@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="canonical" href="https://ai-km-jiang.vercel.app/ai-office/learn.html">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="江江教練的 AI 辦公室">
+  <meta property="og:locale" content="zh_TW">
+  <meta property="og:title" content="零基礎設定教學｜江江教練的 AI 辦公室">
+  <meta property="og:description" content="AI 辦公室零基礎設定教學架構。把 AI 從問答工具變成你的工作系統。">
+  <meta property="og:url" content="https://ai-km-jiang.vercel.app/ai-office/learn.html">
+  <meta property="og:image" content="https://ai-km-jiang.vercel.app/ai-office/img/coach.jpg">
+  <meta name="twitter:card" content="summary">
+  <title>零基礎設定教學｜江江教練的 AI 辦公室</title>
+  <meta name="description" content="AI 辦公室零基礎設定教學架構。把 AI 從問答工具變成你的工作系統。">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    /* ===== 教學頁專屬樣式（奶茶色延伸） ===== */
+    .learn-hero {
+      padding: 80px 0 40px;
+      text-align: center;
+    }
+    .learn-hero .eyebrow {
+      display: inline-block;
+      padding: 6px 16px;
+      background: var(--accent);
+      color: #fff;
+      border-radius: 999px;
+      font-size: 13px;
+      letter-spacing: 2px;
+      margin-bottom: 20px;
+      font-weight: 600;
+    }
+    .learn-hero h1 {
+      font-family: var(--font-display);
+      font-size: 42px;
+      color: var(--text-strong);
+      margin-bottom: 12px;
+      letter-spacing: 1px;
+    }
+    .learn-hero .subtitle {
+      color: var(--muted);
+      font-size: 16px;
+      margin-bottom: 24px;
+    }
+    .learn-hero .notice {
+      display: inline-block;
+      padding: 12px 24px;
+      background: var(--card);
+      border: 1px dashed var(--subtle);
+      border-radius: var(--radius);
+      color: var(--text-soft);
+      font-size: 14px;
+    }
+
+    /* 時間軸 */
+    .timeline {
+      margin: 60px auto 40px;
+      max-width: var(--content-max);
+      padding: 32px;
+      background: var(--card);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow);
+    }
+    .timeline h3 {
+      font-size: 13px;
+      color: var(--accent);
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+      font-weight: 600;
+    }
+    .timeline-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 10px;
+    }
+    .time-block {
+      background: var(--bg);
+      border: 1px solid var(--subtle);
+      border-radius: var(--radius-sm);
+      padding: 14px 8px;
+      text-align: center;
+    }
+    .time-block .time {
+      font-size: 11px;
+      color: var(--accent);
+      font-weight: 700;
+      margin-bottom: 6px;
+      letter-spacing: 1px;
+    }
+    .time-block .what {
+      font-size: 13px;
+      color: var(--text);
+      line-height: 1.4;
+    }
+    .time-block.highlight {
+      background: linear-gradient(135deg, #FFF3E0, #FFE0B2);
+      border-color: var(--accent);
+    }
+    .time-block.highlight .time { color: var(--text-strong); }
+
+    @media (max-width: 768px) {
+      .timeline-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    /* 心智圖區 */
+    .mindmap {
+      max-width: var(--content-max);
+      margin: 60px auto;
+      padding: 0 24px;
+    }
+    .mindmap-title {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    .mindmap-title h2 {
+      font-family: var(--font-display);
+      font-size: 32px;
+      color: var(--text-strong);
+      margin-bottom: 10px;
+    }
+    .mindmap-title .sub {
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    .root-node {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 40px;
+    }
+    .root-node .node-card {
+      padding: 24px 56px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-light));
+      color: #fff;
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-lg);
+      text-align: center;
+    }
+    .root-node .label {
+      font-size: 11px;
+      letter-spacing: 3px;
+      opacity: 0.85;
+      margin-bottom: 6px;
+    }
+    .root-node .title {
+      font-size: 28px;
+      font-weight: 700;
+      font-family: var(--font-display);
+    }
+
+    .branches {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 28px;
+    }
+    @media (max-width: 900px) {
+      .branches { grid-template-columns: 1fr; }
+    }
+
+    .branch {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+    .branch-header {
+      text-align: center;
+      padding: 18px;
+      border-radius: var(--radius);
+      background: var(--card);
+      border: 1px solid var(--subtle);
+      box-shadow: var(--shadow);
+    }
+    .branch-header .label {
+      font-size: 10px;
+      letter-spacing: 3px;
+      color: var(--accent);
+      margin-bottom: 6px;
+      font-weight: 600;
+    }
+    .branch-header .title {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--text-strong);
+      font-family: var(--font-display);
+    }
+
+    .sub-card {
+      background: var(--bg-alt);
+      border: 1px solid var(--subtle);
+      border-radius: var(--radius);
+      padding: 18px 20px;
+      transition: all 0.2s;
+    }
+    .sub-card:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow);
+      border-color: var(--accent-light);
+    }
+    .sub-card .sub-label {
+      font-size: 10px;
+      letter-spacing: 2px;
+      color: var(--accent);
+      margin-bottom: 6px;
+      font-weight: 600;
+    }
+    .sub-card .sub-title {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--text-strong);
+      margin-bottom: 10px;
+    }
+    .sub-card ul {
+      list-style: none;
+      padding: 0;
+    }
+    .sub-card li {
+      padding: 6px 0;
+      padding-left: 18px;
+      color: var(--text-soft);
+      font-size: 14px;
+      position: relative;
+      line-height: 1.5;
+    }
+    .sub-card li::before {
+      content: '◦';
+      position: absolute;
+      left: 4px;
+      color: var(--accent);
+      font-weight: 700;
+    }
+    .star {
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    /* 結尾金句 */
+    .closing {
+      margin: 80px auto;
+      max-width: 900px;
+      padding: 60px 40px;
+      background: linear-gradient(135deg, var(--card), var(--bg-alt));
+      border: 2px solid var(--accent);
+      border-radius: var(--radius-lg);
+      text-align: center;
+      box-shadow: var(--shadow-lg);
+    }
+    .closing .quote {
+      font-family: var(--font-display);
+      font-size: 30px;
+      line-height: 1.8;
+      color: var(--text-strong);
+      margin-bottom: 24px;
+    }
+    .closing .quote .highlight {
+      color: var(--accent);
+      font-weight: 700;
+    }
+    .closing .echo {
+      color: var(--muted);
+      font-size: 15px;
+      font-style: italic;
+      padding-top: 20px;
+      border-top: 1px dashed var(--subtle);
+    }
+
+    /* 課程連結待補區 */
+    .course-pending {
+      margin: 40px auto;
+      max-width: 800px;
+      padding: 32px;
+      background: #FFF8E1;
+      border: 1px dashed var(--accent);
+      border-radius: var(--radius);
+      text-align: center;
+    }
+    .course-pending h3 {
+      color: var(--text-strong);
+      font-size: 20px;
+      margin-bottom: 10px;
+    }
+    .course-pending p {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    @media (max-width: 600px) {
+      .learn-hero h1 { font-size: 32px; }
+      .root-node .node-card { padding: 18px 32px; }
+      .root-node .title { font-size: 22px; }
+      .closing .quote { font-size: 22px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- 主站全域條：跨站導航 -->
+<div class="km-global-bar">
+  <a class="km-global-home" href="../index.html">← 江江教練 · AI 知識管理 主站</a>
+  <nav class="km-global-links">
+    <a href="../offers.html">收費課程</a>
+    <a href="../courses.html">免費講座</a>
+    <a href="../learn.html">自學資源</a>
+  </nav>
+</div>
+
+  <nav class="topnav" style="justify-content:center;">
+    <ul class="nav-links">
+      <li><a href="index.html">AI 辦公室</a></li>
+      <li><a href="team.html">AI 助理</a></li>
+      <li><a href="learn.html">零基礎教學</a></li>
+      <li><a href="index.html#about">關於我</a></li>
+    </ul>
+  </nav>
+
+  <!-- Hero -->
+  <section class="learn-hero">
+    <div class="container">
+      <span class="eyebrow">零基礎設定教學</span>
+      <h1>把 AI 從工具，變成你的工作系統</h1>
+      <p class="subtitle">三小時，建立你的第一座 AI 辦公室。</p>
+      <div style="margin-top: 28px;">
+        <a href="learn-slides.html" style="display: inline-block; background: var(--accent); color: #fff; padding: 18px 44px; border-radius: 12px; text-decoration: none; font-weight: 700; font-size: 20px; box-shadow: var(--shadow); transition: transform 0.2s;">看教學簡報</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 心智圖區 -->
+  <div class="mindmap">
+    <div class="mindmap-title">
+      <h2>三階段教學內容</h2>
+      <p class="sub">環境設定 · 工作流基礎 · 延伸與更新</p>
+    </div>
+
+    <div class="root-node">
+      <div class="node-card">
+        <div class="label">TODAY</div>
+        <div class="title">AI 辦公室</div>
+      </div>
+    </div>
+
+    <div class="branches">
+
+      <!-- 第一支：環境設定 -->
+      <div class="branch">
+        <div class="branch-header">
+          <div class="label">SETUP</div>
+          <div class="title">環境設定</div>
+        </div>
+
+        <div class="sub-card">
+          <div class="sub-label">CODEX</div>
+          <div class="sub-title">Codex 三件事</div>
+          <ul>
+            <li>三層權限（沙箱 / 手動 / 完整存取）</li>
+            <li>⭐ 記憶機制：手動 AGENTS.md / 自動 memories</li>
+            <li>進階三招：/plan ｜ /fork ｜ 內建瀏覽器</li>
+          </ul>
+        </div>
+
+        <div class="sub-card">
+          <div class="sub-label">FOLDER</div>
+          <div class="sub-title">手動建專案資料夾</div>
+          <ul>
+            <li>對應 3X4 資料整理法</li>
+            <li>把策略層 / 執行層分清楚</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- 第二支：工作流基礎 -->
+      <div class="branch">
+        <div class="branch-header">
+          <div class="label">CORE</div>
+          <div class="title">工作流基礎</div>
+        </div>
+
+        <div class="sub-card">
+          <div class="sub-label">PRINCIPLE</div>
+          <div class="sub-title">基本功</div>
+          <ul>
+            <li>「環境」是什麼</li>
+            <li>我的文件 是我的系統</li>
+            <li>3×4 資料管理法</li>
+            <li>檔名命名小技巧</li>
+            <li>標籤連結法</li>
+          </ul>
+        </div>
+
+        <div class="sub-card">
+          <div class="sub-label">DEMO</div>
+          <div class="sub-title">第一個工作流</div>
+          <ul>
+            <li>截圖改中文名</li>
+            <li>HEIC → JPG 轉檔</li>
+            <li>跑兩個技能包，看學員第一次真的會用</li>
+          </ul>
+        </div>
+
+        <div class="sub-card">
+          <div class="sub-label">META <span class="star">⭐</span></div>
+          <div class="sub-title">教問 Mika</div>
+          <ul>
+            <li>「我要怎麼開始？」</li>
+            <li>「這裡有哪些助理？」</li>
+            <li>「我手上有 XXX，怎麼處理？」</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- 第三支：延伸 -->
+      <div class="branch">
+        <div class="branch-header">
+          <div class="label">EXTEND</div>
+          <div class="title">延伸</div>
+        </div>
+
+        <div class="sub-card">
+          <div class="sub-label">GITHUB</div>
+          <div class="sub-title">GitHub 進階補充</div>
+          <ul>
+            <li>最早是版本管理工具</li>
+            <li>網頁 / 技能包 / 文件都能放</li>
+            <li>github-ops 技能包加速</li>
+          </ul>
+        </div>
+
+        <div class="sub-card">
+          <div class="sub-label">TIPS</div>
+          <div class="sub-title">江江小技巧</div>
+          <ul>
+            <li>查資料：開三個代理分角度</li>
+            <li>官方資訊 / 網路正評 / 網路負評</li>
+            <li>三組答案交叉比對才下判斷</li>
+          </ul>
+        </div>
+
+        <div class="sub-card">
+          <div class="sub-label">FUTURE</div>
+          <div class="sub-title">未來可期（不深教）</div>
+          <ul>
+            <li>📱 手機連動（2026-05-14 新功能）</li>
+            <li>Browser Use</li>
+            <li>Computer Use</li>
+            <li>MCP（連 NotebookLM 等）</li>
+            <li>自動化 / 定時任務</li>
+            <li>→ 萬物 Agent 概念</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 結尾金句 -->
+  <div class="closing">
+    <div class="quote">
+      我們從<span class="highlight">「問 AI」</span><br>
+      轉向<span class="highlight">「管理 AI」</span><br><br>
+      最終無可取代的<br>
+      是<span class="highlight">整理出我們自己的知識</span>
+    </div>
+    <div class="echo">
+      你不是要去學 AI，是要讓 AI 來學你。
+    </div>
+  </div>
+
+  <footer style="text-align:center; padding:40px 20px; color:var(--muted); font-size:13px;">
+    © 2026 江江教練的 AI 辦公室 · 零基礎設定教學架構
+    <p style="margin-top:14px; font-size:1rem; color:var(--muted);">
+      江江教練主站：<a href="../index.html" style="color:var(--accent);">首頁</a> · <a href="../offers.html" style="color:var(--accent);">收費課程</a> · <a href="../courses.html" style="color:var(--accent);">免費講座</a> · <a href="../learn.html" style="color:var(--accent);">自學資源</a> · <a href="../cases.html" style="color:var(--accent);">服務方案</a>
+    </p>
+  </footer>
+
+</body>
+</html>

@@ -1,0 +1,981 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>社群工具 AI 成員化 × Agent 支援度比較</title>
+  <style>
+    :root {
+      --paper: #fbfaf7;
+      --panel: #ffffff;
+      --ink: #17202a;
+      --muted: #5c6670;
+      --line-c: #d9dee5;
+      --soft: #f4f0ea;
+      --gold: #b8872f;
+      --amber: #d88c3a;
+      --c-line: #4f8f6b;
+      --c-tg: #3f7cac;
+      --c-dc: #7357a6;
+      --c-sl: #d88c3a;
+      --radius: 8px;
+      --shadow: 0 2px 12px rgba(23,32,42,0.07);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--paper);
+      color: var(--ink);
+      font-family: "Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;
+      line-height: 1.65;
+    }
+    a { color: #7a521b; text-decoration-thickness: 1px; text-underline-offset: 3px; }
+    .wrap { width: min(1180px, calc(100% - 36px)); margin: 0 auto; }
+
+    /* ── HEADER ── */
+    header { padding: 44px 0 28px; border-bottom: 1px solid var(--line-c); }
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: #efe3d0; border: 1px solid #ddc49d; border-radius: 999px;
+      padding: 5px 12px; font-size: 13px; font-weight: 700; color: #6c4b21;
+      margin-bottom: 16px;
+    }
+    h1 { font-size: clamp(28px, 4.5vw, 52px); line-height: 1.1; max-width: 860px; margin-bottom: 12px; }
+    .lead { color: var(--muted); font-size: 17px; max-width: 780px; }
+
+    /* ── SECTION SCAFFOLDING ── */
+    section { padding: 44px 0; border-bottom: 1px solid var(--line-c); }
+    section:last-of-type { border-bottom: none; }
+    .section-label {
+      display: inline-block; font-size: 11px; font-weight: 900; letter-spacing: .12em;
+      text-transform: uppercase; color: #8a6b3a; margin-bottom: 10px;
+    }
+    h2 { font-size: clamp(22px, 3vw, 34px); line-height: 1.2; margin-bottom: 6px; }
+    .section-sub { color: var(--muted); font-size: 15px; margin-bottom: 28px; }
+
+    /* ── PLATFORM DEFINITION CARDS ── */
+    .platform-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-top: 32px;
+    }
+    .pf-card {
+      border: 1px solid var(--line-c);
+      border-top: 4px solid var(--c);
+      border-radius: var(--radius);
+      background: var(--panel);
+      padding: 18px 16px;
+      box-shadow: var(--shadow);
+    }
+    .pf-card .pf-name {
+      font-size: 20px; font-weight: 900; margin-bottom: 4px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .pf-card .pf-role {
+      display: inline-block; font-size: 12px; font-weight: 800;
+      padding: 3px 9px; border-radius: 999px;
+      background: color-mix(in srgb, var(--c) 12%, white);
+      color: color-mix(in srgb, var(--c) 80%, #1a1a1a);
+      margin-bottom: 10px;
+    }
+    .pf-card p { font-size: 14px; color: var(--muted); }
+    .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--c); display: inline-block; }
+    .line { --c: var(--c-line); }
+    .telegram { --c: var(--c-tg); }
+    .discord { --c: var(--c-dc); }
+    .slack { --c: var(--c-sl); }
+
+    /* ── FLOW DIAGRAM ── */
+    .flow-wrap {
+      margin-top: 36px;
+      overflow-x: auto;
+      padding-bottom: 8px;
+    }
+    .flow-track {
+      display: flex;
+      align-items: stretch;
+      gap: 0;
+      min-width: 860px;
+    }
+    .flow-node {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+    }
+    .flow-node:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      right: -1px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 0; height: 0;
+      border-top: 11px solid transparent;
+      border-bottom: 11px solid transparent;
+      border-left: 14px solid var(--line-c);
+      z-index: 2;
+    }
+    .flow-box {
+      width: 100%;
+      border: 1px solid var(--line-c);
+      border-radius: var(--radius);
+      background: var(--panel);
+      padding: 14px 10px;
+      text-align: center;
+      position: relative;
+    }
+    .flow-box.platform-step {
+      border-top: 3px solid var(--c, var(--line-c));
+    }
+    .flow-box b { display: block; font-size: 14px; margin-bottom: 4px; }
+    .flow-box small { font-size: 12px; color: var(--muted); display: block; }
+    .flow-step-num {
+      font-size: 11px; font-weight: 900; color: #aaa;
+      margin-bottom: 8px; letter-spacing: .06em;
+    }
+    .flow-multi {
+      display: flex; gap: 4px; justify-content: center;
+      margin-bottom: 6px;
+    }
+    .flow-multi .mini-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+    }
+    .flow-node-gap { width: 28px; flex-shrink: 0; }
+
+    /* ── THREE CONCEPTS ── */
+    .concepts-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-top: 28px;
+    }
+    .concept-card {
+      border: 1px solid var(--line-c);
+      border-radius: var(--radius);
+      background: var(--panel);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+    .concept-head {
+      padding: 16px 18px 14px;
+      border-bottom: 1px solid var(--line-c);
+    }
+    .concept-num {
+      font-size: 11px; font-weight: 900; letter-spacing: .1em;
+      color: var(--muted); margin-bottom: 6px;
+    }
+    .concept-head h3 { font-size: 18px; line-height: 1.3; margin-bottom: 6px; }
+    .concept-head p { font-size: 13px; color: var(--muted); }
+    .concept-body { padding: 14px 18px; }
+    .concept-body ul {
+      list-style: none; padding: 0;
+      display: flex; flex-direction: column; gap: 5px;
+    }
+    .concept-body li {
+      font-size: 13px; color: #3a4550;
+      padding-left: 16px; position: relative;
+    }
+    .concept-body li::before {
+      content: '→'; position: absolute; left: 0; color: var(--muted); font-size: 11px;
+    }
+    .concept-platforms {
+      display: grid; grid-template-columns: repeat(2,1fr); gap: 8px;
+      margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--line-c);
+    }
+    .cp-item { font-size: 12px; }
+    .cp-name { font-weight: 800; font-size: 13px; display: flex; align-items: center; gap: 5px; margin-bottom: 2px; }
+    .cp-desc { color: var(--muted); }
+
+    /* ── INTERACTIVE BARS ── */
+    .toolbar {
+      display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px;
+    }
+    button {
+      border: 1px solid #d8c9b0; background: #fffaf0; color: #5b3b14;
+      border-radius: 999px; padding: 7px 13px;
+      font: inherit; font-size: 13px; font-weight: 700; cursor: pointer;
+      transition: background .15s, color .15s;
+    }
+    button.active { background: #3d2b1f; color: #fff8ef; border-color: #3d2b1f; }
+    .viz-grid {
+      display: grid; grid-template-columns: 1fr 300px; gap: 16px;
+    }
+    .bars-panel {
+      border: 1px solid var(--line-c); border-radius: var(--radius);
+      background: var(--panel); padding: 20px; box-shadow: var(--shadow);
+    }
+    .metric-header {
+      display: flex; justify-content: space-between; align-items: baseline;
+      border-bottom: 1px solid var(--line-c); padding-bottom: 12px; margin-bottom: 18px;
+    }
+    .metric-header h3 { font-size: 20px; }
+    .metric-header span { font-size: 13px; color: var(--muted); }
+    .bar-row {
+      display: grid; grid-template-columns: 100px 1fr 42px;
+      gap: 10px; align-items: center; margin: 13px 0;
+    }
+    .bar-label { font-weight: 800; font-size: 14px; display: flex; align-items: center; gap: 6px; }
+    .track {
+      height: 14px; background: #ece7df; border-radius: 999px;
+      overflow: hidden; border: 1px solid #e0d5c5;
+    }
+    .fill {
+      height: 100%; width: calc(var(--score) * 20%);
+      background: linear-gradient(90deg, var(--c), color-mix(in srgb, var(--c) 65%, white));
+      border-radius: 999px; transition: width .3s ease;
+    }
+    .score-num { font-weight: 900; font-size: 14px; text-align: right; }
+    .why-grid {
+      display: grid; grid-template-columns: repeat(4,1fr); gap: 8px; margin-top: 16px;
+    }
+    .why-card {
+      border: 1px solid var(--line-c); border-radius: var(--radius);
+      background: var(--soft); padding: 10px 12px;
+    }
+    .why-card .wc-name { font-weight: 800; font-size: 13px; display: flex; align-items: center; gap: 5px; margin-bottom: 5px; }
+    .why-card p { font-size: 13px; color: var(--muted); }
+    .radar-panel {
+      border: 1px solid var(--line-c); border-radius: var(--radius);
+      background: var(--panel); display: grid; place-items: center;
+      padding: 16px; box-shadow: var(--shadow);
+    }
+    svg text { font-family: inherit; fill: var(--muted); font-size: 10.5px; font-weight: 700; }
+
+    /* ── MATRIX TABLE ── */
+    .table-wrap {
+      border: 1px solid var(--line-c); border-radius: var(--radius);
+      background: var(--panel); overflow-x: auto; box-shadow: var(--shadow);
+    }
+    table { width: 100%; border-collapse: collapse; min-width: 860px; }
+    th, td {
+      padding: 11px 14px; border-bottom: 1px solid var(--line-c);
+      text-align: left; font-size: 14px; vertical-align: top;
+    }
+    th {
+      background: #f4efe7; color: #3d2b1f; font-size: 13px;
+      position: sticky; top: 0; z-index: 1;
+    }
+    td:first-child, th:first-child {
+      font-weight: 900; position: sticky; left: 0;
+      background: inherit; z-index: 2;
+    }
+    th:first-child { z-index: 3; background: #f4efe7; }
+    tr:last-child td { border-bottom: none; }
+
+    /* ── ROUTES ── */
+    .routes-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 28px;
+    }
+    .route-card {
+      border: 1px solid var(--line-c); border-radius: var(--radius);
+      background: var(--panel); padding: 22px; box-shadow: var(--shadow);
+    }
+    .route-card.hybrid {
+      border: 2px solid var(--amber); background: #fffbf2;
+      grid-column: span 2;
+    }
+    .route-tag {
+      display: inline-block; font-size: 11px; font-weight: 900; letter-spacing: .1em;
+      padding: 4px 10px; border-radius: 999px; margin-bottom: 12px;
+    }
+    .route-card:not(.hybrid) .route-tag { background: var(--soft); color: var(--muted); }
+    .route-card.hybrid .route-tag { background: #f5e0b8; color: #6b3d00; }
+    .route-card h3 { font-size: 20px; margin-bottom: 8px; }
+    .route-card .route-desc { font-size: 15px; color: var(--muted); margin-bottom: 16px; }
+    .route-meta {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+      margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--line-c);
+    }
+    .route-meta-item { font-size: 13px; }
+    .route-meta-item strong { display: block; font-size: 12px; color: var(--muted); margin-bottom: 3px; }
+    .route-tools { font-size: 13px; color: var(--muted); margin-top: 8px; }
+    .route-tools b { color: var(--ink); }
+
+    /* ── HEAT MAP ── */
+    .heat {
+      display: inline-block; text-align: center; font-weight: 900;
+      border-radius: 5px; padding: 6px 4px; min-width: 34px; font-size: 13px;
+    }
+    .h5 { background: #1f7a52; color: #fff; }
+    .h4 { background: #80a95b; color: #102017; }
+    .h3 { background: #e1b75d; color: #2b1c03; }
+    .h2 { background: #e09064; color: #2b1203; }
+    .h1 { background: #bd645f; color: #fff; }
+    .heat-legend {
+      display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 16px;
+      font-size: 13px; color: var(--muted); align-items: center;
+    }
+    .heat-legend .hli { display: flex; align-items: center; gap: 6px; }
+
+    /* ── AI OFFICE ROLES ── */
+    .office-grid {
+      display: grid; grid-template-columns: repeat(4,1fr); gap: 14px; margin-top: 28px;
+    }
+    .office-card {
+      border: 1px solid var(--line-c); border-top: 4px solid var(--c);
+      border-radius: var(--radius); background: var(--panel); padding: 18px;
+      box-shadow: var(--shadow);
+    }
+    .office-role {
+      font-size: 11px; font-weight: 900; letter-spacing: .08em; text-transform: uppercase;
+      color: var(--c); margin-bottom: 8px;
+    }
+    .office-card h3 { font-size: 19px; margin-bottom: 8px; display: flex; align-items: center; gap: 7px; }
+    .office-card p { font-size: 13px; color: var(--muted); }
+
+    /* ── NOTE ── */
+    .note {
+      background: #fff9ec; border: 1px solid #e6d0a0; border-radius: var(--radius);
+      padding: 12px 16px; font-size: 14px; color: #5b400f; margin-top: 16px;
+    }
+
+    /* ── SOURCES ── */
+    .source-grid {
+      display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin-top: 24px;
+    }
+    .source-grid a {
+      display: block; padding: 10px 12px;
+      border: 1px solid var(--line-c); border-radius: var(--radius);
+      background: var(--panel); font-size: 13px; color: #7a521b;
+    }
+    .source-grid a:hover { background: var(--soft); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      .platform-row { grid-template-columns: 1fr 1fr; }
+      .concepts-grid { grid-template-columns: 1fr; }
+      .viz-grid { grid-template-columns: 1fr; }
+      .why-grid { grid-template-columns: 1fr 1fr; }
+      .routes-grid { grid-template-columns: 1fr; }
+      .routes-grid .route-card.hybrid { grid-column: span 1; }
+      .office-grid { grid-template-columns: 1fr 1fr; }
+      .source-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 560px) {
+      .wrap { width: calc(100% - 24px); }
+      .platform-row { grid-template-columns: 1fr; }
+      .why-grid { grid-template-columns: 1fr; }
+      .office-grid { grid-template-columns: 1fr; }
+      .source-grid { grid-template-columns: 1fr; }
+      .concepts-grid { grid-template-columns: 1fr; }
+      .route-meta { grid-template-columns: 1fr; }
+      .concept-platforms { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── HEADER ── -->
+<header>
+  <div class="wrap">
+    <div class="eyebrow">策略決策看板 · 2026-05-04</div>
+    <h1>高在哪裡，而不是誰比較高分。</h1>
+    <p class="lead">LINE、Telegram、Discord、Slack 各有各的定位。這份看板拆開三個 AI 概念、比較六項能力、對比兩條路線，幫你判斷「哪個工具放在哪一段流程」。</p>
+
+    <!-- Platform Definition Cards -->
+    <div class="platform-row">
+      <div class="pf-card line">
+        <div class="pf-name"><span class="dot"></span>LINE</div>
+        <div class="pf-role">台灣入口</div>
+        <p>親切度最高，適合引流、公告、講座入口。不適合做 AI 社群基地或 Agent 讀寫中樞。</p>
+      </div>
+      <div class="pf-card telegram">
+        <div class="pf-name"><span class="dot"></span>Telegram</div>
+        <div class="pf-role">AI 助教 / 防詐 MVP</div>
+        <p>Bot 自由度最高。適合先做防詐驗證、自動管理、AI 助教實驗，快速上線。</p>
+      </div>
+      <div class="pf-card discord">
+        <div class="pf-name"><span class="dot"></span>Discord</div>
+        <div class="pf-role">正式課程社群基地</div>
+        <p>頻道、角色、權限結構最完整，適合分班、分課程、長期學習社群。</p>
+      </div>
+      <div class="pf-card slack">
+        <div class="pf-name"><span class="dot"></span>Slack</div>
+        <div class="pf-role">Agent 工作流中樞</div>
+        <p>最接近 AI 同事概念。MCP Server 成熟，適合高單價陪跑、企業課、內部團隊。</p>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ── FLOW ── -->
+<section>
+  <div class="wrap">
+    <div class="section-label">核心流程</div>
+    <h2>從引流到知識庫沉澱</h2>
+    <p class="section-sub">這個流程是整份看板的主軸。每個平台對應不同的段落，不需要全部都用。</p>
+
+    <div class="flow-wrap">
+      <div class="flow-track">
+
+        <div class="flow-node">
+          <div class="flow-step-num">01</div>
+          <div class="flow-box">
+            <b>脆文引流</b>
+            <small>Threads / 社群<br>發文觸及陌生受眾</small>
+          </div>
+        </div>
+
+        <div class="flow-node-gap" aria-hidden="true"></div>
+
+        <div class="flow-node">
+          <div class="flow-step-num">02</div>
+          <div class="flow-box platform-step line">
+            <b style="color:var(--c-line)">LINE 加入</b>
+            <small>台灣大眾入口<br>公告 · 講座報名</small>
+          </div>
+        </div>
+
+        <div class="flow-node-gap" aria-hidden="true"></div>
+
+        <div class="flow-node">
+          <div class="flow-step-num">03</div>
+          <div class="flow-box">
+            <b>免費講座</b>
+            <small>篩選 · 表單分流<br>降低混入風險</small>
+          </div>
+        </div>
+
+        <div class="flow-node-gap" aria-hidden="true"></div>
+
+        <div class="flow-node">
+          <div class="flow-step-num">04</div>
+          <div class="flow-box">
+            <b>正式課程 / 陪跑</b>
+            <small>付費 · 深度參與<br>需要社群結構</small>
+          </div>
+        </div>
+
+        <div class="flow-node-gap" aria-hidden="true"></div>
+
+        <div class="flow-node">
+          <div class="flow-step-num">05</div>
+          <div class="flow-box platform-step" style="--c: #5a78b8; border-top-color:#5a78b8;">
+            <div class="flow-multi">
+              <span class="mini-dot" style="background:var(--c-tg)"></span>
+              <span class="mini-dot" style="background:var(--c-dc)"></span>
+              <span class="mini-dot" style="background:var(--c-sl)"></span>
+            </div>
+            <b style="font-size:13px">TG · DC · Slack</b>
+            <small>依需求選一個<br>AI 助教 / 課程 / 工作流</small>
+          </div>
+        </div>
+
+        <div class="flow-node-gap" aria-hidden="true"></div>
+
+        <div class="flow-node">
+          <div class="flow-step-num">06</div>
+          <div class="flow-box">
+            <b>AI 整理</b>
+            <small>Codex · Claude Code<br>摘要 · FAQ · 任務</small>
+          </div>
+        </div>
+
+        <div class="flow-node-gap" aria-hidden="true"></div>
+
+        <div class="flow-node">
+          <div class="flow-step-num">07</div>
+          <div class="flow-box" style="background:var(--soft);">
+            <b>知識庫沉澱</b>
+            <small>Obsidian · Notion<br>長期累積</small>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="note">💡 如果你現在不想開發 bot，另一條路：把 Codex / Claude Code / Cowork 當「AI 辦公室控制台」——聊天群組負責承載對話，Agent 負責讀取、整理、分派，再寫回知識庫。步驟 05 選 Slack 時這條路最順。</div>
+  </div>
+</section>
+
+<!-- ── THREE CONCEPTS ── -->
+<section>
+  <div class="wrap">
+    <div class="section-label">概念拆解</div>
+    <h2>三個不同的 AI 概念</h2>
+    <p class="section-sub">「AI 成員化」「AI 功能整合」「Agent 控制台支援」是三件不同的事，不要混在一起比。</p>
+
+    <div class="concepts-grid">
+
+      <!-- Concept 1 -->
+      <div class="concept-card">
+        <div class="concept-head">
+          <div class="concept-num">概念 01</div>
+          <h3>AI 功能整合度</h3>
+          <p>平台本身或生態是否已有 AI 工具可以直接用，例如摘要、搜尋、分類、工作流——不需要你自己開發。</p>
+        </div>
+        <div class="concept-body">
+          <ul>
+            <li>摘要 / 搜尋</li>
+            <li>自動分類 / 回覆建議</li>
+            <li>工作流自動化</li>
+            <li>外部模型串接</li>
+          </ul>
+          <div class="concept-platforms">
+            <div class="cp-item">
+              <div class="cp-name"><span class="dot line"></span>LINE</div>
+              <div class="cp-desc">可接外部模型，群組端有限。</div>
+            </div>
+            <div class="cp-item">
+              <div class="cp-name"><span class="dot telegram"></span>Telegram</div>
+              <div class="cp-desc">Bot API 彈性高，可自建。</div>
+            </div>
+            <div class="cp-item">
+              <div class="cp-name"><span class="dot discord"></span>Discord</div>
+              <div class="cp-desc">Bot + AutoMod + API 生態完整。</div>
+            </div>
+            <div class="cp-item">
+              <div class="cp-name"><span class="dot slack"></span>Slack</div>
+              <div class="cp-desc">Slack AI、recap、workflow 成熟。</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Concept 2 -->
+      <div class="concept-card">
+        <div class="concept-head">
+          <div class="concept-num">概念 02</div>
+          <h3>AI 成員化能力</h3>
+          <p>AI 是否能像一個獨立用戶一樣存在於群組、伺服器、工作區——有角色、能發言、能被賦予權限。</p>
+        </div>
+        <div class="concept-body">
+          <ul>
+            <li>能否加入群組 / 被看見</li>
+            <li>能否主動發言</li>
+            <li>能否讀取上下文</li>
+            <li>能否被賦予角色權限</li>
+            <li>能否像助教、管理員運作</li>
+          </ul>
+          <div class="concept-platforms">
+            <div class="cp-item">
+              <div class="cp-name"><span class="dot line"></span>LINE</div>
+              <div class="cp-desc">可進群，但像客服帳號。</div>
+            </div>
+            <div class="cp-item">
+              <div class="cp-name"><span class="dot telegram"></span>Telegram</div>
+              <div class="cp-desc">Bot 像成員，可升為管理員。</div>
+            </div>
+            <div class="cp-item">
+              <div class="cp-name"><span class="dot discord"></span>Discord</div>
+              <div class="cp-desc">Bot 是 server 成員，角色完整。</div>
+            </div>
+            <div class="cp-item">
+              <div class="cp-name"><span class="dot slack"></span>Slack</div>
+              <div class="cp-desc">像 AI 同事，在 thread 協作。</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Concept 3 -->
+      <div class="concept-card">
+        <div class="concept-head">
+          <div class="concept-num">概念 03</div>
+          <h3>Agent 辦公室控制台支援</h3>
+          <p>Codex / Claude Code / Cowork 這類外部 Agent 能否把聊天內容當成工作材料——讀取、整理、回寫。</p>
+        </div>
+        <div class="concept-body">
+          <ul>
+            <li>能讀取聊天紀錄</li>
+            <li>整理課後討論 / 抽取問題</li>
+            <li>生成 FAQ / 寫入 Obsidian</li>
+            <li>回寫到群組</li>
+            <li>跨聊天、文件、知識庫判斷</li>
+          </ul>
+          <div class="concept-platforms">
+            <div class="cp-item">
+              <div class="cp-name"><span class="dot line"></span>LINE</div>
+              <div class="cp-desc">市場收件口，不適合讀寫中樞。</div>
+            </div>
+            <div class="cp-item">
+              <div class="cp-name"><span class="dot telegram"></span>Telegram</div>
+              <div class="cp-desc">Bot 可轉送群訊息給 Agent 後台。</div>
+            </div>
+            <div class="cp-item">
+              <div class="cp-name"><span class="dot discord"></span>Discord</div>
+              <div class="cp-desc">頻道結構適合 Agent 定期整理。</div>
+            </div>
+            <div class="cp-item">
+              <div class="cp-name"><span class="dot slack"></span>Slack</div>
+              <div class="cp-desc">MCP + AI Apps 最接近工作流中樞。</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── INTERACTIVE COMPARISON ── -->
+<section>
+  <div class="wrap">
+    <div class="section-label">能力比較</div>
+    <h2>切換指標，看各平台高在哪</h2>
+    <p class="section-sub">六個指標對應三個概念。點選指標，看各平台在那個維度的差距與原因。</p>
+
+    <div class="toolbar" id="metricButtons"></div>
+
+    <div class="viz-grid">
+      <div class="bars-panel">
+        <div class="metric-header">
+          <h3 id="metricName">AI 成員化能力</h3>
+          <span id="metricHint"></span>
+        </div>
+        <div id="barChart"></div>
+        <div class="why-grid" id="whyCards"></div>
+      </div>
+      <div class="radar-panel">
+        <svg id="radar" width="268" height="268" viewBox="0 0 268 268" role="img" aria-label="六維能力雷達圖"></svg>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:12px;font-size:12px;">
+          <span style="display:flex;align-items:center;gap:4px;"><span style="width:10px;height:10px;border-radius:50%;background:var(--c-line);display:inline-block"></span>LINE</span>
+          <span style="display:flex;align-items:center;gap:4px;"><span style="width:10px;height:10px;border-radius:50%;background:var(--c-tg);display:inline-block"></span>Telegram</span>
+          <span style="display:flex;align-items:center;gap:4px;"><span style="width:10px;height:10px;border-radius:50%;background:var(--c-dc);display:inline-block"></span>Discord</span>
+          <span style="display:flex;align-items:center;gap:4px;"><span style="width:10px;height:10px;border-radius:50%;background:var(--c-sl);display:inline-block"></span>Slack</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── MATRIX ── -->
+<section>
+  <div class="wrap">
+    <div class="section-label">能力矩陣</div>
+    <h2>同一個能力，型態不同</h2>
+    <p class="section-sub">這不是排名，是類型比較。左右滑動可查看完整欄位。</p>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>能力維度</th>
+            <th>LINE</th>
+            <th>Telegram</th>
+            <th>Discord</th>
+            <th>Slack</th>
+          </tr>
+        </thead>
+        <tbody id="matrixBody"></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ── ROUTES ── -->
+<section>
+  <div class="wrap">
+    <div class="section-label">路線選擇</div>
+    <h2>不想開發 bot，還有兩條路</h2>
+    <p class="section-sub">你不必一開始就做完整 bot。這裡對比兩條路線的差異，最後給出目前最合理的中期架構。</p>
+
+    <div class="routes-grid">
+
+      <div class="route-card">
+        <div class="route-tag">路線 A</div>
+        <h3>平台原生 bot</h3>
+        <p class="route-desc">AI 直接住在 Telegram / Discord / Slack 裡，像群組成員一樣即時反應。</p>
+        <div class="route-meta">
+          <div class="route-meta-item">
+            <strong>高在哪</strong>
+            即時防詐、入群驗證、刪訊、助教即時回話。
+          </div>
+          <div class="route-meta-item">
+            <strong>限制</strong>
+            需要開發、部署、維護，要處理權限和資安。
+          </div>
+          <div class="route-meta-item">
+            <strong>適合情境</strong>
+            防詐、群管、即時助教、需要快速反應。
+          </div>
+          <div class="route-meta-item">
+            <strong>推薦平台</strong>
+            Telegram（快）、Discord（結構完整）、Slack（企業）。
+          </div>
+        </div>
+      </div>
+
+      <div class="route-card">
+        <div class="route-tag">路線 B</div>
+        <h3>Agent 辦公室控制台</h3>
+        <p class="route-desc">Codex / Claude Code / Cowork 讀取各平台內容，整理成任務、摘要、知識庫，再視情況回寫。</p>
+        <div class="route-meta">
+          <div class="route-meta-item">
+            <strong>高在哪</strong>
+            不用先做完整產品；可跨文件、知識庫、聊天一起判斷。
+          </div>
+          <div class="route-meta-item">
+            <strong>限制</strong>
+            即時防詐較弱；沒有穩定 connector 時需要半自動匯出。
+          </div>
+          <div class="route-meta-item">
+            <strong>適合情境</strong>
+            AI 辦公室、課後整理、策略沉澱、助教工作流。
+          </div>
+          <div class="route-meta-item">
+            <strong>推薦平台</strong>
+            Slack 最成熟；TG / DC 可透過 bot 或匯出接；LINE 適合入口。
+          </div>
+        </div>
+      </div>
+
+      <div class="route-card hybrid">
+        <div class="route-tag">中期推薦架構（混合路線）</div>
+        <h3>群內輕量 bot 守門，後台 Agent 做深度整理</h3>
+        <p class="route-desc">兼顧即時管理與深度分析，最符合人機共管的現實需求。</p>
+        <div class="route-tools">
+          <b>工具組合：</b>LINE 入口收件 → Telegram / Discord 群管理（輕量 bot）→ Codex / Claude Code 後台整理 → Obsidian / Notion 知識庫
+        </div>
+        <div class="route-meta" style="margin-top:14px;">
+          <div class="route-meta-item">
+            <strong>第一步要定義的事</strong>
+            哪些事即時處理（bot）、哪些事批次整理（Agent）。
+          </div>
+          <div class="route-meta-item">
+            <strong>為什麼現在最合理</strong>
+            不需要一次開發完整系統；可以先從 LINE + Telegram bot 開始，再逐步加 Agent 後台。
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── AGENT SUPPORT ── -->
+<section>
+  <div class="wrap">
+    <div class="section-label">Agent 支援度</div>
+    <h2>各家 Agent 接入各平台的差異</h2>
+    <p class="section-sub">分數代表接入成熟度，不是 AI 能力本身的高低。</p>
+
+    <div class="heat-legend">
+      <span style="font-weight:700;color:var(--ink)">讀法：</span>
+      <span class="hli"><span class="heat h5">5</span>原生 / 官方 / 成熟</span>
+      <span class="hli"><span class="heat h4">4</span>可用，生態成熟</span>
+      <span class="hli"><span class="heat h3">3</span>可做但需自建</span>
+      <span class="hli"><span class="heat h2">2</span>有限制或偏入口</span>
+      <span class="hli"><span class="heat h1">1</span>不適合主場</span>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Agent / 系統</th>
+            <th>LINE</th>
+            <th>Telegram</th>
+            <th>Discord</th>
+            <th>Slack</th>
+            <th>重點差異</th>
+          </tr>
+        </thead>
+        <tbody id="agentBody"></tbody>
+      </table>
+    </div>
+
+    <div class="note">「Codex 直連 Slack」拆成兩層：ChatGPT/OpenAI 官方 Slack app 是官方公開能力；Codex 若要做 Slack 任務，較像透過 connector / MCP / 自建工具接入，不等於社群平台原生 bot。</div>
+  </div>
+</section>
+
+<!-- ── AI OFFICE ROLES ── -->
+<section>
+  <div class="wrap">
+    <div class="section-label">AI 辦公室視角</div>
+    <h2>聊天群組在 AI 辦公室裡的角色</h2>
+    <p class="section-sub">不同平台在整個 AI 工作流中扮演不同角色，不是誰取代誰。</p>
+
+    <div class="office-grid">
+      <div class="office-card line">
+        <div class="office-role">市場收件口</div>
+        <h3><span class="dot line"></span>LINE</h3>
+        <p>承接台灣大眾流量、公告、講座入口與表單分流。重要問題導到表單，後續再由 Agent 整理。不適合當長期全量聊天資料庫。</p>
+      </div>
+      <div class="office-card telegram">
+        <div class="office-role">自動化群組入口</div>
+        <h3><span class="dot telegram"></span>Telegram</h3>
+        <p>把群訊息、入群事件、防詐判斷送進 Agent 後台。高在 bot 自由度，不高在課程結構與大眾親切度。</p>
+      </div>
+      <div class="office-card discord">
+        <div class="office-role">課程社群資料庫</div>
+        <h3><span class="dot discord"></span>Discord</h3>
+        <p>頻道、角色、論壇直接變成資料分類。Agent 可按課程、主題、班級定期整理對話，沉澱成 FAQ、任務與知識卡。</p>
+      </div>
+      <div class="office-card slack">
+        <div class="office-role">Agent 工作流中樞</div>
+        <h3><span class="dot slack"></span>Slack</h3>
+        <p>最像 AI 辦公室的工作台：MCP、AI Apps、Slackbot、thread 與 workflow 都朝「AI 同事」發展。適合高單價陪跑、企業課、內部團隊。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── SOURCES ── -->
+<section>
+  <div class="wrap">
+    <div class="section-label">來源</div>
+    <h2>參考文件</h2>
+    <div class="source-grid">
+      <a href="https://developers.line.biz/en/docs/messaging-api/group-chats/">LINE group chats</a>
+      <a href="https://developers.line.biz/en/reference/messaging-api/">LINE Messaging API</a>
+      <a href="https://core.telegram.org/bots/api">Telegram Bot API</a>
+      <a href="https://telegram.org/tour/groups">Telegram Groups</a>
+      <a href="https://docs.discord.com/developers/platform/bots">Discord Bots</a>
+      <a href="https://support.discord.com/hc/en-us/articles/214836687-Discord-Roles-and-Permissions">Discord Roles &amp; Permissions</a>
+      <a href="https://support.discord.com/hc/en-us/articles/4421269296535-AutoMod-FAQ">Discord AutoMod</a>
+      <a href="https://app.slack.com/features/ai">Slack AI</a>
+      <a href="https://slack.com/help/articles/48855576908307-Guide-to-the-Slack-MCP-server">Slack MCP Server</a>
+      <a href="https://docs.slack.dev/ai/slack-mcp-server/connect-to-claude">Slack MCP × Claude</a>
+      <a href="https://help.openai.com/en/articles/12525822-chatgpt-connector-for-slack">ChatGPT Slack app</a>
+      <a href="https://claude.com/blog/claude-and-slack">Claude &amp; Slack</a>
+    </div>
+  </div>
+</section>
+
+<script>
+  const platforms = [
+    { key:"line",     name:"LINE",     color:"#4f8f6b" },
+    { key:"telegram", name:"Telegram", color:"#3f7cac" },
+    { key:"discord",  name:"Discord",  color:"#7357a6" },
+    { key:"slack",    name:"Slack",    color:"#d88c3a" }
+  ];
+
+  const metrics = [
+    {
+      key:"familiarity", name:"台灣大眾加入親切度",
+      hint:"看到工具時是否熟悉、安心",
+      scores:{ line:5, telegram:2, discord:2, slack:1 },
+      why:{ line:"台灣大眾日常入口，轉換阻力最低。", telegram:"AI/技術圈可接受，大眾仍需教學。", discord:"年輕/創作者較熟，一般課程學員需 onboarding。", slack:"企業工作場景熟悉，免費大眾社群不親切。" }
+    },
+    {
+      key:"aiFeature", name:"AI 功能整合度",
+      hint:"摘要、搜尋、分類、工作流",
+      scores:{ line:2, telegram:4, discord:4, slack:5 },
+      why:{ line:"可接 API 和外部模型，但群組端功能有限。", telegram:"Bot API 彈性高，可自建摘要、防詐與回覆。", discord:"Bot + AutoMod + API 生態完整。", slack:"Slack AI、AI recap、workflow、enterprise search 成熟。" }
+    },
+    {
+      key:"aiMember", name:"AI 成員化能力",
+      hint:"把 AI 當獨立用戶加入群組",
+      scores:{ line:2, telegram:5, discord:5, slack:5 },
+      why:{ line:"官方帳號可進群，但比較像客服帳號。", telegram:"Bot 可像群組成員存在，並可升為管理員。", discord:"Bot user 是 server 成員，可用角色與權限管理。", slack:"App/bot/Slackbot 可像工作區 AI 同事參與 thread。" }
+    },
+    {
+      key:"managePower", name:"AI 管理權限能力",
+      hint:"刪訊、禁言、踢人、封鎖",
+      scores:{ line:1, telegram:5, discord:5, slack:3 },
+      why:{ line:"官方文件未提供完整群組踢人/刪訊共管能力。", telegram:"Bot API 可 delete、ban、restrict 成員。", discord:"Moderation API + roles + AutoMod，權限精細。", slack:"偏企業工作流，不是開放社群防詐工具。" }
+    },
+    {
+      key:"structure", name:"課程社群結構能力",
+      hint:"分課程、分班、分角色、分頻道",
+      scores:{ line:1, telegram:3, discord:5, slack:4 },
+      why:{ line:"群組平面，不適合複雜課程架構。", telegram:"可分群/Topic，但完整學習基地能力中等。", discord:"頻道、角色、類別、論壇最適合課程社群。", slack:"頻道和 thread 適合 cohort，但大眾社群成本高。" }
+    },
+    {
+      key:"agentFlow", name:"Agent 控制台支援",
+      hint:"Codex / Claude Code 讀取、整理、回寫",
+      scores:{ line:2, telegram:4, discord:4, slack:5 },
+      why:{ line:"適合當市場收件口，不適合作為 Agent 長期讀寫中樞。", telegram:"可用 bot 把群訊息轉成 Agent 後台任務，適合輕量自動化。", discord:"頻道結構清楚，適合 Agent 按課程/主題定期整理。", slack:"MCP Server、Slackbot、AI Apps 明確走 Agent 工作流，最像 AI 辦公室中樞。" }
+    }
+  ];
+
+  const matrixRows = [
+    ["AI 角色感","客服帳號","群組 bot / 助教","伺服器成員 / 助教 / 管理員","AI 同事 / 工作助理"],
+    ["能否像獨立用戶存在","可，但弱","可，強","可，強","可，偏工作場景"],
+    ["讀取群組上下文","收 webhook，有限制","可，需處理 privacy mode","可，需權限與 intent","可，依 app 權限與方案"],
+    ["主動發言","可回覆/推播","可主動發訊息","可主動發訊息","可在 thread/channel 互動"],
+    ["管理動作","弱","刪訊、ban、restrict","AutoMod、timeout、ban、角色權限","偏 workflow/admin，不偏防詐"],
+    ["權限模型","弱","中高","最高","高"],
+    ["商業策略","大眾通訊入口 / 超級 App","開放 bot 生態 / 高自由度","社群作業系統 / server 結構","企業工作流 / AI 同事"],
+    ["Agent 控制台支援","市場收件口，需轉表單/匯出整理。","bot 可轉送群訊息給 Agent 後台。","頻道可成為課程資料分類。","MCP/AI Apps/Slackbot 最接近 Agent 工作流中樞。"],
+    ["最適合任務","入口與公告","AI 助教 MVP / 防詐 bot","長期課程社群基地","企業課 / 高單價陪跑"]
+  ];
+
+  const agentRows = [
+    ["ChatGPT / OpenAI",2,3,3,5,"Slack app/connector 官方公開；其他平台多需自建 bot。"],
+    ["Codex / Claude Code（AI 辦公室控制台）",2,4,4,5,"Slack 最接近工作流中樞；TG/DC 可接 bot 或匯出；LINE 最適合入口分流。"],
+    ["Claude / Claude Code",1,3,3,5,"Slack MCP Server 明確支援 Claude / Claude Code。"],
+    ["Gemini / Google Workspace",1,2,2,3,"強在 Google Workspace，不是社群平台 bot。"],
+    ["Slackbot / Agentforce",1,1,1,5,"Slack 原生 AI 同事與企業工作流。"],
+    ["自建 LLM Agent",2,5,5,4,"TG/DC 最適合自建社群型 Agent；Slack 適合工作型 Agent。"]
+  ];
+
+  // ── Render buttons ──
+  let active = metrics[2];
+  const btnWrap = document.getElementById("metricButtons");
+  function renderButtons() {
+    btnWrap.innerHTML = metrics.map(m =>
+      `<button data-key="${m.key}" class="${m.key===active.key?"active":""}">${m.name}</button>`
+    ).join("");
+    btnWrap.querySelectorAll("button").forEach(b => b.addEventListener("click", () => {
+      active = metrics.find(m => m.key === b.dataset.key);
+      renderBars(); renderButtons();
+    }));
+  }
+
+  // ── Render bars ──
+  function renderBars() {
+    document.getElementById("metricName").textContent = active.name;
+    document.getElementById("metricHint").textContent = active.hint;
+    document.getElementById("barChart").innerHTML = platforms.map(p => {
+      const s = active.scores[p.key];
+      return `<div class="bar-row" style="--c:${p.color}">
+        <div class="bar-label"><span class="dot ${p.key}" style="--c:${p.color}"></span>${p.name}</div>
+        <div class="track"><div class="fill" style="--score:${s}"></div></div>
+        <div class="score-num">${s}/5</div>
+      </div>`;
+    }).join("");
+    document.getElementById("whyCards").innerHTML = platforms.map(p => `
+      <div class="why-card">
+        <div class="wc-name"><span class="dot" style="background:${p.color}"></span>${p.name}</div>
+        <p>${active.why[p.key]}</p>
+      </div>`).join("");
+  }
+
+  // ── Render matrix ──
+  document.getElementById("matrixBody").innerHTML = matrixRows.map(r =>
+    `<tr>${r.map((c,i) => `<td>${c}</td>`).join("")}</tr>`
+  ).join("");
+
+  // ── Render agents ──
+  function heatSpan(v) { return `<span class="heat h${v}">${v}</span>`; }
+  document.getElementById("agentBody").innerHTML = agentRows.map(r =>
+    `<tr><td>${r[0]}</td><td>${heatSpan(r[1])}</td><td>${heatSpan(r[2])}</td><td>${heatSpan(r[3])}</td><td>${heatSpan(r[4])}</td><td>${r[5]}</td></tr>`
+  ).join("");
+
+  // ── Render radar ──
+  function pt(cx, cy, r, angleDeg, score) {
+    const rad = (angleDeg - 90) * Math.PI / 180;
+    const rr = r * (score / 5);
+    return [cx + rr * Math.cos(rad), cy + rr * Math.sin(rad)];
+  }
+  function renderRadar() {
+    const cx=134, cy=134, r=88;
+    const n = metrics.length;
+    const labels = ["親切度","AI整合","AI成員","管理權","課程結構","Agent控台"];
+    let h = "";
+    for (let lv=1; lv<=5; lv++) {
+      const pts = metrics.map((_,i) => pt(cx,cy,r,i*(360/n),lv).join(",")).join(" ");
+      h += `<polygon points="${pts}" fill="none" stroke="#e2d8c9" stroke-width="1"/>`;
+    }
+    metrics.forEach((_,i) => {
+      const [x,y] = pt(cx,cy,r,i*(360/n),5);
+      h += `<line x1="${cx}" y1="${cy}" x2="${x}" y2="${y}" stroke="#e2d8c9" stroke-width="1"/>`;
+      const [tx,ty] = pt(cx,cy,r+22,i*(360/n),5);
+      h += `<text x="${tx}" y="${ty}" text-anchor="middle">${labels[i]}</text>`;
+    });
+    platforms.forEach(p => {
+      const pts = metrics.map((m,i) => pt(cx,cy,r,i*(360/n),m.scores[p.key]).join(",")).join(" ");
+      h += `<polygon points="${pts}" fill="${p.color}1a" stroke="${p.color}" stroke-width="1.8" stroke-linejoin="round"/>`;
+    });
+    document.getElementById("radar").innerHTML = h;
+  }
+
+  renderButtons();
+  renderBars();
+  renderRadar();
+</script>
+</body>
+</html>

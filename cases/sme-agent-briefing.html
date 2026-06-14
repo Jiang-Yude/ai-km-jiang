@@ -1,0 +1,447 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="description" content="給中小企業、一人公司老闆的 AI Agent 導入觀念說明會。把 AI 當新員工、把做事方法寫成協議、提煉你的知識與判斷，一頁一重點，半小時講完。" />
+<link rel="canonical" href="https://ai-km-jiang.vercel.app/cases/sme-agent-briefing.html" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="小企業導入 AI Agent｜半小時說明會" />
+<meta property="og:description" content="把 AI 當你的新員工。從知識提煉到設備、費用、陪跑，給小企業老闆的 AI 導入說明。" />
+<meta property="og:image" content="https://ai-km-jiang.vercel.app/images/intro-jiang.png" />
+<meta property="og:url" content="https://ai-km-jiang.vercel.app/cases/sme-agent-briefing.html" />
+<title>小企業導入 AI Agent｜半小時說明會 · 江昱德</title>
+<style>
+  :root {
+    --bg-1: #F5EDE7; --bg-2: #EFEBE9; --bg-3: #E8DED9; --bg-4: #D7CCC8;
+    --bg-5: #C9BAB1; --bg-6: #B5A199; --bg-7: #8B6F5C; --bg-8: #5D4037; --bg-9: #3E2723;
+    --text-on-light: #4E342E; --text-on-dark: #F5EDE0;
+    --text-soft-light:#5D4037; --text-soft-dark: rgba(245,237,224,0.78);
+    --accent: #D88C3A; --accent-light: #D4A574; --accent-on-dark: #E6B87D;
+    --subtle-light: #BCAAA4; --subtle-dark: rgba(245,237,224,0.18);
+    --font-display: "PingFang TC","Noto Sans TC","Inter","Helvetica Neue",system-ui,sans-serif;
+    --font-body: "PingFang TC","Noto Sans TC","Inter",system-ui,sans-serif;
+    --font-mono: "JetBrains Mono","SF Mono",ui-monospace,monospace;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; font-family: var(--font-body); background: var(--bg-1); -webkit-font-smoothing: antialiased; }
+
+  section {
+    position: sticky; top: 0; min-height: 100vh; display: grid; place-items: center;
+    padding: 96px 56px; isolation: isolate;
+    border-radius: 32px 32px 0 0; box-shadow: 0 -24px 60px -20px rgba(40, 24, 16, 0.18);
+  }
+  section:first-of-type { border-radius: 0; box-shadow: none; }
+  section[data-bg="1"] { background: var(--bg-1); z-index: 1; color: var(--text-on-light); }
+  section[data-bg="2"] { background: var(--bg-2); z-index: 2; color: var(--text-on-light); }
+  section[data-bg="3"] { background: var(--bg-3); z-index: 3; color: var(--text-on-light); }
+  section[data-bg="4"] { background: var(--bg-4); z-index: 4; color: var(--text-on-light); }
+  section[data-bg="5"] { background: var(--bg-5); z-index: 5; color: var(--text-on-light); }
+  section[data-bg="6"] { background: var(--bg-6); z-index: 6; color: var(--text-on-light); }
+  section[data-bg="7"] { background: var(--bg-7); z-index: 7; color: var(--text-on-dark); }
+  section[data-bg="8"] { background: var(--bg-8); z-index: 8; color: var(--text-on-dark); }
+  section[data-bg="9"] { background: var(--bg-9); z-index: 9; color: var(--text-on-dark); }
+
+  .act-cap {
+    font-family: var(--font-mono); font-size: 18px; letter-spacing: 0.1em; text-transform: uppercase;
+    font-weight: 700; color: var(--accent); margin-bottom: 28px; display: inline-flex; align-items: center; gap: 12px;
+  }
+  .act-cap::before { content: ""; width: 28px; height: 1px; background: var(--accent); }
+  section[data-bg="7"] .act-cap, section[data-bg="8"] .act-cap, section[data-bg="9"] .act-cap { color: var(--accent-on-dark); }
+  section[data-bg="7"] .act-cap::before, section[data-bg="8"] .act-cap::before, section[data-bg="9"] .act-cap::before { background: var(--accent-on-dark); }
+
+  .display { font-family: var(--font-display); font-size: clamp(44px, 7.2vw, 100px); line-height: 1.02; font-weight: 800; letter-spacing: -0.03em; margin: 0 0 24px; }
+  .h1 { font-family: var(--font-display); font-size: clamp(26px, 3.4vw, 40px); line-height: 1.2; font-weight: 700; margin: 0 0 20px; }
+  .h2 { font-size: 20px; line-height: 1.3; font-weight: 600; margin: 0 0 8px; }
+  .lead { font-size: clamp(18px, 1.6vw, 22px); line-height: 1.7; color: var(--text-soft-light); max-width: 760px; margin: 0 auto; }
+  section[data-bg="7"] .lead, section[data-bg="8"] .lead, section[data-bg="9"] .lead { color: var(--text-soft-dark); }
+  .body { font-size: 18px; line-height: 1.7; color: var(--text-soft-light); }
+  section[data-bg="7"] .body, section[data-bg="8"] .body, section[data-bg="9"] .body { color: var(--text-soft-dark); }
+
+  .wrap { width: 100%; max-width: 1080px; text-align: center; }
+  .wrap.left { text-align: left; }
+
+  .dot-indicator { position: fixed; right: 28px; top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; gap: 14px; z-index: 100; }
+  .dot-indicator a { width: 10px; height: 10px; border-radius: 50%; background: rgba(78, 52, 46, 0.22); transition: all 0.35s cubic-bezier(0.22,1,0.36,1); position: relative; }
+  .dot-indicator a:hover { background: rgba(78, 52, 46, 0.5); }
+  .dot-indicator a.active { background: var(--accent); transform: scale(1.5); box-shadow: 0 0 0 4px rgba(216, 140, 58, 0.18); }
+  .dot-indicator a .lbl { position: absolute; right: 22px; top: 50%; transform: translateY(-50%); font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.15em; color: var(--text-soft-light); white-space: nowrap; opacity: 0; transition: opacity 0.25s; pointer-events: none; }
+  .dot-indicator a:hover .lbl, .dot-indicator a.active .lbl { opacity: 1; }
+  body.on-dark .dot-indicator a { background: rgba(245,237,224,0.25); }
+  body.on-dark .dot-indicator a.active { background: var(--accent-on-dark); box-shadow: 0 0 0 4px rgba(230,184,125,0.22); }
+  body.on-dark .dot-indicator a .lbl { color: var(--text-soft-dark); }
+
+  .progress { position: fixed; top: 0; left: 0; height: 3px; width: 0%; background: linear-gradient(90deg, var(--accent), var(--accent-light)); z-index: 200; transition: width 0.15s linear; }
+
+  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; margin-top: 48px; }
+  .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 28px; margin-top: 44px; }
+  .card { background: rgba(255, 248, 240, 0.5); border: 1px solid var(--subtle-light); border-radius: 16px; padding: 30px 26px; text-align: left; transition: transform 0.3s, box-shadow 0.3s; backdrop-filter: blur(8px); }
+  .card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(78,52,46,0.1); }
+  .card .num { font-family: var(--font-mono); font-size: 18px; letter-spacing: 0.12em; color: var(--accent); font-weight: 700; margin-bottom: 12px; }
+  .card .tag { display:inline-block; font-family: var(--font-mono); font-size: 18px; letter-spacing:0.1em; color: var(--text-soft-light); border:1px solid var(--subtle-light); border-radius: 999px; padding: 2px 10px; margin-top: 14px; }
+  section[data-bg="7"] .card, section[data-bg="8"] .card, section[data-bg="9"] .card { background: rgba(255,248,240,0.06); border-color: var(--subtle-dark); }
+  section[data-bg="7"] .card .num, section[data-bg="8"] .card .num, section[data-bg="9"] .card .num { color: var(--accent-on-dark); }
+  section[data-bg="7"] .card .tag, section[data-bg="8"] .card .tag, section[data-bg="9"] .card .tag { color: var(--text-soft-dark); border-color: var(--subtle-dark); }
+
+  .stat-row { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; margin-top: 48px; }
+  .stat .num { font-family: var(--font-display); font-size: clamp(40px, 5vw, 64px); font-weight: 800; color: var(--accent); letter-spacing: -0.02em; line-height: 1; }
+  section[data-bg="6"] .stat .num, section[data-bg="7"] .stat .num { color: var(--accent-on-dark); }
+  .stat .lbl { font-size: 18px; color: var(--text-soft-light); margin-top: 10px; letter-spacing: 0.04em; line-height: 1.5; }
+  section[data-bg="6"] .stat .lbl, section[data-bg="7"] .stat .lbl { color: var(--text-soft-dark); }
+
+  .quote { font-family: var(--font-display); font-size: clamp(28px, 3.6vw, 46px); line-height: 1.5; font-weight: 600; max-width: 900px; margin: 0 auto; letter-spacing: -0.01em; }
+  .quote::before { content:"「"; color: var(--accent-on-dark); margin-right: 4px;}
+  .quote::after { content:"」"; color: var(--accent-on-dark); margin-left: 4px;}
+  .quote-by { margin-top: 32px; font-family: var(--font-mono); font-size: 18px; letter-spacing: 0.16em; color: var(--text-soft-dark); text-transform: uppercase; }
+
+  .footer-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 48px; text-align: left; margin-top: 48px; max-width: 1080px; width: 100%; }
+  .footer-grid h3 { font-size: 18px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent-on-dark); margin: 0 0 16px; font-family: var(--font-mono); }
+  .footer-grid ul { list-style: none; padding: 0; margin: 0; }
+  .footer-grid li { padding: 6px 0; font-size: 15px; color: var(--text-soft-dark); line-height: 1.5; }
+  .footer-bottom { margin-top: 56px; padding-top: 24px; border-top: 1px solid var(--subtle-dark); width: 100%; max-width: 1080px; font-family: var(--font-mono); font-size: 11.5px; letter-spacing: 0.1em; color: rgba(245,237,224,0.5); text-align: center; line-height: 1.8; }
+
+  .reveal { opacity: 1; transform: translateY(0) scale(1); }
+  .js-on .reveal:not(.in) { opacity: 0; transform: translateY(36px) scale(0.96); }
+  .reveal { transition: opacity 0.8s cubic-bezier(0.22,1,0.36,1), transform 0.8s cubic-bezier(0.22,1,0.36,1); }
+  .reveal.d1 { transition-delay: 0.08s; } .reveal.d2 { transition-delay: 0.16s; } .reveal.d3 { transition-delay: 0.24s; } .reveal.d4 { transition-delay: 0.32s; }
+
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } .reveal { opacity: 1 !important; transform: none !important; } }
+  @media (max-width: 720px) {
+    section { padding: 80px 24px; border-radius: 24px 24px 0 0; }
+    .grid-3, .grid-2, .stat-row { grid-template-columns: 1fr; gap: 20px; }
+    .footer-grid { grid-template-columns: 1fr; gap: 32px; }
+    .dot-indicator { right: 14px; gap: 10px; }
+  }
+</style>
+</head>
+<body>
+  <div class="progress" id="progress"></div>
+
+  <nav class="dot-indicator" aria-label="章節導覽">
+    <a href="#act-01" data-i="0"><span class="lbl">01 · 封面</span></a>
+    <a href="#act-02" data-i="1"><span class="lbl">02 · 一個誤會</span></a>
+    <a href="#act-03" data-i="2"><span class="lbl">03 · 工作協議</span></a>
+    <a href="#act-04" data-i="3"><span class="lbl">04 · 知識提煉</span></a>
+    <a href="#act-05" data-i="4"><span class="lbl">05 · 為什麼是現在</span></a>
+    <a href="#act-06" data-i="5"><span class="lbl">06 · 兩種放大</span></a>
+    <a href="#act-07" data-i="6"><span class="lbl">07 · 三種人</span></a>
+    <a href="#act-08" data-i="7"><span class="lbl">08 · 心裡的結</span></a>
+    <a href="#act-09" data-i="8"><span class="lbl">09 · 你會問的</span></a>
+    <a href="#act-10" data-i="9"><span class="lbl">10 · 四個原則</span></a>
+    <a href="#act-11" data-i="10"><span class="lbl">11 · 你帶走的</span></a>
+    <a href="#act-12" data-i="11"><span class="lbl">12 · 一句話</span></a>
+    <a href="#act-13" data-i="12"><span class="lbl">13 · 下一步</span></a>
+  </nav>
+
+  <!-- ACT 01 封面 -->
+  <section id="act-01" data-block data-bg="1">
+    <div class="wrap">
+      <div class="act-cap reveal">AI 導入半小時說明會 · 江昱德</div>
+      <h1 class="display reveal d1">把 AI 當成<br/>你的新員工</h1>
+      <p class="lead reveal d2">你不用學會 AI，你只要學會怎麼帶它。<br/>這半小時，把一件事講清楚：<strong>小公司怎麼用 AI 放大自己。</strong></p>
+      <p class="body reveal d3" style="margin-top:44px; font-family:var(--font-mono); font-size:18px; letter-spacing:0.18em;">↓ 往下滑，一章一章疊上來 ↓</p>
+    </div>
+  </section>
+
+  <!-- ACT 02 一個誤會 -->
+  <section id="act-02" data-block data-bg="2">
+    <div class="wrap">
+      <div class="act-cap reveal">ACT 02 · 先破一個誤會</div>
+      <h2 class="display reveal d1">AI 很強，<br/>但它不懂你家的生意</h2>
+      <p class="lead reveal d2">
+        它會寫程式、會做圖、會查資料，能力幾乎不是問題了。<br/><br/>
+        可是它不知道你怎麼報價、怎麼挑客戶、怎麼判斷一單能不能接。<br/><br/>
+        <strong>你少講一句，它就漏一步。永遠像一個每天都要重新教一遍的新人。</strong>
+      </p>
+    </div>
+  </section>
+
+  <!-- ACT 03 工作協議 -->
+  <section id="act-03" data-block data-bg="2">
+    <div class="wrap">
+      <div class="act-cap reveal">ACT 03 · 真正的關鍵字</div>
+      <h2 class="display reveal d1">把你的做事方法，<br/>寫下來一次</h2>
+      <p class="lead reveal d2" style="margin-bottom:8px;">讓 AI 真正變強的，是你能把一件事寫成它照得了的步驟。</p>
+      <div class="grid-3">
+        <div class="card reveal d1">
+          <div class="num">可執行</div>
+          <h3 class="h2">每一步都照得了</h3>
+          <p class="body">「先問這 5 件事，再對照這份清單，缺的標出來。」每一步都具體到能直接做。</p>
+        </div>
+        <div class="card reveal d2">
+          <div class="num">可檢查</div>
+          <h3 class="h2">會自己驗收</h3>
+          <p class="body">交件前自動比對：規格對不對、有沒有漏項、有沒有踩到禁忌。靠規則擋，不靠人記得。</p>
+        </div>
+        <div class="card reveal d3">
+          <div class="num">可重複用</div>
+          <h3 class="h2">寫一次，永遠用</h3>
+          <p class="body">把一次性的口頭交代，變成隨時叫得出來的能力。下個案子、下個新人，直接接上。</p>
+        </div>
+      </div>
+      <p class="body reveal d4" style="margin-top:40px; max-width:760px; margin-left:auto; margin-right:auto;">
+        這就是業界在講的 <strong>Skills</strong>。把你的工作流，做成一個 AI 能反覆使用的資產。
+      </p>
+    </div>
+  </section>
+
+  <!-- ACT 04 知識提煉 -->
+  <section id="act-04" data-block data-bg="3">
+    <div class="wrap">
+      <div class="act-cap reveal">ACT 04 · 你真正值錢的東西</div>
+      <h2 class="display reveal d1">你最值錢的，<br/>沒寫在任何檔案裡</h2>
+      <p class="lead reveal d2">
+        資深員工累積的經驗、老闆看一單的眼光、判斷一件事的標準和邏輯。<br/><br/>
+        就連你嘴上說不清楚的那種「直覺」，其實也是更深層的隱性知識，一樣提煉得出來。<br/><br/>
+        這些現在只活在人的腦袋裡，人一走就跟著走，新人要好幾年才補得回來。<br/><br/>
+        <strong>我做的，就是把這些經驗、判斷、直覺提煉出來，留下來，傳下去。</strong>
+      </p>
+    </div>
+  </section>
+
+  <!-- ACT 05 為什麼是現在 -->
+  <section id="act-05" data-block data-bg="4">
+    <div class="wrap">
+      <div class="act-cap reveal">ACT 05 · 為什麼是現在</div>
+      <h2 class="display reveal d1">一個人，<br/>也能開一間工廠</h2>
+      <p class="lead reveal d2">
+        以前想把生意做大，只有三條路：跟銀行借錢、請更多人、開更多分店。每一條都要花大錢、要別人點頭、還要扛風險。<br/><br/>
+        現在多了一條路：<strong>一個人，配上一群 AI。</strong>不用借錢、不用面試、不用簽約，馬上就能把產能放大。<br/><br/>
+        但有一個前提：<strong>AI 要先學會你的做事方法，才放得大。</strong>沒整理過的東西，AI 放大的只會是一團亂。
+      </p>
+    </div>
+  </section>
+
+  <!-- ACT 06 兩種放大 -->
+  <section id="act-06" data-block data-bg="5">
+    <div class="wrap">
+      <div class="act-cap reveal">ACT 06 · AI 怎麼放大你</div>
+      <h2 class="display reveal d1">補你的不足，<br/>放大你的本事</h2>
+      <div class="stat-row">
+        <div class="stat reveal d1"><div class="num">0→60</div><div class="lbl">你原本沒有、不擅長的<br/>AI 幫你補到一般人的 60 分</div></div>
+        <div class="stat reveal d2"><div class="num">100→1萬</div><div class="lbl">你原本 100 分的專業<br/>乘上 AI 的 100 倍，放大到 1 萬分</div></div>
+      </div>
+      <p class="lead reveal d3" style="margin-top:44px;">
+        對一人公司來說，這兩件事會一起發生。<br/>
+        AI 補足你的短板，也把你最強的長板放到最大。<br/>
+        <strong>放大歸放大，做判斷的腦，始終是你的。</strong>
+      </p>
+    </div>
+  </section>
+
+  <!-- ACT 07 三種人 -->
+  <section id="act-07" data-block data-bg="6">
+    <div class="wrap">
+      <div class="act-cap reveal">ACT 07 · 先確認一件事</div>
+      <h2 class="display reveal d1">你想玩 AI，<br/>還是想用 AI？</h2>
+      <p class="lead reveal d2" style="margin-bottom:8px;">學 AI 的人大致三種。先弄清楚自己是哪一種，再決定要走多遠。</p>
+      <div class="grid-3">
+        <div class="card reveal d1">
+          <div class="num">想玩 AI</div>
+          <h3 class="h2">圖個新鮮</h3>
+          <p class="body">拿很炫的工具來玩一玩，做出東西覺得有趣。停在這裡也很好。</p>
+        </div>
+        <div class="card reveal d2">
+          <div class="num">想學 AI</div>
+          <h3 class="h2">研究原理</h3>
+          <p class="body">想搞懂大語言模型的本質，甚至去考個證照。這條路偏硬，也不一定是你需要的。</p>
+        </div>
+        <div class="card reveal d3">
+          <div class="num">想用 AI</div>
+          <h3 class="h2">讓生意變順</h3>
+          <p class="body">只想讓公司真的好用。買一台跑得動的電腦，把判斷交出去，把流程接上。</p>
+        </div>
+      </div>
+      <p class="body reveal d4" style="margin-top:40px; max-width:760px; margin-left:auto; margin-right:auto;">
+        今天這場，是給<strong>「想用」</strong>的人聽的。
+      </p>
+    </div>
+  </section>
+
+  <!-- ACT 08 心裡的結 -->
+  <section id="act-08" data-block data-bg="7">
+    <div class="wrap">
+      <div class="act-cap reveal">ACT 08 · 開始之前，你大概在猶豫</div>
+      <h2 class="display reveal d1">你一定在擔心的<br/>三件事</h2>
+      <div class="grid-3">
+        <div class="card reveal d1">
+          <div class="num">怕被綁死</div>
+          <h3 class="h2">「選了會被綁死嗎？」</h3>
+          <p class="body">不會。你累積的是自己的知識庫，之後換哪一家 AI 都接得上。</p>
+        </div>
+        <div class="card reveal d2">
+          <div class="num">怕工程浩大</div>
+          <h3 class="h2">「十幾年舊資料怎麼辦？」</h3>
+          <p class="body">先留著，有留存就有機會。先從一個新案子做起，方法成形了再回頭整理，會快很多。</p>
+        </div>
+        <div class="card reveal d3">
+          <div class="num">怕不值得</div>
+          <h3 class="h2">「我這種小公司值得嗎？」</h3>
+          <p class="body">你不用做到賣全世界。光是整理一條最關鍵的流程，就很有感。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ACT 09 你一定會問的 -->
+  <section id="act-09" data-block data-bg="8">
+    <div class="wrap">
+      <div class="act-cap reveal">ACT 09 · 然後是這幾題</div>
+      <h2 class="display reveal d1">還有三個<br/>最實際的問題</h2>
+      <div class="grid-3">
+        <div class="card reveal d1">
+          <div class="num">設備</div>
+          <h3 class="h2">「要買什麼電腦？」</h3>
+          <p class="body">最便宜、跑得動的就好。規格不是重點，能跑 Agent 才是。一台兩萬出頭的筆電就能開始。</p>
+        </div>
+        <div class="card reveal d2">
+          <div class="num">員工</div>
+          <h3 class="h2">「大家會抗拒嗎？」</h3>
+          <p class="body">AI 是用來放大他的能力，讓他做得更多更快。實際用過的人，眼睛都會亮。</p>
+        </div>
+        <div class="card reveal d3">
+          <div class="num">費用</div>
+          <h3 class="h2">「怎麼算錢？」</h3>
+          <p class="body">看的是要設計幾條工作流，跟幾個人用沒關係。同一套流程，一個人用、十個人用都一樣。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ACT 10 四個原則 -->
+  <section id="act-10" data-block data-bg="8">
+    <div class="wrap">
+      <div class="act-cap reveal">ACT 10 · 真的要做</div>
+      <h2 class="display reveal d1">記住四件事</h2>
+      <div class="grid-2">
+        <div class="card reveal d1">
+          <div class="num">原則一</div>
+          <h3 class="h2">老闆先帶頭</h3>
+          <p class="body">為什麼這樣報價、為什麼接這個客戶，這些判斷只有你寫得出來，也沒人能代勞。</p>
+        </div>
+        <div class="card reveal d2">
+          <div class="num">原則二</div>
+          <h3 class="h2">有留存就有機會</h3>
+          <p class="body">舊資料先留著：會議記錄、現在交代新人的事、企劃的一些想法和判斷。還不知道怎麼整理沒關係，有留就有機會。先從一個新案子把方法跑出來，再回頭整理。</p>
+        </div>
+        <div class="card reveal d3">
+          <div class="num">原則三</div>
+          <h3 class="h2">挑能放大的</h3>
+          <p class="body">先整理 AI 現在做得到的，做不到的明年再說，AI 進步很快。</p>
+        </div>
+        <div class="card reveal d4">
+          <div class="num">原則四</div>
+          <h3 class="h2">給它時間</h3>
+          <p class="body">把工作流真正融入 AI，大約半年到一年。前三個月熟悉工具，後面才開始真正改變。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ACT 11 你會帶走的能力 + 陪跑 -->
+  <section id="act-11" data-block data-bg="8">
+    <div class="wrap">
+      <div class="act-cap reveal">ACT 11 · 我陪你的</div>
+      <h2 class="display reveal d1">不只整理知識，<br/>更陪你長出能力</h2>
+      <p class="lead reveal d2" style="margin-bottom:8px;">我陪你做的，不只是把現有的知識提煉出來，更是讓這三件事變成你自己的。</p>
+      <div class="grid-3">
+        <div class="card reveal d1">
+          <div class="num">能力一</div>
+          <h3 class="h2">學會提煉知識</h3>
+          <p class="body">知道哪些經驗、判斷、流程值得提煉，養成隨手煉、隨手存的好習慣。</p>
+        </div>
+        <div class="card reveal d2">
+          <div class="num">能力二</div>
+          <h3 class="h2">學會設計架構</h3>
+          <p class="body">自己能搭、能調整 agent 的知識架構，不用每件事都靠別人。</p>
+        </div>
+        <div class="card reveal d3">
+          <div class="num">能力三</div>
+          <h3 class="h2">學會判斷趨勢</h3>
+          <p class="body">搞懂 AI 的邏輯和邊界，你就能判斷：現在能做什麼、什麼還要再等。</p>
+        </div>
+      </div>
+      <p class="lead reveal d4" style="margin-top:40px;">
+        最終，我陪你長出一套<strong>能不斷累積知識的系統</strong>。<br/>你自己用、公司用、同事一起用。
+      </p>
+      <p class="body reveal d4" style="margin-top:20px; max-width:820px; margin-left:auto; margin-right:auto; opacity:0.82;">
+        陪跑形式：先一場工作坊把觀念打通，再 2 到 3 個月陪跑，每兩週對一次進度（都會錄影，沒空看回放）。
+      </p>
+    </div>
+  </section>
+
+  <!-- ACT 12 一句話 -->
+  <section id="act-12" data-block data-bg="9">
+    <div class="wrap">
+      <p class="quote reveal d1">AI 放大的，<br/>是你本來就有的東西。</p>
+      <p class="quote-by reveal d2">先整理，再放大</p>
+      <p class="body reveal d3" style="margin-top:36px; max-width:720px; margin-left:auto; margin-right:auto;">
+        你不用從零學 AI。<br/>你要做的，是把累積多年的經驗和判斷，翻成 AI 聽得懂、做得到的形式。
+      </p>
+    </div>
+  </section>
+
+  <!-- ACT 13 下一步 -->
+  <section id="act-13" data-block data-bg="9">
+    <div class="wrap left">
+      <div class="act-cap reveal">ACT 13 · 留在桌上的三個問題</div>
+      <h2 class="display reveal d1" style="text-align:left;">那，<br/>從哪開始？</h2>
+      <div class="footer-grid">
+        <div class="reveal d1">
+          <h3>問題一</h3>
+          <p class="body" style="color:var(--text-soft-dark);">你有沒有一個資料不敏感的案子，可以拿來當第一個樣本？剛開始或剛做完的都可以。</p>
+        </div>
+        <div class="reveal d2">
+          <h3>問題二</h3>
+          <p class="body" style="color:var(--text-soft-dark);">公司裡哪一段經驗，最怕「那個人走了就沒了」？那通常就是最該先整理的。</p>
+        </div>
+        <div class="reveal d3">
+          <h3>問題三</h3>
+          <p class="body" style="color:var(--text-soft-dark);">如果只先教 AI 一件事，把它當成教一個新人的起點，你會先教哪一件？</p>
+        </div>
+      </div>
+      <div class="footer-bottom reveal d4">
+        江昱德 · 小企業導入 Agent 半小時說明會 · 通用版 V4｜本簡報為觀念說明用，非正式提案。
+      </div>
+    </div>
+  </section>
+
+<script>
+(function () {
+  document.documentElement.classList.add('js-on');
+  document.body.classList.add('js-on');
+  const sections = [...document.querySelectorAll('section[data-block]')];
+  const dots = [...document.querySelectorAll('.dot-indicator a')];
+  const progress = document.getElementById('progress');
+  const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!reducedMotion) {
+    const io = new IntersectionObserver((entries) => entries.forEach((e) => {
+      if (e.isIntersecting) { e.target.querySelectorAll('.reveal').forEach((el) => el.classList.add('in')); }
+    }), { threshold: 0.25 });
+    sections.forEach((s) => io.observe(s));
+  } else {
+    document.querySelectorAll('.reveal').forEach((el) => el.classList.add('in'));
+  }
+  const darkBgs = new Set(['7','8','9']);
+  const navIo = new IntersectionObserver((entries) => entries.forEach((e) => {
+    if (e.isIntersecting) {
+      const i = sections.indexOf(e.target);
+      dots.forEach((d, idx) => d.classList.toggle('active', idx === i));
+      document.body.classList.toggle('on-dark', darkBgs.has(e.target.getAttribute('data-bg')));
+    }
+  }), { threshold: 0.55 });
+  sections.forEach((s) => navIo.observe(s));
+  const scroller = document.scrollingElement || document.documentElement;
+  let ticking = false;
+  function updateProgress() {
+    const max = scroller.scrollHeight - scroller.clientHeight;
+    const pct = max > 0 ? (scroller.scrollTop / max) * 100 : 0;
+    progress.style.width = pct + '%'; ticking = false;
+  }
+  window.addEventListener('scroll', () => { if (!ticking) { requestAnimationFrame(updateProgress); ticking = true; } }, { passive: true });
+  updateProgress();
+})();
+</script>
+</body>
+</html>

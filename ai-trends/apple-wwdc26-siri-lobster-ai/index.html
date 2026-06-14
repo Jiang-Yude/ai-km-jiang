@@ -1,0 +1,289 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="index,follow">
+<title>AI 趨勢｜蘋果的 Siri 終於要往龍蝦 AI 進化了</title>
+<meta name="description" content="江江教練的 AI 趨勢觀察：從 Apple WWDC26 看 Siri、App Intents、View Annotations、Xcode agentic coding 如何走向更全能的 AI 助手。">
+<meta property="og:title" content="AI 趨勢｜蘋果的 Siri 終於要往龍蝦 AI 進化了">
+<meta property="og:description" content="從 WWDC26 看 Apple 如何把 Siri、App Intents、View Annotations 和 Xcode agents 推向更全能的 AI 助手。">
+<meta property="og:type" content="article">
+<meta property="og:image" content="https://ai-km-jiang.vercel.app/ai-trends/apple-wwdc26-siri-lobster-ai/assets/slide-13-swift-64.jpg">
+<link rel="canonical" href="https://ai-km-jiang.vercel.app/ai-trends/apple-wwdc26-siri-lobster-ai/">
+<style>
+:root{--ink:#1a1612;--paper:#fefcf8;--muted:#6a635a;--line:#d8cdb8;--green:#5f7553;--blue:#5689b8;--orange:#e85a4f;--soft:#faf5ec;--dark:#2a2018;--shadow:0 18px 45px rgba(107,74,42,.14)}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC","Segoe UI",sans-serif;letter-spacing:0}a{color:inherit}.topbar{position:sticky;top:0;z-index:20;display:flex;gap:10px;align-items:center;justify-content:space-between;padding:12px clamp(18px,4vw,56px);border-bottom:1px solid rgba(26,22,18,.12);background:rgba(254,252,248,.92);backdrop-filter:blur(12px)}.brand{font-weight:900;font-size:14px;text-decoration:none}.nav{display:flex;gap:8px;overflow:auto}.nav a{white-space:nowrap;text-decoration:none;border:1px solid rgba(26,22,18,.16);border-radius:999px;padding:8px 11px;background:#fff;font-size:13px;font-weight:800}.hero{min-height:82vh;display:grid;align-items:end;padding:56px clamp(20px,6vw,88px);background:linear-gradient(135deg,rgba(42,32,24,.9),rgba(95,117,83,.78)),url('assets/slide-13-swift-64.jpg') center/cover;color:#fff;overflow:hidden}.kicker{font:900 13px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;color:#f6d7a6;text-transform:uppercase}.hero h1{max-width:1040px;margin:16px 0 18px;font-size:clamp(42px,7vw,92px);line-height:1.02;letter-spacing:0;overflow-wrap:anywhere}.hero p{max-width:820px;font-size:clamp(18px,2vw,25px);line-height:1.58;color:rgba(255,255,255,.9)}.cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}.cta a{display:inline-flex;align-items:center;text-decoration:none;border-radius:8px;padding:12px 16px;font-weight:900}.cta .primary{background:#fff;color:#1a1612}.cta .ghost{border:1px solid rgba(255,255,255,.32);color:#fff;background:rgba(255,255,255,.08)}.section{padding:62px clamp(20px,6vw,88px);border-top:1px solid var(--line)}.inner{width:min(1160px,100%);margin:0 auto}.section h2{font-size:clamp(32px,5vw,62px);line-height:1.08;margin:0 0 20px}.lead{font-size:clamp(18px,1.6vw,22px);line-height:1.7;color:#3a342d;max-width:900px}.highlight-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-top:28px}.highlight{background:#fff;border:1px solid var(--line);border-radius:8px;padding:18px;min-height:190px;box-shadow:0 8px 22px rgba(107,74,42,.08)}.highlight b{display:block;font-size:19px;line-height:1.25;margin-bottom:10px}.highlight p{margin:0;color:#4b4238;line-height:1.65}.timeline{display:grid;gap:28px}.segment{display:grid;grid-template-columns:minmax(0,1.02fr) minmax(330px,.98fr);gap:30px;align-items:center;padding:34px 0;border-top:1px solid var(--line)}.media{margin:0;background:#fff;border:1px solid var(--line);border-radius:8px;box-shadow:var(--shadow);overflow:hidden}.media a{display:block;position:relative}.media img{display:block;width:100%;aspect-ratio:16/9;object-fit:cover;background:#1a1612}.media a::after{content:"開 YouTube 時間點";position:absolute;right:12px;top:12px;padding:7px 10px;border-radius:999px;background:rgba(42,32,24,.82);color:#fff;font-size:12px;font-weight:900}.media figcaption{padding:10px 12px;font-size:13px;color:var(--muted)}.meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:12px;font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;text-transform:uppercase;color:var(--muted)}.meta span:first-child{color:var(--orange)}.meta a{color:var(--blue);text-decoration:none;border-bottom:1px solid currentColor}.copy h3{font-size:clamp(30px,4.5vw,54px);line-height:1.08;margin:0 0 14px}.summary{font-size:18px;line-height:1.72;color:#3a342d;margin:0 0 14px}.meaning{margin:16px 0;padding:15px 17px;border-left:5px solid var(--green);background:rgba(95,117,83,.12);border-radius:6px;line-height:1.7}.meaning b{display:block;color:var(--green);margin-bottom:4px}details{border:1px solid rgba(26,22,18,.15);border-radius:8px;background:#fff;margin-top:9px;overflow:hidden}summary{cursor:pointer;list-style:none;padding:14px 16px;font-weight:900;line-height:1.45;display:flex;justify-content:space-between;gap:14px}summary::-webkit-details-marker{display:none}summary::after{content:"+";flex:0 0 auto;width:24px;height:24px;border-radius:50%;display:grid;place-items:center;background:rgba(26,22,18,.08);font:900 16px/1 ui-monospace,SFMono-Regular,Menlo,monospace}details[open] summary::after{content:"-"}.detail-body{padding:0 16px 16px;border-top:1px solid rgba(26,22,18,.08)}.detail-body p{margin:12px 0 0;line-height:1.72;color:#3a342d}.tag{display:inline-block;margin-top:12px;color:var(--muted);font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace}.deep summary{background:var(--soft)}.cta-band{background:var(--dark);color:#fff}.cta-band .lead{color:rgba(255,255,255,.82)}.cta-band .inner{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(260px,.85fr);gap:26px;align-items:center}.cta-card{border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.06);border-radius:8px;padding:22px}.cta-card b{display:block;color:#f6d7a6;margin-bottom:10px}.footer{padding:30px clamp(20px,6vw,88px);font-size:14px;color:var(--muted);background:#fff;border-top:1px solid var(--line)}@media(max-width:900px){.topbar{align-items:flex-start;flex-direction:column}.hero{min-height:76vh}.hero h1{font-size:clamp(34px,10vw,40px);line-height:1.08;max-width:100%;word-break:break-word}.highlight-grid,.segment,.cta-band .inner{grid-template-columns:1fr}.segment{gap:18px}.copy h3{font-size:34px}.nav{width:100%}.hero p,.lead{font-size:17px}.section{padding:42px 20px}.media a::after{font-size:11px}.highlight{min-height:0}}
+.hero>div{width:100%;max-width:1040px;min-width:0}.hero p{width:100%;max-width:820px;overflow-wrap:anywhere}.inner{min-width:0}.section h2,.lead,.summary,.meaning{overflow-wrap:anywhere}.workflow-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:26px}.workflow-step{background:#fff;border:1px solid var(--line);border-radius:8px;padding:18px;box-shadow:0 8px 22px rgba(17,19,21,.06)}.workflow-step small{display:block;color:var(--orange);font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;margin-bottom:9px}.workflow-step b{display:block;font-size:20px;line-height:1.25;margin-bottom:9px}.workflow-step p{margin:0;color:#3b4348;line-height:1.65}.demo-note{display:inline-flex;align-items:center;gap:8px;margin:18px 0 0;padding:9px 12px;border:1px solid rgba(17,19,21,.14);border-radius:999px;background:#fff;font-weight:900;color:#30363b}.course-note{display:grid;gap:10px;margin-top:18px}.course-note p{margin:0;line-height:1.7;color:rgba(255,255,255,.86)}.course-note strong{color:#fff}.footer a{color:var(--blue);font-weight:900}@media(max-width:900px){html,body{width:100%;max-width:100%;overflow-x:hidden}.topbar,.hero,.section,.footer{width:100%;max-width:100vw;overflow-x:hidden}.hero>div,.inner,.copy,.media,.workflow-step,.cta-card{width:100%;max-width:350px;min-width:0}.inner{margin-left:auto;margin-right:auto}.workflow-grid{grid-template-columns:1fr}.hero p,.section h2,.lead,.summary,.meaning,summary,.detail-body p{max-width:100%;word-break:break-all;overflow-wrap:anywhere}.copy h3{font-size:32px;word-break:break-all;overflow-wrap:anywhere}.cta a{max-width:100%;white-space:normal;text-align:center}}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="../../ai-trends.html">江江教練 · AI 趨勢</a>
+  <nav class="nav" aria-label="頁面導覽">
+    <a href="../../index.html" style="background:#1a1612;color:#fff;border-color:#1a1612">← 回官網</a><a href="#trend">趨勢判讀</a><a href="#demo">發布會重點</a><a href="#lesson">整理方法</a><a href="https://www.youtube.com/watch?v=yl2jsIoMfDU" target="_blank" rel="noopener">原始影片</a>
+  </nav>
+</header>
+<section class="hero">
+  <div>
+    <div class="kicker">AI Trends / Apple WWDC26</div>
+    <h1>Siri 終於要往<br>「龍蝦 AI」<br>進化了。</h1>
+    <p>從 WWDC26 看 Apple Intelligence、App Intents、View Annotations 到 Xcode agents：各家大廠都在把助理推向能讀介面、叫工具、串 App、完成任務的形態。</p>
+    <div class="cta"><a class="primary" href="#demo">看發布會重點</a><a class="ghost" href="#trend">看我的趨勢判讀</a></div>
+  </div>
+</section>
+<main>
+<section class="section" id="trend"><div class="inner">
+  <h2>我的判讀：各家大廠都在做自己的「龍蝦 AI」</h2>
+  <p class="lead">Google、微軟、Apple 都在往同一個方向走：AI 會從聊天和語音紀錄，進到看懂你眼前的介面、理解 App 裡的內容，然後真的幫你操作、整理、產出。</p>
+  <div class="workflow-grid">
+    <div class="workflow-step"><small>01</small><b>Siri 進入操作層</b><p>App Intents 讓 Siri 能理解 App 裡的內容與動作，開始接近真正的操作入口。</p></div>
+    <div class="workflow-step"><small>02</small><b>AI 會讀你眼前的介面</b><p>View Annotations 讓螢幕上的訊息、照片、按鈕和內容變成可被理解與操作的語意。</p></div>
+    <div class="workflow-step"><small>03</small><b>App 變成 AI 可調用的工具</b><p>以前 App 是你自己點；下一階段是 AI 知道 App 能做什麼，並幫你串起來。</p></div>
+    <div class="workflow-step"><small>04</small><b>模型層開始標準化</b><p>Foundation Models 和 Core AI 讓 Apple 把裝置端、雲端、自訂模型都放進平台工具鏈。</p></div>
+    <div class="workflow-step"><small>05</small><b>Xcode 也在 agent 化</b><p>Apple 把 coding agents 放進 IDE，代表「龍蝦 AI 化」也會進入開發流程。</p></div>
+    <div class="workflow-step"><small>06</small><b>我期待的生活場景</b><p>未來出去拍照、錄影，Siri 能幫我剪成生活 Vlog、上字幕、做成自己的生活故事短片。</p></div>
+  </div>
+</div></section>
+<section class="section" id="demo"><div class="inner">
+  <h2>發布會重點整理：WWDC26 Platforms State of the Union</h2>
+  <p class="lead">下面是 Apple 官方一小時影片的 17 段整理。我把它切成時間軸、截圖、快速摘要、意義判讀和可展開細節；每一段都能回跳 YouTube 原片查證。</p>
+  <div class="demo-note">來源：Apple Developer 官方 YouTube 影片</div>
+  <div class="timeline">
+<article class="segment" id="s1">
+  <figure class="media">
+    <a href="https://youtu.be/yl2jsIoMfDU?t=19" target="_blank" rel="noopener"><img src="assets/slide-01-opening.jpg" alt="活動定位：三條主軸 截圖"></a>
+    <figcaption>00:19-02:23 · 活動定位：三條主軸</figcaption>
+  </figure>
+  <div class="copy">
+    <div class="meta"><span>ACT 01</span><span>開場</span><a href="https://youtu.be/yl2jsIoMfDU?t=19" target="_blank" rel="noopener">YouTube 00:19</a></div>
+    <h3>活動定位：三條主軸</h3>
+    <p class="summary">完整場從開發者社群出發，說明今年 Platforms State of the Union 會聚焦三件事：Apple Intelligence、平台改進與開發者生產力。Apple 把設計與智慧視為今年平台演進的兩個核心。</p>
+    <p class="meaning"><b>意義判讀</b>這段把一小時內容定位成開發者平台路線圖，焦點放在接下來 app 要面對的智慧化與跨平台變化。</p>
+    <details><summary>Apple 把設計與智慧放在同一條主線。</summary><div class="detail-body"><p>開場說明 Liquid Glass 與 Apple Intelligence 是 2026 releases 的重要主題，且今年會延續並回應開發者回饋。這是跨平台體驗與智慧能力的共同調整。</p><span class="tag">回看：00:57-01:14</span></div></details><details><summary>三大段落是 intelligence、platform improvements、developer productivity。</summary><div class="detail-body"><p>這三段也成為整理完整影片的骨架：先講模型與系統智慧，再講設計、SwiftUI 與 Swift，最後講 Xcode 與 agentic coding。</p><span class="tag">回看：01:39-02:18</span></div></details><details class="deep"><summary>完整段落筆記：這段到底在講什麼</summary><div class="detail-body"><p>這段在幫整場設定判讀角度：Apple 把開發者每天用的 technologies、frameworks、tools 放在同一個平台路線裡談。後面所有功能都回到「開發者怎麼把 app 做得更好」這個問題。</p><p>開場也把 Liquid Glass 與 Apple Intelligence 放在同一層。這代表 Apple 同時處理 AI、設計、介面、開發工具一起改變後，app 如何維持自己的 craft 和 domain expertise。</p><p>三條主軸可當成閱讀本頁的地圖：先看 intelligence 怎麼進 app，再看平台 UI / Swift / SwiftUI 怎麼讓 app 更彈性，最後看 Xcode 27 如何把 agentic coding 帶進日常工程。</p><span class="tag">回看：00:19-02:23</span></div></details>
+  </div>
+</article>
+<article class="segment" id="s2">
+  <figure class="media">
+    <a href="https://youtu.be/yl2jsIoMfDU?t=143" target="_blank" rel="noopener"><img src="assets/slide-02-foundation-models.jpg" alt="Apple Foundation Models 與 Gemini 技術 截圖"></a>
+    <figcaption>02:23-05:26 · Apple Foundation Models 與 Gemini 技術</figcaption>
+  </figure>
+  <div class="copy">
+    <div class="meta"><span>ACT 02</span><span>AI 基礎層</span><a href="https://youtu.be/yl2jsIoMfDU?t=143" target="_blank" rel="noopener">YouTube 02:23</a></div>
+    <h3>Apple Foundation Models 與 Gemini 技術</h3>
+    <p class="summary">Apple 表示新一代 Apple Foundation Models 與 Google 合作，運用 Gemini 家族模型背後的技術，並可跑在裝置端與 Private Cloud Compute。Foundation Models framework 也擴充到影像輸入與 server models。</p>
+    <p class="meaning"><b>意義判讀</b>Apple 的 AI 路線把系統助理、模型選擇、隱私與成本一起打包成開發者 API。</p>
+    <details><summary>Apple Foundation Models 連接 Apple Intelligence 與第三方 app。</summary><div class="detail-body"><p>影片說 Foundation Models 支撐系統內的 Apple Intelligence，也能透過 Foundation Models framework 讓開發者在 app 中使用。</p><span class="tag">回看：02:23-02:56</span></div></details><details><summary>新增 image input 與 server models 支援。</summary><div class="detail-body"><p>框架今年擴展到多模態與伺服器模型，讓開發者可以依任務複雜度選擇 on-device、Private Cloud Compute 或其他雲端模型供應商。</p><span class="tag">回看：02:56-03:13</span></div></details><details><summary>低於 200 萬首次下載的開發者可使用 PCC 模型且無 cloud API cost。</summary><div class="detail-body"><p>Apple 把入門成本當作開發者採用 AI 的障礙來處理，但實際資格、限制與成本細節仍要回官方文件查。</p><span class="tag">回看：03:13-03:30</span></div></details><details class="deep"><summary>完整段落筆記：這段到底在講什麼</summary><div class="detail-body"><p>Apple 把 Apple Foundation Models 說成 Apple Intelligence 的核心，同時強調第三方 app 也能透過 Foundation Models framework 使用。這是平台策略：把模型能力包成開發者能調用的 API。</p><p>今年新增的重點是 image input 和 server models。開發者可以用裝置端模型，也可以在任務複雜時選擇 Private Cloud Compute 或自己選的雲端模型供應商。</p><p>Private Cloud Compute 的低成本進入門檻，是 Apple 對開發者採用 AI 的一個關鍵訊號：它知道 AI app 的阻力包含模型能力、隱私、成本、基礎設施和發佈門檻。實際條件仍要回官方文件確認。</p><span class="tag">回看：02:23-05:26</span></div></details>
+  </div>
+</article>
+<article class="segment" id="s3">
+  <figure class="media">
+    <a href="https://youtu.be/yl2jsIoMfDU?t=326" target="_blank" rel="noopener"><img src="assets/slide-03-origami-demo.jpg" alt="Origami 範例：多模態與伺服器模型 截圖"></a>
+    <figcaption>05:26-09:04 · Origami 範例：多模態與伺服器模型</figcaption>
+  </figure>
+  <div class="copy">
+    <div class="meta"><span>ACT 03</span><span>Framework Demo</span><a href="https://youtu.be/yl2jsIoMfDU?t=326" target="_blank" rel="noopener">YouTube 05:26</a></div>
+    <h3>Origami 範例：多模態與伺服器模型</h3>
+    <p class="summary">Origami sample app 展示如何把文字、圖片、OCR、翻譯與模型推理結合成互動教學。Foundation Models framework 也可接 Claude、Gemini 等 server models，並支援 tool calling 與 guided generation。</p>
+    <p class="meaning"><b>意義判讀</b>這段把「模型能力」轉成「app 內可組裝的使用者流程」，是完整影片和短版回顧差異最大的地方。</p>
+    <details><summary>多模態 prompt 可混合文字與圖片。</summary><div class="detail-body"><p>示範用摺紙材料與狗的照片生成摺紙企劃，並利用影像理解、文字翻譯與教學步驟生成來形成完整體驗。</p><span class="tag">回看：05:28-06:36</span></div></details><details><summary>Vision framework 被整合為模型可用工具。</summary><div class="detail-body"><p>OCR 與 barcode reader 等工具可讓模型精準處理畫面中的文字或 code，且可在裝置端執行。</p><span class="tag">回看：06:56-07:14</span></div></details><details><summary>server models 可透過 Language Model protocol 接入。</summary><div class="detail-body"><p>影片點名 Claude、Gemini 等模型，並說任何模型供應商可提供符合 Language Model protocol 的 Swift package。</p><span class="tag">回看：07:17-07:41</span></div></details><details class="deep"><summary>完整段落筆記：這段到底在講什麼</summary><div class="detail-body"><p>Origami 範例把 Foundation Models framework 從 API 名稱變成可理解的產品流程：使用者給文字、圖片或材料資訊，app 透過模型、Vision、翻譯和生成能力整理出可操作的摺紙教學。</p><p>這段最重要的是 AI 開始嵌進 app 的核心任務。模型可以和圖片、文字、OCR、barcode reader、guided generation、tool calling 串成完整流程。</p><p>影片也提到 Claude、Gemini 等 server models 可以透過 Language Model protocol 接入。這代表 Apple 在框架層留下模型供應商的入口，開發者不用把所有 AI 架構綁死在單一模型。</p><span class="tag">回看：05:26-09:04</span></div></details>
+  </div>
+</article>
+<article class="segment" id="s4">
+  <figure class="media">
+    <a href="https://youtu.be/yl2jsIoMfDU?t=544" target="_blank" rel="noopener"><img src="assets/slide-04-dynamic-profiles.jpg" alt="Dynamic Profiles、評估工具與開源框架 截圖"></a>
+    <figcaption>09:04-13:08 · Dynamic Profiles、評估工具與開源框架</figcaption>
+  </figure>
+  <div class="copy">
+    <div class="meta"><span>ACT 04</span><span>Agent 基礎</span><a href="https://youtu.be/yl2jsIoMfDU?t=544" target="_blank" rel="noopener">YouTube 09:04</a></div>
+    <h3>Dynamic Profiles、評估工具與開源框架</h3>
+    <p class="summary">Dynamic Profiles 用來動態交換模型、工具與 instructions，幫助開發者建立 agent 或 skill。Apple 也提出 Evaluations framework、Foundation Models instrument、FM CLI、Python SDK、RAG tool，並宣布 Foundation Models framework 之後會開源。</p>
+    <p class="meaning"><b>意義判讀</b>這段的重點是把 AI 從 demo 功能推向工程化：profile、evaluation、instrument、CLI 與 open source 都在降低導入門檻。</p>
+    <details><summary>Dynamic Profiles 讓 agent 行為可依情境改變。</summary><div class="detail-body"><p>示範中會根據摺紙專案替換模型、工具與指令，使不同 profile 像不同 AI agent 一樣處理任務。</p><span class="tag">回看：09:04-11:38</span></div></details><details><summary>Evaluations framework 與 instruments 用於測試和除錯。</summary><div class="detail-body"><p>Apple 提供生成能力，也補上 prompt 測試、模型行為可視化和 terminal prompt 工具，讓 AI 功能更可驗證。</p><span class="tag">回看：12:00-12:23</span></div></details><details><summary>Foundation Models framework 將開源並可跑在 server。</summary><div class="detail-body"><p>Apple 表示同樣 Swift APIs 可以用於 app 與 server，讓 Swift 開發者建立端到端 AI workflow。</p><span class="tag">回看：12:41-12:54</span></div></details><details class="deep"><summary>完整段落筆記：這段到底在講什麼</summary><div class="detail-body"><p>Dynamic Profiles 的概念是讓模型、工具和 instructions 可以依任務切換。對 app 來說，這比較像把不同工作模式包成 profile，避免把一個固定 prompt 寫死。</p><p>Apple 後面接著講 Evaluations framework、Foundation Models instrument、FM CLI、Python SDK 和 RAG tool。這些工具補上 AI 工程化會缺的部分：測試、觀察、除錯、資料接入和跨語言工作流。</p><p>Foundation Models framework 將開源並可跑在 server 這件事，代表 Apple 想讓同一套 Swift API 同時覆蓋 app 和 server。對 Swift 開發者來說，這是端到端 AI workflow 的基礎鋪路。</p><span class="tag">回看：09:04-13:08</span></div></details>
+  </div>
+</article>
+<article class="segment" id="s5">
+  <figure class="media">
+    <a href="https://youtu.be/yl2jsIoMfDU?t=788" target="_blank" rel="noopener"><img src="assets/slide-05-core-ai.jpg" alt="Core AI：把自訂模型帶進 App 截圖"></a>
+    <figcaption>13:08-14:44 · Core AI：把自訂模型帶進 App</figcaption>
+  </figure>
+  <div class="copy">
+    <div class="meta"><span>ACT 05</span><span>On-device AI</span><a href="https://youtu.be/yl2jsIoMfDU?t=788" target="_blank" rel="noopener">YouTube 13:08</a></div>
+    <h3>Core AI：把自訂模型帶進 App</h3>
+    <p class="summary">Core AI 是新的平台框架，用來把特定模型帶進 app 並在裝置端執行。它提供 Swift API、PyTorch 轉換與最佳化工具、ahead-of-time compilation、instruments 與 visual debugger。</p>
+    <p class="meaning"><b>意義判讀</b>Core AI 補上「用自己的模型」這一層，讓 Foundation Models 之外的 AI 工作也能進入 Apple 平台標準工具鏈。</p>
+    <details><summary>Core AI 目標是 on-device model runtime。</summary><div class="detail-body"><p>Apple 把 Core AI 定位為在 app 中帶入並執行模型的最佳方式，特別適合需要離線、低延遲或自訂模型的功能。</p><span class="tag">回看：13:13-13:28</span></div></details><details><summary>PyTorch 到 Core AI runtime 有完整工具鏈。</summary><div class="detail-body"><p>影片提到 Python-based tools、ahead-of-time compilation、Core AI instruments 與 visual debugger，可追蹤 tensor 到 Python source。</p><span class="tag">回看：13:41-13:59</span></div></details><details><summary>從 iPhone 小型 vision model 到 Mac 多十億參數 LLM 都是目標場景。</summary><div class="detail-body"><p>Apple 明確給了兩端例子，表示 Core AI 可以依模型大小與裝置 compute 彈性部署。</p><span class="tag">回看：14:03-14:26</span></div></details><details class="deep"><summary>完整段落筆記：這段到底在講什麼</summary><div class="detail-body"><p>Core AI 補的是另一層需求：有些任務會使用 Apple Foundation Models，有些任務則需要開發者自己的模型，例如特定 vision、語音、分類、LLM 任務在裝置端跑。</p><p>影片提到 PyTorch 轉換、最佳化、ahead-of-time compilation、instruments 和 visual debugger。這些都指向一件事：Apple 想把自訂模型也納入正式開發工具鏈，從研究模型推進到可驗證的 app 功能。</p><p>它的場景範圍很寬，從 iPhone 上的小型 vision model 到 Mac 上多十億參數的 LLM 都被提到。真正要落地時，開發者要評估模型大小、裝置 compute、延遲、電力和隱私。</p><span class="tag">回看：13:08-14:44</span></div></details>
+  </div>
+</article>
+<article class="segment" id="s6">
+  <figure class="media">
+    <a href="https://youtu.be/yl2jsIoMfDU?t=884" target="_blank" rel="noopener"><img src="assets/slide-06-app-intents.jpg" alt="App Intents 與 Siri 自然語言操作 截圖"></a>
+    <figcaption>14:44-19:26 · App Intents 與 Siri 自然語言操作</figcaption>
+  </figure>
+  <div class="copy">
+    <div class="meta"><span>ACT 06</span><span>System Intelligence</span><a href="https://youtu.be/yl2jsIoMfDU?t=884" target="_blank" rel="noopener">YouTube 14:44</a></div>
+    <h3>App Intents 與 Siri 自然語言操作</h3>
+    <p class="summary">App Intents 讓 app 的內容、實體與操作能被 Siri、Shortcuts、widgets 與 Apple Intelligence 使用。示範透過 Origami app 讓 Siri 查詢對話、傳訊息，並利用 View Annotations API 操作螢幕內容。</p>
+    <p class="meaning"><b>意義判讀</b>Apple 的系統智慧正在把第三方 app 變成 Siri 可查、可叫、可操作的內容層。</p>
+    <details><summary>App Intents schemas 讓 Siri 深度理解 app 能力。</summary><div class="detail-body"><p>Schemas 是 Siri 能辨識的結構，開發者讓 message、contact、conversation 等 entity conform schema 後，系統就能理解 app 內容。</p><span class="tag">回看：15:10-17:16</span></div></details><details><summary>使用者能用自然語言查內容並執行動作。</summary><div class="detail-body"><p>示範中 Siri 先查誰要來 origami night，再追問 Richard 帶什麼，接著能直接傳訊息給 Richard。</p><span class="tag">回看：17:21-18:17</span></div></details><details><summary>View Annotations API 把畫面內容變成可操作語意。</summary><div class="detail-body"><p>開發者可以把 view 與 entity 對應，讓使用者用「第二則訊息」或「這張照片」這類自然語句操作螢幕上的內容。</p><span class="tag">回看：18:18-19:06</span></div></details><details class="deep"><summary>完整段落筆記：這段到底在講什麼</summary><div class="detail-body"><p>App Intents 這段說的是系統智慧如何理解 app。開發者要把 app 裡的內容、entity 和 action 結構化，讓 Siri、Shortcuts、widgets 和 Apple Intelligence 能夠找到、理解、呼叫。</p><p>Origami 示範裡，使用者用自然語言問 Siri 誰要來、誰要帶什麼，接著直接執行傳訊息。這代表 app 內容開始進入系統層的語意索引和動作層。</p><p>View Annotations API 則補上畫面操作。使用者可以說「第二則訊息」或「這張照片」之類的自然語句，系統要能把螢幕上的視覺元素對應到 app 裡的 entity 和操作。</p><span class="tag">回看：14:44-19:26</span></div></details>
+  </div>
+</article>
+<article class="segment" id="s7">
+  <figure class="media">
+    <a href="https://youtu.be/yl2jsIoMfDU?t=1166" target="_blank" rel="noopener"><img src="assets/slide-07-intelligence-recap.jpg" alt="智慧平台總結與設計轉場 截圖"></a>
+    <figcaption>19:26-22:26 · 智慧平台總結與設計轉場</figcaption>
+  </figure>
+  <div class="copy">
+    <div class="meta"><span>ACT 07</span><span>AI 收束</span><a href="https://youtu.be/yl2jsIoMfDU?t=1166" target="_blank" rel="noopener">YouTube 19:26</a></div>
+    <h3>智慧平台總結與設計轉場</h3>
+    <p class="summary">Josh 將 Apple Intelligence 段落收束成三種開發者機會：透過 Siri 強化自然語言體驗、用 Foundation Models 建 AI 功能、用 Core AI 在裝置端跑自訂模型。之後進入 design 與 Liquid Glass。</p>
+    <p class="meaning"><b>意義判讀</b>這段適合作為報告分水嶺：前半是 AI 進 app，後半是平台本身變得更可適應。</p>
+    <details><summary>AI 能力分成 Siri、Foundation Models、Core AI 三層。</summary><div class="detail-body"><p>Siri 負責自然語言和系統整合，Foundation Models 負責生成式功能，Core AI 負責自訂模型的裝置端執行。</p><span class="tag">回看：19:26-19:56</span></div></details><details><summary>platform improvements 從 design 開始。</summary><div class="detail-body"><p>Apple 把 design refinement、Swift、SwiftUI 和 app 效能都歸入平台改進段落，代表這是平台層級的 UI 與開發體驗更新。</p><span class="tag">回看：20:05-21:35</span></div></details><details class="deep"><summary>完整段落筆記：這段到底在講什麼</summary><div class="detail-body"><p>這段是 AI 部分的收束。Apple 把開發者可以做的事分成三類：用 Siri 強化自然語言體驗、用 Foundation Models 做生成式功能、用 Core AI 在裝置端跑自訂模型。</p><p>這三層其實是不同入口：Siri / App Intents 是系統整合層，Foundation Models 是通用模型能力層，Core AI 是自訂模型部署層。開發者可以依 app 性質選擇，不一定三個都做。</p><p>接著轉到 design，代表 AI 進 app 之後，介面、layout、可讀性和開發工具也要一起重新調整。</p><span class="tag">回看：19:26-22:26</span></div></details>
+  </div>
+</article>
+<article class="segment" id="s8">
+  <figure class="media">
+    <a href="https://youtu.be/yl2jsIoMfDU?t=1346" target="_blank" rel="noopener"><img src="assets/slide-08-liquid-glass.jpg" alt="Liquid Glass 27：可讀性、個人化與一致性 截圖"></a>
+    <figcaption>22:26-25:31 · Liquid Glass 27：可讀性、個人化與一致性</figcaption>
+  </figure>
+  <div class="copy">
+    <div class="meta"><span>ACT 08</span><span>Design</span><a href="https://youtu.be/yl2jsIoMfDU?t=1346" target="_blank" rel="noopener">YouTube 22:26</a></div>
+    <h3>Liquid Glass 27：可讀性、個人化與一致性</h3>
+    <p class="summary">Apple 說今年繼續調整 Liquid Glass 的基礎：改善複雜背景下的可讀性、加入暗邊與高光、提供透明度到 tint 的個人化滑桿，也讓 sidebar、toolbar、icons、macOS window radius 更一致。</p>
+    <p class="meaning"><b>意義判讀</b>Liquid Glass 是牽動可讀性、accessibility、app identity 與跨裝置一致性的設計系統。</p>
+    <details><summary>Liquid Glass 針對可讀性與深度重新調整。</summary><div class="detail-body"><p>它會更有效擴散背後的複雜內容，並透過暗邊與高光增加分離感，讓視覺效果和可讀性一起被處理。</p><span class="tag">回看：22:43-22:57</span></div></details><details><summary>使用者可調整從 ultra clear 到 fully tinted。</summary><div class="detail-body"><p>設定中的滑桿讓使用者選擇適合自己的透明與染色程度，同時自動適應 reduce transparency、increase contrast 等 accessibility 設定。</p><span class="tag">回看：22:57-23:25</span></div></details><details><summary>sidebar、toolbar、icon 與 window radius 都被拉進一致性。</summary><div class="detail-body"><p>這些調整會透過標準 API 自動套用，也提供 tint、scroll edge effect 和 Icon Composer 相關客製方式。</p><span class="tag">回看：23:37-25:15</span></div></details><details class="deep"><summary>完整段落筆記：這段到底在講什麼</summary><div class="detail-body"><p>Liquid Glass 27 的重點包含視覺風格、可讀性、深度、暗邊、高光、背景擴散，以及使用者可在透明與 tint 之間調整。</p><p>這對開發者的意義是：如果 app 使用標準 API，很多 sidebar、toolbar、scroll edge、icon、window radius 的一致性會自動受益；但 app identity 和內容可讀性仍然需要重新檢查。</p><p>它也和 accessibility 綁在一起。reduce transparency、increase contrast 這些設定會影響效果呈現，所以 Liquid Glass 不能只用靜態美術截圖判斷，要放進真實內容和使用者設定裡測。</p><span class="tag">回看：22:26-25:31</span></div></details>
+  </div>
+</article>
+<article class="segment" id="s9">
+  <figure class="media">
+    <a href="https://youtu.be/yl2jsIoMfDU?t=1531" target="_blank" rel="noopener"><img src="assets/slide-09-ios-resizable.jpg" alt="iOS App 可縮放與跨裝置適配 截圖"></a>
+    <figcaption>25:31-27:05 · iOS App 可縮放與跨裝置適配</figcaption>
+  </figure>
+  <div class="copy">
+    <div class="meta"><span>ACT 09</span><span>Adaptive UI</span><a href="https://youtu.be/yl2jsIoMfDU?t=1531" target="_blank" rel="noopener">YouTube 25:31</a></div>
+    <h3>iOS App 可縮放與跨裝置適配</h3>
+    <p class="summary">Apple 表示 iOS apps 現在可 resize，能在 iPad、Mac 與 iPhone Mirroring 等大螢幕環境更好運作。Resizable iOS simulator 和 Previews 也讓開發者更容易測試不同尺寸。</p>
+    <p class="meaning"><b>意義判讀</b>這段把設計語言和實際 app 適配接起來，對既有 iOS app 是一個重新檢查 responsive 行為的信號。</p>
+    <details><summary>iOS app 尺寸不再只固定在手機情境。</summary><div class="detail-body"><p>使用者可利用更大顯示器，app 也需要處理更彈性的 layout、navigation 和內容密度。</p><span class="tag">回看：25:31-26:23</span></div></details><details><summary>Resizable simulator 與 Previews 縮短測試週期。</summary><div class="detail-body"><p>開發者能在開發時快速看尺寸變化，減少等到真機或跨平台場景才發現 layout 問題。</p><span class="tag">回看：26:23-26:57</span></div></details><details class="deep"><summary>完整段落筆記：這段到底在講什麼</summary><div class="detail-body"><p>iOS app 可 resize 是很實際的平台變化。app 不能只假設自己永遠在固定手機尺寸裡，因為 iPad、Mac、iPhone Mirroring 都會把同一個 app 放到更彈性的空間。</p><p>這對既有 app 是一個檢查點：navigation、sidebar、內容密度、表單、列表、空狀態都要重新看，否則在大螢幕上可能只是放大版手機畫面。</p><p>Resizable simulator 和 Previews 的價值，是讓這些問題在開發階段就能被看見，而不是等到使用者在 Mac 或 iPad 上遇到 layout 壞掉才修。</p><span class="tag">回看：25:31-27:05</span></div></details>
+  </div>
+</article>
+<article class="segment" id="s10">
+  <figure class="media">
+    <a href="https://youtu.be/yl2jsIoMfDU?t=1625" target="_blank" rel="noopener"><img src="assets/slide-10-swiftui-interactions.jpg" alt="SwiftUI 互動與效能升級 截圖"></a>
+    <figcaption>27:05-31:50 · SwiftUI 互動與效能升級</figcaption>
+  </figure>
+  <div class="copy">
+    <div class="meta"><span>ACT 10</span><span>SwiftUI</span><a href="https://youtu.be/yl2jsIoMfDU?t=1625" target="_blank" rel="noopener">YouTube 27:05</a></div>
+    <h3>SwiftUI 互動與效能升級</h3>
+    <p class="summary">SwiftUI 新增 reorderable containers、任意容器 swipe actions、更完整 text selection，並在與 AppKit/UIKit 共用底層架構後提升多種控制元件與 layout 效能。</p>
+    <p class="meaning"><b>意義判讀</b>SwiftUI 的更新重點是把常見互動、效能與適配問題往框架層收斂。</p>
+    <details><summary>drag-to-reorder 與 swipe actions 可用於更多自訂容器。</summary><div class="detail-body"><p>原本要自己寫大量程式的 grid reorder、custom row swipe，現在能用標準 modifier 實作，減少互動樣板碼。</p><span class="tag">回看：29:12-30:13</span></div></details><details><summary>SwiftUI、AppKit、UIKit 底層逐步統一。</summary><div class="detail-body"><p>Apple 表示多種 controls 開始共享 common foundation，讓 menu picker、nested stacks 等場景自動受益。</p><span class="tag">回看：30:41-31:31</span></div></details><details><summary>async image cache 與 toolbar 控制減少日常摩擦。</summary><div class="detail-body"><p>這些改善讓遠端圖片載入、空間縮小時 toolbar 如何保留可見項目，都更容易交給框架處理。</p><span class="tag">回看：31:31-33:04</span></div></details><details class="deep"><summary>完整段落筆記：這段到底在講什麼</summary><div class="detail-body"><p>SwiftUI 這段集中在日常 UI 問題：reorderable containers、任意容器 swipe actions、text selection、toolbar 控制、async image cache。這些都不是高概念，但會直接減少 app 製作的樣板碼。</p><p>Apple 也提到 SwiftUI、AppKit、UIKit 的底層共用逐步增加，讓 menu picker、nested stacks、layout 等控制元件效能受益。這意味著平台框架在往更一致的基礎設施收斂。</p><p>對開發者來說，這段的判讀重點是：不要只看新 modifier 名稱，而要看哪些過去需要自刻的互動，現在可以交給標準框架。這會影響 app 的維護成本。</p><span class="tag">回看：27:05-31:50</span></div></details>
+  </div>
+</article>
+<article class="segment" id="s11">
+  <figure class="media">
+    <a href="https://youtu.be/yl2jsIoMfDU?t=1910" target="_blank" rel="noopener"><img src="assets/slide-11-documents-spatial.jpg" alt="Document API 與 Spatial Preview 截圖"></a>
+    <figcaption>31:50-35:13 · Document API 與 Spatial Preview</figcaption>
+  </figure>
+  <div class="copy">
+    <div class="meta"><span>ACT 11</span><span>Documents / Spatial</span><a href="https://youtu.be/yl2jsIoMfDU?t=1910" target="_blank" rel="noopener">YouTube 31:50</a></div>
+    <h3>Document API 與 Spatial Preview</h3>
+    <p class="summary">SwiftUI 新文件基礎架構提供更完整的 document-based app 能力，也支援觀察與更新文件屬性。Spatial Preview framework 讓 Mac app 可將 3D models 串流到 Vision Pro 空間中預覽。</p>
+    <p class="meaning"><b>意義判讀</b>這段顯示 Apple 在把傳統文件型 app 與空間運算都納入 SwiftUI 的現代開發流程。</p>
+    <details><summary>新的 document infrastructure 支援更細緻的文件 app。</summary><div class="detail-body"><p>它提供 undo、autosave、Quick Look、sharing、version browsing 等能力，並能只讀寫文件中改變的部分。</p><span class="tag">回看：33:32-34:12</span></div></details><details><summary>Spatial Preview 把 3D 預覽帶進開發回路。</summary><div class="detail-body"><p>Mac app 可以將 3D models 串流到 Vision Pro 周圍空間，讓編輯、預覽與分享更接近實際空間體驗。</p><span class="tag">回看：34:26-34:48</span></div></details><details class="deep"><summary>完整段落筆記：這段到底在講什麼</summary><div class="detail-body"><p>Document infrastructure 的更新，是把 document-based app 常見需求往 SwiftUI 內收。undo、autosave、Quick Look、sharing、version browsing，以及只更新文件中改變的部分，都讓文件型 app 更容易走標準流程。</p><p>Spatial Preview framework 則把 3D model 的預覽放進開發回路。Mac app 可以把模型串流到 Vision Pro 周圍空間，讓開發者更接近實際空間體驗來調整內容。</p><p>這段雖然不像 AI 那麼吸睛，但它說明 Apple 仍在擴充 SwiftUI 的應用邊界：不只一般 app UI，也包含文件型 app 和空間運算內容。</p><span class="tag">回看：31:50-35:13</span></div></details>
+  </div>
+</article>
+<article class="segment" id="s12">
+  <figure class="media">
+    <a href="https://youtu.be/yl2jsIoMfDU?t=2113" target="_blank" rel="noopener"><img src="assets/slide-12-swift-stack.jpg" alt="Swift 作為全棧與系統語言 截圖"></a>
+    <figcaption>35:13-39:50 · Swift 作為全棧與系統語言</figcaption>
+  </figure>
+  <div class="copy">
+    <div class="meta"><span>ACT 12</span><span>Swift</span><a href="https://youtu.be/yl2jsIoMfDU?t=2113" target="_blank" rel="noopener">YouTube 35:13</a></div>
+    <h3>Swift 作為全棧與系統語言</h3>
+    <p class="summary">Apple 將 Swift 定位為能跨 mobile apps、services、embedded firmware、server、WebAssembly、Java/C++ interoperability 的語言，也展示 Apple 內部把 Foundation、UIKit/AppKit、WebKit、QUIC、TrueType、kernel components 等逐步導入 Swift。</p>
+    <p class="meaning"><b>意義判讀</b>Swift 這段的主張很強：Apple 想把 Swift 推成跨平台與低階系統的長期語言。</p>
+    <details><summary>Swift 被定位成可跨整個 stack 使用。</summary><div class="detail-body"><p>影片提到 Linux、Windows、Android、WebAssembly，以及 C++ / Java interoperability，目標是讓既有系統也能逐步引入 Swift。</p><span class="tag">回看：35:18-36:57</span></div></details><details><summary>Apple 內部也把 Swift 用到更底層。</summary><div class="detail-body"><p>Foundation、AppKit/UIKit、WebKit、QUIC、TrueType、firmware、coprocessors、drivers 到 kernel components 都被拿來說明 Swift 的系統層採用。</p><span class="tag">回看：36:57-38:17</span></div></details><details class="deep"><summary>完整段落筆記：這段到底在講什麼</summary><div class="detail-body"><p>Swift 這段的主張很明確：Apple 把 Swift 推向 mobile apps、services、embedded firmware、server、WebAssembly、Java/C++ interoperability。</p><p>影片列出 Apple 內部把 Swift 用到 Foundation、UIKit/AppKit、WebKit、QUIC、TrueType、firmware、drivers、kernel components 等場景。這是用自身採用來支持 Swift 作為系統語言的論述。</p><p>對外部開發者來說，這段可以讀成長期方向：Swift 的價值包含語法、跨平台、跨系統層、跨既有語言邊界進入更多工程場景。</p><span class="tag">回看：35:13-39:50</span></div></details>
+  </div>
+</article>
+<article class="segment" id="s13">
+  <figure class="media">
+    <a href="https://youtu.be/yl2jsIoMfDU?t=2390" target="_blank" rel="noopener"><img src="assets/slide-13-swift-64.jpg" alt="Swift 6.4 與日常開發效率 截圖"></a>
+    <figcaption>39:50-42:03 · Swift 6.4 與日常開發效率</figcaption>
+  </figure>
+  <div class="copy">
+    <div class="meta"><span>ACT 13</span><span>Swift 6.4</span><a href="https://youtu.be/yl2jsIoMfDU?t=2390" target="_blank" rel="noopener">YouTube 39:50</a></div>
+    <h3>Swift 6.4 與日常開發效率</h3>
+    <p class="summary">Swift 6.4 聚焦 everyday workflow：更好的 completion、diagnostics、API 分群、自動插入 import，以及 anyAppleOS availability 屬性。</p>
+    <p class="meaning"><b>意義判讀</b>這段不像前面的系統敘事那麼宏大，但直接影響開發者每天寫 Swift 的摩擦。</p>
+    <details><summary>編譯器與 IDE 回饋更貼近日常工作。</summary><div class="detail-body"><p>影片談到更好的 completion、fix-it、diagnostics 與 import 自動處理，目標是讓 Swift 寫起來更快、更少中斷。</p><span class="tag">回看：38:41-40:13</span></div></details><details><summary>anyAppleOS availability 減少跨 Apple 平台條件判斷。</summary><div class="detail-body"><p>這讓某些 API 可用性判斷更簡潔，對跨 Apple 裝置支援的程式碼較友善。</p><span class="tag">回看：40:13-41:02</span></div></details><details class="deep"><summary>完整段落筆記：這段到底在講什麼</summary><div class="detail-body"><p>Swift 6.4 這段比前面更偏日常開發效率：completion、fix-it、diagnostics、API 分群、自動 import。這些改善會影響開發者每天寫程式時被中斷的頻率。</p><p>anyAppleOS availability 的重點，是減少跨 Apple 平台條件判斷時的繁瑣程度。當 app 要同時面對 iPhone、iPad、Mac、Vision Pro 等平台，這類小改動會累積成維護成本差異。</p><p>這段適合放在簡報裡提醒：平台更新也包含讓工程師少猜、少查、少修的 IDE 和語言體驗。</p><span class="tag">回看：39:50-42:03</span></div></details>
+  </div>
+</article>
+<article class="segment" id="s14">
+  <figure class="media">
+    <a href="https://youtu.be/yl2jsIoMfDU?t=2523" target="_blank" rel="noopener"><img src="assets/slide-14-xcode-daily.jpg" alt="Xcode 27：日常體驗、主題與 Device Hub 截圖"></a>
+    <figcaption>42:03-49:00 · Xcode 27：日常體驗、主題與 Device Hub</figcaption>
+  </figure>
+  <div class="copy">
+    <div class="meta"><span>ACT 14</span><span>Xcode Daily</span><a href="https://youtu.be/yl2jsIoMfDU?t=2523" target="_blank" rel="noopener">YouTube 42:03</a></div>
+    <h3>Xcode 27：日常體驗、主題與 Device Hub</h3>
+    <p class="summary">Xcode 27 有兩條主線：intelligence 與 daily experience。daily experience 包含載入更快、crash/spin 修正、debug 更可靠、體積小 30%、設定 iCloud 同步、新建專案更快、自訂 toolbar、主題、Xcode Cloud 與 Device Hub。</p>
+    <p class="meaning"><b>意義判讀</b>這是 agentic coding 之前的地基：IDE 要先更快、更穩、更個人化，agent 才能進入日常。</p>
+    <details><summary>Xcode 27 體積小 30%，並讓設定可透過 iCloud 同步。</summary><div class="detail-body"><p>Apple Silicon-only 加上背景下載 agents、documentation 等元件，讓 Xcode 本體更小；新 Mac 可直接帶入設定與 Git config。</p><span class="tag">回看：43:45-44:34</span></div></details><details><summary>介面可自訂，並加入主題與專案辨識。</summary><div class="detail-body"><p>toolbar 可重排，activity view 收進 document title；主題如 Emerald、Neon Noir、Coral Reef 可讓不同專案有不同視覺辨識。</p><span class="tag">回看：45:04-46:30</span></div></details><details><summary>Device Hub 整合 simulator 與實體裝置。</summary><div class="detail-body"><p>Device Hub 取代過去分散的裝置管理，支援虛擬與真實裝置、live resizing、pinch to zoom、效能與 sensor 控制。</p><span class="tag">回看：47:36-48:56</span></div></details><details class="deep"><summary>完整段落筆記：這段到底在講什麼</summary><div class="detail-body"><p>Xcode 27 先講 daily experience，再講 agentic coding，順序很重要。IDE 本身要更快、更穩、更可個人化，agent 才有機會變成日常工作流。</p><p>影片提到啟動、crash/spin、debug、體積小 30%、iCloud 同步設定、新建專案、自訂 toolbar、主題、Xcode Cloud 和 Device Hub。這些是開發者每天碰到的摩擦點。</p><p>Device Hub 的意義是把 simulator 和實體裝置管理放在同一處，並支援 live resizing、pinch to zoom、sensor 控制。這和前面的 resizable app 測試需求是連在一起的。</p><span class="tag">回看：42:03-49:00</span></div></details>
+  </div>
+</article>
+<article class="segment" id="s15">
+  <figure class="media">
+    <a href="https://youtu.be/yl2jsIoMfDU?t=2940" target="_blank" rel="noopener"><img src="assets/slide-15-agentic-coding.jpg" alt="Xcode Agentic Coding：從計畫到測試與修復 截圖"></a>
+    <figcaption>49:00-56:02 · Xcode Agentic Coding：從計畫到測試與修復</figcaption>
+  </figure>
+  <div class="copy">
+    <div class="meta"><span>ACT 15</span><span>Agentic Coding</span><a href="https://youtu.be/yl2jsIoMfDU?t=2940" target="_blank" rel="noopener">YouTube 49:00</a></div>
+    <h3>Xcode Agentic Coding：從計畫到測試與修復</h3>
+    <p class="summary">Xcode 把 coding agents 放進 IDE 工作流。Agent conversation 像文件一樣在 editor 開啟，/plan 先建立計畫與圖，開發者確認後再實作；agent 還能跑 app、測試 UI、localize、分析 crash 並修復。</p>
+    <p class="meaning"><b>意義判讀</b>這段把 agent 從聊天補全升級成 IDE 內的工程工作流：規劃、實作、驗證、改善都被納入。</p>
+    <details><summary>/plan 讓 agent 先提出實作方案。</summary><div class="detail-body"><p>agent 會探索專案、理解架構與 pattern、問澄清問題，生成 markdown 計畫與 diagram，讓開發者先 review 後實作。</p><span class="tag">回看：50:23-52:18</span></div></details><details><summary>agent 可以操作 simulator 測試 UI。</summary><div class="detail-body"><p>示範中 agent 會 launch app 和 Device Hub，tap、swipe、type，並回傳測試摘要與截圖。</p><span class="tag">回看：53:37-54:09</span></div></details><details><summary>agent 可協助 localization 與 crash 修復。</summary><div class="detail-body"><p>Xcode 會根據 context 翻譯 strings catalog，也能從 Organizer 取 top crashes，分析 symbolicated crash log、重現、修復並驗證。</p><span class="tag">回看：54:11-55:50</span></div></details><details class="deep"><summary>完整段落筆記：這段到底在講什麼</summary><div class="detail-body"><p>Xcode agentic coding 把 agent conversation 設計成像文件一樣可以開啟、分割、堆疊，代表它被視為工程工作物的一部分。</p><p>/plan 是關鍵。agent 會先探索專案、理解架構和 pattern、提出 markdown 計畫和 diagram，等開發者 review 後再實作。這比直接生成程式碼更接近真正團隊協作。</p><p>後半段示範 agent 可以跑 app、操作 simulator、測 UI、做 localization、分析 crash log、重現和修復。這代表 agent 的角色從「寫」延伸到「驗證」和「改善」。</p><span class="tag">回看：49:00-56:02</span></div></details>
+  </div>
+</article>
+<article class="segment" id="s16">
+  <figure class="media">
+    <a href="https://youtu.be/yl2jsIoMfDU?t=3362" target="_blank" rel="noopener"><img src="assets/slide-16-plugins-acp.jpg" alt="Plugins、MCP 與 Agent Client Protocol 截圖"></a>
+    <figcaption>56:02-57:52 · Plugins、MCP 與 Agent Client Protocol</figcaption>
+  </figure>
+  <div class="copy">
+    <div class="meta"><span>ACT 16</span><span>Plugins / Protocols</span><a href="https://youtu.be/yl2jsIoMfDU?t=3362" target="_blank" rel="noopener">YouTube 56:02</a></div>
+    <h3>Plugins、MCP 與 Agent Client Protocol</h3>
+    <p class="summary">Xcode 27 內建 Apple 工程師與設計師的技能、文件與 MCP tools，也支援 plugins，把 skills、MCP tools 與透過 Agent Client Protocol 的任意 agent 帶進 Xcode。Figma 與 GitHub 被點名為一鍵設定例子。</p>
+    <p class="meaning"><b>意義判讀</b>Apple 正在把 Xcode 變成 agent client，讓外部工具、設計流程與程式流程進到同一個 IDE 工作場。</p>
+    <details><summary>Xcode 內建 specialist skills。</summary><div class="detail-body"><p>SwiftUI、accessibility、universal sizing、testing、performance 等專家能力被包成 agents 可調用的知識與工具。</p><span class="tag">回看：56:02-56:34</span></div></details><details><summary>plugin 可同時包含 skills、MCP tools 與 agent。</summary><div class="detail-body"><p>Agent Client Protocol 讓 plugin 能帶入開發者選擇的 agent，安裝可用 command line 或 git URL。</p><span class="tag">回看：56:40-57:13</span></div></details><details><summary>Figma 與 GitHub 進入 Xcode agent workflow。</summary><div class="detail-body"><p>示範語句是實作 Figma design、用 skill 做 resizable、再發 PR 到 GitHub，代表設計與程式工具被串成一條 workflow。</p><span class="tag">回看：57:13-57:31</span></div></details><details class="deep"><summary>完整段落筆記：這段到底在講什麼</summary><div class="detail-body"><p>Xcode 27 內建 specialist skills，涵蓋 SwiftUI、accessibility、universal sizing、testing、performance 等主題。這讓 agent 不只是泛用模型，而可以帶有 Apple 工程和設計知識。</p><p>Plugins 可以包含 skills、MCP tools，以及透過 Agent Client Protocol 帶進任意 agent。這代表 Xcode 正在變成 agent client，能接外部工具和外部代理。</p><p>Figma 與 GitHub 被點名是很強的訊號：設計稿、程式碼、測試、PR 這些原本分散的工作流，未來會更容易被 agent 串起來。</p><span class="tag">回看：56:02-57:52</span></div></details>
+  </div>
+</article>
+<article class="segment" id="s17">
+  <figure class="media">
+    <a href="https://youtu.be/yl2jsIoMfDU?t=3472" target="_blank" rel="noopener"><img src="assets/slide-17-wrap-tools.jpg" alt="Reality Composer Pro、Game Porting 與 WWDC 後續 截圖"></a>
+    <figcaption>57:52-01:01:39 · Reality Composer Pro、Game Porting 與 WWDC 後續</figcaption>
+  </figure>
+  <div class="copy">
+    <div class="meta"><span>ACT 17</span><span>收束</span><a href="https://youtu.be/yl2jsIoMfDU?t=3472" target="_blank" rel="noopener">YouTube 57:52</a></div>
+    <h3>Reality Composer Pro、Game Porting 與 WWDC 後續</h3>
+    <p class="summary">片尾補充 Reality Composer Pro 3、Game Porting Toolkit 與 Metal command line tools，並收束今年 developer productivity。Apple 引導觀眾看 100+ sessions、Group Labs、forums、Meet with Apple 和 Developer Centers。</p>
+    <p class="meaning"><b>意義判讀</b>最後一段把完整影片轉成學習路徑：要查細節，應回到 WWDC sessions 和官方文件。</p>
+    <details><summary>Reality Composer Pro 3 與 Game Porting Toolkit 也納入工具升級。</summary><div class="detail-body"><p>Reality Composer Pro 3 以 RealityKit 重建，支援 character animations、lighting、live previews；Game Porting Toolkit 加入 AI skills，Metal command line tools 讓 agents 可參與開發與除錯。</p><span class="tag">回看：57:52-58:46</span></div></details><details><summary>今年主軸被收束成 App Intents、Foundation Models、Core AI、Design、Swift/SwiftUI、Xcode agentic coding。</summary><div class="detail-body"><p>這是完整影片的官方總結，可作為後續簡報或課程架構。</p><span class="tag">回看：58:48-59:23</span></div></details><details><summary>官方後續入口是 sessions、labs、forums、Meet with Apple 與 Developer Centers。</summary><div class="detail-body"><p>片尾提到 100+ sessions，並宣布 Berlin Developer Center 將於秋季開幕。</p><span class="tag">回看：59:25-61:11</span></div></details><details class="deep"><summary>完整段落筆記：這段到底在講什麼</summary><div class="detail-body"><p>最後一段補 Reality Composer Pro 3、Game Porting Toolkit 和 Metal command line tools，表示 developer productivity 不只限於一般 app 和 Xcode，也包含空間內容、遊戲移植和命令列除錯。</p><p>官方總結回到幾條主線：App Intents、Foundation Models、Core AI、Design、Swift / SwiftUI、Xcode agentic coding。這也可以作為後續學習路徑的章節表。</p><p>片尾引導觀眾回到 100+ sessions、Group Labs、forums、Meet with Apple 和 Developer Centers。公開頁應把自己定位成導覽，不取代官方文件和 session。</p><span class="tag">回看：57:52-01:01:39</span></div></details>
+  </div>
+</article></div>
+</div></section>
+<section class="section cta-band" id="lesson"><div class="inner">
+  <div>
+    <h2>如果你也想做出這種新聞整理</h2>
+    <p class="lead">把 YouTube 連結交給 AI，就能整理出這樣的時間軸、截圖、重點摘要，甚至直接做成網頁和簡報。6/14 的免費講座，我會拆解這種工作流怎麼跑。</p>
+    <div class="course-note">
+      <p><strong>免費參加：</strong></p>
+      <p>我每月固定舉辦兩場免費線上講座。</p>
+      <p><strong>6/14 這場會教你怎麼把 YouTube 連結整理成這種網頁簡報；講座資訊請看我的 LINE 社群。</strong></p>
+    </div>
+  </div>
+  <div class="cta-card"><b>最後置入</b><p>這篇 Apple 發布會整理就是範例。你如果想把自己的影片、會議或產業消息做成同樣的網頁簡報，6/14 我會從頭拆一次。</p><div class="cta"><a class="primary" href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">免費參加：加入 LINE 社群</a><a class="ghost" href="https://vocus.cc/salon/Jiang_Coach" target="_blank" rel="noopener">看我的方格子</a><a class="ghost" href="https://www.threads.com/@jiang_yude_coach" target="_blank" rel="noopener">追蹤我的脆</a></div></div>
+</div></section>
+</main>
+<footer class="footer"><div class="inner">本文整理自 <a href="https://www.youtube.com/watch?v=yl2jsIoMfDU" target="_blank" rel="noopener">Apple Developer 官方 YouTube 影片</a>。技術採用、API 名稱與版本細節，仍建議回到 Apple 官方文件與 WWDC sessions 確認。</div></footer>
+</body></html>

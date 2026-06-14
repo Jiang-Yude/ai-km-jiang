@@ -1,0 +1,959 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>一人公司多方合作會議｜會議洞察分析範本</title>
+<meta name="description" content="多位獨立工作者／一人公司湊頭討論合作機會的會議，事後做洞察分析的公開範本。化名甲乙丙丁＋角色定位＋議題主題 1-6＋AB 視覺化。">
+<style>
+:root {
+  --ink: #1a1a1a;
+  --ink-soft: #404040;
+  --ink-muted: #737373;
+  --paper: #fafaf7;
+  --paper-soft: #f0efe9;
+  --line: #d9d7cc;
+  --accent: #1e3a5f;
+  --accent-soft: #e8eef5;
+  --green: #2d8659;
+  --yellow: #b88424;
+  --red: #b03a3a;
+  --serif: "Source Han Serif TC", "Noto Serif TC", "PingFang TC", serif;
+  --sans: "Inter", "Noto Sans TC", "PingFang TC", -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--sans);
+  background: var(--paper);
+  color: var(--ink);
+  line-height: 1.75;
+  font-size: 15px;
+  -webkit-font-smoothing: antialiased;
+}
+
+.wrap {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 60px 32px 120px;
+}
+
+/* Header */
+.hero {
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 40px;
+  margin-bottom: 60px;
+}
+.hero .meta {
+  display: flex;
+  gap: 16px;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+  margin-bottom: 24px;
+}
+.hero .meta span { white-space: nowrap; }
+.hero h1 {
+  font-family: var(--serif);
+  font-size: 38px;
+  line-height: 1.25;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin-bottom: 20px;
+}
+.hero .sub {
+  font-size: 17px;
+  color: var(--ink-soft);
+  line-height: 1.7;
+  margin-bottom: 24px;
+}
+.hero .attendees {
+  font-size: 14px;
+  color: var(--ink-soft);
+  padding-top: 20px;
+  border-top: 1px dashed var(--line);
+}
+.hero .attendees b { color: var(--ink); }
+
+/* Template usage notice */
+.tpl-notice {
+  background: #fff8e6;
+  border: 1px solid #e8d480;
+  padding: 22px 26px;
+  margin-bottom: 40px;
+  font-size: 14px;
+  color: #5e4f1a;
+  line-height: 1.75;
+  border-radius: 2px;
+}
+.tpl-notice h3 {
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #856300;
+  margin-bottom: 12px;
+  font-weight: 700;
+}
+.tpl-notice ul { padding-left: 20px; margin: 8px 0; }
+.tpl-notice li { margin: 4px 0; }
+.tpl-notice b { color: #5e4f1a; }
+
+/* Limit notice */
+.limit-notice {
+  background: var(--accent-soft);
+  border-left: 3px solid var(--accent);
+  padding: 18px 22px;
+  margin-bottom: 60px;
+  font-size: 14px;
+  color: var(--ink-soft);
+}
+.limit-notice strong { color: var(--accent); }
+
+/* TOC */
+.toc {
+  background: var(--paper-soft);
+  padding: 24px 28px;
+  margin-bottom: 60px;
+  font-size: 14px;
+}
+.toc h3 {
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+  margin-bottom: 12px;
+  font-weight: 600;
+}
+.toc ol { padding-left: 20px; }
+.toc li { margin: 6px 0; }
+.toc a {
+  color: var(--ink-soft);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: all 0.15s;
+}
+.toc a:hover {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+}
+
+/* Sections */
+section { margin-bottom: 80px; scroll-margin-top: 40px; }
+section > h2 {
+  font-family: var(--serif);
+  font-size: 26px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  letter-spacing: -0.01em;
+}
+section > .layer {
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+  margin-bottom: 32px;
+}
+h3 {
+  font-family: var(--serif);
+  font-size: 19px;
+  font-weight: 600;
+  margin: 36px 0 16px;
+  color: var(--ink);
+}
+h4 {
+  font-size: 15px;
+  font-weight: 600;
+  margin: 24px 0 10px;
+  color: var(--ink);
+}
+p { margin-bottom: 14px; color: var(--ink-soft); }
+p strong { color: var(--ink); font-weight: 600; }
+
+/* Roles table */
+.roles {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 14px;
+  margin: 24px 0 32px;
+}
+.role-card {
+  background: var(--paper-soft);
+  padding: 16px 18px;
+  border-left: 3px solid var(--accent);
+}
+.role-card .rc-name {
+  font-family: var(--serif);
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--ink);
+  margin-bottom: 4px;
+}
+.role-card .rc-role {
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  color: var(--accent);
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+.role-card .rc-desc {
+  font-size: 13px;
+  color: var(--ink-soft);
+  line-height: 1.6;
+}
+
+/* Three key facts */
+.key-facts {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 18px;
+  margin: 24px 0;
+}
+.key-facts .fact {
+  background: var(--paper-soft);
+  padding: 20px 24px;
+  border-left: 3px solid var(--ink);
+}
+.key-facts .fact .num {
+  font-family: var(--serif);
+  font-size: 32px;
+  color: var(--accent);
+  line-height: 1;
+  margin-bottom: 8px;
+}
+.key-facts .fact p { margin: 0; }
+
+/* Tables */
+.tbl-wrap {
+  margin: 24px 0;
+  overflow-x: auto;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+  line-height: 1.6;
+}
+th, td {
+  text-align: left;
+  padding: 14px 12px;
+  vertical-align: top;
+  border-bottom: 1px solid var(--line);
+}
+th {
+  background: var(--paper-soft);
+  font-weight: 600;
+  font-size: 12px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+  border-bottom: 2px solid var(--ink);
+}
+td:first-child { font-weight: 600; color: var(--ink); }
+
+/* Light dots */
+.dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin-right: 6px;
+  vertical-align: middle;
+  box-shadow: 0 0 0 1px rgba(0,0,0,0.05);
+}
+.dot.green { background: var(--green); box-shadow: 0 0 8px rgba(45, 134, 89, 0.5), 0 0 0 1px rgba(0,0,0,0.05); }
+.dot.yellow { background: var(--yellow); box-shadow: 0 0 8px rgba(184, 132, 36, 0.5), 0 0 0 1px rgba(0,0,0,0.05); }
+.dot.red { background: var(--red); box-shadow: 0 0 8px rgba(176, 58, 58, 0.5), 0 0 0 1px rgba(0,0,0,0.05); }
+
+/* Signal blocks */
+.signal {
+  margin: 28px 0;
+  padding: 24px 26px;
+  background: var(--paper-soft);
+  border-left: 4px solid var(--ink);
+  position: relative;
+}
+.signal.warn { border-left-color: var(--yellow); }
+.signal.action { border-left-color: var(--green); }
+.signal .signal-num {
+  font-family: var(--serif);
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+.signal .signal-title {
+  font-family: var(--serif);
+  font-size: 17px;
+  font-weight: 600;
+  margin-bottom: 14px;
+  color: var(--ink);
+  line-height: 1.4;
+}
+.signal ul { padding-left: 22px; margin: 10px 0; }
+.signal li { margin: 8px 0; color: var(--ink-soft); }
+.signal blockquote {
+  border-left: 2px solid var(--accent);
+  padding: 8px 16px;
+  margin: 14px 0;
+  background: white;
+  font-style: italic;
+  font-size: 14px;
+  color: var(--ink-soft);
+}
+.signal blockquote b { font-style: normal; color: var(--ink); }
+
+/* Review notice */
+.codex-note {
+  background: #fff8e6;
+  border: 1px solid #e8d480;
+  padding: 14px 18px;
+  margin: 18px 0;
+  font-size: 13px;
+  color: #6b5a1f;
+  border-radius: 2px;
+}
+.codex-note strong { color: #856300; }
+
+/* Action lists */
+.todo-block {
+  background: var(--paper-soft);
+  padding: 24px 28px;
+  margin: 20px 0;
+}
+.todo-block h4 {
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+  margin-bottom: 14px;
+}
+.todo-block ul { padding-left: 22px; }
+.todo-block li { margin: 8px 0; color: var(--ink-soft); font-size: 14px; }
+.todo-block li strong { color: var(--ink); }
+
+/* Footer */
+footer {
+  margin-top: 100px;
+  padding-top: 32px;
+  border-top: 1px solid var(--line);
+  font-size: 12px;
+  color: var(--ink-muted);
+  letter-spacing: 0.04em;
+}
+footer p { margin: 6px 0; color: var(--ink-muted); }
+footer a { color: var(--ink-soft); text-decoration: underline; text-decoration-color: var(--line); }
+
+/* Quote of opener */
+.opener-quote {
+  font-family: var(--serif);
+  font-size: 18px;
+  line-height: 1.65;
+  color: var(--ink);
+  padding: 24px 0 24px 28px;
+  border-left: 3px solid var(--accent);
+  margin: 28px 0;
+  font-style: italic;
+}
+.opener-quote .source {
+  display: block;
+  margin-top: 12px;
+  font-size: 13px;
+  color: var(--ink-muted);
+  font-style: normal;
+  letter-spacing: 0.04em;
+}
+
+@media (max-width: 640px) {
+  .wrap { padding: 32px 18px 80px; }
+  .hero h1 { font-size: 28px; }
+  table { font-size: 13px; }
+  th, td { padding: 10px 8px; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <div class="meta">
+    <span>公開範本</span>
+    <span>•</span>
+    <span>會議洞察分析</span>
+    <span>•</span>
+    <span>一人公司多方合作</span>
+  </div>
+  <h1>一人公司多方合作會議<br>會議洞察分析範本</h1>
+  <p class="sub">多位獨立工作者（一人公司／自由工作者／工作室主理人）第一次正式湊頭，名為「合作討論」，實際走向是<b>互相驗證商業模式</b>＋<b>意外延伸出一場關於商業執行邏輯的現場諮詢</b>。本範本示範如何把這種<b>主題發散、可能合作機會仍在統籌中</b>的會議，事後壓縮成 30 秒可以看懂的洞察分析。</p>
+  <div class="attendees">
+    <b>出席化名</b>：甲（召集者／內容創作者・工作室主人）、乙（方法論輸出者／獨立顧問・教練）、丙（務實校準者／行銷或市場專業）、丁（商業破門者／社群與人脈型角色）<br>
+    中段戊（甲的合作夥伴，短段加入未正式入場）&nbsp;｜&nbsp;會議時長約 3 小時
+  </div>
+</header>
+
+<div class="tpl-notice">
+  <h3>📋 範本使用說明</h3>
+  <p>這份是公開範本，給<b>一人公司／獨立工作者之間</b>的合作前會議使用——特別適用：</p>
+  <ul>
+    <li>3-5 位獨立工作者第一次正式湊頭、主題很發散、合作機會仍在統籌中</li>
+    <li>會議完大家各自帶著「好像有合作可能但不確定下一步是什麼」的模糊感離場</li>
+    <li>需要在下次見面前把這場會議壓縮成可一眼看懂的素材</li>
+  </ul>
+  <p style="margin-top:12px"><b>替換清單</b>：</p>
+  <ul>
+    <li><b>化名甲乙丙丁戊</b> → 換成你的實際與會者代號或姓氏</li>
+    <li><b>主題 1～6</b> → 換成你會議裡浮出的具體合作議題</li>
+    <li><b>所有金句範例</b>（如「我都賺不到錢，因為我都想另外一邊」）→ 替換成你逐字稿裡真實出現的句子</li>
+    <li><b>金額占位</b>（五位數合約／六位數學費）→ 替換成你實際聽到的金額或保留泛用區間</li>
+    <li><b>時間戳</b>（01:00:40 等）→ 換成你逐字稿的真實時間</li>
+  </ul>
+  <p style="margin-top:12px"><b>適用範圍硬門檻</b>：本範本基於「共識分析適用範圍」設計——<b>只適用平起平坐、自發參與的合作場景</b>（一人公司、自由工作者、獨立單位之間）。<b>不適用</b>老闆對員工、有強制出席義務的組織內部會議。</p>
+  <p style="margin-top:12px"><b>語氣鐵則</b>：所有觀察基於可觀察的行為、話語、發言量、立場主張，<b>不斷言任何人的內心狀態</b>。不替他人發言、不用「質疑者／被動者」等冒犯性標籤。</p>
+</div>
+
+<div class="limit-notice">
+  <strong>分析限制</strong>　單次會議只能做靜態定位，看不到動向（誰從觀望變推動、誰從質疑變整合需要至少兩次會議）。本份僅做靜態定位。所有觀察基於可觀察的行為、話語、發言量、立場主張，不斷言任何人的內心狀態。
+</div>
+
+<h3 style="margin-top:0">與會者化名與角色一覽</h3>
+<div class="roles">
+  <div class="role-card">
+    <div class="rc-name">甲</div>
+    <div class="rc-role">召集者／拋題者</div>
+    <div class="rc-desc">內容創作者／工作室主人。把大家湊在一起，但對具體商業執行有距離感。</div>
+  </div>
+  <div class="role-card">
+    <div class="rc-name">乙</div>
+    <div class="rc-role">方法論輸出者</div>
+    <div class="rc-desc">獨立顧問／教練。擅長把別人的具體案例拉到框架層，會主動做產品化抽象。</div>
+  </div>
+  <div class="role-card">
+    <div class="rc-name">丙</div>
+    <div class="rc-role">務實校準者</div>
+    <div class="rc-desc">行銷／市場專業。把每個提案丟進「TA × 規模 × 資源」三尺檢驗。</div>
+  </div>
+  <div class="role-card">
+    <div class="rc-name">丁</div>
+    <div class="rc-role">商業破門者</div>
+    <div class="rc-desc">社群／人脈型。長段論述自帶結構，現場做了一場諮詢式對話。</div>
+  </div>
+  <div class="role-card">
+    <div class="rc-name">戊</div>
+    <div class="rc-role">未正式入場</div>
+    <div class="rc-desc">甲的合作夥伴。中段短暫加入，補充外部產業邊界與案例。</div>
+  </div>
+</div>
+
+<nav class="toc">
+  <h3>目錄</h3>
+  <ol>
+    <li><a href="#s0">一頁看懂 · 會議結構視覺化（A 網路圖 + B 優先矩陣）</a></li>
+    <li><a href="#s1">第一層 · 這場會議到底發生了什麼</a></li>
+    <li><a href="#s2a">模組 A · 四人角色定位對照</a></li>
+    <li><a href="#s2b">模組 B · 浮出的隱性訊號</a></li>
+    <li><a href="#s2c">模組 C · 主軸的可執行性評分</a></li>
+    <li><a href="#s2d">模組 D · 召集者本人代辦提取</a></li>
+    <li><a href="#s3">下一步建議 · 元層次限制 · 範本說明</a></li>
+  </ol>
+</nav>
+
+<style>
+.ov-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 16px; }
+.ov-panel { background: white; border: 1px solid var(--line); padding: 20px 24px 24px; }
+.ov-panel h3 { font-family: var(--serif); font-size: 17px; font-weight: 600; margin: 0 0 2px; color: var(--ink); }
+.ov-panel .pl { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-muted); margin-bottom: 10px; }
+.ov-panel svg { width: 100%; height: auto; display: block; }
+.ov-legend { margin-top: 16px; padding-top: 14px; border-top: 1px dashed var(--line); font-size: 11px; color: var(--ink-soft); line-height: 1.6; }
+.ov-legend .row { display: flex; flex-wrap: wrap; gap: 12px 18px; margin-top: 6px; }
+.ov-legend .item { display: flex; align-items: center; gap: 6px; }
+.ov-legend .sw { width: 12px; height: 12px; display: inline-block; border-radius: 2px; flex-shrink: 0; }
+.ov-legend .sw.dot { border-radius: 50%; }
+.ov-bottom { background: var(--paper-soft); padding: 18px 22px; border-left: 3px solid var(--accent); margin-bottom: 60px; font-size: 13px; color: var(--ink-soft); line-height: 1.7; }
+.ov-bottom ul { padding-left: 20px; margin: 8px 0; }
+.ov-bottom li { margin: 4px 0; }
+.ov-bottom b { color: var(--ink); }
+@media (max-width: 720px) { .ov-pair { grid-template-columns: 1fr; } }
+</style>
+
+<section id="s0">
+  <h2>一頁看懂 · 會議結構視覺化</h2>
+  <div class="layer">兩種視角・A 看人事如何牽動・B 看下一步動哪個</div>
+
+  <div class="ov-pair">
+
+    <!-- ========== 圖 A：議題-人關係網路圖 ========== -->
+    <div class="ov-panel">
+      <h3>A · 議題-人關係網路圖</h3>
+      <div class="pl">看「人和事如何牽動」</div>
+      <svg viewBox="0 0 560 460" xmlns="http://www.w3.org/2000/svg">
+        <g>
+          <circle cx="60" cy="60" r="36" fill="#c5612e" opacity="0.18" stroke="#c5612e" stroke-width="2.5"/>
+          <text x="60" y="58" text-anchor="middle" font-family="serif" font-size="18" font-weight="700" fill="#c5612e">甲</text>
+          <text x="60" y="74" text-anchor="middle" font-size="9" fill="#737373">召集者</text>
+        </g>
+        <g>
+          <circle cx="500" cy="60" r="36" fill="#1e3a5f" opacity="0.18" stroke="#1e3a5f" stroke-width="2.5"/>
+          <text x="500" y="58" text-anchor="middle" font-family="serif" font-size="18" font-weight="700" fill="#1e3a5f">乙</text>
+          <text x="500" y="74" text-anchor="middle" font-size="9" fill="#737373">抽象化</text>
+        </g>
+        <g>
+          <circle cx="60" cy="400" r="36" fill="#6b4d8c" opacity="0.18" stroke="#6b4d8c" stroke-width="2.5"/>
+          <text x="60" y="398" text-anchor="middle" font-family="serif" font-size="18" font-weight="700" fill="#6b4d8c">丙</text>
+          <text x="60" y="414" text-anchor="middle" font-size="9" fill="#737373">校準者</text>
+        </g>
+        <g>
+          <circle cx="500" cy="400" r="36" fill="#4a7c5e" opacity="0.18" stroke="#4a7c5e" stroke-width="2.5"/>
+          <text x="500" y="398" text-anchor="middle" font-family="serif" font-size="18" font-weight="700" fill="#4a7c5e">丁</text>
+          <text x="500" y="414" text-anchor="middle" font-size="9" fill="#737373">破門者</text>
+        </g>
+
+        <!-- 連線（先畫，後畫節點蓋住起點） -->
+        <!-- 主題 5（個人品牌） -->
+        <path d="M 90 80 Q 180 180, 230 230" stroke="#c5612e" stroke-width="5" fill="none" stroke-linecap="round"/>
+        <path d="M 90 380 Q 180 280, 230 240" stroke="#6b4d8c" stroke-width="5" fill="none" stroke-linecap="round"/>
+        <path d="M 470 80 Q 380 180, 330 230" stroke="#1e3a5f" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <path d="M 470 380 Q 380 290, 330 245" stroke="#4a7c5e" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <!-- 主題 4（B2B 媒合） -->
+        <path d="M 470 85 Q 400 130, 330 160" stroke="#1e3a5f" stroke-width="5" fill="none" stroke-linecap="round"/>
+        <path d="M 470 375 Q 400 240, 330 170" stroke="#4a7c5e" stroke-width="5" fill="none" stroke-linecap="round"/>
+        <path d="M 90 385 Q 160 270, 230 175" stroke="#6b4d8c" stroke-width="2.5" stroke-dasharray="2,4" fill="none" stroke-linecap="round"/>
+        <!-- 主題 3（內容服務商品化） -->
+        <path d="M 90 75 Q 160 200, 230 280" stroke="#c5612e" stroke-width="5" fill="none" stroke-linecap="round"/>
+        <path d="M 470 85 Q 400 200, 330 285" stroke="#1e3a5f" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <!-- 主題 6（代操服務） -->
+        <path d="M 475 90 Q 410 230, 330 355" stroke="#1e3a5f" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <path d="M 90 375 Q 160 380, 230 360" stroke="#b03a3a" stroke-width="4" stroke-dasharray="10,4" fill="none" stroke-linecap="round"/>
+
+        <!-- 議題節點 -->
+        <g>
+          <rect x="226" y="216" width="108" height="40" rx="6" fill="#2d8659" opacity="0.25" stroke="#2d8659" stroke-width="2.5"/>
+          <text x="280" y="234" text-anchor="middle" font-size="11" font-weight="700" fill="#1a1a1a">主題 5</text>
+          <text x="280" y="248" text-anchor="middle" font-size="9" fill="#404040">7 分・上游內容</text>
+        </g>
+        <g>
+          <rect x="226" y="146" width="108" height="40" rx="6" fill="#b88424" opacity="0.2" stroke="#b88424" stroke-width="2"/>
+          <text x="280" y="164" text-anchor="middle" font-size="11" font-weight="700" fill="#1a1a1a">主題 4</text>
+          <text x="280" y="178" text-anchor="middle" font-size="9" fill="#404040">6 分・社群 TA</text>
+        </g>
+        <g>
+          <rect x="226" y="276" width="108" height="40" rx="6" fill="#b88424" opacity="0.2" stroke="#b88424" stroke-width="2"/>
+          <text x="280" y="294" text-anchor="middle" font-size="11" font-weight="700" fill="#1a1a1a">主題 3</text>
+          <text x="280" y="308" text-anchor="middle" font-size="9" fill="#404040">5 分・銀髮 TA</text>
+        </g>
+        <g>
+          <rect x="226" y="346" width="108" height="40" rx="6" fill="#b03a3a" opacity="0.18" stroke="#b03a3a" stroke-width="2"/>
+          <text x="280" y="364" text-anchor="middle" font-size="11" font-weight="700" fill="#1a1a1a">主題 6</text>
+          <text x="280" y="378" text-anchor="middle" font-size="9" fill="#404040">2 分・丙皺眉</text>
+        </g>
+        <g>
+          <text x="280" y="430" text-anchor="middle" font-size="9" fill="#737373" font-style="italic">＋主題 1（銀髮陪伴）、主題 2（個人策展）未評分</text>
+        </g>
+      </svg>
+
+      <div class="ov-legend">
+        <div style="font-weight:700;color:#1a1a1a;font-size:11px;margin-bottom:6px">線條型態 = 4 種關係</div>
+        <div class="row">
+          <div class="item"><svg width="42" height="14"><line x1="2" y1="7" x2="40" y2="7" stroke="#1a1a1a" stroke-width="5" stroke-linecap="round"/></svg><span><b>主推</b>（粗實線）</span></div>
+          <div class="item"><svg width="42" height="14"><line x1="2" y1="7" x2="40" y2="7" stroke="#1a1a1a" stroke-width="2.5" stroke-linecap="round"/></svg><span><b>協作</b>（細實線）</span></div>
+          <div class="item"><svg width="42" height="14"><line x1="2" y1="7" x2="40" y2="7" stroke="#1a1a1a" stroke-width="2.5" stroke-dasharray="2,4" stroke-linecap="round"/></svg><span><b>校準</b>（點線）</span></div>
+          <div class="item"><svg width="42" height="14"><line x1="2" y1="7" x2="40" y2="7" stroke="#b03a3a" stroke-width="4" stroke-dasharray="10,4" stroke-linecap="round"/></svg><span><b>異議/瓶頸</b>（紅寬虛線）</span></div>
+        </div>
+        <div style="font-weight:700;color:#1a1a1a;font-size:11px;margin-top:14px;margin-bottom:6px">線條顏色 = 起點是誰</div>
+        <div class="row">
+          <div class="item"><span class="sw dot" style="background:#c5612e"></span>甲</div>
+          <div class="item"><span class="sw dot" style="background:#1e3a5f"></span>乙</div>
+          <div class="item"><span class="sw dot" style="background:#6b4d8c"></span>丙</div>
+          <div class="item"><span class="sw dot" style="background:#4a7c5e"></span>丁</div>
+          <div class="item"><span class="sw dot" style="background:#b03a3a"></span>異議專用紅</div>
+        </div>
+        <div style="font-weight:700;color:#1a1a1a;font-size:11px;margin-top:14px;margin-bottom:6px">議題框顏色 = 優先級</div>
+        <div class="row">
+          <div class="item"><span class="sw" style="background:#2d8659;opacity:0.4"></span>優先（綠）</div>
+          <div class="item"><span class="sw" style="background:#b88424;opacity:0.35"></span>中（黃）</div>
+          <div class="item"><span class="sw" style="background:#b03a3a;opacity:0.3"></span>暫緩（紅）</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========== 圖 B：議題優先矩陣 ========== -->
+    <div class="ov-panel">
+      <h3>B · 議題優先矩陣</h3>
+      <div class="pl">看「下一步該動哪個」</div>
+      <svg viewBox="0 0 520 460" xmlns="http://www.w3.org/2000/svg">
+        <rect x="280" y="60" width="200" height="180" fill="#2d8659" opacity="0.05"/>
+        <text x="380" y="80" text-anchor="middle" font-size="10" fill="#2d8659" font-weight="600">立即動</text>
+        <rect x="60" y="60" width="220" height="180" fill="#b88424" opacity="0.04"/>
+        <text x="170" y="80" text-anchor="middle" font-size="10" fill="#b88424" font-weight="600">需準備</text>
+        <rect x="60" y="240" width="220" height="160" fill="#b03a3a" opacity="0.03"/>
+        <text x="170" y="260" text-anchor="middle" font-size="10" fill="#b03a3a" font-weight="600">暫不推</text>
+        <rect x="280" y="240" width="200" height="160" fill="#737373" opacity="0.04"/>
+        <text x="380" y="260" text-anchor="middle" font-size="10" fill="#737373" font-weight="600">機會主義</text>
+
+        <line x1="60" y1="400" x2="480" y2="400" stroke="#1a1a1a" stroke-width="1.5"/>
+        <line x1="60" y1="60" x2="60" y2="400" stroke="#1a1a1a" stroke-width="1.5"/>
+
+        <text x="270" y="430" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1a1a">立即可動性 →</text>
+        <text x="20" y="230" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1a1a" transform="rotate(-90, 20, 230)">注意力分數 →</text>
+
+        <text x="50" y="65" text-anchor="end" font-size="9" fill="#737373">10</text>
+        <text x="50" y="160" text-anchor="end" font-size="9" fill="#737373">7</text>
+        <text x="50" y="240" text-anchor="end" font-size="9" fill="#737373">5</text>
+        <text x="50" y="335" text-anchor="end" font-size="9" fill="#737373">3</text>
+        <text x="50" y="400" text-anchor="end" font-size="9" fill="#737373">0</text>
+        <text x="60" y="415" text-anchor="middle" font-size="9" fill="#737373">低</text>
+        <text x="280" y="415" text-anchor="middle" font-size="9" fill="#737373">中</text>
+        <text x="480" y="415" text-anchor="middle" font-size="9" fill="#737373">高</text>
+
+        <line x1="280" y1="60" x2="280" y2="400" stroke="#d9d7cc" stroke-width="1" stroke-dasharray="3,3"/>
+        <line x1="60" y1="240" x2="480" y2="240" stroke="#d9d7cc" stroke-width="1" stroke-dasharray="3,3"/>
+
+        <g>
+          <circle cx="400" cy="155" r="22" fill="#b88424" opacity="0.85" stroke="white" stroke-width="2"/>
+          <text x="400" y="160" text-anchor="middle" font-size="11" font-weight="600" fill="white">7</text>
+          <text x="400" y="195" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1a1a">主題 5</text>
+          <text x="400" y="208" text-anchor="middle" font-size="9" fill="#737373">丙推・乙+丁 助</text>
+        </g>
+        <g>
+          <circle cx="250" cy="200" r="20" fill="#b88424" opacity="0.85" stroke="white" stroke-width="2"/>
+          <text x="250" y="205" text-anchor="middle" font-size="11" font-weight="600" fill="white">6</text>
+          <text x="250" y="238" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1a1a">主題 4</text>
+          <text x="250" y="251" text-anchor="middle" font-size="9" fill="#737373">乙+丁 主推</text>
+        </g>
+        <g>
+          <circle cx="230" cy="245" r="22" fill="#2d8659" opacity="0.85" stroke="white" stroke-width="2"/>
+          <text x="230" y="250" text-anchor="middle" font-size="11" font-weight="600" fill="white">5</text>
+          <text x="230" y="285" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1a1a">主題 3</text>
+          <text x="230" y="298" text-anchor="middle" font-size="9" fill="#737373">甲主場・乙顧問</text>
+        </g>
+        <g>
+          <circle cx="200" cy="290" r="16" fill="#b88424" opacity="0.6" stroke="white" stroke-width="2"/>
+          <text x="200" y="294" text-anchor="middle" font-size="10" font-weight="600" fill="white">4</text>
+          <text x="200" y="320" text-anchor="middle" font-size="10" fill="#1a1a1a">主題 1</text>
+          <text x="200" y="332" text-anchor="middle" font-size="9" fill="#737373">乙舊經驗</text>
+        </g>
+        <g>
+          <circle cx="210" cy="335" r="15" fill="#737373" opacity="0.6" stroke="white" stroke-width="2"/>
+          <text x="210" y="339" text-anchor="middle" font-size="10" font-weight="600" fill="white">3</text>
+          <text x="210" y="363" text-anchor="middle" font-size="10" fill="#1a1a1a">主題 2</text>
+          <text x="210" y="375" text-anchor="middle" font-size="9" fill="#737373">丙初提・未評</text>
+        </g>
+        <g>
+          <circle cx="100" cy="370" r="14" fill="#b03a3a" opacity="0.85" stroke="white" stroke-width="2"/>
+          <text x="100" y="374" text-anchor="middle" font-size="10" font-weight="600" fill="white">2</text>
+          <text x="100" y="395" text-anchor="middle" font-size="10" fill="#1a1a1a">主題 6</text>
+          <text x="100" y="407" text-anchor="middle" font-size="9" fill="#737373">丙皺眉/乙撤回</text>
+        </g>
+      </svg>
+
+      <div class="ov-legend">
+        <div class="row">
+          <div class="item"><span class="sw dot" style="background:#2d8659"></span>TA 清楚（高）</div>
+          <div class="item"><span class="sw dot" style="background:#b88424"></span>TA 中</div>
+          <div class="item"><span class="sw dot" style="background:#737373"></span>TA 未評估</div>
+          <div class="item"><span class="sw dot" style="background:#b03a3a"></span>TA 不明</div>
+        </div>
+        <div class="row" style="margin-top:8px">
+          <div class="item"><b>點上數字</b>＝召集者注意力分數（模組 C）</div>
+          <div class="item"><b>點大小</b>＝重要性／優先級</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="ov-bottom">
+    <ul>
+      <li><b>A 網路圖</b>：適合<b>對齊與會者</b>時用——湊在一起邊指邊講「我在哪、你在哪、誰跟誰一起做什麼」</li>
+      <li><b>B 優先矩陣</b>：適合<b>自己決定下一步</b>時用——一眼看出右上角空白＝沒有現成高可動議題</li>
+      <li><b>關鍵觀察</b>（範例）：B 圖右上角是空的，代表這場會議沒談出馬上能動的東西；A 圖看主題 5 連線最多，是當下最該推進的</li>
+    </ul>
+  </div>
+</section>
+
+<!-- 第一層 -->
+<section id="s1">
+  <h2>一、這場會議到底發生了什麼</h2>
+  <div class="layer">第一層 · Know What</div>
+
+  <h3>最關鍵的三個事實</h3>
+  <div class="key-facts">
+    <div class="fact">
+      <div class="num">01</div>
+      <p><strong>甲把四個人召集起來，但會議主導權在中段被丁拿走</strong>——他用社群組織理事的策略框架（KPI 包裝、三階段報價、目標市場分層、降價換資源）把甲原本想討論的「合作機會」具體化成「商業執行邏輯」。</p>
+    </div>
+    <div class="fact">
+      <div class="num">02</div>
+      <p><strong>丙是現場唯一全程在做「市場驗收」的角色</strong>——她不斷把對方的構想拉回「TA 是誰、規模多大、資源到不到」的尺。她最大貢獻是<b>警示與務實校準</b>，不是提案。</p>
+    </div>
+    <div class="fact">
+      <div class="num">03</div>
+      <p><strong>乙角色在三條線之間切換</strong>：(a) 分享自己的方法論案例；(b) 把別人的想法做產品化抽象；(c) 不斷把話題拉回自己的主場領域（B2B 媒合平台／個人品牌系統）。</p>
+    </div>
+  </div>
+
+  <h3>會議浮出的合作候選清單</h3>
+  <div class="tbl-wrap">
+  <table>
+    <thead>
+      <tr><th>#</th><th>提案</th><th>主推者</th><th>浮出階段</th><th>丙現場反應</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>主題 3</td><td>內容服務商品化（如家族／生命故事網站）</td><td>甲 + 乙</td><td>中段大篇幅</td><td>認可方向，質疑規模化</td></tr>
+      <tr><td>主題 2</td><td>個人策展企劃（如人生階段紀念展）</td><td>丙 → 丁擴大</td><td>中段</td><td>自己提案，後來自己縮編</td></tr>
+      <tr><td>主題 1</td><td>銀髮陪伴 + 社區內容 + 影音紀錄</td><td>乙（過去經驗）</td><td>中段後</td><td>認可「以特定生活場景為切口」</td></tr>
+      <tr><td>主題 4</td><td>B2B 媒合平台 + AI 媒合 + 社群場域認證</td><td>乙 + 丁</td><td>後段</td><td>認可流程，質疑客戶 TA</td></tr>
+      <tr><td>主題 5</td><td>個人品牌內容化（甲從業者→公開敘事）</td><td>丙推 → 丁經紀人</td><td>後段</td><td>丙主動發起</td></tr>
+      <tr><td>主題 6</td><td>社群代操服務（受眾未定）</td><td>乙（會議尾聲）</td><td>結尾</td><td><b>皺眉</b>——乙當場撤回</td></tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+
+<!-- 模組 A -->
+<section id="s2a">
+  <h2>二、模組 A｜四人角色定位對照</h2>
+  <div class="layer">第二層 · Know Why · 基於可觀察的行為</div>
+
+  <div class="tbl-wrap">
+  <table>
+    <thead>
+      <tr><th>人</th><th>觀察到的行為模式</th><th>觀察到的話語特徵</th><th>本場功能位</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>甲</td>
+        <td>召集者 / 拋題者；遇到具體商業問題會說「對我來說有點難」「我聽不太懂」；多次表達想學「定價、報價、賺錢思維」</td>
+        <td>大量用「就是說」「比如說」鋪陳脈絡；長段敘事擅長；金句範例：「我都賺不到錢，因為我都想另外一邊」</td>
+        <td><strong>本場：拋題者 + 注意力分裂者</strong>（不是學徒位——更接近主動放棄執行優先）</td>
+      </tr>
+      <tr>
+        <td>乙</td>
+        <td>高比例發言；遇到他人案例會主動做產品化抽象；分享個人故事密度高（家庭故事 / 過去專案 / 自我察覺）</td>
+        <td>反覆出現「我覺得這件事情其實是」「我認真在思考」「我超認真在觀察你的表情」；高自我揭露</td>
+        <td><strong>方法論輸出者 + 抽象拉升者</strong>——把別人的具體案例拉到框架層</td>
+      </tr>
+      <tr>
+        <td>丙</td>
+        <td>全程把每個提案丟進「TA 規模 × 資源 × 可執行性」三尺；多次說「我們不如先做一個簡單的模型」「太分散會把自己困在窮裡面」；皺眉一次被乙直接看到</td>
+        <td>大量「但是」「我認為」「我覺得這樣會」反問句；用「我想分享一下我自己的經歷」做佐證（前一份產業經驗、過去合作案例、第一份工作）</td>
+        <td><strong>務實校準者</strong>——這場會議的剎車和指北針</td>
+      </tr>
+      <tr>
+        <td>丁</td>
+        <td>全場最高發言密度；用「我先講一個案例」帶入，案例都帶有商業模式骨架；對甲做了一場現場諮詢式對話</td>
+        <td>高頻使用「對對對」「沒錯」做附和節奏；長段論述都自帶結構（先狀態→邏輯→案例→收斂）</td>
+        <td><strong>商業破門 + 角色卡位 + 互惠設計</strong>（三者並存，非單方向給予；他同時在替自己設計可留存的位置）</td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="codex-note">
+    <strong>⚠ 提醒</strong>：以上是「本場互動中的功能組合」，<b>不是穩定跨場合身份</b>。把任何人定位成固定角色（教練位、學徒位、校準者）是越界——下次會議可能完全不同。
+  </div>
+</section>
+
+<!-- 模組 B -->
+<section id="s2b">
+  <h2>三、模組 B｜浮出的隱性訊號</h2>
+  <div class="layer">第二層 · 不是斷言 · 是「值得留意」的點</div>
+
+  <div class="signal warn">
+    <div class="signal-num">訊號 01</div>
+    <div class="signal-title">乙 01:00:40 主動問了丙「你想做什麼」——但問完沒守住</div>
+    <p><b>可觀察的行為鏈</b>：乙問 → 丙用「哈哈哈想做的事很多」打圓場 → 滑向「我在面試、市場慢、公司理解淺」這條觀察線（談的是市場，不是自己）→ 丁用諧音梗接成另一個議題 → 甲說「好那我們再回去上一個」拉回主題。</p>
+    <p><b>乙問完之後沒有第二問</b>——沒接「妳剛說很多，最想做的那個是哪個」「妳會想跟我們做什麼」這類定錨追問。</p>
+    <blockquote>「我是想問的，但後來怎麼沒有問我又忘了，很可惜。」<br><b>—— 召集者本人事後自評（範例引言）</b></blockquote>
+    <p><b>對召集者本人的提醒</b>：你會問——代表你的雷達有偵測到丙還沒被定位。但<b>問完沒守</b>等於沒問。下次會議要練「<b>第二問定錨</b>」——在第一次被岔開後立刻拉回：「等等回到丙——妳剛說很多，挑一個跟我們講。」</p>
+  </div>
+
+  <div class="signal">
+    <div class="signal-num">訊號 02</div>
+    <div class="signal-title">乙拋主題 6（代操服務）時丙皺眉 → 乙當場撤回</div>
+    <p>這是整場會議裡<b>唯一一次有人即時讀到非語言訊號並當場退場</b>。</p>
+    <blockquote>「我超認真在觀察你的表情。你皺眉頭這個案子我就別再提了，我認真的。」<br><b>—— 乙</b></blockquote>
+    <p><b>延伸觀察</b>：乙對丁沒有做同等程度的非語言觀察；他對丁的回應多在「接話 + 把對方的想法做抽象升級」，對丙的回應比較像「測試 + 觀察反應」。</p>
+  </div>
+
+  <div class="signal">
+    <div class="signal-num">訊號 03</div>
+    <div class="signal-title">丁對甲說「我們沒辦法替你工作，是因為我們想要你去做」</div>
+    <p>丁直白指出甲的卡點：「你有能力但沒有執行力。所以你必須學會讓別人幫你工作。」</p>
+    <p>這句話在會議裡出現後，乙立刻接話對甲說：「你不能就是出個點然後不想承擔任何事情。」</p>
+    <p><b>可觀察的後續行動</b>：甲當場答應「丁當經紀人，安排的事情我不能拒絕」——這是會議中最具體的承諾，但<b>沒有寫下任何金額、時程、權責</b>。下一次會議要追蹤這個承諾是否落地。</p>
+  </div>
+
+  <div class="signal warn">
+    <div class="signal-num">訊號 04</div>
+    <div class="signal-title">「主題 4」本場出現短暫收斂，不等於持續意願</div>
+    <ul>
+      <li>02:59:01 甲說「這個方向蠻好的」、02:56:41 丙說「做一個快速 demo」——這是現場情緒的<b>短暫聚焦</b>。</li>
+      <li>但同一段仍有未決條件：03:00:22 丁追問「怎麼量化」、03:00:37 提「場域的限制、時間的限制」、03:04:11 丙說「收費多少真的要想一下」。</li>
+      <li>表面互補的分工（丁的社群人脈 / 乙的數位產品 / 甲的內容採訪 / 丙的行銷）只是「邏輯上的互補」，<b>會議中沒有討論</b>：誰負責找客戶、誰負責收錢、誰負責出開發成本、利潤怎麼分。</li>
+    </ul>
+    <p><b>風險點</b>：把「現場短暫聚焦」當成「四人持續意願」會誤判。下次會議不把錢、時程、責任攤開，會變成「大家都覺得很棒但沒人動」。</p>
+  </div>
+
+  <div class="signal action">
+    <div class="signal-num">訊號 05</div>
+    <div class="signal-title">第一輪洞察漏看的四條線索（補回示範）</div>
+    <ul>
+      <li><b>戊（甲的合作夥伴）不是旁枝</b>：場內持續有人把討論拉向<b>外部產業邊界與案例</b>——對「主題 4 是否真有市場」這條判斷線，這是一個沒納入的聲音。下次會議要不要邀戊正式入場？</li>
+      <li><b>丁的「日常情境段」不是閒聊</b>：表面上是生活日常，實質上是在示範「<b>收入目標要包含關係品質成本</b>」——這是他在合作框架裡設定「什麼叫做值得做」的底層邏輯，與他後來對報價、底氣、降價的態度一致。</li>
+      <li><b>甲「我都賺不到錢，因為我都想另外一邊」是自我定位切換點</b>：不是學徒位的自承，更接近「我承認我的注意力長期分裂」。這個句子值得在下次會議追問——「『另外一邊』具體是什麼？」</li>
+      <li><b>乙某個個人故事的時機點需核實</b>：可能是在替「無形資產的變現」建立價值語言，而不只是自我揭露。<b>這條標記為待召集者本人確認</b>——只有你自己知道當下為什麼選那個時機講那個故事。</li>
+    </ul>
+  </div>
+</section>
+
+<!-- 模組 C -->
+<section id="s2c">
+  <h2>四、模組 C｜主軸的可執行性評分</h2>
+  <div class="layer">第二層 · 召集者本人應該優先放幾分注意力</div>
+
+  <div class="tbl-wrap">
+  <table>
+    <thead>
+      <tr>
+        <th>提案</th>
+        <th>立即可動</th>
+        <th>TA 清楚度</th>
+        <th>資源到位</th>
+        <th>主要風險</th>
+        <th>注意力建議</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>主題 5（個人品牌）</td>
+        <td><span class="dot green"></span>高</td>
+        <td><span class="dot yellow"></span>中</td>
+        <td><span class="dot green"></span>工具齊備</td>
+        <td>甲執行力是主要瓶頸</td>
+        <td><strong>7 分</strong>（↑6→7）<br>是其他三條的<b>上游內容來源</b></td>
+      </tr>
+      <tr>
+        <td>主題 4（B2B 媒合平台）</td>
+        <td><span class="dot yellow"></span>中</td>
+        <td><span class="dot yellow"></span>中</td>
+        <td><span class="dot red"></span>開發未盤</td>
+        <td>交付成本和收費模式都未定</td>
+        <td><strong>6 分</strong>（↓8→6）<br>方向認可、阻力準備不足</td>
+      </tr>
+      <tr>
+        <td>主題 3（內容服務商品化）</td>
+        <td><span class="dot yellow"></span>中</td>
+        <td><span class="dot green"></span>銀髮+中年</td>
+        <td><span class="dot yellow"></span>採訪人力</td>
+        <td>採訪員供給不確定</td>
+        <td><strong>5 分</strong><br>甲主場，乙當顧問</td>
+      </tr>
+      <tr>
+        <td>主題 6（代操服務）</td>
+        <td><span class="dot red"></span>丙皺眉</td>
+        <td><span class="dot red"></span>客戶輪廓未定</td>
+        <td><span class="dot red"></span>開發未啟動</td>
+        <td>丙反應是最強訊號</td>
+        <td><strong>2 分</strong><br>先單獨問丙皺眉的原因</td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="codex-note">
+    <strong>⚠ 跨家審稿修正範例</strong>：第一輪給「主題 4 → 8 分 / 主題 5 → 6 分」是高估主題 4、低估主題 5。修正邏輯：主題 5 是其他三條線的<b>上游基礎建設</b>（B2B 媒合平台的素材、內容服務的信任、丁的社群推廣都需要），主題 4 是「方向被認可但交付未定」的中段提案。
+  </div>
+</section>
+
+<!-- 模組 D -->
+<section id="s2d">
+  <h2>五、模組 D｜召集者本人代辦提取</h2>
+  <div class="layer">第二層 · 個人視角・不替別人寫代辦</div>
+
+  <div class="todo-block">
+    <h4>直接承諾過的事</h4>
+    <ul>
+      <li>答應展示「AI 自動撮合四人合作」的 demo</li>
+      <li>答應提供業界意見領袖訪談的關鍵段落（關於選題＋提煉＋信任感）</li>
+      <li>答應推甲做個人品牌內容（丁當經紀人，乙提供 AI 工作流）</li>
+    </ul>
+  </div>
+
+  <div class="todo-block">
+    <h4>隱含可動的事</h4>
+    <ul>
+      <li><strong>主題 4（B2B 媒合平台）的 demo</strong>——這個東西如果先做出來，會議後續的所有討論才有錨點</li>
+      <li><strong>主題 4 的社群認證機制</strong>——需要丁配合，這是談判籌碼</li>
+      <li><strong>把這場會議的洞察整理給丙看一份</strong>——讓她知道「我有看見妳的角色未定」，可能是把她從免費校準者轉成正式合夥人的關鍵動作</li>
+      <li><strong>下次見丙時，補上「第二問」</strong>——「妳上次說想做的事情很多，挑一個跟我聊」</li>
+    </ul>
+  </div>
+
+  <div class="todo-block">
+    <h4>沒有承諾但會議中浮出的判斷力訊號</h4>
+    <ul>
+      <li>召集者本人在這場會議中<b>沒有提到任何自己的價錢</b>。丁提到五位數合約、五位數產品案例、六位數學費；丙提到八位數市場、六位數婚禮案例；乙提到六位數政府案、六位數微電影案例——但<b>都是「別人的價錢」</b>，沒有任何「我提供 X，要收 Y」的具體報價。</li>
+      <li>對比丁三階段報價的論述——<b>召集者本人在自己的服務定價上是還沒走完這條路的人</b>。</li>
+    </ul>
+  </div>
+</section>
+
+<!-- 後續 -->
+<section id="s3">
+  <h2>六、下一步建議 · 元層次限制</h2>
+  <div class="layer">第二層 · 行動清單與分析自身的限制</div>
+
+  <h3>下一步建議</h3>
+  <ol style="padding-left: 22px; color: var(--ink-soft);">
+    <li style="margin: 10px 0;"><b>下次見丙前</b>：補上「第二問」，問她想做什麼、想從這個合作得到什麼</li>
+    <li style="margin: 10px 0;"><b>主題 4 demo</b>：把這個做出來（最高優先），會議後續所有討論需要這個錨點</li>
+    <li style="margin: 10px 0;"><b>整理一份這個洞察的對外摘要給丙看</b>：讓她知道她的角色被看見、被尊重</li>
+    <li style="margin: 10px 0;"><b>下次會議要攤開的事</b>：主題 4 的錢、時程、權責、利潤分配</li>
+    <li style="margin: 10px 0;"><b>單獨問丙</b>：主題 6 她皺眉的實際原因（對象問題？收費？操盤模式？）</li>
+  </ol>
+
+  <h3>元層次：這份洞察的限制</h3>
+  <ol style="padding-left: 22px; color: var(--ink-soft);">
+    <li style="margin: 10px 0;"><b>單次會議的靜態定位</b>——所有判斷只是「會議當下的觀察」，不是「丙就是務實校準者」「丁就是教練位」這種人格定性。</li>
+    <li style="margin: 10px 0;"><b>AI 看不到的訊號</b>：表情、眼神、肢體、會議當下空氣的緊張或放鬆——這些非語言訊號需要召集者本人補充才完整。</li>
+    <li style="margin: 10px 0;"><b>語氣鐵則的限制</b>：本份分析嚴格遵守「不斷言他人內心狀態」，所有觀察都基於發言、行為、可觀察的反應。如果你想要更主觀的判讀，需要另外補上你的觀察，AI 不應該替你下這種判斷。</li>
+    <li style="margin: 10px 0;"><b>「丙皺眉」這類細節</b>：是逐字稿裡可觀察的事實，但會議當下其他人有沒有意識到、彼此有沒有交換眼神，AI 不知道。</li>
+  </ol>
+
+  <h3>本範本的標準結構</h3>
+  <ol style="padding-left: 22px; color: var(--ink-soft); font-size: 14px;">
+    <li style="margin: 6px 0;"><b>Hero</b>：會議名稱 + 日期 + 與會者化名與角色</li>
+    <li style="margin: 6px 0;"><b>視覺化總覽（s0 一頁看懂）</b>：A 議題-人關係網路圖（4 種線條編碼）+ B 議題優先矩陣（可動性 × 注意力分數）</li>
+    <li style="margin: 6px 0;"><b>第一層（s1）</b>：3 個關鍵事實 + 合作候選清單表</li>
+    <li style="margin: 6px 0;"><b>模組 A（s2a）</b>：每位與會者一列，含行為模式、話語特徵、本場功能位</li>
+    <li style="margin: 6px 0;"><b>模組 B（s2b）</b>：5-6 條隱性訊號，每條：觀察行為 + 可能意義 + 引述（必須是逐字稿原話）</li>
+    <li style="margin: 6px 0;"><b>模組 C（s2c）</b>：主軸打分（立即可動／TA 清楚／資源到位／風險／注意力建議），紅綠燈視覺化</li>
+    <li style="margin: 6px 0;"><b>模組 D（s2d）</b>：召集者本人代辦（不寫別人的代辦）</li>
+    <li style="margin: 6px 0;"><b>下一步與元層次限制（s3）</b></li>
+  </ol>
+
+  <h3>不要放進去的東西</h3>
+  <ul style="padding-left: 22px; color: var(--ink-soft); font-size: 14px;">
+    <li style="margin: 6px 0;">❌ 逐字稿原文大段引用（壓縮失敗）</li>
+    <li style="margin: 6px 0;">❌ AI 修正痕跡 / 「之前寫錯後來改」的歷史說明</li>
+    <li style="margin: 6px 0;">❌ 過度解讀語音辨識錯誤的心理分析</li>
+    <li style="margin: 6px 0;">❌ 替其他與會者寫「他們應該做什麼」（共識分析硬門檻）</li>
+    <li style="margin: 6px 0;">❌ 用「質疑者 / 被動者」等冒犯性標籤詞</li>
+  </ul>
+</section>
+
+<footer>
+  <p>本範本適用於：3-5 位獨立工作者／一人公司湊頭討論合作機會、主題發散且合作方向仍在統籌中的會議</p>
+  <p>適用範圍硬門檻：平起平坐自發參與的合作場景（一人公司／自由工作者之間），<b>不適用</b>老闆對員工或有強制出席義務的組織內部會議</p>
+  <p>建議搭配工作流：原始錄音 → 逐字稿（如 MacWhisper）→ 三層次清理 → AI 起草洞察分析 → 本人交叉校稿 → 跨家審稿（避免同家族模型自我審查）→ 視覺化（A+B 圖）→ 分享給與會者</p>
+  <p style="margin-top: 16px; color: var(--ink-muted);"><em>本範本以化名甲乙丙丁戊呈現，所有金句／時間戳／金額皆為示範性質。實際使用時請替換為你的真實案例內容。</em></p>
+</footer>
+
+</div>
+</body>
+</html>

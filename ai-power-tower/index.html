@@ -1,0 +1,958 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="robots" content="index, follow">
+<title>AI 戰力大樓｜滿配 100 倍，你現在幾倍？</title>
+<link rel="canonical" href="https://ai-km-jiang.vercel.app/ai-power-tower/" />
+<meta name="description" content="AI 戰力大樓：16 層職場情境測驗，測出你用 AI 的大腦倍數與手腳倍數，並給你下一步的練法。江江教練 AI 知識管理。" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://ai-km-jiang.vercel.app/ai-power-tower/" />
+<meta property="og:title" content="AI 戰力大樓｜滿配 100 倍，你現在幾倍？" />
+<meta property="og:description" content="16 層職場情境測驗，測出你用 AI 的大腦倍數與手腳倍數，並給你下一步的練法。" />
+<meta property="og:image" content="https://ai-km-jiang.vercel.app/ai-power-tower/assets/scene-1-morning.jpg" />
+<meta name="twitter:card" content="summary_large_image" />
+<style>
+:root{
+  --night:#12141f; --panel:#1a1c2c; --panel2:#24283d; --line:#333c57;
+  --brain:#41a6f6; --hand:#ffcd75; --good:#38b764; --warn:#ef7d57;
+  --ink:#f4f4f4; --muted:#94a1b2; --gold:#ffcd75;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;background:var(--night);overscroll-behavior:none}
+body{
+  font-family:'PingFang TC','Noto Sans TC','Microsoft JhengHei',sans-serif;
+  color:var(--ink); line-height:1.65; overflow:hidden;
+  image-rendering:pixelated;
+}
+#app{position:relative;height:100dvh;max-width:520px;margin:0 auto;overflow:hidden;background:#000}
+
+/* ===== 背景圖層 ===== */
+.bg{position:absolute;inset:0;background-size:cover;background-position:center 30%;image-rendering:pixelated;opacity:0;transition:opacity .8s;filter:brightness(var(--bgbr,1)) contrast(var(--bgct,.5))}
+.bg.show{opacity:var(--bgop,.75)}
+.bg::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,20,31,0) 0%,rgba(18,20,31,.08) 45%,rgba(18,20,31,.55) 78%,rgba(18,20,31,.72) 100%)}
+@keyframes bgdrift{from{background-position:center 38%}to{background-position:center 22%}}
+.bg.drift{animation:bgdrift 24s ease-in-out infinite alternate}
+
+/* ===== 像素框 ===== */
+.pix{border-radius:0;box-shadow:0 0 0 3px var(--line),0 0 0 6px #0c0e16}
+.pix-gold{box-shadow:0 0 0 3px var(--gold),0 0 0 6px #0c0e16}
+.pix-blue{box-shadow:0 0 0 3px var(--brain),0 0 0 6px #0c0e16}
+
+/* ===== 畫面切換 ===== */
+.screen{position:absolute;inset:0;display:flex;flex-direction:column;opacity:0;pointer-events:none;transition:opacity .5s}
+.screen.on{opacity:1;pointer-events:auto}
+
+/* ===== 標題畫面 ===== */
+#s-title{justify-content:center;align-items:center;padding:24px 20px calc(180px + env(safe-area-inset-bottom));text-align:center}
+.t-card{display:flex;flex-direction:column;align-items:center;background:rgba(12,14,22,.78);padding:28px 28px 32px;max-width:400px}
+body.light .t-card{background:rgba(255,253,247,.88)}
+.t-badge{display:inline-block;font-size:14px;letter-spacing:.3em;color:var(--gold);padding:6px 14px;margin-bottom:14px}
+h1{font-size:42px;line-height:1.2;text-shadow:3px 3px 0 #0c0e16;margin-bottom:10px}
+.t-exp{font-size:18px;line-height:1.85;color:var(--ink);text-align:left;margin-bottom:14px}
+.t-exp b{color:var(--gold)}
+body.light .t-exp b{color:#b8771f}
+.t-meta{font-size:14px;color:var(--muted);text-shadow:1px 1px 0 #0c0e16;margin-bottom:26px}
+.btn{
+  display:inline-block;border:none;cursor:pointer;font-family:inherit;
+  font-size:20px;color:#0c0e16;background:var(--gold);padding:14px 34px;
+  border-radius:0;box-shadow:0 0 0 3px #0c0e16,0 6px 0 0 #a8771f,0 6px 0 3px #0c0e16;
+  transition:transform .08s;
+}
+.btn:active{transform:translateY(5px);box-shadow:0 0 0 3px #0c0e16,0 1px 0 0 #a8771f,0 1px 0 3px #0c0e16}
+.btn.blue{background:var(--brain);box-shadow:0 0 0 3px #0c0e16,0 6px 0 0 #1c5d96,0 6px 0 3px #0c0e16}
+.btn.blue:active{box-shadow:0 0 0 3px #0c0e16,0 1px 0 0 #1c5d96,0 1px 0 3px #0c0e16}
+.btn.ghost{background:var(--panel2);color:var(--muted);box-shadow:0 0 0 3px #0c0e16,0 6px 0 0 #11131d,0 6px 0 3px #0c0e16;font-size:17px}
+@keyframes breathe{0%,100%{transform:scale(1)}50%{transform:scale(1.04)}}
+.breathe{animation:breathe 1.6s ease-in-out infinite}
+
+/* ===== HUD ===== */
+#hud{position:relative;z-index:6;display:flex;align-items:center;gap:12px;margin:12px 14px 0;padding:12px 16px;background:rgba(12,14,22,.8);box-shadow:0 0 0 2px var(--line)}
+.hud-floor{font-size:28px;color:var(--gold);text-shadow:2px 2px 0 #0c0e16;min-width:70px}
+.hud-tier{font-size:18px;color:#0c0e16;background:var(--brain);padding:4px 12px;white-space:nowrap}
+.hud-tier.t2{background:var(--hand)}
+.hud-tier.t3{background:var(--warn)}
+#pips{display:flex;gap:3px;flex:1;justify-content:flex-end}
+.pip{width:13px;height:13px;background:#2a2f45}
+.pip.done{background:var(--good)}
+.pip.cur{background:var(--gold)}
+/* ⑥ 全寬頂部導覽 bar */
+#topbar{position:absolute;top:0;left:0;right:0;height:54px;z-index:50;display:flex;align-items:center;justify-content:space-between;padding:0 14px;background:rgba(248,244,236,.96);box-shadow:0 2px 0 var(--gold)}
+#topbar-right{display:flex;gap:8px}
+#home-link{display:flex;align-items:center;text-decoration:none}
+#home-link img{height:24px;width:auto;display:block}
+#home-link .hl-arrow{color:#3d342a;font-size:18px;font-weight:700;margin-right:8px;line-height:1}
+#theme,#mute,#tune-btn{width:40px;height:40px;font-size:20px;background:rgba(12,14,22,.9);color:var(--ink);border:none;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 2px var(--gold)}
+#tune-btn{box-shadow:0 0 0 2px var(--line)}
+#nav-spacer,#mute-spacer{display:none}
+#hud{margin-top:66px}
+#tuner{display:none;position:absolute;top:60px;right:14px;z-index:60;width:280px;background:rgba(12,14,22,.95);box-shadow:0 0 0 3px var(--gold);padding:16px;color:var(--ink)}
+#tuner.open{display:block}
+#tuner .tn-title{font-size:18px;color:var(--gold);margin-bottom:12px;letter-spacing:.1em}
+#tuner .tn-row{display:flex;align-items:center;gap:8px;font-size:18px;margin-bottom:12px}
+#tuner input[type=range]{flex:1;accent-color:var(--gold)}
+#tuner .tn-val{min-width:52px;text-align:right;font-size:18px;color:var(--gold)}
+#tuner .tn-btns{display:flex;gap:8px}
+#tuner .tn-btns button{flex:1;font-family:inherit;font-size:18px;padding:8px;border:none;cursor:pointer;background:var(--gold);color:#0c0e16;box-shadow:0 0 0 2px #0c0e16}
+#tuner .tn-btns #tn-reset{background:#3a4060;color:var(--ink)}
+#s-game #mute-spacer{width:100px}
+
+/* ===== 題目區 ===== */
+#stagewrap{position:relative;z-index:4;flex:1;display:flex;flex-direction:column;justify-content:center;padding:0 14px calc(14px + env(safe-area-inset-bottom));overflow:hidden}
+#floorcard{display:flex;flex-direction:column;gap:12px;transition:transform .55s cubic-bezier(.3,.8,.3,1),opacity .4s}
+#floorcard.leave{transform:translateY(-110%);opacity:0;transition:transform .45s cubic-bezier(.6,0,.8,.4),opacity .4s}
+#floorcard.enter{transform:translateY(110%);opacity:0;transition:none}
+
+#narr{position:relative;background:rgba(26,28,44,.9);padding:16px 16px 14px}
+#scene-tag{font-size:13px;color:var(--muted);margin-bottom:6px;letter-spacing:.1em}
+#ntext{font-size:19px;line-height:1.7;min-height:118px}
+#ntext .cursor{display:inline-block;width:10px;height:19px;background:var(--gold);vertical-align:-3px;animation:blink .7s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+
+#opts{display:flex;flex-direction:column;gap:9px}
+.opt{
+  position:relative;text-align:left;cursor:pointer;border:none;font-family:inherit;
+  font-size:18px;line-height:1.55;color:var(--ink);
+  background:rgba(36,40,61,.9);padding:12px 14px 12px 34px;
+  border-radius:0;box-shadow:0 0 0 2px var(--line);
+  transition:transform .1s, box-shadow .15s, background .15s;
+}
+.opt::before{content:'▶';position:absolute;left:12px;top:14px;font-size:13px;color:var(--gold);opacity:0;transition:opacity .12s}
+.opt:hover,.opt:focus-visible{background:#2c3150;box-shadow:0 0 0 2px var(--gold);transform:translateX(4px);outline:none}
+.opt:hover::before,.opt:focus-visible::before{opacity:1}
+.opt:disabled{cursor:default;opacity:.45}
+.opt.picked{background:#2f3a2f;box-shadow:0 0 0 2px var(--good);opacity:1}
+
+/* 戳章 */
+#stamp{position:absolute;z-index:30;left:50%;top:38%;transform:translate(-50%,-50%) rotate(-12deg) scale(3);opacity:0;pointer-events:none;
+  font-size:34px;color:var(--good);padding:8px 18px;background:rgba(12,14,22,.4);
+  box-shadow:0 0 0 4px var(--good);letter-spacing:.15em;white-space:nowrap}
+#stamp.hit{animation:stamp .55s ease-out forwards}
+@keyframes stamp{0%{opacity:0;transform:translate(-50%,-50%) rotate(-12deg) scale(1.3)}100%{opacity:.95;transform:translate(-50%,-50%) rotate(-12deg) scale(1)}}
+@keyframes shake{0%,100%{transform:translate(0,0)}20%{transform:translate(-6px,3px)}40%{transform:translate(5px,-4px)}60%{transform:translate(-4px,2px)}80%{transform:translate(3px,-2px)}}
+.shaking{animation:shake .35s linear}
+#flash{position:absolute;inset:0;z-index:25;background:#fff;opacity:0;pointer-events:none}
+#flash.go{transition:opacity .35s;opacity:0}
+#flash.hit{transition:none;opacity:.75}
+
+/* 揭曉 */
+#reveal{display:none;flex-direction:column;gap:10px;background:rgba(26,28,44,.9);padding:16px;box-shadow:0 0 0 3px var(--gold),0 0 0 6px #0c0e16}
+#reveal .r-tag{font-size:13px;color:var(--gold);letter-spacing:.2em}
+#reveal .r-text{font-size:18px;line-height:1.7}
+#reveal .r-src{font-size:14px;color:var(--gold);text-align:right}
+#reveal .btn{align-self:flex-end}
+
+/* ===== 升職畫面 ===== */
+#s-promo{justify-content:center;align-items:center;padding:24px;text-align:center}
+.badge{position:relative;z-index:5;width:270px;background:var(--panel);padding:26px 20px;transform:rotateY(90deg)}
+.badge.flip{transition:transform .5s cubic-bezier(.3,1.4,.5,1);transform:rotateY(0)}
+.badge .b-top{font-size:13px;letter-spacing:.3em;color:var(--muted);margin-bottom:12px}
+.badge .b-icon{font-size:22px;line-height:1.4;color:var(--gold);margin-bottom:12px;letter-spacing:.05em}
+.badge .b-title{font-size:26px;color:var(--gold);margin-bottom:8px}
+.badge .b-sub{font-size:16px;color:var(--muted)}
+#promo-btn{margin-top:26px;position:relative;z-index:5}
+.confetti{position:absolute;width:8px;height:8px;top:-12px;z-index:3;animation:fall linear forwards}
+@keyframes fall{to{transform:translateY(110dvh) rotate(540deg)}}
+
+/* ===== 結算 ===== */
+#s-result{overflow-y:auto;overflow-x:hidden;display:block;padding:64px 16px calc(30px + env(safe-area-inset-bottom))}
+#s-result::-webkit-scrollbar{width:0}
+.r-inner{position:relative;z-index:5;display:flex;flex-direction:column;gap:18px;padding-top:46px;max-width:440px;margin:0 auto}
+.r-block{opacity:0;transform:translateY(24px);transition:opacity .55s,transform .55s}
+.r-block.in{opacity:1;transform:none}
+.r-head{text-align:center}
+.r-head .r-cap{font-size:15px;color:var(--muted);letter-spacing:.2em;margin-bottom:10px}
+#power-line{font-size:21px;margin-bottom:4px}
+#power-line .pb{color:var(--brain)} #power-line .ph{color:var(--hand)}
+#power-num{font-size:76px;line-height:1.1;color:var(--gold);text-shadow:4px 4px 0 #0c0e16}
+#power-num small{font-size:30px;color:var(--ink)}
+.panel{background:rgba(26,28,44,.94);padding:18px 16px}
+.p-title{font-size:14px;color:var(--muted);letter-spacing:.2em;margin-bottom:12px;text-align:center}
+#wingrid{display:grid;grid-template-columns:repeat(10,1fr);gap:4px;max-width:280px;margin:0 auto 10px;padding:12px;background:#171927;box-shadow:0 0 0 2px var(--line)}
+.win{aspect-ratio:1;background:#262b40}
+.win.lit{background:var(--gold);box-shadow:0 0 6px rgba(255,205,117,.55)}
+#wincap{text-align:center;font-size:15px;color:var(--muted)}
+#wincap b{color:var(--gold)}
+.idcard{text-align:center;padding:24px 18px;background:var(--panel);box-shadow:0 0 0 3px var(--gold),0 0 0 6px #0c0e16}
+.idcard .a-img{display:block;width:160px;height:160px;margin:0 auto 14px;image-rendering:pixelated;box-shadow:0 0 0 3px var(--line);object-fit:cover}
+.idcard .a-img[hidden]{display:none}
+.idcard .a-name{font-size:27px;color:var(--gold);margin-bottom:10px}
+.idcard .a-desc{font-size:17px;line-height:1.7;color:var(--ink)}
+.idcard .a-next{font-size:15px;line-height:1.7;color:var(--muted);margin-top:12px;padding-top:12px;border-top:2px solid var(--line)}
+.bar-row{margin-bottom:12px}
+.bar-lab{display:flex;justify-content:space-between;font-size:16px;margin-bottom:5px}
+.bar-track{height:14px;background:#171927;box-shadow:0 0 0 2px var(--line)}
+.bar-fill{height:100%;width:0;transition:width 1s cubic-bezier(.3,.8,.3,1)}
+.bar-fill.b{background:var(--brain)} .bar-fill.h{background:var(--hand)}
+.ladder{display:flex;flex-direction:column-reverse}
+.rung{display:flex;align-items:center;gap:10px;padding:8px 6px;border-bottom:2px solid #20243a;font-size:16px;color:var(--muted)}
+.rung .lv{min-width:34px;font-size:15px;color:var(--muted)}
+.rung.cur{background:rgba(255,205,117,.1);color:var(--ink)}
+.rung.cur .lv{color:var(--gold)}
+.rung .here{margin-left:auto;font-size:13px;color:var(--gold);letter-spacing:.1em}
+.dataline{font-size:16px;line-height:1.75;color:var(--ink);margin-bottom:10px;padding-left:14px;position:relative}
+.dataline::before{content:'';position:absolute;left:0;top:9px;width:7px;height:7px;background:var(--brain)}
+.datanote{font-size:13px;color:var(--muted);margin-top:6px}
+#gapwrap .bar-track{margin-bottom:4px}
+#gap-cap{font-size:17px;text-align:center;margin-top:10px;line-height:1.7}
+#gap-cap b{color:var(--gold)}
+.gap-time{display:flex;justify-content:space-between;font-size:13px;color:var(--muted);margin-bottom:10px}
+.course{padding:18px;background:var(--panel);box-shadow:0 0 0 3px var(--brain),0 0 0 6px #0c0e16}
+.course .c-tag{font-size:13px;color:var(--brain);letter-spacing:.2em;margin-bottom:8px}
+.course .c-name{font-size:22px;color:var(--ink);margin-bottom:8px}
+.course .c-take{font-size:16px;line-height:1.7;color:var(--muted);margin-bottom:14px}
+.course .c-take b{color:var(--ink)}
+.cta-col{display:flex;flex-direction:column;gap:12px}
+.cta-col .btn{width:100%;text-align:center}
+#toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%) translateY(20px);z-index:90;background:var(--panel);color:var(--ink);font-size:16px;padding:12px 20px;box-shadow:0 0 0 3px var(--gold);opacity:0;pointer-events:none;transition:opacity .3s,transform .3s;white-space:nowrap}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+/* ===== 全站最小字 18px ===== */
+#scene-tag,.hud-tier,.t-badge,.t-meta,#reveal .r-tag,#reveal .r-src,.badge .b-top,.r-head .r-cap,.p-title,#wincap,.idcard .a-next,.bar-lab,.rung,.rung .lv,.rung .here,.dataline,.datanote,.gap-time,#gap-cap,.course .c-tag,.course .c-take,#toast,.btn.ghost{font-size:18px}
+
+/* ===== 明亮主題 ===== */
+body.light #hud{background:rgba(255,253,247,.92)}
+body.light #mute,body.light #theme{background:rgba(255,253,247,.95);color:#2b2622;box-shadow:0 0 0 3px #b8771f}
+body.light{--ink:#2b2622;--muted:#6f6552;--line:#cdbfa2;--night:#dfe6f0}
+body.light .bg::after{background:linear-gradient(180deg,rgba(245,242,234,0) 0%,rgba(245,242,234,.06) 45%,rgba(245,242,234,.62) 78%,rgba(245,242,234,.8) 100%)}
+body.light #narr,body.light #reveal{background:rgba(252,249,241,.9)}
+body.light .opt{background:rgba(255,255,255,.9);color:var(--ink)}
+body.light .opt:hover,body.light .opt:focus-visible{background:#fff6e2;box-shadow:0 0 0 2px #d98a2b}
+body.light .opt.picked{background:#e9f4e4;box-shadow:0 0 0 2px var(--good)}
+body.light .opt::before{color:#b8771f}
+body.light #stamp{color:#2c7a45;box-shadow:0 0 0 4px #2c7a45;background:rgba(255,255,255,.55)}
+body.light .panel,body.light .idcard,body.light .course,body.light .badge{background:rgba(252,249,241,.92)}
+body.light .pix{box-shadow:0 0 0 3px var(--line),0 0 0 6px rgba(0,0,0,.12)}
+body.light h1,body.light .t-hook{color:#2b2622;text-shadow:2px 2px 0 rgba(255,255,255,.75)}
+body.light .t-hook b,body.light .t-badge{color:#b8771f}
+body.light .t-meta{color:#5c5346;text-shadow:1px 1px 0 rgba(255,255,255,.6)}
+body.light .t-badge{background:rgba(255,253,247,.85)}
+body.light #mute,body.light #theme{background:rgba(255,253,247,.8);color:#2b2622}
+body.light .hud-floor{color:#b8771f;text-shadow:1px 1px 0 rgba(255,255,255,.7)}
+body.light .pip{background:#d8cdb6}
+body.light .pip.done{background:#3f9a5f}
+body.light .pip.cur{background:#d98a2b}
+body.light #ntext .cursor{background:#b8771f}
+body.light #reveal .r-tag,body.light #reveal .r-src{color:#b8771f}
+body.light #reveal{box-shadow:0 0 0 3px #d98a2b,0 0 0 6px rgba(0,0,0,.12)}
+body.light .idcard{box-shadow:0 0 0 3px #d98a2b,0 0 0 6px rgba(0,0,0,.12)}
+body.light .course{box-shadow:0 0 0 3px #2f7fc1,0 0 0 6px rgba(0,0,0,.12)}
+body.light #power-num{color:#b8771f;text-shadow:3px 3px 0 rgba(255,255,255,.7)}
+body.light #power-line .pb{color:#185fa5}
+body.light #power-line .ph{color:#a8771f}
+body.light #wingrid{background:#efe7d4}
+body.light .win{background:#dcd2ba}
+body.light .win.lit{background:#f4b942;box-shadow:0 0 6px rgba(244,185,66,.6)}
+body.light .bar-track{background:#eee5d0}
+body.light .rung{border-bottom-color:#e4dbc6}
+body.light .rung.cur{background:rgba(217,138,43,.12)}
+body.light .rung.cur .lv,body.light .rung .here{color:#b8771f}
+body.light .dataline::before{background:#2f7fc1}
+body.light #toast{background:#fffdf7;color:#2b2622;box-shadow:0 0 0 3px #d98a2b}
+body.light .btn.ghost{background:#efe8d8;color:#6f6552;box-shadow:0 0 0 3px rgba(0,0,0,.2),0 6px 0 0 #d8cdb6,0 6px 0 3px rgba(0,0,0,.2)}
+body.light .gap-time,body.light .r-head .r-cap,body.light .p-title,body.light #scene-tag,body.light .datanote{color:#8a7c63}
+
+/* ===== 桌面寬版 ===== */
+@media (min-width: 768px){
+  #app{max-width:none}
+  #hud{max-width:760px;width:100%;margin:16px auto 0}
+  #floorcard{width:min(740px,100%);margin:0 auto}
+  #opts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  #ntext{min-height:84px}
+  h1{font-size:60px}
+  .t-card{max-width:480px}
+  #s-title{padding-bottom:140px}
+  .r-inner{max-width:660px}
+  .badge{width:330px}
+  #mute{top:16px;right:20px}
+  #theme{top:16px;left:20px}
+}
+
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{animation-duration:.01ms !important;transition-duration:.01ms !important}
+}
+</style>
+</head>
+<body>
+<div id="app">
+  <div class="bg" id="bg-a"></div>
+  <div class="bg" id="bg-b"></div>
+  <div id="topbar">
+    <a id="home-link" href="../index.html" aria-label="回 江江教練知識官網"><span class="hl-arrow">←</span><img src="../images/footer-signature.png" alt="江江教練 江昱德" /></a>
+    <div id="topbar-right">
+      <button id="theme" aria-label="主題切換">暗</button>
+      <button id="mute" aria-label="音效開關">✕</button>
+      <button id="tune-btn" aria-label="背景調整">⚙</button>
+    </div>
+  </div>
+  <div id="tuner">
+    <p class="tn-title">背景調整</p>
+    <label class="tn-row">透明度 <input type="range" id="tn-op" min="10" max="100" step="1"><span class="tn-val" id="tv-op"></span></label>
+    <label class="tn-row">亮度 <input type="range" id="tn-br" min="40" max="160" step="1"><span class="tn-val" id="tv-br"></span></label>
+    <label class="tn-row">對比 <input type="range" id="tn-ct" min="50" max="150" step="1"><span class="tn-val" id="tv-ct"></span></label>
+    <div class="tn-btns">
+      <button id="tn-copy">複製 CSS</button>
+      <button id="tn-reset">重設</button>
+    </div>
+  </div>
+
+  <!-- 標題 -->
+  <section class="screen on" id="s-title">
+    <div class="t-card pix">
+      <div class="t-badge">AI 戰力測驗</div>
+      <h1>AI 戰力大樓</h1>
+      <p class="t-exp">AI 用得好，能把你的大腦放大十倍，手腳也放大十倍。<br>大腦：你會不會想。手腳：你會不會派。<br><b>大腦 × 手腳 ＝ 10 × 10，滿配就是 100 倍。</b><br>這份測驗用 16 個職場情境，看你現在放大到幾倍。</p>
+      <p class="t-meta">16 層樓 · 約 5 分鐘<br>測完領你的戰力識別證，和一條下一步的練法</p>
+      <button class="btn breathe" id="start">推門進去</button>
+    </div>
+  </section>
+
+  <!-- 遊戲 -->
+  <section class="screen" id="s-game">
+    <div id="hud">
+      <div id="nav-spacer"></div>
+      <span class="hud-floor" id="hud-floor">1F</span>
+      <span class="hud-tier" id="hud-tier">基層專員</span>
+      <div id="pips"></div>
+      <div id="mute-spacer"></div>
+    </div>
+    <div id="stagewrap">
+      <div id="flash"></div>
+      <div id="stamp" aria-hidden="true">已處理</div>
+      <div id="floorcard">
+        <div id="narr" class="pix">
+          <p id="scene-tag"></p>
+          <p id="ntext"></p>
+        </div>
+        <div id="opts"></div>
+        <div id="reveal">
+          <p class="r-tag">▼ 這層的門道</p>
+          <p class="r-text" id="r-text"></p>
+          <p class="r-src" id="r-src"></p>
+          <button class="btn blue" id="up">上樓 ▲</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 升職 -->
+  <section class="screen" id="s-promo">
+    <div class="badge pix-gold" id="badge">
+      <p class="b-top">人事通知</p>
+      <p class="b-icon" id="b-icon"></p>
+      <p class="b-title" id="b-title"></p>
+      <p class="b-sub" id="b-sub"></p>
+    </div>
+    <button class="btn" id="promo-btn">繼續往上 ▲</button>
+  </section>
+
+  <!-- 結算 -->
+  <section class="screen" id="s-result">
+    <div class="r-inner">
+      <div class="r-block r-head" id="rb-power">
+        <p class="r-cap">頂樓 · 戰力結算</p>
+        <p id="power-line"><span class="pb">大腦 0</span> × <span class="ph">手腳 0</span> ＝</p>
+        <p id="power-num">0<small> 倍</small></p>
+      </div>
+      <div class="r-block panel" id="rb-grid">
+        <p class="p-title">滿配 100 扇窗</p>
+        <div id="wingrid"></div>
+        <p id="wincap">你點亮了 <b>0</b> 扇</p>
+      </div>
+      <div class="r-block idcard" id="rb-arch">
+        <img id="a-img" class="a-img" alt="">
+        <p class="a-name" id="a-name"></p>
+        <p class="a-desc" id="a-desc"></p>
+        <p class="a-next" id="a-next"></p>
+        <button class="btn" id="save-card" style="margin-top:16px">存下識別證</button>
+      </div>
+      <div class="r-block panel" id="rb-axes">
+        <p class="p-title">兩條軸，看清楚自己</p>
+        <div class="bar-row">
+          <div class="bar-lab"><span>大腦（統領）</span><span id="v-brain">0</span></div>
+          <div class="bar-track"><div class="bar-fill b" id="bar-brain"></div></div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-lab"><span>手腳（駕馭）</span><span id="v-hand">0</span></div>
+          <div class="bar-track"><div class="bar-fill h" id="bar-hand"></div></div>
+        </div>
+        <div class="ladder" id="ladder"></div>
+      </div>
+      <div class="r-block panel" id="rb-data">
+        <p class="p-title">你在七億人裡的位置</p>
+        <div id="datalines"></div>
+        <p class="datanote">以上為公開研究數據；L1–L5 人口分布為推估。</p>
+      </div>
+      <div class="r-block panel" id="rb-gap">
+        <p class="p-title">為什麼差距會越拉越大</p>
+        <div id="gapwrap">
+          <div class="bar-lab"><span>手腳：AI 越強，自動漲</span></div>
+          <div class="bar-track"><div class="bar-fill h" id="gap-hand"></div></div>
+          <div style="height:10px"></div>
+          <div class="bar-lab"><span>大腦：只能自己練</span></div>
+          <div class="bar-track"><div class="bar-fill b" id="gap-brain"></div></div>
+          <div class="gap-time"><span>今天</span><span>半年後</span><span>一年後</span></div>
+        </div>
+        <p id="gap-cap">手腳會自動變強，<b>大腦只能自己練</b>。</p>
+      </div>
+      <div class="r-block course" id="rb-course">
+        <p class="c-tag">你的下一步</p>
+        <p class="c-name" id="c-name"></p>
+        <p class="c-take" id="c-take"></p>
+        <div class="cta-col">
+          <button class="btn" id="cta-course">了解這門課</button>
+          <button class="btn blue" id="cta-book">預約 30 分鐘 AI 戰力盤點</button>
+          <button class="btn ghost" id="replay">再爬一次</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div id="toast"></div>
+</div>
+
+<script>
+'use strict';
+/* ================= 資料 ================= */
+const QUESTIONS=[
+{id:1,floor:1,axis:'brain',tag:'1F · 你的座位 · 螢幕前',narration:'螢幕上是空白聊天框，游標在閃。你要 AI 幫你寫一封給老客戶的報價信。第一句最像哪句？',options:[
+{text:'「幫我寫一封報價信」，先丟再說，不行再改',score:1},
+{text:'「寫給王老闆，上次他嫌貴，這次語氣軟一點」，背景我都記得，每次用講的',score:4},
+{text:'先翻出上次的信和這次報價單貼給它，再說要幹嘛',score:7},
+{text:'也是一句「報價信，王老闆，新品項」，但它早就知道王老闆是誰、上次卡在哪、我的底價在哪，這些我都讓它學過了',score:10}],
+reveal:'同一句話，兩種人生。背景住在你腦裡，每次都要搬一次；住在 AI 腦裡，你出一張嘴就好。',src:''},
+{id:2,floor:2,axis:'brain',tag:'2F · 檔案區 · 十年的資料夾',narration:'你要 AI 幫你分析一個重要客戶的續約策略。電腦裡有跟這客戶往來十年的資料夾，幾百個檔案。你？',options:[
+{text:'想到什麼貼什麼，聊到哪補到哪',score:1},
+{text:'整個資料夾全部丟給它，資料越多它越懂我',score:4},
+{text:'只挑這次續約相關的：最新合約、最近三次會議紀錄',score:7},
+{text:'給它一份資料目錄，讓它自己說需要調哪幾份，要多少給多少',score:10}],
+reveal:'資料塞太多，AI 反而變笨。Claude Code 官方把 AI 的注意力當稀缺資源在管理。會給的人給得準，給得多的人只是在搬家。',src:'Claude Code 官方設計概念'},
+{id:3,floor:3,axis:'brain',tag:'3F · 你的座位 · AI 剛回覆',narration:'AI 一個字一個字打出一段市場分析，數字看起來都很漂亮。你會？',options:[
+{text:'看起來很專業，直接用，省下來的時間就是賺到',score:1},
+{text:'不放心，整段自己重新查一遍（那我剛剛是請它來幹嘛的）',score:4},
+{text:'請它附來源，點開最關鍵的那一個',score:7},
+{text:'丟給另一家 AI 複查，兩家說法打架的地方，才輪到我出手',score:10}],
+reveal:'這題沒有標準答案，測的是你會不會給自己留一道防線。請第二家 AI 當複查員，是市面上最便宜的保險。',src:''},
+{id:9,floor:4,axis:'hand',tag:'4F · 茶水間旁 · 便利貼牆',narration:'牆上五張便利貼，每週一都長得一模一樣。你？',options:[
+{text:'自己做比較快，做完把貼紙撕掉最爽',score:1},
+{text:'每週一叫 AI 做一遍，每次重新講一次需求',score:4},
+{text:'寫好一份固定流程，每週丟同一份給它',score:7},
+{text:'流程建好排程自動跑，我週一只看結果',score:10}],
+reveal:'公司有制度，AI 進來就能打工。制度建好，換哪款 AI 都能上工。',src:''},
+{id:10,floor:5,axis:'hand',tag:'5F · 你的座位 · 老闆訊息進來',narration:'老闆丟來一段語音、兩張截圖、一個 Excel：「明早給我一頁建議。」你？',options:[
+{text:'自己聽自己看，親手整理完才放心',score:1},
+{text:'Excel 給 AI 算，語音和截圖我自己來',score:4},
+{text:'全丟給 AI 排流水線：轉文字、摘要、合併成一頁',score:7},
+{text:'丟之前先講清楚：這頁給誰看、他明天要做什麼決定',score:10}],
+reveal:'同樣三個檔案，先講清楚給誰看，產出直接差一個檔次。',src:''},
+{id:5,floor:6,axis:'brain',tag:'6F · 主管辦公室 · 新案子進來',narration:'一個你沒做過的新型案子進來了，你打算讓 AI 上。第一步？',options:[
+{text:'直接要答案，它那麼聰明，先給結果再說',score:1},
+{text:'叫它直接開工，做歪了再修',score:4},
+{text:'先叫它列計畫，我看過再動工',score:7},
+{text:'先派它去摸清現況、回報它看到什麼；確認它理解沒歪，才讓它提計畫、再動手',score:10}],
+reveal:'Claude Code 官方建議的順序：先探索、再計畫、再動手。方向錯的努力，比不動還貴。',src:'Claude Code 官方文件'},
+{id:4,floor:7,axis:'brain',tag:'7F · 會議桌 · 五張方案卡攤開',narration:'你請 AI 出行銷方案，它一口氣攤出五張方案卡。你怎麼挑？',options:[
+{text:'挑寫得最完整最詳細的那張，內容多總是比較保險',score:1},
+{text:'挑最快能動手的，先做起來再說',score:4},
+{text:'問它每一張的風險，挑最不會出事的',score:7},
+{text:'翻出我做過最成功的那一次案例丟給它：照這個打法，改到像我們會做的樣子',score:10}],
+reveal:'五張卡是它的，標準是你的。你的代表作，就是你判斷力的實體。',src:''},
+{id:11,floor:8,axis:'hand',tag:'8F · 白板前 · 大案子開工',narration:'一個大案子：要查資料、寫文案、做簡報、還要挑錯字。你打算怎麼用 AI？',options:[
+{text:'同一個對話從頭聊到尾，聊到它開始忘東忘西',score:1},
+{text:'聊太長就開新對話，從頭再交代一次',score:4},
+{text:'不同任務開不同對話，各管各的',score:7},
+{text:'像帶小隊：查資料的、寫稿的、挑錯的各派一個 AI，規定好誰交給誰，最後一個彙整',score:10}],
+reveal:'Claude Code 的子代理設計：複雜任務拆給不同小隊，各自有角色和邊界。一個 AI 從頭做到尾，做到後面它自己都忘了開頭。',src:'Claude Code 官方架構'},
+{id:12,floor:9,axis:'hand',tag:'9F · 主管辦公室 · 委託單在桌上',narration:'你要把整個案子交給 AI 團隊，委託單推到你面前。你最在意哪一欄？',options:[
+{text:'進度欄：做到哪都要回報，我盯著比較安心',score:1},
+{text:'規格欄：每一步怎麼做，我先寫清楚',score:4},
+{text:'團隊欄：這案子該派哪款 AI，它到底接不接得住',score:7},
+{text:'結案欄：怎樣算做完，驗收標準先講好',score:10}],
+reveal:'把 AI 當外包團隊：接得住才丟、丟了就不疑，只管怎樣算結案。',src:''},
+{id:13,floor:10,axis:'hand',tag:'10F · 收件匣 · AI 回報完工',narration:'AI 回報：「做好了！」你怎麼知道是真的好了？',options:[
+{text:'它說好就好，它那麼聰明',score:1},
+{text:'自己從頭到尾再檢查一遍',score:4},
+{text:'給它驗收清單，叫它逐條自檢完才能交',score:7},
+{text:'設一道會自動亮紅燈的關卡：沒過，它自己重做；過了，才輪得到我看',score:10}],
+reveal:'Claude Code 官方的做法：不問 AI「做好了嗎」，給它一個會亮紅燈的檢查，讓它自己跑到綠燈才下班。',src:'Claude Code 官方'},
+{id:14,floor:11,axis:'hand',tag:'11F · 主管辦公室 · 客戶回信了',narration:'案子交了，客戶回了三點修改意見。改完之後你？',options:[
+{text:'交差收工，下一件',score:1},
+{text:'心裡記著這客戶難搞，下次小心',score:4},
+{text:'跟 AI 一起記下「這客戶吃哪一套」',score:7},
+{text:'把意見存進知識庫，下次它開場就知道',score:10}],
+reveal:'AI 那麼聰明，讓它來學你就好。每一次回饋存回去，它就更像你一點。',src:''},
+{id:7,floor:12,axis:'brain',tag:'12F · 經營者樓層 · 又一份格式錯的報告',narration:'「報告用我們的格式」這句話，你這個月已經跟 AI 講三次，它今天又交了一份別人的格式。你？',options:[
+{text:'再講一次，講久了總會記得',score:1},
+{text:'認命，每次開工先貼一次規矩',score:4},
+{text:'存成範本檔，每次開工丟給它',score:7},
+{text:'寫進它每次開工自動必讀的工作守則，而且分兩層：全公司的規矩一份、這個案子的規矩一份',score:10}],
+reveal:'Claude Code 和 Codex 的設計者做了同一件事：讓 AI 進門先讀守則，總則分則分層。規矩用講的會蒸發，寫進系統才算數。',src:'Claude Code + Codex 官方設計'},
+{id:6,floor:13,axis:'brain',tag:'13F · 經營者辦公室 · 換工具公告日',narration:'公司決定全面換一款新 AI 工具。舊的已經調教了半年，很懂大家。你？',options:[
+{text:'不換了，半年感情捨不得，繼續用舊的',score:1},
+{text:'換，從頭再教半年，就當交學費',score:4},
+{text:'兩邊各跑一次同樣的任務，比完再決定搬不搬',score:7},
+{text:'早就有一份它的員工手冊：我是誰、我的客戶、我的規矩、我的範例。貼給新 AI，十分鐘變老員工',score:10}],
+reveal:'流水的 AI 工具，鐵打的知識庫。搬得走的，才是你的。',src:''},
+{id:8,floor:14,axis:'brain',tag:'14F · 經營者辦公室 · 同事來請教',narration:'客戶都說你抓的點就是準。同事問你怎麼判斷的，你說「就⋯⋯感覺啊」。這種感覺，怎麼讓 AI 也會？',options:[
+{text:'這種東西講不出來，硬要講就走味了',score:1},
+{text:'挑幾個代表作丟給它，讓它自己參悟',score:4},
+{text:'叫 AI 反過來訪問我，一直追問為什麼，把我的判斷一條一條逼出來',score:7},
+{text:'每次它做錯我出手改，都叫它記一條「為什麼這樣改」。半年後它有一本我的判斷手冊',score:10}],
+reveal:'資料是資訊，文件是知識，你出手改的那一下才是隱性知識。提得出來，AI 才真的像你。',src:''},
+{id:15,floor:15,axis:'hand',tag:'15F · 週一早上七點 · 你還沒起床',narration:'週一早上七點，你還沒起床。你的 AI 在幹嘛？',options:[
+{text:'在睡，我不叫它就不動',score:1},
+{text:'我開機後第一件事問它「今天要幹嘛」',score:4},
+{text:'我設了排程，九點它自動把今天的重點發給我',score:7},
+{text:'它定期自己醒來巡一輪：該追的進度、該回的訊息、有異常先回報。我起床看它的晨報',score:10}],
+reveal:'龍蝦 OpenClaw 的心跳機制：AI 每隔一段時間自己醒來看一圈。被動助理和背景維運系統，差的就是這顆心跳。',src:'龍蝦 OpenClaw 官方設計'},
+{id:16,floor:16,axis:'hand',tag:'16F · 頂樓辦公室 · AI 主動敲門',narration:'AI 突然跟你說：「這套流程我建議改三個地方，要我直接改嗎？」你？',options:[
+{text:'不准，流程是我訂的',score:1},
+{text:'改吧改吧，它比我懂',score:4},
+{text:'叫它先講理由，我聽完再說',score:7},
+{text:'我有規矩：它隨時可以提案，寫成修改申請，我批准才生效，改了要留紀錄',score:10}],
+reveal:'龍蝦的技能工坊設計：AI 可以提案改自己，但要過人的審核。最高段的放權，旁邊都掛著一條批准線。',src:'龍蝦 OpenClaw 技能工坊'}
+];
+QUESTIONS.forEach(q=>{q.bg='assets/q'+String(q.floor).padStart(2,'0')+'.jpg'});
+const TIERS=[
+{name:'基層專員',cls:'',from:1,to:5,bg:'assets/scene-2-junior-office.jpg'},
+{name:'帶案主管',cls:'t2',from:6,to:11,bg:'assets/scene-3-manager-office.jpg'},
+{name:'經營者',cls:'t3',from:12,to:16,bg:'assets/scene-4-executive-office.jpg'}
+];
+const PROMOS=[
+{after:5,icon:'基層專員 ▶ 帶案主管',title:'升任 帶案主管',sub:'自己的任務做穩了。接下來，帶 AI 小隊打案子。'},
+{after:11,icon:'帶案主管 ▶ 經營者',title:'升任 經營者',sub:'案子帶得動了。接下來，把 AI 變成公司戰力。'}
+];
+const ARCHS={
+eagle:{img:'assets/arch-eagle.jpg',name:'AI 原生統御者',desc:'制度在、知識庫在、驗收標準在。流水的工具換誰來都能上工。',next:'你已經站在看得到塔頂的位置。下一步：把你的判斷提煉成系統，開始規模化。',course:'專業分身與技能包工作坊',take:'帶走：<b>AI 員工角色卡、技能包、輸出標準與驗證方式</b>'},
+zhuge:{img:'assets/arch-zhuge.jpg',name:'輪椅上的諸葛亮',desc:'你很清楚要做什麼，只差一個團隊。AI 就是那個你請得起的團隊。',next:'你想得清楚，缺執行的手。下一步：把一個流程交給 AI 完整跑一遍。',course:'AI 辦公室一日工作坊',take:'帶走：<b>AI 工作環境、文件入口、第一個 AI 員工雛形</b>'},
+rocket:{img:'assets/arch-rocket.jpg',name:'全速前進的迷路火箭',desc:'你的團隊馬力全開，可惜還沒人告訴他們今天做什麼。',next:'你跑得飛快，但背景每次都要重講。下一步：做一份搬得走的設定檔。',course:'個人 AI 知識庫實作營',take:'帶走：<b>個人資料整理、知識庫雛形、常用任務模板</b>'},
+tank:{img:'assets/arch-tank.jpg',name:'人肉坦克',desc:'什麼都自己扛，全公司最強的人是你，也只有你。起點最低，代表每一步增幅都最有感。',next:'你每次都親自上。下一步：先讓 AI 接走一件你最煩的小事。',course:'AI 安心啟動講座',take:'帶走：<b>降低焦慮、建立基本認知、看見可用場景</b>'}
+};
+const LADDER=[
+{lv:'L1',name:'跟風 · 你學 AI'},
+{lv:'L2',name:'指派 · 你用 AI'},
+{lv:'L3',name:'協作 · 你教 AI'},
+{lv:'L4',name:'複製 · AI 學你'},
+{lv:'L5',name:'放權 · 你讓 AI 去學 AI'}
+];
+const DATALINES=[
+'全球每週有 7 億人在用 ChatGPT，近 8 成的使用是問問題、找資料、寫東西。（OpenAI / NBER 2025）',
+'每天都在用 AI 的工作者只有約 10%。（Gallup 2025）',
+'在 75% 以上任務裡用到 AI 的職業，只有約 4%。（Anthropic Economic Index）',
+'委任式使用 8 個月內從 27% 升到 39%，放權正在發生。（Anthropic Economic Index）'
+];
+
+/* ================= 音效 ================= */
+let actx=null,muted=true;
+function ac(){if(!actx)actx=new (window.AudioContext||window.webkitAudioContext)();return actx}
+function beep(f,d,type,vol,when){if(muted)return;try{
+  const c=ac(),o=c.createOscillator(),g=c.createGain(),t=c.currentTime+(when||0);
+  o.type=type||'square';o.frequency.value=f;
+  g.gain.setValueAtTime(vol||.06,t);g.gain.exponentialRampToValueAtTime(.0001,t+d);
+  o.connect(g);g.connect(c.destination);o.start(t);o.stop(t+d);
+}catch(e){}}
+const sfx={
+type(){},
+pick(){beep(523,.14,'sine',.022);beep(784,.2,'sine',.016,.1)},
+stamp(){beep(220,.3,'sine',.028);beep(165,.35,'sine',.02,.05)},
+ding(){beep(880,.35,'sine',.02);beep(1174,.5,'sine',.014,.18)},
+promo(){[523,659,784].forEach((f,i)=>beep(f,.28,'sine',.022,i*.16))},
+finale(){[392,523,659,784].forEach((f,i)=>beep(f,.32,'sine',.018,i*.18))},
+tick(){beep(1046,.06,'sine',.01)}
+};
+document.getElementById('mute').addEventListener('click',function(){
+  muted=!muted;this.textContent=muted?'✕':'♪';
+});
+
+/* ================= 工具 ================= */
+const $=id=>document.getElementById(id);
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+const REDUCED=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+function shuffle(a){a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+
+/* 背景雙緩衝 */
+const bgOk={};
+function setBgSmart(primary,fallback){
+  if(bgOk[primary]===true){setBg(primary,true);return}
+  if(bgOk[primary]===false){setBg(fallback,true);return}
+  const im=new Image();
+  im.onload=()=>{bgOk[primary]=true;setBg(primary,true)};
+  im.onerror=()=>{bgOk[primary]=false;setBg(fallback,true)};
+  im.src=primary;
+}
+let bgFlip=false,curBg='';
+function setBg(url,drift){
+  if(url===curBg)return;curBg=url;
+  const showEl=bgFlip?$('bg-a'):$('bg-b'),hideEl=bgFlip?$('bg-b'):$('bg-a');
+  bgFlip=!bgFlip;
+  showEl.style.backgroundImage="url('"+url+"')";
+  showEl.classList.toggle('drift',!!drift && !REDUCED);
+  showEl.classList.add('show');hideEl.classList.remove('show');
+}
+
+/* ================= 主題 ================= */
+let theme=localStorage.getItem('aitw-theme')||'light';
+function imgPath(p){
+  if(theme!=='light')return p;
+  if(p==='assets/scene-1-building-exterior.jpg')return 'assets/scene-1-morning.jpg';
+  return p.replace(/\.jpg$/,'-m.jpg');
+}
+function applyTheme(){
+  document.body.classList.toggle('light',theme==='light');
+  $('theme').textContent=theme==='light'?'暗':'亮';
+}
+function refreshBg(){
+  if($('s-title').classList.contains('on')){setBgSmart(imgPath('assets/scene-1-building-exterior.jpg'),'assets/scene-1-building-exterior.jpg');return}
+  if($('s-game').classList.contains('on')){const q=QUESTIONS[qi];if(q)setBgSmart(imgPath(q.bg),q.bg);return}
+  if($('s-promo').classList.contains('on')&&pendingPromo){const nt=tierOf(pendingPromo.after+1);setBgSmart(imgPath(nt.bg),nt.bg);return}
+  if($('s-result').classList.contains('on'))setBgSmart(imgPath('assets/scene-5-rooftop-finale.jpg'),'assets/scene-5-rooftop-finale.jpg');
+}
+document.getElementById('theme').addEventListener('click',()=>{
+  theme=theme==='light'?'dark':'light';
+  localStorage.setItem('aitw-theme',theme);
+  applyTheme();refreshBg();
+});
+
+/* ================= 背景調整器 ================= */
+let TUNE;
+try{TUNE=JSON.parse(localStorage.getItem('aitw-tune'))||null}catch(e){TUNE=null}
+if(!TUNE)TUNE={op:75,br:100,ct:50};
+function applyTune(){
+  const a=document.getElementById('app');
+  a.style.setProperty('--bgop',TUNE.op/100);
+  a.style.setProperty('--bgbr',TUNE.br/100);
+  a.style.setProperty('--bgct',TUNE.ct/100);
+  $('tv-op').textContent=TUNE.op+'%';
+  $('tv-br').textContent=TUNE.br+'%';
+  $('tv-ct').textContent=TUNE.ct+'%';
+  $('tn-op').value=TUNE.op;$('tn-br').value=TUNE.br;$('tn-ct').value=TUNE.ct;
+}
+function saveTune(){localStorage.setItem('aitw-tune',JSON.stringify(TUNE))}
+$('tune-btn').addEventListener('click',()=>$('tuner').classList.toggle('open'));
+$('tn-op').addEventListener('input',e=>{TUNE.op=+e.target.value;applyTune();saveTune()});
+$('tn-br').addEventListener('input',e=>{TUNE.br=+e.target.value;applyTune();saveTune()});
+$('tn-ct').addEventListener('input',e=>{TUNE.ct=+e.target.value;applyTune();saveTune()});
+$('tn-reset').addEventListener('click',()=>{TUNE={op:75,br:100,ct:50};applyTune();saveTune()});
+$('tn-copy').addEventListener('click',()=>{
+  const css='.bg{filter:brightness('+(TUNE.br/100)+') contrast('+(TUNE.ct/100)+')}\n.bg.show{opacity:'+(TUNE.op/100)+'}';
+  navigator.clipboard.writeText(css).then(()=>toast('CSS 已複製，貼給雷總管定稿')).catch(()=>toast(css));
+});
+applyTune();
+
+/* ================= 狀態 ================= */
+let qi=0;const scores={};let answered=false;let LASTR=null;
+
+function tierOf(floor){return TIERS.find(t=>floor>=t.from&&floor<=t.to)}
+
+/* HUD */
+function renderHud(){
+  const q=QUESTIONS[qi],t=tierOf(q.floor);
+  $('hud-floor').textContent=q.floor+'F';
+  const ht=$('hud-tier');ht.textContent=t.name;ht.className='hud-tier '+t.cls;
+  const pips=$('pips');pips.innerHTML='';
+  for(let i=0;i<16;i++){const p=document.createElement('span');p.className='pip'+(i<qi?' done':i===qi?' cur':'');pips.appendChild(p)}
+}
+
+/* 打字機 */
+let typeTimer=null;
+function typewriter(text){
+  return new Promise(res=>{
+    const el=$('ntext');el.innerHTML='';
+    if(REDUCED){el.textContent=text;res();return}
+    let i=0;const cur=document.createElement('span');cur.className='cursor';
+    typeTimer=setInterval(()=>{
+      i++;el.textContent=text.slice(0,i);el.appendChild(cur);
+      if(i%3===0)sfx.type();
+      if(i>=text.length){clearInterval(typeTimer);cur.remove();res()}
+    },34);
+  });
+}
+function skipType(text){if(typeTimer){clearInterval(typeTimer);typeTimer=null;$('ntext').textContent=text}}
+
+/* 出題 */
+async function showFloor(){
+  const q=QUESTIONS[qi],t=tierOf(q.floor);
+  answered=false;
+  setBgSmart(imgPath(q.bg),q.bg);
+  renderHud();
+  $('scene-tag').textContent=q.tag;
+  $('reveal').style.display='none';
+  const opts=$('opts');opts.innerHTML='';
+  const card=$('floorcard');
+  card.classList.add('enter');void card.offsetWidth;card.classList.remove('enter');
+  const sh=shuffle(q.options);
+  await typewriter(q.narration);
+  sh.forEach((o,idx)=>{
+    const b=document.createElement('button');
+    b.className='opt';b.textContent=o.text;
+    b.addEventListener('click',()=>pick(b,o,q));
+    opts.appendChild(b);
+  });
+  $('ntext').addEventListener('click',()=>skipType(q.narration),{once:true});
+}
+
+async function pick(btn,opt,q){
+  if(answered)return;answered=true;
+  scores[q.id]=opt.score;
+  document.querySelectorAll('.opt').forEach(b=>{b.disabled=true;if(b===btn)b.classList.add('picked')});
+  sfx.pick();
+  await sleep(220);
+  const st=$('stamp');st.classList.add('hit');sfx.stamp();
+  await sleep(520);
+  $('r-text').textContent=q.reveal;
+  $('r-src').textContent=q.src?('出處 · '+q.src):'';
+  $('r-src').style.display=q.src?'block':'none';
+  $('reveal').style.display='flex';
+  $('reveal').scrollIntoView({behavior:REDUCED?'auto':'smooth',block:'end'});
+}
+
+$('up').addEventListener('click',async()=>{
+  $('stamp').classList.remove('hit');
+  const q=QUESTIONS[qi];
+  const promo=PROMOS.find(p=>p.after===q.floor);
+  const card=$('floorcard');
+  card.classList.add('leave');sfx.ding();
+  await sleep(450);
+  card.classList.remove('leave');
+  if(promo){showPromo(promo);return}
+  next();
+});
+function next(){
+  qi++;
+  if(qi>=QUESTIONS.length){showResult();return}
+  showFloor();
+}
+
+/* 升職 */
+let pendingPromo=null;
+function showPromo(p){
+  pendingPromo=p;
+  const nextTier=tierOf(p.after+1);
+  setBgSmart(imgPath(nextTier.bg),nextTier.bg);
+  switchScreen('s-promo');
+  $('b-icon').textContent=p.icon;
+  $('b-title').textContent=p.title;
+  $('b-sub').textContent=p.sub;
+  const badge=$('badge');badge.classList.remove('flip');void badge.offsetWidth;
+  setTimeout(()=>{badge.classList.add('flip');sfx.promo()},120);
+  confetti($('s-promo'),36);
+}
+$('promo-btn').addEventListener('click',()=>{
+  switchScreen('s-game');
+  next();
+});
+function confetti(host,n){
+  if(REDUCED)return;
+  const colors=['#ffcd75','#41a6f6','#38b764','#ef7d57','#f4f4f4'];
+  for(let i=0;i<n;i++){
+    const c=document.createElement('span');c.className='confetti';
+    c.style.left=(Math.random()*100)+'%';
+    c.style.background=colors[i%colors.length];
+    c.style.animationDuration=(2.2+Math.random()*1.8)+'s';
+    c.style.animationDelay=(Math.random()*.8)+'s';
+    host.appendChild(c);
+    setTimeout(()=>c.remove(),4600);
+  }
+}
+
+/* 畫面切換 */
+function switchScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.toggle('on',s.id===id));
+}
+
+/* ================= 結算 ================= */
+function calc(){
+  let b=0,bc=0,h=0,hc=0;
+  QUESTIONS.forEach(q=>{
+    const s=scores[q.id]||1;
+    if(q.axis==='brain'){b+=s;bc++}else{h+=s;hc++}
+  });
+  const brain=Math.round((b/bc)*10)/10,hand=Math.round((h/hc)*10)/10;
+  const power=Math.max(1,Math.round(brain*hand));
+  let arch;
+  if(brain>=5.5&&hand>=5.5)arch='eagle';
+  else if(brain>=5.5)arch='zhuge';
+  else if(hand>=5.5)arch='rocket';
+  else arch='tank';
+  let lv=0;
+  if(power>=73)lv=4;else if(power>=49)lv=3;else if(power>=25)lv=2;else if(power>=10)lv=1;
+  return{brain,hand,power,arch,lv};
+}
+async function countUp(el,to,suffix,ms){
+  if(REDUCED){el.innerHTML=to+(suffix||'');return}
+  const steps=Math.max(12,Math.min(40,to));const dur=(ms||900)/steps;
+  for(let i=1;i<=steps;i++){
+    const v=Math.round(to*i/steps*10)/10;
+    el.innerHTML=(Number.isInteger(to)?Math.round(v):v)+(suffix||'');
+    if(i%2===0)sfx.tick();
+    await sleep(dur);
+  }
+  el.innerHTML=to+(suffix||'');
+}
+async function showResult(){
+  const r=calc();
+  setBgSmart(imgPath('assets/scene-5-rooftop-finale.jpg'),'assets/scene-5-rooftop-finale.jpg');
+  switchScreen('s-result');
+  sfx.finale();
+  const blocks=['rb-power','rb-grid','rb-arch','rb-axes','rb-data','rb-gap','rb-course'];
+  /* 戰力 */
+  await sleep(300);$('rb-power').classList.add('in');
+  $('power-line').innerHTML='<span class="pb">大腦 '+r.brain+'</span> × <span class="ph">手腳 '+r.hand+'</span> ＝';
+  await countUp($('power-num'),r.power,'<small> 倍</small>',1100);
+  /* 窗燈 */
+  await sleep(350);$('rb-grid').classList.add('in');
+  const grid=$('wingrid');grid.innerHTML='';
+  const cells=[];
+  for(let i=0;i<100;i++){const w=document.createElement('span');w.className='win';grid.appendChild(w);cells.push(w)}
+  const order=shuffle(cells.map((_,i)=>i)).slice(0,r.power);
+  for(let i=0;i<order.length;i++){
+    cells[order[i]].classList.add('lit');
+    if(i%3===0)sfx.tick();
+    if(!REDUCED)await sleep(Math.max(8,300/r.power*1.2));
+  }
+  $('wincap').innerHTML='滿配 100 扇，你點亮了 <b>'+r.power+'</b> 扇';
+  /* 原型 */
+  await sleep(400);$('rb-arch').classList.add('in');sfx.promo();
+  const a=ARCHS[r.arch];LASTR=r;
+  const ai=$('a-img');ai.hidden=false;ai.onerror=()=>{ai.hidden=true};ai.src=a.img;
+  $('a-name').textContent=a.name;
+  $('a-desc').textContent=a.desc;$('a-next').textContent=a.next;
+  /* 雙軸與五階 */
+  await sleep(500);$('rb-axes').classList.add('in');
+  $('v-brain').textContent=r.brain+' / 10';$('v-hand').textContent=r.hand+' / 10';
+  await sleep(80);
+  $('bar-brain').style.width=(r.brain*10)+'%';
+  $('bar-hand').style.width=(r.hand*10)+'%';
+  const lad=$('ladder');lad.innerHTML='';
+  LADDER.forEach((l,i)=>{
+    const d=document.createElement('div');d.className='rung'+(i===r.lv?' cur':'');
+    d.innerHTML='<span class="lv">'+l.lv+'</span><span>'+l.name+'</span>'+(i===r.lv?'<span class="here">◀ 你在這</span>':'');
+    lad.appendChild(d);
+  });
+  /* 數據 */
+  await sleep(450);$('rb-data').classList.add('in');
+  const dl=$('datalines');dl.innerHTML='';
+  DATALINES.forEach(t=>{const p=document.createElement('p');p.className='dataline';p.textContent=t;dl.appendChild(p)});
+  /* 落差 */
+  await sleep(450);$('rb-gap').classList.add('in');
+  await sleep(300);
+  $('gap-hand').style.transition='width 2.4s linear';
+  $('gap-brain').style.transition='width 2.4s linear';
+  $('gap-hand').style.width='92%';
+  $('gap-brain').style.width=Math.min(60,r.brain*10)*0.55+'%';
+  /* 導流 */
+  await sleep(600);$('rb-course').classList.add('in');
+  $('c-name').textContent=a.course;
+  $('c-take').innerHTML=a.take;
+}
+function toast(msg){
+  const t=$('toast');t.textContent=msg;t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2200);
+}
+$('cta-course').addEventListener('click',()=>toast('即將開放，先把這頁存起來'));
+$('cta-book').addEventListener('click',()=>toast('即將開放，先把這頁存起來'));
+$('replay').addEventListener('click',()=>{
+  qi=0;Object.keys(scores).forEach(k=>delete scores[k]);
+  ['rb-power','rb-grid','rb-arch','rb-axes','rb-data','rb-gap','rb-course'].forEach(id=>$(id).classList.remove('in'));
+  $('gap-hand').style.width='0';$('gap-brain').style.width='0';
+  $('bar-brain').style.width='0';$('bar-hand').style.width='0';
+  $('s-result').scrollTop=0;
+  switchScreen('s-game');showFloor();
+});
+
+/* ================= 識別證分享卡 ================= */
+const SHARE_URL='ai-km-jiang.vercel.app/ai-power-tower';
+const FONT=(w,s)=>(w?w+' ':'')+s+'px "PingFang TC","Noto Sans TC","Microsoft JhengHei",sans-serif';
+function wrapText(x,text,cx,y,maxW,lh){
+  let line='';
+  for(const ch of text){
+    if(x.measureText(line+ch).width>maxW){x.fillText(line,cx,y);y+=lh;line=ch}
+    else line+=ch;
+  }
+  if(line){x.fillText(line,cx,y)}
+  return y;
+}
+async function buildShareCard(){
+  if(!LASTR)return null;
+  const r=LASTR,a=ARCHS[r.arch];
+  const W=1080,H=1350,c=document.createElement('canvas');c.width=W;c.height=H;
+  const x=c.getContext('2d');
+  x.fillStyle='#12141f';x.fillRect(0,0,W,H);
+  x.fillStyle='#ffcd75';
+  x.fillRect(0,0,W,12);x.fillRect(0,H-12,W,12);x.fillRect(0,0,12,H);x.fillRect(W-12,0,12,H);
+  x.textAlign='center';
+  x.fillStyle='#ffcd75';x.font=FONT(600,34);
+  x.fillText('AI 戰力大樓 · 戰力識別證',W/2,88);
+  const img=new Image();img.src=a.img;
+  try{await new Promise((res,rej)=>{img.onload=res;img.onerror=rej;setTimeout(rej,3000)})}catch(e){}
+  let y=132;
+  if(img.complete&&img.naturalWidth){
+    const S=300;x.imageSmoothingEnabled=false;
+    x.drawImage(img,(W-S)/2,y,S,S);
+    x.strokeStyle='#333c57';x.lineWidth=6;x.strokeRect((W-S)/2,y,S,S);
+    y+=S+72;
+  }else{y+=40}
+  x.fillStyle='#ffcd75';x.font=FONT(600,62);
+  x.fillText(a.name,W/2,y);y+=54;
+  x.fillStyle='#94a1b2';x.font=FONT('',32);
+  y=wrapText(x,a.desc,W/2,y,820,46)+58;
+  x.fillStyle='#f4f4f4';x.font=FONT('',40);
+  x.fillText('大腦 '+r.brain+' × 手腳 '+r.hand,W/2,y);y+=104;
+  x.fillStyle='#ffcd75';x.font=FONT(700,124);
+  x.fillText(r.power+' 倍',W/2,y);
+  x.fillStyle='#94a1b2';x.font=FONT('',30);
+  x.fillText('滿配 100 倍',W/2,y+46);y+=104;
+  const bw=700,bx=(W-bw)/2;
+  x.fillStyle='#24283d';x.fillRect(bx,y,bw,16);
+  x.fillStyle='#41a6f6';x.fillRect(bx,y,bw*r.brain/10,16);y+=28;
+  x.fillStyle='#24283d';x.fillRect(bx,y,bw,16);
+  x.fillStyle='#ffcd75';x.fillRect(bx,y,bw*r.hand/10,16);y+=56;
+  x.fillStyle='#f4f4f4';x.font=FONT('',32);
+  x.fillText('階級 '+LADDER[r.lv].lv+' · '+LADDER[r.lv].name,W/2,y);
+  x.fillStyle='#333c57';x.fillRect(120,H-256,W-240,4);
+  x.fillStyle='#f4f4f4';x.font=FONT('',30);
+  x.fillText('AI 把大腦放大十倍、手腳放大十倍',W/2,H-198);
+  x.fillText('大腦 × 手腳 ＝ 10 × 10，滿配 100 倍',W/2,H-152);
+  x.fillStyle='#94a1b2';
+  x.fillText('5 分鐘，領你的識別證和下一步練法',W/2,H-106);
+  x.fillStyle='#41a6f6';x.font=FONT(600,34);
+  x.fillText(SHARE_URL,W/2,H-50);
+  return c;
+}
+$('save-card').addEventListener('click',async()=>{
+  const c=await buildShareCard();
+  if(!c){toast('先完成測驗再領識別證');return}
+  c.toBlob(async b=>{
+    const file=new File([b],'AI戰力識別證.png',{type:'image/png'});
+    if(navigator.canShare&&navigator.canShare({files:[file]})){
+      try{await navigator.share({files:[file],title:'AI 戰力識別證'});return}catch(e){if(e.name==='AbortError')return}
+    }
+    const dl=document.createElement('a');
+    dl.href=URL.createObjectURL(b);dl.download='AI戰力識別證.png';dl.click();
+    toast('識別證已下載');
+  },'image/png');
+});
+
+/* 鍵盤 */
+document.addEventListener('keydown',e=>{
+  if(!$('s-game').classList.contains('on'))return;
+  const n=parseInt(e.key);
+  if(n>=1&&n<=4){const bs=document.querySelectorAll('.opt');if(bs[n-1]&&!bs[n-1].disabled)bs[n-1].click()}
+  if(e.key==='Enter'&&$('reveal').style.display==='flex')$('up').click();
+});
+
+/* ================= 開場 ================= */
+const PRELOAD_BASE=['assets/scene-2-junior-office.jpg','assets/scene-3-manager-office.jpg','assets/scene-4-executive-office.jpg','assets/scene-5-rooftop-finale.jpg'].concat(QUESTIONS.map(q=>q.bg));
+const PRELOAD=PRELOAD_BASE.concat(PRELOAD_BASE.map(p=>p.replace(/\.jpg$/,'-m.jpg')));
+applyTheme();
+refreshBg();
+$('start').addEventListener('click',async()=>{
+  try{ac().resume()}catch(e){}
+  sfx.ding();
+  PRELOAD.forEach(u=>{const img=new Image();img.src=u});
+  switchScreen('s-game');
+  showFloor();
+});
+</script>
+</body>
+</html>
