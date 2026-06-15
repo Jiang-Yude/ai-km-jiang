@@ -92,7 +92,7 @@ window.COURSES = [
     summary: "給商會社員：ChatGPT 專案、Gemini Gem、NotebookLM 三套工具的實作整合。",
     detail_url: "https://ai-km-jiang.vercel.app/courses/2026-05-30-yongli-ai-workshop/",
     materials: [
-      { label: "📊 上課簡報", url: "https://ai-km-jiang.vercel.app/courses/2026-05-30-yongli-ai-workshop/" }
+      { label: "上課簡報", url: "https://ai-km-jiang.vercel.app/courses/2026-05-30-yongli-ai-workshop/" }
     ],
     registration: {
       status: "private",

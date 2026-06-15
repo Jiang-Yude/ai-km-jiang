@@ -1,6 +1,6 @@
 # 江江教練官網 v0.8 學習地圖與 SEO/GEO 重整
 
-🌐 正式站：https://ai-km-jiang.vercel.app/
+正式站：https://ai-km-jiang.vercel.app/
 
 本版從 v0.7 複製成獨立工作副本，主改版目標是把「課程預告、課後簡報、學習地圖、Skills、合作案例」重新分流，並新增公開索引與 GEO 友善檔案。
 
@@ -20,7 +20,7 @@
 ├── sitemap.xml         # 搜尋引擎 sitemap
 ├── tuner.html          # 色彩 spotlight 調校工具
 ├── styles.css          # 全站共用樣式
-├── courses-data.js     # ⭐ 課程資料中心（唯一資料源）
+├── courses-data.js     # 課程資料中心（唯一資料源）
 ├── courses-render.js   # 首頁 + 子頁的課程渲染邏輯
 ├── spotlight.js        # 滑鼠跟隨光暈
 ├── robots.txt          # 爬蟲規則
@@ -86,7 +86,7 @@ Phase 1 不新增文章頁。文章先保留在課後簡報頁的方格子與 Th
 
 ### 「上課程看板：XX」觸發詞（標準流程）
 雷哥說「上課程看板：5/23 講師 Agent 工作流」→ AI 同步三處：
-1. 改 `00 工作台/📅 課程看板.md` 加卡片
+1. 改 `00 工作台/課程看板.md` 加卡片
 2. 改本資料夾的 `courses-data.js` 加 object
 3. `cd` 進來 `git add courses-data.js && git commit -m "新增課程：XX" && git push`
 

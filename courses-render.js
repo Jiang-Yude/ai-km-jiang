@@ -126,7 +126,7 @@
   // ─── 課程詳細頁連結（有 detail_url 才顯示） ───
   function detailLinkHTML(c) {
     if (!c.detail_url) return '';
-    return `<a class="course-detail-link" href="${escapeHtml(c.detail_url)}" target="_blank" rel="noopener">📄 完整課程內容與簡報 ↗</a>`;
+    return `<a class="course-detail-link" href="${escapeHtml(c.detail_url)}" target="_blank" rel="noopener">完整課程內容與簡報 ↗</a>`;
   }
 
   // ─── 單張卡片 HTML（極簡版：圖 + 日期 + 標題 + 模式 badges + 詳細連結 + CTA） ───
@@ -156,6 +156,7 @@
     if (!target) return;
     const upcoming = COURSES
       .filter(isUpcoming)
+      .filter(c => inferType(c) !== 'external' && inferType(c) !== 'podcast')
       .sort((a,b) => parseDate(a.date) - parseDate(b.date))
       .slice(0, n);
     if (upcoming.length === 0) {
@@ -183,6 +184,8 @@
 
     // 套 filter
     const filtered = COURSES.filter(c => {
+      // 免費講座頁只顯示免費講座（外部授課/Podcast 在邀約授課頁，付費課在收費課程頁）
+      if (inferType(c) !== 'free') return false;
       if (_courseFilter.type !== 'all' && inferType(c) !== _courseFilter.type) return false;
       if (_courseFilter.venue !== 'all' && (c.venue_mode || 'other') !== _courseFilter.venue) return false;
       if (_courseFilter.search) {
@@ -198,7 +201,11 @@
 
     // 課程預告只顯示未來場次；已結束課程整理到 resources.html。
     const incubating = filtered.filter(isIncubating);
-    const upcoming = filtered.filter(isUpcoming).sort((a,b)=>parseDate(a.date)-parseDate(b.date));
+    let upcoming = filtered.filter(isUpcoming).sort((a,b)=>parseDate(a.date)-parseDate(b.date));
+    // 每月兩堂：未來場次不足兩堂時，補最近的舊場次，免費講座頁永遠至少兩張卡
+    if (upcoming.length < 2) {
+      upcoming = upcoming.concat(filtered.filter(isPast).sort((a,b)=>parseDate(b.date)-parseDate(a.date)).slice(0, 2 - upcoming.length));
+    }
 
     // 沒結果
     const emptyEl = document.getElementById('no-courses-results');
@@ -262,10 +269,20 @@
     let html = '';
     const hasUpcoming = upcoming.length;
     if (hasUpcoming) {
-      html += `<div style="margin-bottom: 12px;"><div class="eyebrow">未來的課</div></div>`;
+      html += `<div style="margin-bottom: 12px;"><div class="eyebrow">近期免費講座</div></div>`;
       html += subsection('本月', currentMonth);
       html += subsection('下月', nextMonthArr);
       html += subsection('後續檔期', later, '更後面的場次與時間未定的課程。');
+    }
+    // 過去課程目錄：已上過的免費講座，含完整操作手冊或回放
+    const shownIds = new Set(upcoming.map(c => c.id));
+    const pastCatalog = filtered.filter(isPast).filter(c => !shownIds.has(c.id)).sort((a,b)=>parseDate(b.date)-parseDate(a.date));
+    if (pastCatalog.length) {
+      html += `<div style="margin:44px 0 14px;"><div class="eyebrow">過去課程目錄</div><p class="group-intro" style="color:var(--ink-faint);margin-top:4px;">已上過的免費講座，含完整操作手冊或回放，挑有興趣的補看。</p></div>`;
+      html += `<div class="list-grid cols-3">` + pastCatalog.map(c => {
+        const thumb = c.image ? `<div class="card-thumbnail"><img src="${escapeHtml(c.image)}" alt="${escapeHtml(c.title)}" loading="lazy"/></div>` : placeholderHTML(c);
+        return `<div class="list-card course-card${c.image ? ' has-thumb' : ''}">${thumb}<div class="card-body"><div class="card-meta"><span class="card-date">${escapeHtml(fmtDate(c))}</span></div><h3>${escapeHtml(c.title)}</h3>${detailLinkHTML(c)}${materialsHTML(c)}</div></div>`;
+      }).join('') + `</div>`;
     }
     if (!html) {
       html = `<p style="text-align:center;color:var(--ink-faint);padding:48px;">目前沒有課程預告。已上完的課程與簡報請看 <a href="resources.html" style="color:var(--c-coral);border-bottom:1px dashed var(--c-coral);">學習資源</a>。</p>`;
@@ -273,8 +290,30 @@
     target.innerHTML = html;
   };
 
+  // ─── 邀約授課頁：外部授課 + Podcast，最近 + 過去戰績 ───
+  window.renderInvitedTalks = function (selector) {
+    const target = document.querySelector(selector);
+    if (!target) return;
+    const all = COURSES.filter(c => inferType(c) === 'external' || inferType(c) === 'podcast');
+    const upcoming = all.filter(isUpcoming).sort((a,b)=>parseDate(a.date)-parseDate(b.date));
+    const past = all.filter(isPast).sort((a,b)=>parseDate(b.date)-parseDate(a.date));
+    function block(title, items) {
+      if (!items.length) return '';
+      return `<div class="group-header"><h2>${title}</h2><span class="group-count">${items.length} 場</span></div>
+        <div class="list-grid cols-3">${items.map(cardHTML).join('')}</div>`;
+    }
+    let html = '';
+    if (upcoming.length) html += `<div style="margin-bottom:12px;"><div class="eyebrow">最近的邀約</div></div>` + block('近期受邀', upcoming);
+    if (past.length) html += `<div style="margin:36px 0 12px;"><div class="eyebrow">過去的戰績</div></div>` + block('講過的場次', past);
+    if (!html) html = `<p style="text-align:center;color:var(--ink-faint);padding:48px;">邀約授課場次整理中。</p>`;
+    target.innerHTML = html;
+  };
+
   // ─── 自動執行（看頁面有沒有 target） ───
   document.addEventListener('DOMContentLoaded', () => {
+    if (document.getElementById('invited-talks')) {
+      window.renderInvitedTalks('#invited-talks');
+    }
     if (document.getElementById('home-upcoming')) {
       window.renderHomeUpcoming('#home-upcoming', 3);
     }
