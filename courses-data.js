@@ -145,7 +145,7 @@ window.COURSES = [
     date: "2026-06-14",
     time: "20:00",
     title: "把 YouTube 變成簡報：時間軸、截圖、重點一次整理好",
-    type_label: "免費講座",
+    type_label: "免費線上講座",
     image: null,
     venue_mode: "online",
     host: "江江教練",

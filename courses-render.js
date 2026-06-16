@@ -201,9 +201,12 @@
 
     // 課程預告只顯示未來場次；已結束課程整理到 resources.html。
     const incubating = filtered.filter(isIncubating);
-    let upcoming = filtered.filter(isUpcoming).sort((a,b)=>parseDate(a.date)-parseDate(b.date));
-    // 每月兩堂：未來場次不足兩堂時，補最近的舊場次，免費講座頁永遠至少兩張卡
-    if (upcoming.length < 2) {
+    const trueUpcoming = filtered.filter(isUpcoming).sort((a,b)=>parseDate(a.date)-parseDate(b.date));
+    // 空窗判斷：完全沒有未來的免費場 → 顯示「下月規劃中、加社群」提示，不補過去場硬湊
+    const isFreeGap = trueUpcoming.length === 0;
+    let upcoming = trueUpcoming;
+    // 有未來場但不足兩堂時補最近舊場次湊兩張；空窗時不補，留給提示卡
+    if (!isFreeGap && upcoming.length < 2) {
       upcoming = upcoming.concat(filtered.filter(isPast).sort((a,b)=>parseDate(b.date)-parseDate(a.date)).slice(0, 2 - upcoming.length));
     }
 
@@ -267,6 +270,16 @@
     }
 
     let html = '';
+    // 空窗：沒有未來免費場時顯示「下月規劃中、加社群」提示卡（人看版，呼應 AI 接待話術）
+    if (isFreeGap) {
+      const lineUrl = 'https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ';
+      html += `<div style="border:1px solid var(--line,#E5DCCE);border-radius:16px;padding:28px 26px;margin-bottom:32px;background:var(--c-sand,#FBF7F0);">
+        <div class="eyebrow">免費線上講座</div>
+        <h2 style="font-size:1.5rem;margin:6px 0 10px;">下個月的課表還在規劃中</h2>
+        <p style="color:var(--ink-soft,#6E6456);line-height:1.85;margin:0 0 18px;">目前這個月兩場免費講座已經上完了。歡迎加入我的 LINE 社群一起討論、提出你想聽的主題，好的問題很可能就成為下一場免費講座的題目喔。</p>
+        <a class="cta-btn" href="${lineUrl}" target="_blank" rel="noopener">加入 LINE 社群一起討論 ↗</a>
+      </div>`;
+    }
     const hasUpcoming = upcoming.length;
     if (hasUpcoming) {
       html += `<div style="margin-bottom: 12px;"><div class="eyebrow">近期免費講座</div></div>`;
