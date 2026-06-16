@@ -53,11 +53,8 @@ window.COURSES = [
     detail_url: "https://jiang-yude.github.io/my-0523-agent-workflow/",
     materials: [],
     registration: {
-      status: "open",
-      url: "https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ",
-      label: "免費參加 ↗",
-      tooltip: "我每月固定舉辦兩場免費線上講座，\n講座資訊請看我的 LINE 社群",
-      note: "免費，加入 LINE 社群收到 Zoom 連結"
+      status: "ended",
+      note: "已結束，新場次會在 LINE 社群公布"
     }
   },
   {
@@ -133,11 +130,8 @@ window.COURSES = [
     detail_url: "https://ai-km-jiang.vercel.app/courses/2026-06-03-1719-ai-employee-course.html",
     materials: [],
     registration: {
-      status: "open",
-      url: "https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ",
-      label: "免費參加 ↗",
-      tooltip: "報名請加入我的 LINE 社群，\n講座連結會分享在社群記事本",
-      note: "免費，講座連結會分享在 LINE 社群記事本"
+      status: "ended",
+      note: "已結束，新場次會在 LINE 社群公布"
     }
   },
   {
@@ -154,11 +148,8 @@ window.COURSES = [
     detail_url: null,
     materials: [],
     registration: {
-      status: "open",
-      url: "https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ",
-      label: "免費參加 ↗",
-      tooltip: "報名請加入我的 LINE 社群，\n講座連結會分享在社群記事本",
-      note: "免費，講座連結會分享在 LINE 社群記事本"
+      status: "ended",
+      note: "已結束，新場次會在 LINE 社群公布"
     }
   },
   {
