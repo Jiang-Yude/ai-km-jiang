@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="index,follow">
+<title>我用 AI 代理工作流，蓋一套程式自動化工作流｜江江教練 · AI 知識管理</title>
+<meta name="description" content="自動化可以分兩層看：一層是建立自動化，一層是自動化自己跑。用 Codex 設定 LINE 備份機器人為例，後面自己跑的是程式，前面把它生出來的過程交給 AI 代理。這就是用 AI 代理工作流，蓋一套程式自動化工作流。">
+<link rel="canonical" href="https://ai-km-jiang.vercel.app/articles/agent-workflow-builds-automation/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="我用 AI 代理工作流，蓋一套程式自動化工作流｜江江教練">
+<meta property="og:description" content="自動化分兩層：建立自動化，跟自動化自己跑。後面是程式，前面把它生出來的過程交給 AI 代理。">
+<meta property="og:url" content="https://ai-km-jiang.vercel.app/articles/agent-workflow-builds-automation/">
+<meta property="og:image" content="https://ai-km-jiang.vercel.app/articles/agent-workflow-builds-automation/assets/00-summary.jpg">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:site_name" content="江江教練 · AI 知識管理">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="我用 AI 代理工作流，蓋一套程式自動化工作流｜江江教練">
+<meta name="twitter:description" content="自動化分兩層：建立自動化，跟自動化自己跑。後面是程式，前面交給 AI 代理。">
+<meta name="twitter:image" content="https://ai-km-jiang.vercel.app/articles/agent-workflow-builds-automation/assets/00-summary.jpg">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"我用 AI 代理工作流，蓋一套程式自動化工作流","description":"自動化分兩層：建立自動化，跟自動化自己跑。後面是程式，前面把它生出來的過程交給 AI 代理。以 Codex 設定 LINE 備份機器人為例。","author":{"@type":"Person","name":"江昱德","alternateName":"江江教練","jobTitle":"隱性知識提煉師、AI 應用規劃師"},"isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://ai-km-jiang.vercel.app/"},"inLanguage":"zh-Hant","url":"https://ai-km-jiang.vercel.app/articles/agent-workflow-builds-automation/"}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{--ink:#1a1612;--paper:#fefcf8;--muted:#6a635a;--line:#d8cdb8;--green:#5f7553;--blue:#5689b8;--orange:#e85a4f;--soft:#faf5ec;--dark:#2a2018}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC","Segoe UI",sans-serif}
+a{color:inherit}
+.topbar{position:sticky;top:0;z-index:20;display:flex;gap:10px;align-items:center;justify-content:space-between;padding:12px clamp(18px,4vw,56px);border-bottom:1px solid rgba(26,22,18,.12);background:rgba(254,252,248,.92);backdrop-filter:blur(12px)}
+.brand{font-weight:900;font-size:14px;text-decoration:none}
+.nav{display:flex;gap:8px;overflow:auto}
+.nav a{white-space:nowrap;text-decoration:none;border:1px solid rgba(26,22,18,.16);border-radius:999px;padding:8px 11px;background:#fff;font-size:14px;font-weight:800}
+.hero{min-height:58vh;display:grid;align-items:end;padding:56px clamp(20px,6vw,88px);background:linear-gradient(135deg,rgba(42,32,24,.92),rgba(95,117,83,.84));color:#fff;overflow:hidden}
+.kicker{font:900 13px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;color:#f6d7a6;text-transform:uppercase}
+.hero h1{max-width:1040px;margin:16px 0 18px;font-size:clamp(34px,5.6vw,68px);line-height:1.1;overflow-wrap:anywhere}
+.hero p{max-width:820px;font-size:clamp(18px,2vw,23px);line-height:1.62;color:rgba(255,255,255,.9)}
+.cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
+.cta a{display:inline-flex;align-items:center;text-decoration:none;border-radius:8px;padding:12px 16px;font-weight:900}
+.cta .primary{background:#fff;color:#1a1612}.cta .ghost{border:1px solid rgba(255,255,255,.32);color:#fff;background:rgba(255,255,255,.08)}
+.section{padding:54px clamp(20px,6vw,88px);border-top:1px solid var(--line)}
+.inner{width:min(1000px,100%);margin:0 auto}
+.section h2{font-size:clamp(26px,4.2vw,48px);line-height:1.12;margin:0 0 18px}
+.lead{font-size:clamp(18px,1.6vw,22px);line-height:1.7;color:#3a342d;max-width:900px}
+.section p{font-size:18px;line-height:1.74;color:#3a342d}.section p+p{margin-top:14px}
+.section ul{padding-left:1.4em;font-size:18px;line-height:1.74;color:#3a342d}.section li{margin-bottom:8px}
+.meaning{margin:22px 0;padding:16px 18px;border-left:5px solid var(--green);background:rgba(95,117,83,.12);border-radius:6px;line-height:1.7;font-size:19px}
+.meaning b{display:block;color:var(--green);margin-bottom:4px}
+/* 文章資訊卡 */
+.infocard{background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px 24px 22px;box-shadow:0 8px 22px rgba(107,74,42,.08);margin-top:8px}
+.infocard-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.info-item{padding:18px 14px 0}
+.info-item b{display:block;font-size:14px;font-weight:900;letter-spacing:.04em;margin-bottom:7px;text-transform:uppercase}
+.info-item:nth-child(1) b{color:var(--green)}.info-item:nth-child(2) b{color:var(--orange)}.info-item:nth-child(3) b{color:var(--blue)}
+.info-item p{margin:0;font-size:17px;line-height:1.6;color:#3a342d}
+.tagrow{display:flex;flex-wrap:wrap;gap:7px;margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
+.tag{font-size:14px;color:var(--muted);background:var(--soft);border:1px solid var(--line);border-radius:999px;padding:4px 11px}
+/* 兩層 */
+.layers{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:24px}
+.layer{background:#fff;border:1px solid var(--line);border-radius:10px;padding:22px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.layer small{display:block;color:var(--orange);font:900 12px/1.2 ui-monospace,monospace;margin-bottom:8px}
+.layer h4{margin:0 0 8px;font-size:21px}
+.layer p{margin:0;font-size:17px;line-height:1.64;color:#3a342d}
+.layer.run{border-color:var(--green)}
+/* 流程步驟 */
+.flow{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:22px}
+.flow div{background:var(--soft);border:1px solid var(--line);border-radius:8px;padding:14px;font-size:16px;line-height:1.5;color:#3a342d}
+.flow b{display:block;color:var(--green);font-size:13px;font-family:ui-monospace,monospace;margin-bottom:6px}
+/* 輪播卡 gallery */
+.gallery{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:22px}
+.gallery img{width:100%;border-radius:10px;border:1px solid var(--line);box-shadow:0 8px 22px rgba(107,74,42,.1);display:block}
+.gallery a:first-child{grid-column:span 2;grid-row:span 2}
+.cta-band{background:var(--dark);color:#fff}.cta-band .section{border-top:none}
+.cta-band .inner{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(260px,.85fr);gap:26px;align-items:start}
+.cta-band h2{font-size:clamp(26px,4vw,44px);margin:0 0 16px}.cta-band p,.cta-band .lead{color:rgba(255,255,255,.84);font-size:18px;line-height:1.72}
+.cta-card{border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.06);border-radius:8px;padding:22px}
+.cta-card b{display:block;color:#f6d7a6;margin-bottom:10px;font-size:18px}.cta-card p{margin:0 0 14px}
+.footer{padding:30px clamp(20px,6vw,88px);font-size:14px;color:var(--muted);background:#fff;border-top:1px solid var(--line)}
+.footer-inner{width:min(1000px,100%);margin:0 auto}
+.footer-links{display:flex;flex-wrap:wrap;gap:6px 12px;margin-bottom:14px}.footer-links a{color:var(--blue);font-weight:900;text-decoration:none;font-size:14px}
+.footer-brand{font-weight:900;font-size:15px;margin-bottom:10px}.footer-note{font-size:13px;line-height:1.6}
+@media(max-width:820px){.infocard-grid{grid-template-columns:1fr}.layers{grid-template-columns:1fr}.flow{grid-template-columns:1fr 1fr}.gallery{grid-template-columns:1fr 1fr}.gallery a:first-child{grid-column:span 2;grid-row:auto}.cta-band .inner{grid-template-columns:1fr}.section{padding:40px 20px}.hero{min-height:52vh}.hero h1{word-break:break-word}html,body{overflow-x:hidden}}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="../../articles.html">江江教練 · 深度文章</a>
+  <nav class="nav" aria-label="頁面導覽">
+    <a href="../../articles.html" style="background:#1a1612;color:#fff;border-color:#1a1612">← 深度文章總站</a>
+    <a href="#layers">兩層</a>
+    <a href="#case">LINE 例子</a>
+    <a href="#where">AI 在哪</a>
+    <a href="#cards">輪播卡</a>
+    <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">LINE 社群 ↗</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <div>
+    <div class="kicker">AI 工作流 / 案例</div>
+    <h1>我用 AI 代理工作流，<br>蓋一套程式自動化工作流</h1>
+    <p>最近跟朋友聊到自動化工作流，我發現可以分兩層看：一層是建立自動化，一層是自動化自己跑。把這兩層分開，就比較容易看懂 AI 到底該插手在哪一段。</p>
+    <div class="cta">
+      <a class="primary" href="#layers">看這兩層</a>
+      <a class="ghost" href="#cards">看輪播卡版本</a>
+    </div>
+  </div>
+</section>
+
+<main>
+
+<section class="section">
+  <div class="inner">
+    <div class="infocard">
+      <div class="infocard-grid">
+        <div class="info-item">
+          <b>適合誰</b>
+          <p>想用 AI 把重複工作變成會自己跑的流程，但分不清 AI 與程式各自負責哪一段的人。</p>
+        </div>
+        <div class="info-item">
+          <b>解決什麼問題</b>
+          <p>搞不清楚「AI 自動化」到底是 AI 在跑、還是程式在跑，也不知道 AI 該插手在哪一段。</p>
+        </div>
+        <div class="info-item">
+          <b>一句話重點</b>
+          <p>用 AI 代理工作流，去建立一套程式自動化工作流。後面自己跑的可以是程式，前面把它生出來的過程交給 AI。</p>
+        </div>
+      </div>
+      <div class="tagrow">
+        <span class="tag">主題：AI Agent 工作流</span>
+        <span class="tag">主題：知識資產累積</span>
+        <span class="tag">程度：工作流設計</span>
+        <span class="tag">適合：一人公司</span>
+        <span class="tag">類型：工作流案例</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="layers">
+  <div class="inner">
+    <h2>先把工作流拆成兩層</h2>
+    <p class="lead">很多人講自動化會混在一起講。我習慣把它拆成兩層，前面那層跟後面那層，需要的東西其實不一樣。</p>
+    <div class="layers">
+      <div class="layer">
+        <small>第一層</small>
+        <h4>建立自動化</h4>
+        <p>把一個流程從無到有生出來：要接什麼、規則怎麼定、怎麼測試。這一層需要判斷與設定。</p>
+      </div>
+      <div class="layer run">
+        <small>第二層</small>
+        <h4>自動化自己跑</h4>
+        <p>流程設定好之後，就是程式自己照規則跑。這一層不需要每次都有人盯，也不一定跟 AI 有關。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="case">
+  <div class="inner">
+    <h2>一個實際例子：LINE 備份機器人</h2>
+    <p class="lead">像我最近用 Codex 幫我設定 LINE 機器人，目標很單純：群組裡幾點幾分、誰說了什麼、誰丟了什麼檔案，都依照群組和專案，自動備份到電腦裡。</p>
+    <p>這個 LINE 備份機器人設定好之後，其實就是程式自己在跑：</p>
+    <div class="flow">
+      <div><b>有新訊息</b>就記錄下來</div>
+      <div><b>有檔案</b>就存檔</div>
+      <div><b>照規則</b>分類</div>
+      <div><b>照位置</b>備份</div>
+    </div>
+    <p style="margin-top:20px">這一段是程式自動化，跟 AI 沒有直接關係，也不一定需要 GPT 的 API key。它就是照著設定好的規則，一直跑下去。</p>
+  </div>
+</section>
+
+<section class="section" id="where">
+  <div class="inner">
+    <h2>那 AI 出現在哪裡？</h2>
+    <p class="lead">AI 出現在前面建立流程的階段。</p>
+    <p>我沒有自己慢慢研究 LINE 後台、webhook、權限、程式怎麼接、怎麼測試，我直接叫 Codex 幫我處理。所以我現在會這樣理解：我用 AI 代理工作流，去建立一套程式自動化工作流。</p>
+    <div class="meaning">後面自動跑的部分，可以完全是程式；前面把它生出來的過程，可以交給 AI 代理。</div>
+    <p>技能包也是類似的概念。它把做事的方法固定下來，讓下次可以重複執行。所以工作流的重點在於：有沒有把一件事，整理成可以反覆執行的系統。</p>
+  </div>
+</section>
+
+<section class="section" id="cards">
+  <div class="inner">
+    <h2>輪播卡版本</h2>
+    <p class="lead">同一個概念，也整理成社群輪播卡。第一張是總結，後面是一頁一頁的拆解。</p>
+    <div class="gallery">
+      <a href="assets/00-summary.jpg" target="_blank" rel="noopener"><img src="assets/00-summary.jpg" alt="代理工作流蓋自動化工作流 總結卡" loading="lazy"></a>
+      <a href="assets/01-carousel-card.jpg" target="_blank" rel="noopener"><img src="assets/01-carousel-card.jpg" alt="輪播卡 1" loading="lazy"></a>
+      <a href="assets/02-carousel-card.jpg" target="_blank" rel="noopener"><img src="assets/02-carousel-card.jpg" alt="輪播卡 2" loading="lazy"></a>
+      <a href="assets/03-carousel-card.jpg" target="_blank" rel="noopener"><img src="assets/03-carousel-card.jpg" alt="輪播卡 3" loading="lazy"></a>
+      <a href="assets/04-carousel-card.jpg" target="_blank" rel="noopener"><img src="assets/04-carousel-card.jpg" alt="輪播卡 4" loading="lazy"></a>
+      <a href="assets/05-carousel-card.jpg" target="_blank" rel="noopener"><img src="assets/05-carousel-card.jpg" alt="輪播卡 5" loading="lazy"></a>
+      <a href="assets/06-carousel-card.jpg" target="_blank" rel="noopener"><img src="assets/06-carousel-card.jpg" alt="輪播卡 6" loading="lazy"></a>
+      <a href="assets/07-carousel-card.jpg" target="_blank" rel="noopener"><img src="assets/07-carousel-card.jpg" alt="輪播卡 7" loading="lazy"></a>
+    </div>
+  </div>
+</section>
+
+<section class="section cta-band">
+  <div class="inner">
+    <div>
+      <h2>把一件事，整理成可以反覆執行的系統</h2>
+      <p class="lead">建立自動化的那一段交給 AI 代理，自動跑的那一段交給程式。重點不是哪一段用了 AI，而是你有沒有把一件事，留成下次可以重複執行的流程。</p>
+      <p>這也是我一直在做的事：幫個人和團隊把工作整理成 AI 接得住、能重複跑的流程。</p>
+    </div>
+    <div class="cta-card">
+      <b>加入 LINE 社群</b>
+      <p>我每月兩場免費線上講座，分享實戰經驗與方法論。有顧問需求或想持續學習，都歡迎先從社群開始。</p>
+      <div class="cta"><a class="primary" href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">免費加入 LINE 社群 ↗</a></div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">江江教練 · AI 知識管理</div>
+    <div class="footer-links">
+      <a href="../../articles.html">← 回深度文章總站</a>
+      <a href="../../index.html">首頁</a>
+      <a href="../../learn.html">自學資源</a>
+      <a href="../../skills.html">Skills 下載</a>
+      <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">LINE 社群 ↗</a>
+      <a href="https://www.threads.com/@jiang_yude_coach" target="_blank" rel="noopener">Threads ↗</a>
+      <a href="https://vocus.cc/salon/Jiang_Coach" target="_blank" rel="noopener">方格子 ↗</a>
+    </div>
+    <div class="footer-note">這篇的脆文與觀點日記版本同步整理，內容相同、長度不同。</div>
+  </div>
+</footer>
+
+</body>
+</html>

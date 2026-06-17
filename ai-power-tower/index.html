@@ -6,11 +6,11 @@
 <meta name="robots" content="index, follow">
 <title>AI 戰力大樓｜滿配 100 倍，你現在幾倍？</title>
 <link rel="canonical" href="https://ai-km-jiang.vercel.app/ai-power-tower/" />
-<meta name="description" content="AI 戰力大樓：16 層職場情境測驗，測出你用 AI 的大腦倍數與手腳倍數，並給你下一步的練法。江江教練 AI 知識管理。" />
+<meta name="description" content="AI 戰力大樓：20 層職場情境測驗，測出你用 AI 的大腦倍數與手腳倍數，並給你下一步的練法。江江教練 AI 知識管理。" />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://ai-km-jiang.vercel.app/ai-power-tower/" />
 <meta property="og:title" content="AI 戰力大樓｜滿配 100 倍，你現在幾倍？" />
-<meta property="og:description" content="16 層職場情境測驗，測出你用 AI 的大腦倍數與手腳倍數，並給你下一步的練法。" />
+<meta property="og:description" content="20 層職場情境測驗，測出你用 AI 的大腦倍數與手腳倍數，並給你下一步的練法。" />
 <meta property="og:image" content="https://ai-km-jiang.vercel.app/ai-power-tower/assets/scene-1-morning.jpg" />
 <meta name="twitter:card" content="summary_large_image" />
 <style>
@@ -99,8 +99,8 @@ body.light .t-exp b{color:#b8771f}
 #s-game #mute-spacer{width:100px}
 
 /* ===== 題目區 ===== */
-#stagewrap{position:relative;z-index:4;flex:1;display:flex;flex-direction:column;justify-content:center;padding:0 14px calc(14px + env(safe-area-inset-bottom));overflow:hidden}
-#floorcard{display:flex;flex-direction:column;gap:12px;transition:transform .55s cubic-bezier(.3,.8,.3,1),opacity .4s}
+#stagewrap{position:relative;z-index:4;flex:1;display:flex;flex-direction:column;justify-content:center;padding:0 14px calc(14px + env(safe-area-inset-bottom));overflow-y:auto;-webkit-overflow-scrolling:touch}
+#floorcard{display:flex;flex-direction:column;gap:12px;margin-top:auto;margin-bottom:auto;transition:transform .55s cubic-bezier(.3,.8,.3,1),opacity .4s}
 #floorcard.leave{transform:translateY(-110%);opacity:0;transition:transform .45s cubic-bezier(.6,0,.8,.4),opacity .4s}
 #floorcard.enter{transform:translateY(110%);opacity:0;transition:none}
 
@@ -162,8 +162,10 @@ body.light .t-exp b{color:#b8771f}
 .r-block{opacity:0;transform:translateY(24px);transition:opacity .55s,transform .55s}
 .r-block.in{opacity:1;transform:none}
 .r-head{text-align:center}
-.r-head .r-cap{font-size:15px;color:var(--muted);letter-spacing:.2em;margin-bottom:10px}
-#power-line{font-size:21px;margin-bottom:4px}
+.r-cap{font-size:15px;color:var(--muted);letter-spacing:.2em;margin-bottom:10px}
+#power-line{font-size:25px;font-weight:700;margin-bottom:8px}
+#rb-score{text-align:center}
+.score-grid-title{margin-top:22px}
 #power-line .pb{color:var(--brain)} #power-line .ph{color:var(--hand)}
 #power-num{font-size:76px;line-height:1.1;color:var(--gold);text-shadow:4px 4px 0 #0c0e16}
 #power-num small{font-size:30px;color:var(--ink)}
@@ -175,9 +177,9 @@ body.light .t-exp b{color:#b8771f}
 #wincap{text-align:center;font-size:15px;color:var(--muted)}
 #wincap b{color:var(--gold)}
 .idcard{text-align:center;padding:24px 18px;background:var(--panel);box-shadow:0 0 0 3px var(--gold),0 0 0 6px #0c0e16}
-.idcard .a-img{display:block;width:160px;height:160px;margin:0 auto 14px;image-rendering:pixelated;box-shadow:0 0 0 3px var(--line);object-fit:cover}
+.idcard .a-img{display:block;width:220px;height:220px;max-width:80%;margin:0 auto 16px;image-rendering:pixelated;box-shadow:0 0 0 3px var(--line);object-fit:cover}
 .idcard .a-img[hidden]{display:none}
-.idcard .a-name{font-size:27px;color:var(--gold);margin-bottom:10px}
+.idcard .a-name{font-size:38px;line-height:1.25;color:var(--gold);margin-bottom:12px}
 .idcard .a-desc{font-size:17px;line-height:1.7;color:var(--ink)}
 .idcard .a-next{font-size:15px;line-height:1.7;color:var(--muted);margin-top:12px;padding-top:12px;border-top:2px solid var(--line)}
 .bar-row{margin-bottom:12px}
@@ -205,14 +207,43 @@ body.light .t-exp b{color:#b8771f}
 .course .c-take b{color:var(--ink)}
 .cta-col{display:flex;flex-direction:column;gap:12px}
 .cta-col .btn{width:100%;text-align:center}
+/* ===== 使用畫像（不計分，導流用） ===== */
+.profile-sub{font-size:18px;color:var(--muted);text-align:center;margin-bottom:16px;line-height:1.6}
+.pf-q{margin-bottom:16px}
+.pf-ask{font-size:18px;margin-bottom:9px}
+.pf-opts{display:flex;flex-direction:column;gap:7px}
+.pf-opt{text-align:left;cursor:pointer;border:none;font-family:inherit;font-size:18px;line-height:1.5;color:var(--ink);background:rgba(36,40,61,.9);padding:11px 13px;box-shadow:0 0 0 2px var(--line);transition:box-shadow .15s,background .15s}
+.pf-opt:hover,.pf-opt:focus-visible{background:#2c3150;box-shadow:0 0 0 2px var(--gold);outline:none}
+.pf-opt.sel{background:#2f3a2f;box-shadow:0 0 0 2px var(--good)}
+.pf-readout{font-size:18px;line-height:1.75;margin-top:6px;padding-top:14px;border-top:2px solid var(--line)}
+.pf-readout b{color:var(--gold)}
+body.light .pf-opt{background:rgba(255,255,255,.9);color:var(--ink)}
+body.light .pf-opt:hover,body.light .pf-opt:focus-visible{background:#fff6e2;box-shadow:0 0 0 2px #d98a2b}
+body.light .pf-opt.sel{background:#e9f4e4;box-shadow:0 0 0 2px var(--good)}
+body.light .pf-readout b{color:#b8771f}
+/* ===== 全人類塔（81 億人，估算） ===== */
+#popgrid{display:grid;grid-template-columns:repeat(50,1fr);gap:1px;padding:10px;background:#171927;box-shadow:0 0 0 2px var(--line);margin-bottom:12px}
+.pdot{aspect-ratio:1;background:#3a3f57}
+.pdot.g{background:#57c98a}
+.pdot.y{background:#ffcd75}
+.pdot.r{background:#ef5350}
+.pdot.you{box-shadow:0 0 0 2px #fff,0 0 8px 2px rgba(255,255,255,.9);transform:scale(1.8);position:relative;z-index:2}
+#poplegend{display:flex;flex-wrap:wrap;gap:8px 14px;justify-content:center;font-size:18px;color:var(--muted);margin-bottom:8px}
+.lg-item{display:flex;align-items:center;gap:6px}
+.lg-sw{width:13px;height:13px;display:inline-block;box-shadow:0 0 0 1px rgba(0,0,0,.3)}
+body.light #popgrid{background:#efe7d4}
+body.light .pdot{background:#cdc4ad}
+body.light .pdot.g{background:#4bb87a}
+body.light .pdot.you{box-shadow:0 0 0 2px #2b2622,0 0 8px 2px rgba(184,119,31,.9)}
 #toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%) translateY(20px);z-index:90;background:var(--panel);color:var(--ink);font-size:16px;padding:12px 20px;box-shadow:0 0 0 3px var(--gold);opacity:0;pointer-events:none;transition:opacity .3s,transform .3s;white-space:nowrap}
 #toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 /* ===== 全站最小字 18px ===== */
-#scene-tag,.hud-tier,.t-badge,.t-meta,#reveal .r-tag,#reveal .r-src,.badge .b-top,.r-head .r-cap,.p-title,#wincap,.idcard .a-next,.bar-lab,.rung,.rung .lv,.rung .here,.dataline,.datanote,.gap-time,#gap-cap,.course .c-tag,.course .c-take,#toast,.btn.ghost{font-size:18px}
+#scene-tag,.hud-tier,.t-badge,.t-meta,#reveal .r-tag,#reveal .r-src,.badge .b-top,.r-cap,.p-title,#wincap,.idcard .a-next,.bar-lab,.rung,.rung .lv,.rung .here,.dataline,.datanote,.gap-time,#gap-cap,.course .c-tag,.course .c-take,#toast,.btn.ghost{font-size:18px}
 
 /* ===== 明亮主題 ===== */
 body.light #hud{background:rgba(255,253,247,.92)}
 body.light #mute,body.light #theme{background:rgba(255,253,247,.95);color:#2b2622;box-shadow:0 0 0 3px #b8771f}
+body.light #tune-btn{background:rgba(255,253,247,.95);color:#2b2622;box-shadow:0 0 0 2px #b8771f}
 body.light{--ink:#2b2622;--muted:#6f6552;--line:#cdbfa2;--night:#dfe6f0}
 body.light .bg::after{background:linear-gradient(180deg,rgba(245,242,234,0) 0%,rgba(245,242,234,.06) 45%,rgba(245,242,234,.62) 78%,rgba(245,242,234,.8) 100%)}
 body.light #narr,body.light #reveal{background:rgba(252,249,241,.9)}
@@ -255,7 +286,7 @@ body.light .gap-time,body.light .r-head .r-cap,body.light .p-title,body.light #s
 /* ===== 桌面寬版 ===== */
 @media (min-width: 768px){
   #app{max-width:none}
-  #hud{max-width:760px;width:100%;margin:16px auto 0}
+  #hud{max-width:760px;width:100%;margin:66px auto 0}
   #floorcard{width:min(740px,100%);margin:0 auto}
   #opts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
   #ntext{min-height:84px}
@@ -301,8 +332,8 @@ body.light .gap-time,body.light .r-head .r-cap,body.light .p-title,body.light #s
     <div class="t-card pix">
       <div class="t-badge">AI 戰力測驗</div>
       <h1>AI 戰力大樓</h1>
-      <p class="t-exp">AI 用得好，能把你的大腦放大十倍，手腳也放大十倍。<br>大腦：你會不會想。手腳：你會不會派。<br><b>大腦 × 手腳 ＝ 10 × 10，滿配就是 100 倍。</b><br>這份測驗用 16 個職場情境，看你現在放大到幾倍。</p>
-      <p class="t-meta">16 層樓 · 約 5 分鐘<br>測完領你的戰力識別證，和一條下一步的練法</p>
+      <p class="t-exp">AI 用得好，能把你的大腦放大十倍，手腳也放大十倍。<br>用 AI 輔助思考，讓你能想得更深更遠。<br>用 AI 自動執行，讓你能做得更快更多。<br><b>大腦 × 手腳 ＝ 10 × 10，滿配就是 100 倍。</b><br>這份測驗用 20 個職場情境，看你現在放大到幾倍。</p>
+      <p class="t-meta">20 層樓 · 約 6 分鐘<br>測完領你的戰力識別證，和一條下一步的練法</p>
       <button class="btn breathe" id="start">推門進去</button>
     </div>
   </section>
@@ -349,16 +380,6 @@ body.light .gap-time,body.light .r-head .r-cap,body.light .p-title,body.light #s
   <!-- 結算 -->
   <section class="screen" id="s-result">
     <div class="r-inner">
-      <div class="r-block r-head" id="rb-power">
-        <p class="r-cap">頂樓 · 戰力結算</p>
-        <p id="power-line"><span class="pb">大腦 0</span> × <span class="ph">手腳 0</span> ＝</p>
-        <p id="power-num">0<small> 倍</small></p>
-      </div>
-      <div class="r-block panel" id="rb-grid">
-        <p class="p-title">滿配 100 扇窗</p>
-        <div id="wingrid"></div>
-        <p id="wincap">你點亮了 <b>0</b> 扇</p>
-      </div>
       <div class="r-block idcard" id="rb-arch">
         <img id="a-img" class="a-img" alt="">
         <p class="a-name" id="a-name"></p>
@@ -366,20 +387,53 @@ body.light .gap-time,body.light .r-head .r-cap,body.light .p-title,body.light #s
         <p class="a-next" id="a-next"></p>
         <button class="btn" id="save-card" style="margin-top:16px">存下識別證</button>
       </div>
+      <div class="r-block panel" id="rb-score">
+        <p class="r-cap">頂樓 · 戰力結算</p>
+        <p id="power-line"><span class="pb">大腦 0</span> × <span class="ph">手腳 0</span> ＝</p>
+        <p id="power-num">0<small> 倍</small></p>
+        <p class="p-title score-grid-title">滿配 100 扇窗</p>
+        <div id="wingrid"></div>
+        <p id="wincap">你點亮了 <b>0</b> 扇</p>
+      </div>
       <div class="r-block panel" id="rb-axes">
         <p class="p-title">兩條軸，看清楚自己</p>
         <div class="bar-row">
-          <div class="bar-lab"><span>大腦（統領）</span><span id="v-brain">0</span></div>
+          <div class="bar-lab"><span>大腦 · 用 AI 思考</span><span id="v-brain">0</span></div>
           <div class="bar-track"><div class="bar-fill b" id="bar-brain"></div></div>
         </div>
         <div class="bar-row">
-          <div class="bar-lab"><span>手腳（駕馭）</span><span id="v-hand">0</span></div>
+          <div class="bar-lab"><span>手腳 · 用 AI 執行</span><span id="v-hand">0</span></div>
           <div class="bar-track"><div class="bar-fill h" id="bar-hand"></div></div>
         </div>
         <div class="ladder" id="ladder"></div>
       </div>
+      <div class="r-block panel" id="rb-profile">
+        <p class="p-title">你的 AI 使用畫像</p>
+        <p class="profile-sub">這三題不算戰力分，只用來看你在全世界的哪一格</p>
+        <div class="pf-q" id="pf-role">
+          <p class="pf-ask">你目前的身份比較接近？</p>
+          <div class="pf-opts"></div>
+        </div>
+        <div class="pf-q" id="pf-use">
+          <p class="pf-ask">你平常最常怎麼用 AI？</p>
+          <div class="pf-opts"></div>
+        </div>
+        <div class="pf-q" id="pf-pay">
+          <p class="pf-ask">過去半年，你為 AI 付過多少？</p>
+          <div class="pf-opts"></div>
+        </div>
+        <p class="pf-readout" id="pf-readout" hidden></p>
+      </div>
+      <div class="r-block panel" id="rb-population">
+        <p class="p-title">你在 81 億人裡的哪一格</p>
+        <p class="profile-sub">每一格約 320 萬人，顏色代表他用 AI 用到哪一步</p>
+        <div id="popgrid"></div>
+        <div id="poplegend"></div>
+        <p class="pf-readout" id="pop-readout" hidden></p>
+        <p class="datanote">估算圖，概念參考 Damian Player（2026 初）廣傳的全球 AI 採用圖，數字為約數。</p>
+      </div>
       <div class="r-block panel" id="rb-data">
-        <p class="p-title">你在七億人裡的位置</p>
+        <p class="p-title">幾個有出處的真實數字</p>
         <div id="datalines"></div>
         <p class="datanote">以上為公開研究數據；L1–L5 人口分布為推估。</p>
       </div>
@@ -414,114 +468,222 @@ body.light .gap-time,body.light .r-head .r-cap,body.light .p-title,body.light #s
 <script>
 'use strict';
 /* ================= 資料 ================= */
-const QUESTIONS=[
-{id:1,floor:1,axis:'brain',tag:'1F · 你的座位 · 螢幕前',narration:'螢幕上是空白聊天框，游標在閃。你要 AI 幫你寫一封給老客戶的報價信。第一句最像哪句？',options:[
-{text:'「幫我寫一封報價信」，先丟再說，不行再改',score:1},
-{text:'「寫給王老闆，上次他嫌貴，這次語氣軟一點」，背景我都記得，每次用講的',score:4},
-{text:'先翻出上次的信和這次報價單貼給它，再說要幹嘛',score:7},
-{text:'也是一句「報價信，王老闆，新品項」，但它早就知道王老闆是誰、上次卡在哪、我的底價在哪，這些我都讓它學過了',score:10}],
-reveal:'同一句話，兩種人生。背景住在你腦裡，每次都要搬一次；住在 AI 腦裡，你出一張嘴就好。',src:''},
-{id:2,floor:2,axis:'brain',tag:'2F · 檔案區 · 十年的資料夾',narration:'你要 AI 幫你分析一個重要客戶的續約策略。電腦裡有跟這客戶往來十年的資料夾，幾百個檔案。你？',options:[
-{text:'想到什麼貼什麼，聊到哪補到哪',score:1},
-{text:'整個資料夾全部丟給它，資料越多它越懂我',score:4},
-{text:'只挑這次續約相關的：最新合約、最近三次會議紀錄',score:7},
-{text:'給它一份資料目錄，讓它自己說需要調哪幾份，要多少給多少',score:10}],
-reveal:'資料塞太多，AI 反而變笨。Claude Code 官方把 AI 的注意力當稀缺資源在管理。會給的人給得準，給得多的人只是在搬家。',src:'Claude Code 官方設計概念'},
-{id:3,floor:3,axis:'brain',tag:'3F · 你的座位 · AI 剛回覆',narration:'AI 一個字一個字打出一段市場分析，數字看起來都很漂亮。你會？',options:[
-{text:'看起來很專業，直接用，省下來的時間就是賺到',score:1},
-{text:'不放心，整段自己重新查一遍（那我剛剛是請它來幹嘛的）',score:4},
+/* ===== 題庫（30 題，6 格：腦/手 × 入門/中階/經營者，每格 5 題）。每輪分層抽 20。 ===== */
+const BANK=[
+/* 入門 · 大腦 */
+{id:'know-llm',axis:'brain',tier:1,tag:'茶水間 · 同事問你',narration:'同事說「AI 給的答案有時根本是錯的，是不是它資料庫太舊？」你怎麼回最準？',options:[
+{text:'「對啊，等它資料庫更新就準了」',score:1},
+{text:'「它偶爾會錯，多問幾次就好」',score:4},
+{text:'「它不是在查資料，是在猜下一個字，所以講得順不代表對」',score:7},
+{text:'「它在預測文字、不是檢索事實，重要的我會要它附來源、自己驗一次」',score:10}],
+reveal:'AI 不是在資料庫找答案，是統計上猜下一個最可能的字。知道這點，你才不會把它講得很順的錯話當真。',src:''},
+{id:'verify-source',axis:'brain',tier:1,tag:'你的座位 · AI 給了漂亮數字',narration:'AI 打出一段市場分析，數字看起來都很專業。你會？',options:[
+{text:'看起來很專業，直接用',score:1},
+{text:'不放心，整段自己重查一遍',score:4},
 {text:'請它附來源，點開最關鍵的那一個',score:7},
-{text:'丟給另一家 AI 複查，兩家說法打架的地方，才輪到我出手',score:10}],
-reveal:'這題沒有標準答案，測的是你會不會給自己留一道防線。請第二家 AI 當複查員，是市面上最便宜的保險。',src:''},
-{id:9,floor:4,axis:'hand',tag:'4F · 茶水間旁 · 便利貼牆',narration:'牆上五張便利貼，每週一都長得一模一樣。你？',options:[
-{text:'自己做比較快，做完把貼紙撕掉最爽',score:1},
-{text:'每週一叫 AI 做一遍，每次重新講一次需求',score:4},
+{text:'丟給另一家 AI 複查，兩家打架的地方才輪到我出手',score:10}],
+reveal:'AI 會用很自信的語氣講錯話。請第二家 AI 當複查員，是市面上最便宜的保險。',src:''},
+{id:'ethics-disclose',axis:'brain',tier:1,tag:'會議室 · 提案要交了',narration:'你用 AI 生了提案的圖跟文案，交出去前你會？',options:[
+{text:'當作自己做的，不提 AI',score:1},
+{text:'有人問才說',score:4},
+{text:'在合適的地方註明哪些是 AI 協助',score:7},
+{text:'主動揭露，並說明我做了哪些把關跟修改',score:10}],
+reveal:'用 AI 不丟臉，藏起來才有風險。講清楚「AI 幫了什麼、我把了什麼關」，是專業，也是保護自己。',src:'AI 使用揭露'},
+{id:'prompt-intent',axis:'brain',tier:1,tag:'你的座位 · 空白聊天框',narration:'你要 AI 幫忙，第一句話最像哪種？',options:[
+{text:'「幫我弄一下這個」，丟了再說',score:1},
+{text:'講需求，但背景它不知道、我也沒說',score:4},
+{text:'講清楚：要做什麼、給誰、什麼情況',score:7},
+{text:'連「有不清楚的先問我，別急著做」都一起講',score:10}],
+reveal:'AI 不會通靈。把「要做什麼、給誰看、什麼情況」講清楚，比下十次模糊指令有用。',src:'Google / Anthropic 提示工程'},
+{id:'know-bias',axis:'brain',tier:1,tag:'茶水間 · 同事的擔心',narration:'同事說「聽說 AI 會有偏見、會歧視，那還能用嗎？」你怎麼看最準？',options:[
+{text:'不會啦，電腦哪有立場',score:1},
+{text:'會喔，所以我都不太敢用',score:4},
+{text:'它會放大訓練資料裡的偏見，結果我會自己再看一眼',score:7},
+{text:'越會影響到人的事（招募、評分），我越不讓它自己決定',score:10}],
+reveal:'AI 的偏見來自它學的資料，而且會被放大。越是影響到人的判斷，越要留一道人類的眼睛。',src:'Google AI Essentials'},
+/* 入門 · 手腳 */
+{id:'sec-classify',axis:'hand',tier:1,tag:'你的座位 · 老闆傳檔來',narration:'老闆把還沒公開的客戶合約丟給你：「用 AI 摘成一頁。」你會？',options:[
+{text:'整份貼進免費版 AI，摘完交差',score:1},
+{text:'貼進去，但摘完把對話刪掉就覺得安全',score:4},
+{text:'先把公司名、金額、個資塗掉，只貼去識別化的內容',score:7},
+{text:'這種機密走公司核准的企業版（不拿去訓練），或先確認該不該用 AI 碰',score:10}],
+reveal:'免費版 AI 預設會拿你貼的內容去訓練。哪種資料能貼、哪種一定不能，先分級，這是第一條安全線。',src:'資料分級'},
+{id:'sec-shadow',axis:'hand',tier:1,tag:'辦公室 · 同事的捷徑',narration:'同事用自己的 ChatGPT 帳號，把公司客戶名單貼進去整理。你覺得？',options:[
+{text:'很聰明啊，效率高',score:1},
+{text:'怪怪的，但說不上來',score:4},
+{text:'這是公司資料跑到私人帳號，有風險',score:7},
+{text:'這叫影子 AI，該幫公司定一條「哪些能用、哪些不能」的規矩',score:10}],
+reveal:'員工偷偷用私人 AI 帳號處理公司資料，叫「影子 AI」。不是禁就好，是要給一條大家能照做的安全線。',src:'Shadow AI'},
+{id:'do-repeat',axis:'hand',tier:1,tag:'茶水間旁 · 便利貼牆',narration:'牆上五張便利貼，每週一都長得一模一樣。你？',options:[
+{text:'自己做比較快',score:1},
+{text:'每週一叫 AI 做一遍，每次重新講需求',score:4},
 {text:'寫好一份固定流程，每週丟同一份給它',score:7},
 {text:'流程建好排程自動跑，我週一只看結果',score:10}],
-reveal:'公司有制度，AI 進來就能打工。制度建好，換哪款 AI 都能上工。',src:''},
-{id:10,floor:5,axis:'hand',tag:'5F · 你的座位 · 老闆訊息進來',narration:'老闆丟來一段語音、兩張截圖、一個 Excel：「明早給我一頁建議。」你？',options:[
-{text:'自己聽自己看，親手整理完才放心',score:1},
-{text:'Excel 給 AI 算，語音和截圖我自己來',score:4},
+reveal:'重複、規則明確、低風險的事最適合交給 AI。把流程寫死一次，之後換哪款 AI 都能上工。',src:''},
+{id:'do-toolpick',axis:'hand',tier:1,tag:'你的座位 · 同樣一件事',narration:'查資料、做圖、寫長文，你怎麼選 AI 工具？',options:[
+{text:'反正都用同一個，習慣就好',score:1},
+{text:'誰紅用誰',score:4},
+{text:'看任務挑：查證、生圖、長文各有強的',score:7},
+{text:'固定幾個搭配好，什麼任務走哪個我心裡有譜',score:10}],
+reveal:'AI 工具沒有「最強」，只有「這件事誰適合」。會搭配的人，比死守一個的人省力很多。',src:''},
+{id:'do-multimodal',axis:'hand',tier:1,tag:'你的座位 · 老闆丟一包',narration:'老闆丟來一段語音、兩張截圖、一個 Excel：「明早給我一頁。」你？',options:[
+{text:'自己聽自己看，親手整理',score:1},
+{text:'Excel 給 AI 算，語音和截圖自己來',score:4},
 {text:'全丟給 AI 排流水線：轉文字、摘要、合併成一頁',score:7},
-{text:'丟之前先講清楚：這頁給誰看、他明天要做什麼決定',score:10}],
-reveal:'同樣三個檔案，先講清楚給誰看，產出直接差一個檔次。',src:''},
-{id:5,floor:6,axis:'brain',tag:'6F · 主管辦公室 · 新案子進來',narration:'一個你沒做過的新型案子進來了，你打算讓 AI 上。第一步？',options:[
-{text:'直接要答案，它那麼聰明，先給結果再說',score:1},
+{text:'丟之前先講清楚：這頁給誰看、他要做什麼決定',score:10}],
+reveal:'同樣三個檔案，先講清楚「給誰看、要做什麼決定」，產出直接差一個檔次。',src:''},
+/* 中階 · 大腦 */
+{id:'delegate-split',axis:'brain',tier:2,tag:'會議桌 · 一個新專案',narration:'新案有五個環節：查資料、寫初稿、算報價、做決定、對外回信。你怎麼分給 AI？',options:[
+{text:'全部丟給 AI，它比我快',score:1},
+{text:'全部自己做，AI 不可靠',score:4},
+{text:'查資料、寫初稿交 AI，報價和回信自己來',score:7},
+{text:'重複低風險的交 AI；會影響到人的決定我自己拍，AI 只給選項',score:10}],
+reveal:'高手不是「全丟」或「全不丟」，是分得出哪段是執行（可交）、哪段是判斷（留人）。會影響到人的決定，AI 給選項、你拍板。',src:'Anthropic AI Fluency'},
+{id:'context-live',axis:'brain',tier:2,tag:'你的座位 · 又一封報價信',narration:'你要 AI 寫給老客戶的報價信，怎麼開場？',options:[
+{text:'「幫我寫封報價信」，先丟再說',score:1},
+{text:'「寫給王老闆，上次嫌貴、語氣軟點」，背景每次用講的',score:4},
+{text:'先翻出上次的信和這次報價單貼給它',score:7},
+{text:'它早知道王老闆是誰、上次卡在哪、我的底價，這些我都讓它學過了',score:10}],
+reveal:'背景住你腦裡，每次都要搬一次；住 AI 腦裡，你出一張嘴就好。',src:''},
+{id:'context-curate',axis:'brain',tier:2,tag:'檔案區 · 十年的資料夾',narration:'要 AI 分析重要客戶的續約策略，電腦裡有往來十年、幾百個檔。你？',options:[
+{text:'想到什麼貼什麼',score:1},
+{text:'整個資料夾全丟，資料越多它越懂我',score:4},
+{text:'只挑這次相關：最新合約、最近三次會議紀錄',score:7},
+{text:'給它一份目錄，讓它自己說要調哪幾份',score:10}],
+reveal:'資料塞太多，AI 反而變笨。會給的人給得準，給得多的人只是在搬家。',src:'Claude Code 官方設計概念'},
+{id:'explore-first',axis:'brain',tier:2,tag:'主管辦公室 · 新案子進來',narration:'一個沒做過的新型案子，你打算讓 AI 上。第一步？',options:[
+{text:'直接要答案，先給結果再說',score:1},
 {text:'叫它直接開工，做歪了再修',score:4},
 {text:'先叫它列計畫，我看過再動工',score:7},
-{text:'先派它去摸清現況、回報它看到什麼；確認它理解沒歪，才讓它提計畫、再動手',score:10}],
-reveal:'Claude Code 官方建議的順序：先探索、再計畫、再動手。方向錯的努力，比不動還貴。',src:'Claude Code 官方文件'},
-{id:4,floor:7,axis:'brain',tag:'7F · 會議桌 · 五張方案卡攤開',narration:'你請 AI 出行銷方案，它一口氣攤出五張方案卡。你怎麼挑？',options:[
-{text:'挑寫得最完整最詳細的那張，內容多總是比較保險',score:1},
-{text:'挑最快能動手的，先做起來再說',score:4},
-{text:'問它每一張的風險，挑最不會出事的',score:7},
-{text:'翻出我做過最成功的那一次案例丟給它：照這個打法，改到像我們會做的樣子',score:10}],
-reveal:'五張卡是它的，標準是你的。你的代表作，就是你判斷力的實體。',src:''},
-{id:11,floor:8,axis:'hand',tag:'8F · 白板前 · 大案子開工',narration:'一個大案子：要查資料、寫文案、做簡報、還要挑錯字。你打算怎麼用 AI？',options:[
-{text:'同一個對話從頭聊到尾，聊到它開始忘東忘西',score:1},
-{text:'聊太長就開新對話，從頭再交代一次',score:4},
-{text:'不同任務開不同對話，各管各的',score:7},
-{text:'像帶小隊：查資料的、寫稿的、挑錯的各派一個 AI，規定好誰交給誰，最後一個彙整',score:10}],
-reveal:'Claude Code 的子代理設計：複雜任務拆給不同小隊，各自有角色和邊界。一個 AI 從頭做到尾，做到後面它自己都忘了開頭。',src:'Claude Code 官方架構'},
-{id:12,floor:9,axis:'hand',tag:'9F · 主管辦公室 · 委託單在桌上',narration:'你要把整個案子交給 AI 團隊，委託單推到你面前。你最在意哪一欄？',options:[
-{text:'進度欄：做到哪都要回報，我盯著比較安心',score:1},
-{text:'規格欄：每一步怎麼做，我先寫清楚',score:4},
-{text:'團隊欄：這案子該派哪款 AI，它到底接不接得住',score:7},
-{text:'結案欄：怎樣算做完，驗收標準先講好',score:10}],
-reveal:'把 AI 當外包團隊：接得住才丟、丟了就不疑，只管怎樣算結案。',src:''},
-{id:13,floor:10,axis:'hand',tag:'10F · 收件匣 · AI 回報完工',narration:'AI 回報：「做好了！」你怎麼知道是真的好了？',options:[
-{text:'它說好就好，它那麼聰明',score:1},
-{text:'自己從頭到尾再檢查一遍',score:4},
-{text:'給它驗收清單，叫它逐條自檢完才能交',score:7},
-{text:'設一道會自動亮紅燈的關卡：沒過，它自己重做；過了，才輪得到我看',score:10}],
-reveal:'Claude Code 官方的做法：不問 AI「做好了嗎」，給它一個會亮紅燈的檢查，讓它自己跑到綠燈才下班。',src:'Claude Code 官方'},
-{id:14,floor:11,axis:'hand',tag:'11F · 主管辦公室 · 客戶回信了',narration:'案子交了，客戶回了三點修改意見。改完之後你？',options:[
+{text:'先派它摸清現況、回報它看到什麼，確認沒歪才讓它提計畫、再動手',score:10}],
+reveal:'先探索、再計畫、再動手。方向錯的努力，比不動還貴。',src:'Claude Code 官方文件'},
+{id:'prompt-iterate',axis:'brain',tier:2,tag:'你的座位 · 一次不到位',narration:'AI 第一次給的不夠好，你通常怎麼辦？',options:[
+{text:'將就用',score:1},
+{text:'重新生成，碰運氣',score:4},
+{text:'告訴它哪裡不對、要它改',score:7},
+{text:'像帶人：指出問題＋給個好例子＋要它說它怎麼理解的',score:10}],
+reveal:'AI 是改出來的，不是一次問到位的。把它當新人帶，指出問題、給範例，比重按一次有用。',src:''},
+/* 中階 · 手腳 */
+{id:'prompt-example',axis:'hand',tier:2,tag:'你的座位 · 給的東西很空泛',narration:'你說「幫我寫個行銷文案」，它給得很空泛。下一步？',options:[
+{text:'算了，自己寫比較快',score:1},
+{text:'再按一次重新生成，碰運氣',score:4},
+{text:'補上：給誰看、賣什麼、什麼語氣、要多長',score:7},
+{text:'把我以前一篇成功的文案貼給它：照這個感覺，改成這次的產品',score:10}],
+reveal:'AI 給得空泛，多半是你給得空泛。丟一個好範例給它照著做，比寫一長串要求更有效。',src:'Anthropic 提示工程'},
+{id:'feedback-store',axis:'hand',tier:2,tag:'主管辦公室 · 客戶回信了',narration:'客戶回了三點修改意見。改完之後你？',options:[
 {text:'交差收工，下一件',score:1},
-{text:'心裡記著這客戶難搞，下次小心',score:4},
+{text:'心裡記著這客戶難搞',score:4},
 {text:'跟 AI 一起記下「這客戶吃哪一套」',score:7},
 {text:'把意見存進知識庫，下次它開場就知道',score:10}],
-reveal:'AI 那麼聰明，讓它來學你就好。每一次回饋存回去，它就更像你一點。',src:''},
-{id:7,floor:12,axis:'brain',tag:'12F · 經營者樓層 · 又一份格式錯的報告',narration:'「報告用我們的格式」這句話，你這個月已經跟 AI 講三次，它今天又交了一份別人的格式。你？',options:[
+reveal:'每一次回饋存回去，AI 就更像你一點。讓它來學你，比你重講一次省事。',src:''},
+{id:'multi-agent',axis:'hand',tier:2,tag:'白板前 · 大案子開工',narration:'一個大案子：查資料、寫文案、做簡報、挑錯字。你怎麼用 AI？',options:[
+{text:'同一個對話從頭聊到尾，聊到它忘東忘西',score:1},
+{text:'聊太長就開新對話，從頭再講一次',score:4},
+{text:'不同任務開不同對話，各管各的',score:7},
+{text:'像帶小隊：查的、寫的、挑錯的各派一個，規定誰交給誰，最後一個彙整',score:10}],
+reveal:'複雜任務拆給不同小隊，各有角色和邊界。一個 AI 從頭做到尾，做到後面它自己都忘了開頭。',src:'Claude Code 官方架構'},
+{id:'vibe-build',axis:'hand',tier:2,tag:'你的座位 · 想要個小工具',narration:'你想要一個幫你算報價的小工具，但你不會寫程式。你？',options:[
+{text:'算了，請工程師或乾脆不做',score:1},
+{text:'自己硬學寫程式',score:4},
+{text:'用講的請 AI 幫我做出來，邊看邊改',score:7},
+{text:'講清楚要它幫誰解決什麼，做出來自己先試、不行就回饋再改',score:10}],
+reveal:'現在不會寫程式，也能用講的讓 AI 幫你做出堪用的小工具（vibe coding）。重點不是程式，是你講不講得清楚要解決什麼。',src:'Vibe coding'},
+{id:'dod-check',axis:'hand',tier:2,tag:'收件匣 · AI 回報完工',narration:'AI 回報「做好了！」你怎麼知道是真的好了？',options:[
+{text:'它說好就好',score:1},
+{text:'自己從頭到尾再檢查一遍',score:4},
+{text:'給它驗收清單，逐條自檢完才能交',score:7},
+{text:'設一道會自動亮紅燈的關卡：沒過它自己重做，過了才輪到我看',score:10}],
+reveal:'不問 AI「做好了嗎」，給它一個會亮紅燈的檢查，讓它自己跑到綠燈才下班。',src:'Claude Code 官方'},
+/* 經營者 · 大腦 */
+{id:'adopt-plan',axis:'brain',tier:3,tag:'經營者辦公室 · 要不要全公司導入',narration:'你想讓全公司開始用 AI，正要買一輪訂閱發下去。動手前最該先確認？',options:[
+{text:'趕快買趕快發，大家用了就會了',score:1},
+{text:'先挑最貴最強的工具，工具好就贏一半',score:4},
+{text:'先問大家現在卡在哪、有沒有人真的想用',score:7},
+{text:'先盤點：哪些流程適合、資料能不能給 AI 碰、誰訂規矩、出錯誰負責',score:10}],
+reveal:'導入失敗多半不是工具不好，是沒先盤點流程、資料邊界和當責。發工具很快，「誰訂規矩、出錯誰扛」才決定用不用得起來。',src:'BCG / Microsoft AI Readiness'},
+{id:'standard-rep',axis:'brain',tier:3,tag:'會議桌 · 五張方案卡攤開',narration:'你請 AI 出行銷方案，它一口氣攤五張。你怎麼讓它做出「我們會做的樣子」？',options:[
+{text:'挑寫得最完整最詳細那張',score:1},
+{text:'挑最快能動手的',score:4},
+{text:'問每一張的風險，挑最不會出事的',score:7},
+{text:'翻出我做過最成功的案例丟它：照這個打法，改到像我們會做的',score:10}],
+reveal:'五張卡是它的，標準是你的。你的代表作，就是你判斷力的實體。',src:''},
+{id:'rules-layer',axis:'brain',tier:3,tag:'經營者樓層 · 又一份格式錯的報告',narration:'「報告用我們的格式」這個月你講三次了，它今天又交別人的格式。你？',options:[
 {text:'再講一次，講久了總會記得',score:1},
 {text:'認命，每次開工先貼一次規矩',score:4},
 {text:'存成範本檔，每次開工丟給它',score:7},
-{text:'寫進它每次開工自動必讀的工作守則，而且分兩層：全公司的規矩一份、這個案子的規矩一份',score:10}],
-reveal:'Claude Code 和 Codex 的設計者做了同一件事：讓 AI 進門先讀守則，總則分則分層。規矩用講的會蒸發，寫進系統才算數。',src:'Claude Code + Codex 官方設計'},
-{id:6,floor:13,axis:'brain',tag:'13F · 經營者辦公室 · 換工具公告日',narration:'公司決定全面換一款新 AI 工具。舊的已經調教了半年，很懂大家。你？',options:[
-{text:'不換了，半年感情捨不得，繼續用舊的',score:1},
-{text:'換，從頭再教半年，就當交學費',score:4},
-{text:'兩邊各跑一次同樣的任務，比完再決定搬不搬',score:7},
-{text:'早就有一份它的員工手冊：我是誰、我的客戶、我的規矩、我的範例。貼給新 AI，十分鐘變老員工',score:10}],
+{text:'寫進它開工自動必讀的工作守則，分兩層：全公司一份、這案子一份',score:10}],
+reveal:'規矩用講的會蒸發，寫進系統才算數。讓 AI 進門先讀守則，總則分則分層。',src:'Claude Code + Codex 官方設計'},
+{id:'portable-kb',axis:'brain',tier:3,tag:'經營者辦公室 · 換工具公告日',narration:'公司要全面換一款新 AI。舊的調教半年、很懂大家。你？',options:[
+{text:'不換了，捨不得',score:1},
+{text:'換，從頭再教半年',score:4},
+{text:'兩邊各跑同樣任務，比完再決定',score:7},
+{text:'早有一份它的員工手冊：我是誰、客戶、規矩、範例，貼給新 AI 十分鐘變老員工',score:10}],
 reveal:'流水的 AI 工具，鐵打的知識庫。搬得走的，才是你的。',src:''},
-{id:8,floor:14,axis:'brain',tag:'14F · 經營者辦公室 · 同事來請教',narration:'客戶都說你抓的點就是準。同事問你怎麼判斷的，你說「就⋯⋯感覺啊」。這種感覺，怎麼讓 AI 也會？',options:[
-{text:'這種東西講不出來，硬要講就走味了',score:1},
-{text:'挑幾個代表作丟給它，讓它自己參悟',score:4},
-{text:'叫 AI 反過來訪問我，一直追問為什麼，把我的判斷一條一條逼出來',score:7},
-{text:'每次它做錯我出手改，都叫它記一條「為什麼這樣改」。半年後它有一本我的判斷手冊',score:10}],
+{id:'tacit-distill',axis:'brain',tier:3,tag:'經營者辦公室 · 同事來請教',narration:'客戶都說你抓的點就是準。同事問你怎麼判斷，你說「就⋯⋯感覺啊」。怎麼讓 AI 也會？',options:[
+{text:'這種講不出來，硬講就走味',score:1},
+{text:'挑幾個代表作丟它，讓它自己參悟',score:4},
+{text:'叫 AI 反過來訪問我，一直追問為什麼，把判斷一條條逼出來',score:7},
+{text:'每次它做錯我出手改，都叫它記一條「為什麼這樣改」，半年後它有一本我的判斷手冊',score:10}],
 reveal:'資料是資訊，文件是知識，你出手改的那一下才是隱性知識。提得出來，AI 才真的像你。',src:''},
-{id:15,floor:15,axis:'hand',tag:'15F · 週一早上七點 · 你還沒起床',narration:'週一早上七點，你還沒起床。你的 AI 在幹嘛？',options:[
+/* 經營者 · 手腳 */
+{id:'agent-autonomy',axis:'hand',tier:3,tag:'經營者辦公室 · AI 要接管流程',narration:'你的 AI 已能自己跑一整條流程。你放它自主到什麼程度？',options:[
+{text:'全自動，它愛怎麼跑就怎麼跑，我不看',score:1},
+{text:'每個動作都要我點頭才能做',score:4},
+{text:'低風險讓它自己跑，碰到錢、對外、刪資料先停下等我',score:7},
+{text:'設分級：哪些它能自己決定、哪些一定要人複核、出事自動停、全程留紀錄',score:10}],
+reveal:'放權不是全有全無。最高段是「分級」：低風險自動跑、高風險留一道人類關卡，而且留紀錄、能回溯。',src:'Levels of Autonomy for AI Agents'},
+{id:'outsource-trust',axis:'hand',tier:3,tag:'主管辦公室 · 委託單在桌上',narration:'你要把整個案子交給 AI 團隊，委託單推到你面前。你最在意哪一欄？',options:[
+{text:'進度欄：盯著比較安心',score:1},
+{text:'規格欄：每一步怎麼做先寫清楚',score:4},
+{text:'團隊欄：該派哪款 AI、它接不接得住',score:7},
+{text:'結案欄：怎樣算做完，驗收標準先講好',score:10}],
+reveal:'把 AI 當外包團隊：接得住才丟、丟了就不疑，只管怎樣算結案。',src:''},
+{id:'heartbeat',axis:'hand',tier:3,tag:'週一早上七點 · 你還沒起床',narration:'週一早上七點，你還沒起床。你的 AI 在幹嘛？',options:[
 {text:'在睡，我不叫它就不動',score:1},
 {text:'我開機後第一件事問它「今天要幹嘛」',score:4},
-{text:'我設了排程，九點它自動把今天的重點發給我',score:7},
-{text:'它定期自己醒來巡一輪：該追的進度、該回的訊息、有異常先回報。我起床看它的晨報',score:10}],
-reveal:'龍蝦 OpenClaw 的心跳機制：AI 每隔一段時間自己醒來看一圈。被動助理和背景維運系統，差的就是這顆心跳。',src:'龍蝦 OpenClaw 官方設計'},
-{id:16,floor:16,axis:'hand',tag:'16F · 頂樓辦公室 · AI 主動敲門',narration:'AI 突然跟你說：「這套流程我建議改三個地方，要我直接改嗎？」你？',options:[
+{text:'我設了排程，九點它自動把今天重點發給我',score:7},
+{text:'它定期自己醒來巡一輪：該追的、該回的、有異常先回報，我起床看晨報',score:10}],
+reveal:'AI 每隔一段時間自己醒來看一圈。被動助理和背景維運系統，差的就是這顆心跳。',src:'龍蝦 OpenClaw 官方設計'},
+{id:'self-improve-gov',axis:'hand',tier:3,tag:'頂樓辦公室 · AI 主動敲門',narration:'AI 跟你說：「這套流程我建議改三個地方，要我直接改嗎？」你？',options:[
 {text:'不准，流程是我訂的',score:1},
 {text:'改吧改吧，它比我懂',score:4},
 {text:'叫它先講理由，我聽完再說',score:7},
-{text:'我有規矩：它隨時可以提案，寫成修改申請，我批准才生效，改了要留紀錄',score:10}],
-reveal:'龍蝦的技能工坊設計：AI 可以提案改自己，但要過人的審核。最高段的放權，旁邊都掛著一條批准線。',src:'龍蝦 OpenClaw 技能工坊'}
+{text:'我有規矩：它隨時可提案，寫成修改申請，我批准才生效，改了留紀錄',score:10}],
+reveal:'AI 可以提案改自己，但要過人的審核。最高段的放權，旁邊都掛著一條批准線。',src:'龍蝦 OpenClaw 技能工坊'},
+{id:'data-boundary',axis:'hand',tier:3,tag:'經營者辦公室 · AI 接上公司系統',narration:'你要讓 AI 接上公司 email、客戶系統、財務檔幫忙跑流程。你最先設什麼？',options:[
+{text:'全給它存取，方便',score:1},
+{text:'先接再說，出事再收',score:4},
+{text:'只給它這個任務需要的那幾個，其他不開',score:7},
+{text:'最小權限＋紀錄誰碰了什麼，敏感動作要二次確認',score:10}],
+reveal:'當 AI 能存取多個系統，資料邊界就是命脈。給它剛好夠用的權限、留下軌跡，比全開方便重要得多。',src:'最小權限 / 企業資料邊界'}
 ];
-QUESTIONS.forEach(q=>{q.bg='assets/q'+String(q.floor).padStart(2,'0')+'.jpg'});
+let QUESTIONS=[];
+const answerChoices={};
 const TIERS=[
-{name:'基層專員',cls:'',from:1,to:5,bg:'assets/scene-2-junior-office.jpg'},
-{name:'帶案主管',cls:'t2',from:6,to:11,bg:'assets/scene-3-manager-office.jpg'},
-{name:'經營者',cls:'t3',from:12,to:16,bg:'assets/scene-4-executive-office.jpg'}
+{name:'基層專員',cls:'',from:1,to:7,bg:'assets/scene-2-junior-office.jpg',tier:1,pickB:4,pickH:3},
+{name:'帶案主管',cls:'t2',from:8,to:14,bg:'assets/scene-3-manager-office.jpg',tier:2,pickB:3,pickH:4},
+{name:'經營者',cls:'t3',from:15,to:20,bg:'assets/scene-4-executive-office.jpg',tier:3,pickB:3,pickH:3}
 ];
 const PROMOS=[
-{after:5,icon:'基層專員 ▶ 帶案主管',title:'升任 帶案主管',sub:'自己的任務做穩了。接下來，帶 AI 小隊打案子。'},
-{after:11,icon:'帶案主管 ▶ 經營者',title:'升任 經營者',sub:'案子帶得動了。接下來，把 AI 變成公司戰力。'}
+{after:7,icon:'基層專員 ▶ 帶案主管',title:'升任 帶案主管',sub:'自己的任務做穩了。接下來，帶 AI 小隊打案子。'},
+{after:14,icon:'帶案主管 ▶ 經營者',title:'升任 經營者',sub:'案子帶得動了。接下來，把 AI 變成公司戰力。'}
 ];
+/* 分層抽 20：每層抽固定 brain/hand 數（4/3、3/4、3/3 → 共 10 腦 10 手），保爬升、保平衡 */
+function selectQuestions(){
+  Object.keys(answerChoices).forEach(k=>delete answerChoices[k]);
+  const chosen=[];
+  TIERS.forEach(t=>{
+    const pool=BANK.filter(q=>q.tier===t.tier);
+    const bs=shuffle(pool.filter(q=>q.axis==='brain')).slice(0,t.pickB);
+    const hs=shuffle(pool.filter(q=>q.axis==='hand')).slice(0,t.pickH);
+    chosen.push(...shuffle(bs.concat(hs)));
+  });
+  QUESTIONS=chosen.map((q,i)=>{
+    const tt=TIERS.find(x=>x.tier===q.tier);
+    const raw=q.tag.replace(/^\d+F\s*·\s*/,'');
+    return Object.assign({},q,{floor:i+1,bg:tt.bg,tag:(i+1)+'F · '+raw});
+  });
+}
 const ARCHS={
 eagle:{img:'assets/arch-eagle.jpg',name:'AI 原生統御者',desc:'制度在、知識庫在、驗收標準在。流水的工具換誰來都能上工。',next:'你已經站在看得到塔頂的位置。下一步：把你的判斷提煉成系統，開始規模化。',course:'專業分身與技能包工作坊',take:'帶走：<b>AI 員工角色卡、技能包、輸出標準與驗證方式</b>'},
 zhuge:{img:'assets/arch-zhuge.jpg',name:'輪椅上的諸葛亮',desc:'你很清楚要做什麼，只差一個團隊。AI 就是那個你請得起的團隊。',next:'你想得清楚，缺執行的手。下一步：把一個流程交給 AI 完整跑一遍。',course:'AI 辦公室一日工作坊',take:'帶走：<b>AI 工作環境、文件入口、第一個 AI 員工雛形</b>'},
@@ -541,6 +703,33 @@ const DATALINES=[
 '在 75% 以上任務裡用到 AI 的職業，只有約 4%。（Anthropic Economic Index）',
 '委任式使用 8 個月內從 27% 升到 39%，放權正在發生。（Anthropic Economic Index）'
 ];
+/* 使用畫像題（不計分，只用來導流） */
+const PROFILE_Q={
+  role:{opts:[
+    {t:'老闆／創辦人',v:1},
+    {t:'主管',v:2},
+    {t:'創業中或接案',v:3},
+    {t:'顧問・講師・教練',v:4},
+    {t:'一般工作者',v:5},
+    {t:'其他',v:6}]},
+  use:{opts:[
+    {t:'拿來聊天、問問題',v:1},
+    {t:'當 Google 用，查資料找答案',v:2},
+    {t:'會把工作交代給它做',v:3},
+    {t:'會請它反問我，幫我想得更深',v:4}]},
+  pay:{opts:[
+    {t:'沒付過，都用免費版',v:1},
+    {t:'付費過，但現在停了',v:2},
+    {t:'持續付 20 美金一款',v:3},
+    {t:'100 美金以上，或同時付兩款以上',v:4}]}
+};
+const profileSel={role:0,use:0,pay:0};
+let profileSent=false;
+/* 把畫像送到 Google 表單（填好下面設定才會送出，留空就靜默略過） */
+const PROFILE_FORM={
+  action:'',                       /* 建表後填：https://docs.google.com/forms/d/e/XXXX/formResponse */
+  entry:{role:'',use:'',pay:''}    /* 建表後填三個 entry ID（填 123456 或 entry.123456 都可） */
+};
 
 /* ================= 音效 ================= */
 let actx=null,muted=true;
@@ -650,7 +839,7 @@ function renderHud(){
   $('hud-floor').textContent=q.floor+'F';
   const ht=$('hud-tier');ht.textContent=t.name;ht.className='hud-tier '+t.cls;
   const pips=$('pips');pips.innerHTML='';
-  for(let i=0;i<16;i++){const p=document.createElement('span');p.className='pip'+(i<qi?' done':i===qi?' cur':'');pips.appendChild(p)}
+  for(let i=0;i<QUESTIONS.length;i++){const p=document.createElement('span');p.className='pip'+(i<qi?' done':i===qi?' cur':'');pips.appendChild(p)}
 }
 
 /* 打字機 */
@@ -693,7 +882,7 @@ async function showFloor(){
 
 async function pick(btn,opt,q){
   if(answered)return;answered=true;
-  scores[q.id]=opt.score;
+  scores[q.id]=opt.score;answerChoices[q.id]=opt.text;
   document.querySelectorAll('.opt').forEach(b=>{b.disabled=true;if(b===btn)b.classList.add('picked')});
   sfx.pick();
   await sleep(220);
@@ -789,18 +978,113 @@ async function countUp(el,to,suffix,ms){
   }
   el.innerHTML=to+(suffix||'');
 }
+/* 使用畫像：渲染、選答、導流 */
+function renderProfile(){
+  profileSel.role=0;profileSel.use=0;profileSel.pay=0;profileSent=false;
+  ['role','use','pay'].forEach(k=>{
+    const wrap=document.querySelector('#pf-'+k+' .pf-opts');
+    wrap.innerHTML='';
+    PROFILE_Q[k].opts.forEach(o=>{
+      const b=document.createElement('button');
+      b.className='pf-opt';b.textContent=o.t;
+      b.addEventListener('click',()=>{
+        profileSel[k]=o.v;
+        wrap.querySelectorAll('.pf-opt').forEach(x=>x.classList.remove('sel'));
+        b.classList.add('sel');sfx.pick();profileDone();
+      });
+      wrap.appendChild(b);
+    });
+  });
+  $('pf-readout').hidden=true;
+  ['cta-course','cta-book'].forEach(id=>$(id)&&$(id).classList.remove('breathe'));
+}
+function profileDone(){
+  if(!profileSel.role||!profileSel.use||!profileSel.pay)return;
+  const s=profileSel.use+profileSel.pay;
+  let level,line,hot;
+  if(s>=7){
+    level='重度投入';
+    line='你已經把 AI 用得深、也願意付費。最快的下一步是做一次盤點，把你現在的用法接成完整工作流。';
+    hot='cta-book';
+  }else if(s>=5){
+    level='穩定使用';
+    line='你已經會把工作交給 AI，下一步是把零散的用法收成一套穩定流程。';
+    hot='cta-course';
+  }else{
+    level='嘗鮮起步';
+    line='你還在起步，先從一堂入門把基礎打穩，再慢慢加碼。';
+    hot='cta-course';
+  }
+  $('pf-readout').innerHTML='你的畫像：<b>'+level+'</b>。'+line;
+  $('pf-readout').hidden=false;
+  ['cta-course','cta-book'].forEach(id=>$(id).classList.remove('breathe'));
+  $(hot).classList.add('breathe');
+  markPopulation(profileSel.pay>=4?'r':profileSel.pay===3?'y':'g');
+  submitProfile();
+}
+function submitProfile(){
+  if(profileSent||!PROFILE_FORM.action)return;
+  const txt=k=>{const o=PROFILE_Q[k].opts.find(x=>x.v===profileSel[k]);return o?o.t:''};
+  const norm=v=>String(v).indexOf('entry.')===0?v:'entry.'+v;
+  const fd=new FormData();
+  fd.append(norm(PROFILE_FORM.entry.role),txt('role'));
+  fd.append(norm(PROFILE_FORM.entry.use),txt('use'));
+  fd.append(norm(PROFILE_FORM.entry.pay),txt('pay'));
+  try{fetch(PROFILE_FORM.action,{method:'POST',mode:'no-cors',body:fd});profileSent=true;}catch(e){}
+}
+/* ===== 全人類塔（81 億人，估算圖）===== */
+let popCells={r:null,y:[],g:[]};
+function renderPopulation(){
+  const grid=$('popgrid');grid.innerHTML='';
+  popCells={r:null,y:[],g:[]};
+  const frag=document.createDocumentFragment();
+  for(let i=0;i<2500;i++){
+    const row=Math.floor(i/50),col=i%50;
+    const d=document.createElement('span');d.className='pdot';
+    if(row===0&&col===0){d.classList.add('r');popCells.r=d;}
+    else if(row===0&&col<=7){d.classList.add('y');popCells.y.push(d);}
+    else if(row<=7){d.classList.add('g');popCells.g.push(d);}
+    frag.appendChild(d);
+  }
+  grid.appendChild(frag);
+  $('poplegend').innerHTML=[
+    ['#3a3f57','沒用過 84%'],['#57c98a','免費 16%'],
+    ['#ffcd75','付費 0.3%'],['#ef5350','頂尖 0.04%']
+  ].map(x=>'<span class="lg-item"><span class="lg-sw" style="background:'+x[0]+'"></span>'+x[1]+'</span>').join('');
+  $('pop-readout').hidden=true;
+}
+const POP_MSG={
+  g:'你在這 16% 的<b>免費使用者</b>裡。全世界 84% 的人從沒用過 AI，你已經在上面這一小撮。再往上一格，是只有 0.3% 的付費者。',
+  y:'你在<b>付費的 0.3%</b> 裡，全球大概一兩千萬人。再往上，就是萬分之四真的用 AI 串自動化的人。',
+  r:'你在<b>最頂端那 0.04%</b>：用 AI 串自動化、建工作流的人。整張圖就這麼一格，全球約兩三百萬人。'
+};
+function markPopulation(tier){
+  if(!popCells.r&&!popCells.g.length)return;
+  [popCells.r].concat(popCells.y,popCells.g).forEach(d=>d&&d.classList.remove('you'));
+  let cell;
+  if(tier==='r')cell=popCells.r;
+  else if(tier==='y')cell=popCells.y[Math.floor(popCells.y.length/2)];
+  else cell=popCells.g[Math.floor(popCells.g.length*0.5)];
+  if(cell)cell.classList.add('you');
+  $('pop-readout').innerHTML='<b>你在這裡。</b>'+POP_MSG[tier];
+  $('pop-readout').hidden=false;
+}
 async function showResult(){
   const r=calc();
   setBgSmart(imgPath('assets/scene-5-rooftop-finale.jpg'),'assets/scene-5-rooftop-finale.jpg');
   switchScreen('s-result');
   sfx.finale();
-  const blocks=['rb-power','rb-grid','rb-arch','rb-axes','rb-data','rb-gap','rb-course'];
-  /* 戰力 */
-  await sleep(300);$('rb-power').classList.add('in');
+  renderPopulation();
+  const a=ARCHS[r.arch];LASTR=r;
+  /* 第一區：識別證 */
+  await sleep(300);$('rb-arch').classList.add('in');sfx.promo();
+  const ai=$('a-img');ai.hidden=false;ai.onerror=()=>{ai.hidden=true};ai.src=a.img;
+  $('a-name').textContent=a.name;
+  $('a-desc').textContent=a.desc;$('a-next').textContent=a.next;
+  /* 第二區：戰力結算 + 100 扇窗 */
+  await sleep(400);$('rb-score').classList.add('in');
   $('power-line').innerHTML='<span class="pb">大腦 '+r.brain+'</span> × <span class="ph">手腳 '+r.hand+'</span> ＝';
   await countUp($('power-num'),r.power,'<small> 倍</small>',1100);
-  /* 窗燈 */
-  await sleep(350);$('rb-grid').classList.add('in');
   const grid=$('wingrid');grid.innerHTML='';
   const cells=[];
   for(let i=0;i<100;i++){const w=document.createElement('span');w.className='win';grid.appendChild(w);cells.push(w)}
@@ -811,12 +1095,6 @@ async function showResult(){
     if(!REDUCED)await sleep(Math.max(8,300/r.power*1.2));
   }
   $('wincap').innerHTML='滿配 100 扇，你點亮了 <b>'+r.power+'</b> 扇';
-  /* 原型 */
-  await sleep(400);$('rb-arch').classList.add('in');sfx.promo();
-  const a=ARCHS[r.arch];LASTR=r;
-  const ai=$('a-img');ai.hidden=false;ai.onerror=()=>{ai.hidden=true};ai.src=a.img;
-  $('a-name').textContent=a.name;
-  $('a-desc').textContent=a.desc;$('a-next').textContent=a.next;
   /* 雙軸與五階 */
   await sleep(500);$('rb-axes').classList.add('in');
   $('v-brain').textContent=r.brain+' / 10';$('v-hand').textContent=r.hand+' / 10';
@@ -829,7 +1107,11 @@ async function showResult(){
     d.innerHTML='<span class="lv">'+l.lv+'</span><span>'+l.name+'</span>'+(i===r.lv?'<span class="here">◀ 你在這</span>':'');
     lad.appendChild(d);
   });
-  /* 數據 */
+  /* 使用畫像 */
+  await sleep(450);renderProfile();$('rb-profile').classList.add('in');
+  /* 全人類塔 */
+  await sleep(450);$('rb-population').classList.add('in');
+  /* 數據佐證 */
   await sleep(450);$('rb-data').classList.add('in');
   const dl=$('datalines');dl.innerHTML='';
   DATALINES.forEach(t=>{const p=document.createElement('p');p.className='dataline';p.textContent=t;dl.appendChild(p)});
@@ -853,11 +1135,13 @@ $('cta-course').addEventListener('click',()=>toast('即將開放，先把這頁�
 $('cta-book').addEventListener('click',()=>toast('即將開放，先把這頁存起來'));
 $('replay').addEventListener('click',()=>{
   qi=0;Object.keys(scores).forEach(k=>delete scores[k]);
-  ['rb-power','rb-grid','rb-arch','rb-axes','rb-data','rb-gap','rb-course'].forEach(id=>$(id).classList.remove('in'));
+  ['rb-arch','rb-score','rb-axes','rb-profile','rb-population','rb-data','rb-gap','rb-course'].forEach(id=>$(id).classList.remove('in'));
+  ['cta-course','cta-book'].forEach(id=>$(id).classList.remove('breathe'));
+  $('pf-readout').hidden=true;$('pop-readout').hidden=true;
   $('gap-hand').style.width='0';$('gap-brain').style.width='0';
   $('bar-brain').style.width='0';$('bar-hand').style.width='0';
   $('s-result').scrollTop=0;
-  switchScreen('s-game');showFloor();
+  selectQuestions();switchScreen('s-game');showFloor();
 });
 
 /* ================= 識別證分享卡 ================= */
@@ -942,7 +1226,7 @@ document.addEventListener('keydown',e=>{
 });
 
 /* ================= 開場 ================= */
-const PRELOAD_BASE=['assets/scene-2-junior-office.jpg','assets/scene-3-manager-office.jpg','assets/scene-4-executive-office.jpg','assets/scene-5-rooftop-finale.jpg'].concat(QUESTIONS.map(q=>q.bg));
+const PRELOAD_BASE=['assets/scene-2-junior-office.jpg','assets/scene-3-manager-office.jpg','assets/scene-4-executive-office.jpg','assets/scene-5-rooftop-finale.jpg'];
 const PRELOAD=PRELOAD_BASE.concat(PRELOAD_BASE.map(p=>p.replace(/\.jpg$/,'-m.jpg')));
 applyTheme();
 refreshBg();
@@ -950,6 +1234,7 @@ $('start').addEventListener('click',async()=>{
   try{ac().resume()}catch(e){}
   sfx.ding();
   PRELOAD.forEach(u=>{const img=new Image();img.src=u});
+  selectQuestions();
   switchScreen('s-game');
   showFloor();
 });

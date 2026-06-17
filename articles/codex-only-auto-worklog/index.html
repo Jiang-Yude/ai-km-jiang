@@ -1,0 +1,382 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="index,follow">
+<title>只用 Codex，也能建立自己的自動工作日誌｜江江教練 · AI 知識管理</title>
+<meta name="description" content="很多人開始用 AI Agent 後，工作脈絡很快就斷掉。這篇分兩條路：只用 Codex 就用它的預設自動化建立工作日誌；同時用多款 Agent 才需要跨 Agent 工作鏡子。附三份可直接複製的 Codex 工作日誌提示詞。">
+<link rel="canonical" href="https://ai-km-jiang.vercel.app/articles/codex-only-auto-worklog/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="只用 Codex，也能建立自己的自動工作日誌｜江江教練">
+<meta property="og:description" content="只用 Codex 就用它的預設自動化建立工作日誌；同時用多款 Agent 才需要跨 Agent 工作鏡子。附可直接複製的提示詞。">
+<meta property="og:url" content="https://ai-km-jiang.vercel.app/articles/codex-only-auto-worklog/">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:site_name" content="江江教練 · AI 知識管理">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="只用 Codex，也能建立自己的自動工作日誌｜江江教練">
+<meta name="twitter:description" content="只用 Codex 就用它的預設自動化建立工作日誌；同時用多款 Agent 才需要跨 Agent 工作鏡子。">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"只用 Codex，也能建立自己的自動工作日誌","description":"分兩條路：只用 Codex 就用它的預設自動化建立工作日誌；同時用多款 Agent 才需要跨 Agent 工作鏡子。附可直接複製的 Codex 工作日誌提示詞。","author":{"@type":"Person","name":"江昱德","alternateName":"江江教練","jobTitle":"隱性知識提煉師、AI 應用規劃師"},"isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://ai-km-jiang.vercel.app/"},"inLanguage":"zh-Hant","url":"https://ai-km-jiang.vercel.app/articles/codex-only-auto-worklog/"}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{--ink:#1a1612;--paper:#fefcf8;--muted:#6a635a;--line:#d8cdb8;--green:#5f7553;--blue:#5689b8;--orange:#e85a4f;--soft:#faf5ec;--dark:#2a2018;--shadow:0 18px 45px rgba(107,74,42,.14)}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC","Segoe UI",sans-serif}
+a{color:inherit}
+.topbar{position:sticky;top:0;z-index:20;display:flex;gap:10px;align-items:center;justify-content:space-between;padding:12px clamp(18px,4vw,56px);border-bottom:1px solid rgba(26,22,18,.12);background:rgba(254,252,248,.92);backdrop-filter:blur(12px)}
+.brand{font-weight:900;font-size:14px;text-decoration:none}
+.nav{display:flex;gap:8px;overflow:auto}
+.nav a{white-space:nowrap;text-decoration:none;border:1px solid rgba(26,22,18,.16);border-radius:999px;padding:8px 11px;background:#fff;font-size:14px;font-weight:800}
+.hero{min-height:58vh;display:grid;align-items:end;padding:56px clamp(20px,6vw,88px);background:linear-gradient(135deg,rgba(42,32,24,.92),rgba(86,137,184,.82));color:#fff;overflow:hidden}
+.kicker{font:900 13px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;color:#f6d7a6;text-transform:uppercase}
+.hero h1{max-width:1040px;margin:16px 0 18px;font-size:clamp(36px,6vw,72px);line-height:1.08;overflow-wrap:anywhere}
+.hero p{max-width:820px;font-size:clamp(18px,2vw,23px);line-height:1.62;color:rgba(255,255,255,.9)}
+.cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
+.cta a{display:inline-flex;align-items:center;text-decoration:none;border-radius:8px;padding:12px 16px;font-weight:900}
+.cta .primary{background:#fff;color:#1a1612}.cta .ghost{border:1px solid rgba(255,255,255,.32);color:#fff;background:rgba(255,255,255,.08)}
+.section{padding:54px clamp(20px,6vw,88px);border-top:1px solid var(--line)}
+.inner{width:min(1000px,100%);margin:0 auto}
+.section h2{font-size:clamp(26px,4.2vw,48px);line-height:1.12;margin:0 0 18px}
+.section h3{font-size:clamp(21px,3vw,30px);line-height:1.2;margin:30px 0 12px}
+.lead{font-size:clamp(18px,1.6vw,22px);line-height:1.7;color:#3a342d;max-width:900px}
+.section p{font-size:18px;line-height:1.74;color:#3a342d}.section p+p{margin-top:14px}
+.section ul,.section ol{padding-left:1.4em;font-size:18px;line-height:1.74;color:#3a342d}.section li{margin-bottom:8px}
+.meaning{margin:22px 0;padding:16px 18px;border-left:5px solid var(--blue);background:rgba(86,137,184,.12);border-radius:6px;line-height:1.7;font-size:19px}
+.meaning b{display:block;color:var(--blue);margin-bottom:4px}
+/* 文章資訊卡 */
+.infocard{background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px 24px 22px;box-shadow:0 8px 22px rgba(107,74,42,.08);margin-top:8px}
+.infocard-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.info-item{padding:18px 14px 0}
+.info-item b{display:block;font-size:14px;font-weight:900;letter-spacing:.04em;margin-bottom:7px;text-transform:uppercase}
+.info-item:nth-child(1) b{color:var(--green)}.info-item:nth-child(2) b{color:var(--orange)}.info-item:nth-child(3) b{color:var(--blue)}
+.info-item p{margin:0;font-size:17px;line-height:1.6;color:#3a342d}
+.tagrow{display:flex;flex-wrap:wrap;gap:7px;margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
+.tag{font-size:14px;color:var(--muted);background:var(--soft);border:1px solid var(--line);border-radius:999px;padding:4px 11px}
+/* 兩條路線 */
+.routes{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:24px}
+.route{background:#fff;border:1px solid var(--line);border-radius:10px;padding:22px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.route.b{border-color:var(--blue);box-shadow:0 8px 24px rgba(86,137,184,.16)}
+.route h4{margin:0 0 6px;font-size:20px}
+.route .who{font-size:15px;color:var(--muted);margin:0 0 12px}
+.route ul{padding-left:1.25em;margin:0}.route li{font-size:16px;line-height:1.6;color:#3a342d;margin-bottom:6px}
+/* 三階段 */
+.workflow-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:24px}
+.workflow-step{background:#fff;border:1px solid var(--line);border-radius:8px;padding:18px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.workflow-step small{display:block;color:var(--orange);font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;margin-bottom:9px}
+.workflow-step b{display:block;font-size:18px;line-height:1.3;margin-bottom:9px}
+.workflow-step p{margin:0;color:#3a342d;line-height:1.6;font-size:16px}
+/* 可複製提示詞 */
+.prompt{position:relative;margin:16px 0;border:1px solid var(--line);border-radius:10px;background:#221c16;overflow:hidden}
+.prompt-head{display:flex;justify-content:space-between;align-items:center;padding:9px 14px;background:rgba(255,255,255,.06);border-bottom:1px solid rgba(255,255,255,.1)}
+.prompt-head span{color:#f6d7a6;font:900 13px/1 ui-monospace,SFMono-Regular,Menlo,monospace}
+.copybtn{border:1px solid rgba(255,255,255,.3);background:rgba(255,255,255,.1);color:#fff;border-radius:6px;padding:6px 12px;font-family:inherit;font-size:14px;font-weight:800;cursor:pointer;transition:.15s}
+.copybtn:hover{background:rgba(255,255,255,.2)}.copybtn.ok{background:#5f7553;border-color:#5f7553}
+.prompt pre{margin:0;padding:16px;overflow:auto;color:#f3ece0;font:500 15px/1.7 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;white-space:pre-wrap;word-break:break-word}
+details{border:1px solid rgba(26,22,18,.15);border-radius:8px;background:#fff;margin-top:9px;overflow:hidden}
+summary{cursor:pointer;list-style:none;padding:14px 16px;font-weight:900;line-height:1.45;display:flex;justify-content:space-between;gap:14px;font-size:18px}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";flex:0 0 auto;width:24px;height:24px;border-radius:50%;display:grid;place-items:center;background:rgba(26,22,18,.08);font:900 16px/1 ui-monospace,monospace}
+details[open] summary::after{content:"-"}
+.detail-body{padding:0 16px 16px;border-top:1px solid rgba(26,22,18,.08)}.detail-body p{margin:12px 0 0;line-height:1.72;color:#3a342d;font-size:17px}
+.cta-band{background:var(--dark);color:#fff}.cta-band .section{border-top:none}
+.cta-band .inner{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(260px,.85fr);gap:26px;align-items:start}
+.cta-band h2{font-size:clamp(26px,4vw,44px);margin:0 0 16px}.cta-band p,.cta-band .lead{color:rgba(255,255,255,.84);font-size:18px;line-height:1.72}
+.cta-card{border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.06);border-radius:8px;padding:22px}
+.cta-card b{display:block;color:#f6d7a6;margin-bottom:10px;font-size:18px}.cta-card p{margin:0 0 14px}
+.footer{padding:30px clamp(20px,6vw,88px);font-size:14px;color:var(--muted);background:#fff;border-top:1px solid var(--line)}
+.footer-inner{width:min(1000px,100%);margin:0 auto}
+.footer-links{display:flex;flex-wrap:wrap;gap:6px 12px;margin-bottom:14px}.footer-links a{color:var(--blue);font-weight:900;text-decoration:none;font-size:14px}
+.footer-brand{font-weight:900;font-size:15px;margin-bottom:10px}.footer-note{font-size:13px;line-height:1.6}
+@media(max-width:820px){.infocard-grid{grid-template-columns:1fr}.routes{grid-template-columns:1fr}.workflow-grid{grid-template-columns:1fr}.cta-band .inner{grid-template-columns:1fr}.section{padding:40px 20px}.hero{min-height:52vh}}
+@media(max-width:820px){html,body{overflow-x:hidden}.hero h1{word-break:break-word}}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="../../articles.html">江江教練 · 深度文章</a>
+  <nav class="nav" aria-label="頁面導覽">
+    <a href="../../articles.html" style="background:#1a1612;color:#fff;border-color:#1a1612">← 深度文章總站</a>
+    <a href="#routes">兩條路</a>
+    <a href="#codex">Codex 三階段</a>
+    <a href="#mirror">工作鏡子</a>
+    <a href="#pits">常見的坑</a>
+    <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">LINE 社群 ↗</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <div>
+    <div class="kicker">AI 工作流 / 教學</div>
+    <h1>只用 Codex，也能建立<br>自己的自動工作日誌</h1>
+    <p>很多人開始用 AI Agent 之後，會很快遇到一個問題：今天明明做了很多事，到了晚上卻說不清楚自己到底完成了什麼。這篇先把路線分清楚：只用 Codex，就用它的預設自動化；同時用多款 Agent，才需要一套跨 Agent 的工作鏡子。</p>
+    <div class="cta">
+      <a class="primary" href="#codex">直接看 Codex 怎麼做</a>
+      <a class="ghost" href="#routes">先判斷我是哪一種</a>
+    </div>
+  </div>
+</section>
+
+<main>
+
+<section class="section">
+  <div class="inner">
+    <div class="infocard">
+      <div class="infocard-grid">
+        <div class="info-item">
+          <b>適合誰</b>
+          <p>剛開始用 Codex、想讓它幫你整理每天做了什麼的人；有很多 AI 對話和檔案變動、晚上常常斷片的人；聽過 Hermes、工作鏡子但不確定自己需不需要的人。</p>
+        </div>
+        <div class="info-item">
+          <b>解決什麼問題</b>
+          <p>用 AI 做完一輪事，工作痕跡散在對話、檔案、資料夾裡，晚上說不清楚今天完成了什麼，隔天也不知道從哪裡接。</p>
+        </div>
+        <div class="info-item">
+          <b>你會得到什麼</b>
+          <p>一個判斷原則（只用 Codex 就用自動化）、一個升級原則（多 Agent 才上工作鏡子）、三份可直接複製的提示詞，以及一個從手動到自動的三階段練習。</p>
+        </div>
+      </div>
+      <div class="tagrow">
+        <span class="tag">主題：AI Agent 工作流</span>
+        <span class="tag">主題：AI 知識管理</span>
+        <span class="tag">程度：零基礎入門</span>
+        <span class="tag">適合：新手</span>
+        <span class="tag">適合：一人公司</span>
+        <span class="tag">類型：教學文章</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="routes">
+  <div class="inner">
+    <h2>先問一個問題：你是單一 Agent，還是多 Agent？</h2>
+    <p class="lead">我現在會把 AI 工作記錄分成兩種情況。先判斷自己是哪一種，再決定工具。工具選太早，系統會變重；判斷清楚後，工具會自己長出來。</p>
+    <div class="routes">
+      <div class="route">
+        <h4>路線 A · 只用 Codex</h4>
+        <p class="who">你的答案大多是「是」就走這條</p>
+        <ul>
+          <li>我主要只開 Codex 工作</li>
+          <li>我的檔案修改大多由 Codex 完成</li>
+          <li>我只是想每天知道自己做了什麼</li>
+          <li>我還不需要記錄不同 Agent 的分工</li>
+          <li>我希望越簡單越好</li>
+        </ul>
+      </div>
+      <div class="route b">
+        <h4>路線 B · 多 Agent 工作鏡子</h4>
+        <p class="who">你的答案大多是「是」就走這條</p>
+        <ul>
+          <li>我會同時用 Claude Code、Codex、Gemini 或其他 Agent</li>
+          <li>我常常不知道哪個 Agent 改了哪裡</li>
+          <li>我想追蹤任務花了多少時間和 token</li>
+          <li>我想知道某個任務有沒有後續</li>
+          <li>我需要把工作軌跡回寫到知識庫或工作日誌</li>
+        </ul>
+      </div>
+    </div>
+    <div class="meaning">如果你只用 Codex，用 Codex 預設自動化。如果你用多款 Agent，用跨 Agent 工作鏡子。這樣就好。</div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>很多人一開始會把系統做太大</h2>
+    <p>很多人剛開始學 AI 自動化，會想一步到位。他會想：要不要裝一個獨立的監控工具？要不要每 20 分鐘自動整理一次？要不要記錄 token、專注力、操作頻率？要不要同時接 Claude、Codex、Gemini？</p>
+    <p>這些問題都可以做。但對大多數剛開始的人來說，第一步是先讓自己看得見每天的工作軌跡。先回答三個問題就夠了：</p>
+    <ol>
+      <li>我今天做了什麼？</li>
+      <li>我改了哪些檔案？</li>
+      <li>明天下一步是什麼？</li>
+    </ol>
+    <p>如果這三個問題每天都能回答，你的 AI 工作流就已經開始有形狀了。</p>
+  </div>
+</section>
+
+<section class="section" id="codex">
+  <div class="inner">
+    <h2>Codex-only 路線：用預設自動化就好</h2>
+    <p class="lead">如果你只用 Codex，我會建議從三個階段開始。先養成習慣，再交給自動化。</p>
+    <div class="workflow-grid">
+      <div class="workflow-step"><small>第一階段</small><b>手動叫 Codex 寫日誌</b><p>工作告一段落，就叫 Codex 幫你整理剛剛做了什麼。重點是建立「工作要留下痕跡」的習慣。</p></div>
+      <div class="workflow-step"><small>第二階段</small><b>讓它看今天的檔案變動</b><p>手動穩了，就讓 Codex 每天根據對話、改過的檔案、產出的文件整理成日報。</p></div>
+      <div class="workflow-step"><small>第三階段</small><b>定時任務自動記錄</b><p>知道日誌長什麼樣子後，設一個定時任務，每隔固定時間自動記一次。預設 30 分鐘，可調成 15 分鐘或 1 小時。</p></div>
+    </div>
+
+    <h3>第一階段：手動叫 Codex 寫工作日誌</h3>
+    <p>一開始先不要自動化。先養成習慣：工作告一段落，就叫 Codex 幫自己整理剛剛做了什麼。可以直接貼這段提示詞：</p>
+    <div class="prompt">
+      <div class="prompt-head"><span>第一階段 · 手動整理</span><button class="copybtn" type="button">複製</button></div>
+      <pre>請幫我整理剛剛這段工作的工作日誌。
+
+請分成五段：
+1. 我原本要做什麼
+2. 實際完成了什麼
+3. 改了哪些檔案或產出了哪些東西
+4. 過程中卡在哪裡
+5. 下一步應該做什麼
+
+請只記錄已經發生的事，不要幫我腦補成果。
+如果你不確定，就標註「未確認」。</pre>
+    </div>
+    <p>很多人以為工作日誌是寫給老闆看的，其實工作日誌首先是寫給明天的自己看的。尤其用 AI 做事，今天一次對話可能改了十幾個地方，不記下來，隔天很容易不知道這段工作接到哪裡。</p>
+
+    <h3>第二階段：讓 Codex 看今天的檔案變動</h3>
+    <p>等手動記錄穩了，就讓 Codex 每天幫你看今天做了什麼。提示詞可以改成：</p>
+    <div class="prompt">
+      <div class="prompt-head"><span>第二階段 · 每日日報</span><button class="copybtn" type="button">複製</button></div>
+      <pre>請幫我整理今天的工作日誌。
+
+請根據今天的對話、修改過的檔案、產出的文件，整理成一篇日報。
+
+請包含：
+1. 今日主要任務
+2. 每個任務花在哪些檔案或輸出上
+3. 哪些事情已完成
+4. 哪些事情還沒完成
+5. 明天最適合接續的三件事
+
+限制：
+- 不要寫成漂亮心得文
+- 不要替我補沒有發生的成果
+- 不確定的地方請寫「未確認」
+- 如果有檔案路徑，請直接列出</pre>
+    </div>
+    <p>這一步會讓你開始理解：AI 可以變成工作回顧工具，回頭看你今天的行動，把散掉的脈絡收起來。</p>
+
+    <h3>第三階段：用 Codex 定時任務自動記錄</h3>
+    <p>等你已經知道日誌長什麼樣子，再把它變成定時任務，每隔固定時間自動記一次。我自己預設每 30 分鐘記一次，你可以照自己的工作節奏調成 15 分鐘或 1 小時。提示詞可以這樣寫：</p>
+    <div class="prompt">
+      <div class="prompt-head"><span>第三階段 · 定時任務（預設 30 分鐘）</span><button class="copybtn" type="button">複製</button></div>
+      <pre>請整理最近這段時間的 Codex 工作日誌。
+
+請檢查自上次記錄到現在，這個工作區內的主要活動，整理成一段可回顧的工作日誌。
+
+輸出格式：
+
+# 工作日誌（這段時間）
+
+## 完成了什麼
+- 條列這段時間完成的任務
+
+## 檔案與產出
+- 列出這段時間新增或修改的重要檔案
+
+## 卡點
+- 列出過程中出現的錯誤、等待、未完成事項
+
+## 下一步
+- 接下來最適合接續的 3 件事
+
+## 可信度
+- 高：有檔案或明確對話證據
+- 中：有對話脈絡但沒有落檔
+- 低：只有零散線索
+
+規則：
+- 只記錄這段時間實際發生的事
+- 不要補我沒有說過的成果
+- 不要寫成勵志心得
+- 找不到資料就寫「這段時間沒有足夠紀錄可整理」</pre>
+    </div>
+    <p>這樣就已經是 Codex-only 的自動工作日誌。對很多人來說，這個版本已經很夠用。</p>
+  </div>
+</section>
+
+<section class="section" id="mirror">
+  <div class="inner">
+    <h2>那什麼時候需要多 Agent 工作鏡子？</h2>
+    <p class="lead">當你的工作開始分散到多個 Agent，就會出現新的問題。</p>
+    <p>例如：Codex 幫你改檔案、Claude Code 幫你順稿、Gemini 幫你查資料、NotebookLM 幫你整理來源、Hermes 幫你定時回顧。這時候你會發現，每個工具都只知道自己那一段。Codex 不一定知道 Claude Code 剛剛做了什麼，Gemini 查到的資料可能存在另一個地方。</p>
+    <p>這時候就需要一個跨 Agent 工作鏡子。它的任務是把不同工具留下的痕跡集中起來，回答幾個更細的問題：</p>
+    <ul>
+      <li>這段時間有哪些 Agent 參與？每個 Agent 做了什麼？</li>
+      <li>哪些檔案真的被改了？哪些只是對話，還沒有落檔？</li>
+      <li>這個任務有沒有工作日誌？前因後果是什麼？</li>
+      <li>token、操作次數、專注力成本大概是多少？</li>
+    </ul>
+    <div class="meaning">這就會從「工作日誌」升級成「工作軌跡系統」。先判斷自己是哪一種，再決定工具。</div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>給初學者的最小練習</h2>
+    <p>如果我要教初學者，我會先給他們一個很小的練習。今天不要做完整自動化，只做這一件事，工作結束後對 Codex 說：</p>
+    <div class="prompt">
+      <div class="prompt-head"><span>最小練習 · 10 行收尾</span><button class="copybtn" type="button">複製</button></div>
+      <pre>請幫我用 10 行以內整理剛剛這段工作：
+
+1. 我做了什麼
+2. 產出了什麼
+3. 下一步是什麼
+
+只寫事實，不要寫心得。</pre>
+    </div>
+    <p>這個練習看起來很小，但它會讓你開始理解一件事：AI 工作流要包含兩個動作，任務開始時下指令，任務結束時收尾。開始時下指令，結束時寫紀錄，這兩個動作加起來，才會形成可以累積的工作流程。</p>
+
+    <h3>再往前一步：讓工作日誌變成技能包</h3>
+    <p>等一個人連續寫了一段時間的工作日誌，就會開始看到重複模式。例如每次寫文章都會先倒口述、再請 AI 收斂架構；每次做網站都會先改本機、再部署、再驗收。這些重複模式，就是技能包的原料。</p>
+    <p>所以我會把工作日誌視為 AI 工作流的地基。沒有工作日誌，技能包容易變成憑空想像的 SOP；有工作日誌，技能包會從真實工作長出來。</p>
+  </div>
+</section>
+
+<section class="section" id="pits">
+  <div class="inner">
+    <h2>常見的坑</h2>
+    <p class="lead">四個最常踩到的地方，展開看對策。</p>
+    <details><summary>坑一：一開始就做太大的系統</summary><div class="detail-body"><p>剛開始只需要每天一篇工作日誌。先不要急著追 token、專注力、操作頻率，那些都是進階層。</p></div></details>
+    <details><summary>坑二：把工作日誌寫成心得文</summary><div class="detail-body"><p>工作日誌的第一任務是記錄事實。可以有反思，但不要讓反思蓋過事實。尤其是自動化產出的日誌，要先能回答「做了什麼」。</p></div></details>
+    <details><summary>坑三：只相信狀態顯示成功</summary><div class="detail-body"><p>任何自動化都要驗收。不要只看系統顯示成功，要看它有沒有真的寫入檔案、有沒有寫對地方、有沒有把錯誤訊息當成工作內容。</p></div></details>
+    <details><summary>坑四：沒有下一步</summary><div class="detail-body"><p>好的工作日誌一定要留下下一步。因為明天的你需要一個可以接著做的入口。</p></div></details>
+  </div>
+</section>
+
+<section class="section cta-band">
+  <div class="inner">
+    <div>
+      <h2>給自己的定位提醒</h2>
+      <p class="lead">我會把 Codex-only 看成入門路線。先讓每個人都能用 Codex 建立自己的工作日誌，等他們開始同時使用多款 Agent，再教多 Agent 工作鏡子。這樣學習成本最低，也最符合真實工作節奏。</p>
+      <p>AI 工作流的本質，就是把一次次工作留下來，變成下一次可以接續、可以複用、可以教給 AI 的流程。</p>
+    </div>
+    <div class="cta-card">
+      <b>加入 LINE 社群</b>
+      <p>我每月兩場免費線上講座，分享實戰經驗與方法論。有顧問需求或想持續學習，都歡迎先從社群開始。</p>
+      <div class="cta"><a class="primary" href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">免費加入 LINE 社群 ↗</a></div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">江江教練 · AI 知識管理</div>
+    <div class="footer-links">
+      <a href="../../articles.html">← 回深度文章總站</a>
+      <a href="../../index.html">首頁</a>
+      <a href="../../learn.html">自學資源</a>
+      <a href="../../skills.html">Skills 下載</a>
+      <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">LINE 社群 ↗</a>
+      <a href="https://www.threads.com/@jiang_yude_coach" target="_blank" rel="noopener">Threads ↗</a>
+      <a href="https://vocus.cc/salon/Jiang_Coach" target="_blank" rel="noopener">方格子 ↗</a>
+    </div>
+    <div class="footer-note">這篇也整理成方格子與脆文版本，內容相同、長度不同。</div>
+  </div>
+</footer>
+
+<script>
+  document.querySelectorAll('.copybtn').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var pre = btn.closest('.prompt').querySelector('pre');
+      var text = pre ? pre.innerText : '';
+      function done(){ btn.textContent='已複製'; btn.classList.add('ok'); setTimeout(function(){ btn.textContent='複製'; btn.classList.remove('ok'); }, 1400); }
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(done, function(){ done(); });
+      } else { done(); }
+    });
+  });
+</script>
+</body>
+</html>
