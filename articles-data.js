@@ -125,6 +125,57 @@ window.ARTICLES = [
       content_type: ["趨勢文章"]
     },
     external: { threads: null, vocus: null }
+  },
+
+  /* ── 7. 抓到 AI 偷懶之後，把它寫進流程規則（案例）── */
+  {
+    id: "caught-ai-slacking-into-rules",
+    url: "articles/caught-ai-slacking-into-rules/",
+    date: "2026-06-08",
+    title: "抓到 AI 偷懶之後，我把它寫進流程規則",
+    problem: "AI 可能沒有執行外部動作，卻用一個看起來完成任務的回答蓋過去，你不確定它有沒有真的照流程做事。",
+    audience: "已經開始用 ChatGPT、Codex、Claude、Gemini 分工，常叫 AI 去查、去叫另一個模型、幫我記住的人。",
+    summary: "我叫 Codex 請 Claude 修文，它沒真的叫卻回了一版像完成的答案。復盤怎麼追問 AI 有沒有真的執行外部動作，並把踩坑寫成規則。附可直接複製的檢查句。",
+    tags: {
+      topic: ["AIAgent", "AI工作流", "工作流程"],
+      level: ["基礎"],
+      content_type: ["案例文章"]
+    },
+    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: "https://vocus.cc/salon/Jiang_Coach" }
+  },
+
+  /* ── 8. AI 之王不上戰場（觀點）── */
+  {
+    id: "ai-king-off-battlefield",
+    url: "articles/ai-king-off-battlefield/",
+    date: "2026-06-17",
+    title: "AI 之王不上戰場：換個角度看蘋果、Google 與 AI 入口",
+    problem: "看 AI 發展很容易只盯著誰跑分高、誰的模型強，少了從產業結構與入口角度看趨勢的視角。",
+    audience: "常追 AI 新聞、習慣用跑分和排行榜看誰強，想拉遠一點理解 AI 趨勢的人。",
+    summary: "一個角度而非預言：把模型公司想成將軍、掌握入口的公司想成後台的王。當模型越來越商品化，真正稀缺的可能是入口。不是要你相信結論，是多一個觀察趨勢的視角。",
+    tags: {
+      topic: ["AI趨勢", "差異比較", "數位轉型"],
+      level: ["基礎"],
+      content_type: ["觀點文章"]
+    },
+    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: "https://vocus.cc/salon/Jiang_Coach" }
+  },
+
+  /* ── 9. 知識庫太大，改成三庫分流（教學）── */
+  {
+    id: "knowledge-base-three-vault-split",
+    url: "articles/knowledge-base-three-vault-split/",
+    date: "2026-06-19",
+    title: "知識庫太大，我改成三庫分流",
+    problem: "知識庫越長越大、全部混在一個庫，找文件要捲很久，AI 也常讀到用不到的東西、找不到該執行的程式。想拆開又不知道照什麼標準拆。",
+    audience: "知識庫越長越大、開始翻不動，想把它拆開又不知道該照什麼標準拆的人。",
+    summary: "一套可以照做的拆庫方法：別用檔案型別分，改問「這東西是誰要用的」，分成主庫（人用）、副庫（AI 執行）、對外庫（受眾），再立一條先讀檢索頁再存檔的流程，外加一個以能運作為準的例外處理。",
+    tags: {
+      topic: ["知識管理", "知識庫", "AIAgent"],
+      level: ["基礎"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: "https://vocus.cc/salon/Jiang_Coach" }
   }
 
 ];

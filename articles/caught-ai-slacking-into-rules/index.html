@@ -1,0 +1,370 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="index,follow">
+<title>抓到 AI 偷懶之後，我把它寫進流程規則｜江江教練 · AI 知識管理</title>
+<meta name="description" content="我叫 Codex 請 Claude 修文章，它沒有真的叫，卻回了一版像完成的答案。這篇復盤怎麼追問 AI 有沒有真的執行外部動作、怎麼確認它真的把規則寫進去，附可直接複製的檢查句。">
+<link rel="canonical" href="https://ai-km-jiang.vercel.app/articles/caught-ai-slacking-into-rules/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="抓到 AI 偷懶之後，我把它寫進流程規則｜江江教練">
+<meta property="og:image" content="https://ai-km-jiang.vercel.app/images/intro-jiang.png">
+<meta property="og:description" content="多模型協作的重點不在哪個模型強，而在 AI 有沒有真的照流程做事。一個真實案例＋可直接複製的追問句。">
+<meta property="og:url" content="https://ai-km-jiang.vercel.app/articles/caught-ai-slacking-into-rules/">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:site_name" content="江江教練 · AI 知識管理">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="抓到 AI 偷懶之後，我把它寫進流程規則｜江江教練">
+<meta name="twitter:image" content="https://ai-km-jiang.vercel.app/images/intro-jiang.png">
+<meta name="twitter:description" content="多模型協作的重點，在 AI 有沒有真的照流程做事。一個真實案例＋可直接複製的追問句。">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"抓到 AI 偷懶之後，我把它寫進流程規則","description":"我叫 Codex 請 Claude 修文章，它沒有真的叫，卻回了一版像完成的答案。這篇復盤怎麼追問 AI 有沒有真的執行外部動作，並把踩坑寫成流程規則。","author":{"@type":"Person","name":"江昱德","alternateName":"江江教練","jobTitle":"隱性知識提煉師、AI 應用規劃師"},"isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://ai-km-jiang.vercel.app/"},"inLanguage":"zh-Hant","url":"https://ai-km-jiang.vercel.app/articles/caught-ai-slacking-into-rules/"}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{--ink:#1a1612;--paper:#fefcf8;--muted:#6a635a;--line:#d8cdb8;--green:#5f7553;--blue:#5689b8;--orange:#e85a4f;--soft:#faf5ec;--dark:#2a2018;--shadow:0 18px 45px rgba(107,74,42,.14)}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC","Segoe UI",sans-serif}
+a{color:inherit}
+.topbar{position:sticky;top:0;z-index:20;display:flex;gap:10px;align-items:center;justify-content:space-between;padding:12px clamp(18px,4vw,56px);border-bottom:1px solid rgba(26,22,18,.12);background:rgba(254,252,248,.92);backdrop-filter:blur(12px)}
+.brand{font-weight:900;font-size:14px;text-decoration:none}
+.nav{display:flex;gap:8px;overflow:auto}
+.nav a{white-space:nowrap;text-decoration:none;border:1px solid rgba(26,22,18,.16);border-radius:999px;padding:8px 11px;background:#fff;font-size:14px;font-weight:800}
+.hero{min-height:58vh;display:grid;align-items:end;padding:56px clamp(20px,6vw,88px);background:linear-gradient(135deg,rgba(42,32,24,.92),rgba(232,90,79,.78));color:#fff;overflow:hidden}
+.kicker{font:900 13px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;color:#f6d7a6;text-transform:uppercase}
+.hero h1{max-width:1040px;margin:16px 0 18px;font-size:clamp(36px,6vw,72px);line-height:1.08;overflow-wrap:anywhere}
+.hero p{max-width:820px;font-size:clamp(18px,2vw,23px);line-height:1.62;color:rgba(255,255,255,.9)}
+.cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
+.cta a{display:inline-flex;align-items:center;text-decoration:none;border-radius:8px;padding:12px 16px;font-weight:900}
+.cta .primary{background:#fff;color:#1a1612}.cta .ghost{border:1px solid rgba(255,255,255,.32);color:#fff;background:rgba(255,255,255,.08)}
+.section{padding:54px clamp(20px,6vw,88px);border-top:1px solid var(--line)}
+.inner{width:min(1000px,100%);margin:0 auto}
+.section h2{font-size:clamp(26px,4.2vw,48px);line-height:1.12;margin:0 0 18px}
+.section h3{font-size:clamp(21px,3vw,30px);line-height:1.2;margin:30px 0 12px}
+.lead{font-size:clamp(18px,1.6vw,22px);line-height:1.7;color:#3a342d;max-width:900px}
+.section p{font-size:18px;line-height:1.74;color:#3a342d}.section p+p{margin-top:14px}
+.section ul,.section ol{padding-left:1.4em;font-size:18px;line-height:1.74;color:#3a342d}.section li{margin-bottom:8px}
+.meaning{margin:22px 0;padding:16px 18px;border-left:5px solid var(--blue);background:rgba(86,137,184,.12);border-radius:6px;line-height:1.7;font-size:19px}
+.meaning b{display:block;color:var(--blue);margin-bottom:4px}
+.infocard{background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px 24px 22px;box-shadow:0 8px 22px rgba(107,74,42,.08);margin-top:8px}
+.infocard-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.info-item{padding:18px 14px 0}
+.info-item b{display:block;font-size:14px;font-weight:900;letter-spacing:.04em;margin-bottom:7px;text-transform:uppercase}
+.info-item:nth-child(1) b{color:var(--green)}.info-item:nth-child(2) b{color:var(--orange)}.info-item:nth-child(3) b{color:var(--blue)}
+.info-item p{margin:0;font-size:17px;line-height:1.6;color:#3a342d}
+.tagrow{display:flex;flex-wrap:wrap;gap:7px;margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
+.tag{font-size:14px;color:var(--muted);background:var(--soft);border:1px solid var(--line);border-radius:999px;padding:4px 11px}
+.routes{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:24px}
+.route{background:#fff;border:1px solid var(--line);border-radius:10px;padding:22px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.route.b{border-color:var(--blue);box-shadow:0 8px 24px rgba(86,137,184,.16)}
+.route h4{margin:0 0 6px;font-size:20px}
+.route .who{font-size:15px;color:var(--muted);margin:0 0 12px}
+.route ul{padding-left:1.25em;margin:0}.route li{font-size:16px;line-height:1.6;color:#3a342d;margin-bottom:6px}
+.prompt{position:relative;margin:16px 0;border:1px solid var(--line);border-radius:10px;background:#221c16;overflow:hidden}
+.prompt-head{display:flex;justify-content:space-between;align-items:center;padding:9px 14px;background:rgba(255,255,255,.06);border-bottom:1px solid rgba(255,255,255,.1)}
+.prompt-head span{color:#f6d7a6;font:900 13px/1 ui-monospace,SFMono-Regular,Menlo,monospace}
+.copybtn{border:1px solid rgba(255,255,255,.3);background:rgba(255,255,255,.1);color:#fff;border-radius:6px;padding:6px 12px;font-family:inherit;font-size:14px;font-weight:800;cursor:pointer;transition:.15s}
+.copybtn:hover{background:rgba(255,255,255,.2)}.copybtn.ok{background:#5f7553;border-color:#5f7553}
+.prompt pre{margin:0;padding:16px;overflow:auto;color:#f3ece0;font:500 15px/1.7 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;white-space:pre-wrap;word-break:break-word}
+details{border:1px solid rgba(26,22,18,.15);border-radius:8px;background:#fff;margin-top:9px;overflow:hidden}
+summary{cursor:pointer;list-style:none;padding:14px 16px;font-weight:900;line-height:1.45;display:flex;justify-content:space-between;gap:14px;font-size:18px}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";flex:0 0 auto;width:24px;height:24px;border-radius:50%;display:grid;place-items:center;background:rgba(26,22,18,.08);font:900 16px/1 ui-monospace,monospace}
+details[open] summary::after{content:"-"}
+.detail-body{padding:0 16px 16px;border-top:1px solid rgba(26,22,18,.08)}.detail-body p{margin:12px 0 0;line-height:1.72;color:#3a342d;font-size:17px}
+.cta-band{background:var(--dark);color:#fff}.cta-band .section{border-top:none}
+.cta-band .inner{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(260px,.85fr);gap:26px;align-items:start}
+.cta-band h2{font-size:clamp(26px,4vw,44px);margin:0 0 16px}.cta-band p,.cta-band .lead{color:rgba(255,255,255,.84);font-size:18px;line-height:1.72}
+.cta-card{border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.06);border-radius:8px;padding:22px}
+.cta-card b{display:block;color:#f6d7a6;margin-bottom:10px;font-size:18px}.cta-card p{margin:0 0 14px}
+.footer{padding:30px clamp(20px,6vw,88px);font-size:14px;color:var(--muted);background:#fff;border-top:1px solid var(--line)}
+.footer-inner{width:min(1000px,100%);margin:0 auto}
+.footer-links{display:flex;flex-wrap:wrap;gap:6px 12px;margin-bottom:14px}.footer-links a{color:var(--blue);font-weight:900;text-decoration:none;font-size:14px}
+.footer-brand{font-weight:900;font-size:15px;margin-bottom:10px}.footer-note{font-size:13px;line-height:1.6}
+@media(max-width:820px){.infocard-grid{grid-template-columns:1fr}.routes{grid-template-columns:1fr}.cta-band .inner{grid-template-columns:1fr}.section{padding:40px 20px}.hero{min-height:52vh}}
+@media(max-width:820px){html,body{overflow-x:hidden}.hero h1{word-break:break-word}}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="../../articles.html">江江教練 · 深度文章</a>
+  <nav class="nav" aria-label="頁面導覽">
+    <a href="../../articles.html" style="background:#1a1612;color:#fff;border-color:#1a1612">← 深度文章總站</a>
+    <a href="#story">事情怎麼發生</a>
+    <a href="#catch">我怎麼抓到</a>
+    <a href="#ask">我現在怎麼下指令</a>
+    <a href="#checklist">檢查清單</a>
+    <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">LINE 社群 ↗</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <div>
+    <div class="kicker">AI 工作流 / 案例</div>
+    <h1>抓到 AI 偷懶之後，<br>我把它寫進流程規則</h1>
+    <p>我叫 Codex 請 Claude 來修文章，它沒有真的叫，卻回了一版像已經完成的答案。文章難看可以重寫，流程不誠實才麻煩。這篇講我怎麼追問，怎麼把這次踩坑變成下次會被執行的規則。</p>
+    <div class="cta">
+      <a class="primary" href="#catch">直接看怎麼抓到</a>
+      <a class="ghost" href="#checklist">先拿走檢查清單</a>
+    </div>
+  </div>
+</section>
+
+<main>
+
+<section class="section">
+  <div class="inner">
+    <div class="infocard">
+      <div class="infocard-grid">
+        <div class="info-item">
+          <b>適合誰</b>
+          <p>已經開始用 ChatGPT、Codex、Claude、Gemini 分工處理不同任務的人；常叫 AI「去查」「去叫另一個模型」「幫我記住」，卻不確定它有沒有真的做的人。</p>
+        </div>
+        <div class="info-item">
+          <b>解決什麼問題</b>
+          <p>AI 可能沒有執行外部動作，卻用一個看起來完成任務的回答蓋過去。你需要一套方法，確認它真的照流程做事。</p>
+        </div>
+        <div class="info-item">
+          <b>你會得到什麼</b>
+          <p>理解多模型協作的重點在流程驗證、一套追問 AI 是否真的執行外部工具的方法，以及可直接複製的檢查句和記憶寫入流程。</p>
+        </div>
+      </div>
+      <div class="tagrow">
+        <span class="tag">主題：AI Agent 工作流</span>
+        <span class="tag">主題：多模型協作</span>
+        <span class="tag">程度：基礎</span>
+        <span class="tag">適合：一人公司</span>
+        <span class="tag">類型：案例文章</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="story">
+  <div class="inner">
+    <h2>事情怎麼發生</h2>
+    <p class="lead">這是一個 AI 協作流程的真實案例。我請 ChatGPT／Codex 寫文章，覺得文案不行，所以要求它請 Claude 來修。我追問後才發現，它根本沒有真的叫 Claude，只是自己改了一版。</p>
+    <p>我最近想寫一篇關於 Codex 裝機門檻的文章。我的觀察是，Codex 一開始比較像新電腦才能玩的工具，印象中最早主要是 Mac M 系列比較順，後來 Intel Mac 可以，再後來 Windows 也支援。最近我朋友一台 2015 年的 MacBook Pro 也能裝，甚至手機上的 ChatGPT 還能遠端接著看 Codex 的工作。</p>
+    <p>我覺得這件事很重要。如果一個 AI agent 要變成真正的工作入口，它不能只服務少數新機器，要能被更多人裝起來，包含學校、組織、企業，還有一般工作者手上的舊電腦。</p>
+    <p>前面我讓 Codex 先查資料，確認 OpenAI 官方有沒有真的講過 AI OS 這件事。查到比較精準的官方用詞是「ChatGPT as an operating system for work」，來自 OpenAI 官方文章，中文大概就是 ChatGPT 會變成工作的入口。這個方向是對的。</p>
+    <p>問題出在寫文章。我看到 Codex 寫出來的版本，一看就是 AI 在堆句子。它寫了一串「它能不能裝在更多人的電腦上、它能不能跨 Mac、Windows、手機、它能不能讀你的工作現場、它能不能接手你的工具」。看起來整齊，實際上很空，讀者會覺得被一堆句型推著走，沒有真的看見人的思考。所以我說：請 Claude 出來修吧。</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>我原本期待的分工</h2>
+    <p class="lead">我對不同 AI 的分工其實很清楚，會按任務分配工具。</p>
+    <div class="routes">
+      <div class="route">
+        <h4>Codex／ChatGPT 比較適合</h4>
+        <p class="who">本機施工、查證、固化流程</p>
+        <ul>
+          <li>查資料</li>
+          <li>整理工作流</li>
+          <li>操作本機檔案、跑指令</li>
+          <li>記錄規則</li>
+          <li>把流程固化進知識庫</li>
+        </ul>
+      </div>
+      <div class="route b">
+        <h4>Claude 比較適合</h4>
+        <p class="who">語氣、節奏、文案判斷</p>
+        <ul>
+          <li>修文章、調語氣</li>
+          <li>把口語變成比較自然的長文</li>
+          <li>處理細膩的文案節奏</li>
+          <li>判斷文章哪裡像 AI 味</li>
+        </ul>
+      </div>
+    </div>
+    <p>所以我會先讓 Codex 試試看。它查資料很方便，整理流程也很強，如果這次寫得可以，我就直接用；寫不好，我就叫 Claude 修。這個分工本來很正常。</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>真正出問題的地方</h2>
+    <p>我說「請 Claude 出來修吧」之後，Codex 回了一版文字，乍看之下好像照做了。後來我追問「你有叫 Claude 出來嗎」，它才承認：沒有。</p>
+    <p>文章寫得不好，這件事我可以接受。模型每一版能力都會變，現在 ChatGPT 可能不擅長某種文章，下一版也許突然就很會寫，那是 OpenAI 要煩惱的事。我該優化的是自己的 AI agent 工作流程。</p>
+    <p>我給了一個明確指令「請 Claude 出來修」，Codex 沒有真的呼叫 Claude，自己改了一版，語氣又像已經完成了這件事。這代表流程裡有一個漏洞：AI 可能沒有執行外部動作，卻用一個看起來完成任務的回答蓋過去。</p>
+    <div class="meaning"><b>這比文章難看更嚴重</b>文章難看可以重寫。流程不誠實，之後每個需要外部工具、子代理、跨模型驗證的任務都會出問題。</div>
+  </div>
+</section>
+
+<section class="section" id="catch">
+  <div class="inner">
+    <h2>我怎麼抓到這件事</h2>
+    <p class="lead">我沒有直接接受它的回答。我問它「你有叫 Claude 出來嗎」，這句話很重要。</p>
+    <p>因為很多時候 AI 會說「已經處理好了」「我會記住」「我已經修正」，這些句子聽起來像完成，實際上不一定有任何可驗證的動作。所以要追問：</p>
+    <div class="prompt">
+      <div class="prompt-head"><span>追問：你真的呼叫了嗎</span><button class="copybtn" type="button">複製</button></div>
+      <pre>你真的有呼叫外部工具嗎？
+你呼叫的是哪一個工具？
+有沒有工具回傳結果？
+如果失敗，錯誤訊息是什麼？
+這是 Claude 的結果，還是你自己整理的？</pre>
+    </div>
+    <p>這次一追問，就抓到了。Codex 承認沒有叫 Claude。接著我問它「所以你現在要怎麼辦」，它才真的去找本機有沒有 Claude CLI。結果本機有 Claude 指令，它實際呼叫後，回來的錯誤是：</p>
+    <div class="prompt">
+      <div class="prompt-head"><span>這才是正確的回報</span><button class="copybtn" type="button">複製</button></div>
+      <pre>401 Invalid authentication credentials</pre>
+    </div>
+    <p>有呼叫，就說有呼叫；沒呼叫，就說沒呼叫；呼叫失敗，就說失敗原因。這個流程比假裝完成重要太多。</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>「記住了」也要查</h2>
+    <p>後來我要求它把這件事記住。可是我現在不會只聽 AI 說「我記住了」，我會繼續問：</p>
+    <div class="prompt">
+      <div class="prompt-head"><span>追問：你記在哪</span><button class="copybtn" type="button">複製</button></div>
+      <pre>你記在哪？
+你真的寫進去了嗎？
+下次遇到同樣任務時，你會去哪裡找這條規則？
+你可以把檔案路徑給我嗎？</pre>
+    </div>
+    <p>因為 AI 的「記住」有很多種：有些只是這一輪對話裡暫時知道，有些是寫進專案規則，有些是寫進長期記憶，有些只是嘴上說說。如果沒有落到可檢查的位置，下一次很容易又忘。</p>
+    <p>這次我要求它寫入兩個地方，一個是 <code>AGENTS.md</code>，一個是 Codex 的記憶補充檔，而且要求它回報完整路徑。最後它真的寫入了，新增的規則大意是：</p>
+    <div class="prompt">
+      <div class="prompt-head"><span>寫進規則的內容</span><button class="copybtn" type="button">複製</button></div>
+      <pre>使用者明確要求「請 Claude 出來」「叫 Claude 修」「交給 Claude」時，
+Codex 必須真的呼叫可用的 Claude 工具或 CLI。
+
+如果 Claude 呼叫失敗，要明確回報失敗原因。
+
+後續由 Codex 先給替代內容時，必須標示為「Codex 臨時版」或「Codex 自行整理」。
+
+不能自行改寫後假裝是 Claude 的結果。</pre>
+    </div>
+    <p>這樣才算把一次踩坑變成流程改善。</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>這件事可以怎麼教</h2>
+    <p>我覺得這是一個很好的 AI 協作教學案例。很多人現在開始學多模型協作，會把焦點放在哪個模型比較強、比較會寫、比較便宜、上下文比較大。這些都重要，可是進入 agent 工作流之後，還有另一個更基本的問題：AI 有沒有真的照你說的流程做？</p>
+    <p>如果你叫它查資料，它有沒有真的查？如果你叫它叫 Claude，它有沒有真的叫？如果你叫它記住，它有沒有真的寫入？如果它說失敗，它有沒有給出錯誤原因？這些問題會決定整套流程能不能被信任。</p>
+  </div>
+</section>
+
+<section class="section" id="ask">
+  <div class="inner">
+    <h2>我現在會怎麼要求 AI</h2>
+    <p class="lead">下次我如果要叫 Codex 請 Claude 修文，我會直接這樣下指令。</p>
+    <div class="prompt">
+      <div class="prompt-head"><span>要求真的呼叫外部模型</span><button class="copybtn" type="button">複製</button></div>
+      <pre>請真的呼叫 Claude 來修這篇文章。
+
+要求：
+1. 先回報你使用的 Claude 呼叫方式。
+2. 如果 Claude 成功回覆，請標示「Claude 修稿版」。
+3. 如果 Claude 呼叫失敗，請貼出錯誤原因。
+4. Claude 失敗時，可以提供「Codex 臨時版」，前提是明確標示。
+5. 不准在沒有呼叫 Claude 的情況下，說成是 Claude 的結果。</pre>
+    </div>
+    <p>如果是要求 AI 記住新規則，我會這樣下：</p>
+    <div class="prompt">
+      <div class="prompt-head"><span>要求記憶落到可檢查的位置</span><button class="copybtn" type="button">複製</button></div>
+      <pre>請把這條規則寫入可檢查的位置。
+
+寫完後請回報：
+1. 寫入哪個檔案。
+2. 檔案完整路徑。
+3. 新增內容在哪幾行。
+4. 下次遇到同樣任務時，你會去哪裡讀取這條規則。</pre>
+    </div>
+    <p>這樣問，AI 就比較難用一句「我記住了」帶過。</p>
+  </div>
+</section>
+
+<section class="section" id="checklist">
+  <div class="inner">
+    <h2>可直接複製的檢查清單</h2>
+    <p class="lead">三種情境，三組追問。AI 說它完成、記住、或請另一個模型處理了，都先追問再相信。</p>
+    <div class="prompt">
+      <div class="prompt-head"><span>當 AI 說它完成某件事</span><button class="copybtn" type="button">複製</button></div>
+      <pre>你剛剛實際做了哪些動作？
+哪些是你自己推論？
+哪些是工具回傳？
+有沒有失敗的步驟？
+如果有，錯誤訊息是什麼？
+這個結果可以在哪裡被我檢查？</pre>
+    </div>
+    <div class="prompt">
+      <div class="prompt-head"><span>當 AI 說它記住了</span><button class="copybtn" type="button">複製</button></div>
+      <pre>你記在哪個檔案？
+完整路徑是什麼？
+新增內容在哪幾行？
+下次同樣情境，你會讀哪個規則？</pre>
+    </div>
+    <div class="prompt">
+      <div class="prompt-head"><span>當 AI 說它請另一個模型處理了</span><button class="copybtn" type="button">複製</button></div>
+      <pre>你真的呼叫那個模型了嗎？
+呼叫方式是什麼？
+有沒有原始回覆？
+如果沒有，請明確說這是你自己的版本。</pre>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>常見的坑</h2>
+    <p class="lead">四個最常踩到的地方，展開看對策。</p>
+    <details><summary>坑一：AI 說「我記住了」，其實沒有寫入任何地方</summary><div class="detail-body"><p>要求它回報檔案路徑、行號、下次讀取位置。沒有落到可檢查的位置，下次就會又忘。</p></div></details>
+    <details><summary>坑二：AI 說「我幫你請某某模型處理」，其實自己代打</summary><div class="detail-body"><p>要求它說明呼叫方式、工具回傳、錯誤訊息。有呼叫就說有，沒呼叫就說沒有。</p></div></details>
+    <details><summary>坑三：把模型能力問題和流程問題混在一起</summary><div class="detail-body"><p>分開處理。文章寫不好可以換模型，流程沒照做要寫規則。兩件事的解法不一樣。</p></div></details>
+    <details><summary>坑四：只在對話中罵 AI，沒有把規則固化</summary><div class="detail-body"><p>把踩坑結果寫進 AGENTS.md、技能包、SOP 或記憶補充檔，下一次才會被執行。</p></div></details>
+  </div>
+</section>
+
+<section class="section cta-band">
+  <div class="inner">
+    <div>
+      <h2>這次我學到的事</h2>
+      <p class="lead">我不需要每次都要求 AI 一次做到完美，我需要的是一套可驗證的修正流程。先讓 Codex 試，寫不好叫 Claude，Claude 叫不到就回報原因，流程出錯就寫進規則，寫進規則後再確認檔案和路徑。</p>
+      <p>真正的進步有兩個來源：一個是模型升級，另一個是我們怎麼把每一次出錯，變成下一次會被執行的規則。只要能把錯誤寫成規則，下一次系統就會更可靠。</p>
+    </div>
+    <div class="cta-card">
+      <b>加入 LINE 社群</b>
+      <p>我每月兩場免費線上講座，分享實戰經驗與方法論。有顧問需求或想持續學習，都歡迎先從社群開始。</p>
+      <div class="cta"><a class="primary" href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">免費加入 LINE 社群 ↗</a></div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">江江教練 · AI 知識管理</div>
+    <div class="footer-links">
+      <a href="../../articles.html">← 回深度文章總站</a>
+      <a href="../../index.html">首頁</a>
+      <a href="../../learn.html">自學資源</a>
+      <a href="../../skills.html">Skills 下載</a>
+      <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">LINE 社群 ↗</a>
+      <a href="https://www.threads.com/@jiang_yude_coach" target="_blank" rel="noopener">Threads ↗</a>
+      <a href="https://vocus.cc/salon/Jiang_Coach" target="_blank" rel="noopener">方格子 ↗</a>
+    </div>
+    <div class="footer-note">這篇之後也會整理成方格子與脆文的引流版本，內容相同、長度不同。</div>
+  </div>
+</footer>
+
+<script>
+  document.querySelectorAll('.copybtn').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var pre = btn.closest('.prompt').querySelector('pre');
+      var text = pre ? pre.innerText : '';
+      function done(){ btn.textContent='已複製'; btn.classList.add('ok'); setTimeout(function(){ btn.textContent='複製'; btn.classList.remove('ok'); }, 1400); }
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(done, function(){ done(); });
+      } else { done(); }
+    });
+  });
+</script>
+</body>
+</html>
