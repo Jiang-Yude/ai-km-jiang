@@ -60,7 +60,8 @@ window.ARTICLES = [
       level: ["零基礎入門"],
       content_type: ["教學文章"]
     },
-    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: "https://vocus.cc/salon/Jiang_Coach" }
+    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: "https://vocus.cc/salon/Jiang_Coach" },
+    related: ["own-ai-team-at-work", "caught-ai-slacking-into-rules"]
   },
 
   /* ── 3. 有標準答案的交給程式，沒標準答案的才輪到 AI（觀點）── */
@@ -77,7 +78,8 @@ window.ARTICLES = [
       level: ["進階"],
       content_type: ["觀點文章"]
     },
-    external: { threads: null, vocus: null }
+    external: { threads: null, vocus: null },
+    related: ["own-ai-team-at-work", "agent-workflow-builds-automation"]
   },
 
   /* ── 4-6. 趨勢判讀 ── */
@@ -176,6 +178,24 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: "https://vocus.cc/salon/Jiang_Coach" }
+  },
+
+  /* ── 10. 在公司上班，你也可以有自己的 AI 團隊（觀點）── */
+  {
+    id: "own-ai-team-at-work",
+    url: "articles/own-ai-team-at-work/",
+    date: "2026-06-20",
+    title: "在公司上班，你也可以有自己的 AI 團隊",
+    problem: "在公司上班，總覺得多做也沒用，想把工作變成自己的系統卻不知道從哪開始，也一直訓練不出自己的 AI。",
+    audience: "在公司上班、又想把工作做成一套系統的人，特別是有資源的中高階主管，以及想經營副業、未來自己接案的資深工作者。",
+    summary: "把自己從員工心態切換成一人公司老闆，公司是你目前唯一的長期固定客戶。同樣的事差別只在心態，而沒有這個轉換，是訓練不出自己的 AI 團隊的。",
+    tags: {
+      topic: ["AIAgent", "數位轉型"],
+      level: ["零基礎入門"],
+      content_type: ["觀點文章"]
+    },
+    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
+    related: ["codex-only-auto-worklog", "program-vs-ai-skill-library"]
   }
 
 ];
