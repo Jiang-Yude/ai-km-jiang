@@ -1,0 +1,310 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="index,follow">
+<title>AI 就是整個市場的縮影：在花錢做市調前，先用 AI 測反應｜江江教練 · AI 知識管理</title>
+<meta name="description" content="做市場調查慢又貴，但 AI 讀過海量真實的人寫的東西，本身就是市場的縮影。高露潔跟 PyMC Labs 的研究證實，先讓 AI 寫反應再換算成分數，模擬購買意願能接近真人自我一致性的九成。附可複製提示詞與免費技能包。">
+<link rel="canonical" href="https://ai-km-jiang.vercel.app/articles/ai-market-microcosm/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AI 就是整個市場的縮影：在花錢做市調前先用 AI 測反應｜江江教練">
+<meta property="og:image" content="https://ai-km-jiang.vercel.app/images/intro-jiang.png">
+<meta property="og:description" content="AI 讀過海量真實的人寫的東西，本身就是市場縮影。高露潔實測：先讓 AI 寫反應再換算分數，模擬購買意願能到真人自我一致性的九成。">
+<meta property="og:url" content="https://ai-km-jiang.vercel.app/articles/ai-market-microcosm/">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:site_name" content="江江教練 · AI 知識管理">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="AI 就是整個市場的縮影：先用 AI 測反應｜江江教練">
+<meta name="twitter:image" content="https://ai-km-jiang.vercel.app/images/intro-jiang.png">
+<meta name="twitter:description" content="花錢做市調前，先讓 AI 當消費者測反應。高露潔實測準確度到真人自我一致性的九成。附免費技能包。">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"AI 就是整個市場的縮影：在花錢做市調前，先用 AI 測反應","description":"做市場調查慢又貴，但 AI 讀過海量真實的人寫的東西，本身就是市場的縮影。高露潔跟 PyMC Labs 的研究證實，先讓 AI 寫反應再換算成分數，模擬購買意願能接近真人自我一致性的九成。","author":{"@type":"Person","name":"江昱德","alternateName":"江江教練","jobTitle":"隱性知識提煉師、AI 應用規劃師"},"isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://ai-km-jiang.vercel.app/"},"inLanguage":"zh-Hant","url":"https://ai-km-jiang.vercel.app/articles/ai-market-microcosm/"}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{--ink:#1a1612;--paper:#fefcf8;--muted:#6a635a;--line:#d8cdb8;--green:#5f7553;--blue:#5689b8;--orange:#e85a4f;--soft:#faf5ec;--dark:#2a2018;--shadow:0 18px 45px rgba(107,74,42,.14)}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC","Segoe UI",sans-serif}
+a{color:inherit}
+.topbar{position:sticky;top:0;z-index:20;display:flex;gap:10px;align-items:center;justify-content:space-between;padding:12px clamp(18px,4vw,56px);border-bottom:1px solid rgba(26,22,18,.12);background:rgba(254,252,248,.92);backdrop-filter:blur(12px)}
+.brand{font-weight:900;font-size:14px;text-decoration:none}
+.nav{display:flex;gap:8px;overflow:auto}
+.nav a{white-space:nowrap;text-decoration:none;border:1px solid rgba(26,22,18,.16);border-radius:999px;padding:8px 11px;background:#fff;font-size:14px;font-weight:800}
+.hero{min-height:58vh;display:grid;align-items:end;padding:56px clamp(20px,6vw,88px);background:linear-gradient(135deg,rgba(26,22,18,.94),rgba(95,117,83,.82));color:#fff;overflow:hidden}
+.kicker{font:900 13px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;color:#f6d7a6;text-transform:uppercase}
+.hero h1{max-width:1040px;margin:16px 0 18px;font-size:clamp(36px,6vw,72px);line-height:1.08;overflow-wrap:anywhere}
+.hero p{max-width:820px;font-size:clamp(18px,2vw,23px);line-height:1.62;color:rgba(255,255,255,.9)}
+.cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
+.cta a{display:inline-flex;align-items:center;text-decoration:none;border-radius:8px;padding:12px 16px;font-weight:900}
+.cta .primary{background:#fff;color:#1a1612}.cta .ghost{border:1px solid rgba(255,255,255,.32);color:#fff;background:rgba(255,255,255,.08)}
+.section{padding:54px clamp(20px,6vw,88px);border-top:1px solid var(--line)}
+.inner{width:min(1000px,100%);margin:0 auto}
+.section h2{font-size:clamp(26px,4.2vw,48px);line-height:1.12;margin:0 0 18px}
+.section h3{font-size:clamp(21px,3vw,30px);line-height:1.2;margin:30px 0 12px}
+.lead{font-size:clamp(18px,1.6vw,22px);line-height:1.7;color:#3a342d;max-width:900px}
+.section p{font-size:18px;line-height:1.74;color:#3a342d}.section p+p{margin-top:14px}
+.section ul,.section ol{padding-left:1.4em;font-size:18px;line-height:1.74;color:#3a342d}.section li{margin-bottom:8px}
+.meaning{margin:22px 0;padding:16px 18px;border-left:5px solid var(--blue);background:rgba(86,137,184,.12);border-radius:6px;line-height:1.7;font-size:19px}
+.meaning b{display:block;color:var(--blue);margin-bottom:4px}
+.caveat{margin:0 0 8px;padding:16px 18px;border-left:5px solid var(--orange);background:rgba(232,90,79,.1);border-radius:6px;line-height:1.7;font-size:18px;color:#3a342d}
+.caveat b{display:block;color:var(--orange);margin-bottom:4px}
+.infocard{background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px 24px 22px;box-shadow:0 8px 22px rgba(107,74,42,.08);margin-top:8px}
+.infocard-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.info-item{padding:18px 14px 0}
+.info-item b{display:block;font-size:14px;font-weight:900;letter-spacing:.04em;margin-bottom:7px;text-transform:uppercase}
+.info-item:nth-child(1) b{color:var(--green)}.info-item:nth-child(2) b{color:var(--orange)}.info-item:nth-child(3) b{color:var(--blue)}
+.info-item p{margin:0;font-size:17px;line-height:1.6;color:#3a342d}
+.tagrow{display:flex;flex-wrap:wrap;gap:7px;margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
+.tag{font-size:14px;color:var(--muted);background:var(--soft);border:1px solid var(--line);border-radius:999px;padding:4px 11px}
+.duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:24px}
+.duo .card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:22px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.duo .card.a{border-color:var(--orange)}.duo .card.b{border-color:var(--green);box-shadow:0 8px 24px rgba(95,117,83,.16)}
+.duo .card small{display:block;font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.04em;margin-bottom:9px}
+.duo .card.a small{color:var(--orange)}.duo .card.b small{color:var(--green)}
+.duo .card b{display:block;font-size:19px;line-height:1.3;margin-bottom:10px}
+.duo .card p{margin:0;color:#3a342d;line-height:1.6;font-size:16px}
+.workflow-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:24px}
+.workflow-step{background:#fff;border:1px solid var(--line);border-radius:8px;padding:18px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.workflow-step small{display:block;color:var(--orange);font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;margin-bottom:9px}
+.workflow-step b{display:block;font-size:18px;line-height:1.3;margin-bottom:9px}
+.workflow-step p{margin:0;color:#3a342d;line-height:1.6;font-size:16px}
+.codeblock{background:var(--dark);color:#f3ead9;border-radius:8px;padding:18px 20px;font:500 14px/1.65 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;overflow-x:auto;white-space:pre-wrap;margin:20px 0;box-shadow:0 8px 22px rgba(107,74,42,.12)}
+.codeblock .c{color:#f6d7a6;font-weight:600}
+.skillcard{background:#fff;border:1px solid var(--green);border-radius:12px;padding:24px;box-shadow:0 10px 26px rgba(95,117,83,.16);margin-top:8px}
+.skillcard b{display:block;font-size:21px;margin-bottom:8px}
+.skillcard p{margin:0 0 16px;font-size:17px;line-height:1.65;color:#3a342d}
+.related{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:24px}
+.related a{display:block;background:#fff;border:1px solid var(--line);border-radius:10px;padding:20px;text-decoration:none;box-shadow:0 8px 22px rgba(107,74,42,.08);transition:transform .15s,box-shadow .15s}
+.related a:hover{transform:translateY(-3px);box-shadow:0 14px 30px rgba(107,74,42,.16)}
+.related small{display:block;color:var(--blue);font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;margin-bottom:9px}
+.related b{display:block;font-size:17px;line-height:1.35;margin-bottom:8px;color:var(--ink)}
+.related p{margin:0;color:#3a342d;line-height:1.55;font-size:15px}
+.cta-band{background:var(--dark);color:#fff}.cta-band .section{border-top:none}
+.cta-band .inner{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(260px,.85fr);gap:26px;align-items:start}
+.cta-band h2{font-size:clamp(26px,4vw,44px);margin:0 0 16px}.cta-band p,.cta-band .lead{color:rgba(255,255,255,.84);font-size:18px;line-height:1.72}
+.cta-card{border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.06);border-radius:8px;padding:22px}
+.cta-card b{display:block;color:#f6d7a6;margin-bottom:10px;font-size:18px}.cta-card p{margin:0 0 14px}
+.footer{padding:30px clamp(20px,6vw,88px);font-size:14px;color:var(--muted);background:#fff;border-top:1px solid var(--line)}
+.footer-inner{width:min(1000px,100%);margin:0 auto}
+.footer-links{display:flex;flex-wrap:wrap;gap:6px 12px;margin-bottom:14px}.footer-links a{color:var(--blue);font-weight:900;text-decoration:none;font-size:14px}
+.footer-brand{font-weight:900;font-size:15px;margin-bottom:10px}.footer-note{font-size:13px;line-height:1.6}
+@media(max-width:820px){.infocard-grid{grid-template-columns:1fr}.duo{grid-template-columns:1fr}.workflow-grid{grid-template-columns:1fr}.related{grid-template-columns:1fr}.cta-band .inner{grid-template-columns:1fr}.section{padding:40px 20px}.hero{min-height:52vh}}
+@media(max-width:820px){html,body{overflow-x:hidden}.hero h1{word-break:break-word}}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="../../articles.html">江江教練 · 深度文章</a>
+  <nav class="nav" aria-label="頁面導覽">
+    <a href="../../articles.html" style="background:#1a1612;color:#fff;border-color:#1a1612">← 深度文章總站</a>
+    <a href="#hard">驗證為何難</a>
+    <a href="#microcosm">市場的縮影</a>
+    <a href="#research">高露潔研究</a>
+    <a href="#how">自己做一次</a>
+    <a href="#boundary">邊界</a>
+    <a href="#skill">免費技能包</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <div>
+    <div class="kicker">AI 應用 / 需求驗證</div>
+    <h1>AI 就是整個市場的縮影</h1>
+    <p>做市場調查慢又貴。但 AI 讀過海量真實的人寫的東西，本身就是整個市場的某種縮影。所以在花大錢驗證前，可以先讓它當消費者，測測你的產品會得到什麼反應。</p>
+    <div class="cta">
+      <a class="primary" href="#research">先看高露潔的研究</a>
+      <a class="ghost" href="#how">直接看怎麼做</a>
+    </div>
+  </div>
+</section>
+
+<main>
+
+<section class="section">
+  <div class="inner">
+    <div class="caveat"><b>先說在前面</b>這套方法是「事前測試」，不是市場驗證的結論。它幫你在花時間找真人之前，先把明顯看不懂、明顯沒人要的版本找出來，不能取代真人訪談、預購、報名或成交。</div>
+    <div class="infocard">
+      <div class="infocard-grid">
+        <div class="info-item">
+          <b>適合誰</b>
+          <p>想推新產品、新課程、新服務，但還沒把握有沒有人買的人；做一人公司或中小企業、沒預算大規模做市調的人；已有 landing page 想先檢查哪裡被誤解的人。</p>
+        </div>
+        <div class="info-item">
+          <b>這篇在聊什麼</b>
+          <p>AI 為什麼能當你的事前消費者、高露潔那篇研究到底做了什麼、那個「九成」是什麼意思，以及一套先寫反應再整理訊號的驗證流程。</p>
+        </div>
+        <div class="info-item">
+          <b>你可以帶走什麼</b>
+          <p>看懂這套方法的原理與邊界、一份可以複製貼上馬上能跑的提示詞，還有我整理好的免費技能包，直接下載就能用。</p>
+        </div>
+      </div>
+      <div class="tagrow">
+        <span class="tag">主題：AI 消費者驗證</span>
+        <span class="tag">主題：市場測試</span>
+        <span class="tag">程度：零基礎入門</span>
+        <span class="tag">類型：教學文章</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="hard">
+  <div class="inner">
+    <h2>為什麼驗證需求這麼難</h2>
+    <p class="lead">只要你推過產品、課程或合作，大概都遇過同一件事。</p>
+    <p>你問別人「這個你覺得怎麼樣」，得到的是「很棒欸」「我有興趣」。結果真的要付錢、要報名、要約時間的時候，人就不見了。</p>
+    <p>這不是別人故意騙你。是問題問錯了。你問的是意見跟對未來的猜測，而人對自己未來的行為其實不太會預測。真正能當證據的，是他過去為了解決這件事，真的花過的時間、金錢跟力氣。</p>
+    <p>只是真人驗證有個現實門檻：慢、貴、難約。要訪談五到八個人、發一兩百份問卷，光是找到對的人、排好時間，就足以讓很多想法在驗證之前就胎死腹中。</p>
+    <p>於是我一直在想一件事。</p>
+  </div>
+</section>
+
+<section class="section" id="microcosm">
+  <div class="inner">
+    <h2>AI 就是整個市場的縮影</h2>
+    <p>現在的 AI，是讀過海量人類寫的東西訓練出來的。論壇抱怨、開箱心得、購物評論、客服對話、社群討論，全都在裡面。</p>
+    <p>換句話說，它身上其實壓縮了一整個市場無數人的語氣、糾結、購買理由跟拒買理由。它本身就是整個市場的某種縮影。</p>
+    <div class="meaning"><b>那個念頭</b>那為什麼不直接把它當成消費者來問？一開始我以為這只是我自己的猜想。直到我看到一篇研究，真的有人把這件事做出來，而且還是一間你我都認識的公司下去實測的。</div>
+  </div>
+</section>
+
+<section class="section" id="research">
+  <div class="inner">
+    <h2>高露潔那篇研究做了什麼</h2>
+    <p>先講白話：這篇研究在問一件事，AI 到底能不能模擬真人的購買意願。它是 PyMC Labs 跟高露潔公司（Colgate-Palmolive）一起做的，完整論文名稱是 LLMs Reproduce Human Purchase Intent via Semantic Similarity Elicitation of Likert Ratings，發在 arXiv（文末有連結）。</p>
+    <p>他們做的事很實在：</p>
+    <ul>
+      <li>拿出 57 份個人清潔用品的真實市場問卷，總共 9,300 筆真人回答。</li>
+      <li>讓 AI（測試了 GPT-4o 跟 Gemini-2.0-flash）扮演消費者，模擬這些問卷的購買意願。</li>
+      <li>再把 AI 模擬的結果，跟真人的回答做比對。</li>
+    </ul>
+    <h3>他們先發現了一個坑</h3>
+    <p>如果你直接問 AI「這個產品 1 到 5 分，你會不會買」，AI 會給你一個看起來很合理的數字。問題是，這些數字會大量擠在中間那種安全、不得罪人的值，整個答案分佈長得跟真人完全不一樣。</p>
+    <div class="caveat"><b>白話講</b>直接要分數，等於逼 AI 講場面話。它會給你一個平均、保險、看起來沒問題、實際上沒用的答案。</div>
+    <h3>他們的解法</h3>
+    <p>他們的方法叫 SSR。這是英文縮寫，講白話就是「先讓 AI 寫反應，再把反應換算成分數」。順序剛好倒過來：</p>
+    <ol>
+      <li>先讓 AI 用自然語言，把對這個產品的反應講出來，這時候不准它打分數。</li>
+      <li>再把這段反應，拿去跟「1 分到 5 分」各自的描述比對，看它的意思比較像哪一種分數。</li>
+      <li>最後得到一個分佈，而不是單一一個數字。</li>
+    </ol>
+    <p>關鍵就在這個順序：先講人話，分數是後面才換算出來的。先有真實反應，才有判斷。</p>
+    <h3>那個「九成」是什麼意思</h3>
+    <p>先給結論：AI 模擬出來的購買意願，已經很接近真人自己重填一次問卷時的一致程度，大約到九成。整體的答案分佈，跟真人回答也很像。</p>
+    <div class="meaning"><b>把「一致程度」說清楚</b>同一群真人，把同一份問卷填兩次，答案也不會完全一樣，這個「人跟自己的一致程度」就是天花板（研究裡叫重測信度）。AI 模擬能達到這個天花板的九成（相關係數 ρ 約 0.90），答案分佈的相似度也很高。所以正確的講法是「AI 達到真人自我一致性的九成」，不是「AI 跟真人的答案有九成一樣」。這兩句聽起來很像，意思差很多。</div>
+  </div>
+</section>
+
+<section class="section" id="how">
+  <div class="inner">
+    <h2>怎麼自己做一次</h2>
+    <p class="lead">你不需要複製研究裡的演算法。真正可以搬回來用的，是那個順序：先讓 AI 寫真實反應，再整理成訊號。</p>
+    <ol>
+      <li><b>先把輸入準備好。</b>整理四件事：產品概念（一兩百字）、目標客群（寫清楚這個人正在什麼情境、想完成什麼事、卡在哪裡，不要只寫「35 歲女性」）、購買情境（誰看到、誰決策、預算從哪來）、核心假設（這一輪只驗證一件事）。</li>
+      <li><b>建立有差異的合成受眾。</b>至少選三種人，不要全選你的粉絲：核心受眾、只掃 30 秒的沒耐心決策者、預算很緊會找替代方案的人。</li>
+      <li><b>讓 AI 先寫反應，不准打分數。</b>這是整套方法的核心，提示詞在下面。</li>
+      <li><b>把反應整理成四類訊號。</b>理解訊號、代價訊號、替代方案訊號、下一步訊號。要轉成分數的話，分數放最後，並附理由跟哪裡不確定。</li>
+      <li><b>回到真人。</b>輸出落到三件事之一：把 AI 的懷疑點改成訪談追問題目、把被誤解的句子改清楚、設計一個承諾測試（等候名單、預購頁、小型說明會）。</li>
+    </ol>
+    <h3>可以直接複製的提示詞</h3>
+    <div class="codeblock"><span class="c">你現在扮演這位潛在客戶：</span>
+[貼上你設定的具體受眾輪廓]
+
+請先不要評分，也不要給建議。
+用第一人稱寫下你看到這個產品概念後，最直覺、未修飾的反應，要包含：
+1. 你第一眼覺得它在解決什麼
+2. 哪裡有吸引力
+3. 哪裡讓你懷疑
+4. 你會不會想進一步了解，原因是什麼
+5. 你腦中浮現的替代方案
+
+<span class="c">產品概念：</span>
+[貼上你的產品說明]</div>
+  </div>
+</section>
+
+<section class="section" id="boundary">
+  <div class="inner">
+    <h2>這套方法的邊界（很重要）</h2>
+    <p>這套方法很好用，正因為好用，邊界更要先講清楚，免得用過頭。</p>
+    <ol>
+      <li><b>它不能取代真人。</b>預購、報名、付費、轉介紹、留存，這些真金白銀的承諾，AI 模擬不出來。它只負責在你花時間找真人之前，先把破綻找出來。</li>
+      <li><b>那個九成是有前提的。</b>研究的資料是個人清潔用品問卷，屬於單價低、決策快的消費品。如果你賣的是高單價顧問、企業服務、長期課程，決策邏輯完全不同，不能直接把九成這個數字套上去。</li>
+      <li><b>不要把 AI 的分數當成市場已經驗證。</b>它是篩題工具，不是結論。看完之後沒有任何真人動作，就不算驗證。</li>
+    </ol>
+    <div class="meaning"><b>給自己的定位提醒</b>這套方法真正的價值，是讓你把真人驗證的力氣花在刀口上。久了你累積的不是 AI 的答案，是你自己對市場、對客群、對拒買理由越來越準的判斷。工具會一直換，能留在你身上的判斷力才是資產。</div>
+  </div>
+</section>
+
+<section class="section" id="skill">
+  <div class="inner">
+    <h2>我把它做成技能包了</h2>
+    <p class="lead">這套方法我已經整理成一個技能包，放在 GitHub 上，免費，可以直接下載使用。</p>
+    <div class="skillcard">
+      <b>AI 消費者驗證技能包</b>
+      <p>下載後放進你的 AI 工具技能包資料夾，或直接把裡面的 SKILL.md 內容貼給支援技能包的 AI（Claude、ChatGPT 都可以），跟它說「AI 消費者驗證：你的產品或方案」，它就會照前面講的流程幫你跑一遍。</p>
+      <div class="cta"><a class="primary" href="https://github.com/Jiang-Yude/ai-consumer-validation" target="_blank" rel="noopener" style="background:var(--green);color:#fff">免費下載技能包（GitHub）↗</a></div>
+    </div>
+  </div>
+</section>
+
+<section class="section cta-band">
+  <div class="inner">
+    <div>
+      <h2>收束成一句話</h2>
+      <p class="lead">真人驗證慢又貴，但 AI 本身就是市場的縮影。在花大錢驗證前，先讓它當消費者寫出真實反應，把明顯的破綻找出來，再帶著比較成熟的版本去問真人。它是篩題工具，不是市場結論。</p>
+      <p>如果你也想把自己的判斷與流程，整理成可以被 AI 放大的知識庫、工作流或技能包，歡迎先從社群開始，我們一起聊。</p>
+    </div>
+    <div class="cta-card">
+      <b>加入 LINE 社群</b>
+      <p>我每月兩場免費線上講座，聊 AI 應用與知識管理。想知道怎麼把工作交給 AI，歡迎進來一起聊。</p>
+      <div class="cta"><a class="primary" href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">免費加入 LINE 社群 ↗</a></div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>相關連結與延伸閱讀</h2>
+    <div class="related">
+      <a href="https://github.com/Jiang-Yude/ai-consumer-validation" target="_blank" rel="noopener">
+        <small>免費技能包</small>
+        <b>AI 消費者驗證（GitHub）</b>
+        <p>這篇講的方法，整理成可下載的技能包，貼給你的 AI 就能跑。</p>
+      </a>
+      <a href="https://vocus.cc/article/68c12abbfd89780001ed3ce2" target="_blank" rel="noopener">
+        <small>延伸閱讀</small>
+        <b>客戶都說很棒，但就是不買單？真實需求調查法</b>
+        <p>真人這一端怎麼問：用 The Mom Test 原則設計訪談與問卷。</p>
+      </a>
+      <a href="https://arxiv.org/abs/2510.08338" target="_blank" rel="noopener">
+        <small>論文原文</small>
+        <b>LLMs Reproduce Human Purchase Intent (arXiv 2510.08338)</b>
+        <p>高露潔 × PyMC Labs 的 SSR 方法原始研究。</p>
+      </a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">江江教練 · AI 知識管理</div>
+    <div class="footer-links">
+      <a href="../../articles.html">← 回深度文章總站</a>
+      <a href="../../index.html">首頁</a>
+      <a href="../../learn.html">自學資源</a>
+      <a href="../../skills.html">Skills 下載</a>
+      <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">LINE 社群 ↗</a>
+      <a href="https://www.threads.com/@jiang_yude_coach" target="_blank" rel="noopener">Threads ↗</a>
+      <a href="https://vocus.cc/salon/Jiang_Coach" target="_blank" rel="noopener">方格子 ↗</a>
+    </div>
+    <div class="footer-note">這是一篇教學文章，整理我對「用 AI 當事前消費者驗證需求」的做法，供你參考。方法參考自 PyMC Labs 與 Colgate-Palmolive 的公開研究。</div>
+  </div>
+</footer>
+
+<script src="../../articles-data.js"></script>
+<script src="../../related-render.js"></script>
+</body>
+</html>
