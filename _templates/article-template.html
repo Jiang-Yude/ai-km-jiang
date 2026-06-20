@@ -1,0 +1,172 @@
+<!--
+============================================================
+  article-template.html  ·  深度文章新頁模板（暖色拿鐵版型）
+------------------------------------------------------------
+  新增一篇文章的步驟：
+    1. 複製本檔到 articles/<slug>/index.html
+       （趨勢文章放 ai-trends/<slug>/index.html）。
+    2. 全檔填掉所有 {{...}} placeholder：
+         {{TITLE}}        文章標題（純文字）
+         {{DESCRIPTION}}  meta description / og:description
+         {{SLUG}}         網址 slug，對應資料夾名
+         {{SECTION}}      所屬區段：articles 或 ai-trends
+         {{KICKER}}       hero 上方小標（例：AI 應用 / 需求驗證）
+         {{HERO_LEAD}}    hero 大標下的一段引言
+         {{BODY}}         正文（用下方 .section 區塊堆疊；可參考
+                          現有文章如 articles/ai-market-microcosm/）
+         {{CONTENT_TYPE}} 文章類型（教學文章／觀點文章／趨勢文章／案例文章）
+       canonical / og / twitter / JSON-LD 的網址也都用
+       https://ai-km-jiang.vercel.app/{{SECTION}}/{{SLUG}}/ 帶入。
+    3. 到 articles-data.js 的 window.ARTICLES 陣列尾端加一筆物件
+       （含 id、url「{{SECTION}}/{{SLUG}}/」、date、title、summary、
+        tags.topic / level / content_type，related 為可選）。
+       標籤一律從 window.ARTICLE_TAGS 受控清單挑，不要自創字串。
+    4. 兩支互聯 script 已內建在本檔 </body> 前，不用再另外加。
+    5. 到 sitemap.xml 與 llms.txt 各補一筆，讓搜尋與 AI 索引得到。
+
+  部署前跑：node scripts/verify-interlink.js 確認互聯腳本齊全。
+============================================================
+-->
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="index,follow">
+<title>{{TITLE}}｜江江教練 · AI 知識管理</title>
+<meta name="description" content="{{DESCRIPTION}}">
+<link rel="canonical" href="https://ai-km-jiang.vercel.app/{{SECTION}}/{{SLUG}}/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="{{TITLE}}｜江江教練">
+<meta property="og:image" content="https://ai-km-jiang.vercel.app/images/intro-jiang.png">
+<meta property="og:description" content="{{DESCRIPTION}}">
+<meta property="og:url" content="https://ai-km-jiang.vercel.app/{{SECTION}}/{{SLUG}}/">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:site_name" content="江江教練 · AI 知識管理">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{{TITLE}}｜江江教練">
+<meta name="twitter:image" content="https://ai-km-jiang.vercel.app/images/intro-jiang.png">
+<meta name="twitter:description" content="{{DESCRIPTION}}">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"{{TITLE}}","description":"{{DESCRIPTION}}","author":{"@type":"Person","name":"江昱德","alternateName":"江江教練","jobTitle":"隱性知識提煉師、AI 應用規劃師"},"isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://ai-km-jiang.vercel.app/"},"inLanguage":"zh-Hant","url":"https://ai-km-jiang.vercel.app/{{SECTION}}/{{SLUG}}/"}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{--ink:#1a1612;--paper:#fefcf8;--muted:#6a635a;--line:#d8cdb8;--green:#5f7553;--blue:#5689b8;--orange:#e85a4f;--soft:#faf5ec;--dark:#2a2018;--shadow:0 18px 45px rgba(107,74,42,.14)}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC","Segoe UI",sans-serif}
+a{color:inherit}
+.topbar{position:sticky;top:0;z-index:20;display:flex;gap:10px;align-items:center;justify-content:space-between;padding:12px clamp(18px,4vw,56px);border-bottom:1px solid rgba(26,22,18,.12);background:rgba(254,252,248,.92);backdrop-filter:blur(12px)}
+.brand{font-weight:900;font-size:14px;text-decoration:none}
+.nav{display:flex;gap:8px;overflow:auto}
+.nav a{white-space:nowrap;text-decoration:none;border:1px solid rgba(26,22,18,.16);border-radius:999px;padding:8px 11px;background:#fff;font-size:14px;font-weight:800}
+.hero{min-height:58vh;display:grid;align-items:end;padding:56px clamp(20px,6vw,88px);background:linear-gradient(135deg,rgba(26,22,18,.94),rgba(95,117,83,.82));color:#fff;overflow:hidden}
+.kicker{font:900 13px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;color:#f6d7a6;text-transform:uppercase}
+.hero h1{max-width:1040px;margin:16px 0 18px;font-size:clamp(36px,6vw,72px);line-height:1.08;overflow-wrap:anywhere}
+.hero p{max-width:820px;font-size:clamp(18px,2vw,23px);line-height:1.62;color:rgba(255,255,255,.9)}
+.cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
+.cta a{display:inline-flex;align-items:center;text-decoration:none;border-radius:8px;padding:12px 16px;font-weight:900}
+.cta .primary{background:#fff;color:#1a1612}.cta .ghost{border:1px solid rgba(255,255,255,.32);color:#fff;background:rgba(255,255,255,.08)}
+.section{padding:54px clamp(20px,6vw,88px);border-top:1px solid var(--line)}
+.inner{width:min(1000px,100%);margin:0 auto}
+.section h2{font-size:clamp(26px,4.2vw,48px);line-height:1.12;margin:0 0 18px}
+.section h3{font-size:clamp(21px,3vw,30px);line-height:1.2;margin:30px 0 12px}
+.lead{font-size:clamp(18px,1.6vw,22px);line-height:1.7;color:#3a342d;max-width:900px}
+.section p{font-size:18px;line-height:1.74;color:#3a342d}.section p+p{margin-top:14px}
+.section ul,.section ol{padding-left:1.4em;font-size:18px;line-height:1.74;color:#3a342d}.section li{margin-bottom:8px}
+.meaning{margin:22px 0;padding:16px 18px;border-left:5px solid var(--blue);background:rgba(86,137,184,.12);border-radius:6px;line-height:1.7;font-size:19px}
+.meaning b{display:block;color:var(--blue);margin-bottom:4px}
+.caveat{margin:0 0 8px;padding:16px 18px;border-left:5px solid var(--orange);background:rgba(232,90,79,.1);border-radius:6px;line-height:1.7;font-size:18px;color:#3a342d}
+.caveat b{display:block;color:var(--orange);margin-bottom:4px}
+.infocard{background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px 24px 22px;box-shadow:0 8px 22px rgba(107,74,42,.08);margin-top:8px}
+.infocard-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.info-item{padding:18px 14px 0}
+.info-item b{display:block;font-size:14px;font-weight:900;letter-spacing:.04em;margin-bottom:7px;text-transform:uppercase}
+.info-item:nth-child(1) b{color:var(--green)}.info-item:nth-child(2) b{color:var(--orange)}.info-item:nth-child(3) b{color:var(--blue)}
+.info-item p{margin:0;font-size:17px;line-height:1.6;color:#3a342d}
+.tagrow{display:flex;flex-wrap:wrap;gap:7px;margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
+.tag{font-size:14px;color:var(--muted);background:var(--soft);border:1px solid var(--line);border-radius:999px;padding:4px 11px}
+.duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:24px}
+.duo .card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:22px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.duo .card.a{border-color:var(--orange)}.duo .card.b{border-color:var(--green);box-shadow:0 8px 24px rgba(95,117,83,.16)}
+.duo .card small{display:block;font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.04em;margin-bottom:9px}
+.duo .card.a small{color:var(--orange)}.duo .card.b small{color:var(--green)}
+.duo .card b{display:block;font-size:19px;line-height:1.3;margin-bottom:10px}
+.duo .card p{margin:0;color:#3a342d;line-height:1.6;font-size:16px}
+.workflow-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:24px}
+.workflow-step{background:#fff;border:1px solid var(--line);border-radius:8px;padding:18px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.workflow-step small{display:block;color:var(--orange);font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;margin-bottom:9px}
+.workflow-step b{display:block;font-size:18px;line-height:1.3;margin-bottom:9px}
+.workflow-step p{margin:0;color:#3a342d;line-height:1.6;font-size:16px}
+.codeblock{background:var(--dark);color:#f3ead9;border-radius:8px;padding:18px 20px;font:500 14px/1.65 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;overflow-x:auto;white-space:pre-wrap;margin:20px 0;box-shadow:0 8px 22px rgba(107,74,42,.12)}
+.codeblock .c{color:#f6d7a6;font-weight:600}
+.skillcard{background:#fff;border:1px solid var(--green);border-radius:12px;padding:24px;box-shadow:0 10px 26px rgba(95,117,83,.16);margin-top:8px}
+.skillcard b{display:block;font-size:21px;margin-bottom:8px}
+.skillcard p{margin:0 0 16px;font-size:17px;line-height:1.65;color:#3a342d}
+.cta-band{background:var(--dark);color:#fff}.cta-band .section{border-top:none}
+.cta-band .inner{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(260px,.85fr);gap:26px;align-items:start}
+.cta-band h2{font-size:clamp(26px,4vw,44px);margin:0 0 16px}.cta-band p,.cta-band .lead{color:rgba(255,255,255,.84);font-size:18px;line-height:1.72}
+.cta-card{border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.06);border-radius:8px;padding:22px}
+.cta-card b{display:block;color:#f6d7a6;margin-bottom:10px;font-size:18px}.cta-card p{margin:0 0 14px}
+.footer{padding:30px clamp(20px,6vw,88px);font-size:14px;color:var(--muted);background:#fff;border-top:1px solid var(--line)}
+.footer-inner{width:min(1000px,100%);margin:0 auto}
+.footer-links{display:flex;flex-wrap:wrap;gap:6px 12px;margin-bottom:14px}.footer-links a{color:var(--blue);font-weight:900;text-decoration:none;font-size:14px}
+.footer-brand{font-weight:900;font-size:15px;margin-bottom:10px}.footer-note{font-size:13px;line-height:1.6}
+@media(max-width:820px){.infocard-grid{grid-template-columns:1fr}.duo{grid-template-columns:1fr}.workflow-grid{grid-template-columns:1fr}.cta-band .inner{grid-template-columns:1fr}.section{padding:40px 20px}.hero{min-height:52vh}}
+@media(max-width:820px){html,body{overflow-x:hidden}.hero h1{word-break:break-word}}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="../../articles.html">江江教練 · 深度文章</a>
+  <nav class="nav" aria-label="頁面導覽">
+    <a href="../../articles.html" style="background:#1a1612;color:#fff;border-color:#1a1612">← 深度文章總站</a>
+    <!-- TODO: 依正文區段填錨點導覽，例如 <a href="#section-1">區段一</a> -->
+    <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">LINE 社群 ↗</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <div>
+    <div class="kicker">{{KICKER}}</div>
+    <h1>{{TITLE}}</h1>
+    <p>{{HERO_LEAD}}</p>
+    <div class="cta">
+      <a class="primary" href="#start">開始閱讀</a>
+    </div>
+  </div>
+</section>
+
+<main>
+
+<!--
+  {{BODY}}
+  正文放這裡。用 <section class="section" id="..."><div class="inner">…</div></section>
+  一段一段堆疊。可用的元件：.lead 引言、.meaning 藍色重點框、
+  .caveat 橙色提醒框、.infocard 三欄資訊卡、.duo 雙欄對照、
+  .workflow-grid 流程三步、.codeblock 程式碼框、.skillcard 技能包卡。
+  可參考現有文章 articles/ai-market-microcosm/index.html。
+-->
+
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">江江教練 · AI 知識管理</div>
+    <div class="footer-links">
+      <a href="../../articles.html">← 回深度文章總站</a>
+      <a href="../../index.html">首頁</a>
+      <a href="../../learn.html">自學資源</a>
+      <a href="../../skills.html">Skills 下載</a>
+      <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">LINE 社群 ↗</a>
+      <a href="https://www.threads.com/@jiang_yude_coach" target="_blank" rel="noopener">Threads ↗</a>
+      <a href="https://vocus.cc/salon/Jiang_Coach" target="_blank" rel="noopener">方格子 ↗</a>
+    </div>
+    <div class="footer-note">這是一篇{{CONTENT_TYPE}}，整理我對「{{TITLE}}」的看法，供你參考。</div>
+  </div>
+</footer>
+
+<!-- 文章自動互聯（相關文章）：兩支已內建，順序不可顛倒，不用再另外加 -->
+<script src="../../articles-data.js"></script>
+<script src="../../related-render.js"></script>
+</body>
+</html>
