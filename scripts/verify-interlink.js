@@ -33,6 +33,10 @@ var ARTICLE_DIRS = ["articles", "ai-trends"];
 var DATA_SCRIPT = "articles-data.js";
 var RENDER_SCRIPT = "related-render.js";
 
+// 手寫精選版：頁面有自己手寫的「相關文章」區，刻意不引入自動互聯腳本，
+// 不算漏接（再加會變成兩個「相關文章」區）。新增這類頁面把 url 加進來。
+var HAND_CURATED = { "articles/own-ai-team-at-work/": 1 };
+
 function read(file) {
   try {
     return fs.readFileSync(file, "utf8");
@@ -84,6 +88,7 @@ function listArticleIndexes() {
 function main() {
   var errors = [];
   var warns = [];
+  var notes = [];
   var okCount = 0;
 
   var pages = listArticleIndexes();
@@ -99,13 +104,16 @@ function main() {
     var hasData = hasScript(html, DATA_SCRIPT);
     var hasRender = hasScript(html, RENDER_SCRIPT);
     var placeholder = isNoindex(html);
+    var curated = HAND_CURATED[p.url];
 
     if (!hasData || !hasRender) {
       var missing = [];
       if (!hasData) missing.push(DATA_SCRIPT);
       if (!hasRender) missing.push(RENDER_SCRIPT);
       var msg = p.rel + " 缺少互聯腳本：" + missing.join("、");
-      if (placeholder) {
+      if (curated) {
+        notes.push("[NOTE] (手寫精選版，刻意不引入自動互聯) " + p.rel);
+      } else if (placeholder) {
         warns.push("[WARN] (noindex 佔位頁) " + msg);
       } else {
         errors.push("[ERROR] " + msg);
@@ -120,6 +128,7 @@ function main() {
     }
   });
 
+  notes.forEach(function (n) { console.log(n); });
   warns.forEach(function (w) { console.log(w); });
   errors.forEach(function (e) { console.log(e); });
 
@@ -127,6 +136,7 @@ function main() {
   console.log("───────── 互聯檢查統計 ─────────");
   console.log("掃描文章頁：" + pages.length + " 篇");
   console.log("兩支腳本齊全：" + okCount + " 篇");
+  console.log("手寫精選例外：" + notes.length + " 篇");
   console.log("WARN：" + warns.length + " 筆");
   console.log("ERROR：" + errors.length + " 筆");
 
