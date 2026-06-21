@@ -213,6 +213,24 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null }
+  },
+
+  /* ── 12. 如何訓練自己的 AI 員工：員工＋顧問框架（教學）── */
+  {
+    id: "how-to-train-your-ai-employee",
+    url: "articles/how-to-train-your-ai-employee/",
+    date: "2026-06-21",
+    title: "如何訓練自己的 AI 員工：員工＋顧問框架",
+    problem: "知道該用 AI，卻習慣自己動手操作工具；想把工作交出去，又不知道怎麼把第一個 AI 員工真的訓練出來。",
+    audience: "想把重複的行政、文書、查證交給 AI，並開始建立自己一套 AI 工作流的工作者、一人公司與創作者。",
+    summary: "一場實作工作坊的教學簡報。把 AI 當員工照你的方式幹活，再加一群顧問幫你挑盲點；從組織架構、隱性知識提煉七層，到把節點串成工作流，最後是真正最值錢的能力：判斷一個問題值多少。",
+    tags: {
+      topic: ["AIAgent", "AI工作流", "隱性知識"],
+      level: ["零基礎入門"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
+    related: ["own-ai-team-at-work", "agent-workflow-builds-automation"]
   }
 
 ];

@@ -1,97 +1,1058 @@
 <!doctype html>
 <html lang="zh-Hant">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="robots" content="noindex,follow">
-<title>如何訓練自己的 AI 員工（撰寫中）｜江江教練 · AI 知識管理</title>
-<meta name="description" content="這篇正在撰寫中。先把心態換成一人公司老闆，下一步談怎麼把第一個 AI 員工真的訓練出來：知識庫、工作流、Agent 怎麼起步。">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>如何訓練自己的 AI 員工：員工＋顧問框架｜江江教練 · AI 知識管理</title>
+<meta name="description" content="一場實作工作坊的教學簡報：把 AI 當員工照你的方式幹活，再加一群顧問幫你挑盲點。涵蓋組織架構、隱性知識提煉七層、把節點串成工作流，以及怎麼判斷一個問題值多少。">
 <link rel="canonical" href="https://ai-km-jiang.vercel.app/articles/how-to-train-your-ai-employee/">
 <meta property="og:type" content="article">
-<meta property="og:title" content="如何訓練自己的 AI 員工（撰寫中）｜江江教練">
-<meta property="og:description" content="先把心態換成一人公司老闆，下一步談怎麼把第一個 AI 員工真的訓練出來。這篇撰寫中，敬請期待。">
+<meta property="og:title" content="如何訓練自己的 AI 員工：員工＋顧問框架｜江江教練">
+<meta property="og:description" content="把 AI 當員工照你的方式幹活，再加一群顧問幫你挑盲點。員工＋顧問框架、隱性知識提煉、把節點串成工作流。">
+<meta property="og:url" content="https://ai-km-jiang.vercel.app/articles/how-to-train-your-ai-employee/">
 <meta property="og:locale" content="zh_TW">
 <meta property="og:site_name" content="江江教練 · AI 知識管理">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <style>
-:root{--ink:#1a1612;--paper:#fefcf8;--muted:#6a635a;--line:#d8cdb8;--green:#5f7553;--blue:#5689b8;--orange:#e85a4f;--soft:#faf5ec;--dark:#2a2018}
-*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC","Segoe UI",sans-serif}
-a{color:inherit}
-.topbar{position:sticky;top:0;z-index:20;display:flex;gap:10px;align-items:center;justify-content:space-between;padding:12px clamp(18px,4vw,56px);border-bottom:1px solid rgba(26,22,18,.12);background:rgba(254,252,248,.92);backdrop-filter:blur(12px)}
-.brand{font-weight:900;font-size:14px;text-decoration:none}
-.nav{display:flex;gap:8px;overflow:auto}
-.nav a{white-space:nowrap;text-decoration:none;border:1px solid rgba(26,22,18,.16);border-radius:999px;padding:8px 11px;background:#fff;font-size:14px;font-weight:800}
-.hero{min-height:62vh;display:grid;align-items:center;padding:56px clamp(20px,6vw,88px);background:linear-gradient(135deg,rgba(26,22,18,.94),rgba(95,117,83,.82));color:#fff;overflow:hidden}
-.badge{display:inline-block;font:900 13px/1 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.06em;color:#1a1612;background:#f6d7a6;border-radius:999px;padding:8px 14px;margin-bottom:20px}
-.hero h1{max-width:1040px;margin:0 0 18px;font-size:clamp(34px,6vw,64px);line-height:1.1;overflow-wrap:anywhere}
-.hero p{max-width:760px;font-size:clamp(18px,2vw,22px);line-height:1.64;color:rgba(255,255,255,.9)}
-.cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:28px}
-.cta a{display:inline-flex;align-items:center;text-decoration:none;border-radius:8px;padding:12px 16px;font-weight:900}
-.cta .primary{background:#fff;color:#1a1612}.cta .ghost{border:1px solid rgba(255,255,255,.32);color:#fff;background:rgba(255,255,255,.08)}
-.section{padding:54px clamp(20px,6vw,88px)}
-.inner{width:min(820px,100%);margin:0 auto}
-.section h2{font-size:clamp(24px,4vw,38px);line-height:1.15;margin:0 0 16px}
-.section p{font-size:18px;line-height:1.74;color:#3a342d}.section p+p{margin-top:14px}
-.section ul{padding-left:1.4em;font-size:18px;line-height:1.74;color:#3a342d}.section li{margin-bottom:8px}
-.preview{margin:22px 0;padding:18px 20px;border-left:5px solid var(--blue);background:rgba(86,137,184,.1);border-radius:6px;line-height:1.7;font-size:18px}
-.preview b{display:block;color:var(--blue);margin-bottom:8px}
-.footer{padding:30px clamp(20px,6vw,88px);font-size:14px;color:var(--muted);background:#fff;border-top:1px solid var(--line)}
-.footer-inner{width:min(820px,100%);margin:0 auto}
-.footer-links{display:flex;flex-wrap:wrap;gap:6px 12px;margin-bottom:14px}.footer-links a{color:var(--blue);font-weight:900;text-decoration:none;font-size:14px}
-.footer-brand{font-weight:900;font-size:15px;margin-bottom:10px}
-@media(max-width:820px){.section{padding:40px 20px}html,body{overflow-x:hidden}.hero h1{word-break:break-word}}
+  :root {
+    /* 知識拿鐵 由淺到深疊加序列 */
+    --bg-1: #F5EDE7;
+    --bg-2: #EFEBE9;
+    --bg-3: #E8DED9;
+    --bg-4: #D7CCC8;
+    --bg-5: #C9BAB1;
+    --bg-6: #B5A199;
+    --bg-7: #8B6F5C;
+    --bg-8: #5D4037;
+    --bg-9: #3E2723;
+
+    --text-on-light:  #4E342E;
+    --text-on-mid:    #F5EDE0;
+    --text-on-dark:   #F5EDE0;
+    --text-soft-light:#5D4037;
+    --text-soft-dark: rgba(245,237,224,0.78);
+
+    --accent:       #D88C3A;
+    --accent-light: #D4A574;
+    --accent-on-dark: #E6B87D;
+    --subtle-light: #BCAAA4;
+    --subtle-dark:  rgba(245,237,224,0.18);
+
+    --font-display: "PingFang TC","Noto Sans TC","Inter","Helvetica Neue",system-ui,sans-serif;
+    --font-body:    "PingFang TC","Noto Sans TC","Inter",system-ui,sans-serif;
+    --font-mono:    "JetBrains Mono","SF Mono",ui-monospace,monospace;
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    font-family: var(--font-body);
+    background: var(--bg-1);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* === Sticky Stack 核心 === */
+  section {
+    position: sticky;
+    top: 0;
+    min-height: 100vh;
+    display: grid;
+    place-items: center;
+    padding: 96px 56px;
+    isolation: isolate;
+    border-radius: 32px 32px 0 0;
+    box-shadow: 0 -24px 60px -20px rgba(40, 24, 16, 0.18);
+  }
+  section.has-open-details {
+    position: relative;
+    place-items: start center;
+    align-content: start;
+  }
+  section:first-of-type {
+    border-radius: 0;
+    box-shadow: none;
+  }
+  /* 9 段背景 + z-index 遞增 */
+  section[data-bg="1"] { background: var(--bg-1); z-index: 1; color: var(--text-on-light); }
+  section[data-bg="2"] { background: var(--bg-2); z-index: 2; color: var(--text-on-light); }
+  section[data-bg="3"] { background: var(--bg-3); z-index: 3; color: var(--text-on-light); }
+  section[data-bg="4"] { background: var(--bg-4); z-index: 4; color: var(--text-on-light); }
+  section[data-bg="5"] { background: var(--bg-5); z-index: 5; color: var(--text-on-light); }
+  section[data-bg="6"] { background: var(--bg-6); z-index: 6; color: var(--text-on-dark); }
+  section[data-bg="7"] { background: var(--bg-7); z-index: 7; color: var(--text-on-dark); }
+  section[data-bg="8"] { background: var(--bg-8); z-index: 8; color: var(--text-on-dark); }
+  section[data-bg="9"] { background: var(--bg-9); z-index: 9; color: var(--text-on-dark); }
+
+  /* 章節編號 caption */
+  .act-cap {
+    font-family: var(--font-mono);
+    font-size: 20px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: var(--accent);
+    margin-bottom: 28px;
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .act-cap::before {
+    content: "";
+    width: 28px; height: 1px;
+    background: var(--accent);
+  }
+  section[data-bg="6"] .act-cap,
+  section[data-bg="7"] .act-cap,
+  section[data-bg="8"] .act-cap,
+  section[data-bg="9"] .act-cap { color: var(--accent-on-dark); }
+  section[data-bg="6"] .act-cap::before,
+  section[data-bg="7"] .act-cap::before,
+  section[data-bg="8"] .act-cap::before,
+  section[data-bg="9"] .act-cap::before { background: var(--accent-on-dark); }
+
+  /* Typography */
+  .display {
+    font-family: var(--font-display);
+    font-size: clamp(48px, 8vw, 112px);
+    line-height: 1.0;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    margin: 0 0 24px;
+  }
+  .h1 {
+    font-family: var(--font-display);
+    font-size: clamp(28px, 3.4vw, 44px);
+    line-height: 1.25;
+    font-weight: 700;
+    margin: 0 0 24px;
+  }
+  .h2 {
+    font-size: 22px;
+    line-height: 1.35;
+    font-weight: 600;
+    margin: 0 0 10px;
+  }
+  .lead {
+    font-size: clamp(20px, 1.8vw, 24px);
+    line-height: 1.7;
+    color: var(--text-soft-light);
+    max-width: 720px;
+    margin: 0 auto;
+  }
+  section[data-bg="6"] .lead,
+  section[data-bg="7"] .lead,
+  section[data-bg="8"] .lead,
+  section[data-bg="9"] .lead { color: var(--text-soft-dark); }
+  .body {
+    font-size: 20px;
+    line-height: 1.7;
+    color: var(--text-soft-light);
+  }
+  section[data-bg="6"] .body,
+  section[data-bg="7"] .body,
+  section[data-bg="8"] .body,
+  section[data-bg="9"] .body { color: var(--text-soft-dark); }
+
+  /* container */
+  .wrap {
+    width: 100%;
+    max-width: 1080px;
+    text-align: center;
+  }
+  .wrap.left { text-align: left; }
+
+  /* dot indicator */
+  .dot-indicator {
+    position: fixed;
+    right: 28px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    z-index: 100;
+  }
+  .dot-indicator a {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: rgba(78, 52, 46, 0.22);
+    transition: all 0.35s cubic-bezier(0.22,1,0.36,1);
+    position: relative;
+  }
+  .dot-indicator a:hover { background: rgba(78, 52, 46, 0.5); }
+  .dot-indicator a.active {
+    background: var(--accent);
+    transform: scale(1.5);
+    box-shadow: 0 0 0 4px rgba(216, 140, 58, 0.18);
+  }
+  .dot-indicator a .lbl {
+    position: absolute;
+    right: 22px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-family: var(--font-mono);
+    font-size: 20px;
+    letter-spacing: 0.15em;
+    color: var(--text-soft-light);
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 0.25s;
+    pointer-events: none;
+  }
+  .dot-indicator a:hover .lbl { opacity: 1; }
+  body.scrolling .dot-indicator a.active .lbl { opacity: 1; }
+  body.on-dark .dot-indicator a { background: rgba(245,237,224,0.25); }
+  body.on-dark .dot-indicator a.active {
+    background: var(--accent-on-dark);
+    box-shadow: 0 0 0 4px rgba(230,184,125,0.22);
+  }
+  body.on-dark .dot-indicator a .lbl { color: var(--text-soft-dark); }
+
+  /* progress bar */
+  .progress {
+    position: fixed;
+    top: 0; left: 0;
+    height: 3px;
+    width: 0%;
+    background: linear-gradient(90deg, var(--accent), var(--accent-light));
+    z-index: 200;
+    transition: width 0.15s linear;
+  }
+
+  /* 卡片 */
+  .grid-2 {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 28px;
+    margin-top: 40px;
+  }
+  .grid-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 28px;
+    margin-top: 40px;
+  }
+  .card {
+    background: rgba(255, 248, 240, 0.5);
+    border: 1px solid var(--subtle-light);
+    border-radius: 16px;
+    padding: 32px 28px;
+    text-align: left;
+    transition: transform 0.3s, box-shadow 0.3s;
+    backdrop-filter: blur(8px);
+  }
+  .card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(78,52,46,0.1);
+  }
+  .card .num {
+    font-family: var(--font-mono);
+    font-size: 20px;
+    letter-spacing: 0.18em;
+    color: var(--accent);
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+  section[data-bg="6"] .card,
+  section[data-bg="7"] .card,
+  section[data-bg="8"] .card,
+  section[data-bg="9"] .card {
+    background: rgba(255,248,240,0.06);
+    border-color: var(--subtle-dark);
+  }
+  section[data-bg="6"] .card .num,
+  section[data-bg="7"] .card .num,
+  section[data-bg="8"] .card .num,
+  section[data-bg="9"] .card .num { color: var(--accent-on-dark); }
+
+  /* 清單 */
+  .list-x {
+    list-style: none;
+    padding: 0;
+    margin: 32px auto 0;
+    max-width: 640px;
+    text-align: left;
+  }
+  .list-x li {
+    font-size: 22px;
+    line-height: 1.6;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--subtle-light);
+    color: var(--text-on-light);
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+  }
+  .list-x li .x {
+    color: var(--accent);
+    font-weight: 700;
+    font-size: 20px;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  section[data-bg="6"] .list-x li,
+  section[data-bg="7"] .list-x li,
+  section[data-bg="8"] .list-x li,
+  section[data-bg="9"] .list-x li {
+    color: var(--text-on-dark);
+    border-bottom-color: var(--subtle-dark);
+  }
+  section[data-bg="6"] .list-x li .x,
+  section[data-bg="7"] .list-x li .x,
+  section[data-bg="8"] .list-x li .x,
+  section[data-bg="9"] .list-x li .x { color: var(--accent-on-dark); }
+
+  /* 金句卡 */
+  .quote-card {
+    background: rgba(216, 140, 58, 0.10);
+    border: 1.5px solid var(--accent);
+    border-radius: 16px;
+    padding: 28px 36px;
+    margin-top: 36px;
+    font-size: 22px;
+    font-weight: 600;
+    line-height: 1.6;
+    color: var(--text-on-light);
+    text-align: center;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  section[data-bg="6"] .quote-card,
+  section[data-bg="7"] .quote-card,
+  section[data-bg="8"] .quote-card,
+  section[data-bg="9"] .quote-card {
+    background: rgba(230,184,125,0.10);
+    border-color: var(--accent-on-dark);
+    color: var(--text-on-dark);
+  }
+
+  /* 大金句 */
+  .quote-big {
+    font-family: var(--font-display);
+    font-size: clamp(26px, 3.2vw, 40px);
+    line-height: 1.5;
+    font-weight: 700;
+    max-width: 880px;
+    margin: 0 auto;
+    letter-spacing: -0.01em;
+  }
+
+  /* 步驟 timeline 四欄 */
+  .timeline {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    margin-top: 56px;
+    position: relative;
+  }
+  .timeline::before {
+    content: "";
+    position: absolute;
+    top: 18px; left: 8%; right: 8%;
+    height: 1px;
+    background: repeating-linear-gradient(90deg, var(--subtle-light) 0, var(--subtle-light) 6px, transparent 6px, transparent 12px);
+  }
+  section[data-bg="6"] .timeline::before,
+  section[data-bg="7"] .timeline::before,
+  section[data-bg="8"] .timeline::before,
+  section[data-bg="9"] .timeline::before {
+    background: repeating-linear-gradient(90deg, var(--subtle-dark) 0, var(--subtle-dark) 6px, transparent 6px, transparent 12px);
+  }
+  .step {
+    text-align: center;
+    position: relative;
+    padding-top: 56px;
+    padding-left: 8px;
+    padding-right: 8px;
+  }
+  .step .dot {
+    position: absolute;
+    top: 0; left: 50%;
+    transform: translateX(-50%);
+    width: 36px; height: 36px;
+    background: var(--accent);
+    color: #fff;
+    border-radius: 50%;
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: 20px;
+    display: grid;
+    place-items: center;
+    box-shadow: 0 0 0 6px rgba(216,140,58,0.18);
+  }
+  section[data-bg="6"] .step .dot,
+  section[data-bg="7"] .step .dot,
+  section[data-bg="8"] .step .dot,
+  section[data-bg="9"] .step .dot {
+    background: var(--accent-on-dark);
+    color: var(--bg-9);
+    box-shadow: 0 0 0 6px rgba(230,184,125,0.22);
+  }
+
+  /* 五步縱列 */
+  .step-list {
+    list-style: none;
+    padding: 0;
+    margin: 36px auto 0;
+    max-width: 680px;
+    text-align: left;
+  }
+  .step-list li {
+    font-size: 22px;
+    line-height: 1.6;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--subtle-light);
+    color: var(--text-on-light);
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+  }
+  .step-list li .sn {
+    font-family: var(--font-mono);
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--accent);
+    flex-shrink: 0;
+    min-width: 24px;
+    margin-top: 3px;
+  }
+  section[data-bg="6"] .step-list li,
+  section[data-bg="7"] .step-list li,
+  section[data-bg="8"] .step-list li,
+  section[data-bg="9"] .step-list li {
+    color: var(--text-on-dark);
+    border-bottom-color: var(--subtle-dark);
+  }
+  section[data-bg="6"] .step-list li .sn,
+  section[data-bg="7"] .step-list li .sn,
+  section[data-bg="8"] .step-list li .sn,
+  section[data-bg="9"] .step-list li .sn { color: var(--accent-on-dark); }
+
+  /* 組織樹（舊版，保留備用） */
+  .org-tree {
+    margin-top: 40px;
+    text-align: center;
+  }
+  .org-top {
+    display: inline-block;
+    background: var(--accent);
+    color: #fff;
+    border-radius: 12px;
+    padding: 12px 32px;
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 24px;
+  }
+  .org-tier {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+  }
+  .org-tier-label {
+    font-family: var(--font-mono);
+    font-size: 20px;
+    letter-spacing: 0.2em;
+    color: var(--accent);
+    margin-bottom: 10px;
+  }
+  section[data-bg="4"] .org-tier-label { color: var(--accent); }
+  section[data-bg="6"] .org-tier-label,
+  section[data-bg="7"] .org-tier-label,
+  section[data-bg="8"] .org-tier-label,
+  section[data-bg="9"] .org-tier-label { color: var(--accent-on-dark); }
+  .org-chip {
+    display: inline-block;
+    background: rgba(255,248,240,0.55);
+    border: 1px solid var(--subtle-light);
+    border-radius: 999px;
+    padding: 8px 20px;
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--text-on-light);
+  }
+  section[data-bg="6"] .org-chip,
+  section[data-bg="7"] .org-chip,
+  section[data-bg="8"] .org-chip,
+  section[data-bg="9"] .org-chip {
+    background: rgba(255,248,240,0.08);
+    border-color: var(--subtle-dark);
+    color: var(--text-on-dark);
+  }
+
+  /* 新版組織圖（ACT 06） */
+  .org{display:flex;flex-direction:column;align-items:center;width:100%;max-width:1180px;margin:8px auto 0;color:var(--text-on-light);}
+  .org .boss{background:var(--accent);color:#3a2414;font-weight:700;font-size:22px;padding:13px 28px;border-radius:14px;}
+  .org .trunk{width:2px;height:22px;background:rgba(78,52,46,.4);}
+  .org .split{position:relative;display:flex;justify-content:center;gap:26px;width:100%;}
+  .org .split::before{content:"";position:absolute;top:0;left:16.6%;right:16.6%;height:2px;background:rgba(78,52,46,.4);}
+  .org .branch{position:relative;padding-top:22px;flex:1 1 0;max-width:380px;}
+  .org .branch::before{content:"";position:absolute;top:0;left:50%;transform:translateX(-50%);width:2px;height:22px;background:rgba(78,52,46,.4);}
+  .org .card{background:rgba(255,255,255,.45);border:1.5px solid rgba(78,52,46,.26);border-radius:16px;padding:16px 18px;height:100%;}
+  .org .bhead{font-size:21px;font-weight:700;margin-bottom:10px;color:#5d4037;}
+  .org .mem{font-size:20px;line-height:1.45;margin:8px 0;text-align:left;}
+  .org .mem b{font-weight:700;}
+  .org .mem .t{color:#6d4c41;}
+  @media(max-width:760px){.org .split{flex-direction:column;gap:0;}.org .split::before{display:none;}.org .branch{max-width:520px;}}
+
+  /* 三視角 */
+  .view-3 {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-top: 36px;
+    max-width: 720px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: left;
+  }
+  .view-row {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    font-size: 21px;
+    line-height: 1.6;
+  }
+  .view-name {
+    font-family: var(--font-mono);
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--accent-on-dark);
+    flex-shrink: 0;
+    min-width: 120px;
+    margin-top: 3px;
+  }
+
+  /* 階梯卡 */
+  .ladder {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-top: 36px;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: left;
+  }
+  .ladder-item {
+    background: rgba(255,248,240,0.5);
+    border: 1px solid var(--subtle-light);
+    border-radius: 14px;
+    padding: 22px 28px;
+    font-size: 21px;
+    line-height: 1.55;
+    color: var(--text-on-light);
+  }
+  .ladder-item strong {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 20px;
+    letter-spacing: 0.18em;
+    color: var(--accent);
+    margin-bottom: 8px;
+  }
+  section[data-bg="6"] .ladder-item,
+  section[data-bg="7"] .ladder-item,
+  section[data-bg="8"] .ladder-item,
+  section[data-bg="9"] .ladder-item {
+    background: rgba(255,248,240,0.06);
+    border-color: var(--subtle-dark);
+    color: var(--text-on-dark);
+  }
+  section[data-bg="6"] .ladder-item strong,
+  section[data-bg="7"] .ladder-item strong,
+  section[data-bg="8"] .ladder-item strong,
+  section[data-bg="9"] .ladder-item strong { color: var(--accent-on-dark); }
+
+  /* 承諾卡 */
+  .promise-card {
+    background: rgba(230,184,125,0.12);
+    border: 2px solid var(--accent-on-dark);
+    border-radius: 20px;
+    padding: 40px 48px;
+    margin-top: 40px;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .promise-q {
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 1.55;
+    color: var(--text-on-dark);
+    margin-bottom: 16px;
+  }
+  .promise-hint {
+    font-family: var(--font-mono);
+    font-size: 20px;
+    letter-spacing: 0.18em;
+    color: var(--accent-on-dark);
+  }
+
+  /* 小字提示 */
+  .hint {
+    margin-top: 32px;
+    font-family: var(--font-mono);
+    font-size: 20px;
+    letter-spacing: 0.15em;
+    color: var(--text-soft-light);
+  }
+  section[data-bg="6"] .hint,
+  section[data-bg="7"] .hint,
+  section[data-bg="8"] .hint,
+  section[data-bg="9"] .hint { color: var(--text-soft-dark); }
+
+  /* footer 底部 */
+  .footer-bottom {
+    margin-top: 56px;
+    padding-top: 20px;
+    border-top: 1px solid var(--subtle-dark);
+    font-family: var(--font-mono);
+    font-size: 20px;
+    letter-spacing: 0.18em;
+    color: rgba(245,237,224,0.55);
+    text-align: center;
+  }
+
+  /* 進場動畫 */
+  .reveal { opacity: 1; transform: translateY(0) scale(1); }
+  .js-on .reveal:not(.in) {
+    opacity: 0;
+    transform: translateY(36px) scale(0.96);
+  }
+  .reveal {
+    transition: opacity 0.8s cubic-bezier(0.22,1,0.36,1),
+                transform 0.8s cubic-bezier(0.22,1,0.36,1);
+  }
+  .reveal.d1 { transition-delay: 0.08s; }
+  .reveal.d2 { transition-delay: 0.16s; }
+  .reveal.d3 { transition-delay: 0.24s; }
+  .reveal.d4 { transition-delay: 0.32s; }
+  .reveal.d5 { transition-delay: 0.40s; }
+
+  /* 七層圖（ACT 11） */
+  .tk-wrap{display:flex;gap:16px;align-items:stretch;width:100%;max-width:1180px;margin:4px auto 0;}
+  .tk{flex:1;}
+  .tk-row{display:flex;align-items:center;gap:14px;border-radius:8px;padding:11px 18px;margin:7px 0;text-align:left;color:#3a2a22;}
+  .tk-row .ly{font-weight:700;font-size:20px;min-width:74px;flex:none;}
+  .tk-row .nm{font-weight:700;font-size:21px;min-width:158px;flex:none;}
+  .tk-row .ds{font-size:20px;color:#5d4037;}
+  .tk-0{background:#ECE3DB;} .tk-1{background:#E3D6CC;} .tk-2{background:#D6C4B7;} .tk-3{background:#C2A994;}
+  .tk-4{background:#AB8E79;color:#fdf6ee;} .tk-5{background:#8B6F5C;color:#fdf6ee;} .tk-6{background:#6B4F3F;color:#fdf6ee;} .tk-7{background:#4A3328;color:#fdf6ee;}
+  .tk-4 .ds,.tk-5 .ds,.tk-6 .ds,.tk-7 .ds{color:rgba(253,246,238,.86);}
+  .tk-axis{display:flex;flex-direction:column;justify-content:space-between;align-items:center;font-size:20px;font-weight:700;color:#6d4c41;padding:6px 4px;}
+  .tk-axis .ar{font-size:22px;color:#8b6f5c;}
+  @media(max-width:760px){.tk-row{flex-wrap:wrap;}}
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .reveal { opacity: 1 !important; transform: none !important; }
+  }
+
+  @media (max-width: 720px) {
+    section { padding: 80px 24px; border-radius: 24px 24px 0 0; }
+    .grid-2, .grid-3 { grid-template-columns: 1fr; gap: 16px; }
+    .timeline { grid-template-columns: 1fr; gap: 20px; }
+    .timeline::before { display: none; }
+    .dot-indicator { right: 12px; gap: 10px; }
+    .org-tier { gap: 10px; }
+  }
 </style>
 </head>
 <body>
-<header class="topbar">
-  <a class="brand" href="../../articles.html">江江教練 · 深度文章</a>
-  <nav class="nav" aria-label="頁面導覽">
-    <a href="../../articles.html" style="background:#1a1612;color:#fff;border-color:#1a1612">← 深度文章總站</a>
-    <a href="../own-ai-team-at-work/">先讀前一篇</a>
-    <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">LINE 社群 ↗</a>
+  <a href="/" style="position:fixed;top:14px;left:16px;z-index:300;font-family:var(--font-mono);font-size:15px;font-weight:500;color:var(--accent);text-decoration:none;background:rgba(245,237,224,.82);padding:7px 13px;border-radius:999px;backdrop-filter:blur(6px);">← 江江教練 · AI 知識管理</a>
+  <div class="progress" id="progress"></div>
+
+  <nav class="dot-indicator" aria-label="章節導覽">
+    <a href="#act-01" data-i="0"><span class="lbl">01 · 封面</span></a>
+    <a href="#act-02" data-i="1"><span class="lbl">02 · 今天不一樣</span></a>
+    <a href="#act-03" data-i="2"><span class="lbl">03 · 什麼在吃掉你</span></a>
+    <a href="#act-04" data-i="3"><span class="lbl">04 · 別補舊流程</span></a>
+    <a href="#act-05" data-i="4"><span class="lbl">05 · 兩種角色</span></a>
+    <a href="#act-06" data-i="5"><span class="lbl">06 · 我的 AI 團隊</span></a>
+    <a href="#act-07" data-i="6"><span class="lbl">07 · 咪卡上工</span></a>
+    <a href="#act-08" data-i="7"><span class="lbl">08 · 你會帶走什麼</span></a>
+    <a href="#act-09" data-i="8"><span class="lbl">09 · 員工怎麼養</span></a>
+    <a href="#act-10" data-i="9"><span class="lbl">10 · 把你的做法挖出來</span></a>
+    <a href="#act-11" data-i="10"><span class="lbl">11 · 隱性知識提煉系統</span></a>
+    <a href="#act-12" data-i="11"><span class="lbl">12 · 把節點串起來</span></a>
+    <a href="#act-13" data-i="12"><span class="lbl">13 · 顧問怎麼用</span></a>
+    <a href="#act-14" data-i="13"><span class="lbl">14 · 最值錢的能力</span></a>
+    <a href="#act-15" data-i="14"><span class="lbl">15 · 帶回家</span></a>
   </nav>
-</header>
 
-<section class="hero">
-  <div>
-    <div class="badge">撰寫中 · 敬請期待</div>
-    <h1>如何訓練自己的 AI 員工</h1>
-    <p>這篇正在撰寫中。它接續前一篇〈在公司上班，你也可以有自己的 AI 團隊〉，談心態換成一人公司老闆之後，怎麼把第一個 AI 員工真的訓練出來。</p>
-    <div class="cta">
-      <a class="primary" href="../own-ai-team-at-work/">先讀前一篇：心態怎麼換</a>
-      <a class="ghost" href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">進社群等更新 ↗</a>
+  <!-- ACT 01 封面 bg-1 最淺 -->
+  <section id="act-01" data-block data-bg="1">
+    <div class="wrap">
+      <div class="act-cap reveal">ACT 01 · 封面</div>
+      <p class="hint reveal" style="margin-top:0; margin-bottom:20px;">AI 員工駕訓班</p>
+      <h1 class="display reveal d1">打造你的<br/>AI 員工<br/>＋ 顧問</h1>
+      <p class="lead reveal d2">一個人，也能擁有一整支團隊，加一群顧問</p>
+      <p class="lead reveal d3" style="margin-top:16px;">不用寫程式，你只要開口說話</p>
+      <p class="hint reveal d4">禮拜日 · 三小時實作</p>
     </div>
-  </div>
-</section>
+  </section>
 
-<main>
-<section class="section">
-  <div class="inner">
-    <h2>這篇會談什麼</h2>
-    <p>前一篇講的是心態：把自己當成一人公司老闆，公司是你目前唯一的長期固定客戶。換好心態之後，真正的問題是怎麼動手。這篇會接著談：</p>
-    <ul>
-      <li>把你系統性的思維，整理成 AI 讀得懂的形狀。</li>
-      <li>知識庫、工作流、Agent 三種形式，先從哪一個起步。</li>
-      <li>怎麼把第一段工作真的交出去，而不是又自己做掉。</li>
-    </ul>
-    <div class="preview"><b>還沒寫完，先給你一句重點</b>訓練 AI 員工的第一步不是學工具，是先願意把一件你本來自己做的事，認真交給它做一次。</div>
-    <p>想在這篇上線時收到通知，歡迎先加入 LINE 社群。我每月也有兩場免費線上講座，聊 AI 應用與知識管理。</p>
-  </div>
-</section>
-</main>
-
-<footer class="footer">
-  <div class="footer-inner">
-    <div class="footer-brand">江江教練 · AI 知識管理</div>
-    <div class="footer-links">
-      <a href="../../articles.html">← 回深度文章總站</a>
-      <a href="../own-ai-team-at-work/">在公司上班，你也可以有自己的 AI 團隊</a>
-      <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">LINE 社群 ↗</a>
+  <!-- ACT 02 今天不一樣 bg-2 -->
+  <section id="act-02" data-block data-bg="2">
+    <div class="wrap">
+      <div class="act-cap reveal">ACT 02 · 今天不一樣</div>
+      <h2 class="h1 reveal d1">今天不是講座，是駕訓班</h2>
+      <p class="lead reveal d2">重點不是聽懂多少，是你今天當場做出自己的 AI 員工。</p>
+      <div class="quote-card reveal d3">
+        打開 Agent，請忍住，不要自己操作。<br/>
+        操作是 AI 的事，不是你的事。
+      </div>
     </div>
-    <div class="footer-note">這是一篇撰寫中的預告頁，內容上線後會更新為完整文章。</div>
-  </div>
-</footer>
+  </section>
 
+  <!-- ACT 03 什麼在吃掉你 bg-3 -->
+  <section id="act-03" data-block data-bg="3">
+    <div class="wrap">
+      <div class="act-cap reveal">ACT 03 · 什麼在吃掉你</div>
+      <h2 class="h1 reveal d1">你現在的工作方式，有什麼在吃掉你？</h2>
+      <ul class="list-x reveal d2">
+        <li><span class="x">✕</span>檔案散在各處，光找就半天</li>
+        <li><span class="x">✕</span>重複的文書，每次都從零憋</li>
+        <li><span class="x">✕</span>行程、訊息，常常漏接</li>
+        <li><span class="x">✕</span>瑣事吃掉時間，正事沒空做</li>
+        <li><span class="x">✕</span>重大決策，一個人鑽牛角尖</li>
+      </ul>
+      <p class="hint reveal d3">現在，這些事是誰在做？（請舉手）</p>
+    </div>
+  </section>
+
+  <!-- ACT 04 別補舊流程 bg-3 -->
+  <section id="act-04" data-block data-bg="3">
+    <div class="wrap">
+      <div class="act-cap reveal">ACT 04 · 別補舊流程</div>
+      <h2 class="h1 reveal d1">鋼鐵，不是拿來加固木屋的</h2>
+      <p class="lead reveal d2">
+        鋼鐵剛發明時，大家拿去做鋼釘，把木造房子從兩層加到三層。<br/>
+        直到有人直接用鋼鐵設計房子，才有了摩天大樓。
+      </p>
+      <p class="body reveal d3" style="margin-top: 28px; max-width: 700px; margin-left: auto; margin-right: auto;">
+        99% 的人用 AI，都在補舊的工作流。<br/>
+        真正該問的是：有什麼事，本來就該整個交給 AI 做？
+      </p>
+      <div class="quote-card reveal d4">
+        AI 是 AI，軟體是軟體。<br/>
+        別用 AI 去做軟體早就做好的事。
+      </div>
+    </div>
+  </section>
+
+  <!-- ACT 05 兩種角色 bg-4 -->
+  <section id="act-05" data-block data-bg="4">
+    <div class="wrap">
+      <div class="act-cap reveal">ACT 05 · 兩種角色</div>
+      <h2 class="h1 reveal d1">你需要兩種 AI：員工，跟顧問</h2>
+      <div class="grid-2 reveal d2">
+        <div class="card">
+          <div class="num">員工（向內）</div>
+          <p class="body">照你的想法幹活，把你會的事複製出來，做得更快。</p>
+        </div>
+        <div class="card">
+          <div class="num">顧問（向外）</div>
+          <p class="body">用外部視角挑你盲點，補上你沒有的角度，讓你想得更對。</p>
+        </div>
+      </div>
+      <div class="quote-card reveal d3">
+        員工讓你做得更快，顧問讓你想得更對。
+      </div>
+      <p class="body reveal d4" style="margin-top: 24px;">不是老闆、沒有員工可管？從顧問入手，人人都能建。</p>
+    </div>
+  </section>
+
+  <!-- ACT 06 我的 AI 團隊 bg-4 淺底深字，組織圖清楚可見 -->
+  <section id="act-06" data-block data-bg="4">
+    <div class="wrap">
+      <div class="act-cap reveal">ACT 06 · 我的 AI 團隊</div>
+      <h2 class="h1 reveal d1">這是我怎麼用 AI 幹活的</h2>
+      <div class="reveal d2">
+        <div class="org">
+          <div class="boss">江昱德（決策者）</div>
+          <div class="trunk"></div>
+          <div class="split">
+            <div class="branch"><div class="card">
+              <div class="bhead">員工（主管型）</div>
+              <div class="mem"><b>雷總管</b>　<span class="t">檔案、看板、標籤、調度</span></div>
+              <div class="mem"><b>春總編</b>　<span class="t">寫作、發文、順稿</span></div>
+              <div class="mem"><b>風組長</b>　<span class="t">多 AI 查證、上網查</span></div>
+              <div class="mem"><b>小秘書</b>　<span class="t">行程、訊息、提醒</span></div>
+            </div></div>
+            <div class="branch"><div class="card">
+              <div class="bhead">專案經理型</div>
+              <div class="mem"><b>網站專案包</b>　<span class="t">該網站的規格與所有細節</span></div>
+              <div class="mem"><b>咪卡（AI 辦公室）</b>　<span class="t">管 20 到 30 個行政小工具</span></div>
+            </div></div>
+            <div class="branch"><div class="card">
+              <div class="bhead">顧問</div>
+              <div class="mem"><b>納瓦爾</b>　<span class="t">長期、槓桿、決策</span></div>
+              <div class="mem"><b>馬斯克</b>　<span class="t">第一性原理、規模</span></div>
+              <div class="mem"><b>一人公司顧問</b>　<span class="t">盲點、邊際成本</span></div>
+            </div></div>
+          </div>
+        </div>
+      </div>
+      <p class="body reveal d3" style="margin-top: 28px;">你只要對總管說一句話，他把事情分給對的人。你動嘴，團隊動手。</p>
+    </div>
+  </section>
+
+  <!-- ACT 07 咪卡上工 bg-5 -->
+  <section id="act-07" data-block data-bg="5">
+    <div class="wrap">
+      <div class="act-cap reveal">ACT 07 · 咪卡上工</div>
+      <h2 class="h1 reveal d1">咪卡，就是你裝進筆電的那位</h2>
+      <div class="timeline reveal d2">
+        <div class="step">
+          <div class="dot">①</div>
+          <h3 class="h2" style="margin-top: 8px;">你開口</h3>
+          <p class="body">說一句話，交辦任務</p>
+        </div>
+        <div class="step">
+          <div class="dot">②</div>
+          <h3 class="h2" style="margin-top: 8px;">咪卡調度</h3>
+          <p class="body">轉派給對的員工</p>
+        </div>
+        <div class="step">
+          <div class="dot">③</div>
+          <h3 class="h2" style="margin-top: 8px;">員工接手</h3>
+          <p class="body">對的人做對的事</p>
+        </div>
+        <div class="step">
+          <div class="dot">④</div>
+          <h3 class="h2" style="margin-top: 8px;">成果回來</h3>
+          <p class="body">你確認，就完成</p>
+        </div>
+      </div>
+      <p class="hint reveal d3">今天前半，我們先讓咪卡在你自己的筆電裡出場。</p>
+    </div>
+  </section>
+
+  <!-- ACT 08 你會帶走什麼 bg-5 -->
+  <section id="act-08" data-block data-bg="5">
+    <div class="wrap">
+      <div class="act-cap reveal">ACT 08 · 你會帶走什麼</div>
+      <h2 class="h1 reveal d1">今天結束，你帶走的是「你的」團隊</h2>
+      <div class="ladder reveal d2">
+        <div class="ladder-item">
+          <strong>入門就很夠</strong>
+          直接用我整套團隊，改個名字、改一句話，就開始是你的。
+        </div>
+        <div class="ladder-item">
+          <strong>想更進一步</strong>
+          當天親手打造一個員工 ＋ 一個顧問，完全照你的樣子長。
+        </div>
+      </div>
+      <div class="quote-card reveal d3">
+        你的員工，不是我的員工。<br/>
+        是用你的習慣、你的語言打造的。
+      </div>
+    </div>
+  </section>
+
+  <!-- ACT 09 員工怎麼養 bg-7 -->
+  <section id="act-09" data-block data-bg="7">
+    <div class="wrap">
+      <div class="act-cap reveal">ACT 09 · 員工怎麼養</div>
+      <h2 class="h1 reveal d1">把一件你本來自己做的事，交出去</h2>
+      <ul class="step-list reveal d2">
+        <li><span class="sn">①</span>交辦，不要自己先做</li>
+        <li><span class="sn">②</span>忍住，不要動手操作</li>
+        <li><span class="sn">③</span>看它做</li>
+        <li><span class="sn">④</span>不準？補一條規則，不是自己重寫</li>
+        <li><span class="sn">⑤</span>成功了，存成下次可重複的指令</li>
+      </ul>
+      <p class="hint reveal d3">第一次不完美，很正常。這就是訓練。</p>
+    </div>
+  </section>
+
+  <!-- ACT 10 把你的做法挖出來（新增） bg-7 -->
+  <section id="act-10" data-block data-bg="7">
+    <div class="wrap">
+      <div class="act-cap reveal">ACT 10 · 把你的做法挖出來</div>
+      <h2 class="h1 reveal d1">員工會「照你的方式」做，前提是你把方式挖出來</h2>
+      <ul class="step-list reveal d2">
+        <li><span class="sn">①</span>你剛剛每補一條規則，其實就是在把你腦袋裡沒說出口的判斷挖出來。</li>
+        <li><span class="sn">②</span>這叫隱性知識提煉：你會做、卻說不清楚的判斷、眉角、標準，一條條變成 AI 看得懂的規則。</li>
+        <li><span class="sn">③</span>提煉得越多，員工越像你。而且這是別人偷不走的，那是你的判斷，不是工具。</li>
+      </ul>
+      <div class="quote-card reveal d3">
+        把你會、卻說不清楚的，變成 AI 學得會的。
+      </div>
+    </div>
+  </section>
+
+  <!-- ACT 11 隱性知識提煉系統 bg-4 -->
+  <section id="act-11" data-block data-bg="4">
+    <div class="wrap left">
+      <div class="act-cap reveal">ACT 11 · 隱性知識提煉系統</div>
+      <h2 class="h1 reveal d1">隱性知識提煉系統</h2>
+      <p class="lead reveal d2" style="margin:0 0 16px;max-width:none;">每往底層推一層，上面整層都能自動化：等比級數的成長</p>
+      <div class="tk-wrap reveal d3">
+        <div class="tk">
+          <div class="tk-row tk-0"><span class="ly">第零層</span><span class="nm">現實的結果</span><span class="ds">看得見的行為、產出、成果</span></div>
+          <div class="tk-row tk-1"><span class="ly">第一層</span><span class="nm">規則</span><span class="ds">結果背後的判斷依據 → SOP、操作手冊、知識庫</span></div>
+          <div class="tk-row tk-2"><span class="ly">第二層</span><span class="nm">經驗</span><span class="ds">規則從哪來？→ 提煉成思維框架、規則庫</span></div>
+          <div class="tk-row tk-3"><span class="ly">第三層</span><span class="nm">跨領域連結</span><span class="ds">框架在不同領域都適用 → 隱藏的共通邏輯</span></div>
+          <div class="tk-row tk-4"><span class="ly">第四層</span><span class="nm">直覺與感覺</span><span class="ds">過往經驗的權重疊加，藏著更深層的連結</span></div>
+          <div class="tk-row tk-5"><span class="ly">第五層</span><span class="nm">價值觀與信念</span><span class="ds">深層連結的根源 → 影響判斷的底層作業系統</span></div>
+          <div class="tk-row tk-6"><span class="ly">第六層</span><span class="nm">理性觀察的極限</span><span class="ds">我知道我在乎，但無法理解為什麼 → 語言的邊界</span></div>
+          <div class="tk-row tk-7"><span class="ly">第七層</span><span class="nm">？</span><span class="ds">更高層次的覺察的開始？</span></div>
+        </div>
+        <div class="tk-axis"><span>顯性</span><span class="ar">↓</span><span>隱性</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ACT 12 把節點串起來 bg-8 -->
+  <section id="act-12" data-block data-bg="8">
+    <div class="wrap">
+      <div class="act-cap reveal">ACT 12 · 把節點串起來</div>
+      <h2 class="h1 reveal d1">一個員工是一個節點，把它們串起來，就是工作流</h2>
+      <ul class="step-list reveal d2">
+        <li><span class="sn">①</span>單一員工只做一件事。真正的力量，是把好幾個節點接成一條流程。</li>
+        <li><span class="sn">②</span>例：風組長查資料，春總編寫成稿，小秘書排程發出。一句話啟動，一條龍跑完。</li>
+        <li><span class="sn">③</span>你今天先練好一個員工，把它們串成流程，是你帶回去的下一步。</li>
+      </ul>
+      <div class="quote-card reveal d3">
+        員工是積木，工作流是你把積木組成的那台機器。
+      </div>
+    </div>
+  </section>
+
+  <!-- ACT 13 顧問怎麼用 bg-8 -->
+  <section id="act-13" data-block data-bg="8">
+    <div class="wrap">
+      <div class="act-cap reveal">ACT 13 · 顧問怎麼用</div>
+      <h2 class="h1 reveal d1">丟一個你正在猶豫的決定</h2>
+      <p class="lead reveal d2">例如：我到底要不要接這個案子？</p>
+      <div class="view-3 reveal d3">
+        <div class="view-row">
+          <span class="view-name">納瓦爾</span>
+          <span>長期、槓桿、值不值得花你的時間</span>
+        </div>
+        <div class="view-row">
+          <span class="view-name">馬斯克</span>
+          <span>第一性原理、這件事能不能做大</span>
+        </div>
+        <div class="view-row">
+          <span class="view-name">一人公司顧問</span>
+          <span>你一個人扛得住嗎、邊際成本划算嗎</span>
+        </div>
+      </div>
+      <div class="quote-card reveal d4" style="margin-top: 36px;">
+        三個顧問會跟你說不一樣的話。<br/>
+        三方都點到的，才是真盲點。
+      </div>
+    </div>
+  </section>
+
+  <!-- ACT 14 最值錢的能力 bg-9 最深 -->
+  <section id="act-14" data-block data-bg="9">
+    <div class="wrap">
+      <div class="act-cap reveal">ACT 14 · 最值錢的能力</div>
+      <h2 class="h1 reveal d1">真正難、也真正值錢的：<br/>判斷這個問題值多少</h2>
+      <div class="ladder reveal d2">
+        <div class="ladder-item">
+          <strong>知道值多少，就現在做</strong>
+          我知道這個問題值 500 塊，有人願意付，現在就能解決，那就做。
+        </div>
+        <div class="ladder-item">
+          <strong>知道時機，先布局再說</strong>
+          我知道現在解決要 1000，下個月 500，後個月 200，那就先談、先建立信任、不把話講死，時機到了再簽。
+        </div>
+      </div>
+      <div class="quote-card reveal d3" style="margin-top: 32px;">
+        其他都叫 AI 去做。<br/>
+        你只要知道：什麼問題、誰願意買單、現在值多少。
+      </div>
+    </div>
+  </section>
+
+  <!-- ACT 15 帶回家 bg-9 最深收尾 -->
+  <section id="act-15" data-block data-bg="9">
+    <div class="wrap">
+      <div class="act-cap reveal">ACT 15 · 帶回家</div>
+      <h2 class="h1 reveal d1">不是記住什麼，是明天就用</h2>
+      <div class="promise-card reveal d2">
+        <p class="promise-q">明天 24 小時內，<br/>你要交給 AI 員工的第一件真實工作，是什麼？</p>
+        <p class="promise-hint">寫下來，才算承諾。</p>
+      </div>
+      <div class="quote-card reveal d3" style="margin-top: 32px; font-size: 26px; padding: 36px 40px;">
+        你怎麼訓員工，就怎麼訓 AI。
+      </div>
+      <div class="footer-bottom reveal d4">
+        江昱德 · AI 員工駕訓班
+      </div>
+    </div>
+  </section>
+
+<script>
+(function () {
+  document.documentElement.classList.add('js-on');
+  document.body.classList.add('js-on');
+
+  const sections = [...document.querySelectorAll('section[data-block]')];
+  const dots = [...document.querySelectorAll('.dot-indicator a')];
+  const progress = document.getElementById('progress');
+  const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function syncSectionDetailState(section) {
+    section.classList.toggle('has-open-details', !!section.querySelector('details[open]'));
+  }
+  sections.forEach(syncSectionDetailState);
+  document.querySelectorAll('details').forEach((detail) => {
+    detail.addEventListener('toggle', () => syncSectionDetailState(detail.closest('section[data-block]')));
+  });
+
+  if (!reducedMotion) {
+    const io = new IntersectionObserver((entries) => entries.forEach((e) => {
+      if (e.isIntersecting) {
+        e.target.querySelectorAll('.reveal').forEach((el) => el.classList.add('in'));
+      }
+    }), { threshold: 0.25 });
+    sections.forEach((s) => io.observe(s));
+  } else {
+    document.querySelectorAll('.reveal').forEach((el) => el.classList.add('in'));
+  }
+
+  const darkBgs = new Set(['6','7','8','9']);
+  const navIo = new IntersectionObserver((entries) => entries.forEach((e) => {
+    if (e.isIntersecting) {
+      const i = sections.indexOf(e.target);
+      dots.forEach((d, idx) => d.classList.toggle('active', idx === i));
+      document.body.classList.toggle('on-dark', darkBgs.has(e.target.getAttribute('data-bg')));
+    }
+  }), { threshold: 0.55 });
+  sections.forEach((s) => navIo.observe(s));
+
+  const scroller = document.scrollingElement || document.documentElement;
+  let ticking = false;
+  function updateProgress() {
+    const max = scroller.scrollHeight - scroller.clientHeight;
+    const pct = max > 0 ? (scroller.scrollTop / max) * 100 : 0;
+    progress.style.width = pct + '%';
+    ticking = false;
+  }
+  window.addEventListener('scroll', () => {
+    if (!ticking) {
+      requestAnimationFrame(updateProgress);
+      ticking = true;
+    }
+  }, { passive: true });
+  updateProgress();
+
+  let _scrollT;
+  window.addEventListener('scroll', () => {
+    document.body.classList.add('scrolling');
+    clearTimeout(_scrollT);
+    _scrollT = setTimeout(() => document.body.classList.remove('scrolling'), 700);
+  }, { passive: true });
+})();
+</script>
 </body>
 </html>
