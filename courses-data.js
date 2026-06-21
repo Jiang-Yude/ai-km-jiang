@@ -40,6 +40,44 @@
 
 window.COURSES = [
   {
+    id: "2026-06-21-use-knowledge-website",
+    date: "2026-06-21",
+    time: "20:00",
+    title: "怎麼用我的知識官網：技能包是什麼、怎麼運作",
+    type_label: "免費線上講座",
+    image: null,
+    venue_mode: "online",
+    host: "江江教練",
+    tags: ["知識官網", "Codex", "技能包", "Agent", "零基礎"],
+    summary: "給還不太熟悉 Agent、想知道技能包是什麼、怎麼運作的新手。如果你常因為整理文書工作加班，可以下載 Codex；不會用的話，我有一個知識管理官網，裡面有技能包，甚至有教學。把官網網址貼給 Codex，網站就會教你怎麼使用它。這場晚上八點開講，我會現場示範一次。",
+    detail_url: null,
+    materials: [],
+    registration: {
+      status: "open",
+      url: "https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ",
+      label: "加 LINE 社群報名 ↗",
+      note: "6/21 晚上八點開講，零基礎新手入門場"
+    }
+  },
+  {
+    id: "2026-07-05-clerical-workflow-demo",
+    date: "2026-07-05",
+    time: null,
+    title: "把學員問卷整理成課綱與簡報的完整流程",
+    type_label: "免費線上講座",
+    image: null,
+    venue_mode: "online",
+    host: "江江教練",
+    tags: ["文書行政", "問卷整理", "課綱", "簡報製作", "工作流"],
+    summary: "拆解一個很多人用得到的環節：我收到學員問卷後怎麼整理。把學員問卷、課程題目、最近的內容組合成新的課程內容，再做成簡報，也包含課程結束後的整理與重組。做文書、行政流程的人也能參考。",
+    detail_url: null,
+    materials: [],
+    registration: {
+      status: "pending",
+      note: "時間與標題籌備中，最終以 LINE 社群公告為準"
+    }
+  },
+  {
     id: "2026-05-23-agent-workflow",
     date: "2026-05-23",
     time: "20:00",
