@@ -231,6 +231,24 @@ window.ARTICLES = [
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
     related: ["own-ai-team-at-work", "agent-workflow-builds-automation"]
+  },
+
+  /* ── 13. LINE 群組也能變成 AI 工作流入口（教學）── */
+  {
+    id: "line-group-ai-workflow",
+    url: "articles/line-group-ai-workflow/",
+    date: "2026-06-22",
+    title: "LINE 群組也能變成 AI 工作流入口",
+    problem: "團隊資料散在 LINE 群組裡，文字、圖片、PDF 和連結當下看得到，過幾天要整理時卻很難找回來。",
+    audience: "已經有 LINE 群組的課程、社群、小團隊與專案協作者，想先把資料收回來，再交給 AI 整理的人。",
+    summary: "把 LINE 官方帳號接進一般群組，先備存訊息、圖片、PDF 和檔案，再讓 Agent 早晚整理；重要訊息才請真人回應，不急著讓 AI 自動回話。",
+    tags: {
+      topic: ["AI工作流", "AIAgent", "工具操作"],
+      level: ["零基礎入門"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
+    related: ["agent-workflow-builds-automation", "codex-only-auto-worklog", "how-to-train-your-ai-employee"]
   }
 
 ];
