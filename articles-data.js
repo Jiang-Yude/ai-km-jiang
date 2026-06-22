@@ -249,6 +249,24 @@ window.ARTICLES = [
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
     related: ["agent-workflow-builds-automation", "codex-only-auto-worklog", "how-to-train-your-ai-employee"]
+  },
+
+  /* ── 14. 活的馬斯克技能包（教學）── */
+  {
+    id: "elon-musk-live-skill",
+    url: "articles/elon-musk-live-skill/",
+    date: "2026-06-22",
+    title: "活的馬斯克技能包：給創業者與主管的第一性原理顧問",
+    problem: "創業者、主管和老闆需要有人協助拆問題、反問假設、看見盲點，同時又希望參考公開資料時能分清楚本人內容、公司一手資訊、新聞報導與新聞評論。",
+    audience: "想用第一性原理拆產品、團隊、資源配置與決策盲點的創業者、主管、老闆，以及想下載開源技能包實作的人。",
+    summary: "這篇介紹活的馬斯克技能包：把馬斯克常見的第一性原理思考方式整理成 AI 顧問流程，每天用 Codex 自動更新公開資料；新聞只作參考提醒，正式技能包本體仍需人工審核。",
+    tags: {
+      topic: ["技能包設計", "AIAgent", "輔助決策", "AI工作流"],
+      level: ["零基礎入門"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
+    related: ["how-to-train-your-ai-employee", "own-ai-team-at-work", "ai-market-microcosm"]
   }
 
 ];
