@@ -81,7 +81,7 @@ a{color:inherit}.topbar{position:sticky;top:0;z-index:20;display:flex;gap:10px;a
       <div class="summary-box">
         <div class="summary-card">
           <b>先收資料</b>
-          <p>用你自己的官方帳號加入一般 LINE 群組，透過 webhook 接收開通後的新訊息。</p>
+          <p>用你自己的官方帳號加入一般 LINE 群組。群組有新訊息時，LINE 會主動把事件送到你的收訊服務，這個通道叫 webhook。</p>
         </div>
         <div class="summary-card">
           <b>再補附件</b>
@@ -94,7 +94,11 @@ a{color:inherit}.topbar{position:sticky;top:0;z-index:20;display:flex;gap:10px;a
       </div>
       <div class="note">
         <b>核心原則</b>
-        先把資料收穩，再把整理規則交給你的 Agent。助理可以叫 Mika，也可以叫課程助教、社群秘書或公司助理；名字不是重點，架構才是重點。
+        先把資料收穩，再把整理規則交給你的 Agent。助理可以叫 Mika，也可以叫課程助教、社群秘書或公司助理；架構是你要帶走的東西，助理叫什麼名字都行。
+      </div>
+      <div class="note">
+        <b>你不需要自己寫程式</b>
+        如果你不會寫程式，可以把這篇當成任務清單，交給 Codex、其他 Agent 或工程夥伴處理。你要決定的是：哪個群組要收、資料要放哪裡、誰需要被提醒、哪些情況不能自動回覆。
       </div>
       <figure class="inline-figure">
         <img src="../../images/articles/line-group-ai-workflow-collect-first.jpg" alt="先收資料不急著讓 AI 回話">
@@ -122,11 +126,11 @@ a{color:inherit}.topbar{position:sticky;top:0;z-index:20;display:flex;gap:10px;a
 → 有重要訊息再請人回應</div>
       <div class="note">
         <b>兩階段設計</b>
-        第一階段先做被動收訊備存器：即時收、延後整理、依群組分資料夾。預設 dry-run，意思是收訊與歸檔正常，LINE 群組不會收到 bot 回覆，即使有人 @ 助理也先不回。第二階段才考慮小助教回覆，而且只在明確 @ 提及或授權情境下回覆。
+        第一階段先做被動收訊備存器：即時收、延後整理、依群組分資料夾。預設測試模式，也就是 dry-run：收訊與歸檔正常，LINE 群組不會收到 bot 回覆，即使有人 @ 助理也先不回。第二階段才考慮小助教回覆，而且只在明確 @ 提及或授權情境下回覆。
       </div>
       <div class="note">
         <b>Webhook 的第一責任</b>
-        webhook 要快回 <code>200 OK</code>。事件成功寫入儲存層後才回 200；如果寫入失敗，應回 5xx，讓 LINE 有機會補送。不要在 webhook request 裡做長摘要、AI 呼叫或大量上傳，這些工作應交給背景排程或晚間整理。
+        收訊服務要快速跟 LINE 說「我收到了」，技術上叫回 <code>200 OK</code>。事件成功寫入資料庫或雲端資料夾後才回 200；如果寫入失敗，應回傳錯誤，技術上叫 5xx，讓 LINE 有機會補送。不要在收訊當下做長摘要、AI 呼叫或大量上傳，這些工作應交給背景排程或晚間整理。
       </div>
     </div>
   </section>
@@ -151,20 +155,30 @@ a{color:inherit}.topbar{position:sticky;top:0;z-index:20;display:flex;gap:10px;a
   <section class="section" id="security">
     <div class="inner">
       <h2>如果不會設定 LINE 後台</h2>
-      <p class="lead">你可以在當次工作中授權 Codex 或其他 Agent 操作螢幕，協助確認官方帳號、Messaging API、webhook 和群組加入設定。</p>
+      <p class="lead">你可以在當次工作中授權 Codex 或其他 Agent 操作螢幕，協助確認官方帳號、Messaging API、webhook 和群組加入設定。下面這段是你可以直接說給 Agent 聽的授權語，不需要自己懂每個設定。</p>
       <div class="codeblock">我不熟 LINE Developers 後台。
 我授權 Agent 在這次工作中操作螢幕，
 幫我建立或確認官方帳號、啟用 Messaging API、
 設定 webhook、確認可以加入群組。
-token 不要貼進聊天，直接寫進本機 .env 或 Keychain。</div>
+token 不要貼進聊天，直接寫進本機設定檔 .env 或系統鑰匙圈 Keychain。</div>
+      <div class="duo">
+        <div class="card good">
+          <b>先選對官方帳號</b>
+          <p>可以新建一個專用官方帳號，也可以使用既有帳號。若你已有品牌官方帳號，改 webhook 或 Messaging API 前要先確認，不要在不確定時動既有帳號。</p>
+        </div>
+        <div class="card good">
+          <b>先告知群組成員</b>
+          <p>把助理加入群組前，先說清楚它會備存開通後的新訊息與附件，並說明用途是整理與提醒，不是監控或自動代回。</p>
+        </div>
+      </div>
       <div class="duo">
         <div class="card warn">
           <b>不要公開或同步 token</b>
-          <p>channel access token 與 channel secret 不貼聊天、不寫進筆記系統、不 commit 到 GitHub。需要長期保存時，放本機 .env 或 Keychain。</p>
+          <p>channel access token 與 channel secret 是你的 LINE 官方帳號金鑰，等同帳號密碼。不要貼聊天、不寫進筆記系統、不上傳到 GitHub 等程式碼平台。需要長期保存時，放本機設定檔 .env 或系統鑰匙圈 Keychain。</p>
         </div>
         <div class="card good">
           <b>資料與程式分開</b>
-          <p>程式和 token 留在本機。訊息、圖片、PDF 這些可整理資料，放到團隊指定的備存資料夾，再依團隊規則同步。</p>
+          <p>金鑰只存在本機，不上傳、不外傳。訊息、圖片、PDF 這些可整理資料，放到團隊指定的備存資料夾，再依團隊規則同步。</p>
         </div>
       </div>
       <figure class="inline-figure">
@@ -177,11 +191,11 @@ token 不要貼進聊天，直接寫進本機 .env 或 Keychain。</div>
       </div>
       <div class="note">
         <b>部署可靠性不要混在一起</b>
-        quick tunnel 適合首次驗證。本機電腦睡眠或關機時，webhook 無法接收。需要長期收訊的場景，應改用雲端中繼站，不要把本機常駐包裝成對外可交付的可靠服務。
+        quick tunnel，像 ngrok 這類暫時性對外通道，適合首次驗證。本機電腦睡眠或關機時，webhook 無法接收。需要長期收訊的場景，應改用雲端中繼站，不要把本機常駐包裝成對外可交付的可靠服務。
       </div>
       <div class="note">
-        <b>Redelivery 和 Vercel 的坑</b>
-        LINE webhook redelivery 需要在 Developers Console 手動啟用。啟用後也只在一定期間內補送，伺服器持續沒有正常回應時，LINE 會停止重送；補送後也要依事件 timestamp 判斷順序。若用 Vercel Function 做雲端中繼站，Function 本身不是長期資料庫，必須接持久化儲存層，事件寫入成功後才能回 200。
+        <b>LINE 會補送失敗事件，但有條件</b>
+        以下是給自己架 webhook 的工程師確認用的細節：LINE webhook redelivery 需要在 Developers Console 手動啟用。啟用後也只在一定期間內補送，伺服器持續沒有正常回應時，LINE 會停止重送；補送後也要依事件 timestamp 判斷順序。若用 Vercel Function 做雲端中繼站，Function 本身不是長期資料庫，必須接能長期保存資料的地方，例如資料庫或雲端資料夾。事件寫入成功後才能回 200。
       </div>
     </div>
   </section>
@@ -189,7 +203,7 @@ token 不要貼進聊天，直接寫進本機 .env 或 Keychain。</div>
   <section class="section">
     <div class="inner">
       <h2>群組名稱和附件怎麼整理</h2>
-      <p>一開始 LINE webhook 只穩定提供 groupId。如果直接用 ID 當資料夾名稱，人會看不懂。所以維護腳本會用 LINE group summary API 抓群組名稱，前面放可讀名稱，後面保留 ID 尾碼，避免同名群組撞在一起。</p>
+      <p>一開始 LINE webhook 只穩定提供 LINE 給每個群組的唯一代號，也就是 groupId。如果直接用 ID 當資料夾名稱，人會看不懂。所以維護腳本會用 LINE group summary API 抓群組名稱，前面放可讀名稱，後面保留 ID 尾碼，避免同名群組撞在一起。</p>
       <div class="figure-split">
         <figure class="inline-figure">
           <img src="../../images/articles/line-group-ai-workflow-group-name.jpg" alt="群組名稱要讓人看得懂">
@@ -206,7 +220,7 @@ token 不要貼進聊天，直接寫進本機 .env 或 Keychain。</div>
               <p><code>示範群組名稱__g1234567</code></p>
             </div>
           </div>
-          <p>圖片、影片、音訊和檔案則透過 messageId 再抓內容。補抓後可以放在 <code>groups/群組名稱__尾碼/media/YYYY-MM-DD/</code>，並把 Markdown 記錄更新成可讀連結。</p>
+          <p>圖片、影片、音訊和檔案則透過 LINE 給每則訊息的唯一編號，也就是 messageId，再抓內容。補抓完成後，統一放進以群組名稱和日期命名的資料夾，方便之後找。常見位置像 <code>groups/群組名稱__尾碼/media/YYYY-MM-DD/</code>，Markdown 記錄也會更新成可讀連結。</p>
         </div>
       </div>
     </div>
@@ -218,9 +232,9 @@ token 不要貼進聊天，直接寫進本機 .env 或 Keychain。</div>
         <h2>這篇適合拿去做什麼</h2>
         <p>這套做法的重點是讓你照著建立自己的 LINE AI 助理，把散落在群組裡的資料接進工作流，先收穩，再整理，再提醒。最適合已經有 LINE 群組的課程、社群、小團隊與專案協作。</p>
         <ul>
-          <li>脆文教學：用 Mika 當案例，說明「先收資料，再整理」。</li>
+          <li>脆文教學：用真實示範案例說明「先收資料，再整理」的邏輯。</li>
           <li>官網文章：當成自建 LINE AI 助理的施工圖。</li>
-          <li>GitHub 技能包：提供流程、檢查清單、設定指引和 .env.example，讓讀者建立自己的版本，不放 token。</li>
+          <li>技能包或檢查清單：提供流程、設定指引和 .env.example，讓讀者建立自己的版本，不放 token。</li>
         </ul>
       </div>
       <div class="cta-card">
