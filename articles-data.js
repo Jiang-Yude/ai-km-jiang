@@ -267,6 +267,24 @@ window.ARTICLES = [
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
     related: ["how-to-train-your-ai-employee", "own-ai-team-at-work", "ai-market-microcosm"]
+  },
+
+  /* ── 15. Codex log 健康巡檢（教學）── */
+  {
+    id: "codex-log-health-check",
+    url: "articles/codex-log-health-check/",
+    date: "2026-06-23",
+    title: "Codex 整個大當機？重安裝後第一步先檢查 logs_2.sqlite",
+    problem: "Codex Desktop 打不開、更新無效、最後只能重安裝，重裝後任務和本機工作現場也可能一起消失。",
+    audience: "每天使用 Codex Desktop 的知識工作者、講師、一人公司與 AI Agent 使用者，特別是已經把 Codex 當成日常工作台的人。",
+    summary: "用學員實際當機畫面當案例，整理 logs_2.sqlite 是什麼、出事時怎麼安全處理、怎麼設定每 3 到 5 天自動巡檢，以及如何靠工作日誌和技能包避免任務心血跟著工具故障一起不見。",
+    tags: {
+      topic: ["工具操作", "AI工作流", "AIAgent"],
+      level: ["零基礎入門"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
+    related: ["codex-only-auto-worklog", "agent-workflow-builds-automation", "how-to-train-your-ai-employee"]
   }
 
 ];

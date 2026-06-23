@@ -1,0 +1,419 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="index,follow">
+<title>Codex 整個大當機？重安裝後第一步先檢查 logs_2.sqlite｜江江教練 · AI 知識管理</title>
+<meta name="description" content="Codex Desktop 打不開、更新無效、最後只能重安裝時，第一步先檢查 logs_2.sqlite。這篇整理 log 資料庫是什麼、怎麼安全處理、怎麼設定自動巡檢，以及如何避免任務心血跟著消失。">
+<link rel="canonical" href="https://ai-km-jiang.vercel.app/articles/codex-log-health-check/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Codex 整個大當機？重安裝後第一步先檢查 logs_2.sqlite｜江江教練">
+<meta property="og:image" content="https://ai-km-jiang.vercel.app/images/articles/codex-log-health-check-cover-image2.jpg">
+<meta property="og:description" content="真實 Codex 當機案例：重安裝後先檢查 logs_2.sqlite，再建立 log 健康巡檢自動化。">
+<meta property="og:url" content="https://ai-km-jiang.vercel.app/articles/codex-log-health-check/">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:site_name" content="江江教練 · AI 知識管理">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Codex 整個大當機？重安裝後第一步先檢查 logs_2.sqlite｜江江教練">
+<meta name="twitter:image" content="https://ai-km-jiang.vercel.app/images/articles/codex-log-health-check-cover-image2.jpg">
+<meta name="twitter:description" content="真實 Codex 當機案例：重安裝後先檢查 logs_2.sqlite，再建立 log 健康巡檢自動化。">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Codex 整個大當機？重安裝後第一步先檢查 logs_2.sqlite","description":"Codex Desktop 打不開、更新無效、最後只能重安裝時，第一步先檢查 logs_2.sqlite。這篇整理 log 資料庫是什麼、怎麼安全處理、怎麼設定自動巡檢，以及如何避免任務心血跟著消失。","author":{"@type":"Person","name":"江昱德","alternateName":"江江教練","jobTitle":"隱性知識提煉師、AI 應用規劃師"},"isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://ai-km-jiang.vercel.app/"},"image":"https://ai-km-jiang.vercel.app/images/articles/codex-log-health-check-cover-image2.jpg","datePublished":"2026-06-23","dateModified":"2026-06-23","inLanguage":"zh-Hant","url":"https://ai-km-jiang.vercel.app/articles/codex-log-health-check/"}</script>
+<style>
+:root{--ink:#181b1f;--muted:#5f6769;--paper:#fffaf1;--soft:#f6efe2;--line:#dfd2bd;--green:#315d45;--green2:#eef7ef;--blue:#386f87;--red:#d84e42;--dark:#20241f;--shadow:0 18px 45px rgba(70,49,31,.15)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC","Segoe UI",sans-serif}
+a{color:var(--blue)}
+.topbar{position:sticky;top:0;z-index:20;display:flex;gap:10px;align-items:center;justify-content:space-between;padding:12px clamp(18px,4vw,56px);border-bottom:1px solid rgba(24,27,31,.12);background:rgba(255,250,241,.92);backdrop-filter:blur(12px)}
+.brand{font-weight:900;font-size:14px;text-decoration:none;color:var(--ink)}
+.nav{display:flex;gap:8px;overflow:auto}
+.nav a{white-space:nowrap;text-decoration:none;border:1px solid rgba(24,27,31,.16);border-radius:999px;padding:8px 11px;background:#fff;font-size:14px;font-weight:800;color:var(--ink)}
+.hero{display:grid;grid-template-columns:minmax(0,1fr) minmax(320px,.55fr);gap:34px;align-items:center;padding:58px clamp(20px,6vw,90px);background:linear-gradient(135deg,#1d241f,#315d45);color:#fff;overflow:hidden}
+.kicker{font:900 13px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;color:#dcefcf;text-transform:uppercase;letter-spacing:.02em}
+.hero h1{max-width:920px;margin:16px 0 18px;font-size:clamp(38px,6vw,78px);line-height:1.08}
+.hero p{max-width:840px;font-size:clamp(18px,2vw,23px);line-height:1.62;color:rgba(255,255,255,.9)}
+.cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
+.cta a{display:inline-flex;align-items:center;text-decoration:none;border-radius:8px;padding:12px 16px;font-weight:900}
+.cta .primary{background:#fff;color:#172018}
+.cta .ghost{border:1px solid rgba(255,255,255,.32);color:#fff;background:rgba(255,255,255,.08)}
+.hero-figure{margin:0;align-self:end}
+.hero-figure img{display:block;width:100%;border-radius:14px;box-shadow:0 22px 60px rgba(0,0,0,.28);border:1px solid rgba(255,255,255,.18)}
+.hero-figure figcaption{font-size:13px;color:rgba(255,255,255,.76);line-height:1.6;margin-top:10px}
+.section{padding:56px clamp(20px,6vw,90px);border-top:1px solid var(--line)}
+.inner{width:min(1040px,100%);margin:0 auto}
+.section h2{font-size:clamp(28px,4vw,48px);line-height:1.16;margin:0 0 18px}
+.section h3{font-size:clamp(21px,2.6vw,30px);line-height:1.26;margin:30px 0 12px}
+.lead{font-size:clamp(18px,1.7vw,22px);line-height:1.75;color:#3a3731;max-width:920px}
+.section p{font-size:18px;line-height:1.78;color:#3a3731}
+.section ul,.section ol{padding-left:1.35em;font-size:18px;line-height:1.74;color:#3a3731}
+.section li{margin-bottom:8px}
+.intro{background:var(--soft)}
+.geo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:24px}
+.geo .card b{color:var(--green)}
+.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:24px}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:24px}
+.card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:22px;box-shadow:0 8px 24px rgba(70,49,31,.08)}
+.card b{display:block;font-size:20px;margin-bottom:10px;color:var(--green)}
+.card p{margin:0;font-size:16px;line-height:1.66}
+.card ul{margin:0;font-size:16px;line-height:1.66;padding-left:1.2em}
+.card li{margin-bottom:6px}
+.warn{border-color:rgba(216,78,66,.48)}
+.warn b{color:var(--red)}
+.good{border-color:rgba(49,93,69,.42);box-shadow:0 8px 24px rgba(49,93,69,.13)}
+.note{margin:22px 0;padding:16px 18px;border-left:5px solid var(--blue);background:rgba(56,111,135,.12);border-radius:6px;line-height:1.72;font-size:18px;color:#3a3731}
+.note b{display:block;color:var(--blue);margin-bottom:4px}
+.danger{border-left-color:var(--red);background:rgba(216,78,66,.1)}
+.danger b{color:var(--red)}
+.codeblock{background:var(--dark);color:#f7efe1;border-radius:8px;padding:18px 20px;font:500 14px/1.68 ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;overflow-x:auto;white-space:pre-wrap;margin:20px 0;box-shadow:0 8px 22px rgba(70,49,31,.12)}
+.inline-figure{margin:30px auto 8px;max-width:820px}
+.inline-figure.wide{max-width:1000px}
+.inline-figure img{display:block;width:100%;border-radius:14px;border:1px solid var(--line);box-shadow:var(--shadow);background:#fff}
+.inline-figure figcaption{font-size:14px;line-height:1.6;color:var(--muted);margin-top:10px}
+.figure-pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin:30px 0 8px}
+.figure-pair figure{margin:0}
+.figure-pair img{display:block;width:100%;border-radius:14px;border:1px solid var(--line);box-shadow:var(--shadow);background:#fff}
+.figure-pair figcaption{font-size:13px;line-height:1.58;color:var(--muted);margin-top:8px}
+.timeline{display:grid;gap:12px;margin-top:24px}
+.row{display:grid;grid-template-columns:110px minmax(0,1fr);gap:16px;align-items:start;background:#fff;border:1px solid var(--line);border-radius:10px;padding:16px 18px}
+.row strong{color:var(--green);font-size:16px}
+.row p{margin:0;font-size:16px}
+.sources a{word-break:break-word}
+.cta-band{background:var(--dark);color:#fff}
+.cta-band .inner{display:grid;grid-template-columns:minmax(0,1.12fr) minmax(280px,.88fr);gap:24px;align-items:start}
+.cta-band p,.cta-band li{color:rgba(255,255,255,.86)}
+.cta-card{border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.06);border-radius:8px;padding:22px}
+.cta-card b{display:block;color:#dcefcf;margin-bottom:10px;font-size:18px}
+.footer{padding:30px clamp(20px,6vw,88px);font-size:14px;color:var(--muted);background:#fff;border-top:1px solid var(--line)}
+.footer-inner{width:min(1040px,100%);margin:0 auto}
+.footer-links{display:flex;flex-wrap:wrap;gap:6px 12px;margin-bottom:14px}
+.footer-links a{color:var(--blue);font-weight:900;text-decoration:none;font-size:14px}
+.footer-brand{font-weight:900;font-size:15px;margin-bottom:10px;color:var(--ink)}
+.footer-note{font-size:13px;line-height:1.6}
+@media(max-width:960px){.hero{grid-template-columns:1fr}.hero-figure{max-width:520px}.geo,.grid3,.grid2,.figure-pair,.cta-band .inner{grid-template-columns:1fr}.row{grid-template-columns:1fr}.hero h1{word-break:break-word}}
+@media(max-width:640px){.hero{padding:40px 20px}.section{padding:40px 20px}.topbar{align-items:flex-start;flex-direction:column}.hero-figure{max-width:420px}}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="../../articles.html">江江教練 · 深度文章</a>
+  <nav class="nav" aria-label="頁面導覽">
+    <a href="../../articles.html" style="background:#181b1f;color:#fff;border-color:#181b1f">← 深度文章總站</a>
+    <a href="#intro">快速看懂</a>
+    <a href="#case">真實案例</a>
+    <a href="#scope">問題定位</a>
+    <a href="#fix">怎麼處理</a>
+    <a href="#automation">自動巡檢</a>
+    <a href="#source">參考 issue</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <div>
+    <div class="kicker">Codex Desktop / log health check / Mika tutorial</div>
+    <h1>Codex 整個大當機？重安裝後第一步先檢查 logs_2.sqlite</h1>
+    <p>最近有學員的 Codex Desktop 整個打不開，更新到最新版也沒解掉，最後重新安裝才救回來。重裝有機會救回啟動，本機任務和工作現場卻可能跟著消失。這篇講重裝後第一步先檢查 logs_2.sqlite，再把 log 健康巡檢做起來。</p>
+    <div class="cta">
+      <a class="primary" href="#fix">先看處理流程</a>
+      <a class="ghost" href="#automation">複製自動化指令</a>
+    </div>
+  </div>
+  <figure class="hero-figure">
+    <img src="../../images/articles/codex-log-health-check-cover-image2.jpg" alt="咪卡偵探拿放大鏡檢查 Codex 當機與 logs_2.sqlite 的封面插圖">
+    <figcaption>封面是咪卡操作教學風格。這篇重點是安全巡檢與備份流程，不鼓勵亂刪 log。</figcaption>
+  </figure>
+</section>
+
+<main>
+  <section class="section intro" id="intro">
+    <div class="inner">
+      <h2>這篇在講什麼</h2>
+      <p class="lead">這篇用學員的實際當機畫面當案例，講四件事：logs_2.sqlite 這個本機 log 資料庫是什麼，Codex 打不開時怎麼安全處理，怎麼設定每 3 到 5 天的自動巡檢，以及怎麼讓任務和心血不跟著工具故障一起不見。所有技術說法的依據是 OpenAI Codex GitHub repo 裡的相近 issue 與原始碼，不是官方公告。</p>
+      <div class="geo">
+        <div class="card">
+          <b>適合誰</b>
+          <ul>
+            <li>你每天靠 Codex Desktop 工作，某天它突然整個打不開，怎麼重開都進不去。</li>
+            <li>你更新到最新版、甚至重裝過，還是擔心同樣狀況哪天又來。</li>
+            <li>你聽過 logs_2.sqlite、WAL、VACUUM 這些字，卻不知道該不該動、會不會越弄越糟。</li>
+            <li>你最怕的是工具壞掉，連帶把這幾天的任務和工作現場一起賠進去。</li>
+          </ul>
+        </div>
+        <div class="card good">
+          <b>你會得到什麼</b>
+          <ul>
+            <li>看懂 logs_2.sqlite 是什麼、不該拿它當什麼用，知道它為什麼可能拖累 Codex 啟動。</li>
+            <li>一套保守的當機處理順序，先備份、先檢查，能不亂刪就不亂刪。</li>
+            <li>一段可以直接貼給 Codex 的巡檢自動化指令，預設只巡檢、不自動清。</li>
+            <li>一個讓任務心血不跟著工具一起消失的工作習慣。</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="case">
+    <div class="inner">
+      <h2>先講這次發生什麼事</h2>
+      <p class="lead">學員的 Codex Desktop 怎麼重開都進不去，畫面顯示發生錯誤，並出現 <code>signal=SIGKILL</code>、<code>config.toml</code>、更新 Codex、重新載入等建議。實際處理時，更新到最新版本還是沒有恢復，最後靠重新安裝才重新啟動。</p>
+      <div class="figure-pair">
+        <figure>
+          <img src="../../images/articles/codex-error-sigkill-config.jpg" alt="Codex 發生錯誤畫面，顯示 SIGKILL 與 config 警告">
+          <figcaption>實際當機畫面之一：錯誤訊息帶 SIGKILL 與 config 提示。看到這類畫面時，除了按更新，也值得檢查本機 log 資料庫。</figcaption>
+        </figure>
+        <figure>
+          <img src="../../images/articles/codex-error-latest-version-mcp.jpg" alt="Codex 已更新到最新版本仍顯示錯誤畫面">
+          <figcaption>實際當機畫面之二：更新到最新版，既有的本機狀態問題不一定會跟著消失。</figcaption>
+        </figure>
+      </div>
+      <figure class="inline-figure">
+        <img src="../../images/articles/codex-log-health-check-cover-real-crash.jpg" alt="Codex 當機畫面放大版，含 SIGKILL 錯誤與處理順序整理">
+        <figcaption>同一個案例的放大整理：上半是實際當機畫面，下半是這篇會走的處理順序，最後收在「log 可以清，任務和心血要自己保存」。</figcaption>
+      </figure>
+      <div class="note danger">
+        <b>重裝不是終點，是新的起點</b>
+        重裝有機會救回啟動，同時也可能讓本機任務、對話狀態或工作現場消失，實際影響取決於版本、安裝方式與本機資料夾是否被清掉。比較好的順序是先備份、先檢查，能移走單一 log 資料庫就不要一開始整個卸載。已經重裝的人，第一步就是把巡檢建立起來，避免問題又慢慢長回來。
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="scope">
+    <div class="inner">
+      <h2>先把問題定位講準</h2>
+      <p class="lead">這件事很容易被講成「OpenAI 官方說 Codex 有這個 bug」。正確的說法要保守一點。</p>
+      <div class="grid2">
+        <div class="card good">
+          <b>查證來自哪裡</b>
+          <p>OpenAI Codex 的 GitHub repo 裡，有多個相近 issue 指向 <code>logs_2.sqlite</code> 過大、corrupt log DB、WAL 持續成長，或高量 TRACE log 寫入等風險。這些是社群回報與維護者討論，不是官網公告。</p>
+        </div>
+        <div class="card warn">
+          <b>該怎麼理解它</b>
+          <p><code>logs_2.sqlite</code> 是值得優先檢查的可能原因之一。它不等於所有 Codex 當機的唯一答案。當機可能還有別的成因，這篇先處理這個有跡可循、又能自己安全檢查的部分。</p>
+        </div>
+      </div>
+      <p>把定位講準，後面的處理才不會走偏。我們要做的是「先檢查這個高機率又可自查的地方」，而不是斷定「當機一定是它害的」。完整 issue 連結放在文末「參考的 issue 和原始碼」。</p>
+    </div>
+  </section>
+
+  <section class="section" id="what">
+    <div class="inner">
+      <h2>logs_2.sqlite 到底在寫什麼？</h2>
+      <p class="lead"><code>logs_2.sqlite</code> 是 Codex Desktop 在本機使用的 SQLite log 資料庫。可以把它理解成本機運作紀錄，記錄程式跑起來留下的診斷資料。它不是你的正式工作日誌，也不是技能包、記憶庫或成品資料夾。</p>
+      <div class="grid3">
+        <div class="card good">
+          <b>會記錄的東西</b>
+          <p>時間、等級、target、錯誤訊息、tracing span、連線或工具執行狀態，以及程式運作需要留下的診斷資料。</p>
+        </div>
+        <div class="card">
+          <b>不該拿它當什麼</b>
+          <p>它不是你的正式筆記，也不適合當成長期保存工作成果的地方。任務結論、交付物和技能包，應該另外存成自己的檔案。</p>
+        </div>
+        <div class="card warn">
+          <b>不要公開原檔</b>
+          <p>log 可能包含本機路徑、錯誤片段、工具呼叫摘要或工作環境資訊。可以清理與備份，不建議拿原始資料庫到處傳。</p>
+        </div>
+      </div>
+      <p>查 repo 時看到幾個相近回報：有人把 <code>logs_2.sqlite*</code> 移走後，Codex 會自己重建 log 資料庫；也有人回報 WAL 檔、TRACE 等級 log 或資料庫異常導致問題。這代表它有它的脾氣，值得當成一個會長大的本機資料庫來照顧，不該放著讓它無限膨脹。</p>
+    </div>
+  </section>
+
+  <section class="section" id="fix">
+    <div class="inner">
+      <h2>出事時怎麼處理</h2>
+      <p class="lead">先看你的狀況，這裡分兩條路。手動能力比較強、或電腦上同時裝了 Claude Code，走路線一的保守完整流程。如果你還是新手，走路線二的簡單三步就好。</p>
+      <h3>路線一：有操作能力，或裝了 Claude Code</h3>
+      <p>如果你手動能力比較強，或同時也裝了 Claude Code，可以請 Claude Code 照下面這套保守順序處理。目標是先保留現場，再讓 Codex 重建可以重建的 log 狀態。每一步都建立在「備份在前、動手在後」之上。</p>
+      <div class="timeline">
+        <div class="row"><strong>第 1 步</strong><p>先完全關閉 Codex，避免資料庫正在寫入時動它。</p></div>
+        <div class="row"><strong>第 2 步</strong><p>備份 <code>~/.codex/logs_2.sqlite</code>、<code>logs_2.sqlite-wal</code>、<code>logs_2.sqlite-shm</code>。三個檔案都先留一份，再處理。</p></div>
+        <div class="row"><strong>第 3 步</strong><p>檢查主檔、WAL、SHM 大小，並執行 SQLite <code>quick_check</code>。如果資料庫健康又不大，只回報狀態，不要硬清。</p></div>
+        <div class="row"><strong>第 4 步</strong><p>如果主檔過大、WAL 過大、筆數異常或 quick_check 不正常，先確認完整備份存在，再保留最近 48 小時 log，執行 checkpoint、VACUUM 與 PRAGMA optimize。</p></div>
+        <div class="row"><strong>第 5 步</strong><p>如果連安全清理都無法執行，可把 <code>logs_2.sqlite*</code> 移到備份資料夾，讓 Codex 重新建立 log 資料庫。這一步仍要先備份，不要直接刪除。</p></div>
+        <div class="row"><strong>第 6 步</strong><p>如果試過仍無法啟動，才考慮解除安裝再重裝。重裝後第一件事，就是做下一段的自動巡檢。</p></div>
+      </div>
+      <div class="note danger">
+        <b>遇到這些狀況立刻停手</b>
+        看到 database locked、Operation not permitted 或任何 SQLite 錯誤，先停下來，不要硬刪檔。另外，Codex 還開著時不要直接刪 WAL。repo 的 issue 裡有人提醒，開啟中的程式仍可能握著舊的檔案描述符，硬刪或截斷 live WAL 反而可能造成新的崩潰或資料庫狀態問題。
+      </div>
+
+      <h3>路線二：新手就照這三步</h3>
+      <p>如果你還不熟，不用糾結那些指令，記住三步就好。</p>
+      <div class="timeline">
+        <div class="row"><strong>第 1 步</strong><p>直接重新安裝 Codex。先接受一件事：本機任務有可能跟著消失，這種情況下也只能這樣，先把 Codex 救回來再說。</p></div>
+        <div class="row"><strong>第 2 步</strong><p>重啟成功後，先別急著開新任務。一開新任務，log 會繼續寫進去，很可能很快又爆滿、又當掉。所以重啟後的第一件事，是立刻把日誌清乾淨。</p></div>
+        <div class="row"><strong>第 3 步</strong><p>日誌清乾淨後，建立下一段的自動巡查。之後它會幫你固定做健康檢查，就不太會再走到重裝這一步。</p></div>
+      </div>
+      <div class="note">
+        <b>兩條路線怎麼選</b>
+        會自己下指令、或手邊有 Claude Code，就走路線一，能保留比較多現場。真的卡住、不想研究指令，就走路線二，先用重裝把工具救回來，再靠清日誌和自動巡查止血。
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="inner">
+      <figure class="inline-figure wide">
+        <img src="../../images/articles/codex-log-health-check-summary-wide.jpg" alt="Codex log 健康巡檢一頁總結圖，左側六步驟，右側實際當機畫面與重點金句">
+        <figcaption>一頁看完整套流程：左邊六步驟從關閉 Codex、備份、檢查到固定巡檢，右邊收在「log 可以清，任務和心血要自己保存」。</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="section" id="automation">
+    <div class="inner">
+      <h2>平常怎麼預防：請 Codex 幫自己做健康巡檢</h2>
+      <p class="lead">與其等當機才處理，平常固定巡檢更省事。如果你每天都開 Codex，我會建議每 3 到 5 天巡一次。我自己偏向週二和週五早上各跑一次。偶爾使用的人，一週一次也夠。</p>
+      <div class="grid2">
+        <div class="card good">
+          <b>日常重度使用</b>
+          <p>每 3 到 5 天檢查一次，我偏向週二、週五。門檻可設主檔大於 300MB、WAL 大於 100MB、log 筆數大於 120000，或 quick_check 不正常才維護。</p>
+        </div>
+        <div class="card">
+          <b>偶爾使用</b>
+          <p>一週一次即可。重點是固定做健康檢查，不是每天清。發現異常時，先確認備份存在再處理。</p>
+        </div>
+      </div>
+      <div class="note">
+        <b>巡檢的安全線</b>
+        自動化預設只巡檢、只回報，不直接清理。達到維護門檻時，它要先停下來、輸出一段「維護交接指令」，並提醒你先完全關閉 Codex Desktop。等 Codex 關掉後，再用那段指令處理 WAL 與 VACUUM。不要在 Codex 還運作時動正在寫入的 log 資料庫。
+      </div>
+      <h3>新開一個 Codex 對話框，直接貼這段</h3>
+      <p>這段指令把上面的安全線寫死在裡面：只檢查不亂清，達門檻先回報並產出維護交接指令，遇到不確定狀況立刻停手。貼之前把路徑裡的使用者名稱換成你自己的，或直接叫 Codex 用目前電腦的路徑替換。</p>
+      <div class="codeblock">請幫我建立一個 Codex log 健康巡檢自動化。
+
+目標：
+以台灣時間每 3 到 5 天執行一次，檢查本機 Codex Desktop 的 log 資料庫健康狀態。
+預設只檢查與回報，不直接維護。
+
+檢查對象：
+/Users/你的使用者名稱/.codex/logs_2.sqlite
+/Users/你的使用者名稱/.codex/logs_2.sqlite-wal
+/Users/你的使用者名稱/.codex/logs_2.sqlite-shm
+
+限制：
+不要讀取或輸出完整 log body。
+不要碰 sessions、memories、skills、主知識庫內容或任何對話紀錄檔。
+只回報檔案大小、筆數、時間範圍、最近一天 ERROR 數量、quick_check 結果與是否需要維護。
+
+維護門檻：
+如果 quick_check 不是 ok，或主檔大於 300MB，或 WAL 大於 100MB，或 log 筆數大於 120000，先回報需要維護，不要立刻清理，不要執行 VACUUM。
+
+需要維護時：
+1. 回報觸發原因。
+2. 回報目前大小、筆數、時間範圍與 ERROR 數量。
+3. 產出一段「維護交接指令」，提醒使用者先完全關閉 Codex Desktop。
+4. 在這次巡檢自動化中停止，不要直接維護。
+
+維護交接指令要包含：
+1. 先建立備份資料夾：
+   /Users/你的使用者名稱/.codex/sqlite/log-maintenance/
+2. 再完整備份 logs_2.sqlite、logs_2.sqlite-wal、logs_2.sqlite-shm 到：
+   /Users/你的使用者名稱/.codex/sqlite/log-maintenance/
+   備份檔名請包含 YYYY-MM-DD-HHMM。
+3. 確認備份檔案真的存在且大小大於 0。
+4. 只保留最近 48 小時 logs。
+5. 執行 wal_checkpoint(TRUNCATE)。
+6. 執行 VACUUM。
+7. 執行 PRAGMA optimize。
+8. 再跑一次 quick_check。
+9. 回報處理前後大小、保留筆數、保留時間範圍、備份路徑與排程規則。
+
+安全線：
+如果遇到 database locked、Operation not permitted、SQLite 錯誤或任何不確定狀況，立即停止，不要硬刪檔，回報卡住原因。</div>
+      <div class="note">
+        <b>咪卡操作提醒</b>
+        如果你不知道自己的使用者名稱，可以直接叫 Codex 幫你判斷，它會用目前電腦的路徑替換掉 <code>/Users/你的使用者名稱/</code>。請不要自己亂改隱藏資料夾，也不要把整個 <code>.codex</code> 資料夾刪掉。
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="keep">
+    <div class="inner">
+      <h2>怎麼避免任務和心血一起不見</h2>
+      <p class="lead">這次真正值得記住的，是不要把 Codex 的本機狀態當成唯一保存位置。工具會更新、會壞、會重裝。自己的資料要靠自己的習慣保住。我平常靠三件事。</p>
+      <div class="grid3">
+        <div class="card good">
+          <b>任務結束寫工作日誌</b>
+          <p>每個任務收尾時，把做了什麼、產出在哪裡、遇到什麼問題、下一步是什麼，寫成自己的工作日誌。</p>
+        </div>
+        <div class="card good">
+          <b>成品存到自己的資料夾</b>
+          <p>文章、圖片、簡報、程式碼、提示詞、報告，都要落成檔案，存進自己看得到的位置，不要只留在對話裡。</p>
+        </div>
+        <div class="card good">
+          <b>好操作寫成技能包</b>
+          <p>反覆會用的流程，整理成技能包或 SOP。這樣 Codex 出事時，Claude、其他 Agent 或下一台電腦也讀得懂、接得上。</p>
+        </div>
+      </div>
+      <p>把這三件事做起來，就算哪天 Codex 整個 down 掉，也只是換一個 AI 工具接著讀資料，工作脈絡還在，不會從零開始。</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="inner">
+      <h2>三十秒收尾</h2>
+      <ul>
+        <li>Codex Desktop 打不開、更新無效、最後重裝，重裝後第一步先檢查 <code>logs_2.sqlite</code>。</li>
+        <li>查證依據是 OpenAI Codex GitHub repo 的相近 issue 與原始碼。它是值得優先檢查的可能原因之一，當機還可能有別的成因。</li>
+        <li>處理分兩條路：有操作能力或裝了 Claude Code，走保守流程（先關 Codex、備份三個 log 檔、檢查 quick_check、健康別硬清、異常才在備份後維護，遇到鎖檔或權限錯誤立刻停手）；新手就重新安裝、重啟後先清日誌別急著開新任務、再建立自動巡查。</li>
+        <li>平常設每 3 到 5 天的自動巡檢，預設只巡檢。達門檻時先輸出維護交接指令，等 Codex 關閉後再處理。</li>
+        <li>任務結束寫工作日誌、成品落成檔案、好操作沉澱成技能包。</li>
+      </ul>
+      <div class="note">
+        <b>給自己的定位提醒</b>
+        會清 log、會設巡檢，是基本功，不是什麼了不起的高招，社群裡比我更懂 SQLite 的人多得是。真正能累積下來的，是「自己的資料自己保存」這個習慣：把任務脈絡、成品和流程留在自己手上，工具壞掉就只是工具壞掉，不會連你這段時間的工作一起賠進去。
+      </div>
+    </div>
+  </section>
+
+  <section class="section sources" id="source">
+    <div class="inner">
+      <h2>這篇參考的 issue 和原始碼</h2>
+      <p class="lead">下面是這篇的查證依據，全部來自 OpenAI Codex 的 GitHub repo，不是 OpenAI 官網公告。這些 issue 指向 log SQLite 資料庫過大、WAL 異常、corrupt log DB 或高量 TRACE log 寫入等風險，支撐「<code>logs_2.sqlite</code> 值得優先檢查」這個判斷。</p>
+      <ul>
+        <li><a href="https://github.com/openai/codex/issues/27741" target="_blank" rel="noopener">openai/codex issue #27741</a>：回報 Codex Desktop 因 <code>logs_2.sqlite</code> 長大而啟動失敗，移走 log DB 後可重建。</li>
+        <li><a href="https://github.com/openai/codex/issues/24001" target="_blank" rel="noopener">openai/codex issue #24001</a>：回報 corrupt <code>logs_2.sqlite</code> 造成問題，重新命名 log DB 後可恢復。</li>
+        <li><a href="https://github.com/openai/codex/issues/29463" target="_blank" rel="noopener">openai/codex issue #29463</a>：回報高量 TRACE websocket log 寫進 <code>logs_2.sqlite</code>。</li>
+        <li><a href="https://github.com/openai/codex/issues/28997" target="_blank" rel="noopener">openai/codex issue #28997</a>：討論 WAL 成長，以及不要直接刪 live WAL 的風險。</li>
+        <li><a href="https://github.com/openai/codex/blob/main/codex-rs/core/src/config/mod.rs" target="_blank" rel="noopener">Codex 原始碼 config/mod.rs</a>：可看到 Codex home、sqlite home、log dir 等本機路徑概念。</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section cta-band">
+    <div class="inner">
+      <div>
+        <h2>這篇最重要的一句話</h2>
+        <p>log 可以清，任務和心血要自己保存。把 log 巡檢、自動健康檢查、工作日誌和技能包沉澱做起來，工具壞掉就只是工具壞掉，不會連你的工作脈絡一起消失。</p>
+      </div>
+      <div class="cta-card">
+        <b>下一步</b>
+        <p>新開一個 Codex 對話框，把上面的自動化指令貼進去。跑完後確認它有回報檔案大小、quick_check 結果、是否達維護門檻，以及排程規則。若需要維護，先讓它產出維護交接指令，並等你關閉 Codex 再處理，不要在巡檢自動化裡直接清。</p>
+        <div class="cta">
+          <a class="primary" href="../../articles.html">回深度文章</a>
+          <a class="ghost" href="../../skills.html">看技能包</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">江江教練 · AI 知識管理</div>
+    <div class="footer-links">
+      <a href="../../articles.html">← 回深度文章總站</a>
+      <a href="../../index.html">首頁</a>
+      <a href="../../learn.html">自學資源</a>
+      <a href="../../skills.html">Skills 下載</a>
+      <a href="https://www.threads.com/@jiang_yude_coach" target="_blank" rel="noopener">Threads ↗</a>
+      <a href="https://vocus.cc/salon/Jiang_Coach" target="_blank" rel="noopener">方格子 ↗</a>
+    </div>
+    <div class="footer-note">這是一篇 Codex Desktop log 健康巡檢教學，案例來自實際當機畫面，技術參考來源為 OpenAI Codex GitHub repo 的 issue 回報與原始碼，非官方公告。</div>
+  </div>
+</footer>
+
+<script src="../../articles-data.js"></script>
+<script src="../../related-render.js"></script>
+</body>
+</html>

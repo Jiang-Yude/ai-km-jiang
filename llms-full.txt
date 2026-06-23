@@ -85,6 +85,14 @@ AI 趨勢區整理江江對 AI 產業消息、工具更新、大廠發布會的�
 - 非工程讀者定位：不需要自己寫程式，可以把文章當任務清單交給 Codex、其他 Agent 或工程夥伴。讀者要決定哪個群組要收、資料放哪裡、誰需要被提醒、哪些情況不能自動回覆。
 - 踩坑提醒：官方帳號 webhook 和個人 LINE / OCR 是兩條路；第一階段 dry-run 只收不回；webhook 要快回 200，寫入失敗應回 5xx；redelivery 要手動啟用且不是永久收件箱；Vercel Function 不是長期資料庫；quick tunnel 只適合驗證，不可包裝成可靠雲端服務。
 
+Codex 整個大當機？重安裝後第一步先檢查 logs_2.sqlite：https://ai-km-jiang.vercel.app/articles/codex-log-health-check/
+- 一頁總結：這篇用學員實際 Codex Desktop 當機畫面當案例，整理 logs_2.sqlite 是什麼、出事時怎麼安全處理、重安裝後第一步怎麼建立 log 健康巡檢，以及如何避免任務心血跟著工具故障一起不見。
+- 問題定位：OpenAI Codex 官方 GitHub repo 已有多個相近 issue，包含 logs_2.sqlite 過大、corrupt log DB、WAL 成長與高量 TRACE log 寫入。文章不把所有當機都說成同一原因，而是把 logs_2.sqlite 當成需要檢查的本機健康風險。
+- logs_2.sqlite 內容：它是 Codex Desktop 本機 SQLite log 資料庫，主要記錄時間、等級、target、錯誤訊息、tracing span、連線與工具執行狀態。它不是正式工作日誌或技能包，不應公開原檔。
+- 處理流程：先關閉 Codex、備份 logs_2.sqlite / WAL / SHM、檢查大小與 quick_check；若異常才進入維護流程，維護前要確認備份存在，再保留最近 48 小時、checkpoint、VACUUM、optimize。遇到 database locked 或權限錯誤就停止，不硬刪。
+- 自動巡檢：重度使用者每 3 到 5 天檢查一次，偶爾使用者一週一次。文章提供可直接貼給 Codex 的巡檢自動化指令。自動化預設只巡檢，達維護門檻時先輸出維護交接指令，不在 Codex 運作中直接清理。
+- 工作流提醒：任務結束寫工作日誌，成品存自己的資料夾，好的操作沉澱成技能包；這樣 Codex 出事時，可以換其他 Agent 讀資料接手。
+
 ## 開源 Claude Code Skills 技能包
 
 GitHub: https://github.com/Jiang-Yude
