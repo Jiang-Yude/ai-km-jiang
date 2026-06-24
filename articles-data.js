@@ -238,10 +238,10 @@ window.ARTICLES = [
     id: "line-group-ai-workflow",
     url: "articles/line-group-ai-workflow/",
     date: "2026-06-22",
-    title: "用 Mika 當範例，建立你自己的 LINE AI 助理",
+    title: "散在 LINE 各群組的資料，怎麼每天自動下載歸檔",
     problem: "團隊資料散在 LINE 群組裡，文字、圖片、PDF 和連結當下看得到，過幾天要整理時卻很難找回來。",
-    audience: "已經有 LINE 群組的課程、社群、小團隊與專案協作者，想建立自己的 LINE AI 助理，把資料先收回來再交給 AI 整理的人。",
-    summary: "Mika 是示範案例，重點是讓你建立自己的 LINE AI 助理：把 LINE 官方帳號接進一般群組，先備存訊息、圖片、PDF 和檔案，再讓 Agent 整理。",
+    audience: "已經有 LINE 群組的課程、社群、小團隊與專案協作者，想把散在各群組的資料先收回來再交給 AI 整理的人。",
+    summary: "把散在 LINE 各群組的訊息、圖片、PDF 和檔案，用官方帳號每天自動收下來、分資料夾歸檔，再讓 Agent 整理。Mika 是示範角色。",
     tags: {
       topic: ["AI工作流", "AIAgent", "工具操作"],
       level: ["零基礎入門"],
