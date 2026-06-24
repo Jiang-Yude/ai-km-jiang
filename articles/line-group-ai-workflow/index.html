@@ -195,11 +195,11 @@ token 不要貼進聊天，直接寫進本機設定檔 .env 或系統鑰匙圈 K
       </div>
       <div class="note">
         <b>部署可靠性不要混在一起</b>
-        quick tunnel，像 ngrok 這類暫時性對外通道，適合首次驗證。本機電腦睡眠或關機時，webhook 無法接收。需要長期收訊的場景，應改用雲端中繼站，不要把本機常駐包裝成對外可交付的可靠服務。
+        quick tunnel，像 ngrok 這類暫時性對外通道，適合首次驗證。本機電腦睡眠或關機時，webhook 無法接收。需要長期收訊的場景，應改用雲端中繼站，不要把本機常駐包裝成對外可交付的可靠服務。我這套實際就是走雲端中繼站：雲端先把事件收下來存著，本機每天再把新事件同步下來整理。
       </div>
       <div class="note">
         <b>LINE 會補送失敗事件，但有條件</b>
-        以下是給自己架 webhook 的工程師確認用的細節：LINE webhook redelivery 需要在 Developers Console 手動啟用。啟用後也只在一定期間內補送，伺服器持續沒有正常回應時，LINE 會停止重送；補送後也要依事件 timestamp 判斷順序。若用 Vercel Function 做雲端中繼站，Function 本身不是長期資料庫，必須接能長期保存資料的地方，例如資料庫或雲端資料夾。事件寫入成功後才能回 200。
+        以下是給自己架 webhook 的工程師確認用的細節：LINE webhook redelivery 需要在 Developers Console 手動啟用。啟用後也只在一定期間內補送，伺服器持續沒有正常回應時，LINE 會停止重送；補送後也要依事件 timestamp 判斷順序。我這套實際的雲端中繼站放在 Cloudflare。雲端中繼站本身不是長期資料庫，必須接能長期保存資料的地方，例如資料庫或雲端資料夾。事件寫入成功後才能回 200。
       </div>
     </div>
   </section>
