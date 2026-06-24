@@ -285,6 +285,24 @@ window.ARTICLES = [
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
     related: ["codex-only-auto-worklog", "agent-workflow-builds-automation", "how-to-train-your-ai-employee"]
+  },
+
+  /* ── 16. AI Agent 怎麼直接操作軟體（教學）── */
+  {
+    id: "how-ai-connects-software",
+    url: "articles/how-ai-connects-software/",
+    date: "2026-06-24",
+    title: "AI Agent 怎麼幫我們直接操作軟體？",
+    problem: "一聽到 API、CLI、MCP 就覺得很工程，搞不懂 AI Agent 到底怎麼幫你直接操作軟體、哪些事可以放心交辦。",
+    audience: "想用 AI 幫忙做事卻被名詞卡住的知識工作者，以及已經在用 Codex、Claude，想搞懂它怎麼接軟體的一人公司、主管與老闆。",
+    summary: "把 AI 接軟體的四種方式（協議直連、CLI、操作網頁、操作電腦）翻成白話，每種配上實際用 Codex 的例子，給一個判斷順序，再用 USB 比喻講清楚 MCP，最後談知識工作者可以怎麼開始用。",
+    tags: {
+      topic: ["AIAgent", "AI工作流", "工具操作", "差異比較"],
+      level: ["零基礎入門"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
+    related: ["how-to-train-your-ai-employee", "agent-workflow-builds-automation", "program-vs-ai-skill-library"]
   }
 
 ];

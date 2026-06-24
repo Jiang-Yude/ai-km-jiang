@@ -69,6 +69,16 @@ a{color:inherit}
 .gallery{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:22px}
 .gallery img{width:100%;border-radius:10px;border:1px solid var(--line);box-shadow:0 8px 22px rgba(107,74,42,.1);display:block}
 .gallery a:first-child{grid-column:span 2;grid-row:span 2}
+/* 單張嵌入圖 */
+.figure{margin:30px auto 6px;text-align:center}
+.figure a{display:inline-block;max-width:100%}
+.figure img{width:100%;max-width:440px;border-radius:12px;border:1px solid var(--line);box-shadow:0 10px 26px rgba(107,74,42,.12);display:block;margin:0 auto}
+.figure.wide img{max-width:820px}
+.figure figcaption{margin-top:10px;font-size:14px;line-height:1.5;color:var(--muted)}
+/* 文末精選三張 */
+.cards-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:22px;align-items:start}
+.cards-grid .figure{margin:0}
+.cards-grid .figure img{max-width:100%}
 .cta-band{background:var(--dark);color:#fff}.cta-band .section{border-top:none}
 .cta-band .inner{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(260px,.85fr);gap:26px;align-items:start}
 .cta-band h2{font-size:clamp(26px,4vw,44px);margin:0 0 16px}.cta-band p,.cta-band .lead{color:rgba(255,255,255,.84);font-size:18px;line-height:1.72}
@@ -78,7 +88,7 @@ a{color:inherit}
 .footer-inner{width:min(1000px,100%);margin:0 auto}
 .footer-links{display:flex;flex-wrap:wrap;gap:6px 12px;margin-bottom:14px}.footer-links a{color:var(--blue);font-weight:900;text-decoration:none;font-size:14px}
 .footer-brand{font-weight:900;font-size:15px;margin-bottom:10px}.footer-note{font-size:13px;line-height:1.6}
-@media(max-width:820px){.infocard-grid{grid-template-columns:1fr}.layers{grid-template-columns:1fr}.flow{grid-template-columns:1fr 1fr}.gallery{grid-template-columns:1fr 1fr}.gallery a:first-child{grid-column:span 2;grid-row:auto}.cta-band .inner{grid-template-columns:1fr}.section{padding:40px 20px}.hero{min-height:52vh}.hero h1{word-break:break-word}html,body{overflow-x:hidden}}
+@media(max-width:820px){.infocard-grid{grid-template-columns:1fr}.layers{grid-template-columns:1fr}.flow{grid-template-columns:1fr 1fr}.gallery{grid-template-columns:1fr 1fr}.gallery a:first-child{grid-column:span 2;grid-row:auto}.cards-grid{grid-template-columns:1fr}.cta-band .inner{grid-template-columns:1fr}.section{padding:40px 20px}.hero{min-height:52vh}.hero h1{word-break:break-word}html,body{overflow-x:hidden}}
 </style>
 </head>
 <body>
@@ -133,6 +143,10 @@ a{color:inherit}
         <span class="tag">類型：工作流案例</span>
       </div>
     </div>
+    <figure class="figure wide">
+      <a href="assets/00-summary.jpg" target="_blank" rel="noopener"><img src="assets/00-summary.jpg" alt="總覽：四步驟流程與代理／自動化兩層差異" loading="lazy"></a>
+      <figcaption>一張圖看懂：四個步驟，兩層差異</figcaption>
+    </figure>
   </div>
 </section>
 
@@ -152,6 +166,10 @@ a{color:inherit}
         <p>流程設定好之後，就是程式自己照規則跑。這一層不需要每次都有人盯，也不一定跟 AI 有關。</p>
       </div>
     </div>
+    <figure class="figure">
+      <a href="assets/03-carousel-card.jpg" target="_blank" rel="noopener"><img src="assets/03-carousel-card.jpg" alt="這件事其實分成兩層：代理工作流與自動化工作流" loading="lazy"></a>
+      <figcaption>左邊：我給 Codex 目標與權限去設定；右邊：設定好之後 LINE 自動備份</figcaption>
+    </figure>
   </div>
 </section>
 
@@ -159,6 +177,10 @@ a{color:inherit}
   <div class="inner">
     <h2>一個實際例子：LINE 備份機器人</h2>
     <p class="lead">像我最近用 Codex 幫我設定 LINE 機器人，目標很單純：群組裡幾點幾分、誰說了什麼、誰丟了什麼檔案，都依照群組和專案，自動備份到電腦裡。</p>
+    <figure class="figure">
+      <a href="assets/02-carousel-card.jpg" target="_blank" rel="noopener"><img src="assets/02-carousel-card.jpg" alt="我想做的事很單純：讓 LINE 機器人自動備份群組訊息" loading="lazy"></a>
+      <figcaption>幾點幾分、誰說了什麼、誰丟了什麼檔案，按群組和專案自動存到電腦</figcaption>
+    </figure>
     <p>這個 LINE 備份機器人設定好之後，其實就是程式自己在跑：</p>
     <div class="flow">
       <div><b>有新訊息</b>就記錄下來</div>
@@ -176,23 +198,35 @@ a{color:inherit}
     <p class="lead">AI 出現在前面建立流程的階段。</p>
     <p>我沒有自己慢慢研究 LINE 後台、webhook、權限、程式怎麼接、怎麼測試，我直接叫 Codex 幫我處理。所以我現在會這樣理解：我用 AI 代理工作流，去建立一套程式自動化工作流。</p>
     <div class="meaning">後面自動跑的部分，可以完全是程式；前面把它生出來的過程，可以交給 AI 代理。</div>
+    <figure class="figure">
+      <a href="assets/04-carousel-card.jpg" target="_blank" rel="noopener"><img src="assets/04-carousel-card.jpg" alt="自動化本身跟 AI 無關，它就是程式在跑" loading="lazy"></a>
+      <figcaption>不用接 GPT、不用接 API key，設定好就免費、自動、長期運作</figcaption>
+    </figure>
     <p>技能包也是類似的概念。它把做事的方法固定下來，讓下次可以重複執行。所以工作流的重點在於：有沒有把一件事，整理成可以反覆執行的系統。</p>
+    <figure class="figure">
+      <a href="assets/06-carousel-card.jpg" target="_blank" rel="noopener"><img src="assets/06-carousel-card.jpg" alt="兩個可以直接用的提示詞：建立自動化、整理成技能包" loading="lazy"></a>
+      <figcaption>一個請 AI 把目標做成自動化流程，一個請 AI 把做法整理成可重複的技能包</figcaption>
+    </figure>
   </div>
 </section>
 
 <section class="section" id="cards">
   <div class="inner">
-    <h2>輪播卡版本</h2>
-    <p class="lead">同一個概念，也整理成社群輪播卡。第一張是總結，後面是一頁一頁的拆解。</p>
-    <div class="gallery">
-      <a href="assets/00-summary.jpg" target="_blank" rel="noopener"><img src="assets/00-summary.jpg" alt="代理工作流蓋自動化工作流 總結卡" loading="lazy"></a>
-      <a href="assets/01-carousel-card.jpg" target="_blank" rel="noopener"><img src="assets/01-carousel-card.jpg" alt="輪播卡 1" loading="lazy"></a>
-      <a href="assets/02-carousel-card.jpg" target="_blank" rel="noopener"><img src="assets/02-carousel-card.jpg" alt="輪播卡 2" loading="lazy"></a>
-      <a href="assets/03-carousel-card.jpg" target="_blank" rel="noopener"><img src="assets/03-carousel-card.jpg" alt="輪播卡 3" loading="lazy"></a>
-      <a href="assets/04-carousel-card.jpg" target="_blank" rel="noopener"><img src="assets/04-carousel-card.jpg" alt="輪播卡 4" loading="lazy"></a>
-      <a href="assets/05-carousel-card.jpg" target="_blank" rel="noopener"><img src="assets/05-carousel-card.jpg" alt="輪播卡 5" loading="lazy"></a>
-      <a href="assets/06-carousel-card.jpg" target="_blank" rel="noopener"><img src="assets/06-carousel-card.jpg" alt="輪播卡 6" loading="lazy"></a>
-      <a href="assets/07-carousel-card.jpg" target="_blank" rel="noopener"><img src="assets/07-carousel-card.jpg" alt="輪播卡 7" loading="lazy"></a>
+    <h2>輪播卡精選</h2>
+    <p class="lead">同一個概念也整理成社群輪播卡。前面各段已經穿插，這裡放三張收尾：封面、一句話講白、為什麼工作流要可重複。完整版在社群貼文。</p>
+    <div class="cards-grid">
+      <figure class="figure">
+        <a href="assets/01-carousel-card.jpg" target="_blank" rel="noopener"><img src="assets/01-carousel-card.jpg" alt="封面：我用代理工作流，蓋了一套自動化工作流" loading="lazy"></a>
+        <figcaption>封面</figcaption>
+      </figure>
+      <figure class="figure">
+        <a href="assets/05-carousel-card.jpg" target="_blank" rel="noopener"><img src="assets/05-carousel-card.jpg" alt="一句話講白：我用代理工作流，去蓋一套自動化工作流" loading="lazy"></a>
+        <figcaption>AI 像幫我把系統蓋起來的人，蓋好之後系統自己運作</figcaption>
+      </figure>
+      <figure class="figure">
+        <a href="assets/07-carousel-card.jpg" target="_blank" rel="noopener"><img src="assets/07-carousel-card.jpg" alt="工作流的重點是可重複：傳統自動化、技能包、AI 代理、工具串接" loading="lazy"></a>
+        <figcaption>只要把一件事固定成可重複執行的方法，都算工作流</figcaption>
+      </figure>
     </div>
   </div>
 </section>

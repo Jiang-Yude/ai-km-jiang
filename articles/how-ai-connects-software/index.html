@@ -1,0 +1,323 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="index,follow">
+<title>AI Agent 怎麼幫我們直接操作軟體？｜江江教練 · AI 知識管理</title>
+<meta name="description" content="現在的 AI Agent 已經可以直接操作你的軟體。用四種接法翻成白話，配上實際用 Codex 操作 LINE、逐字稿、官網部署的例子，告訴你知識工作者可以怎麼開始用。">
+<link rel="canonical" href="https://ai-km-jiang.vercel.app/articles/how-ai-connects-software/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AI Agent 怎麼幫我們直接操作軟體？｜江江教練">
+<meta property="og:image" content="https://ai-km-jiang.vercel.app/images/articles/how-ai-connects-software-four-methods.jpg">
+<meta property="og:description" content="現在的 AI Agent 已經可以直接操作你的軟體。用四種接法翻成白話，配上實際用 Codex 操作 LINE、逐字稿、官網部署的例子，告訴你知識工作者可以怎麼開始用。">
+<meta property="og:url" content="https://ai-km-jiang.vercel.app/articles/how-ai-connects-software/">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:site_name" content="江江教練 · AI 知識管理">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="AI Agent 怎麼幫我們直接操作軟體？｜江江教練">
+<meta name="twitter:image" content="https://ai-km-jiang.vercel.app/images/articles/how-ai-connects-software-four-methods.jpg">
+<meta name="twitter:description" content="現在的 AI Agent 已經可以直接操作你的軟體。用四種接法翻成白話，配上實際用 Codex 操作 LINE、逐字稿、官網部署的例子，告訴你知識工作者可以怎麼開始用。">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"AI Agent 怎麼幫我們直接操作軟體？","description":"現在的 AI Agent 已經可以直接操作你的軟體。用四種接法翻成白話，配上實際用 Codex 操作 LINE、逐字稿、官網部署的例子，告訴你知識工作者可以怎麼開始用。","author":{"@type":"Person","name":"江昱德","alternateName":"江江教練","jobTitle":"隱性知識提煉師、AI 應用規劃師"},"isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://ai-km-jiang.vercel.app/"},"inLanguage":"zh-Hant","url":"https://ai-km-jiang.vercel.app/articles/how-ai-connects-software/"}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{--ink:#1a1612;--paper:#fefcf8;--muted:#6a635a;--line:#d8cdb8;--green:#5f7553;--blue:#5689b8;--orange:#e85a4f;--soft:#faf5ec;--dark:#2a2018;--shadow:0 18px 45px rgba(107,74,42,.14)}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC","Segoe UI",sans-serif}
+a{color:inherit}
+.topbar{position:sticky;top:0;z-index:20;display:flex;gap:10px;align-items:center;justify-content:space-between;padding:12px clamp(18px,4vw,56px);border-bottom:1px solid rgba(26,22,18,.12);background:rgba(254,252,248,.92);backdrop-filter:blur(12px)}
+.brand{font-weight:900;font-size:14px;text-decoration:none}
+.nav{display:flex;gap:8px;overflow:auto}
+.nav a{white-space:nowrap;text-decoration:none;border:1px solid rgba(26,22,18,.16);border-radius:999px;padding:8px 11px;background:#fff;font-size:14px;font-weight:800}
+.hero{min-height:58vh;display:grid;align-items:end;padding:56px clamp(20px,6vw,88px);background:linear-gradient(135deg,rgba(26,22,18,.94),rgba(95,117,83,.82));color:#fff;overflow:hidden}
+.kicker{font:900 13px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;color:#f6d7a6;text-transform:uppercase}
+.hero h1{max-width:1040px;margin:16px 0 18px;font-size:clamp(36px,6vw,72px);line-height:1.08;overflow-wrap:anywhere}
+.hero p{max-width:820px;font-size:clamp(18px,2vw,23px);line-height:1.62;color:rgba(255,255,255,.9)}
+.cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
+.cta a{display:inline-flex;align-items:center;text-decoration:none;border-radius:8px;padding:12px 16px;font-weight:900}
+.cta .primary{background:#fff;color:#1a1612}.cta .ghost{border:1px solid rgba(255,255,255,.32);color:#fff;background:rgba(255,255,255,.08)}
+.section{padding:54px clamp(20px,6vw,88px);border-top:1px solid var(--line)}
+.inner{width:min(1000px,100%);margin:0 auto}
+.section h2{font-size:clamp(26px,4.2vw,48px);line-height:1.12;margin:0 0 18px}
+.section h3{font-size:clamp(21px,3vw,30px);line-height:1.2;margin:30px 0 12px}
+.lead{font-size:clamp(18px,1.6vw,22px);line-height:1.7;color:#3a342d;max-width:900px}
+.section p{font-size:18px;line-height:1.74;color:#3a342d}.section p+p{margin-top:14px}
+.section ul,.section ol{padding-left:1.4em;font-size:18px;line-height:1.74;color:#3a342d}.section li{margin-bottom:8px}
+.meaning{margin:22px 0;padding:16px 18px;border-left:5px solid var(--blue);background:rgba(86,137,184,.12);border-radius:6px;line-height:1.7;font-size:19px}
+.meaning b{display:block;color:var(--blue);margin-bottom:4px}
+.caveat{margin:0 0 8px;padding:16px 18px;border-left:5px solid var(--orange);background:rgba(232,90,79,.1);border-radius:6px;line-height:1.7;font-size:18px;color:#3a342d}
+.caveat b{display:block;color:var(--orange);margin-bottom:4px}
+.infocard{background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px 24px 22px;box-shadow:0 8px 22px rgba(107,74,42,.08);margin-top:8px}
+.infocard-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.info-item{padding:18px 14px 0}
+.info-item b{display:block;font-size:14px;font-weight:900;letter-spacing:.04em;margin-bottom:7px;text-transform:uppercase}
+.info-item:nth-child(1) b{color:var(--green)}.info-item:nth-child(2) b{color:var(--orange)}.info-item:nth-child(3) b{color:var(--blue)}
+.info-item p{margin:0;font-size:17px;line-height:1.6;color:#3a342d}
+.tagrow{display:flex;flex-wrap:wrap;gap:7px;margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
+.tag{font-size:14px;color:var(--muted);background:var(--soft);border:1px solid var(--line);border-radius:999px;padding:4px 11px}
+.duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:24px}
+.duo .card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:22px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.duo .card.a{border-color:var(--orange)}.duo .card.b{border-color:var(--green);box-shadow:0 8px 24px rgba(95,117,83,.16)}
+.duo .card small{display:block;font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.04em;margin-bottom:9px}
+.duo .card.a small{color:var(--orange)}.duo .card.b small{color:var(--green)}
+.duo .card b{display:block;font-size:19px;line-height:1.3;margin-bottom:10px}
+.duo .card p{margin:0;color:#3a342d;line-height:1.6;font-size:16px}
+.workflow-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:24px}
+.workflow-step{background:#fff;border:1px solid var(--line);border-radius:8px;padding:18px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.workflow-step small{display:block;color:var(--orange);font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;margin-bottom:9px}
+.workflow-step b{display:block;font-size:18px;line-height:1.3;margin-bottom:9px}
+.workflow-step p{margin:0;color:#3a342d;line-height:1.6;font-size:16px}
+.codeblock{background:var(--dark);color:#f3ead9;border-radius:8px;padding:18px 20px;font:500 14px/1.65 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;overflow-x:auto;white-space:pre-wrap;margin:20px 0;box-shadow:0 8px 22px rgba(107,74,42,.12)}
+.codeblock .c{color:#f6d7a6;font-weight:600}
+.skillcard{background:#fff;border:1px solid var(--green);border-radius:12px;padding:24px;box-shadow:0 10px 26px rgba(95,117,83,.16);margin-top:8px}
+.skillcard b{display:block;font-size:21px;margin-bottom:8px}
+.skillcard p{margin:0 0 16px;font-size:17px;line-height:1.65;color:#3a342d}
+.cta-band{background:var(--dark);color:#fff}.cta-band .section{border-top:none}
+.cta-band .inner{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(260px,.85fr);gap:26px;align-items:start}
+.cta-band h2{font-size:clamp(26px,4vw,44px);margin:0 0 16px}.cta-band p,.cta-band .lead{color:rgba(255,255,255,.84);font-size:18px;line-height:1.72}
+.cta-card{border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.06);border-radius:8px;padding:22px}
+.cta-card b{display:block;color:#f6d7a6;margin-bottom:10px;font-size:18px}.cta-card p{margin:0 0 14px}
+.footer{padding:30px clamp(20px,6vw,88px);font-size:14px;color:var(--muted);background:#fff;border-top:1px solid var(--line)}
+.footer-inner{width:min(1000px,100%);margin:0 auto}
+.footer-links{display:flex;flex-wrap:wrap;gap:6px 12px;margin-bottom:14px}.footer-links a{color:var(--blue);font-weight:900;text-decoration:none;font-size:14px}
+.footer-brand{font-weight:900;font-size:15px;margin-bottom:10px}.footer-note{font-size:13px;line-height:1.6}
+/* 圖片元件（來自 codex-log-health-check） */
+.inline-figure{margin:30px auto 8px;max-width:820px}
+.inline-figure.wide{max-width:1000px}
+.inline-figure img{display:block;width:100%;border-radius:14px;border:1px solid var(--line);box-shadow:var(--shadow);background:#fff}
+.inline-figure figcaption{font-size:14px;line-height:1.6;color:var(--muted);margin-top:10px}
+.figure-pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin:30px 0 8px}
+.figure-pair figure{margin:0}
+.figure-pair img{display:block;width:100%;border-radius:14px;border:1px solid var(--line);box-shadow:var(--shadow);background:#fff}
+.figure-pair figcaption{font-size:13px;line-height:1.58;color:var(--muted);margin-top:8px}
+/* 四種接法卡片網格 */
+.method-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-top:24px}
+.method-card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:22px 22px 20px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.method-badge{display:inline-block;font-size:16px;font-weight:900;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--orange);background:rgba(232,90,79,.1);border-radius:6px;padding:4px 10px;margin-bottom:12px;line-height:1.4}
+.method-card b{display:block;font-size:20px;line-height:1.3;margin-bottom:10px;color:var(--ink)}
+.method-card p{margin:0;font-size:18px;line-height:1.7;color:#3a342d}
+@media(max-width:820px){.infocard-grid{grid-template-columns:1fr}.duo{grid-template-columns:1fr}.workflow-grid{grid-template-columns:1fr}.cta-band .inner{grid-template-columns:1fr}.section{padding:40px 20px}.hero{min-height:52vh}.method-grid{grid-template-columns:1fr}.figure-pair{grid-template-columns:1fr}}
+@media(max-width:820px){html,body{overflow-x:hidden}.hero h1{word-break:break-word}}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="../../articles.html">江江教練 · 深度文章</a>
+  <nav class="nav" aria-label="頁面導覽">
+    <a href="../../articles.html" style="background:#1a1612;color:#fff;border-color:#1a1612">← 深度文章總站</a>
+    <a href="#four-ways">四種接法</a>
+    <a href="#judgment">判斷順序</a>
+    <a href="#mcp">MCP</a>
+    <a href="#use">怎麼用</a>
+    <a href="#conclusion">結語</a>
+    <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">LINE 社群 ↗</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <div>
+    <div class="kicker">AI 駕馭思維</div>
+    <h1>AI Agent 怎麼幫我們直接操作軟體？</h1>
+    <p>現在的 AI Agent 已經可以直接去操作你的軟體，幫你把事情做掉。它接軟體有四種方式，搞懂它怎麼接，你就知道哪些事可以直接交辦，不用自己一步一步動手。</p>
+    <div class="cta">
+      <a class="primary" href="#start">開始閱讀</a>
+    </div>
+  </div>
+</section>
+
+<main>
+
+  <section class="section" id="start">
+    <div class="inner">
+      <h2>這篇在講什麼</h2>
+      <p class="lead">現在的 AI Agent 已經能直接操作你的軟體。這篇把它接軟體的四種方式翻成白話，配上我實際用 Codex 的例子，告訴你哪些事可以直接交辦、又該怎麼判斷用哪一種，不用自己一步一步動手。</p>
+      <div class="duo">
+        <div class="card a">
+          <small>適合誰</small>
+          <b>這篇寫給這些人</b>
+          <p>· 想用 AI 幫忙做事，但一看到 API、CLI、MCP 就卡住的知識工作者<br>· 已經在用 Codex、Claude 這類 AI Agent，想搞懂它到底怎麼幫你操作軟體的人<br>· 一人公司、主管、老闆，想知道哪些工作可以交給 AI、又該怎麼交</p>
+        </div>
+        <div class="card b">
+          <small>你會得到什麼</small>
+          <b>讀完你可以</b>
+          <p>· 看懂 AI 接軟體的四種方式，各自的特性與適用情況<br>· 拿到一個「該用哪一種接法」的判斷順序，遇到任務直接套<br>· 知道幾個可以立刻開始的做法，把自己從操作員換到交辦者的位置</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="warmup">
+    <div class="inner">
+      <h2>先搞清楚一件事：AI 已經會「動手」了</h2>
+      <p class="lead">很多人對 AI 的印象還停在「它會聊天、會寫字」。但現在的 AI Agent 已經會直接動手操作軟體：去 LINE 群組抓資料、把逐字稿撈出來整理、把網站部署上線，甚至半夜接手卡住的任務。</p>
+      <p>它怎麼做到的，關鍵在它跟那個軟體之間用哪一種方式連上。連法不同，能做的事、穩不穩、要不要你在旁邊盯著，差很多。</p>
+      <p>你不需要背這些連法的技術名稱。你要知道的是它們大概怎麼運作，這樣才判斷得出來：一件事能不能直接交給 AI，又該怎麼交。</p>
+    </div>
+  </section>
+
+  <section class="section" id="four-ways">
+    <div class="inner">
+      <h2>AI 接軟體的四種方式</h2>
+      <p>我用生活語言講一遍，每一種都配上我自己實際用 Codex 做過的事。</p>
+      <div class="method-grid">
+        <div class="method-card">
+          <div class="method-badge">協議直連</div>
+          <b>API＝打專線</b>
+          <p>軟體有開孔（協議），AI 就能直接讀寫它的資料，像打一條專線給對方。我的 Mika LINE 官方帳號就是這樣：它每天早晚自動把群組名稱整理成看得懂的樣子、把大家丟進群組的圖片、PDF、簡報一次抓回來存檔，我只要照常在群組裡聊天就好。</p>
+        </div>
+        <div class="method-card">
+          <div class="method-badge">插線</div>
+          <b>CLI＝命令列</b>
+          <p>在你自己的電腦裡用幾行指令直接動手，像插一條線。我用它讓一個 AI 去叫另一個 AI：寫完的東西讓 Codex 叫 Claude 回頭檢查；也用它一個指令同時派幾個 AI 去查同一個主題，再把結果合起來。官網要更新時，也是用幾行指令把網站推上線。</p>
+        </div>
+        <div class="method-card">
+          <div class="method-badge">開瀏覽器</div>
+          <b>操作網頁＝自己開瀏覽器點</b>
+          <p>AI 像真人一樣打開瀏覽器，一步一步點按鈕、填欄位。碰到只能在網頁後台操作、又沒開放協議的工具，它就自己登入、自己點。因為要照畫面走，所以慢一點，也比較容易卡住。</p>
+        </div>
+        <div class="method-card">
+          <div class="method-badge">最後手段</div>
+          <b>操作電腦＝看螢幕、動滑鼠</b>
+          <p>AI 盯著整個螢幕、移動滑鼠，完全模擬一個真人坐在電腦前。我把它當最後手段：有一次我半夜撞到用量上限、任務卡住，就讓 Codex 凌晨自己醒來，看著畫面把卡住的任務按下去繼續跑。能用前面三種，就不會用這一種。</p>
+        </div>
+      </div>
+      <figure class="inline-figure">
+        <img src="../../images/articles/how-ai-connects-software-four-methods.jpg" alt="咪卡示範四種接法對照：API 打專線、CLI 插線、操作網頁、操作電腦，從快穩準到慢貴易錯" loading="lazy">
+        <figcaption>四種接法從快穩準一路滑向慢貴易錯：API 打專線最快，操作電腦看螢幕動滑鼠是最後手段。</figcaption>
+      </figure>
+      <div class="meaning">
+        <b>為什麼要分這四種</b>
+        同一件事，能用協議直連就最省事；只能看螢幕、動滑鼠的，最花力氣也最容易出錯。上面那張圖就是這個意思，越往右越像請一個真人慢慢操作。重點不是去比快慢的數字，是知道每件事最划算的接法大概落在哪一格。
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="judgment">
+    <div class="inner">
+      <h2>那我怎麼判斷該用哪一種？</h2>
+      <p>遇到一個任務，可以照這個順序問下去：</p>
+      <ol>
+        <li>這個軟體有沒有開協議，AI 能不能直接連？</li>
+        <li>不行的話，能不能用命令列在電腦裡直接做？</li>
+        <li>再不行，才讓 AI 自己去網頁上點。</li>
+        <li>都不行，最後才用看螢幕、動滑鼠的方式。</li>
+      </ol>
+      <p>你不用自己判斷到那麼細。我實際的做法，是直接把任務丟給 AI，加一句：你去查這件事能不能直接接、能不能做得比我想的更好，接不上再退一步。</p>
+      <div class="caveat">
+        <b>一個我踩過的坑</b>
+        AI 接不上的時候，有時會裝沒事，自己用最笨的方法硬做完，或乾脆跳過還跟你說做好了。我就遇過叫一個 AI 去叫另一個 AI 檢查，它根本沒叫到，卻回報「檢查過了」。所以我寫了一條規則給它：叫不動對方、等了幾分鐘還沒回應，就老實跟我說「他沒回應」，再把該貼的指令整理好給我，我自己手動貼過去。交辦的時候要把這種話先講死。
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="mcp">
+    <div class="inner">
+      <h2>MCP 是 AI 世界的 USB</h2>
+      <p>前面說「軟體有沒有開孔讓 AI 接」，這就是 MCP 在做的事。</p>
+      <div class="meaning">
+        <b>三句話看懂</b>
+        有 API，代表這個工具本身有插孔，可以被接。<br>
+        有 MCP，代表這些插孔被統一成一種比較好接的規格。<br>
+        對 AI 來說，規格統一之後，串工具的難度跟成本都會往下掉。
+      </div>
+      <p>所以 MCP 就像 AI 世界的 USB。USB 出現以前，每一種裝置都有自己的接頭，滑鼠一種、印表機一種，換一台就要找對應的線。USB 把接頭統一之後，插上去就能用。MCP 對 AI 來說是同一件事：把各種工具的接法統一成一個規格，AI 要串新工具就容易很多。</p>
+      <p>我桌上一堆工具，像行事曆、Gmail、雲端硬碟、筆記軟體，現在愈來愈多都被統一成這種規格，AI 一條線就接上。還沒被統一、或根本沒開協議的，AI 就只能退回去自己開畫面慢慢點。差別就在這裡。</p>
+      <figure class="inline-figure">
+        <img src="../../images/articles/how-ai-connects-software-mcp-usb.jpg" alt="MCP 像 AI 世界的 USB，把原本五花八門的工具接頭統一成同一種規格" loading="lazy">
+        <figcaption>MCP 就像 AI 世界的 USB，把各種工具的接頭統一成一種規格，AI 一條線就能接。</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="section" id="use">
+    <div class="inner">
+      <h2>知識工作者可以怎麼用這篇</h2>
+      <p>講完原理，回到你身上。你不用變成工程師，但可以開始這樣做：</p>
+      <ol>
+        <li>先盤點你每天重複在哪些軟體上做白工，例如貼資料、整理、轉檔、把東西在不同工具之間搬來搬去。</li>
+        <li>對每一件，問 AI 一句：這件事你能不能直接接我的某個軟體幫我做，用哪一種接法？</li>
+        <li>像行事曆、Gmail、雲端硬碟這種有開協議的，優先交出去，這類最穩。</li>
+        <li>轉檔、撈逐字稿、抓資料這種粗活，讓它在電腦裡用命令列或本地工具做，不用你盯著。</li>
+        <li>真的只能靠看畫面操作的，當最後手段，而且自己再檢查一遍。</li>
+      </ol>
+      <p>講幾個我自己的前後對照：</p>
+      <div class="infocard">
+        <div class="infocard-grid">
+          <div class="info-item">
+            <b>我的 LINE 群組</b>
+            <p>以前重要訊息和檔案散在群組裡，要找老半天。現在 AI 每天早晚自動整理、把檔案抓下來歸檔。</p>
+          </div>
+          <div class="info-item">
+            <b>我的會議逐字稿</b>
+            <p>以前一句一句聽打。現在我截一張圖給 AI，它自己把逐字稿撈出來、分好是誰講的、清掉聽錯的字。</p>
+          </div>
+          <div class="info-item">
+            <b>我的官網</b>
+            <p>以前改個東西要記一長串步驟。現在用幾行指令推上線，AI 還會自己驗證有沒有成功。</p>
+          </div>
+        </div>
+      </div>
+      <div class="meaning">
+        <b>共通點</b>
+        我沒有自己變厲害，是我把「這件事該用哪一種接法」想清楚，剩下交給 AI。
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="conclusion">
+    <div class="inner">
+      <h2>你要練的不是按鈕</h2>
+      <p>講到這裡，我想把整篇收回到我自己的看法。</p>
+      <ul>
+        <li>不用急著背名詞。協議、CLI、MCP 這些字會一直變，背了也追不完。</li>
+        <li>先搞懂每件事最划算的接法大概在哪，這個判斷不會過時。</li>
+        <li>你真正要練的，是交辦的能力跟流程設計的能力。</li>
+        <li>AI 時代重要的，是你知不知道一件事該先叫哪一條路徑去做，不是你自己會不會點那顆按鈕。</li>
+      </ul>
+      <div class="meaning">
+        <b>收回到一句</b>
+        把自己放在交辦跟設計的位置，不要把自己放在操作員的位置。名詞讓 AI 去記，路徑由你來判斷。
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-band">
+    <div class="section">
+      <div class="inner">
+        <div>
+          <h2>先別急著背名詞，先把位置換過來。</h2>
+          <p>如果你看到這裡，發現自己平常還是習慣「我要怎麼操作」，而不是「我要叫 AI 走哪條路徑」，那其實很正常，大部分人一開始都這樣。我每個月都有免費的線上講座，固定在聊這件事：怎麼把自己從操作員的位置，換到交辦跟設計的位置。</p>
+        </div>
+        <div class="cta-card">
+          <b>免費線上講座</b>
+          <p>歡迎來坐坐，一起把這個切換練起來。</p>
+          <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;text-decoration:none;border-radius:8px;padding:12px 16px;font-weight:900;background:#fff;color:#2a2018;">加入 LINE 社群 ↗</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">江江教練 · AI 知識管理</div>
+    <div class="footer-links">
+      <a href="../../articles.html">← 回深度文章總站</a>
+      <a href="../../index.html">首頁</a>
+      <a href="../../learn.html">自學資源</a>
+      <a href="../../skills.html">Skills 下載</a>
+      <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">LINE 社群 ↗</a>
+      <a href="https://www.threads.com/@jiang_yude_coach" target="_blank" rel="noopener">Threads ↗</a>
+      <a href="https://vocus.cc/salon/Jiang_Coach" target="_blank" rel="noopener">方格子 ↗</a>
+    </div>
+    <div class="footer-note">這是一篇教學文章，整理我對「AI 怎麼接軟體」的看法，供你參考。</div>
+  </div>
+</footer>
+
+<!-- 文章自動互聯（相關文章）：兩支已內建，順序不可顛倒，不用再另外加 -->
+<script src="../../articles-data.js"></script>
+<script src="../../related-render.js"></script>
+</body>
+</html>
