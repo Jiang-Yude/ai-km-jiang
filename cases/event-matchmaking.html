@@ -171,9 +171,12 @@
   #tooltip .tt-r{font-size:18px;line-height:1.5;margin-top:4px;opacity:.96;}
   #tooltip .tt-r b{color:#e9c98f;}
   .node{cursor:default;}
+  .back-home{position:fixed;left:18px;top:16px;z-index:120;font-size:18px;font-weight:700;color:var(--gold-d);background:rgba(255,255,255,.92);border:1px solid #e6d8c2;border-radius:999px;padding:8px 16px;box-shadow:0 4px 14px rgba(120,90,40,.15);}
+  .back-home:hover{background:#fff;}
 </style>
 </head>
 <body>
+<a class="back-home" href="../index.html">← 江江教練 AI 知識管理</a>
 <div class="deck">
 
   <!-- 0 封面 -->
@@ -257,7 +260,8 @@
   <!-- 5 互動模擬 -->
   <section>
     <div class="kicker">現場模擬 ｜ 點按鈕跑一次</div>
-    <h2>20 位與會者，活動前先媒合</h2>
+    <h2>20 位與會者，活動前先分析媒合可能性</h2>
+    <div class="lead" style="margin-top:4px;">讓大家在活動現場可以參考。下面三個按鈕切換不同視角。</div>
     <div class="simwrap">
       <div class="legend">
         <span><i class="dot" style="background:var(--kb)"></i>知識庫 / 隱性知識 / 規則庫</span>
@@ -269,8 +273,9 @@
         <svg class="svg-lines" id="svg"></svg>
       </div>
       <div class="ctrl">
-        <button class="btn" id="runBtn">開始媒合</button>
-        <button class="btn ghost" id="resetBtn">重置</button>
+        <button class="btn ghost" id="resetBtn">原始個人資料</button>
+        <button class="btn" id="runBtn">媒合 · 小組模式</button>
+        <button class="btn" id="chainBtn">媒合 · 產業鏈模式</button>
         <span class="count" id="count"></span>
       </div>
       <div class="result" id="result"></div>
@@ -448,7 +453,7 @@ const nodes=people.map((p,i)=>{
   el.addEventListener('mouseenter',()=>showTip(p,el));
   el.addEventListener('mouseleave',hideTip);
   stage.appendChild(el);
-  return {p,el,sx,sy,cx:sx,cy:sy};
+  return {p,el,sx,sy,cx:sx,cy:sy,chx:sx,chy:sy};
 });
 // 三三兩兩分組
 const svgns='http://www.w3.org/2000/svg';
@@ -470,24 +475,37 @@ groups.forEach((g,gi)=>{
   g.members.forEach((nm,mi)=>{const n=findNode(nm);n.cx=ctr[0]+off[mi][0];n.cy=ctr[1]+off[mi][1];});
 });
 
-function place(useCluster){
+// 產業鏈整合：把跨產業的人串成 3 條價值鏈（橫向串）
+const chains=[
+  {name:'製造業數位化鏈', anchor:'kb',  members:['製造業','江江教練','自動化團隊','貿易','行政','服務業','電商']},
+  {name:'服務業獲客鏈',   anchor:'mkt', members:['餐飲','行銷顧問','品牌','零售','個人品牌','客服 AI','旅遊']},
+  {name:'數位內容鏈',     anchor:'cs',  members:['電信','SaaS','診所','教育','顧問業','醫療']}
+];
+const laneY=[100,255,410];
+const labelY=[60,215,370];
+chains.forEach((c,ci)=>{
+  const n=c.members.length;
+  c.members.forEach((nm,mi)=>{const node=findNode(nm);node.chx=95+mi*(850/Math.max(1,n-1));node.chy=laneY[ci];});
+});
+
+function place(mode){
   const r=stage.getBoundingClientRect();
   nodes.forEach(n=>{
-    const x=(useCluster?n.cx:n.sx)/W*r.width;
-    const y=(useCluster?n.cy:n.sy)/H*r.height;
-    n.el.style.left=x+'px';
-    n.el.style.top=y+'px';
+    const lx = mode==='cluster'?n.cx : mode==='chain'?n.chx : n.sx;
+    const ly = mode==='cluster'?n.cy : mode==='chain'?n.chy : n.sy;
+    n.el.style.left=(lx/W*r.width)+'px';
+    n.el.style.top=(ly/H*r.height)+'px';
   });
 }
-place(false);
-window.addEventListener('resize',()=>place(stage.dataset.clustered==='1'));
+place('scatter');
+window.addEventListener('resize',()=>place(stage.dataset.mode||'scatter'));
 
 const countEl=document.getElementById('count');
 const resultEl=document.getElementById('result');
 
 function run(){
-  stage.dataset.clustered='1';
-  place(true);
+  stage.dataset.mode='cluster';
+  place('cluster');
   setTimeout(()=>{
     svg.innerHTML='';
     groups.forEach((g,gi)=>{
@@ -523,14 +541,51 @@ function run(){
   });
   resultEl.classList.add('show');
 }
+function chain(){
+  stage.dataset.mode='chain';
+  place('chain');
+  setTimeout(()=>{
+    svg.innerHTML='';
+    chains.forEach((c,ci)=>{
+      const col=cats[c.anchor].color, mem=c.members.map(findNode);
+      const t=document.createElementNS(svgns,'text');
+      t.setAttribute('x',70);t.setAttribute('y',labelY[ci]);
+      t.setAttribute('fill',col);t.setAttribute('font-size','22');t.setAttribute('font-weight','800');
+      t.setAttribute('opacity','0');t.style.transition='opacity .5s';t.style.transitionDelay=(0.12*ci)+'s';
+      t.textContent='產業鏈 '+'ABC'[ci]+'：'+c.name;
+      svg.appendChild(t);requestAnimationFrame(()=>t.setAttribute('opacity','0.92'));
+      for(let k=0;k<mem.length-1;k++){
+        const a=mem[k],b=mem[k+1];
+        const ln=document.createElementNS(svgns,'line');
+        ln.setAttribute('x1',a.chx);ln.setAttribute('y1',a.chy);
+        ln.setAttribute('x2',b.chx);ln.setAttribute('y2',b.chy);
+        ln.setAttribute('stroke',col);ln.setAttribute('stroke-width','3');
+        ln.setAttribute('stroke-linecap','round');ln.setAttribute('opacity','0');
+        ln.style.transition='opacity .5s';ln.style.transitionDelay=(0.12*ci+0.07*k+0.15)+'s';
+        svg.appendChild(ln);requestAnimationFrame(()=>ln.setAttribute('opacity','0.6'));
+      }
+    });
+  },900);
+  countEl.textContent='串成 3 條產業鏈，把人接起來';
+  resultEl.innerHTML='';
+  chains.forEach((c,ci)=>{
+    const div=document.createElement('div');
+    div.className='grp';
+    div.style.borderLeft='6px solid '+cats[c.anchor].color;
+    div.innerHTML='<b>產業鏈 '+'ABC'[ci]+'｜'+c.name+'</b>　'+c.members.join('　→　');
+    resultEl.appendChild(div);
+  });
+  resultEl.classList.add('show');
+}
 function reset(){
-  stage.dataset.clustered='0';
-  place(false);
+  stage.dataset.mode='scatter';
+  place('scatter');
   svg.innerHTML='';
   countEl.textContent='';
   resultEl.classList.remove('show');
 }
 document.getElementById('runBtn').onclick=run;
+document.getElementById('chainBtn').onclick=chain;
 document.getElementById('resetBtn').onclick=reset;
 </script>
 </body>
