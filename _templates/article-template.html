@@ -59,10 +59,20 @@ a{color:inherit}
 .brand{font-weight:900;font-size:14px;text-decoration:none}
 .nav{display:flex;gap:8px;overflow:auto}
 .nav a{white-space:nowrap;text-decoration:none;border:1px solid rgba(26,22,18,.16);border-radius:999px;padding:8px 11px;background:#fff;font-size:14px;font-weight:800}
-.hero{min-height:58vh;display:grid;align-items:end;padding:56px clamp(20px,6vw,88px);background:linear-gradient(135deg,rgba(26,22,18,.94),rgba(95,117,83,.82));color:#fff;overflow:hidden}
+.hero{min-height:58vh;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:72px;padding:56px clamp(20px,6vw,88px);background:linear-gradient(135deg,#2a221a 0%,#3a2f24 60%,#2c1f15 100%);color:#fef9f0;overflow:hidden}
+.hero>div{flex:none;width:860px;max-width:100%}
+.hero-figure{margin:0;width:420px;flex:none}
+.hero-figure img{display:block;width:100%;border-radius:16px;border:1px solid rgba(255,255,255,.18);box-shadow:0 18px 45px rgba(0,0,0,.35);cursor:zoom-in}
+.hero-figure figcaption{margin-top:10px;font-size:14px;line-height:1.6;color:rgba(255,255,255,.78)}
+.inline-figure{margin:30px auto 8px;max-width:820px}
+.inline-figure img{display:block;width:100%;border-radius:14px;border:1px solid var(--line);box-shadow:var(--shadow);background:#fff;cursor:zoom-in}
+.inline-figure figcaption{font-size:14px;line-height:1.6;color:var(--muted);margin-top:10px}
+.lightbox{position:fixed;inset:0;z-index:999;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(12,10,8,.92);cursor:zoom-out;backdrop-filter:blur(4px)}
+.lightbox.open{display:flex}.lightbox img{max-width:96vw;max-height:92vh;border-radius:10px;box-shadow:0 24px 60px rgba(0,0,0,.5)}
+.lightbox-close{position:fixed;top:18px;right:24px;color:#fff;font-size:34px;line-height:1;font-weight:700;cursor:pointer;opacity:.85}
 .kicker{font:900 13px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;color:#f6d7a6;text-transform:uppercase}
-.hero h1{max-width:1040px;margin:16px 0 18px;font-size:clamp(36px,6vw,72px);line-height:1.08;overflow-wrap:anywhere}
-.hero p{max-width:820px;font-size:clamp(18px,2vw,23px);line-height:1.62;color:rgba(255,255,255,.9)}
+.hero h1{max-width:none;margin:16px 0 18px;font-size:clamp(36px,6vw,72px);line-height:1.08;overflow-wrap:anywhere}
+.hero p{max-width:none;font-size:clamp(18px,2vw,23px);line-height:1.62;color:rgba(255,255,255,.9)}
 .cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
 .cta a{display:inline-flex;align-items:center;text-decoration:none;border-radius:8px;padding:12px 16px;font-weight:900}
 .cta .primary{background:#fff;color:#1a1612}.cta .ghost{border:1px solid rgba(255,255,255,.32);color:#fff;background:rgba(255,255,255,.08)}
@@ -111,7 +121,7 @@ a{color:inherit}
 .footer-inner{width:min(1000px,100%);margin:0 auto}
 .footer-links{display:flex;flex-wrap:wrap;gap:6px 12px;margin-bottom:14px}.footer-links a{color:var(--blue);font-weight:900;text-decoration:none;font-size:14px}
 .footer-brand{font-weight:900;font-size:15px;margin-bottom:10px}.footer-note{font-size:13px;line-height:1.6}
-@media(max-width:820px){.infocard-grid{grid-template-columns:1fr}.duo{grid-template-columns:1fr}.workflow-grid{grid-template-columns:1fr}.cta-band .inner{grid-template-columns:1fr}.section{padding:40px 20px}.hero{min-height:52vh}}
+@media(max-width:820px){.infocard-grid{grid-template-columns:1fr}.duo{grid-template-columns:1fr}.workflow-grid{grid-template-columns:1fr}.cta-band .inner{grid-template-columns:1fr}.section{padding:40px 20px}.hero{min-height:52vh;flex-direction:column;justify-content:flex-start;align-items:flex-start;gap:24px}.hero>div{width:100%}.hero-figure{width:100%;max-width:560px}}
 @media(max-width:820px){html,body{overflow-x:hidden}.hero h1{word-break:break-word}}
 </style>
 </head>
@@ -130,10 +140,12 @@ a{color:inherit}
     <div class="kicker">{{KICKER}}</div>
     <h1>{{TITLE}}</h1>
     <p>{{HERO_LEAD}}</p>
-    <div class="cta">
-      <a class="primary" href="#start">開始閱讀</a>
-    </div>
   </div>
+  <!-- 封面圖（建議放）：橫式用預設 width:420px；4:5 直式改 .hero-figure{width:320px} 並加 .hero-figure img{aspect-ratio:4/5;object-fit:cover}。沒有封面圖就整個 <figure> 刪掉，hero 會自動置中只剩文字。封面同時設成上面 og:image / twitter:image。 -->
+  <figure class="hero-figure">
+    <img src="../../images/articles/{{SLUG}}-cover.jpg" alt="{{COVER_ALT}}" loading="lazy">
+    <figcaption>{{COVER_CAPTION}}</figcaption>
+  </figure>
 </section>
 
 <main>
@@ -151,8 +163,14 @@ a{color:inherit}
       1.「這篇在講什麼」：.lead 一段，2-4 句講清楚問題、為什麼重要、會給什麼解法（也是 SEO/GEO 核心素材）。
       2.「適合誰」：3 個具體讀者（用受眾真實情境口吻，不是術語）。
       3.「你會得到什麼」：3 個讀完可帶走的成果（理解什麼、能怎麼做、可拿走的框架／提示詞／SOP）。
-    建議用 .duo 兩張卡放「適合誰／你會得到什麼」，hero 的「開始閱讀」按鈕連到 #start。
+    建議用 .duo 兩張卡放「適合誰／你會得到什麼」。
     範例見 articles/how-ai-connects-software/index.html 的第一個 section。
+
+  ★ 配圖原則（對齊 knowledge-site-manager 設計系統 02-design-system）：
+    - 封面：放上面 hero 的 .hero-figure（橫式預設，或 4:5 直式），同時設成 og:image / twitter:image。沒封面圖就把 hero 裡的 <figure> 刪掉。
+    - 內文圖：用 <figure class="inline-figure"><img loading="lazy" alt><figcaption>。圖要緊跟相關段落、跟內容互相搭配，不要全堆在一起、也不要放跟文意無關的圖。
+    - 所有圖（hero＋內文）都會自動有「點圖放大」lightbox（CSS＋JS 已內建在本範本結尾，新文章不用再加）。
+    - 圖先 sips 縮圖（JPG、寬 1400、<400K）放 images/articles/，原圖留主庫 11圖片待整。
 -->
 
 </main>
@@ -172,6 +190,23 @@ a{color:inherit}
     <div class="footer-note">這是一篇{{CONTENT_TYPE}}，整理我對「{{TITLE}}」的看法，供你參考。</div>
   </div>
 </footer>
+
+<!-- 點圖放大 lightbox（hero 與內文圖通用，已內建，不用每篇重加） -->
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <span class="lightbox-close" aria-label="關閉">×</span>
+  <img id="lightbox-img" src="" alt="放大檢視">
+</div>
+<script>
+(function(){
+  var box=document.getElementById('lightbox'),boxImg=document.getElementById('lightbox-img');
+  document.querySelectorAll('.hero-figure img,.inline-figure img').forEach(function(img){
+    img.addEventListener('click',function(){boxImg.src=img.currentSrc||img.src;boxImg.alt=img.alt||'放大檢視';box.classList.add('open');box.setAttribute('aria-hidden','false');});
+  });
+  function close(){box.classList.remove('open');box.setAttribute('aria-hidden','true');boxImg.src='';}
+  box.addEventListener('click',close);
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
+})();
+</script>
 
 <!-- 文章自動互聯（相關文章）：兩支已內建，順序不可顛倒，不用再另外加 -->
 <script src="../../articles-data.js"></script>
