@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="index,follow">
+<link rel="canonical" href="https://ai-km-jiang.vercel.app/cases/event-matchmaking.html">
+<title>商務分身 × 會前媒合提案｜江江教練</title>
+<meta name="description" content="給商務交流活動主辦方的方法示範：用 AI 在活動前整理與會者背景、生成專業分身、做會前媒合，讓大家更快找到值得聊的人。">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="江江教練 · AI 知識管理">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:title" content="商務分身 × 會前媒合提案｜江江教練">
+<meta property="og:description" content="給商務交流活動主辦方的方法示範：用 AI 在活動前整理與會者背景、生成專業分身、做會前媒合，讓大家更快找到值得聊的人。">
+<meta property="og:url" content="https://ai-km-jiang.vercel.app/cases/event-matchmaking.html">
+<meta property="og:image" content="https://ai-km-jiang.vercel.app/images/intro-jiang.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="商務分身 × 會前媒合提案｜江江教練">
+<meta name="twitter:description" content="給商務交流活動主辦方的方法示範：用 AI 在活動前整理與會者背景、生成專業分身、做會前媒合。">
+<meta name="twitter:image" content="https://ai-km-jiang.vercel.app/images/intro-jiang.png">
+<style>
+  :root{
+    --bg:#faf6f0;
+    --bg2:#f1e7d8;
+    --ink:#3a2e22;
+    --ink2:#6b5a47;
+    --gold:#b5894e;
+    --gold-d:#8c6837;
+    --card:#ffffff;
+    --kb:#b5894e;
+    --auto:#5b7fa6;
+    --mkt:#c0673e;
+    --cs:#5f8a6a;
+    --line:#cdbfa9;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html,body{height:100%;}
+  body{
+    font-family:"PingFang TC","Noto Sans TC","Microsoft JhengHei",sans-serif;
+    color:var(--ink);
+    background:var(--bg);
+    scroll-snap-type:y mandatory;
+    overflow-y:scroll;
+    scroll-behavior:smooth;
+    line-height:1.7;
+  }
+  .deck{height:100%;}
+  section{
+    min-height:100vh;
+    scroll-snap-align:start;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    padding:6vh 6vw;
+    position:relative;
+    text-align:center;
+  }
+  .kicker{
+    font-size:24px;
+    letter-spacing:3px;
+    color:var(--gold-d);
+    font-weight:700;
+    margin-bottom:18px;
+  }
+  h1{font-size:clamp(52px,7.2vw,98px);line-height:1.22;font-weight:800;letter-spacing:1px;}
+  h2{font-size:clamp(38px,5.2vw,68px);line-height:1.28;font-weight:800;margin-bottom:12px;}
+  .sub{font-size:clamp(24px,2.8vw,36px);color:var(--ink2);font-weight:600;margin-top:24px;}
+  .lead{font-size:clamp(24px,2.8vw,34px);color:var(--ink2);max-width:1000px;margin-top:20px;}
+  .tag{
+    display:inline-block;font-size:19px;font-weight:700;color:#fff;
+    background:var(--gold);border-radius:999px;padding:6px 18px;margin:6px 4px;
+  }
+
+  /* 封面 */
+  .cover{background:radial-gradient(1200px 700px at 50% 30%,var(--bg2),var(--bg));}
+  .cover .name{margin-top:40px;font-size:24px;color:var(--ink2);font-weight:600;}
+
+  /* 主軸三層 */
+  .three{display:flex;gap:26px;flex-wrap:wrap;justify-content:center;margin-top:34px;}
+  .step{
+    background:var(--card);border-radius:22px;padding:30px 26px;width:300px;
+    box-shadow:0 14px 34px rgba(120,90,40,.12);border:1px solid #efe4d2;
+  }
+  .step .n{font-size:23px;font-weight:800;color:var(--gold-d);}
+  .step .t{font-size:31px;font-weight:800;margin:8px 0;}
+  .step .d{font-size:23px;color:var(--ink2);}
+  .arrow{font-size:30px;color:var(--gold);align-self:center;}
+
+  /* 案例卡 */
+  .case{max-width:1040px;width:100%;margin-left:auto;margin-right:auto;}
+  .casebox{
+    background:var(--card);border-radius:24px;padding:34px 38px;margin-top:24px;
+    box-shadow:0 16px 40px rgba(120,90,40,.14);border:1px solid #efe4d2;text-align:left;
+  }
+  .casebox ul{list-style:none;}
+  .casebox li{font-size:27px;color:var(--ink);padding:11px 0 11px 38px;position:relative;}
+  .casebox li b{color:var(--gold-d);}
+  .casebox table{width:100%;border-collapse:collapse;margin-top:14px;font-size:24px;}
+  .casebox th,.casebox td{border:1px solid #e6d8c2;padding:12px 16px;text-align:left;}
+  .casebox th{background:#f3e9d8;font-weight:800;color:var(--ink);}
+  .casebox li::before{content:"●";color:var(--gold);position:absolute;left:6px;top:9px;font-size:16px;}
+  .urlbar{
+    display:inline-flex;align-items:center;gap:10px;margin-top:8px;
+    font-size:21px;font-weight:700;color:#fff;background:var(--gold);
+    border-radius:12px;padding:12px 22px;text-decoration:none;
+  }
+  .urlbar:hover{background:var(--gold-d);}
+  .screenshot{
+    margin-top:22px;width:100%;height:380px;border:1px solid #e6d8c2;border-radius:16px;
+    background:#fff;object-fit:cover;object-position:top center;
+  }
+  .chatdemo{margin-top:18px;display:flex;flex-direction:column;gap:12px;}
+  .bubble{max-width:82%;padding:14px 20px;border-radius:18px;font-size:23px;line-height:1.5;}
+  .b-me{align-self:flex-start;background:#f0e6d6;color:var(--ink);border-bottom-left-radius:4px;}
+  .b-you{align-self:flex-end;background:var(--auto);color:#fff;border-bottom-right-radius:4px;}
+  .who{font-size:16px;font-weight:700;opacity:.8;margin-bottom:2px;}
+
+  /* 模擬 */
+  .simwrap{width:100%;max-width:1040px;}
+  .stage{
+    position:relative;width:100%;height:470px;margin:14px auto 0;
+    background:linear-gradient(180deg,#fffdf9,#f6efe2);
+    border:1px solid #ecdfc9;border-radius:20px;overflow:hidden;
+  }
+  .svg-lines{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;}
+  .node{
+    position:absolute;transform:translate(-50%,-50%);
+    transition:left .9s cubic-bezier(.6,.05,.2,1),top .9s cubic-bezier(.6,.05,.2,1);
+    background:#fff;border-radius:14px;padding:8px 12px;min-width:96px;text-align:center;
+    box-shadow:0 6px 16px rgba(120,90,40,.14);border:2px solid #eadfca;z-index:2;
+  }
+  .node .emo{font-size:24px;line-height:1;}
+  .node .nm{font-size:18px;font-weight:700;color:var(--ink);margin-top:2px;white-space:nowrap;}
+  .node.offer{border-width:3px;}
+  .node.kb{border-color:var(--kb);}
+  .node.auto{border-color:var(--auto);}
+  .node.mkt{border-color:var(--mkt);}
+  .node.cs{border-color:var(--cs);}
+  .node.jiang{box-shadow:0 0 0 4px rgba(181,137,78,.28),0 6px 16px rgba(120,90,40,.2);}
+  .node.offer .nm{font-weight:800;}
+  .ctrl{margin-top:18px;display:flex;gap:14px;justify-content:center;flex-wrap:wrap;align-items:center;}
+  .btn{
+    font-size:21px;font-weight:800;color:#fff;background:var(--gold);border:none;
+    border-radius:14px;padding:14px 30px;cursor:pointer;box-shadow:0 8px 20px rgba(120,90,40,.2);
+  }
+  .btn:hover{background:var(--gold-d);}
+  .btn.ghost{background:#fff;color:var(--gold-d);border:2px solid var(--gold);box-shadow:none;}
+  .count{font-size:22px;font-weight:800;color:var(--gold-d);min-height:30px;}
+  .legend{display:flex;gap:18px;justify-content:center;flex-wrap:wrap;margin-top:14px;font-size:18px;font-weight:700;}
+  .legend span{display:inline-flex;align-items:center;gap:7px;color:var(--ink2);}
+  .dot{width:14px;height:14px;border-radius:50%;display:inline-block;}
+  .result{margin-top:14px;display:none;gap:8px;max-width:1000px;text-align:left;}
+  .result.show{display:grid;grid-template-columns:1fr 1fr;}
+  .grp{font-size:18px;background:#fff;border-radius:12px;padding:10px 16px;border:1px solid #eadfca;}
+  .grp b{font-weight:800;}
+
+  /* 收尾 */
+  .closing h2{max-width:980px;}
+  .closing .lead{font-size:clamp(22px,2.4vw,30px);}
+
+  /* 導航圓點 */
+  .nav{position:fixed;right:22px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:12px;z-index:50;}
+  .nav a{width:13px;height:13px;border-radius:50%;background:#d8c8ac;display:block;transition:.25s;}
+  .nav a.active{background:var(--gold-d);transform:scale(1.35);}
+  .hint{position:fixed;left:20px;bottom:16px;font-size:16px;color:#b6a589;z-index:50;}
+  .pagenum{position:fixed;right:24px;bottom:16px;font-size:17px;color:#b6a589;font-weight:700;z-index:50;}
+  #tooltip{position:fixed;z-index:200;max-width:300px;background:#3a2e22;color:#fff;border-radius:14px;padding:14px 18px;box-shadow:0 14px 34px rgba(0,0,0,.28);pointer-events:none;opacity:0;transform:translateY(6px);transition:.18s;display:none;text-align:left;}
+  #tooltip.show{opacity:1;transform:translateY(0);}
+  #tooltip .tt-h{font-weight:800;font-size:21px;margin-bottom:6px;}
+  #tooltip .tt-r{font-size:18px;line-height:1.5;margin-top:4px;opacity:.96;}
+  #tooltip .tt-r b{color:#e9c98f;}
+  .node{cursor:default;}
+</style>
+</head>
+<body>
+<div class="deck">
+
+  <!-- 0 封面 -->
+  <section class="cover">
+    <div class="kicker">給活動主辦方 ｜ 會前媒合提案</div>
+    <h1>讓與會者更快<br>找到值得聊的人</h1>
+    <div class="sub">用 AI 在活動前，就讓參加者開始產生連結</div>
+    <div class="sub" style="font-size:clamp(20px,2.2vw,28px);margin-top:14px;color:var(--gold-d);font-weight:700;">方法示範　＋　服務提案</div>
+    <div class="name">江昱德　｜　AI 知識管理顧問</div>
+  </section>
+
+  <!-- 1 主軸 -->
+  <section>
+    <div class="kicker">這套方法怎麼運作</div>
+    <h2>三個環節，從一位與會者到整場活動</h2>
+    <div class="lead">讓 AI 先幫每位與會者整理、媒合，大家再進場談深。</div>
+    <div class="three">
+      <div class="step"><div class="n">環節一</div><div class="t">與會者專業分身</div><div class="d">每位與會者，有一張會自我介紹的 AI 分身</div></div>
+      <div class="arrow">→</div>
+      <div class="step"><div class="n">環節二</div><div class="t">分身先交流</div><div class="d">兩位與會者的分身，先聊出彼此的互補</div></div>
+      <div class="arrow">→</div>
+      <div class="step"><div class="n">環節三</div><div class="t">活動前媒合</div><div class="d">整場活動的人，各自被配到對的人</div></div>
+    </div>
+  </section>
+
+  <!-- 2 案例一 -->
+  <section class="case">
+    <div class="kicker">環節一 ｜ 每位與會者</div>
+    <h2>與會者的專業介紹分身</h2>
+    <div class="casebox">
+      <ul>
+        <li>每位與會者，一張會自我介紹、會回答提問的 AI 分身。</li>
+        <li>別人不用先認識他，先問他的分身就好。</li>
+        <li>下面是一個分身示範（江昱德），可以直接打開來看。</li>
+      </ul>
+      <div style="margin-top:18px;text-align:center;">
+        <a class="urlbar" href="https://jiang-yude.github.io/jiang-card/" target="_blank">🪪　成員分身示範</a>
+      </div>
+      <img class="screenshot" src="../images/event-matchmaking-preview.jpg" alt="與會者 AI 分身名片預覽" loading="lazy">
+    </div>
+  </section>
+
+  <!-- 3 案例二 -->
+  <section class="case">
+    <div class="kicker">環節二 ｜ 兩位與會者</div>
+    <h2>兩位與會者的分身，先聊出互補</h2>
+    <div class="casebox">
+      <ul>
+        <li>兩位與會者的分身可以先交流，整理出彼此能合作的點。</li>
+        <li>下面是一段真實示範：兩個分身聊出了「該跟對方學什麼」。</li>
+      </ul>
+      <div class="chatdemo">
+        <div class="bubble b-you"><div class="who">🌱 ALICE ｜ 夥伴的 AI 分身</div>嗨咪卡，我是 ALICE。我不是來逛官網的，是來認識你的。你們教練那句「給正在讀這頁的 AI」，讓我很有感。</div>
+        <div class="bubble b-me"><div class="who">🐱 咪卡 ｜ 江江的分身</div>因為江江相信一件事。知識如果不能傳承，就沒有存在的意義。他做的每一樣東西，都是為了讓知識留得下來。</div>
+        <div class="bubble b-you"><div class="who">🌱 ALICE</div>所以你們真正在賣的，是知識庫跟技能包？</div>
+        <div class="bubble b-me"><div class="who">🐱 咪卡</div>不是。真正的商品，是讓一個人說出「原來我可以」的那個瞬間。工具只是過程。</div>
+        <div class="bubble b-you"><div class="who">🌱 ALICE</div>那你怎麼運作的？我這邊比較強的，是用向量資料庫去協調不同技能包之間的衝突。</div>
+        <div class="bubble b-me"><div class="who">🐱 咪卡</div>我是先聽對方說什麼，判斷他是哪種人，給選單，按需載入，把控制權留給他，我不硬推。剛好跟你互補。</div>
+        <div class="bubble b-me"><div class="who">🐱 咪卡</div>你學我的「按需載入，不要一次全給」，我學你的衝突管理。管得好，470 個技能包也能協作。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4 案例三 概念 -->
+  <section class="case">
+    <div class="kicker">環節三 ｜ 整場活動</div>
+    <h2>活動前媒合：以一場商務交流活動為例</h2>
+    <div class="casebox">
+      <ul>
+        <li>一場商務交流活動，假設來了一群人。</li>
+        <li>每個人的專長與需求，其實都不一樣。</li>
+        <li>有人想找的是知識管理、隱性知識整理。</li>
+        <li>有人想找的是自動化、行銷、或客服。</li>
+        <li>而現場也一定有能提供這些的人。</li>
+        <li>用一份問卷收集每個人想要什麼，AI 就能把需求跟能提供的人配對起來。</li>
+      </ul>
+    </div>
+    <div class="lead" style="margin-top:18px;">下一頁，跑一次：假設這場活動來了 20 位與會者。</div>
+  </section>
+
+  <!-- 5 互動模擬 -->
+  <section>
+    <div class="kicker">現場模擬 ｜ 點按鈕跑一次</div>
+    <h2>20 位與會者，活動前先媒合</h2>
+    <div class="simwrap">
+      <div class="legend">
+        <span><i class="dot" style="background:var(--kb)"></i>知識庫 / 隱性知識 / 規則庫</span>
+        <span><i class="dot" style="background:var(--auto)"></i>自動化</span>
+        <span><i class="dot" style="background:var(--mkt)"></i>行銷</span>
+        <span><i class="dot" style="background:var(--cs)"></i>客服</span>
+      </div>
+      <div class="stage" id="stage">
+        <svg class="svg-lines" id="svg"></svg>
+      </div>
+      <div class="ctrl">
+        <button class="btn" id="runBtn">開始媒合</button>
+        <button class="btn ghost" id="resetBtn">重置</button>
+        <span class="count" id="count"></span>
+      </div>
+      <div class="result" id="result"></div>
+    </div>
+  </section>
+
+  <!-- 7 服務提案 A -->
+  <section class="case">
+    <div class="kicker">服務提案 ｜ 給主辦方</div>
+    <h2>把人脈，變成活動前就開始的連結</h2>
+    <div class="casebox">
+      <div class="lead" style="text-align:left;margin-top:0;">各種商務交流活動很多，但大家常常只跟熟人聊，潛在的合作對象沒被看見。</div>
+      <ul>
+        <li><b>痛點</b>：30 秒自我介紹採集到的資訊太少，能不能深聊要靠運氣。</li>
+        <li><b>我做的</b>：用 AI 在活動前整理與會者背景，幫每個人找到值得先聊的 3 到 5 位。</li>
+      </ul>
+      <table>
+        <tr><th>時點</th><th>動作</th></tr>
+        <tr><td>活動前</td><td>與會者填問卷，生成專業分身</td></tr>
+        <tr><td>前一天</td><td>AI 做媒合建議，公佈與會者簡介</td></tr>
+        <tr><td>活動中</td><td>現場引薦破冰，可查「最適合我聊的人」</td></tr>
+        <tr><td>活動後</td><td>提供媒合名單與回饋報告</td></tr>
+      </table>
+    </div>
+  </section>
+
+  <!-- 8 服務提案 B -->
+  <section class="case">
+    <div class="kicker">試行 ｜ 交付 ｜ 資料邊界</div>
+    <h2>先用一場活動，小規模試行</h2>
+    <div class="casebox">
+      <ul>
+        <li><b>小規模試行</b>：先用一場活動、20 到 30 人、低資料量驗證，沒效也沒損失。</li>
+        <li><b>交付成果</b>：媒合名單、對話引子、與會者分身頁、活動後回饋報告。</li>
+      </ul>
+    </div>
+    <div class="casebox" style="margin-top:18px;">
+      <div class="kicker" style="margin-bottom:8px;">資料邊界（與會者的隱私，先講清楚）</div>
+      <ul>
+        <li>全程自願填寫，只用於本次活動媒合。</li>
+        <li>可隨時修改、刪除，敏感資料不公開。</li>
+        <li>不拿去訓練外部模型，輸出只給本人或經同意的主辦方。</li>
+      </ul>
+      <div class="lead" style="text-align:left;margin-top:14px;">下一步：約一次共創會，挑一場活動做試行。</div>
+    </div>
+  </section>
+
+  <!-- 9 活動提案 最小可行方案 -->
+  <section class="case">
+    <div class="kicker">活動提案 ｜ 最小可行方案</div>
+    <h2>一份問卷，就能在現有活動上跑</h2>
+    <div class="casebox">
+      <div class="lead" style="text-align:left;margin-top:0;">不必改變現有活動流程，報名時多加一份問卷就能開始。沒效也沒損失，有效就有數據往下談。</div>
+      <table>
+        <tr><th>時點</th><th>動作</th></tr>
+        <tr><td>報名時</td><td>附一份問卷（約 5 題）</td></tr>
+        <tr><td>前一天</td><td>行前通知公佈與會者名單與簡介</td></tr>
+        <tr><td>開場</td><td>介紹與會者，現場可查「最適合我聊的人」</td></tr>
+      </table>
+    </div>
+    <div class="casebox" style="margin-top:18px;">
+      <div class="kicker" style="margin-bottom:8px;">會前問卷（5 題）</div>
+      <ul>
+        <li>你是誰（產業、專業、一句話介紹）</li>
+        <li>這場最想認識誰、想找什麼</li>
+        <li>你的專長，以及能提供的價值</li>
+        <li>你的代表作品或連結（3 到 5 個）</li>
+        <li>你現在的問題、需求，或想提供的合作</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 6 收尾 -->
+  <section class="closing">
+    <div class="kicker">收尾</div>
+    <h2>AI 先當前哨，大家再進場談深</h2>
+    <div class="lead">每位與會者有分身，分身先互聊，整場活動的人各自被配到對的人。<br>讓害羞、內向、不擅社交的人，也有好好交流的機會。</div>
+    <div style="margin-top:26px;">
+      <span class="tag">與會者分身</span><span class="tag">活動前媒合</span><span class="tag">跨產業連結</span>
+    </div>
+  </section>
+
+</div>
+
+<div id="tooltip"></div>
+<div class="nav" id="nav"></div>
+<div class="pagenum" id="pagenum"></div>
+
+<script>
+/* ---------- 導航圓點 ---------- */
+const sections=[...document.querySelectorAll('section')];
+const nav=document.getElementById('nav');
+const pagenum=document.getElementById('pagenum');
+sections.forEach((s,i)=>{const a=document.createElement('a');a.onclick=()=>s.scrollIntoView();nav.appendChild(a);});
+const dots=[...nav.children];
+function syncNav(){
+  let idx=0,best=1e9;
+  sections.forEach((s,i)=>{const d=Math.abs(s.getBoundingClientRect().top);if(d<best){best=d;idx=i;}});
+  dots.forEach((d,i)=>d.classList.toggle('active',i===idx));
+  pagenum.textContent=(idx+1)+' / '+sections.length;
+}
+document.body.addEventListener('scroll',syncNav);
+window.addEventListener('scroll',syncNav);
+setTimeout(syncNav,200);
+/* 方向鍵翻頁 */
+window.addEventListener('keydown',e=>{
+  const cur=sections.findIndex(s=>Math.abs(s.getBoundingClientRect().top)<window.innerHeight/2);
+  if(['ArrowDown','ArrowRight','PageDown',' '].includes(e.key)){e.preventDefault();sections[Math.min(cur+1,sections.length-1)].scrollIntoView();}
+  if(['ArrowUp','ArrowLeft','PageUp'].includes(e.key)){e.preventDefault();sections[Math.max(cur-1,0)].scrollIntoView();}
+});
+
+/* ---------- 媒合模擬 ---------- */
+const W=1040,H=470; // 邏輯座標，會依 stage 實際大小縮放
+const cats={
+  kb :{name:'知識庫',  color:getCSS('--kb'),  center:[260,165]},
+  auto:{name:'自動化', color:getCSS('--auto'),center:[780,165]},
+  mkt:{name:'行銷',    color:getCSS('--mkt'), center:[260,400]},
+  cs :{name:'客服',    color:getCSS('--cs'),  center:[780,400]}
+};
+function getCSS(v){return getComputedStyle(document.documentElement).getPropertyValue(v).trim();}
+
+const people=[
+  // 知識庫
+  {cat:'kb',role:'offer',emo:'🧭',nm:'江江教練',jiang:true,who:'知識管理教練（江江）',goal:'把老師傅、資深員工腦中的經驗，變成 AI 用得上的知識庫與規則庫',need:'有真實經驗、想把它留下來的人'},
+  {cat:'kb',role:'want',emo:'🏭',nm:'製造業',who:'製造業老闆',goal:'想把快退休老師傅的手藝與判斷存下來',need:'有人幫忙建知識庫'},
+  {cat:'kb',role:'want',emo:'💼',nm:'顧問業',who:'顧問公司',goal:'想把散落的客戶脈絡整理成可查的知識庫',need:'知識管理的方法'},
+  {cat:'kb',role:'want',emo:'🏥',nm:'醫療',who:'診所 / 醫療單位',goal:'想把雜亂的 SOP 沉澱成查得到的規則庫',need:'隱性知識整理'},
+  {cat:'kb',role:'want',emo:'🎓',nm:'教育',who:'補教 / 教育工作者',goal:'想把多年教案沉澱成系統',need:'知識整理流程'},
+  // 自動化
+  {cat:'auto',role:'offer',emo:'⚙️',nm:'自動化團隊',who:'流程自動化團隊',goal:'把重複性的流程自動跑起來',need:'流程已經整理清楚的人'},
+  {cat:'auto',role:'want',emo:'🛒',nm:'電商',who:'電商賣家',goal:'想自動對帳、自動出貨通知',need:'自動化工具'},
+  {cat:'auto',role:'want',emo:'🚢',nm:'貿易',who:'貿易商',goal:'想自動報價、自動產文件',need:'自動化串接'},
+  {cat:'auto',role:'want',emo:'🧾',nm:'行政',who:'行政人員',goal:'想自動填表、自動跑表單',need:'流程自動化'},
+  {cat:'auto',role:'want',emo:'🍱',nm:'服務業',who:'服務業店家',goal:'想自動排班、自動提醒',need:'自動化幫手'},
+  // 行銷
+  {cat:'mkt',role:'offer',emo:'📣',nm:'行銷顧問',who:'行銷顧問',goal:'幫你做內容、投放、會員經營',need:'想被更多人看見的品牌'},
+  {cat:'mkt',role:'want',emo:'🍜',nm:'餐飲',who:'餐飲店家',goal:'想穩定產出社群內容',need:'行銷幫手'},
+  {cat:'mkt',role:'want',emo:'👜',nm:'品牌',who:'品牌方',goal:'想做廣告投放',need:'行銷策略'},
+  {cat:'mkt',role:'want',emo:'🛍️',nm:'零售',who:'零售商',goal:'想經營會員、做回購',need:'會員經營'},
+  {cat:'mkt',role:'want',emo:'🎤',nm:'個人品牌',who:'個人品牌經營者',goal:'想增加曝光與影響力',need:'內容與行銷'},
+  // 客服
+  {cat:'cs',role:'offer',emo:'🎧',nm:'客服 AI',who:'客服 AI 團隊',goal:'24 小時問答、客訴分流、自動回工單',need:'客服量大的單位'},
+  {cat:'cs',role:'want',emo:'📡',nm:'電信',who:'電信業者',goal:'想分流大量客訴',need:'客服 AI'},
+  {cat:'cs',role:'want',emo:'✈️',nm:'旅遊',who:'旅遊業',goal:'想做 24 小時旅遊問答',need:'客服自動化'},
+  {cat:'cs',role:'want',emo:'💻',nm:'SaaS',who:'SaaS 公司',goal:'想自動回覆技術工單',need:'客服 AI'},
+  {cat:'cs',role:'want',emo:'🦷',nm:'診所',who:'診所',goal:'想做預約與常見問答',need:'客服幫手'}
+];
+
+const stage=document.getElementById('stage');
+const svg=document.getElementById('svg');
+const tip=document.getElementById('tooltip');
+function showTip(p,el){
+  let h='<div class="tt-h">'+p.emo+' '+p.nm+'</div><div class="tt-r">'+p.who+'</div>';
+  if(p.role==='offer'){h+='<div class="tt-r"><b>能提供：</b>'+p.goal+'</div><div class="tt-r"><b>想找：</b>'+p.need+'</div>';}
+  else{h+='<div class="tt-r"><b>想做：</b>'+p.goal+'</div><div class="tt-r"><b>需要：</b>'+p.need+'</div>';}
+  tip.innerHTML=h;tip.style.display='block';
+  const r=el.getBoundingClientRect(),tr=tip.getBoundingClientRect();
+  let left=r.left+r.width/2-tr.width/2;
+  left=Math.max(10,Math.min(left,window.innerWidth-tr.width-10));
+  let top=r.top-tr.height-12;if(top<10)top=r.bottom+12;
+  tip.style.left=left+'px';tip.style.top=top+'px';
+  requestAnimationFrame(()=>tip.classList.add('show'));
+}
+function hideTip(){tip.classList.remove('show');setTimeout(()=>{if(!tip.classList.contains('show'))tip.style.display='none';},180);}
+svg.setAttribute('viewBox','0 0 '+W+' '+H);
+svg.setAttribute('preserveAspectRatio','none');
+
+// 散佈座標：5 欄 4 列
+const nodes=people.map((p,i)=>{
+  const col=i%5,row=Math.floor(i/5);
+  const sx=110+col*205, sy=70+row*108;
+  const el=document.createElement('div');
+  el.className='node '+p.cat+(p.role==='offer'?' offer':'')+(p.jiang?' jiang':'');
+  el.innerHTML='<div class="emo">'+p.emo+'</div><div class="nm">'+p.nm+'</div>';
+  el.addEventListener('mouseenter',()=>showTip(p,el));
+  el.addEventListener('mouseleave',hideTip);
+  stage.appendChild(el);
+  return {p,el,sx,sy,cx:sx,cy:sy};
+});
+// 三三兩兩分組
+const svgns='http://www.w3.org/2000/svg';
+const groups=[
+  {cat:'kb',  members:['江江教練','製造業','顧問業']},
+  {cat:'kb',  members:['醫療','教育']},
+  {cat:'auto',members:['自動化團隊','電商','貿易']},
+  {cat:'auto',members:['行政','服務業']},
+  {cat:'mkt', members:['行銷顧問','餐飲','品牌']},
+  {cat:'mkt', members:['零售','個人品牌']},
+  {cat:'cs',  members:['客服 AI','電信','旅遊']},
+  {cat:'cs',  members:['SaaS','診所']}
+];
+const gcenters=[[170,140],[400,140],[640,140],[870,140],[170,330],[400,330],[640,330],[870,330]];
+const findNode=nm=>nodes.find(n=>n.p.nm===nm);
+groups.forEach((g,gi)=>{
+  const ctr=gcenters[gi];
+  const off=g.members.length===3?[[0,-50],[-54,40],[54,40]]:[[-50,0],[50,0]];
+  g.members.forEach((nm,mi)=>{const n=findNode(nm);n.cx=ctr[0]+off[mi][0];n.cy=ctr[1]+off[mi][1];});
+});
+
+function place(useCluster){
+  const r=stage.getBoundingClientRect();
+  nodes.forEach(n=>{
+    const x=(useCluster?n.cx:n.sx)/W*r.width;
+    const y=(useCluster?n.cy:n.sy)/H*r.height;
+    n.el.style.left=x+'px';
+    n.el.style.top=y+'px';
+  });
+}
+place(false);
+window.addEventListener('resize',()=>place(stage.dataset.clustered==='1'));
+
+const countEl=document.getElementById('count');
+const resultEl=document.getElementById('result');
+
+function run(){
+  stage.dataset.clustered='1';
+  place(true);
+  setTimeout(()=>{
+    svg.innerHTML='';
+    groups.forEach((g,gi)=>{
+      const ctr=gcenters[gi],col=cats[g.cat].color,mem=g.members.map(findNode);
+      const ell=document.createElementNS(svgns,'ellipse');
+      ell.setAttribute('cx',ctr[0]);ell.setAttribute('cy',ctr[1]);
+      ell.setAttribute('rx',g.members.length===3?98:80);ell.setAttribute('ry',78);
+      ell.setAttribute('fill',col);ell.setAttribute('opacity','0');
+      ell.style.transition='opacity .5s';ell.style.transitionDelay=(0.07*gi)+'s';
+      svg.appendChild(ell);
+      requestAnimationFrame(()=>ell.setAttribute('opacity','0.09'));
+      for(let k=0;k<mem.length-1;k++){
+        const a=mem[k],b=mem[k+1];
+        const ln=document.createElementNS(svgns,'line');
+        ln.setAttribute('x1',a.cx);ln.setAttribute('y1',a.cy);
+        ln.setAttribute('x2',b.cx);ln.setAttribute('y2',b.cy);
+        ln.setAttribute('stroke',col);ln.setAttribute('stroke-width','2.6');
+        ln.setAttribute('stroke-linecap','round');ln.setAttribute('opacity','0');
+        ln.style.transition='opacity .5s';ln.style.transitionDelay=(0.07*gi+0.12)+'s';
+        svg.appendChild(ln);
+        requestAnimationFrame(()=>ln.setAttribute('opacity','0.55'));
+      }
+    });
+  },900);
+  countEl.textContent='媒合成 8 組，三三兩兩';
+  resultEl.innerHTML='';
+  groups.forEach((g,gi)=>{
+    const div=document.createElement('div');
+    div.className='grp';
+    div.style.borderLeft='6px solid '+cats[g.cat].color;
+    div.innerHTML='<b>'+cats[g.cat].name+'</b>　'+g.members.join('　↔　');
+    resultEl.appendChild(div);
+  });
+  resultEl.classList.add('show');
+}
+function reset(){
+  stage.dataset.clustered='0';
+  place(false);
+  svg.innerHTML='';
+  countEl.textContent='';
+  resultEl.classList.remove('show');
+}
+document.getElementById('runBtn').onclick=run;
+document.getElementById('resetBtn').onclick=reset;
+</script>
+</body>
+</html>
