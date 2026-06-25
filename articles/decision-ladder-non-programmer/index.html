@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="index,follow">
+<title>Ponytail：不寫程式的人，也能用的「決策階梯」｜江江教練 · AI 知識管理</title>
+<meta name="description" content="Ponytail 原本是工程師用來刪掉 AI 過度設計程式碼的技能包，它處理的其實是一件很常見的事：AI 廢話太多。這篇把它從程式碼搬到寫作、整理、決策與訓練 AI 員工，講清楚「決策階梯」怎麼用，以及讓階梯真正生效的關鍵：舉證反轉。">
+<link rel="canonical" href="https://ai-km-jiang.vercel.app/articles/decision-ladder-non-programmer/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Ponytail：不寫程式的人，也能用的「決策階梯」｜江江教練">
+<meta property="og:image" content="https://ai-km-jiang.vercel.app/images/articles/decision-ladder-summary-wide.jpg">
+<meta property="og:description" content="專治「AI 廢話太多」的一套思路：決策階梯，加上讓它真正生效的舉證反轉。不寫程式也能用。">
+<meta property="og:url" content="https://ai-km-jiang.vercel.app/articles/decision-ladder-non-programmer/">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:site_name" content="江江教練 · AI 知識管理">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Ponytail：不寫程式的人，也能用的「決策階梯」｜江江教練">
+<meta name="twitter:image" content="https://ai-km-jiang.vercel.app/images/articles/decision-ladder-summary-wide.jpg">
+<meta name="twitter:description" content="專治「AI 廢話太多」的一套思路：決策階梯，加上讓它真正生效的舉證反轉。不寫程式也能用。">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Ponytail：不寫程式的人，也能用的決策階梯","description":"Ponytail 原本是工程師用來刪掉 AI 過度設計程式碼的技能包，它處理的其實是一件很常見的事：AI 廢話太多。這篇把它從程式碼搬到寫作、整理、決策與訓練 AI 員工，講清楚決策階梯怎麼用，以及讓階梯真正生效的關鍵：舉證反轉。","author":{"@type":"Person","name":"江昱德","alternateName":"江江教練","jobTitle":"隱性知識提煉師、AI 應用規劃師"},"isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://ai-km-jiang.vercel.app/"},"image":"https://ai-km-jiang.vercel.app/images/articles/decision-ladder-summary-wide.jpg","datePublished":"2026-06-24","dateModified":"2026-06-24","inLanguage":"zh-Hant","url":"https://ai-km-jiang.vercel.app/articles/decision-ladder-non-programmer/"}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{--ink:#1a1612;--paper:#fefcf8;--muted:#6a635a;--line:#d8cdb8;--green:#5f7553;--blue:#5689b8;--orange:#e85a4f;--soft:#faf5ec;--dark:#2a2018;--shadow:0 18px 45px rgba(107,74,42,.14)}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC","Segoe UI",sans-serif}
+a{color:inherit}
+.topbar{position:sticky;top:0;z-index:20;display:flex;gap:10px;align-items:center;justify-content:space-between;padding:12px clamp(18px,4vw,56px);border-bottom:1px solid rgba(26,22,18,.12);background:rgba(254,252,248,.92);backdrop-filter:blur(12px)}
+.brand{font-weight:900;font-size:14px;text-decoration:none}
+.nav{display:flex;gap:8px;overflow:auto}
+.nav a{white-space:nowrap;text-decoration:none;border:1px solid rgba(26,22,18,.16);border-radius:999px;padding:8px 11px;background:#fff;font-size:14px;font-weight:800}
+.hero{min-height:58vh;display:grid;align-items:end;padding:56px clamp(20px,6vw,88px);background:linear-gradient(135deg,rgba(26,22,18,.94),rgba(95,117,83,.82));color:#fff;overflow:hidden}
+.kicker{font:900 13px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;color:#f6d7a6;text-transform:uppercase}
+.hero h1{max-width:1040px;margin:16px 0 18px;font-size:clamp(34px,5.4vw,66px);line-height:1.1;overflow-wrap:anywhere}
+.hero p{max-width:820px;font-size:clamp(18px,2vw,23px);line-height:1.62;color:rgba(255,255,255,.9)}
+.cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
+.cta a{display:inline-flex;align-items:center;text-decoration:none;border-radius:8px;padding:12px 16px;font-weight:900}
+.cta .primary{background:#fff;color:#1a1612}.cta .ghost{border:1px solid rgba(255,255,255,.32);color:#fff;background:rgba(255,255,255,.08)}
+.section{padding:54px clamp(20px,6vw,88px);border-top:1px solid var(--line)}
+.inner{width:min(1000px,100%);margin:0 auto}
+.section h2{font-size:clamp(26px,4.2vw,48px);line-height:1.12;margin:0 0 18px}
+.section h3{font-size:clamp(21px,3vw,30px);line-height:1.2;margin:30px 0 12px}
+.lead{font-size:clamp(18px,1.6vw,22px);line-height:1.7;color:#3a342d;max-width:900px}
+.section p{font-size:18px;line-height:1.74;color:#3a342d}.section p+p{margin-top:14px}
+.section ul,.section ol{padding-left:1.4em;font-size:18px;line-height:1.74;color:#3a342d}.section li{margin-bottom:8px}
+.ladder{counter-reset:none;list-style:decimal}
+.who-front{color:var(--green)}.who-ai{color:var(--blue)}
+.meaning{margin:22px 0;padding:16px 18px;border-left:5px solid var(--blue);background:rgba(86,137,184,.12);border-radius:6px;line-height:1.7;font-size:19px}
+.meaning b{display:block;color:var(--blue);margin-bottom:4px}
+.caveat{margin:22px 0 8px;padding:16px 18px;border-left:5px solid var(--orange);background:rgba(232,90,79,.1);border-radius:6px;line-height:1.7;font-size:18px;color:#3a342d}
+.caveat b{display:block;color:var(--orange);margin-bottom:4px}
+.tagrow{display:flex;flex-wrap:wrap;gap:7px;margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
+.tag{font-size:14px;color:var(--muted);background:var(--soft);border:1px solid var(--line);border-radius:999px;padding:4px 11px}
+.duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:24px}
+.duo .card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:22px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.duo .card.a{border-color:var(--orange)}.duo .card.b{border-color:var(--green);box-shadow:0 8px 24px rgba(95,117,83,.16)}
+.duo .card small{display:block;font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.04em;margin-bottom:9px}
+.duo .card.a small{color:var(--orange)}.duo .card.b small{color:var(--green)}
+.duo .card b{display:block;font-size:19px;line-height:1.3;margin-bottom:10px}
+.duo .card ul{margin:0;font-size:16px;line-height:1.6}
+figure.shot{margin:26px auto;max-width:540px}
+figure.shot.cover{max-width:600px;margin-top:0}
+figure.shot img{width:100%;height:auto;display:block;border-radius:12px;border:1px solid var(--line);box-shadow:var(--shadow)}
+figure.shot figcaption{font-size:14px;color:var(--muted);margin-top:10px;text-align:center;line-height:1.5}
+figure.wide{margin:24px 0 0}
+figure.wide img{width:100%;height:auto;display:block;border-radius:12px;border:1px solid var(--line);box-shadow:var(--shadow)}
+figure.wide figcaption{font-size:14px;color:var(--muted);margin-top:10px;text-align:center}
+.cta-band{background:var(--dark);color:#fff}.cta-band .section{border-top:none}
+.cta-band .inner{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(260px,.85fr);gap:26px;align-items:start}
+.cta-band h2{font-size:clamp(26px,4vw,44px);margin:0 0 16px}.cta-band p,.cta-band .lead{color:rgba(255,255,255,.84);font-size:18px;line-height:1.72}
+.cta-card{border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.06);border-radius:8px;padding:22px}
+.cta-card b{display:block;color:#f6d7a6;margin-bottom:10px;font-size:18px}.cta-card p{margin:0 0 14px}
+.cta-card a{display:inline-flex;text-decoration:none;border-radius:8px;padding:11px 15px;font-weight:900;background:#fff;color:#1a1612}
+.footer{padding:30px clamp(20px,6vw,88px);font-size:14px;color:var(--muted);background:#fff;border-top:1px solid var(--line)}
+.footer-inner{width:min(1000px,100%);margin:0 auto}
+.footer-links{display:flex;flex-wrap:wrap;gap:6px 12px;margin-bottom:14px}.footer-links a{color:var(--blue);font-weight:900;text-decoration:none;font-size:14px}
+.footer-brand{font-weight:900;font-size:15px;margin-bottom:10px}.footer-note{font-size:13px;line-height:1.6}
+@media(max-width:820px){.duo{grid-template-columns:1fr}.cta-band .inner{grid-template-columns:1fr}.section{padding:40px 20px}.hero{min-height:52vh}html,body{overflow-x:hidden}.hero h1{word-break:break-word}}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="../../articles.html">江江教練 · 深度文章</a>
+  <nav class="nav" aria-label="頁面導覽">
+    <a href="../../articles.html" style="background:#1a1612;color:#fff;border-color:#1a1612">← 深度文章總站</a>
+    <a href="#start">速讀</a>
+    <a href="#problem">廢話問題</a>
+    <a href="#ladder">決策階梯</a>
+    <a href="#burden">舉證反轉</a>
+    <a href="#recap">回顧</a>
+    <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">LINE 社群 ↗</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <div>
+    <div class="kicker">AI 應用 · 決策框架</div>
+    <h1>Ponytail：不寫程式的人，也能用的「決策階梯」</h1>
+    <p>一個工程師圈在用的技能包，專治 AI 廢話太多。我把它從程式碼搬到寫作、整理、決策，還有訓練自己的 AI 員工。</p>
+    <div class="cta">
+      <a class="primary" href="#start">開始閱讀</a>
+    </div>
+  </div>
+</section>
+
+<main>
+
+<section class="section" id="start">
+  <div class="inner">
+    <figure class="shot cover">
+      <img loading="lazy" src="../../images/articles/decision-ladder-01.jpg" alt="我做知識管理，最近迷上一個工程師技能包 Ponytail">
+      <figcaption>我是做知識管理的，根本沒在寫程式，但這個技能包我一看就很喜歡。</figcaption>
+    </figure>
+    <p class="lead">AI 很愛講廢話。你只是要它做一件小事，它回你一大串解釋、計畫、延伸方案。寫文章越寫越發散，整理資料囉嗦冗長，請它規劃一個東西，越講越大包。這篇講一個工程師圈在用的技能包 Ponytail，跟它裡面我最喜歡的「決策階梯」，怎麼用在不寫程式的場景，最後再講一個讓階梯真正生效的關鍵：舉證反轉。</p>
+    <div class="duo">
+      <div class="card a">
+        <small>適合誰</small>
+        <ul>
+          <li>每天用 AI 寫文章、整理資料、做決策，但不寫程式的人</li>
+          <li>在訓練自己的 AI 員工，想讓它先判斷再行動的人</li>
+          <li>覺得 AI 的回應總是太長、太發散、抓不到重點的人</li>
+        </ul>
+      </div>
+      <div class="card b">
+        <small>你會得到什麼</small>
+        <ul>
+          <li>一個專治「AI 廢話太多」的思路</li>
+          <li>一條可以一格一格打勾的「決策階梯」</li>
+          <li>一個讓階梯真正生效的關鍵：舉證反轉</li>
+        </ul>
+      </div>
+    </div>
+    <div class="meaning">
+      <b>為什麼一個不寫程式的人會喜歡它</b>
+      Ponytail 處理的事情，每個用 AI 的人都遇得到：它很愛多做。把這件事處理好，省下來的就不只是程式碼。
+    </div>
+  </div>
+</section>
+
+<section class="section" id="problem">
+  <div class="inner">
+    <h2>一、先講問題：AI 很愛講廢話</h2>
+    <figure class="shot">
+      <img loading="lazy" src="../../images/articles/decision-ladder-02.jpg" alt="Ponytail 在處理一件事：AI 廢話太多">
+      <figcaption>Ponytail 的精神，就是先把多餘的東西剪掉，先做最小必要動作。</figcaption>
+    </figure>
+    <p>Ponytail 原本是工程師用來刪掉 AI 過度設計程式碼的技能包。AI 寫程式很愛多做，要一個小功能，它裝套件、包元件、加一堆設定。Ponytail 的精神，就是先把多餘的東西剪掉，先做最小必要的動作。</p>
+    <p>我看到的當下就想，這哪裡只適用程式碼。</p>
+    <figure class="shot">
+      <img loading="lazy" src="../../images/articles/decision-ladder-03.jpg" alt="所有覺得 AI 廢話太多的場景，都用得到">
+      <figcaption>寫文章、整理資料、做決策、請 AI 規劃，都可以套同一套思路。</figcaption>
+    </figure>
+    <p>所有你覺得「AI 廢話太多」的場景，都用得到：</p>
+    <ul>
+      <li>寫文章太發散，先寫重點，再補細節</li>
+      <li>整理資料太囉嗦，先抓重點，再分類</li>
+      <li>做決策一直繞圈，先確認目標，再選最小行動</li>
+      <li>請 AI 規劃卻越講越大包，先做最小版本，再擴充</li>
+    </ul>
+    <p>共同的那句話是：太多，就先剪掉。</p>
+  </div>
+</section>
+
+<section class="section" id="ladder">
+  <div class="inner">
+    <h2>二、Ponytail 的核心：決策階梯</h2>
+    <figure class="shot">
+      <img loading="lazy" src="../../images/articles/decision-ladder-04.jpg" alt="決策階梯：先問最省力的選項">
+      <figcaption>動手之前，從最省力的選項開始問，一階一階往上。</figcaption>
+    </figure>
+    <p>我最喜歡的，是它裡面的「決策階梯」。它的做法很具體，動手之前，從最省力的選項開始問，一階一階往上：</p>
+    <ol class="ladder">
+      <li>這個需要存在嗎？</li>
+      <li>現成工具能用嗎？</li>
+      <li>平台功能能用嗎？</li>
+      <li>已安裝的東西能用嗎？</li>
+      <li>一行能解決嗎？</li>
+      <li>都不行，才做最小必要動作。</li>
+    </ol>
+    <p>只要某一階的答案是「可以」，就停在那裡，不再往上多做。</p>
+    <p>我喜歡它，是因為它把一句空話變成可以一格一格打勾的動作。你跟 AI 說「請簡潔一點」，這是形容詞，它沒辦法照做。但你給它一條階梯，它每一步都有明確的判斷可以走。</p>
+    <figure class="shot">
+      <img loading="lazy" src="../../images/articles/decision-ladder-05.jpg" alt="放到 AI 員工身上，也用在課程講稿整理">
+      <figcaption>讓 AI 員工有自己的決策階梯，先判斷，再行動。</figcaption>
+    </figure>
+    <p>我就覺得它很適合放到我的 AI 員工身上。讓每個 AI 員工都有自己的決策階梯，遇到一個陌生要求，先過一遍判斷，再行動。</p>
+    <p>它也可以用在我自己身上。我整理課程講稿的時候，最容易說太多廢話。有一條階梯先問「這段真的需要嗎」，講稿就會乾淨很多。</p>
+  </div>
+</section>
+
+<section class="section" id="burden">
+  <div class="inner">
+    <h2>三、藏在階梯裡的引擎：舉證反轉</h2>
+    <p>這一段我要老實說。我整理這個技能包的時候，自己只看到兩件事：它幫我少講廢話，還有它給了我決策階梯。我以為這樣就完整了。後來跟 AI 來回討論，它提醒我，還漏了最關鍵的一個，叫舉證反轉。</p>
+    <div class="meaning">
+      <b>什麼是舉證反轉</b>
+      把「預設值」從『做』翻成『不做』，然後讓想做的人負責解釋自己。
+    </div>
+    <p>一般狀況是，東西預設都留著、都做，你想刪、想砍，得說明理由。舉證的責任在做減法的人身上。</p>
+    <p>舉證反轉把它倒過來。東西預設都不做，你想加、想做，得先證明非做不可。舉證的責任跑到做加法的人身上。</p>
+    <p>最好懂的類比是法庭上的無罪推定。法律預設你無罪，要定你的罪，得由檢方舉證，沒有人需要先證明自己清白。</p>
+    <p>決策階梯之所以有用，靠的就是這條規矩。每一個動作預設都是「不做」，要爬過階梯、拿到許可，才准做。決策階梯是你看得到的樓梯，舉證反轉是「預設站在樓梯底、要往上爬才准動」的那條規矩。少了它，階梯只是擺著好看，大家還是會直接從頂樓開始做。</p>
+    <div class="caveat"><b>這段是跟 AI 討論才補上的</b>這件事我自己沒看到，是來回討論時 AI 提醒我的。我常說 AI 可以幫人輔助決策，這就是一個很實際的例子。</div>
+  </div>
+</section>
+
+<section class="section" id="recap">
+  <div class="inner">
+    <h2>一張圖回顧</h2>
+    <figure class="wide">
+      <img loading="lazy" src="../../images/articles/decision-ladder-summary-wide.jpg" alt="Ponytail 給我的三個提醒：先剪掉廢話、先問最省力選項、先判斷再行動">
+      <figcaption>Ponytail 給我的三個提醒</figcaption>
+    </figure>
+    <p>整理一下：先剪掉廢話，先問最省力的選項，先判斷再行動。</p>
+    <h3>說到底</h3>
+    <p>Ponytail 做的，是把一個資深工程師「看一眼就知道這段不用寫」的判斷，拆解成一條 AI 能穩定照做的規則。那種判斷本來藏在老手腦袋裡，講不清楚，也教不會。</p>
+    <p>這正好是我每天在做的事。我不寫程式，但我幫人把藏在腦袋裡的經驗和判斷，整理成能累積、能交接、AI 用得上的系統。</p>
+    <div class="meaning">
+      <b>給自己的定位提醒</b>
+      所以我看一個工程師的技能包，看到的不只是怎麼省程式碼，還有一種把判斷力提煉出來的方法。而這正是不寫程式的我，最用得上的東西。
+    </div>
+    <div class="tagrow">
+      <span class="tag">AI應用</span><span class="tag">知識管理</span><span class="tag">輔助決策</span><span class="tag">技能包設計</span><span class="tag">具身對話代理</span>
+    </div>
+  </div>
+</section>
+
+<section class="cta-band">
+  <div class="section">
+    <div class="inner">
+      <div>
+        <h2>想把這套思路放進自己的 AI 工作流？</h2>
+        <p class="lead">我每月固定舉辦兩場免費線上講座，分享善用 AI 作為思考夥伴、把知識與經驗整理成提示詞、技能包、知識庫的實戰方法。對 AI × 知識管理、隱性知識提煉有興趣，歡迎先從社群開始。</p>
+      </div>
+      <div class="cta-card">
+        <b>江江教練 · LINE 社群</b>
+        <p>實戰經驗與方法論，持續分享。也接顧問需求。</p>
+        <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">加入 LINE 社群 ↗</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">江江教練 · AI 知識管理</div>
+    <div class="footer-links">
+      <a href="../../articles.html">← 回深度文章總站</a>
+      <a href="../../index.html">首頁</a>
+      <a href="../../learn.html">自學資源</a>
+      <a href="../../skills.html">Skills 下載</a>
+      <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">LINE 社群 ↗</a>
+      <a href="https://www.threads.com/@jiang_yude_coach" target="_blank" rel="noopener">Threads ↗</a>
+      <a href="https://vocus.cc/salon/Jiang_Coach" target="_blank" rel="noopener">方格子 ↗</a>
+    </div>
+    <div class="footer-note">這是一篇教學文章，整理我怎麼把一個工程師技能包的「決策階梯」用在不寫程式的場景，供你參考。</div>
+  </div>
+</footer>
+
+<script src="../../articles-data.js"></script>
+<script src="../../related-render.js"></script>
+</body>
+</html>

@@ -1,0 +1,318 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="index,follow">
+<title>Agent的會議記錄工作流：我把會議變成知識資產的七步｜江江教練 · AI 知識管理</title>
+<meta name="description" content="開完會的逐字稿動輒幾萬字，讀完就飽了。這篇完整公開我把每場會議變成知識資產的七步：聲紋辨識轉稿、補現場觀察、一句指令啟動、分級清稿、會後策略報告書、交付物初稿，到用納瓦爾與馬斯克視角判斷這場會值不值得。">
+<link rel="canonical" href="https://ai-km-jiang.vercel.app/articles/meeting-record-agent-workflow/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Agent的會議記錄工作流：我把會議變成知識資產的七步｜江江教練">
+<meta property="og:image" content="https://ai-km-jiang.vercel.app/images/articles/meeting-record-agent-workflow-summary-wide.jpg">
+<meta property="og:description" content="把每一場會議整理成可以輔助決策、下次還用得到的知識資產。完整七步流程公開，含可複用提示詞。">
+<meta property="og:url" content="https://ai-km-jiang.vercel.app/articles/meeting-record-agent-workflow/">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:site_name" content="江江教練 · AI 知識管理">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Agent的會議記錄工作流：我把會議變成知識資產的七步｜江江教練">
+<meta name="twitter:image" content="https://ai-km-jiang.vercel.app/images/articles/meeting-record-agent-workflow-summary-wide.jpg">
+<meta name="twitter:description" content="把每一場會議整理成可以輔助決策、下次還用得到的知識資產。完整七步流程公開，含可複用提示詞。">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Agent的會議記錄工作流：我把會議變成知識資產的七步","description":"開完會的逐字稿動輒幾萬字，讀完就飽了。這篇完整公開我把每場會議變成知識資產的七步：聲紋辨識轉稿、補現場觀察、一句指令啟動、分級清稿、會後策略報告書、交付物初稿，到用納瓦爾與馬斯克視角判斷這場會值不值得。","author":{"@type":"Person","name":"江昱德","alternateName":"江江教練","jobTitle":"隱性知識提煉師、AI 應用規劃師"},"isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://ai-km-jiang.vercel.app/"},"image":"https://ai-km-jiang.vercel.app/images/articles/meeting-record-agent-workflow-summary-wide.jpg","datePublished":"2026-06-23","dateModified":"2026-06-23","inLanguage":"zh-Hant","url":"https://ai-km-jiang.vercel.app/articles/meeting-record-agent-workflow/"}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{--ink:#1a1612;--paper:#fefcf8;--muted:#6a635a;--line:#d8cdb8;--green:#5f7553;--blue:#5689b8;--orange:#e85a4f;--soft:#faf5ec;--dark:#2a2018;--shadow:0 18px 45px rgba(107,74,42,.14)}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC","Segoe UI",sans-serif}
+a{color:inherit}
+.topbar{position:sticky;top:0;z-index:20;display:flex;gap:10px;align-items:center;justify-content:space-between;padding:12px clamp(18px,4vw,56px);border-bottom:1px solid rgba(26,22,18,.12);background:rgba(254,252,248,.92);backdrop-filter:blur(12px)}
+.brand{font-weight:900;font-size:14px;text-decoration:none}
+.nav{display:flex;gap:8px;overflow:auto}
+.nav a{white-space:nowrap;text-decoration:none;border:1px solid rgba(26,22,18,.16);border-radius:999px;padding:8px 11px;background:#fff;font-size:14px;font-weight:800}
+.hero{min-height:58vh;display:grid;align-items:end;padding:56px clamp(20px,6vw,88px);background:linear-gradient(135deg,rgba(26,22,18,.94),rgba(95,117,83,.82));color:#fff;overflow:hidden}
+.kicker{font:900 13px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;color:#f6d7a6;text-transform:uppercase}
+.hero h1{max-width:1040px;margin:16px 0 18px;font-size:clamp(34px,5.4vw,66px);line-height:1.1;overflow-wrap:anywhere}
+.hero p{max-width:820px;font-size:clamp(18px,2vw,23px);line-height:1.62;color:rgba(255,255,255,.9)}
+.cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
+.cta a{display:inline-flex;align-items:center;text-decoration:none;border-radius:8px;padding:12px 16px;font-weight:900}
+.cta .primary{background:#fff;color:#1a1612}.cta .ghost{border:1px solid rgba(255,255,255,.32);color:#fff;background:rgba(255,255,255,.08)}
+.section{padding:54px clamp(20px,6vw,88px);border-top:1px solid var(--line)}
+.inner{width:min(1000px,100%);margin:0 auto}
+.section h2{font-size:clamp(26px,4.2vw,48px);line-height:1.12;margin:0 0 18px}
+.section h3{font-size:clamp(21px,3vw,30px);line-height:1.2;margin:30px 0 12px}
+.lead{font-size:clamp(18px,1.6vw,22px);line-height:1.7;color:#3a342d;max-width:900px}
+.section p{font-size:18px;line-height:1.74;color:#3a342d}.section p+p{margin-top:14px}
+.section ul,.section ol{padding-left:1.4em;font-size:18px;line-height:1.74;color:#3a342d}.section li{margin-bottom:8px}
+.step-label{display:inline-block;font:900 13px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.04em;color:var(--orange);background:rgba(232,90,79,.1);border:1px solid rgba(232,90,79,.3);border-radius:999px;padding:5px 12px;margin-top:18px}
+.who-front{color:var(--green)}.who-ai{color:var(--blue)}
+.meaning{margin:22px 0;padding:16px 18px;border-left:5px solid var(--blue);background:rgba(86,137,184,.12);border-radius:6px;line-height:1.7;font-size:19px}
+.meaning b{display:block;color:var(--blue);margin-bottom:4px}
+.caveat{margin:0 0 8px;padding:16px 18px;border-left:5px solid var(--orange);background:rgba(232,90,79,.1);border-radius:6px;line-height:1.7;font-size:18px;color:#3a342d}
+.caveat b{display:block;color:var(--orange);margin-bottom:4px}
+.tagrow{display:flex;flex-wrap:wrap;gap:7px;margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
+.tag{font-size:14px;color:var(--muted);background:var(--soft);border:1px solid var(--line);border-radius:999px;padding:4px 11px}
+.duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:24px}
+.duo .card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:22px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.duo .card.a{border-color:var(--orange)}.duo .card.b{border-color:var(--green);box-shadow:0 8px 24px rgba(95,117,83,.16)}
+.duo .card small{display:block;font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.04em;margin-bottom:9px}
+.duo .card.a small{color:var(--orange)}.duo .card.b small{color:var(--green)}
+.duo .card b{display:block;font-size:19px;line-height:1.3;margin-bottom:10px}
+.duo .card p{margin:0;color:#3a342d;line-height:1.6;font-size:16px}
+.duo .card ul{margin:0;font-size:16px}
+.cardgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-top:22px}
+.cardgrid figure{margin:0}
+.cardgrid img{width:100%;height:auto;display:block;border-radius:10px;border:1px solid var(--line);box-shadow:0 8px 22px rgba(107,74,42,.1)}
+.cardgrid figcaption{font-size:13px;color:var(--muted);margin-top:6px;line-height:1.4}
+figure.wide{margin:24px 0 0}
+figure.wide img{width:100%;height:auto;display:block;border-radius:12px;border:1px solid var(--line);box-shadow:var(--shadow)}
+figure.wide figcaption{font-size:14px;color:var(--muted);margin-top:10px;text-align:center}
+.codeblock{background:var(--dark);color:#f3ead9;border-radius:8px;padding:18px 20px;font:500 14px/1.65 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;overflow-x:auto;white-space:pre-wrap;margin:20px 0;box-shadow:0 8px 22px rgba(107,74,42,.12)}
+.codeblock .c{color:#f6d7a6;font-weight:600}
+.cta-band{background:var(--dark);color:#fff}.cta-band .section{border-top:none}
+.cta-band .inner{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(260px,.85fr);gap:26px;align-items:start}
+.cta-band h2{font-size:clamp(26px,4vw,44px);margin:0 0 16px}.cta-band p,.cta-band .lead{color:rgba(255,255,255,.84);font-size:18px;line-height:1.72}
+.cta-card{border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.06);border-radius:8px;padding:22px}
+.cta-card b{display:block;color:#f6d7a6;margin-bottom:10px;font-size:18px}.cta-card p{margin:0 0 14px}
+.cta-card a{display:inline-flex;text-decoration:none;border-radius:8px;padding:11px 15px;font-weight:900;background:#fff;color:#1a1612}
+.footer{padding:30px clamp(20px,6vw,88px);font-size:14px;color:var(--muted);background:#fff;border-top:1px solid var(--line)}
+.footer-inner{width:min(1000px,100%);margin:0 auto}
+.footer-links{display:flex;flex-wrap:wrap;gap:6px 12px;margin-bottom:14px}.footer-links a{color:var(--blue);font-weight:900;text-decoration:none;font-size:14px}
+.footer-brand{font-weight:900;font-size:15px;margin-bottom:10px}.footer-note{font-size:13px;line-height:1.6}
+@media(max-width:820px){.duo{grid-template-columns:1fr}.cta-band .inner{grid-template-columns:1fr}.section{padding:40px 20px}.hero{min-height:52vh}html,body{overflow-x:hidden}.hero h1{word-break:break-word}}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="../../articles.html">江江教練 · 深度文章</a>
+  <nav class="nav" aria-label="頁面導覽">
+    <a href="../../articles.html" style="background:#1a1612;color:#fff;border-color:#1a1612">← 深度文章總站</a>
+    <a href="#start">速讀</a>
+    <a href="#cards">輪播卡</a>
+    <a href="#steps-front">七步流程</a>
+    <a href="#recap">回顧</a>
+    <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">LINE 社群 ↗</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <div>
+    <div class="kicker">AI 應用 · 會議記錄</div>
+    <h1>Agent的會議記錄工作流：我把會議變成知識資產的七步</h1>
+    <p>一場會議真正該被留下的，遠比你以為的多。我把整理流程固定成七步，前三步我自己做，第四步起交給 AI 自動跑完。</p>
+    <div class="cta">
+      <a class="primary" href="#start">開始閱讀</a>
+    </div>
+  </div>
+</section>
+
+<main>
+
+<section class="section" id="start">
+  <div class="inner">
+    <p class="lead">開完會的逐字稿動輒幾萬字，讀完就飽了，更別說整理成下次用得上的東西。這篇完整公開我整理會議記錄的七步流程，從聲紋辨識轉稿，一路到「這場會對我有沒有意義」的判斷。核心問題只有一個：一場會議開完，留下來的東西該怎麼整理，才能在下一次同樣的人、同樣的案子出現時，立刻翻得到、接得上。</p>
+    <div class="duo">
+      <div class="card a">
+        <small>適合誰</small>
+        <ul>
+          <li>一週開好幾場會、會後逐字稿堆著沒時間整理的人</li>
+          <li>接案、做顧問、跑合作，需要把每次談話沉澱下來的人</li>
+          <li>想用 AI 整理會議，卻發現它整理完不是太短就是抓不到重點的人</li>
+        </ul>
+      </div>
+      <div class="card b">
+        <small>你會得到什麼</small>
+        <ul>
+          <li>一套可以照抄的七步會議記錄流程</li>
+          <li>四種清稿等級的定義，知道什麼時候該留多少</li>
+          <li>一份會後策略報告書的範本，加上兩段可直接複製的提示詞</li>
+        </ul>
+      </div>
+    </div>
+    <div class="meaning">
+      <b>會議記錄的問題，不在記錄</b>
+      就算硬著頭皮把逐字稿整理完，過兩個月再回頭看，常常只剩一份流水帳。當初誰承諾了什麼、哪個環節我有點不放心、對方為什麼突然鬆口，這些當下最關鍵的訊息，早就在文字裡被磨平了。所以我把流程固定成七步，現在開完會照著跑就好。
+    </div>
+  </div>
+</section>
+
+<section class="section" id="cards">
+  <div class="inner">
+    <h2>先看一眼：這套流程的社群輪播卡版</h2>
+    <p>下面這組輪播卡是同一套流程的社群精簡版，先給你一個整體印象。想看完整七步與可複用提示詞，往下繼續。</p>
+    <div class="cardgrid">
+      <figure><img loading="lazy" src="../../images/articles/meeting-record-agent-workflow-01.jpg" alt="封面：我的會議記錄 Agent 工作流"></figure>
+      <figure><img loading="lazy" src="../../images/articles/meeting-record-agent-workflow-02.jpg" alt="現場會議用錄音筆或手機錄音"></figure>
+      <figure><img loading="lazy" src="../../images/articles/meeting-record-agent-workflow-03.jpg" alt="線上會議開 OBS 把畫面與聲音一起錄"></figure>
+      <figure><img loading="lazy" src="../../images/articles/meeting-record-agent-workflow-04.jpg" alt="把錄音轉成標了講者與時間碼的逐字稿"></figure>
+      <figure><img loading="lazy" src="../../images/articles/meeting-record-agent-workflow-05.jpg" alt="補上錄音聽不到的現場觀察"></figure>
+      <figure><img loading="lazy" src="../../images/articles/meeting-record-agent-workflow-06.jpg" alt="生成會後策略報告書"></figure>
+      <figure><img loading="lazy" src="../../images/articles/meeting-record-agent-workflow-07.jpg" alt="順手做出交付初稿並加上深度分析"></figure>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="steps-front">
+  <div class="inner">
+    <h2>前三步：我自己做的事</h2>
+    <p class="lead">這三步沒辦法外包。它們決定了後面 AI 能整理出多少價值。</p>
+
+    <div class="step-label who-front">第一步 · 我做</div>
+    <h3>用聲紋辨識，把錄音變成分得出人的逐字稿</h3>
+    <p>會議記錄的地基，是一份「知道誰在什麼時候說了什麼」的逐字稿。沒有講者區分，後面所有分析都會糊成一團。</p>
+    <p>現場會議我用錄音筆或手機錄音；線上會議我開 OBS，把畫面和聲音一起留下來。接著用支援聲紋辨識的工具轉逐字稿，Mac 上我用 MacWhisper，或微軟最近開源的 VibeVoice。重點是要能標出誰在說話、幾分幾秒說的。這份標了講者和時間碼的稿子，是後面每一步的原料。</p>
+    <div class="caveat"><b>別省這一步</b>沒有講者區分的逐字稿，能做的整理非常有限。寧可在這裡多花點工夫，用對工具。</div>
+
+    <div class="step-label who-front">第二步 · 我做</div>
+    <h3>補上錄音聽不出來的現場觀察</h3>
+    <p>錄音能留下所有人說了什麼，留不下的是現場的空氣。而那些聽不出來的，往往才是決定後續發展的關鍵。遇到重要的會，我會以一個在場觀察者的身分，當場補一段筆記：</p>
+    <ul>
+      <li>誰的表情、語氣有明顯變化</li>
+      <li>誰刻意避開了哪個話題</li>
+      <li>誰說了哪句話之後，現場士氣開始提振</li>
+      <li>氣氛在哪個時間點轉了</li>
+    </ul>
+    <p>這些我會直接標進逐字稿，註明是我的現場觀察。等到 AI 在做風險分析、描述某個人的立場時，這些就是它看不到、只有我能提供的那一塊。</p>
+
+    <div class="step-label who-front">第三步 · 我做</div>
+    <h3>丟給 AI，一句話啟動</h3>
+    <p>前面兩步把原料備齊，接下來我不想再一步一步下指令。我把這份逐字稿（含現場補充）丟給 AI，說一句「自動全面統整」。從這裡開始，後面四步它全自動接手，只在清稿完成、要生成報告書之前停下來等我確認一次。</p>
+  </div>
+</section>
+
+<section class="section" id="steps-ai">
+  <div class="inner">
+    <h2>後四步：AI 自動跑完</h2>
+
+    <div class="step-label">第四步 · AI 自動</div>
+    <h3>存檔備份，加上分級清稿</h3>
+    <p>AI 會先把原始逐字稿原樣存一份備份，一個字都不改，這是還原點。接著做清稿。清到多細我自己選，標準很簡單，就是「整理後的份量，跟原始逐字稿比，留下多少」：</p>
+    <ul>
+      <li><b>簡單</b>：留一到兩成。只留主幹結論和待辦，適合不重要的會</li>
+      <li><b>詳細</b>：留三到五成。去掉廢話，完整保留實質討論、案例、數字。這是我的預設</li>
+      <li><b>超詳細</b>：留七到九成。幾乎全留，只拿掉明顯重複和廢話</li>
+      <li><b>1:1 逐字稿校正</b>：全部留著。不刪不減，只依上下文把錯別字改掉，所有語氣詞、語助詞一個字都不動</li>
+    </ul>
+    <p>清稿完它會回報：原始幾個字、清完幾個字、留了多少比例。我一看就知道有沒有清過頭。想自己跑這一步，可以用這段提示詞：</p>
+    <div class="codeblock"><span class="c"># 會議逐字稿清稿</span>
+這是一份會議逐字稿，幫我做純清稿，不要做摘要、不要做分析。
+
+目標份量：跟原文比，保留 40-50%（可改 10-20% / 70-90% / 100%）。
+
+規則：
+1. 去掉口語贅字（嗯、啊、就是說、對對對）
+2. 保留每一段的講者標記和時間碼
+3. 完整保留所有實質討論、案例、數字、比喻，不要刪
+4. 清完先自己算字數，回報原始字數、清稿字數、保留比例
+5. 比例低於目標代表砍過頭，把內容補回來
+
+逐字稿如下：
+[貼上逐字稿]</div>
+
+    <div class="step-label">第五步 · AI 自動</div>
+    <h3>生成會後策略報告書</h3>
+    <p>清稿是給人讀的全文，報告書是給人決策的入口。一份好的會後報告書，要讓我三秒鐘知道接下來該做什麼、該擔心什麼，又能在需要時翻到完整的來龍去脈。它固定分三塊，重點在前、備查在後：</p>
+    <ol>
+      <li><b>重點待辦</b>：有負責人、有下一步、有時間節點的行動項目，列成可勾選的清單</li>
+      <li><b>風險與隱憂</b>：這場會議本身要留意的卡點、未決事項、需要追蹤確認的地方</li>
+      <li><b>詳細脈絡</b>：把清稿的重點全部收進來，依時間順序一段一段折疊起來</li>
+    </ol>
+    <p>第三塊我特別要求做成折疊式。平常收著，畫面乾淨；哪天要查「那場會某一段到底講了什麼」，點開就有。這樣一份報告書同時是決策入口和完整備查，不用開兩個檔。</p>
+
+    <div class="step-label">第六步 · AI 自動</div>
+    <h3>把答應對方的東西，先擬成初稿</h3>
+    <p>會議裡常常會順口答應對方一些交付物，報價單、課綱、會後整理。與其回頭再從零生，不如趁 AI 還握著整場脈絡時，直接先擬好初稿。它會掃過整份內容，把我答應要交付的東西抓出來，擬成初稿，預設文件檔和網頁版都給我，並標明「初稿待確認」。內容只照會議實際談到的長，沒談到的價格、節數它不會自己編。我拿到的是一份七八成完成、可以直接動手改的東西。</p>
+
+    <div class="step-label">第七步 · 選配</div>
+    <h3>用納瓦爾加馬斯克的視角，判斷這場會值不值得</h3>
+    <p>前面六步處理的是「這場會怎麼整理」。第七步我要跳出來，問一個更高層的問題：這場會議，對我整個事業到底有什麼意義，值得我花時間參與嗎。這一步只有我想看得更全面時才做，加一句「深度分析」就會啟動。</p>
+    <div class="meaning"><b>兩種尺度要分清楚</b>第五步的風險分析，針對的是「這一場會議本身」；第七步的判斷，針對的是「這場會對我整體發展」。一個是戰術，一個是戰略，別混在一起看。</div>
+    <p>它會用兩種視角各跑一遍：納瓦爾的視角問的是槓桿類型、是否在累積只有我能做的特定知識、注意力會不會長期複利；馬斯克的視角用第一性原理問，撥開「人家都這樣做」之後，這件事對我的大目標是不是必要、是必經之路還是繞路、是不是最高槓桿的時間用法。最後給我一個綜合判斷：這場會對我是加分、中性，還是分心，以及下一步建議。</p>
+    <div class="codeblock"><span class="c"># 會議的整體價值判斷</span>
+以下是我這場會議的報告書。請站在我的立場，用兩種視角分析這場會議對我整體事業的價值，最後給綜合判斷。
+
+納瓦爾視角：槓桿類型、是否累積我的特定知識、注意力是否長期複利。
+馬斯克視角：用第一性原理看對我的大目標是否必要、是必經之路還是繞路、是否最高槓桿的時間用法。
+
+綜合判斷：這場會對我是加分、中性還是分心，下一步建議。
+不要憑空假設我沒提到的事實，只根據報告書和我已知的定位推論。
+
+報告書如下：
+[貼上報告書]</div>
+    <div class="caveat"><b>多場會議，還會多看一件事</b>同一個合作開到第二、第三場之後，我會把幾場一起看，評估這個團隊是越開越有共識，還是越開越發散。尤其是跟一群新的人談一個新的合作時，這個評估特別重要。</div>
+  </div>
+</section>
+
+<section class="section" id="recap">
+  <div class="inner">
+    <h2>一張圖回顧</h2>
+    <figure class="wide">
+      <img loading="lazy" src="../../images/articles/meeting-record-agent-workflow-summary-wide.jpg" alt="會議記錄 Agent 工作流的橫式總結圖">
+      <figcaption>七步流程一頁總覽</figcaption>
+    </figure>
+    <h3>七步濃縮</h3>
+    <ol>
+      <li>聲紋辨識轉稿，先有一份分得出人、帶時間碼的逐字稿</li>
+      <li>重要的會，補上錄音聽不出來的現場觀察</li>
+      <li>丟給 AI，說一句「自動全面統整」啟動</li>
+      <li>存檔備份，再依四個等級分級清稿</li>
+      <li>生成會後報告書：重點待辦、風險隱憂、折疊的詳細脈絡</li>
+      <li>答應對方的交付物，先擬成初稿</li>
+      <li>想看得更全面時，加「深度分析」，判斷這場會值不值得</li>
+    </ol>
+    <h3>常見的坑</h3>
+    <ul>
+      <li>跳過聲紋辨識用普通轉錄。地基沒打好，後面分析全糊掉</li>
+      <li>把現場觀察放在心裡沒記下來。當場就標進逐字稿，事後一定想不起來</li>
+      <li>清稿一律往最短壓。先想清楚這場會要留多少，預設用詳細，重要的會用超詳細</li>
+      <li>報告書把細節全攤在最前面。結論和行動在前，完整脈絡折疊備查</li>
+      <li>用 AI 判斷價值時餵它沒發生的事。只根據報告書和已知定位推論</li>
+    </ul>
+    <div class="meaning">
+      <b>給自己的定位提醒</b>
+      這套流程的重點從來不是整理得比較快，快只是順帶的結果。真正的價值，是讓每一場會議都沉澱成我自己的知識資產。下一次同樣的人、同樣的案子出現，我翻得到、接得上，判斷力是疊加上去的，不用每次從零開始。AI 在這裡的角色，是幫我把這套能累積的系統跑起來，而不是替我把判斷外包出去。
+    </div>
+    <div class="tagrow">
+      <span class="tag">會議記錄</span><span class="tag">AI工作流</span><span class="tag">知識管理</span><span class="tag">錄音轉逐字稿</span><span class="tag">輔助決策</span>
+    </div>
+  </div>
+</section>
+
+<section class="cta-band">
+  <div class="section">
+    <div class="inner">
+      <div>
+        <h2>想搭一套自己的會議工作流？</h2>
+        <p class="lead">我每月固定舉辦兩場免費線上講座，分享善用 AI 作為思考夥伴、把知識與經驗整理成提示詞、技能包、知識庫的實戰方法。對 AI × 知識管理、隱性知識提煉有興趣，歡迎先從社群開始。</p>
+      </div>
+      <div class="cta-card">
+        <b>江江教練 · LINE 社群</b>
+        <p>實戰經驗與方法論，持續分享。也接顧問需求。</p>
+        <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">加入 LINE 社群 ↗</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">江江教練 · AI 知識管理</div>
+    <div class="footer-links">
+      <a href="../../articles.html">← 回深度文章總站</a>
+      <a href="../../index.html">首頁</a>
+      <a href="../../learn.html">自學資源</a>
+      <a href="../../skills.html">Skills 下載</a>
+      <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">LINE 社群 ↗</a>
+      <a href="https://www.threads.com/@jiang_yude_coach" target="_blank" rel="noopener">Threads ↗</a>
+      <a href="https://vocus.cc/salon/Jiang_Coach" target="_blank" rel="noopener">方格子 ↗</a>
+    </div>
+    <div class="footer-note">這是一篇教學文章，整理我把每一場會議變成知識資產的七步流程，供你參考。</div>
+  </div>
+</footer>
+
+<script src="../../articles-data.js"></script>
+<script src="../../related-render.js"></script>
+</body>
+</html>
