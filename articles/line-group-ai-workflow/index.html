@@ -23,52 +23,137 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
 <style>
-:root{--ink:#1a1612;--paper:#fefcf8;--muted:#6a635a;--line:#d8cdb8;--green:#5f7553;--blue:#5689b8;--orange:#e85a4f;--soft:#faf5ec;--dark:#2a2018;--shadow:0 18px 45px rgba(107,74,42,.14)}
+:root{--ink:#1a1612;--paper:#fefcf8;--muted:#6a635a;--line:#d8cdb8;--green:#5f7553;--blue:#5689b8;--orange:#e85a4f;--soft:#faf5ec;--dark:#2a2018;--shadow:0 18px 45px rgba(107,74,42,.14);--sp-shadow:hsla(35,50%,60%,.15);--sp-shadow-edge:hsla(35,50%,68%,.03);--sp-radius:400px}
 *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC","Segoe UI",sans-serif}
-a{color:inherit}.topbar{position:sticky;top:0;z-index:20;display:flex;gap:10px;align-items:center;justify-content:space-between;padding:12px clamp(18px,4vw,56px);border-bottom:1px solid rgba(26,22,18,.12);background:rgba(254,252,248,.92);backdrop-filter:blur(12px)}
-.brand{font-weight:900;font-size:14px;text-decoration:none}.nav{display:flex;gap:8px;overflow:auto}.nav a{white-space:nowrap;text-decoration:none;border:1px solid rgba(26,22,18,.16);border-radius:999px;padding:8px 11px;background:#fff;font-size:14px;font-weight:800}
-.hero{min-height:68vh;display:grid;grid-template-columns:minmax(0,1.1fr) minmax(300px,.9fr);gap:34px;align-items:center;padding:56px clamp(20px,6vw,88px);background:linear-gradient(135deg,rgba(26,22,18,.94),rgba(95,117,83,.82));color:#fff;overflow:hidden}
-.kicker{font:900 13px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;color:#f6d7a6;text-transform:uppercase}.hero h1{max-width:900px;margin:16px 0 18px;font-size:clamp(36px,6vw,72px);line-height:1.08;overflow-wrap:anywhere}.hero p{max-width:820px;font-size:clamp(18px,2vw,23px);line-height:1.62;color:rgba(255,255,255,.9)}
-.hero-figure{margin:0;align-self:end}.hero-figure img{display:block;width:100%;border-radius:14px;box-shadow:0 22px 60px rgba(0,0,0,.24);border:1px solid rgba(255,255,255,.18)}.hero-figure figcaption{font-size:13px;color:rgba(255,255,255,.72);line-height:1.6;margin-top:10px}
-.inline-figure{margin:28px auto 6px;max-width:760px}.inline-figure img{display:block;width:100%;border-radius:14px;border:1px solid var(--line);box-shadow:0 14px 38px rgba(107,74,42,.13)}.inline-figure figcaption{font-size:14px;line-height:1.6;color:var(--muted);margin-top:9px}
-.figure-split{display:grid;grid-template-columns:minmax(280px,.9fr) minmax(0,1.1fr);gap:24px;align-items:center;margin-top:24px}.figure-split .inline-figure{margin:0}.figure-split.reverse{grid-template-columns:minmax(0,1.1fr) minmax(280px,.9fr)}
-.cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}.cta a{display:inline-flex;align-items:center;text-decoration:none;border-radius:8px;padding:12px 16px;font-weight:900}.cta .primary{background:#fff;color:#1a1612}.cta .ghost{border:1px solid rgba(255,255,255,.32);color:#fff;background:rgba(255,255,255,.08)}
-.section{padding:54px clamp(20px,6vw,88px);border-top:1px solid var(--line)}.inner{width:min(1000px,100%);margin:0 auto}.section h2{font-size:clamp(26px,4.2vw,48px);line-height:1.12;margin:0 0 18px}.section h3{font-size:clamp(21px,3vw,30px);line-height:1.2;margin:30px 0 12px}
-.lead{font-size:clamp(18px,1.6vw,22px);line-height:1.7;color:#3a342d;max-width:900px}.section p{font-size:18px;line-height:1.74;color:#3a342d}.section ul,.section ol{padding-left:1.4em;font-size:18px;line-height:1.74;color:#3a342d}.section li{margin-bottom:8px}
-.summary-box{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:24px}.summary-card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:20px;box-shadow:0 8px 22px rgba(107,74,42,.08)}.summary-card b{display:block;color:var(--green);font-size:19px;margin-bottom:8px}.summary-card p{margin:0;font-size:16px;line-height:1.62;color:#3a342d}
-.workflow{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin-top:24px}.step{background:#fff;border:1px solid var(--line);border-radius:8px;padding:16px;min-height:142px}.step small{display:block;color:var(--orange);font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;margin-bottom:9px}.step b{display:block;font-size:17px;line-height:1.35;margin-bottom:8px}.step p{margin:0;font-size:15px;line-height:1.55;color:#3a342d}
-.duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:24px}.card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:22px;box-shadow:0 8px 22px rgba(107,74,42,.08)}.card.warn{border-color:var(--orange)}.card.good{border-color:var(--green);box-shadow:0 8px 24px rgba(95,117,83,.16)}.card b{display:block;font-size:20px;margin-bottom:10px}.card p{margin:0;font-size:16px;line-height:1.65;color:#3a342d}
-.codeblock{background:var(--dark);color:#f3ead9;border-radius:8px;padding:18px 20px;font:500 14px/1.65 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;overflow-x:auto;white-space:pre-wrap;margin:20px 0;box-shadow:0 8px 22px rgba(107,74,42,.12)}
+a{color:inherit}
+/* 官網共用導航列 nav.top（與首頁/文章總站同一條） */
+nav.top{position:sticky;top:0;background:rgba(254,252,248,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid #d8cdb8;z-index:100}
+nav.top .container{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:24px;padding:14px 32px}
+.nav-brand-img{justify-self:start;display:flex;align-items:center;text-decoration:none;flex-shrink:0;transition:opacity .2s}
+.nav-brand-img:hover{opacity:.8}.nav-brand-img img{height:40px;width:auto;display:block}
+nav.top ul.nav-menu{justify-self:end;display:flex;gap:22px;list-style:none;margin:0;padding:0;font-size:.95rem;white-space:nowrap}
+nav.top ul.nav-menu a{color:#3a342d;text-decoration:none;transition:color .2s;font-weight:500;white-space:nowrap}
+nav.top ul.nav-menu a:hover{color:#1a1612}nav.top ul.nav-menu a.active{color:#1a1612;font-weight:700}
+.nav-toggle{display:none;background:none;border:none;padding:6px;cursor:pointer;width:36px;height:36px;position:relative}
+.nav-toggle span{display:block;position:absolute;left:8px;right:8px;height:2px;background:#1a1612;border-radius:2px;transition:transform .25s,opacity .25s,top .25s}
+.nav-toggle span:nth-child(1){top:11px}.nav-toggle span:nth-child(2){top:17px}.nav-toggle span:nth-child(3){top:23px}
+.nav-toggle.open span:nth-child(1){top:17px;transform:rotate(45deg)}.nav-toggle.open span:nth-child(2){opacity:0}.nav-toggle.open span:nth-child(3){top:17px;transform:rotate(-45deg)}
+@media(max-width:860px){
+ nav.top .container{grid-template-columns:auto 1fr auto;padding:10px 16px;gap:12px}
+ .nav-brand-img img{height:32px}
+ .nav-toggle{display:block;justify-self:end}
+ nav.top ul.nav-menu{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(254,252,248,.98);backdrop-filter:blur(14px);border-bottom:1px solid #d8cdb8;flex-direction:column;gap:0;padding:8px 0;box-shadow:0 10px 24px rgba(107,74,42,.08)}
+ nav.top ul.nav-menu.open{display:flex}
+ nav.top ul.nav-menu li{border-bottom:1px solid #e8dfc9}
+ nav.top ul.nav-menu li:last-child{border-bottom:none}
+ nav.top ul.nav-menu a{display:block;padding:14px 20px;font-size:1.06rem}
+}
+/* 滑鼠暖光暈（與首頁同一支 spotlight.js） */
+body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradient(var(--sp-radius) circle at var(--mx,50%) var(--my,50%),var(--sp-shadow) 0%,var(--sp-shadow-edge) 45%,transparent 75%);pointer-events:none;z-index:9999;mix-blend-mode:multiply;transition:background .06s linear}
+.hero{position:relative;overflow:hidden;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:72px;padding:96px clamp(20px,6vw,88px) 80px;background:linear-gradient(180deg,#fffcf0 0%,#f9e9d2 100%);color:#1a1612;border-bottom:1px solid #d8cdb8}
+.hero .wc{position:absolute;border-radius:50%;filter:blur(60px);pointer-events:none;z-index:0}
+.hero .wc1{width:420px;height:360px;top:-120px;right:-80px;background:#e8884b;opacity:.15}
+.hero .wc2{width:360px;height:300px;bottom:-110px;left:-70px;background:#5f7553;opacity:.13}
+.hero .wc3{width:280px;height:260px;top:34%;left:14%;background:#a08144;opacity:.10}
+.hero>div{flex:none;width:860px;max-width:100%;position:relative;z-index:2}
+.hero-figure{margin:0;width:420px;flex:none;position:relative;z-index:2}
+.hero-figure img{display:block;width:100%;border-radius:16px;border:1px solid #d8cdb8;box-shadow:0 18px 45px rgba(107,74,42,.16)}
+.hero-figure figcaption{margin-top:10px;font-size:14px;line-height:1.6;color:#6a635a}
+.kicker{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.55rem;color:#7a5c3a;font-weight:500}
+.hero h1{max-width:none;margin:16px 0 18px;font-size:clamp(36px,6vw,72px);line-height:1.08;overflow-wrap:anywhere}
+.hero p{max-width:none;font-size:clamp(18px,2vw,23px);line-height:1.62;color:#3a342d}
+.section{padding:54px clamp(20px,6vw,88px);border-top:1px solid var(--line)}
+.inner{width:min(1000px,100%);margin:0 auto}
+.section h2{font-size:clamp(26px,4.2vw,48px);line-height:1.12;margin:0 0 18px}
+.section h3{font-size:clamp(21px,3vw,30px);line-height:1.2;margin:30px 0 12px}
+.lead{font-size:clamp(18px,1.6vw,22px);line-height:1.7;color:#3a342d;max-width:900px}
+.section p{font-size:18px;line-height:1.74;color:#3a342d}.section p+p{margin-top:14px}
+.section ul,.section ol{padding-left:1.4em;font-size:18px;line-height:1.74;color:#3a342d}.section li{margin-bottom:8px}
 .note{margin:22px 0;padding:16px 18px;border-left:5px solid var(--blue);background:rgba(86,137,184,.12);border-radius:6px;line-height:1.7;font-size:18px;color:#3a342d}.note b{display:block;color:var(--blue);margin-bottom:4px}
-.cta-band{background:var(--dark);color:#fff}.cta-band .inner{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(260px,.85fr);gap:26px;align-items:start}.cta-band h2{font-size:clamp(26px,4vw,44px);margin:0 0 16px}.cta-band p,.cta-band li{color:rgba(255,255,255,.84);font-size:18px;line-height:1.72}.cta-card{border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.06);border-radius:8px;padding:22px}.cta-card b{display:block;color:#f6d7a6;margin-bottom:10px;font-size:18px}
-.footer{padding:30px clamp(20px,6vw,88px);font-size:14px;color:var(--muted);background:#fff;border-top:1px solid var(--line)}.footer-inner{width:min(1000px,100%);margin:0 auto}.footer-links{display:flex;flex-wrap:wrap;gap:6px 12px;margin-bottom:14px}.footer-links a{color:var(--blue);font-weight:900;text-decoration:none;font-size:14px}.footer-brand{font-weight:900;font-size:15px;margin-bottom:10px}.footer-note{font-size:13px;line-height:1.6}
-@media(max-width:980px){.hero{grid-template-columns:1fr}.hero-figure{max-width:520px}.workflow{grid-template-columns:1fr 1fr}.summary-box{grid-template-columns:1fr}.duo{grid-template-columns:1fr}.cta-band .inner{grid-template-columns:1fr}.figure-split,.figure-split.reverse{grid-template-columns:1fr}.figure-split .inline-figure{max-width:520px}}
-@media(max-width:640px){.hero{padding:40px 20px}.section{padding:40px 20px}.workflow{grid-template-columns:1fr}.topbar{align-items:flex-start;flex-direction:column}.hero h1{word-break:break-word}}
+.summary-box{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:24px}
+.summary-card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:20px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.summary-card b{display:block;color:var(--green);font-size:19px;margin-bottom:8px}
+.summary-card p{margin:0;font-size:16px;line-height:1.62;color:#3a342d}
+.workflow{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin-top:24px}
+.step{background:#fff;border:1px solid var(--line);border-radius:8px;padding:16px;min-height:142px}
+.step small{display:block;color:var(--orange);font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;margin-bottom:9px}
+.step b{display:block;font-size:17px;line-height:1.35;margin-bottom:8px}
+.step p{margin:0;font-size:15px;line-height:1.55;color:#3a342d}
+.duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:24px}
+.duo.stack{grid-template-columns:1fr}
+.duo .card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:22px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.duo .card.a,.duo .card.warn{border-color:var(--orange)}
+.duo .card.b,.duo .card.good{border-color:var(--green);box-shadow:0 8px 24px rgba(95,117,83,.16)}
+.duo .card small{display:block;font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.04em;margin-bottom:9px}
+.duo .card b{display:block;font-size:22px;line-height:1.3;margin-bottom:12px}
+.duo .card.a b,.duo .card.warn b{color:#c0512f}
+.duo .card.b b,.duo .card.good b{color:#4a7a59}
+.duo .card p{margin:0;color:#3a342d;line-height:1.75;font-size:18px}
+.codeblock{background:var(--dark);color:#f3ead9;border-radius:8px;padding:18px 20px;font:500 14px/1.65 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;overflow-x:auto;white-space:pre-wrap;margin:20px 0;box-shadow:0 8px 22px rgba(107,74,42,.12)}
+/* 圖片元件 */
+.inline-figure{margin:30px auto 8px;max-width:820px}
+.inline-figure.wide{max-width:1000px}
+.inline-figure img{display:block;width:100%;border-radius:14px;border:1px solid var(--line);box-shadow:var(--shadow);background:#fff}
+.inline-figure figcaption{font-size:14px;line-height:1.6;color:var(--muted);margin-top:10px}
+.figure-split{display:grid;grid-template-columns:minmax(280px,.9fr) minmax(0,1.1fr);gap:24px;align-items:center;margin-top:24px}
+.figure-split .inline-figure{margin:0}
+.figure-split.reverse{grid-template-columns:minmax(0,1.1fr) minmax(280px,.9fr)}
+/* CTA 帶 */
+.cta-band{background:#e6f0e5;color:#3a342d}.cta-band .section{border-top:none}
+.cta-band .inner{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(260px,.85fr);gap:26px;align-items:start}
+.cta-band h2{font-size:clamp(26px,4vw,44px);margin:0 0 16px}.cta-band p,.cta-band .lead{color:rgba(58,52,45,.92);font-size:18px;line-height:1.72}
+.cta-band li{color:rgba(58,52,45,.92);font-size:18px;line-height:1.72}
+.cta-card{border:1px solid #cfe0d2;background:#fbfdfa;border-radius:8px;padding:22px}
+.cta-card b{display:block;color:#48b178;margin-bottom:10px;font-size:18px}.cta-card p{margin:0 0 14px}
+.footer{padding:30px clamp(20px,6vw,88px);font-size:14px;color:var(--muted);background:#fff;border-top:1px solid var(--line)}
+.footer-inner{width:min(1000px,100%);margin:0 auto}
+.footer-links{display:flex;flex-wrap:wrap;gap:6px 12px;margin-bottom:14px}.footer-links a{color:var(--blue);font-weight:900;text-decoration:none;font-size:14px}
+.footer-brand{font-weight:900;font-size:15px;margin-bottom:10px}.footer-note{font-size:13px;line-height:1.6}
+@media(max-width:820px){
+  .summary-box{grid-template-columns:1fr}.duo{grid-template-columns:1fr}.workflow{grid-template-columns:1fr 1fr}
+  .cta-band .inner{grid-template-columns:1fr}.section{padding:40px 20px}
+  .hero{min-height:52vh;flex-direction:column;justify-content:flex-start;align-items:flex-start;gap:24px}
+  .hero>div{width:100%}.hero-figure{width:100%;max-width:560px}
+  .figure-split,.figure-split.reverse{grid-template-columns:1fr}.figure-split .inline-figure{max-width:520px}
+}
+@media(max-width:640px){.workflow{grid-template-columns:1fr}}
+@media(max-width:820px){html,body{overflow-x:hidden}.hero h1{word-break:break-word}}
+/* 點圖放大 lightbox */
+.hero-figure img,.inline-figure img,.figure-split img{cursor:zoom-in}
+.lightbox{position:fixed;inset:0;z-index:10000;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(12,10,8,.92);cursor:zoom-out;backdrop-filter:blur(4px)}
+.lightbox.open{display:flex}
+.lightbox img{max-width:96vw;max-height:92vh;border-radius:10px;box-shadow:0 24px 60px rgba(0,0,0,.5)}
+.lightbox-close{position:fixed;top:18px;right:24px;color:#fff;font-size:34px;line-height:1;font-weight:700;cursor:pointer;opacity:.85}
 </style>
 </head>
-<body>
-<header class="topbar">
-  <a class="brand" href="../../articles.html">江江教練 · 深度文章</a>
-  <nav class="nav" aria-label="頁面導覽">
-    <a href="../../articles.html" style="background:#1a1612;color:#fff;border-color:#1a1612">← 深度文章總站</a>
-    <a href="#workflow">流程</a>
-    <a href="#security">安全線</a>
-    <a href="../../skills.html">Skills 下載</a>
-  </nav>
-</header>
+<body class="spotlight">
+<nav class="top">
+  <div class="container">
+    <a class="nav-brand-img" href="../../index.html"><img src="../../images/footer-signature.png" alt="江江教練 | 江昱德"></a>
+    <button class="nav-toggle" aria-label="選單"><span></span><span></span><span></span></button>
+    <ul class="nav-menu">
+      <li><a href="../../index.html">首頁</a></li>
+      <li><a href="../../offers.html">收費課程</a></li>
+      <li><a href="../../courses.html">免費講座</a></li>
+      <li><a href="../../invited-talks.html">邀約授課</a></li>
+      <li><a href="../../articles.html" class="active">深度文章</a></li>
+      <li><a href="../../skills.html">Skills 下載</a></li>
+      <li><a href="../../cases.html">服務方案</a></li>
+    </ul>
+  </div>
+</nav>
 
 <section class="hero">
+  <div class="wc wc1"></div>
+  <div class="wc wc2"></div>
+  <div class="wc wc3"></div>
   <div>
     <div class="kicker">AI 工作流 / LINE 官方帳號 / 群組收訊歸檔</div>
     <h1>散在 LINE 各群組的資料，怎麼每天自動下載歸檔</h1>
     <p>這篇把 Mika 當作示範案例。Mika 是我用來示範的第一個版本，真正要帶走的是這套架構：把你自己的 LINE 官方帳號接進群組，先收訊息、圖片、PDF 和檔案，再交給你的 Agent 整理。</p>
-    <div class="cta">
-      <a class="primary" href="#start">看一頁總結</a>
-      <a class="ghost" href="#security">先看安全線</a>
-    </div>
   </div>
   <figure class="hero-figure">
-    <img src="../../images/articles/line-group-ai-workflow-summary.jpg" alt="LINE 群組也能變成 AI 工作流入口圖卡">
+    <img src="../../images/articles/line-group-ai-workflow-summary.jpg" alt="LINE 群組也能變成 AI 工作流入口圖卡" loading="lazy">
     <figcaption>圖中的 Mika 是示範角色。你可以把它換成自己的課程助教、社群秘書或公司助理。</figcaption>
   </figure>
 </section>
@@ -101,7 +186,7 @@ a{color:inherit}.topbar{position:sticky;top:0;z-index:20;display:flex;gap:10px;a
         如果你不會寫程式，可以把這篇當成任務清單，交給 Codex、其他 Agent 或工程夥伴處理。你要決定的是：哪個群組要收、資料要放哪裡、誰需要被提醒、哪些情況不能自動回覆。
       </div>
       <figure class="inline-figure">
-        <img src="../../images/articles/line-group-ai-workflow-collect-first.jpg" alt="先收資料不急著讓 AI 回話">
+        <img src="../../images/articles/line-group-ai-workflow-collect-first.jpg" alt="先收資料不急著讓 AI 回話" loading="lazy">
         <figcaption>第一步是把訊息、圖片和檔案整理到可追溯的位置；自動回覆放到後面的授權情境處理。</figcaption>
       </figure>
     </div>
@@ -186,7 +271,7 @@ token 不要貼進聊天，直接寫進本機設定檔 .env 或系統鑰匙圈 K
         </div>
       </div>
       <figure class="inline-figure">
-        <img src="../../images/articles/line-group-ai-workflow-daily-check.jpg" alt="每天自動整理一次">
+        <img src="../../images/articles/line-group-ai-workflow-daily-check.jpg" alt="每天自動整理一次" loading="lazy">
         <figcaption>每天整理適合做更新群組名、補抓圖片、列出待回應。它不是自動代回 LINE。</figcaption>
       </figure>
       <div class="note">
@@ -210,7 +295,7 @@ token 不要貼進聊天，直接寫進本機設定檔 .env 或系統鑰匙圈 K
       <p>一開始 LINE webhook 只穩定提供 LINE 給每個群組的唯一代號，也就是 groupId。如果直接用 ID 當資料夾名稱，人會看不懂。所以維護腳本會用 LINE group summary API 抓群組名稱，前面放可讀名稱，後面保留 ID 尾碼，避免同名群組撞在一起。</p>
       <div class="figure-split">
         <figure class="inline-figure">
-          <img src="../../images/articles/line-group-ai-workflow-group-name.jpg" alt="群組名稱要讓人看得懂">
+          <img src="../../images/articles/line-group-ai-workflow-group-name.jpg" alt="群組名稱要讓人看得懂" loading="lazy">
           <figcaption>示意名稱全為模擬內容，公開版不放真實群組名稱。</figcaption>
         </figure>
         <div>
@@ -230,27 +315,27 @@ token 不要貼進聊天，直接寫進本機設定檔 .env 或系統鑰匙圈 K
     </div>
   </section>
 
-  <section class="section cta-band">
-    <div class="inner">
-      <div>
-        <h2>這篇適合拿去做什麼</h2>
-        <p>這套做法的重點是讓你照著建立自己的 LINE AI 助理，把散落在群組裡的資料接進工作流，先收穩，再整理，再提醒。最適合已經有 LINE 群組的課程、社群、小團隊與專案協作。</p>
-        <ul>
-          <li>脆文教學：用真實示範案例說明「先收資料，再整理」的邏輯。</li>
-          <li>官網文章：當成自建 LINE AI 助理的施工圖。</li>
-          <li>技能包或檢查清單：提供流程、設定指引和 .env.example，讓讀者建立自己的版本，不放 token。</li>
-        </ul>
-      </div>
-      <div class="cta-card">
-        <b>下一步</b>
-        <p>如果你想做自己的版本，先準備一個 LINE 官方帳號、一個 webhook 收訊服務、一個備存資料夾、一套 Agent 整理規則，以及一條安全線：token 不進聊天、不進 GitHub。</p>
-        <div class="cta">
-          <a class="primary" href="../../skills.html">看設定清單</a>
-          <a class="ghost" href="../../articles.html">回深度文章</a>
+  <section class="cta-band">
+    <div class="section">
+      <div class="inner">
+        <div>
+          <h2>這篇適合拿去做什麼</h2>
+          <p>這套做法的重點是讓你照著建立自己的 LINE AI 助理，把散落在群組裡的資料接進工作流，先收穩，再整理，再提醒。最適合已經有 LINE 群組的課程、社群、小團隊與專案協作。</p>
+          <ul>
+            <li>脆文教學：用真實示範案例說明「先收資料，再整理」的邏輯。</li>
+            <li>官網文章：當成自建 LINE AI 助理的施工圖。</li>
+            <li>技能包或檢查清單：提供流程、設定指引和 .env.example，讓讀者建立自己的版本，不放 token。</li>
+          </ul>
+        </div>
+        <div class="cta-card">
+          <b>免費線上講座</b>
+          <p>每個月兩場免費講座。</p>
+          <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;text-decoration:none;border-radius:8px;padding:12px 16px;font-weight:900;background:#48b178;color:#fff;">點我加入 Line 社群 ↗</a>
         </div>
       </div>
     </div>
   </section>
+
 </main>
 
 <footer class="footer">
@@ -261,6 +346,7 @@ token 不要貼進聊天，直接寫進本機設定檔 .env 或系統鑰匙圈 K
       <a href="../../index.html">首頁</a>
       <a href="../../learn.html">自學資源</a>
       <a href="../../skills.html">Skills 下載</a>
+      <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">LINE 社群 ↗</a>
       <a href="https://www.threads.com/@jiang_yude_coach" target="_blank" rel="noopener">Threads ↗</a>
       <a href="https://vocus.cc/salon/Jiang_Coach" target="_blank" rel="noopener">方格子 ↗</a>
     </div>
@@ -268,6 +354,30 @@ token 不要貼進聊天，直接寫進本機設定檔 .env 或系統鑰匙圈 K
   </div>
 </footer>
 
+<!-- 點圖放大 -->
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <span class="lightbox-close" aria-label="關閉">×</span>
+  <img id="lightbox-img" src="" alt="放大檢視">
+</div>
+<script>
+(function(){
+  var box=document.getElementById('lightbox'),boxImg=document.getElementById('lightbox-img');
+  document.querySelectorAll('.hero-figure img,.inline-figure img,.figure-split img').forEach(function(img){
+    img.addEventListener('click',function(){
+      boxImg.src=img.currentSrc||img.src;boxImg.alt=img.alt||'放大檢視';
+      box.classList.add('open');box.setAttribute('aria-hidden','false');
+    });
+  });
+  function close(){box.classList.remove('open');box.setAttribute('aria-hidden','true');boxImg.src='';}
+  box.addEventListener('click',close);
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
+})();
+</script>
+
+<!-- 官網共用：滑鼠暖光暈 + 導航列漢堡選單 -->
+<script src="../../spotlight.js"></script>
+
+<!-- 文章自動互聯（相關文章）：兩支已內建，順序不可顛倒，不用再另外加 -->
 <script src="../../articles-data.js"></script>
 <script src="../../related-render.js"></script>
 </body>
