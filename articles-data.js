@@ -11,6 +11,10 @@
         content_type 類型  → 文章種類（教學/觀點/趨勢/案例）
    「適合誰」不做篩選（身份會重疊），只用 audience 欄位寫成一句話放卡片。
 
+   ⚠️ related 雙向對稱：A 的 related 列了 B，B 的 related 也要列回 A。
+      手寫精選版頁面（own-ai-team-at-work）的相關文章在 HTML 內手寫，
+      不靠本檔，故不在這裡跟它做雙向。
+
    待辦（受控詞彙四方同步，尚未做到 Obsidian 字典）：
      新增 D3文件用途：教學文章/觀點文章/趨勢文章/案例文章
      新增 D2主題：AI趨勢；D2工具：Codex
@@ -44,7 +48,7 @@ window.ARTICLES = [
       content_type: ["案例文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["program-vs-ai-skill-library", "how-to-train-your-ai-employee", "line-group-ai-workflow", "codex-log-health-check", "how-ai-connects-software"]
+    related: ["program-vs-ai-skill-library", "how-to-train-your-ai-employee", "line-group-ai-workflow", "codex-log-health-check", "how-ai-connects-software", "meeting-record-agent-workflow", "vibe-coding-ten-half-products"]
   },
 
   /* ── 2. 只用 Codex 建立自動工作日誌（教學）── */
@@ -62,7 +66,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: "https://vocus.cc/salon/Jiang_Coach" },
-    related: ["own-ai-team-at-work", "caught-ai-slacking-into-rules", "line-group-ai-workflow", "codex-log-health-check"]
+    related: ["own-ai-team-at-work", "caught-ai-slacking-into-rules", "line-group-ai-workflow", "codex-log-health-check", "meeting-record-agent-workflow", "vibe-coding-ten-half-products"]
   },
 
   /* ── 3. 有標準答案的交給程式，沒標準答案的才輪到 AI（觀點）── */
@@ -80,7 +84,7 @@ window.ARTICLES = [
       content_type: ["觀點文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["own-ai-team-at-work", "agent-workflow-builds-automation", "how-ai-connects-software"]
+    related: ["own-ai-team-at-work", "agent-workflow-builds-automation", "how-ai-connects-software", "decision-ladder-non-programmer"]
   },
 
   /* ── 4-6. 趨勢判讀 ── */
@@ -98,7 +102,7 @@ window.ARTICLES = [
       content_type: ["趨勢文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["elon-musk-live-skill"]
+    related: ["elon-musk-live-skill", "ai-capability-tiers"]
   },
   {
     id: "demis-hassabis-agi-science-ai",
@@ -113,7 +117,8 @@ window.ARTICLES = [
       level: ["基礎"],
       content_type: ["趨勢文章"]
     },
-    external: { threads: null, vocus: null }
+    external: { threads: null, vocus: null },
+    related: ["ai-capability-tiers"]
   },
   {
     id: "apple-wwdc26-siri-lobster-ai",
@@ -146,7 +151,7 @@ window.ARTICLES = [
       content_type: ["案例文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: "https://vocus.cc/salon/Jiang_Coach" },
-    related: ["codex-only-auto-worklog"]
+    related: ["codex-only-auto-worklog", "decision-ladder-non-programmer"]
   },
 
   /* ── 8. AI 之王不上戰場（觀點）── */
@@ -163,7 +168,8 @@ window.ARTICLES = [
       level: ["基礎"],
       content_type: ["觀點文章"]
     },
-    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: "https://vocus.cc/salon/Jiang_Coach" }
+    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: "https://vocus.cc/salon/Jiang_Coach" },
+    related: ["ai-capability-tiers"]
   },
 
   /* ── 9. 知識庫太大，改成三庫分流（教學）── */
@@ -180,10 +186,11 @@ window.ARTICLES = [
       level: ["基礎"],
       content_type: ["教學文章"]
     },
-    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: "https://vocus.cc/salon/Jiang_Coach" }
+    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: "https://vocus.cc/salon/Jiang_Coach" },
+    related: ["diary-driven-agent-3x4"]
   },
 
-  /* ── 10. 在公司上班，你也可以有自己的 AI 團隊（觀點）── */
+  /* ── 10. 在公司上班，你也可以有自己的 AI 團隊（觀點，手寫精選版）── */
   {
     id: "own-ai-team-at-work",
     url: "articles/own-ai-team-at-work/",
@@ -216,7 +223,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["elon-musk-live-skill"]
+    related: ["elon-musk-live-skill", "ai-capability-tiers"]
   },
 
   /* ── 12. 如何訓練自己的 AI 員工：員工＋顧問框架（教學）── */
@@ -234,7 +241,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["own-ai-team-at-work", "agent-workflow-builds-automation", "line-group-ai-workflow", "elon-musk-live-skill", "codex-log-health-check", "how-ai-connects-software"]
+    related: ["own-ai-team-at-work", "agent-workflow-builds-automation", "line-group-ai-workflow", "elon-musk-live-skill", "codex-log-health-check", "how-ai-connects-software", "meeting-record-agent-workflow", "decision-ladder-non-programmer", "tidy-mess-before-consulting", "diary-driven-agent-3x4", "docs-as-system-design-agent"]
   },
 
   /* ── 13. LINE 群組也能變成 AI 工作流入口（教學）── */
@@ -270,7 +277,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["spacex-ipo-musk-trillionaire-knowledge-work", "how-to-train-your-ai-employee", "own-ai-team-at-work", "ai-market-microcosm"]
+    related: ["spacex-ipo-musk-trillionaire-knowledge-work", "how-to-train-your-ai-employee", "own-ai-team-at-work", "ai-market-microcosm", "vibe-coding-ten-half-products"]
   },
 
   /* ── 15. Codex log 健康巡檢（教學）── */
@@ -306,7 +313,133 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["how-to-train-your-ai-employee", "agent-workflow-builds-automation", "program-vs-ai-skill-library"]
+    related: ["how-to-train-your-ai-employee", "agent-workflow-builds-automation", "program-vs-ai-skill-library", "docs-as-system-design-agent", "vibe-coding-ten-half-products"]
+  },
+
+  /* ── 17. Agent 會議記錄工作流：把會議變成知識資產的七步（教學）── */
+  {
+    id: "meeting-record-agent-workflow",
+    url: "articles/meeting-record-agent-workflow/",
+    date: "2026-06-23",
+    title: "Agent 的會議記錄工作流：我把會議變成知識資產的七步",
+    problem: "開完會逐字稿幾萬字，整理完過兩個月再看只剩流水帳，當初的承諾、隱憂、關鍵轉折全被磨平。",
+    audience: "一週開好幾場會、做顧問接案、需要把每次談話沉澱下來，又苦惱 AI 整理不是太短就是抓不到重點的人。",
+    summary: "我完整公開把每場會議變成知識資產的七步流程，前三步自己做、後四步 AI 自動跑完，附四種清稿等級定義、會後策略報告書範本與兩段可直接複製的提示詞。",
+    tags: {
+      topic: ["AI工作流", "知識管理", "工作流程", "輔助決策", "工具操作"],
+      level: ["基礎"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: "https://vocus.cc/salon/Jiang_Coach" },
+    related: ["agent-workflow-builds-automation", "codex-only-auto-worklog", "how-to-train-your-ai-employee", "diary-driven-agent-3x4", "tidy-mess-before-consulting"]
+  },
+
+  /* ── 18. 不寫程式的人也能用的決策階梯（觀點）── */
+  {
+    id: "decision-ladder-non-programmer",
+    url: "articles/decision-ladder-non-programmer/",
+    date: "2026-06-24",
+    title: "Ponytail：不寫程式的人，也能用的「決策階梯」",
+    problem: "AI 很愛講廢話，寫文章越寫越發散、整理資料囉嗦、請它規劃越講越大包，只說「簡潔一點」它根本照不了。",
+    audience: "每天用 AI 寫文章、整理資料、做決策但不寫程式，或正在訓練自己 AI 員工、想讓它先判斷再行動的人。",
+    summary: "我把工程師技能包 Ponytail 的「決策階梯」搬到不寫程式的場景，講清楚一條能一格一格打勾的階梯怎麼用，以及讓它真正生效的關鍵：舉證反轉。",
+    tags: {
+      topic: ["輔助決策", "技能包設計", "AI工作流", "知識管理", "提示詞設計"],
+      level: ["基礎"],
+      content_type: ["觀點文章"]
+    },
+    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: "https://vocus.cc/salon/Jiang_Coach" },
+    related: ["caught-ai-slacking-into-rules", "how-to-train-your-ai-employee", "docs-as-system-design-agent", "tidy-mess-before-consulting", "program-vs-ai-skill-library"]
+  },
+
+  /* ── 19. 你在 AI 世界的哪一階：AI 能力分級榜（觀點）── */
+  {
+    id: "ai-capability-tiers",
+    url: "articles/ai-capability-tiers/",
+    date: "2026-06-26",
+    title: "你在 AI 世界的哪一階？我用「對產業的影響力」排了一張表",
+    problem: "不知道自己在 AI 浪潮裡站在什麼位置，也不知道下一步該往哪走。",
+    audience: "想對照自己在 AI 領域位置、或要判斷團隊裡誰適合做哪種 AI 工作的人。",
+    summary: "我用「對產業的影響力」當軸，把個人對 AI 的位置從 T0 到 T13 排成一張十四層的表，幫你對照自己、找到下一步方向。",
+    tags: {
+      topic: ["AI趨勢", "輔助決策", "差異比較", "AIAgent"],
+      level: ["基礎"],
+      content_type: ["觀點文章"]
+    },
+    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: "https://vocus.cc/salon/Jiang_Coach" },
+    related: ["ai-king-off-battlefield", "demis-hassabis-agi-science-ai", "spacex-ipo-musk-trillionaire-knowledge-work", "ai-market-microcosm", "vibe-coding-ten-half-products"]
+  },
+
+  /* ── 20. 我的文件就是我的系統：非工程師怎麼設計 Agent（教學）── */
+  {
+    id: "docs-as-system-design-agent",
+    url: "articles/docs-as-system-design-agent/",
+    date: "2026-06-25",
+    title: "我的文件就是我的系統：非工程師怎麼設計 Agent",
+    problem: "不會寫程式，卡在「設計 Agent 好像是工程師的事」，不知道怎麼把一個角色做成會自己判斷的 AI。",
+    audience: "會帶人、會設計流程，卻被「Agent 很技術」擋住的創作者、老師與經營者。",
+    summary: "我帶你看「文件就是系統」這個觀念，從人格思維提煉把角色做到會自己判斷，一路長到單一 Agent 與多 Agent 系統，並附上可複用的提示詞。",
+    tags: {
+      topic: ["AIAgent", "技能包設計", "AI工作流", "隱性知識", "提示詞設計"],
+      level: ["基礎"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: "https://vocus.cc/salon/Jiang_Coach" },
+    related: ["diary-driven-agent-3x4", "how-ai-connects-software", "how-to-train-your-ai-employee", "decision-ladder-non-programmer", "tidy-mess-before-consulting"]
+  },
+
+  /* ── 21. 你以為在做一個成品，其實在養十個半成品（觀點）── */
+  {
+    id: "vibe-coding-ten-half-products",
+    url: "articles/vibe-coding-ten-half-products/",
+    date: "2026-06-26",
+    title: "你以為在做一個成品，其實在養十個半成品",
+    problem: "什麼都想用 AI 做，結果手上一堆開到一半、收不了尾的專案，不知道怎麼停。",
+    audience: "還停在網頁版 AI 聊天、想試 vibe coding、或剛開始用 Agent 的人。",
+    summary: "我用一支從聊天到 Agent 的訪談短片，帶你看工具怎麼把慾望放大，再附上我自己用 AI 顧問做第一性原理收斂、把八個專案篩成三個的真實做法。",
+    tags: {
+      topic: ["AIAgent", "AI工作流", "輔助決策", "工具操作", "AI趨勢"],
+      level: ["基礎"],
+      content_type: ["觀點文章"]
+    },
+    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
+    related: ["elon-musk-live-skill", "codex-only-auto-worklog", "ai-capability-tiers", "how-ai-connects-software", "agent-workflow-builds-automation"]
+  },
+
+  /* ── 22. 找顧問前，先讓 AI 幫你把混亂整理成問題（教學）── */
+  {
+    id: "tidy-mess-before-consulting",
+    url: "articles/tidy-mess-before-consulting/",
+    date: "2026-06-26",
+    title: "找顧問前，先讓 AI 幫你把混亂整理成問題",
+    problem: "想找人討論，卻連自己卡在哪都講不清楚，被請「先整理好再來」卻整理不出來。",
+    audience: "想找顧問或團隊討論、卻講不清楚問題，或想用 AI 理思緒卻不知從何開始的人。",
+    summary: "我教你開一個 ChatGPT 專案資料夾把資料集中，讓 AI 先把一團亂拆成三層、整理成一個別人接得住的問題，附一段可直接貼的提示詞。",
+    tags: {
+      topic: ["知識管理", "AI工作流", "提示詞設計", "輔助決策", "工作流程"],
+      level: ["零基礎入門"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: "https://vocus.cc/salon/Jiang_Coach" },
+    related: ["how-to-train-your-ai-employee", "diary-driven-agent-3x4", "decision-ladder-non-programmer", "docs-as-system-design-agent", "meeting-record-agent-workflow"]
+  },
+
+  /* ── 23. 寫日記，就讓 AI 乖乖幫你做事：3X4 資料整理法（教學）── */
+  {
+    id: "diary-driven-agent-3x4",
+    url: "articles/diary-driven-agent-3x4/",
+    date: "2026-05-28",
+    title: "寫日記，就讓 AI 乖乖幫你做事：3X4 資料整理法",
+    problem: "想建知識庫卻不知從哪開始，AI 老是抓不到自己的重點。",
+    audience: "已經在用 AI 卻覺得它抓不到重點、想建知識庫卻不知從何下手的一人公司、自由工作者、創業者。",
+    summary: "我用自己在用的 3X4 資料整理法，三種日記決定寫什麼、四種時效決定放哪裡，帶你把散亂資料整理成任何一家 AI 都讀得懂的知識庫，不用寫程式。",
+    tags: {
+      topic: ["知識管理", "知識庫", "AIAgent", "隱性知識", "AI工作流"],
+      level: ["零基礎入門"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: "https://vocus.cc/salon/Jiang_Coach" },
+    related: ["docs-as-system-design-agent", "how-to-train-your-ai-employee", "knowledge-base-three-vault-split", "tidy-mess-before-consulting", "meeting-record-agent-workflow"]
   }
 
 ];

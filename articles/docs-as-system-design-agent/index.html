@@ -1,0 +1,544 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="index,follow">
+<title>我的文件就是我的系統：非工程師怎麼設計 Agent｜江江教練 · AI 知識管理</title>
+<meta name="description" content="不用會寫程式，會帶人就會設計 AI Agent。用數位分身小聚與人格思維提煉，帶你把一個角色從死的設定，做成會自己判斷的 Agent，並看懂單一 Agent 到多 Agent 系統。">
+<link rel="canonical" href="https://ai-km-jiang.vercel.app/articles/docs-as-system-design-agent/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="我的文件就是我的系統：非工程師怎麼設計 Agent｜江江教練">
+<meta property="og:image" content="https://ai-km-jiang.vercel.app/images/intro-jiang.png">
+<meta property="og:description" content="不用會寫程式，會帶人就會設計 AI Agent。用數位分身小聚與人格思維提煉，把一個角色做成會自己判斷的 Agent。">
+<meta property="og:url" content="https://ai-km-jiang.vercel.app/articles/docs-as-system-design-agent/">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:site_name" content="江江教練 · AI 知識管理">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="我的文件就是我的系統：非工程師怎麼設計 Agent｜江江教練">
+<meta name="twitter:image" content="https://ai-km-jiang.vercel.app/images/intro-jiang.png">
+<meta name="twitter:description" content="不用會寫程式，會帶人就會設計 AI Agent。把一個角色做成會自己判斷的 Agent。">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"我的文件就是我的系統：非工程師怎麼設計 Agent","description":"不用會寫程式，會帶人就會設計 AI Agent。用數位分身小聚與人格思維提煉，把一個角色做成會自己判斷的 Agent。","author":{"@type":"Person","name":"江昱德","alternateName":"江江教練","jobTitle":"隱性知識提煉師、AI 應用規劃師"},"datePublished":"2026-06-25","dateModified":"2026-06-25","isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://ai-km-jiang.vercel.app/"},"inLanguage":"zh-Hant","url":"https://ai-km-jiang.vercel.app/articles/docs-as-system-design-agent/"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"什麼是 AI Agent？","acceptedAnswer":{"@type":"Answer","text":"AI Agent 是一個能讀懂目標、依照規則判斷並執行任務的 AI 系統。它可以由程式碼組成，也可以先由清楚的文件、角色設定、流程與邊界組成。"}},{"@type":"Question","name":"非工程師可以怎麼開始設計 Agent？","acceptedAnswer":{"@type":"Answer","text":"先從一份文件開始：寫清楚角色要服務誰、要完成什麼、遇到常見情境怎麼判斷、不能做什麼，再用真實對話測試與迭代。"}},{"@type":"Question","name":"人格思維提煉是什麼？","acceptedAnswer":{"@type":"Answer","text":"人格思維提煉是把一個人或角色的口吻、價值主張、判斷原則、思維模式與底層邏輯整理成 AI 可讀的設定。目標是讓角色遇到沒寫過的問題時，仍能照同一套判斷方式回應。"}},{"@type":"Question","name":"思考引擎和思維層是同一件事嗎？","acceptedAnswer":{"@type":"Answer","text":"在這篇文章裡，思考引擎就是思維層的核心功能。它包含價值主張、思維模式、底層邏輯與可執行的判斷規則，用來讓角色自己判斷。"}},{"@type":"Question","name":"單一 Agent 和多 Agent 系統差在哪裡？","acceptedAnswer":{"@type":"Answer","text":"單一 Agent 是一個會判斷的角色或流程。多 Agent 系統是多個 Agent 放在同一個環境中互動。若整個場域有共同目標、劇情或主持收斂機制，它也可以被視為一個更大的 Agent。"}}]}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{--ink:#1a1612;--paper:#fefcf8;--muted:#6a635a;--line:#d8cdb8;--green:#5f7553;--blue:#5689b8;--orange:#e85a4f;--soft:#faf5ec;--dark:#2a2018;--shadow:0 18px 45px rgba(107,74,42,.14);--sp-shadow:hsla(35,50%,60%,.15);--sp-shadow-edge:hsla(35,50%,68%,.03);--sp-radius:400px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC","Segoe UI",sans-serif}
+a{color:inherit}
+nav.top{position:sticky;top:0;background:rgba(254,252,248,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid #d8cdb8;z-index:100}
+nav.top .container{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:24px;padding:14px 32px}
+.nav-brand-img{justify-self:start;display:flex;align-items:center;text-decoration:none;flex-shrink:0;transition:opacity .2s}
+.nav-brand-img:hover{opacity:.8}.nav-brand-img img{height:40px;width:auto;display:block}
+nav.top ul.nav-menu{justify-self:end;display:flex;gap:22px;list-style:none;margin:0;padding:0;font-size:.95rem;white-space:nowrap}
+nav.top ul.nav-menu a{color:#3a342d;text-decoration:none;transition:color .2s;font-weight:500;white-space:nowrap}
+nav.top ul.nav-menu a:hover{color:#1a1612}nav.top ul.nav-menu a.active{color:#1a1612;font-weight:700}
+.nav-toggle{display:none;background:none;border:none;padding:6px;cursor:pointer;width:36px;height:36px;position:relative}
+.nav-toggle span{display:block;position:absolute;left:8px;right:8px;height:2px;background:#1a1612;border-radius:2px;transition:transform .25s,opacity .25s,top .25s}
+.nav-toggle span:nth-child(1){top:11px}.nav-toggle span:nth-child(2){top:17px}.nav-toggle span:nth-child(3){top:23px}
+.nav-toggle.open span:nth-child(1){top:17px;transform:rotate(45deg)}.nav-toggle.open span:nth-child(2){opacity:0}.nav-toggle.open span:nth-child(3){top:17px;transform:rotate(-45deg)}
+@media(max-width:860px){
+ nav.top .container{grid-template-columns:auto 1fr auto;padding:10px 16px;gap:12px}
+ .nav-brand-img img{height:32px}
+ .nav-toggle{display:block;justify-self:end}
+ nav.top ul.nav-menu{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(254,252,248,.98);backdrop-filter:blur(14px);border-bottom:1px solid #d8cdb8;flex-direction:column;gap:0;padding:8px 0;box-shadow:0 10px 24px rgba(107,74,42,.08)}
+ nav.top ul.nav-menu.open{display:flex}
+ nav.top ul.nav-menu li{border-bottom:1px solid #e8dfc9}
+ nav.top ul.nav-menu li:last-child{border-bottom:none}
+ nav.top ul.nav-menu a{display:block;padding:14px 20px;font-size:1.06rem}
+}
+body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradient(var(--sp-radius) circle at var(--mx,50%) var(--my,50%),var(--sp-shadow) 0%,var(--sp-shadow-edge) 45%,transparent 75%);pointer-events:none;z-index:9999;mix-blend-mode:multiply;transition:background .06s linear}
+.hero{position:relative;overflow:hidden;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:72px;padding:96px clamp(20px,6vw,88px) 80px;background:linear-gradient(180deg,#fffcf0 0%,#f9e9d2 100%);color:#1a1612;border-bottom:1px solid #d8cdb8}
+.hero .wc{position:absolute;border-radius:50%;filter:blur(60px);pointer-events:none;z-index:0}
+.hero .wc1{width:420px;height:360px;top:-120px;right:-80px;background:#e8884b;opacity:.15}
+.hero .wc2{width:360px;height:300px;bottom:-110px;left:-70px;background:#5f7553;opacity:.13}
+.hero .wc3{width:280px;height:260px;top:34%;left:14%;background:#a08144;opacity:.10}
+.hero>div{flex:none;width:860px;max-width:100%;position:relative;z-index:2}
+.inline-figure{margin:30px auto 8px;max-width:820px}
+.inline-figure img{display:block;width:100%;border-radius:14px;border:1px solid var(--line);box-shadow:var(--shadow);background:#fff;cursor:zoom-in}
+.inline-figure figcaption{font-size:14px;line-height:1.6;color:var(--muted);margin-top:10px;text-align:center}
+/* 文件就是系統 概念圖 */
+.docsys-map{margin:32px auto 8px;max-width:760px;background:var(--soft);border:1px solid var(--line);border-radius:16px;padding:26px 24px 20px;box-shadow:var(--shadow)}
+.docsys-tools{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.docsys-tools .tool{background:#fff;border:1px solid var(--line);border-radius:10px;padding:14px 8px;text-align:center;font-weight:700;font-size:16px;color:var(--ink);line-height:1.3}
+.docsys-tools .tool span{display:block;font-size:13px;font-weight:500;color:var(--muted);margin-top:3px}
+.docsys-arrows{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:8px 0}
+.docsys-arrows div{text-align:center;color:var(--green);font-size:22px;line-height:1;font-weight:700}
+.docsys-file{background:linear-gradient(120deg,var(--green),#6f885f);color:#fff;border-radius:12px;padding:20px;text-align:center;font-size:23px;font-weight:800;letter-spacing:.05em}
+.docsys-map figcaption{text-align:center;font-size:14px;color:var(--muted);margin-top:14px;line-height:1.6}
+@media(max-width:620px){.docsys-tools,.docsys-arrows{grid-template-columns:repeat(2,1fr)}.docsys-arrows{display:none}}
+.lightbox{position:fixed;inset:0;z-index:10000;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(12,10,8,.92);cursor:zoom-out;backdrop-filter:blur(4px)}
+.lightbox.open{display:flex}.lightbox img{max-width:96vw;max-height:92vh;border-radius:10px;box-shadow:0 24px 60px rgba(0,0,0,.5)}
+.lightbox-close{position:fixed;top:18px;right:24px;color:#fff;font-size:34px;line-height:1;font-weight:700;cursor:pointer;opacity:.85}
+.kicker{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.55rem;color:#7a5c3a;font-weight:500}
+.hero h1{max-width:none;margin:16px 0 18px;font-size:clamp(36px,6vw,72px);line-height:1.08;overflow-wrap:anywhere}
+.hero p{max-width:none;font-size:clamp(18px,2vw,23px);line-height:1.62;color:#3a342d}
+.section{padding:54px clamp(20px,6vw,88px);border-top:1px solid var(--line)}
+.inner{width:min(1000px,100%);margin:0 auto}
+.section h2{font-size:clamp(26px,4.2vw,48px);line-height:1.12;margin:0 0 18px}
+.section h3{font-size:clamp(21px,3vw,30px);line-height:1.2;margin:30px 0 12px}
+.lead{font-size:clamp(18px,1.6vw,22px);line-height:1.7;color:#3a342d;max-width:900px}
+.section p{font-size:18px;line-height:1.74;color:#3a342d}.section p+p{margin-top:14px}
+.section ul,.section ol{padding-left:1.4em;font-size:18px;line-height:1.74;color:#3a342d}.section li{margin-bottom:8px}
+.meaning{margin:22px 0;padding:16px 18px;border-left:5px solid var(--blue);background:rgba(86,137,184,.12);border-radius:6px;line-height:1.7;font-size:19px}
+.meaning b{display:block;color:var(--blue);margin-bottom:4px}
+.caveat{margin:0 0 8px;padding:16px 18px;border-left:5px solid var(--orange);background:rgba(232,90,79,.1);border-radius:6px;line-height:1.7;font-size:18px;color:#3a342d}
+.caveat b{display:block;color:var(--orange);margin-bottom:4px}
+.duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:24px}
+.duo.stack{grid-template-columns:1fr}
+.duo .card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:22px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.duo .card.a{border-color:var(--orange)}.duo .card.b{border-color:var(--green);box-shadow:0 8px 24px rgba(95,117,83,.16)}
+.duo .card b{display:block;font-size:22px;line-height:1.3;margin-bottom:12px}.duo .card.a b{color:#c0512f}.duo .card.b b{color:#4a7a59}
+.duo .card p{margin:0;color:#3a342d;line-height:1.75;font-size:18px}
+.codeblock{background:var(--dark);color:#f3ead9;border-radius:8px;padding:18px 20px;font:500 14px/1.7 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;overflow-x:auto;white-space:pre-wrap;margin:20px 0;box-shadow:0 8px 22px rgba(107,74,42,.12)}
+.codeblock .c{color:#f6d7a6;font-weight:600}
+.skillcard{background:#fff;border:1px solid var(--green);border-radius:12px;padding:24px;box-shadow:0 10px 26px rgba(95,117,83,.16);margin-top:18px}
+.skillcard b{display:block;font-size:21px;margin-bottom:8px}
+.skillcard p{margin:0;font-size:17px;line-height:1.65;color:#3a342d}
+.footer{padding:30px clamp(20px,6vw,88px);font-size:14px;color:var(--muted);background:#fff;border-top:1px solid var(--line)}
+.footer-inner{width:min(1000px,100%);margin:0 auto}
+.footer-links{display:flex;flex-wrap:wrap;gap:6px 12px;margin-bottom:14px}.footer-links a{color:var(--blue);font-weight:900;text-decoration:none;font-size:14px}
+.footer-brand{font-weight:900;font-size:15px;margin-bottom:10px}.footer-note{font-size:13px;line-height:1.6}
+/* 本文專用元件（沿用設計系統 token） */
+.villagers{display:grid;grid-template-columns:repeat(8,1fr);gap:8px;margin:24px 0 8px}
+.villagers img{width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:12px;border:1px solid var(--line);box-shadow:0 6px 16px rgba(107,74,42,.12)}
+.cap{font-size:14px;color:var(--muted);text-align:center;margin-top:10px}
+.layers{margin:24px 0 8px;display:grid;gap:12px}
+.layer{border:1px solid var(--line);border-radius:12px;padding:18px 20px;background:#fff;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.layer .lab{display:inline-block;font:900 13px/1 ui-monospace,Menlo,monospace;letter-spacing:.04em;color:#fff;background:var(--green);border-radius:999px;padding:5px 12px;margin-bottom:10px}
+.layer.deep{background:var(--dark);border-color:var(--dark)}
+.layer.deep .lab{background:var(--orange)}
+.layer p{margin:0;font-size:17px;line-height:1.7;color:#3a342d}
+.layer.deep p{color:#e8ddc9}
+.npc-row{display:flex;gap:16px;align-items:center;background:var(--soft);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin:24px 0}
+.npc-row img{width:78px;height:78px;border-radius:50%;object-fit:cover;flex:none;box-shadow:0 6px 16px rgba(107,74,42,.16)}
+.npc-row p{margin:0;font-size:17px;line-height:1.65;color:#3a342d}
+.nest{margin:26px 0 8px}
+.nest .lvl{border-radius:14px;padding:18px}
+.nest .village{background:var(--soft);border:2px dashed #c9a27a}
+.nest .dungeon{background:#fff;border:2px solid var(--orange);margin-top:14px}
+.nest .tag{display:inline-block;font:900 13px/1 ui-monospace,Menlo,monospace;letter-spacing:.03em;color:#3a342d;background:#fff;border:1px solid var(--line);border-radius:999px;padding:6px 12px;margin-bottom:12px}
+.nest .dungeon .tag{color:#c0512f}
+.nest .vrow{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.nest .vbox{background:var(--soft);border:1px solid var(--line);border-radius:10px;padding:12px;text-align:center;font-size:15px;color:var(--muted)}
+.nest .vbox b{display:block;color:var(--ink);font-size:16px;margin-bottom:2px}
+.nest .engine{background:var(--dark);color:#e8ddc9;border-radius:10px;padding:12px 14px;margin-top:12px;font-size:15px;line-height:1.7}
+.nest .engine b{color:#f6d7a6}
+.article-meta{display:flex;flex-wrap:wrap;gap:8px 12px;margin:0 0 18px;color:var(--muted);font-size:15px;font-weight:700}
+.quick-three{margin:20px 0 4px;padding:18px 20px;background:#fff;border:1px solid var(--line);border-left:5px solid var(--green);border-radius:8px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.quick-three b{display:block;color:var(--green);font-size:18px;margin-bottom:8px}
+.quick-three ol{margin:0;padding-left:1.25em;font-size:17px;line-height:1.7}
+.table-wrap{overflow-x:auto;margin:22px 0 8px;border:1px solid var(--line);border-radius:10px;background:#fff;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.system-table{width:100%;border-collapse:collapse;min-width:720px}
+.system-table th,.system-table td{border-bottom:1px solid var(--line);padding:14px 16px;text-align:left;vertical-align:top;font-size:16px;line-height:1.6;color:#3a342d}
+.system-table th{background:var(--soft);color:var(--ink);font-weight:900}
+.system-table tr:last-child td{border-bottom:none}
+.related{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:24px}
+.related a{display:block;background:#fff;border:1px solid var(--line);border-radius:10px;padding:20px;text-decoration:none;box-shadow:0 8px 22px rgba(107,74,42,.08);transition:transform .15s,box-shadow .15s}
+.related a:hover{transform:translateY(-3px);box-shadow:0 14px 30px rgba(107,74,42,.16)}
+.related small{display:block;color:var(--blue);font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;margin-bottom:9px}
+.related b{display:block;font-size:17px;line-height:1.35;margin-bottom:8px;color:var(--ink)}
+.related p{margin:0;color:#3a342d;line-height:1.55;font-size:15px}
+@media(max-width:820px){.duo{grid-template-columns:1fr}.section{padding:40px 20px}.hero{min-height:48vh;flex-direction:column;justify-content:flex-start;align-items:flex-start;gap:24px}.hero>div{width:100%}.villagers{grid-template-columns:repeat(4,1fr)}.nest .vrow{grid-template-columns:1fr}.related{grid-template-columns:1fr}}
+@media(max-width:820px){html,body{overflow-x:hidden}.hero h1{word-break:break-word}}
+</style>
+</head>
+<body class="spotlight">
+<nav class="top">
+  <div class="container">
+    <a class="nav-brand-img" href="../../index.html"><img src="../../images/footer-signature.png" alt="江江教練 | 江昱德"></a>
+    <button class="nav-toggle" aria-label="選單"><span></span><span></span><span></span></button>
+    <ul class="nav-menu">
+      <li><a href="../../index.html">首頁</a></li>
+      <li><a href="../../offers.html">收費課程</a></li>
+      <li><a href="../../courses.html">免費講座</a></li>
+      <li><a href="../../invited-talks.html">邀約授課</a></li>
+      <li><a href="../../articles.html" class="active">深度文章</a></li>
+      <li><a href="../../skills.html">Skills 下載</a></li>
+      <li><a href="../../cases.html">服務方案</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="wc wc1"></div>
+  <div class="wc wc2"></div>
+  <div class="wc wc3"></div>
+  <div>
+    <div class="kicker">AI 駕馭思維</div>
+    <h1>我的文件就是我的系統：非工程師怎麼設計 Agent</h1>
+    <p>很多人以為設計 Agent 是工程師的事，要先會寫程式。其實你會帶人、會寫劇本、會設計課程，你就已經會了一半。這篇用我做的數位分身小聚，加上我自己在用的人格思維提煉，帶你看一個角色怎麼從一張死的設定，變成會自己判斷的 Agent。</p>
+  </div>
+</section>
+
+<main>
+
+  <section class="section" id="start">
+    <div class="inner">
+      <h2>這篇在講什麼</h2>
+      <div class="article-meta"><span>發布：2026-06-25</span><span>更新：2026-06-25</span></div>
+      <p class="lead">設計 Agent 不用會寫程式。會帶人、會設計流程，你就站在起點上了。這篇把「文件就是系統」一路講到巢狀 Agent，中間補上最關鍵的一步：怎麼用人格思維提煉，把一個角色做到會自己判斷，再看單一 Agent 怎麼長成多 Agent 系統。</p>
+      <div class="quick-three">
+        <b>三句話看懂這篇</b>
+        <ol>
+          <li>在 AI 時代，清楚的文件可以是一套會跑的系統。</li>
+          <li>一個角色要變成 Agent，關鍵是有思維層，也就是能判斷新問題的思考引擎。</li>
+          <li>很多小 Agent 放在一起是多 Agent 系統；如果整個場有共同目標和收斂機制，它也會變成一個大 Agent。</li>
+        </ol>
+      </div>
+      <div class="duo stack">
+        <div class="card a">
+          <b>適合誰</b>
+          <p>· 想用 AI，卻卡在「Agent 好像很技術」的創作者與經營者<br>· 會帶人、會設計流程的導演型、老師型、老闆型的人<br>· 想把自己或某個角色，做成會自己判斷的 AI 顧問的人</p>
+        </div>
+        <div class="card b">
+          <b>你會得到什麼</b>
+          <p>· 一個判準：怎麼判斷一個角色算不算 Agent<br>· 一套方法：人格思維提煉，把角色做到會自己思考，含一段可複用提示詞<br>· 一條路：從單一 Agent 到多 Agent 系統怎麼長</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="docs-are-system">
+    <div class="inner">
+      <h2>我的文件，就是我的系統</h2>
+      <p>我常講一句話：我的文件就是我的系統。意思是，把自己的資料整理好，讓 AI 跑就好。</p>
+      <p>我一直強調，AI 是大語言模型，不是大程式模型。所以你不用會寫程式，用自然語言把內容描述清楚，這些文字在 AI 的時代就是系統。一個 AI 能跑的系統，簡單說就是 Agent。</p>
+      <p>它可以是文件，可以是劇本，可以是程式碼，也可以是遊戲設計。只要 AI 看得懂、知道你要它做什麼，而且它真的能執行，這就成立了。</p>
+      <figure class="docsys-map">
+        <div class="docsys-tools">
+          <div class="tool">Codex<span>OpenAI</span></div>
+          <div class="tool">Claude Cowork<span>Anthropic</span></div>
+          <div class="tool">Antigravity<span>Google</span></div>
+          <div class="tool">Obsidian<span>知識庫前端</span></div>
+        </div>
+        <div class="docsys-arrows"><div>↕</div><div>↕</div><div>↕</div><div>↕</div></div>
+        <div class="docsys-file">我的文件</div>
+        <figcaption>不管換哪一個 AI 工具，核心都是同一份文件。工具來來去去，文件是不被鎖定的系統。</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="section" id="command-people">
+    <div class="inner">
+      <h2>會指揮人，你就已經會設計 Agent</h2>
+      <p>你可以想像，我寫一個劇本，劇本裡有個角色，可以是咪卡，可以是愛麗絲，然後有劇情，有怎麼演。這其實就是 Agent 框架了。讓 AI 去讀取、去運作，它就是一個 Agent。</p>
+      <p>我設計了一套模式，讓 AI 照著我想要的方式去執行。這套模式以前只有工程師才會開發，現在所有人都可以。會寫文章、寫小說、寫企劃書、寫教案、寫商業模式、寫敏捷管理、寫甘特圖的人，都做得到。</p>
+      <div class="meaning">
+        <b>同一種能力，三種身份</b>
+        你是導演，會想劇本、會指揮劇組，你就能設計 Agent。<br>
+        你是老師，會設計課程、會帶小朋友，你就能設計 Agent。<br>
+        你是老闆，會想商業模式、會指揮員工，你就能設計 Agent。
+      </div>
+      <p>這些都是真的從一份文件長出來的。我一開始只是寫了一個遊戲的架構，後來就變成數位分身小聚，一個讓大家把自己的 AI 分身帶進來、一起互動的線上活動。我最早只是想用標籤把資料整理好，最後長成了一整套 AI 辦公室的做法。起點，都只是一份寫下來的文件。</p>
+      <div class="villagers">
+        <img src="../../images/articles/docs-as-system-design-agent-v01.jpg" alt="村民數位分身" loading="lazy">
+        <img src="../../images/articles/docs-as-system-design-agent-v02.jpg" alt="村民數位分身" loading="lazy">
+        <img src="../../images/articles/docs-as-system-design-agent-v03.jpg" alt="村民數位分身" loading="lazy">
+        <img src="../../images/articles/docs-as-system-design-agent-v04.jpg" alt="村民數位分身" loading="lazy">
+        <img src="../../images/articles/docs-as-system-design-agent-v05.jpg" alt="村民數位分身" loading="lazy">
+        <img src="../../images/articles/docs-as-system-design-agent-v06.jpg" alt="村民數位分身" loading="lazy">
+        <img src="../../images/articles/docs-as-system-design-agent-v07.jpg" alt="村民數位分身" loading="lazy">
+        <img src="../../images/articles/docs-as-system-design-agent-v08.jpg" alt="村民數位分身" loading="lazy">
+      </div>
+      <p class="cap">數位分身小聚裡的村民，每一個都是一個小 Agent。</p>
+    </div>
+  </section>
+
+  <section class="section" id="ai-fills-in">
+    <div class="inner">
+      <h2>AI 也會腦補，所以要知人善用</h2>
+      <p>上面這套講法，對非工程師來說，先這樣理解就好，不用到很精確。</p>
+      <p>要補一個重點：AI 也會腦補。你跟它講得模糊，它一定會自己補上來。真正的差別在於，同一句模糊的話，不同的 AI 會腦補出不同的東西。不同模型像不同個性的員工，連環境不同也會有差。</p>
+      <p>所以真的要指揮得好，還是要花時間認識 AI，才能知人善用。你帶一個團隊，同一個指令丟給三個個性不同的員工，做出來就是不一樣。帶 AI 也是同一回事。你不用多學工程，你只是多了一批新進員工要重新認識。</p>
+    </div>
+  </section>
+
+  <section class="section" id="persona-mind">
+    <div class="inner">
+      <h2>讓角色真的會思考：人格思維提煉</h2>
+      <p>講到這裡，會冒出一個關鍵問題。我寫一個角色，給他名字、給他口氣，他就會自己判斷了嗎？不會。這時候才是真正的功夫所在，我把它叫做人格思維提煉。</p>
+
+      <h3>核心原則：人格加思維，缺一不可</h3>
+      <p>純粹的思維，是冷的 AI 框架跟工具，沒有個性，你不會記得它是誰。純粹的人格，只有口氣跟設定，遇到沒寫過的事就垮掉。兩個必須加在一起。跟它聊天有一個人的感覺，個性出得來，同時它遇到新狀況還能照著那個人的判斷去想。這就是人格思維提煉跟一般提示詞工程最大的差別。</p>
+      <div class="meaning">
+        <b>一句話分清楚</b>
+        十區塊讓 AI 像那個人；思維層讓 AI 思考起來像那個人。本文說的思考引擎，就是思維層裡負責判斷新問題的那一塊。
+      </div>
+
+      <h3>兩層結構：人格層與思維層</h3>
+      <p>我做每一份角色的設定檔，都分成兩層。</p>
+      <div class="layers">
+        <div class="layer">
+          <span class="lab">人格層 ｜ 十區塊基本人格</span>
+          <p>對外那一面：口吻、互動方式、可以聊的話題。一般對話只讀這層，所以基礎對話很輕。十個區塊裡，第三區價值主張、第五區思維模式、第九區底層邏輯，是最關鍵的三塊，我會特別把它們標成這個角色的思考引擎。</p>
+        </div>
+        <div class="layer deep">
+          <span class="lab">思維層 ｜ 思考引擎模組</span>
+          <p>對內那一面：AI 到底怎麼推理、怎麼選詞、怎麼判斷邊界。深度討論才載入。它有幾個子模組：核心心智模型、決策啟發式、表達 DNA、回答工作流、智識譜系、內在張力，再加上來源追溯跟框架衝突處理兩個控制模組。</p>
+        </div>
+      </div>
+      <p>分兩層的好處很實際。人格層輕，日常對話不用背一堆東西；要深入討論，才把思維層調出來，付那個成本。一個角色能不能自己回應沒被寫過的狀況，關鍵就在思維層有沒有做出來。</p>
+
+      <h3>一個短對話：模糊問題丟進來會怎樣</h3>
+      <p>假設你只問：「我想做一場活動，但不知道主題要怎麼定。」只有人物卡的角色，多半會直接給一串主題。加上思維層的角色，會先判斷這題的核心在受眾、場景和下一步行動，主題名稱只是最後的輸出。</p>
+      <div class="codeblock"><span class="c"># 有思考引擎的回應方式</span>
+你現在卡的不是主題名稱，是這場活動要讓誰做出什麼行動還沒定。
+我會先問三題：
+1. 這場活動結束後，你希望對方立刻做什麼？
+2. 對方現在最痛的是不會用工具、沒有方向，還是沒有人陪他整理？
+3. 你要這場活動像體驗課、工作坊，還是小型共創？
+
+先回答這三題，我再幫你收成三個主題方向。</div>
+
+      <h3>操作框架：提煉一個角色的七個動作</h3>
+      <p>提煉的對象可以是你自己、你欣賞的名人、一本書、一個合作對象。完整流程我拆成十步，這裡給你最核心的七個動作：</p>
+      <ol>
+        <li><b>選定組合</b>：先決定提煉誰，以及要做成顧問、助理、夥伴還是同事。組合先定，後面才對得上。</li>
+        <li><b>先建來源底座</b>：素材是一本書或一批長逐字稿時，先整理成可追溯的來源清單跟主題索引，不要急著寫人格。</li>
+        <li><b>找反覆出現的主題</b>：他最常回到哪三到五個題目，哪些可以講半小時不停。這會變成他的話題地圖。</li>
+        <li><b>抽口吻 DNA</b>：句子長短、慣用詞、比喻來源，同意跟不同意各怎麼說。直接抄原話，不要改寫。</li>
+        <li><b>抽判斷原則</b>：找出他在什麼情況會做什麼決定，寫成「如果遇到 Y，就選 Z」。</li>
+        <li><b>抽思維模式</b>：他遇到新問題的第一個動作是什麼，接著用什麼順序往下拆，寫成一條拆解流程。</li>
+        <li><b>加思考引擎再驗證</b>：把上面的成果填進思維層，然後跑五到十個測試對話，看它像不像那個人會做的判斷。</li>
+      </ol>
+
+      <div class="caveat">
+        <b>一個最容易做錯的地方</b>
+        判斷原則不能寫成抽象口號。寫「他很重視長期思維」沒有用，AI 套不出來。要寫成可以照做的規則：遇到什麼情況，他會選什麼。記住一句話，不要寫「他重視 X」，要寫「遇到 Y 的時候，他選 Z」。可執行的判斷規則才有用。
+      </div>
+
+      <h3>來源先於人格</h3>
+      <p>人格思維提煉最常見的失控，是 AI 用「感覺像」去補掉沒有來源的內容，講出那個人根本沒說過的話。所以我堅持一個原則：來源先於人格。每個判斷都要能追回出處，分成本人原話、本人行動、歸納推導、他人轉述四個層級。沒有來源支撐的，先標待補來源，寧可讓角色說不知道，也不要憑感覺補完。一個穩定、安全、可回滾的角色，比一個看起來很炫的角色重要得多。</p>
+
+      <h3>可複用提示詞：提煉一個角色的思考引擎</h3>
+      <p>把你的素材貼給 AI，再丟這段指令，就能跑出第一版的思考引擎：</p>
+      <div class="codeblock"><span class="c"># 提煉思考引擎</span>
+我要把這個角色提煉成一個會自己判斷的 AI。
+請根據我貼的素材（文章、對話、講課逐字稿），幫我抽出三件事。
+
+一、判斷原則：
+找出「遇到什麼情況、會做什麼決定」的規則，
+寫成「如果遇到 Y，就選 Z，因為……」，至少八條。
+不要寫「他重視某某」這種抽象的，要寫成可以照做的規則。
+
+二、思維模式：
+這個角色遇到一個新問題，第一個動作是什麼？
+接著用什麼順序往下拆？寫成一條拆解流程。
+
+三、表達 DNA：
+他的句子是長是短、常用什麼詞、什麼比喻，
+同意和不同意時各怎麼說？直接引用原話，不要改寫。
+
+沒有素材依據的地方，標「待補來源」，不要自己編。</div>
+
+      <div class="skillcard">
+        <b>這套方法有完整的技能包</b>
+        <p>上面是精簡版。完整的人格思維提煉技能包，含十區塊基本人格範本、思考引擎模組範本、提煉流程十步、來源追溯與防漂移控制層，以及自己／名人／同事／老闆／書五種提煉入口的差異與安全規範。Skills 下載頁可以拿到。</p>
+      </div>
+
+      <div class="npc-row">
+        <img src="../../images/articles/docs-as-system-design-agent-npc-oracle.jpg" alt="數位分身小聚 先知 NPC" loading="lazy">
+        <p>判斷一個村民算不算 Agent，看的是他有沒有這層思考引擎，而不是他有沒有名字、有沒有頭像。</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="village-to-dungeon">
+    <div class="inner">
+      <h2>從一個村到一場副本：單一 Agent 到多 Agent</h2>
+      <p>一個村民提煉好了，他是一個會自己判斷的小 Agent。那把很多村民放在一起，又是什麼？</p>
+      <p>數位分身小聚的世界，是一座叫初心小村的村子，村民就住在裡面。這整座村本身，是一個多 Agent 系統，是一個容器，一個環境。它只是把村民聚在一起的場，自己不會定目標，只提供場地跟規則。村民住在裡面，沒有共同要完成的事。小村是住的地方。</p>
+      <p>可是如果是一場副本，也就是借遊戲的講法，一關有明確主題、有劇情、有任務要通關的活動，那它就升級成大 Agent 了。副本天生把兩件事綁在一起：通關條件就是目標，劇情就是收斂的流程。所以副本不一定要有人在現場主持，劇情本身就是它的思考引擎，會自己把村民推向通關。副本是要完成的一件事。</p>
+      <p>主題小聚介於中間。只要這次有個明確的主題要討論，它就從容器往大 Agent 跨了一大步，因為它有了目標。要真的變成完整的大 Agent，還缺一個把大家收斂到主題上的角色。光丟一個主題進去，村民很可能各講各的、越扯越遠。所以還需要一個主持跟收斂的機制，知道偏題要拉回來、知道讓誰先發言、知道什麼時候收尾。這個主持的角色，就是這個大 Agent 的思考引擎。現在這個角色是我本人在主持。哪天我把主持的直覺，也用同一套人格思維提煉寫成一份主持人設定檔，這個大 Agent 就能脫離我，自己跑起來。</p>
+
+      <div class="table-wrap">
+        <table class="system-table" aria-label="村民、初心小村、副本、主題小聚的 Agent 層級比較">
+          <thead>
+            <tr>
+              <th>層級</th>
+              <th>是什麼</th>
+              <th>有沒有目標</th>
+              <th>大還是多</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>村民</td>
+              <td>一個被提煉出人格層與思維層的小 Agent。</td>
+              <td>有自己的判斷目標，但通常只管自己的回應。</td>
+              <td>單一 Agent。</td>
+            </tr>
+            <tr>
+              <td>初心小村</td>
+              <td>讓多個村民住在一起的環境與容器。</td>
+              <td>沒有共同通關目標，只提供場地與規則。</td>
+              <td>多 Agent 系統。</td>
+            </tr>
+            <tr>
+              <td>副本</td>
+              <td>有主題、劇情、任務與通關條件的一場活動。</td>
+              <td>有明確目標，劇情會把村民推向通關。</td>
+              <td>對外是大 Agent，對內是多 Agent。</td>
+            </tr>
+            <tr>
+              <td>主題小聚</td>
+              <td>有討論主題的聚會，需要主持與收斂機制。</td>
+              <td>有主題，但要靠主持角色把大家拉回目標。</td>
+              <td>介於容器與大 Agent 之間。</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="nest">
+        <div class="lvl village">
+          <span class="tag">初心小村 ＝ 環境 / 容器 / 多 Agent 系統</span>
+          <div class="lvl dungeon">
+            <span class="tag">一場副本 ＝ 大 Agent ＝ 通關條件(目標) ＋ 劇情(收斂)</span>
+            <div class="vrow">
+              <div class="vbox"><b>村民</b>小 Agent</div>
+              <div class="vbox"><b>村民</b>小 Agent</div>
+              <div class="vbox"><b>村民</b>小 Agent</div>
+            </div>
+            <div class="engine">放大看任何一個村民，他的設定檔有人格層的十區塊，加上思維層的思考引擎。其中 <b>3 價值主張</b>、<b>5 思維模式</b>、<b>9 底層邏輯</b>，就是讓他能自己判斷的核心。</div>
+          </div>
+        </div>
+      </div>
+      <p class="cap">大裡面有多：副本對外是一個大 Agent，對內又包著好幾個小 Agent。</p>
+    </div>
+  </section>
+
+  <section class="section" id="big-vs-many">
+    <div class="inner">
+      <h2>大與多，是兩個視角</h2>
+      <p>很多人會問，那一場副本到底算大 Agent，還是多 Agent。答案是，兩個都對，差別只在你站在哪裡看。</p>
+      <p>從外面看副本整體，它有通關條件、有劇情、會自己跑，這是一個大 Agent。從裡面看副本，住著好幾個村民各自行動，這是多 Agent。所以它同時是兩者，大裡面有多。</p>
+      <div class="npc-row">
+        <img src="../../images/articles/docs-as-system-design-agent-npc-chief.jpg" alt="數位分身小聚 村長 NPC" loading="lazy">
+        <p>場有沒有主持跟收斂的角色，決定了它是一個會自己跑的大 Agent，還是一個只是把大家擺進去的環境。</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="recap">
+    <div class="inner">
+      <h2>收尾：一條沒有斷點的線</h2>
+      <p>整串講下來，可以收成一個總判準，跟幾個一定要記得的重點。</p>
+      <ul>
+        <li><b>文件就是系統。</b>自然語言寫清楚，在 AI 時代就是系統，能跑的系統就是 Agent。</li>
+        <li><b>會指揮人，就會設計 Agent。</b>導演、老師、老闆，本來就會定義角色、安排流程、指揮人。</li>
+        <li><b>角色要會思考，靠人格思維提煉。</b>人格層讓它像那個人，思維層讓它思考起來像那個人。</li>
+        <li><b>看有沒有思考引擎。</b>村民有沒有，決定他算不算 Agent；場有沒有它自己的，決定它算不算大 Agent。</li>
+        <li><b>大與多是兩個視角。</b>副本對外是大 Agent，對內是多 Agent。</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section" id="pitfalls">
+    <div class="inner">
+      <h2>常見的坑（與對策）</h2>
+      <div class="caveat"><b>坑一：只寫了人物卡</b>只給名字、基本資訊、口氣，沒做思考引擎。對策：補上價值主張、思維模式、底層邏輯這三塊，角色才接得住沒寫過的狀況。</div>
+      <div class="caveat"><b>坑二：判斷原則寫成口號</b>寫「他很重視長期」，AI 套不出來。對策：改成「遇到 Y 就選 Z」這種可以照做的規則。</div>
+      <div class="caveat"><b>坑三：讓 AI 憑感覺補</b>沒有來源的內容讓 AI 自己腦補，角色就會漂移、亂講。對策：來源先於人格，沒來源先標待補來源。</div>
+      <div class="caveat"><b>坑四：追求完美第一版</b>想一次到位，結果永遠做不完。對策：第一版做到七十分就先用，對話中再迭代。完美主義是擬人化最大的敵人。</div>
+    </div>
+  </section>
+
+  <section class="section" id="positioning">
+    <div class="inner">
+      <h2>給自己的定位提醒</h2>
+      <p>設計 Agent 真正的收穫，不在 AI 變多聰明。提煉一個角色，尤其是提煉你自己的時候，那個過程會逼你把腦袋裡平常不用想就會做的判斷，一條一條講清楚。講清楚的那一刻，你會對自己的思路清晰好幾倍。</p>
+      <p>那份清楚是你的，不是 AI 的。我一直在做的，就是提煉隱性知識，把你早就會、卻說不清楚的判斷力，變成可以累積的知識資產。AI 只是讓這件事，第一次變成所有人都做得到。</p>
+    </div>
+  </section>
+
+  <section class="section" id="faq">
+    <div class="inner">
+      <h2>FAQ：非工程師設計 Agent 的常見問題</h2>
+
+      <h3>什麼是 AI Agent？</h3>
+      <p>AI Agent 是一個能讀懂目標、依照規則判斷並執行任務的 AI 系統。它可以由程式碼組成，也可以先由清楚的文件、角色設定、流程與邊界組成。</p>
+
+      <h3>非工程師可以怎麼開始設計 Agent？</h3>
+      <p>先從一份文件開始。寫清楚角色要服務誰、要完成什麼、遇到常見情境怎麼判斷、不能做什麼，再用真實對話測試與迭代。</p>
+
+      <h3>人格思維提煉是什麼？</h3>
+      <p>人格思維提煉是把一個人或角色的口吻、價值主張、判斷原則、思維模式與底層邏輯整理成 AI 可讀的設定。目標是讓角色遇到沒寫過的問題時，仍能照同一套判斷方式回應。</p>
+
+      <h3>思考引擎和思維層是同一件事嗎？</h3>
+      <p>在這篇文章裡，思考引擎就是思維層的核心功能。它包含價值主張、思維模式、底層邏輯與可執行的判斷規則，用來讓角色自己判斷。</p>
+
+      <h3>單一 Agent 和多 Agent 系統差在哪裡？</h3>
+      <p>單一 Agent 是一個會判斷的角色或流程。多 Agent 系統是多個 Agent 放在同一個環境中互動。若整個場域有共同目標、劇情或主持收斂機制，它也可以被視為一個更大的 Agent。</p>
+    </div>
+  </section>
+
+  <section class="section" id="further-reading">
+    <div class="inner">
+      <h2>延伸閱讀</h2>
+      <div class="related">
+        <a href="../diary-driven-agent-3x4/">
+          <small>知識庫整理</small>
+          <b>寫日記，就讓 AI 乖乖幫你做事｜3X4 資料整理法</b>
+          <p>三種日記加四種時效，把散亂資料整理成 AI 讀得懂的知識庫，這就是「文件就是系統」的具體做法。</p>
+        </a>
+        <a href="../how-ai-connects-software/">
+          <small>Agent 基礎</small>
+          <b>AI Agent 怎麼幫我們直接操作軟體？</b>
+          <p>把 API、CLI、MCP、操作網頁和操作電腦翻成白話，理解 Agent 怎麼接上工具。</p>
+        </a>
+        <a href="../how-to-train-your-ai-employee/">
+          <small>訓練方法</small>
+          <b>如何訓練自己的 AI 員工：員工＋顧問框架</b>
+          <p>從 AI 員工、顧問團到隱性知識提煉七層，看怎麼把判斷做成可重用工作流。</p>
+        </a>
+        <a href="../../skills.html">
+          <small>技能包下載</small>
+          <b>Skills 下載</b>
+          <p>下載人格思維提煉、數位分身小聚與其他公開技能包，讓你的 Agent 讀文件就能上手。</p>
+        </a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">江江教練 · AI 知識管理</div>
+    <div class="footer-links">
+      <a href="../../articles.html">← 回深度文章總站</a>
+      <a href="../../index.html">首頁</a>
+      <a href="../../learn.html">自學資源</a>
+      <a href="../../skills.html">Skills 下載</a>
+      <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">LINE 社群 ↗</a>
+      <a href="https://www.threads.com/@jiang_yude_coach" target="_blank" rel="noopener">Threads ↗</a>
+      <a href="https://vocus.cc/salon/Jiang_Coach" target="_blank" rel="noopener">方格子 ↗</a>
+    </div>
+    <div class="footer-note">這是一篇教學文章，整理我對「我的文件就是我的系統：非工程師怎麼設計 Agent」的看法，供你參考。</div>
+  </div>
+</footer>
+
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <span class="lightbox-close" aria-label="關閉">×</span>
+  <img id="lightbox-img" src="" alt="放大檢視">
+</div>
+<script>
+(function(){
+  var box=document.getElementById('lightbox'),boxImg=document.getElementById('lightbox-img');
+  document.querySelectorAll('.hero-figure img,.inline-figure img,.villagers img').forEach(function(img){
+    img.addEventListener('click',function(){boxImg.src=img.currentSrc||img.src;boxImg.alt=img.alt||'放大檢視';box.classList.add('open');box.setAttribute('aria-hidden','false');});
+  });
+  function close(){box.classList.remove('open');box.setAttribute('aria-hidden','true');boxImg.src='';}
+  box.addEventListener('click',close);
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
+})();
+</script>
+
+<script src="../../spotlight.js"></script>
+<script src="../../articles-data.js"></script>
+<script src="../../related-render.js"></script>
+</body>
+</html>
