@@ -43,7 +43,8 @@ window.ARTICLES = [
       level: ["基礎"],
       content_type: ["案例文章"]
     },
-    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null }
+    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
+    related: ["program-vs-ai-skill-library", "how-to-train-your-ai-employee", "line-group-ai-workflow", "codex-log-health-check", "how-ai-connects-software"]
   },
 
   /* ── 2. 只用 Codex 建立自動工作日誌（教學）── */
@@ -61,7 +62,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: "https://vocus.cc/salon/Jiang_Coach" },
-    related: ["own-ai-team-at-work", "caught-ai-slacking-into-rules"]
+    related: ["own-ai-team-at-work", "caught-ai-slacking-into-rules", "line-group-ai-workflow", "codex-log-health-check"]
   },
 
   /* ── 3. 有標準答案的交給程式，沒標準答案的才輪到 AI（觀點）── */
@@ -79,7 +80,7 @@ window.ARTICLES = [
       content_type: ["觀點文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["own-ai-team-at-work", "agent-workflow-builds-automation"]
+    related: ["own-ai-team-at-work", "agent-workflow-builds-automation", "how-ai-connects-software"]
   },
 
   /* ── 4-6. 趨勢判讀 ── */
@@ -144,7 +145,8 @@ window.ARTICLES = [
       level: ["基礎"],
       content_type: ["案例文章"]
     },
-    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: "https://vocus.cc/salon/Jiang_Coach" }
+    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: "https://vocus.cc/salon/Jiang_Coach" },
+    related: ["codex-only-auto-worklog"]
   },
 
   /* ── 8. AI 之王不上戰場（觀點）── */
@@ -196,7 +198,7 @@ window.ARTICLES = [
       content_type: ["觀點文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["codex-only-auto-worklog", "program-vs-ai-skill-library"]
+    related: ["codex-only-auto-worklog", "program-vs-ai-skill-library", "how-to-train-your-ai-employee", "elon-musk-live-skill"]
   },
 
   /* ── 11. AI 就是整個市場的縮影：先用 AI 測反應（教學）── */
@@ -213,7 +215,8 @@ window.ARTICLES = [
       level: ["零基礎入門"],
       content_type: ["教學文章"]
     },
-    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null }
+    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
+    related: ["elon-musk-live-skill"]
   },
 
   /* ── 12. 如何訓練自己的 AI 員工：員工＋顧問框架（教學）── */
@@ -231,7 +234,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["own-ai-team-at-work", "agent-workflow-builds-automation"]
+    related: ["own-ai-team-at-work", "agent-workflow-builds-automation", "line-group-ai-workflow", "elon-musk-live-skill", "codex-log-health-check", "how-ai-connects-software"]
   },
 
   /* ── 13. LINE 群組也能變成 AI 工作流入口（教學）── */
