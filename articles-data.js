@@ -96,7 +96,8 @@ window.ARTICLES = [
       level: ["基礎"],
       content_type: ["趨勢文章"]
     },
-    external: { threads: null, vocus: null }
+    external: { threads: null, vocus: null },
+    related: ["elon-musk-live-skill"]
   },
   {
     id: "demis-hassabis-agi-science-ai",
@@ -266,7 +267,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["how-to-train-your-ai-employee", "own-ai-team-at-work", "ai-market-microcosm"]
+    related: ["spacex-ipo-musk-trillionaire-knowledge-work", "how-to-train-your-ai-employee", "own-ai-team-at-work", "ai-market-microcosm"]
   },
 
   /* ── 15. Codex log 健康巡檢（教學）── */
