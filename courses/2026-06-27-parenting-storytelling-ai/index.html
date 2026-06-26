@@ -73,7 +73,8 @@
   .dot-indicator a:hover { background:rgba(78,52,46,0.5); }
   .dot-indicator a.active { background:var(--accent); transform:scale(1.5); box-shadow:0 0 0 4px rgba(210,106,76,0.18); }
   .dot-indicator a .lbl { position:absolute; right:20px; top:50%; transform:translateY(-50%); font-family:var(--font-mono); font-size:11px; letter-spacing:0.12em; color:var(--text-soft-light); white-space:nowrap; opacity:0; transition:opacity 0.25s; pointer-events:none; }
-  .dot-indicator a:hover .lbl, .dot-indicator a.active .lbl { opacity:1; }
+  .dot-indicator a:hover .lbl { opacity:1; }
+  .dot-indicator.scrolling a.active .lbl { opacity:1; }
   body.on-dark .dot-indicator a { background:rgba(245,237,224,0.25); }
   body.on-dark .dot-indicator a.active { background:var(--accent-on-dark); box-shadow:0 0 0 4px rgba(232,160,127,0.22); }
   body.on-dark .dot-indicator a .lbl { color:var(--text-soft-dark); }
@@ -754,7 +755,16 @@ E. 電影海報（ChatGPT）
     progress.style.width = (max > 0 ? (scroller.scrollTop / max) * 100 : 0) + '%';
     ticking = false;
   }
-  window.addEventListener('scroll', () => { if (!ticking) { requestAnimationFrame(updateProgress); ticking = true; } }, { passive: true });
+  const dotNav = document.querySelector('.dot-indicator');
+  let lblTimer;
+  window.addEventListener('scroll', () => {
+    if (!ticking) { requestAnimationFrame(updateProgress); ticking = true; }
+    if (dotNav) {
+      dotNav.classList.add('scrolling');
+      clearTimeout(lblTimer);
+      lblTimer = setTimeout(() => dotNav.classList.remove('scrolling'), 1100);
+    }
+  }, { passive: true });
   updateProgress();
 
   document.querySelectorAll('[data-copy]').forEach((btn) => {
