@@ -133,7 +133,8 @@ window.ARTICLES = [
       level: ["基礎"],
       content_type: ["趨勢文章"]
     },
-    external: { threads: null, vocus: null }
+    external: { threads: null, vocus: null },
+    related: ["ai-capability-tiers", "vibe-coding-ten-half-products"]
   },
 
   /* ── 7. 抓到 AI 偷懶之後，把它寫進流程規則（案例）── */
@@ -367,15 +368,15 @@ window.ARTICLES = [
       content_type: ["觀點文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: "https://vocus.cc/salon/Jiang_Coach" },
-    related: ["ai-king-off-battlefield", "demis-hassabis-agi-science-ai", "spacex-ipo-musk-trillionaire-knowledge-work", "ai-market-microcosm", "vibe-coding-ten-half-products"]
+    related: ["ai-king-off-battlefield", "demis-hassabis-agi-science-ai", "spacex-ipo-musk-trillionaire-knowledge-work", "ai-market-microcosm", "vibe-coding-ten-half-products", "apple-wwdc26-siri-lobster-ai"]
   },
 
-  /* ── 20. 我的文件就是我的系統：非工程師怎麼設計 Agent（教學）── */
+  /* ── 20. 文件就是系統：非工程師怎麼設計 Agent 框架（教學）── */
   {
     id: "docs-as-system-design-agent",
     url: "articles/docs-as-system-design-agent/",
     date: "2026-06-25",
-    title: "我的文件就是我的系統：非工程師怎麼設計 Agent",
+    title: "文件就是系統：非工程師怎麼設計 Agent 框架",
     problem: "不會寫程式，卡在「設計 Agent 好像是工程師的事」，不知道怎麼把一個角色做成會自己判斷的 AI。",
     audience: "會帶人、會設計流程，卻被「Agent 很技術」擋住的創作者、老師與經營者。",
     summary: "我帶你看「文件就是系統」這個觀念，從人格思維提煉把角色做到會自己判斷，一路長到單一 Agent 與多 Agent 系統，並附上可複用的提示詞。",
@@ -403,7 +404,7 @@ window.ARTICLES = [
       content_type: ["觀點文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["elon-musk-live-skill", "codex-only-auto-worklog", "ai-capability-tiers", "how-ai-connects-software", "agent-workflow-builds-automation"]
+    related: ["elon-musk-live-skill", "codex-only-auto-worklog", "ai-capability-tiers", "how-ai-connects-software", "agent-workflow-builds-automation", "apple-wwdc26-siri-lobster-ai"]
   },
 
   /* ── 22. 找顧問前，先讓 AI 幫你把混亂整理成問題（教學）── */
