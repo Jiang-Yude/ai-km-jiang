@@ -1,0 +1,391 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="index,follow">
+<title>How to Auto-Archive Data Scattered Across LINE Groups Every Day | Coach Jiang · AI Knowledge Management</title>
+<meta name="description" content="A one-page guide to automatically downloading messages, images, PDFs, and files scattered across LINE groups via an official account, organizing them into folders by group, and handing the results to an Agent.">
+<link rel="canonical" href="https://ai-km-jiang.vercel.app/en/articles/line-group-ai-workflow/">
+<link rel="alternate" hreflang="zh-Hant" href="https://ai-km-jiang.vercel.app/articles/line-group-ai-workflow/">
+<link rel="alternate" hreflang="en" href="https://ai-km-jiang.vercel.app/en/articles/line-group-ai-workflow/">
+<link rel="alternate" hreflang="x-default" href="https://ai-km-jiang.vercel.app/articles/line-group-ai-workflow/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="How to Auto-Archive Data Scattered Across LINE Groups Every Day | Coach Jiang">
+<meta property="og:image" content="https://ai-km-jiang.vercel.app/images/articles/line-group-ai-workflow-summary.jpg">
+<meta property="og:description" content="Automatically download and archive data scattered across LINE groups daily. Collect reliably first, then hand it to an Agent to organize.">
+<meta property="og:url" content="https://ai-km-jiang.vercel.app/en/articles/line-group-ai-workflow/">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Coach Jiang · AI Knowledge Management">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="How to Auto-Archive Data Scattered Across LINE Groups Every Day | Coach Jiang">
+<meta name="twitter:image" content="https://ai-km-jiang.vercel.app/images/articles/line-group-ai-workflow-summary.jpg">
+<meta name="twitter:description" content="Automatically download and archive data scattered across LINE groups daily. Collect reliably first, then hand it to an Agent to organize.">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"How to Auto-Archive Data Scattered Across LINE Groups Every Day","description":"A one-page guide to automatically downloading messages, images, PDFs, and files scattered across LINE groups via an official account, organizing them into folders by group, and handing the results to an Agent.","author":{"@type":"Person","name":"Jiang Yude","alternateName":"Coach Jiang","jobTitle":"Tacit Knowledge Distiller, AI Workflow Planner"},"isPartOf":{"@type":"WebSite","name":"Coach Jiang · AI Knowledge Management","url":"https://ai-km-jiang.vercel.app/"},"inLanguage":"en","url":"https://ai-km-jiang.vercel.app/en/articles/line-group-ai-workflow/"}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{--ink:#1a1612;--paper:#fefcf8;--muted:#6a635a;--line:#d8cdb8;--green:#5f7553;--blue:#5689b8;--orange:#e85a4f;--soft:#faf5ec;--dark:#2a2018;--shadow:0 18px 45px rgba(107,74,42,.14);--sp-shadow:hsla(35,50%,60%,.15);--sp-shadow-edge:hsla(35,50%,68%,.03);--sp-radius:400px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC","Segoe UI",sans-serif}
+a{color:inherit}
+/* shared site nav */
+nav.top{position:sticky;top:0;background:rgba(254,252,248,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid #d8cdb8;z-index:100}
+nav.top .container{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:24px;padding:14px 32px}
+.nav-brand-img{justify-self:start;display:flex;align-items:center;text-decoration:none;flex-shrink:0;transition:opacity .2s}
+.nav-brand-img:hover{opacity:.8}.nav-brand-img img{height:40px;width:auto;display:block}
+nav.top ul.nav-menu{justify-self:end;display:flex;gap:22px;list-style:none;margin:0;padding:0;font-size:.95rem;white-space:nowrap}
+nav.top ul.nav-menu a{color:#3a342d;text-decoration:none;transition:color .2s;font-weight:500;white-space:nowrap}
+nav.top ul.nav-menu a:hover{color:#1a1612}nav.top ul.nav-menu a.active{color:#1a1612;font-weight:700}
+.nav-toggle{display:none;background:none;border:none;padding:6px;cursor:pointer;width:36px;height:36px;position:relative}
+.nav-toggle span{display:block;position:absolute;left:8px;right:8px;height:2px;background:#1a1612;border-radius:2px;transition:transform .25s,opacity .25s,top .25s}
+.nav-toggle span:nth-child(1){top:11px}.nav-toggle span:nth-child(2){top:17px}.nav-toggle span:nth-child(3){top:23px}
+.nav-toggle.open span:nth-child(1){top:17px;transform:rotate(45deg)}.nav-toggle.open span:nth-child(2){opacity:0}.nav-toggle.open span:nth-child(3){top:17px;transform:rotate(-45deg)}
+@media(max-width:860px){
+ nav.top .container{grid-template-columns:auto 1fr auto;padding:10px 16px;gap:12px}
+ .nav-brand-img img{height:32px}
+ .nav-toggle{display:block;justify-self:end}
+ nav.top ul.nav-menu{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(254,252,248,.98);backdrop-filter:blur(14px);border-bottom:1px solid #d8cdb8;flex-direction:column;gap:0;padding:8px 0;box-shadow:0 10px 24px rgba(107,74,42,.08)}
+ nav.top ul.nav-menu.open{display:flex}
+ nav.top ul.nav-menu li{border-bottom:1px solid #e8dfc9}
+ nav.top ul.nav-menu li:last-child{border-bottom:none}
+ nav.top ul.nav-menu a{display:block;padding:14px 20px;font-size:1.06rem}
+}
+/* warm cursor glow */
+body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradient(var(--sp-radius) circle at var(--mx,50%) var(--my,50%),var(--sp-shadow) 0%,var(--sp-shadow-edge) 45%,transparent 75%);pointer-events:none;z-index:9999;mix-blend-mode:multiply;transition:background .06s linear}
+.hero{position:relative;overflow:hidden;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:72px;padding:96px clamp(20px,6vw,88px) 80px;background:linear-gradient(180deg,#fffcf0 0%,#f9e9d2 100%);color:#1a1612;border-bottom:1px solid #d8cdb8}
+.hero .wc{position:absolute;border-radius:50%;filter:blur(60px);pointer-events:none;z-index:0}
+.hero .wc1{width:420px;height:360px;top:-120px;right:-80px;background:#e8884b;opacity:.15}
+.hero .wc2{width:360px;height:300px;bottom:-110px;left:-70px;background:#5f7553;opacity:.13}
+.hero .wc3{width:280px;height:260px;top:34%;left:14%;background:#a08144;opacity:.10}
+.hero>div{flex:none;width:860px;max-width:100%;position:relative;z-index:2}
+.hero-figure{margin:0;width:420px;flex:none;position:relative;z-index:2}
+.hero-figure img{display:block;width:100%;border-radius:16px;border:1px solid #d8cdb8;box-shadow:0 18px 45px rgba(107,74,42,.16)}
+.hero-figure figcaption{margin-top:10px;font-size:14px;line-height:1.6;color:#6a635a}
+.kicker{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.55rem;color:#7a5c3a;font-weight:500}
+.hero h1{max-width:none;margin:16px 0 18px;font-size:clamp(36px,6vw,72px);line-height:1.08;overflow-wrap:anywhere}
+.hero p{max-width:none;font-size:clamp(18px,2vw,23px);line-height:1.62;color:#3a342d}
+.section{padding:54px clamp(20px,6vw,88px);border-top:1px solid var(--line)}
+.inner{width:min(1000px,100%);margin:0 auto}
+.section h2{font-size:clamp(26px,4.2vw,48px);line-height:1.12;margin:0 0 18px}
+.section h3{font-size:clamp(21px,3vw,30px);line-height:1.2;margin:30px 0 12px}
+.lead{font-size:clamp(18px,1.6vw,22px);line-height:1.7;color:#3a342d;max-width:900px}
+.section p{font-size:18px;line-height:1.74;color:#3a342d}.section p+p{margin-top:14px}
+.section ul,.section ol{padding-left:1.4em;font-size:18px;line-height:1.74;color:#3a342d}.section li{margin-bottom:8px}
+.note{margin:22px 0;padding:16px 18px;border-left:5px solid var(--blue);background:rgba(86,137,184,.12);border-radius:6px;line-height:1.7;font-size:18px;color:#3a342d}.note b{display:block;color:var(--blue);margin-bottom:4px}
+.summary-box{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:24px}
+.summary-card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:20px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.summary-card b{display:block;color:var(--green);font-size:19px;margin-bottom:8px}
+.summary-card p{margin:0;font-size:16px;line-height:1.62;color:#3a342d}
+.workflow{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin-top:24px}
+.step{background:#fff;border:1px solid var(--line);border-radius:8px;padding:16px;min-height:142px}
+.step small{display:block;color:var(--orange);font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;margin-bottom:9px}
+.step b{display:block;font-size:17px;line-height:1.35;margin-bottom:8px}
+.step p{margin:0;font-size:15px;line-height:1.55;color:#3a342d}
+.duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:24px}
+.duo.stack{grid-template-columns:1fr}
+.duo .card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:22px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.duo .card.a,.duo .card.warn{border-color:var(--orange)}
+.duo .card.b,.duo .card.good{border-color:var(--green);box-shadow:0 8px 24px rgba(95,117,83,.16)}
+.duo .card small{display:block;font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.04em;margin-bottom:9px}
+.duo .card b{display:block;font-size:22px;line-height:1.3;margin-bottom:12px}
+.duo .card.a b,.duo .card.warn b{color:#c0512f}
+.duo .card.b b,.duo .card.good b{color:#4a7a59}
+.duo .card p{margin:0;color:#3a342d;line-height:1.75;font-size:18px}
+.codeblock{background:var(--dark);color:#f3ead9;border-radius:8px;padding:18px 20px;font:500 14px/1.65 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;overflow-x:auto;white-space:pre-wrap;margin:20px 0;box-shadow:0 8px 22px rgba(107,74,42,.12)}
+/* image components */
+.inline-figure{margin:30px auto 8px;max-width:820px}
+.inline-figure.wide{max-width:1000px}
+.inline-figure img{display:block;width:100%;border-radius:14px;border:1px solid var(--line);box-shadow:var(--shadow);background:#fff}
+.inline-figure figcaption{font-size:14px;line-height:1.6;color:var(--muted);margin-top:10px}
+.figure-split{display:grid;grid-template-columns:minmax(280px,.9fr) minmax(0,1.1fr);gap:24px;align-items:center;margin-top:24px}
+.figure-split .inline-figure{margin:0}
+.figure-split.reverse{grid-template-columns:minmax(0,1.1fr) minmax(280px,.9fr)}
+/* CTA band */
+.cta-band{background:#e6f0e5;color:#3a342d}.cta-band .section{border-top:none}
+.cta-band .inner{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(260px,.85fr);gap:26px;align-items:start}
+.cta-band h2{font-size:clamp(26px,4vw,44px);margin:0 0 16px}.cta-band p,.cta-band .lead{color:rgba(58,52,45,.92);font-size:18px;line-height:1.72}
+.cta-band li{color:rgba(58,52,45,.92);font-size:18px;line-height:1.72}
+.cta-card{border:1px solid #cfe0d2;background:#fbfdfa;border-radius:8px;padding:22px}
+.cta-card b{display:block;color:#48b178;margin-bottom:10px;font-size:18px}.cta-card p{margin:0 0 14px}
+.footer{padding:30px clamp(20px,6vw,88px);font-size:14px;color:var(--muted);background:#fff;border-top:1px solid var(--line)}
+.footer-inner{width:min(1000px,100%);margin:0 auto}
+.footer-links{display:flex;flex-wrap:wrap;gap:6px 12px;margin-bottom:14px}.footer-links a{color:var(--blue);font-weight:900;text-decoration:none;font-size:14px}
+.footer-brand{font-weight:900;font-size:15px;margin-bottom:10px}.footer-note{font-size:13px;line-height:1.6}
+@media(max-width:820px){
+  .summary-box{grid-template-columns:1fr}.duo{grid-template-columns:1fr}.workflow{grid-template-columns:1fr 1fr}
+  .cta-band .inner{grid-template-columns:1fr}.section{padding:40px 20px}
+  .hero{min-height:52vh;flex-direction:column;justify-content:flex-start;align-items:flex-start;gap:24px}
+  .hero>div{width:100%}.hero-figure{width:100%;max-width:560px}
+  .figure-split,.figure-split.reverse{grid-template-columns:1fr}.figure-split .inline-figure{max-width:520px}
+}
+@media(max-width:640px){.workflow{grid-template-columns:1fr}}
+@media(max-width:820px){html,body{overflow-x:hidden}.hero h1{word-break:break-word}}
+/* lightbox */
+.hero-figure img,.inline-figure img,.figure-split img{cursor:zoom-in}
+.lightbox{position:fixed;inset:0;z-index:10000;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(12,10,8,.92);cursor:zoom-out;backdrop-filter:blur(4px)}
+.lightbox.open{display:flex}
+.lightbox img{max-width:96vw;max-height:92vh;border-radius:10px;box-shadow:0 24px 60px rgba(0,0,0,.5)}
+.lightbox-close{position:fixed;top:18px;right:24px;color:#fff;font-size:34px;line-height:1;font-weight:700;cursor:pointer;opacity:.85}
+</style>
+<!-- tracking:vercel-analytics -->
+<script defer src="/_vercel/insights/script.js"></script>
+<script defer src="/_vercel/speed-insights/script.js"></script>
+</head>
+<body class="spotlight">
+<nav class="top">
+  <div class="container">
+    <a class="nav-brand-img" href="../../../index.html"><img src="../../../images/footer-signature.png" alt="Coach Jiang | Jiang Yude"></a>
+    <button class="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
+    <ul class="nav-menu">
+      <li><a href="../../index.html">Home</a></li>
+      <li><a href="../../offers.html">Paid Courses</a></li>
+      <li><a href="../../courses.html">Free Talks</a></li>
+      <li><a href="../../invited-talks.html">Invited Talks</a></li>
+      <li><a href="../../articles.html" class="active">Articles</a></li>
+      <li><a href="../../skills.html">Skills</a></li>
+      <li><a href="../../cases.html">Services</a></li>
+      <li class="lang-switch"><a href="../../../articles/line-group-ai-workflow/">中文</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="wc wc1"></div>
+  <div class="wc wc2"></div>
+  <div class="wc wc3"></div>
+  <div>
+    <div class="kicker">AI Workflow / LINE Official Account / Group Archiving</div>
+    <h1>How to Auto-Archive Data Scattered Across LINE Groups Every Day</h1>
+    <p>This article uses Mika as a demonstration case. Mika is the first version I built for demo purposes. What you actually take away is the architecture: connect your own LINE official account to groups, collect messages, images, PDFs, and files first, then hand everything to your Agent for organization.</p>
+  </div>
+  <figure class="hero-figure">
+    <img src="../../../images/articles/line-group-ai-workflow-summary.jpg" alt="LINE groups as AI workflow entry points: summary card" loading="lazy">
+    <figcaption>Mika in the illustration is a demo character. You can replace it with your own course assistant, community secretary, or company helper.</figcaption>
+  </figure>
+</section>
+
+<main>
+  <section class="section" id="start">
+    <div class="inner">
+      <h2>One-Page Summary</h2>
+      <p class="lead">This workflow addresses a very everyday problem: people share links, photos, meeting notes, and PDFs in group chats. Everyone can see them in the moment, but a few days later when you need to find something, all you can do is scroll up and hope someone remembers. Mika is just the demo name. What you are actually building is your own LINE AI assistant.</p>
+      <div class="summary-box">
+        <div class="summary-card">
+          <b>Step 1: Collect</b>
+          <p>Add your own official account to regular LINE groups. When new messages arrive, LINE proactively pushes the events to your receiving service through a webhook.</p>
+        </div>
+        <div class="summary-card">
+          <b>Step 2: Fetch Attachments</b>
+          <p>Images, videos, audio, and files are retrieved by messageId and stored in folders organized by group and date.</p>
+        </div>
+        <div class="summary-card">
+          <b>Step 3: Organize</b>
+          <p>An Agent runs once a day to update group names, fetch missing attachments, and flag messages that need a human response.</p>
+        </div>
+      </div>
+      <div class="note">
+        <b>Core Principle</b>
+        Collect data reliably first, then hand the organization rules to your Agent. The assistant can be called Mika, a course TA, a community secretary, or a company helper. The name does not matter. The architecture is what you take away.
+      </div>
+      <div class="note">
+        <b>No coding required on your end</b>
+        If you do not write code, treat this article as a task list and hand it to Codex, another Agent, or a technical partner. The decisions that belong to you are: which groups to monitor, where to store the data, who needs to be notified, and which situations must never trigger an automatic reply.
+      </div>
+      <figure class="inline-figure">
+        <img src="../../../images/articles/line-group-ai-workflow-collect-first.jpg" alt="Collect data first, do not rush to have AI reply" loading="lazy">
+        <figcaption>The first step is getting messages, images, and files into a traceable location. Auto-reply belongs to a later stage, handled only in explicitly authorized contexts.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="section" id="workflow">
+    <div class="inner">
+      <h2>Minimum Viable Workflow</h2>
+      <div class="workflow">
+        <div class="step"><small>01</small><b>LINE Group</b><p>Everyone continues sharing messages, images, PDFs, and links as usual.</p></div>
+        <div class="step"><small>02</small><b>Official Account</b><p>Your LINE AI assistant receives new message events after activation through the webhook.</p></div>
+        <div class="step"><small>03</small><b>Archive Folder</b><p>Text is stored immediately; images and attachments are fetched in a separate pass.</p></div>
+        <div class="step"><small>04</small><b>Agent Organizes</b><p>Daily automatic run updates group names, fetches missing attachments, and identifies messages awaiting a response.</p></div>
+        <div class="step"><small>05</small><b>Human Decides</b><p>The responsible person is notified only when something important appears. The system never replies on anyone's behalf.</p></div>
+      </div>
+      <div class="codeblock">LINE group
+→ your official account webhook
+→ receive message events
+→ fetch images and attachments
+→ write to archive folder
+→ Agent organizes daily
+→ notify human only when something important arrives</div>
+      <div class="note">
+        <b>Two-Phase Design</b>
+        Phase one is a passive collection and archiving layer: real-time receipt, deferred organization, folders separated by group. The default mode is dry-run: messages are collected and archived normally, but the bot does not reply in LINE groups, even when someone mentions the assistant. Phase two, a lightweight TA that replies, comes later and only in clearly authorized contexts.
+      </div>
+      <div class="note">
+        <b>First Responsibility of the Webhook</b>
+        The receiving service must acknowledge LINE quickly by returning <code>200 OK</code>. Return 200 only after the event has been successfully written to the database or cloud folder. If writing fails, return an error (5xx) so LINE has the opportunity to redeliver. Do not perform long summaries, AI calls, or bulk uploads at receipt time. Those tasks belong to a background job or the nightly organization run.
+      </div>
+      <div class="note">
+        <b>Does This Use a Lot of Tokens?</b>
+        Receiving messages and running the daily download-and-archive pass are pure programming tasks. They make no AI calls and consume no AI tokens. Tokens are used only when you ask an Agent to read this batch of data for summaries, analysis, or draft replies. Keep the Agent run low-frequency, once a day, and the cost stays very manageable.
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="inner">
+      <h2>Why Not Use the Personal LINE App</h2>
+      <p class="lead">LINE offers two paths. An official account uses the Messaging API webhook, which can join groups and receive new events after activation. The personal LINE app and its desktop chat history require screen-reading or OCR, a centaur-style approach. The two mechanisms are fundamentally different. Confirm which path you are on before proceeding.</p>
+      <div class="duo">
+        <div class="card good">
+          <b>What This Can Do</b>
+          <p>Join groups, receive new messages after activation, archive by groupId, use the Group Summary API to retrieve human-readable group names, and fetch images and attachments.</p>
+        </div>
+        <div class="card warn">
+          <b>What to Avoid Claiming</b>
+          <p>This approach does not read your personal LINE app, and it cannot backfill message history from before the webhook was activated. Whether the assistant replies inside a group requires a separate design decision.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="security">
+    <div class="inner">
+      <h2>If You Are Not Familiar with the LINE Console</h2>
+      <p class="lead">You can authorize Codex or another Agent to operate your screen during the current session to help confirm the official account, Messaging API, webhook, and group join settings. The block below is authorization language you can speak directly to an Agent. You do not need to understand every setting yourself.</p>
+      <div class="codeblock">I am not familiar with the LINE Developers console.
+I authorize the Agent to operate my screen during this session
+to create or confirm the official account, enable the Messaging API,
+configure the webhook, and confirm that group joining is enabled.
+Do not paste tokens into chat. Write them directly to the local config file .env or to the system Keychain.</div>
+      <div class="duo">
+        <div class="card good">
+          <b>Choose the Right Official Account First</b>
+          <p>You can create a dedicated official account or use an existing one. If you already have a brand official account, confirm the impact before changing the webhook or Messaging API settings. Do not touch an active account without being certain of the scope.</p>
+        </div>
+        <div class="card good">
+          <b>Inform Group Members First</b>
+          <p>Before adding the assistant to a group, let members know it will archive new messages and attachments after activation, and clarify that the purpose is organization and reminders, not surveillance or automatic replies on anyone's behalf.</p>
+        </div>
+      </div>
+      <div class="duo">
+        <div class="card warn">
+          <b>Never Expose or Sync Tokens</b>
+          <p>Your channel access token and channel secret are the credentials for your LINE official account, equivalent to a password. Do not paste them into chat, do not write them into a notes app, and do not upload them to GitHub or any code platform. For long-term storage, use a local config file (.env) or the system Keychain.</p>
+        </div>
+        <div class="card good">
+          <b>Keep Data and Code Separate</b>
+          <p>Credentials stay on the local machine only. Messages, images, and PDFs go to the archive folder designated by your team, synced according to your team's own rules.</p>
+        </div>
+      </div>
+      <figure class="inline-figure">
+        <img src="../../../images/articles/line-group-ai-workflow-daily-check.jpg" alt="Automatic daily organization run" loading="lazy">
+        <figcaption>The daily run is for updating group names, fetching images, and listing messages awaiting a response. It does not auto-reply in LINE.</figcaption>
+      </figure>
+      <div class="note">
+        <b>Do Not Touch Live Services Without a Plan</b>
+        If you already have a live relay, database, persistent sync, or established data write path, list the scope of impact and a rollback method before making any changes. Until that is confirmed, limit actions to reading configuration and writing recommendations. Do not deploy, disable, move, or change secrets.
+      </div>
+      <div class="note">
+        <b>Keep Reliability Layers Separate</b>
+        Quick tunnels such as ngrok are suitable for initial verification only. When your local machine sleeps or shuts down, the webhook cannot receive events. Any scenario that requires sustained message collection needs a cloud relay, not a locally hosted service presented as a reliable deliverable. My own setup uses a cloud relay: the cloud layer receives and stores events, and the local machine syncs new events down once a day for organization.
+      </div>
+      <div class="note">
+        <b>LINE Redelivers Failed Events, With Conditions</b>
+        The following detail is for engineers running their own webhook. LINE webhook redelivery must be manually enabled in the Developers Console. Once enabled, it only retries within a limited window. If your server consistently fails to respond correctly, LINE stops retrying. After redelivery, use the event timestamp to determine order. My cloud relay runs on Cloudflare. A cloud relay is not a long-term database; it must connect to a system that can store data persistently, such as a database or a cloud folder. Return 200 only after the event has been successfully written.
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="inner">
+      <h2>How Group Names and Attachments Are Organized</h2>
+      <p>Initially, LINE webhooks only reliably provide the unique identifier LINE assigns to each group: the groupId. Using a raw ID as a folder name is not human-readable. The maintenance script calls the LINE Group Summary API to retrieve the group name, prepending the readable name and appending the ID suffix to avoid collisions between groups with identical names.</p>
+      <div class="figure-split">
+        <figure class="inline-figure">
+          <img src="../../../images/articles/line-group-ai-workflow-group-name.jpg" alt="Group names should be human-readable" loading="lazy">
+          <figcaption>All names shown are simulated. No real group names appear in the public version.</figcaption>
+        </figure>
+        <div>
+          <div class="duo">
+            <div class="card warn">
+              <b>Before</b>
+              <p><code>LINE-group-g1234567__g1234567</code></p>
+            </div>
+            <div class="card good">
+              <b>After</b>
+              <p><code>Sample-Group-Name__g1234567</code></p>
+            </div>
+          </div>
+          <p>Images, videos, audio, and files are retrieved using the unique messageId LINE assigns to each message. Once fetched, everything goes into folders named by group and date, making them easy to find later. A typical path looks like <code>groups/GroupName__suffix/media/YYYY-MM-DD/</code>, and the Markdown log is updated with human-readable links.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-band">
+    <div class="section">
+      <div class="inner">
+        <div>
+          <h2>What This Article Is Good For</h2>
+          <p>The point of this approach is to let you build your own LINE AI assistant: connecting data scattered across groups into your workflow, collecting it reliably, organizing it, and getting notified. It works best for courses, communities, small teams, and project collaborations that already run on LINE groups.</p>
+          <ul>
+            <li>Social post: use the real demo case to illustrate the "collect first, organize second" logic.</li>
+            <li>Website article: treat it as a construction blueprint for building your own LINE AI assistant.</li>
+            <li>Skill or checklist: provide the workflow, configuration guide, and .env.example so readers can build their own version, with no tokens included.</li>
+          </ul>
+        </div>
+        <div class="cta-card">
+          <b>Free Online Talks</b>
+          <p>Two free sessions every month.</p>
+          <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;text-decoration:none;border-radius:8px;padding:12px 16px;font-weight:900;background:#48b178;color:#fff;">Join the LINE Community ↗</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">Coach Jiang · AI Knowledge Management</div>
+    <div class="footer-links">
+      <a href="../../articles.html">← Back to Articles</a>
+      <a href="../../index.html">Home</a>
+      <a href="../../learn.html">Self-Study Resources</a>
+      <a href="../../skills.html">Skills</a>
+      <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">LINE Community ↗</a>
+      <a href="https://www.threads.com/@jiang_yude_coach" target="_blank" rel="noopener">Threads ↗</a>
+      <a href="https://vocus.cc/salon/Jiang_Coach" target="_blank" rel="noopener">Vocus ↗</a>
+    </div>
+    <div class="footer-note">This is an educational article presenting a sanitized public version of how LINE groups can serve as entry points to an AI workflow.</div>
+  </div>
+</footer>
+
+<!-- lightbox -->
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <span class="lightbox-close" aria-label="Close">×</span>
+  <img id="lightbox-img" src="" alt="Enlarged view">
+</div>
+<script>
+(function(){
+  var box=document.getElementById('lightbox'),boxImg=document.getElementById('lightbox-img');
+  document.querySelectorAll('.hero-figure img,.inline-figure img,.figure-split img').forEach(function(img){
+    img.addEventListener('click',function(){
+      boxImg.src=img.currentSrc||img.src;boxImg.alt=img.alt||'Enlarged view';
+      box.classList.add('open');box.setAttribute('aria-hidden','false');
+    });
+  });
+  function close(){box.classList.remove('open');box.setAttribute('aria-hidden','true');boxImg.src='';}
+  box.addEventListener('click',close);
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
+})();
+</script>
+
+<!-- shared: warm cursor glow + nav hamburger -->
+<script src="../../../spotlight.js"></script>
+
+<!-- article cross-linking (related articles): two scripts must load in this order -->
+<script src="../../../articles-data.js"></script>
+<script src="../../../related-render.js"></script>
+</body>
+</html>

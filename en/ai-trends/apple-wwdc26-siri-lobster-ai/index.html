@@ -1,0 +1,473 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="index,follow">
+<title>AI Trends | Apple's Siri Is Finally Evolving toward "Lobster AI"</title>
+<meta name="description" content="Coach Jiang's AI trend analysis: from Apple WWDC26, how Siri, App Intents, View Annotations, and Xcode agentic coding are moving toward a more capable AI assistant.">
+<meta property="og:title" content="AI Trends | Apple's Siri Is Finally Evolving toward &quot;Lobster AI&quot;">
+<meta property="og:description" content="From WWDC26: how Apple is pushing Siri, App Intents, View Annotations, and Xcode agents toward a more capable AI assistant.">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Coach Jiang · AI Knowledge Management">
+<meta property="og:locale" content="en_US">
+<meta property="og:url" content="https://ai-km-jiang.vercel.app/en/ai-trends/apple-wwdc26-siri-lobster-ai/">
+<meta property="og:image" content="https://ai-km-jiang.vercel.app/ai-trends/apple-wwdc26-siri-lobster-ai/assets/slide-13-swift-64.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="AI Trends | Apple's Siri Is Finally Evolving toward &quot;Lobster AI&quot;">
+<meta name="twitter:description" content="From WWDC26: how Apple is pushing Siri, App Intents, View Annotations, and Xcode agents toward a more capable AI assistant.">
+<meta name="twitter:image" content="https://ai-km-jiang.vercel.app/ai-trends/apple-wwdc26-siri-lobster-ai/assets/slide-13-swift-64.jpg">
+<link rel="canonical" href="https://ai-km-jiang.vercel.app/en/ai-trends/apple-wwdc26-siri-lobster-ai/">
+<link rel="alternate" hreflang="zh-Hant" href="https://ai-km-jiang.vercel.app/ai-trends/apple-wwdc26-siri-lobster-ai/">
+<link rel="alternate" hreflang="en" href="https://ai-km-jiang.vercel.app/en/ai-trends/apple-wwdc26-siri-lobster-ai/">
+<link rel="alternate" hreflang="x-default" href="https://ai-km-jiang.vercel.app/ai-trends/apple-wwdc26-siri-lobster-ai/">
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"Article",
+  "headline":"AI Trends | Apple's Siri Is Finally Evolving toward \"Lobster AI\"",
+  "description":"Coach Jiang's AI trend analysis: from Apple WWDC26, how Siri, App Intents, View Annotations, and Xcode agentic coding are moving toward a more capable AI assistant.",
+  "url":"https://ai-km-jiang.vercel.app/en/ai-trends/apple-wwdc26-siri-lobster-ai/",
+  "inLanguage":"en",
+  "author":{"@type":"Person","name":"Jiang Yude","alternateName":"Coach Jiang","jobTitle":"Tacit Knowledge Distiller, AI Application Planner","url":"https://jiang-yude.github.io/jiang-card/"},
+  "publisher":{"@type":"Person","name":"Jiang Yude","alternateName":"Coach Jiang"},
+  "isPartOf":{"@type":"WebSite","name":"Coach Jiang · AI Knowledge Management","url":"https://ai-km-jiang.vercel.app/"}
+}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{--ink:#1a1612;--paper:#fefcf8;--muted:#6a635a;--line:#d8cdb8;--green:#5f7553;--blue:#5689b8;--orange:#e85a4f;--soft:#faf5ec;--dark:#2a2018;--shadow:0 18px 45px rgba(107,74,42,.14);--sp-shadow:hsla(35,50%,60%,.15);--sp-shadow-edge:hsla(35,50%,68%,.03);--sp-radius:400px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC","Segoe UI",sans-serif}
+a{color:inherit}
+/* shared top nav */
+nav.top{position:sticky;top:0;background:rgba(254,252,248,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid #d8cdb8;z-index:100}
+nav.top .container{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:24px;padding:14px 32px}
+.nav-brand-img{justify-self:start;display:flex;align-items:center;text-decoration:none;flex-shrink:0;transition:opacity .2s}
+.nav-brand-img:hover{opacity:.8}.nav-brand-img img{height:40px;width:auto;display:block}
+nav.top ul.nav-menu{justify-self:end;display:flex;gap:22px;list-style:none;margin:0;padding:0;font-size:.95rem;white-space:nowrap}
+nav.top ul.nav-menu a{color:#3a342d;text-decoration:none;transition:color .2s;font-weight:500;white-space:nowrap}
+nav.top ul.nav-menu a:hover{color:#1a1612}nav.top ul.nav-menu a.active{color:#1a1612;font-weight:700}
+.nav-toggle{display:none;background:none;border:none;padding:6px;cursor:pointer;width:36px;height:36px;position:relative}
+.nav-toggle span{display:block;position:absolute;left:8px;right:8px;height:2px;background:#1a1612;border-radius:2px;transition:transform .25s,opacity .25s,top .25s}
+.nav-toggle span:nth-child(1){top:11px}.nav-toggle span:nth-child(2){top:17px}.nav-toggle span:nth-child(3){top:23px}
+.nav-toggle.open span:nth-child(1){top:17px;transform:rotate(45deg)}.nav-toggle.open span:nth-child(2){opacity:0}.nav-toggle.open span:nth-child(3){top:17px;transform:rotate(-45deg)}
+@media(max-width:860px){
+ nav.top .container{grid-template-columns:auto 1fr auto;padding:10px 16px;gap:12px}
+ .nav-brand-img img{height:32px}
+ .nav-toggle{display:block;justify-self:end}
+ nav.top ul.nav-menu{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(254,252,248,.98);backdrop-filter:blur(14px);border-bottom:1px solid #d8cdb8;flex-direction:column;gap:0;padding:8px 0;box-shadow:0 10px 24px rgba(107,74,42,.08)}
+ nav.top ul.nav-menu.open{display:flex}
+ nav.top ul.nav-menu li{border-bottom:1px solid #e8dfc9}
+ nav.top ul.nav-menu li:last-child{border-bottom:none}
+ nav.top ul.nav-menu a{display:block;padding:14px 20px;font-size:1.06rem}
+}
+/* mouse warm-glow spotlight (shared with homepage) */
+body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradient(var(--sp-radius) circle at var(--mx,50%) var(--my,50%),var(--sp-shadow) 0%,var(--sp-shadow-edge) 45%,transparent 75%);pointer-events:none;z-index:9999;mix-blend-mode:multiply;transition:background .06s linear}
+.hero{position:relative;overflow:hidden;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:72px;padding:96px clamp(20px,6vw,88px) 80px;background:linear-gradient(180deg,#fffcf0 0%,#f9e9d2 100%);color:#1a1612;border-bottom:1px solid #d8cdb8}
+.hero .wc{position:absolute;border-radius:50%;filter:blur(60px);pointer-events:none;z-index:0}
+.hero .wc1{width:420px;height:360px;top:-120px;right:-80px;background:#e8884b;opacity:.15}
+.hero .wc2{width:360px;height:300px;bottom:-110px;left:-70px;background:#5f7553;opacity:.13}
+.hero .wc3{width:280px;height:260px;top:34%;left:14%;background:#a08144;opacity:.10}
+.hero>div{flex:none;width:860px;max-width:100%;position:relative;z-index:2}
+.hero-figure{margin:0;width:420px;flex:none;position:relative;z-index:2}
+.hero-figure img{display:block;width:100%;border-radius:16px;border:1px solid #d8cdb8;box-shadow:0 18px 45px rgba(107,74,42,.16)}
+.hero-figure figcaption{margin-top:10px;font-size:14px;line-height:1.6;color:#6a635a}
+.kicker{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.55rem;color:#7a5c3a;font-weight:500}
+.hero h1{max-width:none;margin:16px 0 18px;font-size:clamp(36px,6vw,72px);line-height:1.08;overflow-wrap:anywhere}
+.hero p{max-width:none;font-size:clamp(18px,2vw,23px);line-height:1.62;color:#3a342d}
+.cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
+.cta a{display:inline-flex;align-items:center;text-decoration:none;border-radius:8px;padding:12px 16px;font-weight:900}
+.cta .primary{background:#fff;color:#1a1612}.cta .ghost{border:1px solid rgba(255,255,255,.32);color:#fff;background:rgba(255,255,255,.08)}
+.section{padding:54px clamp(20px,6vw,88px);border-top:1px solid var(--line)}
+.inner{width:min(1000px,100%);margin:0 auto}
+.section h2{font-size:clamp(26px,4.2vw,48px);line-height:1.12;margin:0 0 18px}
+.section h3{font-size:clamp(21px,3vw,30px);line-height:1.2;margin:30px 0 12px}
+.lead{font-size:clamp(18px,1.6vw,22px);line-height:1.7;color:#3a342d;max-width:900px}
+.section p{font-size:18px;line-height:1.74;color:#3a342d}.section p+p{margin-top:14px}
+.section ul,.section ol{padding-left:1.4em;font-size:18px;line-height:1.74;color:#3a342d}.section li{margin-bottom:8px}
+.meaning{margin:22px 0;padding:16px 18px;border-left:5px solid var(--blue);background:rgba(86,137,184,.12);border-radius:6px;line-height:1.7;font-size:19px}
+.meaning b{display:block;color:var(--blue);margin-bottom:4px}
+.caveat{margin:0 0 8px;padding:16px 18px;border-left:5px solid var(--orange);background:rgba(232,90,79,.1);border-radius:6px;line-height:1.7;font-size:18px;color:#3a342d}
+.caveat b{display:block;color:var(--orange);margin-bottom:4px}
+.infocard{background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px 24px 22px;box-shadow:0 8px 22px rgba(107,74,42,.08);margin-top:8px}
+.infocard-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.info-item{padding:18px 14px 0}
+.info-item b{display:block;font-size:14px;font-weight:900;letter-spacing:.04em;margin-bottom:7px;text-transform:uppercase}
+.info-item:nth-child(1) b{color:var(--green)}.info-item:nth-child(2) b{color:var(--orange)}.info-item:nth-child(3) b{color:var(--blue)}
+.info-item p{margin:0;font-size:17px;line-height:1.6;color:#3a342d}
+.tagrow{display:flex;flex-wrap:wrap;gap:7px;margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
+.tag{font-size:14px;color:var(--muted);background:var(--soft);border:1px solid var(--line);border-radius:999px;padding:4px 11px}
+.duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:24px}
+.duo.stack{grid-template-columns:1fr}
+.duo .card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:22px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.duo .card.a{border-color:var(--orange)}.duo .card.b{border-color:var(--green);box-shadow:0 8px 24px rgba(95,117,83,.16)}
+.duo .card small{display:block;font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.04em;margin-bottom:9px}
+.duo .card.a small{color:var(--orange)}.duo .card.b small{color:var(--green)}
+.duo .card b{display:block;font-size:22px;line-height:1.3;margin-bottom:12px}.duo .card.a b{color:#c0512f}.duo .card.b b{color:#4a7a59}
+.duo .card p{margin:0;color:#3a342d;line-height:1.75;font-size:18px}
+.workflow-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:26px}
+.workflow-step{background:#fff;border:1px solid var(--line);border-radius:8px;padding:18px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.workflow-step small{display:block;color:var(--orange);font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;margin-bottom:9px}
+.workflow-step b{display:block;font-size:20px;line-height:1.25;margin-bottom:9px}
+.workflow-step p{margin:0;color:#3b4348;line-height:1.65}
+.codeblock{background:var(--dark);color:#f3ead9;border-radius:8px;padding:18px 20px;font:500 14px/1.65 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;overflow-x:auto;white-space:pre-wrap;margin:20px 0;box-shadow:0 8px 22px rgba(107,74,42,.12)}
+.codeblock .c{color:#f6d7a6;font-weight:600}
+.skillcard{background:#fff;border:1px solid var(--green);border-radius:12px;padding:24px;box-shadow:0 10px 26px rgba(95,117,83,.16);margin-top:8px}
+.skillcard b{display:block;font-size:21px;margin-bottom:8px}
+.skillcard p{margin:0 0 16px;font-size:17px;line-height:1.65;color:#3a342d}
+.cta-band{background:#e6f0e5;color:#3a342d}.cta-band .section{border-top:none}
+.cta-band .inner{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(260px,.85fr);gap:26px;align-items:start}
+.cta-band h2{font-size:clamp(26px,4vw,44px);margin:0 0 16px}.cta-band p,.cta-band .lead{color:rgba(58,52,45,.92);font-size:18px;line-height:1.72}
+.cta-card{border:1px solid #cfe0d2;background:#fbfdfa;border-radius:8px;padding:22px}
+.cta-card b{display:block;color:#48b178;margin-bottom:10px;font-size:18px}.cta-card p{margin:0 0 14px}
+.footer{padding:30px clamp(20px,6vw,88px);font-size:14px;color:var(--muted);background:#fff;border-top:1px solid var(--line)}
+.footer-inner{width:min(1000px,100%);margin:0 auto}
+.footer-links{display:flex;flex-wrap:wrap;gap:6px 12px;margin-bottom:14px}.footer-links a{color:var(--blue);font-weight:900;text-decoration:none;font-size:14px}
+.footer-brand{font-weight:900;font-size:15px;margin-bottom:10px}.footer-note{font-size:13px;line-height:1.6}
+/* timeline styles */
+.highlight-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-top:28px}.highlight{background:#fff;border:1px solid var(--line);border-radius:8px;padding:18px;min-height:190px;box-shadow:0 8px 22px rgba(107,74,42,.08)}.highlight b{display:block;font-size:19px;line-height:1.25;margin-bottom:10px}.highlight p{margin:0;color:#4b4238;line-height:1.65}
+.timeline{display:grid;gap:28px}.segment{display:grid;grid-template-columns:minmax(0,1.02fr) minmax(330px,.98fr);gap:30px;align-items:center;padding:34px 0;border-top:1px solid var(--line)}.media{margin:0;background:#fff;border:1px solid var(--line);border-radius:8px;box-shadow:var(--shadow);overflow:hidden}.media a{display:block;position:relative}.media img{display:block;width:100%;aspect-ratio:16/9;object-fit:cover;background:#1a1612}.media a::after{content:"Open YouTube timestamp";position:absolute;right:12px;top:12px;padding:7px 10px;border-radius:999px;background:rgba(42,32,24,.82);color:#fff;font-size:12px;font-weight:900}.media figcaption{padding:10px 12px;font-size:13px;color:var(--muted)}.meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:12px;font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;text-transform:uppercase;color:var(--muted)}.meta span:first-child{color:var(--orange)}.meta a{color:var(--blue);text-decoration:none;border-bottom:1px solid currentColor}.copy h3{font-size:clamp(30px,4.5vw,54px);line-height:1.08;margin:0 0 14px}.summary{font-size:18px;line-height:1.72;color:#3a342d;margin:0 0 14px}details{border:1px solid rgba(26,22,18,.15);border-radius:8px;background:#fff;margin-top:9px;overflow:hidden}summary{cursor:pointer;list-style:none;padding:14px 16px;font-weight:900;line-height:1.45;display:flex;justify-content:space-between;gap:14px}summary::-webkit-details-marker{display:none}summary::after{content:"+";flex:0 0 auto;width:24px;height:24px;border-radius:50%;display:grid;place-items:center;background:rgba(26,22,18,.08);font:900 16px/1 ui-monospace,SFMono-Regular,Menlo,monospace}details[open] summary::after{content:"-"}.detail-body{padding:0 16px 16px;border-top:1px solid rgba(26,22,18,.08)}.detail-body p{margin:12px 0 0;line-height:1.72;color:#3a342d}.deep summary{background:var(--soft)}.demo-note{display:inline-flex;align-items:center;gap:8px;margin:18px 0 0;padding:9px 12px;border:1px solid rgba(17,19,21,.14);border-radius:999px;background:#fff;font-weight:900;color:#30363b}.course-note{display:grid;gap:10px;margin-top:18px}.course-note p{margin:0;line-height:1.7;color:rgba(58,52,45,.92)}.course-note strong{color:#1a1612}
+/* lightbox */
+.hero-figure img,.inline-figure img{cursor:zoom-in}
+.lightbox{position:fixed;inset:0;z-index:10000;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(12,10,8,.92);cursor:zoom-out;backdrop-filter:blur(4px)}
+.lightbox.open{display:flex}
+.lightbox img{max-width:96vw;max-height:92vh;border-radius:10px;box-shadow:0 24px 60px rgba(0,0,0,.5)}
+.lightbox-close{position:fixed;top:18px;right:24px;color:#fff;font-size:34px;line-height:1;font-weight:700;cursor:pointer;opacity:.85}
+@media(max-width:820px){.infocard-grid{grid-template-columns:1fr}.duo{grid-template-columns:1fr}.workflow-grid{grid-template-columns:1fr}.cta-band .inner{grid-template-columns:1fr}.section{padding:40px 20px}.hero{min-height:52vh;flex-direction:column;justify-content:flex-start;align-items:flex-start;gap:24px}.hero>div{width:100%}.highlight-grid,.segment{grid-template-columns:1fr}.segment{gap:18px}.copy h3{font-size:34px}}
+@media(max-width:820px){html,body{overflow-x:hidden}.hero h1{word-break:break-word}}
+</style>
+<!-- tracking:vercel-analytics -->
+<script defer src="/_vercel/insights/script.js"></script>
+<script defer src="/_vercel/speed-insights/script.js"></script>
+</head>
+<body class="spotlight">
+<nav class="top">
+  <div class="container">
+    <a class="nav-brand-img" href="../../../index.html"><img src="../../../images/footer-signature.png" alt="Coach Jiang | Jiang Yude"></a>
+    <button class="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
+    <ul class="nav-menu">
+      <li><a href="../../../index.html">Home</a></li>
+      <li><a href="../../../offers.html">Paid Courses</a></li>
+      <li><a href="../../../courses.html">Free Talks</a></li>
+      <li><a href="../../../invited-talks.html">Invited Talks</a></li>
+      <li><a href="../../../articles.html" class="active">Articles</a></li>
+      <li><a href="../../../skills.html">Skills</a></li>
+      <li><a href="../../../cases.html">Services</a></li>
+      <li class="lang-switch"><a href="../../../ai-trends/apple-wwdc26-siri-lobster-ai/">中文</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="wc wc1"></div>
+  <div class="wc wc2"></div>
+  <div class="wc wc3"></div>
+  <div>
+    <div class="kicker">AI Trends / Apple WWDC26</div>
+    <h1>Siri Is Finally<br>Evolving toward<br>"Lobster AI."</h1>
+    <p>From WWDC26: Apple Intelligence, App Intents, View Annotations, and Xcode agents show how every major platform is pushing its assistant toward reading the interface, calling tools, connecting apps, and completing real tasks.</p>
+  </div>
+</section>
+
+<main>
+<section class="section" id="trend"><div class="inner">
+  <h2>My Read: Every Major Platform Is Building Its Own "Lobster AI"</h2>
+  <p class="lead">Google, Microsoft, and Apple are all moving in the same direction. AI is graduating from chat and voice logs into something that can see the interface in front of you, understand what's inside an app, and actually operate, organize, and produce on your behalf.</p>
+  <div class="workflow-grid">
+    <div class="workflow-step"><small>01</small><b>Siri Enters the Operation Layer</b><p>App Intents let Siri understand the content and actions inside an app, bringing it closer to a genuine entry point for real operations.</p></div>
+    <div class="workflow-step"><small>02</small><b>AI Can Read Your Current Interface</b><p>View Annotations turn on-screen messages, photos, buttons, and content into semantic elements that can be understood and acted upon.</p></div>
+    <div class="workflow-step"><small>03</small><b>Apps Become AI-Callable Tools</b><p>You used to tap apps yourself. The next stage is AI knowing what each app can do and connecting them on your behalf.</p></div>
+    <div class="workflow-step"><small>04</small><b>The Model Layer Starts to Standardize</b><p>Foundation Models and Core AI let Apple bring on-device, cloud, and custom models into a unified platform toolchain.</p></div>
+    <div class="workflow-step"><small>05</small><b>Xcode Is Also Going Agentic</b><p>Apple putting coding agents inside the IDE means "Lobster AI-ification" is coming to the development workflow itself.</p></div>
+    <div class="workflow-step"><small>06</small><b>A Life Scenario I'm Excited About</b><p>In the future, I'd go out, shoot photos and video, and Siri would help me cut a life vlog, add subtitles, and turn it into my own personal short film.</p></div>
+  </div>
+</div></section>
+<section class="section" id="demo"><div class="inner">
+  <h2>Key Highlights: WWDC26 Platforms State of the Union</h2>
+  <p class="lead">Below is a 17-segment breakdown of Apple's official one-hour video. I've organized it into a timeline with screenshots, quick summaries, my interpretation, and expandable deep-dive notes. Every segment links back to the original YouTube video for verification.</p>
+  <div class="demo-note">Source: Apple Developer official YouTube video</div>
+  <div class="timeline">
+<article class="segment" id="s1">
+  <figure class="media">
+    <a href="https://youtu.be/yl2jsIoMfDU?t=19" target="_blank" rel="noopener"><img src="../../../ai-trends/apple-wwdc26-siri-lobster-ai/assets/slide-01-opening.jpg" alt="Event positioning: three main themes screenshot"></a>
+    <figcaption>00:19-02:23 · Event Positioning: Three Main Themes</figcaption>
+  </figure>
+  <div class="copy">
+    <div class="meta"><span>ACT 01</span><span>Opening</span><a href="https://youtu.be/yl2jsIoMfDU?t=19" target="_blank" rel="noopener">YouTube 00:19</a></div>
+    <h3>Event Positioning: Three Main Themes</h3>
+    <p class="summary">Starting from the developer community, the session establishes that this year's Platforms State of the Union focuses on three things: Apple Intelligence, platform improvements, and developer productivity. Apple frames design and intelligence as the two core pillars of this year's platform evolution.</p>
+    <p class="meaning"><b>Interpretation</b>This segment positions the entire hour as a developer platform roadmap, centered on the intelligence and cross-platform changes that apps will need to navigate.</p>
+    <details><summary>Apple places design and intelligence on the same primary track.</summary><div class="detail-body"><p>The opening notes that Liquid Glass and Apple Intelligence are major themes for 2026 releases, and that this year continues to respond to developer feedback. This represents a coordinated adjustment to cross-platform experience and intelligence capabilities.</p><span class="tag">Review: 00:57-01:14</span></div></details><details><summary>The three main segments are intelligence, platform improvements, and developer productivity.</summary><div class="detail-body"><p>These three segments also form the backbone for organizing the complete video: first the model and system intelligence, then design, SwiftUI, and Swift, and finally Xcode and agentic coding.</p><span class="tag">Review: 01:39-02:18</span></div></details><details class="deep"><summary>Full segment notes: what this section is really saying</summary><div class="detail-body"><p>This segment sets the interpretive frame for the entire event. Apple places the technologies, frameworks, and tools that developers use every day within the same platform roadmap conversation. Everything that follows returns to the question of how developers can make better apps.</p><p>The opening also places Liquid Glass and Apple Intelligence at the same level. This signals that Apple is handling AI, design, interface, and developer tooling simultaneously, and asking how apps can maintain their craft and domain expertise through all of it.</p><p>The three themes can serve as a reading map for this page: first, how intelligence enters apps; then, how platform UI, Swift, and SwiftUI make apps more adaptive; and finally, how Xcode 27 brings agentic coding into everyday engineering.</p><span class="tag">Review: 00:19-02:23</span></div></details>
+  </div>
+</article>
+<article class="segment" id="s2">
+  <figure class="media">
+    <a href="https://youtu.be/yl2jsIoMfDU?t=143" target="_blank" rel="noopener"><img src="../../../ai-trends/apple-wwdc26-siri-lobster-ai/assets/slide-02-foundation-models.jpg" alt="Apple Foundation Models and Gemini technology screenshot"></a>
+    <figcaption>02:23-05:26 · Apple Foundation Models and Gemini Technology</figcaption>
+  </figure>
+  <div class="copy">
+    <div class="meta"><span>ACT 02</span><span>AI Foundation Layer</span><a href="https://youtu.be/yl2jsIoMfDU?t=143" target="_blank" rel="noopener">YouTube 02:23</a></div>
+    <h3>Apple Foundation Models and Gemini Technology</h3>
+    <p class="summary">Apple announces that the new generation of Apple Foundation Models is built in collaboration with Google, drawing on the technology behind the Gemini model family, and can run on-device or via Private Cloud Compute. The Foundation Models framework also expands to support image input and server models.</p>
+    <p class="meaning"><b>Interpretation</b>Apple's AI strategy packages system-level assistance, model selection, privacy, and cost into a single developer API.</p>
+    <details><summary>Apple Foundation Models connect Apple Intelligence with third-party apps.</summary><div class="detail-body"><p>The video states that Foundation Models power Apple Intelligence within the system and are also accessible to developers in their own apps through the Foundation Models framework.</p><span class="tag">Review: 02:23-02:56</span></div></details><details><summary>New support for image input and server models.</summary><div class="detail-body"><p>The framework expands to multimodal and server-side models this year, letting developers choose on-device, Private Cloud Compute, or other cloud model providers depending on the complexity of the task.</p><span class="tag">Review: 02:56-03:13</span></div></details><details><summary>Developers below two million first installs can access PCC models with no cloud API cost.</summary><div class="detail-body"><p>Apple treats entry cost as a barrier to AI adoption for developers, though the exact eligibility criteria, constraints, and cost details should be verified in official documentation.</p><span class="tag">Review: 03:13-03:30</span></div></details><details class="deep"><summary>Full segment notes: what this section is really saying</summary><div class="detail-body"><p>Apple positions Apple Foundation Models as the core of Apple Intelligence while emphasizing that third-party apps can also use them through the Foundation Models framework. This is platform strategy: packaging model capabilities into a developer-callable API.</p><p>The headline additions this year are image input and server models. Developers can use on-device models or reach for Private Cloud Compute or their own cloud provider when the task demands more.</p><p>The low-cost entry threshold for Private Cloud Compute is a significant signal about Apple's view of developer AI adoption barriers: it recognizes that model capability, privacy, cost, infrastructure, and distribution friction all matter. Actual terms should be confirmed in official documentation.</p><span class="tag">Review: 02:23-05:26</span></div></details>
+  </div>
+</article>
+<article class="segment" id="s3">
+  <figure class="media">
+    <a href="https://youtu.be/yl2jsIoMfDU?t=326" target="_blank" rel="noopener"><img src="../../../ai-trends/apple-wwdc26-siri-lobster-ai/assets/slide-03-origami-demo.jpg" alt="Origami sample: multimodal and server models screenshot"></a>
+    <figcaption>05:26-09:04 · Origami Sample: Multimodal and Server Models</figcaption>
+  </figure>
+  <div class="copy">
+    <div class="meta"><span>ACT 03</span><span>Framework Demo</span><a href="https://youtu.be/yl2jsIoMfDU?t=326" target="_blank" rel="noopener">YouTube 05:26</a></div>
+    <h3>Origami Sample: Multimodal and Server Models</h3>
+    <p class="summary">The Origami sample app demonstrates how to combine text, images, OCR, translation, and model inference into an interactive tutorial. The Foundation Models framework can also connect to server models such as Claude and Gemini, and supports tool calling and guided generation.</p>
+    <p class="meaning"><b>Interpretation</b>This segment translates "model capabilities" into "user flows that can be assembled inside an app." It's the section where the full video and a short recap diverge the most.</p>
+    <details><summary>Multimodal prompts can mix text and images.</summary><div class="detail-body"><p>The demo generates an origami project plan from materials and a photo of a dog, combining image understanding, text translation, and step-by-step instruction generation into a complete experience.</p><span class="tag">Review: 05:28-06:36</span></div></details><details><summary>The Vision framework is integrated as a model-callable tool.</summary><div class="detail-body"><p>Tools such as OCR and barcode readers let the model handle on-screen text or codes precisely, all running on-device.</p><span class="tag">Review: 06:56-07:14</span></div></details><details><summary>Server models can be integrated via the Language Model protocol.</summary><div class="detail-body"><p>The video explicitly names Claude and Gemini, and states that any model provider can supply a Swift package conforming to the Language Model protocol.</p><span class="tag">Review: 07:17-07:41</span></div></details><details class="deep"><summary>Full segment notes: what this section is really saying</summary><div class="detail-body"><p>The Origami sample turns the Foundation Models framework from an API name into an understandable product flow. The user provides text, images, or material information; the app uses the model, Vision, translation, and generation to produce a workable origami tutorial.</p><p>The most important takeaway here is that AI is now embedded in the core task of an app. The model can be chained with images, text, OCR, barcode readers, guided generation, and tool calling into a complete workflow.</p><p>The video also shows that server models such as Claude and Gemini can be integrated via the Language Model protocol. This means Apple has left an open door at the framework level for model providers, so developers don't have to lock their entire AI architecture to a single model.</p><span class="tag">Review: 05:26-09:04</span></div></details>
+  </div>
+</article>
+<article class="segment" id="s4">
+  <figure class="media">
+    <a href="https://youtu.be/yl2jsIoMfDU?t=544" target="_blank" rel="noopener"><img src="../../../ai-trends/apple-wwdc26-siri-lobster-ai/assets/slide-04-dynamic-profiles.jpg" alt="Dynamic Profiles, evaluation tools, and open-source framework screenshot"></a>
+    <figcaption>09:04-13:08 · Dynamic Profiles, Evaluation Tools, and Open-Source Framework</figcaption>
+  </figure>
+  <div class="copy">
+    <div class="meta"><span>ACT 04</span><span>Agent Foundation</span><a href="https://youtu.be/yl2jsIoMfDU?t=544" target="_blank" rel="noopener">YouTube 09:04</a></div>
+    <h3>Dynamic Profiles, Evaluation Tools, and Open-Source Framework</h3>
+    <p class="summary">Dynamic Profiles enable dynamic swapping of models, tools, and instructions to help developers build agents or skills. Apple also introduces the Evaluations framework, Foundation Models instrument, FM CLI, Python SDK, and RAG tool, and announces that the Foundation Models framework will be open-sourced.</p>
+    <p class="meaning"><b>Interpretation</b>This segment is about moving AI from demo features to engineered software. Profiles, evaluation, instruments, CLI, and open source all lower the barrier to adoption.</p>
+    <details><summary>Dynamic Profiles let agent behavior change based on context.</summary><div class="detail-body"><p>The demo shows models, tools, and instructions swapping based on the origami project, making different profiles behave like different AI agents handling distinct tasks.</p><span class="tag">Review: 09:04-11:38</span></div></details><details><summary>The Evaluations framework and instruments are for testing and debugging.</summary><div class="detail-body"><p>Apple adds prompt testing, model behavior visualization, and terminal prompt tooling alongside generation capabilities, making AI features more verifiable.</p><span class="tag">Review: 12:00-12:23</span></div></details><details><summary>The Foundation Models framework will be open-sourced and can run on a server.</summary><div class="detail-body"><p>Apple states that the same Swift APIs can be used for both apps and servers, enabling Swift developers to build end-to-end AI workflows.</p><span class="tag">Review: 12:41-12:54</span></div></details><details class="deep"><summary>Full segment notes: what this section is really saying</summary><div class="detail-body"><p>The concept behind Dynamic Profiles is that models, tools, and instructions can be swapped based on the task at hand. For apps, this is more like packaging different working modes as profiles rather than hardcoding a single fixed prompt.</p><p>Apple then introduces the Evaluations framework, Foundation Models instrument, FM CLI, Python SDK, and RAG tool. These fill in what's typically missing from AI engineering: testing, observability, debugging, data ingestion, and cross-language workflows.</p><p>Open-sourcing the Foundation Models framework and making it runnable on servers signals that Apple wants the same Swift APIs to cover both apps and servers. For Swift developers, this lays the groundwork for end-to-end AI workflows.</p><span class="tag">Review: 09:04-13:08</span></div></details>
+  </div>
+</article>
+<article class="segment" id="s5">
+  <figure class="media">
+    <a href="https://youtu.be/yl2jsIoMfDU?t=788" target="_blank" rel="noopener"><img src="../../../ai-trends/apple-wwdc26-siri-lobster-ai/assets/slide-05-core-ai.jpg" alt="Core AI: bringing custom models into apps screenshot"></a>
+    <figcaption>13:08-14:44 · Core AI: Bringing Custom Models into Apps</figcaption>
+  </figure>
+  <div class="copy">
+    <div class="meta"><span>ACT 05</span><span>On-device AI</span><a href="https://youtu.be/yl2jsIoMfDU?t=788" target="_blank" rel="noopener">YouTube 13:08</a></div>
+    <h3>Core AI: Bringing Custom Models into Apps</h3>
+    <p class="summary">Core AI is a new platform framework for bringing specific models into apps and running them on-device. It provides Swift APIs, PyTorch conversion and optimization tools, ahead-of-time compilation, instruments, and a visual debugger.</p>
+    <p class="meaning"><b>Interpretation</b>Core AI fills in the "use your own model" layer, bringing AI work beyond Foundation Models into Apple's standard platform toolchain.</p>
+    <details><summary>Core AI targets on-device model runtime.</summary><div class="detail-body"><p>Apple positions Core AI as the best way to bring and run models in an app, particularly for features requiring offline capability, low latency, or custom models.</p><span class="tag">Review: 13:13-13:28</span></div></details><details><summary>A complete toolchain runs from PyTorch to the Core AI runtime.</summary><div class="detail-body"><p>The video covers Python-based tools, ahead-of-time compilation, Core AI instruments, and a visual debugger capable of tracing tensors back to Python source.</p><span class="tag">Review: 13:41-13:59</span></div></details><details><summary>Target scenarios range from small vision models on iPhone to multi-billion-parameter LLMs on Mac.</summary><div class="detail-body"><p>Apple explicitly gives both ends of the spectrum, indicating that Core AI can be deployed flexibly based on model size and device compute.</p><span class="tag">Review: 14:03-14:26</span></div></details><details class="deep"><summary>Full segment notes: what this section is really saying</summary><div class="detail-body"><p>Core AI addresses a separate layer of need. Some tasks will use Apple Foundation Models; others require developers' own models, such as specialized vision, speech, classification, or LLM tasks running on-device.</p><p>The video mentions PyTorch conversion, optimization, ahead-of-time compilation, instruments, and a visual debugger. All of this points in one direction: Apple wants custom models to be part of the formal development toolchain, advancing from research models to verifiable app features.</p><p>The scenario range is wide, from small vision models on iPhone to multi-billion-parameter LLMs on Mac. When actually shipping, developers will need to weigh model size, device compute, latency, power, and privacy.</p><span class="tag">Review: 13:08-14:44</span></div></details>
+  </div>
+</article>
+<article class="segment" id="s6">
+  <figure class="media">
+    <a href="https://youtu.be/yl2jsIoMfDU?t=884" target="_blank" rel="noopener"><img src="../../../ai-trends/apple-wwdc26-siri-lobster-ai/assets/slide-06-app-intents.jpg" alt="App Intents and Siri natural language operations screenshot"></a>
+    <figcaption>14:44-19:26 · App Intents and Siri Natural Language Operations</figcaption>
+  </figure>
+  <div class="copy">
+    <div class="meta"><span>ACT 06</span><span>System Intelligence</span><a href="https://youtu.be/yl2jsIoMfDU?t=884" target="_blank" rel="noopener">YouTube 14:44</a></div>
+    <h3>App Intents and Siri Natural Language Operations</h3>
+    <p class="summary">App Intents make an app's content, entities, and actions available to Siri, Shortcuts, widgets, and Apple Intelligence. The demo shows Siri querying conversations and sending messages through the Origami app, and using the View Annotations API to act on on-screen content.</p>
+    <p class="meaning"><b>Interpretation</b>Apple's system intelligence is turning third-party apps into a content layer that Siri can query, call, and operate.</p>
+    <details><summary>App Intents schemas let Siri deeply understand app capabilities.</summary><div class="detail-body"><p>Schemas are structures that Siri can recognize. When developers make entities such as messages, contacts, and conversations conform to a schema, the system can understand what's inside the app.</p><span class="tag">Review: 15:10-17:16</span></div></details><details><summary>Users can query content and execute actions using natural language.</summary><div class="detail-body"><p>In the demo, Siri first queries who's coming to origami night, then follows up to ask what Richard is bringing, and then sends a message directly to Richard.</p><span class="tag">Review: 17:21-18:17</span></div></details><details><summary>The View Annotations API turns on-screen content into actionable semantics.</summary><div class="detail-body"><p>Developers can map views to entities, enabling users to operate on-screen content with natural phrases like "the second message" or "this photo."</p><span class="tag">Review: 18:18-19:06</span></div></details><details class="deep"><summary>Full segment notes: what this section is really saying</summary><div class="detail-body"><p>This App Intents segment is about how system intelligence understands an app. Developers must structure the app's content, entities, and actions so that Siri, Shortcuts, widgets, and Apple Intelligence can discover, understand, and invoke them.</p><p>In the Origami demo, the user asks Siri in natural language who's coming and what they're bringing, then directly triggers sending a message. This means app content is beginning to enter the system-level semantic index and action layer.</p><p>The View Annotations API adds screen-level operation. Users can say phrases like "the second message" or "this photo," and the system needs to map the visual elements on screen to entities and actions inside the app.</p><span class="tag">Review: 14:44-19:26</span></div></details>
+  </div>
+</article>
+<article class="segment" id="s7">
+  <figure class="media">
+    <a href="https://youtu.be/yl2jsIoMfDU?t=1166" target="_blank" rel="noopener"><img src="../../../ai-trends/apple-wwdc26-siri-lobster-ai/assets/slide-07-intelligence-recap.jpg" alt="Intelligence platform recap and design transition screenshot"></a>
+    <figcaption>19:26-22:26 · Intelligence Platform Recap and Design Transition</figcaption>
+  </figure>
+  <div class="copy">
+    <div class="meta"><span>ACT 07</span><span>AI Wrap-up</span><a href="https://youtu.be/yl2jsIoMfDU?t=1166" target="_blank" rel="noopener">YouTube 19:26</a></div>
+    <h3>Intelligence Platform Recap and Design Transition</h3>
+    <p class="summary">Josh closes the Apple Intelligence section by naming three developer opportunities: enhancing natural language experiences via Siri, building AI features with Foundation Models, and running custom models on-device with Core AI. The session then transitions into design and Liquid Glass.</p>
+    <p class="meaning"><b>Interpretation</b>This segment works well as a report divider: the first half covers AI entering apps; the second covers the platform itself becoming more adaptive.</p>
+    <details><summary>AI capabilities are divided into three layers: Siri, Foundation Models, and Core AI.</summary><div class="detail-body"><p>Siri handles natural language and system integration; Foundation Models handles generative features; Core AI handles on-device execution of custom models.</p><span class="tag">Review: 19:26-19:56</span></div></details><details><summary>Platform improvements begin with design.</summary><div class="detail-body"><p>Apple groups design refinement, Swift, SwiftUI, and app performance under platform improvements, indicating that this is a platform-level update to UI and development experience.</p><span class="tag">Review: 20:05-21:35</span></div></details><details class="deep"><summary>Full segment notes: what this section is really saying</summary><div class="detail-body"><p>This segment closes the AI section. Apple organizes what developers can do into three categories: use Siri to enhance natural language experiences, use Foundation Models for generative features, and use Core AI to run custom models on-device.</p><p>These three layers represent different entry points. Siri and App Intents form the system integration layer; Foundation Models form the general-purpose model capability layer; Core AI forms the custom model deployment layer. Developers can choose based on their app's nature, and don't necessarily need all three.</p><p>The transition to design signals that once AI is inside an app, the interface, layout, readability, and developer tools also need to be revisited alongside it.</p><span class="tag">Review: 19:26-22:26</span></div></details>
+  </div>
+</article>
+<article class="segment" id="s8">
+  <figure class="media">
+    <a href="https://youtu.be/yl2jsIoMfDU?t=1346" target="_blank" rel="noopener"><img src="../../../ai-trends/apple-wwdc26-siri-lobster-ai/assets/slide-08-liquid-glass.jpg" alt="Liquid Glass 27: readability, personalization, and consistency screenshot"></a>
+    <figcaption>22:26-25:31 · Liquid Glass 27: Readability, Personalization, and Consistency</figcaption>
+  </figure>
+  <div class="copy">
+    <div class="meta"><span>ACT 08</span><span>Design</span><a href="https://youtu.be/yl2jsIoMfDU?t=1346" target="_blank" rel="noopener">YouTube 22:26</a></div>
+    <h3>Liquid Glass 27: Readability, Personalization, and Consistency</h3>
+    <p class="summary">Apple says this year continues refining the foundations of Liquid Glass: improving readability over complex backgrounds, adding dark edges and highlights, providing a personalization slider from clear to tinted, and making sidebars, toolbars, icons, and macOS window radii more consistent.</p>
+    <p class="meaning"><b>Interpretation</b>Liquid Glass is a design system that affects readability, accessibility, app identity, and cross-device consistency all at once.</p>
+    <details><summary>Liquid Glass is re-tuned for readability and depth.</summary><div class="detail-body"><p>It will more effectively diffuse complex content behind it, and dark edges and highlights add separation, so visual effect and readability are addressed together.</p><span class="tag">Review: 22:43-22:57</span></div></details><details><summary>Users can adjust from ultra clear to fully tinted.</summary><div class="detail-body"><p>A slider in Settings lets users choose their preferred level of transparency and tinting, while automatically adapting to accessibility settings such as Reduce Transparency and Increase Contrast.</p><span class="tag">Review: 22:57-23:25</span></div></details><details><summary>Sidebars, toolbars, icons, and window radii are pulled into consistency.</summary><div class="detail-body"><p>These adjustments apply automatically through standard APIs, with additional customization options for tint, scroll edge effects, and Icon Composer.</p><span class="tag">Review: 23:37-25:15</span></div></details><details class="deep"><summary>Full segment notes: what this section is really saying</summary><div class="detail-body"><p>Liquid Glass 27 covers visual style, readability, depth, dark edges, highlights, background diffusion, and user adjustment between transparency and tint.</p><p>For developers, the implication is that apps using standard APIs will automatically benefit from more consistent sidebars, toolbars, scroll edges, icons, and window radii. That said, app identity and content readability still need to be checked independently.</p><p>It's also tied to accessibility. Settings like Reduce Transparency and Increase Contrast affect how the effect renders, so Liquid Glass can't be judged from static screenshots alone. It needs to be tested with real content and real user settings.</p><span class="tag">Review: 22:26-25:31</span></div></details>
+  </div>
+</article>
+<article class="segment" id="s9">
+  <figure class="media">
+    <a href="https://youtu.be/yl2jsIoMfDU?t=1531" target="_blank" rel="noopener"><img src="../../../ai-trends/apple-wwdc26-siri-lobster-ai/assets/slide-09-ios-resizable.jpg" alt="iOS app resizing and cross-device adaptation screenshot"></a>
+    <figcaption>25:31-27:05 · iOS App Resizing and Cross-Device Adaptation</figcaption>
+  </figure>
+  <div class="copy">
+    <div class="meta"><span>ACT 09</span><span>Adaptive UI</span><a href="https://youtu.be/yl2jsIoMfDU?t=1531" target="_blank" rel="noopener">YouTube 25:31</a></div>
+    <h3>iOS App Resizing and Cross-Device Adaptation</h3>
+    <p class="summary">Apple announces that iOS apps can now resize, working better in larger-screen environments such as iPad, Mac, and iPhone Mirroring. A resizable iOS simulator and Previews also make it easier for developers to test different sizes.</p>
+    <p class="meaning"><b>Interpretation</b>This segment connects the design language to actual app adaptation, and is a signal for existing iOS apps to re-examine their responsive behavior.</p>
+    <details><summary>iOS apps are no longer confined to a fixed phone context.</summary><div class="detail-body"><p>Users can take advantage of larger displays, and apps need to handle more flexible layout, navigation, and content density.</p><span class="tag">Review: 25:31-26:23</span></div></details><details><summary>A resizable simulator and Previews shorten the testing cycle.</summary><div class="detail-body"><p>Developers can quickly see how layout changes at different sizes during development, reducing the chance of discovering layout issues only on a real device or in a cross-platform context.</p><span class="tag">Review: 26:23-26:57</span></div></details><details class="deep"><summary>Full segment notes: what this section is really saying</summary><div class="detail-body"><p>iOS app resizing is a practical platform change. An app can no longer assume it will always run in a fixed phone form factor, because iPad, Mac, and iPhone Mirroring will all place the same app in a more flexible space.</p><p>For existing apps, this is a checkpoint: navigation, sidebars, content density, forms, lists, and empty states all need to be revisited, or the app will just look like a magnified phone screen on a large display.</p><p>The value of the resizable simulator and Previews is that these issues become visible during development, rather than surfacing when a user encounters a broken layout on Mac or iPad.</p><span class="tag">Review: 25:31-27:05</span></div></details>
+  </div>
+</article>
+<article class="segment" id="s10">
+  <figure class="media">
+    <a href="https://youtu.be/yl2jsIoMfDU?t=1625" target="_blank" rel="noopener"><img src="../../../ai-trends/apple-wwdc26-siri-lobster-ai/assets/slide-10-swiftui-interactions.jpg" alt="SwiftUI interaction and performance upgrades screenshot"></a>
+    <figcaption>27:05-31:50 · SwiftUI Interaction and Performance Upgrades</figcaption>
+  </figure>
+  <div class="copy">
+    <div class="meta"><span>ACT 10</span><span>SwiftUI</span><a href="https://youtu.be/yl2jsIoMfDU?t=1625" target="_blank" rel="noopener">YouTube 27:05</a></div>
+    <h3>SwiftUI Interaction and Performance Upgrades</h3>
+    <p class="summary">SwiftUI adds reorderable containers, swipe actions for arbitrary containers, and more complete text selection. It also improves performance on multiple controls and layouts by sharing an underlying architecture with AppKit and UIKit.</p>
+    <p class="meaning"><b>Interpretation</b>The SwiftUI updates are centered on pulling common interactions, performance issues, and adaptation concerns into the framework layer.</p>
+    <details><summary>Drag-to-reorder and swipe actions work for more custom containers.</summary><div class="detail-body"><p>Grid reordering and custom row swipe actions that once required writing substantial code can now be implemented with standard modifiers, reducing interaction boilerplate.</p><span class="tag">Review: 29:12-30:13</span></div></details><details><summary>SwiftUI, AppKit, and UIKit are progressively unifying their underlying layer.</summary><div class="detail-body"><p>Apple states that multiple controls are beginning to share a common foundation, so scenarios like menu pickers and nested stacks benefit automatically.</p><span class="tag">Review: 30:41-31:31</span></div></details><details><summary>Async image cache and toolbar control reduce everyday friction.</summary><div class="detail-body"><p>These improvements make it easier to hand off remote image loading and toolbar behavior when space is constrained to the framework rather than writing custom code.</p><span class="tag">Review: 31:31-33:04</span></div></details><details class="deep"><summary>Full segment notes: what this section is really saying</summary><div class="detail-body"><p>This SwiftUI segment focuses on everyday UI problems: reorderable containers, swipe actions for arbitrary containers, text selection, toolbar control, and async image cache. None of these are high-concept, but they directly reduce the boilerplate in building apps.</p><p>Apple also notes that SwiftUI, AppKit, and UIKit are increasingly sharing foundations, so controls like menu pickers, nested stacks, and layouts benefit in terms of performance. This means the platform frameworks are converging toward more consistent infrastructure.</p><p>For developers, the key read here is not just what new modifier names are available, but which interactions that previously required custom code can now be delegated to the standard framework. That has a real impact on maintenance cost.</p><span class="tag">Review: 27:05-31:50</span></div></details>
+  </div>
+</article>
+<article class="segment" id="s11">
+  <figure class="media">
+    <a href="https://youtu.be/yl2jsIoMfDU?t=1910" target="_blank" rel="noopener"><img src="../../../ai-trends/apple-wwdc26-siri-lobster-ai/assets/slide-11-documents-spatial.jpg" alt="Document API and Spatial Preview screenshot"></a>
+    <figcaption>31:50-35:13 · Document API and Spatial Preview</figcaption>
+  </figure>
+  <div class="copy">
+    <div class="meta"><span>ACT 11</span><span>Documents / Spatial</span><a href="https://youtu.be/yl2jsIoMfDU?t=1910" target="_blank" rel="noopener">YouTube 31:50</a></div>
+    <h3>Document API and Spatial Preview</h3>
+    <p class="summary">A new SwiftUI document infrastructure delivers more complete capabilities for document-based apps, including the ability to observe and update document properties. The Spatial Preview framework lets Mac apps stream 3D models into Vision Pro space for preview.</p>
+    <p class="meaning"><b>Interpretation</b>This segment shows Apple pulling both traditional document-based apps and spatial computing into SwiftUI's modern development workflow.</p>
+    <details><summary>The new document infrastructure supports richer document apps.</summary><div class="detail-body"><p>It provides undo, autosave, Quick Look, sharing, and version browsing, and can read and write only the changed parts of a document.</p><span class="tag">Review: 33:32-34:12</span></div></details><details><summary>Spatial Preview brings 3D previewing into the development loop.</summary><div class="detail-body"><p>Mac apps can stream 3D models into the surrounding Vision Pro space, so editing, previewing, and sharing are closer to the actual spatial experience.</p><span class="tag">Review: 34:26-34:48</span></div></details><details class="deep"><summary>Full segment notes: what this section is really saying</summary><div class="detail-body"><p>The document infrastructure update pulls common document-based app needs into SwiftUI. Undo, autosave, Quick Look, sharing, version browsing, and writing only changed parts all make it easier for document-type apps to follow the standard path.</p><p>The Spatial Preview framework puts 3D model previewing into the development loop. Mac apps can stream models into the surrounding Vision Pro space, bringing developers closer to the actual spatial experience when adjusting content.</p><p>This segment is less flashy than the AI sections, but it shows that Apple is still expanding SwiftUI's applicable domain: not just general app UI, but document-based apps and spatial computing content as well.</p><span class="tag">Review: 31:50-35:13</span></div></details>
+  </div>
+</article>
+<article class="segment" id="s12">
+  <figure class="media">
+    <a href="https://youtu.be/yl2jsIoMfDU?t=2113" target="_blank" rel="noopener"><img src="../../../ai-trends/apple-wwdc26-siri-lobster-ai/assets/slide-12-swift-stack.jpg" alt="Swift as a full-stack and systems language screenshot"></a>
+    <figcaption>35:13-39:50 · Swift as a Full-Stack and Systems Language</figcaption>
+  </figure>
+  <div class="copy">
+    <div class="meta"><span>ACT 12</span><span>Swift</span><a href="https://youtu.be/yl2jsIoMfDU?t=2113" target="_blank" rel="noopener">YouTube 35:13</a></div>
+    <h3>Swift as a Full-Stack and Systems Language</h3>
+    <p class="summary">Apple positions Swift as a language that can span mobile apps, services, embedded firmware, servers, WebAssembly, and Java/C++ interoperability. The video also shows how Apple is progressively adopting Swift internally across Foundation, UIKit/AppKit, WebKit, QUIC, TrueType, and kernel components.</p>
+    <p class="meaning"><b>Interpretation</b>The claim in this Swift segment is strong: Apple wants to push Swift as the long-term language for cross-platform and low-level systems work.</p>
+    <details><summary>Swift is positioned as usable across the entire stack.</summary><div class="detail-body"><p>The video mentions Linux, Windows, Android, WebAssembly, and C++ and Java interoperability, with the goal of letting existing systems gradually bring in Swift.</p><span class="tag">Review: 35:18-36:57</span></div></details><details><summary>Apple is also taking Swift deeper internally.</summary><div class="detail-body"><p>Foundation, AppKit/UIKit, WebKit, QUIC, TrueType, firmware, coprocessors, drivers, and kernel components are all cited as examples of Swift's adoption at the systems level.</p><span class="tag">Review: 36:57-38:17</span></div></details><details class="deep"><summary>Full segment notes: what this section is really saying</summary><div class="detail-body"><p>The claim in this Swift segment is clear: Apple is pushing Swift toward mobile apps, services, embedded firmware, servers, WebAssembly, and C++ and Java interoperability.</p><p>The video lists Apple's internal adoption of Swift across Foundation, UIKit/AppKit, WebKit, QUIC, TrueType, firmware, drivers, and kernel components. This uses their own adoption as the argument for Swift as a systems language.</p><p>For outside developers, this segment reads as a long-term signal: Swift's value includes its syntax, cross-platform reach, cross-layer applicability, and the ability to cross existing language boundaries into more engineering contexts.</p><span class="tag">Review: 35:13-39:50</span></div></details>
+  </div>
+</article>
+<article class="segment" id="s13">
+  <figure class="media">
+    <a href="https://youtu.be/yl2jsIoMfDU?t=2390" target="_blank" rel="noopener"><img src="../../../ai-trends/apple-wwdc26-siri-lobster-ai/assets/slide-13-swift-64.jpg" alt="Swift 6.4 and everyday developer efficiency screenshot"></a>
+    <figcaption>39:50-42:03 · Swift 6.4 and Everyday Developer Efficiency</figcaption>
+  </figure>
+  <div class="copy">
+    <div class="meta"><span>ACT 13</span><span>Swift 6.4</span><a href="https://youtu.be/yl2jsIoMfDU?t=2390" target="_blank" rel="noopener">YouTube 39:50</a></div>
+    <h3>Swift 6.4 and Everyday Developer Efficiency</h3>
+    <p class="summary">Swift 6.4 focuses on the everyday workflow: better completion, diagnostics, API grouping, automatic import insertion, and the anyAppleOS availability attribute.</p>
+    <p class="meaning"><b>Interpretation</b>This segment is less sweeping than the systems narrative before it, but it directly affects the friction developers encounter when writing Swift every day.</p>
+    <details><summary>Compiler and IDE feedback is closer to everyday work.</summary><div class="detail-body"><p>The video covers better completion, fix-its, diagnostics, and automatic import handling, with the goal of making Swift faster to write with fewer interruptions.</p><span class="tag">Review: 38:41-40:13</span></div></details><details><summary>anyAppleOS availability reduces conditional checks across Apple platforms.</summary><div class="detail-body"><p>This makes certain API availability checks more concise, which is friendlier for code that supports multiple Apple devices.</p><span class="tag">Review: 40:13-41:02</span></div></details><details class="deep"><summary>Full segment notes: what this section is really saying</summary><div class="detail-body"><p>Swift 6.4 leans more toward everyday developer efficiency than the earlier sections: completion, fix-its, diagnostics, API grouping, and automatic imports. These improvements affect how often developers are interrupted during a typical coding session.</p><p>The point of anyAppleOS availability is reducing the complexity of conditional checks when targeting multiple Apple platforms. When an app needs to simultaneously support iPhone, iPad, Mac, and Vision Pro, small changes like this accumulate into real maintenance cost differences.</p><p>This segment works well as a reminder in presentations: platform updates also include IDE and language experience improvements that help engineers guess less, look things up less, and fix fewer things.</p><span class="tag">Review: 39:50-42:03</span></div></details>
+  </div>
+</article>
+<article class="segment" id="s14">
+  <figure class="media">
+    <a href="https://youtu.be/yl2jsIoMfDU?t=2523" target="_blank" rel="noopener"><img src="../../../ai-trends/apple-wwdc26-siri-lobster-ai/assets/slide-14-xcode-daily.jpg" alt="Xcode 27: daily experience, themes, and Device Hub screenshot"></a>
+    <figcaption>42:03-49:00 · Xcode 27: Daily Experience, Themes, and Device Hub</figcaption>
+  </figure>
+  <div class="copy">
+    <div class="meta"><span>ACT 14</span><span>Xcode Daily</span><a href="https://youtu.be/yl2jsIoMfDU?t=2523" target="_blank" rel="noopener">YouTube 42:03</a></div>
+    <h3>Xcode 27: Daily Experience, Themes, and Device Hub</h3>
+    <p class="summary">Xcode 27 has two tracks: intelligence and daily experience. Daily experience includes faster launch, crash and spin fixes, more reliable debugging, a 30% smaller footprint, iCloud-synced settings, faster new-project creation, customizable toolbars, themes, Xcode Cloud, and Device Hub.</p>
+    <p class="meaning"><b>Interpretation</b>This is the foundation before agentic coding: the IDE needs to be faster, more stable, and more personal before agents can become part of the everyday workflow.</p>
+    <details><summary>Xcode 27 is 30% smaller and settings can sync via iCloud.</summary><div class="detail-body"><p>Being Apple Silicon-only and background-downloading components like agents and documentation keeps the core footprint small. A new Mac can immediately carry in settings and Git config.</p><span class="tag">Review: 43:45-44:34</span></div></details><details><summary>The interface is customizable with themes and project identity.</summary><div class="detail-body"><p>The toolbar is rearrangeable and the activity view moves into the document title. Themes such as Emerald, Neon Noir, and Coral Reef give different projects distinct visual identities.</p><span class="tag">Review: 45:04-46:30</span></div></details><details><summary>Device Hub integrates simulators and physical devices.</summary><div class="detail-body"><p>Device Hub replaces previously scattered device management, supporting both virtual and real devices with live resizing, pinch to zoom, and performance and sensor controls.</p><span class="tag">Review: 47:36-48:56</span></div></details><details class="deep"><summary>Full segment notes: what this section is really saying</summary><div class="detail-body"><p>Xcode 27 addresses daily experience before agentic coding, and the order matters. The IDE itself needs to be faster, more stable, and more personalizable before agents have a chance to become part of the daily workflow.</p><p>The video covers launch performance, crash and spin fixes, debugging reliability, a 30% smaller footprint, iCloud-synced settings, new project creation, customizable toolbars, themes, Xcode Cloud, and Device Hub. These are all friction points developers encounter every day.</p><p>Device Hub's significance is putting simulator and physical device management in one place, with support for live resizing, pinch to zoom, and sensor controls. This connects directly to the resizable app testing needs mentioned earlier.</p><span class="tag">Review: 42:03-49:00</span></div></details>
+  </div>
+</article>
+<article class="segment" id="s15">
+  <figure class="media">
+    <a href="https://youtu.be/yl2jsIoMfDU?t=2940" target="_blank" rel="noopener"><img src="../../../ai-trends/apple-wwdc26-siri-lobster-ai/assets/slide-15-agentic-coding.jpg" alt="Xcode agentic coding: from planning to testing and fixing screenshot"></a>
+    <figcaption>49:00-56:02 · Xcode Agentic Coding: From Planning to Testing and Fixing</figcaption>
+  </figure>
+  <div class="copy">
+    <div class="meta"><span>ACT 15</span><span>Agentic Coding</span><a href="https://youtu.be/yl2jsIoMfDU?t=2940" target="_blank" rel="noopener">YouTube 49:00</a></div>
+    <h3>Xcode Agentic Coding: From Planning to Testing and Fixing</h3>
+    <p class="summary">Xcode brings coding agents into the IDE workflow. An agent conversation opens like a document in the editor; /plan first produces a plan and diagram for the developer to review before implementation begins. The agent can also run the app, test UI, localize, analyze crashes, and apply fixes.</p>
+    <p class="meaning"><b>Interpretation</b>This segment upgrades agents from chat completions to an engineering workflow inside the IDE. Planning, implementation, verification, and improvement are all brought in.</p>
+    <details><summary>/plan lets the agent propose an implementation approach first.</summary><div class="detail-body"><p>The agent explores the project, understands its architecture and patterns, asks clarifying questions, and generates a Markdown plan and diagram for the developer to review before implementation proceeds.</p><span class="tag">Review: 50:23-52:18</span></div></details><details><summary>The agent can operate the simulator to test UI.</summary><div class="detail-body"><p>In the demo the agent launches the app and Device Hub, taps, swipes, and types, then returns a test summary and screenshots.</p><span class="tag">Review: 53:37-54:09</span></div></details><details><summary>The agent can assist with localization and crash fixes.</summary><div class="detail-body"><p>Xcode translates the strings catalog based on context and can pull top crashes from Organizer, analyze symbolicated crash logs, reproduce the issue, apply a fix, and verify it.</p><span class="tag">Review: 54:11-55:50</span></div></details><details class="deep"><summary>Full segment notes: what this section is really saying</summary><div class="detail-body"><p>Xcode agentic coding is designed so that agent conversations open like documents that can be split and stacked, signaling that they are treated as engineering artifacts.</p><p>/plan is the key feature. The agent explores the project first, understands its architecture and patterns, proposes a Markdown plan and diagram, and waits for developer review before implementing. This is closer to genuine team collaboration than directly generating code.</p><p>The second half of the demo shows the agent running the app, operating the simulator, testing UI, doing localization, analyzing crash logs, reproducing issues, and applying fixes. This means the agent's role extends from "writing" to "verifying" and "improving."</p><span class="tag">Review: 49:00-56:02</span></div></details>
+  </div>
+</article>
+<article class="segment" id="s16">
+  <figure class="media">
+    <a href="https://youtu.be/yl2jsIoMfDU?t=3362" target="_blank" rel="noopener"><img src="../../../ai-trends/apple-wwdc26-siri-lobster-ai/assets/slide-16-plugins-acp.jpg" alt="Plugins, MCP, and Agent Client Protocol screenshot"></a>
+    <figcaption>56:02-57:52 · Plugins, MCP, and Agent Client Protocol</figcaption>
+  </figure>
+  <div class="copy">
+    <div class="meta"><span>ACT 16</span><span>Plugins / Protocols</span><a href="https://youtu.be/yl2jsIoMfDU?t=3362" target="_blank" rel="noopener">YouTube 56:02</a></div>
+    <h3>Plugins, MCP, and Agent Client Protocol</h3>
+    <p class="summary">Xcode 27 ships with built-in skills, documentation, and MCP tools from Apple engineers and designers. It also supports plugins that bring skills, MCP tools, and any agent via the Agent Client Protocol into Xcode. Figma and GitHub are named as one-click setup examples.</p>
+    <p class="meaning"><b>Interpretation</b>Apple is turning Xcode into an agent client, bringing external tools, design workflows, and code workflows into the same IDE workspace.</p>
+    <details><summary>Xcode ships with built-in specialist skills.</summary><div class="detail-body"><p>Expert knowledge and tools covering SwiftUI, accessibility, universal sizing, testing, and performance are packaged as capabilities that agents can invoke.</p><span class="tag">Review: 56:02-56:34</span></div></details><details><summary>A plugin can include skills, MCP tools, and an agent simultaneously.</summary><div class="detail-body"><p>The Agent Client Protocol lets a plugin bring in a developer's chosen agent. Installation can be done via command line or a Git URL.</p><span class="tag">Review: 56:40-57:13</span></div></details><details><summary>Figma and GitHub enter the Xcode agent workflow.</summary><div class="detail-body"><p>The demo phrase is: implement a Figma design, use the skill to make it resizable, then open a PR to GitHub. This shows design and code tools being connected into a single workflow.</p><span class="tag">Review: 57:13-57:31</span></div></details><details class="deep"><summary>Full segment notes: what this section is really saying</summary><div class="detail-body"><p>Xcode 27 ships with specialist skills covering SwiftUI, accessibility, universal sizing, testing, and performance. This means the agent isn't just a general-purpose model but can carry Apple engineering and design knowledge.</p><p>Plugins can include skills, MCP tools, and any agent via the Agent Client Protocol. This means Xcode is becoming an agent client that can connect to external tools and external agents.</p><p>Naming Figma and GitHub explicitly is a strong signal: design files, code, tests, and PRs that were previously scattered across separate tools will be easier for an agent to connect into a single flow.</p><span class="tag">Review: 56:02-57:52</span></div></details>
+  </div>
+</article>
+<article class="segment" id="s17">
+  <figure class="media">
+    <a href="https://youtu.be/yl2jsIoMfDU?t=3472" target="_blank" rel="noopener"><img src="../../../ai-trends/apple-wwdc26-siri-lobster-ai/assets/slide-17-wrap-tools.jpg" alt="Reality Composer Pro, Game Porting, and WWDC follow-up screenshot"></a>
+    <figcaption>57:52-01:01:39 · Reality Composer Pro, Game Porting, and WWDC Follow-up</figcaption>
+  </figure>
+  <div class="copy">
+    <div class="meta"><span>ACT 17</span><span>Wrap-up</span><a href="https://youtu.be/yl2jsIoMfDU?t=3472" target="_blank" rel="noopener">YouTube 57:52</a></div>
+    <h3>Reality Composer Pro, Game Porting, and WWDC Follow-up</h3>
+    <p class="summary">The closing segment covers Reality Composer Pro 3, Game Porting Toolkit, and Metal command line tools, then wraps up this year's developer productivity story. Apple directs viewers to 100+ sessions, Group Labs, forums, Meet with Apple, and Developer Centers.</p>
+    <p class="meaning"><b>Interpretation</b>The final segment turns the complete video into a learning path. For deeper details, return to the WWDC sessions and official documentation.</p>
+    <details><summary>Reality Composer Pro 3 and Game Porting Toolkit are also part of the tool upgrades.</summary><div class="detail-body"><p>Reality Composer Pro 3 is rebuilt on RealityKit with support for character animations, lighting, and live previews. Game Porting Toolkit adds AI skills, and Metal command line tools let agents participate in development and debugging.</p><span class="tag">Review: 57:52-58:46</span></div></details><details><summary>This year's core themes are collected as App Intents, Foundation Models, Core AI, Design, Swift/SwiftUI, and Xcode agentic coding.</summary><div class="detail-body"><p>This is the official summary of the complete video and can serve as a framework for follow-up presentations or course outlines.</p><span class="tag">Review: 58:48-59:23</span></div></details><details><summary>Official follow-up resources include sessions, labs, forums, Meet with Apple, and Developer Centers.</summary><div class="detail-body"><p>The closing mentions 100+ sessions and announces that the Berlin Developer Center will open in the fall.</p><span class="tag">Review: 59:25-61:11</span></div></details><details class="deep"><summary>Full segment notes: what this section is really saying</summary><div class="detail-body"><p>The final segment adds Reality Composer Pro 3, Game Porting Toolkit, and Metal command line tools, showing that developer productivity extends beyond general apps and Xcode to spatial content, game porting, and command-line debugging.</p><p>The official summary returns to the main tracks: App Intents, Foundation Models, Core AI, Design, Swift and SwiftUI, Xcode agentic coding. This can also serve as the chapter list for a follow-up learning path.</p><p>The closing guides viewers to 100+ sessions, Group Labs, forums, Meet with Apple, and Developer Centers. A public page like this one should position itself as a guide, not a replacement for official documentation and sessions.</p><span class="tag">Review: 57:52-01:01:39</span></div></details>
+  </div>
+</article></div>
+</div></section>
+<section class="section cta-band" id="lesson"><div class="inner">
+  <div>
+    <h2>Want to Build This Kind of News Digest Yourself?</h2>
+    <p class="lead">Hand a YouTube link to AI and it can produce this kind of timeline, screenshots, key summaries, and even turn it directly into a webpage or presentation. In my free talk on 6/14, I walk through exactly how this workflow runs.</p>
+    <div class="course-note">
+      <p><strong>Join for free:</strong></p>
+      <p>I host two free online talks every month.</p>
+      <p><strong>The 6/14 session teaches you how to turn a YouTube link into this kind of web presentation. See my LINE community for details.</strong></p>
+    </div>
+  </div>
+  <div class="cta-card">
+    <b>Free Online Talks</b>
+    <p>Two free sessions every month.</p>
+    <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;text-decoration:none;border-radius:8px;padding:12px 16px;font-weight:900;background:#48b178;color:#fff;">Join the LINE Community ↗</a>
+  </div>
+</div></section>
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">Coach Jiang · AI Knowledge Management</div>
+    <div class="footer-links">
+      <a href="../../../articles.html">← Back to Articles</a>
+      <a href="../../../index.html">Home</a>
+      <a href="../../../skills.html">Skills</a>
+      <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">LINE Community ↗</a>
+      <a href="https://www.threads.com/@jiang_yude_coach" target="_blank" rel="noopener">Threads ↗</a>
+      <a href="https://vocus.cc/salon/Jiang_Coach" target="_blank" rel="noopener">Vocus ↗</a>
+    </div>
+    <div class="footer-note">This article is based on the <a href="https://www.youtube.com/watch?v=yl2jsIoMfDU" target="_blank" rel="noopener">Apple Developer official YouTube video</a>. For technology adoption, API names, and version specifics, please verify against Apple's official documentation and WWDC sessions.</div>
+  </div>
+</footer>
+
+<!-- lightbox -->
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <span class="lightbox-close" aria-label="Close">×</span>
+  <img id="lightbox-img" src="" alt="Enlarged view">
+</div>
+<script>
+(function(){
+  var box=document.getElementById('lightbox'),boxImg=document.getElementById('lightbox-img');
+  document.querySelectorAll('.hero-figure img,.inline-figure img').forEach(function(img){
+    img.addEventListener('click',function(){
+      boxImg.src=img.currentSrc||img.src;boxImg.alt=img.alt||'Enlarged view';
+      box.classList.add('open');box.setAttribute('aria-hidden','false');
+    });
+  });
+  function close(){box.classList.remove('open');box.setAttribute('aria-hidden','true');boxImg.src='';}
+  box.addEventListener('click',close);
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
+})();
+</script>
+
+<!-- shared: mouse warm-glow + nav hamburger -->
+<script src="../../../spotlight.js"></script>
+
+<script src="../../../articles-data.js"></script>
+<script src="../../../related-render.js"></script>
+</body>
+</html>

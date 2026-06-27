@@ -1,17 +1,20 @@
 <!doctype html>
-<html lang="zh-Hant">
+<html lang="en">
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>如何訓練自己的 AI 員工：員工＋顧問框架｜江江教練 · AI 知識管理</title>
-<meta name="description" content="一場實作工作坊的教學簡報：把 AI 當員工照你的方式幹活，再加一群顧問幫你挑盲點。涵蓋組織架構、隱性知識提煉七層、把節點串成工作流，以及怎麼判斷一個問題值多少。">
-<link rel="canonical" href="https://ai-km-jiang.vercel.app/articles/how-to-train-your-ai-employee/">
+<title>How to Train Your AI Employee: The Employee + Consultant Framework | Coach Jiang · AI Knowledge Management</title>
+<meta name="description" content="Teaching slides from a hands-on workshop: set up AI as your employee to work the way you do, then add a panel of consultants to challenge your blind spots. Covers org structure, the seven-layer tacit knowledge distillation system, connecting nodes into workflows, and how to judge what a problem is worth.">
+<link rel="canonical" href="https://ai-km-jiang.vercel.app/en/articles/how-to-train-your-ai-employee/">
+<link rel="alternate" hreflang="zh-Hant" href="https://ai-km-jiang.vercel.app/articles/how-to-train-your-ai-employee/">
+<link rel="alternate" hreflang="en" href="https://ai-km-jiang.vercel.app/en/articles/how-to-train-your-ai-employee/">
+<link rel="alternate" hreflang="x-default" href="https://ai-km-jiang.vercel.app/articles/how-to-train-your-ai-employee/">
 <meta property="og:type" content="article">
-<meta property="og:title" content="如何訓練自己的 AI 員工：員工＋顧問框架｜江江教練">
-<meta property="og:description" content="把 AI 當員工照你的方式幹活，再加一群顧問幫你挑盲點。員工＋顧問框架、隱性知識提煉、把節點串成工作流。">
-<meta property="og:url" content="https://ai-km-jiang.vercel.app/articles/how-to-train-your-ai-employee/">
-<meta property="og:locale" content="zh_TW">
-<meta property="og:site_name" content="江江教練 · AI 知識管理">
+<meta property="og:title" content="How to Train Your AI Employee: The Employee + Consultant Framework | Coach Jiang">
+<meta property="og:description" content="Set up AI to work your way, then add a panel of consultants to challenge your blind spots. Employee + Consultant framework, tacit knowledge distillation, and connecting nodes into workflows.">
+<meta property="og:url" content="https://ai-km-jiang.vercel.app/en/articles/how-to-train-your-ai-employee/">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Coach Jiang · AI Knowledge Management">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
@@ -19,7 +22,7 @@
 :root{--ink:#1a1612;--paper:#fefcf8;--muted:#6a635a;--line:#d8cdb8;--green:#5f7553;--blue:#5689b8;--orange:#e85a4f;--soft:#faf5ec;--dark:#2a2018;--shadow:0 18px 45px rgba(107,74,42,.14);--sp-shadow:hsla(35,50%,60%,.15);--sp-shadow-edge:hsla(35,50%,68%,.03);--sp-radius:400px}
 *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC","Segoe UI",sans-serif}
 a{color:inherit}
-/* 官網共用導航列 nav.top（與首頁/文章總站同一條） */
+/* nav */
 nav.top{position:sticky;top:0;background:rgba(254,252,248,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid #d8cdb8;z-index:100}
 nav.top .container{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:24px;padding:14px 32px}
 .nav-brand-img{justify-self:start;display:flex;align-items:center;text-decoration:none;flex-shrink:0;transition:opacity .2s}
@@ -41,7 +44,7 @@ nav.top ul.nav-menu a:hover{color:#1a1612}nav.top ul.nav-menu a.active{color:#1a
  nav.top ul.nav-menu li:last-child{border-bottom:none}
  nav.top ul.nav-menu a{display:block;padding:14px 20px;font-size:1.06rem}
 }
-/* 滑鼠暖光暈（與首頁同一支 spotlight.js） */
+/* spotlight */
 body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradient(var(--sp-radius) circle at var(--mx,50%) var(--my,50%),var(--sp-shadow) 0%,var(--sp-shadow-edge) 45%,transparent 75%);pointer-events:none;z-index:9999;mix-blend-mode:multiply;transition:background .06s linear}
 .hero{position:relative;overflow:hidden;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:72px;padding:96px clamp(20px,6vw,88px) 80px;background:linear-gradient(180deg,#fffcf0 0%,#f9e9d2 100%);color:#1a1612;border-bottom:1px solid #d8cdb8}
 .hero .wc{position:absolute;border-radius:50%;filter:blur(60px);pointer-events:none;z-index:0}
@@ -101,7 +104,7 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
 .footer-inner{width:min(1000px,100%);margin:0 auto}
 .footer-links{display:flex;flex-wrap:wrap;gap:6px 12px;margin-bottom:14px}.footer-links a{color:var(--blue);font-weight:900;text-decoration:none;font-size:14px}
 .footer-brand{font-weight:900;font-size:15px;margin-bottom:10px}.footer-note{font-size:13px;line-height:1.6}
-/* 圖片元件 */
+/* images */
 .inline-figure{margin:30px auto 8px;max-width:820px}
 .inline-figure.wide{max-width:1000px}
 .inline-figure img{display:block;width:100%;border-radius:14px;border:1px solid var(--line);box-shadow:var(--shadow);background:#fff}
@@ -110,7 +113,7 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
 .figure-pair figure{margin:0}
 .figure-pair img{display:block;width:100%;border-radius:14px;border:1px solid var(--line);box-shadow:var(--shadow);background:#fff}
 .figure-pair figcaption{font-size:13px;line-height:1.58;color:var(--muted);margin-top:8px}
-/* 點圖放大 lightbox */
+/* lightbox */
 .hero-figure img,.inline-figure img{cursor:zoom-in}
 .lightbox{position:fixed;inset:0;z-index:10000;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(12,10,8,.92);cursor:zoom-out;backdrop-filter:blur(4px)}
 .lightbox.open{display:flex}
@@ -119,8 +122,7 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
 @media(max-width:820px){.infocard-grid{grid-template-columns:1fr}.duo{grid-template-columns:1fr}.workflow-grid{grid-template-columns:1fr}.cta-band .inner{grid-template-columns:1fr}.section{padding:40px 20px}.hero{min-height:52vh;flex-direction:column;justify-content:flex-start;align-items:flex-start;gap:24px}.hero>div{width:100%}.hero-figure{width:100%;max-width:560px}.figure-pair{grid-template-columns:1fr}}
 @media(max-width:820px){html,body{overflow-x:hidden}.hero h1{word-break:break-word}}
 
-/* ===== 投影片版型（正文 ACT 01-16 使用） ===== */
-  /* 知識拿鐵 由淺到深疊加序列 */
+/* ===== Slide layout (ACT 01-16) ===== */
   :root {
     --bg-1: #F5EDE7;
     --bg-2: #EFEBE9;
@@ -149,7 +151,7 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
     --font-mono:    "JetBrains Mono","SF Mono",ui-monospace,monospace;
   }
 
-  /* === Sticky Stack 核心 === */
+  /* === Sticky Stack core === */
   section.slide {
     position: sticky;
     top: 0;
@@ -170,7 +172,6 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
     border-radius: 0;
     box-shadow: none;
   }
-  /* 9 段背景 + z-index 遞增 */
   section.slide[data-bg="1"] { background: var(--bg-1); z-index: 1; color: var(--text-on-light); }
   section.slide[data-bg="2"] { background: var(--bg-2); z-index: 2; color: var(--text-on-light); }
   section.slide[data-bg="3"] { background: var(--bg-3); z-index: 3; color: var(--text-on-light); }
@@ -181,7 +182,6 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
   section.slide[data-bg="8"] { background: var(--bg-8); z-index: 8; color: var(--text-on-dark); }
   section.slide[data-bg="9"] { background: var(--bg-9); z-index: 9; color: var(--text-on-dark); }
 
-  /* 章節編號 caption */
   .act-cap {
     font-family: var(--font-mono);
     font-size: 20px;
@@ -208,7 +208,6 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
   section.slide[data-bg="8"] .act-cap::before,
   section.slide[data-bg="9"] .act-cap::before { background: var(--accent-on-dark); }
 
-  /* Typography */
   .display {
     font-family: var(--font-display);
     font-size: clamp(48px, 8vw, 112px);
@@ -251,7 +250,6 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
   section.slide[data-bg="8"] .body,
   section.slide[data-bg="9"] .body { color: var(--text-soft-dark); }
 
-  /* container */
   .wrap {
     width: 100%;
     max-width: 1080px;
@@ -259,7 +257,6 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
   }
   .wrap.left { text-align: left; }
 
-  /* dot indicator */
   .dot-indicator {
     position: fixed;
     right: 28px;
@@ -306,7 +303,6 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
   }
   body.on-dark .dot-indicator a .lbl { color: var(--text-soft-dark); }
 
-  /* progress bar */
   .progress {
     position: fixed;
     top: 0; left: 0;
@@ -317,7 +313,6 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
     transition: width 0.15s linear;
   }
 
-  /* 卡片 */
   .grid-2 {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -363,7 +358,6 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
   section.slide[data-bg="8"] .slide-card .num,
   section.slide[data-bg="9"] .slide-card .num { color: var(--accent-on-dark); }
 
-  /* 清單 */
   .list-x {
     list-style: none;
     padding: 0;
@@ -400,7 +394,6 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
   section.slide[data-bg="8"] .list-x li .x,
   section.slide[data-bg="9"] .list-x li .x { color: var(--accent-on-dark); }
 
-  /* 金句卡 */
   .quote-card {
     background: rgba(216, 140, 58, 0.10);
     border: 1.5px solid var(--accent);
@@ -425,7 +418,6 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
     color: var(--text-on-dark);
   }
 
-  /* 大金句 */
   .quote-big {
     font-family: var(--font-display);
     font-size: clamp(26px, 3.2vw, 40px);
@@ -436,7 +428,6 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
     letter-spacing: -0.01em;
   }
 
-  /* 步驟 timeline 四欄 */
   .timeline {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -488,7 +479,6 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
     box-shadow: 0 0 0 6px rgba(230,184,125,0.22);
   }
 
-  /* 五步縱列 */
   .step-list {
     list-style: none;
     padding: 0;
@@ -527,7 +517,6 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
   section.slide[data-bg="8"] .step-list li .sn,
   section.slide[data-bg="9"] .step-list li .sn { color: var(--accent-on-dark); }
 
-  /* 組織樹（舊版，保留備用） */
   .org-tree {
     margin-top: 40px;
     text-align: center;
@@ -580,7 +569,7 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
     color: var(--text-on-dark);
   }
 
-  /* 新版組織圖（ACT 06） */
+  /* org chart (ACT 06) */
   .org{display:flex;flex-direction:column;align-items:center;width:100%;max-width:1180px;margin:8px auto 0;color:var(--text-on-light);}
   .org .boss{background:var(--accent);color:#3a2414;font-weight:700;font-size:22px;padding:13px 28px;border-radius:14px;}
   .org .trunk{width:2px;height:22px;background:rgba(78,52,46,.4);}
@@ -595,7 +584,6 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
   .org .mem .t{color:#6d4c41;}
   @media(max-width:760px){.org .split{flex-direction:column;gap:0;}.org .split::before{display:none;}.org .branch{max-width:520px;}}
 
-  /* 三視角 */
   .view-3 {
     display: flex;
     flex-direction: column;
@@ -623,7 +611,6 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
     margin-top: 3px;
   }
 
-  /* 階梯卡 */
   .ladder {
     display: flex;
     flex-direction: column;
@@ -664,7 +651,6 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
   section.slide[data-bg="8"] .ladder-item strong,
   section.slide[data-bg="9"] .ladder-item strong { color: var(--accent-on-dark); }
 
-  /* 承諾卡 */
   .promise-card {
     background: rgba(230,184,125,0.12);
     border: 2px solid var(--accent-on-dark);
@@ -689,7 +675,6 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
     color: var(--accent-on-dark);
   }
 
-  /* 小字提示 */
   .hint {
     margin-top: 32px;
     font-family: var(--font-mono);
@@ -702,7 +687,6 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
   section.slide[data-bg="8"] .hint,
   section.slide[data-bg="9"] .hint { color: var(--text-soft-dark); }
 
-  /* footer 底部 */
   .footer-bottom {
     margin-top: 56px;
     padding-top: 20px;
@@ -714,7 +698,6 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
     text-align: center;
   }
 
-  /* 進場動畫 */
   .reveal { opacity: 1; transform: translateY(0) scale(1); }
   .js-on .reveal:not(.in) {
     opacity: 0;
@@ -730,7 +713,7 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
   .reveal.d4 { transition-delay: 0.32s; }
   .reveal.d5 { transition-delay: 0.40s; }
 
-  /* 七層圖（ACT 12） */
+  /* seven-layer chart (ACT 12) */
   .tk-wrap{display:flex;gap:16px;align-items:stretch;width:100%;max-width:1180px;margin:4px auto 0;}
   .tk{flex:1;}
   .tk-row{display:flex;align-items:center;gap:14px;border-radius:8px;padding:11px 18px;margin:7px 0;text-align:left;color:#3a2a22;}
@@ -766,17 +749,17 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
 
 <nav class="top">
   <div class="container">
-    <a class="nav-brand-img" href="../../index.html"><img src="../../images/footer-signature.png" alt="江江教練 | 江昱德"></a>
-    <button class="nav-toggle" aria-label="選單"><span></span><span></span><span></span></button>
+    <a class="nav-brand-img" href="../../../index.html"><img src="../../../images/footer-signature.png" alt="Coach Jiang | Jiang Yude"></a>
+    <button class="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
     <ul class="nav-menu">
-      <li><a href="../../index.html">首頁</a></li>
-      <li><a href="../../offers.html">收費課程</a></li>
-      <li><a href="../../courses.html">免費講座</a></li>
-      <li><a href="../../invited-talks.html">邀約授課</a></li>
-      <li><a href="../../articles.html" class="active">深度文章</a></li>
-      <li><a href="../../skills.html">Skills 下載</a></li>
-      <li><a href="../../cases.html">服務方案</a></li>
-      <li class="lang-switch"><a href="../../en/articles/how-to-train-your-ai-employee/" hreflang="en">EN</a></li>
+      <li><a href="../../../index.html">Home</a></li>
+      <li><a href="../../../offers.html">Paid Courses</a></li>
+      <li><a href="../../../courses.html">Free Talks</a></li>
+      <li><a href="../../../invited-talks.html">Invited Talks</a></li>
+      <li><a href="../../../articles.html" class="active">Articles</a></li>
+      <li><a href="../../../skills.html">Skills</a></li>
+      <li><a href="../../../cases.html">Services</a></li>
+      <li class="lang-switch"><a href="../../../articles/how-to-train-your-ai-employee/">中文</a></li>
     </ul>
   </div>
 </nav>
@@ -786,9 +769,9 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
   <div class="wc wc2"></div>
   <div class="wc wc3"></div>
   <div>
-    <div class="kicker">AI 員工駕訓班</div>
-    <h1>打造你的 AI 員工＋顧問</h1>
-    <p>一個人，也能擁有一整支團隊，加一群顧問。不用寫程式，你只要開口說話。</p>
+    <div class="kicker">AI Employee Training</div>
+    <h1>Build Your AI Employees + Consultants</h1>
+    <p>One person, a whole team, plus a panel of advisors. No coding required. All you have to do is speak.</p>
   </div>
 </section>
 
@@ -796,350 +779,350 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
 
   <div class="progress" id="progress"></div>
 
-  <nav class="dot-indicator" aria-label="章節導覽">
-    <a href="#act-01" data-i="0"><span class="lbl">01 · 封面</span></a>
-    <a href="#act-02" data-i="1"><span class="lbl">02 · 今天不一樣</span></a>
-    <a href="#act-03" data-i="2"><span class="lbl">03 · 什麼在吃掉你</span></a>
-    <a href="#act-04" data-i="3"><span class="lbl">04 · 別補舊流程</span></a>
-    <a href="#act-05" data-i="4"><span class="lbl">05 · 兩種角色</span></a>
-    <a href="#act-06" data-i="5"><span class="lbl">06 · 我的 AI 團隊</span></a>
-    <a href="#act-07" data-i="6"><span class="lbl">07 · 咪卡上工</span></a>
-    <a href="#act-08" data-i="7"><span class="lbl">08 · 你會帶走什麼</span></a>
-    <a href="#act-09" data-i="8"><span class="lbl">09 · 員工怎麼養</span></a>
-    <a href="#act-10" data-i="9"><span class="lbl">10 · 把你的做法挖出來</span></a>
-    <a href="#act-11" data-i="10"><span class="lbl">11 · 整理不等於提煉</span></a>
-    <a href="#act-12" data-i="11"><span class="lbl">12 · 隱性知識提煉系統</span></a>
-    <a href="#act-13" data-i="12"><span class="lbl">13 · 把節點串起來</span></a>
-    <a href="#act-14" data-i="13"><span class="lbl">14 · 顧問怎麼用</span></a>
-    <a href="#act-15" data-i="14"><span class="lbl">15 · 最值錢的能力</span></a>
-    <a href="#act-16" data-i="15"><span class="lbl">16 · 帶回家</span></a>
+  <nav class="dot-indicator" aria-label="Section navigation">
+    <a href="#act-01" data-i="0"><span class="lbl">01 · Cover</span></a>
+    <a href="#act-02" data-i="1"><span class="lbl">02 · Today Is Different</span></a>
+    <a href="#act-03" data-i="2"><span class="lbl">03 · What's Eating Your Time</span></a>
+    <a href="#act-04" data-i="3"><span class="lbl">04 · Stop Patching Old Workflows</span></a>
+    <a href="#act-05" data-i="4"><span class="lbl">05 · Two Roles</span></a>
+    <a href="#act-06" data-i="5"><span class="lbl">06 · My AI Team</span></a>
+    <a href="#act-07" data-i="6"><span class="lbl">07 · Mika on the Job</span></a>
+    <a href="#act-08" data-i="7"><span class="lbl">08 · What You'll Take Home</span></a>
+    <a href="#act-09" data-i="8"><span class="lbl">09 · How to Train an AI Employee</span></a>
+    <a href="#act-10" data-i="9"><span class="lbl">10 · Surface Your Way of Working</span></a>
+    <a href="#act-11" data-i="10"><span class="lbl">11 · Organizing vs. Distilling</span></a>
+    <a href="#act-12" data-i="11"><span class="lbl">12 · Tacit Knowledge Distillation</span></a>
+    <a href="#act-13" data-i="12"><span class="lbl">13 · Connecting the Nodes</span></a>
+    <a href="#act-14" data-i="13"><span class="lbl">14 · How to Use Consultants</span></a>
+    <a href="#act-15" data-i="14"><span class="lbl">15 · The Most Valuable Skill</span></a>
+    <a href="#act-16" data-i="15"><span class="lbl">16 · Take It Home</span></a>
   </nav>
 
-  <!-- ACT 01 封面 bg-1 最淺 -->
+  <!-- ACT 01 Cover bg-1 lightest -->
   <section id="act-01" class="slide" data-block data-bg="1">
     <div class="wrap">
-      <div class="act-cap reveal">ACT 01 · 封面</div>
-      <p class="hint reveal" style="margin-top:0; margin-bottom:20px;">AI 員工駕訓班</p>
-      <h1 class="display reveal d1">打造你的<br/>AI 員工<br/>＋ 顧問</h1>
-      <p class="lead reveal d2">一個人，也能擁有一整支團隊，加一群顧問</p>
-      <p class="lead reveal d3" style="margin-top:16px;">不用寫程式，你只要開口說話</p>
-      <p class="hint reveal d4">禮拜日 · 三小時實作</p>
+      <div class="act-cap reveal">ACT 01 · Cover</div>
+      <p class="hint reveal" style="margin-top:0; margin-bottom:20px;">AI Employee Training</p>
+      <h1 class="display reveal d1">Build Your<br/>AI Employees<br/>+ Consultants</h1>
+      <p class="lead reveal d2">One person, a whole team, plus a panel of advisors</p>
+      <p class="lead reveal d3" style="margin-top:16px;">No coding required. All you have to do is speak.</p>
+      <p class="hint reveal d4">Sunday · Three-hour hands-on workshop</p>
     </div>
   </section>
 
-  <!-- ACT 02 今天不一樣 bg-2 -->
+  <!-- ACT 02 Today Is Different bg-2 -->
   <section id="act-02" class="slide" data-block data-bg="2">
     <div class="wrap">
-      <div class="act-cap reveal">ACT 02 · 今天不一樣</div>
-      <h2 class="h1 reveal d1">今天不是講座，是駕訓班</h2>
-      <p class="lead reveal d2">重點不是聽懂多少，是你今天當場做出自己的 AI 員工。</p>
+      <div class="act-cap reveal">ACT 02 · Today Is Different</div>
+      <h2 class="h1 reveal d1">This is a training ground, not a lecture hall</h2>
+      <p class="lead reveal d2">What matters today is not how much you understand, but that you build your own AI employee right here.</p>
       <div class="quote-card reveal d3">
-        打開 Agent，請忍住，不要自己操作。<br/>
-        操作是 AI 的事，不是你的事。
+        Open the Agent. Then resist the urge to operate it yourself.<br/>
+        Operating is the AI's job, not yours.
       </div>
     </div>
   </section>
 
-  <!-- ACT 03 什麼在吃掉你 bg-3 -->
+  <!-- ACT 03 What's Eating Your Time bg-3 -->
   <section id="act-03" class="slide" data-block data-bg="3">
     <div class="wrap">
-      <div class="act-cap reveal">ACT 03 · 什麼在吃掉你</div>
-      <h2 class="h1 reveal d1">你現在的工作方式，有什麼在吃掉你？</h2>
+      <div class="act-cap reveal">ACT 03 · What's Eating Your Time</div>
+      <h2 class="h1 reveal d1">What in your current workflow is eating you alive?</h2>
       <ul class="list-x reveal d2">
-        <li><span class="x">✕</span>檔案散在各處，光找就半天</li>
-        <li><span class="x">✕</span>重複的文書，每次都從零憋</li>
-        <li><span class="x">✕</span>行程、訊息，常常漏接</li>
-        <li><span class="x">✕</span>瑣事吃掉時間，正事沒空做</li>
-        <li><span class="x">✕</span>重大決策，一個人鑽牛角尖</li>
+        <li><span class="x">✕</span>Files scattered everywhere. Just finding them takes half the day.</li>
+        <li><span class="x">✕</span>Repetitive documents that you rebuild from scratch every time</li>
+        <li><span class="x">✕</span>Appointments and messages that slip through the cracks</li>
+        <li><span class="x">✕</span>Busywork consuming the time that should go to real work</li>
+        <li><span class="x">✕</span>Major decisions made in a vacuum, going in circles alone</li>
       </ul>
-      <p class="hint reveal d3">現在，這些事是誰在做？（請舉手）</p>
+      <p class="hint reveal d3">Right now, who is doing all of this? (Raise your hand.)</p>
     </div>
   </section>
 
-  <!-- ACT 04 別補舊流程 bg-3 -->
+  <!-- ACT 04 Stop Patching Old Workflows bg-3 -->
   <section id="act-04" class="slide" data-block data-bg="3">
     <div class="wrap">
-      <div class="act-cap reveal">ACT 04 · 別補舊流程</div>
-      <h2 class="h1 reveal d1">鋼鐵，不是拿來加固木屋的</h2>
+      <div class="act-cap reveal">ACT 04 · Stop Patching Old Workflows</div>
+      <h2 class="h1 reveal d1">Steel was not invented to reinforce wooden houses</h2>
       <p class="lead reveal d2">
-        鋼鐵剛發明時，大家拿去做鋼釘，把木造房子從兩層加到三層。<br/>
-        直到有人直接用鋼鐵設計房子，才有了摩天大樓。
+        When steel first appeared, people used it as nails to build wooden houses one floor taller.<br/>
+        Skyscrapers only became possible once someone designed directly in steel from the start.
       </p>
       <p class="body reveal d3" style="margin-top: 28px; max-width: 700px; margin-left: auto; margin-right: auto;">
-        99% 的人用 AI，都在補舊的工作流。<br/>
-        真正該問的是：有什麼事，本來就該整個交給 AI 做？
+        99% of people use AI to patch their existing workflows.<br/>
+        The real question to ask: what tasks should have been handed to AI entirely from the beginning?
       </p>
       <div class="quote-card reveal d4">
-        AI 是 AI，軟體是軟體。<br/>
-        別用 AI 去做軟體早就做好的事。
+        AI is AI, and software is software.<br/>
+        Do not use AI to do what software already does well.
       </div>
     </div>
   </section>
 
-  <!-- ACT 05 兩種角色 bg-4 -->
+  <!-- ACT 05 Two Roles bg-4 -->
   <section id="act-05" class="slide" data-block data-bg="4">
     <div class="wrap">
-      <div class="act-cap reveal">ACT 05 · 兩種角色</div>
-      <h2 class="h1 reveal d1">你需要兩種 AI：員工，跟顧問</h2>
+      <div class="act-cap reveal">ACT 05 · Two Roles</div>
+      <h2 class="h1 reveal d1">You need two kinds of AI: Employees and Consultants</h2>
       <div class="grid-2 reveal d2">
         <div class="slide-card">
-          <div class="num">員工（向內）</div>
-          <p class="body">照你的想法幹活，把你會的事複製出來，做得更快。</p>
+          <div class="num">Employees (inward-facing)</div>
+          <p class="body">They work the way you work, replicate what you know, and get it done faster.</p>
         </div>
         <div class="slide-card">
-          <div class="num">顧問（向外）</div>
-          <p class="body">用外部視角挑你盲點，補上你沒有的角度，讓你想得更對。</p>
+          <div class="num">Consultants (outward-facing)</div>
+          <p class="body">They apply an external perspective to challenge your blind spots and bring angles you lack, helping you think more clearly.</p>
         </div>
       </div>
       <div class="quote-card reveal d3">
-        員工讓你做得更快，顧問讓你想得更對。
+        Employees help you move faster. Consultants help you think straighter.
       </div>
-      <p class="body reveal d4" style="margin-top: 24px;">不是老闆、沒有員工可管？從顧問入手，人人都能建。</p>
+      <p class="body reveal d4" style="margin-top: 24px;">No team to manage? Start with consultants. Anyone can build those.</p>
     </div>
   </section>
 
-  <!-- ACT 06 我的 AI 團隊 bg-4 淺底深字，組織圖清楚可見 -->
+  <!-- ACT 06 My AI Team bg-4 -->
   <section id="act-06" class="slide" data-block data-bg="4">
     <div class="wrap">
-      <div class="act-cap reveal">ACT 06 · 我的 AI 團隊</div>
-      <h2 class="h1 reveal d1">這是我怎麼用 AI 幹活的</h2>
+      <div class="act-cap reveal">ACT 06 · My AI Team</div>
+      <h2 class="h1 reveal d1">Here is how I use AI to get things done</h2>
       <div class="reveal d2">
         <div class="org">
-          <div class="boss">江昱德（決策者）</div>
+          <div class="boss">Coach Jiang (Decision-maker)</div>
           <div class="trunk"></div>
           <div class="split">
             <div class="branch"><div class="card">
-              <div class="bhead">員工（主管型）</div>
-              <div class="mem"><b>雷總管</b>　<span class="t">檔案、看板、標籤、調度</span></div>
-              <div class="mem"><b>春總編</b>　<span class="t">寫作、發文、順稿</span></div>
-              <div class="mem"><b>風組長</b>　<span class="t">多 AI 查證、上網查</span></div>
-              <div class="mem"><b>小秘書</b>　<span class="t">行程、訊息、提醒</span></div>
+              <div class="bhead">Employees (Senior staff)</div>
+              <div class="mem"><b>Director Lei</b>　<span class="t">Files, boards, tags, dispatch</span></div>
+              <div class="mem"><b>Editor Chun</b>　<span class="t">Writing, publishing, copyediting</span></div>
+              <div class="mem"><b>Research Lead Feng</b>　<span class="t">Multi-AI verification, web research</span></div>
+              <div class="mem"><b>Secretary Bee</b>　<span class="t">Schedule, messages, reminders</span></div>
             </div></div>
             <div class="branch"><div class="card">
-              <div class="bhead">專案經理型</div>
-              <div class="mem"><b>網站專案包</b>　<span class="t">該網站的規格與所有細節</span></div>
-              <div class="mem"><b>咪卡（AI 辦公室）</b>　<span class="t">管 20 到 30 個行政小工具</span></div>
+              <div class="bhead">Project manager type</div>
+              <div class="mem"><b>Website Project Package</b>　<span class="t">Specs and all details for a given site</span></div>
+              <div class="mem"><b>Mika (AI Office)</b>　<span class="t">Manages 20 to 30 administrative micro-tools</span></div>
             </div></div>
             <div class="branch"><div class="card">
-              <div class="bhead">顧問</div>
-              <div class="mem"><b>納瓦爾</b>　<span class="t">長期、槓桿、決策</span></div>
-              <div class="mem"><b>馬斯克</b>　<span class="t">第一性原理、規模</span></div>
-              <div class="mem"><b>一人公司顧問</b>　<span class="t">盲點、邊際成本</span></div>
+              <div class="bhead">Consultants</div>
+              <div class="mem"><b>Naval</b>　<span class="t">Long-term thinking, leverage, decision-making</span></div>
+              <div class="mem"><b>Musk</b>　<span class="t">First-principles, scalability</span></div>
+              <div class="mem"><b>Company-of-One Advisor</b>　<span class="t">Blind spots, marginal cost</span></div>
             </div></div>
           </div>
         </div>
       </div>
-      <p class="body reveal d3" style="margin-top: 28px;">你只要對總管說一句話，他把事情分給對的人。你動嘴，團隊動手。</p>
+      <p class="body reveal d3" style="margin-top: 28px;">You say one sentence to the director, and the right person gets assigned. You talk, the team works.</p>
     </div>
   </section>
 
-  <!-- ACT 07 咪卡上工 bg-5 -->
+  <!-- ACT 07 Mika on the Job bg-5 -->
   <section id="act-07" class="slide" data-block data-bg="5">
     <div class="wrap">
-      <div class="act-cap reveal">ACT 07 · 咪卡上工</div>
-      <h2 class="h1 reveal d1">咪卡，就是你裝進筆電的那位</h2>
+      <div class="act-cap reveal">ACT 07 · Mika on the Job</div>
+      <h2 class="h1 reveal d1">Mika is the one installed inside your laptop</h2>
       <div class="timeline reveal d2">
         <div class="step">
           <div class="dot">①</div>
-          <h3 class="h2" style="margin-top: 8px;">你開口</h3>
-          <p class="body">說一句話，交辦任務</p>
+          <h3 class="h2" style="margin-top: 8px;">You speak</h3>
+          <p class="body">Say one sentence, assign the task</p>
         </div>
         <div class="step">
           <div class="dot">②</div>
-          <h3 class="h2" style="margin-top: 8px;">咪卡調度</h3>
-          <p class="body">轉派給對的員工</p>
+          <h3 class="h2" style="margin-top: 8px;">Mika dispatches</h3>
+          <p class="body">Routes to the right employee</p>
         </div>
         <div class="step">
           <div class="dot">③</div>
-          <h3 class="h2" style="margin-top: 8px;">員工接手</h3>
-          <p class="body">對的人做對的事</p>
+          <h3 class="h2" style="margin-top: 8px;">Employee takes over</h3>
+          <p class="body">The right person does the right thing</p>
         </div>
         <div class="step">
           <div class="dot">④</div>
-          <h3 class="h2" style="margin-top: 8px;">成果回來</h3>
-          <p class="body">你確認，就完成</p>
+          <h3 class="h2" style="margin-top: 8px;">Result comes back</h3>
+          <p class="body">You confirm, and it's done</p>
         </div>
       </div>
-      <p class="hint reveal d3">今天前半，我們先讓咪卡在你自己的筆電裡出場。</p>
+      <p class="hint reveal d3">In the first half of today, we will get Mika running on your own laptop.</p>
     </div>
   </section>
 
-  <!-- ACT 08 你會帶走什麼 bg-5 -->
+  <!-- ACT 08 What You'll Take Home bg-5 -->
   <section id="act-08" class="slide" data-block data-bg="5">
     <div class="wrap">
-      <div class="act-cap reveal">ACT 08 · 你會帶走什麼</div>
-      <h2 class="h1 reveal d1">今天結束，你帶走的是「你的」團隊</h2>
+      <div class="act-cap reveal">ACT 08 · What You'll Take Home</div>
+      <h2 class="h1 reveal d1">When today ends, you walk out with your own team</h2>
       <div class="ladder reveal d2">
         <div class="ladder-item">
-          <strong>入門就很夠</strong>
-          直接用我整套團隊，改個名字、改一句話，就開始是你的。
+          <strong>Good enough to start</strong>
+          Take my entire team, change the names and a line or two, and it is already yours.
         </div>
         <div class="ladder-item">
-          <strong>想更進一步</strong>
-          當天親手打造一個員工 ＋ 一個顧問，完全照你的樣子長。
+          <strong>Want to go further</strong>
+          Build one employee and one consultant yourself today, shaped entirely around how you work.
         </div>
       </div>
       <div class="quote-card reveal d3">
-        你的員工，不是我的員工。<br/>
-        是用你的習慣、你的語言打造的。
+        Your AI employees are not my AI employees.<br/>
+        They are built from your habits and your language.
       </div>
     </div>
   </section>
 
-  <!-- ACT 09 員工怎麼養 bg-7 -->
+  <!-- ACT 09 How to Train an AI Employee bg-7 -->
   <section id="act-09" class="slide" data-block data-bg="7">
     <div class="wrap">
-      <div class="act-cap reveal">ACT 09 · 員工怎麼養</div>
-      <h2 class="h1 reveal d1">把一件你本來自己做的事，交出去</h2>
+      <div class="act-cap reveal">ACT 09 · How to Train an AI Employee</div>
+      <h2 class="h1 reveal d1">Hand over one thing you used to do yourself</h2>
       <ul class="step-list reveal d2">
-        <li><span class="sn">①</span>交辦，不要自己先做</li>
-        <li><span class="sn">②</span>忍住，不要動手操作</li>
-        <li><span class="sn">③</span>看它做</li>
-        <li><span class="sn">④</span>不準？補一條規則，不是自己重寫</li>
-        <li><span class="sn">⑤</span>成功了，存成下次可重複的指令</li>
+        <li><span class="sn">①</span>Assign it, do not do it yourself first</li>
+        <li><span class="sn">②</span>Resist the urge to take over and operate it manually</li>
+        <li><span class="sn">③</span>Watch it work</li>
+        <li><span class="sn">④</span>If it gets something wrong, add a rule rather than rewriting it yourself</li>
+        <li><span class="sn">⑤</span>Once it succeeds, save the instruction as a reusable template</li>
       </ul>
-      <p class="hint reveal d3">第一次不完美，很正常。這就是訓練。</p>
+      <p class="hint reveal d3">Imperfect the first time is perfectly normal. That is what training looks like.</p>
     </div>
   </section>
 
-  <!-- ACT 10 把你的做法挖出來（新增） bg-7 -->
+  <!-- ACT 10 Surface Your Way of Working bg-7 -->
   <section id="act-10" class="slide" data-block data-bg="7">
     <div class="wrap">
-      <div class="act-cap reveal">ACT 10 · 把你的做法挖出來</div>
-      <h2 class="h1 reveal d1">員工會「照你的方式」做，前提是你把方式挖出來</h2>
+      <div class="act-cap reveal">ACT 10 · Surface Your Way of Working</div>
+      <h2 class="h1 reveal d1">An AI employee works your way, but only once you surface what your way actually is</h2>
       <ul class="step-list reveal d2">
-        <li><span class="sn">①</span>你剛剛每補一條規則，其實就是在把你腦袋裡沒說出口的判斷挖出來。</li>
-        <li><span class="sn">②</span>這叫隱性知識提煉：你會做、卻說不清楚的判斷、眉角、標準，一條條變成 AI 看得懂的規則。</li>
-        <li><span class="sn">③</span>提煉得越多，員工越像你。而且這是別人偷不走的，那是你的判斷，不是工具。</li>
+        <li><span class="sn">①</span>Every rule you just added was you surfacing an unspoken judgment from inside your head.</li>
+        <li><span class="sn">②</span>This is tacit knowledge distillation: taking the calls, the nuances, and the standards you know how to apply but cannot quite articulate, and turning them into rules an AI can follow.</li>
+        <li><span class="sn">③</span>The more you distill, the more the AI employee resembles you. And no one can take that away. Those are your judgments, not the tool's.</li>
       </ul>
       <div class="quote-card reveal d3">
-        把你會、卻說不清楚的，變成 AI 學得會的。
+        Turn what you know but cannot explain into what an AI can learn.
       </div>
     </div>
   </section>
 
-  <!-- ACT 11 整理不等於提煉 bg-7 -->
+  <!-- ACT 11 Organizing vs. Distilling bg-7 -->
   <section id="act-11" class="slide" data-block data-bg="7">
     <div class="wrap">
-      <div class="act-cap reveal">ACT 11 · 整理 ≠ 提煉</div>
-      <h2 class="h1 reveal d1">整理，不等於提煉</h2>
+      <div class="act-cap reveal">ACT 11 · Organizing vs. Distilling</div>
+      <h2 class="h1 reveal d1">Organizing is not the same as distilling</h2>
       <div class="grid-2 reveal d2">
         <div class="slide-card">
-          <div class="num">系統化整理 · 顯性</div>
-          <h3 class="h2">把本來就寫得出來的事實收好</h3>
-          <p class="body">一個陪伴式教育的客戶：五年的導覽紀錄、利害關係人訪談、帶團路線、輪椅過不過得去。整理出來很有用，但它本來就在那。</p>
+          <div class="num">Systematic organizing · Explicit</div>
+          <h3 class="h2">Collecting facts that were always expressible</h3>
+          <p class="body">A client in inclusive education: five years of tour logs, stakeholder interviews, route maps, wheelchair accessibility notes. Organizing these is useful, but the information was already there.</p>
         </div>
         <div class="slide-card">
-          <div class="num">提煉 · 隱性</div>
-          <h3 class="h2">把藏在判斷裡、說不清楚的挖出來</h3>
-          <p class="body">她心裡知道哪位顧問的話該聽、哪一句不該聽。這種判斷提煉成規則，AI 才能幫她做決定。</p>
+          <div class="num">Distilling · Tacit</div>
+          <h3 class="h2">Surfacing the judgment buried inside decisions</h3>
+          <p class="body">She knows which advisor's words to trust and which ones to set aside. Distilling that judgment into a rule is what lets an AI help her make decisions.</p>
         </div>
       </div>
-      <p class="lead reveal d3" style="margin-top: 40px;">整理是把已經顯性的收好；提煉是把還是隱性的挖出來。後者才是別人偷不走的。</p>
+      <p class="lead reveal d3" style="margin-top: 40px;">Organizing collects what is already explicit. Distilling surfaces what is still tacit. Only the latter is something no one else can replicate.</p>
     </div>
   </section>
 
-  <!-- ACT 12 隱性知識提煉系統 bg-4 -->
+  <!-- ACT 12 Tacit Knowledge Distillation System bg-4 -->
   <section id="act-12" class="slide" data-block data-bg="4">
     <div class="wrap left">
-      <div class="act-cap reveal">ACT 12 · 隱性知識提煉系統</div>
-      <h2 class="h1 reveal d1">隱性知識提煉系統</h2>
-      <p class="lead reveal d2" style="margin:0 0 16px;max-width:none;">每往底層推一層，上面整層都能自動化：等比級數的成長</p>
+      <div class="act-cap reveal">ACT 12 · Tacit Knowledge Distillation System</div>
+      <h2 class="h1 reveal d1">Tacit Knowledge Distillation System</h2>
+      <p class="lead reveal d2" style="margin:0 0 16px;max-width:none;">Every layer deeper you go unlocks automation for everything above it: exponential leverage</p>
       <div class="tk-wrap reveal d3">
         <div class="tk">
-          <div class="tk-row tk-0"><span class="ly">第零層</span><span class="nm">現實的結果</span><span class="ds">看得見的行為、產出、成果</span></div>
-          <div class="tk-row tk-1"><span class="ly">第一層</span><span class="nm">規則</span><span class="ds">結果背後的判斷依據 → SOP、操作手冊、知識庫</span></div>
-          <div class="tk-row tk-2"><span class="ly">第二層</span><span class="nm">經驗</span><span class="ds">規則從哪來？→ 提煉成思維框架、規則庫</span></div>
-          <div class="tk-row tk-3"><span class="ly">第三層</span><span class="nm">跨領域連結</span><span class="ds">框架在不同領域都適用 → 隱藏的共通邏輯</span></div>
-          <div class="tk-row tk-4"><span class="ly">第四層</span><span class="nm">直覺與感覺</span><span class="ds">過往經驗的權重疊加，藏著更深層的連結</span></div>
-          <div class="tk-row tk-5"><span class="ly">第五層</span><span class="nm">價值觀與信念</span><span class="ds">深層連結的根源 → 影響判斷的底層作業系統</span></div>
-          <div class="tk-row tk-6"><span class="ly">第六層</span><span class="nm">理性觀察的極限</span><span class="ds">我知道我在乎，但無法理解為什麼 → 語言的邊界</span></div>
-          <div class="tk-row tk-7"><span class="ly">第七層</span><span class="nm">？</span><span class="ds">更高層次的覺察的開始？</span></div>
+          <div class="tk-row tk-0"><span class="ly">Layer 0</span><span class="nm">Observable results</span><span class="ds">Visible behaviors, outputs, and outcomes</span></div>
+          <div class="tk-row tk-1"><span class="ly">Layer 1</span><span class="nm">Rules</span><span class="ds">The judgments behind the results → SOPs, manuals, knowledge bases</span></div>
+          <div class="tk-row tk-2"><span class="ly">Layer 2</span><span class="nm">Experience</span><span class="ds">Where do the rules come from? → Distilled into mental frameworks, rule libraries</span></div>
+          <div class="tk-row tk-3"><span class="ly">Layer 3</span><span class="nm">Cross-domain connections</span><span class="ds">Frameworks that apply across fields → hidden common logic</span></div>
+          <div class="tk-row tk-4"><span class="ly">Layer 4</span><span class="nm">Intuition and feeling</span><span class="ds">Weighted accumulation of past experience, containing even deeper connections</span></div>
+          <div class="tk-row tk-5"><span class="ly">Layer 5</span><span class="nm">Values and beliefs</span><span class="ds">The root of deep connection → the underlying operating system that shapes judgment</span></div>
+          <div class="tk-row tk-6"><span class="ly">Layer 6</span><span class="nm">Limits of rational observation</span><span class="ds">I know I care, but cannot explain why → the edge of language</span></div>
+          <div class="tk-row tk-7"><span class="ly">Layer 7</span><span class="nm">?</span><span class="ds">The beginning of a higher-order awareness?</span></div>
         </div>
-        <div class="tk-axis"><span>顯性</span><span class="ar">↓</span><span>隱性</span></div>
+        <div class="tk-axis"><span>Explicit</span><span class="ar">↓</span><span>Tacit</span></div>
       </div>
     </div>
   </section>
 
-  <!-- ACT 13 把節點串起來 bg-8 -->
+  <!-- ACT 13 Connecting the Nodes bg-8 -->
   <section id="act-13" class="slide" data-block data-bg="8">
     <div class="wrap">
-      <div class="act-cap reveal">ACT 13 · 把節點串起來</div>
-      <h2 class="h1 reveal d1">一個員工是一個節點，把它們串起來，就是工作流</h2>
+      <div class="act-cap reveal">ACT 13 · Connecting the Nodes</div>
+      <h2 class="h1 reveal d1">One AI employee is one node. Connect them and you have a workflow.</h2>
       <ul class="step-list reveal d2">
-        <li><span class="sn">①</span>單一員工只做一件事。真正的力量，是把好幾個節點接成一條流程。</li>
-        <li><span class="sn">②</span>例：風組長查資料，春總編寫成稿，小秘書排程發出。一句話啟動，一條龍跑完。</li>
-        <li><span class="sn">③</span>你今天先練好一個員工，把它們串成流程，是你帶回去的下一步。</li>
+        <li><span class="sn">①</span>Each individual employee handles one thing. The real power comes from chaining several nodes into a single pipeline.</li>
+        <li><span class="sn">②</span>For example: Research Lead Feng gathers the data, Editor Chun shapes it into a draft, Secretary Bee schedules and sends it out. One sentence starts it. One pipeline runs it end to end.</li>
+        <li><span class="sn">③</span>Today you will first build one solid employee. Connecting them into a workflow is the next step you take home.</li>
       </ul>
       <div class="quote-card reveal d3">
-        員工是積木，工作流是你把積木組成的那台機器。
+        AI employees are building blocks. A workflow is the machine you assemble from them.
       </div>
     </div>
   </section>
 
-  <!-- ACT 14 顧問怎麼用 bg-8 -->
+  <!-- ACT 14 How to Use Consultants bg-8 -->
   <section id="act-14" class="slide" data-block data-bg="8">
     <div class="wrap">
-      <div class="act-cap reveal">ACT 14 · 顧問怎麼用</div>
-      <h2 class="h1 reveal d1">丟一個你正在猶豫的決定</h2>
-      <p class="lead reveal d2">例如：我到底要不要接這個案子？</p>
+      <div class="act-cap reveal">ACT 14 · How to Use Consultants</div>
+      <h2 class="h1 reveal d1">Bring a decision you are sitting on right now</h2>
+      <p class="lead reveal d2">For example: should I take this project or not?</p>
       <div class="view-3 reveal d3">
         <div class="view-row">
-          <span class="view-name">納瓦爾</span>
-          <span>長期、槓桿、值不值得花你的時間</span>
+          <span class="view-name">Naval</span>
+          <span>Long-term thinking, leverage, is this worth your time?</span>
         </div>
         <div class="view-row">
-          <span class="view-name">馬斯克</span>
-          <span>第一性原理、這件事能不能做大</span>
+          <span class="view-name">Musk</span>
+          <span>First principles, can this scale?</span>
         </div>
         <div class="view-row">
-          <span class="view-name">一人公司顧問</span>
-          <span>你一個人扛得住嗎、邊際成本划算嗎</span>
+          <span class="view-name">Solo-Company Advisor</span>
+          <span>Can you carry this alone? Is the marginal cost worthwhile?</span>
         </div>
       </div>
       <div class="quote-card reveal d4" style="margin-top: 36px;">
-        三個顧問會跟你說不一樣的話。<br/>
-        三方都點到的，才是真盲點。
+        Three consultants will give you three different answers.<br/>
+        What all three flag is your real blind spot.
       </div>
     </div>
   </section>
 
-  <!-- ACT 15 最值錢的能力 bg-9 最深 -->
+  <!-- ACT 15 The Most Valuable Skill bg-9 darkest -->
   <section id="act-15" class="slide" data-block data-bg="9">
     <div class="wrap">
-      <div class="act-cap reveal">ACT 15 · 最值錢的能力</div>
-      <h2 class="h1 reveal d1">真正難、也真正值錢的：<br/>判斷這個問題值多少</h2>
+      <div class="act-cap reveal">ACT 15 · The Most Valuable Skill</div>
+      <h2 class="h1 reveal d1">The hardest and most valuable ability:<br/>knowing what a problem is worth</h2>
       <div class="ladder reveal d2">
         <div class="ladder-item">
-          <strong>知道值多少，就現在做</strong>
-          我知道這個問題值 500 塊，有人願意付，現在就能解決，那就做。
+          <strong>Know the value, move now</strong>
+          If I know this problem is worth 500, someone is willing to pay, and it can be solved today, then do it.
         </div>
         <div class="ladder-item">
-          <strong>知道時機，先布局再說</strong>
-          我知道現在解決要 1000，下個月 500，後個月 200，那就先談、先建立信任、不把話講死，時機到了再簽。
+          <strong>Know the timing, position first</strong>
+          If solving it now costs 1,000, next month 500, the month after 200, then start the conversation now, build the relationship, keep the door open, and close when the moment is right.
         </div>
       </div>
       <div class="quote-card reveal d3" style="margin-top: 32px;">
-        其他都叫 AI 去做。<br/>
-        你只要知道：什麼問題、誰願意買單、現在值多少。
+        Let AI handle everything else.<br/>
+        All you need to know: what problem, who will pay, and what it is worth right now.
       </div>
     </div>
   </section>
 
-  <!-- ACT 16 帶回家 bg-9 最深收尾 -->
+  <!-- ACT 16 Take It Home bg-9 closing -->
   <section id="act-16" class="slide" data-block data-bg="9">
     <div class="wrap">
-      <div class="act-cap reveal">ACT 16 · 帶回家</div>
-      <h2 class="h1 reveal d1">不是記住什麼，是明天就用</h2>
+      <div class="act-cap reveal">ACT 16 · Take It Home</div>
+      <h2 class="h1 reveal d1">Not something to remember. Something to use tomorrow.</h2>
       <div class="promise-card reveal d2">
-        <p class="promise-q">明天 24 小時內，<br/>你要交給 AI 員工的第一件真實工作，是什麼？</p>
-        <p class="promise-hint">寫下來，才算承諾。</p>
+        <p class="promise-q">Within the next 24 hours,<br/>what is the first real task you will hand to your AI employee?</p>
+        <p class="promise-hint">Write it down. Only then is it a commitment.</p>
       </div>
       <div class="quote-card reveal d3" style="margin-top: 32px; font-size: 26px; padding: 36px 40px;">
-        你怎麼訓員工，就怎麼訓 AI。
+        Train your AI employees the same way you would train any employee.
       </div>
       <div class="footer-bottom reveal d4">
-        江昱德 · AI 員工駕訓班
+        Coach Jiang · AI Employee Training
       </div>
     </div>
   </section>
@@ -1148,13 +1131,13 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
     <div class="section">
       <div class="inner">
         <div>
-          <h2>想把自己從操作員的位置換過來？</h2>
-          <p>我每個月都有免費的線上講座，固定在聊這件事：怎麼把自己從操作員的位置，換到交辦跟設計的位置。從員工框架、隱性知識提煉到工作流設計，一步一步帶你做出自己的 AI 團隊。</p>
+          <h2>Ready to step out of the operator role?</h2>
+          <p>Every month I host free online talks on exactly this: how to move from being the one who operates to the one who assigns and designs. From the employee framework and tacit knowledge distillation to workflow design, I walk you through building your own AI team step by step.</p>
         </div>
         <div class="cta-card">
-          <b>免費線上講座</b>
-          <p>每個月兩場免費講座。</p>
-          <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;text-decoration:none;border-radius:8px;padding:12px 16px;font-weight:900;background:#48b178;color:#fff;">點我加入 Line 社群 ↗</a>
+          <b>Free online talks</b>
+          <p>Two free sessions every month.</p>
+          <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;text-decoration:none;border-radius:8px;padding:12px 16px;font-weight:900;background:#48b178;color:#fff;">Join the LINE Community ↗</a>
         </div>
       </div>
     </div>
@@ -1164,17 +1147,17 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
 
 <footer class="footer">
   <div class="footer-inner">
-    <div class="footer-brand">江江教練 · AI 知識管理</div>
+    <div class="footer-brand">Coach Jiang · AI Knowledge Management</div>
     <div class="footer-links">
-      <a href="../../articles.html">← 回深度文章總站</a>
-      <a href="../../index.html">首頁</a>
-      <a href="../../learn.html">自學資源</a>
-      <a href="../../skills.html">Skills 下載</a>
-      <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">LINE 社群 ↗</a>
+      <a href="../../../articles.html">← Back to Articles</a>
+      <a href="../../../index.html">Home</a>
+      <a href="../../../learn.html">Self-Study Resources</a>
+      <a href="../../../skills.html">Skills</a>
+      <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">LINE Community ↗</a>
       <a href="https://www.threads.com/@jiang_yude_coach" target="_blank" rel="noopener">Threads ↗</a>
-      <a href="https://vocus.cc/salon/Jiang_Coach" target="_blank" rel="noopener">方格子 ↗</a>
+      <a href="https://vocus.cc/salon/Jiang_Coach" target="_blank" rel="noopener">Vocus ↗</a>
     </div>
-    <div class="footer-note">這是一份教學簡報，整理自 AI 員工駕訓班工作坊，供你參考。</div>
+    <div class="footer-note">These are teaching slides from the AI Employee Training workshop, shared here for your reference.</div>
   </div>
 </footer>
 
@@ -1242,17 +1225,17 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
 })();
 </script>
 
-<!-- 點圖放大 -->
+<!-- lightbox -->
 <div class="lightbox" id="lightbox" aria-hidden="true">
-  <span class="lightbox-close" aria-label="關閉">×</span>
-  <img id="lightbox-img" src="" alt="放大檢視">
+  <span class="lightbox-close" aria-label="Close">×</span>
+  <img id="lightbox-img" src="" alt="Enlarged view">
 </div>
 <script>
 (function(){
   var box=document.getElementById('lightbox'),boxImg=document.getElementById('lightbox-img');
   document.querySelectorAll('.hero-figure img,.inline-figure img').forEach(function(img){
     img.addEventListener('click',function(){
-      boxImg.src=img.currentSrc||img.src;boxImg.alt=img.alt||'放大檢視';
+      boxImg.src=img.currentSrc||img.src;boxImg.alt=img.alt||'Enlarged view';
       box.classList.add('open');box.setAttribute('aria-hidden','false');
     });
   });
@@ -1262,11 +1245,11 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
 })();
 </script>
 
-<!-- 官網共用：滑鼠暖光暈 + 導航列漢堡選單 -->
-<script src="../../spotlight.js"></script>
+<!-- shared: spotlight + hamburger menu -->
+<script src="../../../spotlight.js"></script>
 
-<!-- 文章自動互聯（相關文章）：兩支已內建，順序不可顛倒，不用再另外加 -->
-<script src="../../articles-data.js"></script>
-<script src="../../related-render.js"></script>
+<!-- article cross-linking (related articles): these two must load in order -->
+<script src="../../../articles-data.js"></script>
+<script src="../../../related-render.js"></script>
 </body>
 </html>

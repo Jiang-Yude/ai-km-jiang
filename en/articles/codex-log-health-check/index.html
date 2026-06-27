@@ -1,0 +1,496 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="index,follow">
+<title>Codex Crashed? Check logs_2.sqlite First After Reinstalling | Coach Jiang · AI Knowledge Management</title>
+<meta name="description" content="When Codex Desktop won't open, updates don't help, and reinstalling is your last resort, start by checking logs_2.sqlite. This article covers what the log database is, how to handle it safely, how to set up automated health checks, and how to keep your work safe even when tools break.">
+<link rel="canonical" href="https://ai-km-jiang.vercel.app/en/articles/codex-log-health-check/">
+<link rel="alternate" hreflang="zh-Hant" href="https://ai-km-jiang.vercel.app/articles/codex-log-health-check/">
+<link rel="alternate" hreflang="en" href="https://ai-km-jiang.vercel.app/en/articles/codex-log-health-check/">
+<link rel="alternate" hreflang="x-default" href="https://ai-km-jiang.vercel.app/articles/codex-log-health-check/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Codex Crashed? Check logs_2.sqlite First After Reinstalling | Coach Jiang">
+<meta property="og:image" content="https://ai-km-jiang.vercel.app/images/articles/codex-log-health-check-cover-image2.jpg">
+<meta property="og:description" content="A real Codex crash case: check logs_2.sqlite after reinstalling, then set up an automated log health check routine.">
+<meta property="og:url" content="https://ai-km-jiang.vercel.app/en/articles/codex-log-health-check/">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Coach Jiang · AI Knowledge Management">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Codex Crashed? Check logs_2.sqlite First After Reinstalling | Coach Jiang">
+<meta name="twitter:image" content="https://ai-km-jiang.vercel.app/images/articles/codex-log-health-check-cover-image2.jpg">
+<meta name="twitter:description" content="A real Codex crash case: check logs_2.sqlite after reinstalling, then set up an automated log health check routine.">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Codex Crashed? Check logs_2.sqlite First After Reinstalling","description":"When Codex Desktop won't open, updates don't help, and reinstalling is your last resort, start by checking logs_2.sqlite. This article covers what the log database is, how to handle it safely, how to set up automated health checks, and how to keep your work safe even when tools break.","author":{"@type":"Person","name":"Jiang Yude","alternateName":"Coach Jiang","jobTitle":"Tacit Knowledge Distiller and AI Application Planner"},"isPartOf":{"@type":"WebSite","name":"Coach Jiang · AI Knowledge Management","url":"https://ai-km-jiang.vercel.app/"},"image":"https://ai-km-jiang.vercel.app/images/articles/codex-log-health-check-cover-image2.jpg","datePublished":"2026-06-23","dateModified":"2026-06-23","inLanguage":"en","url":"https://ai-km-jiang.vercel.app/en/articles/codex-log-health-check/"}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{--ink:#1a1612;--paper:#fefcf8;--muted:#6a635a;--line:#d8cdb8;--green:#5f7553;--blue:#5689b8;--orange:#e85a4f;--soft:#faf5ec;--dark:#2a2018;--shadow:0 18px 45px rgba(107,74,42,.14);--sp-shadow:hsla(35,50%,60%,.15);--sp-shadow-edge:hsla(35,50%,68%,.03);--sp-radius:400px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC","Segoe UI",sans-serif}
+a{color:inherit}
+/* 官網共用導航列 nav.top（與首頁/文章總站同一條） */
+nav.top{position:sticky;top:0;background:rgba(254,252,248,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid #d8cdb8;z-index:100}
+nav.top .container{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:24px;padding:14px 32px}
+.nav-brand-img{justify-self:start;display:flex;align-items:center;text-decoration:none;flex-shrink:0;transition:opacity .2s}
+.nav-brand-img:hover{opacity:.8}.nav-brand-img img{height:40px;width:auto;display:block}
+nav.top ul.nav-menu{justify-self:end;display:flex;gap:22px;list-style:none;margin:0;padding:0;font-size:.95rem;white-space:nowrap}
+nav.top ul.nav-menu a{color:#3a342d;text-decoration:none;transition:color .2s;font-weight:500;white-space:nowrap}
+nav.top ul.nav-menu a:hover{color:#1a1612}nav.top ul.nav-menu a.active{color:#1a1612;font-weight:700}
+.nav-toggle{display:none;background:none;border:none;padding:6px;cursor:pointer;width:36px;height:36px;position:relative}
+.nav-toggle span{display:block;position:absolute;left:8px;right:8px;height:2px;background:#1a1612;border-radius:2px;transition:transform .25s,opacity .25s,top .25s}
+.nav-toggle span:nth-child(1){top:11px}.nav-toggle span:nth-child(2){top:17px}.nav-toggle span:nth-child(3){top:23px}
+.nav-toggle.open span:nth-child(1){top:17px;transform:rotate(45deg)}.nav-toggle.open span:nth-child(2){opacity:0}.nav-toggle.open span:nth-child(3){top:17px;transform:rotate(-45deg)}
+@media(max-width:860px){
+ nav.top .container{grid-template-columns:auto 1fr auto;padding:10px 16px;gap:12px}
+ .nav-brand-img img{height:32px}
+ .nav-toggle{display:block;justify-self:end}
+ nav.top ul.nav-menu{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(254,252,248,.98);backdrop-filter:blur(14px);border-bottom:1px solid #d8cdb8;flex-direction:column;gap:0;padding:8px 0;box-shadow:0 10px 24px rgba(107,74,42,.08)}
+ nav.top ul.nav-menu.open{display:flex}
+ nav.top ul.nav-menu li{border-bottom:1px solid #e8dfc9}
+ nav.top ul.nav-menu li:last-child{border-bottom:none}
+ nav.top ul.nav-menu a{display:block;padding:14px 20px;font-size:1.06rem}
+}
+/* 滑鼠暖光暈（與首頁同一支 spotlight.js） */
+body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradient(var(--sp-radius) circle at var(--mx,50%) var(--my,50%),var(--sp-shadow) 0%,var(--sp-shadow-edge) 45%,transparent 75%);pointer-events:none;z-index:9999;mix-blend-mode:multiply;transition:background .06s linear}
+.hero{position:relative;overflow:hidden;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:72px;padding:96px clamp(20px,6vw,88px) 80px;background:linear-gradient(180deg,#fffcf0 0%,#f9e9d2 100%);color:#1a1612;border-bottom:1px solid #d8cdb8}
+.hero .wc{position:absolute;border-radius:50%;filter:blur(60px);pointer-events:none;z-index:0}
+.hero .wc1{width:420px;height:360px;top:-120px;right:-80px;background:#e8884b;opacity:.15}
+.hero .wc2{width:360px;height:300px;bottom:-110px;left:-70px;background:#5f7553;opacity:.13}
+.hero .wc3{width:280px;height:260px;top:34%;left:14%;background:#a08144;opacity:.10}
+.hero>div{flex:none;width:860px;max-width:100%;position:relative;z-index:2}
+.hero-figure{margin:0;width:420px;flex:none;position:relative;z-index:2}
+.hero-figure img{display:block;width:100%;border-radius:16px;border:1px solid #d8cdb8;box-shadow:0 18px 45px rgba(107,74,42,.16)}
+.hero-figure figcaption{margin-top:10px;font-size:14px;line-height:1.6;color:#6a635a}
+.kicker{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.55rem;color:#7a5c3a;font-weight:500}
+.hero h1{max-width:none;margin:16px 0 18px;font-size:clamp(36px,6vw,72px);line-height:1.08;overflow-wrap:anywhere}
+.hero p{max-width:none;font-size:clamp(18px,2vw,23px);line-height:1.62;color:#3a342d}
+.section{padding:54px clamp(20px,6vw,88px);border-top:1px solid var(--line)}
+.inner{width:min(1000px,100%);margin:0 auto}
+.section h2{font-size:clamp(26px,4.2vw,48px);line-height:1.12;margin:0 0 18px}
+.section h3{font-size:clamp(21px,3vw,30px);line-height:1.2;margin:30px 0 12px}
+.lead{font-size:clamp(18px,1.6vw,22px);line-height:1.7;color:#3a342d;max-width:900px}
+.section p{font-size:18px;line-height:1.74;color:#3a342d}.section p+p{margin-top:14px}
+.section ul,.section ol{padding-left:1.4em;font-size:18px;line-height:1.74;color:#3a342d}.section li{margin-bottom:8px}
+.meaning{margin:22px 0;padding:16px 18px;border-left:5px solid var(--blue);background:rgba(86,137,184,.12);border-radius:6px;line-height:1.7;font-size:19px}
+.meaning b{display:block;color:var(--blue);margin-bottom:4px}
+.caveat{margin:0 0 8px;padding:16px 18px;border-left:5px solid var(--orange);background:rgba(232,90,79,.1);border-radius:6px;line-height:1.7;font-size:18px;color:#3a342d}
+.caveat b{display:block;color:var(--orange);margin-bottom:4px}
+.infocard{background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px 24px 22px;box-shadow:0 8px 22px rgba(107,74,42,.08);margin-top:8px}
+.infocard-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.info-item{padding:18px 14px 0}
+.info-item b{display:block;font-size:14px;font-weight:900;letter-spacing:.04em;margin-bottom:7px;text-transform:uppercase}
+.info-item:nth-child(1) b{color:var(--green)}.info-item:nth-child(2) b{color:var(--orange)}.info-item:nth-child(3) b{color:var(--blue)}
+.info-item p{margin:0;font-size:17px;line-height:1.6;color:#3a342d}
+.tagrow{display:flex;flex-wrap:wrap;gap:7px;margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
+.tag{font-size:14px;color:var(--muted);background:var(--soft);border:1px solid var(--line);border-radius:999px;padding:4px 11px}
+.duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:24px}
+.duo.stack{grid-template-columns:1fr}
+.duo .card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:22px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.duo .card.a{border-color:var(--orange)}.duo .card.b{border-color:var(--green);box-shadow:0 8px 24px rgba(95,117,83,.16)}
+.duo .card small{display:block;font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.04em;margin-bottom:9px}
+.duo .card.a small{color:var(--orange)}.duo .card.b small{color:var(--green)}
+.duo .card b{display:block;font-size:22px;line-height:1.3;margin-bottom:12px}.duo .card.a b{color:#c0512f}.duo .card.b b{color:#4a7a59}
+.duo .card p{margin:0;color:#3a342d;line-height:1.75;font-size:18px}
+.cta-band{background:#e6f0e5;color:#3a342d}.cta-band .section{border-top:none}
+.cta-band .inner{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(260px,.85fr);gap:26px;align-items:start}
+.cta-band h2{font-size:clamp(26px,4vw,44px);margin:0 0 16px}.cta-band p,.cta-band .lead{color:rgba(58,52,45,.92);font-size:18px;line-height:1.72}
+.cta-card{border:1px solid #cfe0d2;background:#fbfdfa;border-radius:8px;padding:22px}
+.cta-card b{display:block;color:#48b178;margin-bottom:10px;font-size:18px}.cta-card p{margin:0 0 14px}
+.footer{padding:30px clamp(20px,6vw,88px);font-size:14px;color:var(--muted);background:#fff;border-top:1px solid var(--line)}
+.footer-inner{width:min(1000px,100%);margin:0 auto}
+.footer-links{display:flex;flex-wrap:wrap;gap:6px 12px;margin-bottom:14px}.footer-links a{color:var(--blue);font-weight:900;text-decoration:none;font-size:14px}
+.footer-brand{font-weight:900;font-size:15px;margin-bottom:10px}.footer-note{font-size:13px;line-height:1.6}
+/* 文章專用元件 */
+.geo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:24px}
+.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:24px}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:24px}
+.card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:22px;box-shadow:0 8px 24px rgba(107,74,42,.08)}
+.card b{display:block;font-size:20px;margin-bottom:10px;color:var(--green)}
+.card p{margin:0;font-size:16px;line-height:1.66}
+.card ul{margin:0;font-size:16px;line-height:1.66;padding-left:1.2em}
+.card li{margin-bottom:6px}
+.card.warn{border-color:rgba(232,90,79,.48)}.card.warn b{color:var(--orange)}
+.card.good{border-color:rgba(95,117,83,.42);box-shadow:0 8px 24px rgba(95,117,83,.13)}
+.note{margin:22px 0;padding:16px 18px;border-left:5px solid var(--blue);background:rgba(86,137,184,.12);border-radius:6px;line-height:1.72;font-size:18px;color:#3a342d}
+.note b{display:block;color:var(--blue);margin-bottom:4px}
+.note.danger{border-left-color:var(--orange);background:rgba(232,90,79,.1)}
+.note.danger b{color:var(--orange)}
+.codeblock{background:var(--dark);color:#f3ead9;border-radius:8px;padding:18px 20px;font:500 14px/1.65 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;overflow-x:auto;white-space:pre-wrap;margin:20px 0;box-shadow:0 8px 22px rgba(107,74,42,.12)}
+.timeline{display:grid;gap:12px;margin-top:24px}
+.row{display:grid;grid-template-columns:110px minmax(0,1fr);gap:16px;align-items:start;background:#fff;border:1px solid var(--line);border-radius:10px;padding:16px 18px}
+.row strong{color:var(--green);font-size:16px}
+.row p{margin:0;font-size:16px}
+/* 圖片元件 */
+.inline-figure{margin:30px auto 8px;max-width:820px}
+.inline-figure.wide{max-width:1000px}
+.inline-figure img{display:block;width:100%;border-radius:14px;border:1px solid var(--line);box-shadow:var(--shadow);background:#fff}
+.inline-figure figcaption{font-size:14px;line-height:1.6;color:var(--muted);margin-top:10px}
+.figure-pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin:30px 0 8px}
+.figure-pair figure{margin:0}
+.figure-pair img{display:block;width:100%;border-radius:14px;border:1px solid var(--line);box-shadow:var(--shadow);background:#fff}
+.figure-pair figcaption{font-size:13px;line-height:1.58;color:var(--muted);margin-top:8px}
+/* 點圖放大 lightbox */
+.hero-figure img,.inline-figure img,.figure-pair img{cursor:zoom-in}
+.lightbox{position:fixed;inset:0;z-index:10000;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(12,10,8,.92);cursor:zoom-out;backdrop-filter:blur(4px)}
+.lightbox.open{display:flex}
+.lightbox img{max-width:96vw;max-height:92vh;border-radius:10px;box-shadow:0 24px 60px rgba(0,0,0,.5)}
+.lightbox-close{position:fixed;top:18px;right:24px;color:#fff;font-size:34px;line-height:1;font-weight:700;cursor:pointer;opacity:.85}
+@media(max-width:820px){.infocard-grid{grid-template-columns:1fr}.duo{grid-template-columns:1fr}.grid3,.grid2,.geo,.figure-pair{grid-template-columns:1fr}.cta-band .inner{grid-template-columns:1fr}.section{padding:40px 20px}.hero{min-height:52vh;flex-direction:column;justify-content:flex-start;align-items:flex-start;gap:24px}.hero>div{width:100%}.hero-figure{width:100%;max-width:560px}.row{grid-template-columns:1fr}}
+@media(max-width:820px){html,body{overflow-x:hidden}.hero h1{word-break:break-word}}
+</style>
+<!-- tracking:vercel-analytics -->
+<script defer src="/_vercel/insights/script.js"></script>
+<script defer src="/_vercel/speed-insights/script.js"></script>
+</head>
+<body class="spotlight">
+<nav class="top">
+  <div class="container">
+    <a class="nav-brand-img" href="../../../index.html"><img src="../../../images/footer-signature.png" alt="Coach Jiang | Jiang Yude"></a>
+    <button class="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
+    <ul class="nav-menu">
+      <li><a href="../../../index.html">Home</a></li>
+      <li><a href="../../../offers.html">Paid Courses</a></li>
+      <li><a href="../../../courses.html">Free Talks</a></li>
+      <li><a href="../../../invited-talks.html">Invited Talks</a></li>
+      <li><a href="../../../articles.html" class="active">Articles</a></li>
+      <li><a href="../../../skills.html">Skills</a></li>
+      <li><a href="../../../cases.html">Services</a></li>
+      <li class="lang-switch"><a href="../../../articles/codex-log-health-check/">中文</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="wc wc1"></div>
+  <div class="wc wc2"></div>
+  <div class="wc wc3"></div>
+  <div>
+    <div class="kicker">Codex Desktop / log health check / Mika tutorial</div>
+    <h1>Codex Crashed? Check logs_2.sqlite First After Reinstalling</h1>
+    <p>A student recently found their Codex Desktop completely unresponsive. Updating to the latest version didn't fix it. A full reinstall was the only way back. Reinstalling can restore the app, but local tasks and work context may disappear along the way. This article walks through why logs_2.sqlite should be your first stop after a reinstall, and how to set up a regular log health check going forward.</p>
+  </div>
+  <figure class="hero-figure">
+    <img src="../../../images/articles/codex-log-health-check-cover-image2.jpg" alt="Mika the detective holding a magnifying glass, inspecting a Codex crash and the logs_2.sqlite database" loading="lazy">
+    <figcaption>Cover illustration in Mika tutorial style. The focus of this article is a safe health-check and backup workflow, not deleting logs arbitrarily.</figcaption>
+  </figure>
+</section>
+
+<main>
+  <section class="section" id="intro">
+    <div class="inner">
+      <h2>What This Article Covers</h2>
+      <p class="lead">Using a real crash case from a student as the starting point, this article addresses four things: what the local log database logs_2.sqlite actually is, how to handle it safely when Codex won't open, how to set up an automated health check that runs every three to five days, and how to make sure your work survives even when the tool breaks down. The technical references are drawn from related issues and source code in the OpenAI Codex GitHub repo, not from any official announcement.</p>
+      <div class="geo">
+        <div class="card">
+          <b>Who This Is For</b>
+          <ul>
+            <li>You rely on Codex Desktop every day, and one day it simply refuses to open no matter how many times you try.</li>
+            <li>You've updated to the latest version or even reinstalled, and you're still worried the same thing could happen again.</li>
+            <li>You've heard of logs_2.sqlite, WAL, and VACUUM but aren't sure whether to touch them or whether doing so could make things worse.</li>
+            <li>Your biggest fear is that a broken tool takes your recent tasks and work context down with it.</li>
+          </ul>
+        </div>
+        <div class="card good">
+          <b>What You'll Take Away</b>
+          <ul>
+            <li>A clear understanding of what logs_2.sqlite is and what it isn't, and why it can drag down Codex's startup.</li>
+            <li>A conservative handling sequence for crashes: back up first, inspect first, avoid deleting unless necessary.</li>
+            <li>A health-check automation prompt you can paste directly into Codex, with inspection-only mode as the default.</li>
+            <li>A work habit that keeps your knowledge assets safe even when tools fail.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="case">
+    <div class="inner">
+      <h2>What Actually Happened</h2>
+      <p class="lead">The student's Codex Desktop kept refusing to open. The screen displayed an error with <code>signal=SIGKILL</code>, <code>config.toml</code>, and suggestions to update Codex or reload. Updating to the latest version still didn't resolve it. A full reinstall was what finally brought it back.</p>
+      <div class="figure-pair">
+        <figure>
+          <img src="../../../images/articles/codex-error-sigkill-config.jpg" alt="Codex error screen showing SIGKILL and config warnings" loading="lazy">
+          <figcaption>Crash screenshot one: the error message includes SIGKILL and a config warning. When you see this kind of screen, checking the local log database is worth doing alongside hitting the update button.</figcaption>
+        </figure>
+        <figure>
+          <img src="../../../images/articles/codex-error-latest-version-mcp.jpg" alt="Codex showing an error even after updating to the latest version" loading="lazy">
+          <figcaption>Crash screenshot two: even after updating to the latest version, existing local state issues don't necessarily go away.</figcaption>
+        </figure>
+      </div>
+      <figure class="inline-figure">
+        <img src="../../../images/articles/codex-log-health-check-cover-real-crash.jpg" alt="Enlarged view of the Codex crash screen with SIGKILL error and a breakdown of the recommended handling steps" loading="lazy">
+        <figcaption>An annotated view of the same case: the top half shows the actual crash screen, the bottom half outlines the handling steps covered in this article, ending with the key takeaway: logs can be cleared, but your tasks and work belong in your own files.</figcaption>
+      </figure>
+      <div class="note danger">
+        <b>Reinstalling Is a Starting Point, Not an Ending One</b>
+        A reinstall can bring the app back online, but it may also wipe local tasks, conversation state, and your current work context. The actual impact depends on the version, installation method, and whether your local data folder was cleared. The better sequence is to back up first, inspect first, and move only the log database if that's enough. If you've already reinstalled, the first thing to do is set up a health check so the problem doesn't quietly grow back.
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="scope">
+    <div class="inner">
+      <h2>Getting the Framing Right</h2>
+      <p class="lead">It's easy to describe this situation as "OpenAI officially says Codex has this bug." The accurate framing requires more caution.</p>
+      <div class="grid2">
+        <div class="card good">
+          <b>Where the Evidence Comes From</b>
+          <p>Multiple related issues in the OpenAI Codex GitHub repo point to risks such as an oversized <code>logs_2.sqlite</code>, a corrupt log database, a WAL file that keeps growing, or high-volume TRACE log writes. These are community reports and maintainer discussions, not official announcements.</p>
+        </div>
+        <div class="card warn">
+          <b>How to Interpret It</b>
+          <p><code>logs_2.sqlite</code> is one plausible cause worth checking first. It is not the single definitive answer for every Codex crash. There may be other causes at play. This article focuses on the part that leaves a traceable trail and can be safely inspected on your own.</p>
+        </div>
+      </div>
+      <p>Getting the framing right prevents the response from going off course. The goal is to "check this high-probability, self-inspectable area first," not to conclude that "the log database is always to blame." Links to the full issues are in the references section at the end.</p>
+    </div>
+  </section>
+
+  <section class="section" id="what">
+    <div class="inner">
+      <h2>What Does logs_2.sqlite Actually Store?</h2>
+      <p class="lead"><code>logs_2.sqlite</code> is the local SQLite log database used by Codex Desktop. Think of it as an operational record: diagnostic data the program writes as it runs. It is not your work log, not a Skills file, not a memory store, and not an output folder.</p>
+      <div class="grid3">
+        <div class="card good">
+          <b>What Gets Recorded</b>
+          <p>Timestamps, log levels, targets, error messages, tracing spans, connection and tool execution states, and other diagnostic data the program needs to retain while running.</p>
+        </div>
+        <div class="card">
+          <b>What It Should Not Be Used For</b>
+          <p>It is not a place for your own notes, and it is not suitable as a long-term storage location for finished work. Task conclusions, deliverables, and Skills should be saved as your own files.</p>
+        </div>
+        <div class="card warn">
+          <b>Do Not Share the Raw File</b>
+          <p>The log may contain local paths, error fragments, tool call summaries, or information about your working environment. Cleaning and backing it up is fine. Sending the raw database around is not recommended.</p>
+        </div>
+      </div>
+      <p>Looking through the repo, several related reports emerged: some users found that moving <code>logs_2.sqlite*</code> out of the way caused Codex to rebuild the log database from scratch. Others reported issues caused by WAL files, TRACE-level logs, or database corruption. This suggests the file has a life of its own and is worth treating as a local database that can grow over time, not something you can safely ignore indefinitely.</p>
+    </div>
+  </section>
+
+  <section class="section" id="fix">
+    <div class="inner">
+      <h2>What to Do When Things Break</h2>
+      <p class="lead">Two paths, depending on your situation. If you're comfortable with terminal commands or have Claude Code installed, take Path A, the conservative full sequence. If you're newer to this, Path B's three steps are enough.</p>
+      <h3>Path A: You're Comfortable with Commands, or You Have Claude Code</h3>
+      <p>If you can work with the terminal or have Claude Code available, ask Claude Code to follow the conservative sequence below. The goal is to preserve the current state first, then let Codex rebuild the log state it can rebuild. Every step follows the same principle: back up before touching anything.</p>
+      <div class="timeline">
+        <div class="row"><strong>Step 1</strong><p>Fully close Codex before doing anything. Touching the database while it's still writing is risky.</p></div>
+        <div class="row"><strong>Step 2</strong><p>Back up <code>~/.codex/logs_2.sqlite</code>, <code>logs_2.sqlite-wal</code>, and <code>logs_2.sqlite-shm</code>. Keep copies of all three before proceeding.</p></div>
+        <div class="row"><strong>Step 3</strong><p>Check the sizes of the main file, WAL, and SHM, then run a SQLite <code>quick_check</code>. If the database is healthy and not oversized, just report the status. Do not force a cleanup.</p></div>
+        <div class="row"><strong>Step 4</strong><p>If the main file is oversized, the WAL is oversized, the row count is abnormal, or <code>quick_check</code> fails, confirm that a full backup exists first. Then retain only the last 48 hours of logs and run checkpoint, VACUUM, and PRAGMA optimize.</p></div>
+        <div class="row"><strong>Step 5</strong><p>If safe cleanup still isn't possible, move <code>logs_2.sqlite*</code> to a backup folder and let Codex rebuild the log database. Back up before this step too. Do not delete the files directly.</p></div>
+        <div class="row"><strong>Step 6</strong><p>If Codex still won't start after all of the above, then consider uninstalling and reinstalling. After reinstalling, set up the automated health check described in the next section immediately.</p></div>
+      </div>
+      <div class="note danger">
+        <b>Stop Immediately If You See Any of These</b>
+        If you encounter "database locked," "Operation not permitted," or any SQLite error, stop and do not force-delete files. Also, do not delete the WAL while Codex is still running. Issues in the repo warn that a running process may still hold old file descriptors, and force-deleting or truncating a live WAL can cause new crashes or corrupt the database further.
+      </div>
+
+      <h3>Path B: You're New to This, Follow These Three Steps</h3>
+      <p>If the commands feel overwhelming, skip them. Three steps is all you need to remember.</p>
+      <div class="timeline">
+        <div class="row"><strong>Step 1</strong><p>Reinstall Codex directly. Accept that local tasks may be lost in the process. In this situation, getting Codex back online is the priority.</p></div>
+        <div class="row"><strong>Step 2</strong><p>Once it restarts, don't rush into a new task. Opening a new task immediately means logs start accumulating again, and the database may overflow quickly and crash again. The very first thing after a successful restart is to clear the logs.</p></div>
+        <div class="row"><strong>Step 3</strong><p>After clearing the logs, set up the automated health check described in the next section. It will run regular inspections going forward so you're unlikely to need a reinstall again.</p></div>
+      </div>
+      <div class="note">
+        <b>How to Choose Between the Two Paths</b>
+        If you're comfortable with commands or have Claude Code on hand, take Path A. You'll be able to preserve more of your current state. If you're stuck and don't want to research the commands, take Path B. Reinstall first to get the tool back, then clear the logs and set up the automated check to prevent a recurrence.
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="inner">
+      <figure class="inline-figure wide">
+        <img src="../../../images/articles/codex-log-health-check-summary-wide.jpg" alt="One-page summary of the Codex log health check workflow: six steps on the left, actual crash screenshots and key takeaways on the right" loading="lazy">
+        <figcaption>The full workflow at a glance: the left side shows six steps from closing Codex through backup, inspection, and setting up routine checks. The right side closes with the core message: logs can be cleared, but your tasks and work belong in your own files.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="section" id="automation">
+    <div class="inner">
+      <h2>Preventing the Problem: Let Codex Run Its Own Health Check</h2>
+      <p class="lead">Waiting for a crash to act is more expensive than running regular checks. If you use Codex every day, running the check every three to five days is a reasonable rhythm. Personally, I run it Tuesday and Friday mornings. If you use Codex occasionally, once a week is enough.</p>
+      <div class="grid2">
+        <div class="card good">
+          <b>Heavy Daily Use</b>
+          <p>Check every three to five days. My personal preference is Tuesday and Friday. Suggested thresholds for triggering maintenance: main file over 300MB, WAL over 100MB, row count over 120,000, or a failed quick_check.</p>
+        </div>
+        <div class="card">
+          <b>Occasional Use</b>
+          <p>Once a week is sufficient. The goal is consistent inspection, not daily cleaning. When an issue is found, confirm the backup exists before taking any action.</p>
+        </div>
+      </div>
+      <div class="note">
+        <b>The Safety Boundary for Automation</b>
+        The automated routine defaults to inspect-only mode. It reports, it does not clean. When a maintenance threshold is reached, it must stop, output a "maintenance handoff prompt," and remind you to fully close Codex Desktop first. Only after Codex is closed should you use that handoff prompt to handle the WAL and run VACUUM. Never touch a log database that is actively being written to.
+      </div>
+      <h3>Open a New Codex Conversation and Paste This Prompt</h3>
+      <p>The safety boundaries above are baked into the prompt: inspect only, no cleanup unless triggered, report and produce a handoff prompt when thresholds are met, stop immediately when uncertain. Before pasting, replace the username in the paths with your own, or ask Codex to detect and substitute the current machine's paths automatically.</p>
+      <div class="codeblock">Please help me set up a Codex log health check automation.
+
+Goal:
+Run every 3 to 5 days (Taiwan time) to inspect the health of the local Codex Desktop log database.
+Default mode: inspect and report only. Do not run maintenance automatically.
+
+Files to check:
+/Users/your-username/.codex/logs_2.sqlite
+/Users/your-username/.codex/logs_2.sqlite-wal
+/Users/your-username/.codex/logs_2.sqlite-shm
+
+Restrictions:
+Do not read or output the full log body.
+Do not touch sessions, memories, skills, the main knowledge base, or any conversation records.
+Report only: file sizes, row count, time range, ERROR count from the past 24 hours, quick_check result, and whether maintenance is needed.
+
+Maintenance thresholds:
+If quick_check is not "ok", or the main file exceeds 300MB, or the WAL exceeds 100MB, or the row count exceeds 120,000: report that maintenance is needed. Do not clean immediately. Do not run VACUUM.
+
+When maintenance is needed:
+1. Report the trigger reason.
+2. Report current size, row count, time range, and ERROR count.
+3. Output a "maintenance handoff prompt" reminding the user to fully close Codex Desktop first.
+4. Stop this health check run. Do not proceed with maintenance.
+
+The maintenance handoff prompt must include:
+1. Create the backup folder:
+   /Users/your-username/.codex/sqlite/log-maintenance/
+2. Back up logs_2.sqlite, logs_2.sqlite-wal, and logs_2.sqlite-shm to:
+   /Users/your-username/.codex/sqlite/log-maintenance/
+   Backup filenames must include YYYY-MM-DD-HHMM.
+3. Confirm backup files exist and are larger than 0 bytes.
+4. Retain only the last 48 hours of logs.
+5. Run wal_checkpoint(TRUNCATE).
+6. Run VACUUM.
+7. Run PRAGMA optimize.
+8. Run quick_check again.
+9. Report before/after size, retained row count, retained time range, backup path, and schedule rule.
+
+Safety boundary:
+If you encounter "database locked", "Operation not permitted", any SQLite error, or anything uncertain: stop immediately. Do not force-delete files. Report what blocked you.</div>
+      <div class="note">
+        <b>A Note from Mika</b>
+        If you don't know your username, just ask Codex to detect it. It will substitute the correct path for <code>/Users/your-username/</code> automatically. Please don't modify hidden folders on your own, and don't delete the entire <code>.codex</code> folder.
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="keep">
+    <div class="inner">
+      <h2>How to Keep Your Work Safe When Tools Break</h2>
+      <p class="lead">The real lesson from this incident is not to treat Codex's local state as your only storage location. Tools get updated, break, and get reinstalled. Your knowledge assets need to be protected by your own habits. Here are the three things I rely on.</p>
+      <div class="grid3">
+        <div class="card good">
+          <b>Write a Work Log After Each Task</b>
+          <p>When a task wraps up, write down what you did, where the output lives, what problems came up, and what the next step is. Save it as your own work log.</p>
+        </div>
+        <div class="card good">
+          <b>Save Outputs to Your Own Folders</b>
+          <p>Articles, images, slides, code, prompts, reports: all of these should be saved as files in a location you can find. Don't leave them only inside a conversation.</p>
+        </div>
+        <div class="card good">
+          <b>Turn Good Workflows into Skills</b>
+          <p>If a process is worth repeating, write it up as a Skills file or SOP. When Codex breaks, Claude, another agent, or your next machine can still read and pick it up.</p>
+        </div>
+      </div>
+      <p>With these three habits in place, if Codex ever goes down completely, the situation is just a tool switching problem. Your work context is still intact. You're not starting from zero.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="inner">
+      <h2>Thirty-Second Recap</h2>
+      <ul>
+        <li>When Codex Desktop won't open, updates don't help, and a reinstall is the last resort: check <code>logs_2.sqlite</code> first after reinstalling.</li>
+        <li>The evidence comes from related issues and source code in the OpenAI Codex GitHub repo. It is one plausible cause worth checking first, not the only possible explanation for every crash.</li>
+        <li>Two paths: if you're comfortable with commands or have Claude Code, use the conservative sequence (close Codex, back up all three log files, run quick_check, don't force cleanup when healthy, only do maintenance after confirming backups, stop immediately on lock or permission errors). If you're newer, reinstall, clear the logs before starting any new task, then set up the automated check.</li>
+        <li>Set up an automated health check to run every three to five days, in inspect-only mode by default. When thresholds are reached, output a maintenance handoff prompt and wait for Codex to be closed before proceeding.</li>
+        <li>Write a work log after each task. Save outputs to your own files. Turn reliable workflows into Skills.</li>
+      </ul>
+      <div class="note">
+        <b>A Note on Perspective</b>
+        Knowing how to clear logs and set up a health check is basic maintenance, not an advanced skill. There are plenty of people in this community who understand SQLite far better than I do. What actually compounds over time is the habit of keeping your own data: task context, outputs, and workflows in your own hands. When a tool breaks, it's just a tool breaking. Your work doesn't go down with it.
+      </div>
+    </div>
+  </section>
+
+  <section class="section sources" id="source">
+    <div class="inner">
+      <h2>References: Issues and Source Code</h2>
+      <p class="lead">Everything below comes from the OpenAI Codex GitHub repo, not from any official OpenAI announcement. These issues point to risks including an oversized log SQLite database, WAL anomalies, a corrupt log database, or high-volume TRACE log writes, all of which support the judgment that <code>logs_2.sqlite</code> is worth checking first.</p>
+      <ul>
+        <li><a href="https://github.com/openai/codex/issues/27741" target="_blank" rel="noopener">openai/codex issue #27741</a>: Reports Codex Desktop failing to start due to a large <code>logs_2.sqlite</code>; moving the log database out allowed it to be rebuilt.</li>
+        <li><a href="https://github.com/openai/codex/issues/24001" target="_blank" rel="noopener">openai/codex issue #24001</a>: Reports a corrupt <code>logs_2.sqlite</code> causing issues; renaming the log database restored functionality.</li>
+        <li><a href="https://github.com/openai/codex/issues/29463" target="_blank" rel="noopener">openai/codex issue #29463</a>: Reports high-volume TRACE WebSocket logs being written into <code>logs_2.sqlite</code>.</li>
+        <li><a href="https://github.com/openai/codex/issues/28997" target="_blank" rel="noopener">openai/codex issue #28997</a>: Discusses WAL growth and the risk of deleting a live WAL file directly.</li>
+        <li><a href="https://github.com/openai/codex/blob/main/codex-rs/core/src/config/mod.rs" target="_blank" rel="noopener">Codex source code: config/mod.rs</a>: Shows the local path conventions for Codex home, sqlite home, and log directory.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="cta-band">
+    <div class="section">
+      <div class="inner">
+        <div>
+          <h2>The One Line That Matters</h2>
+          <p>Logs can be cleared. Your tasks and work belong in your own files. Build the log health check, the automated inspection, the work log habit, and the Skills practice. When a tool breaks, it's just a tool breaking. Your work context stays with you.</p>
+          <div class="meaning"><b>Next Step</b>Open a new Codex conversation and paste the automation prompt above. After it runs, confirm that it reports file sizes, the quick_check result, whether maintenance thresholds were reached, and the schedule rule. If maintenance is needed, let it produce the handoff prompt first, then close Codex before acting on it. Do not clean inside the health check automation itself.</div>
+        </div>
+        <div class="cta-card">
+          <b>Free Online Talks</b>
+          <p>Two free talks every month.</p>
+          <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;text-decoration:none;border-radius:8px;padding:12px 16px;font-weight:900;background:#48b178;color:#fff;">Join the LINE Community ↗</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">Coach Jiang · AI Knowledge Management</div>
+    <div class="footer-links">
+      <a href="../../../articles.html">← Back to Articles</a>
+      <a href="../../../index.html">Home</a>
+      <a href="../../../learn.html">Self-Study Resources</a>
+      <a href="../../../skills.html">Skills</a>
+      <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">LINE Community ↗</a>
+      <a href="https://www.threads.com/@jiang_yude_coach" target="_blank" rel="noopener">Threads ↗</a>
+      <a href="https://vocus.cc/salon/Jiang_Coach" target="_blank" rel="noopener">Vocus ↗</a>
+    </div>
+    <div class="footer-note">A Codex Desktop log health check tutorial based on a real crash case. Technical references are drawn from issue reports and source code in the OpenAI Codex GitHub repo, not from any official announcement.</div>
+  </div>
+</footer>
+
+<!-- 點圖放大 -->
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <span class="lightbox-close" aria-label="Close">×</span>
+  <img id="lightbox-img" src="" alt="Enlarged view">
+</div>
+<script>
+(function(){
+  var box=document.getElementById('lightbox'),boxImg=document.getElementById('lightbox-img');
+  document.querySelectorAll('.hero-figure img,.inline-figure img,.figure-pair img').forEach(function(img){
+    img.addEventListener('click',function(){
+      boxImg.src=img.currentSrc||img.src;boxImg.alt=img.alt||'Enlarged view';
+      box.classList.add('open');box.setAttribute('aria-hidden','false');
+    });
+  });
+  function close(){box.classList.remove('open');box.setAttribute('aria-hidden','true');boxImg.src='';}
+  box.addEventListener('click',close);
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
+})();
+</script>
+
+<!-- 官網共用：滑鼠暖光暈 + 導航列漢堡選單 -->
+<script src="../../../spotlight.js"></script>
+
+<!-- 文章自動互聯（相關文章）：兩支已內建，順序不可顛倒，不用再另外加 -->
+<script src="../../../articles-data.js"></script>
+<script src="../../../related-render.js"></script>
+</body>
+</html>

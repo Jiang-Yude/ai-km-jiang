@@ -1,0 +1,409 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="index,follow">
+<title>My Agent-Powered Meeting Workflow: Seven Steps to Turn Every Meeting into a Knowledge Asset | Coach Jiang · AI Knowledge Management</title>
+<meta name="description" content="A meeting transcript can run tens of thousands of words. Just reading it is exhausting, let alone distilling it into something useful. This article lays out my full seven-step workflow: speaker diarization, adding on-the-ground observations, a one-line trigger, tiered cleanup, a post-meeting strategy report, a draft deliverable, and a Naval-plus-Elon-Musk lens to judge whether the meeting was worth attending at all.">
+<link rel="canonical" href="https://ai-km-jiang.vercel.app/en/articles/meeting-record-agent-workflow/">
+<link rel="alternate" hreflang="zh-Hant" href="https://ai-km-jiang.vercel.app/articles/meeting-record-agent-workflow/">
+<link rel="alternate" hreflang="en" href="https://ai-km-jiang.vercel.app/en/articles/meeting-record-agent-workflow/">
+<link rel="alternate" hreflang="x-default" href="https://ai-km-jiang.vercel.app/articles/meeting-record-agent-workflow/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="My Agent-Powered Meeting Workflow: Seven Steps to Turn Every Meeting into a Knowledge Asset | Coach Jiang">
+<meta property="og:image" content="https://ai-km-jiang.vercel.app/images/articles/meeting-record-agent-workflow-summary-wide.jpg">
+<meta property="og:description" content="Turn every meeting into a decision-support knowledge asset. Full seven-step workflow with reusable prompts.">
+<meta property="og:url" content="https://ai-km-jiang.vercel.app/en/articles/meeting-record-agent-workflow/">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Coach Jiang · AI Knowledge Management">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="My Agent-Powered Meeting Workflow: Seven Steps to Turn Every Meeting into a Knowledge Asset | Coach Jiang">
+<meta name="twitter:image" content="https://ai-km-jiang.vercel.app/images/articles/meeting-record-agent-workflow-summary-wide.jpg">
+<meta name="twitter:description" content="Turn every meeting into a decision-support knowledge asset. Full seven-step workflow with reusable prompts.">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"My Agent-Powered Meeting Workflow: Seven Steps to Turn Every Meeting into a Knowledge Asset","description":"A meeting transcript can run tens of thousands of words. Just reading it is exhausting. This article lays out my full seven-step workflow: speaker diarization, adding on-the-ground observations, a one-line trigger, tiered cleanup, a post-meeting strategy report, a draft deliverable, and a Naval-plus-Elon-Musk lens to judge whether the meeting was worth it.","author":{"@type":"Person","name":"Jiang Yude","alternateName":"Coach Jiang","jobTitle":"Tacit Knowledge Distiller & AI Application Strategist"},"isPartOf":{"@type":"WebSite","name":"Coach Jiang · AI Knowledge Management","url":"https://ai-km-jiang.vercel.app/"},"image":"https://ai-km-jiang.vercel.app/images/articles/meeting-record-agent-workflow-summary-wide.jpg","datePublished":"2026-06-23","dateModified":"2026-06-23","inLanguage":"en","url":"https://ai-km-jiang.vercel.app/en/articles/meeting-record-agent-workflow/"}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{--ink:#1a1612;--paper:#fefcf8;--muted:#6a635a;--line:#d8cdb8;--green:#5f7553;--blue:#5689b8;--orange:#e85a4f;--soft:#faf5ec;--dark:#2a2018;--shadow:0 18px 45px rgba(107,74,42,.14);--sp-shadow:hsla(35,50%,60%,.15);--sp-shadow-edge:hsla(35,50%,68%,.03);--sp-radius:400px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC","Segoe UI",sans-serif}
+a{color:inherit}
+/* nav */
+nav.top{position:sticky;top:0;background:rgba(254,252,248,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid #d8cdb8;z-index:100}
+nav.top .container{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:24px;padding:14px 32px}
+.nav-brand-img{justify-self:start;display:flex;align-items:center;text-decoration:none;flex-shrink:0;transition:opacity .2s}
+.nav-brand-img:hover{opacity:.8}.nav-brand-img img{height:40px;width:auto;display:block}
+nav.top ul.nav-menu{justify-self:end;display:flex;gap:22px;list-style:none;margin:0;padding:0;font-size:.95rem;white-space:nowrap}
+nav.top ul.nav-menu a{color:#3a342d;text-decoration:none;transition:color .2s;font-weight:500;white-space:nowrap}
+nav.top ul.nav-menu a:hover{color:#1a1612}nav.top ul.nav-menu a.active{color:#1a1612;font-weight:700}
+.nav-toggle{display:none;background:none;border:none;padding:6px;cursor:pointer;width:36px;height:36px;position:relative}
+.nav-toggle span{display:block;position:absolute;left:8px;right:8px;height:2px;background:#1a1612;border-radius:2px;transition:transform .25s,opacity .25s,top .25s}
+.nav-toggle span:nth-child(1){top:11px}.nav-toggle span:nth-child(2){top:17px}.nav-toggle span:nth-child(3){top:23px}
+.nav-toggle.open span:nth-child(1){top:17px;transform:rotate(45deg)}.nav-toggle.open span:nth-child(2){opacity:0}.nav-toggle.open span:nth-child(3){top:17px;transform:rotate(-45deg)}
+@media(max-width:860px){
+ nav.top .container{grid-template-columns:auto 1fr auto;padding:10px 16px;gap:12px}
+ .nav-brand-img img{height:32px}
+ .nav-toggle{display:block;justify-self:end}
+ nav.top ul.nav-menu{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(254,252,248,.98);backdrop-filter:blur(14px);border-bottom:1px solid #d8cdb8;flex-direction:column;gap:0;padding:8px 0;box-shadow:0 10px 24px rgba(107,74,42,.08)}
+ nav.top ul.nav-menu.open{display:flex}
+ nav.top ul.nav-menu li{border-bottom:1px solid #e8dfc9}
+ nav.top ul.nav-menu li:last-child{border-bottom:none}
+ nav.top ul.nav-menu a{display:block;padding:14px 20px;font-size:1.06rem}
+}
+/* spotlight */
+body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradient(var(--sp-radius) circle at var(--mx,50%) var(--my,50%),var(--sp-shadow) 0%,var(--sp-shadow-edge) 45%,transparent 75%);pointer-events:none;z-index:9999;mix-blend-mode:multiply;transition:background .06s linear}
+/* hero */
+.hero{position:relative;overflow:hidden;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:72px;padding:96px clamp(20px,6vw,88px) 80px;background:linear-gradient(180deg,#fffcf0 0%,#f9e9d2 100%);color:#1a1612;border-bottom:1px solid #d8cdb8}
+.hero .wc{position:absolute;border-radius:50%;filter:blur(60px);pointer-events:none;z-index:0}
+.hero .wc1{width:420px;height:360px;top:-120px;right:-80px;background:#e8884b;opacity:.15}
+.hero .wc2{width:360px;height:300px;bottom:-110px;left:-70px;background:#5f7553;opacity:.13}
+.hero .wc3{width:280px;height:260px;top:34%;left:14%;background:#a08144;opacity:.10}
+.hero>div{flex:none;width:860px;max-width:100%;position:relative;z-index:2}
+.hero-figure{margin:0;width:420px;flex:none;position:relative;z-index:2}
+.hero-figure img{display:block;width:100%;border-radius:16px;border:1px solid #d8cdb8;box-shadow:0 18px 45px rgba(107,74,42,.16)}
+.hero-figure figcaption{margin-top:10px;font-size:14px;line-height:1.6;color:#6a635a}
+.kicker{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.55rem;color:#7a5c3a;font-weight:500}
+.hero h1{max-width:none;margin:16px 0 18px;font-size:clamp(36px,6vw,72px);line-height:1.08;overflow-wrap:anywhere}
+.hero p{max-width:none;font-size:clamp(18px,2vw,23px);line-height:1.62;color:#3a342d}
+.section{padding:54px clamp(20px,6vw,88px);border-top:1px solid var(--line)}
+.inner{width:min(1000px,100%);margin:0 auto}
+.section h2{font-size:clamp(26px,4.2vw,48px);line-height:1.12;margin:0 0 18px}
+.section h3{font-size:clamp(21px,3vw,30px);line-height:1.2;margin:30px 0 12px}
+.lead{font-size:clamp(18px,1.6vw,22px);line-height:1.7;color:#3a342d;max-width:900px}
+.section p{font-size:18px;line-height:1.74;color:#3a342d}.section p+p{margin-top:14px}
+.section ul,.section ol{padding-left:1.4em;font-size:18px;line-height:1.74;color:#3a342d}.section li{margin-bottom:8px}
+.step-label{display:inline-block;font:900 13px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.04em;color:var(--orange);background:rgba(232,90,79,.1);border:1px solid rgba(232,90,79,.3);border-radius:999px;padding:5px 12px;margin-top:18px}
+.who-front{color:var(--green)}.who-ai{color:var(--blue)}
+.meaning{margin:22px 0;padding:16px 18px;border-left:5px solid var(--blue);background:rgba(86,137,184,.12);border-radius:6px;line-height:1.7;font-size:19px}
+.meaning b{display:block;color:var(--blue);margin-bottom:4px}
+.caveat{margin:0 0 8px;padding:16px 18px;border-left:5px solid var(--orange);background:rgba(232,90,79,.1);border-radius:6px;line-height:1.7;font-size:18px;color:#3a342d}
+.caveat b{display:block;color:var(--orange);margin-bottom:4px}
+.tagrow{display:flex;flex-wrap:wrap;gap:7px;margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
+.tag{font-size:14px;color:var(--muted);background:var(--soft);border:1px solid var(--line);border-radius:999px;padding:4px 11px}
+/* duo cards */
+.duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:24px}
+.duo.stack{grid-template-columns:1fr}
+.duo .card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:22px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.duo .card.a{border-color:var(--orange)}.duo .card.b{border-color:var(--green);box-shadow:0 8px 24px rgba(95,117,83,.16)}
+.duo .card small{display:block;font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.04em;margin-bottom:9px}
+.duo .card.a small{color:var(--orange)}.duo .card.b small{color:var(--green)}
+.duo .card b{display:block;font-size:22px;line-height:1.3;margin-bottom:12px}.duo .card.a b{color:#c0512f}.duo .card.b b{color:#4a7a59}
+.duo .card p,.duo .card ul{margin:0;color:#3a342d;line-height:1.75;font-size:18px}
+.duo .card ul{padding-left:1.3em}
+.codeblock{background:var(--dark);color:#f3ead9;border-radius:8px;padding:18px 20px;font:500 14px/1.65 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;overflow-x:auto;white-space:pre-wrap;margin:20px 0;box-shadow:0 8px 22px rgba(107,74,42,.12)}
+.codeblock .c{color:#f6d7a6;font-weight:600}
+/* CTA */
+.cta-band{background:#e6f0e5;color:#3a342d}.cta-band .section{border-top:none}
+.cta-band .inner{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(260px,.85fr);gap:26px;align-items:start}
+.cta-band h2{font-size:clamp(26px,4vw,44px);margin:0 0 16px}.cta-band p,.cta-band .lead{color:rgba(58,52,45,.92);font-size:18px;line-height:1.72}
+.cta-card{border:1px solid #cfe0d2;background:#fbfdfa;border-radius:8px;padding:22px}
+.cta-card b{display:block;color:#48b178;margin-bottom:10px;font-size:18px}.cta-card p{margin:0 0 14px}
+.footer{padding:30px clamp(20px,6vw,88px);font-size:14px;color:var(--muted);background:#fff;border-top:1px solid var(--line)}
+.footer-inner{width:min(1000px,100%);margin:0 auto}
+.footer-links{display:flex;flex-wrap:wrap;gap:6px 12px;margin-bottom:14px}.footer-links a{color:var(--blue);font-weight:900;text-decoration:none;font-size:14px}
+.footer-brand{font-weight:900;font-size:15px;margin-bottom:10px}.footer-note{font-size:13px;line-height:1.6}
+/* figures */
+.inline-figure{margin:30px auto 8px;max-width:820px}
+.inline-figure.wide{max-width:1000px}
+.inline-figure img{display:block;width:100%;border-radius:14px;border:1px solid var(--line);box-shadow:var(--shadow);background:#fff}
+.inline-figure figcaption{font-size:14px;line-height:1.6;color:var(--muted);margin-top:10px}
+.figure-pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin:30px 0 8px}
+.figure-pair figure{margin:0}
+.figure-pair img{display:block;width:100%;border-radius:14px;border:1px solid var(--line);box-shadow:var(--shadow);background:#fff}
+.figure-pair figcaption{font-size:13px;line-height:1.58;color:var(--muted);margin-top:8px}
+figure.wide{margin:24px 0 0}
+figure.wide img{width:100%;height:auto;display:block;border-radius:12px;border:1px solid var(--line);box-shadow:var(--shadow)}
+figure.wide figcaption{font-size:14px;color:var(--muted);margin-top:10px;text-align:center}
+/* mobile */
+@media(max-width:820px){.duo{grid-template-columns:1fr}.cta-band .inner{grid-template-columns:1fr}.section{padding:40px 20px}.hero{min-height:52vh;flex-direction:column;justify-content:flex-start;align-items:flex-start;gap:24px}.hero>div{width:100%}.hero-figure{width:100%;max-width:560px}.figure-pair{grid-template-columns:1fr}}
+@media(max-width:820px){html,body{overflow-x:hidden}.hero h1{word-break:break-word}}
+/* lightbox */
+.hero-figure img,.inline-figure img,.figure-pair img{cursor:zoom-in}
+.lightbox{position:fixed;inset:0;z-index:10000;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(12,10,8,.92);cursor:zoom-out;backdrop-filter:blur(4px)}
+.lightbox.open{display:flex}
+.lightbox img{max-width:96vw;max-height:92vh;border-radius:10px;box-shadow:0 24px 60px rgba(0,0,0,.5)}
+.lightbox-close{position:fixed;top:18px;right:24px;color:#fff;font-size:34px;line-height:1;font-weight:700;cursor:pointer;opacity:.85}
+</style>
+<!-- tracking:vercel-analytics -->
+<script defer src="/_vercel/insights/script.js"></script>
+<script defer src="/_vercel/speed-insights/script.js"></script>
+</head>
+<body class="spotlight">
+<nav class="top">
+  <div class="container">
+    <a class="nav-brand-img" href="../../index.html"><img src="../../../images/footer-signature.png" alt="Coach Jiang | Jiang Yude"></a>
+    <button class="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
+    <ul class="nav-menu">
+      <li><a href="../../index.html">Home</a></li>
+      <li><a href="../../offers.html">Paid Courses</a></li>
+      <li><a href="../../courses.html">Free Talks</a></li>
+      <li><a href="../../invited-talks.html">Invited Talks</a></li>
+      <li><a href="../../articles.html" class="active">Articles</a></li>
+      <li><a href="../../skills.html">Skills</a></li>
+      <li><a href="../../cases.html">Services</a></li>
+      <li class="lang-switch"><a href="../../../articles/meeting-record-agent-workflow/">中文</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="wc wc1"></div>
+  <div class="wc wc2"></div>
+  <div class="wc wc3"></div>
+  <div>
+    <div class="kicker">AI Applications · Meeting Records</div>
+    <h1>My Agent-Powered Meeting Workflow: Seven Steps to Turn Every Meeting into a Knowledge Asset</h1>
+    <p>A meeting contains far more worth keeping than you might think. I've standardized my workflow into seven steps: the first three I handle myself, and from step four onward the AI runs everything automatically.</p>
+  </div>
+  <figure class="hero-figure">
+    <img src="../../../images/articles/meeting-record-agent-workflow-01.jpg" alt="Cover: My meeting records Agent workflow" loading="lazy">
+    <figcaption>Cover: My meeting records Agent workflow</figcaption>
+  </figure>
+</section>
+
+<main>
+
+<section class="section" id="start">
+  <div class="inner">
+    <p class="lead">A meeting transcript can easily run tens of thousands of words. Just reading it leaves you full. Distilling it into something you can actually use next time? Even harder. This article lays out my complete seven-step process, from speaker diarization all the way to asking "did this meeting mean anything for my career?" The core question is simple: once a meeting ends, how do you organize what's left so that the next time the same people and the same project come back around, you can find it instantly and pick up right where you left off?</p>
+    <div class="duo stack">
+      <div class="card a">
+        <b>Who this is for</b>
+        <ul>
+          <li>People who have multiple meetings a week and transcripts stacking up with no time to process them</li>
+          <li>Freelancers, consultants, and collaborators who need to consolidate every conversation into something lasting</li>
+          <li>People who have tried using AI to organize meetings, only to find the output either too short or too far from the point</li>
+        </ul>
+      </div>
+      <div class="card b">
+        <b>What you'll walk away with</b>
+        <ul>
+          <li>A seven-step meeting record workflow you can copy directly</li>
+          <li>Definitions for four levels of transcript cleanup, so you know how much to keep for any given meeting</li>
+          <li>A post-meeting strategy report template plus two reusable prompts you can paste right away</li>
+        </ul>
+      </div>
+    </div>
+    <div class="meaning">
+      <b>The problem with meeting records isn't the recording</b>
+      Even if you push through and clean up the transcript, revisiting it two months later usually leaves you with nothing but a running log. Who committed to what, which part made you uneasy, why the other person suddenly softened their position: the most critical signals get sanded away in the text. That's why I fixed the process at seven steps. Now I just run through them after every meeting.
+    </div>
+  </div>
+</section>
+
+<section class="section" id="steps-front">
+  <div class="inner">
+    <h2>The First Three Steps: What I Do Myself</h2>
+    <p class="lead">These three steps cannot be delegated. They determine how much value the AI can extract from everything that follows.</p>
+
+    <div class="step-label who-front">Step 1 · Me</div>
+    <h3>Speaker diarization: turning the recording into a transcript that knows who said what</h3>
+    <p>The foundation of a good meeting record is a transcript that shows who said what and when. Without speaker labels, every analysis downstream blurs into noise.</p>
+    <p>For in-person meetings I use a voice recorder or my phone. For remote meetings I run OBS to capture both the screen and the audio. I then use a speaker-diarization tool to generate the transcript. On Mac I use MacWhisper, or Microsoft's recently open-sourced VibeVoice. The key requirement: the output must tag each speaker and include timestamps. That labeled, time-coded transcript is the raw material for every step that follows.</p>
+    <div class="figure-pair">
+      <figure>
+        <img src="../../../images/articles/meeting-record-agent-workflow-02.jpg" alt="Recording in-person meetings with a voice recorder or phone" loading="lazy">
+        <figcaption>Recording in-person meetings with a voice recorder or phone</figcaption>
+      </figure>
+      <figure>
+        <img src="../../../images/articles/meeting-record-agent-workflow-03.jpg" alt="Capturing remote meetings with OBS: screen and audio together" loading="lazy">
+        <figcaption>Capturing remote meetings with OBS: screen and audio together</figcaption>
+      </figure>
+    </div>
+    <p>I then run the audio through a speaker diarization tool to produce the transcript. On Mac I use MacWhisper, or Microsoft's recently open-sourced VibeVoice. The non-negotiable is having each speaker labeled with a timestamp. That labeled, time-coded transcript is the raw material for every step that follows.</p>
+    <figure class="inline-figure">
+      <img src="../../../images/articles/meeting-record-agent-workflow-04.jpg" alt="Converting a recording into a transcript with speaker labels and timestamps" loading="lazy">
+      <figcaption>Converting a recording into a transcript with speaker labels and timestamps</figcaption>
+    </figure>
+    <div class="caveat"><b>Don't skip this step.</b> A transcript without speaker separation severely limits what any cleanup or analysis can do. Invest the effort here, and use the right tool.</div>
+
+    <div class="step-label who-front">Step 2 · Me</div>
+    <h3>Adding the on-the-ground observations the recording cannot capture</h3>
+    <p>A recording captures everything everyone said. What it cannot capture is the atmosphere in the room. And often, what goes unspoken is exactly what determines what happens next. For meetings that matter, I write a brief observer's note on the spot:</p>
+    <ul>
+      <li>Who showed a noticeable shift in expression or tone</li>
+      <li>Who deliberately steered away from a particular topic</li>
+      <li>Whose words visibly lifted the energy in the room</li>
+      <li>Where and when the atmosphere turned</li>
+    </ul>
+    <p>I add these notes directly into the transcript, clearly marked as my own field observations. When the AI later runs risk analysis or describes someone's position, these observations are the piece it cannot see on its own, and only I can supply.</p>
+    <figure class="inline-figure">
+      <img src="../../../images/articles/meeting-record-agent-workflow-05.jpg" alt="Adding on-the-ground observations the recording cannot capture" loading="lazy">
+      <figcaption>Adding on-the-ground observations the recording cannot capture</figcaption>
+    </figure>
+
+    <div class="step-label who-front">Step 3 · Me</div>
+    <h3>Hand it to the AI with a single instruction</h3>
+    <p>The first two steps prepare the raw material. From here I don't want to issue commands one by one. I hand the transcript (with my field observations included) to the AI and say one thing: "run a full comprehensive synthesis." From this point on, the AI automatically handles the remaining four steps, pausing only once before generating the strategy report to confirm with me.</p>
+  </div>
+</section>
+
+<section class="section" id="steps-ai">
+  <div class="inner">
+    <h2>The Final Four Steps: Handled by the AI</h2>
+
+    <div class="step-label">Step 4 · AI</div>
+    <h3>Archive and backup, then tiered transcript cleanup</h3>
+    <p>The AI first saves an unmodified copy of the raw transcript, word for word. That's the restore point. Then it cleans up the transcript. How much to clean is my call. The standard is simple: how much of the original does the cleaned version retain?</p>
+    <ul>
+      <li><b>Light</b>: keep 10 to 20 percent. Only the core conclusions and action items. For meetings that don't need much.</li>
+      <li><b>Standard</b>: keep 30 to 50 percent. Cut the filler, preserve all substantive discussion, examples, and figures. This is my default.</li>
+      <li><b>Detailed</b>: keep 70 to 90 percent. Keep almost everything; only remove obvious repetition and filler.</li>
+      <li><b>Verbatim correction</b>: keep 100 percent. No cuts, no reductions. Only fix clear typos based on context. Every filler word stays.</li>
+    </ul>
+    <p>After cleanup the AI reports back: original word count, cleaned word count, and retention ratio. One glance tells me whether it cut too deep. To run this step yourself, use this prompt:</p>
+    <div class="codeblock"><span class="c"># Meeting transcript cleanup</span>
+This is a meeting transcript. Please do a pure cleanup only — no summary, no analysis.
+
+Target retention: keep 40-50% relative to the original. (Adjust to 10-20% / 70-90% / 100% as needed.)
+
+Rules:
+1. Remove spoken filler (um, uh, you know, right right right)
+2. Preserve every speaker label and timestamp
+3. Keep all substantive discussion, examples, figures, and analogies in full — do not cut these
+4. After cleanup, count the words yourself and report: original count, cleaned count, and retention ratio
+5. If the ratio falls below the target, the content was over-cut — restore it
+
+Transcript follows:
+[paste transcript here]</div>
+
+    <div class="step-label">Step 5 · AI</div>
+    <h3>Generate the post-meeting strategy report</h3>
+    <p>The cleaned transcript is the full text for reading. The strategy report is the entry point for decision-making. A good post-meeting report lets me know in three seconds what to do next and what to watch out for, while still giving me access to the full context whenever I need it. It always has three sections, with the critical information up front and the supporting detail at the back:</p>
+    <ol>
+      <li><b>Priority action items</b>: a checkable list of action items, each with an owner, a next step, and a deadline</li>
+      <li><b>Risks and open questions</b>: blockers to watch, unresolved issues, and items that need follow-up confirmation</li>
+      <li><b>Full context</b>: all the key points from the cleaned transcript, organized chronologically and collapsed by default</li>
+    </ol>
+    <p>I specifically ask for the third section to be collapsible. Closed by default, the view stays clean. Any time I need to check what exactly was said in a particular segment of that meeting, I expand it. One report serves as both decision entry point and complete reference archive, with no need to open two files.</p>
+    <figure class="inline-figure">
+      <img src="../../../images/articles/meeting-record-agent-workflow-06.jpg" alt="Generating the post-meeting strategy report" loading="lazy">
+      <figcaption>Generating the post-meeting strategy report</figcaption>
+    </figure>
+
+    <div class="step-label">Step 6 · AI</div>
+    <h3>Draft the deliverables you committed to</h3>
+    <p>In almost every meeting someone casually agrees to send something: a quote, a course outline, a follow-up summary. Rather than going back and starting from scratch later, it's better to have the AI draft those deliverables while it still holds the full context of the meeting. It scans the entire conversation, identifies what I committed to delivering, and produces a first draft. By default it gives me both a document version and a web-ready version, each marked "draft pending review." The content reflects only what was actually discussed in the meeting. Prices and session counts that were never mentioned don't get invented. What I receive is a 70 to 80 percent complete draft I can edit directly.</p>
+    <figure class="inline-figure">
+      <img src="../../../images/articles/meeting-record-agent-workflow-07.jpg" alt="Producing a deliverable draft and a deeper strategic analysis" loading="lazy">
+      <figcaption>Producing a deliverable draft and a deeper strategic analysis</figcaption>
+    </figure>
+
+    <div class="step-label">Step 7 · Optional</div>
+    <h3>A Naval and Elon Musk lens: was this meeting worth my time?</h3>
+    <p>Steps one through six are about organizing what happened in this meeting. Step seven asks me to step back and raise a higher-level question: what does this meeting actually mean for my overall career, and was it worth showing up for? This step is optional. I add the phrase "deep analysis" to the prompt and it kicks in.</p>
+    <div class="meaning"><b>Keep two scales separate.</b> The risk analysis in step five applies to this specific meeting. The judgment in step seven applies to how this meeting fits into my overall trajectory. One is tactical, the other is strategic. Don't conflate them.</div>
+    <p>It runs two lenses in sequence. Naval's lens asks about the type of leverage involved, whether the meeting is building specific knowledge that only I can accumulate, and whether my attention will compound over time. Elon Musk's first-principles lens cuts through "that's just how it's done" and asks whether this meeting is actually necessary for my biggest goal, whether it's a direct path or a detour, and whether it's the highest-leverage use of my time. The final output is a synthesized verdict: does this meeting add to my trajectory, leave it neutral, or pull me off course, along with a recommended next step.</p>
+    <div class="codeblock"><span class="c"># Assessing the overall value of a meeting</span>
+Below is the strategy report from one of my meetings. Please take my perspective and analyze the value of this meeting for my overall career using two lenses. Finish with a synthesized verdict.
+
+Naval's lens: type of leverage, whether it builds specific knowledge only I can accumulate, whether my attention compounds over time.
+Elon Musk's first-principles lens: whether this meeting is necessary for my biggest goal, whether it's a direct path or a detour, whether it's the highest-leverage use of my time.
+
+Synthesized verdict: does this meeting add to my trajectory, leave it neutral, or pull me off course? What's the recommended next step?
+Do not assume facts I haven't mentioned. Base your reasoning only on the report and the positioning I've already established.
+
+Report follows:
+[paste report here]</div>
+    <div class="caveat"><b>When there are multiple meetings with the same people.</b> Once a collaboration reaches a second or third meeting, I review them together and assess whether the team is building toward greater alignment or drifting further apart. This evaluation matters most when I'm exploring a new collaboration with a group I haven't worked with before.</div>
+  </div>
+</section>
+
+<section class="section" id="recap">
+  <div class="inner">
+    <h2>One-Page Overview</h2>
+    <figure class="wide">
+      <img loading="lazy" src="../../../images/articles/meeting-record-agent-workflow-summary-wide.jpg" alt="Wide summary chart of the meeting records Agent workflow">
+      <figcaption>All seven steps at a glance</figcaption>
+    </figure>
+    <h3>Seven Steps in Brief</h3>
+    <ol>
+      <li>Speaker diarization: start with a transcript that identifies speakers and includes timestamps</li>
+      <li>For meetings that matter, add the on-the-ground observations the recording cannot capture</li>
+      <li>Hand it to the AI and say "run a full comprehensive synthesis" to kick off the process</li>
+      <li>Archive a backup, then clean the transcript at one of four levels</li>
+      <li>Generate the post-meeting strategy report: priority action items, risks and open questions, full context collapsed by default</li>
+      <li>Draft whatever deliverables you committed to during the meeting</li>
+      <li>When you want the bigger picture, add "deep analysis" and let the AI assess whether the meeting was worth your time</li>
+    </ol>
+    <h3>Common Pitfalls</h3>
+    <ul>
+      <li>Skipping speaker diarization and using plain transcription instead. Without a solid foundation, every downstream analysis collapses.</li>
+      <li>Keeping your field observations in your head rather than writing them down. Mark them in the transcript on the spot. You will not remember them later.</li>
+      <li>Always cleaning the transcript to the shortest possible length. Decide how much this meeting deserves to keep. Default to standard; use detailed for meetings that matter.</li>
+      <li>Front-loading the strategy report with details. Conclusions and actions go first; full context is collapsed at the back for reference.</li>
+      <li>Feeding the AI facts that didn't happen when asking it to assess meeting value. Base everything on the report and your established positioning only.</li>
+    </ul>
+    <div class="meaning">
+      <b>A reminder about the point of all this</b>
+      This workflow was never designed to make organizing faster. Speed is a side effect. The real value is that every meeting becomes a knowledge asset I own. The next time the same people and the same project come back, I can find what I need immediately, pick up where things left off, and make a better judgment call because I'm building on what I already know. The AI's role here is to keep that accumulation system running, not to take my judgment off my hands.
+    </div>
+    <div class="tagrow">
+      <span class="tag">Meeting Records</span><span class="tag">AI Workflow</span><span class="tag">Knowledge Management</span><span class="tag">Audio Transcription</span><span class="tag">Decision Support</span>
+    </div>
+  </div>
+</section>
+
+<section class="cta-band">
+  <div class="section">
+    <div class="inner">
+      <div>
+        <h2>Want to build your own meeting workflow?</h2>
+        <p class="lead">I run two free online talks every month, sharing practical methods for using AI as a thinking partner, and for distilling knowledge and experience into prompts, Skills, and knowledge bases. If AI and knowledge management, or surfacing tacit knowledge, sounds like your thing, start with the community.</p>
+      </div>
+      <div class="cta-card">
+        <b>Free Online Talks</b>
+        <p>Two free sessions every month.</p>
+        <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;text-decoration:none;border-radius:8px;padding:12px 16px;font-weight:900;background:#48b178;color:#fff;">Join the LINE Community ↗</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">Coach Jiang · AI Knowledge Management</div>
+    <div class="footer-links">
+      <a href="../../articles.html">← Back to Articles</a>
+      <a href="../../index.html">Home</a>
+      <a href="../../learn.html">Self-Study Resources</a>
+      <a href="../../skills.html">Skills</a>
+      <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">LINE Community ↗</a>
+      <a href="https://www.threads.com/@jiang_yude_coach" target="_blank" rel="noopener">Threads ↗</a>
+      <a href="https://vocus.cc/salon/Jiang_Coach" target="_blank" rel="noopener">Vocus ↗</a>
+    </div>
+    <div class="footer-note">This is a tutorial article laying out my seven-step process for turning every meeting into a knowledge asset. Shared here for your reference.</div>
+  </div>
+</footer>
+
+<!-- lightbox -->
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <span class="lightbox-close" aria-label="Close">&#215;</span>
+  <img id="lightbox-img" src="" alt="Enlarged view">
+</div>
+<script>
+(function(){
+  var box=document.getElementById('lightbox'),boxImg=document.getElementById('lightbox-img');
+  document.querySelectorAll('.hero-figure img,.inline-figure img,.figure-pair img').forEach(function(img){
+    img.addEventListener('click',function(){
+      boxImg.src=img.currentSrc||img.src;boxImg.alt=img.alt||'Enlarged view';
+      box.classList.add('open');box.setAttribute('aria-hidden','false');
+    });
+  });
+  function close(){box.classList.remove('open');box.setAttribute('aria-hidden','true');boxImg.src='';}
+  box.addEventListener('click',close);
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
+})();
+</script>
+
+<!-- spotlight + hamburger menu -->
+<script src="../../../spotlight.js"></script>
+
+<!-- related articles -->
+<script src="../../../articles-data.js"></script>
+<script src="../../../related-render.js"></script>
+</body>
+</html>

@@ -1,0 +1,456 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="index,follow">
+<title>Building Your Own Automatic Work Log with Codex Alone | Coach Jiang · AI Knowledge Management</title>
+<meta name="description" content="Many people lose track of their work context soon after they start using AI agents. This article offers two paths: if you only use Codex, its built-in automation is all you need; if you use multiple agents, you need a cross-agent work mirror. Includes three copy-ready Codex work log prompts.">
+<link rel="canonical" href="https://ai-km-jiang.vercel.app/en/articles/codex-only-auto-worklog/">
+<link rel="alternate" hreflang="zh-Hant" href="https://ai-km-jiang.vercel.app/articles/codex-only-auto-worklog/">
+<link rel="alternate" hreflang="en" href="https://ai-km-jiang.vercel.app/en/articles/codex-only-auto-worklog/">
+<link rel="alternate" hreflang="x-default" href="https://ai-km-jiang.vercel.app/articles/codex-only-auto-worklog/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Building Your Own Automatic Work Log with Codex Alone | Coach Jiang">
+<meta property="og:image" content="https://ai-km-jiang.vercel.app/images/intro-jiang.png">
+<meta property="og:description" content="If you only use Codex, its built-in automation handles the work log. If you use multiple agents, you need a cross-agent work mirror. Includes copy-ready prompts.">
+<meta property="og:url" content="https://ai-km-jiang.vercel.app/en/articles/codex-only-auto-worklog/">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Coach Jiang · AI Knowledge Management">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Building Your Own Automatic Work Log with Codex Alone | Coach Jiang">
+<meta name="twitter:image" content="https://ai-km-jiang.vercel.app/images/intro-jiang.png">
+<meta name="twitter:description" content="If you only use Codex, its built-in automation handles the work log. If you use multiple agents, you need a cross-agent work mirror.">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Building Your Own Automatic Work Log with Codex Alone","description":"Two paths: if you only use Codex, its built-in automation handles the work log; if you use multiple agents, you need a cross-agent work mirror. Includes copy-ready Codex work log prompts.","author":{"@type":"Person","name":"Jiang Yu-De","alternateName":"Coach Jiang","jobTitle":"Tacit Knowledge Distiller, AI Workflow Designer"},"isPartOf":{"@type":"WebSite","name":"Coach Jiang · AI Knowledge Management","url":"https://ai-km-jiang.vercel.app/"},"inLanguage":"en","url":"https://ai-km-jiang.vercel.app/en/articles/codex-only-auto-worklog/"}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{--ink:#1a1612;--paper:#fefcf8;--muted:#6a635a;--line:#d8cdb8;--green:#5f7553;--blue:#5689b8;--orange:#e85a4f;--soft:#faf5ec;--dark:#2a2018;--shadow:0 18px 45px rgba(107,74,42,.14);--sp-shadow:hsla(35,50%,60%,.15);--sp-shadow-edge:hsla(35,50%,68%,.03);--sp-radius:400px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC","Segoe UI",sans-serif}
+a{color:inherit}
+/* shared top nav */
+nav.top{position:sticky;top:0;background:rgba(254,252,248,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid #d8cdb8;z-index:100}
+nav.top .container{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:24px;padding:14px 32px}
+.nav-brand-img{justify-self:start;display:flex;align-items:center;text-decoration:none;flex-shrink:0;transition:opacity .2s}
+.nav-brand-img:hover{opacity:.8}.nav-brand-img img{height:40px;width:auto;display:block}
+nav.top ul.nav-menu{justify-self:end;display:flex;gap:22px;list-style:none;margin:0;padding:0;font-size:.95rem;white-space:nowrap}
+nav.top ul.nav-menu a{color:#3a342d;text-decoration:none;transition:color .2s;font-weight:500;white-space:nowrap}
+nav.top ul.nav-menu a:hover{color:#1a1612}nav.top ul.nav-menu a.active{color:#1a1612;font-weight:700}
+.nav-toggle{display:none;background:none;border:none;padding:6px;cursor:pointer;width:36px;height:36px;position:relative}
+.nav-toggle span{display:block;position:absolute;left:8px;right:8px;height:2px;background:#1a1612;border-radius:2px;transition:transform .25s,opacity .25s,top .25s}
+.nav-toggle span:nth-child(1){top:11px}.nav-toggle span:nth-child(2){top:17px}.nav-toggle span:nth-child(3){top:23px}
+.nav-toggle.open span:nth-child(1){top:17px;transform:rotate(45deg)}.nav-toggle.open span:nth-child(2){opacity:0}.nav-toggle.open span:nth-child(3){top:17px;transform:rotate(-45deg)}
+@media(max-width:860px){
+ nav.top .container{grid-template-columns:auto 1fr auto;padding:10px 16px;gap:12px}
+ .nav-brand-img img{height:32px}
+ .nav-toggle{display:block;justify-self:end}
+ nav.top ul.nav-menu{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(254,252,248,.98);backdrop-filter:blur(14px);border-bottom:1px solid #d8cdb8;flex-direction:column;gap:0;padding:8px 0;box-shadow:0 10px 24px rgba(107,74,42,.08)}
+ nav.top ul.nav-menu.open{display:flex}
+ nav.top ul.nav-menu li{border-bottom:1px solid #e8dfc9}
+ nav.top ul.nav-menu li:last-child{border-bottom:none}
+ nav.top ul.nav-menu a{display:block;padding:14px 20px;font-size:1.06rem}
+}
+/* mouse warm-glow spotlight */
+body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradient(var(--sp-radius) circle at var(--mx,50%) var(--my,50%),var(--sp-shadow) 0%,var(--sp-shadow-edge) 45%,transparent 75%);pointer-events:none;z-index:9999;mix-blend-mode:multiply;transition:background .06s linear}
+.hero{position:relative;overflow:hidden;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:72px;padding:96px clamp(20px,6vw,88px) 80px;background:linear-gradient(180deg,#fffcf0 0%,#f9e9d2 100%);color:#1a1612;border-bottom:1px solid #d8cdb8}
+.hero .wc{position:absolute;border-radius:50%;filter:blur(60px);pointer-events:none;z-index:0}
+.hero .wc1{width:420px;height:360px;top:-120px;right:-80px;background:#e8884b;opacity:.15}
+.hero .wc2{width:360px;height:300px;bottom:-110px;left:-70px;background:#5f7553;opacity:.13}
+.hero .wc3{width:280px;height:260px;top:34%;left:14%;background:#a08144;opacity:.10}
+.hero>div{flex:none;width:860px;max-width:100%;position:relative;z-index:2}
+.kicker{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.55rem;color:#7a5c3a;font-weight:500}
+.hero h1{max-width:none;margin:16px 0 18px;font-size:clamp(36px,6vw,72px);line-height:1.08;overflow-wrap:anywhere}
+.hero p{max-width:none;font-size:clamp(18px,2vw,23px);line-height:1.62;color:#3a342d}
+.section{padding:54px clamp(20px,6vw,88px);border-top:1px solid var(--line)}
+.inner{width:min(1000px,100%);margin:0 auto}
+.section h2{font-size:clamp(26px,4.2vw,48px);line-height:1.12;margin:0 0 18px}
+.section h3{font-size:clamp(21px,3vw,30px);line-height:1.2;margin:30px 0 12px}
+.lead{font-size:clamp(18px,1.6vw,22px);line-height:1.7;color:#3a342d;max-width:900px}
+.section p{font-size:18px;line-height:1.74;color:#3a342d}.section p+p{margin-top:14px}
+.section ul,.section ol{padding-left:1.4em;font-size:18px;line-height:1.74;color:#3a342d}.section li{margin-bottom:8px}
+.meaning{margin:22px 0;padding:16px 18px;border-left:5px solid var(--blue);background:rgba(86,137,184,.12);border-radius:6px;line-height:1.7;font-size:19px}
+.meaning b{display:block;color:var(--blue);margin-bottom:4px}
+/* article info card */
+.infocard{background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px 24px 22px;box-shadow:0 8px 22px rgba(107,74,42,.08);margin-top:8px}
+.infocard-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.info-item{padding:18px 14px 0}
+.info-item b{display:block;font-size:14px;font-weight:900;letter-spacing:.04em;margin-bottom:7px;text-transform:uppercase}
+.info-item:nth-child(1) b{color:var(--green)}.info-item:nth-child(2) b{color:var(--orange)}.info-item:nth-child(3) b{color:var(--blue)}
+.info-item p{margin:0;font-size:17px;line-height:1.6;color:#3a342d}
+.tagrow{display:flex;flex-wrap:wrap;gap:7px;margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
+.tag{font-size:14px;color:var(--muted);background:var(--soft);border:1px solid var(--line);border-radius:999px;padding:4px 11px}
+.duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:24px}
+.duo.stack{grid-template-columns:1fr}
+.duo .card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:22px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.duo .card.a{border-color:var(--orange)}.duo .card.b{border-color:var(--green);box-shadow:0 8px 24px rgba(95,117,83,.16)}
+.duo .card small{display:block;font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.04em;margin-bottom:9px}
+.duo .card.a small{color:var(--orange)}.duo .card.b small{color:var(--green)}
+.duo .card b{display:block;font-size:22px;line-height:1.3;margin-bottom:12px}.duo .card.a b{color:#c0512f}.duo .card.b b{color:#4a7a59}
+.duo .card p{margin:0;color:#3a342d;line-height:1.75;font-size:18px}
+/* two-path cards */
+.routes{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:24px}
+.route{background:#fff;border:1px solid var(--line);border-radius:10px;padding:22px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.route.b{border-color:var(--blue);box-shadow:0 8px 24px rgba(86,137,184,.16)}
+.route h4{margin:0 0 6px;font-size:20px}
+.route .who{font-size:15px;color:var(--muted);margin:0 0 12px}
+.route ul{padding-left:1.25em;margin:0}.route li{font-size:16px;line-height:1.6;color:#3a342d;margin-bottom:6px}
+/* three-stage workflow */
+.workflow-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:24px}
+.workflow-step{background:#fff;border:1px solid var(--line);border-radius:8px;padding:18px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.workflow-step small{display:block;color:var(--orange);font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;margin-bottom:9px}
+.workflow-step b{display:block;font-size:18px;line-height:1.3;margin-bottom:9px}
+.workflow-step p{margin:0;color:#3a342d;line-height:1.6;font-size:16px}
+/* copyable prompts */
+.prompt{position:relative;margin:16px 0;border:1px solid var(--line);border-radius:10px;background:#221c16;overflow:hidden}
+.prompt-head{display:flex;justify-content:space-between;align-items:center;padding:9px 14px;background:rgba(255,255,255,.06);border-bottom:1px solid rgba(255,255,255,.1)}
+.prompt-head span{color:#f6d7a6;font:900 13px/1 ui-monospace,SFMono-Regular,Menlo,monospace}
+.copybtn{border:1px solid rgba(255,255,255,.3);background:rgba(255,255,255,.1);color:#fff;border-radius:6px;padding:6px 12px;font-family:inherit;font-size:14px;font-weight:800;cursor:pointer;transition:.15s}
+.copybtn:hover{background:rgba(255,255,255,.2)}.copybtn.ok{background:#5f7553;border-color:#5f7553}
+.prompt pre{margin:0;padding:16px;overflow:auto;color:#f3ece0;font:500 15px/1.7 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;white-space:pre-wrap;word-break:break-word}
+details{border:1px solid rgba(26,22,18,.15);border-radius:8px;background:#fff;margin-top:9px;overflow:hidden}
+summary{cursor:pointer;list-style:none;padding:14px 16px;font-weight:900;line-height:1.45;display:flex;justify-content:space-between;gap:14px;font-size:18px}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";flex:0 0 auto;width:24px;height:24px;border-radius:50%;display:grid;place-items:center;background:rgba(26,22,18,.08);font:900 16px/1 ui-monospace,monospace}
+details[open] summary::after{content:"-"}
+.detail-body{padding:0 16px 16px;border-top:1px solid rgba(26,22,18,.08)}.detail-body p{margin:12px 0 0;line-height:1.72;color:#3a342d;font-size:17px}
+.cta-band{background:#e6f0e5;color:#3a342d}.cta-band .section{border-top:none}
+.cta-band .inner{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(260px,.85fr);gap:26px;align-items:start}
+.cta-band h2{font-size:clamp(26px,4vw,44px);margin:0 0 16px}.cta-band p,.cta-band .lead{color:rgba(58,52,45,.92);font-size:18px;line-height:1.72}
+.cta-card{border:1px solid #cfe0d2;background:#fbfdfa;border-radius:8px;padding:22px}
+.cta-card b{display:block;color:#48b178;margin-bottom:10px;font-size:18px}.cta-card p{margin:0 0 14px}
+.footer{padding:30px clamp(20px,6vw,88px);font-size:14px;color:var(--muted);background:#fff;border-top:1px solid var(--line)}
+.footer-inner{width:min(1000px,100%);margin:0 auto}
+.footer-links{display:flex;flex-wrap:wrap;gap:6px 12px;margin-bottom:14px}.footer-links a{color:var(--blue);font-weight:900;text-decoration:none;font-size:14px}
+.footer-brand{font-weight:900;font-size:15px;margin-bottom:10px}.footer-note{font-size:13px;line-height:1.6}
+/* lightbox */
+.lightbox{position:fixed;inset:0;z-index:10000;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(12,10,8,.92);cursor:zoom-out;backdrop-filter:blur(4px)}
+.lightbox.open{display:flex}
+.lightbox img{max-width:96vw;max-height:92vh;border-radius:10px;box-shadow:0 24px 60px rgba(0,0,0,.5)}
+.lightbox-close{position:fixed;top:18px;right:24px;color:#fff;font-size:34px;line-height:1;font-weight:700;cursor:pointer;opacity:.85}
+@media(max-width:820px){.infocard-grid{grid-template-columns:1fr}.routes{grid-template-columns:1fr}.workflow-grid{grid-template-columns:1fr}.cta-band .inner{grid-template-columns:1fr}.section{padding:40px 20px}.hero{min-height:52vh;flex-direction:column;justify-content:flex-start;align-items:flex-start;gap:24px}.hero>div{width:100%}}
+@media(max-width:820px){html,body{overflow-x:hidden}.hero h1{word-break:break-word}}
+</style>
+<!-- tracking:vercel-analytics -->
+<script defer src="/_vercel/insights/script.js"></script>
+<script defer src="/_vercel/speed-insights/script.js"></script>
+</head>
+<body class="spotlight">
+<nav class="top">
+  <div class="container">
+    <a class="nav-brand-img" href="../../../index.html"><img src="../../../images/footer-signature.png" alt="Coach Jiang | Jiang Yu-De"></a>
+    <button class="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
+    <ul class="nav-menu">
+      <li><a href="../../../index.html">Home</a></li>
+      <li><a href="../../../offers.html">Paid Courses</a></li>
+      <li><a href="../../../courses.html">Free Talks</a></li>
+      <li><a href="../../../invited-talks.html">Invited Talks</a></li>
+      <li><a href="../../../articles.html" class="active">Articles</a></li>
+      <li><a href="../../../skills.html">Skills</a></li>
+      <li><a href="../../../cases.html">Services</a></li>
+      <li class="lang-switch"><a href="../../../articles/codex-only-auto-worklog/">中文</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="wc wc1"></div>
+  <div class="wc wc2"></div>
+  <div class="wc wc3"></div>
+  <div>
+    <div class="kicker">AI Workflow / Tutorial</div>
+    <h1>Building Your Own Automatic Work Log with Codex Alone</h1>
+    <p>Many people who start using AI agents quickly run into the same problem: they got a lot done during the day, but by evening they can't clearly describe what they actually finished. This article separates the two paths first: if you only use Codex, rely on its built-in automation; if you use multiple agents at the same time, you need a cross-agent work mirror.</p>
+  </div>
+</section>
+
+<main>
+
+<section class="section">
+  <div class="inner">
+    <div class="infocard">
+      <div class="infocard-grid">
+        <div class="info-item">
+          <b>Who This Is For</b>
+          <p>People who just started using Codex and want it to help them track what they did each day; people who have many AI conversations and file changes and often feel disoriented by evening; people who have heard about Hermes or work mirrors but are not sure whether they need them.</p>
+        </div>
+        <div class="info-item">
+          <b>What Problem It Solves</b>
+          <p>After using AI to get work done, the traces of that work are scattered across conversations, files, and folders. By evening you can't clearly describe what you finished, and the next morning you don't know where to pick up.</p>
+        </div>
+        <div class="info-item">
+          <b>What You Will Get</b>
+          <p>One decision principle (Codex-only means use its built-in automation), one upgrade principle (multiple agents means add a work mirror), three copy-ready prompts, and a three-stage practice moving from manual to automatic.</p>
+        </div>
+      </div>
+      <div class="tagrow">
+        <span class="tag">Topic: AI Agent Workflow</span>
+        <span class="tag">Topic: AI Knowledge Management</span>
+        <span class="tag">Level: Beginner</span>
+        <span class="tag">For: New Users</span>
+        <span class="tag">For: Solo Founders</span>
+        <span class="tag">Type: Tutorial</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="routes">
+  <div class="inner">
+    <h2>Start with One Question: Single Agent or Multiple Agents?</h2>
+    <p class="lead">I now split AI work logging into two situations. Decide which one you are in first, then choose the tool. Picking the tool too early makes the system heavy; once you know where you stand, the right tool naturally follows.</p>
+    <div class="routes">
+      <div class="route">
+        <h4>Path A · Codex Only</h4>
+        <p class="who">Take this path if most of your answers below are "yes"</p>
+        <ul>
+          <li>I mainly work inside Codex</li>
+          <li>Most of my file edits are made by Codex</li>
+          <li>I just want to know what I did each day</li>
+          <li>I don't need to track how different agents divided the work</li>
+          <li>I prefer the simplest possible setup</li>
+        </ul>
+      </div>
+      <div class="route b">
+        <h4>Path B · Multi-Agent Work Mirror</h4>
+        <p class="who">Take this path if most of your answers below are "yes"</p>
+        <ul>
+          <li>I regularly use Claude Code, Codex, Gemini, or other agents together</li>
+          <li>I often can't tell which agent changed what</li>
+          <li>I want to track how much time and how many tokens each task consumed</li>
+          <li>I want to know whether a task has any follow-up</li>
+          <li>I need to write work traces back into a knowledge base or work log</li>
+        </ul>
+      </div>
+    </div>
+    <div class="meaning">If you only use Codex, use Codex's built-in automation. If you use multiple agents, use a cross-agent work mirror. That's all there is to it.</div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>Most People Start by Building a System That Is Too Big</h2>
+    <p>When people first learn AI automation, they often want to do everything at once. Should I install a dedicated monitoring tool? Should I auto-summarize every 20 minutes? Should I track tokens, focus levels, and operation frequency? Should I connect Claude, Codex, and Gemini all at the same time?</p>
+    <p>All of those are possible. But for most people just starting out, the first step is simply to be able to see their daily work trail. Three questions are enough to begin:</p>
+    <ol>
+      <li>What did I do today?</li>
+      <li>Which files did I change?</li>
+      <li>What is the next step tomorrow?</li>
+    </ol>
+    <p>If you can answer those three questions every day, your AI workflow already has a shape.</p>
+  </div>
+</section>
+
+<section class="section" id="codex">
+  <div class="inner">
+    <h2>Codex-Only Path: Built-In Automation Is Enough</h2>
+    <p class="lead">If you only use Codex, I recommend starting with three stages. Build the habit first, then hand it over to automation.</p>
+    <div class="workflow-grid">
+      <div class="workflow-step"><small>Stage 1</small><b>Manually Ask Codex to Write the Log</b><p>When a stretch of work wraps up, ask Codex to summarize what you just did. The goal is to build the habit that work needs to leave a trace.</p></div>
+      <div class="workflow-step"><small>Stage 2</small><b>Let It Read Today's File Changes</b><p>Once the manual habit is steady, have Codex produce a daily report each day based on the conversations, edited files, and documents produced.</p></div>
+      <div class="workflow-step"><small>Stage 3</small><b>Scheduled Task for Automatic Logging</b><p>Once you know what a good log looks like, set up a scheduled task to record automatically at fixed intervals. Default is every 30 minutes; you can adjust to 15 minutes or 1 hour.</p></div>
+    </div>
+
+    <h3>Stage 1: Manually Ask Codex to Write a Work Log</h3>
+    <p>Don't automate anything at first. Build the habit: when a block of work finishes, ask Codex to help you summarize what just happened. You can paste this prompt directly:</p>
+    <div class="prompt">
+      <div class="prompt-head"><span>Stage 1 · Manual Summary</span><button class="copybtn" type="button">Copy</button></div>
+      <pre>Please help me write a work log for this last stretch of work.
+
+Organize it into five sections:
+1. What I originally intended to do
+2. What was actually completed
+3. Which files were changed or what outputs were produced
+4. Where I got stuck along the way
+5. What the next step should be
+
+Only record what has already happened. Do not infer results.
+If you are unsure about something, mark it as "unconfirmed".</pre>
+    </div>
+    <p>Many people think work logs are written for a manager. In practice, a work log is written first for your future self. When you use AI to get work done, a single session today might change a dozen different things. Without a record, it's easy to wake up tomorrow with no idea where this thread left off.</p>
+
+    <h3>Stage 2: Let Codex Read Today's File Changes</h3>
+    <p>Once manual logging is consistent, have Codex check what you did each day. Update the prompt to something like this:</p>
+    <div class="prompt">
+      <div class="prompt-head"><span>Stage 2 · Daily Report</span><button class="copybtn" type="button">Copy</button></div>
+      <pre>Please help me write today's work log.
+
+Based on today's conversations, edited files, and produced documents, compile a daily report.
+
+Include:
+1. Today's main tasks
+2. Which files or outputs each task touched
+3. What has been completed
+4. What has not yet been completed
+5. The three best things to continue with tomorrow
+
+Constraints:
+- Do not write this as a reflective essay
+- Do not add outcomes that did not actually happen
+- Mark anything uncertain as "unconfirmed"
+- If there are file paths, list them directly</pre>
+    </div>
+    <p>This stage will help you realize that AI can function as a retrospective tool, looking back at your actions from the day and pulling together context that had scattered.</p>
+
+    <h3>Stage 3: Use Codex Scheduled Tasks for Automatic Logging</h3>
+    <p>Once you know what a good log looks like, turn it into a scheduled task that records automatically at fixed intervals. I personally default to every 30 minutes; adjust to 15 minutes or 1 hour based on your own work rhythm. The prompt can look like this:</p>
+    <div class="prompt">
+      <div class="prompt-head"><span>Stage 3 · Scheduled Task (default: every 30 minutes)</span><button class="copybtn" type="button">Copy</button></div>
+      <pre>Please compile a Codex work log for this recent interval.
+
+Review the main activity in this workspace since the last log entry and organize it into a reviewable work log.
+
+Output format:
+
+# Work Log (this interval)
+
+## What Was Completed
+- List tasks completed during this interval
+
+## Files and Outputs
+- List important files added or modified during this interval
+
+## Blockers
+- List errors, waiting periods, or unfinished items that came up
+
+## Next Steps
+- The 3 best things to continue with next
+
+## Confidence Level
+- High: backed by file evidence or clear conversation record
+- Medium: conversation context exists but nothing was committed to a file
+- Low: only scattered clues available
+
+Rules:
+- Only record what actually happened during this interval
+- Do not add outcomes I did not mention
+- Do not write this as a motivational reflection
+- If there is not enough data, write "insufficient records to compile for this interval"</pre>
+    </div>
+    <p>That is a complete Codex-only automatic work log. For many people, this version is more than sufficient.</p>
+  </div>
+</section>
+
+<section class="section" id="mirror">
+  <div class="inner">
+    <h2>When Do You Actually Need a Multi-Agent Work Mirror?</h2>
+    <p class="lead">When your work starts spreading across multiple agents, new problems emerge.</p>
+    <p>For example: Codex edits your files, Claude Code polishes your drafts, Gemini looks things up, NotebookLM organizes your sources, and Hermes handles periodic reviews. At that point you realize each tool only knows its own slice. Codex doesn't necessarily know what Claude Code just did; the data Gemini retrieved might be sitting somewhere else entirely.</p>
+    <p>That's when you need a cross-agent work mirror. Its job is to bring together the traces left by different tools and answer a more detailed set of questions:</p>
+    <ul>
+      <li>Which agents were involved during this period? What did each one do?</li>
+      <li>Which files were actually changed? Which actions stayed in conversation and never landed in a file?</li>
+      <li>Does this task have a work log? What is the full context around it?</li>
+      <li>Roughly how many tokens, operations, and focus-cost units did it take?</li>
+    </ul>
+    <div class="meaning">That is the upgrade from a "work log" to a "work trail system." Decide which situation you are in first, then choose the tool.</div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>A Minimal Practice for Beginners</h2>
+    <p>If I were teaching a complete beginner, I would give them one very small exercise. Don't try to build a full automation today. Do just this one thing: at the end of a work session, say to Codex:</p>
+    <div class="prompt">
+      <div class="prompt-head"><span>Minimal Practice · 10-Line Wrap-Up</span><button class="copybtn" type="button">Copy</button></div>
+      <pre>Please summarize this last stretch of work in 10 lines or fewer:
+
+1. What I did
+2. What was produced
+3. What the next step is
+
+Facts only. No reflections.</pre>
+    </div>
+    <p>This exercise looks small, but it teaches you something important: an AI workflow needs two actions, not one. You give instructions when a task starts, and you write a record when it ends. Those two actions together are what creates a workflow that compounds over time.</p>
+
+    <h3>One Step Further: Turning Work Logs into Skills</h3>
+    <p>Once someone has been writing work logs consistently for a while, they start to notice repeating patterns. For instance: every time they write an article, they first dictate a rough draft, then ask AI to distill the structure. Every time they build a website, they modify it locally first, then deploy, then review. Those repeating patterns are the raw material for Skills.</p>
+    <p>That's why I treat work logs as the foundation of an AI workflow. Without work logs, Skills tend to become SOPs invented from thin air. With work logs, Skills grow out of real work.</p>
+  </div>
+</section>
+
+<section class="section" id="pits">
+  <div class="inner">
+    <h2>Common Pitfalls</h2>
+    <p class="lead">Four places people most often stumble. Expand each one to see the fix.</p>
+    <details><summary>Pitfall 1: Building the system too big from the start</summary><div class="detail-body"><p>At the beginning, all you need is one work log per day. Don't rush to track tokens, focus levels, or operation frequency. Those belong to a more advanced stage.</p></div></details>
+    <details><summary>Pitfall 2: Writing the work log as a reflective essay</summary><div class="detail-body"><p>A work log's primary job is to record facts. Reflection is fine, but don't let it crowd out the facts. This matters especially for automatically generated logs: they need to answer "what was done" before anything else.</p></div></details>
+    <details><summary>Pitfall 3: Trusting the "success" status display</summary><div class="detail-body"><p>Every automation needs to be verified. Don't just check that the system says it succeeded. Check whether it actually wrote to the file, wrote to the right place, and didn't mistake an error message for work output.</p></div></details>
+    <details><summary>Pitfall 4: Leaving out the next step</summary><div class="detail-body"><p>A good work log always ends with a next step. Tomorrow's version of you needs a clear entry point to pick up from.</p></div></details>
+  </div>
+</section>
+
+<section class="cta-band">
+  <div class="section">
+    <div class="inner">
+      <div>
+        <h2>A Positioning Reminder for Yourself</h2>
+        <p>I think of the Codex-only path as the entry route. Help everyone build their own work log with Codex first. Once they start using multiple agents at the same time, introduce the multi-agent work mirror. This keeps the learning cost low and fits the pace of real work.</p>
+        <p>The essence of an AI workflow is capturing each piece of work so it becomes a process you can continue next time, reuse, and teach to the AI.</p>
+      </div>
+      <div class="cta-card">
+        <b>Free Online Talks</b>
+        <p>Two free talks every month.</p>
+        <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;text-decoration:none;border-radius:8px;padding:12px 16px;font-weight:900;background:#48b178;color:#fff;">Join the LINE Community ↗</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">Coach Jiang · AI Knowledge Management</div>
+    <div class="footer-links">
+      <a href="../../../articles.html">← Back to Articles</a>
+      <a href="../../../index.html">Home</a>
+      <a href="../../../learn.html">Learning Resources</a>
+      <a href="../../../skills.html">Skills</a>
+      <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">LINE Community ↗</a>
+      <a href="https://www.threads.com/@jiang_yude_coach" target="_blank" rel="noopener">Threads ↗</a>
+      <a href="https://vocus.cc/salon/Jiang_Coach" target="_blank" rel="noopener">Vocus ↗</a>
+    </div>
+    <div class="footer-note">This article is also available as a Vocus post and a Threads thread, same content in different lengths.</div>
+  </div>
+</footer>
+
+<script>
+  document.querySelectorAll('.copybtn').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var pre = btn.closest('.prompt').querySelector('pre');
+      var text = pre ? pre.innerText : '';
+      function done(){ btn.textContent='Copied'; btn.classList.add('ok'); setTimeout(function(){ btn.textContent='Copy'; btn.classList.remove('ok'); }, 1400); }
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(done, function(){ done(); });
+      } else { done(); }
+    });
+  });
+</script>
+<script src="../../../articles-data.js"></script>
+<script src="../../../related-render.js"></script>
+
+<!-- lightbox -->
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <span class="lightbox-close" aria-label="Close">×</span>
+  <img id="lightbox-img" src="" alt="Enlarged view">
+</div>
+<script>
+(function(){
+  var box=document.getElementById('lightbox'),boxImg=document.getElementById('lightbox-img');
+  document.querySelectorAll('.hero-figure img,.inline-figure img').forEach(function(img){
+    img.addEventListener('click',function(){
+      boxImg.src=img.currentSrc||img.src;boxImg.alt=img.alt||'Enlarged view';
+      box.classList.add('open');box.setAttribute('aria-hidden','false');
+    });
+  });
+  function close(){box.classList.remove('open');box.setAttribute('aria-hidden','true');boxImg.src='';}
+  box.addEventListener('click',close);
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
+})();
+</script>
+
+<!-- shared: mouse warm-glow spotlight + hamburger nav -->
+<script src="../../../spotlight.js"></script>
+</body>
+</html>

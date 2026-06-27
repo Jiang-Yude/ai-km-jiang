@@ -1,0 +1,389 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="index,follow">
+<title>How AI Agents Connect to Software Directly | Coach Jiang · AI Knowledge Management</title>
+<meta name="description" content="Today's AI agents can operate your software directly. I break down the four connection methods in plain language, with real examples using Codex for LINE, meeting transcripts, and website deployment, so knowledge workers know where to start.">
+<link rel="canonical" href="https://ai-km-jiang.vercel.app/en/articles/how-ai-connects-software/">
+<link rel="alternate" hreflang="zh-Hant" href="https://ai-km-jiang.vercel.app/articles/how-ai-connects-software/">
+<link rel="alternate" hreflang="en" href="https://ai-km-jiang.vercel.app/en/articles/how-ai-connects-software/">
+<link rel="alternate" hreflang="x-default" href="https://ai-km-jiang.vercel.app/articles/how-ai-connects-software/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="How AI Agents Connect to Software Directly | Coach Jiang">
+<meta property="og:image" content="https://ai-km-jiang.vercel.app/images/articles/how-ai-connects-software-mcp-usb.jpg">
+<meta property="og:description" content="Today's AI agents can operate your software directly. I break down the four connection methods in plain language, with real examples using Codex for LINE, meeting transcripts, and website deployment, so knowledge workers know where to start.">
+<meta property="og:url" content="https://ai-km-jiang.vercel.app/en/articles/how-ai-connects-software/">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Coach Jiang · AI Knowledge Management">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="How AI Agents Connect to Software Directly | Coach Jiang">
+<meta name="twitter:image" content="https://ai-km-jiang.vercel.app/images/articles/how-ai-connects-software-mcp-usb.jpg">
+<meta name="twitter:description" content="Today's AI agents can operate your software directly. I break down the four connection methods in plain language, with real examples using Codex for LINE, meeting transcripts, and website deployment, so knowledge workers know where to start.">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"How AI Agents Connect to Software Directly","description":"Today's AI agents can operate your software directly. I break down the four connection methods in plain language, with real examples using Codex for LINE, meeting transcripts, and website deployment, so knowledge workers know where to start.","author":{"@type":"Person","name":"Jiang Yude","alternateName":"Coach Jiang","jobTitle":"Tacit Knowledge Distiller, AI Application Strategist"},"isPartOf":{"@type":"WebSite","name":"Coach Jiang · AI Knowledge Management","url":"https://ai-km-jiang.vercel.app/"},"inLanguage":"en","url":"https://ai-km-jiang.vercel.app/en/articles/how-ai-connects-software/"}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{--ink:#1a1612;--paper:#fefcf8;--muted:#6a635a;--line:#d8cdb8;--green:#5f7553;--blue:#5689b8;--orange:#e85a4f;--soft:#faf5ec;--dark:#2a2018;--shadow:0 18px 45px rgba(107,74,42,.14);--sp-shadow:hsla(35,50%,60%,.15);--sp-shadow-edge:hsla(35,50%,68%,.03);--sp-radius:400px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC","Segoe UI",sans-serif}
+a{color:inherit}
+/* 官網共用導航列 nav.top（與首頁/文章總站同一條） */
+nav.top{position:sticky;top:0;background:rgba(254,252,248,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid #d8cdb8;z-index:100}
+nav.top .container{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:24px;padding:14px 32px}
+.nav-brand-img{justify-self:start;display:flex;align-items:center;text-decoration:none;flex-shrink:0;transition:opacity .2s}
+.nav-brand-img:hover{opacity:.8}.nav-brand-img img{height:40px;width:auto;display:block}
+nav.top ul.nav-menu{justify-self:end;display:flex;gap:22px;list-style:none;margin:0;padding:0;font-size:.95rem;white-space:nowrap}
+nav.top ul.nav-menu a{color:#3a342d;text-decoration:none;transition:color .2s;font-weight:500;white-space:nowrap}
+nav.top ul.nav-menu a:hover{color:#1a1612}nav.top ul.nav-menu a.active{color:#1a1612;font-weight:700}
+.nav-toggle{display:none;background:none;border:none;padding:6px;cursor:pointer;width:36px;height:36px;position:relative}
+.nav-toggle span{display:block;position:absolute;left:8px;right:8px;height:2px;background:#1a1612;border-radius:2px;transition:transform .25s,opacity .25s,top .25s}
+.nav-toggle span:nth-child(1){top:11px}.nav-toggle span:nth-child(2){top:17px}.nav-toggle span:nth-child(3){top:23px}
+.nav-toggle.open span:nth-child(1){top:17px;transform:rotate(45deg)}.nav-toggle.open span:nth-child(2){opacity:0}.nav-toggle.open span:nth-child(3){top:17px;transform:rotate(-45deg)}
+@media(max-width:860px){
+ nav.top .container{grid-template-columns:auto 1fr auto;padding:10px 16px;gap:12px}
+ .nav-brand-img img{height:32px}
+ .nav-toggle{display:block;justify-self:end}
+ nav.top ul.nav-menu{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(254,252,248,.98);backdrop-filter:blur(14px);border-bottom:1px solid #d8cdb8;flex-direction:column;gap:0;padding:8px 0;box-shadow:0 10px 24px rgba(107,74,42,.08)}
+ nav.top ul.nav-menu.open{display:flex}
+ nav.top ul.nav-menu li{border-bottom:1px solid #e8dfc9}
+ nav.top ul.nav-menu li:last-child{border-bottom:none}
+ nav.top ul.nav-menu a{display:block;padding:14px 20px;font-size:1.06rem}
+}
+/* 滑鼠暖光暈（與首頁同一支 spotlight.js） */
+body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradient(var(--sp-radius) circle at var(--mx,50%) var(--my,50%),var(--sp-shadow) 0%,var(--sp-shadow-edge) 45%,transparent 75%);pointer-events:none;z-index:9999;mix-blend-mode:multiply;transition:background .06s linear}
+.hero{position:relative;overflow:hidden;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:72px;padding:96px clamp(20px,6vw,88px) 80px;background:linear-gradient(180deg,#fffcf0 0%,#f9e9d2 100%);color:#1a1612;border-bottom:1px solid #d8cdb8}
+.hero .wc{position:absolute;border-radius:50%;filter:blur(60px);pointer-events:none;z-index:0}
+.hero .wc1{width:420px;height:360px;top:-120px;right:-80px;background:#e8884b;opacity:.15}
+.hero .wc2{width:360px;height:300px;bottom:-110px;left:-70px;background:#5f7553;opacity:.13}
+.hero .wc3{width:280px;height:260px;top:34%;left:14%;background:#a08144;opacity:.10}
+.hero>div{flex:none;width:860px;max-width:100%;position:relative;z-index:2}
+.hero-figure{margin:0;width:420px;flex:none;position:relative;z-index:2}
+.hero-figure img{display:block;width:100%;border-radius:16px;border:1px solid #d8cdb8;box-shadow:0 18px 45px rgba(107,74,42,.16)}
+.hero-figure figcaption{margin-top:10px;font-size:14px;line-height:1.6;color:#6a635a}
+.kicker{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.55rem;color:#7a5c3a;font-weight:500}
+.hero h1{max-width:none;margin:16px 0 18px;font-size:clamp(36px,6vw,72px);line-height:1.08;overflow-wrap:anywhere}
+.hero p{max-width:none;font-size:clamp(18px,2vw,23px);line-height:1.62;color:#3a342d}
+.cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
+.cta a{display:inline-flex;align-items:center;text-decoration:none;border-radius:8px;padding:12px 16px;font-weight:900}
+.cta .primary{background:#fff;color:#1a1612}.cta .ghost{border:1px solid rgba(255,255,255,.32);color:#fff;background:rgba(255,255,255,.08)}
+.section{padding:54px clamp(20px,6vw,88px);border-top:1px solid var(--line)}
+.inner{width:min(1000px,100%);margin:0 auto}
+.section h2{font-size:clamp(26px,4.2vw,48px);line-height:1.12;margin:0 0 18px}
+.section h3{font-size:clamp(21px,3vw,30px);line-height:1.2;margin:30px 0 12px}
+.lead{font-size:clamp(18px,1.6vw,22px);line-height:1.7;color:#3a342d;max-width:900px}
+.section p{font-size:18px;line-height:1.74;color:#3a342d}.section p+p{margin-top:14px}
+.section ul,.section ol{padding-left:1.4em;font-size:18px;line-height:1.74;color:#3a342d}.section li{margin-bottom:8px}
+.meaning{margin:22px 0;padding:16px 18px;border-left:5px solid var(--blue);background:rgba(86,137,184,.12);border-radius:6px;line-height:1.7;font-size:19px}
+.meaning b{display:block;color:var(--blue);margin-bottom:4px}
+.caveat{margin:0 0 8px;padding:16px 18px;border-left:5px solid var(--orange);background:rgba(232,90,79,.1);border-radius:6px;line-height:1.7;font-size:18px;color:#3a342d}
+.caveat b{display:block;color:var(--orange);margin-bottom:4px}
+.infocard{background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px 24px 22px;box-shadow:0 8px 22px rgba(107,74,42,.08);margin-top:8px}
+.infocard-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.info-item{padding:18px 14px 0}
+.info-item b{display:block;font-size:14px;font-weight:900;letter-spacing:.04em;margin-bottom:7px;text-transform:uppercase}
+.info-item:nth-child(1) b{color:var(--green)}.info-item:nth-child(2) b{color:var(--orange)}.info-item:nth-child(3) b{color:var(--blue)}
+.info-item p{margin:0;font-size:17px;line-height:1.6;color:#3a342d}
+.tagrow{display:flex;flex-wrap:wrap;gap:7px;margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
+.tag{font-size:14px;color:var(--muted);background:var(--soft);border:1px solid var(--line);border-radius:999px;padding:4px 11px}
+.duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:24px}
+.duo.stack{grid-template-columns:1fr}
+.duo .card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:22px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.duo .card.a{border-color:var(--orange)}.duo .card.b{border-color:var(--green);box-shadow:0 8px 24px rgba(95,117,83,.16)}
+.duo .card small{display:block;font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.04em;margin-bottom:9px}
+.duo .card.a small{color:var(--orange)}.duo .card.b small{color:var(--green)}
+.duo .card b{display:block;font-size:22px;line-height:1.3;margin-bottom:12px}.duo .card.a b{color:#c0512f}.duo .card.b b{color:#4a7a59}
+.duo .card p{margin:0;color:#3a342d;line-height:1.75;font-size:18px}
+.workflow-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:24px}
+.workflow-step{background:#fff;border:1px solid var(--line);border-radius:8px;padding:18px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.workflow-step small{display:block;color:var(--orange);font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;margin-bottom:9px}
+.workflow-step b{display:block;font-size:18px;line-height:1.3;margin-bottom:9px}
+.workflow-step p{margin:0;color:#3a342d;line-height:1.6;font-size:16px}
+.codeblock{background:var(--dark);color:#f3ead9;border-radius:8px;padding:18px 20px;font:500 14px/1.65 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;overflow-x:auto;white-space:pre-wrap;margin:20px 0;box-shadow:0 8px 22px rgba(107,74,42,.12)}
+.codeblock .c{color:#f6d7a6;font-weight:600}
+.skillcard{background:#fff;border:1px solid var(--green);border-radius:12px;padding:24px;box-shadow:0 10px 26px rgba(95,117,83,.16);margin-top:8px}
+.skillcard b{display:block;font-size:21px;margin-bottom:8px}
+.skillcard p{margin:0 0 16px;font-size:17px;line-height:1.65;color:#3a342d}
+.cta-band{background:#e6f0e5;color:#3a342d}.cta-band .section{border-top:none}
+.cta-band .inner{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(260px,.85fr);gap:26px;align-items:start}
+.cta-band h2{font-size:clamp(26px,4vw,44px);margin:0 0 16px}.cta-band p,.cta-band .lead{color:rgba(58,52,45,.92);font-size:18px;line-height:1.72}
+.cta-card{border:1px solid #cfe0d2;background:#fbfdfa;border-radius:8px;padding:22px}
+.cta-card b{display:block;color:#48b178;margin-bottom:10px;font-size:18px}.cta-card p{margin:0 0 14px}
+.footer{padding:30px clamp(20px,6vw,88px);font-size:14px;color:var(--muted);background:#fff;border-top:1px solid var(--line)}
+.footer-inner{width:min(1000px,100%);margin:0 auto}
+.footer-links{display:flex;flex-wrap:wrap;gap:6px 12px;margin-bottom:14px}.footer-links a{color:var(--blue);font-weight:900;text-decoration:none;font-size:14px}
+.footer-brand{font-weight:900;font-size:15px;margin-bottom:10px}.footer-note{font-size:13px;line-height:1.6}
+/* 圖片元件（來自 codex-log-health-check） */
+.inline-figure{margin:30px auto 8px;max-width:820px}
+.inline-figure.wide{max-width:1000px}
+.inline-figure img{display:block;width:100%;border-radius:14px;border:1px solid var(--line);box-shadow:var(--shadow);background:#fff}
+.inline-figure figcaption{font-size:14px;line-height:1.6;color:var(--muted);margin-top:10px}
+.figure-pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin:30px 0 8px}
+.figure-pair figure{margin:0}
+.figure-pair img{display:block;width:100%;border-radius:14px;border:1px solid var(--line);box-shadow:var(--shadow);background:#fff}
+.figure-pair figcaption{font-size:13px;line-height:1.58;color:var(--muted);margin-top:8px}
+/* 四種接法卡片網格 */
+.method-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-top:24px}
+.method-card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:22px 22px 20px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.method-badge{display:inline-block;font-size:16px;font-weight:900;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--orange);background:rgba(232,90,79,.1);border-radius:6px;padding:4px 10px;margin-bottom:12px;line-height:1.4}
+.method-card b{display:block;font-size:20px;line-height:1.3;margin-bottom:10px;color:var(--ink)}
+.method-card p{margin:0;font-size:18px;line-height:1.7;color:#3a342d}
+@media(max-width:820px){.infocard-grid{grid-template-columns:1fr}.duo{grid-template-columns:1fr}.workflow-grid{grid-template-columns:1fr}.cta-band .inner{grid-template-columns:1fr}.section{padding:40px 20px}.hero{min-height:52vh;flex-direction:column;justify-content:flex-start;align-items:flex-start;gap:24px}.hero>div{width:100%}.hero-figure{width:100%;max-width:560px}.method-grid{grid-template-columns:1fr}.figure-pair{grid-template-columns:1fr}}
+@media(max-width:820px){html,body{overflow-x:hidden}.hero h1{word-break:break-word}}
+/* 點圖放大 lightbox */
+.hero-figure img,.inline-figure img{cursor:zoom-in}
+.lightbox{position:fixed;inset:0;z-index:10000;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(12,10,8,.92);cursor:zoom-out;backdrop-filter:blur(4px)}
+.lightbox.open{display:flex}
+.lightbox img{max-width:96vw;max-height:92vh;border-radius:10px;box-shadow:0 24px 60px rgba(0,0,0,.5)}
+.lightbox-close{position:fixed;top:18px;right:24px;color:#fff;font-size:34px;line-height:1;font-weight:700;cursor:pointer;opacity:.85}
+</style>
+<!-- tracking:vercel-analytics -->
+<script defer src="/_vercel/insights/script.js"></script>
+<script defer src="/_vercel/speed-insights/script.js"></script>
+</head>
+<body class="spotlight">
+<nav class="top">
+  <div class="container">
+    <a class="nav-brand-img" href="../../index.html"><img src="../../../images/footer-signature.png" alt="Coach Jiang | Jiang Yude"></a>
+    <button class="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
+    <ul class="nav-menu">
+      <li><a href="../../index.html">Home</a></li>
+      <li><a href="../../offers.html">Paid Courses</a></li>
+      <li><a href="../../courses.html">Free Talks</a></li>
+      <li><a href="../../invited-talks.html">Invited Talks</a></li>
+      <li><a href="../../articles.html" class="active">Articles</a></li>
+      <li><a href="../../skills.html">Skills</a></li>
+      <li><a href="../../cases.html">Services</a></li>
+      <li class="lang-switch"><a href="../../../articles/how-ai-connects-software/">中文</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="wc wc1"></div>
+  <div class="wc wc2"></div>
+  <div class="wc wc3"></div>
+  <div>
+    <div class="kicker">AI Mastery Mindset</div>
+    <h1>How AI Agents Connect to Software Directly</h1>
+    <p>Today's AI agents can go straight into your software and get things done for you. They connect to software in four different ways. Once you understand how each connection works, you'll know exactly which tasks you can delegate without lifting a finger.</p>
+  </div>
+  <figure class="hero-figure">
+    <img src="../../../images/articles/how-ai-connects-software-mcp-usb.jpg" alt="MCP acts like USB for the AI world, unifying the fragmented interfaces of different tools into a single standard so AI can plug in with one connection" loading="lazy">
+    <figcaption>MCP is like USB for the AI world. It standardizes the connectors across all your tools so AI can plug in with a single interface.</figcaption>
+  </figure>
+</section>
+
+<main>
+
+  <section class="section" id="start">
+    <div class="inner">
+      <h2>What This Article Covers</h2>
+      <p class="lead">Today's AI agents can operate your software directly. This article translates the four connection methods into plain language, illustrated with my own real-world examples using Codex. You'll learn which tasks you can delegate outright, and how to decide which method fits each situation.</p>
+      <div class="duo stack">
+        <div class="card a">
+          <b>Who This Is For</b>
+          <p>· Knowledge workers who want AI to do real work for them, but freeze up the moment they see terms like API, CLI, or MCP<br>· People already using AI agents like Codex or Claude who want to understand how those agents actually operate software on their behalf<br>· Solo operators, managers, and business owners who want to know which tasks are safe to hand off to AI and how to hand them off well</p>
+        </div>
+        <div class="card b">
+          <b>What You'll Walk Away With</b>
+          <p>· A clear picture of the four ways AI connects to software, including the trade-offs and use cases for each<br>· A decision sequence you can apply immediately when a new task comes up<br>· Concrete first steps for moving yourself from operator to delegator</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="warmup">
+    <div class="inner">
+      <h2>First, Let's Settle One Thing: AI Already Has Hands</h2>
+      <p class="lead">Most people still picture AI as something that chats and writes. But today's AI agents actually reach into software and act: pulling data from a LINE group, extracting and cleaning a meeting transcript, deploying a website, even picking up a stalled task in the middle of the night.</p>
+      <p>How it does this comes down to which connection method it uses to reach that particular piece of software. Different methods mean different capabilities, different reliability, and very different levels of oversight required from you.</p>
+      <p>You don't need to memorize the technical names. What you do need is a rough mental model of how each method works, so you can judge: can this task be delegated to AI, and if so, how?</p>
+    </div>
+  </section>
+
+  <section class="section" id="four-ways">
+    <div class="inner">
+      <h2>The Four Ways AI Connects to Software</h2>
+      <p>Here's each method in everyday terms, with a real example from my own work using Codex.</p>
+      <div class="method-grid">
+        <div class="method-card">
+          <div class="method-badge">Direct Protocol</div>
+          <b>API = Direct Line</b>
+          <p>When software exposes a protocol, AI can read and write its data directly, like dialing a dedicated line straight to the other side. My Mika LINE official account works this way: every morning and evening it automatically organizes group names into a readable format and pulls back all the images, PDFs, and decks that members post, without me doing anything except participating in the conversation normally.</p>
+        </div>
+        <div class="method-card">
+          <div class="method-badge">Plug In</div>
+          <b>CLI = Command Line</b>
+          <p>Running a few commands directly on your own machine, like plugging a cable into a local port. I use this to have one AI call another: after Codex finishes something, it calls Claude to review it. I also use it to dispatch multiple AI agents in parallel to research the same topic, then merge their findings. When the website needs an update, a few lines of commands push it live.</p>
+        </div>
+        <div class="method-card">
+          <div class="method-badge">Open a Browser</div>
+          <b>Web Automation = AI Clicks Through a Browser</b>
+          <p>The AI opens a browser and works through it step by step, clicking buttons and filling in fields, just like a person would. This kicks in when a tool only exposes a web interface and has no protocol for direct connection. It logs in, clicks around, and gets the job done. Because it has to follow what's on screen, it's slower and more prone to getting stuck.</p>
+        </div>
+        <div class="method-card">
+          <div class="method-badge">Last Resort</div>
+          <b>Screen Control = Watch the Screen, Move the Mouse</b>
+          <p>The AI watches the entire screen and moves the mouse, fully simulating a person sitting at a computer. I treat this as a last resort. One time I hit a usage limit in the middle of the night and a task stalled. I had Codex wake up in the early hours, watch the screen, and press the button to resume the stalled job. If any of the first three methods work, I don't use this one.</p>
+        </div>
+      </div>
+      <figure class="inline-figure">
+        <img src="../../../images/articles/how-ai-connects-software-four-methods.jpg" alt="Mika illustrates the four connection methods side by side: API direct line, CLI plug-in, web automation, screen control, ranging from fast and reliable to slow and error-prone" loading="lazy">
+        <figcaption>The four methods run from fast and reliable on the left to slow and error-prone on the right. API is the most efficient; screen control is the method of last resort.</figcaption>
+      </figure>
+      <div class="meaning">
+        <b>Why the Distinction Matters</b>
+        For any given task, using a direct protocol connection requires the least effort. Relying on screen control requires the most effort and is most likely to fail. The diagram above captures this: the further right you go, the more it resembles asking a person to sit down and operate the computer manually. The point isn't to memorize speed benchmarks. It's to know roughly where on that spectrum each task lands so you can pick the most efficient path.
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="judgment">
+    <div class="inner">
+      <h2>So How Do I Decide Which Method to Use?</h2>
+      <p>When a task comes up, work through these questions in order:</p>
+      <ol>
+        <li>Does this software expose a protocol? Can AI connect directly?</li>
+        <li>If not, can it be done via command line on the local machine?</li>
+        <li>If not, can AI handle it through the web interface?</li>
+        <li>If none of the above work, only then fall back to screen control.</li>
+      </ol>
+      <p>You don't have to reason through this yourself every time. My actual approach: hand the task to the AI and add one line: "Check whether you can connect to this directly, and whether there's a more efficient method than what I have in mind. Fall back a step only if needed."</p>
+      <div class="caveat">
+        <b>A Pitfall I've Fallen Into</b>
+        When AI can't make a connection, it sometimes covers for itself: it quietly uses the slowest method to muscle through, or silently skips the step and reports success anyway. I ran into this firsthand when I told one AI to call another for a review. It never actually made the call, but reported back "reviewed." So I've since written an explicit rule: if it can't reach the other agent and gets no response after a few minutes, it must tell me clearly that there was no response, then package up the handoff instructions so I can paste them manually. You have to spell this out upfront when you delegate.
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="mcp">
+    <div class="inner">
+      <h2>MCP Is the USB of the AI World</h2>
+      <p>Earlier I mentioned "whether software exposes a port for AI to connect to." MCP is exactly what creates that port.</p>
+      <div class="meaning">
+        <b>Three Sentences That Cover It</b>
+        Having an API means the tool itself has a socket. It can be connected to.<br>
+        Having MCP means those sockets have been standardized into a common format that's easier to plug into.<br>
+        For AI, a unified standard means lower cost and complexity when wiring up a new tool.
+      </div>
+      <p>So MCP is USB for the AI world. Before USB, every device had its own connector: one shape for a mouse, a different shape for a printer. Swap devices and you hunted for the right cable. USB standardized everything: plug it in and it works. MCP does the same thing for AI: it brings all the tool interfaces into a single format so connecting a new tool is far less work.</p>
+      <p>More and more of the tools on my desk, including calendar, Gmail, cloud storage, and note-taking apps, are being standardized into this format. AI can connect to them with a single interface. The ones that haven't been standardized yet, or don't expose any protocol at all, force AI to fall back to opening a screen and clicking through manually. That's the whole difference, and it's what the cover image at the top of this article is showing.</p>
+    </div>
+  </section>
+
+  <section class="section" id="use">
+    <div class="inner">
+      <h2>How Knowledge Workers Can Apply This</h2>
+      <p>Now that the mechanics are clear, here's how to bring this back to your own work. You don't need to become an engineer. You can start like this:</p>
+      <ol>
+        <li>Audit the repetitive manual work you do every day across different tools: copying data, reorganizing, converting files, moving things between platforms.</li>
+        <li>For each item, ask your AI: "Can you connect directly to this software and handle this for me? Which connection method would you use?"</li>
+        <li>Tools that already have open protocols, like calendar, Gmail, and cloud storage, are the best candidates to delegate first. They're the most stable.</li>
+        <li>Grunt work like file conversion, transcript extraction, and data scraping can be handled locally via command line or local tooling, no supervision needed.</li>
+        <li>Tasks that genuinely require screen interaction get treated as a last resort, and you review the output yourself afterward.</li>
+      </ol>
+      <p>A few before-and-after examples from my own workflow:</p>
+      <div class="infocard">
+        <div class="infocard-grid">
+          <div class="info-item">
+            <b>My LINE Group</b>
+            <p>Important messages and files used to be scattered across the group, hard to find. Now AI automatically organizes everything twice a day and archives all shared files.</p>
+          </div>
+          <div class="info-item">
+            <b>My Meeting Transcripts</b>
+            <p>I used to transcribe word by word. Now I give AI a screenshot and it extracts the transcript, labels each speaker, and cleans up misheard words on its own.</p>
+          </div>
+          <div class="info-item">
+            <b>My Website</b>
+            <p>Making a change used to require memorizing a long sequence of steps. Now a few commands push the update live, and AI verifies the deployment succeeded on its own.</p>
+          </div>
+        </div>
+      </div>
+      <div class="meaning">
+        <b>The Common Thread</b>
+        I didn't get smarter. I got clearer on which connection method each task calls for, and handed the rest to AI.
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="conclusion">
+    <div class="inner">
+      <h2>What You're Actually Training Is Not Button-Clicking</h2>
+      <p>Before I close, I want to bring the whole article back to what I actually think.</p>
+      <ul>
+        <li>Don't rush to memorize the terminology. Protocol, CLI, MCP: these labels will keep changing. Chasing them is a losing game.</li>
+        <li>Focus first on knowing roughly which connection method is most efficient for a given task. That judgment doesn't go out of date.</li>
+        <li>What you're really building is the skill of delegation and the skill of workflow design.</li>
+        <li>In the AI era, what matters is whether you know which path to send a task down first, not whether you personally know how to click the button.</li>
+      </ul>
+      <div class="meaning">
+        <b>One Line to Take With You</b>
+        Put yourself in the position of the delegator and the designer. Let AI memorize the terminology. You own the judgment about which path to take.
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-band">
+    <div class="section">
+      <div class="inner">
+        <div>
+          <h2>Stop memorizing terms. Start shifting your position.</h2>
+          <p>If you've read this far and realize you still default to thinking "how do I operate this" rather than "which path should I send AI down," that's completely normal. Most people start there. I run free online talks every month on exactly this: how to move yourself from the operator's seat to the delegator's and designer's seat.</p>
+        </div>
+        <div class="cta-card">
+          <b>Free Online Talks</b>
+          <p>Two free sessions every month.</p>
+          <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;text-decoration:none;border-radius:8px;padding:12px 16px;font-weight:900;background:#48b178;color:#fff;">Join the LINE Community &#8599;</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">Coach Jiang · AI Knowledge Management</div>
+    <div class="footer-links">
+      <a href="../../articles.html">&#8592; Back to Articles</a>
+      <a href="../../index.html">Home</a>
+      <a href="../../learn.html">Self-Study Resources</a>
+      <a href="../../skills.html">Skills</a>
+      <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">LINE Community &#8599;</a>
+      <a href="https://www.threads.com/@jiang_yude_coach" target="_blank" rel="noopener">Threads &#8599;</a>
+      <a href="https://vocus.cc/salon/Jiang_Coach" target="_blank" rel="noopener">Vocus &#8599;</a>
+    </div>
+    <div class="footer-note">This is an educational article sharing my perspective on how AI connects to software. Take it as a starting point for your own thinking.</div>
+  </div>
+</footer>
+
+<!-- 點圖放大 -->
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <span class="lightbox-close" aria-label="Close">&#215;</span>
+  <img id="lightbox-img" src="" alt="Enlarged view">
+</div>
+<script>
+(function(){
+  var box=document.getElementById('lightbox'),boxImg=document.getElementById('lightbox-img');
+  document.querySelectorAll('.hero-figure img,.inline-figure img').forEach(function(img){
+    img.addEventListener('click',function(){
+      boxImg.src=img.currentSrc||img.src;boxImg.alt=img.alt||'Enlarged view';
+      box.classList.add('open');box.setAttribute('aria-hidden','false');
+    });
+  });
+  function close(){box.classList.remove('open');box.setAttribute('aria-hidden','true');boxImg.src='';}
+  box.addEventListener('click',close);
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
+})();
+</script>
+
+<!-- 官網共用：滑鼠暖光暈 + 導航列漢堡選單 -->
+<script src="../../../spotlight.js"></script>
+
+<!-- 文章自動互聯（相關文章）：兩支已內建，順序不可顛倒，不用再另外加 -->
+<script src="../../../articles-data.js"></script>
+<script src="../../../related-render.js"></script>
+</body>
+</html>
