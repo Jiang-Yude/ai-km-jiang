@@ -1,0 +1,422 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="index,follow">
+<title>用我寫一篇文章的工作流，講清楚什麼是迴圈工程（Loop Engineering）｜江江教練 · AI 知識管理</title>
+<meta name="description" content="迴圈工程（Loop Engineering）是什麼？不用任何程式，用我寫一篇文章的工作流講清楚：提示詞跟迴圈差在哪、一個迴圈的五個階段與最少零件、什麼時候才值得做成迴圈。">
+<link rel="canonical" href="https://ai-km-jiang.vercel.app/articles/what-is-loop-engineering/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="用我寫一篇文章的工作流，講清楚什麼是迴圈工程（Loop Engineering）｜江江教練">
+<meta property="og:image" content="https://ai-km-jiang.vercel.app/images/articles/what-is-loop-engineering-summary-wide.jpg">
+<meta property="og:description" content="不用任何程式，用寫一篇文章的工作流，把提示詞跟迴圈的差別、五個階段、最少零件、什麼時候值得做，一次講清楚。">
+<meta property="og:url" content="https://ai-km-jiang.vercel.app/articles/what-is-loop-engineering/">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:site_name" content="江江教練 · AI 知識管理">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="用我寫一篇文章的工作流，講清楚什麼是迴圈工程（Loop Engineering）｜江江教練">
+<meta name="twitter:image" content="https://ai-km-jiang.vercel.app/images/articles/what-is-loop-engineering-summary-wide.jpg">
+<meta name="twitter:description" content="不用任何程式，用寫一篇文章的工作流，把迴圈工程講到你能直接套在自己的工作上。">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"用我寫一篇文章的工作流，講清楚什麼是迴圈工程（Loop Engineering）","description":"迴圈工程（Loop Engineering）是什麼？不用任何程式，用寫一篇文章的工作流，把提示詞跟迴圈的差別、五個階段、最少零件、什麼時候值得做，一次講清楚。","image":"https://ai-km-jiang.vercel.app/images/articles/what-is-loop-engineering-summary-wide.jpg","author":{"@type":"Person","name":"江昱德","alternateName":"江江教練","jobTitle":"隱性知識提煉師、AI 應用規劃師"},"datePublished":"2026-06-27","dateModified":"2026-06-27","isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://ai-km-jiang.vercel.app/"},"inLanguage":"zh-Hant","url":"https://ai-km-jiang.vercel.app/articles/what-is-loop-engineering/"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"迴圈工程跟提示詞工程，我該學哪個？","acceptedAnswer":{"@type":"Answer","text":"先把提示詞用熟，因為迴圈裡每一步還是靠提示詞。等你發現自己一直在重複叫 AI 做同一串步驟，那就是該把它包成迴圈的時候。"}},{"@type":"Question","name":"我不會寫程式，也能做迴圈嗎？","acceptedAnswer":{"@type":"Answer","text":"可以。迴圈的核心是那張怎樣算做完的清單，跟你會不會寫程式無關，跟你清不清楚自己的標準有關。"}},{"@type":"Question","name":"迴圈會不會讓 AI 失控、一直跑？","acceptedAnswer":{"@type":"Answer","text":"會，如果你沒設停止條件。所以每個迴圈都要有一句改到通過就停，或轉兩三輪沒進展就停下來問我。停止條件跟驗收清單一樣重要。"}},{"@type":"Question","name":"什麼工作最適合先拿來做成迴圈？","acceptedAnswer":{"@type":"Answer","text":"你最常重複、而且你說得清楚怎樣算做好的那件事。對我來說是寫文章，對你可能是回固定類型的客戶訊息、整理會議、做每週報表。"}}]}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{--ink:#1a1612;--paper:#fefcf8;--muted:#6a635a;--line:#d8cdb8;--green:#5f7553;--blue:#5689b8;--orange:#e85a4f;--soft:#faf5ec;--dark:#2a2018;--shadow:0 18px 45px rgba(107,74,42,.14);--sp-shadow:hsla(35,50%,60%,.15);--sp-shadow-edge:hsla(35,50%,68%,.03);--sp-radius:400px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC","Segoe UI",sans-serif}
+a{color:inherit}
+nav.top{position:sticky;top:0;background:rgba(254,252,248,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid #d8cdb8;z-index:100}
+nav.top .container{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:24px;padding:14px 32px}
+.nav-brand-img{justify-self:start;display:flex;align-items:center;text-decoration:none;flex-shrink:0;transition:opacity .2s}
+.nav-brand-img:hover{opacity:.8}.nav-brand-img img{height:40px;width:auto;display:block}
+nav.top ul.nav-menu{justify-self:end;display:flex;gap:22px;list-style:none;margin:0;padding:0;font-size:.95rem;white-space:nowrap}
+nav.top ul.nav-menu a{color:#3a342d;text-decoration:none;transition:color .2s;font-weight:500;white-space:nowrap}
+nav.top ul.nav-menu a:hover{color:#1a1612}nav.top ul.nav-menu a.active{color:#1a1612;font-weight:700}
+.nav-toggle{display:none;background:none;border:none;padding:6px;cursor:pointer;width:36px;height:36px;position:relative}
+.nav-toggle span{display:block;position:absolute;left:8px;right:8px;height:2px;background:#1a1612;border-radius:2px;transition:transform .25s,opacity .25s,top .25s}
+.nav-toggle span:nth-child(1){top:11px}.nav-toggle span:nth-child(2){top:17px}.nav-toggle span:nth-child(3){top:23px}
+.nav-toggle.open span:nth-child(1){top:17px;transform:rotate(45deg)}.nav-toggle.open span:nth-child(2){opacity:0}.nav-toggle.open span:nth-child(3){top:17px;transform:rotate(-45deg)}
+@media(max-width:860px){
+ nav.top .container{grid-template-columns:auto 1fr auto;padding:10px 16px;gap:12px}
+ .nav-brand-img img{height:32px}
+ .nav-toggle{display:block;justify-self:end}
+ nav.top ul.nav-menu{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(254,252,248,.98);backdrop-filter:blur(14px);border-bottom:1px solid #d8cdb8;flex-direction:column;gap:0;padding:8px 0;box-shadow:0 10px 24px rgba(107,74,42,.08)}
+ nav.top ul.nav-menu.open{display:flex}
+ nav.top ul.nav-menu li{border-bottom:1px solid #e8dfc9}
+ nav.top ul.nav-menu li:last-child{border-bottom:none}
+ nav.top ul.nav-menu a{display:block;padding:14px 20px;font-size:1.06rem}
+}
+body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradient(var(--sp-radius) circle at var(--mx,50%) var(--my,50%),var(--sp-shadow) 0%,var(--sp-shadow-edge) 45%,transparent 75%);pointer-events:none;z-index:9999;mix-blend-mode:multiply;transition:background .06s linear}
+.hero{position:relative;overflow:hidden;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:64px;padding:96px clamp(20px,6vw,88px) 80px;background:linear-gradient(180deg,#fffcf0 0%,#f9e9d2 100%);color:#1a1612;border-bottom:1px solid #d8cdb8}
+.hero .wc{position:absolute;border-radius:50%;filter:blur(60px);pointer-events:none;z-index:0}
+.hero .wc1{width:420px;height:360px;top:-120px;right:-80px;background:#e8884b;opacity:.15}
+.hero .wc2{width:360px;height:300px;bottom:-110px;left:-70px;background:#5f7553;opacity:.13}
+.hero .wc3{width:280px;height:260px;top:34%;left:14%;background:#a08144;opacity:.10}
+.hero>div{flex:none;width:720px;max-width:100%;position:relative;z-index:2}
+.kicker{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.55rem;color:#7a5c3a;font-weight:500}
+.hero h1{max-width:none;margin:16px 0 18px;font-size:clamp(34px,5.2vw,62px);line-height:1.08;overflow-wrap:anywhere}
+.hero p{max-width:none;font-size:clamp(18px,2vw,22px);line-height:1.62;color:#3a342d}
+.meta-date{font-size:14px;color:#7a5c3a;margin-top:14px;font-weight:500}
+.hero-figure{margin:0;width:330px;flex:none;position:relative;z-index:2}
+.hero-figure img{display:block;width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:16px;border:1px solid #d8cdb8;box-shadow:0 18px 45px rgba(107,74,42,.16);cursor:zoom-in}
+.inline-figure{margin:28px auto 6px;max-width:460px}
+.inline-figure.wide{max-width:880px}
+.inline-figure img{display:block;width:100%;border-radius:14px;border:1px solid var(--line);box-shadow:var(--shadow);background:#fff;cursor:zoom-in}
+.inline-figure figcaption{font-size:14px;line-height:1.6;color:var(--muted);margin-top:10px;text-align:center}
+.lightbox{position:fixed;inset:0;z-index:10000;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(12,10,8,.92);cursor:zoom-out;backdrop-filter:blur(4px)}
+.lightbox.open{display:flex}.lightbox img{max-width:96vw;max-height:92vh;border-radius:10px;box-shadow:0 24px 60px rgba(0,0,0,.5)}
+.lightbox-close{position:fixed;top:18px;right:24px;color:#fff;font-size:34px;line-height:1;font-weight:700;cursor:pointer;opacity:.85}
+.section{padding:54px clamp(20px,6vw,88px);border-top:1px solid var(--line)}
+.inner{width:min(1000px,100%);margin:0 auto}
+.section h2{font-size:clamp(26px,4.2vw,48px);line-height:1.12;margin:0 0 18px}
+.section h3{font-size:clamp(21px,3vw,30px);line-height:1.2;margin:30px 0 12px}
+.lead{font-size:clamp(18px,1.6vw,22px);line-height:1.7;color:#3a342d;max-width:900px}
+.section p{font-size:18px;line-height:1.74;color:#3a342d}.section p+p{margin-top:14px}
+.section ul,.section ol{padding-left:1.4em;font-size:18px;line-height:1.74;color:#3a342d}.section li{margin-bottom:8px}
+.meaning{margin:22px 0;padding:16px 18px;border-left:5px solid var(--blue);background:rgba(86,137,184,.12);border-radius:6px;line-height:1.7;font-size:19px}
+.meaning b{display:block;color:var(--blue);margin-bottom:4px}
+.caveat{margin:18px 0 8px;padding:16px 18px;border-left:5px solid var(--orange);background:rgba(232,90,79,.1);border-radius:6px;line-height:1.7;font-size:17px;color:#3a342d}
+.caveat b{display:block;color:var(--orange);margin-bottom:4px}
+.duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:24px}
+.duo.stack{grid-template-columns:1fr}
+.duo .card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:22px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.duo .card.a{border-color:var(--orange)}.duo .card.b{border-color:var(--green);box-shadow:0 8px 24px rgba(95,117,83,.16)}
+.duo .card b{display:block;font-size:22px;line-height:1.3;margin-bottom:12px}.duo .card.a b{color:#c0512f}.duo .card.b b{color:#4a7a59}
+.duo .card ul{margin:0;font-size:17px}.duo .card p{margin:0;color:#3a342d;line-height:1.75;font-size:18px}
+.steplist{counter-reset:st;list-style:none;padding-left:0;margin:18px 0 0}
+.steplist li{position:relative;padding-left:46px;margin-bottom:14px;min-height:34px}
+.steplist li::before{counter-increment:st;content:counter(st);position:absolute;left:0;top:-2px;width:32px;height:32px;border-radius:50%;background:var(--green);color:#fff;font:900 15px/32px "JetBrains Mono",ui-monospace,Menlo,monospace;text-align:center}
+.steplist b{color:#2a2018}
+.partlist{list-style:none;padding-left:0;margin:18px 0 0}
+.partlist li{margin-bottom:14px;padding:16px 18px;background:#fff;border:1px solid var(--line);border-radius:10px;box-shadow:0 8px 22px rgba(107,74,42,.06);line-height:1.7;font-size:17px}
+.partlist b{display:block;font-size:18px;color:#4a7a59;margin-bottom:4px}
+.faq h3{font-size:20px;margin:26px 0 6px;color:#2a2018}
+.faq p{margin:0}
+.readmore{list-style:none;padding-left:0;margin:18px 0 0}
+.readmore li{margin-bottom:12px;padding-left:0;line-height:1.7;font-size:17px}
+.readmore a{color:var(--blue);font-weight:700;text-decoration:none}.readmore a:hover{text-decoration:underline}
+.cta-band{background:#e6f0e5;color:#3a342d}.cta-band .section{border-top:none}
+.cta-band .inner{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(260px,.85fr);gap:26px;align-items:start}
+.cta-band h2{font-size:clamp(26px,4vw,44px);margin:0 0 16px}.cta-band p{color:rgba(58,52,45,.9);font-size:18px;line-height:1.72}
+.cta-card{border:1px solid #cfe0d2;background:#fbfdfa;border-radius:8px;padding:22px}
+.cta-card b{display:block;color:#48b178;margin-bottom:10px;font-size:18px}.cta-card p{margin:0 0 14px}
+.cta-card a{display:inline-block;text-decoration:none;background:#5f7553;color:#fff;border-radius:8px;padding:11px 16px;font-weight:900;font-size:15px}
+.footer{padding:30px clamp(20px,6vw,88px);font-size:14px;color:var(--muted);background:#fff;border-top:1px solid var(--line)}
+.footer-inner{width:min(1000px,100%);margin:0 auto}
+.footer-links{display:flex;flex-wrap:wrap;gap:6px 12px;margin-bottom:14px}.footer-links a{color:var(--blue);font-weight:900;text-decoration:none;font-size:14px}
+.footer-brand{font-weight:900;font-size:15px;margin-bottom:10px}.footer-note{font-size:13px;line-height:1.6}
+@media(max-width:820px){.duo{grid-template-columns:1fr}.cta-band .inner{grid-template-columns:1fr}.section{padding:40px 20px}.hero{min-height:auto;flex-direction:column;justify-content:flex-start;align-items:flex-start;gap:28px}.hero>div{width:100%}.hero-figure{width:100%;max-width:340px;align-self:center}.inline-figure{max-width:100%}html,body{overflow-x:hidden}.hero h1{word-break:break-word}}
+</style>
+</head>
+<body class="spotlight">
+<nav class="top">
+  <div class="container">
+    <a class="nav-brand-img" href="../../index.html"><img src="../../images/footer-signature.png" alt="江江教練 | 江昱德"></a>
+    <button class="nav-toggle" aria-label="選單"><span></span><span></span><span></span></button>
+    <ul class="nav-menu">
+      <li><a href="../../index.html">首頁</a></li>
+      <li><a href="../../offers.html">收費課程</a></li>
+      <li><a href="../../courses.html">免費講座</a></li>
+      <li><a href="../../invited-talks.html">邀約授課</a></li>
+      <li><a href="../../articles.html" class="active">深度文章</a></li>
+      <li><a href="../../skills.html">Skills 下載</a></li>
+      <li><a href="../../cases.html">服務方案</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="wc wc1"></div>
+  <div class="wc wc2"></div>
+  <div class="wc wc3"></div>
+  <div>
+    <div class="kicker">AI 工作流 · 迴圈工程</div>
+    <h1>用我寫一篇文章的工作流，講清楚什麼是迴圈工程</h1>
+    <p>最近工程師圈在講迴圈工程（Loop Engineering），聽起來很技術，但它的核心跟寫程式無關。我不用任何程式例子，就用我每天在做的一件事，把它的整個架構講清楚，讓你能直接套在自己的工作上。</p>
+    <p class="meta-date">發布 2026-06-27 ｜ 最後更新 2026-06-27</p>
+  </div>
+  <figure class="hero-figure">
+    <img src="../../images/articles/what-is-loop-engineering-01.jpg" alt="迴圈工程一頁圖：以前一步一步叫 AI，現在只顧頭跟尾，流程是想法、草稿、AI 迴圈、審核、發文" loading="lazy">
+  </figure>
+</section>
+
+<main>
+
+<section class="section" id="start">
+  <div class="inner">
+    <p class="lead">最近工程師圈在講一個詞，迴圈工程（Loop Engineering），意思是工程師不再一句一句寫提示詞，改成設計一個會自己跑完整件事的循環。這篇我全程不用任何程式例子，就用我寫一篇文章的工作流，把迴圈工程的整個架構講清楚。</p>
+    <div class="duo stack">
+      <div class="card a">
+        <b>適合誰</b>
+        <ul>
+          <li>你已經會用 AI，但每次做事都要一步一步叫它，叫到自己很累</li>
+          <li>你常常做同一類工作（寫文章、整理會議、回客戶），每次心裡跑的檢查都差不多</li>
+          <li>你聽過「要設計 loop，不要只寫提示詞」，但不知道那到底是什麼意思</li>
+        </ul>
+      </div>
+      <div class="card b">
+        <b>你會得到什麼</b>
+        <ul>
+          <li>迴圈工程的一句話定義，跟它跟提示詞的差別</li>
+          <li>一個迴圈在跑的五個階段，跟它最少要哪幾個零件</li>
+          <li>兩個真實案例，加三個判準：怎麼知道有沒有用、什麼時候值得做、哪些坑要你自己顧</li>
+        </ul>
+      </div>
+    </div>
+    <figure class="inline-figure wide">
+      <img src="../../images/articles/what-is-loop-engineering-summary-wide.jpg" alt="迴圈工程一頁總結：定義、提示詞 vs 迴圈、五個階段、四個零件、什麼時候值得做、三個坑、建置順序" loading="lazy">
+      <figcaption>一頁看完這篇：什麼是迴圈工程</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>一、先講定義：迴圈工程是什麼</h2>
+    <div class="meaning"><b>一句話</b>迴圈工程，就是把「我一直在做的那個循環」，交給一個會自己跑的系統。</div>
+    <p>什麼叫「我一直在做的那個循環」。以前我寫一篇文章，是把想法給 AI，叫它順稿，看它回什麼，再叫它想標題，看它回什麼，再叫它查風險。輸入，看回覆，再輸入。這個一圈一圈轉的角色，一直是我在當。我很累，是因為我在當那個人工的循環。</p>
+    <p>迴圈工程做的事，就是把這個循環從我手上接走，變成一個會自己轉的系統。我只負責開頭給它東西、結尾收成品，中間那幾圈，它自己跑。</p>
+    <figure class="inline-figure">
+      <img src="../../images/articles/what-is-loop-engineering-02.jpg" alt="以前我寫文章是一步一步叫 AI 做：先順稿、再想標題、再看風險、再檢查讀者有沒有收穫、最後再手動發文" loading="lazy">
+      <figcaption>以前每一步都要我開口，做完還要確認才換下一步</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>二、提示詞工程 vs 迴圈工程</h2>
+    <p>這兩件事差一個層次。</p>
+    <div class="duo">
+      <div class="card a">
+        <b>提示詞工程</b>
+        <ul>
+          <li>你在拚把一句話講到最精準</li>
+          <li>目標是一次漂亮的輸出</li>
+          <li>當那個循環的，是你自己</li>
+        </ul>
+      </div>
+      <div class="card b">
+        <b>迴圈工程</b>
+        <ul>
+          <li>你在拚把整個流程設計到能自動跑</li>
+          <li>目標是一個可靠、已經被檢查過的結果</li>
+          <li>當那個循環的，是你設計的系統</li>
+        </ul>
+      </div>
+    </div>
+    <div class="meaning"><b>用一句話分清楚</b>提示詞是「幫我順這段」。迴圈是「順稿、配標題、查風險，改到整張清單都過為止」。差別就在那句「改到通過為止」。提示詞給你一個動作，迴圈幫你跑完一整件事。</div>
+    <figure class="inline-figure">
+      <img src="../../images/articles/what-is-loop-engineering-05.jpg" alt="提示詞教 AI 做一個動作，Loop 教 AI 跑完一整段流程；一個完整的 Loop 要有起點、驗收清單、會自己改的執行、停止條件四個零件" loading="lazy">
+      <figcaption>提示詞等於一個動作，Loop 等於一整段流程</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>三、一個迴圈在跑的五個階段</h2>
+    <p>任何一個迴圈，拆開來看都是同樣五個階段。用我寫一篇文章來對：</p>
+    <ol class="steplist">
+      <li><b>探索：</b>我想寫什麼，為誰寫，這篇要解掉讀者什麼問題</li>
+      <li><b>規劃：</b>抓一個角度，列出要講的重點</li>
+      <li><b>執行：</b>把草稿寫出來</li>
+      <li><b>驗證：</b>照一張清單檢查這篇到底行不行</li>
+      <li><b>迭代：</b>沒過的地方改掉，改完再驗，直到整張清單都過</li>
+    </ol>
+    <p>關鍵在這裡。以前這五個階段，每一階段跳到下一階段，都要我親手推一下。迴圈工程要做的，是讓第三到第五階段自己接著跑：我給完探索跟規劃，AI 自己執行、自己驗證、自己迭代，跑到過了才回來找我。</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>四、一個迴圈最少要哪幾個零件</h2>
+    <p>把上面那五個階段變成真的會跑的東西，最少要四個零件。</p>
+    <ul class="partlist">
+      <li><b>一、一個起點</b>你得先給它東西。以寫文章來說，起點是我的想法跟一份草稿。這裡有個常見誤會要先講清楚，起草是我的事，AI 不負責。我負責把腦袋裡的東西先倒出來，哪怕只是很粗的草稿。</li>
+      <li><b>二、一張驗收清單</b>這是整個迴圈的心臟，也就是上面第四階段的那張清單。清單就是「怎樣才算做完」。沒有它，AI 不知道什麼時候該停，會一直亂改，或太早收工。</li>
+      <li><b>三、一個會自己改的執行</b>AI 拿我的草稿，照清單一項一項檢查，沒過的自己潤、自己改，不用我在旁邊一步一步說下一步。</li>
+      <li><b>四、一個停止條件</b>改到清單都過就停。或者改了兩三輪還是過不了，就停下來告訴我卡在哪，不要無限改下去。</li>
+    </ul>
+    <p>頭（起點）跟尾（最後審核）是我，中間那兩個零件（執行、停止）是它。</p>
+    <figure class="inline-figure wide">
+      <img src="../../images/articles/what-is-loop-engineering-04.jpg" alt="現在我只負責頭尾：頭是給想法跟草稿，中間是 AI 照清單自己檢查潤飾修改，尾是我做最後審核" loading="lazy">
+      <figcaption>頭給草稿、尾做審核都是我，中間那一整圈交給 AI</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>五、真實案例一：把寫一篇文章變成迴圈</h2>
+    <p>我前陣子寫了一篇講「寫文章」的短文，它本身就是這樣跑出來的。</p>
+    <p>我先寫一個粗草稿。然後我沒有再一句一句叫 AI 改，我把驗收清單交給它，這張清單有六項：</p>
+    <ul>
+      <li>目的明不明確</li>
+      <li>標題配不配內容</li>
+      <li>對讀者有沒有意義</li>
+      <li>標題好不好懂</li>
+      <li>收尾有沒有用、會不會太空泛</li>
+      <li>符不符合我的定位</li>
+    </ul>
+    <p>AI 自己照這六項跑了一遍，沒過的地方自己改，改到六項全過，才把成品給我。我做的只有最後看一眼，確認可以發。</p>
+    <div class="meaning"><b>這就是迴圈</b>我沒有一步一步改，我是定義好那張清單，讓它自己跑到過。</div>
+    <figure class="inline-figure">
+      <img src="../../images/articles/what-is-loop-engineering-03.jpg" alt="雖然每次都一步一步叫，但檢查的其實都是同一圈：觀點、內容、標題、讀者收穫、行動呼籲、自身定位" loading="lazy">
+      <figcaption>每次寫文章，心裡跑的都是這同一圈檢查</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>六、真實案例二：把整套 AI 協作變成迴圈</h2>
+    <p>寫文章只是個小迴圈。我後來把同樣的架構，放大到我跟 AI 的整個協作。</p>
+    <p>我以前的麻煩一樣：每件複雜的事都要我提醒。複雜就提醒它找另一個 AI 一起想，做完要提醒它寫工作日誌，有規則要改要提醒它記下來。我又在當人工的循環，只是換了個場景。</p>
+    <p>所以我替自己設計了一套協作的迴圈，寫成一份規則，讓我所有的 AI 助手讀了就照著跑。它的零件跟寫文章那套一模一樣，只是換了清單：</p>
+    <ul>
+      <li><b>先分級：</b>這件事是查個時間的小事，還是會改到重要設定的大事。小事快速做，大事才升高規格。這是驗收清單的第一關，先判斷要審多重。</li>
+      <li><b>自己找第二顆腦：</b>複雜或有風險的事，自動找另一家 AI 一起檢查，不用我開口。</li>
+      <li><b>自己收尾：</b>做完自動寫工作日誌、自動判斷有沒有規則要記下來。</li>
+      <li><b>會停：</b>同一圈轉兩三輪沒進展就停，不無限跑。</li>
+    </ul>
+    <p>設計完，我從那個一步一步下指令的人，變成定義這幾張清單的人。</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>七、怎麼知道你的迴圈到底有沒有用</h2>
+    <p>迴圈做出來，不代表它有用。有一個很簡單的指標：採納率。</p>
+    <p>AI 跑完一圈交回來的東西，你最後真的採用了幾成。如果它改十次有八次你都得打掉重來，那這個迴圈沒在幫你，反而在浪費你的時間。採納率低，通常是兩個原因：清單沒寫清楚，AI 抓不到你的標準；或者這件事根本不適合做成迴圈。</p>
+    <div class="meaning"><b>看採納率，不看勤勞</b>衡量一個迴圈，看的是它每次交出來的東西，你採用的比例高不高。跑得勤不勤，不是重點。</div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>八、什麼時候才值得做成迴圈</h2>
+    <p>不是每件事都該做成迴圈。工程師圈自己的結論是「多數人現在還不需要迴圈」。值得做的事，要同時滿足幾個條件：</p>
+    <ul>
+      <li>這件事會<b>一直重複</b>做，不是只做一次</li>
+      <li>你<b>說得清楚</b>「怎樣算做完」，能寫成一張清單</li>
+      <li>就算 AI 多跑幾輪，你也<b>耗得起</b>那個時間跟成本</li>
+    </ul>
+    <div class="caveat"><b>先別急著自動化</b>如果一件事你只做一次，或你自己都講不清楚什麼叫做好，那它不適合做成迴圈，你手動做還比較快。</div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>九、三個坑，迴圈自己解不了，要你顧</h2>
+    <p>迴圈被講得太神，好像什麼都能交給它。但有三個坑，它自己跨不過去，要你顧著。</p>
+    <div class="caveat"><b>坑一：無聲的失敗</b>AI 會提早說「我做完了」，其實只做了一半。解法是那張驗收清單要夠客觀，能明確判斷過或不過，不能讓它自己說了算。</div>
+    <div class="caveat"><b>坑二：理解的落差</b>東西交得越快，你對它的內容越不熟。所以成品拿回來，你還是要讀，不能整圈跑完就直接用。</div>
+    <div class="caveat"><b>坑三：放棄判斷</b>迴圈跑久了，人很容易變成只會按確認鍵。這就是為什麼我堅持頭尾兩端一定是我自己。起想法是我，最後審核也是我。中間可以交給它，判斷不能交出去。</div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>十、建置順序：先手動跑穩，最後才自動</h2>
+    <p>最後講順序，因為跳步驟是迴圈翻車的主因。正確的順序是：</p>
+    <ol class="steplist">
+      <li>先讓這件事<b>手動跑順、跑到穩定</b></li>
+      <li>再把它整理成一張<b>清楚的清單</b></li>
+      <li>然後把清單<b>包成一個會自己跑的迴圈</b></li>
+      <li>最後真的需要了，才讓它<b>自動觸發</b></li>
+    </ol>
+    <p>我自己也是先手動寫了幾十篇文章，清楚知道每次在檢查什麼，才把那張清單交出去。清單是從真實經驗長出來的，不是憑空想的。</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>收尾：槓桿往上移一層</h2>
+    <p>把這篇收成一句話：你要學的，是把自己從「一直下指令的人」，變成「設計清單的人」。這跟會不會寫程式無關。</p>
+    <div class="meaning"><b>施力點往上移一層</b>以前你用力在「打字下一個指令」，現在你用力在「設計一個會自己下指令的系統」。同樣一份力氣，槓桿長很多。</div>
+    <p>而且會帶人、會設計流程、會反覆做同一類工作的人，其實比工程師更有條件做這件事。因為你早就有那張清單了，它只是還在你腦袋裡，沒被寫出來。我一直在做的，就是把這種你早就會、卻說不清楚的判斷，一條一條提煉出來，變成可以重複用的東西。</p>
+    <p>換你了。你做一件事之前，腦袋會自動跑哪幾個問題。那一圈，就是你可以設計成迴圈的東西。</p>
+  </div>
+</section>
+
+<section class="section faq">
+  <div class="inner">
+    <h2>常見問題</h2>
+    <h3>迴圈工程跟提示詞工程，我該學哪個？</h3>
+    <p>先把提示詞用熟，因為迴圈裡每一步還是靠提示詞。等你發現自己一直在重複叫 AI 做同一串步驟，那就是該把它包成迴圈的時候。</p>
+    <h3>我不會寫程式，也能做迴圈嗎？</h3>
+    <p>可以。這篇全程沒有任何程式。迴圈的核心是那張「怎樣算做完」的清單，跟你會不會寫程式無關，跟你清不清楚自己的標準有關。</p>
+    <h3>迴圈會不會讓 AI 失控、一直跑？</h3>
+    <p>會，如果你沒設停止條件。所以每個迴圈都要有一句「改到通過就停」或「轉兩三輪沒進展就停下來問我」。停止條件跟驗收清單一樣重要。</p>
+    <h3>什麼工作最適合先拿來做成迴圈？</h3>
+    <p>你最常重複、而且你說得清楚「怎樣算做好」的那件事。對我來說是寫文章。對你可能是回固定類型的客戶訊息、整理會議、做每週報表。</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>延伸閱讀</h2>
+    <ul class="readmore">
+      <li id="loop-to-intent-first" data-pending-link="intent-first-prompting">意圖優先：從提示詞工程到駕馭工程（即將發佈）　迴圈是你設計的循環，駕馭工程是你怎麼給 AI 目標跟底線，兩篇一起看。</li>
+      <li><a href="../docs-as-system-design-agent/">我的文件就是我的系統：非工程師怎麼設計 Agent</a>　把判斷寫成文件，就是把你的迴圈存下來的方法。</li>
+      <li><a href="../how-to-train-your-ai-employee/">如何訓練自己的 AI 員工：員工＋顧問框架</a>　從單一動作到一整套工作流，看判斷怎麼變成可重用的流程。</li>
+    </ul>
+  </div>
+</section>
+
+</main>
+
+<div class="cta-band">
+  <div class="section">
+    <div class="inner">
+      <h2>想把自己的工作流變成迴圈？</h2>
+      <p>我做的事，是把你早就會、卻說不清楚的判斷，一條一條提煉成可以重複用的清單。從一篇文章，到一整套 AI 協作。</p>
+      <div class="cta-card">
+        <b>跟著一起做</b>
+        <p>加入我的 LINE 社群，每個月有免費線上講座，帶你實際把一個工作流設計成會自己跑的迴圈。</p>
+        <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">加入 LINE 社群 ↗</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">江江教練 · AI 知識管理</div>
+    <div class="footer-links">
+      <a href="../../articles.html">← 回深度文章總站</a>
+      <a href="../../index.html">首頁</a>
+      <a href="../../learn.html">自學資源</a>
+      <a href="../../skills.html">Skills 下載</a>
+      <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">LINE 社群 ↗</a>
+      <a href="https://www.threads.com/@jiang_yude_coach" target="_blank" rel="noopener">Threads ↗</a>
+      <a href="https://vocus.cc/salon/Jiang_Coach" target="_blank" rel="noopener">方格子 ↗</a>
+    </div>
+    <div class="footer-note">這是一篇教學文章，整理我對「用我寫一篇文章的工作流，講清楚什麼是迴圈工程」的看法，供你參考。</div>
+  </div>
+</footer>
+
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <span class="lightbox-close" aria-label="關閉">×</span>
+  <img id="lightbox-img" src="" alt="放大檢視">
+</div>
+<script>
+(function(){
+  var box=document.getElementById('lightbox'),boxImg=document.getElementById('lightbox-img');
+  document.querySelectorAll('.hero-figure img,.inline-figure img').forEach(function(img){
+    img.addEventListener('click',function(){boxImg.src=img.currentSrc||img.src;boxImg.alt=img.alt||'放大檢視';box.classList.add('open');box.setAttribute('aria-hidden','false');});
+  });
+  function close(){box.classList.remove('open');box.setAttribute('aria-hidden','true');boxImg.src='';}
+  box.addEventListener('click',close);
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
+})();
+</script>
+
+<script src="../../spotlight.js"></script>
+<script src="../../articles-data.js"></script>
+<script src="../../related-render.js"></script>
+</body>
+</html>

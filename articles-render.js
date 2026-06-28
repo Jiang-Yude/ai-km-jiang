@@ -25,7 +25,7 @@
 
   // 依日期新到舊（最新在前）
   var articles = (window.ARTICLES || []).slice().sort(function (a, b) {
-    return (b.date || "").localeCompare(a.date || "");
+    return ((b.updated || b.date) || "").localeCompare((a.updated || a.date) || "");
   });
 
   var selected = new Set();   // "dim::tag"
@@ -176,7 +176,7 @@
     return '' +
       '<article class="list-card article-card" data-idx="' + idx + '">' +
         '<div class="card-meta">' +
-          '<span class="card-date">' + esc(a.date) + '</span>' +
+          '<span class="card-date">' + (a.updated && a.updated !== a.date ? '更新 ' + esc(a.updated) : esc(a.date)) + '</span>' +
           '<span class="badge ' + badge + '">' + esc(type) + '</span>' +
         '</div>' +
         '<h3><a href="' + esc(a.url) + '">' + esc(a.title) + '</a></h3>' +

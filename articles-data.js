@@ -242,7 +242,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["own-ai-team-at-work", "agent-workflow-builds-automation", "line-group-ai-workflow", "elon-musk-live-skill", "codex-log-health-check", "how-ai-connects-software", "meeting-record-agent-workflow", "decision-ladder-non-programmer", "tidy-mess-before-consulting", "diary-driven-agent-3x4", "docs-as-system-design-agent"]
+    related: ["own-ai-team-at-work", "agent-workflow-builds-automation", "line-group-ai-workflow", "elon-musk-live-skill", "codex-log-health-check", "how-ai-connects-software", "meeting-record-agent-workflow", "decision-ladder-non-programmer", "tidy-mess-before-consulting", "diary-driven-agent-3x4", "docs-as-system-design-agent", "what-is-loop-engineering"]
   },
 
   /* ── 13. LINE 群組也能變成 AI 工作流入口（教學）── */
@@ -376,6 +376,7 @@ window.ARTICLES = [
     id: "docs-as-system-design-agent",
     url: "articles/docs-as-system-design-agent/",
     date: "2026-06-25",
+    updated: "2026-06-27",
     title: "文件就是系統：非工程師怎麼設計 Agent 框架",
     problem: "不會寫程式，卡在「設計 Agent 好像是工程師的事」，不知道怎麼把一個角色做成會自己判斷的 AI。",
     audience: "會帶人、會設計流程，卻被「Agent 很技術」擋住的創作者、老師與經營者。",
@@ -386,7 +387,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: "https://vocus.cc/salon/Jiang_Coach" },
-    related: ["diary-driven-agent-3x4", "how-ai-connects-software", "how-to-train-your-ai-employee", "decision-ladder-non-programmer", "tidy-mess-before-consulting"]
+    related: ["diary-driven-agent-3x4", "how-ai-connects-software", "how-to-train-your-ai-employee", "decision-ladder-non-programmer", "tidy-mess-before-consulting", "what-is-loop-engineering"]
   },
 
   /* ── 21. 你以為在做一個成品，其實在養十個半成品（觀點）── */
@@ -441,6 +442,25 @@ window.ARTICLES = [
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: "https://vocus.cc/salon/Jiang_Coach" },
     related: ["docs-as-system-design-agent", "how-to-train-your-ai-employee", "knowledge-base-three-vault-split", "tidy-mess-before-consulting", "meeting-record-agent-workflow"]
+  },
+
+  /* ── 24. 用我寫一篇文章的工作流，講清楚什麼是迴圈工程（教學）── */
+  {
+    id: "what-is-loop-engineering",
+    url: "articles/what-is-loop-engineering/",
+    date: "2026-06-27",
+    updated: "2026-06-27",
+    title: "用我寫一篇文章的工作流，講清楚什麼是迴圈工程（Loop Engineering）",
+    problem: "你已經會用 AI，但每次做事都要一步一步叫它，叫到很累；聽過「要設計 loop，不要只寫提示詞」卻不知道那是什麼意思。",
+    audience: "常做同一類工作（寫文章、整理會議、回客戶），想把重複流程變成會自己跑完的迴圈的非工程師。",
+    summary: "全程不用程式，用我寫一篇文章的工作流，把迴圈工程講清楚：它跟提示詞差在哪、一個迴圈的五個階段與最少零件、什麼時候才值得做成迴圈。",
+    tags: {
+      topic: ["AI工作流", "工作流程", "提示詞設計", "AIAgent"],
+      level: ["基礎"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
+    related: ["docs-as-system-design-agent", "how-to-train-your-ai-employee"]
   }
 
 ];
