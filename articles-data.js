@@ -461,6 +461,25 @@ window.ARTICLES = [
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
     related: ["docs-as-system-design-agent", "how-to-train-your-ai-employee"]
+  },
+
+  /* ── 無形資產，越分享越豐盛（觀點）── */
+  {
+    id: "intangible-assets-grow-by-sharing",
+    url: "articles/intangible-assets-grow-by-sharing/",
+    date: "2026-06-28",
+    updated: "2026-06-28",
+    title: "無形資產，越分享越豐盛",
+    problem: "你天天在累積經驗、做判斷，但這些無形的東西好像留不下來，也換不成錢。",
+    audience: "想把自己的經驗、思維變成可以累積的資產，而不只是賣時間的知識工作者。",
+    summary: "從一顆蘋果跟一個微笑的故事講起，說明無形資產為什麼越分享越豐盛；在 AI 時代，經驗與判斷可以被放大成知識資本，並分享我從自媒體到數位商會、想成為無形資本家的前進階梯。",
+    tags: {
+      topic: ["知識管理", "AIAgent", "知識庫"],
+      level: ["基礎"],
+      content_type: ["觀點文章"]
+    },
+    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
+    related: ["how-to-train-your-ai-employee", "docs-as-system-design-agent"]
   }
 
 ];
