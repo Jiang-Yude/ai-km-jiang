@@ -53,7 +53,16 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
 .hero .wc1{width:420px;height:360px;top:-120px;right:-80px;background:#e8884b;opacity:.15}
 .hero .wc2{width:360px;height:300px;bottom:-110px;left:-70px;background:#5f7553;opacity:.13}
 .hero .wc3{width:280px;height:260px;top:34%;left:14%;background:#a08144;opacity:.10}
-.hero>div{flex:none;width:860px;max-width:100%;position:relative;z-index:2}
+.hero>div{flex:none;width:min(560px,100%);position:relative;z-index:2}
+.hero-figure{margin:0;width:340px;max-width:100%;flex:none;position:relative;z-index:2}
+.hero-figure img{display:block;width:100%;border-radius:16px;border:1px solid #d8cdb8;box-shadow:0 18px 45px rgba(107,74,42,.16);cursor:zoom-in}
+.inline-figure{margin:26px auto 8px;max-width:820px}
+.inline-figure.portrait{max-width:400px}
+.inline-figure img{display:block;width:100%;border-radius:14px;border:1px solid var(--line);box-shadow:var(--shadow);background:#fff;cursor:zoom-in}
+.inline-figure figcaption{font-size:14px;line-height:1.6;color:var(--muted);margin-top:10px;text-align:center}
+.lightbox{position:fixed;inset:0;z-index:10000;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(12,10,8,.92);cursor:zoom-out;backdrop-filter:blur(4px)}
+.lightbox.open{display:flex}.lightbox img{max-width:96vw;max-height:92vh;border-radius:10px;box-shadow:0 24px 60px rgba(0,0,0,.5)}
+.lightbox-close{position:fixed;top:18px;right:24px;color:#fff;font-size:34px;line-height:1;font-weight:700;cursor:pointer;opacity:.85}
 .kicker{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.55rem;color:#7a5c3a;font-weight:500}
 .hero h1{max-width:none;margin:16px 0 18px;font-size:clamp(34px,5.4vw,64px);line-height:1.1;overflow-wrap:anywhere}
 .hero p{max-width:none;font-size:clamp(18px,2vw,23px);line-height:1.62;color:#3a342d}
@@ -120,31 +129,34 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
   <div>
     <div class="kicker">AI 工作流 · 駕馭工程</div>
     <h1>當我開始理解迴圈，把三個工作流設計成 Loop</h1>
-    <p>以前我想的是怎麼寫一個更好的提示詞，現在我想的是怎麼設計一條會自己跑的迴圈。理解這個之後，我把自己原本就在做的三個工作流，設計成三條會自己跑的 loop：往外、往內、往回。</p>
+    <p>你不用會寫程式，只要會寫規則，就能讓 AI 有系統地照你的方法做事。把你常做的判斷寫成規則、交給 AI 一輪一輪自己跑，這就是你也能做的迴圈工程。這篇講我用它設計的三條 loop，以及你今天可以怎麼開始。</p>
     <div class="datemeta">發佈 2026-06-30 ｜ 最後更新 2026-06-30</div>
   </div>
+  <figure class="hero-figure">
+    <img src="../../images/articles/my-three-loops-01.jpg" alt="三條 loop 封面：當我開始理解迴圈，把三個工作流設計成迴圈">
+  </figure>
 </section>
 
 <main>
 
 <section class="section" id="start">
   <div class="inner">
-    <p class="lead">提示詞是一次性的：你問一句，它答一句，這一輪就結束，下次重來。迴圈不一樣，它會自己啟動、自己跑、關鍵的點才回來找你，而且這一輪的產出會變成下一輪的材料。這篇講我已經成形的三條 loop，以及把工作流變成迴圈跟寫提示詞差在哪。</p>
+    <p class="lead">你是不是每次都要把同樣的事，重新交代 AI 一遍？其實不用。你不用會寫程式，只要會寫規則，就能讓 AI 有系統地照你的方法做事。提示詞是「這一次幫我做這個」，做完就忘；規則是「以後每次都照這樣做」，寫一次，AI 一直照著跑。這篇講我用規則設計的三條 loop，以及你今天可以怎麼開始。</p>
     <div class="duo stack">
       <div class="card a">
         <b>適合誰</b>
         <ul>
           <li>每天用 AI 做事、卻覺得每次都在從頭交代的人</li>
           <li>想把重複工作變成會自己跑的流程，又不想只靠記憶的人</li>
-          <li>聽過迴圈工程、想看一個落到日常的具體版本的人</li>
+          <li>不會寫程式，但想更有系統地讓 AI 幫你做事的知識工作者</li>
         </ul>
       </div>
       <div class="card b">
         <b>你會得到什麼</b>
         <ul>
-          <li>提示詞與迴圈的差別，一句講清楚</li>
-          <li>三條可借用的 loop：發文、提煉、復盤</li>
-          <li>一個判斷：迴圈是地圖不是輸送帶，該停就停</li>
+          <li>為什麼不用會寫程式，只要會寫規則</li>
+          <li>提示詞與規則的差別，一次講白</li>
+          <li>三條可以直接借用的 loop，加一個今天就能做的第一步</li>
         </ul>
       </div>
     </div>
@@ -157,6 +169,11 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
     <p>提示詞是一次性的。你問一句，它答一句，這一輪就結束了。下一次你要重來。</p>
     <p>迴圈不一樣。它是一個會自己啟動、自己跑、關鍵的點才回來找你的循環。你把一件反覆要做的事，定義成幾個階段，每個階段有明確的輸入、輸出、完成條件，然後讓它一輪一輪跑。重點是它會回頭餵自己：這一輪的產出，會變成下一輪的材料。</p>
     <p>迴圈工程的細節我另外寫過一篇（連結放文末）。這裡只要先記住一句：提示詞是你每次推一下它動一下，迴圈是你設計好之後它自己會轉。</p>
+    <p>那你怎麼讓它自己轉？關鍵是寫規則，不用寫程式。把你平常怎麼判斷、怎麼做，用白話寫成幾條規則交給 AI，它就照著一輪一輪跑。會寫規則，你就能設計自己的迴圈。</p>
+    <figure class="inline-figure portrait">
+      <img src="../../images/articles/my-three-loops-02.jpg" alt="提示詞 vs 迴圈：提示詞問一句答一句，迴圈自己會跑" loading="lazy">
+      <figcaption>以前寫提示詞，現在設計迴圈</figcaption>
+    </figure>
   </div>
 </section>
 
@@ -171,21 +188,33 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
       <div class="flow"><span>日記</span><i>→</i><span>脆文</span><i>→</i><span>官網深度文</span><i>→</i><span>外部依受眾分流</span><i>→</i><span>延伸閱讀回官網</span></div>
       <p>把一個想法變成多平台內容。一個觀點先寫成日記，濃縮成脆文首發，值得深講就升級成官網的深度文當主檔，再按受眾分流到不同平台，所有外部版的延伸閱讀都連回官網。它是往外的：把腦袋裡的東西一層一層推到更多人面前，而且讓官網一直當中心。</p>
     </div>
+    <figure class="inline-figure portrait">
+      <img src="../../images/articles/my-three-loops-03.jpg" alt="發文迴圈：日記到脆文到官網深度文到外部分流到延伸閱讀回官網" loading="lazy">
+      <figcaption>發文迴圈 · 往外產出</figcaption>
+    </figure>
 
     <div class="loopcard in">
       <div class="dir">往內累積</div>
       <h3>二、隱性知識提煉迴圈</h3>
       <div class="flow"><span>提煉</span><i>→</i><span>部署</span><i>→</i><span>驗證</span></div>
-      <p>把自己的判斷變成 AI 用得上的規則，並確認它真的照做。先用提問把「說不清楚但會做」的判斷挖成顯性規則，再把規則裝進一個會自己跑的工作流持續用，最後用可機器檢查的方式確認 AI 真的照規則做了，而不是給你一堆假裝做完的東西。它是往內的：把最難被取代的判斷力，一條一條沉澱成自己的知識資產。</p>
+      <p>把自己的判斷變成 AI 用得上的規則，並確認它真的照做。先用提問把「說不清楚但會做」的判斷挖成顯性規則，再把規則裝進一個會自己跑的工作流持續用，最後用可機器檢查的方式確認 AI 真的照規則做了，沒有給你一堆假裝做完的東西。它是往內的：把最難被取代的判斷力，一條一條沉澱成自己的知識資產。</p>
       <p>這裡有一條我守得很緊的線：能寫成機器檢查的，只到「講得出來的判斷標準」這層；再往上的直覺跟價值觀，留給人自己把關，不硬塞給機器。</p>
     </div>
+    <figure class="inline-figure portrait">
+      <img src="../../images/articles/my-three-loops-04.jpg" alt="隱性知識提煉迴圈：提煉到部署到驗證" loading="lazy">
+      <figcaption>隱性知識提煉迴圈 · 往內累積</figcaption>
+    </figure>
 
     <div class="loopcard back">
       <div class="dir">往回改善</div>
       <h3>三、復盤迴圈</h3>
       <div class="flow"><span>精簡分流</span><i>→</i><span>治理</span><i>→</i><span>寫日記</span><i>→</i><span>寫回系統</span></div>
-      <p>做完一段工作之後，回頭把系統變好。先判斷這次的產出是內容還是基礎設施，該精簡的精簡；再看規則或技能包要不要調整；把過程寫成日記留痕；最後把學到的東西寫回對應的規則或技能包，讓下次更好。它是往回的：每做完一輪，系統就升一級，不是做完就算了。</p>
+      <p>做完一段工作之後，回頭把系統變好。先判斷這次的產出是內容還是基礎設施，該精簡的精簡；再看規則或技能包要不要調整；把過程寫成日記留痕；最後把學到的東西寫回對應的規則或技能包，讓下次更好。它是往回的：每做完一輪，系統就升一級，做完不是結束。</p>
     </div>
+    <figure class="inline-figure portrait">
+      <img src="../../images/articles/my-three-loops-05.jpg" alt="復盤迴圈：精簡分流到治理到寫日記到寫回系統" loading="lazy">
+      <figcaption>復盤迴圈 · 往回改善</figcaption>
+    </figure>
   </div>
 </section>
 
@@ -193,7 +222,11 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
   <div class="inner">
     <h2>三條怎麼合起來</h2>
     <p>把三個方向擺在一起就清楚了。發文往外、提煉往內、復盤往回，三條迴圈圍著同一個東西轉，就是我自己的知識庫跟系統。</p>
-    <p>提煉把判斷存進知識庫，發文把知識庫的東西推出去，復盤把每次的經驗寫回知識庫。存進來、推出去、改上去，三條接起來，知識庫就會越轉越厚，而不是停在原地。</p>
+    <p>提煉把判斷存進知識庫，發文把知識庫的東西推出去，復盤把每次的經驗寫回知識庫。存進來、推出去、改上去，三條接起來，知識庫就會越轉越厚，不會停在原地。</p>
+    <figure class="inline-figure portrait">
+      <img src="../../images/articles/my-three-loops-06.jpg" alt="一頁總結：發文往外、提煉往內、復盤往回，三條圍著知識庫轉" loading="lazy">
+      <figcaption>一頁總結 · 三條圍著知識庫轉</figcaption>
+    </figure>
     <div class="meaning">
       <b>跟寫提示詞最大的差別</b>
       提示詞每次都從零開始，迴圈每轉一圈都讓你的系統長一點。
@@ -207,6 +240,7 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
     <p>最後補一句，免得誤會。設計成迴圈，不代表每件事都要把整條跑完。迴圈是一張地圖，標出可以往哪走，不是一條停不下來的輸送帶。</p>
     <p>我只想記一個想法，就停在日記；想公開講一下，就停在脆文；真的值得深講，才往官網升級。該停就停，報酬遞減就收，不為了跑完而跑完。</p>
     <p>迴圈給我的好處很實在：同一件事不用每次重來。這對知識工作者來說，是把時間從重複勞動，換到真正會累積的地方。協定、工具、模型都會一直變，但把自己反覆做的事設計成會自己跑、又會回頭餵自己的迴圈，這個能力會一直有用。</p>
+    <p>如果你想開始，今天先做一件事就好：把你最常重複交代 AI 的那句話寫下來，當你的第一條規則。你不用會寫程式，會寫規則，就已經在設計自己的迴圈了。</p>
     <div class="relbox">延伸閱讀：<a href="../what-is-loop-engineering/">迴圈工程是什麼：用我寫一篇文章的工作流講清楚 →</a></div>
   </div>
 </section>
@@ -245,6 +279,21 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
   </div>
 </footer>
 
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <span class="lightbox-close" aria-label="關閉">×</span>
+  <img id="lightbox-img" src="" alt="放大檢視">
+</div>
+<script>
+(function(){
+  var box=document.getElementById('lightbox'),boxImg=document.getElementById('lightbox-img');
+  document.querySelectorAll('.hero-figure img,.inline-figure img').forEach(function(img){
+    img.addEventListener('click',function(){boxImg.src=img.currentSrc||img.src;boxImg.alt=img.alt||'放大檢視';box.classList.add('open');box.setAttribute('aria-hidden','false');});
+  });
+  function close(){box.classList.remove('open');box.setAttribute('aria-hidden','true');boxImg.src='';}
+  box.addEventListener('click',close);
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
+})();
+</script>
 <script src="../../spotlight.js"></script>
 <script src="../../articles-data.js"></script>
 <script src="../../related-render.js"></script>

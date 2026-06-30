@@ -460,7 +460,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["docs-as-system-design-agent", "how-to-train-your-ai-employee"]
+    related: ["docs-as-system-design-agent", "how-to-train-your-ai-employee", "my-three-loops"]
   },
 
   /* ── 無形資產，越分享越豐盛（觀點）── */
@@ -552,6 +552,25 @@ window.ARTICLES = [
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
     related: ["agent-workflow-builds-automation"]
+  },
+
+  /* ── 當我開始理解迴圈，把三個工作流設計成 Loop（觀點）── */
+  {
+    id: "my-three-loops",
+    url: "articles/my-three-loops/",
+    date: "2026-06-30",
+    updated: "2026-06-30",
+    title: "當我開始理解迴圈，把三個工作流設計成 Loop",
+    problem: "每天用 AI 做事，卻每次都要把同樣的事重新交代一遍，覺得不夠有系統、又怕這要會寫程式才做得到。",
+    audience: "不會寫程式、但想更有系統地讓 AI 幫自己做事的知識工作者、一人公司與小團隊。",
+    summary: "你不用會寫程式，只要會寫規則，就能讓 AI 有系統地照你的方法做事。提示詞是這次幫我做這個，規則是以後每次都照這樣做。用三條我自己在跑的 loop 當例子，加一個今天就能做的第一步。",
+    tags: {
+      topic: ["AI工作流", "AIAgent", "工作流程"],
+      level: ["基礎"],
+      content_type: ["觀點文章"]
+    },
+    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
+    related: ["what-is-loop-engineering"]
   }
 
 ];
