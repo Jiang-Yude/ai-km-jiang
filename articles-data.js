@@ -102,7 +102,7 @@ window.ARTICLES = [
       content_type: ["趨勢文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["elon-musk-live-skill", "ai-capability-tiers"]
+    related: ["elon-musk-live-skill", "ai-capability-tiers", "company-shape-is-the-moat"]
   },
   {
     id: "demis-hassabis-agi-science-ai",
@@ -170,7 +170,7 @@ window.ARTICLES = [
       content_type: ["觀點文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: "https://vocus.cc/salon/Jiang_Coach" },
-    related: ["ai-capability-tiers"]
+    related: ["ai-capability-tiers", "company-shape-is-the-moat"]
   },
 
   /* ── 9. 知識庫太大，改成三庫分流（教學）── */
@@ -368,7 +368,7 @@ window.ARTICLES = [
       content_type: ["觀點文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: "https://vocus.cc/salon/Jiang_Coach" },
-    related: ["ai-king-off-battlefield", "demis-hassabis-agi-science-ai", "spacex-ipo-musk-trillionaire-knowledge-work", "ai-market-microcosm", "vibe-coding-ten-half-products", "apple-wwdc26-siri-lobster-ai"]
+    related: ["ai-king-off-battlefield", "demis-hassabis-agi-science-ai", "spacex-ipo-musk-trillionaire-knowledge-work", "ai-market-microcosm", "vibe-coding-ten-half-products", "apple-wwdc26-siri-lobster-ai", "company-shape-is-the-moat"]
   },
 
   /* ── 20. 文件就是系統：非工程師怎麼設計 Agent 框架（教學）── */
@@ -479,7 +479,7 @@ window.ARTICLES = [
       content_type: ["觀點文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["how-to-train-your-ai-employee", "docs-as-system-design-agent"]
+    related: ["how-to-train-your-ai-employee", "docs-as-system-design-agent", "company-shape-is-the-moat"]
   },
 
   /* ── 當 AI 代理開始互相對話：A2A 機制（趨勢）── */
@@ -571,6 +571,24 @@ window.ARTICLES = [
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
     related: ["what-is-loop-engineering"]
+  },
+
+  /* ── 公司護城河：組織模式、共識、影響力與信任（觀點）── */
+  {
+    id: "company-shape-is-the-moat",
+    url: "articles/company-shape-is-the-moat/",
+    date: "2026-06-30",
+    title: "AI 時代真正的護城河：組織模式、共識、影響力與使用者信任",
+    problem: "模型、產品、技術都被快速複製，搞不清楚 AI 時代一家公司還剩下什麼別人拿不走。",
+    audience: "在建團隊或一人公司、或正在選擇加入哪家公司，想知道什麼值得長期投資的人。",
+    summary: "創投人 Jaya Gupta 主張護城河是公司長成的樣子，我整理她的論述，再補上更具體的看法：組織模式像骨架可以照畫，真正抄不走的是共識、影響力與使用者信任這些時間長出來的累積。",
+    tags: {
+      topic: ["AI趨勢", "知識管理"],
+      level: ["基礎"],
+      content_type: ["觀點文章"]
+    },
+    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
+    related: ["intangible-assets-grow-by-sharing", "ai-king-off-battlefield", "spacex-ipo-musk-trillionaire-knowledge-work", "ai-capability-tiers", "own-ai-team-at-work"]
   }
 
 ];
