@@ -480,6 +480,44 @@ window.ARTICLES = [
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
     related: ["how-to-train-your-ai-employee", "docs-as-system-design-agent"]
+  },
+
+  /* ── 當 AI 代理開始互相對話：A2A 機制（趨勢）── */
+  {
+    id: "a2a-agent-protocol",
+    url: "articles/a2a-agent-protocol/",
+    date: "2026-06-28",
+    updated: "2026-06-28",
+    title: "當 AI 代理開始互相對話：A2A 機制，以及我怎麼讓人和 AI 都讀得懂我",
+    problem: "聽過 AI Agent，但不知道「代理互相協作」到底在講什麼，也不知道現在能先準備什麼。",
+    audience: "想搞懂 AI 代理之間怎麼協作、又想知道自己現在能先做什麼準備的個人工作者與小團隊。",
+    summary: "用白話拆解 Google A2A 協定的三件事：自我介紹、交辦、傳輸；再講我怎麼把同一套思路用在自己的名片和知識官網，為人也為 AI 設計。附四步準備與名片試用。",
+    tags: {
+      topic: ["AIAgent", "AI趨勢", "AI工作流"],
+      level: ["基礎"],
+      content_type: ["趨勢文章"]
+    },
+    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
+    related: ["market-to-ai"]
+  },
+
+  /* ── 可以學用 AI 行銷，還可以學對 AI 行銷（觀點）── */
+  {
+    id: "market-to-ai",
+    url: "articles/market-to-ai/",
+    date: "2026-06-29",
+    updated: "2026-06-29",
+    title: "現在這個時間點，可以學「用 AI 行銷」，還可以學「對 AI 行銷」",
+    problem: "現在才要開始學行銷，不知道時間該花在用 AI 做行銷，還是別的地方。",
+    audience: "現在才要開始學行銷，靠專業被看見的個人工作者、一人公司與中小團隊。",
+    summary: "當 AI 開始幫人做決定，行銷的對象就多出一個 AI。用 AI 行銷是把 AI 當工具，對 AI 行銷是把 AI 當受眾。兩件都值得學，但對 AI 行銷現在才剛打開、還沒擠。附四步開始與名片自測。",
+    tags: {
+      topic: ["AI趨勢", "AIAgent", "差異比較"],
+      level: ["基礎"],
+      content_type: ["觀點文章"]
+    },
+    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
+    related: ["a2a-agent-protocol"]
   }
 
 ];

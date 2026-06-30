@@ -1,0 +1,284 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="index,follow">
+<title>當 AI 代理開始互相對話：A2A 機制，以及我怎麼讓人和 AI 都讀得懂我｜江江教練 · AI 知識管理</title>
+<meta name="description" content="Google A2A（Agent2Agent）協定在做什麼，用白話拆解 Agent Card、Task、Transport 三件事；再講我怎麼把同一套思路用在自己的 AI 名片與知識官網上，為人也為 AI 設計，好找好讀好用。文末附名片試用方式。">
+<link rel="canonical" href="https://ai-km-jiang.vercel.app/articles/a2a-agent-protocol/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="當 AI 代理開始互相對話：A2A 機制，以及我怎麼讓人和 AI 都讀得懂我｜江江教練">
+<meta property="og:image" content="https://ai-km-jiang.vercel.app/images/intro-jiang.png">
+<meta property="og:description" content="A2A 協定在做什麼，用白話拆解三件事；再講我怎麼把這套思路用在自己的 AI 名片與知識官網，為人也為 AI 設計。">
+<meta property="og:url" content="https://ai-km-jiang.vercel.app/articles/a2a-agent-protocol/">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:site_name" content="江江教練 · AI 知識管理">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="當 AI 代理開始互相對話：A2A 機制，以及我怎麼讓人和 AI 都讀得懂我｜江江教練">
+<meta name="twitter:image" content="https://ai-km-jiang.vercel.app/images/intro-jiang.png">
+<meta name="twitter:description" content="A2A 協定在做什麼，用白話拆解三件事；再講我怎麼把這套思路用在自己的 AI 名片與知識官網。">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"當 AI 代理開始互相對話：A2A 機制，以及我怎麼讓人和 AI 都讀得懂我","description":"Google A2A（Agent2Agent）協定在做什麼，用白話拆解 Agent Card、Task、Transport 三件事；再講我怎麼把同一套思路用在自己的 AI 名片與知識官網上，為人也為 AI 設計。","author":{"@type":"Person","name":"江昱德","alternateName":"江江教練","jobTitle":"隱性知識提煉師、AI 應用規劃師"},"isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://ai-km-jiang.vercel.app/"},"inLanguage":"zh-Hant","datePublished":"2026-06-28","dateModified":"2026-06-28","url":"https://ai-km-jiang.vercel.app/articles/a2a-agent-protocol/"}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{--ink:#1a1612;--paper:#fefcf8;--muted:#6a635a;--line:#d8cdb8;--green:#5f7553;--blue:#5689b8;--orange:#e85a4f;--soft:#faf5ec;--dark:#2a2018;--shadow:0 18px 45px rgba(107,74,42,.14);--sp-shadow:hsla(35,50%,60%,.15);--sp-shadow-edge:hsla(35,50%,68%,.03);--sp-radius:400px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC","Segoe UI",sans-serif}
+a{color:inherit}
+nav.top{position:sticky;top:0;background:rgba(254,252,248,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid #d8cdb8;z-index:100}
+nav.top .container{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:24px;padding:14px 32px}
+.nav-brand-img{justify-self:start;display:flex;align-items:center;text-decoration:none;flex-shrink:0;transition:opacity .2s}
+.nav-brand-img:hover{opacity:.8}.nav-brand-img img{height:40px;width:auto;display:block}
+nav.top ul.nav-menu{justify-self:end;display:flex;gap:22px;list-style:none;margin:0;padding:0;font-size:.95rem;white-space:nowrap}
+nav.top ul.nav-menu a{color:#3a342d;text-decoration:none;transition:color .2s;font-weight:500;white-space:nowrap}
+nav.top ul.nav-menu a:hover{color:#1a1612}nav.top ul.nav-menu a.active{color:#1a1612;font-weight:700}
+.nav-toggle{display:none;background:none;border:none;padding:6px;cursor:pointer;width:36px;height:36px;position:relative}
+.nav-toggle span{display:block;position:absolute;left:8px;right:8px;height:2px;background:#1a1612;border-radius:2px;transition:transform .25s,opacity .25s,top .25s}
+.nav-toggle span:nth-child(1){top:11px}.nav-toggle span:nth-child(2){top:17px}.nav-toggle span:nth-child(3){top:23px}
+.nav-toggle.open span:nth-child(1){top:17px;transform:rotate(45deg)}.nav-toggle.open span:nth-child(2){opacity:0}.nav-toggle.open span:nth-child(3){top:17px;transform:rotate(-45deg)}
+@media(max-width:860px){
+ nav.top .container{grid-template-columns:auto 1fr auto;padding:10px 16px;gap:12px}
+ .nav-brand-img img{height:32px}
+ .nav-toggle{display:block;justify-self:end}
+ nav.top ul.nav-menu{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(254,252,248,.98);backdrop-filter:blur(14px);border-bottom:1px solid #d8cdb8;flex-direction:column;gap:0;padding:8px 0;box-shadow:0 10px 24px rgba(107,74,42,.08)}
+ nav.top ul.nav-menu.open{display:flex}
+ nav.top ul.nav-menu li{border-bottom:1px solid #e8dfc9}
+ nav.top ul.nav-menu li:last-child{border-bottom:none}
+ nav.top ul.nav-menu a{display:block;padding:14px 20px;font-size:1.06rem}
+}
+body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradient(var(--sp-radius) circle at var(--mx,50%) var(--my,50%),var(--sp-shadow) 0%,var(--sp-shadow-edge) 45%,transparent 75%);pointer-events:none;z-index:9999;mix-blend-mode:multiply;transition:background .06s linear}
+.hero{position:relative;overflow:hidden;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:72px;padding:96px clamp(20px,6vw,88px) 72px;background:linear-gradient(180deg,#fffcf0 0%,#f9e9d2 100%);color:#1a1612;border-bottom:1px solid #d8cdb8}
+.hero .wc{position:absolute;border-radius:50%;filter:blur(60px);pointer-events:none;z-index:0}
+.hero .wc1{width:420px;height:360px;top:-120px;right:-80px;background:#e8884b;opacity:.15}
+.hero .wc2{width:360px;height:300px;bottom:-110px;left:-70px;background:#5f7553;opacity:.13}
+.hero .wc3{width:280px;height:260px;top:34%;left:14%;background:#a08144;opacity:.10}
+.hero>div{flex:none;width:860px;max-width:100%;position:relative;z-index:2}
+.kicker{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.55rem;color:#7a5c3a;font-weight:500}
+.hero h1{max-width:none;margin:16px 0 18px;font-size:clamp(34px,5.4vw,64px);line-height:1.1;overflow-wrap:anywhere}
+.hero p{max-width:none;font-size:clamp(18px,2vw,23px);line-height:1.62;color:#3a342d}
+.datemeta{font-size:14px;color:var(--muted);margin-top:18px;font-weight:500}
+.section{padding:54px clamp(20px,6vw,88px);border-top:1px solid var(--line)}
+.inner{width:min(1000px,100%);margin:0 auto}
+.section h2{font-size:clamp(26px,4.2vw,46px);line-height:1.14;margin:0 0 18px}
+.section h3{font-size:clamp(20px,3vw,27px);line-height:1.22;margin:28px 0 10px;color:#2a2018}
+.lead{font-size:clamp(18px,1.6vw,22px);line-height:1.7;color:#3a342d;max-width:900px}
+.section p{font-size:18px;line-height:1.78;color:#3a342d}.section p+p{margin-top:14px}
+.section ul,.section ol{padding-left:1.4em;font-size:18px;line-height:1.78;color:#3a342d}.section li{margin-bottom:10px}
+.meaning{margin:22px 0;padding:16px 18px;border-left:5px solid var(--blue);background:rgba(86,137,184,.12);border-radius:6px;line-height:1.72;font-size:19px}
+.meaning b{display:block;color:var(--blue);margin-bottom:4px}
+.caveat{margin:18px 0 8px;padding:16px 18px;border-left:5px solid var(--orange);background:rgba(232,90,79,.1);border-radius:6px;line-height:1.7;font-size:17px;color:#3a342d}
+.caveat b{display:block;color:var(--orange);margin-bottom:4px}
+.trybox{margin:24px 0;padding:22px;border:1px solid var(--green);background:#f3f7f1;border-radius:10px;box-shadow:0 8px 22px rgba(95,117,83,.12)}
+.trybox b{display:block;color:#4a7a59;font-size:19px;margin-bottom:10px}
+.trybox .code{font:500 15px/1.62 "JetBrains Mono",ui-monospace,Menlo,monospace;background:#fbfdfa;border:1px solid #cfe0d2;border-radius:8px;padding:14px 16px;margin:12px 0;color:#2a2018;white-space:pre-wrap;word-break:break-all}
+.trybox .go{display:inline-block;text-decoration:none;background:#5f7553;color:#fff;border-radius:8px;padding:11px 18px;font-weight:900;font-size:15px;margin-top:4px}
+.duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:24px}
+.duo.stack{grid-template-columns:1fr}
+.duo .card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:22px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.duo .card.a{border-color:var(--orange)}.duo .card.b{border-color:var(--green);box-shadow:0 8px 24px rgba(95,117,83,.16)}
+.duo .card b{display:block;font-size:21px;line-height:1.3;margin-bottom:12px}.duo .card.a b{color:#c0512f}.duo .card.b b{color:#4a7a59}
+.duo .card ul{margin:0;font-size:17px}
+.steplist{counter-reset:step;list-style:none;padding-left:0;margin:18px 0 0}
+.steplist li{position:relative;padding:4px 0 16px 52px;margin:0;border-left:2px solid var(--line);margin-left:16px}
+.steplist li:last-child{border-left-color:transparent}
+.steplist li::before{counter-increment:step;content:counter(step);position:absolute;left:-17px;top:0;width:32px;height:32px;border-radius:50%;background:var(--green);color:#fff;font:900 15px/32px "JetBrains Mono",monospace;text-align:center}
+.steplist b{color:#2a2018}
+.cta-band{background:#e6f0e5;color:#3a342d}.cta-band .section{border-top:none}
+.cta-band .inner{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(260px,.85fr);gap:26px;align-items:start}
+.cta-band h2{font-size:clamp(26px,4vw,44px);margin:0 0 16px}.cta-band p{color:rgba(58,52,45,.9);font-size:18px;line-height:1.72}
+.cta-card{border:1px solid #cfe0d2;background:#fbfdfa;border-radius:8px;padding:22px}
+.cta-card b{display:block;color:#48b178;margin-bottom:10px;font-size:18px}.cta-card p{margin:0 0 14px}
+.cta-card a{display:inline-block;text-decoration:none;background:#5f7553;color:#fff;border-radius:8px;padding:11px 16px;font-weight:900;font-size:15px}
+.footer{padding:30px clamp(20px,6vw,88px);font-size:14px;color:var(--muted);background:#fff;border-top:1px solid var(--line)}
+.footer-inner{width:min(1000px,100%);margin:0 auto}
+.footer-links{display:flex;flex-wrap:wrap;gap:6px 12px;margin-bottom:14px}.footer-links a{color:var(--blue);font-weight:900;text-decoration:none;font-size:14px}
+.footer-brand{font-weight:900;font-size:15px;margin-bottom:10px}.footer-note{font-size:13px;line-height:1.6}
+@media(max-width:820px){.duo{grid-template-columns:1fr}.cta-band .inner{grid-template-columns:1fr}.section{padding:40px 20px}.hero{min-height:42vh;flex-direction:column;justify-content:flex-start;align-items:flex-start;gap:24px}.hero>div{width:100%}html,body{overflow-x:hidden}.hero h1{word-break:break-word}}
+</style>
+</head>
+<body class="spotlight">
+<nav class="top">
+  <div class="container">
+    <a class="nav-brand-img" href="../../index.html"><img src="../../images/footer-signature.png" alt="江江教練 | 江昱德"></a>
+    <button class="nav-toggle" aria-label="選單"><span></span><span></span><span></span></button>
+    <ul class="nav-menu">
+      <li><a href="../../index.html">首頁</a></li>
+      <li><a href="../../offers.html">收費課程</a></li>
+      <li><a href="../../courses.html">免費講座</a></li>
+      <li><a href="../../invited-talks.html">邀約授課</a></li>
+      <li><a href="../../articles.html" class="active">深度文章</a></li>
+      <li><a href="../../skills.html">Skills 下載</a></li>
+      <li><a href="../../cases.html">服務方案</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="wc wc1"></div>
+  <div class="wc wc2"></div>
+  <div class="wc wc3"></div>
+  <div>
+    <div class="kicker">AI 趨勢 · 代理協作</div>
+    <h1>當 AI 代理開始互相對話：A2A 機制，以及我怎麼讓人和 AI 都讀得懂我</h1>
+    <p>過去兩年，大家在學的是怎麼跟 AI 對話。接下來要看的，是 AI 怎麼跟 AI 對話。我先把 Google A2A 協定的機制講清楚，再講我怎麼把同一套思路，用在自己的名片和知識官網上。</p>
+    <div class="datemeta">發佈 2026-06-28 ｜ 最後更新 2026-06-28</div>
+  </div>
+</section>
+
+<main>
+
+<section class="section" id="start">
+  <div class="inner">
+    <p class="lead">2025 年 4 月，Google 發表了一個叫 A2A（Agent2Agent）的開放協定，要解決一個很具體的問題：讓不同公司、不同框架做出來的 AI 代理，能夠互相發現、交辦任務、協調工作。同年 6 月，它交由 Linux 基金會治理，成為一個廠商中立的開源專案，到 2026 年，夥伴與社群名單已經超過 150 個組織。微軟、AWS、Salesforce、SAP、ServiceNow 等陸續公開表態支援，部分已進入測試或導入階段。</p>
+    <div class="duo stack">
+      <div class="card a">
+        <b>適合誰</b>
+        <ul>
+          <li>聽過 AI Agent、想知道「代理互相協作」到底在講什麼的人</li>
+          <li>個人工作者、一人公司、帶小團隊，想知道現在能先準備什麼的人</li>
+          <li>想讓自己的服務與作品，未來也被別人的 AI 找得到的人</li>
+        </ul>
+      </div>
+      <div class="card b">
+        <b>你會得到什麼</b>
+        <ul>
+          <li>用白話拆解 A2A 的三件事：自我介紹、交辦、傳輸</li>
+          <li>一個可以照做的觀念：為人也為 AI 設計，好找好讀好用</li>
+          <li>四個現在就能動手的準備，外加一個你可以立刻試的小實驗</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>一、A2A 到底在做什麼</h2>
+    <p>先講清楚它跟另一個常被混在一起的協定的差別。</p>
+    <div class="duo">
+      <div class="card a">
+        <b>MCP　代理對工具</b>
+        <ul><li>Anthropic 的協定，讓一個 AI 代理去接資料庫、接 API、接檔案系統。往下接工具。</li></ul>
+      </div>
+      <div class="card b">
+        <b>A2A　代理對代理</b>
+        <ul><li>Google 的協定，讓一個 AI 代理去呼叫、交辦另一個 AI 代理。往旁邊接同類。</li></ul>
+      </div>
+    </div>
+    <p>兩者實務上會重疊也會互相轉接，多數企業架構現在是兩個一起用。A2A 的機制其實不複雜，懂 REST API 的人會很快進入狀況。它定義三件事。</p>
+
+    <h3>第一，代理怎麼自我介紹（Agent Card）</h3>
+    <p>每個代理在一個固定網址（<code>/.well-known/agent-card.json</code>）放一張 JSON 名片，寫清楚自己會做什麼、吃什麼格式的輸入輸出、要用哪種驗證、任務要送到哪個端點。別的代理讀這張名片，就知道該不該把工作交給它。</p>
+
+    <h3>第二，工作怎麼交辦（Task）</h3>
+    <p>代理之間交換的是結構化的任務訊息，帶著動作、輸入輸出格式、參數。一個代理可以把一段工作丟給另一個代理，等它回報結果。</p>
+
+    <h3>第三，怎麼傳（Transport）</h3>
+    <p>主要走現成的 Web 標準：HTTP(S)、JSON-RPC 2.0、Server-Sent Events。需要即時回報就用 SSE 串流，需要一問一答就用 JSON-RPC；新版規格也定義了 REST 與 gRPC 的綁定方式。沒有太多新標準要學。</p>
+
+    <div class="meaning">
+      <b>一句話</b>
+      A2A 做的就是一件事：讓 AI 代理像服務一樣，能被別的代理找到、呼叫、協作。你可以把它理解成代理之間協作的一種共同語言。它離 HTTP 那種人人預設、無所不在的通用基礎設施還很早，但方向是往那裡走的。
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>二、它鬆動了什麼</h2>
+    <p>機制聽起來像技術細節，但它鬆動的是商業互動的底層假設。</p>
+    <p>過去跨公司的協調，雖然早就有 API、EDI 和各種自動化在跑，但規格怎麼談、例外怎麼處理、一件事怎麼拆成步驟，仍然高度依賴人。當代理可以互相對話，這層會慢慢自動化：你的個人代理去跟某家公司的客服代理談規格、比價格、確認庫存，談完才把選項收斂給你。人從每一個環節，退到關鍵節點。</p>
+    <p>這個方向是不是已經全面發生？還沒有。據 Gartner 轉述，企業應用內嵌 AI 代理的比例正在快速上升，但多數組織說自己在用代理，真正進到正式環境的其實還是少數。換句話說，協定正在成熟，瓶頸移到了組織這一端：誰先把自己的資料、流程、邊界整理好，誰就先接得上。</p>
+    <p>所以與其追數字，我更想講一件我自己已經在做的事。</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>三、我怎麼做的：為人也為 AI 設計</h2>
+    <p>我做東西的時候，會問一個現在很多人還沒問的問題：這份東西，除了給人看，能不能也給 AI 讀。</p>
+    <p>這裡有個現實要先講清楚。現在絕大多數情況，還是人類用肉眼看、用雙手操作。所以我不會只為 AI 設計，把網頁做成一份人看不懂的資料。我的標準是一份東西要讓人跟 AI 都好找、好讀、好用：人用眼睛掃過去是一個乾淨、好懂的版面；AI 來讀，是一份它接得住、調得動、用得上的結構化資料。同一份內容，兩種讀者都照顧到。</p>
+    <p>我把這個標準先用在兩個地方。</p>
+    <div class="duo">
+      <div class="card a">
+        <b>我的 AI 名片</b>
+        <ul><li>表面是一個 LinkedIn 風格的個人頁，給人看。我同時放了一份 <code>llms.txt</code> 和結構化資料，讓任何 AI 讀了就知道我是誰、我能幫什麼、該怎麼代我接待訪客。不只被人看，也可以被別人的 AI 讀。</li></ul>
+      </div>
+      <div class="card b">
+        <b>我的知識官網</b>
+        <ul><li>同一套思路。文章除了給人讀，也整理成 AI 容易抓取、容易引用的結構，讓別人的 AI 來查資料時，找得到我、讀得懂我寫的東西。</li></ul>
+      </div>
+    </div>
+    <p>這就是 A2A 那張 Agent Card 在講的事，只是我把它落到一個個人工作者能做的尺度：先讓自己被 AI 找得到、讀得懂，未來別人的代理要找人、找資料、找合作對象時，你才在桌上。</p>
+
+    <div class="trybox">
+      <b>你可以現在就試一次</b>
+      <p style="margin:0 0 4px">把我的名片網址貼進你常用的 AI，比如 ChatGPT 或 Gemini，再加一句你的職業跟你想解決的問題：</p>
+      <div class="code">https://jiang-yude.github.io/jiang-card/
+
+我是一名 ＿＿＿，我想解決 ＿＿＿，
+請讀這個連結，幫我判斷他能幫上我什麼。</div>
+      <p style="margin:0 0 12px">它讀完，就會站在你的角度，幫我跟你做一段自我介紹，告訴你以你的身份，我可能在哪裡幫得上忙。你用眼睛看，是一個乾淨的網頁；你的 AI 來讀，是一份它接得住的資料。這就是我說的，為人也為 AI 設計。</p>
+      <a class="go" href="https://jiang-yude.github.io/jiang-card/" target="_blank" rel="noopener">打開我的 AI 名片 ↗</a>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>四、你現在可以做的準備</h2>
+    <p>回到你身上。不管你是個人工作者還是帶團隊，現在有幾件事可以先做。</p>
+    <ol class="steplist">
+      <li><b>盤點流程，而不是先買工具。</b>先問「我手上哪些工作是固定步驟、會重複、有明確輸入輸出」，那些就是未來最可能被代理接手的環節。台灣的中小團隊可以先挑五個高頻流程下手，像報價、客服、會議整理、提案初稿、知識庫搜尋。每個流程記下幾個欄位：觸發條件、輸入資料、輸出成果、現在用什麼工具、資料是誰的、做錯的代價、要誰審核。</li>
+      <li><b>把工作拆成代理接得住的步驟。</b>把每個流程的步驟分成三欄：人判斷、工具查詢、代理可代做。重點是不要把一整件事丟給代理。以客服回覆為例，它應該被拆成「讀取問題、查 FAQ、草擬回覆、人工確認、送出」，其中只有中間幾步適合代理代做，每一個代做步驟都要寫明輸入、輸出、完成標準。</li>
+      <li><b>把自己整理成人和 AI 都讀得懂的樣子。</b>這就是我在做的事。你的服務、作品、專長，除了有給人看的版面，也整理成一份 AI 讀得懂的資料，讓別人的 AI 來找人、找合作時，找得到你、讀得懂你。好找、好讀、好用，人和 AI 兩種讀者一起顧。</li>
+      <li><b>先想清楚資料邊界與審核點。</b>哪些資料絕對不能丟給外部代理，先畫紅線：個資、客戶合約、財務資料、未公開策略。哪些動作一定要人簽核，先列清楚：對外送出、付款、刪除或修改客戶資料。每一次代理的操作都要留下紀錄。這些規則越早立，未來放手時越安全。</li>
+    </ol>
+    <div class="meaning">
+      <b>收束</b>
+      A2A 把「代理能互相協作」從各家自己玩，變成有共同標準的公共建設。它提醒我的，是接下來真正稀缺的能力，會從「會用 AI」移到「會設計流程、會拆任務、會審核輸出、會把自己整理成人和 AI 都讀得懂的樣子」。協定的部分，巨頭已經在鋪。剩下能不能接得上，看的是我們自己有沒有先把流程、邊界，還有自己這個人，整理成找得到、讀得懂、用得上的樣子。
+    </div>
+  </div>
+</section>
+
+<section class="cta-band">
+  <div class="section">
+    <div class="inner">
+      <div>
+        <h2>想把自己整理成人和 AI 都讀得懂的樣子？</h2>
+        <p>我是江江教練，隱性知識提煉師、AI 應用規劃師。我每月固定舉辦兩場免費線上講座，分享怎麼把 AI 變成思考夥伴、怎麼把自己的知識與經驗整理成提示詞、技能包、知識庫，讓人和 AI 都用得上。想持續學習，或有顧問需求，都歡迎先從社群開始。</p>
+      </div>
+      <div class="cta-card">
+        <b>先看我的 AI 名片</b>
+        <p>把它丟進你的 AI，讓它依你的身份幫我做自我介紹。</p>
+        <a href="https://jiang-yude.github.io/jiang-card/" target="_blank" rel="noopener">打開 AI 名片 ↗</a>
+        <p style="margin:14px 0 0"><a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener" style="color:#5f7553;font-weight:900;text-decoration:none">加入 LINE 社群 ↗</a></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">江江教練 · AI 知識管理</div>
+    <div class="footer-links">
+      <a href="../../articles.html">← 回深度文章總站</a>
+      <a href="../../index.html">首頁</a>
+      <a href="../../learn.html">自學資源</a>
+      <a href="../../skills.html">Skills 下載</a>
+      <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">LINE 社群 ↗</a>
+      <a href="https://www.threads.com/@jiang_yude_coach" target="_blank" rel="noopener">Threads ↗</a>
+      <a href="https://vocus.cc/salon/Jiang_Coach" target="_blank" rel="noopener">方格子 ↗</a>
+    </div>
+    <div class="footer-note">這是一篇觀點文章，整理我對 A2A 協定與「為人也為 AI 設計」的看法，供你參考。文中外部數據為二手轉述，已盡量保守；我的名片與官網為第一手案例。</div>
+  </div>
+</footer>
+
+<script src="../../spotlight.js"></script>
+<script src="../../articles-data.js"></script>
+<script src="../../related-render.js"></script>
+</body>
+</html>
