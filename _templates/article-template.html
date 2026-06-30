@@ -38,14 +38,15 @@
 <link rel="canonical" href="https://ai-km-jiang.vercel.app/{{SECTION}}/{{SLUG}}/">
 <meta property="og:type" content="article">
 <meta property="og:title" content="{{TITLE}}｜江江教練">
-<meta property="og:image" content="https://ai-km-jiang.vercel.app/images/intro-jiang.png">
+<!-- 分享封面：hero 文字填好後在 repo 根目錄跑 `node scripts/og-shot.mjs {{SLUG}}` 自動截 1200×630 到 images/og/{{SLUG}}.jpg（見 README「文章分享封面（OG 圖）機制」）。別退回 intro-jiang.png 直式人像，會被裁成只剩脖子。 -->
+<meta property="og:image" content="https://ai-km-jiang.vercel.app/images/og/{{SLUG}}.jpg">
 <meta property="og:description" content="{{DESCRIPTION}}">
 <meta property="og:url" content="https://ai-km-jiang.vercel.app/{{SECTION}}/{{SLUG}}/">
 <meta property="og:locale" content="zh_TW">
 <meta property="og:site_name" content="江江教練 · AI 知識管理">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="{{TITLE}}｜江江教練">
-<meta name="twitter:image" content="https://ai-km-jiang.vercel.app/images/intro-jiang.png">
+<meta name="twitter:image" content="https://ai-km-jiang.vercel.app/images/og/{{SLUG}}.jpg">
 <meta name="twitter:description" content="{{DESCRIPTION}}">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"{{TITLE}}","description":"{{DESCRIPTION}}","author":{"@type":"Person","name":"江昱德","alternateName":"江江教練","jobTitle":"隱性知識提煉師、AI 應用規劃師"},"isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://ai-km-jiang.vercel.app/"},"inLanguage":"zh-Hant","url":"https://ai-km-jiang.vercel.app/{{SECTION}}/{{SLUG}}/"}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -204,7 +205,8 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
     範例見 articles/how-ai-connects-software/index.html 的第一個 section（速讀區順序）、articles/what-is-loop-engineering/index.html（速讀三塊＋一頁總結圖）。
 
   ★ 配圖原則（對齊 knowledge-site-manager 設計系統 02-design-system）：
-    - 封面：放上面 hero 的 .hero-figure（橫式預設，或 4:5 直式），同時設成 og:image / twitter:image。沒封面圖就把 hero 裡的 <figure> 刪掉。
+    - 封面：放上面 hero 的 .hero-figure（橫式預設，或 4:5 直式）。沒封面圖就把 hero 裡的 <figure> 刪掉。
+    - 分享封面（og:image / twitter:image）：不論有沒有插圖，都跑 `node scripts/og-shot.mjs {{SLUG}}` 自動截 hero 標題卡成 1200×630（見 README）。og:image 已預設指向 images/og/{{SLUG}}.jpg，截好即生效，不要退回 intro-jiang.png。
     - 內文圖：用 <figure class="inline-figure"><img loading="lazy" alt><figcaption>。圖要緊跟相關段落、跟內容互相搭配，不要全堆在一起、也不要放跟文意無關的圖。
     - 所有圖（hero＋內文）都會自動有「點圖放大」lightbox（CSS＋JS 已內建在本範本結尾，新文章不用再加）。
     - 圖先 sips 縮圖（JPG、寬 1400、<400K）放 images/articles/，原圖留主庫 11圖片待整。

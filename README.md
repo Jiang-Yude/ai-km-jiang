@@ -48,6 +48,31 @@ Phase 1 不新增文章頁。文章先保留在課後簡報頁的方格子與 Th
 4. `site-index.json` 是否補上新內容與四維標籤。
 5. 公開學習頁不要放 `noindex`；工具頁如 `tuner.html` 可以保留 noindex。
 
+## 文章分享封面（OG 圖）機制
+
+文章分享到 Threads/FB 時，預覽圖（`og:image`）若沒設好，會退回直式人像 `images/intro-jiang.png`，被平台裁成「只剩脖子」的醜預覽。
+
+**解法：每篇文章用自己的 hero 標題卡當分享封面。** hero 區（eyebrow＋大標＋副標，暖色拿鐵底）本身就是一張現成的橫式封面，自動截下來即可，不必每篇畫插畫。
+
+### 新文章上線時的固定步驟
+
+1. 建好 `articles/<slug>/index.html`（hero 文字填好）。
+2. 截封面：
+   ```
+   node scripts/og-shot.mjs <slug>
+   ```
+   產出 `images/og/<slug>.jpg`（1200×630 @2x）。
+3. 把該篇 `<head>` 的 `og:image` 與 `twitter:image` 指到：
+   ```
+   https://ai-km-jiang.vercel.app/images/og/<slug>.jpg
+   ```
+   （`og:title` 本來就帶文章標題，不用改。）
+4. `vercel --prod --yes` → `git push`。
+
+可一次傳多個 slug 批次截。需要全域 `playwright`（`npm i -g playwright && playwright install chromium`）。
+
+> 注意：平台會快取 OG 圖。換圖後若預覽還是舊的，把連結刪掉重貼一次通常就會抓新圖。
+
 ## 課程同步機制
 
 ### 新增課程
