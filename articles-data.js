@@ -518,6 +518,40 @@ window.ARTICLES = [
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
     related: ["a2a-agent-protocol"]
+  },
+  {
+    id: "four-lens-rapid-review",
+    url: "articles/four-lens-rapid-review/",
+    date: "2026-06-30",
+    updated: "2026-06-30",
+    title: "忙到迷惘時，用四視角快速復盤找回方向",
+    problem: "手上同時開好幾條線，每條都在動，忙得很充實，卻說不出哪一條真正重要。",
+    audience: "同時推好幾個專案、抓不到重點的經營者、團隊主管，與得自己當軍師的一人公司。",
+    summary: "一套六步快速復盤法：攤平事實、回饋槓桿象限、四視角輪審、外化路徑篩子，最後收斂成本週一個動作。忙到發散時用來校準方向，一張紙就能跑。",
+    tags: {
+      topic: ["輔助決策", "一人公司"],
+      level: ["基礎"],
+      content_type: ["觀點文章"]
+    },
+    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
+    related: ["decision-ladder-non-programmer"]
+  },
+  {
+    id: "give-ai-choices-not-descriptions",
+    url: "articles/give-ai-choices-not-descriptions/",
+    date: "2026-06-30",
+    updated: "2026-06-30",
+    title: "跟 AI 調配色，別讓它一直猜：六組一次給你挑，挑了再微調",
+    problem: "跟 AI 調配色、調樣式，最耗時的就是它猜一個、你說不對、它再猜的來回，又慢又燒額度。",
+    audience: "會用 AI 做網頁、圖卡、簡報，卡在配色與樣式來回試的人。",
+    summary: "與其讓 AI 一次次猜，不如請它一次配六組並排你直接挑，挑中當場微調，定稿一鍵複製。文章內有可以直接玩的互動配色校稿器，並連到公開技能包 ai-web-tuner。",
+    tags: {
+      topic: ["AI工作流", "AIAgent"],
+      level: ["基礎"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
+    related: ["agent-workflow-builds-automation"]
   }
 
 ];
