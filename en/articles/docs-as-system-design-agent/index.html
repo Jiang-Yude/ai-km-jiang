@@ -1,0 +1,603 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="index,follow">
+<title>Docs as System Design: How Non-Engineers Build Agent Frameworks | Coach Jiang · AI Knowledge Management</title>
+<meta name="description" content="You don't need to write code to design AI Agents. If you can lead people, you're already halfway there. Using the Digital Twin Village and persona-mind distillation, this article shows how to turn a character from a static profile into a self-judging Agent, and how to scale from a single Agent to a multi-Agent system.">
+<link rel="canonical" href="https://ai-km-jiang.vercel.app/en/articles/docs-as-system-design-agent/">
+<link rel="alternate" hreflang="zh-Hant" href="https://ai-km-jiang.vercel.app/articles/docs-as-system-design-agent/">
+<link rel="alternate" hreflang="en" href="https://ai-km-jiang.vercel.app/en/articles/docs-as-system-design-agent/">
+<link rel="alternate" hreflang="x-default" href="https://ai-km-jiang.vercel.app/articles/docs-as-system-design-agent/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Docs as System Design: How Non-Engineers Build Agent Frameworks | Coach Jiang">
+<meta property="og:image" content="https://ai-km-jiang.vercel.app/images/og/docs-as-system-design-agent.jpg">
+<meta property="og:description" content="You don't need to write code to design AI Agents. If you can lead people, you're already halfway there. Turn a character into a self-judging Agent using persona-mind distillation.">
+<meta property="og:url" content="https://ai-km-jiang.vercel.app/en/articles/docs-as-system-design-agent/">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Coach Jiang · AI Knowledge Management">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Docs as System Design: How Non-Engineers Build Agent Frameworks | Coach Jiang">
+<meta name="twitter:image" content="https://ai-km-jiang.vercel.app/images/og/docs-as-system-design-agent.jpg">
+<meta name="twitter:description" content="You don't need to write code to design AI Agents. Turn a character into a self-judging Agent.">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Docs as System Design: How Non-Engineers Build Agent Frameworks","description":"You don't need to write code to design AI Agents. Using the Digital Twin Village and persona-mind distillation, turn a character into a self-judging Agent.","author":{"@type":"Person","name":"Jiang Yude","alternateName":"Coach Jiang","jobTitle":"Tacit Knowledge Distiller, AI Application Strategist"},"datePublished":"2026-06-25","dateModified":"2026-06-27","isPartOf":{"@type":"WebSite","name":"Coach Jiang · AI Knowledge Management","url":"https://ai-km-jiang.vercel.app/"},"inLanguage":"en","url":"https://ai-km-jiang.vercel.app/en/articles/docs-as-system-design-agent/"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is an AI Agent?","acceptedAnswer":{"@type":"Answer","text":"An AI Agent is an AI system that can read a goal, apply rules to make judgments, and execute tasks. It can be built from code, but it can also be built first from clear documentation, character profiles, workflows, and boundary definitions."}},{"@type":"Question","name":"How can a non-engineer start designing Agents?","acceptedAnswer":{"@type":"Answer","text":"Start with a single document. Write clearly who the character serves, what it needs to accomplish, how it should judge common situations, and what it must never do. Then test and iterate through real conversations."}},{"@type":"Question","name":"What is persona-mind distillation?","acceptedAnswer":{"@type":"Answer","text":"Persona-mind distillation is the process of organizing a person's or character's tone, value propositions, judgment principles, thinking patterns, and underlying logic into an AI-readable profile. The goal is to let the character respond to problems it has never encountered before, using the same judgment framework."}},{"@type":"Question","name":"Are the thinking engine and the cognitive layer the same thing?","acceptedAnswer":{"@type":"Answer","text":"In this article, the thinking engine is the core function of the cognitive layer. It includes value propositions, thinking patterns, underlying logic, and actionable judgment rules, enabling the character to make its own judgments."}},{"@type":"Question","name":"What is the difference between a single Agent and a multi-Agent system?","acceptedAnswer":{"@type":"Answer","text":"A single Agent is one character or workflow that can make judgments. A multi-Agent system is multiple Agents placed in the same environment, interacting with each other. If the whole environment has a shared goal, storyline, or facilitation mechanism to converge outcomes, it can also be viewed as one larger Agent."}},{"@type":"Question","name":"What is Harness Engineering?","acceptedAnswer":{"@type":"Answer","text":"Harness Engineering is the practice of designing the layer of architecture outside the AI model itself: how to provide context, how to connect tools, how to manage memory, how to set boundaries and checkpoints, and how to steer the AI in the direction you want. In a metaphor: the AI is the brain, an Agent is the horse that gives the brain hands and feet, and Harness Engineering is the reins, the route, and the checkpoints that guide the horse. This has become a key focus of AI engineering in 2026, because that layer outside the model determines outcomes more than the model itself does. It can be built with code, or built entirely with plain text and natural language."}},{"@type":"Question","name":"How do prompt engineering, context engineering, and Harness Engineering differ?","acceptedAnswer":{"@type":"Answer","text":"These three form an upward-growing evolution. Prompt engineering is about crafting a single instruction. Context engineering is about managing the entire conversation context: what data, background, and surrounding material you give the AI so it can work with sufficient information. Harness Engineering goes one level higher: the focus is not on how each sentence is written, but on how you guide a collaborator that is smarter than you toward the direction you want. A single prompt has a low ceiling. The focus has already moved from individual prompts up to context and harness."}}]}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{--ink:#1a1612;--paper:#fefcf8;--muted:#6a635a;--line:#d8cdb8;--green:#5f7553;--blue:#5689b8;--orange:#e85a4f;--soft:#faf5ec;--dark:#2a2018;--shadow:0 18px 45px rgba(107,74,42,.14);--sp-shadow:hsla(35,50%,60%,.15);--sp-shadow-edge:hsla(35,50%,68%,.03);--sp-radius:400px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC","Segoe UI",sans-serif}
+a{color:inherit}
+nav.top{position:sticky;top:0;background:rgba(254,252,248,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid #d8cdb8;z-index:100}
+nav.top .container{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:24px;padding:14px 32px}
+.nav-brand-img{justify-self:start;display:flex;align-items:center;text-decoration:none;flex-shrink:0;transition:opacity .2s}
+.nav-brand-img:hover{opacity:.8}.nav-brand-img img{height:40px;width:auto;display:block}
+nav.top ul.nav-menu{justify-self:end;display:flex;gap:22px;list-style:none;margin:0;padding:0;font-size:.95rem;white-space:nowrap}
+nav.top ul.nav-menu a{color:#3a342d;text-decoration:none;transition:color .2s;font-weight:500;white-space:nowrap}
+nav.top ul.nav-menu a:hover{color:#1a1612}nav.top ul.nav-menu a.active{color:#1a1612;font-weight:700}
+.nav-toggle{display:none;background:none;border:none;padding:6px;cursor:pointer;width:36px;height:36px;position:relative}
+.nav-toggle span{display:block;position:absolute;left:8px;right:8px;height:2px;background:#1a1612;border-radius:2px;transition:transform .25s,opacity .25s,top .25s}
+.nav-toggle span:nth-child(1){top:11px}.nav-toggle span:nth-child(2){top:17px}.nav-toggle span:nth-child(3){top:23px}
+.nav-toggle.open span:nth-child(1){top:17px;transform:rotate(45deg)}.nav-toggle.open span:nth-child(2){opacity:0}.nav-toggle.open span:nth-child(3){top:17px;transform:rotate(-45deg)}
+@media(max-width:860px){
+ nav.top .container{grid-template-columns:auto 1fr auto;padding:10px 16px;gap:12px}
+ .nav-brand-img img{height:32px}
+ .nav-toggle{display:block;justify-self:end}
+ nav.top ul.nav-menu{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(254,252,248,.98);backdrop-filter:blur(14px);border-bottom:1px solid #d8cdb8;flex-direction:column;gap:0;padding:8px 0;box-shadow:0 10px 24px rgba(107,74,42,.08)}
+ nav.top ul.nav-menu.open{display:flex}
+ nav.top ul.nav-menu li{border-bottom:1px solid #e8dfc9}
+ nav.top ul.nav-menu li:last-child{border-bottom:none}
+ nav.top ul.nav-menu a{display:block;padding:14px 20px;font-size:1.06rem}
+}
+body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradient(var(--sp-radius) circle at var(--mx,50%) var(--my,50%),var(--sp-shadow) 0%,var(--sp-shadow-edge) 45%,transparent 75%);pointer-events:none;z-index:9999;mix-blend-mode:multiply;transition:background .06s linear}
+.hero{position:relative;overflow:hidden;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:72px;padding:96px clamp(20px,6vw,88px) 80px;background:linear-gradient(180deg,#fffcf0 0%,#f9e9d2 100%);color:#1a1612;border-bottom:1px solid #d8cdb8}
+.hero .wc{position:absolute;border-radius:50%;filter:blur(60px);pointer-events:none;z-index:0}
+.hero .wc1{width:420px;height:360px;top:-120px;right:-80px;background:#e8884b;opacity:.15}
+.hero .wc2{width:360px;height:300px;bottom:-110px;left:-70px;background:#5f7553;opacity:.13}
+.hero .wc3{width:280px;height:260px;top:34%;left:14%;background:#a08144;opacity:.10}
+.hero>div{flex:none;width:860px;max-width:100%;position:relative;z-index:2}
+.inline-figure{margin:30px auto 8px;max-width:820px}
+.inline-figure img{display:block;width:100%;border-radius:14px;border:1px solid var(--line);box-shadow:var(--shadow);background:#fff;cursor:zoom-in}
+.inline-figure figcaption{font-size:14px;line-height:1.6;color:var(--muted);margin-top:10px;text-align:center}
+/* docs-as-system concept diagram */
+.docsys-map{margin:32px auto 8px;max-width:760px;background:var(--soft);border:1px solid var(--line);border-radius:16px;padding:26px 24px 20px;box-shadow:var(--shadow)}
+.docsys-tools{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.docsys-tools .tool{background:#fff;border:1px solid var(--line);border-radius:10px;padding:14px 8px;text-align:center;font-weight:700;font-size:16px;color:var(--ink);line-height:1.3}
+.docsys-tools .tool span{display:block;font-size:13px;font-weight:500;color:var(--muted);margin-top:3px}
+.docsys-arrows{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:8px 0}
+.docsys-arrows div{text-align:center;color:#b08968;font-size:22px;line-height:1;font-weight:700}
+.docsys-file{background:linear-gradient(120deg,#c9a27a,#b58a63);color:#3a2a18;border-radius:12px;padding:20px;text-align:center;font-size:23px;font-weight:800;letter-spacing:.05em}
+.docsys-map figcaption{text-align:center;font-size:14px;color:var(--muted);margin-top:14px;line-height:1.6}
+@media(max-width:620px){.docsys-tools,.docsys-arrows{grid-template-columns:repeat(2,1fr)}.docsys-arrows{display:none}}
+.lightbox{position:fixed;inset:0;z-index:10000;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(12,10,8,.92);cursor:zoom-out;backdrop-filter:blur(4px)}
+.lightbox.open{display:flex}.lightbox img{max-width:96vw;max-height:92vh;border-radius:10px;box-shadow:0 24px 60px rgba(0,0,0,.5)}
+.lightbox-close{position:fixed;top:18px;right:24px;color:#fff;font-size:34px;line-height:1;font-weight:700;cursor:pointer;opacity:.85}
+.kicker{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.55rem;color:#7a5c3a;font-weight:500}
+.hero h1{max-width:none;margin:16px 0 18px;font-size:clamp(36px,6vw,72px);line-height:1.08;overflow-wrap:anywhere}
+.hero p{max-width:none;font-size:clamp(18px,2vw,23px);line-height:1.62;color:#3a342d}
+.section{padding:54px clamp(20px,6vw,88px);border-top:1px solid var(--line)}
+.inner{width:min(1000px,100%);margin:0 auto}
+.section h2{font-size:clamp(26px,4.2vw,48px);line-height:1.12;margin:0 0 18px}
+.section h3{font-size:clamp(21px,3vw,30px);line-height:1.2;margin:30px 0 12px}
+.lead{font-size:clamp(18px,1.6vw,22px);line-height:1.7;color:#3a342d;max-width:900px}
+.section p{font-size:18px;line-height:1.74;color:#3a342d}.section p+p{margin-top:14px}
+.section ul,.section ol{padding-left:1.4em;font-size:18px;line-height:1.74;color:#3a342d}.section li{margin-bottom:8px}
+.meaning{margin:22px 0;padding:16px 18px;border-left:5px solid var(--blue);background:rgba(86,137,184,.12);border-radius:6px;line-height:1.7;font-size:19px}
+.meaning b{display:block;color:var(--blue);margin-bottom:4px}
+.caveat{margin:0 0 8px;padding:16px 18px;border-left:5px solid var(--orange);background:rgba(232,90,79,.1);border-radius:6px;line-height:1.7;font-size:18px;color:#3a342d}
+.caveat b{display:block;color:var(--orange);margin-bottom:4px}
+.duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:24px}
+.duo.stack{grid-template-columns:1fr}
+.duo .card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:22px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.duo .card.a{border-color:var(--orange)}.duo .card.b{border-color:var(--green);box-shadow:0 8px 24px rgba(95,117,83,.16)}
+.duo .card b{display:block;font-size:22px;line-height:1.3;margin-bottom:12px}.duo .card.a b{color:#c0512f}.duo .card.b b{color:#4a7a59}
+.duo .card p{margin:0;color:#3a342d;line-height:1.75;font-size:18px}
+.codeblock{background:var(--dark);color:#f3ead9;border-radius:8px;padding:18px 20px;font:500 14px/1.7 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;overflow-x:auto;white-space:pre-wrap;margin:20px 0;box-shadow:0 8px 22px rgba(107,74,42,.12)}
+.codeblock .c{color:#f6d7a6;font-weight:600}
+.skillcard{background:#fff;border:1px solid var(--green);border-radius:12px;padding:24px;box-shadow:0 10px 26px rgba(95,117,83,.16);margin-top:18px}
+.skillcard b{display:block;font-size:21px;margin-bottom:8px}
+.skillcard p{margin:0;font-size:17px;line-height:1.65;color:#3a342d}
+.skillcard .repo-links{margin-top:16px;display:flex;flex-wrap:wrap;gap:12px 26px}
+.skillcard .repo-links a{color:var(--green);font-weight:900;font-size:17px;text-decoration:none;border-bottom:2px solid rgba(95,117,83,.35);padding-bottom:2px}
+.skillcard .repo-links a:hover{border-bottom-color:var(--green)}
+.footer{padding:30px clamp(20px,6vw,88px);font-size:14px;color:var(--muted);background:#fff;border-top:1px solid var(--line)}
+.footer-inner{width:min(1000px,100%);margin:0 auto}
+.footer-links{display:flex;flex-wrap:wrap;gap:6px 12px;margin-bottom:14px}.footer-links a{color:var(--blue);font-weight:900;text-decoration:none;font-size:14px}
+.footer-brand{font-weight:900;font-size:15px;margin-bottom:10px}.footer-note{font-size:13px;line-height:1.6}
+/* Article-specific components (design system tokens) */
+.villagers{display:grid;grid-template-columns:repeat(8,1fr);gap:8px;margin:24px 0 8px}
+.villagers img{width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:12px;border:1px solid var(--line);box-shadow:0 6px 16px rgba(107,74,42,.12)}
+.cap{font-size:14px;color:var(--muted);text-align:center;margin-top:10px}
+.layers{margin:24px 0 8px;display:grid;gap:12px}
+.layer{border:1px solid var(--line);border-radius:12px;padding:18px 20px;background:#fff;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.layer .lab{display:inline-block;font:900 13px/1 ui-monospace,Menlo,monospace;letter-spacing:.04em;color:#fff;background:var(--green);border-radius:999px;padding:5px 12px;margin-bottom:10px}
+.layer.deep{background:var(--dark);border-color:var(--dark)}
+.layer.deep .lab{background:var(--orange)}
+.layer p{margin:0;font-size:17px;line-height:1.7;color:#3a342d}
+.layer.deep p{color:#e8ddc9}
+.npc-row{display:flex;gap:16px;align-items:center;background:var(--soft);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin:24px 0}
+.npc-row img{width:78px;height:78px;border-radius:50%;object-fit:cover;flex:none;box-shadow:0 6px 16px rgba(107,74,42,.16)}
+.npc-row p{margin:0;font-size:17px;line-height:1.65;color:#3a342d}
+.nest{margin:26px 0 8px}
+.nest .lvl{border-radius:14px;padding:18px}
+.nest .village{background:var(--soft);border:2px dashed #c9a27a}
+.nest .dungeon{background:#fff;border:2px solid var(--orange);margin-top:14px}
+.nest .tag{display:inline-block;font:900 13px/1 ui-monospace,Menlo,monospace;letter-spacing:.03em;color:#3a342d;background:#fff;border:1px solid var(--line);border-radius:999px;padding:6px 12px;margin-bottom:12px}
+.nest .dungeon .tag{color:#c0512f}
+.nest .vrow{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.nest .vbox{background:var(--soft);border:1px solid var(--line);border-radius:10px;padding:12px;text-align:center;font-size:15px;color:var(--muted)}
+.nest .vbox b{display:block;color:var(--ink);font-size:16px;margin-bottom:2px}
+.nest .engine{background:var(--dark);color:#e8ddc9;border-radius:10px;padding:12px 14px;margin-top:12px;font-size:15px;line-height:1.7}
+.nest .engine b{color:#f6d7a6}
+.article-meta{display:flex;flex-wrap:wrap;gap:8px 12px;margin:0 0 18px;color:var(--muted);font-size:15px;font-weight:700}
+.quick-three{margin:20px 0 4px;padding:18px 20px;background:#fff;border:1px solid var(--line);border-left:5px solid var(--green);border-radius:8px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.quick-three b{display:block;color:var(--green);font-size:18px;margin-bottom:8px}
+.quick-three ol{margin:0;padding-left:1.25em;font-size:17px;line-height:1.7}
+.table-wrap{overflow-x:auto;margin:22px 0 8px;border:1px solid var(--line);border-radius:10px;background:#fff;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.system-table{width:100%;border-collapse:collapse;min-width:720px}
+.system-table th,.system-table td{border-bottom:1px solid var(--line);padding:14px 16px;text-align:left;vertical-align:top;font-size:16px;line-height:1.6;color:#3a342d}
+.system-table th{background:var(--soft);color:var(--ink);font-weight:900}
+.system-table tr:last-child td{border-bottom:none}
+.related{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:24px}
+.related a{display:block;background:#fff;border:1px solid var(--line);border-radius:10px;padding:20px;text-decoration:none;box-shadow:0 8px 22px rgba(107,74,42,.08);transition:transform .15s,box-shadow .15s}
+.related a:hover{transform:translateY(-3px);box-shadow:0 14px 30px rgba(107,74,42,.16)}
+.related small{display:block;color:var(--blue);font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;margin-bottom:9px}
+.related b{display:block;font-size:17px;line-height:1.35;margin-bottom:8px;color:var(--ink)}
+.related p{margin:0;color:#3a342d;line-height:1.55;font-size:15px}
+@media(max-width:820px){.duo{grid-template-columns:1fr}.section{padding:40px 20px}.hero{min-height:48vh;flex-direction:column;justify-content:flex-start;align-items:flex-start;gap:24px}.hero>div{width:100%}.villagers{grid-template-columns:repeat(4,1fr)}.nest .vrow{grid-template-columns:1fr}.related{grid-template-columns:1fr}}
+@media(max-width:820px){html,body{overflow-x:hidden}.hero h1{word-break:break-word}}
+</style>
+</head>
+<body class="spotlight">
+<nav class="top">
+  <div class="container">
+    <a class="nav-brand-img" href="../../index.html"><img src="../../../images/footer-signature.png" alt="Coach Jiang | Jiang Yude"></a>
+    <button class="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
+    <ul class="nav-menu">
+      <li><a href="../../index.html">Home</a></li>
+      <li><a href="../../offers.html">Paid Courses</a></li>
+      <li><a href="../../../courses.html">Free Talks</a></li>
+      <li><a href="../../invited-talks.html">Invited Talks</a></li>
+      <li><a href="../../../articles.html" class="active">Articles</a></li>
+      <li><a href="../../../skills.html">Skills</a></li>
+      <li><a href="../../cases.html">Services</a></li>
+      <li class="lang-switch"><a href="../../../articles/docs-as-system-design-agent/">中文</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="wc wc1"></div>
+  <div class="wc wc2"></div>
+  <div class="wc wc3"></div>
+  <div>
+    <div class="kicker">AI Harness Thinking</div>
+    <h1>Docs as System Design: How Non-Engineers Build Agent Frameworks</h1>
+    <p>Many people assume that designing Agents is an engineer's job, something you can only do after learning to code. In reality, if you can lead people, write scripts, or design a curriculum, you already know half of it. This article uses my Digital Twin Village project and my own persona-mind distillation practice to show how a character can grow from a static profile into a self-judging Agent.</p>
+  </div>
+</section>
+
+<main>
+
+  <section class="section" id="start">
+    <div class="inner">
+      <h2>What This Article Covers</h2>
+      <div class="article-meta"><span>Published: 2026-06-25</span><span>Updated: 2026-06-27</span></div>
+      <p class="lead">Designing Agents does not require writing code. If you can lead people and design workflows, you are already at the starting line. This article traces the path from "docs as system design" all the way to nested Agents, filling in the most critical step along the way: how to use persona-mind distillation to build a character that can make its own judgments, and then how a single Agent scales into a multi-Agent system.</p>
+      <div class="quick-three">
+        <b>Three sentences to understand this article</b>
+        <ol>
+          <li>In the age of AI, a clear document can be a fully functioning system.</li>
+          <li>For a character to become an Agent, the key is having a cognitive layer, a thinking engine that can judge new problems it has never seen before.</li>
+          <li>Many small Agents together form a multi-Agent system. If the whole environment has a shared goal and a convergence mechanism, it can also become one large Agent.</li>
+        </ol>
+      </div>
+      <div class="duo stack">
+        <div class="card a">
+          <b>Who this is for</b>
+          <p>· Creators and operators who want to use AI but feel stuck because "Agents seem too technical"<br>· Directors, teachers, and managers who already define roles, design processes, and lead people<br>· Anyone who wants to turn themselves or a character into an AI advisor that can make its own judgments</p>
+        </div>
+        <div class="card b">
+          <b>What you will get</b>
+          <p>· A criterion: how to judge whether a character qualifies as an Agent<br>· A method: persona-mind distillation, to build a character that can think for itself, including a reusable prompt<br>· A path: how to grow from a single Agent to a multi-Agent system</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="docs-are-system">
+    <div class="inner">
+      <h2>My Documents Are My System</h2>
+      <p>I often say: my documents are my system. The idea is to organize your own material clearly and then let AI run on top of it.</p>
+      <p>I keep emphasizing that AI is a large language model, not a large programming model. So you do not need to write code. Describe your content clearly in natural language, and in the AI era those words become a system. A system that AI can run is, simply put, an Agent.</p>
+      <p>It can be a document, a script, source code, or a game design. As long as AI can read it, knows what you want it to do, and can actually execute, the system is real.</p>
+      <figure class="docsys-map">
+        <div class="docsys-tools">
+          <div class="tool">Codex<span>OpenAI</span></div>
+          <div class="tool">Claude Cowork<span>Anthropic</span></div>
+          <div class="tool">OpenClaw AI<span>OpenClaw</span></div>
+          <div class="tool">Obsidian<span>Knowledge Base</span></div>
+        </div>
+        <div class="docsys-arrows"><div>↕</div><div>↕</div><div>↕</div><div>↕</div></div>
+        <div class="docsys-file">My Documents</div>
+        <figcaption>No matter which AI tool you switch to, the core is the same set of documents. Tools come and go. Your documents are the system that keeps you free from lock-in.</figcaption>
+      </figure>
+
+      <h3>What It Looks Like in Practice: The Digital Twin Village Folder</h3>
+      <p>When I say "docs are the system," I open it up so you can see. This is the actual folder structure the Digital Twin Village runs on:</p>
+      <div class="codeblock">Digital-Twin-Village/
+├── <span class="c">CLAUDE.md</span>            ← Router: read first each session, decides who handles what and which Skills to load
+├── world-rules.md        ← The shared rules of this environment
+├── NPC-profiles/         ← Fixed characters like the Oracle and the Village Chief
+├── digital-twins/        ← One persona file per villager
+├── guest-speakers/       ← Heavier knowledge bases like Naval Ravikant
+├── cross-session-memory.md
+├── dev-journal.md
+└── <span class="c">_agent/skills/</span>       ← Skills: loaded only when a specific interaction triggers them</div>
+      <p>Not a single line of code. All plain text files and folders. When AI runs a session, it reads CLAUDE.md first to understand who to call and which layer to load, then retrieves the relevant character file to respond. If you can organize folders, create categories, and write rules clearly, you can build this.</p>
+    </div>
+  </section>
+
+  <section class="section" id="command-people">
+    <div class="inner">
+      <h2>If You Can Lead People, You Can Already Design Agents</h2>
+      <p>Think of it this way: I write a script, the script has a character, maybe Mika, maybe Alice, and the script includes a story and instructions for how to perform. That is already an Agent framework. Let AI read and run it, and it becomes an Agent.</p>
+      <p>I designed a system of patterns that lets AI execute the way I intend. This kind of system used to be something only engineers could build. Now anyone can. People who write articles, novels, proposals, curricula, business models, agile plans, or Gantt charts can all do it.</p>
+      <div class="meaning">
+        <b>The same capability, three different roles</b>
+        You are a director. You write scripts and coordinate a crew. You can design Agents.<br>
+        You are a teacher. You design courses and guide students. You can design Agents.<br>
+        You are a manager. You think through business models and lead a team. You can design Agents.
+      </div>
+      <p>All of this grew from a single document. I started by writing a game framework, and it became the Digital Twin Village, an online event where participants bring their own AI personas and interact with each other. I originally just wanted to use tags to organize my data well, and that eventually became an entire AI office system. Every starting point was just a document someone wrote down.</p>
+      <div class="villagers">
+        <img src="../../../images/articles/docs-as-system-design-agent-v01.jpg" alt="Villager digital twin" loading="lazy">
+        <img src="../../../images/articles/docs-as-system-design-agent-v02.jpg" alt="Villager digital twin" loading="lazy">
+        <img src="../../../images/articles/docs-as-system-design-agent-v03.jpg" alt="Villager digital twin" loading="lazy">
+        <img src="../../../images/articles/docs-as-system-design-agent-v04.jpg" alt="Villager digital twin" loading="lazy">
+        <img src="../../../images/articles/docs-as-system-design-agent-v05.jpg" alt="Villager digital twin" loading="lazy">
+        <img src="../../../images/articles/docs-as-system-design-agent-v06.jpg" alt="Villager digital twin" loading="lazy">
+        <img src="../../../images/articles/docs-as-system-design-agent-v07.jpg" alt="Villager digital twin" loading="lazy">
+        <img src="../../../images/articles/docs-as-system-design-agent-v08.jpg" alt="Villager digital twin" loading="lazy">
+      </div>
+      <p class="cap">Villagers in the Digital Twin Village. Each one is a small Agent.</p>
+    </div>
+  </section>
+
+  <section class="section" id="ai-fills-in">
+    <div class="inner">
+      <h2>AI Also Fills in the Gaps, So Know Your Collaborator</h2>
+      <p>The framing above is a good starting point for non-engineers. You do not need to be more precise than this at the beginning.</p>
+      <p>One important thing to add: AI also fills in gaps on its own. When you give it a vague instruction, it will always complete the picture by itself. The real difference is that the same vague instruction will produce different completions from different AI models. Different models are like employees with different personalities, and even differences in environment affect the output.</p>
+      <p>So to truly give good direction, you still need to spend time getting to know your AI, the same way you get to know people. If you give the same instruction to three employees with different personalities, you will get three different results. Working with AI is exactly the same. You do not need to learn more engineering. You just have a new group of team members to get acquainted with.</p>
+    </div>
+  </section>
+
+  <section class="section" id="persona-mind">
+    <div class="inner">
+      <h2>Making a Character That Can Actually Think: Persona-Mind Distillation</h2>
+      <p>At this point, a key question surfaces. I write a character, give them a name and a voice, and now they can make their own judgments? No, they cannot. This is where the real craft begins, and I call it persona-mind distillation.</p>
+
+      <h3>Core Principle: Persona Plus Cognition, Neither Alone Is Enough</h3>
+      <p>Pure cognition without personality is a cold AI framework, a tool without character that no one remembers. Pure personality without cognition is just a voice and a profile that collapses the moment it encounters something it was never told about. The two must work together. Talking to the character should feel like talking to a person, with real personality coming through, while also having it reason through new situations the way that person would. That is the fundamental difference between persona-mind distillation and ordinary prompt engineering.</p>
+      <div class="meaning">
+        <b>One sentence to tell them apart</b>
+        The ten-block persona layer makes AI respond like that person. The cognitive layer makes AI think like that person. The thinking engine referenced in this article is the part of the cognitive layer that handles new, unscripted problems.
+      </div>
+
+      <h3>Two Layers: The Persona Layer and the Cognitive Layer</h3>
+      <p>Every character profile I build is divided into two layers. Start with the persona layer, a persona file with ten fixed blocks, each block a separate .md file, organized like a tree-structured folder:</p>
+      <div class="codeblock">persona-profile/
+├── 01-quick-summary.md
+├── 02-basic-info.md               (one-sentence self-intro, professional domain, interests)
+├── <span class="c">03-value-proposition-anchors.md</span>  ← Thinking engine
+├── 04-communication-style.md
+├── <span class="c">05-thinking-patterns.md</span>          ← Thinking engine
+├── 06-interpersonal-dynamics.md
+├── 07-interests-and-topic-map.md
+├── 08-expertise-and-workflow.md
+├── <span class="c">09-underlying-logic-and-criteria.md</span> ← Thinking engine
+└── 10-personality-contrasts.md    (optional: surprising contradictions)</div>
+      <p>The earlier blocks (tone, interaction style, topic coverage) represent the outward face of this character. Everyday conversations only need this layer, which keeps the context light. What actually enables the character to make its own judgments are the three blocks marked as the thinking engine: <b>Block 03, Value Proposition Anchors</b>, covering what outcomes this character cares about and which way they lean when making trade-offs; <b>Block 05, Thinking Patterns</b>, covering what the character does first when encountering a new problem and what sequence they use to break it down; <b>Block 09, Underlying Logic and Criteria</b>, covering what this character believes and therefore what decisions they make, written as "when Y, choose Z." These three blocks together form the character's thinking engine. Block 10 is optional and the character runs fine without it, but adding it makes the character feel more like a real person.</p>
+      <div class="layers">
+        <div class="layer">
+          <span class="lab">Persona Layer | Ten-Block Core Persona</span>
+          <p>The outward face: tone, interaction style, conversational topics. Everyday conversations only load this layer, so the baseline interaction stays lightweight. The most critical elements within the ten blocks are blocks 03, 05, and 09, the thinking engine described above.</p>
+        </div>
+        <div class="layer deep">
+          <span class="lab">Cognitive Layer | Thinking Engine Module</span>
+          <p>The inward face: how AI actually reasons, how it selects language, how it judges boundaries. This layer is only loaded for deep discussions. It contains several submodules: core mental models, decision heuristics, expression DNA, response workflow, intellectual lineage, inner tensions, plus two control modules for source tracing and handling conflicting frameworks.</p>
+        </div>
+      </div>
+      <p>The two-layer structure has a practical benefit. The persona layer is lightweight, so everyday conversation does not require loading a large amount of context. For deeper discussions, you bring in the cognitive layer and pay that cost only when it is needed. Whether a character can respond to situations it was never explicitly scripted for depends entirely on whether the cognitive layer has been built out.</p>
+
+      <h3>A Short Dialogue: What Happens When a Vague Question Comes In</h3>
+      <p>Suppose someone asks: "I want to run an event but I'm not sure how to define the topic." A character with only a persona profile will typically respond with a list of topic ideas. A character with the cognitive layer will first identify that the core issue is about the audience, the context, and the desired next action, with the topic name being only the final output.</p>
+      <div class="codeblock"><span class="c"># How a character with a thinking engine responds</span>
+What you're stuck on isn't the topic name. It's that you haven't yet defined
+what action you want the audience to take after this event.
+
+Let me ask three questions first:
+1. Right after this event ends, what do you want them to do immediately?
+2. What is their biggest pain right now: not knowing which tools to use,
+   lacking direction, or having no one to help them organize their thoughts?
+3. Do you want this event to feel like a taster session, a workshop,
+   or a small co-creation space?
+
+Answer these three and I'll help you narrow it down to three topic directions.</div>
+
+      <h3>The Operational Framework: Seven Steps to Distill a Character</h3>
+      <p>The subject of distillation can be yourself, someone you admire, a book, or a collaborator. The full process has ten steps; here are the seven most critical ones:</p>
+      <ol>
+        <li><b>Choose the pairing.</b> Decide who you are distilling and what role this character should play: advisor, assistant, partner, or colleague. Fix the pairing first, or nothing downstream will align.</li>
+        <li><b>Build the source foundation first.</b> When the source material is a book or a large batch of transcripts, organize it into a traceable source list and a thematic index before writing any persona. Do not rush into character writing.</li>
+        <li><b>Find recurring themes.</b> Which three to five topics does this person keep returning to? What can they talk about for thirty minutes without stopping? These become the topic map.</li>
+        <li><b>Extract the expression DNA.</b> Sentence length, habitual vocabulary, where metaphors come from, how they express agreement and disagreement. Quote the original words directly. Do not paraphrase.</li>
+        <li><b>Extract judgment principles.</b> Find patterns in what they decide in given situations, and more importantly, write down why they decide that way. Format it as: "When Y, choose Z, because what they are trying to achieve is..." The "because" is the point. Intent is more stable than steps.</li>
+        <li><b>Extract thinking patterns.</b> What is their first move when they encounter a new problem? What sequence do they use to break it down? Write it as a step-by-step reasoning flow.</li>
+        <li><b>Add the thinking engine and validate.</b> Load the results from above into the cognitive layer, then run five to ten test conversations. Check whether it resembles the judgments that person would actually make.</li>
+      </ol>
+
+      <div class="caveat">
+        <b>The most common mistake to avoid</b>
+        Judgment principles should never be written as abstract slogans. Writing "this person values long-term thinking" gives AI nothing to work with. But writing only "when Y, choose Z" as a step is still not enough. Steps are references; they shift with context, and a different situation makes them inaccurate. What you actually need to write clearly is the intent: why does this person choose long-term thinking, what does long-term mean to them, and what are they ultimately trying to achieve? When that is clear, AI can reason through novel situations and figure out the right choice on its own, rather than being trapped inside a rigid rule. This is intent-first design: lead with the goal and the reason, and let the AI work out the better approach.
+      </div>
+
+      <!-- Bidirectional link anchor: once the intent-first prompting article is published, update the b tag below into a link and add a backlink from that article. data-pending-link is tracked by scripts/link-graph.js -->
+      <div class="meaning" id="intent-first-teaser" data-pending-link="intent-first-prompting">
+        <b>Intent-First Prompting (full article coming later)</b>
+        Behind this is a practice I call intent-first prompt design: instead of writing a fixed instruction, start by explaining why you need something done and to what degree (intent and goal), then let the smarter AI figure out the better approach. This article mentions the idea and a full dedicated piece will follow. A link will be added here once it is published.
+      </div>
+
+      <h3>Source Before Persona</h3>
+      <p>The most common failure mode in persona-mind distillation is AI using "feels right" to fill in gaps where there is no source material, producing things the person never actually said. So I hold to one principle: source before persona. Every judgment must be traceable to an origin, categorized into four levels: direct quotes from the person, verified actions by the person, reasoned inference, or secondhand accounts. Anything without source support gets labeled "source pending." It is better to have the character say it does not know than to have it complete the picture from intuition. A stable, safe, and reversible character is far more valuable than one that sounds impressive but cannot be trusted.</p>
+
+      <h3>A Reusable Prompt: Distilling a Character's Thinking Engine</h3>
+      <p>Paste your source material into AI and send this prompt to generate the first version of the thinking engine:</p>
+      <div class="codeblock"><span class="c"># Distill the Thinking Engine</span>
+I want to distill this character into an AI that can make its own judgments.
+Based on the material I've pasted (articles, conversations, lecture transcripts),
+please extract three things:
+
+1. Judgment Principles:
+Find patterns of "in situation Y, this person chooses Z."
+Write each one as: "When Y, choose Z, because (the intent / desired outcome)."
+At least eight principles.
+The "because" is the essential part. Intent must be written clearly.
+Steps are only reference points; they shift with context.
+
+2. Thinking Patterns:
+When this character encounters a new problem, what is their first move?
+What sequence do they follow to break it down?
+Write it as a step-by-step reasoning flow.
+
+3. Expression DNA:
+Are their sentences long or short? What vocabulary do they favor?
+What kinds of metaphors do they use?
+How do they express agreement and disagreement?
+Quote original words directly. Do not paraphrase.
+
+Anything without source support: label it "source pending." Do not invent.</div>
+
+      <div class="skillcard">
+        <b>The complete system is open source. Clone it and use it directly.</b>
+        <p>The above is the condensed version. My full standard workflow for distilling books, research papers, videos, podcasts, and ideas into embodied AI advisors is publicly available on GitHub. It includes: the ten-block persona template with examples for every section, the thinking engine module with instructions and validation tests for blocks 03, 05, and 09, a knowledge graph update workflow for processing large source materials into Markdown, splitting files, building index pages, and loading on demand, the full ten-step distillation process, source tracing and drift prevention controls, and notes on the five different entry points (self, public figure, colleague, manager, or a book) with their respective differences and safety guidelines. Clone it, fill it in, and your Agent can get started just by reading the docs.</p>
+        <p class="repo-links"><a href="https://github.com/Jiang-Yude/persona-mind-distiller" target="_blank" rel="noopener">Chinese GitHub →</a><a href="https://github.com/Jiang-Yude/persona-mind-distiller-en" target="_blank" rel="noopener">English GitHub →</a></p>
+      </div>
+
+      <div class="npc-row">
+        <img src="../../../images/articles/docs-as-system-design-agent-npc-oracle.jpg" alt="Digital Twin Village: Oracle NPC" loading="lazy">
+        <p>Whether a villager counts as an Agent comes down to whether they have this thinking engine, not whether they have a name or an avatar.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="village-to-dungeon">
+    <div class="inner">
+      <h2>From a Village to a Dungeon Run: Single Agent to Multi-Agent</h2>
+      <p>Once a villager is fully distilled, they are a small Agent that can make its own judgments. Now put many villagers together. What does that become?</p>
+      <p>The world of the Digital Twin Village is a place called Chuxin Village, where villagers live. The village as a whole is a multi-Agent system, a container, an environment. It is simply a space that brings villagers together. The village does not set goals on its own; it provides the grounds and the rules. Villagers live there but have no shared mission to accomplish. The village is a place to inhabit.</p>
+      <p>A dungeon run is different. Borrowing language from games, a dungeon run is a session with a defined theme, a storyline, and tasks to complete. That structure upgrades the whole thing to a large Agent. A dungeon run binds two things together from the start: the completion condition is the goal, and the storyline is the convergence mechanism. So a dungeon run does not necessarily need a live facilitator. The storyline itself is its thinking engine, and it will push villagers toward completion on its own. A dungeon run is a thing to be finished.</p>
+      <p>A themed gathering sits in between. The moment a session has a defined topic to discuss, it has crossed a large part of the distance from container to large Agent, because it now has a goal. To become a fully realized large Agent, it still needs one more element: a mechanism to bring participants back to the topic when they drift. Just dropping a theme into the room often results in everyone talking past each other and wandering further and further off course. That requires a facilitation and convergence role, one that knows when to pull the discussion back, who to invite to speak, and when to wrap up. That facilitating role is the thinking engine of the large Agent. Right now, that role is me facilitating in person. When I eventually distill my own facilitation instincts into a facilitator persona file using the same persona-mind distillation process, this large Agent will be able to run on its own without me.</p>
+
+      <div class="table-wrap">
+        <table class="system-table" aria-label="Agent level comparison: Villager, Chuxin Village, Dungeon Run, Themed Gathering">
+          <thead>
+            <tr>
+              <th>Level</th>
+              <th>What it is</th>
+              <th>Does it have a goal?</th>
+              <th>Large or multi?</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Villager</td>
+              <td>A small Agent with both a persona layer and a cognitive layer distilled out.</td>
+              <td>Has its own judgment goals, but typically manages only its own responses.</td>
+              <td>Single Agent.</td>
+            </tr>
+            <tr>
+              <td>Chuxin Village</td>
+              <td>The environment and container where multiple villagers coexist.</td>
+              <td>No shared completion goal. Provides grounds and rules only.</td>
+              <td>Multi-Agent system.</td>
+            </tr>
+            <tr>
+              <td>Dungeon Run</td>
+              <td>A session with a defined theme, storyline, tasks, and a completion condition.</td>
+              <td>Has a clear goal. The storyline pushes villagers toward completion.</td>
+              <td>A large Agent from the outside, a multi-Agent system from the inside.</td>
+            </tr>
+            <tr>
+              <td>Themed Gathering</td>
+              <td>A gathering with a discussion topic that requires facilitation and convergence.</td>
+              <td>Has a topic, but needs a facilitating role to keep participants on track.</td>
+              <td>Between a container and a large Agent.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="nest">
+        <div class="lvl village">
+          <span class="tag">Chuxin Village = Environment / Container / Multi-Agent System</span>
+          <div class="lvl dungeon">
+            <span class="tag">One Dungeon Run = Large Agent = Completion Condition (Goal) + Storyline (Convergence)</span>
+            <div class="vrow">
+              <div class="vbox"><b>Villager</b>Small Agent</div>
+              <div class="vbox"><b>Villager</b>Small Agent</div>
+              <div class="vbox"><b>Villager</b>Small Agent</div>
+            </div>
+            <div class="engine">Zoom in on any villager and their profile contains the ten-block persona layer plus the cognitive layer's thinking engine. The three blocks that enable self-judgment are: <b>Block 3 Value Propositions</b>, <b>Block 5 Thinking Patterns</b>, and <b>Block 9 Underlying Logic</b>.</div>
+          </div>
+        </div>
+      </div>
+      <p class="cap">The large contains the multi: a dungeon run is one large Agent from the outside, and a collection of small Agents from the inside.</p>
+    </div>
+  </section>
+
+  <section class="section" id="big-vs-many">
+    <div class="inner">
+      <h2>Large and Multi Are Two Different Perspectives</h2>
+      <p>Many people ask: is a dungeon run a large Agent or a multi-Agent system? The answer is both, and the difference is only a matter of where you are standing.</p>
+      <p>Looking at the dungeon run from outside as a whole, it has a completion condition, a storyline, and it runs on its own. That is one large Agent. Looking at the dungeon run from inside, there are multiple villagers each acting independently. That is a multi-Agent system. So it is both at the same time. The large contains the multi.</p>
+      <div class="npc-row">
+        <img src="../../../images/articles/docs-as-system-design-agent-npc-chief.jpg" alt="Digital Twin Village: Village Chief NPC" loading="lazy">
+        <p>Whether an environment has a facilitation and convergence role determines whether it is a self-running large Agent or simply a space where people have been placed.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="recap">
+    <div class="inner">
+      <h2>Closing: One Unbroken Line</h2>
+      <p>Walking through the full arc, the whole thing resolves into one master criterion and a few points worth holding onto.</p>
+      <ul>
+        <li><b>Docs are the system.</b> Natural language written clearly is a system in the AI era. A system that can run is an Agent.</li>
+        <li><b>If you can lead people, you can design Agents.</b> Directors, teachers, and managers already define roles, arrange workflows, and give direction.</li>
+        <li><b>For a character to think, use persona-mind distillation.</b> The persona layer makes it seem like that person. The cognitive layer makes it reason like that person.</li>
+        <li><b>Look for the thinking engine.</b> Whether a villager has one determines whether they count as an Agent. Whether an environment has one determines whether it counts as a large Agent.</li>
+        <li><b>Large and multi are two perspectives.</b> A dungeon run is a large Agent from the outside and a multi-Agent system from the inside.</li>
+      </ul>
+      <div class="meaning" id="harness-engineering">
+        <b>This practice has a name: Harness Engineering</b>
+        This concept has been gaining traction in AI engineering circles starting in 2026. It refers to the layer of architecture outside the model itself: how you provide context, how you connect tools, how you manage memory, and how you set boundaries. That layer determines outcomes more than the model itself does. The industry typically builds this layer with code. My entire system is built with plain text and natural language. Same thing, different means. That is the proof that non-engineers can design Agent frameworks too.
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="pitfalls">
+    <div class="inner">
+      <h2>Common Pitfalls (and How to Avoid Them)</h2>
+      <div class="caveat"><b>Pitfall 1: Only writing a character card.</b> You give a name, basic info, and a tone of voice, but never build the thinking engine. Fix: add the three blocks covering value propositions, thinking patterns, and underlying logic. Without them, the character cannot handle situations it was never scripted for.</div>
+      <div class="caveat"><b>Pitfall 2: Writing judgment principles as slogans.</b> Writing "this person values the long term" gives AI nothing actionable. Fix: first write why they make that choice and what they are trying to achieve (the intent), then pair it with "when Y, choose Z" as a reference. Intent is more stable than steps, because steps shift with context.</div>
+      <div class="caveat"><b>Pitfall 3: Letting AI fill gaps from intuition.</b> Content without source support leads AI to improvise, causing the character to drift and say things the person never actually said. Fix: source before persona. Anything without a source gets labeled "source pending."</div>
+      <div class="caveat"><b>Pitfall 4: Chasing a perfect first version.</b> Wanting to get everything right at once means the work never gets finished. Fix: get the first version to seventy percent and start using it. Iterate through real conversations. Perfectionism is the greatest enemy of embodiment.</div>
+    </div>
+  </section>
+
+  <section class="section" id="positioning">
+    <div class="inner">
+      <h2>A Reminder About What You Are Really Building</h2>
+      <p>The real gain from designing Agents is not that AI gets smarter. When you distill a character, especially when you distill yourself, the process forces you to articulate judgments you normally make without thinking, one by one, in explicit language. The moment you articulate them clearly, your own thinking becomes several times sharper.</p>
+      <p>That clarity belongs to you, not to AI. What I have always been doing is distilling tacit knowledge: turning judgments you already have but cannot yet explain into knowledge assets that accumulate over time. AI simply makes this possible for everyone, for the first time.</p>
+    </div>
+  </section>
+
+  <section class="section" id="faq">
+    <div class="inner">
+      <h2>FAQ: Common Questions from Non-Engineers Designing Agents</h2>
+
+      <h3>What is an AI Agent?</h3>
+      <p>An AI Agent is an AI system that can read a goal, apply rules to make judgments, and execute tasks. It can be built from code, but it can also be built first from clear documentation, character profiles, workflows, and boundary definitions.</p>
+
+      <h3>How can a non-engineer start designing Agents?</h3>
+      <p>Start with a single document. Write clearly who the character serves, what it needs to accomplish, how it should judge common situations, and what it must never do. Then test and iterate through real conversations.</p>
+
+      <h3>What is persona-mind distillation?</h3>
+      <p>Persona-mind distillation is the process of organizing a person's or character's tone, value propositions, judgment principles, thinking patterns, and underlying logic into an AI-readable profile. The goal is to let the character respond to problems it has never encountered before, using the same judgment framework.</p>
+
+      <h3>Are the thinking engine and the cognitive layer the same thing?</h3>
+      <p>In this article, the thinking engine is the core function of the cognitive layer. It includes value propositions, thinking patterns, underlying logic, and actionable judgment rules, enabling the character to make its own judgments.</p>
+
+      <h3>What is the difference between a single Agent and a multi-Agent system?</h3>
+      <p>A single Agent is one character or workflow that can make judgments. A multi-Agent system is multiple Agents placed in the same environment, interacting with each other. If the whole environment has a shared goal, storyline, or facilitation mechanism to converge outcomes, it can also be viewed as one larger Agent.</p>
+
+      <h3>What is Harness Engineering?</h3>
+      <p>Harness Engineering is the practice of designing the layer of architecture outside the AI model itself: how to provide context, how to connect tools, how to manage memory, how to set boundaries and checkpoints, and how to steer AI in the direction you want. In a metaphor: the AI is the brain, an Agent is the horse that gives the brain hands and feet, and Harness Engineering is the reins, the route, and the checkpoints that guide the horse. This is a key focus of AI engineering in 2026, because that layer outside the model determines outcomes more than the model itself does. It can be built with code, or, as this article demonstrates, built entirely with plain text and natural language.</p>
+
+      <h3>How do prompt engineering, context engineering, and Harness Engineering differ?</h3>
+      <p>These three form an upward-growing evolution. Prompt engineering is about crafting a single instruction. Context engineering is about managing the entire conversation context: what data, background, and surrounding material you give the AI so it can work with sufficient information. Harness Engineering goes one level higher: the focus is not on how each sentence is written, but on how you guide a collaborator that is smarter than you toward the direction you want. A single prompt has a low ceiling. The focus has already moved from individual prompts up to context and harness.</p>
+    </div>
+  </section>
+
+  <section class="section" id="further-reading">
+    <div class="inner">
+      <h2>Further Reading</h2>
+      <div class="related">
+        <a href="../diary-driven-agent-3x4/">
+          <small>Knowledge Base Organization</small>
+          <b>Write a Diary, and AI Will Follow Your Lead: The 3X4 Data Organization Method</b>
+          <p>Three types of diary entries combined with four time horizons, turning scattered material into a knowledge base that AI can read. This is what "docs as system design" looks like in practice.</p>
+        </a>
+        <a href="../how-ai-connects-software/">
+          <small>Agent Fundamentals</small>
+          <b>How Do AI Agents Operate Software Directly?</b>
+          <p>APIs, CLI, MCP, web browser control, and computer control explained in plain language, showing how an Agent connects to its tools.</p>
+        </a>
+        <a href="../how-to-train-your-ai-employee/">
+          <small>Training Methods</small>
+          <b>How to Train Your AI Employee: The Employee Plus Advisor Framework</b>
+          <p>From AI employees and advisor teams to seven layers of tacit knowledge distillation, showing how to turn judgment into reusable workflows.</p>
+        </a>
+        <a href="../../../skills.html">
+          <small>Skills Download</small>
+          <b>Skills Download</b>
+          <p>Download persona-mind distillation, Digital Twin Village, and other open Skills so your Agent can get started just by reading the docs.</p>
+        </a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">Coach Jiang · AI Knowledge Management</div>
+    <div class="footer-links">
+      <a href="../../../articles.html">← Back to All Articles</a>
+      <a href="../../index.html">Home</a>
+      <a href="../../learn.html">Self-Study Resources</a>
+      <a href="../../../skills.html">Skills Download</a>
+      <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">LINE Community ↗</a>
+      <a href="https://www.threads.com/@jiang_yude_coach" target="_blank" rel="noopener">Threads ↗</a>
+      <a href="https://vocus.cc/salon/Jiang_Coach" target="_blank" rel="noopener">Vocus ↗</a>
+    </div>
+    <div class="footer-note">This is an educational article presenting Coach Jiang's perspective on "docs as system design: how non-engineers build Agent frameworks," offered for reference.</div>
+  </div>
+</footer>
+
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <span class="lightbox-close" aria-label="Close">×</span>
+  <img id="lightbox-img" src="" alt="Enlarged view">
+</div>
+<script>
+(function(){
+  var box=document.getElementById('lightbox'),boxImg=document.getElementById('lightbox-img');
+  document.querySelectorAll('.hero-figure img,.inline-figure img,.villagers img').forEach(function(img){
+    img.addEventListener('click',function(){boxImg.src=img.currentSrc||img.src;boxImg.alt=img.alt||'Enlarged view';box.classList.add('open');box.setAttribute('aria-hidden','false');});
+  });
+  function close(){box.classList.remove('open');box.setAttribute('aria-hidden','true');boxImg.src='';}
+  box.addEventListener('click',close);
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
+})();
+</script>
+
+<script src="../../../spotlight.js"></script>
+<script src="../../../articles-data.js"></script>
+<script src="../../../related-render.js"></script>
+</body>
+</html>

@@ -1,0 +1,324 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="index,follow">
+<title>I Used an Agent to Build My Automated Workflow | Coach Jiang · AI Knowledge Management</title>
+<meta name="description" content="Automation is best understood as two distinct concepts: an Agent workflow builds the process for you, while a programmatic automation workflow runs it on its own. Using a Codex-powered LINE backup bot as a case study, this article breaks down how the two work together and gives you a practical framework for deciding what to hand off to AI and what to hand off to code.">
+<link rel="canonical" href="https://ai-km-jiang.vercel.app/en/articles/agent-workflow-builds-automation/">
+<link rel="alternate" hreflang="zh-Hant" href="https://ai-km-jiang.vercel.app/articles/agent-workflow-builds-automation/">
+<link rel="alternate" hreflang="en" href="https://ai-km-jiang.vercel.app/en/articles/agent-workflow-builds-automation/">
+<link rel="alternate" hreflang="x-default" href="https://ai-km-jiang.vercel.app/articles/agent-workflow-builds-automation/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="I Used an Agent to Build My Automated Workflow | Coach Jiang">
+<meta property="og:description" content="Two concepts: an Agent workflow builds the process, a programmatic workflow runs it automatically. A case study using Codex to set up a LINE backup bot.">
+<meta property="og:url" content="https://ai-km-jiang.vercel.app/en/articles/agent-workflow-builds-automation/">
+<meta property="og:image" content="https://ai-km-jiang.vercel.app/articles/agent-workflow-builds-automation/assets/00-summary.jpg">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Coach Jiang · AI Knowledge Management">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="I Used an Agent to Build My Automated Workflow | Coach Jiang">
+<meta name="twitter:description" content="Two concepts: an Agent workflow builds the process, a programmatic workflow runs it automatically. A case study using Codex to set up a LINE backup bot.">
+<meta name="twitter:image" content="https://ai-km-jiang.vercel.app/articles/agent-workflow-builds-automation/assets/00-summary.jpg">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"I Used an Agent to Build My Automated Workflow","description":"Two concepts: an Agent workflow builds the process, a programmatic automation workflow runs it on its own. A case study using Codex to set up a LINE backup bot.","author":{"@type":"Person","name":"Jiang Yu-De","alternateName":"Coach Jiang","jobTitle":"Tacit Knowledge Distiller, AI Application Planner"},"isPartOf":{"@type":"WebSite","name":"Coach Jiang · AI Knowledge Management","url":"https://ai-km-jiang.vercel.app/"},"inLanguage":"en","datePublished":"2026-06-16","dateModified":"2026-06-24","image":"https://ai-km-jiang.vercel.app/articles/agent-workflow-builds-automation/assets/00-summary.jpg","url":"https://ai-km-jiang.vercel.app/en/articles/agent-workflow-builds-automation/"}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{--ink:#1a1612;--paper:#fefcf8;--muted:#6a635a;--line:#d8cdb8;--green:#5f7553;--blue:#5689b8;--orange:#e85a4f;--soft:#faf5ec;--dark:#2a2018;--shadow:0 18px 45px rgba(107,74,42,.14);--sp-shadow:hsla(35,50%,60%,.15);--sp-shadow-edge:hsla(35,50%,68%,.03);--sp-radius:400px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC","Segoe UI",sans-serif}
+a{color:inherit}
+/* shared top nav */
+nav.top{position:sticky;top:0;background:rgba(254,252,248,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid #d8cdb8;z-index:100}
+nav.top .container{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:24px;padding:14px 32px}
+.nav-brand-img{justify-self:start;display:flex;align-items:center;text-decoration:none;flex-shrink:0;transition:opacity .2s}
+.nav-brand-img:hover{opacity:.8}.nav-brand-img img{height:40px;width:auto;display:block}
+nav.top ul.nav-menu{justify-self:end;display:flex;gap:22px;list-style:none;margin:0;padding:0;font-size:.95rem;white-space:nowrap}
+nav.top ul.nav-menu a{color:#3a342d;text-decoration:none;transition:color .2s;font-weight:500;white-space:nowrap}
+nav.top ul.nav-menu a:hover{color:#1a1612}nav.top ul.nav-menu a.active{color:#1a1612;font-weight:700}
+.nav-toggle{display:none;background:none;border:none;padding:6px;cursor:pointer;width:36px;height:36px;position:relative}
+.nav-toggle span{display:block;position:absolute;left:8px;right:8px;height:2px;background:#1a1612;border-radius:2px;transition:transform .25s,opacity .25s,top .25s}
+.nav-toggle span:nth-child(1){top:11px}.nav-toggle span:nth-child(2){top:17px}.nav-toggle span:nth-child(3){top:23px}
+.nav-toggle.open span:nth-child(1){top:17px;transform:rotate(45deg)}.nav-toggle.open span:nth-child(2){opacity:0}.nav-toggle.open span:nth-child(3){top:17px;transform:rotate(-45deg)}
+@media(max-width:860px){
+ nav.top .container{grid-template-columns:auto 1fr auto;padding:10px 16px;gap:12px}
+ .nav-brand-img img{height:32px}
+ .nav-toggle{display:block;justify-self:end}
+ nav.top ul.nav-menu{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(254,252,248,.98);backdrop-filter:blur(14px);border-bottom:1px solid #d8cdb8;flex-direction:column;gap:0;padding:8px 0;box-shadow:0 10px 24px rgba(107,74,42,.08)}
+ nav.top ul.nav-menu.open{display:flex}
+ nav.top ul.nav-menu li{border-bottom:1px solid #e8dfc9}
+ nav.top ul.nav-menu li:last-child{border-bottom:none}
+ nav.top ul.nav-menu a{display:block;padding:14px 20px;font-size:1.06rem}
+}
+/* mouse warm-glow spotlight */
+body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradient(var(--sp-radius) circle at var(--mx,50%) var(--my,50%),var(--sp-shadow) 0%,var(--sp-shadow-edge) 45%,transparent 75%);pointer-events:none;z-index:9999;mix-blend-mode:multiply;transition:background .06s linear}
+.hero{position:relative;overflow:hidden;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:72px;padding:96px clamp(20px,6vw,88px) 80px;background:linear-gradient(180deg,#fffcf0 0%,#f9e9d2 100%);color:#1a1612;border-bottom:1px solid #d8cdb8}
+.hero .wc{position:absolute;border-radius:50%;filter:blur(60px);pointer-events:none;z-index:0}
+.hero .wc1{width:420px;height:360px;top:-120px;right:-80px;background:#e8884b;opacity:.15}
+.hero .wc2{width:360px;height:300px;bottom:-110px;left:-70px;background:#5f7553;opacity:.13}
+.hero .wc3{width:280px;height:260px;top:34%;left:14%;background:#a08144;opacity:.10}
+.hero>div{flex:none;width:860px;max-width:100%;position:relative;z-index:2}
+.hero-figure{margin:0;width:420px;flex:none;position:relative;z-index:2}
+.hero-figure img{display:block;width:100%;border-radius:16px;border:1px solid #d8cdb8;box-shadow:0 18px 45px rgba(107,74,42,.16);cursor:zoom-in}
+.hero-figure figcaption{margin-top:10px;font-size:14px;line-height:1.6;color:#6a635a}
+.kicker{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.55rem;color:#7a5c3a;font-weight:500}
+.hero h1{max-width:none;margin:16px 0 18px;font-size:clamp(36px,6vw,72px);line-height:1.08;overflow-wrap:anywhere}
+.hero p{max-width:none;font-size:clamp(18px,2vw,23px);line-height:1.62;color:#3a342d}
+.section{padding:54px clamp(20px,6vw,88px);border-top:1px solid var(--line)}
+.inner{width:min(1000px,100%);margin:0 auto}
+.section h2{font-size:clamp(26px,4.2vw,48px);line-height:1.12;margin:0 0 18px}
+.section h3{font-size:clamp(21px,3vw,30px);line-height:1.2;margin:30px 0 12px}
+.lead{font-size:clamp(18px,1.6vw,22px);line-height:1.7;color:#3a342d;max-width:900px}
+.section p{font-size:18px;line-height:1.74;color:#3a342d}.section p+p{margin-top:14px}
+.section ul,.section ol{padding-left:1.4em;font-size:18px;line-height:1.74;color:#3a342d}.section li{margin-bottom:8px}
+.meaning{margin:22px 0;padding:16px 18px;border-left:5px solid var(--green);background:rgba(95,117,83,.12);border-radius:6px;line-height:1.7;font-size:19px}
+.meaning b{display:block;color:var(--green);margin-bottom:4px}
+/* article info card */
+.infocard{background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px 24px 22px;box-shadow:0 8px 22px rgba(107,74,42,.08);margin-top:8px}
+.infocard-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.info-item{padding:18px 14px 0}
+.info-item b{display:block;font-size:16px;font-weight:900;letter-spacing:.04em;margin-bottom:7px;text-transform:uppercase}
+.info-item:nth-child(1) b{color:var(--green)}.info-item:nth-child(2) b{color:var(--orange)}.info-item:nth-child(3) b{color:var(--blue)}
+.info-item p{margin:0;font-size:18px;line-height:1.6;color:#3a342d}
+.tagrow{display:flex;flex-wrap:wrap;gap:7px;margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
+.tag{font-size:16px;color:var(--muted);background:var(--soft);border:1px solid var(--line);border-radius:999px;padding:4px 11px}
+/* two layers */
+.layers{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:24px}
+.layer{background:#fff;border:1px solid var(--line);border-radius:10px;padding:22px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.layer small{display:block;color:var(--orange);font:900 12px/1.2 ui-monospace,monospace;margin-bottom:8px}
+.layer h3{margin:0 0 8px;font-size:21px}
+.layer p{margin:0;font-size:18px;line-height:1.64;color:#3a342d}
+.layer.run{border-color:var(--green)}
+/* flow steps */
+.flow{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:22px}
+.flow div{background:var(--soft);border:1px solid var(--line);border-radius:8px;padding:14px;font-size:18px;line-height:1.5;color:#3a342d}
+.flow b{display:block;color:var(--green);font-size:16px;font-family:ui-monospace,monospace;margin-bottom:6px}
+/* single embedded figure */
+.figure{margin:30px auto 6px;text-align:center}
+.figure img{width:100%;max-width:440px;border-radius:12px;border:1px solid #d8cdb8;box-shadow:0 10px 26px hsla(35,50%,60%,.15);display:block;margin:0 auto;cursor:zoom-in}
+.figure.wide img{max-width:820px}
+.figure figcaption{margin-top:10px;font-size:16px;line-height:1.5;color:#6a635a}
+/* duo cards */
+.duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:24px}
+.duo.stack{grid-template-columns:1fr}
+.duo .card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:22px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.duo .card.a{border-color:var(--orange)}.duo .card.b{border-color:var(--green);box-shadow:0 8px 24px rgba(95,117,83,.16)}
+.duo .card b{display:block;font-size:22px;line-height:1.3;margin-bottom:12px}.duo .card.a b{color:#c0512f}.duo .card.b b{color:#4a7a59}
+.duo .card p{margin:0;color:#3a342d;line-height:1.75;font-size:18px}
+/* inline-figure (wide landscape images) */
+.inline-figure{margin:30px auto 8px;max-width:820px}
+.inline-figure.wide{max-width:1000px}
+.inline-figure img{display:block;width:100%;border-radius:14px;border:1px solid var(--line);box-shadow:var(--shadow);background:#fff;cursor:zoom-in}
+.inline-figure figcaption{font-size:16px;line-height:1.6;color:var(--muted);margin-top:10px;text-align:center}
+/* CTA band light green */
+.cta-band{background:#e6f0e5;color:#3a342d}.cta-band .section{border-top:none}
+.cta-band .inner{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(260px,.85fr);gap:26px;align-items:start}
+.cta-band h2{font-size:clamp(26px,4vw,44px);margin:0 0 16px}.cta-band p,.cta-band .lead{color:rgba(58,52,45,.92);font-size:18px;line-height:1.72}
+.cta-card{border:1px solid #cfe0d2;background:#fbfdfa;border-radius:8px;padding:22px}
+.cta-card b{display:block;color:#48b178;margin-bottom:10px;font-size:18px}.cta-card p{margin:0 0 14px}
+.footer{padding:30px clamp(20px,6vw,88px);font-size:14px;color:var(--muted);background:#fff;border-top:1px solid var(--line)}
+.footer-inner{width:min(1000px,100%);margin:0 auto}
+.footer-links{display:flex;flex-wrap:wrap;gap:6px 12px;margin-bottom:14px}.footer-links a{color:var(--blue);font-weight:900;text-decoration:none;font-size:14px}
+.footer-brand{font-weight:900;font-size:15px;margin-bottom:10px}.footer-note{font-size:13px;line-height:1.6}
+@media(max-width:820px){.infocard-grid{grid-template-columns:1fr}.layers{grid-template-columns:1fr}.flow{grid-template-columns:1fr 1fr}.cta-band .inner{grid-template-columns:1fr}.section{padding:40px 20px}.hero{min-height:52vh;flex-direction:column;justify-content:flex-start;align-items:flex-start;gap:24px}.hero>div{width:100%}.hero-figure{width:100%;max-width:560px}}
+@media(max-width:820px){html,body{overflow-x:hidden}.hero h1{word-break:break-word}}
+/* lightbox */
+.hero-figure img,.figure img{cursor:zoom-in}
+.lightbox{position:fixed;inset:0;z-index:10000;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(12,10,8,.92);cursor:zoom-out;backdrop-filter:blur(4px)}
+.lightbox.open{display:flex}
+.lightbox img{max-width:96vw;max-height:92vh;border-radius:10px;box-shadow:0 24px 60px rgba(0,0,0,.5)}
+.lightbox-close{position:fixed;top:18px;right:24px;color:#fff;font-size:34px;line-height:1;font-weight:700;cursor:pointer;opacity:.85}
+.article-meta{display:flex;flex-wrap:wrap;gap:8px 12px;margin:0 0 18px;color:var(--muted,#6a635a);font-size:15px;font-weight:700}
+</style>
+<!-- tracking:vercel-analytics -->
+<script defer src="/_vercel/insights/script.js"></script>
+<script defer src="/_vercel/speed-insights/script.js"></script>
+</head>
+<body class="spotlight">
+<nav class="top">
+  <div class="container">
+    <a class="nav-brand-img" href="../../index.html"><img src="../../../images/footer-signature.png" alt="Coach Jiang | Jiang Yu-De"></a>
+    <button class="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
+    <ul class="nav-menu">
+      <li><a href="../../index.html">Home</a></li>
+      <li><a href="../../offers.html">Paid Courses</a></li>
+      <li><a href="../../../courses.html">Free Talks</a></li>
+      <li><a href="../../invited-talks.html">Invited Talks</a></li>
+      <li><a href="../../../articles.html" class="active">Articles</a></li>
+      <li><a href="../../../skills.html">Skills</a></li>
+      <li><a href="../../cases.html">Services</a></li>
+      <li class="lang-switch"><a href="../../../articles/agent-workflow-builds-automation/">中文</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="wc wc1"></div>
+  <div class="wc wc2"></div>
+  <div class="wc wc3"></div>
+  <div>
+    <div class="kicker">Agent Workflow × Programmatic Automation</div>
+    <h1>I Used an Agent to Build My Automated Workflow</h1>
+    <p>Talking with a friend about automation recently, I realized it helps to separate the concept into two parts: an Agent workflow that builds the process for you, and a programmatic automation workflow that runs on its own once it is built. Keeping them distinct clarifies exactly where AI should be involved.</p>
+  </div>
+</section>
+
+<main>
+
+<section class="section" id="start">
+  <div class="inner">
+    <div class="article-meta"><span>Published: 2026-06-16</span><span>Updated: 2026-06-16</span></div>
+    <h2>What This Article Covers</h2>
+    <p class="lead">Breaking "AI automation" into two concepts: an Agent workflow builds the process, while a programmatic automation workflow runs it on its own. Using a Codex-powered LINE backup bot as the example, I explain which parts to hand off to AI and which to hand off to code.</p>
+    <div class="duo stack">
+      <div class="card a">
+        <b>Who This Is For</b>
+        <p>· People who want to use AI to turn repetitive work into a self-running process, but are unclear about which part AI handles and which part code handles<br>· People confused about whether "AI automation" means AI is running it or code is running it<br>· Solo business owners and freelancers who want AI to genuinely take over a workflow</p>
+      </div>
+      <div class="card b">
+        <b>What You Will Get</b>
+        <p>· A clear picture of how an Agent workflow and a programmatic automation workflow divide the work<br>· One practical decision rule: which parts go to AI, which parts go to code<br>· One real case study: using Codex to set up a LINE backup bot from scratch</p>
+      </div>
+    </div>
+    <figure class="inline-figure wide">
+      <img src="../../../articles/agent-workflow-builds-automation/assets/00-summary.jpg" alt="Overview: four-step process and the difference between Agent workflow and programmatic automation workflow" loading="lazy">
+      <figcaption>One diagram to understand it: four steps, two distinct concepts</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section class="section" id="layers">
+  <div class="inner">
+    <h2>Separating the Two Concepts First</h2>
+    <p class="lead">A lot of people lump automation together when they talk about it. I prefer to separate it into two concepts: an Agent workflow is responsible for building the process, while a programmatic automation workflow is responsible for running it once it is built. They require very different things.</p>
+    <div class="layers">
+      <div class="layer">
+        <small>BUILD PHASE</small>
+        <h3>Agent Workflow</h3>
+        <p>Bringing a process into existence from nothing: what to connect, how to define the rules, how to test it. This phase I hand to an Agent, because it requires judgment and configuration.</p>
+      </div>
+      <div class="layer run">
+        <small>RUN PHASE</small>
+        <h3>Programmatic Automation Workflow</h3>
+        <p>Once the process is configured, code runs it according to the rules. This phase does not need anyone watching it every time, and it does not necessarily involve AI at all.</p>
+      </div>
+    </div>
+    <div class="meaning"><b>How to decide who gets which part?</b> Anything that requires understanding, judgment, design, or testing goes to the Agent. Fixed operations like searching, archiving, classifying, and backing up go to code. Offloading the no-brainer repetitive operations lets AI focus on where judgment is actually needed.</div>
+    <figure class="figure">
+      <img src="../../../articles/agent-workflow-builds-automation/assets/03-carousel-card.jpg" alt="The task splits into two concepts: Agent workflow and programmatic automation workflow" loading="lazy">
+      <figcaption>Left: I give Codex a goal and permissions to set things up. Right: once configured, LINE backs up automatically.</figcaption>
+    </figure>
+    <figure class="figure">
+      <img src="../../../articles/agent-workflow-builds-automation/assets/05-carousel-card.jpg" alt="In plain terms: I used an Agent workflow to build a programmatic automation workflow" loading="lazy">
+      <figcaption>AI is like the person who builds the system for you. Once it is built, the system runs itself.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section class="section" id="case">
+  <div class="inner">
+    <h2>A Real Example: The LINE Backup Bot</h2>
+    <p class="lead">I recently used Codex to set up a LINE bot for myself. The goal was simple: every message in the group, timestamped, with sender and any attached files, automatically backed up to my computer, organized by group and project.</p>
+    <figure class="figure">
+      <img src="../../../articles/agent-workflow-builds-automation/assets/02-carousel-card.jpg" alt="What I wanted was simple: a LINE bot that automatically backs up group messages" loading="lazy">
+      <figcaption>Time, sender, messages, and file attachments, automatically saved to my computer by group and project.</figcaption>
+    </figure>
+    <p>Once the LINE backup bot is configured, it is purely code running on its own:</p>
+    <div class="flow">
+      <div><b>New message</b>log it</div>
+      <div><b>File attachment</b>save it</div>
+      <div><b>Apply rules</b>classify it</div>
+      <div><b>By location</b>back it up</div>
+    </div>
+    <p style="margin-top:20px">This phase is programmatic automation. It has no direct relationship to AI and does not necessarily require a GPT API key. It just follows the configured rules and keeps running.</p>
+  </div>
+</section>
+
+<section class="section" id="where">
+  <div class="inner">
+    <h2>So Where Does AI Come In?</h2>
+    <p class="lead">AI appears in the earlier phase, when the process is being built.</p>
+    <p>Rather than slowly researching LINE webhooks, permissions, how to wire up the code, and how to test it myself, I simply gave the task to Codex. That is how I now think about it: I used an Agent workflow to build a programmatic automation workflow.</p>
+    <div class="meaning">The part that runs automatically afterward can be pure code. The part that brings it into existence in the first place can be handed to an Agent workflow.</div>
+    <figure class="figure">
+      <img src="../../../articles/agent-workflow-builds-automation/assets/04-carousel-card.jpg" alt="The automation itself has nothing to do with AI; it is just code running" loading="lazy">
+      <figcaption>No GPT connection, no API key required. Once configured, it runs free, automatic, and indefinitely.</figcaption>
+    </figure>
+    <p>Skills work on a similar principle. They lock down a way of doing something so it can be repeated the next time. That is the core idea behind a workflow: have you turned a task into a system that can be executed again and again?</p>
+    <p>Arranging these approaches from fixed to flexible, you can see a spectrum: hard-coded scripts, drag-and-drop workflow tools, Skills as reusable operating manuals, and fully autonomous Agents. The more fixed and repetitive the task, the more it belongs at the fixed end of the spectrum. The more variable and judgment-dependent it is, the more it belongs at the flexible end. The LINE backup bot sits firmly at the fixed end; Skills sit somewhere in the middle.</p>
+    <figure class="figure">
+      <img src="../../../articles/agent-workflow-builds-automation/assets/06-carousel-card.jpg" alt="Two ready-to-use prompts: one to build an automation, one to package a process as a Skill" loading="lazy">
+      <figcaption>One prompt asks AI to turn a goal into an automated workflow. The other asks AI to document a process as a reusable Skill.</figcaption>
+    </figure>
+    <figure class="figure">
+      <img src="../../../articles/agent-workflow-builds-automation/assets/07-carousel-card.jpg" alt="The point of a workflow is repeatability: traditional automation, Skills, AI Agents, tool integrations" loading="lazy">
+      <figcaption>Any time you lock a task into a repeatable method, that qualifies as a workflow.</figcaption>
+    </figure>
+    <p>Push it one layer further: write the rules as plain-text documents, the way Skills are written, and you are no longer locked into any single AI. Use Codex today, switch to a different model tomorrow, and as long as it can read the document it can pick up where things left off. What truly persists is that reusable operating manual. Individual conversations come and go. The document stays.</p>
+  </div>
+</section>
+
+<section class="cta-band">
+  <div class="section">
+    <div class="inner">
+      <div>
+        <h2>Turn a Task into a System You Can Run Again and Again</h2>
+        <p>Hand the build phase to an Agent workflow. Hand the run phase to a programmatic automation workflow. The real question is: have you turned a task into a process you can repeat next time?</p>
+        <p>This is what I keep doing for individuals and teams: organizing work into AI-ready processes that can run repeatedly.</p>
+      </div>
+      <div class="cta-card">
+        <b>Free Online Talks</b>
+        <p>Two free talks every month.</p>
+        <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;text-decoration:none;border-radius:8px;padding:12px 16px;font-weight:900;background:#48b178;color:#fff;">Join the LINE Community ↗</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">Coach Jiang · AI Knowledge Management</div>
+    <div class="footer-links">
+      <a href="../../../articles.html">← Back to Articles</a>
+      <a href="../../index.html">Home</a>
+      <a href="../../learn.html">Self-Study Resources</a>
+      <a href="../../../skills.html">Skills</a>
+      <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">LINE Community ↗</a>
+      <a href="https://www.threads.com/@jiang_yude_coach" target="_blank" rel="noopener">Threads ↗</a>
+      <a href="https://vocus.cc/salon/Jiang_Coach" target="_blank" rel="noopener">Vocus ↗</a>
+    </div>
+    <div class="footer-note">The short-form and journal versions of this piece are archived separately; the content is the same at different lengths.</div>
+  </div>
+</footer>
+
+<!-- lightbox -->
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <span class="lightbox-close" aria-label="Close">×</span>
+  <img id="lightbox-img" src="" alt="Enlarged view">
+</div>
+<script>
+(function(){
+  var box=document.getElementById('lightbox'),boxImg=document.getElementById('lightbox-img');
+  document.querySelectorAll('.hero-figure img,.figure img,.inline-figure img').forEach(function(img){
+    img.addEventListener('click',function(){
+      boxImg.src=img.currentSrc||img.src;boxImg.alt=img.alt||'Enlarged view';
+      box.classList.add('open');box.setAttribute('aria-hidden','false');
+    });
+  });
+  function close(){box.classList.remove('open');box.setAttribute('aria-hidden','true');boxImg.src='';}
+  box.addEventListener('click',close);
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
+})();
+</script>
+
+<!-- shared: mouse warm-glow spotlight + hamburger nav -->
+<script src="../../../spotlight.js"></script>
+
+<!-- article auto-interlink (related articles): two scripts in order, do not rearrange -->
+<script src="../../../articles-data.js"></script>
+<script src="../../../related-render.js"></script>
+</body>
+</html>

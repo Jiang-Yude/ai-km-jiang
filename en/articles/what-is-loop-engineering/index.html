@@ -1,0 +1,426 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="index,follow">
+<title>What Is Loop Engineering? Explained Through My Article-Writing Workflow | Coach Jiang · AI Knowledge Management</title>
+<meta name="description" content="What is loop engineering? No code required. Coach Jiang explains the concept through his article-writing workflow: the difference between prompts and loops, the five phases of a loop, the minimum required components, and when it is actually worth building one.">
+<link rel="canonical" href="https://ai-km-jiang.vercel.app/en/articles/what-is-loop-engineering/">
+<link rel="alternate" hreflang="zh-Hant" href="https://ai-km-jiang.vercel.app/articles/what-is-loop-engineering/">
+<link rel="alternate" hreflang="en" href="https://ai-km-jiang.vercel.app/en/articles/what-is-loop-engineering/">
+<link rel="alternate" hreflang="x-default" href="https://ai-km-jiang.vercel.app/articles/what-is-loop-engineering/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="What Is Loop Engineering? Explained Through My Article-Writing Workflow | Coach Jiang">
+<meta property="og:image" content="https://ai-km-jiang.vercel.app/images/articles/what-is-loop-engineering-summary-wide.jpg">
+<meta property="og:description" content="No code required. Coach Jiang uses his own article-writing workflow to explain the difference between prompts and loops, the five phases, the minimum components, and when a loop is worth building.">
+<meta property="og:url" content="https://ai-km-jiang.vercel.app/en/articles/what-is-loop-engineering/">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Coach Jiang · AI Knowledge Management">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="What Is Loop Engineering? Explained Through My Article-Writing Workflow | Coach Jiang">
+<meta name="twitter:image" content="https://ai-km-jiang.vercel.app/images/articles/what-is-loop-engineering-summary-wide.jpg">
+<meta name="twitter:description" content="No code required. Coach Jiang walks through loop engineering using his own article-writing workflow, so you can apply it directly to your own work.">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"What Is Loop Engineering? Explained Through My Article-Writing Workflow","description":"What is loop engineering? No code required. Coach Jiang explains the concept through his article-writing workflow: the difference between prompts and loops, the five phases, the minimum required components, and when it is worth building one.","image":"https://ai-km-jiang.vercel.app/images/articles/what-is-loop-engineering-summary-wide.jpg","author":{"@type":"Person","name":"Jiang Yude","alternateName":"Coach Jiang","jobTitle":"Tacit Knowledge Distiller, AI Workflow Strategist"},"datePublished":"2026-06-27","dateModified":"2026-06-27","isPartOf":{"@type":"WebSite","name":"Coach Jiang · AI Knowledge Management","url":"https://ai-km-jiang.vercel.app/"},"inLanguage":"en","url":"https://ai-km-jiang.vercel.app/en/articles/what-is-loop-engineering/"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Should I learn prompt engineering or loop engineering first?","acceptedAnswer":{"@type":"Answer","text":"Start with prompts, because every step inside a loop still relies on them. Once you notice yourself repeatedly calling AI through the same sequence of steps, that is the signal to wrap it into a loop."}},{"@type":"Question","name":"Can I build a loop without knowing how to code?","acceptedAnswer":{"@type":"Answer","text":"Yes. The heart of a loop is the checklist that defines 'done,' which has nothing to do with coding and everything to do with knowing your own standards."}},{"@type":"Question","name":"Will a loop cause AI to run out of control?","acceptedAnswer":{"@type":"Answer","text":"It will, if you do not set a stopping condition. Every loop needs a rule such as 'stop when everything on the checklist passes' or 'stop and ask me if there is no progress after two or three rounds.' The stopping condition matters as much as the checklist itself."}},{"@type":"Question","name":"What kind of work is best to turn into a loop first?","acceptedAnswer":{"@type":"Answer","text":"Whatever you repeat most often and can clearly define as 'done.' For me that is writing articles. For you it might be replying to recurring client messages, summarizing meetings, or producing weekly reports."}}]}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{--ink:#1a1612;--paper:#fefcf8;--muted:#6a635a;--line:#d8cdb8;--green:#5f7553;--blue:#5689b8;--orange:#e85a4f;--soft:#faf5ec;--dark:#2a2018;--shadow:0 18px 45px rgba(107,74,42,.14);--sp-shadow:hsla(35,50%,60%,.15);--sp-shadow-edge:hsla(35,50%,68%,.03);--sp-radius:400px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC","Segoe UI",sans-serif}
+a{color:inherit}
+nav.top{position:sticky;top:0;background:rgba(254,252,248,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid #d8cdb8;z-index:100}
+nav.top .container{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:24px;padding:14px 32px}
+.nav-brand-img{justify-self:start;display:flex;align-items:center;text-decoration:none;flex-shrink:0;transition:opacity .2s}
+.nav-brand-img:hover{opacity:.8}.nav-brand-img img{height:40px;width:auto;display:block}
+nav.top ul.nav-menu{justify-self:end;display:flex;gap:22px;list-style:none;margin:0;padding:0;font-size:.95rem;white-space:nowrap}
+nav.top ul.nav-menu a{color:#3a342d;text-decoration:none;transition:color .2s;font-weight:500;white-space:nowrap}
+nav.top ul.nav-menu a:hover{color:#1a1612}nav.top ul.nav-menu a.active{color:#1a1612;font-weight:700}
+.nav-toggle{display:none;background:none;border:none;padding:6px;cursor:pointer;width:36px;height:36px;position:relative}
+.nav-toggle span{display:block;position:absolute;left:8px;right:8px;height:2px;background:#1a1612;border-radius:2px;transition:transform .25s,opacity .25s,top .25s}
+.nav-toggle span:nth-child(1){top:11px}.nav-toggle span:nth-child(2){top:17px}.nav-toggle span:nth-child(3){top:23px}
+.nav-toggle.open span:nth-child(1){top:17px;transform:rotate(45deg)}.nav-toggle.open span:nth-child(2){opacity:0}.nav-toggle.open span:nth-child(3){top:17px;transform:rotate(-45deg)}
+@media(max-width:860px){
+ nav.top .container{grid-template-columns:auto 1fr auto;padding:10px 16px;gap:12px}
+ .nav-brand-img img{height:32px}
+ .nav-toggle{display:block;justify-self:end}
+ nav.top ul.nav-menu{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(254,252,248,.98);backdrop-filter:blur(14px);border-bottom:1px solid #d8cdb8;flex-direction:column;gap:0;padding:8px 0;box-shadow:0 10px 24px rgba(107,74,42,.08)}
+ nav.top ul.nav-menu.open{display:flex}
+ nav.top ul.nav-menu li{border-bottom:1px solid #e8dfc9}
+ nav.top ul.nav-menu li:last-child{border-bottom:none}
+ nav.top ul.nav-menu a{display:block;padding:14px 20px;font-size:1.06rem}
+}
+body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradient(var(--sp-radius) circle at var(--mx,50%) var(--my,50%),var(--sp-shadow) 0%,var(--sp-shadow-edge) 45%,transparent 75%);pointer-events:none;z-index:9999;mix-blend-mode:multiply;transition:background .06s linear}
+.hero{position:relative;overflow:hidden;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:64px;padding:96px clamp(20px,6vw,88px) 80px;background:linear-gradient(180deg,#fffcf0 0%,#f9e9d2 100%);color:#1a1612;border-bottom:1px solid #d8cdb8}
+.hero .wc{position:absolute;border-radius:50%;filter:blur(60px);pointer-events:none;z-index:0}
+.hero .wc1{width:420px;height:360px;top:-120px;right:-80px;background:#e8884b;opacity:.15}
+.hero .wc2{width:360px;height:300px;bottom:-110px;left:-70px;background:#5f7553;opacity:.13}
+.hero .wc3{width:280px;height:260px;top:34%;left:14%;background:#a08144;opacity:.10}
+.hero>div{flex:none;width:720px;max-width:100%;position:relative;z-index:2}
+.kicker{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.55rem;color:#7a5c3a;font-weight:500}
+.hero h1{max-width:none;margin:16px 0 18px;font-size:clamp(34px,5.2vw,62px);line-height:1.08;overflow-wrap:anywhere}
+.hero p{max-width:none;font-size:clamp(18px,2vw,22px);line-height:1.62;color:#3a342d}
+.meta-date{font-size:14px;color:#7a5c3a;margin-top:14px;font-weight:500}
+.hero-figure{margin:0;width:330px;flex:none;position:relative;z-index:2}
+.hero-figure img{display:block;width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:16px;border:1px solid #d8cdb8;box-shadow:0 18px 45px rgba(107,74,42,.16);cursor:zoom-in}
+.inline-figure{margin:28px auto 6px;max-width:460px}
+.inline-figure.wide{max-width:880px}
+.inline-figure img{display:block;width:100%;border-radius:14px;border:1px solid var(--line);box-shadow:var(--shadow);background:#fff;cursor:zoom-in}
+.inline-figure figcaption{font-size:14px;line-height:1.6;color:var(--muted);margin-top:10px;text-align:center}
+.lightbox{position:fixed;inset:0;z-index:10000;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(12,10,8,.92);cursor:zoom-out;backdrop-filter:blur(4px)}
+.lightbox.open{display:flex}.lightbox img{max-width:96vw;max-height:92vh;border-radius:10px;box-shadow:0 24px 60px rgba(0,0,0,.5)}
+.lightbox-close{position:fixed;top:18px;right:24px;color:#fff;font-size:34px;line-height:1;font-weight:700;cursor:pointer;opacity:.85}
+.section{padding:54px clamp(20px,6vw,88px);border-top:1px solid var(--line)}
+.inner{width:min(1000px,100%);margin:0 auto}
+.section h2{font-size:clamp(26px,4.2vw,48px);line-height:1.12;margin:0 0 18px}
+.section h3{font-size:clamp(21px,3vw,30px);line-height:1.2;margin:30px 0 12px}
+.lead{font-size:clamp(18px,1.6vw,22px);line-height:1.7;color:#3a342d;max-width:900px}
+.section p{font-size:18px;line-height:1.74;color:#3a342d}.section p+p{margin-top:14px}
+.section ul,.section ol{padding-left:1.4em;font-size:18px;line-height:1.74;color:#3a342d}.section li{margin-bottom:8px}
+.meaning{margin:22px 0;padding:16px 18px;border-left:5px solid var(--blue);background:rgba(86,137,184,.12);border-radius:6px;line-height:1.7;font-size:19px}
+.meaning b{display:block;color:var(--blue);margin-bottom:4px}
+.caveat{margin:18px 0 8px;padding:16px 18px;border-left:5px solid var(--orange);background:rgba(232,90,79,.1);border-radius:6px;line-height:1.7;font-size:17px;color:#3a342d}
+.caveat b{display:block;color:var(--orange);margin-bottom:4px}
+.duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:24px}
+.duo.stack{grid-template-columns:1fr}
+.duo .card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:22px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.duo .card.a{border-color:var(--orange)}.duo .card.b{border-color:var(--green);box-shadow:0 8px 24px rgba(95,117,83,.16)}
+.duo .card b{display:block;font-size:22px;line-height:1.3;margin-bottom:12px}.duo .card.a b{color:#c0512f}.duo .card.b b{color:#4a7a59}
+.duo .card ul{margin:0;font-size:17px}.duo .card p{margin:0;color:#3a342d;line-height:1.75;font-size:18px}
+.steplist{counter-reset:st;list-style:none;padding-left:0;margin:18px 0 0}
+.steplist li{position:relative;padding-left:46px;margin-bottom:14px;min-height:34px}
+.steplist li::before{counter-increment:st;content:counter(st);position:absolute;left:0;top:-2px;width:32px;height:32px;border-radius:50%;background:var(--green);color:#fff;font:900 15px/32px "JetBrains Mono",ui-monospace,Menlo,monospace;text-align:center}
+.steplist b{color:#2a2018}
+.partlist{list-style:none;padding-left:0;margin:18px 0 0}
+.partlist li{margin-bottom:14px;padding:16px 18px;background:#fff;border:1px solid var(--line);border-radius:10px;box-shadow:0 8px 22px rgba(107,74,42,.06);line-height:1.7;font-size:17px}
+.partlist b{display:block;font-size:18px;color:#4a7a59;margin-bottom:4px}
+.faq h3{font-size:20px;margin:26px 0 6px;color:#2a2018}
+.faq p{margin:0}
+.readmore{list-style:none;padding-left:0;margin:18px 0 0}
+.readmore li{margin-bottom:12px;padding-left:0;line-height:1.7;font-size:17px}
+.readmore a{color:var(--blue);font-weight:700;text-decoration:none}.readmore a:hover{text-decoration:underline}
+.cta-band{background:#e6f0e5;color:#3a342d}.cta-band .section{border-top:none}
+.cta-band .inner{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(260px,.85fr);gap:26px;align-items:start}
+.cta-band h2{font-size:clamp(26px,4vw,44px);margin:0 0 16px}.cta-band p{color:rgba(58,52,45,.9);font-size:18px;line-height:1.72}
+.cta-card{border:1px solid #cfe0d2;background:#fbfdfa;border-radius:8px;padding:22px}
+.cta-card b{display:block;color:#48b178;margin-bottom:10px;font-size:18px}.cta-card p{margin:0 0 14px}
+.cta-card a{display:inline-block;text-decoration:none;background:#5f7553;color:#fff;border-radius:8px;padding:11px 16px;font-weight:900;font-size:15px}
+.footer{padding:30px clamp(20px,6vw,88px);font-size:14px;color:var(--muted);background:#fff;border-top:1px solid var(--line)}
+.footer-inner{width:min(1000px,100%);margin:0 auto}
+.footer-links{display:flex;flex-wrap:wrap;gap:6px 12px;margin-bottom:14px}.footer-links a{color:var(--blue);font-weight:900;text-decoration:none;font-size:14px}
+.footer-brand{font-weight:900;font-size:15px;margin-bottom:10px}.footer-note{font-size:13px;line-height:1.6}
+@media(max-width:820px){.duo{grid-template-columns:1fr}.cta-band .inner{grid-template-columns:1fr}.section{padding:40px 20px}.hero{min-height:auto;flex-direction:column;justify-content:flex-start;align-items:flex-start;gap:28px}.hero>div{width:100%}.hero-figure{width:100%;max-width:340px;align-self:center}.inline-figure{max-width:100%}html,body{overflow-x:hidden}.hero h1{word-break:break-word}}
+</style>
+</head>
+<body class="spotlight">
+<nav class="top">
+  <div class="container">
+    <a class="nav-brand-img" href="../../index.html"><img src="../../../images/footer-signature.png" alt="Coach Jiang | Jiang Yude"></a>
+    <button class="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
+    <ul class="nav-menu">
+      <li><a href="../../index.html">Home</a></li>
+      <li><a href="../../offers.html">Paid Courses</a></li>
+      <li><a href="../../../courses.html">Free Talks</a></li>
+      <li><a href="../../invited-talks.html">Invited Talks</a></li>
+      <li><a href="../../../articles.html" class="active">Articles</a></li>
+      <li><a href="../../../skills.html">Skills</a></li>
+      <li><a href="../../cases.html">Services</a></li>
+      <li class="lang-switch"><a href="../../../articles/what-is-loop-engineering/">中文</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="wc wc1"></div>
+  <div class="wc wc2"></div>
+  <div class="wc wc3"></div>
+  <div>
+    <div class="kicker">AI Workflow · Loop Engineering</div>
+    <h1>What Is Loop Engineering? Explained Through My Article-Writing Workflow</h1>
+    <p>Loop engineering has been gaining attention in engineering circles and the term sounds highly technical, but its core has nothing to do with writing code. Using something I do every day, with no code examples at all, I will walk through the entire structure so you can apply it directly to your own work.</p>
+    <p class="meta-date">Published 2026-06-27 · Last updated 2026-06-27</p>
+  </div>
+  <figure class="hero-figure">
+    <img src="../../../images/articles/what-is-loop-engineering-01.jpg" alt="Loop engineering overview: previously calling AI step by step; now only handling the start and end, with idea, draft, AI loop, review, and publish in between" loading="lazy">
+  </figure>
+</section>
+
+<main>
+
+<section class="section" id="start">
+  <div class="inner">
+    <p class="lead">Loop engineering is a term circulating in engineering communities. The idea is that instead of writing prompts one sentence at a time, engineers design a cycle that runs an entire task on its own. This article uses no code examples at all. I explain the full architecture of loop engineering through my article-writing workflow.</p>
+    <div class="duo stack">
+      <div class="card a">
+        <b>Who this is for</b>
+        <ul>
+          <li>You already use AI, but every task still requires calling it step by step, which is exhausting</li>
+          <li>You regularly do the same category of work (writing articles, summarizing meetings, replying to clients), and the mental checklist you run each time is nearly identical</li>
+          <li>You have heard "design the loop, not just the prompt," but you are not sure what that actually means</li>
+        </ul>
+      </div>
+      <div class="card b">
+        <b>What you will get</b>
+        <ul>
+          <li>A one-sentence definition of loop engineering and how it differs from prompt engineering</li>
+          <li>The five phases of a running loop, plus the minimum components it requires</li>
+          <li>Two real examples, and three criteria: how to know whether a loop is working, when it is worth building, and which pitfalls you still have to watch yourself</li>
+        </ul>
+      </div>
+    </div>
+    <figure class="inline-figure wide">
+      <img src="../../../images/articles/what-is-loop-engineering-summary-wide.jpg" alt="One-page summary of loop engineering: definition, prompt vs loop, five phases, four components, when it is worth building, three pitfalls, and build order" loading="lazy">
+      <figcaption>Everything in this article, on one page</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>1. The definition: what is loop engineering</h2>
+    <div class="meaning"><b>One sentence</b>Loop engineering means handing the cycle you keep running yourself over to a system that runs it on its own.</div>
+    <p>What does "the cycle you keep running yourself" mean? When I used to write an article, I would give AI my idea, ask it to polish the draft, check its response, then ask it to brainstorm titles, check that response, then ask it to flag risks. Input, check the reply, input again. The role going around in circles was always me. I got tired because I was the manual loop.</p>
+    <p>What loop engineering does is take that cycle out of my hands and turn it into a system that spins on its own. I only handle the beginning, providing the raw material, and the end, receiving the finished output. Everything in between, the system runs itself.</p>
+    <figure class="inline-figure">
+      <img src="../../../images/articles/what-is-loop-engineering-02.jpg" alt="Previously, writing an article meant calling AI one step at a time: polish the draft, then brainstorm titles, then check risks, then verify reader value, then publish manually" loading="lazy">
+      <figcaption>Every step used to require me to speak up and confirm before moving to the next</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>2. Prompt engineering vs. loop engineering</h2>
+    <p>These two things differ by one level of abstraction.</p>
+    <div class="duo">
+      <div class="card a">
+        <b>Prompt engineering</b>
+        <ul>
+          <li>You are working to make a single instruction as precise as possible</li>
+          <li>The goal is one clean output</li>
+          <li>You are the one running the cycle</li>
+        </ul>
+      </div>
+      <div class="card b">
+        <b>Loop engineering</b>
+        <ul>
+          <li>You are working to design an entire workflow that runs automatically</li>
+          <li>The goal is a reliable, already-verified result</li>
+          <li>The system you designed is the one running the cycle</li>
+        </ul>
+      </div>
+    </div>
+    <div class="meaning"><b>One sentence to keep them apart</b>A prompt says "polish this passage." A loop says "polish the draft, find a title, check for risks, and revise until every item on the checklist passes." The difference is that phrase "until everything passes." A prompt gives you one action. A loop runs a complete task end to end.</div>
+    <figure class="inline-figure">
+      <img src="../../../images/articles/what-is-loop-engineering-05.jpg" alt="A prompt teaches AI to perform one action; a loop teaches AI to run through an entire workflow. A complete loop requires four components: a starting point, an acceptance checklist, self-correcting execution, and a stopping condition" loading="lazy">
+      <figcaption>A prompt equals one action. A loop equals an entire workflow.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>3. The five phases of a running loop</h2>
+    <p>Any loop, when broken down, moves through the same five phases. Here they are mapped against my article-writing process:</p>
+    <ol class="steplist">
+      <li><b>Explore:</b> What do I want to write, for whom, and what problem does this piece solve for the reader?</li>
+      <li><b>Plan:</b> Choose an angle and outline the key points to cover.</li>
+      <li><b>Execute:</b> Write the draft.</li>
+      <li><b>Verify:</b> Check the draft against a checklist to determine whether it is actually ready.</li>
+      <li><b>Iterate:</b> Fix anything that did not pass, then verify again, until every item on the checklist clears.</li>
+    </ol>
+    <p>Here is the key insight. Previously, each phase required me to push the transition to the next one manually. What loop engineering does is let phases three through five run continuously on their own: once I supply the exploration and the plan, AI executes, verifies, and iterates by itself, returning to me only when everything passes.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>4. The minimum components a loop requires</h2>
+    <p>To turn those five phases into something that actually runs, you need at least four components.</p>
+    <ul class="partlist">
+      <li><b>1. A starting point</b>You have to give it something to work with. For article writing, the starting point is my idea and a rough draft. There is a common misconception worth addressing here: drafting is my responsibility, not AI's. I am the one who empties my head first, even if the result is only a rough skeleton.</li>
+      <li><b>2. An acceptance checklist</b>This is the heart of the entire loop, the checklist from phase four above. The checklist defines what "done" looks like. Without it, AI does not know when to stop. It will either keep making unnecessary changes or quit too early.</li>
+      <li><b>3. Self-correcting execution</b>AI takes my draft, goes through the checklist item by item, and revises whatever does not pass, all without me having to narrate each next step.</li>
+      <li><b>4. A stopping condition</b>Stop when every item on the checklist passes. Or, if two or three rounds still leave items failing, stop and report exactly where things are stuck rather than looping forever.</li>
+    </ul>
+    <p>The head (starting point) and the tail (final review) belong to me. The two middle components (execution and stopping) belong to the system.</p>
+    <figure class="inline-figure wide">
+      <img src="../../../images/articles/what-is-loop-engineering-04.jpg" alt="Now I only handle the start and end: I provide the idea and draft at the start, AI runs the checklist, revises, and iterates in the middle, and I do the final review at the end" loading="lazy">
+      <figcaption>I handle the start and the final review. Everything in between goes to AI.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>5. Real example one: turning article writing into a loop</h2>
+    <p>I recently wrote a short piece about writing articles, and that piece itself was produced this way.</p>
+    <p>I wrote a rough draft first. Then, instead of calling AI one instruction at a time, I handed it an acceptance checklist with six items:</p>
+    <ul>
+      <li>Is the purpose clear?</li>
+      <li>Does the title match the content?</li>
+      <li>Is this meaningful to the reader?</li>
+      <li>Is the title easy to understand?</li>
+      <li>Does the ending land, or is it too vague?</li>
+      <li>Is this consistent with my positioning?</li>
+    </ul>
+    <p>AI ran through all six items on its own, revised whatever did not pass, and only returned the finished piece once all six cleared. My only job was the final look to confirm it was ready to publish.</p>
+    <div class="meaning"><b>That is a loop</b>I did not revise step by step. I defined the checklist and let the system run until everything passed.</div>
+    <figure class="inline-figure">
+      <img src="../../../images/articles/what-is-loop-engineering-03.jpg" alt="Even when calling AI step by step, the same cycle kept repeating: perspective, content, title, reader value, call to action, personal positioning" loading="lazy">
+      <figcaption>Every article ran through the same mental checklist. I was the loop.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>6. Real example two: turning my entire AI collaboration into a loop</h2>
+    <p>Article writing is a small loop. I later applied the same architecture to my entire AI collaboration workflow.</p>
+    <p>The problem was familiar: every complex task required me to give a reminder. Complex tasks needed a reminder to bring in a second AI. Finished tasks needed a reminder to write a work log. New rules needed a reminder to save them. I was still playing the role of the manual loop, just in a different setting.</p>
+    <p>So I designed a collaboration loop for myself, wrote it as a set of rules, and had all my AI assistants read and follow them. The components are identical to the article-writing loop, with the checklist updated for this context:</p>
+    <ul>
+      <li><b>Classify first:</b> Is this a quick lookup or a change that affects important settings? Small tasks get handled quickly. Large tasks get a higher level of scrutiny. This is the first gate on the checklist.</li>
+      <li><b>Find a second brain automatically:</b> For complex or risky tasks, it automatically consults another AI for a cross-check, without waiting for me to ask.</li>
+      <li><b>Wrap up independently:</b> After completing a task, it automatically writes a work log and decides whether any new rules should be saved.</li>
+      <li><b>Know when to stop:</b> If two or three rounds produce no progress, stop and report rather than looping indefinitely.</li>
+    </ul>
+    <p>Once the design was in place, I went from the person issuing instructions one by one to the person who defines the checklists.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>7. How to tell whether your loop is actually working</h2>
+    <p>Building a loop does not mean it is useful. There is one simple metric: adoption rate.</p>
+    <p>Of everything AI hands back after running a loop, how much do you actually use? If eight out of ten revisions require you to start over anyway, the loop is not helping you. It is wasting your time. A low adoption rate usually has one of two causes: the checklist was not specific enough for AI to understand your standards, or the task was simply not a good candidate for a loop in the first place.</p>
+    <div class="meaning"><b>Measure adoption, not activity</b>What matters is how often you keep what the loop produces. How frequently it runs is beside the point.</div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>8. When is a loop actually worth building</h2>
+    <p>Not everything should be turned into a loop. The engineering community's own conclusion is that most people do not need a loop yet. A task worth looping has to meet all of the following conditions at once:</p>
+    <ul>
+      <li>You will <b>repeat it regularly</b>, not just once</li>
+      <li>You can <b>articulate clearly</b> what "done" looks like, well enough to write it as a checklist</li>
+      <li>You can <b>afford</b> the time and cost of AI running multiple rounds</li>
+    </ul>
+    <div class="caveat"><b>Resist the urge to automate early</b>If you will only do something once, or you cannot explain what good looks like, the task is not ready for a loop. Doing it by hand will be faster.</div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>9. Three pitfalls a loop cannot solve on its own</h2>
+    <p>Loops are sometimes described as if they handle everything. But there are three pitfalls a loop cannot get past by itself. These require your attention.</p>
+    <div class="caveat"><b>Pitfall 1: Silent failure</b>AI may declare "done" when only half the work is finished. The fix is to make the acceptance checklist objective enough that pass or fail can be determined clearly, not left for AI to self-assess.</div>
+    <div class="caveat"><b>Pitfall 2: The understanding gap</b>The faster output arrives, the less familiar you become with its content. You still have to read the finished product. You cannot let the loop run to completion and use the result without looking at it.</div>
+    <div class="caveat"><b>Pitfall 3: Surrendering judgment</b>After running a loop for a while, it is easy to become someone who only clicks confirm. That is why I insist on owning both ends. The idea comes from me. The final review comes from me. The middle can go to AI. Judgment cannot.</div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>10. Build order: run it manually until it is stable, then automate</h2>
+    <p>Skipping steps is the leading cause of a loop breaking down. The correct order is:</p>
+    <ol class="steplist">
+      <li>Run the task <b>manually until it is stable and consistent</b></li>
+      <li>Distill it into a <b>clear checklist</b></li>
+      <li>Wrap the checklist into <b>a loop that runs on its own</b></li>
+      <li>Only when truly needed, let it <b>trigger automatically</b></li>
+    </ol>
+    <p>I wrote dozens of articles by hand first, until I knew exactly what I was checking for each time, before I handed that checklist off. The checklist grew from real experience. It was not invented from scratch.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>Closing: move the lever up one level</h2>
+    <p>This entire article in one sentence: what you need to learn is how to go from being the person who keeps issuing instructions to being the person who designs the checklist. That has nothing to do with whether you can code.</p>
+    <div class="meaning"><b>Move the point of effort up one level</b>You used to put your energy into typing the next instruction. Now you put it into designing a system that issues its own instructions. The same amount of effort, with a much longer lever.</div>
+    <p>People who know how to lead teams, design processes, and do the same category of work repeatedly are actually better positioned to do this than engineers. Because you already have the checklist. It is just still inside your head, not yet written down. What I keep doing is taking the judgment you have always had but could never quite explain, and extracting it one item at a time into something reusable.</p>
+    <p>Your turn. Before you start any task, what questions does your mind automatically run through? That cycle is exactly what you can design into a loop.</p>
+  </div>
+</section>
+
+<section class="section faq">
+  <div class="inner">
+    <h2>Frequently asked questions</h2>
+    <h3>Should I learn prompt engineering or loop engineering first?</h3>
+    <p>Start with prompts, because every step inside a loop still relies on them. Once you notice yourself repeatedly calling AI through the same sequence of steps, that is the signal to wrap it into a loop.</p>
+    <h3>Can I build a loop without knowing how to code?</h3>
+    <p>Yes. This entire article contains no code. The heart of a loop is the checklist that defines "done," which has nothing to do with coding and everything to do with knowing your own standards.</p>
+    <h3>Will a loop cause AI to run out of control?</h3>
+    <p>It will, if you do not set a stopping condition. Every loop needs a rule such as "stop when everything on the checklist passes" or "stop and ask me if there is no progress after two or three rounds." The stopping condition matters as much as the checklist itself.</p>
+    <h3>What kind of work is best to turn into a loop first?</h3>
+    <p>Whatever you repeat most often and can clearly define as "done." For me that is writing articles. For you it might be replying to recurring client messages, summarizing meetings, or producing weekly reports.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>Further reading</h2>
+    <ul class="readmore">
+      <li id="loop-to-intent-first" data-pending-link="intent-first-prompting">Intent-first: from prompt engineering to steering engineering (coming soon) &mdash; A loop is the cycle you design. Steering engineering is how you give AI its objectives and boundaries. The two articles pair well together.</li>
+      <li><a href="../../docs-as-system-design-agent/">Your Documents Are Your System: How Non-Engineers Design Agents</a>&nbsp;&nbsp;Writing your judgment into documents is how you store a loop for later use.</li>
+      <li><a href="../../how-to-train-your-ai-employee/">How to Train Your AI Employee: The Employee and Advisor Framework</a>&nbsp;&nbsp;From single actions to complete workflows: seeing how judgment becomes a reusable process.</li>
+    </ul>
+  </div>
+</section>
+
+</main>
+
+<div class="cta-band">
+  <div class="section">
+    <div class="inner">
+      <h2>Want to turn your own workflow into a loop?</h2>
+      <p>What I do is take the judgment you have always had but could never quite explain and extract it, one item at a time, into a checklist you can use again and again. From a single article to an entire AI collaboration workflow.</p>
+      <div class="cta-card">
+        <b>Build one together</b>
+        <p>Join my LINE community. Every month I run a free online session where we take one workflow and design it into a loop that runs on its own.</p>
+        <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">Join the LINE community ↗</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">Coach Jiang · AI Knowledge Management</div>
+    <div class="footer-links">
+      <a href="../../../articles.html">← Back to Articles</a>
+      <a href="../../index.html">Home</a>
+      <a href="../../learn.html">Self-study Resources</a>
+      <a href="../../../skills.html">Skills</a>
+      <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">LINE community ↗</a>
+      <a href="https://www.threads.com/@jiang_yude_coach" target="_blank" rel="noopener">Threads ↗</a>
+      <a href="https://vocus.cc/salon/Jiang_Coach" target="_blank" rel="noopener">Vocus ↗</a>
+    </div>
+    <div class="footer-note">This is an educational article reflecting Coach Jiang's perspective on loop engineering, shared for your reference.</div>
+  </div>
+</footer>
+
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <span class="lightbox-close" aria-label="Close">&#x2715;</span>
+  <img id="lightbox-img" src="" alt="Enlarged view">
+</div>
+<script>
+(function(){
+  var box=document.getElementById('lightbox'),boxImg=document.getElementById('lightbox-img');
+  document.querySelectorAll('.hero-figure img,.inline-figure img').forEach(function(img){
+    img.addEventListener('click',function(){boxImg.src=img.currentSrc||img.src;boxImg.alt=img.alt||'Enlarged view';box.classList.add('open');box.setAttribute('aria-hidden','false');});
+  });
+  function close(){box.classList.remove('open');box.setAttribute('aria-hidden','true');boxImg.src='';}
+  box.addEventListener('click',close);
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
+})();
+</script>
+
+<script src="../../../spotlight.js"></script>
+<script src="../../../articles-data.js"></script>
+<script src="../../../related-render.js"></script>
+</body>
+</html>

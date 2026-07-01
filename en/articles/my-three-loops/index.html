@@ -1,0 +1,388 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="index,follow">
+<title>When I Started Thinking in Loops: Three Workflows Redesigned as Loops | Coach Jiang · AI Knowledge Management</title>
+<meta name="description" content="From writing prompts to designing loops. I took three workflows I was already running and turned them into three named loops: a publishing loop (outward), a tacit-knowledge distillation loop (inward), and a retrospective loop (backward), all orbiting the same knowledge base.">
+<link rel="canonical" href="https://ai-km-jiang.vercel.app/en/articles/my-three-loops/">
+<link rel="alternate" hreflang="zh-Hant" href="https://ai-km-jiang.vercel.app/articles/my-three-loops/">
+<link rel="alternate" hreflang="en" href="https://ai-km-jiang.vercel.app/en/articles/my-three-loops/">
+<link rel="alternate" hreflang="x-default" href="https://ai-km-jiang.vercel.app/articles/my-three-loops/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="When I Started Thinking in Loops: Three Workflows Redesigned as Loops | Coach Jiang">
+<meta property="og:image" content="https://ai-km-jiang.vercel.app/images/og/my-three-loops.jpg">
+<meta property="og:description" content="A publishing loop that pushes outward, a tacit-knowledge distillation loop that accumulates inward, a retrospective loop that feeds back, all three orbiting the same knowledge base.">
+<meta property="og:url" content="https://ai-km-jiang.vercel.app/en/articles/my-three-loops/">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Coach Jiang · AI Knowledge Management">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="When I Started Thinking in Loops: Three Workflows Redesigned as Loops | Coach Jiang">
+<meta name="twitter:image" content="https://ai-km-jiang.vercel.app/images/og/my-three-loops.jpg">
+<meta name="twitter:description" content="Publishing, distillation, and retrospective: three loops pushing outward, inward, and backward, orbiting the same knowledge base.">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"When I Started Thinking in Loops: Three Workflows Redesigned as Loops","description":"From writing prompts to designing loops. I took three workflows I was already running and turned them into three named loops: a publishing loop (outward), a tacit-knowledge distillation loop (inward), and a retrospective loop (backward).","author":{"@type":"Person","name":"Jiang Yude","alternateName":"Coach Jiang","jobTitle":"Tacit Knowledge Distiller, AI Application Planner"},"isPartOf":{"@type":"WebSite","name":"Coach Jiang · AI Knowledge Management","url":"https://ai-km-jiang.vercel.app/"},"inLanguage":"en","datePublished":"2026-06-30","dateModified":"2026-06-30","url":"https://ai-km-jiang.vercel.app/en/articles/my-three-loops/"}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{--ink:#1a1612;--paper:#fefcf8;--muted:#6a635a;--line:#d8cdb8;--green:#5f7553;--blue:#5689b8;--orange:#e85a4f;--soft:#faf5ec;--dark:#2a2018;--shadow:0 18px 45px rgba(107,74,42,.14);--sp-shadow:hsla(35,50%,60%,.15);--sp-shadow-edge:hsla(35,50%,68%,.03);--sp-radius:400px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC","Segoe UI",sans-serif}
+a{color:inherit}
+nav.top{position:sticky;top:0;background:rgba(254,252,248,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid #d8cdb8;z-index:100}
+nav.top .container{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:24px;padding:14px 32px}
+.nav-brand-img{justify-self:start;display:flex;align-items:center;text-decoration:none;flex-shrink:0;transition:opacity .2s}
+.nav-brand-img:hover{opacity:.8}.nav-brand-img img{height:40px;width:auto;display:block}
+nav.top ul.nav-menu{justify-self:end;display:flex;gap:22px;list-style:none;margin:0;padding:0;font-size:.95rem;white-space:nowrap}
+nav.top ul.nav-menu a{color:#3a342d;text-decoration:none;transition:color .2s;font-weight:500;white-space:nowrap}
+nav.top ul.nav-menu a:hover{color:#1a1612}nav.top ul.nav-menu a.active{color:#1a1612;font-weight:700}
+.nav-toggle{display:none;background:none;border:none;padding:6px;cursor:pointer;width:36px;height:36px;position:relative}
+.nav-toggle span{display:block;position:absolute;left:8px;right:8px;height:2px;background:#1a1612;border-radius:2px;transition:transform .25s,opacity .25s,top .25s}
+.nav-toggle span:nth-child(1){top:11px}.nav-toggle span:nth-child(2){top:17px}.nav-toggle span:nth-child(3){top:23px}
+.nav-toggle.open span:nth-child(1){top:17px;transform:rotate(45deg)}.nav-toggle.open span:nth-child(2){opacity:0}.nav-toggle.open span:nth-child(3){top:17px;transform:rotate(-45deg)}
+@media(max-width:860px){
+ nav.top .container{grid-template-columns:auto 1fr auto;padding:10px 16px;gap:12px}
+ .nav-brand-img img{height:32px}
+ .nav-toggle{display:block;justify-self:end}
+ nav.top ul.nav-menu{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(254,252,248,.98);backdrop-filter:blur(14px);border-bottom:1px solid #d8cdb8;flex-direction:column;gap:0;padding:8px 0;box-shadow:0 10px 24px rgba(107,74,42,.08)}
+ nav.top ul.nav-menu.open{display:flex}
+ nav.top ul.nav-menu li{border-bottom:1px solid #e8dfc9}
+ nav.top ul.nav-menu li:last-child{border-bottom:none}
+ nav.top ul.nav-menu a{display:block;padding:14px 20px;font-size:1.06rem}
+}
+body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradient(var(--sp-radius) circle at var(--mx,50%) var(--my,50%),var(--sp-shadow) 0%,var(--sp-shadow-edge) 45%,transparent 75%);pointer-events:none;z-index:9999;mix-blend-mode:multiply;transition:background .06s linear}
+.hero{position:relative;overflow:hidden;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:72px;padding:96px clamp(20px,6vw,88px) 72px;background:linear-gradient(180deg,#fffcf0 0%,#f9e9d2 100%);color:#1a1612;border-bottom:1px solid #d8cdb8}
+.hero .wc{position:absolute;border-radius:50%;filter:blur(60px);pointer-events:none;z-index:0}
+.hero .wc1{width:420px;height:360px;top:-120px;right:-80px;background:#e8884b;opacity:.15}
+.hero .wc2{width:360px;height:300px;bottom:-110px;left:-70px;background:#5f7553;opacity:.13}
+.hero .wc3{width:280px;height:260px;top:34%;left:14%;background:#a08144;opacity:.10}
+.hero>div{flex:none;width:min(560px,100%);position:relative;z-index:2}
+.hero-figure{margin:0;width:340px;max-width:100%;flex:none;position:relative;z-index:2}
+.hero-figure img{display:block;width:100%;border-radius:16px;border:1px solid #d8cdb8;box-shadow:0 18px 45px rgba(107,74,42,.16);cursor:zoom-in}
+.inline-figure{margin:26px auto 8px;max-width:820px}
+.inline-figure.portrait{max-width:400px}
+.inline-figure img{display:block;width:100%;border-radius:14px;border:1px solid var(--line);box-shadow:var(--shadow);background:#fff;cursor:zoom-in}
+.inline-figure figcaption{font-size:14px;line-height:1.6;color:var(--muted);margin-top:10px;text-align:center}
+.lightbox{position:fixed;inset:0;z-index:10000;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(12,10,8,.92);cursor:zoom-out;backdrop-filter:blur(4px)}
+.lightbox.open{display:flex}.lightbox img{max-width:96vw;max-height:92vh;border-radius:10px;box-shadow:0 24px 60px rgba(0,0,0,.5)}
+.lightbox-close{position:fixed;top:18px;right:24px;color:#fff;font-size:34px;line-height:1;font-weight:700;cursor:pointer;opacity:.85}
+.kicker{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.55rem;color:#7a5c3a;font-weight:500}
+.hero h1{max-width:none;margin:16px 0 18px;font-size:clamp(34px,5.4vw,64px);line-height:1.1;overflow-wrap:anywhere}
+.hero p{max-width:none;font-size:clamp(18px,2vw,23px);line-height:1.62;color:#3a342d}
+.datemeta{font-size:14px;color:var(--muted);margin-top:18px;font-weight:500}
+.section{padding:54px clamp(20px,6vw,88px);border-top:1px solid var(--line)}
+.inner{width:min(1000px,100%);margin:0 auto}
+.section h2{font-size:clamp(26px,4.2vw,46px);line-height:1.14;margin:0 0 18px}
+.section h3{font-size:clamp(20px,3vw,28px);line-height:1.22;margin:0 0 6px;color:#2a2018}
+.dir{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.2rem;color:#7a5c3a;margin-bottom:10px}
+.lead{font-size:clamp(18px,1.6vw,22px);line-height:1.7;color:#3a342d;max-width:900px}
+.section p{font-size:18px;line-height:1.78;color:#3a342d}.section p+p{margin-top:14px}
+.section ul,.section ol{padding-left:1.4em;font-size:18px;line-height:1.78;color:#3a342d}.section li{margin-bottom:10px}
+.flow{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:14px 0 16px;font:600 15px/1.5 "JetBrains Mono",ui-monospace,Menlo,monospace}
+.flow span{background:#f3f7f1;border:1px solid #cfe0d2;border-radius:7px;padding:7px 11px;color:#2a2018}
+.flow i{color:var(--green);font-style:normal;font-weight:900}
+.loopcard{background:#fff;border:1px solid var(--line);border-left:6px solid var(--green);border-radius:12px;padding:24px 26px;margin:22px 0;box-shadow:0 10px 26px rgba(107,74,42,.09)}
+.loopcard.out{border-left-color:var(--orange)}
+.loopcard.in{border-left-color:var(--blue)}
+.loopcard.back{border-left-color:var(--green)}
+.meaning{margin:22px 0;padding:16px 18px;border-left:5px solid var(--blue);background:rgba(86,137,184,.12);border-radius:6px;line-height:1.72;font-size:19px}
+.meaning b{display:block;color:var(--blue);margin-bottom:4px}
+.relbox{margin:6px 0 0;padding:16px 18px;border:1px dashed var(--line);border-radius:8px;background:var(--soft);font-size:17px;line-height:1.7}
+.relbox a{color:var(--blue);font-weight:700;text-decoration:none}
+.duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:24px}
+.duo.stack{grid-template-columns:1fr}
+.duo .card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:22px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.duo .card.a{border-color:var(--orange)}.duo .card.b{border-color:var(--green);box-shadow:0 8px 24px rgba(95,117,83,.16)}
+.duo .card b{display:block;font-size:21px;line-height:1.3;margin-bottom:12px}.duo .card.a b{color:#c0512f}.duo .card.b b{color:#4a7a59}
+.duo .card ul{margin:0;font-size:17px}
+.cta-band{background:#e6f0e5;color:#3a342d}.cta-band .section{border-top:none}
+.cta-band .inner{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(260px,.85fr);gap:26px;align-items:start}
+.cta-band h2{font-size:clamp(26px,4vw,44px);margin:0 0 16px}.cta-band p{color:rgba(58,52,45,.9);font-size:18px;line-height:1.72}
+.cta-card{border:1px solid #cfe0d2;background:#fbfdfa;border-radius:8px;padding:22px}
+.cta-card b{display:block;color:#48b178;margin-bottom:10px;font-size:18px}.cta-card p{margin:0 0 14px}
+.cta-card a{display:inline-block;text-decoration:none;background:#5f7553;color:#fff;border-radius:8px;padding:11px 16px;font-weight:900;font-size:15px}
+.footer{padding:30px clamp(20px,6vw,88px);font-size:14px;color:var(--muted);background:#fff;border-top:1px solid var(--line)}
+.footer-inner{width:min(1000px,100%);margin:0 auto}
+.footer-links{display:flex;flex-wrap:wrap;gap:6px 12px;margin-bottom:14px}.footer-links a{color:var(--blue);font-weight:900;text-decoration:none;font-size:14px}
+.footer-brand{font-weight:900;font-size:15px;margin-bottom:10px}.footer-note{font-size:13px;line-height:1.6}
+@media(max-width:820px){.duo{grid-template-columns:1fr}.cta-band .inner{grid-template-columns:1fr}.section{padding:40px 20px}.hero{min-height:42vh;flex-direction:column;justify-content:flex-start;align-items:flex-start;gap:24px}.hero>div{width:100%}html,body{overflow-x:hidden}.hero h1{word-break:break-word}}
+.kpi{counter-reset:k;list-style:none;padding-left:0;margin:18px 0 0}
+.kpi li{position:relative;padding:2px 0 12px 44px;margin:0;font-size:18px;line-height:1.7;color:#3a342d}
+.kpi li::before{counter-increment:k;content:counter(k);position:absolute;left:0;top:1px;width:30px;height:30px;border-radius:8px;background:var(--blue);color:#fff;font:900 15px/30px "JetBrains Mono",monospace;text-align:center}
+.kpi b{color:#2a2018}
+.promptcard{background:#fff;border:1px solid var(--line);border-radius:12px;padding:20px 22px;margin:18px 0;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.promptcard h3{margin:0 0 8px;font-size:clamp(19px,2.6vw,24px);line-height:1.3;color:#2a2018}
+.promptcard>p{font-size:16px;color:var(--muted);margin:0 0 12px}
+.promptcard pre{white-space:pre-wrap;word-break:break-word;font:500 17px/1.8 "JetBrains Mono",ui-monospace,Menlo,monospace;background:#faf7f0;border:1px solid #e6dcc4;border-radius:8px;padding:18px;margin:0;color:#2a2018}
+.copybtn{margin-top:12px;display:inline-block;background:#5f7553;color:#fff;border:none;border-radius:8px;padding:9px 16px;font-weight:900;font-size:14px;cursor:pointer}
+.copybtn.done{background:#48b178}
+.caveat{margin:22px 0 8px;padding:16px 18px;border-left:5px solid var(--orange);background:rgba(232,90,79,.1);border-radius:6px;line-height:1.7;font-size:17px;color:#3a342d}
+.caveat b{display:block;color:var(--orange);margin-bottom:6px}
+.caveat ol{margin:0;padding-left:1.3em}.caveat li{margin-bottom:6px}
+</style>
+</head>
+<body class="spotlight">
+<nav class="top">
+  <div class="container">
+    <a class="nav-brand-img" href="../../index.html"><img src="../../../images/footer-signature.png" alt="Coach Jiang | Jiang Yude"></a>
+    <button class="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
+    <ul class="nav-menu">
+      <li><a href="../../index.html">Home</a></li>
+      <li><a href="../../offers.html">Paid Courses</a></li>
+      <li><a href="../../../courses.html">Free Talks</a></li>
+      <li><a href="../../invited-talks.html">Invited Talks</a></li>
+      <li><a href="../../../articles.html" class="active">Articles</a></li>
+      <li><a href="../../../skills.html">Skills</a></li>
+      <li><a href="../../cases.html">Services</a></li>
+      <li class="lang-switch"><a href="../../../articles/my-three-loops/">中文</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="wc wc1"></div>
+  <div class="wc wc2"></div>
+  <div class="wc wc3"></div>
+  <div>
+    <div class="kicker">AI Workflows · Loop Engineering</div>
+    <h1>When I Started Thinking in Loops: Three Workflows Redesigned as Loops</h1>
+    <p>You do not need to know how to code. You only need to know how to write rules, and you can get AI to follow your methods systematically. Write down the judgments you make repeatedly, hand them to AI as rules, and let it run them round after round. That is loop engineering, and it is within reach. This article covers the three loops I designed and one concrete first step you can take today.</p>
+    <div class="datemeta">Published 2026-06-30 · Last updated 2026-06-30</div>
+  </div>
+  <figure class="hero-figure">
+    <img src="../../../images/articles/my-three-loops-01.jpg" alt="Three loops cover: when I started thinking in loops, three workflows redesigned as loops">
+  </figure>
+</section>
+
+<main>
+
+<section class="section" id="start">
+  <div class="inner">
+    <p class="lead">Do you find yourself re-explaining the same task to AI every single time? You do not have to. You do not need to know how to code. You only need to know how to write rules, and you can get AI to follow your methods systematically. A prompt says "do this for me now" and is forgotten the moment the exchange ends. A rule says "always do it this way from now on," written once, running continuously. This article covers the three loops I built on top of rules, and one first step you can take today.</p>
+    <div class="duo stack">
+      <div class="card a">
+        <b>Who this is for</b>
+        <ul>
+          <li>People who use AI every day but feel like they are starting from scratch every time</li>
+          <li>People who want repetitive work to run on its own without relying purely on memory</li>
+          <li>Knowledge workers who cannot code but want a more systematic way to make AI work for them</li>
+        </ul>
+      </div>
+      <div class="card b">
+        <b>What you will get</b>
+        <ul>
+          <li>Why coding is not required, only rule-writing</li>
+          <li>The difference between a prompt and a rule, stated plainly</li>
+          <li>Three loops you can borrow directly, plus one first step you can take today</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>What a loop actually is</h2>
+    <p>A prompt is one-shot. You ask once, it answers once, and that exchange is over. Next time, you start again.</p>
+    <p>A loop is different. It is a cycle that starts on its own, runs on its own, and only comes back to you at the moments that matter. You take something you do repeatedly, break it into stages, give each stage a clear input, output, and completion condition, and let it run round after round. The key is that it feeds itself: each round's output becomes the next round's input.</p>
+    <p>I have written a separate piece on the details of loop engineering (link at the end). For now, just hold onto this one sentence: a prompt waits for you to push it; a loop turns on its own once you have designed it.</p>
+    <p>How do you get it to turn on its own? The key is writing rules, not code. Describe in plain language how you normally judge and decide, hand those descriptions to AI as rules, and it will follow them round after round. If you can write rules, you can design your own loops.</p>
+    <figure class="inline-figure portrait">
+      <img src="../../../images/articles/my-three-loops-02.jpg" alt="Prompt vs loop: a prompt asks one question and gets one answer; a loop runs on its own" loading="lazy">
+      <figcaption>From writing prompts to designing loops</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>My three loops</h2>
+    <p>These three loops were not planned from the start. They grew one by one.</p>
+    <p>The first workflow I turned into a loop was publishing. How does an idea travel from a journal entry and a short post all the way into a full article on my site and then out to other platforms? I broke that journey into stages, wrote it as rules, and let it run. (I wrote a full piece on that loop separately: <a href="../what-is-loop-engineering/" style="color:var(--blue);font-weight:700;text-decoration:none">Using One Article's Workflow to Explain What Loop Engineering Is</a>.)</p>
+    <p>Once publishing was running smoothly, I noticed two other workflows I was running every day that were equally suited to becoming loops: one for distilling judgments into rules, and one for looking back and improving after the fact. That is how these three loops came to be.</p>
+
+    <div class="loopcard out">
+      <div class="dir">Outward</div>
+      <h3>Loop 1: Publishing Loop</h3>
+      <div class="flow"><span>Journal</span><i>→</i><span>Short post</span><i>→</i><span>Site article</span><i>→</i><span>Platform distribution</span><i>→</i><span>Further reading back to site</span></div>
+      <p>Turns one idea into content across multiple platforms. An observation goes into a journal entry, gets condensed into a short post for first publication, earns a full article on the site if it is worth developing further, then gets distributed to other platforms by audience segment, with every external version pointing back to the site for further reading. It moves outward: taking what is in your head and surfacing it in layers to more people, while keeping your site as the permanent center.</p>
+    </div>
+    <figure class="inline-figure portrait">
+      <img src="../../../images/articles/my-three-loops-03.jpg" alt="Publishing loop: from journal to short post to site article to platform distribution to further reading back to site" loading="lazy">
+      <figcaption>Publishing Loop · outward</figcaption>
+    </figure>
+
+    <div class="loopcard in">
+      <div class="dir">Inward</div>
+      <h3>Loop 2: Tacit Knowledge Distillation Loop</h3>
+      <div class="flow"><span>Distill</span><i>→</i><span>Deploy</span><i>→</i><span>Verify</span></div>
+      <p>Turns your own judgment into rules that AI can actually use, then confirms AI is genuinely following them. First, use targeted questions to surface the implicit judgments you make fluently but cannot yet articulate, turning them into explicit rules. Then load those rules into a workflow that runs continuously. Finally, use machine-checkable criteria to confirm AI is actually following the rules rather than producing outputs that look complete but are not. It moves inward: depositing your hardest-to-replace judgment, one rule at a time, into your own knowledge assets.</p>
+      <p>There is one boundary I hold carefully here. What can be written as machine-checkable criteria extends only as far as "judgment standards that can be stated explicitly." Intuition and values above that level stay with the person. I do not force those into a machine.</p>
+    </div>
+    <figure class="inline-figure portrait">
+      <img src="../../../images/articles/my-three-loops-04.jpg" alt="Tacit knowledge distillation loop: distill to deploy to verify" loading="lazy">
+      <figcaption>Tacit Knowledge Distillation Loop · inward</figcaption>
+    </figure>
+
+    <div class="loopcard back">
+      <div class="dir">Backward</div>
+      <h3>Loop 3: Retrospective Loop</h3>
+      <div class="flow"><span>Triage and trim</span><i>→</i><span>Govern</span><i>→</i><span>Log</span><i>→</i><span>Write back to system</span></div>
+      <p>After completing a stretch of work, look back and make the system better. First, decide whether the output is content or infrastructure, and trim what should be trimmed. Then assess whether any rules or Skills need updating. Write a log of the process to preserve a record. Finally, write what was learned back into the relevant rules or Skills so the next round starts from a higher baseline. It moves backward: each completed round upgrades the system. Finishing is not an end point.</p>
+    </div>
+    <figure class="inline-figure portrait">
+      <img src="../../../images/articles/my-three-loops-05.jpg" alt="Retrospective loop: triage and trim to govern to log to write back to system" loading="lazy">
+      <figcaption>Retrospective Loop · backward</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>How the three loops fit together</h2>
+    <p>Only after building all three did I notice something: they each point in a different direction. Publishing moves outward, distillation moves inward, retrospection moves backward. Three loops orbiting the same thing: my own knowledge base and system.</p>
+    <p>Distillation deposits judgments into the knowledge base. Publishing draws from the knowledge base and pushes content outward. Retrospection writes each experience back into the knowledge base. Deposit, push out, write back: with all three running, the knowledge base grows richer with each turn rather than standing still.</p>
+    <figure class="inline-figure portrait">
+      <img src="../../../images/articles/my-three-loops-06.jpg" alt="One-page summary: publishing outward, distillation inward, retrospection backward, three loops orbiting the knowledge base" loading="lazy">
+      <figcaption>One-page summary · three loops orbiting the knowledge base</figcaption>
+    </figure>
+    <div class="meaning">
+      <b>The biggest difference from writing prompts</b>
+      Every prompt starts from zero. Every loop turn makes your system a little more capable.
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>Prompts you can copy: let AI help you build a loop</h2>
+    <p>By now you probably understand the concept. But a concept does not become your loop on its own. You need something you can put to use. The three prompt templates below are ready to copy. Paste any of them into your AI agent of choice (ChatGPT, Claude, or Codex all work) and it will get to work.</p>
+    <p>For each loop, we use the same five dimensions to describe it clearly. Fill these in when designing, and neither you nor AI will miss anything important:</p>
+    <ol class="kpi">
+      <li><b>Trigger</b>: What event or condition starts this loop.</li>
+      <li><b>What to read each time</b>: Which logs, examples, rules, or materials to review before each run.</li>
+      <li><b>How to decide</b>: Which standards govern choices when the loop reaches a decision point.</li>
+      <li><b>What counts as done</b>: The verifiable state that marks the end of a run.</li>
+      <li><b>Human checkpoints</b>: Which steps require your sign-off before AI continues.</li>
+    </ol>
+
+    <div class="promptcard">
+      <h3>Prompt 1: Take stock and find the three workflows most worth turning into loops</h3>
+      <p>Start here to let AI review what you have been doing and identify the best candidates for automation.</p>
+      <pre>I want to turn the repetitive work I do into loops that can run repeatedly. Please handle two scenarios:
+
+A. If you can see my work logs, past records, or examples, start by reviewing those and identify three tasks I have been doing repeatedly with roughly consistent steps.
+B. If you cannot see any records, ask me to describe three tasks I do repeatedly, and for each one ask: what is the goal, what information is needed, and how do I normally judge whether it went well.
+
+Then use these five columns to organize the three tasks: Trigger, What to read each time, How to decide, What counts as done, Human checkpoints.
+Under "How to decide," you may infer from my past patterns, but mark each inference as "pending my confirmation."
+Finally, recommend the one loop most worth building first and explain your reasoning.</pre>
+      <button class="copybtn" type="button">Copy this prompt</button>
+    </div>
+
+    <div class="promptcard">
+      <h3>Prompt 2: Design one of those workflows into a complete loop</h3>
+      <p>Once you have taken stock and chosen one, use this prompt to design it in full.</p>
+      <pre>Please help me design "(fill in the workflow you want to build)" as a loop.
+Output using these five columns: Trigger, What to read each time, How to decide, What counts as done, Human checkpoints.
+Write the rules in my own voice. Ask me any necessary questions before starting, then produce a version I can copy and use directly.</pre>
+      <button class="copybtn" type="button">Copy this prompt</button>
+    </div>
+
+    <div class="promptcard">
+      <h3>Prompt 3: After running the loop for a while, make it more accurate</h3>
+      <p>Once a loop has run a few times, use this prompt to turn your corrections into new rules.</p>
+      <pre>Please review the recent outputs from this loop, along with my corrections and comments on each run. Identify the places where AI made consistent errors, missed things, or produced text I rewrote.
+Organize those findings into new rules, each written as "whenever X, do Y."
+Then list which rules need my confirmation before being added to the loop officially.</pre>
+      <button class="copybtn" type="button">Copy this prompt</button>
+    </div>
+
+    <div class="caveat">
+      <b>Three things to keep in mind when using these prompts</b>
+      <ol>
+        <li>When AI infers your judgment standards, it will mark them as "pending confirmation." Do not treat them as official rules until you have reviewed and confirmed them.</li>
+        <li>Write completion conditions as verifiable outcomes, for example "produce three headline options each with one sentence of rationale," rather than something vague like "organize everything."</li>
+        <li>If you have no past records, start by describing three recent repetitive tasks out loud. AI can only work with what you tell it. It cannot fill in what you have not said.</li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>Not every loop needs to run all the way through</h2>
+    <p>One clarification before closing. Designing something as a loop does not mean you always need to run the full cycle. A loop is a map showing you where you could go, not a conveyor belt that cannot be stopped.</p>
+    <p>If I only want to capture one thought, I stop at the journal. If I want to share something briefly, I stop at the short post. Only when something is genuinely worth developing further do I carry it up to a full site article. Stop when you should. Pull back when returns are diminishing. Do not run a loop to completion just for the sake of completing it.</p>
+    <p>The practical benefit a loop gives me is simple: I do not have to start over every time I do the same thing. For knowledge workers, that translates to moving time away from repetitive effort and toward work that actually accumulates. Tools, platforms, and models will keep changing, but the ability to take what you do repeatedly and design it into a loop that runs on its own and feeds itself back: that capability will always be worth having.</p>
+    <p>If you want to start, do one thing today: write down the instruction you most often find yourself re-explaining to AI. That is your first rule. You do not need to know how to code. If you can write rules, you are already designing your own loops.</p>
+    <div class="relbox">Further reading: <a href="../what-is-loop-engineering/">What is Loop Engineering: Explained Through One Article's Workflow →</a></div>
+  </div>
+</section>
+
+<section class="cta-band">
+  <div class="section">
+    <div class="inner">
+      <div>
+        <h2>Want to turn your workflows into loops?</h2>
+        <p>I am Coach Jiang, a tacit knowledge distiller and AI application planner. I host two free online talks every month, sharing how to make AI a genuine thinking partner, and how to organize your knowledge and experience into prompts, Skills, and knowledge bases that both people and AI can use. Whether you want to keep learning or have a consulting need, the community is a good place to start.</p>
+      </div>
+      <div class="cta-card">
+        <b>Join the LINE Community</b>
+        <p>Let's talk AI and knowledge management, and turn workflows into loops that run themselves.</p>
+        <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">Join the community ↗</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">Coach Jiang · AI Knowledge Management</div>
+    <div class="footer-links">
+      <a href="../../../articles.html">← Back to all articles</a>
+      <a href="../what-is-loop-engineering/">What is Loop Engineering</a>
+      <a href="../../index.html">Home</a>
+      <a href="../../../skills.html">Skills</a>
+      <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">LINE Community ↗</a>
+      <a href="https://www.threads.com/@jiang_yude_coach" target="_blank" rel="noopener">Threads ↗</a>
+      <a href="https://vocus.cc/salon/Jiang_Coach" target="_blank" rel="noopener">Vocus ↗</a>
+    </div>
+    <div class="footer-note">This is a perspective piece organizing my method of designing three workflows as loops, shared for your reference.</div>
+  </div>
+</footer>
+
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <span class="lightbox-close" aria-label="Close">×</span>
+  <img id="lightbox-img" src="" alt="Enlarged view">
+</div>
+<script>
+(function(){
+  var box=document.getElementById('lightbox'),boxImg=document.getElementById('lightbox-img');
+  document.querySelectorAll('.hero-figure img,.inline-figure img').forEach(function(img){
+    img.addEventListener('click',function(){boxImg.src=img.currentSrc||img.src;boxImg.alt=img.alt||'Enlarged view';box.classList.add('open');box.setAttribute('aria-hidden','false');});
+  });
+  function close(){box.classList.remove('open');box.setAttribute('aria-hidden','true');boxImg.src='';}
+  box.addEventListener('click',close);
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
+})();
+</script>
+<script>
+document.querySelectorAll('.copybtn').forEach(function(btn){
+  btn.addEventListener('click',function(){
+    var pre=btn.parentElement.querySelector('pre');
+    if(!pre)return;
+    navigator.clipboard.writeText(pre.innerText).then(function(){
+      var t=btn.textContent;btn.textContent='Copied ✓';btn.classList.add('done');
+      setTimeout(function(){btn.textContent=t;btn.classList.remove('done');},1600);
+    });
+  });
+});
+</script>
+<script src="../../../spotlight.js"></script>
+<script src="../../../articles-data.js"></script>
+<script src="../../../related-render.js"></script>
+</body>
+</html>
