@@ -1089,6 +1089,20 @@
     const search = document.getElementById('skill-search');
     let activeTag = 'all';
 
+    // ─── chip 數字回填：手寫死的數字會漂移，改用實際 data-tags 現場算 ───
+    // 手寫的 count 文字只當 JS 失敗時的 fallback，不再是唯一真相。
+    (function recalcChipCounts() {
+      chips.forEach(chip => {
+        const tag = chip.dataset.tag || 'all';
+        const countEl = chip.querySelector('.count');
+        if (!countEl) return;
+        const n = tag === 'all'
+          ? cards.length
+          : Array.from(cards).filter(card => (card.dataset.tags || '').split(/\s+/).includes(tag)).length;
+        countEl.textContent = String(n);
+      });
+    })();
+
     function applyFilters() {
       const query = (search?.value || '').trim().toLowerCase();
       let totalVisible = 0;
