@@ -4,8 +4,9 @@
 //   UPSTASH_REDIS_REST_URL、UPSTASH_REDIS_REST_TOKEN
 // 前端 views.js 會用「同瀏覽器同頁一小時只計一次」控制 increment，避免重刷灌水。
 
-const URL = () => process.env.UPSTASH_REDIS_REST_URL;
-const TOKEN = () => process.env.UPSTASH_REDIS_REST_TOKEN;
+// 相容 Vercel Storage 一鍵建的 Redis（KV_REST_API_*）與 Upstash 整合（UPSTASH_REDIS_REST_*）
+const URL = () => process.env.UPSTASH_REDIS_REST_URL || process.env.KV_REST_API_URL;
+const TOKEN = () => process.env.UPSTASH_REDIS_REST_TOKEN || process.env.KV_REST_API_TOKEN;
 
 // 一次送多個 Redis 指令（pipeline），回傳每個指令的結果陣列
 async function pipe(commands) {

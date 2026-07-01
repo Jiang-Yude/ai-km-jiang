@@ -7,8 +7,8 @@
 //   REPORT_FROM（寄件人，預設 onboarding@resend.dev，可改成你驗證過的網域）
 //   CRON_SECRET（選用；設了就只有帶對 secret 的請求能觸發，防外部亂打）
 
-const U = () => process.env.UPSTASH_REDIS_REST_URL;
-const T = () => process.env.UPSTASH_REDIS_REST_TOKEN;
+const U = () => process.env.UPSTASH_REDIS_REST_URL || process.env.KV_REST_API_URL;
+const T = () => process.env.UPSTASH_REDIS_REST_TOKEN || process.env.KV_REST_API_TOKEN;
 
 async function cmd(command) {
   const r = await fetch(`${U()}`, {

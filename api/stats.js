@@ -1,8 +1,8 @@
 // 統計資料：給 /stats 頁讀「當月每日」「歷月總計」「全站總數」「熱門頁」。
 // 只讀不寫。資料來源同 view.js 的 Upstash Redis。
 
-const URL = () => process.env.UPSTASH_REDIS_REST_URL;
-const TOKEN = () => process.env.UPSTASH_REDIS_REST_TOKEN;
+const URL = () => process.env.UPSTASH_REDIS_REST_URL || process.env.KV_REST_API_URL;
+const TOKEN = () => process.env.UPSTASH_REDIS_REST_TOKEN || process.env.KV_REST_API_TOKEN;
 
 async function cmd(command) {
   const r = await fetch(`${URL()}`, {
