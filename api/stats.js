@@ -53,7 +53,13 @@ module.exports = async (req, res) => {
     // 全站總數
     const total = Number((await cmd(['GET', 'global'])) || 0);
 
-    res.status(200).json({ today, days, months, total });
+    // 分區小計（已知分區：articles、ai-trends）
+    const secNames = ['articles', 'ai-trends'];
+    const secVals = await cmd(['MGET', ...secNames.map((s) => `section:${s}`)]);
+    const sections = {};
+    secNames.forEach((s, i) => { sections[s] = Number((secVals && secVals[i]) || 0); });
+
+    res.status(200).json({ today, days, months, total, sections });
   } catch (e) {
     res.status(200).json({ days: [], months: [], total: 0, error: String(e.message || e) });
   }

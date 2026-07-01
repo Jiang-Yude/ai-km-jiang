@@ -39,5 +39,16 @@
         fill('global', d.global);
       })
       .catch(function () {});
+    // 分區小計：列表頁放 <span data-views-section="articles"></span>，另外抓 /api/stats 填
+    if (document.querySelector('[data-views-section]')) {
+      fetch('/api/stats').then(function (r) { return r.json(); }).then(function (s) {
+        var secs = s.sections || {};
+        var els = document.querySelectorAll('[data-views-section]');
+        for (var i = 0; i < els.length; i++) {
+          var name = els[i].getAttribute('data-views-section');
+          if (secs[name] != null) els[i].textContent = Number(secs[name]).toLocaleString();
+        }
+      }).catch(function () {});
+    }
   } catch (e) {}
 })();
