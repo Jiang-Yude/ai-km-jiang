@@ -123,6 +123,12 @@
   details.story-text { margin-top:32px; border:1px solid var(--subtle-light); border-radius:16px; background:rgba(255,248,240,0.62); text-align:left; overflow:hidden; }
   details.story-text summary { cursor:pointer; padding:18px 22px; font-weight:700; color:var(--accent); list-style:none; }
   details.story-text summary::-webkit-details-marker { display:none; }
+  details.prompt-fold { margin-top:14px; border:1px solid var(--subtle-light); border-radius:12px; background:rgba(255,248,240,0.5); overflow:hidden; }
+  details.prompt-fold > summary { cursor:pointer; padding:12px 18px; font-family:var(--font-mono); font-size:13px; font-weight:700; color:var(--accent); list-style:none; }
+  details.prompt-fold > summary::-webkit-details-marker { display:none; }
+  details.prompt-fold > summary::after { content:"　▾"; }
+  details.prompt-fold[open] > summary::after { content:"　▴"; }
+  details.prompt-fold > pre { margin-top:0; border:none; border-radius:0; border-top:1px solid var(--subtle-light); }
   .story-body { padding:0 22px 24px; color:var(--text-soft-light); font-size:18px; line-height:1.85; white-space:pre-line; }
 
   /* 作品 + 指令 一頁版 */
@@ -571,7 +577,7 @@ nav.top ul.nav-menu a:hover{color:#1a1612}nav.top ul.nav-menu a.active{color:#1a
           <span class="h2" style="margin:0;">親子協議故事順稿提示詞</span>
           <button class="copy-btn" data-copy="prompt-guide">複製指令</button>
         </div>
-        <pre class="prompt" id="prompt-guide">你是一位親子故事整理師。
+        <details class="prompt-fold"><summary>展開完整提示詞</summary><pre class="prompt" id="prompt-guide">你是一位親子故事整理師。
 
 請把我和孩子討論出的「親子協議」整理成一篇溫暖、生活化、適合親子故事繪本的故事。
 
@@ -619,7 +625,7 @@ nav.top ul.nav-menu a:hover{color:#1a1612}nav.top ul.nav-menu a.active{color:#1a
 5. 可以帶孩子討論的 3 個問題
 
 以下是我的素材：
-【請貼上我和孩子討論出來的內容】</pre>
+【請貼上我和孩子討論出來的內容】</pre></details>
       </div>
     </div>
   </section>
@@ -637,7 +643,7 @@ nav.top ul.nav-menu a:hover{color:#1a1612}nav.top ul.nav-menu a.active{color:#1a
           <span class="h2" style="margin:0;">單張插畫三版設計稿提示詞</span>
           <button class="copy-btn" data-copy="prompt-design">複製指令</button>
         </div>
-        <pre class="prompt" id="prompt-design">你是一位親子故事視覺設計師。
+        <details class="prompt-fold"><summary>展開完整提示詞</summary><pre class="prompt" id="prompt-design">你是一位親子故事視覺設計師。
 
 請根據我貼上的親子故事，幫我生成 3 份「完全不同風格」的單張畫面設計稿。每一份都要用一張畫面，精準呈現故事的衝突、親子關係、協議和轉變。
 
@@ -667,7 +673,7 @@ nav.top ul.nav-menu a:hover{color:#1a1612}nav.top ul.nav-menu a.active{color:#1a
 - 適合親子故事繪本、活動分享或社群封面
 
 以下是我的故事：
-【請貼上親子故事全文】</pre>
+【請貼上親子故事全文】</pre></details>
       </div>
     </div>
   </section>
@@ -718,7 +724,7 @@ nav.top ul.nav-menu a:hover{color:#1a1612}nav.top ul.nav-menu a.active{color:#1a
           <span class="h2" style="margin:0;">真人電影海報三版本提示詞</span>
           <button class="copy-mini" data-copy="prompt-char">複製</button>
         </div>
-        <pre class="mini-prompt" id="prompt-char">你是一位電影海報視覺導演。
+        <details class="prompt-fold"><summary>展開完整提示詞</summary><pre class="mini-prompt" id="prompt-char">你是一位電影海報視覺導演。
 
 我會上傳一張或多張真人照片，請盡量保留照片中人物的五官、表情、年齡感與真實氣質，不要把人變成陌生人。
 
@@ -754,7 +760,7 @@ nav.top ul.nav-menu a:hover{color:#1a1612}nav.top ul.nav-menu a.active{color:#1a
 - 要看得出「衝突後，親子正在找到新的協議」
 
 以下是我的故事：
-【貼上親子故事全文】</pre>
+【貼上親子故事全文】</pre></details>
       </div>
       <div class="reveal d4" style="margin-top:20px; text-align:left; padding:22px 24px; background:rgba(255,248,240,0.55); border-left:3px solid var(--accent); border-radius:10px;">
         <h3 class="h2" style="margin:0 0 10px;">親子怎麼一起選</h3>
@@ -987,7 +993,7 @@ nav.top ul.nav-menu a:hover{color:#1a1612}nav.top ul.nav-menu a.active{color:#1a
     btn.addEventListener('click', () => {
       const pre = document.getElementById(btn.dataset.copy);
       if (!pre) return;
-      navigator.clipboard.writeText(pre.innerText).then(() => {
+      navigator.clipboard.writeText(pre.textContent).then(() => {
         const t = btn.textContent; btn.textContent = '已複製 ✓';
         setTimeout(() => btn.textContent = t, 1600);
       });
