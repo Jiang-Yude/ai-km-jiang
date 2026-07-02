@@ -1,0 +1,271 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="index,follow">
+<title>從提示詞工程到迴圈工程：一張圖看懂四階段｜江江教練 · AI 知識管理</title>
+<meta name="description" content="提示詞工程、上下文工程、駕馭工程、迴圈工程。這四個階段是一條主軸，把我寫的二十幾篇相關文章全部串起來。從任一站點進去，順著往下讀。">
+<link rel="canonical" href="https://ai-km-jiang.vercel.app/articles/prompt-to-loop-map/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="從提示詞工程到迴圈工程：一張圖看懂四階段｜江江教練">
+<meta property="og:image" content="https://ai-km-jiang.vercel.app/images/intro-jiang.png">
+<meta property="og:description" content="提示詞工程 → 上下文工程 → 駕馭工程 → 迴圈工程。一條主軸串起所有相關文章。">
+<meta property="og:url" content="https://ai-km-jiang.vercel.app/articles/prompt-to-loop-map/">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:site_name" content="江江教練 · AI 知識管理">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="從提示詞工程到迴圈工程：一張圖看懂四階段">
+<meta name="twitter:image" content="https://ai-km-jiang.vercel.app/images/intro-jiang.png">
+<meta name="twitter:description" content="一條主軸串起所有相關文章：提示詞工程 → 上下文工程 → 駕馭工程 → 迴圈工程。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{--ink:#1a1612;--paper:#fefcf8;--muted:#6a635a;--line:#d8cdb8;--green:#5f7553;--blue:#5689b8;--orange:#e85a4f;--soft:#faf5ec;--dark:#2a2018;--shadow:0 18px 45px rgba(107,74,42,.14);--sp-shadow:hsla(35,50%,60%,.15);--sp-shadow-edge:hsla(35,50%,68%,.03);--sp-radius:400px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC","Segoe UI",sans-serif}
+a{color:inherit}
+nav.top{position:sticky;top:0;background:rgba(254,252,248,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid #d8cdb8;z-index:100}
+nav.top .container{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:24px;padding:14px 32px}
+.nav-brand-img{justify-self:start;display:flex;align-items:center;text-decoration:none;flex-shrink:0;transition:opacity .2s}
+.nav-brand-img:hover{opacity:.8}.nav-brand-img img{height:40px;width:auto;display:block}
+nav.top ul.nav-menu{justify-self:end;display:flex;gap:22px;list-style:none;margin:0;padding:0;font-size:.95rem;white-space:nowrap}
+nav.top ul.nav-menu a{color:#3a342d;text-decoration:none;transition:color .2s;font-weight:500;white-space:nowrap}
+nav.top ul.nav-menu a:hover{color:#1a1612}nav.top ul.nav-menu a.active{color:#1a1612;font-weight:700}
+.nav-toggle{display:none;background:none;border:none;padding:6px;cursor:pointer;width:36px;height:36px;position:relative}
+.nav-toggle span{display:block;position:absolute;left:8px;right:8px;height:2px;background:#1a1612;border-radius:2px;transition:transform .25s,opacity .25s,top .25s}
+.nav-toggle span:nth-child(1){top:11px}.nav-toggle span:nth-child(2){top:17px}.nav-toggle span:nth-child(3){top:23px}
+.nav-toggle.open span:nth-child(1){top:17px;transform:rotate(45deg)}.nav-toggle.open span:nth-child(2){opacity:0}.nav-toggle.open span:nth-child(3){top:17px;transform:rotate(-45deg)}
+@media(max-width:860px){
+ nav.top .container{grid-template-columns:auto 1fr auto;padding:10px 16px;gap:12px}
+ .nav-brand-img img{height:32px}
+ .nav-toggle{display:block;justify-self:end}
+ nav.top ul.nav-menu{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(254,252,248,.98);backdrop-filter:blur(14px);border-bottom:1px solid #d8cdb8;flex-direction:column;gap:0;padding:8px 0;box-shadow:0 10px 24px rgba(107,74,42,.08)}
+ nav.top ul.nav-menu.open{display:flex}
+ nav.top ul.nav-menu li{border-bottom:1px solid #e8dfc9}
+ nav.top ul.nav-menu li:last-child{border-bottom:none}
+ nav.top ul.nav-menu a{display:block;padding:14px 20px;font-size:1.06rem}
+}
+body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradient(var(--sp-radius) circle at var(--mx,50%) var(--my,50%),var(--sp-shadow) 0%,var(--sp-shadow-edge) 45%,transparent 75%);pointer-events:none;z-index:9999;mix-blend-mode:multiply;transition:background .06s linear}
+.hero{position:relative;overflow:hidden;padding:80px clamp(20px,6vw,88px) 54px;background:linear-gradient(180deg,#fffcf0 0%,#f9e9d2 100%);color:#1a1612;border-bottom:1px solid #d8cdb8}
+.hero .wc{position:absolute;border-radius:50%;filter:blur(60px);pointer-events:none;z-index:0}
+.hero .wc1{width:420px;height:360px;top:-120px;right:-80px;background:#e8884b;opacity:.15}
+.hero .wc2{width:360px;height:300px;bottom:-110px;left:-70px;background:#5f7553;opacity:.13}
+.hero-inner{position:relative;z-index:2;width:min(1000px,100%);margin:0 auto}
+.kicker{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.5rem;color:#7a5c3a;font-weight:500}
+.hero h1{margin:14px 0 16px;font-size:clamp(32px,5vw,58px);line-height:1.1}
+.hero p{font-size:clamp(18px,1.8vw,21px);line-height:1.62;color:#3a342d;max-width:820px}
+.section{padding:48px clamp(20px,6vw,88px);border-top:1px solid var(--line)}
+.inner{width:min(1080px,100%);margin:0 auto}
+.section h2{font-size:clamp(24px,3.6vw,40px);margin:0 0 8px}
+.section .sub{color:var(--muted);font-size:18px;margin:0 0 8px}
+/* 四階段主軸地圖 */
+.map{display:flex;flex-direction:column;gap:0;margin-top:10px}
+.stage{position:relative;padding:22px 0 30px 74px}
+.stage::before{content:'';position:absolute;left:26px;top:0;bottom:0;width:3px;background:var(--line);z-index:0}
+.stage:first-child::before{top:34px}
+.stage:last-child::before{bottom:auto;height:34px}
+.stage .dot{position:absolute;left:8px;top:22px;width:40px;height:40px;border-radius:50%;background:#fff;border:3px solid var(--orange);display:flex;align-items:center;justify-content:center;font:900 18px/1 ui-monospace,Menlo,monospace;color:#c0512f;z-index:2;box-shadow:0 6px 16px rgba(232,90,79,.18)}
+.stage.dim .dot{border-color:var(--line);color:var(--muted);box-shadow:none}
+.stage h3{margin:22px 0 4px;font-size:clamp(21px,2.6vw,28px)}
+.stage .count{font:900 18px/1 ui-monospace,Menlo,monospace;color:var(--muted);margin-left:8px}
+.stage .oneliner{color:var(--muted);font-size:18px;margin:0 0 16px;line-height:1.6}
+.cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.artcard{display:block;text-decoration:none;background:#fff;border:1px solid var(--line);border-radius:10px;padding:16px 18px;box-shadow:0 6px 18px rgba(107,74,42,.07);transition:transform .16s,box-shadow .16s,border-color .16s}
+.artcard:hover{transform:translateY(-3px);box-shadow:0 12px 28px rgba(107,74,42,.14);border-color:var(--orange)}
+.artcard .tag{display:inline-block;font:900 18px/1 ui-monospace,Menlo,monospace;letter-spacing:.03em;padding:4px 8px;border-radius:999px;margin-bottom:8px}
+.artcard .tag.nw{background:rgba(232,90,79,.12);color:#c0512f}
+.artcard .tag.live{background:rgba(95,117,83,.14);color:#4a7a59}
+.artcard b{display:block;font-size:18px;line-height:1.35;color:var(--ink);margin-bottom:4px}
+.artcard p{margin:0;font-size:18px;line-height:1.55;color:var(--muted)}
+.gap{background:var(--soft);border:1px dashed var(--line);border-radius:10px;padding:16px 18px;font-size:18px;line-height:1.6;color:var(--muted);margin-top:12px}
+.gap b{color:#7a5c3a}
+.legend{display:flex;flex-wrap:wrap;gap:14px;margin-top:22px;font-size:18px;color:var(--muted)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{width:12px;height:12px;border-radius:3px;display:inline-block}
+.footer{padding:30px clamp(20px,6vw,88px);font-size:18px;color:var(--muted);background:#fff;border-top:1px solid var(--line)}
+.footer-inner{width:min(1080px,100%);margin:0 auto}
+.footer-links{display:flex;flex-wrap:wrap;gap:6px 12px;margin-bottom:14px}.footer-links a{color:var(--blue);font-weight:900;text-decoration:none;font-size:18px}
+.footer-brand{font-weight:900;font-size:18px;margin-bottom:10px}.footer-note{font-size:18px;line-height:1.6}
+@media(max-width:720px){.cards{grid-template-columns:1fr}.stage{padding-left:60px}.stage .dot{width:34px;height:34px;font-size:18px}.stage::before{left:23px}}
+</style>
+</head>
+<body class="spotlight">
+<nav class="top">
+  <div class="container">
+    <a class="nav-brand-img" href="../../index.html"><img src="../../images/footer-signature.png" alt="江江教練 | 江昱德"></a>
+    <button class="nav-toggle" aria-label="選單"><span></span><span></span><span></span></button>
+    <ul class="nav-menu">
+      <li><a href="../../index.html">首頁</a></li>
+      <li><a href="../../offers.html">收費課程</a></li>
+      <li><a href="../../courses.html">免費講座</a></li>
+      <li><a href="../../invited-talks.html">邀約授課</a></li>
+      <li><a href="../../articles.html" class="active">深度文章</a></li>
+      <li><a href="../../skills.html">Skills 下載</a></li>
+      <li><a href="../../cases.html">服務方案</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="wc wc1"></div>
+  <div class="wc wc2"></div>
+  <div class="hero-inner">
+    <div class="kicker">知識地圖 · Knowledge Map</div>
+    <h1>從提示詞工程到迴圈工程</h1>
+    <p>怎麼跟 AI 合作，這幾年一路在往上走。提示詞工程、上下文工程、駕馭工程、迴圈工程，這四個階段是一條主軸。這張圖把我寫的二十幾篇相關文章全部掛上去，你從任一站進去，順著往下讀就好。</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>四個階段，一條主軸</h2>
+    <p class="sub">越往下，你越不用管 AI 怎麼做，越專心在「你要什麼」。點任一張卡，從那裡開始讀。</p>
+
+    <div class="map">
+
+      <div class="stage">
+        <div class="dot">1</div>
+        <h3>提示詞工程<span class="count">1 篇</span></h3>
+        <p class="oneliner">琢磨單句指令怎麼下。這是起點，也是大家最早學的一塊。單句提示詞的天花板很低，所以重點很快往上移。</p>
+        <div class="cards">
+          <a class="artcard" href="../give-ai-choices-not-descriptions/">
+            <b>跟 AI 調配色，別讓它一直猜：給選擇，不是給描述</b>
+            <p>提示詞層次最好用的技巧之一：給 AI 選項讓它挑，比一直用文字描述更快到位。</p>
+          </a>
+        </div>
+        <div class="gap"><b>為什麼提示詞「退場」</b>：想看單句提示詞為什麼不夠用了，直接看第三站的〈別再寫死指令〉開頭那段演進史。</div>
+      </div>
+
+      <div class="stage">
+        <div class="dot">2</div>
+        <h3>上下文工程<span class="count">4 篇</span></h3>
+        <p class="oneliner">經營整個對話的脈絡：你給 AI 哪些資料、哪些背景、哪些前後文。知識庫怎麼整理，就是這一站的核心。</p>
+        <div class="cards">
+          <a class="artcard" href="../knowledge-base-three-vault-split/">
+            <b>知識庫太大，我改成三庫分流</b>
+            <p>資料多到 AI 反而找不到重點時，怎麼把知識庫拆成三庫。</p>
+          </a>
+          <a class="artcard" href="../tag-wiki-method/">
+            <b>把標籤變成卡片，知識庫才活起來：標籤連結法 Tag Wiki</b>
+            <p>用受控標籤把筆記串成一張 Wiki，AI 才讀得懂你的知識。</p>
+          </a>
+          <a class="artcard" href="../diary-driven-agent-3x4/">
+            <b>寫日記，就讓 AI 乖乖幫你做事：3X4 資料整理法</b>
+            <p>用寫日記的方式持續餵給 AI 脈絡，它就接得住你的工作。</p>
+          </a>
+          <a class="artcard" href="../a2a-agent-protocol/">
+            <b>當 AI 代理開始互相對話：A2A，以及怎麼讓人和 AI 都讀得懂我</b>
+            <p>把自己整理成人和 AI 都讀得懂的格式，代理之間才接得住。</p>
+          </a>
+        </div>
+      </div>
+
+      <div class="stage">
+        <div class="dot">3</div>
+        <h3>駕馭工程<span class="count">7 篇</span></h3>
+        <p class="oneliner">給 AI 你的意圖跟底線，帶著一個比你聰明的協作者往你要的方向走。這一站文章最多，是目前的主場。</p>
+        <div class="cards">
+          <a class="artcard" href="../intent-first-prompting/">
+            <span class="tag nw">系列 01</span>
+            <b>別再寫死指令：把你要什麼講清楚，剩下交給 AI</b>
+            <p>為什麼要意圖優先，加入門三動作與三組可複製提示詞。</p>
+          </a>
+          <a class="artcard" href="../harness-mindset-for-bosses/">
+            <span class="tag nw">系列 02</span>
+            <b>給老闆的駕馭思維：把不敢對員工說的，講給 AI 聽</b>
+            <p>把 AI 當員工、對它當企業主，附駕馭十問與向內反問。</p>
+          </a>
+          <a class="artcard" href="../docs-as-system-design-agent/">
+            <b>文件就是系統：非工程師怎麼設計 Agent 框架</b>
+            <p>用文件當系統設計，讓 AI 照著你的架構跑。</p>
+          </a>
+          <a class="artcard" href="../how-to-train-your-ai-employee/">
+            <b>如何訓練自己的 AI 員工：員工＋顧問框架</b>
+            <p>用帶員工的思維帶 AI，先驗收再交辦。</p>
+          </a>
+          <a class="artcard" href="../caught-ai-slacking-into-rules/">
+            <b>抓到 AI 偷懶之後，我把它寫進流程規則</b>
+            <p>AI 出包怎麼辦：把你的要求沉澱成規則，它下次就守。</p>
+          </a>
+          <a class="artcard" href="../decision-ladder-non-programmer/">
+            <b>Ponytail：不寫程式的人，也能用的「決策階梯」</b>
+            <p>駕馭 AI 的判斷框架：什麼時候該放手、什麼時候該收。</p>
+          </a>
+          <a class="artcard" href="../ai-capability-tiers/">
+            <b>你在 AI 世界的哪一階？用對產業影響力排的一張表</b>
+            <p>AI 現在多聰明、你站哪個位置，決定你怎麼駕馭它。</p>
+          </a>
+        </div>
+      </div>
+
+      <div class="stage">
+        <div class="dot">4</div>
+        <h3>迴圈工程<span class="count">8 篇</span></h3>
+        <p class="oneliner">不再一句一句下指令，而是設計一個會自己跑的循環。把整條工作流變成 Loop，讓它自動累積，也要能容錯。</p>
+        <div class="cards">
+          <a class="artcard" href="../what-is-loop-engineering/">
+            <b>用我寫一篇文章的工作流，講清楚什麼是迴圈工程</b>
+            <p>拿一個真實工作流當例子，白話說明 Loop Engineering 是什麼。</p>
+          </a>
+          <a class="artcard" href="../my-three-loops/">
+            <b>當我開始理解迴圈，把三個工作流設計成 Loop</b>
+            <p>發文迴圈、復盤迴圈、提煉迴圈，三個 Loop 怎麼設計。</p>
+          </a>
+          <a class="artcard" href="../agent-workflow-builds-automation/">
+            <b>我用 AI 代理工作流，蓋一套程式自動化工作流</b>
+            <p>把重複的事交給 AI 代理，長成一條自動化。</p>
+          </a>
+          <a class="artcard" href="../codex-only-auto-worklog/">
+            <b>只用 Codex，也能建立自己的自動工作日誌</b>
+            <p>讓 AI 每天自動記錄工作，回頭有脈絡可查。</p>
+          </a>
+          <a class="artcard" href="../line-group-ai-workflow/">
+            <b>散在 LINE 各群組的資料，怎麼每天自動下載歸檔</b>
+            <p>一條每天自跑的 Loop，把群組訊息與檔案收進知識庫。</p>
+          </a>
+          <a class="artcard" href="../meeting-record-agent-workflow/">
+            <b>Agent 的會議記錄工作流：把會議變成知識資產的七步</b>
+            <p>從錄音到成稿，一條可重複跑的會議 Loop。</p>
+          </a>
+          <a class="artcard" href="../ai-loop-safety-recovery/">
+            <b>AI 出錯不可怕，沒有備援才可怕：搞壞 170 檔的教訓</b>
+            <p>自跑的 Loop 一定要有備援，錯了才回得來。</p>
+          </a>
+          <a class="artcard" href="../recovery-over-perfection/">
+            <b>與其期待不出錯的 AI 系統，不如設計能容錯的 Loop</b>
+            <p>設計重點不是不出錯，是出錯能自己修回來。</p>
+          </a>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="legend">
+      <span><i style="background:#c0512f"></i>紅標 ＝「從提示詞工程到駕馭工程」系列文章</span>
+      <span>共 20 篇，橫跨四階段</span>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">江江教練 · AI 知識管理</div>
+    <div class="footer-links">
+      <a href="../../articles.html">← 回深度文章總站</a>
+      <a href="../../index.html">首頁</a>
+      <a href="../../learn.html">自學資源</a>
+      <a href="../../skills.html">Skills 下載</a>
+      <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">LINE 社群 ↗</a>
+    </div>
+    <div class="footer-note">這是一張知識地圖，把「從提示詞工程到迴圈工程」這條主軸的相關文章串起來，供你依序閱讀。</div>
+  </div>
+  <a href="/stats.html" class="page-views" style="text-align:center;color:#9a9186;font-size:18px;padding:12px 0 2px;display:block;text-decoration:none" title="看完整流量統計"><span style="text-decoration:underline;text-decoration-color:#cbbfa8;text-underline-offset:3px">本頁瀏覽 <span data-views="page">·</span> 次</span></a>
+</footer>
+
+<script src="../../spotlight.js"></script>
+<script src="../../articles-data.js"></script>
+<script src="../../related-render.js"></script>
+  <script src="/views.js"></script>
+</body>
+</html>

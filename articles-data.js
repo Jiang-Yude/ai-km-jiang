@@ -646,6 +646,63 @@ window.ARTICLES = [
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
     related: ["ai-loop-safety-recovery", "my-three-loops", "what-is-loop-engineering"]
+  },
+
+  /* ── 別再寫死指令：把你要什麼講清楚，剩下交給 AI（系列 01）（教學）── */
+  {
+    id: "intent-first-prompting",
+    url: "articles/intent-first-prompting/",
+    date: "2026-06-27",
+    updated: "2026-07-02",
+    title: "別再寫死指令：把你要什麼講清楚，剩下交給 AI（系列 01）",
+    problem: "學過提示詞、指令越寫越長，AI 卻還是只照你寫的做，沒有更好的表現。",
+    audience: "會下指令但覺得 AI 發揮不出來的知識工作者，以及想搞懂提示詞、上下文、駕馭、迴圈這幾個詞差在哪的人。",
+    summary: "2024 年 AI 只有 60 分，把流程寫死是在幫它；現在它能想到你想不到的做法，寫死反而綁住它。這篇講意圖優先：把為什麼做、做到什麼程度講清楚，方法留給 AI，附三組可複製提示詞與四個名詞的賽馬圖解。",
+    tags: {
+      topic: ["提示詞設計", "AI工作流"],
+      level: ["零基礎入門"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
+    related: ["harness-mindset-for-bosses", "prompt-to-loop-map"]
+  },
+
+  /* ── 給老闆的駕馭思維：把不敢對員工說的，講給 AI 聽（系列 02）（教學）── */
+  {
+    id: "harness-mindset-for-bosses",
+    url: "articles/harness-mindset-for-bosses/",
+    date: "2026-07-02",
+    updated: "2026-07-02",
+    title: "給老闆的駕馭思維：把不敢對員工說的，講給 AI 聽（系列 02）",
+    problem: "當了幾十年老闆、主管，帶人很有一套，但覺得學 AI 工具很痛苦，AI 產出也只是看起來還行。",
+    audience: "中小企業老闆、主管、一人公司：帶人有經驗、想把管理本事直接用到 AI 上的人。",
+    summary: "AI 已經能當員工，而且你可以對它比對員工狠十倍：它不會離職、不會抱怨。這篇講駕馭思維，附駕馭十問、向內反問、好老闆對照表，全部可直接複製，最後補 Anthropic 創業手冊的提醒：AI 讓你做得快，做對的判斷反而更值錢。",
+    tags: {
+      topic: ["提示詞設計", "輔助決策"],
+      level: ["零基礎入門"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
+    related: ["intent-first-prompting", "prompt-to-loop-map"]
+  },
+
+  /* ── 從提示詞工程到迴圈工程：一張圖看懂四階段（知識地圖）── */
+  {
+    id: "prompt-to-loop-map",
+    url: "articles/prompt-to-loop-map/",
+    date: "2026-07-02",
+    updated: "2026-07-02",
+    title: "從提示詞工程到迴圈工程：一張圖看懂四階段（知識地圖）",
+    problem: "文章一篇一篇散著讀，抓不到「怎麼跟 AI 合作」這件事的全貌跟先後順序。",
+    audience: "想有系統地把這個站的 AI 協作文章從頭讀到尾、需要一張總覽地圖的人。",
+    summary: "提示詞工程、上下文工程、駕馭工程、迴圈工程，四個階段一條主軸，把 20 篇文章全部掛上去：越往下，你越不用管 AI 怎麼做，越專心在你要什麼。從任一站進去，順著往下讀。",
+    tags: {
+      topic: ["AI工作流", "提示詞設計"],
+      level: ["零基礎入門"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
+    related: ["intent-first-prompting", "harness-mindset-for-bosses"]
   }
 
 ];
