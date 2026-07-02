@@ -1,0 +1,302 @@
+#!/usr/bin/env node
+/* ============================================================
+   build-site-index.mjs · 產生全站統一索引 site-index.json
+   ------------------------------------------------------------
+   來源（自動彙整，不手改結果檔）：
+     1. articles-data.js       → type: "article"
+     2. courses-data.js        → type: "course"
+     3. skills.html            → type: "skill"（解析 51 張 skill-card）
+     4. site-manual-entries.json → type: page / case / resource / tool（人工維護，原樣併入）
+
+   用法（在 repo 根目錄跑）：
+     node scripts/build-site-index.mjs
+
+   輸出：覆寫 site-index.json。手改該檔無效，重跑本腳本會覆蓋。
+   零依賴，純 Node（用內建 vm 模組載入瀏覽器全域賦值檔）。
+   ============================================================ */
+"use strict";
+
+import fs from "node:fs";
+import path from "node:path";
+import vm from "node:vm";
+import { fileURLToPath } from "node:url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const ROOT = path.resolve(__dirname, "..");
+
+function read(file) {
+  return fs.readFileSync(file, "utf8");
+}
+
+function todayTaipei() {
+  // 環境未必是台灣時區，手算 UTC+8 的日期字串 YYYY-MM-DD
+  const now = new Date();
+  const utc = now.getTime() + now.getTimezoneOffset() * 60000;
+  const tw = new Date(utc + 8 * 3600000);
+  const y = tw.getFullYear();
+  const m = String(tw.getMonth() + 1).padStart(2, "0");
+  const d = String(tw.getDate()).padStart(2, "0");
+  return `${y}-${m}-${d}`;
+}
+
+function loadBrowserGlobal(file, globalName) {
+  const code = read(path.join(ROOT, file));
+  const sandbox = { window: {} };
+  vm.runInNewContext(code, sandbox, { filename: file });
+  return sandbox.window[globalName];
+}
+
+/* ───────────── 1. 文章 ───────────── */
+function buildArticleItems() {
+  const articles = loadBrowserGlobal("articles-data.js", "ARTICLES");
+  if (!Array.isArray(articles) || articles.length === 0) {
+    console.error("articles-data.js 沒有有效的 window.ARTICLES，中止。");
+    process.exit(2);
+  }
+  return articles.map((a) => {
+    const url = a.url ? (a.url.startsWith("/") ? a.url : "/" + a.url) : "";
+    return {
+      id: "article-" + a.id,
+      type: "article",
+      title: a.title || "",
+      url,
+      date: a.date || null,
+      updated: a.updated || null,
+      summary: a.summary || "",
+      problem: a.problem || "",
+      audience: a.audience || "",
+      tags: a.tags || { topic: [], level: [], content_type: [] },
+    };
+  });
+}
+
+/* ───────────── 2. 課程 ───────────── */
+function buildCourseItems() {
+  const courses = loadBrowserGlobal("courses-data.js", "COURSES");
+  if (!Array.isArray(courses)) {
+    console.error("courses-data.js 沒有有效的 window.COURSES，中止。");
+    process.exit(2);
+  }
+  return courses.map((c) => {
+    const url = c.detail_url || "/courses.html";
+    const normalizedUrl = url.startsWith("http") || url.startsWith("/") ? url : "/" + url;
+    return {
+      id: "course-" + c.id,
+      type: "course",
+      title: c.title || "",
+      url: normalizedUrl,
+      date: c.date || null,
+      updated: null,
+      summary: c.summary || "",
+      problem: "",
+      audience: c.host ? `講師：${c.host}` : "",
+      tags: {
+        topic: Array.isArray(c.tags) ? c.tags : [],
+        level: [],
+        content_type: c.type_label ? [c.type_label] : [],
+      },
+    };
+  });
+}
+
+/* ───────────── 3. Skills（解析 skills.html） ───────────── */
+const SKILL_TAG_TOPIC_MAP = {
+  evaluation: "評估篩選",
+  distill: "知識提煉",
+  content: "內容創作",
+  transcript: "逐字稿",
+  consulting: "顧問思考",
+  business: "商業策略",
+  persona: "AI 顧問人格",
+  tools: "工具整合",
+  experience: "體驗包",
+  bundle: "整套內含",
+  external: "好物分享",
+};
+const SKILL_FLAG_TAGS = new Set(["mit", "bilingual", "zh", "en"]);
+
+function buildSkillItems() {
+  const html = read(path.join(ROOT, "skills.html"));
+  const cardRe = /<article class="skill-card"([^>]*)>([\s\S]*?)<\/article>/g;
+  const items = [];
+  let m;
+  while ((m = cardRe.exec(html)) !== null) {
+    const attrs = m[1];
+    const body = m[2];
+
+    const dataTagsMatch = attrs.match(/data-tags="([^"]*)"/);
+    const rawTags = dataTagsMatch ? dataTagsMatch[1].trim().split(/\s+/).filter(Boolean) : [];
+
+    const topicTags = [];
+    const flags = [];
+    rawTags.forEach((t) => {
+      if (SKILL_FLAG_TAGS.has(t)) {
+        flags.push(t);
+      } else if (SKILL_TAG_TOPIC_MAP[t]) {
+        topicTags.push(SKILL_TAG_TOPIC_MAP[t]);
+      }
+    });
+
+    const idMatch = body.match(/<div class="skill-id">([^<]*)<\/div>/);
+    const skillId = idMatch ? idMatch[1].trim() : null;
+
+    const h3Match = body.match(/<h3>([\s\S]*?)<\/h3>/);
+    const title = h3Match ? h3Match[1].replace(/\s+/g, " ").trim() : "";
+
+    const pMatch = body.match(/<p>([\s\S]*?)<\/p>/);
+    const summary = pMatch ? pMatch[1].replace(/\s+/g, " ").trim() : "";
+
+    // 優先抓第一個 GitHub 連結；沒有就退而求其次抓第一個 skill-btn-primary 連結
+    // （部分卡片主連結是官網或站內文章，例：open-slide.dev、concise-reviewer）；
+    // 兩者都沒有（籌備中／規劃中的卡片沒有 skill-actions）就退到站內錨點。
+    const githubMatch = body.match(/href="(https:\/\/github\.com[^"]*)"/);
+    const primaryMatch = body.match(/class="skill-btn-primary"[^>]*href="([^"]*)"/);
+    const url = githubMatch ? githubMatch[1] : primaryMatch ? primaryMatch[1] : `/skills.html#${skillId}`;
+
+    if (!skillId) {
+      console.warn("WARN 跳過一張沒有 skill-id 的 skill-card（title：" + title + "）");
+      continue;
+    }
+
+    items.push({
+      id: "skill-" + skillId,
+      type: "skill",
+      title,
+      url,
+      date: null,
+      updated: null,
+      summary,
+      problem: "",
+      audience: "",
+      tags: { topic: topicTags, level: [], content_type: [] },
+      flags,
+    });
+  }
+  return items;
+}
+
+/* ───────────── 4. 人工維護區（page/case/resource/tool） ───────────── */
+function buildManualItems() {
+  const raw = JSON.parse(read(path.join(ROOT, "site-manual-entries.json")));
+  // 原始 id（如 course-2026-05-05-mvp-validation、skill-html-quick-editor）是舊 site-index.json
+  // 的歷史命名，會跟自動生成的 course-*／skill-* id 撞號；索引項 id 前面補 "manual-" 區隔，
+  // 不改 site-manual-entries.json 本身保留的原始 id 字串。
+  return (raw.items || []).map((i) => ({
+    id: "manual-" + i.id,
+    type: i.type,
+    title: i.title || "",
+    url: i.url || "",
+    date: i.date || null,
+    updated: i.updated || null,
+    summary: i.summary || "",
+    problem: i.problem || "",
+    audience: i.audience || "",
+    tags: i.tags || { topic: [], level: [], content_type: [] },
+  }));
+}
+
+/* ───────────── 5. 檢查與彙整 ───────────── */
+function checkUniqueIds(items) {
+  const seen = new Map();
+  const dupes = [];
+  items.forEach((it) => {
+    if (seen.has(it.id)) dupes.push(it.id);
+    seen.set(it.id, (seen.get(it.id) || 0) + 1);
+  });
+  if (dupes.length) {
+    console.error("id 不唯一：" + [...new Set(dupes)].join("、"));
+    process.exit(2);
+  }
+}
+
+function checkNonEmptyUrl(items) {
+  const bad = items.filter((it) => !it.url);
+  if (bad.length) {
+    console.error("以下項目 url 為空：" + bad.map((b) => b.id).join("、"));
+    process.exit(2);
+  }
+}
+
+function loadVocabNames() {
+  const raw = JSON.parse(read(path.join(ROOT, "vocab-public.json")));
+  return new Set((raw.vocab || []).map((v) => v.name));
+}
+
+function checkVocab(items, vocabNames) {
+  const warnings = [];
+  items.forEach((it) => {
+    if (it.type !== "article") return;
+    const t = it.tags || {};
+    ["topic", "level"].forEach((dim) => {
+      (t[dim] || []).forEach((val) => {
+        if (!vocabNames.has(val)) {
+          warnings.push(`WARN [${it.id}] tags.${dim} 的值「${val}」不在 vocab-public.json`);
+        }
+      });
+    });
+  });
+  return warnings;
+}
+
+function collectTagDimensions(items) {
+  const dims = { topic: new Set(), level: new Set(), content_type: new Set() };
+  items.forEach((it) => {
+    const t = it.tags || {};
+    ["topic", "level", "content_type"].forEach((dim) => {
+      (t[dim] || []).forEach((v) => dims[dim].add(v));
+    });
+  });
+  return {
+    topic: [...dims.topic].sort(),
+    level: [...dims.level].sort(),
+    content_type: [...dims.content_type].sort(),
+  };
+}
+
+/* ───────────── 進入點 ───────────── */
+function main() {
+  const oldIndex = JSON.parse(read(path.join(ROOT, "site-index.json")));
+
+  const articleItems = buildArticleItems();
+  const courseItems = buildCourseItems();
+  const skillItems = buildSkillItems();
+  const manualItems = buildManualItems();
+
+  const items = [...articleItems, ...courseItems, ...skillItems, ...manualItems];
+
+  checkUniqueIds(items);
+  checkNonEmptyUrl(items);
+
+  const vocabNames = loadVocabNames();
+  const warnings = checkVocab(items, vocabNames);
+
+  const output = {
+    version: "2.0",
+    updated: todayTaipei(),
+    generated_by: "scripts/build-site-index.mjs（手改無效，重跑會覆蓋）",
+    site: oldIndex.site,
+    tag_dimensions: collectTagDimensions(items),
+    items,
+  };
+
+  fs.writeFileSync(path.join(ROOT, "site-index.json"), JSON.stringify(output, null, 2) + "\n");
+
+  // 統計
+  const byType = {};
+  items.forEach((it) => (byType[it.type] = (byType[it.type] || 0) + 1));
+  console.log("───────── site-index.json 產生完成 ─────────");
+  Object.keys(byType)
+    .sort()
+    .forEach((t) => console.log(`  ${t}: ${byType[t]} 筆`));
+  console.log(`  合計: ${items.length} 筆`);
+  console.log("");
+  if (warnings.length) {
+    console.log("───────── WARN 清單（不在 vocab-public.json，不擋） ─────────");
+    warnings.forEach((w) => console.log(w));
+  } else {
+    console.log("✅ 所有文章 topic/level 標籤皆在 vocab-public.json 內。");
+  }
+}
+
+main();

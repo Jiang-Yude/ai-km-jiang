@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="robots" content="index,follow">
+<title>全站搜尋 · 江江教練 · AI 知識管理</title>
+<meta name="description" content="江江教練官網的全站搜尋。一次搜深度文章、技能包、課程講座、簡報資源、合作案例與網站頁面。" />
+<link rel="canonical" href="https://ai-km-jiang.vercel.app/search.html" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://ai-km-jiang.vercel.app/search.html" />
+<meta property="og:title" content="全站搜尋 · 江江教練 · AI 知識管理" />
+<meta property="og:description" content="一次搜深度文章、技能包、課程講座、簡報資源、合作案例與網站頁面。" />
+<meta property="og:image" content="https://ai-km-jiang.vercel.app/images/intro-jiang.png" />
+<meta property="og:locale" content="zh_TW" />
+<meta property="og:site_name" content="江江教練 · AI 知識管理" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="全站搜尋 · 江江教練 · AI 知識管理" />
+<meta name="twitter:description" content="一次搜深度文章、技能包、課程講座、簡報資源、合作案例與網站頁面。" />
+<meta name="twitter:image" content="https://ai-km-jiang.vercel.app/images/intro-jiang.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" />
+<link rel="stylesheet" href="styles.css?v=20260603-learning-map" />
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SearchResultsPage","name":"全站搜尋 · 江江教練 · AI 知識管理","url":"https://ai-km-jiang.vercel.app/search.html","inLanguage":"zh-Hant","isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://ai-km-jiang.vercel.app/"}}</script>
+<style>
+  /* ── 搜尋框（沿用 articles.html 的視覺語言） ── */
+  .site-search-box { position: relative; margin: 0 0 20px; }
+  .site-search-box input {
+    width: 100%; font-family: inherit; font-size: 18px;
+    padding: 15px 44px 15px 46px; color: var(--ink);
+    border: 1px solid var(--line); border-radius: var(--radius-pill); background: #fff;
+  }
+  .site-search-box input::placeholder { color: var(--ink-faint); }
+  .site-search-box input:focus { outline: none; border-color: var(--c-sky); box-shadow: 0 0 0 3px rgba(86,137,184,.16); }
+  .site-search-box .s-ico { position: absolute; left: 17px; top: 50%; transform: translateY(-50%); opacity: .5; font-size: 18px; pointer-events: none; }
+
+  /* ── type 篩選 chip ── */
+  .search-type-chips { display: flex; flex-wrap: wrap; gap: 9px; margin: 0 0 22px; }
+  .search-type-chip {
+    display: inline-flex; align-items: center; gap: 6px; padding: 8px 14px;
+    border: 1px solid var(--line); border-radius: var(--radius-pill); background: #fff;
+    font-family: inherit; font-size: 15px; color: var(--ink-soft); cursor: pointer;
+    transition: all .15s ease;
+  }
+  .search-type-chip:hover { border-color: var(--ink-faint); transform: translateY(-1px); }
+  .search-type-chip.on { background: var(--ink); color: #fff; border-color: var(--ink); }
+
+  /* ── 結果統計 ── */
+  .search-status { font-size: 18px; font-weight: 600; color: var(--ink); margin: 0 0 18px; }
+  .search-status b { color: var(--c-coral); font-size: 22px; margin: 0 2px; }
+
+  /* ── 結果卡片 ── */
+  .search-results { display: grid; grid-template-columns: 1fr; gap: 16px; }
+  @media (min-width: 720px) {
+    .search-results { grid-template-columns: repeat(2, 1fr); }
+  }
+  .search-card {
+    display: block; background: var(--paper); border: 1px solid var(--line);
+    border-radius: var(--radius-lg); padding: 20px 22px; text-decoration: none;
+    color: inherit; transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+  }
+  .search-card:hover { transform: translateY(-2px); box-shadow: var(--shadow); border-color: var(--c-sand); }
+  .search-card-badge {
+    display: inline-block; font-size: 13px; font-weight: 700; letter-spacing: .02em;
+    padding: 3px 10px; border-radius: var(--radius-pill); background: var(--bg-soft);
+    color: var(--ink-soft); margin-bottom: 10px;
+  }
+  .search-card h3 { margin: 0 0 8px; font-size: 20px; line-height: 1.4; color: var(--ink); }
+  .search-card p { margin: 0 0 10px; font-size: 16px; line-height: 1.65; color: var(--ink-soft); }
+  .search-card .search-tag-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+  .search-card .search-tag {
+    font-size: 13px; color: var(--ink-faint); background: var(--bg-soft);
+    border: 1px solid var(--line-soft); border-radius: var(--radius-pill); padding: 3px 10px;
+  }
+  .search-card.hide { display: none; }
+
+  .search-empty { display: none; text-align: center; padding: 48px 20px; color: var(--ink-faint); font-size: 18px; line-height: 1.8; }
+  .search-empty.show { display: block; }
+  .search-empty b { color: var(--ink); }
+  .search-empty a { color: var(--c-coral); }
+
+  .search-footnote { text-align: center; font-size: 13px; color: var(--ink-faint); margin-top: 40px; }
+  .search-footnote a { color: var(--ink-faint); }
+</style>
+<!-- tracking:vercel-analytics -->
+<script defer src="/_vercel/insights/script.js"></script>
+<script defer src="/_vercel/speed-insights/script.js"></script>
+</head>
+<body class="spotlight" data-motion-type="pointer">
+
+<nav class="top">
+  <div class="container">
+    <a class="nav-brand-img" href="index.html"><img src="images/footer-signature.png" alt="江江教練 | 江昱德" /></a>
+    <button class="nav-toggle" aria-label="選單"><span></span><span></span><span></span></button>
+    <ul class="nav-menu">
+      <li><a href="index.html">首頁</a></li>
+      <li><a href="offers.html">收費課程</a></li>
+      <li><a href="courses.html">免費講座</a></li>
+      <li><a href="invited-talks.html">邀約授課</a></li>
+      <li><a href="articles.html">深度文章</a></li>
+      <li><a href="skills.html">Skills 下載</a></li>
+      <li><a href="cases.html">服務方案</a></li>
+      <li><a href="search.html" class="active">全站搜尋</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="page-header">
+  <div class="watercolor wc-peach"></div>
+  <div class="watercolor wc-sky"></div>
+  <div class="container narrow">
+    <div class="eyebrow">全站搜尋</div>
+    <h1>全站 <span class="italic">搜尋</span></h1>
+    <p>一次搜深度文章、技能包、課程講座、課後簡報、合作案例與網站頁面。輸入關鍵字，或先用下面的類型篩選縮小範圍。</p>
+  </div>
+</div>
+
+<section>
+  <div class="container">
+
+    <div class="site-search-box" id="site-search-box">
+      <span class="s-ico">🔍</span>
+      <input type="search" id="site-search-input" placeholder="搜尋標題、摘要、標籤…" autocomplete="off" aria-label="全站搜尋" />
+    </div>
+
+    <div class="search-type-chips" id="search-type-chips">
+      <button type="button" class="search-type-chip on" data-type="all">全部</button>
+      <button type="button" class="search-type-chip" data-type="article">深度文章</button>
+      <button type="button" class="search-type-chip" data-type="skill">技能包</button>
+      <button type="button" class="search-type-chip" data-type="course">課程講座</button>
+      <button type="button" class="search-type-chip" data-type="resource">簡報資源</button>
+      <button type="button" class="search-type-chip" data-type="case">合作案例</button>
+      <button type="button" class="search-type-chip" data-type="page">網站頁面</button>
+    </div>
+
+    <p class="search-status" id="search-status">符合 <b>0</b> 項</p>
+
+    <div class="search-results" id="search-results"><!-- 由 search.js 渲染 --></div>
+
+    <div class="search-empty" id="search-empty">
+      <p><b>目前沒有符合的結果。</b></p>
+      <p>試試換個關鍵字、清空搜尋框，或切回「全部」類型。也可以先回<a href="index.html">首頁</a>逛逛。</p>
+    </div>
+
+    <p class="search-footnote">本站索引 <a href="/site-index.json" target="_blank" rel="noopener">site-index.json</a> 與 <a href="/llms.txt" target="_blank" rel="noopener">llms.txt</a> 對 AI 代理開放</p>
+
+  </div>
+</section>
+
+<footer>
+  <div class="watercolor wc-sand"></div>
+  <div class="container">
+    <div class="foot-brand">
+      <div class="logo"><span class="eye">江江教練的</span>AI 知識管理</div>
+      <p>提煉 · 累積 · 應用你的知識資產</p>
+    </div>
+
+    <div class="foot-links">
+      <a href="index.html">首頁</a>
+      <a href="offers.html">收費課程</a>
+      <a href="courses.html">免費講座</a>
+      <a href="invited-talks.html">邀約授課</a>
+      <a href="learn.html">自學資源</a>
+      <a href="articles.html">深度文章</a>
+      <a href="cases.html">服務方案</a>
+      <a href="resources.html">課後簡報</a>
+      <a href="ai-trends.html">AI 趨勢</a>
+      <a href="skills.html">Skills 下載</a>
+      <a href="ai-office/">AI 辦公室</a>
+      <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">LINE 社群 ↗</a>
+      <a href="https://line.me/R/ti/p/@713kczfc" target="_blank" rel="noopener">LINE OA ↗</a>
+      <a href="https://www.threads.com/@jiang_yude_coach" target="_blank" rel="noopener">Threads ↗</a>
+      <a href="https://vocus.cc/salon/Jiang_Coach" target="_blank" rel="noopener">方格子 ↗</a>
+      <a href="https://www.instagram.com/jiang_yude_coach/" target="_blank" rel="noopener">IG ↗</a>
+    </div>
+
+    <div class="foot-meta">
+      v0.8 學習地圖版 · 全站搜尋持續整理中
+    </div>
+  </div>
+</footer>
+
+<script src="spotlight.js" defer></script>
+<script src="search.js" defer></script>
+<script src="/views.js"></script>
+</body>
+</html>
