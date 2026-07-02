@@ -1,0 +1,433 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="index,follow">
+<title>與其期待不出錯的 AI 系統，不如設計能容錯的 Loop｜江江教練 · AI 知識管理</title>
+<meta name="description" content="AI 一定會出錯，人也會下錯指令，設計不會犯錯的系統不可能。這篇整理我怎麼把力氣改放在容錯：六個步驟，分大小、留後路、先小試、分批留痕、換腦驗收、寫收工筆記，每一步都有完成條件與常見的坑，附一個完整案例示範。">
+<link rel="canonical" href="https://ai-km-jiang.vercel.app/articles/recovery-over-perfection/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="與其期待不出錯的 AI 系統，不如設計能容錯的 Loop｜江江教練">
+<!-- 無封面圖，og 暫用 intro-jiang.png 佔位（比照 ai-capability-tiers 先例）；之後補專屬封面時改截 og-shot -->
+<meta property="og:image" content="https://ai-km-jiang.vercel.app/images/intro-jiang.png">
+<meta property="og:description" content="AI 一定會出錯，人也會下錯指令，設計不會犯錯的系統不可能。這篇整理我怎麼把力氣改放在容錯：六個步驟，分大小、留後路、先小試、分批留痕、換腦驗收、寫收工筆記，每一步都有完成條件與常見的坑，附一個完整案例示範。">
+<meta property="og:url" content="https://ai-km-jiang.vercel.app/articles/recovery-over-perfection/">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:site_name" content="江江教練 · AI 知識管理">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="與其期待不出錯的 AI 系統，不如設計能容錯的 Loop｜江江教練">
+<meta name="twitter:image" content="https://ai-km-jiang.vercel.app/images/intro-jiang.png">
+<meta name="twitter:description" content="AI 一定會出錯，人也會下錯指令，設計不會犯錯的系統不可能。這篇整理我怎麼把力氣改放在容錯：六個步驟，分大小、留後路、先小試、分批留痕、換腦驗收、寫收工筆記，每一步都有完成條件與常見的坑，附一個完整案例示範。">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"與其期待不出錯的 AI 系統，不如設計能容錯的 Loop","description":"AI 一定會出錯，人也會下錯指令，設計不會犯錯的系統不可能。這篇整理我怎麼把力氣改放在容錯：六個步驟，分大小、留後路、先小試、分批留痕、換腦驗收、寫收工筆記，每一步都有完成條件與常見的坑，附一個完整案例示範。","author":{"@type":"Person","name":"江昱德","alternateName":"江江教練","jobTitle":"隱性知識提煉師、AI 應用規劃師"},"isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://ai-km-jiang.vercel.app/"},"inLanguage":"zh-Hant","url":"https://ai-km-jiang.vercel.app/articles/recovery-over-perfection/"}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{--ink:#1a1612;--paper:#fefcf8;--muted:#6a635a;--line:#d8cdb8;--green:#5f7553;--blue:#5689b8;--orange:#e85a4f;--soft:#faf5ec;--dark:#2a2018;--shadow:0 18px 45px rgba(107,74,42,.14);--sp-shadow:hsla(35,50%,60%,.15);--sp-shadow-edge:hsla(35,50%,68%,.03);--sp-radius:400px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC","Segoe UI",sans-serif}
+a{color:inherit}
+/* 官網共用導航列 nav.top（與首頁/文章總站同一條） */
+nav.top{position:sticky;top:0;background:rgba(254,252,248,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid #d8cdb8;z-index:100}
+nav.top .container{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:24px;padding:14px 32px}
+.nav-brand-img{justify-self:start;display:flex;align-items:center;text-decoration:none;flex-shrink:0;transition:opacity .2s}
+.nav-brand-img:hover{opacity:.8}.nav-brand-img img{height:40px;width:auto;display:block}
+nav.top ul.nav-menu{justify-self:end;display:flex;gap:22px;list-style:none;margin:0;padding:0;font-size:.95rem;white-space:nowrap}
+nav.top ul.nav-menu a{color:#3a342d;text-decoration:none;transition:color .2s;font-weight:500;white-space:nowrap}
+nav.top ul.nav-menu a:hover{color:#1a1612}nav.top ul.nav-menu a.active{color:#1a1612;font-weight:700}
+.nav-toggle{display:none;background:none;border:none;padding:6px;cursor:pointer;width:36px;height:36px;position:relative}
+.nav-toggle span{display:block;position:absolute;left:8px;right:8px;height:2px;background:#1a1612;border-radius:2px;transition:transform .25s,opacity .25s,top .25s}
+.nav-toggle span:nth-child(1){top:11px}.nav-toggle span:nth-child(2){top:17px}.nav-toggle span:nth-child(3){top:23px}
+.nav-toggle.open span:nth-child(1){top:17px;transform:rotate(45deg)}.nav-toggle.open span:nth-child(2){opacity:0}.nav-toggle.open span:nth-child(3){top:17px;transform:rotate(-45deg)}
+@media(max-width:860px){
+ nav.top .container{grid-template-columns:auto 1fr auto;padding:10px 16px;gap:12px}
+ .nav-brand-img img{height:32px}
+ .nav-toggle{display:block;justify-self:end}
+ nav.top ul.nav-menu{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(254,252,248,.98);backdrop-filter:blur(14px);border-bottom:1px solid #d8cdb8;flex-direction:column;gap:0;padding:8px 0;box-shadow:0 10px 24px rgba(107,74,42,.08)}
+ nav.top ul.nav-menu.open{display:flex}
+ nav.top ul.nav-menu li{border-bottom:1px solid #e8dfc9}
+ nav.top ul.nav-menu li:last-child{border-bottom:none}
+ nav.top ul.nav-menu a{display:block;padding:14px 20px;font-size:1.06rem}
+}
+/* 滑鼠暖光暈（與首頁同一支 spotlight.js） */
+body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradient(var(--sp-radius) circle at var(--mx,50%) var(--my,50%),var(--sp-shadow) 0%,var(--sp-shadow-edge) 45%,transparent 75%);pointer-events:none;z-index:9999;mix-blend-mode:multiply;transition:background .06s linear}
+.hero{position:relative;overflow:hidden;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:72px;padding:96px clamp(20px,6vw,88px) 80px;background:linear-gradient(180deg,#fffcf0 0%,#f9e9d2 100%);color:#1a1612;border-bottom:1px solid #d8cdb8}
+.hero .wc{position:absolute;border-radius:50%;filter:blur(60px);pointer-events:none;z-index:0}
+.hero .wc1{width:420px;height:360px;top:-120px;right:-80px;background:#e8884b;opacity:.15}
+.hero .wc2{width:360px;height:300px;bottom:-110px;left:-70px;background:#5f7553;opacity:.13}
+.hero .wc3{width:280px;height:260px;top:34%;left:14%;background:#a08144;opacity:.10}
+.hero>div{flex:none;width:860px;max-width:100%;position:relative;z-index:2}
+.hero-figure{margin:0;width:420px;flex:none;position:relative;z-index:2}
+.hero-figure img{display:block;width:100%;border-radius:16px;border:1px solid #d8cdb8;box-shadow:0 18px 45px rgba(107,74,42,.16);cursor:zoom-in}
+.hero-figure figcaption{margin-top:10px;font-size:14px;line-height:1.6;color:#6a635a}
+.inline-figure{margin:30px auto 8px;max-width:820px}
+.inline-figure img{display:block;width:100%;border-radius:14px;border:1px solid var(--line);box-shadow:var(--shadow);background:#fff;cursor:zoom-in}
+.inline-figure figcaption{font-size:14px;line-height:1.6;color:var(--muted);margin-top:10px}
+.lightbox{position:fixed;inset:0;z-index:10000;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(12,10,8,.92);cursor:zoom-out;backdrop-filter:blur(4px)}
+.lightbox.open{display:flex}.lightbox img{max-width:96vw;max-height:92vh;border-radius:10px;box-shadow:0 24px 60px rgba(0,0,0,.5)}
+.lightbox-close{position:fixed;top:18px;right:24px;color:#fff;font-size:34px;line-height:1;font-weight:700;cursor:pointer;opacity:.85}
+.kicker{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.55rem;color:#7a5c3a;font-weight:500}
+.hero h1{max-width:none;margin:16px 0 18px;font-size:clamp(36px,6vw,72px);line-height:1.08;overflow-wrap:anywhere}
+.hero p{max-width:none;font-size:clamp(18px,2vw,23px);line-height:1.62;color:#3a342d}
+.cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
+.cta a{display:inline-flex;align-items:center;text-decoration:none;border-radius:8px;padding:12px 16px;font-weight:900}
+.cta .primary{background:#fff;color:#1a1612}.cta .ghost{border:1px solid rgba(255,255,255,.32);color:#fff;background:rgba(255,255,255,.08)}
+.section{padding:54px clamp(20px,6vw,88px);border-top:1px solid var(--line)}
+.inner{width:min(1000px,100%);margin:0 auto}
+.section h2{font-size:clamp(26px,4.2vw,48px);line-height:1.12;margin:0 0 18px}
+.section h3{font-size:clamp(21px,3vw,30px);line-height:1.2;margin:30px 0 12px}
+.lead{font-size:clamp(18px,1.6vw,22px);line-height:1.7;color:#3a342d;max-width:900px}
+.section p{font-size:18px;line-height:1.74;color:#3a342d}.section p+p{margin-top:14px}
+.section ul,.section ol{padding-left:1.4em;font-size:18px;line-height:1.74;color:#3a342d}.section li{margin-bottom:8px}
+.meaning{margin:22px 0;padding:16px 18px;border-left:5px solid var(--blue);background:rgba(86,137,184,.12);border-radius:6px;line-height:1.7;font-size:19px}
+.meaning b{display:block;color:var(--blue);margin-bottom:4px}
+.caveat{margin:0 0 8px;padding:16px 18px;border-left:5px solid var(--orange);background:rgba(232,90,79,.1);border-radius:6px;line-height:1.7;font-size:18px;color:#3a342d}
+.caveat b{display:block;color:var(--orange);margin-bottom:4px}
+.infocard{background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px 24px 22px;box-shadow:0 8px 22px rgba(107,74,42,.08);margin-top:8px}
+.infocard-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.info-item{padding:18px 14px 0}
+.info-item b{display:block;font-size:14px;font-weight:900;letter-spacing:.04em;margin-bottom:7px;text-transform:uppercase}
+.info-item:nth-child(1) b{color:var(--green)}.info-item:nth-child(2) b{color:var(--orange)}.info-item:nth-child(3) b{color:var(--blue)}
+.info-item p{margin:0;font-size:17px;line-height:1.6;color:#3a342d}
+.tagrow{display:flex;flex-wrap:wrap;gap:7px;margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
+.tag{font-size:14px;color:var(--muted);background:var(--soft);border:1px solid var(--line);border-radius:999px;padding:4px 11px}
+.duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:24px}
+.duo.stack{grid-template-columns:1fr}
+.duo .card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:22px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.duo .card.a{border-color:var(--orange)}.duo .card.b{border-color:var(--green);box-shadow:0 8px 24px rgba(95,117,83,.16)}
+.duo .card small{display:block;font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.04em;margin-bottom:9px}
+.duo .card.a small{color:var(--orange)}.duo .card.b small{color:var(--green)}
+.duo .card b{display:block;font-size:22px;line-height:1.3;margin-bottom:12px}.duo .card.a b{color:#c0512f}.duo .card.b b{color:#4a7a59}
+.duo .card p{margin:0;color:#3a342d;line-height:1.75;font-size:18px}
+.workflow-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:24px}
+.workflow-step{background:#fff;border:1px solid var(--line);border-radius:8px;padding:18px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.workflow-step small{display:block;color:var(--orange);font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;margin-bottom:9px}
+.workflow-step b{display:block;font-size:18px;line-height:1.3;margin-bottom:9px}
+.workflow-step p{margin:0;color:#3a342d;line-height:1.6;font-size:16px}
+.codeblock{background:var(--dark);color:#f3ead9;border-radius:8px;padding:18px 20px;font:500 14px/1.65 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;overflow-x:auto;white-space:pre-wrap;margin:20px 0;box-shadow:0 8px 22px rgba(107,74,42,.12)}
+.codeblock .c{color:#f6d7a6;font-weight:600}
+.skillcard{background:#fff;border:1px solid var(--green);border-radius:12px;padding:24px;box-shadow:0 10px 26px rgba(95,117,83,.16);margin-top:8px}
+.skillcard b{display:block;font-size:21px;margin-bottom:8px}
+.skillcard p{margin:0 0 16px;font-size:17px;line-height:1.65;color:#3a342d}
+.cta-band{background:#e6f0e5;color:#3a342d}.cta-band .section{border-top:none}
+.cta-band .inner{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(260px,.85fr);gap:26px;align-items:start}
+.cta-band h2{font-size:clamp(26px,4vw,44px);margin:0 0 16px}.cta-band p,.cta-band .lead{color:rgba(58,52,45,.9);font-size:18px;line-height:1.72}
+.cta-card{border:1px solid #cfe0d2;background:#fbfdfa;border-radius:8px;padding:22px}
+.cta-card b{display:block;color:#48b178;margin-bottom:10px;font-size:18px}.cta-card p{margin:0 0 14px}
+.footer{padding:30px clamp(20px,6vw,88px);font-size:14px;color:var(--muted);background:#fff;border-top:1px solid var(--line)}
+.footer-inner{width:min(1000px,100%);margin:0 auto}
+.footer-links{display:flex;flex-wrap:wrap;gap:6px 12px;margin-bottom:14px}.footer-links a{color:var(--blue);font-weight:900;text-decoration:none;font-size:14px}
+.footer-brand{font-weight:900;font-size:15px;margin-bottom:10px}.footer-note{font-size:13px;line-height:1.6}
+@media(max-width:820px){.infocard-grid{grid-template-columns:1fr}.duo{grid-template-columns:1fr}.workflow-grid{grid-template-columns:1fr}.cta-band .inner{grid-template-columns:1fr}.section{padding:40px 20px}.hero{min-height:52vh;flex-direction:column;justify-content:flex-start;align-items:flex-start;gap:24px}.hero>div{width:100%}.hero-figure{width:100%;max-width:560px}}
+@media(max-width:820px){html,body{overflow-x:hidden}.hero h1{word-break:break-word}}
+.article-meta{display:flex;flex-wrap:wrap;gap:8px 12px;margin:0 0 18px;color:var(--muted,#6a635a);font-size:15px;font-weight:700}
+.infocard table{width:100%;border-collapse:collapse;font-size:17px}
+.infocard table th,.infocard table td{text-align:left;padding:12px 14px;border-bottom:1px solid var(--line);line-height:1.6}
+.infocard table th{font-size:13px;font-weight:900;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);background:var(--soft)}
+.infocard table tr:last-child td{border-bottom:none}
+@media(max-width:600px){.infocard{overflow-x:auto}.infocard table{min-width:520px}}
+#faq details{border:1px solid var(--line);border-radius:10px;padding:16px 20px;margin-bottom:12px;background:#fff}
+#faq summary{cursor:pointer;font-weight:900;font-size:18px;list-style:none;position:relative;padding-right:28px}
+#faq summary::-webkit-details-marker{display:none}
+#faq summary::after{content:'+';position:absolute;right:0;top:0;font-size:22px;color:var(--orange);font-weight:900}
+#faq details[open] summary::after{content:'−'}
+#faq details p{margin-top:12px}
+</style>
+</head>
+<body class="spotlight">
+<!-- 官網共用導航列 nav.top：與首頁/總站同一條，文章不要自己另做極簡 topbar（江江 2026-06-25：要同一個框架、同一條導航列）。把對應頁面的 class="active" 標在自己那欄。 -->
+<nav class="top">
+  <div class="container">
+    <a class="nav-brand-img" href="../../index.html"><img src="../../images/footer-signature.png" alt="江江教練 | 江昱德"></a>
+    <button class="nav-toggle" aria-label="選單"><span></span><span></span><span></span></button>
+    <ul class="nav-menu">
+      <li><a href="../../index.html">首頁</a></li>
+      <li><a href="../../offers.html">收費課程</a></li>
+      <li><a href="../../courses.html">免費講座</a></li>
+      <li><a href="../../invited-talks.html">邀約授課</a></li>
+      <li><a href="../../articles.html" class="active">深度文章</a></li>
+      <li><a href="../../skills.html">Skills 下載</a></li>
+      <li><a href="../../cases.html">服務方案</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="wc wc1"></div>
+  <div class="wc wc2"></div>
+  <div class="wc wc3"></div>
+  <div>
+    <div class="kicker">AI 工作流 · 容錯設計</div>
+    <h1>與其期待不出錯的 AI 系統，不如設計能容錯的 Loop</h1>
+    <p>AI 有不確定性，人也會下錯指令，設計不會犯錯的系統不可能。我把力氣改放在容錯：出錯了，能重新檢查、能回復原狀。這是我整理出的六步 Loop，一步一步拆給你看。</p>
+  </div>
+</section>
+
+<main>
+
+<section class="section" id="start">
+  <div class="inner">
+    <div class="article-meta"><span>發布：2026-07-02</span><span>更新：2026-07-02</span></div>
+    <p class="lead">AI 一定會出錯，你自己下指令也一定會下錯。這篇教你設計一套出錯了也接得住的 Loop：六個步驟，每一步都有清楚的完成條件，附一個從頭到尾的示範。</p>
+    <div class="duo stack">
+      <div class="card a">
+        <b>適合誰</b>
+        <ul>
+          <li>開始把重要的工作交給 AI（整理檔案、批次修改、更新系統設定），但心裡毛毛的，怕它一次搞砸一堆東西的人</li>
+          <li>被 AI 搞砸過，事後找不到它到底改了什麼、改壞在哪的人</li>
+          <li>想放心讓 AI 做更大的事，但不知道安全網要怎麼架的人</li>
+        </ul>
+      </div>
+      <div class="card b">
+        <b>你會得到什麼</b>
+        <ul>
+          <li>一個心態翻轉：從追求零錯誤，變成追求錯得起</li>
+          <li>容錯 Loop 六步，每步都有完成條件，跟一個具體任務從頭走到尾的示範</li>
+          <li>出錯之後的五個標準動作</li>
+        </ul>
+      </div>
+    </div>
+    <div class="meaning">
+      <b>為什麼要學這套流程</b>
+      你可能已經知道要備份、要複驗這些道理，這篇要給的是一套排好順序、每步都有完成條件的具體流程，讓你下次接大任務時直接照著跑。
+    </div>
+  </div>
+</section>
+
+<section class="section" id="reality">
+  <div class="inner">
+    <h2>一、先認清一件事：零錯誤做不到</h2>
+    <p>AI 有不確定性。同一個指令跑兩次，結果可能不一樣，模型再強都一樣。</p>
+    <p>人也一樣。我自己就會手滑、會下錯指令、會少想一個範圍。</p>
+    <p>所以「設計一套不會犯錯的機制」這個目標，我放棄了。至少我做不到。</p>
+    <p>我改追求另一個目標：<b>做錯了，可以重新檢查，可以回復原狀。</b></p>
+    <p>這就是容錯。錯誤不可避免，但傷害可以控制。</p>
+  </div>
+</section>
+
+<section class="section" id="three-lines">
+  <div class="inner">
+    <h2>二、三個目標，三道防線</h2>
+    <p>我給容錯機制定了三個目標，按重要性排，每個目標對應一道防線：</p>
+    <div class="infocard">
+      <table>
+        <thead><tr><th>目標</th><th>防線</th><th>對應步驟</th></tr></thead>
+        <tbody>
+          <tr><td>1. 盡量少出錯</td><td>事前防</td><td>分大小、留後路、先小試</td></tr>
+          <tr><td>2. 出錯了，知道錯在哪</td><td>事中留痕</td><td>分批做、留紀錄、設停損</td></tr>
+          <tr><td>3. 知道錯在哪，能回復</td><td>事後回得來</td><td>備份、換腦驗收、收工筆記</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>注意這個排序的含義：第一道防線做得再好，第二、第三道還是要架。因為第一道就是會被突破，這是前提，你只是不知道哪一次。</p>
+  </div>
+</section>
+
+<section class="section" id="six-steps">
+  <div class="inner">
+    <h2>三、容錯 Loop 六步</h2>
+    <p>先看六步總覽：</p>
+    <div class="infocard">
+      <table>
+        <thead><tr><th>步驟</th><th>一句話</th><th>怎樣算完成</th></tr></thead>
+        <tbody>
+          <tr><td>1. 分大小</td><td>大事才進 loop，小事直接做</td><td>說得出這是大事還是小事、範圍多大</td></tr>
+          <tr><td>2. 留後路</td><td>備份，加寫下怎麼回去</td><td>備份打得開、還原步驟寫好了</td></tr>
+          <tr><td>3. 先小試</td><td>先跑 1 到 2 個樣本</td><td>親眼確認結果正確</td></tr>
+          <tr><td>4. 分批留痕</td><td>分批跑、講好停損</td><td>每批有紀錄可查</td></tr>
+          <tr><td>5. 換腦驗收</td><td>執行跟驗收不同腦</td><td>說得出驗收證據</td></tr>
+          <tr><td>6. 寫筆記</td><td>記下動了什麼、備份在哪</td><td>四件事都寫了</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>下面每一步都用同一個例子示範：<b>你要讓 AI 把電腦裡 300 份舊檔案統一改名、加上日期。</b>一次動幾百個檔案，這種事就是容錯 Loop 的主場。</p>
+
+    <div class="step-card">
+      <span class="step-title">第一步：分大小</span>
+      <p><b>做什麼：</b>問自己一句，這次要動多大？改一個檔案裡的一句話是小事，直接做，不用跑 loop。一次動幾十幾百個檔案、涉及改名刪除搬移、會動到重要設定，就是大事，進完整六步。</p>
+      <p><span class="lbl ok">怎樣算完成｜</span>你說得出「這是小事」或「這是大事，因為範圍是什麼」。</p>
+      <p><b>例子：</b>300 份檔案要改名，大事，進 loop。</p>
+      <p><span class="lbl warn">最常見的坑｜</span>不分大小。下場兩頭空，小事被流程拖死，大事裸奔。</p>
+    </div>
+
+    <div class="step-card">
+      <span class="step-title">第二步：留後路</span>
+      <p><b>做什麼：</b>兩件事。一是把所有可能被動到的範圍，整個複製一份當備份。二是寫下「出錯怎麼回去」，具體到你照著做就能還原。</p>
+      <p><span class="lbl ok">怎樣算完成｜</span>備份你親手打得開，還原步驟已經寫在筆記裡。缺任何一項，不准動手。</p>
+      <p><b>例子：</b>整個資料夾複製一份，命名「改名前備份 0702」。筆記寫上一行：出錯就把這個備份資料夾整個複製回去覆蓋。</p>
+      <p><span class="lbl warn">最常見的坑｜</span>備份範圍太小。你以為只會動到 A 資料夾就只備份 A，結果錯誤擴散到 B。備份要涵蓋「實際可能被動到的全部範圍」，別只備份「我打算改的範圍」。這兩者的差距，就是意外的藏身處。</p>
+    </div>
+
+    <div class="step-card">
+      <span class="step-title">第三步：先小試</span>
+      <p><b>做什麼：</b>挑 1 到 2 個檔案，讓 AI 先跑一遍，你親眼打開看結果。</p>
+      <p><span class="lbl ok">怎樣算完成｜</span>試跑結果跟你要的一模一樣，而且是你親眼確認的，才准放大。</p>
+      <p><b>例子：</b>先改 2 份。打開看：新檔名格式對不對？檔案內容有沒有被動到？</p>
+      <p><span class="lbl warn">最常見的坑｜</span>計畫看起來很完美，就直接全部跑。這一步擋的是「指令本身就寫錯」這種最傷的錯。同一個錯，跑 2 個檔案是小事，跑 300 個是災難，差別只在你先試了沒有。</p>
+    </div>
+
+    <div class="step-card">
+      <span class="step-title">第四步：分批做，每批留紀錄</span>
+      <p><b>做什麼：</b>分批執行，不一口氣跑到底。每批做完，記下這批動了哪些檔案。開跑前先跟 AI 講好停損條件：遇到什麼狀況就停下來回報，不要硬跑。</p>
+      <p><span class="lbl ok">怎樣算完成｜</span>每一批都有紀錄可查，停損條件講清楚了。</p>
+      <p><b>例子：</b>300 份分 6 批，一批 50 份。每批完成留一份清單。停損講好：遇到檔名格式跟前面不一致的檔案，停下來問我。</p>
+      <p><span class="lbl warn">最常見的坑｜</span>一口氣跑到底。分批的價值要到出錯才看得到：你會知道錯在哪一批，只要還原那一批，不用全部重來。</p>
+    </div>
+
+    <div class="step-card">
+      <span class="step-title">第五步：換一顆腦驗收</span>
+      <p><b>做什麼：</b>執行的 AI 說完成了、都沒問題，不能當驗收。換另一個 AI，或你自己用不同的方法，再查一次：抽幾個檔案打開看實際內容，拿改完的檔案跟備份比對，確認差異只有預期中的那些。</p>
+      <p><span class="lbl ok">怎樣算完成｜</span>你說得出驗收證據：我抽了哪幾個檔案、比對了什麼、結果如何。</p>
+      <p><b>例子：</b>從第 1、3、6 批各抽 3 份打開看。再請另一個 AI 掃一遍全部檔名，回報有沒有漏改的、格式不一致的。</p>
+      <p><span class="lbl warn">最常見的坑｜</span>把執行 AI 的回報當驗收。它可能真的做完了，也可能只是以為自己做完了。鐵則：執行跟驗收，不能是同一顆腦。</p>
+    </div>
+
+    <div class="step-card">
+      <span class="step-title">第六步：寫收工筆記</span>
+      <p><b>做什麼：</b>記四件事：這次動了什麼、怎麼驗收的、備份放在哪、備份什麼時候可以刪。</p>
+      <p><span class="lbl ok">怎樣算完成｜</span>四件事都寫了。備份我的習慣是留一週，確認一切正常才刪，而且刪備份這件事開一張待辦提醒自己，不靠記憶。</p>
+      <p><b>例子：</b>筆記寫「7/02 改名 300 份、抽驗 9 份加全檔名掃描通過、備份在某某資料夾、7/09 確認無誤後刪」。</p>
+      <p><span class="lbl warn">最常見的坑｜</span>做完就散場。等真的出事，你連自己上週動過什麼都想不起來。這份筆記就是下次出事時的地圖。</p>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="when-it-breaks">
+  <div class="inner">
+    <h2>四、出錯的時候，照這五個動作走</h2>
+    <p>容錯 Loop 真正的價值在出錯之後。發現不對勁，照順序做：</p>
+    <div class="infocard">
+      <table>
+        <thead><tr><th>順序</th><th>動作</th><th>重點</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>停</td><td>不要急著修</td></tr>
+          <tr><td>2</td><td>定位</td><td>翻收工筆記跟分批紀錄，找出錯在哪一批</td></tr>
+          <tr><td>3</td><td>還原</td><td>從備份把那一批復原</td></tr>
+          <tr><td>4</td><td>修正做法</td><td>找出指令哪裡寫錯，改掉</td></tr>
+          <tr><td>5</td><td>回到第三步</td><td>重新小試，通過了才再放大</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>第五個動作最容易被跳過：不要修完直接大規模重跑，因為你的修正本身也可能是錯的。修正過的指令，跟新指令享受同等待遇，一律重新小試。</p>
+  </div>
+</section>
+
+<section class="section" id="case">
+  <div class="inner">
+    <h2>五、真實案例：170 個檔案被改壞，然後救回來</h2>
+    <p>前陣子我跑一次大規模的知識庫整理，全自動，AI 處理上百個檔案。其中一個環節的批次替換指令寫壞了，整批跑下去，170 個檔案的內容被打亂。更麻煩的是，那次備份只涵蓋了我以為會動到的資料夾，實際損壞卻擴散到備份範圍之外。</p>
+    <p>檔案救回來了，因為損壞的方式可以反推回去。完整的事情經過跟三道防線，我另外寫成一篇：<a href="../ai-loop-safety-recovery/">AI 出錯不可怕，沒有備援才可怕：一次搞壞 170 檔案的教訓</a>。這篇六步 Loop，就是那次事故之後，我把零散的原則整理成的一套完整流程。</p>
+    <div class="meaning"><b>錯誤發生了，救得回來，機制還因為這次錯誤變得更強</b>這就是容錯 Loop 跟祈禱 AI 不要出錯的差別。</div>
+  </div>
+</section>
+
+<section class="section" id="cost">
+  <div class="inner">
+    <h2>六、成本怎麼算：不同的步驟，用不同等級的 AI</h2>
+    <p>容錯 Loop 步驟多，會不會很貴？我的做法是分級用模型。<b>前提先講死：後路留好、小試通過、停損講好，才可以把執行交給便宜的模型。</b></p>
+    <div class="infocard">
+      <table>
+        <thead><tr><th>步驟類型</th><th>包含哪些</th><th>用哪級模型</th></tr></thead>
+        <tbody>
+          <tr><td>需要判斷的</td><td>分大小、設計計畫跟還原步驟、複驗結果的判讀、出事後的分析</td><td>最強的模型</td></tr>
+          <tr><td>純執行的</td><td>複製備份、跑批次、跑驗收指令</td><td>便宜快速的模型</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>執行交給便宜的模型沒關係，因為有整條 loop 兜著它。然後執行跟驗收永遠不同腦。</p>
+  </div>
+</section>
+
+<section class="section" id="closing">
+  <div class="inner">
+    <h2>收尾</h2>
+    <p>把這篇收成一句話：與其花力氣讓 AI 不出錯，把力氣花在確保出錯之後回得來。</p>
+    <div class="tagrow">
+      <span class="tag">分大小</span><span class="tag">留後路</span><span class="tag">先小試</span><span class="tag">分批留痕</span><span class="tag">換腦驗收</span><span class="tag">寫筆記</span>
+    </div>
+    <p>趕時間的話，濃縮成三個問題，動手前問自己：後路留了嗎？小的試過了嗎？誰來驗收？</p>
+    <p>安全網夠強，你才敢把更大的事交給 AI。容錯機制看起來是煞車，實際上是油門。</p>
+  </div>
+</section>
+
+<section class="section" id="faq">
+  <div class="inner">
+    <h2>常見問題</h2>
+    <details>
+      <summary>每次用 AI 都要跑六步嗎？</summary>
+      <p>第一步「分大小」就是在回答這個問題。日常小事直接做，動得大、刪得掉、改得回不來的事，才進完整六步。</p>
+    </details>
+    <details>
+      <summary>我沒有幾百個檔案要處理，這對我有用嗎？</summary>
+      <p>有。用收尾那三個問題就好：後路留了嗎、小的試過了嗎、誰來驗收。任何要把重要東西交給 AI 的場合都適用，例如讓 AI 改你的履歷、整理你的相簿、清理你的信箱。</p>
+    </details>
+    <details>
+      <summary>備份要留多久？</summary>
+      <p>我的習慣是一週。確認一切正常才刪，而且刪備份開一張待辦追蹤，不靠記憶。</p>
+    </details>
+    <details>
+      <summary>這跟迴圈工程是什麼關係？</summary>
+      <p>容錯 Loop 是迴圈工程的一種應用。迴圈工程講怎麼把重複的工作變成會自己跑的循環；容錯 Loop 講其中風險最高的那類工作，大規模修改，要怎麼跑才安全。</p>
+    </details>
+  </div>
+</section>
+
+<section class="cta-band">
+  <div class="section">
+    <div class="inner">
+      <div>
+        <h2>想把容錯 Loop 用進自己的工作流？</h2>
+        <p class="lead">我每月固定舉辦兩場免費線上講座，分享善用 AI 作為思考夥伴、把知識與經驗整理成提示詞、技能包、知識庫的實戰方法。對 AI 工作流、Loop 工程有興趣，歡迎先從社群開始。</p>
+      </div>
+      <div class="cta-card">
+        <b>免費線上講座</b>
+        <p>每個月兩場免費講座。</p>
+        <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;text-decoration:none;border-radius:8px;padding:12px 16px;font-weight:900;background:#48b178;color:#fff;">點我加入 Line 社群 ↗</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">江江教練 · AI 知識管理</div>
+    <div class="footer-links">
+      <a href="../../articles.html">← 回深度文章總站</a>
+      <a href="../../index.html">首頁</a>
+      <a href="../../learn.html">自學資源</a>
+      <a href="../../skills.html">Skills 下載</a>
+      <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">LINE 社群 ↗</a>
+      <a href="https://www.threads.com/@jiang_yude_coach" target="_blank" rel="noopener">Threads ↗</a>
+      <a href="https://vocus.cc/salon/Jiang_Coach" target="_blank" rel="noopener">方格子 ↗</a>
+    </div>
+    <div class="footer-note">這是一篇教學文章，整理我對「與其期待不出錯的 AI 系統，不如設計能容錯的 Loop」的看法，供你參考。</div>
+  </div>
+</footer>
+
+<!-- 點圖放大 lightbox（hero 與內文圖通用，已內建，不用每篇重加） -->
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <span class="lightbox-close" aria-label="關閉">×</span>
+  <img id="lightbox-img" src="" alt="放大檢視">
+</div>
+<script>
+(function(){
+  var box=document.getElementById('lightbox'),boxImg=document.getElementById('lightbox-img');
+  document.querySelectorAll('.hero-figure img,.inline-figure img').forEach(function(img){
+    img.addEventListener('click',function(){boxImg.src=img.currentSrc||img.src;boxImg.alt=img.alt||'放大檢視';box.classList.add('open');box.setAttribute('aria-hidden','false');});
+  });
+  function close(){box.classList.remove('open');box.setAttribute('aria-hidden','true');boxImg.src='';}
+  box.addEventListener('click',close);
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
+})();
+</script>
+
+<!-- 官網共用：滑鼠暖光暈 + 導航列漢堡選單 -->
+<script src="../../spotlight.js"></script>
+
+<!-- 文章自動互聯（相關文章）：兩支已內建，順序不可顛倒，不用再另外加 -->
+<script src="../../articles-data.js"></script>
+<script src="../../related-render.js"></script>
+</body>
+</html>

@@ -188,7 +188,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: "https://vocus.cc/salon/Jiang_Coach" },
-    related: ["diary-driven-agent-3x4"]
+    related: ["diary-driven-agent-3x4", "tag-wiki-method"]
   },
 
   /* ── 10. 在公司上班，你也可以有自己的 AI 團隊（觀點，手寫精選版）── */
@@ -387,7 +387,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: "https://vocus.cc/salon/Jiang_Coach" },
-    related: ["diary-driven-agent-3x4", "how-ai-connects-software", "how-to-train-your-ai-employee", "decision-ladder-non-programmer", "tidy-mess-before-consulting", "what-is-loop-engineering"]
+    related: ["diary-driven-agent-3x4", "how-ai-connects-software", "how-to-train-your-ai-employee", "decision-ladder-non-programmer", "tidy-mess-before-consulting", "what-is-loop-engineering", "tag-wiki-method"]
   },
 
   /* ── 21. 你以為在做一個成品，其實在養十個半成品（觀點）── */
@@ -460,7 +460,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["docs-as-system-design-agent", "how-to-train-your-ai-employee", "my-three-loops"]
+    related: ["docs-as-system-design-agent", "how-to-train-your-ai-employee", "my-three-loops", "ai-loop-safety-recovery", "recovery-over-perfection"]
   },
 
   /* ── 無形資產，越分享越豐盛（觀點）── */
@@ -570,7 +570,7 @@ window.ARTICLES = [
       content_type: ["觀點文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["what-is-loop-engineering"]
+    related: ["what-is-loop-engineering", "ai-loop-safety-recovery", "recovery-over-perfection"]
   },
 
   /* ── 公司護城河：組織模式、共識、影響力與信任（觀點）── */
@@ -589,6 +589,63 @@ window.ARTICLES = [
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
     related: ["intangible-assets-grow-by-sharing", "ai-king-off-battlefield", "spacex-ipo-musk-trillionaire-knowledge-work", "ai-capability-tiers", "own-ai-team-at-work"]
+  },
+
+  /* ── 把標籤變成卡片，知識庫才活起來：標籤連結法 Tag Wiki（教學）── */
+  {
+    id: "tag-wiki-method",
+    url: "articles/tag-wiki-method/",
+    date: "2026-07-01",
+    updated: "2026-07-01",
+    title: "把標籤變成卡片，知識庫才活起來：標籤連結法 Tag Wiki",
+    problem: "資料越存越多卻越來越找不到，標籤亂增生，最後變成存了等於沒存。",
+    audience: "個人知識工作者、顧問、想讓 AI 讀懂自己知識庫的人。",
+    summary: "把標籤從貼上去的關鍵字，升級成一張能自己下定義、又能互連的卡片。用受控維度管理、幾乎不用 YAML，並講清楚這套方法跟密集互聯、RAG 之間是互補不是取代的關係，外加顧問跨客戶做知識整合的隔離原則。",
+    tags: {
+      topic: ["知識管理", "知識庫", "工具操作"],
+      level: ["基礎"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
+    related: ["knowledge-base-three-vault-split", "docs-as-system-design-agent", "ai-loop-safety-recovery"]
+  },
+
+  /* ── AI 出錯不可怕，沒有備援才可怕：一次搞壞 170 檔案的教訓（觀點）── */
+  {
+    id: "ai-loop-safety-recovery",
+    url: "articles/ai-loop-safety-recovery/",
+    date: "2026-07-01",
+    updated: "2026-07-01",
+    title: "AI 出錯不可怕，沒有備援才可怕：一次搞壞 170 檔案的教訓",
+    problem: "讓 AI 自動跑比較大的批次工作，最怕出錯又不知道怎麼收場。",
+    audience: "已經開始讓 AI 自動執行任務、擔心出錯沒辦法挽回的知識工作者與一人公司。",
+    summary: "一次全自動改名任務，子代理把 170 個檔案打壞還回報「完成」。這篇整理我怎麼靠獨立複驗、驗證過的備份、跨家驗證三道防線零遺失收場，以及看懂這件事之後，Loop 工程真正該設計的是什麼。",
+    tags: {
+      topic: ["AI工作流", "工作流程", "AIAgent"],
+      level: ["基礎"],
+      content_type: ["觀點文章"]
+    },
+    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
+    related: ["what-is-loop-engineering", "my-three-loops", "tag-wiki-method", "recovery-over-perfection"]
+  },
+
+  /* ── 與其期待不出錯的 AI 系統，不如設計能容錯的 Loop（教學）── */
+  {
+    id: "recovery-over-perfection",
+    url: "articles/recovery-over-perfection/",
+    date: "2026-07-02",
+    updated: "2026-07-02",
+    title: "與其期待不出錯的 AI 系統，不如設計能容錯的 Loop",
+    problem: "讓 AI 自動跑比較大的任務時，最怕出錯又不知道從哪裡開始收拾。",
+    audience: "已經開始把整理檔案、批次修改、系統設定交給 AI 執行，想要一套具體步驟、不只是原則的知識工作者。",
+    summary: "AI 一定會出錯，人也會下錯指令，設計不會犯錯的系統不可能。這篇整理容錯 Loop 六步：分大小、留後路、先小試、分批留痕、換腦驗收、寫收工筆記，每步都有完成條件與常見的坑，附一個 300 份檔案改名的完整示範，以及出錯之後的五個標準動作。",
+    tags: {
+      topic: ["AI工作流", "工作流程", "AIAgent"],
+      level: ["基礎"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
+    related: ["ai-loop-safety-recovery", "my-three-loops", "what-is-loop-engineering"]
   }
 
 ];
