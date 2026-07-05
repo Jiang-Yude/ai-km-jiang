@@ -7,6 +7,7 @@
      2. courses-data.js        → type: "course"
      3. skills.html            → type: "skill"（解析 51 張 skill-card）
      4. site-manual-entries.json → type: page / case / resource / tool（人工維護，原樣併入）
+     5. offers.json            → type: "offer"（服務方案 SSOT，人工維護，原樣併入）
 
    用法（在 repo 根目錄跑）：
      node scripts/build-site-index.mjs
@@ -196,6 +197,36 @@ function buildManualItems() {
   }));
 }
 
+/* ───────────── 5. 服務方案（offers.json SSOT） ───────────── */
+function buildOfferItems() {
+  const raw = JSON.parse(read(path.join(ROOT, "offers.json")));
+  return (raw.offers || []).map((o) => {
+    // 價格摘要：優先 price_note；無則從 price / price_range 組
+    let priceStr = o.price_note || "";
+    if (!priceStr) {
+      if (typeof o.price === "number") priceStr = o.price === 0 ? "免費" : `${o.price} ${raw.currency || "TWD"}`;
+      else if (Array.isArray(o.price_range)) priceStr = `${o.price_range[0]}–${o.price_range[1]} ${raw.currency || "TWD"}`;
+    }
+    const summary = priceStr ? `${o.summary}（${priceStr}）` : o.summary || "";
+    return {
+      id: "offer-" + o.id,
+      type: "offer",
+      title: o.title || "",
+      url: o.source_url || raw.source_page || "/offers.html",
+      date: null,
+      updated: raw.updated || null,
+      summary,
+      problem: "",
+      audience: o.level || "",
+      tags: {
+        topic: o.type ? [o.type] : [],
+        level: o.level ? [o.level] : [],
+        content_type: ["服務方案"],
+      },
+    };
+  });
+}
+
 /* ───────────── 5. 檢查與彙整 ───────────── */
 function checkUniqueIds(items) {
   const seen = new Map();
@@ -262,8 +293,9 @@ function main() {
   const courseItems = buildCourseItems();
   const skillItems = buildSkillItems();
   const manualItems = buildManualItems();
+  const offerItems = buildOfferItems();
 
-  const items = [...articleItems, ...courseItems, ...skillItems, ...manualItems];
+  const items = [...articleItems, ...courseItems, ...skillItems, ...manualItems, ...offerItems];
 
   checkUniqueIds(items);
   checkNonEmptyUrl(items);

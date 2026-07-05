@@ -1,0 +1,325 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="index,follow">
+<title>把不知不覺被 AI 改變的行為，抓成一套流程｜江江教練 · AI 知識管理</title>
+<meta name="description" content="出差查行程時，我發現第一個動作已經從打開地圖變成問 AI。這篇從這個案例出發，教你辨認這種不知不覺被 AI 改變的行為訊號，並參考迴圈工程分四步（找出行為、觀察變數、固定流程、變成提示詞）把它整理成 AI 可重複執行的流程，文末附可直接複製的提示詞。">
+<link rel="canonical" href="https://ai-km-jiang.vercel.app/articles/ai-changed-behavior-into-workflow/">
+<link rel="alternate" hreflang="zh-Hant" href="https://ai-km-jiang.vercel.app/articles/ai-changed-behavior-into-workflow/">
+<link rel="alternate" hreflang="en" href="https://ai-km-jiang.vercel.app/en/articles/ai-changed-behavior-into-workflow/">
+<link rel="alternate" hreflang="x-default" href="https://ai-km-jiang.vercel.app/articles/ai-changed-behavior-into-workflow/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="把不知不覺被 AI 改變的行為，抓成一套流程｜江江教練">
+<meta property="og:description" content="出差查行程時，我發現第一個動作已經從打開地圖變成問 AI。這篇從這個案例出發，教你辨認這種不知不覺被 AI 改變的行為訊號，並參考迴圈工程分四步（找出行為、觀察變數、固定流程、變成提示詞）把它整理成 AI 可重複執行的流程，文末附可直接複製的提示詞。">
+<meta property="og:url" content="https://ai-km-jiang.vercel.app/articles/ai-changed-behavior-into-workflow/">
+<meta property="og:image" content="https://ai-km-jiang.vercel.app/articles/ai-changed-behavior-into-workflow/assets/00-summary.jpg">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:site_name" content="江江教練 · AI 知識管理">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="把不知不覺被 AI 改變的行為，抓成一套流程｜江江教練">
+<meta name="twitter:description" content="出差查行程時，我發現第一個動作已經從打開地圖變成問 AI。這篇從這個案例出發，教你辨認這種不知不覺被 AI 改變的行為訊號，並參考迴圈工程分四步把它整理成 AI 可重複執行的流程，文末附可直接複製的提示詞。">
+<meta name="twitter:image" content="https://ai-km-jiang.vercel.app/articles/ai-changed-behavior-into-workflow/assets/00-summary.jpg">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"把不知不覺被 AI 改變的行為，抓成一套流程","description":"出差查行程時，我發現第一個動作已經從打開地圖變成問 AI。這篇從這個案例出發，教你辨認這種不知不覺被 AI 改變的行為訊號，並參考迴圈工程分四步把它整理成 AI 可重複執行的流程，文末附可直接複製的提示詞。","author":{"@type":"Person","name":"江昱德","alternateName":"江江教練","jobTitle":"隱性知識提煉師、AI 應用規劃師"},"isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://ai-km-jiang.vercel.app/"},"inLanguage":"zh-Hant","datePublished":"2026-07-04","dateModified":"2026-07-04","image":"https://ai-km-jiang.vercel.app/articles/ai-changed-behavior-into-workflow/assets/00-summary.jpg","url":"https://ai-km-jiang.vercel.app/articles/ai-changed-behavior-into-workflow/"}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{--ink:#1a1612;--paper:#fefcf8;--muted:#6a635a;--line:#d8cdb8;--green:#5f7553;--blue:#5689b8;--orange:#e85a4f;--soft:#faf5ec;--dark:#2a2018;--shadow:0 18px 45px rgba(107,74,42,.14);--sp-shadow:hsla(35,50%,60%,.15);--sp-shadow-edge:hsla(35,50%,68%,.03);--sp-radius:400px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC","Segoe UI",sans-serif}
+a{color:inherit}
+/* 官網共用導航列 nav.top（與首頁/文章總站同一條） */
+nav.top{position:sticky;top:0;background:rgba(254,252,248,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid #d8cdb8;z-index:100}
+nav.top .container{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:24px;padding:14px 32px}
+.nav-brand-img{justify-self:start;display:flex;align-items:center;text-decoration:none;flex-shrink:0;transition:opacity .2s}
+.nav-brand-img:hover{opacity:.8}.nav-brand-img img{height:40px;width:auto;display:block}
+nav.top ul.nav-menu{justify-self:end;display:flex;gap:22px;list-style:none;margin:0;padding:0;font-size:.95rem;white-space:nowrap}
+nav.top ul.nav-menu a{color:#3a342d;text-decoration:none;transition:color .2s;font-weight:500;white-space:nowrap}
+nav.top ul.nav-menu a:hover{color:#1a1612}nav.top ul.nav-menu a.active{color:#1a1612;font-weight:700}
+.nav-toggle{display:none;background:none;border:none;padding:6px;cursor:pointer;width:36px;height:36px;position:relative}
+.nav-toggle span{display:block;position:absolute;left:8px;right:8px;height:2px;background:#1a1612;border-radius:2px;transition:transform .25s,opacity .25s,top .25s}
+.nav-toggle span:nth-child(1){top:11px}.nav-toggle span:nth-child(2){top:17px}.nav-toggle span:nth-child(3){top:23px}
+.nav-toggle.open span:nth-child(1){top:17px;transform:rotate(45deg)}.nav-toggle.open span:nth-child(2){opacity:0}.nav-toggle.open span:nth-child(3){top:17px;transform:rotate(-45deg)}
+@media(max-width:860px){
+ nav.top .container{grid-template-columns:auto 1fr auto;padding:10px 16px;gap:12px}
+ .nav-brand-img img{height:32px}
+ .nav-toggle{display:block;justify-self:end}
+ nav.top ul.nav-menu{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(254,252,248,.98);backdrop-filter:blur(14px);border-bottom:1px solid #d8cdb8;flex-direction:column;gap:0;padding:8px 0;box-shadow:0 10px 24px rgba(107,74,42,.08)}
+ nav.top ul.nav-menu.open{display:flex}
+ nav.top ul.nav-menu li{border-bottom:1px solid #e8dfc9}
+ nav.top ul.nav-menu li:last-child{border-bottom:none}
+ nav.top ul.nav-menu a{display:block;padding:14px 20px;font-size:1.06rem}
+}
+/* 滑鼠暖光暈（與首頁同一支 spotlight.js） */
+body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradient(var(--sp-radius) circle at var(--mx,50%) var(--my,50%),var(--sp-shadow) 0%,var(--sp-shadow-edge) 45%,transparent 75%);pointer-events:none;z-index:9999;mix-blend-mode:multiply;transition:background .06s linear}
+.hero{position:relative;overflow:hidden;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:72px;padding:96px clamp(20px,6vw,88px) 80px;background:linear-gradient(180deg,#fffcf0 0%,#f9e9d2 100%);color:#1a1612;border-bottom:1px solid #d8cdb8}
+.hero .wc{position:absolute;border-radius:50%;filter:blur(60px);pointer-events:none;z-index:0}
+.hero .wc1{width:420px;height:360px;top:-120px;right:-80px;background:#e8884b;opacity:.15}
+.hero .wc2{width:360px;height:300px;bottom:-110px;left:-70px;background:#5f7553;opacity:.13}
+.hero .wc3{width:280px;height:260px;top:34%;left:14%;background:#a08144;opacity:.10}
+.hero>div{flex:none;width:860px;max-width:100%;position:relative;z-index:2}
+.hero-figure{margin:0;width:420px;flex:none;position:relative;z-index:2}
+.hero-figure img{display:block;width:100%;border-radius:16px;border:1px solid #d8cdb8;box-shadow:0 18px 45px rgba(107,74,42,.16);cursor:zoom-in}
+.hero-figure figcaption{margin-top:10px;font-size:14px;line-height:1.6;color:#6a635a}
+.kicker{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.55rem;color:#7a5c3a;font-weight:500}
+.hero h1{max-width:none;margin:16px 0 18px;font-size:clamp(36px,6vw,72px);line-height:1.08;overflow-wrap:anywhere}
+.hero p{max-width:none;font-size:clamp(18px,2vw,23px);line-height:1.62;color:#3a342d}
+.section{padding:54px clamp(20px,6vw,88px);border-top:1px solid var(--line)}
+.inner{width:min(1000px,100%);margin:0 auto}
+.section h2{font-size:clamp(26px,4.2vw,48px);line-height:1.12;margin:0 0 18px}
+.section h3{font-size:clamp(21px,3vw,30px);line-height:1.2;margin:30px 0 12px}
+.lead{font-size:clamp(18px,1.6vw,22px);line-height:1.7;color:#3a342d;max-width:900px}
+.section p{font-size:18px;line-height:1.74;color:#3a342d}.section p+p{margin-top:14px}
+.section ul,.section ol{padding-left:1.4em;font-size:18px;line-height:1.74;color:#3a342d}.section li{margin-bottom:8px}
+.meaning{margin:22px 0;padding:16px 18px;border-left:5px solid var(--green);background:rgba(95,117,83,.12);border-radius:6px;line-height:1.7;font-size:19px}
+.meaning b{display:block;color:var(--green);margin-bottom:4px}
+/* 文章資訊卡 */
+.infocard{background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px 24px 22px;box-shadow:0 8px 22px rgba(107,74,42,.08);margin-top:8px}
+.infocard-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.info-item{padding:18px 14px 0}
+.info-item b{display:block;font-size:16px;font-weight:900;letter-spacing:.04em;margin-bottom:7px;text-transform:uppercase}
+.info-item:nth-child(1) b{color:var(--green)}.info-item:nth-child(2) b{color:var(--orange)}.info-item:nth-child(3) b{color:var(--blue)}
+.info-item p{margin:0;font-size:18px;line-height:1.6;color:#3a342d}
+.tagrow{display:flex;flex-wrap:wrap;gap:7px;margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
+.tag{font-size:16px;color:var(--muted);background:var(--soft);border:1px solid var(--line);border-radius:999px;padding:4px 11px}
+/* 兩層 */
+.layers{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:24px}
+.layer{background:#fff;border:1px solid var(--line);border-radius:10px;padding:22px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.layer small{display:block;color:var(--orange);font:900 12px/1.2 ui-monospace,monospace;margin-bottom:8px}
+.layer h3{margin:0 0 8px;font-size:21px}
+.layer p{margin:0;font-size:18px;line-height:1.64;color:#3a342d}
+.layer.run{border-color:var(--green)}
+/* 流程步驟 */
+.flow{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:22px}
+.flow div{background:var(--soft);border:1px solid var(--line);border-radius:8px;padding:14px;font-size:18px;line-height:1.5;color:#3a342d}
+.flow b{display:block;color:var(--green);font-size:16px;font-family:ui-monospace,monospace;margin-bottom:6px}
+/* 單張嵌入圖 */
+.figure{margin:30px auto 6px;text-align:center}
+.figure img{width:100%;max-width:440px;border-radius:12px;border:1px solid #d8cdb8;box-shadow:0 10px 26px hsla(35,50%,60%,.15);display:block;margin:0 auto;cursor:zoom-in}
+.figure.wide img{max-width:820px}
+.figure figcaption{margin-top:10px;font-size:16px;line-height:1.5;color:#6a635a}
+/* 速讀區 duo 卡（公用版型）*/
+.duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:24px}
+.duo.stack{grid-template-columns:1fr}
+.duo .card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:22px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.duo .card.a{border-color:var(--orange)}.duo .card.b{border-color:var(--green);box-shadow:0 8px 24px rgba(95,117,83,.16)}
+.duo .card b{display:block;font-size:22px;line-height:1.3;margin-bottom:12px}.duo .card.a b{color:#c0512f}.duo .card.b b{color:#4a7a59}
+.duo .card p{margin:0;color:#3a342d;line-height:1.75;font-size:18px}
+/* 內文圖 inline-figure（公用版型，橫式寬圖用）*/
+.inline-figure{margin:30px auto 8px;max-width:820px}
+.inline-figure.wide{max-width:1000px}
+.inline-figure img{display:block;width:100%;border-radius:14px;border:1px solid var(--line);box-shadow:var(--shadow);background:#fff;cursor:zoom-in}
+.inline-figure figcaption{font-size:16px;line-height:1.6;color:var(--muted);margin-top:10px;text-align:center}
+/* CTA band 淺綠版 */
+.cta-band{background:#e6f0e5;color:#3a342d}.cta-band .section{border-top:none}
+.cta-band .inner{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(260px,.85fr);gap:26px;align-items:start}
+.cta-band h2{font-size:clamp(26px,4vw,44px);margin:0 0 16px}.cta-band p,.cta-band .lead{color:rgba(58,52,45,.92);font-size:18px;line-height:1.72}
+.cta-card{border:1px solid #cfe0d2;background:#fbfdfa;border-radius:8px;padding:22px}
+.cta-card b{display:block;color:#48b178;margin-bottom:10px;font-size:18px}.cta-card p{margin:0 0 14px}
+.footer{padding:30px clamp(20px,6vw,88px);font-size:14px;color:var(--muted);background:#fff;border-top:1px solid var(--line)}
+.footer-inner{width:min(1000px,100%);margin:0 auto}
+.footer-links{display:flex;flex-wrap:wrap;gap:6px 12px;margin-bottom:14px}.footer-links a{color:var(--blue);font-weight:900;text-decoration:none;font-size:14px}
+.footer-brand{font-weight:900;font-size:15px;margin-bottom:10px}.footer-note{font-size:13px;line-height:1.6}
+@media(max-width:820px){.infocard-grid{grid-template-columns:1fr}.layers{grid-template-columns:1fr}.flow{grid-template-columns:1fr 1fr}.cta-band .inner{grid-template-columns:1fr}.section{padding:40px 20px}.hero{min-height:52vh;flex-direction:column;justify-content:flex-start;align-items:flex-start;gap:24px}.hero>div{width:100%}.hero-figure{width:100%;max-width:560px}}
+@media(max-width:820px){html,body{overflow-x:hidden}.hero h1{word-break:break-word}}
+/* 點圖放大 lightbox */
+.hero-figure img,.figure img{cursor:zoom-in}
+.lightbox{position:fixed;inset:0;z-index:10000;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(12,10,8,.92);cursor:zoom-out;backdrop-filter:blur(4px)}
+.lightbox.open{display:flex}
+.lightbox img{max-width:96vw;max-height:92vh;border-radius:10px;box-shadow:0 24px 60px rgba(0,0,0,.5)}
+.lightbox-close{position:fixed;top:18px;right:24px;color:#fff;font-size:34px;line-height:1;font-weight:700;cursor:pointer;opacity:.85}
+.article-meta{display:flex;flex-wrap:wrap;gap:8px 12px;margin:0 0 18px;color:var(--muted,#6a635a);font-size:15px;font-weight:700}
+.codeblock{background:var(--dark);color:#f4ede0;border-radius:10px;padding:22px 24px;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:15px;line-height:1.75;white-space:pre-wrap;overflow-x:auto;margin:22px 0}
+</style>
+<!-- tracking:vercel-analytics -->
+<script defer src="/_vercel/insights/script.js"></script>
+<script defer src="/_vercel/speed-insights/script.js"></script>
+</head>
+<body class="spotlight">
+<nav class="top">
+  <div class="container">
+    <a class="nav-brand-img" href="../../index.html"><img src="../../images/footer-signature.png" alt="江江教練 | 江昱德"></a>
+    <button class="nav-toggle" aria-label="選單"><span></span><span></span><span></span></button>
+    <ul class="nav-menu">
+      <li><a href="../../index.html">首頁</a></li>
+      <li><a href="../../offers.html">收費課程</a></li>
+      <li><a href="../../courses.html">免費講座</a></li>
+      <li><a href="../../invited-talks.html">邀約授課</a></li>
+      <li><a href="../../articles.html" class="active">深度文章</a></li>
+      <li><a href="../../skills.html">Skills 下載</a></li>
+      <li><a href="../../cases.html">服務方案</a></li>
+      <li class="lang-switch"><a href="../../en/articles/ai-changed-behavior-into-workflow/" hreflang="en">EN</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="wc wc1"></div>
+  <div class="wc wc2"></div>
+  <div class="wc wc3"></div>
+  <div>
+    <div class="kicker">行為訊號 × 迴圈工程</div>
+    <h1>把不知不覺被 AI 改變的行為，抓成一套流程</h1>
+    <p>我出差查行程時，發現自己的第一個動作已經從打開 Google Map 變成問 AI，而且完全沒察覺。這篇講怎麼把這種被 AI 改變的行為抓出來，整理成可重複用的流程，之後甚至讓 AI 自動幫你跑。</p>
+  </div>
+</section>
+
+<main>
+
+<section class="section" id="start">
+  <div class="inner">
+        <div class="article-meta"><span>發布：2026-07-04</span><span>更新：2026-07-04</span></div>
+    <h2>這篇在講什麼</h2>
+    <p class="lead">我出差查行程的時候，發現自己的第一個動作已經從「打開 Google Map」變成「問 AI」，而且我自己完全沒察覺。這篇從這個案例出發，講一件我認為值得每個人做的事：找出這種不知不覺被 AI 改變的行為，把它抓成一套具體明確的流程，之後甚至讓 AI 自動幫你跑。文末附一段可以直接複製使用的提示詞。</p>
+    <div class="duo stack">
+      <div class="card a">
+        <b>適合誰</b>
+        <p>· 每天都在用 AI，卻說不清楚 AI 到底改變了自己哪些工作習慣的人<br>· 常常問 AI 同樣類型的問題，每次都要重新描述一遍的人<br>· 想讓 AI 從「回答問題」進到「接手流程」的人</p>
+      </div>
+      <div class="card b">
+        <b>你會得到什麼</b>
+        <p>· 一個訊號辨認法：怎麼發現某件事已經不知不覺交給 AI<br>· 參考迴圈工程的四步整理法：找出行為、觀察變數、固定流程、變成提示詞<br>· 一段可以直接複製使用的提示詞</p>
+      </div>
+    </div>
+    <figure class="inline-figure wide">
+      <img src="assets/00-summary.jpg" alt="一張圖看懂：訊號、分岔、整理成可重複的流程" loading="lazy">
+      <figcaption>一張圖看懂：訊號、分岔、整理成可重複的流程</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section class="section" id="case">
+  <div class="inner">
+    <h2>一個出差的案例</h2>
+    <p class="lead">昨天出差，我發現自己有個習慣被 AI 換掉了。</p>
+    <p>查行程時，我沒有打開 Google Map 一段段拉路線。我直接把情況丟給 AI：正常流程怎麼走、提早一小時結束怎麼走、延後一小時結束怎麼走，請它把路線和車次都先找好。Google Map 只剩下到現場核對班次的功能。</p>
+    <p>我才意識到，我安排行程的第一個動作，已經從打開地圖變成問 AI。</p>
+  </div>
+</section>
+
+<section class="section" id="signal">
+  <div class="inner">
+    <h2>這是一個訊號</h2>
+    <p class="lead">這件事的判斷點不在「我用了 AI」。用 AI 的人很多。判斷點在「我跳過了原本自己動手的步驟」，而且是不知不覺跳過的。</p>
+    <p>這種時刻每個人都有。可能是查資料、排行程、寫信、整理報表。某一天你回頭看，才發現那件事你已經預設先問 AI 了。</p>
+    <div class="meaning"><b>這代表什麼</b>這其實是一個值得停下來看的訊號：它代表你有一段原本放在腦內的判斷，已經開始外包給 AI。這段判斷就是你自己的隱性知識，只是你從來沒把它寫下來。</div>
+  </div>
+</section>
+
+<section class="section" id="fork">
+  <div class="inner">
+    <h2>這裡有一個分岔</h2>
+    <div class="duo">
+      <div class="card a">
+        <b>放過去</b>
+        <p>覺得「AI 好方便」，然後下次遇到同樣的事，再臨場問一次。方便是一次性的，什麼都沒有留下來。</p>
+      </div>
+      <div class="card b">
+        <b>抓出來</b>
+        <p>把這件事整理成一套具體明確的流程。整理過的流程會累積、可以重複用，也交得出去，之後甚至可以讓 AI 自動化執行。</p>
+      </div>
+    </div>
+    <p style="margin-top:20px">兩條路的差別，就是「AI 幫你回答一次」和「AI 開始替你累積」的差別。</p>
+  </div>
+</section>
+
+<section class="section" id="four-steps">
+  <div class="inner">
+    <h2>參考迴圈工程，把行為整理成 AI 可重複執行的流程</h2>
+    <p class="lead">我參考迴圈工程的做法，把這種被 AI 改變的行為整理成流程，分四步。</p>
+    <div class="flow">
+      <div><b>1 找出行為</b>我哪件事開始習慣先問 AI 了？以前是怎麼做的？</div>
+      <div><b>2 觀察變數</b>這件事有哪些條件、要判斷什麼、有哪些例外？以行程為例：幾點結束、有哪些交通工具、提早或延後怎麼辦。</div>
+      <div><b>3 固定流程</b>排成主路線、備用方案，還有哪裡一定要我自己確認。像車班這種會變動的資訊，最後到現場核對這一步就是我保留給自己的。</div>
+      <div><b>4 變成提示詞</b>整理成一段可以複製的提問，以後 AI 先跑一輪，我最後收尾。</div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="prompt">
+  <div class="inner">
+    <h2>直接可用的提示詞</h2>
+    <p class="lead">如果你想直接試，把下面這段複製給 AI，空格換成你自己的那件事。</p>
+    <div class="codeblock">我想把一件我已經習慣交給你的事，整理成一套可以重複用的流程。
+
+這件事我原本是這樣做的：______
+現在我會交給你做的部分是：______
+中間需要我判斷的條件有：______
+可能遇到的例外狀況有：______
+最後我還是要自己確認的是：______
+
+請幫我整理成四個東西：
+1. 完整的工作流程
+2. 我該自己把關的檢查點
+3. 遇到例外時的備用做法
+4. 一段我下次可以直接複製使用的提示詞</div>
+    <div class="meaning"><b>最後想說的</b>AI 幫你回答一次，只是省了這一次的力氣。你把它沉澱成流程，這件事才開始替你累積。下次你發現某件事已經習慣先問 AI，別放過，那是個訊號。</div>
+  </div>
+</section>
+
+<section class="cta-band">
+  <div class="section">
+    <div class="inner">
+      <div>
+        <h2>把一件事，整理成可以反覆執行的系統</h2>
+        <p>建立的那一段交給 Agent 工作流，自動跑的那一段交給程式自動化。真正的重點是：你有沒有把一件事，留成下次可以重複執行的流程。</p>
+        <p>這也是我一直在做的事：幫個人和團隊把工作整理成 AI 接得住、能重複跑的流程。</p>
+      </div>
+      <div class="cta-card">
+        <b>免費線上講座</b>
+        <p>每個月兩場免費講座。</p>
+        <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;text-decoration:none;border-radius:8px;padding:12px 16px;font-weight:900;background:#48b178;color:#fff;">點我加入 Line 社群 ↗</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">江江教練 · AI 知識管理</div>
+    <div class="footer-links">
+      <a href="../../articles.html">← 回深度文章總站</a>
+      <a href="../../index.html">首頁</a>
+      <a href="../../learn.html">自學資源</a>
+      <a href="../../skills.html">Skills 下載</a>
+      <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">LINE 社群 ↗</a>
+      <a href="https://www.threads.com/@jiang_yude_coach" target="_blank" rel="noopener">Threads ↗</a>
+      <a href="https://vocus.cc/salon/Jiang_Coach" target="_blank" rel="noopener">方格子 ↗</a>
+    </div>
+    <div class="footer-note">這篇的脆文與觀點日記版本同步整理，內容相同、長度不同。</div>
+  </div>
+  <a href="/stats.html" class="page-views" style="text-align:center;color:#9a9186;font-size:13px;padding:12px 0 2px;display:block;text-decoration:none" title="看完整流量統計"><span style="text-decoration:underline;text-decoration-color:#cbbfa8;text-underline-offset:3px">本頁瀏覽 <span data-views="page">·</span> 次</span></a>
+</footer>
+
+<!-- 點圖放大 -->
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <span class="lightbox-close" aria-label="關閉">×</span>
+  <img id="lightbox-img" src="" alt="放大檢視">
+</div>
+<script>
+(function(){
+  var box=document.getElementById('lightbox'),boxImg=document.getElementById('lightbox-img');
+  document.querySelectorAll('.hero-figure img,.figure img,.inline-figure img').forEach(function(img){
+    img.addEventListener('click',function(){
+      boxImg.src=img.currentSrc||img.src;boxImg.alt=img.alt||'放大檢視';
+      box.classList.add('open');box.setAttribute('aria-hidden','false');
+    });
+  });
+  function close(){box.classList.remove('open');box.setAttribute('aria-hidden','true');boxImg.src='';}
+  box.addEventListener('click',close);
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
+})();
+</script>
+
+<!-- 官網共用：滑鼠暖光暈 + 導航列漢堡選單 -->
+<script src="../../spotlight.js"></script>
+
+<!-- 文章自動互聯（相關文章）：兩支已內建，順序不可顛倒，不用再另外加 -->
+<script src="../../articles-data.js"></script>
+<script src="../../related-render.js"></script>
+  <script src="/views.js"></script>
+</body>
+</html>

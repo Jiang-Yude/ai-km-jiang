@@ -206,7 +206,7 @@ window.ARTICLES = [
       content_type: ["觀點文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["codex-only-auto-worklog", "program-vs-ai-skill-library", "how-to-train-your-ai-employee", "elon-musk-live-skill"]
+    related: ["codex-only-auto-worklog", "program-vs-ai-skill-library", "how-to-train-your-ai-employee", "elon-musk-live-skill", "ai-delegators-optimism"]
   },
 
   /* ── 11. AI 就是整個市場的縮影：先用 AI 測反應（教學）── */
@@ -242,7 +242,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["own-ai-team-at-work", "agent-workflow-builds-automation", "line-group-ai-workflow", "elon-musk-live-skill", "codex-log-health-check", "how-ai-connects-software", "meeting-record-agent-workflow", "decision-ladder-non-programmer", "tidy-mess-before-consulting", "diary-driven-agent-3x4", "docs-as-system-design-agent", "what-is-loop-engineering"]
+    related: ["own-ai-team-at-work", "agent-workflow-builds-automation", "line-group-ai-workflow", "elon-musk-live-skill", "codex-log-health-check", "how-ai-connects-software", "meeting-record-agent-workflow", "decision-ladder-non-programmer", "tidy-mess-before-consulting", "diary-driven-agent-3x4", "docs-as-system-design-agent", "what-is-loop-engineering", "ai-delegators-optimism", "map-is-not-the-territory"]
   },
 
   /* ── 13. LINE 群組也能變成 AI 工作流入口（教學）── */
@@ -460,7 +460,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["docs-as-system-design-agent", "how-to-train-your-ai-employee", "my-three-loops", "ai-loop-safety-recovery", "recovery-over-perfection"]
+    related: ["docs-as-system-design-agent", "how-to-train-your-ai-employee", "my-three-loops", "ai-loop-safety-recovery", "recovery-over-perfection", "ai-changed-behavior-into-workflow"]
   },
 
   /* ── 無形資產，越分享越豐盛（觀點）── */
@@ -570,7 +570,7 @@ window.ARTICLES = [
       content_type: ["觀點文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["what-is-loop-engineering", "ai-loop-safety-recovery", "recovery-over-perfection"]
+    related: ["what-is-loop-engineering", "ai-loop-safety-recovery", "recovery-over-perfection", "ai-changed-behavior-into-workflow"]
   },
 
   /* ── 公司護城河：組織模式、共識、影響力與信任（觀點）── */
@@ -664,7 +664,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["harness-mindset-for-bosses", "prompt-to-loop-map"]
+    related: ["harness-mindset-for-bosses", "prompt-to-loop-map", "map-is-not-the-territory"]
   },
 
   /* ── 給老闆的駕馭思維：把不敢對員工說的，講給 AI 聽（系列 02）（教學）── */
@@ -703,6 +703,60 @@ window.ARTICLES = [
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
     related: ["intent-first-prompting", "harness-mindset-for-bosses"]
+  },
+
+  /* ── 越把工作交給 AI 的人，越希望 AI 更強，越不怕被取代（趨勢）── */
+  {
+    id: "ai-delegators-optimism",
+    url: "articles/ai-delegators-optimism/",
+    date: "2026-07-01",
+    title: "越把工作交給 AI 的人，越希望 AI 更強，越不怕被取代",
+    problem: "看著 AI 越來越強，不確定該擔心被取代，還是該更積極把工作交出去。",
+    audience: "已經在用 AI 分擔工作、或擔心 AI 會不會取代自己的知識工作者。",
+    summary: "從 Anthropic 2026 年 6 月 Cadences 報告，用五張圖表拆解：越常把工作交給 AI 的人越樂觀、越不怕被取代，並附把任務分三層、做成技能包的做法。含樣本限制的誠實提醒。",
+    tags: {
+      topic: ["AI趨勢", "AIAgent", "工作流程"],
+      level: ["基礎"],
+      content_type: ["趨勢文章"]
+    },
+    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
+    related: ["how-to-train-your-ai-employee", "own-ai-team-at-work"]
+  },
+
+  /* ── 把不知不覺被 AI 改變的行為，抓成一套流程（教學）── */
+  {
+    id: "ai-changed-behavior-into-workflow",
+    url: "articles/ai-changed-behavior-into-workflow/",
+    date: "2026-07-04",
+    title: "把不知不覺被 AI 改變的行為，抓成一套流程",
+    problem: "已經常常用 AI，卻沒發現自己的工作習慣早就被改變，也沒把它固定成流程。",
+    audience: "想把自己已經在做、卻還沒固定下來的 AI 用法，變成可重複流程的知識工作者。",
+    summary: "出差查行程時，我發現第一個動作已從打開地圖變成問 AI。用迴圈工程四步（找出行為、觀察變數、固定流程、變成提示詞）把不知不覺的 AI 習慣整理成可重複執行的流程，文末附可複製的提示詞。",
+    tags: {
+      topic: ["AI工作流", "工作流程", "提示詞設計"],
+      level: ["基礎"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
+    related: ["what-is-loop-engineering", "my-three-loops"]
+  },
+
+  /* ── 地圖不等於實際地形（觀點）── */
+  {
+    id: "map-is-not-the-territory",
+    url: "articles/map-is-not-the-territory/",
+    date: "2026-07-05",
+    title: "地圖不等於實際地形",
+    problem: "跟 AI 工作常卡住，它一直猜錯、要你重講一遍，卻說不清楚問題到底出在哪。",
+    audience: "天天用 AI、想把專業判斷交給它，卻發現最難的是把判斷「講清楚」的顧問、教練、知識工作者。",
+    summary: "從 Anthropic 工程師 Thariq 的「地圖不等於實際地形」談起，把四種未知接到隱性知識提煉：先把地圖畫清楚，AI 跑真實任務的成功率就高很多。附動手前就能用的提問法。",
+    tags: {
+      topic: ["隱性知識", "提示詞設計", "知識管理"],
+      level: ["基礎"],
+      content_type: ["觀點文章"]
+    },
+    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
+    related: ["how-to-train-your-ai-employee", "intent-first-prompting"]
   }
 
 ];

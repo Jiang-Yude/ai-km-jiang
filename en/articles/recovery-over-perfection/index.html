@@ -1,0 +1,434 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="index,follow">
+<title>Instead of Expecting an Error-Free AI System, Design a Fault-Tolerant Loop | Coach Jiang · AI Knowledge Management</title>
+<meta name="description" content="AI will make mistakes, and people give wrong instructions too, so an error-free system is impossible. This piece organizes how I redirect the effort toward fault tolerance: six steps (sort by size, keep an exit, small test first, batch with a trail, verify with a different mind, write a wrap-up note), each with a completion condition and its common pitfall, plus a full worked example.">
+<link rel="canonical" href="https://ai-km-jiang.vercel.app/en/articles/recovery-over-perfection/">
+<link rel="alternate" hreflang="zh-Hant" href="https://ai-km-jiang.vercel.app/articles/recovery-over-perfection/">
+<link rel="alternate" hreflang="en" href="https://ai-km-jiang.vercel.app/en/articles/recovery-over-perfection/">
+<link rel="alternate" hreflang="x-default" href="https://ai-km-jiang.vercel.app/articles/recovery-over-perfection/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Instead of Expecting an Error-Free AI System, Design a Fault-Tolerant Loop | Coach Jiang">
+<meta property="og:image" content="https://ai-km-jiang.vercel.app/images/intro-jiang.png">
+<meta property="og:description" content="AI will make mistakes, and people give wrong instructions too, so an error-free system is impossible. This piece organizes how I redirect the effort toward fault tolerance: six steps, each with a completion condition and its common pitfall, plus a full worked example.">
+<meta property="og:url" content="https://ai-km-jiang.vercel.app/en/articles/recovery-over-perfection/">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Coach Jiang · AI Knowledge Management">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Instead of Expecting an Error-Free AI System, Design a Fault-Tolerant Loop | Coach Jiang">
+<meta name="twitter:image" content="https://ai-km-jiang.vercel.app/images/intro-jiang.png">
+<meta name="twitter:description" content="AI will make mistakes, and people give wrong instructions too, so an error-free system is impossible. This piece organizes how I redirect the effort toward fault tolerance: six steps, each with a completion condition and its common pitfall, plus a full worked example.">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Instead of Expecting an Error-Free AI System, Design a Fault-Tolerant Loop","description":"AI will make mistakes, and people give wrong instructions too, so an error-free system is impossible. This piece organizes how I redirect the effort toward fault tolerance: six steps, each with a completion condition and its common pitfall, plus a full worked example.","author":{"@type":"Person","name":"Jiang Yude","alternateName":"Coach Jiang","jobTitle":"Tacit Knowledge Distiller, AI Application Planner"},"isPartOf":{"@type":"WebSite","name":"Coach Jiang · AI Knowledge Management","url":"https://ai-km-jiang.vercel.app/"},"inLanguage":"en","url":"https://ai-km-jiang.vercel.app/en/articles/recovery-over-perfection/"}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{--ink:#1a1612;--paper:#fefcf8;--muted:#6a635a;--line:#d8cdb8;--green:#5f7553;--blue:#5689b8;--orange:#e85a4f;--soft:#faf5ec;--dark:#2a2018;--shadow:0 18px 45px rgba(107,74,42,.14);--sp-shadow:hsla(35,50%,60%,.15);--sp-shadow-edge:hsla(35,50%,68%,.03);--sp-radius:400px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC","Segoe UI",sans-serif}
+a{color:inherit}
+nav.top{position:sticky;top:0;background:rgba(254,252,248,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid #d8cdb8;z-index:100}
+nav.top .container{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:24px;padding:14px 32px}
+.nav-brand-img{justify-self:start;display:flex;align-items:center;text-decoration:none;flex-shrink:0;transition:opacity .2s}
+.nav-brand-img:hover{opacity:.8}.nav-brand-img img{height:40px;width:auto;display:block}
+nav.top ul.nav-menu{justify-self:end;display:flex;gap:22px;list-style:none;margin:0;padding:0;font-size:.95rem;white-space:nowrap}
+nav.top ul.nav-menu a{color:#3a342d;text-decoration:none;transition:color .2s;font-weight:500;white-space:nowrap}
+nav.top ul.nav-menu a:hover{color:#1a1612}nav.top ul.nav-menu a.active{color:#1a1612;font-weight:700}
+nav.top ul.nav-menu li.lang-switch a{color:#7a5c3a;font-weight:700}
+.nav-toggle{display:none;background:none;border:none;padding:6px;cursor:pointer;width:36px;height:36px;position:relative}
+.nav-toggle span{display:block;position:absolute;left:8px;right:8px;height:2px;background:#1a1612;border-radius:2px;transition:transform .25s,opacity .25s,top .25s}
+.nav-toggle span:nth-child(1){top:11px}.nav-toggle span:nth-child(2){top:17px}.nav-toggle span:nth-child(3){top:23px}
+.nav-toggle.open span:nth-child(1){top:17px;transform:rotate(45deg)}.nav-toggle.open span:nth-child(2){opacity:0}.nav-toggle.open span:nth-child(3){top:17px;transform:rotate(-45deg)}
+@media(max-width:860px){
+ nav.top .container{grid-template-columns:auto 1fr auto;padding:10px 16px;gap:12px}
+ .nav-brand-img img{height:32px}
+ .nav-toggle{display:block;justify-self:end}
+ nav.top ul.nav-menu{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(254,252,248,.98);backdrop-filter:blur(14px);border-bottom:1px solid #d8cdb8;flex-direction:column;gap:0;padding:8px 0;box-shadow:0 10px 24px rgba(107,74,42,.08)}
+ nav.top ul.nav-menu.open{display:flex}
+ nav.top ul.nav-menu li{border-bottom:1px solid #e8dfc9}
+ nav.top ul.nav-menu li:last-child{border-bottom:none}
+ nav.top ul.nav-menu a{display:block;padding:14px 20px;font-size:1.06rem}
+}
+body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradient(var(--sp-radius) circle at var(--mx,50%) var(--my,50%),var(--sp-shadow) 0%,var(--sp-shadow-edge) 45%,transparent 75%);pointer-events:none;z-index:9999;mix-blend-mode:multiply;transition:background .06s linear}
+.hero{position:relative;overflow:hidden;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:72px;padding:96px clamp(20px,6vw,88px) 80px;background:linear-gradient(180deg,#fffcf0 0%,#f9e9d2 100%);color:#1a1612;border-bottom:1px solid #d8cdb8}
+.hero .wc{position:absolute;border-radius:50%;filter:blur(60px);pointer-events:none;z-index:0}
+.hero .wc1{width:420px;height:360px;top:-120px;right:-80px;background:#e8884b;opacity:.15}
+.hero .wc2{width:360px;height:300px;bottom:-110px;left:-70px;background:#5f7553;opacity:.13}
+.hero .wc3{width:280px;height:260px;top:34%;left:14%;background:#a08144;opacity:.10}
+.hero>div{flex:none;width:860px;max-width:100%;position:relative;z-index:2}
+.hero-figure{margin:0;width:420px;flex:none;position:relative;z-index:2}
+.hero-figure img{display:block;width:100%;border-radius:16px;border:1px solid #d8cdb8;box-shadow:0 18px 45px rgba(107,74,42,.16);cursor:zoom-in}
+.hero-figure figcaption{margin-top:10px;font-size:14px;line-height:1.6;color:#6a635a}
+.inline-figure{margin:30px auto 8px;max-width:820px}
+.inline-figure img{display:block;width:100%;border-radius:14px;border:1px solid var(--line);box-shadow:var(--shadow);background:#fff;cursor:zoom-in}
+.inline-figure figcaption{font-size:14px;line-height:1.6;color:var(--muted);margin-top:10px}
+.lightbox{position:fixed;inset:0;z-index:10000;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(12,10,8,.92);cursor:zoom-out;backdrop-filter:blur(4px)}
+.lightbox.open{display:flex}.lightbox img{max-width:96vw;max-height:92vh;border-radius:10px;box-shadow:0 24px 60px rgba(0,0,0,.5)}
+.lightbox-close{position:fixed;top:18px;right:24px;color:#fff;font-size:34px;line-height:1;font-weight:700;cursor:pointer;opacity:.85}
+.kicker{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.55rem;color:#7a5c3a;font-weight:500}
+.hero h1{max-width:none;margin:16px 0 18px;font-size:clamp(36px,6vw,72px);line-height:1.08;overflow-wrap:anywhere}
+.hero p{max-width:none;font-size:clamp(18px,2vw,23px);line-height:1.62;color:#3a342d}
+.cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
+.cta a{display:inline-flex;align-items:center;text-decoration:none;border-radius:8px;padding:12px 16px;font-weight:900}
+.cta .primary{background:#fff;color:#1a1612}.cta .ghost{border:1px solid rgba(255,255,255,.32);color:#fff;background:rgba(255,255,255,.08)}
+.section{padding:54px clamp(20px,6vw,88px);border-top:1px solid var(--line)}
+.inner{width:min(1000px,100%);margin:0 auto}
+.section h2{font-size:clamp(26px,4.2vw,48px);line-height:1.12;margin:0 0 18px}
+.section h3{font-size:clamp(21px,3vw,30px);line-height:1.2;margin:30px 0 12px}
+.lead{font-size:clamp(18px,1.6vw,22px);line-height:1.7;color:#3a342d;max-width:900px}
+.section p{font-size:18px;line-height:1.74;color:#3a342d}.section p+p{margin-top:14px}
+.section ul,.section ol{padding-left:1.4em;font-size:18px;line-height:1.74;color:#3a342d}.section li{margin-bottom:8px}
+.meaning{margin:22px 0;padding:16px 18px;border-left:5px solid var(--blue);background:rgba(86,137,184,.12);border-radius:6px;line-height:1.7;font-size:19px}
+.meaning b{display:block;color:var(--blue);margin-bottom:4px}
+.caveat{margin:0 0 8px;padding:16px 18px;border-left:5px solid var(--orange);background:rgba(232,90,79,.1);border-radius:6px;line-height:1.7;font-size:18px;color:#3a342d}
+.caveat b{display:block;color:var(--orange);margin-bottom:4px}
+.infocard{background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px 24px 22px;box-shadow:0 8px 22px rgba(107,74,42,.08);margin-top:8px}
+.infocard-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.info-item{padding:18px 14px 0}
+.info-item b{display:block;font-size:14px;font-weight:900;letter-spacing:.04em;margin-bottom:7px;text-transform:uppercase}
+.info-item:nth-child(1) b{color:var(--green)}.info-item:nth-child(2) b{color:var(--orange)}.info-item:nth-child(3) b{color:var(--blue)}
+.info-item p{margin:0;font-size:17px;line-height:1.6;color:#3a342d}
+.tagrow{display:flex;flex-wrap:wrap;gap:7px;margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
+.tag{font-size:14px;color:var(--muted);background:var(--soft);border:1px solid var(--line);border-radius:999px;padding:4px 11px}
+.duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:24px}
+.duo.stack{grid-template-columns:1fr}
+.duo .card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:22px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.duo .card.a{border-color:var(--orange)}.duo .card.b{border-color:var(--green);box-shadow:0 8px 24px rgba(95,117,83,.16)}
+.duo .card small{display:block;font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.04em;margin-bottom:9px}
+.duo .card.a small{color:var(--orange)}.duo .card.b small{color:var(--green)}
+.duo .card b{display:block;font-size:22px;line-height:1.3;margin-bottom:12px}.duo .card.a b{color:#c0512f}.duo .card.b b{color:#4a7a59}
+.duo .card p{margin:0;color:#3a342d;line-height:1.75;font-size:18px}
+.workflow-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:24px}
+.workflow-step{background:#fff;border:1px solid var(--line);border-radius:8px;padding:18px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.workflow-step small{display:block;color:var(--orange);font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;margin-bottom:9px}
+.workflow-step b{display:block;font-size:18px;line-height:1.3;margin-bottom:9px}
+.workflow-step p{margin:0;color:#3a342d;line-height:1.6;font-size:16px}
+.codeblock{background:var(--dark);color:#f3ead9;border-radius:8px;padding:18px 20px;font:500 14px/1.65 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;overflow-x:auto;white-space:pre-wrap;margin:20px 0;box-shadow:0 8px 22px rgba(107,74,42,.12)}
+.codeblock .c{color:#f6d7a6;font-weight:600}
+.skillcard{background:#fff;border:1px solid var(--green);border-radius:12px;padding:24px;box-shadow:0 10px 26px rgba(95,117,83,.16);margin-top:8px}
+.skillcard b{display:block;font-size:21px;margin-bottom:8px}
+.skillcard p{margin:0 0 16px;font-size:17px;line-height:1.65;color:#3a342d}
+.cta-band{background:#e6f0e5;color:#3a342d}.cta-band .section{border-top:none}
+.cta-band .inner{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(260px,.85fr);gap:26px;align-items:start}
+.cta-band h2{font-size:clamp(26px,4vw,44px);margin:0 0 16px}.cta-band p,.cta-band .lead{color:rgba(58,52,45,.9);font-size:18px;line-height:1.72}
+.cta-card{border:1px solid #cfe0d2;background:#fbfdfa;border-radius:8px;padding:22px}
+.cta-card b{display:block;color:#48b178;margin-bottom:10px;font-size:18px}.cta-card p{margin:0 0 14px}
+.footer{padding:30px clamp(20px,6vw,88px);font-size:14px;color:var(--muted);background:#fff;border-top:1px solid var(--line)}
+.footer-inner{width:min(1000px,100%);margin:0 auto}
+.footer-links{display:flex;flex-wrap:wrap;gap:6px 12px;margin-bottom:14px}.footer-links a{color:var(--blue);font-weight:900;text-decoration:none;font-size:14px}
+.footer-brand{font-weight:900;font-size:15px;margin-bottom:10px}.footer-note{font-size:13px;line-height:1.6}
+@media(max-width:820px){.infocard-grid{grid-template-columns:1fr}.duo{grid-template-columns:1fr}.workflow-grid{grid-template-columns:1fr}.cta-band .inner{grid-template-columns:1fr}.section{padding:40px 20px}.hero{min-height:52vh;flex-direction:column;justify-content:flex-start;align-items:flex-start;gap:24px}.hero>div{width:100%}.hero-figure{width:100%;max-width:560px}}
+@media(max-width:820px){html,body{overflow-x:hidden}.hero h1{word-break:break-word}}
+.article-meta{display:flex;flex-wrap:wrap;gap:8px 12px;margin:0 0 18px;color:var(--muted,#6a635a);font-size:15px;font-weight:700}
+.infocard table{width:100%;border-collapse:collapse;font-size:17px}
+.infocard table th,.infocard table td{text-align:left;padding:12px 14px;border-bottom:1px solid var(--line);line-height:1.6}
+.infocard table th{font-size:13px;font-weight:900;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);background:var(--soft)}
+.infocard table tr:last-child td{border-bottom:none}
+@media(max-width:600px){.infocard{overflow-x:auto}.infocard table{min-width:520px}}
+#faq details{border:1px solid var(--line);border-radius:10px;padding:16px 20px;margin-bottom:12px;background:#fff}
+#faq summary{cursor:pointer;font-weight:900;font-size:18px;list-style:none;position:relative;padding-right:28px}
+#faq summary::-webkit-details-marker{display:none}
+#faq summary::after{content:'+';position:absolute;right:0;top:0;font-size:22px;color:var(--orange);font-weight:900}
+#faq details[open] summary::after{content:'−'}
+#faq details p{margin-top:12px}
+</style>
+</head>
+<body class="spotlight">
+<nav class="top">
+  <div class="container">
+    <a class="nav-brand-img" href="../../index.html"><img src="../../../images/footer-signature.png" alt="Coach Jiang | Jiang Yude"></a>
+    <button class="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
+    <ul class="nav-menu">
+      <li><a href="../../index.html">Home</a></li>
+      <li><a href="../../offers.html">Paid Courses</a></li>
+      <li><a href="../../../courses.html">Free Talks</a></li>
+      <li><a href="../../invited-talks.html">Invited Talks</a></li>
+      <li><a href="../../../articles.html" class="active">Articles</a></li>
+      <li><a href="../../../skills.html">Skills</a></li>
+      <li><a href="../../cases.html">Services</a></li>
+      <li class="lang-switch"><a href="../../../articles/recovery-over-perfection/">中文</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="wc wc1"></div>
+  <div class="wc wc2"></div>
+  <div class="wc wc3"></div>
+  <div>
+    <div class="kicker">AI Workflow · Fault-Tolerant Design</div>
+    <h1>Instead of Expecting an Error-Free AI System, Design a Fault-Tolerant Loop</h1>
+    <p>AI is uncertain, and people give wrong instructions too, so a system that never errs is impossible. I redirect the effort toward fault tolerance: when something goes wrong, you can re-check and restore. This is the six-step Loop I've put together, taken apart for you one step at a time.</p>
+  </div>
+</section>
+
+<main>
+
+<section class="section" id="start">
+  <div class="inner">
+    <div class="article-meta"><span>Published: 2026-07-02</span><span>Updated: 2026-07-02</span></div>
+    <p class="lead">AI will make mistakes, and you will give wrong instructions too. This piece teaches you to design a Loop that catches errors when they happen: six steps, each with a clear completion condition, plus an end-to-end demonstration.</p>
+    <div class="duo stack">
+      <div class="card a">
+        <b>Who it's for</b>
+        <ul>
+          <li>People who have started handing important work to AI (organizing files, batch edits, updating system settings) but feel uneasy, afraid it will wreck a whole pile of things at once</li>
+          <li>People who have been burned by AI and afterward couldn't find what it actually changed or where it broke</li>
+          <li>People who want to confidently let AI do bigger things but don't know how to set up the safety net</li>
+        </ul>
+      </div>
+      <div class="card b">
+        <b>What you'll get</b>
+        <ul>
+          <li>A mindset flip: from chasing zero errors to being able to afford errors</li>
+          <li>The six-step fault-tolerant Loop, each step with a completion condition, and a concrete task walked end to end</li>
+          <li>The five standard moves for after something goes wrong</li>
+        </ul>
+      </div>
+    </div>
+    <div class="meaning">
+      <b>Why learn this process</b>
+      You may already know the principles of backing up and re-verifying. What this piece gives you is a concrete process, ordered and with a completion condition at each step, so next time you take on a big task you can just follow it.
+    </div>
+  </div>
+</section>
+
+<section class="section" id="reality">
+  <div class="inner">
+    <h2>1. First, face one fact: zero errors is unachievable</h2>
+    <p>AI is uncertain. Run the same instruction twice and the results can differ, no matter how strong the model is.</p>
+    <p>People are the same. I myself slip, give wrong instructions, and forget to consider a scope.</p>
+    <p>So the goal of "designing a mechanism that never errs," I gave up. At least I can't do it.</p>
+    <p>I switched to a different goal: <b>if you get it wrong, you can re-check, and you can restore.</b></p>
+    <p>This is fault tolerance. Errors are unavoidable, but the damage can be controlled.</p>
+  </div>
+</section>
+
+<section class="section" id="three-lines">
+  <div class="inner">
+    <h2>2. Three goals, three lines of defense</h2>
+    <p>I set three goals for the fault-tolerance mechanism, ordered by importance, each goal matched to a line of defense:</p>
+    <div class="infocard">
+      <table>
+        <thead><tr><th>Goal</th><th>Line of defense</th><th>Steps</th></tr></thead>
+        <tbody>
+          <tr><td>1. Make as few errors as possible</td><td>Prevent beforehand</td><td>Sort by size, keep an exit, small test first</td></tr>
+          <tr><td>2. When it errs, know where</td><td>Leave a trail during</td><td>Do it in batches, keep records, set a stop-loss</td></tr>
+          <tr><td>3. Knowing where, be able to restore</td><td>Recoverable afterward</td><td>Backup, verify with a different mind, wrap-up note</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Note what this ordering implies: no matter how well the first line is done, the second and third still have to be built. Because the first line will be breached; that's the premise, you just don't know which time.</p>
+  </div>
+</section>
+
+<section class="section" id="six-steps">
+  <div class="inner">
+    <h2>3. The six-step fault-tolerant Loop</h2>
+    <p>First, an overview of the six steps:</p>
+    <div class="infocard">
+      <table>
+        <thead><tr><th>Step</th><th>In one line</th><th>What counts as done</th></tr></thead>
+        <tbody>
+          <tr><td>1. Sort by size</td><td>Only big things enter the loop; small things get done directly</td><td>You can say whether it's big or small, and how large the scope is</td></tr>
+          <tr><td>2. Keep an exit</td><td>Back up, and write down how to go back</td><td>The backup opens, and the restore steps are written</td></tr>
+          <tr><td>3. Small test first</td><td>Run 1 to 2 samples first</td><td>You confirm the result is correct with your own eyes</td></tr>
+          <tr><td>4. Batch with a trail</td><td>Run in batches, agree on a stop-loss</td><td>Each batch has a record you can check</td></tr>
+          <tr><td>5. Verify with a different mind</td><td>Execution and verification use different minds</td><td>You can state the verification evidence</td></tr>
+          <tr><td>6. Write a note</td><td>Record what was changed and where the backup is</td><td>All four things are written</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Below, every step is demonstrated with the same example: <b>you want AI to uniformly rename 300 old files on your computer and add dates.</b> Touching hundreds of files at once is exactly where the fault-tolerant Loop belongs.</p>
+
+    <div class="step-card">
+      <span class="step-title">Step 1: Sort by size</span>
+      <p><b>What to do:</b> ask yourself one question, how big is this change? Editing one sentence in one file is a small thing; do it directly, no loop needed. Touching dozens or hundreds of files at once, involving renaming, deleting, or moving, or touching important settings, is a big thing; run the full six steps.</p>
+      <p><span class="lbl ok">What counts as done |</span> you can say "this is small" or "this is big, because the scope is such-and-such."</p>
+      <p><b>Example:</b> 300 files to rename, big thing, into the loop.</p>
+      <p><span class="lbl warn">The most common pitfall |</span> not sorting by size. The result is you lose both ways: small tasks get dragged down by the process, and big tasks run without protection.</p>
+    </div>
+
+    <div class="step-card">
+      <span class="step-title">Step 2: Keep an exit</span>
+      <p><b>What to do:</b> two things. One, copy the entire range that could possibly be touched as a backup. Two, write down "how to go back if it goes wrong," concrete enough that you can restore by following it.</p>
+      <p><span class="lbl ok">What counts as done |</span> the backup opens by your own hand, and the restore steps are already written in your notes. Missing either one, no starting.</p>
+      <p><b>Example:</b> copy the whole folder, named "pre-rename backup 0702." Write one line in your notes: if it goes wrong, copy this entire backup folder back over the top.</p>
+      <p><span class="lbl warn">The most common pitfall |</span> too small a backup scope. You assume only folder A will be touched so you back up only A, and then the error spreads to B. The backup must cover "the entire range that could actually be touched," not just "the range I intend to change." The gap between those two is exactly where accidents hide.</p>
+    </div>
+
+    <div class="step-card">
+      <span class="step-title">Step 3: Small test first</span>
+      <p><b>What to do:</b> pick 1 to 2 files, let AI run through them first, and open them with your own eyes to see the result.</p>
+      <p><span class="lbl ok">What counts as done |</span> the test result is exactly what you wanted, and you confirmed it with your own eyes, only then may you scale up.</p>
+      <p><b>Example:</b> rename 2 first. Open and look: is the new filename format right? Was the file content touched?</p>
+      <p><span class="lbl warn">The most common pitfall |</span> the plan looks perfect, so you just run it all. This step blocks the most damaging kind of error, "the instruction itself was written wrong." The same error is trivial across 2 files and a disaster across 300; the only difference is whether you tested first.</p>
+    </div>
+
+    <div class="step-card">
+      <span class="step-title">Step 4: Do it in batches, keep a record per batch</span>
+      <p><b>What to do:</b> execute in batches, don't run it all in one go. After each batch, note which files this batch touched. Before starting, agree on a stop-loss condition with the AI: on what situation it should stop and report, rather than forcing through.</p>
+      <p><span class="lbl ok">What counts as done |</span> every batch has a record you can check, and the stop-loss condition is clearly stated.</p>
+      <p><b>Example:</b> split 300 into 6 batches of 50. Keep a list per batch. Agree on the stop-loss: if you hit a file whose name format is inconsistent with the earlier ones, stop and ask me.</p>
+      <p><span class="lbl warn">The most common pitfall |</span> running it all in one go. The value of batching only shows up when something goes wrong: you'll know which batch the error is in, and you only restore that batch, no need to redo everything.</p>
+    </div>
+
+    <div class="step-card">
+      <span class="step-title">Step 5: Verify with a different mind</span>
+      <p><b>What to do:</b> the executing AI saying it's done and all fine cannot count as verification. Switch to another AI, or use a different method yourself, and check again: open a few sampled files to see the actual content, compare the changed files against the backup, and confirm the differences are only the expected ones.</p>
+      <p><span class="lbl ok">What counts as done |</span> you can state the verification evidence: which files I sampled, what I compared, and the result.</p>
+      <p><b>Example:</b> sample 3 files from batches 1, 3, and 6 and open them. Then ask another AI to scan all the filenames and report whether any were missed or are inconsistent in format.</p>
+      <p><span class="lbl warn">The most common pitfall |</span> treating the executing AI's report as verification. It may really be done, or it may just think it's done. The rule: execution and verification cannot be the same mind.</p>
+    </div>
+
+    <div class="step-card">
+      <span class="step-title">Step 6: Write a wrap-up note</span>
+      <p><b>What to do:</b> record four things: what was changed this time, how it was verified, where the backup is, and when the backup can be deleted.</p>
+      <p><span class="lbl ok">What counts as done |</span> all four things are written. For backups, my habit is to keep them a week and delete only after confirming everything is fine, and I open a to-do to remind myself to delete the backup, not relying on memory.</p>
+      <p><b>Example:</b> the note says "7/02 renamed 300 files, sampled 9 plus a full filename scan passed, backup in such-and-such folder, delete on 7/09 after confirming all is well."</p>
+      <p><span class="lbl warn">The most common pitfall |</span> disbanding once it's done. When something actually goes wrong, you can't even remember what you touched last week. This note is the map for the next time something breaks.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="when-it-breaks">
+  <div class="inner">
+    <h2>4. When it goes wrong, follow these five moves</h2>
+    <p>The real value of the fault-tolerant Loop is after something goes wrong. When you notice something's off, do it in order:</p>
+    <div class="infocard">
+      <table>
+        <thead><tr><th>Order</th><th>Move</th><th>The point</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>Stop</td><td>Don't rush to fix</td></tr>
+          <tr><td>2</td><td>Locate</td><td>Check the wrap-up note and batch records to find which batch erred</td></tr>
+          <tr><td>3</td><td>Restore</td><td>Restore that batch from the backup</td></tr>
+          <tr><td>4</td><td>Fix the approach</td><td>Find where the instruction was written wrong, and change it</td></tr>
+          <tr><td>5</td><td>Back to step 3</td><td>Small-test again; only scale up after it passes</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>The fifth move is the easiest to skip: don't fix and then immediately re-run at scale, because your fix itself may also be wrong. A fixed instruction gets the same treatment as a new instruction, always small-tested again.</p>
+  </div>
+</section>
+
+<section class="section" id="case">
+  <div class="inner">
+    <h2>5. A real case: 170 files corrupted, then recovered</h2>
+    <p>A while back I ran a large knowledge-base cleanup, fully autonomous, with AI handling over a hundred files. In one part, the batch-replace instruction was written wrong, the whole batch ran, and the content of 170 files was scrambled. Worse, that backup only covered the folder I assumed would be touched, while the actual damage spread beyond the backup's scope.</p>
+    <p>The files were recovered, because the way they were corrupted could be reversed. I wrote up the full account and the three lines of defense separately: <a href="../ai-loop-safety-recovery/">AI Errors Aren't the Danger, Having No Backup Is: Lessons From Corrupting 170 Files</a>. This six-step Loop is the complete process I organized from scattered principles after that incident.</p>
+    <div class="meaning"><b>The error happened, it was recoverable, and the mechanism got stronger because of it</b>That's the difference between a fault-tolerant Loop and praying that AI won't err.</div>
+  </div>
+</section>
+
+<section class="section" id="cost">
+  <div class="inner">
+    <h2>6. How to think about cost: different steps, different tiers of AI</h2>
+    <p>The fault-tolerant Loop has many steps, won't it be expensive? My approach is to tier the models. <b>State the premise firmly first: only after the exit is kept, the small test passes, and the stop-loss is agreed, may you hand execution to a cheap model.</b></p>
+    <div class="infocard">
+      <table>
+        <thead><tr><th>Step type</th><th>Which steps</th><th>Which model tier</th></tr></thead>
+        <tbody>
+          <tr><td>Requires judgment</td><td>Sorting by size, designing the plan and restore steps, interpreting verification results, analysis after an incident</td><td>The strongest model</td></tr>
+          <tr><td>Pure execution</td><td>Copying backups, running batches, running verification commands</td><td>A cheap, fast model</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Handing execution to a cheap model is fine, because the whole loop holds it. And execution and verification are always different minds.</p>
+  </div>
+</section>
+
+<section class="section" id="closing">
+  <div class="inner">
+    <h2>Wrap-up</h2>
+    <p>To put this piece in one line: instead of spending effort making AI not err, spend the effort making sure you can come back after it errs.</p>
+    <div class="tagrow">
+      <span class="tag">Sort by size</span><span class="tag">Keep an exit</span><span class="tag">Small test first</span><span class="tag">Batch with a trail</span><span class="tag">Verify with a different mind</span><span class="tag">Write a note</span>
+    </div>
+    <p>If you're pressed for time, condense it into three questions to ask yourself before starting: is the exit kept? Have I tested the small one? Who verifies?</p>
+    <p>Only with a strong enough safety net do you dare hand bigger things to AI. That fault-tolerance mechanism is exactly what lets you accelerate.</p>
+  </div>
+</section>
+
+<section class="section" id="faq">
+  <div class="inner">
+    <h2>FAQ</h2>
+    <details>
+      <summary>Do I have to run all six steps every time I use AI?</summary>
+      <p>Step 1, "sort by size," is answering exactly this question. Everyday small things get done directly; only things that touch a lot, can delete, or can't be changed back enter the full six steps.</p>
+    </details>
+    <details>
+      <summary>I don't have hundreds of files to handle, is this useful to me?</summary>
+      <p>Yes. Just use the three questions from the wrap-up: is the exit kept, have I tested the small one, who verifies. It applies to any situation where you hand something important to AI, such as letting AI edit your resume, organize your photo album, or clean up your inbox.</p>
+    </details>
+    <details>
+      <summary>How long should a backup be kept?</summary>
+      <p>My habit is a week. Delete only after confirming everything is fine, and open a to-do to track deleting the backup, not relying on memory.</p>
+    </details>
+    <details>
+      <summary>How does this relate to Loop Engineering?</summary>
+      <p>The fault-tolerant Loop is one application of Loop Engineering. Loop Engineering is about turning repeated work into a self-running cycle; the fault-tolerant Loop is about how to run the highest-risk kind of that work, large-scale changes, safely.</p>
+    </details>
+  </div>
+</section>
+
+<section class="cta-band">
+  <div class="section">
+    <div class="inner">
+      <div>
+        <h2>Want to bring the fault-tolerant Loop into your own workflow?</h2>
+        <p class="lead">I host two free online talks every month, sharing practical methods for using AI as a thinking partner and turning your knowledge and experience into prompts, skills, and a knowledge base. If you're interested in AI workflows and Loop Engineering, start from the community.</p>
+      </div>
+      <div class="cta-card">
+        <b>Free Online Talks</b>
+        <p>Two free talks every month.</p>
+        <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;text-decoration:none;border-radius:8px;padding:12px 16px;font-weight:900;background:#48b178;color:#fff;">Join the LINE Community ↗</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">Coach Jiang · AI Knowledge Management</div>
+    <div class="footer-links">
+      <a href="../../../articles.html">← Back to all articles</a>
+      <a href="../ai-loop-safety-recovery/">The 170-File Recovery Story</a>
+      <a href="../../index.html">Home</a>
+      <a href="../../../skills.html">Skills</a>
+      <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">LINE Community ↗</a>
+      <a href="https://www.threads.com/@jiang_yude_coach" target="_blank" rel="noopener">Threads ↗</a>
+      <a href="https://vocus.cc/salon/Jiang_Coach" target="_blank" rel="noopener">Vocus ↗</a>
+    </div>
+    <div class="footer-note">This is a tutorial piece organizing my view that instead of expecting an error-free AI system, you should design a fault-tolerant Loop, shared for your reference.</div>
+  </div>
+</footer>
+
+<!-- Click to enlarge lightbox (shared by hero and inline figures, built in) -->
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <span class="lightbox-close" aria-label="Close">×</span>
+  <img id="lightbox-img" src="" alt="Enlarged view">
+</div>
+<script>
+(function(){
+  var box=document.getElementById('lightbox'),boxImg=document.getElementById('lightbox-img');
+  document.querySelectorAll('.hero-figure img,.inline-figure img').forEach(function(img){
+    img.addEventListener('click',function(){boxImg.src=img.currentSrc||img.src;boxImg.alt=img.alt||'Enlarged view';box.classList.add('open');box.setAttribute('aria-hidden','false');});
+  });
+  function close(){box.classList.remove('open');box.setAttribute('aria-hidden','true');boxImg.src='';}
+  box.addEventListener('click',close);
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
+})();
+</script>
+
+<!-- Site-wide: mouse warm spotlight + nav hamburger menu -->
+<script src="../../../spotlight.js"></script>
+
+<!-- Article auto-linking (related articles): both built in, order must not be reversed -->
+<script src="../../../articles-data.js"></script>
+<script src="../../../related-render.js"></script>
+</body>
+</html>

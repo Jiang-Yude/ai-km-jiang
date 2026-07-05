@@ -1,0 +1,353 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="index,follow">
+<title>地圖不等於實際地形｜江江教練 · AI 知識管理</title>
+<meta name="description" content="跟 AI 工作卡住你的，往往是你給的地圖太簡單，模型再強也幫不上。從 Anthropic 工程師 Thariq 的「地圖不等於實際地形」談起，把四種未知接到隱性知識提煉：先把地圖畫清楚，AI 跑真實任務的成功率就高很多。附動手前就能用的提問法。">
+<link rel="canonical" href="https://ai-km-jiang.vercel.app/articles/map-is-not-the-territory/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="地圖不等於實際地形｜江江教練">
+<meta property="og:description" content="跟 AI 工作卡住你的，往往是你給的地圖太簡單，模型再強也幫不上。把地圖畫清楚，其實就是在提煉你自己的隱性知識。">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:site_name" content="江江教練 · AI 知識管理">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"地圖不等於實際地形","description":"從 Anthropic 工程師 Thariq 的「地圖不等於實際地形」談起，把四種未知接到隱性知識提煉：先把地圖畫清楚，AI 跑真實任務的成功率就高很多。","author":{"@type":"Person","name":"江昱德","alternateName":"江江教練","jobTitle":"隱性知識提煉師、AI 應用規劃師"},"isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://ai-km-jiang.vercel.app/"},"inLanguage":"zh-Hant","url":"https://ai-km-jiang.vercel.app/articles/map-is-not-the-territory/"}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{--ink:#1a1612;--paper:#fefcf8;--muted:#6a635a;--line:#d8cdb8;--green:#5f7553;--blue:#5689b8;--orange:#e85a4f;--soft:#faf5ec;--dark:#2a2018;--shadow:0 18px 45px rgba(107,74,42,.14)}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC","Segoe UI",sans-serif}
+a{color:inherit}
+nav.top{position:sticky;top:0;background:rgba(254,252,248,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid #d8cdb8;z-index:100}
+nav.top .container{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:24px;padding:14px 32px}
+.nav-brand{justify-self:start;font-weight:900;font-size:1.05rem;text-decoration:none;color:#1a1612;letter-spacing:.02em}
+nav.top ul.nav-menu{justify-self:end;display:flex;gap:22px;list-style:none;margin:0;padding:0;font-size:.95rem;white-space:nowrap}
+nav.top ul.nav-menu a{color:#3a342d;text-decoration:none;transition:color .2s;font-weight:500}
+nav.top ul.nav-menu a:hover{color:#1a1612}nav.top ul.nav-menu a.active{color:#1a1612;font-weight:700}
+@media(max-width:860px){nav.top ul.nav-menu{display:none}nav.top .container{padding:12px 18px}}
+.hero{position:relative;overflow:hidden;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:56px;padding:88px clamp(20px,6vw,88px) 72px;background:linear-gradient(180deg,#fffcf0 0%,#f9e9d2 100%);color:#1a1612;border-bottom:1px solid #d8cdb8}
+.hero .wc{position:absolute;border-radius:50%;filter:blur(60px);pointer-events:none;z-index:0}
+.hero .wc1{width:420px;height:360px;top:-120px;right:-80px;background:#e8884b;opacity:.15}
+.hero .wc2{width:360px;height:300px;bottom:-110px;left:-70px;background:#5f7553;opacity:.13}
+.hero .wc3{width:280px;height:260px;top:34%;left:14%;background:#a08144;opacity:.10}
+.hero>div{flex:none;width:780px;max-width:100%;position:relative;z-index:2}
+.hero-figure{margin:0;width:440px;flex:none;position:relative;z-index:2}
+.hero-figure svg{display:block;width:100%;height:auto;border-radius:16px;border:1px solid #d8cdb8;box-shadow:0 18px 45px rgba(107,74,42,.16);background:#fffdf8}
+.kicker{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.55rem;color:#7a5c3a;font-weight:500}
+.hero h1{max-width:none;margin:14px 0 18px;font-size:clamp(38px,6vw,74px);line-height:1.06;overflow-wrap:anywhere}
+.hero p{max-width:none;font-size:clamp(18px,2vw,22px);line-height:1.62;color:#3a342d}
+.section{padding:52px clamp(20px,6vw,88px);border-top:1px solid var(--line)}
+.inner{width:min(1000px,100%);margin:0 auto}
+.section h2{font-size:clamp(26px,4.2vw,46px);line-height:1.14;margin:0 0 18px}
+.section h3{font-size:clamp(21px,3vw,29px);line-height:1.2;margin:30px 0 12px}
+.lead{font-size:clamp(18px,1.6vw,22px);line-height:1.72;color:#3a342d;max-width:920px}
+.section p{font-size:18px;line-height:1.76;color:#3a342d}.section p+p{margin-top:14px}
+.section ul,.section ol{padding-left:1.4em;font-size:18px;line-height:1.76;color:#3a342d}.section li{margin-bottom:8px}
+.meaning{margin:22px 0;padding:16px 18px;border-left:5px solid var(--blue);background:rgba(86,137,184,.12);border-radius:6px;line-height:1.72;font-size:19px}
+.meaning b{display:block;color:var(--blue);margin-bottom:4px}
+.caveat{margin:22px 0 8px;padding:16px 18px;border-left:5px solid var(--orange);background:rgba(232,90,79,.1);border-radius:6px;line-height:1.72;font-size:18px;color:#3a342d}
+.caveat b{display:block;color:var(--orange);margin-bottom:4px}
+.duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:24px}
+.duo.stack{grid-template-columns:1fr}
+.duo .card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:22px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.duo .card.a{border-color:var(--orange)}.duo .card.b{border-color:var(--green);box-shadow:0 8px 24px rgba(95,117,83,.16)}
+.duo .card b{display:block;font-size:22px;line-height:1.3;margin-bottom:12px}.duo .card.a b{color:#c0512f}.duo .card.b b{color:#4a7a59}
+.duo .card p{margin:0;color:#3a342d;line-height:1.75;font-size:18px}
+.duo .card ul{margin:0;font-size:17px}
+.workflow-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:24px}
+.workflow-step{background:#fff;border:1px solid var(--line);border-radius:8px;padding:20px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.workflow-step small{display:block;color:var(--orange);font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;margin-bottom:9px;letter-spacing:.04em}
+.workflow-step b{display:block;font-size:19px;line-height:1.3;margin-bottom:9px}
+.workflow-step p{margin:0;color:#3a342d;line-height:1.66;font-size:16px}
+.codeblock{background:var(--dark);color:#f3ead9;border-radius:8px;padding:18px 20px;font:500 14.5px/1.7 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;overflow-x:auto;white-space:pre-wrap;margin:20px 0;box-shadow:0 8px 22px rgba(107,74,42,.12)}
+.codeblock .c{color:#f6d7a6;font-weight:600}
+.figure{margin:30px auto 8px;max-width:860px}
+.figure svg{display:block;width:100%;height:auto;border-radius:14px;border:1px solid var(--line);box-shadow:var(--shadow);background:#fffdf8}
+.figure figcaption{font-size:14px;line-height:1.6;color:var(--muted);margin-top:10px;text-align:center}
+.quad{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:24px}
+.quad .q{border:1px solid var(--line);border-radius:12px;padding:20px;background:#fff;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.quad .q small{display:block;font:900 12px/1.2 ui-monospace,Menlo,monospace;letter-spacing:.04em;color:var(--muted);margin-bottom:7px}
+.quad .q b{display:block;font-size:20px;margin-bottom:8px;color:var(--ink)}
+.quad .q p{margin:0;font-size:16px;line-height:1.62;color:#3a342d}
+.quad .q.hot{border-color:var(--green);box-shadow:0 8px 24px rgba(95,117,83,.18);background:#fbfdfa}
+.quad .q.hot b{color:#4a7a59}
+.tagrow{display:flex;flex-wrap:wrap;gap:7px;margin-top:26px;padding-top:16px;border-top:1px solid var(--line)}
+.tag{font-size:14px;color:var(--muted);background:var(--soft);border:1px solid var(--line);border-radius:999px;padding:4px 11px}
+.readmore{display:grid;grid-template-columns:1fr;gap:12px;margin-top:20px}
+.readmore a{display:block;text-decoration:none;background:#fff;border:1px solid var(--line);border-radius:10px;padding:18px 20px;box-shadow:0 8px 22px rgba(107,74,42,.08);transition:box-shadow .2s,transform .2s}
+.readmore a:hover{box-shadow:0 12px 30px rgba(107,74,42,.16);transform:translateY(-1px)}
+.readmore small{display:block;color:var(--orange);font:900 12px/1.2 ui-monospace,Menlo,monospace;margin-bottom:8px;letter-spacing:.04em}
+.readmore b{display:block;font-size:19px;margin-bottom:5px;color:var(--ink)}
+.readmore span{font-size:15px;color:var(--muted);line-height:1.55}
+.footer{padding:30px clamp(20px,6vw,88px);font-size:14px;color:var(--muted);background:#fff;border-top:1px solid var(--line)}
+.footer-inner{width:min(1000px,100%);margin:0 auto}
+.footer-links{display:flex;flex-wrap:wrap;gap:6px 12px;margin-bottom:14px}.footer-links a{color:var(--blue);font-weight:900;text-decoration:none;font-size:14px}
+.footer-brand{font-weight:900;font-size:15px;margin-bottom:10px}.footer-note{font-size:13px;line-height:1.6}
+@media(max-width:820px){.duo{grid-template-columns:1fr}.workflow-grid{grid-template-columns:1fr}.quad{grid-template-columns:1fr}.section{padding:40px 20px}.hero{flex-direction:column;align-items:flex-start;gap:28px}.hero>div{width:100%}.hero-figure{width:100%;max-width:520px}html,body{overflow-x:hidden}.hero h1{word-break:break-word}}
+</style>
+</head>
+<body>
+<nav class="top">
+  <div class="container">
+    <a class="nav-brand" href="https://ai-km-jiang.vercel.app/">江江教練 · AI 知識管理</a>
+    <ul class="nav-menu">
+      <li><a href="https://ai-km-jiang.vercel.app/">首頁</a></li>
+      <li><a href="https://ai-km-jiang.vercel.app/articles.html" class="active">深度文章</a></li>
+      <li><a href="https://ai-km-jiang.vercel.app/skills.html">Skills 下載</a></li>
+      <li><a href="https://ai-km-jiang.vercel.app/cases.html">服務方案</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="wc wc1"></div>
+  <div class="wc wc2"></div>
+  <div class="wc wc3"></div>
+  <div>
+    <div class="kicker">AI 應用 · 隱性知識提煉</div>
+    <h1>地圖不等於實際地形</h1>
+    <p>跟 AI 工作，真正卡住你的往往是你給的地圖太簡單，模型再強也幫不上。而把地圖畫清楚這件事，其實就是在提煉你自己的隱性知識。</p>
+  </div>
+  <figure class="hero-figure">
+    <svg viewBox="0 0 440 300" role="img" aria-label="左邊是一張簡單的地圖，一條直線；右邊是真實地形，路徑彎曲並佈滿問號">
+      <rect x="18" y="30" width="180" height="220" rx="14" fill="#fff" stroke="#d8cdb8"/>
+      <text x="108" y="24" text-anchor="middle" font-size="15" fill="#6a635a" font-family="'Cormorant Garamond',serif" font-style="italic">你的地圖</text>
+      <line x1="52" y1="215" x2="164" y2="70" stroke="#1a1612" stroke-width="2.5" stroke-dasharray="2 7" stroke-linecap="round"/>
+      <circle cx="52" cy="215" r="7" fill="#e85a4f"/>
+      <circle cx="164" cy="70" r="7" fill="none" stroke="#1a1612" stroke-width="2.5"/>
+      <rect x="242" y="30" width="180" height="220" rx="14" fill="#fbf6ec" stroke="#d8cdb8"/>
+      <text x="332" y="24" text-anchor="middle" font-size="15" fill="#6a635a" font-family="'Cormorant Garamond',serif" font-style="italic">實際地形</text>
+      <path d="M276 215 C 300 200 288 170 316 160 C 344 150 330 118 356 108 C 372 102 380 90 388 74" fill="none" stroke="#1a1612" stroke-width="3" stroke-linecap="round"/>
+      <circle cx="276" cy="215" r="7" fill="#e85a4f"/>
+      <circle cx="388" cy="74" r="7" fill="none" stroke="#1a1612" stroke-width="2.5"/>
+      <text x="300" y="120" font-size="18" fill="#5689b8" font-weight="700">?</text>
+      <text x="360" y="180" font-size="18" fill="#e85a4f" font-weight="700">?</text>
+      <text x="330" y="92" font-size="14" fill="#6a635a">△</text>
+      <text x="220" y="150" text-anchor="middle" font-size="12" fill="#7a5c3a" font-family="'Cormorant Garamond',serif" font-style="italic">落差</text>
+      <line x1="205" y1="140" x2="236" y2="140" stroke="#e85a4f" stroke-width="2" stroke-dasharray="3 4" marker-end="url(#ar)"/>
+      <line x1="236" y1="160" x2="205" y2="160" stroke="#e85a4f" stroke-width="2" stroke-dasharray="3 4" marker-end="url(#ar)"/>
+      <defs><marker id="ar" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto"><path d="M0 0 L6 3 L0 6 z" fill="#e85a4f"/></marker></defs>
+    </svg>
+    <figcaption>地圖是你給 AI 的指示，實際地形是任務真正發生的現場。兩者的落差，就是「未知」。</figcaption>
+  </figure>
+</section>
+
+<main>
+
+<section class="section" id="start">
+  <div class="inner">
+    <p class="lead">Anthropic 的工程師 Thariq 寫了一篇跟新模型 Fable 工作的心得，核心是一句老話：地圖不等於實際地形。地圖是你給 AI 的指示、脈絡、規則；實際地形是任務真正發生的現場，是程式碼、是真實世界、是那些你事前想不到的限制。兩者的落差，就是 AI 會踩坑、繞圈、亂猜的地方。我把這個框架接到我一直在做的隱性知識提煉：你先把地圖畫清楚，等於把腦中說不出來的判斷攤成明講的規則，AI 照著跑，真實任務的成功率就高很多。</p>
+    <div class="duo stack">
+      <div class="card a">
+        <b>適合誰讀</b>
+        <ul>
+          <li>已經天天用 AI，但常覺得「它怎麼又猜錯、又要我重講一遍」的人</li>
+          <li>想把自己的專業判斷交給 AI，卻發現最難的是「講清楚」的顧問、教練、知識工作者</li>
+          <li>想搞懂「為什麼同一個 AI，有人用得很神、有人用得很卡」的人</li>
+        </ul>
+      </div>
+      <div class="card b">
+        <b>你會帶走什麼</b>
+        <ul>
+          <li>看懂「地圖 vs 實際地形」這組比喻，知道 AI 出錯的根源在哪</li>
+          <li>一張「四種未知」的地圖，認出哪一種未知就是你的隱性知識</li>
+          <li>一套動手前就能做的提問法，把地圖畫清楚，附可直接貼的問句</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>一句話：地圖不等於實際地形</h2>
+    <p>這句話源自語言學家 Alfred Korzybski 的老命題，Thariq 把它用在跟 AI 工作上，我覺得講得很好。</p>
+    <p>他的拆法是這樣。地圖，是你要做的那件事的一個表述，也就是你給 AI 的提示、規則、脈絡。實際地形，是工作真正發生的地方，是那個有各種真實限制的現場。你交出去的永遠是地圖，但 AI 要走的是地形。</p>
+    <div class="meaning"><b>落差＝未知</b>地圖和實際地形之間對不上的部分，Thariq 叫它「未知」。AI 每撞到一個未知，就得靠「猜你想要什麼」來做決定。任務越大，它會撞到的未知越多。他說 Fable 是第一個讓他覺得「產出好不好，瓶頸在我能不能把未知講清楚」的模型。</div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>為什麼 AI 會出錯、會繞圈</h2>
+    <p>如果地圖畫得太簡單，AI 照著跑，一到真實地形就發現一堆你沒寫的狀況。這時它只有兩條路：卡住問你，或自己用「業界一般做法」硬猜。而業界一般做法，不一定是你要的那個做法。</p>
+    <p>Thariq 講得很精準，指揮 AI 是一種平衡。太具體，它會死守你的指令，哪怕轉個方向才對；太模糊，它會照它以為的最佳做法亂填。你沒把未知想清楚，就會兩頭都失敗。你不知道哪段路會有坑，也不知道哪段路其實很順、只是你希望它在那裡轉個彎。</p>
+    <div class="duo">
+      <div class="card a">
+        <b>地圖太模糊</b>
+        <p>你只丟一句「幫我做個儀表板」。AI 只能自己補一堆假設：要哪些欄位、給誰看、什麼風格。補錯了，你來回改十次還是差一點。</p>
+      </div>
+      <div class="card b">
+        <b>地圖夠清楚</b>
+        <p>你先講清楚：給誰看、要回答什麼問題、哪些數字最重要、哪裡我還沒想好。AI 照這張地圖跑，一次就八九不離十，剩下的只是微調。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>四種未知：哪一種是你的隱性知識</h2>
+    <p>Thariq 把「你要 AI 做的東西」拆成四種。這個四象限本身源自 Donald Rumsfeld 的講法，但拿來看跟 AI 工作，剛好把「你以為講清楚了、其實沒有」的地方全部照出來。</p>
+    <div class="quad">
+      <div class="q">
+        <small>KNOWN KNOWNS</small>
+        <b>已知的已知</b>
+        <p>你寫進提示裡的東西。你很清楚、也講得出來，這是你交給 AI 的地圖本身。</p>
+      </div>
+      <div class="q">
+        <small>KNOWN UNKNOWNS</small>
+        <b>已知的未知</b>
+        <p>你還沒想清楚，但你知道自己還沒想清楚。至少你知道要去問、去查。</p>
+      </div>
+      <div class="q hot">
+        <small>UNKNOWN KNOWNS</small>
+        <b>未知的已知 ＝ 隱性知識</b>
+        <p>明顯到你根本不會寫下來、但一看到就認得的東西。你懂，只是你沒意識到要講。這一格，就是隱性知識。</p>
+      </div>
+      <div class="q">
+        <small>UNKNOWN UNKNOWNS</small>
+        <b>未知的未知</b>
+        <p>你完全沒考慮過的。你不知道自己缺了哪塊知識，也不知道一件事最好能做到什麼程度。</p>
+      </div>
+    </div>
+    <div class="figure">
+      <svg viewBox="0 0 860 300" role="img" aria-label="四象限：橫軸是你知不知道自己知道，縱軸是你知不知道這件事">
+        <rect x="0" y="0" width="860" height="300" fill="#fffdf8"/>
+        <line x1="430" y1="30" x2="430" y2="270" stroke="#d8cdb8" stroke-width="1.5"/>
+        <line x1="70" y1="150" x2="800" y2="150" stroke="#d8cdb8" stroke-width="1.5"/>
+        <text x="250" y="95" text-anchor="middle" font-size="19" fill="#1a1612" font-weight="700">已知的已知</text>
+        <text x="250" y="120" text-anchor="middle" font-size="14" fill="#6a635a">＝你的提示</text>
+        <text x="610" y="95" text-anchor="middle" font-size="19" fill="#1a1612" font-weight="700">已知的未知</text>
+        <text x="610" y="120" text-anchor="middle" font-size="14" fill="#6a635a">＝你知道要去問的</text>
+        <rect x="452" y="176" width="316" height="86" rx="10" fill="#eef4ec" stroke="#5f7553" stroke-width="1.5"/>
+        <text x="610" y="212" text-anchor="middle" font-size="19" fill="#4a7a59" font-weight="700">未知的已知</text>
+        <text x="610" y="236" text-anchor="middle" font-size="15" fill="#4a7a59" font-weight="700">＝隱性知識（本文重點）</text>
+        <text x="250" y="215" text-anchor="middle" font-size="19" fill="#1a1612" font-weight="700">未知的未知</text>
+        <text x="250" y="240" text-anchor="middle" font-size="14" fill="#6a635a">＝你不知道自己不知道</text>
+      </svg>
+      <figcaption>四種未知。左下你不知道自己不知道，右下你懂卻沒講出來。把 AI 卡住的，多半是下面這兩格。</figcaption>
+    </div>
+    <div class="meaning"><b>為什麼「未知的已知」最關鍵</b>你之所以不把它寫下來，正是因為它對你太理所當然。但 AI 不在你腦袋裡，它看不到你覺得理所當然的那套判斷。你越專業，這一格越厚，也越容易漏。把它攤出來，AI 才接得住。</div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>把地圖畫清楚，就是提煉隱性知識</h2>
+    <p>這是我想接上去的一句。Thariq 在講怎麼跟 AI 把地圖對齊，而「把地圖畫清楚」這個動作，換到我天天在做的事，就是隱性知識提煉。</p>
+    <p>我幫顧問、教練、講師做的，常常就是這件事。他們腦子裡有一整套判斷，接一個案子怎麼開場、一份資料怎麼看出重點、一個學員的問題卡在哪，問他們「你怎麼決定的」，他們答不太出來。那套判斷其實一直都在，只是太熟了，熟到變成直覺，講不出口。</p>
+    <p>這種講不出口的判斷，就是隱性知識。而你把它一條一條攤成明講的規則，AI 就能照著你的方式做事。所以「畫地圖」跟「提煉隱性知識」，其實是同一個動作的兩個名字。你這麼做，其實是在把自己腦中最值錢、最說不清楚的那塊，變成一份能重複用、能交給別人、能累積的資產。</p>
+    <div class="caveat"><b>要分清楚</b>四種未知裡，只有「未知的已知」對得上隱性知識。「未知的未知」是你真的不懂的東西，得靠查、靠學、靠 AI 幫你補。這兩件事的解法不一樣，別混為一談。</div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>怎麼做：動手前就把地圖畫清楚</h2>
+    <p>Thariq 在原文列了一整套跟 AI 挖未知的做法。我挑幾個最好搬到非工程場景的，翻成給知識工作者用的版本。你不用每次都全用，當成一個工具箱。</p>
+    <div class="workflow-grid">
+      <div class="workflow-step">
+        <small>01 盲點掃描</small>
+        <b>找你的未知的未知</b>
+        <p>接一個新領域、新客戶之前，直接請 AI 幫你列「這件事我可能不知道自己不知道的地方」，並給它你的起點：你懂什麼、不懂什麼。</p>
+      </div>
+      <div class="workflow-step">
+        <small>02 訪談</small>
+        <b>把隱性判斷逼成文字</b>
+        <p>請 AI 一次問你一個問題，專挑會改變做法的地方問。你邊答邊發現，很多你以為講過的判斷，其實從沒寫下來。這招對提煉隱性知識最直接。</p>
+      </div>
+      <div class="workflow-step">
+        <small>03 參照</small>
+        <b>講不清楚就給範例</b>
+        <p>有些東西你就是描述不出來。這時給一個你喜歡的實例，讓 AI 去讀它「怎麼做到的」，比你用一堆形容詞去猜有效得多。</p>
+      </div>
+      <div class="workflow-step">
+        <small>04 先擬草案你來審</small>
+        <b>讓 AI 把地圖畫給你改</b>
+        <p>覺得差不多了，就請 AI 先擬一份計畫或初稿，把最可能要改的決定放最前面。你一看，常常就發現自己還有沒講清楚的地方。</p>
+      </div>
+    </div>
+    <h3>可以直接貼的問句</h3>
+    <div class="codeblock"><span class="c"># 盲點掃描</span>
+我要開始做（某件事），但這塊我不太熟。
+先幫我做一次盲點掃描，列出我可能不知道自己不知道的地方，
+再用我聽得懂的話解釋，讓我知道接下來該補什麼。
+
+<span class="c"># 訪談我，把判斷逼出來</span>
+針對這件事，一次問我一個問題，
+優先問那些「我的答案會改變整個做法」的問題，
+問到你有把握照我的方式做為止。</div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>模型會越來越強，地圖是你的責任</h2>
+    <p>Thariq 最後說了一句我很認同的話：模型越好，用對方法你能達成的就越多。當一個很長的任務最後做出來是錯的，通常代表你需要花更多時間，把你的未知先定義清楚。</p>
+    <p>每一次的盲點掃描、每一次的訪談、每一次給參照，都是一種很便宜的方式，讓你在「修起來變很貴」之前，先搞清楚自己原本不知道的事。AI 強不強是一回事，你能不能把地圖畫好，才是差距真正拉開的地方。</p>
+    <p>所以下一個任務，先別急著叫 AI 動手。先花十分鐘，請它幫你找出你的未知，把地圖畫清楚。這十分鐘，就是在提煉你自己最值錢的那塊知識。</p>
+
+    <h3>延伸閱讀</h3>
+    <div class="readmore">
+      <a href="https://x.com/trq212/status/2073100352921215386" target="_blank" rel="noopener">
+        <small>原文 · THARIQ（ANTHROPIC）</small>
+        <b>A Field Guide to Fable: Finding Your Unknowns ↗</b>
+        <span>本文的源頭。四種未知的框架、還有動手前中後一整套挖未知的技巧，都在裡面。</span>
+      </a>
+      <a href="https://ai-km-jiang.vercel.app/articles/how-to-train-your-ai-employee/">
+        <small>我的深度文</small>
+        <b>如何訓練自己的 AI 員工：員工＋顧問框架</b>
+        <span>想把「畫地圖」變成一套可重複的流程，這篇有我實際在用的隱性知識提煉七層。</span>
+      </a>
+    </div>
+
+    <div class="tagrow">
+      <span class="tag">隱性知識提煉</span>
+      <span class="tag">提示詞設計</span>
+      <span class="tag">AI 駕馭思維</span>
+      <span class="tag">地圖與實際地形</span>
+      <span class="tag">四種未知</span>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">江江教練 · AI 知識管理</div>
+    <div class="footer-links">
+      <a href="https://ai-km-jiang.vercel.app/articles.html">← 回深度文章總站</a>
+      <a href="https://ai-km-jiang.vercel.app/">首頁</a>
+      <a href="https://ai-km-jiang.vercel.app/skills.html">Skills 下載</a>
+      <a href="https://www.threads.com/@jiang_yude_coach" target="_blank" rel="noopener">Threads ↗</a>
+    </div>
+    <div class="footer-note">這是一篇觀點文章，整理我對「地圖不等於實際地形」的看法，供你參考。概念源頭為 Anthropic 工程師 Thariq 的公開文章，已於文中標註連結。</div>
+  </div>
+</footer>
+
+<div class="lightbox" id="lightbox" aria-hidden="true" style="position:fixed;inset:0;z-index:10000;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(12,10,8,.92);cursor:zoom-out">
+  <span style="position:fixed;top:18px;right:24px;color:#fff;font-size:34px;font-weight:700;cursor:pointer;opacity:.85">×</span>
+  <img id="lightbox-img" src="" alt="放大檢視" style="max-width:96vw;max-height:92vh;border-radius:10px">
+</div>
+<script>
+(function(){
+  var box=document.getElementById('lightbox'),boxImg=document.getElementById('lightbox-img');
+  document.querySelectorAll('.hero-figure svg,.figure svg').forEach(function(el){
+    el.style.cursor='zoom-in';
+    el.addEventListener('click',function(){
+      var s=new XMLSerializer().serializeToString(el);
+      boxImg.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(s);
+      box.style.display='flex';box.setAttribute('aria-hidden','false');
+    });
+  });
+  function close(){box.style.display='none';box.setAttribute('aria-hidden','true');boxImg.src='';}
+  box.addEventListener('click',close);
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
+})();
+</script>
+</body>
+</html>
