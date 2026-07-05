@@ -230,6 +230,25 @@ window.COURSES = [
     }
   },
   {
+    id: "2026-07-05-slide-to-skill",
+    date: "2026-07-05",
+    time: "20:00",
+    duration_min: 60,
+    title: "每次都從頭重做簡報？把流程存成技能包",
+    type_label: "免費線上講座",
+    image: "images/courses/2026-07-05-slide-to-skill.jpg",
+    venue_mode: "online",
+    host: "江江教練",
+    tags: ["簡報", "課前問卷", "技能包", "AI工作流", "知識累積"],
+    summary: "從一個實際工作問題出發：把課前問卷加課綱變成一份簡報，再把整套流程存成可重複使用的技能包，附一份合成示範問卷可下載練習。",
+    detail_url: "courses/2026-07-05-slide-to-skill/",
+    materials: [],
+    registration: {
+      status: "open",
+      note: "免費參加，講座連結在 LINE 社群記事本公布"
+    }
+  },
+  {
     id: "2026-07-08-marketing-1",
     date: "2026-07-08",
     time: "19:00",
