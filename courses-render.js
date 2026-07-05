@@ -331,13 +331,11 @@
     return `
       <div class="list-card course-card" data-course-id="${escapeHtml(o.id)}">
         <div class="card-body">
-          <div class="card-meta"><span class="card-date" style="font-weight:700;color:var(--c-coral);">${escapeHtml(o.price)}${o.price==='洽談'?'':' 元'}</span></div>
+          <div class="card-meta"><span class="card-date" style="font-weight:700;color:var(--c-coral);">${escapeHtml(o.price)}</span></div>
           <h3>${escapeHtml(o.title)}</h3>
           <div class="card-modes">${vn}${lv}</div>
           <p style="font-size:0.98rem;color:var(--ink-soft);line-height:1.7;margin:10px 0 0;">${escapeHtml(o.brief)}</p>
-          <div class="course-cta open" style="margin-top:12px;">
-            <a class="cta-btn" href="${escapeHtml(o.anchor)}">看課程詳情與報名 →</a>
-          </div>
+          ${o.anchor ? `<div class="course-cta open" style="margin-top:12px;"><a class="cta-btn" href="${escapeHtml(o.anchor)}">${escapeHtml(o.cta || '瞭解更多 →')}</a></div>` : ''}
         </div>
       </div>`;
   }
@@ -357,7 +355,7 @@
       const offers = (window.PAID_OFFERS || []).filter(o => hitVenue(o.venue_mode) && hitQ([o.title, o.brief, o.level, (o.tags||[]).join(' ')]));
       const paidRuns = COURSES.filter(c => inferType(c) === 'paid' && hitVenue(c.venue_mode) && hitQ([c.title, c.summary||'', (c.tags||[]).join(' ')]));
       if (offers.length + paidRuns.length) {
-        html += header('收費課程', offers.length + paidRuns.length, '常設課程與工作坊，點卡片看完整介紹與報名。');
+        html += header('收費課程', offers.length + paidRuns.length, '服務方案重整設計中，價格與細節陸續公告。');
         html += grid(offers.map(paidCardHTML).concat(paidRuns.map(cardHTML)));
       }
     }

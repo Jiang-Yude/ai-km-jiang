@@ -415,59 +415,39 @@ window.COURSES = [
  */
 window.PAID_OFFERS = [
   {
-    id: "offer-prerec",
-    title: "預錄課四支",
-    price: "500–1000",
-    brief: "規劃你的 AI 辦公室（頭陣）、講師簡報流、小編圖文流、文科生 3X4 資料整理。七月底起陸續上架。",
+    id: "offer-invite",
+    title: "課程邀約",
+    price: "講師費 2,000 元／小時",
+    brief: "企業、學校、社群邀約授課。不含車馬費，主題可客製，或從講過的場次挑。",
+    level: "邀約",
+    venue_mode: "hybrid",
+    venue_label: "到你那裡或線上",
+    tags: ["邀約", "企業", "學校", "社群"],
+    anchor: "cases.html",
+    cta: "談邀約 →"
+  },
+  {
+    id: "offer-online",
+    title: "線上課程",
+    price: "規劃中",
+    brief: "預錄課程重整規劃中，上架後在這裡公告。",
     level: "入門",
     venue_mode: "online",
-    venue_label: "線上預錄",
-    tags: ["預錄課", "AI辦公室", "3X4", "簡報", "圖文"],
-    anchor: "offers.html#card-prerec"
+    venue_label: "線上",
+    tags: ["預錄課", "線上課程"],
+    anchor: null
   },
   {
-    id: "offer-3000",
-    title: "打造你的 AI 員工",
-    price: "3,000",
-    brief: "三小時手把手實體工作坊，江江在旁邊看你操作、現場糾正，當天做出你的知識庫雛形。",
-    level: "實作",
-    venue_mode: "physical",
-    venue_label: "實體工作坊",
-    tags: ["AI員工", "知識庫", "工作坊"],
-    anchor: "offers.html#card-3000"
-  },
-  {
-    id: "offer-8000",
-    title: "團隊 AI 工作坊",
-    price: "8,000",
-    brief: "把 AI 帶進團隊的起手式，一場工作坊讓團隊看見同一套工作方式。",
+    id: "offer-workshop",
+    title: "實體一天工作坊＋長期陪跑",
+    price: "規劃中",
+    brief: "一天實體工作坊加長期陪跑，服務方案設計中，想帶團隊導入可以先聊。",
     level: "團隊導入",
     venue_mode: "physical",
     venue_label: "實體",
-    tags: ["團隊", "企業", "工作坊"],
-    anchor: "offers.html#card-8000"
-  },
-  {
-    id: "offer-18000",
-    title: "一個月深度陪跑",
-    price: "18,000",
-    brief: "一個月陪你把 AI 工作流真的跑起來，跑得動、帶得走。",
-    level: "團隊導入",
-    venue_mode: "hybrid",
-    venue_label: "線上＋實體",
-    tags: ["陪跑", "團隊", "顧問"],
-    anchor: "offers.html#card-18000"
-  },
-  {
-    id: "offer-consulting",
-    title: "顧問合作",
-    price: "洽談",
-    brief: "組織導入、知識管理顧問，依需求規劃。",
-    level: "團隊導入",
-    venue_mode: "hybrid",
-    venue_label: "依需求",
-    tags: ["顧問", "企業", "組織"],
-    anchor: "offers.html#card-consulting"
+    tags: ["工作坊", "陪跑", "團隊"],
+    anchor: "cases.html",
+    cta: "先聊聊 →"
   }
 ];
 
