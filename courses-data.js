@@ -408,6 +408,69 @@ window.COURSES = [
   }
 ];
 
+/* ─── 常設收費課程（課程總覽頁「收費課程」區資料源） ───
+ * 與 window.COURSES 分開：COURSES 是有日期的場次，PAID_OFFERS 是常設報名項目。
+ * 舊渲染器（首頁最近的課、邀約授課頁）只讀 COURSES，不受這個陣列影響。
+ * 詳細介紹與報名都在 offers.html 對應錨點（銷售頁保留不動）。
+ */
+window.PAID_OFFERS = [
+  {
+    id: "offer-prerec",
+    title: "預錄課四支",
+    price: "500–1000",
+    brief: "規劃你的 AI 辦公室（頭陣）、講師簡報流、小編圖文流、文科生 3X4 資料整理。七月底起陸續上架。",
+    level: "入門",
+    venue_mode: "online",
+    venue_label: "線上預錄",
+    tags: ["預錄課", "AI辦公室", "3X4", "簡報", "圖文"],
+    anchor: "offers.html#card-prerec"
+  },
+  {
+    id: "offer-3000",
+    title: "打造你的 AI 員工",
+    price: "3,000",
+    brief: "三小時手把手實體工作坊，江江在旁邊看你操作、現場糾正，當天做出你的知識庫雛形。",
+    level: "實作",
+    venue_mode: "physical",
+    venue_label: "實體工作坊",
+    tags: ["AI員工", "知識庫", "工作坊"],
+    anchor: "offers.html#card-3000"
+  },
+  {
+    id: "offer-8000",
+    title: "團隊 AI 工作坊",
+    price: "8,000",
+    brief: "把 AI 帶進團隊的起手式，一場工作坊讓團隊看見同一套工作方式。",
+    level: "團隊導入",
+    venue_mode: "physical",
+    venue_label: "實體",
+    tags: ["團隊", "企業", "工作坊"],
+    anchor: "offers.html#card-8000"
+  },
+  {
+    id: "offer-18000",
+    title: "一個月深度陪跑",
+    price: "18,000",
+    brief: "一個月陪你把 AI 工作流真的跑起來，跑得動、帶得走。",
+    level: "團隊導入",
+    venue_mode: "hybrid",
+    venue_label: "線上＋實體",
+    tags: ["陪跑", "團隊", "顧問"],
+    anchor: "offers.html#card-18000"
+  },
+  {
+    id: "offer-consulting",
+    title: "顧問合作",
+    price: "洽談",
+    brief: "組織導入、知識管理顧問，依需求規劃。",
+    level: "團隊導入",
+    venue_mode: "hybrid",
+    venue_label: "依需求",
+    tags: ["顧問", "企業", "組織"],
+    anchor: "offers.html#card-consulting"
+  }
+];
+
 /* ─── 全域 CTA 預設文案 ─── */
 window.CTA_DEFAULTS = {
   open_label: "報名 ↗",
