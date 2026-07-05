@@ -1,0 +1,43 @@
+#!/bin/bash
+# ─── 官網 repo pre-push 品質閘門（2026-07-06 立）───
+# 任何人（Claude / Codex / 排程 / 江江本人）push 到 main，先過輕量檢查；不過就推不出去。
+# 綁定方式：git config core.hooksPath scripts/git-hooks（publish.sh 每次自動確保）
+# 只做「唯讀檢查」，不重生檔案（避免 push 途中弄髒工作樹）；完整重建在 publish.sh 的 preflight。
+set -uo pipefail
+REPO="$(git rev-parse --show-toplevel)"
+cd "$REPO"
+
+PUSH_MAIN=0
+while read -r local_ref local_sha remote_ref remote_sha; do
+  [[ "$remote_ref" == "refs/heads/main" ]] && PUSH_MAIN=1
+done
+[[ $PUSH_MAIN -eq 0 ]] && exit 0   # 推分支不擋（分支是工作區）
+
+echo "🔒 pre-push 品質閘門（push main）…"
+FAIL=0
+
+if node scripts/verify-interlink.js 2>&1 | grep -q "結果：PASS"; then
+  echo "  ✅ 文章互聯"
+else
+  echo "  ❌ verify-interlink FAIL（有文章缺互聯腳本）"; FAIL=1
+fi
+
+if node scripts/link-graph.js check 2>&1 | grep -q "結果：PASS"; then
+  echo "  ✅ 雙向連結"
+else
+  echo "  ❌ link-graph 有斷連"; FAIL=1
+fi
+
+if python3 scripts/check-links.py; then
+  echo "  ✅ 內部連結"
+else
+  echo "  ❌ 有內部斷鏈（見上）"; FAIL=1
+fi
+
+if [[ $FAIL -ne 0 ]]; then
+  echo ""
+  echo "⛔ push 已擋下。修完再推；正式發佈請走：bash scripts/publish.sh \"訊息\""
+  exit 1
+fi
+echo "🟢 pre-push 通過"
+exit 0

@@ -8,6 +8,9 @@ cd "$(dirname "$0")/.."
 
 MSG="${1:?用法：bash scripts/publish.sh \"commit 訊息\"}"
 
+# 確保 git 品質閘門綁定（pre-push）
+git config core.hooksPath scripts/git-hooks
+
 echo "▶ Preflight…"
 bash scripts/preflight.sh || { echo "⛔ preflight 未過，取消發佈"; exit 1; }
 
