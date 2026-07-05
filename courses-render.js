@@ -322,6 +322,86 @@
     target.innerHTML = html;
   };
 
+  // ─── 課程總覽頁：收費 + 免費 + 邀約 合併渲染（courses.html 用；純新增，不影響上方三個渲染器） ───
+  let _mFilter = { type: 'all', venue: 'all', q: '' };
+  const LEVEL_COLOR = { '入門': 'var(--c-mint)', '實作': 'var(--c-sand)', '團隊導入': 'var(--c-coral)' };
+  function paidCardHTML(o) {
+    const lv = o.level ? `<span class="mode-badge" style="background:transparent;border:1px solid ${LEVEL_COLOR[o.level]||'var(--line)'};color:${LEVEL_COLOR[o.level]||'var(--ink-soft)'}">${escapeHtml(o.level)}</span>` : '';
+    const vn = o.venue_label ? `<span class="mode-badge venue-${o.venue_mode||'tbd'}">${escapeHtml(o.venue_label)}</span>` : '';
+    return `
+      <div class="list-card course-card" data-course-id="${escapeHtml(o.id)}">
+        <div class="card-body">
+          <div class="card-meta"><span class="card-date" style="font-weight:700;color:var(--c-coral);">${escapeHtml(o.price)}${o.price==='洽談'?'':' 元'}</span></div>
+          <h3>${escapeHtml(o.title)}</h3>
+          <div class="card-modes">${vn}${lv}</div>
+          <p style="font-size:0.98rem;color:var(--ink-soft);line-height:1.7;margin:10px 0 0;">${escapeHtml(o.brief)}</p>
+          <div class="course-cta open" style="margin-top:12px;">
+            <a class="cta-btn" href="${escapeHtml(o.anchor)}">看課程詳情與報名 →</a>
+          </div>
+        </div>
+      </div>`;
+  }
+  window.renderMergedCourses = function (selector) {
+    const target = document.querySelector(selector);
+    if (!target) return;
+    const F = _mFilter;
+    const q = (F.q || '').toLowerCase();
+    const hitQ = (parts) => !q || parts.join(' ').toLowerCase().includes(q);
+    const hitVenue = (v) => F.venue === 'all' || (v || '') === F.venue;
+    const grid = (items) => `<div class="list-grid cols-3">${items.join('')}</div>`;
+    const header = (t, n, intro) => `<div class="group-header"><h2>${t}</h2><span class="group-count">${n} 項</span></div>` + (intro ? `<p class="group-intro">${intro}</p>` : '');
+    let html = '';
+
+    // 收費課程（常設 offers + 有日期的付費場次）
+    if (F.type === 'all' || F.type === 'paid') {
+      const offers = (window.PAID_OFFERS || []).filter(o => hitVenue(o.venue_mode) && hitQ([o.title, o.brief, o.level, (o.tags||[]).join(' ')]));
+      const paidRuns = COURSES.filter(c => inferType(c) === 'paid' && hitVenue(c.venue_mode) && hitQ([c.title, c.summary||'', (c.tags||[]).join(' ')]));
+      if (offers.length + paidRuns.length) {
+        html += header('收費課程', offers.length + paidRuns.length, '常設課程與工作坊，點卡片看完整介紹與報名。');
+        html += grid(offers.map(paidCardHTML).concat(paidRuns.map(cardHTML)));
+      }
+    }
+    // 免費講座（未來場次 + 過去目錄）
+    if (F.type === 'all' || F.type === 'free') {
+      const free = COURSES.filter(c => inferType(c) === 'free' && hitVenue(c.venue_mode) && hitQ([c.title, c.summary||'', (c.tags||[]).join(' ')]));
+      const up = free.filter(isUpcoming).sort((a,b)=>parseDate(a.date)-parseDate(b.date));
+      const past = free.filter(isPast).sort((a,b)=>parseDate(b.date)-parseDate(a.date));
+      if (up.length) { html += header('免費講座 · 近期', up.length); html += grid(up.map(cardHTML)); }
+      else if (F.type === 'free' || F.type === 'all') {
+        html += header('免費講座', 0, '');
+        html += `<div class="note-box" style="margin-bottom:28px;"><h3>下個月的免費課表還在規劃中</h3><p>加入 <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener" style="color:var(--c-coral);">LINE 社群</a> 提出你想聽的主題，好的問題很可能就是下一場講座。</p></div>`;
+      }
+      if (past.length) { html += header('免費講座 · 過去目錄', past.length, '已上過的講座，含完整簡報或回放，挑有興趣的補看。'); html += grid(past.map(cardHTML)); }
+    }
+    // 邀約授課（外部授課 + Podcast）
+    if (F.type === 'all' || F.type === 'invited') {
+      const inv = COURSES.filter(c => (inferType(c) === 'external' || inferType(c) === 'podcast') && hitVenue(c.venue_mode) && hitQ([c.title, c.summary||'', (c.tags||[]).join(' ')]));
+      const up = inv.filter(isUpcoming).sort((a,b)=>parseDate(a.date)-parseDate(b.date));
+      const past = inv.filter(isPast).sort((a,b)=>parseDate(b.date)-parseDate(a.date));
+      if (up.length) { html += header('邀約授課 · 近期受邀', up.length); html += grid(up.map(cardHTML)); }
+      if (past.length) { html += header('邀約授課 · 講過的場次', past.length, '企業、學校、社群的邀約場。想邀課請走服務方案頁。'); html += grid(past.map(cardHTML)); }
+    }
+
+    if (!html) html = `<p style="text-align:center;color:var(--ink-faint);padding:48px;">沒有符合條件的課程，換個篩選或關鍵字試試。</p>`;
+    target.innerHTML = html;
+    if (window.attachLocalSpotlight) target.querySelectorAll('.list-card').forEach(window.attachLocalSpotlight);
+  };
+
+  document.addEventListener('DOMContentLoaded', () => {
+    if (!document.getElementById('merged-courses')) return;
+    window.renderMergedCourses('#merged-courses');
+    const s = document.getElementById('merged-search');
+    if (s) s.addEventListener('input', e => { _mFilter.q = e.target.value.trim(); window.renderMergedCourses('#merged-courses'); });
+    document.querySelectorAll('[data-mtype]').forEach(chip => chip.addEventListener('click', () => {
+      document.querySelectorAll('[data-mtype]').forEach(c => c.classList.remove('active'));
+      chip.classList.add('active'); _mFilter.type = chip.dataset.mtype; window.renderMergedCourses('#merged-courses');
+    }));
+    document.querySelectorAll('[data-mvenue]').forEach(chip => chip.addEventListener('click', () => {
+      document.querySelectorAll('[data-mvenue]').forEach(c => c.classList.remove('active'));
+      chip.classList.add('active'); _mFilter.venue = chip.dataset.mvenue; window.renderMergedCourses('#merged-courses');
+    }));
+  });
+
   // ─── 自動執行（看頁面有沒有 target） ───
   document.addEventListener('DOMContentLoaded', () => {
     if (document.getElementById('invited-talks')) {

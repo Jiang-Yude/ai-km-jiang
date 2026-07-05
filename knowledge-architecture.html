@@ -1,0 +1,320 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="robots" content="index,follow">
+<title>知識架構 · 江江教練</title>
+<link rel="canonical" href="https://ai-km-jiang.vercel.app/knowledge-architecture.html" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://ai-km-jiang.vercel.app/knowledge-architecture.html" />
+<meta property="og:title" content="知識架構 · 江江教練" />
+<meta property="og:description" content="我是隱性知識提煉師。這頁把我的技術做一個概括：文件就是系統、知識分三庫再加一層控制層，以及這套系統三年來怎麼長出來的。" />
+<meta property="og:image" content="https://ai-km-jiang.vercel.app/images/intro-jiang.png" />
+<meta name="description" content="我是隱性知識提煉師。這頁把我的技術做一個概括：文件就是系統、知識分三庫再加一層控制層，以及這套系統三年來怎麼長出來的。" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" />
+<link rel="stylesheet" href="styles.css?v=20260603-learning-map" />
+<style>
+/* ── 自 index.html 內嵌樣式抽出的公版（pillar 卡與區塊殼），維持與首頁一致 ── */
+.pillars-section { padding: 72px 0 64px; background: var(--bg); position: relative; overflow: hidden; }
+.pillars-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 48px; }
+@media (max-width: 768px) { .pillars-grid { grid-template-columns: 1fr; gap: 18px; } }
+.pillar-card { background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius-xl); padding: 36px 32px; position: relative; overflow: hidden; transition: transform .3s, box-shadow .3s, border-color .3s; }
+.pillar-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-strong); border-color: var(--c-sand); }
+.pillar-num { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 3.6rem; font-weight: 500; line-height: 1; margin-bottom: 12px; color: var(--line); }
+.pillar-title { font-family: 'Cormorant Garamond', serif; font-size: 2rem; font-weight: 500; margin: 0 0 8px; color: var(--ink); letter-spacing: 0.01em; }
+.pillar-sub { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 1.18rem; color: var(--ink-faint); margin: 0 0 14px; font-weight: 500; }
+.pillar-desc { font-size: 1.06rem; color: var(--ink-soft); line-height: 1.75; margin: 0; }
+.tiers-section { padding: 72px 0 64px; background: var(--bg); position: relative; overflow: hidden; }
+</style>
+</head>
+<body>
+
+<nav class="top">
+  <a class="nav-brand-img" href="index.html"><img src="images/footer-signature.png" alt="江江教練 | 江昱德" /></a>
+  <button class="nav-toggle" aria-label="選單"><span></span><span></span><span></span></button>
+  <ul class="nav-menu">
+      <li><a href="index.html">首頁</a></li>
+      <li><a href="knowledge-architecture.html" class="active">知識架構</a></li>
+      <li><a href="courses.html">課程</a></li>
+      <li><a href="articles.html">深度文章</a></li>
+      <li><a href="skills.html">技能包下載</a></li>
+      <li><a href="cases.html">服務方案</a></li>
+      <li class="lang-switch"><a href="en/index.html" hreflang="en">EN</a></li>
+    </ul>
+</nav>
+
+<!-- Hero -->
+<section class="pillars-section" style="padding-top:64px;">
+  <div class="container">
+    <div class="section-head-center">
+      <div class="eyebrow">知識架構</div>
+      <h2 class="section-title">我怎麼把知識，<span class="italic">變成一套 AI 幫得上忙的系統</span></h2>
+      <p class="section-sub">我是隱性知識提煉師：幫你把腦中知道、但還沒寫下來的判斷與經驗提煉出來，累積成你自己的知識資產。<br />這頁把我的技術做一個概括。想學細節就看深度文章，想直接用就下載技能包，想找人一起做就看服務方案。</p>
+    </div>
+  </div>
+</section>
+
+<!-- 核心觀念：我的文件就是我的系統（自首頁整併） -->
+<section class="docsys-section" style="padding:72px 0; background:var(--bg-soft);">
+  <div class="container">
+    <div class="section-head-center">
+      <div class="eyebrow">核心觀念</div>
+      <h2 class="section-title">我的文件，就是<span class="italic">我的系統</span></h2>
+      <p class="section-sub">把自己的資料整理好，讓 AI 跑就好。工具來來去去，文件是不被鎖定的系統。</p>
+    </div>
+    <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:36px; align-items:center; max-width:980px; margin:8px auto 0;">
+      <div>
+        <p style="font-size:17px; line-height:1.85; color:var(--ink-soft); margin:0 0 16px;">一個 AI 能跑的系統，簡單說就是 Agent。它可以是文件、劇本、企劃，甚至程式碼。滿足三件事，它就成立：</p>
+        <div style="display:flex; flex-direction:column; gap:10px;">
+          <div style="display:flex; gap:12px; align-items:flex-start; background:var(--paper); border:1px solid var(--line-soft); border-radius:12px; padding:14px 16px;">
+            <span style="font-weight:700; color:var(--c-sand); font-size:15px; flex:none;">01</span>
+            <span style="font-size:16px; line-height:1.6; color:var(--ink);"><strong style="font-weight:700;">AI 看得懂</strong>　用自然語言把內容描述清楚。</span>
+          </div>
+          <div style="display:flex; gap:12px; align-items:flex-start; background:var(--paper); border:1px solid var(--line-soft); border-radius:12px; padding:14px 16px;">
+            <span style="font-weight:700; color:var(--c-sand); font-size:15px; flex:none;">02</span>
+            <span style="font-size:16px; line-height:1.6; color:var(--ink);"><strong style="font-weight:700;">知道你要它做什麼</strong>　文件裡寫明任務與規則。</span>
+          </div>
+          <div style="display:flex; gap:12px; align-items:flex-start; background:var(--paper); border:1px solid var(--line-soft); border-radius:12px; padding:14px 16px;">
+            <span style="font-weight:700; color:var(--c-sand); font-size:15px; flex:none;">03</span>
+            <span style="font-size:16px; line-height:1.6; color:var(--ink);"><strong style="font-weight:700;">它真的能執行</strong>　AI 讀得到、跑得動。</span>
+          </div>
+        </div>
+        <a href="articles/docs-as-system-design-agent/" style="display:inline-block; margin-top:18px; color:var(--c-sand); font-weight:700; font-size:16px; text-decoration:none;">讀完整篇：非工程師怎麼設計 Agent →</a>
+      </div>
+      <figure style="margin:0; background:var(--bg-soft); border:1px solid var(--line); border-radius:18px; padding:22px 20px 18px; box-shadow:var(--shadow);">
+        <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:9px;">
+          <div style="background:var(--paper); border:1px solid var(--line); border-radius:10px; padding:11px 5px; text-align:center; font-weight:700; font-size:13px; color:var(--ink); line-height:1.3;">Codex<span style="display:block; font-size:11px; font-weight:500; color:var(--ink-faint); margin-top:2px;">OpenAI</span></div>
+          <div style="background:var(--paper); border:1px solid var(--line); border-radius:10px; padding:11px 5px; text-align:center; font-weight:700; font-size:13px; color:var(--ink); line-height:1.3;">Claude Cowork<span style="display:block; font-size:11px; font-weight:500; color:var(--ink-faint); margin-top:2px;">Anthropic</span></div>
+          <div style="background:var(--paper); border:1px solid var(--line); border-radius:10px; padding:11px 5px; text-align:center; font-weight:700; font-size:13px; color:var(--ink); line-height:1.3;">龍蝦 AI<span style="display:block; font-size:11px; font-weight:500; color:var(--ink-faint); margin-top:2px;">OpenClaw</span></div>
+          <div style="background:var(--paper); border:1px solid var(--line); border-radius:10px; padding:11px 5px; text-align:center; font-weight:700; font-size:13px; color:var(--ink); line-height:1.3;">Obsidian<span style="display:block; font-size:11px; font-weight:500; color:var(--ink-faint); margin-top:2px;">知識庫前端</span></div>
+        </div>
+        <div style="text-align:center; color:var(--c-sand); font-size:20px; margin:8px 0; line-height:1;">↕</div>
+        <div style="background:linear-gradient(120deg,#c9a27a,#b58a63); color:#3a2a18; border-radius:12px; padding:20px; text-align:center; font-size:22px; font-weight:800; letter-spacing:.05em;">我的文件</div>
+        <figcaption style="text-align:center; font-size:13px; color:var(--ink-faint); margin-top:14px; line-height:1.65;">不管換哪一個 AI 工具，核心都是同一份文件。</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- 三庫 + 控制層（自首頁整併，移除比較句 eyebrow） -->
+<section class="tiers-section" style="background:var(--bg);">
+  <div class="container">
+    <div class="section-head-center">
+      <div class="eyebrow">怎麼分層</div>
+      <h2 class="section-title">你的知識，分三庫；<br />上面還有<span class="italic">一層控制層</span></h2>
+      <p class="section-sub">留給 AI 的是資料，它只能幫你查；留的是判斷，它才能替你出手。</p>
+    </div>
+    <div class="pillars-grid">
+      <div class="pillar-card">
+        <div class="pillar-num" style="color:rgba(86,137,184,0.22);">01</div>
+        <h3 class="pillar-title" style="color:var(--c-sky);">資料庫</h3>
+        <p class="pillar-desc">只存。文件、會議、截圖先集中進來，AI 查得到。</p>
+      </div>
+      <div class="pillar-card">
+        <div class="pillar-num" style="color:rgba(232,90,79,0.20);">02</div>
+        <h3 class="pillar-title" style="color:var(--c-coral);">知識庫</h3>
+        <p class="pillar-desc">存＋連。資料整理成有關聯的知識，AI 看見關聯，開始複利。</p>
+      </div>
+      <div class="pillar-card">
+        <div class="pillar-num" style="color:rgba(95,117,83,0.22);">03</div>
+        <h3 class="pillar-title" style="color:var(--c-sage);">規則庫</h3>
+        <p class="pillar-desc">你的判斷。把判斷寫成規則與技能包，AI 帶著你的判斷出手。</p>
+      </div>
+    </div>
+    <div style="margin-top:20px;">
+      <div class="pillar-card" style="border-color:var(--c-sand); background:var(--paper); border-radius:var(--radius-xl);">
+        <div class="pillar-num" style="color:rgba(160,129,68,0.28);">＋</div>
+        <h3 class="pillar-title" style="font-size:1.6rem; color:var(--c-sand);">控制層</h3>
+        <p class="pillar-desc" style="font-size:1.1rem;">AGENTS.md、技能包路由、標籤字典、Hook、審查規則。決定整套怎麼運轉的那一層。</p>
+      </div>
+    </div>
+    <div style="margin-top:40px; max-width:720px; margin-left:auto; margin-right:auto;">
+      <p style="font-size:1.1rem; color:var(--ink-soft); line-height:1.85; text-align:center; background:var(--bg-soft); border:1px solid var(--line-soft); border-radius:var(--radius-lg); padding:28px 32px;">最後一關，AI 先整理，人再決定要不要讓它進正式知識庫。這一關的判準與審批，就是江江幫你守的價值，輔助你決策、累積你自己的知識資產。</p>
+    </div>
+  </div>
+</section>
+
+<!-- 知識庫成長史（時間軸 + 四象限地圖） -->
+<style>
+  .gh-wrap{padding:60px 0; background:var(--bg);}
+  .gh-switch{display:flex; gap:8px; justify-content:center; margin:20px 0 6px;}
+  .gh-vbtn{font:inherit; font-size:14px; font-weight:600; padding:7px 16px; border-radius:999px; border:1px solid var(--line); background:var(--paper); color:var(--ink-soft); cursor:pointer;}
+  .gh-vbtn.on{background:var(--c-sand); color:#fff; border-color:var(--c-sand);}
+  .gh-era{padding:30px 0;} .gh-era.alt{background:var(--bg-soft);}
+  .gh-ei{max-width:900px; margin:0 auto; position:relative; padding:0 20px;}
+  .gh-ei::before{content:""; position:absolute; top:90px; bottom:8px; left:50%; width:2px; background:var(--line); transform:translateX(-50%);}
+  .gh-band{text-align:center; margin-bottom:18px; position:relative; z-index:2;}
+  .gh-band .y{font-family:'Cormorant Garamond',serif; font-size:52px; font-weight:600; line-height:.9; color:var(--ac);}
+  .gh-band .n{font-size:18px; font-weight:700; margin-top:2px;}
+  .gh-band .o{font-size:14px; color:var(--ink-faint); max-width:480px; margin:6px auto 0;}
+  .gh-row{position:relative; width:50%; padding:0 32px 18px 0; z-index:2;}
+  .gh-row.r{left:50%; padding:0 0 18px 32px; text-align:left;} .gh-row.l{left:0; text-align:right;}
+  .gh-row .d{position:absolute; top:18px; width:12px; height:12px; border-radius:50%; background:var(--paper); border:3px solid var(--ac); z-index:3;}
+  .gh-row.l .d{right:-6px;} .gh-row.r .d{left:-6px;}
+  .gh-card{background:var(--paper); border:1px solid var(--line); border-radius:13px; padding:14px 16px; box-shadow:0 3px 12px rgba(90,70,40,.06); text-align:left; display:inline-block; width:100%;}
+  .gh-dt{font-family:'Cormorant Garamond',serif; font-size:19px; font-weight:600; color:var(--ac);}
+  .gh-tt{font-size:17px; font-weight:700; margin-top:3px;}
+  .gh-fl{font-size:11px; font-weight:700; padding:1px 8px; border-radius:999px; margin-left:6px; background:#fdeae7; color:var(--c-coral);}
+  .gh-mn{font-size:14px; color:var(--ink-soft); margin-top:4px;}
+  .gh-qt{font-family:'Cormorant Garamond',serif; font-size:17px; font-style:italic; font-weight:600; color:var(--ac); margin-top:7px;}
+  .gh-lk{margin-top:10px; display:flex; flex-wrap:wrap; gap:7px;}
+  .gh-lk a{font-size:13px; font-weight:700; text-decoration:none; padding:5px 12px; border-radius:8px; background:var(--ac); color:#fff;}
+  .gh-lk a.sk{background:transparent; color:var(--ac); border:1.5px solid var(--ac);}
+  .gh-lk .ph{font-size:12.5px; color:var(--ink-faint); padding:5px 10px; border:1px dashed var(--line); border-radius:8px;}
+  .gh-mapwrap{max-width:800px; margin:10px auto 0; padding:0 54px;}
+  .gh-yt,.gh-yb{text-align:center; font-weight:700; font-size:14px; color:var(--ink-soft);}
+  .gh-yt{margin-bottom:8px;} .gh-yb{margin-top:8px;}
+  .gh-mr{display:flex; align-items:center; gap:10px;}
+  .gh-ax{writing-mode:vertical-rl; font-weight:700; font-size:14px; color:var(--ink-soft); white-space:nowrap;}
+  .gh-ax.r{transform:rotate(180deg);}
+  .gh-grid{position:relative; flex:1; aspect-ratio:1/0.82; border:1px solid var(--line); border-radius:14px; overflow:hidden; background:var(--paper);}
+  .gh-q{position:absolute; width:50%; height:50%;}
+  .gh-q1{top:0;left:0;background:rgba(160,129,68,.09);} .gh-q2{top:0;left:50%;background:rgba(232,90,79,.07);}
+  .gh-q3{top:50%;left:0;background:rgba(95,117,83,.08);} .gh-q4{top:50%;left:50%;background:rgba(86,137,184,.08);}
+  .gh-ch{position:absolute;top:50%;left:0;right:0;height:1px;background:var(--line);}
+  .gh-cv{position:absolute;left:50%;top:0;bottom:0;width:1px;background:var(--line);}
+  .gh-ql{position:absolute; font-size:11.5px; font-weight:700; color:var(--ink-faint); opacity:.6;}
+  .gh-pin{position:absolute; transform:translate(-50%,-50%); background:var(--paper); border:1.5px solid var(--pc); color:var(--ink); font-size:12px; font-weight:700; padding:4px 9px; border-radius:999px; white-space:nowrap; box-shadow:0 2px 8px rgba(90,70,40,.12); z-index:2; transition:transform .14s;}
+  a.gh-pin{text-decoration:none;} a.gh-pin::after{content:" →"; font-size:10px; color:var(--pc);}
+  .gh-pin:hover{transform:translate(-50%,-50%) scale(1.08); z-index:5;}
+  @media(max-width:680px){
+    .gh-ei::before{left:14px;}
+    .gh-band{text-align:left; padding-left:34px;} .gh-band .y{font-size:40px;} .gh-band .o{margin-left:0;}
+    .gh-row,.gh-row.r,.gh-row.l{width:100%;left:0;text-align:left;padding:0 0 16px 34px;}
+    .gh-row .d,.gh-row.l .d,.gh-row.r .d{left:8px;right:auto;}
+    .gh-mapwrap{padding:0 30px;} .gh-pin{font-size:10.5px; padding:3px 7px;} .gh-ql{font-size:10px;}
+  }
+</style>
+<script src="growth-data.js?v=20260705"></script>
+<section class="gh-wrap" id="growth-history">
+  <div class="container">
+    <div class="section-head-center">
+      <div class="eyebrow">怎麼長出來的</div>
+      <h2 class="section-title">知識庫<span class="italic">成長史</span></h2>
+      <p class="section-sub">「現在我只管一件事，設計一個機制，讓 AI 能快速找到對的資料，這樣就夠了。」<br>這條時間軸講的，就是怎麼走到這句話。也可以切成四象限地圖，看這些東西定位在哪。</p>
+    </div>
+    <div class="gh-switch">
+      <button class="gh-vbtn on" data-v="time">時間軸</button>
+      <button class="gh-vbtn" data-v="map">四象限地圖</button>
+    </div>
+    <div id="gh-time"></div>
+    <div id="gh-map" style="display:none">
+      <div class="gh-mapwrap">
+        <div class="gh-yt">↑ 輔助決策</div>
+        <div class="gh-mr">
+          <div class="gh-ax">← 個人</div>
+          <div class="gh-grid" id="gh-grid">
+            <div class="gh-q gh-q1"></div><div class="gh-q gh-q2"></div><div class="gh-q gh-q3"></div><div class="gh-q gh-q4"></div>
+            <div class="gh-ch"></div><div class="gh-cv"></div>
+            <div class="gh-ql" style="top:9px;left:11px">個人 × 輔助決策</div>
+            <div class="gh-ql" style="top:9px;right:11px">企業 × 輔助決策</div>
+            <div class="gh-ql" style="bottom:9px;left:11px">個人 × 流程自動</div>
+            <div class="gh-ql" style="bottom:9px;right:11px">企業 × 流程自動</div>
+          </div>
+          <div class="gh-ax r">企業 →</div>
+        </div>
+        <div class="gh-yb">↓ 流程自動</div>
+        <p style="text-align:center; font-size:13px; color:var(--ink-faint); margin-top:16px;">重心壓在左上（個人＋輔助決策），跟市面多數偏企業＋流程自動不一樣。定位為草稿，可調。</p>
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+(function(){
+  var GD=window.GROWTH_ERAS||[];
+  var GP=window.GROWTH_PINS||[];
+  function e(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+  var h="",fp=0;
+  GD.forEach(function(er,i){
+    h+='<div class="gh-era'+(i%2===1?' alt':'')+'" style="--ac:'+er.c+'"><div class="gh-ei"><div class="gh-band"><div class="y">'+e(er.y)+'</div><div class="n">'+e(er.n)+(er.plan?' · 計劃中':'')+'</div>'+(er.o?'<div class="o">'+e(er.o)+'</div>':'')+'</div>';
+    er.m.forEach(function(m){
+      var side=fp%2===0?'l':'r';fp++;
+      var links='';(m.l||[]).forEach(function(l){ links+= l.ph ? '<span class="ph">'+e(l.t)+'</span>' : '<a class="'+(l.sk?'sk':'')+'" href="'+e(l.u)+'">'+e(l.t)+' →</a>'; });
+      var fl=m.f?'<span class="gh-fl">'+e(m.f)+'</span>':'';
+      h+='<div class="gh-row '+side+'"><span class="d"></span><div class="gh-card"><div class="gh-dt">'+e(m.d)+'</div><div class="gh-tt">'+e(m.t)+fl+'</div><div class="gh-mn">'+e(m.mn)+'</div>'+(m.q?'<div class="gh-qt">「'+e(m.q)+'」</div>':'')+(links?'<div class="gh-lk">'+links+'</div>':'')+'</div></div>';
+    });
+    h+='</div></div>';
+  });
+  document.getElementById('gh-time').innerHTML=h;
+  var g=document.getElementById('gh-grid');
+  GP.forEach(function(p){
+    var tag=p.u?'a':'span', href=p.u?' href="'+e(p.u)+'"':'';
+    g.insertAdjacentHTML('beforeend','<'+tag+' class="gh-pin"'+href+' style="left:'+p.x+'%;top:'+p.y+'%;--pc:'+p.c+'">'+e(p.t)+'</'+tag+'>');
+  });
+  document.querySelectorAll('.gh-vbtn').forEach(function(b){b.onclick=function(){
+    document.querySelectorAll('.gh-vbtn').forEach(function(x){x.classList.remove('on');});b.classList.add('on');
+    var v=b.getAttribute('data-v');
+    document.getElementById('gh-time').style.display=v==='time'?'':'none';
+    document.getElementById('gh-map').style.display=v==='map'?'':'none';
+  };});
+})();
+</script>
+
+<!-- 導流 -->
+<section class="entry-section">
+  <div class="container">
+    <div class="section-head-center">
+      <div class="eyebrow">接下來</div>
+      <h2 class="section-title">看懂架構之後，<span class="italic">你想怎麼開始</span>？</h2>
+    </div>
+    <div class="entry-grid four">
+      <a class="entry-card c1" href="articles.html">
+        <div class="entry-eye">想學細節</div>
+        <h3>深度文章</h3>
+        <p>每個機制怎麼設計、怎麼運作，都寫成可以照做的深度文章。</p>
+        <span class="arrow">讀深度文章 →</span>
+      </a>
+      <a class="entry-card c2" href="skills.html">
+        <div class="entry-eye">想直接用</div>
+        <h3>技能包下載</h3>
+        <p>把整理好的工作方式打包成技能包，貼給你的 AI 就能用。</p>
+        <span class="arrow">看技能包 →</span>
+      </a>
+      <a class="entry-card c5" href="cases.html">
+        <div class="entry-eye">想一起做</div>
+        <h3>服務方案</h3>
+        <p>團隊工作坊、一個月陪跑、顧問合作，帶你把這套系統長在自己身上。</p>
+        <span class="arrow">看服務方案 →</span>
+      </a>
+      <a class="entry-card c3" href="courses.html">
+        <div class="entry-eye">先免費聽</div>
+        <h3>免費講座</h3>
+        <p>每月兩場免費線上講座，先聽聽適不適合再說。</p>
+        <span class="arrow">看免費講座 →</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="watercolor wc-sand"></div>
+  <div class="container">
+    <div class="foot-brand">
+      <div class="logo"><span class="eye">江江教練的</span>AI 知識管理</div>
+      <p>提煉 · 累積 · 應用你的知識資產</p>
+    </div>
+    <div class="foot-links">
+      <a href="index.html">首頁</a>
+      <a href="knowledge-architecture.html">知識架構</a>
+      <a href="courses.html">課程</a>
+      <a href="offers.html">收費課程詳情</a>
+      <a href="articles.html">深度文章</a>
+      <a href="skills.html">技能包下載</a>
+      <a href="cases.html">服務方案</a>
+      <a href="#growth-history">知識庫成長史</a>
+      <a href="ai-office/">AI 辦公室</a>
+      <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">LINE 社群 ↗</a>
+    </div>
+    <div class="foot-meta">
+      v0.8 學習地圖版 · 搜尋、標籤與知識圖譜持續整理中
+    </div>
+  </div>
+</footer>
+
+<script src="spotlight.js" defer></script>
+<script src="/views.js"></script>
+</body>
+</html>
