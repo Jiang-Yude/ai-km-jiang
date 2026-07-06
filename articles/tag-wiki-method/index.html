@@ -21,7 +21,7 @@
 <meta name="twitter:title" content="把標籤變成卡片，知識庫才活起來：標籤連結法 Tag Wiki｜江江教練">
 <meta name="twitter:image" content="https://ai-km-jiang.vercel.app/images/intro-jiang.png">
 <meta name="twitter:description" content="標籤不是貼上去的關鍵字，是一張能自己下定義、又能互連的卡片。四維度受控，維護成本低，跨資料量規模都用得上。">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"把標籤變成卡片，知識庫才活起來：標籤連結法 Tag Wiki","description":"把標籤從貼上去的關鍵字，升級成一張有內容的卡片。用四維度受控、幾乎不用 YAML，並講清楚這套方法跟密集互聯、RAG 之間是互補不是取代的關係。","author":{"@type":"Person","name":"江昱德","alternateName":"江江教練","jobTitle":"隱性知識提煉師、AI 應用規劃師"},"isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://ai-km-jiang.vercel.app/"},"image":"https://ai-km-jiang.vercel.app/images/intro-jiang.png","datePublished":"2026-07-01","dateModified":"2026-07-01","inLanguage":"zh-Hant","url":"https://ai-km-jiang.vercel.app/articles/tag-wiki-method/"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"把標籤變成卡片，知識庫才活起來：標籤連結法 Tag Wiki","description":"把標籤從貼上去的關鍵字，升級成一張有內容的卡片。用四維度受控、幾乎不用 YAML，並講清楚這套方法跟密集互聯、RAG 之間是互補不是取代的關係。","author":{"@type":"Person","name":"江昱德","alternateName":"江江教練","jobTitle":"隱性知識提煉師、AI 應用規劃師"},"isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://ai-km-jiang.vercel.app/"},"image":"https://ai-km-jiang.vercel.app/images/intro-jiang.png","datePublished":"2026-07-01","dateModified":"2026-07-06","inLanguage":"zh-Hant","url":"https://ai-km-jiang.vercel.app/articles/tag-wiki-method/"}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
@@ -133,7 +133,7 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
 
 <section class="section" id="start">
   <div class="inner">
-    <div class="article-meta"><span>發布：2026-07-01</span><span>更新：2026-07-01</span></div>
+    <div class="article-meta"><span>發布：2026-07-01</span><span>更新：2026-07-06</span></div>
     <p class="lead">很多人的知識庫有一個共同的命運：資料一直存進來，分類卻一直跟不上，最後變成存了等於沒存。我自己也走過這條路。後來我把整套整理方式收斂成一個動作，知識庫才真的活起來。這個方法我叫它標籤連結法，英文是 Tag Wiki。</p>
     <div class="duo">
       <div class="card a">
@@ -219,9 +219,27 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
   </div>
 </section>
 
+<section class="section" id="version-control">
+  <div class="inner">
+    <h2>六、受控詞彙怎麼版本控管</h2>
+    <p>標籤卡片用久了，一定會遇到要加新詞、改定義、讓舊詞退場的時刻。這時最怕的狀況是詞改了，半年後沒人記得為什麼改。我的做法是把整份受控詞彙表當成一份有版本的規則文件來管理，方法不需要任何程式背景，照做就行。</p>
+    <p><b>字典檔是唯一真相。</b>所有標籤必須從字典檔選用，不可自行發明。我的字典目前累積約 220 個受控詞，分成四個維度：對象（誰）、內容（講什麼）、情境（用在哪）、性質（什麼屬性）。每個詞有一張標準定義卡，寫清楚定義、定位、邊界、統一用詞跟不使用的詞。</p>
+    <p><b>每一版改動都留下紀錄。</b>字典檔開頭有一份變更紀錄，我的字典從 v1.8 走到 v2.19，累積了 20 個版本。每一版記三件事：動了哪些詞、為什麼、誰拍板。去個人化之後，一筆紀錄長這樣：</p>
+    <div class="compare">
+      <b>變更紀錄範例（去個人化）</b>
+      <p>v2.x（某月某日）：新增受控詞「某某概念」，掛在情境維度的文件用途底下。理由：連續三份文件出現同一概念，既有詞彙涵蓋不了。決策：負責人確認定義卡後入表，同步更新檢索頁。</p>
+    </div>
+    <p><b>機器可讀版只當衍生檔。</b>字典檔另外會轉出一份機器可讀的對照檔（JSON 格式），讓 AI 在存檔前自動比對標籤合不合規。鐵則是這份衍生檔禁止手改：改了字典就重新產生一次，再跑驗證腳本確認兩邊一致。唯一真相永遠是那份人看得懂的字典檔。</p>
+    <div class="meaning">
+      <b>為什麼這件事重要</b>
+      有版本紀錄的詞彙表，才撐得起「可稽核」三個字。半年後你問「這個詞什麼時候出現的、當時為什麼這樣定義」，翻紀錄就有答案；AI 的產出要回溯到「當時依據哪一版規則」，也才有依據可查。這是把個人筆記習慣升級成組織級知識治理的分水嶺。
+    </div>
+  </div>
+</section>
+
 <section class="section" id="start-doing">
   <div class="inner">
-    <h2>六、怎麼開始</h2>
+    <h2>七、怎麼開始</h2>
     <ol>
       <li>先想清楚輸出：你以後最常要把什麼東西叫出來用。整理是為了將來拿得出來用，不是為了收藏。</li>
       <li>從眼前一個正在進行的專案開始，為它建幾張最必要的標籤卡片，分到幾個固定維度。</li>
