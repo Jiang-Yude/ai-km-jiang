@@ -152,7 +152,7 @@ window.ARTICLES = [
       content_type: ["案例文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: "https://vocus.cc/salon/Jiang_Coach" },
-    related: ["codex-only-auto-worklog", "decision-ladder-non-programmer"]
+    related: ["codex-only-auto-worklog", "decision-ladder-non-programmer", "publish-gate"]
   },
 
   /* ── 8. AI 之王不上戰場（觀點）── */
@@ -387,7 +387,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: "https://vocus.cc/salon/Jiang_Coach" },
-    related: ["diary-driven-agent-3x4", "how-ai-connects-software", "how-to-train-your-ai-employee", "decision-ladder-non-programmer", "tidy-mess-before-consulting", "what-is-loop-engineering", "tag-wiki-method", "ai-delegators-optimism", "intangible-assets-grow-by-sharing"]
+    related: ["diary-driven-agent-3x4", "how-ai-connects-software", "how-to-train-your-ai-employee", "decision-ladder-non-programmer", "tidy-mess-before-consulting", "what-is-loop-engineering", "tag-wiki-method", "ai-delegators-optimism", "intangible-assets-grow-by-sharing", "publish-gate"]
   },
 
   /* ── 21. 你以為在做一個成品，其實在養十個半成品（觀點）── */
@@ -460,7 +460,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["docs-as-system-design-agent", "how-to-train-your-ai-employee", "my-three-loops", "ai-loop-safety-recovery", "recovery-over-perfection", "ai-changed-behavior-into-workflow", "ai-delegators-optimism"]
+    related: ["docs-as-system-design-agent", "how-to-train-your-ai-employee", "my-three-loops", "ai-loop-safety-recovery", "recovery-over-perfection", "ai-changed-behavior-into-workflow", "ai-delegators-optimism", "publish-gate"]
   },
 
   /* ── 無形資產，越分享越豐盛（觀點）── */
@@ -758,6 +758,25 @@ window.ARTICLES = [
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
     related: ["how-to-train-your-ai-employee", "intent-first-prompting"]
+  },
+
+  /* ── 發佈閘門：多個 AI 改同一個網站怎麼不打架（教學）── */
+  {
+    id: "publish-gate",
+    url: "articles/publish-gate/",
+    date: "2026-07-06",
+    updated: "2026-07-06",
+    title: "多個 AI 改同一個網站，怎麼不打架：發佈閘門",
+    problem: "用 AI 維護網站，多個任務改來改去開始版本錯亂，部署後才發現連結壞了、索引沒跟上。",
+    audience: "已經有網站、常請 AI 幫忙改版，或同時開多個 AI 任務的人。",
+    summary: "用我自己的翻車現場，講版本錯亂的三個來源，給一套三層防護：工作區隔離（git worktree）、發佈閘門（preflight＋一鍵發佈）、強制力（pre-push hook）。附公開技能包 publish-gate，交給你的 AI 五步裝完。",
+    tags: {
+      topic: ["AI工作流", "工作流程", "工具操作"],
+      level: ["基礎"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
+    related: ["docs-as-system-design-agent", "what-is-loop-engineering", "caught-ai-slacking-into-rules"]
   }
 
 ];

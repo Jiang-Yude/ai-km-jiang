@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="index,follow">
+<title>多個 AI 改同一個網站，怎麼不打架：發佈閘門｜江江教練 · AI 知識管理</title>
+<meta name="description" content="用 AI 維護網站，遲早遇到版本錯亂：這個任務改這裡、那個任務改那裡，互相蓋掉。這篇用我自己的翻車現場，講一套裝得起來的三層防護：工作區隔離、發佈閘門、強制力，附可直接用的公開技能包。">
+<link rel="canonical" href="https://ai-km-jiang.vercel.app/articles/publish-gate/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="多個 AI 改同一個網站，怎麼不打架：發佈閘門｜江江教練">
+<meta property="og:image" content="https://ai-km-jiang.vercel.app/images/og/publish-gate.jpg">
+<meta property="og:description" content="用 AI 維護網站，遲早遇到版本錯亂。這篇用真實翻車現場，講一套三層防護：工作區隔離、發佈閘門、強制力，附公開技能包。">
+<meta property="og:url" content="https://ai-km-jiang.vercel.app/articles/publish-gate/">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:site_name" content="江江教練 · AI 知識管理">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="多個 AI 改同一個網站，怎麼不打架：發佈閘門｜江江教練">
+<meta name="twitter:image" content="https://ai-km-jiang.vercel.app/images/og/publish-gate.jpg">
+<meta name="twitter:description" content="用 AI 維護網站，遲早遇到版本錯亂。三層防護：工作區隔離、發佈閘門、強制力，附公開技能包。">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"多個 AI 改同一個網站，怎麼不打架：發佈閘門","description":"用 AI 維護網站，遲早遇到版本錯亂。這篇用真實翻車現場，講一套三層防護：工作區隔離、發佈閘門、強制力，附公開技能包。","datePublished":"2026-07-06","dateModified":"2026-07-06","author":{"@type":"Person","name":"江昱德","alternateName":"江江教練","jobTitle":"隱性知識提煉師、AI 應用規劃師"},"isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://ai-km-jiang.vercel.app/"},"inLanguage":"zh-Hant","url":"https://ai-km-jiang.vercel.app/articles/publish-gate/"}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{--ink:#1a1612;--paper:#fefcf8;--muted:#6a635a;--line:#d8cdb8;--green:#5f7553;--blue:#5689b8;--orange:#e85a4f;--soft:#faf5ec;--dark:#2a2018;--shadow:0 18px 45px rgba(107,74,42,.14);--sp-shadow:hsla(35,50%,60%,.15);--sp-shadow-edge:hsla(35,50%,68%,.03);--sp-radius:400px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC","Segoe UI",sans-serif}
+a{color:inherit}
+nav.top{position:sticky;top:0;background:rgba(254,252,248,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid #d8cdb8;z-index:100}
+nav.top .container{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:24px;padding:14px 32px}
+.nav-brand-img{justify-self:start;display:flex;align-items:center;text-decoration:none;flex-shrink:0;transition:opacity .2s}
+.nav-brand-img:hover{opacity:.8}.nav-brand-img img{height:40px;width:auto;display:block}
+nav.top ul.nav-menu{justify-self:end;display:flex;gap:22px;list-style:none;margin:0;padding:0;font-size:.95rem;white-space:nowrap}
+nav.top ul.nav-menu a{color:#3a342d;text-decoration:none;transition:color .2s;font-weight:500;white-space:nowrap}
+nav.top ul.nav-menu a:hover{color:#1a1612}nav.top ul.nav-menu a.active{color:#1a1612;font-weight:700}
+.nav-toggle{display:none;background:none;border:none;padding:6px;cursor:pointer;width:36px;height:36px;position:relative}
+.nav-toggle span{display:block;position:absolute;left:8px;right:8px;height:2px;background:#1a1612;border-radius:2px;transition:transform .25s,opacity .25s,top .25s}
+.nav-toggle span:nth-child(1){top:11px}.nav-toggle span:nth-child(2){top:17px}.nav-toggle span:nth-child(3){top:23px}
+.nav-toggle.open span:nth-child(1){top:17px;transform:rotate(45deg)}.nav-toggle.open span:nth-child(2){opacity:0}.nav-toggle.open span:nth-child(3){top:17px;transform:rotate(-45deg)}
+@media(max-width:860px){
+ nav.top .container{grid-template-columns:auto 1fr auto;padding:10px 16px;gap:12px}
+ .nav-brand-img img{height:32px}
+ .nav-toggle{display:block;justify-self:end}
+ nav.top ul.nav-menu{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(254,252,248,.98);backdrop-filter:blur(14px);border-bottom:1px solid #d8cdb8;flex-direction:column;gap:0;padding:8px 0;box-shadow:0 10px 24px rgba(107,74,42,.08)}
+ nav.top ul.nav-menu.open{display:flex}
+ nav.top ul.nav-menu li{border-bottom:1px solid #e8dfc9}
+ nav.top ul.nav-menu li:last-child{border-bottom:none}
+ nav.top ul.nav-menu a{display:block;padding:14px 20px;font-size:1.06rem}
+}
+body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradient(var(--sp-radius) circle at var(--mx,50%) var(--my,50%),var(--sp-shadow) 0%,var(--sp-shadow-edge) 45%,transparent 75%);pointer-events:none;z-index:9999;mix-blend-mode:multiply;transition:background .06s linear}
+.hero{position:relative;overflow:hidden;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:72px;padding:96px clamp(20px,6vw,88px) 80px;background:linear-gradient(180deg,#fffcf0 0%,#f9e9d2 100%);color:#1a1612;border-bottom:1px solid #d8cdb8}
+.hero .wc{position:absolute;border-radius:50%;filter:blur(60px);pointer-events:none;z-index:0}
+.hero .wc1{width:420px;height:360px;top:-120px;right:-80px;background:#e8884b;opacity:.15}
+.hero .wc2{width:360px;height:300px;bottom:-110px;left:-70px;background:#5f7553;opacity:.13}
+.hero .wc3{width:280px;height:260px;top:34%;left:14%;background:#a08144;opacity:.10}
+.hero>div{flex:none;width:860px;max-width:100%;position:relative;z-index:2}
+.kicker{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.55rem;color:#7a5c3a;font-weight:500}
+.hero h1{max-width:none;margin:16px 0 18px;font-size:clamp(36px,6vw,72px);line-height:1.08;overflow-wrap:anywhere}
+.hero p{max-width:none;font-size:clamp(18px,2vw,23px);line-height:1.62;color:#3a342d}
+.hero-date{margin-top:18px;font-size:15px;color:#7a5c3a}
+.section{padding:54px clamp(20px,6vw,88px);border-top:1px solid var(--line)}
+.inner{width:min(1000px,100%);margin:0 auto}
+.section h2{font-size:clamp(26px,4.2vw,48px);line-height:1.12;margin:0 0 18px}
+.section h3{font-size:clamp(21px,3vw,30px);line-height:1.2;margin:30px 0 12px}
+.lead{font-size:clamp(18px,1.6vw,22px);line-height:1.7;color:#3a342d;max-width:900px}
+.section p{font-size:18px;line-height:1.74;color:#3a342d}.section p+p{margin-top:14px}
+.section ul,.section ol{padding-left:1.4em;font-size:18px;line-height:1.74;color:#3a342d}.section li{margin-bottom:8px}
+.meaning{margin:22px 0;padding:16px 18px;border-left:5px solid var(--blue);background:rgba(86,137,184,.12);border-radius:6px;line-height:1.7;font-size:19px}
+.meaning b{display:block;color:var(--blue);margin-bottom:4px}
+.caveat{margin:0 0 8px;padding:16px 18px;border-left:5px solid var(--orange);background:rgba(232,90,79,.1);border-radius:6px;line-height:1.7;font-size:18px;color:#3a342d}
+.caveat b{display:block;color:var(--orange);margin-bottom:4px}
+.tagrow{display:flex;flex-wrap:wrap;gap:7px;margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
+.tag{font-size:14px;color:var(--muted);background:var(--soft);border:1px solid var(--line);border-radius:999px;padding:4px 11px}
+.duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:24px}
+.duo.stack{grid-template-columns:1fr}
+.duo .card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:22px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.duo .card.a{border-color:var(--orange)}.duo .card.b{border-color:var(--green);box-shadow:0 8px 24px rgba(95,117,83,.16)}
+.duo .card b{display:block;font-size:22px;line-height:1.3;margin-bottom:12px}.duo .card.a b{color:#c0512f}.duo .card.b b{color:#4a7a59}
+.duo .card p{margin:0;color:#3a342d;line-height:1.75;font-size:18px}
+.workflow-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:24px}
+.workflow-step{background:#fff;border:1px solid var(--line);border-radius:8px;padding:18px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.workflow-step small{display:block;color:var(--orange);font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;margin-bottom:9px}
+.workflow-step b{display:block;font-size:18px;line-height:1.3;margin-bottom:9px}
+.workflow-step p{margin:0;color:#3a342d;line-height:1.6;font-size:16px}
+.codeblock{background:var(--dark);color:#f3ead9;border-radius:8px;padding:18px 20px;font:500 14px/1.65 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;overflow-x:auto;white-space:pre-wrap;margin:20px 0;box-shadow:0 8px 22px rgba(107,74,42,.12)}
+.codeblock .c{color:#f6d7a6;font-weight:600}
+.skillcard{background:#fff;border:1px solid var(--green);border-radius:12px;padding:24px;box-shadow:0 10px 26px rgba(95,117,83,.16);margin-top:8px}
+.skillcard b{display:block;font-size:21px;margin-bottom:8px}
+.skillcard p{margin:0 0 16px;font-size:17px;line-height:1.65;color:#3a342d}
+.skillcard a.btn{display:inline-flex;align-items:center;text-decoration:none;border-radius:8px;padding:11px 15px;font-weight:900;background:var(--green);color:#fff;margin-right:10px}
+.skillcard a.btn.ghost{background:transparent;color:var(--green);border:1.5px solid var(--green)}
+.footer{padding:30px clamp(20px,6vw,88px);font-size:14px;color:var(--muted);background:#fff;border-top:1px solid var(--line)}
+.footer-inner{width:min(1000px,100%);margin:0 auto}
+.footer-links{display:flex;flex-wrap:wrap;gap:6px 12px;margin-bottom:14px}.footer-links a{color:var(--blue);font-weight:900;text-decoration:none;font-size:14px}
+.footer-brand{font-weight:900;font-size:15px;margin-bottom:10px}.footer-note{font-size:13px;line-height:1.6}
+@media(max-width:820px){.duo{grid-template-columns:1fr}.workflow-grid{grid-template-columns:1fr}.section{padding:40px 20px}.hero{min-height:52vh;flex-direction:column;justify-content:flex-start;align-items:flex-start;gap:24px}.hero>div{width:100%}}
+@media(max-width:820px){html,body{overflow-x:hidden}.hero h1{word-break:break-word}}
+</style>
+</head>
+<body class="spotlight">
+<nav class="top">
+  <div class="container">
+    <a class="nav-brand-img" href="../../index.html"><img src="../../images/footer-signature.png" alt="江江教練 | 江昱德"></a>
+    <button class="nav-toggle" aria-label="選單"><span></span><span></span><span></span></button>
+    <ul class="nav-menu">
+      <li><a href="../../index.html">首頁</a></li>
+      <li><a href="../../knowledge-architecture.html">知識架構</a></li>
+      <li><a href="../../courses.html">課程</a></li>
+      <li><a href="../../articles.html" class="active">深度文章</a></li>
+      <li><a href="../../skills.html">技能包下載</a></li>
+      <li><a href="../../cases.html">服務方案</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="wc wc1"></div>
+  <div class="wc wc2"></div>
+  <div class="wc wc3"></div>
+  <div>
+    <div class="kicker">AI 工作流 × 網站維護</div>
+    <h1>多個 AI 改同一個網站，怎麼不打架</h1>
+    <p>用 AI 維護網站，遲早遇到版本錯亂：這個任務改這裡、那個任務改那裡，互相蓋掉，部署了才發現漏東西。這篇用我自己的翻車現場，講一套你交給 AI 就裝得起來的三層防護。</p>
+    <div class="hero-date">發佈 2026-07-06 ｜ 最後更新 2026-07-06</div>
+  </div>
+</section>
+
+<main>
+
+<section class="section" id="start">
+  <div class="inner">
+    <h2>這篇在講什麼</h2>
+    <p class="lead">網站上線只是開始，之後你會一直改它。當改的人變成好幾個 AI 助手，版本錯亂就從「偶爾」變成「必然」。這篇講清楚錯亂的三個來源，給一套叫「發佈閘門」的三層防護：工作區隔離、上線前檢查、強制力。方法打包成公開技能包，你不用會寫程式，交給你的 AI 照裝就好。</p>
+    <div class="duo stack">
+      <div class="card a">
+        <b>適合誰</b>
+        <p>· 已經有網站、常常請 AI 幫忙改版的人<br>· 同時開好幾個 AI 任務，開始覺得檔案「怪怪的」的人<br>· 部署過後才發現連結壞掉、索引沒跟上的人</p>
+      </div>
+      <div class="card b">
+        <b>你會得到什麼</b>
+        <p>· 看懂版本錯亂的三個來源，知道為什麼寫規則沒有用<br>· 一套三層防護的做法：隔離、閘門、強制力<br>· 可直接用的公開技能包 publish-gate，交給 AI 五步裝完</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="story">
+  <div class="inner">
+    <h2>先說一個真實的翻車現場</h2>
+    <p>2026 年 7 月 5 號，我在做官網改版。一個 AI 正在幫我調整全站導覽，做到一半，我發現文章資料檔被改過了，還多出一個新的課程頁。</p>
+    <p>改的人是另一個 AI。它在執行另一個任務，跟這次改版完全無關，就直接在同一個資料夾裡動手了。兩邊都沒存檔，變更全部混在一起。</p>
+    <p>最諷刺的是什麼？「動檔案前先檢查狀態」這條規則，我兩週前就白紙黑字寫進工作看板了。規則在，照樣被違反。</p>
+    <div class="meaning"><b>這件事的重點</b>如果你也開始用 AI 幫你維護網站，這件事遲早輪到你。倒不是 AI 不乖，是「靠自覺遵守的規則」本來就防不了疏忽。人也一樣。</div>
+  </div>
+</section>
+
+<section class="section" id="sources">
+  <div class="inner">
+    <h2>版本錯亂的三個來源</h2>
+    <h3>一、多個任務共用同一個工作資料夾</h3>
+    <p>這個任務改 A 頁，那個任務改 B 檔，互相不知道對方存在。git 分支解決不了這件事，因為分支只保護歷史，不保護「現場」：A 還沒存檔，B 一切換分支，A 的半成品就毀了。</p>
+    <h3>二、上線要同步的地方太多，靠人記</h3>
+    <p>我的網站每上一篇新文章，要同步六個地方：文章頁本身、文章清單資料檔、sitemap、站內索引、給 AI 讀的 llms.txt、文章之間的雙向連結。有一篇文章就是漏走了流程，結果同時中了三個病：互聯腳本沒裝、英文版沒建、導覽連結是壞的。</p>
+    <h3>三、出問題只能事後查</h3>
+    <p>看板記錄了每個任務走到哪，但它是排程表，管不了版本。等發現東西壞了，只能翻紀錄比對，查得到原因，防不了下一次。</p>
+  </div>
+</section>
+
+<section class="section" id="solution">
+  <div class="inner">
+    <h2>解法：把檢查變成閘門</h2>
+    <p class="lead">我後來把整套做法收斂成三層，取名叫「發佈閘門」（Publish Gate）。核心想法一句話：該檢查的事交給機器把關，檢查不過，網站就出不去。</p>
+    <div class="workflow-grid">
+      <div class="workflow-step"><small>第一層</small><b>一個任務一個工作間</b><p>用 git worktree 給每個任務開獨立資料夾，做完才合回主線。主資料夾永遠沒人施工，兩個 AI 根本不在同一個房間，踩不到彼此。</p></div>
+      <div class="workflow-step"><small>第二層</small><b>上線只有一個入口</b><p>上線前該檢查的事寫成 preflight 腳本：連結有沒有斷、新頁有沒有進索引、有沒有把金鑰寫進公開檔。再串成一支 publish 腳本，一句「發佈」跑完全部。</p></div>
+      <div class="workflow-step"><small>第三層</small><b>忘記走閘門也會被擋</b><p>加一道 git pre-push hook：任何人、任何 AI 要推送主線，先自動跑檢查，不過就推不出去。這道鎖綁在 repo 本身，哪一家的 AI 都繞不開。</p></div>
+    </div>
+    <p style="margin-top:24px;">第一層的指令長這樣，給你的 AI 看得懂就好：</p>
+    <div class="codeblock"><span class="c"># 一個任務一個獨立工作間</span>
+git worktree add ../my-site-worktrees/task-name -b task-branch origin/main</div>
+    <p>裝完之後第一次實測：發佈腳本從檢查到部署到線上驗證一條龍跑完，全程零手動。後來我故意留了一個壞連結去推送，真的被擋下來。那一刻跟「規則寫在文件裡」的安心感，完全是兩回事。</p>
+  </div>
+</section>
+
+<section class="section" id="honest">
+  <div class="inner">
+    <h2>誠實說，它保證什麼、不保證什麼</h2>
+    <p>它保證：走正常路徑出去的每一版，都通過了你定義的檢查；每一版都有版本標記，出錯可以回滾。</p>
+    <p>它不保證：有人「有意」繞道。要把繞道也封死，終局是把部署交給 Git 平台整合（例如 Vercel 連 GitHub，只認合併進主線的版本）。我自己還沒走到那步，目前的三層對一人公司加幾個 AI 助手的規模已經夠用。</p>
+    <div class="caveat"><b>先說在前面</b>這套想法我沒有發明什麼。工程圈做 CI/CD 幾十年了，大公司的做法比這深得多。我做的事情是把它縮到「不寫程式的人，交給 AI 就能裝起來」的大小。</div>
+  </div>
+</section>
+
+<section class="section" id="skill">
+  <div class="inner">
+    <h2>想裝在自己網站上</h2>
+    <p class="lead">整套做法打包成公開技能包 publish-gate，裡面有方法說明和四支腳本模板（上線前檢查、一鍵發佈、推送閘門、連結掃描），MIT 授權。</p>
+    <div class="skillcard">
+      <b>publish-gate · 發佈閘門</b>
+      <p>把這個技能包交給你的 AI 助手（Claude Code、Codex、Cursor 都行），說「照 publish-gate 幫我的網站裝發佈閘門」。它會照五個步驟裝完，最後還會故意弄壞一個連結，實測閘門真的會擋。</p>
+      <a class="btn" href="https://github.com/Jiang-Yude/publish-gate" target="_blank" rel="noopener">GitHub 完整說明 ↗</a>
+      <a class="btn ghost" href="../../skills.html#publish-gate">在技能包下載頁看這包</a>
+    </div>
+    <p style="margin-top:24px;">網站是長出來的。會一直改，就會一直有版本問題。與其每次出事再修，把閘門裝上，讓機器替你記得該檢查的事。</p>
+    <div class="tagrow">
+      <span class="tag">AI工作流</span><span class="tag">工作流程</span><span class="tag">工具操作</span><span class="tag">基礎</span><span class="tag">教學文章</span>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">江江教練 · AI 知識管理</div>
+    <div class="footer-links">
+      <a href="../../articles.html">← 回深度文章總站</a>
+      <a href="../../index.html">首頁</a>
+      <a href="../../learn.html">自學資源</a>
+      <a href="../../skills.html">技能包下載</a>
+      <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">LINE 社群 ↗</a>
+      <a href="https://www.threads.com/@jiang_yude_coach" target="_blank" rel="noopener">Threads ↗</a>
+      <a href="https://vocus.cc/salon/Jiang_Coach" target="_blank" rel="noopener">方格子 ↗</a>
+    </div>
+    <div class="footer-note">這是一篇教學文章，整理我幫網站裝發佈閘門的做法與步驟，供你參考與照做。</div>
+  </div>
+</footer>
+
+<script src="../../spotlight.js"></script>
+
+<script src="../../articles-data.js"></script>
+<script src="../../related-render.js"></script>
+<script src="/views.js"></script>
+</body>
+</html>
