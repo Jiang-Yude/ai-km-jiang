@@ -64,7 +64,11 @@
       .concat(flattenTags(item.tags))
       .join(" ")
       .toLowerCase();
-    return haystack.indexOf(query) !== -1;
+    // 空格分詞 AND 比對：每個詞都命中才算符合（「角色設定 三視圖」= 兩詞都要有）
+    var tokens = query.split(/\s+/).filter(Boolean);
+    return tokens.every(function (token) {
+      return haystack.indexOf(token) !== -1;
+    });
   }
 
   function renderCard(item) {
