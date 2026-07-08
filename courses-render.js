@@ -80,11 +80,20 @@
     pending: '待開放',
     ended: '已結束'
   };
+  const FEE_LABEL = { free: '免費課', paid: '付費課', external: '邀約課', podcast: '邀約課' };
+  const FEE_COLOR = { free: 'var(--c-mint)', paid: 'var(--c-coral)', external: 'var(--c-sand)', podcast: 'var(--c-sand)' };
+  function feeBadgeHTML(c) {
+    const ft = inferType(c);
+    if (!FEE_LABEL[ft]) return '';
+    return `<span class="mode-badge" style="background:transparent;border:1px solid ${FEE_COLOR[ft]};color:${FEE_COLOR[ft]}">${FEE_LABEL[ft]}</span>`;
+  }
   function modeBadgesHTML(c) {
     const v = c.venue_mode || (c.type === 'podcast' ? 'podcast' : null);
     const r = (c.registration && c.registration.status) || null;
     const parts = [];
     if (isIncubating(c)) parts.push(`<span class="mode-badge phase-incubating">籌備中 · 徵求夥伴</span>`);
+    const fee = feeBadgeHTML(c);
+    if (fee) parts.push(fee);
     if (v) parts.push(`<span class="mode-badge venue-${v}">${escapeHtml(VENUE_LABEL[v] || v)}</span>`);
     if (r && !isIncubating(c)) parts.push(`<span class="mode-badge reg-${r}">${escapeHtml(REG_LABEL[r] || r)}</span>`);
     return parts.length ? `<div class="card-modes">${parts.join('')}</div>` : '';
@@ -349,6 +358,18 @@
     const grid = (items) => `<div class="list-grid cols-3">${items.join('')}</div>`;
     const header = (t, n, intro) => `<div class="group-header"><h2>${t}</h2><span class="group-count">${n} 項</span></div>` + (intro ? `<p class="group-intro">${intro}</p>` : '');
     let html = '';
+
+    // 近期課程置頂：免費、付費、邀約合看，最近要上的排最前（2026-07-08 江江指示）
+    if (F.type === 'all') {
+      const soon = COURSES
+        .filter(c => isUpcoming(c) && hitVenue(c.venue_mode) && hitQ([c.title, c.summary || '', (c.tags || []).join(' '), c.type_label || '']))
+        .sort((a, b) => parseDate(a.date) - parseDate(b.date))
+        .slice(0, 6);
+      if (soon.length) {
+        html += header('近期課程', soon.length, '最近要上的課排最前面；免費課、付費課、邀約課看卡片上的標籤。');
+        html += grid(soon.map(cardHTML));
+      }
+    }
 
     // 收費課程（常設 offers + 有日期的付費場次）
     if (F.type === 'all' || F.type === 'paid') {
