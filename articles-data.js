@@ -848,7 +848,7 @@ window.ARTICLES = [
     title: "迴圈護欄：讓 AI 自動跑，又不跑出安全範圍的五條規則",
     problem: "AI 能連續自動工作之後，一個沒被挑戰過的錯誤判斷，會被後面每一圈放大。",
     audience: "已經讓 AI 自動連跑任務、常把工作交接給第二個 AI 或子代理的人。",
-    summary: "把駕馭工程和迴圈工程接在一起的五條護欄：未抗辯假設、三鏡頭抗辯、Non-goals 與允許路徑、換路煞車、驗收證據分級。讓 AI 連續自動工作時，錯誤不會一路滾大。",
+    summary: "把駕馭工程和迴圈工程接在一起的五條護欄：未抗辯假設、三視角抗辯、Non-goals 與允許路徑、換路煞車、驗收證據分級。讓 AI 連續自動工作時，錯誤不會一路滾大。",
     tags: {"topic":["AI工作流","AIAgent","跨家審稿"],"level":["基礎"],"content_type":["教學文章"]},
     external: { threads: null, vocus: null },
     related: ["what-is-loop-engineering","harness-mindset-for-bosses","ai-loop-safety-recovery"]

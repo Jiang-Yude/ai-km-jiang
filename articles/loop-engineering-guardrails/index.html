@@ -5,20 +5,20 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="index,follow">
 <title>迴圈護欄：讓 AI 自動跑，又不跑出安全範圍的五條規則｜江江教練 · AI 知識管理</title>
-<meta name="description" content="把駕馭工程和迴圈工程接在一起的五條護欄：未抗辯假設、三鏡頭抗辯、Non-goals 與允許路徑、換路煞車、驗收證據分級。讓 AI 連續自動工作時，錯誤不會一路滾大。">
+<meta name="description" content="把駕馭工程和迴圈工程接在一起的五條護欄：未抗辯假設、三視角抗辯、Non-goals 與允許路徑、換路煞車、驗收證據分級。讓 AI 連續自動工作時，錯誤不會一路滾大。">
 <link rel="canonical" href="https://ai-km-jiang.vercel.app/articles/loop-engineering-guardrails/">
 <meta property="og:type" content="article">
 <meta property="og:title" content="迴圈護欄：讓 AI 自動跑，又不跑出安全範圍的五條規則｜江江教練">
 <meta property="og:image" content="https://ai-km-jiang.vercel.app/images/og/loop-engineering-guardrails.jpg">
-<meta property="og:description" content="未抗辯假設、三鏡頭抗辯、允許路徑、換路煞車、證據分級：AI 自動連跑的五條護欄。">
+<meta property="og:description" content="未抗辯假設、三視角抗辯、允許路徑、換路煞車、證據分級：AI 自動連跑的五條護欄。">
 <meta property="og:url" content="https://ai-km-jiang.vercel.app/articles/loop-engineering-guardrails/">
 <meta property="og:locale" content="zh_TW">
 <meta property="og:site_name" content="江江教練 · AI 知識管理">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="迴圈護欄：讓 AI 自動跑，又不跑出安全範圍的五條規則｜江江教練">
 <meta name="twitter:image" content="https://ai-km-jiang.vercel.app/images/og/loop-engineering-guardrails.jpg">
-<meta name="twitter:description" content="未抗辯假設、三鏡頭抗辯、允許路徑、換路煞車、證據分級：AI 自動連跑的五條護欄。">
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Article", "headline": "迴圈護欄：讓 AI 自動跑，又不跑出安全範圍的五條規則", "description": "把駕馭工程和迴圈工程接在一起的五條護欄：未抗辯假設、三鏡頭抗辯、Non-goals 與允許路徑、換路煞車、驗收證據分級。讓 AI 連續自動工作時，錯誤不會一路滾大。", "datePublished": "2026-07-06", "dateModified": "2026-07-06", "author": {"@type": "Person", "name": "江昱德", "alternateName": "江江教練", "jobTitle": "隱性知識提煉師、AI 應用規劃師"}, "isPartOf": {"@type": "WebSite", "name": "江江教練 · AI 知識管理", "url": "https://ai-km-jiang.vercel.app/"}, "inLanguage": "zh-Hant", "url": "https://ai-km-jiang.vercel.app/articles/loop-engineering-guardrails/"}</script>
+<meta name="twitter:description" content="未抗辯假設、三視角抗辯、允許路徑、換路煞車、證據分級：AI 自動連跑的五條護欄。">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Article", "headline": "迴圈護欄：讓 AI 自動跑，又不跑出安全範圍的五條規則", "description": "把駕馭工程和迴圈工程接在一起的五條護欄：未抗辯假設、三視角抗辯、Non-goals 與允許路徑、換路煞車、驗收證據分級。讓 AI 連續自動工作時，錯誤不會一路滾大。", "datePublished": "2026-07-06", "dateModified": "2026-07-06", "author": {"@type": "Person", "name": "江昱德", "alternateName": "江江教練", "jobTitle": "隱性知識提煉師、AI 應用規劃師"}, "isPartOf": {"@type": "WebSite", "name": "江江教練 · AI 知識管理", "url": "https://ai-km-jiang.vercel.app/"}, "inLanguage": "zh-Hant", "url": "https://ai-km-jiang.vercel.app/articles/loop-engineering-guardrails/"}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
@@ -144,7 +144,7 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
     <h2>五條護欄一覽</h2>
     <div class="workflow-grid">
       <div class="workflow-step"><small>護欄 1</small><b>未抗辯假設</b><p>沒被第二視角挑戰過的重大結論，只能標成假設，不能寫成事實。</p></div>
-      <div class="workflow-step"><small>護欄 2</small><b>三鏡頭抗辯</b><p>邏輯、失效、過度工程三個角度，輪流攻擊自己的結論。</p></div>
+      <div class="workflow-step"><small>護欄 2</small><b>三視角抗辯</b><p>邏輯、失效、過度工程三個角度，輪流攻擊自己的結論。</p></div>
       <div class="workflow-step"><small>護欄 3</small><b>交接補兩欄</b><p>Non-goals 寫明不做什麼，允許路徑劃出能碰哪裡。</p></div>
       <div class="workflow-step"><small>護欄 4</small><b>換路煞車</b><p>同一方法失敗兩次就換路，不做第三次盲試。</p></div>
       <div class="workflow-step"><small>護欄 5</small><b>驗收證據分級</b><p>「看起來沒問題」不是證據。收工前先問：證據是哪一級？</p></div>
@@ -170,14 +170,14 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
 
 <section class="section" id="g2">
   <div class="inner">
-    <h2>護欄二：三鏡頭抗辯，輪流攻擊自己</h2>
-    <p>抗辯用三個鏡頭輪流看同一個結論，每個鏡頭有自己的問題清單：</p>
+    <h2>護欄二：三視角抗辯，輪流攻擊自己</h2>
+    <p>抗辯用三個視角輪流看同一個結論，每個視角有自己的問題清單：</p>
     <ul>
-      <li>邏輯鏡頭（skeptic）：這個結論是不是只靠單一證據？有沒有把相關當因果？有沒有忽略相反證據？驗收條件真的能證明結論嗎？</li>
-      <li>失效鏡頭（red-team）：最壞情況是什麼？會不會碰到權限、金鑰、資料遺失、公開發布、金錢這些不可逆的東西？失敗了怎麼還原？有沒有看似可行但會放大風險的捷徑？</li>
-      <li>過度工程鏡頭（simplifier）：有沒有更小的第一步？是不是把一次性任務做成了永久系統？能不能先用現有的工具和手動驗收完成？</li>
+      <li>邏輯視角（skeptic）：這個結論是不是只靠單一證據？有沒有把相關當因果？有沒有忽略相反證據？驗收條件真的能證明結論嗎？</li>
+      <li>失效視角（red-team）：最壞情況是什麼？會不會碰到權限、金鑰、資料遺失、公開發布、金錢這些不可逆的東西？失敗了怎麼還原？有沒有看似可行但會放大風險的捷徑？</li>
+      <li>過度工程視角（simplifier）：有沒有更小的第一步？是不是把一次性任務做成了永久系統？能不能先用現有的工具和手動驗收完成？</li>
     </ul>
-    <p>一個重要的誠實標記：讓同一個 AI 自己扮演三個鏡頭攻擊自己，叫「僅自攻」，聊勝於無；真正算數的抗辯，是拿給另一家模型審。同一家模型的子代理互審，仍然共享同一套盲點。</p>
+    <p>一個重要的誠實標記：讓同一個 AI 自己扮演三個視角攻擊自己，叫「僅自攻」，聊勝於無；真正算數的抗辯，是拿給另一家模型審。同一家模型的子代理互審，仍然共享同一套盲點。</p>
   </div>
 </section>
 
@@ -230,7 +230,7 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
     <ol>
       <li>開工前：交接說明補上 Non-goals 和允許路徑兩欄。</li>
       <li>過程中：跟 AI 約好換路煞車，同方法失敗兩次要停下來回報。</li>
-      <li>出結論時：要求標記「未抗辯假設」，再用三鏡頭問它一輪，能跨家就跨家。</li>
+      <li>出結論時：要求標記「未抗辯假設」，再用三視角問它一輪，能跨家就跨家。</li>
       <li>收工前：問一句「你的證據是哪一級」，第四級證據就再補一級。</li>
     </ol>
     <p>跑順之後把這五條寫進你的規則庫或技能包，讓每一輪迴圈自動帶著護欄跑。迴圈出事時怎麼復原，另有一篇<a href="../ai-loop-safety-recovery/">迴圈安全與復原</a>可以接著讀。</p>
