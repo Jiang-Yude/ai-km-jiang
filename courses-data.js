@@ -260,8 +260,11 @@ window.COURSES = [
     host: "江江教練",
     tags: ["嘉我好漾", "AI小編", "品牌特色", "靈感池", "開頭公式", "發文節奏"],
     summary: "嘉我好漾線上青創課，把 AI 從工具變成員工：① 先讓它認識你的品牌特色；② 建立靈感池，靈感詞加標籤，不用每次從零想；③ 五種開頭公式加發文節奏，吸睛轉單。",
-    detail_url: null,
-    materials: [],
+    detail_url: "https://ai-km-jiang.vercel.app/courses/2026-07-08-ai-agent-editor/",
+    materials: [
+      { label: "上課簡報 ↗", url: "https://ai-km-jiang.vercel.app/courses/2026-07-08-ai-agent-editor/" },
+      { label: "學員問卷落點地圖 ↗", url: "https://ai-km-jiang.vercel.app/courses/2026-07-08-ai-agent-editor/map.html" }
+    ],
     registration: {
       status: "open",
       url: "https://www.accupass.com/event/2606140311328045535890",
@@ -283,7 +286,9 @@ window.COURSES = [
     tags: ["嘉我好漾", "AI圖文", "品牌資產", "降低AI味", "批量產出", "形象頁"],
     summary: "嘉我好漾線上青創課，讓 AI 圖不要有 AI 味：① 把品牌放進 prompt，做出別人複製不走的圖卡；② 一個主題一次做完圖卡、海報、簡報、貼文；③ 用 AI 做產品、形象頁與影片代操判斷。",
     detail_url: null,
-    materials: [],
+    materials: [
+      { label: "學員問卷落點地圖 ↗", url: "https://ai-km-jiang.vercel.app/courses/2026-07-08-ai-agent-editor/map.html" }
+    ],
     registration: {
       status: "open",
       url: "https://www.accupass.com/event/2606140311328045535890",

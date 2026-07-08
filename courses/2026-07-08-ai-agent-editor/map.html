@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>嘉我好漾 七月行銷課 落點地圖 ｜ AI 小編 + 圖文實作</title>
+<style>
+:root{
+  --bg:#EDE0CC; --text:#3D2817; --accent:#B5704A; --accent-light:#C9956A;
+  --accent-deep:#8E5A36; --subtle:#C9B294; --card:#F8F0E0; --card-deep:#E2D2BD;
+  --highlight-bg:rgba(181,112,74,0.08);
+  --core:#6F4E37; --core-text:#FFF8DC;
+  --ext:#C9956A; --out:#E2D2BD;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC","Microsoft JhengHei",sans-serif;
+  background:var(--bg);color:var(--text);line-height:1.7;font-size:19px;letter-spacing:.02em}
+.container{max-width:1080px;margin:0 auto;padding:36px 30px 100px}
+
+/* 頂部標題 */
+.masthead{text-align:center;padding:8px 0 26px;border-bottom:2px solid var(--subtle);margin-bottom:24px}
+.masthead .prog{display:inline-block;font-size:16px;font-weight:800;color:#FFF8DC;background:var(--accent-deep);
+  padding:6px 18px;border-radius:20px;letter-spacing:.16em;margin-bottom:16px}
+.masthead h1{font-size:40px;font-weight:800;line-height:1.25;margin-bottom:10px}
+.masthead .sub{font-size:19px;opacity:.72;line-height:1.6}
+
+/* 分頁 */
+.tabs{position:sticky;top:0;z-index:50;display:flex;gap:8px;background:var(--bg);
+  padding:14px 0 12px;margin-bottom:8px;border-bottom:1.5px solid var(--subtle);flex-wrap:wrap}
+.tab-btn{flex:1;min-width:150px;font-family:inherit;font-size:18px;font-weight:800;cursor:pointer;
+  color:var(--accent-deep);background:var(--card);border:1.5px solid var(--subtle);
+  padding:14px 16px;border-radius:12px;transition:all .15s;letter-spacing:.03em;line-height:1.4}
+.tab-btn small{display:block;font-size:14px;font-weight:500;opacity:.65;margin-top:3px}
+.tab-btn:hover{border-color:var(--accent)}
+.tab-btn.active{background:var(--core);color:#FFF8DC;border-color:var(--core)}
+.tab-btn.active small{opacity:.85}
+.panel{display:none;animation:fade .25s ease}
+.panel.active{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+/* KPI */
+.kpi-row{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:28px 0 40px}
+.kpi-card{background:var(--card);border:1.5px solid var(--subtle);padding:24px 20px;border-radius:14px;text-align:center}
+.kpi-num{font-size:52px;font-weight:800;color:var(--accent);line-height:1;letter-spacing:-.02em}
+.kpi-label{font-size:16px;opacity:.7;margin-top:10px;line-height:1.4}
+.kpi-row.four{grid-template-columns:repeat(4,1fr)}
+.kpi-row.four .kpi-num{font-size:40px}
+
+/* section */
+.section-block{margin-bottom:52px}
+.section-h2{font-size:30px;font-weight:800;margin-bottom:20px;border-left:5px solid var(--accent);padding-left:15px}
+.section-h2 small{font-size:17px;font-weight:500;opacity:.6;margin-left:10px}
+
+/* info box */
+.infobox{background:var(--card);border:1.5px solid var(--subtle);border-radius:14px;padding:26px 30px;margin-bottom:40px}
+.infobox .eyebrow{font-size:16px;font-weight:800;color:var(--accent);letter-spacing:.16em;margin-bottom:12px}
+.infobox .big{font-size:28px;font-weight:800;line-height:1.4;margin-bottom:14px}
+.infobox p{font-size:18px;opacity:.85;line-height:1.75}
+.infobox .axes{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:18px}
+.infobox .axis{background:var(--bg);border-left:4px solid var(--accent);border-radius:10px;padding:14px 18px}
+.infobox .axis b{color:var(--accent-deep);font-size:17px}
+.infobox .axis span{font-size:16px;opacity:.75}
+
+/* sample */
+.sample-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.sample-card{background:var(--card);border:1.5px solid var(--subtle);border-radius:14px;padding:22px 24px}
+.sample-card-title{font-size:16px;font-weight:800;color:var(--accent);letter-spacing:.13em;margin-bottom:14px}
+.sample-row{display:flex;align-items:center;justify-content:space-between;padding:5px 0;font-size:17px;border-bottom:1px dashed var(--subtle)}
+.sample-row:last-child{border-bottom:none}
+.sample-row-bar-wrap{flex:1;max-width:100px;margin:0 10px;height:8px;background:var(--bg);border-radius:4px;overflow:hidden}
+.sample-row-bar{height:100%;background:var(--accent-light);border-radius:4px}
+.sample-row-num{font-weight:700;color:var(--accent-deep);min-width:60px;text-align:right;font-size:16px}
+.sample-note{margin-top:14px;font-size:16px;opacity:.68;line-height:1.55}
+
+/* dist bars（Gemini 落點） */
+.dist{background:var(--card);border:1.5px solid var(--subtle);border-radius:14px;padding:24px 26px}
+.dist-title{font-size:19px;font-weight:800;margin-bottom:4px}
+.dist-note{font-size:15px;opacity:.62;margin-bottom:16px}
+.dbar{display:grid;grid-template-columns:150px 1fr;align-items:center;gap:12px;margin:8px 0}
+.dbar .dl{font-size:15px;opacity:.75;text-align:right;line-height:1.35}
+.dbar .dtrack{background:var(--bg);border-radius:7px;height:26px;overflow:hidden}
+.dbar .dfill{height:100%;border-radius:7px;display:flex;align-items:center;justify-content:flex-end;
+  padding-right:9px;color:#FFF8DC;font-size:14px;font-weight:700;min-width:26px;background:var(--accent)}
+.dbar.hot .dfill{background:var(--core)}
+.dbar .dl b{color:var(--text);font-weight:800;opacity:1}
+
+/* rank */
+.rank{list-style:none;display:flex;flex-direction:column;gap:9px}
+.rank li{display:flex;align-items:center;gap:12px;font-size:17px}
+.rank .medal{flex:0 0 auto;width:28px;height:28px;border-radius:50%;display:grid;place-items:center;font-weight:800;font-size:14px;color:#FFF8DC;background:var(--subtle)}
+.rank li:nth-child(1) .medal{background:var(--accent-deep)}
+.rank li:nth-child(2) .medal{background:var(--accent-light)}
+.rank .tw{font-size:14px;opacity:.6;margin-left:auto;text-align:right}
+
+/* map */
+.map-wrap{background:var(--card);border:1.5px solid var(--subtle);border-radius:14px;padding:30px 28px;margin-bottom:16px}
+.map-lead{font-size:17px;font-weight:700;color:var(--accent);letter-spacing:.06em;text-align:center;margin-bottom:6px}
+.map-disclaim{font-size:15px;opacity:.62;text-align:center;margin-bottom:20px;line-height:1.5}
+.map-flex{display:grid;grid-template-columns:1.25fr 1fr;gap:24px;align-items:center}
+.tier-stack>div{padding:15px 18px;border-radius:10px;margin-bottom:10px}
+.tier-stack .t-core{background:rgba(111,78,55,.42);color:#FFF8DC}
+.tier-stack .t-ext{background:rgba(201,149,106,.32)}
+.tier-stack .t-out{background:rgba(212,165,116,.18);border:1.5px dashed var(--accent-light)}
+.tier-stack .tlab{font-size:13px;font-weight:800;letter-spacing:.2em;margin-bottom:5px;opacity:.9}
+.tier-stack .ttitle{font-size:20px;font-weight:800;margin-bottom:5px}
+.tier-stack .tdesc{font-size:15px;line-height:1.55}
+.t-ext .tlab,.t-out .tlab{color:var(--accent-deep)}
+
+/* 比例堆疊條 */
+.priority-bar{display:grid;grid-template-columns:minmax(160px,60fr) minmax(120px,30fr) minmax(90px,10fr);
+  width:100%;height:130px;border-radius:14px;overflow:hidden;border:1.5px solid var(--subtle);line-height:1.3}
+.priority-segment{display:flex;flex-direction:column;justify-content:center;align-items:center;
+  padding:12px;text-align:center;border-right:2px solid rgba(255,248,220,.4);min-width:0;gap:4px}
+.priority-segment:last-child{border-right:none}
+.priority-segment.tier1{background:var(--core);color:var(--core-text)}
+.priority-segment.tier2{background:var(--ext);color:#FFF8DC}
+.priority-segment.tier3{background:var(--out);color:var(--text)}
+.priority-tier-label{font-size:13px;font-weight:800;letter-spacing:.2em;opacity:.9}
+.priority-count{font-size:24px;font-weight:800}
+.priority-pct{font-size:13px;opacity:.85;font-weight:600}
+.priority-desc{font-size:13px}
+
+/* tier detail */
+.tier-detail{background:var(--card);border:1.5px solid var(--subtle);border-radius:14px;padding:24px 28px;margin-bottom:16px}
+.tier-detail.tier1{border-left:6px solid var(--core)}
+.tier-detail.tier2{border-left:6px solid var(--ext)}
+.tier-detail.tier3{border-left:6px solid var(--accent-light);background:linear-gradient(135deg,var(--card) 0%,rgba(212,165,116,.08) 100%)}
+.tier-detail-header{display:flex;align-items:baseline;gap:12px;margin-bottom:14px;flex-wrap:wrap}
+.tier-detail-label{font-size:14px;font-weight:800;background:var(--text);color:var(--bg);padding:4px 12px;border-radius:6px;letter-spacing:.16em}
+.tier-detail-title{font-size:24px;font-weight:700}
+.qrow{display:grid;grid-template-columns:52px 1.4fr 2fr;gap:14px;padding:15px 0;border-bottom:1px dashed var(--subtle);align-items:start}
+.qrow:last-child{border-bottom:none}
+.qrow-num{font-size:20px;font-weight:800;color:var(--accent);background:var(--highlight-bg);padding:7px 0;border-radius:6px;text-align:center}
+.qrow-q{font-weight:700;font-size:18px;line-height:1.55}
+.qrow-target{font-size:16px;color:var(--accent-deep);font-weight:600;line-height:1.5}
+
+/* 特別回應 */
+.special{background:linear-gradient(135deg,var(--card) 0%,rgba(181,112,74,.12) 100%);
+  border:2px solid var(--accent-deep);border-radius:14px;padding:24px 28px;margin-bottom:18px}
+.special .slabel{display:inline-block;background:var(--accent-deep);color:#FFF8DC;padding:4px 14px;border-radius:6px;
+  font-size:14px;font-weight:800;letter-spacing:.16em;margin-bottom:12px}
+.special .sintro{font-size:17px;opacity:.75;margin-bottom:16px;line-height:1.6}
+.special-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.special-card{background:var(--bg);padding:18px 20px;border-radius:10px;border-left:4px solid var(--accent-deep)}
+.special-card .sc-q{font-size:17px;font-weight:700;line-height:1.6;margin-bottom:10px}
+.special-card .sc-q b{color:var(--accent-deep)}
+.special-card .sc-a{font-size:16px;line-height:1.6;padding-top:10px;border-top:1px dashed var(--accent-light)}
+.special-card .sc-a b{color:var(--accent-deep)}
+
+/* script */
+.script-box{background:var(--card);border:2px dashed var(--accent-light);padding:22px 26px;border-radius:12px;margin-top:16px}
+.script-label{display:inline-block;font-size:14px;font-weight:800;color:#FFF8DC;background:var(--accent);padding:4px 12px;border-radius:6px;letter-spacing:.16em;margin-bottom:10px}
+.script-text{font-size:19px;line-height:1.7;font-style:italic}
+
+/* 統整專用 */
+.compare{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.cmp-card{background:var(--card);border:1.5px solid var(--subtle);border-radius:14px;padding:24px 26px}
+.cmp-card.s1{border-top:5px solid var(--accent)}
+.cmp-card.s2{border-top:5px solid var(--accent-deep)}
+.cmp-card h3{font-size:21px;font-weight:800;margin-bottom:4px}
+.cmp-card .cmeta{font-size:15px;opacity:.6;margin-bottom:14px}
+.insight{background:var(--card);border:1.5px solid var(--subtle);border-radius:14px;padding:22px 26px;margin-bottom:14px}
+.insight h4{font-size:20px;font-weight:800;margin-bottom:8px;display:flex;align-items:center;gap:10px}
+.insight h4 .dot{width:12px;height:12px;border-radius:50%;background:var(--accent);flex:0 0 auto}
+.insight p{font-size:17px;line-height:1.7}
+.insight .data{color:var(--accent-deep);font-weight:800}
+.teach{background:linear-gradient(135deg,#F1E6D3,#E9DCC6);border:1.5px solid var(--subtle);border-radius:14px;padding:26px 30px;margin-top:16px}
+.teach h4{font-size:22px;font-weight:800;margin-bottom:12px}
+.teach ul{margin-left:22px;font-size:17px;line-height:1.9}
+.teach ul b{color:var(--accent-deep)}
+
+footer{margin-top:70px;padding-top:36px;border-top:2px solid var(--subtle);text-align:center;opacity:.55;font-size:16px;line-height:1.8;letter-spacing:.08em}
+
+@media(max-width:820px){
+  body{font-size:18px}
+  .container{padding:24px 18px 60px}
+  .masthead h1{font-size:29px}
+  .kpi-row,.kpi-row.four{grid-template-columns:1fr 1fr}
+  .sample-grid,.map-flex,.infobox .axes,.special-grid,.compare{grid-template-columns:1fr}
+  .dbar{grid-template-columns:120px 1fr}
+  .qrow{grid-template-columns:1fr;gap:6px}
+  .qrow-num{width:60px}
+  .priority-bar{grid-template-columns:1fr;height:auto}
+  .priority-segment{border-right:none;border-bottom:2px solid rgba(255,248,220,.4)}
+  .section-h2{font-size:25px}
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="masthead">
+    <div class="prog">嘉我好漾 ｜ 七月行銷課 上課素材</div>
+    <h1>學員問卷落點地圖</h1>
+    <div class="sub">AI Agent 小編（0708）＋ AI 圖文實作（0714）｜ 嘉義縣兩梯次<br>教學班長 · 問卷回饋分析法 ｜ 講師備課用</div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab-btn active" data-tab="all">大統整<small>兩梯次合看 + 總結</small></button>
+    <button class="tab-btn" data-tab="s1">只有第一場<small>0708 Agent 小編</small></button>
+    <button class="tab-btn" data-tab="s2">只有第二場<small>0714 圖文實作</small></button>
+  </div>
+
+  <!-- ================= 大統整 ================= -->
+  <div class="panel active" id="tab-all">
+
+    <div class="kpi-row four">
+      <div class="kpi-card"><div class="kpi-num">135</div><div class="kpi-label">兩梯次總報名人次</div></div>
+      <div class="kpi-card"><div class="kpi-num">63–64%</div><div class="kpi-label">嘉義縣在地占比</div></div>
+      <div class="kpi-card"><div class="kpi-num">37–38%</div><div class="kpi-label">36–40 歲單一最大級距</div></div>
+      <div class="kpi-card"><div class="kpi-num">57–61%</div><div class="kpi-label">Gemini 略懂皮毛以下</div></div>
+    </div>
+
+    <div class="infobox">
+      <div class="eyebrow">兩場的關係</div>
+      <div class="big">兩個梯次，相近受眾的兩種切面</div>
+      <p>兩梯次的地區、年齡、產業輪廓高度相近（可視為相近受眾，不一定是同一批人）。第一場問的是「文字與發文」，第二場問的是「圖像與延伸」。這份大統整把兩場並排，再收一個跨梯次總結，讓備課一次看清共同起點與各自重點。</p>
+    </div>
+
+    <!-- 共同背景 -->
+    <div class="section-block">
+      <h2 class="section-h2">共同輪廓<small>兩場幾乎重疊</small></h2>
+      <div class="sample-grid">
+        <div class="sample-card">
+          <div class="sample-card-title">地區（兩場）</div>
+          <div class="sample-row"><div>嘉義縣</div><div class="sample-row-bar-wrap"><div class="sample-row-bar" style="width:100%"></div></div><div class="sample-row-num">63–64%</div></div>
+          <div class="sample-row"><div>嘉義市</div><div class="sample-row-bar-wrap"><div class="sample-row-bar" style="width:24%"></div></div><div class="sample-row-num">13–16%</div></div>
+          <div class="sample-row"><div>外縣市</div><div class="sample-row-bar-wrap"><div class="sample-row-bar" style="width:36%"></div></div><div class="sample-row-num">19–24%</div></div>
+          <div class="sample-note">在地為主，外縣市約兩成。</div>
+        </div>
+        <div class="sample-card">
+          <div class="sample-card-title">年齡主力（兩場）</div>
+          <div class="sample-row"><div>36–40 歲</div><div class="sample-row-bar-wrap"><div class="sample-row-bar" style="width:100%"></div></div><div class="sample-row-num">37–38%</div></div>
+          <div class="sample-row"><div>41 歲以上</div><div class="sample-row-bar-wrap"><div class="sample-row-bar" style="width:100%"></div></div><div class="sample-row-num">約 40%</div></div>
+          <div class="sample-row"><div>35 歲以下</div><div class="sample-row-bar-wrap"><div class="sample-row-bar" style="width:55%"></div></div><div class="sample-row-num">約 22%</div></div>
+          <div class="sample-note">36–40 歲是單一最大級距，41 歲以上合計約四成。職涯轉型與事業穩定期。</div>
+        </div>
+        <div class="sample-card">
+          <div class="sample-card-title">產業與階段（問卷歸納）</div>
+          <div class="sample-note" style="margin-top:0;opacity:.85;font-size:17px">傳統農產、水產養殖、養蜂場；咖啡、手作烘焙、辣椒醬、包子店、披薩店、臭豆腐、市集攤販；行政上班族（醫院、政府、科技、教育、社福、藥局）。</div>
+          <div class="sample-note">多在家族接班數位轉型、個人品牌與副業初期，沒有設計師預算的微型創業者。</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Gemini 落點對照 -->
+    <div class="section-block">
+      <h2 class="section-h2">Gemini 落點對照<small>兩場的 AI 熟悉度都偏低</small></h2>
+      <div class="compare">
+        <div class="dist">
+          <div class="dist-title">熟悉程度</div>
+          <div class="dist-note">兩場都是「2 分 略懂皮毛」人數最多</div>
+          <div class="dbar"><div class="dl">第一場 略懂以下</div><div class="dtrack"><div class="dfill" style="width:57%">57%</div></div></div>
+          <div class="dbar"><div class="dl">第二場 略懂以下</div><div class="dtrack"><div class="dfill" style="width:61%">61%</div></div></div>
+          <div class="dbar"><div class="dl">第一場 高度熟悉↑</div><div class="dtrack"><div class="dfill" style="width:10%">10%</div></div></div>
+          <div class="dbar"><div class="dl">第二場 高度熟悉↑</div><div class="dtrack"><div class="dfill" style="width:7%">7%</div></div></div>
+        </div>
+        <div class="dist">
+          <div class="dist-title">常用 AI 工具</div>
+          <div class="dist-note">兩場都是 ChatGPT 一支獨大，Gemini 次之</div>
+          <ul class="rank">
+            <li><span class="medal">1</span> ChatGPT / Chat <span class="tw">兩場都最多</span></li>
+            <li><span class="medal">2</span> Gemini <span class="tw">兩場都居次</span></li>
+            <li><span class="medal">3</span> 第一場 Claude ／ 第二場 Canva <span class="tw">主題差異</span></li>
+            <li><span class="medal">4</span> Gamma、NotebookLM、Midjourney 等 <span class="tw">極少提及</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- 兩場合看落點地圖 -->
+    <div class="section-block">
+      <h2 class="section-h2">落點地圖 · 兩場合看<small>11 個提問主題一張圖 ｜ 上文字、下圖像</small></h2>
+      <div class="map-wrap">
+        <div class="map-lead">越靠近中心，越是系列核心；左半邊是「讓 AI 記住品牌」，右半邊是「成效與效率」</div>
+        <div class="map-disclaim">上半＝第一場 0708（文字與發文）、下半＝第二場 0714（圖像與延伸）。泡泡是提問主題與課堂比重，位置與分層是講師戰術判斷，不是人數統計</div>
+        <div class="map-flex">
+          <svg viewBox="0 0 600 600" style="width:100%;max-width:520px;margin:0 auto;display:block">
+            <circle cx="300" cy="300" r="240" fill="rgba(212,165,116,0.16)" stroke="#C9956A" stroke-width="1.5" stroke-dasharray="6 6"><title>範圍外圈 ｜ 10%
+只有第二場的「判斷外包」落在這裡</title></circle>
+            <circle cx="300" cy="300" r="170" fill="rgba(201,149,106,0.30)" stroke="#C9956A" stroke-width="1.5"><title>補充延伸圈 ｜ 30%
+看課堂節奏帶到</title></circle>
+            <circle cx="300" cy="300" r="100" fill="rgba(111,78,55,0.42)" stroke="#6F4E37" stroke-width="2"><title>核心內容圈 ｜ 60%
+兩場主架構必講</title></circle>
+            <line x1="50" y1="300" x2="550" y2="300" stroke="#3D2817" stroke-width="1.2" opacity="0.5" stroke-dasharray="2 4"/>
+            <line x1="300" y1="50" x2="300" y2="550" stroke="#3D2817" stroke-width="1.2" opacity="0.5" stroke-dasharray="2 4"/>
+            <text x="46" y="292" text-anchor="start" font-size="16" font-weight="800" fill="#3D2817">品牌根基</text>
+            <text x="48" y="314" text-anchor="start" font-size="13" fill="#3D2817" opacity="0.7">讓 AI 記住品牌</text>
+            <text x="554" y="292" text-anchor="end" font-size="16" font-weight="800" fill="#3D2817">成效與效率</text>
+            <text x="552" y="314" text-anchor="end" font-size="13" fill="#3D2817" opacity="0.7">產出、轉單、省工</text>
+            <text x="300" y="40" text-anchor="middle" font-size="16" font-weight="800" fill="#3D2817">文字與發文 ｜ 第一場 0708</text>
+            <text x="300" y="574" text-anchor="middle" font-size="16" font-weight="800" fill="#3D2817">圖像與延伸 ｜ 第二場 0714</text>
+            <circle cx="300" cy="300" r="6" fill="#3D2817"/>
+
+            <circle cx="250" cy="240" r="26" fill="#6F4E37" opacity="0.95"><title>0708 ｜ 品牌記憶 ｜ 核心
+怎麼讓 AI 一次記住我賣什麼、我的品牌特色？
+→ 建品牌人設／記憶檔，一次設定重複用</title></circle>
+            <text x="250" y="237" text-anchor="middle" font-size="15" font-weight="800" fill="#FFF8DC">記憶</text>
+            <text x="250" y="253" text-anchor="middle" font-size="11" fill="#FFE6B8">0708</text>
+
+            <circle cx="212" cy="282" r="24" fill="#6F4E37" opacity="0.95"><title>0708 ｜ 品牌溫度 ｜ 核心
+傳統老店，AI 語氣太科技感太罐頭，怎麼調出溫度？
+→ 罐頭版 vs 有溫度版並排改給大家看</title></circle>
+            <text x="212" y="279" text-anchor="middle" font-size="15" font-weight="800" fill="#FFF8DC">溫度</text>
+            <text x="212" y="295" text-anchor="middle" font-size="11" fill="#FFE6B8">0708</text>
+
+            <circle cx="352" cy="248" r="24" fill="#6F4E37" opacity="0.95"><title>0708 ｜ 選題發想 ｜ 核心
+每天想發什麼、腦袋空空，AI 能幫忙規劃主題嗎？
+→ 靈感池＋批量產選題</title></circle>
+            <text x="352" y="245" text-anchor="middle" font-size="15" font-weight="800" fill="#FFF8DC">選題</text>
+            <text x="352" y="261" text-anchor="middle" font-size="11" fill="#FFE6B8">0708</text>
+
+            <circle cx="385" cy="290" r="22" fill="#6F4E37" opacity="0.95"><title>0708 ｜ 開場鉤子 ｜ 核心
+文案被滑過去，怎麼第一句就抓住眼睛？
+→ 五種開頭公式、第一句改寫示範</title></circle>
+            <text x="385" y="287" text-anchor="middle" font-size="14" font-weight="800" fill="#FFF8DC">鉤子</text>
+            <text x="385" y="302" text-anchor="middle" font-size="11" fill="#FFE6B8">0708</text>
+
+            <circle cx="415" cy="205" r="20" fill="#C9956A"><title>0708 ｜ 發文節奏轉單 ｜ 補充延伸
+怎麼排節奏才能既有互動又轉單？
+→ 課堂給框架，成效看課後長期執行</title></circle>
+            <text x="415" y="202" text-anchor="middle" font-size="13" font-weight="800" fill="#FFF8DC">節奏</text>
+            <text x="415" y="217" text-anchor="middle" font-size="11" fill="#FFF8DC">0708</text>
+
+            <circle cx="248" cy="360" r="26" fill="#6F4E37" opacity="0.95"><title>0714 ｜ 去 AI 味 ｜ 核心
+AI 圖太像 3D 或科技畫風，沒有店的特色？
+→ 去 AI 味提示詞與參考圖，帶入店的元素</title></circle>
+            <text x="248" y="357" text-anchor="middle" font-size="14" font-weight="800" fill="#FFF8DC">去AI味</text>
+            <text x="248" y="373" text-anchor="middle" font-size="11" fill="#FFE6B8">0714</text>
+
+            <circle cx="215" cy="320" r="24" fill="#6F4E37" opacity="0.95"><title>0714 ｜ 品牌色調 ｜ 核心
+每次重調風格，怎麼讓 AI 記住品牌色調？
+→ 建品牌色票／風格模板，重複套用</title></circle>
+            <text x="215" y="317" text-anchor="middle" font-size="14" font-weight="800" fill="#FFF8DC">品牌色</text>
+            <text x="215" y="333" text-anchor="middle" font-size="11" fill="#FFE6B8">0714</text>
+
+            <circle cx="350" cy="355" r="24" fill="#6F4E37" opacity="0.95"><title>0714 ｜ 一鍵改尺寸 ｜ 核心
+FB、IG、海報、簡報要各改一次，能一鍵延伸嗎？
+→ 一稿多尺寸的延伸流程</title></circle>
+            <text x="350" y="352" text-anchor="middle" font-size="14" font-weight="800" fill="#FFF8DC">改尺寸</text>
+            <text x="350" y="368" text-anchor="middle" font-size="11" fill="#FFE6B8">0714</text>
+
+            <circle cx="382" cy="312" r="22" fill="#6F4E37" opacity="0.95"><title>0714 ｜ 跨格式演繹 ｜ 核心
+同一主題同時做成簡報排版與社群圖卡？
+→ 一份主題延伸成圖卡＋簡報</title></circle>
+            <text x="382" y="309" text-anchor="middle" font-size="13" font-weight="800" fill="#FFF8DC">跨格式</text>
+            <text x="382" y="324" text-anchor="middle" font-size="11" fill="#FFE6B8">0714</text>
+
+            <circle cx="412" cy="395" r="20" fill="#C9956A"><title>0714 ｜ 選工具 ｜ 補充延伸
+哪種 AI 工具適合小農或手作烘焙？貴不貴？
+→ 給挑工具的判斷原則與門檻</title></circle>
+            <text x="412" y="392" text-anchor="middle" font-size="13" font-weight="800" fill="#FFF8DC">選工具</text>
+            <text x="412" y="407" text-anchor="middle" font-size="11" fill="#FFF8DC">0714</text>
+
+            <circle cx="300" cy="520" r="18" fill="#E2D2BD" stroke="#C9956A" stroke-width="1.5"><title>0714 ｜ 判斷外包 ｜ 範圍外
+找廠商 AI 代操，怎麼判斷好壞、會不會被騙？
+→ 給驗收清單，課後或 QA 深談</title></circle>
+            <text x="300" y="517" text-anchor="middle" font-size="12" font-weight="800" fill="#3D2817">外包</text>
+            <text x="300" y="531" text-anchor="middle" font-size="10" fill="#3D2817">0714</text>
+          </svg>
+
+          <div class="tier-stack">
+            <div class="t-core">
+              <div class="tlab">左半邊 ｜ 共同暗線</div>
+              <div class="ttitle">讓 AI 記住品牌</div>
+              <div class="tdesc">兩場各有兩顆核心泡泡擠在左半邊：0708 的記憶與溫度、0714 的去 AI 味與品牌色。同一個需求的文字面與圖像面，是貫穿系列的主軸。</div>
+            </div>
+            <div class="t-ext">
+              <div class="tlab">右半邊 ｜ 各自的成效題</div>
+              <div class="ttitle">產出、轉單、省工</div>
+              <div class="tdesc">0708 求選題、鉤子、節奏轉單；0714 求改尺寸、跨格式、選工具。文字場問「怎麼被看見」，圖像場問「怎麼不過勞」。</div>
+            </div>
+            <div class="t-out">
+              <div class="tlab">範圍外 ｜ 全系列只有一題</div>
+              <div class="ttitle">判斷外包（0714）</div>
+              <div class="tdesc">給驗收清單、QA 深談。其餘 10 題全部落在兩堂課射程內，提問非常集中。</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 跨梯次總結 -->
+    <div class="section-block">
+      <h2 class="section-h2">跨梯次總結<small>備課可以直接用的判斷</small></h2>
+      <div class="insight">
+        <h4><span class="dot"></span>一、低基礎、高動機</h4>
+        <p>兩場 Gemini 熟悉度都以「略懂皮毛」最多，略懂以下合計<span class="data">第一場 57%、第二場 61%</span>，高度熟悉以上僅一成上下。工具用得淺，但提問都很具體，集中在品牌一致性、產出效率與部分商業成效。<span class="data">起點要壓在零基礎能跟上</span>。</p>
+      </div>
+      <div class="insight">
+        <h4><span class="dot"></span>二、共同暗線：讓 AI 記住我的品牌</h4>
+        <p>第一場要 AI 記住「品牌語氣溫度」，第二場要 AI 記住「品牌視覺色調」。<span class="data">同一個需求的兩面</span>：都怕 AI 出來的東西太罐頭、沒有自己店的特色。這是兩場都能扣住的主軸。</p>
+      </div>
+      <div class="insight">
+        <h4><span class="dot"></span>三、真正的痛：省時與延伸</h4>
+        <p>一人工作室校長兼撞鐘反覆出現：不知道發什麼、每次重調、改尺寸與跨格式很累。學員要的是<span class="data">同一份素材一次延伸多用途</span>，把重複工變一鍵。</p>
+      </div>
+      <div class="teach">
+        <h4>兩場備課意涵</h4>
+        <ul>
+          <li>起點都壓在<b>零基礎能跟上</b>，示範不預設進階操作。</li>
+          <li>用「<b>讓 AI 記住品牌</b>」貫穿兩場：第一場落在語氣人設，第二場落在色調風格。</li>
+          <li>第一場給<b>品牌記憶、去罐頭味、選題、鉤子、發文節奏轉單</b>；第二場給<b>去 AI 味、鎖品牌色、一鍵改尺寸、跨格式延伸、選工具與判斷外包</b>。</li>
+          <li>案例都用他們的產業（農產、烘焙、手作、市集），最有感。</li>
+          <li>兩場都有<b>約四成 41 歲以上</b>（46 歲以上就佔兩成）、<b>外縣市約兩成</b>：節奏放穩、步驟可重複看，案例用共通產業而非只綁嘉義在地梗，讓年長與外縣市學員都跟得上。</li>
+          <li>還有一個落差：學員<b>使用頻率不算低（一半一半就用）、但自評熟悉度低</b>。代表他們其實常在動手、只是缺深度與信心，實作示範會很受用，不用從「AI 是什麼」講起。</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= 第一場 ================= -->
+  <div class="panel" id="tab-s1">
+
+    <div class="infobox">
+      <div class="eyebrow">本場課程</div>
+      <div class="big">訓練你的 AI Agent 小編 ｜ 把 AI 從工具變成員工</div>
+      <p>把 AI 訓練成一個記得住你品牌、能持續產出、幫你發文的小編。學員的提問集中在「文字與發文」這條線。落點地圖用兩個維度攤開他們的提問。</p>
+      <div class="axes">
+        <div class="axis"><b>X 軸 · 品牌根基 ↔ 發文成效</b><br><span>左：讓 AI 認識你的品牌　｜　右：產出與轉單</span></div>
+        <div class="axis"><b>Y 軸 · 單次可設定 ↔ 需持續經營</b><br><span>下：一次設定到位　｜　上：要跨時間經營</span></div>
+      </div>
+    </div>
+
+    <div class="kpi-row four">
+      <div class="kpi-card"><div class="kpi-num">68</div><div class="kpi-label">總報名人數</div></div>
+      <div class="kpi-card"><div class="kpi-num">63%</div><div class="kpi-label">嘉義縣在地</div></div>
+      <div class="kpi-card"><div class="kpi-num">38%</div><div class="kpi-label">36–40 歲（最大級距）</div></div>
+      <div class="kpi-card"><div class="kpi-num">57%</div><div class="kpi-label">Gemini 略懂皮毛以下</div></div>
+    </div>
+
+    <!-- 樣本背景 -->
+    <div class="section-block">
+      <h2 class="section-h2">學員樣本背景</h2>
+      <div class="sample-grid">
+        <div class="sample-card">
+          <div class="sample-card-title">地區分布</div>
+          <div class="sample-row"><div>嘉義縣</div><div class="sample-row-bar-wrap"><div class="sample-row-bar" style="width:100%"></div></div><div class="sample-row-num">43 ｜ 63%</div></div>
+          <div class="sample-row"><div>嘉義市</div><div class="sample-row-bar-wrap"><div class="sample-row-bar" style="width:21%"></div></div><div class="sample-row-num">9 ｜ 13%</div></div>
+          <div class="sample-row"><div>外縣市</div><div class="sample-row-bar-wrap"><div class="sample-row-bar" style="width:37%"></div></div><div class="sample-row-num">16 ｜ 24%</div></div>
+        </div>
+        <div class="sample-card">
+          <div class="sample-card-title">年齡分布</div>
+          <div class="sample-row"><div>26–30 歲</div><div class="sample-row-bar-wrap"><div class="sample-row-bar" style="width:27%"></div></div><div class="sample-row-num">7 ｜ 10%</div></div>
+          <div class="sample-row"><div>31–35 歲</div><div class="sample-row-bar-wrap"><div class="sample-row-bar" style="width:19%"></div></div><div class="sample-row-num">5 ｜ 7%</div></div>
+          <div class="sample-row"><div>36–40 歲</div><div class="sample-row-bar-wrap"><div class="sample-row-bar" style="width:100%"></div></div><div class="sample-row-num">26 ｜ 38%</div></div>
+          <div class="sample-row"><div>41–45 歲</div><div class="sample-row-bar-wrap"><div class="sample-row-bar" style="width:50%"></div></div><div class="sample-row-num">13 ｜ 19%</div></div>
+          <div class="sample-row"><div>46 歲以上</div><div class="sample-row-bar-wrap"><div class="sample-row-bar" style="width:54%"></div></div><div class="sample-row-num">14 ｜ 21%</div></div>
+          <div class="sample-note">16–25 歲合計 3 人。主力 36 歲以上。</div>
+        </div>
+        <div class="sample-card">
+          <div class="sample-card-title">產業與階段（問卷歸納）</div>
+          <div class="sample-note" style="margin-top:0;opacity:.85;font-size:17px">農產、水產養殖、養蜂場、傳統農產；咖啡、手作烘焙、陶藝文創、辣椒醬、包子店、披薩店、臭豆腐、市集攤販；行政與上班族。</div>
+          <div class="sample-note">家族接班或傳統事業數位轉型中、個人品牌與副業初期、退休後第二職涯規劃。</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 落點分析 -->
+    <div class="section-block">
+      <h2 class="section-h2">落點分析<small>學員的 AI 現況落在哪 ｜ 真實問卷數據</small></h2>
+      <div class="compare">
+        <div class="dist">
+          <div class="dist-title">對 Gemini 的熟悉程度</div>
+          <div class="dist-note">1–5 分 · 人數最多落在「2 分 略懂皮毛」</div>
+          <div class="dbar"><div class="dl">5 精通掌握</div><div class="dtrack"><div class="dfill" style="width:14%">4</div></div></div>
+          <div class="dbar"><div class="dl">4 高度熟悉</div><div class="dtrack"><div class="dfill" style="width:10%">3</div></div></div>
+          <div class="dbar"><div class="dl">3 中等熟悉</div><div class="dtrack"><div class="dfill" style="width:76%">22</div></div></div>
+          <div class="dbar hot"><div class="dl"><b>2 略懂皮毛</b></div><div class="dtrack"><div class="dfill" style="width:100%">29</div></div></div>
+          <div class="dbar"><div class="dl">1 完全不熟</div><div class="dtrack"><div class="dfill" style="width:34%">10</div></div></div>
+        </div>
+        <div class="dist">
+          <div class="dist-title">對 Gemini 的使用頻率</div>
+          <div class="dist-note">1–5 分 · 高頻使用（4–5 分）僅 18 人</div>
+          <div class="dbar"><div class="dl">5 幾乎每次</div><div class="dtrack"><div class="dfill" style="width:32%">7</div></div></div>
+          <div class="dbar"><div class="dl">4 多數會做</div><div class="dtrack"><div class="dfill" style="width:50%">11</div></div></div>
+          <div class="dbar"><div class="dl">3 一半一半</div><div class="dtrack"><div class="dfill" style="width:91%">20</div></div></div>
+          <div class="dbar hot"><div class="dl"><b>2 偶爾才做</b></div><div class="dtrack"><div class="dfill" style="width:100%">22</div></div></div>
+          <div class="dbar"><div class="dl">1 幾乎不用</div><div class="dtrack"><div class="dfill" style="width:36%">8</div></div></div>
+        </div>
+      </div>
+      <div class="infobox" style="margin-top:16px;margin-bottom:0">
+        <div class="eyebrow">落點觀察</div>
+        <p>熟悉度與使用頻率都往低分堆：略懂皮毛以下佔 <b>57%（39 人）</b>，能高度熟悉的只有 7 人。常用工具第一名 ChatGPT、第二名 Gemini、第三名 Claude，Gamma／NotebookLM／Canva 幾乎無人提及。<b>這是一群 AI 用得淺、但很想靠它變現的學員</b>，示範步驟要從零開始。</p>
+      </div>
+    </div>
+
+    <!-- 落點地圖 -->
+    <div class="section-block">
+      <h2 class="section-h2">落點地圖<small>五個提問主題 ｜ 找到核心、思考切入</small></h2>
+      <div class="map-wrap">
+        <div class="map-lead">越靠近中心，越是這場的核心；象限位置，幫講師思考從哪個方向切入</div>
+        <div class="map-disclaim">泡泡代表「學員提問主題」與課堂比重，位置與分層是講師戰術判斷，不是人數統計（本場為彙總問卷，無逐人資料）</div>
+        <div class="map-flex">
+          <svg viewBox="0 0 600 600" style="width:100%;max-width:520px;margin:0 auto;display:block">
+            <circle cx="300" cy="300" r="240" fill="rgba(212,165,116,0.16)" stroke="#C9956A" stroke-width="1.5" stroke-dasharray="6 6"><title>範圍外圈 ｜ 10%
+本場提問集中，無明顯範圍外主題</title></circle>
+            <circle cx="300" cy="300" r="170" fill="rgba(201,149,106,0.30)" stroke="#C9956A" stroke-width="1.5"><title>補充延伸圈 ｜ 30%
+看課堂節奏帶到</title></circle>
+            <circle cx="300" cy="300" r="100" fill="rgba(111,78,55,0.42)" stroke="#6F4E37" stroke-width="2"><title>核心內容圈 ｜ 60%
+本場主架構必講</title></circle>
+            <line x1="50" y1="300" x2="550" y2="300" stroke="#3D2817" stroke-width="1.2" opacity="0.5" stroke-dasharray="2 4"/>
+            <line x1="300" y1="50" x2="300" y2="550" stroke="#3D2817" stroke-width="1.2" opacity="0.5" stroke-dasharray="2 4"/>
+            <text x="46" y="292" text-anchor="start" font-size="16" font-weight="800" fill="#3D2817">品牌根基</text>
+            <text x="48" y="314" text-anchor="start" font-size="13" fill="#3D2817" opacity="0.7">讓 AI 認識品牌</text>
+            <text x="554" y="292" text-anchor="end" font-size="16" font-weight="800" fill="#3D2817">發文成效</text>
+            <text x="552" y="314" text-anchor="end" font-size="13" fill="#3D2817" opacity="0.7">產出與轉單</text>
+            <text x="300" y="40" text-anchor="middle" font-size="16" font-weight="800" fill="#3D2817">需持續經營</text>
+            <text x="300" y="574" text-anchor="middle" font-size="16" font-weight="800" fill="#3D2817">單次可設定</text>
+            <text x="300" y="152" text-anchor="middle" font-size="13" font-weight="700" fill="#8E5A36" letter-spacing="2" opacity="0.75">延伸 30%</text>
+            <text x="300" y="222" text-anchor="middle" font-size="13" font-weight="700" fill="#FFF8DC" letter-spacing="2" opacity="0.85">核心 60%</text>
+            <circle cx="300" cy="300" r="6" fill="#3D2817"/>
+
+            <circle cx="245" cy="345" r="32" fill="#6F4E37" opacity="0.95"><title>Q1 ｜ 品牌記憶 ｜ 核心（必講）
+提問：每次都要重新輸入我是賣什麼，怎麼讓 AI 一次記住品牌特色？
+位置：品牌根基 + 單次可設定 → 左下核心
+回應方向：建品牌人設／記憶檔，一次設定重複用</title></circle>
+            <text x="245" y="341" text-anchor="middle" font-size="17" font-weight="800" fill="#FFF8DC">Q1</text>
+            <text x="245" y="359" text-anchor="middle" font-size="12" fill="#FFE6B8">品牌記憶</text>
+
+            <circle cx="250" cy="258" r="27" fill="#6F4E37" opacity="0.95"><title>Q2 ｜ 品牌溫度 ｜ 核心（必講）
+提問：傳統老店，AI 寫的語氣太科技感、太像罐頭，怎麼調出品牌溫度？
+位置：品牌根基 + 偏經營 → 左中核心
+回應方向：語氣範例對照，罐頭版 vs 有溫度版</title></circle>
+            <text x="250" y="255" text-anchor="middle" font-size="16" font-weight="800" fill="#FFF8DC">Q2</text>
+            <text x="250" y="272" text-anchor="middle" font-size="12" fill="#FFE6B8">品牌溫度</text>
+
+            <circle cx="352" cy="352" r="26" fill="#6F4E37" opacity="0.95"><title>Q3 ｜ 選題發想 ｜ 核心（必講）
+提問：每天想今天要發什麼，常常腦袋空空，AI 能幫忙規劃主題嗎？
+位置：發文成效 + 單次可產出 → 右下核心
+回應方向：用品牌記憶批量產選題、內容行事曆</title></circle>
+            <text x="352" y="349" text-anchor="middle" font-size="16" font-weight="800" fill="#FFF8DC">Q3</text>
+            <text x="352" y="366" text-anchor="middle" font-size="12" fill="#FFE6B8">選題</text>
+
+            <circle cx="388" cy="300" r="24" fill="#6F4E37" opacity="0.95"><title>Q4 ｜ 開場鉤子 ｜ 核心（必講）
+提問：文案大家滑過去就沒了，怎麼在第一句話就抓住客人的眼睛？
+位置：發文成效端 → 右側核心
+回應方向：鉤子公式、第一句改寫示範</title></circle>
+            <text x="388" y="297" text-anchor="middle" font-size="16" font-weight="800" fill="#FFF8DC">Q4</text>
+            <text x="388" y="314" text-anchor="middle" font-size="12" fill="#FFE6B8">鉤子</text>
+
+            <circle cx="418" cy="222" r="21" fill="#C9956A"><title>Q5 ｜ 發文節奏轉單 ｜ 補充延伸
+提問：每次發文都像硬寫、讚數少，怎麼安排節奏才能既有互動又真的轉單？
+位置：發文成效 + 需持續經營 → 右上延伸圈
+回應方向：課堂給節奏框架，實際成效看課後長期執行</title></circle>
+            <text x="418" y="219" text-anchor="middle" font-size="15" font-weight="800" fill="#FFF8DC">Q5</text>
+            <text x="418" y="235" text-anchor="middle" font-size="11" fill="#FFF8DC">節奏轉單</text>
+          </svg>
+
+          <div class="tier-stack">
+            <div class="t-core">
+              <div class="tlab">核心 ｜ 60%</div>
+              <div class="ttitle">必講 ｜ Q1–Q4</div>
+              <div class="tdesc">品牌記憶、品牌溫度、選題、鉤子。訓練 AI 小編產出內容的主線，講完解決多數人的當下痛點。</div>
+            </div>
+            <div class="t-ext">
+              <div class="tlab">延伸 ｜ 30%</div>
+              <div class="ttitle">看節奏帶 ｜ Q5</div>
+              <div class="tdesc">轉單是這場的最終目的、已貫穿核心 Q1–Q4；這裡列延伸的是「跨時間的發文節奏經營」，課堂給框架、成效靠課後執行。</div>
+            </div>
+            <div class="t-out">
+              <div class="tlab">範圍外 ｜ 10%</div>
+              <div class="ttitle">本場無明顯範圍外</div>
+              <div class="tdesc">五題提問全部落在課程主軸內，這是難得集中的一場。</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="priority-bar">
+        <div class="priority-segment tier1"><div class="priority-tier-label">核心</div><div class="priority-count">Q1–Q4</div><div class="priority-pct">60%</div><div class="priority-desc">必講主線</div></div>
+        <div class="priority-segment tier2"><div class="priority-tier-label">補充延伸</div><div class="priority-count">Q5</div><div class="priority-pct">30%</div><div class="priority-desc">看節奏帶</div></div>
+        <div class="priority-segment tier3"><div class="priority-tier-label">範圍外</div><div class="priority-count">—</div><div class="priority-pct">10%</div><div class="priority-desc">本場無</div></div>
+      </div>
+      <div class="map-disclaim" style="margin-top:10px">比例為建議課堂時間配比（60/30/10 基準），非人數。</div>
+    </div>
+
+    <!-- 各層詳列 + 特別回應 -->
+    <div class="section-block">
+      <h2 class="section-h2">核心內容<small>必講 ｜ 講完解決多數當下痛點</small></h2>
+
+      <div class="special">
+        <div class="slabel">特別回應 · 講師標記</div>
+        <div class="sintro">這兩題最具體、又剛好命中課程招牌（把 AI 訓練成記得住品牌的小編）。本場會在對應段落直接示範。</div>
+        <div class="special-grid">
+          <div class="special-card">
+            <div class="sc-q">Q1 <b>「怎麼讓 AI 一次記住我賣什麼、我的品牌特色？」</b>正是這堂「Agent 小編」的核心賣點。</div>
+            <div class="sc-a"><b>→ 課堂回應：</b>現場示範建一份品牌記憶檔／人設，之後每次發文都不用重講。</div>
+          </div>
+          <div class="special-card">
+            <div class="sc-q">Q2 傳統老店（養蜂場、傳統農產）怕 AI 寫得<b>太科技感、太罐頭</b>，要有品牌溫度。</div>
+            <div class="sc-a"><b>→ 課堂回應：</b>同一段文案，罐頭版與有溫度版並排改給大家看。</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tier-detail tier1">
+        <div class="tier-detail-header"><span class="tier-detail-label">核心</span><div class="tier-detail-title">Q1–Q4 ｜ 必講</div></div>
+        <div class="qrow"><div class="qrow-num">Q1</div><div class="qrow-q">品牌記憶：每次都要重講我賣什麼，怎麼讓 AI 一次記住品牌特色？</div><div class="qrow-target">建品牌人設／記憶檔，一次設定重複用</div></div>
+        <div class="qrow"><div class="qrow-num">Q2</div><div class="qrow-q">品牌溫度：傳統老店，AI 語氣太科技感太罐頭，怎麼調出溫度？</div><div class="qrow-target">語氣範例對照，罐頭版 vs 有溫度版</div></div>
+        <div class="qrow"><div class="qrow-num">Q3</div><div class="qrow-q">選題：每天想發什麼、腦袋空空，AI 能幫忙規劃主題嗎？</div><div class="qrow-target">用品牌記憶批量產選題、內容行事曆</div></div>
+        <div class="qrow"><div class="qrow-num">Q4</div><div class="qrow-q">鉤子：文案被滑過去，怎麼第一句就抓住眼睛？</div><div class="qrow-target">鉤子公式、第一句改寫示範</div></div>
+      </div>
+    </div>
+
+    <div class="section-block">
+      <h2 class="section-h2">補充延伸<small>看節奏帶到</small></h2>
+      <div class="tier-detail tier2">
+        <div class="tier-detail-header"><span class="tier-detail-label">補充延伸</span><div class="tier-detail-title">Q5 ｜ 看節奏帶</div></div>
+        <div class="qrow"><div class="qrow-num">Q5</div><div class="qrow-q">發文節奏轉單：怎麼安排節奏，才能既有互動又真的賣出東西？</div><div class="qrow-target">課堂給節奏框架；成效看課後長期執行</div></div>
+      </div>
+      <div class="script-box">
+        <div class="script-label">課堂處理建議</div>
+        <p class="script-text">「發文節奏跟轉單，課堂會給你一套框架。但它真正見效是跨好幾週的事，今天先把品牌記憶跟內容產出練起來，節奏我們用框架帶，回去照著跑。」</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= 第二場 ================= -->
+  <div class="panel" id="tab-s2">
+
+    <div class="infobox">
+      <div class="eyebrow">本場課程</div>
+      <div class="big">AI 圖文實作 ｜ 讓 AI 圖不要有 AI 味</div>
+      <p>教學員自己用 AI 產出有品牌感、不廉價的圖，並高效延伸成多種尺寸與格式。學員的提問集中在「圖像與延伸」這條線。落點地圖用兩個維度攤開他們的提問。</p>
+      <div class="axes">
+        <div class="axis"><b>X 軸 · 風格品質 ↔ 效率延伸</b><br><span>左：去 AI 味、有品牌感　｜　右：多尺寸多用途</span></div>
+        <div class="axis"><b>Y 軸 · 自己動手實作 ↔ 系統設定與工具外包</b><br><span>下：親手做圖　｜　上：建模板／選工具／判斷外包</span></div>
+      </div>
+    </div>
+
+    <div class="kpi-row four">
+      <div class="kpi-card"><div class="kpi-num">67</div><div class="kpi-label">總報名人數</div></div>
+      <div class="kpi-card"><div class="kpi-num">64%</div><div class="kpi-label">嘉義縣在地</div></div>
+      <div class="kpi-card"><div class="kpi-num">37%</div><div class="kpi-label">36–40 歲（最大級距）</div></div>
+      <div class="kpi-card"><div class="kpi-num">61%</div><div class="kpi-label">Gemini 略懂皮毛以下</div></div>
+    </div>
+
+    <div class="section-block">
+      <h2 class="section-h2">學員樣本背景</h2>
+      <div class="sample-grid">
+        <div class="sample-card">
+          <div class="sample-card-title">地區分布</div>
+          <div class="sample-row"><div>嘉義縣</div><div class="sample-row-bar-wrap"><div class="sample-row-bar" style="width:100%"></div></div><div class="sample-row-num">43 ｜ 64%</div></div>
+          <div class="sample-row"><div>嘉義市</div><div class="sample-row-bar-wrap"><div class="sample-row-bar" style="width:26%"></div></div><div class="sample-row-num">11 ｜ 16%</div></div>
+          <div class="sample-row"><div>外縣市</div><div class="sample-row-bar-wrap"><div class="sample-row-bar" style="width:30%"></div></div><div class="sample-row-num">13 ｜ 19%</div></div>
+        </div>
+        <div class="sample-card">
+          <div class="sample-card-title">年齡分布</div>
+          <div class="sample-row"><div>26–30 歲</div><div class="sample-row-bar-wrap"><div class="sample-row-bar" style="width:28%"></div></div><div class="sample-row-num">7 ｜ 10%</div></div>
+          <div class="sample-row"><div>31–35 歲</div><div class="sample-row-bar-wrap"><div class="sample-row-bar" style="width:16%"></div></div><div class="sample-row-num">4 ｜ 6%</div></div>
+          <div class="sample-row"><div>36–40 歲</div><div class="sample-row-bar-wrap"><div class="sample-row-bar" style="width:100%"></div></div><div class="sample-row-num">25 ｜ 37%</div></div>
+          <div class="sample-row"><div>41–45 歲</div><div class="sample-row-bar-wrap"><div class="sample-row-bar" style="width:48%"></div></div><div class="sample-row-num">12 ｜ 18%</div></div>
+          <div class="sample-row"><div>46 歲以上</div><div class="sample-row-bar-wrap"><div class="sample-row-bar" style="width:60%"></div></div><div class="sample-row-num">15 ｜ 22%</div></div>
+          <div class="sample-note">16–25 歲合計 4 人。主力 36 歲以上。</div>
+        </div>
+        <div class="sample-card">
+          <div class="sample-card-title">學員輪廓（問卷歸納）</div>
+          <div class="sample-note" style="margin-top:0;opacity:.85;font-size:17px">「美感有要求，但卡在技術與時間」的微型創業者。風格美食與精緻農產、在地文創與市集攤販、跨界行政上班族。</div>
+          <div class="sample-note">不希望產品圖像廉價 AI 罐頭圖，對「去 AI 味」「高質感文青風」有強烈渴望。沒有設計師預算，必須自己用 AI 當設計助理。</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-block">
+      <h2 class="section-h2">落點分析<small>學員的 AI 現況落在哪 ｜ 真實問卷數據</small></h2>
+      <div class="compare">
+        <div class="dist">
+          <div class="dist-title">對 Gemini 的熟悉程度</div>
+          <div class="dist-note">1–5 分 · 略懂皮毛以下比第一場更集中</div>
+          <div class="dbar"><div class="dl">5 精通掌握</div><div class="dtrack"><div class="dfill" style="width:7%">2</div></div></div>
+          <div class="dbar"><div class="dl">4 高度熟悉</div><div class="dtrack"><div class="dfill" style="width:10%">3</div></div></div>
+          <div class="dbar"><div class="dl">3 中等熟悉</div><div class="dtrack"><div class="dfill" style="width:70%">21</div></div></div>
+          <div class="dbar hot"><div class="dl"><b>2 略懂皮毛</b></div><div class="dtrack"><div class="dfill" style="width:100%">30</div></div></div>
+          <div class="dbar"><div class="dl">1 完全不熟</div><div class="dtrack"><div class="dfill" style="width:37%">11</div></div></div>
+        </div>
+        <div class="dist">
+          <div class="dist-title">對 Gemini 的使用頻率</div>
+          <div class="dist-note">1–5 分 · 偶爾才做人數最多</div>
+          <div class="dbar"><div class="dl">5 幾乎每次</div><div class="dtrack"><div class="dfill" style="width:27%">6</div></div></div>
+          <div class="dbar"><div class="dl">4 多數會做</div><div class="dtrack"><div class="dfill" style="width:59%">13</div></div></div>
+          <div class="dbar"><div class="dl">3 一半一半</div><div class="dtrack"><div class="dfill" style="width:77%">17</div></div></div>
+          <div class="dbar hot"><div class="dl"><b>2 偶爾才做</b></div><div class="dtrack"><div class="dfill" style="width:100%">22</div></div></div>
+          <div class="dbar"><div class="dl">1 幾乎不用</div><div class="dtrack"><div class="dfill" style="width:41%">9</div></div></div>
+        </div>
+      </div>
+      <div class="infobox" style="margin-top:16px;margin-bottom:0">
+        <div class="eyebrow">落點觀察</div>
+        <p>熟悉度往低分堆得比第一場更明顯：略懂皮毛以下佔 <b>61%（41 人）</b>，高度熟悉以上只有 5 人。常用工具第一名 ChatGPT、第二名 Gemini、第三名 Canva 系列（圖像場明顯上升），Midjourney／Stable Diffusion 幾乎無人用。<b>工具用得淺、對成品美感標準卻很高</b>，這個落差就是課程要接住的。Canva 已是這場第三名，適合當品牌色、多尺寸與跨格式延伸的承接工具。</p>
+      </div>
+    </div>
+
+    <div class="section-block">
+      <h2 class="section-h2">落點地圖<small>六個提問主題 ｜ 找到核心、思考切入</small></h2>
+      <div class="map-wrap">
+        <div class="map-lead">越靠近中心，越是這場的核心；象限位置，幫講師思考從哪個方向切入</div>
+        <div class="map-disclaim">泡泡代表「學員提問主題」與課堂比重，位置與分層是講師戰術判斷，不是人數統計（本場為彙總問卷，無逐人資料）</div>
+        <div class="map-flex">
+          <svg viewBox="0 0 600 600" style="width:100%;max-width:520px;margin:0 auto;display:block">
+            <circle cx="300" cy="300" r="240" fill="rgba(212,165,116,0.16)" stroke="#C9956A" stroke-width="1.5" stroke-dasharray="6 6"><title>範圍外圈 ｜ 10%
+選工具與判斷外包偏決策層，非自己做圖的主軸</title></circle>
+            <circle cx="300" cy="300" r="170" fill="rgba(201,149,106,0.30)" stroke="#C9956A" stroke-width="1.5"><title>補充延伸圈 ｜ 30%
+看課堂節奏帶到</title></circle>
+            <circle cx="300" cy="300" r="100" fill="rgba(111,78,55,0.42)" stroke="#6F4E37" stroke-width="2"><title>核心內容圈 ｜ 60%
+本場主架構必講</title></circle>
+            <line x1="50" y1="300" x2="550" y2="300" stroke="#3D2817" stroke-width="1.2" opacity="0.5" stroke-dasharray="2 4"/>
+            <line x1="300" y1="50" x2="300" y2="550" stroke="#3D2817" stroke-width="1.2" opacity="0.5" stroke-dasharray="2 4"/>
+            <text x="46" y="292" text-anchor="start" font-size="16" font-weight="800" fill="#3D2817">風格品質</text>
+            <text x="48" y="314" text-anchor="start" font-size="13" fill="#3D2817" opacity="0.7">去 AI 味</text>
+            <text x="554" y="292" text-anchor="end" font-size="16" font-weight="800" fill="#3D2817">效率延伸</text>
+            <text x="552" y="314" text-anchor="end" font-size="13" fill="#3D2817" opacity="0.7">多尺寸多用途</text>
+            <text x="300" y="40" text-anchor="middle" font-size="16" font-weight="800" fill="#3D2817">系統設定 · 工具外包</text>
+            <text x="300" y="574" text-anchor="middle" font-size="16" font-weight="800" fill="#3D2817">自己動手實作</text>
+            <text x="300" y="152" text-anchor="middle" font-size="13" font-weight="700" fill="#8E5A36" letter-spacing="2" opacity="0.75">延伸 30%</text>
+            <text x="300" y="378" text-anchor="middle" font-size="13" font-weight="700" fill="#FFF8DC" letter-spacing="2" opacity="0.85">核心 60%</text>
+            <circle cx="300" cy="300" r="6" fill="#3D2817"/>
+
+            <circle cx="248" cy="352" r="32" fill="#6F4E37" opacity="0.95"><title>Q1 ｜ 去 AI 味 ｜ 核心（必講）
+提問：AI 圖不是太像歐美 3D 動畫，就是太像生硬科技畫風，沒有店的特色？
+位置：風格品質 + 自己做 → 左下核心
+回應方向：去 AI 味的提示詞與參考圖，帶入店的元素</title></circle>
+            <text x="248" y="348" text-anchor="middle" font-size="17" font-weight="800" fill="#FFF8DC">Q1</text>
+            <text x="248" y="366" text-anchor="middle" font-size="12" fill="#FFE6B8">去 AI 味</text>
+
+            <circle cx="252" cy="262" r="27" fill="#6F4E37" opacity="0.95"><title>Q2 ｜ 品牌色調 ｜ 核心（必講）
+提問：每次都要重調風格，怎麼讓 AI 記住品牌特定色調（日式簡約、台式青風）？
+位置：風格品質 + 偏設定 → 左中核心
+回應方向：建立品牌色票／風格模板，重複套用</title></circle>
+            <text x="252" y="259" text-anchor="middle" font-size="16" font-weight="800" fill="#FFF8DC">Q2</text>
+            <text x="252" y="276" text-anchor="middle" font-size="12" fill="#FFE6B8">品牌色</text>
+
+            <circle cx="352" cy="352" r="26" fill="#6F4E37" opacity="0.95"><title>Q3 ｜ 一鍵改尺寸 ｜ 核心（必講）
+提問：做完 FB 圖還要手動改 IG、海報、簡報尺寸，一人工作室過勞，能一鍵延伸嗎？
+位置：效率延伸 + 自己做 → 右下核心
+回應方向：一稿多尺寸的延伸流程示範</title></circle>
+            <text x="352" y="349" text-anchor="middle" font-size="16" font-weight="800" fill="#FFF8DC">Q3</text>
+            <text x="352" y="366" text-anchor="middle" font-size="12" fill="#FFE6B8">改尺寸</text>
+
+            <circle cx="372" cy="286" r="24" fill="#6F4E37" opacity="0.95"><title>Q4 ｜ 跨格式演繹 ｜ 核心（必講）
+提問：同一個文案主題，能不能讓 AI 同時做成簡報排版與社群圖卡？
+位置：效率延伸 + 偏設定 → 右中核心
+回應方向：一份主題延伸成圖卡＋簡報的做法</title></circle>
+            <text x="372" y="283" text-anchor="middle" font-size="16" font-weight="800" fill="#FFF8DC">Q4</text>
+            <text x="372" y="300" text-anchor="middle" font-size="12" fill="#FFE6B8">跨格式</text>
+
+            <circle cx="415" cy="212" r="20" fill="#C9956A"><title>Q5 ｜ 選工具 ｜ 補充延伸
+提問：那麼多 AI 生成影片或做網頁的工具，哪種適合小農或手作烘焙？會不會很貴很難學？
+位置：效率延伸 + 決策層 → 右上延伸圈
+回應方向：課堂給選工具的判斷原則與門檻</title></circle>
+            <text x="415" y="209" text-anchor="middle" font-size="15" font-weight="800" fill="#FFF8DC">Q5</text>
+            <text x="415" y="225" text-anchor="middle" font-size="11" fill="#FFF8DC">選工具</text>
+
+            <circle cx="292" cy="118" r="18" fill="#E2D2BD" stroke="#C9956A" stroke-width="1.5"><title>Q6 ｜ 判斷外包 ｜ 範圍外
+提問：如果自己做不來，找外部廠商用 AI 代操影片或官網，怎麼判斷做得好不好？會不會被騙？
+位置：決策層、非自己做圖 → 上方範圍外圈
+回應方向：給一份驗收外包的判斷清單，課後可用</title></circle>
+            <text x="292" y="115" text-anchor="middle" font-size="14" font-weight="800" fill="#3D2817">Q6</text>
+            <text x="292" y="130" text-anchor="middle" font-size="11" fill="#3D2817">判斷外包</text>
+          </svg>
+
+          <div class="tier-stack">
+            <div class="t-core">
+              <div class="tlab">核心 ｜ 60%</div>
+              <div class="ttitle">必講 ｜ Q1–Q4</div>
+              <div class="tdesc">去 AI 味、品牌色調、一鍵改尺寸、跨格式演繹。自己動手做圖的主線，去掉罐頭味又省下延伸的重複工。</div>
+            </div>
+            <div class="t-ext">
+              <div class="tlab">延伸 ｜ 30%</div>
+              <div class="ttitle">看節奏帶 ｜ Q5</div>
+              <div class="tdesc">選工具。課堂給挑工具的判斷原則與門檻，不逐一教操作。</div>
+            </div>
+            <div class="t-out">
+              <div class="tlab">範圍外 ｜ 10%</div>
+              <div class="ttitle">不深入 ｜ Q6</div>
+              <div class="tdesc">判斷外包好壞偏決策層，給一份驗收清單，課後或 QA 再深談。</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="priority-bar">
+        <div class="priority-segment tier1"><div class="priority-tier-label">核心</div><div class="priority-count">Q1–Q4</div><div class="priority-pct">60%</div><div class="priority-desc">必講主線</div></div>
+        <div class="priority-segment tier2"><div class="priority-tier-label">補充延伸</div><div class="priority-count">Q5</div><div class="priority-pct">30%</div><div class="priority-desc">看節奏帶</div></div>
+        <div class="priority-segment tier3"><div class="priority-tier-label">範圍外</div><div class="priority-count">Q6</div><div class="priority-pct">10%</div><div class="priority-desc">QA 或課後</div></div>
+      </div>
+      <div class="map-disclaim" style="margin-top:10px">比例為建議課堂時間配比（60/30/10 基準），非人數。</div>
+    </div>
+
+    <div class="section-block">
+      <h2 class="section-h2">核心內容<small>必講 ｜ 講完解決多數當下痛點</small></h2>
+
+      <div class="special">
+        <div class="slabel">特別回應 · 講師標記</div>
+        <div class="sintro">這兩題最具體、又剛好命中課程招牌（去 AI 味＋省下延伸工）。本場會在對應段落直接示範。</div>
+        <div class="special-grid">
+          <div class="special-card">
+            <div class="sc-q">Q1 <b>「AI 圖不是歐美 3D 就是生硬科技畫風，完全沒有店的特色」</b>正是這堂「去 AI 味」的核心賣點。</div>
+            <div class="sc-a"><b>→ 課堂回應：</b>現場示範怎麼把店的元素餵進去、調出有品牌感又不廉價的圖。</div>
+          </div>
+          <div class="special-card">
+            <div class="sc-q">Q3 一人工作室做完 FB 圖還要手動改 IG、海報、簡報尺寸，<b>真的會過勞</b>。</div>
+            <div class="sc-a"><b>→ 課堂回應：</b>示範一稿多尺寸的延伸流程，把重複工變一次做完。</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tier-detail tier1">
+        <div class="tier-detail-header"><span class="tier-detail-label">核心</span><div class="tier-detail-title">Q1–Q4 ｜ 必講</div></div>
+        <div class="qrow"><div class="qrow-num">Q1</div><div class="qrow-q">去 AI 味：AI 圖太像 3D 或科技畫風，沒有店的特色？</div><div class="qrow-target">去 AI 味的提示詞與參考圖，帶入店的元素</div></div>
+        <div class="qrow"><div class="qrow-num">Q2</div><div class="qrow-q">品牌色調：每次重調風格，怎麼讓 AI 記住品牌特定色調？</div><div class="qrow-target">建品牌色票／風格模板，重複套用（可用 Canva 等版型工具承接）</div></div>
+        <div class="qrow"><div class="qrow-num">Q3</div><div class="qrow-q">一鍵改尺寸：FB、IG、海報、簡報要各改一次，能一鍵延伸嗎？</div><div class="qrow-target">一稿多尺寸的延伸流程（Canva 一鍵改尺寸最直接）</div></div>
+        <div class="qrow"><div class="qrow-num">Q4</div><div class="qrow-q">跨格式演繹：同一主題同時做成簡報排版與社群圖卡？</div><div class="qrow-target">一份主題延伸成圖卡＋簡報（Canva／版型工具承接）</div></div>
+      </div>
+    </div>
+
+    <div class="section-block">
+      <h2 class="section-h2">補充延伸與範圍外<small>看節奏帶到 ／ 給判斷清單</small></h2>
+      <div class="tier-detail tier2">
+        <div class="tier-detail-header"><span class="tier-detail-label">補充延伸</span><div class="tier-detail-title">Q5 ｜ 看節奏帶</div></div>
+        <div class="qrow"><div class="qrow-num">Q5</div><div class="qrow-q">選工具：那麼多 AI 影片／做網頁工具，哪種適合小農或手作烘焙？貴不貴、難不難？</div><div class="qrow-target">給挑工具的判斷原則與門檻，不逐一教操作</div></div>
+      </div>
+      <div class="tier-detail tier3">
+        <div class="tier-detail-header"><span class="tier-detail-label">範圍外</span><div class="tier-detail-title">Q6 ｜ 不深入</div></div>
+        <div class="qrow"><div class="qrow-num">Q6</div><div class="qrow-q">判斷外包：找廠商用 AI 代操影片或官網，怎麼判斷做得好不好、會不會被騙？</div><div class="qrow-target">給一份驗收外包的判斷清單，課後或 QA 再深談</div></div>
+      </div>
+      <div class="script-box">
+        <div class="script-label">課堂處理建議</div>
+        <p class="script-text">「選工具跟找外包這兩題，今天不會一個一個工具教。我給你一組判斷原則跟一張驗收清單，你自己就能看出哪個適合、哪個是被話術包裝的。真正動手的部分，我們先把去 AI 味跟延伸練起來。」</p>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    嘉我好漾 ｜ 七月行銷課 上課素材 ｜ 學員問卷落點地圖<br>
+    資料來源：0708 訓練你的 AI Agent 小編、0714 AI 圖文實作 報名問卷（給講師）<br>
+    教學班長 · 問卷回饋分析法 ｜ 2026-07-01 製作
+  </footer>
+
+</div>
+
+<!-- 即時 Hover Tooltip -->
+<div id="svg-tooltip" style="position:fixed;pointer-events:none;background:rgba(61,40,23,0.96);color:#FFF8DC;
+  padding:12px 16px;border-radius:10px;font-size:14px;line-height:1.6;white-space:pre-line;
+  box-shadow:0 6px 20px rgba(0,0,0,0.3);display:none;z-index:9999;max-width:340px;font-weight:500;letter-spacing:.02em"></div>
+
+<script>
+// 分頁切換
+document.querySelectorAll('.tab-btn').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    const t=btn.dataset.tab;
+    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.toggle('active',b===btn));
+    document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('active',p.id==='tab-'+t));
+    window.scrollTo({top:0,behavior:'smooth'});
+  });
+});
+
+// SVG 即時 tooltip
+(function(){
+  const tooltip=document.getElementById('svg-tooltip');
+  function attachHover(el,txt){
+    el.style.cursor='pointer';
+    el.addEventListener('mouseenter',e=>{tooltip.textContent=txt;tooltip.style.display='block';pos(e);});
+    el.addEventListener('mousemove',pos);
+    el.addEventListener('mouseleave',()=>{tooltip.style.display='none';});
+  }
+  function pos(e){
+    let x=e.clientX+14,y=e.clientY+14;
+    const tw=tooltip.offsetWidth,th=tooltip.offsetHeight;
+    if(x+tw>window.innerWidth)x=e.clientX-tw-14;
+    if(y+th>window.innerHeight)y=e.clientY-th-14;
+    tooltip.style.left=x+'px';tooltip.style.top=y+'px';
+  }
+  document.querySelectorAll('svg circle').forEach(c=>{
+    const t=c.querySelector('title');if(!t)return;
+    const cx=parseFloat(c.getAttribute('cx')),cy=parseFloat(c.getAttribute('cy'));
+    if(cx===300&&cy===300){t.remove();return;}
+    const txt=t.textContent;c.setAttribute('data-tooltip',txt);t.remove();attachHover(c,txt);
+  });
+  document.querySelectorAll('svg text').forEach(text=>{
+    const svg=text.closest('svg');if(!svg)return;
+    const x=parseFloat(text.getAttribute('x')),y=parseFloat(text.getAttribute('y'));
+    if(isNaN(x)||isNaN(y))return;
+    let near=null,min=Infinity;
+    svg.querySelectorAll('circle[data-tooltip]').forEach(c=>{
+      const cx=parseFloat(c.getAttribute('cx')),cy=parseFloat(c.getAttribute('cy')),r=parseFloat(c.getAttribute('r'));
+      const d=Math.sqrt((x-cx)**2+(y-cy)**2);
+      if(d<r+8&&d<min){min=d;near=c;}
+    });
+    if(near){const tip=near.getAttribute('data-tooltip');if(tip)attachHover(text,tip);}
+  });
+})();
+</script>
+</body>
+</html>
