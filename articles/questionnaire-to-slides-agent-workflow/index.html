@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="index,follow">
+<title>把課前問卷變成簡報，再把流程存成技能包｜江江教練 · AI 知識管理</title>
+<meta name="description" content="一堂 Agent 基礎教學示範：從課前問卷和課綱整理出教學簡報，再把做簡報的步驟沉澱成 Agent 工作流、技能包與知識庫。適合 AI 新手先讀。">
+<link rel="canonical" href="https://ai-km-jiang.vercel.app/articles/questionnaire-to-slides-agent-workflow/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="把課前問卷變成簡報，再把流程存成技能包｜江江教練">
+<meta property="og:image" content="https://ai-km-jiang.vercel.app/images/og/questionnaire-to-slides-agent-workflow.jpg">
+<meta property="og:description" content="從資料蒐集整理，到教學簡報製作，再把步驟規劃成 Agent 工作流、技能包與知識沉澱。">
+<meta property="og:url" content="https://ai-km-jiang.vercel.app/articles/questionnaire-to-slides-agent-workflow/">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:site_name" content="江江教練 · AI 知識管理">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="把課前問卷變成簡報，再把流程存成技能包｜江江教練">
+<meta name="twitter:image" content="https://ai-km-jiang.vercel.app/images/og/questionnaire-to-slides-agent-workflow.jpg">
+<meta name="twitter:description" content="一篇給 AI 新手看的 Agent 工作流示範，從問卷、課綱、簡報一路走到技能包與知識庫。">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"把課前問卷變成簡報，再把流程存成技能包","description":"一堂 Agent 基礎教學示範：從課前問卷和課綱整理出教學簡報，再把做簡報的步驟沉澱成 Agent 工作流、技能包與知識庫。","datePublished":"2026-07-06","dateModified":"2026-07-06","author":{"@type":"Person","name":"江昱德","alternateName":"江江教練","jobTitle":"隱性知識提煉師、AI 應用規劃師"},"isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://ai-km-jiang.vercel.app/"},"inLanguage":"zh-Hant","url":"https://ai-km-jiang.vercel.app/articles/questionnaire-to-slides-agent-workflow/"}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{--ink:#1a1612;--paper:#fefcf8;--muted:#6a635a;--line:#d8cdb8;--green:#5f7553;--blue:#5689b8;--orange:#e85a4f;--soft:#faf5ec;--dark:#2a2018;--shadow:0 18px 45px rgba(107,74,42,.14);--sp-shadow:hsla(35,50%,60%,.15);--sp-shadow-edge:hsla(35,50%,68%,.03);--sp-radius:400px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC","Segoe UI",sans-serif}
+a{color:inherit}
+nav.top{position:sticky;top:0;background:rgba(254,252,248,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid #d8cdb8;z-index:100}
+nav.top .container{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:24px;padding:14px 32px}
+.nav-brand-img{justify-self:start;display:flex;align-items:center;text-decoration:none;flex-shrink:0;transition:opacity .2s}
+.nav-brand-img:hover{opacity:.8}.nav-brand-img img{height:40px;width:auto;display:block}
+nav.top ul.nav-menu{justify-self:end;display:flex;gap:22px;list-style:none;margin:0;padding:0;font-size:.95rem;white-space:nowrap}
+nav.top ul.nav-menu a{color:#3a342d;text-decoration:none;transition:color .2s;font-weight:500;white-space:nowrap}
+nav.top ul.nav-menu a:hover{color:#1a1612}nav.top ul.nav-menu a.active{color:#1a1612;font-weight:700}
+.nav-toggle{display:none;background:none;border:none;padding:6px;cursor:pointer;width:36px;height:36px;position:relative}
+.nav-toggle span{display:block;position:absolute;left:8px;right:8px;height:2px;background:#1a1612;border-radius:2px;transition:transform .25s,opacity .25s,top .25s}
+.nav-toggle span:nth-child(1){top:11px}.nav-toggle span:nth-child(2){top:17px}.nav-toggle span:nth-child(3){top:23px}
+.nav-toggle.open span:nth-child(1){top:17px;transform:rotate(45deg)}.nav-toggle.open span:nth-child(2){opacity:0}.nav-toggle.open span:nth-child(3){top:17px;transform:rotate(-45deg)}
+@media(max-width:860px){
+ nav.top .container{grid-template-columns:auto 1fr auto;padding:10px 16px;gap:12px}
+ .nav-brand-img img{height:32px}
+ .nav-toggle{display:block;justify-self:end}
+ nav.top ul.nav-menu{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(254,252,248,.98);backdrop-filter:blur(14px);border-bottom:1px solid #d8cdb8;flex-direction:column;gap:0;padding:8px 0;box-shadow:0 10px 24px rgba(107,74,42,.08)}
+ nav.top ul.nav-menu.open{display:flex}
+ nav.top ul.nav-menu li{border-bottom:1px solid #e8dfc9}
+ nav.top ul.nav-menu li:last-child{border-bottom:none}
+ nav.top ul.nav-menu a{display:block;padding:14px 20px;font-size:1.06rem}
+}
+body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradient(var(--sp-radius) circle at var(--mx,50%) var(--my,50%),var(--sp-shadow) 0%,var(--sp-shadow-edge) 45%,transparent 75%);pointer-events:none;z-index:9999;mix-blend-mode:multiply;transition:background .06s linear}
+.hero{position:relative;overflow:hidden;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:72px;padding:96px clamp(20px,6vw,88px) 80px;background:linear-gradient(180deg,#fffcf0 0%,#f9e9d2 100%);color:#1a1612;border-bottom:1px solid #d8cdb8}
+.hero .wc{position:absolute;border-radius:50%;filter:blur(60px);pointer-events:none;z-index:0}
+.hero .wc1{width:420px;height:360px;top:-120px;right:-80px;background:#e8884b;opacity:.15}
+.hero .wc2{width:360px;height:300px;bottom:-110px;left:-70px;background:#5f7553;opacity:.13}
+.hero .wc3{width:280px;height:260px;top:34%;left:14%;background:#a08144;opacity:.10}
+.hero>div{flex:none;width:860px;max-width:100%;position:relative;z-index:2}
+.kicker{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.55rem;color:#7a5c3a;font-weight:500}
+.hero h1{max-width:none;margin:16px 0 18px;font-size:clamp(36px,6vw,72px);line-height:1.08;overflow-wrap:anywhere}
+.hero p{max-width:none;font-size:clamp(18px,2vw,23px);line-height:1.62;color:#3a342d}
+.hero-date{margin-top:18px;font-size:15px;color:#7a5c3a}
+.section{padding:54px clamp(20px,6vw,88px);border-top:1px solid var(--line)}
+.inner{width:min(1000px,100%);margin:0 auto}
+.section h2{font-size:clamp(26px,4.2vw,48px);line-height:1.12;margin:0 0 18px}
+.section h3{font-size:clamp(21px,3vw,30px);line-height:1.2;margin:30px 0 12px}
+.lead{font-size:clamp(18px,1.6vw,22px);line-height:1.7;color:#3a342d;max-width:900px}
+.section p{font-size:18px;line-height:1.74;color:#3a342d}.section p+p{margin-top:14px}
+.section ul,.section ol{padding-left:1.4em;font-size:18px;line-height:1.74;color:#3a342d}.section li{margin-bottom:8px}
+.meaning{margin:22px 0;padding:16px 18px;border-left:5px solid var(--blue);background:rgba(86,137,184,.12);border-radius:6px;line-height:1.7;font-size:19px}
+.meaning b{display:block;color:var(--blue);margin-bottom:4px}
+.caveat{margin:0 0 8px;padding:16px 18px;border-left:5px solid var(--orange);background:rgba(232,90,79,.1);border-radius:6px;line-height:1.7;font-size:18px;color:#3a342d}
+.caveat b{display:block;color:var(--orange);margin-bottom:4px}
+.tagrow{display:flex;flex-wrap:wrap;gap:7px;margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
+.tag{font-size:14px;color:var(--muted);background:var(--soft);border:1px solid var(--line);border-radius:999px;padding:4px 11px}
+.duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:24px}
+.duo.stack{grid-template-columns:1fr}
+.duo .card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:22px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.duo .card.a{border-color:var(--orange)}.duo .card.b{border-color:var(--green);box-shadow:0 8px 24px rgba(95,117,83,.16)}
+.duo .card b{display:block;font-size:22px;line-height:1.3;margin-bottom:12px}.duo .card.a b{color:#c0512f}.duo .card.b b{color:#4a7a59}
+.duo .card p{margin:0;color:#3a342d;line-height:1.75;font-size:18px}
+.workflow-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:24px}
+.workflow-step{background:#fff;border:1px solid var(--line);border-radius:8px;padding:18px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.workflow-step small{display:block;color:var(--orange);font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;margin-bottom:9px}
+.workflow-step b{display:block;font-size:18px;line-height:1.3;margin-bottom:9px}
+.workflow-step p{margin:0;color:#3a342d;line-height:1.6;font-size:16px}
+.codeblock{background:var(--dark);color:#f3ead9;border-radius:8px;padding:18px 20px;font:500 14px/1.65 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;overflow-x:auto;white-space:pre-wrap;margin:20px 0;box-shadow:0 8px 22px rgba(107,74,42,.12)}
+.footer{padding:30px clamp(20px,6vw,88px);font-size:14px;color:var(--muted);background:#fff;border-top:1px solid var(--line)}
+.footer-inner{width:min(1000px,100%);margin:0 auto}
+.footer-links{display:flex;flex-wrap:wrap;gap:6px 12px;margin-bottom:14px}.footer-links a{color:var(--blue);font-weight:900;text-decoration:none;font-size:14px}
+.footer-brand{font-weight:900;font-size:15px;margin-bottom:10px}.footer-note{font-size:13px;line-height:1.6}
+@media(max-width:820px){.duo{grid-template-columns:1fr}.workflow-grid{grid-template-columns:1fr}.section{padding:40px 20px}.hero{min-height:52vh;flex-direction:column;justify-content:flex-start;align-items:flex-start;gap:24px}.hero>div{width:100%}}
+@media(max-width:820px){html,body{overflow-x:hidden}.hero h1{word-break:break-word}}
+</style>
+</head>
+<body class="spotlight">
+<nav class="top">
+  <div class="container">
+    <a class="nav-brand-img" href="../../index.html"><img src="../../images/footer-signature.png" alt="江江教練 | 江昱德"></a>
+    <button class="nav-toggle" aria-label="選單"><span></span><span></span><span></span></button>
+    <ul class="nav-menu">
+      <li><a href="../../index.html">首頁</a></li>
+      <li><a href="../../knowledge-architecture.html">知識架構</a></li>
+      <li><a href="../../courses.html">課程</a></li>
+      <li><a href="../../articles.html" class="active">深度文章</a></li>
+      <li><a href="../../skills.html">技能包下載</a></li>
+      <li><a href="../../cases.html">服務方案</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="wc wc1"></div>
+  <div class="wc wc2"></div>
+  <div class="wc wc3"></div>
+  <div>
+    <div class="kicker">Agent 基礎教學</div>
+    <h1>把課前問卷變成簡報，再把流程存成技能包</h1>
+    <p>這篇用一堂實際講座示範：從課前問卷和課綱開始，先把資料整理成教學簡報，再把步驟規劃成 Agent 工作流，最後沉澱成技能包和知識庫。</p>
+    <div class="hero-date">發佈 2026-07-06 ｜ 最後更新 2026-07-06</div>
+  </div>
+</section>
+
+<main>
+
+<section class="section" id="start">
+  <div class="inner">
+    <h2>這篇在講什麼</h2>
+    <p class="lead">如果你剛開始學 AI，很容易把重點放在「AI 能不能幫我做一份漂亮簡報」。這堂課真正示範的，是每一次備課、整理、修簡報、修風格，都可以被記錄下來，變成下一次 Agent 讀得懂、接得上的系統。</p>
+    <div class="duo stack">
+      <div class="card a">
+        <b>適合誰</b>
+        <p>· 會用 ChatGPT 或 Claude 寫東西，但還不確定桌面型 Agent 能多做什麼的人<br>· 常常重做簡報、重講需求、重修格式的人<br>· 想把教學、顧問、研究或內容生產流程整理成 AI 可重複執行方法的人</p>
+      </div>
+      <div class="card b">
+        <b>你會得到什麼</b>
+        <p>· 看懂一個從資料蒐集到簡報產出的完整 Agent 工作流<br>· 知道為什麼要先產文字大綱，再做 HTML 簡報<br>· 學會把偏好、流程、檢查清單和範例放進資料夾，讓下一次能延續</p>
+      </div>
+    </div>
+    <div class="meaning"><b>新手必讀的原因</b>這篇把幾個常被講得很抽象的詞放回同一個流程裡：Agent、工作流、技能包、知識庫、知識沉澱。你不用先懂全部名詞，先看一件事怎麼被 AI 接手。</div>
+  </div>
+</section>
+
+<section class="section" id="workflow">
+  <div class="inner">
+    <h2>做簡報只是入口，主軸是工作流</h2>
+    <p>這堂課一開始就把重點講清楚：做簡報、用 Agent 做、理解自己的知識要怎麼放進知識庫。</p>
+    <p>表面上看，這是一堂用 AI 做簡報的課。實際上，它把一件常做的事拆成一段可重複流程。</p>
+    <div class="workflow-grid">
+      <div class="workflow-step"><small>Step 1</small><b>資料進來</b><p>先有課程主題或原始課綱，再收集課前問卷、單位需求與學員問題。</p></div>
+      <div class="workflow-step"><small>Step 2</small><b>Agent 整理</b><p>把問卷和課綱放進同一個資料夾，先請 Agent 回報它讀到哪些檔案。</p></div>
+      <div class="workflow-step"><small>Step 3</small><b>先產大綱</b><p>請 Agent 先整理十頁以內的文字框架，確認方向後才進入簡報製作。</p></div>
+      <div class="workflow-step"><small>Step 4</small><b>轉成簡報</b><p>方向沒問題，再請桌面型 Agent 產出 HTML 簡報，並把檔案留在專案資料夾。</p></div>
+      <div class="workflow-step"><small>Step 5</small><b>保存偏好</b><p>把字級、配色、語氣、版型、資料夾位置等偏好寫成文件。</p></div>
+      <div class="workflow-step"><small>Step 6</small><b>沉澱成技能包</b><p>把重複流程、範例和自我檢查清單寫成 Agent 下次能載入的操作規則。</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="folder">
+  <div class="inner">
+    <h2>第一步：把問卷和課綱放進同一個資料夾</h2>
+    <p>老師示範的真實備課方式，是先有課程主題或原始課綱，再收集學員問卷或單位需求。當資料進來後，第一步先把課綱、問卷、示範資料放進同一個專案資料夾。</p>
+    <p>這個動作很重要，因為 Agent 需要知道自己正在處理哪一批資料。新手最好先開一個練習資料夾，不要一開始就讓 AI 處理真正重要的文件。等流程穩定後，再放進正式工作資料夾。</p>
+    <div class="codeblock">這個資料夾裡有問卷資料。
+這是我要上的課程課綱。
+請先讀資料夾，回報你看到哪些檔案，以及每個檔案大概是做什麼用的。</div>
+    <p>先讓 Agent 回報資料夾內容，是為了確認它讀得到資料，也確認它沒有漏看關鍵檔案。</p>
+  </div>
+</section>
+
+<section class="section" id="outline">
+  <div class="inner">
+    <h2>第二步：先產文字大綱，再做漂亮簡報</h2>
+    <p>確認 Agent 讀到課綱和問卷後，下一步才是請它整理簡報大綱。</p>
+    <div class="codeblock">請依照問卷裡的需求和大家的問題，
+結合這份課綱，
+先整理成適合這個單位的版本。
+先不要太複雜，先給我十頁以內的大框架。
+先存文字版本。</div>
+    <p>這一步的重點是先對齊內容方向。學員真正關心什麼，原本課綱想講什麼，兩者要先接在一起。若一開始就要求 AI 做成漂亮簡報，錯誤會被包進版型裡，後面反而更難改。</p>
+    <p>先用文字大綱確認，可以把問題攤開：哪些問題應該提前講，哪些內容可以合併，哪些案例要換成這個單位聽得懂的版本，哪些頁數太多，應該先刪掉。</p>
+    <div class="meaning"><b>給新手的判斷點</b>簡報會從需求和課綱的對齊長出來，不必從空白頁硬想。</div>
+  </div>
+</section>
+
+<section class="section" id="desktop-agent">
+  <div class="inner">
+    <h2>第三步：理解網頁聊天 AI 和桌面幹活 AI 的差別</h2>
+    <p>網頁版 AI 很適合讀資料、整理大綱、幫你想頁面內容。但如果要直接在本機資料夾裡寫檔、產出 HTML、保存版本、把檔案留在專案中，桌面型 Agent 就更適合。</p>
+    <div class="duo">
+      <div class="card a">
+        <b>網頁版聊天 AI</b>
+        <p>適合討論內容、整理思路、產出初稿。主要限制是產出後常要人工下載、貼上、搬到其他工具。</p>
+      </div>
+      <div class="card b">
+        <b>桌面型幹活 AI</b>
+        <p>適合讀本機資料夾、寫檔、改檔、產出可以保存和重用的成品。</p>
+      </div>
+    </div>
+    <p>Codex 這類桌面型 Agent，就像裝到電腦裡的 GPT 桌面版。它可以走出網頁聊天框，在你指定的資料夾裡幫你整理文件、產出檔案、修改網頁、留下工作成果。</p>
+  </div>
+</section>
+
+<section class="section" id="preference">
+  <div class="inner">
+    <h2>第四步：把偏好寫進資料夾</h2>
+    <p>很多人用 AI 做完一次簡報後，下次還是要重新講一遍：字太小、顏色不對、頁面太花、語氣太硬、標題太像行銷文案。</p>
+    <p>這堂課提醒的是，AI 說「我記住了」不代表你真的可控。偏好如果只存在某一次對話、某一個 AI 工具、某一台電腦，換工具或換情境就可能消失。</p>
+    <p>更穩的做法，是把偏好寫進專案資料夾。例如字級規則、配色偏好、常用版型、課程語氣、目標對象差異、每次執行後的工作日記。</p>
+    <div class="caveat"><b>不要只相信 AI 的記憶</b>重要偏好要寫成你自己保管的文件。下次換 Codex、Claude Code 或其他 Agent，只要它能讀同一個資料夾，就能接續你的規則。</div>
+  </div>
+</section>
+
+<section class="section" id="skill">
+  <div class="inner">
+    <h2>第五步：把重複流程做成技能包</h2>
+    <p>當你發現自己一直重複講同一件事，就可以考慮把它做成技能包。這堂課示範的流程很適合封裝：整理問卷、整合課綱、產文字大綱、確認後做 HTML、套用固定風格、做完後自我檢查。</p>
+    <p>提示詞只是當下的一段指令。技能包則是把固定流程、偏好、範例、檢查規則都寫下來，讓 Agent 在類似情境中知道要照哪一套方法做。</p>
+    <div class="workflow-grid">
+      <div class="workflow-step"><small>規則</small><b>先讀哪些檔案</b><p>收到課綱和問卷時，要先確認資料夾內容與來源。</p></div>
+      <div class="workflow-step"><small>順序</small><b>先文字後成品</b><p>不能直接衝最後成品，要先做文字稿，確認後才做 HTML。</p></div>
+      <div class="workflow-step"><small>驗收</small><b>自己檢查漏步驟</b><p>流程最後要有自我檢查清單，避免模型跳過關鍵步驟。</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="knowledge-base">
+  <div class="inner">
+    <h2>第六步：把每次課後產物累積成知識庫</h2>
+    <p>一次課程結束後，值得留下來的內容不只有那份簡報。還有課前問卷、課綱、簡報大綱、HTML 成品、風格偏好、學員回饋、課後 QA、這次做完後發現的問題。</p>
+    <p>這些資料如果都留在同一個可追溯的位置，下一次備課時就能請 Agent 回頭查：上次同類主題怎麼講，學員最常卡在哪裡，哪些比喻好用，哪些頁面太難，哪些風格適合這個對象。</p>
+    <p>累積到一定程度，這個資料夾就會長成 Agent 可以讀、可以接續、可以幫你做事的知識庫。</p>
+  </div>
+</section>
+
+<section class="section" id="practice">
+  <div class="inner">
+    <h2>你可以怎麼練習</h2>
+    <p class="lead">先不要拿最重要的資料做實驗。開一個練習資料夾，放一份任務說明或課綱，再放一份問卷、訪談紀錄或需求摘要。</p>
+    <ol>
+      <li>先請 Agent 回報資料夾裡有什麼。</li>
+      <li>根據資料整理一版文字大綱。</li>
+      <li>做完後寫下這次流程、偏好和檢查清單。</li>
+    </ol>
+    <p>如果你下一次還會做類似任務，就把這份流程整理成技能包。等你累積三到五次，你就會開始看見自己的知識庫長出形狀。</p>
+    <div class="tagrow">
+      <span class="tag">新手必讀</span><span class="tag">Agent 基礎</span><span class="tag">AI工作流</span><span class="tag">課前問卷</span><span class="tag">教學簡報</span><span class="tag">技能包設計</span><span class="tag">知識庫</span>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">江江教練 · AI 知識管理</div>
+    <div class="footer-links">
+      <a href="../../articles.html">← 回深度文章總站</a>
+      <a href="../../index.html">首頁</a>
+      <a href="../../learn.html">自學資源</a>
+      <a href="../../skills.html">技能包下載</a>
+      <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">LINE 社群 ↗</a>
+      <a href="https://www.threads.com/@jiang_yude_coach" target="_blank" rel="noopener">Threads ↗</a>
+      <a href="https://vocus.cc/salon/Jiang_Coach" target="_blank" rel="noopener">方格子 ↗</a>
+    </div>
+    <div class="footer-note">這是一篇教學文章，整理 2026-07-05 線上講座的 Agent 工作流示範，供 AI 新手先建立基本概念。</div>
+  </div>
+</footer>
+
+<script src="../../spotlight.js"></script>
+<script src="../../articles-data.js"></script>
+<script src="../../related-render.js"></script>
+<script src="/views.js"></script>
+</body>
+</html>

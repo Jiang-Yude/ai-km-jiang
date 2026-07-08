@@ -53,10 +53,10 @@ window.COURSES = [
     detail_url: null,
     materials: [],
     registration: {
-      status: "open",
-      url: "https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ",
-      label: "加 LINE 社群報名 ↗",
-      note: "6/21 晚上八點開講，零基礎新手入門場"
+      status: "ended",
+      url: null,
+      label: null,
+      note: "本場已於 2026-06-21 結束"
     }
   },
   {

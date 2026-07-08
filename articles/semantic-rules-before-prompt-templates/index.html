@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="index,follow">
+<title>提示詞模板為什麼時好時壞？先懂 AI 是強一億倍的手機輸入法｜江江教練 · AI 知識管理</title>
+<meta name="description" content="提示詞設計的底層原理：AI 是詞語關聯的計算機，像強一億倍的手機輸入法。從課題分離的三步修正、角色設定的限制到負向提示詞的陷阱，先懂語意再套模板。">
+<link rel="canonical" href="https://ai-km-jiang.vercel.app/articles/semantic-rules-before-prompt-templates/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="提示詞模板為什麼時好時壞？先懂 AI 是強一億倍的手機輸入法｜江江教練">
+<meta property="og:image" content="https://ai-km-jiang.vercel.app/images/og/semantic-rules-before-prompt-templates.jpg">
+<meta property="og:description" content="AI 是詞語關聯的計算機。先懂語意規則，再用提示詞模板，含課題分離三步修正實戰。">
+<meta property="og:url" content="https://ai-km-jiang.vercel.app/articles/semantic-rules-before-prompt-templates/">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:site_name" content="江江教練 · AI 知識管理">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="提示詞模板為什麼時好時壞？先懂 AI 是強一億倍的手機輸入法｜江江教練">
+<meta name="twitter:image" content="https://ai-km-jiang.vercel.app/images/og/semantic-rules-before-prompt-templates.jpg">
+<meta name="twitter:description" content="AI 是詞語關聯的計算機。先懂語意規則，再用提示詞模板，含課題分離三步修正實戰。">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Article", "headline": "提示詞模板為什麼時好時壞？先懂 AI 是強一億倍的手機輸入法", "description": "提示詞設計的底層原理：AI 是詞語關聯的計算機，像強一億倍的手機輸入法。從課題分離的三步修正、角色設定的限制到負向提示詞的陷阱，先懂語意再套模板。", "datePublished": "2026-01-24", "dateModified": "2026-01-24", "author": {"@type": "Person", "name": "江昱德", "alternateName": "江江教練", "jobTitle": "隱性知識提煉師、AI 應用規劃師"}, "isPartOf": {"@type": "WebSite", "name": "江江教練 · AI 知識管理", "url": "https://ai-km-jiang.vercel.app/"}, "inLanguage": "zh-Hant", "url": "https://ai-km-jiang.vercel.app/articles/semantic-rules-before-prompt-templates/"}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{--ink:#1a1612;--paper:#fefcf8;--muted:#6a635a;--line:#d8cdb8;--green:#5f7553;--blue:#5689b8;--orange:#e85a4f;--soft:#faf5ec;--dark:#2a2018;--shadow:0 18px 45px rgba(107,74,42,.14);--sp-shadow:hsla(35,50%,60%,.15);--sp-shadow-edge:hsla(35,50%,68%,.03);--sp-radius:400px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC","Segoe UI",sans-serif}
+a{color:inherit}
+nav.top{position:sticky;top:0;background:rgba(254,252,248,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid #d8cdb8;z-index:100}
+nav.top .container{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:24px;padding:14px 32px}
+.nav-brand-img{justify-self:start;display:flex;align-items:center;text-decoration:none;flex-shrink:0;transition:opacity .2s}
+.nav-brand-img:hover{opacity:.8}.nav-brand-img img{height:40px;width:auto;display:block}
+nav.top ul.nav-menu{justify-self:end;display:flex;gap:22px;list-style:none;margin:0;padding:0;font-size:.95rem;white-space:nowrap}
+nav.top ul.nav-menu a{color:#3a342d;text-decoration:none;transition:color .2s;font-weight:500;white-space:nowrap}
+nav.top ul.nav-menu a:hover{color:#1a1612}nav.top ul.nav-menu a.active{color:#1a1612;font-weight:700}
+.nav-toggle{display:none;background:none;border:none;padding:6px;cursor:pointer;width:36px;height:36px;position:relative}
+.nav-toggle span{display:block;position:absolute;left:8px;right:8px;height:2px;background:#1a1612;border-radius:2px;transition:transform .25s,opacity .25s,top .25s}
+.nav-toggle span:nth-child(1){top:11px}.nav-toggle span:nth-child(2){top:17px}.nav-toggle span:nth-child(3){top:23px}
+.nav-toggle.open span:nth-child(1){top:17px;transform:rotate(45deg)}.nav-toggle.open span:nth-child(2){opacity:0}.nav-toggle.open span:nth-child(3){top:17px;transform:rotate(-45deg)}
+@media(max-width:860px){
+ nav.top .container{grid-template-columns:auto 1fr auto;padding:10px 16px;gap:12px}
+ .nav-brand-img img{height:32px}
+ .nav-toggle{display:block;justify-self:end}
+ nav.top ul.nav-menu{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(254,252,248,.98);backdrop-filter:blur(14px);border-bottom:1px solid #d8cdb8;flex-direction:column;gap:0;padding:8px 0;box-shadow:0 10px 24px rgba(107,74,42,.08)}
+ nav.top ul.nav-menu.open{display:flex}
+ nav.top ul.nav-menu li{border-bottom:1px solid #e8dfc9}
+ nav.top ul.nav-menu li:last-child{border-bottom:none}
+ nav.top ul.nav-menu a{display:block;padding:14px 20px;font-size:1.06rem}
+}
+body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradient(var(--sp-radius) circle at var(--mx,50%) var(--my,50%),var(--sp-shadow) 0%,var(--sp-shadow-edge) 45%,transparent 75%);pointer-events:none;z-index:9999;mix-blend-mode:multiply;transition:background .06s linear}
+.hero{position:relative;overflow:hidden;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:72px;padding:96px clamp(20px,6vw,88px) 80px;background:linear-gradient(180deg,#fffcf0 0%,#f9e9d2 100%);color:#1a1612;border-bottom:1px solid #d8cdb8}
+.hero .wc{position:absolute;border-radius:50%;filter:blur(60px);pointer-events:none;z-index:0}
+.hero .wc1{width:420px;height:360px;top:-120px;right:-80px;background:#e8884b;opacity:.15}
+.hero .wc2{width:360px;height:300px;bottom:-110px;left:-70px;background:#5f7553;opacity:.13}
+.hero .wc3{width:280px;height:260px;top:34%;left:14%;background:#a08144;opacity:.10}
+.hero>div{flex:none;width:860px;max-width:100%;position:relative;z-index:2}
+.kicker{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.55rem;color:#7a5c3a;font-weight:500}
+.hero h1{max-width:none;margin:16px 0 18px;font-size:clamp(36px,6vw,72px);line-height:1.08;overflow-wrap:anywhere}
+.hero p{max-width:none;font-size:clamp(18px,2vw,23px);line-height:1.62;color:#3a342d}
+.hero-date{margin-top:18px;font-size:15px;color:#7a5c3a}
+.section{padding:54px clamp(20px,6vw,88px);border-top:1px solid var(--line)}
+.inner{width:min(1000px,100%);margin:0 auto}
+.section h2{font-size:clamp(26px,4.2vw,48px);line-height:1.12;margin:0 0 18px}
+.section h3{font-size:clamp(21px,3vw,30px);line-height:1.2;margin:30px 0 12px}
+.lead{font-size:clamp(18px,1.6vw,22px);line-height:1.7;color:#3a342d;max-width:900px}
+.section p{font-size:18px;line-height:1.74;color:#3a342d}.section p+p{margin-top:14px}
+.section ul,.section ol{padding-left:1.4em;font-size:18px;line-height:1.74;color:#3a342d}.section li{margin-bottom:8px}
+.meaning{margin:22px 0;padding:16px 18px;border-left:5px solid var(--blue);background:rgba(86,137,184,.12);border-radius:6px;line-height:1.7;font-size:19px}
+.meaning b{display:block;color:var(--blue);margin-bottom:4px}
+.caveat{margin:0 0 8px;padding:16px 18px;border-left:5px solid var(--orange);background:rgba(232,90,79,.1);border-radius:6px;line-height:1.7;font-size:18px;color:#3a342d}
+.caveat b{display:block;color:var(--orange);margin-bottom:4px}
+.tagrow{display:flex;flex-wrap:wrap;gap:7px;margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
+.tag{font-size:14px;color:var(--muted);background:var(--soft);border:1px solid var(--line);border-radius:999px;padding:4px 11px}
+.duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:24px}
+.duo.stack{grid-template-columns:1fr}
+.duo .card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:22px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.duo .card.a{border-color:var(--orange)}.duo .card.b{border-color:var(--green);box-shadow:0 8px 24px rgba(95,117,83,.16)}
+.duo .card b{display:block;font-size:22px;line-height:1.3;margin-bottom:12px}.duo .card.a b{color:#c0512f}.duo .card.b b{color:#4a7a59}
+.duo .card p{margin:0;color:#3a342d;line-height:1.75;font-size:18px}
+.workflow-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:24px}
+.workflow-step{background:#fff;border:1px solid var(--line);border-radius:8px;padding:18px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.workflow-step small{display:block;color:var(--orange);font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;margin-bottom:9px}
+.workflow-step b{display:block;font-size:18px;line-height:1.3;margin-bottom:9px}
+.workflow-step p{margin:0;color:#3a342d;line-height:1.6;font-size:16px}
+.codeblock{background:var(--dark);color:#f3ead9;border-radius:8px;padding:18px 20px;font:500 14px/1.65 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;overflow-x:auto;white-space:pre-wrap;margin:20px 0;box-shadow:0 8px 22px rgba(107,74,42,.12)}
+.footer{padding:30px clamp(20px,6vw,88px);font-size:14px;color:var(--muted);background:#fff;border-top:1px solid var(--line)}
+.footer-inner{width:min(1000px,100%);margin:0 auto}
+.footer-links{display:flex;flex-wrap:wrap;gap:6px 12px;margin-bottom:14px}.footer-links a{color:var(--blue);font-weight:900;text-decoration:none;font-size:14px}
+.footer-brand{font-weight:900;font-size:15px;margin-bottom:10px}.footer-note{font-size:13px;line-height:1.6}
+@media(max-width:820px){.duo{grid-template-columns:1fr}.workflow-grid{grid-template-columns:1fr}.section{padding:40px 20px}.hero{min-height:52vh;flex-direction:column;justify-content:flex-start;align-items:flex-start;gap:24px}.hero>div{width:100%}}
+@media(max-width:820px){html,body{overflow-x:hidden}.hero h1{word-break:break-word}}
+</style>
+</head>
+<body class="spotlight">
+<nav class="top">
+  <div class="container">
+    <a class="nav-brand-img" href="../../index.html"><img src="../../images/footer-signature.png" alt="江江教練 | 江昱德"></a>
+    <button class="nav-toggle" aria-label="選單"><span></span><span></span><span></span></button>
+    <ul class="nav-menu">
+      <li><a href="../../index.html">首頁</a></li>
+      <li><a href="../../knowledge-architecture.html">知識架構</a></li>
+      <li><a href="../../courses.html">課程</a></li>
+      <li><a href="../../articles.html" class="active">深度文章</a></li>
+      <li><a href="../../skills.html">技能包下載</a></li>
+      <li><a href="../../cases.html">服務方案</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="wc wc1"></div>
+  <div class="wc wc2"></div>
+  <div class="wc wc3"></div>
+  <div>
+    <div class="kicker">語意規則</div>
+    <h1>提示詞模板為什麼時好時壞？先懂 AI 是強一億倍的手機輸入法</h1>
+    <p>2022 年底我曾經為了一個歷史人物的答案，跟 ChatGPT 吵了三小時。它最後說「我記住了」，下一秒又說「我只是個大語言模型，沒辦法處理這件事」。我瞬間清醒，也從那天立志要搞懂怎麼訓練 AI。</p>
+    <div class="hero-date">發佈 2026-01-24 ｜ 最後更新 2026-01-24</div>
+  </div>
+</section>
+
+<main>
+
+<section class="section" id="start">
+  <div class="inner">
+    <h2>這篇在講什麼</h2>
+    <p class="lead">網路上的提示詞模板抄不完，但模板解決的都是表面。這篇整理「從詞語關聯性看提示詞設計」工作坊的完整內容：先弄懂 AI 到底怎麼「理解」你說的話，你就會自己長出寫提示詞的能力，模板反而變成參考就好。</p>
+    <div class="duo stack">
+      <div class="card a">
+        <b>適合誰</b>
+        <p>· 收藏了很多提示詞模板，效果卻時好時壞的人<br>· 想知道為什麼 AI 有時答非所問、有時一秒懂你的人<br>· 要教別人用 AI，需要一套好懂的原理講法的講師與主管</p>
+      </div>
+      <div class="card b">
+        <b>你會得到什麼</b>
+        <p>· 一個換掉你認知的比喻：AI 是強一億倍的手機輸入法<br>· 課題分離提示詞的三步修正，可直接複製<br>· 角色設定、罵 AI、負向提示詞三個常見手法的原理與陷阱</p>
+      </div>
+    </div>
+    <div class="meaning"><b>整堂課最重要的一句</b>AI 不會思考，它只是會算概率。它不會判斷、不知道對錯。光是有這個認知，你就會發現自己很多提示詞下得很不精確。</div>
+  </div>
+</section>
+
+<section class="section" id="essence">
+  <div class="inner">
+    <h2>AI 的本質：詞語關聯的計算機</h2>
+    <p>大語言模型的訓練方式，是讓它看大量的人類語言：對話、小說、文章、論文。看多了，它就「學會說話」了。但它學會的是找到詞語之間的關聯，它認得人類的字，卻不理解字的意思。</p>
+    <p>課堂上有位學員給了一個我講了這麼久、聽過最好的比喻：AI 就是手機輸入法，預測你下一個最可能出現的字，只是強了一億倍。原理真的一樣：自動選字、會記你的常用詞（這就像 AI 的記憶功能），差別只在規模。</p>
+    <p>用 1+1=2 檢驗一次。人類看到 1+1 知道這是數學。AI 收到的是「人類說了一句叫 1+1 的話」，它翻資料庫，發現人類的文章裡講 1+1 的時候，後面通常接「等於 2」，所以它回答 2。它從頭到尾沒有在算數學。現在的 AI 會算複雜公式，是因為工程師教它：遇到數學別去模型裡找答案，去調用計算程式。</p>
+    <p>「今天幾月幾號」也一樣。人類的文章裡，「今天」後面接過一年 365 個日期，科幻小說裡甚至有 15 月 38 號，光靠模型根本無從回答。現在答得出來，是因為它知道自己答不了，會先連到時間服務確認再回你。</p>
+    <p>連 AI 的溫柔也是同一個原理。你說「我好難過，可以安慰我嗎」，它就去找大量關於難過、溫暖、被安慰的文章，整理成你想要的版本。有一句話講得很好：如果你覺得 AI 回應得很好，那是全世界人類的溫柔在回應你。</p>
+  </div>
+</section>
+
+<section class="section" id="bias">
+  <div class="inner">
+    <h2>實戰核心：課題分離提示詞的三步修正</h2>
+    <p>懂了原理，來看一個真實的應用。很多人會請 AI 評理：「你幫我看看我跟朋友吵架，我是不是對的，他是不是錯的。」現在你應該猜得到結果了：人類的文章裡，講到「我」的時候多半說我是對的，講到「你」的時候多半說你是錯的，這個慣性整包植入在模型裡。再加上 AI 是產品，出廠設定就是要服務好使用者。這樣問下去，你只會得到一篇「對，你是對的」的爽文，對修復關係毫無幫助。</p>
+    <p>修正分三步，一步比一步深：</p>
+    <div class="workflow-grid">
+      <div class="workflow-step"><small>第一步</small><b>抽離角色</b><p>把「我」跟「他」拿掉，改成「這是 A 和 B 的對話」。AI 無法從立場關聯對錯，只能從內容分析。</p></div>
+      <div class="workflow-step"><small>第二步</small><b>引入專業框架</b><p>指定「用阿德勒心理學的課題分離分析」。關聯的資料庫就從論壇酸民的吵架文，換成心理學專業文獻。</p></div>
+      <div class="workflow-step"><small>第三步</small><b>換掉目標詞</b><p>把「對錯」也拿掉。我真正要的是和好，所以請它找共識，讓它從成功達成共識的資料裡找答案。</p></div>
+    </div>
+    <div class="codeblock">這邊有 A 和 B 的對話。
+請你客觀分析，用阿德勒心理學「課題分離」的觀點，
+標出哪句話是誰的課題，
+各自可以採取什麼建議去改善，
+我們各自有哪些需求與立場，
+有沒有其實已經有共識的觀點，
+最後幫我們整理出一個雙方都能接受的行動方案。</div>
+    <p>注意這份提示詞裡完全沒有「對錯」兩個字。這就是語意規則的力量：你選的每一個詞，都在決定 AI 去哪一區資料庫找答案。</p>
+  </div>
+</section>
+
+<section class="section" id="role">
+  <div class="inner">
+    <h2>三個常見手法，用原理重新看一遍</h2>
+    <h3>角色設定為什麼有時沒用</h3>
+    <p>「請用商業顧問的角度分析」會過濾掉大部分太差的文章，所以有點用。但「我要拍婚紗，幫我推薦厲害的攝影師」就沒意義：什麼叫厲害？你要什麼風格？你住台北還是屏東？「我要創業，請用商業顧問角度分析」也一樣，一人公司、中小企業、矽谷新創是完全不同的資料庫。角色設定是入口，真的要專業，背景資料要給足，本質是給 AI 更多有用資訊，讓它關聯到對的資料區。</p>
+    <h3>為什麼罵 AI 有效</h3>
+    <p>2024 年流傳一個偏方：AI 不聽話就罵它。這招確實有效，但看懂原理你就用不著罵了。「你很爛耶，我住台北你推薦屏東的幹嘛」這句罵人的話，其實是在補充上下文、修正關聯、明確告訴它你要什麼或至少不要什麼。罵有效的本質是給了更多提示詞。知道這件事，直接給它對的參考資料就好，省下情緒也省下來回。</p>
+    <h3>負向提示詞的檸檬陷阱</h3>
+    <p>「不要想檸檬、不要想檸檬。」你現在滿腦子都是檸檬了。負向提示詞單獨使用就是這個效果：你給的所有關鍵字裡只有檸檬，它只好想檸檬。要用負向提示詞，先鋪正向基礎：「請想蘋果，不喜歡可以想西瓜，總之避開檸檬。」有明確的正向方向，再補負向排除，才會生效。</p>
+  </div>
+</section>
+
+<section class="section" id="template">
+  <div class="inner">
+    <h2>回到模板：語意不清，模板也救不了</h2>
+    <p>很多模板看起來欄位齊全，但任務本身沒講清楚，模型仍然在猜。「幫我整理」可以是摘要、分類、改寫、轉表格、找問題，也可以是做簡報大綱。套模板之前，先寫清楚任務動詞、資料範圍、使用對象與輸出標準，這些是語意規則，超過格式要求。</p>
+    <p>長期工作還需要知識庫補足脈絡：保存詞彙定義、分類規則、寫作風格、專案背景，AI 讀得到這些，每次提示詞就用不著從零解釋。這也是提示詞設計最後一定會接到知識管理的原因，接法在<a href="../ai-data-organization-usable-system/">AI 時代怎麼整理資料</a>那篇。</p>
+    <div class="caveat"><b>模板的正確用法</b>模板最好的用途是提醒你有哪些欄位別漏。真正使用時，把它改成自己的工作語言，加入自己的資料、限制與驗收方式。一個好的提示詞，重點是讓模型準確知道這次任務該怎麼處理。</div>
+  </div>
+</section>
+
+<section class="section" id="practice">
+  <div class="inner">
+    <h2>你可以怎麼練習：重寫一個常用提示詞</h2>
+    <p class="lead">挑一個你最常用的提示詞，用這堂課的原理重寫一次：</p>
+    <ol>
+      <li>標出裡面的角色、任務動詞、資料範圍、限制與輸出格式，缺的補上。</li>
+      <li>檢查有沒有立場詞（我、他、對錯）在偷偷帶風向，需要就抽離成 A 與 B。</li>
+      <li>問自己：我真正要的結果是什麼？把目標詞換成那個（像把「對錯」換成「共識」）。</li>
+      <li>有負向排除的，確認前面已有明確的正向方向。</li>
+    </ol>
+    <p>這一輪走完，你對這個提示詞的理解，會比再收藏十個模板都深。</p>
+    <div class="tagrow">
+      <span class="tag">提示詞設計</span><span class="tag">詞語關聯性</span><span class="tag">語意規則</span><span class="tag">課題分離</span><span class="tag">LLM 原理</span><span class="tag">AI 溝通</span><span class="tag">知識管理</span>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">江江教練 · AI 知識管理</div>
+    <div class="footer-links">
+      <a href="../../articles.html">← 回深度文章總站</a>
+      <a href="../../index.html">首頁</a>
+      <a href="../../learn.html">自學資源</a>
+      <a href="../../skills.html">技能包下載</a>
+      <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">LINE 社群 ↗</a>
+      <a href="https://www.threads.com/@jiang_yude_coach" target="_blank" rel="noopener">Threads ↗</a>
+      <a href="https://vocus.cc/salon/Jiang_Coach" target="_blank" rel="noopener">方格子 ↗</a>
+    </div>
+    <div class="footer-note">這是一篇提示詞原理文章，整理 2026-01-24 線上工作坊「從詞語關聯性看提示詞設計」的教學手冊內容。</div>
+  </div>
+</footer>
+
+<script src="../../spotlight.js"></script>
+<script src="../../articles-data.js"></script>
+<script src="../../related-render.js"></script>
+<script src="/views.js"></script>
+</body>
+</html>

@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="index,follow">
+<title>文科生不寫程式，也能讓 AI 接手工作：設計自己的 Agent 框架｜江江教練 · AI 知識管理</title>
+<meta name="description" content="給文科生的 Agent 框架設計通識課：駕馭工程三件事、迴圈工程與三種日記、LLM Wiki 知識圖譜與 Tag Wiki 標籤系統，不寫程式也能讓 AI 接手工作。">
+<link rel="canonical" href="https://ai-km-jiang.vercel.app/articles/liberal-arts-agent-framework/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="文科生不寫程式，也能讓 AI 接手工作｜江江教練">
+<meta property="og:image" content="https://ai-km-jiang.vercel.app/images/og/liberal-arts-agent-framework.jpg">
+<meta property="og:description" content="駕馭工程三件事、迴圈工程與三種日記、LLM Wiki 與 Tag Wiki，不寫程式也能讓 AI 接手工作。">
+<meta property="og:url" content="https://ai-km-jiang.vercel.app/articles/liberal-arts-agent-framework/">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:site_name" content="江江教練 · AI 知識管理">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="文科生不寫程式，也能讓 AI 接手工作｜江江教練">
+<meta name="twitter:image" content="https://ai-km-jiang.vercel.app/images/og/liberal-arts-agent-framework.jpg">
+<meta name="twitter:description" content="駕馭工程、迴圈工程、LLM Wiki 與 Tag Wiki，文科生的 Agent 框架設計課。">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"文科生不寫程式，也能讓 AI 接手工作：設計自己的 Agent 框架","description":"給文科生的 Agent 框架設計通識課：駕馭工程三件事、迴圈工程與三種日記、LLM Wiki 知識圖譜與 Tag Wiki 標籤系統，不寫程式也能讓 AI 接手工作。","datePublished":"2026-04-20","dateModified":"2026-04-20","author":{"@type":"Person","name":"江昱德","alternateName":"江江教練","jobTitle":"隱性知識提煉師、AI 應用規劃師"},"isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://ai-km-jiang.vercel.app/"},"inLanguage":"zh-Hant","url":"https://ai-km-jiang.vercel.app/articles/liberal-arts-agent-framework/"}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{--ink:#1a1612;--paper:#fefcf8;--muted:#6a635a;--line:#d8cdb8;--green:#5f7553;--blue:#5689b8;--orange:#e85a4f;--soft:#faf5ec;--dark:#2a2018;--shadow:0 18px 45px rgba(107,74,42,.14);--sp-shadow:hsla(35,50%,60%,.15);--sp-shadow-edge:hsla(35,50%,68%,.03);--sp-radius:400px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC","Segoe UI",sans-serif}
+a{color:inherit}
+nav.top{position:sticky;top:0;background:rgba(254,252,248,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid #d8cdb8;z-index:100}
+nav.top .container{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:24px;padding:14px 32px}
+.nav-brand-img{justify-self:start;display:flex;align-items:center;text-decoration:none;flex-shrink:0;transition:opacity .2s}
+.nav-brand-img:hover{opacity:.8}.nav-brand-img img{height:40px;width:auto;display:block}
+nav.top ul.nav-menu{justify-self:end;display:flex;gap:22px;list-style:none;margin:0;padding:0;font-size:.95rem;white-space:nowrap}
+nav.top ul.nav-menu a{color:#3a342d;text-decoration:none;transition:color .2s;font-weight:500;white-space:nowrap}
+nav.top ul.nav-menu a:hover{color:#1a1612}nav.top ul.nav-menu a.active{color:#1a1612;font-weight:700}
+.nav-toggle{display:none;background:none;border:none;padding:6px;cursor:pointer;width:36px;height:36px;position:relative}
+.nav-toggle span{display:block;position:absolute;left:8px;right:8px;height:2px;background:#1a1612;border-radius:2px;transition:transform .25s,opacity .25s,top .25s}
+.nav-toggle span:nth-child(1){top:11px}.nav-toggle span:nth-child(2){top:17px}.nav-toggle span:nth-child(3){top:23px}
+.nav-toggle.open span:nth-child(1){top:17px;transform:rotate(45deg)}.nav-toggle.open span:nth-child(2){opacity:0}.nav-toggle.open span:nth-child(3){top:17px;transform:rotate(-45deg)}
+@media(max-width:860px){
+ nav.top .container{grid-template-columns:auto 1fr auto;padding:10px 16px;gap:12px}
+ .nav-brand-img img{height:32px}
+ .nav-toggle{display:block;justify-self:end}
+ nav.top ul.nav-menu{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(254,252,248,.98);backdrop-filter:blur(14px);border-bottom:1px solid #d8cdb8;flex-direction:column;gap:0;padding:8px 0;box-shadow:0 10px 24px rgba(107,74,42,.08)}
+ nav.top ul.nav-menu.open{display:flex}
+ nav.top ul.nav-menu li{border-bottom:1px solid #e8dfc9}
+ nav.top ul.nav-menu li:last-child{border-bottom:none}
+ nav.top ul.nav-menu a{display:block;padding:14px 20px;font-size:1.06rem}
+}
+body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradient(var(--sp-radius) circle at var(--mx,50%) var(--my,50%),var(--sp-shadow) 0%,var(--sp-shadow-edge) 45%,transparent 75%);pointer-events:none;z-index:9999;mix-blend-mode:multiply;transition:background .06s linear}
+.hero{position:relative;overflow:hidden;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:72px;padding:96px clamp(20px,6vw,88px) 80px;background:linear-gradient(180deg,#fffcf0 0%,#f9e9d2 100%);color:#1a1612;border-bottom:1px solid #d8cdb8}
+.hero .wc{position:absolute;border-radius:50%;filter:blur(60px);pointer-events:none;z-index:0}
+.hero .wc1{width:420px;height:360px;top:-120px;right:-80px;background:#e8884b;opacity:.15}
+.hero .wc2{width:360px;height:300px;bottom:-110px;left:-70px;background:#5f7553;opacity:.13}
+.hero .wc3{width:280px;height:260px;top:34%;left:14%;background:#a08144;opacity:.10}
+.hero>div{flex:none;width:860px;max-width:100%;position:relative;z-index:2}
+.kicker{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.55rem;color:#7a5c3a;font-weight:500}
+.hero h1{max-width:none;margin:16px 0 18px;font-size:clamp(32px,5vw,58px);line-height:1.12;overflow-wrap:anywhere}
+.hero p{max-width:none;font-size:clamp(18px,2vw,23px);line-height:1.62;color:#3a342d}
+.hero-date{margin-top:18px;font-size:15px;color:#7a5c3a}
+.section{padding:54px clamp(20px,6vw,88px);border-top:1px solid var(--line)}
+.inner{width:min(1000px,100%);margin:0 auto}
+.section h2{font-size:clamp(26px,4.2vw,48px);line-height:1.12;margin:0 0 18px}
+.section h3{font-size:clamp(21px,3vw,30px);line-height:1.2;margin:30px 0 12px}
+.lead{font-size:clamp(18px,1.6vw,22px);line-height:1.7;color:#3a342d;max-width:900px}
+.section p{font-size:18px;line-height:1.74;color:#3a342d}.section p+p{margin-top:14px}
+.section ul,.section ol{padding-left:1.4em;font-size:18px;line-height:1.74;color:#3a342d}.section li{margin-bottom:8px}
+.meaning{margin:22px 0;padding:16px 18px;border-left:5px solid var(--blue);background:rgba(86,137,184,.12);border-radius:6px;line-height:1.7;font-size:19px}
+.meaning b{display:block;color:var(--blue);margin-bottom:4px}
+.caveat{margin:0 0 8px;padding:16px 18px;border-left:5px solid var(--orange);background:rgba(232,90,79,.1);border-radius:6px;line-height:1.7;font-size:18px;color:#3a342d}
+.caveat b{display:block;color:var(--orange);margin-bottom:4px}
+.tagrow{display:flex;flex-wrap:wrap;gap:7px;margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
+.tag{font-size:14px;color:var(--muted);background:var(--soft);border:1px solid var(--line);border-radius:999px;padding:4px 11px}
+.duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:24px}
+.duo.stack{grid-template-columns:1fr}
+.duo .card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:22px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.duo .card.a{border-color:var(--orange)}.duo .card.b{border-color:var(--green);box-shadow:0 8px 24px rgba(95,117,83,.16)}
+.duo .card b{display:block;font-size:22px;line-height:1.3;margin-bottom:12px}.duo .card.a b{color:#c0512f}.duo .card.b b{color:#4a7a59}
+.duo .card p{margin:0;color:#3a342d;line-height:1.75;font-size:18px}
+.workflow-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:24px}
+.workflow-step{background:#fff;border:1px solid var(--line);border-radius:8px;padding:18px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.workflow-step small{display:block;color:var(--orange);font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;margin-bottom:9px}
+.workflow-step b{display:block;font-size:18px;line-height:1.3;margin-bottom:9px}
+.workflow-step p{margin:0;color:#3a342d;line-height:1.6;font-size:16px}
+.codeblock{background:var(--dark);color:#f3ead9;border-radius:8px;padding:18px 20px;font:500 14px/1.65 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;overflow-x:auto;white-space:pre-wrap;margin:20px 0;box-shadow:0 8px 22px rgba(107,74,42,.12)}
+.footer{padding:30px clamp(20px,6vw,88px);font-size:14px;color:var(--muted);background:#fff;border-top:1px solid var(--line)}
+.footer-inner{width:min(1000px,100%);margin:0 auto}
+.footer-links{display:flex;flex-wrap:wrap;gap:6px 12px;margin-bottom:14px}.footer-links a{color:var(--blue);font-weight:900;text-decoration:none;font-size:14px}
+.footer-brand{font-weight:900;font-size:15px;margin-bottom:10px}.footer-note{font-size:13px;line-height:1.6}
+@media(max-width:820px){.duo{grid-template-columns:1fr}.workflow-grid{grid-template-columns:1fr}.section{padding:40px 20px}.hero{min-height:52vh;flex-direction:column;justify-content:flex-start;align-items:flex-start;gap:24px}.hero>div{width:100%}}
+@media(max-width:820px){html,body{overflow-x:hidden}.hero h1{word-break:break-word}}
+</style>
+</head>
+<body class="spotlight">
+<nav class="top">
+  <div class="container">
+    <a class="nav-brand-img" href="../../index.html"><img src="../../images/footer-signature.png" alt="江江教練 | 江昱德"></a>
+    <button class="nav-toggle" aria-label="選單"><span></span><span></span><span></span></button>
+    <ul class="nav-menu">
+      <li><a href="../../index.html">首頁</a></li>
+      <li><a href="../../knowledge-architecture.html">知識架構</a></li>
+      <li><a href="../../courses.html">課程</a></li>
+      <li><a href="../../articles.html" class="active">深度文章</a></li>
+      <li><a href="../../skills.html">技能包下載</a></li>
+      <li><a href="../../cases.html">服務方案</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="wc wc1"></div>
+  <div class="wc wc2"></div>
+  <div class="wc wc3"></div>
+  <div>
+    <div class="kicker">Agent 框架</div>
+    <h1>文科生不寫程式，也能讓 AI 接手工作：設計自己的 Agent 框架</h1>
+    <p>我的做法很單純：用文件跟資料夾做分類，用自然語言把規則說清楚。這跟寫劇本讓演員去演是同一個概念，只是劇本換成了規則，演員換成了 AI。</p>
+    <div class="hero-date">發佈 2026-04-20 ｜ 最後更新 2026-04-20</div>
+  </div>
+</section>
+
+<main>
+
+<section class="section" id="start">
+  <div class="inner">
+    <h2>這篇在講什麼</h2>
+    <p class="lead">工程師用 AI 看起來特別厲害，很多人以為那是因為他們懂程式。其實關鍵在別的地方：程式碼是已經被高度結構化的文本，AI 讀起來特別順。這件事反過來就是文科生的機會：只要把文件與知識整理得像程式碼一樣有結構，AI 就能很好地讀取與應用。而整理的工具你早就會了：資料夾負責分類，文件用自然語言把規則寫清楚，AI 拿到就照著演。這篇整理一堂通識課的完整內容，從駕馭工程講到 LLM Wiki 和 Tag Wiki。</p>
+    <div class="duo stack">
+      <div class="card a">
+        <b>適合誰</b>
+        <p>· 內容工作者、老師、顧問、大量文書工作者<br>· 想讓 AI 接手工作，但一看到「工程」兩個字就想關掉頁面的人<br>· 已經在用 ChatGPT 或 Claude，想往 Agent 和個人工作系統走的人</p>
+      </div>
+      <div class="card b">
+        <b>你會得到什麼</b>
+        <p>· 駕馭工程裡非工程師能做的三件事<br>· 讓 AI 讀懂你文件關係的三個具體寫法（時間戳、連結語法、跨系統參照）<br>· 個人設定檔、擬人化技能包、三種日記的實作方法</p>
+      </div>
+    </div>
+    <div class="meaning"><b>整堂課的核心一句話</b>AI 工具現在很聰明了，讓它來學你，用不著你那麼累去學它。建立一份寫清楚自己系統、流程、思考方式的文件讓 AI 讀，今天哪家 AI 來，就讓哪家 AI 讀。</div>
+  </div>
+</section>
+
+<section class="section" id="harness">
+  <div class="inner">
+    <h2>駕馭工程：非工程師能做的三件事</h2>
+    <p>Harness 是韁繩的意思，我把 Harness Engineering 翻成「駕馭工程」，本質就是駕馭 AI。OpenAI 在 2026 年給 Agent 下的定義可以簡化成一個公式：Agent 等於 AI 模型（大腦）加上我們控制這顆大腦的工程（駕馭工程）。</p>
+    <p>大腦是哪家的，你我決定不了，也追不完。駕馭這一半，才是我們能做的。而它的大部分工作根本用不到程式碼：</p>
+    <div class="workflow-grid">
+      <div class="workflow-step"><small>第一件</small><b>設計環境</b><p>規劃資料夾結構、文件放置邏輯，讓 AI 一進來就知道東西在哪。</p></div>
+      <div class="workflow-step"><small>第二件</small><b>定義意圖</b><p>用文件寫清楚每個資料夾的用途、每個流程的規則和禁區。</p></div>
+      <div class="workflow-step"><small>第三件</small><b>建立迴圈</b><p>讓 AI 照著寫好的路徑自動跑，跑完檢查、回寫規則。</p></div>
+    </div>
+    <p>用寫劇本來理解最快：設計環境是搭場景，定義意圖是寫劇本，建立迴圈是讓演員照劇本連戲。文科生平常就在做這些訓練：閱讀、分類、詮釋、把脈絡整理清楚。差別只是以前寫給人看，現在多寫一份給 AI 看。</p>
+    <p>要記得一個底層事實：你不告訴 AI 特殊邏輯，它一定照預設走。三份文件 A、B、C，AI 預設按 ABC 順序讀；如果你的實際流程是 A 完接 C、C 完才回 B，就要事先寫下來，它才會照 ACB 跑。AI 會越來越聰明，但你的特殊邏輯，永遠要你自己定義。</p>
+  </div>
+</section>
+
+<section class="section" id="loop">
+  <div class="inner">
+    <h2>迴圈工程：做一次、檢查、回寫規則</h2>
+    <p>駕馭工程處理的是「怎麼讓 AI 在可控範圍內做事」，迴圈工程處理的是「怎麼讓它一次比一次做得好」（完整方法在<a href="../what-is-loop-engineering/">什麼是迴圈工程</a>那篇；兩者怎麼接在一起，看<a href="../loop-engineering-guardrails/">迴圈護欄</a>）。做一次、檢查、把經驗回寫成規則、下次少犯，長期工作靠的是這個循環，單次提示詞撐不起來。</p>
+    <p>回寫規則最實際的工具是三種日記。其他資料都可以叫 AI 整理，日記只能你自己留，因為 AI 沒辦法讀心。</p>
+    <ul>
+      <li>工作日誌：每次完成一個流程，尤其是來回多輪才搞定的，下一句指令「把剛剛的過程寫成工作日誌」。下次做類似的事，先叫 AI 讀上一份。就算這次 AI 一次做對，也照寫，因為 AI 有隨機性，這次順不代表下次順。</li>
+      <li>觀點日記：發現跨系統、跨文件的洞察時，獨立寫成一份，別塞進原本的文件裡。查原系統時邏輯乾淨，要跨系統比對時也有地方查。</li>
+      <li>心情日記：記錄情緒狀態、內耗點、卡住的地方。情緒成本也是成本，特別推薦一人公司的創辦者。</li>
+    </ul>
+    <div class="codeblock">工作日誌範例：
+本來以為流程是 ABC，這次遇到突發狀況，實際變成 ACB。
+以後遇到這種情況，記得流程是 ACB。
+
+（AI 下次讀到，就知道怎麼處理，不用重新教。）</div>
+  </div>
+</section>
+
+<section class="section" id="llmwiki">
+  <div class="inner">
+    <h2>LLM Wiki：給模型讀的知識地圖</h2>
+    <p>Karpathy 提出的 LLM Wiki，核心是讓知識庫可以持續累積、自動連結、自動更新。AI 需要可讀、可引用、可追溯的知識結構，才知道什麼是核心概念、什麼是相關概念、不同頁面怎麼連在一起。</p>
+    <p>落到個人知識庫，有三個具體寫法：</p>
+    <div class="codeblock">1. 時間戳（提示）：
+檔名加 YYYY-MM-DD-HHMM，AI 看到時間就知道先後。
+
+2. 連結語法（指定，比時間戳精確）：
+在文件裡直接寫「A 完之後接 C」。
+
+3. 跨系統參照：
+在 B 文件開頭寫
+「請參照另一個系統裡的丙，底層邏輯幾乎相同，
+可作為系統間的參照。」</div>
+    <p>好習慣是時間戳和連結語法兩種都寫。丟新文件進知識庫時，AI 可以自動判斷關聯建立連結，特殊案例再手動補。這就是知識圖譜：文件之間有方向性的連結，讓知識庫可以規模化，同時保留人工介入的空間。</p>
+    <h3>Tag Wiki：個人的工作語義系統</h3>
+    <p>LLM Wiki 管文件之間的連結，我自己的 Tag Wiki 則更偏個人工作語義：用標籤把資料分類、任務場景、角色、流程與輸出形式連起來。標籤定義清楚，AI 就知道某份筆記該進哪個工作流。</p>
+    <p>新手的最小起點是先定義幾個常用標籤，例如資料、流程、任務、成品、待處理。標籤穩定之後，Agent 才有辦法幫你整理與召回。</p>
+  </div>
+</section>
+
+<section class="section" id="profile">
+  <div class="inner">
+    <h2>兩個馬上能做的配件：個人設定檔與擬人化技能包</h2>
+    <h3>個人設定檔：給 AI 看的履歷</h3>
+    <p>個人設定檔是一份讓任何 AI 快速了解你的文件。AI 讀完這一份就懂你，用不著每次爬你幾百份文件。做法很簡單，打開你最常用的 AI，下這個指令：</p>
+    <div class="codeblock">幫我分析我們最近談話的內容，
+整理我的工作模式、興趣、喜好、流程。</div>
+    <p>檢視草稿、補上缺漏，存成一份固定文件，內容涵蓋品牌核心、想服務誰、工作邏輯與策略、個人喜好與流程。重點是這份檔案要能給任何一家 AI 讀，不綁定平台，並且隨工作方式變化定期更新。</p>
+    <h3>擬人化技能包：記人比記工具容易</h3>
+    <p>工具一多，你會忘記哪個功能放在哪裡。解法是把技能包擬人化：幫每個技能包取名字、寫一段人設，說清楚這個角色負責什麼、什麼情境叫他。像我的「春總編」負責寫文案、行銷、內容創作，只要跟寫文案有關的事，直接叫春總編。Agent 團隊越大，擬人化越必要，人設要具體到「什麼情境該找他」。</p>
+    <div class="caveat"><b>新工具的安裝節奏</b>熱門工具剛爆紅時 Bug 最多，先聽不動；過一週確認下載數持續上升、沒人說是詐騙；再過一兩週官方或社群有了 Bug 解法再開始學。權限越大的桌面 Agent，前置調查越要仔細，安裝前先請既有的 AI 幫你查風險和解除方式。而且從新工具裡拿走最厲害的概念吸收進自己的系統就好，整套搬家永遠學不完。</div>
+  </div>
+</section>
+
+<section class="section" id="practice">
+  <div class="inner">
+    <h2>你可以怎麼練習：寫一張 Agent 規則卡</h2>
+    <p class="lead">文科生設計 Agent 框架的起點，是一張規則卡。它把駕馭工程的三件事濃縮在一頁裡。</p>
+    <ol>
+      <li>我有哪些資料：列出你的主要資料夾和每個資料夾的用途。</li>
+      <li>我常做哪些任務：挑三個重複出現的工作，各用三五句話寫下你的做法。</li>
+      <li>哪些事不能自動做：對外送出、刪除檔案、碰敏感資料，先劃出禁區。</li>
+      <li>做完怎麼驗收：每個任務寫一條「做完的標準」，讓 AI 自己對答案。</li>
+    </ol>
+    <p>這張卡就是你個人 Agent 系統的起點。之後每跑一輪工作，用工作日誌把經驗寫回來，規則卡會自己長大。流水的 AI，鐵打的知識：工具會一直換，這套你整理出來的系統，才是留得下來的資產。</p>
+    <div class="tagrow">
+      <span class="tag">Agent 框架</span><span class="tag">駕馭工程</span><span class="tag">迴圈工程</span><span class="tag">LLM Wiki</span><span class="tag">Tag Wiki</span><span class="tag">文科生</span><span class="tag">知識管理</span>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">江江教練 · AI 知識管理</div>
+    <div class="footer-links">
+      <a href="../../articles.html">← 回深度文章總站</a>
+      <a href="../../index.html">首頁</a>
+      <a href="../../learn.html">自學資源</a>
+      <a href="../../skills.html">技能包下載</a>
+      <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">LINE 社群 ↗</a>
+      <a href="https://www.threads.com/@jiang_yude_coach" target="_blank" rel="noopener">Threads ↗</a>
+      <a href="https://vocus.cc/salon/Jiang_Coach" target="_blank" rel="noopener">方格子 ↗</a>
+    </div>
+    <div class="footer-note">這是一篇方法論文章，整理 2026-04-20「給文科生的 Harness Engineering × LLM Wiki 通識課」的教學手冊內容。</div>
+  </div>
+</footer>
+
+<script src="../../spotlight.js"></script>
+<script src="../../articles-data.js"></script>
+<script src="../../related-render.js"></script>
+<script src="/views.js"></script>
+</body>
+</html>
