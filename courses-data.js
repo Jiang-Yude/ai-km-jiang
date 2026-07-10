@@ -274,6 +274,26 @@ window.COURSES = [
     }
   },
   {
+    id: "2026-07-12-chatgpt-work-admin",
+    date: "2026-07-12",
+    time: "20:00",
+    title: "ChatGPT Work 到底能幫行政工作做什麼？",
+    type_label: "免費線上講座",
+    image: "images/courses/2026-07-12-chatgpt-work-admin.jpg",
+    venue_mode: "online",
+    host: "江江教練",
+    tags: ["ChatGPT Work", "行政工作", "AI工作流", "工作交代"],
+    summary: "從一般行政工作的角度，帶大家看懂 ChatGPT Work 到底能幫我們做什麼，以及該怎麼交代，才真的能幫你省下時間。",
+    detail_url: null,
+    materials: [],
+    registration: {
+      status: "open",
+      url: "https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ",
+      label: "加入 LINE 社群 ↗",
+      note: "免費參加，講座資訊請看 LINE 社群"
+    }
+  },
+  {
     id: "2026-07-14-marketing-2",
     date: "2026-07-14",
     time: "19:00",
