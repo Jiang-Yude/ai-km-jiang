@@ -4,24 +4,24 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="index,follow">
-<title>Agent的會議記錄工作流：我把會議變成知識資產的七步｜江江教練 · AI 知識管理</title>
-<meta name="description" content="開完會的逐字稿動輒幾萬字，讀完就飽了。這篇完整公開我把每場會議變成知識資產的七步：聲紋辨識轉稿、補現場觀察、一句指令啟動、分級清稿、會後策略報告書、交付物初稿，到用納瓦爾與馬斯克視角判斷這場會值不值得。">
+<title>我的會議記錄 Agent 工作流｜江江教練 · AI 知識管理</title>
+<meta name="description" content="從現場錄音、OBS 線上錄影、MacWhisper 或 VibeVoice-ASR 轉錄開始，逐步補上現場觀察、保留原始資料、生成會議策略書與交付初稿，再用多種思維模型檢測盲點。">
 <link rel="canonical" href="https://ai-km-jiang.vercel.app/articles/meeting-record-agent-workflow/">
 <link rel="alternate" hreflang="zh-Hant" href="https://ai-km-jiang.vercel.app/articles/meeting-record-agent-workflow/">
 <link rel="alternate" hreflang="en" href="https://ai-km-jiang.vercel.app/en/articles/meeting-record-agent-workflow/">
 <link rel="alternate" hreflang="x-default" href="https://ai-km-jiang.vercel.app/articles/meeting-record-agent-workflow/">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Agent的會議記錄工作流：我把會議變成知識資產的七步｜江江教練">
+<meta property="og:title" content="我的會議記錄 Agent 工作流｜江江教練">
 <meta property="og:image" content="https://ai-km-jiang.vercel.app/images/articles/meeting-record-agent-workflow-summary-wide.jpg">
-<meta property="og:description" content="把每一場會議整理成可以輔助決策、下次還用得到的知識資產。完整七步流程公開，含可複用提示詞。">
+<meta property="og:description" content="從錄音開始，把每一場會議整理成可以輔助決策的策略書。完整七步流程與可複製提示詞。">
 <meta property="og:url" content="https://ai-km-jiang.vercel.app/articles/meeting-record-agent-workflow/">
 <meta property="og:locale" content="zh_TW">
 <meta property="og:site_name" content="江江教練 · AI 知識管理">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Agent的會議記錄工作流：我把會議變成知識資產的七步｜江江教練">
+<meta name="twitter:title" content="我的會議記錄 Agent 工作流｜江江教練">
 <meta name="twitter:image" content="https://ai-km-jiang.vercel.app/images/articles/meeting-record-agent-workflow-summary-wide.jpg">
-<meta name="twitter:description" content="把每一場會議整理成可以輔助決策、下次還用得到的知識資產。完整七步流程公開，含可複用提示詞。">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Agent的會議記錄工作流：我把會議變成知識資產的七步","description":"開完會的逐字稿動輒幾萬字，讀完就飽了。這篇完整公開我把每場會議變成知識資產的七步：聲紋辨識轉稿、補現場觀察、一句指令啟動、分級清稿、會後策略報告書、交付物初稿，到用納瓦爾與馬斯克視角判斷這場會值不值得。","author":{"@type":"Person","name":"江昱德","alternateName":"江江教練","jobTitle":"隱性知識提煉師、AI 應用規劃師"},"isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://ai-km-jiang.vercel.app/"},"image":"https://ai-km-jiang.vercel.app/images/articles/meeting-record-agent-workflow-summary-wide.jpg","datePublished":"2026-06-23","dateModified":"2026-06-23","inLanguage":"zh-Hant","url":"https://ai-km-jiang.vercel.app/articles/meeting-record-agent-workflow/"}</script>
+<meta name="twitter:description" content="從錄音開始，把每一場會議整理成可以輔助決策的策略書。完整七步流程與可複製提示詞。">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"我的會議記錄 Agent 工作流","description":"從現場錄音、OBS 線上錄影、MacWhisper 或 VibeVoice-ASR 轉錄開始，逐步補上現場觀察、保留原始資料、生成會議策略書與交付初稿，再用多種思維模型檢測盲點。","author":{"@type":"Person","name":"江昱德","alternateName":"江江教練","jobTitle":"隱性知識提煉師、AI 應用規劃師"},"isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://ai-km-jiang.vercel.app/"},"image":"https://ai-km-jiang.vercel.app/images/articles/meeting-record-agent-workflow-summary-wide.jpg","datePublished":"2026-06-23","dateModified":"2026-07-10","inLanguage":"zh-Hant","url":"https://ai-km-jiang.vercel.app/articles/meeting-record-agent-workflow/"}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
@@ -153,8 +153,8 @@ figure.wide figcaption{font-size:14px;color:var(--muted);margin-top:10px;text-al
   <div class="wc wc3"></div>
   <div>
     <div class="kicker">AI 應用 · 會議記錄</div>
-    <h1>Agent的會議記錄工作流：我把會議變成知識資產的七步</h1>
-    <p>一場會議真正該被留下的，遠比你以為的多。我把整理流程固定成七步，前三步我自己做，第四步起交給 AI 自動跑完。</p>
+    <h1>我的會議記錄 Agent 工作流</h1>
+    <p>從錄音開始，把每一場會議整理成可以輔助決策的策略書。</p>
   </div>
   <figure class="hero-figure">
     <img src="../../images/articles/meeting-record-agent-workflow-01.jpg" alt="封面：我的會議記錄 Agent 工作流" loading="lazy">
@@ -166,180 +166,250 @@ figure.wide figcaption{font-size:14px;color:var(--muted);margin-top:10px;text-al
 
 <section class="section" id="start">
   <div class="inner">
-        <div class="article-meta"><span>發布：2026-06-23</span><span>更新：2026-06-23</span></div>
-    <p class="lead">開完會的逐字稿動輒幾萬字，讀完就飽了，更別說整理成下次用得上的東西。這篇完整公開我整理會議記錄的七步流程，從聲紋辨識轉稿，一路到「這場會對我有沒有意義」的判斷。核心問題只有一個：一場會議開完，留下來的東西該怎麼整理，才能在下一次同樣的人、同樣的案子出現時，立刻翻得到、接得上。</p>
+    <div class="article-meta"><span>發佈：2026-06-23</span><span>最後更新：2026-07-10</span></div>
+    <p class="lead">我會分享自己怎麼處理一場會議：先留下完整錄音，再把聲音轉成有講者與時間碼的逐字稿，補上表情、語氣和現場氣氛，最後交給 AI 整理成待辦、風險、決策脈絡與後續交付初稿。整套流程的終點，是得到一份可以繼續分析、檢查盲點、輔助下一步判斷的會議策略書。</p>
     <div class="duo stack">
       <div class="card a">
         <b>適合誰</b>
         <ul>
-          <li>一週開好幾場會、會後逐字稿堆著沒時間整理的人</li>
-          <li>接案、做顧問、跑合作，需要把每次談話沉澱下來的人</li>
-          <li>想用 AI 整理會議，卻發現它整理完不是太短就是抓不到重點的人</li>
+          <li>開完會有錄音，最後只留下逐字稿，很少再回頭使用的人</li>
+          <li>常在會議裡答應很多事，會後還要重做報價單、課綱或企劃初稿的人</li>
+          <li>想讓 AI 協助分析會議，又擔心它漏掉語氣、表情與現場關係的人</li>
+          <li>想把每場會議累積成知識資產，供之後查詢與決策使用的人</li>
         </ul>
       </div>
       <div class="card b">
         <b>你會得到什麼</b>
         <ul>
-          <li>一套可以照抄的七步會議記錄流程</li>
-          <li>四種清稿等級的定義，知道什麼時候該留多少</li>
-          <li>一份會後策略報告書的範本，加上兩段可直接複製的提示詞</li>
+          <li>一套從錄音、轉錄到策略分析的七步流程</li>
+          <li>一份可以直接交給 AI 的會議材料清單</li>
+          <li>三組可複製提示詞：策略書、交付初稿、盲點檢測</li>
+          <li>這套方法的限制，以及錄音同意與資料安全提醒</li>
         </ul>
       </div>
     </div>
-    <div class="meaning">
-      <b>會議記錄的問題，不在記錄</b>
-      就算硬著頭皮把逐字稿整理完，過兩個月再回頭看，常常只剩一份流水帳。當初誰承諾了什麼、哪個環節我有點不放心、對方為什麼突然鬆口，這些當下最關鍵的訊息，早就在文字裡被磨平了。所以我把流程固定成七步，現在開完會照著跑就好。
-    </div>
+    <figure class="inline-figure wide">
+      <img src="../../images/articles/meeting-record-agent-workflow-summary-wide.jpg" alt="我的會議記錄 Agent 工作流一頁總結" loading="lazy">
+      <figcaption>從錄音、轉錄、現場觀察，一路整理成可以輔助決策的會議策略書。</figcaption>
+    </figure>
   </div>
 </section>
 
-<section class="section" id="steps-front">
+<section class="section" id="why">
   <div class="inner">
-    <h2>前三步：我自己做的事</h2>
-    <p class="lead">這三步沒辦法外包。它們決定了後面 AI 能整理出多少價值。</p>
-
-    <div class="step-label who-front">第一步 · 我做</div>
-    <h3>用聲紋辨識，把錄音變成分得出人的逐字稿</h3>
-    <p>會議記錄的地基，是一份「知道誰在什麼時候說了什麼」的逐字稿。沒有講者區分，後面所有分析都會糊成一團。</p>
-    <p>現場會議我用錄音筆或手機錄音；線上會議我開 OBS，把畫面和聲音一起留下來。接著用支援聲紋辨識的工具轉逐字稿，Mac 上我用 MacWhisper，或微軟最近開源的 VibeVoice。重點是要能標出誰在說話、幾分幾秒說的。這份標了講者和時間碼的稿子，是後面每一步的原料。</p>
-    <div class="figure-pair">
-      <figure>
-        <img src="../../images/articles/meeting-record-agent-workflow-02.jpg" alt="現場會議用錄音筆或手機錄音" loading="lazy">
-        <figcaption>現場會議用錄音筆或手機錄音</figcaption>
-      </figure>
-      <figure>
-        <img src="../../images/articles/meeting-record-agent-workflow-03.jpg" alt="線上會議開 OBS 把畫面與聲音一起錄" loading="lazy">
-        <figcaption>線上會議開 OBS 把畫面與聲音一起錄</figcaption>
-      </figure>
-    </div>
-    <p>接著用支援聲紋辨識的工具轉逐字稿，Mac 上我用 MacWhisper，或微軟最近開源的 VibeVoice。重點是要能標出誰在說話、幾分幾秒說的。這份標了講者和時間碼的稿子，是後面每一步的原料。</p>
-    <figure class="inline-figure">
-      <img src="../../images/articles/meeting-record-agent-workflow-04.jpg" alt="把錄音轉成標了講者與時間碼的逐字稿" loading="lazy">
-      <figcaption>把錄音轉成標了講者與時間碼的逐字稿</figcaption>
-    </figure>
-    <div class="caveat"><b>別省這一步</b>沒有講者區分的逐字稿，能做的整理非常有限。寧可在這裡多花點工夫，用對工具。</div>
-
-    <div class="step-label who-front">第二步 · 我做</div>
-    <h3>補上錄音聽不出來的現場觀察</h3>
-    <p>錄音能留下所有人說了什麼，留不下的是現場的空氣。而那些聽不出來的，往往才是決定後續發展的關鍵。遇到重要的會，我會以一個在場觀察者的身分，當場補一段筆記：</p>
+    <h2>為什麼逐字稿還不夠</h2>
+    <p class="lead">逐字稿能回答誰在什麼時間說了什麼，卻很難直接回答下一步該做什麼。</p>
     <ul>
-      <li>誰的表情、語氣有明顯變化</li>
-      <li>誰刻意避開了哪個話題</li>
-      <li>誰說了哪句話之後，現場士氣開始提振</li>
-      <li>氣氛在哪個時間點轉了</li>
+      <li>這場會議最後真正承諾了哪些事？</li>
+      <li>哪些議題已經有共識，哪些只是暫時略過？</li>
+      <li>哪一段話改變了現場方向或氣氛？</li>
+      <li>哪些風險已經出現，只是還沒有人明講？</li>
+      <li>我接下來應該交付什麼，先處理哪一件？</li>
     </ul>
-    <p>這些我會直接標進逐字稿，註明是我的現場觀察。等到 AI 在做風險分析、描述某個人的立場時，這些就是它看不到、只有我能提供的那一塊。</p>
-    <figure class="inline-figure">
-      <img src="../../images/articles/meeting-record-agent-workflow-05.jpg" alt="補上錄音聽不到的現場觀察" loading="lazy">
-      <figcaption>補上錄音聽不到的現場觀察</figcaption>
-    </figure>
-
-    <div class="step-label who-front">第三步 · 我做</div>
-    <h3>丟給 AI，一句話啟動</h3>
-    <p>前面兩步把原料備齊，接下來我不想再一步一步下指令。我把這份逐字稿（含現場補充）丟給 AI，說一句「自動全面統整」。從這裡開始，後面四步它全自動接手，只在清稿完成、要生成報告書之前停下來等我確認一次。</p>
+    <div class="meaning"><b>逐字稿是證據底稿</b>再補進錄音收不到的現場觀察，AI 才有足夠材料整理出一份可以行動、可以追查來源、也可以繼續分析的策略書。</div>
   </div>
 </section>
 
-<section class="section" id="steps-ai">
+<section class="section" id="step-1">
   <div class="inner">
-    <h2>後四步：AI 自動跑完</h2>
+    <div class="step-label who-front">第一步</div>
+    <h2>先把會議完整錄下來</h2>
+    <h3>現場會議</h3>
+    <p>現場會議我會用錄音筆或手機錄音。放置位置要盡量靠近主要談話區，避免塞在包包裡，也要留意桌面碰撞聲、冷氣聲與距離太遠造成的收音問題。</p>
+    <p>開始前建議先確認儲存空間、電量與錄音狀態。重要會議可以準備第二個錄音來源，例如錄音筆做主檔，手機做備份。</p>
+    <figure class="inline-figure">
+      <img src="../../images/articles/meeting-record-agent-workflow-02.jpg" alt="現場會議使用錄音筆或手機錄音" loading="lazy">
+      <figcaption>現場會議可以使用錄音筆或手機，重點是先確認收音與備份。</figcaption>
+    </figure>
+    <h3>線上會議</h3>
+    <p>線上會議我會用 OBS 錄下畫面與聲音。第一次使用時，先做一段 30 秒測試，確認自己的聲音與對方的聲音都有被錄到，再開始正式會議。</p>
+    <figure class="inline-figure">
+      <img src="../../images/articles/meeting-record-agent-workflow-03.jpg" alt="線上會議用 OBS 保留畫面與聲音" loading="lazy">
+      <figcaption>線上會議用 OBS 保留畫面與聲音，開始前先做短測試。</figcaption>
+    </figure>
+    <div class="caveat"><b>先取得錄音同意</b>會議開始前先讓與會者知道會錄音，也要說清楚資料用途。涉及個資、商業機密或未公開內容時，先決定資料可以放在哪裡、哪些工具可以處理。</div>
+  </div>
+</section>
 
-    <div class="step-label">第四步 · AI 自動</div>
-    <h3>存檔備份，加上分級清稿</h3>
-    <p>AI 會先把原始逐字稿原樣存一份備份，一個字都不改，這是還原點。接著做清稿。清到多細我自己選，標準很簡單，就是「整理後的份量，跟原始逐字稿比，留下多少」：</p>
+<section class="section" id="step-2">
+  <div class="inner">
+    <div class="step-label who-front">第二步</div>
+    <h2>轉成有講者與時間碼的逐字稿</h2>
+    <p class="lead">我希望轉錄工具至少留下三種資訊：誰說的、幾分幾秒說的、實際說了什麼。</p>
+    <p>Mac 使用者可以考慮 MacWhisper。它支援時間碼與講者辨識。另一條路是微軟開源的 VibeVoice-ASR，它把語音辨識、講者區分與時間碼整合在結構化輸出裡，適合願意自行安裝模型、處理本機運算環境的人。</p>
+    <p>完成後仍要人工抽查人名、專有名詞、數字與講者標記。多人同時說話、現場雜音大或麥克風距離遠時，辨識結果比較容易出錯。</p>
+    <figure class="inline-figure">
+      <img src="../../images/articles/meeting-record-agent-workflow-04.jpg" alt="使用 MacWhisper 或 VibeVoice-ASR 轉成有講者與時間碼的逐字稿" loading="lazy">
+      <figcaption>工具只是第一輪轉錄，重要決策段落仍要回到錄音抽查。</figcaption>
+    </figure>
+    <h3>轉錄完成後先抽查四個地方</h3>
+    <ol>
+      <li>會議開頭：確認錄音沒有少一段。</li>
+      <li>重要決策段落：確認數字、日期與承諾內容正確。</li>
+      <li>多人快速交談處：確認講者沒有標錯。</li>
+      <li>會議結尾：確認最後的分工與交付期限有被留下。</li>
+    </ol>
+    <p>工具資料：<a href="https://docs.macwhisper.com/article/32-automatic-speaker-recognition-in-macwhisper" target="_blank" rel="noopener">MacWhisper 講者辨識說明 ↗</a>、<a href="https://github.com/microsoft/VibeVoice" target="_blank" rel="noopener">Microsoft VibeVoice GitHub ↗</a></p>
+  </div>
+</section>
+
+<section class="section" id="step-3">
+  <div class="inner">
+    <div class="step-label who-front">第三步</div>
+    <h2>補上錄音聽不到的現場觀察</h2>
+    <p>錄音留下語句，現場筆記補的是情境。重要會議中，我會另外記下誰在某個議題前後改變了表情或語氣、哪個問題被快速帶過、哪句話改變了現場氣氛，以及誰主動承諾、誰保持保留。</p>
+    <figure class="inline-figure">
+      <img src="../../images/articles/meeting-record-agent-workflow-05.jpg" alt="在逐字稿旁補上表情語氣與現場觀察" loading="lazy">
+      <figcaption>把錄音收不到的表情、語氣與現場轉折補在逐字稿旁。</figcaption>
+    </figure>
+    <h3>把事實與判斷分開</h3>
+    <p>「對方聽到預算後停頓五秒」是觀察；「對方覺得價格太高」是推測。把兩者混在一起，AI 很容易把推測寫成事實。</p>
     <ul>
-      <li><b>簡單</b>：留一到兩成。只留主幹結論和待辦，適合不重要的會</li>
-      <li><b>詳細</b>：留三到五成。去掉廢話，完整保留實質討論、案例、數字。這是我的預設</li>
-      <li><b>超詳細</b>：留七到九成。幾乎全留，只拿掉明顯重複和廢話</li>
-      <li><b>1:1 逐字稿校正</b>：全部留著。不刪不減，只依上下文把錯別字改掉，所有語氣詞、語助詞一個字都不動</li>
+      <li><b>觀察</b>：看見或聽見的具體行為。</li>
+      <li><b>我的推測</b>：目前的解讀，需要後續確認。</li>
+      <li><b>待確認</b>：下次要直接問對方的問題。</li>
     </ul>
-    <p>清稿完它會回報：原始幾個字、清完幾個字、留了多少比例。我一看就知道有沒有清過頭。想自己跑這一步，可以用這段提示詞：</p>
-    <div class="codeblock"><span class="c"># 會議逐字稿清稿</span>
-這是一份會議逐字稿，幫我做純清稿，不要做摘要、不要做分析。
+  </div>
+</section>
 
-目標份量：跟原文比，保留 40-50%（可改 10-20% / 70-90% / 100%）。
+<section class="section" id="step-4">
+  <div class="inner">
+    <div class="step-label">第四步</div>
+    <h2>保留原始資料，再整理成適合閱讀的版本</h2>
+    <p class="lead">原始錄音與原始逐字稿要先保存。後續整理可以依用途選擇保留程度。</p>
+    <ul>
+      <li><b>快速版</b>：保留一到兩成，適合只看結論、待辦與期限。</li>
+      <li><b>詳細版</b>：保留三到五成，適合一般工作會議與後續交接。</li>
+      <li><b>超詳細版</b>：保留七到九成，適合顧問會議、需求訪談或重要決策。</li>
+      <li><b>原句版</b>：內容幾乎全部保留，只校正明顯錯字、講者與標點。</li>
+    </ul>
+    <div class="meaning"><b>先看未來怎麼用</b>只要追工作進度，可以用快速版；需要回看判斷過程，建議留詳細版或超詳細版；涉及承諾、爭議或研究資料時，原始檔不能省。</div>
+  </div>
+</section>
+
+<section class="section" id="step-5">
+  <div class="inner">
+    <div class="step-label">第五步</div>
+    <h2>生成可以輔助決策的會議策略書</h2>
+    <p class="lead">會議策略書可以分成三層，先讓人行動，再協助判斷，最後保留完整脈絡。</p>
+    <ol>
+      <li><b>立即行動</b>：決議、待辦、負責人、期限、我承諾的交付。</li>
+      <li><b>輔助判斷</b>：風險、尚未對齊的議題、缺乏證據的假設、下次要確認的問題。</li>
+      <li><b>完整脈絡</b>：依時間順序整理討論過程，保留講者與時間碼。</li>
+    </ol>
+    <figure class="inline-figure">
+      <img src="../../images/articles/meeting-record-agent-workflow-06.jpg" alt="把逐字稿整理成待辦風險與決策脈絡" loading="lazy">
+      <figcaption>策略書同時保留待辦、風險、決策脈絡與查證入口。</figcaption>
+    </figure>
+    <h3>可直接使用的提示詞</h3>
+    <div class="codeblock"><span class="c"># 生成會議策略書</span>
+請根據我提供的逐字稿與現場觀察，整理成一份會議策略書。
+
+請分成三層：
+1. 立即行動：決議、待辦、負責人、期限、我承諾的交付。
+2. 輔助判斷：風險、尚未對齊的議題、缺乏證據的假設、下次要確認的問題。
+3. 完整脈絡：依時間順序整理討論過程，保留講者與時間碼。
 
 規則：
-1. 去掉口語贅字（嗯、啊、就是說、對對對）
-2. 保留每一段的講者標記和時間碼
-3. 完整保留所有實質討論、案例、數字、比喻，不要刪
-4. 清完先自己算字數，回報原始字數、清稿字數、保留比例
-5. 比例低於目標代表砍過頭，把內容補回來
-
-逐字稿如下：
-[貼上逐字稿]</div>
-
-    <div class="step-label">第五步 · AI 自動</div>
-    <h3>生成會後策略報告書</h3>
-    <p>清稿是給人讀的全文，報告書是給人決策的入口。一份好的會後報告書，要讓我三秒鐘知道接下來該做什麼、該擔心什麼，又能在需要時翻到完整的來龍去脈。它固定分三塊，重點在前、備查在後：</p>
-    <ol>
-      <li><b>重點待辦</b>：有負責人、有下一步、有時間節點的行動項目，列成可勾選的清單</li>
-      <li><b>風險與隱憂</b>：這場會議本身要留意的卡點、未決事項、需要追蹤確認的地方</li>
-      <li><b>詳細脈絡</b>：把清稿的重點全部收進來，依時間順序一段一段折疊起來</li>
-    </ol>
-    <p>第三塊我特別要求做成折疊式。平常收著，畫面乾淨；哪天要查「那場會某一段到底講了什麼」，點開就有。這樣一份報告書同時是決策入口和完整備查，不用開兩個檔。</p>
-    <figure class="inline-figure">
-      <img src="../../images/articles/meeting-record-agent-workflow-06.jpg" alt="生成會後策略報告書" loading="lazy">
-      <figcaption>生成會後策略報告書</figcaption>
-    </figure>
-
-    <div class="step-label">第六步 · AI 自動</div>
-    <h3>把答應對方的東西，先擬成初稿</h3>
-    <p>會議裡常常會順口答應對方一些交付物，報價單、課綱、會後整理。與其回頭再從零生，不如趁 AI 還握著整場脈絡時，直接先擬好初稿。它會掃過整份內容，把我答應要交付的東西抓出來，擬成初稿，預設文件檔和網頁版都給我，並標明「初稿待確認」。內容只照會議實際談到的長，沒談到的價格、節數它不會自己編。我拿到的是一份七八成完成、可以直接動手改的東西。</p>
-    <figure class="inline-figure">
-      <img src="../../images/articles/meeting-record-agent-workflow-07.jpg" alt="順手做出交付初稿並加上深度分析" loading="lazy">
-      <figcaption>順手做出交付初稿並加上深度分析</figcaption>
-    </figure>
-
-    <div class="step-label">第七步 · 選配</div>
-    <h3>用納瓦爾加馬斯克的視角，判斷這場會值不值得</h3>
-    <p>前面六步處理的是「這場會怎麼整理」。第七步我要跳出來，問一個更高層的問題：這場會議，對我整個事業到底有什麼意義，值得我花時間參與嗎。這一步只有我想看得更全面時才做，加一句「深度分析」就會啟動。</p>
-    <div class="meaning"><b>兩種尺度要分清楚</b>第五步的風險分析，針對的是「這一場會議本身」；第七步的判斷，針對的是「這場會對我整體發展」。一個是戰術，一個是戰略，別混在一起看。</div>
-    <p>它會用兩種視角各跑一遍：納瓦爾的視角問的是槓桿類型、是否在累積只有我能做的特定知識、注意力會不會長期複利；馬斯克的視角用第一性原理問，撥開「人家都這樣做」之後，這件事對我的大目標是不是必要、是必經之路還是繞路、是不是最高槓桿的時間用法。最後給我一個綜合判斷：這場會對我是加分、中性，還是分心，以及下一步建議。</p>
-    <div class="codeblock"><span class="c"># 會議的整體價值判斷</span>
-以下是我這場會議的報告書。請站在我的立場，用兩種視角分析這場會議對我整體事業的價值，最後給綜合判斷。
-
-納瓦爾視角：槓桿類型、是否累積我的特定知識、注意力是否長期複利。
-馬斯克視角：用第一性原理看對我的大目標是否必要、是必經之路還是繞路、是否最高槓桿的時間用法。
-
-綜合判斷：這場會對我是加分、中性還是分心，下一步建議。
-不要憑空假設我沒提到的事實，只根據報告書和我已知的定位推論。
-
-報告書如下：
-[貼上報告書]</div>
-    <div class="caveat"><b>多場會議，還會多看一件事</b>同一個合作開到第二、第三場之後，我會把幾場一起看，評估這個團隊是越開越有共識，還是越開越發散。尤其是跟一群新的人談一個新的合作時，這個評估特別重要。</div>
+逐字稿與現場觀察分開標示來源。
+推測不能寫成已確認事實。
+找不到負責人或期限時，標記「待確認」。
+每一項重要結論附上對應時間碼。</div>
   </div>
 </section>
 
-<section class="section" id="recap">
+<section class="section" id="step-6">
   <div class="inner">
-    <h2>一張圖回顧</h2>
-    <figure class="wide">
-      <img loading="lazy" src="../../images/articles/meeting-record-agent-workflow-summary-wide.jpg" alt="會議記錄 Agent 工作流的橫式總結圖">
-      <figcaption>七步流程一頁總覽</figcaption>
+    <div class="step-label">第六步</div>
+    <h2>把會議承諾變成交付初稿</h2>
+    <p>會議裡答應對方的內容，例如報價單、課綱、會後摘要、企劃架構，可以讓 AI 依照會議證據先擬出第一版。</p>
+    <p>這一步要把「對方明確要求」與「AI 建議補充」分開。前者是交付需求，後者只是候選內容。正式送出前，仍要由人確認價格、範圍、日期、承諾與語氣。</p>
+    <figure class="inline-figure">
+      <img src="../../images/articles/meeting-record-agent-workflow-07.jpg" alt="依會議內容擬出交付初稿並進行盲點檢查" loading="lazy">
+      <figcaption>交付初稿與深度分析都要回到會議證據，人負責最後確認。</figcaption>
     </figure>
-    <h3>七步濃縮</h3>
-    <ol>
-      <li>聲紋辨識轉稿，先有一份分得出人、帶時間碼的逐字稿</li>
-      <li>重要的會，補上錄音聽不出來的現場觀察</li>
-      <li>丟給 AI，說一句「自動全面統整」啟動</li>
-      <li>存檔備份，再依四個等級分級清稿</li>
-      <li>生成會後報告書：重點待辦、風險隱憂、折疊的詳細脈絡</li>
-      <li>答應對方的交付物，先擬成初稿</li>
-      <li>想看得更全面時，加「深度分析」，判斷這場會值不值得</li>
-    </ol>
-    <h3>常見的坑</h3>
+    <div class="codeblock"><span class="c"># 擬定交付初稿</span>
+請根據這份會議策略書，擬出「課綱初稿」。
+
+請分成：
+1. 會議中已確認的需求。
+2. 仍待確認的條件。
+3. 可先提出的初稿內容。
+
+每一段都要標示依據。會議沒有提到的資訊不要自行補成事實；如果需要合理假設，集中放在「假設與待確認」區。</div>
+  </div>
+</section>
+
+<section class="section" id="step-7">
+  <div class="inner">
+    <div class="step-label">第七步</div>
+    <h2>用不同思維模型做深度分析與盲點檢測</h2>
+    <p class="lead">這一步的目的，是讓 AI 提供更深度的分析，調動不同思維模型幫我檢測盲點，讓我更好地做判斷。</p>
     <ul>
-      <li>跳過聲紋辨識用普通轉錄。地基沒打好，後面分析全糊掉</li>
-      <li>把現場觀察放在心裡沒記下來。當場就標進逐字稿，事後一定想不起來</li>
-      <li>清稿一律往最短壓。先想清楚這場會要留多少，預設用詳細，重要的會用超詳細</li>
-      <li>報告書把細節全攤在最前面。結論和行動在前，完整脈絡折疊備查</li>
-      <li>用 AI 判斷價值時餵它沒發生的事。只根據報告書和已知定位推論</li>
+      <li><b>風險角度</b>：有哪些延遲、成本、承諾或關係風險？</li>
+      <li><b>利害關係人角度</b>：不同參與者在意的事情是否一致？</li>
+      <li><b>機會與槓桿角度</b>：哪些工作值得投入，哪些可以交給系統或 AI？</li>
+      <li><b>反方角度</b>：如果目前判斷是錯的，最可能錯在哪個假設？</li>
+      <li><b>證據角度</b>：哪些結論有原話與時間碼支持，哪些仍是推測？</li>
     </ul>
-    <div class="meaning">
-      <b>給自己的定位提醒</b>
-      這套流程的重點從來不是整理得比較快，快只是順帶的結果。真正的價值，是讓每一場會議都沉澱成我自己的知識資產。下一次同樣的人、同樣的案子出現，我翻得到、接得上，判斷力是疊加上去的，不用每次從零開始。AI 在這裡的角色，是幫我把這套能累積的系統跑起來，而不是替我把判斷外包出去。
-    </div>
+    <div class="codeblock"><span class="c"># 深度分析與盲點檢測</span>
+請對這份會議策略書做深度分析。分別從風險、利害關係人、機會與槓桿、反方假設、證據完整度五個角度檢查。
+
+每個角度請列出：
+1. 你看到的訊號。
+2. 對應的逐字稿時間碼或現場觀察。
+3. 可能的盲點。
+4. 我下一步應該確認的問題。
+
+最後整理成三個區塊：
+目前可以採取的行動。
+還不能下結論的地方。
+需要由我親自判斷的取捨。</div>
+    <div class="caveat"><b>AI 提供分析，人負責決定</b>涉及合作承諾、價格、人事評價或敏感關係時，要回到原始證據，也要給當事人澄清的機會。</div>
+  </div>
+</section>
+
+<section class="section" id="deliverables">
+  <div class="inner">
+    <h2>一場重要會議，建議留下七種檔案</h2>
+    <ol>
+      <li>原始錄音或錄影。</li>
+      <li>有講者與時間碼的原始逐字稿。</li>
+      <li>現場觀察筆記。</li>
+      <li>依用途整理過的閱讀版。</li>
+      <li>會議策略書。</li>
+      <li>報價單、課綱或其他交付初稿。</li>
+      <li>深度分析與待確認問題清單。</li>
+    </ol>
+    <p>這些檔案最好放在同一個會議資料夾，檔名保留日期與會議主題。之後要回查承諾、準備下一場會議，或交給另一個 AI 接手，都能找到同一套證據。</p>
+  </div>
+</section>
+
+<section class="section" id="pitfalls">
+  <div class="inner">
+    <h2>常見的坑</h2>
+    <h3>只有錄音，沒有現場觀察</h3>
+    <p>AI 會缺少表情、停頓、氣氛與互動線索。重要會議至少補一小段觀察筆記。</p>
+    <h3>逐字稿沒有時間碼</h3>
+    <p>分析看起來很完整，卻很難回到原始錄音驗證。轉錄時就保留講者與時間碼。</p>
+    <h3>把 AI 推測當成對方立場</h3>
+    <p>任何心理、態度與意圖判斷都要標記成推測，並列出可以支持或反駁它的證據。</p>
+    <h3>直接把交付初稿送出去</h3>
+    <p>AI 可能補入會議沒有確認的範圍、數字或日期。送出前逐項核對承諾、金額、期限與責任邊界。</p>
+  </div>
+</section>
+
+<section class="section" id="minimum-start">
+  <div class="inner">
+    <h2>最小開始方式</h2>
+    <p class="lead">第一次不用把整套系統一次做滿。先挑一場重要會議，完成四件事。</p>
+    <ol>
+      <li>錄下來。</li>
+      <li>轉成有講者與時間碼的逐字稿。</li>
+      <li>補五行現場觀察。</li>
+      <li>用本文的策略書提示詞，整理出待辦、風險、脈絡與待確認問題。</li>
+    </ol>
+    <div class="meaning"><b>這套流程的價值</b>每一場會議都能留下可以查證的脈絡、可以執行的下一步，以及可以繼續分析的知識資產。AI 協助我們看得更深、檢測盲點，做決定時也有更完整的依據。</div>
     <div class="tagrow">
       <span class="tag">會議記錄</span><span class="tag">AI工作流</span><span class="tag">知識管理</span><span class="tag">錄音轉逐字稿</span><span class="tag">輔助決策</span>
     </div>

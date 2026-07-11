@@ -317,15 +317,16 @@ window.ARTICLES = [
     related: ["questionnaire-to-slides-agent-workflow", "teacher-prep-knowledge-workflow", "how-to-train-your-ai-employee", "agent-workflow-builds-automation", "program-vs-ai-skill-library", "docs-as-system-design-agent", "vibe-coding-ten-half-products"]
   },
 
-  /* ── 17. Agent 會議記錄工作流：把會議變成知識資產的七步（教學）── */
+  /* ── 17. 我的會議記錄 Agent 工作流（教學）── */
   {
     id: "meeting-record-agent-workflow",
     url: "articles/meeting-record-agent-workflow/",
     date: "2026-06-23",
-    title: "Agent 的會議記錄工作流：我把會議變成知識資產的七步",
-    problem: "開完會逐字稿幾萬字，整理完過兩個月再看只剩流水帳，當初的承諾、隱憂、關鍵轉折全被磨平。",
-    audience: "一週開好幾場會、做顧問接案、需要把每次談話沉澱下來，又苦惱 AI 整理不是太短就是抓不到重點的人。",
-    summary: "我完整公開把每場會議變成知識資產的七步流程，前三步自己做、後四步 AI 自動跑完，附四種清稿等級定義、會後策略報告書範本與兩段可直接複製的提示詞。",
+    updated: "2026-07-10",
+    title: "我的會議記錄 Agent 工作流",
+    problem: "會議有錄音、有逐字稿，卻缺少待辦、風險、決策脈絡與現場觀察，之後很難回查，也難以支持下一步判斷。",
+    audience: "常開會、做顧問或跑合作，需要把談話沉澱成知識資產，並希望用 AI 協助整理與分析的人。",
+    summary: "從現場錄音、OBS 線上錄影、MacWhisper 或 VibeVoice-ASR 轉錄開始，逐步補上現場觀察、保留原始資料、生成會議策略書與交付初稿，再用多種思維模型檢測盲點。",
     tags: {
       topic: ["AI工作流", "知識管理", "工作流程", "輔助決策", "工具操作"],
       level: ["基礎"],
