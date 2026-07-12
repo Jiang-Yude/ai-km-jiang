@@ -266,13 +266,15 @@ window.COURSES = [
     host: "江江教練",
     tags: ["ChatGPT Work", "行政工作", "AI工作流", "工作交代"],
     summary: "從一般行政工作的角度，帶大家看懂 ChatGPT Work 到底能幫我們做什麼，以及該怎麼交代，才真的能幫你省下時間。",
-    detail_url: null,
-    materials: [],
+    detail_url: "https://ai-km-jiang.vercel.app/courses/2026-07-12-chatgpt-work/",
+    materials: [
+      { label: "課後版簡報 ↗", url: "https://ai-km-jiang.vercel.app/courses/2026-07-12-chatgpt-work/" }
+    ],
     registration: {
-      status: "open",
-      url: "https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ",
-      label: "加入 LINE 社群 ↗",
-      note: "免費參加，講座資訊請看 LINE 社群"
+      status: "ended",
+      url: null,
+      label: null,
+      note: "本場已於 2026-07-12 結束，課後版簡報已上線"
     }
   },
   {

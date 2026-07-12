@@ -1,0 +1,527 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="index,follow">
+<meta name="description" content="ChatGPT Work 免費講座 7/12 課後版完整簡報：網頁版 AI 終於支援技能包、提示詞與技能包的差別、專案×技能包的公版做法、兩個雷點、資料主權，加當日 QA 實錄 13 題（江江實答與 Claude、Codex 課前作答對照）。江江教練主講。" />
+<meta name="keywords" content="ChatGPT Work, 技能包, AI 員工, 專案, 公版文件, 資料主權, Codex, 江江教練" />
+<meta name="author" content="江江教練（江昱德）· 隱性知識提煉師 / AI 應用規劃師" />
+<link rel="canonical" href="https://ai-km-jiang.vercel.app/courses/2026-07-12-chatgpt-work/" />
+<title>ChatGPT Work 課後版 · 網頁版 AI 終於支援技能包 · 江江教練 7/12</title>
+<style>
+  :root {
+    --bg-1: #F5EDE7; --bg-2: #EFEBE9; --bg-3: #E8DED9; --bg-4: #D7CCC8;
+    --bg-5: #C9BAB1; --bg-6: #B5A199; --bg-7: #8B6F5C; --bg-8: #5D4037; --bg-9: #3E2723;
+    --text-on-light:#4E342E; --text-on-mid:#F5EDE0; --text-on-dark:#F5EDE0;
+    --text-soft-light:#5D4037; --text-soft-dark: rgba(245,237,224,0.80);
+    --accent:#D88C3A; --accent-light:#D4A574; --accent-on-dark:#E6B87D;
+    --subtle-light:#BCAAA4; --subtle-dark: rgba(245,237,224,0.18);
+    --font-display: "PingFang TC","Noto Sans TC","Inter","Helvetica Neue",system-ui,sans-serif;
+    --font-body:    "PingFang TC","Noto Sans TC","Inter",system-ui,sans-serif;
+    --font-mono:    "JetBrains Mono","SF Mono",ui-monospace,monospace;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin:0; font-family:var(--font-body); background:var(--bg-1); -webkit-font-smoothing:antialiased; }
+
+  section {
+    position: relative; min-height: 100vh;
+    display: flex; flex-direction: column;
+    padding: 96px 56px; isolation: isolate;
+    border-radius: 32px 32px 0 0; box-shadow: 0 -24px 60px -20px rgba(40, 24, 16, 0.18);
+  }
+  section:first-of-type { border-radius: 0; box-shadow: none; }
+  section[data-bg="1"] { background: var(--bg-1); z-index: 1; color: var(--text-on-light); }
+  section[data-bg="2"] { background: var(--bg-2); z-index: 2; color: var(--text-on-light); }
+  section[data-bg="3"] { background: var(--bg-3); z-index: 3; color: var(--text-on-light); }
+  section[data-bg="4"] { background: var(--bg-4); z-index: 4; color: var(--text-on-light); }
+  section[data-bg="5"] { background: var(--bg-5); z-index: 5; color: var(--text-on-light); }
+  section[data-bg="6"] { background: var(--bg-6); z-index: 6; color: var(--text-on-dark); }
+  section[data-bg="6L"] { background: var(--bg-6); z-index: 6; color: var(--text-on-light); }
+  section[data-bg="7"] { background: var(--bg-7); z-index: 7; color: var(--text-on-dark); }
+  section[data-bg="8"] { background: var(--bg-8); z-index: 8; color: var(--text-on-dark); }
+  section[data-bg="9"] { background: var(--bg-9); z-index: 9; color: var(--text-on-dark); }
+
+  .act-cap { font-family:var(--font-mono); font-size:13px; letter-spacing:0.22em; text-transform:uppercase;
+    font-weight:700; color:var(--accent); margin-bottom:28px; display:inline-flex; align-items:center; gap:12px; }
+  .act-cap::before { content:""; width:28px; height:1px; background:var(--accent); }
+  section[data-bg="7"] .act-cap, section[data-bg="8"] .act-cap, section[data-bg="9"] .act-cap { color: var(--accent-on-dark); }
+  section[data-bg="7"] .act-cap::before, section[data-bg="8"] .act-cap::before, section[data-bg="9"] .act-cap::before { background: var(--accent-on-dark); }
+
+  .display { font-family:var(--font-display); font-size:clamp(48px,8vw,112px); line-height:1.0; font-weight:800; letter-spacing:-0.03em; margin:0 0 24px; }
+  .display.sm { font-size:clamp(34px,5vw,68px); }
+  .h2 { font-size:21px; line-height:1.3; font-weight:600; margin:0 0 8px; }
+  .lead { font-size:clamp(19px,1.7vw,23px); line-height:1.7; color:var(--text-soft-light); max-width:800px; margin:0 auto; }
+  section[data-bg="7"] .lead, section[data-bg="8"] .lead, section[data-bg="9"] .lead { color: var(--text-soft-dark); }
+  .body { font-size:18px; line-height:1.7; color:var(--text-soft-light); }
+  section[data-bg="7"] .body, section[data-bg="8"] .body, section[data-bg="9"] .body { color: var(--text-soft-dark); }
+  .mono-note { font-family:var(--font-mono); font-size:14px; letter-spacing:0.12em; color:var(--accent); margin-top:40px; }
+  section[data-bg="7"] .mono-note, section[data-bg="8"] .mono-note, section[data-bg="9"] .mono-note { color: var(--accent-on-dark); }
+
+  .wrap { width:100%; max-width:1080px; text-align:center; margin:auto; }
+  .wrap.left { text-align:left; }
+
+  .dot-indicator { position:fixed; right:28px; top:50%; transform:translateY(-50%); display:flex; flex-direction:column; gap:14px; z-index:100; }
+  .dot-indicator a { width:10px; height:10px; border-radius:50%; background:rgba(78,52,46,0.22); transition:all .35s cubic-bezier(.22,1,.36,1); position:relative; }
+  .dot-indicator a:hover { background:rgba(78,52,46,0.5); }
+  .dot-indicator a.active { background:var(--accent); transform:scale(1.5); box-shadow:0 0 0 4px rgba(216,140,58,0.18); }
+  .dot-indicator a .lbl { position:absolute; right:22px; top:50%; transform:translateY(-50%); font-family:var(--font-mono); font-size:11px; letter-spacing:.15em; color:var(--text-soft-light); white-space:nowrap; opacity:0; transition:opacity .25s; pointer-events:none; }
+  .dot-indicator a:hover .lbl { opacity:1; }
+  .dot-indicator.scrolling a.active .lbl { opacity:1; }
+  body.on-dark .dot-indicator a { background:rgba(245,237,224,0.25); }
+  body.on-dark .dot-indicator a.active { background:var(--accent-on-dark); box-shadow:0 0 0 4px rgba(230,184,125,0.22); }
+  body.on-dark .dot-indicator a .lbl { color:var(--text-soft-dark); }
+
+  .progress { position:fixed; top:0; left:0; height:3px; width:0%; background:linear-gradient(90deg,var(--accent),var(--accent-light)); z-index:200; transition:width .15s linear; }
+
+  .font-ctl { position:fixed; left:20px; bottom:20px; z-index:150; display:flex; gap:6px; }
+  .font-ctl button { font-family:var(--font-mono); font-size:13px; font-weight:700; width:40px; height:34px;
+    border:1px solid var(--subtle-light); background:rgba(255,248,240,0.85); color:var(--text-on-light);
+    border-radius:8px; cursor:pointer; }
+  .font-ctl button:hover { border-color:var(--accent); color:var(--accent); }
+
+  .grid-3 { display:grid; grid-template-columns:repeat(3,1fr); gap:24px; margin-top:44px; }
+  .grid-2 { display:grid; grid-template-columns:repeat(2,1fr); gap:24px; margin-top:36px; }
+  .card { background:rgba(255,248,240,0.5); border:1px solid var(--subtle-light); border-radius:16px; padding:28px 26px; text-align:left; transition:transform .3s,box-shadow .3s; backdrop-filter:blur(8px); }
+  .card:hover { transform:translateY(-4px); box-shadow:0 12px 32px rgba(78,52,46,0.1); }
+  .card .num { font-family:var(--font-mono); font-size:14px; letter-spacing:0.18em; color:var(--accent); font-weight:700; margin-bottom:12px; }
+  section[data-bg="7"] .card, section[data-bg="8"] .card, section[data-bg="9"] .card { background:rgba(255,248,240,0.06); border-color:var(--subtle-dark); }
+  section[data-bg="7"] .card .num, section[data-bg="8"] .card .num, section[data-bg="9"] .card .num { color:var(--accent-on-dark); }
+
+  .quote { font-family:var(--font-display); font-size:clamp(26px,3.4vw,42px); line-height:1.5; font-weight:600; max-width:880px; margin:0 auto; letter-spacing:-0.01em; }
+  .quote::before { content:"「"; color:var(--accent); margin-right:4px; }
+  .quote::after { content:"」"; color:var(--accent); margin-left:4px; }
+  section[data-bg="7"] .quote::before,section[data-bg="7"] .quote::after,section[data-bg="8"] .quote::before,section[data-bg="8"] .quote::after,section[data-bg="9"] .quote::before,section[data-bg="9"] .quote::after { color:var(--accent-on-dark); }
+
+  .timeline { display:grid; grid-template-columns:repeat(4,1fr); gap:0; margin-top:52px; position:relative; }
+  .timeline.cols-3 { grid-template-columns:repeat(3,1fr); }
+  .timeline::before { content:""; position:absolute; top:18px; left:8%; right:8%; height:1px; background:repeating-linear-gradient(90deg,var(--subtle-light) 0,var(--subtle-light) 6px,transparent 6px,transparent 12px); }
+  section[data-bg="7"] .timeline::before,section[data-bg="8"] .timeline::before,section[data-bg="9"] .timeline::before { background:repeating-linear-gradient(90deg,var(--subtle-dark) 0,var(--subtle-dark) 6px,transparent 6px,transparent 12px); }
+  .step { text-align:center; position:relative; padding:56px 12px 0; }
+  .step .dot { position:absolute; top:0; left:50%; transform:translateX(-50%); width:36px; height:36px; background:var(--accent); color:#fff; border-radius:50%; font-family:var(--font-mono); font-weight:700; font-size:14px; display:grid; place-items:center; box-shadow:0 0 0 6px rgba(216,140,58,0.18); }
+  section[data-bg="7"] .step .dot,section[data-bg="8"] .step .dot,section[data-bg="9"] .step .dot { background:var(--accent-on-dark); color:var(--bg-9); box-shadow:0 0 0 6px rgba(230,184,125,0.22); }
+
+  .trybox { margin-top:18px; border-left:4px solid var(--accent); border-radius:0 12px 12px 0; padding:14px 20px; text-align:left; background:rgba(216,140,58,0.08); font-size:18px; line-height:1.7; color:var(--text-soft-light); }
+  .trybox b { color:var(--text-on-light); }
+  .trybox a { color:var(--accent); font-weight:700; }
+  section[data-bg="7"] .trybox, section[data-bg="8"] .trybox, section[data-bg="9"] .trybox { background:rgba(230,184,125,0.10); border-left-color:var(--accent-on-dark); color:var(--text-soft-dark); }
+  section[data-bg="7"] .trybox b, section[data-bg="8"] .trybox b, section[data-bg="9"] .trybox b { color:var(--text-on-dark); }
+  section[data-bg="7"] .trybox a, section[data-bg="8"] .trybox a, section[data-bg="9"] .trybox a { color:var(--accent-on-dark); }
+
+  details { margin-top:20px; text-align:left; background:rgba(255,248,240,0.45); border:1px solid var(--subtle-light); border-radius:12px; padding:14px 20px; }
+  details summary { cursor:pointer; font-weight:700; font-size:18px; color:var(--text-on-light); }
+  details p, details li { font-size:18px; line-height:1.75; color:var(--text-soft-light); }
+  section[data-bg="7"] details, section[data-bg="8"] details, section[data-bg="9"] details { background:rgba(255,248,240,0.06); border-color:var(--subtle-dark); }
+  section[data-bg="7"] details summary, section[data-bg="8"] details summary, section[data-bg="9"] details summary { color:var(--text-on-dark); }
+  section[data-bg="7"] details p, section[data-bg="7"] details li, section[data-bg="8"] details p, section[data-bg="8"] details li, section[data-bg="9"] details p, section[data-bg="9"] details li { color:var(--text-soft-dark); }
+
+  .footer-grid { display:grid; grid-template-columns:2fr 1fr 1fr; gap:56px; text-align:left; margin-top:56px; max-width:1080px; width:100%; }
+  .footer-grid h3 { font-size:13px; letter-spacing:0.2em; text-transform:uppercase; color:var(--accent-on-dark); margin:0 0 16px; font-family:var(--font-mono); }
+  .footer-grid ul { list-style:none; padding:0; margin:0; }
+  .footer-grid li { padding:6px 0; font-size:16px; color:var(--text-soft-dark); }
+  .footer-grid a { color:var(--text-soft-dark); }
+  .footer-bottom { margin-top:64px; padding-top:24px; border-top:1px solid var(--subtle-dark); width:100%; max-width:1080px; font-family:var(--font-mono); font-size:13px; letter-spacing:0.15em; color:rgba(245,237,224,0.6); text-align:center; }
+
+  .reveal { opacity:1; transform:translateY(0) scale(1); }
+  .js-on .reveal:not(.in) { opacity:0; transform:translateY(36px) scale(0.96); }
+  .reveal { transition:opacity .8s cubic-bezier(.22,1,.36,1),transform .8s cubic-bezier(.22,1,.36,1); }
+  .reveal.d1 { transition-delay:.08s; } .reveal.d2 { transition-delay:.16s; } .reveal.d3 { transition-delay:.24s; } .reveal.d4 { transition-delay:.32s; }
+
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior:auto; } .reveal { opacity:1 !important; transform:none !important; } }
+  @media (max-width: 720px) {
+    section { padding:80px 24px; border-radius:24px 24px 0 0; }
+    .grid-3,.grid-2,.timeline,.timeline.cols-3 { grid-template-columns:1fr; gap:18px; }
+    .timeline::before { display:none; }
+    .footer-grid { grid-template-columns:1fr; gap:32px; }
+    .dot-indicator { display:none; }
+  }
+</style>
+</head>
+<body>
+  <!-- 官網品牌列（courses 頁 MUST；與官網首頁 nav.top 同套選單，課程頁模板共用）-->
+  <style>
+    .sh-nav{position:sticky;top:0;z-index:190;background:rgba(245,237,231,0.90);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid rgba(78,52,46,0.12);}
+    .sh-nav-in{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:11px 32px;}
+    .sh-brand{display:flex;align-items:center;flex-shrink:0;transition:opacity .2s;}
+    .sh-brand:hover{opacity:.8;}
+    .sh-brand img{height:34px;width:auto;display:block;}
+    .sh-menu{display:flex;align-items:center;gap:22px;list-style:none;margin:0;padding:0;}
+    .sh-menu a{color:#5D4037;font-size:0.95rem;font-weight:500;text-decoration:none;white-space:nowrap;transition:color .2s;}
+    .sh-menu a:hover{color:#D88C3A;}
+    .sh-menu a.sh-en{border:1px solid rgba(78,52,46,0.25);border-radius:999px;padding:3px 12px;font-weight:600;}
+    .sh-menu a.sh-en:hover{border-color:#D88C3A;}
+    .sh-toggle{display:none;background:none;border:none;padding:6px;cursor:pointer;width:36px;height:36px;position:relative;}
+    .sh-toggle span{display:block;position:absolute;left:8px;right:8px;height:2px;background:#4E342E;border-radius:2px;transition:transform .25s,opacity .25s,top .25s;}
+    .sh-toggle span:nth-child(1){top:11px;}
+    .sh-toggle span:nth-child(2){top:17px;}
+    .sh-toggle span:nth-child(3){top:23px;}
+    .sh-toggle.open span:nth-child(1){top:17px;transform:rotate(45deg);}
+    .sh-toggle.open span:nth-child(2){opacity:0;}
+    .sh-toggle.open span:nth-child(3){top:17px;transform:rotate(-45deg);}
+    @media(max-width:820px){
+      .sh-nav-in{padding:9px 16px;}
+      .sh-toggle{display:block;}
+      .sh-menu{display:none;position:absolute;top:100%;left:0;right:0;flex-direction:column;align-items:stretch;gap:0;background:rgba(245,237,231,0.98);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid rgba(78,52,46,0.12);padding:6px 0;box-shadow:0 10px 24px rgba(62,39,35,0.10);}
+      .sh-menu.open{display:flex;}
+      .sh-menu li{border-bottom:1px solid rgba(78,52,46,0.08);}
+      .sh-menu li:last-child{border-bottom:none;}
+      .sh-menu a{display:block;padding:13px 20px;font-size:1.02rem;}
+      .sh-menu a.sh-en{display:inline-block;margin:10px 20px;}
+    }
+  </style>
+  <header class="sh-nav">
+    <div class="sh-nav-in">
+      <a class="sh-brand" href="https://ai-km-jiang.vercel.app/"><img src="https://ai-km-jiang.vercel.app/images/footer-signature.png" alt="江江教練 ｜ 江昱德 · 知識官網" /></a>
+      <button class="sh-toggle" aria-label="開關選單"><span></span><span></span><span></span></button>
+      <ul class="sh-menu">
+        <li><a href="https://ai-km-jiang.vercel.app/">首頁</a></li>
+        <li><a href="https://ai-km-jiang.vercel.app/knowledge-architecture.html">知識架構</a></li>
+        <li><a href="https://ai-km-jiang.vercel.app/courses.html">課程</a></li>
+        <li><a href="https://ai-km-jiang.vercel.app/articles.html">深度文章</a></li>
+        <li><a href="https://ai-km-jiang.vercel.app/skills.html">技能包下載</a></li>
+        <li><a href="https://ai-km-jiang.vercel.app/cases.html">服務方案</a></li>
+        <li><a class="sh-en" href="https://ai-km-jiang.vercel.app/en/index.html" hreflang="en">EN</a></li>
+      </ul>
+    </div>
+  </header>
+  <script>(function(){var t=document.querySelector('.sh-toggle'),m=document.querySelector('.sh-menu');if(t&&m){t.addEventListener('click',function(){t.classList.toggle('open');m.classList.toggle('open');});m.addEventListener('click',function(e){if(e.target.closest('a')){t.classList.remove('open');m.classList.remove('open');}});}})();</script>
+
+  <div class="progress" id="progress"></div>
+
+  <nav class="dot-indicator" aria-label="章節導覽">
+    <a href="#act-01" data-i="0"><span class="lbl">01 · 封面</span></a>
+    <a href="#act-02" data-i="1"><span class="lbl">02 · Work 的最大意義</span></a>
+    <a href="#act-03" data-i="2"><span class="lbl">03 · 提示詞 vs 技能包</span></a>
+    <a href="#act-04" data-i="3"><span class="lbl">04 · 介面與安裝</span></a>
+    <a href="#act-05" data-i="4"><span class="lbl">05 · 專案 × 技能包</span></a>
+    <a href="#act-06" data-i="5"><span class="lbl">06 · 現場示範</span></a>
+    <a href="#act-07" data-i="6"><span class="lbl">07 · 兩個雷點</span></a>
+    <a href="#act-08" data-i="7"><span class="lbl">08 · 資料主權</span></a>
+    <a href="#act-09" data-i="8"><span class="lbl">09 · 當日 QA 實錄</span></a>
+    <a href="#act-10" data-i="9"><span class="lbl">10 · 課後行動</span></a>
+  </nav>
+
+  <div class="font-ctl" aria-label="字級調整">
+    <button data-f="-">A−</button><button data-f="0">A</button><button data-f="+">A＋</button>
+  </div>
+
+  <!-- ACT 01 封面 -->
+  <section id="act-01" data-block data-bg="1">
+    <div class="wrap">
+      <div class="act-cap reveal">江江教練 免費線上講座 · 7/12（日）已開課 · 課後版</div>
+      <h1 class="display reveal d1">ChatGPT Work<br/>把工作外包給 AI 員工</h1>
+      <p class="lead reveal d2">這份簡報照 7/12 實際上課內容整理 ｜ 江昱德．江江教練 ｜ 隱性知識提煉師 × AI 應用規劃師</p>
+      <div class="grid-3" style="max-width:920px; margin-left:auto; margin-right:auto;">
+        <div class="card reveal d2"><div class="num">今天最大的一件事</div><h3 class="h2">網頁版 AI 終於支援技能包</h3></div>
+        <div class="card reveal d3"><div class="num">主力示範</div><h3 class="h2">專案 × 技能包</h3><p class="body">現場做了一個咪卡社群圖卡技能包。</p></div>
+        <div class="card reveal d3"><div class="num">帶回家的觀念</div><h3 class="h2">我的文件就是我的系統</h3></div>
+      </div>
+      <p class="mono-note reveal d4">7/12 課後公開版。免費版只能在桌面版用 Work；網頁版 Work 要付費版（每月 690 起）。</p>
+    </div>
+  </section>
+
+  <!-- ACT 02 Work 的最大意義 -->
+  <section id="act-02" data-block data-bg="2">
+    <div class="wrap">
+      <div class="act-cap reveal">ACT 02 · Work 的最大意義</div>
+      <h2 class="display sm reveal d1">網頁版 AI<br/>終於支援技能包了</h2>
+      <p class="lead reveal d2">我平常用網頁版 AI 一直有一種感覺：它在發號施令，我在把東西做起來，我比較像它的助理跟秘書。我覺得不對，應該是我發號施令，你幫我做完才對。</p>
+      <div class="grid-3">
+        <div class="card reveal d1"><div class="num">背景 01</div><h3 class="h2">Codex＝裝到電腦裡的 ChatGPT</h3><p class="body">現在 Codex 跟 ChatGPT 已經合併，官方終於採用這個說法。但舊電腦常裝不了：舊 Windows 問題多、Mac 要新的 M 系列，很多人進不來。</p></div>
+        <div class="card reveal d2"><div class="num">背景 02</div><h3 class="h2">真正強的是技能包</h3><p class="body">之前支援技能包的網頁版唯二：Claude 跟 Grok，但大家都少用，Claude 沒有 100 美金起跳玩不起，推廣技能包一直受阻。</p></div>
+        <div class="card reveal d3"><div class="num">現在</div><h3 class="h2">ChatGPT 支援了</h3><p class="body">心心念念的 ChatGPT 終於支援技能包。如果你原本就在用 Codex，繼續用你的 Codex 就好。</p></div>
+      </div>
+      <p class="quote reveal d4" style="margin-top:48px; font-size:clamp(22px,2.8vw,34px);">有支援技能包跟沒支援技能包，是兩種不同的 AI：聽話的 AI 跟不聽話的 AI。</p>
+    </div>
+  </section>
+
+  <!-- ACT 03 提示詞 vs 技能包 -->
+  <section id="act-03" data-block data-bg="3">
+    <div class="wrap">
+      <div class="act-cap reveal">ACT 03 · 技能包是什麼（課前調查約三分之一的人沒聽過）</div>
+      <h2 class="display sm reveal d1">提示詞它愛聽不聽<br/>技能包是操作手冊</h2>
+      <div class="grid-2">
+        <div class="card reveal d1"><div class="num">提示詞</div><h3 class="h2">它愛聽不聽</h3><p class="body">我們之前教 AI 做事會下提示詞，大家知道有時候 AI 就是不太會理你。</p></div>
+        <div class="card reveal d2"><div class="num">技能包</div><h3 class="h2">操作手冊、正式合約</h3><p class="body">有比較嚴謹的 SOP，一種新的協定。AI 看到這份合約書或操作手冊，會比較認真地執行。</p></div>
+      </div>
+      <div class="trybox reveal d3">⚠️ 提醒：技能包不是絕對會遵守。大模型本質是機率模型，還是會出一點小問題，但比提示詞更具約束性、更會照著我們的需求去做。</div>
+      <div class="trybox reveal d4">💰 版本現況：免費版只能在 ChatGPT 桌面版裡用 Work（都有桌面版就直接用桌面版）。想在網頁版用 Work，目前需要付費版，一個月 690。</div>
+    </div>
+  </section>
+
+  <!-- ACT 04 介面與安裝 -->
+  <section id="act-04" data-block data-bg="4">
+    <div class="wrap">
+      <div class="act-cap reveal">ACT 04 · 介面、安裝與連接器</div>
+      <h2 class="display sm reveal d1">Chat 跟 Work<br/>差一顆技能包按鈕</h2>
+      <p class="lead reveal d2">點新對話，上面就有 Chat 跟 Work 兩個模式。最大的差別：Work 可以啟動技能包（按 S 就能叫出來），Chat 那邊搜尋不到技能包。</p>
+      <div class="grid-3">
+        <div class="card reveal d1"><div class="num">安裝在哪</div><h3 class="h2">外掛程式 → 技能</h3><p class="body">左側側邊欄選外掛程式，點進去選技能，就可以了。</p></div>
+        <div class="card reveal d2"><div class="num">三種來源</div><h3 class="h2">對話建立、上傳、GitHub</h3><p class="body">不會寫技能不用擔心，可以透過對話直接建立；或從電腦上傳；或聽到有大神把技能包放在 GitHub，直接在對話裡請它安裝。</p></div>
+        <div class="card reveal d3"><div class="num">連接器</div><h3 class="h2">Gmail、Notion、行事曆都在裡面</h3><p class="body">工具在外掛清單裡的，連動就是非常簡單的事。PDF、簡報也都有。我的 Google 行事曆有連動：Email 報名確認了，直接請它順手壓上行事曆。</p></div>
+      </div>
+      <div class="trybox reveal d4">🚧 IG 為什麼連不了：問題卡在平台授權，卡的從來就不是 AI 技術。IG 不給 ChatGPT 連；Manus 被 Meta 收購，內建就有 IG 功能。像一個活動的官方：認識裡面的人，一通電話就幫你留位子；不認識，就乖乖排隊買門票、寫企劃書、簽合約。</div>
+    </div>
+  </section>
+
+  <!-- ACT 05 專案 × 技能包 -->
+  <section id="act-05" data-block data-bg="5">
+    <div class="wrap">
+      <div class="act-cap reveal">ACT 05 · 公版文件的最好做法</div>
+      <h2 class="display sm reveal d1">專案存資料<br/>技能包存判斷</h2>
+      <p class="lead reveal d2">要做公版文件、符合國際規範或公司規範的格式，都可以。最好的方法：技能包搭配專案。專案就是一個資料夾（免費付費都能用），一個話題、一個系列全部收在裡面。像 A 廠商的專案，背景資料、簡報、每次會議記錄都丟進去，久而久之這個資料夾就有滿滿的脈絡。</p>
+      <div class="grid-3">
+        <div class="card reveal d1"><div class="num">問題</div><h3 class="h2">對的錯的都留在裡面</h3><p class="body">一篇文章改十次才滿意，代表第十次才是正確答案，前面九次都是錯誤版本。資料夾的好處是所有資料都在，壞處是聊錯的也都在。</p></div>
+        <div class="card reveal d2"><div class="num">解法一（勤快版）</div><h3 class="h2">手動存最後的答案</h3><p class="body">每次聊到對的答案，複製起來手動丟進專案的資料來源。限制：付費版的資料來源大概也只能存 10 份左右。</p></div>
+        <div class="card reveal d3"><div class="num">解法二（更好）</div><h3 class="h2">請它整理成技能包</h3><p class="body">直接請它把你覺得對的文章、對的模式、對的版型、對的判斷整理成技能包。技能包存最精華的步驟、規則跟判斷，資料來源放附屬參考資料，兩邊交叉印證。</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ACT 06 現場示範（中間調底、深咖字） -->
+  <section id="act-06" data-block data-bg="6L">
+    <div class="wrap">
+      <div class="act-cap reveal">ACT 06 · 現場示範 ｜ 咪卡社群圖卡技能包</div>
+      <h2 class="display sm reveal d1">不會做技能包不用擔心<br/>ChatGPT 會做</h2>
+      <p class="lead reveal d2">把你每次改稿在唸的話，一次講給它聽，請它「幫我做成技能包」。</p>
+      <div class="timeline">
+        <div class="step reveal d1"><div class="dot">01</div><h3 class="h2">口述規則</h3><p class="body">生圖前先給分鏡腳本；比例 4×5（IG 也能用）；張數自己判斷（內容少 3 到 5 張、多 7 到 10 張）；每張要有大標副標內容跟版型；咪卡照三視圖造型生成，動作要符合卡片情境。</p></div>
+        <div class="step reveal d2"><div class="dot">02</div><h3 class="h2">做成技能包</h3><p class="body">它自己寫好、存進技能列表。打開看：生成圖片前要先查看咪卡參考圖，有存進去。</p></div>
+        <div class="step reveal d3"><div class="dot">03</div><h3 class="h2">實測</h3><p class="body">丟一篇發過的脆文說「幫我生圖文」。陷阱：看它記不記得先給腳本。結果它先給腳本、建議六張，過關。</p></div>
+        <div class="step reveal d4"><div class="dot">04</div><h3 class="h2">邊用邊改</h3><p class="body">封面太素？補一條規則：襯圖（貓爪爪、小插畫）淡淡的在旁邊或當底，不搶文字。講完請它把規則更新回技能包，以後就記得了。</p></div>
+      </div>
+      <p class="quote reveal d4" style="margin-top:44px; font-size:clamp(22px,2.8vw,32px);">我們要學習成為慣老闆。你是老闆，拿出內心最慣的那一面；你是員工，回憶那些嚴苛但有道理的主管怎麼要求你。</p>
+      <details class="reveal d4"><summary>💡 講不出規則怎麼辦：請 AI 幫你融會貫通</summary>
+        <p>我不會設計，但過去做了十份企劃。把十份丟給它：「我要做技能包了，幫我把裡面的規則提煉出來，先告訴我你要怎麼融會貫通。」它講出來的不滿意就直接改，例如張數改成彈性判斷，再加一條硬規則：不能為了達到某個張數區間硬拆或灌水。這個圖只值兩張，那就兩張。</p>
+      </details>
+      <details class="reveal d4"><summary>💡 生圖不穩定的解法：定裝照概念</summary>
+        <p>角色剛好生得好看的當下，跟它說「我就是要這個角色」，請它設成四視圖（正、左、右、後）存進參考資料。之後每張都照造型生成。沒丟參考圖，咪卡就會變形，這是試過無數次的結論。</p>
+      </details>
+      <details class="reveal d4"><summary>💡 版型可以有很多套</summary>
+        <p>溫馨話題用手繪風，B2B 企業端用藍灰簡單線條，可以指定。社群貼文要咪卡，去做企業顧問就換江江教練企業顧問版，再做一個企業提案簡報技能包就好。把老闆要你做的東西、你以前做好的簡報丟給它分析，都可以。</p>
+      </details>
+      <details class="reveal d4"><summary>💡 好的壞的都要講，並請它更新技能包</summary>
+        <p>AI 弄出很棒的東西：「你這個版型很棒，記住，以後這份資料就用這個版型。」不好的：「這樣不行，你要改。」講完記得補一句「把這條更新到技能包裡」，目前它不會自動更新，要記得請它更。這些規則看起來很多，就是一次一次的經驗累積。</p>
+      </details>
+      <details class="reveal d4"><summary>💡 技能包可以下載、可以搬家</summary>
+        <p>技能包做好可以下載下來，改天換其他 AI（例如 Claude 也支援技能包），上傳上去就能用。</p>
+      </details>
+    </div>
+  </section>
+
+  <!-- ACT 07 兩個雷點 (dark) -->
+  <section id="act-07" data-block data-bg="7">
+    <div class="wrap">
+      <div class="act-cap reveal">ACT 07 · 先跟你講兩個雷點</div>
+      <h2 class="display sm reveal d1">專案＋技能包<br/>做到最後避不開這兩個雷</h2>
+      <p class="lead reveal d2">平常小案子跑一跑、技能包不會寫到幾千字、沒有複雜案子要跨域整合的話，可以用得很開心。用深了就會撞到。</p>
+      <div class="grid-2">
+        <div class="card reveal d1"><div class="num">雷一</div><h3 class="h2">跨專案不連通</h3><p class="body">A 廠商的東西鎖在 A 資料夾裡。想開新專案，請它從這裡抓 123、那裡抓 456、組成新的 12345678910？沒辦法，要自己一個一個挑出來。東西明明都準備好了，但它不能連通。</p></div>
+        <div class="card reveal d2"><div class="num">雷二</div><h3 class="h2">網頁的物理限制</h3><p class="body">技能包存到 6000 字以上，再叫它更新就容易出問題；超過一萬字問題就多很多。三年份的企劃、各講師各經理各領域客戶的案例，隨便加一加就破萬。單個網頁的記憶體承受有上限。</p></div>
+      </div>
+      <div class="trybox reveal d3">🔧 怎麼辦：用桌面版，把技能包跟資料都存在電腦裡，電腦版比網頁版好用很多。剛剛的操作你可以接受、電腦又裝得了 Codex 的話，直接用 Codex。現在（7 月）上手已經簡單很多了。</div>
+    </div>
+  </section>
+
+  <!-- ACT 08 資料主權 (dark) -->
+  <section id="act-08" data-block data-bg="8">
+    <div class="wrap">
+      <div class="act-cap reveal">ACT 08 · 帶回家的觀念</div>
+      <h2 class="display sm reveal d1">我的文件<br/>就是我的系統</h2>
+      <p class="lead reveal d2">東西都放在 Notion 或 ChatGPT 上面，明天 Gemini 變超好用怎麼辦？後天 Claude 佛心大降價怎麼辦？難道這些東西要再傳一次給他們嗎？</p>
+      <div class="timeline cols-3">
+        <div class="step reveal d1"><div class="dot">01</div><h3 class="h2">資料整理在我的電腦</h3><p class="body">簡報、圖卡、技能包，全部存在我的文件裡面。</p></div>
+        <div class="step reveal d2"><div class="dot">02</div><h3 class="h2">叫 AI 來打工</h3><p class="body">現在哪個 AI 強，就叫哪個 AI 進我的電腦裡打工。</p></div>
+        <div class="step reveal d3"><div class="dot">03</div><h3 class="h2">產出收回我的文件</h3><p class="body">打完工，所有產出整理好回到我的文件，隨時可以換其他家 AI 來打工。</p></div>
+      </div>
+      <p class="quote reveal d3" style="margin-top:48px; font-size:clamp(22px,2.8vw,34px);">與其每換一個工具就重新學一次，我選擇把規矩立好：換哪一家 AI 來打工，都照我的流程做事。</p>
+      <div class="trybox reveal d4">📦 網頁版舊資料怎麼搬：一篇一篇存。小技巧：請它「幫我整理成工作日記，把重點精華的知識、脈絡、步驟提煉出來」。二八原則，不用每篇都存，有印象、有價值、資訊密度高的再存。第一次從 ChatGPT 搬到 Gemini 我就悟了：未來一定不停有 AI 稱王，搬一次家搬到自己電腦，以後就不用再搬。</div>
+    </div>
+  </section>
+
+  <!-- ACT 09 當日 QA 實錄 (dark) -->
+  <section id="act-09" data-block data-bg="9">
+    <div class="wrap left">
+      <div class="act-cap reveal">ACT 09 · 當日 QA 實錄 ｜ 十三題三方對照</div>
+      <h2 class="display sm reveal d1" style="text-align:left;">同一個問題<br/>AI 怎麼答、我怎麼答</h2>
+      <p class="lead reveal d2" style="margin:0; max-width:880px;">課前我把大家的問題丟給 Claude 和 Codex 兩位 AI 員工，各自先答一輪（互相看不到對方的答案），現場我講我的版本，課後再請它們分析三方哪裡不一樣。這就是慣老闆：讓 AI 先回答，我再修正。以下 🎯 是我當天實際講的。</p>
+      <details class="reveal d3"><summary>Q1（納妮亞）信箱自動整理與當日摘要</summary>
+        <p><b>❓ 原話：</b>不知道能不能用 GPT Work 自動信箱整理及當天信箱摘要功能（公司電腦不能下載 codex），就現況 gemini 和 gpt 確實已足夠使用，所以一直沒有想使用 codex 網頁版！</p>
+        <p><b>🎯 江江當日：</b>可以，沒有問題。Codex、ChatGPT 現在可以連了，Claude 也行。現場示範：外掛程式裡有 Gmail，請它查今天收到什麼信，它能準確說哪封該注意，可以直接請它回信、順手壓行事曆。連 Gmail 這種內建連動，聊天版（Chat）就有，不一定要 Work。</p>
+        <p><b>🔵 Claude 課前作答：</b>「全自動」做不到：連公司信箱屬於 API／連接器層，公司環境常擋授權。做半自動：信件貼給 Work，技能包固定產「當日摘要＋分類＋待辦」。先確認公司資安政策。</p>
+        <p><b>🟠 Codex 課前作答：</b>能否直接連信箱取決於帳號權限、方案與連接器，不確定需查證。穩妥做法：匯出或貼上非敏感信件，依「待回覆、待追蹤、僅知會、風險」分類產摘要。含機密先確認資安規範。</p>
+      </details>
+      <details class="reveal d3"><summary>Q2（納妮亞）主管面試與考核工作流【現場對話】</summary>
+        <p><b>❓ 原話：</b>以主管的身分需要面試及考核，目前都是單一丟履歷或考核表整理可以問他的問題集，用錄音整理問題回覆並讓 gpt 或 gemini 提供主管意見，如果只有 1-2 位還好，但這次考核 10 位真的有點吃不消，年末還有年終考核，有沒有管理人員的工作流？</p>
+        <p><b>🎯 江江當日：</b>現場先反問「你所謂的工作流是什麼意思」，釐清後發現她要的是錄音整理。答案：丟 NotebookLM，沒有要高精度的話超快超便宜，10 個都丟進去。有 Codex 的話，丟上去之後叫 Codex 直接去 NotebookLM 抓。注意：NotebookLM 無法分離講者，分不出誰是主考官誰是面試者；重要會議一定要分講者（哪句話是誰說的誰要負責），分離講者很麻煩，當天沒展開。完整考核流程的建立比較麻煩，做法像技能包示範那樣：很細地把考核標準講給 AI。</p>
+        <p><b>🔵 Claude 課前作答：</b>做三個公版技能包（履歷進問題集出、逐字稿進整理出、整理稿進意見草稿出），10 位跑 10 次。提醒個資規範與主管最終責任。</p>
+        <p><b>🟠 Codex 課前作答：</b>建「考核準備包」，十人不要混同一段對話，每人一份結構化表單再匯總，建共用評分規準避免 AI 直接下結論。</p>
+      </details>
+      <details class="reveal d3"><summary>Q3（湯老師）一稿三平台改寫＋輪播卡＋定時自動發文</summary>
+        <p><b>❓ 原話：</b>寫好一個完整詳細的貼文後，依 FB、IG、threads 不同社群受眾修改為各平台適合各自屬性的貼文，還可以依內容直接製作各自的輪播卡，並依預設時間自動貼文和輪播卡。</p>
+        <p><b>🎯 江江當日：</b>一稿改三平台很簡單，格式跟受眾都講給它就好。推薦官網的「<a href="https://ai-km-jiang.vercel.app/skills.html#ai-consumer-validation" target="_blank" rel="noopener">AI 消費者驗證</a>」技能包：讓 AI 模擬你的各種受眾來評你的文章，再搭配「<a href="https://ai-km-jiang.vercel.app/skills.html#title-rewriter" target="_blank" rel="noopener">改標題</a>」技能包，生成十個受眾提出問題、再改標題，兩包組合很好用。自動發文：目前非常難做，問題卡在平台授權，卡的從來就不是 AI 技術。IG 不給 ChatGPT 連；Manus 被 Meta 收購所以內建 IG。各家媒體都有自己的小心機：我家的媒體只給我家的 AI 串。</p>
+        <p><b>🔵 Claude 課前作答：</b>改寫可以、輪播卡一半、自動發文不行（API 層），排程回平台原生工具。</p>
+        <p><b>🟠 Codex 課前作答：</b>逐平台指定讀者、篇幅、語氣、禁用詞；自動排程不確定需查證，發布前保留人工確認。</p>
+      </details>
+      <details class="reveal d3"><summary>Q4（黑熊）當專家抓錯誤＋出公版意見</summary>
+        <p><b>❓ 原話：</b>GPT Work 可以當專家抓錯誤給建議，並且可以出公版（公司常用的語句或版型）的意見嗎？</p>
+        <p><b>🎯 江江當日：</b>都沒問題，公司常用版型可以，當專家抓錯誤給意見可以。補充一個重點：把各個顧問的東西丟進去之外，要給 AI「你選顧問的標準」。這份報告第一句話講得很棒、第二頁的建議不適合我；B 專家推薦的第一本書很適合、第二本還好；為什麼好、好在哪、解決我什麼痛點，都寫給它。你描述得越清楚，AI 越知道怎麼幫你。AI 很聰明，但目前不會通靈跟讀心，要把內心的想法講出去。</p>
+        <p><b>🔵 Claude 課前作答：</b>公版＋檢查清單＋驗收標準寫進技能包，範例越真抓得越準。</p>
+        <p><b>🟠 Codex 課前作答：</b>依據要給清楚，讓它輸出「發現的問題、依據、建議改法、需人工確認處」。</p>
+      </details>
+      <details class="reveal d3"><summary>Q5（嚕嚕）長文多受眾改寫、內容不重複</summary>
+        <p><b>❓ 原話：</b>部落格長文想改寫，然後希望從不同受眾角度重複改寫，但每次不能重複內容。</p>
+        <p><b>🎯 江江當日：</b>這是 AI 很好處理的。從不同受眾角度改寫，就用剛講的 AI 消費者模擬，還不錯。技能包在這：<a href="https://ai-km-jiang.vercel.app/skills.html#ai-consumer-validation" target="_blank" rel="noopener">AI 消費者驗證</a>，搭配 <a href="https://ai-km-jiang.vercel.app/skills.html#title-rewriter" target="_blank" rel="noopener">改標題</a> 一起用。</p>
+        <p><b>🔵 Claude 課前作答：</b>派角度：每版指定不同切入點，規則明定不得重複前版例子與句子，包成技能包。</p>
+        <p><b>🟠 Codex 課前作答：</b>拆受眾地圖，列「已用內容清單」自查，但不能保證絕對不重複，人工確認不扭曲原意。</p>
+      </details>
+      <details class="reveal d3"><summary>Q6（嚕嚕）依過去部落格自動產一週貼文</summary>
+        <p><b>❓ 原話：</b>我想要系統化 Threads 發文，直接自動幫我依照過去的部落格文章，改寫好 1 週貼文（要依照我希望的爆文格式和語氣）。</p>
+        <p><b>🎯 江江當日：</b>可以，這是靈感池的概念，而且靈感可以系統性產出。三區：①資料庫裡我過去的文章 ②AI 模擬工具幫我模擬不同受眾的需求 ③最近的熱門時事梗。三個結合：用熱門時事的梗接大家關注的點，再連回我的專業解決方案。我實際的操作：看到熱門梗有靈感，丟給 AI 說「這個梗很有趣，幫我查我過去寫過哪篇文章符合這個，幫我寫出來」；寫完再說「有靈感但太專業了，幫我用受眾的角度檢查標題，改成受眾聽得懂的版本」。</p>
+        <p><b>🔵 Claude 課前作答：</b>格式語氣鎖進技能包，每週餵舊文產七天草稿；自動產可以、自動發不行。</p>
+        <p><b>🟠 Codex 課前作答：</b>建文章庫、選一週七個不重複切角，格式拆成可檢查規則，人審完再交平台排程。</p>
+      </details>
+      <details class="reveal d4"><summary>Q7（Joshua）建立工作流的思考邏輯</summary>
+        <p><b>❓ 原話：</b>想理解要用甚麼樣的思考邏輯，來逐漸的建立自己的工作流內容，會比較好？</p>
+        <p><b>🎯 江江當日：</b>今天用咪卡技能包示範帶了核心做法：好的說「記住」、不好的說「要改」，並記得請它把糾正更新回技能包，規則是一次一次的經驗累積出來的。系統性的拆解可以直接看下面兩位 AI 員工的答案，流水線跟步驟它們講得很完整。</p>
+        <p><b>🔵 Claude 課前作答：</b>畫流水線（進料、加工、出貨），格式固定交公版、判斷留人，從最痛的一段開始包。</p>
+        <p><b>🟠 Codex 課前作答：</b>先找每週重複耗時的一小段工作，拆輸入、規則、產出、誰驗收，跑幾次再固化成模板。</p>
+      </details>
+      <details class="reveal d4"><summary>Q8（Joshua）用 Work 生成 ISO 固定公版文件</summary>
+        <p><b>❓ 原話：</b>如果要用 chatgpt Work 生成固定公版的文件，是可以的嗎？想用來解決 ISO 方面的大量文件問題。</p>
+        <p><b>🎯 江江當日：</b>可以。不只圖卡，公版文件要符合國際規範或公司自己的規範都可以，最好的方法是技能包搭配專案（做法見 ACT 05）。</p>
+        <p><b>🔵 Claude 課前作答：</b>可以，是主場；雜格式先加「素材清洗」轉統一中間格式再進公版。</p>
+        <p><b>🟠 Codex 課前作答：</b>可以，但先確認版本控制、核准流程、編號規則；提供既有模板，先試跑一種再擴大。</p>
+      </details>
+      <details class="reveal d4"><summary>Q9（Joshua）自訂 GPT、ChatGPT Agent、Codex、Work 差異</summary>
+        <p><b>❓ 原話：</b>想要了解自訂 GPT、ChatGPT Agent（代理程式）、Codex、chatgpt Work 差異是甚麼？</p>
+        <p><b>🎯 江江當日：</b>今天講了其中三個：Codex＝裝到電腦裡的 ChatGPT（合併改名後官方終於採用這說法）；Chat 跟 Work 的差別＝支不支援技能包。順便破解一個迷思：有人覺得 ChatGPT 聰明、Codex 笨又噴 token，它們接的是同一個大腦；會覺得 Codex 笨，我猜是資料夾太亂，亂到它不曉得怎麼分析，是資料整理的問題。自訂 GPT 當天沒展開，完整對照可以看下面兩位 AI 員工的版本。</p>
+        <p><b>🔵 Claude 課前作答：</b>自訂 GPT＝固定角色可連結分享；Codex＝本機檔案代理；Work＝網頁任務代理＋技能包；ChatGPT Agent 當前定義不確定，需查證，不硬答。</p>
+        <p><b>🟠 Codex 課前作答：</b>兩個模型都對 Agent 與 Work 的產品範圍標「不確定需查證」；Codex「分析弱」不宜一概而論，常是任務規格沒設好。</p>
+      </details>
+      <details class="reveal d4"><summary>Q10（Joshua）建好的機器人怎麼分享給同伴共用</summary>
+        <p><b>❓ 原話：</b>想要了解哪一個方式可以把建立好的機器人，分享給其他工作的同伴，共同享有快速的生成工作流？（他的案例：收集網路學術論文與網站資訊，彙整並整理，重新寫出毒理判斷與說明）</p>
+        <p><b>🎯 江江當日：</b>目前最好的就是技能包，技能包加 Agent 最方便，而且技能包更彈性、隨時可以更新。但「讓同事共同享有快速工作流」牽扯組織溝通：我推過 Notion、Trello 各種數位方案，最終悟透一件事，工具好不好用是一回事，大家願不願意陪我一起用，是我的溝通、組織、號召能力的部分，這不是 AI 可以解決的。</p>
+        <p><b>🔵 Claude 課前作答：</b>技能包＝可交接的檔案；自訂 GPT 可連結分享；Codex 綁個人電腦最難分享。毒理判斷最後由人負責。</p>
+        <p><b>🟠 Codex 課前作答：</b>共享的是版本化的指令、資料來源、模板與使用邊界；高風險專業內容 AI 只起草不定案。</p>
+      </details>
+      <details class="reveal d4"><summary>Q11（Pamela）直接產出可以修改的簡報</summary>
+        <p><b>❓ 原話：</b>想知道哪個平台可以直接產出可以修改的簡報。（補充：工作幾乎每週都得交簡報，向上報告給處長或總經理，多個長官都會有修改建議，不改沒辦法往上呈，人工做花大量時間。需要的是完整、偏邏輯清晰、而且可以修改的簡報。）</p>
+        <p><b>🎯 江江當日：</b>兩個做法。①直接讓 Codex 或 ChatGPT Work 用文書工具做可編輯的 PPT；Codex 還可以連 Google 投影片，一頁一頁修改，這我試過。不要叫 Claude 做文書，它太貴，像超厲害超貴的法律顧問，大條的問題再請它，小問題讓 Codex 做。②固定格式的 HTML 簡報，讓 AI 持續修改，就像這一份：講完課直接請 AI 把逐字稿補進簡報，指令清楚的話它可以穩定地改，不會補了新的、前面就不見。兩種「可修改」：人可以修改，跟 AI 可以持續修改。</p>
+        <p><b>🔵 Claude 課前作答：</b>「可修改」拆兩件事：檔案可編輯＋修改流程省力（意見貼回去出新版），後者才省時間。</p>
+        <p><b>🟠 Codex 課前作答：</b>選能輸出原生可編輯格式、能在既有檔案上持續修改的工具；哪個平台最完整不確定需查證。</p>
+      </details>
+      <details class="reveal d4"><summary>Q12（邱Chiu）Notion 法律筆記彙整產出週報月報</summary>
+        <p><b>❓ 原話：</b>法律相關的工作，直接把工作倒進去是不可能。本身是 notion 重度使用者，法律相關的筆記都放在裡面，目前想到的是彙整法律筆記產出週報或月報，提供給公司職員看。（目前用免費版）</p>
+        <p><b>🎯 江江當日：</b>沒什麼大問題，但我其實不太建議東西都放在 Notion 上或 ChatGPT 上。理由就是資料主權（ACT 08）：明天 Gemini 變超好用、後天 Claude 大降價怎麼辦？資料整理好在自己電腦，哪家 AI 強就叫誰來打工，搬家一次就好。</p>
+        <p><b>🔵 Claude 課前作答：</b>Work 要付費版；直連 Notion 不確定需查證；穩的做法是匯出貼給技能包產週報公版，只貼可對內公開的筆記。</p>
+        <p><b>🟠 Codex 課前作答：</b>先遵守資安與保密規範，去識別化摘要再產週報；可公開範圍由法律負責人定義。</p>
+      </details>
+      <details class="reveal d4"><summary>Q13（Anna Su、沈先生）職場整理報告與簡報</summary>
+        <p><b>❓ 原話：</b>職場上常常需要整理成報告或做簡報。（沈先生：+1 有簡報需求）</p>
+        <p><b>🎯 江江當日：</b>同第 11 題的兩個做法：可編輯 PPT（Codex 或 Work 的文書工具、Google 投影片），或固定格式 HTML 簡報讓 AI 持續修改。</p>
+        <p><b>🔵 Claude 課前作答：</b>公版技能包（範本＋規則＋驗收），先包最常交的一種報告。</p>
+        <p><b>🟠 Codex 課前作答：</b>先講清楚這份內容要讓誰做什麼決策，簡報每頁一個重點、標題直接說結論。</p>
+      </details>
+      <details class="reveal d4"><summary>➕ 現場追問實錄</summary>
+        <p><b>只有付費版能連 Gmail 外掛？</b>不知道，現場不方便切換帳號，可能沒有就沒有了。</p>
+        <p><b>今天的內容會放 YouTube 嗎？</b>只要 AI 可以幫我剪片就會放。我剪一支影片的時間，夠我生成十篇深度教學文章或技能包，所以還是以文章跟技能包為主，讓 AI 幫我剪跟上架。</p>
+        <p><b>算力怎麼分（感謝湯老師補充）：</b>網頁版 ChatGPT 跟電腦的 Codex 分開算，但 ChatGPT Work 跟 Codex 共用 token 上限。所以我不太用 Work 燒 token：要大量生圖卡的時候丟給網頁版 ChatGPT 做，保留 Codex 算力。生成圖卡是超級好獨立出來的工作。</p>
+        <p><b>有在用 Obsidian：</b>同資料主權的概念。文件就存在我的電腦裡，讓各家 AI、各個應用程式、甚至 Obsidian 來讀。</p>
+        <p><b>怎樣讓兩家 AI 互相審核？</b>我的文章跟技能包都寫了：概念、機制、流程、指令全部在裡面，丟一個連結就可以用，就是這篇：<a href="https://ai-km-jiang.vercel.app/articles/dual-track-planning-loop/" target="_blank" rel="noopener">讓兩個 AI 互相挑錯：企劃雙軌互審 loop</a>。90% 的問題官網都有答案。</p>
+      </details>
+      <p class="mono-note reveal d4">課後：三方差異已請 AI 整理回寫，這就是訓練 AI 員工的日常。</p>
+    </div>
+  </section>
+
+  <!-- ACT 10 課後行動 (dark) -->
+  <section id="act-10" data-block data-bg="9">
+    <div class="wrap left">
+      <div class="act-cap reveal">ACT 10 · 課後行動</div>
+      <h2 class="display sm reveal d1" style="text-align:left;">回去做<br/>有問題群組繼續問</h2>
+      <div class="grid-3" style="margin-top:32px;">
+        <div class="card reveal d1"><div class="num">行動 01</div><h3 class="h2">免費 20 分鐘 1-1</h3><p class="body">開放預約討論，先快速試個水溫。90% 的問題我的文章跟技能包都有答案，丟一個連結給你，直接叫 AI 去處理就好。連結在群組。</p></div>
+        <div class="card reveal d2"><div class="num">行動 02</div><h3 class="h2">逛知識官網</h3><p class="body">這一場主要在教大家怎麼用我的知識官網。文章、技能包（含 AI 消費者驗證、改標題）都在上面。</p></div>
+        <div class="card reveal d3"><div class="num">行動 03</div><h3 class="h2">動手做一個技能包</h3><p class="body">把你每次改稿在唸的話講給 AI，請它做成技能包。一定是回去做才會有問題，有問題在知識群組繼續發問。</p></div>
+      </div>
+      <div class="footer-grid">
+        <div class="reveal d1">
+          <h3>今晚的一句話</h3>
+          <p class="body">資料整理好在我的電腦裡，現在哪個 AI 強，就叫哪個 AI 來我的電腦裡打工。大家的問題都是非常好的市場調查，讓我持續產出更符合需求的產品、服務跟課程。</p>
+        </div>
+        <div class="reveal d2">
+          <h3>官網資源</h3>
+          <ul>
+            <li><a href="https://ai-km-jiang.vercel.app/" target="_blank" rel="noopener">知識官網首頁</a></li>
+            <li><a href="https://ai-km-jiang.vercel.app/skills.html" target="_blank" rel="noopener">技能包下載</a></li>
+            <li><a href="https://ai-km-jiang.vercel.app/skills.html#ai-consumer-validation" target="_blank" rel="noopener">AI 消費者驗證</a></li>
+            <li><a href="https://ai-km-jiang.vercel.app/skills.html#title-rewriter" target="_blank" rel="noopener">改標題 title-rewriter</a></li>
+          </ul>
+        </div>
+        <div class="reveal d3">
+          <h3>找到我</h3>
+          <ul>
+            <li>Threads ＠jiang_yude_coach</li>
+            <li>方格子 Jiang_Coach</li>
+            <li>免費 1-1 連結在群組公布</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom reveal d4">江江教練 免費線上講座 · 7/12 ChatGPT Work 課後版 · 江昱德｜江江教練</div>
+    </div>
+  </section>
+
+<script>
+(function () {
+  document.documentElement.classList.add('js-on');
+  document.body.classList.add('js-on');
+  const sections = [...document.querySelectorAll('section[data-block]')];
+  const dots = [...document.querySelectorAll('.dot-indicator a')];
+  const progress = document.getElementById('progress');
+  const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!reducedMotion) {
+    const io = new IntersectionObserver((entries) => entries.forEach((e) => {
+      if (e.isIntersecting) { e.target.querySelectorAll('.reveal').forEach((el) => el.classList.add('in')); }
+    }), { threshold: 0.25 });
+    sections.forEach((s) => io.observe(s));
+  } else { document.querySelectorAll('.reveal').forEach((el) => el.classList.add('in')); }
+  const darkBgs = new Set(['7','8','9']);
+  const navIo = new IntersectionObserver((entries) => entries.forEach((e) => {
+    if (e.isIntersecting) {
+      const i = sections.indexOf(e.target);
+      dots.forEach((d, idx) => d.classList.toggle('active', idx === i));
+      document.body.classList.toggle('on-dark', darkBgs.has(e.target.getAttribute('data-bg')));
+    }
+  }), { threshold: 0.55 });
+  sections.forEach((s) => navIo.observe(s));
+  const scroller = document.scrollingElement || document.documentElement;
+  let ticking = false;
+  function updateProgress() {
+    const max = scroller.scrollHeight - scroller.clientHeight;
+    const pct = max > 0 ? (scroller.scrollTop / max) * 100 : 0;
+    progress.style.width = pct + '%'; ticking = false;
+  }
+  // 滑動時才顯示章節標籤，停止約 1.1 秒後自動消失（webpage-builder 15-mode-slide-deck 2026-06-26 校正）
+  const dotNav = document.querySelector('.dot-indicator');
+  let hideTimer = null;
+  window.addEventListener('scroll', () => {
+    if (!ticking) { requestAnimationFrame(updateProgress); ticking = true; }
+    if (dotNav) {
+      dotNav.classList.add('scrolling');
+      clearTimeout(hideTimer);
+      hideTimer = setTimeout(() => dotNav.classList.remove('scrolling'), 1100);
+    }
+  }, { passive: true });
+  updateProgress();
+  // 字級 A− / A / A＋（現場提詞用）
+  let zoom = 1;
+  document.querySelectorAll('.font-ctl button').forEach((b) => b.addEventListener('click', () => {
+    const f = b.dataset.f;
+    zoom = f === '+' ? Math.min(1.4, zoom + 0.1) : f === '-' ? Math.max(0.8, zoom - 0.1) : 1;
+    document.body.style.zoom = zoom;
+  }));
+})();
+</script>
+</body>
+</html>
