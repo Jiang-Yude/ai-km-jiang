@@ -499,7 +499,7 @@ window.ARTICLES = [
       content_type: ["趨勢文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["market-to-ai"]
+    related: ["market-to-ai","dual-track-planning-loop"]
   },
 
   /* ── 可以學用 AI 行銷，還可以學對 AI 行銷（觀點）── */
@@ -852,7 +852,7 @@ window.ARTICLES = [
     summary: "把駕馭工程和迴圈工程接在一起的五條護欄：未抗辯假設、三視角抗辯、Non-goals 與允許路徑、換路煞車、驗收證據分級。讓 AI 連續自動工作時，錯誤不會一路滾大。",
     tags: {"topic":["AI工作流","AIAgent","跨家審稿"],"level":["基礎"],"content_type":["教學文章"]},
     external: { threads: null, vocus: null },
-    related: ["what-is-loop-engineering","harness-mindset-for-bosses","ai-loop-safety-recovery"]
+    related: ["what-is-loop-engineering","harness-mindset-for-bosses","ai-loop-safety-recovery","dual-track-planning-loop"]
   },
   {
     id: "parenting-story-ai-family-dialogue",
@@ -1010,5 +1010,17 @@ window.ARTICLES = [
     tags: {"topic":["AI趨勢","知識管理","AI工作流","駕馭工程 HarnessEngineering"],"level":["基礎"],"content_type":["教學文章"]},
     external: { threads: null, vocus: null },
     related: ["docs-as-system-design-agent", "what-is-loop-engineering", "how-to-train-your-ai-employee"]
+  },
+  {
+    id: "dual-track-planning-loop",
+    url: "articles/dual-track-planning-loop/",
+    date: "2026-07-12",
+    title: "讓兩個 AI 互相挑錯：我的企劃在送出前，先被模擬評審打了 2/5 分",
+    problem: "AI 寫企劃又快又順，但單一模型自己寫自己審，看不到自己的盲點，還會被你的想法錨定。",
+    audience: "用 AI 寫提案、企劃、報告，輸不起一次盲點的知識工作者與一人公司。",
+    summary: "企劃雙軌互審 loop：兩個不同家的 AI 同輸入各自獨立寫完、互相挑錯、整合留決策點、對家終審。以一場真實政府補助提案首跑為案例，附兩段可直接複製的提示詞。",
+    tags: {"topic":["AI工作流","跨家審稿","輔助決策"],"level":["基礎"],"content_type":["案例文章"]},
+    external: { threads: null, vocus: null },
+    related: ["loop-engineering-guardrails", "a2a-agent-protocol", "docs-as-system-design-agent"]
   }
 ];

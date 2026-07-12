@@ -1,0 +1,379 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="index,follow">
+<title>讓兩個 AI 互相挑錯：我的企劃在送出前，先被模擬評審打了 2/5 分｜企劃雙軌互審 loop｜江江教練 · AI 知識管理</title>
+<meta name="description" content="AI 寫企劃很快，問題是它會順著你，一個模型自己寫自己審，看不到自己的盲點。這篇用一場真實的政府補助提案，完整記錄企劃雙軌互審 loop 的跑法：兩個不同家的 AI 各自獨立寫完、互相挑錯、最後由人拍板，附可直接複製的提示詞。">
+<link rel="canonical" href="https://ai-km-jiang.vercel.app/articles/dual-track-planning-loop/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="讓兩個 AI 互相挑錯：企劃雙軌互審 loop｜江江教練">
+<meta property="og:image" content="https://ai-km-jiang.vercel.app/images/og/dual-track-planning-loop.jpg">
+<meta property="og:description" content="兩個不同家的 AI 各自獨立寫完、互相挑錯、最後由人拍板。附可直接複製的提示詞。">
+<meta property="og:url" content="https://ai-km-jiang.vercel.app/articles/dual-track-planning-loop/">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:site_name" content="江江教練 · AI 知識管理">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="讓兩個 AI 互相挑錯：企劃雙軌互審 loop｜江江教練">
+<meta name="twitter:image" content="https://ai-km-jiang.vercel.app/images/og/dual-track-planning-loop.jpg">
+<meta name="twitter:description" content="兩個不同家的 AI 各自獨立寫完、互相挑錯、最後由人拍板。附可直接複製的提示詞。">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"讓兩個 AI 互相挑錯：我的企劃在送出前，先被模擬評審打了 2/5 分｜企劃雙軌互審 loop","description":"兩個不同家的 AI 各自獨立寫完、互相挑錯、最後由人拍板的雙軌互審工作流，以一場真實政府補助提案為案例，附可複製提示詞。","datePublished":"2026-07-12","dateModified":"2026-07-12","author":{"@type":"Person","name":"江昱德","alternateName":"江江教練","jobTitle":"隱性知識提煉師、AI 應用規劃師"},"isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://ai-km-jiang.vercel.app/"},"image":"https://ai-km-jiang.vercel.app/images/articles/dual-track-planning-loop-cover.jpg","inLanguage":"zh-Hant","url":"https://ai-km-jiang.vercel.app/articles/dual-track-planning-loop/"}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{--ink:#1a1612;--paper:#fefcf8;--muted:#6a635a;--line:#d8cdb8;--green:#5f7553;--blue:#5689b8;--orange:#e85a4f;--soft:#faf5ec;--dark:#2a2018;--shadow:0 18px 45px rgba(107,74,42,.14);--sp-shadow:hsla(35,50%,60%,.15);--sp-shadow-edge:hsla(35,50%,68%,.03);--sp-radius:400px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC","Segoe UI",sans-serif}
+a{color:inherit}
+nav.top{position:sticky;top:0;background:rgba(254,252,248,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid #d8cdb8;z-index:100}
+nav.top .container{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:24px;padding:14px 32px}
+.nav-brand-img{justify-self:start;display:flex;align-items:center;text-decoration:none;flex-shrink:0;transition:opacity .2s}
+.nav-brand-img:hover{opacity:.8}.nav-brand-img img{height:40px;width:auto;display:block}
+nav.top ul.nav-menu{justify-self:end;display:flex;gap:22px;list-style:none;margin:0;padding:0;font-size:.95rem;white-space:nowrap}
+nav.top ul.nav-menu a{color:#3a342d;text-decoration:none;transition:color .2s;font-weight:500;white-space:nowrap}
+nav.top ul.nav-menu a:hover{color:#1a1612}nav.top ul.nav-menu a.active{color:#1a1612;font-weight:700}
+.nav-toggle{display:none;background:none;border:none;padding:6px;cursor:pointer;width:36px;height:36px;position:relative}
+.nav-toggle span{display:block;position:absolute;left:8px;right:8px;height:2px;background:#1a1612;border-radius:2px;transition:transform .25s,opacity .25s,top .25s}
+.nav-toggle span:nth-child(1){top:11px}.nav-toggle span:nth-child(2){top:17px}.nav-toggle span:nth-child(3){top:23px}
+.nav-toggle.open span:nth-child(1){top:17px;transform:rotate(45deg)}.nav-toggle.open span:nth-child(2){opacity:0}.nav-toggle.open span:nth-child(3){top:17px;transform:rotate(-45deg)}
+@media(max-width:860px){
+ nav.top .container{grid-template-columns:auto 1fr auto;padding:10px 16px;gap:12px}
+ .nav-brand-img img{height:32px}
+ .nav-toggle{display:block;justify-self:end}
+ nav.top ul.nav-menu{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(254,252,248,.98);backdrop-filter:blur(14px);border-bottom:1px solid #d8cdb8;flex-direction:column;gap:0;padding:8px 0;box-shadow:0 10px 24px rgba(107,74,42,.08)}
+ nav.top ul.nav-menu.open{display:flex}
+ nav.top ul.nav-menu li{border-bottom:1px solid #e8dfc9}
+ nav.top ul.nav-menu li:last-child{border-bottom:none}
+ nav.top ul.nav-menu a{display:block;padding:14px 20px;font-size:1.06rem}
+}
+body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradient(var(--sp-radius) circle at var(--mx,50%) var(--my,50%),var(--sp-shadow) 0%,var(--sp-shadow-edge) 45%,transparent 75%);pointer-events:none;z-index:9999;mix-blend-mode:multiply;transition:background .06s linear}
+.hero{position:relative;overflow:hidden;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:72px;padding:96px clamp(20px,6vw,88px) 80px;background:linear-gradient(180deg,#fffcf0 0%,#f9e9d2 100%);color:#1a1612;border-bottom:1px solid #d8cdb8}
+.hero .wc{position:absolute;border-radius:50%;filter:blur(60px);pointer-events:none;z-index:0}
+.hero .wc1{width:420px;height:360px;top:-120px;right:-80px;background:#e8884b;opacity:.15}
+.hero .wc2{width:360px;height:300px;bottom:-110px;left:-70px;background:#5f7553;opacity:.13}
+.hero .wc3{width:280px;height:260px;top:34%;left:14%;background:#a08144;opacity:.10}
+.hero>div{flex:none;width:760px;max-width:100%;position:relative;z-index:2}
+.hero-figure{margin:0;width:320px;flex:none;position:relative;z-index:2}
+.hero-figure img{display:block;width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:16px;border:1px solid #d8cdb8;box-shadow:0 18px 45px rgba(107,74,42,.16);cursor:zoom-in}
+.hero-figure figcaption{margin-top:10px;font-size:14px;line-height:1.6;color:#6a635a}
+.inline-figure{margin:30px auto 8px;max-width:820px}
+.inline-figure img{display:block;width:100%;border-radius:14px;border:1px solid var(--line);box-shadow:var(--shadow);background:#fff;cursor:zoom-in}
+.inline-figure figcaption{font-size:14px;line-height:1.6;color:var(--muted);margin-top:10px}
+.lightbox{position:fixed;inset:0;z-index:10000;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(12,10,8,.92);cursor:zoom-out;backdrop-filter:blur(4px)}
+.lightbox.open{display:flex}.lightbox img{max-width:96vw;max-height:92vh;border-radius:10px;box-shadow:0 24px 60px rgba(0,0,0,.5)}
+.lightbox-close{position:fixed;top:18px;right:24px;color:#fff;font-size:34px;line-height:1;font-weight:700;cursor:pointer;opacity:.85}
+.kicker{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.55rem;color:#7a5c3a;font-weight:500}
+.hero h1{max-width:none;margin:16px 0 18px;font-size:clamp(32px,5vw,58px);line-height:1.14;overflow-wrap:anywhere}
+.hero p{max-width:none;font-size:clamp(18px,2vw,23px);line-height:1.62;color:#3a342d}
+.article-meta{display:flex;flex-wrap:wrap;gap:8px 16px;margin-top:20px;color:#6a635a;font-size:14px}
+.article-meta span{display:inline-flex;align-items:center;gap:6px}
+.section{padding:54px clamp(20px,6vw,88px);border-top:1px solid var(--line)}
+.inner{width:min(1000px,100%);margin:0 auto}
+.section h2{font-size:clamp(26px,4.2vw,48px);line-height:1.12;margin:0 0 18px}
+.section h3{font-size:clamp(21px,3vw,30px);line-height:1.2;margin:30px 0 12px}
+.lead{font-size:clamp(18px,1.6vw,22px);line-height:1.7;color:#3a342d;max-width:900px}
+.section p{font-size:18px;line-height:1.74;color:#3a342d}.section p+p{margin-top:14px}
+.section ul,.section ol{padding-left:1.4em;font-size:18px;line-height:1.74;color:#3a342d}.section li{margin-bottom:8px}
+.meaning{margin:22px 0;padding:16px 18px;border-left:5px solid var(--blue);background:rgba(86,137,184,.12);border-radius:6px;line-height:1.7;font-size:19px}
+.meaning b{display:block;color:var(--blue);margin-bottom:4px}
+.caveat{margin:0 0 8px;padding:16px 18px;border-left:5px solid var(--orange);background:rgba(232,90,79,.1);border-radius:6px;line-height:1.7;font-size:18px;color:#3a342d}
+.caveat b{display:block;color:var(--orange);margin-bottom:4px}
+.infocard{background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px 24px 22px;box-shadow:0 8px 22px rgba(107,74,42,.08);margin-top:8px}
+.infocard-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.info-item{padding:18px 14px 0}
+.info-item b{display:block;font-size:14px;font-weight:900;letter-spacing:.04em;margin-bottom:7px;text-transform:uppercase}
+.info-item:nth-child(1) b{color:var(--green)}.info-item:nth-child(2) b{color:var(--orange)}.info-item:nth-child(3) b{color:var(--blue)}
+.info-item p{margin:0;font-size:17px;line-height:1.6;color:#3a342d}
+.tagrow{display:flex;flex-wrap:wrap;gap:7px;margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
+.tag{font-size:14px;color:var(--muted);background:var(--soft);border:1px solid var(--line);border-radius:999px;padding:4px 11px}
+.duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:24px}
+.duo.stack{grid-template-columns:1fr}
+.duo .card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:22px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.duo .card.a{border-color:var(--orange)}.duo .card.b{border-color:var(--green);box-shadow:0 8px 24px rgba(95,117,83,.16)}
+.duo .card small{display:block;font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.04em;margin-bottom:9px}
+.duo .card.a small{color:var(--orange)}.duo .card.b small{color:var(--green)}
+.duo .card b{display:block;font-size:22px;line-height:1.3;margin-bottom:12px}.duo .card.a b{color:#c0512f}.duo .card.b b{color:#4a7a59}
+.duo .card p{margin:0;color:#3a342d;line-height:1.75;font-size:18px}
+.duo .card ul{margin:0;padding-left:1.3em}
+.workflow-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:24px}
+.workflow-step{background:#fff;border:1px solid var(--line);border-radius:8px;padding:18px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.workflow-step small{display:block;color:var(--orange);font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;margin-bottom:9px}
+.workflow-step b{display:block;font-size:18px;line-height:1.3;margin-bottom:9px}
+.workflow-step p{margin:0;color:#3a342d;line-height:1.6;font-size:16px}
+.codeblock{background:var(--dark);color:#f3ead9;border-radius:8px;padding:18px 20px;font:500 14px/1.65 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;overflow-x:auto;white-space:pre-wrap;margin:20px 0;box-shadow:0 8px 22px rgba(107,74,42,.12)}
+.cta-band{background:#e6f0e5;color:#3a342d}.cta-band .section{border-top:none}
+.cta-band .inner{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(260px,.85fr);gap:26px;align-items:start}
+.cta-band h2{font-size:clamp(26px,4vw,44px);margin:0 0 16px}.cta-band p,.cta-band .lead{color:rgba(58,52,45,.9);font-size:18px;line-height:1.72}
+.cta-card{border:1px solid #cfe0d2;background:#fbfdfa;border-radius:8px;padding:22px}
+.cta-card b{display:block;color:#48b178;margin-bottom:10px;font-size:18px}.cta-card p{margin:0 0 14px}
+.cta-card a{display:inline-flex;align-items:center;text-decoration:none;border-radius:8px;padding:12px 16px;font-weight:900;background:#5f7553;color:#fff}
+.footer{padding:30px clamp(20px,6vw,88px);font-size:14px;color:var(--muted);background:#fff;border-top:1px solid var(--line)}
+.footer-inner{width:min(1000px,100%);margin:0 auto}
+.footer-links{display:flex;flex-wrap:wrap;gap:6px 12px;margin-bottom:14px}.footer-links a{color:var(--blue);font-weight:900;text-decoration:none;font-size:14px}
+.footer-brand{font-weight:900;font-size:15px;margin-bottom:10px}.footer-note{font-size:13px;line-height:1.6}
+@media(max-width:820px){.infocard-grid{grid-template-columns:1fr}.duo{grid-template-columns:1fr}.workflow-grid{grid-template-columns:1fr}.cta-band .inner{grid-template-columns:1fr}.section{padding:40px 20px}.hero{min-height:52vh;flex-direction:column;justify-content:flex-start;align-items:flex-start;gap:24px}.hero>div{width:100%}.hero-figure{width:100%;max-width:420px}}
+@media(max-width:820px){html,body{overflow-x:hidden}.hero h1{word-break:break-word}}
+</style>
+</head>
+<body class="spotlight">
+<nav class="top">
+  <div class="container">
+    <a class="nav-brand-img" href="../../index.html"><img src="../../images/footer-signature.png" alt="江江教練 | 江昱德"></a>
+    <button class="nav-toggle" aria-label="選單"><span></span><span></span><span></span></button>
+    <ul class="nav-menu">
+      <li><a href="../../index.html">首頁</a></li>
+      <li><a href="../../knowledge-architecture.html">知識架構</a></li>
+      <li><a href="../../courses.html">課程</a></li>
+      <li><a href="../../articles.html" class="active">深度文章</a></li>
+      <li><a href="../../skills.html">技能包下載</a></li>
+      <li><a href="../../cases.html">服務方案</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="wc wc1"></div>
+  <div class="wc wc2"></div>
+  <div class="wc wc3"></div>
+  <div>
+    <div class="kicker">AI 應用 / AI 工作流</div>
+    <h1>讓兩個 AI 互相挑錯：我的企劃在送出前，先被模擬評審打了 2/5 分</h1>
+    <p>企劃雙軌互審 loop：兩個不同家的 AI 各自獨立寫同一份企劃，再互相挑錯，最後把真正的決定留給自己。一場真實的政府補助提案首跑實錄，附可直接複製的提示詞。</p>
+    <div class="article-meta"><span>案例文章</span><span>發佈 2026-07-12</span><span>最後更新 2026-07-12</span></div>
+  </div>
+  <figure class="hero-figure">
+    <img src="../../images/articles/dual-track-planning-loop-cover.jpg" alt="企劃雙軌 loop 封面：兩條軌道各一台終端機，匯合成一份文件，Mika 拿著拍板印章" loading="lazy">
+    <figcaption>兩個 AI 各寫一份，互相挑錯。</figcaption>
+  </figure>
+</section>
+
+<main>
+
+<section class="section" id="start">
+  <div class="inner">
+    <h2>這篇在講什麼</h2>
+    <p class="lead">AI 幫你寫企劃、提案、策略文件，寫得又快又順。但你有沒有想過，它從頭到尾都在順著你講？這篇記錄我怎麼讓兩個不同家的 AI 各自獨立寫同一份企劃，再互相挑錯，最後把真正的決定留給自己。整場流程今天真實跑過一次，數據和翻車點都在文章裡。</p>
+    <div class="duo stack">
+      <div class="card a">
+        <b>適合誰</b>
+        <ul>
+          <li>已經在用 AI 寫提案、企劃、報告，但心裡毛毛的，不確定能不能直接交出去的人</li>
+          <li>手上有 Claude 也有 ChatGPT，想知道兩個一起用可以強在哪的人</li>
+          <li>要送政府補助案、投標案、對客戶提案，輸不起一次盲點的人</li>
+        </ul>
+      </div>
+      <div class="card b">
+        <b>你會得到什麼</b>
+        <ul>
+          <li>一套完整的雙軌互審流程，五個步驟，照做就能跑</li>
+          <li>兩段可直接複製的提示詞，不用裝任何工具</li>
+          <li>一份真實案例的翻車清單：AI 提前演出了我的提案會怎麼死</li>
+        </ul>
+      </div>
+    </div>
+    <p style="margin-top:18px">趕時間的話，直接跳到<a href="#prompts">「你可以怎麼開始」</a>，提示詞在那裡。</p>
+  </div>
+</section>
+
+<section class="section" id="scene">
+  <div class="inner">
+    <h2>真實現場</h2>
+    <p>今天我要寫一份 SBIR 政府研發補助的提案企劃。</p>
+    <p>事情的起點是我看到市場上一堆公司在做 AI CRM、企業資訊整合平台，自動串接一大堆系統。我的定位跟他們用分工看：他們是資料水管工，把結構化資料匯集乾淨；我做知識萃取，把非結構化的文件變成組織的知識資產。這個定位要寫成一份能送審的企劃。</p>
+    <p>以前的做法是開一個 AI，跟它來回改。改到第五輪，文件看起來很完整，每一段都很有道理。但我後來發現一個問題：它每一輪都在順著我上一輪講的方向走。我說分工好，它就把分工寫得頭頭是道；我說公益組織是主場，它就把公益寫得情真意切。整份文件其實是我自己的想法被放大，沒有人在裡面唱反調。</p>
+    <p>送審的文件輸一次就是輸了，評審可不會順著我。</p>
+  </div>
+</section>
+
+<section class="section" id="problems">
+  <div class="inner">
+    <h2>問題來源</h2>
+    <p class="lead">拆開來看，單一 AI 寫重要文件有三個結構性的問題。</p>
+    <div class="infocard">
+      <div class="infocard-grid">
+        <div class="info-item">
+          <b>一、自審失明</b>
+          <p>同一個模型，寫的時候用什麼邏輯，審的時候就用什麼邏輯。它挑不出自己邏輯裡的洞，就像我們自己校對自己的作文，錯字永遠找不完。</p>
+        </div>
+        <div class="info-item">
+          <b>二、錨定</b>
+          <p>你先講了方向，AI 就在你的方向裡面做到最好。它很少退一步問：這個方向本身對嗎？你越早給結論，它就越早停止懷疑。</p>
+        </div>
+        <div class="info-item">
+          <b>三、只求完成</b>
+          <p>重要文件需要的是被挑戰，而 AI 預設的服務姿態是把東西完成。完成和正確中間，隔著一整排你看不到的地雷。</p>
+        </div>
+      </div>
+    </div>
+    <p style="margin-top:22px">有人會說，叫同一個 AI 換個角色自我批評不就好了？我試過，換角色換得掉稱呼，換不掉底層的思考習慣，它還是用同一套邏輯在審自己，挑出來的多半是表面問題。</p>
+  </div>
+</section>
+
+<section class="section" id="loop">
+  <div class="inner">
+    <h2>機制解法：企劃雙軌互審 loop</h2>
+    <p class="lead">我的解法是讓兩個不同家的模型各自獨立跑完全程，再互相挑錯。今天的配置是 Claude 一軌、Codex 一軌（Codex 是 ChatGPT 家的桌面 AI，重點只有一個：它跟 Claude 是不同公司訓練出來的腦袋）。整條流程五步。</p>
+    <div class="workflow-grid">
+      <div class="workflow-step"><small>STEP 0</small><b>同一份輸入</b><p>拍板過的想法、背景文件、官方資料整理成同一包，兩軌從同一條起跑線出發。</p></div>
+      <div class="workflow-step"><small>STEP 1</small><b>雙軌獨立跑</b><p>各自寫初稿、顧問挑盲點、模擬評審打分、自己修訂。過程互相看不到。</p></div>
+      <div class="workflow-step"><small>STEP 2</small><b>互審</b><p>交換成品，你審我的、我審你的，固定五個審查重點。</p></div>
+      <div class="workflow-step"><small>STEP 3</small><b>整合，分歧交人</b><p>收斂的放心採用；分歧的列成決策點，AI 不准自己拍板。</p></div>
+      <div class="workflow-step"><small>STEP 4</small><b>對家終審</b><p>整合版再給另一家審一次，抓整合者自己的偏心。</p></div>
+    </div>
+    <figure class="inline-figure">
+      <img src="../../images/articles/dual-track-planning-loop-five-steps.jpg" alt="雙軌 loop 五步流程圖：同一份輸入、雙軌獨立跑、互審、整合分歧交人、對家終審，第五步後虛線繞回第一步" loading="lazy">
+      <figcaption>雙軌 loop 五步：第五步之後繞回第一步，形成迴圈。</figcaption>
+    </figure>
+
+    <h3>第零步：同一份輸入</h3>
+    <p>我把拍板過的想法、背景文件、官方資料位置整理成同一包，兩軌拿到的輸入完全相同。關鍵紀律：交接給第二軌的內容，不能夾帶第一軌已經寫出來的任何觀點，兩邊要從同一條起跑線出發。</p>
+
+    <h3>第一步：雙軌獨立跑，互相看不到</h3>
+    <p>每一軌各自做四件事：寫企劃初稿、找嚴格的顧問視角挑盲點、模擬目標評審打分、依前兩項自己修訂。</p>
+    <p>我這軌的顧問是兩個人設技能包，也就是把一位名人的思考方法整理成 AI 可以扮演的角色設定：第一性原理的馬斯克視角，和講槓桿與專屬知識的納瓦爾視角。</p>
+    <div class="meaning"><b>馬斯克那關最狠的一句</b>整份文件裡，沒有任何一個人為「知識萃取」這四個字付過錢。你有很漂亮的分工敘事，但敘事只是敘事，證據才是證據。</div>
+    <p>納瓦爾那關則把整份企劃的重心撬動了：與其說我們會萃取知識，先去證明萃取的品質可以被驗證，建出那把量尺，量化、研發性、智財、護城河四個問題會一起消失。</p>
+    <p>模擬評審這關，我先讓一個負責搜資料的子代理，把知識庫裡的官方審查資料盤出來：評分構面、查核點格式要求、常見扣分點、資格紅線。然後用這些資料餵出三位模擬評審委員，技術型、產業型、執行型各一位，每位帶著不同的挑剔習慣。三位給我的初稿打了 2 分、2 分、3 分，滿分 5 分。共同死因只有一個：整份企劃找不到一個合格的量化查核點，官方明文要「完成某模組、達成百分之幾」這種可驗收的寫法，我的初稿全是質化描述。</p>
+    <p>同一時間，Codex 那軌在完全看不到我這軌的狀態下獨立跑完。它自己寫了一版、自己挑了十五個盲點、自己模擬評審給自己打 57 分，滿分 100，還列了八個可能落選的死因。它甚至查出一個案別層級的問題：官方資料裡找不到台北市有獨立的「地方型 SBIR」頁面，提案的補助對象可能要換。</p>
+
+    <h3>第二步：互審</h3>
+    <p>兩軌都完成後交換。你審我的成品，我審你的成品。審查重點固定五項：有沒有曲解原意、內部有沒有矛盾、官方資料引用對不對、有沒有雙方都漏掉的新盲點、決策選項的呈現公不公平。</p>
+
+    <h3>第三步：整合，分歧交給人</h3>
+    <p>由發起的那一軌把兩份成品和兩份互審意見整合成一版。鐵則是：兩軌意見收斂的地方，可以放心採用；兩軌分歧的地方，AI 不准自己拍板，要列成決策點交給我。</p>
+    <p>今天的分歧點是受眾要鎖誰。一軌主張鎖公益組織，一軌主張鎖小微企業。這種商業判斷，AI 給選項和利弊就好，拍板是我的事。</p>
+
+    <h3>第四步：對家終審</h3>
+    <p>整合版是我這軌產的，所以最後再丟給對家審一次。這一關抓到了整場最有價值的一刀：我在呈現兩個受眾選項時，把既有的課程收入放進了其中一案的優勢欄。終審指出，課程收入證明的是執行能力，拿來當「這個服務有人要買」的需求證據，是在騙自己。兩案的需求證據其實都是零，起跑點相同。</p>
+    <div class="meaning"><b>為什麼一個 AI 抓不到</b>這個偏心是我自己完全沒意識到的。一個 AI 不會抓到，因為那份偏心一開始就是順著我的敘事長出來的。</div>
+  </div>
+</section>
+
+<section class="section" id="limits">
+  <div class="inner">
+    <h2>它保證什麼、不保證什麼</h2>
+    <div class="duo">
+      <div class="card b">
+        <small>保證</small>
+        <b>雙軌做得到的</b>
+        <p>盲點覆蓋比單模型大得多，兩家收斂的結論可信度高；防錨定，因為第二軌從乾淨的輸入出發；整個過程留下可稽核的工作檔，每個修改都能回溯到是誰、哪一關提出來的。</p>
+      </div>
+      <div class="card a">
+        <small>不保證</small>
+        <b>雙軌做不到的</b>
+        <p>模擬評審是預演，真的評審委員怎麼想，模擬替代不了，送件前還是要找寫過或審過案子的真人過一次。AI 的所有產出都是選項和證據，拍板的責任沒有辦法外包。官方資料會過期，送件前要回原始來源重核。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="prompts">
+  <div class="inner">
+    <h2>你可以怎麼開始</h2>
+    <p class="lead">不用裝任何工具，開兩個不同家的 AI 就能跑簡化版。三步。</p>
+    <p>第一步，把同一份需求分別貼給兩個 AI，提示詞可以直接用這段：</p>
+    <div class="codeblock">我要寫一份[企劃/提案]，需求如下：[貼上你的需求與背景]。
+請你獨立完成三步：
+1. 寫出初稿。
+2. 換上一位嚴格顧問的角色，列出這份初稿的 5 到 8 個盲點，每個附上「怎麼補」。
+3. 模擬[目標審查者，例如補助評審/客戶的決策主管]，對初稿打分，列出他會問的尖銳問題和最可能落選的死因。
+最後依 2、3 修訂成你的最終版。過程不要問我，直接跑完。</div>
+    <p>第二步，交換互審。把 A 的最終版貼給 B，B 的貼給 A：</p>
+    <div class="codeblock">這是另一個 AI 獨立完成的同題企劃（如下）。請你只審查，不要重寫：
+1. 有沒有曲解我的原意
+2. 內部有沒有前後矛盾
+3. 事實與資料有沒有錯
+4. 它沒發現、你看得到的新盲點
+5. 選項呈現有沒有偏袒</div>
+    <p>第三步，挑一個 AI 把兩版和互審意見整合，分歧的地方自己拍板。</p>
+    <h3>進階：讓兩家 AI 直接互叫</h3>
+    <p>如果你常同時用 Claude 跟 Codex，或想把這條 loop 跑成半自動，推薦兩個開源套件：</p>
+    <ul>
+      <li><a href="https://github.com/openai/codex-plugin-cc" target="_blank" rel="noopener">openai/codex-plugin-cc</a>：讓 Claude Code 裡可以直接叫 Codex</li>
+      <li><a href="https://github.com/sendbird/cc-plugin-codex" target="_blank" rel="noopener">sendbird/cc-plugin-codex</a>：讓 Codex 裡可以反過來叫 Claude Code</li>
+    </ul>
+    <p>我自己的分工習慣：Claude 負責分析推理，Codex 負責執行。跑 loop 遇事不決，兩家模型自己討論，真的喬不定再來叫我。知識工作者最小的起手式就是：寫完文案、計劃後，讓另一個模型來審稿。</p>
+    <figure class="inline-figure">
+      <img src="../../images/articles/dual-track-planning-loop-dual-model.jpg" alt="Claude 與 Codex 雙模型工作流圖卡：分析交給 Claude，執行交給 Codex，兩個套件讓雙方互叫" loading="lazy">
+      <figcaption>雙模型工作流：分析交給 Claude，執行交給 Codex。</figcaption>
+    </figure>
+    <div class="caveat"><b>兩個提醒</b>第一，順序很重要：先各自跑完，再交換。先交換再寫，第二個 AI 就被錨定了，雙軌就白開了。第二，收斂處放心用，分歧處自己想，這是整套流程裡人最不能缺席的位置。</div>
+  </div>
+</section>
+
+<section class="section" id="recap">
+  <div class="inner">
+    <h2>收尾 Recap</h2>
+    <ul>
+      <li>單一 AI 寫重要文件的三個結構問題：自審失明、錨定、只求完成</li>
+      <li>雙軌互審 loop 五步：同輸入、獨立跑、互審、整合留決策點、對家終審</li>
+      <li>實跑結果：模擬評審提前演出死因，終審抓到我自己看不到的偏心</li>
+      <li>收斂的可信，分歧的交人，模擬不取代真人</li>
+      <li>兩段提示詞，今天就能開兩個視窗跑起來</li>
+    </ul>
+    <h3>給自己的定位提醒</h3>
+    <p>這套流程慢嗎？比單開一個 AI 慢。但我要的從來就是更快寫完一份文件嗎？我要的是送出去的東西經得起挑戰，是每一次跑完之後，盲點清單、評審視角、決策紀錄都留在我的知識庫裡，變成下一次的起點。用 AI 輔助決策、累積知識資產，速度只是順便的。</p>
+    <div class="tagrow">
+      <span class="tag">AI工作流</span><span class="tag">跨家審稿</span><span class="tag">輔助決策</span><span class="tag">案例文章</span><span class="tag">基礎</span>
+    </div>
+  </div>
+</section>
+
+<div class="cta-band">
+  <section class="section">
+    <div class="inner">
+      <div>
+        <h2>我是江江教練</h2>
+        <p class="lead">隱性知識提煉師、AI 應用規劃師。我每月固定舉辦兩場免費線上講座，分享實戰經驗與方法論。如果你對這些主題感興趣，想持續學習，或是有顧問需求，都歡迎先從社群開始。</p>
+        <p>主要討論：善用 AI 作為思考夥伴，提升決策品質與思考深度；把知識、經驗，整理成提示詞、技能包、知識庫，讓 AI 能靈活運用。</p>
+      </div>
+      <div class="cta-card">
+        <b>對 AI × 知識管理有興趣？</b>
+        <p>歡迎加入我的 LINE 社群，免費講座與方法論都先在這裡分享。</p>
+        <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">加入 LINE 社群 ↗</a>
+      </div>
+    </div>
+  </section>
+</div>
+
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">江江教練 · AI 知識管理</div>
+    <div class="footer-links">
+      <a href="../../articles.html">← 回深度文章總站</a>
+      <a href="../../index.html">首頁</a>
+      <a href="../../learn.html">自學資源</a>
+      <a href="../../skills.html">技能包下載</a>
+      <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">LINE 社群 ↗</a>
+      <a href="https://www.threads.com/@jiang_yude_coach" target="_blank" rel="noopener">Threads ↗</a>
+      <a href="https://vocus.cc/salon/Jiang_Coach" target="_blank" rel="noopener">方格子 ↗</a>
+    </div>
+    <div class="footer-note">這是一篇案例文章，整理我對「企劃雙軌互審 loop」的做法與看法，供你參考。</div>
+  </div>
+</footer>
+
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <span class="lightbox-close" aria-label="關閉">×</span>
+  <img id="lightbox-img" src="" alt="放大檢視">
+</div>
+<script>
+(function(){
+  var box=document.getElementById('lightbox'),boxImg=document.getElementById('lightbox-img');
+  document.querySelectorAll('.hero-figure img,.inline-figure img').forEach(function(img){
+    img.addEventListener('click',function(){boxImg.src=img.currentSrc||img.src;boxImg.alt=img.alt||'放大檢視';box.classList.add('open');box.setAttribute('aria-hidden','false');});
+  });
+  function close(){box.classList.remove('open');box.setAttribute('aria-hidden','true');boxImg.src='';}
+  box.addEventListener('click',close);
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
+})();
+</script>
+
+<script src="../../spotlight.js"></script>
+<script src="../../articles-data.js"></script>
+<script src="../../related-render.js"></script>
+<script src="/views.js"></script>
+</body>
+</html>
