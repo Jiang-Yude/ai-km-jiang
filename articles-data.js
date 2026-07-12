@@ -461,7 +461,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["strong-ai-models-knowledge-workflow-road", "questionnaire-to-slides-agent-workflow", "teacher-prep-knowledge-workflow", "docs-as-system-design-agent", "how-to-train-your-ai-employee", "my-three-loops", "ai-loop-safety-recovery", "recovery-over-perfection", "ai-changed-behavior-into-workflow", "ai-delegators-optimism", "publish-gate", "loop-engineering-guardrails"]
+    related: ["strong-ai-models-knowledge-workflow-road", "questionnaire-to-slides-agent-workflow", "teacher-prep-knowledge-workflow", "docs-as-system-design-agent", "how-to-train-your-ai-employee", "my-three-loops", "ai-loop-safety-recovery", "recovery-over-perfection", "ai-changed-behavior-into-workflow", "ai-delegators-optimism", "publish-gate", "loop-engineering-guardrails", "dual-centaur-meeting"]
   },
 
   /* ── 無形資產，越分享越豐盛（觀點）── */
@@ -499,7 +499,7 @@ window.ARTICLES = [
       content_type: ["趨勢文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["market-to-ai","dual-track-planning-loop"]
+    related: ["market-to-ai","dual-track-planning-loop", "dual-centaur-meeting"]
   },
 
   /* ── 可以學用 AI 行銷，還可以學對 AI 行銷（觀點）── */
@@ -722,7 +722,7 @@ window.ARTICLES = [
       content_type: ["趨勢文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["what-is-loop-engineering", "my-three-loops", "agent-workflow-builds-automation", "docs-as-system-design-agent", "decision-ladder-non-programmer", "ai-capability-tiers"]
+    related: ["what-is-loop-engineering", "my-three-loops", "agent-workflow-builds-automation", "docs-as-system-design-agent", "decision-ladder-non-programmer", "ai-capability-tiers", "dual-centaur-meeting"]
   },
 
   /* ── 把不知不覺被 AI 改變的行為，抓成一套流程（教學）── */
@@ -1022,5 +1022,18 @@ window.ARTICLES = [
     tags: {"topic":["AI工作流","跨家審稿","輔助決策"],"level":["基礎"],"content_type":["案例文章"]},
     external: { threads: null, vocus: null },
     related: ["loop-engineering-guardrails", "a2a-agent-protocol", "docs-as-system-design-agent"]
+  },
+  {
+    id: "dual-centaur-meeting",
+    url: "articles/dual-centaur-meeting/",
+    date: "2026-07-11",
+    updated: "2026-07-12",
+    title: "雙人馬會議：我帶我的 Agent，你帶你的 Agent，四方一起開",
+    problem: "複雜專案的會議常開兩三個小時才對齊目標，全部交給 AI 代理去談，又會掉太多細節。",
+    audience: "跟客戶或合作夥伴談複雜專案、已經有自己常用 AI，想讓它從打草稿進到正式協作流程的知識工作者。",
+    summary: "雙人馬會議是中間解：人加 Agent 對 人加 Agent，Agent 先把資料過濾完，人只聊決策、信任與承諾。附五步流程與 PAAP、AAP、AA 三階段演進判斷，以及納瓦爾對談的兩個可回看時間碼。",
+    tags: {"topic":["AIAgent","AI工作流","AI趨勢"],"level":["基礎"],"content_type":["觀點文章"]},
+    external: { threads: null, vocus: null },
+    related: ["a2a-agent-protocol", "ai-delegators-optimism", "what-is-loop-engineering"]
   }
 ];
