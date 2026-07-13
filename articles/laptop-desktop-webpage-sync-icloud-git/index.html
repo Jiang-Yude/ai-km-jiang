@@ -1,0 +1,442 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="index,follow">
+<title>在家裡桌機上用 Codex 做好網頁後，出門用筆電想要改，就找不到檔案了？｜江江教練 · AI 知識管理</title>
+<meta name="description" content="桌機做好網頁，出門筆電想改卻找不到檔案？問題出在專案放錯地方。iCloud 適合放文件，程式碼要交給 git。一次真實搬家紀錄，附完整步驟與可複製提示詞，讓多台電腦、多個 AI 助手共用唯一真相。">
+<link rel="canonical" href="https://ai-km-jiang.vercel.app/articles/laptop-desktop-webpage-sync-icloud-git/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="桌機做好網頁，出門筆電想改卻找不到檔案？問題出在專案放錯地方｜江江教練">
+<meta property="og:image" content="https://ai-km-jiang.vercel.app/images/og/laptop-desktop-webpage-sync-icloud-git.jpg">
+<meta property="og:description" content="iCloud 適合放文件，程式碼要交給 git。一次真實搬家紀錄，讓多台電腦、多個 AI 助手共用唯一真相。">
+<meta property="og:url" content="https://ai-km-jiang.vercel.app/articles/laptop-desktop-webpage-sync-icloud-git/">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:site_name" content="江江教練 · AI 知識管理">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="桌機做好網頁，出門筆電想改卻找不到檔案？｜江江教練">
+<meta name="twitter:image" content="https://ai-km-jiang.vercel.app/images/og/laptop-desktop-webpage-sync-icloud-git.jpg">
+<meta name="twitter:description" content="iCloud 適合放文件，程式碼要交給 git。一次真實搬家紀錄，讓多台電腦、多個 AI 助手共用唯一真相。">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"在家裡桌機上用 Codex 做好網頁後，出門用筆電想要改，就找不到檔案了？問題出在你把專案放錯地方","description":"iCloud 適合放文件，程式碼要交給 git。一次真實搬家紀錄，附完整步驟與可複製提示詞，讓多台電腦、多個 AI 助手共用唯一真相。","author":{"@type":"Person","name":"江昱德","alternateName":"江江教練","jobTitle":"隱性知識提煉師、AI 應用規劃師"},"isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://ai-km-jiang.vercel.app/"},"inLanguage":"zh-Hant","url":"https://ai-km-jiang.vercel.app/articles/laptop-desktop-webpage-sync-icloud-git/"}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{--ink:#1a1612;--paper:#fefcf8;--muted:#6a635a;--line:#d8cdb8;--green:#5f7553;--blue:#5689b8;--orange:#e85a4f;--soft:#faf5ec;--dark:#2a2018;--shadow:0 18px 45px rgba(107,74,42,.14);--sp-shadow:hsla(35,50%,60%,.15);--sp-shadow-edge:hsla(35,50%,68%,.03);--sp-radius:400px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC","Segoe UI",sans-serif}
+a{color:inherit}
+nav.top{position:sticky;top:0;background:rgba(254,252,248,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid #d8cdb8;z-index:100}
+nav.top .container{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:24px;padding:14px 32px}
+.nav-brand-img{justify-self:start;display:flex;align-items:center;text-decoration:none;flex-shrink:0;transition:opacity .2s}
+.nav-brand-img:hover{opacity:.8}.nav-brand-img img{height:40px;width:auto;display:block}
+nav.top ul.nav-menu{justify-self:end;display:flex;gap:22px;list-style:none;margin:0;padding:0;font-size:.95rem;white-space:nowrap}
+nav.top ul.nav-menu a{color:#3a342d;text-decoration:none;transition:color .2s;font-weight:500;white-space:nowrap}
+nav.top ul.nav-menu a:hover{color:#1a1612}nav.top ul.nav-menu a.active{color:#1a1612;font-weight:700}
+.nav-toggle{display:none;background:none;border:none;padding:6px;cursor:pointer;width:36px;height:36px;position:relative}
+.nav-toggle span{display:block;position:absolute;left:8px;right:8px;height:2px;background:#1a1612;border-radius:2px;transition:transform .25s,opacity .25s,top .25s}
+.nav-toggle span:nth-child(1){top:11px}.nav-toggle span:nth-child(2){top:17px}.nav-toggle span:nth-child(3){top:23px}
+.nav-toggle.open span:nth-child(1){top:17px;transform:rotate(45deg)}.nav-toggle.open span:nth-child(2){opacity:0}.nav-toggle.open span:nth-child(3){top:17px;transform:rotate(-45deg)}
+@media(max-width:860px){
+ nav.top .container{grid-template-columns:auto 1fr auto;padding:10px 16px;gap:12px}
+ .nav-brand-img img{height:32px}
+ .nav-toggle{display:block;justify-self:end}
+ nav.top ul.nav-menu{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(254,252,248,.98);backdrop-filter:blur(14px);border-bottom:1px solid #d8cdb8;flex-direction:column;gap:0;padding:8px 0;box-shadow:0 10px 24px rgba(107,74,42,.08)}
+ nav.top ul.nav-menu.open{display:flex}
+ nav.top ul.nav-menu li{border-bottom:1px solid #e8dfc9}
+ nav.top ul.nav-menu li:last-child{border-bottom:none}
+ nav.top ul.nav-menu a{display:block;padding:14px 20px;font-size:1.06rem}
+}
+body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradient(var(--sp-radius) circle at var(--mx,50%) var(--my,50%),var(--sp-shadow) 0%,var(--sp-shadow-edge) 45%,transparent 75%);pointer-events:none;z-index:9999;mix-blend-mode:multiply;transition:background .06s linear}
+.hero{position:relative;overflow:hidden;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:72px;padding:96px clamp(20px,6vw,88px) 80px;background:linear-gradient(180deg,#fffcf0 0%,#f9e9d2 100%);color:#1a1612;border-bottom:1px solid #d8cdb8}
+.hero .wc{position:absolute;border-radius:50%;filter:blur(60px);pointer-events:none;z-index:0}
+.hero .wc1{width:420px;height:360px;top:-120px;right:-80px;background:#e8884b;opacity:.15}
+.hero .wc2{width:360px;height:300px;bottom:-110px;left:-70px;background:#5f7553;opacity:.13}
+.hero .wc3{width:280px;height:260px;top:34%;left:14%;background:#a08144;opacity:.10}
+.hero>div{flex:none;width:860px;max-width:100%;position:relative;z-index:2}
+.inline-figure{margin:30px auto 8px;max-width:820px}
+.inline-figure img{display:block;width:100%;border-radius:14px;border:1px solid var(--line);box-shadow:var(--shadow);background:#fff;cursor:zoom-in}
+.inline-figure figcaption{font-size:14px;line-height:1.6;color:var(--muted);margin-top:10px}
+.lightbox{position:fixed;inset:0;z-index:10000;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(12,10,8,.92);cursor:zoom-out;backdrop-filter:blur(4px)}
+.lightbox.open{display:flex}.lightbox img{max-width:96vw;max-height:92vh;border-radius:10px;box-shadow:0 24px 60px rgba(0,0,0,.5)}
+.lightbox-close{position:fixed;top:18px;right:24px;color:#fff;font-size:34px;line-height:1;font-weight:700;cursor:pointer;opacity:.85}
+.kicker{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.55rem;color:#7a5c3a;font-weight:500}
+.hero h1{max-width:none;margin:16px 0 18px;font-size:clamp(30px,4.6vw,54px);line-height:1.18;overflow-wrap:anywhere}
+.hero p{max-width:none;font-size:clamp(18px,2vw,23px);line-height:1.62;color:#3a342d}
+.section{padding:54px clamp(20px,6vw,88px);border-top:1px solid var(--line)}
+.inner{width:min(1000px,100%);margin:0 auto}
+.section h2{font-size:clamp(26px,4.2vw,48px);line-height:1.12;margin:0 0 18px}
+.section h3{font-size:clamp(21px,3vw,30px);line-height:1.2;margin:30px 0 12px}
+.lead{font-size:clamp(18px,1.6vw,22px);line-height:1.7;color:#3a342d;max-width:900px}
+.section p{font-size:18px;line-height:1.74;color:#3a342d}.section p+p{margin-top:14px}
+.section ul,.section ol{padding-left:1.4em;font-size:18px;line-height:1.74;color:#3a342d}.section li{margin-bottom:8px}
+.meaning{margin:22px 0;padding:16px 18px;border-left:5px solid var(--blue);background:rgba(86,137,184,.12);border-radius:6px;line-height:1.7;font-size:19px}
+.meaning b{display:block;color:var(--blue);margin-bottom:4px}
+.caveat{margin:0 0 8px;padding:16px 18px;border-left:5px solid var(--orange);background:rgba(232,90,79,.1);border-radius:6px;line-height:1.7;font-size:18px;color:#3a342d}
+.caveat b{display:block;color:var(--orange);margin-bottom:4px}
+.infocard{background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px 24px 22px;box-shadow:0 8px 22px rgba(107,74,42,.08);margin-top:8px}
+.infocard-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.info-item{padding:18px 14px 0}
+.info-item b{display:block;font-size:14px;font-weight:900;letter-spacing:.04em;margin-bottom:7px;text-transform:uppercase}
+.info-item:nth-child(1) b{color:var(--green)}.info-item:nth-child(2) b{color:var(--orange)}.info-item:nth-child(3) b{color:var(--blue)}
+.info-item p{margin:0;font-size:17px;line-height:1.6;color:#3a342d}
+.duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:24px}
+.duo.stack{grid-template-columns:1fr}
+.duo .card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:22px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.duo .card.a{border-color:var(--orange)}.duo .card.b{border-color:var(--green);box-shadow:0 8px 24px rgba(95,117,83,.16)}
+.duo .card small{display:block;font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.04em;margin-bottom:9px}
+.duo .card.a small{color:var(--orange)}.duo .card.b small{color:var(--green)}
+.duo .card b{display:block;font-size:22px;line-height:1.3;margin-bottom:12px}.duo .card.a b{color:#c0512f}.duo .card.b b{color:#4a7a59}
+.duo .card p{margin:0;color:#3a342d;line-height:1.75;font-size:18px}
+.workflow-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:24px}
+.workflow-step{background:#fff;border:1px solid var(--line);border-radius:8px;padding:18px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.workflow-step small{display:block;color:var(--orange);font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;margin-bottom:9px}
+.workflow-step b{display:block;font-size:18px;line-height:1.3;margin-bottom:9px}
+.workflow-step p{margin:0;color:#3a342d;line-height:1.6;font-size:16px}
+.codeblock{background:var(--dark);color:#f3ead9;border-radius:8px;padding:18px 20px;font:500 14px/1.65 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;overflow-x:auto;white-space:pre-wrap;margin:20px 0;box-shadow:0 8px 22px rgba(107,74,42,.12)}
+.codeblock .c{color:#f6d7a6;font-weight:600}
+.tagrow{display:flex;flex-wrap:wrap;gap:7px;margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
+.tag{font-size:14px;color:var(--muted);background:var(--soft);border:1px solid var(--line);border-radius:999px;padding:4px 11px}
+.cta-band{background:#e6f0e5;color:#3a342d}.cta-band .section{border-top:none}
+.cta-band .inner{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(260px,.85fr);gap:26px;align-items:start}
+.cta-band h2{font-size:clamp(26px,4vw,44px);margin:0 0 16px}.cta-band p,.cta-band .lead{color:rgba(58,52,45,.9);font-size:18px;line-height:1.72}
+.cta-card{border:1px solid #cfe0d2;background:#fbfdfa;border-radius:8px;padding:22px}
+.cta-card b{display:block;color:#48b178;margin-bottom:10px;font-size:18px}.cta-card p{margin:0 0 14px}
+.cta-card a{display:inline-flex;align-items:center;text-decoration:none;border-radius:8px;padding:12px 16px;font-weight:900;background:var(--green);color:#fff}
+.footer{padding:30px clamp(20px,6vw,88px);font-size:14px;color:var(--muted);background:#fff;border-top:1px solid var(--line)}
+.footer-inner{width:min(1000px,100%);margin:0 auto}
+.footer-links{display:flex;flex-wrap:wrap;gap:6px 12px;margin-bottom:14px}.footer-links a{color:var(--blue);font-weight:900;text-decoration:none;font-size:14px}
+.footer-brand{font-weight:900;font-size:15px;margin-bottom:10px}.footer-note{font-size:13px;line-height:1.6}
+@media(max-width:820px){.infocard-grid{grid-template-columns:1fr}.duo{grid-template-columns:1fr}.workflow-grid{grid-template-columns:1fr}.cta-band .inner{grid-template-columns:1fr}.section{padding:40px 20px}.hero{min-height:52vh;flex-direction:column;justify-content:flex-start;align-items:flex-start;gap:24px}.hero>div{width:100%}}
+@media(max-width:820px){html,body{overflow-x:hidden}.hero h1{word-break:break-word}}
+</style>
+</head>
+<body class="spotlight">
+<nav class="top">
+  <div class="container">
+    <a class="nav-brand-img" href="../../index.html"><img src="../../images/footer-signature.png" alt="江江教練 | 江昱德"></a>
+    <button class="nav-toggle" aria-label="選單"><span></span><span></span><span></span></button>
+    <ul class="nav-menu">
+      <li><a href="../../index.html">首頁</a></li>
+      <li><a href="../../knowledge-architecture.html">知識架構</a></li>
+      <li><a href="../../courses.html">課程</a></li>
+      <li><a href="../../articles.html" class="active">深度文章</a></li>
+      <li><a href="../../skills.html">技能包下載</a></li>
+      <li><a href="../../cases.html">服務方案</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="wc wc1"></div>
+  <div class="wc wc2"></div>
+  <div class="wc wc3"></div>
+  <div>
+    <div class="kicker">AI 工作流 / 多裝置協作</div>
+    <h1>在家裡桌機上用 Codex 做好網頁後，出門用筆電想要改，就找不到檔案了？問題出在你把專案放錯地方</h1>
+    <p>兩台電腦、每台各跑兩個 AI 助手，四個環境碰同一個專案，靠 iCloud 同步注定打架。這是一次真實搬家紀錄：把網頁專案從 iCloud 遷進 git，一小時完工，附完整步驟和可以直接抄的提示詞。</p>
+  </div>
+</section>
+
+<main>
+
+<section class="section" id="start">
+  <div class="inner">
+    <h2>這篇在講什麼</h2>
+    <p class="lead">筆電做到一半的網頁，回到桌機接手，檔案不是舊的就是壞的；桌機做好的，出門用筆電想改，甚至根本找不到。如果你跟我一樣，兩台電腦、每台各跑 Claude Code 和 Codex 兩個 AI 助手，等於四個環境在碰同一個專案，這種事幾乎注定發生。這篇記錄我怎麼在一個晚上把網頁專案從 iCloud 搬進 git，讓四個環境共用同一份真相。整個搬家過程你不用自己打 git 指令，下對指令讓 AI 做就好。</p>
+    <div class="duo stack">
+      <div class="card a">
+        <b>適合誰</b>
+        <ul>
+          <li>有兩台以上電腦，出門筆電、在家桌機，檔案靠 iCloud 或 Google Drive 同步的人</li>
+          <li>已經在用 Claude Code、Codex 這類 AI 助手做網頁或小專案，開始遇到「昨天明明改好了」的人</li>
+          <li>不寫程式，聽過 git 但一直覺得那是工程師的東西的知識工作者</li>
+        </ul>
+      </div>
+      <div class="card b">
+        <b>你會得到什麼</b>
+        <ul>
+          <li>一個判斷原則：什麼東西適合放 iCloud，什麼東西一定要進 git</li>
+          <li>一套照做就能完成的搬家流程，含驗收方法</li>
+          <li>「規則要寫在哪裡，每個 AI 才都看得到」的三層做法，多 AI 環境都適用</li>
+        </ul>
+      </div>
+    </div>
+    <p style="margin-top:18px">趕時間？<a href="#getstarted">直接跳到「你可以怎麼開始」</a>，先把提示詞拿走。</p>
+  </div>
+</section>
+
+<section class="section" id="scene">
+  <div class="inner">
+    <h2>真實現場</h2>
+    <p>我平常做網頁，桌機上是 Codex 和 Claude Code 輪流上陣，筆電上也各有一套。2026 年 7 月 11 日晚上，我跟桌機的 Claude Code 說了一個困擾很久的問題：我出門的時候用筆電做網頁，回家想用桌機接手，常常出問題。反過來也一樣，桌機做好的網頁，出門想用筆電改個小地方，也會出問題。</p>
+    <p>盤點下來，我的工作環境長這樣：桌機和筆電各一台，每台上面跑 Claude Code 和 Codex，總共四個 AI 環境。專案檔案放在 iCloud 的知識庫裡，想說 iCloud 會自動同步，兩台電腦都看得到。</p>
+    <p>聽起來很合理，對吧？我也這樣覺得，直到當天晚上發生一件很妙的事。</p>
+    <div class="meaning">
+      <b>兩分鐘的時間差</b>
+      桌機的 AI 把搬家交接檔寫好存進 iCloud，我請筆電的 AI 去讀。筆電找了兩分鐘，回報：檔案還沒同步下來，連資料夾都還不存在。桌機是 22 點 28 分存的檔，筆電 22 點 30 分去找，找不到。
+    </div>
+    <p>文件晚兩分鐘到，等一下就好。換成程式碼，這兩分鐘裡我在筆電上繼續改，改的是舊版本，兩邊就此分岔，之後不管誰蓋掉誰，都是白工。</p>
+  </div>
+</section>
+
+<section class="section" id="why">
+  <div class="inner">
+    <h2>問題來源</h2>
+    <p class="lead">拆開來看，壞在三個地方。</p>
+    <h3>一、iCloud 的同步是為文件設計的</h3>
+    <p>iCloud 同步有三個特性，放文件沒事，放程式碼就出事：</p>
+    <div class="infocard">
+      <div class="infocard-grid">
+        <div class="info-item">
+          <b>同步有延遲</b>
+          <p>上面那個兩分鐘的現場就是證據。文件等得起，程式碼等不起，因為你不知道自己正在改的是不是最新版。</p>
+        </div>
+        <div class="info-item">
+          <b>衝突處理很安靜</b>
+          <p>兩台電腦都改過同一個檔案，iCloud 常常默默生出「檔名 2」這種衝突副本，或只留下其中一邊；就算跳出提示，也不會告訴你兩邊到底差在哪。</p>
+        </div>
+        <div class="info-item">
+          <b>檔案會被「瘦身」</b>
+          <p>iCloud 為了省空間，會把久沒開的檔案變成雲端佔位符。人看資料夾好好的，預期檔案已在本機的工具，一讀到還沒下載完的佔位檔就可能失敗或逾時。我同一天稍早才處理過另一個案例：一個排程工具放在 iCloud，被佔位檔搞到連線逾時，最後也是搬離 iCloud 才解決。</p>
+        </div>
+      </div>
+    </div>
+    <h3>二、四個 AI 環境，記憶不相通</h3>
+    <p>這是多 AI 工作者特有的問題。先看我說的四個環境是哪四個：</p>
+    <div style="overflow-x:auto">
+      <table style="width:100%;max-width:640px;border-collapse:collapse;margin:20px 0;font-size:18px;line-height:1.6">
+        <tr>
+          <th style="border:1px solid #d8cdb8;padding:12px 14px;background:#faf5ec;text-align:left"></th>
+          <th style="border:1px solid #d8cdb8;padding:12px 14px;background:#faf5ec;text-align:left">Claude Code</th>
+          <th style="border:1px solid #d8cdb8;padding:12px 14px;background:#faf5ec;text-align:left">Codex</th>
+        </tr>
+        <tr>
+          <th style="border:1px solid #d8cdb8;padding:12px 14px;background:#faf5ec;text-align:left">桌機</th>
+          <td style="border:1px solid #d8cdb8;padding:12px 14px">環境 ①，一份自己的記憶</td>
+          <td style="border:1px solid #d8cdb8;padding:12px 14px">環境 ②，一份自己的記憶</td>
+        </tr>
+        <tr>
+          <th style="border:1px solid #d8cdb8;padding:12px 14px;background:#faf5ec;text-align:left">筆電</th>
+          <td style="border:1px solid #d8cdb8;padding:12px 14px">環境 ③，一份自己的記憶</td>
+          <td style="border:1px solid #d8cdb8;padding:12px 14px">環境 ④，一份自己的記憶</td>
+        </tr>
+      </table>
+    </div>
+    <p>四格，四份記憶，互不相通。桌機的 Claude Code 有自己的記憶，筆電的 Claude Code 有另一份，Codex 則完全讀不到 Claude 的記憶。我在桌機跟一個 AI 講好的規矩，其他三個環境一無所知。</p>
+    <p>所以就算搬家搬對了，只要「新家在哪裡」這個資訊只存在某一個 AI 的私有記憶裡，其他三個環境還是會照舊路徑跑去改舊檔案。</p>
+    <h3>三、舊路徑會殘留在各種文件裡</h3>
+    <p>我的知識庫裡有索引頁、操作手冊，裡面寫著「源碼在某某資料夾」。搬家之後這些句子全部變成地雷，哪個 AI 讀到就會被帶去錯的地方。</p>
+  </div>
+</section>
+
+<section class="section" id="how">
+  <div class="inner">
+    <h2>機制解法</h2>
+    <h3>核心原則：文件走 iCloud，程式碼走 git</h3>
+    <p>判斷方式很簡單。問自己一句話：這個東西壞掉一小段，我看得出來嗎？</p>
+    <div class="duo">
+      <div class="card a">
+        <small>DOCUMENT · iCloud</small>
+        <b>文件：iCloud 雙向猜拳</b>
+        <p>文章、筆記、會議記錄。晚兩分鐘同步、偶爾出現一個衝突副本，人眼一看就知道怎麼處理。放 iCloud 沒問題。</p>
+      </div>
+      <div class="card b">
+        <small>CODE · git</small>
+        <b>程式碼：git 中央對帳</b>
+        <p>網頁專案、腳本、設定檔。改錯一行就整個壞掉，而且壞得很安靜。git 的工作方式是對帳：動工前先跟中央對一次帳（pull），收工後把帳回報（push）。兩邊真的改了同一個地方，它會明確告訴你衝突在哪，讓你選；只要有提交過（commit），兩邊的內容都找得回來。</p>
+      </div>
+    </div>
+    <h3>搬家流程（當晚實際走過的版本）</h3>
+    <div class="workflow-grid">
+      <div class="workflow-step">
+        <small>STEP 1</small>
+        <b>盤點</b>
+        <p>先列出所有網頁專案在哪裡、哪些還活著、哪些已經是歷史。我讓 AI 掃了整個知識庫，找出還住在 iCloud 的活躍專案。</p>
+      </div>
+      <div class="workflow-step">
+        <small>STEP 2</small>
+        <b>複製，先不刪</b>
+        <p>把專案複製到本機的 Developer 資料夾，建立 git repo，跟原檔比對確認一致。原資料夾原封不動留著，這是後悔藥。</p>
+      </div>
+      <div class="workflow-step">
+        <small>STEP 3</small>
+        <b>推上 GitHub 私有 repo</b>
+        <p>私有的意思是源碼只有你看得到；網站本來就是部署出去給人看的，訪客完全不受影響。</p>
+      </div>
+      <div class="workflow-step">
+        <small>STEP 4</small>
+        <b>在舊資料夾掛門牌</b>
+        <p>留一個說明檔在原位置，寫清楚「本資料夾已凍結，真相在某某 repo，改這裡無效」。誰路過舊家都會被引導去新家。</p>
+      </div>
+      <div class="workflow-step">
+        <small>STEP 5</small>
+        <b>更新所有舊路徑</b>
+        <p>索引頁、操作手冊裡寫著舊位置的句子，一個一個改成新位置，不留地雷。</p>
+      </div>
+      <div class="workflow-step">
+        <small>STEP 6</small>
+        <b>筆電 clone，雙機驗收</b>
+        <p>筆電寫一行測試、推上去；桌機拉下來看到、刪掉、推回去。一圈走完，代表同步鏈是通的。</p>
+      </div>
+    </div>
+    <p style="margin-top:18px">當晚實測，整條流程走完不到一小時，雙機驗收一次通過。</p>
+    <h3>規則要寫在哪裡：三層</h3>
+    <p>多 AI 環境的關鍵一課：規則的效力範圍，取決於它寫在哪裡。</p>
+    <div class="infocard">
+      <div class="infocard-grid">
+        <div class="info-item">
+          <b>全域規則檔</b>
+          <p>所有 AI 都會先讀的規則主檔。「程式碼一律 git、放本機 Developer」這條寫在這裡，四個環境都吃得到。</p>
+        </div>
+        <div class="info-item">
+          <b>門牌卡</b>
+          <p>跟著檔案走的規則，寫在舊資料夾裡。不管哪個 AI、透過什麼路徑摸到舊檔案，第一眼就看到警告。</p>
+        </div>
+        <div class="info-item">
+          <b>AI 私有記憶</b>
+          <p>每個 AI 自己記的東西，只對它自己有效。方便，但千萬別把「真相在哪」這種關鍵資訊只放這一層。</p>
+        </div>
+      </div>
+    </div>
+    <p>寫的位置越靠近檔案本身，越不容易漏。我的順序是：先寫門牌卡，再更新全域規則，私有記憶只當快取。三層分別怎麼做：</p>
+    <div class="meaning">
+      <b>全域規則檔在哪裡、怎麼寫</b>
+      Claude Code 會自動讀專案資料夾裡的 CLAUDE.md，Codex 會自動讀 AGENTS.md。我的做法是只維護一份 AGENTS.md，放在兩台電腦都同步得到的知識庫根目錄（規則檔是文件，走 iCloud 同步沒問題），CLAUDE.md 只留一行「先讀 AGENTS.md」。內容用白話條列就好，例如：「網頁專案一律放 ~/Developer/、用 git 管理；開工先 git pull，收工必 git push。」一份規則，四個環境都吃得到。
+    </div>
+    <div class="meaning">
+      <b>門牌卡是什麼</b>
+      一個普通的說明檔，放在搬家後的舊資料夾裡，檔名取醒目一點，我用「⚠️ 門牌：本資料夾已遷移」。內容三句話：本資料夾已凍結，不要改；源碼真相在哪個 repo；要接手就 git clone 哪裡。它守的是最後一關：不管哪個 AI、還是三個月後已經忘記這件事的你，循舊路徑摸進來，第一眼就被引導去新家。
+    </div>
+    <div class="meaning">
+      <b>AI 私有記憶怎麼管理</b>
+      你在對話裡叫 AI「記住」的東西，只存在那台機器的那個工具裡，換一台電腦、換一個 AI 都讀不到。管理原則就一條：私有記憶只當快取。對話中發現一條值得跨環境通用的規矩，當場升級寫進全域規則檔；跟特定資料夾綁定的資訊，寫成門牌卡。讓檔案和規則檔當真相，記憶只負責加速。
+    </div>
+    <h3>之後的日常：一條規矩</h3>
+    <div class="meaning">
+      <b>開工先 pull，收工必 push</b>
+      就這一條。出門用筆電：pull、改、push。回家用桌機：pull、接著做。哪台機器、哪個 AI 都一樣。我還請 AI 準備了一個每晚十點的檢查任務，看有沒有改了忘記推的，有就提醒我。
+    </div>
+  </div>
+</section>
+
+<section class="section" id="boundary">
+  <div class="inner">
+    <h2>它保證什麼、不保證什麼</h2>
+    <p>保證的部分：只要照著「開工 pull、收工 push」走，iCloud 那種「默默蓋掉、默默分岔」的無聲事故就不再發生。git 把每一次提交都記了帳，就算真的衝突，它會把衝突攤在你面前讓你選；有提交過的內容，都找得回來。</p>
+    <div class="caveat">
+      <b>誠實邊界</b>
+      它治不了忘記 push。筆電改完沒推，回家桌機還是看不到，這是紀律問題，工具只能提醒。另外，搬家當下所有寫著舊路徑的文件都要更新，漏一份就是一顆地雷，我自己也還有兩份排在待辦清單上，靠門牌卡先擋著。
+    </div>
+  </div>
+</section>
+
+<section class="section" id="getstarted">
+  <div class="inner">
+    <h2>你可以怎麼開始</h2>
+    <p>最小可行的第一步，是讓你的 AI 幫你盤點。把這段丟給你的 Claude Code 或 Codex：</p>
+    <div class="codeblock"><span class="c"># 可以直接複製的盤點提示詞</span>
+我的專案檔案放在 iCloud（或 Google Drive）同步資料夾裡，
+我有多台電腦會輪流編輯。請幫我：
+1. 盤點同步資料夾裡所有的程式碼類專案（網頁、腳本、設定檔）
+2. 列出每個專案：位置、是否活躍、有沒有 git
+3. 給我一份搬遷建議清單：哪些該遷入 git repo、哪些可以不動
+只盤點，先不要動任何檔案。</div>
+    <p>盤點完，挑一個最活躍的專案先搬。搬家也讓 AI 做，一次搬一個：</p>
+    <div class="codeblock"><span class="c"># 搬家執行提示詞（一次搬一個專案）</span>
+請把 [專案資料夾路徑] 遷入 git 管理：
+1. 複製到 ~/Developer/[專案名]/，先不要動原資料夾
+2. git init、首次 commit，跟原檔 diff 確認內容一致
+3. 建 GitHub 私有 repo 並推上去（建立前先跟我確認）
+4. 在原資料夾留一個門牌說明檔：已凍結、真相在哪個 repo
+5. 列出所有寫著舊路徑的筆記或文件，先給我清單，我確認後再改
+全程不刪除任何檔案，每一步回報結果。</div>
+    <p>跑通驗收再放大到其他專案。搬完之後記得三件事：舊資料夾掛門牌、全域規則補一條、所有寫著舊路徑的文件更新掉。</p>
+  </div>
+</section>
+
+<section class="section" id="recap">
+  <div class="inner">
+    <h2>收尾 Recap</h2>
+    <ol>
+      <li>兩台電腦四個 AI 碰同一個專案，靠 iCloud 同步注定打架，因為它的同步是為文件設計的。</li>
+      <li>判斷原則一句話：壞掉一小段人眼看不出來的東西，交給 git。</li>
+      <li>搬家六步：盤點、複製不刪、推私有 repo、掛門牌、更新舊路徑、雙機驗收。</li>
+      <li>規則寫在哪決定誰看得到：全域規則檔給所有 AI、門牌卡跟著檔案走、私有記憶只當快取。</li>
+      <li>日常一條規矩：開工先 pull，收工必 push。</li>
+    </ol>
+    <h3>常見的坑（與對策）</h3>
+    <div class="caveat"><b>搬家後直接刪舊資料夾</b>先凍結掛門牌，用一週確認新流程順了再清，清也是進垃圾桶不直接刪。</div>
+    <div class="caveat"><b>只搬檔案，不更新規則</b>四個環境裡只要有一個還記得舊路徑，它就會回去改舊檔案。搬家和改規則是同一件事的兩半。</div>
+    <div class="caveat"><b>把部署和同步混為一談</b>git 管的是你和你的機器之間的同步；網站部署照原本的流程走，兩件事互不干擾。</div>
+    <div class="caveat"><b>圖快用「小改直接動 iCloud 那份」</b>平行真相都是這樣長出來的，再小的改動也走 repo。</div>
+    <h3>給自己的定位提醒</h3>
+    <p>這篇解的問題很技術，但核心跟我一直講的事情一樣：AI 再聰明，也需要你把環境架好。四個 AI 環境不打架，靠的是一份大家都讀得到的規則、一個唯一的真相位置，和一條簡單到不會忘的紀律。把地基架好，AI 才能真的幫你累積，而且是四個一起幫你累積。</p>
+    <div class="tagrow">
+      <span class="tag">AI 工作流</span><span class="tag">多裝置協作</span><span class="tag">git</span><span class="tag">iCloud</span><span class="tag">Claude Code</span><span class="tag">Codex</span>
+    </div>
+  </div>
+</section>
+
+<div class="cta-band">
+  <section class="section">
+    <div class="inner">
+      <div>
+        <h2>我是江江教練</h2>
+        <p class="lead">隱性知識提煉師、AI 應用規劃師。我每月固定舉辦兩場免費線上講座，分享實戰經驗與方法論。如果你對這些主題感興趣，想持續學習，或是有顧問需求，都歡迎先從社群開始。</p>
+        <p>主要討論：善用 AI 作為思考夥伴，提升決策品質與思考深度；把知識、經驗，整理成提示詞、技能包、知識庫，讓 AI 能靈活運用。</p>
+      </div>
+      <div class="cta-card">
+        <b>加入 LINE 社群</b>
+        <p>對 AI × 知識管理、隱性知識提煉有興趣？從這裡開始。</p>
+        <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">加入社群 →</a>
+      </div>
+    </div>
+  </section>
+</div>
+
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">江江教練 · AI 知識管理</div>
+    <div class="footer-links">
+      <a href="../../articles.html">← 回深度文章總站</a>
+      <a href="../../index.html">首頁</a>
+      <a href="../../learn.html">自學資源</a>
+      <a href="../../skills.html">技能包下載</a>
+      <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">LINE 社群 ↗</a>
+      <a href="https://www.threads.com/@jiang_yude_coach" target="_blank" rel="noopener">Threads ↗</a>
+      <a href="https://vocus.cc/salon/Jiang_Coach" target="_blank" rel="noopener">方格子 ↗</a>
+    </div>
+    <div class="footer-note">這是一篇教學文章，整理我對「多裝置多 AI 的網頁專案同步」的做法，供你參考。</div>
+  </div>
+</footer>
+
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <span class="lightbox-close" aria-label="關閉">×</span>
+  <img id="lightbox-img" src="" alt="放大檢視">
+</div>
+<script>
+(function(){
+  var box=document.getElementById('lightbox'),boxImg=document.getElementById('lightbox-img');
+  document.querySelectorAll('.hero-figure img,.inline-figure img').forEach(function(img){
+    img.addEventListener('click',function(){boxImg.src=img.currentSrc||img.src;boxImg.alt=img.alt||'放大檢視';box.classList.add('open');box.setAttribute('aria-hidden','false');});
+  });
+  function close(){box.classList.remove('open');box.setAttribute('aria-hidden','true');boxImg.src='';}
+  box.addEventListener('click',close);
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
+})();
+</script>
+<script>
+(function(){
+  var t=document.querySelector('.nav-toggle'),m=document.querySelector('ul.nav-menu');
+  if(t&&m){t.addEventListener('click',function(){t.classList.toggle('open');m.classList.toggle('open');});}
+  document.body.addEventListener('mousemove',function(e){document.body.style.setProperty('--mx',e.clientX+'px');document.body.style.setProperty('--my',e.clientY+'px');});
+})();
+</script>
+<script src="../../articles-data.js"></script>
+<script src="../../related-render.js"></script>
+<script src="/views.js"></script>
+</body>
+</html>

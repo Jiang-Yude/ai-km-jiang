@@ -388,7 +388,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: "https://vocus.cc/salon/Jiang_Coach" },
-    related: ["strong-ai-models-knowledge-workflow-road", "questionnaire-to-slides-agent-workflow", "teacher-prep-knowledge-workflow", "diary-driven-agent-3x4", "how-ai-connects-software", "how-to-train-your-ai-employee", "decision-ladder-non-programmer", "tidy-mess-before-consulting", "what-is-loop-engineering", "tag-wiki-method", "ai-delegators-optimism", "intangible-assets-grow-by-sharing", "publish-gate"]
+    related: ["strong-ai-models-knowledge-workflow-road", "questionnaire-to-slides-agent-workflow", "teacher-prep-knowledge-workflow", "diary-driven-agent-3x4", "how-ai-connects-software", "how-to-train-your-ai-employee", "decision-ladder-non-programmer", "tidy-mess-before-consulting", "what-is-loop-engineering", "tag-wiki-method", "ai-delegators-optimism", "intangible-assets-grow-by-sharing", "publish-gate", "laptop-desktop-webpage-sync-icloud-git"]
   },
 
   /* ── 21. 你以為在做一個成品，其實在養十個半成品（觀點）── */
@@ -627,7 +627,7 @@ window.ARTICLES = [
       content_type: ["觀點文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["what-is-loop-engineering", "my-three-loops", "tag-wiki-method", "recovery-over-perfection", "loop-engineering-guardrails"]
+    related: ["what-is-loop-engineering", "my-three-loops", "tag-wiki-method", "recovery-over-perfection", "loop-engineering-guardrails", "laptop-desktop-webpage-sync-icloud-git"]
   },
 
   /* ── 與其期待不出錯的 AI 系統，不如設計能容錯的 Loop（教學）── */
@@ -1035,5 +1035,18 @@ window.ARTICLES = [
     tags: {"topic":["AIAgent","AI工作流","AI趨勢"],"level":["基礎"],"content_type":["觀點文章"]},
     external: { threads: null, vocus: null },
     related: ["a2a-agent-protocol", "ai-delegators-optimism", "what-is-loop-engineering"]
+  },
+  {
+    id: "laptop-desktop-webpage-sync-icloud-git",
+    url: "articles/laptop-desktop-webpage-sync-icloud-git/",
+    date: "2026-07-11",
+    updated: "2026-07-12",
+    title: "在家裡桌機上用 Codex 做好網頁後，出門用筆電想要改，就找不到檔案了？問題出在你把專案放錯地方",
+    problem: "在桌機用 AI 做好網頁，換一台筆電想改，卻找不到檔案；把程式碼放進 iCloud 又常常撞同步衝突。",
+    audience: "用多台電腦、多個 AI 助手做網頁或程式專案，被檔案同步與版本混亂困擾、非工程背景的創作者。",
+    summary: "iCloud 適合放文件，程式碼要交給 git。一次真實搬家紀錄，附完整步驟與可複製提示詞，讓多台電腦、多個 AI 助手共用唯一真相。",
+    tags: {"topic":["AI工作流","知識管理","工作流程"],"level":["基礎"],"content_type":["教學文章"]},
+    external: { threads: null, vocus: null },
+    related: ["docs-as-system-design-agent", "ai-loop-safety-recovery"]
   }
 ];
