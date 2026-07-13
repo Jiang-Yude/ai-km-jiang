@@ -4,7 +4,7 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="robots" content="index,follow">
-<meta name="description" content="訓練你的 AI Agent 小編：把 AI 從工具變成員工。嘉我好漾線上青創課 2026-07-08 完整上課簡報：什麼是 AI Agent、品牌三張卡片、靈感池、五種開頭公式、發文節奏，附免費技能包下載。江江教練主講。" />
+<meta name="description" content="訓練你的 AI Agent 小編：把 AI 從工具變成員工。嘉我好漾線上青創課 2026-07-08 完整上課簡報：什麼是 AI Agent、品牌三張卡片、靈感池、五種開頭公式、發文節奏、課後 QA，附免費技能包下載。江江教練主講。" />
 <meta name="keywords" content="AI Agent, AI 小編, 靈感池, 改標題, 開頭公式, 發文節奏, Codex, 嘉我好漾, 一人公司, 小微企業, 江江教練" />
 <meta name="author" content="江江教練（江昱德）· 隱性知識提煉師 / AI 應用規劃師" />
 <link rel="canonical" href="https://ai-km-jiang.vercel.app/courses/2026-07-08-ai-agent-editor/" />
@@ -143,63 +143,10 @@
     .timeline::before { display:none; }
     .footer-grid { grid-template-columns:1fr; gap:32px; }
     .dot-indicator { display:none; }
-    html, body { overflow-x:hidden; }                 /* 頁級橫向溢出防護 */
-    .wrap { width:min(100%,440px); max-width:440px; } /* 內容欄寬收斂，置中 */
-    .display { font-size:clamp(30px,8.5vw,56px); }    /* 手機大標縮小，避免橫向溢出 */
-    .act-cap { flex-wrap:wrap; }                      /* 日期／章節列可換行 */
-    .lead, .body, .mono-note { overflow-wrap:anywhere; }
   }
 </style>
 </head>
 <body>
-  <!-- 官網品牌列（2026-07-08 課後整理加入；與官網首頁 nav.top 同套選單，課程頁模板共用）-->
-  <style>
-    .sh-nav{position:sticky;top:0;z-index:190;background:rgba(245,237,231,0.90);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid rgba(78,52,46,0.12);}
-    .sh-nav-in{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:11px 32px;}
-    .sh-brand{display:flex;align-items:center;flex-shrink:0;transition:opacity .2s;}
-    .sh-brand:hover{opacity:.8;}
-    .sh-brand img{height:34px;width:auto;display:block;}
-    .sh-menu{display:flex;align-items:center;gap:22px;list-style:none;margin:0;padding:0;}
-    .sh-menu a{color:#5D4037;font-size:0.95rem;font-weight:500;text-decoration:none;white-space:nowrap;transition:color .2s;}
-    .sh-menu a:hover{color:#D88C3A;}
-    .sh-menu a.sh-en{border:1px solid rgba(78,52,46,0.25);border-radius:999px;padding:3px 12px;font-weight:600;}
-    .sh-menu a.sh-en:hover{border-color:#D88C3A;}
-    .sh-toggle{display:none;background:none;border:none;padding:6px;cursor:pointer;width:36px;height:36px;position:relative;}
-    .sh-toggle span{display:block;position:absolute;left:8px;right:8px;height:2px;background:#4E342E;border-radius:2px;transition:transform .25s,opacity .25s,top .25s;}
-    .sh-toggle span:nth-child(1){top:11px;}
-    .sh-toggle span:nth-child(2){top:17px;}
-    .sh-toggle span:nth-child(3){top:23px;}
-    .sh-toggle.open span:nth-child(1){top:17px;transform:rotate(45deg);}
-    .sh-toggle.open span:nth-child(2){opacity:0;}
-    .sh-toggle.open span:nth-child(3){top:17px;transform:rotate(-45deg);}
-    @media(max-width:820px){
-      .sh-nav-in{padding:9px 16px;}
-      .sh-toggle{display:block;}
-      .sh-menu{display:none;position:absolute;top:100%;left:0;right:0;flex-direction:column;align-items:stretch;gap:0;background:rgba(245,237,231,0.98);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid rgba(78,52,46,0.12);padding:6px 0;box-shadow:0 10px 24px rgba(62,39,35,0.10);}
-      .sh-menu.open{display:flex;}
-      .sh-menu li{border-bottom:1px solid rgba(78,52,46,0.08);}
-      .sh-menu li:last-child{border-bottom:none;}
-      .sh-menu a{display:block;padding:13px 20px;font-size:1.02rem;}
-      .sh-menu a.sh-en{display:inline-block;margin:10px 20px;}
-    }
-  </style>
-  <header class="sh-nav">
-    <div class="sh-nav-in">
-      <a class="sh-brand" href="https://ai-km-jiang.vercel.app/"><img src="https://ai-km-jiang.vercel.app/images/footer-signature.png" alt="江江教練 ｜ 江昱德 · 知識官網" /></a>
-      <button class="sh-toggle" aria-label="開關選單"><span></span><span></span><span></span></button>
-      <ul class="sh-menu">
-        <li><a href="https://ai-km-jiang.vercel.app/">首頁</a></li>
-        <li><a href="https://ai-km-jiang.vercel.app/knowledge-architecture.html">知識架構</a></li>
-        <li><a href="https://ai-km-jiang.vercel.app/courses.html">課程</a></li>
-        <li><a href="https://ai-km-jiang.vercel.app/articles.html">深度文章</a></li>
-        <li><a href="https://ai-km-jiang.vercel.app/skills.html">技能包下載</a></li>
-        <li><a href="https://ai-km-jiang.vercel.app/cases.html">服務方案</a></li>
-        <li><a class="sh-en" href="https://ai-km-jiang.vercel.app/en/index.html" hreflang="en">EN</a></li>
-      </ul>
-    </div>
-  </header>
-  <script>(function(){var t=document.querySelector('.sh-toggle'),m=document.querySelector('.sh-menu');if(t&&m){t.addEventListener('click',function(){t.classList.toggle('open');m.classList.toggle('open');});m.addEventListener('click',function(e){if(e.target.closest('a')){t.classList.remove('open');m.classList.remove('open');}});}})();</script>
-
   <div class="progress" id="progress"></div>
 
   <nav class="dot-indicator" aria-label="章節導覽">
@@ -211,8 +158,8 @@
     <a href="#act-06" data-i="5"><span class="lbl">06 · 認識市場</span></a>
     <a href="#act-07" data-i="6"><span class="lbl">07 · 靈感池</span></a>
     <a href="#act-08" data-i="7"><span class="lbl">08 · 開頭與節奏</span></a>
-    <a href="#act-09" data-i="8"><span class="lbl">09 · 課後 QA</span></a>
-    <a href="#act-10" data-i="9"><span class="lbl">10 · 收尾</span></a>
+    <a href="#act-085" data-i="8"><span class="lbl">09 · 課後補充</span></a>
+    <a href="#act-09" data-i="9"><span class="lbl">10 · 收尾</span></a>
   </nav>
 
   <div class="font-ctl" aria-label="字級調整">
@@ -392,31 +339,47 @@
     </div>
   </section>
 
-  <!-- ACT 09 課後 QA（2026-07-08 課後整理，現場學員問答）-->
-  <section id="act-09" data-block data-bg="8">
-    <div class="wrap left">
-      <div class="act-cap reveal">ACT 09 · 課後 QA ｜ 現場學員問答</div>
-      <h2 class="display sm reveal d1" style="text-align:left;">你們當天問的，<br/>我整理成一頁</h2>
-      <p class="lead reveal d2" style="text-align:left;">下面都是 7/8 現場真的被問到的問題，挑你有疑惑的看。</p>
-      <div class="grid-3" style="margin-top:32px;">
-        <div class="card reveal d1"><div class="num">🔐 資安</div><h3 class="h2">開電腦權限會不會外洩？</h3><p class="body">分兩件事。檔案安全：做好備份，並叫 Codex「禁止刪除、只能移到垃圾桶」，就有回復空間。資訊安全：用 API 幾乎接近安全，AI 公司沒動機拿你的資料去訓練。多數資安新聞其實是「人操作不當」，不是模型偷資料。</p></div>
-        <div class="card reveal d2"><div class="num">💻 裝置</div><h3 class="h2">只有桌機版嗎？手機能用嗎？</h3><p class="body">裝進電腦的 ChatGPT 就是桌機版。Codex 有連動手機的機制，電腦設定好，出門就能用手機遙控，這就是龍蝦 AI 那種用法。</p></div>
-        <div class="card reveal d3"><div class="num">🖥 電腦</div><h3 class="h2">M1（Mac Neo）跑得動嗎？</h3><p class="body">跑得動。現在做的事都是接網路的模型，M1 二手筆電（一萬多到兩萬）就夠。老師顧問的一家四人公司全用二手 M1。</p></div>
-      </div>
-      <div class="grid-3" style="margin-top:24px;">
-        <div class="card reveal d1"><div class="num">📄 輸出</div><h3 class="h2">可以輸出 PPT / PDF 嗎？</h3><p class="body">可以。沒有工具就叫他裝，開完整存取權授權他自己安裝。老師示範都用 HTML，因為快、彈性、可直接分享。</p></div>
-        <div class="card reveal d2"><div class="num">🧩 名詞</div><h3 class="h2">Skill 跟 .md 差在哪？NotebookLM 呢？</h3><p class="body">.md 是檔案格式；Skill 是「協議／合約」，對 Agent 有強制約束力（也用 .md 寫成）。NotebookLM 是 RAG 知識庫、只裝資料不動手；Codex 是 Agent，能操作電腦、容量更大，甚至能操作 NotebookLM。</p></div>
-        <div class="card reveal d3"><div class="num">⚠️ 幻覺</div><h3 class="h2">Agent 的產出也會有幻覺嗎？</h3><p class="body">會，底層還是 LLM。但桌面版能加防護：叫兩家模型互審（Codex 寫、Claude 檢查）、做完回頭比對原始問卷、或寫一個專門檢查的技能包。</p></div>
-      </div>
-      <div class="grid-2" style="margin-top:24px;">
-        <div class="card reveal d1"><div class="num">✏️ 修改</div><h3 class="h2">局部改一段，直接跟他講就好？</h3><p class="body">可以，但先叫他把草稿存成檔案再改。沒存的話他每次都重生一整份，可能改掉你沒要動的地方；存檔後改哪句就只動那句。</p></div>
-        <div class="card reveal d2"><div class="num">📦 技能包</div><h3 class="h2">下載別人的技能包安全嗎？會打架嗎？</h3><p class="body">像下載軟體一樣要小心。下載前請 AI 先檢查：① 有沒有惡意指令／風險 ② 會不會跟你現有系統衝突。花鼠技能包個人免費、商用有條款，先問清楚。</p></div>
-      </div>
+  <!-- ACT 09 課後補充：課堂 QA 與加講 (dark) -->
+  <section id="act-085" data-block data-bg="8">
+    <div class="wrap">
+      <div class="act-cap reveal">ACT 09 · 課後補充 ｜ 課堂問到的、多講到的</div>
+      <h2 class="display sm reveal d1">當天大家問的問題<br/>跟我臨場多帶的</h2>
+      <p class="lead reveal d2">這一段是課後補進來的。把 7/8 當晚聊天室的提問、還有我看進度順手多講的內容收在這裡，聽不懂的地方把整份簡報複製給你的 AI，叫它照逐字稿把細節補上就好。</p>
+
+      <details class="reveal d2"><summary>🔐 開權限給 AI，會不會有資安問題？</summary>
+        <p>先分清兩件事。<b>檔案管理安全</b>：備份做好就好，再加一條規矩「禁止刪除、只能移到垃圾桶資料夾」，永遠有得救。<b>資訊安全</b>：用 API 幾乎接近安全，AI 公司要訓練也是拿知名大神的公開資料，不會來蒐集廣大用戶（CP 值太低）。近年的資安新聞，出事的幾乎都是人員操作不當，不是 AI 自己偷資料。</p>
+      </details>
+
+      <details class="reveal d2"><summary>📄 技能包（Skill）跟 MD 檔差在哪？</summary>
+        <p>MD 是文件格式（跟 HTML、PDF、TXT 一樣是格式）。Skill 是一份協議、一份合約。工作日誌像口頭說「好啦明天幫你」，Skill 像白紙黑字的操作手冊，對 AI 有更強的約束力。Skill 也是用 MD 寫成的，但它的身分是合約，不是格式。</p>
+      </details>
+
+      <details class="reveal d3"><summary>👻 Agent 產出的東西也會有幻覺嗎？</summary>
+        <p>會，因為底層還是大型語言模型當大腦。但 Agent 在你電腦裡，可以加更多安全網：叫 Codex 寫完請 Claude 檢查（兩家互審）、叫它做完回頭比對最初的問卷、或另寫一個「檢查用技能包」做完自動審核。錯誤就會少很多。</p>
+      </details>
+
+      <details class="reveal d3"><summary>💻 沒有 Agent、只有網頁版怎麼辦？</summary>
+        <p>一樣有路。<b>ChatGPT</b>：用專案模式，把風格、品牌、過去文章丟進資料來源當小知識庫，同主題都在這個專案裡聊。<b>Gemini</b>：搭配 NotebookLM。缺點是資料綁單一生態、換 AI 要重傳。不管用哪種，核心是聊完一定請 AI 把過程寫成工作日誌，留在你手上。</p>
+      </details>
+
+      <details class="reveal d3"><summary>✏️ 局部修改、輸出 PPT/PDF、多帳號統整</summary>
+        <p><b>局部改</b>：先叫 AI 把初稿存成檔案再改，改第一句就只動第一句；留在聊天框每改一次都是整份重生，容易改掉你不想動的地方。<b>PPT/PDF</b>：直接叫它裝工具就行（開完整存取權授權它自己裝）。<b>多帳號</b>：兩個 ChatGPT 帳號＝兩倍額度，登出再讀同一個知識庫沒問題。</p>
+      </details>
+
+      <details class="reveal d4"><summary>🖥 買電腦：我推 Mac，二手 M1 就夠</summary>
+        <p>我裝機超過 100 台，Mac 是封閉系統、出問題大家都一樣，網路上一定查得到解法。修電腦我只跟 Codex 說一句「你查別人怎麼解、確認沒有破壞性操作後自己幫我解決」。現在做的事都是接網路的模型，二手 M1 筆電（一萬多到兩萬）就跑得動。一句話：不要用肉身硬扛 AI 的資料，要用 AI 去扛。</p>
+      </details>
+
+      <details class="reveal d4"><summary>🦞 龍蝦工程師的三階段：真正的能力是組織管理</summary>
+        <p>OpenClaw 創辦人的三個階段：① 電腦前指揮七個 AI 主管、每個主管管三個 AI 員工；② 手機遙控一個 AI 大總管、呼叫幾百個 Agent；③ 幾乎不用管，AI 每天自己上網找回饋、自我更新。Agent 就是你的 AI 員工，未來拚的不是誰會用工具，是誰更會帶團隊、組織這群 AI 員工。</p>
+      </details>
+
+      <p class="mono-note reveal d4">我大概課後 48 小時內會再更新一次，把你們回饋單寫的也整合進來。這份簡報本身，就是今天教的方法做出來的。</p>
     </div>
   </section>
 
   <!-- ACT 10 收尾 (dark) -->
-  <section id="act-10" data-block data-bg="9">
+  <section id="act-09" data-block data-bg="9">
     <div class="wrap left">
       <div class="act-cap reveal">ACT 10 · 收尾 ｜ 你的小編＋你的漏斗</div>
       <h2 class="display sm reveal d1" style="text-align:left;">今晚串起來的<br/>是一條會長大的線</h2>
