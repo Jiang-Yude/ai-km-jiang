@@ -442,7 +442,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: "https://vocus.cc/salon/Jiang_Coach" },
-    related: ["questionnaire-to-slides-agent-workflow", "teacher-prep-knowledge-workflow", "docs-as-system-design-agent", "how-to-train-your-ai-employee", "knowledge-base-three-vault-split", "tidy-mess-before-consulting", "meeting-record-agent-workflow"]
+    related: ["questionnaire-to-slides-agent-workflow", "teacher-prep-knowledge-workflow", "docs-as-system-design-agent", "how-to-train-your-ai-employee", "knowledge-base-three-vault-split", "tidy-mess-before-consulting", "meeting-record-agent-workflow", "inspiration-production-system"]
   },
 
   /* ── 24. 用我寫一篇文章的工作流，講清楚什麼是迴圈工程（教學）── */
@@ -608,7 +608,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["questionnaire-to-slides-agent-workflow", "teacher-prep-knowledge-workflow", "knowledge-base-three-vault-split", "docs-as-system-design-agent", "ai-loop-safety-recovery"]
+    related: ["questionnaire-to-slides-agent-workflow", "teacher-prep-knowledge-workflow", "knowledge-base-three-vault-split", "docs-as-system-design-agent", "ai-loop-safety-recovery", "inspiration-production-system"]
   },
 
   /* ── AI 出錯不可怕，沒有備援才可怕：一次搞壞 170 檔案的教訓（觀點）── */
@@ -1048,5 +1048,18 @@ window.ARTICLES = [
     tags: {"topic":["AI工作流","知識管理","工作流程"],"level":["基礎"],"content_type":["教學文章"]},
     external: { threads: null, vocus: null },
     related: ["docs-as-system-design-agent", "ai-loop-safety-recovery"]
+  },
+  {
+    id: "inspiration-production-system",
+    url: "articles/inspiration-production-system/",
+    date: "2026-07-13",
+    updated: "2026-07-13",
+    title: "靈感產出系統：教你建立內容創作的靈感池",
+    problem: "每天硬想今天發什麼想到累；有一堆舊素材卻要用時找不到。",
+    audience: "一人公司、自媒體、想穩定經營社群卻卡在選題的知識工作者。",
+    summary: "把靈感當成可以系統性產出的東西：三個來源（過去累積的內容、AI 模擬受眾、熱門話題）加上標籤撈取系統，配一套從話題到貼文的實操流程，以及沒靈感時請 AI 搜話題並從大眾與專業兩個角度選題的流程，讓有個人特色的穩定發文變成一套會自己運轉的系統。",
+    tags: {"topic":["AI工作流","工作流程","知識管理"],"level":["基礎"],"content_type":["教學文章"]},
+    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
+    related: ["tag-wiki-method", "diary-driven-agent-3x4"]
   }
 ];

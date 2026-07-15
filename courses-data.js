@@ -248,11 +248,11 @@ window.COURSES = [
       { label: "學員問卷落點地圖 ↗", url: "https://ai-km-jiang.vercel.app/courses/2026-07-08-ai-agent-editor/map.html" }
     ],
     registration: {
-      status: "open",
-      url: "https://www.accupass.com/event/2606140311328045535890",
-      label: "Accupass 報名 ↗",
+      status: "ended",
+      url: null,
+      label: null,
       host_org: "嘉我好漾",
-      note: "嘉義縣勞青處青創課程，7/8 19:00-21:00"
+      note: "本場已於 2026-07-08 結束，上課簡報已上線"
     }
   },
   {
@@ -289,16 +289,17 @@ window.COURSES = [
     host: "江江教練",
     tags: ["嘉我好漾", "AI圖文", "品牌資產", "降低AI味", "批量產出", "形象頁"],
     summary: "嘉我好漾線上青創課，讓 AI 圖不要有 AI 味：① 把品牌放進 prompt，做出別人複製不走的圖卡；② 一個主題一次做完圖卡、海報、簡報、貼文；③ 用 AI 做產品、形象頁與影片代操判斷。",
-    detail_url: null,
+    detail_url: "https://ai-visual-ws-4e74f0.vercel.app/",
     materials: [
+      { label: "上課簡報 ↗", url: "https://ai-visual-ws-4e74f0.vercel.app/" },
       { label: "學員問卷落點地圖 ↗", url: "https://ai-km-jiang.vercel.app/courses/2026-07-08-ai-agent-editor/map.html" }
     ],
     registration: {
-      status: "open",
-      url: "https://www.accupass.com/event/2606140311328045535890",
-      label: "Accupass 報名 ↗",
+      status: "ended",
+      url: null,
+      label: null,
       host_org: "嘉我好漾",
-      note: "嘉義縣勞青處青創課程，7/14 19:00-21:00"
+      note: "本場已於 2026-07-14 結束，上課簡報已上線"
     }
   },
   {
