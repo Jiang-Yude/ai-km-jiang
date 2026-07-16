@@ -43,5 +43,5 @@ for u in "https://ai-km-jiang.vercel.app/" \
   CODE=$(curl -s -o /dev/null -w '%{http_code}' "$u")
   [ "$CODE" = "200" ] && echo "  ✅ $CODE $u" || { echo "  ❌ $CODE $u"; FAIL=1; }
 done
-[ $FAIL -eq 0 ] && echo "🟢 發佈完成：$TAG（回滾：git revert 或 Vercel 歷史部署）" || echo "🔴 線上驗證有問題，快查！"
+[ $FAIL -eq 0 ] && echo "🟢 發佈完成：${TAG}（回滾：git revert 或 Vercel 歷史部署）" || echo "🔴 線上驗證有問題，快查！"
 exit $FAIL
