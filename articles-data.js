@@ -766,10 +766,11 @@ window.ARTICLES = [
     id: "questionnaire-to-slides-agent-workflow",
     url: "articles/questionnaire-to-slides-agent-workflow/",
     date: "2026-07-06",
+    updated: "2026-07-16",
     title: "把課前問卷變成簡報，再把流程存成技能包",
-    problem: "剛開始學 Agent，知道 AI 可以做簡報，卻不清楚怎麼從資料蒐集、整理、產出成品，一路沉澱成可重複的工作流。",
+    problem: "剛開始學 Agent，知道 AI 可以做簡報，卻不清楚怎麼從資料蒐集、整理、產出成品，一路沉澱成可重複的工作流，也不知道怎麼連到技能包與知識庫。",
     audience: "AI 新手、講師、顧問、內容創作者，以及想把備課或簡報流程做成可複用系統的人。",
-    summary: "一篇新手必讀的 Agent 基礎教學示範：從課前問卷和課綱整理出教學簡報，再把做簡報的步驟沉澱成 Agent 工作流、技能包與知識庫。",
+    summary: "一篇新手必讀的 Agent 基礎教學示範與正式 SOP 入口：從課前問卷和課綱整理出教學簡報，再把做簡報的步驟沉澱成 Agent 工作流、lecture-prep 技能包與知識庫。",
     tags: {
       topic: ["AIAgent", "AI工作流", "技能包設計", "知識庫"],
       level: ["零基礎入門"],
@@ -1074,5 +1075,18 @@ window.ARTICLES = [
     tags: {"topic":["AI工作流","知識管理","工作流程"],"level":["零基礎入門"],"content_type":["教學文章"]},
     external: { threads: null, vocus: null },
     related: ["how-to-train-your-ai-employee", "docs-as-system-design-agent", "inspiration-production-system"]
+  },
+  {
+    id: "manage-ai-with-management-knowledge",
+    url: "articles/manage-ai-with-management-knowledge/",
+    date: "2026-07-16",
+    updated: "2026-07-16",
+    title: "用你已經有的管理知識來管理 AI，以豐田 TPS 為例",
+    problem: "公司想開始用 AI，第一個反應是覺得要從零學一套新技術、得先招工程師先買系統，於是一直停在之後再說。",
+    audience: "已經有一套管人、管流程、管品質經驗，卻覺得 AI 是工程師的事、不知道自己的管理經驗算不算數的經營者或主管。",
+    summary: "多數企業導入 AI 不缺底子：你管人、管流程、管品質的管理知識，本來就能翻譯成管理 AI 的方法。用豐田 TPS 當例子，把標準化、自働化停線、持續改善對應成 AI 可落地的規則主檔、自動攔截、回寫標準，附一張把既有管理知識翻成 AI 流程的檢查表與可先動的第一步。",
+    tags: {"topic":["數位轉型","知識管理","AI工作流","隱性知識"],"level":["零基礎入門"],"content_type":["教學文章"]},
+    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
+    related: ["how-to-train-your-ai-employee", "docs-as-system-design-agent", "what-is-loop-engineering", "claude-skills-knowledge-assets", "company-shape-is-the-moat", "decision-ladder-non-programmer"]
   }
 ];

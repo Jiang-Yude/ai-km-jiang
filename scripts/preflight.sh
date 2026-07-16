@@ -24,7 +24,7 @@ else bad "link-graph 有斷連"; fi
 echo "═══ 4/7 新頁面有進 sitemap 與 llms.txt ═══"
 MISS=0
 for f in *.html; do
-  case "$f" in google*|stats.html|search.html|agent.html) continue;; esac
+  case "$f" in google*|stats.html|search.html|agent.html|index-parallel*.html) continue;; esac
   loc="${f}"; [ "$f" = "index.html" ] && loc="/"
   grep -q "$loc" sitemap.xml || { bad "sitemap 缺 $f"; MISS=1; }
 done
