@@ -137,7 +137,7 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
 <section class="section" id="start">
   <div class="inner">
     <div class="article-meta"><span>Published: 2026-07-01</span><span>Updated: 2026-07-01</span></div>
-    <p class="lead">Many people's knowledge bases share the same fate: material keeps coming in, but the categorization never keeps up, and in the end storing it is as good as not storing it. I walked that road myself. Later I collapsed my whole way of organizing into a single move, and only then did the knowledge base truly come alive. I call this method the Tag-Link Method.</p>
+    <p class="lead">Many people's knowledge bases share the same fate: material keeps coming in, but the categorization never keeps up, and in the end storing it is as good as not storing it. I walked that road myself. Later I collapsed my whole way of organizing into a single move, and only then did the knowledge base truly come alive. I call this method the Tag-Link Method, or Tag Wiki in English.</p>
     <div class="duo">
       <div class="card a">
         <small>WHO IT'S FOR</small>
@@ -222,9 +222,27 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
   </div>
 </section>
 
+<section class="section" id="version-control">
+  <div class="inner">
+    <h2>6. How to version-control your controlled vocabulary</h2>
+    <p>Use tag cards long enough and you will inevitably hit moments where you need to add a new term, change a definition, or retire an old one. The worst outcome here is that a term gets changed and, six months later, no one remembers why. My approach is to manage the whole controlled-vocabulary list as a versioned rules document. The method needs no programming background; just follow the steps.</p>
+    <p><b>The dictionary file is the single source of truth.</b> Every tag must be chosen from the dictionary file; you can't invent your own. My dictionary currently holds about 220 controlled terms across four dimensions: who (subject), what (content), where it's used (context), and what property (nature). Each term has a standard definition card that spells out its definition, positioning, boundaries, the preferred wording, and the wording not to use.</p>
+    <p><b>Every version leaves a record.</b> The dictionary file opens with a change log. Mine has gone from v1.8 to v2.19, accumulating 20 versions. Each version records three things: which terms changed, why, and who signed off. De-personalized, one entry looks like this:</p>
+    <div class="compare">
+      <b>Change-log example (de-personalized)</b>
+      <p>v2.x (some date): Added the controlled term "some concept," placed under document-purpose in the context dimension. Reason: the same concept appeared in three documents in a row, and existing vocabulary couldn't cover it. Decision: the owner confirmed the definition card, then added it to the list and updated the index page in sync.</p>
+    </div>
+    <p><b>The machine-readable version is only a derived file.</b> The dictionary file also exports a machine-readable mapping file (in JSON format) so AI can automatically check tags for compliance before saving. The iron rule is that this derived file must never be hand-edited: change the dictionary, regenerate it, then run the validation script to confirm the two sides match. The single source of truth is always that human-readable dictionary file.</p>
+    <div class="meaning">
+      <b>Why this matters</b>
+      Only a vocabulary list with a version history can support the word "auditable." Six months later, when you ask "when did this term appear, and why was it defined this way at the time," the record has the answer; and when AI output needs to be traced back to "which version of the rules it was based on at the time," there is something to check against. This is the watershed that upgrades a personal note-taking habit into organization-level knowledge governance.
+    </div>
+  </div>
+</section>
+
 <section class="section" id="start-doing">
   <div class="inner">
-    <h2>6. How to start</h2>
+    <h2>7. How to start</h2>
     <ol>
       <li>Think through the output first: what will you most often need to call up and use later. Organizing is so you can take it out and use it in the future, not for collecting.</li>
       <li>Start from one project you're currently working on, and build the few most essential tag cards for it, sorted into a few fixed dimensions.</li>

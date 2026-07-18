@@ -21,7 +21,7 @@
 <meta name="twitter:title" content="Codex Crashed? Check logs_2.sqlite First After Reinstalling | Coach Jiang">
 <meta name="twitter:image" content="https://ai-km-jiang.vercel.app/images/articles/codex-log-health-check-cover-image2.jpg">
 <meta name="twitter:description" content="A real Codex crash case: check logs_2.sqlite after reinstalling, then set up an automated log health check routine.">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Codex Crashed? Check logs_2.sqlite First After Reinstalling","description":"When Codex Desktop won't open, updates don't help, and reinstalling is your last resort, start by checking logs_2.sqlite. This article covers what the log database is, how to handle it safely, how to set up automated health checks, and how to keep your work safe even when tools break.","author":{"@type":"Person","name":"Jiang Yude","alternateName":"Coach Jiang","jobTitle":"Tacit Knowledge Distiller and AI Application Planner"},"isPartOf":{"@type":"WebSite","name":"Coach Jiang · AI Knowledge Management","url":"https://ai-km-jiang.vercel.app/"},"image":"https://ai-km-jiang.vercel.app/images/articles/codex-log-health-check-cover-image2.jpg","datePublished":"2026-06-23","dateModified":"2026-06-23","inLanguage":"en","url":"https://ai-km-jiang.vercel.app/en/articles/codex-log-health-check/"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Codex Crashed? Check logs_2.sqlite First After Reinstalling","description":"When Codex Desktop won't open, updates don't help, and reinstalling is your last resort, start by checking logs_2.sqlite. This article covers what the log database is, how to handle it safely, how to set up automated health checks, and how to keep your work safe even when tools break.","author":{"@type":"Person","name":"Jiang Yude","alternateName":"Coach Jiang","jobTitle":"Tacit Knowledge Distiller, AI Application Planner"},"isPartOf":{"@type":"WebSite","name":"Coach Jiang · AI Knowledge Management","url":"https://ai-km-jiang.vercel.app/"},"image":"https://ai-km-jiang.vercel.app/images/articles/codex-log-health-check-cover-image2.jpg","datePublished":"2026-06-23","dateModified":"2026-06-23","inLanguage":"en","url":"https://ai-km-jiang.vercel.app/en/articles/codex-log-health-check/"}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
@@ -251,7 +251,7 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
   <section class="section" id="what">
     <div class="inner">
       <h2>What Does logs_2.sqlite Actually Store?</h2>
-      <p class="lead"><code>logs_2.sqlite</code> is the local SQLite log database used by Codex Desktop. Think of it as an operational record: diagnostic data the program writes as it runs. It is not your work log, not a Skills file, not a memory store, and not an output folder.</p>
+      <p class="lead"><code>logs_2.sqlite</code> is the local SQLite log database used by Codex Desktop. Think of it as an operational record: diagnostic data the program writes as it runs. It is not your work log, not a skill package, not a memory store, and not an output folder.</p>
       <div class="grid3">
         <div class="card good">
           <b>What Gets Recorded</b>
@@ -259,7 +259,7 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
         </div>
         <div class="card">
           <b>What It Should Not Be Used For</b>
-          <p>It is not a place for your own notes, and it is not suitable as a long-term storage location for finished work. Task conclusions, deliverables, and Skills should be saved as your own files.</p>
+          <p>It is not a place for your own notes, and it is not suitable as a long-term storage location for finished work. Task conclusions, deliverables, and skill packages should be saved as your own files.</p>
         </div>
         <div class="card warn">
           <b>Do Not Share the Raw File</b>
@@ -394,8 +394,8 @@ If you encounter "database locked", "Operation not permitted", any SQLite error,
           <p>Articles, images, slides, code, prompts, reports: all of these should be saved as files in a location you can find. Don't leave them only inside a conversation.</p>
         </div>
         <div class="card good">
-          <b>Turn Good Workflows into Skills</b>
-          <p>If a process is worth repeating, write it up as a Skills file or SOP. When Codex breaks, Claude, another agent, or your next machine can still read and pick it up.</p>
+          <b>Turn Good Workflows into Skill Packages</b>
+          <p>If a process is worth repeating, write it up as a skill package or SOP. When Codex breaks, Claude, another agent, or your next machine can still read and pick it up.</p>
         </div>
       </div>
       <p>With these three habits in place, if Codex ever goes down completely, the situation is just a tool switching problem. Your work context is still intact. You're not starting from zero.</p>
@@ -410,7 +410,7 @@ If you encounter "database locked", "Operation not permitted", any SQLite error,
         <li>The evidence comes from related issues and source code in the OpenAI Codex GitHub repo. It is one plausible cause worth checking first, not the only possible explanation for every crash.</li>
         <li>Two paths: if you're comfortable with commands or have Claude Code, use the conservative sequence (close Codex, back up all three log files, run quick_check, don't force cleanup when healthy, only do maintenance after confirming backups, stop immediately on lock or permission errors). If you're newer, reinstall, clear the logs before starting any new task, then set up the automated check.</li>
         <li>Set up an automated health check to run every three to five days, in inspect-only mode by default. When thresholds are reached, output a maintenance handoff prompt and wait for Codex to be closed before proceeding.</li>
-        <li>Write a work log after each task. Save outputs to your own files. Turn reliable workflows into Skills.</li>
+        <li>Write a work log after each task. Save outputs to your own files. Turn reliable workflows into skill packages.</li>
       </ul>
       <div class="note">
         <b>A Note on Perspective</b>
@@ -438,7 +438,7 @@ If you encounter "database locked", "Operation not permitted", any SQLite error,
       <div class="inner">
         <div>
           <h2>The One Line That Matters</h2>
-          <p>Logs can be cleared. Your tasks and work belong in your own files. Build the log health check, the automated inspection, the work log habit, and the Skills practice. When a tool breaks, it's just a tool breaking. Your work context stays with you.</p>
+          <p>Logs can be cleared. Your tasks and work belong in your own files. Build the log health check, the automated inspection, the work log habit, and the skill package practice. When a tool breaks, it's just a tool breaking. Your work context stays with you.</p>
           <div class="meaning"><b>Next Step</b>Open a new Codex conversation and paste the automation prompt above. After it runs, confirm that it reports file sizes, the quick_check result, whether maintenance thresholds were reached, and the schedule rule. If maintenance is needed, let it produce the handoff prompt first, then close Codex before acting on it. Do not clean inside the health check automation itself.</div>
         </div>
         <div class="cta-card">
@@ -465,7 +465,7 @@ If you encounter "database locked", "Operation not permitted", any SQLite error,
     </div>
     <div class="footer-note">A Codex Desktop log health check tutorial based on a real crash case. Technical references are drawn from issue reports and source code in the OpenAI Codex GitHub repo, not from any official announcement.</div>
   </div>
-  <a href="/stats.html" class="page-views" style="text-align:center;color:#9a9186;font-size:13px;padding:12px 0 2px;display:block;text-decoration:none" title="看完整流量統計"><span style="text-decoration:underline;text-decoration-color:#cbbfa8;text-underline-offset:3px">Views: <span data-views="page">·</span></span></a>
+  <a href="/stats.html" class="page-views" style="text-align:center;color:#9a9186;font-size:13px;padding:12px 0 2px;display:block;text-decoration:none" title="View full traffic stats"><span style="text-decoration:underline;text-decoration-color:#cbbfa8;text-underline-offset:3px">Views: <span data-views="page">·</span></span></a>
 </footer>
 
 <!-- 點圖放大 -->
