@@ -1,0 +1,384 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="index,follow">
+<title>Let two AIs find fault with each other: Before sending my plan, it was scored 2/5 by the mock review｜Double-track mutual review loop for planning｜Coach Jiang · AI Knowledge Management</title>
+<meta name="description" content="AI can write plans very quickly, but the problem is that it will follow you. It writes and reviews a model by itself, and cannot see its own blind spots. This article uses a real government subsidy proposal to completely record the running method of the dual-track mutual review loop of the project: two AIs from different companies independently wrote the project, faulted each other, and finally the decision was made by a human, with prompts that can be directly copied.">
+<link rel="canonical" href="https://ai-km-jiang.vercel.app/en/articles/dual-track-planning-loop/">
+<link rel="alternate" hreflang="zh-Hant" href="https://ai-km-jiang.vercel.app/articles/dual-track-planning-loop/">
+<link rel="alternate" hreflang="en" href="https://ai-km-jiang.vercel.app/en/articles/dual-track-planning-loop/">
+<link rel="alternate" hreflang="x-default" href="https://ai-km-jiang.vercel.app/articles/dual-track-planning-loop/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Let two AIs find fault with each other: planning a dual-track mutual review loop｜Coach Jiang">
+<meta property="og:image" content="https://ai-km-jiang.vercel.app/images/og/dual-track-planning-loop.jpg">
+<meta property="og:description" content="Two AIs from different companies wrote the code independently, faulted each other, and finally had people make the final decision. Attached are prompt words that can be copied directly.">
+<meta property="og:url" content="https://ai-km-jiang.vercel.app/en/articles/dual-track-planning-loop/">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Coach Jiang · AI Knowledge Management">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Let two AIs find fault with each other: planning a dual-track mutual review loop｜Coach Jiang">
+<meta name="twitter:image" content="https://ai-km-jiang.vercel.app/images/og/dual-track-planning-loop.jpg">
+<meta name="twitter:description" content="Two AIs from different companies wrote the code independently, faulted each other, and finally had people make the final decision. Attached are prompt words that can be copied directly.">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Let two AIs find fault with each other: Before sending my plan, it was scored 2/5 by the mock review","description":"AI can write plans very quickly, but the problem is that it will follow you. It writes and reviews a model by itself, and cannot see its own blind spots. This article uses a real government subsidy proposal to completely record the running method of the dual-track mutual review loop of the project: two AIs from different companies independently wrote the project, faulted each other, and finally the decision was made by a human, with prompts that can be directly copied.","author":{"@type":"Person","name":"Jiang Yude","alternateName":"Coach Jiang"},"isPartOf":{"@type":"WebSite","name":"Coach Jiang · AI Knowledge Management","url":"https://ai-km-jiang.vercel.app/en/"},"inLanguage":"en","datePublished":"2026-07-12","dateModified":"2026-07-12","image":"https://ai-km-jiang.vercel.app/images/og/dual-track-planning-loop.jpg","url":"https://ai-km-jiang.vercel.app/en/articles/dual-track-planning-loop/"}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{--ink:#1a1612;--paper:#fefcf8;--muted:#6a635a;--line:#d8cdb8;--green:#5f7553;--blue:#5689b8;--orange:#e85a4f;--soft:#faf5ec;--dark:#2a2018;--shadow:0 18px 45px rgba(107,74,42,.14);--sp-shadow:hsla(35,50%,60%,.15);--sp-shadow-edge:hsla(35,50%,68%,.03);--sp-radius:400px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC","Segoe UI",sans-serif}
+a{color:inherit}
+nav.top{position:sticky;top:0;background:rgba(254,252,248,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid #d8cdb8;z-index:100}
+nav.top .container{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:24px;padding:14px 32px}
+.nav-brand-img{justify-self:start;display:flex;align-items:center;text-decoration:none;flex-shrink:0;transition:opacity .2s}
+.nav-brand-img:hover{opacity:.8}.nav-brand-img img{height:40px;width:auto;display:block}
+nav.top ul.nav-menu{justify-self:end;display:flex;gap:22px;list-style:none;margin:0;padding:0;font-size:.95rem;white-space:nowrap}
+nav.top ul.nav-menu a{color:#3a342d;text-decoration:none;transition:color .2s;font-weight:500;white-space:nowrap}
+nav.top ul.nav-menu a:hover{color:#1a1612}nav.top ul.nav-menu a.active{color:#1a1612;font-weight:700}
+.nav-toggle{display:none;background:none;border:none;padding:6px;cursor:pointer;width:36px;height:36px;position:relative}
+.nav-toggle span{display:block;position:absolute;left:8px;right:8px;height:2px;background:#1a1612;border-radius:2px;transition:transform .25s,opacity .25s,top .25s}
+.nav-toggle span:nth-child(1){top:11px}.nav-toggle span:nth-child(2){top:17px}.nav-toggle span:nth-child(3){top:23px}
+.nav-toggle.open span:nth-child(1){top:17px;transform:rotate(45deg)}.nav-toggle.open span:nth-child(2){opacity:0}.nav-toggle.open span:nth-child(3){top:17px;transform:rotate(-45deg)}
+@media(max-width:860px){
+ nav.top .container{grid-template-columns:auto 1fr auto;padding:10px 16px;gap:12px}
+ .nav-brand-img img{height:32px}
+ .nav-toggle{display:block;justify-self:end}
+ nav.top ul.nav-menu{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(254,252,248,.98);backdrop-filter:blur(14px);border-bottom:1px solid #d8cdb8;flex-direction:column;gap:0;padding:8px 0;box-shadow:0 10px 24px rgba(107,74,42,.08)}
+ nav.top ul.nav-menu.open{display:flex}
+ nav.top ul.nav-menu li{border-bottom:1px solid #e8dfc9}
+ nav.top ul.nav-menu li:last-child{border-bottom:none}
+ nav.top ul.nav-menu a{display:block;padding:14px 20px;font-size:1.06rem}
+}
+body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradient(var(--sp-radius) circle at var(--mx,50%) var(--my,50%),var(--sp-shadow) 0%,var(--sp-shadow-edge) 45%,transparent 75%);pointer-events:none;z-index:9999;mix-blend-mode:multiply;transition:background .06s linear}
+.hero{position:relative;overflow:hidden;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:72px;padding:96px clamp(20px,6vw,88px) 80px;background:linear-gradient(180deg,#fffcf0 0%,#f9e9d2 100%);color:#1a1612;border-bottom:1px solid #d8cdb8}
+.hero .wc{position:absolute;border-radius:50%;filter:blur(60px);pointer-events:none;z-index:0}
+.hero .wc1{width:420px;height:360px;top:-120px;right:-80px;background:#e8884b;opacity:.15}
+.hero .wc2{width:360px;height:300px;bottom:-110px;left:-70px;background:#5f7553;opacity:.13}
+.hero .wc3{width:280px;height:260px;top:34%;left:14%;background:#a08144;opacity:.10}
+.hero>div{flex:none;width:760px;max-width:100%;position:relative;z-index:2}
+.hero-figure{margin:0;width:320px;flex:none;position:relative;z-index:2}
+.hero-figure img{display:block;width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:16px;border:1px solid #d8cdb8;box-shadow:0 18px 45px rgba(107,74,42,.16);cursor:zoom-in}
+.hero-figure figcaption{margin-top:10px;font-size:14px;line-height:1.6;color:#6a635a}
+.inline-figure{margin:30px auto 8px;max-width:820px}
+.inline-figure img{display:block;width:100%;border-radius:14px;border:1px solid var(--line);box-shadow:var(--shadow);background:#fff;cursor:zoom-in}
+.inline-figure figcaption{font-size:14px;line-height:1.6;color:var(--muted);margin-top:10px}
+.lightbox{position:fixed;inset:0;z-index:10000;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(12,10,8,.92);cursor:zoom-out;backdrop-filter:blur(4px)}
+.lightbox.open{display:flex}.lightbox img{max-width:96vw;max-height:92vh;border-radius:10px;box-shadow:0 24px 60px rgba(0,0,0,.5)}
+.lightbox-close{position:fixed;top:18px;right:24px;color:#fff;font-size:34px;line-height:1;font-weight:700;cursor:pointer;opacity:.85}
+.kicker{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.55rem;color:#7a5c3a;font-weight:500}
+.hero h1{max-width:none;margin:16px 0 18px;font-size:clamp(32px,5vw,58px);line-height:1.14;overflow-wrap:anywhere}
+.hero p{max-width:none;font-size:clamp(18px,2vw,23px);line-height:1.62;color:#3a342d}
+.article-meta{display:flex;flex-wrap:wrap;gap:8px 16px;margin-top:20px;color:#6a635a;font-size:14px}
+.article-meta span{display:inline-flex;align-items:center;gap:6px}
+.section{padding:54px clamp(20px,6vw,88px);border-top:1px solid var(--line)}
+.inner{width:min(1000px,100%);margin:0 auto}
+.section h2{font-size:clamp(26px,4.2vw,48px);line-height:1.12;margin:0 0 18px}
+.section h3{font-size:clamp(21px,3vw,30px);line-height:1.2;margin:30px 0 12px}
+.lead{font-size:clamp(18px,1.6vw,22px);line-height:1.7;color:#3a342d;max-width:900px}
+.section p{font-size:18px;line-height:1.74;color:#3a342d}.section p+p{margin-top:14px}
+.section ul,.section ol{padding-left:1.4em;font-size:18px;line-height:1.74;color:#3a342d}.section li{margin-bottom:8px}
+.meaning{margin:22px 0;padding:16px 18px;border-left:5px solid var(--blue);background:rgba(86,137,184,.12);border-radius:6px;line-height:1.7;font-size:19px}
+.meaning b{display:block;color:var(--blue);margin-bottom:4px}
+.caveat{margin:0 0 8px;padding:16px 18px;border-left:5px solid var(--orange);background:rgba(232,90,79,.1);border-radius:6px;line-height:1.7;font-size:18px;color:#3a342d}
+.caveat b{display:block;color:var(--orange);margin-bottom:4px}
+.infocard{background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px 24px 22px;box-shadow:0 8px 22px rgba(107,74,42,.08);margin-top:8px}
+.infocard-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.info-item{padding:18px 14px 0}
+.info-item b{display:block;font-size:14px;font-weight:900;letter-spacing:.04em;margin-bottom:7px;text-transform:uppercase}
+.info-item:nth-child(1) b{color:var(--green)}.info-item:nth-child(2) b{color:var(--orange)}.info-item:nth-child(3) b{color:var(--blue)}
+.info-item p{margin:0;font-size:17px;line-height:1.6;color:#3a342d}
+.tagrow{display:flex;flex-wrap:wrap;gap:7px;margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
+.tag{font-size:14px;color:var(--muted);background:var(--soft);border:1px solid var(--line);border-radius:999px;padding:4px 11px}
+.duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:24px}
+.duo.stack{grid-template-columns:1fr}
+.duo .card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:22px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.duo .card.a{border-color:var(--orange)}.duo .card.b{border-color:var(--green);box-shadow:0 8px 24px rgba(95,117,83,.16)}
+.duo .card small{display:block;font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.04em;margin-bottom:9px}
+.duo .card.a small{color:var(--orange)}.duo .card.b small{color:var(--green)}
+.duo .card b{display:block;font-size:22px;line-height:1.3;margin-bottom:12px}.duo .card.a b{color:#c0512f}.duo .card.b b{color:#4a7a59}
+.duo .card p{margin:0;color:#3a342d;line-height:1.75;font-size:18px}
+.duo .card ul{margin:0;padding-left:1.3em}
+.workflow-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:24px}
+.workflow-step{background:#fff;border:1px solid var(--line);border-radius:8px;padding:18px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.workflow-step small{display:block;color:var(--orange);font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;margin-bottom:9px}
+.workflow-step b{display:block;font-size:18px;line-height:1.3;margin-bottom:9px}
+.workflow-step p{margin:0;color:#3a342d;line-height:1.6;font-size:16px}
+.codeblock{background:var(--dark);color:#f3ead9;border-radius:8px;padding:18px 20px;font:500 14px/1.65 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;overflow-x:auto;white-space:pre-wrap;margin:20px 0;box-shadow:0 8px 22px rgba(107,74,42,.12)}
+.cta-band{background:#e6f0e5;color:#3a342d}.cta-band .section{border-top:none}
+.cta-band .inner{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(260px,.85fr);gap:26px;align-items:start}
+.cta-band h2{font-size:clamp(26px,4vw,44px);margin:0 0 16px}.cta-band p,.cta-band .lead{color:rgba(58,52,45,.9);font-size:18px;line-height:1.72}
+.cta-card{border:1px solid #cfe0d2;background:#fbfdfa;border-radius:8px;padding:22px}
+.cta-card b{display:block;color:#48b178;margin-bottom:10px;font-size:18px}.cta-card p{margin:0 0 14px}
+.cta-card a{display:inline-flex;align-items:center;text-decoration:none;border-radius:8px;padding:12px 16px;font-weight:900;background:#5f7553;color:#fff}
+.footer{padding:30px clamp(20px,6vw,88px);font-size:14px;color:var(--muted);background:#fff;border-top:1px solid var(--line)}
+.footer-inner{width:min(1000px,100%);margin:0 auto}
+.footer-links{display:flex;flex-wrap:wrap;gap:6px 12px;margin-bottom:14px}.footer-links a{color:var(--blue);font-weight:900;text-decoration:none;font-size:14px}
+.footer-brand{font-weight:900;font-size:15px;margin-bottom:10px}.footer-note{font-size:13px;line-height:1.6}
+@media(max-width:820px){.infocard-grid{grid-template-columns:1fr}.duo{grid-template-columns:1fr}.workflow-grid{grid-template-columns:1fr}.cta-band .inner{grid-template-columns:1fr}.section{padding:40px 20px}.hero{min-height:52vh;flex-direction:column;justify-content:flex-start;align-items:flex-start;gap:24px}.hero>div{width:100%}.hero-figure{width:100%;max-width:420px}}
+@media(max-width:820px){html,body{overflow-x:hidden}.hero h1{word-break:break-word}}
+</style>
+</head>
+<body class="spotlight">
+<nav class="top">
+  <div class="container">
+    <a class="nav-brand-img" href="../../../index.html"><img src="../../../images/footer-signature.png" alt="Coach Jiang | Jiang Yude"></a>
+    <button class="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
+    <ul class="nav-menu">
+      <li><a href="../../../index.html">Home page</a></li>
+      <li><a href="../../../knowledge-architecture.html">Knowledge Architecture</a></li>
+      <li><a href="../../../courses.html">Course</a></li>
+      <li><a href="../../../articles.html" class="active">In-depth article</a></li>
+      <li><a href="../../../skills.html">Skill Pack Download</a></li>
+      <li><a href="../../../cases.html">Service Plan</a></li>
+    <li class="lang-switch"><a href="https://ai-km-jiang.vercel.app/articles/dual-track-planning-loop/" hreflang="zh-Hant">中文</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="wc wc1"></div>
+  <div class="wc wc2"></div>
+  <div class="wc wc3"></div>
+  <div>
+    <div class="kicker">AI Application/AI Workflow</div>
+    <h1>Let two AIs find faults with each other: Before sending my plan, it was scored 2/5 by the mock reviewer</h1>
+    <p>Plan dual-track mutual review loop: Two AIs from different companies independently write the same plan, then find fault with each other, and finally leave the real decision to themselves. A real record of the first run of a government subsidy proposal, with prompts that can be copied directly.</p>
+    <div class="article-meta"><span>Case Article</span><span>Published 2026-07-12</span><span>Last updated 2026-07-12</span></div>
+  </div>
+  <figure class="hero-figure">
+    <img src="../../../images/articles/dual-track-planning-loop-cover.jpg" alt="Planned dual-track loop cover: One terminal on each track, merged into one document, Mika holding the seal of approval" loading="lazy">
+    <figcaption>The two AIs each write one copy and criticize each other’s mistakes.</figcaption>
+  </figure>
+</section>
+
+<main>
+
+<section class="section" id="start">
+  <div class="inner">
+    <h2>What is this article talking about?</h2>
+    <p class="lead">AI helps you write plans, proposals, and strategy documents quickly and smoothly. But have you ever thought that it is following you from beginning to end? This article records how I let two AIs from different companies write the same plan independently, then find fault with each other, and finally leave the real decision to myself. The entire process was actually run once today, and the data and turning points are all in the article.
+Who is</p>
+    <div class="duo stack">
+      <div class="card a">
+        <b>suitable for?</b>
+        <ul>
+          <li>People who are already using AI to write proposals, plans, and reports, but are unsure whether they can hand it over directly</li>
+          <li>I have both Claude and ChatGPT, and I want to know what the advantages of using the two together are.</li>
+          <li>To submit government subsidy cases, bid cases, and proposals to customers, people who cannot afford to lose once have a blind spot</li>
+        </ul>
+      </div>
+      <div class="card b">
+        <b>What can you take with you?</b>
+        <ul>
+          <li>A complete dual-track mutual review process, five steps, you can run it if you follow it</li>
+          <li>Two prompt words that can be copied directly without installing any tools</li>
+          <li>A list of rollovers in real cases: AI acted out in advance how my proposal would die</li>
+        </ul>
+      </div>
+    </div>
+    <p style="margin-top:18px">If you are in a hurry, jump directly to<a href="#prompts">「How can you start」</a>, the prompt word is there.</p>
+  </div>
+</section>
+
+<section class="section" id="scene">
+  <div class="inner">
+    <h2>Real scene</h2>
+    <p>Today I am going to write a proposal for SBIR government R&D subsidies.</p>
+    <p>The starting point of the matter is that I saw a lot of companies on the market making AI CRM and enterprise information integration platforms, which automatically connect a lot of systems. My positioning is based on the division of labor with them: they are data plumbers, who collect structured data; I do knowledge extraction, turning unstructured documents into the organization's intellectual assets. This positioning should be written into a plan that can be submitted for review.</p>
+    <p>The previous approach was to open an AI and make changes back and forth with it. By the fifth round, the document looked complete and every paragraph made sense. But then I discovered a problem: every round it went in the direction I talked about in the previous round. When I say the division of labor is good, it describes the division of labor clearly and logically; when I say that public welfare organizations are the home field, it describes public welfare in a sincere way. The entire document is actually my own thoughts amplified, and no one is speaking against me.</p>
+    <p>If you submit a document for review once, you lose it. The review will not go along with me.</p>
+  </div>
+</section>
+
+<section class="section" id="problems">
+  <div class="inner">
+    <h2>Source of the problem</h2>
+    <p class="lead">Looking apart, there are three structural problems with a single AI writing important documents.</p>
+    <div class="infocard">
+      <div class="infocard-grid">
+        <div class="info-item">
+          <b>1. Self-examination blindness</b>
+          <p>The same model, whatever logic is used when writing, will be used when reviewing. It cannot find holes in its own logic, just like when we proofread our own compositions, we will never find enough typos.</p>
+        </div>
+        <div class="info-item">
+          <b>2. Anchoring</b>
+          <p>You first talk about the direction, and AI will do its best in your direction. It rarely takes a step back and asks: Is this the right direction in itself? The sooner you give a conclusion, the sooner it suspends disbelief.</p>
+        </div>
+        <div class="info-item">
+          <b>3. Just seek completion</b>
+          <p>Important documents need to be challenged, and AI’s preset service posture is to complete things. Between done and correct, there is a whole row of mines that you can't see.</p>
+        </div>
+      </div>
+    </div>
+    <p style="margin-top:22px">Some people would say, wouldn’t it be better to ask the same AI to change roles and criticize itself? I've tried changing roles and titles, but I can't change the underlying thinking habits. It still uses the same set of logic to examine itself, and most of the problems it picks out are superficial.</p>
+  </div>
+</section>
+
+<section class="section" id="loop">
+  <div class="inner">
+    <h2>Mechanism solution: planning dual-track mutual review loop</h2>
+    <p class="lead">My solution is to let two models from different manufacturers run the entire course independently, and then fault each other's mistakes. Today’s configuration is Claude on one track and Codex on the other (Codex is ChatGPT’s desktop AI, with only one important point: it and Claude are brains trained by different companies). The whole process is five steps.</p>
+    <div class="workflow-grid">
+      <div class="workflow-step"><small>STEP 0</small><b>Same input</b><p>The finalized ideas, background documents, and official information are organized into the same package, and the two tracks start from the same starting line.</p></div>
+      <div class="workflow-step"><small>STEP 1</small><b>Double track independent running</b><p>Each writes a first draft, the consultant picks out blind spots, simulates the review and scores, and makes revisions by himself. The processes cannot see each other.</p></div>
+      <div class="workflow-step"><small>STEP 2</small><b>Mutual review</b><p>Exchange finished products, you review mine and I review yours, with five review points fixed.</p></div>
+      <div class="workflow-step"><small>STEP 3</small><b>Integrate and hand over differences</b><p>The convergent ones can be adopted with confidence; the divergent ones are listed as decision points, and the AI is not allowed to make decisions on its own.</p></div>
+      <div class="workflow-step"><small>STEP 4</small><b>Final review of the opponent</b><p>The integrated version will be reviewed by another company to capture the integrator’s own bias.</p></div>
+    </div>
+    <figure class="inline-figure">
+      <img src="../../../images/articles/dual-track-planning-loop-five-steps.jpg" alt="Dual-track loop five-step flow chart: same input, dual-track independent running, mutual review, integration of differences and submission, final peer review. After the fifth step, the dotted line circles back to the first step." loading="lazy">
+      <figcaption>Double-track loop Five steps: After the fifth step, go back to the first step to form a loop.</figcaption>
+    </figure>
+
+    <h3>Step 0: Same input</h3>
+    <p>I organized the finalized ideas, background files, and official information locations into the same package, and the two tracks received exactly the same input. Key discipline: The content transferred to the second track cannot carry any ideas already written in the first track. Both sides must start from the same starting line.</p>
+
+    <h3>Step one: Run independently on both tracks, unable to see each other</h3>
+    <p>Each track does four things: write the first draft of the plan, find blind spots from a strict consultant’s perspective, simulate target review and scoring, and revise by yourself based on the first two items.</p>
+    <p>My consultants in this track are two personality skill packages, which are to organize the thinking methods of a celebrity into role settings that AI can play: Musk's perspective of first principles, and Navarre's perspective of leverage and exclusive knowledge.</p>
+    <div class="meaning"><b>Musk’s toughest sentence</b>No one in the entire document has paid for the words "knowledge extraction". You have a beautiful division of labor narrative, but narrative is just narrative, and evidence is evidence.</div>
+    <p>Navarna has shifted the focus of the entire project: instead of extracting knowledge, we must first prove that the quality of the extraction can be verified. By building that measuring stick, the four problems of quantification, research and development, intellectual property, and moat will disappear together.</p>
+    <p>For the simulated review stage, I first asked a sub-agent responsible for searching for information to list the official review information in the knowledge base: scoring aspects, check point format requirements, common deduction points, and qualification red lines. Then use this information to feed three mock review members, one each for technology, industry, and execution, each with different picky habits. Three people gave my first draft a score of 2, 2, and 3 out of 5. There is only one common cause of death: the entire project cannot find a qualified quantitative check point. The official text clearly requires "complete a certain module and achieve a certain percentage." This is an acceptable way of writing. My first draft is all qualitative description.</p>
+    <p>At the same time, the Codex track was completed independently without being able to see my track at all. It wrote its own version, picked its own fifteen blind spots, had its own mock judges score it 57 out of 100, and listed eight possible causes of death. It even found a problem at the case level: Taipei City could not find an independent "local SBIR" page in the official information, and the proposed subsidy targets may need to be changed.</p>
+
+    <h3>Step 2: Mutual review</h3>
+    <p>Swap after both tracks are completed. You review my finished product, and I review your finished product. The focus of the review is fixed on five items: whether there is any misinterpretation of the original meaning, whether there are internal contradictions, whether the official information is quoted correctly, whether there are new blind spots missed by both parties, and whether the presentation of decision-making options is fair.</p>
+
+    <h3>Step 3: Integrate and hand over differences to others</h3>
+    <p>The track initiated by combines the two finished products and the two mutual review opinions into one version. The iron rule is: where the opinions of the two tracks converge, you can feel free to adopt them; where the two tracks diverge, the AI ​​is not allowed to make its own decisions, but must list them as decision points and leave them to me.</p>
+    <p>The point of disagreement today is who the audience should target. One track advocates targeting public welfare organizations, and the other advocates targeting small and micro enterprises. For this kind of business judgment, AI can provide options and pros and cons, and it is my business to make the decision.</p>
+
+    <h3>Step 4: Final review of the opponent</h3>
+    <p>The integrated version is produced by my company, so I will leave it to the opponent for review. This level captured the most valuable move in the whole game: when I presented the two audience options, I put the existing course income into the advantage column of one of the cases. The final review pointed out that course income proves execution ability, and using it as evidence of demand that “someone wants to buy this service” is deceiving oneself. The evidence of demand in both cases is actually zero, and the starting point is the same.</p>
+    <div class="meaning"><b>Why an AI can’t catch</b>I am completely unaware of this bias. An AI wouldn't catch it, because that bias grew along my narrative from the beginning.</div>
+  </div>
+</section>
+
+<section class="section" id="limits">
+  <div class="inner">
+    <h2>What it guarantees and what it does not guarantee</h2>
+    <div class="duo">
+      <div class="card b">
+        <small>Guaranteed</small>
+        <b>Double track can be done</b>
+        <p>The blind spot coverage is much larger than that of a single model, and the convergence conclusion of the two models is highly credible; it prevents anchoring because the second track starts from clean input; the entire process leaves an auditable work file, and each modification can be traced back to who and which level proposed it.</p>
+      </div>
+      <div class="card a">
+        <small>Not guaranteed</small>
+        <b>What the dual track cannot do</b>
+        <p>The mock review is a preview. What the real reviewers think is not replaced by a simulation. You still need to go through it with a real person who has written or reviewed the case before submitting the application. All the output of AI are options and evidence, and the responsibility for making decisions cannot be outsourced. Official information will expire and must be returned to the original source for rechecking before sending.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="prompts">
+  <div class="inner">
+    <h2>How you can get started</h2>
+    <p class="lead">You don’t need to install any tools, just open two different AIs and you can run the simplified version. Three steps.</p>
+    <p>The first step is to post the same requirement to the two AIs respectively. You can use this paragraph directly as the prompt:</p>
+    <div class="codeblock">I want to write a [plan/proposal] with the following requirements: [Paste your needs and background].
+Please complete the three steps independently:
+1. Write a first draft.
+2. Put on the role of a strict consultant and list 5 to 8 blind spots in this first draft, with a “how to fix them” for each.
+3. Simulate [the target reviewer, such as the grant reviewer/client’s decision-making director], who rates the first draft, listing the tough questions he would ask and the most likely causes of death.
+Finally, revise it into your final version according to steps 2 and 3. Don’t ask me about the process, just run through it.</div>
+    <p>The second step is exchange and mutual review. Paste A's final version to B, and B's final version to A:</p>
+    <div class="codeblock">This is another project with the same theme independently completed by AI (below). Please just review, don't rewrite:
+1. Have you misinterpreted my original intention?
+2. Are there any internal inconsistencies?
+3. Are the facts and information correct?
+4. It doesn’t discover new blind spots that you can see.
+5. Is there any bias in the presentation of options?</div>
+    <p>The third step is to choose an AI to integrate the two versions and the mutual review opinions, and make your own decisions on any differences.</p>
+    <h3>Advanced: Let the two AIs call each other directly</h3>
+    <p>If you often use Claude and Codex at the same time, or want to run this loop semi-automatically, we recommend two open source packages:</p>
+    <ul>
+      <li><a href="https://github.com/openai/codex-plugin-cc" target="_blank" rel="noopener">openai/codex-plugin-cc</a>: Allow Claude Code to call Codex directly</li>
+      <li><a href="https://github.com/sendbird/cc-plugin-codex" target="_blank" rel="noopener">sendbird/cc-plugin-codex</a>: Let the Codex be called Claude Code in reverse</li>
+    </ul>
+    <p>My own division of labor habits: Claude is responsible for analysis and reasoning, and Codex is responsible for execution. When running the loop, if something goes wrong, the two models will discuss it among themselves. If it is true, Joe may call me again. The smallest starting point for a knowledge worker is: after writing the copy and plan, let another model review the manuscript.</p>
+    <figure class="inline-figure">
+      <img src="../../../images/articles/dual-track-planning-loop-dual-model.jpg" alt="Claude and Codex dual-model workflow chart: analysis is handed over to Claude, execution is handed over to Codex, and the two suites allow both parties to call each other" loading="lazy">
+      <figcaption>Dual-model workflow: leave analysis to Claude and execution to Codex.</figcaption>
+    </figure>
+    <div class="caveat"><b>Two reminders</b>First, the order is very important: finish each run first, and then switch. If you swap first and then write, the second AI will be anchored, and the dual track will be in vain. Second, feel free to use the convergence points and think about the divergences yourself. This is the most indispensable position in the entire process.</div>
+  </div>
+</section>
+
+<section class="section" id="recap">
+  <div class="inner">
+    <h2>Ending Recap</h2>
+    <ul>
+      <li>Three structural issues in writing important documents with a single AI: self-examination blindness, anchoring, and only seeking completion</li>
+      <li>Dual-track mutual review loop five steps: same input, independent running, mutual review, integration to retain decision points, and final review against each other</li>
+      <li>Real running results: The simulated review staged the cause of death in advance, and the final review caught the bias that I could not see.</li>
+      <li>Converging credibility, different communication, simulation does not replace the real person</li>
+      <li>With two prompt words, you can open two windows and start running today</li>
+    </ul>
+    <h3>Positioning reminder for yourself</h3>
+    <p>Is this process slow? Slower than opening an AI alone. But what I always want is to write a document faster? What I want is that the things I send out can withstand the challenge. After each run, the blind spot list, review perspective, and decision-making record are all left in my knowledge base and become the starting point for the next time. Using AI to assist decision-making and accumulate knowledge assets is just a matter of speed.</p>
+    <div class="tagrow">
+      <span class="tag">AI Workflow</span><span class="tag">Cross-family review</span><span class="tag">Assistant decision-making</span><span class="tag">Case Article</span><span class="tag">Basics</span>
+    </div>
+  </div>
+</section>
+
+<div class="cta-band">
+  <section class="section">
+    <div class="inner">
+      <div>
+        <h2>I am coach Jiang Jiang</h2>
+        <p class="lead">Tacit knowledge refiner, AI application planner. I hold two free online lectures every month to share practical experience and methodology. If you are interested in these topics, want to continue learning, or have consulting needs, you are welcome to start with the community.</p>
+        <p>Main discussion: Make good use of AI as a thinking partner to improve decision-making quality and depth of thinking; organize knowledge and experience into prompt words, skill packages, and knowledge bases so that AI can be used flexibly.</p>
+      </div>
+      <div class="cta-card">
+        <b>Interested in AI × knowledge management?</b>
+        <p>Welcome to join my LINE community, free lectures and methodologies are shared here first.</p>
+        <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">Join LINE community ↗</a>
+      </div>
+    </div>
+  </section>
+</div>
+
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">Coach Jiang · AI Knowledge Management</div>
+    <div class="footer-links">
+      <a href="../../../articles.html">← Return to Shen Shen Articles Website</a>
+      <a href="../../../index.html">Home page</a>
+      <a href="../../../learn.html">Self-study resources</a>
+      <a href="../../../skills.html">Skill Pack Download</a>
+      <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">LINE Community ↗</a>
+      <a href="https://www.threads.com/@jiang_yude_coach" target="_blank" rel="noopener">Threads ↗</a>
+      <a href="https://vocus.cc/salon/Jiang_Coach" target="_blank" rel="noopener">Square grid ↗</a>
+    </div>
+    <div class="footer-note">This is a case article that summarizes my approach and views on the “planning dual-track mutual review loop” for your reference.</div>
+  </div>
+</footer>
+
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <span class="lightbox-close" aria-label="Close">×</span>
+  <img id="lightbox-img" src="" alt="Enlarge view">
+</div>
+<script>
+(function(){
+  var box=document.getElementById('lightbox'),boxImg=document.getElementById('lightbox-img');
+  document.querySelectorAll('.hero-figure img,.inline-figure img').forEach(function(img){
+    img.addEventListener('click',function(){boxImg.src=img.currentSrc||img.src;boxImg.alt=img.alt||'放大檢視';box.classList.add('open');box.setAttribute('aria-hidden','false');});
+  });
+  function close(){box.classList.remove('open');box.setAttribute('aria-hidden','true');boxImg.src='';}
+  box.addEventListener('click',close);
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
+})();
+</script>
+
+<script src="../../../spotlight.js"></script>
+<script src="../../../articles-data.js"></script>
+<script src="../../../related-render.js"></script>
+<script src="/views.js"></script>
+</body>
+</html>

@@ -1,0 +1,256 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="index,follow">
+<title>Liberal arts students can let AI take over the work without writing programs: Design their own Agent framework｜Coach Jiang · AI Knowledge Management</title>
+<meta name="description" content="A general course on Agent framework design for liberal arts students: three things to control engineering, loop engineering and three kinds of diaries, LLM Wiki knowledge graph and Tag Wiki tag system. AI can take over the work without writing programs.">
+<link rel="canonical" href="https://ai-km-jiang.vercel.app/en/articles/liberal-arts-agent-framework/">
+<link rel="alternate" hreflang="zh-Hant" href="https://ai-km-jiang.vercel.app/articles/liberal-arts-agent-framework/">
+<link rel="alternate" hreflang="en" href="https://ai-km-jiang.vercel.app/en/articles/liberal-arts-agent-framework/">
+<link rel="alternate" hreflang="x-default" href="https://ai-km-jiang.vercel.app/articles/liberal-arts-agent-framework/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Arts majors can let AI take over the work without writing programs｜Coach Jiang">
+<meta property="og:image" content="https://ai-km-jiang.vercel.app/images/og/liberal-arts-agent-framework.jpg">
+<meta property="og:description" content="Three things about mastering engineering, loop engineering and three kinds of diaries, LLM Wiki and Tag Wiki, AI can take over the work without writing programs.">
+<meta property="og:url" content="https://ai-km-jiang.vercel.app/en/articles/liberal-arts-agent-framework/">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Coach Jiang · AI Knowledge Management">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Arts majors can let AI take over the work without writing programs｜Coach Jiang">
+<meta name="twitter:image" content="https://ai-km-jiang.vercel.app/images/og/liberal-arts-agent-framework.jpg">
+<meta name="twitter:description" content="Control engineering, loop engineering, LLM Wiki and Tag Wiki, Agent framework design course for liberal arts students.">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Liberal arts students can let AI take over the work without writing programs: Design their own Agent framework","description":"A general course on Agent framework design for liberal arts students: three things to control engineering, loop engineering and three kinds of diaries, LLM Wiki knowledge graph and Tag Wiki tag system. AI can take over the work without writing programs.","author":{"@type":"Person","name":"Jiang Yude","alternateName":"Coach Jiang"},"isPartOf":{"@type":"WebSite","name":"Coach Jiang · AI Knowledge Management","url":"https://ai-km-jiang.vercel.app/en/"},"inLanguage":"en","datePublished":"2026-04-20","dateModified":"2026-04-20","image":"https://ai-km-jiang.vercel.app/images/og/liberal-arts-agent-framework.jpg","url":"https://ai-km-jiang.vercel.app/en/articles/liberal-arts-agent-framework/"}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{--ink:#1a1612;--paper:#fefcf8;--muted:#6a635a;--line:#d8cdb8;--green:#5f7553;--blue:#5689b8;--orange:#e85a4f;--soft:#faf5ec;--dark:#2a2018;--shadow:0 18px 45px rgba(107,74,42,.14);--sp-shadow:hsla(35,50%,60%,.15);--sp-shadow-edge:hsla(35,50%,68%,.03);--sp-radius:400px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC","Segoe UI",sans-serif}
+a{color:inherit}
+nav.top{position:sticky;top:0;background:rgba(254,252,248,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid #d8cdb8;z-index:100}
+nav.top .container{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:24px;padding:14px 32px}
+.nav-brand-img{justify-self:start;display:flex;align-items:center;text-decoration:none;flex-shrink:0;transition:opacity .2s}
+.nav-brand-img:hover{opacity:.8}.nav-brand-img img{height:40px;width:auto;display:block}
+nav.top ul.nav-menu{justify-self:end;display:flex;gap:22px;list-style:none;margin:0;padding:0;font-size:.95rem;white-space:nowrap}
+nav.top ul.nav-menu a{color:#3a342d;text-decoration:none;transition:color .2s;font-weight:500;white-space:nowrap}
+nav.top ul.nav-menu a:hover{color:#1a1612}nav.top ul.nav-menu a.active{color:#1a1612;font-weight:700}
+.nav-toggle{display:none;background:none;border:none;padding:6px;cursor:pointer;width:36px;height:36px;position:relative}
+.nav-toggle span{display:block;position:absolute;left:8px;right:8px;height:2px;background:#1a1612;border-radius:2px;transition:transform .25s,opacity .25s,top .25s}
+.nav-toggle span:nth-child(1){top:11px}.nav-toggle span:nth-child(2){top:17px}.nav-toggle span:nth-child(3){top:23px}
+.nav-toggle.open span:nth-child(1){top:17px;transform:rotate(45deg)}.nav-toggle.open span:nth-child(2){opacity:0}.nav-toggle.open span:nth-child(3){top:17px;transform:rotate(-45deg)}
+@media(max-width:860px){
+ nav.top .container{grid-template-columns:auto 1fr auto;padding:10px 16px;gap:12px}
+ .nav-brand-img img{height:32px}
+ .nav-toggle{display:block;justify-self:end}
+ nav.top ul.nav-menu{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(254,252,248,.98);backdrop-filter:blur(14px);border-bottom:1px solid #d8cdb8;flex-direction:column;gap:0;padding:8px 0;box-shadow:0 10px 24px rgba(107,74,42,.08)}
+ nav.top ul.nav-menu.open{display:flex}
+ nav.top ul.nav-menu li{border-bottom:1px solid #e8dfc9}
+ nav.top ul.nav-menu li:last-child{border-bottom:none}
+ nav.top ul.nav-menu a{display:block;padding:14px 20px;font-size:1.06rem}
+}
+body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradient(var(--sp-radius) circle at var(--mx,50%) var(--my,50%),var(--sp-shadow) 0%,var(--sp-shadow-edge) 45%,transparent 75%);pointer-events:none;z-index:9999;mix-blend-mode:multiply;transition:background .06s linear}
+.hero{position:relative;overflow:hidden;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:72px;padding:96px clamp(20px,6vw,88px) 80px;background:linear-gradient(180deg,#fffcf0 0%,#f9e9d2 100%);color:#1a1612;border-bottom:1px solid #d8cdb8}
+.hero .wc{position:absolute;border-radius:50%;filter:blur(60px);pointer-events:none;z-index:0}
+.hero .wc1{width:420px;height:360px;top:-120px;right:-80px;background:#e8884b;opacity:.15}
+.hero .wc2{width:360px;height:300px;bottom:-110px;left:-70px;background:#5f7553;opacity:.13}
+.hero .wc3{width:280px;height:260px;top:34%;left:14%;background:#a08144;opacity:.10}
+.hero>div{flex:none;width:860px;max-width:100%;position:relative;z-index:2}
+.kicker{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.55rem;color:#7a5c3a;font-weight:500}
+.hero h1{max-width:none;margin:16px 0 18px;font-size:clamp(32px,5vw,58px);line-height:1.12;overflow-wrap:anywhere}
+.hero p{max-width:none;font-size:clamp(18px,2vw,23px);line-height:1.62;color:#3a342d}
+.hero-date{margin-top:18px;font-size:15px;color:#7a5c3a}
+.section{padding:54px clamp(20px,6vw,88px);border-top:1px solid var(--line)}
+.inner{width:min(1000px,100%);margin:0 auto}
+.section h2{font-size:clamp(26px,4.2vw,48px);line-height:1.12;margin:0 0 18px}
+.section h3{font-size:clamp(21px,3vw,30px);line-height:1.2;margin:30px 0 12px}
+.lead{font-size:clamp(18px,1.6vw,22px);line-height:1.7;color:#3a342d;max-width:900px}
+.section p{font-size:18px;line-height:1.74;color:#3a342d}.section p+p{margin-top:14px}
+.section ul,.section ol{padding-left:1.4em;font-size:18px;line-height:1.74;color:#3a342d}.section li{margin-bottom:8px}
+.meaning{margin:22px 0;padding:16px 18px;border-left:5px solid var(--blue);background:rgba(86,137,184,.12);border-radius:6px;line-height:1.7;font-size:19px}
+.meaning b{display:block;color:var(--blue);margin-bottom:4px}
+.caveat{margin:0 0 8px;padding:16px 18px;border-left:5px solid var(--orange);background:rgba(232,90,79,.1);border-radius:6px;line-height:1.7;font-size:18px;color:#3a342d}
+.caveat b{display:block;color:var(--orange);margin-bottom:4px}
+.tagrow{display:flex;flex-wrap:wrap;gap:7px;margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
+.tag{font-size:14px;color:var(--muted);background:var(--soft);border:1px solid var(--line);border-radius:999px;padding:4px 11px}
+.duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:24px}
+.duo.stack{grid-template-columns:1fr}
+.duo .card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:22px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.duo .card.a{border-color:var(--orange)}.duo .card.b{border-color:var(--green);box-shadow:0 8px 24px rgba(95,117,83,.16)}
+.duo .card b{display:block;font-size:22px;line-height:1.3;margin-bottom:12px}.duo .card.a b{color:#c0512f}.duo .card.b b{color:#4a7a59}
+.duo .card p{margin:0;color:#3a342d;line-height:1.75;font-size:18px}
+.workflow-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:24px}
+.workflow-step{background:#fff;border:1px solid var(--line);border-radius:8px;padding:18px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.workflow-step small{display:block;color:var(--orange);font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;margin-bottom:9px}
+.workflow-step b{display:block;font-size:18px;line-height:1.3;margin-bottom:9px}
+.workflow-step p{margin:0;color:#3a342d;line-height:1.6;font-size:16px}
+.codeblock{background:var(--dark);color:#f3ead9;border-radius:8px;padding:18px 20px;font:500 14px/1.65 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;overflow-x:auto;white-space:pre-wrap;margin:20px 0;box-shadow:0 8px 22px rgba(107,74,42,.12)}
+.footer{padding:30px clamp(20px,6vw,88px);font-size:14px;color:var(--muted);background:#fff;border-top:1px solid var(--line)}
+.footer-inner{width:min(1000px,100%);margin:0 auto}
+.footer-links{display:flex;flex-wrap:wrap;gap:6px 12px;margin-bottom:14px}.footer-links a{color:var(--blue);font-weight:900;text-decoration:none;font-size:14px}
+.footer-brand{font-weight:900;font-size:15px;margin-bottom:10px}.footer-note{font-size:13px;line-height:1.6}
+@media(max-width:820px){.duo{grid-template-columns:1fr}.workflow-grid{grid-template-columns:1fr}.section{padding:40px 20px}.hero{min-height:52vh;flex-direction:column;justify-content:flex-start;align-items:flex-start;gap:24px}.hero>div{width:100%}}
+@media(max-width:820px){html,body{overflow-x:hidden}.hero h1{word-break:break-word}}
+</style>
+</head>
+<body class="spotlight">
+<nav class="top">
+  <div class="container">
+    <a class="nav-brand-img" href="../../../index.html"><img src="../../../images/footer-signature.png" alt="Coach Jiang | Jiang Yude"></a>
+    <button class="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
+    <ul class="nav-menu">
+      <li><a href="../../../index.html">Home page</a></li>
+      <li><a href="../../../knowledge-architecture.html">Knowledge Architecture</a></li>
+      <li><a href="../../../courses.html">Course</a></li>
+      <li><a href="../../../articles.html" class="active">In-depth article</a></li>
+      <li><a href="../../../skills.html">Skill Pack Download</a></li>
+      <li><a href="../../../cases.html">Service Plan</a></li>
+    <li class="lang-switch"><a href="https://ai-km-jiang.vercel.app/articles/liberal-arts-agent-framework/" hreflang="zh-Hant">中文</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="wc wc1"></div>
+  <div class="wc wc2"></div>
+  <div class="wc wc3"></div>
+  <div>
+    <div class="kicker">Agent Framework</div>
+    <h1>Arts majors can let AI take over the work without writing programs: Design their own Agent framework</h1>
+    <p>My approach is very simple: use files and folders to classify, and use natural language to explain the rules clearly. This is the same concept as writing a script for actors to act, except that the script is replaced by rules and the actors are replaced by AI.</p>
+    <div class="hero-date">Published 2026-04-20 | Last updated 2026-04-20</div>
+  </div>
+</section>
+
+<main>
+
+<section class="section" id="start">
+  <div class="inner">
+    <h2>What is this article talking about?</h2>
+    <p class="lead">Engineers look particularly good at using AI, and many people think it’s because they understand programming. In fact, the key lies elsewhere: program code is highly structured text, and AI reads it very smoothly. This, in turn, is an opportunity for liberal arts students: as long as the documents and knowledge are organized into a structure like program code, AI can read and apply it well. You already know the tools for organizing: folders are responsible for categorization, documents have clearly written rules in natural language, and AI will follow them as soon as they get it. This article compiles the complete content of a general course, from driving engineering to LLM Wiki and Tag Wiki.
+Who is</p>
+    <div class="duo stack">
+      <div class="card a">
+        <b>suitable for?</b>
+        <p>· Content workers, teachers, consultants, mass clerical workers<br>· People who want AI to take over the work, but want to close the page as soon as they see the word "engineering"<br>· People who are already using ChatGPT or Claude and want to move to Agent and personal work systems</p>
+      </div>
+      <div class="card b">
+        <b>What can you take with you?</b>
+        <p>· Three things non-engineers can do in mastering engineering<br>· Let AI understand the three specific ways of writing your file relationships (timestamp, link syntax, cross-system reference)<br>·Personal profile, anthropomorphic skill package, three diary implementation methods</p>
+      </div>
+    </div>
+    <div class="meaning"><b>The core sentence of the whole class</b>AI tools are very smart now. Let it learn from you, and you don’t need to be so tired to learn it. Create a document that clearly describes your system, process, and way of thinking and let AI read it. Whichever AI company comes today, let it be read by that AI company.</div>
+  </div>
+</section>
+
+<section class="section" id="harness">
+  <div class="inner">
+    <h2>Mastering Engineering: Three Things Non-Engineers Can Do</h2>
+    <p>Harness means reins. I translate Harness Engineering into "control engineering", which is essentially about controlling AI. OpenAI's definition of Agent in 2026 can be simplified into a formula: Agent is equal to the AI ​​model (brain) plus the engineering we control this brain (driving engineering).</p>
+    <p>You and I can’t decide which company the brain belongs to, and we can’t chase it to the end. Controlling this half is what we can do. And most of its work requires no coding at all:</p>
+    <div class="workflow-grid">
+      <div class="workflow-step"><small>First item</small><b>Design Environment</b><p>Plan the folder structure and file placement logic so that AI will know where things are as soon as it comes in.</p></div>
+      <div class="workflow-step"><small>Second item</small><b>Define intent</b><p>Use a document to clearly describe the purpose of each folder, the rules and restricted areas of each process.</p></div>
+      <div class="workflow-step"><small>The third item</small><b>Create a loop</b><p>Let AI automatically run along the written path, check and write back the rules after running.</p></div>
+    </div>
+    <p>The fastest way to understand is by writing a script: designing the environment is setting up the scene, defining the intention is writing the script, and establishing the loop is letting the actors follow the script. Liberal arts students usually do these exercises: reading, classifying, interpreting, and sorting out the context. The only difference is that I used to write for humans to read, but now I write an extra copy for AI to read.</p>
+    <p>You must remember an underlying fact: If you don’t tell AI special logic, it will definitely follow the presets. The AI ​​presets the three documents A, B, and C to read in the order of ABC; if your actual process is to finish A and then C, and then return to B after C, you must write it down in advance, so that it will run according to ACB. AI will get smarter and smarter, but your special logic will always have to be defined by you.</p>
+  </div>
+</section>
+
+<section class="section" id="loop">
+  <div class="inner">
+    <h2>Loop project: do it once, check, and write back the rules</h2>
+    <p>The driving engineering deals with "how to make AI do things within the controllable range", and the loop engineering deals with "how to make it do better every time" (the complete method is in<a href="../what-is-loop-engineering/">What is loop engineering?</a>The article; how to connect the two together, see<a href="../loop-engineering-guardrails/">Loop Guardrail</a>). Do it once, check it, write down the experience into rules, and make less mistakes next time. Long-term work depends on this cycle, and a single prompt word cannot sustain it.</p>
+    <p>The most practical tools for writing back rules are three types of diaries. Other information can be sorted by AI. You can only keep the diary by yourself, because AI cannot read minds.</p>
+    <ul>
+      <li>Work log: Every time a process is completed, especially if it takes many rounds to complete, the next instruction is "Write the process just now into a work log." Next time you do something similar, ask the AI ​​to read the previous one first. Even if the AI ​​gets it right this time, it will still be written as written, because AI is random, and the success this time does not mean that it will be the success next time.</li>
+      <li>Opinion Diary: When you discover cross-system or cross-document insights, write them in a separate journal instead of stuffing them into the original document. The logic is clean when checking the original system, and there is a place to check when comparing across systems.</li>
+      <li>Mood diary: record emotional state, internal friction points, and stuck places. Emotional costs are also costs, and are especially recommended for founders of one-person companies.</li>
+    </ul>
+    <div class="codeblock">Work log example:
+Originally I thought the process was ABC, but this time when an unexpected situation occurred, it actually became ACB.
+If you encounter this situation in the future, remember that the process is ACB.
+
+(The next time the AI reads it, it will know how to deal with it. There is no need to teach it again.)</div>
+  </div>
+</section>
+
+<section class="section" id="llmwiki">
+  <div class="inner">
+    <h2>LLM Wiki: Knowledge map for model reading</h2>
+    <p>The core of LLM Wiki proposed by Karpathy is to allow the knowledge base to be continuously accumulated, automatically linked, and automatically updated. AI needs a readable, referenceable, and traceable knowledge structure to know what are the core concepts, what are the related concepts, and how different pages are connected together.</p>
+    <p>falls into the personal knowledge base, and there are three specific ways to write it:</p>
+    <div class="codeblock">1. Timestamp (prompt):
+Add YYYY-MM-DD-HHMM to the file name, and the AI will know the order when it sees the time.
+
+2. Connection syntax (specified, more precise than timestamp):
+Simply write "A followed by C" in the document.
+
+3. Cross-system reference:
+Write at the beginning of file B
+"Please refer to C in another system. The underlying logic is almost the same.
+Can be used as a reference between systems. "</div>
+    <p>A good practice is to write both timestamp and link syntax. When a new document is added to the knowledge base, AI can automatically determine the association and establish a link. In special cases, it can be manually filled in. This is the knowledge graph: directional links between documents, allowing the knowledge base to be scaled up while retaining room for manual intervention.</p>
+    <h3>Tag Wiki: Personal work semantic system</h3>
+    <p>LLM Wiki manages the links between documents, while my own Tag Wiki is more focused on personal work semantics: using tags to connect data classification, task scenarios, roles, processes and output forms. If the labels are clearly defined, AI will know which workflow a certain note should enter.</p>
+    <p>The minimum starting point for novices is to first define a few common tags, such as data, process, task, finished product, and pending. Only after the labels are stable can the Agent help you organize and recall them.</p>
+  </div>
+</section>
+
+<section class="section" id="profile">
+  <div class="inner">
+    <h2>Two immediately available accessories: personal profile and anthropomorphic skill pack</h2>
+    <h3>Personal Profile: Resume for AI</h3>
+    <p>A personal profile is a document that allows any AI to quickly learn about you. AI will understand you after reading this one document, so there is no need to crawl through hundreds of documents each time. The method is very simple. Open your most commonly used AI and issue this command:</p>
+    <div class="codeblock">Help me analyze the content of our recent conversation,
+Organize my work patterns, interests, preferences, and processes.</div>
+    <p>Review the draft, fill in the gaps, and save it as a fixed document. The content covers the core of the brand, who you want to serve, work logic and strategy, personal preferences and processes. The key point is that this file should be readable by any AI company, not bound to the platform, and updated regularly as working methods change.</p>
+    <h3>Personification Skill Package: Memorizing people is easier than memorizing tools</h3>
+    <p>With too many tools, you will forget which function is placed where. The solution is to personify the skill packages: give each skill package a name, write a character description, and clearly explain what this character is responsible for and what situation he is called in. For example, my "Chief Editor Chun" is responsible for copywriting, marketing, and content creation. As long as it is related to copywriting, I will directly call Editor Chun. The larger the Agent team is, the more necessary it is to personify it, and the persona should be specific to "what situation should I find him in?"</p>
+    <div class="caveat"><b>Installation rhythm of new tools</b>When a popular tool first becomes popular, there are the most bugs, so you can’t listen to it at first. After a week, it is confirmed that the number of downloads continues to increase, and no one says it is a scam. After another week or two, the official or community has a solution to the bug, and then you can start learning. Desktop Agents with greater authority require more careful pre-investigation. Before installation, ask an existing AI to help you check for risks and removal methods. And just take the most powerful concepts from the new tools and absorb them into your own system. You will never finish learning the whole set of moving.</div>
+  </div>
+</section>
+
+<section class="section" id="practice">
+  <div class="inner">
+    <h2>How you can practice: Write an Agent rule card</h2>
+    <p class="lead">The starting point for liberal arts students to design the Agent framework is a rule card. It condenses three things about mastering engineering into one page.</p>
+    <ol>
+      <li>What stuff do I have: List your main folders and what each folder is used for.</li>
+      <li>What tasks do I often do: Pick three recurring tasks and write down how you do them in three to five sentences each.</li>
+      <li>What cannot be done automatically: sending out, deleting files, touching sensitive information, first mark out the restricted area.</li>
+      <li>How to accept the completed task: Write a "completion standard" for each task and let the AI ​​determine the answer by itself.</li>
+    </ol>
+    <p>This card is the starting point of your personal Agent system. After each round of work, use the work log to write down the experience, and the rule card will grow on its own. Streamlined AI, iron-clad knowledge: Tools will keep changing, and the system you have sorted out is the asset that will remain.</p>
+    <div class="tagrow">
+      <span class="tag">Agent Framework</span><span class="tag">Control Engineering</span><span class="tag">Loop Project</span><span class="tag">LLM Wiki</span><span class="tag">Tag Wiki</span><span class="tag">Arts students</span><span class="tag">Knowledge Management</span>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">Coach Jiang · AI Knowledge Management</div>
+    <div class="footer-links">
+      <a href="../../../articles.html">← Return to Shen Shen Articles Website</a>
+      <a href="../../../index.html">Home page</a>
+      <a href="../../../learn.html">Self-study resources</a>
+      <a href="../../../skills.html">Skill Pack Download</a>
+      <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">LINE Community ↗</a>
+      <a href="https://www.threads.com/@jiang_yude_coach" target="_blank" rel="noopener">Threads ↗</a>
+      <a href="https://vocus.cc/salon/Jiang_Coach" target="_blank" rel="noopener">square grid ↗</a>
+    </div>
+    <div class="footer-note">This is a methodology article that compiles the teaching manual content of the 2026-04-20 "Harness Engineering × LLM Wiki General Course for Liberal Arts Students".</div>
+  </div>
+</footer>
+
+<script src="../../../spotlight.js"></script>
+<script src="../../../articles-data.js"></script>
+<script src="../../../related-render.js"></script>
+<script src="/views.js"></script>
+</body>
+</html>
