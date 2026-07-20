@@ -254,7 +254,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["strong-ai-models-knowledge-workflow-road", "questionnaire-to-slides-agent-workflow", "teacher-prep-knowledge-workflow", "own-ai-team-at-work", "agent-workflow-builds-automation", "line-group-ai-workflow", "elon-musk-live-skill", "codex-log-health-check", "how-ai-connects-software", "meeting-record-agent-workflow", "decision-ladder-non-programmer", "tidy-mess-before-consulting", "diary-driven-agent-3x4", "docs-as-system-design-agent", "what-is-loop-engineering", "map-is-not-the-territory", "intangible-assets-grow-by-sharing", "manage-ai-with-management-knowledge"]
+    related: ["strong-ai-models-knowledge-workflow-road", "questionnaire-to-slides-agent-workflow", "teacher-prep-knowledge-workflow", "own-ai-team-at-work", "agent-workflow-builds-automation", "line-group-ai-workflow", "elon-musk-live-skill", "codex-log-health-check", "how-ai-connects-software", "meeting-record-agent-workflow", "decision-ladder-non-programmer", "tidy-mess-before-consulting", "diary-driven-agent-3x4", "docs-as-system-design-agent", "what-is-loop-engineering", "map-is-not-the-territory", "intangible-assets-grow-by-sharing", "manage-ai-with-management-knowledge", "ai-handoff-instructions", "train-your-ai-agent-editor"]
   },
 
   /* ── 13. LINE 群組也能變成 AI 工作流入口（教學）── */
@@ -406,7 +406,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: "https://vocus.cc/salon/Jiang_Coach" },
-    related: ["strong-ai-models-knowledge-workflow-road", "questionnaire-to-slides-agent-workflow", "teacher-prep-knowledge-workflow", "diary-driven-agent-3x4", "how-ai-connects-software", "how-to-train-your-ai-employee", "decision-ladder-non-programmer", "tidy-mess-before-consulting", "what-is-loop-engineering", "tag-wiki-method", "ai-delegators-optimism", "intangible-assets-grow-by-sharing", "publish-gate", "laptop-desktop-webpage-sync-icloud-git", "manage-ai-with-management-knowledge"]
+    related: ["strong-ai-models-knowledge-workflow-road", "questionnaire-to-slides-agent-workflow", "teacher-prep-knowledge-workflow", "diary-driven-agent-3x4", "how-ai-connects-software", "how-to-train-your-ai-employee", "decision-ladder-non-programmer", "tidy-mess-before-consulting", "what-is-loop-engineering", "tag-wiki-method", "ai-delegators-optimism", "intangible-assets-grow-by-sharing", "publish-gate", "laptop-desktop-webpage-sync-icloud-git", "manage-ai-with-management-knowledge", "train-your-ai-agent-editor"]
   },
 
   /* ── 21. 你以為在做一個成品，其實在養十個半成品（觀點）── */
@@ -687,7 +687,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["harness-mindset-for-bosses", "prompt-to-loop-map", "map-is-not-the-territory"]
+    related: ["harness-mindset-for-bosses", "prompt-to-loop-map", "map-is-not-the-territory", "ai-handoff-instructions"]
   },
 
   /* ── 給老闆的駕馭思維：把不敢對員工說的，講給 AI 聽（系列 02）（教學）── */
@@ -820,7 +820,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["questionnaire-to-slides-agent-workflow", "how-to-train-your-ai-employee", "how-ai-connects-software", "docs-as-system-design-agent", "diary-driven-agent-3x4", "what-is-loop-engineering", "tag-wiki-method"]
+    related: ["questionnaire-to-slides-agent-workflow", "how-to-train-your-ai-employee", "how-ai-connects-software", "docs-as-system-design-agent", "diary-driven-agent-3x4", "what-is-loop-engineering", "tag-wiki-method", "train-your-ai-agent-editor"]
   },
 
   /* ── 發佈閘門：多個 AI 改同一個網站怎麼不打架（教學）── */
@@ -881,7 +881,7 @@ window.ARTICLES = [
     summary: "把駕馭工程和迴圈工程接在一起的五條護欄：未抗辯假設、三視角抗辯、Non-goals 與允許路徑、換路煞車、驗收證據分級。讓 AI 連續自動工作時，錯誤不會一路滾大。",
     tags: {"topic":["AI工作流","AIAgent","跨家審稿"],"level":["基礎"],"content_type":["教學文章"]},
     external: { threads: null, vocus: null },
-    related: ["what-is-loop-engineering","harness-mindset-for-bosses","ai-loop-safety-recovery","dual-track-planning-loop"]
+    related: ["what-is-loop-engineering","harness-mindset-for-bosses","ai-loop-safety-recovery","dual-track-planning-loop","ai-handoff-instructions"]
   },
   {
     id: "parenting-story-ai-family-dialogue",
@@ -972,7 +972,7 @@ window.ARTICLES = [
     summary: "用新手聽得懂的方式分清聊天型 AI、網頁工具與桌面型 Agent：專案模式的三個痛點、桌面版的範式轉變、Codex 與三層分工工作流，文科生不用寫程式也能上手。",
     tags: {"topic":["差異比較","AIAgent","工具操作","AI工作流"],"level":["零基礎入門"],"content_type":["教學文章"]},
     external: { threads: null, vocus: null },
-    related: ["youtube-to-opinion-report-workflow", "liberal-arts-agent-framework"]
+    related: ["youtube-to-opinion-report-workflow", "liberal-arts-agent-framework", "train-your-ai-agent-editor"]
   },
   {
     id: "ai-course-map-from-entry-to-workflow",
@@ -1063,7 +1063,7 @@ window.ARTICLES = [
     summary: "企劃雙軌互審 loop：兩個不同家的 AI 同輸入各自獨立寫完、互相挑錯、整合留決策點、對家終審。以一場真實政府補助提案首跑為案例，附兩段可直接複製的提示詞。",
     tags: {"topic":["AI工作流","跨家審稿","輔助決策"],"level":["基礎"],"content_type":["案例文章"]},
     external: { threads: null, vocus: null },
-    related: ["loop-engineering-guardrails", "a2a-agent-protocol", "docs-as-system-design-agent"]
+    related: ["loop-engineering-guardrails", "a2a-agent-protocol", "docs-as-system-design-agent", "ai-handoff-instructions"]
   },
   {
     id: "dual-centaur-meeting",
@@ -1102,7 +1102,7 @@ window.ARTICLES = [
     summary: "把靈感當成可以系統性產出的東西：三個來源（過去累積的內容、AI 模擬受眾、熱門話題）加上標籤撈取系統，配一套從話題到貼文的實操流程，以及沒靈感時請 AI 搜話題並從大眾與專業兩個角度選題的流程，讓有個人特色的穩定發文變成一套會自己運轉的系統。",
     tags: {"topic":["AI工作流","工作流程","知識管理"],"level":["基礎"],"content_type":["教學文章"]},
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["tag-wiki-method", "diary-driven-agent-3x4"]
+    related: ["tag-wiki-method", "diary-driven-agent-3x4", "train-your-ai-agent-editor"]
   },
   {
     id: "post-class-organizing-loop",
@@ -1115,8 +1115,23 @@ window.ARTICLES = [
     summary: "把課後整理拆成一條六步輸送帶：同一份材料生出教學手冊、課後實錄版簡報、官網課程頁三種成品，並用兩層審核確保 AI 整理出來的東西能用。附觸發分流、六步交付物、兩層審核分法與常見坑，可照著替自己的整理流程搭一條一樣的輸送帶。",
     tags: {"topic":["AI工作流","知識管理","工作流程"],"level":["零基礎入門"],"content_type":["教學文章"]},
     external: { threads: null, vocus: null },
-    related: ["how-to-train-your-ai-employee", "docs-as-system-design-agent", "inspiration-production-system"]
+    related: ["how-to-train-your-ai-employee", "docs-as-system-design-agent", "inspiration-production-system", "train-your-ai-agent-editor"]
   },
+
+  {
+    id: "ai-handoff-instructions",
+    url: "articles/ai-handoff-instructions/",
+    date: "2026-07-15",
+    updated: "2026-07-15",
+    title: "交接指令：難的是決定不寫什麼",
+    problem: "換模型、換一家 AI、換機器、換人操作，每次都要交代一句話，結果講太多，連自己回頭要做的事也塞了進去。",
+    audience: "需要在多個 AI、多台機器或多個人之間換手做事，卻常常交接完還要重講一次的一人公司、內容創作者與團隊主管。",
+    summary: "交接指令寫不好，通常不是寫太少而是寫太多。從一次真實的生圖事故拆出核心原則「只寫對方所需」，分成一次交辦、供應商模式、換人續跑三種場景各自的寫法，加上卡住才回吐的自動化分寸與三招防呆，附一張可直接複製的交接單。",
+    tags: {"topic":["AI工作流","AIAgent","工作流程"],"level":["基礎"],"content_type":["案例文章"]},
+    external: { threads: null, vocus: null },
+    related: ["dual-track-planning-loop", "loop-engineering-guardrails", "how-to-train-your-ai-employee", "intent-first-prompting"]
+  },
+
   {
     id: "manage-ai-with-management-knowledge",
     url: "articles/manage-ai-with-management-knowledge/",
@@ -1129,6 +1144,20 @@ window.ARTICLES = [
     tags: {"topic":["數位轉型","知識管理","AI工作流","隱性知識"],"level":["零基礎入門"],"content_type":["教學文章"]},
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
     related: ["how-to-train-your-ai-employee", "docs-as-system-design-agent", "what-is-loop-engineering", "claude-skills-knowledge-assets", "company-shape-is-the-moat", "decision-ladder-non-programmer"]
+  },
+
+  {
+    id: "train-your-ai-agent-editor",
+    url: "articles/train-your-ai-agent-editor/",
+    date: "2026-07-16",
+    updated: "2026-07-16",
+    title: "訓練你的 AI Agent 小編：讓 AI 認識你，比學會用 AI 更重要",
+    problem: "學了很多 AI 工具，卻每次都要重講背景、自己複製貼上和操作，AI 還不像真的小編。",
+    audience: "想把 AI 從聊天工具訓練成能整理問卷、做簡報、寫社群、記住風格與流程的一人公司、內容創作者、小編、講師與小微企業主。",
+    summary: "從嘉我好漾課程整理出的 AI Agent 小編訓練法：分清聊天型 AI 和幹活型 Agent，先用安全資料夾練習，再把問卷變簡報、工作日誌、技能包、交接文件與靈感池串起來，讓 AI 認識你、記住你的判斷，成為真正能交辦的工作夥伴。",
+    tags: {"topic":["AIAgent","AI工作流","知識庫","技能包設計"],"level":["零基礎入門"],"content_type":["教學文章"]},
+    external: { threads: null, vocus: null },
+    related: ["how-to-train-your-ai-employee", "web-chat-ai-vs-desktop-agent", "docs-as-system-design-agent", "inspiration-production-system", "post-class-organizing-loop", "teacher-prep-knowledge-workflow"]
   },
 
   /* ── 為什麼要把資料拆成卡片：從 PDF 難讀到 AI 檢索的卡片化教學（教學·江江精選）── */
