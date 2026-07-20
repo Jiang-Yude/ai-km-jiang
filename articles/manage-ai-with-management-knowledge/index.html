@@ -57,6 +57,9 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
 .hero .wc2{width:360px;height:300px;bottom:-110px;left:-70px;background:#5f7553;opacity:.13}
 .hero .wc3{width:280px;height:260px;top:34%;left:14%;background:#a08144;opacity:.10}
 .hero>div{flex:none;width:860px;max-width:100%;position:relative;z-index:2}
+.hero-figure{margin:0;width:420px;flex:none;position:relative;z-index:2}
+.hero-figure img{display:block;width:100%;border-radius:16px;border:1px solid #d8cdb8;box-shadow:0 18px 45px rgba(107,74,42,.16);cursor:zoom-in}
+.hero-figure figcaption{margin-top:10px;font-size:14px;line-height:1.6;color:#6a635a}
 .inline-figure{margin:30px auto 8px;max-width:820px}
 .inline-figure img{display:block;width:100%;border-radius:14px;border:1px solid var(--line);box-shadow:var(--shadow);background:#fff;cursor:zoom-in}
 .inline-figure figcaption{font-size:14px;line-height:1.6;color:var(--muted);margin-top:10px}
@@ -100,11 +103,15 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
 .ktable tbody tr:last-child td{border-bottom:none}
 .ktable td:first-child{width:38%;font-weight:700;color:#4a7a59;background:#fbfdfa}
 @media(max-width:820px){.ktable,.ktable tbody,.ktable tr,.ktable td{display:block;width:100%}.ktable thead{display:none}.ktable td:first-child{width:100%;border-bottom:none;padding-bottom:2px}.ktable tr{border-bottom:1px solid var(--line);padding:8px 0}}
+.cycle{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:24px 0 8px}
+.cycle .step{background:#fff;border:1px solid var(--line);border-radius:999px;padding:9px 16px;font-size:16px;font-weight:700;color:#3a342d;box-shadow:0 4px 12px rgba(107,74,42,.08)}
+.cycle .arr{color:var(--orange);font-weight:900;font-size:18px}
+.cycle .loop{color:var(--green);font-weight:900;font-size:15px;padding:9px 4px}
 .footer{padding:30px clamp(20px,6vw,88px);font-size:14px;color:var(--muted);background:#fff;border-top:1px solid var(--line)}
 .footer-inner{width:min(1000px,100%);margin:0 auto}
 .footer-links{display:flex;flex-wrap:wrap;gap:6px 12px;margin-bottom:14px}.footer-links a{color:var(--blue);font-weight:900;text-decoration:none;font-size:14px}
 .footer-brand{font-weight:900;font-size:15px;margin-bottom:10px}.footer-note{font-size:13px;line-height:1.6}
-@media(max-width:820px){.duo{grid-template-columns:1fr}.workflow-grid{grid-template-columns:1fr}.section{padding:40px 20px}.hero{min-height:52vh;flex-direction:column;justify-content:flex-start;align-items:flex-start;gap:24px}.hero>div{width:100%}}
+@media(max-width:820px){.duo{grid-template-columns:1fr}.workflow-grid{grid-template-columns:1fr}.section{padding:40px 20px}.hero{min-height:52vh;flex-direction:column;justify-content:flex-start;align-items:flex-start;gap:24px}.hero>div{width:100%}.hero-figure{width:100%;max-width:560px}}
 @media(max-width:820px){html,body{overflow-x:hidden}.hero h1{word-break:break-word}}
 </style>
 </head>
@@ -133,6 +140,10 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
     <h1>用你已經有的管理知識來管理 AI，以豐田 TPS 為例</h1>
     <p>你不用為了用 AI 把自己重新練成工程師。管過人、管過流程、管過品質，你就有管 AI 的底子。這篇用豐田 TPS 當例子，把「你既有的管理知識」翻譯成「AI 可以照著跑的流程」。</p>
   </div>
+  <figure class="hero-figure">
+    <img src="../../images/articles/manage-ai-with-management-knowledge-cover.jpg" alt="管理者翻著標準作業書，一條流程線從工廠產線穿過本子，流向辦公室裡的 AI 螢幕" loading="lazy">
+    <figcaption>你在產線上熟悉的標準與改善，翻譯一層，就是 AI 能照著跑的流程。</figcaption>
+  </figure>
 </section>
 
 <main>
@@ -165,6 +176,17 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
   <div class="inner">
     <h2>先講結論</h2>
     <p>你不必為了用 AI，把自己重新練成一個工程師。管 AI 這件事，本質上是組織管理的延伸。你已經有的管理知識派得上用場，差別只在於，過去你管的是人跟機器，現在多了一種要管的對象，叫 AI。</p>
+    <p>先把整篇的重點濃縮成一張對照表。左邊是你在 TPS、在產線上早就熟悉的做法，右邊是同一件事放到 AI 上怎麼落地。後面整篇文章，就是在講這張表：</p>
+    <table class="ktable">
+      <thead><tr><th>TPS 的做法</th><th>對應到 AI 系統怎麼落地（白話）</th></tr></thead>
+      <tbody>
+        <tr><td>標準化作業（不只是一份文件，還包含步驟順序、該有的產出、節拍）</td><td>一份團隊跟 AI 都遵守的規則主檔，把工作範圍、步驟、預期產出、不可接受的錯誤都寫進去。我自己是一份叫 AGENTS 的規則檔，所有 AI 都讀同一份</td></tr>
+        <tr><td>自働化，異常就停下來處理（安燈拉繩只是其中一種現場做法）</td><td>設一個會自動攔截的檢查點，AI 一做錯或碰到危險動作就當場停下來，不讓錯誤流到下一關。我用的是一種叫 Hook 的自動小程式</td></tr>
+        <tr><td>持續改善</td><td>每次做完就檢討，把學到的東西寫回規則主檔，讓同樣的錯愈來愈少犯</td></tr>
+        <tr><td>標準是拿來被改善的</td><td>那份規則會被新的經驗一直覆蓋更新，舊版本留著當對照，看得到自己怎麼一路變好</td></tr>
+        <tr><td>傳給其他人</td><td>因為所有 AI 讀的是同一份規則，一處改好，全部一起更新，不用一個一個交代</td></tr>
+      </tbody>
+    </table>
     <p>我自己這一兩年在做的事，說穿了就是把我腦袋裡的判斷，還有我整理知識的方法，一步一步變成 AI 看得懂、也跑得動的流程。這個過程讓我愈來愈確定一件事：訓練一個 AI 員工，跟訓練一個真人員工，中間的道理是相通的。</p>
   </div>
 </section>
@@ -181,8 +203,23 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
 <section class="section">
   <div class="inner">
     <h2>我會這樣看：管 AI 靠的是組織管理的底子</h2>
-    <p>把一個新進員工帶到能獨當一面，你會做哪些事？你會告訴他標準怎麼做、哪裡不能出錯、出錯了怎麼回報、做完之後怎麼檢討改進，然後把好的做法留下來，教給下一個人。</p>
-    <p>管 AI 要做的，其實是同一組動作。你要給 AI 一份清楚的標準，設好哪裡不能出錯、出錯要停下來，讓它跑一輪、看結果、把問題寫回標準，再讓它跑下一輪。</p>
+    <p>把一個新進員工帶到能獨當一面，你會做哪些事？管 AI 要做的，其實是同一組動作：</p>
+    <div class="duo">
+      <div class="card a">
+        <small>你已經會的</small>
+        <b>帶一個新進員工</b>
+        <p>告訴他標準怎麼做、哪裡不能出錯、出錯了怎麼回報、做完之後怎麼檢討改進，然後把好的做法留下來，教給下一個人。</p>
+      </div>
+      <div class="card b">
+        <small>你要做的</small>
+        <b>管一個 AI</b>
+        <p>給 AI 一份清楚的標準，設好哪裡不能出錯、出錯要停下來，讓它跑一輪、看結果、把問題寫回標準，再讓它跑下一輪。</p>
+      </div>
+    </div>
+    <figure class="inline-figure">
+      <img src="../../images/articles/manage-ai-with-management-knowledge-02.jpg" alt="人類新進員工與 AI 夥伴看著同一本標準作業書" loading="lazy">
+      <figcaption>帶新人跟管 AI，用的是同一本標準作業書。</figcaption>
+    </figure>
     <p>差別在於，員工會自己吸收、自己判斷，你講一次他能舉一反三；AI 需要你把話講得更清楚、更明白，它才接得住。但這正是管理者本來就擅長的事：把模糊的經驗，講成別人能照做的標準。</p>
     <p>所以我會說，導入 AI 真正在考的，是你組織管理的底子。這件事跟會不會寫程式，關係沒有想像中那麼大。</p>
   </div>
@@ -194,7 +231,20 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
     <p>豐田 TPS 全名 Toyota Production System，中文常翻成豐田生產方式。它本身有兩大支柱，一個是及時化（Just in Time，需要的東西在需要的時候才做、才送），一個是自働化（Jidoka，讓機器跟流程能自己發現異常、馬上停下來，把品質做進過程裡）。這是 TPS 的正統骨架，我不會用一句話蓋過它。</p>
     <p>我這篇想從另一個角度看它，就是知識管理的角度。從這個角度看，TPS 除了讓生產更有效率，它更像一套系統，讓現場的經驗持續被發現、被驗證、被標準化、被傳下去，然後再被改善。我先說清楚，這是一種解讀，用來幫你把管理知識接到 AI 上，並不是要取代 TPS 原本的定義。</p>
     <p>一般公司談知識管理，最常問的是：怎麼把員工腦袋裡的東西，整理進一個資料庫。從知識管理的角度看 TPS，它問的是另一個問題：怎麼讓每一次工作、每一個問題、每一次改善，都變成整間公司可以重複拿來用的知識。</p>
-    <div class="meaning"><b>TPS 的知識循環</b>現場工作，發現異常，分析原因，提出改善，驗證結果，更新標準，再傳給其他人。你把這串讀一遍會發現，它根本就是一間公司學習跟進步的完整動作。它不只在講怎麼把車做好，它在講一間公司怎麼一次比一次做得更好，而且把每一次變好的原因留下來。</div>
+    <div class="cycle">
+      <span class="step">現場工作</span><span class="arr">→</span>
+      <span class="step">發現異常</span><span class="arr">→</span>
+      <span class="step">分析原因</span><span class="arr">→</span>
+      <span class="step">提出改善</span><span class="arr">→</span>
+      <span class="step">驗證結果</span><span class="arr">→</span>
+      <span class="step">更新標準</span><span class="arr">→</span>
+      <span class="step">傳給其他人</span><span class="loop">↺ 回到現場</span>
+    </div>
+    <div class="meaning"><b>TPS 的知識循環</b>這串循環讀一遍會發現，它根本就是一間公司學習跟進步的完整動作。它不只在講怎麼把車做好，它在講一間公司怎麼一次比一次做得更好，而且把每一次變好的原因留下來。</div>
+    <figure class="inline-figure">
+      <img src="../../images/articles/manage-ai-with-management-knowledge-03.jpg" alt="產線上七個環節連成一圈的知識循環插畫" loading="lazy">
+      <figcaption>七個環節在現場連成一圈：每一次改善的原因，都被留下來、傳下去。</figcaption>
+    </figure>
   </div>
 </section>
 
@@ -222,18 +272,7 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
 <section class="section">
   <div class="inner">
     <h2>怎麼把一套管理知識，翻成 AI 可以跑的流程</h2>
-    <p>講到這裡，我把 TPS 那個循環，一格一格對到我自己的 AI 系統上給你看。你會發現幾乎每一格都對得上。</p>
-    <table class="ktable">
-      <thead><tr><th>TPS 的做法</th><th>對應到 AI 系統怎麼落地（白話）</th></tr></thead>
-      <tbody>
-        <tr><td>標準化作業（不只是一份文件，還包含步驟順序、該有的產出、節拍）</td><td>一份團隊跟 AI 都遵守的規則主檔，把工作範圍、步驟、預期產出、不可接受的錯誤都寫進去。我自己是一份叫 AGENTS 的規則檔，所有 AI 都讀同一份</td></tr>
-        <tr><td>自働化，異常就停下來處理（安燈拉繩只是其中一種現場做法）</td><td>設一個會自動攔截的檢查點，AI 一做錯或碰到危險動作就當場停下來，不讓錯誤流到下一關。我用的是一種叫 Hook 的自動小程式</td></tr>
-        <tr><td>持續改善</td><td>每次做完就檢討，把學到的東西寫回規則主檔，讓同樣的錯愈來愈少犯</td></tr>
-        <tr><td>標準是拿來被改善的</td><td>那份規則會被新的經驗一直覆蓋更新，舊版本留著當對照，看得到自己怎麼一路變好</td></tr>
-        <tr><td>傳給其他人</td><td>因為所有 AI 讀的是同一份規則，一處改好，全部一起更新，不用一個一個交代</td></tr>
-      </tbody>
-    </table>
-    <p>這張對應表要說的重點是，這些機制你在產線上、在管理上早就都有了。你有標準作業、有品檢停線、有持續改善、有交接。差別只是，過去這些是給人跟機器用的，現在多做一份是給 AI 用的。</p>
+    <p>講到這裡，再回頭看開頭那張對照表：TPS 的循環，一格一格都對到我自己的 AI 系統上。那張表要說的重點是，這些機制你在產線上、在管理上早就都有了。你有標準作業、有品檢停線、有持續改善、有交接。差別只是，過去這些是給人跟機器用的，現在多做一份是給 AI 用的。</p>
     <div class="meaning"><b>怎麼確認這套有沒有真的在跑</b>看每一項有沒有留下一個看得到的東西：一份規則、一個檢查點、一筆異常紀錄、一個版本紀錄。留得下來，就是它有在運作的證據。</div>
     <h3>翻譯檢查表：照著走一遍</h3>
     <p>如果你想自己動手試，我把它整理成一張表，你可以照著走：</p>
@@ -267,6 +306,10 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
       <div class="workflow-step"><small>STEP 2</small><b>一週後核對兩件事</b><p>找一個熟這個流程的同事核對：AI 有沒有照標準做，還有它在哪裡跑不下去。做出來的結果你敢直接拿去用，就算過關。</p></div>
       <div class="workflow-step"><small>STEP 3</small><b>補清楚再跑一輪</b><p>還不敢用，通常就是標準還沒寫清楚。把它補清楚，再跑一輪。這個小循環跑順，你已經在用 TPS 的精神管 AI 了。</p></div>
     </div>
+    <figure class="inline-figure">
+      <img src="../../images/articles/manage-ai-with-management-knowledge-04.jpg" alt="三格插畫：人挑流程、AI 執行、人核對蓋章" loading="lazy">
+      <figcaption>人挑流程、AI 跑一輪、人核對過關。選擇跟核准，始終在你手上。</figcaption>
+    </figure>
     <p>我最後想強調一件事。這個月省下幾小時，是這件事的附加好處。真正會留在公司的，是你把做法、判斷、標準，一點一點變成可以重複使用的知識資產。人會離職，機器會換代，但這份被整理過、又被 AI 接住的知識，會一直留在公司裡，而且愈用愈厚。這才是我覺得最值得投資的地方。</p>
   </div>
 </section>
@@ -313,11 +356,29 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
   </div>
 </footer>
 
+<!-- 點圖放大 lightbox（hero 與內文圖通用） -->
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <span class="lightbox-close" aria-label="關閉">×</span>
+  <img id="lightbox-img" src="" alt="放大檢視">
+</div>
+<script>
+(function(){
+  var box=document.getElementById('lightbox'),boxImg=document.getElementById('lightbox-img');
+  document.querySelectorAll('.hero-figure img,.inline-figure img').forEach(function(img){
+    img.addEventListener('click',function(){boxImg.src=img.currentSrc||img.src;boxImg.alt=img.alt||'放大檢視';box.classList.add('open');box.setAttribute('aria-hidden','false');});
+  });
+  function close(){box.classList.remove('open');box.setAttribute('aria-hidden','true');boxImg.src='';}
+  box.addEventListener('click',close);
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
+})();
+</script>
+
 <!-- 官網共用：滑鼠暖光暈 + 導航列漢堡選單 -->
 <script src="../../spotlight.js"></script>
 
 <!-- 文章自動互聯（相關文章）：兩支已內建，順序不可顛倒，不用再另外加 -->
 <script src="../../articles-data.js"></script>
 <script src="../../related-render.js"></script>
+<script src="/views.js"></script>
 </body>
 </html>
