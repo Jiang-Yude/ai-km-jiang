@@ -40,6 +40,30 @@
 
 window.COURSES = [
   {
+    id: "2026-08-15-ai-that-knows-you",
+    date: "2026-08-15",
+    time: "14:00",
+    duration_min: 180,
+    title: "讓你的 AI 更懂你：從「懂我」到「能幫我做事」",
+    type_label: "實體工作坊（主辦單位邀請制）",
+    image: null,
+    venue_mode: "physical",
+    venue_label: "實體",
+    host: "江江教練",
+    tags: ["AIAgent", "數位分身", "提示詞", "ChatGPT", "零基礎"],
+    summary: "永力智庫主辦、育成社福基金會共同主辦的三小時實體工作坊，地點在育成蕃薯藤餐廳。多數人想到數位分身是一張像你的臉，但真正能幫你做事的那一個，重點在它懂不懂你怎麼做事。現場帶三件事：弄懂 AI 代理人是什麼、體驗做好的顧問型分身、學會把自己的 AI 設定得更懂你。一支手機就能參加，帶筆電操作更順手。",
+    detail_url: "courses/2026-08-15-ai-that-knows-you/",
+    materials: [
+      { label: "上課投影頁 ↗", url: "https://ai-km-jiang.vercel.app/courses/2026-08-15-ai-that-knows-you/" }
+    ],
+    registration: {
+      status: "open",
+      url: null,
+      label: null,
+      note: "永力智庫主辦，扶輪社友與邀請來賓參加，非對外公開報名。詳細課程內容見上課投影頁。"
+    }
+  },
+  {
     id: "2026-06-21-use-knowledge-website",
     date: "2026-06-21",
     time: "20:00",

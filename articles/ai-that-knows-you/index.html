@@ -1,55 +1,25 @@
-<!--
-============================================================
-  article-template.html  ·  深度文章新頁模板（暖色拿鐵版型）
-------------------------------------------------------------
-  新增一篇文章的步驟：
-    1. 複製本檔到 articles/<slug>/index.html
-       （趨勢文章放 ai-trends/<slug>/index.html）。
-    2. 全檔填掉所有 {{...}} placeholder：
-         {{TITLE}}        文章標題（純文字）
-         {{DESCRIPTION}}  meta description / og:description
-         {{SLUG}}         網址 slug，對應資料夾名
-         {{SECTION}}      所屬區段：articles 或 ai-trends
-         {{KICKER}}       hero 上方小標（例：AI 應用 / 需求驗證）
-         {{HERO_LEAD}}    hero 大標下的一段引言
-         {{BODY}}         正文（用下方 .section 區塊堆疊；可參考
-                          現有文章如 articles/ai-market-microcosm/）
-         {{CONTENT_TYPE}} 文章類型（教學文章／觀點文章／趨勢文章／案例文章）
-       canonical / og / twitter / JSON-LD 的網址也都用
-       https://ai-km-jiang.vercel.app/{{SECTION}}/{{SLUG}}/ 帶入。
-    3. 到 articles-data.js 的 window.ARTICLES 陣列尾端加一筆物件
-       （含 id、url「{{SECTION}}/{{SLUG}}/」、date、title、summary、
-        tags.topic / level / content_type，related 為可選）。
-       標籤一律從 window.ARTICLE_TAGS 受控清單挑，不要自創字串。
-    4. 兩支互聯 script 已內建在本檔   <script src="/views.js"></script>
-</body> 前，不用再另外加。
-    5. 到 sitemap.xml 與 llms.txt 各補一筆，讓搜尋與 AI 索引得到。
-
-  部署前跑：node scripts/verify-interlink.js 確認互聯腳本齊全。
-============================================================
--->
 <!doctype html>
 <html lang="zh-Hant">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="index,follow">
-<title>{{TITLE}}｜江江教練 · AI 知識管理</title>
-<meta name="description" content="{{DESCRIPTION}}">
-<link rel="canonical" href="https://ai-km-jiang.vercel.app/{{SECTION}}/{{SLUG}}/">
+<title>讓你的 AI 更懂你：從「懂我」到「能幫我做事」｜江江教練 · AI 知識管理</title>
+<meta name="description" content="AI 有時候答得好、有時候不是你要的，問題常常不在提示詞不夠強，在它不夠認識你。這篇拆解數位分身被誤解的地方，並給三個手機十分鐘就做得完的設定，讓 AI 從聊得來變成幫得上。">
+<link rel="canonical" href="https://ai-km-jiang.vercel.app/articles/ai-that-knows-you/">
 <meta property="og:type" content="article">
-<meta property="og:title" content="{{TITLE}}｜江江教練">
-<!-- 分享封面：hero 文字填好後在 repo 根目錄跑 `node scripts/og-shot.mjs {{SLUG}}` 自動截 1200×630 到 images/og/{{SLUG}}.jpg（見 README「文章分享封面（OG 圖）機制」）。別退回 intro-jiang.png 直式人像，會被裁成只剩脖子。 -->
-<meta property="og:image" content="https://ai-km-jiang.vercel.app/images/og/{{SLUG}}.jpg">
-<meta property="og:description" content="{{DESCRIPTION}}">
-<meta property="og:url" content="https://ai-km-jiang.vercel.app/{{SECTION}}/{{SLUG}}/">
+<meta property="og:title" content="讓你的 AI 更懂你：從「懂我」到「能幫我做事」｜江江教練">
+<!-- 分享封面：hero 文字填好後在 repo 根目錄跑 `node scripts/og-shot.mjs ai-that-knows-you` 自動截 1200×630 到 images/og/ai-that-knows-you.jpg（見 README「文章分享封面（OG 圖）機制」）。別退回 intro-jiang.png 直式人像，會被裁成只剩脖子。 -->
+<meta property="og:image" content="https://ai-km-jiang.vercel.app/images/og/ai-that-knows-you.jpg">
+<meta property="og:description" content="AI 有時候答得好、有時候不是你要的，問題常常不在提示詞不夠強，在它不夠認識你。這篇拆解數位分身被誤解的地方，並給三個手機十分鐘就做得完的設定，讓 AI 從聊得來變成幫得上。">
+<meta property="og:url" content="https://ai-km-jiang.vercel.app/articles/ai-that-knows-you/">
 <meta property="og:locale" content="zh_TW">
 <meta property="og:site_name" content="江江教練 · AI 知識管理">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="{{TITLE}}｜江江教練">
-<meta name="twitter:image" content="https://ai-km-jiang.vercel.app/images/og/{{SLUG}}.jpg">
-<meta name="twitter:description" content="{{DESCRIPTION}}">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"{{TITLE}}","description":"{{DESCRIPTION}}","author":{"@type":"Person","name":"江昱德","alternateName":"江江教練","jobTitle":"隱性知識提煉師、AI 應用規劃師"},"isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://ai-km-jiang.vercel.app/"},"inLanguage":"zh-Hant","url":"https://ai-km-jiang.vercel.app/{{SECTION}}/{{SLUG}}/"}</script>
+<meta name="twitter:title" content="讓你的 AI 更懂你：從「懂我」到「能幫我做事」｜江江教練">
+<meta name="twitter:image" content="https://ai-km-jiang.vercel.app/images/og/ai-that-knows-you.jpg">
+<meta name="twitter:description" content="AI 有時候答得好、有時候不是你要的，問題常常不在提示詞不夠強，在它不夠認識你。這篇拆解數位分身被誤解的地方，並給三個手機十分鐘就做得完的設定，讓 AI 從聊得來變成幫得上。">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"讓你的 AI 更懂你：從「懂我」到「能幫我做事」","description":"AI 有時候答得好、有時候不是你要的，問題常常不在提示詞不夠強，在它不夠認識你。這篇拆解數位分身被誤解的地方，並給三個手機十分鐘就做得完的設定，讓 AI 從聊得來變成幫得上。","author":{"@type":"Person","name":"江昱德","alternateName":"江江教練","jobTitle":"隱性知識提煉師、AI 應用規劃師"},"isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://ai-km-jiang.vercel.app/"},"inLanguage":"zh-Hant","url":"https://ai-km-jiang.vercel.app/articles/ai-that-knows-you/"}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
@@ -173,46 +143,156 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
   <div class="wc wc2"></div>
   <div class="wc wc3"></div>
   <div>
-    <div class="kicker">{{KICKER}}</div>
-    <h1>{{TITLE}}</h1>
-    <p>{{HERO_LEAD}}</p>
+    <div class="kicker">AI 應用 / 零基礎入門</div>
+    <h1>讓你的 AI 更懂你：從「懂我」到「能幫我做事」</h1>
+    <p>多數人想到數位分身，想到的是一張像你的臉。但真正能幫你做事的那一個，重點從來不在長相。</p>
   </div>
-  <!-- 封面圖（建議放）：橫式用預設 width:420px；4:5 直式改 .hero-figure{width:320px} 並加 .hero-figure img{aspect-ratio:4/5;object-fit:cover}。沒有封面圖就整個 <figure> 刪掉，hero 會自動置中只剩文字。封面同時設成上面 og:image / twitter:image。 -->
-  <figure class="hero-figure">
-    <img src="../../images/articles/{{SLUG}}-cover.jpg" alt="{{COVER_ALT}}" loading="lazy">
-    <figcaption>{{COVER_CAPTION}}</figcaption>
-  </figure>
 </section>
 
 <main>
 
-<!--
-  {{BODY}}
-  正文放這裡。用 <section class="section" id="..."><div class="inner">…</div></section>
-  一段一段堆疊。可用的元件：.lead 引言、.meaning 藍色重點框、
-  .caveat 橙色提醒框、.infocard 三欄資訊卡、.duo 雙欄對照、
-  .workflow-grid 流程三步、.codeblock 程式碼框、.skillcard 技能包卡。
-  可參考現有文章 articles/ai-market-microcosm/index.html。
+<section class="section" id="start">
+  <div class="inner">
+    <p class="lead">你可能已經在用 ChatGPT，但它有時候答得很好、有時候卻不是你要的，同樣的事情還得一再交代。多數人第一個反應是去學更厲害的提示詞，但問題常常在更前面一層：它到底有多認識你。這篇講清楚「數位分身」被誤解的地方，並給你三個手機上十分鐘就能做完的設定，讓 AI 從「聊得來」變成「幫得上」。</p>
 
-  ★ 開頭速讀區（必放，對齊江江方格子寫作原則：簡介先、正文後）：
-    正文第一個 section（id="start"）一律先放速讀簡介，再進正文。內容三塊：
-      1.「這篇在講什麼」：.lead 一段，2-4 句講清楚問題、為什麼重要、會給什麼解法（也是 SEO/GEO 核心素材）。
-      2.「適合誰」：3 個具體讀者（用受眾真實情境口吻，不是術語）。
-      3. 第二張卡依文章屬性二選一（2026-07-13 立，禁用舊標「你會得到什麼」，姿態太高）：
-         方法／教學文用「你可以帶走什麼」：3 個讀完可帶走的成果（能怎麼做、可拿走的框架／提示詞／SOP）。
-         觀點文用「這篇想說什麼」：3 句陳述文章立場與論點，不承諾收穫。
-         判斷法：卡片條列若是具體流程、提示詞、表格、判準 → 方法文；若是「一套論述、理解、看懂」→ 觀點文。
-    用 <div class="duo stack"> 兩張卡放「適合誰／你可以帶走什麼（或 這篇想說什麼）」，**預設上下兩列**（.duo.stack＝單欄堆疊，不要左右兩框）。把這兩個詞**直接當卡片標題**放在 <b>（22px、加色：適合誰偏橘、第二張卡偏綠），底下接條列；不要再加一層 12px 小標籤或第二層標題（會重複、字也太小）。（一般「兩種思路對照」才用不加 stack 的 .duo 兩欄）
-    速讀三塊之後，若整篇有「一頁總結圖」（把全文精華濃縮成一張），放在這裡（&lt;figure class="inline-figure wide"&gt;），讓讀者三秒看完全貌再決定要不要往下讀，再進正文第一段；沒有總結圖就跳過這格。
-    範例見 articles/how-ai-connects-software/index.html 的第一個 section（速讀區順序）、articles/what-is-loop-engineering/index.html（速讀三塊＋一頁總結圖）。
+    <div class="duo stack">
+      <div class="card a">
+        <b>適合誰</b>
+        <ul>
+          <li>已經在用 ChatGPT，但覺得它的回答總是不夠貼、每次都要重講一遍背景的人。</li>
+          <li>聽過「數位分身」但只想到虛擬人像，不確定它跟自己的工作有什麼關係的經營者。</li>
+          <li>手上只有手機、不太碰電腦，卻想開始把 AI 用在工作上的人。</li>
+        </ul>
+      </div>
+      <div class="card b">
+        <b>你可以帶走什麼</b>
+        <ul>
+          <li>一個判斷標準：分得出「外型像你的分身」跟「懂你做事的代理人」差在哪，以及各自適合什麼場合。</li>
+          <li>一段可以直接唸給 AI 聽的提示詞，讓它幫你寫出自己的自我描述。</li>
+          <li>三個手機上就能做完的設定步驟，含一個立刻能驗收成效的方法。</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
 
-  ★ 配圖原則（對齊 knowledge-site-manager 設計系統 02-design-system）：
-    - 封面：放上面 hero 的 .hero-figure（橫式預設，或 4:5 直式）。沒封面圖就把 hero 裡的 <figure> 刪掉。
-    - 分享封面（og:image / twitter:image）：不論有沒有插圖，都跑 `node scripts/og-shot.mjs {{SLUG}}` 自動截 hero 標題卡成 1200×630（見 README）。og:image 已預設指向 images/og/{{SLUG}}.jpg，截好即生效，不要退回 intro-jiang.png。
-    - 內文圖：用 <figure class="inline-figure"><img loading="lazy" alt><figcaption>。圖要緊跟相關段落、跟內容互相搭配，不要全堆在一起、也不要放跟文意無關的圖。
-    - 所有圖（hero＋內文）都會自動有「點圖放大」lightbox（CSS＋JS 已內建在本範本結尾，新文章不用再加）。
-    - 圖先 sips 縮圖（JPG、寬 1400、<400K）放 images/articles/，原圖留主庫 11圖片待整。
--->
+<section class="section" id="two-kinds">
+  <div class="inner">
+    <h2>數位分身的兩種想像</h2>
+    <p>現在講到「數位分身」，多數人腦中浮現的是這個畫面：一個長得像你的虛擬人物，用你的聲音講話，能對嘴、能錄影片。</p>
+    <p>那個東西確實有價值。你要做自媒體、要拍短影片、要讓行銷素材大量產出，複製外型就是你要的。</p>
+    <p>但那是一層皮。它不知道你做哪一行，不知道你怎麼判斷一件事該不該接，不知道你談合作時最在意什麼。它長得像你，腦袋是空的。</p>
+
+    <div class="duo">
+      <div class="card a">
+        <small>常見的想像</small>
+        <b>複製外型</b>
+        <p>外型像你、聲音像你。做自媒體、行銷、短影片時，這確實有用，你要的就是「露臉」。</p>
+        <p>但他不知道你怎麼想事情，也不知道你怎麼做決定。</p>
+      </div>
+      <div class="card b">
+        <small>Agent 時代的重點</small>
+        <b>複製做事方式</b>
+        <p>懂你怎麼做事、懂你的思考、懂你的決策，所以他能幫你做事。</p>
+        <p>如果你要複製的是一整套工作流程，不只是外型，你要的就是這一種。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="train">
+  <div class="inner">
+    <h2>把它想成培訓一個員工</h2>
+    <p>我自己是這樣理解的。</p>
+    <p>培訓一個新來的員工，你要的不是讓他長得像你。你要的是讓他知道你怎麼做事：這種案子怎麼報價、客戶問這個問題你會怎麼回、什麼情況要先問過你再決定。</p>
+
+    <div class="meaning">
+      <b>這才叫培訓人</b>
+      培訓一個 AI 員工，我要的不是讓他長得像我，是讓他知道我要怎麼做事。
+    </div>
+
+    <p>少了這一步，它永遠停在通用建議那一層，因為它面對的是「一個不知道是誰的人」。</p>
+  </div>
+</section>
+
+<section class="section" id="two-layers">
+  <div class="inner">
+    <h2>從「懂我」到「能幫我做事」</h2>
+    <p>這兩件事是連著的，順序不能顛倒。</p>
+    <h3>第一層：懂我</h3>
+    <p>它知道你是誰、做什麼、在意什麼。這一層做好，你會感覺到它的回答變穩定了，不用每次重新交代背景。</p>
+    <h3>第二層：能幫我做事</h3>
+    <p>當它夠懂你，它給的就不再只是「參考方向」，而是你可以直接拿去用的東西。報價信它能照你的語氣寫，客戶問題它能照你的邏輯拆。</p>
+    <p>多數人卡在第一層還沒做，就想跳到第二層，然後抱怨 AI 不好用。</p>
+  </div>
+</section>
+
+<section class="section" id="three-steps">
+  <div class="inner">
+    <h2>手機上就能做的三件事</h2>
+    <p>不用電腦，不用學程式。以下三件事在 ChatGPT 手機 App 上都做得到，十分鐘可以做完。</p>
+
+    <h3>1. 設定自訂指令</h3>
+    <p>這是最直接的一步。告訴 ChatGPT 你是誰、做什麼行業、希望它怎麼回答你。設定一次，之後每一次對話它都記得。</p>
+    <p>不知道怎麼寫的話，讓它幫你寫。打開 ChatGPT，用語音輸入唸這段：</p>
+    <div class="codeblock">我用說的介紹自己：我是誰、做什麼行業、擅長什麼、平常最常需要你幫我處理什麼事。你邊聽邊整理，最後幫我寫成一段可以放進「自訂指令」的自我描述。</div>
+    <p>唸完，它會整理成一段文字。把那段貼進設定裡的自訂指令欄位就完成了。</p>
+
+    <h3>2. 打開記憶功能</h3>
+    <p>開啟後，它會把你講過的重要資訊留下來，不用每次重講。這個功能預設不一定是開的，值得進設定確認一次。</p>
+
+    <h3>3. 用同一個問題驗收</h3>
+    <p>這一步很多人跳過，但它是整件事最有感的地方。</p>
+    <p>設定前你問過的某個問題，設定後再問一次。同一個問題、同一個 AI，答案會明顯不一樣。那個差別就是「更懂你」的具體意思，比任何解釋都清楚。</p>
+    <p>還沒想到要問什麼的話，用這題最有感，因為它逼 AI 動用對你的了解：</p>
+    <div class="codeblock">以你現在對我的了解，我手上的工作裡有哪三件事最適合交給你處理？每件說一句為什麼適合我。</div>
+    <p>設定之前問，它只能給你一般性的答案。設定之後問，它會開始講你的行業、你的情況。</p>
+  </div>
+</section>
+
+<section class="section" id="limit">
+  <div class="inner">
+    <h2>一個要先知道的限制</h2>
+    <p>順帶提一個常見誤會。有人會想：那我乾脆做一個屬於自己的 GPT 吧？</p>
+
+    <div class="caveat">
+      <b>ChatGPT 手機 App 目前不能建立自己的 GPT</b>
+      GPT Builder 是網頁版限定的功能，手機 App 只能「使用」別人做好的，不能「建立」。（2026 年 7 月查證 OpenAI 官方說明文件）
+    </div>
+
+    <p>所以如果你手上只有手機，不用往這個方向鑽。把上面那三件事做好，效果一樣明顯，而且今天就能做完。</p>
+  </div>
+</section>
+
+<section class="section" id="advanced">
+  <div class="inner">
+    <h2>如果你有在用電腦版</h2>
+    <p>上面三件事是地基。地基做好之後，往上還有路。</p>
+    <p>電腦版的進階工具（像 Codex、桌面版 Claude）能做的更多：它可以直接讀你電腦裡的檔案。如果你本來就有整理自己的資料，有一套自己的知識庫，AI 能聊的深度會完全不同。</p>
+
+    <div class="meaning">
+      <b>順序問題</b>
+      先把自己的資料整理好，AI 才幫得上你。很多人想的是「等 AI 更強就好了」，但 AI 再強，它讀不到你的東西就是讀不到。
+    </div>
+  </div>
+</section>
+
+<section class="section" id="closing">
+  <div class="inner">
+    <h2>收束</h2>
+    <p>AI 好不好用，很大一部分不在模型多強，在它有多認識你。</p>
+    <p>而讓它認識你這件事，門檻比多數人想的低：一段自我描述、一個設定、一次驗收。三件事，手機上十分鐘做得完。</p>
+    <p>做完之後，你的 AI 會從「聊得來」，變成「幫得上」。</p>
+
+    <div class="tagrow">
+      <span class="tag">AIAgent</span>
+      <span class="tag">提示詞設計</span>
+      <span class="tag">工具操作</span>
+      <span class="tag">零基礎入門</span>
+    </div>
+  </div>
+</section>
+
 
 </main>
 
@@ -227,7 +307,7 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
       <a href="https://www.threads.com/@jiang_yude_coach" target="_blank" rel="noopener">Threads ↗</a>
       <a href="https://vocus.cc/salon/Jiang_Coach" target="_blank" rel="noopener">方格子 ↗</a>
     </div>
-    <div class="footer-note">這是一篇{{CONTENT_TYPE}}，整理我對「{{TITLE}}」的看法，供你參考。</div>
+    <div class="footer-note">這是一篇教學文章，整理我對「讓你的 AI 更懂你：從「懂我」到「能幫我做事」」的看法，供你參考。</div>
   </div>
 </footer>
 

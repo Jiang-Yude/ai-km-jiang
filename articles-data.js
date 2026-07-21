@@ -216,7 +216,7 @@ window.ARTICLES = [
       content_type: ["觀點文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["codex-only-auto-worklog", "program-vs-ai-skill-library", "how-to-train-your-ai-employee", "elon-musk-live-skill"]
+    related: ["codex-only-auto-worklog", "program-vs-ai-skill-library", "how-to-train-your-ai-employee", "elon-musk-live-skill", "personal-studio-vs-solo-company"]
   },
 
   /* ── 11. AI 就是整個市場的縮影：先用 AI 測反應（教學）── */
@@ -254,7 +254,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["strong-ai-models-knowledge-workflow-road", "questionnaire-to-slides-agent-workflow", "teacher-prep-knowledge-workflow", "own-ai-team-at-work", "agent-workflow-builds-automation", "line-group-ai-workflow", "elon-musk-live-skill", "codex-log-health-check", "how-ai-connects-software", "meeting-record-agent-workflow", "decision-ladder-non-programmer", "tidy-mess-before-consulting", "diary-driven-agent-3x4", "docs-as-system-design-agent", "what-is-loop-engineering", "map-is-not-the-territory", "intangible-assets-grow-by-sharing", "manage-ai-with-management-knowledge", "ai-handoff-instructions", "train-your-ai-agent-editor"]
+    related: ["strong-ai-models-knowledge-workflow-road", "questionnaire-to-slides-agent-workflow", "teacher-prep-knowledge-workflow", "own-ai-team-at-work", "agent-workflow-builds-automation", "line-group-ai-workflow", "elon-musk-live-skill", "codex-log-health-check", "how-ai-connects-software", "meeting-record-agent-workflow", "decision-ladder-non-programmer", "tidy-mess-before-consulting", "diary-driven-agent-3x4", "docs-as-system-design-agent", "what-is-loop-engineering", "map-is-not-the-territory", "intangible-assets-grow-by-sharing", "manage-ai-with-management-knowledge", "ai-handoff-instructions", "train-your-ai-agent-editor", "ai-that-knows-you", "personal-studio-vs-solo-company"]
   },
 
   /* ── 13. LINE 群組也能變成 AI 工作流入口（教學）── */
@@ -501,7 +501,7 @@ window.ARTICLES = [
       content_type: ["觀點文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["how-to-train-your-ai-employee", "docs-as-system-design-agent", "company-shape-is-the-moat"]
+    related: ["how-to-train-your-ai-employee", "docs-as-system-design-agent", "company-shape-is-the-moat", "personal-studio-vs-solo-company"]
   },
 
   /* ── 當 AI 代理開始互相對話：A2A 機制（趨勢）── */
@@ -611,7 +611,7 @@ window.ARTICLES = [
       content_type: ["觀點文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["intangible-assets-grow-by-sharing", "ai-king-off-battlefield", "spacex-ipo-musk-trillionaire-knowledge-work", "ai-capability-tiers", "own-ai-team-at-work", "manage-ai-with-management-knowledge"]
+    related: ["intangible-assets-grow-by-sharing", "ai-king-off-battlefield", "spacex-ipo-musk-trillionaire-knowledge-work", "ai-capability-tiers", "own-ai-team-at-work", "manage-ai-with-management-knowledge", "personal-studio-vs-solo-company"]
   },
 
   /* ── 把標籤變成卡片，知識庫才活起來：標籤連結法 Tag Wiki（教學）── */
@@ -687,7 +687,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["harness-mindset-for-bosses", "prompt-to-loop-map", "map-is-not-the-territory", "ai-handoff-instructions"]
+    related: ["harness-mindset-for-bosses", "prompt-to-loop-map", "map-is-not-the-territory", "ai-handoff-instructions", "ai-that-knows-you"]
   },
 
   /* ── 給老闆的駕馭思維：把不敢對員工說的，講給 AI 聽（系列 02）（教學）── */
@@ -907,7 +907,7 @@ window.ARTICLES = [
     summary: "客戶都說很棒但就是不買單？用真實需求調查法加 AI 顧問驗證創業點子：三大提問心法、VJPD 框架、承諾訊號評分，先驗證需求再投入產品開發。",
     tags: {"topic":["輔助決策","AI工作流","提示詞設計"],"level":["零基礎入門"],"content_type":["教學文章"]},
     external: { threads: null, vocus: null },
-    related: ["ai-market-microcosm"]
+    related: ["ai-market-microcosm", "personal-studio-vs-solo-company"]
   },
   {
     id: "books-videos-pdf-ai-advisor",
@@ -985,7 +985,7 @@ window.ARTICLES = [
     summary: "一張垂直結構的 AI 課程地圖：地基層 Agent 導入、往上套用現成工作流、往下深挖資料整理、隱性知識與語意工程三條線，終點是 Agent 一人公司營運團隊。",
     tags: {"topic":["AI工作流","知識管理","技能包設計"],"level":["零基礎入門"],"content_type":["觀點文章"]},
     external: { threads: null, vocus: null },
-    related: ["ai-learning-map-reduce-anxiety", "claude-skills-knowledge-assets"]
+    related: ["ai-learning-map-reduce-anxiety", "claude-skills-knowledge-assets", "ai-that-knows-you"]
   },
   {
     id: "ai-data-organization-usable-system",
@@ -1011,7 +1011,7 @@ window.ARTICLES = [
     summary: "提示詞設計的底層原理：AI 是詞語關聯的計算機，像強一億倍的手機輸入法。從課題分離的三步修正、角色設定的限制到負向提示詞的陷阱，先懂語意再套模板。",
     tags: {"topic":["提示詞設計","隱性知識","知識管理"],"level":["基礎"],"content_type":["教學文章"]},
     external: { threads: null, vocus: null },
-    related: ["ai-data-organization-usable-system", "claude-skills-knowledge-assets"]
+    related: ["ai-data-organization-usable-system", "claude-skills-knowledge-assets", "ai-that-knows-you"]
   },
   {
     id: "claude-skills-knowledge-assets",
@@ -1050,7 +1050,7 @@ window.ARTICLES = [
     summary: "Claude Fable、GPT-5.6 Sol 這類強模型出現後，知識庫、工作流、規則與驗收方式造成的差距更明顯。用泥巴路、柏油路與高速公路三種道路環境，帶你完成六步 AI 鋪路流程。",
     tags: {"topic":["AI趨勢","知識管理","AI工作流","駕馭工程 HarnessEngineering"],"level":["基礎"],"content_type":["教學文章"]},
     external: { threads: null, vocus: null },
-    related: ["docs-as-system-design-agent", "what-is-loop-engineering", "how-to-train-your-ai-employee"]
+    related: ["docs-as-system-design-agent", "what-is-loop-engineering", "how-to-train-your-ai-employee", "ai-that-knows-you"]
   },
   {
     id: "dual-track-planning-loop",
@@ -1147,6 +1147,20 @@ window.ARTICLES = [
   },
 
   {
+    id: "personal-studio-vs-solo-company",
+    url: "articles/personal-studio-vs-solo-company/",
+    date: "2026-07-16",
+    updated: "2026-07-16",
+    title: "個人工作室與一人公司差在哪？我會看兩件事",
+    problem: "接案接到滿，收入卻永遠跟工時綁在一起，停下來就沒有進帳，也說不清楚自己到底算不算一人公司。",
+    audience: "已經在接案或開個人工作室，想把專業變成能重複賣的產品、不再用時間換錢的自由工作者與獨立顧問。",
+    summary: "個人工作室靠時間與專業完成單次交付，一人公司把專業產品化、建立能重複運作的商業系統。用收入怎麼產生、這套事業服務誰兩個對比切開兩種模式，帶到產品化自己的五個步驟與三套可直接開始的技能包入口，並以馬斯克當極端例子說明系統思維的上限。",
+    tags: {"topic":["差異比較","數位轉型","隱性知識"],"level":["基礎"],"content_type":["觀點文章"]},
+    external: { threads: null, vocus: null },
+    related: ["company-shape-is-the-moat", "how-to-train-your-ai-employee", "ai-mvp-validation-before-product", "own-ai-team-at-work", "intangible-assets-grow-by-sharing"]
+  },
+
+  {
     id: "train-your-ai-agent-editor",
     url: "articles/train-your-ai-agent-editor/",
     date: "2026-07-16",
@@ -1154,7 +1168,7 @@ window.ARTICLES = [
     title: "訓練你的 AI Agent 小編：讓 AI 認識你，比學會用 AI 更重要",
     problem: "學了很多 AI 工具，卻每次都要重講背景、自己複製貼上和操作，AI 還不像真的小編。",
     audience: "想把 AI 從聊天工具訓練成能整理問卷、做簡報、寫社群、記住風格與流程的一人公司、內容創作者、小編、講師與小微企業主。",
-    summary: "從嘉我好漾課程整理出的 AI Agent 小編訓練法：分清聊天型 AI 和幹活型 Agent，先用安全資料夾練習，再把問卷變簡報、工作日誌、技能包、交接文件與靈感池串起來，讓 AI 認識你、記住你的判斷，成為真正能交辦的工作夥伴。",
+    summary: "從嘉我好漾課程整理出的 AI Agent 小編訓練法：分清聊天型 AI 和幹活型 Agent，先用安全資料夾練習，再把問卷變簡報、工作日誌、技能包、交接文件與靈感池串起來，讓 AI 認識你、記住你的判斷，成為真正能交辦的工作夥伴。內含九段可直接複製的提示詞，從禁止刪除的安全規矩到把零散筆記變成一週發文靈感。",
     tags: {"topic":["AIAgent","AI工作流","知識庫","技能包設計"],"level":["零基礎入門"],"content_type":["教學文章"]},
     external: { threads: null, vocus: null },
     related: ["how-to-train-your-ai-employee", "web-chat-ai-vs-desktop-agent", "docs-as-system-design-agent", "inspiration-production-system", "post-class-organizing-loop", "teacher-prep-knowledge-workflow"]
@@ -1178,5 +1192,24 @@ window.ARTICLES = [
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
     related: ["tag-wiki-method", "diary-driven-agent-3x4", "books-videos-pdf-ai-advisor", "ai-data-organization-usable-system"]
+  },
+
+  /* ── 讓你的 AI 更懂你：從懂我到能幫我做事（教學）── */
+  {
+    id: "ai-that-knows-you",
+    url: "articles/ai-that-knows-you/",
+    date: "2026-07-21",
+    updated: "2026-07-21",
+    title: "讓你的 AI 更懂你：從「懂我」到「能幫我做事」",
+    problem: "AI 有時候答得很好、有時候卻不是你要的，同樣的事還得一再交代，不知道問題出在哪。",
+    audience: "已經在用 ChatGPT 但覺得回答總是不夠貼的人、聽過數位分身卻只想到虛擬人像的經營者、手上只有手機也想開始用 AI 的人。",
+    summary: "多數人想到數位分身是一張像你的臉，但真正能幫你做事的那一個，重點不在長相，在它懂不懂你怎麼做事。這篇拆開「複製外型」與「複製做事方式」的差別，用培訓員工的比喻講清楚為什麼順序是先懂我、後幫我做事，並給三個手機十分鐘做得完的設定，含一段可直接唸給 AI 聽的自我描述提示詞與一個立刻驗收成效的方法。",
+    tags: {
+      topic: ["AIAgent", "提示詞設計", "工具操作"],
+      level: ["零基礎入門"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
+    related: ["how-to-train-your-ai-employee", "semantic-rules-before-prompt-templates", "intent-first-prompting", "strong-ai-models-knowledge-workflow-road", "ai-course-map-from-entry-to-workflow"]
   }
 ];

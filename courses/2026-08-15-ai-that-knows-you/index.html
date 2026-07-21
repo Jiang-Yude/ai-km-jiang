@@ -1,0 +1,507 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>讓你的 AI 更懂你 · 8/15 扶輪社工作坊</title>
+<style>
+  :root {
+    --bg-1: #F5EDE7; --bg-2: #EFEBE9; --bg-3: #E8DED9; --bg-4: #D7CCC8;
+    --bg-5: #C9BAB1; --bg-6: #B5A199; --bg-7: #8B6F5C; --bg-8: #5D4037; --bg-9: #3E2723;
+    --text-on-light:#4E342E; --text-on-dark:#F5EDE0;
+    --text-soft-light:#5D4037; --text-soft-dark: rgba(245,237,224,0.86);
+    --accent:#D88C3A; --accent-light:#D4A574; --accent-on-dark:#E6B87D;
+    --subtle-light:#BCAAA4; --subtle-dark: rgba(245,237,224,0.20);
+    --font-display: "PingFang TC","Noto Sans TC","Inter","Helvetica Neue",system-ui,sans-serif;
+    --font-body:    "PingFang TC","Noto Sans TC","Inter",system-ui,sans-serif;
+    --font-mono:    "JetBrains Mono","SF Mono",ui-monospace,monospace;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin:0; font-family:var(--font-body); background:var(--bg-1); -webkit-font-smoothing:antialiased; }
+
+  /* 一頁一段，正常文件流。不使用 sticky 疊加，避免上課滑動時內容被蓋住。 */
+  section {
+    position: relative; min-height: 100vh; display: grid; place-items: center;
+    padding: 88px 56px; isolation: isolate;
+  }
+  section[data-bg="1"] { background: var(--bg-1); color: var(--text-on-light); }
+  section[data-bg="2"] { background: var(--bg-2); color: var(--text-on-light); }
+  section[data-bg="3"] { background: var(--bg-3); color: var(--text-on-light); }
+  section[data-bg="4"] { background: var(--bg-4); color: var(--text-on-light); }
+  section[data-bg="5"] { background: var(--bg-5); color: var(--text-on-light); }
+  section[data-bg="6"] { background: var(--bg-6); color: var(--text-on-light); }
+  section[data-bg="7"] { background: var(--bg-7); color: var(--text-on-dark); }
+  section[data-bg="8"] { background: var(--bg-8); color: var(--text-on-dark); }
+  section[data-bg="9"] { background: var(--bg-9); color: var(--text-on-dark); }
+
+  .act-cap { font-family:var(--font-mono); font-size:15px; letter-spacing:0.18em; text-transform:uppercase;
+    font-weight:700; color:var(--accent); margin-bottom:24px; display:inline-flex; align-items:center; gap:12px; }
+  .act-cap::before { content:""; width:28px; height:1px; background:var(--accent); }
+  section[data-bg="7"] .act-cap, section[data-bg="8"] .act-cap, section[data-bg="9"] .act-cap { color: var(--accent-on-dark); }
+  section[data-bg="7"] .act-cap::before, section[data-bg="8"] .act-cap::before, section[data-bg="9"] .act-cap::before { background: var(--accent-on-dark); }
+
+  .display { font-family:var(--font-display); font-size:clamp(44px,7vw,104px); line-height:1.05; font-weight:800; letter-spacing:-0.03em; margin:0 0 24px; }
+  .display.sm { font-size:clamp(34px,5vw,68px); }
+  .h1 { font-family:var(--font-display); font-size:clamp(26px,3.4vw,40px); line-height:1.25; font-weight:700; margin:0 0 20px; }
+  .h2 { font-size:22px; line-height:1.35; font-weight:700; margin:0 0 10px; }
+  .lead { font-size:clamp(20px,1.8vw,24px); line-height:1.7; color:var(--text-soft-light); max-width:820px; margin:0 auto; }
+  .body { font-size:19px; line-height:1.75; color:var(--text-soft-light); margin:0; }
+  .mono-note { font-family:var(--font-mono); font-size:16px; letter-spacing:0.1em; color:var(--accent); margin-top:36px; }
+  section[data-bg="7"] .lead, section[data-bg="8"] .lead, section[data-bg="9"] .lead,
+  section[data-bg="7"] .body, section[data-bg="8"] .body, section[data-bg="9"] .body { color: var(--text-soft-dark); }
+  section[data-bg="7"] .mono-note, section[data-bg="8"] .mono-note, section[data-bg="9"] .mono-note { color: var(--accent-on-dark); }
+  /* bg-7 是最亮的深底，淺字改用滿版不透明，投影才夠清楚 */
+  section[data-bg="7"] .lead, section[data-bg="7"] .body,
+  section[data-bg="7"] .steprow .v, section[data-bg="7"] .factbox p, section[data-bg="7"] .quote-by { color: var(--text-on-dark); }
+
+  .wrap { width:100%; max-width:1080px; text-align:center; }
+  .wrap.left { text-align:left; }
+
+  .dot-indicator { position:fixed; right:28px; top:50%; transform:translateY(-50%); display:flex; flex-direction:column; gap:15px; z-index:100; }
+  .dot-indicator a { width:10px; height:10px; border-radius:50%; background:rgba(78,52,46,0.22); transition:all .35s cubic-bezier(.22,1,.36,1); position:relative; }
+  .dot-indicator a:hover { background:rgba(78,52,46,0.5); }
+  .dot-indicator a.active { background:var(--accent); transform:scale(1.5); box-shadow:0 0 0 4px rgba(216,140,58,0.18); }
+  .dot-indicator a .lbl { position:absolute; right:22px; top:50%; transform:translateY(-50%); font-family:var(--font-mono); font-size:13px; letter-spacing:.12em; color:var(--text-soft-light); white-space:nowrap; opacity:0; transition:opacity .25s; pointer-events:none; background:rgba(255,248,240,0.82); padding:3px 8px; border-radius:6px; }
+  /* 標籤只在滑動中或滑鼠移上去時浮出，停止滑動 1.1 秒後自動消失 */
+  .dot-indicator.scrolling a.active .lbl { opacity:1; }
+  .dot-indicator a:hover .lbl { opacity:1; }
+  body.on-dark .dot-indicator a { background:rgba(245,237,224,0.25); }
+  body.on-dark .dot-indicator a.active { background:var(--accent-on-dark); box-shadow:0 0 0 4px rgba(230,184,125,0.22); }
+  body.on-dark .dot-indicator a .lbl { color:var(--text-soft-dark); background:rgba(62,39,35,0.82); }
+
+  .progress { position:fixed; top:0; left:0; height:3px; width:0%; background:linear-gradient(90deg,var(--accent),var(--accent-light)); z-index:200; transition:width .15s linear; }
+
+  .grid-3 { display:grid; grid-template-columns:repeat(3,1fr); gap:24px; margin-top:44px; }
+  .grid-2 { display:grid; grid-template-columns:repeat(2,1fr); gap:24px; margin-top:40px; }
+  .card { background:rgba(255,248,240,0.55); border:1px solid var(--subtle-light); border-radius:16px; padding:28px 26px; text-align:left; }
+  .card .num { font-family:var(--font-mono); font-size:15px; letter-spacing:0.16em; color:var(--accent); font-weight:700; margin-bottom:12px; }
+  section[data-bg="7"] .card, section[data-bg="8"] .card, section[data-bg="9"] .card { background:rgba(255,248,240,0.08); border-color:var(--subtle-dark); }
+  section[data-bg="7"] .card .num, section[data-bg="8"] .card .num, section[data-bg="9"] .card .num { color:var(--accent-on-dark); }
+
+  /* 三層操作步驟：點哪裡 → 填什麼 → 看到什麼 */
+  .stepbox { text-align:left; margin-top:40px; border:1px solid var(--subtle-light); border-radius:18px; overflow:hidden; background:rgba(255,248,240,0.55); }
+  .steprow { display:grid; grid-template-columns:150px 1fr; gap:24px; padding:22px 26px; border-bottom:1px solid var(--subtle-light); align-items:start; }
+  .steprow:last-child { border-bottom:none; }
+  .steprow .k { font-family:var(--font-mono); font-size:18px; font-weight:700; color:var(--accent); letter-spacing:0.06em; }
+  .steprow .v { font-size:19px; line-height:1.75; color:var(--text-soft-light); }
+  .steprow .v b { color:var(--text-on-light); }
+  section[data-bg="7"] .stepbox, section[data-bg="8"] .stepbox, section[data-bg="9"] .stepbox { background:rgba(255,248,240,0.08); border-color:var(--subtle-dark); }
+  section[data-bg="7"] .steprow, section[data-bg="8"] .steprow, section[data-bg="9"] .steprow { border-color:var(--subtle-dark); }
+  section[data-bg="7"] .steprow .k, section[data-bg="8"] .steprow .k, section[data-bg="9"] .steprow .k { color:var(--accent-on-dark); }
+  section[data-bg="7"] .steprow .v, section[data-bg="8"] .steprow .v, section[data-bg="9"] .steprow .v { color:var(--text-soft-dark); }
+  section[data-bg="7"] .steprow .v b, section[data-bg="8"] .steprow .v b, section[data-bg="9"] .steprow .v b { color:var(--text-on-dark); }
+
+  /* 可直接唸／複製的指令 */
+  .promptbox { text-align:left; margin-top:32px; border:2px solid var(--accent); border-radius:18px; background:rgba(255,248,240,0.7); padding:24px 26px 20px; }
+  .promptbox .plabel { font-family:var(--font-mono); font-size:15px; letter-spacing:0.14em; color:var(--accent); font-weight:700; margin-bottom:12px; display:block; }
+  .promptbox p { font-size:20px; line-height:1.8; color:var(--text-on-light); margin:0; }
+  .promptbox .copy { margin-top:16px; font-family:var(--font-body); font-size:16px; font-weight:600; padding:9px 20px; border-radius:999px; border:1px solid var(--accent); background:transparent; color:var(--accent); cursor:pointer; }
+  .promptbox .copy:hover { background:var(--accent); color:#fff; }
+  section[data-bg="7"] .promptbox, section[data-bg="8"] .promptbox, section[data-bg="9"] .promptbox { background:rgba(255,248,240,0.08); border-color:var(--accent-on-dark); }
+  section[data-bg="7"] .promptbox p, section[data-bg="8"] .promptbox p, section[data-bg="9"] .promptbox p { color:var(--text-on-dark); }
+  section[data-bg="7"] .promptbox .plabel, section[data-bg="8"] .promptbox .plabel, section[data-bg="9"] .promptbox .plabel,
+  section[data-bg="7"] .promptbox .copy, section[data-bg="8"] .promptbox .copy, section[data-bg="9"] .promptbox .copy { color:var(--accent-on-dark); border-color:var(--accent-on-dark); }
+  section[data-bg="7"] .promptbox .copy:hover, section[data-bg="8"] .promptbox .copy:hover, section[data-bg="9"] .promptbox .copy:hover { background:var(--accent-on-dark); color:var(--bg-9); }
+
+  /* 查證過的事實框 */
+  .factbox { text-align:left; margin-top:28px; border-left:4px solid var(--accent); border-radius:0 12px 12px 0; background:rgba(255,248,240,0.45); padding:20px 24px; }
+  .factbox p { font-size:19px; line-height:1.75; color:var(--text-soft-light); margin:0 0 8px; }
+  .factbox .src { font-family:var(--font-mono); font-size:15px; letter-spacing:0.06em; color:var(--text-soft-light); opacity:.85; margin:0; }
+  section[data-bg="7"] .factbox, section[data-bg="8"] .factbox, section[data-bg="9"] .factbox { background:rgba(255,248,240,0.08); border-left-color:var(--accent-on-dark); }
+  section[data-bg="7"] .factbox p, section[data-bg="8"] .factbox p, section[data-bg="9"] .factbox p,
+  section[data-bg="7"] .factbox .src, section[data-bg="8"] .factbox .src, section[data-bg="9"] .factbox .src { color:var(--text-soft-dark); }
+
+  .quote { font-family:var(--font-display); font-size:clamp(28px,3.4vw,42px); line-height:1.55; font-weight:600; max-width:900px; margin:0 auto; letter-spacing:-0.01em; }
+  .quote::before { content:"「"; color:var(--accent); }
+  .quote::after { content:"」"; color:var(--accent); }
+  section[data-bg="7"] .quote::before,section[data-bg="7"] .quote::after,section[data-bg="8"] .quote::before,section[data-bg="8"] .quote::after,section[data-bg="9"] .quote::before,section[data-bg="9"] .quote::after { color:var(--accent-on-dark); }
+  .quote-by { margin-top:28px; font-family:var(--font-mono); font-size:16px; letter-spacing:0.16em; color:var(--text-soft-light); }
+  section[data-bg="7"] .quote-by,section[data-bg="8"] .quote-by,section[data-bg="9"] .quote-by { color:var(--text-soft-dark); }
+
+  .timeline { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin-top:52px; position:relative; }
+  .timeline::before { content:""; position:absolute; top:18px; left:8%; right:8%; height:1px; background:repeating-linear-gradient(90deg,var(--subtle-light) 0,var(--subtle-light) 6px,transparent 6px,transparent 12px); }
+  section[data-bg="7"] .timeline::before,section[data-bg="8"] .timeline::before,section[data-bg="9"] .timeline::before { background:repeating-linear-gradient(90deg,var(--subtle-dark) 0,var(--subtle-dark) 6px,transparent 6px,transparent 12px); }
+  .step { text-align:center; position:relative; padding:56px 8px 0; }
+  .step .dot { position:absolute; top:0; left:50%; transform:translateX(-50%); width:36px; height:36px; background:var(--accent); color:#fff; border-radius:50%; font-family:var(--font-mono); font-weight:700; font-size:15px; display:grid; place-items:center; box-shadow:0 0 0 6px rgba(216,140,58,0.18); }
+  section[data-bg="7"] .step .dot,section[data-bg="8"] .step .dot,section[data-bg="9"] .step .dot { background:var(--accent-on-dark); color:var(--bg-9); box-shadow:0 0 0 6px rgba(230,184,125,0.22); }
+
+  .footer-grid { display:grid; grid-template-columns:2fr 1fr 1fr; gap:48px; text-align:left; margin-top:52px; max-width:1080px; width:100%; }
+  .footer-grid h3 { font-size:15px; letter-spacing:0.18em; color:var(--accent-on-dark); margin:0 0 14px; font-family:var(--font-mono); }
+  .footer-grid ul { list-style:none; padding:0; margin:0; }
+  .footer-grid li { padding:6px 0; font-size:18px; color:var(--text-soft-dark); }
+  .footer-bottom { margin-top:56px; padding-top:22px; border-top:1px solid var(--subtle-dark); width:100%; max-width:1080px; font-family:var(--font-mono); font-size:15px; letter-spacing:0.1em; color:rgba(245,237,224,0.65); text-align:center; }
+
+  .reveal { opacity:1; transform:translateY(0); }
+  .js-on .reveal:not(.in) { opacity:0; transform:translateY(30px); }
+  .reveal { transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1); }
+  .reveal.d1 { transition-delay:.08s; } .reveal.d2 { transition-delay:.16s; } .reveal.d3 { transition-delay:.24s; } .reveal.d4 { transition-delay:.32s; }
+
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior:auto; } .reveal { opacity:1 !important; transform:none !important; } }
+  @media (max-width: 860px) {
+    section { padding:64px 22px; min-height:auto; }
+    .grid-3,.grid-2,.timeline { grid-template-columns:1fr; gap:18px; }
+    .timeline::before { display:none; }
+    .step { padding:48px 4px 0; }
+    .steprow { grid-template-columns:1fr; gap:8px; padding:18px 20px; }
+    .footer-grid { grid-template-columns:1fr; gap:28px; }
+    .dot-indicator { display:none; }
+  }
+</style>
+</head>
+<body>
+  <!-- 官網品牌列（courses 頁 MUST；與官網首頁 nav.top 同套選單，課程頁模板共用）-->
+  <style>
+    .sh-nav{position:sticky;top:0;z-index:190;background:rgba(245,237,231,0.90);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid rgba(78,52,46,0.12);}
+    .sh-nav-in{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:11px 32px;}
+    .sh-brand{display:flex;align-items:center;flex-shrink:0;transition:opacity .2s;}
+    .sh-brand:hover{opacity:.8;}
+    .sh-brand img{height:34px;width:auto;display:block;}
+    .sh-menu{display:flex;align-items:center;gap:22px;list-style:none;margin:0;padding:0;}
+    .sh-menu a{color:#5D4037;font-size:0.95rem;font-weight:500;text-decoration:none;white-space:nowrap;transition:color .2s;}
+    .sh-menu a:hover{color:#D88C3A;}
+    .sh-menu a.sh-en{border:1px solid rgba(78,52,46,0.25);border-radius:999px;padding:3px 12px;font-weight:600;}
+    .sh-menu a.sh-en:hover{border-color:#D88C3A;}
+    .sh-toggle{display:none;background:none;border:none;padding:6px;cursor:pointer;width:36px;height:36px;position:relative;}
+    .sh-toggle span{display:block;position:absolute;left:8px;right:8px;height:2px;background:#4E342E;border-radius:2px;transition:transform .25s,opacity .25s,top .25s;}
+    .sh-toggle span:nth-child(1){top:11px;}
+    .sh-toggle span:nth-child(2){top:17px;}
+    .sh-toggle span:nth-child(3){top:23px;}
+    .sh-toggle.open span:nth-child(1){top:17px;transform:rotate(45deg);}
+    .sh-toggle.open span:nth-child(2){opacity:0;}
+    .sh-toggle.open span:nth-child(3){top:17px;transform:rotate(-45deg);}
+    @media(max-width:820px){
+      .sh-nav-in{padding:9px 16px;}
+      .sh-toggle{display:block;}
+      .sh-menu{display:none;position:absolute;top:100%;left:0;right:0;flex-direction:column;align-items:stretch;gap:0;background:rgba(245,237,231,0.98);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid rgba(78,52,46,0.12);padding:6px 0;box-shadow:0 10px 24px rgba(62,39,35,0.10);}
+      .sh-menu.open{display:flex;}
+      .sh-menu li{border-bottom:1px solid rgba(78,52,46,0.08);}
+      .sh-menu li:last-child{border-bottom:none;}
+      .sh-menu a{display:block;padding:13px 20px;font-size:1.02rem;}
+      .sh-menu a.sh-en{display:inline-block;margin:10px 20px;}
+    }
+  </style>
+  <header class="sh-nav">
+    <div class="sh-nav-in">
+      <a class="sh-brand" href="https://ai-km-jiang.vercel.app/"><img src="https://ai-km-jiang.vercel.app/images/footer-signature.png" alt="江江教練 ｜ 江昱德 · 知識官網" /></a>
+      <button class="sh-toggle" aria-label="開關選單"><span></span><span></span><span></span></button>
+      <ul class="sh-menu">
+        <li><a href="https://ai-km-jiang.vercel.app/">首頁</a></li>
+        <li><a href="https://ai-km-jiang.vercel.app/knowledge-architecture.html">知識架構</a></li>
+        <li><a href="https://ai-km-jiang.vercel.app/courses.html">課程</a></li>
+        <li><a href="https://ai-km-jiang.vercel.app/articles.html">深度文章</a></li>
+        <li><a href="https://ai-km-jiang.vercel.app/cases.html">服務方案</a></li>
+        <li><a class="sh-en" href="https://ai-km-jiang.vercel.app/en/index.html" hreflang="en">EN</a></li>
+      </ul>
+    </div>
+  </header>
+  <script>(function(){var t=document.querySelector('.sh-toggle'),m=document.querySelector('.sh-menu');if(t&&m){t.addEventListener('click',function(){t.classList.toggle('open');m.classList.toggle('open');});m.addEventListener('click',function(e){if(e.target.closest('a')){t.classList.remove('open');m.classList.remove('open');}});}})();</script>
+
+  <div class="progress" id="progress"></div>
+  <div class="progress" id="progress"></div>
+
+  <nav class="dot-indicator" id="dots" aria-label="章節導覽">
+    <a href="#act-01" data-i="0"><span class="lbl">01 · 封面</span></a>
+    <a href="#act-02" data-i="1"><span class="lbl">02 · 皮與腦</span></a>
+    <a href="#act-03" data-i="2"><span class="lbl">03 · 一句話</span></a>
+    <a href="#act-04" data-i="3"><span class="lbl">04 · 四個分身</span></a>
+    <a href="#act-05" data-i="4"><span class="lbl">05 · 兩種用法</span></a>
+    <a href="#act-06" data-i="5"><span class="lbl">06 · 自訂指令</span></a>
+    <a href="#act-07" data-i="6"><span class="lbl">07 · 用講的寫</span></a>
+    <a href="#act-08" data-i="7"><span class="lbl">08 · 記憶功能</span></a>
+    <a href="#act-09" data-i="8"><span class="lbl">09 · 專案與 Work</span></a>
+    <a href="#act-10" data-i="9"><span class="lbl">10 · 分身交流</span></a>
+    <a href="#act-11" data-i="10"><span class="lbl">11 · 回家做</span></a>
+    <a href="#act-12" data-i="11"><span class="lbl">12 · 聯繫</span></a>
+  </nav>
+
+  <!-- ACT 01 封面 -->
+  <section id="act-01" data-block data-bg="1">
+    <div class="wrap">
+      <div class="act-cap reveal">ACT 01 · 2026/08/15 工作坊</div>
+      <h1 class="display reveal d1">讓你的<br/>AI 更懂你</h1>
+      <p class="lead reveal d2">8/15（六）14:00 到 17:00 ｜ 育成蕃薯藤餐廳<br/>主辦 永力智庫．共同主辦 育成社福基金會</p>
+      <p class="body reveal d3" style="margin:32px auto 0; max-width:700px;">一支手機就可以參加，帶筆電操作更順手。不用先準備任何東西。</p>
+      <p class="mono-note reveal d4">↓ 三小時，從「聊得來」走到「幫得上」 ↓</p>
+    </div>
+  </section>
+
+  <!-- ACT 02 皮與腦 -->
+  <section id="act-02" data-block data-bg="2">
+    <div class="wrap">
+      <div class="act-cap reveal">ACT 02 · 14:20 開場概念</div>
+      <h2 class="display sm reveal d1">數位分身有兩種</h2>
+      <p class="lead reveal d2">一種複製你的外型，一種複製你怎麼做事。今天講第二種。</p>
+      <div class="grid-2">
+        <div class="card reveal d1">
+          <div class="num">第一種 · 皮</div>
+          <h3 class="h2">外型像你</h3>
+          <p class="body">臉像你、聲音像你。你要做自媒體、行銷、短影片，這個很有用，該做就做。它解決的是「露臉」這件事。</p>
+        </div>
+        <div class="card reveal d2">
+          <div class="num">第二種 · 腦</div>
+          <h3 class="h2">懂你怎麼做事</h3>
+          <p class="body">他知道你的行業、你的專業、你怎麼下判斷。所以他能替你工作。Agent 時代講的是這一種。</p>
+        </div>
+      </div>
+      <p class="body reveal d4" style="max-width:800px;margin:36px auto 0;">外型是一件事，工作流程是另一件事。如果你今天要複製的是一整套工作流程呢？那長得像你就沒有用了，他得知道你在想什麼。</p>
+    </div>
+  </section>
+
+  <!-- ACT 03 金句 -->
+  <section id="act-03" data-block data-bg="3">
+    <div class="wrap">
+      <div class="act-cap reveal">ACT 03 · 定調</div>
+      <p class="quote reveal d1">培訓一個 AI 員工，我要的不是讓他長得像我，是讓他知道我要怎麼做事。</p>
+      <p class="quote-by reveal d2">江江教練．隱性知識提煉師</p>
+      <p class="body reveal d3" style="max-width:780px;margin:44px auto 0;">今天這三小時就是在做這一件事：把你怎麼做事，一段一段交給你的 AI。做完之後，同一個問題再問一次，答案會明顯不一樣。</p>
+    </div>
+  </section>
+
+  <!-- ACT 04 四個分身 -->
+  <section id="act-04" data-block data-bg="4">
+    <div class="wrap">
+      <div class="act-cap reveal">ACT 04 · 14:40 第一段 體驗</div>
+      <h2 class="display sm reveal d1">先體驗四個做好的代理人</h2>
+      <p class="lead reveal d2">拿你事業上真正卡住的問題去問，感受一下懂做事的 AI 跟一般聊天差在哪。</p>
+      <div class="grid-2">
+        <div class="card reveal d1"><div class="num">分身 01</div><h3 class="h2">納瓦爾</h3><p class="body">財富、槓桿、判斷。適合問：我手上的事業，哪一塊真的有槓桿，哪一塊只是在賣時間。</p></div>
+        <div class="card reveal d2"><div class="num">分身 02</div><h3 class="h2">馬斯克</h3><p class="body">第一性原理。適合問：如果我的成本結構砍掉重練，會長成什麼樣子。</p></div>
+        <div class="card reveal d3"><div class="num">分身 03</div><h3 class="h2">Vicky</h3><p class="body">實際做過的顧問流程。適合問：我這個規模的公司，第一步該從哪裡開始整理。</p></div>
+        <div class="card reveal d4"><div class="num">分身 04</div><h3 class="h2">江江教練</h3><p class="body">隱性知識提煉。適合問：我腦子裡哪些東西別人學不走，該被提煉出來變成公司的資產。</p></div>
+      </div>
+      <div class="promptbox reveal d4">
+        <span class="plabel">建議第一題 · 指令卡上也有</span>
+        <p data-copy>我是［你的行業］的經營者。我哪些工作流程適合做成 AI Agent？我有哪些知識應該被提煉出來？</p>
+        <button class="copy" type="button">複製這段</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ACT 05 兩種用法 -->
+  <section id="act-05" data-block data-bg="5">
+    <div class="wrap">
+      <div class="act-cap reveal">ACT 05 · 14:40 第一段 體驗</div>
+      <h2 class="display sm reveal d1">兩種用法，第二種更值得學</h2>
+      <div class="grid-2">
+        <div class="card reveal d1"><div class="num">用法一</div><h3 class="h2">掃 QR 直接聊</h3><p class="body">桌上指令卡的 QR 掃下去就開，不用登入、不用設定。適合現在馬上試一次。</p></div>
+        <div class="card reveal d2"><div class="num">用法二</div><h3 class="h2">複製進你自己的 ChatGPT</h3><p class="body">把分身的設定整段貼進你自己的 ChatGPT。你的 ChatGPT 裡有你最多的內容，顧問到你熟悉的地方跟你聊，你不用從頭介紹一次自己。</p></div>
+      </div>
+      <div class="stepbox reveal d3">
+        <div class="steprow"><div class="k">點哪裡</div><div class="v">指令卡上「<b>複製分身</b>」那一段文字，長按選取全部，複製。</div></div>
+        <div class="steprow"><div class="k">填什麼</div><div class="v">打開你的 ChatGPT，開一個<b>新對話</b>，直接貼上，最後自己加一句：<b>從現在開始你就是他，先問我三個問題。</b></div></div>
+        <div class="steprow"><div class="k">看到什麼</div><div class="v">它會反過來問你三個問題。回答完，這場對話就是你專屬的顧問了。</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ACT 06 自訂指令 -->
+  <section id="act-06" data-block data-bg="2">
+    <div class="wrap">
+      <div class="act-cap reveal">ACT 06 · 15:30 第二段 動手設定</div>
+      <h2 class="display sm reveal d1">設定一：自訂指令</h2>
+      <p class="lead reveal d2">設定一次，之後每次開新對話它都記得。這是投報率最高的一格。</p>
+      <div class="stepbox reveal d3">
+        <div class="steprow"><div class="k">點哪裡</div><div class="v">ChatGPT App 左上角<b>三條線</b> → 最下面點<b>你的名字</b> → <b>自訂 ChatGPT</b>（英文介面是 Customize ChatGPT）。</div></div>
+        <div class="steprow"><div class="k">填什麼</div><div class="v">有兩格。第一格「<b>希望 ChatGPT 多了解你</b>」寫你是誰、做哪一行、專業在哪。第二格「<b>希望 ChatGPT 怎麼回應</b>」寫你要它怎麼答你，例如：先講結論、用繁體中文、不要條列一大串。</div></div>
+        <div class="steprow"><div class="k">看到什麼</div><div class="v">存檔後回到對話，開一個<b>新對話</b>，問同一個問題。它會直接扣著你的行業講，不再從頭問你是做什麼的。</div></div>
+      </div>
+      <div class="factbox reveal d4">
+        <p><b>那一格可以寫多長？</b>免費版與 Go 方案：<b>每一格上限 1,500 字元</b>。Plus、Pro、Business、Enterprise、Edu：<b>每一格 5,000 字元</b>。中文一個字算一個字元，所以寫 1,000 到 1,500 字的自我介紹，剛好放得進免費版的第一格。</p>
+        <p class="src">出處：OpenAI Help Center「ChatGPT Custom Instructions」官方說明（2026-07 查證）</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ACT 07 用講的寫那 1500 字 -->
+  <section id="act-07" data-block data-bg="3">
+    <div class="wrap">
+      <div class="act-cap reveal">ACT 07 · 15:30 第二段 動手設定</div>
+      <h2 class="display sm reveal d1">用講的，讓它幫你寫那 1,500 字</h2>
+      <p class="lead reveal d2">不用打字。按下 ChatGPT 的錄音鍵，對著手機講三分鐘就好。</p>
+      <div class="promptbox reveal d3">
+        <span class="plabel">現場照著唸這一段</span>
+        <p data-copy>我要用說的介紹我自己，你先聽完，不要打斷我。我會講：我是誰、做哪一行、公司多大、我最擅長什麼、我平常最常需要你幫我處理什麼事、我不喜歡你怎麼回答我。聽完之後，幫我整理成一段 1,000 到 1,500 字的自我描述，用第一人稱寫，寫成可以直接貼進 ChatGPT 自訂指令的格式。我沒有講過的東西不要加進去。</p>
+        <button class="copy" type="button">複製這段</button>
+      </div>
+      <div class="grid-3">
+        <div class="card reveal d1"><div class="num">要講 01</div><h3 class="h2">你是誰</h3><p class="body">做哪一行、公司多大、幾個人、主要客戶是誰。</p></div>
+        <div class="card reveal d2"><div class="num">要講 02</div><h3 class="h2">你怎麼判斷</h3><p class="body">你決定要不要接一個案子的時候，看的是什麼。這一段最值錢，別人學不走。</p></div>
+        <div class="card reveal d3"><div class="num">要講 03</div><h3 class="h2">你要它做什麼</h3><p class="body">你最常要 AI 幫你做的三件事。講具體，不要講「幫我處理公事」。</p></div>
+      </div>
+      <p class="body reveal d4" style="max-width:820px;margin:32px auto 0;">這三塊的結構，跟江江幫顧問客戶建 AI 助理時用的同一套一樣：角色、能力、邊界。你講的是前兩塊，第三塊由它整理。</p>
+    </div>
+  </section>
+
+  <!-- ACT 08 記憶功能 -->
+  <section id="act-08" data-block data-bg="4">
+    <div class="wrap">
+      <div class="act-cap reveal">ACT 08 · 15:30 第二段 動手設定</div>
+      <h2 class="display sm reveal d1">設定二：記憶功能</h2>
+      <p class="lead reveal d2">開啟之後，它會把講過的重要資訊留下來，你不用每次重講一遍。</p>
+      <div class="stepbox reveal d3">
+        <div class="steprow"><div class="k">點哪裡</div><div class="v">同一個地方。左上角<b>三條線</b> → <b>你的名字</b> → <b>個人化</b> → <b>記憶</b>（Memory）。</div></div>
+        <div class="steprow"><div class="k">填什麼</div><div class="v">把<b>記憶</b>和<b>引用聊天記錄</b>兩個開關打開。想手動塞東西，直接在對話裡跟它說：<b>記住：我的公司在……，我的主力客戶是……。</b></div></div>
+        <div class="steprow"><div class="k">看到什麼</div><div class="v">它會回你「<b>已更新記憶</b>」。點<b>管理記憶</b>可以看到它記了哪些，不想留的當場刪掉。</div></div>
+      </div>
+      <div class="factbox reveal d4">
+        <p><b>記憶可以裝多少？</b>OpenAI 沒有公布官方數字。第三方實測整理大約落在 100 到 200 條、1,200 到 1,400 字左右就會滿；滿了它會提示 Memory is full，要刪掉舊的才存得進新的。</p>
+        <p class="src">出處：第三方實測整理，非官方公布數字。現場以你自己手機畫面顯示的為準。</p>
+      </div>
+      <p class="body reveal d4" style="max-width:820px;margin:28px auto 0;">所以分工是這樣：長期不變的重要資料放<b>自訂指令</b>，零碎的、臨時的資訊才交給<b>記憶</b>。</p>
+    </div>
+  </section>
+
+  <!-- ACT 09 專案模式與 Work 模式 -->
+  <section id="act-09" data-block data-bg="5">
+    <div class="wrap">
+      <div class="act-cap reveal">ACT 09 · 16:10 進階版能做到什麼</div>
+      <h2 class="display sm reveal d1">手機上還有兩個地方可以用</h2>
+      <div class="grid-2">
+        <div class="card reveal d1">
+          <div class="num">進階 01</div>
+          <h3 class="h2">專案模式 Projects</h3>
+          <p class="body">把同一個主題的對話收進同一個資料夾，還可以給這個專案<b>專屬的指令</b>，只在這個專案裡生效。手機可以建專案、可以下專案指令。</p>
+          <p class="body" style="margin-top:12px;">限制：把檔案掛到<b>整個專案</b>目前只有網頁版做得到。手機能做的是在專案裡的<b>單一對話</b>上傳檔案。</p>
+        </div>
+        <div class="card reveal d2">
+          <div class="num">進階 02</div>
+          <h3 class="h2">Work 模式</h3>
+          <p class="body">2026 年 7 月 9 日推出，跟 Chat 並排的另一個模式。Chat 用在你還在想的時候，Work 用在你已經講得出你要什麼的時候。</p>
+          <p class="body" style="margin-top:12px;">它會連著跑好幾個步驟，交出一份完成品：試算表、簡報、文件、小網頁。接得上 Gmail、雲端硬碟這類工具，也能排定時間自己跑。</p>
+        </div>
+      </div>
+      <div class="factbox reveal d3">
+        <p>Work 模式含在 Plus、Pro、Business、Enterprise 方案裡，不另外收費，免費方案目前用不到。專案模式免費方案可以用。</p>
+        <p class="src">出處：OpenAI Help Center「ChatGPT Work and Codex」與 2026-07 公開發布資訊（2026-07 查證）。功能更新快，現場以你自己帳號畫面為準。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ACT 10 分身互相交流 -->
+  <section id="act-10" data-block data-bg="8">
+    <div class="wrap">
+      <div class="act-cap reveal">ACT 10 · 16:30 分身媒合</div>
+      <h2 class="display sm reveal d1">把全場的分身<br/>放在一起媒合一次</h2>
+      <p class="lead reveal d2">剛剛那段自我介紹，不只是給你的 AI 看的。全場交上來，現場就能看出誰跟誰接得起來。</p>
+      <div class="timeline">
+        <div class="step reveal d1"><div class="dot">01</div><h3 class="h2">先去敏感</h3><p class="body">跟你的 AI 說一句，把那段自我介紹改成可以給外人看的版本。</p></div>
+        <div class="step reveal d2"><div class="dot">02</div><h3 class="h2">貼進表單</h3><p class="body">掃桌上的 QR，表單只有一格，把去敏感版貼進去就好。</p></div>
+        <div class="step reveal d3"><div class="dot">03</div><h3 class="h2">現場跑分析</h3><p class="body">我當場把全場的自我介紹丟進 AI，投影出來給大家看。</p></div>
+        <div class="step reveal d4"><div class="dot">04</div><h3 class="h2">看配對</h3><p class="body">哪幾位是產業鏈上下游、哪兩位剛好互補、誰的客群可以互相轉介。現場點幾組出來。</p></div>
+      </div>
+      <div class="promptbox reveal d4">
+        <span class="plabel">第一步 · 貼上這段</span>
+        <p data-copy>把我剛剛那段自我介紹，改成可以給外人看的版本。拿掉客戶名稱、金額、還沒公開的計畫、以及任何我不會在公開場合講的細節。保留我的行業、專業、可以合作的方向。長度控制在 1,000 字左右。</p>
+        <button class="copy" type="button">複製這段</button>
+      </div>
+      <p class="body reveal d4" style="max-width:840px;margin:28px auto 0;">交上來的分析只公布正面的配對結果。沒有配到的不點名，也不會有人知道誰沒配到。</p>
+    </div>
+  </section>
+
+  <!-- ACT 11 收尾 -->
+  <section id="act-11" data-block data-bg="9">
+    <div class="wrap">
+      <div class="act-cap reveal">ACT 11 · 16:45 收尾與回家指令卡</div>
+      <h2 class="display sm reveal d1">回家再做一次</h2>
+      <p class="lead reveal d2">今天做的事串起來就是一句話：講清楚你是誰，讓它記住，再讓它替你去談。</p>
+      <div class="grid-3">
+        <div class="card reveal d1"><div class="num">今晚</div><h3 class="h2">把那段話存好</h3><p class="body">今天現場整理出來的那 1,000 多字，存進手機備忘錄。那是你的第一份數位資產。</p></div>
+        <div class="card reveal d2"><div class="num">這週</div><h3 class="h2">補三次</h3><p class="body">這週只要覺得 AI 答得不對，就回去把原因補進自訂指令。補三次，它就跟今天不一樣了。</p></div>
+        <div class="card reveal d3"><div class="num">往下</div><h3 class="h2">從一段話到一座知識庫</h3><p class="body">一段自我介紹撐得起一個人。要撐起一間公司，得把散在各處的東西變成查得到、用得上的知識庫。這是我們現在在做的服務。</p></div>
+      </div>
+      <p class="mono-note reveal d4">今天之後，你的 AI 會從聊得來，變成幫得上。</p>
+    </div>
+  </section>
+
+  <!-- ACT 12 聯繫 -->
+  <section id="act-12" data-block data-bg="9">
+    <div class="wrap left">
+      <div class="act-cap reveal">ACT 12 · 帶回去</div>
+      <h2 class="display sm reveal d1" style="text-align:left;">指令卡帶回家<br/>對你自己的 AI 再做一次</h2>
+      <p class="lead reveal d2" style="text-align:left;margin:0;">今天現場只做了一輪。回去照著指令卡再做一次，你會發現它記得的東西越來越像你在想的。</p>
+      <div class="footer-grid">
+        <div class="reveal d1">
+          <h3>關於這場</h3>
+          <p class="body">讓你的 AI 更懂你。2026/08/15 14:00 到 17:00，台北永續影響力扶輪社工作坊，地點在育成蕃薯藤餐廳。主辦 永力智庫，共同主辦 育成社福基金會。</p>
+        </div>
+        <div class="reveal d2">
+          <h3>想再往下走</h3>
+          <ul>
+            <li>知識庫建置</li>
+            <li>做網頁做知識庫</li>
+            <li>一對一顧問陪跑</li>
+          </ul>
+        </div>
+        <div class="reveal d3">
+          <h3>聯繫</h3>
+          <ul>
+            <li>Threads ＠jiang_yude_coach</li>
+            <li>官網（指令卡 QR）</li>
+            <li>LINE 官方帳號（指令卡 QR）</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom reveal d4">讓你的 AI 更懂你 · 2026/08/15 · 江江教練．隱性知識提煉師</div>
+    </div>
+  </section>
+
+<script>
+(function () {
+  document.documentElement.classList.add('js-on');
+  document.body.classList.add('js-on');
+  const sections = [...document.querySelectorAll('section[data-block]')];
+  const dotNav = document.getElementById('dots');
+  const dots = [...document.querySelectorAll('.dot-indicator a')];
+  const progress = document.getElementById('progress');
+  const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (!reducedMotion) {
+    const io = new IntersectionObserver((entries) => entries.forEach((e) => {
+      if (e.isIntersecting) { e.target.querySelectorAll('.reveal').forEach((el) => el.classList.add('in')); }
+    }), { threshold: 0.2 });
+    sections.forEach((s) => io.observe(s));
+  } else { document.querySelectorAll('.reveal').forEach((el) => el.classList.add('in')); }
+
+  // 只有 bg-7 / bg-8 / bg-9 是深底，導覽點才換成淺色
+  const darkBgs = new Set(['7','8','9']);
+  const navIo = new IntersectionObserver((entries) => entries.forEach((e) => {
+    if (e.isIntersecting) {
+      const i = sections.indexOf(e.target);
+      dots.forEach((d, idx) => d.classList.toggle('active', idx === i));
+      document.body.classList.toggle('on-dark', darkBgs.has(e.target.getAttribute('data-bg')));
+    }
+  }), { threshold: 0.5 });
+  sections.forEach((s) => navIo.observe(s));
+
+  const scroller = document.scrollingElement || document.documentElement;
+  let ticking = false, hideTimer = null;
+  function updateProgress() {
+    const max = scroller.scrollHeight - scroller.clientHeight;
+    progress.style.width = (max > 0 ? (scroller.scrollTop / max) * 100 : 0) + '%';
+    ticking = false;
+  }
+  window.addEventListener('scroll', () => {
+    if (!ticking) { requestAnimationFrame(updateProgress); ticking = true; }
+    // 章節標籤只在滑動時浮出，停 1.1 秒自動消失
+    dotNav.classList.add('scrolling');
+    clearTimeout(hideTimer);
+    hideTimer = setTimeout(() => dotNav.classList.remove('scrolling'), 1100);
+  }, { passive: true });
+  updateProgress();
+
+  // 指令一鍵複製
+  document.querySelectorAll('.promptbox .copy').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const text = btn.parentElement.querySelector('[data-copy]').innerText.trim();
+      navigator.clipboard.writeText(text).then(() => {
+        const old = btn.textContent;
+        btn.textContent = '已複製';
+        setTimeout(() => { btn.textContent = old; }, 1600);
+      });
+    });
+  });
+})();
+</script>
+</body>
+</html>
