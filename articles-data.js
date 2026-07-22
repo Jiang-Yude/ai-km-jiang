@@ -87,7 +87,7 @@ window.ARTICLES = [
       content_type: ["觀點文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["own-ai-team-at-work", "agent-workflow-builds-automation", "how-ai-connects-software", "decision-ladder-non-programmer", "chatgpt-work-codex-choice"]
+    related: ["own-ai-team-at-work", "agent-workflow-builds-automation", "how-ai-connects-software", "decision-ladder-non-programmer", "chatgpt-work-codex-choice", "ai-cp-value-calculus"]
   },
 
   /* ── 4-6. 趨勢判讀 ── */
@@ -254,7 +254,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["strong-ai-models-knowledge-workflow-road", "questionnaire-to-slides-agent-workflow", "teacher-prep-knowledge-workflow", "own-ai-team-at-work", "agent-workflow-builds-automation", "line-group-ai-workflow", "elon-musk-live-skill", "codex-log-health-check", "how-ai-connects-software", "meeting-record-agent-workflow", "decision-ladder-non-programmer", "tidy-mess-before-consulting", "diary-driven-agent-3x4", "docs-as-system-design-agent", "what-is-loop-engineering", "map-is-not-the-territory", "intangible-assets-grow-by-sharing", "manage-ai-with-management-knowledge", "ai-handoff-instructions", "train-your-ai-agent-editor", "ai-that-knows-you", "personal-studio-vs-solo-company", "cli-api-mcp-computer-use", "knowledge-as-employee", "mika-to-laika-product-character-design", "agent-native-tools-software-interface"]
+    related: ["strong-ai-models-knowledge-workflow-road", "questionnaire-to-slides-agent-workflow", "teacher-prep-knowledge-workflow", "own-ai-team-at-work", "agent-workflow-builds-automation", "line-group-ai-workflow", "elon-musk-live-skill", "codex-log-health-check", "how-ai-connects-software", "meeting-record-agent-workflow", "decision-ladder-non-programmer", "tidy-mess-before-consulting", "diary-driven-agent-3x4", "docs-as-system-design-agent", "what-is-loop-engineering", "map-is-not-the-territory", "intangible-assets-grow-by-sharing", "manage-ai-with-management-knowledge", "ai-handoff-instructions", "train-your-ai-agent-editor", "ai-that-knows-you", "personal-studio-vs-solo-company", "cli-api-mcp-computer-use", "knowledge-as-employee", "mika-to-laika-product-character-design", "agent-native-tools-software-interface", "ai-tools-professional-judgment"]
   },
 
   /* ── 13. LINE 群組也能變成 AI 工作流入口（教學）── */
@@ -387,7 +387,7 @@ window.ARTICLES = [
       content_type: ["觀點文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: "https://vocus.cc/salon/Jiang_Coach" },
-    related: ["ai-king-off-battlefield", "demis-hassabis-agi-science-ai", "spacex-ipo-musk-trillionaire-knowledge-work", "ai-market-microcosm", "vibe-coding-ten-half-products", "apple-wwdc26-siri-lobster-ai", "company-shape-is-the-moat", "ai-delegators-optimism", "chatgpt-work-codex-choice", "one-on-one-questions", "cli-api-mcp-computer-use"]
+    related: ["ai-king-off-battlefield", "demis-hassabis-agi-science-ai", "spacex-ipo-musk-trillionaire-knowledge-work", "ai-market-microcosm", "vibe-coding-ten-half-products", "apple-wwdc26-siri-lobster-ai", "company-shape-is-the-moat", "ai-delegators-optimism", "chatgpt-work-codex-choice", "one-on-one-questions", "cli-api-mcp-computer-use", "ai-tools-professional-judgment", "ai-cp-value-calculus"]
   },
 
   /* ── 20. 文件就是系統：非工程師怎麼設計 Agent 框架（教學）── */
@@ -425,7 +425,7 @@ window.ARTICLES = [
       content_type: ["觀點文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["elon-musk-live-skill", "codex-only-auto-worklog", "ai-capability-tiers", "how-ai-connects-software", "agent-workflow-builds-automation", "apple-wwdc26-siri-lobster-ai"]
+    related: ["elon-musk-live-skill", "codex-only-auto-worklog", "ai-capability-tiers", "how-ai-connects-software", "agent-workflow-builds-automation", "apple-wwdc26-siri-lobster-ai", "ai-tools-professional-judgment"]
   },
 
   /* ── 22. 找顧問前，先讓 AI 幫你把混亂整理成問題（教學）── */
@@ -1050,7 +1050,7 @@ window.ARTICLES = [
     summary: "Claude Fable、GPT-5.6 Sol 這類強模型出現後，知識庫、工作流、規則與驗收方式造成的差距更明顯。用泥巴路、柏油路與高速公路三種道路環境，帶你完成六步 AI 鋪路流程。",
     tags: {"topic":["AI趨勢","知識管理","AI工作流","駕馭工程 HarnessEngineering"],"level":["基礎"],"content_type":["教學文章"]},
     external: { threads: null, vocus: null },
-    related: ["docs-as-system-design-agent", "what-is-loop-engineering", "how-to-train-your-ai-employee", "ai-that-knows-you", "knowledge-as-employee"]
+    related: ["docs-as-system-design-agent", "what-is-loop-engineering", "how-to-train-your-ai-employee", "ai-that-knows-you", "knowledge-as-employee", "ai-tools-professional-judgment", "ai-cp-value-calculus"]
   },
   {
     id: "dual-track-planning-loop",
@@ -1144,6 +1144,34 @@ window.ARTICLES = [
     tags: {"topic":["數位轉型","知識管理","AI工作流","隱性知識"],"level":["零基礎入門"],"content_type":["教學文章"]},
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
     related: ["how-to-train-your-ai-employee", "docs-as-system-design-agent", "what-is-loop-engineering", "claude-skills-knowledge-assets", "company-shape-is-the-moat", "decision-ladder-non-programmer"]
+  },
+
+  {
+    id: "ai-tools-professional-judgment",
+    url: "articles/ai-tools-professional-judgment/",
+    date: "2026-07-17",
+    updated: "2026-07-17",
+    title: "當每個人都有 AI，真正拉開差距的是判斷力",
+    problem: "已經在用 ChatGPT、Claude 或 Codex 工作，工具跟別人一樣，開始擔心自己的差異到底剩下什麼。",
+    audience: "想讓 AI 幫忙加速、又不想把重要判斷全部交出去的人，以及正在累積顧問、教學、管理、內容或其他專業能力的人。",
+    summary: "三名資深工程師靠清理 AI 生成的冗長程式碼收費，一週完整達標一萬美元。他們自己也用 Claude Code，官網卻寫著 the agent doesn't get a vote。搭配 SlopCodeBench 對結構侵蝕的研究，說明工具普及後差異會回到看懂問題、知道哪裡不能碰、判斷結果能不能用。附把工作分成三層的方法、交付 AI 前的三問清單與可直接使用的提示詞。",
+    tags: {"topic":["AI趨勢","輔助決策","AIAgent"],"level":["基礎"],"content_type":["觀點文章"]},
+    external: { threads: null, vocus: null },
+    related: ["ai-capability-tiers", "how-to-train-your-ai-employee", "vibe-coding-ten-half-products", "strong-ai-models-knowledge-workflow-road", "ai-cp-value-calculus"]
+  },
+
+  {
+    id: "ai-cp-value-calculus",
+    url: "articles/ai-cp-value-calculus/",
+    date: "2026-07-14",
+    updated: "2026-07-14",
+    title: "模型不是越聰明越好：我開始學著算 AI 的 CP 值",
+    problem: "同時有好幾個模型可以用，每次都習慣直接開最強那個，帳單卻一路往上走。",
+    audience: "開始感覺到 API 帳單或訂閱費在增加，想知道什麼任務該用哪一級模型的 AI 重度使用者。",
+    summary: "用三個模型的成本對照說明一件反直覺的事：用最便宜的模型做到滿分，反而是最貴也最慢的。真正該問的是這次任務需要幾分，附三張對照表。最後把問題放大到人類層級：算力有限、要解的問題滿出來，會排序哪些問題值得解，才是真正的分水嶺。",
+    tags: {"topic":["AI趨勢","輔助決策","差異比較"],"level":["基礎"],"content_type":["觀點文章"]},
+    external: { threads: null, vocus: null },
+    related: ["ai-tools-professional-judgment", "strong-ai-models-knowledge-workflow-road", "program-vs-ai-skill-library", "ai-capability-tiers"]
   },
 
   {
