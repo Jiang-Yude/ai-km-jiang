@@ -254,7 +254,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["strong-ai-models-knowledge-workflow-road", "questionnaire-to-slides-agent-workflow", "teacher-prep-knowledge-workflow", "own-ai-team-at-work", "agent-workflow-builds-automation", "line-group-ai-workflow", "elon-musk-live-skill", "codex-log-health-check", "how-ai-connects-software", "meeting-record-agent-workflow", "decision-ladder-non-programmer", "tidy-mess-before-consulting", "diary-driven-agent-3x4", "docs-as-system-design-agent", "what-is-loop-engineering", "map-is-not-the-territory", "intangible-assets-grow-by-sharing", "manage-ai-with-management-knowledge", "ai-handoff-instructions", "train-your-ai-agent-editor", "ai-that-knows-you", "personal-studio-vs-solo-company"]
+    related: ["strong-ai-models-knowledge-workflow-road", "questionnaire-to-slides-agent-workflow", "teacher-prep-knowledge-workflow", "own-ai-team-at-work", "agent-workflow-builds-automation", "line-group-ai-workflow", "elon-musk-live-skill", "codex-log-health-check", "how-ai-connects-software", "meeting-record-agent-workflow", "decision-ladder-non-programmer", "tidy-mess-before-consulting", "diary-driven-agent-3x4", "docs-as-system-design-agent", "what-is-loop-engineering", "map-is-not-the-territory", "intangible-assets-grow-by-sharing", "manage-ai-with-management-knowledge", "ai-handoff-instructions", "train-your-ai-agent-editor", "ai-that-knows-you", "personal-studio-vs-solo-company", "cli-api-mcp-computer-use"]
   },
 
   /* ── 13. LINE 群組也能變成 AI 工作流入口（教學）── */
@@ -330,7 +330,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["questionnaire-to-slides-agent-workflow", "teacher-prep-knowledge-workflow", "how-to-train-your-ai-employee", "agent-workflow-builds-automation", "program-vs-ai-skill-library", "docs-as-system-design-agent", "vibe-coding-ten-half-products", "chatgpt-work-codex-choice", "chatgpt-work-skills-web-version"]
+    related: ["questionnaire-to-slides-agent-workflow", "teacher-prep-knowledge-workflow", "how-to-train-your-ai-employee", "agent-workflow-builds-automation", "program-vs-ai-skill-library", "docs-as-system-design-agent", "vibe-coding-ten-half-products", "chatgpt-work-codex-choice", "chatgpt-work-skills-web-version", "cli-api-mcp-computer-use"]
   },
 
   /* ── 17. 我的會議記錄 Agent 工作流（教學）── */
@@ -387,7 +387,7 @@ window.ARTICLES = [
       content_type: ["觀點文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: "https://vocus.cc/salon/Jiang_Coach" },
-    related: ["ai-king-off-battlefield", "demis-hassabis-agi-science-ai", "spacex-ipo-musk-trillionaire-knowledge-work", "ai-market-microcosm", "vibe-coding-ten-half-products", "apple-wwdc26-siri-lobster-ai", "company-shape-is-the-moat", "ai-delegators-optimism", "chatgpt-work-codex-choice", "one-on-one-questions"]
+    related: ["ai-king-off-battlefield", "demis-hassabis-agi-science-ai", "spacex-ipo-musk-trillionaire-knowledge-work", "ai-market-microcosm", "vibe-coding-ten-half-products", "apple-wwdc26-siri-lobster-ai", "company-shape-is-the-moat", "ai-delegators-optimism", "chatgpt-work-codex-choice", "one-on-one-questions", "cli-api-mcp-computer-use"]
   },
 
   /* ── 20. 文件就是系統：非工程師怎麼設計 Agent 框架（教學）── */
@@ -1272,5 +1272,24 @@ window.ARTICLES = [
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
     related: ["ai-capability-tiers", "ai-learning-map-reduce-anxiety", "ai-that-knows-you", "ai-course-map-from-entry-to-workflow", "prompt-to-loop-map"]
+  },
+
+  /* ── 叫 AI 幫你點餐，就懂 CLI、API、MCP（教學）── */
+  {
+    id: "cli-api-mcp-computer-use",
+    url: "articles/cli-api-mcp-computer-use/",
+    date: "2026-07-22",
+    updated: "2026-07-22",
+    title: "叫 AI 幫你點餐，就懂 CLI、API、MCP",
+    problem: "CLI、API、MCP、computer use 每次看到都有聽沒有懂，被硬排成一列比大小，越比越糊。",
+    audience: "常聽到這幾個詞卻分不清差別的人、想讓 AI 接某個服務卻不知道該用哪種方式的人、需要一個一講就懂的比喻去跟同事或學員解釋的人。",
+    summary: "用「叫 AI 幫你去餐廳點餐」一個比喻，把 GUI、computer use、CLI、API、MCP 五個詞各拆成名詞、原理、餐廳場景、實際行為四層講清楚。主軸是一個反直覺的規律：對人越好用的介面，對 AI 越難用，所以 AI 助手才幾乎都長成 CLI 的樣子。文末給一組可以直接用的判斷順序，先問有沒有 MCP，再問有沒有 API，都沒有才輪到最慢最燒 Token 的 computer use。",
+    tags: {
+      topic: ["AIAgent", "差異比較", "AI工作流"],
+      level: ["零基礎入門"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
+    related: ["how-ai-connects-software", "ai-capability-tiers", "how-to-train-your-ai-employee"]
   }
 ];
