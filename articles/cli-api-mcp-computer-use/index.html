@@ -1,0 +1,420 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>叫 AI 幫你點餐，就懂 CLI、API、MCP｜江江教練 · AI 知識管理</title>
+<meta name="description" content="CLI、API、MCP、computer use 每次看到都有聽沒有懂？用「叫 AI 幫你去餐廳點餐」一個比喻，把四個詞拆成名詞、原理、場景、行為四層講清楚，並給你一組選管道的判斷順序。">
+<link rel="canonical" href="https://ai-km-jiang.vercel.app/articles/cli-api-mcp-computer-use/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="叫 AI 幫你點餐，就懂 CLI、API、MCP｜江江教練">
+<meta property="og:image" content="https://ai-km-jiang.vercel.app/images/og/cli-api-mcp-computer-use.jpg">
+<meta property="og:description" content="用「叫 AI 幫你去餐廳點餐」一個比喻，把 CLI、API、MCP、computer use 四個詞一次講清楚，並給你一組選管道的判斷順序。">
+<meta property="og:url" content="https://ai-km-jiang.vercel.app/articles/cli-api-mcp-computer-use/">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:site_name" content="江江教練 · AI 知識管理">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="叫 AI 幫你點餐，就懂 CLI、API、MCP｜江江教練">
+<meta name="twitter:image" content="https://ai-km-jiang.vercel.app/images/og/cli-api-mcp-computer-use.jpg">
+<meta name="twitter:description" content="用「叫 AI 幫你去餐廳點餐」一個比喻，把 CLI、API、MCP、computer use 四個詞一次講清楚。">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"叫 AI 幫你點餐，就懂 CLI、API、MCP","description":"用「叫 AI 幫你去餐廳點餐」一個比喻，把 CLI、API、MCP、computer use 四個詞拆成名詞、原理、場景、行為四層講清楚，並給出選管道的判斷順序。","author":{"@type":"Person","name":"江昱德","alternateName":"江江教練","jobTitle":"隱性知識提煉師、AI 應用規劃師"},"isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://ai-km-jiang.vercel.app/"},"inLanguage":"zh-Hant","url":"https://ai-km-jiang.vercel.app/articles/cli-api-mcp-computer-use/"}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{--ink:#1a1612;--paper:#fefcf8;--muted:#6a635a;--line:#d8cdb8;--green:#5f7553;--blue:#5689b8;--orange:#e85a4f;--soft:#faf5ec;--dark:#2a2018;--shadow:0 18px 45px rgba(107,74,42,.14);--sp-shadow:hsla(35,50%,60%,.15);--sp-shadow-edge:hsla(35,50%,68%,.03);--sp-radius:400px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC","Segoe UI",sans-serif}
+a{color:inherit}
+nav.top{position:sticky;top:0;background:rgba(254,252,248,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid #d8cdb8;z-index:100}
+nav.top .container{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:24px;padding:14px 32px}
+.nav-brand-img{justify-self:start;display:flex;align-items:center;text-decoration:none;flex-shrink:0;transition:opacity .2s}
+.nav-brand-img:hover{opacity:.8}.nav-brand-img img{height:40px;width:auto;display:block}
+nav.top ul.nav-menu{justify-self:end;display:flex;gap:22px;list-style:none;margin:0;padding:0;font-size:.95rem;white-space:nowrap}
+nav.top ul.nav-menu a{color:#3a342d;text-decoration:none;transition:color .2s;font-weight:500;white-space:nowrap}
+nav.top ul.nav-menu a:hover{color:#1a1612}nav.top ul.nav-menu a.active{color:#1a1612;font-weight:700}
+.nav-toggle{display:none;background:none;border:none;padding:6px;cursor:pointer;width:36px;height:36px;position:relative}
+.nav-toggle span{display:block;position:absolute;left:8px;right:8px;height:2px;background:#1a1612;border-radius:2px;transition:transform .25s,opacity .25s,top .25s}
+.nav-toggle span:nth-child(1){top:11px}.nav-toggle span:nth-child(2){top:17px}.nav-toggle span:nth-child(3){top:23px}
+.nav-toggle.open span:nth-child(1){top:17px;transform:rotate(45deg)}.nav-toggle.open span:nth-child(2){opacity:0}.nav-toggle.open span:nth-child(3){top:17px;transform:rotate(-45deg)}
+@media(max-width:860px){
+ nav.top .container{grid-template-columns:auto 1fr auto;padding:10px 16px;gap:12px}
+ .nav-brand-img img{height:32px}
+ .nav-toggle{display:block;justify-self:end}
+ nav.top ul.nav-menu{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(254,252,248,.98);backdrop-filter:blur(14px);border-bottom:1px solid #d8cdb8;flex-direction:column;gap:0;padding:8px 0;box-shadow:0 10px 24px rgba(107,74,42,.08)}
+ nav.top ul.nav-menu.open{display:flex}
+ nav.top ul.nav-menu li{border-bottom:1px solid #e8dfc9}
+ nav.top ul.nav-menu li:last-child{border-bottom:none}
+ nav.top ul.nav-menu a{display:block;padding:14px 20px;font-size:1.06rem}
+}
+body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradient(var(--sp-radius) circle at var(--mx,50%) var(--my,50%),var(--sp-shadow) 0%,var(--sp-shadow-edge) 45%,transparent 75%);pointer-events:none;z-index:9999;mix-blend-mode:multiply;transition:background .06s linear}
+.hero{position:relative;overflow:hidden;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:72px;padding:96px clamp(20px,6vw,88px) 80px;background:linear-gradient(180deg,#fffcf0 0%,#f9e9d2 100%);color:#1a1612;border-bottom:1px solid #d8cdb8}
+.hero .wc{position:absolute;border-radius:50%;filter:blur(60px);pointer-events:none;z-index:0}
+.hero .wc1{width:420px;height:360px;top:-120px;right:-80px;background:#e8884b;opacity:.15}
+.hero .wc2{width:360px;height:300px;bottom:-110px;left:-70px;background:#5f7553;opacity:.13}
+.hero .wc3{width:280px;height:260px;top:34%;left:14%;background:#a08144;opacity:.10}
+.hero>div{flex:none;width:860px;max-width:100%;position:relative;z-index:2}
+.hero-figure{margin:0;width:420px;flex:none;position:relative;z-index:2}
+.hero-figure img{display:block;width:100%;border-radius:16px;border:1px solid #d8cdb8;box-shadow:0 18px 45px rgba(107,74,42,.16);cursor:zoom-in}
+.hero-figure figcaption{margin-top:10px;font-size:14px;line-height:1.6;color:#6a635a}
+.inline-figure{margin:30px auto 8px;max-width:820px}
+.inline-figure.wide{max-width:980px}
+.inline-figure img{display:block;width:100%;border-radius:14px;border:1px solid var(--line);box-shadow:var(--shadow);background:#fff;cursor:zoom-in}
+.inline-figure figcaption{font-size:14px;line-height:1.6;color:var(--muted);margin-top:10px}
+.figure-todo{display:flex;align-items:center;justify-content:center;text-align:center;min-height:210px;border:2px dashed var(--line);border-radius:14px;background:var(--soft);color:var(--muted);font-size:16px;line-height:1.7;padding:24px}
+.lightbox{position:fixed;inset:0;z-index:10000;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(12,10,8,.92);cursor:zoom-out;backdrop-filter:blur(4px)}
+.lightbox.open{display:flex}.lightbox img{max-width:96vw;max-height:92vh;border-radius:10px;box-shadow:0 24px 60px rgba(0,0,0,.5)}
+.lightbox-close{position:fixed;top:18px;right:24px;color:#fff;font-size:34px;line-height:1;font-weight:700;cursor:pointer;opacity:.85}
+.kicker{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.55rem;color:#7a5c3a;font-weight:500}
+.hero h1{max-width:none;margin:16px 0 18px;font-size:clamp(36px,6vw,72px);line-height:1.08;overflow-wrap:anywhere}
+.hero p{max-width:none;font-size:clamp(18px,2vw,23px);line-height:1.62;color:#3a342d}
+.section{padding:54px clamp(20px,6vw,88px);border-top:1px solid var(--line)}
+.inner{width:min(1000px,100%);margin:0 auto}
+.section h2{font-size:clamp(26px,4.2vw,48px);line-height:1.12;margin:0 0 18px}
+.section h3{font-size:clamp(21px,3vw,30px);line-height:1.2;margin:30px 0 12px}
+.lead{font-size:clamp(18px,1.6vw,22px);line-height:1.7;color:#3a342d;max-width:900px}
+.section p{font-size:18px;line-height:1.74;color:#3a342d}.section p+p{margin-top:14px}
+.section ul,.section ol{padding-left:1.4em;font-size:18px;line-height:1.74;color:#3a342d}.section li{margin-bottom:8px}
+.meaning{margin:22px 0;padding:16px 18px;border-left:5px solid var(--blue);background:rgba(86,137,184,.12);border-radius:6px;line-height:1.7;font-size:19px}
+.meaning b{display:block;color:var(--blue);margin-bottom:4px}
+.caveat{margin:0 0 8px;padding:16px 18px;border-left:5px solid var(--orange);background:rgba(232,90,79,.1);border-radius:6px;line-height:1.7;font-size:18px;color:#3a342d}
+.caveat b{display:block;color:var(--orange);margin-bottom:4px}
+.infocard{background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px 24px 22px;box-shadow:0 8px 22px rgba(107,74,42,.08);margin-top:8px}
+.infocard-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.info-item{padding:18px 14px 0}
+.info-item b{display:block;font-size:14px;font-weight:900;letter-spacing:.04em;margin-bottom:7px;text-transform:uppercase}
+.info-item:nth-child(1) b{color:var(--green)}.info-item:nth-child(2) b{color:var(--orange)}.info-item:nth-child(3) b{color:var(--blue)}
+.info-item p{margin:0;font-size:17px;line-height:1.6;color:#3a342d}
+.tagrow{display:flex;flex-wrap:wrap;gap:7px;margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
+.tag{font-size:14px;color:var(--muted);background:var(--soft);border:1px solid var(--line);border-radius:999px;padding:4px 11px}
+.duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:24px}
+.duo.stack{grid-template-columns:1fr}
+.duo .card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:22px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.duo .card.a{border-color:var(--orange)}.duo .card.b{border-color:var(--green);box-shadow:0 8px 24px rgba(95,117,83,.16)}
+.duo .card small{display:block;font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.04em;margin-bottom:9px}
+.duo .card.a small{color:var(--orange)}.duo .card.b small{color:var(--green)}
+.duo .card b{display:block;font-size:22px;line-height:1.3;margin-bottom:12px}.duo .card.a b{color:#c0512f}.duo .card.b b{color:#4a7a59}
+.duo .card p{margin:0;color:#3a342d;line-height:1.75;font-size:18px}
+.duo .card ul{margin:0;padding-left:1.2em}
+.workflow-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:24px}
+.workflow-step{background:#fff;border:1px solid var(--line);border-radius:8px;padding:18px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.workflow-step small{display:block;color:var(--orange);font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;margin-bottom:9px}
+.workflow-step b{display:block;font-size:18px;line-height:1.3;margin-bottom:9px}
+.workflow-step p{margin:0;color:#3a342d;line-height:1.6;font-size:16px}
+.termcard{background:#fff;border:1px solid var(--line);border-radius:12px;padding:4px 24px 20px;box-shadow:0 8px 22px rgba(107,74,42,.08);margin-top:20px}
+.termrow{display:grid;grid-template-columns:104px 1fr;gap:14px;padding:16px 0;border-bottom:1px solid var(--line)}
+.termrow:last-child{border-bottom:none}
+.termrow b{font-size:14px;font-weight:900;letter-spacing:.04em;color:var(--green);padding-top:3px}
+.termrow:nth-child(2) b{color:var(--orange)}.termrow:nth-child(3) b{color:var(--blue)}.termrow:nth-child(4) b{color:#7a5c3a}
+.termrow p{margin:0;font-size:17px;line-height:1.68;color:#3a342d}
+.footer{padding:30px clamp(20px,6vw,88px);font-size:14px;color:var(--muted);background:#fff;border-top:1px solid var(--line)}
+.footer-inner{width:min(1000px,100%);margin:0 auto}
+.footer-links{display:flex;flex-wrap:wrap;gap:6px 12px;margin-bottom:14px}.footer-links a{color:var(--blue);font-weight:900;text-decoration:none;font-size:14px}
+.footer-brand{font-weight:900;font-size:15px;margin-bottom:10px}.footer-note{font-size:13px;line-height:1.6}
+@media(max-width:820px){.infocard-grid{grid-template-columns:1fr}.duo{grid-template-columns:1fr}.workflow-grid{grid-template-columns:1fr}.section{padding:40px 20px}.hero{min-height:52vh;flex-direction:column;justify-content:flex-start;align-items:flex-start;gap:24px}.hero>div{width:100%}.hero-figure{width:100%;max-width:560px}.termrow{grid-template-columns:1fr;gap:4px}}
+@media(max-width:820px){html,body{overflow-x:hidden}.hero h1{word-break:break-word}}
+</style>
+</head>
+<body class="spotlight">
+
+<nav class="top">
+  <div class="container">
+    <a class="nav-brand-img" href="../../index.html"><img src="../../images/footer-signature.png" alt="江江教練 | 江昱德"></a>
+    <button class="nav-toggle" aria-label="選單"><span></span><span></span><span></span></button>
+    <ul class="nav-menu">
+      <li><a href="../../index.html">首頁</a></li>
+      <li><a href="../../knowledge-architecture.html">知識架構</a></li>
+      <li><a href="../../courses.html">課程</a></li>
+      <li><a href="../../articles.html" class="active">深度文章</a></li>
+      <li><a href="../../skills.html">技能包下載</a></li>
+      <li><a href="../../cases.html">服務方案</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="wc wc1"></div>
+  <div class="wc wc2"></div>
+  <div class="wc wc3"></div>
+  <div>
+    <div class="kicker">AI 應用 / Agent 介面</div>
+    <h1>叫 AI 幫你點餐，就懂 CLI、API、MCP</h1>
+    <p>這幾個詞你大概都聽過，可能還聽過很多次，但要你一句話說清楚它們差在哪，多半講不出來。用一頓飯的距離，一次講明白。</p>
+  </div>
+  <!-- 封面圖待補：咪卡輪播卡封面（4:5）生成後放 images/articles/cli-api-mcp-computer-use-cover.jpg，並改 .hero-figure{width:320px} + img{aspect-ratio:4/5;object-fit:cover}
+  <figure class="hero-figure">
+    <img src="../../images/articles/cli-api-mcp-computer-use-cover.jpg" alt="咪卡站在餐廳門口，前方是三種點餐管道" loading="lazy">
+    <figcaption>叫 AI 幫你點餐：同一頓飯，四種點法</figcaption>
+  </figure>
+  -->
+</section>
+
+<main>
+
+<section class="section" id="start">
+  <div class="inner">
+    <p class="lead">CLI、API、MCP、computer use，這幾個詞在 AI 時代天天出現，但它們常被硬排成一列比大小，越比越糊。這篇用「叫 AI 幫你去餐廳點餐」一個比喻，把每個詞拆成名詞、原理、餐廳場景、實際行為四層講清楚，最後給你一組可以直接用的判斷順序：要 AI 幫你接一個服務時，該優先走哪條管道，哪條要留到最後才用。</p>
+
+    <div class="duo stack">
+      <div class="card a">
+        <b>適合誰</b>
+        <ul>
+          <li>常聽到這些詞、也在用 AI 工具，但一直沒真的分清楚它們差在哪的人</li>
+          <li>想讓 AI 幫忙接某個服務或系統，卡在不知道該用哪種方式的人</li>
+          <li>要對同事、學員、客戶解釋這幾個詞，需要一個一講就懂的比喻的人</li>
+        </ul>
+      </div>
+      <div class="card b">
+        <b>你可以帶走什麼</b>
+        <ul>
+          <li>四個詞的四層拆解（名詞、原理、場景、行為），可以直接拿去跟別人解釋</li>
+          <li>一組選管道的判斷順序，從最省到最貴排好，下次要接服務直接照著問</li>
+          <li>三個最容易誤會的點，包含 MCP 到底有沒有取代 API</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 一頁總結圖待補：咪卡橫式 16:9 一頁總結生成後放 images/articles/cli-api-mcp-computer-use-summary.jpg
+    <figure class="inline-figure wide">
+      <img src="../../images/articles/cli-api-mcp-computer-use-summary.jpg" alt="四種點餐管道一頁對照表" loading="lazy">
+      <figcaption>一頁看懂：四種管道，AI 分別怎麼接手</figcaption>
+    </figure>
+    -->
+    <div class="inline-figure wide">
+      <div class="figure-todo">一頁總結圖待補<br><small>咪卡橫式 16:9 總結卡生成後放入 images/articles/cli-api-mcp-computer-use-summary.jpg</small></div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>先立一個觀念：廚房從頭到尾沒變</h2>
+    <p>不管你用哪種方式點餐，餐廳後面那個廚師，做的是同一盤麵。你用觸控機點、走到櫃檯報單、派機器人來按、打電話專線，還是用通用 App 點，最後端出來的菜是一樣的。</p>
+    <div class="meaning">
+      <b>對應到技術上</b>
+      這四個詞，沒有一個在講「服務本身變好」或「AI 變聰明」。它們全部在講同一件事：你的訂單用什麼方式送進去。真正在做事的後端運算、資料庫、模型本體，是同一個廚房。
+    </div>
+    <p>先記住這件事，後面就不會把「點餐方式」跟「做菜的人」搞混。</p>
+
+    <h3>主軸：這家餐廳開了哪種點餐管道</h3>
+    <p>一旦你決定「我很懶，不想自己排隊，我要叫 AI 幫我點」，真正的問題就浮出來了：這家餐廳開了哪種管道給 AI 用。</p>
+    <p>有的餐廳只有一台給人用的觸控點餐機，沒別的。有的另外開了電話專線。有的接上了大家通用的點餐 App。餐廳開了哪種管道，直接決定 AI 幫你點得順不順、快不快、貴不貴。</p>
+  </div>
+</section>
+
+<section class="section" id="gui">
+  <div class="inner">
+    <h2>一、GUI：那台給人用的點餐機</h2>
+    <div class="termcard">
+      <div class="termrow"><b>名詞</b><p>GUI 是 Graphical User Interface，圖形使用者介面。就是你螢幕上看得到的那些按鈕、圖示、視窗。</p></div>
+      <div class="termrow"><b>原理</b><p>把每個功能畫成一個看得到的圖形，你用滑鼠點、用手指觸控。它是為「人的眼睛和手」設計的。</p></div>
+      <div class="termrow"><b>餐廳場景</b><p>門口那台觸控點餐機，螢幕上一格一格的餐點照片。</p></div>
+      <div class="termrow"><b>行為</b><p>人用手指點照片、選加大、按結帳，很直覺，但一步一步慢。</p></div>
+    </div>
+    <p>問題來了。當這家餐廳只有這台給人的機器，AI 要幫你點，該怎麼辦。這就帶出下一個詞。</p>
+  </div>
+</section>
+
+<section class="section" id="computer-use">
+  <div class="inner">
+    <h2>二、computer use：燒 Token 的萬能笨辦法</h2>
+    <div class="termcard">
+      <div class="termrow"><b>名詞</b><p>computer use，電腦操作，也叫 GUI 自動化。白話就是讓 AI 像人一樣去操作螢幕。</p></div>
+      <div class="termrow"><b>原理</b><p>有些服務就是只做了給人看的畫面，沒開專門給機器的管道。AI 想用，只能模仿人。它沒有眼睛也沒有手，只能先截一張螢幕圖來「看」，判斷按鈕在哪個位置，再模擬滑鼠鍵盤去點、去打。每做一步，都要重新截圖、重新判斷下一步。</p></div>
+      <div class="termrow"><b>餐廳場景</b><p>這家餐廳只有一台觸控點餐機，沒有電話，也沒有 App。你懶得自己去排隊一格一格按，就派一個機器人代替你，站到機器前面，用它的鏡頭看螢幕、機械手慢慢按。</p></div>
+      <div class="termrow"><b>行為</b><p>萬能，但笨重又貴。下面三個特性很現實。</p></div>
+    </div>
+
+    <div class="infocard">
+      <div class="infocard-grid">
+        <div class="info-item">
+          <b>萬能</b>
+          <p>不需要餐廳特別配合。凡是人在螢幕上能做的，它都能做。這是它唯一、但也很關鍵的優點。</p>
+        </div>
+        <div class="info-item">
+          <b>很慢又很燒 Token</b>
+          <p>每按一步之前，都要先拍一張照看清楚現在畫面長怎樣，才敢動下一步。而每張截圖都是一整張圖丟給 AI 判讀，圖片非常吃 Token，一個流程點下來要看幾十張畫面。</p>
+        </div>
+        <div class="info-item">
+          <b>很脆弱</b>
+          <p>螢幕改版、跳出廣告、載入慢一點，它就可能看錯、點錯。</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="meaning">
+      <b>它的定位</b>
+      當對方只給人看的畫面、又沒開別的管道時，computer use 是唯一能讓 AI 接手的辦法。它是最後手段，不是首選。
+    </div>
+  </div>
+</section>
+
+<section class="section" id="cli">
+  <div class="inner">
+    <h2>三、CLI：AI 的主場</h2>
+    <div class="termcard">
+      <div class="termrow"><b>名詞</b><p>CLI 是 Command Line Interface，命令列介面。就是那種整片黑底、只能打字的視窗。</p></div>
+      <div class="termrow"><b>原理</b><p>沒有按鈕、沒有圖，你打一行文字指令，系統照著做。文字進、文字出。</p></div>
+      <div class="termrow"><b>餐廳場景</b><p>你走到櫃檯，不看菜單，直接用一句行話報單：大杯美式、去冰、半糖、加濃縮。</p></div>
+      <div class="termrow"><b>行為</b><p>對人來說，你要先會念這串咒語，知道指令怎麼打，對新手不友善。但一旦會念，超快，一句話點完整單。</p></div>
+    </div>
+
+    <p>而對 AI 來說，情況整個翻過來。AI 本來就是靠文字在思考和輸出的，打指令對它來說就是講母語。它不用看螢幕、不用假裝人，把文字指令送出去就完成了。</p>
+    <p>這就是為什麼 Claude Code、Codex 這些 AI 助手，幾乎都長成 CLI 的樣子。因為它們站在這個文字報單的櫃檯，最順手。</p>
+
+    <div class="caveat">
+      <b>順帶解一個常見疑問：CLI 分本地還是遠端嗎</b>
+      都可以。你在自己電腦的終端機打指令，操作的是本機；你用 ssh 連到遠方的伺服器打指令，操作的是遠端。報單的方式（打字）沒變，變的只是你人在不在現場。本地和遠端是一條橫切所有管道的獨立維度，不是 CLI 專屬的特徵。
+    </div>
+  </div>
+</section>
+
+<section class="section" id="api">
+  <div class="inner">
+    <h2>四、API：程式的電話專線</h2>
+    <div class="termcard">
+      <div class="termrow"><b>名詞</b><p>API 是 Application Programming Interface，應用程式介面。白話就是一個系統開給其他程式用的窗口。</p></div>
+      <div class="termrow"><b>原理</b><p>不透過螢幕、不透過人看的畫面，程式直接對程式送資料、收資料，格式事先講好。像一條專線。</p></div>
+      <div class="termrow"><b>餐廳場景</b><p>餐廳為了外送和電話訂餐，開了一支專線號碼。你照它規定的格式報：餐點編號、數量、地址。</p></div>
+      <div class="termrow"><b>行為</b><p>AI 不用看螢幕，照格式把訂單資料送出去就完成，又快又穩，比截圖點按鈕可靠太多。</p></div>
+    </div>
+
+    <p>缺點在於，每家餐廳的專線規則都不一樣。這家要先報會員編號，那家格式不同，另一家只收特定寫法。所以 AI 每接一家新餐廳，都要先學會這家的專線怎麼打。接十家，就要學十次。</p>
+  </div>
+</section>
+
+<section class="section" id="mcp">
+  <div class="inner">
+    <h2>五、MCP：為 AI 而生的通用標準</h2>
+    <div class="termcard">
+      <div class="termrow"><b>名詞</b><p>MCP 是 Model Context Protocol，模型上下文協定。白話就是一套專門讓 AI 去接各種工具的通用標準。</p></div>
+      <div class="termrow"><b>原理</b><p>以前每家 API 各長各的樣子，AI 要一家一家接。MCP 訂了一套共通規格，規定菜單長怎樣、怎麼問這家有哪些功能、訂單怎麼送。工具方只要照這套規格把自己包好，任何支援 MCP 的 AI 一連上就會用。</p></div>
+      <div class="termrow"><b>餐廳場景</b><p>一套所有餐廳通用的點餐 App。餐廳照 App 的統一格式把菜單上架，你打開 App 就看到每家有什麼、每道菜要填什麼，直接點。</p></div>
+      <div class="termrow"><b>行為</b><p>AI 學會這套 App 的用法一次，就能點所有上架餐廳，不用每家重學。而且它一連上還能自己看菜單，知道這家有哪些功能可用。</p></div>
+    </div>
+
+    <div class="caveat">
+      <b>澄清一：MCP 沒有取代 API</b>
+      通用 App 收單之後，背後往往還是打餐廳自己的專線把單送進廚房。MCP 讓 AI 這端點餐變統一，餐廳那頭的 API 沒有消失。它是站在 AI 前面的統一窗口，不是把廚房換掉。
+    </div>
+    <div class="caveat">
+      <b>澄清二：MCP 不等於遠端</b>
+      那個通用 App，常常就裝在你自己的電腦上。很多人以為 MCP 一定是連雲端，其實最常見的反而跑在本機。
+    </div>
+  </div>
+</section>
+
+<section class="section" id="flip">
+  <div class="inner">
+    <h2>一個反直覺的規律</h2>
+    <p>四個看完，會發現一件很有意思的事。介面對人友善的程度，跟對 AI 友善的程度，剛好相反。</p>
+
+    <div class="duo">
+      <div class="card a">
+        <small>對人的排行榜</small>
+        <b>GUI 最好用，CLI 最難用</b>
+        <p>圖形介面看得到、點得到，新手也會用。命令列要背指令，光是開始就卡住一票人。</p>
+      </div>
+      <div class="card b">
+        <small>對 AI 的排行榜</small>
+        <b>CLI 最好用，GUI 最痛苦</b>
+        <p>文字是 AI 的母語，打指令一步到位。圖形介面它得假裝成人去看去點，慢、貴、還容易錯。</p>
+      </div>
+    </div>
+
+    <p>至於 API 和 MCP，是後來專門為程式和 AI 開的管道，一個各家各接，一個學一次全通。</p>
+
+    <div class="meaning">
+      <b>Agent 時代真正的變化</b>
+      介面好不好用的那張排行榜，從「以人為主」翻成了「以 AI 為主」。以前設計介面，想的是人的眼睛和手。現在多了一個問題要問：AI 好不好接。
+    </div>
+  </div>
+</section>
+
+<section class="section" id="takeaway">
+  <div class="inner">
+    <h2>可以帶走的判斷：要 AI 接一個服務，怎麼選</h2>
+    <p>如果你之後要讓 AI 幫你接某個服務，判斷順序其實很簡單。從省到貴，照這個順序問下來就好。</p>
+
+    <div class="workflow-grid">
+      <div class="workflow-step">
+        <small>STEP 1</small>
+        <b>有支援 MCP 嗎</b>
+        <p>有就優先用。AI 學一次就會，還能自己看菜單知道有哪些功能，最省事。</p>
+      </div>
+      <div class="workflow-step">
+        <small>STEP 2</small>
+        <b>沒有 MCP，那有開 API 嗎</b>
+        <p>有就走 API。快又穩，只是要花一次功夫，把這一家的規則接好。</p>
+      </div>
+      <div class="workflow-step">
+        <small>STEP 3</small>
+        <b>都沒有，只剩給人的畫面</b>
+        <p>那才輪到 computer use。萬能，但最慢、最燒 Token、最容易出錯，是沒有更好管道時的最後手段。</p>
+      </div>
+    </div>
+
+    <div class="meaning">
+      <b>一句話記住</b>
+      能走專門給機器的管道，就別叫 AI 假裝人去點。
+    </div>
+
+    <div class="tagrow">
+      <span class="tag">AI 應用</span>
+      <span class="tag">Agent</span>
+      <span class="tag">介面</span>
+      <span class="tag">MCP</span>
+      <span class="tag">API</span>
+      <span class="tag">CLI</span>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="end">
+  <div class="inner">
+    <h2>收束</h2>
+    <p>CLI、API、MCP、computer use，這幾個詞會讓人混，往往是因為被硬排成一列比大小。但它們其實是同一頓飯的不同點法。把它們放回「叫 AI 幫你點餐」這條線上，看每個負責哪一段，就不混了。</p>
+    <p>同樣一頓飯，差別只在 AI 從哪個管道接手。而那個管道友不友善，決定了它做起來有多順、多貴。</p>
+  </div>
+</section>
+
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">江江教練 · AI 知識管理</div>
+    <div class="footer-links">
+      <a href="../../articles.html">← 回深度文章總站</a>
+      <a href="../../index.html">首頁</a>
+      <a href="../../learn.html">自學資源</a>
+      <a href="../../skills.html">技能包下載</a>
+      <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">LINE 社群 ↗</a>
+      <a href="https://www.threads.com/@jiang_yude_coach" target="_blank" rel="noopener">Threads ↗</a>
+      <a href="https://vocus.cc/salon/Jiang_Coach" target="_blank" rel="noopener">方格子 ↗</a>
+    </div>
+    <div class="footer-note">這是一篇教學文章，整理我對「叫 AI 幫你點餐，就懂 CLI、API、MCP」的看法，供你參考。</div>
+  </div>
+</footer>
+
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <span class="lightbox-close" aria-label="關閉">×</span>
+  <img id="lightbox-img" src="" alt="放大檢視">
+</div>
+<script>
+(function(){
+  var box=document.getElementById('lightbox'),boxImg=document.getElementById('lightbox-img');
+  document.querySelectorAll('.hero-figure img,.inline-figure img').forEach(function(img){
+    img.addEventListener('click',function(){boxImg.src=img.currentSrc||img.src;boxImg.alt=img.alt||'放大檢視';box.classList.add('open');box.setAttribute('aria-hidden','false');});
+  });
+  function close(){box.classList.remove('open');box.setAttribute('aria-hidden','true');boxImg.src='';}
+  box.addEventListener('click',close);
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
+})();
+</script>
+
+<script src="../../spotlight.js"></script>
+
+<script src="../../articles-data.js"></script>
+<script src="../../related-render.js"></script>
+</body>
+</html>
