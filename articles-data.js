@@ -87,7 +87,7 @@ window.ARTICLES = [
       content_type: ["觀點文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["own-ai-team-at-work", "agent-workflow-builds-automation", "how-ai-connects-software", "decision-ladder-non-programmer"]
+    related: ["own-ai-team-at-work", "agent-workflow-builds-automation", "how-ai-connects-software", "decision-ladder-non-programmer", "chatgpt-work-codex-choice"]
   },
 
   /* ── 4-6. 趨勢判讀 ── */
@@ -330,7 +330,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["questionnaire-to-slides-agent-workflow", "teacher-prep-knowledge-workflow", "how-to-train-your-ai-employee", "agent-workflow-builds-automation", "program-vs-ai-skill-library", "docs-as-system-design-agent", "vibe-coding-ten-half-products"]
+    related: ["questionnaire-to-slides-agent-workflow", "teacher-prep-knowledge-workflow", "how-to-train-your-ai-employee", "agent-workflow-builds-automation", "program-vs-ai-skill-library", "docs-as-system-design-agent", "vibe-coding-ten-half-products", "chatgpt-work-codex-choice", "chatgpt-work-skills-web-version"]
   },
 
   /* ── 17. 我的會議記錄 Agent 工作流（教學）── */
@@ -387,7 +387,7 @@ window.ARTICLES = [
       content_type: ["觀點文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: "https://vocus.cc/salon/Jiang_Coach" },
-    related: ["ai-king-off-battlefield", "demis-hassabis-agi-science-ai", "spacex-ipo-musk-trillionaire-knowledge-work", "ai-market-microcosm", "vibe-coding-ten-half-products", "apple-wwdc26-siri-lobster-ai", "company-shape-is-the-moat", "ai-delegators-optimism"]
+    related: ["ai-king-off-battlefield", "demis-hassabis-agi-science-ai", "spacex-ipo-musk-trillionaire-knowledge-work", "ai-market-microcosm", "vibe-coding-ten-half-products", "apple-wwdc26-siri-lobster-ai", "company-shape-is-the-moat", "ai-delegators-optimism", "chatgpt-work-codex-choice"]
   },
 
   /* ── 20. 文件就是系統：非工程師怎麼設計 Agent 框架（教學）── */
@@ -972,7 +972,7 @@ window.ARTICLES = [
     summary: "用新手聽得懂的方式分清聊天型 AI、網頁工具與桌面型 Agent：專案模式的三個痛點、桌面版的範式轉變、Codex 與三層分工工作流，文科生不用寫程式也能上手。",
     tags: {"topic":["差異比較","AIAgent","工具操作","AI工作流"],"level":["零基礎入門"],"content_type":["教學文章"]},
     external: { threads: null, vocus: null },
-    related: ["youtube-to-opinion-report-workflow", "liberal-arts-agent-framework", "train-your-ai-agent-editor"]
+    related: ["youtube-to-opinion-report-workflow", "liberal-arts-agent-framework", "train-your-ai-agent-editor", "chatgpt-work-codex-choice"]
   },
   {
     id: "ai-course-map-from-entry-to-workflow",
@@ -1011,7 +1011,7 @@ window.ARTICLES = [
     summary: "提示詞設計的底層原理：AI 是詞語關聯的計算機，像強一億倍的手機輸入法。從課題分離的三步修正、角色設定的限制到負向提示詞的陷阱，先懂語意再套模板。",
     tags: {"topic":["提示詞設計","隱性知識","知識管理"],"level":["基礎"],"content_type":["教學文章"]},
     external: { threads: null, vocus: null },
-    related: ["ai-data-organization-usable-system", "claude-skills-knowledge-assets", "ai-that-knows-you"]
+    related: ["ai-data-organization-usable-system", "claude-skills-knowledge-assets", "ai-that-knows-you", "chatgpt-work-skills-web-version"]
   },
   {
     id: "claude-skills-knowledge-assets",
@@ -1024,7 +1024,7 @@ window.ARTICLES = [
     summary: "用 Claude Skills 理解技能包：它是給 AI 看的操作手冊，把你的專業流程、格式標準、最佳狀態封裝成可重複執行的知識資產。含兩種製作方法與備份要點。",
     tags: {"topic":["ClaudeSkills","技能包設計","知識管理"],"level":["零基礎入門"],"content_type":["教學文章"]},
     external: { threads: null, vocus: null },
-    related: ["semantic-rules-before-prompt-templates", "ai-data-organization-usable-system", "manage-ai-with-management-knowledge"]
+    related: ["semantic-rules-before-prompt-templates", "ai-data-organization-usable-system", "manage-ai-with-management-knowledge", "chatgpt-work-skills-web-version"]
   },
   {
     id: "notebooklm-knowledge-analysis-assistant",
@@ -1144,6 +1144,34 @@ window.ARTICLES = [
     tags: {"topic":["數位轉型","知識管理","AI工作流","隱性知識"],"level":["零基礎入門"],"content_type":["教學文章"]},
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
     related: ["how-to-train-your-ai-employee", "docs-as-system-design-agent", "what-is-loop-engineering", "claude-skills-knowledge-assets", "company-shape-is-the-moat", "decision-ladder-non-programmer"]
+  },
+
+  {
+    id: "chatgpt-work-skills-web-version",
+    url: "articles/chatgpt-work-skills-web-version/",
+    date: "2026-07-13",
+    updated: "2026-07-13",
+    title: "ChatGPT 網頁版終於能用技能包了：ChatGPT Work 從上手到兩個雷",
+    problem: "以前技能包只有 Claude、Grok 這種要付高費的網頁版才有，打開 ChatGPT 網頁版做重複性工作時，每次都要重貼一遍規則和格式。",
+    audience: "已經在用 ChatGPT 網頁版、想用「專案加技能包」做出穩定公版產出，卻還分不清技能包和提示詞差在哪的內容工作者與一人公司。",
+    summary: "ChatGPT Work 讓網頁版 AI 終於能用技能包。從 7/12 免費講座的實際示範整理成文字：技能包跟提示詞差在哪、怎麼用「專案存資料、技能包存判斷」做出穩定公版產出，以及用到深處一定會撞到的兩個雷點。",
+    tags: {"topic":["技能包設計","AI工作流","工具操作"],"level":["基礎"],"content_type":["教學文章"]},
+    external: { threads: null, vocus: null },
+    related: ["chatgpt-work-codex-choice", "claude-skills-knowledge-assets", "how-ai-connects-software", "semantic-rules-before-prompt-templates"]
+  },
+
+  {
+    id: "chatgpt-work-codex-choice",
+    url: "articles/chatgpt-work-codex-choice/",
+    date: "2026-07-16",
+    updated: "2026-07-16",
+    title: "ChatGPT Work、Codex、一般 ChatGPT 怎麼分工？先看電腦、資料與額度",
+    problem: "同時有 ChatGPT Work、Codex 和一般 ChatGPT，每次要做事都不知道該開哪一個，還常把個人用法當成所有帳號都適用的規則。",
+    audience: "已經在用 ChatGPT Plus 或 Pro，卻常搞不清該開 Work、Codex 還是一般 Chat 的使用者，含電腦裝得了與裝不了 Codex 兩種情況。",
+    summary: "ChatGPT Work、Codex 與一般 ChatGPT 都能幫忙做事，真正要分的是工作會不會碰本機資料、需不需要長期累積、以及該用哪一套限制。整理實際三路分工法，補上 OpenAI 官方文件能支持到哪裡，附一個圖文網頁的分工實例、一張能力邊界表與一份可直接照判斷的檢查清單。",
+    tags: {"topic":["差異比較","AI工作流","工具操作"],"level":["基礎"],"content_type":["教學文章"]},
+    external: { threads: null, vocus: null },
+    related: ["web-chat-ai-vs-desktop-agent", "how-ai-connects-software", "ai-capability-tiers", "program-vs-ai-skill-library", "chatgpt-work-skills-web-version"]
   },
 
   {
