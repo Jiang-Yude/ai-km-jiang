@@ -387,7 +387,7 @@ window.ARTICLES = [
       content_type: ["觀點文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: "https://vocus.cc/salon/Jiang_Coach" },
-    related: ["ai-king-off-battlefield", "demis-hassabis-agi-science-ai", "spacex-ipo-musk-trillionaire-knowledge-work", "ai-market-microcosm", "vibe-coding-ten-half-products", "apple-wwdc26-siri-lobster-ai", "company-shape-is-the-moat", "ai-delegators-optimism", "chatgpt-work-codex-choice"]
+    related: ["ai-king-off-battlefield", "demis-hassabis-agi-science-ai", "spacex-ipo-musk-trillionaire-knowledge-work", "ai-market-microcosm", "vibe-coding-ten-half-products", "apple-wwdc26-siri-lobster-ai", "company-shape-is-the-moat", "ai-delegators-optimism", "chatgpt-work-codex-choice", "one-on-one-questions"]
   },
 
   /* ── 20. 文件就是系統：非工程師怎麼設計 Agent 框架（教學）── */
@@ -725,7 +725,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["intent-first-prompting", "harness-mindset-for-bosses", "old-prompts-intent-first-loop-engineering"]
+    related: ["intent-first-prompting", "harness-mindset-for-bosses", "old-prompts-intent-first-loop-engineering", "one-on-one-questions"]
   },
 
   /* ── 越把工作交給 AI 的人，越希望 AI 更強，越不怕被取代（趨勢）── */
@@ -946,7 +946,7 @@ window.ARTICLES = [
     summary: "收藏夾存了一堆「以後再看」？用 Agent 把散落各處的學習資料整理成看得見的學習地圖：技能樹、學習履歷、個人設定檔，三層架構含老師教案與排班系統案例。",
     tags: {"topic":["知識管理","AIAgent","工作流程"],"level":["零基礎入門"],"content_type":["教學文章"]},
     external: { threads: null, vocus: null },
-    related: ["ai-course-map-from-entry-to-workflow", "ai-data-organization-usable-system"]
+    related: ["ai-course-map-from-entry-to-workflow", "ai-data-organization-usable-system", "one-on-one-questions"]
   },
   {
     id: "relationship-boundary-ai-practice",
@@ -985,7 +985,7 @@ window.ARTICLES = [
     summary: "一張垂直結構的 AI 課程地圖：地基層 Agent 導入、往上套用現成工作流、往下深挖資料整理、隱性知識與語意工程三條線，終點是 Agent 一人公司營運團隊。",
     tags: {"topic":["AI工作流","知識管理","技能包設計"],"level":["零基礎入門"],"content_type":["觀點文章"]},
     external: { threads: null, vocus: null },
-    related: ["ai-learning-map-reduce-anxiety", "claude-skills-knowledge-assets", "ai-that-knows-you"]
+    related: ["ai-learning-map-reduce-anxiety", "claude-skills-knowledge-assets", "ai-that-knows-you", "one-on-one-questions"]
   },
   {
     id: "ai-data-organization-usable-system",
@@ -1252,6 +1252,25 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["how-to-train-your-ai-employee", "semantic-rules-before-prompt-templates", "intent-first-prompting", "strong-ai-models-knowledge-workflow-road", "ai-course-map-from-entry-to-workflow"]
+    related: ["how-to-train-your-ai-employee", "semantic-rules-before-prompt-templates", "intent-first-prompting", "strong-ai-models-knowledge-workflow-road", "ai-course-map-from-entry-to-workflow", "one-on-one-questions"]
+  },
+
+  /* ── AI 常見問題 37 問（觀點）── */
+  {
+    id: "one-on-one-questions",
+    url: "articles/one-on-one-questions/",
+    date: "2026-07-22",
+    updated: "2026-07-22",
+    title: "AI 常見問題 37 問：知識庫怎麼建、技能包怎麼用、公司裡怎麼推",
+    problem: "已經在用 AI，卻說不出自己算不算會用；想建知識庫不知道資料怎麼放、判斷標準怎麼給；在公司想推又卡在制度。",
+    audience: "覺得自己 AI 沒用在對的地方的人、想建知識庫卻不知從哪開始的人、在公司或體制內想推 AI 卻卡住的人。",
+    summary: "一輪免費一對一線上聊收到的 37 個真實問題，分九個區塊：學習心態、知識庫、技能包、模型與工具選擇、自動化與驗證、職場組織現實、被 AI 搜尋找到、商業化、教學現場。每題都有完整回答，其中 26 題附上已寫好的深度文章連結，可以順著讀下去。整理後發現一件事：真正在問「工具怎麼操作」的很少，大家卡住的位置比想像中前面。",
+    tags: {
+      topic: ["知識管理", "AI工作流", "知識庫"],
+      level: ["零基礎入門"],
+      content_type: ["觀點文章"]
+    },
+    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
+    related: ["ai-capability-tiers", "ai-learning-map-reduce-anxiety", "ai-that-knows-you", "ai-course-map-from-entry-to-workflow", "prompt-to-loop-map"]
   }
 ];
