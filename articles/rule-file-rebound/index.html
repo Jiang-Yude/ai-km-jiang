@@ -1,0 +1,438 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="index,follow">
+<title>你寫給 AI 的規則，大部分根本沒在執行｜江江教練 · AI 知識管理</title>
+<meta name="description" content="AGENTS.md / CLAUDE.md 越來越臃腫，我刪掉三分之一，18 天又長回來。盤完約 220 條規則後發現，真的有機制在執行的約 24 條，代價最高的 60 條裡有 48 條完全靠 AI 自己記得。這篇給四欄盤點表、三題准入閘、沒有 Hook 環境的手動版，以及一個每週複查的固定行程。">
+<link rel="canonical" href="https://ai-km-jiang.vercel.app/articles/rule-file-rebound/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="你寫給 AI 的規則，大部分根本沒在執行｜江江教練">
+<!-- 分享封面：hero 文字填好後在 repo 根目錄跑 `node scripts/og-shot.mjs rule-file-rebound` 自動截 1200×630 到 images/og/rule-file-rebound.jpg（見 README「文章分享封面（OG 圖）機制」）。別退回 intro-jiang.png 直式人像，會被裁成只剩脖子。 -->
+<meta property="og:image" content="https://ai-km-jiang.vercel.app/images/og/rule-file-rebound.jpg">
+<meta property="og:description" content="AGENTS.md / CLAUDE.md 越來越臃腫，我刪掉三分之一，18 天又長回來。盤完約 220 條規則後發現，真的有機制在執行的約 24 條，代價最高的 60 條裡有 48 條完全靠 AI 自己記得。這篇給四欄盤點表、三題准入閘、沒有 Hook 環境的手動版，以及一個每週複查的固定行程。">
+<meta property="og:url" content="https://ai-km-jiang.vercel.app/articles/rule-file-rebound/">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:site_name" content="江江教練 · AI 知識管理">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="你寫給 AI 的規則，大部分根本沒在執行｜江江教練">
+<meta name="twitter:image" content="https://ai-km-jiang.vercel.app/images/og/rule-file-rebound.jpg">
+<meta name="twitter:description" content="AGENTS.md / CLAUDE.md 越來越臃腫，我刪掉三分之一，18 天又長回來。盤完約 220 條規則後發現，真的有機制在執行的約 24 條，代價最高的 60 條裡有 48 條完全靠 AI 自己記得。這篇給四欄盤點表、三題准入閘、沒有 Hook 環境的手動版，以及一個每週複查的固定行程。">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"你寫給 AI 的規則，大部分根本沒在執行","description":"AGENTS.md / CLAUDE.md 越來越臃腫，我刪掉三分之一，18 天又長回來。盤完約 220 條規則後發現，真的有機制在執行的約 24 條，代價最高的 60 條裡有 48 條完全靠 AI 自己記得。這篇給四欄盤點表、三題准入閘、沒有 Hook 環境的手動版，以及一個每週複查的固定行程。","author":{"@type":"Person","name":"江昱德","alternateName":"江江教練","jobTitle":"隱性知識提煉師、AI 應用規劃師"},"isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://ai-km-jiang.vercel.app/"},"inLanguage":"zh-Hant","url":"https://ai-km-jiang.vercel.app/articles/rule-file-rebound/"}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{--ink:#1a1612;--paper:#fefcf8;--muted:#6a635a;--line:#d8cdb8;--green:#5f7553;--blue:#5689b8;--orange:#e85a4f;--soft:#faf5ec;--dark:#2a2018;--shadow:0 18px 45px rgba(107,74,42,.14);--sp-shadow:hsla(35,50%,60%,.15);--sp-shadow-edge:hsla(35,50%,68%,.03);--sp-radius:400px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC","Segoe UI",sans-serif}
+a{color:inherit}
+/* 官網共用導航列 nav.top（與首頁/文章總站同一條） */
+nav.top{position:sticky;top:0;background:rgba(254,252,248,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid #d8cdb8;z-index:100}
+nav.top .container{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:24px;padding:14px 32px}
+.nav-brand-img{justify-self:start;display:flex;align-items:center;text-decoration:none;flex-shrink:0;transition:opacity .2s}
+.nav-brand-img:hover{opacity:.8}.nav-brand-img img{height:40px;width:auto;display:block}
+nav.top ul.nav-menu{justify-self:end;display:flex;gap:22px;list-style:none;margin:0;padding:0;font-size:.95rem;white-space:nowrap}
+nav.top ul.nav-menu a{color:#3a342d;text-decoration:none;transition:color .2s;font-weight:500;white-space:nowrap}
+nav.top ul.nav-menu a:hover{color:#1a1612}nav.top ul.nav-menu a.active{color:#1a1612;font-weight:700}
+.nav-toggle{display:none;background:none;border:none;padding:6px;cursor:pointer;width:36px;height:36px;position:relative}
+.nav-toggle span{display:block;position:absolute;left:8px;right:8px;height:2px;background:#1a1612;border-radius:2px;transition:transform .25s,opacity .25s,top .25s}
+.nav-toggle span:nth-child(1){top:11px}.nav-toggle span:nth-child(2){top:17px}.nav-toggle span:nth-child(3){top:23px}
+.nav-toggle.open span:nth-child(1){top:17px;transform:rotate(45deg)}.nav-toggle.open span:nth-child(2){opacity:0}.nav-toggle.open span:nth-child(3){top:17px;transform:rotate(-45deg)}
+@media(max-width:860px){
+ nav.top .container{grid-template-columns:auto 1fr auto;padding:10px 16px;gap:12px}
+ .nav-brand-img img{height:32px}
+ .nav-toggle{display:block;justify-self:end}
+ nav.top ul.nav-menu{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(254,252,248,.98);backdrop-filter:blur(14px);border-bottom:1px solid #d8cdb8;flex-direction:column;gap:0;padding:8px 0;box-shadow:0 10px 24px rgba(107,74,42,.08)}
+ nav.top ul.nav-menu.open{display:flex}
+ nav.top ul.nav-menu li{border-bottom:1px solid #e8dfc9}
+ nav.top ul.nav-menu li:last-child{border-bottom:none}
+ nav.top ul.nav-menu a{display:block;padding:14px 20px;font-size:1.06rem}
+}
+/* 滑鼠暖光暈（與首頁同一支 spotlight.js） */
+body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradient(var(--sp-radius) circle at var(--mx,50%) var(--my,50%),var(--sp-shadow) 0%,var(--sp-shadow-edge) 45%,transparent 75%);pointer-events:none;z-index:9999;mix-blend-mode:multiply;transition:background .06s linear}
+.hero{position:relative;overflow:hidden;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:72px;padding:96px clamp(20px,6vw,88px) 80px;background:linear-gradient(180deg,#fffcf0 0%,#f9e9d2 100%);color:#1a1612;border-bottom:1px solid #d8cdb8}
+.hero .wc{position:absolute;border-radius:50%;filter:blur(60px);pointer-events:none;z-index:0}
+.hero .wc1{width:420px;height:360px;top:-120px;right:-80px;background:#e8884b;opacity:.15}
+.hero .wc2{width:360px;height:300px;bottom:-110px;left:-70px;background:#5f7553;opacity:.13}
+.hero .wc3{width:280px;height:260px;top:34%;left:14%;background:#a08144;opacity:.10}
+.hero>div{flex:none;width:860px;max-width:100%;position:relative;z-index:2}
+.hero-figure{margin:0;width:420px;flex:none;position:relative;z-index:2}
+.hero-figure img{display:block;width:100%;border-radius:16px;border:1px solid #d8cdb8;box-shadow:0 18px 45px rgba(107,74,42,.16);cursor:zoom-in}
+.hero-figure figcaption{margin-top:10px;font-size:14px;line-height:1.6;color:#6a635a}
+.inline-figure{margin:30px auto 8px;max-width:820px}
+.inline-figure img{display:block;width:100%;border-radius:14px;border:1px solid var(--line);box-shadow:var(--shadow);background:#fff;cursor:zoom-in}
+.inline-figure figcaption{font-size:14px;line-height:1.6;color:var(--muted);margin-top:10px}
+.lightbox{position:fixed;inset:0;z-index:10000;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(12,10,8,.92);cursor:zoom-out;backdrop-filter:blur(4px)}
+.lightbox.open{display:flex}.lightbox img{max-width:96vw;max-height:92vh;border-radius:10px;box-shadow:0 24px 60px rgba(0,0,0,.5)}
+.lightbox-close{position:fixed;top:18px;right:24px;color:#fff;font-size:34px;line-height:1;font-weight:700;cursor:pointer;opacity:.85}
+.kicker{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.55rem;color:#7a5c3a;font-weight:500}
+.hero h1{max-width:none;margin:16px 0 18px;font-size:clamp(36px,6vw,72px);line-height:1.08;overflow-wrap:anywhere}
+.hero p{max-width:none;font-size:clamp(18px,2vw,23px);line-height:1.62;color:#3a342d}
+.cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
+.cta a{display:inline-flex;align-items:center;text-decoration:none;border-radius:8px;padding:12px 16px;font-weight:900}
+.cta .primary{background:#fff;color:#1a1612}.cta .ghost{border:1px solid rgba(255,255,255,.32);color:#fff;background:rgba(255,255,255,.08)}
+.section{padding:54px clamp(20px,6vw,88px);border-top:1px solid var(--line)}
+.inner{width:min(1000px,100%);margin:0 auto}
+.section h2{font-size:clamp(26px,4.2vw,48px);line-height:1.12;margin:0 0 18px}
+.section h3{font-size:clamp(21px,3vw,30px);line-height:1.2;margin:30px 0 12px}
+.lead{font-size:clamp(18px,1.6vw,22px);line-height:1.7;color:#3a342d;max-width:900px}
+.section p{font-size:18px;line-height:1.74;color:#3a342d}.section p+p{margin-top:14px}
+.section ul,.section ol{padding-left:1.4em;font-size:18px;line-height:1.74;color:#3a342d}.section li{margin-bottom:8px}
+.meaning{margin:22px 0;padding:16px 18px;border-left:5px solid var(--blue);background:rgba(86,137,184,.12);border-radius:6px;line-height:1.7;font-size:19px}
+.meaning b{display:block;color:var(--blue);margin-bottom:4px}
+.caveat{margin:0 0 8px;padding:16px 18px;border-left:5px solid var(--orange);background:rgba(232,90,79,.1);border-radius:6px;line-height:1.7;font-size:18px;color:#3a342d}
+.caveat b{display:block;color:var(--orange);margin-bottom:4px}
+.infocard{background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px 24px 22px;box-shadow:0 8px 22px rgba(107,74,42,.08);margin-top:8px}
+.infocard-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.info-item{padding:18px 14px 0}
+.info-item b{display:block;font-size:14px;font-weight:900;letter-spacing:.04em;margin-bottom:7px;text-transform:uppercase}
+.info-item:nth-child(1) b{color:var(--green)}.info-item:nth-child(2) b{color:var(--orange)}.info-item:nth-child(3) b{color:var(--blue)}
+.info-item p{margin:0;font-size:17px;line-height:1.6;color:#3a342d}
+.tagrow{display:flex;flex-wrap:wrap;gap:7px;margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
+.tag{font-size:14px;color:var(--muted);background:var(--soft);border:1px solid var(--line);border-radius:999px;padding:4px 11px}
+.duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:24px}
+.duo.stack{grid-template-columns:1fr}
+.duo .card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:22px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.duo .card.a{border-color:var(--orange)}.duo .card.b{border-color:var(--green);box-shadow:0 8px 24px rgba(95,117,83,.16)}
+.duo .card small{display:block;font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.04em;margin-bottom:9px}
+.duo .card.a small{color:var(--orange)}.duo .card.b small{color:var(--green)}
+.duo .card b{display:block;font-size:22px;line-height:1.3;margin-bottom:12px}.duo .card.a b{color:#c0512f}.duo .card.b b{color:#4a7a59}
+.duo .card p{margin:0;color:#3a342d;line-height:1.75;font-size:18px}
+.workflow-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:24px}
+.workflow-step{background:#fff;border:1px solid var(--line);border-radius:8px;padding:18px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.workflow-step small{display:block;color:var(--orange);font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;margin-bottom:9px}
+.workflow-step b{display:block;font-size:18px;line-height:1.3;margin-bottom:9px}
+.workflow-step p{margin:0;color:#3a342d;line-height:1.6;font-size:16px}
+.codeblock{background:var(--dark);color:#f3ead9;border-radius:8px;padding:18px 20px;font:500 14px/1.65 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;overflow-x:auto;white-space:pre-wrap;margin:20px 0;box-shadow:0 8px 22px rgba(107,74,42,.12)}
+.codeblock .c{color:#f6d7a6;font-weight:600}
+.skillcard{background:#fff;border:1px solid var(--green);border-radius:12px;padding:24px;box-shadow:0 10px 26px rgba(95,117,83,.16);margin-top:8px}
+.skillcard b{display:block;font-size:21px;margin-bottom:8px}
+.skillcard p{margin:0 0 16px;font-size:17px;line-height:1.65;color:#3a342d}
+.cta-band{background:#e6f0e5;color:#3a342d}.cta-band .section{border-top:none}
+.cta-band .inner{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(260px,.85fr);gap:26px;align-items:start}
+.cta-band h2{font-size:clamp(26px,4vw,44px);margin:0 0 16px}.cta-band p,.cta-band .lead{color:rgba(58,52,45,.9);font-size:18px;line-height:1.72}
+.cta-card{border:1px solid #cfe0d2;background:#fbfdfa;border-radius:8px;padding:22px}
+.cta-card b{display:block;color:#48b178;margin-bottom:10px;font-size:18px}.cta-card p{margin:0 0 14px}
+.footer{padding:30px clamp(20px,6vw,88px);font-size:14px;color:var(--muted);background:#fff;border-top:1px solid var(--line)}
+.footer-inner{width:min(1000px,100%);margin:0 auto}
+.footer-links{display:flex;flex-wrap:wrap;gap:6px 12px;margin-bottom:14px}.footer-links a{color:var(--blue);font-weight:900;text-decoration:none;font-size:14px}
+.footer-brand{font-weight:900;font-size:15px;margin-bottom:10px}.footer-note{font-size:13px;line-height:1.6}
+@media(max-width:820px){.infocard-grid{grid-template-columns:1fr}.duo{grid-template-columns:1fr}.workflow-grid{grid-template-columns:1fr}.cta-band .inner{grid-template-columns:1fr}.section{padding:40px 20px}.hero{min-height:52vh;flex-direction:column;justify-content:flex-start;align-items:flex-start;gap:24px}.hero>div{width:100%}.hero-figure{width:100%;max-width:560px}}
+@media(max-width:820px){html,body{overflow-x:hidden}.hero h1{word-break:break-word}}
+</style>
+</head>
+<body class="spotlight">
+<!-- 官網共用導航列 nav.top：與首頁/總站同一條，文章不要自己另做極簡 topbar（江江 2026-06-25：要同一個框架、同一條導航列）。把對應頁面的 class="active" 標在自己那欄。 -->
+<nav class="top">
+  <div class="container">
+    <a class="nav-brand-img" href="../../index.html"><img src="../../images/footer-signature.png" alt="江江教練 | 江昱德"></a>
+    <button class="nav-toggle" aria-label="選單"><span></span><span></span><span></span></button>
+    <ul class="nav-menu">
+      <li><a href="../../index.html">首頁</a></li>
+      <li><a href="../../knowledge-architecture.html">知識架構</a></li>
+      <li><a href="../../courses.html">課程</a></li>
+      <li><a href="../../articles.html" class="active">深度文章</a></li>
+      <li><a href="../../skills.html">技能包下載</a></li>
+      <li><a href="../../cases.html">服務方案</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="wc wc1"></div>
+  <div class="wc wc2"></div>
+  <div class="wc wc3"></div>
+  <div>
+    <div class="kicker">AI 工作流 / 規則庫治理</div>
+    <h1>你寫給 AI 的規則，大部分根本沒在執行</h1>
+    <p>AGENTS.md / CLAUDE.md 越來越臃腫，我刪掉三分之一，18 天又長回來。盤完之後才發現，比字數更該先看的是：這些規則到底有沒有人在執行。</p>
+  </div>
+</section>
+
+<main>
+
+<section class="section" id="start">
+  <div class="inner">
+    <p class="lead">我把自己寫給 AI 的規則盤了一次，約 220 條。裡面真的有機制在執行的，約 24 條。代價最高的那 60 條裡面，48 條完全靠 AI 自己記得。這不是在講模型不聽話，是我寫了規則卻沒給它觸發點、執行器跟驗收方式，所以它從頭到尾就只是一段文字。會去盤這件事，是因為我先發現規則主檔砍掉三分之一之後，18 天就長回來了。我用的是 AGENTS.md，Claude Code 的使用者通常是 CLAUDE.md，ChatGPT 那邊則是自訂指令，名字不一樣，遇到的狀況是一樣的。</p>
+    <div class="duo stack">
+      <div class="card a">
+        <b>適合誰</b>
+        <ul>
+          <li>你有一份給 AI 讀的規則檔，而且它越寫越長，你隱約覺得該整理了</li>
+          <li>你精簡過一次，過幾週發現又變回原樣，不知道問題出在哪</li>
+          <li>你寫了一堆規則，可是沒把握 AI 到底有沒有照做</li>
+        </ul>
+      </div>
+      <div class="card b">
+        <b>你可以帶走什麼</b>
+        <ul>
+          <li>一張四欄盤點表，用來查你的規則到底有沒有人在執行，含沒有 Hook 環境的手動版</li>
+          <li>三題准入閘，可以直接複製去用，把預設值從「加」翻成「不加」</li>
+          <li>一條真實的瘦身與回胖曲線，還有我對它為什麼發生的解釋</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="origin">
+  <div class="inner">
+    <h2>事情是怎麼開始的</h2>
+    <p>有天看到一篇貼文，轉述 Anthropic 工程師的訪談，說他們把 Claude Code 的系統提示詞砍掉了 80%。理由很反直覺：模型越強，給它的指令要越少，因為太多限制跟範例會壓縮模型的解題空間。</p>
+    <p>我第一個反應是，那我的規則庫是不是也該再砍一輪。</p>
+    <p>我先讓 Codex 幫我查證，查完發現兩件事。</p>
+    <div class="caveat">
+      <p>第一，貼文裡那句「超過 90% 工程師都在建立自我改進迴圈」，找不到官方對應的說法。我查到的相近說法講的是別的事，跟這句對不上，所以這個數字我不引用。</p>
+      <p>第二，Anthropic 官方的 Claude Code 最佳實務文件，到現在還是明白寫著可以把具體的多步流程放進自訂命令。所以「砍 80%」有它的脈絡，不是一個可以直接套用的通則。</p>
+      <p>順帶說，那句「砍掉 80%」本身也是二手轉述，我沒有找到原始訪談出處。這篇後面所有的判斷都建立在我自己的數字上，不是建立在那個 80% 上。</p>
+    </div>
+    <p>那我到底該不該砍？我先去量了一下我自己的數字。</p>
+  </div>
+</section>
+
+<section class="section" id="curve">
+  <div class="inner">
+    <h2>我的實際曲線</h2>
+    <div style="overflow-x:auto">
+      <table style="width:100%;max-width:560px;border-collapse:collapse;margin:20px 0;font-size:18px;line-height:1.6">
+        <tr>
+          <th style="border:1px solid #d8cdb8;padding:12px 14px;background:#faf5ec;text-align:left">時間</th>
+          <th style="border:1px solid #d8cdb8;padding:12px 14px;background:#faf5ec;text-align:right">字數</th>
+          <th style="border:1px solid #d8cdb8;padding:12px 14px;background:#faf5ec;text-align:right">變化</th>
+        </tr>
+        <tr>
+          <td style="border:1px solid #d8cdb8;padding:12px 14px">7/4 瘦身前</td>
+          <td style="border:1px solid #d8cdb8;padding:12px 14px;text-align:right">25,036</td>
+          <td style="border:1px solid #d8cdb8;padding:12px 14px;text-align:right">　</td>
+        </tr>
+        <tr>
+          <td style="border:1px solid #d8cdb8;padding:12px 14px">7/4 瘦身後</td>
+          <td style="border:1px solid #d8cdb8;padding:12px 14px;text-align:right">15,822</td>
+          <td style="border:1px solid #d8cdb8;padding:12px 14px;text-align:right;color:#5f7553">砍掉 37%</td>
+        </tr>
+        <tr>
+          <td style="border:1px solid #d8cdb8;padding:12px 14px">7/16</td>
+          <td style="border:1px solid #d8cdb8;padding:12px 14px;text-align:right">21,028</td>
+          <td style="border:1px solid #d8cdb8;padding:12px 14px;text-align:right;color:#e85a4f">+5,206</td>
+        </tr>
+        <tr>
+          <td style="border:1px solid #d8cdb8;padding:12px 14px">7/18</td>
+          <td style="border:1px solid #d8cdb8;padding:12px 14px;text-align:right">23,412</td>
+          <td style="border:1px solid #d8cdb8;padding:12px 14px;text-align:right;color:#e85a4f">+2,384</td>
+        </tr>
+        <tr>
+          <td style="border:1px solid #d8cdb8;padding:12px 14px">7/22</td>
+          <td style="border:1px solid #d8cdb8;padding:12px 14px;text-align:right">24,219</td>
+          <td style="border:1px solid #d8cdb8;padding:12px 14px;text-align:right;color:#e85a4f">+807</td>
+        </tr>
+      </table>
+    </div>
+    <p>18 天回胖 8,397 字。</p>
+    <div class="caveat">
+      <p>先講這份數據的限制：這些字數是我從自己的自動備份資料夾裡，把各個時間點的規則檔逐一算出來的。那是我的私有檔案，你沒辦法查驗，只能看我的記錄。而且備份會定期清理，所以這條曲線本身也會消失。這件事後面會再提到。</p>
+    </div>
+    <p>這條曲線讓我打消了再砍一次的念頭。它讓我看到另一件事：我沒有任何機制阻止規則變多。在這種狀態下再砍一次，18 天後我大概會再看到同一條曲線。</p>
+  </div>
+</section>
+
+<section class="section" id="why">
+  <div class="inner">
+    <h2>為什麼會復胖</h2>
+    <p>以下是我自己的解釋，不是實驗結論。</p>
+    <p>我有一份方法論叫「減法許可協議」，從開源技能包 Ponytail 提煉來的。它說任何有減法性質的規則，都需要三個零件。</p>
+    <div class="meaning">
+      <p><b>決策階梯</b>：把「請簡潔」這種模糊的形容詞，變成一條有順序、可以逐項打勾的是非題清單。形容詞沒辦法執行，階梯可以。</p>
+      <p><b>舉證反轉</b>：把預設值從「做」翻成「不做」。想加東西的人要先證明非加不可，舉證責任從想刪的人跑到想加的人身上。</p>
+      <p><b>紅線保留</b>：任何減法規則上線時，同時釘一張絕不砍的清單。原則負責砍複雜，清單負責保命。</p>
+    </div>
+    <p>我看了一下自己的狀況：階梯有，紅線有，舉證反轉沒有。</p>
+    <p>我把這個缺口當成復胖的原因。每次有新規則要進主檔，預設答案都是「加吧，反正也不差這幾百字」。加的成本是零，刪的成本很高，曲線當然只會往上。問題不在勤不勤勞，在於預設值站在復胖那一邊。</p>
+  </div>
+</section>
+
+<section class="section" id="engine">
+  <div class="inner">
+    <h2>防復胖引擎長什麼樣</h2>
+    <p>我補的東西很簡單，就是三個問題。每次要往規則主檔加東西之前，先回答：</p>
+    <ol>
+      <li>這條「每輪對話」都需要載入嗎？這裡問的是載入頻率，不是重要程度。很多規則很重要，可是只在特定情境需要，那它應該放按需載入的地方。</li>
+      <li>既有的規則或工具已經涵蓋了嗎？重複維護同一件事，遲早會變成兩個互相打架的版本。</li>
+      <li>這條掛在哪個執行器上？Hook、腳本、既有流程的掛載點，還是純靠自覺？如果是純靠自覺，那違反的代價是什麼？代價低才留純自覺。</li>
+    </ol>
+    <p>三題有任何一題答不出來，就不要進主檔。</p>
+    <p>這三題可以直接複製去用，不管你的規則檔叫什麼名字：</p>
+    <div class="codeblock"><pre>我要在規則主檔新增一條規則。開始寫之前先回答三題：
+
+1. 這條每輪對話都需要載入嗎（問的是載入頻率，不是重要程度）？
+2. 既有規則或工具已經涵蓋了嗎？
+3. 掛在哪個執行器上（Hook／腳本／流程掛載點／純自覺）？
+   純自覺的話，違反的代價是什麼？
+
+三題有任何一題答不出來，就不要加進主檔，改放按需載入的地方。</pre></div>
+    <p>我另外把它做成了一支 Hook，改主檔的時候會自動跳出來問，順便告訴我現在幾個字、比基準多了多少。它不阻擋，只提醒，同一個工作階段只出現一次，不會吵。</p>
+    <p>會選提示型，是因為我還不知道有沒有效。一個月後我會看字數曲線，止漲就維持提示型，還在漲再考慮升級成擋下來。</p>
+  </div>
+</section>
+
+<section class="section" id="nohook">
+  <div class="inner">
+    <h2>沒有 Hook 環境的話怎麼做</h2>
+    <p>上面講的 Hook 需要能跑腳本的環境。如果你是用 ChatGPT 網頁版、Claude 網頁版這類介面，同樣可以做，只是換成手動的。</p>
+    <div class="workflow-grid">
+      <div class="workflow-step">
+        <b>三題准入閘</b>
+        <p>把上面那段提示詞存成一個固定的自訂指令或記事本片段。每次要改規則檔之前，先貼一次，讓 AI 陪你答完三題再動手。</p>
+      </div>
+      <div class="workflow-step">
+        <b>四欄盤點</b>
+        <p>開一個試算表，一列一條規則，四個欄位分別是觸發器、執行器、證據、跨家覆蓋。你可以把規則檔整份貼給 AI，請它照這四欄輸出，再自己抽查幾條有沒有標錯。</p>
+      </div>
+      <div class="workflow-step">
+        <b>字數曲線</b>
+        <p>每週固定一天，把規則檔的字數記到同一個試算表的第二個分頁，一行一筆。四週之後你就有自己的曲線了。</p>
+      </div>
+    </div>
+    <p>差別只在自動跟手動。判斷邏輯完全一樣。</p>
+  </div>
+</section>
+
+<section class="section" id="finding">
+  <div class="inner">
+    <h2>一個更值錢的發現</h2>
+    <p>做這件事的時候，我順便把整份規則主檔盤了一次。找了個子代理逐條讀完 259 行，每一條標四個欄位。</p>
+    <div style="overflow-x:auto">
+      <table style="width:100%;max-width:640px;border-collapse:collapse;margin:20px 0;font-size:18px;line-height:1.6">
+        <tr>
+          <th style="border:1px solid #d8cdb8;padding:12px 14px;background:#faf5ec;text-align:left">欄位</th>
+          <th style="border:1px solid #d8cdb8;padding:12px 14px;background:#faf5ec;text-align:left">要回答的問題</th>
+        </tr>
+        <tr>
+          <td style="border:1px solid #d8cdb8;padding:12px 14px">觸發器</td>
+          <td style="border:1px solid #d8cdb8;padding:12px 14px">誰、在什麼時候會讀到這條？</td>
+        </tr>
+        <tr>
+          <td style="border:1px solid #d8cdb8;padding:12px 14px">執行器</td>
+          <td style="border:1px solid #d8cdb8;padding:12px 14px">Hook、腳本、流程掛載點，還是純人工自覺？</td>
+        </tr>
+        <tr>
+          <td style="border:1px solid #d8cdb8;padding:12px 14px">證據</td>
+          <td style="border:1px solid #d8cdb8;padding:12px 14px">什麼輸出能證明做過？</td>
+        </tr>
+        <tr>
+          <td style="border:1px solid #d8cdb8;padding:12px 14px">跨家覆蓋</td>
+          <td style="border:1px solid #d8cdb8;padding:12px 14px">我用的每一個 AI 工具，是不是都真的受這條約束？</td>
+        </tr>
+      </table>
+    </div>
+    <p>盤出來約 220 條規則。有機械執行器的，約 24 條。</p>
+    <p>再往下切，把代價高的挑出來，也就是會刪除資料、會覆寫、會對外送出、會部署、會給客戶看的那些，60 條。這 60 條裡面有執行器的，12 條。</p>
+    <p>也就是說，48 條代價最高的規則，完全靠 AI 自己記得。</p>
+    <div class="caveat">
+      <p>這裡要標一個限制：代價高不高是我自己標的，屬於主觀判斷，邊界案例大概有正負三條的誤差。條數不是精確值，可是量級不會差太多。</p>
+    </div>
+    <p>裡面最刺眼的一條是「跨家審稿」。我規定重要產出必須由不同家的模型互審，禁止自己審自己。這是我整套品質體系的基石，寫在「品質硬門檻」那一段。它零機械檢查。</p>
+    <p>我這輪工作確實有跑四輪跨家審，包含這篇文章本身，可是那是我自己開口要求的，沒有任何東西提醒我要跑。</p>
+    <p>盤點的時候還看到一個模式：出過事的規則，後來都補了 Hook。沒出過事的，都還靠自覺。我的補洞機制是事後反應型。那 48 條裡面應該有一部分是因為還沒出過事才沒被補上，不過我沒有逐條追過每一條的歷史，這只是我看整體的印象。</p>
+  </div>
+</section>
+
+<section class="section" id="priority">
+  <div class="inner">
+    <h2>這比砍字重要在哪裡</h2>
+    <p>回到最初那個問題：該不該再砍一輪。</p>
+    <p>答案是不該，至少不該優先做。因為規則多不多，跟規則有沒有效，是兩件事。</p>
+    <p>一條沒有觸發器、沒有執行器、沒有完成證據的規則，就算把它寫得再精簡、放在再顯眼的位置，它仍然只是一段文字。反過來，一條有 Hook 擋著的規則，就算它佔了 200 字，它每天都在幹活。</p>
+    <p>所以我後來的順序是：先量執行覆蓋率，再決定刪、移、合併還是機械化。先砍字的話，砍完會發現該擋的還是沒擋住。</p>
+    <p>這裡順便講個我寫文章時的習慣，剛好同一個道理。文章超過字數的時候，我以前都用砍字的，保留原本的結構一個字一個字摳，砍好幾輪字數還是降不太下來。後來改成砍段，重新判斷讀者需不需要知道這件事，整段拿掉用一句話帶過。</p>
+    <p>兩種砍法各有適用場景。已經確定每一段都該留、只是句子囉嗦的時候，砍字有效；架構還沒定、或是自己也覺得某幾段可有可無的時候，砍段的效果大很多。規則庫也一樣，與其在條文裡摳字，不如先問「這條需要每輪都載入嗎」，答案是否定的整條搬走，主檔立刻少一段。</p>
+  </div>
+</section>
+
+<section class="section" id="howto">
+  <div class="inner">
+    <h2>你可以怎麼做</h2>
+    <p>如果你也在維護一份給 AI 的規則檔，我建議的順序是這樣。</p>
+    <div class="workflow-grid">
+      <div class="workflow-step">
+        <b>第一步：先量</b>
+        <p>找一天把規則檔逐條標上那四個欄位。你會很快發現哪些條文根本沒有觸發點，哪些從來沒有人驗過有沒有做到。這一步是唯讀的，不會動到任何東西。</p>
+      </div>
+      <div class="workflow-step">
+        <b>第二步：補洞</b>
+        <p>把「代價高但沒有執行器」的挑出來，逐條決定：補一個機械檢查、改寫成會被觸發的形式，或是降級搬去按需載入的地方。不用全部都補 Hook，Hook 太多會互相干擾，誤攔率會上升。</p>
+      </div>
+      <div class="workflow-step">
+        <b>第三步：裝閘門</b>
+        <p>把上面那三題放進流程，讓新規則進主檔之前要先過。這一步才是防復胖的關鍵。前兩步做完沒有這一步，過幾週你會再看到同一條曲線。</p>
+      </div>
+    </div>
+    <p>還有第四步，這是我這次最後才想到、而且是被 Codex 點出來才修對的一件事。</p>
+    <div class="meaning">
+      <p><b>第四步：留證據</b></p>
+      <p>你要能證明機制有效。我一開始把字數記錄寫在提示 Hook 裡，結果它只記到「每個工作階段第一次、而且沒有變短的那次改動」。刪除完全不會被記錄，而「有沒有下降」正是這條曲線要回答的問題。</p>
+      <p>後來把記錄拆成獨立的一支，在改動之後才量測，每次都記，這條曲線才變成可以拿來做決定的東西。沒有這一步，一個月後你只能憑感覺說「好像有變好」。</p>
+    </div>
+    <p>還有第五步，而且它是前面四步的保險。</p>
+    <div class="meaning">
+      <p><b>第五步：排一個固定的複查行程</b></p>
+      <p>前面四步都是一次性的動作。閘門裝好了、證據在記了，可是如果沒有人固定回去看，那條曲線就只是一個沒人讀的檔案。</p>
+      <p>我的做法是排一個每週的自動行程，固定時間跑三件事：讀字數曲線看有沒有止漲、看這週有沒有新規則進了主檔卻沒答三題、抽查一條有執行器的規則是不是真的還在運作。沒有排程工具的話，行事曆設一個每週重複的提醒也可以，重點是它會自己找上你，不是等你想起來。</p>
+      <p>這一步就是這篇文章講的東西套用在自己身上。複查如果只靠記得，它就是第 48 條沒人執行的規則。</p>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="end">
+  <div class="inner">
+    <h2>最後</h2>
+    <p>那篇貼文最有價值的其實是最後一句話：指令變少不代表不要規則，關鍵是留下最重要的邊界，目標、權限、驗證、停止條件。</p>
+    <p>這句話我完全同意。拿這把尺去量我自己的規則庫，量出來的結果是：我該做的是把那 48 條沒人執行的規則補上執行器，而砍字可以晚一點再說。</p>
+    <p>砍到最後你會發現，能砍的其實有限。真正決定規則庫有沒有用的，是每一條規則背後有沒有一個東西在幫你執行它。</p>
+  </div>
+</section>
+
+
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">江江教練 · AI 知識管理</div>
+    <div class="footer-links">
+      <a href="../../articles.html">← 回深度文章總站</a>
+      <a href="../../index.html">首頁</a>
+      <a href="../../learn.html">自學資源</a>
+      <a href="../../skills.html">技能包下載</a>
+      <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">LINE 社群 ↗</a>
+      <a href="https://www.threads.com/@jiang_yude_coach" target="_blank" rel="noopener">Threads ↗</a>
+      <a href="https://vocus.cc/salon/Jiang_Coach" target="_blank" rel="noopener">方格子 ↗</a>
+    </div>
+    <div class="footer-note">這是一篇教學文章，整理我對「你寫給 AI 的規則，大部分根本沒在執行」的看法，供你參考。</div>
+  </div>
+</footer>
+
+<!-- 點圖放大 lightbox（hero 與內文圖通用，已內建，不用每篇重加） -->
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <span class="lightbox-close" aria-label="關閉">×</span>
+  <img id="lightbox-img" src="" alt="放大檢視">
+</div>
+<script>
+(function(){
+  var box=document.getElementById('lightbox'),boxImg=document.getElementById('lightbox-img');
+  document.querySelectorAll('.hero-figure img,.inline-figure img').forEach(function(img){
+    img.addEventListener('click',function(){boxImg.src=img.currentSrc||img.src;boxImg.alt=img.alt||'放大檢視';box.classList.add('open');box.setAttribute('aria-hidden','false');});
+  });
+  function close(){box.classList.remove('open');box.setAttribute('aria-hidden','true');boxImg.src='';}
+  box.addEventListener('click',close);
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
+})();
+</script>
+
+<!-- 官網共用：滑鼠暖光暈 + 導航列漢堡選單 -->
+<script src="../../spotlight.js"></script>
+
+<!-- 文章自動互聯（相關文章）：兩支已內建，順序不可顛倒，不用再另外加 -->
+<script src="../../articles-data.js"></script>
+<script src="../../related-render.js"></script>
+</body>
+</html>

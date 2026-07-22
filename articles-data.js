@@ -482,7 +482,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["strong-ai-models-knowledge-workflow-road", "questionnaire-to-slides-agent-workflow", "teacher-prep-knowledge-workflow", "docs-as-system-design-agent", "how-to-train-your-ai-employee", "my-three-loops", "ai-loop-safety-recovery", "recovery-over-perfection", "ai-changed-behavior-into-workflow", "ai-delegators-optimism", "publish-gate", "loop-engineering-guardrails", "dual-centaur-meeting", "manage-ai-with-management-knowledge", "old-prompts-intent-first-loop-engineering"]
+    related: ["strong-ai-models-knowledge-workflow-road", "questionnaire-to-slides-agent-workflow", "teacher-prep-knowledge-workflow", "docs-as-system-design-agent", "how-to-train-your-ai-employee", "my-three-loops", "ai-loop-safety-recovery", "recovery-over-perfection", "ai-changed-behavior-into-workflow", "ai-delegators-optimism", "publish-gate", "loop-engineering-guardrails", "dual-centaur-meeting", "manage-ai-with-management-knowledge", "old-prompts-intent-first-loop-engineering", "rule-file-rebound"]
   },
 
   /* ── 無形資產，越分享越豐盛（觀點）── */
@@ -1129,7 +1129,7 @@ window.ARTICLES = [
     summary: "交接指令寫不好，通常不是寫太少而是寫太多。從一次真實的生圖事故拆出核心原則「只寫對方所需」，分成一次交辦、供應商模式、換人續跑三種場景各自的寫法，加上卡住才回吐的自動化分寸與三招防呆，附一張可直接複製的交接單。",
     tags: {"topic":["AI工作流","AIAgent","工作流程"],"level":["基礎"],"content_type":["案例文章"]},
     external: { threads: null, vocus: null },
-    related: ["dual-track-planning-loop", "loop-engineering-guardrails", "how-to-train-your-ai-employee", "intent-first-prompting"]
+    related: ["dual-track-planning-loop", "loop-engineering-guardrails", "how-to-train-your-ai-employee", "intent-first-prompting", "rule-file-rebound"]
   },
 
   {
@@ -1233,7 +1233,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["tag-wiki-method", "diary-driven-agent-3x4", "books-videos-pdf-ai-advisor", "ai-data-organization-usable-system"]
+    related: ["tag-wiki-method", "diary-driven-agent-3x4", "books-videos-pdf-ai-advisor", "ai-data-organization-usable-system", "rule-file-rebound"]
   },
 
   /* ── 讓你的 AI 更懂你：從懂我到能幫我做事（教學）── */
@@ -1291,5 +1291,22 @@ window.ARTICLES = [
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
     related: ["how-ai-connects-software", "ai-capability-tiers", "how-to-train-your-ai-employee"]
+  },
+  {
+    id: "rule-file-rebound",
+    url: "articles/rule-file-rebound/",
+    date: "2026-07-22",
+    updated: "2026-07-22",
+    title: "你寫給 AI 的規則，大部分根本沒在執行",
+    problem: "給 AI 看的規則檔越寫越長，精簡過一次，過幾週又長回原樣，不知道問題出在哪。",
+    audience: "有一份給 AI 讀的規則檔而且越寫越長的人、精簡過但發現會復胖的人、看到「模型越強指令要越少」想知道該不該照做的人。",
+    summary: "盤完自己寫給 AI 的約 220 條規則，真的有機制在執行的約 24 條；把代價最高的挑出來共 60 條，其中 48 條完全靠 AI 自己記得，包括「禁止自己審自己」這條品質基石。文章給一張四欄盤點表（觸發器、執行器、證據、跨家覆蓋）、三題准入閘（可直接複製），以及沒有 Hook 環境時用試算表做的手動版。另附一條真實曲線：規則主檔從 25,036 字砍到 15,822（砍掉三分之一），18 天後回到 24,219，離砍之前只剩 817 字；作者把復胖歸因於減法三零件缺了「舉證反轉」這個引擎，並說明這是自己的解釋而非實驗結論；最後一步是排一個每週複查的固定行程，因為複查如果只靠記得，它自己就會變成第 48 條沒人執行的規則。",
+    tags: {
+      topic: ["AI工作流", "知識庫", "工作流程"],
+      level: ["進階"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["ai-handoff-instructions", "what-is-loop-engineering", "why-split-data-into-cards"]
   }
 ];
