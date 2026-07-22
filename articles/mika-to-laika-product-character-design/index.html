@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="index,follow">
+  <meta name="description" content="我原本只有一隻 AI 助理咪卡，不同入口沿用同一個角色，使用者就會期待相同能力，我得反覆解釋權限差異。談我怎麼判斷該沿用還是拆出新角色，以及為什麼最後選擇讓介面自己傳達產品邊界。">
+  <title>從咪卡分出萊卡：用角色設計把產品邊界說清楚｜江江教練 · AI 知識管理</title>
+  <style>
+    :root{--paper:#f7f0e5;--card:#fffdf8;--ink:#2f2923;--muted:#74685c;--line:#dccbb8;--red:#a72d37;--orange:#c66c31;--green:#647a58;--blue:#456b83;--shadow:0 16px 42px rgba(80,55,34,.12)}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:"Noto Sans TC","PingFang TC",system-ui,sans-serif;line-height:1.8}img{max-width:100%;display:block}a{color:inherit}.top{position:sticky;top:0;z-index:20;background:rgba(255,253,248,.94);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}.nav{width:min(1120px,calc(100% - 36px));margin:auto;min-height:66px;display:flex;align-items:center;justify-content:space-between;gap:20px}.brand{font-weight:900;text-decoration:none}.menu{display:flex;gap:18px;list-style:none;margin:0;padding:0}.menu a{text-decoration:none;font-weight:750;font-size:14px}.toggle{display:none;border:0;background:transparent;font-size:24px}.hero{width:min(1120px,calc(100% - 36px));margin:46px auto 28px;display:grid;grid-template-columns:1.05fr .95fr;align-items:center;gap:44px}.kicker{color:var(--red);font-weight:900;letter-spacing:.1em}.hero h1{font-family:"Noto Serif TC","Songti TC",serif;font-size:clamp(38px,5.5vw,72px);line-height:1.12;margin:12px 0 20px}.hero p{font-size:20px;color:var(--muted)}.hero figure{margin:0;background:var(--card);padding:14px;border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);transform:rotate(1deg)}.hero figure img{border-radius:13px}.hero figcaption,.inline figcaption{font-size:14px;color:var(--muted);padding-top:10px}.date{font-size:14px;color:var(--muted)}main{padding-bottom:70px}.section{width:min(930px,calc(100% - 36px));margin:0 auto;padding:54px 0;border-top:1px solid var(--line)}.section h2{font-family:"Noto Serif TC","Songti TC",serif;font-size:clamp(29px,4vw,44px);line-height:1.25;margin:0 0 22px}.section h3{font-size:23px;margin:34px 0 10px}.lead{font-size:21px}.quote{font-family:"Noto Serif TC","Songti TC",serif;font-size:clamp(25px,4vw,38px);line-height:1.5;color:var(--red);border-left:5px solid var(--red);padding:8px 0 8px 24px;margin:34px 0}.stack{display:grid;gap:16px;margin:28px 0}.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:23px;box-shadow:0 10px 26px rgba(80,55,34,.07)}.card b{display:block;font-size:22px;margin-bottom:8px}.card.orange b{color:var(--orange)}.card.green b{color:var(--green)}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.step small{display:block;color:var(--orange);font-weight:900}.step b{display:block;font-size:19px;margin:6px 0}.inline{margin:30px 0;background:var(--card);padding:12px;border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow)}.inline img{width:100%;border-radius:10px;cursor:zoom-in}.gallery{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}.gallery figure{margin:0}.gallery.three{grid-template-columns:repeat(3,1fr);gap:12px}.gallery.three .inline{margin:8px 0;padding:8px}.gallery.three figcaption{font-size:13px;line-height:1.55}.note{background:#fff8e9;border:1px solid #e8c78b;border-radius:12px;padding:20px}.prompt{white-space:pre-wrap;background:#2f2923;color:#fff8eb;border-radius:12px;padding:20px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:14px;line-height:1.7;overflow:auto}.footer{background:#fffdf8;border-top:1px solid var(--line);padding:34px 20px;color:var(--muted)}.footer>div{width:min(930px,100%);margin:auto}.lightbox{display:none;position:fixed;inset:0;z-index:50;background:rgba(20,16,13,.9);padding:28px;align-items:center;justify-content:center}.lightbox.open{display:flex}.lightbox img{max-height:90vh;max-width:94vw;object-fit:contain}.close{position:absolute;right:24px;top:12px;color:white;font-size:38px;cursor:pointer}
+    @media(max-width:980px){.gallery.three{grid-template-columns:repeat(2,1fr)}}
+    @media(max-width:800px){.toggle{display:block}.menu{display:none;position:absolute;left:18px;right:18px;top:66px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px;box-shadow:var(--shadow);flex-direction:column}.menu.open{display:flex}.hero{grid-template-columns:1fr;margin-top:28px}.hero figure{transform:none}.grid,.gallery,.gallery.three{grid-template-columns:1fr}.section{padding:40px 0}.hero p,.lead{font-size:18px}}
+  </style>
+<link rel="canonical" href="https://ai-km-jiang.vercel.app/articles/mika-to-laika-product-character-design/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="從咪卡分出萊卡：用角色設計把產品邊界說清楚｜江江教練">
+<meta property="og:image" content="https://ai-km-jiang.vercel.app/images/og/mika-to-laika-product-character-design.jpg">
+<meta property="og:description" content="同一張臉出現在不同入口，使用者就會期待相同能力，我得反覆解釋權限差異。談我怎麼判斷該沿用還是拆出新角色，以及為什麼最後選擇讓介面自己傳達產品邊界。">
+<meta property="og:url" content="https://ai-km-jiang.vercel.app/articles/mika-to-laika-product-character-design/">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:site_name" content="江江教練 · AI 知識管理">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="從咪卡分出萊卡：用角色設計把產品邊界說清楚">
+<meta name="twitter:image" content="https://ai-km-jiang.vercel.app/images/og/mika-to-laika-product-character-design.jpg">
+<meta name="twitter:description" content="當你已經在重複解釋同一件事，那個說明成本不會消失，只是從產品轉嫁到你身上。一次角色分流的產品心得。">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"從咪卡分出萊卡：用角色設計把產品邊界說清楚","description":"同一張臉出現在不同入口，使用者就會期待相同能力，我得反覆解釋權限差異。談我怎麼判斷該沿用還是拆出新角色，以及為什麼最後選擇讓介面自己傳達產品邊界。","author":{"@type":"Person","name":"江昱德","alternateName":"江江教練","jobTitle":"隱性知識提煉師、AI 應用規劃師"},"isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://ai-km-jiang.vercel.app/"},"datePublished":"2026-07-14","dateModified":"2026-07-14","inLanguage":"zh-Hant","url":"https://ai-km-jiang.vercel.app/articles/mika-to-laika-product-character-design/"}</script>
+</head>
+<body>
+  <nav class="top">
+    <div class="nav">
+      <a class="brand" href="../../">江江教練 · AI 知識管理</a>
+      <button class="toggle" aria-label="開啟選單">☰</button>
+      <ul class="menu">
+        <li><a href="../../">首頁</a></li>
+        <li><a href="../../knowledge-architecture.html">知識架構</a></li>
+        <li><a href="../../courses.html">課程</a></li>
+        <li><a href="../../articles.html">深度文章</a></li>
+        <li><a href="../../skills.html">技能包下載</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <div>
+      <div class="kicker">產品設計 × 角色系統</div>
+      <h1>從咪卡分出萊卡</h1>
+      <p>一次角色分流的產品心得：當同一張臉出現在不同入口，說明成本就會從產品轉嫁到你身上。</p>
+      <div class="date">發佈 2026-07-14｜最後更新 2026-07-14</div>
+    </div>
+  </header>
+
+  <main>
+
+<section class="section"><div class="inner">
+  <p class="lead">我原本只有一隻 AI 助理，叫咪卡。官網、課堂、社群圖卡上看到的都是牠。後來 LINE 群組那邊也沿用同一隻，結果卡住的不是技術，是產品期待。</p>
+  <p>同一個名字、同一張臉出現在不同入口，使用者很自然會沿用原本的理解，也會期待它有一樣的能力。但 LINE 群組有自己的環境限制與權限，能做的事本來就跟官網不一樣。於是每次互動前，我都得先解釋一次哪些功能可以用、哪些不行。</p>
+  <p>後來我做了一個產品決定：把 LINE 群組裡的角色分出來，叫萊卡。</p>
+  <div class="meaning"><b>這篇是產品心得，不是教學</b>角色名稱與外型在這裡不只負責好看，也負責傳達產品邊界。這篇談的是我怎麼判斷該沿用還是該拆，以及為什麼我最後選擇讓介面自己說話。</div>
+  <div class="duo">
+    <div class="card a"><b>適合誰</b>
+      <ul>
+        <li>正在設計 AI 助理、聊天機器人或數位角色，卻發現不同入口能力不一樣的人</li>
+        <li>同一個服務放進不同平台後，需要一直向使用者解釋差異的人</li>
+        <li>已經有角色形象，想把它整理成可長期使用的產品角色的人</li>
+      </ul>
+    </div>
+    <div class="card b"><b>你可以帶走什麼</b>
+      <ul>
+        <li>一組判斷「沿用同一角色」或「拆出新角色」的三個問題</li>
+        <li>把使用情境、能力邊界與角色辨識連起來的思考順序</li>
+        <li>一個把說明工作交還給介面的做法</li>
+      </ul>
+    </div>
+  </div>
+</div></section>
+
+<section class="section"><div class="inner">
+  <h2>同一個角色，帶來了相同能力的期待</h2>
+  <p>咪卡是一隻戴鴨舌帽的黑貓，體型比較矮胖、比較圓。大家在官網或課堂看到我跟咪卡互動，再到 LINE 群組看到同樣的名字，很容易把原本的使用經驗一起帶過來。</p>
+  <p>可是那個環境有自己的限制。如果每一次互動前都要先說明權限差異，代表產品邊界還停留在我的解釋裡，使用者沒辦法從介面本身認出來。</p>
+  <p>我最後選擇讓咪卡分出萊卡。萊卡保留貓的角色血緣，但換了名字、毛色、身形與固定配件。使用者看到萊卡，就會先知道自己進到了另一個互動情境。</p>
+</div></section>
+
+<section class="section"><div class="inner">
+  <h2>這是一個產品設計問題，不是美術問題</h2>
+  <p>角色放進產品之後，就會參與使用者對功能的理解。</p>
+  <p>同一個角色反覆出現，人會累積一套對它的認識：它叫什麼、能幫什麼、可以怎麼跟它說話。當產品環境改變、能力也跟著改變，原本累積的認識就會變成錯誤期待。</p>
+  <p>這次我選擇直接調整角色架構，而不是再增加說明文字。咪卡維持原本的角色識別，萊卡承接 LINE 群組這個特定環境。角色名稱與視覺因此成為產品介面的一部分，幫忙傳達能力邊界。</p>
+</div></section>
+
+<section class="section"><div class="inner">
+  <h2>我用三個問題決定要不要拆</h2>
+  <p>每個入口都換一隻角色，也會增加使用者的記憶成本與我自己的維護成本。所以拆不拆要有判準，我的順序是這三題：</p>
+  <ol>
+    <li>兩個環境的能力與權限差異大不大？</li>
+    <li>使用者會不會把原本的互動方式直接帶過來？</li>
+    <li>我是不是需要反覆解釋同一組限制？</li>
+  </ol>
+  <p>差異很小的時候，沿用同一角色、再加上模式名稱或介面提示就夠了。差異會持續造成錯誤期待的時候，拆出新角色會比較清楚。萊卡走的是第二條路。</p>
+  <div class="caveat"><b>第三題是關鍵</b>前兩題還可以爭辯，第三題最誠實：如果你已經在重複解釋同一件事，那個說明成本不會自己消失，它只是從產品轉嫁到你身上。</div>
+</div></section>
+
+<section class="section"><div class="inner">
+  <h2>先定義產品角色，再開始畫角色</h2>
+  <p>萊卡的第一版方向還是黑貓，試了幾種配件想表現「群組裡的協調與訊息傳遞」。但角色仍然是黑貓、體型也接近咪卡，兩者的辨識度不夠。</p>
+  <p>於是我先把角色設定收斂下來：咪卡是黑貓、萊卡是白貓；咪卡矮胖圓潤、萊卡修長；萊卡氣質高冷，手上有信件；萊卡負責 LINE 群組的角色識別。</p>
+  <p>這些先確定，後面的造型才有判斷依據。每一個提案只要回答兩件事：使用者能不能一眼認出萊卡，以及萊卡能不能清楚地跟咪卡分工。</p>
+  <div class="meaning"><b>順序不能顛倒</b>先決定產品分工，才決定視覺。反過來做，你會得到一隻好看但講不清楚自己是誰的角色。</div>
+</div></section>
+
+<section class="section"><div class="inner">
+  <h2>造型不只是好看，它在傳達邊界</h2>
+  <p>造型探索的過程，其實是把產品決策攤開來看。每換一個配件，我問的是「這樣夠不夠讓人一眼分辨」，好不好看反而排在後面。</p>
+  <p>最後萊卡定在紅色貝雷帽加白色信封。紅色帽子讓牠跟黑色的咪卡形成明顯區別，信封保留訊息傳遞的角色線索。到這一步，萊卡才有一套可以被反覆描述、辨認與製作的固定元素。</p>
+  <p>角色一旦有了固定元素，之後做貼圖、網站插圖或社群圖卡，就不必每次重新發明一次。這跟產品設計裡先固定主元件規格、再往其他情境延伸，是同一件事。</p>
+</div></section>
+
+<section class="section"><div class="inner">
+  <h2>一張圖只能證明一個角度好看</h2>
+  <p>做完第一張定裝照的時候，我以為角色定案了。實際上那只證明了這個角度好看。</p>
+  <p>角色轉到側面或背面，帽子怎麼戴、信封拿在哪一側、身形比例會不會跑掉，都還沒有答案。我後來才發現，真正讓角色能被交出去的是「換角度之後哪些特徵不能變」這份共識，最好看的那張圖反而不是重點。</p>
+  <p>這件事在產品上也一樣：規格不是為了現在這一次做對，是為了下一個人接手時知道什麼不能動。</p>
+</div></section>
+
+<section class="section"><div class="inner">
+  <h2>與其一直解釋，不如讓介面自己說</h2>
+  <p>萊卡的誕生，起點不是我想多養一隻貓，是 LINE 群組的能力邊界與使用者期待對不上。</p>
+  <p>角色名稱與造型先讓這個邊界被看見，後面的視覺規格再把它整理成可以持續使用的系統。整件事真正的產出不是一隻新角色，是把「說明」這份工作從我身上，交還給產品本身。</p>
+  <p>與其期待大家都能理解不同環境的變數，不如我直接設計一個新角色就好。</p>
+  <div class="tagrow">
+    <span class="tag">產品設計</span>
+    <span class="tag">AI 助理</span>
+    <span class="tag">角色系統</span>
+    <span class="tag">產品邊界</span>
+  </div>
+</div></section>
+
+<div class="cta-band">
+  <section class="section">
+    <div class="inner">
+      <div>
+        <h2>把 AI 用成幫你累積判斷力的工具</h2>
+        <p class="lead">我每月固定舉辦兩場免費線上講座，主題輪流談怎麼把工作流程、判斷、經驗，整理成 AI 能靈活運用的提示詞、技能包與知識庫。想收到開課通知，或想討論自己的產品該怎麼劃邊界，都歡迎先從社群開始。</p>
+      </div>
+      <div class="cta-card">
+        <b>加入 LINE 社群</b>
+        <p>免費講座場次會先在這裡公布，也可以把你正在做的產品拿出來一起想。</p>
+        <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">加入社群 ↗</a>
+      </div>
+    </div>
+  </section>
+</div>
+
+</main>
+
+  <footer class="footer"><div><strong>江江教練 · AI 知識管理</strong><p>這是一篇產品觀點文章，記錄我把 LINE 群組助理從咪卡分出萊卡的判斷過程。</p></div></footer>
+  <div class="lightbox" aria-hidden="true"><span class="close" aria-label="關閉">×</span></div>
+  <script>
+    const toggle=document.querySelector('.toggle'),menu=document.querySelector('.menu');
+    toggle.addEventListener('click',()=>menu.classList.toggle('open'));
+    const box=document.querySelector('.lightbox'),boxImg=box.querySelector('img');
+    document.querySelectorAll('figure img').forEach(img=>img.addEventListener('click',()=>{boxImg.src=img.src;boxImg.alt=img.alt;box.classList.add('open');box.setAttribute('aria-hidden','false')}));
+    box.addEventListener('click',()=>{box.classList.remove('open');box.setAttribute('aria-hidden','true');boxImg.src='' });
+    document.addEventListener('keydown',e=>{if(e.key==='Escape')box.click()});
+  </script>
+<script src="../../spotlight.js"></script>
+<script src="../../articles-data.js"></script>
+<script src="../../related-render.js"></script>
+<script src="/views.js"></script>
+</body>
+</html>

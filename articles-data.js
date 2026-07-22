@@ -178,7 +178,7 @@ window.ARTICLES = [
       content_type: ["觀點文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: "https://vocus.cc/salon/Jiang_Coach" },
-    related: ["ai-capability-tiers", "company-shape-is-the-moat"]
+    related: ["ai-capability-tiers", "company-shape-is-the-moat", "agent-native-tools-software-interface"]
   },
 
   /* ── 9. 知識庫太大，改成三庫分流（教學）── */
@@ -254,7 +254,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["strong-ai-models-knowledge-workflow-road", "questionnaire-to-slides-agent-workflow", "teacher-prep-knowledge-workflow", "own-ai-team-at-work", "agent-workflow-builds-automation", "line-group-ai-workflow", "elon-musk-live-skill", "codex-log-health-check", "how-ai-connects-software", "meeting-record-agent-workflow", "decision-ladder-non-programmer", "tidy-mess-before-consulting", "diary-driven-agent-3x4", "docs-as-system-design-agent", "what-is-loop-engineering", "map-is-not-the-territory", "intangible-assets-grow-by-sharing", "manage-ai-with-management-knowledge", "ai-handoff-instructions", "train-your-ai-agent-editor", "ai-that-knows-you", "personal-studio-vs-solo-company", "cli-api-mcp-computer-use", "knowledge-as-employee"]
+    related: ["strong-ai-models-knowledge-workflow-road", "questionnaire-to-slides-agent-workflow", "teacher-prep-knowledge-workflow", "own-ai-team-at-work", "agent-workflow-builds-automation", "line-group-ai-workflow", "elon-musk-live-skill", "codex-log-health-check", "how-ai-connects-software", "meeting-record-agent-workflow", "decision-ladder-non-programmer", "tidy-mess-before-consulting", "diary-driven-agent-3x4", "docs-as-system-design-agent", "what-is-loop-engineering", "map-is-not-the-territory", "intangible-assets-grow-by-sharing", "manage-ai-with-management-knowledge", "ai-handoff-instructions", "train-your-ai-agent-editor", "ai-that-knows-you", "personal-studio-vs-solo-company", "cli-api-mcp-computer-use", "knowledge-as-employee", "mika-to-laika-product-character-design", "agent-native-tools-software-interface"]
   },
 
   /* ── 13. LINE 群組也能變成 AI 工作流入口（教學）── */
@@ -273,7 +273,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["agent-workflow-builds-automation", "codex-only-auto-worklog", "how-to-train-your-ai-employee"]
+    related: ["agent-workflow-builds-automation", "codex-only-auto-worklog", "how-to-train-your-ai-employee", "mika-to-laika-product-character-design"]
   },
 
   /* ── 14. 活的馬斯克技能包（教學）── */
@@ -330,7 +330,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["questionnaire-to-slides-agent-workflow", "teacher-prep-knowledge-workflow", "how-to-train-your-ai-employee", "agent-workflow-builds-automation", "program-vs-ai-skill-library", "docs-as-system-design-agent", "vibe-coding-ten-half-products", "chatgpt-work-codex-choice", "chatgpt-work-skills-web-version", "cli-api-mcp-computer-use"]
+    related: ["questionnaire-to-slides-agent-workflow", "teacher-prep-knowledge-workflow", "how-to-train-your-ai-employee", "agent-workflow-builds-automation", "program-vs-ai-skill-library", "docs-as-system-design-agent", "vibe-coding-ten-half-products", "chatgpt-work-codex-choice", "chatgpt-work-skills-web-version", "cli-api-mcp-computer-use", "agent-native-tools-software-interface"]
   },
 
   /* ── 17. 我的會議記錄 Agent 工作流（教學）── */
@@ -406,7 +406,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: "https://vocus.cc/salon/Jiang_Coach" },
-    related: ["strong-ai-models-knowledge-workflow-road", "questionnaire-to-slides-agent-workflow", "teacher-prep-knowledge-workflow", "diary-driven-agent-3x4", "how-ai-connects-software", "how-to-train-your-ai-employee", "decision-ladder-non-programmer", "tidy-mess-before-consulting", "what-is-loop-engineering", "tag-wiki-method", "ai-delegators-optimism", "intangible-assets-grow-by-sharing", "publish-gate", "laptop-desktop-webpage-sync-icloud-git", "manage-ai-with-management-knowledge", "train-your-ai-agent-editor", "knowledge-os-master-map", "knowledge-as-employee"]
+    related: ["strong-ai-models-knowledge-workflow-road", "questionnaire-to-slides-agent-workflow", "teacher-prep-knowledge-workflow", "diary-driven-agent-3x4", "how-ai-connects-software", "how-to-train-your-ai-employee", "decision-ladder-non-programmer", "tidy-mess-before-consulting", "what-is-loop-engineering", "tag-wiki-method", "ai-delegators-optimism", "intangible-assets-grow-by-sharing", "publish-gate", "laptop-desktop-webpage-sync-icloud-git", "manage-ai-with-management-knowledge", "train-your-ai-agent-editor", "knowledge-os-master-map", "knowledge-as-employee", "mika-to-laika-product-character-design"]
   },
 
   /* ── 21. 你以為在做一個成品，其實在養十個半成品（觀點）── */
@@ -520,7 +520,7 @@ window.ARTICLES = [
       content_type: ["趨勢文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["market-to-ai","dual-track-planning-loop", "dual-centaur-meeting"]
+    related: ["market-to-ai","dual-track-planning-loop", "dual-centaur-meeting", "agent-native-tools-software-interface"]
   },
 
   /* ── 可以學用 AI 行銷，還可以學對 AI 行銷（觀點）── */
@@ -1144,6 +1144,34 @@ window.ARTICLES = [
     tags: {"topic":["數位轉型","知識管理","AI工作流","隱性知識"],"level":["零基礎入門"],"content_type":["教學文章"]},
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
     related: ["how-to-train-your-ai-employee", "docs-as-system-design-agent", "what-is-loop-engineering", "claude-skills-knowledge-assets", "company-shape-is-the-moat", "decision-ladder-non-programmer"]
+  },
+
+  {
+    id: "mika-to-laika-product-character-design",
+    url: "articles/mika-to-laika-product-character-design/",
+    date: "2026-07-14",
+    updated: "2026-07-14",
+    title: "從咪卡分出萊卡：用角色設計把產品邊界說清楚",
+    problem: "同一個 AI 助理放進不同入口，能力與權限其實不一樣，但使用者會沿用原本的理解，於是每次互動前都得先解釋一次。",
+    audience: "正在設計 AI 助理、聊天機器人或數位角色，卻發現不同入口能力不一致的人；以及同一個服務放進不同平台後，需要一直向使用者解釋差異的人。",
+    summary: "當同一張臉出現在不同入口，使用者就會期待相同能力，說明成本會從產品轉嫁到自己身上。記錄我把 LINE 群組助理從咪卡分出萊卡的判斷過程：用三個問題決定該沿用還是拆出新角色，先定義產品分工再決定視覺，最後讓角色名稱與造型自己傳達能力邊界。",
+    tags: {"topic":["輔助決策","差異比較","AI應用"],"level":["基礎"],"content_type":["觀點文章"]},
+    external: { threads: null, vocus: null },
+    related: ["line-group-ai-workflow", "how-to-train-your-ai-employee", "docs-as-system-design-agent"]
+  },
+
+  {
+    id: "agent-native-tools-software-interface",
+    url: "articles/agent-native-tools-software-interface/",
+    date: "2026-07-12",
+    updated: "2026-07-12",
+    title: "Agent 原生工具會讓軟體介面退到後台嗎？",
+    problem: "每接觸一個新軟體，就要先學會它的介面與一堆操作，才能完成其實很單純的一件任務。",
+    audience: "在學 AI 應用、想知道該怎麼開始把整段工作交辦出去的人，以及正在開發 AI 應用、思考功能與任務該怎麼切的人。",
+    summary: "看到能直接在時間線上剪片的 Agent 原生工具，第一眼想到的是介面可能會退到後台。這件事很像找外包團隊：你交代任務、驗收成果，不必自己學會每個操作。談我現在怎麼把工作交給 AI，以及為什麼覺得現在可以開始這樣想。",
+    tags: {"topic":["AIAgent","AI趨勢","AI工作流"],"level":["基礎"],"content_type":["觀點文章"]},
+    external: { threads: null, vocus: null },
+    related: ["how-ai-connects-software", "a2a-agent-protocol", "how-to-train-your-ai-employee", "ai-king-off-battlefield"]
   },
 
   {
