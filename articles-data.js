@@ -482,7 +482,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["strong-ai-models-knowledge-workflow-road", "questionnaire-to-slides-agent-workflow", "teacher-prep-knowledge-workflow", "docs-as-system-design-agent", "how-to-train-your-ai-employee", "my-three-loops", "ai-loop-safety-recovery", "recovery-over-perfection", "ai-changed-behavior-into-workflow", "ai-delegators-optimism", "publish-gate", "loop-engineering-guardrails", "dual-centaur-meeting", "manage-ai-with-management-knowledge"]
+    related: ["strong-ai-models-knowledge-workflow-road", "questionnaire-to-slides-agent-workflow", "teacher-prep-knowledge-workflow", "docs-as-system-design-agent", "how-to-train-your-ai-employee", "my-three-loops", "ai-loop-safety-recovery", "recovery-over-perfection", "ai-changed-behavior-into-workflow", "ai-delegators-optimism", "publish-gate", "loop-engineering-guardrails", "dual-centaur-meeting", "manage-ai-with-management-knowledge", "old-prompts-intent-first-loop-engineering"]
   },
 
   /* ── 無形資產，越分享越豐盛（觀點）── */
@@ -687,7 +687,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["harness-mindset-for-bosses", "prompt-to-loop-map", "map-is-not-the-territory", "ai-handoff-instructions", "ai-that-knows-you"]
+    related: ["harness-mindset-for-bosses", "prompt-to-loop-map", "map-is-not-the-territory", "ai-handoff-instructions", "ai-that-knows-you", "old-prompts-intent-first-loop-engineering"]
   },
 
   /* ── 給老闆的駕馭思維：把不敢對員工說的，講給 AI 聽（系列 02）（教學）── */
@@ -725,7 +725,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["intent-first-prompting", "harness-mindset-for-bosses"]
+    related: ["intent-first-prompting", "harness-mindset-for-bosses", "old-prompts-intent-first-loop-engineering"]
   },
 
   /* ── 越把工作交給 AI 的人，越希望 AI 更強，越不怕被取代（趨勢）── */
@@ -1024,7 +1024,7 @@ window.ARTICLES = [
     summary: "用 Claude Skills 理解技能包：它是給 AI 看的操作手冊，把你的專業流程、格式標準、最佳狀態封裝成可重複執行的知識資產。含兩種製作方法與備份要點。",
     tags: {"topic":["ClaudeSkills","技能包設計","知識管理"],"level":["零基礎入門"],"content_type":["教學文章"]},
     external: { threads: null, vocus: null },
-    related: ["semantic-rules-before-prompt-templates", "ai-data-organization-usable-system", "manage-ai-with-management-knowledge", "chatgpt-work-skills-web-version"]
+    related: ["semantic-rules-before-prompt-templates", "ai-data-organization-usable-system", "manage-ai-with-management-knowledge", "chatgpt-work-skills-web-version", "old-prompts-intent-first-loop-engineering"]
   },
   {
     id: "notebooklm-knowledge-analysis-assistant",
@@ -1144,6 +1144,20 @@ window.ARTICLES = [
     tags: {"topic":["數位轉型","知識管理","AI工作流","隱性知識"],"level":["零基礎入門"],"content_type":["教學文章"]},
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
     related: ["how-to-train-your-ai-employee", "docs-as-system-design-agent", "what-is-loop-engineering", "claude-skills-knowledge-assets", "company-shape-is-the-moat", "decision-ladder-non-programmer"]
+  },
+
+  {
+    id: "old-prompts-intent-first-loop-engineering",
+    url: "articles/old-prompts-intent-first-loop-engineering/",
+    date: "2026-07-16",
+    updated: "2026-07-16",
+    title: "舊提示詞不必丟：用它提煉你的意圖，再走向迴圈工程",
+    problem: "現在隨手下一句提示詞，AI 有時做得很好；以前很認真寫的技能包和詳細提示詞，效果卻不一定理想，開始懷疑那些時間是不是白花了。",
+    audience: "寫過很長的提示詞或技能包、卻開始覺得它們把 AI 卡住的人，以及聽過迴圈工程但不知道它跟提示詞怎麼接起來的人。",
+    summary: "舊技能包不是包袱，是地基：它裝著你在意的成果標準、慣用的思考順序、角色語氣與不能碰的紅線。把「照著步驟做」升級成「先理解我想達成什麼、我怎麼判斷好不好」，讓 AI 有空間用更合適的方法。附一段可直接複製的意圖優先提示詞，以及從意圖優先走到迴圈工程的最小流程。",
+    tags: {"topic":["提示詞設計","AI工作流","技能包設計"],"level":["基礎"],"content_type":["教學文章"]},
+    external: { threads: null, vocus: null },
+    related: ["what-is-loop-engineering", "intent-first-prompting", "prompt-to-loop-map", "claude-skills-knowledge-assets"]
   },
 
   {
