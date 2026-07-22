@@ -254,6 +254,11 @@ function loadVocabNames() {
   return new Set((raw.vocab || []).map((v) => v.name));
 }
 
+/* 網站層級的策展標籤：不屬於知識庫受控詞彙，故不進 vocab-public.json
+   （該檔是 tag-dictionary.md 的唯讀衍生檔，不可手改）。
+   這類標籤只用於官網文章總站的篩選與排序，新增前先確認它是策展用途、不是知識概念。 */
+const CURATION_TAGS = new Set(["江江精選"]);
+
 function checkVocab(items, vocabNames) {
   const warnings = [];
   items.forEach((it) => {
@@ -261,6 +266,7 @@ function checkVocab(items, vocabNames) {
     const t = it.tags || {};
     ["topic", "level"].forEach((dim) => {
       (t[dim] || []).forEach((val) => {
+        if (CURATION_TAGS.has(val)) return;
         if (!vocabNames.has(val)) {
           warnings.push(`WARN [${it.id}] tags.${dim} 的值「${val}」不在 vocab-public.json`);
         }

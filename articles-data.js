@@ -1,4 +1,4 @@
-/* ============================================================
+/* ====="江江精選",=======================================================
    articles-data.js  ·  深度文章總站唯一資料源（Single Source of Truth）
    ------------------------------------------------------------
    新增一篇文章 = 在 window.ARTICLES 陣列尾端加一個物件即可。
@@ -23,6 +23,7 @@
 
 window.ARTICLE_TAGS = {
   topic: [
+    "江江精選",
     "知識管理", "AI工作流", "AIAgent", "工作流程", "工具操作",
     "技能包設計", "ClaudeSkills", "知識庫", "輔助決策",
     "差異比較", "數位轉型", "隱性知識", "提示詞設計", "AI趨勢"
@@ -1211,7 +1212,7 @@ window.ARTICLES = [
     problem: "學了很多整理法、筆記法、AI 工作流，卻覺得它們彼此兜不起來，看不到整個系統長什麼樣子。",
     audience: "想讓 AI 接手自己工作流程、並且想先看清整個系統全貌的知識工作者，以及正在把專業方法整理成體系、課程或產品的顧問與講師。",
     summary: "提出「知識作業系統」母架構：存量三庫、八步精煉迴圈、護欄、治理四個構件，加一條三域分流部署軸，圓心是隱性知識提煉。含三重收斂的信度證據（雙 AI 獨立收斂、2023 至 2026 實踐先於命名、跨時內部收斂）、三條真實工作流的驗證設計，與一個立刻能做的對照練習。",
-    tags: {"topic":["知識管理","隱性知識","AI工作流","知識庫"],"level":["進階"],"content_type":["教學文章"]},
+    tags: {"topic":["江江精選","知識管理","隱性知識","AI工作流","知識庫"],"level":["進階"],"content_type":["教學文章"]},
     external: { threads: null, vocus: null },
     related: ["knowledge-as-employee", "docs-as-system-design-agent", "knowledge-base-three-vault-split", "tag-wiki-method", "what-is-loop-engineering"]
   },
@@ -1225,7 +1226,7 @@ window.ARTICLES = [
     problem: "已經在用 AI，卻覺得跟別人用起來沒差多少；做過筆記、建過知識庫，也說不出舊方法在 AI 時代還缺什麼。",
     audience: "聽過 AI 員工、AI 辦公室，想知道那份能力究竟從哪裡來的人，以及做過知識管理、想知道舊方法還缺哪一塊的人。",
     summary: "傳統知識管理把知識當工具，整理好之後人去用它；AI 時代的思維是把知識當員工，架構好之後知識搭配 AI 自己去工作。用七個面向與流程逐站對照兩種思路，說明知識變成員工之後制度要跟著長出什麼，答案落在隱性知識提煉。",
-    tags: {"topic":["知識管理","隱性知識","AIAgent","數位轉型"],"level":["基礎"],"content_type":["觀點文章"]},
+    tags: {"topic":["江江精選","知識管理","隱性知識","AIAgent","數位轉型"],"level":["基礎"],"content_type":["觀點文章"]},
     external: { threads: null, vocus: null },
     related: ["knowledge-os-master-map", "how-to-train-your-ai-employee", "docs-as-system-design-agent", "strong-ai-models-knowledge-workflow-road", "intangible-assets-grow-by-sharing"]
   },
@@ -1326,7 +1327,7 @@ window.ARTICLES = [
     audience: "教材塞滿 PPT 與 PDF 的講師、聽過卡片盒筆記法但不知道它跟 AI 有什麼關係的人、想把舊資料變成可重複使用素材庫的知識工作者。",
     summary: "PDF 是印刷格式，AI 讀起來是座標跟亂碼；丟越多資料給 AI，準確度越是雪崩式下滑。這篇用投影頁互動動畫講整條邏輯：拉滑桿看資料量與準確度的關係、點標籤體驗檢索、看卡片怎麼拆解合併重組，文末附可直接複製的原子化拆解提示詞。",
     tags: {
-      topic: ["知識管理", "知識庫", "AI工作流"],
+      topic: ["江江精選", "知識管理", "知識庫", "AI工作流"],
       level: ["零基礎入門"],
       content_type: ["教學文章"]
     },
