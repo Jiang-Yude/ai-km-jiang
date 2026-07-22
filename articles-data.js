@@ -197,7 +197,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: "https://vocus.cc/salon/Jiang_Coach" },
-    related: ["diary-driven-agent-3x4", "tag-wiki-method"]
+    related: ["diary-driven-agent-3x4", "tag-wiki-method", "knowledge-os-master-map"]
   },
 
   /* ── 10. 在公司上班，你也可以有自己的 AI 團隊（觀點，手寫精選版）── */
@@ -254,7 +254,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["strong-ai-models-knowledge-workflow-road", "questionnaire-to-slides-agent-workflow", "teacher-prep-knowledge-workflow", "own-ai-team-at-work", "agent-workflow-builds-automation", "line-group-ai-workflow", "elon-musk-live-skill", "codex-log-health-check", "how-ai-connects-software", "meeting-record-agent-workflow", "decision-ladder-non-programmer", "tidy-mess-before-consulting", "diary-driven-agent-3x4", "docs-as-system-design-agent", "what-is-loop-engineering", "map-is-not-the-territory", "intangible-assets-grow-by-sharing", "manage-ai-with-management-knowledge", "ai-handoff-instructions", "train-your-ai-agent-editor", "ai-that-knows-you", "personal-studio-vs-solo-company", "cli-api-mcp-computer-use"]
+    related: ["strong-ai-models-knowledge-workflow-road", "questionnaire-to-slides-agent-workflow", "teacher-prep-knowledge-workflow", "own-ai-team-at-work", "agent-workflow-builds-automation", "line-group-ai-workflow", "elon-musk-live-skill", "codex-log-health-check", "how-ai-connects-software", "meeting-record-agent-workflow", "decision-ladder-non-programmer", "tidy-mess-before-consulting", "diary-driven-agent-3x4", "docs-as-system-design-agent", "what-is-loop-engineering", "map-is-not-the-territory", "intangible-assets-grow-by-sharing", "manage-ai-with-management-knowledge", "ai-handoff-instructions", "train-your-ai-agent-editor", "ai-that-knows-you", "personal-studio-vs-solo-company", "cli-api-mcp-computer-use", "knowledge-as-employee"]
   },
 
   /* ── 13. LINE 群組也能變成 AI 工作流入口（教學）── */
@@ -349,7 +349,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: "https://vocus.cc/salon/Jiang_Coach" },
-    related: ["agent-workflow-builds-automation", "codex-only-auto-worklog", "how-to-train-your-ai-employee", "diary-driven-agent-3x4", "tidy-mess-before-consulting"]
+    related: ["agent-workflow-builds-automation", "codex-only-auto-worklog", "how-to-train-your-ai-employee", "diary-driven-agent-3x4", "tidy-mess-before-consulting", "meeting-into-verifiable-loop"]
   },
 
   /* ── 18. 不寫程式的人也能用的決策階梯（觀點）── */
@@ -406,7 +406,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: "https://vocus.cc/salon/Jiang_Coach" },
-    related: ["strong-ai-models-knowledge-workflow-road", "questionnaire-to-slides-agent-workflow", "teacher-prep-knowledge-workflow", "diary-driven-agent-3x4", "how-ai-connects-software", "how-to-train-your-ai-employee", "decision-ladder-non-programmer", "tidy-mess-before-consulting", "what-is-loop-engineering", "tag-wiki-method", "ai-delegators-optimism", "intangible-assets-grow-by-sharing", "publish-gate", "laptop-desktop-webpage-sync-icloud-git", "manage-ai-with-management-knowledge", "train-your-ai-agent-editor"]
+    related: ["strong-ai-models-knowledge-workflow-road", "questionnaire-to-slides-agent-workflow", "teacher-prep-knowledge-workflow", "diary-driven-agent-3x4", "how-ai-connects-software", "how-to-train-your-ai-employee", "decision-ladder-non-programmer", "tidy-mess-before-consulting", "what-is-loop-engineering", "tag-wiki-method", "ai-delegators-optimism", "intangible-assets-grow-by-sharing", "publish-gate", "laptop-desktop-webpage-sync-icloud-git", "manage-ai-with-management-knowledge", "train-your-ai-agent-editor", "knowledge-os-master-map", "knowledge-as-employee"]
   },
 
   /* ── 21. 你以為在做一個成品，其實在養十個半成品（觀點）── */
@@ -482,7 +482,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["strong-ai-models-knowledge-workflow-road", "questionnaire-to-slides-agent-workflow", "teacher-prep-knowledge-workflow", "docs-as-system-design-agent", "how-to-train-your-ai-employee", "my-three-loops", "ai-loop-safety-recovery", "recovery-over-perfection", "ai-changed-behavior-into-workflow", "ai-delegators-optimism", "publish-gate", "loop-engineering-guardrails", "dual-centaur-meeting", "manage-ai-with-management-knowledge", "old-prompts-intent-first-loop-engineering", "rule-file-rebound"]
+    related: ["strong-ai-models-knowledge-workflow-road", "questionnaire-to-slides-agent-workflow", "teacher-prep-knowledge-workflow", "docs-as-system-design-agent", "how-to-train-your-ai-employee", "my-three-loops", "ai-loop-safety-recovery", "recovery-over-perfection", "ai-changed-behavior-into-workflow", "ai-delegators-optimism", "publish-gate", "loop-engineering-guardrails", "dual-centaur-meeting", "manage-ai-with-management-knowledge", "old-prompts-intent-first-loop-engineering", "rule-file-rebound", "knowledge-os-master-map", "meeting-into-verifiable-loop"]
   },
 
   /* ── 無形資產，越分享越豐盛（觀點）── */
@@ -501,7 +501,7 @@ window.ARTICLES = [
       content_type: ["觀點文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["how-to-train-your-ai-employee", "docs-as-system-design-agent", "company-shape-is-the-moat", "personal-studio-vs-solo-company"]
+    related: ["how-to-train-your-ai-employee", "docs-as-system-design-agent", "company-shape-is-the-moat", "personal-studio-vs-solo-company", "knowledge-as-employee"]
   },
 
   /* ── 當 AI 代理開始互相對話：A2A 機制（趨勢）── */
@@ -592,7 +592,7 @@ window.ARTICLES = [
       content_type: ["觀點文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["what-is-loop-engineering", "ai-loop-safety-recovery", "recovery-over-perfection", "ai-delegators-optimism"]
+    related: ["what-is-loop-engineering", "ai-loop-safety-recovery", "recovery-over-perfection", "ai-delegators-optimism", "meeting-into-verifiable-loop"]
   },
 
   /* ── 公司護城河：組織模式、共識、影響力與信任（觀點）── */
@@ -630,7 +630,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["questionnaire-to-slides-agent-workflow", "teacher-prep-knowledge-workflow", "knowledge-base-three-vault-split", "docs-as-system-design-agent", "ai-loop-safety-recovery", "inspiration-production-system", "why-split-data-into-cards"]
+    related: ["questionnaire-to-slides-agent-workflow", "teacher-prep-knowledge-workflow", "knowledge-base-three-vault-split", "docs-as-system-design-agent", "ai-loop-safety-recovery", "inspiration-production-system", "why-split-data-into-cards", "knowledge-os-master-map"]
   },
 
   /* ── AI 出錯不可怕，沒有備援才可怕：一次搞壞 170 檔案的教訓（觀點）── */
@@ -881,7 +881,7 @@ window.ARTICLES = [
     summary: "把駕馭工程和迴圈工程接在一起的五條護欄：未抗辯假設、三視角抗辯、Non-goals 與允許路徑、換路煞車、驗收證據分級。讓 AI 連續自動工作時，錯誤不會一路滾大。",
     tags: {"topic":["AI工作流","AIAgent","跨家審稿"],"level":["基礎"],"content_type":["教學文章"]},
     external: { threads: null, vocus: null },
-    related: ["what-is-loop-engineering","harness-mindset-for-bosses","ai-loop-safety-recovery","dual-track-planning-loop","ai-handoff-instructions"]
+    related: ["what-is-loop-engineering","harness-mindset-for-bosses","ai-loop-safety-recovery","dual-track-planning-loop","ai-handoff-instructions", "meeting-into-verifiable-loop"]
   },
   {
     id: "parenting-story-ai-family-dialogue",
@@ -1050,7 +1050,7 @@ window.ARTICLES = [
     summary: "Claude Fable、GPT-5.6 Sol 這類強模型出現後，知識庫、工作流、規則與驗收方式造成的差距更明顯。用泥巴路、柏油路與高速公路三種道路環境，帶你完成六步 AI 鋪路流程。",
     tags: {"topic":["AI趨勢","知識管理","AI工作流","駕馭工程 HarnessEngineering"],"level":["基礎"],"content_type":["教學文章"]},
     external: { threads: null, vocus: null },
-    related: ["docs-as-system-design-agent", "what-is-loop-engineering", "how-to-train-your-ai-employee", "ai-that-knows-you"]
+    related: ["docs-as-system-design-agent", "what-is-loop-engineering", "how-to-train-your-ai-employee", "ai-that-knows-you", "knowledge-as-employee"]
   },
   {
     id: "dual-track-planning-loop",
@@ -1115,7 +1115,7 @@ window.ARTICLES = [
     summary: "把課後整理拆成一條六步輸送帶：同一份材料生出教學手冊、課後實錄版簡報、官網課程頁三種成品，並用兩層審核確保 AI 整理出來的東西能用。附觸發分流、六步交付物、兩層審核分法與常見坑，可照著替自己的整理流程搭一條一樣的輸送帶。",
     tags: {"topic":["AI工作流","知識管理","工作流程"],"level":["零基礎入門"],"content_type":["教學文章"]},
     external: { threads: null, vocus: null },
-    related: ["how-to-train-your-ai-employee", "docs-as-system-design-agent", "inspiration-production-system", "train-your-ai-agent-editor"]
+    related: ["how-to-train-your-ai-employee", "docs-as-system-design-agent", "inspiration-production-system", "train-your-ai-agent-editor", "meeting-into-verifiable-loop"]
   },
 
   {
@@ -1144,6 +1144,48 @@ window.ARTICLES = [
     tags: {"topic":["數位轉型","知識管理","AI工作流","隱性知識"],"level":["零基礎入門"],"content_type":["教學文章"]},
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
     related: ["how-to-train-your-ai-employee", "docs-as-system-design-agent", "what-is-loop-engineering", "claude-skills-knowledge-assets", "company-shape-is-the-moat", "decision-ladder-non-programmer"]
+  },
+
+  {
+    id: "knowledge-os-master-map",
+    url: "articles/knowledge-os-master-map/",
+    date: "2026-07-10",
+    updated: "2026-07-10",
+    title: "知識作業系統母架構：把隱性知識持續提煉成可執行判斷的系統設計",
+    problem: "學了很多整理法、筆記法、AI 工作流，卻覺得它們彼此兜不起來，看不到整個系統長什麼樣子。",
+    audience: "想讓 AI 接手自己工作流程、並且想先看清整個系統全貌的知識工作者，以及正在把專業方法整理成體系、課程或產品的顧問與講師。",
+    summary: "提出「知識作業系統」母架構：存量三庫、八步精煉迴圈、護欄、治理四個構件，加一條三域分流部署軸，圓心是隱性知識提煉。含三重收斂的信度證據（雙 AI 獨立收斂、2023 至 2026 實踐先於命名、跨時內部收斂）、三條真實工作流的驗證設計，與一個立刻能做的對照練習。",
+    tags: {"topic":["知識管理","隱性知識","AI工作流","知識庫"],"level":["進階"],"content_type":["教學文章"]},
+    external: { threads: null, vocus: null },
+    related: ["knowledge-as-employee", "docs-as-system-design-agent", "knowledge-base-three-vault-split", "tag-wiki-method", "what-is-loop-engineering"]
+  },
+
+  {
+    id: "knowledge-as-employee",
+    url: "articles/knowledge-as-employee/",
+    date: "2026-07-10",
+    updated: "2026-07-10",
+    title: "把知識當員工：AI 時代知識管理的分水嶺",
+    problem: "已經在用 AI，卻覺得跟別人用起來沒差多少；做過筆記、建過知識庫，也說不出舊方法在 AI 時代還缺什麼。",
+    audience: "聽過 AI 員工、AI 辦公室，想知道那份能力究竟從哪裡來的人，以及做過知識管理、想知道舊方法還缺哪一塊的人。",
+    summary: "傳統知識管理把知識當工具，整理好之後人去用它；AI 時代的思維是把知識當員工，架構好之後知識搭配 AI 自己去工作。用七個面向與流程逐站對照兩種思路，說明知識變成員工之後制度要跟著長出什麼，答案落在隱性知識提煉。",
+    tags: {"topic":["知識管理","隱性知識","AIAgent","數位轉型"],"level":["基礎"],"content_type":["觀點文章"]},
+    external: { threads: null, vocus: null },
+    related: ["knowledge-os-master-map", "how-to-train-your-ai-employee", "docs-as-system-design-agent", "strong-ai-models-knowledge-workflow-road", "intangible-assets-grow-by-sharing"]
+  },
+
+  {
+    id: "meeting-into-verifiable-loop",
+    url: "articles/meeting-into-verifiable-loop/",
+    date: "2026-07-07",
+    updated: "2026-07-07",
+    title: "一場會議整理，我把它做成了一條可驗收的迴圈",
+    problem: "同一串會議整理流程每週都要手動一步步推，方法都會、筆記也做過，只是每次都得自己重新串起來。",
+    audience: "同一串流程每週都要手動重推一遍的知識工作者，以及想把散落各處的做法收成一條自己會跑的流程的人。",
+    summary: "每一步的規則與標準其實早就寫成技能包了，缺的是把它們串起來。講怎麼把這些現成的規則模組，串成一條喊一聲就自己跑完、還會驗收的迴圈，附可照做的起步順序，以及一份誠實的邊界說明：這條迴圈保證什麼、不保證什麼。",
+    tags: {"topic":["AI工作流","工作流程","知識管理"],"level":["進階"],"content_type":["案例文章"]},
+    external: { threads: null, vocus: null },
+    related: ["what-is-loop-engineering", "meeting-record-agent-workflow", "my-three-loops", "loop-engineering-guardrails", "post-class-organizing-loop"]
   },
 
   {

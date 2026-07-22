@@ -1,0 +1,293 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="index,follow">
+<title>一場會議整理，我把它做成了一條可驗收的迴圈｜江江教練 · AI 知識管理</title>
+<meta name="description" content="同一串會議整理流程每週都要手動一步步推。其實每一步的規則、標準我早就寫成技能包了。這篇講我怎麼把這些現成的規則模組，串成一條喊一聲就自己跑完、還會驗收的迴圈。">
+<link rel="canonical" href="https://ai-km-jiang.vercel.app/articles/meeting-into-verifiable-loop/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="一場會議整理，我把它做成了一條可驗收的迴圈｜江江教練">
+<!-- 分享封面：hero 文字填好後在 repo 根目錄跑 `node scripts/og-shot.mjs meeting-into-verifiable-loop` 自動截 1200×630 到 images/og/meeting-into-verifiable-loop.jpg（見 README「文章分享封面（OG 圖）機制」）。別退回 intro-jiang.png 直式人像，會被裁成只剩脖子。 -->
+<meta property="og:image" content="https://ai-km-jiang.vercel.app/images/og/meeting-into-verifiable-loop.jpg">
+<meta property="og:description" content="同一串會議整理流程每週都要手動一步步推。其實每一步的規則、標準我早就寫成技能包了。這篇講我怎麼把這些現成的規則模組，串成一條喊一聲就自己跑完、還會驗收的迴圈。">
+<meta property="og:url" content="https://ai-km-jiang.vercel.app/articles/meeting-into-verifiable-loop/">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:site_name" content="江江教練 · AI 知識管理">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="一場會議整理，我把它做成了一條可驗收的迴圈｜江江教練">
+<meta name="twitter:image" content="https://ai-km-jiang.vercel.app/images/og/meeting-into-verifiable-loop.jpg">
+<meta name="twitter:description" content="同一串會議整理流程每週都要手動一步步推。其實每一步的規則、標準我早就寫成技能包了。這篇講我怎麼把這些現成的規則模組，串成一條喊一聲就自己跑完、還會驗收的迴圈。">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"一場會議整理，我把它做成了一條可驗收的迴圈","description":"同一串會議整理流程每週都要手動一步步推。其實每一步的規則、標準我早就寫成技能包了。這篇講我怎麼把這些現成的規則模組，串成一條喊一聲就自己跑完、還會驗收的迴圈。","author":{"@type":"Person","name":"江昱德","alternateName":"江江教練","jobTitle":"隱性知識提煉師、AI 應用規劃師"},"isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://ai-km-jiang.vercel.app/"},"inLanguage":"zh-Hant","url":"https://ai-km-jiang.vercel.app/articles/meeting-into-verifiable-loop/"}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{--ink:#1a1612;--paper:#fefcf8;--muted:#6a635a;--line:#d8cdb8;--green:#5f7553;--blue:#5689b8;--orange:#e85a4f;--soft:#faf5ec;--dark:#2a2018;--shadow:0 18px 45px rgba(107,74,42,.14);--sp-shadow:hsla(35,50%,60%,.15);--sp-shadow-edge:hsla(35,50%,68%,.03);--sp-radius:400px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC","Segoe UI",sans-serif}
+a{color:inherit}
+/* 官網共用導航列 nav.top（與首頁/文章總站同一條） */
+nav.top{position:sticky;top:0;background:rgba(254,252,248,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid #d8cdb8;z-index:100}
+nav.top .container{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:24px;padding:14px 32px}
+.nav-brand-img{justify-self:start;display:flex;align-items:center;text-decoration:none;flex-shrink:0;transition:opacity .2s}
+.nav-brand-img:hover{opacity:.8}.nav-brand-img img{height:40px;width:auto;display:block}
+nav.top ul.nav-menu{justify-self:end;display:flex;gap:22px;list-style:none;margin:0;padding:0;font-size:.95rem;white-space:nowrap}
+nav.top ul.nav-menu a{color:#3a342d;text-decoration:none;transition:color .2s;font-weight:500;white-space:nowrap}
+nav.top ul.nav-menu a:hover{color:#1a1612}nav.top ul.nav-menu a.active{color:#1a1612;font-weight:700}
+.nav-toggle{display:none;background:none;border:none;padding:6px;cursor:pointer;width:36px;height:36px;position:relative}
+.nav-toggle span{display:block;position:absolute;left:8px;right:8px;height:2px;background:#1a1612;border-radius:2px;transition:transform .25s,opacity .25s,top .25s}
+.nav-toggle span:nth-child(1){top:11px}.nav-toggle span:nth-child(2){top:17px}.nav-toggle span:nth-child(3){top:23px}
+.nav-toggle.open span:nth-child(1){top:17px;transform:rotate(45deg)}.nav-toggle.open span:nth-child(2){opacity:0}.nav-toggle.open span:nth-child(3){top:17px;transform:rotate(-45deg)}
+@media(max-width:860px){
+ nav.top .container{grid-template-columns:auto 1fr auto;padding:10px 16px;gap:12px}
+ .nav-brand-img img{height:32px}
+ .nav-toggle{display:block;justify-self:end}
+ nav.top ul.nav-menu{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(254,252,248,.98);backdrop-filter:blur(14px);border-bottom:1px solid #d8cdb8;flex-direction:column;gap:0;padding:8px 0;box-shadow:0 10px 24px rgba(107,74,42,.08)}
+ nav.top ul.nav-menu.open{display:flex}
+ nav.top ul.nav-menu li{border-bottom:1px solid #e8dfc9}
+ nav.top ul.nav-menu li:last-child{border-bottom:none}
+ nav.top ul.nav-menu a{display:block;padding:14px 20px;font-size:1.06rem}
+}
+/* 滑鼠暖光暈（與首頁同一支 spotlight.js） */
+body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradient(var(--sp-radius) circle at var(--mx,50%) var(--my,50%),var(--sp-shadow) 0%,var(--sp-shadow-edge) 45%,transparent 75%);pointer-events:none;z-index:9999;mix-blend-mode:multiply;transition:background .06s linear}
+.hero{position:relative;overflow:hidden;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:72px;padding:96px clamp(20px,6vw,88px) 80px;background:linear-gradient(180deg,#fffcf0 0%,#f9e9d2 100%);color:#1a1612;border-bottom:1px solid #d8cdb8}
+.hero .wc{position:absolute;border-radius:50%;filter:blur(60px);pointer-events:none;z-index:0}
+.hero .wc1{width:420px;height:360px;top:-120px;right:-80px;background:#e8884b;opacity:.15}
+.hero .wc2{width:360px;height:300px;bottom:-110px;left:-70px;background:#5f7553;opacity:.13}
+.hero .wc3{width:280px;height:260px;top:34%;left:14%;background:#a08144;opacity:.10}
+.hero>div{flex:none;width:860px;max-width:100%;position:relative;z-index:2}
+.hero-figure{margin:0;width:420px;flex:none;position:relative;z-index:2}
+.hero-figure img{display:block;width:100%;border-radius:16px;border:1px solid #d8cdb8;box-shadow:0 18px 45px rgba(107,74,42,.16);cursor:zoom-in}
+.hero-figure figcaption{margin-top:10px;font-size:14px;line-height:1.6;color:#6a635a}
+.inline-figure{margin:30px auto 8px;max-width:820px}
+.inline-figure img{display:block;width:100%;border-radius:14px;border:1px solid var(--line);box-shadow:var(--shadow);background:#fff;cursor:zoom-in}
+.inline-figure figcaption{font-size:14px;line-height:1.6;color:var(--muted);margin-top:10px}
+.lightbox{position:fixed;inset:0;z-index:10000;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(12,10,8,.92);cursor:zoom-out;backdrop-filter:blur(4px)}
+.lightbox.open{display:flex}.lightbox img{max-width:96vw;max-height:92vh;border-radius:10px;box-shadow:0 24px 60px rgba(0,0,0,.5)}
+.lightbox-close{position:fixed;top:18px;right:24px;color:#fff;font-size:34px;line-height:1;font-weight:700;cursor:pointer;opacity:.85}
+.kicker{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.55rem;color:#7a5c3a;font-weight:500}
+.hero h1{max-width:none;margin:16px 0 18px;font-size:clamp(36px,6vw,72px);line-height:1.08;overflow-wrap:anywhere}
+.hero p{max-width:none;font-size:clamp(18px,2vw,23px);line-height:1.62;color:#3a342d}
+.cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
+.cta a{display:inline-flex;align-items:center;text-decoration:none;border-radius:8px;padding:12px 16px;font-weight:900}
+.cta .primary{background:#fff;color:#1a1612}.cta .ghost{border:1px solid rgba(255,255,255,.32);color:#fff;background:rgba(255,255,255,.08)}
+.section{padding:54px clamp(20px,6vw,88px);border-top:1px solid var(--line)}
+.inner{width:min(1000px,100%);margin:0 auto}
+.section h2{font-size:clamp(26px,4.2vw,48px);line-height:1.12;margin:0 0 18px}
+.section h3{font-size:clamp(21px,3vw,30px);line-height:1.2;margin:30px 0 12px}
+.lead{font-size:clamp(18px,1.6vw,22px);line-height:1.7;color:#3a342d;max-width:900px}
+.section p{font-size:18px;line-height:1.74;color:#3a342d}.section p+p{margin-top:14px}
+.section ul,.section ol{padding-left:1.4em;font-size:18px;line-height:1.74;color:#3a342d}.section li{margin-bottom:8px}
+.meaning{margin:22px 0;padding:16px 18px;border-left:5px solid var(--blue);background:rgba(86,137,184,.12);border-radius:6px;line-height:1.7;font-size:19px}
+.meaning b{display:block;color:var(--blue);margin-bottom:4px}
+.caveat{margin:0 0 8px;padding:16px 18px;border-left:5px solid var(--orange);background:rgba(232,90,79,.1);border-radius:6px;line-height:1.7;font-size:18px;color:#3a342d}
+.caveat b{display:block;color:var(--orange);margin-bottom:4px}
+.infocard{background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px 24px 22px;box-shadow:0 8px 22px rgba(107,74,42,.08);margin-top:8px}
+.infocard-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.info-item{padding:18px 14px 0}
+.info-item b{display:block;font-size:14px;font-weight:900;letter-spacing:.04em;margin-bottom:7px;text-transform:uppercase}
+.info-item:nth-child(1) b{color:var(--green)}.info-item:nth-child(2) b{color:var(--orange)}.info-item:nth-child(3) b{color:var(--blue)}
+.info-item p{margin:0;font-size:17px;line-height:1.6;color:#3a342d}
+.tagrow{display:flex;flex-wrap:wrap;gap:7px;margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
+.tag{font-size:14px;color:var(--muted);background:var(--soft);border:1px solid var(--line);border-radius:999px;padding:4px 11px}
+.duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:24px}
+.duo.stack{grid-template-columns:1fr}
+.duo .card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:22px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.duo .card.a{border-color:var(--orange)}.duo .card.b{border-color:var(--green);box-shadow:0 8px 24px rgba(95,117,83,.16)}
+.duo .card small{display:block;font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.04em;margin-bottom:9px}
+.duo .card.a small{color:var(--orange)}.duo .card.b small{color:var(--green)}
+.duo .card b{display:block;font-size:22px;line-height:1.3;margin-bottom:12px}.duo .card.a b{color:#c0512f}.duo .card.b b{color:#4a7a59}
+.duo .card p{margin:0;color:#3a342d;line-height:1.75;font-size:18px}
+.workflow-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:24px}
+.workflow-step{background:#fff;border:1px solid var(--line);border-radius:8px;padding:18px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.workflow-step small{display:block;color:var(--orange);font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;margin-bottom:9px}
+.workflow-step b{display:block;font-size:18px;line-height:1.3;margin-bottom:9px}
+.workflow-step p{margin:0;color:#3a342d;line-height:1.6;font-size:16px}
+.codeblock{background:var(--dark);color:#f3ead9;border-radius:8px;padding:18px 20px;font:500 14px/1.65 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;overflow-x:auto;white-space:pre-wrap;margin:20px 0;box-shadow:0 8px 22px rgba(107,74,42,.12)}
+.codeblock .c{color:#f6d7a6;font-weight:600}
+.skillcard{background:#fff;border:1px solid var(--green);border-radius:12px;padding:24px;box-shadow:0 10px 26px rgba(95,117,83,.16);margin-top:8px}
+.skillcard b{display:block;font-size:21px;margin-bottom:8px}
+.skillcard p{margin:0 0 16px;font-size:17px;line-height:1.65;color:#3a342d}
+.cta-band{background:#e6f0e5;color:#3a342d}.cta-band .section{border-top:none}
+.cta-band .inner{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(260px,.85fr);gap:26px;align-items:start}
+.cta-band h2{font-size:clamp(26px,4vw,44px);margin:0 0 16px}.cta-band p,.cta-band .lead{color:rgba(58,52,45,.9);font-size:18px;line-height:1.72}
+.cta-card{border:1px solid #cfe0d2;background:#fbfdfa;border-radius:8px;padding:22px}
+.cta-card b{display:block;color:#48b178;margin-bottom:10px;font-size:18px}.cta-card p{margin:0 0 14px}
+.footer{padding:30px clamp(20px,6vw,88px);font-size:14px;color:var(--muted);background:#fff;border-top:1px solid var(--line)}
+.footer-inner{width:min(1000px,100%);margin:0 auto}
+.footer-links{display:flex;flex-wrap:wrap;gap:6px 12px;margin-bottom:14px}.footer-links a{color:var(--blue);font-weight:900;text-decoration:none;font-size:14px}
+.footer-brand{font-weight:900;font-size:15px;margin-bottom:10px}.footer-note{font-size:13px;line-height:1.6}
+@media(max-width:820px){.infocard-grid{grid-template-columns:1fr}.duo{grid-template-columns:1fr}.workflow-grid{grid-template-columns:1fr}.cta-band .inner{grid-template-columns:1fr}.section{padding:40px 20px}.hero{min-height:52vh;flex-direction:column;justify-content:flex-start;align-items:flex-start;gap:24px}.hero>div{width:100%}.hero-figure{width:100%;max-width:560px}}
+@media(max-width:820px){html,body{overflow-x:hidden}.hero h1{word-break:break-word}}
+</style>
+</head>
+<body class="spotlight">
+<!-- 官網共用導航列 nav.top：與首頁/總站同一條，文章不要自己另做極簡 topbar（江江 2026-06-25：要同一個框架、同一條導航列）。把對應頁面的 class="active" 標在自己那欄。 -->
+<nav class="top">
+  <div class="container">
+    <a class="nav-brand-img" href="../../" style="font-weight:900;color:#1a1612;text-decoration:none;font-size:1.05rem">江江教練 · AI 知識管理</a>
+    <button class="nav-toggle" aria-label="選單"><span></span><span></span><span></span></button>
+    <ul class="nav-menu">
+      <li><a href="../../index.html">首頁</a></li>
+      <li><a href="../../knowledge-architecture.html">知識架構</a></li>
+      <li><a href="../../courses.html">課程</a></li>
+      <li><a href="../../articles.html" class="active">深度文章</a></li>
+      <li><a href="../../skills.html">技能包下載</a></li>
+      <li><a href="../../cases.html">服務方案</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="wc wc1"></div>
+  <div class="wc wc2"></div>
+  <div class="wc wc3"></div>
+  <div>
+    <div class="kicker">AI 工作流 · 回圈工程</div>
+    <h1>一場會議整理，我把它做成了一條可驗收的迴圈</h1>
+    <p>方法我早就寫成一個個技能包，缺的是把它們串起來，做成一條喊一聲就自己跑完、還會驗收的迴圈。</p>
+  </div>
+  
+  
+</section>
+
+<main>
+<section class="section" id="start"><div class="inner">
+  <p class="lead">我自己在整理我們團隊的會議記錄。流程很固定，可是每一次我都要自己一步一步下指令、一關一關確認，很累。其實每一步該怎麼做、做到什麼標準，我早就寫成技能包了，只是它們分散在各處。這篇講我怎麼把這些現成的規則模組，串成一條喊一聲就自己跑完、還會留下驗收證據的迴圈。</p>
+  <div class="duo stack">
+    <div class="card a"><b>適合誰</b>
+      <ul>
+        <li>同一串流程每週都要手動重推一遍的知識工作者</li>
+        <li>方法都會、筆記也做過，只是每次都要自己一步步串起來的人</li>
+        <li>想把散落各處的做法，收成一條自己會跑的流程的人</li>
+      </ul>
+    </div>
+    <div class="card b"><b>你會得到什麼</b>
+      <ul>
+        <li>看懂「把現成規則串成迴圈」跟「每次手動推」差在哪</li>
+        <li>一條可以照做的起步順序，從單一動作長到一條迴圈</li>
+        <li>一份誠實的邊界，知道迴圈能幫你到哪、不能幫你到哪</li>
+      </ul>
+    </div>
+  </div>
+</div></section>
+
+<section class="section"><div class="inner">
+  <h2>真實現場</h2>
+  <p>我自己在整理我們團隊的會議記錄。每一次，都是同一串固定的動作。</p>
+  <p>原始逐字稿存一份。清理過的版本再存一份。然後整理分析，做成一頁好讀的網頁排版，部署到我們團隊內部的網站，讓大家點開就看得到。最後把這場會議產生的待辦，更新到追蹤清單。</p>
+  <p>流程固定到我閉著眼睛都知道下一步是什麼。可是每一次，我還是要自己一步一步下指令，一關一關確認。整理完了記得去存清理版，存完了記得去做網頁，做完了記得去部署，部署完了記得去更新待辦。少推一步，那一步就空在那裡。</p>
+  <p>同一件事，每週都要這樣手動推一遍。這就是我想解決的麻煩。</p>
+</div></section>
+
+<section class="section"><div class="inner">
+  <h2>我不缺方法，我缺的是把方法串起來</h2>
+  <p>這裡要先講一件事，才知道迴圈到底在省什麼。</p>
+  <p>這串流程的每一步，我都不是臨場發揮。過去這段時間，我把每個步驟都寫成了技能包，裡面是很細的規則、標準跟判斷。</p>
+  <p>清理逐字稿，我有分等級的規則：這份要清到哪一級、要不要分講者、保留多少原話。會議整理分析，我有一套固定方法：先抓決議和待辦，再看討論脈絡和立場，最後才做策略判讀。網頁排版，我有專屬的版型規則，哪一段放前面、哪一段折疊，都定好了。部署跟更新待辦，也各有各的 SOP。</p>
+  <p>所以我缺的從來不是方法。每一步該怎麼做、做到什麼標準、遇到狀況怎麼判斷，答案都寫好了，就放在各自的技能包裡。</p>
+  <p>我缺的是把它們串起來。以前這些技能包是分開的，每次我都要自己一個一個叫出來，一步一步推、一步一步確認。方法是現成的，力氣卻每次重花。</p>
+</div></section>
+
+<section class="section"><div class="inner">
+  <h2>機制解法：把現成的規則，串成一條會自己跑的鏈</h2>
+  <p>迴圈做的事情很單純：把這些本來就存在、各自完整的規則模組，串成一條鏈。喊一個觸發詞，加上逐字稿，六步就一路跑完。</p>
+  <div class="workflow-grid">
+    <div class="workflow-step"><small>STEP 1</small><b>存兩份</b><p>原始逐字稿存一份，清理版再存一份。清理到哪一級，照原本清理技能包的規則判斷。</p></div>
+    <div class="workflow-step"><small>STEP 2</small><b>整理分析</b><p>照原本那套三層方法，把會議變成分層記錄：決議待辦、討論脈絡、策略判讀。</p></div>
+    <div class="workflow-step"><small>STEP 3</small><b>網頁排版</b><p>鎖定原本的專屬版型，做出好讀、給大家看的那一版。</p></div>
+    <div class="workflow-step"><small>STEP 4</small><b>部署</b><p>發佈到團隊內部網站，大家點開就看得到。</p></div>
+    <div class="workflow-step"><small>STEP 5</small><b>更新待辦</b><p>把這場會議產生的待辦，一條一條寫進追蹤清單，不跟舊的重複。</p></div>
+    <div class="workflow-step"><small>STEP 6</small><b>驗收</b><p>沒人在旁邊盯，所以每步做完都要留機器驗得出來的證據：上架了沒、待辦進去了沒、網頁打得開嗎。</p></div>
+  </div>
+  <p>每一步用的判斷，都還是原本技能包裡的那一套。迴圈沒有取代它們，只是把「我要一個一個手動推」變成「喊一聲，它自己照規則跑完」。</p>
+</div></section>
+
+<section class="section"><div class="inner">
+  <h2>它保證什麼，不保證什麼</h2>
+  <div class="meaning"><b>保證</b>同一件反覆工作不用每次手動推，每一步都照我既有的規則跑，關鍵步驟不漏，而且錯了機器驗得出來。</div>
+  <div class="caveat"><b>不保證取代判斷</b>迴圈跑得動，是因為底下那些規則、標準、判斷，是我一條一條累積出來的。遇到規則沒涵蓋的狀況，還是要我自己判斷，再把新規則補回技能包。迴圈自動的是執行，思考還是我的事。</div>
+  <div class="caveat"><b>不保證通用</b>這六步是為了我們團隊的會議流程長出來的。你的流程長得不一樣，步驟也會不一樣。可以參考的是做法，你的步驟要你自己定。</div>
+</div></section>
+
+<section class="section"><div class="inner">
+  <h2>你可以怎麼開始</h2>
+  <p>不用一開始就想著建一整套系統。護欄回圈是長出來的，不是設計出來的。</p>
+  <p>最小的第一步是這樣：挑一件你每週都要重做的知識工作，先老老實實做一次。做的過程，把每一個「欸剛剛差點出錯」的地方記下來。做完之後，把每一個記下來的坑，翻成一句「下次一定先做」或「下次一定不做」。</p>
+  <p>這些句子累積久了，會變成你每一步的規則。等你發現同一串步驟一直重複、每一步的規則也都固定了，就可以把它們串成一條迴圈：給它一個觸發詞，讓自己或 AI 一喊就照著跑完，收尾留下可以驗的證據。</p>
+  <p>到這裡，你手上這些原本分開的做法，就串成了一條會自己跑、還會愈跑愈穩的迴圈。</p>
+</div></section>
+
+<section class="section"><div class="inner">
+  <h2>邁向安全的自動化</h2>
+  <p>有了這條迴圈，我才終於真的開始邁向自動化。以前不太敢讓流程自己跑，是怕它跑歪了我不知道。現在敢了，是因為迴圈裡有一層防護：重要的判斷會先標成還沒被第二個人審過，收尾一定要有機器驗得出來的證據，出錯擋得住。</p>
+  <p>我把這層防護叫駕馭工程。回圈工程負責讓流程自己跑，駕馭工程負責讓它跑得安全。兩個加起來，才是我要的那種自動化：安全的、有防護機制的自動化。</p>
+  <p>前期要把規則一條一條建好，確實比較麻煩。可是建好之後，安全很多。而且這些規則是可以重複用的：清理逐字稿的等級規則、三層整理法、版型規則，不會只用在會議整理這一條迴圈上，換一個流程照樣搬得過去。</p>
+</div></section>
+
+<section class="section"><div class="inner">
+  <h2>給自己的定位提醒</h2>
+  <p>這件事真正累積下來的，是那些規則、標準和判斷。它們才是資產。迴圈只是讓這批資產不用我每次手動搬，自己就會照著跑。</p>
+  <p>工具會一直換。可是一套你親手累積、還能重複用的規則，加上一條把它們串起來的迴圈，換工具也帶得走。</p>
+</div></section>
+
+<div class="cta-band"><section class="section"><div class="inner">
+  <div>
+    <h2>我是江江教練</h2>
+    <p class="lead">隱性知識提煉師、AI 應用規劃師。我用 AI 幫人把「我會做」變成「這套系統會做」，讓經驗變成會累積的資產。</p>
+    <p>對 AI × 知識管理、隱性知識提煉有興趣，歡迎從我的 LINE 社群開始。我每月固定兩場免費線上講座，分享實戰經驗與方法論。</p>
+  </div>
+  <div class="cta-card">
+    <b>從社群開始</b>
+    <p>想持續學習，或有顧問需求，都歡迎先加入。</p>
+    <p><a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener"><b>加入 LINE 社群 ↗</b></a></p>
+  </div>
+</div></section></div>
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">江江教練 · AI 知識管理</div>
+    <div class="footer-links">
+      <a href="../../articles.html">← 回深度文章總站</a>
+      <a href="../../index.html">首頁</a>
+      <a href="../../learn.html">自學資源</a>
+      <a href="../../skills.html">技能包下載</a>
+      <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">LINE 社群 ↗</a>
+      <a href="https://www.threads.com/@jiang_yude_coach" target="_blank" rel="noopener">Threads ↗</a>
+      <a href="https://vocus.cc/salon/Jiang_Coach" target="_blank" rel="noopener">方格子 ↗</a>
+    </div>
+    <div class="footer-note">這是一篇案例文章，整理我對「一場會議整理，我把它做成了一條可驗收的迴圈」的看法，供你參考。</div>
+  </div>
+</footer>
+
+<!-- 點圖放大 lightbox（hero 與內文圖通用，已內建，不用每篇重加） -->
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <span class="lightbox-close" aria-label="關閉">×</span>
+  <img id="lightbox-img" src="" alt="放大檢視">
+</div>
+<script>
+(function(){
+  var box=document.getElementById('lightbox'),boxImg=document.getElementById('lightbox-img');
+  document.querySelectorAll('.hero-figure img,.inline-figure img').forEach(function(img){
+    img.addEventListener('click',function(){boxImg.src=img.currentSrc||img.src;boxImg.alt=img.alt||'放大檢視';box.classList.add('open');box.setAttribute('aria-hidden','false');});
+  });
+  function close(){box.classList.remove('open');box.setAttribute('aria-hidden','true');boxImg.src='';}
+  box.addEventListener('click',close);
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
+})();
+</script>
+
+<!-- 官網共用：滑鼠暖光暈 + 導航列漢堡選單 -->
+
+
+<!-- 文章自動互聯（相關文章）：兩支已內建，順序不可顛倒，不用再另外加 -->
+
+
+<script src="../../spotlight.js"></script>
+<script src="../../articles-data.js"></script>
+<script src="../../related-render.js"></script>
+<script src="/views.js"></script>
+</body>
+</html>

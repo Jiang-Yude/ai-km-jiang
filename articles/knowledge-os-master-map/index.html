@@ -1,0 +1,306 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="index,follow">
+<title>知識作業系統母架構：把隱性知識持續提煉成可執行判斷的系統設計｜江江教練 · AI 知識管理</title>
+<meta name="description" content="提出「知識作業系統」母架構：存量三庫、八步精煉迴圈、護欄、治理四個構件，加一條三域分流部署軸，圓心是隱性知識提煉。含三重收斂的信度證據（雙 AI 獨立收斂、2023 至 2026 實踐先於命名、跨時內部收斂）、三條真實工作流的驗證設計，與一個立刻能做的對照練習。">
+<link rel="canonical" href="https://ai-km-jiang.vercel.app/articles/knowledge-os-master-map/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="知識作業系統母架構：把隱性知識持續提煉成可執行判斷的系統設計｜江江教練">
+<meta property="og:image" content="https://ai-km-jiang.vercel.app/images/og/knowledge-os-master-map.jpg">
+<meta property="og:description" content="提出「知識作業系統」母架構：存量三庫、八步精煉迴圈、護欄、治理四個構件，加一條三域分流部署軸，圓心是隱性知識提煉。">
+<meta property="og:url" content="https://ai-km-jiang.vercel.app/articles/knowledge-os-master-map/">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:site_name" content="江江教練 · AI 知識管理">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="知識作業系統母架構｜江江教練">
+<meta name="twitter:image" content="https://ai-km-jiang.vercel.app/images/og/knowledge-os-master-map.jpg">
+<meta name="twitter:description" content="知識作業系統母架構：三庫、八步精煉迴圈、護欄與治理，圓心是隱性知識提煉。">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"知識作業系統母架構：把隱性知識持續提煉成可執行判斷的系統設計","description":"提出「知識作業系統」母架構：存量三庫、八步精煉迴圈、護欄、治理四個構件，加一條三域分流部署軸，圓心是隱性知識提煉。","author":{"@type":"Person","name":"江昱德","alternateName":"江江教練","jobTitle":"隱性知識提煉師、AI 應用規劃師"},"isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://ai-km-jiang.vercel.app/"},"inLanguage":"zh-Hant","url":"https://ai-km-jiang.vercel.app/articles/knowledge-os-master-map/"}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{--ink:#1a1612;--paper:#fefcf8;--muted:#6a635a;--line:#d8cdb8;--green:#5f7553;--blue:#5689b8;--orange:#e85a4f;--soft:#faf5ec;--dark:#2a2018;--shadow:0 18px 45px rgba(107,74,42,.14);--sp-shadow:hsla(35,50%,60%,.15);--sp-shadow-edge:hsla(35,50%,68%,.03);--sp-radius:400px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC","Segoe UI",sans-serif}
+a{color:inherit}
+nav.top{position:sticky;top:0;background:rgba(254,252,248,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid #d8cdb8;z-index:100}
+nav.top .container{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:24px;padding:14px 32px}
+.nav-brand-img{justify-self:start;display:flex;align-items:center;text-decoration:none;flex-shrink:0;transition:opacity .2s}
+.nav-brand-img:hover{opacity:.8}.nav-brand-img img{height:40px;width:auto;display:block}
+nav.top ul.nav-menu{justify-self:end;display:flex;gap:22px;list-style:none;margin:0;padding:0;font-size:.95rem;white-space:nowrap}
+nav.top ul.nav-menu a{color:#3a342d;text-decoration:none;transition:color .2s;font-weight:500;white-space:nowrap}
+nav.top ul.nav-menu a:hover{color:#1a1612}nav.top ul.nav-menu a.active{color:#1a1612;font-weight:700}
+.nav-toggle{display:none;background:none;border:none;padding:6px;cursor:pointer;width:36px;height:36px;position:relative}
+.nav-toggle span{display:block;position:absolute;left:8px;right:8px;height:2px;background:#1a1612;border-radius:2px;transition:transform .25s,opacity .25s,top .25s}
+.nav-toggle span:nth-child(1){top:11px}.nav-toggle span:nth-child(2){top:17px}.nav-toggle span:nth-child(3){top:23px}
+.nav-toggle.open span:nth-child(1){top:17px;transform:rotate(45deg)}.nav-toggle.open span:nth-child(2){opacity:0}.nav-toggle.open span:nth-child(3){top:17px;transform:rotate(-45deg)}
+@media(max-width:860px){
+ nav.top .container{grid-template-columns:auto 1fr auto;padding:10px 16px;gap:12px}
+ .nav-brand-img img{height:32px}
+ .nav-toggle{display:block;justify-self:end}
+ nav.top ul.nav-menu{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(254,252,248,.98);backdrop-filter:blur(14px);border-bottom:1px solid #d8cdb8;flex-direction:column;gap:0;padding:8px 0;box-shadow:0 10px 24px rgba(107,74,42,.08)}
+ nav.top ul.nav-menu.open{display:flex}
+ nav.top ul.nav-menu li{border-bottom:1px solid #e8dfc9}
+ nav.top ul.nav-menu li:last-child{border-bottom:none}
+ nav.top ul.nav-menu a{display:block;padding:14px 20px;font-size:1.06rem}
+}
+body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradient(var(--sp-radius) circle at var(--mx,50%) var(--my,50%),var(--sp-shadow) 0%,var(--sp-shadow-edge) 45%,transparent 75%);pointer-events:none;z-index:9999;mix-blend-mode:multiply;transition:background .06s linear}
+.hero{position:relative;overflow:hidden;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:72px;padding:96px clamp(20px,6vw,88px) 80px;background:linear-gradient(180deg,#fffcf0 0%,#f9e9d2 100%);color:#1a1612;border-bottom:1px solid #d8cdb8}
+.hero .wc{position:absolute;border-radius:50%;filter:blur(60px);pointer-events:none;z-index:0}
+.hero .wc1{width:420px;height:360px;top:-120px;right:-80px;background:#e8884b;opacity:.15}
+.hero .wc2{width:360px;height:300px;bottom:-110px;left:-70px;background:#5f7553;opacity:.13}
+.hero .wc3{width:280px;height:260px;top:34%;left:14%;background:#a08144;opacity:.10}
+.hero>div{flex:none;width:860px;max-width:100%;position:relative;z-index:2}
+.kicker{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.55rem;color:#7a5c3a;font-weight:500}
+.hero h1{max-width:none;margin:16px 0 18px;font-size:clamp(36px,6vw,72px);line-height:1.08;overflow-wrap:anywhere}
+.hero p{max-width:none;font-size:clamp(18px,2vw,23px);line-height:1.62;color:#3a342d}
+.section{padding:54px clamp(20px,6vw,88px);border-top:1px solid var(--line)}
+.inner{width:min(1000px,100%);margin:0 auto}
+.section h2{font-size:clamp(26px,4.2vw,48px);line-height:1.12;margin:0 0 18px}
+.section h3{font-size:clamp(21px,3vw,30px);line-height:1.2;margin:30px 0 12px}
+.lead{font-size:clamp(18px,1.6vw,22px);line-height:1.7;color:#3a342d;max-width:900px}
+.section p{font-size:18px;line-height:1.74;color:#3a342d}.section p+p{margin-top:14px}
+.section ul,.section ol{padding-left:1.4em;font-size:18px;line-height:1.74;color:#3a342d}.section li{margin-bottom:8px}
+.meaning{margin:22px 0;padding:16px 18px;border-left:5px solid var(--blue);background:rgba(86,137,184,.12);border-radius:6px;line-height:1.7;font-size:19px}
+.meaning b{display:block;color:var(--blue);margin-bottom:4px}
+.caveat{margin:0 0 8px;padding:16px 18px;border-left:5px solid var(--orange);background:rgba(232,90,79,.1);border-radius:6px;line-height:1.7;font-size:18px;color:#3a342d}
+.caveat b{display:block;color:var(--orange);margin-bottom:4px}
+.infocard{background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px 24px 22px;box-shadow:0 8px 22px rgba(107,74,42,.08);margin-top:8px}
+.infocard-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.info-item{padding:18px 14px 0}
+.info-item b{display:block;font-size:14px;font-weight:900;letter-spacing:.04em;margin-bottom:7px;text-transform:uppercase}
+.info-item:nth-child(1) b{color:var(--green)}.info-item:nth-child(2) b{color:var(--orange)}.info-item:nth-child(3) b{color:var(--blue)}
+.info-item p{margin:0;font-size:17px;line-height:1.6;color:#3a342d}
+.tagrow{display:flex;flex-wrap:wrap;gap:7px;margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
+.tag{font-size:14px;color:var(--muted);background:var(--soft);border:1px solid var(--line);border-radius:999px;padding:4px 11px}
+.duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:24px}
+.duo.stack{grid-template-columns:1fr}
+.duo .card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:22px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.duo .card.a{border-color:var(--orange)}.duo .card.b{border-color:var(--green);box-shadow:0 8px 24px rgba(95,117,83,.16)}
+.duo .card small{display:block;font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.04em;margin-bottom:9px}
+.duo .card.a small{color:var(--orange)}.duo .card.b small{color:var(--green)}
+.duo .card b{display:block;font-size:22px;line-height:1.3;margin-bottom:12px}.duo .card.a b{color:#c0512f}.duo .card.b b{color:#4a7a59}
+.duo .card p{margin:0;color:#3a342d;line-height:1.75;font-size:18px}
+.workflow-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-top:24px}
+.workflow-step{background:#fff;border:1px solid var(--line);border-radius:8px;padding:18px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.workflow-step small{display:block;color:var(--orange);font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;margin-bottom:9px}
+.workflow-step b{display:block;font-size:18px;line-height:1.3;margin-bottom:9px}
+.workflow-step p{margin:0;color:#3a342d;line-height:1.6;font-size:16px}
+.cta-band{background:#e6f0e5;color:#3a342d}.cta-band .section{border-top:none}
+.cta-band .inner{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(260px,.85fr);gap:26px;align-items:start}
+.cta-band h2{font-size:clamp(26px,4vw,44px);margin:0 0 16px}.cta-band p,.cta-band .lead{color:rgba(58,52,45,.9);font-size:18px;line-height:1.72}
+.cta-card{border:1px solid #cfe0d2;background:#fbfdfa;border-radius:8px;padding:22px}
+.cta-card b{display:block;color:#48b178;margin-bottom:10px;font-size:18px}.cta-card p{margin:0 0 14px}
+.cta-card a{display:inline-flex;align-items:center;text-decoration:none;border-radius:8px;padding:12px 16px;font-weight:900;background:#5f7553;color:#fff}
+.footer{padding:30px clamp(20px,6vw,88px);font-size:14px;color:var(--muted);background:#fff;border-top:1px solid var(--line)}
+.footer-inner{width:min(1000px,100%);margin:0 auto}
+.footer-links{display:flex;flex-wrap:wrap;gap:6px 12px;margin-bottom:14px}.footer-links a{color:var(--blue);font-weight:900;text-decoration:none;font-size:14px}
+.footer-brand{font-weight:900;font-size:15px;margin-bottom:10px}.footer-note{font-size:13px;line-height:1.6}
+@media(max-width:820px){.infocard-grid{grid-template-columns:1fr}.duo{grid-template-columns:1fr}.workflow-grid{grid-template-columns:1fr}.cta-band .inner{grid-template-columns:1fr}.section{padding:40px 20px}.hero{min-height:52vh;flex-direction:column;justify-content:flex-start;align-items:flex-start;gap:24px}.hero>div{width:100%}}
+@media(max-width:820px){html,body{overflow-x:hidden}.hero h1{word-break:break-word}}
+@media(min-width:821px) and (max-width:1100px){.workflow-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+</style>
+</head>
+<body class="spotlight">
+<nav class="top">
+  <div class="container">
+    <a class="nav-brand-img" href="../../index.html"><img src="../../images/footer-signature.png" alt="江江教練 | 江昱德"></a>
+    <button class="nav-toggle" aria-label="選單"><span></span><span></span><span></span></button>
+    <ul class="nav-menu">
+      <li><a href="../../index.html">首頁</a></li>
+      <li><a href="../../knowledge-architecture.html">知識架構</a></li>
+      <li><a href="../../courses.html">課程</a></li>
+      <li><a href="../../articles.html" class="active">深度文章</a></li>
+      <li><a href="../../skills.html">技能包下載</a></li>
+      <li><a href="../../cases.html">服務方案</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="wc wc1"></div>
+  <div class="wc wc2"></div>
+  <div class="wc wc3"></div>
+  <div>
+    <div class="kicker">知識管理 / 觀點文章</div>
+    <h1>知識作業系統母架構：把隱性知識持續提煉成可執行判斷的系統設計</h1>
+    <p>提出「知識作業系統」的母架構：四個構件（存量、流量、控制、治理）加一條部署軸，圓心是隱性知識提煉。說明標籤連結法、3X4 資料整理法、隱性知識提煉、迴圈工程、迴圈護欄如何構成一套完整系統，並回答一個更通用的問題：知識工作者的方法越學越多之後，該怎麼收斂成自己的體系。</p>
+  </div>
+</section>
+
+<main>
+
+<section class="section" id="start">
+  <div class="inner">
+    <p class="lead">這篇不深入單一方法的細節，先把整體架構講清楚：問題定義、形成方法、母命題、架構本體、驗證設計，最後是誠實的邊界。文末附一個你可以立刻做的對照練習。</p>
+    <div class="duo stack">
+      <div class="card a">
+        <b>適合誰</b>
+        <ul style="margin:0;padding-left:1.3em">
+          <li>學了很多整理法、筆記法、AI 工作流，卻覺得彼此兜不起來的知識工作者</li>
+          <li>想讓 AI 接手自己的工作流程，並且想先看清整個系統全貌的人</li>
+          <li>正在把自己的專業方法整理成體系、課程或產品的顧問與講師</li>
+        </ul>
+      </div>
+      <div class="card b">
+        <b>你會得到什麼</b>
+        <ul style="margin:0;padding-left:1.3em">
+          <li>一張系統總圖：四個構件加一條部署軸，每個構件管什麼、為什麼缺一不可</li>
+          <li>一條八步精煉迴圈：知識從素材變成資產的完整路徑，以及背後的點線面邏輯</li>
+          <li>一個可以立刻做的對照練習：拿自己的一條工作流程，逐站檢查缺了哪一站</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="problem">
+  <div class="inner">
+    <h2>問題定義</h2>
+    <p>我在三年裡發展了一批方法：標籤連結法、3X4 資料整理法、隱性知識提煉、迴圈工程、迴圈護欄。每個方法各自成篇、各自有效，但一直缺一張說明彼此關係的總圖。</p>
+    <p>缺總圖的代價有三個。方法之間怎麼銜接，靠慣例維持，沒有寫成規格；同一個詞在不同文件裡的定義會漂移；新學的方法找不到掛載的位置，於是每多一個方法，整體就多一分東拼西湊感。這篇文章是把總圖補上的結果。</p>
+  </div>
+</section>
+
+<section class="section" id="experiment">
+  <div class="inner">
+    <h2>形成方法：三重收斂</h2>
+    <p>這張總圖的形成過程採用了刻意的信度設計，最後得到三重互相獨立的收斂證據。</p>
+    <p><strong>第一重，雙 AI 獨立收斂。</strong>我請兩個不同公司的 AI，在互相看不到對方的情況下，各自閱讀官網五十八篇已發布文章與知識庫的核心規則檔，回答同一個問題：這個人的知識架構是什麼。兩份答案幾乎同時交卷，核心結論一致：母命題幾乎逐字同義、畫出同一條迴圈骨架、指出同一個命名混亂、把同一件事放在圓心。差異共五處，互審之後全部收斂。</p>
+    <p><strong>第二重，實踐先於命名。</strong>定案之後，我把 2023 到 2026 的知識庫紀錄全部翻出來回溯比對。架構的每一個構件，都能在歷史紀錄裡找到早於命名的實踐證據：三庫的雛形出現在 2023 年底，捕捉、清理、提煉、發布四站的雛形出現在 2024 年 4 月；2025 年在八站命名之前，已經有三條自然走完「捕捉到發布」的完整工作流。架構是從實踐長出來的回溯性整理，先做了三年，才畫出這張圖。</p>
+    <p><strong>第三重，跨時內部收斂。</strong>2023 年底我為 AI 數位分身設計的三層資料庫，順序是價值觀、表達、事件，從規則層想起；2026 年的定本把同一結構排成資料、知識、規則的提煉方向。同一個人、相隔兩年半、從相反方向抵達同一個三層結構。</p>
+    <p>2023 年那批紀錄會存在，當時就有理由。我那時候就深深地相信：我現在所有紀錄的價值觀跟判斷原則，總有一天 AI 都會聰明到能夠讀懂，然後按照我的規則去運作。所以很多人說 AI 發展很快，其實我等很久了。</p>
+    <div class="meaning"><b>這代表什麼</b>三重證據指向同一件事：體系在既有的紀錄裡原本就存在，缺的只是明文化。</div>
+  </div>
+</section>
+
+<section class="section" id="thesis">
+  <div class="inner">
+    <h2>母命題</h2>
+    <div class="meaning" style="font-size:21px"><b>母命題</b>在有護欄的迴圈裡，把可追溯的素材持續提煉成可執行的判斷，累積成自己的知識資產。</div>
+    <p>素材指每天的會議、日記、對話、閱讀。判斷指「遇到這種情況我會這樣做」的隱性知識。這句話有三個關鍵詞：迴圈（系統持續運轉，而且越轉越自動）、護欄（AI 在其中執行不出軌）、可執行（提煉的終點是 AI 帶著就能出手的判斷規則，停在筆記裡的心得尚未到位）。</p>
+  </div>
+</section>
+
+<section class="section" id="architecture">
+  <div class="inner">
+    <h2>架構本體：四個構件加一條部署軸</h2>
+
+    <h3>存量：三庫</h3>
+    <p>知識依深度分三層存放。三庫之上有一層控制層，管理整套系統的運轉。</p>
+    <div class="infocard">
+      <div class="infocard-grid">
+        <div class="info-item"><b>資料庫</b><p>只存事實與原始素材。文件、會議、截圖先集中進來，AI 查得到。</p></div>
+        <div class="info-item"><b>知識庫</b><p>存加連。資料整理成有關聯的知識，AI 看見關聯，開始複利。</p></div>
+        <div class="info-item"><b>規則庫</b><p>你的判斷。提煉成規則與技能包，AI 帶著你的判斷出手。</p></div>
+      </div>
+    </div>
+
+    <h3>流量：八步精煉迴圈</h3>
+    <p>知識從素材到資產的完整路徑。理論依據是點線面：提煉挖出一個一個的點，連結把點連成線，架構把線組成面與立體；捕捉與清理是備料，運行、驗證、回寫讓這個立體持續轉動。</p>
+    <div class="workflow-grid">
+      <div class="workflow-step"><small>STEP 1</small><b>捕捉</b><p>把原始素材收進來：日記、會議、對話、閱讀。</p></div>
+      <div class="workflow-step"><small>STEP 2</small><b>清理</b><p>轉成可讀、可處理的內容，不急著深度分類。</p></div>
+      <div class="workflow-step"><small>STEP 3</small><b>提煉</b><p>找出觀點、方法、判斷與隱性知識，把它們變成一個一個的點。</p></div>
+      <div class="workflow-step"><small>STEP 4</small><b>連結</b><p>把提煉後的知識接回既有體系，點連成線。</p></div>
+      <div class="workflow-step"><small>STEP 5</small><b>架構</b><p>把知識組成定本、技能包、Agent 或 Loop，線組成面與立體。</p></div>
+      <div class="workflow-step"><small>STEP 6</small><b>運行</b><p>讓架構好的東西自己跑：排程、迴圈、自動任務。</p></div>
+      <div class="workflow-step"><small>STEP 7</small><b>驗證</b><p>確認跑出來的結果是對的，是下一站的閘門。</p></div>
+      <div class="workflow-step"><small>STEP 8</small><b>回寫＋發布</b><p>回寫往內讓系統長大，發布往外讓別人看見或使用。</p></div>
+    </div>
+    <p style="margin-top:22px">其中兩站需要補充定義。<strong>連結</strong>站排在提煉之後，理由是：必須先讀懂一份素材真正產生了什麼知識，才能決定它該掛哪張標籤卡、和哪些既有文章建立連結。</p>
+    <p><strong>回寫＋發布</strong>是同一站的兩個方向：回寫往內，讓自己的系統長大；發布往外，讓成果被看見或使用。私人判斷與客戶資料只回寫不發布；可發布的內容，都先通過了前一站的驗證，驗證因此是這一站的閘門。</p>
+
+    <h3>控制與治理：品管跟廠務是兩件事</h3>
+    <div class="duo">
+      <div class="card a">
+        <small>控制</small>
+        <b>護欄：這一次不出錯</b>
+        <p>管單次任務不出軌。重大結論在被挑戰之前只能視為假設、同一方法連續失敗兩次就換路、驗收必須拿得出證據。這一層是放手讓 AI 自動執行的前提。</p>
+      </div>
+      <div class="card b">
+        <small>治理</small>
+        <b>防腐化：規則本身不腐爛</b>
+        <p>管系統長期健康。規則寫進哪一層、每月健檢、詞彙統整。整理系統在三個月後失效的常見原因，就是只有控制、沒有治理。</p>
+      </div>
+    </div>
+
+    <h3>部署軸：三域分流</h3>
+    <p>與三庫垂直的另一條軸，回答東西放在哪、給誰用：人的工作區、AI 執行區、對外發布區。三庫講知識的深度，三域講知識的去處，兩條軸互相獨立。</p>
+  </div>
+</section>
+
+<section class="section" id="core">
+  <div class="inner">
+    <h2>圓心</h2>
+    <p>四個構件服務同一個定位：隱性知識提煉。三庫是提煉的倉庫、迴圈是提煉的產線、護欄是品管、治理是廠務。我的頭銜是隱性知識提煉師，這張圖等於把名片畫成了系統。</p>
+    <p>這也回答了東拼西湊感的來源：那是敘事的缺口，方法本身沒有散。每個方法都是某個構件裡的一站，圓心站穩之後，零件越多，系統越完整。</p>
+  </div>
+</section>
+
+<section class="section" id="practice">
+  <div class="inner">
+    <h2>驗證與練習</h2>
+    <p>驗證設計是拿三條真實工作流（會議整理、發文、備課）逐站對照八步迴圈，檢查每一站是否真實存在、有無硬塞、有無缺站。</p>
+    <p>你可以做同一個練習：拿自己最常跑的一條工作流程（例如會議記錄、寫文章、備課），對照八步迴圈走一遍，記錄每一站現在用什麼方法、哪一站是空的、哪一站全靠手動。</p>
+    <div class="caveat"><b>第一個修正</b>定案當日就出現：AI 原本把連結排在提煉之前，拿實際流程一走就發現順序錯誤，當場對調。這個結果同時確立了一條原則：架構可以請 AI 起草，最終裁決權在實際運行這套系統的人。</div>
+  </div>
+</section>
+
+<section class="section" id="limits">
+  <div class="inner">
+    <h2>邊界與後續</h2>
+    <p>本架構目前是單一使用者的縱向個案（n 等於 1）：在我自己的知識庫上形成、驗證中，還沒在其他人身上完整驗證。</p>
+    <p>歷史回溯同時驗出了要誠實標註的事：八站的歷史縱深並不均勻。六站有 2023 至 2025 的實踐前史，是長出來的；驗證與回寫兩站是 2026 年才補上的年輕構件。三條工作流的逐站驗證也還缺獨立的檢核紀錄，這是後續工作的第一項。</p>
+    <p>後續依序是：三條真實工作流逐站驗證、各方法的定本展開，以及一個更遠的方向：把整套提煉流程做成協助他人挖掘隱性知識的 Agent。在那之前，這篇文章是這張總圖的第一版。</p>
+    <p>想知道為什麼要這樣管理知識（跟傳統知識管理差在哪、AI 員工的能力從哪來），<a href="../../articles/knowledge-as-employee/" style="font-weight:700;color:var(--blue)">典範差異那篇</a>有完整對照。</p>
+    <div class="tagrow">
+      <span class="tag">知識管理</span><span class="tag">AI工作流</span><span class="tag">隱性知識</span><span class="tag">觀點文章</span>
+    </div>
+  </div>
+</section>
+
+<div class="cta-band">
+  <section class="section">
+    <div class="inner">
+      <div>
+        <h2>想把自己的方法收斂成一張圖？</h2>
+        <p class="lead">從八步迴圈的對照練習開始。想看單一方法的細節，深度文章裡有標籤連結法、迴圈工程、隱性知識提煉各自的完整拆解。</p>
+      </div>
+      <div class="cta-card">
+        <b>繼續讀</b>
+        <p>回深度文章總站，依主題挑你缺的那一站。</p>
+        <a href="../../articles.html">看所有深度文章 →</a>
+      </div>
+    </div>
+  </section>
+</div>
+
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">江江教練 · AI 知識管理</div>
+    <div class="footer-links">
+      <a href="../../articles.html">← 回深度文章總站</a>
+      <a href="../../index.html">首頁</a>
+      <a href="../../learn.html">自學資源</a>
+      <a href="../../skills.html">技能包下載</a>
+      <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">LINE 社群 ↗</a>
+      <a href="https://www.threads.com/@jiang_yude_coach" target="_blank" rel="noopener">Threads ↗</a>
+      <a href="https://vocus.cc/salon/Jiang_Coach" target="_blank" rel="noopener">方格子 ↗</a>
+    </div>
+    <div class="footer-note">這是一篇觀點文章，整理我對「知識架構總圖」的看法，供你參考。</div>
+  </div>
+</footer>
+
+<!-- 草稿階段：互聯與 spotlight 腳本移入 repo 時再啟用（相對路徑）
+<script src="../../spotlight.js"></script>
+<script src="../../articles-data.js"></script>
+<script src="../../related-render.js"></script>
+-->
+</body>
+</html>
