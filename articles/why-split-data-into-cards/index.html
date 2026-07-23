@@ -224,6 +224,13 @@ strong.hl{color:var(--text-on-light);font-weight:700;background:linear-gradient(
 .splitstage.go .fly.f3{transform:translate(52%,-122%) rotate(2deg) scale(1)}
 .splitstage.go .fly.f4{transform:translate(158%,42%) rotate(-3deg) scale(1)}
 .hint{text-align:center;font-size:12.5px;font-family:var(--font-mono);color:var(--muted-on-light);letter-spacing:.06em;margin-top:6px}
+.stagetoggle{display:flex;justify-content:center;margin-top:14px}
+.togglebtn{font-size:13.6px;padding:9px 22px;border-radius:999px;border:1.5px solid var(--accent);
+  color:var(--accent);background:transparent;cursor:pointer;transition:all .25s;font-weight:500;
+  font-family:inherit;display:inline-flex;align-items:center;gap:8px}
+.togglebtn:hover{background:rgba(216,140,58,.12)}
+.togglebtn i{font-style:normal;font-size:14px;transition:transform .4s}
+.togglebtn.is-split i{transform:rotate(180deg)}
 /* 合併 */
 .mergestage{position:relative;height:242px;margin-top:6px}
 .mc{position:absolute;left:50%;top:50%;width:182px;background:var(--card);border:1px solid var(--subtle);border-radius:11px;padding:14px;box-shadow:var(--dshadow);font-size:12.5px;line-height:1.62;transition:transform 1s cubic-bezier(.22,1,.36,1),opacity .7s}
@@ -502,7 +509,7 @@ strong.hl{color:var(--text-on-light);font-weight:700;background:linear-gradient(
     <div class="cap rise">Act 06 · 第一步：拆</div>
     <h2 class="big rise">把一頁投影片，拆成幾塊積木</h2>
     <p class="dlead rise">一頁 PPT 上通常不只一件事。四個條列可能是四個獨立的概念，只是那天剛好排在同一頁。拆的動作，就是讓它們變成各自獨立的積木。</p>
-    <div class="splitstage rise" data-stage>
+    <div class="splitstage rise" id="splitstage" data-stage>
       <div class="bigslide">
         <div class="st">A 課 · p.12「教學現場的四個原則」</div>
         <div class="ln" style="width:88%"></div>
@@ -515,7 +522,10 @@ strong.hl{color:var(--text-on-light);font-weight:700;background:linear-gradient(
       <div class="fly f3"><b>卡 03</b>示範完要留手感時間</div>
       <div class="fly f4"><b>卡 04</b>下課前收一句回饋</div>
     </div>
-    <p class="hint rise">一頁投影片 → 四張各自站得住的卡</p>
+    <p class="hint rise" id="splithint">一頁投影片 → 四張各自站得住的卡</p>
+    <div class="stagetoggle rise">
+      <button class="togglebtn is-split" id="splitbtn" type="button"><i>↺</i><span>合回一頁投影片</span></button>
+    </div>
   </div>
 </section>
 
@@ -675,7 +685,11 @@ var io = new IntersectionObserver(function(entries){
         dotBox.classList.toggle('on-dark', darkBgs.indexOf(e.target.dataset.bg) > -1);
       }
       e.target.querySelectorAll('[data-stage]').forEach(function(st){
-        setTimeout(function(){ st.classList.add('go'); }, 700);
+        setTimeout(function(){
+          if(st.dataset.manual === '1') return;   /* 使用者手動切過就不再自動播 */
+          st.classList.add('go');
+          if(st.id === 'splitstage') syncSplitBtn();
+        }, 700);
       });
     }
   });
@@ -703,6 +717,30 @@ window.addEventListener('scroll', function(){
   clearTimeout(tmr);
   tmr = setTimeout(function(){ dotBox.classList.remove('scrolling'); }, 1100);
 });
+
+/* Act 06 拆解：一頁 ↔ 四張，可來回切換 */
+function syncSplitBtn(){
+  var stage = document.getElementById('splitstage');
+  var btn = document.getElementById('splitbtn');
+  var hint = document.getElementById('splithint');
+  if(!stage || !btn) return;
+  var split = stage.classList.contains('go');
+  btn.classList.toggle('is-split', split);
+  btn.querySelector('i').textContent = split ? '↺' : '✂';
+  btn.querySelector('span').textContent = split ? '合回一頁投影片' : '拆成四張卡';
+  if(hint) hint.textContent = split ? '一頁投影片 → 四張各自站得住的卡' : '一頁投影片：四個概念擠在同一頁';
+}
+(function(){
+  var stage = document.getElementById('splitstage');
+  var btn = document.getElementById('splitbtn');
+  if(!stage || !btn) return;
+  btn.addEventListener('click', function(){
+    stage.dataset.manual = '1';
+    stage.classList.toggle('go');
+    syncSplitBtn();
+  });
+  syncSplitBtn();
+})();
 
 /* Act 03 資料量滑桿實驗 */
 (function(){
