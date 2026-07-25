@@ -255,7 +255,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["strong-ai-models-knowledge-workflow-road", "questionnaire-to-slides-agent-workflow", "teacher-prep-knowledge-workflow", "own-ai-team-at-work", "agent-workflow-builds-automation", "line-group-ai-workflow", "elon-musk-live-skill", "codex-log-health-check", "how-ai-connects-software", "meeting-record-agent-workflow", "decision-ladder-non-programmer", "tidy-mess-before-consulting", "diary-driven-agent-3x4", "docs-as-system-design-agent", "what-is-loop-engineering", "map-is-not-the-territory", "intangible-assets-grow-by-sharing", "manage-ai-with-management-knowledge", "ai-handoff-instructions", "train-your-ai-agent-editor", "ai-that-knows-you", "personal-studio-vs-solo-company", "cli-api-mcp-computer-use", "knowledge-as-employee", "mika-to-laika-product-character-design", "agent-native-tools-software-interface", "ai-tools-professional-judgment"]
+    related: ["strong-ai-models-knowledge-workflow-road", "questionnaire-to-slides-agent-workflow", "teacher-prep-knowledge-workflow", "own-ai-team-at-work", "agent-workflow-builds-automation", "line-group-ai-workflow", "elon-musk-live-skill", "codex-log-health-check", "how-ai-connects-software", "meeting-record-agent-workflow", "decision-ladder-non-programmer", "tidy-mess-before-consulting", "diary-driven-agent-3x4", "docs-as-system-design-agent", "what-is-loop-engineering", "map-is-not-the-territory", "intangible-assets-grow-by-sharing", "manage-ai-with-management-knowledge", "ai-handoff-instructions", "train-your-ai-agent-editor", "ai-that-knows-you", "personal-studio-vs-solo-company", "cli-api-mcp-computer-use", "knowledge-as-employee", "mika-to-laika-product-character-design", "agent-native-tools-software-interface", "ai-tools-professional-judgment", "answer-to-action-enterprise-ai-agent"]
   },
 
   /* ── 13. LINE 群組也能變成 AI 工作流入口（教學）── */
@@ -1312,7 +1312,7 @@ window.ARTICLES = [
     summary: "從嘉我好漾課程整理出的 AI Agent 小編訓練法：分清聊天型 AI 和幹活型 Agent，先用安全資料夾練習，再把問卷變簡報、工作日誌、技能包、交接文件與靈感池串起來，讓 AI 認識你、記住你的判斷，成為真正能交辦的工作夥伴。內含九段可直接複製的提示詞，從禁止刪除的安全規矩到把零散筆記變成一週發文靈感。",
     tags: {"topic":["AIAgent","AI工作流","知識庫","技能包設計"],"level":["零基礎入門"],"content_type":["教學文章"]},
     external: { threads: null, vocus: null },
-    related: ["how-to-train-your-ai-employee", "web-chat-ai-vs-desktop-agent", "docs-as-system-design-agent", "inspiration-production-system", "post-class-organizing-loop", "teacher-prep-knowledge-workflow"]
+    related: ["how-to-train-your-ai-employee", "web-chat-ai-vs-desktop-agent", "docs-as-system-design-agent", "inspiration-production-system", "post-class-organizing-loop", "teacher-prep-knowledge-workflow", "answer-to-action-enterprise-ai-agent"]
   },
 
   /* ── 為什麼要把資料拆成卡片：從 PDF 難讀到 AI 檢索的卡片化教學（教學·江江精選）── */
@@ -1407,5 +1407,24 @@ window.ARTICLES = [
     },
     external: { threads: null, vocus: null },
     related: ["ai-handoff-instructions", "what-is-loop-engineering", "why-split-data-into-cards"]
+  },
+
+  /* ── 從 Answer 到 Action：企業如何導入 AI Agent（教學）── */
+  {
+    id: "answer-to-action-enterprise-ai-agent",
+    url: "articles/answer-to-action-enterprise-ai-agent/",
+    date: "2026-07-25",
+    updated: "2026-07-25",
+    title: "從 Answer 到 Action：我從簡立峰老師的公開觀察，看企業如何導入 AI Agent",
+    problem: "企業已經開始使用生成式 AI，成果卻停在問答、摘要與個人效率，不知道第一個 Agent 流程該從哪裡開始。",
+    audience: "想導入 AI Agent、需要先選一個可控場景做試點，並同時處理資料、權限、人工檢核與責任分工的企業管理者、專案負責人與內部推動團隊。",
+    summary: "依簡立峰老師公開演講與媒體報導，整理 AI 從 Answer 走向 Action 的變化，再延伸成企業可執行的導入框架：四類起步場景、六題篩選表、六步小型試點、資料與系統準備、三層權限護欄，以及 90 天第一輪學習路線。文中清楚區分公開觀點與江江教練的實務整理。",
+    tags: {
+      topic: ["AIAgent", "AI工作流", "數位轉型", "工作流程"],
+      level: ["基礎"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["how-to-train-your-ai-employee", "train-your-ai-agent-editor"]
   }
 ];
