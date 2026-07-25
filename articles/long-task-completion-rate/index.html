@@ -3,14 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="robots" content="noindex,nofollow">
+<meta name="robots" content="index,follow">
 <title>Opus 5 實測：10 個步驟的 Loop，你的 AI 跑到第幾步就停了｜江江教練 · AI 知識管理</title>
-<meta name="description" content="Opus 4.8、Fable、Opus 5 Max 跑同一條十步驟長流程的實測體感。差異出現在遇到解不了的第五步時：停住等人、找 Codex CLI 討論解掉、還是記錄後跳過繼續跑。文中定義長流程完工率（在安全紅線內走到明確結局的步驟數除以總步驟數，品質另計）、說明長流程斷點多半來自判斷標準不足而非技術難度，並附一段可直接複製的長流程續跑指令。">
+<meta name="description" content="知識管理場景的實測：Opus 4.8、Fable、Opus 5 Max 跑同一條十步驟長流程（文件推理、抽象問題、高不確定性、跨領域分析整合）的體感。差異出現在遇到解不了的第五步時：停住等人、找 Codex CLI 討論解掉、還是記錄後跳過繼續跑。文中定義長流程完工率（在安全紅線內走到明確結局的步驟數除以總步驟數，品質另計）、說明長流程斷點多半來自判斷標準不足而非技術難度，並附一段可直接複製的長流程續跑指令。">
 <link rel="canonical" href="https://ai-km-jiang.vercel.app/articles/long-task-completion-rate/">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Opus 5 實測：10 個步驟的 Loop，你的 AI 跑到第幾步就停了｜江江教練">
 <meta property="og:image" content="https://ai-km-jiang.vercel.app/images/og/long-task-completion-rate.jpg">
-<meta property="og:description" content="Opus 4.8、Fable、Opus 5 Max 跑同一條十步驟長流程的實測：長流程能不能跑完，看的是它遇到解不了的事情時做什麼。附三種卡關反應對照、長流程完工率定義與可複製的續跑指令。">
+<meta property="og:description" content="知識管理場景實測，Opus 4.8、Fable、Opus 5 Max 跑同一條十步驟長流程：長流程能不能跑完，看的是它遇到解不了的事情時做什麼。附三種卡關反應對照、長流程完工率定義與可複製的續跑指令。">
 <meta property="og:url" content="https://ai-km-jiang.vercel.app/articles/long-task-completion-rate/">
 <meta property="og:locale" content="zh_TW">
 <meta property="og:site_name" content="江江教練 · AI 知識管理">
@@ -18,7 +18,7 @@
 <meta name="twitter:title" content="Opus 5 實測：10 個步驟的 Loop，你的 AI 跑到第幾步就停了">
 <meta name="twitter:image" content="https://ai-km-jiang.vercel.app/images/og/long-task-completion-rate.jpg">
 <meta name="twitter:description" content="長流程完工率：我現在看模型能不能接長任務的第一個指標。Opus 4.8、Fable、Opus 5 Max 三種卡關反應實測。">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Opus 5 實測：10 個步驟的 Loop，你的 AI 跑到第幾步就停了","description":"Opus 4.8、Fable、Opus 5 Max 跑同一條十步驟長流程的實測體感。差異出現在遇到解不了的第五步時：停住等人、找 Codex CLI 討論解掉、還是記錄後跳過繼續跑。文中定義長流程完工率＝在安全紅線內走到明確結局的步驟數除以總步驟數，品質另計。","keywords":"Opus 5,Opus 5 Max,Opus 4.8,Fable,長流程完工率,迴圈工程,Loop Engineering,AI 工作流,Codex CLI,長任務,不確定性推理","author":{"@type":"Person","name":"江昱德","alternateName":"江江教練","jobTitle":"隱性知識提煉師、AI 應用規劃師"},"isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://ai-km-jiang.vercel.app/"},"datePublished":"2026-07-25","dateModified":"2026-07-25","inLanguage":"zh-Hant","url":"https://ai-km-jiang.vercel.app/articles/long-task-completion-rate/"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Opus 5 實測：10 個步驟的 Loop，你的 AI 跑到第幾步就停了","description":"知識管理場景的實測：Opus 4.8、Fable、Opus 5 Max 跑同一條十步驟長流程（文件推理、抽象問題、高不確定性、跨領域分析整合）的體感。差異出現在遇到解不了的第五步時：停住等人、找 Codex CLI 討論解掉、還是記錄後跳過繼續跑。文中定義長流程完工率＝在安全紅線內走到明確結局的步驟數除以總步驟數，品質另計。","keywords":"Opus 5,Opus 5 Max,Opus 4.8,Fable,長流程完工率,迴圈工程,Loop Engineering,AI 工作流,知識管理,Codex CLI,長任務,不確定性推理,跨領域分析,文件推理,抽象問題","author":{"@type":"Person","name":"江昱德","alternateName":"江江教練","jobTitle":"隱性知識提煉師、AI 應用規劃師"},"isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://ai-km-jiang.vercel.app/"},"datePublished":"2026-07-25","dateModified":"2026-07-25","inLanguage":"zh-Hant","url":"https://ai-km-jiang.vercel.app/articles/long-task-completion-rate/"}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
@@ -144,9 +144,9 @@ pre code{white-space:pre}
   <div class="wc wc2"></div>
   <div class="wc wc3"></div>
   <div>
-    <div class="kicker">AI 工作流 / 迴圈工程</div>
+    <div class="kicker">知識管理實測 / 迴圈工程</div>
     <h1>Opus 5 實測：10 個步驟的 Loop，你的 AI 跑到第幾步就停了</h1>
-    <p>同一條十步驟的長流程，交給 Opus 4.8、Fable、Opus 5 Max 自己從頭跑到尾。我看到最大的差異出現在它遇到解不了的第五步時：停住等我、找 Codex CLI 討論到解掉、還是記錄下來跳過、繼續把後面做完。這篇把它整理成一個可以用的指標：長流程完工率。</p>
+    <p>這是知識管理場景的實測，任務性質是比較複雜的跨領域分析推理，本身帶著很多不確定性。同一條十步驟的長流程，交給 Opus 4.8、Fable、Opus 5 Max 自己從頭跑到尾，最大的差異出現在它遇到解不了的第五步時：停住等我、找 Codex CLI 討論到解掉、還是記錄下來跳過、繼續把後面做完。這篇把它整理成一個可以用的指標：長流程完工率。</p>
     <div class="article-meta">發佈 2026-07-25｜最後更新 2026-07-25</div>
   </div>
 </section>
@@ -154,7 +154,7 @@ pre code{white-space:pre}
 <main>
 
 <section class="section"><div class="inner">
-  <p class="lead">我把同一條有十個步驟的工作流程，交給三個不同的模型自己從頭跑到尾。以我這次的觀察，差異最明顯的地方是遇到解不了的那一步時，它接下來做什麼。</p>
+  <p class="lead">我把同一條有十個步驟的知識管理工作流程，交給三個不同的模型自己從頭跑到尾。以我這次的觀察，差異最明顯的地方是遇到解不了的那一步時，它接下來做什麼。</p>
   <p>這篇整理我的實測體感，以及要在迴圈工程裡補上哪三件事，才能讓長流程真的跑得完。</p>
   <div class="duo">
     <div class="card a"><b>適合誰</b>
@@ -178,6 +178,13 @@ pre code{white-space:pre}
   <h2>真實現場：一條有十個步驟的 Loop</h2>
   <p>我平常的工作方式不是一問一答。我會把一整條流程交給 AI，讓它從第一步跑到第十步，中間不要來問我，跑完再一次回報。</p>
   <p>這種跑法的好處很直接：我可以把它丟下去跑，人離開電腦，回來再看結果。也正因為我人不在，中間出事沒人接手，這條流程能不能跑完，就變成一件很現實的事。</p>
+  <p>先說清楚我測的是什麼類型的任務，因為這會決定結論能延伸到哪裡。我跑的是知識管理的流程，不是寫程式。這類流程的四個特徵，剛好也是最容易讓 AI 卡住的四個地方：</p>
+  <ul>
+    <li><b>文件推理</b>：要從我自己的筆記、逐字稿、規則檔裡讀出資訊，再據此判斷</li>
+    <li><b>抽象問題</b>：處理的是定位、分類、歸屬這類沒有標準答案的東西</li>
+    <li><b>高不確定性</b>：同一份素材可以有好幾種合理處理方式，要選一種</li>
+    <li><b>跨領域分析整合</b>：一條流程裡同時要碰內容、規則、商業判斷與檔案結構</li>
+  </ul>
   <p>十個步驟裡面，通常會有一兩個是有點問題的。可能是我給的資料本身有盲點，可能是那一步比較抽象，模型無法確定該怎麼判斷。這是常態，不是意外。</p>
   <p>所以我一開始就會交代清楚：如果有問題，你就寫工作日誌回報我，先跳過，把剩下的步驟整理好。</p>
   <div class="meaning"><b>問題就出在這裡</b>交代了，不代表它會照做。</div>
@@ -185,7 +192,7 @@ pre code{white-space:pre}
 
 <section class="section"><div class="inner">
   <h2>三種卡關反應</h2>
-  <div class="caveat"><b>先說清楚這不是模型排行榜</b>三個模型的流程配置不完全一樣。我給 Fable 的交代裡包含「可以去叫 Codex CLI 討論」這個授權，Opus 那兩次的交代沒有。所以下面比的是我實際配置下的整體工作流表現，不是控制變因後的模型能力排名。</div>
+  <div class="caveat"><b>先說清楚這不是模型排行榜</b>兩件事要先講：一，我測的是知識管理類的長流程（文件推理、抽象問題、高不確定性、跨領域整合），不是寫程式，也不是通用評測項目。二，三個模型的流程配置不完全一樣，我給 Fable 的交代裡包含「可以去叫 Codex CLI 討論」這個授權，Opus 那兩次的交代沒有。所以下面比的是我在這個場景、這組配置下的整體工作流表現，不是控制變因後的模型能力排名。</div>
 
   <h3>第一種：停在那裡等我</h3>
   <p>我用 Opus 4.8 跑同樣的長流程，以我這組提示與十步流程下的體感估計，有一半、甚至大概六成的機率會停掉。</p>
@@ -213,7 +220,7 @@ pre code{white-space:pre}
 
   <figure class="inline-figure">
     <img src="../../images/articles/long-task-completion-rate-compare.jpg" alt="三個模型在長流程中遇到問題時的反應對照表：Opus 4.8 容易停住、Fable 找 Codex CLI 討論、Opus 5 Max 記錄後跳過繼續跑" loading="lazy" width="1400" height="788">
-    <figcaption>同一條十步驟流程、同一種交代方式，三個模型的卡關反應對照。個人實測，依工作流與提示設定而異。</figcaption>
+    <figcaption>同一條十步驟的知識管理流程（文件推理、抽象問題、不確定性、跨域分析整合）、同一種交代方式，三個模型的卡關反應對照。個人實測，依工作流與提示設定而異。</figcaption>
   </figure>
 
   <div class="cmp-wrap">
@@ -324,7 +331,7 @@ pre code{white-space:pre}
   <div class="duo">
     <div class="card b"><b>保證的部分</b>
       <ul>
-        <li>這是我在自己的工作流上，用同一條長流程跑出來的體感差異</li>
+        <li>這是我在自己的知識管理工作流上，用同一條長流程跑出來的體感差異</li>
         <li>這三種反應是我在自己流程裡觀察到的模式；你能不能複現，要看版本、提示、工具權限與任務結構</li>
         <li>那段續跑指令是我實際在用的，可以直接拿去改</li>
       </ul>
@@ -335,6 +342,7 @@ pre code{white-space:pre}
         <li>模型行為會隨版本、提示設定、工作流結構改變</li>
         <li>我測的是 Opus 5 Max。Opus 5 High 跑 Loop 會不會有同樣結果，我還沒測，這是我接下來要試的</li>
         <li>三個模型的流程配置不對等（Fable 那次多了求助 Codex CLI 的授權），所以這不能當成模型能力排名</li>
+        <li>測的是知識管理類任務（文件推理、抽象問題、高不確定性、跨領域分析整合）。換到寫程式、資料處理這種有明確對錯、可以自動驗證的任務，模型的卡關行為很可能完全不同，那類任務本來就比較不會出現「無法確定要不要繼續」的狀況</li>
       </ul>
     </div>
   </div>
