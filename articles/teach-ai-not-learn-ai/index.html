@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>為什麼你的 AI 每次都要重講一遍：教 AI 的四個步驟｜江江教練 · AI 知識管理</title>
+<meta name="description" content="每次用 AI 都要從頭講一遍需求，問題不在它笨，在沒有人教過它你的判斷。這篇講教 AI 的四個步驟：分清楚三種庫、用 3X4 擺放文件、寫出一條能用的規則、把你帶人的方式搬過來。">
+<link rel="canonical" href="https://ai-km-jiang.vercel.app/articles/teach-ai-not-learn-ai/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="為什麼你的 AI 每次都要重講一遍：教 AI 的四個步驟｜江江教練">
+<meta property="og:description" content="每次用 AI 都要從頭講一遍需求，問題不在它笨，在沒有人教過它你的判斷。這篇講教 AI 的四個步驟：分清楚三種庫、用 3X4 擺放文件、寫出一條能用的規則、把你帶人的方式搬過來。">
+<meta property="og:url" content="https://ai-km-jiang.vercel.app/articles/teach-ai-not-learn-ai/">
+<meta property="og:image" content="https://ai-km-jiang.vercel.app/images/og/teach-ai-not-learn-ai.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="為什麼你的 AI 每次都要重講一遍：教 AI 的四個步驟｜江江教練">
+<meta name="twitter:description" content="每次用 AI 都要從頭講一遍需求，問題不在它笨，在沒有人教過它你的判斷。這篇講教 AI 的四個步驟：分清楚三種庫、用 3X4 擺放文件、寫出一條能用的規則、把你帶人的方式搬過來。">
+<meta name="twitter:image" content="https://ai-km-jiang.vercel.app/images/og/teach-ai-not-learn-ai.jpg">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"為什麼你的 AI 每次都要重講一遍：教 AI 的四個步驟","description":"每次用 AI 都要從頭講一遍需求，問題不在它笨，在沒有人教過它你的判斷。這篇講教 AI 的四個步驟：分清楚三種庫、用 3X4 擺放文件、寫出一條能用的規則、把你帶人的方式搬過來。","author":{"@type":"Person","name":"江昱德","alternateName":"江江教練","jobTitle":"隱性知識提煉師、AI 應用規劃師"},"isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://ai-km-jiang.vercel.app/"},"inLanguage":"zh-Hant","url":"https://ai-km-jiang.vercel.app/articles/teach-ai-not-learn-ai/"}</script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{--ink:#1a1612;--paper:#fefcf8;--muted:#6a635a;--line:#d8cdb8;--green:#5f7553;--blue:#5689b8;--orange:#e85a4f;--soft:#faf5ec;--dark:#2a2018;--shadow:0 18px 45px rgba(107,74,42,.14);--sp-shadow:hsla(35,50%,60%,.15);--sp-shadow-edge:hsla(35,50%,68%,.03);--sp-radius:400px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC","Segoe UI",sans-serif}
+a{color:inherit}
+nav.top{position:sticky;top:0;background:rgba(254,252,248,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid #d8cdb8;z-index:100}
+nav.top .container{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:24px;padding:14px 32px}
+.nav-brand{justify-self:start;font-weight:900;text-decoration:none;font-size:1.02rem}
+nav.top ul.nav-menu{justify-self:end;display:flex;gap:22px;list-style:none;margin:0;padding:0;font-size:.95rem;white-space:nowrap}
+nav.top ul.nav-menu a{color:#3a342d;text-decoration:none;transition:color .2s;font-weight:500}
+nav.top ul.nav-menu a:hover{color:#1a1612}nav.top ul.nav-menu a.active{color:#1a1612;font-weight:700}
+@media(max-width:860px){nav.top .container{grid-template-columns:1fr;padding:10px 16px;gap:8px}nav.top ul.nav-menu{justify-self:start;flex-wrap:wrap;gap:12px}}
+body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradient(var(--sp-radius) circle at var(--mx,50%) var(--my,50%),var(--sp-shadow) 0%,var(--sp-shadow-edge) 45%,transparent 75%);pointer-events:none;z-index:9999;mix-blend-mode:multiply;transition:background .06s linear}
+.hero{position:relative;overflow:hidden;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:72px;padding:96px clamp(20px,6vw,88px) 80px;background:linear-gradient(180deg,#fffcf0 0%,#f9e9d2 100%);color:#1a1612;border-bottom:1px solid #d8cdb8}
+.hero .wc{position:absolute;border-radius:50%;filter:blur(60px);pointer-events:none;z-index:0}
+.hero .wc1{width:420px;height:360px;top:-120px;right:-80px;background:#e8884b;opacity:.15}
+.hero .wc2{width:360px;height:300px;bottom:-110px;left:-70px;background:#5f7553;opacity:.13}
+.hero .wc3{width:280px;height:260px;top:34%;left:14%;background:#a08144;opacity:.10}
+.hero>div{flex:none;width:860px;max-width:100%;position:relative;z-index:2}
+.kicker{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.55rem;color:#7a5c3a;font-weight:500}
+.hero h1{max-width:none;margin:16px 0 18px;font-size:clamp(36px,6vw,72px);line-height:1.08;overflow-wrap:anywhere}
+.hero p{max-width:none;font-size:clamp(18px,2vw,23px);line-height:1.62;color:#3a342d}
+.section{padding:54px clamp(20px,6vw,88px);border-top:1px solid var(--line)}
+.inner{width:min(1000px,100%);margin:0 auto}
+.section h2{font-size:clamp(26px,4.2vw,48px);line-height:1.12;margin:0 0 18px}
+.section h3{font-size:clamp(21px,3vw,30px);line-height:1.2;margin:30px 0 12px}
+.lead{font-size:clamp(18px,1.6vw,22px);line-height:1.7;color:#3a342d;max-width:900px}
+.section p{font-size:18px;line-height:1.74;color:#3a342d}.section p+p{margin-top:14px}
+.section ul,.section ol{padding-left:1.4em;font-size:18px;line-height:1.74;color:#3a342d}.section li{margin-bottom:8px}
+.meaning{margin:22px 0;padding:16px 18px;border-left:5px solid var(--blue);background:rgba(86,137,184,.12);border-radius:6px;line-height:1.7;font-size:19px}
+.meaning b{display:block;color:var(--blue);margin-bottom:4px}
+.caveat{margin:0 0 8px;padding:16px 18px;border-left:5px solid var(--orange);background:rgba(232,90,79,.1);border-radius:6px;line-height:1.7;font-size:18px;color:#3a342d}
+.caveat b{display:block;color:var(--orange);margin-bottom:4px}
+.duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:24px}
+.duo.stack{grid-template-columns:1fr}
+.duo .card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:22px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.duo .card.a{border-color:var(--orange)}.duo .card.b{border-color:var(--green);box-shadow:0 8px 24px rgba(95,117,83,.16)}
+.duo .card b{display:block;font-size:22px;line-height:1.3;margin-bottom:12px}.duo .card.a b{color:#c0512f}.duo .card.b b{color:#4a7a59}
+.duo .card p{margin:0;color:#3a342d;line-height:1.75;font-size:18px}
+.duo .card ul{margin:0;padding-left:1.2em}
+.workflow-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:24px}
+.workflow-step{background:#fff;border:1px solid var(--line);border-radius:8px;padding:18px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.workflow-step small{display:block;color:var(--orange);font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;margin-bottom:9px}
+.workflow-step b{display:block;font-size:18px;line-height:1.3;margin-bottom:9px}
+.workflow-step p{margin:0;color:#3a342d;line-height:1.6;font-size:16px}
+.codeblock{background:var(--dark);color:#f3ead9;border-radius:8px;padding:18px 20px;font:500 14px/1.65 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;overflow-x:auto;white-space:pre-wrap;margin:20px 0;box-shadow:0 8px 22px rgba(107,74,42,.12)}
+.codeblock .c{color:#f6d7a6;font-weight:600}
+.tagrow{display:flex;flex-wrap:wrap;gap:7px;margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
+.tag{font-size:14px;color:var(--muted);background:var(--soft);border:1px solid var(--line);border-radius:999px;padding:4px 11px}
+.footer{padding:30px clamp(20px,6vw,88px);font-size:14px;color:var(--muted);background:#fff;border-top:1px solid var(--line)}
+.footer-inner{width:min(1000px,100%);margin:0 auto}
+.footer-links{display:flex;flex-wrap:wrap;gap:6px 12px;margin-bottom:14px}.footer-links a{color:var(--blue);font-weight:900;text-decoration:none;font-size:14px}
+.footer-brand{font-weight:900;font-size:15px;margin-bottom:10px}.footer-note{font-size:13px;line-height:1.6}
+.draftbar{background:#fff4d6;border-bottom:1px solid #e6c98a;color:#6b4a2a;font-size:15px;padding:10px 20px;text-align:center}
+@media(max-width:820px){.duo{grid-template-columns:1fr}.workflow-grid{grid-template-columns:1fr}.section{padding:40px 20px}.hero{flex-direction:column;justify-content:flex-start;align-items:flex-start;gap:24px;padding:56px 20px 48px}.hero>div{width:100%}html,body{overflow-x:hidden}.hero h1{word-break:break-word}}
+</style>
+</head>
+<body class="spotlight">
+
+
+<nav class="top">
+  <div class="container">
+    <a class="nav-brand-img" href="../../index.html"><img src="../../images/footer-signature.png" alt="江江教練 | 江昱德"></a>
+    <button class="nav-toggle" aria-label="選單"><span></span><span></span><span></span></button>
+    <ul class="nav-menu">
+      <li><a href="../../index.html">首頁</a></li>
+      <li><a href="../../knowledge-architecture.html">知識架構</a></li>
+      <li><a href="../../courses.html">課程</a></li>
+      <li><a href="../../articles.html" class="active">深度文章</a></li>
+      <li><a href="../../skills.html">技能包下載</a></li>
+      <li><a href="../../cases.html">服務方案</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="wc wc1"></div><div class="wc wc2"></div><div class="wc wc3"></div>
+  <div>
+    <div class="kicker">知識管理 / AI 工作流</div>
+    <h1>為什麼你的 AI 每次都要重講一遍：教 AI 的四個步驟</h1>
+    <p>很多人以為要先把 AI 學會才能用 AI。我的順序是反過來的：我從來沒有花過一天在學 AI，我一直在想的是我要怎麼教 AI。這篇講的是教的具體做法，還有一件我在一對一裡反覆看到的事：本來就會帶人的人，學這個特別快。</p>
+  </div>
+</section>
+
+<main>
+
+<section class="section" id="start">
+  <div class="inner">
+    <p class="lead">「教 AI，不是學 AI」這句話我講過很多次，但沒展開講過怎麼教。這篇把它拆成可以照做的四件事：先分清楚資料庫、知識庫、規則庫，知道自己缺哪一塊；再用 3X4 資料整理法把手上的文件變成 AI 讀得懂的系統；接著學會怎麼寫一條真正有用的規則；最後把你原本帶人的方式直接搬過來。文章後半有給不太碰數位工具的老闆的一段話，那是我在現場講最有效的版本。</p>
+
+    <div class="duo stack">
+      <div class="card a">
+        <b>適合誰</b>
+        <ul>
+          <li>覺得自己「還沒學會 AI」所以遲遲不敢開始的人</li>
+          <li>AI 用了一陣子，但每次都要從頭講一遍需求的人</li>
+          <li>文件很多但 AI 找不到重點、老是答非所問的人</li>
+          <li>本來就會帶團隊、會做教育訓練，但覺得自己跟科技無緣的主管與老闆</li>
+        </ul>
+      </div>
+      <div class="card b">
+        <b>你可以帶走什麼</b>
+        <ul>
+          <li>資料庫、知識庫、規則庫的分法，知道自己缺的是哪一塊</li>
+          <li>3X4 資料整理法：三種日記 × 四種時效的完整說明</li>
+          <li>一條好規則長什麼樣，還有四種常見的教錯方式</li>
+          <li>一段可以直接對 AI 說的「新人上工說明」</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>把順序換過來</h2>
+    <p>我從來沒有花過一天在學 AI。我用 AI 的時候，心裡想的一直是「我要怎麼教 AI」，覺得它應該可以更聽話一點、更聰明一點，思考模式一直都是這樣。</p>
+    <p>這不是文字遊戲，兩種順序會長出完全不同的結果。</p>
+    <p>把重點放在學，你會一直在追工具：這個模型比上個月強在哪、那個新功能怎麼開、又出了什麼新名詞。工具每個月都在換，你永遠在補課。</p>
+    <p>把重點放在教，你累積的是另一種東西：你的判斷標準、你的做事順序、你的價值觀。這些東西不會因為換一家模型就作廢，反而是換到更強的模型時，它們會發揮得更好。</p>
+    <div class="meaning"><b>一句話分辨</b>學 AI 累積的是工具知識，會過期；教 AI 累積的是你自己的規則，會增值。</div>
+    <p>還有一個現實的理由：現在的模型已經很強了。它缺的不是能力，是關於你的資訊。它不知道你的客戶是誰、你為什麼上次拒絕那個案子、你交件前一定要檢查什麼。這些東西再強的模型也猜不到，只能你教。</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>那到底要教它什麼</h2>
+    <p>講到這裡，下一個問題自然就來了：既然要教，那到底教什麼。</p>
+    <p>我現在不會只講「知識」這兩個字，因為大家太容易混為一談。我會分成三個：</p>
+    <div class="workflow-grid">
+      <div class="workflow-step"><small>第一層</small><b>資料庫</b><p>比較結構化的東西，數據、表格、名單、報價明細。</p></div>
+      <div class="workflow-step"><small>第二層</small><b>知識庫</b><p>一般的文件，會議紀錄、簡報、SOP、教材、筆記。</p></div>
+      <div class="workflow-step"><small>第三層</small><b>規則庫</b><p>我怎麼下規則、怎麼下判斷。什麼情況該怎麼選、什麼絕對不做。</p></div>
+    </div>
+    <p>大部分人做到第二層就停了。知識庫裡丟了一堆文件，但文件裡不見得含判斷。有些人的文件裡會寫他的價值判斷跟規則，但大部分的人沒有，所以我另外取名叫規則庫。</p>
+    <p>缺了第三層，AI 的表現就會停在「查得到資料，但選不出答案」。它可以把你的三份報價單都念給你聽，但它不知道你為什麼上次選了比較貴的那家。</p>
+    <p>而那個「為什麼」，正好就是隱性知識：老師傅的手感、業務的判斷、主管腦子裡沒寫下來的那條線。教 AI 的核心工作，其實就是把這些東西寫下來。</p>
+    <div class="caveat"><b>常見誤解</b>自動收集資料沒有那麼有價值。真正有價值的是規則庫：告訴 AI 什麼資料對我有價值、為什麼有價值。沒有這一層，收得越多只是雜訊越多。</div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>東西放哪裡，它才找得到</h2>
+    <p>知道要教什麼之後，下一個問題是東西放哪裡、怎麼放，AI 才讀得懂。</p>
+    <p>我自己用的方法叫 3X4，一句話講完就是：<b>三種日記乘以四種時效</b>。</p>
+
+    <h3>三種日記：解決 AI 的三個不知道</h3>
+    <div class="workflow-grid">
+      <div class="workflow-step"><small>第一種</small><b>工作日記</b><p>解決「AI 不知道你在幹嘛」。你今天做了什麼、卡在哪、怎麼解的。</p></div>
+      <div class="workflow-step"><small>第二種</small><b>觀點日記</b><p>解決「AI 不懂你怎麼想」。你對一件事的判斷與理由，這一種最接近規則庫。</p></div>
+      <div class="workflow-step"><small>第三種</small><b>心情日記</b><p>解決「AI 不知道你的狀態」。這週狀態如何、什麼事情消耗你。</p></div>
+    </div>
+    <p>三種的優先順序不一樣。剛開始只要寫工作日記就好，其他兩種先不碰，寫得動比寫得全重要。</p>
+
+    <h3>四種時效：越常用的放越近</h3>
+    <p>四種時效解決的是「AI 該先找哪裡」。邏輯很像人腦的記憶：</p>
+    <ul>
+      <li><b>最近幾天</b>放工作台或看板：本週要動的任務、進行中的事</li>
+      <li><b>最近一個月</b>放根目錄：新建的日記、草稿、進行中的文件。這是 AI 搜尋的第一站</li>
+      <li><b>半年內</b>放分類資料夾：告一段落的內容，按用途歸類</li>
+      <li><b>超過半年</b>搬到備存區：<b>搬走，不是刪掉</b>，名字保留，需要時還找得到</li>
+    </ul>
+    <p>兩個關鍵習慣：新檔案預設先放根目錄，先求好找，過一個月整理時再歸位，不要一建檔就為了分類美觀塞進深層資料夾；過期的搬走、永遠不刪，備存區就是你的歷史。</p>
+    <p>還有一個小動作效益特別大：<b>每個檔名都帶時間戳開頭</b>，格式是 `YYYY-MM-DD-HHMM 標題`。這樣檔案天生按時間排序，AI 一看檔名就知道新舊，連內文都不用開，省下來的是實實在在的成本。</p>
+    <div class="meaning"><b>整套方法的目的只有一句</b>讓你的文件變成你的系統。你不需要另外架一套軟體、買一個平台。你手上那些會議紀錄、教材、報價單、心得筆記，本來就是你的系統，只是它們現在散落各處、沒有結構、沒有判斷。整理過之後，它們就是 AI 的工作說明書。</div>
+    <p>這也是為什麼我說 AI 換哪一家都沒關係。只要文件在、檔名清楚、連結完整，系統就在。</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>一條好規則長什麼樣</h2>
+    <p>檔案擺好之後，剩下最關鍵的就是規則本身怎麼寫。規則庫是三層裡最少人做、但價值最高的一層，所以這一段講具體一點。</p>
+    <p>一條能用的規則，通常有三個部分：<b>什麼情況、怎麼做、為什麼</b>。第三個最容易被省略，但它才是讓 AI 能舉一反三的關鍵。只寫前兩個，AI 只會照抄；三個都寫，它遇到你沒寫過的情況才知道怎麼推。</p>
+    <div class="duo">
+      <div class="card a">
+        <b>不好用的規則</b>
+        <p>「回覆客戶要專業一點。」</p>
+        <p>沒有情況、沒有動作、沒有理由。AI 只能猜什麼叫專業，猜出來的多半不是你要的。</p>
+      </div>
+      <div class="card b">
+        <b>可以用的規則</b>
+        <p>「客戶問價格時，先問清楚他的使用情境再報價。因為同一個服務對不同情境的價值差很多，先報數字會讓對話變成殺價。」</p>
+        <p>情況、動作、理由都在，AI 換一個情境也知道要怎麼推。</p>
+      </div>
+    </div>
+    <p>另外四種常見的教錯方式，中了就會覺得 AI 很笨：</p>
+    <ol>
+      <li><b>只給範例不給理由。</b>丟三份過去的文件說「照這樣寫」，AI 會抄表面格式，抄不到你的判斷。</li>
+      <li><b>每次都重講需求。</b>這次講完下次再講一遍，等於你在當永遠的客服，規則庫一條都沒長。</li>
+      <li><b>寫得太抽象。</b>「要有溫度」「要精準」這種詞，你自己都很難定義，AI 更不可能。改成可觀察的動作。</li>
+      <li><b>只寫該做的，不寫不能做的。</b>紅線比正面規則更重要，因為它擋掉的是你最不能接受的那種錯。</li>
+    </ol>
+    <p>最有效的習慣只有一個：<b>每次 AI 做錯，不要重講一次需求，改成把那條規則補進去。</b>這是唯一會讓你越用越輕鬆的動作。每次都重講，你就是永遠在當客服；把它寫成規則，你才是在建系統。</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>有一種人學這個特別快</h2>
+    <p>上面講的都是方法。但我在一對一裡看到一件事，比方法更能決定一個人上不上得了手。</p>
+    <p>想打造自己的 AI 員工，其實需要兩種能力。</p>
+    <div class="duo">
+      <div class="card a">
+        <b>能力一：對 AI 的理解與應用</b>
+        <p>知道它能做什麼、不能做什麼，知道怎麼把工作交給它。這一塊大家都在補。</p>
+      </div>
+      <div class="card b">
+        <b>能力二：訓練與管理員工的能力</b>
+        <p>會拆工作、會給標準、會驗收、會在對方做錯的時候把話說清楚。這一塊很多人本來就有，只是沒想過可以用在這裡。</p>
+      </div>
+    </div>
+    <p>大家目前幾乎都在補第一塊，很少人注意到第二塊才是真正的門檻。</p>
+    <p>正因為這樣，我在一對一裡常常遇到一種很有優勢的人：本來就有組織領導、組織管理，或是教育訓練經驗的人。他們一旦抓到怎麼跟 AI 說話，速度非常快，因為帶人的那套邏輯可以直接搬過來。</p>
+    <p>反過來說，如果你交代工作一向只講「你看著辦」，那用 AI 也會卡在同一個地方，因為 AI 也需要知道什麼叫做好。</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>給不太碰數位工具的老闆</h2>
+    <p>我遇過一些五十幾歲的老闆，他們會這樣問：我不是很會用數位工具，也不太懂 AI，我真的做得出自己的 AI 員工嗎？</p>
+    <p>我的回答通常是：你會啊，你很會教人啊。</p>
+    <p>然後我會請他把 AI 想像成一個剛畢業的新進助理。更精確一點的說法是：一個大學剛畢業的學霸，很聰明，你講什麼他都聽得懂，但完全沒有實務經驗，不知道你們公司的規矩，也不知道你在乎什麼。</p>
+    <p>但他有一個一般新人沒有的好處：你認真、耐心地教過一次，他就記得了。不會忘記，不會請假，也不會因為你上週講過所以覺得你在囉唆。只要你把那一次教好，他就可以運作得很好。</p>
+    <p>通常講到這裡，老闆就知道要怎麼開始了，而且效果都還不錯。因為他不需要學新東西，他只是在做他做了二三十年的事：帶一個新人。</p>
+    <div class="meaning"><b>換句話說</b>你越會帶人，這件事對你越容易。這是一個對資深管理者非常友善的時代，只是很多人被「我不懂科技」這句話擋在門外。</div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>可以直接複製的新人上工說明</h2>
+    <p>把下面這段補完之後貼給你的 AI，它會從「通用助理」變成「你的員工」。這就是規則庫的第一頁。</p>
+    <div class="codeblock">你現在是我的助理。以下是你上工前要知道的事：
+
+【我是誰、我在做什麼】
+<span class="c">（一句話講清楚你的工作與客戶是誰）</span>
+
+【我最常做的決定，跟我的判斷標準】
+<span class="c">（寫二到三條，每條都要有理由。
+  例：接不接這個案子，我看的是對方有沒有決策權、
+  時程會不會撞到既有客戶。因為沒有決策權的案子
+  通常會來回很多次，最後還不一定成。）</span>
+
+【我絕對不做的事】
+<span class="c">（寫二到三條紅線，例：不承諾沒把握的交期、
+  對外文件不出現客戶未公開的數字）</span>
+
+【交付給我的時候】
+<span class="c">（你希望怎麼收東西：先給結論、還是先給選項；
+  要不要附理由；長度大概多少）</span>
+
+之後我每次糾正你，你都要問我一句：這條要不要寫進上面的規則裡？</div>
+    <div class="caveat"><b>最後那句是關鍵</b>沒有那句，你每次糾正都只在這一次對話裡生效，換個視窗就重來。有那句，你每糾正一次，規則庫就長一條。三個月之後你會有一份別人抄不走的東西。</div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>如果只做一件事，從這裡開始</h2>
+    <p>整篇講完，如果只做一件事，我建議這樣排：</p>
+    <div class="workflow-grid">
+      <div class="workflow-step"><small>第一週</small><b>寫下一個決定</b><p>挑你最常做的那個決定，寫下你是怎麼判斷的，記得寫理由。這是規則庫第一條。</p></div>
+      <div class="workflow-step"><small>第二週</small><b>把檔名改成帶時間戳</b><p>新檔案一律 `YYYY-MM-DD-HHMM 標題`，全部先放根目錄。這一步幾乎不花時間，但 AI 找東西的成本立刻下降。</p></div>
+      <div class="workflow-step"><small>第三週</small><b>建立糾正即入庫的習慣</b><p>AI 做錯的時候，改成補規則而不是重講需求。這一步是整套方法會不會滾起來的分水嶺。</p></div>
+    </div>
+    <p>不用等你學會 AI 才開始。你今天就可以開始教它。</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>收尾</h2>
+    <p>學 AI 是追著工具跑，教 AI 是把自己的判斷寫下來。前者的成果會隨著版本更新作廢，後者的成果會隨著模型變強而變得更值錢。</p>
+    <p>而且教 AI 這件事有個副作用：你會被迫把自己一直以來憑感覺做的判斷講清楚。很多人做到一半會發現，最大的收穫不是 AI 變好用，是自己終於知道自己在幹嘛。</p>
+    <p><b>你的文件，就是你的系統。</b></p>
+    <div class="tagrow">
+      <span class="tag">知識管理</span><span class="tag">規則庫</span><span class="tag">AI 員工</span><span class="tag">隱性知識</span><span class="tag">3X4 資料整理法</span>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>延伸閱讀</h2>
+    <ul>
+      <li><a href="../ten-year-anchor/">AI 知識焦慮的解法：在快速變動的時代，找到十年不變的錨點</a>　規則庫要寫什麼，取決於你想完成的那件事是什麼。</li>
+      <li><a href="../ai-native-not-transformation/">為什麼你的 AI 導入沒有效果：從三層論到組織那面牆</a>　把判斷寫下來，正好是那篇說的第三層入場券。</li>
+      <li><a href="../timing-and-forecast/">資訊時差與市場預測：怎麼比市場早一步，又不會早太多</a>　工具會一直換，規則庫是換工具時唯一帶得走的東西。</li>
+      <li><a href="../one-on-one-questions/">AI 常見問題 37 問</a>　這篇的原始出處，一對一收到的問題全集。</li>
+    </ul>
+  </div>
+</section>
+
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">江江教練 · AI 知識管理</div>
+    <div class="footer-links">
+      <a href="../../articles.html">← 回深度文章總站</a>
+      <a href="../../index.html">首頁</a>
+      <a href="../../learn.html">自學資源</a>
+      <a href="../../skills.html">技能包下載</a>
+      <a href="https://www.threads.com/@jiang_yude_coach" target="_blank" rel="noopener">Threads ↗</a>
+      <a href="https://vocus.cc/salon/Jiang_Coach" target="_blank" rel="noopener">方格子 ↗</a>
+    </div>
+    <div class="footer-note">這是一篇方法文章，整理我對「為什麼你的 AI 每次都要重講一遍：教 AI 的四個步驟」的看法，供你參考。</div>
+  </div>
+</footer>
+
+<script src="../../spotlight.js"></script>
+<script src="../../articles-data.js"></script>
+<script src="../../related-render.js"></script>
+</body>
+</html>

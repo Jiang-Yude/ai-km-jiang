@@ -1,0 +1,418 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Opus 5 實測：10 個步驟的 Loop，你的 AI 跑到第幾步就停了｜江江教練 · AI 知識管理</title>
+<meta name="description" content="Opus 4.8、Fable、Opus 5 Max 跑同一條十步驟長流程的實測體感。差異出現在遇到解不了的第五步時：停住等人、找 Codex CLI 討論解掉、還是記錄後跳過繼續跑。文中定義長流程完工率（在安全紅線內走到明確結局的步驟數除以總步驟數，品質另計）、說明長流程斷點多半來自判斷標準不足而非技術難度，並附一段可直接複製的長流程續跑指令。">
+<link rel="canonical" href="https://ai-km-jiang.vercel.app/articles/long-task-completion-rate/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Opus 5 實測：10 個步驟的 Loop，你的 AI 跑到第幾步就停了｜江江教練">
+<meta property="og:image" content="https://ai-km-jiang.vercel.app/images/og/long-task-completion-rate.jpg">
+<meta property="og:description" content="Opus 4.8、Fable、Opus 5 Max 跑同一條十步驟長流程的實測：長流程能不能跑完，看的是它遇到解不了的事情時做什麼。附三種卡關反應對照、長流程完工率定義與可複製的續跑指令。">
+<meta property="og:url" content="https://ai-km-jiang.vercel.app/articles/long-task-completion-rate/">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:site_name" content="江江教練 · AI 知識管理">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Opus 5 實測：10 個步驟的 Loop，你的 AI 跑到第幾步就停了">
+<meta name="twitter:image" content="https://ai-km-jiang.vercel.app/images/og/long-task-completion-rate.jpg">
+<meta name="twitter:description" content="長流程完工率：我現在看模型能不能接長任務的第一個指標。Opus 4.8、Fable、Opus 5 Max 三種卡關反應實測。">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Opus 5 實測：10 個步驟的 Loop，你的 AI 跑到第幾步就停了","description":"Opus 4.8、Fable、Opus 5 Max 跑同一條十步驟長流程的實測體感。差異出現在遇到解不了的第五步時：停住等人、找 Codex CLI 討論解掉、還是記錄後跳過繼續跑。文中定義長流程完工率＝在安全紅線內走到明確結局的步驟數除以總步驟數，品質另計。","keywords":"Opus 5,Opus 5 Max,Opus 4.8,Fable,長流程完工率,迴圈工程,Loop Engineering,AI 工作流,Codex CLI,長任務,不確定性推理","author":{"@type":"Person","name":"江昱德","alternateName":"江江教練","jobTitle":"隱性知識提煉師、AI 應用規劃師"},"isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://ai-km-jiang.vercel.app/"},"datePublished":"2026-07-25","dateModified":"2026-07-25","inLanguage":"zh-Hant","url":"https://ai-km-jiang.vercel.app/articles/long-task-completion-rate/"}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{--ink:#1a1612;--paper:#fefcf8;--muted:#6a635a;--line:#d8cdb8;--green:#5f7553;--blue:#5689b8;--orange:#e85a4f;--soft:#faf5ec;--dark:#2a2018;--shadow:0 18px 45px rgba(107,74,42,.14);--sp-shadow:hsla(35,50%,60%,.15);--sp-shadow-edge:hsla(35,50%,68%,.03);--sp-radius:400px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC","Segoe UI",sans-serif}
+a{color:inherit}
+nav.top{position:sticky;top:0;background:rgba(254,252,248,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid #d8cdb8;z-index:100}
+nav.top .container{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:24px;padding:14px 32px}
+.nav-brand-img{justify-self:start;display:flex;align-items:center;text-decoration:none;flex-shrink:0;transition:opacity .2s}
+.nav-brand-img:hover{opacity:.8}.nav-brand-img img{height:40px;width:auto;display:block}
+nav.top ul.nav-menu{justify-self:end;display:flex;gap:22px;list-style:none;margin:0;padding:0;font-size:.95rem;white-space:nowrap}
+nav.top ul.nav-menu a{color:#3a342d;text-decoration:none;transition:color .2s;font-weight:500;white-space:nowrap}
+nav.top ul.nav-menu a:hover{color:#1a1612}nav.top ul.nav-menu a.active{color:#1a1612;font-weight:700}
+.nav-toggle{display:none;background:none;border:none;padding:6px;cursor:pointer;width:36px;height:36px;position:relative}
+.nav-toggle span{display:block;position:absolute;left:8px;right:8px;height:2px;background:#1a1612;border-radius:2px;transition:transform .25s,opacity .25s,top .25s}
+.nav-toggle span:nth-child(1){top:11px}.nav-toggle span:nth-child(2){top:17px}.nav-toggle span:nth-child(3){top:23px}
+.nav-toggle.open span:nth-child(1){top:17px;transform:rotate(45deg)}.nav-toggle.open span:nth-child(2){opacity:0}.nav-toggle.open span:nth-child(3){top:17px;transform:rotate(-45deg)}
+@media(max-width:860px){
+ nav.top .container{grid-template-columns:auto 1fr auto;padding:10px 16px;gap:12px}
+ .nav-brand-img img{height:32px}
+ .nav-toggle{display:block;justify-self:end}
+ nav.top ul.nav-menu{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(254,252,248,.98);backdrop-filter:blur(14px);border-bottom:1px solid #d8cdb8;flex-direction:column;gap:0;padding:8px 0;box-shadow:0 10px 24px rgba(107,74,42,.08)}
+ nav.top ul.nav-menu.open{display:flex}
+ nav.top ul.nav-menu li{border-bottom:1px solid #e8dfc9}
+ nav.top ul.nav-menu li:last-child{border-bottom:none}
+ nav.top ul.nav-menu a{display:block;padding:14px 20px;font-size:1.06rem}
+}
+body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradient(var(--sp-radius) circle at var(--mx,50%) var(--my,50%),var(--sp-shadow) 0%,var(--sp-shadow-edge) 45%,transparent 75%);pointer-events:none;z-index:9999;mix-blend-mode:multiply;transition:background .06s linear}
+.hero{position:relative;overflow:hidden;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:72px;padding:96px clamp(20px,6vw,88px) 80px;background:linear-gradient(180deg,#fffcf0 0%,#f9e9d2 100%);color:#1a1612;border-bottom:1px solid #d8cdb8}
+.hero .wc{position:absolute;border-radius:50%;filter:blur(60px);pointer-events:none;z-index:0}
+.hero .wc1{width:420px;height:360px;top:-120px;right:-80px;background:#e8884b;opacity:.15}
+.hero .wc2{width:360px;height:300px;bottom:-110px;left:-70px;background:#5f7553;opacity:.13}
+.hero .wc3{width:280px;height:260px;top:34%;left:14%;background:#a08144;opacity:.10}
+.hero>div{flex:none;width:860px;max-width:100%;position:relative;z-index:2}
+.kicker{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.55rem;color:#7a5c3a;font-weight:500}
+.hero h1{max-width:none;margin:16px 0 18px;font-size:clamp(34px,5.4vw,64px);line-height:1.1;overflow-wrap:anywhere}
+.hero p{max-width:none;font-size:clamp(18px,2vw,23px);line-height:1.62;color:#3a342d}
+.section{padding:54px clamp(20px,6vw,88px);border-top:1px solid var(--line)}
+.inner{width:min(1000px,100%);margin:0 auto}
+.section h2{font-size:clamp(26px,4.2vw,48px);line-height:1.12;margin:0 0 18px}
+.section h3{font-size:clamp(21px,3vw,30px);line-height:1.2;margin:30px 0 12px}
+.lead{font-size:clamp(18px,1.6vw,22px);line-height:1.7;color:#3a342d;max-width:900px}
+.section p{font-size:18px;line-height:1.74;color:#3a342d}.section p+p{margin-top:14px}
+.section ul,.section ol{padding-left:1.4em;font-size:18px;line-height:1.74;color:#3a342d}.section li{margin-bottom:8px}
+.meaning{margin:22px 0;padding:16px 18px;border-left:5px solid var(--blue);background:rgba(86,137,184,.12);border-radius:6px;line-height:1.7;font-size:19px}
+.meaning b{display:block;color:var(--blue);margin-bottom:4px}
+.caveat{margin:0 0 8px;padding:16px 18px;border-left:5px solid var(--orange);background:rgba(232,90,79,.1);border-radius:6px;line-height:1.7;font-size:18px;color:#3a342d}
+.caveat b{display:block;color:var(--orange);margin-bottom:4px}
+.tagrow{display:flex;flex-wrap:wrap;gap:7px;margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
+.tag{font-size:14px;color:var(--muted);background:var(--soft);border:1px solid var(--line);border-radius:999px;padding:4px 11px}
+.duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:24px}
+.duo.stack{grid-template-columns:1fr}
+.duo .card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:22px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.duo .card.a{border-color:var(--orange)}.duo .card.b{border-color:var(--green);box-shadow:0 8px 24px rgba(95,117,83,.16)}
+.duo .card small{display:block;font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.04em;margin-bottom:9px}
+.duo .card.a small{color:var(--orange)}.duo .card.b small{color:var(--green)}
+.duo .card b{display:block;font-size:22px;line-height:1.3;margin-bottom:12px}.duo .card.a b{color:#c0512f}.duo .card.b b{color:#4a7a59}
+.duo .card p{margin:0;color:#3a342d;line-height:1.75;font-size:18px}
+.duo .card ul{margin:0;padding-left:1.25em;font-size:17px}
+.steps{counter-reset:st;margin:24px 0 0;padding:0;list-style:none}
+.steps li{counter-increment:st;position:relative;padding:16px 18px 16px 60px;margin-bottom:12px;background:#fff;border:1px solid var(--line);border-radius:10px;box-shadow:0 6px 18px rgba(107,74,42,.06);font-size:18px;line-height:1.7}
+.steps li::before{content:counter(st);position:absolute;left:16px;top:15px;width:30px;height:30px;border-radius:50%;background:var(--green);color:#fff;font-weight:900;font-size:16px;display:flex;align-items:center;justify-content:center}
+.steps li b{display:block;margin-bottom:4px;font-size:19px}
+.flowline{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin:24px 0 6px;padding:18px;background:var(--soft);border:1px solid var(--line);border-radius:12px;font-size:19px;font-weight:700}
+.flowline span{background:#fff;border:1px solid var(--line);border-radius:999px;padding:8px 16px}
+.flowline i{color:var(--green);font-style:normal;font-weight:900}
+pre{margin:22px 0 8px;padding:20px;background:var(--dark);color:#f4ece0;border-radius:12px;overflow-x:auto;font:500 15px/1.75 'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,monospace;box-shadow:var(--shadow)}
+pre code{white-space:pre}
+.inline-figure{margin:30px auto 8px;max-width:900px}
+.inline-figure img{display:block;width:100%;height:auto;aspect-ratio:1400/788;border-radius:14px;border:1px solid var(--line);box-shadow:var(--shadow);background:#fff;cursor:zoom-in}
+.inline-figure figcaption{font-size:14px;line-height:1.6;color:var(--muted);margin-top:10px}
+.lightbox{position:fixed;inset:0;z-index:10000;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(12,10,8,.92);cursor:zoom-out;backdrop-filter:blur(4px)}
+.lightbox.open{display:flex}.lightbox img{max-width:96vw;max-height:92vh;border-radius:10px;box-shadow:0 24px 60px rgba(0,0,0,.5)}
+.lightbox-close{position:fixed;top:18px;right:24px;color:#fff;font-size:34px;line-height:1;font-weight:700;cursor:pointer;opacity:.85}
+.cta-band{background:#e6f0e5;color:#3a342d}.cta-band .section{border-top:none}
+.cta-band .inner{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(260px,.85fr);gap:26px;align-items:start}
+.cta-band h2{font-size:clamp(26px,4vw,44px);margin:0 0 16px}.cta-band p,.cta-band .lead{color:rgba(58,52,45,.9);font-size:18px;line-height:1.72}
+.cta-card{border:1px solid #cfe0d2;background:#fbfdfa;border-radius:8px;padding:22px}
+.cta-card b{display:block;color:#48b178;margin-bottom:10px;font-size:18px}.cta-card p{margin:0 0 14px}
+.cta-card a{display:inline-flex;align-items:center;text-decoration:none;border-radius:8px;padding:12px 16px;font-weight:900;background:#5f7553;color:#fff}
+.footer{padding:30px clamp(20px,6vw,88px);font-size:14px;color:var(--muted);background:#fff;border-top:1px solid var(--line)}
+.footer-inner{width:min(1000px,100%);margin:0 auto}
+.footer-links{display:flex;flex-wrap:wrap;gap:6px 12px;margin-bottom:14px}.footer-links a{color:var(--blue);font-weight:900;text-decoration:none;font-size:14px}
+.footer-brand{font-weight:900;font-size:15px;margin-bottom:10px}.footer-note{font-size:13px;line-height:1.6}
+.readmore{margin-top:24px;padding:20px 22px;background:var(--soft);border:1px solid var(--line);border-radius:12px}
+.readmore.near{margin:26px 0 6px;background:rgba(86,137,184,.07);border-color:#bcd0e2}
+.readmore.near b{color:var(--blue);font-size:18px}
+.readmore.near li{font-size:17px;line-height:1.7;margin-bottom:10px}
+.readmore b{display:block;margin-bottom:10px;font-size:19px}
+.readmore ul{margin:0;padding-left:1.25em}
+.readmore a{color:var(--blue);font-weight:700;text-decoration:none}
+.readmore a:hover{text-decoration:underline}
+@media(max-width:820px){.duo{grid-template-columns:1fr}.cta-band .inner{grid-template-columns:1fr}.section{padding:40px 20px}.hero{min-height:52vh;flex-direction:column;justify-content:flex-start;align-items:flex-start;gap:24px}.hero>div{width:100%}}
+@media(max-width:820px){html,body{overflow-x:hidden}.hero h1{word-break:break-word}}
+.compare{width:100%;border-collapse:collapse;margin:18px 0;font-size:17px}
+.compare th,.compare td{border:1px solid var(--line);padding:11px 13px;text-align:left;line-height:1.6}
+.compare th{background:var(--soft);font-weight:700}
+.compare tr:nth-child(even) td{background:rgba(250,245,236,.5)}
+.cmp-wrap{overflow-x:auto}
+@media(max-width:700px){.compare{font-size:15px;min-width:560px}.compare th,.compare td{padding:8px 9px}}
+.article-meta{margin-top:18px;font-size:14px;line-height:1.6;color:#6a635a}
+</style>
+</head>
+<body class="spotlight">
+<nav class="top">
+  <div class="container">
+    <a class="nav-brand-img" href="../../index.html"><img src="../../images/footer-signature.png" alt="江江教練 | 江昱德"></a>
+    <button class="nav-toggle" aria-label="選單"><span></span><span></span><span></span></button>
+    <ul class="nav-menu">
+      <li><a href="../../index.html">首頁</a></li>
+      <li><a href="../../knowledge-architecture.html">知識架構</a></li>
+      <li><a href="../../courses.html">課程</a></li>
+      <li><a href="../../articles.html" class="active">深度文章</a></li>
+      <li><a href="../../skills.html">技能包下載</a></li>
+      <li><a href="../../cases.html">服務方案</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="wc wc1"></div>
+  <div class="wc wc2"></div>
+  <div class="wc wc3"></div>
+  <div>
+    <div class="kicker">AI 工作流 / 迴圈工程</div>
+    <h1>Opus 5 實測：10 個步驟的 Loop，你的 AI 跑到第幾步就停了</h1>
+    <p>同一條十步驟的長流程，交給 Opus 4.8、Fable、Opus 5 Max 自己從頭跑到尾。我看到最大的差異出現在它遇到解不了的第五步時：停住等我、找 Codex CLI 討論到解掉、還是記錄下來跳過、繼續把後面做完。這篇把它整理成一個可以用的指標：長流程完工率。</p>
+    <div class="article-meta">發佈 2026-07-25｜最後更新 2026-07-25</div>
+  </div>
+</section>
+
+<main>
+
+<section class="section"><div class="inner">
+  <p class="lead">我把同一條有十個步驟的工作流程，交給三個不同的模型自己從頭跑到尾。以我這次的觀察，差異最明顯的地方是遇到解不了的那一步時，它接下來做什麼。</p>
+  <p>這篇整理我的實測體感，以及要在迴圈工程裡補上哪三件事，才能讓長流程真的跑得完。</p>
+  <div class="duo">
+    <div class="card a"><b>適合誰</b>
+      <ul>
+        <li>已經在讓 AI 自己跑多步驟流程，但常常回來發現它停在中間的人</li>
+        <li>手上有好幾個模型可以選，不知道複雜任務該派給誰的人</li>
+        <li>想知道長流程要怎麼交代，AI 才不會卡在一個小問題上動不了的人</li>
+      </ul>
+    </div>
+    <div class="card b"><b>你可以帶走什麼</b>
+      <ul>
+        <li>三種卡關反應的對照：停住、找人討論、記錄後跳過</li>
+        <li>一個判斷指標：長流程完工率，比單題分數更貼近實際使用</li>
+        <li>一段可以直接複製的長流程續跑指令</li>
+      </ul>
+    </div>
+  </div>
+</div></section>
+
+<section class="section"><div class="inner">
+  <h2>真實現場：一條有十個步驟的 Loop</h2>
+  <p>我平常的工作方式不是一問一答。我會把一整條流程交給 AI，讓它從第一步跑到第十步，中間不要來問我，跑完再一次回報。</p>
+  <p>這種跑法的好處很直接：我可以把它丟下去跑，人離開電腦，回來再看結果。也正因為我人不在，中間出事沒人接手，這條流程能不能跑完，就變成一件很現實的事。</p>
+  <p>十個步驟裡面，通常會有一兩個是有點問題的。可能是我給的資料本身有盲點，可能是那一步比較抽象，模型無法確定該怎麼判斷。這是常態，不是意外。</p>
+  <p>所以我一開始就會交代清楚：如果有問題，你就寫工作日誌回報我，先跳過，把剩下的步驟整理好。</p>
+  <div class="meaning"><b>問題就出在這裡</b>交代了，不代表它會照做。</div>
+</div></section>
+
+<section class="section"><div class="inner">
+  <h2>三種卡關反應</h2>
+  <div class="caveat"><b>先說清楚這不是模型排行榜</b>三個模型的流程配置不完全一樣。我給 Fable 的交代裡包含「可以去叫 Codex CLI 討論」這個授權，Opus 那兩次的交代沒有。所以下面比的是我實際配置下的整體工作流表現，不是控制變因後的模型能力排名。</div>
+
+  <h3>第一種：停在那裡等我</h3>
+  <p>我用 Opus 4.8 跑同樣的長流程，以我這組提示與十步流程下的體感估計，有一半、甚至大概六成的機率會停掉。</p>
+  <p>停的位置很有規律。十個步驟裡假設有兩個有點問題、有盲點，或是比較抽象讓它無法確定，只有一個問題的時候它通常還能繼續做；一旦變成兩個，尤其第五步的問題又影響到後面的步驟，它就很高機率真的停下來，後面的都沒做。</p>
+  <p>我回來看到的畫面是：卡在第五格，第六到第十步是空的。即便我已經寫過「有問題就跳過」。</p>
+
+  <h3>第二種：找另一個 AI 討論，解掉再繼續</h3>
+  <p>Fable 我是這樣交代的：有問題就跟 Codex 討論，直接叫 Codex CLI 去討論，討論完沒問題就繼續做；真的有大問題，你寫工作日誌回報我，但先跳過，去執行後面的步驟。這個前提是我本來就配好了 Codex CLI 的存取權，也明確授權它可以去求助。</p>
+  <p>這樣跑，幾乎真的都可以全部執行完。</p>
+  <p>第五步有問題，它跟 Codex 討論完就把問題解決掉。第八步有問題，它可能再跟另一個模型討論完就解決掉。我回來看的時候，整條流程是走到第十步的，其中可以直接拿去用的結果大概七到八成，剩下真的解不掉的兩三個問題寫在回報裡等我處理。</p>
+  <p>這是我之前遇到複雜、抽象、不確定性高的任務，會直接指定 Fable 的原因。</p>
+
+  <div class="readmore near">
+    <b>換一顆腦這件事，我另外寫過兩篇</b>
+    <ul>
+      <li><a href="../dual-track-planning-loop/">讓兩個 AI 互相挑錯：我的企劃在送出前，先被模擬評審打了 2/5 分</a>　同一份輸入讓兩家各自跑完再互審，這篇是把「找另一個 AI 討論」做成固定流程的完整版</li>
+      <li><a href="../ai-handoff-instructions/">交接指令：難的是決定不寫什麼</a>　要讓它去問別的模型，交接那段話怎麼寫才不會越交代越糟</li>
+    </ul>
+  </div>
+
+  <h3>第三種：解不了就記錄、跳過、繼續跑</h3>
+  <p>今天我拿同樣的跑法測 Opus 5 Max。我的體感是它跑 Loop 有變穩：比較常走到第十步，也比較常留下記錄。</p>
+  <p>但它穩的方式跟 Fable 不一樣。Fable 是遇到問題會去把問題解決掉；Opus 5 Max 我覺得它可能沒有辦法解決問題，比較穩定的是那件事解決不了的時候，它會跳過，繼續執行後面的步驟。</p>
+  <p>對我來說這個進步很有感。我要的是它解不掉的時候先把能做的做完，不要整條停住。解得掉當然更好，但那是加分項。</p>
+
+  <figure class="inline-figure">
+    <img src="../../images/articles/long-task-completion-rate-compare.jpg" alt="三個模型在長流程中遇到問題時的反應對照表：Opus 4.8 容易停住、Fable 找 Codex CLI 討論、Opus 5 Max 記錄後跳過繼續跑" loading="lazy" width="1400" height="788">
+    <figcaption>同一條十步驟流程、同一種交代方式，三個模型的卡關反應對照。個人實測，依工作流與提示設定而異。</figcaption>
+  </figure>
+
+  <div class="cmp-wrap">
+  <table class="compare">
+    <tr><th>模型</th><th>遇到問題時</th><th>長流程表現</th><th>我的體感</th></tr>
+    <tr><td>Opus 4.8</td><td>累積一兩個問題後，容易停住</td><td>後面步驟可能全部沒做</td><td>容易卡在半路</td></tr>
+    <tr><td>Fable</td><td>找 Codex CLI 討論；解不了就記錄、跳過</td><td>通常能跑完整條流程，完成約七至八成</td><td>解題與完工最穩</td></tr>
+    <tr><td>Opus 5 Max</td><td>未必能解決，但比較會記錄、跳過</td><td>可以繼續執行後面的步驟</td><td>跑 Loop 明顯變穩</td></tr>
+  </table>
+  </div>
+
+  <p>Opus 5 Max 最大的進步，用一條動線講就是：</p>
+  <div class="flowline"><span>解不了</span><i>→</i><span>記錄</span><i>→</i><span>跳過</span><i>→</i><span>繼續跑</span></div>
+  <div class="caveat"><b>這是個人實測</b>上面的機率與完成度都是我自己跑下來的體感，不是量化實驗，也不是任何一家的官方數據。同一個模型放到你的工作流與提示設定裡，表現可能不一樣。</div>
+</div></section>
+
+<section class="section"><div class="inner">
+  <h2>讓 AI 停下來的，常常是不確定</h2>
+  <p>如果你只看單題能力，這三個模型的差異不會長成這樣。差距是在另一種情況下拉開的。</p>
+  <p>在我的長流程裡，讓 AI 停下來的那一步，常常不是技術上最難的那一步，而是判斷標準不足的那一步。難度跟不確定也可能同時出現在同一步，但它們是兩件事。</p>
+  <div class="duo">
+    <div class="card a"><small>DIFFICULT</small><b>難</b>
+      <p>答案很複雜，但方向明確。可以硬算、可以查、可以拆成小步，做完知道自己做對了。</p>
+    </div>
+    <div class="card b"><small>UNCERTAIN</small><b>不確定</b>
+      <p>連「這樣算不算對」都沒有標準，需要有人拍板。做完也不知道自己做對了沒有。</p>
+    </div>
+  </div>
+  <p>我把這類情況看成缺少可以自我驗證的收斂條件：它做完也不知道自己做對了沒有。這種時候停下來問你，是一種合理的風險控制，因為它判斷不了繼續下去對不對。</p>
+  <p>麻煩的是，長流程裡的不確定會傳染。第五步無法確定，第六步吃第五步的結果，第七步又吃第六步的。這時候它面對的已經不只是一個小問題，是一整段建立在未確認基礎上的後續步驟。停下來，確實比往下亂跑安全。</p>
+  <div class="meaning"><b>所以要給它第三條路</b>把這一步標記成待確認，帶著未確認的狀態繼續往下做，最後一次跟我回報。既不硬猜，也不整條停住。</div>
+  <p>但第三條路要設門檻，不然它會拿「待確認」當通行證。我的界線是：只有後面的工作可以用假設、分支或待確認欄位表示的時候才續跑；如果後面的動作會造成不可逆的變更、會對外送出，或者必須依賴那個唯一正確的值才能做，那一條分支就停下來記錄，不要帶著假設往下跑。</p>
+</div></section>
+
+<section class="section"><div class="inner">
+  <h2>長流程完工率：我現在怎麼看模型</h2>
+  <p>我現在看一個模型能不能接長任務，看的是這個指標。先把它定義清楚，免得跟品質混在一起：</p>
+  <div class="meaning"><b>長流程完工率</b>在安全紅線內走到明確結局的步驟數，除以總步驟數。明確結局有三種：做完了、照規則跳過並留下記錄、碰到紅線依規定停下。至於做出來的東西好不好、問題有沒有解掉，另外記，不混進這個比例。</div>
+  <p>這樣分開算，前面那兩個數字就不衝突了：Fable 那次是走完十步（完工率高），其中可以直接拿去用的大概七到八成（品質另計）。Opus 4.8 停在第五步，後面五步沒有結局，完工率就是掉在那裡。</p>
+  <p>實際操作上，十個步驟的流程，中間放進一兩個解不了的問題，回來看四件事：</p>
+  <ol class="steps">
+    <li><b>它跑到第幾步</b>停在中途，還是走到最後一步。</li>
+    <li><b>有沒有把解不了的地方記下來</b>卡在哪、卡什麼、試過什麼。</li>
+    <li><b>有沒有繼續把後面能做的做完</b>不因為一步卡住就整條放棄。</li>
+    <li><b>最後有沒有一次講清楚</b>哪些做了、哪些沒做、哪些要我拍板。</li>
+  </ol>
+  <p>單題分數高，代表它每一步的品質好。長流程完工率高，代表你可以把事情交給它、離開電腦。這是兩種不同的能力，對我這種把 AI 當工作流引擎的人來說，第二種更貼近實際使用。</p>
+  <p>這也連到我之前算 AI CP 值的那個結論：真正該問的是這次的任務需要幾分，哪個模型最強反而排在後面。長流程要的那一分，就是完工率。</p>
+</div></section>
+
+<section class="section"><div class="inner">
+  <h2>迴圈工程要補的三件事</h2>
+  <p>模型行為會變，這是好消息也是壞消息。好消息是它一直在進步；壞消息是你不能把完工率賭在模型的預設行為上。迴圈工程要做的，是把完工率寫進流程裡，讓它不隨模型版本浮動。</p>
+  <p>我在自己的 Loop 裡補了三件事。</p>
+
+  <h3>一、把記錄、跳過、續跑寫成明文規則</h3>
+  <p>不要只說「有問題就跳過」。要把怎麼記、記在哪、跳過之後做什麼，全部寫清楚。我的設計假設是：它停下來，有一部分原因是不知道跳過這個行為到底被允許到什麼程度。</p>
+
+  <h3>二、給它一個可以問的對象</h3>
+  <p>Fable 那次能把問題解掉，我認為關鍵在於我給了它一個可以討論的對象，讓它去叫 Codex CLI 討論。這件事在流程設計上叫換一顆腦，靠的是分工。</p>
+  <p>一個模型解不掉的抽象問題，換一家的模型看，有時候能提供不同的判斷角度。這也是我平常跨家審稿的做法：產出的跟主審的不是同一家。這篇文章本身就是這樣跑的，我寫完之後交給 Codex 審，它抓到四個問題我改在上面。把這件事做成固定流程的完整版，在<a href="../dual-track-planning-loop/">讓兩個 AI 互相挑錯</a>那篇。</p>
+
+  <h3>三、卡關要有停止條件</h3>
+  <p>讓它跳過不等於讓它硬幹。我的規則是同一個問題卡超過一定次數或時間就跳過、記錄、往下走，不要在原地反覆嘗試。這件事要寫死在流程裡，否則它會把你所有的時間用在一個步驟上，這也是一種跑不完。</p>
+  <div class="meaning"><b>三件事加起來的效果</b>完工率從「看模型今天穩不穩」，變成「我的 Loop 本來就設計成跑得完」。</div>
+</div></section>
+
+<section class="section"><div class="inner">
+  <h2>可以直接複製的長流程續跑指令</h2>
+  <p>這段是我交代長流程時的核心段落，你可以直接改成自己的版本：</p>
+<pre><code>這條流程有 N 個步驟：［貼上第 1 步到第 N 步，每一步寫預期產出］
+工作日誌寫在：［檔案或位置］
+可以動用的工具與權限：［列出來，以及哪些資料不准外送］
+每一步的上限：最多嘗試 2 次，或 15 分鐘
+
+請一次從第 1 步跑到第 N 步，中間不要停下來問我。
+遇到問題照這個順序處理：
+
+1. 先自己試著解決，同一個問題最多嘗試 2 次、不超過時間上限。
+2. 解不掉就換一顆腦：在不外送未授權資料的前提下，
+   把問題摘要、已經試過什麼、需要判斷的選項交給另一個模型討論
+   （例如叫 Codex CLI），討論後能解決就繼續做。
+3. 還是解不掉就記錄下來，寫進工作日誌，欄位包含：
+   卡在第幾步、卡什麼、影響到後面哪些步驟、你嘗試過什麼、
+   有哪些可選的處理方向、需要我判斷什麼。
+4. 記錄完就跳過這一步：
+   - 不依賴這一步的後續步驟，照原計畫做完。
+   - 依賴這一步的後續步驟，只有在能明確標示「待確認」或建立分支假設時
+     才繼續，並寫出你用了什麼假設、影響哪些產出。
+   - 如果沒辦法安全地建立假設，那一條分支就停下來記錄，不要硬做。
+
+以下動作一律不准自己決定：不可逆的刪除或覆寫、對外送出、花錢、
+改權限或設定、外送未授權資料，以及任何我沒授權的破壞性操作。
+碰到紅線就停這個動作跟所有直接依賴它的步驟；其他不相干、
+只讀不寫的步驟可以繼續做完。
+
+全部跑完後一次回報，分開寫清楚：
+- 已完成的步驟與產出位置
+- 跳過或停下的步驟與原因
+- 目前帶著跑的待確認假設，以及受影響的產出
+- 需要我拍板的判斷點，附選項與你的建議</code></pre>
+  <p>那段紅線不能省。讓 AI 自己跑完整條流程的前提，是它知道哪幾件事永遠不准自己跑。第 4 點的分支規則也不能省，否則它會拿「待確認」當通行證，把整條流程建在一個沒人確認過的假設上。</p>
+</div></section>
+
+<section class="section"><div class="inner">
+  <h2>它保證什麼、不保證什麼</h2>
+  <p>這篇是我的個人實測，講清楚邊界比講結論重要。</p>
+  <div class="duo">
+    <div class="card b"><b>保證的部分</b>
+      <ul>
+        <li>這是我在自己的工作流上，用同一條長流程跑出來的體感差異</li>
+        <li>這三種反應是我在自己流程裡觀察到的模式；你能不能複現，要看版本、提示、工具權限與任務結構</li>
+        <li>那段續跑指令是我實際在用的，可以直接拿去改</li>
+      </ul>
+    </div>
+    <div class="card a"><b>不保證的部分</b>
+      <ul>
+        <li>我給的是體感機率，不是統計數據。一半到六成會停，是我自己跑下來的感覺，沒有做成量化實驗</li>
+        <li>模型行為會隨版本、提示設定、工作流結構改變</li>
+        <li>我測的是 Opus 5 Max。Opus 5 High 跑 Loop 會不會有同樣結果，我還沒測，這是我接下來要試的</li>
+        <li>三個模型的流程配置不對等（Fable 那次多了求助 Codex CLI 的授權），所以這不能當成模型能力排名</li>
+      </ul>
+    </div>
+  </div>
+  <p>如果你要拿這篇當選模型的依據，我建議的做法是自己跑一次：拿你真實的十步流程，中間本來就有那一兩個你知道會卡的地方，同一份交代丟給不同模型，看它們回來的樣子。要找出最適合自己流程的配置，自己這一次測試通常比通用評測更有參考價值。</p>
+  <div class="readmore">
+    <b>延伸閱讀</b>
+    <ul>
+      <li><a href="../what-is-loop-engineering/">用我寫一篇文章的工作流，講清楚什麼是迴圈工程</a></li>
+      <li><a href="../my-three-loops/">當我開始理解迴圈，把三個工作流設計成 Loop</a></li>
+      <li><a href="../loop-engineering-guardrails/">迴圈護欄：讓 AI 自動跑，又不跑出安全範圍的五條規則</a></li>
+      <li><a href="../ai-cp-value-calculus/">模型不是越聰明越好：我開始學著算 AI 的 CP 值</a></li>
+      <li><a href="../dual-track-planning-loop/">讓兩個 AI 互相挑錯：我的企劃在送出前，先被模擬評審打了 2/5 分</a></li>
+      <li><a href="../ai-handoff-instructions/">交接指令：難的是決定不寫什麼</a></li>
+      <li><a href="../recovery-over-perfection/">與其期待不出錯的 AI 系統，不如設計能容錯的 Loop</a></li>
+    </ul>
+  </div>
+  <div class="tagrow">
+    <span class="tag">AI 工作流</span>
+    <span class="tag">迴圈工程</span>
+    <span class="tag">模型選擇</span>
+    <span class="tag">長流程完工率</span>
+    <span class="tag">跨家分工</span>
+  </div>
+</div></section>
+
+<div class="cta-band">
+  <section class="section">
+    <div class="inner">
+      <div>
+        <h2>把 Loop 設計成跑得完的樣子</h2>
+        <p class="lead">我每月固定舉辦兩場免費線上講座，主題輪流談怎麼把工作流程、判斷、經驗，整理成 AI 能靈活運用的提示詞、技能包與知識庫。想收到開課通知，或想討論自己的長流程卡在哪一步，都歡迎先從社群開始。</p>
+      </div>
+      <div class="cta-card">
+        <b>加入 LINE 社群</b>
+        <p>免費講座場次會先在這裡公布，也可以把你卡住的那條流程拿出來一起看。</p>
+        <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">加入社群 ↗</a>
+      </div>
+    </div>
+  </section>
+</div>
+
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">江江教練 · AI 知識管理</div>
+    <div class="footer-links">
+      <a href="../../articles.html">← 回深度文章總站</a>
+      <a href="../../index.html">首頁</a>
+      <a href="../../learn.html">自學資源</a>
+      <a href="../../skills.html">技能包下載</a>
+      <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">LINE 社群 ↗</a>
+      <a href="https://www.threads.com/@jiang_yude_coach" target="_blank" rel="noopener">Threads ↗</a>
+      <a href="https://vocus.cc/salon/Jiang_Coach" target="_blank" rel="noopener">方格子 ↗</a>
+    </div>
+    <div class="footer-note" style="margin-bottom:8px"><a href="/stats.html" style="color:var(--muted);text-decoration:none">👁 瀏覽次數</a></div>
+    <div class="footer-note">這是一篇實測與方法文章，整理我怎麼看長流程完工率、以及怎麼把記錄、跳過、續跑寫進自己的 Loop，供你參考。</div>
+  </div>
+</footer>
+
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <span class="lightbox-close" aria-label="關閉">×</span>
+  <img id="lightbox-img" src="" alt="放大檢視">
+</div>
+<script>
+(function(){
+  var box=document.getElementById('lightbox'),boxImg=document.getElementById('lightbox-img');
+  document.querySelectorAll('.inline-figure img').forEach(function(img){
+    img.addEventListener('click',function(){boxImg.src=img.currentSrc||img.src;boxImg.alt=img.alt||'放大檢視';box.classList.add('open');box.setAttribute('aria-hidden','false');});
+  });
+  function close(){box.classList.remove('open');box.setAttribute('aria-hidden','true');boxImg.src='';}
+  box.addEventListener('click',close);
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
+})();
+</script>
+<script src="../../spotlight.js"></script>
+<script src="../../articles-data.js"></script>
+<script src="../../related-render.js"></script>
+<script src="/views.js"></script>
+</body>
+</html>

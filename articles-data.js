@@ -34,6 +34,82 @@ window.ARTICLE_TAGS = {
 
 window.ARTICLES = [
 
+  /* ── 一對一系列：AI 知識焦慮的解法（觀點）── */
+  {
+    id: "ten-year-anchor",
+    url: "articles/ten-year-anchor/",
+    date: "2026-07-26",
+    updated: "2026-07-26",
+    title: "AI 知識焦慮的解法：在快速變動的時代，找到十年不變的錨點",
+    problem: "AI 每天都在更新，追不完，覺得自己一直在追、一直沒追上。",
+    audience: "被 AI 新聞洗版、學了很多工具卻講不出自己在累積什麼的人。",
+    summary: "該焦慮的是 AI，不是我們。解法不是追得更快，是先找到一個十年不會變的錨點：你的天賦，交集上趨勢裡不會變的部分。錨點鎖住目標、方法隨時代換。附三句錨點驗證自問，以及把資訊篩選外包給 AI 的提示詞。",
+    tags: {
+      topic: ["知識管理", "隱性知識"],
+      level: ["基礎"],
+      content_type: ["觀點文章"]
+    },
+    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
+    related: ["teach-ai-not-learn-ai", "timing-and-forecast", "ai-native-not-transformation", "one-on-one-questions", "talent-vs-expertise"]
+  },
+
+  /* ── 一對一系列：教 AI 的四個步驟（教學）── */
+  {
+    id: "teach-ai-not-learn-ai",
+    url: "articles/teach-ai-not-learn-ai/",
+    date: "2026-07-26",
+    updated: "2026-07-26",
+    title: "為什麼你的 AI 每次都要重講一遍：教 AI 的四個步驟",
+    problem: "每次用 AI 都要從頭講一遍需求，文件很多但 AI 抓不到重點。",
+    audience: "覺得還沒學會 AI 所以不敢開始的人，以及本來就會帶團隊、卻覺得跟科技無緣的主管與老闆。",
+    summary: "問題不在 AI 笨，在沒有人教過它你的判斷。教 AI 的四個步驟：分清楚資料庫、知識庫、規則庫；用 3X4（三種日記 × 四種時效）擺放文件；寫出一條含情況、動作、理由的規則；把你原本帶人的方式搬過來。附可直接複製的新人上工說明與三週上手排程。",
+    tags: {
+      topic: ["知識管理", "隱性知識", "AI工作流", "知識庫"],
+      level: ["零基礎入門"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
+    related: ["ten-year-anchor", "ai-native-not-transformation", "timing-and-forecast", "one-on-one-questions", "how-to-train-your-ai-employee"]
+  },
+
+  /* ── 一對一系列：資訊時差與市場預測（方法）── */
+  {
+    id: "timing-and-forecast",
+    url: "articles/timing-and-forecast/",
+    date: "2026-07-26",
+    updated: "2026-07-26",
+    title: "資訊時差與市場預測：怎麼比市場早一步，又不會早太多",
+    problem: "抓不準題目的時機，不是講太早沒人聽得懂，就是等到市場已經很擠。",
+    audience: "做內容、做課程、做顧問，需要決定什麼時候押什麼題目的人。",
+    summary: "資訊擴散有固定節奏：從國外最尖端到台灣政府開課大約兩年。這篇把六格節奏表與市場預測三步法接在一起，往後看知道客戶在哪一格、該用什麼形式交付，往前看知道下一個痛點什麼時候會被解掉、現在該準備什麼。附痛點反推提示詞。",
+    tags: {
+      topic: ["AI趨勢", "知識管理"],
+      level: ["基礎"],
+      content_type: ["觀點文章"]
+    },
+    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
+    related: ["ten-year-anchor", "teach-ai-not-learn-ai", "ai-native-not-transformation"]
+  },
+
+  /* ── 一對一系列：為什麼你的 AI 導入沒有效果（觀點）── */
+  {
+    id: "ai-native-not-transformation",
+    url: "articles/ai-native-not-transformation/",
+    date: "2026-07-26",
+    updated: "2026-07-26",
+    title: "為什麼你的 AI 導入沒有效果：從三層論到組織那面牆",
+    problem: "工具都買了、課也上了，AI 導入的效果卻停在「快了一點」。",
+    audience: "在公司裡推 AI 推不動的人，以及工具買了卻沒看到效果的企業主。",
+    summary: "問題出在兩個地方。方向上，多數導入停在第一層節點加速（流程沒變，只是某個環節快了一點），真正的機會在第三層原生設計。阻力上，效率增十倍而薪水不變，聰明員工必然裝死；權限開不了是組織治理問題不是 AI 問題。附三句問出第三層的問題，與給老闆的價值換算方式。",
+    tags: {
+      topic: ["數位轉型", "AI工作流", "輔助決策"],
+      level: ["基礎"],
+      content_type: ["觀點文章"]
+    },
+    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
+    related: ["ten-year-anchor", "teach-ai-not-learn-ai", "timing-and-forecast", "one-on-one-questions"]
+  },
+
   /* ── 1. 代理工作流蓋自動化工作流（案例）── */
   {
     id: "agent-workflow-builds-automation",
@@ -255,7 +331,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["strong-ai-models-knowledge-workflow-road", "questionnaire-to-slides-agent-workflow", "teacher-prep-knowledge-workflow", "own-ai-team-at-work", "agent-workflow-builds-automation", "line-group-ai-workflow", "elon-musk-live-skill", "codex-log-health-check", "how-ai-connects-software", "meeting-record-agent-workflow", "decision-ladder-non-programmer", "tidy-mess-before-consulting", "diary-driven-agent-3x4", "docs-as-system-design-agent", "what-is-loop-engineering", "map-is-not-the-territory", "intangible-assets-grow-by-sharing", "manage-ai-with-management-knowledge", "ai-handoff-instructions", "train-your-ai-agent-editor", "ai-that-knows-you", "personal-studio-vs-solo-company", "cli-api-mcp-computer-use", "knowledge-as-employee", "mika-to-laika-product-character-design", "agent-native-tools-software-interface", "ai-tools-professional-judgment", "answer-to-action-enterprise-ai-agent"]
+    related: ["strong-ai-models-knowledge-workflow-road", "questionnaire-to-slides-agent-workflow", "teacher-prep-knowledge-workflow", "own-ai-team-at-work", "agent-workflow-builds-automation", "line-group-ai-workflow", "elon-musk-live-skill", "codex-log-health-check", "how-ai-connects-software", "meeting-record-agent-workflow", "decision-ladder-non-programmer", "tidy-mess-before-consulting", "diary-driven-agent-3x4", "docs-as-system-design-agent", "what-is-loop-engineering", "map-is-not-the-territory", "intangible-assets-grow-by-sharing", "manage-ai-with-management-knowledge", "ai-handoff-instructions", "train-your-ai-agent-editor", "ai-that-knows-you", "personal-studio-vs-solo-company", "cli-api-mcp-computer-use", "knowledge-as-employee", "mika-to-laika-product-character-design", "agent-native-tools-software-interface", "ai-tools-professional-judgment", "answer-to-action-enterprise-ai-agent", "teach-ai-not-learn-ai", "talent-vs-expertise"]
   },
 
   /* ── 13. LINE 群組也能變成 AI 工作流入口（教學）── */
@@ -483,7 +559,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["strong-ai-models-knowledge-workflow-road", "questionnaire-to-slides-agent-workflow", "teacher-prep-knowledge-workflow", "docs-as-system-design-agent", "how-to-train-your-ai-employee", "my-three-loops", "ai-loop-safety-recovery", "recovery-over-perfection", "ai-changed-behavior-into-workflow", "ai-delegators-optimism", "publish-gate", "loop-engineering-guardrails", "dual-centaur-meeting", "manage-ai-with-management-knowledge", "old-prompts-intent-first-loop-engineering", "rule-file-rebound", "knowledge-os-master-map", "meeting-into-verifiable-loop"]
+    related: ["strong-ai-models-knowledge-workflow-road", "questionnaire-to-slides-agent-workflow", "teacher-prep-knowledge-workflow", "docs-as-system-design-agent", "how-to-train-your-ai-employee", "my-three-loops", "ai-loop-safety-recovery", "recovery-over-perfection", "ai-changed-behavior-into-workflow", "ai-delegators-optimism", "publish-gate", "loop-engineering-guardrails", "long-task-completion-rate", "dual-centaur-meeting", "manage-ai-with-management-knowledge", "old-prompts-intent-first-loop-engineering", "rule-file-rebound", "knowledge-os-master-map", "meeting-into-verifiable-loop"]
   },
 
   /* ── 無形資產，越分享越豐盛（觀點）── */
@@ -521,7 +597,7 @@ window.ARTICLES = [
       content_type: ["趨勢文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["market-to-ai","dual-track-planning-loop", "dual-centaur-meeting", "agent-native-tools-software-interface"]
+    related: ["market-to-ai","agent-web-turning-point","dual-track-planning-loop", "dual-centaur-meeting", "agent-native-tools-software-interface"]
   },
 
   /* ── 可以學用 AI 行銷，還可以學對 AI 行銷（觀點）── */
@@ -540,7 +616,26 @@ window.ARTICLES = [
       content_type: ["觀點文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["a2a-agent-protocol"]
+    related: ["a2a-agent-protocol", "agent-web-turning-point"]
+  },
+
+  /* ── 機器人黃金交叉點：網路付錢邏輯正在換（趨勢）── */
+  {
+    id: "agent-web-turning-point",
+    url: "articles/agent-web-turning-point/",
+    date: "2026-07-25",
+    updated: "2026-07-25",
+    title: "機器人黃金交叉點已經過了：網路的付錢邏輯正在換，你要提早準備什麼",
+    problem: "機器人流量已超過真人，靠內容被看見的人不知道這件事會怎麼影響自己，也不知道現在該準備什麼。",
+    audience: "有在寫內容、經營網站或個人品牌，以及幫組織做官網與知識庫的個人工作者與小團隊。",
+    summary: "機器人流量首次超過人類，比原本預估提前。這篇把有一手出處的事實、他人的預測、我的判斷分三層講清楚，中間談為什麼不同來源的數字不能互換著用，最後拆成內容層、協議層、平台層、服務層四個機會，附準備節奏、七件可以先做的事，與一個十分鐘自測。",
+    tags: {
+      topic: ["AI趨勢", "AIAgent", "數位轉型"],
+      level: ["基礎"],
+      content_type: ["趨勢文章"]
+    },
+    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
+    related: ["market-to-ai", "a2a-agent-protocol", "agent-native-tools-software-interface"]
   },
   {
     id: "four-lens-rapid-review",
@@ -593,7 +688,7 @@ window.ARTICLES = [
       content_type: ["觀點文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["what-is-loop-engineering", "ai-loop-safety-recovery", "recovery-over-perfection", "ai-delegators-optimism", "meeting-into-verifiable-loop"]
+    related: ["what-is-loop-engineering", "ai-loop-safety-recovery", "recovery-over-perfection", "ai-delegators-optimism", "long-task-completion-rate", "meeting-into-verifiable-loop"]
   },
 
   /* ── 公司護城河：組織模式、共識、影響力與信任（觀點）── */
@@ -669,7 +764,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["ai-loop-safety-recovery", "my-three-loops", "what-is-loop-engineering"]
+    related: ["ai-loop-safety-recovery", "my-three-loops", "what-is-loop-engineering", "long-task-completion-rate"]
   },
 
   /* ── 別再寫死指令：把你要什麼講清楚，剩下交給 AI（系列 01）（教學）── */
@@ -783,7 +878,7 @@ window.ARTICLES = [
       content_type: ["觀點文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["how-to-train-your-ai-employee", "intent-first-prompting"]
+    related: ["how-to-train-your-ai-employee", "intent-first-prompting", "talent-vs-expertise"]
   },
 
   /* ── 把課前問卷變成簡報，再把流程存成技能包（教學）── */
@@ -882,7 +977,7 @@ window.ARTICLES = [
     summary: "把駕馭工程和迴圈工程接在一起的五條護欄：未抗辯假設、三視角抗辯、Non-goals 與允許路徑、換路煞車、驗收證據分級。讓 AI 連續自動工作時，錯誤不會一路滾大。",
     tags: {"topic":["AI工作流","AIAgent","跨家審稿"],"level":["基礎"],"content_type":["教學文章"]},
     external: { threads: null, vocus: null },
-    related: ["what-is-loop-engineering","harness-mindset-for-bosses","ai-loop-safety-recovery","dual-track-planning-loop","ai-handoff-instructions", "meeting-into-verifiable-loop"]
+    related: ["what-is-loop-engineering","harness-mindset-for-bosses","ai-loop-safety-recovery","dual-track-planning-loop","ai-handoff-instructions","long-task-completion-rate", "meeting-into-verifiable-loop"]
   },
   {
     id: "parenting-story-ai-family-dialogue",
@@ -1064,7 +1159,7 @@ window.ARTICLES = [
     summary: "企劃雙軌互審 loop：兩個不同家的 AI 同輸入各自獨立寫完、互相挑錯、整合留決策點、對家終審。以一場真實政府補助提案首跑為案例，附兩段可直接複製的提示詞。",
     tags: {"topic":["AI工作流","跨家審稿","輔助決策"],"level":["基礎"],"content_type":["案例文章"]},
     external: { threads: null, vocus: null },
-    related: ["loop-engineering-guardrails", "a2a-agent-protocol", "docs-as-system-design-agent", "ai-handoff-instructions"]
+    related: ["loop-engineering-guardrails", "a2a-agent-protocol", "docs-as-system-design-agent", "ai-handoff-instructions", "long-task-completion-rate"]
   },
   {
     id: "dual-centaur-meeting",
@@ -1130,7 +1225,7 @@ window.ARTICLES = [
     summary: "交接指令寫不好，通常不是寫太少而是寫太多。從一次真實的生圖事故拆出核心原則「只寫對方所需」，分成一次交辦、供應商模式、換人續跑三種場景各自的寫法，加上卡住才回吐的自動化分寸與三招防呆，附一張可直接複製的交接單。",
     tags: {"topic":["AI工作流","AIAgent","工作流程"],"level":["基礎"],"content_type":["案例文章"]},
     external: { threads: null, vocus: null },
-    related: ["dual-track-planning-loop", "loop-engineering-guardrails", "how-to-train-your-ai-employee", "intent-first-prompting", "rule-file-rebound"]
+    related: ["dual-track-planning-loop", "loop-engineering-guardrails", "how-to-train-your-ai-employee", "intent-first-prompting", "rule-file-rebound", "long-task-completion-rate"]
   },
 
   {
@@ -1172,7 +1267,7 @@ window.ARTICLES = [
     summary: "用三個模型的成本對照說明一件反直覺的事：用最便宜的模型做到滿分，反而是最貴也最慢的。真正該問的是這次任務需要幾分，附三張對照表。最後把問題放大到人類層級：算力有限、要解的問題滿出來，會排序哪些問題值得解，才是真正的分水嶺。",
     tags: {"topic":["AI趨勢","輔助決策","差異比較"],"level":["基礎"],"content_type":["觀點文章"]},
     external: { threads: null, vocus: null },
-    related: ["ai-tools-professional-judgment", "strong-ai-models-knowledge-workflow-road", "program-vs-ai-skill-library", "ai-capability-tiers"]
+    related: ["ai-tools-professional-judgment", "strong-ai-models-knowledge-workflow-road", "program-vs-ai-skill-library", "ai-capability-tiers", "long-task-completion-rate"]
   },
 
   {
@@ -1200,7 +1295,7 @@ window.ARTICLES = [
     summary: "看到能直接在時間線上剪片的 Agent 原生工具，第一眼想到的是介面可能會退到後台。這件事很像找外包團隊：你交代任務、驗收成果，不必自己學會每個操作。談我現在怎麼把工作交給 AI，以及為什麼覺得現在可以開始這樣想。",
     tags: {"topic":["AIAgent","AI趨勢","AI工作流"],"level":["基礎"],"content_type":["觀點文章"]},
     external: { threads: null, vocus: null },
-    related: ["how-ai-connects-software", "a2a-agent-protocol", "how-to-train-your-ai-employee", "ai-king-off-battlefield"]
+    related: ["how-ai-connects-software", "a2a-agent-protocol", "agent-web-turning-point", "how-to-train-your-ai-employee", "ai-king-off-battlefield"]
   },
 
   {
@@ -1214,7 +1309,7 @@ window.ARTICLES = [
     summary: "提出「知識作業系統」母架構：存量三庫、八步精煉迴圈、護欄、治理四個構件，加一條三域分流部署軸，圓心是隱性知識提煉。含三重收斂的信度證據（雙 AI 獨立收斂、2023 至 2026 實踐先於命名、跨時內部收斂）、三條真實工作流的驗證設計，與一個立刻能做的對照練習。",
     tags: {"topic":["江江精選","知識管理","隱性知識","AI工作流","知識庫"],"level":["進階"],"content_type":["教學文章"]},
     external: { threads: null, vocus: null },
-    related: ["knowledge-as-employee", "docs-as-system-design-agent", "knowledge-base-three-vault-split", "tag-wiki-method", "what-is-loop-engineering"]
+    related: ["knowledge-as-employee", "docs-as-system-design-agent", "knowledge-base-three-vault-split", "tag-wiki-method", "what-is-loop-engineering", "talent-vs-expertise"]
   },
 
   {
@@ -1228,7 +1323,7 @@ window.ARTICLES = [
     summary: "傳統知識管理把知識當工具，整理好之後人去用它；AI 時代的思維是把知識當員工，架構好之後知識搭配 AI 自己去工作。用七個面向與流程逐站對照兩種思路，說明知識變成員工之後制度要跟著長出什麼，答案落在隱性知識提煉。",
     tags: {"topic":["江江精選","知識管理","隱性知識","AIAgent","數位轉型"],"level":["基礎"],"content_type":["觀點文章"]},
     external: { threads: null, vocus: null },
-    related: ["knowledge-os-master-map", "how-to-train-your-ai-employee", "docs-as-system-design-agent", "strong-ai-models-knowledge-workflow-road", "intangible-assets-grow-by-sharing"]
+    related: ["knowledge-os-master-map", "how-to-train-your-ai-employee", "docs-as-system-design-agent", "strong-ai-models-knowledge-workflow-road", "intangible-assets-grow-by-sharing", "talent-vs-expertise"]
   },
 
   {
@@ -1370,7 +1465,7 @@ window.ARTICLES = [
       content_type: ["觀點文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["ai-capability-tiers", "ai-learning-map-reduce-anxiety", "ai-that-knows-you", "ai-course-map-from-entry-to-workflow", "prompt-to-loop-map"]
+    related: ["ai-capability-tiers", "ai-learning-map-reduce-anxiety", "ai-that-knows-you", "ai-course-map-from-entry-to-workflow", "prompt-to-loop-map", "ten-year-anchor", "teach-ai-not-learn-ai", "ai-native-not-transformation"]
   },
 
   /* ── 叫 AI 幫你點餐，就懂 CLI、API、MCP（教學）── */
@@ -1426,5 +1521,43 @@ window.ARTICLES = [
     },
     external: { threads: null, vocus: null },
     related: ["how-to-train-your-ai-employee", "train-your-ai-agent-editor"]
+  },
+
+  /* ── 長流程完工率：10 步驟 Loop 的三種卡關反應（觀點）── */
+  {
+    id: "long-task-completion-rate",
+    url: "articles/long-task-completion-rate/",
+    date: "2026-07-25",
+    updated: "2026-07-25",
+    title: "Opus 5 實測：10 個步驟的 Loop，你的 AI 跑到第幾步就停了",
+    problem: "把多步驟流程交給 AI 自己跑完，回來常發現它停在中間某一步，後面全部沒做，即便已經交代過「有問題就跳過」。",
+    audience: "已經在讓 AI 自己跑長流程、卻常常回來發現它停在半路的人，以及手上有多個模型、不知道複雜任務該派給誰的人。",
+    summary: "同一條十步驟長流程、同一種交代方式，交給 Opus 4.8、Fable、Opus 5 Max 自己跑完，觀察到三種卡關反應：停住等人、找 Codex CLI 討論到解掉、記錄後跳過繼續跑。文章定義「長流程完工率」（在安全紅線內走到明確結局的步驟數除以總步驟數，品質另計），拆解為什麼斷點多半出現在判斷標準不足而非技術難度，並給迴圈工程要補的三件事與一段可直接複製的長流程續跑指令。全篇為個人實測體感，並標明三個模型的流程配置不對等、不能當模型能力排名。",
+    tags: {
+      topic: ["AI工作流", "差異比較", "AIAgent", "輔助決策"],
+      level: ["進階"],
+      content_type: ["觀點文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["what-is-loop-engineering", "my-three-loops", "loop-engineering-guardrails", "ai-cp-value-calculus", "ai-handoff-instructions", "recovery-over-perfection", "dual-track-planning-loop"]
+  },
+
+  /* ── 專業與天賦的分辨，兩個自己就能做的提煉技巧（觀點）── */
+  {
+    id: "talent-vs-expertise",
+    url: "articles/talent-vs-expertise/",
+    date: "2026-07-26",
+    updated: "2026-07-26",
+    title: "努力學來的是專業，輕鬆就會的才可能是天賦",
+    problem: "要講「我的強項是什麼」就卡住，把辛苦學來的專業當成天賦，真正輕鬆就會的那件事反而被自己忽略。",
+    audience: "想找出自己定位的知識工作者，想把專業變成課程、產品或 AI 規則的人，以及需要挖出對方講不出來的判斷標準的教練與顧問。",
+    summary: "很多人把努力學來的專業當成天賦。天賦反而是你做起來非常簡單、簡單到以為每個人都會的那件事，正因為理所當然，你不會把它算進自己的本事裡。文章用雙足行走的對照說明為什麼天賦要靠比較才看得出來，接到隱性知識的三個代價（交接不了、教不了、交不給 AI），再給兩個自己就能做的提煉技巧：差異提煉法與隨機偶遇法，各附可直接複製的提問，另加兩個不用工具的日常訊號。",
+    tags: {
+      topic: ["隱性知識", "知識管理", "輔助決策"],
+      level: ["基礎"],
+      content_type: ["觀點文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["map-is-not-the-territory", "knowledge-as-employee", "knowledge-os-master-map", "how-to-train-your-ai-employee", "ten-year-anchor"]
   }
 ];
