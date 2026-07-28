@@ -146,6 +146,16 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
 .layer-card p{line-height:1.7;margin:8px 0 0;font-size:16.5px}
 .layer-tag{display:inline-block;margin-bottom:10px;padding:5px 10px;border-radius:999px;background:#edf2e9;color:#405238;font-size:14px;font-weight:800}
 @media(max-width:820px){.access-grid,.layer-grid{grid-template-columns:1fr}.report-table{min-width:520px}}
+
+/* 三個判斷卡 */
+.qgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin:24px 0}
+.qcard{background:#fff;border:1px solid var(--line);border-radius:14px;padding:20px 22px;box-shadow:0 8px 22px rgba(107,74,42,.08);position:relative}
+.qnum{display:inline-block;font:900 13px/1 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.06em;color:var(--orange);background:rgba(232,90,79,.1);padding:6px 10px;border-radius:999px;margin-bottom:12px}
+.qcard b{display:block;font-size:19px;margin-bottom:8px;color:var(--ink)}
+.qcard p{margin:0;font-size:16.5px;line-height:1.7;color:#51483f}
+.duo .card b{display:block;font-size:19px;margin:2px 0 10px}
+.duo .card p{font-size:16.5px;line-height:1.7;margin:8px 0 0}
+@media(max-width:820px){.qgrid{grid-template-columns:1fr}}
 </style>
 </head>
 <body class="spotlight">
@@ -207,17 +217,20 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
 <section class="section"><div class="inner">
 <h2>先做三個判斷</h2>
 <p>免費額度通常不是第一個門檻。<strong>公開程度、商業用途與未來功能，才會真正改變選擇。</strong></p>
-<div class="workflow-grid">
-  <div class="wf-card">
-    <b>01 誰能看到？</b>
+<div class="qgrid">
+  <div class="qcard">
+    <span class="qnum">01</span>
+    <b>誰能看到？</b>
     <p>完全公開、降低曝光，或只限授權者？</p>
   </div>
-  <div class="wf-card">
-    <b>02 是否商用？</b>
+  <div class="qcard">
+    <span class="qnum">02</span>
+    <b>是否商用？</b>
     <p>接案、付費課程與業務網站，需要先核對方案條款。</p>
   </div>
-  <div class="wf-card">
-    <b>03 未來要加什麼？</b>
+  <div class="qcard">
+    <span class="qnum">03</span>
+    <b>未來要加什麼？</b>
     <p>純展示頁，或可能增加表單、後端與會員功能？</p>
   </div>
 </div>
@@ -346,18 +359,36 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
 <section class="section"><div class="inner">
 <h2>兩個平台各適合長成什麼樣</h2>
 <div class="duo">
-  <div class="duo-card">
-    <b>GitHub Pages</b>
+  <div class="card a">
+    <small>GITHUB PAGES</small>
+    <b>穩，但要公開</b>
     <p>GitHub 本來是給工程師存放程式碼的地方，Pages 是它附帶的功能：把你的資料夾直接變成一個網站。</p>
-    <p><strong>個性是穩。</strong>背後是 Microsoft，免費方案多年沒有大改，適合放長期不太會動的東西。</p>
-    <p><strong>限制來自出身。</strong>核心是「公開分享程式碼」，所以免費方案要求你的檔案必須公開。純靜態，沒有後端，未來想加登入、會員做不到。</p>
+    <p>背後是 Microsoft，免費方案多年沒有大改，適合放長期不太會動的東西。</p>
+    <p>限制來自出身。它的核心是「公開分享程式碼」，所以免費方案要求你的檔案必須公開。純靜態，沒有後端。</p>
   </div>
-  <div class="duo-card">
-    <b>Vercel</b>
+  <div class="card b">
+    <small>VERCEL</small>
+    <b>快且有彈性，但條款較嚴</b>
     <p>給現代網站用的部署平台。全球都有伺服器，台灣連過去很快。</p>
-    <p><strong>個性是快跟彈性。</strong>不只能放靜態網頁，支援 Serverless Functions，未來想加登入、表單、會員功能都有空間。</p>
-    <p><strong>限制在條款跟額度。</strong>免費方案有明確的用途限制，超額的處理方式也比較硬。</p>
+    <p>不只能放靜態網頁，支援 Serverless Functions，未來想加登入、表單、會員功能都有空間。</p>
+    <p>限制在條款跟額度。免費方案有明確的用途限制，超額的處理方式也比較硬。</p>
   </div>
+</div>
+
+<h3>兩邊現在能做什麼、未來能長到哪</h3>
+<div class="table-scroll">
+<table class="report-table">
+<thead><tr><th>你想做的事</th><th>GitHub Pages</th><th>Vercel</th></tr></thead>
+<tbody>
+<tr><td>放純展示網頁</td><td>可以</td><td>可以</td></tr>
+<tr><td>原始碼不公開</td><td><strong style="color:#e85a4f">免費方案做不到</strong></td><td>可以（Hobby 限個人帳號的 repo）</td></tr>
+<tr><td>加表單、後端處理</td><td><strong style="color:#e85a4f">做不到</strong></td><td>可以（Serverless Functions）</td></tr>
+<tr><td>未來加登入、會員</td><td><strong style="color:#e85a4f">做不到</strong></td><td>有空間</td></tr>
+<tr><td>放著幾年不太管</td><td><strong style="color:#5f7553">最適合</strong></td><td>可以，但要留意額度與條款</td></tr>
+<tr><td>商業用途（接案、賣課）</td><td>不得作為主要交易網站</td><td><strong style="color:#e85a4f">Hobby 不允許，需 Pro</strong></td></tr>
+</tbody>
+</table>
+</div>
 </div>
 
 <div class="readmore near">
