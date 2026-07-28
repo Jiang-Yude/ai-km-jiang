@@ -101,6 +101,8 @@ if [[ "${#PUBLISH_PATHS[@]}" -gt 0 ]]; then
 
   if [[ -n "$UNEXPECTED" ]]; then
     echo "⛔ 有未列入本次發布範圍的變更；commit 前停止："
+    echo "   （可能是另一個 session 施工中。依 🌐 官網看板『防打架四鐵律』第 4 條："
+    echo "     同一時段單一 session 施工，先到看板『🔧 施工中掛牌』登記，等對方收工撤牌再發布。）"
     printf '%s\n' "$UNEXPECTED" | sed -n '1,20p'
     exit 2
   fi
