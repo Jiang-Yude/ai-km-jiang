@@ -34,6 +34,26 @@ window.ARTICLE_TAGS = {
 
 window.ARTICLES = [
 
+  /* ── 部署平台選擇：免費版的三道邊界（教學） ── */
+  {
+    id: "free-deploy-three-boundaries",
+    url: "articles/free-deploy-three-boundaries/",
+    date: "2026-07-28",
+    updated: "2026-07-28",
+    title: "AI 幫你把網頁做好了，該放哪？GitHub Pages 與 Vercel 完整比較",
+    problem: "用 AI 幾分鐘做好網頁，卻不知道該放哪個平台，也分不清「不被搜到」跟「別人進不去」的差別，更沒查過真正的權限保護要多少錢。",
+    audience: "用 AI 做網頁的知識工作者、講師、接案者，以及有些內容只想給特定人看的一人公司。",
+    summary: "先給三個判斷問題（誰能看到、是否商用、未來要加什麼），再用四層配置示範怎麼依內容敏感度分類，接著比較兩平台的免費額度、原始碼公開規則與權限控制費用，全部附官方來源。最後拆解一個反直覺的情況：如果你的目標是被 AI 引用，選平台的邏輯會反過來，因為爬蟲流量在按請求計費的平台上是成本。",
+    tags: {
+      topic: ["差異比較", "工具操作", "AI工作流"],
+      level: ["零基礎入門"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["agent-web-turning-point", "docs-as-system-design-agent", "knowledge-base-three-vault-split", "recovery-over-perfection"]
+  },
+
+
   /* ── 一對一系列：AI 知識焦慮的解法（觀點）── */
   {
     id: "ten-year-anchor",
@@ -274,7 +294,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: "https://vocus.cc/salon/Jiang_Coach" },
-    related: ["diary-driven-agent-3x4", "tag-wiki-method", "knowledge-os-master-map"]
+    related: ["diary-driven-agent-3x4", "tag-wiki-method", "knowledge-os-master-map", "free-deploy-three-boundaries"]
   },
 
   /* ── 10. 在公司上班，你也可以有自己的 AI 團隊（觀點，手寫精選版）── */
@@ -483,7 +503,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: "https://vocus.cc/salon/Jiang_Coach" },
-    related: ["strong-ai-models-knowledge-workflow-road", "questionnaire-to-slides-agent-workflow", "teacher-prep-knowledge-workflow", "diary-driven-agent-3x4", "how-ai-connects-software", "how-to-train-your-ai-employee", "decision-ladder-non-programmer", "tidy-mess-before-consulting", "what-is-loop-engineering", "tag-wiki-method", "ai-delegators-optimism", "intangible-assets-grow-by-sharing", "publish-gate", "laptop-desktop-webpage-sync-icloud-git", "manage-ai-with-management-knowledge", "train-your-ai-agent-editor", "knowledge-os-master-map", "knowledge-as-employee", "mika-to-laika-product-character-design", "ai-employee-four-levels"]
+    related: ["strong-ai-models-knowledge-workflow-road", "questionnaire-to-slides-agent-workflow", "teacher-prep-knowledge-workflow", "diary-driven-agent-3x4", "how-ai-connects-software", "how-to-train-your-ai-employee", "decision-ladder-non-programmer", "tidy-mess-before-consulting", "what-is-loop-engineering", "tag-wiki-method", "ai-delegators-optimism", "intangible-assets-grow-by-sharing", "publish-gate", "laptop-desktop-webpage-sync-icloud-git", "manage-ai-with-management-knowledge", "train-your-ai-agent-editor", "knowledge-os-master-map", "knowledge-as-employee", "mika-to-laika-product-character-design", "ai-employee-four-levels", "free-deploy-three-boundaries"]
   },
 
   /* ── 21. 你以為在做一個成品，其實在養十個半成品（觀點）── */
@@ -635,7 +655,7 @@ window.ARTICLES = [
       content_type: ["趨勢文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["market-to-ai", "a2a-agent-protocol", "agent-native-tools-software-interface"]
+    related: ["market-to-ai", "a2a-agent-protocol", "agent-native-tools-software-interface", "free-deploy-three-boundaries"]
   },
   {
     id: "four-lens-rapid-review",
@@ -764,7 +784,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["ai-loop-safety-recovery", "my-three-loops", "what-is-loop-engineering", "long-task-completion-rate"]
+    related: ["ai-loop-safety-recovery", "my-three-loops", "what-is-loop-engineering", "long-task-completion-rate", "free-deploy-three-boundaries"]
   },
 
   /* ── 別再寫死指令：把你要什麼講清楚，剩下交給 AI（系列 01）（教學）── */
