@@ -4,10 +4,10 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="index,follow">
-  <meta name="description" content="萊卡 Lyca 是正在進行第一波內部測試的 LINE 存訊小助理，協助保存群組文字、連結與附件線索，整理成可查找的群組紀錄。">
+  <meta name="description" content="萊卡 Lyca 是正在進行第一波內部測試的 LINE 存訊小助理，定期備存群組文字、連結與附件線索，整理進自己的知識庫，讓人類與 AI Agent 都能讀取使用。">
   <link rel="canonical" href="https://ai-km-jiang.vercel.app/ai-office/lyca/">
   <meta property="og:title" content="萊卡 Lyca｜LINE 存訊小助理">
-  <meta property="og:description" content="重要訊息，不要再靠某一個人記得。萊卡目前正在進行第一波內部測試，後續將開放第二波測試報名。">
+  <meta property="og:description" content="萊卡定期備存 LINE 群組訊息，整理進自己的知識庫，讓人類透過檢索頁查找，也讓取得授權的 AI Agent 讀取使用。">
   <meta property="og:url" content="https://ai-km-jiang.vercel.app/ai-office/lyca/">
   <meta property="og:image" content="https://ai-km-jiang.vercel.app/images/ai-office/lyca/lyca-cover-title-hd.webp">
   <title>萊卡 Lyca｜LINE 存訊小助理</title>
@@ -322,6 +322,311 @@
       background: var(--bg-soft);
     }
 
+    .lyca-overview {
+      background:
+        radial-gradient(circle at 12% 18%, rgba(232, 90, 79, 0.07), transparent 24%),
+        radial-gradient(circle at 88% 82%, rgba(77, 156, 125, 0.09), transparent 28%),
+        var(--bg);
+    }
+
+    .lyca-overview-head {
+      max-width: 900px;
+      margin: 0 auto 34px;
+      text-align: center;
+    }
+
+    .lyca-overview-head h2 {
+      margin: 10px 0 16px;
+      color: var(--ink);
+      font-family: "Cormorant Garamond", "Noto Sans TC", serif;
+      font-size: clamp(2.35rem, 4.8vw, 4rem);
+      font-weight: 500;
+      letter-spacing: -0.025em;
+      line-height: 1.14;
+    }
+
+    .lyca-overview-head p {
+      max-width: 760px;
+      margin: 0 auto;
+      color: var(--ink-soft);
+      font-size: 1.08rem;
+      line-height: 1.85;
+    }
+
+    .lyca-overview-visual {
+      overflow: hidden;
+      margin: 0 0 28px;
+      border: 1px solid rgba(160, 129, 68, 0.4);
+      border-radius: 30px;
+      background: #f3e2c8;
+      box-shadow: var(--shadow);
+    }
+
+    .lyca-overview-visual img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    .lyca-overview-visual figcaption {
+      padding: 14px 20px 16px;
+      border-top: 1px solid var(--line-soft);
+      background: rgba(255, 252, 247, 0.92);
+      color: var(--ink-faint);
+      font-size: 0.84rem;
+      line-height: 1.65;
+      text-align: center;
+    }
+
+    .lyca-overview-details {
+      overflow: hidden;
+      border: 1px solid rgba(160, 129, 68, 0.38);
+      border-radius: 24px;
+      background: rgba(255, 255, 255, 0.82);
+      box-shadow: var(--shadow);
+    }
+
+    .lyca-overview-details > summary {
+      position: relative;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 42px;
+      gap: 20px;
+      align-items: center;
+      padding: 23px 26px;
+      cursor: pointer;
+      list-style: none;
+    }
+
+    .lyca-overview-details > summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .lyca-overview-details > summary::after {
+      content: "+";
+      display: grid;
+      width: 42px;
+      height: 42px;
+      place-items: center;
+      border-radius: 50%;
+      background: var(--ink);
+      color: #fffaf2;
+      font-family: "Cormorant Garamond", serif;
+      font-size: 1.8rem;
+      line-height: 1;
+    }
+
+    .lyca-overview-details[open] > summary::after {
+      content: "−";
+    }
+
+    .lyca-overview-details > summary:hover,
+    .lyca-overview-details > summary:focus-visible {
+      background: rgba(230, 204, 158, 0.15);
+    }
+
+    .lyca-overview-details > summary:focus-visible {
+      outline: 3px solid rgba(201, 78, 69, 0.25);
+      outline-offset: -3px;
+    }
+
+    .lyca-overview-details-title {
+      display: block;
+      color: var(--ink);
+      font-size: 1.12rem;
+      font-weight: 700;
+      line-height: 1.5;
+    }
+
+    .lyca-overview-details-hint {
+      display: block;
+      margin-top: 4px;
+      color: var(--ink-faint);
+      font-size: 0.86rem;
+      font-weight: 400;
+      line-height: 1.6;
+    }
+
+    .lyca-overview-panel {
+      padding: clamp(24px, 4vw, 44px);
+      border-top: 1px solid var(--line-soft);
+      background: rgba(255, 255, 255, 0.82);
+    }
+
+    .lyca-overview-flow {
+      display: grid;
+      grid-template-columns: minmax(150px, 0.9fr) 34px minmax(170px, 1fr) 34px minmax(210px, 1.12fr) 34px minmax(220px, 1.2fr);
+      align-items: center;
+      gap: 8px;
+    }
+
+    .lyca-overview-node {
+      min-width: 0;
+      padding: 24px 20px;
+      border: 1px solid var(--line-soft);
+      border-radius: 20px;
+      background: var(--bg-soft);
+      text-align: left;
+    }
+
+    .lyca-overview-node[data-tone="red"] {
+      border-color: rgba(201, 78, 69, 0.32);
+      background: rgba(201, 78, 69, 0.055);
+    }
+
+    .lyca-overview-node[data-tone="gold"] {
+      border-color: rgba(160, 129, 68, 0.38);
+      background: rgba(230, 204, 158, 0.18);
+    }
+
+    .lyca-overview-node[data-tone="green"] {
+      border-color: rgba(77, 156, 125, 0.34);
+      background: rgba(77, 156, 125, 0.06);
+    }
+
+    .lyca-overview-node strong {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--ink);
+      font-size: 1.12rem;
+      line-height: 1.45;
+    }
+
+    .lyca-overview-node span {
+      display: block;
+      color: var(--ink-soft);
+      font-size: 0.9rem;
+      line-height: 1.65;
+    }
+
+    .lyca-overview-arrow {
+      color: var(--c-coral);
+      font-family: "Cormorant Garamond", serif;
+      font-size: 2rem;
+      font-weight: 600;
+      text-align: center;
+    }
+
+    .lyca-overview-destinations {
+      display: grid;
+      gap: 10px;
+    }
+
+    .lyca-storage-title {
+      margin: 34px 0 14px;
+      color: var(--ink);
+      font-family: "Cormorant Garamond", "Noto Sans TC", serif;
+      font-size: 1.45rem;
+      font-weight: 600;
+      text-align: center;
+    }
+
+    .lyca-storage-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .lyca-storage-card {
+      padding: 22px 24px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: var(--bg-soft);
+    }
+
+    .lyca-storage-card strong {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--ink);
+      font-size: 1.05rem;
+    }
+
+    .lyca-storage-card p {
+      margin: 0;
+      color: var(--ink-soft);
+      font-size: 0.92rem;
+      line-height: 1.75;
+    }
+
+    .lyca-overview-summary {
+      max-width: 860px;
+      margin: 24px auto 0;
+      color: var(--ink);
+      font-size: 1.08rem;
+      font-weight: 600;
+      line-height: 1.8;
+      text-align: center;
+    }
+
+    .lyca-overview-scope {
+      max-width: 900px;
+      margin: 18px auto 0;
+      padding: 14px 18px;
+      border-left: 3px solid var(--c-coral);
+      background: rgba(201, 78, 69, 0.05);
+      color: var(--ink-soft);
+      font-size: 0.88rem;
+      line-height: 1.75;
+    }
+
+    .lyca-agent-layout {
+      display: grid;
+      grid-template-columns: minmax(360px, 1.08fr) minmax(0, 0.92fr);
+      align-items: center;
+      gap: clamp(32px, 6vw, 72px);
+    }
+
+    .lyca-agent-visual {
+      overflow: hidden;
+      margin: 0;
+      border: 1px solid rgba(160, 129, 68, 0.34);
+      border-radius: 30px;
+      background: #ead5b7;
+      box-shadow: var(--shadow);
+    }
+
+    .lyca-agent-visual img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    .lyca-agent-copy h2 {
+      margin: 9px 0 16px;
+      color: var(--ink);
+      font-family: "Cormorant Garamond", "Noto Sans TC", serif;
+      font-size: clamp(2.15rem, 4vw, 3.4rem);
+      font-weight: 500;
+      line-height: 1.18;
+    }
+
+    .lyca-agent-copy > p {
+      margin: 0 0 24px;
+      color: var(--ink-soft);
+      font-size: 1.03rem;
+      line-height: 1.85;
+    }
+
+    .lyca-agent-list {
+      display: grid;
+      gap: 12px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .lyca-agent-list li {
+      padding: 18px 20px;
+      border-left: 4px solid var(--c-coral);
+      border-radius: 0 14px 14px 0;
+      background: rgba(255, 255, 255, 0.76);
+      color: var(--ink-soft);
+      line-height: 1.7;
+    }
+
+    .lyca-agent-list strong {
+      color: var(--ink);
+    }
+
     .lyca-section-head {
       max-width: 760px;
       margin-bottom: 42px;
@@ -469,21 +774,6 @@
       background: var(--c-mint);
     }
 
-    .lyca-flow-map {
-      display: flex;
-      align-items: stretch;
-      gap: 10px;
-      padding: clamp(22px, 4vw, 38px);
-      overflow: hidden;
-      border: 1px solid var(--line);
-      border-radius: 28px;
-      background:
-        radial-gradient(circle at 8% 12%, rgba(232, 90, 79, 0.08), transparent 25%),
-        radial-gradient(circle at 92% 88%, rgba(77, 156, 125, 0.10), transparent 30%),
-        rgba(255, 255, 255, 0.8);
-      box-shadow: var(--shadow);
-    }
-
     .lyca-flow-guide {
       position: relative;
       display: grid;
@@ -549,89 +839,16 @@
       line-height: 1.85;
     }
 
-    .lyca-chart-head,
-    .lyca-architecture-head {
+    .lyca-chart-head {
       margin: 34px 0 14px;
     }
 
-    .lyca-chart-head h3,
-    .lyca-architecture-head h3 {
+    .lyca-chart-head h3 {
       margin: 0;
       color: var(--ink);
       font-family: "Cormorant Garamond", "Noto Sans TC", serif;
       font-size: 1.45rem;
       font-weight: 600;
-    }
-
-    .lyca-flow-stage {
-      position: relative;
-      display: flex;
-      min-width: 0;
-      flex: 1 1 0;
-      flex-direction: column;
-      padding: 23px 18px;
-      border: 1px solid var(--line-soft);
-      border-radius: 20px;
-      background: rgba(255, 252, 247, 0.92);
-    }
-
-    .lyca-flow-stage:nth-of-type(3) {
-      border-color: rgba(232, 90, 79, 0.35);
-      background: rgba(232, 90, 79, 0.055);
-    }
-
-    .lyca-flow-stage:nth-of-type(5) {
-      border-color: rgba(77, 156, 125, 0.35);
-      background: rgba(77, 156, 125, 0.055);
-    }
-
-    .lyca-flow-icon {
-      display: grid;
-      width: 42px;
-      height: 42px;
-      margin-bottom: 16px;
-      place-items: center;
-      border-radius: 14px;
-      background: var(--ink);
-      color: #fffaf2;
-      font-family: "Noto Sans TC", sans-serif;
-      font-size: 0.9rem;
-      font-weight: 700;
-    }
-
-    .lyca-flow-stage h3 {
-      margin: 0 0 8px;
-      color: var(--ink);
-      font-family: "Cormorant Garamond", "Noto Sans TC", serif;
-      font-size: 1.28rem;
-      font-weight: 600;
-      line-height: 1.35;
-    }
-
-    .lyca-flow-stage p {
-      margin: 0;
-      color: var(--ink-soft);
-      font-size: 0.88rem;
-      line-height: 1.7;
-    }
-
-    .lyca-flow-arrow {
-      display: grid;
-      flex: 0 0 22px;
-      place-items: center;
-      color: var(--c-coral);
-      font-family: "Cormorant Garamond", serif;
-      font-size: 1.8rem;
-      font-weight: 600;
-    }
-
-    .lyca-flow-caption {
-      max-width: 860px;
-      margin: 18px auto 0;
-      color: var(--ink-faint);
-      font-size: 0.86rem;
-      line-height: 1.7;
-      text-align: center;
     }
 
     .lyca-message-journey {
@@ -1128,6 +1345,17 @@
       margin-top: 0;
     }
 
+    @media (max-width: 1120px) {
+      .lyca-overview-flow {
+        grid-template-columns: 1fr;
+      }
+
+      .lyca-overview-arrow {
+        min-height: 22px;
+        transform: rotate(90deg);
+      }
+    }
+
     @media (max-width: 1040px) {
       body.lyca-page nav.top ul.nav-menu {
         gap: 14px;
@@ -1143,15 +1371,6 @@
         grid-template-columns: repeat(2, minmax(0, 1fr));
       }
 
-      .lyca-flow-map {
-        display: grid;
-        grid-template-columns: 1fr;
-      }
-
-      .lyca-flow-arrow {
-        min-height: 24px;
-        transform: rotate(90deg);
-      }
     }
 
     @media (max-width: 820px) {
@@ -1213,9 +1432,19 @@
 
       .lyca-hero-grid,
       .lyca-origin-grid,
+      .lyca-agent-layout,
       .lyca-benefit-layout,
       .lyca-boundary-box {
         grid-template-columns: 1fr;
+      }
+
+      .lyca-storage-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .lyca-agent-visual {
+        width: min(100%, 680px);
+        margin: 0 auto;
       }
 
       .lyca-hero-copy-block {
@@ -1373,12 +1602,12 @@
       </button>
       <ul class="nav-menu" id="lyca-nav-menu">
         <li><a href="../../index.html">首頁</a></li>
-        <li><a href="../../articles.html">深度文章</a></li>
+        <li><a href="../../knowledge-architecture.html">知識架構</a></li>
         <li><a href="../../courses.html">課程</a></li>
-        <li><a href="../../agent.html">AI Agent</a></li>
-        <li><a href="../../offers.html">服務方案</a></li>
-        <li><a href="../../skills.html">技能包</a></li>
-        <li><a href="../index.html" class="active">AI 辦公室</a></li>
+        <li><a href="../../articles.html">深度文章</a></li>
+        <li><a href="../../skills.html">技能包下載</a></li>
+        <li><a href="../../cases.html">服務方案</a></li>
+        <li class="lang-switch"><a href="../../en/index.html" hreflang="en">EN</a></li>
       </ul>
     </div>
   </nav>
@@ -1395,7 +1624,7 @@
           <div class="lyca-kicker">LINE Group Memory Service</div>
           <h1 id="lyca-title">萊卡 Lyca<span>LINE 存訊小助理</span></h1>
           <p class="lyca-hero-statement">重要訊息，不要再靠某一個人記得。</p>
-          <p class="lyca-hero-copy">萊卡替已設定的 LINE 群組備存文字、連結與附件線索，整理成可查找的群組紀錄與週報。下次有人問「上次怎麼決定的？」不用再從聊天紀錄重新翻起。</p>
+          <p class="lyca-hero-copy">萊卡定期備存已設定 LINE 群組裡的文字、連結與附件線索，整理進自己的知識庫。人可以從檢索頁快速查找，取得授權的 AI Agent 也能讀取同一份資料，延續後續整理與工作流程。</p>
           <div class="lyca-status">
             <span class="lyca-status-dot" aria-hidden="true"></span>
             第一波內部測試進行中
@@ -1405,6 +1634,77 @@
             <a class="lyca-button lyca-button-secondary" href="#workflow">看看萊卡怎麼工作</a>
           </div>
         </div>
+      </div>
+    </section>
+
+    <section class="lyca-section lyca-overview" aria-labelledby="overview-title">
+      <div class="container">
+        <div class="lyca-overview-head">
+          <div class="lyca-section-index">00 · At a Glance</div>
+          <h2 id="overview-title">一張總表看懂：LINE 群組訊息如何變成自己與 AI 都能使用的知識庫</h2>
+          <p>萊卡是 LINE 群組與 AI 工作流之間的資料入口。訊息定期備存後，不再只留在聊天畫面，而是進入你自己掌握的知識庫，接著分別提供給 AI Agent 與人類使用。</p>
+        </div>
+
+        <figure class="lyca-overview-visual">
+          <picture>
+            <source srcset="../../images/ai-office/lyca/lyca-one-page-overview-hd.webp" type="image/webp">
+            <img src="../../images/ai-office/lyca/lyca-one-page-overview.png" width="1672" height="941" loading="eager" alt="萊卡存訊流程總表：LINE 群組訊息經萊卡定期備存後進入自己的知識庫，可選擇地端優先或純雲端，最後提供 AI Agent 讀取與人類檢索">
+          </picture>
+          <figcaption>一份訊息進入自己的知識庫後，可以同時成為 AI Agent 的工作資料，以及人類可查找的群組紀錄。</figcaption>
+        </figure>
+
+        <details class="lyca-overview-details">
+          <summary>
+            <span>
+              <span class="lyca-overview-details-title">點我看詳細說明</span>
+              <span class="lyca-overview-details-hint">了解萊卡會保存哪些資訊、資料放在哪裡，以及人與 AI 如何使用同一份知識庫。</span>
+            </span>
+          </summary>
+
+          <div class="lyca-overview-panel">
+          <div class="lyca-overview-flow" role="img" aria-label="LINE 群組訊息經萊卡定期備存後進入自己的知識庫，再分別提供 AI Agent 讀取與人類檢索頁查找">
+            <div class="lyca-overview-node">
+              <strong>LINE 群組</strong>
+              <span>群組持續產生文字、連結、圖片、PDF 與檔案。萊卡會連同訊息時間、群組來源、原始文字及附件線索一起保存，保留日後查證需要的脈絡。</span>
+            </div>
+            <div class="lyca-overview-arrow" aria-hidden="true">→</div>
+            <div class="lyca-overview-node" data-tone="red">
+              <strong>萊卡定期備存</strong>
+              <span>依設定週期執行備存，把群組裡散落的訊息轉成可以持續累積、整理與查找的資料，不必再由某一個人手動複製。</span>
+            </div>
+            <div class="lyca-overview-arrow" aria-hidden="true">→</div>
+            <div class="lyca-overview-node" data-tone="gold">
+              <strong>你自己的知識庫</strong>
+              <span>資料不只停在聊天畫面，而是整理進由你掌握的知識庫。可以依導入方式放在指定雲端，或以自己的電腦硬碟作為主要保存位置。</span>
+            </div>
+            <div class="lyca-overview-arrow" aria-hidden="true">→</div>
+            <div class="lyca-overview-destinations">
+              <div class="lyca-overview-node" data-tone="green">
+                <strong>AI Agent 讀取</strong>
+                <span>取得授權的 AI Agent 可以讀取知識庫，依原始脈絡查找資料、整理決定、彙整待辦，並銜接後續工作流程。</span>
+              </div>
+              <div class="lyca-overview-node" data-tone="green">
+                <strong>人類檢索頁</strong>
+                <span>成員可從檢索頁依關鍵字、群組、時間與附件線索找回內容，同時回到原始訊息理解完整討論脈絡。</span>
+              </div>
+            </div>
+          </div>
+
+          <h3 class="lyca-storage-title">保存位置可以依導入方式選擇</h3>
+          <div class="lyca-storage-grid">
+            <article class="lyca-storage-card">
+              <strong>地端優先</strong>
+              <p>知識庫主檔存進自己的電腦硬碟，再依設定同步保留一份 Google Drive 雲端副本，降低資料只留在單一位置的風險。</p>
+            </article>
+            <article class="lyca-storage-card">
+              <strong>純雲端</strong>
+              <p>依團隊的使用情境與權限需求，把備存資料放在指定雲端空間，讓授權成員與後續服務取用。</p>
+            </article>
+          </div>
+          <p class="lyca-overview-summary">同一份群組資訊，一份交給 AI Agent 讀，一個檢索頁給人找，讓人與 AI 都能真正使用 LINE 裡累積的內容。</p>
+          <p class="lyca-overview-scope"><strong>目前的運作範圍：</strong>萊卡只在已設定的群組定期備存，每個群組分開保存；實際能保存的文字與附件資訊，仍依 LINE 官方提供的權限及導入設定為準。</p>
+          </div>
+        </details>
       </div>
     </section>
 
@@ -1428,7 +1728,7 @@
           </article>
           <article class="lyca-card">
             <span class="lyca-card-number">02</span>
-            <h3>行動沒接住</h3>
+            <h3>行動沒有留下</h3>
             <p>訊息裡有人交辦、有人補充，過幾天才發現沒有形成可以追蹤的下一步。</p>
           </article>
           <article class="lyca-card">
@@ -1446,7 +1746,7 @@
         <div class="lyca-section-head">
           <div class="lyca-section-index">02 · How It Works</div>
           <h2 id="workflow-title">一則 LINE 訊息，會怎麼走</h2>
-          <p>萊卡的主流程可以拆成五個階段：接收、驗證、分群保存、整理輸出，再交回給人查找與決定。</p>
+          <p>萊卡的主流程可以拆成五個階段：定期備存、分群保存、寫入自有知識庫，再分別交給 AI Agent 讀取與人類檢索。</p>
         </div>
 
         <div class="lyca-flow-guide">
@@ -1455,8 +1755,8 @@
           </figure>
           <div class="lyca-flow-guide-copy">
             <span class="lyca-flow-guide-label">萊卡來說明</span>
-            <h3>我先把訊息接住，再把時間、群組與附件線索一起留下來。</h3>
-            <p>收到訊息後，我不會只摘出一句話。原始內容會先按群組保存，再整理成可以重新查找的紀錄。等你需要回顧時，仍然看得到事情發生在哪個群組、什麼時間，以及當時搭配了哪些連結或檔案。</p>
+            <h3>我會定期備份訊息</h3>
+            <p>原始內容會按群組保存，連同時間、來源與附件線索整理進知識庫。等你或 AI Agent 需要使用時，仍然看得到事情發生在哪個群組、什麼時間，以及當時搭配了哪些連結或檔案。</p>
           </div>
         </div>
 
@@ -1464,7 +1764,7 @@
           <span class="lyca-chart-label">一則訊息的轉換圖</span>
           <h3>從群組原話，變成日後找得回來的紀錄</h3>
         </div>
-        <div class="lyca-message-journey" aria-label="一則訊息從群組原話、接收線索、分群保存到重新查找的轉換圖">
+        <div class="lyca-message-journey" aria-label="一則訊息從群組原話、定期備存、分群保存到重新查找的轉換圖">
           <article class="lyca-journey-step">
             <span class="lyca-journey-label">01 · 群組原話</span>
             <strong>「下週三前，請把報名表與簡報連結補齊。」</strong>
@@ -1472,60 +1772,24 @@
           </article>
           <span class="lyca-journey-arrow" aria-hidden="true">→</span>
           <article class="lyca-journey-step">
-            <span class="lyca-journey-label">02 · 接住線索</span>
+            <span class="lyca-journey-label">02 · 定期備存</span>
             <strong>時間、群組與原始文字一起留下</strong>
-            <p>先保留訊息出現時的基本脈絡，避免只剩一段摘要。</p>
+            <p>依設定的排程保存訊息脈絡，避免最後只剩一段摘要。</p>
           </article>
           <span class="lyca-journey-arrow" aria-hidden="true">→</span>
           <article class="lyca-journey-step">
-            <span class="lyca-journey-label">03 · 分群保存</span>
-            <strong>附件與連結跟著同一則紀錄走</strong>
-            <p>不同群組各自保存，後續整理時不互相混入。</p>
+            <span class="lyca-journey-label">03 · 寫入知識庫</span>
+            <strong>附件與連結跟著同一則紀錄進入自有資料夾</strong>
+            <p>不同群組各自保存，也保留後續讓 Agent 讀取的結構。</p>
           </article>
           <span class="lyca-journey-arrow" aria-hidden="true">→</span>
           <article class="lyca-journey-step">
-            <span class="lyca-journey-label">04 · 日後找回</span>
-            <strong>用「報名表」或「下週三」找到原本脈絡</strong>
-            <p>人再根據完整紀錄確認行動、回覆與最後決定。</p>
+            <span class="lyca-journey-label">04 · 人機共同使用</span>
+            <strong>Agent 可以讀，人也能用「報名表」或「下週三」找回</strong>
+            <p>同一份資料同時支援 AI 工作流與人類查找，不必再整理兩套。</p>
           </article>
         </div>
 
-        <div class="lyca-architecture-head">
-          <span class="lyca-chart-label">完整系統架構</span>
-          <h3>萊卡背後仍照五個階段運作</h3>
-        </div>
-        <div class="lyca-flow-map" role="img" aria-label="LINE 群組訊息從接收、驗證、分群保存、整理輸出，到群組成員使用的五階段流程">
-          <article class="lyca-flow-stage">
-            <span class="lyca-flow-icon" aria-hidden="true">訊</span>
-            <h3>LINE 群組</h3>
-            <p>文字、連結、圖片、PDF 與其他檔案，先從已設定的群組進入。</p>
-          </article>
-          <span class="lyca-flow-arrow" aria-hidden="true">→</span>
-          <article class="lyca-flow-stage">
-            <span class="lyca-flow-icon" aria-hidden="true">驗</span>
-            <h3>安全接收</h3>
-            <p>確認來源、辨識群組，並降低同一事件被重複處理的風險。</p>
-          </article>
-          <span class="lyca-flow-arrow" aria-hidden="true">→</span>
-          <article class="lyca-flow-stage">
-            <span class="lyca-flow-icon" aria-hidden="true">存</span>
-            <h3>分群備存</h3>
-            <p>不同群組分開保存，讓訊息、連結與附件不會混在一起。</p>
-          </article>
-          <span class="lyca-flow-arrow" aria-hidden="true">→</span>
-          <article class="lyca-flow-stage">
-            <span class="lyca-flow-icon" aria-hidden="true">整</span>
-            <h3>整理輸出</h3>
-            <p>依設定產生檢索入口、每日整理、週報或提醒候選。</p>
-          </article>
-          <span class="lyca-flow-arrow" aria-hidden="true">→</span>
-          <article class="lyca-flow-stage">
-            <span class="lyca-flow-icon" aria-hidden="true">人</span>
-            <h3>人員使用</h3>
-            <p>群組成員查找脈絡、確認行動；需要回覆時仍保留人的決定權。</p>
-          </article>
-        </div>
-        <p class="lyca-flow-caption">現階段只在已設定的群組運作；每個群組各自保存，實際可備存內容依 LINE 官方權限為準。</p>
       </div>
     </section>
 
@@ -1534,8 +1798,8 @@
         <div class="lyca-section-intro">
           <div class="lyca-section-head">
             <div class="lyca-section-index">03 · What You Can Use</div>
-            <h2 id="feature-title">LINE 裡聊過的事情，之後還找得回來</h2>
-            <p>你照平常在 LINE 討論，萊卡在後面把文字、連結與附件收好，再整理成群組專屬的查找入口與定期摘要。</p>
+            <h2 id="feature-title">同一份群組資料，人與 AI 都能繼續使用</h2>
+            <p>你照平常在 LINE 討論，萊卡定期把文字、連結與附件整理進自己的知識庫，再提供給 AI Agent 與人類檢索頁使用。</p>
           </div>
           <figure class="lyca-section-illustration">
             <img src="../../images/ai-office/lyca/lyca-scene-search-hd.webp" width="1254" height="1254" loading="lazy" alt="萊卡拿著放大鏡查找已保存的群組訊息">
@@ -1551,35 +1815,53 @@
               <li>時間與群組來源</li>
             </ul>
           </article>
-          <article class="lyca-feature-card" data-letter="分">
-            <h3>群組分開保存</h3>
-            <p>每個群組都有自己的保存區與查找範圍。</p>
+          <article class="lyca-feature-card" data-letter="庫">
+            <h3>自己的知識庫</h3>
+            <p>依導入設定保存於本機硬碟或指定雲端空間。</p>
             <ul>
-              <li>按群組分開保存</li>
-              <li>降低不同專案互相混入</li>
-              <li>查找範圍更明確</li>
+              <li>不同群組分開保存</li>
+              <li>地端優先或純雲端</li>
+              <li>可同步 Google Drive 副本</li>
+            </ul>
+          </article>
+          <article class="lyca-feature-card" data-letter="AI">
+            <h3>AI Agent 讀取</h3>
+            <p>讓授權的 Agent 直接使用知識庫裡的群組資料。</p>
+            <ul>
+              <li>查找過往討論</li>
+              <li>整理摘要與脈絡</li>
+              <li>銜接後續工作流程</li>
             </ul>
           </article>
           <article class="lyca-feature-card" data-letter="找">
-            <h3>群組檢索入口</h3>
-            <p>沿著關鍵字與附件線索回到脈絡。</p>
+            <h3>人類檢索頁</h3>
+            <p>沿著關鍵字、群組與附件線索回到原始脈絡。</p>
             <ul>
               <li>群組專屬檢索頁</li>
               <li>訊息與附件索引</li>
-              <li>歷史內容回看</li>
-            </ul>
-          </article>
-          <article class="lyca-feature-card" data-letter="整">
-            <h3>定期整理輸出</h3>
-            <p>把保存內容轉成較容易閱讀的整理。</p>
-            <ul>
-              <li>每日整理</li>
-              <li>每週摘要</li>
-              <li>提醒與待辦候選</li>
+              <li>歷史內容快速回看</li>
             </ul>
           </article>
         </div>
-        <p class="lyca-feature-note">重要的不只是一份摘要，而是原始訊息、附件線索與討論脈絡仍然能被重新找到。</p>
+        <p class="lyca-feature-note">重點不只是一份摘要，而是把原始訊息、附件線索與討論脈絡留在自己能掌握、也能交給 AI 使用的地方。</p>
+      </div>
+    </section>
+
+    <section class="lyca-section" aria-labelledby="agent-use-title">
+      <div class="container lyca-agent-layout">
+        <figure class="lyca-agent-visual">
+          <img src="../../images/ai-office/lyca/lyca-agent-handoff-hd.webp" width="1448" height="1086" loading="lazy" alt="萊卡把保存 LINE 群組訊息的紅色封蠟信件交給 AI Agent">
+        </figure>
+        <div class="lyca-agent-copy">
+          <div class="lyca-section-index">04 · Human and AI Ready</div>
+          <h2 id="agent-use-title">萊卡把群組訊息整理好，再交給 AI Agent 使用</h2>
+          <p>群組訊息存進自己的知識庫後，就能成為 AI 工作流真正讀得到的資料。你不必把同一段對話重新複製貼上，也不必另外整理一套只給 AI 的版本。</p>
+          <ul class="lyca-agent-list">
+            <li><strong>給 AI Agent：</strong>在授權的資料夾範圍內讀取歷史討論、附件線索與群組脈絡，協助查找、整理與延續後續工作。</li>
+            <li><strong>給團隊成員：</strong>透過專屬檢索頁輸入關鍵字，快速找到當時的原始訊息與相關附件。</li>
+            <li><strong>給資料掌握者：</strong>保存位置與讀取權限依導入方式設定，讓資料留在自己選擇的本機或雲端環境。</li>
+          </ul>
+        </div>
       </div>
     </section>
 
@@ -1587,19 +1869,19 @@
       <div class="container lyca-benefit-layout">
         <div>
           <div class="lyca-section-head">
-            <div class="lyca-section-index">04 · What Changes</div>
-            <h2 id="benefits-title">少一次重找、重問和重做</h2>
-            <p>萊卡把原本依賴某個人記得的事情，轉成群組可以持續使用的保存與查找流程。</p>
+            <div class="lyca-section-index">05 · What Changes</div>
+            <h2 id="benefits-title">群組資訊留下來，後面的工作才接得上</h2>
+            <p>萊卡把原本只存在聊天畫面的內容，轉成團隊與 AI Agent 都能持續使用的知識資料。</p>
           </div>
           <ul class="lyca-benefit-list">
             <li><span>1</span><div>原本靠記憶翻聊天紀錄，之後可從群組檢索入口重新查找。</div></li>
-            <li><span>2</span><div>原本交辦散在對話裡，之後可進入每日整理、週報或提醒候選。</div></li>
+            <li><span>2</span><div>原本每次都要重新交代背景，之後 AI Agent 可從知識庫讀取既有脈絡。</div></li>
             <li><span>3</span><div>原本附件離開討論脈絡，之後可連同來源與附件線索一起保存。</div></li>
-            <li><span>4</span><div>原本每個群組混在一起，之後可保有各自的保存區與查找範圍。</div></li>
+            <li><span>4</span><div>原本資料只停在 LINE 平台裡，之後可保存到自己選擇的本機或雲端空間。</div></li>
           </ul>
         </div>
         <aside class="lyca-benefit-callout">
-          <p>當關鍵資訊找得回來，群組才有機會把時間留給下一個決定。</p>
+          <p>讓人找得到，也讓 AI 讀得到，LINE 群組裡的訊息才會真的進入後續工作流。</p>
           <small>實際成效會受到群組設定、平台權限、訊息內容與團隊使用方式影響。</small>
         </aside>
       </div>
@@ -1609,15 +1891,15 @@
       <div class="container">
         <div class="lyca-boundary-box">
           <div class="lyca-boundary-intro">
-            <div class="lyca-section-index">05 · Stay In LINE</div>
+            <div class="lyca-section-index">06 · Stay In LINE</div>
             <h2 id="daily-use-title">群組照常討論，萊卡把資料收好</h2>
-            <p>萊卡透過 LINE 官方帳號加入設定好的群組。團隊照原本方式聊天，重要訊息會進入群組自己的保存與查找流程。</p>
+            <p>萊卡透過 LINE 官方帳號加入設定好的群組。團隊照原本方式聊天，訊息會依排程進入群組自己的知識庫、檢索頁與 Agent 讀取流程。</p>
           </div>
           <ul class="lyca-boundary-list">
             <li>文字、連結、圖片、PDF 與檔案線索可以一起備存。</li>
             <li>每個群組有自己的資料區與檢索頁，不和其他群組混在一起。</li>
-            <li>保存內容可以再整理成每日統整、週報與待辦候選。</li>
-            <li>需要回顧時，沿著關鍵字回到原始訊息與附件脈絡。</li>
+            <li>地端優先時，資料保存在自己的電腦硬碟，也可同步保留 Google Drive 副本。</li>
+            <li>需要使用時，人從檢索頁查找，AI Agent 從授權知識庫讀取。</li>
           </ul>
           <div class="lyca-guardrail" aria-label="使用萊卡後的三個日常變化">
             <div class="lyca-guardrail-item">
@@ -1625,12 +1907,12 @@
               <span>討論仍留在熟悉的 LINE 群組。</span>
             </div>
             <div class="lyca-guardrail-item">
-              <strong>自動備存</strong>
-              <span>訊息與附件線索依群組整理保存。</span>
+              <strong>定期備存</strong>
+              <span>訊息與附件線索依群組寫入知識庫。</span>
             </div>
             <div class="lyca-guardrail-item">
-              <strong>需要時找回</strong>
-              <span>從專屬檢索頁回到完整討論脈絡。</span>
+              <strong>人機共用</strong>
+              <span>人從檢索頁查找，AI Agent 從知識庫讀取。</span>
             </div>
           </div>
         </div>
@@ -1640,11 +1922,11 @@
     <section class="lyca-section" aria-labelledby="faq-title">
       <div class="container">
         <div class="lyca-section-head">
-          <div class="lyca-section-index">06 · Common Questions</div>
-          <h2 id="faq-title">開始使用萊卡前，大家通常會問的四件事</h2>
+          <div class="lyca-section-index">07 · Common Questions</div>
+          <h2 id="faq-title">開始使用萊卡前，大家通常會問的六件事</h2>
           <p>先不用理解技術架構，從群組成員真正會遇到的使用情境開始。</p>
         </div>
-        <div class="lyca-card-grid">
+        <div class="lyca-card-grid lyca-card-grid-three">
           <article class="lyca-card">
             <span class="lyca-card-number">APP</span>
             <h3>需要另外下載 App 嗎？</h3>
@@ -1665,6 +1947,16 @@
             <h3>之後要怎麼找回來？</h3>
             <p>從群組專屬檢索頁輸入關鍵字，再回到相關文字、附件與討論脈絡。</p>
           </article>
+          <article class="lyca-card">
+            <span class="lyca-card-number">STORAGE</span>
+            <h3>資料會存在哪裡？</h3>
+            <p>可依導入需求選擇純雲端或地端優先。地端優先時，主檔放在自己的電腦硬碟，也可同步保留 Google Drive 雲端副本。</p>
+          </article>
+          <article class="lyca-card">
+            <span class="lyca-card-number">AGENT</span>
+            <h3>AI Agent 可以讀嗎？</h3>
+            <p>可以。完成資料夾與權限設定後，指定的 AI Agent 就能在授權範圍內讀取知識庫，協助查找、整理與延續工作流程。</p>
+          </article>
         </div>
       </div>
     </section>
@@ -1672,7 +1964,7 @@
     <section class="lyca-section lyca-section-soft" aria-labelledby="fit-title">
       <div class="container">
         <div class="lyca-section-head">
-          <div class="lyca-section-index">07 · Suitable Scenarios</div>
+          <div class="lyca-section-index">08 · Suitable Scenarios</div>
           <h2 id="fit-title">哪些群組最需要萊卡</h2>
           <p>群組裡經常出現專案決定、行動事項、附件與後續追蹤，萊卡就能減少事後翻找與重新整理的時間。</p>
         </div>
@@ -1700,9 +1992,9 @@
     <section class="lyca-final" id="status" aria-labelledby="status-title">
       <div class="container">
         <div class="lyca-final-inner">
-          <div class="lyca-section-index">08 · Test Status</div>
+          <div class="lyca-section-index">09 · Test Status</div>
           <h2 id="status-title">目前正在進行第一波內部測試</h2>
-          <p>第一波會先確認真實群組裡的訊息備存、分群查找與整理流程。完成後，將開放第二波測試報名。</p>
+          <p>第一波會先確認真實群組裡的定期備存、知識庫寫入、AI Agent 讀取與人類檢索流程。完成後，將開放第二波測試報名。</p>
           <div class="lyca-status">
             <span class="lyca-status-dot" aria-hidden="true"></span>
             第二波測試報名尚未開放
@@ -1722,7 +2014,7 @@
             <article class="lyca-role">
               <span class="lyca-role-label">STEP 03</span>
               <h3>參加第二波測試</h3>
-              <p>確認範圍後，從指定群組開始觀察備存、查找與整理效果。</p>
+              <p>確認範圍後，從指定群組開始觀察備存、知識庫讀取與檢索效果。</p>
             </article>
           </div>
           <div class="lyca-cta-row">
@@ -1742,12 +2034,12 @@
       </div>
       <div class="foot-links">
         <a href="../../index.html">首頁</a>
-        <a href="../../articles.html">深度文章</a>
+        <a href="../../knowledge-architecture.html">知識架構</a>
         <a href="../../courses.html">課程</a>
-        <a href="../../agent.html">AI Agent</a>
-        <a href="../../offers.html">服務方案</a>
-        <a href="../../skills.html">技能包</a>
-        <a href="../index.html">AI 辦公室</a>
+        <a href="../../articles.html">深度文章</a>
+        <a href="../../skills.html">技能包下載</a>
+        <a href="../../cases.html">服務方案</a>
+        <a href="../../en/index.html" hreflang="en">EN</a>
       </div>
       <div class="foot-meta">Lyca · LINE 存訊小助理</div>
     </div>

@@ -67,7 +67,7 @@ Phase 1 不新增文章頁。文章先保留在課後簡報頁的方格子與 Th
    https://ai-km-jiang.vercel.app/images/og/<slug>.jpg
    ```
    （`og:title` 本來就帶文章標題，不用改。）
-4. `vercel --prod --yes` → `git push`。
+4. 先 `git add --` 本篇新增／修改的明確檔案，再執行 `bash scripts/publish.sh "新增文章：<slug>"`；也可用 `bash scripts/publish.sh "新增文章：<slug>" -- path1 path2`。腳本只允許 `main` 且 upstream 必須是 `origin/main`，會先做 preflight 與兩次秘密掃描，再經共用安全部署工具上線並做五個端點的 HTTP 可達性驗收。
 
 可一次傳多個 slug 批次截。需要全域 `playwright`（`npm i -g playwright && playwright install chromium`）。
 
@@ -100,7 +100,7 @@ Phase 1 不新增文章頁。文章先保留在課後簡報頁的方格子與 Th
 }
 ```
 
-存檔 → `git push` → 30 秒後線上自動更新。
+存檔後執行 `bash scripts/publish.sh "新增課程：XX" -- courses-data.js`；不要只做 `git push` 或手動 `vercel --prod`。
 
 ### 自動顯示邏輯
 - **首頁「最近的課」**：自動取 `date >= 今天` 的前 3 場
@@ -113,7 +113,7 @@ Phase 1 不新增文章頁。文章先保留在課後簡報頁的方格子與 Th
 雷哥說「上課程看板：5/23 講師 Agent 工作流」→ AI 同步三處：
 1. 改 `00 工作台/課程看板.md` 加卡片
 2. 改本資料夾的 `courses-data.js` 加 object
-3. `cd` 進來 `git add courses-data.js && git commit -m "新增課程：XX" && git push`
+3. `cd` 進來執行 `bash scripts/publish.sh "新增課程：XX" -- courses-data.js`
 
 ## 配色調整
 
@@ -129,8 +129,16 @@ Phase 1 不新增文章頁。文章先保留在課後簡報頁的方格子與 Th
 
 ## 部署
 
+唯一入口：
+
 ```bash
-git add . && git commit -m "..." && git push
+git add -- 本次明確檔案
+bash scripts/publish.sh "本次修改說明"
+
+# 或讓腳本只加入列出的明確路徑
+bash scripts/publish.sh "本次修改說明" -- path1 path2
 ```
 
-GitHub Pages 自動部署（30-60 秒）。
+腳本先鎖定 `main` 且要求 upstream＝`origin/main`，確認 `scripts/git-hooks/pre-push` 存在且可執行後才綁定 hooks，再依序執行：官網 preflight → 驗明確檔案範圍 → 秘密掃描 → commit → `git pull --rebase` → 再掃描 → main 明確 refspec＋tag atomic push → 共用 `safe-deploy.sh` 建候選 → 候選五端點 HTTP 可達性驗收 → 只切 `ai-km-jiang.vercel.app` 這個別名 → 正式五端點 HTTP 可達性驗收。正式驗收失敗時，工具會把該別名指回舊 deployment，並用 inspect＋相同五端點再次驗證；回退無法確認時 exit 3 並標 `CRITICAL`。detached HEAD、不是 main、upstream 不符或 hook 缺失都會在 preflight 前停止。不要手動執行 `vercel --prod`，也不要用裸 `git push` 代替完整發布。
+
+秘密掃描刻意檢查 repo 的實際工作樹，不因 `.gitignore` 或 `.vercelignore` 放行真值；因此 repo 內任何 `.env*` 真實憑證都會讓發布停止。這是安全閘門，不是掃描器故障，禁止繞過。下次發布前須另案確認憑證已安全存於 Vercel 專案環境，再經明確授權移出 repo 工作樹；不可把值貼進對話、README 或 commit。

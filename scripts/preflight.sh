@@ -5,6 +5,7 @@
 # 2026-07-06 立：把人工健檢清單機器化，錯誤在部署前擋下。
 set -uo pipefail
 cd "$(dirname "$0")/.."
+SAFE_DEPLOY_TOOL="${SAFE_DEPLOY_TOOL:-/Users/jiangyude2/Library/Mobile Documents/iCloud~md~obsidian/Documents/江昱德 主知識庫/_agent/tools/safe-deploy/safe-deploy.sh}"
 FAIL=0
 ok(){ echo "  ✅ $1"; }
 bad(){ echo "  ❌ $1"; FAIL=1; }
@@ -35,9 +36,13 @@ echo "═══ 5/7 內部連結掃描 ═══"
 python3 scripts/check-links.py && ok "內部連結" || bad "有內部斷鏈（見上）"
 
 echo "═══ 6/7 秘密掃描（未提交變更檔）═══"
-HITS=$(git status --short | awk '{print $2}' | while read -r f; do
-  [ -f "$f" ] && grep -lEi "sk-[a-zA-Z0-9]{20}|AKIA[0-9A-Z]{16}|api[_-]?key\s*[:=]\s*['\"][A-Za-z0-9]{16,}" "$f" 2>/dev/null; done | head -3)
-[ -z "$HITS" ] && ok "無疑似金鑰" || bad "疑似金鑰：$HITS"
+if [[ ! -f "$SAFE_DEPLOY_TOOL" ]]; then
+  bad "找不到共用秘密掃描入口"
+elif bash "$SAFE_DEPLOY_TOOL" --scan-only "$PWD"; then
+  ok "共用掃描全綠"
+else
+  bad "共用秘密掃描未通過"
+fi
 
 echo "═══ 7/7 內容 lint（本次變更檔）═══"
 DASH=$(git diff HEAD --unified=0 -- '*.html' 2>/dev/null | grep '^+' | grep -c '——\|——' || true)

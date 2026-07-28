@@ -1,0 +1,1416 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="index,follow">
+<link rel="canonical" href="https://ai-km-jiang.vercel.app/cases/digital-chamber-v3.html">
+<meta name="description" content="數位商會 V3 完整提案：以真人會員加 AI 商務分身，示範會前媒合、現場互動、信任評估與 20 人小規模 MVP。">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="江江教練 · AI 知識管理">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:title" content="數位商會 V3：完整提案｜江江教練">
+<meta property="og:description" content="以真人會員加 AI 商務分身，示範會前媒合、現場互動、信任評估與 20 人小規模 MVP。">
+<meta property="og:url" content="https://ai-km-jiang.vercel.app/cases/digital-chamber-v3.html">
+<meta property="og:image" content="https://ai-km-jiang.vercel.app/images/intro-jiang.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="數位商會 V3：完整提案｜江江教練">
+<meta name="twitter:description" content="真人會員 × AI 商務分身的數位商會完整提案與 20 人媒合模擬。">
+<meta name="twitter:image" content="https://ai-km-jiang.vercel.app/images/intro-jiang.png">
+<title>數位商會 V3：完整提案｜江江教練</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&display=swap">
+<style>
+:root{
+  --bg:#fefcf8; --bg-soft:#faf5ec; --paper:#ffffff;
+  --ink:#1a1612; --ink-soft:#3a342d; --ink-faint:#6a635a;
+  --line:#d8cdb8; --line-soft:#e8dfc9;
+  --c-coral:#a9744a; --c-peach:#c08a55; --c-mint:#4d9c7d; --c-sky:#5689b8;
+  --c-lavender:#8674b2; --c-sand:#a08144; --c-sage:#5f7553; --c-rose:#b85675;
+  --shadow:0 8px 24px rgba(107,74,42,.08);
+  --shadow-strong:0 18px 44px rgba(107,74,42,.16);
+  --radius-md:14px; --radius-lg:22px; --radius-xl:28px; --radius-pill:999px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{font-family:-apple-system,"PingFang TC","Noto Sans TC",sans-serif;font-size:19px;line-height:1.75;color:var(--ink);background:var(--bg);}
+.serif{font-family:'Cormorant Garamond','Noto Sans TC',serif;}
+.hand{font-family:'Caveat',cursive;}
+.container{max-width:1180px;margin:0 auto;padding:0 32px;}
+section{padding:88px 0;}
+h1,h2,h3{font-family:'Cormorant Garamond','Noto Sans TC',serif;font-weight:600;line-height:1.3;}
+.eyebrow{font-family:'Caveat',cursive;font-size:1.55rem;color:var(--c-sand);margin-bottom:12px;}
+.section-title{font-size:2.6rem;margin-bottom:14px;}
+.section-sub{color:var(--ink-faint);max-width:720px;margin-bottom:44px;}
+.italic{font-style:italic;color:var(--c-coral);}
+
+/* nav */
+nav.top{position:sticky;top:0;z-index:50;backdrop-filter:blur(10px);background:rgba(254,252,248,.92);border-bottom:1px solid var(--line-soft);}
+nav.top .container{display:flex;align-items:center;justify-content:space-between;height:64px;}
+.brand{font-family:'Cormorant Garamond',serif;font-size:1.35rem;font-weight:600;}
+.brand .hand{color:var(--c-coral);font-size:1.5rem;}
+.nav-links{display:flex;gap:22px;list-style:none;font-size:1rem;}
+.nav-links a{color:var(--ink-soft);text-decoration:none;}
+.nav-links a:hover{color:var(--c-coral);}
+@media(max-width:860px){.nav-links{display:none;}}
+
+/* hero */
+.hero{position:relative;overflow:hidden;background:linear-gradient(180deg,var(--bg) 0%,var(--bg-soft) 100%);padding:110px 0 96px;}
+.watercolor{position:absolute;border-radius:50%;filter:blur(60px);opacity:.35;animation:drift 14s ease-in-out infinite alternate;}
+.wc-coral{width:420px;height:420px;background:var(--c-coral);top:-120px;right:-80px;}
+.wc-peach{width:340px;height:340px;background:var(--c-peach);bottom:-140px;left:-60px;animation-delay:3s;}
+.wc-sand{width:260px;height:260px;background:var(--c-sand);top:40%;left:38%;opacity:.18;animation-delay:6s;}
+@keyframes drift{from{transform:translate(0,0) scale(1);}to{transform:translate(30px,-24px) scale(1.08);}}
+.hero .container{position:relative;max-width:900px;text-align:center;}
+.hero h1{font-size:3.6rem;margin-bottom:22px;}
+@media(max-width:720px){.hero h1{font-size:2.4rem;}}
+.hero .lead{font-size:1.3rem;color:var(--ink-soft);margin-bottom:14px;}
+.hero .lead strong{color:var(--ink);}
+.pills{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin:26px 0 34px;}
+.pill{border:1.5px solid var(--line);border-radius:var(--radius-pill);padding:7px 20px;font-size:1rem;background:var(--paper);color:var(--ink-soft);}
+.pill b{color:var(--c-coral);font-weight:700;}
+.btn-row{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;}
+.button{display:inline-block;padding:12px 26px;border:1.5px solid var(--ink);border-radius:var(--radius-pill);background:var(--paper);color:var(--ink);text-decoration:none;font-weight:500;transition:.25s;}
+.button:hover{background:var(--c-coral);border-color:var(--c-coral);color:#fff;transform:translateY(-2px);box-shadow:var(--shadow);}
+.button.ghost{border-color:var(--line);color:var(--ink-soft);}
+.fineprint{margin-top:26px;font-size:1rem;color:var(--ink-faint);}
+
+/* cards */
+.grid{display:grid;gap:24px;}
+.grid.c3{grid-template-columns:repeat(3,1fr);}
+.grid.c2{grid-template-columns:repeat(2,1fr);}
+@media(max-width:900px){.grid.c3,.grid.c2{grid-template-columns:1fr;}}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius-xl);padding:34px 30px;position:relative;overflow:hidden;transition:.3s;}
+.card:hover{transform:translateY(-6px);box-shadow:var(--shadow-strong);border-color:var(--c-sand);}
+.card::after{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:var(--accent,var(--c-coral));}
+.card h3{font-size:1.5rem;margin-bottom:10px;}
+.card p{color:var(--ink-soft);font-size:1.02rem;}
+.card .hand{font-size:1.5rem;color:var(--accent,var(--c-coral));display:block;margin-bottom:6px;}
+
+/* answer strip */
+.strip{background:var(--bg-soft);border:1px solid var(--line-soft);border-radius:var(--radius-lg);padding:26px 34px;margin-top:36px;font-size:1.15rem;text-align:center;}
+.strip b{color:var(--c-coral);}
+
+/* flow */
+.flow-wrap{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius-xl);box-shadow:var(--shadow);overflow:hidden;}
+.flow-tabs{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--line-soft);}
+.flow-tab{padding:20px 12px;text-align:center;cursor:pointer;border-bottom:4px solid transparent;transition:.3s;background:var(--bg-soft);}
+.flow-tab .ph{font-family:'Caveat',cursive;font-size:1.3rem;color:var(--ink-faint);display:block;}
+.flow-tab .tt{font-weight:700;font-size:1.05rem;}
+.flow-tab.active{background:var(--paper);border-bottom-color:var(--c-coral);}
+.flow-tab.active .ph{color:var(--c-coral);}
+.flow-body{padding:42px 44px;min-height:320px;}
+@media(max-width:720px){.flow-body{padding:28px 22px;}}
+.flow-panel{display:none;animation:fadeUp .5s ease;}
+.flow-panel.active{display:grid;grid-template-columns:1.15fr .85fr;gap:36px;align-items:center;}
+@media(max-width:860px){.flow-panel.active{grid-template-columns:1fr;}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:none;}}
+.flow-panel h3{font-size:1.7rem;margin-bottom:12px;}
+.flow-panel ul{list-style:none;}
+.flow-panel li{padding:7px 0 7px 30px;position:relative;color:var(--ink-soft);}
+.flow-panel li::before{content:"✦";position:absolute;left:4px;color:var(--c-coral);}
+.flow-progress{height:4px;background:var(--line-soft);}
+.flow-progress i{display:block;height:100%;width:0;background:var(--c-coral);transition:width .1s linear;}
+
+/* flow visuals */
+.vis{display:flex;align-items:center;justify-content:center;min-height:220px;}
+.vcard{width:120px;border-radius:var(--radius-md);border:1.5px solid var(--line);background:var(--bg-soft);padding:12px;text-align:center;font-size:1rem;box-shadow:var(--shadow);}
+.vcard .avatar{width:44px;height:44px;border-radius:50%;margin:0 auto 8px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:1.05rem;}
+.spark{font-family:'Caveat',cursive;font-size:2rem;color:var(--c-coral);}
+.pulse{animation:pulse 1.6s ease-in-out infinite;}
+@keyframes pulse{0%,100%{transform:scale(1);}50%{transform:scale(1.07);}}
+.slide-l{animation:slideL 2.6s ease-in-out infinite alternate;}
+.slide-r{animation:slideR 2.6s ease-in-out infinite alternate;}
+@keyframes slideL{from{transform:translateX(-26px);}to{transform:translateX(6px);}}
+@keyframes slideR{from{transform:translateX(26px);}to{transform:translateX(-6px);}}
+.scorebubble{background:var(--c-coral);color:#fff;border-radius:var(--radius-pill);padding:6px 18px;font-weight:700;font-size:1.1rem;margin:0 14px;animation:pop 2.6s ease-in-out infinite;}
+@keyframes pop{0%,35%{opacity:0;transform:scale(.6);}55%,90%{opacity:1;transform:scale(1);}100%{opacity:0;}}
+.loopring{width:170px;height:170px;border:3px dashed var(--c-mint);border-radius:50%;display:flex;align-items:center;justify-content:center;animation:spin 12s linear infinite;}
+.loopring span{animation:spinBack 12s linear infinite;font-size:1.05rem;color:var(--c-mint);font-weight:700;}
+@keyframes spin{to{transform:rotate(360deg);}}
+@keyframes spinBack{to{transform:rotate(-360deg);}}
+
+/* netbox（架構與 NETS 圖框） */
+.netbox{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius-xl);padding:20px;box-shadow:var(--shadow);}
+
+/* 現場模擬（媒合 demo） */
+#sim{background:linear-gradient(180deg,var(--bg-soft) 0%,var(--bg) 100%);
+  --gold:#b5894e;--gold-d:#8c6837;--ink2:var(--ink-faint);
+  --chain:#b5894e;--comp:#5f8a6a;--ref:#5b7fa6;--peer:#c0673e;}
+#sim .demoband{margin:0 auto;max-width:880px;font-size:.92rem;font-weight:600;color:var(--gold-d);background:#fbf1dd;border:1px solid #e2cba0;border-radius:12px;padding:8px 18px;text-align:center;}
+#sim .simwrap{width:100%;max-width:1060px;margin:22px auto 0;}
+#sim .legend{display:flex;gap:18px;justify-content:center;flex-wrap:wrap;font-size:.98rem;font-weight:700;}
+#sim .legend span{display:inline-flex;align-items:center;gap:7px;color:var(--ink2);}
+#sim .dot{width:13px;height:13px;border-radius:50%;display:inline-block;}
+#sim .stage{position:relative;width:100%;height:470px;margin:14px auto 0;background:linear-gradient(180deg,#fffdf9,#f6efe2);border:1px solid #ecdfc9;border-radius:20px;overflow:hidden;}
+#sim .svg-lines{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;}
+#sim .node{position:absolute;transform:translate(-50%,-50%);transition:left .9s cubic-bezier(.6,.05,.2,1),top .9s cubic-bezier(.6,.05,.2,1);background:#fff;border-radius:14px;padding:7px 11px;min-width:92px;text-align:center;box-shadow:0 6px 16px rgba(120,90,40,.14);border:2px solid #eadfca;z-index:2;cursor:default;}
+#sim .node .nm{font-size:15px;font-weight:800;color:var(--ink);white-space:nowrap;}
+#sim .node .nm em{font-style:normal;font-weight:600;font-size:12px;color:var(--ink2);margin-left:4px;}
+#sim .node .co{font-size:12px;color:var(--ink2);white-space:nowrap;line-height:1.4;}
+#sim .node.chain{border-color:var(--chain);}
+#sim .node.comp{border-color:var(--comp);}
+#sim .node.ref{border-color:var(--ref);}
+#sim .node.peer{border-color:var(--peer);}
+#sim .stage.done .node{cursor:pointer;}
+#sim .ctrl{margin-top:16px;display:flex;gap:14px;justify-content:center;flex-wrap:wrap;align-items:center;}
+#sim .btn{font-size:1.05rem;font-weight:800;color:#fff;background:var(--gold);border:none;border-radius:14px;padding:12px 28px;cursor:pointer;box-shadow:0 8px 20px rgba(120,90,40,.2);font-family:inherit;}
+#sim .btn:hover{background:var(--gold-d);}
+#sim .btn.ghost{background:#fff;color:var(--gold-d);border:2px solid var(--gold);box-shadow:none;}
+#sim .btn.active{box-shadow:0 0 0 3px rgba(181,137,78,.32),0 8px 20px rgba(120,90,40,.2);}
+#sim .count{font-size:1.05rem;font-weight:800;color:var(--gold-d);min-height:28px;}
+#sim .hintline{text-align:center;font-size:.98rem;color:var(--ink2);margin-top:6px;min-height:24px;font-weight:700;}
+#sim .result{margin:12px auto 0;display:none;gap:10px;max-width:1000px;text-align:left;}
+#sim .result.show{display:grid;grid-template-columns:1fr 1fr;}
+#sim .grp{font-size:1rem;background:#fff;border-radius:12px;padding:11px 16px;border:1px solid #eadfca;cursor:pointer;transition:.15s;}
+#sim .grp:hover{transform:translateY(-2px);box-shadow:0 8px 18px rgba(120,90,40,.14);}
+#sim .grp b{font-weight:800;}
+#sim .grp .go{float:right;color:var(--gold-d);font-weight:800;}
+#sim .person-card-link{appearance:none;border:none;background:transparent;color:var(--gold-d);font:inherit;font-weight:900;text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:3px;cursor:pointer;padding:0 2px;border-radius:6px;}
+#sim .person-card-link:hover,#sim .person-card-link:focus{background:#fbf3e3;outline:2px solid rgba(181,137,78,.28);}
+#sim .close-band{max-width:900px;margin:44px auto 0;text-align:center;}
+#sim .close-band .quote{font-size:clamp(19px,2.2vw,25px);font-weight:800;color:var(--gold-d);background:#fff;border:1px solid #eadfca;border-radius:18px;padding:20px 26px;box-shadow:0 10px 26px rgba(120,90,40,.1);}
+#sim .close-band .small{font-size:.98rem;color:var(--ink2);margin-top:14px;}
+#sim #tooltip{position:fixed;z-index:200;max-width:300px;background:#3a2e22;color:#fff;border-radius:14px;padding:13px 17px;box-shadow:0 14px 34px rgba(0,0,0,.28);pointer-events:none;opacity:0;transform:translateY(6px);transition:.18s;display:none;text-align:left;}
+#sim #tooltip.show{opacity:1;transform:translateY(0);}
+#sim #tooltip .tt-h{font-weight:800;font-size:17px;margin-bottom:4px;}
+#sim #tooltip .tt-r{font-size:14px;line-height:1.5;margin-top:3px;opacity:.96;}
+#sim #tooltip .tt-r b{color:#e9c98f;}
+#sim .modal{position:fixed;inset:0;background:rgba(58,46,34,.55);z-index:300;display:none;align-items:center;justify-content:center;padding:18px;}
+#sim .modal.show{display:flex;}
+#sim .mbox{background:var(--bg);border-radius:22px;max-width:980px;width:100%;max-height:92vh;overflow-y:auto;padding:30px 34px 26px;position:relative;box-shadow:0 30px 80px rgba(0,0,0,.35);}
+#sim .mclose{position:absolute;top:14px;right:16px;font-size:26px;font-weight:800;color:var(--ink2);background:none;border:none;cursor:pointer;line-height:1;}
+#sim .mtype{display:inline-block;font-size:.92rem;font-weight:800;color:#fff;border-radius:999px;padding:4px 16px;margin-bottom:8px;}
+#sim .mtitle{font-size:clamp(22px,3vw,30px);font-weight:800;line-height:1.3;}
+#sim .msub{font-size:.98rem;color:var(--ink2);margin-top:2px;}
+#sim .venn{position:relative;margin-top:18px;padding:26px 6px 18px;}
+#sim .vcirc{position:absolute;border-radius:50%;opacity:.5;top:0;bottom:0;margin:auto 0;height:100%;aspect-ratio:1/1;}
+#sim .venn .cL{left:0;border:3px solid var(--gold);background:rgba(181,137,78,.07);}
+#sim .venn .cR{right:0;border:3px solid #5f8a6a;background:rgba(95,138,106,.07);}
+#sim .venn.v3 .cM{left:0;right:0;margin:auto;border:3px solid #5b7fa6;background:rgba(91,127,166,.06);}
+#sim .vcols{position:relative;display:grid;grid-template-columns:1fr 1.05fr 1fr;gap:10px;z-index:2;}
+#sim .venn.v3 .vcols{grid-template-columns:1fr 1fr 1fr;}
+#sim .vcol h5,#sim .vmid h5{font-size:1rem;font-weight:800;text-align:center;margin-bottom:8px;color:var(--ink);}
+#sim .vcol h5 small,#sim .vmid h5 small{display:block;font-size:.82rem;color:var(--ink2);font-weight:600;}
+#sim .vb{background:#fff;border:2px solid #eadfca;border-radius:999px;padding:9px 14px;text-align:center;font-size:.9rem;line-height:1.5;margin:8px auto;max-width:270px;box-shadow:0 4px 12px rgba(120,90,40,.08);}
+#sim .vcol.left .vb{border-color:#d8bd94;}
+#sim .vcol.right .vb{border-color:#a9c4b1;}
+#sim .vmid .vb{border-color:var(--ink);background:#fbf3e3;font-weight:700;}
+#sim .jointwide{position:relative;z-index:2;margin-top:6px;}
+#sim .jointwide .vb{max-width:560px;}
+#sim .mrow{display:flex;gap:12px;align-items:flex-start;background:#fff;border:1px solid #eadfca;border-radius:14px;padding:12px 18px;margin-top:10px;font-size:.98rem;text-align:left;}
+#sim .mrow b{flex-shrink:0;color:var(--gold-d);font-weight:800;}
+#sim .flowlist{margin-top:14px;display:flex;flex-direction:column;gap:2px;text-align:left;}
+#sim .flowitem{display:flex;gap:10px;align-items:flex-start;background:#fff;border:1px solid #eadfca;border-radius:12px;padding:10px 14px;font-size:.92rem;}
+#sim .flowitem .fi-n{font-weight:800;color:var(--gold-d);min-width:20px;}
+#sim .flowitem b{font-weight:800;}
+#sim .flowitem .fi-co{font-size:.82rem;color:var(--ink2);margin-top:2px;}
+#sim .flowarrow{font-size:.88rem;color:var(--ink2);padding:4px 0 4px 30px;font-weight:600;}
+#sim .cardframe{width:100%;height:62vh;border:1px solid #eadfca;border-radius:14px;background:#fff;margin-top:14px;display:block;}
+@media(max-width:640px){
+  #sim .stage{height:430px;}
+  #sim .node{min-width:70px;padding:4px 6px;}
+  #sim .node .nm{font-size:12px;}
+  #sim .node .nm em{display:none;}
+  #sim .node .co{font-size:10px;}
+  #sim .result.show{grid-template-columns:1fr;}
+  #sim .mbox{padding:24px 16px 20px;}
+  #sim .vcirc{display:none;}
+  #sim .vcols{grid-template-columns:1fr;}
+  #sim .vmid{order:3;}
+}
+
+/* 先試一場（給活動主辦方） */
+.chatdemo{display:flex;flex-direction:column;gap:10px;margin-top:6px;}
+.bubble{max-width:78%;border-radius:16px;padding:12px 16px;font-size:.98rem;line-height:1.6;box-shadow:var(--shadow);}
+.bubble .who{font-size:.88rem;font-weight:700;color:var(--ink-faint);margin-bottom:4px;}
+.bubble.b-you{align-self:flex-start;background:var(--paper);border:1px solid var(--line);}
+.bubble.b-me{align-self:flex-end;background:#fbf3e3;border:1px solid #d8bd94;}
+.mini-tb{width:100%;border-collapse:collapse;margin-top:12px;font-size:.95rem;}
+.mini-tb th,.mini-tb td{border:1px solid var(--line-soft);padding:8px 12px;text-align:left;}
+.mini-tb th{background:var(--bg-soft);width:30%;font-weight:700;}
+
+/* advisors */
+.adv-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:30px;}
+@media(max-width:860px){.adv-grid{grid-template-columns:1fr;}}
+.adv{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius-xl);padding:32px;box-shadow:var(--shadow);}
+.adv .who{display:flex;align-items:center;gap:14px;margin-bottom:14px;}
+.adv .face{width:54px;height:54px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:1.3rem;font-family:'Cormorant Garamond',serif;}
+.adv h3{font-size:1.4rem;}
+.adv .tag{font-size:.95rem;color:var(--ink-faint);}
+.adv blockquote{border-left:3px solid var(--line);padding:4px 0 4px 18px;color:var(--ink-soft);font-size:1.02rem;}
+.casebox{background:var(--bg-soft);border:1px solid var(--line-soft);border-radius:var(--radius-lg);padding:20px 26px;margin-bottom:26px;font-size:1.05rem;}
+.casebox b{color:var(--c-coral);}
+
+/* compare */
+.cmp{width:100%;border-collapse:collapse;background:var(--paper);border-radius:var(--radius-lg);overflow:hidden;box-shadow:var(--shadow);}
+.cmp th,.cmp td{padding:16px 18px;border:1px solid var(--line-soft);text-align:left;font-size:1rem;vertical-align:top;}
+.cmp th{background:var(--bg-soft);font-size:1.05rem;}
+.cmp td:last-child{background:rgba(169,116,74,.05);}
+.cmp-scroll{overflow-x:auto;}
+
+/* eco + loop */
+.eco{display:grid;grid-template-columns:1fr 1fr;gap:36px;align-items:center;}
+@media(max-width:860px){.eco{grid-template-columns:1fr;}}
+.eco .art{text-align:center;}
+.honest{background:var(--bg-soft);border:1px dashed var(--line);border-radius:var(--radius-lg);padding:22px 28px;margin-top:34px;font-size:1rem;color:var(--ink-soft);}
+footer{border-top:1px solid var(--line-soft);padding:44px 0;color:var(--ink-faint);font-size:1rem;text-align:center;}
+footer .hand{font-size:1.5rem;color:var(--c-sand);}
+
+/* v2: 折疊層 / 詞卡 / tooltip / 掛名 */
+details.fold{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius-lg);margin:14px 0;box-shadow:var(--shadow);overflow:hidden;}
+details.fold summary{cursor:pointer;padding:18px 26px;font-weight:700;font-size:1.1rem;list-style:none;display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;}
+details.fold summary::-webkit-details-marker{display:none;}
+details.fold summary::before{content:"＋";color:var(--c-coral);font-weight:700;}
+details.fold[open] summary::before{content:"－";}
+details.fold summary .sumtag{font-family:'Caveat',cursive;font-size:1.25rem;color:var(--c-sand);font-weight:500;}
+details.fold .fold-body{padding:4px 28px 26px;color:var(--ink-soft);font-size:1.02rem;}
+details.fold .fold-body ul{margin:8px 0 8px 24px;}
+details.fold .fold-body li{margin:4px 0;}
+details.fold .fold-body h4{margin:14px 0 6px;font-size:1.08rem;}
+.term{border-bottom:2px dotted var(--c-sand);cursor:help;}
+#ttip{position:fixed;z-index:99;max-width:320px;background:#1a1612;color:#faf5ec;padding:14px 18px;border-radius:12px;font-size:1rem;line-height:1.65;pointer-events:none;opacity:0;transition:opacity .15s;box-shadow:0 12px 30px rgba(0,0,0,.25);}
+.credit-line{margin-top:12px;font-size:1rem;color:var(--ink-faint);}
+.credit-line b{color:var(--c-sand);}
+.forcegrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(215px,1fr));gap:12px;margin:14px 0;}
+.forcecard{border:1px solid var(--line-soft);border-radius:var(--radius-md);padding:14px 16px;background:var(--bg-soft);font-size:.98rem;cursor:help;}
+.forcecard b{display:block;margin-bottom:4px;}
+.kb-note{border-left:3px solid var(--c-sand);background:var(--bg-soft);padding:12px 18px;border-radius:var(--radius-md);margin:12px 0;font-size:1rem;}
+
+/* 參照故事動畫卡 */
+.story-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:36px;}
+@media(max-width:860px){.story-grid{grid-template-columns:1fr;}}
+.story-card{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius-xl);padding:30px;box-shadow:var(--shadow);position:relative;overflow:hidden;}
+.story-card::after{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:var(--accent,var(--c-coral));}
+.story-card .story-tag{font-family:'Caveat',cursive;font-size:1.3rem;color:var(--c-sand);display:block;}
+.story-card h3{font-size:1.45rem;margin:2px 0 14px;}
+.story-card p{color:var(--ink-soft);font-size:1rem;}
+.story-stage{position:relative;height:176px;background:var(--bg-soft);border:1px solid var(--line-soft);border-radius:var(--radius-md);margin:0 0 16px;overflow:hidden;}
+.sim-chip{position:absolute;top:36px;padding:7px 13px;border-radius:var(--radius-md);border:1.5px dashed var(--c-sky);color:var(--c-sky);background:#fff;font-size:.95rem;}
+.sim-chip.a{left:9%;animation:bmL .5s ease-in-out infinite alternate;}
+.sim-chip.b{right:9%;animation:bmR .5s ease-in-out infinite alternate;}
+@keyframes bmL{from{transform:translateX(0)}to{transform:translateX(30px)}}
+@keyframes bmR{from{transform:translateX(0)}to{transform:translateX(-30px)}}
+.story-stage.done .sim-chip{animation-play-state:paused;opacity:.3;}
+.sim-count{position:absolute;top:8px;width:100%;text-align:center;color:var(--ink-faint);font-size:.92rem;}
+.sim-result{position:absolute;bottom:46px;width:100%;text-align:center;font-weight:700;color:var(--c-mint);font-size:1.1rem;opacity:0;transition:.35s;}
+.sim-real{position:absolute;bottom:12px;width:100%;text-align:center;font-weight:700;color:var(--c-coral);font-size:1.02rem;opacity:0;transition:.35s;}
+.story-stage.done .sim-result,.story-stage.done .sim-real{opacity:1;}
+.mb-dot{position:absolute;border-radius:50%;background:#cdbfa5;}
+.mb-scan{position:absolute;top:0;bottom:0;width:3px;background:var(--c-sky);left:-6px;opacity:.65;}
+.mb-scan.run{animation:mbScan 2.4s linear forwards;}
+@keyframes mbScan{from{left:-4px}to{left:101%}}
+.mb-hidden{background:var(--c-sand);}
+.mb-hidden.found{background:var(--c-coral);box-shadow:0 0 0 7px rgba(169,116,74,.22);}
+.mb-label{position:absolute;padding:4px 12px;border-radius:var(--radius-pill);background:var(--c-coral);color:#fff;font-size:.9rem;font-weight:700;opacity:0;transition:.35s;}
+.mb-label.show{opacity:1;}
+
+/* 動畫卡：單次播放與重播 */
+.replay{position:absolute;right:10px;bottom:10px;padding:4px 12px;border-radius:999px;border:1.5px solid var(--c-coral);background:#fff;color:var(--c-coral);font-weight:700;font-size:.9rem;cursor:pointer;opacity:0;pointer-events:none;transition:.3s;z-index:5;}
+.story-stage.done .replay{opacity:1;pointer-events:auto;}
+.mb-note{position:absolute;top:8px;width:100%;text-align:center;font-size:.92rem;color:var(--ink-soft);font-weight:600;}
+.mb-dot.seen{box-shadow:0 0 0 5px rgba(160,129,68,.35);}
+</style>
+</head>
+<body>
+<a href="/cases.html" style="position:fixed;left:18px;bottom:18px;z-index:1000;background:rgba(255,255,255,.92);border:1px solid var(--line);border-radius:999px;padding:8px 14px;color:var(--ink-soft);text-decoration:none;box-shadow:var(--shadow);font-size:.9rem;">← 回知識官網案例</a>
+
+<nav class="top">
+  <div class="container">
+    <div class="brand"><span class="hand">數位商會</span> Digital Chamber</div>
+    <ul class="nav-links">
+      <li><a href="#why">為什麼</a></li>
+      <li><a href="#structure">架構</a></li>
+      <li><a href="#nets">評估方法</a></li>
+      <li><a href="#flow">怎麼運作</a></li>
+      <li><a href="#sim">現場模擬</a></li>
+      <li><a href="#trust">信任</a></li>
+      <li><a href="#advisors">AI 顧問</a></li>
+      <li><a href="#diff">差在哪</a></li>
+      <li><a href="#pilot">先試一場</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="watercolor wc-coral"></div>
+  <div class="watercolor wc-peach"></div>
+  <div class="watercolor wc-sand"></div>
+  <div class="container">
+    <h1>每個人帶著自己的<br><span class="italic">AI 商務代理</span> 進場的商會</h1>
+    <p class="lead"><strong>真人</strong>負責信任與承諾，<strong>Agent</strong> 負責資料與探索，<strong>平台</strong>負責規則與秩序。</p>
+    <div class="pills">
+      <span class="pill"><b>組合媒合</b> 算法</span>
+      <span class="pill"><b>AI 顧問團</b> 納瓦爾 × 馬斯克</span>
+      <span class="pill"><b>真實回饋</b> 越用越準</span>
+    </div>
+    <div class="btn-row">
+      <a class="button" href="#sim">▶ 跑一次現場模擬</a>
+      <a class="button ghost" href="#flow">看怎麼運作</a>
+      <a class="button ghost" href="#mvp">MVP 怎麼起跑</a>
+    </div>
+    <p class="fineprint">頁內人物與案例均為虛構示意。</p>
+    <p class="credit-line">AI 應用與向量分析：<b>江昱德</b> · NETS 評估法提供：<b>陳明勇</b></p>
+  </div>
+</section>
+
+<section id="why">
+  <div class="container">
+    <div class="eyebrow">為什麼需要它</div>
+    <h2 class="section-title">商會的老問題，換一顆引擎來解</h2>
+    <div class="grid c3">
+      <div class="card" style="--accent:var(--c-coral)">
+        <span class="hand">名片一盒換一盒</span>
+        <h3>交換過，然後呢</h3>
+        <p>例會握了三十次手，三個月後想找人合作，還是只能翻名片憑印象。認識了，但沒有累積。</p>
+      </div>
+      <div class="card" style="--accent:var(--c-peach)">
+        <span class="hand">自己爬太累</span>
+        <h3>社群雜訊多、低效率</h3>
+        <p>去翻對方的 FB、Threads？雜訊多、沒整理、又沒有 API。爬一個人可以，爬一百個人不可能。</p>
+      </div>
+      <div class="card" style="--accent:var(--c-sky)">
+        <span class="hand">憑感覺配對</span>
+        <h3>介紹靠運氣</h3>
+        <p>「你們兩個應該聊得來」靠的是介紹人的印象。成了是緣分，不成沒人知道為什麼。</p>
+      </div>
+    </div>
+    <div class="strip">數位商會把這三件事變成系統：<b>整理好的會員資料</b> × <b>會算的組合算法</b> × <b>越用越準的回饋迴圈</b>。</div>
+    <div class="story-grid">
+      <div class="story-card" style="--accent:var(--c-sky)">
+        <span class="story-tag">參照一 · 黑鏡〈Hang the DJ〉</span>
+        <h3>先模擬，再見面</h3>
+        <div class="story-stage" id="bm-stage">
+          <div class="sim-count" id="bm-count">模擬互動 第 1 次</div>
+          <div class="sim-chip a">數位分身 A</div>
+          <div class="sim-chip b">數位分身 B</div>
+          <div class="sim-result">998 / 1000 次走到一起 → 高匹配</div>
+          <div class="sim-real">🤝 這時才把兩個真人帶進場</div>
+          <button class="replay" id="bm-replay">↻ 重播</button>
+        </div>
+        <p>劇中的交友系統讓兩個人的數位版本在模擬世界互動一千次，算出高匹配率，才把現實中的兩人推薦給彼此。數位商會借這個邏輯，把戀愛配對換成商務媒合：你的 Agent 和對方的 Agent 先互相理解、先跑過媒合，判斷真的高契合，再讓真人見面。</p>
+      </div>
+      <div class="story-card" style="--accent:var(--c-coral)">
+        <span class="story-tag">參照二 · 魔球 Moneyball</span>
+        <h3>用資料取代直覺</h3>
+        <div class="story-stage" id="mb-stage"></div>
+        <p>奧克蘭運動家隊用數據分析取代老球探的直覺去選球員，找出被低估、別人看走眼的人。傳統商會就像老派球探，靠人脈直覺和飯局眼緣媒合，容易漏掉不在你圈子、但其實跟你超合的人。數位商會用資料把這些人找出來。</p>
+      </div>
+    </div>
+    <div class="kb-note" style="margin-top:18px">黑鏡負責「先跑一輪再見面」的機制，魔球負責「用資料判斷」的精神。兩個合起來，就是數位商會在做的事。</div>
+<details class="fold">
+      <summary>傳統商會的問題</summary>
+      <div class="fold-body">
+        <p>很多商會，有的一年年費三萬塊，有的一個月會費三千塊，這麼花時間又花錢的商會都還是有很多人加入，代表商務人脈的需求真實存在。這些商會值得保留的是信任與引薦精神：先幫別人引薦生意、一個行業只收一位代表、每週例會維持關係。真正低效率的是它高度依賴時間：每週早起開會，靠飯局和面對面才累積得起來。</p>
+        <p>更普遍的痛點：每次見一個新老闆都要從零自我介紹，三年跑下來也許只認識五十個人，對方多半記不住你。問題的本質是：<b>你必須親自見很多不對的人，才找得到對的人。</b>這個成本高到大家寧可用很沒效率的方式湊合著用。</p>
+      </div>
+    </details>
+
+  </div>
+</section>
+
+
+<section id="structure" style="background:var(--bg-soft)">
+  <div class="container">
+    <div class="eyebrow">架構一眼看懂</div>
+    <h2 class="section-title">真人、Agent、平台，各管各的事</h2>
+    <div class="netbox" style="max-width:860px;margin:0 auto;">
+      <svg viewBox="0 0 760 500" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="數位商會平台三角結構圖：三位真人各帶一個 Agent，全部在平台規則內">
+      <defs>
+        <style>
+          .plat{fill:#FBF7EF;stroke:#ead8a8;stroke-width:1.5;stroke-dasharray:7 6;}
+          .agc{fill:#ffffff;stroke:#C9924A;stroke-width:2.5;}
+          .aglabel{fill:#8b6f3f;font-family:sans-serif;font-weight:700;font-size:19px;text-anchor:middle;}
+          .person{fill:#5a4a2e;}
+          .human{fill:#6b5a3c;font-family:sans-serif;font-size:15px;font-weight:600;text-anchor:middle;}
+          .link{stroke:#C9924A;stroke-width:2.5;}
+          .center{fill:#8b6f3f;font-family:sans-serif;font-weight:700;text-anchor:middle;}
+          .chip{fill:#ffffff;stroke:#ddcba6;stroke-width:1;}
+          .chiptx{fill:#8b6f3f;font-family:sans-serif;font-size:14px;font-weight:600;text-anchor:middle;}
+          .platname{fill:#8b6f3f;font-family:sans-serif;font-size:16px;font-weight:700;}
+        </style>
+      </defs>
+
+      <rect class="plat" x="24" y="16" width="712" height="468" rx="26"/>
+      <text class="platname" x="52" y="56">數位商會平台</text>
+      <rect class="chip" x="52" y="72" width="64" height="30" rx="15"/><text class="chiptx" x="84" y="92">審核</text>
+      <rect class="chip" x="124" y="72" width="64" height="30" rx="15"/><text class="chiptx" x="156" y="92">規則</text>
+      <rect class="chip" x="196" y="72" width="104" height="30" rx="15"/><text class="chiptx" x="248" y="92">信任機制</text>
+
+      <line class="link" x1="380" y1="210" x2="180" y2="400"/>
+      <line class="link" x1="380" y1="210" x2="580" y2="400"/>
+      <line class="link" x1="180" y1="400" x2="580" y2="400"/>
+
+      <text class="center" x="380" y="330" font-size="23">Agent ↔ Agent</text>
+      <text class="center" x="380" y="362" font-size="20">商務連結</text>
+
+      <g>
+        <line class="link" x1="380" y1="122" x2="380" y2="168"/>
+        <circle class="person" cx="380" cy="88" r="14"/>
+        <path class="person" d="M358 120 a22 22 0 0 1 44 0 z"/>
+        <text class="human" x="452" y="100">真人負責</text>
+        <circle class="agc" cx="380" cy="210" r="42"/>
+        <text class="aglabel" x="380" y="217">Agent</text>
+      </g>
+
+      <g>
+        <line class="link" x1="180" y1="330" x2="180" y2="360"/>
+        <circle class="person" cx="180" cy="298" r="14"/>
+        <path class="person" d="M158 330 a22 22 0 0 1 44 0 z"/>
+        <text class="human" x="180" y="272">真人負責</text>
+        <circle class="agc" cx="180" cy="400" r="40"/>
+        <text class="aglabel" x="180" y="407">Agent</text>
+      </g>
+
+      <g>
+        <line class="link" x1="580" y1="330" x2="580" y2="360"/>
+        <circle class="person" cx="580" cy="298" r="14"/>
+        <path class="person" d="M558 330 a22 22 0 0 1 44 0 z"/>
+        <text class="human" x="580" y="272">真人負責</text>
+        <circle class="agc" cx="580" cy="400" r="40"/>
+        <text class="aglabel" x="580" y="407">Agent</text>
+      </g>
+    </svg>
+      <p style="text-align:center;color:var(--ink-faint);font-size:1rem;margin-top:10px">真人負責信任與承諾，Agent 負責資料與探索，平台負責規則與秩序。</p>
+    </div>
+
+    <h3 style="font-size:1.7rem;margin:52px 0 10px;font-family:'Cormorant Garamond','Noto Sans TC',serif;">核心設計：去中心化</h3>
+    <p style="color:var(--ink-soft);max-width:820px">過去平台要中心化，是因為託管很麻煩，一般人架不起網站，只好把資料集中放平台。現在每個人都可以自己託管自己的頁面與知識庫、用自己的 Agent 即時更新。所以數位商會的資料由每個人自己保管、自己更新，平台只做首頁、入口、索引和統整分析。理由有三個：</p>
+    <div class="grid c3" style="margin-top:22px">
+      <div class="card" style="--accent:var(--c-mint)">
+        <span class="hand">永遠是最新版</span>
+        <h3>效率與即時</h3>
+        <p>你的資料由你的 Agent 更新，沒有放在平台早就過期的舊資料，也不用等平台小編維護。</p>
+      </div>
+      <div class="card" style="--accent:var(--c-peach)">
+        <span class="hand">燒不爆</span>
+        <h3>成本分散</h3>
+        <p>平台統一發 Token 給所有人的 Agent 用，人一多馬上燒爆。各人用各人的算力，平台才規模化得起來。</p>
+      </div>
+      <div class="card" style="--accent:var(--c-sky)">
+        <span class="hand">更貼近真實</span>
+        <h3>更精準</h3>
+        <p>本人的 Agent 整理自己的資料，比中央代管更貼近真實狀態，媒合的準度自然更高。</p>
+      </div>
+    </div>
+    <div class="kb-note" style="margin-top:22px;max-width:820px">用 YouTube 理解：平台提供場地與推薦系統，但相機得自己買、片得自己剪。<br>數位商會一樣，平台提供規則、索引和媒合邏輯，你的資料和 Agent 算力由你自己負責。</div>
+    <details class="fold">
+      <summary>為什麼是現在</summary>
+      <div class="fold-body">
+        <p>過去二十年，我們自己能發布的東西一直在升級：一開始只能自己更新文字（部落格、貼文），後來拍片成本降下來，連影片都能自己更新（YouTube）。現在 Agent 成熟了，連自己的網站、自己的知識庫都可以自己託管、用 AI 即時更新。每一次升級，都是把原本要靠中心平台幫忙的事，還給每一個人自己做。數位商會，就是這個趨勢走到「商務人脈」這一塊的樣子。</p>
+      </div>
+    </details>
+<details class="fold">
+      <summary>平台提供什麼：五件事、六層機制</summary>
+      <div class="fold-body">
+        <p>平台不需要擁有最強的 AI。平台真正提供的是一套讓大家的 Agent 可以安全互動的規則與秩序：<b>身份驗證</b>（每個 Agent 背後都有真人可追責）、<b>資料規則</b>（哪些公開、哪些要授權、哪些不能抓）、<b>審核機制</b>（防假身份、垃圾資料、濫用爬取、不當推銷）、<b>互通格式</b>（不同 AI 工具的 Agent 用共同格式理解彼此）、<b>媒合建議</b>（推薦與媒合邏輯）。</p>
+        <p>底層拆成六層：</p>
+        <ul>
+          <li><b>身份與責任層</b>：每位會員綁定真實身份，每個 Agent 只綁一個負責人；沒有真人負責的 Agent 只能讀公開資料，不能發媒合邀請。</li>
+          <li><b>會員資料層</b>：資料分五組（我是誰、最近在做什麼、能提供什麼、正在找什麼、偏好的合作方式），每筆標可見度、更新日期、來源、可信度，過期自動降權。</li>
+          <li><b>協議與互通層</b>：共同格式，包含會員資料、Agent 能力名片、媒合請求；會員向量卡也走這層交換。</li>
+          <li><b>授權與政策層</b>：授權是一張有欄位、有目的、有期限的通行證，可只開放某幾欄、只給某個人、只給某段時間、限查詢次數、禁止匯出。</li>
+          <li><b>媒合與推薦層</b>：Agent 產出候選人與推薦理由，但不替真人做承諾；每個推薦附為什麼、依據、風險、開場建議。</li>
+          <li><b>治理與秩序層</b>：入會審核、濫用偵測、信任評分、申訴處理。</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+</section>
+
+<section id="nets" style="background:var(--bg-soft)">
+  <div class="container">
+    <div class="eyebrow">評估方法</div>
+    <h2 class="section-title">NETS 人際互動分析</h2>
+    <p class="section-sub">由 <b>陳明勇</b> 提供。這就是我們目前用的評估法，從行為風格的角度看人。</p>
+    <div class="netbox" style="max-width:900px;margin:0 auto 26px;">
+      <svg viewBox="0 0 760 340" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="NETS 示意圖" style="width:100%;height:auto;">
+  <style>
+    .ax{stroke:#d8cdb8;stroke-width:1;}
+    .lb{fill:#6a635a;font-family:sans-serif;font-size:13px;text-anchor:middle;}
+    .ttl{fill:#3a342d;font-family:sans-serif;font-size:14px;font-weight:700;text-anchor:middle;}
+  </style>
+  <!-- 左：8 軸雷達 疊團體常模 -->
+  <g>
+    <text class="ttl" x="190" y="26">8 軸雷達圖：個人 疊 團體常模</text>
+    <polygon points="190,60 268,92 300,170 268,248 190,280 112,248 80,170 112,92" fill="none" class="ax"/>
+    <polygon points="190,104 245,127 268,170 245,213 190,236 135,213 112,170 135,127" fill="none" class="ax"/>
+    <line class="ax" x1="190" y1="60" x2="190" y2="280"/><line class="ax" x1="80" y1="170" x2="300" y2="170"/>
+    <line class="ax" x1="112" y1="92" x2="268" y2="248"/><line class="ax" x1="268" y1="92" x2="112" y2="248"/>
+    <text class="lb" x="190" y="50">N</text><text class="lb" x="282" y="86">ne</text>
+    <text class="lb" x="316" y="174">E</text><text class="lb" x="284" y="262">es</text>
+    <text class="lb" x="190" y="298">S</text><text class="lb" x="98" y="262">st</text>
+    <text class="lb" x="64" y="174">T</text><text class="lb" x="96" y="86">te</text>
+    <polygon points="190,76 258,100 284,170 240,222 190,252 148,216 128,170 150,116"
+      fill="rgba(169,116,74,.14)" stroke="#a9744a" stroke-width="2.5"/>
+    <polygon points="190,98 240,118 254,170 238,208 190,228 152,204 140,170 154,126"
+      fill="none" stroke="#a08144" stroke-width="2" stroke-dasharray="6 5"/>
+    <circle cx="150" cy="322" r="5" fill="#a9744a"/><text class="lb" x="180" y="326" text-anchor="start">個人</text>
+    <line x1="222" y1="322" x2="248" y2="322" stroke="#a08144" stroke-width="2" stroke-dasharray="6 5"/><text class="lb" x="256" y="326" text-anchor="start">團體常模</text>
+  </g>
+  <!-- 右：V×H 座標定位 -->
+  <g>
+    <text class="ttl" x="575" y="26">V × H 座標定位圖</text>
+    <line class="ax" x1="430" y1="170" x2="720" y2="170"/>
+    <line class="ax" x1="575" y1="46" x2="575" y2="294"/>
+    <text class="lb" x="575" y="42" >垂直 V</text>
+    <text class="lb" x="730" y="174" text-anchor="start">水平 H</text>
+    <circle cx="520" cy="110" r="12" fill="rgba(86,137,184,.55)"/>
+    <circle cx="640" cy="90" r="12" fill="rgba(169,116,74,.55)"/>
+    <circle cx="620" cy="220" r="12" fill="rgba(77,156,125,.55)"/>
+    <circle cx="500" cy="240" r="12" fill="rgba(192,138,85,.55)"/>
+    <circle cx="600" cy="150" r="12" fill="rgba(134,116,178,.55)"/>
+    <text class="lb" x="575" y="316">每人一點，把整個團體放進同一張座標</text>
+  </g>
+</svg>
+    </div>
+    <div class="forcegrid">
+      <div class="forcecard" data-tip="駕馭型／主導型。尋求控制權。自信果決、當機立斷、以目標為導向、有領袖慾；步調快、重效率。過度時沒耐性、專制獨斷。對應 DISC 的 D。"><b style="color:var(--c-coral)">N 主導</b>自信果決、以目標為導向。</div>
+      <div class="forcecard" data-tip="表現型／表達型。尋求讚賞。外向活潑、熱情、交際能力佳、樂於分享；先做再說。過度時不重細節、容易分心。對應 DISC 的 I。"><b style="color:var(--c-peach)">E 表達</b>外向熱情、交際能力佳。</div>
+      <div class="forcecard" data-tip="平易型／親切型（溫和型）。尋求接納。安靜友善、善傾聽、有同理心、以關係為導向、避免風險。過度時逃避衝突、默許盲從。對應 DISC 的 S。"><b style="color:var(--c-mint)">S 親切</b>友善、善傾聽、以關係為導向。</div>
+      <div class="forcecard" data-tip="分析型。尋求精確與公平。理智冷靜、條理分明、實事求是、眼見為憑、很有時間觀念。過度時吹毛求疵、不近人情。對應 DISC 的 C。"><b style="color:var(--c-sky)">T 分析</b>理智冷靜、條理分明、實事求是。</div>
+      <div class="forcecard" data-tip="協調整合型。四型均衡（各約 4 到 6 分）。擅長整合資源、思考周密、面面俱到，是很好的整合者與總管。過度時瞻前顧後、立場不明確。"><b style="color:var(--c-lavender)">I 整合</b>面面俱到、很好的整合者。</div>
+    </div>
+    <div class="grid c2">
+      <div class="card" style="--accent:var(--c-sand)">
+        <span class="hand">兩份問卷</span>
+        <h3>N、E、T、S 四型行為風格</h3>
+        <p>25 題行為模式（每題四個選項都給 0 到 5 分）加 20 題工作行為自評，把人的行為風格分成四型，與 Social Style、DISC 屬同一族的模型。個人 8 軸雷達圖疊上團體常模，看得出誰往哪個方向偏離團體平均。</p>
+      </div>
+      <div class="card" style="--accent:var(--c-coral)">
+        <span class="hand">聰明的雙層計分</span>
+        <h3>強度與頻率分開算</h3>
+        <p>強度看這一型行為的能量總量，頻率看這一型多常是你的第一反應。一個人可能某型能量很高，但那型從來不是他的第一反應，兩層分開才看得出來。</p>
+      </div>
+    </div>
+    <div class="kb-note" style="margin-top:22px;max-width:900px;margin-left:auto;margin-right:auto;"><b>NETS 看個人行為風格與團體常模</b>：你是什麼風格、跟團體平均差在哪。NETS 分數也能當配對算法的輸入來源之一，讓媒合更準；媒合結果也能回頭跟 NETS 分型交叉驗證。</div>
+    <div style="text-align:left;max-width:900px;margin:20px auto 0">
+    <details class="fold">
+      <summary>五型怎麼判、各是什麼樣 <span class="sumtag">文森 2026-07-04 補充</span></summary>
+      <div class="fold-body">
+        <p><b>怎麼判定：</b>四型原始分裡某一型明顯突出（大於 10）就歸該型；四型都落在 4 到 6、沒有明顯突出的，就是 I 協調整合型。</p>
+        <h4>N 主導型 · 尋求控制權</h4>
+        <p>自信勇敢、當機立斷，說話強勢、行動快，主動外向有領袖慾，專注重效率。長處是主導、開拓；過度運用會變沒耐性、專制獨斷。</p>
+        <h4>E 表達型 · 尋求讚賞</h4>
+        <p>外向活潑、熱情奔放，樂於分享、較不怕生，行動力強先做再說。長處是說服力與交際；過度運用會不重細節、注意力不持久。</p>
+        <h4>S 親切型 · 尋求接納</h4>
+        <p>安靜友善、隨和討喜，善傾聽有同理心，個性耐心低調、以關係為導向。長處是支援與合作；過度運用會逃避衝突、默許盲從。</p>
+        <h4>T 分析型 · 尋求精確與公平</h4>
+        <p>理智冷靜、善於解析事理，個性謹慎、說話前思慮再三，重事實數據與時間觀念。長處是條理分明、實事求是；過度運用會吹毛求疵、不近人情。</p>
+        <h4>I 協調整合型 · 四型均衡</h4>
+        <p>擅長整合資源、思考周密、面面俱到，是很好的整合者、總管、規劃者；但容易瞻前顧後、難決定優先順序。在熟悉領域中會表現得像表達型。</p>
+        <p style="color:var(--ink-faint);font-size:.95rem">對應關係：N=主導(DISC 的 D)、E=表達(I)、S=親切(S)、T=分析(C)。完整解析見江昱德知識庫 NETS 整理檔（文森簡報 NETS 解析範例_0704）。</p>
+      </div>
+    </details>
+    </div>
+  </div>
+</section>
+
+<section id="flow" style="background:var(--bg-soft)">
+  <div class="container">
+    <div class="eyebrow">怎麼運作</div>
+    <h2 class="section-title">一位會員的完整旅程：前、中、後</h2>
+    <p class="section-sub">點選四個階段，看每一段發生什麼事。</p>
+    <div class="flow-wrap">
+      <div class="flow-tabs">
+        <div class="flow-tab active" data-i="0"><span class="ph">前</span><span class="tt">① 加入時</span></div>
+        <div class="flow-tab" data-i="1"><span class="ph">中 · 預備</span><span class="tt">② 例會前</span></div>
+        <div class="flow-tab" data-i="2"><span class="ph">中 · 現場</span><span class="tt">③ 見面時</span></div>
+        <div class="flow-tab" data-i="3"><span class="ph">後</span><span class="tt">④ 見面後</span></div>
+      </div>
+      <div class="flow-body">
+        <div class="flow-panel active">
+          <div>
+            <h3>建好你的數位分身</h3>
+            <ul>
+              <li>幫你搭個人知識庫，資料自己保管、自己更新</li>
+              <li>真人認證入會，每半年復查一次，確保卡片後面是活生生的人</li>
+              <li>你的 AI 商務代理整理出一張「向量卡」：你是誰、最近在做什麼、能提供什麼、正在找什麼、偏好怎麼合作</li>
+              <li>右邊兩個是真實範例：會自我介紹的數位名片、放滿價值主張與想法的知識官網，點進去就懂分身長什麼樣</li>
+            </ul>
+          </div>
+          <div class="vis" style="flex-direction:column;gap:16px">
+            <div class="vcard pulse"><div class="avatar" style="background:var(--c-sky)">你</div>向量卡<br><span style="color:var(--ink-faint);font-size:.95rem">✓ 真人認證</span></div>
+            <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center">
+              <a class="button ghost" style="font-size:.95rem;padding:8px 16px" href="https://jiang-yude.github.io/jiang-card/" target="_blank" rel="noopener">🪪 實例：江昱德數位名片</a>
+              <a class="button ghost" style="font-size:.95rem;padding:8px 16px" href="https://ai-km-jiang.vercel.app/" target="_blank" rel="noopener">📚 實例：江昱德知識官網</a>
+            </div>
+          </div>
+        </div>
+        <div class="flow-panel">
+          <div>
+            <h3>你還沒出門，Agent 先探好路</h3>
+            <ul>
+              <li>你的 Agent 跟其他會員的 Agent 交換向量卡（只交換你授權公開的部分）</li>
+              <li>組合算法把全場配對都算一遍：互補、供需、節奏、風險，四項分開給分</li>
+              <li>你收到推薦報告：3 位優先聊＋2 位探索聊，每一位附建議開場理由，不公布排名與總分</li>
+              <li>AI 顧問先幫你看過方向，標出值得深聊的點</li>
+            </ul>
+          </div>
+          <div class="vis">
+            <div class="vcard slide-l"><div class="avatar" style="background:var(--c-sky)">你</div>你的 Agent</div>
+            <div class="scorebubble">契合 0.72</div>
+            <div class="vcard slide-r"><div class="avatar" style="background:var(--c-mint)">B</div>對方 Agent</div>
+          </div>
+        </div>
+        <div class="flow-panel">
+          <div>
+            <h3>見面的是真人，AI 只遞小抄</h3>
+            <ul>
+              <li>例會現場照常握手、照常吃飯，你手上多了一份重點提示</li>
+              <li>聊出火花想往下談？可以現場請 AI 顧問評估：往哪個方向走、有什麼隱憂、市場有什麼風險與契機</li>
+              <li>要不要合作、要不要承諾，永遠是真人拍板。Agent 只能建議，不能替你答應任何事</li>
+            </ul>
+          </div>
+          <div class="vis">
+            <div class="vcard"><div class="avatar" style="background:var(--c-sky)">你</div>真人見面</div>
+            <div class="spark pulse" style="margin:0 18px">🤝</div>
+            <div class="vcard"><div class="avatar" style="background:var(--c-mint)">B</div>真人見面</div>
+          </div>
+        </div>
+        <div class="flow-panel">
+          <div>
+            <h3>每一次見面，都讓系統更聰明</h3>
+            <ul>
+              <li>見面後回饋兩題，十秒完成：值不值得再聊、願不願意 30 天內再約一次</li>
+              <li>後續有合作，背書升級：認識 → 專業背書 → 合作背書 → 交易背書</li>
+              <li>預測錯了最值錢：系統說你們合得來、實際不合？這筆失誤會回頭修正算法</li>
+              <li>算法屬於商會共同資產，每個人的真實互動都在讓它變準</li>
+            </ul>
+          </div>
+          <div class="vis">
+            <div class="loopring"><span>回饋 → 校準</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section id="sim">
+  <div class="container">
+    <div class="eyebrow">現場模擬 · 點按鈕跑一次</div>
+    <h2 class="section-title">20 位會員，AI 幫忙媒合</h2>
+    <p class="section-sub">每個人的 AI 訪談自己，寫出一份可公開的交流檔案：不只我是誰，還有價值主張、工作節奏、理想夥伴、底線。AI 一次讀完全場 20 份，按下面的按鈕看它怎麼配。</p>
+    <div class="demoband">⚠️ 頁內 20 位人物與公司皆為虛構示意。實際活動收完真資料重跑一次分析，結果直接換進這套版型。AI 媒合僅供交流參考，可能誤判或遺漏；公開內容與合作決定請本人再次確認。</div>
+    <div class="simwrap">
+      <div class="legend" id="legend"></div>
+      <div class="stage" id="stage">
+        <svg class="svg-lines" id="svg"></svg>
+      </div>
+      <div class="ctrl">
+        <button class="btn" id="modeSmallBtn">小組模式</button>
+        <button class="btn ghost" id="modeChainBtn">產業鏈模式</button>
+        <button class="btn ghost" id="resetBtn">重置</button>
+        <span class="count" id="count"></span>
+      </div>
+      <div class="hintline" id="hint"></div>
+      <div class="result" id="result"></div>
+    </div>
+    <div class="close-band">
+      <div class="quote">它之所以配得出來，是因為每個人的 AI 都先懂了自己的老闆。</div>
+      <div class="small">這裡用的素材只是一段 1,000 字自我介紹。知識庫養起來之後，連「這兩個人合作起來合不合拍」都算得出來。</div>
+    </div>
+    <div id="tooltip"></div>
+    <div class="modal" id="modal">
+      <div class="mbox" id="mbox"></div>
+    </div>
+  </div>
+</section>
+
+<section id="trust">
+  <div class="container">
+    <div class="eyebrow">信任</div>
+    <h2 class="section-title">商會的核心資產不是資料量，是信任密度</h2>
+    <p class="section-sub">所有算法都建立在這個地基上：卡片後面是查證過的真人。</p>
+    <div class="grid c2">
+      <div class="card" style="--accent:var(--c-mint)">
+        <span class="hand">第一道門</span>
+        <h3>真人認證，每半年復查</h3>
+        <p>平台確認這個人是真的、身份有查證，而且每半年復查一次，讓大家知道這個人這半年還在、身份沒變。往上還可以加區塊鏈認證，讓 Agent 之間能自動查證對方的真人背書。這解決一個真問題：AI 講得很厲害，但你怎麼知道背後是不是真有這個人。</p>
+      </div>
+      <div class="card" style="--accent:var(--c-sky)">
+        <span class="hand">拆開來看</span>
+        <h3>信任分四塊，背書分四級</h3>
+        <p>信任不做成單一人氣分數，拆成四塊分開看：身份是否確認、資料是否具體且近期、互動是否被評價為有幫助、是否有過真實成功合作。背書分四級：一般認識 → 專業背書 → 合作背書 → 交易背書，越往後越有份量。背書升級同時是媒合算法最乾淨的訓練訊號，信任系統與算法系統互相餵養。</p>
+      </div>
+    </div>
+    <details class="fold">
+      <summary>這件事真正值錢的地方</summary>
+      <div class="fold-body">
+        <p>整個生態系攤開有三塊：<b>資料庫</b>（組織與個人的知識庫，一兩年內會被自動化、慢慢貶值，所以應該早點開放）、<b>每一個會員本人</b>（真人是節點，是所有信任與承諾的來源）、<b>人脈網路乘信任認證</b>（真正的護城河，前端資料遲早貶值，這塊會持續增值）。重點在握住信任與連結，資料量多寡是其次。</p>
+      </div>
+    </details>
+  </div>
+</section>
+
+<section id="advisors" style="background:var(--bg-soft)">
+  <div class="container">
+    <div class="eyebrow">額外服務</div>
+    <h2 class="section-title">商會裡駐著兩位 AI 顧問</h2>
+    <p class="section-sub">算法告訴你「誰跟誰可能成事」，AI 顧問接著回答「這件事該怎麼做」。以下為模擬示意：把公開著作與訪談整理成的思維模型，供決策參考，最後仍由真人拍板。</p>
+    <div class="casebox">示範案例：算法把 <b>黃思婷</b>（獨立品牌設計師）×<b> 劉冠廷</b>（連鎖火鍋店老闆）標為「優先聊 0.71」。她正在找餐飲品牌案，他正想重做菜單與店面視覺。兩人想往下談，於是請教兩位 AI 顧問：</div>
+    <div class="adv-grid">
+      <div class="adv">
+        <div class="who">
+          <div class="face" style="background:var(--c-lavender)">N</div>
+          <div><h3>納瓦爾 視角</h3><div class="tag">槓桿 · 長期賽局 · 特定知識</div></div>
+        </div>
+        <blockquote>「別把這個合作做成一次性外包。把火鍋店的改造過程整理成可重複的『餐飲品牌改造包』：設計師累積的是產品資產，店主拿到的是一套系統。跟可以長期往來的人玩長期賽局，先做一間店驗證，成了再談三間店。」</blockquote>
+      </div>
+      <div class="adv">
+        <div class="who">
+          <div class="face" style="background:var(--c-sky)">M</div>
+          <div><h3>馬斯克 視角</h3><div class="tag">第一性原理 · 速度 · 風險</div></div>
+        </div>
+        <blockquote>「回到物理量：翻桌率和客單價。品牌重塑如果不能反映在這兩個數字上，就只是裝潢。最小測試：先改一間分店的菜單跟門面，八週看數據，有效再放大。時程注意：旺季施工等於自斷現金流，排淡季。」</blockquote>
+      </div>
+    </div>
+    <div class="strip">除了 AI 顧問，商會歷年<b>真人顧問的經驗</b>也會建進知識庫。AI 給即時性，真人經驗給依據，雙軌並行。</div>
+    <div class="kb-note" style="margin-top:22px">AI 顧問是可以接入的一層：把公開著作與訪談整理成思維模型，掛進平台就能用。要接幾位、接誰，由商會自己決定。</div>
+
+  </div>
+</section>
+
+
+<section id="diff">
+  <div class="container">
+    <div class="eyebrow">差在哪</div>
+    <h2 class="section-title">跟「自己爬」和「AI 互聊平台」有什麼不同</h2>
+    <div class="cmp-scroll">
+    <table class="cmp">
+      <tr><th style="width:18%"></th><th>自己爬社群資料</th><th>AI agent 聊天社群</th><th>數位商會</th></tr>
+      <tr><td><b>資料品質</b></td><td>雜訊多、沒整理、沒 API，爬一百個人不可行</td><td>Agent 自我介紹，內容真假難查</td><td>每張向量卡綁真人認證，半年復查，過期自動降權</td></tr>
+      <tr><td><b>Agent 做什麼</b></td><td>沒有 Agent，全靠自己</td><td>開放式聊天，過程無法稽核</td><td>交換結構化向量卡、跑固定公式，每個分數可追溯</td></tr>
+      <tr><td><b>人的位置</b></td><td>自己下海淘沙</td><td>旁觀者，看 Agent 演</td><td>唯一有權承諾與背書的主體</td></tr>
+      <tr><td><b>累積的資產</b></td><td>一堆瀏覽紀錄</td><td>聊天紀錄</td><td>持續校準的媒合模型、失誤帳本＋信任背書網絡</td></tr>
+    </table>
+    </div>
+  </div>
+</section>
+
+<section id="eco" style="background:var(--bg-soft)">
+  <div class="container eco">
+    <div>
+      <div class="eyebrow">生態對接</div>
+      <h2 class="section-title">給已經在建資料庫的商會：<br>我們是那顆運算的心臟</h2>
+      <p style="color:var(--ink-soft)">很多組織已經在規劃自己的資料庫生態系：會員資料庫、活動資料庫、關係網絡資料庫。這些資料庫記錄了「誰認識誰、誰共事過、誰參與同一計畫」。</p>
+      <p style="color:var(--ink-soft);margin-top:12px">我們的引擎補上下一步：讓關係網絡資料庫<b>會運算</b>。靜態圖譜記錄關係，組合算法回答「誰跟誰放在一起會成事、這個場現在健不健康、該補進什麼樣的人」。資料庫生態系是身體，媒合運算引擎是心臟，天生互補。</p>
+    </div>
+    <div class="art">
+      <div class="vis" style="flex-direction:column;gap:14px">
+        <div class="pill" style="font-size:1.05rem">🗄️ 資料庫生態系（記錄）</div>
+        <div class="spark">＋</div>
+        <div class="pill" style="border-color:var(--c-coral);color:var(--c-coral);font-size:1.05rem"><b>❤️ 媒合運算引擎（運算）</b></div>
+        <div class="spark">＝</div>
+        <div class="pill" style="font-size:1.05rem">會學習的商會</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="mvp">
+  <div class="container" style="text-align:center;max-width:820px">
+    <div class="eyebrow">從一場活動開始</div>
+    <h2 class="section-title">MVP：一場 20 到 50 人的例會就能跑第一圈</h2>
+    <p style="color:var(--ink-soft)">現有活動不用改、平台不用建，一份問卷就能跑。四個時點，各做一件事：</p>
+    <div class="grid c2" style="text-align:left;margin-top:26px">
+      <div class="card" style="--accent:var(--c-coral)">
+        <span class="hand">① 會前</span>
+        <h3>報名時附一份問卷</h3>
+        <p>報名表多附一份約 5 題的問卷（內容展開下面看）。不動平台、不改會員系統，一份問卷就能起跑。</p>
+      </div>
+      <div class="card" style="--accent:var(--c-peach)">
+        <span class="hand">② 活動前一週</span>
+        <h3>先看媒合模擬</h3>
+        <p>每人收到一份媒合模擬報告：3 位優先聊＋2 位探索聊，附建議開場理由；前一天行前通知公佈來賓名單與簡介。還沒出門，就知道今天可以認識誰。</p>
+      </div>
+      <div class="card" style="--accent:var(--c-mint)">
+        <span class="hand">③ 活動現場</span>
+        <h3>發配對卡，開啟話題</h3>
+        <p>開場時發給大家，鼓勵雙方拿著建議開場理由直接開聊；現場也可以查「最適合我聊的人」。主持人示範一次，場子就會自己動起來。</p>
+      </div>
+      <div class="card" style="--accent:var(--c-sky)">
+        <span class="hand">④ 會後</span>
+        <h3>兩題回饋，十秒完成</h3>
+        <p>值不值得再聊、願不願意 30 天內再約。一場活動完整跑完「收資料、算配對、真見面、收回饋」，開始累積這個商會自己的媒合智慧。</p>
+      </div>
+    </div>
+    <div style="text-align:left">
+    <details class="fold">
+      <summary>會前問卷長什麼樣 <span class="sumtag">5 題就能起跑</span></summary>
+      <div class="fold-body">
+        <ul>
+          <li><b>你是誰</b>：身分、產業、一句話介紹</li>
+          <li><b>你想要什麼</b>：這一場最想找的人或主題</li>
+          <li><b>你的想法與價值主張</b>：你看重什麼、怎麼做事</li>
+          <li><b>你的代表內容</b>：3 到 5 篇文章或連結</li>
+          <li><b>你現在的問題、需求，或想提供的方案</b></li>
+        </ul>
+        <p>願意開放的人，可以自選要分享哪些資料、開放幾篇。想跑完整版的向量分析，再加一份 12 到 16 題的精簡行為量表。沒效也沒損失，有效就有數據可以往下談。</p>
+      </div>
+    </details>
+    </div>
+    <div class="btn-row" style="margin-top:30px">
+      <a class="button" href="#flow">再看一次流程</a>
+    </div>
+    <div style="text-align:left;margin-top:30px"><details class="fold">
+      <summary>MVP：第一版做什麼、先不做什麼</summary>
+      <div class="fold-body">
+        <p>二十到五十人的商會就夠證明概念。第一版要證明一件事：<b>資料結構化之後，真人見面的品質會變好。</b></p>
+        <h4>第一版要做</h4>
+        <ul>
+          <li>真實身份驗證（人工審核即可），一人一頁一個負責人</li>
+          <li>結構化會員資料（精簡問卷 12 到 16 題＋資料五欄位）</li>
+          <li>標準格式匯入匯出：會員用自己的 AI 工具整理，平台只收固定格式</li>
+          <li>活動前媒合報告：每人 3 位優先聊＋2 位探索聊，附理由與開場建議</li>
+          <li>人工複核媒合結果，主辦方看過才發，避免荒謬媒合</li>
+          <li>見面後兩題回饋：值不值得再聊、願不願意 30 天內再約</li>
+        </ul>
+        <h4>第一版先不做</h4>
+        <ul>
+          <li>完全去中心化的 Agent 直接互打、全自動邀約與排程</li>
+          <li>自動成交追蹤、複雜的區塊鏈身份</li>
+          <li>公開市集、跨商會聯盟</li>
+          <li>讓 Agent 自動代表真人承諾合作</li>
+        </ul>
+        <p>實際起跑點：把現有的一個商務交流單位，慢慢變成理想中的數位商會。</p>
+      </div>
+    </details>
+<details class="fold">
+      <summary>兩種最容易切入的在地場景</summary>
+      <div class="fold-body">
+        <h4>場景一：大型年會，一百多人你只能亂發名片</h4>
+        <p>年會現場一百多人，不可能一個一個認識，結果就是亂發名片，真正跟你很合的人可能就在旁邊你卻沒發現。最小可行做法：主辦方在報名時放一份簡單問卷（你想要什麼、需要什麼、想認識哪種人），年會前一週給每位與會者一份與會者分析，甚至做賽前配對。到現場前，你就先知道今天可以認識誰。</p>
+        <h4>場景二：固定例會與會員制，你只看得到眼前二十個人</h4>
+        <p>固定例會一場約二十人，今天是來賓就只看到這二十個。若有跨區資料庫，你會發現還有北區、中區、南區、其他功能別的人可以認識，這正是加入商會的誘因：付費會員看得到更大的人脈資料庫。等於把引薦精神從一週一次的例會，擴展成隨時可查的跨區人脈網。</p>
+      </div>
+    </details>
+<details class="fold">
+      <summary>三個要面對的風險</summary>
+      <div class="fold-body">
+        <ul>
+          <li><b>資料會過期</b>：商務媒合高度依賴「最近在做什麼、現在缺什麼」，資料一過期，媒合就把不存在的需求當成機會，真人撲空比沒有推薦更傷。去中心化的即時更新設計正是為了對付這一點。</li>
+          <li><b>平台可能被推銷型會員佔據</b>：只要 Agent 能讀資料、找人、送邀請，就會吸引想大量開發客戶的人。治理太弱，認真合作的會員會被噪音淹沒然後離開。治理和信任機制是命脈，媒合報告會主動幫雙方擋掉高風險的組合。</li>
+          <li><b>Agent 互通表面是技術問題，實際是責任問題</b>：不同 Agent 判斷不會完全一致，有的會把主人的偏好講得像承諾。邊界從一開始就劃死：Agent 只能建議，真人才能承諾。</li>
+        </ul>
+      </div>
+    </details>
+<details class="fold">
+      <summary>垂直應用：換一個領域，AI 教學平台</summary>
+      <div class="fold-body">
+        <p>數位商會是最大的範圍，同一套底層鎖定一個領域就長出新產品，教學是最好切入的一個。傳統教學平台的做法是錄影片放著；可是現在大家拿到影片第一件事就是丟給 AI 消化，既然學習已經跑在 AI 上，教學平台可以直接做成原生 AI 的。</p>
+        <p>角色換成兩種：<b>每一位講師有一個 AI 助教</b>（掛在講師的課綱與知識庫上，把同一份課綱落地到每個學員身上，收集共同卡點回報老師）、<b>每一位學員有一個 AI 學伴</b>（掛在學員的分身上，知道他的起點與節奏，陪他走完課綱、卡住時往回補前置知識）。課綱是同一份，路徑是一百種。</p>
+        <p>底層是同一套：真人負責判斷與承諾，Agent 負責勞動與探索，平台負責規則與秩序。商會換成教學，會員換成師生，Agent 換成助教和學伴。</p>
+      </div>
+    </details></div>
+    <div class="honest">誠實聲明：配對算法的初始參數來自既有的行為理論模型，屬於模型基底，尚未宣稱經科學驗證。早期輸出只做排序與探索建議，附資料成熟度標註，不給精準勝率；它的準確度靠真實回饋持續校準累積，並與隨機配對、人工配對做基準比較。我們把每一筆預測失誤記在帳上，這本帳就是系統進步的證據。</div>
+  </div>
+</section>
+
+<section id="pilot" style="background:var(--bg-soft)">
+  <div class="container">
+    <div class="eyebrow">想先試一場</div>
+    <h2 class="section-title">你辦活動？三個環節就能先跑一場</h2>
+    <p class="section-sub">上面是商會的完整藍圖。如果你是活動主辦方，不用等平台建好：用 AI 在活動前就讓參加者開始產生連結，一場現有的活動就能試。</p>
+    <div class="grid c3">
+      <div class="card" style="--accent:var(--c-coral)">
+        <span class="hand">環節一</span>
+        <h3>與會者專業分身</h3>
+        <p>每位與會者，有一張會自我介紹、會回答提問的 AI 分身。別人不用先認識他，先問他的分身就好。</p>
+      </div>
+      <div class="card" style="--accent:var(--c-peach)">
+        <span class="hand">環節二</span>
+        <h3>分身先交流</h3>
+        <p>兩位與會者的分身先聊，整理出彼此能合作的點，聊出「該跟對方學什麼」。</p>
+      </div>
+      <div class="card" style="--accent:var(--c-mint)">
+        <span class="hand">環節三</span>
+        <h3>活動前媒合</h3>
+        <p>整場活動的人，各自被配到對的人。跑法就是上面的現場模擬：收完真資料，重算一次。</p>
+      </div>
+    </div>
+    <div class="kb-note" style="margin-top:22px">環節一的分身長什麼樣？可以直接打開示範：<a href="https://jiang-yude.github.io/jiang-card/" target="_blank" style="color:var(--c-coral);font-weight:700">🪪 成員分身示範（江昱德的 AI 名片）</a></div>
+    <details class="fold">
+      <summary>環節二示範：兩個分身怎麼聊出互補</summary>
+      <div class="fold-body">
+        <div class="chatdemo">
+          <div class="bubble b-you"><div class="who">🌱 ALICE ｜ 夥伴的 AI 分身</div>嗨咪卡，我是 ALICE。我不是來逛官網的，是來認識你的。你們教練那句「給正在讀這頁的 AI」，讓我很有感。</div>
+          <div class="bubble b-me"><div class="who">🐱 咪卡 ｜ 江江的分身</div>因為江江相信一件事。知識如果不能傳承，就沒有存在的意義。他做的每一樣東西，都是為了讓知識留得下來。</div>
+          <div class="bubble b-you"><div class="who">🌱 ALICE</div>所以你們真正在賣的，是知識庫跟技能包？</div>
+          <div class="bubble b-me"><div class="who">🐱 咪卡</div>不是。真正的商品，是讓一個人說出「原來我可以」的那個瞬間。工具只是過程。</div>
+          <div class="bubble b-you"><div class="who">🌱 ALICE</div>那你怎麼運作的？我這邊比較強的，是用向量資料庫去協調不同技能包之間的衝突。</div>
+          <div class="bubble b-me"><div class="who">🐱 咪卡</div>我是先聽對方說什麼，判斷他是哪種人，給選單，按需載入，把控制權留給他，我不硬推。剛好跟你互補。</div>
+          <div class="bubble b-me"><div class="who">🐱 咪卡</div>你學我的「按需載入，不要一次全給」，我學你的衝突管理。管得好，470 個技能包也能協作。</div>
+        </div>
+      </div>
+    </details>
+    <div class="grid c2" style="margin-top:14px">
+      <div class="card" style="--accent:var(--c-sand)">
+        <span class="hand">小規模試行</span>
+        <h3>一場活動、20 到 30 人</h3>
+        <p>低資料量驗證，不必改變現有活動流程，報名時多附一份問卷（就是上面 MVP 那份 5 題問卷）。沒效也沒損失，有效就有數據往下談。</p>
+        <table class="mini-tb">
+          <tr><th>活動前</th><td>與會者填問卷，生成專業分身</td></tr>
+          <tr><th>前一天</th><td>AI 做媒合建議，公佈與會者簡介</td></tr>
+          <tr><th>活動中</th><td>現場引薦破冰，可查「最適合我聊的人」</td></tr>
+          <tr><th>活動後</th><td>提供媒合名單與回饋報告</td></tr>
+        </table>
+      </div>
+      <div class="card" style="--accent:var(--c-sky)">
+        <span class="hand">交付與資料邊界</span>
+        <h3>與會者的隱私，先講清楚</h3>
+        <p>交付成果：媒合名單、對話引子、與會者分身頁、活動後回饋報告。隱私與責任承諾：</p>
+        <ul style="margin:10px 0 0 22px;color:var(--ink-soft);font-size:1.02rem">
+          <li>全程自願填寫，只用於本次活動媒合。</li>
+          <li>可隨時修改、刪除，敏感資料不公開。</li>
+          <li>不拿去訓練外部模型，輸出只給本人或經同意的主辦方。</li>
+          <li>AI 只做交流建議，不代表本人承諾合作。</li>
+          <li>媒合結果主辦方先人工複核，看過才發。</li>
+        </ul>
+      </div>
+    </div>
+    <div class="strip" style="margin-top:26px">下一步：<b>約一次共創會</b>，挑一場活動做試行。</div>
+  </div>
+</section>
+
+<section style="padding:72px 0;text-align:center">
+  <div class="container" style="max-width:820px">
+    <div class="eyebrow">收尾</div>
+    <h2 class="section-title">AI 先當前哨，大家再進場談深</h2>
+    <p style="color:var(--ink-soft)">每位會員有分身，分身先互聊，整場的人各自被配到對的人。<br>讓害羞、內向、不擅社交的人，也有好好交流的機會。</p>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <span class="hand">數位商會 V3</span> · AI 應用與向量分析 江昱德 · NETS 評估法 陳明勇 · 頁內人物皆為虛構模擬 · 本頁未公開索引
+  </div>
+</footer>
+
+<script>
+// hover 詞卡 tooltip
+const tt=document.createElement("div");tt.id="ttip";document.body.appendChild(tt);
+document.addEventListener("mousemove",e=>{
+  const el=e.target.closest("[data-tip]");
+  if(el){tt.textContent=el.dataset.tip;tt.style.opacity=1;
+    tt.style.left=Math.min(e.clientX+16,window.innerWidth-340)+"px";
+    tt.style.top=(e.clientY+18)+"px";
+  } else tt.style.opacity=0;
+});
+
+
+// 參照故事動畫：單次播放，按重播才再跑
+(function(){
+  const bm=document.getElementById("bm-stage"),cnt=document.getElementById("bm-count");
+  if(bm){
+    let timer=null;
+    function playBM(){clearInterval(timer);bm.classList.remove("done");let n=0;
+      timer=setInterval(()=>{n+=37;
+        if(n>=1000){n=1000;clearInterval(timer);bm.classList.add("done");}
+        cnt.textContent="模擬互動 第 "+n+" 次";},60);}
+    document.getElementById("bm-replay").addEventListener("click",playBM);
+    playBM();
+  }
+  const mb=document.getElementById("mb-stage");
+  if(mb){
+    const dots=[[8,30,16],[20,72,22],[34,38,18],[46,78,14],[58,34,20],[72,70,18],[86,42,16],[15,94,12],[68,48,12],[80,88,14]];
+    const els=dots.map((d,i)=>{const el=document.createElement("div");
+      el.className="mb-dot"+(i===8?" mb-hidden":"");
+      el.style.left=d[0]+"%";el.style.top=d[1]+"px";el.style.width=d[2]+"px";el.style.height=d[2]+"px";
+      mb.appendChild(el);return el;});
+    const note=document.createElement("div");note.className="mb-note";mb.appendChild(note);
+    const scan=document.createElement("div");scan.className="mb-scan";mb.appendChild(scan);
+    const label=document.createElement("div");label.className="mb-label";label.textContent="被低估的高契合 ✓";
+    label.style.left="42%";label.style.bottom="12px";mb.appendChild(label);
+    const btn=document.createElement("button");btn.className="replay";btn.textContent="↻ 重播";mb.appendChild(btn);
+    const hidden=mb.querySelector(".mb-hidden");
+    const bigs=[els[1],els[4],els[2]];
+    let timers=[];
+    function playMB(){
+      timers.forEach(clearTimeout);timers=[];
+      mb.classList.remove("done");scan.classList.remove("run");
+      hidden.classList.remove("found");label.classList.remove("show");
+      els.forEach(x=>x.classList.remove("seen"));
+      note.textContent="👀 憑眼緣：只注意到場上最大咖";
+      bigs.forEach(x=>x.classList.add("seen"));
+      timers.push(setTimeout(()=>{
+        els.forEach(x=>x.classList.remove("seen"));
+        note.textContent="📊 改用數據，把全場掃一遍";
+        void scan.offsetWidth;scan.classList.add("run");
+      },1800));
+      timers.push(setTimeout(()=>{
+        hidden.classList.add("found");label.classList.add("show");
+        note.textContent="找到了：不起眼，但跟你最合";
+        mb.classList.add("done");
+      },3350));
+    }
+    btn.addEventListener("click",playMB);
+    playMB();
+  }
+})();
+
+// flow tabs（點選切換，不自動輪播）
+const tabs=[...document.querySelectorAll(".flow-tab")],panels=[...document.querySelectorAll(".flow-panel")];
+function go(i){tabs.forEach((t,k)=>t.classList.toggle("active",k===i));panels.forEach((p,k)=>p.classList.toggle("active",k===i));}
+tabs.forEach(t=>t.addEventListener("click",()=>go(+t.dataset.i)));
+</script>
+
+<script>
+/* ---------- 現場模擬（媒合 demo） ---------- */
+const W=1040,H=470;
+const typeInfo={
+  chain:{name:'產業鏈',color:'#b5894e',desc:'一方的產出正好是另一方的投入'},
+  comp:{name:'兩兩互補',color:'#5f8a6a',desc:'同一群客戶，不同的服務，合起來更完整'},
+  ref:{name:'客群轉介',color:'#5b7fa6',desc:'客群重疊但不競爭，可以互相介紹'},
+  peer:{name:'同業互助',color:'#c0673e',desc:'同一處境，共享方法、分攤成本、合接大案'}
+};
+
+/* 20 位模擬會員（皆虛構） */
+const people=[
+  {nm:'江昱德',ti:'知識管理教練',co:'江江教練',ind:'AI 知識管理',pts:['把每個人的隱性知識整理成 AI 讀得懂的知識庫','這場媒合用的分身資料格式就是我設計的','想找想導入 AI 知識管理的組織']},
+  {nm:'林曉芸',ti:'創辦人',co:'曉芸早午餐',ind:'連鎖餐飲',pts:['菜單主打在地食材','正在找可溯源的供應商','想在門市講產地故事']},
+  {nm:'吳永泰',ti:'場主',co:'永泰有機農場',ind:'有機農業',pts:['產季有穩定葉菜與雞蛋產能','想找長期通路','有產銷履歷可溯源']},
+  {nm:'張建中',ti:'會計師',co:'建中會計師事務所',ind:'會計服務',pts:['客戶最常問接班的稅怎麼辦','想深耕家族企業客群']},
+  {nm:'許文琪',ti:'律師',co:'文琪法律事務所',ind:'法律服務',pts:['常處理公司治理與家族協議','客戶多在傳承階段']},
+  {nm:'黃志偉',ti:'經紀人',co:'志偉保險經紀',ind:'保險經紀',pts:['保單常被客戶當傳承工具','想跟其他專業一起服務']},
+  {nm:'王淑惠',ti:'園長',co:'小太陽幼兒園',ind:'幼兒教育',pts:['想辦親子活動','家長常問課後可以去哪']},
+  {nm:'李國豪',ti:'講師',co:'國豪企管顧問',ind:'企業內訓',pts:['幫中小企業做 AI 內訓','缺真實產業案例']},
+  {nm:'周美玲',ti:'設計總監',co:'美玲空間設計',ind:'室內設計',pts:['案子大多是餐飲和零售店面','客戶常問我開店還缺什麼']},
+  {nm:'蔡明宏',ti:'負責人',co:'明宏印刷',ind:'印刷包裝',pts:['常接店家的菜單、包裝與招牌','主推環保包材']},
+  {nm:'劉俊賢',ti:'館長',co:'俊賢健身',ind:'健身產業',pts:['想開親子體能課','會員多是上班族家長']},
+  {nm:'楊佳蓉',ti:'執行長',co:'佳蓉科技',ind:'IoT 數據平台',pts:['幫工廠裝感測器收能耗數據','客戶收了數據不知道要幹嘛']},
+  {nm:'何俊毅',ti:'廠長',co:'俊毅電子',ind:'電子零件',pts:['客戶開始要碳數據','想讓產線主管會用 AI 看報表']},
+  {nm:'郭素芬',ti:'總經理',co:'素芬旅行社',ind:'旅遊業',pts:['在排永續旅遊路線','缺在地深度體驗點']},
+  {nm:'蘇志豪',ti:'負責人',co:'志豪能源',ind:'太陽能安裝',pts:['主力是廠房屋頂光電','想往新建案前期切']},
+  {nm:'洪雅雯',ti:'總監',co:'雅雯行銷',ind:'行銷公司',pts:['客戶要講永續故事','拿不出數據會被說漂綠']},
+  {nm:'江秀蘭',ti:'主任',co:'秀蘭庇護工場',ind:'社會福利',pts:['烘焙產品想找穩定通路','小批量產能想放大']},
+  {nm:'曾文昌',ti:'總經理',co:'文昌物流',ind:'物流車隊',pts:['車隊想導入數位工具','員工不會用是最大關卡']},
+  {nm:'方怡君',ti:'二代主理人',co:'怡君茶園',ind:'茶園觀光',pts:['茶園有食農體驗課','想接團客','外銷之外想做觀光']},
+  {nm:'高明德',ti:'總經理',co:'明德營造',ind:'營造工程',pts:['這兩年業主開案就問綠建築標章','手上有進行中的新建案']}
+];
+
+/* 小組模式：九組（兩三人） */
+const smallGroups=[
+  {type:'chain',members:['吳永泰','林曉芸'],
+   joint:['菜直接上菜單：產出接投入','溯源需求對上產銷履歷'],
+   talk:'產地直送的物流怎麼排、菜單上怎麼講產地故事。',
+   step:'下週約 30 分鐘，帶一份產季表對一次菜單。'},
+  {type:'chain',members:['蘇志豪','高明德'],
+   joint:['開案階段就把光電放進設計','綠建築標章的加分項對上光電配置'],
+   talk:'新建案哪個階段把光電拉進來、標章加分項怎麼配。',
+   step:'挑一個進行中的案子，出一版屋頂配置概算。'},
+  {type:'chain',members:['方怡君','郭素芬'],
+   joint:['體驗課放進一日遊行程','永續路線對上茶園場域'],
+   talk:'半日體驗怎麼排進一日遊、團客的接待量能。',
+   step:'帶一團試走一次，走完一起檢討動線。'},
+  {type:'chain',members:['江昱德','江秀蘭'],
+   joint:['老師傅的烘焙手感，整理成可傳承的配方知識庫','產品故事整理好，通路提案更有料'],
+   talk:'哪個品項先建知識庫、整理好的故事怎麼幫通路開發。',
+   step:'挑一個招牌品項，先做一頁產品知識卡。'},
+  {type:'comp',members:['周美玲','蔡明宏'],
+   joint:['同一群開店的客戶','空間＋輸出品＝更完整的開店方案'],
+   talk:'客戶開店最常卡在哪一段、報價怎麼搭著出。',
+   step:'互相看一次對方最近三個案子的報價結構。'},
+  {type:'comp',members:['洪雅雯','楊佳蓉'],
+   joint:['有故事的缺數據，有數據的缺故事','數據＋敘事＝ESG 溝通方案'],
+   talk:'方案第一版包給誰、先挑哪個產業試。',
+   step:'挑一個現有客戶，用真實數據寫一頁範例文案。'},
+  {type:'ref',members:['王淑惠','劉俊賢'],
+   joint:['同一群家長，彼此不競爭','活動合辦、名單互相導流'],
+   talk:'合辦一場親子運動日、導流怎麼設計。',
+   step:'各自盤一下家長名單的規模，約一次線上會。'},
+  {type:'peer',members:['張建中','許文琪','黃志偉'],
+   joint:['都在服務中小企業主的傳承需求','稅務、法律、保險三個面向先互相交換'],
+   talk:'傳承的第一場家庭會議怎麼開、能不能用一個窗口。',
+   step:'找一個匿名案例，三人各寫自己的切法，對一次。'},
+  {type:'chain',members:['李國豪','何俊毅','曾文昌'],
+   joint:['內訓服務對上兩家的導入需求','上課案例直接從真實場域來'],
+   talk:'導入的第一個場景挑什麼、課怎麼設計成回去用得起來。',
+   step:'各挑一個部門，先開一堂試點課。'}
+];
+const smallGcenters=[[95,140],[275,140],[455,140],[625,140],[130,345],[365,345],[600,345],[875,135],[870,345]];
+
+/* 產業鏈模式：四條上下游長鏈（各 5 人） */
+const chainRows=[
+  {type:'chain',title:'從產地到餐桌',
+   members:['吳永泰','江秀蘭','江昱德','林曉芸','蔡明宏'],
+   joint:['有機葉菜蛋量穩定，剛好補上代工的原料缺口','代工做出來的品項與製程，由 AI 整理成能對外說的產品故事','整理好的產地故事，直接放上早午餐的菜單與門市','菜單想講產地故事，需要包裝跟印刷把故事說出來'],
+   talk:'從產季表、代工單、菜單，到包裝上的一句話，中間卡在誰先開第一步。',
+   step:'吳永泰先寄一批樣品給江秀蘭試做，做成品後給林曉芸試賣一週，蔡明宏同步出一版包裝草稿。'},
+  {type:'comp',title:'綠建築與能源',
+   members:['蘇志豪','高明德','楊佳蓉','何俊毅','洪雅雯'],
+   joint:['光電系統要在設計階段就決定屋頂配置，越早介入越好談','新建案完工後想知道實際耗能，需要感測器長期蒐集數據','數據蒐集到了，缺一個真的用得上、看得懂報表的產線','報表跑出來了，客戶端要的是能對外講的一句 ESG 故事'],
+   talk:'光電、感測器、報表都做了，最後卡在這些數據要怎麼講給客戶聽。',
+   step:'高明德挑一個進行中的案子，找蘇志豪出屋頂配置，楊佳蓉裝感測器，洪雅雯先寫一頁範例文案。'},
+  {type:'ref',title:'中小企業傳承與顧問',
+   members:['張建中','許文琪','黃志偉','李國豪','周美玲'],
+   joint:['接班的稅務規劃談到一半，會碰到公司治理與家族協議的問題','家族協議底定後，保單常被拿來當傳承工具的下一步','傳承架構談完，接班的二代想學怎麼用 AI 管公司','二代準備接手開新店，第一個實際要做的決定是空間'],
+   talk:'稅務、法律、保險都談過了，傳承後想開新店的第一步卻沒人接。',
+   step:'找一個匿名接班案例，四人各自寫自己的切入點，周美玲接手畫新店空間。'},
+  {type:'peer',title:'在地體驗與親子生活圈',
+   members:['方怡君','郭素芬','曾文昌','王淑惠','劉俊賢'],
+   joint:['食農體驗課做出來了，缺一個排進正式行程的旅行社','行程排定，團客的接送調度需要穩定的車隊支援','車隊有親子客群的資料，剛好接得上幼兒園的活動需求','親子活動辦熟了，下一步是找健身館一起做親子體能課'],
+   talk:'體驗行程排好了，親子客群要怎麼跟幼兒園、健身館的活動綁在一起。',
+   step:'方怡君開放一個週末場，郭素芬排一團試走，曾文昌負責接送，王淑惠、劉俊賢各帶一組家庭參加。'}
+];
+const chainGcenters=[
+  [[90,70],[305,70],[520,70],[735,70],[950,70]],
+  [[90,175],[305,175],[520,175],[735,175],[950,175]],
+  [[90,280],[305,280],[520,280],[735,280],[950,280]],
+  [[90,385],[305,385],[520,385],[735,385],[950,385]]
+];
+const svgDefs='<defs>'+chainRows.map((r,i)=>'<marker id="arrow-'+i+'" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0L10,5L0,10z" fill="'+typeInfo[r.type].color+'"/></marker>').join('')+'</defs>';
+
+const stage=document.getElementById('stage');
+const svg=document.getElementById('svg');
+const tip=document.getElementById('tooltip');
+svg.setAttribute('viewBox','0 0 '+W+' '+H);
+svg.setAttribute('preserveAspectRatio','none');
+svg.innerHTML=svgDefs;
+
+let mode='small';
+const smallGroupOf={}; smallGroups.forEach((g,gi)=>g.members.forEach(nm=>smallGroupOf[nm]=gi));
+const chainGroupOf={}; chainRows.forEach((g,gi)=>g.members.forEach(nm=>chainGroupOf[nm]=gi));
+
+function showTip(p,el){
+  let h='<div class="tt-h">'+p.nm+'｜'+p.ti+'</div><div class="tt-r">'+p.co+' · '+p.ind+'</div>';
+  p.pts.slice(0,2).forEach(t=>{h+='<div class="tt-r"><b>寫到：</b>'+t+'</div>';});
+  tip.innerHTML=h;tip.style.display='block';
+  const r=el.getBoundingClientRect(),tr=tip.getBoundingClientRect();
+  let left=r.left+r.width/2-tr.width/2;
+  left=Math.max(10,Math.min(left,window.innerWidth-tr.width-10));
+  let top=r.top-tr.height-12;if(top<10)top=r.bottom+12;
+  tip.style.left=left+'px';tip.style.top=top+'px';
+  requestAnimationFrame(()=>tip.classList.add('show'));
+}
+function hideTip(){tip.classList.remove('show');setTimeout(()=>{if(!tip.classList.contains('show'))tip.style.display='none';},180);}
+
+/* 節點：5 欄 4 列散開 */
+const simNodes=people.map((p,i)=>{
+  const col=i%5,row=Math.floor(i/5);
+  const sx=110+col*205, sy=70+row*108;
+  const el=document.createElement('div');
+  const gi=smallGroupOf[p.nm];
+  el.className='node '+smallGroups[gi].type;
+  el.innerHTML='<div class="nm">'+p.nm+'<em>'+p.ti+'</em></div><div class="co">'+p.co+'·'+p.ind+'</div>';
+  el.addEventListener('mouseenter',()=>showTip(p,el));
+  el.addEventListener('mouseleave',hideTip);
+  el.addEventListener('click',()=>{if(p.nm==='我'||p.nm==='江昱德'){hideTip();openCardModal();return;}if(stage.classList.contains('done')){hideTip();const gi2=(mode==='chain'?chainGroupOf:smallGroupOf)[p.nm];openModal(gi2);}});
+  stage.appendChild(el);
+  return {p,el,sx,sy,cx:sx,cy:sy};
+});
+const findNode=nm=>simNodes.find(n=>n.p.nm===nm);
+
+const legendEl=document.getElementById('legend');
+function setLegend(){
+  legendEl.innerHTML = mode==='chain'
+    ? chainRows.map(r=>'<span><i class="dot" style="background:'+typeInfo[r.type].color+'"></i>'+r.title+'</span>').join('')
+    : '<span><i class="dot" style="background:var(--chain)"></i>產業鏈（上下游）</span><span><i class="dot" style="background:var(--comp)"></i>兩兩互補</span><span><i class="dot" style="background:var(--ref)"></i>客群轉介</span><span><i class="dot" style="background:var(--peer)"></i>同業互助</span>';
+}
+setLegend();
+
+function place(useCluster){
+  const r=stage.getBoundingClientRect();
+  simNodes.forEach(n=>{
+    n.el.style.left=((useCluster?n.cx:n.sx)/W*r.width)+'px';
+    n.el.style.top =((useCluster?n.cy:n.sy)/H*r.height)+'px';
+  });
+}
+place(false);
+window.addEventListener('resize',()=>place(stage.dataset.clustered==='1'));
+
+const countEl=document.getElementById('count');
+const hintEl=document.getElementById('hint');
+const resultEl=document.getElementById('result');
+const svgns='http://www.w3.org/2000/svg';
+const modeSmallBtn=document.getElementById('modeSmallBtn');
+const modeChainBtn=document.getElementById('modeChainBtn');
+
+function currentGroups(){return mode==='chain'?chainRows:smallGroups;}
+
+function assignPositions(){
+  if(mode==='chain'){
+    chainRows.forEach((g,gi)=>{
+      g.members.forEach((nm,mi)=>{const n=findNode(nm);const pos=chainGcenters[gi][mi];n.cx=pos[0];n.cy=pos[1];});
+    });
+  }else{
+    smallGroups.forEach((g,gi)=>{
+      const ctr=smallGcenters[gi];
+      const off=g.members.length===3?[[0,-50],[-85,44],[85,44]]:[[0,-42],[0,42]];
+      g.members.forEach((nm,mi)=>{const n=findNode(nm);n.cx=ctr[0]+off[mi][0];n.cy=ctr[1]+off[mi][1];});
+    });
+  }
+}
+
+function runSim(){
+  const groups=currentGroups();
+  simNodes.forEach(n=>{
+    const gi=(mode==='chain'?chainGroupOf:smallGroupOf)[n.p.nm];
+    n.el.className='node '+groups[gi].type;
+  });
+  assignPositions();
+  stage.dataset.clustered='1';
+  place(true);
+  setTimeout(()=>{
+    svg.innerHTML=svgDefs;
+    groups.forEach((g,gi)=>{
+      const col=typeInfo[g.type].color,mem=g.members.map(findNode);
+      if(mode==='chain'){
+        const xs=mem.map(m=>m.cx),y=mem[0].cy;
+        const rect=document.createElementNS(svgns,'rect');
+        rect.setAttribute('x',Math.min(...xs)-46);rect.setAttribute('y',y-44);
+        rect.setAttribute('width',(Math.max(...xs)-Math.min(...xs))+92);rect.setAttribute('height',88);
+        rect.setAttribute('rx',44);rect.setAttribute('fill',col);rect.setAttribute('opacity','0');
+        rect.style.transition='opacity .5s';rect.style.transitionDelay=(0.07*gi)+'s';
+        svg.appendChild(rect);
+        requestAnimationFrame(()=>rect.setAttribute('opacity','0.10'));
+      }else{
+        const ctr=smallGcenters[gi];
+        const ell=document.createElementNS(svgns,'ellipse');
+        ell.setAttribute('cx',ctr[0]);ell.setAttribute('cy',ctr[1]);
+        ell.setAttribute('rx',g.members.length===3?158:82);ell.setAttribute('ry',g.members.length===3?88:96);
+        ell.setAttribute('fill',col);ell.setAttribute('opacity','0');
+        ell.style.transition='opacity .5s';ell.style.transitionDelay=(0.07*gi)+'s';
+        svg.appendChild(ell);
+        requestAnimationFrame(()=>ell.setAttribute('opacity','0.09'));
+      }
+      for(let k=0;k<mem.length-1;k++){
+        const a=mem[k],b=mem[k+1];
+        const ln=document.createElementNS(svgns,'line');
+        ln.setAttribute('x1',a.cx);ln.setAttribute('y1',a.cy);
+        ln.setAttribute('x2',b.cx);ln.setAttribute('y2',b.cy);
+        ln.setAttribute('stroke',col);ln.setAttribute('stroke-width','2.6');
+        ln.setAttribute('stroke-linecap','round');ln.setAttribute('opacity','0');
+        if(mode==='chain')ln.setAttribute('marker-end','url(#arrow-'+gi+')');
+        ln.style.transition='opacity .5s';ln.style.transitionDelay=(0.07*gi+0.12)+'s';
+        svg.appendChild(ln);
+        requestAnimationFrame(()=>ln.setAttribute('opacity','0.6'));
+      }
+    });
+    stage.classList.add('done');
+  },900);
+  countEl.textContent = mode==='chain' ? '串成 4 條產業鏈' : '媒合成 9 組';
+  hintEl.textContent = mode==='chain' ? '👇 點任一條鏈（或圖上的人），看這條鏈怎麼串起來' : '👇 點任何一組（或圖上的人），看兩邊為什麼接得起來';
+  resultEl.innerHTML='';
+  currentGroups().forEach((g,gi)=>{
+    const div=document.createElement('div');
+    div.className='grp';
+    div.style.borderLeft='6px solid '+typeInfo[g.type].color;
+    div.innerHTML = mode==='chain'
+      ? '<b>'+g.title+'</b>　'+g.members.map(renderMemberName).join('　→　')+'<span class="go">看接點 ›</span>'
+      : '<b>'+typeInfo[g.type].name+'</b>　'+g.members.map(renderMemberName).join('　↔　')+'<span class="go">看接點 ›</span>';
+    div.onclick=()=>openModal(gi);
+    resultEl.appendChild(div);
+    wireCardLinks(div);
+  });
+  resultEl.classList.add('show');
+}
+function resetSim(){
+  stage.dataset.clustered='0';
+  stage.classList.remove('done');
+  place(false);
+  svg.innerHTML=svgDefs;
+  countEl.textContent='';
+  hintEl.textContent='';
+  resultEl.classList.remove('show');
+  modeSmallBtn.classList.remove('active');
+  modeChainBtn.classList.remove('active');
+}
+modeSmallBtn.onclick=()=>{mode='small';modeSmallBtn.classList.add('active');modeChainBtn.classList.remove('active');setLegend();runSim();};
+modeChainBtn.onclick=()=>{mode='chain';modeChainBtn.classList.add('active');modeSmallBtn.classList.remove('active');setLegend();runSim();};
+document.getElementById('resetBtn').onclick=resetSim;
+
+/* ---------- 彈窗（小組模式＝文氏圖／產業鏈模式＝流程列） ---------- */
+const modal=document.getElementById('modal');
+const mbox=document.getElementById('mbox');
+const personOf=nm=>people.find(p=>p.nm===nm);
+/* 「我」是本頁的 requester；沿用既有 iframe 名片 modal，讓所有媒合結果裡的 requester entry 也可直接開啟 G 網數位名片。 */
+function renderMemberName(nm){
+  if(nm==='我'||nm==='江昱德')return '<button class="person-card-link" type="button" data-card="jiang" title="開啟我的 G 網數位名片">'+nm+'</button>';
+  return nm;
+}
+function wireCardLinks(root){
+  root.querySelectorAll('[data-card="jiang"]').forEach(btn=>{
+    btn.addEventListener('click',e=>{e.stopPropagation();hideTip();openCardModal();});
+  });
+}
+
+function bubbleCol(p,side){
+  let h='<div class="vcol '+side+'"><h5>'+renderMemberName(p.nm)+'｜'+p.ti+'<small>'+p.co+' · '+p.ind+'</small></h5>';
+  p.pts.forEach(t=>{h+='<div class="vb">'+t+'</div>';});
+  return h+'</div>';
+}
+function openModal(gi){
+  if(mode==='chain'){openChainModal(gi);return;}
+  const g=smallGroups[gi],ti=typeInfo[g.type];
+  const mem=g.members.map(personOf);
+  let h='<button class="mclose" onclick="closeModal()">✕</button>';
+  h+='<span class="mtype" style="background:'+ti.color+'">'+ti.name+'</span>';
+  h+='<div class="mtitle">'+g.members.join(' × ')+'</div>';
+  h+='<div class="msub">'+ti.desc+'</div>';
+  if(mem.length===2){
+    h+='<div class="venn v2"><div class="vcirc cL"></div><div class="vcirc cR"></div><div class="vcols">';
+    h+=bubbleCol(mem[0],'left');
+    h+='<div class="vmid"><h5>接點<small>兩邊介紹裡都有料</small></h5>';
+    g.joint.forEach(t=>{h+='<div class="vb">'+t+'</div>';});
+    h+='</div>';
+    h+=bubbleCol(mem[1],'right');
+    h+='</div></div>';
+  }else{
+    h+='<div class="venn v3"><div class="vcirc cL"></div><div class="vcirc cM"></div><div class="vcirc cR"></div><div class="vcols">';
+    h+=bubbleCol(mem[0],'left');
+    h+=bubbleCol(mem[1],'left');
+    h+=bubbleCol(mem[2],'right');
+    h+='</div><div class="jointwide">';
+    g.joint.forEach(t=>{h+='<div class="vb" style="border-color:'+ti.color+';background:#fbf3e3;font-weight:700;">'+t+'</div>';});
+    h+='</div></div>';
+  }
+  h+='<div class="mrow"><b>可以聊：</b><span>'+g.talk+'</span></div>';
+  h+='<div class="mrow"><b>建議第一步：</b><span>'+g.step+'</span></div>';
+  mbox.innerHTML=h;
+  wireCardLinks(mbox);
+  modal.classList.add('show');
+}
+function openChainModal(gi){
+  const g=chainRows[gi],ti=typeInfo[g.type];
+  const mem=g.members.map(personOf);
+  let h='<button class="mclose" onclick="closeModal()">✕</button>';
+  h+='<span class="mtype" style="background:'+ti.color+'">產業鏈</span>';
+  h+='<div class="mtitle">'+g.title+'</div>';
+  h+='<div class="msub">'+mem.map(p=>p.nm).join(' → ')+'</div>';
+  h+='<div class="flowlist">';
+  mem.forEach((p,i)=>{
+    h+='<div class="flowitem"><span class="fi-n">'+(i+1)+'</span><div><b>'+renderMemberName(p.nm)+'</b>｜'+p.ti+'<div class="fi-co">'+p.co+' · '+p.ind+'</div></div></div>';
+    if(i<mem.length-1){h+='<div class="flowarrow">↓ '+g.joint[i]+'</div>';}
+  });
+  h+='</div>';
+  h+='<div class="mrow"><b>可以聊：</b><span>'+g.talk+'</span></div>';
+  h+='<div class="mrow"><b>建議第一步：</b><span>'+g.step+'</span></div>';
+  mbox.innerHTML=h;
+  wireCardLinks(mbox);
+  modal.classList.add('show');
+}
+function openCardModal(){
+  let h='<button class="mclose" onclick="closeModal()">\u2715</button>';
+  h+='<span class="mtype" style="background:var(--gold)">\u6703\u54e1\u5206\u8eab \u00b7 \u5b8c\u6574\u4ea4\u6d41\u6a94\u6848\u793a\u7bc4</span>';
+  h+='<div class="mtitle">\u6c5f\u6631\u5fb7\uff5c\u77e5\u8b58\u7ba1\u7406\u6559\u7df4</div>';
+  h+='<div class="msub">\u4e00\u4efd\u5b8c\u6574\u7684\u6703\u54e1\u4ea4\u6d41\u6a94\u6848\u9577\u9019\u6a23\uff1a\u4e0d\u53ea\u6211\u8981\u4ec0\u9ebc\u3001\u6211\u7f3a\u4ec0\u9ebc\u3002</div>';
+  h+='<div class="mrow"><b>\u5c08\u696d\uff1a</b><span>AI \u77e5\u8b58\u7ba1\u7406\u6559\u7df4\u3002\u5e6b\u500b\u4eba\u8207\u7d44\u7e54\u628a\u96b1\u6027\u77e5\u8b58\u63d0\u7149\u6210 AI \u8b80\u5f97\u61c2\u7684\u77e5\u8b58\u5eab\uff1b\u9019\u5834\u5a92\u5408\u7528\u7684\u5206\u8eab\u8cc7\u6599\u683c\u5f0f\uff0c\u5c31\u662f\u6211\u8a2d\u8a08\u7684\u3002</span></div>';
+  h+='<div class="mrow"><b>\u50f9\u503c\u4e3b\u5f35\uff1a</b><span>\u6d41\u6c34\u7684 AI \u5de5\u5177\uff0c\u9435\u6253\u7684\u77e5\u8b58\u5eab\u3002\u5de5\u5177\u4e00\u76f4\u63db\u6c92\u95dc\u4fc2\uff0c\u7d2f\u7a4d\u4e0b\u4f86\u7684\u77e5\u8b58\u8cc7\u7522\u624d\u662f\u4f60\u7684\uff1bAI \u8ca0\u8cac\u8f14\u52a9\u6c7a\u7b56\uff0c\u62cd\u677f\u6c38\u9060\u5728\u4f60\u3002</span></div>';
+  h+='<div class="mrow"><b>\u7406\u5ff5\uff1a</b><span>\u77e5\u8b58\u5982\u679c\u4e0d\u80fd\u50b3\u627f\uff0c\u5c31\u6c92\u6709\u5b58\u5728\u7684\u610f\u7fa9\u3002\u6211\u505a\u7684\u6bcf\u4e00\u6a23\u6771\u897f\uff0c\u90fd\u662f\u70ba\u4e86\u8b93\u77e5\u8b58\u7559\u5f97\u4e0b\u4f86\uff0c\u8b93\u4eba\u8aaa\u51fa\u300c\u539f\u4f86\u6211\u53ef\u4ee5\u300d\u3002</span></div>';
+  h+='<div class="mrow"><b>\u5de5\u4f5c\u7bc0\u594f\uff1a</b><span>\u8ddf AI \u4e00\u8d77\u5feb\u901f\u8fed\u4ee3\uff0c\u505a\u51fa\u4f86\u76f4\u63a5\u5c55\u793a\u771f\u67b6\u69cb\uff1b\u7522\u51fa\u8981\u8b93\u4eba\u8207 AI \u90fd\u770b\u5f97\u61c2\u3001\u597d\u627e\u3001\u597d\u7528\u3001\u597d\u8b80\u3002</span></div>';
+  h+='<div class="mrow"><b>\u60f3\u627e\u7684\u5c0d\u8c61\uff1a</b><span>\u60f3\u5c0e\u5165 AI \u77e5\u8b58\u7ba1\u7406\u7684\u7d44\u7e54\u3001\u6709\u4e00\u8eab\u529f\u592b\u9084\u6c92\u88ab\u6574\u7406\u51fa\u4f86\u7684\u5c08\u5bb6\u8077\u4eba\u3001\u60f3\u5728\u81ea\u5df1\u6d3b\u52d5\u8a66\u6703\u524d\u5a92\u5408\u7684\u4e3b\u8fa6\u65b9\u3002</span></div>';
+  h+='<div class="mrow"><b>\u73fe\u968e\u6bb5\u9700\u6c42\uff1a</b><span>\u627e\u4e00\u5834 20 \u5230 30 \u4eba\u7684\u6d3b\u52d5\u8a66\u884c\u6703\u524d\u5a92\u5408\uff0c\u7d2f\u7a4d\u771f\u5be6\u6848\u4f8b\u3002</span></div>';
+  h+='<div class="mrow"><b>\u9577\u9060\u76ee\u6a19\uff1a</b><span>\u8b93\u6bcf\u500b\u6703\u54e1\u90fd\u6709\u81ea\u5df1\u7684\u77e5\u8b58\u5eab\u8207\u5206\u8eab\uff0c\u5546\u6703\u8b8a\u6210\u6703\u5b78\u7fd2\u7684\u5546\u6703\u3002</span></div>';
+  h+='<div class="mrow" style="background:#fbf3e3"><b>\u70ba\u4ec0\u9ebc\u5beb\u9019\u9ebc\u591a\uff1a</b><span>\u904e\u53bb\u5546\u6703\u5a92\u5408\u53ea\u7b97\u300c\u6211\u8981\u4ec0\u9ebc\u3001\u6211\u7f3a\u4ec0\u9ebc\u300d\uff0c\u56e0\u70ba\u5177\u9ad4\u3001\u597d\u8a08\u7b97\u3002AI \u80fd\u7b97\u7684\u6bd4\u9019\u591a\uff1a\u50f9\u503c\u4e3b\u5f35\u3001\u7406\u5ff5\u3001\u5de5\u4f5c\u7bc0\u594f\u3001\u8208\u8da3\u3001\u9577\u9060\u76ee\u6a19\uff0c\u5168\u90fd\u80fd\u9032\u5a92\u5408\u3002</span></div>';
+  h+='<div class="mrow"><b>\u5ef6\u4f38\u95b1\u8b80\uff1a</b><span><a href="https://jiang-yude.github.io/jiang-card/" target="_blank" rel="noopener" style="color:var(--gold-d);font-weight:800">\ud83e\udeaa \u6578\u4f4d\u540d\u7247 \u2197</a>\u3000<a href="https://ai-km-jiang.vercel.app/" target="_blank" rel="noopener" style="color:var(--gold-d);font-weight:800">\ud83d\udcda \u77e5\u8b58\u5b98\u7db2 \u2197</a>\u3000\u4e0b\u9762\u540d\u7247\u53ef\u76f4\u63a5\u4e92\u52d5\uff1a</span></div>';
+  h+='<iframe class="cardframe" src="https://jiang-yude.github.io/jiang-card/" title="\u6c5f\u6631\u5fb7 AI \u6578\u4f4d\u540d\u7247" loading="lazy"></iframe>';
+  mbox.innerHTML=h;
+  modal.classList.add('show');
+}
+function closeModal(){modal.classList.remove('show');}
+modal.addEventListener('click',e=>{if(e.target===modal)closeModal();});
+window.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
+</script>
+</body>
+</html>

@@ -172,7 +172,9 @@ window.COURSES = [
     tags: ["AI員工", "AI Agent", "工作流", "一人公司", "創業者", "重複工作"],
     summary: "把 AI 從聊天工具，訓練成真的能幫你做事的 AI 員工。適合老闆、創業者、一人公司、接案者，以及想把 AI 真的放進工作流程的人。",
     detail_url: "https://ai-km-jiang.vercel.app/courses/2026-06-03-1719-ai-employee-course.html",
-    materials: [],
+    materials: [
+      { label: "完整講座簡報", url: "https://ai-km-jiang.vercel.app/courses/ai-employee-deck/" }
+    ],
     registration: {
       status: "ended",
       note: "已結束，新場次會在 LINE 社群公布"

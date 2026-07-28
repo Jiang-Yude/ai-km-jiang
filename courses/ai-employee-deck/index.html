@@ -1,0 +1,941 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>怎麼訓練自己的 AI 員工 · 6/7 免費線上講座 v4</title>
+<style>
+  :root {
+    --bg-1: #F5EDE7; --bg-2: #F1E9E3; --bg-3: #ECE3DC; --bg-4: #E6DCD4;
+    --bg-5: #DFD3CB; --bg-6: #D6C8BF; --bg-7: #CBBBB0;
+    --bg-8: #7A5E4C; --bg-9: #6B4F3E; --bg-10: #5D4037;
+    --bg-11: #4E342B; --bg-12: #3E2723; --bg-13: #34201A; --bg-14: #2A1610;
+    --text-on-light: #4E342E; --text-on-dark: #F5EDE0;
+    --text-soft-light: #5D4037; --text-soft-dark: rgba(245,237,224,0.80);
+    --accent: #D88C3A; --accent-light: #D4A574; --accent-on-dark: #E6B87D;
+    --subtle-light: #BCAAA4; --subtle-dark: rgba(245,237,224,0.18);
+    --font-display: "PingFang TC","Noto Sans TC","Inter","Helvetica Neue",system-ui,sans-serif;
+    --font-body:    "PingFang TC","Noto Sans TC","Inter",system-ui,sans-serif;
+    --font-mono:    "JetBrains Mono","SF Mono",ui-monospace,monospace;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin:0; font-family:var(--font-body); background:var(--bg-1); -webkit-font-smoothing:antialiased; }
+
+  section {
+    position: sticky; top: 0; min-height: 100vh; display: grid; place-items: center;
+    padding: 96px 56px; isolation: isolate;
+    border-radius: 32px 32px 0 0; box-shadow: 0 -24px 60px -20px rgba(40,24,16,0.18);
+  }
+  section:first-of-type { border-radius: 0; box-shadow: none; }
+  /* 內容超過一個螢幕的頁，退出 sticky 釘住，改成正常長頁：可完整往下滑，滑到底下一頁才疊上來 */
+  section.tall { position: relative; align-content: start; place-items: start center; }
+
+  section[data-bg="1"]  { background: var(--bg-1);  z-index: 1;  color: var(--text-on-light); }
+  section[data-bg="2"]  { background: var(--bg-2);  z-index: 2;  color: var(--text-on-light); }
+  section[data-bg="3"]  { background: var(--bg-3);  z-index: 3;  color: var(--text-on-light); }
+  section[data-bg="4"]  { background: var(--bg-4);  z-index: 4;  color: var(--text-on-light); }
+  section[data-bg="5"]  { background: var(--bg-5);  z-index: 5;  color: var(--text-on-light); }
+  section[data-bg="6"]  { background: var(--bg-6);  z-index: 6;  color: var(--text-on-light); }
+  section[data-bg="7"]  { background: var(--bg-7);  z-index: 7;  color: var(--text-on-light); }
+  section[data-bg="8"]  { background: var(--bg-8);  z-index: 8;  color: var(--text-on-dark); }
+  section[data-bg="9"]  { background: var(--bg-9);  z-index: 9;  color: var(--text-on-dark); }
+  section[data-bg="10"] { background: var(--bg-10); z-index: 10; color: var(--text-on-dark); }
+  section[data-bg="11"] { background: var(--bg-11); z-index: 11; color: var(--text-on-dark); }
+  section[data-bg="12"] { background: var(--bg-12); z-index: 12; color: var(--text-on-dark); }
+  section[data-bg="13"] { background: var(--bg-13); z-index: 13; color: var(--text-on-dark); }
+  section[data-bg="14"] { background: var(--bg-14); z-index: 14; color: var(--text-on-dark); }
+
+  /* act-cap */
+  .act-cap { font-family:var(--font-mono); font-size:13px; letter-spacing:0.22em; text-transform:uppercase;
+    font-weight:700; color:var(--accent); margin-bottom:28px; display:inline-flex; align-items:center; gap:12px; }
+  .act-cap::before { content:""; width:28px; height:1px; background:var(--accent); }
+  section[data-bg="8"]  .act-cap, section[data-bg="9"]  .act-cap,
+  section[data-bg="10"] .act-cap, section[data-bg="11"] .act-cap,
+  section[data-bg="12"] .act-cap, section[data-bg="13"] .act-cap,
+  section[data-bg="14"] .act-cap { color: var(--accent-on-dark); }
+  section[data-bg="8"]  .act-cap::before, section[data-bg="9"]  .act-cap::before,
+  section[data-bg="10"] .act-cap::before, section[data-bg="11"] .act-cap::before,
+  section[data-bg="12"] .act-cap::before, section[data-bg="13"] .act-cap::before,
+  section[data-bg="14"] .act-cap::before { background: var(--accent-on-dark); }
+
+  /* typography */
+  .display { font-family:var(--font-display); font-size:clamp(48px,8vw,112px); line-height:1.0; font-weight:800; letter-spacing:-0.03em; margin:0 0 24px; }
+  .display.sm { font-size:clamp(36px,5.4vw,72px); }
+  .h1 { font-family:var(--font-display); font-size:clamp(26px,3.4vw,40px); line-height:1.25; font-weight:700; margin:0 0 20px; }
+  .h2 { font-size:21px; line-height:1.3; font-weight:600; margin:0 0 8px; }
+  .lead { font-size:clamp(19px,1.7vw,23px); line-height:1.7; color:var(--text-soft-light); max-width:760px; margin:0 auto; }
+  section[data-bg="8"]  .lead, section[data-bg="9"]  .lead,
+  section[data-bg="10"] .lead, section[data-bg="11"] .lead,
+  section[data-bg="12"] .lead, section[data-bg="13"] .lead,
+  section[data-bg="14"] .lead { color: var(--text-soft-dark); }
+  .body { font-size:18px; line-height:1.7; color:var(--text-soft-light); }
+  section[data-bg="8"]  .body, section[data-bg="9"]  .body,
+  section[data-bg="10"] .body, section[data-bg="11"] .body,
+  section[data-bg="12"] .body, section[data-bg="13"] .body,
+  section[data-bg="14"] .body { color: var(--text-soft-dark); }
+  .mono-note { font-family:var(--font-mono); font-size:14px; letter-spacing:0.12em; color:var(--accent); margin-top:40px; }
+  section[data-bg="8"]  .mono-note, section[data-bg="9"]  .mono-note,
+  section[data-bg="10"] .mono-note, section[data-bg="11"] .mono-note,
+  section[data-bg="12"] .mono-note, section[data-bg="13"] .mono-note,
+  section[data-bg="14"] .mono-note { color: var(--accent-on-dark); }
+
+  .wrap { width:100%; max-width:1080px; text-align:center; }
+  .wrap.left { text-align:left; }
+
+  /* dot indicator */
+  .dot-indicator { position:fixed; right:28px; top:50%; transform:translateY(-50%); display:flex; flex-direction:column; gap:12px; z-index:100; }
+  .dot-indicator a { width:10px; height:10px; border-radius:50%; background:rgba(78,52,46,0.22); transition:all .35s cubic-bezier(.22,1,.36,1); position:relative; }
+  .dot-indicator a:hover { background:rgba(78,52,46,0.5); }
+  .dot-indicator a.active { background:var(--accent); transform:scale(1.5); box-shadow:0 0 0 4px rgba(216,140,58,0.18); }
+  .dot-indicator a .lbl { position:absolute; right:22px; top:50%; transform:translateY(-50%); font-family:var(--font-mono); font-size:11px; letter-spacing:.15em; color:var(--text-soft-light); white-space:nowrap; opacity:0; transition:opacity .25s; pointer-events:none; }
+  .dot-indicator a:hover .lbl, .dot-indicator a.active .lbl { opacity:1; }
+  body.on-dark .dot-indicator a { background:rgba(245,237,224,0.25); }
+  body.on-dark .dot-indicator a.active { background:var(--accent-on-dark); box-shadow:0 0 0 4px rgba(230,184,125,0.22); }
+  body.on-dark .dot-indicator a .lbl { color:var(--text-soft-dark); }
+
+  /* progress */
+  .progress { position:fixed; top:0; left:0; height:3px; width:0%; background:linear-gradient(90deg,var(--accent),var(--accent-light)); z-index:200; transition:width .15s linear; }
+
+  /* grids */
+  .grid-3 { display:grid; grid-template-columns:repeat(3,1fr); gap:28px; margin-top:48px; }
+  .grid-2 { display:grid; grid-template-columns:repeat(2,1fr); gap:28px; margin-top:40px; }
+
+  /* card */
+  .card { background:rgba(255,248,240,0.5); border:1px solid var(--subtle-light); border-radius:16px; padding:32px 28px; text-align:left; transition:transform .3s,box-shadow .3s; backdrop-filter:blur(8px); }
+  .card:hover { transform:translateY(-4px); box-shadow:0 12px 32px rgba(78,52,46,0.1); }
+  .card .num { font-family:var(--font-mono); font-size:14px; letter-spacing:0.18em; color:var(--accent); font-weight:700; margin-bottom:12px; }
+  section[data-bg="8"]  .card, section[data-bg="9"]  .card,
+  section[data-bg="10"] .card, section[data-bg="11"] .card,
+  section[data-bg="12"] .card, section[data-bg="13"] .card,
+  section[data-bg="14"] .card { background:rgba(255,248,240,0.06); border-color:var(--subtle-dark); }
+  section[data-bg="8"]  .card .num, section[data-bg="9"]  .card .num,
+  section[data-bg="10"] .card .num, section[data-bg="11"] .card .num,
+  section[data-bg="12"] .card .num, section[data-bg="13"] .card .num,
+  section[data-bg="14"] .card .num { color:var(--accent-on-dark); }
+
+  /* quote */
+  .quote { font-family:var(--font-display); font-size:clamp(28px,3.6vw,44px); line-height:1.5; font-weight:600; max-width:880px; margin:0 auto; letter-spacing:-0.01em; }
+  .quote::before { content:"「"; color:var(--accent); margin-right:4px; }
+  .quote::after  { content:"」"; color:var(--accent); margin-left:4px; }
+  section[data-bg="8"]  .quote::before, section[data-bg="8"]  .quote::after,
+  section[data-bg="9"]  .quote::before, section[data-bg="9"]  .quote::after,
+  section[data-bg="10"] .quote::before, section[data-bg="10"] .quote::after,
+  section[data-bg="11"] .quote::before, section[data-bg="11"] .quote::after,
+  section[data-bg="12"] .quote::before, section[data-bg="12"] .quote::after,
+  section[data-bg="13"] .quote::before, section[data-bg="13"] .quote::after,
+  section[data-bg="14"] .quote::before, section[data-bg="14"] .quote::after { color:var(--accent-on-dark); }
+  .quote-by { margin-top:32px; font-family:var(--font-mono); font-size:14px; letter-spacing:0.2em; color:var(--text-soft-light); text-transform:uppercase; }
+  section[data-bg="8"]  .quote-by, section[data-bg="9"]  .quote-by,
+  section[data-bg="10"] .quote-by, section[data-bg="11"] .quote-by,
+  section[data-bg="12"] .quote-by, section[data-bg="13"] .quote-by,
+  section[data-bg="14"] .quote-by { color:var(--text-soft-dark); }
+
+  /* timeline */
+  .timeline { display:grid; grid-template-columns:repeat(4,1fr); gap:0; margin-top:56px; position:relative; }
+  .timeline::before { content:""; position:absolute; top:18px; left:8%; right:8%; height:1px; background:repeating-linear-gradient(90deg,var(--subtle-light) 0,var(--subtle-light) 6px,transparent 6px,transparent 12px); }
+  section[data-bg="8"]  .timeline::before, section[data-bg="9"]  .timeline::before,
+  section[data-bg="10"] .timeline::before, section[data-bg="11"] .timeline::before,
+  section[data-bg="12"] .timeline::before, section[data-bg="13"] .timeline::before,
+  section[data-bg="14"] .timeline::before { background:repeating-linear-gradient(90deg,var(--subtle-dark) 0,var(--subtle-dark) 6px,transparent 6px,transparent 12px); }
+  .step { text-align:center; position:relative; padding:56px 12px 0; }
+  .step .dot { position:absolute; top:0; left:50%; transform:translateX(-50%); width:36px; height:36px; background:var(--accent); color:#fff; border-radius:50%; font-family:var(--font-mono); font-weight:700; font-size:14px; display:grid; place-items:center; box-shadow:0 0 0 6px rgba(216,140,58,0.18); }
+  section[data-bg="8"]  .step .dot, section[data-bg="9"]  .step .dot,
+  section[data-bg="10"] .step .dot, section[data-bg="11"] .step .dot,
+  section[data-bg="12"] .step .dot, section[data-bg="13"] .step .dot,
+  section[data-bg="14"] .step .dot { background:var(--accent-on-dark); color:var(--bg-14); box-shadow:0 0 0 6px rgba(230,184,125,0.22); }
+
+  /* button */
+  .btn { display:inline-block; padding:16px 36px; background:var(--accent); color:#fff; border-radius:999px; text-decoration:none; font-weight:600; letter-spacing:0.04em; font-size:18px; transition:all .3s; margin-top:32px; }
+  .btn:hover { background:var(--text-on-light); transform:translateY(-2px); }
+  section[data-bg="8"]  .btn:hover, section[data-bg="9"]  .btn:hover,
+  section[data-bg="10"] .btn:hover, section[data-bg="11"] .btn:hover,
+  section[data-bg="12"] .btn:hover, section[data-bg="13"] .btn:hover,
+  section[data-bg="14"] .btn:hover { background:var(--accent-on-dark); color:var(--bg-14); }
+
+  /* comparison table */
+  .cmp-table { width:100%; max-width:860px; margin:36px auto 0; border-collapse:collapse; font-size:18px; }
+  .cmp-table th { padding:12px 20px; font-family:var(--font-mono); font-size:13px; letter-spacing:0.15em; text-transform:uppercase; color:var(--accent-on-dark); background:rgba(0,0,0,0.22); text-align:left; }
+  .cmp-table td { padding:14px 20px; border-bottom:1px solid var(--subtle-dark); text-align:left; color:var(--text-soft-dark); vertical-align:top; }
+  .cmp-table tr:last-child td { border-bottom:none; }
+
+  /* two-col list */
+  .two-col-list { display:grid; grid-template-columns:repeat(2,1fr); gap:12px 40px; margin:28px auto 0; max-width:900px; list-style:none; padding:0; font-size:18px; text-align:left; }
+  .two-col-list li { padding:10px 0; border-bottom:1px solid var(--subtle-dark); color:var(--text-soft-dark); }
+  .two-col-list li::before { content:"Q "; font-family:var(--font-mono); font-size:13px; color:var(--accent-on-dark); letter-spacing:0.1em; }
+
+  /* code block */
+  .code-block { background:rgba(0,0,0,0.28); border-radius:12px; padding:28px 32px; margin:32px auto 0; max-width:860px; text-align:left; border:1px solid rgba(245,237,224,0.10); }
+  .code-block pre { margin:0; }
+  .code-block code { font-family:var(--font-mono); font-size:16px; line-height:1.7; color:#F5EDE0; white-space:pre-wrap; overflow-wrap:break-word; display:block; }
+
+  /* live lecture notes */
+  .lecture-note { margin:32px auto 0; max-width:900px; text-align:left; border-top:1px solid var(--subtle-dark); border-bottom:1px solid var(--subtle-dark); padding:18px 0; color:var(--text-soft-dark); }
+  .lecture-note summary { cursor:pointer; font-family:var(--font-mono); font-size:13px; letter-spacing:0.14em; color:var(--accent-on-dark); list-style:none; }
+  .lecture-note summary::-webkit-details-marker { display:none; }
+  .lecture-note summary::after { content:"+"; float:right; font-size:20px; line-height:1; color:var(--accent-on-dark); }
+  .lecture-note[open] summary::after { content:"-"; }
+  .lecture-note .body { margin:14px 0 0; }
+  .lecture-note ul { margin:14px 0 0; padding-left:1.2em; }
+  .lecture-note li { margin:8px 0; line-height:1.7; color:var(--text-soft-dark); }
+  .lecture-note.on-light { color:var(--text-on-light); }
+  .lecture-note.on-light summary, .lecture-note.on-light summary::after { color:var(--accent); }
+  .lecture-note.on-light li { color:var(--text-on-light); }
+
+  /* image */
+  .hero-img { width:100%; max-width:900px; margin:36px auto 0; display:block; border-radius:16px; border:1px solid var(--subtle-light); box-shadow:0 8px 32px rgba(78,52,46,0.12); }
+
+  /* identity cards (self intro) */
+  .id-cards { display:grid; grid-template-columns:repeat(3,1fr); gap:24px; margin-top:40px; }
+  .id-card { background:rgba(255,248,240,0.55); border:1px solid var(--subtle-light); border-radius:16px; padding:28px 24px; text-align:left; }
+  .id-card .tag { font-family:var(--font-mono); font-size:12px; letter-spacing:0.18em; color:var(--accent); margin-bottom:10px; }
+  .id-card .name { font-size:19px; font-weight:700; margin:0 0 8px; }
+  .id-card .desc { font-size:17px; color:var(--text-soft-light); line-height:1.6; }
+
+  /* footer */
+  .footer-grid { display:grid; grid-template-columns:2fr 1fr 1fr; gap:56px; text-align:left; margin-top:56px; max-width:1080px; width:100%; }
+  .footer-grid h3 { font-size:13px; letter-spacing:0.2em; text-transform:uppercase; color:var(--accent-on-dark); margin:0 0 16px; font-family:var(--font-mono); }
+  .footer-grid ul { list-style:none; padding:0; margin:0; }
+  .footer-grid li { padding:6px 0; font-size:18px; color:var(--text-soft-dark); }
+  .footer-bottom { margin-top:64px; padding-top:24px; border-top:1px solid var(--subtle-dark); width:100%; max-width:1080px; font-family:var(--font-mono); font-size:13px; letter-spacing:0.15em; color:rgba(245,237,224,0.6); text-align:center; }
+
+  /* reveal */
+  .reveal { opacity:1; transform:translateY(0) scale(1); }
+  .js-on .reveal:not(.in) { opacity:0; transform:translateY(36px) scale(0.96); }
+  .reveal { transition:opacity .8s cubic-bezier(.22,1,.36,1),transform .8s cubic-bezier(.22,1,.36,1); }
+  .reveal.d1 { transition-delay:.08s; } .reveal.d2 { transition-delay:.16s; } .reveal.d3 { transition-delay:.24s; } .reveal.d4 { transition-delay:.32s; }
+
+  /* dark note small */
+  .dark-note { font-size:14px; color:rgba(245,237,224,0.45); font-family:var(--font-mono); margin-top:20px; letter-spacing:0.08em; }
+
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior:auto; } .reveal { opacity:1 !important; transform:none !important; } }
+  @media (max-width: 720px) {
+    section { padding:80px 24px; border-radius:24px 24px 0 0; }
+    .grid-3,.grid-2,.timeline,.id-cards { grid-template-columns:1fr; gap:20px; }
+    .timeline::before { display:none; }
+    .footer-grid { grid-template-columns:1fr; gap:32px; }
+    .dot-indicator { display:none; }
+    .two-col-list { grid-template-columns:1fr; }
+    .cmp-table { font-size:16px; }
+    .cmp-table th, .cmp-table td { padding:10px 12px; }
+    .code-block code { font-size:14px; }
+  }
+</style>
+</head>
+<body>
+  <div class="progress" id="progress"></div>
+
+  <a href="https://ai-km-jiang.vercel.app" target="_blank" rel="noopener" style="position:fixed; top:18px; left:20px; z-index:300; font-family:var(--font-mono); font-size:14px; letter-spacing:0.04em; color:var(--accent); text-decoration:none; background:rgba(245,237,224,0.9); padding:8px 14px; border-radius:999px; box-shadow:0 4px 14px rgba(40,24,16,0.14);">← 江江教練官網</a>
+
+  <nav class="dot-indicator" aria-label="章節導覽">
+    <a href="#act-01"><span class="lbl">01 · 封面</span></a>
+    <a href="#act-02"><span class="lbl">02 · 自我介紹</span></a>
+    <a href="#act-03"><span class="lbl">03 · 今晚主題</span></a>
+    <a href="#act-04"><span class="lbl">04 · 四個層次</span></a>
+    <a href="#act-05"><span class="lbl">05 · 2022 吵架</span></a>
+    <a href="#act-06"><span class="lbl">06 · 玩具工具員工</span></a>
+    <a href="#act-07"><span class="lbl">07 · 鋼鐵典範</span></a>
+    <a href="#act-08"><span class="lbl">08 · 2025 員工</span></a>
+    <a href="#act-09"><span class="lbl">09 · 核心心法</span></a>
+    <a href="#act-soul"><span class="lbl">10 · 靈魂拷問</span></a>
+    <a href="#act-100x"><span class="lbl">11 · 放大 100 倍</span></a>
+    <a href="#act-10"><span class="lbl">12 · 訓練第一個</span></a>
+    <a href="#act-11"><span class="lbl">13 · Codex 活案例</span></a>
+    <a href="#act-12"><span class="lbl">14 · 意圖知人善用</span></a>
+    <a href="#act-13"><span class="lbl">15 · AI 小編生產線</span></a>
+    <a href="#act-faq"><span class="lbl">16 · 學員提問</span></a>
+    <a href="#act-survey"><span class="lbl">17 · 填問卷</span></a>
+    <a href="#act-14"><span class="lbl">18 · 報名收尾</span></a>
+  </nav>
+
+  <!-- ACT 01 封面 -->
+  <section id="act-01" data-block data-bg="1">
+    <div class="wrap">
+      <div class="act-cap reveal">ACT 01 · 免費線上講座</div>
+      <h1 class="display reveal d1">怎麼訓練<br/>自己的 AI 員工</h1>
+      <p class="lead reveal d2">6/7 晚上八點 ｜ 線上 ｜ 江江教練．隱性知識提煉師</p>
+      <p class="body reveal d3" style="margin-top:36px; max-width:680px; margin-left:auto; margin-right:auto;">
+        從一個 AI 工具，到一隊會幫你做事的 AI 員工。
+      </p>
+      <p class="mono-note reveal d4">往下滑，先看我現在做到哪</p>
+    </div>
+  </section>
+
+  <!-- ACT 02 自我介紹 -->
+  <section id="act-02" data-block data-bg="2">
+    <div class="wrap">
+      <div class="act-cap reveal">ACT 02 · 先自我介紹</div>
+      <img class="reveal d1" src="jiang-portrait.jpg" alt="江江教練 形象照，隱性知識提煉師 / AI 應用規劃師" style="width:100%;max-width:880px;border-radius:20px;box-shadow:0 16px 40px rgba(40,24,16,0.22);margin:4px auto 28px;display:block;" />
+      <!-- 本地版用根目錄形象照 jiang-portrait.jpg；上 V 網時改成官網形象照 URL（江江說 V 網已有照片） -->
+      <p class="lead reveal d2">
+        我專門幫用腦袋跟嘴巴吃飯的人，把腦中的經驗變成 AI 能用的知識資產。
+      </p>
+      <div class="id-cards">
+        <div class="id-card reveal d1">
+          <div class="tag">身分 01 · iPAS 認證</div>
+          <div class="name">AI 應用規劃師</div>
+          <div class="desc">歡迎各單位約上課，或企業組織的培訓工作坊。</div>
+        </div>
+        <div class="id-card reveal d2">
+          <div class="tag">身分 02</div>
+          <div class="name">AI 知識架構師</div>
+          <div class="desc">教專業知識工作者，用文字＋資料夾分類，就能打造讓 AI 運作的框架。</div>
+        </div>
+        <div class="id-card reveal d3">
+          <div class="tag">身分 03</div>
+          <div class="name">隱性知識提煉師</div>
+          <div class="desc">把你腦中的知識、價值、判斷、思維整理出來，累積自己的知識資產。流水的 AI 工具，鐵打的知識庫。</div>
+        </div>
+      </div>
+    <details class="lecture-note reveal d4" open>
+        <summary>現場補充：三個身分怎麼層層聚焦</summary>
+        <p class="body">AI 應用規劃師是我的證照，但這個範圍太大，到底用在哪？我其實是用在知識架構：帶專業知識工作者，用文字加資料夾，就能打造讓 AI 運作的框架。再往下一層，我最擅長的是隱性知識提煉，把你腦中的知識、價值判斷、思維整理出來，讓 AI 更清楚地知道你。</p>
+        <p class="body">還有一件事：這份簡報同時是給人看的簡報，也是給 AI 用的技能包。如果你聽完覺得有道理但還是不會用，把這份簡報丟給你家的 AI，跟它說「參考江江教練的東西，請你自己變成一個好員工」。</p>
+      </details>
+    </div>
+  </section>
+
+  <!-- ACT 03 今晚主題 -->
+  <section id="act-03" data-block data-bg="3">
+    <div class="wrap">
+      <div class="act-cap reveal">ACT 03 · 今晚的主題</div>
+      <h2 class="display sm reveal d1">現在 Agent 很厲害<br/>你教它一次，它就會記住</h2>
+      <p class="lead reveal d2">所以重點是學會怎麼教它、當它的主管。今晚你會帶走四件事。</p>
+      <div class="grid-2">
+        <div class="card reveal d1">
+          <div class="num">帶走 01</div>
+          <h3 class="h2">AI 員工是什麼</h3>
+          <p class="body">會聊天的 ChatGPT，跟會幹活的 Codex，差在哪。</p>
+        </div>
+        <div class="card reveal d2">
+          <div class="num">帶走 02</div>
+          <h3 class="h2">技能包</h3>
+          <p class="body">做一次給它看，叫它寫成一份手冊，下次它照著做。</p>
+        </div>
+        <div class="card reveal d3">
+          <div class="num">帶走 03</div>
+          <h3 class="h2">一條生產線</h3>
+          <p class="body">只要會訓練第一個，就能叫 Codex 幫你訓練第二個。</p>
+        </div>
+        <div class="card reveal d4">
+          <div class="num">帶走 04 · 最核心</div>
+          <h3 class="h2">能力與邊界</h3>
+          <p class="body">搞懂什麼能交、什麼不能交。疑人不用、用人不疑。</p>
+        </div>
+      </div>
+      <p class="mono-note reveal d4">真正要學的，是學怎麼用人、用 AI，不是學怎麼用工具</p>
+      <div class="reveal d4" style="margin-top:56px; width:100%; max-width:1080px; margin-left:auto; margin-right:auto;">
+        <div class="act-cap" style="justify-content:center; margin-bottom:0;">現場示範 · 亞洲家長式 AI 使用法</div>
+        <div class="grid-3" style="margin-top:24px;">
+          <img src="asian-parent-1.jpg" alt="亞洲家長式 AI 使用法 圖卡 1" style="width:100%;border-radius:14px;box-shadow:0 8px 24px rgba(40,24,16,0.12);display:block;" />
+          <img src="asian-parent-2.jpg" alt="亞洲家長式 AI 使用法 圖卡 2" style="width:100%;border-radius:14px;box-shadow:0 8px 24px rgba(40,24,16,0.12);display:block;" />
+          <img src="asian-parent-3.jpg" alt="亞洲家長式 AI 使用法 圖卡 3" style="width:100%;border-radius:14px;box-shadow:0 8px 24px rgba(40,24,16,0.12);display:block;" />
+        </div>
+        <p class="body" style="margin-top:18px; text-align:center; color:var(--text-soft-light);">這是我前幾天發的脆文。看到別人的 AI 又會新東西，不用焦慮，回去叫你的 AI 學起來就好。需要焦慮的是 AI，不是你。</p>
+      </div>
+    <details class="lecture-note reveal d4" open>
+        <summary>現場補充：技能包跟提示詞差在哪</summary>
+        <p class="body">2025 是 Agent 的時代，但那時大概只有工程師會用。2026 是 Agent 落地的時代，絕大部分人都能用了。ChatGPT 是在網頁上陪你聊天的 AI，Codex 是下載到你電腦裡幫你做事的 AI。</p>
+        <p class="body">那技能包跟提示詞差在哪？提示詞就是提示，AI 可能愛聽不聽。技能包有 skill 協議，只要這個 Agent 支援，它會盡量老實地照著做。技能包更有強制性、內容更豐富、流程細節更多，多到可以幾千字甚至幾萬字。</p>
+      </details>
+    </div>
+  </section>
+
+  <!-- ACT 04 四個層次 -->
+  <section id="act-04" data-block data-bg="4">
+    <div class="wrap">
+      <div class="act-cap reveal">ACT 04 · 我目前做到哪</div>
+      <h2 class="display sm reveal d1">訓練 AI 員工的<br/>四個層次</h2>
+      <img
+        src="ai-4-levels.jpg"
+        alt="訓練 AI 員工的四個層次橫式圖"
+        class="hero-img reveal d2"
+      />
+      <p class="body reveal d3" style="margin-top:32px; max-width:760px; margin-left:auto; margin-right:auto;">
+        前面三層我都做到了，第四層是我現在挑戰的。目標七月底前至少十個案例。接下來娓娓道來，這條路怎麼一層一層長上去的。
+      </p>
+    <details class="lecture-note on-light reveal d4" open>
+        <summary>現場補充：四個層次的時間線，與「知識會累積」的頓悟</summary>
+        <ul>
+          <li>2024 我就很會訓練自己的 AI 助理。</li>
+          <li>2025 我開始帶工作夥伴訓練他們自己的 AI 員工。</li>
+          <li>2025 底 Claude 的 skill 出現，我花了一兩個月突然發現：知識是會累積的。訓練好一個助理，可以再叫這個助理去訓練新的助理。</li>
+          <li>第四層是我現在挑戰的，卡在技術，兩台筆電還沒辦法直接連通，預計七、八月，最慢九月完成。到時候上工作坊大家電腦帶來，我的 AI 教大家的 AI 做事，我跟大家聊概念，就像老闆聚會聊合作，事情員工去幹。</li>
+        </ul>
+      </details>
+    </div>
+  </section>
+
+  <!-- ACT 05 2022 吵架 -->
+  <section id="act-05" data-block data-bg="5">
+    <div class="wrap">
+      <div class="act-cap reveal">ACT 05 · 2022 我跟 AI 吵了一架</div>
+      <h2 class="display sm reveal d1">「我沒辦法，我只是個 AI」</h2>
+      <p class="lead reveal d2">
+        2022 年底 ChatGPT 剛出，我為一個很在乎的議題跟它吵了三個小時。最後問它以後別人問你同樣的問題，你不會再答錯了吧。它說我沒辦法，我只是個 AI。我才懂，這三個小時全白吵了。
+      </p>
+      <div class="grid-3">
+        <div class="card reveal d1">
+          <div class="num">本質</div>
+          <h3 class="h2">它是詞語關聯概率計算機</h3>
+          <p class="body">它非常會猜下一個字最可能是什麼，但它也只會這件事。它不會思考、不會推理、不會記憶。</p>
+        </div>
+        <div class="card reveal d2">
+          <div class="num">領悟</div>
+          <h3 class="h2">所以我決定要教它</h3>
+          <p class="body">我這人好為人師，原來也好為 AI 師。你要練的，是學會怎麼教 AI、當它的主管。</p>
+        </div>
+        <div class="card reveal d3">
+          <div class="num">放心</div>
+          <h3 class="h2">它說不會，可能只是太新</h3>
+          <p class="body">功能太新樣本太少，它找不到是正常的。你看新聞掌握最新，直接餵它，它就接上了。你比 AI 更早看到新東西，這就是你的價值。</p>
+        </div>
+      </div>
+    <details class="lecture-note reveal d4" open>
+        <summary>現場補充：通用 vs 不通用，為什麼今天教的不會白學</summary>
+        <p class="body">AI 是一個產品，產品要越多人用越好，所以訓練資料越通用越好，這就是通用大語言模型。通用的知識它答得很好，但你獨特的、在地小眾的知識跟經驗，它不會知道，因為 AI 還不會通靈。</p>
+        <p class="body">所以今天教的這套，不會因為 AI 進步、改版就沒用。除非 AI 學會通靈、學會讀心，否則它只會隨著 AI 工具成長而更好用、更有價值。回到那句話：流水的 AI 工具，鐵打的知識庫。</p>
+      </details>
+    </div>
+  </section>
+
+  <!-- ACT 06 2023 到 2024 -->
+  <section id="act-06" data-block data-bg="6">
+    <div class="wrap">
+      <div class="act-cap reveal">ACT 06 · 2022 到 2026</div>
+      <h2 class="display sm reveal d1">AI 一路從玩具、到工具、到員工</h2>
+      <div class="timeline">
+        <div class="step reveal d1">
+          <div class="dot">01</div>
+          <h3 class="h2">2023 當輔助</h3>
+          <p class="body">拿它整理會議記錄、改腳本，強化我原本就擅長的。</p>
+        </div>
+        <div class="step reveal d2">
+          <div class="dot">02</div>
+          <h3 class="h2">2024 開課</h3>
+          <p class="body">開「打造你的 AI 助理」，教大家用 ChatGPT 做 GPTs。</p>
+        </div>
+        <div class="step reveal d3">
+          <div class="dot">03</div>
+          <h3 class="h2">攝影課助教</h3>
+          <p class="body">叫 AI 看構圖太難，改用 AI 生短影音腳本，推不出的課推出去了。</p>
+        </div>
+        <div class="step reveal d4">
+          <div class="dot">04</div>
+          <h3 class="h2">兩種用法</h3>
+          <p class="body">AI 能強化你擅長的，也能把你帶到完全不一樣的地方。</p>
+        </div>
+      </div>
+    <details class="lecture-note reveal d4" open>
+        <summary>現場補充：攝影課 AI 助教，做了二三十款只成功一款</summary>
+        <p class="body">我在影像領域做了二十年，攝影師兼導演兼攝影老師。2024 我想做 AI 助教幫我教構圖，ChatGPT 4.0 剛能看圖，結果發現很難：它辨識圖片的原理跟我想的差很多，而且辨識圖片很貴。我做了二、三十款 AI 助教，只有一款成功，就是教大家寫腳本的。</p>
+        <p class="body">那時大家想拍短影音，但沒先寫好文案就拍，拍不出也剪不出。我直接教寫文案，大家會困惑為什麼教作文，所以我改成：給幾個關鍵字，AI 生一個分鏡腳本，帶大家拍一次，大家就頓悟原來這是一整套。這是我第一次發現，真正落地幫到大家的 AI 助教，跟我原本想的完全不一樣。</p>
+      </details>
+    </div>
+  </section>
+
+  <!-- ACT 07 鋼鐵典範 -->
+  <section id="act-07" data-block data-bg="7">
+    <div class="wrap">
+      <div class="act-cap reveal">ACT 07 · 一個重要的觀念</div>
+      <p class="reveal" style="margin:-6px 0 18px; font-size:15px; color:var(--text-soft-light);">靈感來自 Notion CEO Ivan Zhao 的〈蒸汽、鋼鐵與無限智能〉　<a href="https://x.com/ivanhzhao/status/2003192654545539400" target="_blank" rel="noopener" style="color:var(--accent); text-decoration:underline;">原文 ↗</a></p>
+      <h2 class="display sm reveal d1">木屋釘再牢<br/>還是木屋</h2>
+      <p class="lead reveal d2" style="max-width:880px;">
+        鋼釘可以把木屋釘得更牢，讓它更穩。但你再怎麼補，它還是在「木屋」的邏輯裡。摩天大樓不是靠把木屋釘得更牢出現的，它是因為有人改用鋼骨，重新設計了建築怎麼承重。AI 也一樣，很多人現在只是拿 AI 當鋼釘，補強原本的工作流（木屋）。要發揮最大潛力，是把工作本身重新設計。
+      </p>
+      <div class="grid-2">
+        <div class="card reveal d1"><div class="num">換水車</div><h3 class="h2">不要只換掉水車</h3><p class="body">早期工廠把水車換成蒸汽機、其他不動，生產力只小升。真正爆發，是脫離河流、圍繞蒸汽機重新蓋一座工廠。我們現在用 AI，大多還停在換水車這一步。</p></div>
+        <div class="card reveal d2"><div class="num">無限心智</div><h3 class="h2">700 個代理在跑</h3><p class="body">Notion 一千名員工之外，已經有七百多個 AI 代理在做會議記錄、客戶回饋、週報這些重複工作。那才是重新蓋的工廠。</p></div>
+      </div>
+      <p class="h1 reveal d4" style="margin-top:48px; text-align:center; font-size:clamp(28px,3.6vw,44px); max-width:900px; margin-left:auto; margin-right:auto;">真正的機會，是用 AI 去做過去根本做不到的事。</p>
+    <details class="lecture-note reveal d4" open>
+        <summary>現場補充：會寫程式不等於會用 AI，加上 Vibe Coding 的第一性原理</summary>
+        <p class="body">過去的軟體是預錄好的程式，1 加 1 永遠等於 2，按一萬次都一樣。AI 是隨機生成的大語言模型，本質不同。所以會不會寫程式，跟會不會用 AI 沒有正相關。這個時代是所有人重新學用 AI，機會平等。就像行動網路、自媒體剛出來時，傳統藝人不一定比素人更會拍短影音，因為那是不同的思維。所以別覺得「我又不是工程師，學 AI 會很吃力」。</p>
+        <p class="body">再舉一個例子。2025 很多人用 AI 寫程式，所謂 Vibe Coding。但如果你的目的是解決問題，想想看：我想剪影片，是要先用 AI 寫出一個剪輯軟體、再用那個軟體去剪嗎？還是直接叫 AI 幫我剪就好？只要 AI 能直接剪，我就叫它直接剪。不要發明了鋼鐵，卻只想到用鋼釘去補木屋。</p>
+      </details>
+    </div>
+  </section>
+
+  <!-- ACT 08 2025 從工具到員工 -->
+  <section id="act-08" data-block data-bg="8">
+    <div class="wrap">
+      <div class="act-cap reveal">ACT 08 · 2025 從工具到員工</div>
+      <h2 class="display sm reveal d1">我開始把 AI 當員工，不是當工具</h2>
+      <div class="grid-3">
+        <div class="card reveal d1">
+          <div class="num">婚禮大神</div>
+          <h3 class="h2">只記 AI 記不住的</h3>
+          <p class="body">那個婚禮攝影大神請第二個人拍主畫面，自己專拍不經意的瞬間。我把這招用在會議記錄。</p>
+        </div>
+        <div class="card reveal d2">
+          <div class="num">吃螺絲</div>
+          <h3 class="h2">什麼才是重點？</h3>
+          <p class="body">如果我要評估這個主題講得順不順、有沒有越講越順，那我吃螺絲的那些地方，才是重點。</p>
+        </div>
+        <div class="card reveal d3">
+          <div class="num">真員工</div>
+          <h3 class="h2">到自動化才算完整</h3>
+          <p class="body">在會議記錄上，我已經開始把 AI 當員工，但那還只是初步。要它真的像員工一樣自己幹活，是 Agent 自動化之後的事。今天就帶你做出第一個。</p>
+        </div>
+      </div>
+    <details class="lecture-note reveal d4" open>
+        <summary>現場補充：我的系統就是我的文件，不是某一個 AI 工具</summary>
+        <p class="body">很多人以為我的系統是 Codex、是 Claude、是龍蝦、是 Obsidian。不是。我的系統就是我設計出來的文件系統，我的架構、我的知識、我的文件。我的知識庫才是我的系統。裡面寫了我要做什麼、怎麼做、規則是什麼，AI 去讀取就知道怎麼做了。我看需要什麼工作、哪個 AI 好用，就讓哪個 AI 來幫我做。這就是為什麼工具會換，知識庫會留下來。</p>
+        <p class="body">我現在日常用三套 AI 分工：Codex 記它自己覺得重要的，愛馬仕在背景每半小時客觀記錄我所有的操作步驟，最後讓 Claude 去分析「AI 抓的重點、我認為的重點、客觀的事實」三者怎麼修正跟平衡。我把它們當三個人：一個認真記錄的小秘書，一個自由發揮，一個統整分析。因為你怎麼知道 AI 記的重點真的是重點？所以我才要這樣交叉。</p>
+      </details>
+    </div>
+  </section>
+
+  <!-- ACT 09 慣老闆駕馭心法 -->
+  <section id="act-09" data-block data-bg="9">
+    <div class="wrap">
+      <div class="act-cap reveal">ACT 09 · 核心心法</div>
+      <h2 class="display sm reveal d1">對人不敢開口的，<br/>乘十倍提給 AI</h2>
+      <p class="lead reveal d2">
+        對真人員工不敢開口的要求，對 AI 直接乘十倍開下去。AI 不會離職、不會抱怨、不會找勞工局。
+      </p>
+
+      <table class="cmp-table reveal d3">
+        <thead>
+          <tr>
+            <th>對員工你會說</th>
+            <th>對 AI 你應該說</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>想三個方向就好</td>
+            <td>想 30 個，再給我 5 個會失敗的</td>
+          </tr>
+          <tr>
+            <td>找一些參考</td>
+            <td>用當地語言找當地資料，日文找日文、英文找英文，各找 50 篇</td>
+          </tr>
+          <tr>
+            <td>下週給我</td>
+            <td>現在給我，做不到告訴我為什麼</td>
+          </tr>
+          <tr>
+            <td>你判斷一下</td>
+            <td>給我五個版本，每個都附上推薦理由跟風險</td>
+          </tr>
+          <tr>
+            <td>不錯，再修一下</td>
+            <td>我這份 60 分，照我的目標給我一個 100 分的，並告訴我差在哪、你該怎麼學</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p class="body reveal d3" style="max-width:760px; margin:32px auto 0; color:var(--text-soft-dark);">
+        駕馭式提問十問：
+      </p>
+      <ul class="two-col-list reveal d4">
+        <li>真的嗎？</li>
+        <li>資料來源是什麼？</li>
+        <li>解釋這三個重點給我聽</li>
+        <li>如果失敗，五個原因是什麼？</li>
+        <li>競爭對手會怎麼想？</li>
+        <li>上週、上個月的看法，有什麼要改進？</li>
+        <li>你漏了什麼？</li>
+        <li>有沒有完全相反的角度？</li>
+        <li>你自己最不確定的地方在哪？</li>
+        <li>再給我五個你還沒想到的版本</li>
+      </ul>
+      <p class="mono-note reveal d4">對 AI 客客氣氣，你是在浪費錢</p>
+      <p class="dark-note reveal d4">5/8 江江提出 · Sting（陶韻智）同階層背書</p>
+      <details class="lecture-note reveal d4" open>
+        <summary>現場補充：把 AI 當員工，不是把 AI 當工具</summary>
+        <p class="body">很多人下提示詞時，心裡還是把 AI 當工具，所以會努力研究這個工具每個按鈕怎麼操作。我的用法反過來：工具是給員工用的，我要訓練的是 AI 這個員工，叫它自己去學工具、用工具、交結果。</p>
+        <p class="body">可以用攝影師理解：我請攝影師拍照，不需要自己研究相機怎麼操作；我要講清楚的是「我要拍什麼」「我要什麼感覺」「結果要長怎樣」。相機怎麼調，是攝影師要處理的事。</p>
+        <ul>
+          <li>對人你會說「給我兩三個方向」，對 AI 可以說「第一輪先給我十個，再給第二輪、第三輪，順便列出會失敗的版本」。</li>
+          <li>找資料不要只用中文搜全世界；要讓 AI 用日文找日本資料、英文找英文資料、韓文找韓文資料，直接站到各地語境裡找。</li>
+          <li>如果你有一份 100 分版本，不要只叫 AI 照抄；要問它「為什麼你的只有 60 分？差在哪？你要怎麼學？下次怎麼確保做到 100 分？」</li>
+        </ul>
+      </details>
+      <p class="reveal d4" style="margin-top:14px; font-size:16px;"><span style="font-family:var(--font-mono); font-size:13px; letter-spacing:0.1em; color:var(--accent-on-dark);">延伸閱讀</span>　<a href="https://vocus.cc/article/6a22cd97fd89780001a3bba7" target="_blank" rel="noopener" style="color:var(--accent-on-dark); text-decoration:underline;">駕馭 AI：把它變成你的大腦增幅器 ↗</a></p>
+    <details class="lecture-note reveal d4" open>
+        <summary>現場補充：老闆版與員工版，還有找資料別只待在同溫層</summary>
+        <p class="body">這個心法有兩個版本。如果你是老闆，平常想要求員工但不好意思直接說的，對 AI 直接加強十倍說下去。如果你平常是員工，覺得受了委屈無處安放，就把老闆主管給你的壓力乘十倍，丟給你的 AI 助理。AI 員工不會累、24 小時耐操，訂閱費都付了，對它客氣是在浪費錢。</p>
+        <p class="body">找資料也是。我英文很差只會中文，以前用中文搜國外，其實還是繞回同一個同溫層。真正該做的是用日文找日文、用英文找英文、用韓文找韓文，直接站到各國的語境裡找。這個 AI 做得到，所以要去想各種更極端的用法。</p>
+      </details>
+    </div>
+  </section>
+
+  <!-- ACT soul 對自己的靈魂拷問 -->
+  <section id="act-soul" data-block data-bg="10">
+    <div class="wrap">
+      <div class="act-cap reveal">ACT 10 · 對自己的靈魂拷問</div>
+      <h2 class="display sm reveal d1">讓 AI 反過來拷問你</h2>
+      <p class="lead reveal d2">決策層怎麼磨？讓 AI 拷問你的「靈魂拷問十問」（費曼學習法）：</p>
+      <ul class="two-col-list reveal d3">
+        <li>用一句話講，這到底在解決什麼問題？</li>
+        <li>講給完全外行的人聽，你會怎麼說？</li>
+        <li>你最站不住腳的假設是哪一個？</li>
+        <li>只能留一個重點，是哪個？為什麼？</li>
+        <li>你怎麼知道這是真的，不是你以為的？</li>
+        <li>反對你的人會怎麼說？</li>
+        <li>這跟你上次的想法差在哪？為什麼改了？</li>
+        <li>哪個地方你其實還沒想清楚？</li>
+        <li>拿掉行話，你還講得清楚嗎？</li>
+        <li>如果這是錯的，你會從哪裡先發現？</li>
+      </ul>
+      <details class="lecture-note reveal d4" open>
+        <summary>現場補充：什麼時候你教 AI，什麼時候 AI 教你</summary>
+        <p class="body">AI 可以先想成全人類資料訓練出來的平均值。當你知道自己某個能力高於平均值，就要訓練 AI、把它當員工；當你知道自己在某個領域低於平均值，就讓 AI 當顧問、當教練，反過來訓練你。</p>
+        <p class="body">最難的不是問問題，而是判斷自己到底在人類水準之上，還是在人類水準之下。判斷對了，AI 才會站在正確的位置：不是每件事都叫它照做，也不是每件事都聽它的。</p>
+        <ul>
+          <li>你強的地方：把你的判斷、標準、流程寫給 AI，讓它學你。</li>
+          <li>你弱的地方：讓 AI 拷問你的假設、盲點、反方觀點，幫你補決策力。</li>
+          <li>真人員工通常不敢一直挑戰老闆，顧問也不可能無時無刻在場；AI 很適合承擔這種隨時可用的顧問角色。</li>
+        </ul>
+      </details>
+    </div>
+  </section>
+
+  <!-- ACT 100x 為什麼能放大 100 倍 -->
+  <section id="act-100x" data-block data-bg="11">
+    <div class="wrap">
+      <div class="act-cap reveal">ACT 11 · 為什麼能放大 100 倍</div>
+      <h2 class="display sm reveal d1">思維 ×10，手腳 ×10，合起來 ×100</h2>
+      <p class="lead reveal d2">AI 放大你兩層能力。<strong>決策層 ×10</strong>：AI 當你的顧問跟教練，磨利你的判斷。<strong>手腳層 ×10</strong>：讓 AI 清楚你的意圖，替你執行。兩層相乘，把自己放大 100 倍，是合理的。</p>
+      <p class="body reveal d3" style="max-width:880px; margin:20px auto 0; text-align:center;">這張卡現場講完後，發現接在「靈魂拷問」下面最順。因為前一頁講的是 AI 如何反過來磨你的決策，這一頁就直接承接：那是大腦的放大；接下來再談流程、技能包與自動化，就是手腳的放大。</p>
+      <details class="lecture-note reveal d4" open>
+        <summary>現場補充：大腦乘十倍，手腳乘十倍</summary>
+        <p class="body">大腦的十倍，是讓 AI 幫你想目標、策略、風險、反方與盲點，讓你的思維能力與決策能力變強。手腳的十倍，是把操作步驟、SOP、資料整理、回填、轉檔、查資料這些事，交給 AI 自己學、自己跑、自己檢查。</p>
+        <p class="body">×100 聽起來誇張，但每個時代的新工具本來就會帶來不可思議的增幅。沒有麥克風時，一張嘴只能讓十幾個人聽見；有麥克風後，幾百人、幾千人都能聽見；再加上手機與 YouTube，內容可以被更多人反覆看到。AI 的增幅也是同一種邏輯。</p>
+        <ul>
+          <li>大腦 ×10：用 AI 當顧問，讓它拷問你的策略、假設、盲點與決策。</li>
+          <li>手腳 ×10：用 AI 當員工，讓它學會流程、工具、資料夾與技能包，替你反覆執行。</li>
+          <li>兩者相乘：不是只省一點時間，而是讓一個人的判斷與執行都被同步放大。</li>
+        </ul>
+      </details>
+    </div>
+  </section>
+
+  <!-- ACT 10 訓練第一個 -->
+  <section id="act-10" data-block data-bg="12">
+    <div class="wrap">
+      <div class="act-cap reveal">ACT 12 · 訓練你的第一個員工</div>
+      <h2 class="display sm reveal d1">帶它，像帶一個新人</h2>
+      <p class="lead reveal d2">先挑一件你每天都做、做到很煩、規則最清楚的事。別貪心，一次一件。</p>
+      <div class="timeline">
+        <div class="step reveal d1">
+          <div class="dot">01</div>
+          <h3 class="h2">做給它看</h3>
+          <p class="body">做一次，邊做邊講你為什麼這樣做。</p>
+        </div>
+        <div class="step reveal d2">
+          <div class="dot">02</div>
+          <h3 class="h2">寫成手冊</h3>
+          <p class="body">叫它把過程寫成工作手冊，這就是技能包。</p>
+        </div>
+        <div class="step reveal d3">
+          <div class="dot">03</div>
+          <h3 class="h2">它做你檢查</h3>
+          <p class="body">下次把手冊丟給它，它做、你檢查，不對就改手冊。</p>
+        </div>
+        <div class="step reveal d4">
+          <div class="dot">04</div>
+          <h3 class="h2">技能包回血</h3>
+          <p class="body">每次它做錯，把規則補回手冊，它越來越懂你。</p>
+        </div>
+      </div>
+      <p class="mono-note reveal d4">關鍵是把任務難度分清楚。這件事難度 60 分，AI 現在 50 分先別交，到 60 分我看一下，到 80 分我放手，再叫另一家 AI 檢查就好。疑人不用、用人不疑。</p>
+      <p class="body reveal d4" style="max-width:840px; margin:16px auto 0;">最省力的訓練法：帶真人新人的時候，順便把 AI 一起教。人走了 AI 也學會了，下一個新人進來，直接叫 AI 學長去帶他。</p>
+      <p class="reveal d4" style="margin-top:12px; font-size:16px;"><span style="font-family:var(--font-mono); font-size:13px; letter-spacing:0.1em; color:var(--accent-on-dark);">延伸閱讀</span>　<a href="https://vocus.cc/article/68ff58ebfd8978000134f4fe" target="_blank" rel="noopener" style="color:var(--accent-on-dark); text-decoration:underline;">為什麼 AI 總是不懂你？用錄音把工作經驗轉化為 AI 能執行的 SOP ↗</a></p>
+    <details class="lecture-note reveal d4" open>
+        <summary>現場補充：AI 是名校學霸沒經驗，還有老闆心態 vs 員工心態</summary>
+        <p class="body">把現在的 AI 想成一個名校剛畢業的學霸：非常聰明、考試一百分，但完全沒有業界實戰經驗，而且第一天到你公司，不知道你有什麼產品、服務、規則。所以你要做的，是把做事的細節告訴他，透過帶人、開會、跟夥伴溝通的過程錄音存下來，叫 AI 去學、去整理。</p>
+        <p class="body">錄音之後怎麼變知識庫？這裡分老闆心態跟員工心態。自己埋頭去弄逐字稿、研究工具，那是員工心態。老闆心態是把這件事丟給 AI：「我聽一個老師說，建知識庫最好的方法就是帶新人時錄音。我用手機錄好了，傳給你，你要怎麼整理成知識庫、操作手冊、技能包？你幫我想辦法。」實際怎麼操作、用什麼工具，那是 AI 該煩惱的事。</p>
+      </details>
+    </div>
+  </section>
+
+  <!-- ACT 11 Codex 活案例 -->
+  <section id="act-11" data-block data-bg="13">
+    <div class="wrap">
+      <div class="act-cap reveal">ACT 13 · 活案例</div>
+      <h2 class="display sm reveal d1">重點不是那行指令<br/>是我怎麼訓練它</h2>
+      <p class="lead reveal d2">指令誰都會貼。值錢的，是我怎麼一步步交代、把它訓練成會做這件事。</p>
+      <div class="timeline" style="margin-top:40px;">
+        <div class="step reveal d1"><div class="dot">01</div><h3 class="h2">先問它能不能做</h3><p class="body">我沒直接叫它做，先問「你自己可以切換模型嗎」，先盤點它的能力。</p></div>
+        <div class="step reveal d2"><div class="dot">02</div><h3 class="h2">確認後才定分工</h3><p class="body">爬資料用便宜的 mini，只找來源摘錄；統整判斷才用 5.5。</p></div>
+        <div class="step reveal d3"><div class="dot">03</div><h3 class="h2">變成一個觸發詞</h3><p class="body">跟它說「以後說『開代理查資料』就是這招」，一句話呼叫整套。</p></div>
+        <div class="step reveal d4"><div class="dot">04</div><h3 class="h2">叫它寫進風組長</h3><p class="body">把規則寫進技能包，靠文件記住，不靠這次對話。</p></div>
+      </div>
+      <p class="mono-note reveal d4">訓練完之後，我一句「開代理查資料」，它現在就會自己跑這套：</p>
+      <div class="code-block reveal d4">
+        <pre><code>codex exec -m gpt-5.4-mini "從官方角度找資料，只列來源與摘錄"
+codex exec -m gpt-5.4-mini "從正面評價角度找資料，只列來源與摘錄"
+codex exec -m gpt-5.4-mini "從負面評價角度找資料，只列來源與摘錄"
+codex exec -m gpt-5.5 "整合三份材料，區分官方事實、網友評價、待驗證點"</code></pre>
+      </div>
+      <details class="lecture-note reveal d4" open>
+        <summary>現場補充：從一個工具，直接延展成一套工作流</summary>
+        <p class="body">今天現場示範 VibeVoice-ASR 時，不是只問「這個模型能不能轉逐字稿」。真正的訓練方式是：先請 AI 研究工具，確認它是否能解決痛點；確定可行後，立刻把它延展成完整流程。</p>
+        <ul>
+          <li>第一步：先驗證工具能不能跑，能不能處理長音檔、多角色、時間戳與語言需求。</li>
+          <li>第二步：把工具接進既有流程，包含抽音訊、轉原始逐字稿、分等級清稿、保存來源。</li>
+          <li>第三步：把下游用途也先想好。同樣一份逐字稿，可能是會議紀錄、教學影片、YouTube 演講、課程回顧，整理方式不能只有一種。</li>
+          <li>第四步：把「從工具到工作流」這個方法本身也做成技能包，讓工作夥伴或學員也能複製。</li>
+        </ul>
+      </details>
+    <details class="lecture-note reveal d4" open>
+        <summary>現場補充：現場活案例，VibeVoice 怎麼從一個工具長成一條工作流與技能包</summary>
+        <p class="body">這是我當天現場真的示範的那一個。我看到新聞，微軟開源了一個語音轉文字模型，一次能處理一小時連續音頻，還能結構化，包含誰說的、什麼時候說的、說了什麼，支援五十種語言。我平常最簡單的做法是丟 NotebookLM，快又準，但它有兩個缺點：無法辨時間、無法區分講者。教學影片、YouTube 演講可以，但會議記錄不行，因為誰講的、他是秒答還是遲疑三十秒才答應，差很多。</p>
+        <ul>
+          <li>先確認能力：我沒急著叫它做，先問「你能安裝嗎」。確認可行，我才往下。</li>
+          <li>人只決定價值：操作都能丟給 AI，人類只剩下決定「這個問題值不值得處理、這個工具值不值得學」。我判斷值得，就叫我家 AI 去學、去裝。</li>
+          <li>講需求：一般人 16G 的筆電要能跑，而且一定要能處理多角色。它說方向對、可以做。</li>
+          <li>延展成流程：把它接進我原本的會議記錄流程。分離講者、存原始逐字稿、清理逐字稿分等級（預設、很詳細、超詳細），再請 Claude 做分析，重點待辦脈絡加上風險隱憂。</li>
+          <li>適配多情境：同一份逐字稿，可能是會議記錄、教學影片、YouTube 演講，整理方式不能只有一種。</li>
+          <li>再做成可複製的能力：我把「從一個工具延展成一條工作流」這件事本身也做成技能包，讓夥伴、學員都能用。</li>
+        </ul>
+        <p class="body">結果我一次做出了兩個員工：一個是幫我整理逐字稿的員工，一個是幫我把「怎麼做出員工」這個流程做出來的員工。</p>
+      </details>
+    </div>
+  </section>
+
+  <!-- ACT 12 意圖優先 + 知人善用 -->
+  <section id="act-12" data-block data-bg="14">
+    <div class="wrap">
+      <div class="act-cap reveal">ACT 14 · 兩個心法</div>
+      <h2 class="display sm reveal d1">意圖優先，知人善用</h2>
+      <div class="grid-2">
+        <div class="card reveal d2">
+          <div class="num">心法一</div>
+          <h3 class="h2">意圖優先，步驟其次</h3>
+          <p class="body">
+            2024 你寫 100 分的步驟給 60 分的 AI，很棒。2026 AI 可能自己知道 300 分、500 分的做法，你用步驟框住它反而虧。
+          </p>
+          <p class="body" style="margin-top:12px;">
+            現在做法：給目標，給一個建議，說「你想想有沒有更好的，甚至上網查」。這叫意圖優先，你要會畫大餅，方向說清楚，讓 AI 自己想辦法。
+          </p>
+        </div>
+        <div class="card reveal d3">
+          <div class="num">心法二</div>
+          <h3 class="h2">知人善用，選對 AI 做對事</h3>
+          <p class="body">
+            不同家 AI 有不同個性，Claude、GPT、Gemini 各有調性，同一家不同模型也不一樣。
+          </p>
+          <p class="body" style="margin-top:12px;">
+            就像攝影：拍高質感的去拍形象片，拍有趣的去拍短影音，不錯置。老闆要知道誰能做什麼，不是自己去研究攝影機怎麼操作。
+          </p>
+        </div>
+      </div>
+      <p class="quote reveal d4" style="margin-top:48px; font-size:clamp(22px,2.6vw,34px);">你管結果不管工具。給意圖跟目標，工具讓 AI 自己選。</p>
+    <details class="lecture-note reveal d4" open>
+        <summary>現場補充：讓 AI 猜意圖的前提，是先讓它知道你是誰</summary>
+        <p class="body">讓 AI 猜我的意圖有個前提：我已經先餵它一些資料，它知道我是誰、我想做什麼，我存了工作日誌在裡面。下指令前我會問它「你執行之前，知道我為什麼這麼做嗎？說說看」。它做完如果只有六十分，我會說「我有一個一百分的版本，但你先告訴我，為什麼你六十、我一百，差在哪、為什麼差、你有辦法學嗎、怎麼學、怎麼確保下次也做到一百分」。我實際這樣做過，現在 ChatGPT 5.5 跟 Claude Opus 4.8 可以。</p>
+      </details>
+    </div>
+  </section>
+
+  <!-- ACT 13 AI 小編 + 流水線 -->
+  <section id="act-13" data-block data-bg="14">
+    <div class="wrap">
+      <div class="act-cap reveal">ACT 15 · 真實員工到生產線</div>
+      <h2 class="display sm reveal d1">從一個員工<br/>到一條生產線</h2>
+
+      <div class="grid-2" style="margin-top:40px; text-align:left;">
+        <div class="card reveal d2">
+          <div class="num">真實員工案例</div>
+          <h3 class="h2">AI 小編</h3>
+          <p class="body">
+            我出觀點、判斷發不發。春總編寫文案。AI 小編負責回收已發貼文、回填發文看板、補連結、整理日報週報。
+          </p>
+          <p class="body" style="margin-top:12px;">
+            用 Codex 排了每天晚上回收、每週週報的自動任務。安全邊界：只讀只整理，不自動發文、不自動留言。
+          </p>
+          <p class="body" style="margin-top:12px;">
+            七月我會跟一個單位開一場 AI 員工訓練，以社群行銷為主，就是教大家怎麼做自己的 AI 小編。有消息再跟大家說。
+          </p>
+        </div>
+        <div>
+          <div class="card reveal d3" style="margin-bottom:24px;">
+            <div class="num">層次一 / 二</div>
+            <h3 class="h2">自己做，再教夥伴做</h3>
+            <p class="body">先訓練自己的 AI 員工，再教人類夥伴訓練他的。</p>
+          </div>
+          <div class="card reveal d4">
+            <div class="num">層次三 / 四</div>
+            <h3 class="h2">老鳥帶新鳥，再自動化</h3>
+            <p class="body">讓老鳥 AI 員工帶新的，最後我的 AI 幫夥伴訓練他的，連提煉過程都自動化。</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="reveal d4" style="margin-top:48px; width:100%; max-width:1000px; margin-left:auto; margin-right:auto; text-align:left;">
+        <div class="act-cap" style="margin-bottom:12px;">再往外一步</div>
+        <h3 class="h1" style="font-size:clamp(22px,2.8vw,32px);">訓練員工用 AI，不如訓練 AI 員工</h3>
+        <p class="body" style="margin-top:12px;">如果你是老闆，公司已經有一批員工，你希望他們用 AI。很多時候，訓練員工用 AI，不如直接訓練 AI 員工。而且不是每個人都適合用 AI，每個人都會用一點，但有些人的思維、有些公司的商業模式，特別容易被 AI 放大。如果你的房子才剛要蓋，像我現在這樣，我不會再蓋木頭的，直接用鋼骨：先想哪些價值最容易被 AI 放大、最容易被 AI 傳遞，就做那一塊。跟自媒體剛出來時一樣。</p>
+        <p class="body" style="margin-top:16px;">舉個例子。公司要拍形象影片，想找自己真正的員工出鏡。一百個員工，與其每個人都化妝、每個人拍一張，不如挑一個最上相的，把他化得更好，請攝影師狂拍他。不是每個人都上相，有些人面對鏡頭就僵、就扭捏。與其花時間訓練每個人美姿美儀、幫每個人治裝，不如讓上相的人去上相就好。用 AI 也一樣：不是每個人、每件事都適合被放大，挑最適合的，集中火力。</p>
+      </div>
+
+      <p class="quote reveal d4" style="margin-top:48px; font-size:clamp(20px,2.4vw,30px);">
+        把 AI 當工具的人，每次都從零開始；把 AI 當員工帶的人，它會越來越像你。
+      </p>
+    <details class="lecture-note reveal d4" open>
+        <summary>現場補充：Codex 自己就有做技能包的工具</summary>
+        <p class="body">先別急著做第二個。第一個做完，先把過程提煉成一份「怎麼訓練一個 AI 員工」的方法，再叫 AI 照同一套幫你做第二個、第三個，你就是在做一條生產線。其實 Codex 的外掛技能裡，自己就內建了做技能包的工具，你只要跟它說「我覺得剛剛這個操作很棒，希望你學會幫我做技能包」，它就會了。</p>
+      </details>
+    </div>
+  </section>
+
+  <!-- ACT faq 學員提問補充 -->
+  <section id="act-faq" data-block data-bg="14">
+    <div class="wrap">
+      <div class="act-cap reveal">ACT 16 · 你們問的問題，我一題一題答</div>
+      <h2 class="display sm reveal d1">現場沒講完的，<br/>補在這裡</h2>
+      <p class="lead reveal d2">這幾題是大家填問卷時問最多的。先回答你，再決定要不要進一步。</p>
+      <div style="margin:44px auto 0; max-width:920px; text-align:left; display:grid; gap:22px;">
+        <div class="card reveal d1">
+          <div class="num">Q1 · 要花錢嗎</div>
+          <h3 class="h2">這些工具要付費嗎？免費能做到哪？</h3>
+          <p class="body">可以從免費的開始。Codex 用 ChatGPT 免費帳號就能先試，先把方法跑起來、把一件事訓練好。等你確定每天都要用、量也變大了，再升級付費版。先別卡在要不要付錢，先卡在「我有沒有真的把一件事訓練起來」。</p>
+        </div>
+        <div class="card reveal d1">
+          <div class="num">Q2 · 從哪開始</div>
+          <h3 class="h2">完全不知道從哪開始，第一步做什麼？</h3>
+          <p class="body">今晚只做一件事：打開 Codex，把這份簡報丟給它，說「照這個老師的方法，帶我做出第一個 AI 員工」。再挑一件你每天都做、做到很煩、規則最清楚的事，從那件開始。一次一件，別貪心。</p>
+          <p class="body" style="margin-top:12px; opacity:0.82;">如果你連 Codex 怎麼裝、怎麼設定都還不熟，那是工具操作的部分。我另外有一堂入門設定課，專門帶你把環境裝好、把基礎流程跑通；這場講的，是裝好之後怎麼把你的知識教給它。</p>
+        </div>
+        <div class="card reveal d1">
+          <div class="num">Q3 · 能交什麼</div>
+          <h3 class="h2">AI 能幫到什麼程度？什麼能交、什麼不能？</h3>
+          <p class="body">一句話判斷：有模糊、需要動腦判斷的事，適合交給 AI；每個步驟都明確、錯一步就出事的事，用傳統軟體或自己來。難度也要分：這件事難度 60 分，AI 做到 50 分先別放手，到 60 分你看一下，到 80 分再放手，最後叫另一家 AI 幫你檢查。疑人不用、用人不疑。</p>
+        </div>
+        <div class="card reveal d1">
+          <div class="num">Q4 · 怎麼學會我</div>
+          <h3 class="h2">怎麼讓 AI 真的學會我的東西，不用每次重講？</h3>
+          <p class="body">把你腦中的判斷，變成它讀得懂的材料。最省力的入口是用講的：把你做一件事的過程錄音，叫 AI 整理成一份工作手冊（技能包），它下次照著做。你做給它看一次，它寫成手冊，它做你檢查，做錯就把規則補回手冊。它會一次比一次懂你。這份手冊就是你的知識資產，工具會換，它會留下來。</p>
+        </div>
+        <div class="card reveal d1">
+          <div class="num">Q5 · 三層關係</div>
+          <h3 class="h2">CLAUDE.md、技能包、程式碼是什麼關係？</h3>
+          <p class="body">用三層想。第一層知識庫（像 CLAUDE.md）：放「我是誰、我的判斷標準、我要什麼」，讓 AI 懂你。第二層技能包：放「這件事的做法步驟」，讓 AI 照你的方法做。第三層程式碼：AI 自己會處理的執行細節，你不用碰。你只顧前兩層，那兩層裝的全是你的知識。</p>
+        </div>
+        <div class="card reveal d1">
+          <div class="num">Q6 · 能不能串起來</div>
+          <h3 class="h2">可以把好幾個工具自動串起來嗎？</h3>
+          <p class="body">可以，那是「一條生產線」的進階。但先別急著串全部。先把一個 AI 員工訓練到好用，再把第二件事交給它，最後才把多個工具、多個員工串成自動流程。先有一個會動的，再談一整條線。</p>
+        </div>
+      </div>
+      <p class="body reveal d4" style="text-align:center; max-width:860px; margin:32px auto 0;">後段操作覺得太快、沒跟上？沒關係，這份簡報就是你的逐步講義，ACT 12、ACT 13 可以慢慢回看。真的想要有人在旁邊看著你做，那就是下一頁那場工作坊的事了。</p>
+    </div>
+  </section>
+
+  <!-- ACT survey 填問卷 -->
+  <section id="act-survey" data-block data-bg="14">
+    <div class="wrap">
+      <div class="act-cap reveal">ACT 17 · 填個回饋問卷</div>
+      <div class="reveal d1" style="text-align:left; margin-top:28px; padding:24px 28px; border:1px solid var(--subtle-dark); border-radius:16px; background:rgba(255,248,240,0.06); max-width:900px; margin-left:auto; margin-right:auto;">
+        <h3 class="h2" style="color:var(--accent-on-dark);">聽完之後，你是哪一種？</h3>
+        <ol class="body" style="margin:10px 0 0; padding-left:22px; color:var(--text-soft-dark); line-height:1.85;">
+          <li>已經會了，不需要再上課。</li>
+          <li>會了，想自己把這份簡報丟給 AI 試試看。</li>
+          <li>還不太懂，想上實體課讓我帶你做。</li>
+          <li>大概懂了，但想上實體課，看更多細節跟實際操作。</li>
+        </ol>
+        <p class="body" style="margin-top:14px; color:var(--text-soft-dark);">如果你是 ③ 或 ④，我有一場實體工作坊「打造你的 AI 員工」：<strong>6/21（日）下午 2 點到 5 點</strong>，3 小時（2 小時教學 + 1 小時實作，我會到你身邊看你操作、示範我會怎麼做）。課後 <strong>6/28（日）晚上 8 點</strong>再加一場一小時線上複習課，這段時間遇到的問題一起解。3000 元、5 到 10 人小班。知識免費，這場是想被我手把手帶的人才需要。填問卷讓我知道你的意願（要租場地，請誠實填）。</p>
+        <a href="https://forms.gle/jyJXSNGrVKNui1G58" class="btn" target="_blank" rel="noopener" style="margin-top:18px;">填回饋與工作坊意願問卷 ↗</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ACT 14 報名收尾 -->
+  <section id="act-14" data-block data-bg="14">
+    <div class="wrap left">
+      <div class="act-cap reveal">ACT 18 · 今晚之後</div>
+      <h2 class="display sm reveal d1" style="text-align:left;">回去做你的<br/>第一個 AI 員工</h2>
+      <p class="lead reveal d2" style="text-align:left; margin:0 0 18px;">
+        今晚的第一個動作：把這份簡報丟給 Codex，跟它說「照這個老師的方法，我該怎麼做」，叫它帶你做出第一個。今天講的細節，我會全部更新進這份簡報，最慢明天。
+      </p>
+      <p class="body reveal d2" style="text-align:left; max-width:900px; margin:0 0 8px; color:var(--text-soft-dark);">
+        聽不懂沒關係。記得我說過我會教 AI 嗎？這份你直接丟給 AI，讓它教你。
+      </p>
+      <p class="body reveal d2" style="text-align:left; max-width:900px; margin:0; color:var(--text-soft-dark);">
+        其實最重要的不是技術，是判斷力：判斷一個東西值不值得信任、有沒有價值。你信任我、覺得我講的有價值、你想做，叫 AI 去做就好。這就是現在最關鍵的能力。
+      </p>
+
+      <div class="reveal d4" style="text-align:left; margin-top:24px; max-width:900px;">
+        <div style="font-family:var(--font-mono); font-size:13px; letter-spacing:0.1em; color:var(--accent-on-dark); margin-bottom:10px;">延伸閱讀</div>
+        <p style="margin:0 0 8px; font-size:16px;"><a href="https://vocus.cc/article/6a17adfcfd897800010b2bd1" target="_blank" rel="noopener" style="color:var(--accent-on-dark); text-decoration:underline;">文科生也能用 Agent：寫日記，就讓 AI 乖乖幫你做事（3X4 資料整理法）↗</a></p>
+        <p style="margin:0; font-size:16px;"><a href="https://vocus.cc/article/6a203f83fd8978000150b7b4" target="_blank" rel="noopener" style="color:var(--accent-on-dark); text-decoration:underline;">納瓦爾 Naval 的最新訪談：打造你的 AI 工廠 ↗</a></p>
+      </div>
+
+      <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" class="btn reveal d3" target="_blank" rel="noopener" style="margin-top:18px; background:transparent; border:1px solid var(--accent-on-dark); color:var(--accent-on-dark);">加入 Line 社群，看講座連結與最新消息</a>
+
+      <div class="footer-grid">
+        <div class="reveal d1">
+          <h3>關於這場</h3>
+          <p class="body" style="color:var(--text-soft-dark);">怎麼訓練自己的 AI 員工，免費線上講座。從一個 AI 員工，到一條會自己生產員工的生產線。</p>
+        </div>
+        <div class="reveal d2">
+          <h3>想更進一步</h3>
+          <ul>
+            <li>打造你的 AI 員工（工作坊）</li>
+            <li>6/21（日）下午 ＋6/28（日）晚 8 點複習</li>
+            <li>3000 元 · 小班 · 填問卷登記</li>
+          </ul>
+        </div>
+        <div class="reveal d3">
+          <h3>聯繫</h3>
+          <ul>
+            <li><a href="https://ai-km-jiang.vercel.app" target="_blank" rel="noopener" style="color:var(--accent-on-dark); text-decoration:underline;">江江教練官網 ↗</a></li>
+            <li>Threads ＠jiang_yude_coach</li>
+            <li>方格子 Jiang_Coach</li>
+            <li>Line 社群</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom reveal d4">流水的 AI 工具，鐵打的知識資產 · 6/7 江江教練．隱性知識提煉師</div>
+    </div>
+  </section>
+
+<script>
+(function () {
+  document.documentElement.classList.add('js-on');
+  document.body.classList.add('js-on');
+  const sections = [...document.querySelectorAll('section[data-block]')];
+  sections.forEach((s, i) => { s.style.zIndex = String(i + 1); });
+  // 內容比一個螢幕高的頁 → 退出 sticky，改成正常長頁，可完整滑到底，滑完下一頁才疊上來
+  function fitTall() {
+    const vh = window.innerHeight;
+    sections.forEach((s) => { s.classList.remove('tall'); if (s.offsetHeight > vh + 4) s.classList.add('tall'); });
+  }
+  fitTall();
+  window.addEventListener('load', fitTall);
+  window.addEventListener('resize', fitTall);
+  const dots = [...document.querySelectorAll('.dot-indicator a')];
+  const progress = document.getElementById('progress');
+  const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!reducedMotion) {
+    const io = new IntersectionObserver((entries) => entries.forEach((e) => {
+      if (e.isIntersecting) { e.target.querySelectorAll('.reveal').forEach((el) => el.classList.add('in')); }
+    }), { threshold: 0.25 });
+    sections.forEach((s) => io.observe(s));
+  } else { document.querySelectorAll('.reveal').forEach((el) => el.classList.add('in')); }
+  const darkBgs = new Set(['8','9','10','11','12','13','14']);
+  const navIo = new IntersectionObserver((entries) => entries.forEach((e) => {
+    if (e.isIntersecting) {
+      const i = sections.indexOf(e.target);
+      dots.forEach((d, idx) => d.classList.toggle('active', idx === i));
+      document.body.classList.toggle('on-dark', darkBgs.has(e.target.getAttribute('data-bg')));
+    }
+  }), { threshold: 0.55 });
+  sections.forEach((s) => navIo.observe(s));
+  const scroller = document.scrollingElement || document.documentElement;
+  let ticking = false;
+  function updateProgress() {
+    const max = scroller.scrollHeight - scroller.clientHeight;
+    const pct = max > 0 ? (scroller.scrollTop / max) * 100 : 0;
+    progress.style.width = pct + '%'; ticking = false;
+  }
+  window.addEventListener('scroll', () => { if (!ticking) { requestAnimationFrame(updateProgress); ticking = true; } }, { passive: true });
+  updateProgress();
+})();
+</script>
+</body>
+</html>
