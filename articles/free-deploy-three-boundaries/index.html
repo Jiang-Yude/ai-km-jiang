@@ -1,0 +1,401 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>我以為沒人知道網址就夠了：盤點自己 74 個網站那天｜江江教練 · AI 知識管理</title>
+<meta name="description" content="盤點自己 74 個網站時，發現六個含客戶會議記錄的頁面對 Google 完全開放。查完官方文件才知道，noindex 擋的是搜尋不是存取，而真正的密碼保護最低要每月 170 美元。這篇拆開免費部署的三道邊界，給出三個問題的判斷順序與三分鐘自查法。">
+<link rel="canonical" href="https://ai-km-jiang.vercel.app/articles/free-deploy-three-boundaries/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="我以為沒人知道網址就夠了：盤點自己 74 個網站那天｜江江教練">
+<!-- 分享封面：hero 文字填好後在 repo 根目錄跑 `node scripts/og-shot.mjs free-deploy-three-boundaries` 自動截 1200×630 到 images/og/free-deploy-three-boundaries.jpg（見 README「文章分享封面（OG 圖）機制」）。別退回 intro-jiang.png 直式人像，會被裁成只剩脖子。 -->
+<meta property="og:image" content="https://ai-km-jiang.vercel.app/images/og/free-deploy-three-boundaries.jpg">
+<meta property="og:description" content="盤點自己 74 個網站時，發現六個含客戶會議記錄的頁面對 Google 完全開放。查完官方文件才知道，noindex 擋的是搜尋不是存取，而真正的密碼保護最低要每月 170 美元。這篇拆開免費部署的三道邊界，給出三個問題的判斷順序與三分鐘自查法。">
+<meta property="og:url" content="https://ai-km-jiang.vercel.app/articles/free-deploy-three-boundaries/">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:site_name" content="江江教練 · AI 知識管理">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="我以為沒人知道網址就夠了：盤點自己 74 個網站那天｜江江教練">
+<meta name="twitter:image" content="https://ai-km-jiang.vercel.app/images/og/free-deploy-three-boundaries.jpg">
+<meta name="twitter:description" content="盤點自己 74 個網站時，發現六個含客戶會議記錄的頁面對 Google 完全開放。查完官方文件才知道，noindex 擋的是搜尋不是存取，而真正的密碼保護最低要每月 170 美元。這篇拆開免費部署的三道邊界，給出三個問題的判斷順序與三分鐘自查法。">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"我以為沒人知道網址就夠了：盤點自己 74 個網站那天","description":"盤點自己 74 個網站時，發現六個含客戶會議記錄的頁面對 Google 完全開放。查完官方文件才知道，noindex 擋的是搜尋不是存取，而真正的密碼保護最低要每月 170 美元。這篇拆開免費部署的三道邊界，給出三個問題的判斷順序與三分鐘自查法。","author":{"@type":"Person","name":"江昱德","alternateName":"江江教練","jobTitle":"隱性知識提煉師、AI 應用規劃師"},"isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://ai-km-jiang.vercel.app/"},"inLanguage":"zh-Hant","url":"https://ai-km-jiang.vercel.app/articles/free-deploy-three-boundaries/"}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{--ink:#1a1612;--paper:#fefcf8;--muted:#6a635a;--line:#d8cdb8;--green:#5f7553;--blue:#5689b8;--orange:#e85a4f;--soft:#faf5ec;--dark:#2a2018;--shadow:0 18px 45px rgba(107,74,42,.14);--sp-shadow:hsla(35,50%,60%,.15);--sp-shadow-edge:hsla(35,50%,68%,.03);--sp-radius:400px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC","Segoe UI",sans-serif}
+a{color:inherit}
+/* 官網共用導航列 nav.top（與首頁/文章總站同一條） */
+nav.top{position:sticky;top:0;background:rgba(254,252,248,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid #d8cdb8;z-index:100}
+nav.top .container{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:24px;padding:14px 32px}
+.nav-brand-img{justify-self:start;display:flex;align-items:center;text-decoration:none;flex-shrink:0;transition:opacity .2s}
+.nav-brand-img:hover{opacity:.8}.nav-brand-img img{height:40px;width:auto;display:block}
+nav.top ul.nav-menu{justify-self:end;display:flex;gap:22px;list-style:none;margin:0;padding:0;font-size:.95rem;white-space:nowrap}
+nav.top ul.nav-menu a{color:#3a342d;text-decoration:none;transition:color .2s;font-weight:500;white-space:nowrap}
+nav.top ul.nav-menu a:hover{color:#1a1612}nav.top ul.nav-menu a.active{color:#1a1612;font-weight:700}
+.nav-toggle{display:none;background:none;border:none;padding:6px;cursor:pointer;width:36px;height:36px;position:relative}
+.nav-toggle span{display:block;position:absolute;left:8px;right:8px;height:2px;background:#1a1612;border-radius:2px;transition:transform .25s,opacity .25s,top .25s}
+.nav-toggle span:nth-child(1){top:11px}.nav-toggle span:nth-child(2){top:17px}.nav-toggle span:nth-child(3){top:23px}
+.nav-toggle.open span:nth-child(1){top:17px;transform:rotate(45deg)}.nav-toggle.open span:nth-child(2){opacity:0}.nav-toggle.open span:nth-child(3){top:17px;transform:rotate(-45deg)}
+@media(max-width:860px){
+ nav.top .container{grid-template-columns:auto 1fr auto;padding:10px 16px;gap:12px}
+ .nav-brand-img img{height:32px}
+ .nav-toggle{display:block;justify-self:end}
+ nav.top ul.nav-menu{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(254,252,248,.98);backdrop-filter:blur(14px);border-bottom:1px solid #d8cdb8;flex-direction:column;gap:0;padding:8px 0;box-shadow:0 10px 24px rgba(107,74,42,.08)}
+ nav.top ul.nav-menu.open{display:flex}
+ nav.top ul.nav-menu li{border-bottom:1px solid #e8dfc9}
+ nav.top ul.nav-menu li:last-child{border-bottom:none}
+ nav.top ul.nav-menu a{display:block;padding:14px 20px;font-size:1.06rem}
+}
+/* 滑鼠暖光暈（與首頁同一支 spotlight.js） */
+body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradient(var(--sp-radius) circle at var(--mx,50%) var(--my,50%),var(--sp-shadow) 0%,var(--sp-shadow-edge) 45%,transparent 75%);pointer-events:none;z-index:9999;mix-blend-mode:multiply;transition:background .06s linear}
+.hero{position:relative;overflow:hidden;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:72px;padding:96px clamp(20px,6vw,88px) 80px;background:linear-gradient(180deg,#fffcf0 0%,#f9e9d2 100%);color:#1a1612;border-bottom:1px solid #d8cdb8}
+.hero .wc{position:absolute;border-radius:50%;filter:blur(60px);pointer-events:none;z-index:0}
+.hero .wc1{width:420px;height:360px;top:-120px;right:-80px;background:#e8884b;opacity:.15}
+.hero .wc2{width:360px;height:300px;bottom:-110px;left:-70px;background:#5f7553;opacity:.13}
+.hero .wc3{width:280px;height:260px;top:34%;left:14%;background:#a08144;opacity:.10}
+.hero>div{flex:none;width:860px;max-width:100%;position:relative;z-index:2}
+.hero-figure{margin:0;width:420px;flex:none;position:relative;z-index:2}
+.hero-figure img{display:block;width:100%;border-radius:16px;border:1px solid #d8cdb8;box-shadow:0 18px 45px rgba(107,74,42,.16);cursor:zoom-in}
+.hero-figure figcaption{margin-top:10px;font-size:14px;line-height:1.6;color:#6a635a}
+.inline-figure{margin:30px auto 8px;max-width:820px}
+.inline-figure img{display:block;width:100%;border-radius:14px;border:1px solid var(--line);box-shadow:var(--shadow);background:#fff;cursor:zoom-in}
+.inline-figure figcaption{font-size:14px;line-height:1.6;color:var(--muted);margin-top:10px}
+.lightbox{position:fixed;inset:0;z-index:10000;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(12,10,8,.92);cursor:zoom-out;backdrop-filter:blur(4px)}
+.lightbox.open{display:flex}.lightbox img{max-width:96vw;max-height:92vh;border-radius:10px;box-shadow:0 24px 60px rgba(0,0,0,.5)}
+.lightbox-close{position:fixed;top:18px;right:24px;color:#fff;font-size:34px;line-height:1;font-weight:700;cursor:pointer;opacity:.85}
+.kicker{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.55rem;color:#7a5c3a;font-weight:500}
+.hero h1{max-width:none;margin:16px 0 18px;font-size:clamp(36px,6vw,72px);line-height:1.08;overflow-wrap:anywhere}
+.hero p{max-width:none;font-size:clamp(18px,2vw,23px);line-height:1.62;color:#3a342d}
+.cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
+.cta a{display:inline-flex;align-items:center;text-decoration:none;border-radius:8px;padding:12px 16px;font-weight:900}
+.cta .primary{background:#fff;color:#1a1612}.cta .ghost{border:1px solid rgba(255,255,255,.32);color:#fff;background:rgba(255,255,255,.08)}
+.section{padding:54px clamp(20px,6vw,88px);border-top:1px solid var(--line)}
+.inner{width:min(1000px,100%);margin:0 auto}
+.section h2{font-size:clamp(26px,4.2vw,48px);line-height:1.12;margin:0 0 18px}
+.section h3{font-size:clamp(21px,3vw,30px);line-height:1.2;margin:30px 0 12px}
+.lead{font-size:clamp(18px,1.6vw,22px);line-height:1.7;color:#3a342d;max-width:900px}
+.section p{font-size:18px;line-height:1.74;color:#3a342d}.section p+p{margin-top:14px}
+.section ul,.section ol{padding-left:1.4em;font-size:18px;line-height:1.74;color:#3a342d}.section li{margin-bottom:8px}
+.meaning{margin:22px 0;padding:16px 18px;border-left:5px solid var(--blue);background:rgba(86,137,184,.12);border-radius:6px;line-height:1.7;font-size:19px}
+.meaning b{display:block;color:var(--blue);margin-bottom:4px}
+.caveat{margin:0 0 8px;padding:16px 18px;border-left:5px solid var(--orange);background:rgba(232,90,79,.1);border-radius:6px;line-height:1.7;font-size:18px;color:#3a342d}
+.caveat b{display:block;color:var(--orange);margin-bottom:4px}
+.infocard{background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px 24px 22px;box-shadow:0 8px 22px rgba(107,74,42,.08);margin-top:8px}
+.infocard-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.info-item{padding:18px 14px 0}
+.info-item b{display:block;font-size:14px;font-weight:900;letter-spacing:.04em;margin-bottom:7px;text-transform:uppercase}
+.info-item:nth-child(1) b{color:var(--green)}.info-item:nth-child(2) b{color:var(--orange)}.info-item:nth-child(3) b{color:var(--blue)}
+.info-item p{margin:0;font-size:17px;line-height:1.6;color:#3a342d}
+.tagrow{display:flex;flex-wrap:wrap;gap:7px;margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
+.tag{font-size:14px;color:var(--muted);background:var(--soft);border:1px solid var(--line);border-radius:999px;padding:4px 11px}
+.duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:24px}
+.duo.stack{grid-template-columns:1fr}
+.duo .card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:22px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.duo .card.a{border-color:var(--orange)}.duo .card.b{border-color:var(--green);box-shadow:0 8px 24px rgba(95,117,83,.16)}
+.duo .card small{display:block;font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.04em;margin-bottom:9px}
+.duo .card.a small{color:var(--orange)}.duo .card.b small{color:var(--green)}
+.duo .card b{display:block;font-size:22px;line-height:1.3;margin-bottom:12px}.duo .card.a b{color:#c0512f}.duo .card.b b{color:#4a7a59}
+.duo .card p{margin:0;color:#3a342d;line-height:1.75;font-size:18px}
+.workflow-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:24px}
+.workflow-step{background:#fff;border:1px solid var(--line);border-radius:8px;padding:18px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.workflow-step small{display:block;color:var(--orange);font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;margin-bottom:9px}
+.workflow-step b{display:block;font-size:18px;line-height:1.3;margin-bottom:9px}
+.workflow-step p{margin:0;color:#3a342d;line-height:1.6;font-size:16px}
+.codeblock{background:var(--dark);color:#f3ead9;border-radius:8px;padding:18px 20px;font:500 14px/1.65 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;overflow-x:auto;white-space:pre-wrap;margin:20px 0;box-shadow:0 8px 22px rgba(107,74,42,.12)}
+.codeblock .c{color:#f6d7a6;font-weight:600}
+.skillcard{background:#fff;border:1px solid var(--green);border-radius:12px;padding:24px;box-shadow:0 10px 26px rgba(95,117,83,.16);margin-top:8px}
+.skillcard b{display:block;font-size:21px;margin-bottom:8px}
+.skillcard p{margin:0 0 16px;font-size:17px;line-height:1.65;color:#3a342d}
+.cta-band{background:#e6f0e5;color:#3a342d}.cta-band .section{border-top:none}
+.cta-band .inner{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(260px,.85fr);gap:26px;align-items:start}
+.cta-band h2{font-size:clamp(26px,4vw,44px);margin:0 0 16px}.cta-band p,.cta-band .lead{color:rgba(58,52,45,.9);font-size:18px;line-height:1.72}
+.cta-card{border:1px solid #cfe0d2;background:#fbfdfa;border-radius:8px;padding:22px}
+.cta-card b{display:block;color:#48b178;margin-bottom:10px;font-size:18px}.cta-card p{margin:0 0 14px}
+.footer{padding:30px clamp(20px,6vw,88px);font-size:14px;color:var(--muted);background:#fff;border-top:1px solid var(--line)}
+.footer-inner{width:min(1000px,100%);margin:0 auto}
+.footer-links{display:flex;flex-wrap:wrap;gap:6px 12px;margin-bottom:14px}.footer-links a{color:var(--blue);font-weight:900;text-decoration:none;font-size:14px}
+.footer-brand{font-weight:900;font-size:15px;margin-bottom:10px}.footer-note{font-size:13px;line-height:1.6}
+@media(max-width:820px){.infocard-grid{grid-template-columns:1fr}.duo{grid-template-columns:1fr}.workflow-grid{grid-template-columns:1fr}.cta-band .inner{grid-template-columns:1fr}.section{padding:40px 20px}.hero{min-height:52vh;flex-direction:column;justify-content:flex-start;align-items:flex-start;gap:24px}.hero>div{width:100%}.hero-figure{width:100%;max-width:560px}}
+@media(max-width:820px){html,body{overflow-x:hidden}.hero h1{word-break:break-word}}
+</style>
+</head>
+<body class="spotlight">
+<!-- 官網共用導航列 nav.top：與首頁/總站同一條，文章不要自己另做極簡 topbar（江江 2026-06-25：要同一個框架、同一條導航列）。把對應頁面的 class="active" 標在自己那欄。 -->
+<nav class="top">
+  <div class="container">
+    <a class="nav-brand-img" href="../../index.html"><img src="../../images/footer-signature.png" alt="江江教練 | 江昱德"></a>
+    <button class="nav-toggle" aria-label="選單"><span></span><span></span><span></span></button>
+    <ul class="nav-menu">
+      <li><a href="../../index.html">首頁</a></li>
+      <li><a href="../../knowledge-architecture.html">知識架構</a></li>
+      <li><a href="../../courses.html">課程</a></li>
+      <li><a href="../../articles.html" class="active">深度文章</a></li>
+      <li><a href="../../skills.html">技能包下載</a></li>
+      <li><a href="../../cases.html">服務方案</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="wc wc1"></div>
+  <div class="wc wc2"></div>
+  <div class="wc wc3"></div>
+  <div>
+    <div class="kicker">網頁部署 / 存取控制</div>
+    <h1>我以為沒人知道網址就夠了：盤點自己 74 個網站那天</h1>
+    <p>六個含客戶會議記錄的頁面，網址是亂碼、沒掛在任何地方，我一直以為那樣就夠了。</p>
+  </div>
+</section>
+
+<main>
+
+<section class="section"><div class="inner">
+<h2>這篇在講什麼</h2>
+<p>很多人把網頁放上網之後，用「網址很難猜、沒掛在任何地方」當作保護。這是障礙，不是門鎖。這篇拆開免費部署的三道邊界：哪一層免費就夠、哪一層要加設定、哪一層真的要付錢，並給出一個三分鐘就能做完的自查法。</p>
+<h3>適合誰</h3>
+<ul>
+<li>用 AI 幫你做網頁，但不確定「這樣放上去安全嗎」的人</li>
+<li>做課程、接案、顧問，有些內容只想給特定人看的一人公司</li>
+<li>已經放了十幾個頁面上網，但說不出哪些對 Google 開放的人</li>
+</ul>
+<h3>你會得到什麼</h3>
+<ul>
+<li>一個判斷順序：三個問題決定你該用免費、加設定、還是付費</li>
+<li>兩平台存取控制的完整價格對照，含官方來源</li>
+<li>三分鐘自查法：打開任何一頁，馬上知道它對搜尋引擎開不開放</li>
+<li>一段可複製的提示詞，讓 AI 幫你盤點手上所有頁面</li>
+</ul>
+</div></section>
+
+<section class="section"><div class="inner">
+<h2>真實現場</h2>
+<p>前幾天我盤點自己的 Vercel 帳號，發現上面有 74 個網站。</p>
+<p>這個數字本身讓我意外。做網頁太容易了，一行指令就上線，做完就忘了它存在。但更意外的是後面查到的東西。</p>
+<p>我把每一個站抓下來，檢查它有沒有設 <code>noindex</code>。結果有六個站對 Google 完全開放：</p>
+<ul>
+<li>一份「會議報告書：江昱德 x Vicky」</li>
+<li>一份「江江與芝芝討論」的工作坊報告</li>
+<li>兩份永力扶輪社的會議記錄，其中一份標題就寫著「兩次會議人員態度軌跡」</li>
+<li>一份永力扶輪社的 AI 導入與永續報告書規劃</li>
+<li>一份旅學堂的 2026 影響力報告</li>
+</ul>
+<p>這些都是客戶會議內容，有真實人名、有對合作對象的判讀。</p>
+<p>它們的網址都是亂碼，沒有掛在我任何一個頁面上，也沒有傳給第三個人。我一直以為那樣就夠了。</p>
+<blockquote><p>實際上它們對搜尋引擎完全開放，只是還沒被爬到而已。</p></blockquote>
+</div></section>
+
+<section class="section"><div class="inner">
+<h2>問題來源</h2>
+<p>事後回想，我踩的是三個不同的坑，而且它們常常同時發生。</p>
+<h3>一、把「找不到」當成「進不去」</h3>
+<p>亂碼網址的作用是降低被亂找到的機率。它是一道障礙，可以擋掉隨手亂試的人。</p>
+<p>但它擋不住任何一種真正的外流：連結被轉貼、被截圖、被存進瀏覽器書籤同步到別的裝置、被 AI 助理讀進脈絡。任何一種情況發生，那個網址就是一個公開網址。</p>
+<h3>二、以為部署工具會幫你把關</h3>
+<p>我用的是 Vercel 的免費方案。它預設什麼保護都沒有，部署上去就是公開的。</p>
+<p>這不是平台的錯，它從來沒說會幫你擋。是我自己沒去確認預設值。</p>
+<h3>三、沒查過真正的保護要多少錢</h3>
+<p>這一項最關鍵。我從來沒認真查過「如果我要密碼保護，多少錢」，所以我心裡一直有個模糊的假設：需要的時候再加就好。</p>
+<p>查完之後發現，那個「需要的時候」的價格是每月 170 美元。</p>
+</div></section>
+
+<section class="section"><div class="inner">
+<h2>機制解法：先問這頁要給誰看</h2>
+<p>與其問「該用哪個平台」，先問「這頁要給誰看」。答案分三層，每一層撞到不同的邊界。</p>
+
+<h3>第一道邊界：完全公開的內容</h3>
+<p>作品集、公開文章、活動頁、對外簡介，任何人看到都沒關係。</p>
+<p>這一層兩個平台的免費方案都夠用，額度比多數人想像的寬：</p>
+<ul>
+<li><strong>GitHub Pages 免費</strong>：網站不超過 1 GB、每月 100 GB 流量、每小時 10 次建置（都是軟性上限）</li>
+<li><strong>Vercel Hobby</strong>：每月 100 GB 流量、每小時 32 次建置、每日 100 次部署</li>
+</ul>
+<p>兩邊都免費支援自訂網域與自動 HTTPS。</p>
+<p>這一層的選擇標準很單純：<strong>你的檔案本來放在哪，就用哪個。</strong></p>
+<p>只有一個差別要注意。GitHub Pages 的免費方案要求 repository 必須公開，所以原始碼會跟著公開。如果你的 HTML 裡有客戶名稱的註解、還沒公布的日期、內部備註，那些也在網路上。</p>
+
+<h3>第二道邊界：不想被搜到，但被看到沒關係</h3>
+<p>課程的課後資料、活動的內部通知、還在校稿的頁面，都屬於這一層。</p>
+<p>做法是 <code>noindex</code>，兩個平台都免費，加一行就好：</p>
+<pre><code>&lt;meta name="robots" content="noindex, nofollow"&gt;</code></pre>
+<p>搭配 <code>robots.txt</code> 的 <code>Disallow: /</code>，搜尋引擎就不會收錄。</p>
+<blockquote><p>這裡有個 Google 官方文件講得很直接、但很多人沒讀到的重點：<code>noindex</code> 只阻止頁面出現在搜尋結果，知道網址的人仍然可以直接打開。</p></blockquote>
+<p>換句話說，這一層處理的是「找不到」。如果你要的是「進不去」，那是第三層。</p>
+
+<h3>第三道邊界：只給特定人看</h3>
+<p>這一層要付費，而且價差很大。以下是查官方文件整理出來的完整選項。</p>
+<p><strong>Vercel</strong></p>
+<ol>
+<li><strong>Vercel Authentication</strong>：Hobby 免費就有，但只保護 preview 網址，<strong>正式網址仍然公開</strong></li>
+<li><strong>Shareable Link</strong>：可撤銷的通行連結，Hobby 全帳號限一條</li>
+<li><strong>Password Protection</strong>：保護正式網址，需要 Pro 加購 Advanced Deployment Protection，每月 20 美元加 150 美元，<strong>最低 170 美元</strong></li>
+<li><strong>Trusted IPs</strong>：IP 白名單，只有 Enterprise，客製報價</li>
+</ol>
+<p><strong>GitHub Pages</strong></p>
+<ol>
+<li><strong>private repository</strong>：GitHub Pro 每月 4 美元，<strong>但這只隱藏原始碼，發布出去的網站預設還是公開的</strong></li>
+<li><strong>私密發布</strong>（只限 repo 成員進入）：需要組織版 Enterprise Cloud，<strong>每位使用者每月 21 美元起</strong></li>
+</ol>
+<p>第二點是很多人誤會的地方。付了 GitHub Pro，你得到的是「程式碼不公開」，不是「網站不公開」。</p>
+</div></section>
+
+<section class="section"><div class="inner">
+<h2>它保證什麼、不保證什麼</h2>
+<p>這段是我踩坑之後最想寫下來的。</p>
+<h3><code>noindex</code> 保證的</h3>
+<ul>
+<li>頁面不會出現在 Google 搜尋結果</li>
+<li>已經被收錄的頁面，重新爬取後會移除</li>
+</ul>
+<h3><code>noindex</code> 不保證的</h3>
+<ul>
+<li>擋不住任何知道網址的人</li>
+<li>擋不住連結外流</li>
+<li>對非搜尋引擎的爬蟲，行為沒有官方保證</li>
+</ul>
+<h3>亂碼網址保證的</h3>
+<ul><li>降低被隨機猜中的機率</li></ul>
+<h3>亂碼網址不保證的</h3>
+<ul>
+<li>一旦外流，跟公開網址沒有差別</li>
+<li>我查不到 GitHub 官方對「秘密網址是否算安全措施」的任何正式說明，也就是說沒有人背書這種做法</li>
+</ul>
+<h3>免費方案的條款邊界</h3>
+<p>這一項跟技術無關，但對一人公司很重要。</p>
+<p><strong>Vercel Hobby 的使用條款寫明只允許個人、非商業用途。</strong>官方在定價頁與條款都提到，商業用途、接案、付費服務、業務網站應該採用 Pro。這條規定跟流量多寡無關，就算你的站每月只有幾十次瀏覽，用途是商業的就已經越界。</p>
+<p>GitHub Pages 也有類似邊界，官方明講不允許把它當成免費主機經營「主要用於商業交易」的網站、電子商務或商業 SaaS。</p>
+<p>還有一個更實際的風險：<strong>Vercel Hobby 超出免費額度時，官方處理方式是暫停整個帳號的新舊部署，通常要等 30 天恢復，而且免費方案不能加購少量超額流量。</strong>流量突然衝高的那一天，你的站會全部下線，沒有花錢解決的選項。</p>
+</div></section>
+
+<section class="section"><div class="inner">
+<h2>你可以怎麼開始</h2>
+<h3>三分鐘自查法</h3>
+<p>拿你手上任何一個已經上線的頁面，做這三步：</p>
+<ol>
+<li>用瀏覽器打開它，按 <code>Cmd+U</code>（Windows 是 <code>Ctrl+U</code>）看原始碼</li>
+<li>按 <code>Cmd+F</code> 搜尋 <code>noindex</code></li>
+<li>找不到，代表這頁對搜尋引擎完全開放</li>
+</ol>
+<p>然後問自己一句話：<strong>這頁如果被完全不相關的人搜到，會有問題嗎？</strong></p>
+<p>會有問題、而你以為它是私密的，那就是你最該先處理的那一頁。</p>
+
+<h3>三個問題的判斷順序</h3>
+<p>要決定新的頁面該怎麼放，照這個順序問：</p>
+<p><strong>問題一：這頁有沒有不能被外人看到的東西？</strong></p>
+<p>沒有，走第一層，兩個平台免費都夠用，選你檔案本來放的那個。有，繼續問。</p>
+<p><strong>問題二：你能接受「知道網址的人看得到」嗎？</strong></p>
+<p>能接受，走第二層。<code>noindex</code> 加不公開的網址，兩邊都免費。適合課後資料、內部通知這類「不想被搜到，但流出去也不會出事」的內容。不能接受，走第三層，要付費。</p>
+<p><strong>問題三：這個用途算商業嗎？</strong></p>
+<p>算，Vercel 該用 Pro。這跟流量無關，是條款問題。</p>
+
+<h3>可複製提示詞：讓 AI 幫你盤點</h3>
+<p>如果你手上已經有一堆頁面，不用一個一個開。把這段貼給你的 AI 助理：</p>
+<pre><code>我要盤點手上所有已上線的網頁，判斷哪些需要補防護。
+
+請幫我對以下每個網址做三件事，用表格回報：
+1. 抓取首頁，檢查 head 裡有沒有 &lt;meta name="robots"&gt; 且含 noindex
+2. 抓取 /robots.txt，檢查有沒有 Disallow: /
+3. 抓取 &lt;title&gt;，讓我知道這頁是什麼
+
+回報格式：網址 | 標題 | 有無 noindex | 有無 Disallow | 我的判斷（需要防護／不需要）
+
+判斷標準：標題或內容含真實人名、會議、報價、客戶名稱、
+內部評估的，都算需要防護。純公開展示、作品集、活動頁不用。
+
+網址清單：
+[貼上你的網址]</code></pre>
+<p>跑完你會拿到一張表，一眼看出哪幾頁該補。</p>
+</div></section>
+
+<section class="section"><div class="inner">
+<h2>收尾 Recap</h2>
+<ul>
+<li>免費部署的邊界有三道，對應「完全公開」「不想被搜到」「只給特定人」三種需求</li>
+<li>前兩道免費就能做到，第三道要付費，最低每月 170 美元（Vercel）或 21 美元一人（GitHub 組織版）</li>
+<li><code>noindex</code> 擋搜尋，不擋存取。亂碼網址是障礙，不是門鎖</li>
+<li>Vercel Hobby 條款只允許非商業用途，這跟流量無關</li>
+<li>自查只要三分鐘：<code>Cmd+U</code> 搜 <code>noindex</code></li>
+</ul>
+</div></section>
+
+<section class="section"><div class="inner">
+<h2>常見的坑（與對策）</h2>
+<p><strong>坑一：以為 private repository 等於私密網站</strong></p>
+<p>對策：分清楚兩件事。private repo 保護的是原始碼，網站本身要另外設。GitHub 要讓網站只限授權者進入，需要組織版 Enterprise Cloud。</p>
+<p><strong>坑二：把敏感內容放上網，打算「之後再加保護」</strong></p>
+<p>對策：先查那個「之後」要多少錢。我就是沒查，才以為隨時可以加。查完發現是每月 170 美元。</p>
+<p><strong>坑三：只檢查首頁，忘了子頁</strong></p>
+<p>對策：<code>noindex</code> 是逐頁生效的。首頁有設不代表 <code>/report/</code> 有設。用上面那段提示詞跑完整清單。</p>
+<p><strong>坑四：以為流量小就不會有事</strong></p>
+<p>對策：條款限制跟流量無關。而且免費額度爆掉時，Vercel 的處理是暫停整個帳號，不是只擋超額的部分。</p>
+</div></section>
+
+<section class="section"><div class="inner">
+<h2>給自己的定位提醒</h2>
+<p>查完這一輪，我最後的做法不是去買 170 美元的保護。</p>
+<p>我把自己的內容分成三類：<strong>公開官網</strong>（要被搜尋引擎收錄，也要被 AI 引用）、<strong>半私密站</strong>（亂碼網址加 <code>noindex</code>，我知道它擋搜尋不擋存取，所以只放「流出去也不會出事」的東西）、<strong>完全不上網</strong>（分潤談判、內部評估、對客戶未公開的判讀，留在本機知識庫）。</p>
+<p>第三類是關鍵。與其把敏感內容放上網再想辦法保護，先判斷它該不該上網。</p>
+<blockquote><p>那 170 美元一個月的密碼保護我沒買，是因為需要那種保護的內容，我一開始就不該放上去。</p></blockquote>
+<p>這個判斷順序省下的不只是錢。少一個對外的入口，就少一個要維護、要記得檢查的東西。</p>
+<p>工具會換，方案會漲價，條款會改。但「這份內容該給誰看」這個判斷，是你自己的，不會過期。</p>
+</div></section>
+
+<section class="section"><div class="inner">
+<h2>查證附錄</h2>
+<p>本文數據 2026-07-28 查官方文件，八輪搜尋。平台政策會變，引用前建議回查原始頁面。</p>
+<ul>
+<li>GitHub Pages 限制：<a href="https://docs.github.com/en/pages/getting-started-with-github-pages/github-pages-limits" target="_blank" rel="noopener">GitHub Pages limits</a></li>
+<li>Vercel Hobby 額度：<a href="https://vercel.com/docs/plans/hobby" target="_blank" rel="noopener">Hobby plan</a>、<a href="https://vercel.com/docs/limits" target="_blank" rel="noopener">Limits</a></li>
+<li>Vercel Hobby 非商業用途條款：<a href="https://vercel.com/legal/terms" target="_blank" rel="noopener">Vercel Terms</a></li>
+<li>Vercel Deployment Protection 與價格：<a href="https://vercel.com/docs/deployment-protection" target="_blank" rel="noopener">Deployment Protection</a></li>
+<li>GitHub Pages 私密發布：<a href="https://docs.github.com/en/enterprise-cloud@latest/pages/getting-started-with-github-pages/changing-the-visibility-of-your-github-pages-site" target="_blank" rel="noopener">Changing Pages visibility</a></li>
+<li>Google 官方說明 noindex 與存取控制的差別：<a href="https://developers.google.com/search/docs/crawling-indexing/control-what-you-share" target="_blank" rel="noopener">Control what you share</a></li>
+</ul>
+<p><strong>本次查無官方說法（未當成事實使用）</strong>：GitHub 官方對「秘密網址是否算安全措施」無正式說明；GitHub Pages 可綁子網域的數值上限；Vercel 是否曾於 2023 年縮減 Hobby 額度；Vercel 失敗的 build 是否以完整分鐘數計入額度。</p>
+</div></section>
+
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">江江教練 · AI 知識管理</div>
+    <div class="footer-links">
+      <a href="../../articles.html">← 回深度文章總站</a>
+      <a href="../../index.html">首頁</a>
+      <a href="../../learn.html">自學資源</a>
+      <a href="../../skills.html">技能包下載</a>
+      <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">LINE 社群 ↗</a>
+      <a href="https://www.threads.com/@jiang_yude_coach" target="_blank" rel="noopener">Threads ↗</a>
+      <a href="https://vocus.cc/salon/Jiang_Coach" target="_blank" rel="noopener">方格子 ↗</a>
+    </div>
+    <div class="footer-note">這是一篇教學文章，整理我對「我以為沒人知道網址就夠了：盤點自己 74 個網站那天」的看法，供你參考。</div>
+  </div>
+</footer>
+
+<!-- 點圖放大 lightbox（hero 與內文圖通用，已內建，不用每篇重加） -->
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <span class="lightbox-close" aria-label="關閉">×</span>
+  <img id="lightbox-img" src="" alt="放大檢視">
+</div>
+<script>
+(function(){
+  var box=document.getElementById('lightbox'),boxImg=document.getElementById('lightbox-img');
+  document.querySelectorAll('.hero-figure img,.inline-figure img').forEach(function(img){
+    img.addEventListener('click',function(){boxImg.src=img.currentSrc||img.src;boxImg.alt=img.alt||'放大檢視';box.classList.add('open');box.setAttribute('aria-hidden','false');});
+  });
+  function close(){box.classList.remove('open');box.setAttribute('aria-hidden','true');boxImg.src='';}
+  box.addEventListener('click',close);
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
+})();
+</script>
+
+<!-- 官網共用：滑鼠暖光暈 + 導航列漢堡選單 -->
+<script src="../../spotlight.js"></script>
+
+<!-- 文章自動互聯（相關文章）：兩支已內建，順序不可顛倒，不用再另外加 -->
+<script src="../../articles-data.js"></script>
+<script src="../../related-render.js"></script>
+</body>
+</html>
