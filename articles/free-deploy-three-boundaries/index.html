@@ -423,7 +423,7 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
 <thead><tr><th>項目</th><th>GitHub Pages（免費版）</th><th>Vercel Hobby（免費版）</th></tr></thead>
 <tbody>
 <tr><td>網站大小</td><td>不超過 1 GB</td><td>未單獨限制</td></tr>
-<tr><td>每月流量</td><td>100 GB（軟性上限）</td><td><strong>已不看流量</strong>，改看下面兩項</td></tr>
+<tr><td>每月流量</td><td>100 GB（軟性上限）</td><td>100 GB Fast Data Transfer<br><small>（仍存在，但方案文件頁已不突出列出）</small></td></tr>
 <tr><td>Edge Requests（主要判準）</td><td>不適用</td><td><strong>100 萬次／月</strong></td></tr>
 <tr><td>Function Invocations</td><td>不適用（無後端）</td><td>100 萬次／月</td></tr>
 <tr><td>可建幾個專案</td><td>未設專案數上限</td><td>200 個</td></tr>
@@ -436,24 +436,35 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
 </tbody>
 </table>
 </div>
-<h3>Vercel 已經不看流量了，改看「Edge Requests」</h3>
-<p>這是 2026 年要注意的變化。<strong>Vercel 免費版的配額表裡已經沒有「每月幾 GB 流量」這一項</strong>，後台也不再顯示那個數字。所以「用到 50 GB 再說」這種判準已經沒辦法用了。</p>
-<p>取而代之的主要判準是 <strong>Edge Requests，免費版每月 100 萬次</strong>。</p>
+<h3>Vercel 現在同時看流量與「Edge Requests」</h3>
+<p>這是 2024 年 4 月起的改變，官方把原本主要看頻寬的模型<strong>拆成多個獨立指標</strong>：Fast Data Transfer、Edge Requests、Function Invocations 等各自計量。理由是讓每種資源能分別最佳化，按實際使用量計價。</p>
+<p>對免費版使用者的實際影響是：<strong>你現在有兩條可能先撞到的線</strong>。而且 Vercel 的方案文件頁把 Edge Requests 放在顯眼位置、沒有列出頻寬，很容易讓人以為頻寬那條不見了。它還在，只是要去 pricing 頁才看得到。</p>
+<div class="table-scroll">
+<table class="report-table">
+<thead><tr><th>指標</th><th>免費版上限</th><th>什麼樣的網站會先撞到</th></tr></thead>
+<tbody>
+<tr><td>Fast Data Transfer（流量）</td><td>100 GB／月</td><td>檔案大：影片、PDF、高解析原圖、大型下載</td></tr>
+<tr><td><strong>Edge Requests（請求數）</strong></td><td><strong>100 萬次／月</strong></td><td>檔案多但小：大量 JS 分塊、圖片、API 輪詢、爬蟲探測</td></tr>
+<tr><td>Function Invocations</td><td>100 萬次／月</td><td>有後端邏輯的網站</td></tr>
+<tr><td>可建幾個專案</td><td>200 個</td><td>用 AI 大量產站的人</td></tr>
+</tbody>
+</table>
+</div>
 <div class="infocard-grid">
   <div class="infocard">
     <b>Edge Request 是什麼</b>
-    <p>大約是「每個檔案的請求數」。一次頁面載入會產生十幾到二十幾個，因為 HTML、CSS、JS、每一張圖都各算一次。</p>
+    <p>每個到達 Vercel 的檔案請求都算一次。一次頁面首度載入通常十幾到二十幾次，因為 HTML、CSS、JS、每張圖、字型各算一次。</p>
   </div>
   <div class="infocard">
-    <b>100 萬次大概是多少人看</b>
-    <p>換算下來大約是<strong>每月五萬次頁面瀏覽</strong>。個人網站、課程頁、作品集離這個數字通常很遠。</p>
+    <b>100 萬次大概是多少</b>
+    <p>以每次載入 20 個請求估算，約 <strong>5 萬次冷載入</strong>。但這是請求容量換算，<strong>不等於訪客數</strong>，實際數字受快取、預抓與爬蟲影響很大。</p>
   </div>
   <div class="infocard">
     <b>怎麼看自己用了多少</b>
-    <p>Vercel 後台的 <strong>Usage 頁</strong>看得到 Edge Requests 的當月累計。設一個 <strong>50 萬次</strong>的心理警戒線，到了再考慮升級。</p>
+    <p>Vercel 後台 <strong>Usage 頁</strong>看得到當月累計。兩條線都要看，別只盯其中一條。</p>
   </div>
 </div>
-<p>超過限制的處理方式要特別注意：<strong>官方寫的是「要等 30 天才能再使用該功能」，是硬停，不是降速。</strong>沒有加購少量超額的選項。不過以個人網站的流量來說，這在可預見的未來不太會發生。</p>
+<p><strong>超額的處理方式</strong>：免費版沒有小額加購的緩衝。多數月度資源超額後，相關功能或專案可能被暫停，通常要等 30 天或升級。要注意的是每日部署 100 次是<strong>另一條不同的限制</strong>，命中後等一天就恢復，不是 30 天。</p>
 
 <p><strong>關於長期穩定度</strong>，坊間有不少沒根據的說法，這裡誠實講清楚：GitHub Pages 本次查證未找到 2023 到 2026 年間縮減免費額度的官方公告，這只能說「查無縮減紀錄」，不能說「保證不會變」。Vercel 常見的「2023 年縮減過免費額度」說法查無官方公告，那年的變更是 Pro 的 Function timeout 降到 15 秒，官方同時明寫免費版維持原設定；真正有紀錄的縮減是 2026 年，免費版的部署保留期改為 30 天。</p>
 </div></section>
@@ -504,7 +515,7 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
 <li><code>noindex</code> 擋搜尋不擋存取，亂碼網址是障礙不是門鎖</li>
 <li>真正的存取控制要付費：Vercel 170 美元起、GitHub 組織版 21 美元一人起</li>
 <li>Vercel 免費版條款只允許非商業用途，這跟流量無關</li>
-<li><strong>Vercel 已不看流量</strong>，改看 Edge Requests，免費版每月 100 萬次（約五萬次頁面瀏覽），後台 Usage 頁查得到</li>
+<li>Vercel 免費版有<strong>兩條線</strong>：100 GB 流量與 100 萬次 Edge Requests，後台 Usage 頁兩條都要看</li>
 <li>第四層「不上網」是最容易被忽略、但常常最正確的選項</li>
 </ul>
 </div></section>
@@ -519,8 +530,8 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
 <p>對策：先查那個「之後」要多少錢。我就是沒查，才以為隨時可以加。</p>
 <p><strong>坑四：只檢查首頁，忘了子頁</strong></p>
 <p>對策：<code>noindex</code> 是逐頁生效的。首頁有設不代表 <code>/report/</code> 有設。</p>
-<p><strong>坑五：還在用「幾 GB 流量」判斷 Vercel 額度</strong></p>
-<p>對策：2026 年起免費版配額表已經沒有這一項，後台也不顯示。改看 Edge Requests，警戒線設每月 50 萬次。</p>
+<p><strong>坑五：只盯著流量，忘了還有請求數這條線</strong></p>
+<p>對策：Vercel 方案文件頁把 Edge Requests 放在顯眼位置、沒列頻寬，容易讓人以為只剩一條線。實際上兩條都在，而且對圖片多、爬蟲多的網站，請求數那條通常會先撞到。</p>
 <p><strong>坑六：以為流量小就不會有商業用途問題</strong></p>
 <p>對策：條款限制跟流量無關。Vercel 免費版額度爆掉時是暫停整個帳號，不是只擋超額的部分。</p>
 </div></section>
@@ -545,7 +556,7 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
 <li>Vercel Deployment Protection 與價格：<a href="https://vercel.com/docs/deployment-protection" target="_blank" rel="noopener">Deployment Protection</a></li>
 <li>Google 官方說明 noindex 與存取控制的差別：<a href="https://developers.google.com/search/docs/crawling-indexing/control-what-you-share" target="_blank" rel="noopener">Control what you share</a></li>
 </ul>
-<p><strong>2026-07-28 補正</strong>：Vercel 免費版的計費模型已改，官方 Hobby 方案頁的配額表不再列出每月頻寬，改以 Edge Requests、Function Invocations、Projects、Deployments 計算。本文的 Edge Requests 數字與換算來自江昱德本人帳號後台實況核對，非 Codex 該輪查證結果（該輪查到的 100 GB 頻寬數字取自 pricing 頁，與 Hobby 方案頁現況不一致，已以方案頁為準）。</p>
+<p><strong>2026-07-28 補正</strong>：Vercel 自 2024 年 4 月起改用拆分式計價（<a href="https://vercel.com/blog/improved-infrastructure-pricing" target="_blank" rel="noopener">官方公告</a>），把頻寬、請求數、運算時間分開計量。本文初稿曾誤寫「免費版已取消頻寬配額」，經查證更正：<strong>100 GB Fast Data Transfer 仍然存在</strong>，可在 <a href="https://vercel.com/pricing" target="_blank" rel="noopener">pricing 頁</a>與官方比較頁確認；只是 <a href="https://vercel.com/docs/plans/hobby" target="_blank" rel="noopener">Hobby 方案文件頁</a>（2026-01-07 更新）的配額表未列出這一項，容易造成誤會。</p>
 <p><strong>本次查無官方說法（未當成事實使用）</strong>：GitHub 官方對「秘密網址是否算安全措施」無正式說明；GitHub Pages 可綁子網域的數值上限；Vercel 是否曾於 2023 年縮減 Hobby 額度；Vercel 失敗的 build 是否以完整分鐘數計入額度。</p>
 </div></section>
 
