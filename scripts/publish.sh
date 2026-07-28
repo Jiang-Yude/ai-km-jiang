@@ -167,4 +167,13 @@ SAFE_DEPLOY_CALLER="scripts/publish.sh" \
     "/articles.html" \
     "/site-index.json"
 
+echo "▶ 正式網域 jiangyude.com 同步切換（2026-07-28 加：此前只切 .vercel.app 別名，jiangyude.com 停留舊版）…"
+SAFE_DEPLOY_CALLER="scripts/publish.sh" \
+  bash "$SAFE_DEPLOY_TOOL" "$REPO_ROOT" "jiangyude.com" \
+    "/" \
+    "/offers.html" \
+    "/cases.html" \
+    "/skills.html" \
+    "/site-index.json"
+
 echo "🟢 發布完成：${TAG}（部署失敗會保留 commit/tag，但不採用壞版；正式切換失敗會把指定別名指回舊 deployment）"
