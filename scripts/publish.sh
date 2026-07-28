@@ -159,15 +159,7 @@ git push --atomic origin \
   "refs/tags/$TAG:refs/tags/$TAG"
 
 echo "▶ 共用安全部署：候選五站 HTTP 可達性全綠才切指定正式別名…"
-SAFE_DEPLOY_CALLER="scripts/publish.sh" \
-  bash "$SAFE_DEPLOY_TOOL" "$REPO_ROOT" "ai-km-jiang.vercel.app" \
-    "/" \
-    "/courses.html" \
-    "/knowledge-architecture.html" \
-    "/articles.html" \
-    "/site-index.json"
-
-echo "▶ 正式網域 jiangyude.com 同步切換（2026-07-28 加：此前只切 .vercel.app 別名，jiangyude.com 停留舊版）…"
+# 2026-07-28 起正式網域＝jiangyude.com（.vercel.app 由 Vercel 專案層 301 轉向主網域，驗收打 .vercel.app 會誤判）
 SAFE_DEPLOY_CALLER="scripts/publish.sh" \
   bash "$SAFE_DEPLOY_TOOL" "$REPO_ROOT" "jiangyude.com" \
     "/" \
@@ -175,5 +167,12 @@ SAFE_DEPLOY_CALLER="scripts/publish.sh" \
     "/cases.html" \
     "/skills.html" \
     "/site-index.json"
+
+echo "▶ 同步 .vercel.app 與 www 別名到同一 deployment（轉向層仍會 301 到主網域）…"
+LATEST=$(vercel alias ls 2>/dev/null | awk '$2=="jiangyude.com"{print $1; exit}')
+if [[ -n "$LATEST" ]]; then
+  vercel alias set "$LATEST" "www.jiangyude.com" >/dev/null 2>&1 || echo "  ⚠️ www 別名切換失敗（不擋發布）"
+  vercel alias set "$LATEST" "ai-km-jiang.vercel.app" >/dev/null 2>&1 || echo "  ⚠️ .vercel.app 別名切換失敗（不擋發布）"
+fi
 
 echo "🟢 發布完成：${TAG}（部署失敗會保留 commit/tag，但不採用壞版；正式切換失敗會把指定別名指回舊 deployment）"
