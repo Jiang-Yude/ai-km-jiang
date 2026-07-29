@@ -160,7 +160,38 @@ git push --atomic origin \
   "HEAD:refs/heads/$EXPECTED_BRANCH" \
   "refs/tags/$TAG:refs/tags/$TAG"
 
-echo "▶ 共用安全部署：候選五站 HTTP 可達性全綠才切指定正式別名…"
+# ─── 動態驗收路徑（2026-07-29 立，事故驅動）───
+# 固定五站不含新文章路徑，所以「索引宣告存在、檔案被 .vercelignore 擋著沒上傳」的 404
+# 不會被部署驗收抓到（2026-07-29 free-deploy-three-boundaries 就是這樣線上掛了 404）。
+# 這裡從本次 commit 解析出真的會上線的文章路徑，動態加進驗收清單。
+# 只驗「真的可能 404」的兩種，不是本次動到的所有文章
+# （全站批次會動到 200+ 篇既有文章，那些不會突然 404，全驗只是拖慢部署）
+EXTRA_VERIFY=()
+_add_verify() {
+  local _id="$1" _e
+  [[ -n "$_id" ]] || return 0
+  grep -qE "^${_id}/\$" .vercelignore 2>/dev/null && return 0   # 仍被擋著＝刻意排隊中，不該上線
+  [[ -f "${_id}/index.html" ]] || return 0
+  for _e in ${EXTRA_VERIFY[@]+"${EXTRA_VERIFY[@]}"}; do
+    [[ "$_e" == "/${_id}/" ]] && return 0
+  done
+  EXTRA_VERIFY+=("/${_id}/")
+}
+# ① 本次新增的文章
+while IFS= read -r _p; do
+  case "$_p" in
+    articles/*/index.html|en/articles/*/index.html) _add_verify "${_p%/index.html}" ;;
+  esac
+done < <(git show --name-only --diff-filter=A --pretty=format: HEAD 2>/dev/null | awk 'NF')
+# ② 本次從 .vercelignore 解除擋板的文章（2026-07-29 那次 404 的真正樣態：檔案早就在，只是擋板沒拿掉）
+while IFS= read -r _p; do
+  _add_verify "${_p%/}"
+done < <(git show HEAD -- .vercelignore 2>/dev/null | grep '^-articles/' | sed 's/^-//' | awk 'NF')
+if [[ ${#EXTRA_VERIFY[@]} -gt 0 ]]; then
+  echo "▶ 本次含新文章，驗收清單加入：${EXTRA_VERIFY[*]}"
+fi
+
+echo "▶ 共用安全部署：候選五站＋本次文章路徑 HTTP 可達性全綠才切指定正式別名…"
 # 2026-07-28 起正式網域＝jiangyude.com（.vercel.app 由 Vercel 專案層 301 轉向主網域，驗收打 .vercel.app 會誤判）
 SAFE_DEPLOY_CALLER="scripts/publish.sh" \
   bash "$SAFE_DEPLOY_TOOL" "$REPO_ROOT" "jiangyude.com" \
@@ -168,7 +199,8 @@ SAFE_DEPLOY_CALLER="scripts/publish.sh" \
     "/offers.html" \
     "/cases.html" \
     "/skills.html" \
-    "/site-index.json"
+    "/site-index.json" \
+    ${EXTRA_VERIFY[@]+"${EXTRA_VERIFY[@]}"}
 
 echo "▶ 同步 .vercel.app 與 www 別名到同一 deployment（轉向層仍會 301 到主網域）…"
 LATEST=$(vercel alias ls 2>/dev/null | awk '$2=="jiangyude.com"{print $1; exit}')

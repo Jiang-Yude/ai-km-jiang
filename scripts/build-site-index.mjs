@@ -309,11 +309,20 @@ function main() {
   const vocabNames = loadVocabNames();
   const warnings = checkVocab(items, vocabNames);
 
+  // site.base_url 以 profile.json 為準（該檔自稱 SSOT，2026-07-29 前是空頭支票：本腳本從未讀它，
+  // site 區塊是 oldIndex 自我延續，導致「改 profile 再重跑」完全沒效果，換網域時踩過）。
+  // name 與 summary 目前仍沿用舊檔，因為 profile.json 沒有語意對等的欄位（positioning 是定位句不是站台簡介），
+  // 硬綁會讓兩邊互相遷就。要收斂的話得先在 profile.json 新增 site_name／site_summary 欄位，屬另一個決策。
+  const profile = JSON.parse(read(path.join(ROOT, "profile.json")));
+  if (!profile.site) {
+    console.error("❌ profile.json 缺 site 欄位（site-index 的 base_url 來源）");
+    process.exit(1);
+  }
   const output = {
     version: "2.0",
     updated: todayTaipei(),
-    generated_by: "scripts/build-site-index.mjs（items 與 tag_dimensions 重跑會覆蓋、手改無效；site 區塊沿用舊檔原值，手改才會生效）",
-    site: oldIndex.site,
+    generated_by: "scripts/build-site-index.mjs（items／tag_dimensions 重跑會覆蓋、手改無效；site.base_url 取自 profile.json；site.name 與 site.summary 沿用舊檔，手改才會生效）",
+    site: { ...oldIndex.site, base_url: profile.site },
     tag_dimensions: collectTagDimensions(items),
     items,
   };
