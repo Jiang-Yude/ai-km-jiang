@@ -34,6 +34,26 @@ window.ARTICLE_TAGS = {
 
 window.ARTICLES = [
 
+  /* ── 通訊軟體 AI 友善度比較（教學） ── */
+  {
+    id: "messaging-apps-ai-friendliness",
+    url: "articles/messaging-apps-ai-friendliness/",
+    date: "2026-07-29",
+    updated: "2026-07-29",
+    title: "通訊軟體 AI 友善度比較：LINE、Telegram、Discord、Slack，你的 AI 該住在哪？",
+    problem: "想讓 AI 幫忙顧群組、當助教、把對話收成知識庫，卻不知道該用哪個通訊軟體，也分不清「平台自己有 AI」「AI 能當成員」「外部 Agent 讀得到」是三件不同的事。",
+    audience: "想加 AI 助教的講師與社群經營者、想讓 AI 整理群組對話的知識工作者，以及要向主管解釋平台選擇的評估者。",
+    summary: "先把「AI 友善度」拆成 AI 功能整合度、AI 成員化能力、Agent 控制台支援三件事，再用六個指標加評分錨點比較四個平台，附互動長條圖、雷達圖與能力矩陣。第三節整理 2026 上半年的實際變動：Slack 官方託管 MCP Server 與三種官方 Agent 進駐方式（頻道成員型、標記執行型、側欄助理型），Telegram 三波 Bot API 更新，Discord 的開發文件 MCP 為何不能讀聊天，LINE 原生 AI 的地區與次數限制，全部附官方來源。最後給三個判斷問題，加一份可直接複製的測試提示詞與三分支判準，讓你不用先做 bot 就能確認自己需要哪一種 AI。",
+    tags: {
+      topic: ["差異比較", "工具操作", "AIAgent", "AI工作流"],
+      level: ["基礎"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["line-group-ai-workflow", "web-chat-ai-vs-desktop-agent", "free-deploy-three-boundaries", "ai-employee-four-levels"]
+  },
+
+
   /* ── 部署平台選擇：免費版的三道邊界（教學） ── */
   {
     id: "free-deploy-three-boundaries",
@@ -50,7 +70,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["agent-web-turning-point", "docs-as-system-design-agent", "knowledge-base-three-vault-split", "recovery-over-perfection"]
+    related: ["agent-web-turning-point", "docs-as-system-design-agent", "knowledge-base-three-vault-split", "recovery-over-perfection", "messaging-apps-ai-friendliness"]
   },
 
 
@@ -370,7 +390,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["agent-workflow-builds-automation", "codex-only-auto-worklog", "how-to-train-your-ai-employee", "mika-to-laika-product-character-design"]
+    related: ["agent-workflow-builds-automation", "codex-only-auto-worklog", "how-to-train-your-ai-employee", "mika-to-laika-product-character-design", "messaging-apps-ai-friendliness"]
   },
 
   /* ── 14. 活的馬斯克技能包（教學）── */
@@ -1088,7 +1108,7 @@ window.ARTICLES = [
     summary: "用新手聽得懂的方式分清聊天型 AI、網頁工具與桌面型 Agent：專案模式的三個痛點、桌面版的範式轉變、Codex 與三層分工工作流，文科生不用寫程式也能上手。",
     tags: {"topic":["差異比較","AIAgent","工具操作","AI工作流"],"level":["零基礎入門"],"content_type":["教學文章"]},
     external: { threads: null, vocus: null },
-    related: ["youtube-to-opinion-report-workflow", "liberal-arts-agent-framework", "train-your-ai-agent-editor", "chatgpt-work-codex-choice", "ai-employee-four-levels"]
+    related: ["youtube-to-opinion-report-workflow", "liberal-arts-agent-framework", "train-your-ai-agent-editor", "chatgpt-work-codex-choice", "ai-employee-four-levels", "messaging-apps-ai-friendliness"]
   },
   {
     id: "ai-course-map-from-entry-to-workflow",
@@ -1597,6 +1617,6 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["how-to-train-your-ai-employee", "harness-mindset-for-bosses", "train-your-ai-agent-editor", "ai-native-not-transformation", "web-chat-ai-vs-desktop-agent", "knowledge-as-employee", "claude-skills-knowledge-assets", "docs-as-system-design-agent", "ai-tools-professional-judgment", "meeting-record-agent-workflow", "program-vs-ai-skill-library", "intent-first-prompting"]
+    related: ["how-to-train-your-ai-employee", "harness-mindset-for-bosses", "train-your-ai-agent-editor", "ai-native-not-transformation", "web-chat-ai-vs-desktop-agent", "knowledge-as-employee", "claude-skills-knowledge-assets", "docs-as-system-design-agent", "ai-tools-professional-judgment", "meeting-record-agent-workflow", "program-vs-ai-skill-library", "intent-first-prompting", "messaging-apps-ai-friendliness"]
   }
 ];
