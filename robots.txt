@@ -1,4 +1,24 @@
 User-agent: *
 Allow: /
 
+# ─── AI 檢索與引用（2026-07-29 立）───
+# 依據：主知識庫 _agent/skills/web-4o-optimization 的 references
+#       「2026-07-08-2309 GEO 數據找贏家閉環＋頁型優先序」4-3 節「有官方依據的可執行動作」
+# 下面兩條在 User-agent: * 已全放行的情況下是冗餘的，明寫是為了讓意圖可見：
+# 日後若有人替 * 加上 Disallow，這兩個檢索爬蟲仍會依自己的區塊放行，不會被誤擋。
+
+# OpenAI ChatGPT Search 的檢索爬蟲。官方說放行對內容被納入很重要，同時明說不保證排名。
+# https://help.openai.com/en/articles/9237897-chatgpt-
+User-agent: OAI-SearchBot
+Allow: /
+
+# Perplexity 的檢索爬蟲。
+# https://docs.perplexity.ai/docs/resources/perplexity-crawlers
+User-agent: PerplexityBot
+Allow: /
+
+# 刻意不寫 Google-Extended 相關規則：技能包 4-3 節那條建議限定「Gemini Enterprise Agent
+# Platform 的 Grounding with Google Search」這個產品，不可推及一般 Gemini API 或 Gemini Apps。
+# 目前站上沒有擋它，維持現狀，不加沒有官方依據的規則。
+
 Sitemap: https://jiangyude.com/sitemap.xml
