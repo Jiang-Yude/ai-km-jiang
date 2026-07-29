@@ -6,19 +6,19 @@
 <meta name="robots" content="index,follow">
 <title>Opus 5 實測：10 個步驟的 Loop，你的 AI 跑到第幾步就停了｜江江教練 · AI 知識管理</title>
 <meta name="description" content="知識管理場景的實測：Opus 4.8、Fable、Opus 5 Max 跑同一條十步驟長流程（文件推理、抽象問題、高不確定性、跨領域分析整合）的體感。差異出現在遇到解不了的第五步時：停住等人、找 Codex CLI 討論解掉、還是記錄後跳過繼續跑。文中定義長流程完工率（在安全紅線內走到明確結局的步驟數除以總步驟數，品質另計）、說明長流程斷點多半來自判斷標準不足而非技術難度，並附一段可直接複製的長流程續跑指令。">
-<link rel="canonical" href="https://ai-km-jiang.vercel.app/articles/long-task-completion-rate/">
+<link rel="canonical" href="https://jiangyude.com/articles/long-task-completion-rate/">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Opus 5 實測：10 個步驟的 Loop，你的 AI 跑到第幾步就停了｜江江教練">
-<meta property="og:image" content="https://ai-km-jiang.vercel.app/images/og/long-task-completion-rate.jpg">
+<meta property="og:image" content="https://jiangyude.com/images/og/long-task-completion-rate.jpg">
 <meta property="og:description" content="知識管理場景實測，Opus 4.8、Fable、Opus 5 Max 跑同一條十步驟長流程：長流程能不能跑完，看的是它遇到解不了的事情時做什麼。附三種卡關反應對照、長流程完工率定義與可複製的續跑指令。">
-<meta property="og:url" content="https://ai-km-jiang.vercel.app/articles/long-task-completion-rate/">
+<meta property="og:url" content="https://jiangyude.com/articles/long-task-completion-rate/">
 <meta property="og:locale" content="zh_TW">
 <meta property="og:site_name" content="江江教練 · AI 知識管理">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Opus 5 實測：10 個步驟的 Loop，你的 AI 跑到第幾步就停了">
-<meta name="twitter:image" content="https://ai-km-jiang.vercel.app/images/og/long-task-completion-rate.jpg">
+<meta name="twitter:image" content="https://jiangyude.com/images/og/long-task-completion-rate.jpg">
 <meta name="twitter:description" content="長流程完工率：我現在看模型能不能接長任務的第一個指標。Opus 4.8、Fable、Opus 5 Max 三種卡關反應實測。">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Opus 5 實測：10 個步驟的 Loop，你的 AI 跑到第幾步就停了","description":"知識管理場景的實測：Opus 4.8、Fable、Opus 5 Max 跑同一條十步驟長流程（文件推理、抽象問題、高不確定性、跨領域分析整合）的體感。差異出現在遇到解不了的第五步時：停住等人、找 Codex CLI 討論解掉、還是記錄後跳過繼續跑。文中定義長流程完工率＝在安全紅線內走到明確結局的步驟數除以總步驟數，品質另計。","keywords":"Opus 5,Opus 5 Max,Opus 4.8,Fable,長流程完工率,迴圈工程,Loop Engineering,AI 工作流,知識管理,Codex CLI,長任務,不確定性推理,跨領域分析,文件推理,抽象問題","author":{"@type":"Person","name":"江昱德","alternateName":"江江教練","jobTitle":"隱性知識提煉師、AI 應用規劃師"},"isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://ai-km-jiang.vercel.app/"},"datePublished":"2026-07-25","dateModified":"2026-07-25","inLanguage":"zh-Hant","url":"https://ai-km-jiang.vercel.app/articles/long-task-completion-rate/"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Opus 5 實測：10 個步驟的 Loop，你的 AI 跑到第幾步就停了","description":"知識管理場景的實測：Opus 4.8、Fable、Opus 5 Max 跑同一條十步驟長流程（文件推理、抽象問題、高不確定性、跨領域分析整合）的體感。差異出現在遇到解不了的第五步時：停住等人、找 Codex CLI 討論解掉、還是記錄後跳過繼續跑。文中定義長流程完工率＝在安全紅線內走到明確結局的步驟數除以總步驟數，品質另計。","keywords":"Opus 5,Opus 5 Max,Opus 4.8,Fable,長流程完工率,迴圈工程,Loop Engineering,AI 工作流,知識管理,Codex CLI,長任務,不確定性推理,跨領域分析,文件推理,抽象問題","author":{"@type":"Person","name":"江昱德","alternateName":"江江教練","jobTitle":"隱性知識提煉師、AI 應用規劃師"},"isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://jiangyude.com/"},"datePublished":"2026-07-25","dateModified":"2026-07-25","inLanguage":"zh-Hant","url":"https://jiangyude.com/articles/long-task-completion-rate/"}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">

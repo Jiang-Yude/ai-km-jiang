@@ -6,22 +6,22 @@
 <meta name="robots" content="index,follow">
 <title>Codex 整個大當機？重安裝後第一步先檢查 logs_2.sqlite｜江江教練 · AI 知識管理</title>
 <meta name="description" content="Codex Desktop 打不開、更新無效、最後只能重安裝時，第一步先檢查 logs_2.sqlite。這篇整理 log 資料庫是什麼、怎麼安全處理、怎麼設定自動巡檢，以及如何避免任務心血跟著消失。">
-<link rel="canonical" href="https://ai-km-jiang.vercel.app/articles/codex-log-health-check/">
-<link rel="alternate" hreflang="zh-Hant" href="https://ai-km-jiang.vercel.app/articles/codex-log-health-check/">
-<link rel="alternate" hreflang="en" href="https://ai-km-jiang.vercel.app/en/articles/codex-log-health-check/">
-<link rel="alternate" hreflang="x-default" href="https://ai-km-jiang.vercel.app/articles/codex-log-health-check/">
+<link rel="canonical" href="https://jiangyude.com/articles/codex-log-health-check/">
+<link rel="alternate" hreflang="zh-Hant" href="https://jiangyude.com/articles/codex-log-health-check/">
+<link rel="alternate" hreflang="en" href="https://jiangyude.com/en/articles/codex-log-health-check/">
+<link rel="alternate" hreflang="x-default" href="https://jiangyude.com/articles/codex-log-health-check/">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Codex 整個大當機？重安裝後第一步先檢查 logs_2.sqlite｜江江教練">
-<meta property="og:image" content="https://ai-km-jiang.vercel.app/images/articles/codex-log-health-check-cover-image2.jpg">
+<meta property="og:image" content="https://jiangyude.com/images/articles/codex-log-health-check-cover-image2.jpg">
 <meta property="og:description" content="真實 Codex 當機案例：重安裝後先檢查 logs_2.sqlite，再建立 log 健康巡檢自動化。">
-<meta property="og:url" content="https://ai-km-jiang.vercel.app/articles/codex-log-health-check/">
+<meta property="og:url" content="https://jiangyude.com/articles/codex-log-health-check/">
 <meta property="og:locale" content="zh_TW">
 <meta property="og:site_name" content="江江教練 · AI 知識管理">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Codex 整個大當機？重安裝後第一步先檢查 logs_2.sqlite｜江江教練">
-<meta name="twitter:image" content="https://ai-km-jiang.vercel.app/images/articles/codex-log-health-check-cover-image2.jpg">
+<meta name="twitter:image" content="https://jiangyude.com/images/articles/codex-log-health-check-cover-image2.jpg">
 <meta name="twitter:description" content="真實 Codex 當機案例：重安裝後先檢查 logs_2.sqlite，再建立 log 健康巡檢自動化。">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Codex 整個大當機？重安裝後第一步先檢查 logs_2.sqlite","description":"Codex Desktop 打不開、更新無效、最後只能重安裝時，第一步先檢查 logs_2.sqlite。這篇整理 log 資料庫是什麼、怎麼安全處理、怎麼設定自動巡檢，以及如何避免任務心血跟著消失。","author":{"@type":"Person","name":"江昱德","alternateName":"江江教練","jobTitle":"隱性知識提煉師、AI 應用規劃師"},"isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://ai-km-jiang.vercel.app/"},"image":"https://ai-km-jiang.vercel.app/images/articles/codex-log-health-check-cover-image2.jpg","datePublished":"2026-06-23","dateModified":"2026-06-23","inLanguage":"zh-Hant","url":"https://ai-km-jiang.vercel.app/articles/codex-log-health-check/"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Codex 整個大當機？重安裝後第一步先檢查 logs_2.sqlite","description":"Codex Desktop 打不開、更新無效、最後只能重安裝時，第一步先檢查 logs_2.sqlite。這篇整理 log 資料庫是什麼、怎麼安全處理、怎麼設定自動巡檢，以及如何避免任務心血跟著消失。","author":{"@type":"Person","name":"江昱德","alternateName":"江江教練","jobTitle":"隱性知識提煉師、AI 應用規劃師"},"isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://jiangyude.com/"},"image":"https://jiangyude.com/images/articles/codex-log-health-check-cover-image2.jpg","datePublished":"2026-06-23","dateModified":"2026-06-23","inLanguage":"zh-Hant","url":"https://jiangyude.com/articles/codex-log-health-check/"}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">

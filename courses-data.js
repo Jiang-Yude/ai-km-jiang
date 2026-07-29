@@ -54,7 +54,7 @@ window.COURSES = [
     summary: "永力智庫主辦、育成社福基金會共同主辦的三小時實體工作坊，地點在育成蕃薯藤餐廳。多數人想到數位分身是一張像你的臉，但真正能幫你做事的那一個，重點在它懂不懂你怎麼做事。現場帶三件事：弄懂 AI 代理人是什麼、體驗做好的顧問型分身、學會把自己的 AI 設定得更懂你。一支手機就能參加，帶筆電操作更順手。",
     detail_url: "courses/2026-08-15-ai-that-knows-you/",
     materials: [
-      { label: "上課投影頁 ↗", url: "https://ai-km-jiang.vercel.app/courses/2026-08-15-ai-that-knows-you/" }
+      { label: "上課投影頁 ↗", url: "https://jiangyude.com/courses/2026-08-15-ai-that-knows-you/" }
     ],
     registration: {
       status: "open",
@@ -131,9 +131,9 @@ window.COURSES = [
     host: "江江教練",
     tags: ["扶輪社", "ChatGPT", "Gemini", "NotebookLM", "商會"],
     summary: "給商會社員：ChatGPT 專案、Gemini Gem、NotebookLM 三套工具的實作整合。",
-    detail_url: "https://ai-km-jiang.vercel.app/courses/2026-05-30-yongli-ai-workshop/",
+    detail_url: "https://jiangyude.com/courses/2026-05-30-yongli-ai-workshop/",
     materials: [
-      { label: "上課簡報", url: "https://ai-km-jiang.vercel.app/courses/2026-05-30-yongli-ai-workshop/" }
+      { label: "上課簡報", url: "https://jiangyude.com/courses/2026-05-30-yongli-ai-workshop/" }
     ],
     registration: {
       status: "private",
@@ -171,9 +171,9 @@ window.COURSES = [
     host: "江江教練",
     tags: ["AI員工", "AI Agent", "工作流", "一人公司", "創業者", "重複工作"],
     summary: "把 AI 從聊天工具，訓練成真的能幫你做事的 AI 員工。適合老闆、創業者、一人公司、接案者，以及想把 AI 真的放進工作流程的人。",
-    detail_url: "https://ai-km-jiang.vercel.app/courses/2026-06-03-1719-ai-employee-course.html",
+    detail_url: "https://jiangyude.com/courses/2026-06-03-1719-ai-employee-course.html",
     materials: [
-      { label: "完整講座簡報", url: "https://ai-km-jiang.vercel.app/courses/ai-employee-deck/" }
+      { label: "完整講座簡報", url: "https://jiangyude.com/courses/ai-employee-deck/" }
     ],
     registration: {
       status: "ended",
@@ -210,7 +210,7 @@ window.COURSES = [
     host: "江江教練",
     tags: ["文藻大學", "講師", "行政人員", "Agent", "工作流", "知識庫"],
     summary: "給大學教授、講師與行政人員的線上課：從資料收集整理，到建立自己的知識庫與 AI 工作流。",
-    detail_url: "https://ai-km-jiang.vercel.app/courses/2026-05-23-agent-workflow/",
+    detail_url: "https://jiangyude.com/courses/2026-05-23-agent-workflow/",
     materials: [],
     registration: {
       status: "private",
@@ -268,10 +268,10 @@ window.COURSES = [
     host: "江江教練",
     tags: ["嘉我好漾", "AI小編", "品牌特色", "靈感池", "開頭公式", "發文節奏"],
     summary: "嘉我好漾線上青創課，把 AI 從工具變成員工：① 先讓它認識你的品牌特色；② 建立靈感池，靈感詞加標籤，不用每次從零想；③ 五種開頭公式加發文節奏，吸睛轉單。",
-    detail_url: "https://ai-km-jiang.vercel.app/courses/2026-07-08-ai-agent-editor/",
+    detail_url: "https://jiangyude.com/courses/2026-07-08-ai-agent-editor/",
     materials: [
-      { label: "上課簡報 ↗", url: "https://ai-km-jiang.vercel.app/courses/2026-07-08-ai-agent-editor/" },
-      { label: "學員問卷落點地圖 ↗", url: "https://ai-km-jiang.vercel.app/courses/2026-07-08-ai-agent-editor/map.html" }
+      { label: "上課簡報 ↗", url: "https://jiangyude.com/courses/2026-07-08-ai-agent-editor/" },
+      { label: "學員問卷落點地圖 ↗", url: "https://jiangyude.com/courses/2026-07-08-ai-agent-editor/map.html" }
     ],
     registration: {
       status: "ended",
@@ -292,9 +292,9 @@ window.COURSES = [
     host: "江江教練",
     tags: ["ChatGPT Work", "行政工作", "AI工作流", "工作交代"],
     summary: "從一般行政工作的角度，帶大家看懂 ChatGPT Work 到底能幫我們做什麼，以及該怎麼交代，才真的能幫你省下時間。",
-    detail_url: "https://ai-km-jiang.vercel.app/courses/2026-07-12-chatgpt-work/",
+    detail_url: "https://jiangyude.com/courses/2026-07-12-chatgpt-work/",
     materials: [
-      { label: "課後版簡報 ↗", url: "https://ai-km-jiang.vercel.app/courses/2026-07-12-chatgpt-work/" }
+      { label: "課後版簡報 ↗", url: "https://jiangyude.com/courses/2026-07-12-chatgpt-work/" }
     ],
     registration: {
       status: "ended",
@@ -318,7 +318,7 @@ window.COURSES = [
     detail_url: "https://ai-visual-ws-4e74f0.vercel.app/",
     materials: [
       { label: "上課簡報 ↗", url: "https://ai-visual-ws-4e74f0.vercel.app/" },
-      { label: "學員問卷落點地圖 ↗", url: "https://ai-km-jiang.vercel.app/courses/2026-07-08-ai-agent-editor/map.html" }
+      { label: "學員問卷落點地圖 ↗", url: "https://jiangyude.com/courses/2026-07-08-ai-agent-editor/map.html" }
     ],
     registration: {
       status: "ended",

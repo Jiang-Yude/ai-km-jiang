@@ -13,7 +13,7 @@
  *   node scripts/og-shot.mjs four-lens-rapid-review
  *
  * 截完還要手動把該篇 index.html 的 og:image 與 twitter:image 指到
- *   https://ai-km-jiang.vercel.app/images/og/<slug>.jpg
+ *   https://jiangyude.com/images/og/<slug>.jpg
  * （新文章用 _templates/article-template.html 的話，預設就填這個路徑即可。）
  *
  * 需求：全域已裝 playwright（npm i -g playwright && playwright install chromium）。

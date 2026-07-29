@@ -312,7 +312,7 @@ function main() {
   const output = {
     version: "2.0",
     updated: todayTaipei(),
-    generated_by: "scripts/build-site-index.mjs（手改無效，重跑會覆蓋）",
+    generated_by: "scripts/build-site-index.mjs（items 與 tag_dimensions 重跑會覆蓋、手改無效；site 區塊沿用舊檔原值，手改才會生效）",
     site: oldIndex.site,
     tag_dimensions: collectTagDimensions(items),
     items,
