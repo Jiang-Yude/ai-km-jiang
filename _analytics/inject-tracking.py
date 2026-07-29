@@ -48,12 +48,40 @@ def ga_snippet(gid):
 </script>
 """
 
+def blocked_dirs():
+    """讀 .vercelignore 取出被擋著不上線的文章目錄（排隊中的草稿，注入沒意義）。"""
+    p = os.path.join(ROOT, ".vercelignore")
+    if not os.path.exists(p):
+        return set()
+    out = set()
+    for line in open(p, encoding="utf-8"):
+        line = line.strip()
+        if line and not line.startswith("#") and line.endswith("/"):
+            out.add(os.path.join(ROOT, line.rstrip("/")))
+    return out
+
 def html_files():
+    """
+    2026-07-29 修：原本寫死四個 glob（*.html / en/*.html / articles/*/index.html /
+    ai-trends/*/index.html），漏掉 en/articles/（60 篇英文文章全部沒被注入）、
+    en/ai-trends/、courses/、cases/、offers/、ai-office/。
+    諷刺的是本檔開頭的說明正是在警告「雙語站漏掉英文頁那一側」。
+    改成走訪全站，用排除清單而不是白名單，新增目錄不會再被漏掉。
+    """
+    skip_dirs = {".git", "node_modules", "_trash", "_自動備份", "_templates", "_analytics", ".vercel"}
+    blocked = blocked_dirs()
     out = []
-    for pat in ["*.html", "en/*.html", "articles/*/index.html", "ai-trends/*/index.html"]:
-        out += glob.glob(os.path.join(ROOT, pat))
-    # 排除被 vercelignore 的目錄
-    return [f for f in out if "/_trash/" not in f and "/_templates/" not in f]
+    for dp, dn, fn in os.walk(ROOT):
+        dn[:] = [d for d in dn if d not in skip_dirs]
+        if any(dp == b or dp.startswith(b + os.sep) for b in blocked):
+            continue
+        for f in fn:
+            if not f.endswith(".html"):
+                continue
+            if f.startswith("google") or f.startswith("index-parallel"):
+                continue  # Google 驗證檔與平行版草稿不注入
+            out.append(os.path.join(dp, f))
+    return sorted(out)
 
 def inject(path):
     s = open(path, encoding="utf-8").read()
