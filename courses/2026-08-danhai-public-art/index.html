@@ -1,0 +1,1042 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex, nofollow" />
+<title>淡水公共藝術 AI 創作課 · 上課簡報 · 旅學堂 × 江江教練</title>
+<style>
+  :root {
+    --bg-1: #F5EDE7; --bg-2: #EFEBE9; --bg-3: #E8DED9; --bg-4: #D7CCC8;
+    --bg-5: #C9BAB1; --bg-6: #B5A199; --bg-7: #8B6F5C; --bg-8: #5D4037; --bg-9: #3E2723;
+    --text-on-light:#4E342E; --text-on-dark:#F5EDE0;
+    --text-soft-light:#5D4037; --text-soft-dark: rgba(245,237,224,0.86);
+    --accent:#D88C3A; --accent-light:#D4A574; --accent-on-dark:#E6B87D;
+    --subtle-light:#BCAAA4; --subtle-dark: rgba(245,237,224,0.20);
+    --font-display: "PingFang TC","Noto Sans TC","Inter","Helvetica Neue",system-ui,sans-serif;
+    --font-body:    "PingFang TC","Noto Sans TC","Inter",system-ui,sans-serif;
+    --font-mono:    "JetBrains Mono","SF Mono",ui-monospace,monospace;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin:0; font-family:var(--font-body); background:var(--bg-1); -webkit-font-smoothing:antialiased; }
+
+  /* 一頁一段，正常文件流。不使用 sticky 疊加，避免上課滑動時內容被蓋住。 */
+  section {
+    position: relative; min-height: 100vh; display: grid; place-items: center;
+    padding: 88px 56px; isolation: isolate;
+  }
+  section[data-bg="1"] { background: var(--bg-1); color: var(--text-on-light); }
+  section[data-bg="2"] { background: var(--bg-2); color: var(--text-on-light); }
+  section[data-bg="3"] { background: var(--bg-3); color: var(--text-on-light); }
+  section[data-bg="4"] { background: var(--bg-4); color: var(--text-on-light); }
+  section[data-bg="5"] { background: var(--bg-5); color: var(--text-on-light); }
+  section[data-bg="6"] { background: var(--bg-6); color: var(--text-on-light); }
+  section[data-bg="7"] { background: var(--bg-7); color: var(--text-on-dark); }
+  section[data-bg="8"] { background: var(--bg-8); color: var(--text-on-dark); }
+  section[data-bg="9"] { background: var(--bg-9); color: var(--text-on-dark); }
+
+  .act-cap { font-family:var(--font-mono); font-size:15px; letter-spacing:0.18em; text-transform:uppercase;
+    font-weight:700; color:var(--accent); margin-bottom:24px; display:inline-flex; align-items:center; gap:12px; }
+  .act-cap::before { content:""; width:28px; height:1px; background:var(--accent); }
+  section[data-bg="7"] .act-cap, section[data-bg="8"] .act-cap, section[data-bg="9"] .act-cap { color: var(--accent-on-dark); }
+  section[data-bg="7"] .act-cap::before, section[data-bg="8"] .act-cap::before, section[data-bg="9"] .act-cap::before { background: var(--accent-on-dark); }
+
+  .display { font-family:var(--font-display); font-size:clamp(44px,7vw,104px); line-height:1.14; font-weight:800; letter-spacing:-0.02em; margin:0 0 24px; }
+  .display.sm { font-size:clamp(34px,5vw,68px); }
+  .h1 { font-family:var(--font-display); font-size:clamp(26px,3.4vw,40px); line-height:1.25; font-weight:700; margin:0 0 20px; }
+  .h2 { font-size:22px; line-height:1.35; font-weight:700; margin:0 0 10px; }
+  .lead { font-size:clamp(20px,1.8vw,24px); line-height:1.7; color:var(--text-soft-light); max-width:860px; margin:0 auto; }
+  .body { font-size:19px; line-height:1.75; color:var(--text-soft-light); margin:0; }
+  .mono-note { font-family:var(--font-mono); font-size:16px; letter-spacing:0.1em; color:var(--accent); margin-top:36px; }
+  section[data-bg="7"] .lead, section[data-bg="8"] .lead, section[data-bg="9"] .lead,
+  section[data-bg="7"] .body, section[data-bg="8"] .body, section[data-bg="9"] .body { color: var(--text-soft-dark); }
+  section[data-bg="7"] .mono-note, section[data-bg="8"] .mono-note, section[data-bg="9"] .mono-note { color: var(--accent-on-dark); }
+  /* bg-7 是最亮的深底，淺字改用滿版不透明，投影才夠清楚 */
+  section[data-bg="7"] .lead, section[data-bg="7"] .body,
+  section[data-bg="7"] .steprow .v, section[data-bg="7"] .factbox p { color: var(--text-on-dark); }
+
+  .wrap { width:100%; max-width:1080px; text-align:center; }
+  .wrap.wide { max-width:1180px; }
+  .wrap.left { text-align:left; }
+
+  .dot-indicator { position:fixed; right:28px; top:50%; transform:translateY(-50%); display:flex; flex-direction:column; gap:13px; z-index:100; }
+  .dot-indicator a { width:10px; height:10px; border-radius:50%; background:rgba(78,52,46,0.22); transition:all .35s cubic-bezier(.22,1,.36,1); position:relative; }
+  .dot-indicator a:hover { background:rgba(78,52,46,0.5); }
+  .dot-indicator a.active { background:var(--accent); transform:scale(1.5); box-shadow:0 0 0 4px rgba(216,140,58,0.18); }
+  .dot-indicator a .lbl { position:absolute; right:22px; top:50%; transform:translateY(-50%); font-family:var(--font-mono); font-size:13px; letter-spacing:.12em; color:var(--text-soft-light); white-space:nowrap; opacity:0; transition:opacity .25s; pointer-events:none; background:rgba(255,248,240,0.82); padding:3px 8px; border-radius:6px; }
+  /* 標籤只在滑動中或滑鼠移上去時浮出，停止滑動 1.1 秒後自動消失 */
+  .dot-indicator.scrolling a.active .lbl { opacity:1; }
+  .dot-indicator a:hover .lbl { opacity:1; }
+  body.on-dark .dot-indicator a { background:rgba(245,237,224,0.25); }
+  body.on-dark .dot-indicator a.active { background:var(--accent-on-dark); box-shadow:0 0 0 4px rgba(230,184,125,0.22); }
+  body.on-dark .dot-indicator a .lbl { color:var(--text-soft-dark); background:rgba(62,39,35,0.82); }
+
+  .progress { position:fixed; top:0; left:0; height:3px; width:0%; background:linear-gradient(90deg,var(--accent),var(--accent-light)); z-index:200; transition:width .15s linear; }
+
+  /* 封面橫幅：左字右圖 */
+  .hero { display:grid; grid-template-columns:1.15fr 0.85fr; gap:56px; align-items:center; text-align:left; width:100%; max-width:1180px; }
+  .hero-art { position:relative; border-radius:22px; overflow:hidden; box-shadow:0 26px 60px rgba(62,39,35,0.22); border:1px solid rgba(255,248,240,0.6); }
+  .hero-art img { display:block; width:100%; height:auto; }
+  .hero .kicker { display:inline-block; font-family:var(--font-mono); font-size:15px; letter-spacing:0.2em; color:var(--accent); font-weight:700; margin-bottom:18px; }
+  .hero .subtitle { font-size:clamp(19px,1.7vw,23px); line-height:1.6; color:var(--text-soft-light); margin:0 0 26px; }
+  .hero .withline { display:inline-flex; align-items:center; gap:14px; font-size:20px; font-weight:700; color:var(--text-on-light); background:rgba(255,248,240,0.7); border:1px solid var(--subtle-light); border-radius:999px; padding:9px 22px; margin-bottom:26px; }
+  .hero .withline span { color:var(--accent); font-family:var(--font-mono); }
+  .facts { display:flex; flex-wrap:wrap; gap:10px; margin:0 0 24px; padding:0; list-style:none; }
+  .facts li { font-size:17px; background:rgba(255,248,240,0.6); border:1px solid var(--subtle-light); border-radius:10px; padding:8px 14px; color:var(--text-soft-light); }
+  .backlink { display:inline-flex; align-items:center; gap:8px; font-size:17px; color:var(--accent); text-decoration:none; font-weight:600; margin-bottom:20px; }
+  .backlink:hover { text-decoration:underline; }
+
+  /* 流程總覽：三大段落 */
+  .phases { display:grid; gap:16px; margin-top:44px; text-align:left; width:100%; }
+  .phase { display:grid; grid-template-columns:120px 1fr 280px; gap:26px; align-items:center;
+    background:rgba(255,248,240,0.5); border:1px solid var(--subtle-light); border-radius:18px; padding:20px 26px; }
+  .phase.main { border:2px solid var(--accent); background:rgba(255,248,240,0.82); }
+  .phase .no { font-family:var(--font-mono); font-size:14px; letter-spacing:0.14em; color:var(--accent); font-weight:700; }
+  .phase .no b { display:block; font-family:var(--font-display); font-size:32px; letter-spacing:-0.02em; line-height:1.1; margin-top:2px; color:var(--text-on-light); }
+  .phase.side .no b { font-size:22px; color:var(--text-soft-light); }
+  .phase h3 { font-size:27px; line-height:1.3; margin:0 0 6px; color:var(--text-on-light); }
+  .phase.side h3 { font-size:21px; }
+  .phase p { font-size:18px; line-height:1.6; margin:0; color:var(--text-soft-light); }
+  .phase .out { font-size:17px; line-height:1.55; background:rgba(216,140,58,0.16); border-radius:12px; padding:13px 16px; color:var(--text-on-light); font-weight:600; }
+  .phase.side .out { background:rgba(78,52,46,0.07); font-weight:400; color:var(--text-soft-light); }
+
+  .outcome { display:inline-flex; align-items:center; gap:12px; background:var(--accent); color:#fff; border-radius:999px;
+    padding:12px 26px; font-size:19px; font-weight:700; margin-top:26px; text-align:left; line-height:1.4; }
+  .outcome span { font-family:var(--font-mono); font-size:14px; letter-spacing:0.14em; opacity:.85; }
+  section[data-bg="7"] .outcome, section[data-bg="8"] .outcome, section[data-bg="9"] .outcome { background:var(--accent-on-dark); color:var(--bg-9); }
+
+  .grid-3 { display:grid; grid-template-columns:repeat(3,1fr); gap:24px; margin-top:44px; }
+  .grid-2 { display:grid; grid-template-columns:repeat(2,1fr); gap:24px; margin-top:40px; }
+  .card { background:rgba(255,248,240,0.55); border:1px solid var(--subtle-light); border-radius:16px; padding:28px 26px; text-align:left; }
+  .card .num { font-family:var(--font-mono); font-size:15px; letter-spacing:0.16em; color:var(--accent); font-weight:700; margin-bottom:12px; }
+  section[data-bg="7"] .card, section[data-bg="8"] .card, section[data-bg="9"] .card { background:rgba(255,248,240,0.08); border-color:var(--subtle-dark); }
+  section[data-bg="7"] .card .num, section[data-bg="8"] .card .num, section[data-bg="9"] .card .num { color:var(--accent-on-dark); }
+  section[data-bg="8"] .card .body, section[data-bg="9"] .card .body { color:var(--text-soft-dark); }
+  section[data-bg="7"] .card .body { color:var(--text-on-dark); }
+  section[data-bg="7"] .card .h2, section[data-bg="8"] .card .h2, section[data-bg="9"] .card .h2 { color:var(--text-on-dark); }
+
+  /* 步驟表 */
+  .stepbox { text-align:left; margin-top:36px; border:1px solid var(--subtle-light); border-radius:18px; overflow:hidden; background:rgba(255,248,240,0.55); }
+  .steprow { display:grid; grid-template-columns:215px 1fr; gap:24px; padding:18px 26px; border-bottom:1px solid var(--subtle-light); align-items:start; }
+  .steprow:last-child { border-bottom:none; }
+  .steprow .k { font-family:var(--font-mono); font-size:18px; font-weight:700; color:var(--accent); letter-spacing:0.04em; }
+  .steprow .v { font-size:19px; line-height:1.7; color:var(--text-soft-light); }
+  .steprow .v b { color:var(--text-on-light); }
+  .steprow.hi { background:rgba(216,140,58,0.10); }
+  section[data-bg="7"] .stepbox, section[data-bg="8"] .stepbox, section[data-bg="9"] .stepbox { background:rgba(255,248,240,0.08); border-color:var(--subtle-dark); }
+  section[data-bg="7"] .steprow, section[data-bg="8"] .steprow, section[data-bg="9"] .steprow { border-color:var(--subtle-dark); }
+  section[data-bg="7"] .steprow .k, section[data-bg="8"] .steprow .k, section[data-bg="9"] .steprow .k { color:var(--accent-on-dark); }
+  section[data-bg="8"] .steprow .v, section[data-bg="9"] .steprow .v { color:var(--text-soft-dark); }
+  section[data-bg="7"] .steprow .v b, section[data-bg="8"] .steprow .v b, section[data-bg="9"] .steprow .v b { color:var(--text-on-dark); }
+
+  /* 提醒框 */
+  .factbox { text-align:left; margin-top:28px; border-left:4px solid var(--accent); border-radius:0 12px 12px 0; background:rgba(255,248,240,0.45); padding:20px 24px; }
+  .factbox p { font-size:19px; line-height:1.75; color:var(--text-soft-light); margin:0 0 8px; }
+  .factbox p:last-child { margin-bottom:0; }
+  section[data-bg="7"] .factbox, section[data-bg="8"] .factbox, section[data-bg="9"] .factbox { background:rgba(255,248,240,0.08); border-left-color:var(--accent-on-dark); }
+  section[data-bg="8"] .factbox p, section[data-bg="9"] .factbox p { color:var(--text-soft-dark); }
+
+  /* 三元素徽章 */
+  .trio { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; margin-top:44px; }
+  .trio .t { background:rgba(255,248,240,0.62); border:2px solid var(--accent); border-radius:18px; padding:26px 22px; text-align:center; }
+  .trio .t .n { font-family:var(--font-mono); font-size:34px; font-weight:800; color:var(--accent); line-height:1; margin-bottom:12px; }
+  .trio .t h3 { font-size:24px; margin:0 0 8px; color:var(--text-on-light); }
+  .trio .t p { font-size:17px; line-height:1.6; color:var(--text-soft-light); margin:0; }
+
+  /* 表格 */
+  .tbl { width:100%; border-collapse:collapse; margin-top:28px; text-align:left; font-size:18px; }
+  .tbl th, .tbl td { border:1px solid var(--subtle-light); padding:12px 16px; vertical-align:top; line-height:1.6; color:var(--text-soft-light); }
+  .tbl th { background:rgba(216,140,58,0.14); color:var(--text-on-light); font-weight:700; white-space:nowrap; }
+  .tbl td b { color:var(--text-on-light); }
+  section[data-bg="8"] .tbl th, section[data-bg="9"] .tbl th { background:rgba(230,184,125,0.18); color:var(--text-on-dark); }
+  section[data-bg="8"] .tbl th, section[data-bg="8"] .tbl td, section[data-bg="9"] .tbl th, section[data-bg="9"] .tbl td { border-color:var(--subtle-dark); color:var(--text-soft-dark); }
+  section[data-bg="8"] .tbl td b, section[data-bg="9"] .tbl td b { color:var(--text-on-dark); }
+  .scrollx { overflow-x:auto; }
+
+  /* 指令：可展開、可一鍵複製 */
+  .promptbox { text-align:left; margin-top:26px; border:2px solid var(--accent); border-radius:18px; background:rgba(255,248,240,0.72); overflow:hidden; }
+  .promptbox > summary { list-style:none; cursor:pointer; padding:20px 24px; display:flex; align-items:center; justify-content:space-between; gap:14px; flex-wrap:wrap; }
+  .promptbox > summary::-webkit-details-marker { display:none; }
+  .promptbox > summary .plabel { font-family:var(--font-mono); font-size:15px; letter-spacing:0.12em; color:var(--accent); font-weight:700; }
+  .promptbox > summary .ptitle { font-size:23px; font-weight:700; color:var(--text-on-light); }
+  .promptbox > summary .phint { font-size:16px; color:var(--text-soft-light); }
+  .promptbox > summary::before { content:"▸ 展開"; font-family:var(--font-mono); font-size:14px; color:var(--accent); order:9; }
+  .promptbox[open] > summary::before { content:"▾ 收起"; }
+  .promptbox .pbody { padding:0 24px 22px; }
+  .promptbox pre { margin:0; padding:18px 20px; background:rgba(62,39,35,0.06); border-radius:12px; font-family:var(--font-mono); font-size:15px; line-height:1.75; white-space:pre-wrap; word-break:break-word; max-height:52vh; overflow-y:auto; color:var(--text-on-light); }
+  .promptbox .copy { margin-top:16px; font-family:var(--font-body); font-size:17px; font-weight:600; padding:11px 26px; border-radius:999px; border:1px solid var(--accent); background:var(--accent); color:#fff; cursor:pointer; }
+  .promptbox .copy:hover { opacity:.86; }
+  .promptbox .ptip { font-size:17px; line-height:1.7; color:var(--text-soft-light); margin:0 0 14px; }
+  section[data-bg="8"] .promptbox, section[data-bg="9"] .promptbox { background:rgba(255,248,240,0.08); border-color:var(--accent-on-dark); }
+  section[data-bg="8"] .promptbox pre, section[data-bg="9"] .promptbox pre { background:rgba(0,0,0,0.22); color:var(--text-on-dark); }
+  section[data-bg="8"] .promptbox .ptitle, section[data-bg="9"] .promptbox .ptitle { color:var(--text-on-dark); }
+
+  /* 桌長折疊 */
+  .hostbox { text-align:left; margin-top:26px; border:2px dashed var(--accent); border-radius:16px; background:rgba(255,248,240,0.4); overflow:hidden; }
+  .hostbox > summary { list-style:none; cursor:pointer; padding:16px 22px; font-size:19px; font-weight:700; color:var(--accent); display:flex; align-items:center; gap:10px; }
+  .hostbox > summary::-webkit-details-marker { display:none; }
+  .hostbox > summary::before { content:"▸"; font-family:var(--font-mono); }
+  .hostbox[open] > summary::before { content:"▾"; }
+  .hostbox .hbody { padding:0 22px 20px; }
+  .hostbox .hbody p, .hostbox .hbody li { font-size:18px; line-height:1.75; color:var(--text-soft-light); }
+  .hostbox .hbody ul { margin:10px 0; padding-left:22px; }
+  .hostbox .hbody li { margin:5px 0; }
+  .hostbox .hbody b { color:var(--text-on-light); }
+  section[data-bg="8"] .hostbox, section[data-bg="9"] .hostbox { background:rgba(255,248,240,0.06); border-color:var(--accent-on-dark); }
+  section[data-bg="8"] .hostbox > summary, section[data-bg="9"] .hostbox > summary { color:var(--accent-on-dark); }
+  section[data-bg="8"] .hostbox .hbody p, section[data-bg="8"] .hostbox .hbody li,
+  section[data-bg="9"] .hostbox .hbody p, section[data-bg="9"] .hostbox .hbody li { color:var(--text-soft-dark); }
+  section[data-bg="8"] .hostbox .hbody b, section[data-bg="9"] .hostbox .hbody b { color:var(--text-on-dark); }
+
+  /* 檢查清單 */
+  .chk { list-style:none; padding:0; margin:26px 0 0; text-align:left; display:grid; grid-template-columns:repeat(2,1fr); gap:12px; }
+  .chk li { position:relative; padding:14px 18px 14px 46px; background:rgba(255,248,240,0.55); border:1px solid var(--subtle-light); border-radius:12px; font-size:18px; line-height:1.6; color:var(--text-soft-light); }
+  .chk li::before { content:"✓"; position:absolute; left:16px; top:13px; color:var(--accent); font-weight:800; font-size:19px; }
+  .chk.bad li::before { content:"✕"; color:#B8531F; }
+  section[data-bg="8"] .chk li, section[data-bg="9"] .chk li { background:rgba(255,248,240,0.08); border-color:var(--subtle-dark); color:var(--text-soft-dark); }
+  section[data-bg="8"] .chk li::before, section[data-bg="9"] .chk li::before { color:var(--accent-on-dark); }
+  section[data-bg="8"] .chk.bad li::before, section[data-bg="9"] .chk.bad li::before { color:#E9A178; }
+
+  .footer-grid { display:grid; grid-template-columns:2fr 1fr 1fr; gap:48px; text-align:left; margin-top:52px; max-width:1080px; width:100%; }
+  .footer-grid h3 { font-size:15px; letter-spacing:0.18em; color:var(--accent-on-dark); margin:0 0 14px; font-family:var(--font-mono); }
+  .footer-grid ul { list-style:none; padding:0; margin:0; }
+  .footer-grid li { padding:6px 0; font-size:18px; color:var(--text-soft-dark); }
+  .footer-bottom { margin-top:56px; padding-top:22px; border-top:1px solid var(--subtle-dark); width:100%; max-width:1080px; font-family:var(--font-mono); font-size:15px; letter-spacing:0.1em; color:rgba(245,237,224,0.65); text-align:center; }
+
+  .reveal { opacity:1; transform:translateY(0); }
+  .js-on .reveal:not(.in) { opacity:0; transform:translateY(30px); }
+  .reveal { transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1); }
+  .reveal.d1 { transition-delay:.08s; } .reveal.d2 { transition-delay:.16s; } .reveal.d3 { transition-delay:.24s; } .reveal.d4 { transition-delay:.32s; }
+
+
+  /* 三圖對照 */
+  .cmp { display:grid; grid-template-columns:repeat(3,1fr); gap:22px; margin-top:44px; text-align:left; }
+  .cmp figure { margin:0; background:rgba(255,248,240,0.6); border:1px solid var(--subtle-light); border-radius:16px; overflow:hidden; }
+  .cmp figure.good { border:2px solid var(--accent); }
+  .cmp img { display:block; width:100%; height:auto; }
+  .cmp figcaption { padding:16px 18px 18px; }
+  .cmp .tagline { font-family:var(--font-mono); font-size:14px; letter-spacing:0.12em; font-weight:700; color:var(--accent); display:block; margin-bottom:8px; }
+  .cmp h3 { font-size:20px; margin:0 0 8px; color:var(--text-on-light); }
+  .cmp p { font-size:17px; line-height:1.65; margin:0; color:var(--text-soft-light); }
+  @media (max-width: 980px) { .cmp { grid-template-columns:1fr; } }
+
+  /* 圖片點開放大 */
+  .zoomable { cursor: zoom-in; }
+  .lb { position:fixed; inset:0; z-index:400; background:rgba(30,20,16,0.92); display:none;
+    align-items:center; justify-content:center; padding:32px; cursor:zoom-out; }
+  .lb.open { display:flex; }
+  .lb img { max-width:min(96vw,1400px); max-height:92vh; width:auto; height:auto; border-radius:12px;
+    box-shadow:0 30px 80px rgba(0,0,0,0.5); }
+  .lb .lb-close { position:absolute; top:18px; right:22px; width:44px; height:44px; border-radius:50%;
+    border:1px solid rgba(245,237,224,0.4); background:rgba(0,0,0,0.3); color:#F5EDE0;
+    font-size:24px; line-height:1; cursor:pointer; }
+  .lb .lb-close:hover { background:rgba(245,237,224,0.16); }
+  .lb .lb-cap { position:absolute; bottom:20px; left:0; right:0; text-align:center;
+    color:rgba(245,237,224,0.8); font-size:15px; padding:0 24px; }
+
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior:auto; } .reveal { opacity:1 !important; transform:none !important; } }
+  @media (max-width: 1080px) {
+    .phase { grid-template-columns:100px 1fr; }
+    .phase .out { grid-column:1 / -1; }
+  }
+  @media (max-width: 980px) {
+    .hero { grid-template-columns:1fr; gap:32px; }
+    .hero-art { max-width:420px; margin:0 auto; }
+    .trio { grid-template-columns:1fr; }
+    .chk { grid-template-columns:1fr; }
+  }
+  @media (max-width: 860px) {
+    section { padding:64px 22px; min-height:auto; }
+    .grid-3,.grid-2 { grid-template-columns:1fr; gap:18px; }
+    .steprow { grid-template-columns:1fr; gap:6px; padding:16px 18px; }
+    .phase { grid-template-columns:1fr; gap:12px; padding:20px; }
+    .phase .no b { display:inline; margin-left:8px; }
+    .footer-grid { grid-template-columns:1fr; gap:28px; }
+    .dot-indicator { display:none; }
+    .promptbox pre { font-size:14px; max-height:56vh; }
+  }
+</style>
+<!-- tracking:vercel-analytics -->
+<script defer src="/_vercel/insights/script.js"></script>
+<script defer src="/_vercel/speed-insights/script.js"></script>
+</head>
+<body>
+  <!-- 官網品牌列（courses 頁 MUST；與官網首頁 nav.top 同套選單，課程頁模板共用）-->
+  <style>
+    .sh-nav{position:sticky;top:0;z-index:190;background:rgba(245,237,231,0.90);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid rgba(78,52,46,0.12);}
+    .sh-nav-in{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:11px 32px;}
+    .sh-brand{display:flex;align-items:center;flex-shrink:0;transition:opacity .2s;}
+    .sh-brand:hover{opacity:.8;}
+    .sh-brand img{height:34px;width:auto;display:block;}
+    .sh-menu{display:flex;align-items:center;gap:22px;list-style:none;margin:0;padding:0;}
+    .sh-menu a{color:#5D4037;font-size:0.95rem;font-weight:500;text-decoration:none;white-space:nowrap;transition:color .2s;}
+    .sh-menu a:hover{color:#D88C3A;}
+    .sh-menu a.sh-en{border:1px solid rgba(78,52,46,0.25);border-radius:999px;padding:3px 12px;font-weight:600;}
+    .sh-menu a.sh-en:hover{border-color:#D88C3A;}
+    .sh-toggle{display:none;background:none;border:none;padding:6px;cursor:pointer;width:36px;height:36px;position:relative;}
+    .sh-toggle span{display:block;position:absolute;left:8px;right:8px;height:2px;background:#4E342E;border-radius:2px;transition:transform .25s,opacity .25s,top .25s;}
+    .sh-toggle span:nth-child(1){top:11px;}
+    .sh-toggle span:nth-child(2){top:17px;}
+    .sh-toggle span:nth-child(3){top:23px;}
+    .sh-toggle.open span:nth-child(1){top:17px;transform:rotate(45deg);}
+    .sh-toggle.open span:nth-child(2){opacity:0;}
+    .sh-toggle.open span:nth-child(3){top:17px;transform:rotate(-45deg);}
+    @media(max-width:820px){
+      .sh-nav-in{padding:9px 16px;}
+      .sh-toggle{display:block;}
+      .sh-menu{display:none;position:absolute;top:100%;left:0;right:0;flex-direction:column;align-items:stretch;gap:0;background:rgba(245,237,231,0.98);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid rgba(78,52,46,0.12);padding:6px 0;box-shadow:0 10px 24px rgba(62,39,35,0.10);}
+      .sh-menu.open{display:flex;}
+      .sh-menu li{border-bottom:1px solid rgba(78,52,46,0.08);}
+      .sh-menu li:last-child{border-bottom:none;}
+      .sh-menu a{display:block;padding:13px 20px;font-size:1.02rem;}
+      .sh-menu a.sh-en{display:inline-block;margin:10px 20px;}
+    }
+  </style>
+  <header class="sh-nav">
+    <div class="sh-nav-in">
+      <a class="sh-brand" href="https://jiangyude.com/"><img src="https://jiangyude.com/images/footer-signature.png" alt="江江教練 ｜ 江昱德 · 知識官網" /></a>
+      <button class="sh-toggle" aria-label="開關選單"><span></span><span></span><span></span></button>
+      <ul class="sh-menu">
+        <li><a href="https://jiangyude.com/">首頁</a></li>
+        <li><a href="https://jiangyude.com/knowledge-architecture.html">知識架構</a></li>
+        <li><a href="https://jiangyude.com/courses.html">課程</a></li>
+        <li><a href="https://jiangyude.com/articles.html">深度文章</a></li>
+        <li><a href="https://jiangyude.com/offers.html">服務方案</a></li>
+        <li><a class="sh-en" href="https://jiangyude.com/en/index.html" hreflang="en">EN</a></li>
+      </ul>
+    </div>
+  </header>
+  <script>(function(){var t=document.querySelector('.sh-toggle'),m=document.querySelector('.sh-menu');if(t&&m){t.addEventListener('click',function(){t.classList.toggle('open');m.classList.toggle('open');});m.addEventListener('click',function(e){if(e.target.closest('a')){t.classList.remove('open');m.classList.remove('open');}});}})();</script>
+
+  <div class="progress" id="progress"></div>
+
+  <div class="lb" id="lightbox" role="dialog" aria-modal="true" aria-label="放大檢視">
+    <button class="lb-close" type="button" aria-label="關閉">×</button>
+    <img alt="" />
+    <div class="lb-cap"></div>
+  </div>
+
+  <nav class="dot-indicator" id="dots" aria-label="章節導覽">
+    <a href="#act-01" data-i="0"><span class="lbl">01 · 封面</span></a>
+    <a href="#act-02" data-i="1"><span class="lbl">02 · 今天的流程</span></a>
+    <a href="#act-03" data-i="2"><span class="lbl">03 · 你會帶走</span></a>
+    <a href="#act-04" data-i="3"><span class="lbl">04 · 三個元素</span></a>
+    <a href="#act-05" data-i="4"><span class="lbl">05 · 敘事轉譯</span></a>
+    <a href="#act-06" data-i="5"><span class="lbl">06 · 破冰採集</span></a>
+    <a href="#act-07" data-i="6"><span class="lbl">07 · 段落一 形象照</span></a>
+    <a href="#act-08" data-i="7"><span class="lbl">08 · 段落一 注意</span></a>
+    <a href="#act-09" data-i="8"><span class="lbl">09 · 場景要給參考</span></a>
+    <a href="#act-10" data-i="9"><span class="lbl">10 · 段落二 共創角色</span></a>
+    <a href="#act-11" data-i="10"><span class="lbl">11 · 段落二 注意</span></a>
+    <a href="#act-12" data-i="11"><span class="lbl">12 · 段落三 故事創作</span></a>
+    <a href="#act-13" data-i="12"><span class="lbl">13 · 段落三 注意</span></a>
+    <a href="#act-14" data-i="13"><span class="lbl">14 · 收尾</span></a>
+  </nav>
+
+  <!-- ACT 01 封面橫幅 -->
+  <section id="act-01" data-block data-bg="1">
+    <div class="hero">
+      <div>
+        <a class="backlink reveal" href="https://jiangyude.com/courses.html">← 回課程列表</a>
+        <span class="kicker reveal" style="display:block;">淡海輕軌 · 公共藝術走讀</span>
+        <h1 class="display reveal d1" style="font-size:clamp(40px,5.4vw,80px);">淡水公共藝術<br/>AI 創作課</h1>
+        <p class="subtitle reveal d2">如果公共藝術會說話。<br/>把早上走讀聽到的故事，變成一張你自己的淡水形象，再變成一桌人一起做的繪本網頁。</p>
+        <div class="withline reveal d2">旅學堂 <span>×</span> 江江教練</div>
+        <ul class="facts reveal d3">
+          <li>綠山線 8 月底（日期待確認）</li>
+          <li>藍海線 9/12</li>
+          <li>下午三小時</li>
+          <li>五組，每組一位桌長</li>
+        </ul>
+        <p class="body reveal d4" style="max-width:560px;">一支手機就可以參加。不用先準備任何東西，也不用先會用 AI。</p>
+        <p class="mono-note reveal d4">↓ 往下滑，看今天下午的流程 ↓</p>
+      </div>
+      <div class="hero-art reveal d2">
+        <img src="../../images/courses/2026-08-danhai-public-art-hero.jpg" alt="淡水公共藝術 AI 創作課主視覺：紅樹林站月台、輕軌列車、公共藝術雕像與貓" loading="eager" />
+      </div>
+    </div>
+  </section>
+
+  <!-- ACT 02 今天下午的流程 -->
+  <section id="act-02" data-block data-bg="2">
+    <div class="wrap wide">
+      <div class="act-cap reveal">ACT 02 · 今天下午的流程</div>
+      <h2 class="display sm reveal d1">三個段落，一段接一段</h2>
+      <p class="lead reveal d2">每一段都會做出一個東西，做完才往下走。中間不會有「先聽完再說」的空檔。</p>
+      <div class="phases">
+        <div class="phase side reveal d1">
+          <div class="no">準備<b>55 分</b></div>
+          <div><h3>開場、敘事轉譯、桌長破冰、江江示範</h3><p>簽授權、聽一段「同一件作品怎麼換你來說」，桌長帶你把感受聊出來，然後看江江完整示範一次。</p></div>
+          <div class="out">產出：你的六個形容詞、你認領的那一站</div>
+        </div>
+        <div class="phase main reveal d2">
+          <div class="no">段落一<b>50 分</b></div>
+          <div><h3>每個人的淡水形象照</h3><p>把你剛剛講的感受丟進 AI，做出一個屬於你自己的插畫角色，然後上台講一分鐘：我怎麼把感受變成這張圖。</p></div>
+          <div class="out">產出：一張你自己的角色圖，可以下載帶回家</div>
+        </div>
+        <div class="phase main reveal d3">
+          <div class="no">段落二<b>30 分</b></div>
+          <div><h3>大家共創角色</h3><p>把分享時講的感想與心情整理好交給桌長，讓 AI 從裡面抓出每個人的線索，合成一個新的主角，做成含三視圖與表情的角色設定表。</p></div>
+          <div class="out">產出：全桌一個共創主角，含三視圖與表情</div>
+        </div>
+        <div class="phase main reveal d4">
+          <div class="no">段落三<b>60 分</b></div>
+          <div><h3>淡水故事創作</h3><p>同一份資料再用一次，先變成六段故事與六格分鏡，然後六個人一人生一張圖，桌長用 Google 簡報排出初版。</p></div>
+          <div class="out">產出：六格繪本＋一份可以投影的初版</div>
+        </div>
+        <div class="phase side reveal d4">
+          <div class="no">收尾<b>25 分</b></div>
+          <div><h3>發表與收檔</h3><p>每組上台，全組一起站上去講三件事。桌長把圖與初版收齊交出去。</p></div>
+          <div class="out">產出：初版當天投影，正式網頁活動後統整上線</div>
+        </div>
+      </div>
+      <details class="hostbox reveal d4">
+        <summary>桌長小卡</summary>
+        <div class="hbody">
+          <p><b>你要帶的東西</b>：一台筆電，登入 <b>ChatGPT 付費版</b>。手機免費版的額度大約在做完個人形象照之後用完，需要協助完成圖片時會用到你這一台。另外先確認現場網路。</p>
+          <p><b>你這一桌今天要完成的四件事</b>：每個人都有自己的形象圖 → 共創出一個主角 → 六段故事變成六格繪本 → 一頁網頁交出去。</p>
+          <p>各段時間是抓寬的，實際會依當天開始的時間微調，你聽主持人的指示走就好，不用自己決定要不要壓縮。</p>
+          <p>你只要守住兩件事：<b>破冰與段落一不要趕</b>。破冰是你這一桌後面所有素材的源頭，段落一要讓每個人都完成自己的角色圖。</p>
+          <p>如果整場往後延，主持人會統一宣布調整哪一段（通常是分享與發表的長度）。真的來不及做初版簡報，你先把六格圖依序編號收好交出去就可以，正式的網頁本來就是活動後統整。</p>
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <!-- ACT 03 你會帶走什麼 -->
+  <section id="act-03" data-block data-bg="3">
+    <div class="wrap">
+      <div class="act-cap reveal">ACT 03 · 開場 15 分</div>
+      <h2 class="display sm reveal d1">今天結束，你會帶走三樣東西</h2>
+      <div class="grid-3">
+        <div class="card reveal d1">
+          <div class="num">帶走 01</div>
+          <h3 class="h2">一個屬於你的淡水角色</h3>
+          <p class="body">從你今天真的講出來的感受長出來的插畫角色。<b>原圖可以下載帶回家</b>，回去自己還可以繼續玩。</p>
+        </div>
+        <div class="card reveal d2">
+          <div class="num">帶走 02</div>
+          <h3 class="h2">一句你自己寫的話</h3>
+          <p class="body">25 字以內，關於你認領的那一站。這句話會直接進到全桌的繪本裡，用你的原話，不改寫。</p>
+        </div>
+        <div class="card reveal d3">
+          <div class="num">帶走 03</div>
+          <h3 class="h2">一桌一起做的繪本</h3>
+          <p class="body">六格圖文的繪本。當天現場先用 Google 簡報做出初版投影，<b>活動後我們會統整成正式的網頁放到官網</b>，再發連結給你。</p>
+        </div>
+      </div>
+      <div class="factbox reveal d4">
+        <p><b>先說清楚一件事。</b>個人形象照是你自己帶回家的紀念形象；團體繪本用的是<b>全桌一起共創的那一個主角</b>，六個人都當主角的話，畫面塞不下，故事線也會散掉。</p>
+        <p>不過每個人都保住三件事：個人原圖可以下載、<b>每個人至少一句原話會進最終繪本</b>、成果頁會標示六個人各自的角色設計貢獻。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ACT 04 三個元素 -->
+  <section id="act-04" data-block data-bg="4">
+    <div class="wrap">
+      <div class="act-cap reveal">ACT 04 · 作品的三個共同元素</div>
+      <h2 class="display sm reveal d1">下午的作品，<br/>要接得上早上的走讀</h2>
+      <p class="lead reveal d2">去年同一個案子的工作坊，下午的成品跟早上的走讀有點脫節，最後只剩淡水河、觀音山，跟漂亮的衣服。</p>
+      <p class="lead reveal d3" style="margin-top:24px;"><b>所以段落三的團體繪本，每一格都有硬規則：這三個東西都要在。</b></p>
+      <div class="trio">
+        <div class="t reveal d1"><div class="n">01</div><h3>主角</h3><p>就是段落二做出來的那個共創角色，全書只有他一位。</p></div>
+        <div class="t reveal d2"><div class="n">02</div><h3>幾米公共藝術</h3><p>一定要有一個雕像，而且要完整看得見，不能被人物或文字擋住。</p></div>
+        <div class="t reveal d3"><div class="n">03</div><h3>輕軌月台</h3><p>可以是全景，也可以只出現月台地板、候車椅、軌道或站名牌。</p></div>
+      </div>
+      <div class="factbox reveal d4">
+        <p>輕軌車體不強求出現（現場很難拍到）。但<b>月台一定要在</b>，這是「這件事發生在淡海輕軌」的唯一證據。</p>
+        <p><b>先分清楚兩種圖</b>：段落一的<b>個人形象照</b>是你自己的角色，乾淨背景就好，不受這三元素限制；三元素管的是段落三<b>團體繪本那六格</b>。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ACT 05 敘事轉譯 -->
+  <section id="act-05" data-block data-bg="5">
+    <div class="wrap">
+      <div class="act-cap reveal">ACT 05 · 15 分 ｜ Vivi 吳宛庭</div>
+      <h2 class="display sm reveal d1">同一件作品，<br/>換你來說一次</h2>
+      <p class="lead reveal d2">車站原本是學術上說的「非地方」，你每天經過，但從來沒真的看過。當一件作品讓你停下來、想起自己的事，它才變成一個「地方」。</p>
+      <p class="lead reveal d3" style="margin-top:20px;">Vivi 的論文研究的就是這件事。你們今天要用自己的故事，親手做一次。</p>
+      <div class="scrollx">
+        <table class="tbl reveal d3">
+          <thead><tr><th>論文說的</th><th>今天現場的講法</th></tr></thead>
+          <tbody>
+            <tr><td><b>非地方</b></td><td>你每天經過但從來沒真的看過的地方</td></tr>
+            <tr><td><b>情感地景</b></td><td>因為你有故事，它才變成一個地方</td></tr>
+            <tr><td><b>敘事轉譯</b></td><td>同一件作品，換你來說一次</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="grid-3">
+        <div class="card reveal d1"><div class="num">目標 01</div><h3 class="h2">會做</h3><p class="body">做出一個屬於自己的淡水形象角色，並用它說出一段自己的地方故事。</p></div>
+        <div class="card reveal d2"><div class="num">目標 02</div><h3 class="h2">會想</h3><p class="body">理解同一件公共藝術可以被重新說一次，這套方法有學術上的理論基礎。</p></div>
+        <div class="card reveal d3"><div class="num">目標 03</div><h3 class="h2">會用</h3><p class="body">帶走一套「先聊出感受，再定風格，才生圖」的方法，回去可以自己再做一次。</p></div>
+      </div>
+      <details class="hostbox reveal d4">
+        <summary>桌長小卡</summary>
+        <div class="hbody">
+          <p>這一段你不用帶，Vivi 會用她的一頁式網站講，底下有三團子的影片可以播。<b>趁這 15 分鐘把桌上準備好</b>：便條紙與筆發下去、筆電開機連上網、確認你這一桌今天實際幾個人（等一下五人桌的欄位要合併，先知道比較好安排）。</p>
+          <p>如果有人問你三階段叫什麼、對應哪一站，以 Vivi 現場講的版本為準，不用自己補。</p>
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <!-- ACT 06 破冰 -->
+  <section id="act-06" data-block data-bg="6">
+    <div class="wrap">
+      <div class="act-cap reveal">ACT 06 · 破冰 15 分 ｜ 桌長帶</div>
+      <h2 class="display sm reveal d1">先把感受聊出來</h2>
+      <p class="lead reveal d2">這一段看起來像聊天，實際上是在採集下午所有創作的原料。你等一下貼進 AI 的內容，就是這一段講出來的話。</p>
+      <div class="stepbox reveal d3">
+        <div class="steprow"><div class="k">第一題</div><div class="v">你今天為什麼會想來？</div></div>
+        <div class="steprow"><div class="k">第二題</div><div class="v">你跟淡水有沒有什麼關係？以前來過嗎、住過嗎、在這裡讀過書嗎？</div></div>
+        <div class="steprow"><div class="k">第三題</div><div class="v">早上走完，哪一站讓你最有感覺？聽到什麼是你原本不知道的？</div></div>
+        <div class="steprow hi"><div class="k">★ 追問這句</div><div class="v">你剛剛講的裡面，<b>對外面的風景</b>你會用哪三個詞形容？<b>你自己心裡</b>又是哪三種心情？</div></div>
+      </div>
+      <div class="outcome reveal d4"><span>預期達成</span>六個人都開過口、每人都有六個詞、每人認領一站</div>
+      <div class="factbox reveal d4">
+        <p><b>這六個詞就是等一下 AI 生成形象的核心參數。</b>對外的畫面詞例如自然、遼闊、明亮、溫暖、流動、熱鬧、古老；對內的情緒詞例如療癒、放鬆、自在、好奇、安心、驚喜、充滿力量。桌長會把它記在便條紙上給你。</p>
+      </div>
+      <details class="hostbox reveal d4">
+        <summary>桌長小卡</summary>
+        <div class="hbody">
+          <p>這一段是你當天最重要的工作。看起來像閒聊，後面每一關的素材都是從這裡來的。</p>
+          <ul>
+            <li><b>你要照顧到的三件事</b>：每個人都有開口的機會、每個人都選好自己的那一站、全桌不重複。</li>
+            <li><b>認站方式</b>：六站六人剛好，五人就留一站不寫。兩位想選同一站也可以，分工成一個寫作品、一個寫在那裡的人。沒人選的站不用硬塞，少一站不影響。</li>
+            <li><b>在地經驗優先</b>：聽到「我以前在淡江讀書」「我阿嬤住這附近」，當場說「這個很好，寫進去」。連得到真實的地方經驗，比寫得像童話更打動人。</li>
+            <li><b>你的角色</b>：依序問三題，一人一輪，順著大家講的接下去。不先講一個自己的版本當範例，也不提前給答案，讓每個人講出來的都是自己的話。</li>
+          </ul>
+          <p><b>整天都適用的四件事</b>：不先編一個故事讓大家跟著走、不改大家講出來的原話、不替大家決定風格、不用外貌評比的說法帶討論。</p>
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <!-- ACT 07 段落一 -->
+  <section id="act-07" data-block data-bg="2">
+    <div class="wrap wide">
+      <div class="act-cap reveal">段落一 · 50 分 ｜ 你的手機</div>
+      <h2 class="display sm reveal d1">每個人的淡水形象照</h2>
+      <p class="lead reveal d2">用你手機上的 <b>ChatGPT，免費版就可以</b>。開一個新對話，把下面這份指令整段貼進去，然後照著它問你的問題回答。</p>
+      <div class="stepbox reveal d3">
+        <div class="steprow"><div class="k">1 ｜ 3 分</div><div class="v">互相幫忙拍一張照（半身即可、光線亮、背景乾淨），或用手機裡<b>自己最好看的那一張</b></div></div>
+        <div class="steprow hi"><div class="k">2 ｜ 20 分</div><div class="v">開<b>新對話</b>，貼下面這份指令，上傳照片，照著它的問題回答，確認設定卡，看三個風格，<b>一個風格生一次，最多三次</b></div></div>
+        <div class="steprow"><div class="k">3 ｜ 2 分</div><div class="v">把圖存下來（點進圖片再按下載），檔名寫「組別-姓名-形象照」，交給桌長收進雲端組別夾</div></div>
+        <div class="steprow"><div class="k">4 ｜ 25 分</div><div class="v">全體分享，每人 1 分鐘，講你怎麼把感受變成這張圖</div></div>
+      </div>
+
+      <details class="promptbox reveal d4" open>
+        <summary><span><span class="plabel">段落一 指令</span><br/><span class="ptitle">我的淡水形象</span></span><span class="phint">整段複製，貼進新對話，再上傳你的照片。</span></summary>
+        <div class="pbody">
+          <p class="ptip">它會先問你問題，設定卡沒確認之前不會生圖。看到它一直在問是正常的，不要催。</p>
+          <pre data-copy>你是「我的淡水」工作坊的形象設計助教，陪我把今天在淡水的感受做成一張屬於我的插畫角色。
+
+【第一步：先聊，不要生圖】
+一次問我一個問題，用簡單好回答的說法，優先用我的原話，不要幫我加我沒說過的事。
+要問到這六件事：
+1 今天在淡水最難忘的一個畫面
+2 三個「對外的畫面詞」，形容淡水給你的視覺印象（例如遼闊、明亮、古老）
+3 三個「對內的情緒詞」，形容你當時的心情（例如療癒、自在、驚喜）
+4 今天聽到的在地故事，哪一個最想放進自己的形象
+5 如果把你畫進淡水，你正在做什麼
+6 有沒有不希望出現在畫面裡的東西
+
+我會上傳一張自己的照片。只記錄照片裡看得見的外觀，不要推測我的身分、職業或個性。
+不是全身照的話，要再問我下半身穿什麼、鞋子、外套飾品眼鏡帽子背包要不要留。
+我答不出來就給三個選項讓我挑，不要替我決定。
+
+問完整理成一張【我的淡水形象設定卡】給我確認，我回覆「確認」之前不要生圖。
+
+【第二步：三個風格版本】
+從我的六個詞長出三個插畫風格版本讓我挑，每一版三行：
+風格名稱、為什麼配我講的話、畫面大概長什麼樣。
+三版差異要明顯。給完先停，等我說要生哪一版。
+
+【第三步：生圖】
+我說哪一版就生哪一版，一版只生一次，不要自動重生。
+全身、插畫風格、乾淨單色背景。
+保留我照片裡的五官特徵與髮型，要看得出是我本人，不要畫成通用的卡通臉。
+不模仿吉卜力，不模仿幾米，用原創的插畫語言。
+不要文字、不要浮水印。我說過不希望出現的東西不要出現。</pre>
+          <button class="copy" type="button">複製這份指令</button>
+        </div>
+      </details>
+
+      <div class="outcome reveal d4"><span>預期達成</span>全桌每個人都有一張自己的角色圖</div>
+    </div>
+  </section>
+
+  <!-- ACT 08 段落一 注意事項 -->
+  <section id="act-08" data-block data-bg="3">
+    <div class="wrap wide">
+      <div class="act-cap reveal">段落一 · 注意事項</div>
+      <h2 class="display sm reveal d1">這一段要注意四件事</h2>
+      <div class="grid-2">
+        <div class="card reveal d1">
+          <div class="num">注意 01</div>
+          <h3 class="h2">照片挑最好看的那張</h3>
+          <p class="body">照片品質直接決定像不像。隨手拍的通常不太像本人，平常在用的那張「萬用照」就很像。從相簿挑一張你喜歡的就好，不必現場重拍。</p>
+        </div>
+        <div class="card reveal d2">
+          <div class="num">注意 02</div>
+          <h3 class="h2">一個階段換一個視窗</h3>
+          <p class="body">今天分成幾個階段，每進到新的階段就開一個新的對話視窗。現在這一關做的是你的個人形象，<b>下一個階段開始前，講師會提醒大家換視窗</b>。同一個視窗連續做不同的事，AI 會把前面的設定帶到後面來。</p>
+        </div>
+        <div class="card reveal d3">
+          <div class="num">注意 03</div>
+          <h3 class="h2">一個風格生一次，三次為限</h3>
+          <p class="body">這一關是體驗，讓你先感受一次 AI 怎麼把你講的話變成畫面。三個風格版本，<b>一個生一次就好，全部加起來以三次為限</b>。今天後面還要做別的圖，先把額度留著。真的很想多試幾種，等今天課上完，回家再慢慢玩。</p>
+        </div>
+        <div class="card reveal d4">
+          <div class="num">注意 04</div>
+          <h3 class="h2">圖要記得存下來</h3>
+          <p class="body"><b>要點進圖片再按下載</b>，用「分享」只會把連結傳走，回家就打不開了。萬一額度提早用完也不用擔心，舉手就好，桌長的筆電有付費版，可以協助你完成。</p>
+        </div>
+      </div>
+      <div class="factbox reveal d4">
+        <p><b>分享一輪要講三件事</b>，不是只給大家看照片：我對淡水的感受是哪六個詞、我為什麼挑這個風格、這張圖裡哪個地方是我自己決定的。</p>
+        <p>現場一定會出現的效果：<b>講得細的那個人的圖明顯比較好</b>。這個對比本身就是今天最好的一堂教學。</p>
+      </div>
+      <details class="hostbox reveal d4">
+        <summary>桌長小卡</summary>
+        <div class="hbody">
+          <ul>
+            <li><b>半身照要補問下半身</b>。現場多半只拍得到半身，但形象圖是全身。沒補問的話 AI 會自己補，出來的樣子容易不像本人。指令裡已經寫了，確認它有問到就好。</li>
+            <li><b>需要協助時就接手</b>：試過幾次還沒到位，你直接用自己的帳號協助完成一張，幾分鐘就好。這一關的目標是你這一桌每個人手上都有自己的圖。</li>
+            <li><b>備援</b>：額度用完就用素材夾的原始照片，配上自己寫的文字，圖文故事一樣成立。</li>
+            <li><b>手機存圖</b>：要點進圖片再按下載，用「分享」只會把連結傳走。這一步記得帶大家做一次。</li>
+          </ul>
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <!-- ACT 09 段落二 -->
+  <!-- ACT 09 場景要給參考 -->
+  <section id="act-09" data-block data-bg="4">
+    <div class="wrap wide">
+      <div class="act-cap reveal">段落一 · 一個重要的觀念</div>
+      <h2 class="display sm reveal d1">AI 只認得<br/>你給它看過的東西</h2>
+      <p class="lead reveal d2">你上傳自己的照片，它就畫得出像你的人，因為它看過你了。同樣的道理，你沒有給它看淡水的樣子，它畫出來的就不會是淡水。</p>
+      <div class="cmp">
+        <figure class="reveal d1">
+          <img src="../../images/courses/danhai-scene-01-no-reference.jpg" alt="只給人像照片生成的結果：人物是像的，但海邊與橋都不是淡水實景" loading="lazy" />
+          <figcaption>
+            <span class="tagline">狀況 · 只給了自己的照片</span>
+            <h3>人是像的，地方不是</h3>
+            <p>畫面很漂亮，人也像本人。但這座橋不是關渡大橋，這個岸邊也不是紅樹林站。AI 是憑「淡水大概長這樣」自己想的。</p>
+          </figcaption>
+        </figure>
+        <figure class="reveal d2">
+          <img src="../../images/courses/danhai-scene-02-real-photo.jpg" alt="紅樹林站月台的實拍照片，有鈴鐺樹與小女孩和兔子的公共藝術" loading="lazy" />
+          <figcaption>
+            <span class="tagline">做法 · 把實拍照片給它</span>
+            <h3>這才是真的紅樹林站</h3>
+            <p>鈴鐺樹、小女孩和兔子的雕塑、月台的地磚與車廂。這些細節只有現場照片有，說再多也描述不出來。</p>
+          </figcaption>
+        </figure>
+        <figure class="good reveal d3">
+          <img src="../../images/courses/danhai-scene-03-with-reference.jpg" alt="加入實拍場景照後生成的結果：月台、鈴鐺樹與公共藝術都對上了" loading="lazy" />
+          <figcaption>
+            <span class="tagline">結果 · 場景就對了</span>
+            <h3>一眼看得出是哪一站</h3>
+            <p>把實拍照片一起放進去之後，鈴鐺樹、雕塑、月台全部到位。人還是你，地方也真的是淡水。</p>
+          </figcaption>
+        </figure>
+      </div>
+      <div class="factbox reveal d4">
+        <p><b>這一關先簡單一點，只給自己的照片就好。</b>個人形象照的重點是造型，背景乾淨就行。</p>
+        <p>淡水的地景要怎麼給、每一站該用哪一張照片，我們留到<b>段落三的分鏡</b>再仔細做。到那一關，實拍照片就是主角站的地方。</p>
+      </div>
+      <p class="mono-note reveal d4">↑ 三張圖都可以點開放大看細節 ↑</p>
+    </div>
+  </section>
+
+  <section id="act-10" data-block data-bg="4">
+    <div class="wrap wide">
+      <div class="act-cap reveal">段落二 · 30 分</div>
+      <h2 class="display sm reveal d1">大家共創角色</h2>
+      <p class="lead reveal d2">你們剛剛做的個人形象照不會被更動，那一版帶回家。接下來要做的是<b>這一桌共同的主角</b>，他身上會有你們每個人的一樣東西。</p>
+      <div class="stepbox reveal d3">
+        <div class="steprow hi"><div class="k">1 ｜ 5 分</div><div class="v">把剛剛分享時講的<b>感想與心情整理一下</b>，傳到小組 LINE 群。自己打字也行，跟 ChatGPT 聊一下讓它幫你整理再貼過來也行</div></div>
+        <div class="steprow"><div class="k">2 ｜ 5 分</div><div class="v">桌長把自己聽分享時記的關鍵字，加上群裡收到的整理，<b>整份一起貼進指令</b>。不用先分類，AI 會自己統整</div></div>
+        <div class="steprow"><div class="k">3 ｜ 10 分</div><div class="v">看 AI 給的三個方案，全桌選一案，確認角色設定卡</div></div>
+        <div class="steprow hi"><div class="k">4 ｜ 10 分</div><div class="v">生<b>角色設定表</b>（三視圖＋表情＋動作），出圖給大家確認</div></div>
+      </div>
+      <div class="factbox reveal d3">
+        <p><b>為什麼不用一個一個問</b>：現場一題一題收會佔掉整段時間。你們剛剛分享時講的話本來就夠用了，桌長記的關鍵字加上你們自己整理的感想，整份交給 AI 統整就好。</p>
+        <p><b>每個人都會在角色身上</b>：指令要求它列出「誰的哪一句被用進去了」，逐人對照，一個都不能漏。</p>
+      </div>
+
+      <details class="promptbox reveal d4">
+        <summary><span><span class="plabel">段落二 指令</span><br/><span class="ptitle">共創角色設計</span></span><span class="phint">桌長筆電用。關鍵字與大家的整理，整份貼進去就好。</span></summary>
+        <div class="pbody">
+          <p class="ptip">這份指令可以直接讀還沒整理過的筆記。順序不一定、講法各自不同都沒關係，它會自己統整。</p>
+          <pre data-copy>你是這一桌的共創角色設計助教。
+
+我們這一桌有（　）個人。剛剛每個人都做了自己的淡水形象，也分享過自己的感受。
+現在要一起創造一個新的主角，帶大家走完六站。
+
+【我會貼一份還沒整理過的資料給你】
+裡面有：桌長聽大家分享時記的關鍵字、每個人自己整理的感想與心情，還有一些零散的句子。
+順序不一定，每個人的講法也各自不同，這是正常的。
+你不要叫我先整理，直接做下面這三件事：
+
+1 把「外觀與造型」的線索抓出來：輪廓與頭身比例、臉、髮型、服裝、顏色、配件、道具
+2 把「情緒與氣質」的線索抓出來：心情詞、氛圍詞、想呈現的感覺
+3 標出每一項是誰講的。★ 每個人至少要有一項被用到，這是硬規則
+
+【硬限制】
+主色最多三色、代表道具最多一件、服裝焦點最多兩個、整個角色只留一個最強辨識點。
+資料裡如果有互相拉扯的地方（例如一個要二頭身、一個要修長剪裁），
+你只能標示為「疑似衝突」並說明理由，由我們全桌判定，不要當成事實。
+
+【接著給我 A、B、C 三個方案】
+中立呈現，不要替我們選。每一案寫四項：
+・外型描述：輪廓頭身、臉髮、服裝、配色、道具、表情氣質
+・誰的哪一句被用進去了，逐人列出
+・最強辨識點是什麼
+・這一案的風險，一句話
+
+【我們選定之後】
+輸出一張【共創角色設定卡】，最後一行寫「每個人的貢獻對照」。
+角色名字由我們自己取，你不要命名。
+
+★【停下來等我】
+設定卡輸出之後你必須停住，只問一句：「設定卡確認了嗎？要修哪一項？」然後等待。
+我回覆「設定卡確認」之前不要生任何圖。
+
+【收到「設定卡確認」才做】
+生一張角色設定表，同一張圖包含三個部分：
+1 三視圖：正面、側面、背面並排，同一水平線、同樣頭身比例
+2 臉部表情 3 到 5 個
+3 代表動作 1 到 2 個（全身）
+
+表情與動作要從資料裡的情緒詞長出來，不要用通用的表情包。
+例如情緒詞是「療癒、自在」，就往放鬆、微笑、閉眼吹風的方向設計。
+乾淨單色背景，嚴格照設定卡。不模仿吉卜力與幾米。圖上不要寫字、不要浮水印。
+生完用文字告訴我每個表情與動作各自對應哪一個詞。</pre>
+          <button class="copy" type="button">複製這份指令</button>
+        </div>
+      </details>
+
+      <div class="outcome reveal d4"><span>預期達成</span>一個全桌都認的主角＋一張角色設定表（三視圖＋表情＋動作）</div>
+    </div>
+  </section>
+
+  <!-- ACT 10 段落二 注意事項 -->
+  <section id="act-11" data-block data-bg="5">
+    <div class="wrap wide">
+      <div class="act-cap reveal">段落二 · 注意事項</div>
+      <h2 class="display sm reveal d1">這一段要注意三件事</h2>
+      <div class="grid-3">
+        <div class="card reveal d1">
+          <div class="num">注意 01</div>
+          <h3 class="h2">為什麼不是六張臉合成</h3>
+          <p class="body">六張臉平均合成，出來的角色會失去辨識度。改成從大家講過的話裡抓線索，每個人的貢獻落在角色的不同地方，不會互相抵消，而且每個人都真的有東西在角色身上。</p>
+        </div>
+        <div class="card reveal d2">
+          <div class="num">注意 02</div>
+          <h3 class="h2">設定卡確認之前不生圖</h3>
+          <p class="body">丟資料、看三個方案、選一案、確認設定卡，這一串走完才生角色設定表。這是省額度，也是避免無限修改。</p>
+        </div>
+        <div class="card reveal d3">
+          <div class="num">注意 03</div>
+          <h3 class="h2">有主有從才看得下去</h3>
+          <p class="body">六個人的貢獻都會有文字記錄，成果頁會標。但不保證六項都同等搶眼，角色要能看，就必須有主有從。</p>
+        </div>
+      </div>
+      <details class="hostbox reveal d4">
+        <summary>桌長小卡</summary>
+        <div class="hbody">
+          <p>這一關的討論容易延長，時間由你控。<b>十分鐘還沒收斂，你就宣布改用公用 IP 往下走</b>，旅學堂提供兩個：<b>三團子</b>（Vivi 的角色）與<b>羽毛</b>，做法一樣是把六個人的意象加在公用 IP 身上。先把作品完成，細節之後還可以再調。</p>
+          <p><b>你在段落一分享時就開始工作</b>：一邊聽一邊記關鍵字，尤其是造型線索（穿什麼、什麼顏色、帶什麼）與情緒詞。這份筆記就是這一關要貼進 AI 的主要材料，不用等到這一關才收。</p>
+          <p><b>人數不足不影響</b>：這份指令吃的是內容不是欄位，五個人四個人都跑得動，只要在開頭寫清楚本組幾個人。</p>
+          <p><b>你開場記得先說一句</b>：個人形象照不會被更動，那一版帶回家；接下來要做的是這一桌共同的主角。這句先講，後面比較不會有人捨不得。</p>
+          <p><b>你的用詞</b>：講造型時用具體的語言（臉部造型、髮型、剪裁、顏色），AI 才知道要做什麼，大家也比較好接話。</p>
+          <p><b>角色元素太雜時</b>：你帶大家回頭精簡，主色降到兩色、道具只留一件、服裝焦點只留一個，重生一次。</p>
+          <p><b>設定表一次生不好時</b>（三視圖＋表情＋動作擠在一張，本來就不容易）：先要三視圖就好，表情跟動作另外生第二張。兩張都留著，下午分鏡一起上傳。真的來不及，只要有一張正面全身可辨識的圖，下午就跑得下去。</p>
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <!-- ACT 11 段落三 -->
+  <section id="act-12" data-block data-bg="2">
+    <div class="wrap wide">
+      <div class="act-cap reveal">段落三 · 60 分</div>
+      <h2 class="display sm reveal d1">淡水故事創作</h2>
+      <p class="lead reveal d2">同一份資料再用一次：這次讓它變成<b>六段故事與六格分鏡</b>。分鏡確認之後，六個人一人生一張圖。</p>
+      <div class="stepbox reveal d3">
+        <div class="steprow"><div class="k">1 ｜ 選照片 5 分</div><div class="v">六站各挑一張實拍照片，優先選<b>本身就同時拍到雕像與月台</b>的那張</div></div>
+        <div class="steprow hi"><div class="k">2 ｜ 分鏡 15 分</div><div class="v">桌長筆電：角色設定表＋六張照片＋剛剛那份資料一起貼進去，讓它<b>先整理出六段故事，再排成六格分鏡</b></div></div>
+        <div class="steprow"><div class="k">3 ｜ 確認 5 分</div><div class="v">分鏡腳本出來，<b>全桌一起看過</b>：自己那一格的故事對不對、想改哪裡</div></div>
+        <div class="steprow hi"><div class="k">4 ｜ 生圖 25 分</div><div class="v">桌長把<b>角色設定表、你那一站的照片、你那一格的分鏡</b>傳進小組 LINE 群。各自開新對話生自己那一張，生好傳回群裡</div></div>
+        <div class="steprow"><div class="k">5 ｜ 做初版 10 分</div><div class="v">桌長用 <b>Google 簡報</b>把六格圖文快速排成初版，發表時直接投影</div></div>
+      </div>
+      <div class="factbox reveal d3">
+        <p><b>今天的初版不是最終成品。</b>活動之後我們會把六組的作品再統整一次，做成正式的網頁放到官網上，到時候發連結給大家。今天現場先把圖跟文字湊齊就好。</p>
+        <p><b>為什麼一人生一張</b>：六格都集中在同一台，額度很快就會用完。分開來每個人只用到自己的額度，速度也快一倍，而且每個人手上都有一格是自己做的。</p>
+      </div>
+
+      <details class="promptbox reveal d4">
+        <summary><span><span class="plabel">段落三 指令</span><br/><span class="ptitle">六段故事與六格分鏡</span></span><span class="phint">桌長筆電用。貼完再上傳角色設定表與六張實拍照片。</span></summary>
+        <div class="pbody">
+          <p class="ptip">場景是實拍的，這份指令不設計場景，只設計主角在那個場景裡的動作與表情。</p>
+          <pre data-copy>你是這一桌繪本的分鏡設計。
+
+我會給你三樣東西：
+1 共創角色的設定表（三視圖＋表情＋動作，全書只有這一位主角）
+2 六張實拍的站點照片，每張標站名與編號
+3 我們這一桌的資料：桌長的關鍵字筆記、每個人的感想與心情，以及誰負責哪一站
+
+【第一步：先整理出六段故事】
+從資料裡整理出六段，一人一站一段，每段 25 字以內。
+只能用他們自己講過的話，不要新增沒說過的內容。
+排一個先後順序，並告訴我哪一段開場、哪一段收尾、為什麼。
+六段給我確認之後，才進第二步。
+
+【第二步：排六格分鏡】
+
+★ 最重要的一條：場景不要動。
+照片是我們在現場實拍的，你不要重新設計場景，也不要描述場景長什麼樣。
+構圖、光線、角度、建築、公共藝術雕像的外觀全部保留，
+要讓人一眼認出就是這張照片拍到的地方。
+會變的只有兩件事：畫風統一成角色設定表的畫風，以及畫面裡多了一個角色。
+
+你要設計的只有角色。每一格依照那一段故事的情緒，設計主角在這個場景裡：
+・站在畫面的哪個位置（配合照片既有的空位與光線，不要擋住公共藝術雕像）
+・做什麼動作（只有一個動作，而且是在這個場景裡合理會做的事）
+・什麼表情（從設定表的表情裡挑一個，說出對應哪一個情緒詞）
+・視線看哪裡
+
+每一格輸出六項：
+第 N 格｜站名｜負責生圖的人｜用第幾號照片
+1 這一格的文字：那一段故事，25 字以內
+2 主角位置
+3 主角動作
+4 主角表情，對應哪一個情緒詞
+5 文字要放的位置，以及文字規格：字體感、顏色、大小，要跟畫風搭
+6 這一格的生圖指令，寫成可以直接複製貼上的一段
+
+第 6 項照這個格式寫：
+上傳：角色設定表 ＋ 第（　）號場景照
+指令：保留這張照片的場景、構圖與光線，不要更動，只把角色加進畫面。
+角色外型嚴格照設定表，畫風統一。
+角色（位置）（動作）（表情）。
+公共藝術雕像要完整看得見，不能被角色擋住。
+（文字區）留白，不要在圖裡生成文字。
+畫面裡不要多出其他人物。
+
+六格分鏡給我確認之後，你再一次把六份生圖指令列出來，一人一份。</pre>
+          <button class="copy" type="button">複製這份指令</button>
+        </div>
+      </details>
+
+      <details class="promptbox reveal d4">
+        <summary><span><span class="plabel">段落三 · 修圖</span><br/><span class="ptitle">生出來不太搭的時候</span></span><span class="phint">這一段是今天最值得學的：用描述去修，不是一直重新生成。</span></summary>
+        <div class="pbody">
+          <p class="ptip">角色的感覺不對、或是角色跟場景像兩張圖拼起來，都可以用講的修。把你要的情境、表情、動作描述清楚，比反覆重新生成有效，也省額度。</p>
+          <pre data-copy>這張很接近了，但有三個地方要改，其他都保留：
+
+1 角色的樣子跟設定表不一樣（臉／髮型／服裝顏色／道具），請照設定表。
+2 角色跟場景不太搭，看起來像貼上去的。
+   請讓他的光線方向、影子、色調跟這張照片一致，站的位置也要踩在合理的地面上。
+3 情緒不對。這一格他應該是（　　）的心情，
+   所以表情要（　　），動作要（　　），視線看向（　　）。
+
+場景的構圖、光線與公共藝術的樣子不要更動。</pre>
+          <button class="copy" type="button">複製這段</button>
+        </div>
+      </details>
+
+      <details class="hostbox reveal d4">
+        <summary>桌長小卡</summary>
+        <div class="hbody">
+          <p><b>你在段落一分享時就開始收材料了</b>，這一關直接沿用，不用重新訪談。有人的內容太長，你當場問一句「這一段裡面你最想留下來的是哪一句」。</p>
+          <p><b>認站要對一次</b>：把破冰時寫的認站便條紙拿出來，一人一站不重複，這份要跟資料一起貼給 AI。</p>
+          <p><b>LINE 群怎麼用</b>：分鏡確認之後，你把<b>角色設定表</b>發到群裡（六個人都要），再把<b>每個人那一站的照片與那一格的生圖指令</b>個別貼給對應的人。大家生好的圖也傳回群裡，你統一收。</p>
+          <p><b>各自開新對話</b>：提醒大家生自己那一格要開新的對話，同一個對話連續生不同格，畫風容易跑掉。</p>
+          <p><b>額度不夠的夥伴</b>：那一格請額度還有的組員協助完成，他改成負責文案與挑圖。六格湊齊優先。</p>
+          <p><b>如果拿到 Vivi 的共創故事指令</b>：先跑她那一份把六段故事整理好，再把成果貼進上面的分鏡指令第三項，故事會更完整。沒拿到也不影響，分鏡指令自己會整理。</p>
+          <p><b>初版用 Google 簡報就好</b>：一頁一格，圖放上去、文字打上去，加個封面。不用排得漂亮，發表能投影就行，後續會統一做成正式網頁。</p>
+          <p><b>收檔</b>：六格圖依序編號 01 到 06，連同 Google 簡報連結一起傳給 Vicky。<b>記得跟全桌說一次</b>：今天是初版，之後會統整成正式網頁放到官網，再發連結。</p>
+        </div>
+      </details>
+
+      <div class="outcome reveal d4"><span>預期達成</span>六段故事＋六格繪本＋一份可以投影的初版</div>
+    </div>
+  </section>
+
+  <!-- ACT 12 段落三 注意事項 -->
+  <section id="act-13" data-block data-bg="3">
+    <div class="wrap wide">
+      <div class="act-cap reveal">段落三 · 注意事項</div>
+      <h2 class="display sm reveal d1">這一段要注意四件事</h2>
+      <div class="grid-2">
+        <div class="card reveal d1">
+          <div class="num">注意 01</div>
+          <h3 class="h2">場景不要動，只動角色</h3>
+          <p class="body">照片是現場實拍的淡水，構圖、光線、雕像的樣子都要原封保留，要讓人一眼認出是那個地方。AI 只負責把角色加進去。生圖時<b>一定要上傳那張照片</b>，沒放參考圖，出來的車站會是錯的。</p>
+        </div>
+        <div class="card reveal d2">
+          <div class="num">注意 02</div>
+          <h3 class="h2">故事先確認，再排分鏡</h3>
+          <p class="body">指令會先給你們六段故事，全桌看過、確認了才往下排分鏡。故事定了、照片選好了，分鏡通常一次就對。分鏡那個對話從頭到尾不生圖。</p>
+        </div>
+        <div class="card reveal d3">
+          <div class="num">注意 03</div>
+          <h3 class="h2">生自己那一格，開新對話</h3>
+          <p class="body">六格一人一張，各自開一個新對話貼自己那一份指令。同一個對話連續生不同格，畫風容易跑掉。生三次還不滿意就先收下最接近的那張，<b>六格湊齊優先於每格都好。</b></p>
+        </div>
+        <div class="card reveal d4">
+          <div class="num">注意 04</div>
+          <h3 class="h2">文字留白，規格照分鏡走</h3>
+          <p class="body">圖裡先不生文字，只留白。AI 生中文字經常出錯字，現場沒有時間逐字校對重生。分鏡會給每一格的文字位置與規格（字體感、顏色、大小），排 Google 簡報初版時照著走就對得起來。</p>
+        </div>
+      </div>
+      <p class="body reveal d4" style="max-width:900px;margin:36px auto 0;"><b>你生完自己那一格，照這六件事看一遍</b>，都過了再交給桌長。</p>
+      <ul class="chk reveal d4">
+        <li>主角外型跟角色設定表一致（臉、髮型、服裝、配件有沒有掉）</li>
+        <li>幾米公共藝術有出現且沒被擋住</li>
+        <li>月台有出現</li>
+        <li>畫風跟前面幾格一致</li>
+        <li>沒有多餘人物、錯誤肢體、重複配件</li>
+        <li>文字留白區有留出來</li>
+      </ul>
+      <div class="factbox reveal d4">
+        <p><b>發表時全組一起站上去，講三件事</b>：我們這組的主角是誰、他身上有誰的什麼；故事線從哪一站走到哪一站；哪一格最喜歡。</p>
+        <p><b>今天交出去的是初版。</b>活動後我們會把六組作品統整成正式的網頁放到官網，到時候發連結給大家。</p>
+      </div>
+      <details class="hostbox reveal d4">
+        <summary>桌長小卡</summary>
+        <div class="hbody">
+          <p><b>空景照的挑選標準，這是最重要的一條</b>：優先選本身就同時拍到「公共藝術雕像＋月台」的那張。這樣 AI 只需要新增一個角色，不必自己拼裝兩個場景來源，拼裝就是走鐘的開始。</p>
+          <p><b>六個已知的失敗樣態</b>（生完照這個順序檢查）：角色遮住雕像；雕像被 AI 誤認成第二個活角色（會長出表情或動作）；為了放大角色，月台辨識度整個消失；月台標示、軌道、雕像結構被 AI 重畫成別的樣子；角色道具太多搶走公共藝術焦點；三元素塞滿後沒有文字安全區。</p>
+        </div>
+      </details>
+    </div>
+  </section>
+
+
+  <!-- ACT 14 收尾 -->
+  <section id="act-14" data-block data-bg="9">
+    <div class="wrap left">
+      <div class="act-cap reveal">ACT 14 · 帶回去</div>
+      <h2 class="display sm reveal d1" style="text-align:left;">回去自己再做一次</h2>
+      <p class="lead reveal d2" style="text-align:left;margin:0;">今天做的事串起來就是一句話：先把感受聊清楚，再決定風格，才生圖。這套方法你回去可以用在任何一個地方，不只是淡水。</p>
+      <div class="footer-grid">
+        <div class="reveal d1">
+          <h3>關於這堂課</h3>
+          <p class="body">淡水公共藝術 AI 創作課。上午走讀淡海輕軌六站的幾米公共藝術，下午用 AI 把感受變成自己的插畫角色與一本團體繪本。旅學堂與江江教練特約合作，講師群：江昱德（流程、場景設計、AI 生圖）、吳宛庭 Vivi（敘事轉譯）、李琪 Vicky（主持與行政）。</p>
+        </div>
+        <div class="reveal d2">
+          <h3>想再往下走</h3>
+          <ul>
+            <li>配音與翻頁動畫</li>
+            <li>個人衍生商品</li>
+            <li>把整套流程帶進你的單位</li>
+          </ul>
+        </div>
+        <div class="reveal d3">
+          <h3>聯繫</h3>
+          <ul>
+            <li>官網 jiangyude.com</li>
+            <li>Threads ＠jiang_yude_coach</li>
+            <li>旅學堂</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom reveal d4">淡水公共藝術 AI 創作課 · 旅學堂 × 江江教練 · 隱性知識提煉師</div>
+    </div>
+  </section>
+
+<script>
+(function () {
+  document.documentElement.classList.add('js-on');
+  document.body.classList.add('js-on');
+  const sections = [...document.querySelectorAll('section[data-block]')];
+  const dotNav = document.getElementById('dots');
+  const dots = [...document.querySelectorAll('.dot-indicator a')];
+  const progress = document.getElementById('progress');
+  const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (!reducedMotion) {
+    const io = new IntersectionObserver((entries) => entries.forEach((e) => {
+      if (e.isIntersecting) { e.target.querySelectorAll('.reveal').forEach((el) => el.classList.add('in')); }
+    }), { threshold: 0.2 });
+    sections.forEach((s) => io.observe(s));
+  } else { document.querySelectorAll('.reveal').forEach((el) => el.classList.add('in')); }
+
+  // 只有 bg-7 / bg-8 / bg-9 是深底，導覽點才換成淺色
+  const darkBgs = new Set(['7','8','9']);
+  const navIo = new IntersectionObserver((entries) => entries.forEach((e) => {
+    if (e.isIntersecting) {
+      const i = sections.indexOf(e.target);
+      dots.forEach((d, idx) => d.classList.toggle('active', idx === i));
+      document.body.classList.toggle('on-dark', darkBgs.has(e.target.getAttribute('data-bg')));
+    }
+  }), { threshold: 0.5 });
+  sections.forEach((s) => navIo.observe(s));
+
+  const scroller = document.scrollingElement || document.documentElement;
+  let ticking = false, hideTimer = null;
+  function updateProgress() {
+    const max = scroller.scrollHeight - scroller.clientHeight;
+    progress.style.width = (max > 0 ? (scroller.scrollTop / max) * 100 : 0) + '%';
+    ticking = false;
+  }
+  window.addEventListener('scroll', () => {
+    if (!ticking) { requestAnimationFrame(updateProgress); ticking = true; }
+    // 章節標籤只在滑動時浮出，停 1.1 秒自動消失
+    dotNav.classList.add('scrolling');
+    clearTimeout(hideTimer);
+    hideTimer = setTimeout(() => dotNav.classList.remove('scrolling'), 1100);
+  }, { passive: true });
+  updateProgress();
+
+
+  // 圖片點開放大：頁面裡所有內容圖都可點
+  const lb = document.getElementById('lightbox');
+  if (lb) {
+    const lbImg = lb.querySelector('img');
+    const lbCap = lb.querySelector('.lb-cap');
+    document.querySelectorAll('section img').forEach((img) => {
+      img.classList.add('zoomable');
+      img.setAttribute('tabindex', '0');
+      const open = () => {
+        lbImg.src = img.currentSrc || img.src;
+        lbImg.alt = img.alt || '';
+        lbCap.textContent = img.alt || '';
+        lb.classList.add('open');
+        document.body.style.overflow = 'hidden';
+      };
+      img.addEventListener('click', open);
+      img.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(); } });
+    });
+    const close = () => { lb.classList.remove('open'); document.body.style.overflow = ''; };
+    lb.addEventListener('click', close);
+    lb.querySelector('.lb-close').addEventListener('click', close);
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') close(); });
+  }
+
+  // 指令一鍵複製
+  document.querySelectorAll('.promptbox .copy').forEach((btn) => {
+    btn.addEventListener('click', (ev) => {
+      ev.preventDefault();
+      const text = btn.closest('.pbody').querySelector('[data-copy]').innerText.trim();
+      navigator.clipboard.writeText(text).then(() => {
+        const old = btn.textContent;
+        btn.textContent = '已複製';
+        setTimeout(() => { btn.textContent = old; }, 1600);
+      });
+    });
+  });
+})();
+</script>
+</body>
+</html>

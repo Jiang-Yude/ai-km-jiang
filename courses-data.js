@@ -42,89 +42,45 @@
 
 window.COURSES = [
   {
-    id: "2026-09-09-npo-impact-report-workshop-day-1",
+    id: "2026-09-09-npo-impact-report-workshop",
     date: "2026-09-09",
     time: "09:30",
     duration_min: null,
-    title: "使命有跡：NPO 永續影響力報告書 AI 共創工作坊（第一日）",
-    type_label: "付費實體課",
+    title: "使命有跡：NPO 永續影響力報告書 AI 共創工作坊",
+    type_label: "付費實體課＋線上場",
     image: "images/courses/2026-09-npo-impact-report-workshop.jpg",
-    venue_mode: "physical",
-    venue_label: "實體",
+    venue_mode: "hybrid",
+    venue_label: "實體＋線上",
     host: "永力智庫顧問團隊",
     tags: ["永力智庫", "社會影響力", "永續報告書", "AI工作流", "工作坊"],
-    summary: "兩日制 NPO 永續影響力報告書 AI 共創工作坊，主工作坊日期為 9 月 9 日與 9 月 23 日，地點在台北市萬華區。",
+    summary: "同一梯次共四場：9/9 與 9/23 兩個實體工作坊日（台北市萬華區，09:30 開始），中間再加 9/16 與 9/30 兩場線上兩小時課。帶著真實資料上課，兩天實作加兩次線上跟進，做出可用的永續影響力報告書 1.0。",
     detail_url: "https://jiang-yude.github.io/yongli-thinktank-site/",
     detail_label: "查看課程資訊 ↗",
     materials: [],
     registration: {
       status: "pending",
-      note: "兩日制課程，9/9 與 9/23 為同一梯次；報名方式待主辦單位公告"
+      note: "同一梯次四場：9/9（實體）、9/16（線上兩小時）、9/23（實體）、9/30（線上兩小時）。報名方式待主辦單位公告。"
     }
   },
   {
-    id: "2026-09-16-npo-impact-report-workshop-online-1",
-    date: "2026-09-16",
-    time: "09:00",
-    duration_min: 120,
-    title: "使命有跡：NPO 工作坊線上兩小時場（第一場）",
-    type_label: "外部授課",
-    image: "images/courses/2026-09-npo-impact-report-workshop.jpg",
-    venue_mode: "online",
-    venue_label: "線上",
-    host: "永力智庫顧問團隊",
-    tags: ["永力智庫", "社會影響力", "永續報告書", "AI工作流", "工作坊"],
-    summary: "NPO 永續影響力報告書 AI 共創工作坊的第一場線上兩小時課程。",
-    detail_url: "https://jiang-yude.github.io/yongli-thinktank-site/",
-    detail_label: "查看課程資訊 ↗",
-    materials: [],
-    registration: {
-      status: "private",
-      host_org: "永力智庫",
-      note: "線上兩小時場，參加方式由主辦單位通知"
-    }
-  },
-  {
-    id: "2026-09-23-npo-impact-report-workshop-day-2",
-    date: "2026-09-23",
-    time: "09:30",
-    duration_min: null,
-    title: "使命有跡：NPO 永續影響力報告書 AI 共創工作坊（第二日）",
-    type_label: "付費實體課",
-    image: "images/courses/2026-09-npo-impact-report-workshop.jpg",
+    id: "2026-09-12-danhai-public-art",
+    date: "2026-09-12",
+    time: null,
+    duration_min: 180,
+    title: "淡水公共藝術 AI 創作課",
+    type_label: "實體工作坊（旅學堂特約合作）",
+    image: "images/courses/2026-08-danhai-public-art.jpg",
     venue_mode: "physical",
     venue_label: "實體",
-    host: "永力智庫顧問團隊",
-    tags: ["永力智庫", "社會影響力", "永續報告書", "AI工作流", "工作坊"],
-    summary: "兩日制 NPO 永續影響力報告書 AI 共創工作坊，主工作坊日期為 9 月 9 日與 9 月 23 日，地點在台北市萬華區。",
-    detail_url: "https://jiang-yude.github.io/yongli-thinktank-site/",
-    detail_label: "查看課程資訊 ↗",
-    materials: [],
-    registration: {
-      status: "pending",
-      note: "兩日制課程，9/9 與 9/23 為同一梯次；報名方式待主辦單位公告"
-    }
-  },
-  {
-    id: "2026-09-30-npo-impact-report-workshop-online-2",
-    date: "2026-09-30",
-    time: "09:00",
-    duration_min: 120,
-    title: "使命有跡：NPO 工作坊線上兩小時場（第二場）",
-    type_label: "外部授課",
-    image: "images/courses/2026-09-npo-impact-report-workshop.jpg",
-    venue_mode: "online",
-    venue_label: "線上",
-    host: "永力智庫顧問團隊",
-    tags: ["永力智庫", "社會影響力", "永續報告書", "AI工作流", "工作坊"],
-    summary: "NPO 永續影響力報告書 AI 共創工作坊的第二場線上兩小時課程。",
-    detail_url: "https://jiang-yude.github.io/yongli-thinktank-site/",
-    detail_label: "查看課程資訊 ↗",
+    host: "江江教練",
+    tags: ["公共藝術", "敘事轉譯", "AI生圖", "提示詞", "在地故事", "零基礎"],
+    summary: "與旅學堂特約合作的走讀加創作工作坊。上午走讀淡海輕軌沿線的幾米公共藝術，下午用 AI 把早上聽到的故事變成一張屬於自己的淡水形象角色，再由全桌共創一個主角，做成六格繪本。一支手機就可以參加，不用先會用 AI。",
+    detail_url: "courses/2026-08-danhai-public-art/",
     materials: [],
     registration: {
       status: "private",
-      host_org: "永力智庫",
-      note: "線上兩小時場，參加方式由主辦單位通知"
+      host_org: "旅學堂",
+      note: "藍海線場次 9/12；綠山線場次 8 月底加開，正式日期由旅學堂公布。報名與場次資訊以旅學堂公告為準。"
     }
   },
   {
