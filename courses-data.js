@@ -63,8 +63,8 @@ window.COURSES = [
     }
   },
   {
-    id: "2026-09-12-danhai-public-art",
-    date: "2026-09-12",
+    id: "2026-08-21-danhai-public-art",
+    date: "2026-08-21",
     time: null,
     duration_min: 180,
     title: "淡水公共藝術 AI 創作課",
@@ -80,7 +80,7 @@ window.COURSES = [
     registration: {
       status: "private",
       host_org: "旅學堂",
-      note: "藍海線場次 9/12；綠山線場次 8 月底加開，正式日期由旅學堂公布。報名與場次資訊以旅學堂公告為準。"
+      note: "同一套課程兩場：綠山線 8/21（五）、藍海線 9/12（六）。報名與場次資訊以旅學堂公告為準。"
     }
   },
   {
