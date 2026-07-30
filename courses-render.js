@@ -4,12 +4,13 @@
   const TODAY = new Date(new Date().toISOString().slice(0, 10)); // 00:00 today
 
   // ─── 工具 ───
-  function parseDate(s) { return new Date(s); }
+  function parseDate(s) { return s ? new Date(s) : new Date(8640000000000000); }
   function isIncubating(c) { return c.phase === "incubating"; }
-  function isUpcoming(c) { return !isIncubating(c) && parseDate(c.date) >= TODAY; }
-  function isPast(c) { return !isIncubating(c) && parseDate(c.date) < TODAY; }
-  function monthKey(c) { return c.date.slice(0, 7); }   // "2026-05"
+  function isUpcoming(c) { return !isIncubating(c) && !!c.date && parseDate(c.date) >= TODAY; }
+  function isPast(c) { return !isIncubating(c) && !!c.date && parseDate(c.date) < TODAY; }
+  function monthKey(c) { return c.date ? c.date.slice(0, 7) : 'tbd'; }   // "2026-05"
   function fmtDate(c) {
+    if (!c.date) return c.date_label || '日期待定';
     const d = parseDate(c.date);
     // 沒給時間 = 時間未定 → 顯示模糊「M 月 · 時間待定」
     if (!c.time) {
@@ -101,6 +102,20 @@
 
   // ─── 沒圖時的佔位（明信片風：漸層底 + 月份 + 大日期 + 標題 + 主辦） ───
   function placeholderHTML(c) {
+    if (!c.date) {
+      const r = c.registration || {};
+      const orgLabel = (r.status === 'private' && r.host_org) ? `主辦：${r.host_org}` : c.type_label;
+      return `<div class="card-thumbnail-placeholder">
+        <div class="ph-decor ph-decor-a"></div>
+        <div class="ph-decor ph-decor-b"></div>
+        <div class="ph-top"><span class="ph-month-mark">TO BE ANNOUNCED</span></div>
+        <div class="ph-mid"><div class="ph-day">TBD</div></div>
+        <div class="ph-bottom">
+          <div class="ph-title">${escapeHtml(c.title)}</div>
+          <div class="ph-org">${escapeHtml(orgLabel)}</div>
+        </div>
+      </div>`;
+    }
     const d = parseDate(c.date);
     const monthEn = ['JANUARY','FEBRUARY','MARCH','APRIL','MAY','JUNE','JULY','AUGUST','SEPTEMBER','OCTOBER','NOVEMBER','DECEMBER'][d.getMonth()];
     const monthShort = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][d.getMonth()];
@@ -135,7 +150,7 @@
   // ─── 課程詳細頁連結（有 detail_url 才顯示） ───
   function detailLinkHTML(c) {
     if (!c.detail_url) return '';
-    return `<a class="course-detail-link" href="${escapeHtml(c.detail_url)}" target="_blank" rel="noopener">完整課程內容與簡報 ↗</a>`;
+    return `<a class="course-detail-link" href="${escapeHtml(c.detail_url)}" target="_blank" rel="noopener">${escapeHtml(c.detail_label || '完整課程內容與簡報 ↗')}</a>`;
   }
 
   // ─── 單張卡片 HTML（極簡版：圖 + 日期 + 標題 + 模式 badges + 詳細連結 + CTA） ───
@@ -154,6 +169,7 @@
           <h3>${escapeHtml(c.title)}</h3>
           ${modeBadgesHTML(c)}
           ${detailLinkHTML(c)}
+          ${materialsHTML(c)}
           ${ctaHTML(c)}
         </div>
       </div>`;
@@ -369,12 +385,19 @@
         html += header('近期課程', soon.length, '最近要上的課排最前面；免費課、付費課、邀約課看卡片上的標籤。');
         html += grid(soon.map(cardHTML));
       }
+
+      const incubating = COURSES
+        .filter(c => isIncubating(c) && hitVenue(c.venue_mode) && hitQ([c.title, c.summary || '', (c.tags || []).join(' '), c.type_label || '']));
+      if (incubating.length) {
+        html += header('籌備中', incubating.length, '日期與報名方式尚未確定的課程。');
+        html += grid(incubating.map(cardHTML));
+      }
     }
 
     // 收費課程（常設 offers + 有日期的付費場次）
     if (F.type === 'all' || F.type === 'paid') {
       const offers = (window.PAID_OFFERS || []).filter(o => hitVenue(o.venue_mode) && hitQ([o.title, o.brief, o.level, (o.tags||[]).join(' ')]));
-      const paidRuns = COURSES.filter(c => inferType(c) === 'paid' && hitVenue(c.venue_mode) && hitQ([c.title, c.summary||'', (c.tags||[]).join(' ')]));
+      const paidRuns = COURSES.filter(c => inferType(c) === 'paid' && !isIncubating(c) && hitVenue(c.venue_mode) && hitQ([c.title, c.summary||'', (c.tags||[]).join(' ')]));
       if (offers.length + paidRuns.length) {
         html += header('收費課程', offers.length + paidRuns.length, '服務方案重整設計中，價格與細節陸續公告。');
         html += grid(offers.map(paidCardHTML).concat(paidRuns.map(cardHTML)));

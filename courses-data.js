@@ -3,7 +3,8 @@
  *
  * ─── 欄位 ───
  *   id           - 唯一識別碼，格式 YYYY-MM-DD-slug
- *   date         - YYYY-MM-DD（必填）
+ *   date         - YYYY-MM-DD；籌備中且日期未定可填 null
+ *   date_label   - date=null 時顯示的文字，預設「日期待定」
  *   time         - HH:MM 或 null
  *   duration_min - 分鐘數或 null
  *   title        - 課程標題
@@ -14,6 +15,7 @@
  *   tags         - 主題標籤（內部分類用，不顯示）
  *   summary      - 一段話介紹（給未來內頁用，卡片不顯示）
  *   detail_url   - 該堂課的內頁 URL（之後做才填）
+ *   detail_label - 內頁連結文字；不填時預設「完整課程內容與簡報 ↗」
  *   materials    - 簡報、技能包等延伸資源（之後做才填）
  *
  *   phase        - 課程階段：
@@ -40,27 +42,137 @@
 
 window.COURSES = [
   {
+    id: "2026-09-09-npo-impact-report-workshop-day-1",
+    date: "2026-09-09",
+    time: "09:30",
+    duration_min: null,
+    title: "使命有跡：NPO 永續影響力報告書 AI 共創工作坊（第一日）",
+    type_label: "付費實體課",
+    image: "images/courses/2026-09-npo-impact-report-workshop.jpg",
+    venue_mode: "physical",
+    venue_label: "實體",
+    host: "永力智庫顧問團隊",
+    tags: ["永力智庫", "社會影響力", "永續報告書", "AI工作流", "工作坊"],
+    summary: "兩日制 NPO 永續影響力報告書 AI 共創工作坊，主工作坊日期為 9 月 9 日與 9 月 23 日，地點在台北市萬華區。",
+    detail_url: "https://jiang-yude.github.io/yongli-thinktank-site/",
+    detail_label: "查看課程資訊 ↗",
+    materials: [],
+    registration: {
+      status: "pending",
+      note: "兩日制課程，9/9 與 9/23 為同一梯次；報名方式待主辦單位公告"
+    }
+  },
+  {
+    id: "2026-09-16-npo-impact-report-workshop-online-1",
+    date: "2026-09-16",
+    time: "09:00",
+    duration_min: 120,
+    title: "使命有跡：NPO 工作坊線上兩小時場（第一場）",
+    type_label: "外部授課",
+    image: "images/courses/2026-09-npo-impact-report-workshop.jpg",
+    venue_mode: "online",
+    venue_label: "線上",
+    host: "永力智庫顧問團隊",
+    tags: ["永力智庫", "社會影響力", "永續報告書", "AI工作流", "工作坊"],
+    summary: "NPO 永續影響力報告書 AI 共創工作坊的第一場線上兩小時課程。",
+    detail_url: "https://jiang-yude.github.io/yongli-thinktank-site/",
+    detail_label: "查看課程資訊 ↗",
+    materials: [],
+    registration: {
+      status: "private",
+      host_org: "永力智庫",
+      note: "線上兩小時場，參加方式由主辦單位通知"
+    }
+  },
+  {
+    id: "2026-09-23-npo-impact-report-workshop-day-2",
+    date: "2026-09-23",
+    time: "09:30",
+    duration_min: null,
+    title: "使命有跡：NPO 永續影響力報告書 AI 共創工作坊（第二日）",
+    type_label: "付費實體課",
+    image: "images/courses/2026-09-npo-impact-report-workshop.jpg",
+    venue_mode: "physical",
+    venue_label: "實體",
+    host: "永力智庫顧問團隊",
+    tags: ["永力智庫", "社會影響力", "永續報告書", "AI工作流", "工作坊"],
+    summary: "兩日制 NPO 永續影響力報告書 AI 共創工作坊，主工作坊日期為 9 月 9 日與 9 月 23 日，地點在台北市萬華區。",
+    detail_url: "https://jiang-yude.github.io/yongli-thinktank-site/",
+    detail_label: "查看課程資訊 ↗",
+    materials: [],
+    registration: {
+      status: "pending",
+      note: "兩日制課程，9/9 與 9/23 為同一梯次；報名方式待主辦單位公告"
+    }
+  },
+  {
+    id: "2026-09-30-npo-impact-report-workshop-online-2",
+    date: "2026-09-30",
+    time: "09:00",
+    duration_min: 120,
+    title: "使命有跡：NPO 工作坊線上兩小時場（第二場）",
+    type_label: "外部授課",
+    image: "images/courses/2026-09-npo-impact-report-workshop.jpg",
+    venue_mode: "online",
+    venue_label: "線上",
+    host: "永力智庫顧問團隊",
+    tags: ["永力智庫", "社會影響力", "永續報告書", "AI工作流", "工作坊"],
+    summary: "NPO 永續影響力報告書 AI 共創工作坊的第二場線上兩小時課程。",
+    detail_url: "https://jiang-yude.github.io/yongli-thinktank-site/",
+    detail_label: "查看課程資訊 ↗",
+    materials: [],
+    registration: {
+      status: "private",
+      host_org: "永力智庫",
+      note: "線上兩小時場，參加方式由主辦單位通知"
+    }
+  },
+  {
     id: "2026-08-15-ai-that-knows-you",
     date: "2026-08-15",
     time: "14:00",
     duration_min: 180,
     title: "讓你的 AI 更懂你：從「懂我」到「能幫我做事」",
-    type_label: "實體工作坊（主辦單位邀請制）",
-    image: null,
+    type_label: "工作坊",
+    image: "images/courses/2026-08-15-ai-that-knows-you.jpg",
     venue_mode: "physical",
     venue_label: "實體",
     host: "江江教練",
     tags: ["AIAgent", "數位分身", "提示詞", "ChatGPT", "零基礎"],
-    summary: "永力智庫主辦、育成社福基金會共同主辦的三小時實體工作坊，地點在育成蕃薯藤餐廳。多數人想到數位分身是一張像你的臉，但真正能幫你做事的那一個，重點在它懂不懂你怎麼做事。現場帶三件事：弄懂 AI 代理人是什麼、體驗做好的顧問型分身、學會把自己的 AI 設定得更懂你。一支手機就能參加，帶筆電操作更順手。",
+    summary: "永力智庫主辦、育成社福基金會共同主辦的三小時實體工作坊，地點在育成蕃薯藤餐廳。現場帶你弄懂 AI 代理人、體驗做好的顧問型 AI，再一步一步完成手機上的設定。走完三步，你的 AI 會從「聊得來」變成「幫得上」。不用會電腦，一支手機就可以參加。",
     detail_url: "courses/2026-08-15-ai-that-knows-you/",
+    materials: [],
+    registration: {
+      status: "private",
+      url: null,
+      label: null,
+      host_org: "永力智庫",
+      note: "扶輪社友與邀請來賓參加，非對外公開報名。詳細內容見課程介紹與上課頁。"
+    }
+  },
+  {
+    id: "2026-08-02-dual-model-review-loop",
+    date: "2026-08-02",
+    time: "20:00",
+    duration_min: null,
+    title: "文科生也能設計的雙模型互審機制與迴圈工程",
+    type_label: "免費線上講座",
+    image: "images/courses/2026-08-02-dual-model-review-loop.jpg",
+    venue_mode: "online",
+    venue_label: "線上",
+    host: "江江教練",
+    tags: ["AIAgent", "MultiAgent", "跨家審稿", "迴圈工程"],
+    summary: "給不會寫程式的知識工作者與 Agent 新手，分享為什麼要讓兩個模型互相審查、迴圈工程怎麼設計，以及從交代任務到收到回報的完整流程。",
+    detail_url: null,
     materials: [
-      { label: "上課投影頁 ↗", url: "https://jiangyude.com/courses/2026-08-15-ai-that-knows-you/" }
+      { label: "文章｜當我開始理解迴圈，把三個工作流設計成 Loop ↗", url: "https://jiangyude.com/articles/my-three-loops/" },
+      { label: "文章｜讓兩個 AI 互相挑錯：企劃雙軌互審 loop ↗", url: "https://jiangyude.com/articles/dual-track-planning-loop/" }
     ],
     registration: {
       status: "open",
-      url: null,
-      label: null,
-      note: "永力智庫主辦，扶輪社友與邀請來賓參加，非對外公開報名。詳細課程內容見上課投影頁。"
+      url: "https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ",
+      label: "加入 LINE 社群 ↗",
+      note: "免費參加，課程連結會在上課前半小時公布於 LINE 社群；課程時長待公告"
     }
   },
   {
@@ -330,7 +442,8 @@ window.COURSES = [
   },
   {
     id: "tbd-ai-design-workshop",
-    date: "2026-12-31",
+    date: null,
+    date_label: "日期待定",
     time: null,
     title: "AI 圖文設計工作坊",
     type_label: "工作坊",
@@ -349,7 +462,8 @@ window.COURSES = [
   },
   {
     id: "2026-08-xx-esg-agent",
-    date: "2026-08-15",
+    date: null,
+    date_label: "日期待定",
     time: null,
     title: "Agent 文書處理基礎班 · ESG 場",
     type_label: "付費實體課",
@@ -358,6 +472,7 @@ window.COURSES = [
     host: "江江教練",
     tags: ["ESG", "永續報告", "Agent", "文書處理", "商會"],
     summary: "給扶輪社、商會、ESG 顧問。",
+    phase: "incubating",
     detail_url: null,
     materials: [],
     registration: {

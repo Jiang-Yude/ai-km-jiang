@@ -147,7 +147,7 @@ window.ARTICLES = [
       content_type: ["觀點文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["ten-year-anchor", "teach-ai-not-learn-ai", "timing-and-forecast", "one-on-one-questions", "ai-employee-four-levels"]
+    related: ["ten-year-anchor", "teach-ai-not-learn-ai", "timing-and-forecast", "one-on-one-questions", "ai-employee-four-levels", "use-more-ai-not-enough"]
   },
 
   /* ── 1. 代理工作流蓋自動化工作流（案例）── */
@@ -1160,7 +1160,7 @@ window.ARTICLES = [
     summary: "用 Claude Skills 理解技能包：它是給 AI 看的操作手冊，把你的專業流程、格式標準、最佳狀態封裝成可重複執行的知識資產。含兩種製作方法與備份要點。",
     tags: {"topic":["ClaudeSkills","技能包設計","知識管理"],"level":["零基礎入門"],"content_type":["教學文章"]},
     external: { threads: null, vocus: null },
-    related: ["semantic-rules-before-prompt-templates", "ai-data-organization-usable-system", "manage-ai-with-management-knowledge", "chatgpt-work-skills-web-version", "old-prompts-intent-first-loop-engineering", "ai-employee-four-levels"]
+    related: ["semantic-rules-before-prompt-templates", "ai-data-organization-usable-system", "manage-ai-with-management-knowledge", "chatgpt-work-skills-web-version", "old-prompts-intent-first-loop-engineering", "ai-employee-four-levels", "use-more-ai-not-enough"]
   },
   {
     id: "notebooklm-knowledge-analysis-assistant",
@@ -1186,7 +1186,7 @@ window.ARTICLES = [
     summary: "Claude Fable、GPT-5.6 Sol 這類強模型出現後，知識庫、工作流、規則與驗收方式造成的差距更明顯。用泥巴路、柏油路與高速公路三種道路環境，帶你完成六步 AI 鋪路流程。",
     tags: {"topic":["AI趨勢","知識管理","AI工作流","駕馭工程 HarnessEngineering"],"level":["基礎"],"content_type":["教學文章"]},
     external: { threads: null, vocus: null },
-    related: ["docs-as-system-design-agent", "what-is-loop-engineering", "how-to-train-your-ai-employee", "ai-that-knows-you", "knowledge-as-employee", "ai-tools-professional-judgment", "ai-cp-value-calculus"]
+    related: ["docs-as-system-design-agent", "what-is-loop-engineering", "how-to-train-your-ai-employee", "ai-that-knows-you", "knowledge-as-employee", "ai-tools-professional-judgment", "ai-cp-value-calculus", "use-more-ai-not-enough"]
   },
   {
     id: "dual-track-planning-loop",
@@ -1293,7 +1293,7 @@ window.ARTICLES = [
     summary: "三名資深工程師靠清理 AI 生成的冗長程式碼收費，一週完整達標一萬美元。他們自己也用 Claude Code，官網卻寫著 the agent doesn't get a vote。搭配 SlopCodeBench 對結構侵蝕的研究，說明工具普及後差異會回到看懂問題、知道哪裡不能碰、判斷結果能不能用。附把工作分成三層的方法、交付 AI 前的三問清單與可直接使用的提示詞。",
     tags: {"topic":["AI趨勢","輔助決策","AIAgent"],"level":["基礎"],"content_type":["觀點文章"]},
     external: { threads: null, vocus: null },
-    related: ["ai-capability-tiers", "how-to-train-your-ai-employee", "vibe-coding-ten-half-products", "strong-ai-models-knowledge-workflow-road", "ai-cp-value-calculus", "ai-employee-four-levels"]
+    related: ["ai-capability-tiers", "how-to-train-your-ai-employee", "vibe-coding-ten-half-products", "strong-ai-models-knowledge-workflow-road", "ai-cp-value-calculus", "ai-employee-four-levels", "use-more-ai-not-enough"]
   },
 
   {
@@ -1349,7 +1349,7 @@ window.ARTICLES = [
     summary: "提出「知識作業系統」母架構：存量三庫、八步精煉迴圈、護欄、治理四個構件，加一條三域分流部署軸，圓心是隱性知識提煉。含三重收斂的信度證據（雙 AI 獨立收斂、2023 至 2026 實踐先於命名、跨時內部收斂）、三條真實工作流的驗證設計，與一個立刻能做的對照練習。",
     tags: {"topic":["江江精選","知識管理","隱性知識","AI工作流","知識庫"],"level":["進階"],"content_type":["教學文章"]},
     external: { threads: null, vocus: null },
-    related: ["knowledge-as-employee", "docs-as-system-design-agent", "knowledge-base-three-vault-split", "tag-wiki-method", "what-is-loop-engineering", "talent-vs-expertise"]
+    related: ["knowledge-as-employee", "docs-as-system-design-agent", "knowledge-base-three-vault-split", "tag-wiki-method", "what-is-loop-engineering", "talent-vs-expertise", "use-more-ai-not-enough"]
   },
 
   {
@@ -1618,5 +1618,22 @@ window.ARTICLES = [
     },
     external: { threads: null, vocus: null },
     related: ["how-to-train-your-ai-employee", "harness-mindset-for-bosses", "train-your-ai-agent-editor", "ai-native-not-transformation", "web-chat-ai-vs-desktop-agent", "knowledge-as-employee", "claude-skills-knowledge-assets", "docs-as-system-design-agent", "ai-tools-professional-judgment", "meeting-record-agent-workflow", "program-vs-ai-skill-library", "intent-first-prompting", "messaging-apps-ai-friendliness"]
+  },
+  {
+    id: "use-more-ai-not-enough",
+    url: "articles/use-more-ai-not-enough/",
+    date: "2026-07-30",
+    updated: "2026-07-30",
+    title: "多數人只是用更多 AI，工作的形狀沒有變",
+    problem: "AI 用了一段時間，工作只是變快，講不出跟半年前有什麼結構性差別；也不知道手上哪件事真的該交給 AI。",
+    audience: "已經天天在用 AI 但看不到結構性改變的個人工作者，想導入 AI 卻只想得到「把現有流程加速」的團隊，以及手上有很多經驗說不清楚、教不會別人的資深工作者。",
+    summary: "AI 時代沒有 AI 優化，只有 AI 原生：過去能被數位優化的事，軟體都已經做得差不多好了，該找的是過去的軟體系統做不到的事。判斷一件事該不該交給 AI，看倍數不看百分比，只提高 20% 到 50% 的大概不是 AI 的強項。後半整理 Sam Altman 69 分鐘訪談裡的三件事：為還不划算的事鋪路、把「學得會但教不會」的判斷外化、用持續性與倍數重篩工具，每件都附這週可以做的第一步，含一段可直接複製的追問提示詞。",
+    tags: {
+      topic: ["AI趨勢", "知識管理", "隱性知識", "數位轉型"],
+      level: ["基礎"],
+      content_type: ["觀點文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["ai-native-not-transformation", "knowledge-os-master-map", "strong-ai-models-knowledge-workflow-road", "claude-skills-knowledge-assets", "ai-tools-professional-judgment"]
   }
 ];
