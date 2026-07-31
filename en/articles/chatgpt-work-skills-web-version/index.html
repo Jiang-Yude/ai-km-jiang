@@ -1,0 +1,337 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="index,follow">
+<title>ChatGPT on the Web Finally Supports Skill Packages: From Setup to Two Pitfalls | Coach Jiang · AI Knowledge Management</title>
+<meta name="description" content="How ChatGPT Work brings skill packages to the web, how skill packages differ from prompts, how projects store data while skill packages store judgment, and two pitfalls that appear with deeper use.">
+<link rel="canonical" href="https://jiangyude.com/en/articles/chatgpt-work-skills-web-version/">
+<link rel="alternate" hreflang="zh-Hant" href="https://jiangyude.com/articles/chatgpt-work-skills-web-version/"><link rel="alternate" hreflang="en" href="https://jiangyude.com/en/articles/chatgpt-work-skills-web-version/"><link rel="alternate" hreflang="x-default" href="https://jiangyude.com/articles/chatgpt-work-skills-web-version/"><meta property="og:type" content="article">
+<meta property="og:title" content="ChatGPT on the Web Finally Supports Skill Packages: From Setup to Two Pitfalls">
+<meta property="og:image" content="https://jiangyude.com/images/og/chatgpt-work-skills-web-version.jpg">
+<meta property="og:description" content="How ChatGPT Work brings skill packages to the web, how skill packages differ from prompts, how projects store data while skill packages store judgment, and two pitfalls that appear with deeper use.">
+<meta property="og:url" content="https://jiangyude.com/en/articles/chatgpt-work-skills-web-version/">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Coach Jiang · AI Knowledge Management">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="ChatGPT on the Web Finally Supports Skill Packages: From Setup to Two Pitfalls">
+<meta name="twitter:image" content="https://jiangyude.com/images/og/chatgpt-work-skills-web-version.jpg">
+<meta name="twitter:description" content="How ChatGPT Work brings skill packages to the web, how skill packages differ from prompts, how projects store data while skill packages store judgment, and two pitfalls that appear with deeper use.">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"ChatGPT on the Web Finally Supports Skill Packages: From Setup to Two Pitfalls","description":"How ChatGPT Work brings skill packages to the web, how skill packages differ from prompts, how projects store data while skill packages store judgment, and two pitfalls that appear with deeper use.","author":{"@type":"Person","name":"Jiang Yude","alternateName":"Coach Jiang","jobTitle":"Tacit Knowledge Distiller and AI Application Planner"},"isPartOf":{"@type":"WebSite","name":"Coach Jiang · AI Knowledge Management","url":"https://jiangyude.com/"},"datePublished":"2026-07-13","dateModified":"2026-07-13","inLanguage":"en","url":"https://jiangyude.com/en/articles/chatgpt-work-skills-web-version/"}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&amp;family=Caveat:wght@400;500;600;700&amp;family=Noto+Sans+TC:wght@400;500;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap">
+<style>
+:root{--ink:#1a1612;--paper:#fefcf8;--muted:#6a635a;--line:#d8cdb8;--green:#5f7553;--blue:#5689b8;--orange:#e85a4f;--soft:#faf5ec;--dark:#2a2018;--shadow:0 18px 45px rgba(107,74,42,.14);--sp-shadow:hsla(35,50%,60%,.15);--sp-shadow-edge:hsla(35,50%,68%,.03);--sp-radius:400px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC","Segoe UI",sans-serif}
+a{color:inherit}
+nav.top{position:sticky;top:0;background:rgba(254,252,248,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid #d8cdb8;z-index:100}
+nav.top .container{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:24px;padding:14px 32px}
+.nav-brand-img{justify-self:start;display:flex;align-items:center;text-decoration:none;flex-shrink:0;transition:opacity .2s}
+.nav-brand-img:hover{opacity:.8}.nav-brand-img img{height:40px;width:auto;display:block}
+nav.top ul.nav-menu{justify-self:end;display:flex;gap:22px;list-style:none;margin:0;padding:0;font-size:.95rem;white-space:nowrap}
+nav.top ul.nav-menu a{color:#3a342d;text-decoration:none;transition:color .2s;font-weight:500;white-space:nowrap}
+nav.top ul.nav-menu a:hover{color:#1a1612}nav.top ul.nav-menu a.active{color:#1a1612;font-weight:700}
+.nav-toggle{display:none;background:none;border:none;padding:6px;cursor:pointer;width:36px;height:36px;position:relative}
+.nav-toggle span{display:block;position:absolute;left:8px;right:8px;height:2px;background:#1a1612;border-radius:2px;transition:transform .25s,opacity .25s,top .25s}
+.nav-toggle span:nth-child(1){top:11px}.nav-toggle span:nth-child(2){top:17px}.nav-toggle span:nth-child(3){top:23px}
+.nav-toggle.open span:nth-child(1){top:17px;transform:rotate(45deg)}.nav-toggle.open span:nth-child(2){opacity:0}.nav-toggle.open span:nth-child(3){top:17px;transform:rotate(-45deg)}
+@media(max-width:860px){
+ nav.top .container{grid-template-columns:auto 1fr auto;padding:10px 16px;gap:12px}
+ .nav-brand-img img{height:32px}
+ .nav-toggle{display:block;justify-self:end}
+ nav.top ul.nav-menu{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(254,252,248,.98);backdrop-filter:blur(14px);border-bottom:1px solid #d8cdb8;flex-direction:column;gap:0;padding:8px 0;box-shadow:0 10px 24px rgba(107,74,42,.08)}
+ nav.top ul.nav-menu.open{display:flex}
+ nav.top ul.nav-menu li{border-bottom:1px solid #e8dfc9}
+ nav.top ul.nav-menu li:last-child{border-bottom:none}
+ nav.top ul.nav-menu a{display:block;padding:14px 20px;font-size:1.06rem}
+}
+body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradient(var(--sp-radius) circle at var(--mx,50%) var(--my,50%),var(--sp-shadow) 0%,var(--sp-shadow-edge) 45%,transparent 75%);pointer-events:none;z-index:9999;mix-blend-mode:multiply;transition:background .06s linear}
+.hero{position:relative;overflow:hidden;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:72px;padding:96px clamp(20px,6vw,88px) 80px;background:linear-gradient(180deg,#fffcf0 0%,#f9e9d2 100%);color:#1a1612;border-bottom:1px solid #d8cdb8}
+.hero .wc{position:absolute;border-radius:50%;filter:blur(60px);pointer-events:none;z-index:0}
+.hero .wc1{width:420px;height:360px;top:-120px;right:-80px;background:#e8884b;opacity:.15}
+.hero .wc2{width:360px;height:300px;bottom:-110px;left:-70px;background:#5f7553;opacity:.13}
+.hero .wc3{width:280px;height:260px;top:34%;left:14%;background:#a08144;opacity:.10}
+.hero>div{flex:none;width:860px;max-width:100%;position:relative;z-index:2}
+.kicker{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.55rem;color:#7a5c3a;font-weight:500}
+.hero h1{max-width:none;margin:16px 0 18px;font-size:clamp(36px,6vw,68px);line-height:1.08;overflow-wrap:anywhere}
+.hero p{max-width:none;font-size:clamp(18px,2vw,23px);line-height:1.62;color:#3a342d}
+.section{padding:54px clamp(20px,6vw,88px);border-top:1px solid var(--line)}
+.inner{width:min(1000px,100%);margin:0 auto}
+.section h2{font-size:clamp(26px,4.2vw,48px);line-height:1.12;margin:0 0 18px}
+.section h3{font-size:clamp(21px,3vw,30px);line-height:1.2;margin:30px 0 12px}
+.lead{font-size:clamp(18px,1.6vw,22px);line-height:1.7;color:#3a342d;max-width:900px}
+.section p{font-size:18px;line-height:1.74;color:#3a342d}.section p+p{margin-top:14px}
+.section ul,.section ol{padding-left:1.4em;font-size:18px;line-height:1.74;color:#3a342d}.section li{margin-bottom:8px}
+.meaning{margin:22px 0;padding:16px 18px;border-left:5px solid var(--blue);background:rgba(86,137,184,.12);border-radius:6px;line-height:1.7;font-size:19px}
+.meaning b{display:block;color:var(--blue);margin-bottom:4px}
+.caveat{margin:0 0 8px;padding:16px 18px;border-left:5px solid var(--orange);background:rgba(232,90,79,.1);border-radius:6px;line-height:1.7;font-size:18px;color:#3a342d}
+.caveat b{display:block;color:var(--orange);margin-bottom:4px}
+.tagrow{display:flex;flex-wrap:wrap;gap:7px;margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
+.tag{font-size:14px;color:var(--muted);background:var(--soft);border:1px solid var(--line);border-radius:999px;padding:4px 11px}
+.duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:24px}
+.duo.stack{grid-template-columns:1fr}
+.duo .card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:22px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.duo .card.a{border-color:var(--orange)}.duo .card.b{border-color:var(--green);box-shadow:0 8px 24px rgba(95,117,83,.16)}
+.duo .card b{display:block;font-size:22px;line-height:1.3;margin-bottom:12px}.duo .card.a b{color:#c0512f}.duo .card.b b{color:#4a7a59}
+.duo .card p{margin:0;color:#3a342d;line-height:1.75;font-size:18px}
+.duo .card ul{margin:0;padding-left:1.25em}.duo .card li{font-size:17px;line-height:1.7}
+.workflow-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:24px}
+.workflow-grid.four{grid-template-columns:repeat(4,minmax(0,1fr))}
+.workflow-step{background:#fff;border:1px solid var(--line);border-radius:8px;padding:18px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.workflow-step small{display:block;color:var(--orange);font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;margin-bottom:9px}
+.workflow-step b{display:block;font-size:18px;line-height:1.3;margin-bottom:9px}
+.workflow-step p{margin:0;color:#3a342d;line-height:1.6;font-size:16px}
+.infocard{background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px 24px 22px;box-shadow:0 8px 22px rgba(107,74,42,.08);margin-top:20px}
+.infocard-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.info-item{padding:18px 14px 0}
+.info-item b{display:block;font-size:15px;font-weight:900;letter-spacing:.04em;margin-bottom:7px}
+.info-item:nth-child(1) b{color:var(--green)}.info-item:nth-child(2) b{color:var(--orange)}.info-item:nth-child(3) b{color:var(--blue)}
+.info-item p{margin:0;font-size:17px;line-height:1.6;color:#3a342d}
+.footer{padding:30px clamp(20px,6vw,88px);font-size:14px;color:var(--muted);background:#fff;border-top:1px solid var(--line)}
+.footer-inner{width:min(1000px,100%);margin:0 auto}
+.footer-links{display:flex;flex-wrap:wrap;gap:6px 12px;margin-bottom:14px}.footer-links a{color:var(--blue);font-weight:900;text-decoration:none;font-size:14px}
+.footer-brand{font-weight:900;font-size:15px;margin-bottom:10px}.footer-note{font-size:13px;line-height:1.6}
+@media(max-width:820px){.infocard-grid{grid-template-columns:1fr}.duo{grid-template-columns:1fr}.workflow-grid,.workflow-grid.four{grid-template-columns:1fr}.section{padding:40px 20px}.hero{min-height:52vh;flex-direction:column;justify-content:flex-start;align-items:flex-start;gap:24px}.hero>div{width:100%}html,body{overflow-x:hidden}.hero h1{word-break:break-word}}
+.cta-band{background:#e6f0e5;color:#3a342d}.cta-band .section{border-top:none}
+.cta-band .inner{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(260px,.85fr);gap:26px;align-items:start}
+.cta-band h2{font-size:clamp(26px,4vw,44px);margin:0 0 16px}.cta-band p,.cta-band .lead{color:rgba(58,52,45,.9);font-size:18px;line-height:1.72}
+.cta-card{border:1px solid #cfe0d2;background:#fbfdfa;border-radius:8px;padding:22px}
+.cta-card b{display:block;color:#48b178;margin-bottom:10px;font-size:18px}.cta-card p{margin:0 0 14px}
+.cta-card a{display:inline-flex;align-items:center;text-decoration:none;border-radius:8px;padding:11px 16px;font-weight:900;background:#5f7553;color:#fff}
+@media(max-width:860px){.cta-band .inner{grid-template-columns:1fr}}
+.article-meta{margin-top:18px;font-size:14px;line-height:1.6;color:#6a635a}
+</style>
+<!-- tracking:vercel-analytics -->
+<script defer src="/_vercel/insights/script.js"></script>
+<script defer src="/_vercel/speed-insights/script.js"></script>
+</head>
+<body class="spotlight">
+<nav class="top">
+  <div class="container">
+    <a class="nav-brand-img" href="../../index.html"><img src="../../../images/footer-signature.png" alt="Coach Jiang | Jiang Yude"></a>
+    <button class="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
+    <ul class="nav-menu">
+      <li><a href="../../index.html">Home</a></li>
+      <li><a href="../../knowledge-architecture.html">Knowledge Architecture</a></li>
+      <li><a href="../../courses.html">Courses</a></li>
+      <li><a href="../../articles.html" class="active">Articles</a></li>
+      <li><a href="../../skills.html">Skill Packages</a></li>
+      <li><a href="../../offers.html">Services</a></li>
+      <li class="lang-switch"><a href="../../../articles/chatgpt-work-skills-web-version/index.html" hreflang="zh-Hant">中文</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="wc wc1"></div>
+  <div class="wc wc2"></div>
+  <div class="wc wc3"></div>
+  <div>
+    <div class="kicker">AI Applications · Tool Tutorials</div>
+    <h1>ChatGPT on the Web Finally Supports Skill Packages: From Setup to Two Pitfalls</h1>
+    <p>ChatGPT Work From Getting Started to Two Traps. If You've Used AI for a Long Time, Have You Ever Felt Like You're Working for It? Skill Packages Are Things That Can Turn This Relationship Around.</p>
+    <div class="article-meta">Published 2026-07-13 | Last Updated 2026-07-13</div>
+  </div>
+</section>
+
+<main>
+
+<section class="section" id="start">
+  <div class="inner">
+    <p class="lead">ChatGPT Work Makes the Web Version of AI Finally Able to Use Skill Packages. Previously, Only Claude, Grok, and Other Web Versions That Required High Fees Had This Feature. Now, You Can Use It by Simply Opening the ChatGPT Web Version. This Article Is a Summary of My Free Online Lecture, Writing the Process Demonstrated on the Day as a Text That Can Be Followed Step by Step: The Difference Between Skill Packages and Prompts, How to Make Stable Public Outputs Using 'Project Store Data, Skill Package Store Judgment,' and Two Traps You Will Definitely Encounter When Using It Deeply.</p>
+    <div class="duo stack">
+      <div class="card a">
+        <b>Who is this for</b>
+        <ul>
+          <li>Used ChatGPT, But Always Felt It 'Likes to Listen or Not,' and Its Format Is Always Unstable</li>
+          <li>People Who Can't Install Codex on Their Computers (Old Windows, Non-M Series Mac) and Can Only Use the Web Version</li>
+          <li>People Who Want AI to Always Follow Their Rules Without Having to Explain Everything Again Every Time</li>
+        </ul>
+      </div>
+      <div class="card b">
+        <b>What you can take away</b>
+        <ul>
+          <li>Understand the Difference Between Skill Packages and Prompts, and Know Why Skill Packages Are More Compliant</li>
+          <li>A Set of 'Project Store Data, Skill Package Store Judgment' Public Method That Can Be Directly Followed</li>
+          <li>Warning About Two Traps: When to Switch from Web Version to Desktop Version to Avoid Falling into Pits</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>Have You Also Felt Like You're Working for AI?</h2>
+    <p>I Usually Teach and Advise as a Lecturer and Consultant, and I Have to Organize a Lot of Data Every Day. I've Used the Web Version of AI for a Long Time, and I've Always Had a Strange Feeling: It Seems Like It's Giving Orders to Me, and I'm Helping It Get Things Done. I Feel This Is Wrong. It Should Be That I Give Orders, and You Help Me Finish It.</p>
+    <p>The ChatGPT Work Mode Is Exactly Related to This, Because It Makes the Web Version of AI Finally Able to Use Skill Packages. And Skill Packages Are Things That Make AI Follow Your Rules. The Following Paragraphs Are All Based on My Actual Experience of Opening the Interface and Confirming That They Are Feasible.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>First Understand Three Terms: ChatGPT, Codex, Work</h2>
+    <p>Before Discussing Skill Packages, First Clarify Three Frequently Confused Terms Together.</p>
+    <div class="infocard">
+      <div class="infocard-grid">
+        <div class="info-item">
+          <b>ChatGPT (Web Version)</b>
+          <p>The chat window everyone is most familiar with, which can chat with you and answer questions, has been around for a long time.</p>
+        </div>
+        <div class="info-item">
+          <b>Codex</b>
+          <p>The ChatGPT installed on your computer can access your folders, read your files, and generate documents. It has now been merged with ChatGPT. It's powerful, but it's often difficult to install on old Windows and non-M series old Macs, so many people are stuck at the gate.</p>
+        </div>
+        <div class="info-item">
+          <b>ChatGPT Work</b>
+          <p>The main subject of this article. It's a mode in the web version of ChatGPT, where you can click on the new conversation above to see Chat and Work. The difference will be explained in the next paragraph.</p>
+        </div>
+      </div>
+    </div>
+    <div class="caveat"><b>Current version status</b> If you're using the free version, you can only use Work in the desktop version of ChatGPT, which actually has little meaning because if you already have the desktop version, you can just use the desktop version directly. If you want to use Work in the web version, you currently need the paid version, which costs 690 yuan per month.</div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>The main significance of the Work mode: the web version of ChatGPT can finally use skill packages.</h2>
+    <p>Work can create websites, and the content you see in this article was made using it during a lecture. But I think the most important thing about its appearance is that it finally allows the web version of AI to use skill packages.</p>
+    <p>Before this, there were only two web versions that could use skill packages: one is Claude, and the other is Grok from Musk. But these two are rarely used, and Claude is very expensive, with no less than a hundred dollars per month, which is unaffordable. So I've been stuck in promoting skill packages for the past few years: a useful tool, but people's tools can't use it.</p>
+    <p>Now, the web version of ChatGPT, which is the most familiar and has the lowest threshold, finally supports skill packages.</p>
+    <div class="meaning"><b>There is also an added advantage.</b> The Work mode of the web version of ChatGPT can use skill packages. It can also be used together with 'projects'. Projects place source data. Skill packages place your judgment. Combining these two elements will result in something more useful. The next paragraph explains how to combine them.</div>
+    <p>If you are already using Codex and are familiar with skill packages, continue to use your Codex, there's no need to move it over specially. This article is written for those who 'have always wanted to use skill packages but the tools don't allow it'.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>Prompt words it listens to or not, skill packages are the operation manual.</h2>
+    <p>The term 'skill package' is still unknown to many people, so first clearly explain the most core thing.</p>
+    <p>We used to teach AI to do things using prompt words. But have you ever had an experience: even after giving prompt words, the AI just listens or doesn't listen, sometimes it doesn't even care about you.</p>
+    <p>Skill packages are different. It's more like an operation manual, with more rigorous SOP. You can think of it as a new protocol or a formal contract. When the AI sees this contract or this operation manual, it will take it more seriously and follow it.</p>
+    <div class="caveat"><b>First, make it clear</b> Skill packages are not 'absolutely' compliant. Large model AI is essentially a probabilistic model, so it will still have some small problems. But compared to prompt words, it has more constraints and will follow your needs more.</div>
+    <div class="meaning"><b>Remember this in one sentence</b> Supporting skill packages and not supporting skill packages are two different AIs: one that listens and one that doesn't.</div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>Best practice for public domain documents: store projects in the data repository, and store judgment in the skill package</h2>
+    <p>People often ask me: can AI generate public domain documents in the format I want, reliably? For example, documents that conform to international standards or company-specific standards like reports.</p>
+    <p>Yes. This applies to documents, images, and presentations. I recommend combining projects with skill packages; this combination is the best one.</p>
+    <p>What is a project? Whether you use the free or paid version, you can now use projects. Think of it as a folder. A topic, a series, everything is stored in the same folder. For example, if I need to communicate with A vendor, I create a 'A vendor' project, and put background information, presentations, and meeting records into it. Over time, this folder will be filled with the complete context of A vendor, and every time I ask it to handle matters related to A vendor, it can understand the background and context.</p>
+    <p>How do projects and skill packages divide responsibilities? I will explain with my actual experience. Every time I write an article, I chat with AI. Suppose I have revised an article ten times until I am satisfied. What does this mean? It means the tenth version is the correct one, and the first nine are incorrect versions. The characteristic of a project folder is that all conversations are stored inside. The advantage is that all data is available, but the disadvantage is that the correct version is inside, along with incorrect versions and off-topic discussions. What should I do? There are two approaches.</p>
+    <div class="duo">
+      <div class="card a">
+        <b>Approach 1: Be more diligent</b>
+        <p>Every time I reach the correct answer, I copy the final version and manually move it into the project's data source. The limitation is that the data source can only store about ten versions, even in the paid version.</p>
+      </div>
+      <div class="card b">
+        <b>Approach 2: Better</b>
+        <p>Directly ask AI to help me, and organize the articles, patterns, formats, and judgments I consider correct into a skill package. The skill package stores the most refined steps, rules, and judgments, while the data source stores supporting reference materials. The two sides cross-verify, and the output is both stable and accurate.</p>
+      </div>
+    </div>
+    <div class="meaning"><b>Summary of the division of responsibilities in one sentence</b> Store data in projects, and store judgment in skill packages.</div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>Lecture demonstration: if you don't know how to create a skill package, don't worry, ChatGPT can do it</h2>
+    <p>Many people are afraid to hear 'create a skill package' and think it is the job of engineers. Don't worry, if you don't know how to do it, ChatGPT can do it.</p>
+    <p>In my lecture, I demonstrated a 'Mika Community Image Card Skill Package' (Mika is my AI brand image). The method is to tell ChatGPT all the things I say when I modify images. I roughly explain it like this:</p>
+    <p>In the future, I will give you an article, and you will help me create a community carousel card. Before generating the image, give me a storyboard script, don't generate directly. The number of images is up to you to judge. For simple topics, about three to five images, for content-rich topics, seven to ten images. The ratio is 4×5, because it can also be used on IG. Each image should have a headline, subheadline, content, and layout. The image of Mika should be generated according to the three-view model in the reference materials, don't generate other images. The actions of Mika should not be the same in every image, they should match the context of each card.</p>
+    <p>After saying all that, I said: help me create the Mika Community Image Card Skill Package. It then wrote it down and saved it. This demonstration brought out three principles, which are more valuable than the skill package itself.</p>
+    <div class="workflow-grid">
+      <div class="workflow-step">
+        <small>Principle 01</small>
+        <b>Unable to express rules? Let AI help you synthesize them</b>
+        <p>I don't do design, but I have done ten plans. I gave them all to it and said, 'I want to create a skill package. First, help me extract the rules from it, and first tell me how you plan to synthesize them.' If I am not satisfied, I can directly modify it. For example, changing 'seven to ten images' to flexible judgment, adding a hard rule: don't split or pad for the sake of quantity. This image is only worth two images, so give me two.</p>
+      </div>
+      <div class="workflow-step">
+        <small>Principle 02</small>
+        <b>Talk about both good and bad, and remember to ask it to update</b>
+        <p>If it produces something great, say 'This style is great, remember it.' If it doesn't, say 'This won't do, you need to change it.' Key point: currently it won't automatically write the correction back to the skill package, so you need to remember to add a sentence 'Update this to the skill package.' These rules are the result of accumulated experience.</p>
+      </div>
+      <div class="workflow-step">
+        <small>Mindset 03</small>
+        <b>Learn to be a boss</b>
+        <p>You are originally the boss, so take out your most habitual side of yourself. Tell the AI things you usually do not dare tell your employees. If you are an employee, recall the strict yet reasonable managers who made your work smooth and how they required you to operate. Then, require the AI in that same manner.</p>
+      </div>
+    </div>
+    <p>At the end of the demonstration, I added one more test. I gave it an older published article and said, "Help me create a set of visual posts." I had already told it to provide the script first, so I checked whether it remembered. It provided the script first, suggested making six images, and passed the test. This is the skill package in action: it turns my long explanation into an operating manual the AI can follow.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>Two pitfalls: when to switch from the web version to the desktop version</h2>
+    <p>The above are all the benefits. But when I used 'project plus skill package' deeply, I hit two unavoidable pitfalls. Let me tell you first, so you won't find out by stepping on them.</p>
+    <div class="duo">
+      <div class="card a">
+        <b>Pitfall 1: Cross-project inaccessibility</b>
+        <p>A vendor's content is locked in folder A. One day I wanted to start a new project, and asked it to take 1, 2, 3 from A, 4, 5, 6 from B, and 7, 8, 9 from C, to form a new one. It couldn't do it. The content was clearly ready in my project, but it just couldn't access across folders, so I had to pick them one by one.</p>
+      </div>
+      <div class="card a">
+        <b>Pitfall 2: Physical limitations of the web version</b>
+        <p>When the skill package reaches about 6000 characters or more, calling it to update is likely to cause problems; exceeding 10,000 characters, the problems become much more. Three years of planning, government-related, event-related, various courses, cases of various lecturers and clients, just adding them up easily exceeds 10,000 characters. A single web page has a memory limit, and it can't sustain it.</p>
+      </div>
+    </div>
+    <div class="meaning"><b>What to do</b> Use the desktop version, storing the skill package and data on your computer, which is much better than the web version.</div>
+    <p>But I need to be fair: if you usually just run small projects, the skill package won't reach several thousand to tens of thousands of characters, and you won't have so many complex, cross-domain integration projects. In that case, the web version's Work plus project can be used very happily. These two pitfalls are only encountered when using it deeply. Start with the web version, hit the wall, then consider moving to the desktop version Codex. By then, you've already mastered the logic of the skill package.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>Tools will change, the skill package is your asset</h2>
+    <p>Going back to the feeling I mentioned at the beginning, using AI is like being its assistant. The skill package is the tool that turns this relationship back. You store each judgment and correction into the skill package, and the AI becomes a tool that listens and follows, turning it from a chatbot that doesn't always listen into an employee who understands your rules and follows your standards.</p>
+    <p>Tools will keep changing. Today it's ChatGPT Work, tomorrow it might be something else. But the skill package is your asset. It can be downloaded and moved to another AI to continue using. Instead of relearning every time you switch tools, establish clear rules: no matter which AI comes to work, it follows your process.</p>
+    <p>This is what I've been teaching all along. Choose a tool that suits you. The real effort is turning your experience into an operational manual that the AI can understand and execute.</p>
+    <div class="tagrow">
+      <span class="tag">ChatGPT Work</span><span class="tag">Skill Package</span><span class="tag">Project</span><span class="tag">Public domain document</span><span class="tag">Codex</span><span class="tag">AI Workflow</span>
+    </div>
+  </div>
+</section>
+
+<div class="cta-band">
+  <section class="section">
+    <div class="inner">
+      <div>
+        <h2>Use AI as a tool to help you accumulate judgment</h2>
+        <p class="lead">The content of this article comes from my free online lecture. I hold two sessions monthly, with themes that rotate around how to organize work processes, judgments, and experience into prompts, skill packages, and knowledge bases that AI can flexibly use. If you want to receive course notifications or want to do and ask questions simultaneously, you're welcome to start from the community.</p>
+      </div>
+      <div class="cta-card">
+        <b>Join LINE Community</b>
+        <p>Free lecture sessions will be announced here first, and you can also directly upload your stuck points for discussion.</p>
+        <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">Join the community ↗</a>
+      </div>
+    </div>
+  </section>
+</div>
+
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">Coach Jiang · AI Knowledge Management</div>
+    <div class="footer-links">
+      <a href="../../articles.html">← Back to Articles</a>
+      <a href="../../index.html">Home</a>
+      <a href="../../skills.html">Skill Packages</a>
+      <a href="../../../courses/2026-07-12-chatgpt-work/">This lecture's post-lecture presentation ↗</a>
+      <a href="https://www.threads.com/@jiang_yude_coach" target="_blank" rel="noopener">Threads ↗</a>
+      <a href="https://vocus.cc/salon/Jiang_Coach" target="_blank" rel="noopener">Vocus ↗</a>
+    </div>
+    <div class="footer-note">This is a tutorial article, summarizing my views on 'ChatGPT Work from Getting Started to Two Pitfalls', for your reference.</div>
+  </div>
+</footer>
+
+<script src="../../../spotlight.js"></script>
+<script src="../../../articles-data.js"></script>
+<script src="../../../related-render.js"></script>
+<script src="/views.js"></script>
+</body>
+</html>

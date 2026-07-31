@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+<head>
+<link rel="canonical" href="https://jiangyude.com/en/articles/old-prompts-intent-first-loop-engineering/"><link rel="alternate" hreflang="zh-Hant" href="https://jiangyude.com/articles/old-prompts-intent-first-loop-engineering/"><link rel="alternate" hreflang="en" href="https://jiangyude.com/en/articles/old-prompts-intent-first-loop-engineering/"><link rel="alternate" hreflang="x-default" href="https://jiangyude.com/articles/old-prompts-intent-first-loop-engineering/"><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="index,follow">
+<title>Keep Your Old Prompts: Extract the Intent, Then Move Toward Loop Engineering | Coach Jiang · AI Knowledge Management</title>
+<meta name="description" content="Old prompts and skill packages still contain your standards, preferences, and red lines. Learn how to turn them into intent references and connect them to loop engineering with a copyable prompt and a minimal workflow.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Keep Your Old Prompts: Extract the Intent, Then Move Toward Loop Engineering">
+<meta property="og:image" content="https://jiangyude.com/images/og/old-prompts-intent-first-loop-engineering.jpg">
+<meta property="og:description" content="Old prompts and skill packages still contain your standards, preferences, and red lines. Learn how to turn them into intent references and connect them to loop engineering with a copyable prompt and a minimal workflow.">
+<meta property="og:url" content="https://jiangyude.com/en/articles/old-prompts-intent-first-loop-engineering/">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Coach Jiang · AI Knowledge Management">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Keep Your Old Prompts: Extract the Intent, Then Move Toward Loop Engineering">
+<meta name="twitter:image" content="https://jiangyude.com/images/og/old-prompts-intent-first-loop-engineering.jpg">
+<meta name="twitter:description" content="Old prompts still hold your standards and red lines. Turn them into intent references, then connect them to loop engineering with a copyable prompt.">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Keep Your Old Prompts: Extract the Intent, Then Move Toward Loop Engineering","description":"Old prompts and skill packages still contain your standards, preferences, and red lines. Learn how to turn them into intent references and connect them to loop engineering with a copyable prompt and a minimal workflow.","author":{"@type":"Person","name":"Jiang Yude","alternateName":"Coach Jiang","jobTitle":"Tacit Knowledge Distiller and AI Application Planner"},"isPartOf":{"@type":"WebSite","name":"Coach Jiang · AI Knowledge Management","url":"https://jiangyude.com/"},"datePublished":"2026-07-16","dateModified":"2026-07-16","inLanguage":"en","url":"https://jiangyude.com/en/articles/old-prompts-intent-first-loop-engineering/"}</script>
+<style>
+:root{--ink:#201b17;--paper:#fffcf6;--soft:#f7efe2;--line:#dfcfb7;--orange:#bd6543;--green:#56745c;--blue:#477aa8;--muted:#645c54}*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Noto Sans TC","PingFang TC",sans-serif;line-height:1.8}.top{position:sticky;top:0;z-index:3;background:#fffcf6eF;backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}.top-inner{max-width:1120px;margin:auto;padding:13px 24px;display:flex;justify-content:space-between;font-size:14px}.brand{font-weight:800}.state{color:var(--muted)}.hero{padding:96px 24px 80px;background:radial-gradient(circle at 85% 10%,#f2c88777,transparent 30%),radial-gradient(circle at 15% 90%,#bad0b466,transparent 30%),linear-gradient(#fff8ec,#f8e8d0);border-bottom:1px solid var(--line)}.hero-inner,.inner{max-width:940px;margin:auto}.kicker{color:#8d6239;font:italic 24px Georgia,serif}.hero h1{max-width:850px;margin:14px 0 18px;font-size:clamp(42px,7vw,76px);line-height:1.1;letter-spacing:-.045em}.hero p{max-width:720px;margin:0;font-size:clamp(19px,2.5vw,25px);color:#463a30}.meta{margin-top:22px;color:var(--muted);font-size:14px}.section{padding:60px 24px;border-bottom:1px solid var(--line)}h2{margin:0 0 18px;font-size:clamp(28px,4vw,46px);line-height:1.22;letter-spacing:-.025em}h3{font-size:24px;line-height:1.35;margin:34px 0 10px}.lead{font-size:21px;color:#43392f}.cards{display:grid;gap:14px;margin-top:25px}.card{background:white;border:1px solid var(--line);border-radius:14px;padding:22px 24px;box-shadow:0 10px 28px #835a2910}.card.a{border-left:5px solid var(--orange)}.card.b{border-left:5px solid var(--green)}.card b{font-size:21px}.card ul{margin:10px 0 0;padding-left:1.25em}.card-image,.summary-image{display:block;margin:30px auto 0;border-radius:18px;border:1px solid var(--line);box-shadow:0 16px 38px #53341725}.card-image{width:min(100%,520px)}.summary-image{width:100%;max-width:900px}.notice{margin:28px 0;padding:18px 20px;background:#eaf2f6;border-left:5px solid var(--blue);border-radius:8px;font-size:18px}.compare{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:25px 0}.compare>div{padding:22px;border:1px solid var(--line);border-radius:12px;background:white}.compare small,.step small{font-weight:800;color:var(--orange);letter-spacing:.06em}.compare b,.step b{display:block;font-size:21px;margin:6px 0}.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:25px}.step{padding:20px;background:white;border:1px solid var(--line);border-radius:12px}.prompt{padding:22px;background:#292019;color:#f9f0dd;border-radius:12px;white-space:pre-wrap;font:15px/1.8 ui-monospace,SFMono-Regular,Menlo,monospace;overflow:auto}.flow{padding:18px 22px;background:var(--soft);border-radius:12px;font-size:19px;text-align:center}.cta{background:#e6f0e6}.footer{padding:36px 24px;color:var(--muted);font-size:14px}@media(max-width:700px){.hero{padding:70px 24px 56px}.compare,.steps{grid-template-columns:1fr}.top-inner{padding:11px 16px}.state{display:none}}
+.cta-band{background:#e6f0e5;color:#3a342d}.cta-band .section{border-top:none}
+.cta-band .inner{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(260px,.85fr);gap:26px;align-items:start}
+.cta-band h2{font-size:clamp(26px,4vw,44px);margin:0 0 16px}.cta-band p,.cta-band .lead{color:rgba(58,52,45,.9);font-size:18px;line-height:1.72}
+.cta-card{border:1px solid #cfe0d2;background:#fbfdfa;border-radius:8px;padding:22px}
+.cta-card b{display:block;color:#48b178;margin-bottom:10px;font-size:18px}.cta-card p{margin:0 0 14px}
+.cta-card a{display:inline-flex;align-items:center;text-decoration:none;border-radius:8px;padding:11px 16px;font-weight:900;background:#5f7553;color:#fff}
+@media(max-width:860px){.cta-band .inner{grid-template-columns:1fr}}
+.article-meta{margin-top:18px;font-size:14px;line-height:1.6;color:#6a635a}
+nav.top{position:sticky;top:0;background:rgba(254,252,248,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid #d8cdb8;z-index:100}
+nav.top .container{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:24px;padding:14px 32px}
+.nav-brand-img{justify-self:start;display:flex;align-items:center;text-decoration:none;flex-shrink:0;transition:opacity .2s}
+.nav-brand-img:hover{opacity:.8}.nav-brand-img img{height:40px;width:auto;display:block}
+nav.top ul.nav-menu{justify-self:end;display:flex;gap:22px;list-style:none;margin:0;padding:0;font-size:.95rem;white-space:nowrap}
+nav.top ul.nav-menu a{color:#3a342d;text-decoration:none;transition:color .2s;font-weight:500;white-space:nowrap}
+nav.top ul.nav-menu a:hover{color:#1a1612}nav.top ul.nav-menu a.active{color:#1a1612;font-weight:700}
+.nav-toggle{display:none;background:none;border:none;padding:6px;cursor:pointer;width:36px;height:36px;position:relative}
+.nav-toggle span{display:block;position:absolute;left:8px;right:8px;height:2px;background:#1a1612;border-radius:2px;transition:transform .25s,opacity .25s,top .25s}
+.nav-toggle span:nth-child(1){top:11px}.nav-toggle span:nth-child(2){top:17px}.nav-toggle span:nth-child(3){top:23px}
+.nav-toggle.open span:nth-child(1){top:17px;transform:rotate(45deg)}.nav-toggle.open span:nth-child(2){opacity:0}.nav-toggle.open span:nth-child(3){top:17px;transform:rotate(-45deg)}
+@media(max-width:860px){
+ nav.top .container{grid-template-columns:auto 1fr auto;padding:10px 16px;gap:12px}
+ .nav-brand-img img{height:32px}
+ .nav-toggle{display:block;justify-self:end}
+ nav.top ul.nav-menu{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(254,252,248,.98);backdrop-filter:blur(14px);border-bottom:1px solid #d8cdb8;flex-direction:column;gap:0;padding:8px 0;box-shadow:0 10px 24px rgba(107,74,42,.08)}
+ nav.top ul.nav-menu.open{display:flex}
+ nav.top ul.nav-menu li{border-bottom:1px solid #e8dfc9}
+ nav.top ul.nav-menu li:last-child{border-bottom:none}
+ nav.top ul.nav-menu a{display:block;padding:14px 20px;font-size:1.06rem}
+}
+</style>
+<!-- tracking:vercel-analytics -->
+<script defer src="/_vercel/insights/script.js"></script>
+<script defer src="/_vercel/speed-insights/script.js"></script>
+</head>
+<body>
+<nav class="top">
+  <div class="container">
+    <a class="nav-brand-img" href="../../index.html"><img src="../../../images/footer-signature.png" alt="Coach Jiang | Jiang Yude"></a>
+    <button class="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
+    <ul class="nav-menu">
+      <li><a href="../../index.html">Home</a></li>
+      <li><a href="../../knowledge-architecture.html">Knowledge Architecture</a></li>
+      <li><a href="../../courses.html">Courses</a></li>
+      <li><a href="../../articles.html" class="active">Articles</a></li>
+      <li><a href="../../skills.html">Skill Packages</a></li>
+      <li><a href="../../offers.html">Services</a></li>
+      <li class="lang-switch"><a href="../../../articles/old-prompts-intent-first-loop-engineering/index.html" hreflang="zh-Hant">中文</a></li>
+    </ul>
+  </div>
+</nav>
+<header class="hero"><div class="hero-inner"><div class="kicker">Prompt design · AI workflow</div><h1>Keep Your Old Prompts: Extract the Intent, Then Move Toward Loop Engineering</h1><p>As AI becomes more capable, the value of prompts lies in allowing it to understand your true goals, quality standards, and red lines. Explicitly writing every step is less valuable.</p>
+    <div class="article-meta">Published 2026-07-16 | Last updated 2026-07-16</div><div class="meta">The article draft was completed in July 2026 · This page is a pending review version</div></div></header>
+<main>
+<section class="section"><div class="inner"><p class="lead">During a free one-on-one consultation, someone asked me: now, when I just type a prompt, AI sometimes does a good job; but previously, when I wrote detailed skill packages and prompts carefully, the results were not always ideal. What's the difference?</p><div class="cards"><div class="card a"><b>Who is this for</b><ul><li>You've written long prompts or skill packages, but you start to feel they're holding AI back</li><li>You want to keep your own work standards, yet hope AI can suggest more suitable approaches</li><li>You've heard of Loop Engineering, but you still don't know how to connect it with prompts</li></ul></div><div class="card b"><b>What you can take away</b><ul><li>Converting old skill packages into intent reference materials</li><li>A directly copyable intent-first prompt</li><li>The minimal process from intent-first to Loop Engineering</li></ul></div></div></div></section>
+<section class="section"><div class="inner"><h2>Why carefully written prompts sometimes limit AI</h2><p>Previously, when models weren't mature enough, writing roles, steps, formats, and checking methods clearly could indeed bring results to a usable level. Now that models and tools have advanced, in some tasks, old processes becoming the only rule can prevent AI from using more suitable methods at hand.</p><div class="compare"><div><small>Old usage</small><b>The process is the only rule</b><p>Do every step according to the existing method. The advantage is stability, but the cost is that it is difficult to adjust when encountering new tools or new situations.</p></div><div><small>Updated usage</small><b>The process is your reference for understanding</b><p>Keep the standard, tone, and limitations, and let the AI judge the method according to the current task. If you want to change it, first explain the reason and then propose suggestions.</p></div></div><div class="notice"><b>Key difference</b><br>Detailed prompts still have value. What needs to change is its role, from an unchangeable instruction, into data that helps the AI understand how you judge a good result.</div></div></section>
+<section class="section"><div class="inner"><h2>Old skill packages are actually your foundation</h2><p>The processes you wrote down in the past often already contain your standards for results, habitual thinking order, imagined scenes, role tone, and what cannot be touched. These are more valuable than a single instruction.</p><p>You can hand over your old skill package to the AI, asking it to first distill your goals and preferences, then divide into requirements that must be retained, methods that can be flexible, and steps that may be outdated.</p><div class="prompt">Below are the prompts and skill packages I used to write. Please treat them as reference materials. Distill what my real goal is, the standards for judging quality, the style I care about, and the boundaries I cannot cross. Then, please divide the content into three categories: requirements that must be retained, methods that can be flexible, and steps that may already be outdated. If you have a more suitable approach, please first explain the reason and then propose updated suggestions. When executing, prioritize my intention, with the old process as a reference.</div></div></section>
+<section class="section"><div class="inner"><h2>What to write when prioritizing intention</h2><p>Intention sounds abstract, but actually you just need to let the AI know a few things. You don't have to write long essays every time, but at least let it see the destination and the boundaries.</p><div class="steps"><div class="step"><small>01</small><b>Goals and standards</b><p>What you hope the reader, client, or team will finally know, what kind of result is considered credible, useful, and like you.</p></div><div class="step"><small>02</small><b>Scenes and red lines</b><p>What role, tone, and context you want to retain, what data cannot be guessed, and what format must be kept.</p></div><div class="step"><small>03</small><b>Flexibility of methods</b><p>Which steps can be adjusted, and if the AI has a more suitable method, how to first explain and report to you.</p></div></div><h3>A directly copyable minimal version</h3><div class="prompt">I want to complete [Task]
+
+The real goal I want to achieve this time is [Goal]
+I will use these standards to judge whether the outcome is good [Quality Standards]
+I want to preserve the style, role, or scene [Style and Context]
+These are the restrictions I cannot cross [Red Lines]
+
+Below are some related workflows or skill packages I have written before
+Please treat them as references, and extract my intentions and preferences from them [Paste Materials]
+
+Please first tell me what you understand about the goal
+The suggestions for what to keep and update
+As well as the methods you are prepared to take
+If there are more suitable approaches, you can propose and explain the reasons
+Confirm and then start execution</div></div></section>
+<section class="section"><div class="inner"><h2>From intention-first to Loop Engineering</h2><p>For one-time tasks, first clarify the intention, quality standards, and red lines, which is usually very helpful. When encountering tasks that are repeated, have many steps, and require checking results, expand it into Loop Engineering.</p><div class="flow">Goal and Intention → Execution → Check According to Standards → Correction or Change Method → Meet Delivery Conditions</div><p>Loop Engineering is not just asking AI to run multiple times. It will first clarify the goal, standards, starting point, checkpoints, correction methods, and stopping conditions. Intention-first answers why it is done and to what extent; Loop Engineering then adds how to check in the middle, what to do if it does not meet the standards, and when it can end.</p><div class="notice"><b>The order is very important</b><br>Without intention-first, Loop can easily become running endlessly without knowing where to fix. First clarify the judgment standards, so that you know where to place the checkpoints.</div></div></section>
+<section class="section cta"><div class="inner"><h2>First pick the most commonly used old skill package to try</h2><p>You do not need to rewrite all the prompt words immediately. First find the most commonly used and most seriously written skill package, and ask AI to help you extract the true intention behind it. Those seemingly old workflows often contain your most irreplaceable judgment force.</p><p>Further Reading:<a href="../what-is-loop-engineering/">Use my article writing workflow to explain what Loop Engineering is.</a>　·　<a href="../intent-first-prompting/">Don't write fixed instructions: explain clearly what you want, and let the AI handle the rest.</a></p></div></section>
+<div class="cta-band">
+  <section class="section">
+    <div class="inner">
+      <div>
+        <h2>Use AI as a tool to help you accumulate judgment</h2>
+        <p class="lead">The questions in this article come from a free one-on-one consultation. I hold two free online lectures every month, with topics rotating around how to turn workflows, judgments, and experience into AI-friendly prompts, skill packages, and knowledge bases. If you want to receive course notifications or want to discuss stuck prompts, you are welcome to start from the community.</p>
+      </div>
+      <div class="cta-card">
+        <b>Join LINE Community</b>
+        <p>The free lecture sessions will be announced here first, and you can also directly upload your old skill package to see how to extract it together.</p>
+        <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">Join the community ↗</a>
+      </div>
+    </div>
+  </section>
+</div>
+
+</main>
+<footer class="footer"><div class="inner">This article originates from a free one-on-one consultation in July 2026. The scores in the article are used to explain the relationship between model capabilities and prompt limitations, and are just analogies for understanding, not used to evaluate model capabilities.</div></footer>
+<script src="../../../spotlight.js"></script>
+<script src="../../../articles-data.js"></script>
+<script src="../../../related-render.js"></script>
+<script src="/views.js"></script>
+</body></html>

@@ -1,0 +1,669 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="index,follow">
+<title>Where Should You Put an AI-Built Website? GitHub Pages vs. Vercel | Coach Jiang · AI Knowledge Management</title>
+<meta name="description" content="Three questions for deciding where to host an AI-built website, a four-layer model based on content sensitivity, and a source-backed comparison of GitHub Pages and Vercel quotas, source-code visibility, access control, and costs.">
+<link rel="canonical" href="https://jiangyude.com/en/articles/free-deploy-three-boundaries/">
+<link rel="alternate" hreflang="zh-Hant" href="https://jiangyude.com/articles/free-deploy-three-boundaries/"><link rel="alternate" hreflang="en" href="https://jiangyude.com/en/articles/free-deploy-three-boundaries/"><link rel="alternate" hreflang="x-default" href="https://jiangyude.com/articles/free-deploy-three-boundaries/"><meta property="og:type" content="article">
+<meta property="og:title" content="Where Should You Put an AI-Built Website? GitHub Pages vs. Vercel">
+<!-- 分享封面: hero 文字填好後在 repo 根目錄跑 `node scripts/og-shot.mjs free-deploy-three-boundaries` 自動截 1200×630 到 images/og/free-deploy-three-boundaries.jpg (見 README“文章分享封面 (OG 圖)機制”).別退回 intro-jiang.png 直式人像, 會被裁成只剩脖子. -->
+<meta property="og:image" content="https://jiangyude.com/images/og/free-deploy-three-boundaries.jpg">
+<meta property="og:description" content="Three questions for deciding where to host an AI-built website, a four-layer model based on content sensitivity, and a source-backed comparison of GitHub Pages and Vercel quotas, source-code visibility, access control, and costs.">
+<meta property="og:url" content="https://jiangyude.com/en/articles/free-deploy-three-boundaries/">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Coach Jiang · AI Knowledge Management">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Where Should You Put an AI-Built Website? GitHub Pages vs. Vercel">
+<meta name="twitter:image" content="https://jiangyude.com/images/og/free-deploy-three-boundaries.jpg">
+<meta name="twitter:description" content="Three questions for deciding where to host an AI-built website, a four-layer model based on content sensitivity, and a source-backed comparison of GitHub Pages and Vercel quotas, source-code visibility, access control, and costs.">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Where Should You Put an AI-Built Website? GitHub Pages vs. Vercel","description":"Three questions for deciding where to host an AI-built website, a four-layer model based on content sensitivity, and a source-backed comparison of GitHub Pages and Vercel quotas, source-code visibility, access control, and costs.","author":{"@type":"Person","name":"Jiang Yude","alternateName":"Coach Jiang","jobTitle":"Tacit Knowledge Distiller and AI Application Planner"},"isPartOf":{"@type":"WebSite","name":"Coach Jiang · AI Knowledge Management","url":"https://jiangyude.com/"},"inLanguage":"en","url":"https://jiangyude.com/en/articles/free-deploy-three-boundaries/"}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&amp;family=Caveat:wght@400;500;600;700&amp;family=Noto+Sans+TC:wght@400;500;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap">
+<style>
+:root{--ink:#1a1612;--paper:#fefcf8;--muted:#6a635a;--line:#d8cdb8;--green:#5f7553;--blue:#5689b8;--orange:#e85a4f;--soft:#faf5ec;--dark:#2a2018;--shadow:0 18px 45px rgba(107,74,42,.14);--sp-shadow:hsla(35,50%,60%,.15);--sp-shadow-edge:hsla(35,50%,68%,.03);--sp-radius:400px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC","Segoe UI",sans-serif}
+a{color:inherit}
+/* 官網共用導航列 nav.top (與首頁/文章總站同一條) */
+nav.top{position:sticky;top:0;background:rgba(254,252,248,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid #d8cdb8;z-index:100}
+nav.top .container{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:24px;padding:14px 32px}
+.nav-brand-img{justify-self:start;display:flex;align-items:center;text-decoration:none;flex-shrink:0;transition:opacity .2s}
+.nav-brand-img:hover{opacity:.8}.nav-brand-img img{height:40px;width:auto;display:block}
+nav.top ul.nav-menu{justify-self:end;display:flex;gap:22px;list-style:none;margin:0;padding:0;font-size:.95rem;white-space:nowrap}
+nav.top ul.nav-menu a{color:#3a342d;text-decoration:none;transition:color .2s;font-weight:500;white-space:nowrap}
+nav.top ul.nav-menu a:hover{color:#1a1612}nav.top ul.nav-menu a.active{color:#1a1612;font-weight:700}
+.nav-toggle{display:none;background:none;border:none;padding:6px;cursor:pointer;width:36px;height:36px;position:relative}
+.nav-toggle span{display:block;position:absolute;left:8px;right:8px;height:2px;background:#1a1612;border-radius:2px;transition:transform .25s,opacity .25s,top .25s}
+.nav-toggle span:nth-child(1){top:11px}.nav-toggle span:nth-child(2){top:17px}.nav-toggle span:nth-child(3){top:23px}
+.nav-toggle.open span:nth-child(1){top:17px;transform:rotate(45deg)}.nav-toggle.open span:nth-child(2){opacity:0}.nav-toggle.open span:nth-child(3){top:17px;transform:rotate(-45deg)}
+@media(max-width:860px){
+ nav.top .container{grid-template-columns:auto 1fr auto;padding:10px 16px;gap:12px}
+ .nav-brand-img img{height:32px}
+ .nav-toggle{display:block;justify-self:end}
+ nav.top ul.nav-menu{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(254,252,248,.98);backdrop-filter:blur(14px);border-bottom:1px solid #d8cdb8;flex-direction:column;gap:0;padding:8px 0;box-shadow:0 10px 24px rgba(107,74,42,.08)}
+ nav.top ul.nav-menu.open{display:flex}
+ nav.top ul.nav-menu li{border-bottom:1px solid #e8dfc9}
+ nav.top ul.nav-menu li:last-child{border-bottom:none}
+ nav.top ul.nav-menu a{display:block;padding:14px 20px;font-size:1.06rem}
+}
+/* 滑鼠暖光暈 (與首頁同一支 spotlight.js) */
+body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradient(var(--sp-radius) circle at var(--mx,50%) var(--my,50%),var(--sp-shadow) 0%,var(--sp-shadow-edge) 45%,transparent 75%);pointer-events:none;z-index:9999;mix-blend-mode:multiply;transition:background .06s linear}
+.hero{position:relative;overflow:hidden;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:72px;padding:96px clamp(20px,6vw,88px) 80px;background:linear-gradient(180deg,#fffcf0 0%,#f9e9d2 100%);color:#1a1612;border-bottom:1px solid #d8cdb8}
+.hero .wc{position:absolute;border-radius:50%;filter:blur(60px);pointer-events:none;z-index:0}
+.hero .wc1{width:420px;height:360px;top:-120px;right:-80px;background:#e8884b;opacity:.15}
+.hero .wc2{width:360px;height:300px;bottom:-110px;left:-70px;background:#5f7553;opacity:.13}
+.hero .wc3{width:280px;height:260px;top:34%;left:14%;background:#a08144;opacity:.10}
+.hero>div{flex:none;width:860px;max-width:100%;position:relative;z-index:2}
+.hero-figure{margin:0;width:420px;flex:none;position:relative;z-index:2}
+.hero-figure img{display:block;width:100%;border-radius:16px;border:1px solid #d8cdb8;box-shadow:0 18px 45px rgba(107,74,42,.16);cursor:zoom-in}
+.hero-figure figcaption{margin-top:10px;font-size:14px;line-height:1.6;color:#6a635a}
+.inline-figure{margin:30px auto 8px;max-width:820px}
+.inline-figure img{display:block;width:100%;border-radius:14px;border:1px solid var(--line);box-shadow:var(--shadow);background:#fff;cursor:zoom-in}
+.inline-figure figcaption{font-size:14px;line-height:1.6;color:var(--muted);margin-top:10px}
+.lightbox{position:fixed;inset:0;z-index:10000;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(12,10,8,.92);cursor:zoom-out;backdrop-filter:blur(4px)}
+.lightbox.open{display:flex}.lightbox img{max-width:96vw;max-height:92vh;border-radius:10px;box-shadow:0 24px 60px rgba(0,0,0,.5)}
+.lightbox-close{position:fixed;top:18px;right:24px;color:#fff;font-size:34px;line-height:1;font-weight:700;cursor:pointer;opacity:.85}
+.kicker{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.55rem;color:#7a5c3a;font-weight:500}
+.hero h1{max-width:none;margin:16px 0 18px;font-size:clamp(36px,6vw,72px);line-height:1.08;overflow-wrap:anywhere}
+.hero p{max-width:none;font-size:clamp(18px,2vw,23px);line-height:1.62;color:#3a342d}
+.cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
+.cta a{display:inline-flex;align-items:center;text-decoration:none;border-radius:8px;padding:12px 16px;font-weight:900}
+.cta .primary{background:#fff;color:#1a1612}.cta .ghost{border:1px solid rgba(255,255,255,.32);color:#fff;background:rgba(255,255,255,.08)}
+.section{padding:54px clamp(20px,6vw,88px);border-top:1px solid var(--line)}
+.inner{width:min(1000px,100%);margin:0 auto}
+.section h2{font-size:clamp(26px,4.2vw,48px);line-height:1.12;margin:0 0 18px}
+.section h3{font-size:clamp(21px,3vw,30px);line-height:1.2;margin:30px 0 12px}
+.lead{font-size:clamp(18px,1.6vw,22px);line-height:1.7;color:#3a342d;max-width:900px}
+.section p{font-size:18px;line-height:1.74;color:#3a342d}.section p+p{margin-top:14px}
+.section ul,.section ol{padding-left:1.4em;font-size:18px;line-height:1.74;color:#3a342d}.section li{margin-bottom:8px}
+.meaning{margin:22px 0;padding:16px 18px;border-left:5px solid var(--blue);background:rgba(86,137,184,.12);border-radius:6px;line-height:1.7;font-size:19px}
+.meaning b{display:block;color:var(--blue);margin-bottom:4px}
+.caveat{margin:0 0 8px;padding:16px 18px;border-left:5px solid var(--orange);background:rgba(232,90,79,.1);border-radius:6px;line-height:1.7;font-size:18px;color:#3a342d}
+.caveat b{display:block;color:var(--orange);margin-bottom:4px}
+.infocard{background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px 24px 22px;box-shadow:0 8px 22px rgba(107,74,42,.08);margin-top:8px}
+.infocard-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.info-item{padding:18px 14px 0}
+.info-item b{display:block;font-size:14px;font-weight:900;letter-spacing:.04em;margin-bottom:7px;text-transform:uppercase}
+.info-item:nth-child(1) b{color:var(--green)}.info-item:nth-child(2) b{color:var(--orange)}.info-item:nth-child(3) b{color:var(--blue)}
+.info-item p{margin:0;font-size:17px;line-height:1.6;color:#3a342d}
+.tagrow{display:flex;flex-wrap:wrap;gap:7px;margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
+.tag{font-size:14px;color:var(--muted);background:var(--soft);border:1px solid var(--line);border-radius:999px;padding:4px 11px}
+.duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:24px}
+.duo.stack{grid-template-columns:1fr}
+.duo .card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:22px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.duo .card.a{border-color:var(--orange)}.duo .card.b{border-color:var(--green);box-shadow:0 8px 24px rgba(95,117,83,.16)}
+.duo .card small{display:block;font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.04em;margin-bottom:9px}
+.duo .card.a small{color:var(--orange)}.duo .card.b small{color:var(--green)}
+.duo .card b{display:block;font-size:22px;line-height:1.3;margin-bottom:12px}.duo .card.a b{color:#c0512f}.duo .card.b b{color:#4a7a59}
+.duo .card p{margin:0;color:#3a342d;line-height:1.75;font-size:18px}
+.workflow-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:24px}
+.workflow-step{background:#fff;border:1px solid var(--line);border-radius:8px;padding:18px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.workflow-step small{display:block;color:var(--orange);font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;margin-bottom:9px}
+.workflow-step b{display:block;font-size:18px;line-height:1.3;margin-bottom:9px}
+.workflow-step p{margin:0;color:#3a342d;line-height:1.6;font-size:16px}
+.codeblock{background:var(--dark);color:#f3ead9;border-radius:8px;padding:18px 20px;font:500 14px/1.65 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;overflow-x:auto;white-space:pre-wrap;margin:20px 0;box-shadow:0 8px 22px rgba(107,74,42,.12)}
+.codeblock .c{color:#f6d7a6;font-weight:600}
+.skillcard{background:#fff;border:1px solid var(--green);border-radius:12px;padding:24px;box-shadow:0 10px 26px rgba(95,117,83,.16);margin-top:8px}
+.skillcard b{display:block;font-size:21px;margin-bottom:8px}
+.skillcard p{margin:0 0 16px;font-size:17px;line-height:1.65;color:#3a342d}
+.cta-band{background:#e6f0e5;color:#3a342d}.cta-band .section{border-top:none}
+.cta-band .inner{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(260px,.85fr);gap:26px;align-items:start}
+.cta-band h2{font-size:clamp(26px,4vw,44px);margin:0 0 16px}.cta-band p,.cta-band .lead{color:rgba(58,52,45,.9);font-size:18px;line-height:1.72}
+.cta-card{border:1px solid #cfe0d2;background:#fbfdfa;border-radius:8px;padding:22px}
+.cta-card b{display:block;color:#48b178;margin-bottom:10px;font-size:18px}.cta-card p{margin:0 0 14px}
+.footer{padding:30px clamp(20px,6vw,88px);font-size:14px;color:var(--muted);background:#fff;border-top:1px solid var(--line)}
+.footer-inner{width:min(1000px,100%);margin:0 auto}
+.footer-links{display:flex;flex-wrap:wrap;gap:6px 12px;margin-bottom:14px}.footer-links a{color:var(--blue);font-weight:900;text-decoration:none;font-size:14px}
+.footer-brand{font-weight:900;font-size:15px;margin-bottom:10px}.footer-note{font-size:13px;line-height:1.6}
+@media(max-width:820px){.infocard-grid{grid-template-columns:1fr}.duo{grid-template-columns:1fr}.workflow-grid{grid-template-columns:1fr}.cta-band .inner{grid-template-columns:1fr}.section{padding:40px 20px}.hero{min-height:52vh;flex-direction:column;justify-content:flex-start;align-items:flex-start;gap:24px}.hero>div{width:100%}.hero-figure{width:100%;max-width:560px}}
+@media(max-width:820px){html,body{overflow-x:hidden}.hero h1{word-break:break-word}}
+
+/* 表格 (沿用官網 agent-web-turning-point 既有定義) */
+.table-scroll{overflow-x:auto;margin-top:20px}
+.report-table{width:100%;border-collapse:collapse;min-width:600px}
+.report-table th{background:rgba(122,90,71,.09);color:#3a2a1c;font-weight:900}
+.report-table th,.report-table td{padding:13px 15px;border-bottom:1px solid var(--line);vertical-align:top;text-align:left;font-size:16.5px;line-height:1.62}
+/* 就近延伸閱讀 (依 02-design-system.md) */
+.readmore{margin-top:24px;padding:20px 22px;background:var(--soft);border:1px solid var(--line);border-radius:12px}
+.readmore.near{margin:26px 0 6px;background:rgba(86,137,184,.07);border-color:#bcd0e2}
+.readmore.near b{color:var(--blue);font-size:18px;display:block;margin-bottom:8px}
+.readmore.near li{font-size:17px;line-height:1.7;margin-bottom:10px}
+.readmore.near ul{margin:0;padding-left:20px}
+.readmore.near a{color:var(--blue);font-weight:700}
+/* 存取選擇卡 (CX 建議新元件) */
+.access-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin:22px 0}
+.access-card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px}
+.access-card h4{margin:0 0 10px;color:var(--ink);font-size:18px}
+.access-meta{margin:6px 0 0;color:#51483f;line-height:1.65;font-size:16.5px}
+.access-warn{color:#a43f37}
+/* 四層配置主視覺 (CX 建議新元件) */
+.layer-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin:24px 0}
+.layer-card{border:1px solid var(--line);border-radius:16px;padding:20px;background:#fff}
+.layer-card h4{margin:0 0 10px;font-size:19px}
+.layer-card p{line-height:1.7;margin:8px 0 0;font-size:16.5px}
+.layer-tag{display:inline-block;margin-bottom:10px;padding:5px 10px;border-radius:999px;background:#edf2e9;color:#405238;font-size:14px;font-weight:800}
+@media(max-width:820px){.access-grid,.layer-grid{grid-template-columns:1fr}.report-table{min-width:520px}}
+
+/* 三個判斷卡 */
+.qgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin:24px 0}
+.qcard{background:#fff;border:1px solid var(--line);border-radius:14px;padding:20px 22px;box-shadow:0 8px 22px rgba(107,74,42,.08);position:relative}
+.qnum{display:inline-block;font:900 13px/1 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.06em;color:var(--orange);background:rgba(232,90,79,.1);padding:6px 10px;border-radius:999px;margin-bottom:12px}
+.qcard b{display:block;font-size:19px;margin-bottom:8px;color:var(--ink)}
+.qcard p{margin:0;font-size:16.5px;line-height:1.7;color:#51483f}
+.duo .card b{display:block;font-size:19px;margin:2px 0 10px}
+.duo .card p{font-size:16.5px;line-height:1.7;margin:8px 0 0}
+@media(max-width:820px){.qgrid{grid-template-columns:1fr}}
+</style>
+<!-- tracking:vercel-analytics -->
+<script defer src="/_vercel/insights/script.js"></script>
+<script defer src="/_vercel/speed-insights/script.js"></script>
+</head>
+<body class="spotlight">
+<!-- 官網共用導航列 nav.top: 與首頁/總站同一條, 文章不要自己另做極簡 topbar (江江 2026-06-25: 要同一個框架, 同一條導航列).把對應頁面的 class="active" 標在自己那欄. -->
+<nav class="top">
+  <div class="container">
+    <a class="nav-brand-img" href="../../index.html"><img src="../../../images/footer-signature.png" alt="Coach Jiang | Jiang Yude"></a>
+    <button class="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
+    <ul class="nav-menu">
+      <li><a href="../../index.html">Home</a></li>
+      <li><a href="../../knowledge-architecture.html">Knowledge Architecture</a></li>
+      <li><a href="../../courses.html">Courses</a></li>
+      <li><a href="../../articles.html" class="active">Articles</a></li>
+      <li><a href="../../skills.html">Skill Packages</a></li>
+      <li><a href="../../offers.html">Services</a></li>
+      <li class="lang-switch"><a href="../../../articles/free-deploy-three-boundaries/index.html" hreflang="zh-Hant">中文</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="wc wc1"></div>
+  <div class="wc wc2"></div>
+  <div class="wc wc3"></div>
+  <div>
+    <div class="kicker">Website Deployment / Platform Selection</div>
+    <h1>Where Should You Put an AI-Built Website? GitHub Pages vs. Vercel</h1>
+    <p>Both are free, both support custom domains, the differences become apparent after three months of use.</p>
+  </div>
+</section>
+
+<main>
+
+<section class="section"><div class="inner">
+<h2>What This Article Is About</h2>
+<p>People who don't know how to code can now create a website in a few minutes with AI. After completing the website, they often face the same problem: where should they put it so that others can see it? The two most common free options are GitHub Pages and Vercel. This article will give you three judgment questions, then demonstrate a four-layer configuration to help you decide, and finally attach a complete table of quotas and cost queries.</p>
+<h3>Who is this for</h3>
+<ul>
+<li>People who have used AI to create a website and don't know which platform to choose</li>
+<li>Those who are already using one but are unsure if the other is more suitable</li>
+<li>People who create courses, take on projects, or offer consulting, and have some content they only want specific people to see, running a one-person company</li>
+</ul>
+<h3>What you will get</h3>
+<ul>
+<li>Three judgment questions, follow them to know which one to choose</li>
+<li>A four-layer configuration classification method, which you can directly copy</li>
+<li>Six methods of access control, arranged by 'who you want to see it', including actual costs</li>
+<li>A copyable prompt, letting AI help you inventory all the pages you have</li>
+</ul>
+</div></section>
+
+<section class="section"><div class="inner">
+<h2>A specific question</h2>
+<p>You ask AI to help you create a website. It could be a registration page for a course, a proposal for clients, or your portfolio.</p>
+<p>The files are done and on your computer. The next question is: <strong>How can others access it?</strong></p>
+<p>Searching for 'free website space' will bring up dozens of platforms, each claiming to be the simplest. For the context of 'using AI to create a website', the mainstream options are GitHub Pages and Vercel. Both are free, both support custom domains, both have automatic HTTPS, and AI is very good at operating them.</p>
+<p>The difference lies in the details, and those details will surface after you've used it for three months.</p>
+
+<h3>First, understand four terms, which will be used later.</h3>
+<p>Both platforms use their own names to refer to the scheme level. It might feel a bit confusing at first. Let's compare them:</p>
+<div class="table-scroll">
+<table class="report-table">
+<thead><tr><th>The name you will see</th><th>Plain language</th><th>Price</th></tr></thead>
+<tbody>
+<tr><td><strong>Vercel Hobby</strong></td><td>Vercel's <strong>Free version</strong></td><td>0 yuan</td></tr>
+<tr><td><strong>Vercel Pro</strong></td><td>Vercel's <strong>Paid version</strong></td><td>Starting at 20 USD per month</td></tr>
+<tr><td><strong>GitHub Free</strong></td><td>GitHub's <strong>Free version</strong></td><td>0 yuan</td></tr>
+<tr><td><strong>GitHub Pro</strong></td><td>GitHub's <strong>Personal paid version</strong></td><td>4 USD per month</td></tr>
+<tr><td>Enterprise / Enterprise Cloud</td><td>Both sides'<strong>Enterprise version</strong> For company team use</td><td>Custom pricing or per-person billing</td></tr>
+</tbody>
+</table>
+</div>
+<p>"Included in Hobby" means the free tier has it, while "Pro required" means it is paid.</p>
+</div></section>
+
+<section class="section"><div class="inner">
+<h2>First make three judgments</h2>
+<p>Free quotas are usually not the first threshold. <strong>Publicity, commercial use, and future features will truly change the choice.</strong></p>
+<div class="qgrid">
+  <div class="qcard">
+    <span class="qnum">01</span>
+    <b>Who can see it?</b>
+    <p>Fully public, reduced exposure, or only for authorized users?</p>
+  </div>
+  <div class="qcard">
+    <span class="qnum">02</span>
+    <b>Is it for commercial use?</b>
+    <p>For projects, paid courses, and business websites, you need to check the plan terms first.</p>
+  </div>
+  <div class="qcard">
+    <span class="qnum">03</span>
+    <b>What features do you want to add in the future?</b>
+    <p>Pure display pages, or may add forms, backend, and member functions?</p>
+  </div>
+</div>
+<p>The answers to these three questions decide everything. Below, first look at how to layer it, then look at the technical details of each layer.</p>
+</div></section>
+
+<section class="section"><div class="inner">
+<h2>Four-layer configuration: How I divide them</h2>
+<p>I currently have over forty websites online, divided into four layers based on content sensitivity. This method you can directly copy.</p>
+
+<div class="layer-grid">
+  <div class="layer-card">
+    <span class="layer-tag">Layer 1 | Fully public</span>
+    <h4>GitHub Pages</h4>
+    <p><strong>Suitable for:</strong> Portfolio, demo, open-source skill package description</p>
+    <p><strong>Features:</strong> Public, long-term static, convenient to share. It's fine if the source code is also public.</p>
+  </div>
+
+  <div class="layer-card" style="border-color:#e85a4f;background:#fff7f4">
+    <span class="layer-tag" style="background:#ffe5df;color:#8d332c">Layer 2 | Reduce Exposure</span>
+    <h4>Semi-Private Vercel</h4>
+    <p><strong>Suitable for:</strong> Delivery page containing names, meetings, and pricing</p>
+    <p><strong>Method:</strong> Use a random URL, <code>noindex</code>, and <code>Disallow</code> in <code>robots.txt</code> together</p>
+    <p class="access-warn"><strong>This layer reduces the probability of being discovered, but does not establish real access control.</strong></p>
+  </div>
+
+  <div class="layer-card">
+    <span class="layer-tag">Layer 3 | Active Publicity</span>
+    <h4>Public Website Vercel</h4>
+    <p><strong>Suitable for:</strong> Brand website, public articles, service introduction</p>
+    <p><strong>Objective:</strong> Allow search engines and AI to find, understand, and cite, with no restrictions <code>noindex</code></p>
+  </div>
+
+  <div class="layer-card" style="background:#29251f;color:#fefcf8;border-color:#29251f">
+    <span class="layer-tag" style="background:#5f7553;color:#fff">Layer 4 | No Publication</span>
+    <h4 style="color:#fff">Completely stay on local machine</h4>
+    <p><strong>Suitable for:</strong> Revenue sharing negotiations, internal evaluations, sensitive strategies</p>
+    <p style="color:#eee5d7">Some content does not need to be deployed on a platform. Staying on local machine is a clear security decision.</p>
+  </div>
+</div>
+
+<p>The fourth layer is critical. Rather than putting sensitive content online and then trying to protect it, first determine whether it should be online.</p>
+
+<div class="readmore near">
+  <b>I have also done a layering approach in the knowledge base.</b>
+  <ul>
+    <li><a href="../knowledge-base-three-vault-split/">The knowledge base became too large, so I routed it into three repositories.</a>　This article discusses which layer a website should be placed in, while the other discusses which repository a file should be placed in. Both use the same judgment logic.</li>
+  </ul>
+</div>
+</div></section>
+
+<section class="section"><div class="inner">
+<h2>Three common misunderstandings about permissions.</h2>
+<p>Before layering, first dispel the three most commonly misunderstood concepts. I myself have misunderstood these things.</p>
+<div class="infocard-grid">
+  <div class="infocard">
+    <b>Misunderstanding one.</b>
+    <p><strong>“Adding noindex makes it private”.</strong></p>
+    <p>Google's official documentation states clearly: <code>noindex</code> Only let the page not appear in search results. <strong>People who know the URL can still open it directly</strong>.</p>
+  </div>
+  <div class="infocard">
+    <b>Misunderstanding Two</b>
+    <p><strong>“Paid GitHub Pro means the website is no longer public”</strong></p>
+    <p>The private repository of GitHub Pro (paid version) hides <strong>source code</strong> After publishing the website, it is still public by default. To make the website itself accessible only to authorized users, you need the Enterprise Cloud version.</p>
+  </div>
+  <div class="infocard">
+    <b>Misunderstanding Three</b>
+    <p><strong>“Vercel free version has account verification”</strong></p>
+    <p>The free version of Vercel Authentication <strong>only protects the preview URL</strong> The formal website address you provided is not within the protected scope.</p>
+  </div>
+</div>
+<p>The common point is: <strong>'Not being searchable' and 'Others cannot enter' are two different things.</strong></p>
+</div></section>
+
+<section class="section"><div class="inner">
+<h2>Who do you want to be able to enter this website?</h2>
+<p>Pick a card based on the actual access scope you need. The cost is the number found in the official documentation as of 2026-07-28.</p>
+<div class="access-grid">
+  <div class="access-card">
+    <h4>As long as you reduce search exposure</h4>
+    <p class="access-meta"><strong>Method:</strong> Both sides can be set <code>noindex</code></p>
+    <p class="access-meta"><strong>Cost:</strong> 0 dollars</p>
+    <p class="access-meta access-warn"><strong>Protected scope:</strong> Search engines find it more difficult, but people who know the address can still enter</p>
+  </div>
+  <div class="access-card">
+    <h4>Only share the test version with a small number of people</h4>
+    <p class="access-meta"><strong>Method:</strong> Vercel Authentication, or a free version's one Shareable Link</p>
+    <p class="access-meta"><strong>Cost:</strong> 0 dollars</p>
+    <p class="access-meta access-warn"><strong>Protected scope:</strong> Only handles preview, the formal website address needs to be evaluated separately</p>
+  </div>
+  <div class="access-card">
+    <h4>Only want to hide the source code</h4>
+    <p class="access-meta"><strong>Method:</strong> GitHub Pro (paid version) private repository</p>
+    <p class="access-meta"><strong>Cost:</strong> GitHub Pro paid version, $4 per month</p>
+    <p class="access-meta access-warn"><strong>Protected scope:</strong> Only code is hidden, website remains public</p>
+  </div>
+  <div class="access-card" style="border-color:#e85a4f">
+    <h4>Official website requires password</h4>
+    <p class="access-meta"><strong>Method:</strong> Vercel Pro (paid version) with Advanced Deployment Protection add-on</p>
+    <p class="access-meta"><strong>Cost:</strong> <strong style="color:#e85a4f">Minimum $170</strong> ($20 Pro + $150 add-on)</p>
+    <p class="access-meta"><strong>Protected scope:</strong> True access control, only those with password can enter</p>
+  </div>
+  <div class="access-card">
+    <h4>Website is limited to specific members</h4>
+    <p class="access-meta"><strong>Method:</strong> GitHub Pages private release</p>
+    <p class="access-meta"><strong>Cost:</strong> Enterprise Cloud version, starting at $21 per user per month</p>
+    <p class="access-meta"><strong>Protected scope:</strong> True access control, limit to repo members</p>
+  </div>
+  <div class="access-card" style="background:#29251f;color:#fefcf8;border-color:#29251f">
+    <h4 style="color:#fff">No one should see it</h4>
+    <p class="access-meta" style="color:#eee5d7"><strong>Method:</strong> Do not deploy, leave it on the local machine</p>
+    <p class="access-meta" style="color:#eee5d7"><strong>Cost:</strong> 0 dollars</p>
+    <p class="access-meta" style="color:#eee5d7"><strong>Protected scope:</strong> The most thorough, yet most often overlooked option</p>
+  </div>
+</div>
+</div></section>
+
+<section class="section"><div class="inner">
+<h2>One-person company should first read this section: commercial use terms</h2>
+<blockquote><p><strong>The terms of use for Vercel's free plan (Hobby) state that it is only allowed for personal, non-commercial use.</strong> The official pricing page and terms state that commercial use, taking on clients, paid services, and business websites should use the paid Pro plan, starting at $20 per month.</p></blockquote>
+<p>This rule is not related to traffic. Even if your site has only a few visits per month, if the use is commercial, it is already in violation.</p>
+<p>GitHub Pages also has similar boundaries. The official statement clearly states that it is not allowed to use it as a free host to operate a website mainly used for commercial transactions, e-commerce, or commercial SaaS.</p>
+<p>Another practical risk: <strong>When the free plan of Vercel exceeds the quota, the official handling method is to pause all new and existing deployments for the account, usually requiring 30 days to recover, and you cannot purchase a small amount of additional traffic.</strong> On the day when traffic suddenly spikes, your site will go offline entirely, with no option to resolve it by paying.</p>
+</div></section>
+
+<section class="section"><div class="inner">
+<h2>What kind of growth each platform is suitable for</h2>
+<div class="duo">
+  <div class="card a">
+    <small>GITHUB PAGES</small>
+    <b>Stable, but needs to be public</b>
+    <p>GitHub was originally a place for engineers to store code, and Pages is an additional feature: turning your folder directly into a website.</p>
+    <p>Behind it is Microsoft, and the free plan has not undergone major changes for years, making it suitable for placing things that are unlikely to change in the long term.</p>
+    <p>Limitations come from origin. Its core is 'publicly sharing code', so the free plan requires your files to be public. Purely static, no backend.</p>
+  </div>
+  <div class="card b">
+    <small>VERCEL</small>
+    <b>Fast and flexible, but the terms are stricter.</b>
+    <p>A deployment platform for modern websites. Servers are available globally, and connections to Taiwan are fast.</p>
+    <p>Not only can it host static websites, it also supports Serverless Functions. In the future, you can add login, forms, and member functions.</p>
+    <p>Limitations are in terms and quotas. The free plan has clear usage restrictions, and the handling of exceeding limits is more rigid.</p>
+  </div>
+</div>
+
+<h3>What both sides can do now and where they can grow in the future.</h3>
+<div class="table-scroll">
+<table class="report-table">
+<thead><tr><th>What you want to do.</th><th>GitHub Pages</th><th>Vercel</th></tr></thead>
+<tbody>
+<tr><td>Place purely display websites.</td><td>Can.</td><td>Can.</td></tr>
+<tr><td>Source code not public.</td><td><strong style="color:#e85a4f">The free plan cannot do this.</strong></td><td>Can (free version is limited to personal account repos).</td></tr>
+<tr><td>Add forms and backend processing.</td><td><strong style="color:#e85a4f">Cannot.</strong></td><td>Can (Serverless Functions).</td></tr>
+<tr><td>Future addition of login and membership.</td><td><strong style="color:#e85a4f">Cannot.</strong></td><td>There is space.</td></tr>
+<tr><td>Leave it for several years without maintenance.</td><td><strong style="color:#5f7553">Most suitable</strong></td><td>Yes, but note the limits and terms</td></tr>
+<tr><td>Commercial use (taking on projects, selling courses)</td><td>Not allowed to be the main transaction website</td><td><strong style="color:#e85a4f">Free version not allowed, need paid version</strong></td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div class="readmore near">
+  <b>How can someone who doesn't write code design an entire system, I have written about it separately</b>
+  <ul>
+    <li><a href="../docs-as-system-design-agent/">Documents are systems: How non-engineers can design an Agent framework.</a>　This article talks about where to place the website, and the other article talks about how to design the entire system using documentation. Choosing a platform is just one of the steps.</li>
+  </ul>
+</div>
+</section>
+
+<section class="section"><div class="inner">
+<h2>Free quota quick reference table</h2>
+<p>This table is used after the previous judgments are completed. Confirmed by checking the official documentation on 2026-07-28.</p>
+<div class="table-scroll">
+<table class="report-table">
+<thead><tr><th>Project</th><th>GitHub Pages (free version)</th><th>Vercel Hobby (free version)</th></tr></thead>
+<tbody>
+<tr><td>Website size</td><td>No more than 1 GB</td><td>No separate limit</td></tr>
+<tr><td>Monthly traffic</td><td>100 GB (soft upper limit)</td><td>100 GB Fast Data Transfer<br><small>Still exists, but the plan document page is no longer prominently listed</small></td></tr>
+<tr><td>Edge Requests (main criterion)</td><td>Not applicable</td><td><strong>1 million requests/month</strong></td></tr>
+<tr><td>Function Invocations</td><td>Not applicable (no backend)</td><td>1 million invocations/month</td></tr>
+<tr><td>Can create several projects</td><td>No project number limit</td><td>200</td></tr>
+<tr><td>Deployment times</td><td>10 times/hour (soft limit)</td><td>32 times/hour, 100 times/day deployment</td></tr>
+<tr><td>Custom domain</td><td>Supported, including apex and subdomains</td><td>Maximum of 50 per project</td></tr>
+<tr><td>Automatic HTTPS</td><td>Supported</td><td>Supported</td></tr>
+<tr><td>Source code open</td><td>Free plan must be open</td><td>Can use private repo (free plan limited to personal account owned)</td></tr>
+<tr><td>Dynamic features</td><td>Purely static, no backend</td><td>Supports Serverless Functions</td></tr>
+<tr><td>What if there is overage?</td><td>It may stop providing service or send an email suggesting to switch services</td><td>Pause all new and existing deployments for the account, usually for 30 days, cannot purchase additional</td></tr>
+</tbody>
+</table>
+</div>
+<h3>Vercel now monitors traffic and 'Edge Requests' simultaneously</h3>
+<p>This is a change starting in April 2024, where the original model that mainly monitored bandwidth <strong>was split into multiple independent metrics</strong> such as Fast Data Transfer, Edge Requests, Function Invocations, etc., each measured separately. The reason is to optimize each resource separately and bill based on actual usage.</p>
+<p>The actual impact on free users is: <strong>You now have two potential limits that may be reached first.</strong> Moreover, Vercel's pricing page highlights Edge Requests prominently and does not list bandwidth, making it easy for people to think that the bandwidth limit has been removed. The bandwidth limit is still in place, and you have to go to the pricing page to see it.</p>
+<div class="table-scroll">
+<table class="report-table">
+<thead><tr><th>Metrics</th><th>Free tier limits</th><th>What kind of website will hit these limits first</th></tr></thead>
+<tbody>
+<tr><td>Fast Data Transfer (traffic)</td><td>100 GB/month</td><td>Large files: videos, PDFs, high-resolution originals, large downloads</td></tr>
+<tr><td><strong>Edge Requests (request count)</strong></td><td><strong>1 million requests/month</strong></td><td>Many small files: large numbers of JS chunks, images, API polling, and crawler detection</td></tr>
+<tr><td>Function Invocations</td><td>1 million invocations/month</td><td>Websites with backend logic</td></tr>
+<tr><td>Can create several projects</td><td>200</td><td>People who use AI to mass-produce websites</td></tr>
+</tbody>
+</table>
+</div>
+<div class="infocard-grid">
+  <div class="infocard">
+    <b>What is Edge Request</b>
+    <p>Each file request arriving at Vercel counts as one. A single page load usually involves ten to twenty requests, because HTML, CSS, JS, each image, and each font counts as one.</p>
+  </div>
+  <div class="infocard">
+    <b>How much is 1 million requests</b>
+    <p>Estimated at 20 requests per load, about <strong>50,000 cold loads</strong>. But this is request capacity conversion, <strong>not equal to the number of visitors</strong>, the actual number is greatly affected by caching, pre-fetching, and crawlers.</p>
+  </div>
+  <div class="infocard">
+    <b>How to check how much you've used</b>
+    <p>Vercel backend <strong>Usage page</strong> You can see the cumulative usage for the month. Both lines need to be checked, don't focus only on one of them.</p>
+  </div>
+</div>
+<p><strong>How the excess is handled</strong>: The free plan has no buffer for small additional charges. After most monthly resources are exceeded, related functions or projects may be temporarily suspended, usually requiring 30 days or upgrading. Note that deploying 100 times per day is <strong>Another different limitation</strong>, after hitting it, it recovers after one day, not 30 days.</p>
+
+<p><strong>Regarding long-term stability</strong>, there are many unfounded claims in the industry. Here is a honest explanation: GitHub Pages has not found any official announcements about reducing the free quota between 2023 and 2026. This can only be stated as 'no record of reduction', not 'guaranteed not to change'. The common claim about Vercel's 'reduction of the free quota in 2023' has no official announcement. The change in 2023 was the Pro Function timeout reduced to 15 seconds, and the official statement clearly mentioned that the free version remains unchanged. The actual recorded reduction was in 2026, when the deployment retention period for the free version was changed to 30 days.</p>
+</div></section>
+
+<section class="section"><div class="inner">
+<h2>If your goal is 'to be found by AI', the logic of selecting a platform should be reversed</h2>
+<p>The previous discussion was about the general case. However, there is a group of people who use the opposite logic to select a platform, and this group is growing.</p>
+<p>If you are creating content and hope to be <strong>searched and cited by AI</strong> (posting sitemap, writing llms.txt, adding JSON-LD, actively inviting crawlers to read), you are welcoming crawler traffic.</p>
+<p>The problem comes: <strong>Vercel counts every file request that reaches it as an Edge Request, including AI crawlers.</strong></p>
+<blockquote><p>In other words, the more successful your content strategy is, the more frequently AI crawlers will come, and you will approach the free version's limit.</p></blockquote>
+
+<h3>How big is this gap</h3>
+<p>Vercel officially released a set of numbers in December 2024: <strong>GPTBot generated 569 million requests on their network each month, Claude generated 370 million</strong> The combined total is about 20% of Googlebot traffic during the same period.</p>
+<p>When it falls to a single website, it would look like this (the following are examples from Vercel's official community and developer community, which are user self-reported):</p>
+<div class="infocard-grid">
+  <div class="infocard">
+    <b>Case one</b>
+    <p>A directory-type website only has <strong>4,905 times</strong> Human page views, yet generated <strong>543,000</strong> Edge Requests. The reason is that it has about 7,500 pages that can be crawled.</p>
+  </div>
+  <div class="infocard">
+    <b>Case Two</b>
+    <p>A free version project <strong>Within one night</strong> received 882,000 ClaudeBot requests, 125,000 GPTBot requests, and Edge Requests surged to 1.5 million, <strong>the project was temporarily suspended</strong>.</p>
+  </div>
+  <div class="infocard">
+    <b>Case Three</b>
+    <p>A developer reported that Meta's crawler issued <strong>11 million</strong> requests to his website.</p>
+  </div>
+</div>
+<p>Note the ratio in Case One: <strong>Human browsing and request numbers differed by over 100 times</strong>. If you only think that 'my website isn't being viewed much' and assume it's safe, you will make a wrong judgment.</p>
+
+<h3>Differences between four platforms for 'welcome crawler' type websites</h3>
+<div class="table-scroll">
+<table class="report-table">
+<thead><tr><th>Platform</th><th>How are static file requests counted</th><th>For websites that want to be cited by AI</th></tr></thead>
+<tbody>
+<tr><td><strong>Cloudflare Pages</strong></td><td><strong>Free and unlimited</strong> Only execution of Worker is metered</td><td>Number of crawlers does not affect the quota</td></tr>
+<tr><td><strong>GitHub Pages</strong></td><td>Not billed by request count, only monthly 100 GB soft upper limit</td><td>No risk of request count</td></tr>
+<tr><td>Vercel</td><td><strong>Each time counts as Edge Request</strong> Free tier monthly 1 million times</td><td>More crawlers approach the limit</td></tr>
+<tr><td>Netlify</td><td>Counts (every 10,000 requests deduct 2 credits)</td><td>Same direction as Vercel</td></tr>
+</tbody>
+</table>
+</div>
+
+<h3>Counterintuitive conclusion</h3>
+<p>Looking back at the table above, the biggest limitation of GitHub Pages free tier is 'source code must be public'.</p>
+<p><strong>But for a content website with the goal of 'being found by AI', this is not a limitation.</strong> Your content is meant to be seen by the world, so making the source code public causes no loss.</p>
+<p>In other words, the same feature evaluates completely oppositely under different goals. This is why I do not recommend copying any conclusion from any article about 'which platform is better', including this one. <strong>First determine your goal, then each cell in that table has meaning.</strong></p>
+
+<h3>Should I move it?</h3>
+<p>Sharing my own judgment for your reference. My knowledge website is still on Vercel, and I have no plans to move it in the short term, for three reasons:</p>
+<ol>
+<li><strong>Still far from the limit.</strong> This is the level of 'knowing is enough', not 'act now'.</li>
+<li><strong>The website is not just static pages.</strong> There are interactive scripts and automatic interconnection mechanisms, and moving them requires re-verifying whether they can run.</li>
+<li><strong>Vercel has a Firewall, and requests blocked by it are explicitly stated by the official to not count toward Edge Requests.</strong> But this solution contradicts the goal. I want the AI to read me, not block it.</li>
+</ol>
+<p>The signal that would make me change my decision is very clear: <strong>The Edge Requests on the backend Usage page are approaching 500,000 per month.</strong> At that time, the first thing to do is go to Observability to check the traffic source, first distinguishing whether it is human, AI search crawlers, or unwanted crawlers, then deciding whether to block, move, or upgrade.</p>
+
+<div class="readmore near">
+  <b>The fact that machines read your content, I have written about it in another article.</b>
+  <ul>
+    <li><a href="../agent-web-turning-point/">More than half of the traffic online is not from humans anymore. Are your contents ready to be read by machines?</a>　That article talks about how to make machines understand your content, and this section talks about what the bill looks like after machines have read it.</li>
+  </ul>
+</div>
+</div></section>
+
+<section class="section"><div class="inner">
+<h2>A pitfall I have fallen into</h2>
+<p>The above four-layer configuration was established after I had fallen into a pitfall.</p>
+<p>A few days ago, I reviewed my Vercel account and found six sites completely open to Google, including two customer meeting reports, one workshop record, and one influence report.</p>
+<p>Their URLs are all random, not displayed on any page, and not shared with anyone else. <strong>I always thought that was enough.</strong></p>
+<p>In reality, they were just not crawled yet.</p>
+<p>After that incident, I made "use all three together" a fixed rule for the second layer. A random URL is only one part; without <code>noindex</code> and <code>Disallow</code> in <code>robots.txt</code>, the random URL alone is meaningless.</p>
+
+<div class="readmore near">
+  <b>How to design a system that can make errors is another topic.</b>
+  <ul>
+    <li><a href="../recovery-over-perfection/">Rather than expecting an error-free AI system, design a Loop that can tolerate errors.</a>　This article talks about how to make up for missed settings, and the other talks about how to directly design the 'leak' into the process.</li>
+  </ul>
+</div>
+</div></section>
+
+<section class="section"><div class="inner">
+<h2>Copyable prompt: Let AI help you audit</h2>
+<p>If you already have a bunch of pages, you don't need to open them one by one. Paste this segment to your AI assistant:</p>
+<pre><code>I want to audit all the pages that are already online, and determine which ones need protection.
+
+Please help me do three things for each of the following URLs, and report back in a table:
+1. Fetch the homepage, check if there is &lt;meta name="robots"&gt; with noindex
+2. Fetch /robots.txt, check if there is Disallow: /
+3. Fetch &lt;title&gt;, let me know what this page is
+
+Reporting format: URL | Title | Has noindex | Has Disallow | My judgment (Needs protection / Doesn't need)
+
+Judgment criteria: If the title or content contains real names, meetings, quotes, customer names, or internal evaluations, it is considered to need protection. Pure public display, portfolio, and event pages do not need protection.
+
+URL list:
+[Paste your URLs]</code></pre>
+<p>After running this, you will get a table that clearly shows which pages need to be added.</p>
+<p>If you just want to quickly check a single page, it's even simpler: open it and click <code>Cmd+U</code> (Windows is <code>Ctrl+U</code>)view source<code>Cmd+F</code> search <code>noindex</code>.If it's not found, it means the search engine is fully open.</p>
+</div></section>
+
+<section class="section"><div class="inner">
+<h2>Wrap-up Recap</h2>
+<ul>
+<li>First ask three questions: Who can see it, is it commercial, and what will be added in the future</li>
+<li>Completely public content, two platforms free are enough <strong>Select the one where your files were originally placed</strong></li>
+<li>GitHub Pages free plan will publish the source code together, Vercel can use a private repo</li>
+<li><code>noindex</code> Block search but not access, scrambled URLs are obstacles, not locks</li>
+<li>True access control requires payment: Vercel starts at $170, GitHub organization plan starts at $21 per person</li>
+<li>Vercel free plan only allows non-commercial use, which has nothing to do with traffic</li>
+<li>Vercel free plan has <strong>two lines</strong> 100 GB traffic and 1 million Edge Requests, check both entries on the Usage page in the backend</li>
+<li>The fourth layer 'not going online' is the easiest to overlook and often the most correct option.</li>
+</ul>
+</div></section>
+
+<section class="section"><div class="inner">
+<h2>Common pitfalls (and solutions)</h2>
+<p><strong>Pitfall 1: Thinking that a private repository is equivalent to a private website</strong></p>
+<p>Solution: Distinguish between two things. A private repo protects the source code, but the website itself needs to be set up separately.</p>
+<p><strong>Pitfall 2: Thinking that Vercel's free plan authentication protects the official website URL</strong></p>
+<p>Solution: It only protects the preview URL. The URL you give to your client is not within the protection range.</p>
+<p><strong>Pitfall 3: Putting sensitive content online with the intention of 'adding protection later'</strong></p>
+<p>Solution: First check how much it would cost for that 'later'. I didn't check, so I thought I could add it anytime.</p>
+<p><strong>Pitfall 4: Only checking the homepage and forgetting about subpages</strong></p>
+<p>Solution: <code>noindex</code> It applies page by page. Having it set on the homepage does not mean <code>/report/</code> it is set.</p>
+<p><strong>Pitfall 5: Only focusing on traffic and forgetting about the request count</strong></p>
+<p>Solution: The Vercel plan page puts Edge Requests in a prominent position and omits bandwidth, making it easy to think there is only one limit. In reality, both are in place, and for websites with many images and crawlers, the request count often hits the limit first.</p>
+<p><strong>Pitfall 6: Thinking that small traffic means no commercial use issues</strong></p>
+<p>Solution: The terms and conditions are unrelated to traffic. When the Vercel free plan quota is exceeded, the entire account is paused, not just the excess part.</p>
+</div></section>
+
+<section class="section"><div class="inner">
+<h2>Reminders for your own positioning</h2>
+<p>Tools change, plans increase in price, and terms change. The numbers in this article may need to be reviewed again in six months.</p>
+<p>But one thing will never expire: <strong>The judgment of 'who should see this content' is yours alone.</strong></p>
+<p>The platform only provides options; the judgment still rests with you. Making the right judgment saves more than just money. Fewer external entry points mean fewer things to maintain and remember to check.</p>
+</div></section>
+
+<section class="section"><div class="inner">
+<h2>Verification appendix</h2>
+<p>Article data verified by checking official documents on 2026-07-28, with eight rounds of search. Platform policies may change; it is recommended to check the original page before citing.</p>
+<ul>
+<li>GitHub Pages limitations and commercial usage boundaries:<a href="https://docs.github.com/en/pages/getting-started-with-github-pages/github-pages-limits" target="_blank" rel="noopener">GitHub Pages limits</a></li>
+<li>GitHub Free requires a public repo:<a href="https://docs.github.com/en/pages/getting-started-with-github-pages/what-is-github-pages" target="_blank" rel="noopener">What is GitHub Pages</a></li>
+<li>GitHub plan and pricing:<a href="https://github.com/pricing" target="_blank" rel="noopener">GitHub Pricing</a></li>
+<li>GitHub Pages private publishing:<a href="https://docs.github.com/en/enterprise-cloud@latest/pages/getting-started-with-github-pages/changing-the-visibility-of-your-github-pages-site" target="_blank" rel="noopener">Changing Pages visibility</a></li>
+<li>Vercel Hobby plan limits:<a href="https://vercel.com/docs/plans/hobby" target="_blank" rel="noopener">Hobby plan</a>, <a href="https://vercel.com/docs/limits" target="_blank" rel="noopener">Limits</a></li>
+<li>Vercel non-commercial use terms:<a href="https://vercel.com/legal/terms" target="_blank" rel="noopener">Vercel Terms</a></li>
+<li>Vercel Deployment Protection and pricing:<a href="https://vercel.com/docs/deployment-protection" target="_blank" rel="noopener">Deployment Protection</a></li>
+<li>Google official explanation of noindex and access control differences:<a href="https://developers.google.com/search/docs/crawling-indexing/control-what-you-share" target="_blank" rel="noopener">Control what you share</a></li>
+</ul>
+<p><strong>2026-07-28 correction:</strong> Vercel has used a split pricing model since April 2024 (<a href="https://vercel.com/blog/improved-infrastructure-pricing" target="_blank" rel="noopener">official announcement</a>), with bandwidth, request count, and computation time measured separately. The initial draft of this article mistakenly stated that the free plan had removed its bandwidth allocation. After verification, it was corrected: <strong>100 GB Fast Data Transfer still exists</strong> and can be confirmed on the <a href="https://vercel.com/pricing" target="_blank" rel="noopener">pricing page</a> and official comparison page. However, the quota table on the <a href="https://vercel.com/docs/plans/hobby" target="_blank" rel="noopener">Hobby plan documentation page</a> (updated 2026-01-07) does not list this item, which may cause confusion.</p>
+<p><strong>This search found no official statement (not used as fact)</strong>: GitHub official has no formal statement on whether 'secret URLs count as security measures'; the numerical upper limit for subdomain binding on GitHub Pages; whether Vercel reduced Hobby quota in 2023; whether failed builds on Vercel are counted in quota by full minutes.</p>
+</div></section>
+
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">Coach Jiang · AI Knowledge Management</div>
+    <div class="footer-links">
+      <a href="../../articles.html">← Back to Articles</a>
+      <a href="../../index.html">Home</a>
+      <a href="../../learn.html">Learning Resources</a>
+      <a href="../../skills.html">Skill Packages</a>
+      <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">LINE Community ↗</a>
+      <a href="https://www.threads.com/@jiang_yude_coach" target="_blank" rel="noopener">Threads ↗</a>
+      <a href="https://vocus.cc/salon/Jiang_Coach" target="_blank" rel="noopener">Vocus ↗</a>
+    </div>
+    <div class="footer-note">This is a tutorial article, summarizing my views on 'Where to put the website made by AI? Complete comparison of GitHub Pages and Vercel', for your reference.</div>
+  </div>
+</footer>
+
+<!-- 點圖放大 lightbox (hero 與內文圖通用, 已內建, 不用每篇重加) -->
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <span class="lightbox-close" aria-label="Close">×</span>
+  <img id="lightbox-img" src="" alt="Zoom in for detailed view">
+</div>
+<script>
+(function(){
+  var box=document.getElementById('lightbox'),boxImg=document.getElementById('lightbox-img');
+  document.querySelectorAll('.hero-figure img,.inline-figure img').forEach(function(img){
+    img.addEventListener('click',function(){boxImg.src=img.currentSrc||img.src;boxImg.alt=img.alt||'Enlarged view';box.classList.add('open');box.setAttribute('aria-hidden','false');});
+  });
+  function close(){box.classList.remove('open');box.setAttribute('aria-hidden','true');boxImg.src='';}
+  box.addEventListener('click',close);
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
+})();
+</script>
+
+<!-- 官網共用: 滑鼠暖光暈 + 導航列漢堡選單 -->
+<script src="../../../spotlight.js"></script>
+
+<!-- 文章自動互聯 (相關文章): 兩支已內建, 順序不可顛倒, 不用再另外加 -->
+<script src="../../../articles-data.js"></script>
+<script src="../../../related-render.js"></script>
+</body>
+</html>

@@ -1,0 +1,306 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="index,follow">
+<title>AI Handoff Instructions: The Hard Part Is Deciding What to Leave Out | Coach Jiang · AI Knowledge Management</title>
+<meta name="description" content="A real incident showing how AI handoff instructions fail when they include too much, followed by three handoff scenarios and a reusable handoff form.">
+<link rel="canonical" href="https://jiangyude.com/en/articles/ai-handoff-instructions/">
+<link rel="alternate" hreflang="zh-Hant" href="https://jiangyude.com/articles/ai-handoff-instructions/"><link rel="alternate" hreflang="en" href="https://jiangyude.com/en/articles/ai-handoff-instructions/"><link rel="alternate" hreflang="x-default" href="https://jiangyude.com/articles/ai-handoff-instructions/"><meta property="og:type" content="article">
+<meta property="og:title" content="AI Handoff Instructions: The Hard Part Is Deciding What to Leave Out">
+<meta property="og:image" content="https://jiangyude.com/images/og/ai-handoff-instructions.jpg">
+<meta property="og:description" content="A real incident showing how AI handoff instructions fail when they include too much, followed by three handoff scenarios and a reusable handoff form.">
+<meta property="og:url" content="https://jiangyude.com/en/articles/ai-handoff-instructions/">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Coach Jiang · AI Knowledge Management">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="AI Handoff Instructions: The Hard Part Is Deciding What to Leave Out">
+<meta name="twitter:image" content="https://jiangyude.com/images/og/ai-handoff-instructions.jpg">
+<meta name="twitter:description" content="A real incident showing how AI handoff instructions fail when they include too much, followed by three handoff scenarios and a reusable handoff form.">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"AI Handoff Instructions: The Hard Part Is Deciding What to Leave Out","description":"A real incident showing how AI handoff instructions fail when they include too much, followed by three handoff scenarios and a reusable handoff form.","author":{"@type":"Person","name":"Jiang Yude","alternateName":"Coach Jiang","jobTitle":"Tacit Knowledge Distiller and AI Application Planner"},"isPartOf":{"@type":"WebSite","name":"Coach Jiang · AI Knowledge Management","url":"https://jiangyude.com/"},"datePublished":"2026-07-15","dateModified":"2026-07-15","inLanguage":"en","url":"https://jiangyude.com/en/articles/ai-handoff-instructions/"}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&amp;family=Caveat:wght@400;500;600;700&amp;family=Noto+Sans+TC:wght@400;500;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap">
+<style>
+:root{--ink:#1a1612;--paper:#fefcf8;--muted:#6a635a;--line:#d8cdb8;--green:#5f7553;--blue:#5689b8;--orange:#e85a4f;--soft:#faf5ec;--dark:#2a2018;--shadow:0 18px 45px rgba(107,74,42,.14);--sp-shadow:hsla(35,50%,60%,.15);--sp-shadow-edge:hsla(35,50%,68%,.03);--sp-radius:400px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC","Segoe UI",sans-serif}
+a{color:inherit}
+/* 官網共用導航列 nav.top (與首頁/文章總站同一條) */
+nav.top{position:sticky;top:0;background:rgba(254,252,248,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid #d8cdb8;z-index:100}
+nav.top .container{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:24px;padding:14px 32px}
+.nav-brand-img{justify-self:start;display:flex;align-items:center;text-decoration:none;flex-shrink:0;transition:opacity .2s}
+.nav-brand-img:hover{opacity:.8}.nav-brand-img img{height:40px;width:auto;display:block}
+nav.top ul.nav-menu{justify-self:end;display:flex;gap:22px;list-style:none;margin:0;padding:0;font-size:.95rem;white-space:nowrap}
+nav.top ul.nav-menu a{color:#3a342d;text-decoration:none;transition:color .2s;font-weight:500;white-space:nowrap}
+nav.top ul.nav-menu a:hover{color:#1a1612}nav.top ul.nav-menu a.active{color:#1a1612;font-weight:700}
+.nav-toggle{display:none;background:none;border:none;padding:6px;cursor:pointer;width:36px;height:36px;position:relative}
+.nav-toggle span{display:block;position:absolute;left:8px;right:8px;height:2px;background:#1a1612;border-radius:2px;transition:transform .25s,opacity .25s,top .25s}
+.nav-toggle span:nth-child(1){top:11px}.nav-toggle span:nth-child(2){top:17px}.nav-toggle span:nth-child(3){top:23px}
+.nav-toggle.open span:nth-child(1){top:17px;transform:rotate(45deg)}.nav-toggle.open span:nth-child(2){opacity:0}.nav-toggle.open span:nth-child(3){top:17px;transform:rotate(-45deg)}
+@media(max-width:860px){
+ nav.top .container{grid-template-columns:auto 1fr auto;padding:10px 16px;gap:12px}
+ .nav-brand-img img{height:32px}
+ .nav-toggle{display:block;justify-self:end}
+ nav.top ul.nav-menu{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(254,252,248,.98);backdrop-filter:blur(14px);border-bottom:1px solid #d8cdb8;flex-direction:column;gap:0;padding:8px 0;box-shadow:0 10px 24px rgba(107,74,42,.08)}
+ nav.top ul.nav-menu.open{display:flex}
+ nav.top ul.nav-menu li{border-bottom:1px solid #e8dfc9}
+ nav.top ul.nav-menu li:last-child{border-bottom:none}
+ nav.top ul.nav-menu a{display:block;padding:14px 20px;font-size:1.06rem}
+}
+/* 滑鼠暖光暈 (與首頁同一支 spotlight.js) */
+body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradient(var(--sp-radius) circle at var(--mx,50%) var(--my,50%),var(--sp-shadow) 0%,var(--sp-shadow-edge) 45%,transparent 75%);pointer-events:none;z-index:9999;mix-blend-mode:multiply;transition:background .06s linear}
+.hero{position:relative;overflow:hidden;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:72px;padding:96px clamp(20px,6vw,88px) 80px;background:linear-gradient(180deg,#fffcf0 0%,#f9e9d2 100%);color:#1a1612;border-bottom:1px solid #d8cdb8}
+.hero .wc{position:absolute;border-radius:50%;filter:blur(60px);pointer-events:none;z-index:0}
+.hero .wc1{width:420px;height:360px;top:-120px;right:-80px;background:#e8884b;opacity:.15}
+.hero .wc2{width:360px;height:300px;bottom:-110px;left:-70px;background:#5f7553;opacity:.13}
+.hero .wc3{width:280px;height:260px;top:34%;left:14%;background:#a08144;opacity:.10}
+.hero>div{flex:none;width:860px;max-width:100%;position:relative;z-index:2}
+.hero-figure{margin:0;width:420px;flex:none;position:relative;z-index:2}
+.hero-figure img{display:block;width:100%;border-radius:16px;border:1px solid #d8cdb8;box-shadow:0 18px 45px rgba(107,74,42,.16);cursor:zoom-in}
+.hero-figure figcaption{margin-top:10px;font-size:14px;line-height:1.6;color:#6a635a}
+.inline-figure{margin:30px auto 8px;max-width:820px}
+.inline-figure img{display:block;width:100%;border-radius:14px;border:1px solid var(--line);box-shadow:var(--shadow);background:#fff;cursor:zoom-in}
+.inline-figure figcaption{font-size:14px;line-height:1.6;color:var(--muted);margin-top:10px}
+.lightbox{position:fixed;inset:0;z-index:10000;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(12,10,8,.92);cursor:zoom-out;backdrop-filter:blur(4px)}
+.lightbox.open{display:flex}.lightbox img{max-width:96vw;max-height:92vh;border-radius:10px;box-shadow:0 24px 60px rgba(0,0,0,.5)}
+.lightbox-close{position:fixed;top:18px;right:24px;color:#fff;font-size:34px;line-height:1;font-weight:700;cursor:pointer;opacity:.85}
+.kicker{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.55rem;color:#7a5c3a;font-weight:500}
+.hero h1{max-width:none;margin:16px 0 18px;font-size:clamp(36px,6vw,72px);line-height:1.08;overflow-wrap:anywhere}
+.hero p{max-width:none;font-size:clamp(18px,2vw,23px);line-height:1.62;color:#3a342d}
+.article-meta{margin-top:20px;font-size:14px;color:#6a635a}
+.section{padding:54px clamp(20px,6vw,88px);border-top:1px solid var(--line)}
+.inner{width:min(1000px,100%);margin:0 auto}
+.section h2{font-size:clamp(26px,4.2vw,48px);line-height:1.12;margin:0 0 18px}
+.section h3{font-size:clamp(21px,3vw,30px);line-height:1.2;margin:30px 0 12px}
+.lead{font-size:clamp(18px,1.6vw,22px);line-height:1.7;color:#3a342d;max-width:900px}
+.section p{font-size:18px;line-height:1.74;color:#3a342d}.section p+p{margin-top:14px}
+.section ul,.section ol{padding-left:1.4em;font-size:18px;line-height:1.74;color:#3a342d}.section li{margin-bottom:8px}
+.meaning{margin:22px 0;padding:16px 18px;border-left:5px solid var(--blue);background:rgba(86,137,184,.12);border-radius:6px;line-height:1.7;font-size:19px}
+.meaning b{display:block;color:var(--blue);margin-bottom:4px}
+.caveat{margin:0 0 8px;padding:16px 18px;border-left:5px solid var(--orange);background:rgba(232,90,79,.1);border-radius:6px;line-height:1.7;font-size:18px;color:#3a342d}
+.caveat b{display:block;color:var(--orange);margin-bottom:4px}
+.infocard{background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px 24px 22px;box-shadow:0 8px 22px rgba(107,74,42,.08);margin-top:8px}
+.infocard-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.info-item{padding:18px 14px 0}
+.info-item b{display:block;font-size:14px;font-weight:900;letter-spacing:.04em;margin-bottom:7px;text-transform:uppercase}
+.info-item:nth-child(1) b{color:var(--green)}.info-item:nth-child(2) b{color:var(--orange)}.info-item:nth-child(3) b{color:var(--blue)}
+.info-item p{margin:0;font-size:17px;line-height:1.6;color:#3a342d}
+.tagrow{display:flex;flex-wrap:wrap;gap:7px;margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
+.tag{font-size:14px;color:var(--muted);background:var(--soft);border:1px solid var(--line);border-radius:999px;padding:4px 11px}
+.duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:24px}
+.duo.stack{grid-template-columns:1fr}
+.duo .card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:22px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.duo .card.a{border-color:var(--orange)}.duo .card.b{border-color:var(--green);box-shadow:0 8px 24px rgba(95,117,83,.16)}
+.duo .card small{display:block;font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.04em;margin-bottom:9px}
+.duo .card.a small{color:var(--orange)}.duo .card.b small{color:var(--green)}
+.duo .card b{display:block;font-size:22px;line-height:1.3;margin-bottom:12px}.duo .card.a b{color:#c0512f}.duo .card.b b{color:#4a7a59}
+.duo .card p{margin:0;color:#3a342d;line-height:1.75;font-size:18px}
+.workflow-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:24px}
+.workflow-step{background:#fff;border:1px solid var(--line);border-radius:8px;padding:18px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.workflow-step small{display:block;color:var(--orange);font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;margin-bottom:9px}
+.workflow-step b{display:block;font-size:18px;line-height:1.3;margin-bottom:9px}
+.workflow-step p{margin:0;color:#3a342d;line-height:1.6;font-size:16px}
+.codeblock{background:var(--dark);color:#f3ead9;border-radius:8px;padding:18px 20px;font:500 14px/1.65 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;overflow-x:auto;white-space:pre-wrap;margin:20px 0;box-shadow:0 8px 22px rgba(107,74,42,.12)}
+.codeblock .c{color:#f6d7a6;font-weight:600}
+.cta-band{background:#e6f0e5;color:#3a342d}.cta-band .section{border-top:none}
+.cta-band .inner{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(260px,.85fr);gap:26px;align-items:start}
+.cta-band h2{font-size:clamp(26px,4vw,44px);margin:0 0 16px}.cta-band p,.cta-band .lead{color:rgba(58,52,45,.9);font-size:18px;line-height:1.72}
+.cta-card{border:1px solid #cfe0d2;background:#fbfdfa;border-radius:8px;padding:22px}
+.cta-card b{display:block;color:#48b178;margin-bottom:10px;font-size:18px}.cta-card p{margin:0 0 14px}
+.cta-card a{display:inline-flex;align-items:center;text-decoration:none;border-radius:8px;padding:11px 16px;font-weight:900;background:#5f7553;color:#fff}
+.footer{padding:30px clamp(20px,6vw,88px);font-size:14px;color:var(--muted);background:#fff;border-top:1px solid var(--line)}
+.footer-inner{width:min(1000px,100%);margin:0 auto}
+.footer-links{display:flex;flex-wrap:wrap;gap:6px 12px;margin-bottom:14px}.footer-links a{color:var(--blue);font-weight:900;text-decoration:none;font-size:14px}
+.footer-brand{font-weight:900;font-size:15px;margin-bottom:10px}.footer-note{font-size:13px;line-height:1.6}
+@media(max-width:820px){.infocard-grid{grid-template-columns:1fr}.duo{grid-template-columns:1fr}.workflow-grid{grid-template-columns:1fr}.cta-band .inner{grid-template-columns:1fr}.section{padding:40px 20px}.hero{min-height:52vh;flex-direction:column;justify-content:flex-start;align-items:flex-start;gap:24px}.hero>div{width:100%}.hero-figure{width:100%;max-width:560px}}
+@media(max-width:820px){html,body{overflow-x:hidden}.hero h1{word-break:break-word}}
+</style>
+<!-- tracking:vercel-analytics -->
+<script defer src="/_vercel/insights/script.js"></script>
+<script defer src="/_vercel/speed-insights/script.js"></script>
+</head>
+<body class="spotlight">
+<nav class="top">
+  <div class="container">
+    <a class="nav-brand-img" href="../../index.html"><img src="../../../images/footer-signature.png" alt="Coach Jiang | Jiang Yude"></a>
+    <button class="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
+    <ul class="nav-menu">
+      <li><a href="../../index.html">Home</a></li>
+      <li><a href="../../knowledge-architecture.html">Knowledge Architecture</a></li>
+      <li><a href="../../courses.html">Courses</a></li>
+      <li><a href="../../articles.html" class="active">Articles</a></li>
+      <li><a href="../../skills.html">Skill Packages</a></li>
+      <li><a href="../../offers.html">Services</a></li>
+      <li class="lang-switch"><a href="../../../articles/ai-handoff-instructions/index.html" hreflang="zh-Hant">中文</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="wc wc1"></div>
+  <div class="wc wc2"></div>
+  <div class="wc wc3"></div>
+  <div>
+    <div class="kicker">AI Workflow</div>
+    <h1>AI Handoff Instructions: The Hard Part Is Deciding What to Leave Out</h1>
+    <p>AI is increasingly handing over tasks to different people, different models, different companies, different machines, or even different people. Every time we hand over, we need to give a sentence. I found that the most common mistake in this sentence is talking too much, and putting what I need to do later into it.</p>
+    <div class="article-meta">Published 2026-07-15 | Last updated 2026-07-15</div>
+  </div>
+</section>
+
+<main>
+
+<section class="section" id="start">
+  <div class="inner">
+    <p class="lead">When AI helps us run tasks automatically, work often needs to be handed over. The first half is done by one AI, and the second half is handed over to another, sometimes to a different company, a different machine, or even a different person. Every time we hand over, we need to tell the person taking over what to do next. This sentence is the handover instruction. This article will tell you that the main reason for a bad handover instruction is talking too much, and it will give you three ways to write it for different scenarios and a handover form you can directly copy.</p>
+    <div class="duo stack">
+      <div class="card a">
+        <b>Who is this for</b>
+        <p>People who let AI automatically run tasks and often hand over to another AI or sub-agent; creators who use multiple AIs for different tasks; advisors or independent workers who use the same AI tools; people who lead a team or family to use the same AI tools.</p>
+      </div>
+      <div class="card b">
+        <b>What you can take away</b>
+        <p>A core principle: Only write what the other person needs, not what I will do later. Three ways to write handover instructions for different scenarios: one-time assignment, supplier model, and handover to another person to continue. A handover form you can directly copy, and the right amount of feedback when things get stuck.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="scene">
+  <div class="inner">
+    <h2>Real-life example: I wrote three extra sentences, and I got called out</h2>
+    <p>Once I was making a webpage and needed two images. Since I couldn't come up with them on my own, I handed them over to another AI to generate.</p>
+    <p>I wrote the handover form quite carefully. Each image needed to have what content, what ratio, where to save it, and how to report back to me after it was generated. All of these were correct.</p>
+    <p>Then I added three more sentences on the fly: the images should be placed after which paragraph in the article, the desktop version shouldn't be too wide, and the mobile version shouldn't crop the text.</p>
+    <p>I got called out. Those three sentences shouldn't have been in the image generation handover form. The person generating the images only needed to generate the image files. How to place the images in the webpage and how to adjust the layout were tasks I needed to do myself after receiving the images. I forced myself to do what I needed to do later into the handover form for someone else.</p>
+    <div class="caveat"><b>Those three sentences didn't help</b> They wouldn't make the person generating the images produce better images. Instead, they would make the handover form longer, blurrier, and might make the other person guess something they didn't need to touch.</div>
+  </div>
+</section>
+
+<section class="section" id="why">
+  <div class="inner">
+    <h2>Why do we write too much?</h2>
+    <p>After I finished writing, I thought back about why I wrote those three sentences. There were three reasons, and I think many people are like me.</p>
+    <div class="infocard">
+      <div class="infocard-grid">
+        <div class="info-item"><b>Fear of not doing it well</b><p>Want to explain more, explaining while explaining, ended up explaining things that were not his responsibility.</p></div>
+        <div class="info-item"><b>Unable to distinguish boundaries.</b><p>Unable to tell which tasks belong to the other party and which are my own. Everything in my mind is connected, and I poured it all out at once.</p></div>
+        <div class="info-item"><b>Handed everything over at once.</b><p>Sent the complete imagination of the finished product all at once. However, the other party only needed a small part of it, and the rest was noise to them.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="solution">
+  <div class="inner">
+    <h2>One principle, three scenarios.</h2>
+    <h3>Core principle: only write what the other party needs.</h3>
+    <p>Take the example of a drawing. A handover form only needs four things: what the image should have, what ratio, where to save it, and how to report after generation. Layout, position, and where to put it in the file are all deleted, as those are my own matters.</p>
+    <div class="meaning"><b>Core principle.</b> Handover instructions should only write 'the information the other party needs to do this task,' not 'what I will do after I return.' Self-check: ask yourself for each sentence, if this sentence is deleted, will the other party make a mistake? If they will, keep it; if not, it's extra and should be deleted.</div>
+
+    <h3>Three types of handover, each with its own way of writing.</h3>
+    <div class="workflow-grid">
+      <div class="workflow-step"><small>Scenario one.</small><b>One-time handover.</b><p>Hand over the whole task, and let the other party complete it. Write clearly which files can be modified, which cannot, what state counts as completion, and which command to use for verification. The core is the whitelist; anything not written can be modified is strictly prohibited from being touched.</p></div>
+      <div class="workflow-step"><small>Scenario two.</small><b>Supplier model.</b><p>The main line needs a part I cannot generate myself, which I outsource. After the other party generates it, they report where the file is and the specifications, and I put the part back into the main line. The handover form only writes the part specifications, not where to put it or how to assemble it.</p></div>
+      <div class="workflow-step"><small>Scenario three.</small><b>Switching to another person</b><p>Switching to another person with the same account and data, like moving work from a desktop to a laptop or handing it over to a family member. The handover instructions should first clarify who is currently in the conversation. Reporting should be in plain language, and things like pricing strategies should be pre-recorded for me to approve later.</p></div>
+    </div>
+
+    <h3>The balance of automation: only report when stuck</h3>
+    <p>I want the process to run automatically. Mechanical tasks should be handled by cheaper, faster hands. For image generation, directly assign it to another party. These don't need to bother me. Only when it truly gets stuck should we stop and provide me with a handover form, which I will manually transfer to another party. Once that party completes the task, they should provide a list for me to paste back.</p>
+    <div class="caveat"><b>First check if the individual part is stuck</b> If the image cannot be generated, I can first place a placeholder image, continue the main line to completion, and finally list "This image hasn't been generated" as a pending task for me to receive at the end. Only parts that truly prevent the final product from being completed should be stopped midway for waiting.</div>
+
+    <h3>Preventive measures: three common ways cheap hands fail</h3>
+    <ul>
+      <li><b>Imagine it's done.</b> Reported it as completed, but actually did nothing. The handover form includes a command that can be directly executed for verification. I run it again myself and don't take their report as the truth.</li>
+      <li><b>Expand the task on the fly.</b> Do the things that look like they should also be done together. First write what this round does not include, so they don't treat good ideas as part of this round's task.</li>
+      <li><b>Overstepping authority.</b> Do my downstream tasks and include them. Only write what the other party needs, and delete any extra sentence.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="section" id="bounds">
+  <div class="inner">
+    <h2>What it guarantees and what it does not guarantee</h2>
+    <div class="caveat"><b>What it does not guarantee</b> A good handover form will not suddenly make a cheap model smart. Tasks requiring complex judgment or nuanced tone still need to be handled by a good person or a good model. The handover form itself should also be carefully condensed into a clean, bounded small task. If the handover explanation is longer than the task itself, don't hand it over; it's faster to do it yourself.</div>
+    <div class="meaning"><b>What it guarantees</b> When you cross off all the "I will do it when I return" items, the handover form will become shorter and clearer, and the other party is less likely to overstep or interfere. Also, because you attach a verification command, you don't need to rely on their "It's done" to believe them.</div>
+  </div>
+</section>
+
+<section class="section" id="start-now">
+  <div class="inner">
+    <h2>How to start</h2>
+    <p>First copy this handover form, and apply it to image generation, verification, and outsourcing a segment of material.</p>
+    <div class="codeblock"><span class="c">Task</span>: 〔Clearly state what needs to be done in one sentence〕
+<span class="c">Output specifications</span> What does the thing the other party needs to hand over look like, for example, the content of the image, the ratio
+<span class="c">Storage location</span> Absolute path, where to put it after it's done
+<span class="c">Do not do</span> What is definitely not going to be done in this round, at least one item
+<span class="c">Completion report</span> What needs to be reported back, for example, file path plus specifications; include one command I can run myself to verify
+<span class="c">Stop loss</span> Maximum number of rounds, if stuck, stop and say where it's stuck, don't force it</div>
+    <p>Then do one thing: pick a task you recently handed over incorrectly, spread out the handover form, and use the deletion method to cross out each line of 'things I will do myself when I return'. You will find that the remaining lines are what the other party really needs.</p>
+    <p>Good handover instructions often save more than what is written. The form you write for others, the thinner it is, the more accurate it usually is.</p>
+    <div class="tagrow">
+      <span class="tag">Handover instructions</span>
+      <span class="tag">AI collaboration</span>
+      <span class="tag">AI Workflow</span>
+      <span class="tag">Multi-agent</span>
+      <span class="tag">Prompt</span>
+    </div>
+  </div>
+</section>
+
+<div class="cta-band">
+  <section class="section">
+    <div class="inner">
+      <div>
+        <h2>Use AI as a tool to help you accumulate judgment</h2>
+        <p class="lead">I host two free online seminars every month, sharing how to organize workflows, judgments, and experience into prompts, skill packages, and knowledge bases that AI can flexibly use. If you want to continue learning or have consulting needs, feel free to start from the community.</p>
+      </div>
+      <div class="cta-card">
+        <b>Join LINE Community</b>
+        <p>AI × Knowledge Management, Tacit Knowledge Distillation, Together to Use AI as a Thinking Partner.</p>
+        <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">Join the community ↗</a>
+      </div>
+    </div>
+  </section>
+</div>
+
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">Coach Jiang · AI Knowledge Management</div>
+    <div class="footer-links">
+      <a href="../../articles.html">← Back to Articles</a>
+      <a href="../../index.html">Home</a>
+      <a href="../../learn.html">Learning Resources</a>
+      <a href="../../skills.html">Skill Packages</a>
+      <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">LINE Community ↗</a>
+      <a href="https://www.threads.com/@jiang_yude_coach" target="_blank" rel="noopener">Threads ↗</a>
+      <a href="https://vocus.cc/salon/Jiang_Coach" target="_blank" rel="noopener">Vocus ↗</a>
+    </div>
+    <div class="footer-note">This is a case study article, summarizing my approach and views on 'handover instructions,' for your reference.</div>
+  </div>
+</footer>
+
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <span class="lightbox-close" aria-label="Close">×</span>
+  <img id="lightbox-img" src="" alt="Zoom in for detailed view">
+</div>
+<script>
+(function(){
+  var box=document.getElementById('lightbox'),boxImg=document.getElementById('lightbox-img');
+  document.querySelectorAll('.hero-figure img,.inline-figure img').forEach(function(img){
+    img.addEventListener('click',function(){boxImg.src=img.currentSrc||img.src;boxImg.alt=img.alt||'Enlarged view';box.classList.add('open');box.setAttribute('aria-hidden','false');});
+  });
+  function close(){box.classList.remove('open');box.setAttribute('aria-hidden','true');boxImg.src='';}
+  box.addEventListener('click',close);
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
+})();
+</script>
+
+<script src="../../../spotlight.js"></script>
+<script src="../../../articles-data.js"></script>
+<script src="../../../related-render.js"></script>
+</body>
+</html>

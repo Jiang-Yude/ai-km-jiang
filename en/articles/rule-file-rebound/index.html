@@ -1,0 +1,442 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="index,follow">
+<title>Why Most of Your AI Rules Never Run | Coach Jiang · AI Knowledge Management</title>
+<meta name="description" content="After my rule files grew back within 18 days, I reviewed about 220 rules and found only 24 with execution mechanisms. This article provides a four-column audit, three admission questions, a no-Hook manual version, and a weekly review schedule.">
+<link rel="canonical" href="https://jiangyude.com/en/articles/rule-file-rebound/">
+<link rel="alternate" hreflang="zh-Hant" href="https://jiangyude.com/articles/rule-file-rebound/"><link rel="alternate" hreflang="en" href="https://jiangyude.com/en/articles/rule-file-rebound/"><link rel="alternate" hreflang="x-default" href="https://jiangyude.com/articles/rule-file-rebound/"><meta property="og:type" content="article">
+<meta property="og:title" content="Why Most of Your AI Rules Never Run">
+<!-- 分享封面: hero 文字填好後在 repo 根目錄跑 `node scripts/og-shot.mjs rule-file-rebound` 自動截 1200×630 到 images/og/rule-file-rebound.jpg (見 README“文章分享封面 (OG 圖)機制”).別退回 intro-jiang.png 直式人像, 會被裁成只剩脖子. -->
+<meta property="og:image" content="https://jiangyude.com/images/og/rule-file-rebound.jpg">
+<meta property="og:description" content="After my rule files grew back within 18 days, I reviewed about 220 rules and found only 24 with execution mechanisms. This article provides a four-column audit, three admission questions, a no-Hook manual version, and a weekly review schedule.">
+<meta property="og:url" content="https://jiangyude.com/en/articles/rule-file-rebound/">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Coach Jiang · AI Knowledge Management">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Why Most of Your AI Rules Never Run">
+<meta name="twitter:image" content="https://jiangyude.com/images/og/rule-file-rebound.jpg">
+<meta name="twitter:description" content="After my rule files grew back within 18 days, I reviewed about 220 rules and found only 24 with execution mechanisms. This article provides a four-column audit, three admission questions, a no-Hook manual version, and a weekly review schedule.">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Why Most of Your AI Rules Never Run","description":"After my rule files grew back within 18 days, I reviewed about 220 rules and found only 24 with execution mechanisms. This article provides a four-column audit, three admission questions, a no-Hook manual version, and a weekly review schedule.","author":{"@type":"Person","name":"Jiang Yude","alternateName":"Coach Jiang","jobTitle":"Tacit Knowledge Distiller and AI Application Planner"},"isPartOf":{"@type":"WebSite","name":"Coach Jiang · AI Knowledge Management","url":"https://jiangyude.com/"},"inLanguage":"en","url":"https://jiangyude.com/en/articles/rule-file-rebound/"}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&amp;family=Caveat:wght@400;500;600;700&amp;family=Noto+Sans+TC:wght@400;500;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap">
+<style>
+:root{--ink:#1a1612;--paper:#fefcf8;--muted:#6a635a;--line:#d8cdb8;--green:#5f7553;--blue:#5689b8;--orange:#e85a4f;--soft:#faf5ec;--dark:#2a2018;--shadow:0 18px 45px rgba(107,74,42,.14);--sp-shadow:hsla(35,50%,60%,.15);--sp-shadow-edge:hsla(35,50%,68%,.03);--sp-radius:400px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC","Segoe UI",sans-serif}
+a{color:inherit}
+/* 官網共用導航列 nav.top (與首頁/文章總站同一條) */
+nav.top{position:sticky;top:0;background:rgba(254,252,248,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid #d8cdb8;z-index:100}
+nav.top .container{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:24px;padding:14px 32px}
+.nav-brand-img{justify-self:start;display:flex;align-items:center;text-decoration:none;flex-shrink:0;transition:opacity .2s}
+.nav-brand-img:hover{opacity:.8}.nav-brand-img img{height:40px;width:auto;display:block}
+nav.top ul.nav-menu{justify-self:end;display:flex;gap:22px;list-style:none;margin:0;padding:0;font-size:.95rem;white-space:nowrap}
+nav.top ul.nav-menu a{color:#3a342d;text-decoration:none;transition:color .2s;font-weight:500;white-space:nowrap}
+nav.top ul.nav-menu a:hover{color:#1a1612}nav.top ul.nav-menu a.active{color:#1a1612;font-weight:700}
+.nav-toggle{display:none;background:none;border:none;padding:6px;cursor:pointer;width:36px;height:36px;position:relative}
+.nav-toggle span{display:block;position:absolute;left:8px;right:8px;height:2px;background:#1a1612;border-radius:2px;transition:transform .25s,opacity .25s,top .25s}
+.nav-toggle span:nth-child(1){top:11px}.nav-toggle span:nth-child(2){top:17px}.nav-toggle span:nth-child(3){top:23px}
+.nav-toggle.open span:nth-child(1){top:17px;transform:rotate(45deg)}.nav-toggle.open span:nth-child(2){opacity:0}.nav-toggle.open span:nth-child(3){top:17px;transform:rotate(-45deg)}
+@media(max-width:860px){
+ nav.top .container{grid-template-columns:auto 1fr auto;padding:10px 16px;gap:12px}
+ .nav-brand-img img{height:32px}
+ .nav-toggle{display:block;justify-self:end}
+ nav.top ul.nav-menu{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(254,252,248,.98);backdrop-filter:blur(14px);border-bottom:1px solid #d8cdb8;flex-direction:column;gap:0;padding:8px 0;box-shadow:0 10px 24px rgba(107,74,42,.08)}
+ nav.top ul.nav-menu.open{display:flex}
+ nav.top ul.nav-menu li{border-bottom:1px solid #e8dfc9}
+ nav.top ul.nav-menu li:last-child{border-bottom:none}
+ nav.top ul.nav-menu a{display:block;padding:14px 20px;font-size:1.06rem}
+}
+/* 滑鼠暖光暈 (與首頁同一支 spotlight.js) */
+body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradient(var(--sp-radius) circle at var(--mx,50%) var(--my,50%),var(--sp-shadow) 0%,var(--sp-shadow-edge) 45%,transparent 75%);pointer-events:none;z-index:9999;mix-blend-mode:multiply;transition:background .06s linear}
+.hero{position:relative;overflow:hidden;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:72px;padding:96px clamp(20px,6vw,88px) 80px;background:linear-gradient(180deg,#fffcf0 0%,#f9e9d2 100%);color:#1a1612;border-bottom:1px solid #d8cdb8}
+.hero .wc{position:absolute;border-radius:50%;filter:blur(60px);pointer-events:none;z-index:0}
+.hero .wc1{width:420px;height:360px;top:-120px;right:-80px;background:#e8884b;opacity:.15}
+.hero .wc2{width:360px;height:300px;bottom:-110px;left:-70px;background:#5f7553;opacity:.13}
+.hero .wc3{width:280px;height:260px;top:34%;left:14%;background:#a08144;opacity:.10}
+.hero>div{flex:none;width:860px;max-width:100%;position:relative;z-index:2}
+.hero-figure{margin:0;width:420px;flex:none;position:relative;z-index:2}
+.hero-figure img{display:block;width:100%;border-radius:16px;border:1px solid #d8cdb8;box-shadow:0 18px 45px rgba(107,74,42,.16);cursor:zoom-in}
+.hero-figure figcaption{margin-top:10px;font-size:14px;line-height:1.6;color:#6a635a}
+.inline-figure{margin:30px auto 8px;max-width:820px}
+.inline-figure img{display:block;width:100%;border-radius:14px;border:1px solid var(--line);box-shadow:var(--shadow);background:#fff;cursor:zoom-in}
+.inline-figure figcaption{font-size:14px;line-height:1.6;color:var(--muted);margin-top:10px}
+.lightbox{position:fixed;inset:0;z-index:10000;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(12,10,8,.92);cursor:zoom-out;backdrop-filter:blur(4px)}
+.lightbox.open{display:flex}.lightbox img{max-width:96vw;max-height:92vh;border-radius:10px;box-shadow:0 24px 60px rgba(0,0,0,.5)}
+.lightbox-close{position:fixed;top:18px;right:24px;color:#fff;font-size:34px;line-height:1;font-weight:700;cursor:pointer;opacity:.85}
+.kicker{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.55rem;color:#7a5c3a;font-weight:500}
+.hero h1{max-width:none;margin:16px 0 18px;font-size:clamp(36px,6vw,72px);line-height:1.08;overflow-wrap:anywhere}
+.hero p{max-width:none;font-size:clamp(18px,2vw,23px);line-height:1.62;color:#3a342d}
+.cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
+.cta a{display:inline-flex;align-items:center;text-decoration:none;border-radius:8px;padding:12px 16px;font-weight:900}
+.cta .primary{background:#fff;color:#1a1612}.cta .ghost{border:1px solid rgba(255,255,255,.32);color:#fff;background:rgba(255,255,255,.08)}
+.section{padding:54px clamp(20px,6vw,88px);border-top:1px solid var(--line)}
+.inner{width:min(1000px,100%);margin:0 auto}
+.section h2{font-size:clamp(26px,4.2vw,48px);line-height:1.12;margin:0 0 18px}
+.section h3{font-size:clamp(21px,3vw,30px);line-height:1.2;margin:30px 0 12px}
+.lead{font-size:clamp(18px,1.6vw,22px);line-height:1.7;color:#3a342d;max-width:900px}
+.section p{font-size:18px;line-height:1.74;color:#3a342d}.section p+p{margin-top:14px}
+.section ul,.section ol{padding-left:1.4em;font-size:18px;line-height:1.74;color:#3a342d}.section li{margin-bottom:8px}
+.meaning{margin:22px 0;padding:16px 18px;border-left:5px solid var(--blue);background:rgba(86,137,184,.12);border-radius:6px;line-height:1.7;font-size:19px}
+.meaning b{display:block;color:var(--blue);margin-bottom:4px}
+.caveat{margin:0 0 8px;padding:16px 18px;border-left:5px solid var(--orange);background:rgba(232,90,79,.1);border-radius:6px;line-height:1.7;font-size:18px;color:#3a342d}
+.caveat b{display:block;color:var(--orange);margin-bottom:4px}
+.infocard{background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px 24px 22px;box-shadow:0 8px 22px rgba(107,74,42,.08);margin-top:8px}
+.infocard-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.info-item{padding:18px 14px 0}
+.info-item b{display:block;font-size:14px;font-weight:900;letter-spacing:.04em;margin-bottom:7px;text-transform:uppercase}
+.info-item:nth-child(1) b{color:var(--green)}.info-item:nth-child(2) b{color:var(--orange)}.info-item:nth-child(3) b{color:var(--blue)}
+.info-item p{margin:0;font-size:17px;line-height:1.6;color:#3a342d}
+.tagrow{display:flex;flex-wrap:wrap;gap:7px;margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
+.tag{font-size:14px;color:var(--muted);background:var(--soft);border:1px solid var(--line);border-radius:999px;padding:4px 11px}
+.duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:24px}
+.duo.stack{grid-template-columns:1fr}
+.duo .card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:22px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.duo .card.a{border-color:var(--orange)}.duo .card.b{border-color:var(--green);box-shadow:0 8px 24px rgba(95,117,83,.16)}
+.duo .card small{display:block;font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.04em;margin-bottom:9px}
+.duo .card.a small{color:var(--orange)}.duo .card.b small{color:var(--green)}
+.duo .card b{display:block;font-size:22px;line-height:1.3;margin-bottom:12px}.duo .card.a b{color:#c0512f}.duo .card.b b{color:#4a7a59}
+.duo .card p{margin:0;color:#3a342d;line-height:1.75;font-size:18px}
+.workflow-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:24px}
+.workflow-step{background:#fff;border:1px solid var(--line);border-radius:8px;padding:18px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.workflow-step small{display:block;color:var(--orange);font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;margin-bottom:9px}
+.workflow-step b{display:block;font-size:18px;line-height:1.3;margin-bottom:9px}
+.workflow-step p{margin:0;color:#3a342d;line-height:1.6;font-size:16px}
+.codeblock{background:var(--dark);color:#f3ead9;border-radius:8px;padding:18px 20px;font:500 14px/1.65 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;overflow-x:auto;white-space:pre-wrap;margin:20px 0;box-shadow:0 8px 22px rgba(107,74,42,.12)}
+.codeblock .c{color:#f6d7a6;font-weight:600}
+.skillcard{background:#fff;border:1px solid var(--green);border-radius:12px;padding:24px;box-shadow:0 10px 26px rgba(95,117,83,.16);margin-top:8px}
+.skillcard b{display:block;font-size:21px;margin-bottom:8px}
+.skillcard p{margin:0 0 16px;font-size:17px;line-height:1.65;color:#3a342d}
+.cta-band{background:#e6f0e5;color:#3a342d}.cta-band .section{border-top:none}
+.cta-band .inner{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(260px,.85fr);gap:26px;align-items:start}
+.cta-band h2{font-size:clamp(26px,4vw,44px);margin:0 0 16px}.cta-band p,.cta-band .lead{color:rgba(58,52,45,.9);font-size:18px;line-height:1.72}
+.cta-card{border:1px solid #cfe0d2;background:#fbfdfa;border-radius:8px;padding:22px}
+.cta-card b{display:block;color:#48b178;margin-bottom:10px;font-size:18px}.cta-card p{margin:0 0 14px}
+.footer{padding:30px clamp(20px,6vw,88px);font-size:14px;color:var(--muted);background:#fff;border-top:1px solid var(--line)}
+.footer-inner{width:min(1000px,100%);margin:0 auto}
+.footer-links{display:flex;flex-wrap:wrap;gap:6px 12px;margin-bottom:14px}.footer-links a{color:var(--blue);font-weight:900;text-decoration:none;font-size:14px}
+.footer-brand{font-weight:900;font-size:15px;margin-bottom:10px}.footer-note{font-size:13px;line-height:1.6}
+@media(max-width:820px){.infocard-grid{grid-template-columns:1fr}.duo{grid-template-columns:1fr}.workflow-grid{grid-template-columns:1fr}.cta-band .inner{grid-template-columns:1fr}.section{padding:40px 20px}.hero{min-height:52vh;flex-direction:column;justify-content:flex-start;align-items:flex-start;gap:24px}.hero>div{width:100%}.hero-figure{width:100%;max-width:560px}}
+@media(max-width:820px){html,body{overflow-x:hidden}.hero h1{word-break:break-word}}
+</style>
+<!-- tracking:vercel-analytics -->
+<script defer src="/_vercel/insights/script.js"></script>
+<script defer src="/_vercel/speed-insights/script.js"></script>
+</head>
+<body class="spotlight">
+<!-- 官網共用導航列 nav.top: 與首頁/總站同一條, 文章不要自己另做極簡 topbar (江江 2026-06-25: 要同一個框架, 同一條導航列).把對應頁面的 class="active" 標在自己那欄. -->
+<nav class="top">
+  <div class="container">
+    <a class="nav-brand-img" href="../../index.html"><img src="../../../images/footer-signature.png" alt="Coach Jiang | Jiang Yude"></a>
+    <button class="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
+    <ul class="nav-menu">
+      <li><a href="../../index.html">Home</a></li>
+      <li><a href="../../knowledge-architecture.html">Knowledge Architecture</a></li>
+      <li><a href="../../courses.html">Courses</a></li>
+      <li><a href="../../articles.html" class="active">Articles</a></li>
+      <li><a href="../../skills.html">Skill Packages</a></li>
+      <li><a href="../../offers.html">Services</a></li>
+      <li class="lang-switch"><a href="../../../articles/rule-file-rebound/index.html" hreflang="zh-Hant">中文</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="wc wc1"></div>
+  <div class="wc wc2"></div>
+  <div class="wc wc3"></div>
+  <div>
+    <div class="kicker">AI Workflow / Rule Base Governance</div>
+    <h1>Why Most of Your AI Rules Never Run</h1>
+    <p>AGENTS.md / CLAUDE.md are getting increasingly bloated, I deleted a third, and in 18 days they grew back. After reviewing, I realized that more important than the number of words is: are these rules actually being executed.</p>
+  </div>
+</section>
+
+<main>
+
+<section class="section" id="start">
+  <div class="inner">
+    <p class="lead">I reviewed all the rules I wrote for AI; there are about 220 rules in total. Among these, approximately 24 rules have mechanisms ready for execution. Of the 60 rules with the highest cost, 48 of them the AI remembers independently. This situation reflects that I wrote the rules but did not provide triggers, executors, or verification methods; therefore, they remained only as text. I conducted this review because after removing a third of the main rule file, it expanded again within 18 days. I used AGENTS.md. Claude Code users typically use CLAUDE.md, and ChatGPT side uses custom commands with different names, yet the situations encountered are similar.</p>
+    <div class="duo stack">
+      <div class="card a">
+        <b>Who is this for</b>
+        <ul>
+          <li>You have a rule file for AI to read, and it's getting longer, you vaguely feel it should be organized</li>
+          <li>You simplified it once, but after a few weeks it went back to the original state, not knowing where the problem was</li>
+          <li>You wrote a lot of rules, but you don't know if AI is actually following them</li>
+        </ul>
+      </div>
+      <div class="card b">
+        <b>What you can take away</b>
+        <ul>
+          <li>A four-column checklist to check if your rules are actually being executed, including a manual version without hook environment</li>
+          <li>Three access gates that can be directly copied to use, changing the default value from 'add' to 'not add'</li>
+          <li>A real slimming and weight gain curve, along with my explanation of why it happened</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="origin">
+  <div class="inner">
+    <h2>How it all started</h2>
+    <p>One day, I saw a post that quoted an interview with an Anthropic engineer, saying they cut down the system prompt for Claude Code by 80%. The reason was counterintuitive: the stronger the model, the fewer instructions it should be given, because too many constraints and examples would compress the model's problem-solving space.</p>
+    <p>My first reaction was, then my rule base should also be cut down again.</p>
+    <p>I first let Codex help me verify, and after checking, I found two things.</p>
+    <div class="caveat">
+      <p>First, the statement in the post that 'over 90% of engineers are building self-improvement loops' couldn't be found in the official sources. The closest statements I found were about different things, so this number I don't cite.</p>
+      <p>Second, the official best practices document for Anthropic's Claude Code still clearly states that you can put specific multi-step processes into custom commands. So 'cutting 80%' has its context, and it's not a rule that can be directly applied.</p>
+      <p>By the way, the statement 'cutting 80%' itself is a second-hand report, and I couldn't find the original interview source. All the judgments in this post are based on my own data, not on that 80%.</p>
+    </div>
+    <p>So should I cut it or not? I first measured my own numbers.</p>
+  </div>
+</section>
+
+<section class="section" id="curve">
+  <div class="inner">
+    <h2>My actual curve</h2>
+    <div style="overflow-x:auto">
+      <table style="width:100%;max-width:560px;border-collapse:collapse;margin:20px 0;font-size:18px;line-height:1.6">
+        <tr>
+          <th style="border:1px solid #d8cdb8;padding:12px 14px;background:#faf5ec;text-align:left">Time</th>
+          <th style="border:1px solid #d8cdb8;padding:12px 14px;background:#faf5ec;text-align:right">Word count</th>
+          <th style="border:1px solid #d8cdb8;padding:12px 14px;background:#faf5ec;text-align:right">Change</th>
+        </tr>
+        <tr>
+          <td style="border:1px solid #d8cdb8;padding:12px 14px">Before weight loss on 7/4</td>
+          <td style="border:1px solid #d8cdb8;padding:12px 14px;text-align:right">25,036</td>
+          <td style="border:1px solid #d8cdb8;padding:12px 14px;text-align:right">　</td>
+        </tr>
+        <tr>
+          <td style="border:1px solid #d8cdb8;padding:12px 14px">After weight loss on 7/4</td>
+          <td style="border:1px solid #d8cdb8;padding:12px 14px;text-align:right">15,822</td>
+          <td style="border:1px solid #d8cdb8;padding:12px 14px;text-align:right;color:#5f7553">Cut 37%</td>
+        </tr>
+        <tr>
+          <td style="border:1px solid #d8cdb8;padding:12px 14px">7/16</td>
+          <td style="border:1px solid #d8cdb8;padding:12px 14px;text-align:right">21,028</td>
+          <td style="border:1px solid #d8cdb8;padding:12px 14px;text-align:right;color:#e85a4f">+5,206</td>
+        </tr>
+        <tr>
+          <td style="border:1px solid #d8cdb8;padding:12px 14px">7/18</td>
+          <td style="border:1px solid #d8cdb8;padding:12px 14px;text-align:right">23,412</td>
+          <td style="border:1px solid #d8cdb8;padding:12px 14px;text-align:right;color:#e85a4f">+2,384</td>
+        </tr>
+        <tr>
+          <td style="border:1px solid #d8cdb8;padding:12px 14px">7/22</td>
+          <td style="border:1px solid #d8cdb8;padding:12px 14px;text-align:right">24,219</td>
+          <td style="border:1px solid #d8cdb8;padding:12px 14px;text-align:right;color:#e85a4f">+807</td>
+        </tr>
+      </table>
+    </div>
+    <p>Gained 8,397 words in 18 days.</p>
+    <div class="caveat">
+      <p>First, let me explain the limitations of these numbers: these word counts are calculated from the rule files in my own automatic backup folder at various time points. These are my private files, which you cannot verify, only see my records. Also, backups are periodically cleaned up, so this curve itself will also disappear. I will mention this again later.</p>
+    </div>
+    <p>This curve made me abandon the idea of cutting again. It also made me realize another thing: I have no mechanism to prevent the rules from increasing. In this state, cutting again would likely result in the same curve in 18 days.</p>
+  </div>
+</section>
+
+<section class="section" id="why">
+  <div class="inner">
+    <h2>Why did I regain weight?</h2>
+    <p>The following is my own explanation, not an experimental conclusion.</p>
+    <p>I have a methodology called the 'Subtraction License Agreement,' distilled from the open-source skill package Ponytail. It says any rule with subtractive properties needs three components.</p>
+    <div class="meaning">
+      <p><b>Decision Ladder</b> Turn the vague adjective 'please be concise' into a checklist with order and tickable items. Adjectives cannot be executed, but a ladder can.</p>
+      <p><b>Burden of Proof Reversal</b> Change the default from 'do' to 'do not.' Anyone wanting to add something must first prove it is necessary. The burden of proof shifts from those wanting to delete to those wanting to add.</p>
+      <p><b>Red Line Retention</b> When any subtractive rule is launched, simultaneously pin a list of things that will never be cut. Principles are responsible for cutting complexity, and the list is responsible for protection.</p>
+    </div>
+    <p>I looked at my own situation: there is a staircase, there is a red line, but there is no reversal evidence.</p>
+    <p>I considered this gap the reason for weight regain. Each time a new rule is added to the main file, the default response suggests adding it because adding a few hundred words seems minor. The cost of addition is zero; the cost of deletion is high. Consequently, the curve will only increase. The issue resides with the default value favoring weight regain rather than my diligence.</p>
+  </div>
+</section>
+
+<section class="section" id="engine">
+  <div class="inner">
+    <h2>What does the anti-weight regain engine look like?</h2>
+    <p>The things I added are very simple, which are three questions. Before adding anything to the rule main file, first answer:</p>
+    <ol>
+      <li>I am asking about the frequency of loading for this rule across conversation rounds. Some rules are important; others are only needed in specific situations. Therefore, it should be placed in the on-demand loading area.</li>
+      <li>Are the existing rules or tools already covering this? Repeatedly maintaining the same thing will eventually become two conflicting versions.</li>
+      <li>Which executor does this rule belong to? Hook, script, existing workflow mounting point, or purely self-discipline? If it's purely self-discipline, what is the cost of violating it? Only keep purely self-discipline if the cost is low.</li>
+    </ol>
+    <p>If any of the three questions cannot be answered, do not add it to the main file.</p>
+    <p>These three questions can be directly copied and used, regardless of the name of your rule file:</p>
+    <div class="codeblock"><pre>I want to add a new rule to the rule main file. Before writing, first answer the three questions:
+
+1. Does this rule need to be loaded for every conversation round (the question is about the frequency of loading, not the importance)?
+2. Are the existing rules or tools already covering this?
+3. Which executor does this rule belong to (Hook/script/workflow mounting point/pure self-discipline)?
+   If it's pure self-discipline, what is the cost of violating it?
+
+If any of the three questions cannot be answered, do not add it to the main file, instead place it in the on-demand loading area.</pre></div>
+    <p>I also made it into a Hook. When modifying the main file, it will automatically pop up to ask me, and also tell me the current number of words and how much it exceeds the baseline. It does not block, only reminds, and only appears once in the same workflow stage, so it won't be annoying.</p>
+    <p>I chose the prompt type because I still don't know if it is effective. After one month, I will look at the word count curve. If it stops rising, I will maintain the prompt type. If it is still rising, I will consider upgrading to blocking it.</p>
+  </div>
+</section>
+
+<section class="section" id="nohook">
+  <div class="inner">
+    <h2>What to do if there is no Hook environment?</h2>
+    <p>The Hook mentioned above requires an environment that can run scripts. If you are using the web version of ChatGPT or Claude, you can do the same, just manually.</p>
+    <div class="workflow-grid">
+      <div class="workflow-step">
+        <b>Three-question gate</b>
+        <p>Save the above prompt as a fixed custom command or note snippet. Before modifying the rule file, paste it once, let the AI answer the three questions with you, and then proceed.</p>
+      </div>
+      <div class="workflow-step">
+        <b>Four-column inventory</b>
+        <p>Open a spreadsheet, one row for each rule, with four columns for trigger, executor, evidence, and cross-family coverage. You can paste the entire rule file to AI, ask it to output according to these four columns, and then check a few of them yourself to see if they are marked incorrectly.</p>
+      </div>
+      <div class="workflow-step">
+        <b>Word count curve</b>
+        <p>Fix a day every week to record the word count of the rule file to the second sheet of the same spreadsheet, one line per entry. After four weeks, you will have your own curve.</p>
+      </div>
+    </div>
+    <p>The difference is only between automatic and manual. The judgment logic is completely the same.</p>
+  </div>
+</section>
+
+<section class="section" id="finding">
+  <div class="inner">
+    <h2>A more valuable discovery</h2>
+    <p>While doing this, I also went through the entire rule main file. I found a sub-agent to read through 259 lines, labeling each line with four fields.</p>
+    <div style="overflow-x:auto">
+      <table style="width:100%;max-width:640px;border-collapse:collapse;margin:20px 0;font-size:18px;line-height:1.6">
+        <tr>
+          <th style="border:1px solid #d8cdb8;padding:12px 14px;background:#faf5ec;text-align:left">Field</th>
+          <th style="border:1px solid #d8cdb8;padding:12px 14px;background:#faf5ec;text-align:left">The question to answer</th>
+        </tr>
+        <tr>
+          <td style="border:1px solid #d8cdb8;padding:12px 14px">Trigger</td>
+          <td style="border:1px solid #d8cdb8;padding:12px 14px">Who, and when, will read this line?</td>
+        </tr>
+        <tr>
+          <td style="border:1px solid #d8cdb8;padding:12px 14px">Executor</td>
+          <td style="border:1px solid #d8cdb8;padding:12px 14px">Hook, script, workflow mounting point, or purely manual awareness?</td>
+        </tr>
+        <tr>
+          <td style="border:1px solid #d8cdb8;padding:12px 14px">Evidence</td>
+          <td style="border:1px solid #d8cdb8;padding:12px 14px">What output can prove it was done?</td>
+        </tr>
+        <tr>
+          <td style="border:1px solid #d8cdb8;padding:12px 14px">Cross-family coverage</td>
+          <td style="border:1px solid #d8cdb8;padding:12px 14px">Every AI tool I use, is it really subject to this rule?</td>
+        </tr>
+      </table>
+    </div>
+    <p>I came up with about 220 rules. About 24 of them have mechanical executors.</p>
+    <p>Going further down, I picked out the ones with high cost, meaning those that delete data, overwrite, send externally, deploy, or show to customers, totaling 60 rules. Of these 60, 12 have executors.</p>
+    <p>That means the 48 rules with the highest cost are entirely remembered by AI itself.</p>
+    <div class="caveat">
+      <p>A limitation exists here: my judgment regarding whether the cost is high is subjective. Boundary cases might have an error involving about three rules. The number lacks precision; however, the scale will not differ much.</p>
+    </div>
+    <p>The most glaring rule is 'cross-family review.' I require important outputs to be reviewed by models from different families, prohibiting self-review. This is the foundation of my entire quality system, written in the 'quality hard threshold' section. It has no mechanical checks.</p>
+    <p>This round of work did indeed run four rounds of cross-family reviews, including this article itself, but I requested it myself, and nothing reminded me to do so.</p>
+    <p>During the inventory, I observed a pattern: rules that experienced issues later had Hooks added. Rules that did not experience issues still depended on self-awareness. My patching mechanism is reactive. Among the 48 rules, some may remain unpatched because they have not caused issues; however, I did not track each rule's history individually. This represents my overall impression.</p>
+  </div>
+</section>
+
+<section class="section" id="priority">
+  <div class="inner">
+    <h2>This is more important than cutting words</h2>
+    <p>Going back to the original question: Should we cut another round?</p>
+    <p>The answer is no, at least not as a priority. The number of rules and whether the rules are effective are two different things.</p>
+    <p>A rule without a trigger, an executor, and evidence of completion, even if written as concisely as possible and placed in a prominent position, is still just a piece of text. Conversely, a rule with a Hook blocking it, even if it takes up 200 words, is working every day.</p>
+    <p>Therefore, my later order is: first measure the execution coverage, then decide whether to delete, move, merge, or mechanize. Cutting words first will lead to the realization that the necessary barriers are still not in place.</p>
+    <p>Here's a habit I have when writing articles, which coincidentally follows the same principle. When an article exceeds the word limit, I used to cut words, keeping the original structure and trimming one word at a time, cutting several rounds but still not reducing the word count much. Later, I changed to cutting paragraphs, re-evaluating whether the reader needs to know this information, and removing the entire paragraph, summarizing it with one sentence.</p>
+    <p>Both methods have their applicable scenarios. When it's clear that every paragraph should be kept, but the sentences are wordy, cutting words is effective. When the structure is not yet determined, or when you yourself feel that certain paragraphs are unnecessary, cutting paragraphs is much more effective. The rule base is the same; instead of trimming words in the text, first ask, 'Does this rule need to be loaded every round?' If the answer is no, move the entire rule, and the main file immediately loses a section.</p>
+  </div>
+</section>
+
+<section class="section" id="howto">
+  <div class="inner">
+    <h2>What you can do</h2>
+    <p>If you are also maintaining a rule file for AI, I recommend the following order.</p>
+    <div class="workflow-grid">
+      <div class="workflow-step">
+        <b>Step one: first measure</b>
+        <p>Find a day to mark each rule with those four fields. You will quickly discover which provisions have no trigger points and which have never been checked for compliance. This step is read-only and will not alter anything.</p>
+      </div>
+      <div class="workflow-step">
+        <b>Second step: patch the gaps</b>
+        <p>Identify the provisions that have high cost but no executor. For each, decide: add a mechanical check, rewrite it into a triggered form, or downgrade it to a place where it is loaded on demand. Do not add all hooks. Too many hooks will interfere with each other and increase the rate of false positives.</p>
+      </div>
+      <div class="workflow-step">
+        <b>Third step: install the gate</b>
+        <p>Put the above three steps into a workflow, so that new rules must pass through before entering the main file. This is the key to preventing the system from becoming bloated again. Without this step, after a few weeks, you will see the same curve again.</p>
+      </div>
+    </div>
+    <p>There is also a fourth step, which I only thought of at the end of this process, and it was pointed out to me by Codex.</p>
+    <div class="meaning">
+      <p><b>Fourth step: leave evidence</b></p>
+      <p>You must be able to prove that the mechanism is effective. Initially, I recorded the word count within the prompt hook, but it only recorded the first time each stage was modified and did not shorten. Deletions were never recorded, and whether the length had decreased was exactly the question this curve was meant to answer.</p>
+      <p>Later, I split the recording into an independent branch, measuring it after the modification, and recording it every time. Only then did this curve become something that could be used to make decisions. Without this step, after a month, you could only say "it seems better" based on intuition.</p>
+    </div>
+    <p>There is also a fifth step, and it is the insurance for the previous four steps.</p>
+    <div class="meaning">
+      <p><b>Step 5: Set up a fixed review schedule</b></p>
+      <p>The first four steps are one-time actions. The gate is set up, the evidence is recorded, but if no one goes back to check regularly, that curve is just an unread file.</p>
+      <p>My approach is to set up an automatic schedule every week, running three tasks at fixed times: check the word count curve to see if it has stopped rising, check if any new rules have been added to the main file but not answered three questions, and randomly check one rule with an executor to see if it is still running. If there is no scheduling tool, setting a recurring reminder in the calendar will work, the key point is that it will find you, not wait for you to remember.</p>
+      <p>This step is applying what this article talks about to yourself. If review relies only on memory, it becomes the 48th rule that is not executed.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="end">
+  <div class="inner">
+    <h2>Finally</h2>
+    <p>The most valuable part of that post is actually its last sentence: fewer instructions does not mean fewer rules, the key is to leave the most important boundaries, goals, permissions, verification, and stopping conditions.</p>
+    <p>I completely agree with this sentence. Using this ruler to measure my rule base, the result is: what I should do is add executors to the 48 rules that are not executed, and cutting down can be postponed for a bit.</p>
+    <p>Cutting down to the end, you will find that there is actually limited to cut. What truly determines whether the rule base is useful is whether there is something behind each rule that helps execute it.</p>
+  </div>
+</section>
+
+
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">Coach Jiang · AI Knowledge Management</div>
+    <div class="footer-links">
+      <a href="../../articles.html">← Back to Articles</a>
+      <a href="../../index.html">Home</a>
+      <a href="../../learn.html">Learning Resources</a>
+      <a href="../../skills.html">Skill Packages</a>
+      <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">LINE Community ↗</a>
+      <a href="https://www.threads.com/@jiang_yude_coach" target="_blank" rel="noopener">Threads ↗</a>
+      <a href="https://vocus.cc/salon/Jiang_Coach" target="_blank" rel="noopener">Vocus ↗</a>
+    </div>
+    <div class="footer-note">This is a teaching article, summarizing my views on 'Most of the rules you write for AI are not being executed,' for your reference.</div>
+  </div>
+</footer>
+
+<!-- 點圖放大 lightbox (hero 與內文圖通用, 已內建, 不用每篇重加) -->
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <span class="lightbox-close" aria-label="Close">×</span>
+  <img id="lightbox-img" src="" alt="Zoom in for detailed view">
+</div>
+<script>
+(function(){
+  var box=document.getElementById('lightbox'),boxImg=document.getElementById('lightbox-img');
+  document.querySelectorAll('.hero-figure img,.inline-figure img').forEach(function(img){
+    img.addEventListener('click',function(){boxImg.src=img.currentSrc||img.src;boxImg.alt=img.alt||'Enlarged view';box.classList.add('open');box.setAttribute('aria-hidden','false');});
+  });
+  function close(){box.classList.remove('open');box.setAttribute('aria-hidden','true');boxImg.src='';}
+  box.addEventListener('click',close);
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
+})();
+</script>
+
+<!-- 官網共用: 滑鼠暖光暈 + 導航列漢堡選單 -->
+<script src="../../../spotlight.js"></script>
+
+<!-- 文章自動互聯 (相關文章): 兩支已內建, 順序不可顛倒, 不用再另外加 -->
+<script src="../../../articles-data.js"></script>
+<script src="../../../related-render.js"></script>
+</body>
+</html>
