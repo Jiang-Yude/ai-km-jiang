@@ -121,6 +121,7 @@ window.COURSES = [
     summary: "給不會寫程式的知識工作者與 Agent 新手，分享為什麼要讓兩個模型互相審查、迴圈工程怎麼設計，以及從交代任務到收到回報的完整流程。",
     detail_url: null,
     materials: [
+      { label: "上課簡報 ↗", url: "https://jiangyude.com/courses/2026-08-02-dual-model-review-loop/" },
       { label: "文章｜當我開始理解迴圈，把三個工作流設計成 Loop ↗", url: "https://jiangyude.com/articles/my-three-loops/" },
       { label: "文章｜讓兩個 AI 互相挑錯：企劃雙軌互審 loop ↗", url: "https://jiangyude.com/articles/dual-track-planning-loop/" }
     ],
