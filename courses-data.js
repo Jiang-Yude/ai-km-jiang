@@ -107,6 +107,29 @@ window.COURSES = [
     }
   },
   {
+    id: "2026-08-04-digital-creation-1",
+    date: "2026-08-04",
+    time: "09:00",
+    duration_min: 360,
+    title: "數位起步走 輕鬆玩創作：讓 AI 認識你，做出自己的樣子",
+    type_label: "實體課程",
+    image: null,
+    venue_mode: "physical",
+    venue_label: "臺中",
+    host: "江江教練",
+    tags: ["AI應用", "圖片生成", "提示詞設計", "零基礎入門", "自媒體"],
+    summary: "八月數位創作課程四堂的第一堂，對象是只用手機、多數沒碰過 AI 的中高齡學員。上午用五個問題讓 AI 訪問你，做出自己的個人設定檔並存進 AI 的記憶；下午用自己的照片生出一張形象照，再練代言人、寫短文、建靈感池。簡報裡所有指令都可以整段複製直接用。",
+    detail_url: null,
+    materials: [
+      { label: "上課簡報 ↗", url: "https://jiangyude.com/courses/2026-08-04-digital-creation-1/" }
+    ],
+    registration: {
+      status: "private",
+      host_org: "臺中市女兒館",
+      note: "四堂系列課 8/4、8/11、8/18、8/25，機構邀約授課，不對外報名。"
+    }
+  },
+  {
     id: "2026-08-02-dual-model-review-loop",
     date: "2026-08-02",
     time: "20:00",

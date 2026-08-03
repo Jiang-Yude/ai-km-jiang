@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="8 月數位創作課程第一堂：讓 AI 認識你，做出自己的形象照。給只用手機的零基礎學員，全部指令可直接複製。">
+<title>數位起步走 輕鬆玩創作｜8月數位創作課程 第一堂</title>
+<style>
+  :root{
+    --bg-1:#F5EDE7; --bg-2:#EFEBE9; --bg-3:#E8DED9; --bg-4:#D7CCC8;
+    --bg-7:#8B6F5C; --bg-8:#5D4037; --bg-9:#3E2723;
+    --accent:#D88C3A; --accent-light:#D4A574; --accent-on-dark:#E6B87D;
+    --text-on-light:#4E342E; --text-soft-light:#5D4037;
+    --text-on-dark:#F5EDE0; --text-soft-dark:rgba(245,237,224,.78);
+    --line-light:#BCAAA4; --line-dark:rgba(245,237,224,.22);
+    --font:"PingFang TC","Noto Sans TC","Inter",system-ui,sans-serif;
+    --mono:"JetBrains Mono","SF Mono",ui-monospace,monospace;
+    --fs:1;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth; font-size:calc(20px * var(--fs));}
+  body{
+    background:var(--bg-1); color:var(--text-on-light);
+    font-family:var(--font); font-size:1rem;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  section{
+    min-height:100vh; display:flex; flex-direction:column;
+    justify-content:center; align-items:center;
+    padding:11vh 7vw; position:relative; text-align:center;
+  }
+  section.left{align-items:flex-start; text-align:left;}
+  section.dark{background:var(--bg-9); color:var(--text-on-dark);}
+  section.dark .lead{color:var(--text-soft-dark);}
+  section.dark .act{color:var(--accent-on-dark);}
+  section.dark .act::before{background:var(--accent-on-dark);}
+  section.mid{background:var(--bg-3);}
+  section.mid2{background:var(--bg-2);}
+
+  .act{
+    display:inline-flex; align-items:center; gap:.9rem;
+    color:var(--accent); font-weight:700; font-size:1rem;
+    letter-spacing:.32em; text-transform:uppercase;
+    margin-bottom:2.2rem; font-family:var(--mono);
+  }
+  .act::before{content:""; width:48px; height:2px; background:var(--accent);}
+
+  .display{
+    font-weight:800; line-height:1.18; letter-spacing:-.01em;
+    font-size:clamp(2.4rem, 6vw, 5.2rem);
+    color:inherit;
+  }
+  .display.sm{font-size:clamp(2rem, 4.6vw, 3.8rem);}
+  .lead{
+    font-size:clamp(1.15rem,2vw,1.6rem); line-height:1.85;
+    color:var(--text-soft-light); margin-top:1.8rem; max-width:46ch;
+  }
+  section:not(.left) .lead{margin-left:auto;margin-right:auto;}
+  .hi{color:var(--accent); font-weight:700;}
+  section.dark .hi{color:var(--accent-on-dark);}
+
+  .ribbon{
+    display:inline-block; margin-top:2.4rem;
+    border:1px solid var(--accent); color:var(--accent);
+    border-radius:999px; padding:.55rem 1.5rem;
+    font-size:1rem; letter-spacing:.05em;
+  }
+  .flag{
+    display:inline-block; margin-bottom:1.4rem;
+    background:var(--accent); color:#fff; font-weight:700;
+    border-radius:999px; padding:.4rem 1.2rem; font-size:1rem;
+  }
+
+  .grid{display:grid; gap:1.6rem; width:100%; max-width:1040px; margin-top:2.6rem;}
+  .g4{grid-template-columns:repeat(4,1fr); max-width:1180px;}
+  .g3{grid-template-columns:repeat(3,1fr);}
+  .g2{grid-template-columns:repeat(2,1fr);}
+  @media(max-width:1080px){.g4{grid-template-columns:repeat(2,1fr);}}
+  @media(max-width:820px){.g4,.g3,.g2{grid-template-columns:1fr;}}
+  .card{
+    background:rgba(255,251,235,.72); border:1px solid var(--line-light);
+    border-radius:16px; padding:1.8rem 1.6rem; text-align:left;
+    box-shadow:0 2px 14px rgba(62,39,35,.05);
+  }
+  .card.now{border:2px solid var(--accent); background:rgba(216,140,58,.1);}
+  section.dark .card{
+    background:rgba(255,248,240,.06); border-color:var(--line-dark);
+  }
+  .num{
+    font-family:var(--mono); font-weight:700; color:var(--accent);
+    font-size:1.05rem; letter-spacing:.1em; margin-bottom:1rem;
+    display:flex; align-items:center; gap:.6rem;
+  }
+  section.dark .num{color:var(--accent-on-dark);}
+  .num::after{content:""; flex:1; height:1px; background:currentColor; opacity:.35;}
+  .card h3{font-size:1.3rem; font-weight:800; margin-bottom:1rem; line-height:1.4;}
+  .card ul{list-style:none;}
+  .card li{
+    font-size:1.02rem; line-height:1.75; padding-left:1.3rem;
+    position:relative; color:var(--text-soft-light);
+  }
+  section.dark .card li{color:var(--text-soft-dark);}
+  .card li::before{content:"·"; position:absolute; left:.3rem; color:var(--accent); font-weight:700;}
+  .card p{font-size:1.05rem; line-height:1.8; color:var(--text-soft-light);}
+  section.dark .card p{color:var(--text-soft-dark);}
+  .take{
+    margin-top:1.2rem; padding-top:1rem; border-top:1px dashed var(--line-light);
+    font-size:1.02rem; font-weight:700; color:var(--accent);
+  }
+
+  .quote{
+    max-width:780px; font-size:clamp(1.25rem,2.2vw,1.75rem);
+    line-height:1.9; font-weight:500; text-align:left;
+    border-left:4px solid var(--accent); padding-left:2rem; margin-top:1rem;
+  }
+  section.dark .quote{border-color:var(--accent-on-dark);}
+
+  .prompt{
+    background:rgba(255,248,240,.55); border:1px dashed var(--line-light);
+    border-radius:14px; padding:1.6rem; text-align:left;
+  }
+  section.dark .prompt{background:rgba(255,248,240,.06); border-color:var(--line-dark);}
+  .prompt .tag{
+    display:inline-block; background:var(--accent); color:#fff;
+    font-size:1rem; font-weight:700; letter-spacing:.05em;
+    padding:.3rem .9rem; border-radius:999px; margin-bottom:1rem;
+  }
+  .prompt p{font-size:1.02rem; line-height:1.8; color:var(--text-soft-light);}
+  section.dark .prompt p{color:var(--text-soft-dark);}
+
+  .shot{
+    max-width:min(420px, 62vw); width:100%;
+    border-radius:18px; box-shadow:0 10px 34px rgba(62,39,35,.22);
+    border:1px solid var(--line-light); display:block;
+  }
+  .split{
+    display:grid; grid-template-columns:auto 1fr; gap:3rem;
+    align-items:center; width:100%; max-width:1100px; margin-top:2.4rem;
+  }
+  @media(max-width:900px){.split{grid-template-columns:1fr; gap:2rem;} .shot{max-width:min(340px,72vw); margin:0 auto;}}
+  .cap{font-size:1rem; color:var(--text-soft-light); margin-top:1rem; text-align:center;}
+  section.dark .cap{color:var(--text-soft-dark);}
+
+  .idcard{
+    background:rgba(255,251,235,.86); border:2px solid var(--accent);
+    border-radius:20px; padding:2.2rem 2rem; text-align:left;
+    width:100%; max-width:860px; margin-top:2.4rem;
+    box-shadow:0 8px 28px rgba(62,39,35,.12);
+  }
+  .idcard .title{
+    font-family:var(--mono); color:var(--accent); font-weight:700;
+    letter-spacing:.2em; font-size:1rem; margin-bottom:1.4rem;
+  }
+  .row{
+    display:grid; grid-template-columns:8.5rem 1fr; gap:1.2rem;
+    align-items:center; padding:.9rem 0;
+    border-bottom:1px dashed var(--line-light);
+  }
+  .row:last-child{border-bottom:none;}
+  .row .k{font-size:1.05rem; font-weight:800; color:var(--text-on-light);}
+  .row .v{
+    font-size:1.05rem; color:var(--text-soft-light);
+    background:rgba(216,140,58,.09); border-radius:8px;
+    padding:.6rem .9rem; line-height:1.7;
+  }
+  @media(max-width:700px){.row{grid-template-columns:1fr; gap:.5rem;}}
+
+  .reveal{opacity:0; transform:translateY(28px); transition:opacity .7s ease, transform .7s ease;}
+  .reveal.in{opacity:1; transform:none;}
+  .d1{transition-delay:.05s;} .d2{transition-delay:.15s;}
+  .d3{transition-delay:.25s;} .d4{transition-delay:.35s;} .d5{transition-delay:.45s;}
+
+  #progress{position:fixed; top:0; left:0; height:4px; width:0;
+    background:linear-gradient(90deg,var(--accent),var(--accent-light)); z-index:50;}
+
+  .home{
+    position:fixed; top:18px; left:22px; z-index:40;
+    background:rgba(255,251,235,.92); border:1px solid var(--line-light);
+    border-radius:999px; padding:.5rem 1.1rem; font-size:1rem;
+    color:var(--text-on-light); text-decoration:none;
+  }
+
+  .fontw{position:fixed; top:14px; right:22px; z-index:40; display:flex; gap:.3rem;
+    background:rgba(255,251,235,.92); border-radius:999px; padding:.3rem; border:1px solid var(--line-light);}
+  .fontw button{
+    border:none; background:transparent; cursor:pointer; color:var(--text-on-light);
+    width:38px; height:32px; border-radius:999px; font-size:1rem; font-family:var(--mono);
+  }
+  .fontw button:hover{background:rgba(216,140,58,.12);}
+
+  .dots{position:fixed; right:20px; top:50%; transform:translateY(-50%); z-index:40;
+    display:flex; flex-direction:column; gap:10px;}
+  .dots a{width:9px; height:9px; border-radius:50%; background:var(--line-light); transition:all .25s;}
+  .dots a.active{background:var(--accent); transform:scale(1.35);}
+
+  .zoomable{cursor:zoom-in; transition:transform .25s ease;}
+  .zoomable:hover{transform:scale(1.02);}
+  .zoomhint{display:inline-block; margin-top:.8rem; font-size:1rem; color:var(--accent); font-weight:700;}
+  #lb{
+    position:fixed; inset:0; background:rgba(40,26,20,.94);
+    display:none; align-items:center; justify-content:center;
+    z-index:100; padding:3vh 3vw; cursor:zoom-out;
+  }
+  #lb.on{display:flex;}
+  #lb img{max-width:100%; max-height:94vh; border-radius:14px; box-shadow:0 24px 70px rgba(0,0,0,.55);}
+  #lb .close{
+    position:absolute; top:20px; right:26px; color:var(--text-on-dark);
+    font-size:1.6rem; font-weight:700; background:rgba(0,0,0,.35);
+    border-radius:999px; width:52px; height:52px;
+    display:flex; align-items:center; justify-content:center;
+  }
+</style>
+</head>
+<body>
+  <!-- 官網品牌列（courses 頁 MUST）-->
+  <style>
+    .sh-nav{position:sticky;top:0;z-index:190;background:rgba(245,237,231,0.90);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid rgba(78,52,46,0.12);}
+    .sh-nav-in{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:11px 32px;}
+    .sh-brand{display:flex;align-items:center;flex-shrink:0;transition:opacity .2s;}
+    .sh-brand:hover{opacity:.8;}
+    .sh-brand img{height:34px;width:auto;display:block;}
+    .sh-menu{display:flex;align-items:center;gap:22px;list-style:none;margin:0;padding:0;}
+    .sh-menu a{color:#5D4037;font-size:0.95rem;font-weight:500;text-decoration:none;white-space:nowrap;transition:color .2s;}
+    .sh-menu a:hover{color:#D88C3A;}
+    .sh-menu a.sh-en{border:1px solid rgba(78,52,46,0.25);border-radius:999px;padding:3px 12px;font-weight:600;}
+    .sh-menu a.sh-en:hover{border-color:#D88C3A;}
+    .sh-toggle{display:none;background:none;border:none;padding:6px;cursor:pointer;width:36px;height:36px;position:relative;}
+    .sh-toggle span{display:block;position:absolute;left:8px;right:8px;height:2px;background:#4E342E;border-radius:2px;transition:transform .25s,opacity .25s,top .25s;}
+    .sh-toggle span:nth-child(1){top:11px;}
+    .sh-toggle span:nth-child(2){top:17px;}
+    .sh-toggle span:nth-child(3){top:23px;}
+    .sh-toggle.open span:nth-child(1){top:17px;transform:rotate(45deg);}
+    .sh-toggle.open span:nth-child(2){opacity:0;}
+    .sh-toggle.open span:nth-child(3){top:17px;transform:rotate(-45deg);}
+    @media(max-width:820px){
+      .sh-nav-in{padding:9px 16px;}
+      .sh-toggle{display:block;}
+      .sh-menu{display:none;position:absolute;top:100%;left:0;right:0;flex-direction:column;align-items:stretch;gap:0;background:rgba(245,237,231,0.98);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid rgba(78,52,46,0.12);padding:6px 0;box-shadow:0 10px 24px rgba(62,39,35,0.10);}
+      .sh-menu.open{display:flex;}
+      .sh-menu li{border-bottom:1px solid rgba(78,52,46,0.08);}
+      .sh-menu li:last-child{border-bottom:none;}
+      .sh-menu a{display:block;padding:13px 20px;font-size:1.02rem;}
+      .sh-menu a.sh-en{display:inline-block;margin:10px 20px;}
+    }
+    /* 官網版：品牌列已提供導航，隱藏投影檔自帶的回頂端鈕，字級鈕下移避開品牌列 */
+    .home{display:none;}
+    .fontw{top:70px;}
+  </style>
+  <header class="sh-nav">
+    <div class="sh-nav-in">
+      <a class="sh-brand" href="https://jiangyude.com/"><img src="https://jiangyude.com/images/footer-signature.png" alt="江江教練 ｜ 江昱德 · 知識官網" /></a>
+      <button class="sh-toggle" aria-label="開關選單"><span></span><span></span><span></span></button>
+      <ul class="sh-menu">
+        <li><a href="https://jiangyude.com/">首頁</a></li>
+        <li><a href="https://jiangyude.com/knowledge-architecture.html">知識架構</a></li>
+        <li><a href="https://jiangyude.com/courses.html">課程</a></li>
+        <li><a href="https://jiangyude.com/articles.html">深度文章</a></li>
+        <li><a href="https://jiangyude.com/skills.html">技能包下載</a></li>
+        <li><a href="https://jiangyude.com/offers.html">服務方案</a></li>
+        <li><a class="sh-en" href="https://jiangyude.com/en/index.html" hreflang="en">EN</a></li>
+      </ul>
+    </div>
+  </header>
+  <script>(function(){var t=document.querySelector('.sh-toggle'),m=document.querySelector('.sh-menu');if(t&&m){t.addEventListener('click',function(){t.classList.toggle('open');m.classList.toggle('open');});m.addEventListener('click',function(e){if(e.target.closest('a')){t.classList.remove('open');m.classList.remove('open');}});}})();</script>
+
+
+<div id="progress"></div>
+<a href="#act-01" class="home">← 回頂端</a>
+<div class="fontw">
+  <button onclick="setFont(-1)">A-</button>
+  <button onclick="setFont(0)">A</button>
+  <button onclick="setFont(1)">A+</button>
+</div>
+<nav class="dots" id="dots"></nav>
+
+<div id="lb"><span class="close">×</span><img id="lb-img" src="" alt="放大檢視"></div>
+
+<!-- 01 封面 -->
+<section id="act-01">
+  <span class="act reveal d1">第一堂 · 8月4日</span>
+  <h1 class="display reveal d2">數位起步走<br>輕鬆玩創作</h1>
+  <p class="lead reveal d3">數位培力課程　第一堂</p>
+  <span class="ribbon reveal d4">今天結束，AI 會認識你，你也會有一張自己的樣子</span>
+</section>
+
+<!-- 02 四堂地圖 -->
+<section id="act-02" class="mid2">
+  <span class="act reveal d1">02 · 這四堂怎麼走</span>
+  <h2 class="display sm reveal d2">四堂課，四個作品</h2>
+  <div class="grid g4">
+    <div class="card now reveal d2">
+      <div class="num">8/4 今天</div>
+      <h3>數位起步走<br>輕鬆玩創作</h3>
+      <ul><li>自媒體簡介與生活應用</li><li>AI 工具與日常內容創作</li><li>學員實作練習</li></ul>
+      <div class="take">帶走：AI 認識你，一張形象照</div>
+    </div>
+    <div class="card reveal d3">
+      <div class="num">8/11</div>
+      <h3>圖影雙全<br>生活小劇場</h3>
+      <ul><li>日常圖片、影像基礎</li><li>攝影構圖技巧</li><li>圖像文字應用</li></ul>
+      <div class="take">帶走：一組自己的圖文卡</div>
+    </div>
+    <div class="card reveal d4">
+      <div class="num">8/18</div>
+      <h3>社群經營<br>百變生活圈</h3>
+      <ul><li>簡易剪輯與音訊處理</li><li>認識不同社群 APP</li><li>社群內容設計技巧</li></ul>
+      <div class="take">帶走：一支小影片，一則貼文</div>
+    </div>
+    <div class="card reveal d5">
+      <div class="num">8/25</div>
+      <h3>人際筆記本<br>生活經營筆記本</h3>
+      <ul><li>社群互動與人際</li><li>日常內容管理與規劃</li><li>成果分享</li></ul>
+      <div class="take">帶走：一本自己的筆記本</div>
+    </div>
+  </div>
+  <p class="lead reveal d5">四堂是接起來的。每一堂做出來的東西，下一堂都會用到。</p>
+</section>
+
+<!-- 03 AI 基礎（另開簡報） -->
+<section id="act-03" class="mid">
+  <span class="act reveal d1">03 · 先花半小時</span>
+  <h2 class="display sm reveal d2">AI 到底是什麼</h2>
+  <p class="lead reveal d3">這一段我們看另一份簡報。</p>
+  <div class="idcard reveal d3" style="max-width:900px;text-align:center;">
+    <div class="title" style="text-align:center;">AI 基礎概念</div>
+    <p style="font-size:1.15rem;line-height:1.9;color:var(--text-soft-light);word-break:break-all;">
+      <a href="https://gamma.app/docs/AI-112--71kpobryyh1vgy5" target="_blank" style="color:var(--accent);font-weight:700;text-decoration:none;">
+        gamma.app/docs/AI-112--71kpobryyh1vgy5
+      </a>
+    </p>
+  </div>
+  <p class="lead reveal d4">看完回到這裡，我們就開始動手。</p>
+</section>
+
+<!-- 06 所以要怎麼講 -->
+<section id="act-04" class="left">
+  <span class="act reveal d1">04 · 所以呢</span>
+  <h2 class="display sm reveal d2">你講得越清楚<br>它猜得越準</h2>
+  <div class="grid g2">
+    <div class="card reveal d2"><div class="num">它猜不到的</div><ul><li>你長什麼樣子</li><li>你今天心情怎樣</li><li>你想給誰看</li><li>你不喜歡什麼</li></ul></div>
+    <div class="card reveal d3"><div class="num">所以我們今天要做的</div><ul><li>把這些告訴它</li><li>讓它記住你是誰</li><li>之後每次都不用重講</li></ul></div>
+  </div>
+  <p class="lead reveal d4">今天上午的重點就這一件事：<span class="hi">讓 AI 認識你</span>。</p>
+</section>
+
+<!-- 07 AI 可以幫你做什麼 -->
+<section id="act-05" class="mid2">
+  <span class="act reveal d1">05 · 它到底能幫你做什麼</span>
+  <h2 class="display sm reveal d2">不用會電腦，會講話就好</h2>
+  <div class="grid g3">
+    <div class="card reveal d2"><div class="num">寫</div><ul><li>幫你寫一段話</li><li>幫你回訊息</li><li>幫你想標題</li></ul></div>
+    <div class="card reveal d3"><div class="num">畫</div><ul><li>畫一張你的樣子</li><li>做一張圖卡</li><li>把照片變插畫</li></ul></div>
+    <div class="card reveal d4"><div class="num">想</div><ul><li>陪你把事情想清楚</li><li>問你問題</li><li>幫你整理雜亂的想法</li></ul></div>
+  </div>
+  <p class="lead reveal d5">它不會累，不會不耐煩，你問一百次都可以。</p>
+</section>
+
+<!-- 08 兩個工具 -->
+<section id="act-06" class="left">
+  <span class="act reveal d1">06 · 今天兩個工具都會用</span>
+  <h2 class="display sm reveal d2">ChatGPT 跟 Gemini<br>兩個都開</h2>
+  <p class="lead reveal d3">免費的帳號，每天能畫的張數有限。兩個都開，這個用完換另一個，今天才不會卡住。</p>
+  <div class="grid g2">
+    <div class="card reveal d3"><div class="num">ChatGPT</div><ul><li>手機下載 App</li><li>用 Google 帳號登入最快</li><li>會講話就能用</li><li>裡面有個 Work 模式，可以叫它專心做一件事</li></ul></div>
+    <div class="card reveal d4"><div class="num">Gemini</div><ul><li>Android 手機大多內建</li><li>同樣用 Google 帳號</li><li>畫圖的額度另外算</li></ul></div>
+  </div>
+</section>
+
+<!-- 09 什麼是技能包 -->
+<section id="act-07" class="mid">
+  <span class="act reveal d1">07 · 順便認識一個詞</span>
+  <h2 class="display sm reveal d2">什麼是技能包</h2>
+  <div class="grid g2">
+    <div class="card reveal d2"><div class="num">用講的</div><p>每次都要從頭跟 AI 解釋你要什麼，講到累。</p></div>
+    <div class="card reveal d3"><div class="num">用技能包</div><p>事先把「怎麼做這件事」寫好交給它，以後你只要說一句，它就照著做。</p></div>
+  </div>
+  <p class="lead reveal d4">今天我先給你們幾個做好的小幫手用。<span class="hi">後面幾堂我們會實際做</span>。</p>
+</section>
+
+<!-- 10 個人設定檔 -->
+<section id="act-08" class="left">
+  <span class="act reveal d1">08 · 上午的主角</span>
+  <h2 class="display sm reveal d2">個人設定檔<br>就是你的自我介紹書</h2>
+  <p class="lead reveal d3">一段寫好你是誰的文字。存起來，以後每次開新對話，貼給它看，它就懂你了。</p>
+  <div class="grid g2">
+    <div class="card reveal d3"><div class="num">沒有設定檔</div><p>每次都要重講一次自己是誰，AI 寫出來的東西都不像你。</p></div>
+    <div class="card reveal d4"><div class="num">有設定檔</div><p>貼一次，它就用你的方式跟你講話，寫出來的東西才像你。</p></div>
+  </div>
+</section>
+
+<!-- 11 三種身份 -->
+<section id="act-09" class="mid2">
+  <span class="act reveal d1">09 · 先想一下</span>
+  <h2 class="display sm reveal d2">你來上課，是為了什麼</h2>
+  <div class="grid g3">
+    <div class="card reveal d2"><div class="num">第一種</div><h3>我想做自媒體</h3><p>想經營自己的品牌、想接案、想有自己的一份事業。</p></div>
+    <div class="card reveal d3"><div class="num">第二種</div><h3>我是上班族</h3><p>想用 AI 幫我省點時間，把工作上的事處理得快一點。</p></div>
+    <div class="card reveal d4"><div class="num">第三種</div><h3>我還在探索</h3><p>剛回到職場，或還沒想清楚，先來看看有什麼可能。</p></div>
+  </div>
+  <p class="lead reveal d5">三種都很好，<span class="hi">沒有哪一種比較厲害</span>。等一下 AI 會自己問出來，你不用先選。</p>
+</section>
+
+<!-- 10 一個指令 -->
+<section id="act-10" class="dark">
+  <span class="act reveal d1">10 · 整段照貼，一個字都不用改</span>
+  <h2 class="display sm reveal d2">讓 AI 訪問你</h2>
+  <div class="prompt reveal d2" style="max-width:900px;">
+    <span class="tag">讓 AI 認識我</span>
+    <p>
+      我今天來上一堂數位創作課，四堂課要學會用 AI 做出自己的內容。<br>
+      請你當我的陪跑教練，一次問我一個問題，總共問五個。<br><br>
+
+      五個問題照這個順序問：<br>
+      一、我今天為什麼想來上這個課<br>
+      二、我最想學會什麼<br>
+      三、學會以後我想拿它來做什麼<br>
+      四、上完四堂課，我希望自己變成什麼樣子<br>
+      五、有什麼是我一直很想做，但還沒開始的<br><br>
+
+      規則：<br>
+      一次只問一個問題，一次只出現一個問號。不要預告後面的題目，也不要一次列出來。<br>
+      每一題開頭先寫「第幾題，共五題」，讓我知道還有幾題。<br>
+      用日常的話問，不要用專業名詞。<br>
+      我答得很短也沒關係，不要一直追問，最多再問一次就好。<br>
+      我答不出來的時候，給我三個選項讓我挑。<br>
+      我說「停」的時候，就用我已經回答的先整理。<br>
+      整理的時候<span class="hi">只能用我說過的話</span>，不要幫我加上我沒講過的東西。<br><br>
+
+      五題問完，幫我整理成一份「我的個人設定檔」，用我自己的口吻寫，每一項一行：<br>
+      <span class="hi">我是誰：</span><br>
+      <span class="hi">我想做的事：</span><br>
+      <span class="hi">我想學會的：</span><br>
+      <span class="hi">我希望變成的樣子：</span><br>
+      <span class="hi">跟我說話的時候要注意：</span><br><br>
+
+      整理好之後，請你把這份設定檔記起來，以後每次聊天都要照這個來認識我。
+    </p>
+  </div>
+</section>
+
+<!-- 11 讓它記住 -->
+<section id="act-11">
+  <span class="act reveal d1">11 · 最關鍵的一步</span>
+  <h2 class="display sm reveal d2">讓它<span class="hi">永遠</span>記得你<br>不是每次重講</h2>
+  <div class="grid g3">
+    <div class="card reveal d2">
+      <div class="num">第一步</div>
+      <h3>叫它記起來</h3>
+      <p>剛剛的指令最後一句就是。它會把你的設定檔存進記憶。</p>
+    </div>
+    <div class="card reveal d3">
+      <div class="num">第二步</div>
+      <h3>放進個人化設定</h3>
+      <p>到 App 的設定裡找「個人化」，把設定檔貼進去。這樣每次開新對話它都記得。</p>
+    </div>
+    <div class="card reveal d4">
+      <div class="num">第三步</div>
+      <h3>存一份備份</h3>
+      <p>複製一份到手機備忘錄。換手機、換工具的時候還找得回來。</p>
+    </div>
+  </div>
+  <div class="prompt reveal d5" style="max-width:900px;margin-top:2rem;">
+    <span class="tag">以前就跟 AI 聊過的人 · 用這一句</span>
+    <p>
+      請你看看我們以前聊過的內容，幫我整理出一份「我的個人設定檔」，<br>
+      包含：我是什麼樣的人、我在意什麼、我平常問你什麼、我講話的習慣。<br>
+      整理好之後記起來，以後每次聊天都要照這個來認識我。
+    </p>
+  </div>
+</section>
+
+<!-- 14 上午收 -->
+<section id="act-12" class="mid left">
+  <span class="act reveal d1">12 · 上午到這裡</span>
+  <h2 class="display sm reveal d2">現在 AI 認識你了</h2>
+  <p class="lead reveal d3">你手上有一份自己的個人設定檔，存在手機裡。<br>下午我們用它來做出你的樣子。</p>
+</section>
+
+<!-- 15 成品長這樣 -->
+<section id="act-13" class="mid2">
+  <span class="act reveal d1">13 · 下午 · 成品長這樣</span>
+  <h2 class="display sm reveal d2">這是別人做出來的</h2>
+  <div class="split">
+    <div>
+      <img class="shot zoomable reveal d2" src="vicky-example.jpg" alt="水彩風格人物形象照範例">
+      <p class="cap reveal d3">一張圖，講完一個人是誰<br><span class="zoomhint">點圖片可以放大</span></p>
+    </div>
+    <div class="card reveal d3" style="margin-top:0;">
+      <div class="num">拆開來看</div>
+      <ul>
+        <li>畫面中間是一個人</li>
+        <li>旁邊有她喜歡的地方</li>
+        <li>手上有她常帶的東西</li>
+        <li>寫著三個形容她的詞</li>
+        <li>下面有一句她想說的話</li>
+      </ul>
+      <p style="margin-top:1.2rem;">這五樣東西，等一下你也會有。</p>
+    </div>
+  </div>
+</section>
+
+<!-- 16 自我介紹卡片 -->
+<section id="act-14">
+  <span class="act reveal d1">14 · 先填這張卡片</span>
+  <h2 class="display sm reveal d2">動手之前<br>先想清楚五件事</h2>
+  <p class="lead reveal d3">紙本上有一樣的卡片，先用筆填，填完再打開手機。</p>
+  <div class="idcard reveal d3">
+    <div class="title">我的自我介紹卡片</div>
+    <div class="row"><div class="k">我的名字</div><div class="v">大家都怎麼叫我</div></div>
+    <div class="row"><div class="k">三個形容我的詞</div><div class="v">例如：自然、明亮、自在</div></div>
+    <div class="row"><div class="k">我喜歡待的地方</div><div class="v">例如：海邊、廚房、公園、市場</div></div>
+    <div class="row"><div class="k">我手上常有的東西</div><div class="v">例如：相機、菜籃、毛線、孫子的手</div></div>
+    <div class="row"><div class="k">我想跟人說的一句話</div><div class="v">例如：慢慢來，也可以走很遠</div></div>
+  </div>
+</section>
+
+<!-- 生圖指令 -->
+<section id="act-15" class="dark">
+  <span class="act reveal d1">15 · 照著唸就好</span>
+  <h2 class="display sm reveal d2">用你自己的照片<br>畫出你的樣子</h2>
+  <p class="lead reveal d3">先上傳一張自己的照片，再把下面整段唸給它聽。橘色的地方換成<span class="hi">你卡片上填的</span>。</p>
+  <div class="prompt reveal d3" style="max-width:900px;">
+    <span class="tag">畫出我的形象照</span>
+    <p>
+      這是我的照片。請照著照片裡的我，畫成水彩風格的插畫，像手繪明信片。<br>
+      保留我的髮型跟臉的感覺，不要畫得比較年輕，也不要修得不像我。<br>
+      把我放在<span class="hi">海邊</span>，手上拿著<span class="hi">一台相機</span>，笑得很自在。<br>
+      背景用淡淡的水彩畫出這個地方的樣子。<br>
+      左上角寫三個詞：<span class="hi">自然、明亮、自在</span>。<br>
+      右下角寫一句話：<span class="hi">慢慢來，也可以走很遠</span>。<br>
+      整體色調溫暖柔和，留白多一點。
+    </p>
+  </div>
+  <p class="lead reveal d4">拍一張現在的自己就可以，不用特別化妝。<span class="hi">半身、光線亮一點</span>，畫出來會比較像。</p>
+</section>
+
+<!-- 18 改圖與自我介紹 -->
+<section id="act-16">
+  <span class="act reveal d1">16 · 還有兩句很好用</span>
+  <h2 class="display sm reveal d2">改圖，還有<br>幫你寫自我介紹</h2>
+  <div class="grid g2">
+    <div class="prompt reveal d2">
+      <span class="tag">改圖 · 只改一個地方</span>
+      <p>不用整張重畫，只要改一個地方：<span class="hi">把外套換成藍色</span>。<br>其他都保留。</p>
+      <p style="margin-top:1.2rem;">想改幾次就改幾次，它不會不耐煩。</p>
+    </div>
+    <div class="prompt reveal d3">
+      <span class="tag">請它幫你寫自我介紹</span>
+      <p>
+        我要一句自我介紹，寫在我的照片旁邊。<br>
+        我叫<span class="hi">王美惠，大家都叫我美惠姐</span>。<br>
+        我喜歡待在<span class="hi">海邊</span>，手上常常拿著<span class="hi">相機</span>。<br>
+        三個形容我的詞是：<span class="hi">自然、明亮、自在</span>。<br>
+        請幫我寫三個版本，每一個都不要超過三十個字，用口語一點的說法。
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- 19 你的代言人 -->
+<section id="act-17" class="mid2">
+  <span class="act reveal d1">17 · 再進一步</span>
+  <h2 class="display sm reveal d2">幫自己設計一個代言人</h2>
+  <div class="prompt reveal d2" style="max-width:820px;">
+    <span class="tag">吉祥物 · 代言人</span>
+    <p>
+      這是我的個人設定檔（貼上）。<br>
+      請幫我設計一個代表我的吉祥物或代言人，要跟我的個性有關。<br>
+      告訴我：它長什麼樣子、它的名字、它的個性、它會怎麼跟人講話。<br>
+      然後幫我寫一段畫圖用的描述，我要拿去生成圖片。
+    </p>
+  </div>
+  <p class="lead reveal d3">拿到描述之後，貼回去請它畫出來，你就有自己的代言人了。</p>
+</section>
+
+<!-- 20 開始寫 -->
+<section id="act-18" class="dark">
+  <span class="act reveal d1">18 · 開始寫東西</span>
+  <h2 class="display sm reveal d2">先讓它問你<br>再讓它寫</h2>
+  <div class="grid g2">
+    <div class="prompt reveal d2">
+      <span class="tag">寫一篇短文</span>
+      <p>
+        這是我的個人設定檔（貼上）。<br>
+        我想寫一篇短文，主題是<span class="hi">＿＿＿＿</span>。<br>
+        請先問我三個問題，問完再幫我寫。<br>
+        寫的時候用我平常講話的方式，不要太文謅謅，大概三百字。
+      </p>
+    </div>
+    <div class="prompt reveal d3">
+      <span class="tag">參考別人寫得好的</span>
+      <p>
+        這是我看到覺得很好的一篇貼文（貼上）。<br>
+        請幫我拆解：它為什麼吸引人、開頭用了什麼方法、結尾怎麼收。<br>
+        然後用同樣的方法，幫我寫一篇關於<span class="hi">＿＿＿＿</span>的貼文。
+      </p>
+    </div>
+  </div>
+  <p class="lead reveal d4">學別人的<span class="hi">寫法</span>，寫自己的<span class="hi">故事</span>。</p>
+</section>
+
+<!-- 靈感池 觀念 -->
+<section id="act-19">
+  <span class="act reveal d1">19 · 想到的東西不要讓它跑掉</span>
+  <h2 class="display sm reveal d2">靈感池<br>三個圈圈的交集</h2>
+  <div class="grid g3">
+    <div class="card reveal d2"><div class="num">一</div><h3>我的內容</h3><p>我自己想講的、我的經驗、我拍到的東西。</p></div>
+    <div class="card reveal d3"><div class="num">二</div><h3>熱門話題</h3><p>最近大家在討論什麼、什麼季節、什麼節日。</p></div>
+    <div class="card reveal d4"><div class="num">三</div><h3>受眾需求</h3><p>看我的人想知道什麼、常常問我什麼。</p></div>
+  </div>
+  <p class="lead reveal d5">三個都有的那一則，<span class="hi">最容易被看見，也最像你</span>。只有自己想講會變成自言自語，只追熱門會變成大家都一樣。</p>
+</section>
+
+<!-- 靈感池 指令 -->
+<section id="act-20" class="mid2">
+  <span class="act reveal d1">20 · 請它幫你做一個</span>
+  <h2 class="display sm reveal d2">你的靈感池</h2>
+  <div class="prompt reveal d2" style="max-width:900px;">
+    <span class="tag">做一個自己的靈感池</span>
+    <p>
+      我想建一個自己的靈感池，用來存平常想到的點子。<br>
+      請幫我設計一個最簡單的表格，放在手機備忘錄就能用，只要三欄：<br>
+      一、<span class="hi">我的內容</span>：我自己想講的、我的經驗、我拍到的東西<br>
+      二、<span class="hi">熱門話題</span>：最近大家在討論什麼<br>
+      三、<span class="hi">受眾需求</span>：看我的人想知道什麼<br><br>
+      然後告訴我，三欄都有東西的時候，怎麼把它們組合成一則貼文。<br>
+      最後幫我想三個現在就可以放進去的例子。
+    </p>
+  </div>
+  <p class="lead reveal d3">想到什麼隨手丟進去。要發文的時候打開它，就不會坐在那裡想不出來。</p>
+</section>
+
+<!-- 22 進度快才上 -->
+<section id="act-21" class="mid">
+  <span class="flag reveal d1">今天有時間才上，不然是下一堂的事</span>
+  <span class="act reveal d1">21 · 進階</span>
+  <h2 class="display sm reveal d2">一張圖講一句話<br>幾張圖講一件事</h2>
+  <div class="prompt reveal d2" style="max-width:820px;">
+    <span class="tag">輪播卡與分鏡</span>
+    <p>
+      這是我要講的一件事：<span class="hi">＿＿＿＿</span>。<br>
+      請幫我拆成 5 張圖卡，每一張告訴我：這張要放什麼畫面、上面要寫什麼字（不超過 15 個字）。<br>
+      第一張要能讓人想看下去，最後一張要有一句收尾的話。
+    </p>
+  </div>
+  <p class="lead reveal d3">排出來的這個順序，就叫<span class="hi">分鏡</span>。下一堂拍照、再下一堂剪影片，都會用到它。</p>
+</section>
+
+<!-- 23 存檔 -->
+<section id="act-22" class="mid2">
+  <span class="act reveal d1">22 · 最重要的一件事</span>
+  <h2 class="display sm reveal d2">做出來，還要找得回來</h2>
+  <div class="grid g3">
+    <div class="card reveal d2"><div class="num">存</div><p>圖片長按存進相簿，設定檔存進備忘錄。</p></div>
+    <div class="card reveal d3"><div class="num">找</div><p>知道它在哪一本相簿，下週要用。</p></div>
+    <div class="card reveal d4"><div class="num">傳</div><p>傳一份到自己的 LINE，就不會不見。</p></div>
+  </div>
+  <p class="lead reveal d5">很多人不是做不出來，是<span class="hi">下週找不到自己的作品</span>。</p>
+</section>
+
+<!-- 24 收尾 -->
+<section id="act-23" class="dark">
+  <span class="act reveal d1">23 · 今天你做到了</span>
+  <h2 class="display sm reveal d2">AI 現在認識你了</h2>
+  <p class="lead reveal d3">今天帶走：一份自己的個人設定檔，一張自己的形象照，一句介紹自己的話。</p>
+  <div class="idcard reveal d4" style="background:rgba(255,248,240,.08);border-color:var(--accent-on-dark);">
+    <div class="title" style="color:var(--accent-on-dark);">回家的功課</div>
+    <div class="row" style="border-color:var(--line-dark);"><div class="k" style="color:var(--text-on-dark);">這週</div><div class="v" style="background:rgba(230,184,125,.14);color:var(--text-soft-dark);">用手機拍 5 張照片，什麼都好</div></div>
+    <div class="row"><div class="k" style="color:var(--text-on-dark);">下週 8/11</div><div class="v" style="background:rgba(230,184,125,.14);color:var(--text-soft-dark);">學怎麼拍才好看，再把這 5 張排出順序，講成一件事</div></div>
+  </div>
+</section>
+
+<script>
+  const io = new IntersectionObserver((es)=>{
+    es.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('in'); });
+  }, {threshold:.15});
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+  const bar = document.getElementById('progress');
+  addEventListener('scroll', ()=>{
+    const h = document.documentElement;
+    bar.style.width = (h.scrollTop/(h.scrollHeight-h.clientHeight)*100)+'%';
+  });
+
+  const secs = Array.from(document.querySelectorAll('section'));
+  const dots = document.getElementById('dots');
+  secs.forEach((s,k)=>{
+    const a=document.createElement('a'); a.href='#'+s.id; a.title=String(k+1).padStart(2,'0');
+    dots.appendChild(a);
+  });
+  const dotEls = Array.from(dots.children);
+  const dio = new IntersectionObserver((es)=>{
+    es.forEach(e=>{ if(e.isIntersecting){
+      const i = secs.indexOf(e.target);
+      dotEls.forEach((d,k)=>d.classList.toggle('active', k===i));
+    }});
+  }, {threshold:.5});
+  secs.forEach(s=>dio.observe(s));
+
+  let fs=1;
+  function setFont(d){
+    fs = d===0 ? 1 : Math.min(1.6, Math.max(1, fs + d*0.1));
+    document.documentElement.style.setProperty('--fs', fs);
+  }
+
+  const lb = document.getElementById('lb');
+  const lbImg = document.getElementById('lb-img');
+  document.querySelectorAll('.zoomable').forEach(img=>{
+    img.addEventListener('click', ()=>{ lbImg.src = img.src; lb.classList.add('on'); });
+  });
+  lb.addEventListener('click', ()=> lb.classList.remove('on'));
+  addEventListener('keydown', e=>{ if(e.key==='Escape') lb.classList.remove('on'); });
+</script>
+</body>
+</html>
