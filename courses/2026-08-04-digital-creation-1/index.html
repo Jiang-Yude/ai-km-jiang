@@ -128,6 +128,22 @@
   }
   .prompt p{font-size:1.02rem; line-height:1.8; color:var(--text-soft-light);}
   section.dark .prompt p{color:var(--text-soft-dark);}
+  .copy-btn{
+    display:inline-flex; align-items:center; justify-content:center; gap:.5rem;
+    margin-top:1.25rem; border:0; border-radius:999px; padding:.72rem 1.25rem;
+    background:var(--accent); color:#fff; font-family:var(--font);
+    font-size:1rem; font-weight:800; cursor:pointer;
+    box-shadow:0 5px 16px rgba(62,39,35,.14); transition:transform .2s ease, opacity .2s ease;
+  }
+  .copy-btn:hover{transform:translateY(-2px);}
+  .copy-btn:focus-visible{outline:3px solid rgba(216,140,58,.35); outline-offset:3px;}
+  .copy-status{min-height:1.5em; margin-top:.65rem; font-size:.95rem; color:var(--accent); font-weight:700;}
+  section.dark .copy-status{color:var(--accent-on-dark);}
+  .question-card h3{font-size:1.35rem; line-height:1.55; margin:0;}
+  .askcue{
+    display:inline-block; margin-top:2rem; border:1px solid var(--accent);
+    border-radius:999px; padding:.55rem 1.25rem; color:var(--accent); font-weight:800;
+  }
 
   .shot{
     max-width:min(420px, 62vw); width:100%;
@@ -193,6 +209,7 @@
     display:flex; flex-direction:column; gap:10px;}
   .dots a{width:9px; height:9px; border-radius:50%; background:var(--line-light); transition:all .25s;}
   .dots a.active{background:var(--accent); transform:scale(1.35);}
+  @media(max-width:700px){.dots{display:none;}}
 
   .zoomable{cursor:zoom-in; transition:transform .25s ease;}
   .zoomable:hover{transform:scale(1.02);}
@@ -263,7 +280,6 @@
     </div>
   </header>
   <script>(function(){var t=document.querySelector('.sh-toggle'),m=document.querySelector('.sh-menu');if(t&&m){t.addEventListener('click',function(){t.classList.toggle('open');m.classList.toggle('open');});m.addEventListener('click',function(e){if(e.target.closest('a')){t.classList.remove('open');m.classList.remove('open');}});}})();</script>
-
 
 <div id="progress"></div>
 <a href="#act-01" class="home">← 回頂端</a>
@@ -339,7 +355,7 @@
   <h2 class="display sm reveal d2">你講得越清楚<br>它猜得越準</h2>
   <div class="grid g2">
     <div class="card reveal d2"><div class="num">它猜不到的</div><ul><li>你長什麼樣子</li><li>你今天心情怎樣</li><li>你想給誰看</li><li>你不喜歡什麼</li></ul></div>
-    <div class="card reveal d3"><div class="num">所以我們今天要做的</div><ul><li>把這些告訴它</li><li>讓它記住你是誰</li><li>之後每次都不用重講</li></ul></div>
+    <div class="card reveal d3"><div class="num">所以我們今天要做的</div><ul><li>把這些告訴它</li><li>把自己的設定留好</li><li>下次比較容易接著聊</li></ul></div>
   </div>
   <p class="lead reveal d4">今天上午的重點就這一件事：<span class="hi">讓 AI 認識你</span>。</p>
 </section>
@@ -367,6 +383,19 @@
   </div>
 </section>
 
+<!-- 現場提問 01 -->
+<section id="ask-01" class="mid2">
+  <span class="act reveal d1">現場問大家 01 · 開始前</span>
+  <h2 class="display sm reveal d2">你現在最擔心<br>哪一件事</h2>
+  <div class="grid g4">
+    <div class="card question-card reveal d2"><div class="num">一</div><h3>我的畫面跟老師不一樣，會不會找不到按鈕？</h3></div>
+    <div class="card question-card reveal d3"><div class="num">二</div><h3>我怕按錯，也怕不小心被扣錢。</h3></div>
+    <div class="card question-card reveal d4"><div class="num">三</div><h3>我忘記帳號或密碼，還能跟著做嗎？</h3></div>
+    <div class="card question-card reveal d5"><div class="num">四</div><h3>我打字很慢，會不會跟不上大家？</h3></div>
+  </div>
+  <span class="askcue reveal d5">哪一個最像你？直接舉手，我們先處理最多人的那一題。</span>
+</section>
+
 <!-- 09 什麼是技能包 -->
 <section id="act-07" class="mid">
   <span class="act reveal d1">07 · 順便認識一個詞</span>
@@ -382,10 +411,10 @@
 <section id="act-08" class="left">
   <span class="act reveal d1">08 · 上午的主角</span>
   <h2 class="display sm reveal d2">個人設定檔<br>就是你的自我介紹書</h2>
-  <p class="lead reveal d3">一段寫好你是誰的文字。存起來，以後每次開新對話，貼給它看，它就懂你了。</p>
+  <p class="lead reveal d3">一段寫好你是誰的文字。存起來，以後開新對話時貼給它看，它就比較知道怎麼回你。</p>
   <div class="grid g2">
     <div class="card reveal d3"><div class="num">沒有設定檔</div><p>每次都要重講一次自己是誰，AI 寫出來的東西都不像你。</p></div>
-    <div class="card reveal d4"><div class="num">有設定檔</div><p>貼一次，它就用你的方式跟你講話，寫出來的東西才像你。</p></div>
+    <div class="card reveal d4"><div class="num">有設定檔</div><p>貼給它看，它就能參考你的方式跟你講話，寫出來的東西也比較像你。</p></div>
   </div>
 </section>
 
@@ -434,7 +463,8 @@
       <span class="hi">我希望變成的樣子：</span><br>
       <span class="hi">跟我說話的時候要注意：</span><br><br>
 
-      整理好之後，請你把這份設定檔記起來，以後每次聊天都要照這個來認識我。
+      整理好之後，如果我的帳號支援記憶，請記住這份設定檔。<br>
+      如果無法記住，請告訴我怎麼把它保存好，下次聊天時再貼給你看。
     </p>
   </div>
 </section>
@@ -442,17 +472,17 @@
 <!-- 11 讓它記住 -->
 <section id="act-11">
   <span class="act reveal d1">11 · 最關鍵的一步</span>
-  <h2 class="display sm reveal d2">讓它<span class="hi">永遠</span>記得你<br>不是每次重講</h2>
+  <h2 class="display sm reveal d2">讓它下次更認得你<br>自己的設定也要留一份</h2>
   <div class="grid g3">
     <div class="card reveal d2">
       <div class="num">第一步</div>
-      <h3>叫它記起來</h3>
-      <p>剛剛的指令最後一句就是。它會把你的設定檔存進記憶。</p>
+      <h3>請它試著記住</h3>
+      <p>如果你的帳號支援記憶，它會嘗試記住這些內容。不同帳號的結果可能不一樣。</p>
     </div>
     <div class="card reveal d3">
       <div class="num">第二步</div>
       <h3>放進個人化設定</h3>
-      <p>到 App 的設定裡找「個人化」，把設定檔貼進去。這樣每次開新對話它都記得。</p>
+      <p>到 App 的設定裡找「個人化」。如果看得到這個功能，可以把設定檔貼進去。</p>
     </div>
     <div class="card reveal d4">
       <div class="num">第三步</div>
@@ -465,15 +495,29 @@
     <p>
       請你看看我們以前聊過的內容，幫我整理出一份「我的個人設定檔」，<br>
       包含：我是什麼樣的人、我在意什麼、我平常問你什麼、我講話的習慣。<br>
-      整理好之後記起來，以後每次聊天都要照這個來認識我。
+      整理好之後，如果我的帳號支援記憶，請記住這份設定檔。<br>
+      如果無法記住，請告訴我怎麼保存，下次聊天時再貼給你看。
     </p>
   </div>
+</section>
+
+<!-- 現場提問 02 -->
+<section id="ask-02" class="mid2">
+  <span class="act reveal d1">現場問大家 02 · 記憶與個資</span>
+  <h2 class="display sm reveal d2">哪一題也正是<br>你想問的</h2>
+  <div class="grid g4">
+    <div class="card question-card reveal d2"><div class="num">一</div><h3>它說記住了，下一次真的還會記得嗎？</h3></div>
+    <div class="card question-card reveal d3"><div class="num">二</div><h3>有些事情我不想被記住，可以叫它忘掉嗎？</h3></div>
+    <div class="card question-card reveal d4"><div class="num">三</div><h3>身分證、密碼、住址，可以告訴 AI 嗎？</h3></div>
+    <div class="card question-card reveal d5"><div class="num">四</div><h3>換手機、換帳號或換工具，設定還會在嗎？</h3></div>
+  </div>
+  <span class="askcue reveal d5">先記一件事：重要內容自己存一份，私密資料不要貼。你最不放心哪一題？</span>
 </section>
 
 <!-- 14 上午收 -->
 <section id="act-12" class="mid left">
   <span class="act reveal d1">12 · 上午到這裡</span>
-  <h2 class="display sm reveal d2">現在 AI 認識你了</h2>
+  <h2 class="display sm reveal d2">你已經把自己<br>介紹給 AI 了</h2>
   <p class="lead reveal d3">你手上有一份自己的個人設定檔，存在手機裡。<br>下午我們用它來做出你的樣子。</p>
 </section>
 
@@ -517,9 +561,9 @@
 
 <!-- 生圖指令 -->
 <section id="act-15" class="dark">
-  <span class="act reveal d1">15 · 照著唸就好</span>
+  <span class="act reveal d1">15 · 一鍵複製，再換成你的內容</span>
   <h2 class="display sm reveal d2">用你自己的照片<br>畫出你的樣子</h2>
-  <p class="lead reveal d3">先上傳一張自己的照片，再把下面整段唸給它聽。橘色的地方換成<span class="hi">你卡片上填的</span>。</p>
+  <p class="lead reveal d3">先上傳一張自己的照片，再點下面的一鍵複製。貼到對話框後，把橘色的地方換成<span class="hi">你卡片上填的</span>。</p>
   <div class="prompt reveal d3" style="max-width:900px;">
     <span class="tag">畫出我的形象照</span>
     <p>
@@ -533,6 +577,19 @@
     </p>
   </div>
   <p class="lead reveal d4">拍一張現在的自己就可以，不用特別化妝。<span class="hi">半身、光線亮一點</span>，畫出來會比較像。</p>
+</section>
+
+<!-- 現場提問 03 -->
+<section id="ask-03" class="mid2">
+  <span class="act reveal d1">現場問大家 03 · 生圖之後</span>
+  <h2 class="display sm reveal d2">圖片出來了<br>你可能還會想問</h2>
+  <div class="grid g4">
+    <div class="card question-card reveal d2"><div class="num">一</div><h3>一定要上傳本人的照片，才可以畫嗎？</h3></div>
+    <div class="card question-card reveal d3"><div class="num">二</div><h3>我上傳的照片，別人會不會看到？</h3></div>
+    <div class="card question-card reveal d4"><div class="num">三</div><h3>臉畫得不像，怎麼請它慢慢改？</h3></div>
+    <div class="card question-card reveal d5"><div class="num">四</div><h3>圖片裡的中文字寫錯，可以叫它重寫嗎？</h3></div>
+  </div>
+  <span class="askcue reveal d5">哪一題是你剛剛真的遇到的？我們用你的作品一起試。</span>
 </section>
 
 <!-- 18 改圖與自我介紹 -->
@@ -662,7 +719,7 @@
 <!-- 24 收尾 -->
 <section id="act-23" class="dark">
   <span class="act reveal d1">23 · 今天你做到了</span>
-  <h2 class="display sm reveal d2">AI 現在認識你了</h2>
+  <h2 class="display sm reveal d2">你已經讓 AI<br>更認識你了</h2>
   <p class="lead reveal d3">今天帶走：一份自己的個人設定檔，一張自己的形象照，一句介紹自己的話。</p>
   <div class="idcard reveal d4" style="background:rgba(255,248,240,.08);border-color:var(--accent-on-dark);">
     <div class="title" style="color:var(--accent-on-dark);">回家的功課</div>
@@ -697,6 +754,51 @@
     }});
   }, {threshold:.5});
   secs.forEach(s=>dio.observe(s));
+
+  function fallbackCopy(text){
+    const ta=document.createElement('textarea');
+    ta.value=text;
+    ta.setAttribute('readonly','');
+    ta.style.position='fixed';
+    ta.style.opacity='0';
+    ta.style.pointerEvents='none';
+    document.body.appendChild(ta);
+    ta.select();
+    const ok=document.execCommand('copy');
+    ta.remove();
+    return ok;
+  }
+
+  document.querySelectorAll('.prompt').forEach((box)=>{
+    const source=box.querySelector('[data-copy-source]') || box.querySelector('p');
+    if(!source) return;
+    const btn=document.createElement('button');
+    const status=document.createElement('div');
+    btn.type='button';
+    btn.className='copy-btn';
+    btn.textContent='一鍵複製這段指令';
+    status.className='copy-status';
+    status.setAttribute('aria-live','polite');
+    btn.addEventListener('click', async()=>{
+      const text=source.innerText.replace(/\n{3,}/g,'\n\n').trim();
+      let ok=false;
+      try{
+        if(navigator.clipboard && window.isSecureContext){
+          await navigator.clipboard.writeText(text);
+          ok=true;
+        }else{
+          ok=fallbackCopy(text);
+        }
+      }catch(err){
+        try{ ok=fallbackCopy(text); }catch(fallbackErr){ ok=false; }
+      }
+      status.textContent=ok
+        ? '已複製。回到 ChatGPT 或 Gemini，長按輸入框選「貼上」。'
+        : '這台手機沒有自動複製成功，請長按上面的文字選取。';
+    });
+    box.appendChild(btn);
+    box.appendChild(status);
+  });
 
   let fs=1;
   function setFont(d){
