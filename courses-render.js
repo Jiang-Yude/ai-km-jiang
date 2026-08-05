@@ -10,7 +10,8 @@
   function isPast(c) { return !isIncubating(c) && !!c.date && parseDate(c.date) < TODAY; }
   function monthKey(c) { return c.date ? c.date.slice(0, 7) : 'tbd'; }   // "2026-05"
   function fmtDate(c) {
-    if (!c.date) return c.date_label || '日期待定';
+    if (c.date_label) return c.date_label;   // 多日系列課給 date_label 直接顯示（date 仍管排序與過期）
+    if (!c.date) return '日期待定';
     const d = parseDate(c.date);
     // 沒給時間 = 時間未定 → 顯示模糊「M 月 · 時間待定」
     if (!c.time) {
@@ -417,7 +418,7 @@
     }
     // 邀約授課（外部授課 + Podcast）
     if (F.type === 'all' || F.type === 'invited') {
-      const inv = COURSES.filter(c => (inferType(c) === 'external' || inferType(c) === 'podcast') && hitVenue(c.venue_mode) && hitQ([c.title, c.summary||'', (c.tags||[]).join(' ')]));
+      const inv = COURSES.filter(c => (inferType(c) === 'external' || inferType(c) === 'podcast' || (inferType(c) === 'other' && (c.registration || {}).status === 'private')) && hitVenue(c.venue_mode) && hitQ([c.title, c.summary||'', (c.tags||[]).join(' ')]));
       const up = inv.filter(isUpcoming).sort((a,b)=>parseDate(a.date)-parseDate(b.date));
       const past = inv.filter(isPast).sort((a,b)=>parseDate(b.date)-parseDate(a.date));
       if (up.length) { html += header('邀約授課 · 近期受邀', up.length); html += grid(up.map(cardHTML)); }
