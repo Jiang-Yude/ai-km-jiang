@@ -693,7 +693,7 @@ details.fold .fold-body h4{margin:14px 0 6px;font-size:1.08rem;}
   <div class="container">
     <div class="eyebrow">現場模擬 · 點按鈕跑一次</div>
     <h2 class="section-title">20 位會員，AI 幫忙媒合</h2>
-    <p class="section-sub">每個人的 AI 訪談自己，寫出一份可公開的交流檔案：不只我是誰，還有價值主張、工作節奏、理想夥伴、底線。AI 一次讀完全場 20 份，按下面的按鈕看它怎麼配。</p>
+    <p class="section-sub">每個人的 AI 訪談自己，寫出一份可公開的交流檔案：不只我是誰，還有價值主張、工作節奏、理想夥伴、底線。AI 一次讀完全場 20 份。同一批檔案，換一種思維模型就配出另一種結果：<b>商會模式看生意、人際模式看合拍、扶輪模式看服務</b>。滑鼠移到按鈕上看每種算法在算什麼。</p>
     <div class="demoband">⚠️ 頁內 20 位人物與公司皆為虛構示意。實際活動收完真資料重跑一次分析，結果直接換進這套版型。AI 媒合僅供交流參考，可能誤判或遺漏；公開內容與合作決定請本人再次確認。</div>
     <div class="simwrap">
       <div class="legend" id="legend"></div>
@@ -701,8 +701,9 @@ details.fold .fold-body h4{margin:14px 0 6px;font-size:1.08rem;}
         <svg class="svg-lines" id="svg"></svg>
       </div>
       <div class="ctrl">
-        <button class="btn" id="modeSmallBtn">小組模式</button>
-        <button class="btn ghost" id="modeChainBtn">產業鏈模式</button>
+        <button class="btn" id="modeBizBtn">商會模式</button>
+        <button class="btn ghost" id="modeRenjiBtn">人際模式</button>
+        <button class="btn ghost" id="modeFulunBtn">扶輪模式</button>
         <button class="btn ghost" id="resetBtn">重置</button>
         <span class="count" id="count"></span>
       </div>
@@ -1092,7 +1093,7 @@ const people=[
   {nm:'高明德',ti:'總經理',co:'明德營造',ind:'營造工程',pts:['這兩年業主開案就問綠建築標章','手上有進行中的新建案']}
 ];
 
-/* 小組模式：九組（兩三人） */
+/* 商會模式：九組（兩三人） */
 const smallGroups=[
   {type:'chain',members:['吳永泰','林曉芸'],
    joint:['菜直接上菜單：產出接投入','溯源需求對上產銷履歷'],
@@ -1133,36 +1134,73 @@ const smallGroups=[
 ];
 const smallGcenters=[[95,140],[275,140],[455,140],[625,140],[130,345],[365,345],[600,345],[875,135],[870,345]];
 
-/* 產業鏈模式：四條上下游長鏈（各 5 人） */
-const chainRows=[
-  {type:'chain',title:'從產地到餐桌',
-   members:['吳永泰','江秀蘭','江昱德','林曉芸','蔡明宏'],
-   joint:['有機葉菜蛋量穩定，剛好補上代工的原料缺口','代工做出來的品項與製程，由 AI 整理成能對外說的產品故事','整理好的產地故事，直接放上早午餐的菜單與門市','菜單想講產地故事，需要包裝跟印刷把故事說出來'],
-   talk:'從產季表、代工單、菜單，到包裝上的一句話，中間卡在誰先開第一步。',
-   step:'吳永泰先寄一批樣品給江秀蘭試做，做成品後給林曉芸試賣一週，蔡明宏同步出一版包裝草稿。'},
-  {type:'comp',title:'綠建築與能源',
-   members:['蘇志豪','高明德','楊佳蓉','何俊毅','洪雅雯'],
-   joint:['光電系統要在設計階段就決定屋頂配置，越早介入越好談','新建案完工後想知道實際耗能，需要感測器長期蒐集數據','數據蒐集到了，缺一個真的用得上、看得懂報表的產線','報表跑出來了，客戶端要的是能對外講的一句 ESG 故事'],
-   talk:'光電、感測器、報表都做了，最後卡在這些數據要怎麼講給客戶聽。',
-   step:'高明德挑一個進行中的案子，找蘇志豪出屋頂配置，楊佳蓉裝感測器，洪雅雯先寫一頁範例文案。'},
-  {type:'ref',title:'中小企業傳承與顧問',
-   members:['張建中','許文琪','黃志偉','李國豪','周美玲'],
-   joint:['接班的稅務規劃談到一半，會碰到公司治理與家族協議的問題','家族協議底定後，保單常被拿來當傳承工具的下一步','傳承架構談完，接班的二代想學怎麼用 AI 管公司','二代準備接手開新店，第一個實際要做的決定是空間'],
-   talk:'稅務、法律、保險都談過了，傳承後想開新店的第一步卻沒人接。',
-   step:'找一個匿名接班案例，四人各自寫自己的切入點，周美玲接手畫新店空間。'},
-  {type:'peer',title:'在地體驗與親子生活圈',
-   members:['方怡君','郭素芬','曾文昌','王淑惠','劉俊賢'],
-   joint:['食農體驗課做出來了，缺一個排進正式行程的旅行社','行程排定，團客的接送調度需要穩定的車隊支援','車隊有親子客群的資料，剛好接得上幼兒園的活動需求','親子活動辦熟了，下一步是找健身館一起做親子體能課'],
-   talk:'體驗行程排好了，親子客群要怎麼跟幼兒園、健身館的活動綁在一起。',
-   step:'方怡君開放一個週末場，郭素芬排一團試走，曾文昌負責接送，王淑惠、劉俊賢各帶一組家庭參加。'}
+/* 人際模式：六個聊得起來的圈（處境相似、話題自然、節奏合拍） */
+const renjiGroups=[
+  {type:'chain',title:'轉型當家圈',members:['方怡君','高明德','蘇志豪','何俊毅'],
+   joint:['都扛著公司走在轉型路上：老客戶還在、新需求已經來敲門','這種壓力，只有同處境的人聽得懂'],
+   talk:'接班與轉型的真心話：哪些堅持要留、哪些做法該放。',
+   step:'約一次午餐，各帶一個「最近最頭痛的決定」來聊。'},
+  {type:'comp',title:'開店前線圈',members:['林曉芸','周美玲','蔡明宏'],
+   joint:['全部圍著「開一家店」打轉：一個正在開、兩個天天幫人開','話題不用暖場，第一分鐘就有共鳴'],
+   talk:'客戶開店最常卡在哪、哪些坑可以提早避開。',
+   step:'互相走一次對方的現場：店裡、工作室、印刷廠各半天。'},
+  {type:'ref',title:'照顧者圈',members:['王淑惠','江秀蘭','劉俊賢'],
+   joint:['做的都是「人」的工作：孩子、庇護員工、會員的健康','帶著使命感經營，價值觀相近，信任來得快'],
+   talk:'怎麼在照顧人的同時把營運撐住、不把自己燒完。',
+   step:'互相參觀一次彼此的場域，看別人怎麼帶人。'},
+  {type:'peer',title:'導入實作派',members:['楊佳蓉','曾文昌','李國豪','江昱德'],
+   joint:['都在「導入」的現場：裝了工具、開了課，卡的常常是人不想用','喜歡談具體、不愛談概念，節奏對得上'],
+   talk:'導入卡關的真實案例交換：第一線的人為什麼不想用。',
+   step:'各帶一個卡關案例來拆，整理出共同的卡點清單。'},
+  {type:'chain',title:'專業三師圈',members:['張建中','許文琪','黃志偉'],
+   joint:['專業語言相通，講半句就懂','同樣服務中小企業主，信任門檻本來就低'],
+   talk:'各自最近遇到的難案，聽聽別的專業會怎麼切。',
+   step:'每月固定一次早餐會，輪流出題。'},
+  {type:'comp',title:'故事人圈',members:['吳永泰','郭素芬','洪雅雯'],
+   joint:['一個有產地的故事、一個在找路線的故事、一個幫人說故事','節奏都偏「慢慢聊、聊出東西」'],
+   talk:'好故事是怎麼被找到、被說出去的。',
+   step:'挑一個週末下午，去農場邊走邊聊。'}
 ];
-const chainGcenters=[
-  [[90,70],[305,70],[520,70],[735,70],[950,70]],
-  [[90,175],[305,175],[520,175],[735,175],[950,175]],
-  [[90,280],[305,280],[520,280],[735,280],[950,280]],
-  [[90,385],[305,385],[520,385],[735,385],[950,385]]
+const renjiGcenters=[[175,135],[530,135],[880,135],[175,350],[530,350],[880,350]];
+
+/* 扶輪模式：五個服務計畫（服務優先、跨職業互學；四大考驗當過濾器） */
+const fulunGroups=[
+  {type:'chain',title:'兒童食農教育日',members:['吳永泰','王淑惠','方怡君','林曉芸'],
+   joint:['農場＋幼兒園＋茶園體驗＋餐飲，合辦「從產地到餐桌」兒童食農日','每個人出自己的專業，成果屬於社區'],
+   talk:'第一場辦在哪、對象是誰、各自出什麼。',
+   step:'先辦一場 20 個家庭的小型試辦。'},
+  {type:'comp',title:'庇護工場升級行動',members:['江秀蘭','蔡明宏','洪雅雯'],
+   joint:['包裝與行銷專業投入一次，幫烘焙產品站上通路','工場得到專業，專業者得到最有溫度的作品'],
+   talk:'第一個要升級的品項、可以敲門的通路名單。',
+   step:'挑一個招牌品項，一個月內做出新包裝提案。'},
+  {type:'ref',title:'家族企業公益諮詢日',members:['張建中','許文琪','黃志偉','江昱德'],
+   joint:['三師合辦免費傳承諮詢日，服務社區的家族企業','諮詢日的經驗整理成知識庫，變成可傳承的教材'],
+   talk:'諮詢日的形式、對象怎麼邀、經驗怎麼留下來。',
+   step:'訂一個日期，先服務五家企業試辦。'},
+  {type:'peer',title:'綠色轉型互學小組',members:['高明德','蘇志豪','楊佳蓉','何俊毅'],
+   joint:['四個職業距離很遠的人，面對同一題：減碳','每月輪流當老師，互學不藏私'],
+   talk:'各自產業的減碳第一步、踩過的雷。',
+   step:'排出前四個月的輪值表，每人教一次。'},
+  {type:'chain',title:'社區聯合服務日',members:['李國豪','曾文昌','周美玲','劉俊賢','郭素芬'],
+   joint:['五攤位的社區開放日：學 AI、動起來、空間諮詢、在地走讀，物流當後勤','跨職業合作一次，看見彼此的專業'],
+   talk:'場地、日期、每一攤要準備什麼。',
+   step:'選一個社區活動中心，先辦半天版。'}
 ];
-const svgDefs='<defs>'+chainRows.map((r,i)=>'<marker id="arrow-'+i+'" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0L10,5L0,10z" fill="'+typeInfo[r.type].color+'"/></marker>').join('')+'</defs>';
+const fulunGcenters=[[170,135],[520,135],[865,135],[265,345],[720,345]];
+
+/* 三種算法的模式定義（核心價值文字＝按鈕 hover 說明） */
+const modeDefs={
+  biz:{label:'商會模式',groups:smallGroups,gcenters:smallGcenters,count:'媒合成 9 組',
+    hint:'👇 點任何一組（或圖上的人），看兩邊為什麼接得起來',
+    core:'問「誰的生意接得起來」：產業鏈上下游、互補方案、客群轉介、同業互助。思路參考 BNI 的引薦模式：先給引薦，再得引薦。'},
+  renji:{label:'人際模式',groups:renjiGroups,gcenters:renjiGcenters,count:'分成 6 個聊得起來的圈',
+    hint:'👇 點任何一圈（或圖上的人），看為什麼聊得起來',
+    core:'問「誰跟誰處得來」：處境相似、話題自然、節奏合拍。先熟人、再談事，信任是媒合的第一層。'},
+  fulun:{label:'扶輪模式',groups:fulunGroups,gcenters:fulunGcenters,count:'組成 5 個服務計畫',
+    hint:'👇 點任何一組（或圖上的人），看這個服務計畫怎麼合作',
+    core:'問「誰能一起做服務、互相學習」：配的不是生意，是服務計畫的搭檔與跨職業互學小組，用四大考驗過濾。'}
+};
+const svgDefs='';
 
 const stage=document.getElementById('stage');
 const svg=document.getElementById('svg');
@@ -1171,9 +1209,11 @@ svg.setAttribute('viewBox','0 0 '+W+' '+H);
 svg.setAttribute('preserveAspectRatio','none');
 svg.innerHTML=svgDefs;
 
-let mode='small';
-const smallGroupOf={}; smallGroups.forEach((g,gi)=>g.members.forEach(nm=>smallGroupOf[nm]=gi));
-const chainGroupOf={}; chainRows.forEach((g,gi)=>g.members.forEach(nm=>chainGroupOf[nm]=gi));
+let mode='biz';
+const groupOfBy={};
+Object.keys(modeDefs).forEach(k=>{
+  const m={};modeDefs[k].groups.forEach((g,gi)=>g.members.forEach(nm=>m[nm]=gi));groupOfBy[k]=m;
+});
 
 function showTip(p,el){
   let h='<div class="tt-h">'+p.nm+'｜'+p.ti+'</div><div class="tt-r">'+p.co+' · '+p.ind+'</div>';
@@ -1193,12 +1233,12 @@ const simNodes=people.map((p,i)=>{
   const col=i%5,row=Math.floor(i/5);
   const sx=110+col*205, sy=70+row*108;
   const el=document.createElement('div');
-  const gi=smallGroupOf[p.nm];
+  const gi=groupOfBy.biz[p.nm];
   el.className='node '+smallGroups[gi].type;
   el.innerHTML='<div class="nm">'+p.nm+'<em>'+p.ti+'</em></div><div class="co">'+p.co+'·'+p.ind+'</div>';
   el.addEventListener('mouseenter',()=>showTip(p,el));
   el.addEventListener('mouseleave',hideTip);
-  el.addEventListener('click',()=>{if(p.nm==='我'||p.nm==='江昱德'){hideTip();openCardModal();return;}if(stage.classList.contains('done')){hideTip();const gi2=(mode==='chain'?chainGroupOf:smallGroupOf)[p.nm];openModal(gi2);}});
+  el.addEventListener('click',()=>{if(p.nm==='我'||p.nm==='江昱德'){hideTip();openCardModal();return;}if(stage.classList.contains('done')){hideTip();const gi2=groupOfBy[mode][p.nm];openModal(gi2);}});
   stage.appendChild(el);
   return {p,el,sx,sy,cx:sx,cy:sy};
 });
@@ -1206,9 +1246,9 @@ const findNode=nm=>simNodes.find(n=>n.p.nm===nm);
 
 const legendEl=document.getElementById('legend');
 function setLegend(){
-  legendEl.innerHTML = mode==='chain'
-    ? chainRows.map(r=>'<span><i class="dot" style="background:'+typeInfo[r.type].color+'"></i>'+r.title+'</span>').join('')
-    : '<span><i class="dot" style="background:var(--chain)"></i>產業鏈（上下游）</span><span><i class="dot" style="background:var(--comp)"></i>兩兩互補</span><span><i class="dot" style="background:var(--ref)"></i>客群轉介</span><span><i class="dot" style="background:var(--peer)"></i>同業互助</span>';
+  legendEl.innerHTML = mode==='biz'
+    ? '<span><i class="dot" style="background:var(--chain)"></i>產業鏈（上下游）</span><span><i class="dot" style="background:var(--comp)"></i>兩兩互補</span><span><i class="dot" style="background:var(--ref)"></i>客群轉介</span><span><i class="dot" style="background:var(--peer)"></i>同業互助</span>'
+    : modeDefs[mode].groups.map(g=>'<span><i class="dot" style="background:'+typeInfo[g.type].color+'"></i>'+g.title+'</span>').join('');
 }
 setLegend();
 
@@ -1226,57 +1266,52 @@ const countEl=document.getElementById('count');
 const hintEl=document.getElementById('hint');
 const resultEl=document.getElementById('result');
 const svgns='http://www.w3.org/2000/svg';
-const modeSmallBtn=document.getElementById('modeSmallBtn');
-const modeChainBtn=document.getElementById('modeChainBtn');
+const modeBtns={biz:document.getElementById('modeBizBtn'),renji:document.getElementById('modeRenjiBtn'),fulun:document.getElementById('modeFulunBtn')};
 
-function currentGroups(){return mode==='chain'?chainRows:smallGroups;}
+function currentGroups(){return modeDefs[mode].groups;}
 
+/* 依組員人數決定圍桌座位 */
+const clusterOff={
+  2:[[0,-42],[0,42]],
+  3:[[0,-50],[-85,44],[85,44]],
+  4:[[-88,-46],[88,-46],[-88,46],[88,46]],
+  5:[[0,-80],[-108,-6],[108,-6],[-62,72],[62,72]]
+};
 function assignPositions(){
-  if(mode==='chain'){
-    chainRows.forEach((g,gi)=>{
-      g.members.forEach((nm,mi)=>{const n=findNode(nm);const pos=chainGcenters[gi][mi];n.cx=pos[0];n.cy=pos[1];});
-    });
-  }else{
-    smallGroups.forEach((g,gi)=>{
-      const ctr=smallGcenters[gi];
-      const off=g.members.length===3?[[0,-50],[-85,44],[85,44]]:[[0,-42],[0,42]];
-      g.members.forEach((nm,mi)=>{const n=findNode(nm);n.cx=ctr[0]+off[mi][0];n.cy=ctr[1]+off[mi][1];});
-    });
-  }
+  const md=modeDefs[mode];
+  md.groups.forEach((g,gi)=>{
+    const ctr=md.gcenters[gi];
+    const off=clusterOff[g.members.length];
+    g.members.forEach((nm,mi)=>{const n=findNode(nm);n.cx=ctr[0]+off[mi][0];n.cy=ctr[1]+off[mi][1];});
+  });
 }
 
+/* 圈圈大小依組員人數 */
+const ellSize={2:[82,96],3:[158,88],4:[168,100],5:[190,125]};
+
 function runSim(){
+  const md=modeDefs[mode];
   const groups=currentGroups();
   simNodes.forEach(n=>{
-    const gi=(mode==='chain'?chainGroupOf:smallGroupOf)[n.p.nm];
+    const gi=groupOfBy[mode][n.p.nm];
     n.el.className='node '+groups[gi].type;
   });
   assignPositions();
   stage.dataset.clustered='1';
   place(true);
   setTimeout(()=>{
-    svg.innerHTML=svgDefs;
+    svg.innerHTML='';
     groups.forEach((g,gi)=>{
       const col=typeInfo[g.type].color,mem=g.members.map(findNode);
-      if(mode==='chain'){
-        const xs=mem.map(m=>m.cx),y=mem[0].cy;
-        const rect=document.createElementNS(svgns,'rect');
-        rect.setAttribute('x',Math.min(...xs)-46);rect.setAttribute('y',y-44);
-        rect.setAttribute('width',(Math.max(...xs)-Math.min(...xs))+92);rect.setAttribute('height',88);
-        rect.setAttribute('rx',44);rect.setAttribute('fill',col);rect.setAttribute('opacity','0');
-        rect.style.transition='opacity .5s';rect.style.transitionDelay=(0.07*gi)+'s';
-        svg.appendChild(rect);
-        requestAnimationFrame(()=>rect.setAttribute('opacity','0.10'));
-      }else{
-        const ctr=smallGcenters[gi];
-        const ell=document.createElementNS(svgns,'ellipse');
-        ell.setAttribute('cx',ctr[0]);ell.setAttribute('cy',ctr[1]);
-        ell.setAttribute('rx',g.members.length===3?158:82);ell.setAttribute('ry',g.members.length===3?88:96);
-        ell.setAttribute('fill',col);ell.setAttribute('opacity','0');
-        ell.style.transition='opacity .5s';ell.style.transitionDelay=(0.07*gi)+'s';
-        svg.appendChild(ell);
-        requestAnimationFrame(()=>ell.setAttribute('opacity','0.09'));
-      }
+      const ctr=md.gcenters[gi];
+      const sz=ellSize[g.members.length];
+      const ell=document.createElementNS(svgns,'ellipse');
+      ell.setAttribute('cx',ctr[0]);ell.setAttribute('cy',ctr[1]);
+      ell.setAttribute('rx',sz[0]);ell.setAttribute('ry',sz[1]);
+      ell.setAttribute('fill',col);ell.setAttribute('opacity','0');
+      ell.style.transition='opacity .5s';ell.style.transitionDelay=(0.07*gi)+'s';
+      svg.appendChild(ell);
+      requestAnimationFrame(()=>ell.setAttribute('opacity','0.09'));
       for(let k=0;k<mem.length-1;k++){
         const a=mem[k],b=mem[k+1];
         const ln=document.createElementNS(svgns,'line');
@@ -1284,7 +1319,6 @@ function runSim(){
         ln.setAttribute('x2',b.cx);ln.setAttribute('y2',b.cy);
         ln.setAttribute('stroke',col);ln.setAttribute('stroke-width','2.6');
         ln.setAttribute('stroke-linecap','round');ln.setAttribute('opacity','0');
-        if(mode==='chain')ln.setAttribute('marker-end','url(#arrow-'+gi+')');
         ln.style.transition='opacity .5s';ln.style.transitionDelay=(0.07*gi+0.12)+'s';
         svg.appendChild(ln);
         requestAnimationFrame(()=>ln.setAttribute('opacity','0.6'));
@@ -1292,16 +1326,16 @@ function runSim(){
     });
     stage.classList.add('done');
   },900);
-  countEl.textContent = mode==='chain' ? '串成 4 條產業鏈' : '媒合成 9 組';
-  hintEl.textContent = mode==='chain' ? '👇 點任一條鏈（或圖上的人），看這條鏈怎麼串起來' : '👇 點任何一組（或圖上的人），看兩邊為什麼接得起來';
+  countEl.textContent = md.count;
+  hintEl.innerHTML = '<b>'+md.label+'：</b>'+md.core+'<br>'+md.hint;
   resultEl.innerHTML='';
-  currentGroups().forEach((g,gi)=>{
+  groups.forEach((g,gi)=>{
     const div=document.createElement('div');
     div.className='grp';
     div.style.borderLeft='6px solid '+typeInfo[g.type].color;
-    div.innerHTML = mode==='chain'
-      ? '<b>'+g.title+'</b>　'+g.members.map(renderMemberName).join('　→　')+'<span class="go">看接點 ›</span>'
-      : '<b>'+typeInfo[g.type].name+'</b>　'+g.members.map(renderMemberName).join('　↔　')+'<span class="go">看接點 ›</span>';
+    div.innerHTML = mode==='biz'
+      ? '<b>'+typeInfo[g.type].name+'</b>　'+g.members.map(renderMemberName).join('　↔　')+'<span class="go">看接點 ›</span>'
+      : '<b>'+g.title+'</b>　'+g.members.map(renderMemberName).join('、')+'<span class="go">'+(mode==='fulun'?'看計畫 ›':'看為什麼 ›')+'</span>';
     div.onclick=()=>openModal(gi);
     resultEl.appendChild(div);
     wireCardLinks(div);
@@ -1312,18 +1346,31 @@ function resetSim(){
   stage.dataset.clustered='0';
   stage.classList.remove('done');
   place(false);
-  svg.innerHTML=svgDefs;
+  svg.innerHTML='';
   countEl.textContent='';
   hintEl.textContent='';
   resultEl.classList.remove('show');
-  modeSmallBtn.classList.remove('active');
-  modeChainBtn.classList.remove('active');
+  Object.values(modeBtns).forEach(b=>b.classList.remove('active'));
 }
-modeSmallBtn.onclick=()=>{mode='small';modeSmallBtn.classList.add('active');modeChainBtn.classList.remove('active');setLegend();runSim();};
-modeChainBtn.onclick=()=>{mode='chain';modeChainBtn.classList.add('active');modeSmallBtn.classList.remove('active');setLegend();runSim();};
+Object.keys(modeBtns).forEach(k=>{
+  const b=modeBtns[k];
+  b.onclick=()=>{mode=k;Object.values(modeBtns).forEach(x=>x.classList.remove('active'));b.classList.add('active');setLegend();runSim();};
+  /* 滑鼠移過去：顯示這個算法的核心價值 */
+  b.addEventListener('mouseenter',()=>{
+    tip.innerHTML='<div class="tt-h">'+modeDefs[k].label+'</div><div class="tt-r">'+modeDefs[k].core+'</div>';
+    tip.style.display='block';
+    const r=b.getBoundingClientRect(),tr=tip.getBoundingClientRect();
+    let left=r.left+r.width/2-tr.width/2;
+    left=Math.max(10,Math.min(left,window.innerWidth-tr.width-10));
+    let top=r.top-tr.height-12;if(top<10)top=r.bottom+12;
+    tip.style.left=left+'px';tip.style.top=top+'px';
+    requestAnimationFrame(()=>tip.classList.add('show'));
+  });
+  b.addEventListener('mouseleave',hideTip);
+});
 document.getElementById('resetBtn').onclick=resetSim;
 
-/* ---------- 彈窗（小組模式＝文氏圖／產業鏈模式＝流程列） ---------- */
+/* ---------- 彈窗（商會模式＝文氏圖／人際與扶輪模式＝成員列表＋接點） ---------- */
 const modal=document.getElementById('modal');
 const mbox=document.getElementById('mbox');
 const personOf=nm=>people.find(p=>p.nm===nm);
@@ -1344,7 +1391,7 @@ function bubbleCol(p,side){
   return h+'</div>';
 }
 function openModal(gi){
-  if(mode==='chain'){openChainModal(gi);return;}
+  if(mode!=='biz'){openGroupModal(gi);return;}
   const g=smallGroups[gi],ti=typeInfo[g.type];
   const mem=g.members.map(personOf);
   let h='<button class="mclose" onclick="closeModal()">✕</button>';
@@ -1374,19 +1421,19 @@ function openModal(gi){
   wireCardLinks(mbox);
   modal.classList.add('show');
 }
-function openChainModal(gi){
-  const g=chainRows[gi],ti=typeInfo[g.type];
+function openGroupModal(gi){
+  const g=modeDefs[mode].groups[gi],ti=typeInfo[g.type];
   const mem=g.members.map(personOf);
   let h='<button class="mclose" onclick="closeModal()">✕</button>';
-  h+='<span class="mtype" style="background:'+ti.color+'">產業鏈</span>';
+  h+='<span class="mtype" style="background:'+ti.color+'">'+(mode==='renji'?'人際圈':'服務計畫')+'</span>';
   h+='<div class="mtitle">'+g.title+'</div>';
-  h+='<div class="msub">'+mem.map(p=>p.nm).join(' → ')+'</div>';
+  h+='<div class="msub">'+mem.map(p=>p.nm).join('、')+'</div>';
   h+='<div class="flowlist">';
   mem.forEach((p,i)=>{
     h+='<div class="flowitem"><span class="fi-n">'+(i+1)+'</span><div><b>'+renderMemberName(p.nm)+'</b>｜'+p.ti+'<div class="fi-co">'+p.co+' · '+p.ind+'</div></div></div>';
-    if(i<mem.length-1){h+='<div class="flowarrow">↓ '+g.joint[i]+'</div>';}
   });
   h+='</div>';
+  h+='<div class="mrow" style="background:#fbf3e3"><b>'+(mode==='renji'?'為什麼聊得起來：':'服務接點：')+'</b><span>'+g.joint.join('；')+'</span></div>';
   h+='<div class="mrow"><b>可以聊：</b><span>'+g.talk+'</span></div>';
   h+='<div class="mrow"><b>建議第一步：</b><span>'+g.step+'</span></div>';
   mbox.innerHTML=h;
