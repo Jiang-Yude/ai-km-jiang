@@ -2350,6 +2350,28 @@
       });
       const dots = Array.from(dotsHost.querySelectorAll('button'));
 
+      // 現場補充：浮動視窗一次只留一個，換頁、點外面、按 Esc 都會收起來
+      const liveNotes = Array.from(document.querySelectorAll('.live-note'));
+      const inlineNoteQuery = window.matchMedia('(max-width: 720px)');
+
+      function closeLiveNotes(except) {
+        liveNotes.forEach((note) => {
+          if (note !== except && note.open) note.open = false;
+        });
+      }
+
+      liveNotes.forEach((note) => {
+        note.addEventListener('toggle', () => {
+          if (note.open) closeLiveNotes(note);
+        });
+      });
+
+      document.addEventListener('pointerdown', (event) => {
+        if (inlineNoteQuery.matches) return;
+        if (event.target.closest && event.target.closest('.live-note')) return;
+        closeLiveNotes();
+      }, true);
+
       const revealObserver = new IntersectionObserver((entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) entry.target.classList.add('seen');
@@ -2368,6 +2390,7 @@
           slide.classList.toggle('active', i === index);
         });
         dots.forEach((dot, i) => dot.classList.toggle('active', i === index));
+        if (!inlineNoteQuery.matches) closeLiveNotes(slides[index].querySelector('.live-note'));
         document.body.classList.toggle('on-dark', index === slides.length - 1);
         counter.textContent = `${index + 1} / ${slides.length}`;
         progress.style.width = `${((index + 1) / slides.length) * 100}%`;
@@ -2459,7 +2482,7 @@
         if (event.key.toLowerCase() === 'n') toggleNotes();
         if (event.key.toLowerCase() === 'f') toggleFullscreen();
         if (event.key === '?') toggleHelp();
-        if (event.key === 'Escape') { notesPanel.classList.remove('open'); help.classList.remove('open'); }
+        if (event.key === 'Escape') { notesPanel.classList.remove('open'); help.classList.remove('open'); closeLiveNotes(); }
       });
 
       document.addEventListener('touchstart', (event) => { touchStartX = event.changedTouches[0].screenX; }, { passive: true });
