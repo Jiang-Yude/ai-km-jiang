@@ -4,11 +4,15 @@
  * ─── 欄位 ───
  *   id           - 唯一識別碼，格式 YYYY-MM-DD-slug
  *   date         - YYYY-MM-DD；籌備中且日期未定可填 null
- *   date_label   - date=null 時顯示的文字，預設「日期待定」
+ *   date_label   - 有填就優先顯示（多日系列課用；date 仍管排序與過期），date=null 時預設「日期待定」
  *   time         - HH:MM 或 null
  *   duration_min - 分鐘數或 null
  *   title        - 課程標題
- *   type_label   - badge 上的中文標籤（保留給未來用）
+ *   type_label   - ⚠️ 不是裝飾，是分區路由依據：courses-render.js inferType() 用關鍵字判類。
+ *                  含「免費」→免費講座區｜含「付費」→收費課程區｜含「Podcast」／「外部」→邀約授課區。
+ *                  機構邀約／專場一律寫「外部授課」。關鍵字都不含＝other：只會出現在近期課程，
+ *                  日期一過就從課程頁消失（僅 registration.status="private" 有 fallback 收進邀約區）。
+ *                  2026-08-06 事故補記：8/4 卡曾寫「實體課程」，課後整張卡從課程頁消失。
  *   image        - 封面圖 4:5 直幅（"images/courses/xxx.jpg"）或 null
  *   venue_mode   - 場域：online / physical / hybrid / podcast / tbd
  *   host         - 講師
