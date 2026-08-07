@@ -1,0 +1,503 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="index,follow">
+<title>資料清理只是第一關：長文件審不出錯的三層設計｜江江教練 · AI 知識管理</title>
+<meta name="description" content="一份 150 頁教材，一家模型改了十幾次沒問題，換一家立刻審出標準規範錯誤。長文件出錯通常是三層設計沒做：材料、切法、視角。這篇拆開三層怎麼做，含指定規範版本的規則、兩種切法互相覆蓋、只能用一家模型時的退路。">
+<link rel="canonical" href="https://jiangyude.com/articles/long-document-review-layers/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="資料清理只是第一關：長文件審不出錯的三層設計｜江江教練">
+<!-- 分享封面：hero 文字填好後在 repo 根目錄跑 `node scripts/og-shot.mjs long-document-review-layers` 自動截 1200×630 到 images/og/long-document-review-layers.jpg（見 README「文章分享封面（OG 圖）機制」）。別退回 intro-jiang.png 直式人像，會被裁成只剩脖子。 -->
+<meta property="og:image" content="https://jiangyude.com/images/og/long-document-review-layers.jpg">
+<meta property="og:description" content="一份 150 頁教材，一家模型改了十幾次沒問題，換一家立刻審出標準規範錯誤。長文件出錯通常是三層設計沒做：材料、切法、視角。這篇拆開三層怎麼做，含指定規範版本的規則、兩種切法互相覆蓋、只能用一家模型時的退路。">
+<meta property="og:url" content="https://jiangyude.com/articles/long-document-review-layers/">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:site_name" content="江江教練 · AI 知識管理">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="資料清理只是第一關：長文件審不出錯的三層設計｜江江教練">
+<meta name="twitter:image" content="https://jiangyude.com/images/og/long-document-review-layers.jpg">
+<meta name="twitter:description" content="一份 150 頁教材，一家模型改了十幾次沒問題，換一家立刻審出標準規範錯誤。長文件出錯通常是三層設計沒做：材料、切法、視角。這篇拆開三層怎麼做，含指定規範版本的規則、兩種切法互相覆蓋、只能用一家模型時的退路。">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"資料清理只是第一關：長文件審不出錯的三層設計","description":"一份 150 頁教材，一家模型改了十幾次沒問題，換一家立刻審出標準規範錯誤。長文件出錯通常是三層設計沒做：材料、切法、視角。這篇拆開三層怎麼做，含指定規範版本的規則、兩種切法互相覆蓋、只能用一家模型時的退路。","author":{"@type":"Person","name":"江昱德","alternateName":"江江教練","jobTitle":"隱性知識提煉師、AI 應用規劃師"},"isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://jiangyude.com/"},"inLanguage":"zh-Hant","url":"https://jiangyude.com/articles/long-document-review-layers/"}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{--ink:#1a1612;--paper:#fefcf8;--muted:#6a635a;--line:#d8cdb8;--green:#5f7553;--blue:#5689b8;--orange:#e85a4f;--soft:#faf5ec;--dark:#2a2018;--shadow:0 18px 45px rgba(107,74,42,.14);--sp-shadow:hsla(35,50%,60%,.15);--sp-shadow-edge:hsla(35,50%,68%,.03);--sp-radius:400px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC","Segoe UI",sans-serif}
+a{color:inherit}
+/* 官網共用導航列 nav.top（與首頁/文章總站同一條） */
+nav.top{position:sticky;top:0;background:rgba(254,252,248,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid #d8cdb8;z-index:100}
+nav.top .container{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:24px;padding:14px 32px}
+.nav-brand-img{justify-self:start;display:flex;align-items:center;text-decoration:none;flex-shrink:0;transition:opacity .2s}
+.nav-brand-img:hover{opacity:.8}.nav-brand-img img{height:40px;width:auto;display:block}
+nav.top ul.nav-menu{justify-self:end;display:flex;gap:22px;list-style:none;margin:0;padding:0;font-size:.95rem;white-space:nowrap}
+nav.top ul.nav-menu a{color:#3a342d;text-decoration:none;transition:color .2s;font-weight:500;white-space:nowrap}
+nav.top ul.nav-menu a:hover{color:#1a1612}nav.top ul.nav-menu a.active{color:#1a1612;font-weight:700}
+.nav-toggle{display:none;background:none;border:none;padding:6px;cursor:pointer;width:36px;height:36px;position:relative}
+.nav-toggle span{display:block;position:absolute;left:8px;right:8px;height:2px;background:#1a1612;border-radius:2px;transition:transform .25s,opacity .25s,top .25s}
+.nav-toggle span:nth-child(1){top:11px}.nav-toggle span:nth-child(2){top:17px}.nav-toggle span:nth-child(3){top:23px}
+.nav-toggle.open span:nth-child(1){top:17px;transform:rotate(45deg)}.nav-toggle.open span:nth-child(2){opacity:0}.nav-toggle.open span:nth-child(3){top:17px;transform:rotate(-45deg)}
+@media(max-width:860px){
+ nav.top .container{grid-template-columns:auto 1fr auto;padding:10px 16px;gap:12px}
+ .nav-brand-img img{height:32px}
+ .nav-toggle{display:block;justify-self:end}
+ nav.top ul.nav-menu{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(254,252,248,.98);backdrop-filter:blur(14px);border-bottom:1px solid #d8cdb8;flex-direction:column;gap:0;padding:8px 0;box-shadow:0 10px 24px rgba(107,74,42,.08)}
+ nav.top ul.nav-menu.open{display:flex}
+ nav.top ul.nav-menu li{border-bottom:1px solid #e8dfc9}
+ nav.top ul.nav-menu li:last-child{border-bottom:none}
+ nav.top ul.nav-menu a{display:block;padding:14px 20px;font-size:1.06rem}
+}
+/* 滑鼠暖光暈（與首頁同一支 spotlight.js） */
+body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradient(var(--sp-radius) circle at var(--mx,50%) var(--my,50%),var(--sp-shadow) 0%,var(--sp-shadow-edge) 45%,transparent 75%);pointer-events:none;z-index:9999;mix-blend-mode:multiply;transition:background .06s linear}
+.hero{position:relative;overflow:hidden;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:72px;padding:96px clamp(20px,6vw,88px) 80px;background:linear-gradient(180deg,#fffcf0 0%,#f9e9d2 100%);color:#1a1612;border-bottom:1px solid #d8cdb8}
+.hero .wc{position:absolute;border-radius:50%;filter:blur(60px);pointer-events:none;z-index:0}
+.hero .wc1{width:420px;height:360px;top:-120px;right:-80px;background:#e8884b;opacity:.15}
+.hero .wc2{width:360px;height:300px;bottom:-110px;left:-70px;background:#5f7553;opacity:.13}
+.hero .wc3{width:280px;height:260px;top:34%;left:14%;background:#a08144;opacity:.10}
+.hero>div{flex:none;width:860px;max-width:100%;position:relative;z-index:2}
+.hero-figure{margin:0;width:420px;flex:none;position:relative;z-index:2}
+.hero-figure img{display:block;width:100%;border-radius:16px;border:1px solid #d8cdb8;box-shadow:0 18px 45px rgba(107,74,42,.16);cursor:zoom-in}
+.hero-figure figcaption{margin-top:10px;font-size:14px;line-height:1.6;color:#6a635a}
+.inline-figure{margin:30px auto 8px;max-width:820px}
+.inline-figure img{display:block;width:100%;border-radius:14px;border:1px solid var(--line);box-shadow:var(--shadow);background:#fff;cursor:zoom-in}
+.inline-figure figcaption{font-size:14px;line-height:1.6;color:var(--muted);margin-top:10px}
+.lightbox{position:fixed;inset:0;z-index:10000;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(12,10,8,.92);cursor:zoom-out;backdrop-filter:blur(4px)}
+.lightbox.open{display:flex}.lightbox img{max-width:96vw;max-height:92vh;border-radius:10px;box-shadow:0 24px 60px rgba(0,0,0,.5)}
+.lightbox-close{position:fixed;top:18px;right:24px;color:#fff;font-size:34px;line-height:1;font-weight:700;cursor:pointer;opacity:.85}
+.kicker{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.55rem;color:#7a5c3a;font-weight:500}
+.hero h1{max-width:none;margin:16px 0 18px;font-size:clamp(36px,6vw,72px);line-height:1.08;overflow-wrap:anywhere}
+.hero p{max-width:none;font-size:clamp(18px,2vw,23px);line-height:1.62;color:#3a342d}
+.cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
+.cta a{display:inline-flex;align-items:center;text-decoration:none;border-radius:8px;padding:12px 16px;font-weight:900}
+.cta .primary{background:#fff;color:#1a1612}.cta .ghost{border:1px solid rgba(255,255,255,.32);color:#fff;background:rgba(255,255,255,.08)}
+.section{padding:54px clamp(20px,6vw,88px);border-top:1px solid var(--line)}
+.inner{width:min(1000px,100%);margin:0 auto}
+.section h2{font-size:clamp(26px,4.2vw,48px);line-height:1.12;margin:0 0 18px}
+.section h3{font-size:clamp(21px,3vw,30px);line-height:1.2;margin:30px 0 12px}
+.lead{font-size:clamp(18px,1.6vw,22px);line-height:1.7;color:#3a342d;max-width:900px}
+.section p{font-size:18px;line-height:1.74;color:#3a342d}.section p+p{margin-top:14px}
+.section ul,.section ol{padding-left:1.4em;font-size:18px;line-height:1.74;color:#3a342d}.section li{margin-bottom:8px}
+.meaning{margin:22px 0;padding:16px 18px;border-left:5px solid var(--blue);background:rgba(86,137,184,.12);border-radius:6px;line-height:1.7;font-size:19px}
+.meaning b{display:block;color:var(--blue);margin-bottom:4px}
+.caveat{margin:0 0 8px;padding:16px 18px;border-left:5px solid var(--orange);background:rgba(232,90,79,.1);border-radius:6px;line-height:1.7;font-size:18px;color:#3a342d}
+.caveat b{display:block;color:var(--orange);margin-bottom:4px}
+.infocard{background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px 24px 22px;box-shadow:0 8px 22px rgba(107,74,42,.08);margin-top:8px}
+.infocard-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.info-item{padding:18px 14px 0}
+.info-item b{display:block;font-size:14px;font-weight:900;letter-spacing:.04em;margin-bottom:7px;text-transform:uppercase}
+.info-item:nth-child(1) b{color:var(--green)}.info-item:nth-child(2) b{color:var(--orange)}.info-item:nth-child(3) b{color:var(--blue)}
+.info-item p{margin:0;font-size:17px;line-height:1.6;color:#3a342d}
+.tagrow{display:flex;flex-wrap:wrap;gap:7px;margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
+.tag{font-size:14px;color:var(--muted);background:var(--soft);border:1px solid var(--line);border-radius:999px;padding:4px 11px}
+.duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:24px}
+.duo.stack{grid-template-columns:1fr}
+.duo .card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:22px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.duo .card.a{border-color:var(--orange)}.duo .card.b{border-color:var(--green);box-shadow:0 8px 24px rgba(95,117,83,.16)}
+.duo .card small{display:block;font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.04em;margin-bottom:9px}
+.duo .card.a small{color:var(--orange)}.duo .card.b small{color:var(--green)}
+.duo .card b{display:block;font-size:22px;line-height:1.3;margin-bottom:12px}.duo .card.a b{color:#c0512f}.duo .card.b b{color:#4a7a59}
+.duo .card p{margin:0;color:#3a342d;line-height:1.75;font-size:18px}
+.workflow-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:24px}
+.workflow-step{background:#fff;border:1px solid var(--line);border-radius:8px;padding:18px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.workflow-step small{display:block;color:var(--orange);font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;margin-bottom:9px}
+.workflow-step b{display:block;font-size:18px;line-height:1.3;margin-bottom:9px}
+.workflow-step p{margin:0;color:#3a342d;line-height:1.6;font-size:16px}
+.codeblock{background:var(--dark);color:#f3ead9;border-radius:8px;padding:18px 20px;font:500 14px/1.65 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;overflow-x:auto;white-space:pre-wrap;margin:20px 0;box-shadow:0 8px 22px rgba(107,74,42,.12)}
+.codeblock .c{color:#f6d7a6;font-weight:600}
+.skillcard{background:#fff;border:1px solid var(--green);border-radius:12px;padding:24px;box-shadow:0 10px 26px rgba(95,117,83,.16);margin-top:8px}
+.skillcard b{display:block;font-size:21px;margin-bottom:8px}
+.skillcard p{margin:0 0 16px;font-size:17px;line-height:1.65;color:#3a342d}
+.cta-band{background:#e6f0e5;color:#3a342d}.cta-band .section{border-top:none}
+.cta-band .inner{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(260px,.85fr);gap:26px;align-items:start}
+.cta-band h2{font-size:clamp(26px,4vw,44px);margin:0 0 16px}.cta-band p,.cta-band .lead{color:rgba(58,52,45,.9);font-size:18px;line-height:1.72}
+.cta-card{border:1px solid #cfe0d2;background:#fbfdfa;border-radius:8px;padding:22px}
+.cta-card b{display:block;color:#48b178;margin-bottom:10px;font-size:18px}.cta-card p{margin:0 0 14px}
+.footer{padding:30px clamp(20px,6vw,88px);font-size:14px;color:var(--muted);background:#fff;border-top:1px solid var(--line)}
+.footer-inner{width:min(1000px,100%);margin:0 auto}
+.footer-links{display:flex;flex-wrap:wrap;gap:6px 12px;margin-bottom:14px}.footer-links a{color:var(--blue);font-weight:900;text-decoration:none;font-size:14px}
+.footer-brand{font-weight:900;font-size:15px;margin-bottom:10px}.footer-note{font-size:13px;line-height:1.6}
+@media(max-width:820px){.infocard-grid{grid-template-columns:1fr}.duo{grid-template-columns:1fr}.workflow-grid{grid-template-columns:1fr}.cta-band .inner{grid-template-columns:1fr}.section{padding:40px 20px}.hero{min-height:52vh;flex-direction:column;justify-content:flex-start;align-items:flex-start;gap:24px}.hero>div{width:100%}.hero-figure{width:100%;max-width:560px}}
+@media(max-width:820px){html,body{overflow-x:hidden}.hero h1{word-break:break-word}}
+.codeblock{position:relative}
+.copy-btn{position:absolute;top:10px;right:10px;padding:5px 12px;border:1px solid rgba(243,234,217,.35);border-radius:6px;background:rgba(243,234,217,.1);color:#f3ead9;font:700 13px/1.2 -apple-system,"PingFang TC",sans-serif;cursor:pointer;transition:background .2s}
+.copy-btn:hover{background:rgba(243,234,217,.22)}
+.copy-btn.done{background:#5f7553;border-color:#5f7553;color:#fff}
+@media(max-width:820px){.copy-btn{position:static;display:block;margin:0 0 12px auto}}
+.said{margin:26px 0;padding:20px 24px;border-left:5px solid var(--green);border-radius:0 10px 10px 0;background:#f3f6f1;color:#2f3a2a;font-size:clamp(19px,1.9vw,23px);line-height:1.68;font-weight:560}
+.said cite{display:block;margin-top:10px;color:var(--muted);font-size:14px;font-style:normal;font-weight:700;letter-spacing:.02em}
+.said cite::before{content:"— "}
+/* 四欄卡片（文章模板原本只有 .duo 與 .workflow-grid，這裡補上） */
+.grid-4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-top:24px}
+.grid-4 .card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:20px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.grid-4 .card.sage{border-color:var(--green)}
+.grid-4 .card.brick{border-color:var(--orange)}
+.grid-4 .card.paper{background:var(--soft)}
+.grid-4 .card .index{display:block;font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--muted);letter-spacing:.04em;margin-bottom:9px}
+.grid-4 .card h3{font-size:19px;line-height:1.3;margin:0 0 8px}
+.grid-4 .card p{margin:0;font-size:16px;line-height:1.62;color:#3a342d}
+/* 關鍵字格 */
+.keyword-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:24px}
+.keyword{background:#fff;border:1px solid var(--line);border-left:4px solid var(--orange);border-radius:10px;padding:18px 20px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.keyword strong{display:block;font-size:19px;line-height:1.35;margin-bottom:8px;color:#c0512f}
+.keyword p{margin:0;font-size:16px;line-height:1.62;color:#3a342d}
+nav.top ul.nav-menu li.lang-switch a{font-weight:800;letter-spacing:.06em}
+@media(max-width:820px){.grid-4{grid-template-columns:1fr}.keyword-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body class="spotlight">
+<!-- 官網共用導航列 nav.top：與首頁/總站同一條，文章不要自己另做極簡 topbar（江江 2026-06-25：要同一個框架、同一條導航列）。把對應頁面的 class="active" 標在自己那欄。 -->
+<nav class="top">
+  <div class="container">
+    <a class="nav-brand-img" href="../../index.html"><img src="../../images/footer-signature.png" alt="江江教練 | 江昱德"></a>
+    <button class="nav-toggle" aria-label="選單"><span></span><span></span><span></span></button>
+    <ul class="nav-menu">
+      <li><a href="../../index.html">首頁</a></li>
+      <li><a href="../../knowledge-architecture.html">知識架構</a></li>
+      <li><a href="../../courses.html">課程</a></li>
+      <li><a href="../../articles.html" class="active">深度文章</a></li>
+      <li><a href="../../skills.html">技能包下載</a></li>
+      <li><a href="../../offers.html">服務方案</a></li>
+      <li class="lang-switch"><a href="../../en/articles.html" hreflang="en">EN</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="wc wc1"></div>
+  <div class="wc wc2"></div>
+  <div class="wc wc3"></div>
+  <div>
+    <div class="kicker">AI 應用 / 文件審查</div>
+    <h1>資料清理只是第一關：長文件審不出錯的三層設計</h1>
+    <p>同一份材料、同一個模型、同一種問法，跑第十次跟跑第二次通常不會有本質差別。要換的是層，不是次數。</p>
+  </div>
+</section>
+
+<main>
+
+<section class="section" id="start">
+  <div class="inner">
+    <h2>這篇在講什麼</h2>
+    <p class="lead">有位學員在講座上問了一個很好的問題。他做了一份 150 頁的教材簡報，先用一家模型反覆檢查內容、結構、章節順序，改了十幾次，覺得差不多了；換另一家模型審一遍，竟然找出內容裡的標準規範錯誤，而原本那家開了深度思考也沒抓到。他後來查出來，問題是兩套國際標準的差異。</p>
+    <div class="said">「我用的兩家模型都是新的，也用了深度思考，反覆做了超過十次，結果還是有差異。所以應可證明不能只相信一家的 AI，或說，各家的功能與強調的方向可能不同。」<cite>2026-08-02 講座學員提問</cite></div>
+    <p>他反覆做了超過十次，兩家都用最新模型、都開了深度思考，結果還是有落差。就這個案例看，問題比較像是材料、指令與機制的設計，不是靠換更強的模型能解決的；但也不能只憑一個案例就完全排除模型能力這一項。</p>
+    <p>我的判斷是：長文件出錯，通常是三層設計沒做，而多數人只做了第一層，甚至第一層也沒做。這篇把三層拆開來講，並且給你一段比「再跑一次」更有效的提示詞。</p>
+
+    <p>這篇分三段：</p>
+    <ol>
+      <li><b>第一到第二節</b>：為什麼反覆重跑沒有用，三層設計是哪三層</li>
+      <li><b>第三到第五節</b>：每一層具體怎麼做，含可以直接複製的做法</li>
+      <li><b>第六到第八節</b>：出錯之後怎麼判斷是哪一種問題、跑幾輪要停、怎麼把這套變成 AI 自己會跑的流程</li>
+    </ol>
+
+    <div class="duo stack">
+      <div class="card a">
+        <b>適合誰</b>
+        <ul>
+          <li>要用 AI 檢查長文件的人：教材、報告、規範、合約、標書</li>
+          <li>已經換過模型、開過深度思考，結果還是不放心的人</li>
+          <li>想把一次性的檢查，變成下次可以重複用的流程的人</li>
+          <li>（第五節與第七節不限長文件，任何會跟 AI 反覆來回修改的人都用得上）</li>
+        </ul>
+      </div>
+      <div class="card b">
+        <b>你可以帶走什麼</b>
+        <ul>
+          <li>三層檢查的順序與各層的判準</li>
+          <li>兩種切法互相覆蓋的做法，以及為什麼一種切法不夠</li>
+          <li>一段可直接複製的提示詞，用來跟 AI 討論它為什麼會出錯</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="why-rerun-fails">
+  <div class="inner">
+    <h2>一、為什麼反覆重跑十幾次沒有用</h2>
+    <p>先講一個直覺上很難接受的事實：同一份材料、同一個模型、同一種問法，跑第十次跟跑第二次，通常不會有本質差別。每一次的字句會不一樣，偶爾也會多抓到一兩處，但同一層的盲點不會因為多跑幾次就自己消失。原因有三個，而且它們是不同層的問題。</p>
+
+    <div class="workflow-grid">
+      <div class="workflow-step">
+        <small>第一層</small>
+        <b>材料</b>
+        <p>AI 讀到的東西跟你看到的不一樣。這是資料清理要解決的。</p>
+      </div>
+      <div class="workflow-step">
+        <small>第二層</small>
+        <b>切法</b>
+        <p>一次讀太多，它會漏。這是分區塊要解決的。</p>
+      </div>
+      <div class="workflow-step">
+        <small>第三層</small>
+        <b>視角</b>
+        <p>同一個模型會沿用同一套偏好，它覺得對的地方，回頭審還是覺得對。這是換一家模型要解決的。</p>
+      </div>
+    </div>
+
+    <p>反覆重跑，只是在同一層裡面繞。你重跑十次，材料還是那份難讀的材料、切法還是那個一次吞完的切法、視角還是同一個視角。</p>
+    <div class="meaning"><b>順序很重要</b>先把材料變成它讀得懂的，再決定怎麼切，最後才找第二個視角。跳過前兩層直接找第二家模型，你只會得到兩份都建立在同一個誤讀上的檢查報告。</div>
+  </div>
+</section>
+
+<section class="section" id="layer-material">
+  <div class="inner">
+    <h2>二、第一層：材料，先確認它讀到的跟你看到的一樣</h2>
+    <p>這一層官網已經有兩篇寫得很完整，直接給你連結：</p>
+    <ul>
+      <li><a href="../why-split-data-into-cards/">為什麼要把資料拆成卡片：從 PDF 難讀到 AI 檢索的卡片化教學</a>：PDF 與 PPT 為什麼是給人看的印刷格式、AI 讀起來是座標與程式碼，以及怎麼拆。<b>150 頁 PPT 實際怎麼轉，看這篇。</b></li>
+      <li><a href="../ai-data-organization-usable-system/">AI 時代怎麼整理資料，讓文件變成可用的系統</a>：清理完之後怎麼整理成人跟 AI 都能操作的系統。</li>
+    </ul>
+    <p>所以這裡不重複，只補三件跟「審查」直接相關的事。</p>
+
+    <h3>嚴肅規範類的內容要優先清理</h3>
+    <p>教材、法規、標準、合約這一類，錯一個版本號、錯一個標準代號，整段結論就跟著錯，而且錯得很像對的。這種內容我一律建議先轉成純文字的 Markdown 檔，把章節架構跟內容檢索一起整理出來，再交給 AI 分析。轉出來的是給 AI 讀的可檢索副本，原檔要留著：表格、圖片裡的字、頁尾註解這些東西轉檔時最容易掉，所以下一段的抽樣核對要回原檔比對。</p>
+    <div class="said">「我目前遇到說文件容易有幻覺的，90% 的人做資料清理之後都會有極大幅度的改善。」<cite>2026-08-02 講座現場</cite></div>
+
+    <h3>清理完要做一次抽樣核對</h3>
+    <p>不要清完就直接開始審。隨機挑三到五個地方，回頭跟原檔核對一次：表格有沒有跳列、頁尾註解有沒有被吃掉、圖片裡的文字有沒有完全消失。這一步花五分鐘，可以省掉後面十次白跑。</p>
+
+    <h3>把「出處」變成規則的一部分</h3>
+    <p>這是那位學員的案例給我的啟發：既然錯的是規範版本，那就在檢查規則裡要求它標出處。</p>
+    <div class="codeblock">凡是你提到規範、標準、法條、版本號的地方，
+一律在句子後面標出：出自哪一份文件、第幾章節、哪一版。
+
+你在原始材料裡找不到出處的，不要寫成肯定句，
+改成「這一點材料裡沒有明確依據」並且列出來給我。</div>
+    <p>這段話的作用是把它「順口說出來」的東西，變成必須舉證的東西。沒有出處的說法會自己浮出來。</p>
+
+    <div class="caveat"><b>但這條擋不住開頭那個案例</b>學員那份教材的錯，是兩套國際標準搞混。兩套標準都真實存在、都查得到出處，所以它引用錯的那一套時，照樣標得出出處給你看，而且看起來完全合理。要擋這種錯，規則要再加一層：<b>先指定這份文件適用哪一套、哪一版，再要求它每次引用都跟這一行比對。</b></div>
+    <div class="codeblock">本文件適用的規範是：{填你的標準名稱與版本，例如 XXX 標準 2023 版}。
+
+你每次引用規範時，先跟上面這一行比對：
+1. 相符 → 照常寫，後面標出章節
+2. 不相符（引到別套或別版）→ 標成【版本不符】並列出來
+3. 材料裡沒有寫明是哪一套 → 標成【待確認適用版本】，不要自己挑一套
+
+最後給我一份清單：哪些地方是【版本不符】、哪些是【待確認】。</div>
+    <p>這一層的關鍵在第三種情況。多數規範類的錯誤不是憑空捏造，是在兩套都成立的東西之間選錯了一套，而它選的時候不會告訴你它做過選擇。你要做的是把「選擇」這件事變成必須回報的動作。</p>
+  </div>
+</section>
+
+<section class="section" id="layer-slicing">
+  <div class="inner">
+    <h2>三、第二層：切法，而且不要只用一種</h2>
+    <p>第二層的問題是：一次讀太多，它會用跳的。</p>
+    <p>一份一百多頁的東西整份丟進去，前面讀得很清楚，讀到後面就開始略過。所以要分區塊。但真正的關鍵在下一句：<b>區塊不要用同一種分法。</b></p>
+    <div class="said">「你下次請他試試看分區塊去檢查，就是避免上下文爆炸。分區塊，然後區塊不要用同一種分法，用兩到三種不同的分法，那這樣子基本上會好很多。」<cite>2026-08-02 講座現場</cite></div>
+
+    <div class="duo">
+      <div class="card a">
+        <small>切法一</small>
+        <b>按章節切</b>
+        <p>十個章節就分十次，一個章節分析一次，最後再把十個章節的結果做一次大統整。</p>
+        <p><b>死角</b>：跨章節的矛盾看不到，例如第二章跟第八章講同一件事但說法不一樣。</p>
+      </div>
+      <div class="card b">
+        <small>切法二</small>
+        <b>按主題切</b>
+        <p>先請它把這十個章節拆成五個主題，再用五個主題各跑一次。</p>
+        <p><b>死角</b>：章節內部的順序問題看不到，例如由淺入深的鋪陳斷掉了。</p>
+      </div>
+    </div>
+
+    <p>兩種切法蓋的區域不一樣，重疊起來才有覆蓋率。這是「用兩種以上不同分法」真正的意思，不是同一種切法跑兩次。</p>
+
+    <div class="codeblock">第一輪：這份文件有 {章節數} 個章節，請你一個章節分析一次，
+每一章單獨回報問題，最後再做一次跨章節統整。
+
+第二輪：請你先把這些章節重新歸成 {主題數} 個主題，
+告訴我你怎麼歸的，然後用這些主題各分析一次。
+
+兩輪的結果如果有衝突，把衝突列出來，不要自己選一個。</div>
+    <div class="caveat"><b>最後那一句最重要</b>不叫它列衝突，它會自動幫你選一個，而你不會知道它選過。</div>
+  </div>
+</section>
+
+<section class="section" id="layer-perspective">
+  <div class="inner">
+    <h2>四、第三層：視角，讓兩家各跑一輪再交叉</h2>
+    <p>第三層才是換模型。</p>
+    <div class="said">「你用章節幫我一個一個檢查，然後 Claude 交叉相乘、GPT 交叉相乘，再把 Claude 跟 GPT 的交叉相乘，那這樣子基本上很難會有問題。」<cite>2026-08-02 講座現場</cite></div>
+    <p>做法是：兩種切法各讓兩家模型跑一輪，然後把兩邊的結果交叉一次。這樣你手上會有四份結果，交叉之後剩下的分歧，通常就是真正需要人判斷的地方。</p>
+    <p>那位學員的經驗剛好是這一層的證明：兩家模型都用最新版、都開深度思考、反覆做了超過十次，結果還是有差異。</p>
+    <p>我自己的補充是：不同模型的權重不一樣，盲點也不一樣。這不是誰比較強的問題，是他們在意的東西不同。</p>
+    <div class="caveat"><b>只能用一家模型怎麼辦</b>很多環境有這個限制：公司只採購一家、資安規定只允許特定服務。這時候第三層拿不到，但不是完全沒有替代：同一家模型，開兩個乾淨的新對話，一個用「章節切」的角色設定跑、一個用「主題切＋只挑矛盾」的角色設定跑，再把兩份結果交給第三個對話比對。<b>要老實說的是，這比跨家交叉弱</b>，因為兩邊的偏好還是同一套，抓得到疏漏，抓不到「它一貫的認知偏差」。把它當補強，不要當等價替代。</div>
+
+    <div class="caveat"><b>那三家會不會更保險</b>我算過就放棄了。如果要每一家都審過每一家，A 要審 B 再審 C，B 要審 A 再審 C，C 要審 A 審 B，然後再重跑一遍，工作量會往上翻好幾倍，時間也耗不起。我的經驗是兩家交叉就能處理掉絕大多數問題，這是經驗判斷，不是統計數字。</div>
+  </div>
+</section>
+
+<section class="section" id="discuss-mechanism">
+  <div class="inner">
+    <h2>五、比再跑一次更有效的一步：跟它討論為什麼會錯</h2>
+    <p>這是我覺得最多人漏掉的一步。</p>
+    <p>發現錯誤之後，多數人的反應是「你再檢查一次」。但錯誤已經發生了，重跑只是換一次骰子。更有效的是直接跟它討論這件事本身。</p>
+    <p>我在課堂上念的是這一段：</p>
+    <div class="codeblock">為什麼你會出現規範錯誤的資訊？我們如何確保資訊是正確的？
+
+假設我願意多花時間、多花費用，讓你第二次複查，
+或是第二次用不同角度驗證，第三次再跟其他 AI 複查，
+我也有兩套模型可以搭配。
+
+你是否可以陪我一起設計出一套審查機制、除錯機制，
+或是資訊追蹤機制，以確保所有的東西都是正確的？</div>
+
+    <p>這段話有兩個作用。</p>
+    <ul>
+      <li><b>把問題換一層</b>：從「這一次錯了」變成「我們要設計一套不會再錯的流程」。你拿到的不是一次修正，是一份可以留下來的檢查設計。</li>
+      <li><b>逼出它自己知道、但你沒問就不會講的限制</b>：例如哪一段其實它沒有把握、哪一種比對它做不到、哪些內容需要外部資料才能驗證。</li>
+    </ul>
+  </div>
+</section>
+
+<section class="section" id="three-sources">
+  <div class="inner">
+    <h2>六、出錯的三種來源，先分清楚是哪一種</h2>
+    <p>跟它討論完，你會需要判斷問題屬於哪一種，因為三種的處理方式完全不同。</p>
+    <div class="said">「有些東西是我們指令沒有下好，有些東西是我們機制沒有設定好，有些東西是可能突破現在模型能力的上限。」<cite>2026-08-02 講座現場</cite></div>
+
+    <div class="workflow-grid">
+      <div class="workflow-step">
+        <small>來源 01</small>
+        <b>指令沒下好</b>
+        <p><b>特徵</b>：它做的事情跟你要的不一樣，但它做得很認真。<br><br><b>處理</b>：把判準、範圍、輸出格式寫清楚。</p>
+      </div>
+      <div class="workflow-step">
+        <small>來源 02</small>
+        <b>機制沒設好</b>
+        <p><b>特徵</b>：它做對了這次，但下次同樣情況又漏。<br><br><b>處理</b>：把檢查點、順序、停止條件寫成規則。</p>
+      </div>
+      <div class="workflow-step">
+        <small>來源 03</small>
+        <b>超出模型上限</b>
+        <p><b>特徵</b>：換模型、換切法、換問法都一樣錯。<br><br><b>處理</b>：這一段改用人審，或改用能查證的外部資料。</p>
+      </div>
+    </div>
+
+    <p>那位學員的 150 頁教材，看起來不像是超出模型的閱讀範圍，所以我判斷它落在前兩種，是指令跟機制的問題。要補一句：頁數不能直接換算成模型讀得下多少，真正影響的是清理之後的文字量與格式，所以這是就這個案例的判斷，不是通則。</p>
+    <div class="meaning"><b>判斷錯了會做白工</b>機制問題你去換更強的模型，換到最貴的也還是會漏；能力問題你一直改指令，改到天亮也改不出來。</div>
+  </div>
+</section>
+
+<section class="section" id="stop-rule">
+  <div class="inner">
+    <h2>七、跑幾輪要停</h2>
+    <p>還有一個問題比「怎麼審」更容易被漏掉：修正幾次要停。</p>
+    <p>如果你只跟它說「按照我的標準去修正」，沒有給次數上限，它會一直修到它覺得好為止。結果通常是兩種：費用一直往上，或是越修越歪。</p>
+    <p>我自己的工作以文件分析推理為主，經驗值是兩到三輪。這裡的一輪指的是：</p>
+    <ul>
+      <li>第一輪：A 審完 B，B 也審完 A</li>
+      <li>第二輪：A 依照 B 的建議再跑一次，B 依照 A 的建議再跑一次，然後互相再審一遍</li>
+    </ul>
+    <div class="said">「兩到三輪沒問題的就沒問題的，有問題的他也不會比較好⋯⋯跑兩輪還無解的就不要在那，因為他跑十輪跑一百輪，基本上也不會有解。」<cite>2026-08-02 講座現場</cite></div>
+    <p>判斷「該停了」有一個很簡單的方法：同一個問題連續兩到三次都卡在同一個地方，就停下來回報，不要再跑。</p>
+    <p>停下來之後要做的是回頭看規則少寫了什麼。通常是這三種：</p>
+    <ul>
+      <li><b>判準沒定義</b>：什麼叫做「正確」，你沒說。</li>
+      <li><b>例外沒規定</b>：遇到規則沒寫到的情況怎麼辦，你沒說。</li>
+      <li><b>出處沒要求</b>：憑什麼說這是對的，你沒要求它舉證。</li>
+    </ul>
+  </div>
+</section>
+
+<section class="section" id="into-loop">
+  <div class="inner">
+    <h2>八、最後一步：把這套變成它自己會跑的流程</h2>
+    <p>做到這裡，你手上已經有一套完整的檢查設計了：清理與抽樣、兩種切法、兩家交叉、討論機制、三種來源判斷、停止條件。</p>
+    <p>這一整套目前還是「你每次帶著它跑一遍」。最後一步是把它交出去。</p>
+    <p>判斷時機很簡單：當你發現這套標準做過一兩次都沒問題了，就可以跟它說：</p>
+    <div class="said">「你知道我的標準，你應該要讓自己跑啊。我希望下次我不在你身邊，你也可以按照這個標準，自己審查、自己跑。這就叫迴圈工程了。」<cite>2026-08-02 講座現場</cite></div>
+    <p>它做得到，這就叫迴圈工程。做不到的時候，多半是它不知道錯的時候該怎麼辦。那就回頭把「錯了怎麼發現、怎麼修、什麼時候停」補進規則裡。</p>
+    <p>那位學員在課堂最後說的話我印象很深：確定 OK 之後要做成技能包。這個順序是對的，先把流程跑順，再把跑順的流程存起來，而不是一開始就想做一個完美的技能包。</p>
+  </div>
+</section>
+
+<section class="section" id="start-here">
+  <div class="inner">
+    <h2>你可以怎麼開始</h2>
+    <div class="workflow-grid">
+      <div class="workflow-step">
+        <small>今天</small>
+        <b>抽樣核對清理結果</b>
+        <p>把你手上那份最常被 AI 讀錯的文件，隨機挑三個地方跟原檔核對一次。你會很快知道問題出在材料還是分析。</p>
+      </div>
+      <div class="workflow-step">
+        <small>這週</small>
+        <b>用兩種切法各跑一次</b>
+        <p>同一份文件按章節、按主題各跑一次，把兩邊的衝突列出來。不要叫它幫你選，衝突清單本身就是價值。</p>
+      </div>
+      <div class="workflow-step">
+        <small>做完前兩步</small>
+        <b>把出處與停止條件寫進規則</b>
+        <p>然後開一個新對話，只講你平常會講的那句話，測它會不會自己跑起來。</p>
+      </div>
+    </div>
+    <p>三步都不需要寫程式。你需要的是把自己每次都在檢查的東西講清楚，這件事只有你做得到。</p>
+    <div class="tagrow">
+      <span class="tag">AI工作流</span><span class="tag">跨家審稿</span><span class="tag">資料整理</span><span class="tag">知識管理</span><span class="tag">基礎</span><span class="tag">2026-08-05 發布</span>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">江江教練 · AI 知識管理</div>
+    <div class="footer-links">
+      <a href="../../articles.html">← 回深度文章總站</a>
+      <a href="../../index.html">首頁</a>
+      <a href="../../learn.html">自學資源</a>
+      <a href="../../skills.html">技能包下載</a>
+      <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">LINE 社群 ↗</a>
+      <a href="https://www.threads.com/@jiang_yude_coach" target="_blank" rel="noopener">Threads ↗</a>
+      <a href="https://vocus.cc/salon/Jiang_Coach" target="_blank" rel="noopener">方格子 ↗</a>
+    </div>
+    <div class="footer-note">這是一篇教學文章，整理我對「資料清理只是第一關：長文件審不出錯的三層設計」的看法，供你參考。</div>
+  </div>
+</footer>
+
+<!-- 點圖放大 lightbox（hero 與內文圖通用，已內建，不用每篇重加） -->
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <span class="lightbox-close" aria-label="關閉">×</span>
+  <img id="lightbox-img" src="" alt="放大檢視">
+</div>
+<script>
+(function(){
+  var box=document.getElementById('lightbox'),boxImg=document.getElementById('lightbox-img');
+  document.querySelectorAll('.hero-figure img,.inline-figure img').forEach(function(img){
+    img.addEventListener('click',function(){boxImg.src=img.currentSrc||img.src;boxImg.alt=img.alt||'放大檢視';box.classList.add('open');box.setAttribute('aria-hidden','false');});
+  });
+  function close(){box.classList.remove('open');box.setAttribute('aria-hidden','true');boxImg.src='';}
+  box.addEventListener('click',close);
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
+})();
+</script>
+
+<script>
+(function(){
+  document.querySelectorAll('.codeblock').forEach(function(box){
+    var btn=document.createElement('button');
+    btn.type='button'; btn.className='copy-btn'; btn.textContent='複製';
+    btn.addEventListener('click',function(){
+      var t=box.cloneNode(true); var b=t.querySelector('.copy-btn'); if(b) b.remove();
+      navigator.clipboard.writeText(t.textContent.trim()).then(function(){
+        btn.textContent='已複製'; btn.classList.add('done');
+        setTimeout(function(){btn.textContent='複製'; btn.classList.remove('done');},1800);
+      });
+    });
+    box.prepend(btn);
+  });
+})();
+</script>
+<!-- 官網共用：滑鼠暖光暈 + 導航列漢堡選單 -->
+<script src="../../spotlight.js"></script>
+
+<!-- 文章自動互聯（相關文章）：兩支已內建，順序不可顛倒，不用再另外加 -->
+<script src="../../articles-data.js"></script>
+<script src="../../related-render.js"></script>
+</body>
+</html>

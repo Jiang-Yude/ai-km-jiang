@@ -2353,16 +2353,21 @@
       // 現場補充：浮動視窗一次只留一個，換頁、點外面、按 Esc 都會收起來
       const liveNotes = Array.from(document.querySelectorAll('.live-note'));
       const inlineNoteQuery = window.matchMedia('(max-width: 720px)');
+      let liveNoteOpenScrollTop = deck.scrollTop;
 
       function closeLiveNotes(except) {
         liveNotes.forEach((note) => {
           if (note !== except && note.open) note.open = false;
         });
+        if (!liveNotes.some((note) => note.open)) liveNoteOpenScrollTop = deck.scrollTop;
       }
 
       liveNotes.forEach((note) => {
         note.addEventListener('toggle', () => {
-          if (note.open) closeLiveNotes(note);
+          if (note.open) {
+            closeLiveNotes(note);
+            liveNoteOpenScrollTop = deck.scrollTop;
+          }
         });
       });
 
@@ -2385,12 +2390,13 @@
       }
 
       function setActive(nextIndex, writeHash = true) {
+        const previousIndex = index;
         index = Math.max(0, Math.min(slides.length - 1, nextIndex));
         slides.forEach((slide, i) => {
           slide.classList.toggle('active', i === index);
         });
         dots.forEach((dot, i) => dot.classList.toggle('active', i === index));
-        if (!inlineNoteQuery.matches) closeLiveNotes(slides[index].querySelector('.live-note'));
+        if (!inlineNoteQuery.matches && index !== previousIndex) closeLiveNotes();
         document.body.classList.toggle('on-dark', index === slides.length - 1);
         counter.textContent = `${index + 1} / ${slides.length}`;
         progress.style.width = `${((index + 1) / slides.length) * 100}%`;
@@ -2455,6 +2461,8 @@
       slides.forEach((slide) => activeObserver.observe(slide));
 
       deck.addEventListener('scroll', () => {
+        const hasOpenLiveNote = liveNotes.some((note) => note.open);
+        if (!inlineNoteQuery.matches && hasOpenLiveNote && Math.abs(deck.scrollTop - liveNoteOpenScrollTop) > 24) closeLiveNotes();
         dotsHost.classList.add('scrolling');
         window.clearTimeout(scrollLabelTimer);
         scrollLabelTimer = window.setTimeout(() => dotsHost.classList.remove('scrolling'), 1100);

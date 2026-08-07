@@ -129,16 +129,27 @@ Phase 1 不新增文章頁。文章先保留在課後簡報頁的方格子與 Th
 
 ## 部署
 
-唯一入口：
+完整新電腦 SOP 見 [`DEPLOYMENT.md`](DEPLOYMENT.md)。
+
+本 repo 目前是靜態站，沒有 `package.json`；一般發布不需要 `npm install` 或重建 `node_modules`。Node 版本用 `.nvmrc` 固定在 22。
+
+發布前先跑：
+
+```bash
+bash scripts/check-deploy-env.sh
+bash scripts/preflight.sh
+```
+
+唯一正式發布入口：
 
 ```bash
 git add -- 本次明確檔案
 bash scripts/publish.sh "本次修改說明"
 
-# 或讓腳本只加入列出的明確路徑
+# 或讓腳本只加入列出的明確路徑（推薦，避免夾帶其他 session 變更）
 bash scripts/publish.sh "本次修改說明" -- path1 path2
 ```
 
-腳本先鎖定 `main` 且要求 upstream＝`origin/main`，確認 `scripts/git-hooks/pre-push` 存在且可執行後才綁定 hooks，再依序執行：官網 preflight → 驗明確檔案範圍 → 秘密掃描 → commit → `git pull --rebase` → 再掃描 → main 明確 refspec＋tag atomic push → 共用 `safe-deploy.sh` 建候選 → 候選五端點 HTTP 可達性驗收 → 只切 `jiangyude.com` 這個別名 → 正式五端點 HTTP 可達性驗收。正式驗收失敗時，工具會把該別名指回舊 deployment，並用 inspect＋相同五端點再次驗證；回退無法確認時 exit 3 並標 `CRITICAL`。detached HEAD、不是 main、upstream 不符或 hook 缺失都會在 preflight 前停止。不要手動執行 `vercel --prod`，也不要用裸 `git push` 代替完整發布。
+腳本先跑部署環境檢查，鎖定 `main` 且要求 upstream＝`origin/main`，確認 `scripts/git-hooks/pre-push` 存在且可執行後才綁定 hooks，再依序執行：官網 preflight → 驗明確檔案範圍 → 秘密掃描 → commit → `git pull --rebase` → 再掃描 → main 明確 refspec＋tag atomic push → 共用 `safe-deploy.sh` 建候選 → 候選五端點 HTTP 可達性驗收 → 只切 `jiangyude.com` 這個別名 → 正式五端點 HTTP 可達性驗收。正式驗收失敗時，工具會把該別名指回舊 deployment，並用 inspect＋相同五端點再次驗證；回退無法確認時 exit 3 並標 `CRITICAL`。detached HEAD、不是 main、upstream 不符、hook 缺失、Node/Vercel/safe-deploy/git 身分未就緒都會在部署前停止。不要手動執行 `vercel --prod`，也不要用裸 `git push` 代替完整發布。
 
 秘密掃描刻意檢查 repo 的實際工作樹，不因 `.gitignore` 或 `.vercelignore` 放行真值；因此 repo 內任何 `.env*` 真實憑證都會讓發布停止。這是安全閘門，不是掃描器故障，禁止繞過。下次發布前須另案確認憑證已安全存於 Vercel 專案環境，再經明確授權移出 repo 工作樹；不可把值貼進對話、README 或 commit。

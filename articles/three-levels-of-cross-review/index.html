@@ -1,0 +1,477 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="index,follow">
+<title>互審要做多深：三種難度與怎麼選｜江江教練 · AI 知識管理</title>
+<meta name="description" content="找第二個 AI 挑錯有三種深度：只審結果、雙軌後併回、完整雙軌互審。多數人只用第一種，而它剛好抓不到最貴的那種錯。這篇給三種難度的可複製指令、選擇判準、成本、停止條件、斷線備援，以及只能用一家模型時的替代做法。">
+<link rel="canonical" href="https://jiangyude.com/articles/three-levels-of-cross-review/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="互審要做多深：三種難度與怎麼選｜江江教練">
+<!-- 分享封面：hero 文字填好後在 repo 根目錄跑 `node scripts/og-shot.mjs three-levels-of-cross-review` 自動截 1200×630 到 images/og/three-levels-of-cross-review.jpg（見 README「文章分享封面（OG 圖）機制」）。別退回 intro-jiang.png 直式人像，會被裁成只剩脖子。 -->
+<meta property="og:image" content="https://jiangyude.com/images/og/three-levels-of-cross-review.jpg">
+<meta property="og:description" content="找第二個 AI 挑錯有三種深度：只審結果、雙軌後併回、完整雙軌互審。多數人只用第一種，而它剛好抓不到最貴的那種錯。這篇給三種難度的可複製指令、選擇判準、成本、停止條件、斷線備援，以及只能用一家模型時的替代做法。">
+<meta property="og:url" content="https://jiangyude.com/articles/three-levels-of-cross-review/">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:site_name" content="江江教練 · AI 知識管理">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="互審要做多深：三種難度與怎麼選｜江江教練">
+<meta name="twitter:image" content="https://jiangyude.com/images/og/three-levels-of-cross-review.jpg">
+<meta name="twitter:description" content="找第二個 AI 挑錯有三種深度：只審結果、雙軌後併回、完整雙軌互審。多數人只用第一種，而它剛好抓不到最貴的那種錯。這篇給三種難度的可複製指令、選擇判準、成本、停止條件、斷線備援，以及只能用一家模型時的替代做法。">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"互審要做多深：三種難度與怎麼選","description":"找第二個 AI 挑錯有三種深度：只審結果、雙軌後併回、完整雙軌互審。多數人只用第一種，而它剛好抓不到最貴的那種錯。這篇給三種難度的可複製指令、選擇判準、成本、停止條件、斷線備援，以及只能用一家模型時的替代做法。","author":{"@type":"Person","name":"江昱德","alternateName":"江江教練","jobTitle":"隱性知識提煉師、AI 應用規劃師"},"isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://jiangyude.com/"},"inLanguage":"zh-Hant","url":"https://jiangyude.com/articles/three-levels-of-cross-review/"}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{--ink:#1a1612;--paper:#fefcf8;--muted:#6a635a;--line:#d8cdb8;--green:#5f7553;--blue:#5689b8;--orange:#e85a4f;--soft:#faf5ec;--dark:#2a2018;--shadow:0 18px 45px rgba(107,74,42,.14);--sp-shadow:hsla(35,50%,60%,.15);--sp-shadow-edge:hsla(35,50%,68%,.03);--sp-radius:400px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC","Segoe UI",sans-serif}
+a{color:inherit}
+/* 官網共用導航列 nav.top（與首頁/文章總站同一條） */
+nav.top{position:sticky;top:0;background:rgba(254,252,248,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid #d8cdb8;z-index:100}
+nav.top .container{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:24px;padding:14px 32px}
+.nav-brand-img{justify-self:start;display:flex;align-items:center;text-decoration:none;flex-shrink:0;transition:opacity .2s}
+.nav-brand-img:hover{opacity:.8}.nav-brand-img img{height:40px;width:auto;display:block}
+nav.top ul.nav-menu{justify-self:end;display:flex;gap:22px;list-style:none;margin:0;padding:0;font-size:.95rem;white-space:nowrap}
+nav.top ul.nav-menu a{color:#3a342d;text-decoration:none;transition:color .2s;font-weight:500;white-space:nowrap}
+nav.top ul.nav-menu a:hover{color:#1a1612}nav.top ul.nav-menu a.active{color:#1a1612;font-weight:700}
+.nav-toggle{display:none;background:none;border:none;padding:6px;cursor:pointer;width:36px;height:36px;position:relative}
+.nav-toggle span{display:block;position:absolute;left:8px;right:8px;height:2px;background:#1a1612;border-radius:2px;transition:transform .25s,opacity .25s,top .25s}
+.nav-toggle span:nth-child(1){top:11px}.nav-toggle span:nth-child(2){top:17px}.nav-toggle span:nth-child(3){top:23px}
+.nav-toggle.open span:nth-child(1){top:17px;transform:rotate(45deg)}.nav-toggle.open span:nth-child(2){opacity:0}.nav-toggle.open span:nth-child(3){top:17px;transform:rotate(-45deg)}
+@media(max-width:860px){
+ nav.top .container{grid-template-columns:auto 1fr auto;padding:10px 16px;gap:12px}
+ .nav-brand-img img{height:32px}
+ .nav-toggle{display:block;justify-self:end}
+ nav.top ul.nav-menu{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(254,252,248,.98);backdrop-filter:blur(14px);border-bottom:1px solid #d8cdb8;flex-direction:column;gap:0;padding:8px 0;box-shadow:0 10px 24px rgba(107,74,42,.08)}
+ nav.top ul.nav-menu.open{display:flex}
+ nav.top ul.nav-menu li{border-bottom:1px solid #e8dfc9}
+ nav.top ul.nav-menu li:last-child{border-bottom:none}
+ nav.top ul.nav-menu a{display:block;padding:14px 20px;font-size:1.06rem}
+}
+/* 滑鼠暖光暈（與首頁同一支 spotlight.js） */
+body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradient(var(--sp-radius) circle at var(--mx,50%) var(--my,50%),var(--sp-shadow) 0%,var(--sp-shadow-edge) 45%,transparent 75%);pointer-events:none;z-index:9999;mix-blend-mode:multiply;transition:background .06s linear}
+.hero{position:relative;overflow:hidden;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:72px;padding:96px clamp(20px,6vw,88px) 80px;background:linear-gradient(180deg,#fffcf0 0%,#f9e9d2 100%);color:#1a1612;border-bottom:1px solid #d8cdb8}
+.hero .wc{position:absolute;border-radius:50%;filter:blur(60px);pointer-events:none;z-index:0}
+.hero .wc1{width:420px;height:360px;top:-120px;right:-80px;background:#e8884b;opacity:.15}
+.hero .wc2{width:360px;height:300px;bottom:-110px;left:-70px;background:#5f7553;opacity:.13}
+.hero .wc3{width:280px;height:260px;top:34%;left:14%;background:#a08144;opacity:.10}
+.hero>div{flex:none;width:860px;max-width:100%;position:relative;z-index:2}
+.hero-figure{margin:0;width:420px;flex:none;position:relative;z-index:2}
+.hero-figure img{display:block;width:100%;border-radius:16px;border:1px solid #d8cdb8;box-shadow:0 18px 45px rgba(107,74,42,.16);cursor:zoom-in}
+.hero-figure figcaption{margin-top:10px;font-size:14px;line-height:1.6;color:#6a635a}
+.inline-figure{margin:30px auto 8px;max-width:820px}
+.inline-figure img{display:block;width:100%;border-radius:14px;border:1px solid var(--line);box-shadow:var(--shadow);background:#fff;cursor:zoom-in}
+.inline-figure figcaption{font-size:14px;line-height:1.6;color:var(--muted);margin-top:10px}
+.lightbox{position:fixed;inset:0;z-index:10000;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(12,10,8,.92);cursor:zoom-out;backdrop-filter:blur(4px)}
+.lightbox.open{display:flex}.lightbox img{max-width:96vw;max-height:92vh;border-radius:10px;box-shadow:0 24px 60px rgba(0,0,0,.5)}
+.lightbox-close{position:fixed;top:18px;right:24px;color:#fff;font-size:34px;line-height:1;font-weight:700;cursor:pointer;opacity:.85}
+.kicker{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.55rem;color:#7a5c3a;font-weight:500}
+.hero h1{max-width:none;margin:16px 0 18px;font-size:clamp(36px,6vw,72px);line-height:1.08;overflow-wrap:anywhere}
+.hero p{max-width:none;font-size:clamp(18px,2vw,23px);line-height:1.62;color:#3a342d}
+.cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
+.cta a{display:inline-flex;align-items:center;text-decoration:none;border-radius:8px;padding:12px 16px;font-weight:900}
+.cta .primary{background:#fff;color:#1a1612}.cta .ghost{border:1px solid rgba(255,255,255,.32);color:#fff;background:rgba(255,255,255,.08)}
+.section{padding:54px clamp(20px,6vw,88px);border-top:1px solid var(--line)}
+.inner{width:min(1000px,100%);margin:0 auto}
+.section h2{font-size:clamp(26px,4.2vw,48px);line-height:1.12;margin:0 0 18px}
+.section h3{font-size:clamp(21px,3vw,30px);line-height:1.2;margin:30px 0 12px}
+.lead{font-size:clamp(18px,1.6vw,22px);line-height:1.7;color:#3a342d;max-width:900px}
+.section p{font-size:18px;line-height:1.74;color:#3a342d}.section p+p{margin-top:14px}
+.section ul,.section ol{padding-left:1.4em;font-size:18px;line-height:1.74;color:#3a342d}.section li{margin-bottom:8px}
+.meaning{margin:22px 0;padding:16px 18px;border-left:5px solid var(--blue);background:rgba(86,137,184,.12);border-radius:6px;line-height:1.7;font-size:19px}
+.meaning b{display:block;color:var(--blue);margin-bottom:4px}
+.caveat{margin:0 0 8px;padding:16px 18px;border-left:5px solid var(--orange);background:rgba(232,90,79,.1);border-radius:6px;line-height:1.7;font-size:18px;color:#3a342d}
+.caveat b{display:block;color:var(--orange);margin-bottom:4px}
+.infocard{background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px 24px 22px;box-shadow:0 8px 22px rgba(107,74,42,.08);margin-top:8px}
+.infocard-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.info-item{padding:18px 14px 0}
+.info-item b{display:block;font-size:14px;font-weight:900;letter-spacing:.04em;margin-bottom:7px;text-transform:uppercase}
+.info-item:nth-child(1) b{color:var(--green)}.info-item:nth-child(2) b{color:var(--orange)}.info-item:nth-child(3) b{color:var(--blue)}
+.info-item p{margin:0;font-size:17px;line-height:1.6;color:#3a342d}
+.tagrow{display:flex;flex-wrap:wrap;gap:7px;margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
+.tag{font-size:14px;color:var(--muted);background:var(--soft);border:1px solid var(--line);border-radius:999px;padding:4px 11px}
+.duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:24px}
+.duo.stack{grid-template-columns:1fr}
+.duo .card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:22px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.duo .card.a{border-color:var(--orange)}.duo .card.b{border-color:var(--green);box-shadow:0 8px 24px rgba(95,117,83,.16)}
+.duo .card small{display:block;font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.04em;margin-bottom:9px}
+.duo .card.a small{color:var(--orange)}.duo .card.b small{color:var(--green)}
+.duo .card b{display:block;font-size:22px;line-height:1.3;margin-bottom:12px}.duo .card.a b{color:#c0512f}.duo .card.b b{color:#4a7a59}
+.duo .card p{margin:0;color:#3a342d;line-height:1.75;font-size:18px}
+.workflow-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:24px}
+.workflow-step{background:#fff;border:1px solid var(--line);border-radius:8px;padding:18px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.workflow-step small{display:block;color:var(--orange);font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;margin-bottom:9px}
+.workflow-step b{display:block;font-size:18px;line-height:1.3;margin-bottom:9px}
+.workflow-step p{margin:0;color:#3a342d;line-height:1.6;font-size:16px}
+.codeblock{background:var(--dark);color:#f3ead9;border-radius:8px;padding:18px 20px;font:500 14px/1.65 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;overflow-x:auto;white-space:pre-wrap;margin:20px 0;box-shadow:0 8px 22px rgba(107,74,42,.12)}
+.codeblock .c{color:#f6d7a6;font-weight:600}
+.skillcard{background:#fff;border:1px solid var(--green);border-radius:12px;padding:24px;box-shadow:0 10px 26px rgba(95,117,83,.16);margin-top:8px}
+.skillcard b{display:block;font-size:21px;margin-bottom:8px}
+.skillcard p{margin:0 0 16px;font-size:17px;line-height:1.65;color:#3a342d}
+.cta-band{background:#e6f0e5;color:#3a342d}.cta-band .section{border-top:none}
+.cta-band .inner{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(260px,.85fr);gap:26px;align-items:start}
+.cta-band h2{font-size:clamp(26px,4vw,44px);margin:0 0 16px}.cta-band p,.cta-band .lead{color:rgba(58,52,45,.9);font-size:18px;line-height:1.72}
+.cta-card{border:1px solid #cfe0d2;background:#fbfdfa;border-radius:8px;padding:22px}
+.cta-card b{display:block;color:#48b178;margin-bottom:10px;font-size:18px}.cta-card p{margin:0 0 14px}
+.footer{padding:30px clamp(20px,6vw,88px);font-size:14px;color:var(--muted);background:#fff;border-top:1px solid var(--line)}
+.footer-inner{width:min(1000px,100%);margin:0 auto}
+.footer-links{display:flex;flex-wrap:wrap;gap:6px 12px;margin-bottom:14px}.footer-links a{color:var(--blue);font-weight:900;text-decoration:none;font-size:14px}
+.footer-brand{font-weight:900;font-size:15px;margin-bottom:10px}.footer-note{font-size:13px;line-height:1.6}
+@media(max-width:820px){.infocard-grid{grid-template-columns:1fr}.duo{grid-template-columns:1fr}.workflow-grid{grid-template-columns:1fr}.cta-band .inner{grid-template-columns:1fr}.section{padding:40px 20px}.hero{min-height:52vh;flex-direction:column;justify-content:flex-start;align-items:flex-start;gap:24px}.hero>div{width:100%}.hero-figure{width:100%;max-width:560px}}
+@media(max-width:820px){html,body{overflow-x:hidden}.hero h1{word-break:break-word}}
+.codeblock{position:relative}
+.copy-btn{position:absolute;top:10px;right:10px;padding:5px 12px;border:1px solid rgba(243,234,217,.35);border-radius:6px;background:rgba(243,234,217,.1);color:#f3ead9;font:700 13px/1.2 -apple-system,"PingFang TC",sans-serif;cursor:pointer;transition:background .2s}
+.copy-btn:hover{background:rgba(243,234,217,.22)}
+.copy-btn.done{background:#5f7553;border-color:#5f7553;color:#fff}
+@media(max-width:820px){.copy-btn{position:static;display:block;margin:0 0 12px auto}}
+.said{margin:26px 0;padding:20px 24px;border-left:5px solid var(--green);border-radius:0 10px 10px 0;background:#f3f6f1;color:#2f3a2a;font-size:clamp(19px,1.9vw,23px);line-height:1.68;font-weight:560}
+.said cite{display:block;margin-top:10px;color:var(--muted);font-size:14px;font-style:normal;font-weight:700;letter-spacing:.02em}
+.said cite::before{content:"— "}
+/* 四欄卡片（文章模板原本只有 .duo 與 .workflow-grid，這裡補上） */
+.grid-4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-top:24px}
+.grid-4 .card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:20px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.grid-4 .card.sage{border-color:var(--green)}
+.grid-4 .card.brick{border-color:var(--orange)}
+.grid-4 .card.paper{background:var(--soft)}
+.grid-4 .card .index{display:block;font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--muted);letter-spacing:.04em;margin-bottom:9px}
+.grid-4 .card h3{font-size:19px;line-height:1.3;margin:0 0 8px}
+.grid-4 .card p{margin:0;font-size:16px;line-height:1.62;color:#3a342d}
+/* 關鍵字格 */
+.keyword-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:24px}
+.keyword{background:#fff;border:1px solid var(--line);border-left:4px solid var(--orange);border-radius:10px;padding:18px 20px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.keyword strong{display:block;font-size:19px;line-height:1.35;margin-bottom:8px;color:#c0512f}
+.keyword p{margin:0;font-size:16px;line-height:1.62;color:#3a342d}
+nav.top ul.nav-menu li.lang-switch a{font-weight:800;letter-spacing:.06em}
+@media(max-width:820px){.grid-4{grid-template-columns:1fr}.keyword-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body class="spotlight">
+<!-- 官網共用導航列 nav.top：與首頁/總站同一條，文章不要自己另做極簡 topbar（江江 2026-06-25：要同一個框架、同一條導航列）。把對應頁面的 class="active" 標在自己那欄。 -->
+<nav class="top">
+  <div class="container">
+    <a class="nav-brand-img" href="../../index.html"><img src="../../images/footer-signature.png" alt="江江教練 | 江昱德"></a>
+    <button class="nav-toggle" aria-label="選單"><span></span><span></span><span></span></button>
+    <ul class="nav-menu">
+      <li><a href="../../index.html">首頁</a></li>
+      <li><a href="../../knowledge-architecture.html">知識架構</a></li>
+      <li><a href="../../courses.html">課程</a></li>
+      <li><a href="../../articles.html" class="active">深度文章</a></li>
+      <li><a href="../../skills.html">技能包下載</a></li>
+      <li><a href="../../offers.html">服務方案</a></li>
+      <li class="lang-switch"><a href="../../en/articles.html" hreflang="en">EN</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="wc wc1"></div>
+  <div class="wc wc2"></div>
+  <div class="wc wc3"></div>
+  <div>
+    <div class="kicker">AI 應用 / 跨家審稿</div>
+    <h1>互審要做多深：三種難度與怎麼選</h1>
+    <p>多數人只知道第一種深度，而第一種剛好抓不到最貴的那種錯：一開始就走錯路。</p>
+  </div>
+</section>
+
+<main>
+
+<section class="section" id="start">
+  <div class="inner">
+    <h2>這篇在講什麼</h2>
+    <p class="lead">找第二個 AI 來挑錯，這件事有三種深度：只審最後結果、兩邊各跑一次再併回、完整雙軌互審。多數人只知道第一種，而第一種剛好抓不到最貴的那種錯：一開始就走錯路。</p>
+    <p>這篇給的是選擇的方法與可以直接複製的指令。三種難度分別怎麼跑、什麼情況選哪一種、成本差多少、跑幾輪要停、對家聯絡不上怎麼辦、只能用一家模型時還剩什麼。</p>
+
+    <div class="duo stack">
+      <div class="card a">
+        <b>適合誰</b>
+        <ul>
+          <li>已經會叫另一個 AI 幫忙看，但不知道什麼時候該看得更深的人</li>
+          <li>重要文件送出去之前會緊張，但又不想每件事都跑滿全套的人</li>
+          <li>想把「找第二顆腦」變成固定流程，而不是想到才做的人</li>
+        </ul>
+      </div>
+      <div class="card b">
+        <b>你可以帶走什麼</b>
+        <ul>
+          <li>三種難度各自的做法與可直接複製的指令</li>
+          <li>一組判斷：這件事該用哪一種深度</li>
+          <li>停止條件、斷線備援、只能用一家模型時的替代做法</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="meaning"><b>跟另一篇的分工</b>「為什麼要互審」「怎麼確認 AI 真的記住規則」在 <a href="../after-ai-says-remembered/">AI 說「我記住了」之後，我會問七個問題</a> 講過了。這篇不重複概念，只講深度怎麼選、指令怎麼下。</div>
+  </div>
+</section>
+
+<section class="section" id="why">
+  <div class="inner">
+    <h2>一、先用一句話講完為什麼</h2>
+    <div class="said">「同一套模型，他在做決策的時候，他一定覺得這樣子好，他才會出這個決策。所以當他在審這個決策的時候，他一定也覺得這是好的，因為這就是當初他覺得好的樣子。」<cite>2026-08-02 講座現場</cite></div>
+    <p>愛吃辣的廚師，需要的是一個不吃辣的試吃員。他沒有要騙人，他就是喜歡吃辣。</p>
+    <p>所以叫同一個模型自我審查三遍五遍，意義不大，而且更花錢。換另一家來看，常常一下就抓到問題。這一段是前提，接下來講的是：要換得多深。</p>
+  </div>
+</section>
+
+<section class="section" id="three-levels">
+  <div class="inner">
+    <h2>二、三種難度</h2>
+
+    <h3>難度一：只審最後結果</h3>
+    <p>主力模型一路做到最後，另一家只看成品。這是我最早的做法，日常工作大多用這種就夠。</p>
+    <div class="codeblock">這是我用另一個 AI 做出來的成果，請你只做審查，不要重做。
+
+請挑出：事實錯誤、前後矛盾、明顯漏掉的部分、
+以及任何「看起來完成但其實沒有交代清楚」的地方。
+
+每一項請標出在哪一段，並說明你判斷的依據。
+沒有問題的部分不用複述，直接說通過。</div>
+    <p><b>它抓得到什麼</b>：寫錯、漏寫、前後打架。<b>它抓不到什麼</b>：主力模型在最一開始就選錯方向這件事。因為它只看到終點，看不到路。</p>
+
+    <h3>難度二：兩邊各跑一次，再把好的併回來</h3>
+    <p>兩家從同一份材料各自跑完，然後讓主力模型參考另一條線，把值得採用的併進來。</p>
+    <div class="codeblock">附上同一份材料與同樣的要求，兩邊各自完成一次。
+（先跑 A，再開 B，B 不要看 A 的結果。）
+
+B 完成之後，把 B 的成果貼回 A，跟 A 說：
+這是另一個 AI 從同一份材料做出來的版本。
+請你比較兩份的差別，列出：
+1. 它有而我沒有的（我該補的）
+2. 我有而它沒有的（我要保留的理由）
+3. 兩份講法不一致的地方（不要自己選，列出來給我）
+
+然後在保留你原本主線的前提下，把該補的補進來。</div>
+    <p>這一種的好處是成本比全套低，但你已經拿到「另一條路長什麼樣子」的資訊。適合中等重要、時間有限的事情。</p>
+
+    <h3>難度三：完整雙軌互審</h3>
+    <p>A 跑完審 B、B 跑完審 A，最後兩邊再互審一次。重大決策才這樣跑。</p>
+    <div class="said">「他不可以參考另一邊的東西，他不可以先偷看。我要告訴你，自己從頭，同樣這些材料，你給我從頭自己分析，不要偷看別人的，避免干擾。」<cite>2026-08-02 講座現場</cite></div>
+    <div class="workflow-grid">
+      <div class="workflow-step"><small>01</small><b>同一份輸入</b><p>背景、限制、來源完全相同，一字不差。</p></div>
+      <div class="workflow-step"><small>02</small><b>各自獨立完成</b><p>不准偷看對方答案。先看了，第二軌就失去獨立性。</p></div>
+      <div class="workflow-step"><small>03</small><b>交換審查</b><p>挑對方的曲解、矛盾與盲點。</p></div>
+      <div class="workflow-step"><small>04</small><b>整合分歧</b><p>收斂的可以合併，分歧的要列出來，不准自己選。</p></div>
+      <div class="workflow-step"><small>05</small><b>交回人</b><p>人決策，或讓沒有負責整合的那一家做終審。</p></div>
+    </div>
+    <div class="codeblock">這件事我要跑完整雙軌互審，請照這五步做，不要跳步：
+
+1. 同一份輸入：背景、限制、來源、要求跟另一邊完全一樣，一字不差。
+2. 各自獨立完成：你現在先自己從頭做完，不要看另一邊的任何結果。
+   （另一邊我會另外開，同樣不給它看你的。）
+3. 交換審查：兩邊都做完之後，我會把對方的成果貼給你。
+   你只挑對方的曲解、矛盾與盲點，不要幫他重寫。
+4. 整合分歧：兩邊講法一致的可以合併；不一致的列成清單交給我，
+   不要自己選一個，也不要折中。
+5. 交回人：最後給我一份「共識項」與「分歧項」，分歧項附兩邊的理由。
+
+停止條件：同一個爭點最多來回兩輪，還沒收斂就停下來回報。</div>
+    <div class="caveat"><b>第二步是整條線的關鍵</b>「不准偷看」聽起來多餘，但少了這句，你拿到的只會是同一個答案的兩種說法。獨立性是這一套唯一的價值來源。</div>
+  </div>
+</section>
+
+<section class="section" id="how-to-choose">
+  <div class="inner">
+    <h2>三、怎麼選：三個判準</h2>
+    <p>不用每件事都跑滿。我的判斷順序是這三個問題：</p>
+    <div class="workflow-grid">
+      <div class="workflow-step">
+        <small>判準一</small>
+        <b>做錯了收得回來嗎</b>
+        <p>寄出去的提案、對外發布的文章、要拿去報價的數字，收不回來。收不回來的往上加一級。</p>
+      </div>
+      <div class="workflow-step">
+        <small>判準二</small>
+        <b>這件事有沒有第二條合理的路</b>
+        <p>格式明確的工作通常只有一條路，審結果就好。策略、企劃、跨領域整合往往有好幾條，那就值得跑雙軌。</p>
+      </div>
+      <div class="workflow-step">
+        <small>判準三</small>
+        <b>我信不信得過起點</b>
+        <p>如果連「這件事該從哪裡切入」你自己都不確定，那第一種難度不夠用，因為它只驗終點。</p>
+      </div>
+    </div>
+    <div class="meaning"><b>對照表</b>日常內容、格式明確、可以改 → 難度一。中等重要、想多一個角度、時間有限 → 難度二。對外承諾、金額、重大決策、起點可能就錯 → 難度三。</div>
+    <p>我自己的實務比例大概是：多數工作停在難度一，重要的東西跑難度三，難度二用在「想看看有沒有別條路，但今天沒那麼多時間」的時候。</p>
+  </div>
+</section>
+
+<section class="section" id="cost">
+  <div class="inner">
+    <h2>四、成本：這套要花多少</h2>
+    <p><b>固定成本</b>：兩家各一份月費訂閱。桌面版工具就能互相呼叫，不需要另外接 API。這是我目前的用法，也是我覺得文書工作者做得起的門檻。</p>
+    <p><b>變動成本</b>：同一件事，難度一大約是單跑一次的兩倍工作量；難度三會再明顯多一截，因為兩邊都要從頭讀完整份材料，還要各審一次。這是我抓的相對感覺，不是量測數字。</p>
+    <div class="caveat"><b>老實說</b>我沒有精確計量過每一種的實際用量，只能給你相對關係。實用的判斷是：日常用難度一、重要決策才用難度三，這比精算數字有用。</div>
+    <p><b>那三家會不會更保險？</b>我算過就沒有做：</p>
+    <div class="said">「A 要審 B 再審 C，B 要審 A 再審 C，C 要審 A 審 B，然後再重跑一遍。哇，這太容易爆炸了，不是很建議這麼做，太耗時耗力了。這兩家互審，90% 的問題真的都可以處理掉。」<cite>2026-08-02 講座現場</cite></div>
+    <p>如果要每一家都審過每一家，工作量會往上翻好幾倍，時間也耗不起。以我的經驗，兩家已經能處理掉絕大多數問題，第三家換來的那一點邊際效益通常不值得。這是經驗判斷，不是統計數字。</p>
+  </div>
+</section>
+
+<section class="section" id="stop">
+  <div class="inner">
+    <h2>五、跑幾輪要停</h2>
+    <p>比「要不要互審」更容易被漏掉的是：修正幾次要停。不給上限，它會一直修到它覺得好為止，結果是費用一直往上，或越修越歪。</p>
+    <p>先定義一輪：</p>
+    <ul>
+      <li><b>第一輪</b>：A 審完 B，B 也審完 A</li>
+      <li><b>第二輪</b>：A 依照 B 的建議再跑一次，B 依照 A 的建議再跑一次，然後互相再審一遍</li>
+    </ul>
+    <div class="said">「我建議大家先跑兩到三圈。因為我發現兩到三輪沒問題的就沒問題，有問題的他也不會比較好⋯⋯跑兩輪還無解的就不要在那，因為他跑十輪跑一百輪，基本上也不會有解。」<cite>2026-08-02 講座現場</cite></div>
+    <p>兩到三輪還沒解決的，通常不是次數不夠，是規則本身缺了東西。這時候要停下來看規則，不是繼續跑。</p>
+    <p>兩個數字要分清楚，不然會覺得互相打架：<b>「兩到三輪」講的是整條互審流程跑幾遍；「最多修兩次」講的是同一個問題自己重做幾次。</b>前者是你在管的節奏，後者是寫進規則給它的上限。</p>
+    <h3>怎麼知道是規則缺了東西</h3>
+    <p>我在課堂上用收拾桌子解釋過：你給它一張整潔桌面的標準圖，加四個指標。它整理一輪、對照標準、沒達標就再整理。但如果桌上多了一顆球，而標準圖裡沒有球、也沒寫球該放哪裡，它再跑一百次也不可能完全符合。</p>
+    <p>這時候正確的動作是停下來回報：其他都擺好了，這顆球沒有規則，請你補。所以停止條件要寫兩層：</p>
+    <div class="codeblock">停止條件：
+1. 同一個問題最多修正兩輪，還沒解決就停下來回報
+2. 遇到規則沒有寫到的狀況，把其他能做的做完，
+   然後告訴我是哪一種狀況、你卡在哪裡，不要自己猜一個做法
+
+回報的時候請分三段：做了什麼／哪裡沒達標／你認為規則缺什麼</div>
+  </div>
+</section>
+
+<section class="section" id="fallback">
+  <div class="inner">
+    <h2>六、對家聯絡不上怎麼辦</h2>
+    <p>這是實際跑久了一定會遇到的事。我有一台桌機兩台筆電，帳號會互相踢登出，互審常常斷線。</p>
+    <p>以前我的規則寫死「一定要互審」，結果一斷線整條流程就卡住，我回來看到的是做到一半的東西，等於零分。</p>
+    <div class="said">「我用 A 跑完至少也有 80 分，用 B 跑完至少也有六七十分，總比我預計半個小時回來，就看到卡在中間、一半都沒有做好。」<cite>2026-08-02 講座現場</cite></div>
+    <p>現在的規則改成：對家沒回應，主軌先做完，然後告訴我另一家沒有審，並且產出一份交接指令讓我一鍵複製。那份交接要說清楚四件事：</p>
+    <div class="codeblock">如果你呼叫不到另一家模型，不要停下來等，照這樣做：
+
+1. 主軌先把能做的做完
+2. 明確告訴我「另一家沒有審」，不要含糊帶過
+3. 產出一份我可以一鍵複製貼給另一家的交接指令，內容包含：
+   · 這個任務在跑什麼
+   · 它要審什麼
+   · 它不能動什麼（這份丟過去是要它審，不是要它接著做）
+   · 審完之後結果要貼回哪裡
+4. 把目前的狀態標成「待補審」，不要標成完成</div>
+    <p>第四點是重點。狀態要誠實，不然你下次看到它會以為這件事已經審過了。</p>
+  </div>
+</section>
+
+<section class="section" id="single-model">
+  <div class="inner">
+    <h2>七、只能用一家模型的時候</h2>
+    <p>很多環境有這個限制：公司只採購一家、資安規定只允許特定服務、或是預算只有一份訂閱。</p>
+    <p>這時候跨家互審拿不到，但不是完全沒有替代做法：</p>
+    <ul>
+      <li>開兩個乾淨的新對話，一個用「產出者」的角色設定跑，一個用「只挑毛病、不重寫」的角色設定跑</li>
+      <li>兩邊都不要看到對方的過程，只交換成果</li>
+      <li>再開第三個對話，只做比對，把兩邊不一致的地方列出來</li>
+    </ul>
+    <div class="caveat"><b>要老實說的是，這比跨家弱</b>兩邊的偏好還是同一套，所以它抓得到疏漏與前後矛盾，抓不到「它一貫的認知偏差」。把它當補強，不要當等價替代。真的重要的東西，還是想辦法找第二家。</div>
+  </div>
+</section>
+
+<section class="section" id="keywords">
+  <div class="inner">
+    <h2>八、把三種難度變成四句共同語言</h2>
+    <p>最後一步是讓它變成你日常說得出口的東西。我把它收成四句：</p>
+    <div class="keyword-grid">
+      <article class="keyword"><strong>「跑結果互審」</strong><p>難度一。主力做完，另一家只審成品。</p></article>
+      <article class="keyword"><strong>「跑雙軌後併回」</strong><p>難度二。兩邊各跑一次，把好的併回主線。</p></article>
+      <article class="keyword"><strong>「跑完整雙軌互審」</strong><p>難度三。獨立跑完、交換審查、分歧交回人。</p></article>
+      <article class="keyword"><strong>「對家沒回應」</strong><p>主軌先完成，標成待補審，留下交接指令。</p></article>
+    </div>
+    <p>關鍵字負責啟動，完整規則住在你的資料夾裡。這也是為什麼規則要寫在一個 AI 讀得到的地方，而不是每次重講一遍。</p>
+  </div>
+</section>
+
+<section class="section" id="start-here">
+  <div class="inner">
+    <h2>你可以怎麼開始</h2>
+    <div class="workflow-grid">
+      <div class="workflow-step">
+        <small>今天</small>
+        <b>拿一件今天要交的東西跑難度一</b>
+        <p>複製第二節第一段那則指令，貼給另一家。重點是「只做審查，不要重做」這句。</p>
+      </div>
+      <div class="workflow-step">
+        <small>這週</small>
+        <b>挑一件重要的跑難度三</b>
+        <p>用同一份材料開兩條線，記得加「不要偷看對方的答案」。分歧列出來自己看，會比成果本身更有價值。</p>
+      </div>
+      <div class="workflow-step">
+        <small>做完之後</small>
+        <b>把停止條件寫進去</b>
+        <p>兩輪上限、規則沒寫到就回報。這一條比多跑幾輪有用得多。</p>
+      </div>
+    </div>
+
+    <h3>相關的三篇</h3>
+    <ul>
+      <li><a href="../after-ai-says-remembered/">AI 說「我記住了」之後，我會問七個問題</a>：互審的上一步，怎麼確認規則真的被記住、被啟動。</li>
+      <li><a href="../long-document-review-layers/">資料清理只是第一關：長文件審不出錯的三層設計</a>：長文件要先處理材料與切法，互審才有意義。</li>
+      <li><a href="../mobile-to-desktop-publish-loop/">我在路上用手機把一篇文發完</a>：把這些規則放進一條真的在跑的迴圈裡長什麼樣子。</li>
+    </ul>
+
+    <div class="tagrow">
+      <span class="tag">跨家審稿</span><span class="tag">MultiAgent</span><span class="tag">AI工作流</span><span class="tag">輔助決策</span><span class="tag">基礎</span><span class="tag">2026-08-06 發布</span>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">江江教練 · AI 知識管理</div>
+    <div class="footer-links">
+      <a href="../../articles.html">← 回深度文章總站</a>
+      <a href="../../index.html">首頁</a>
+      <a href="../../learn.html">自學資源</a>
+      <a href="../../skills.html">技能包下載</a>
+      <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">LINE 社群 ↗</a>
+      <a href="https://www.threads.com/@jiang_yude_coach" target="_blank" rel="noopener">Threads ↗</a>
+      <a href="https://vocus.cc/salon/Jiang_Coach" target="_blank" rel="noopener">方格子 ↗</a>
+    </div>
+    <div class="footer-note">這是一篇教學文章，整理我對「互審要做多深：三種難度與怎麼選」的看法，供你參考。</div>
+  </div>
+</footer>
+
+<!-- 點圖放大 lightbox（hero 與內文圖通用，已內建，不用每篇重加） -->
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <span class="lightbox-close" aria-label="關閉">×</span>
+  <img id="lightbox-img" src="" alt="放大檢視">
+</div>
+<script>
+(function(){
+  var box=document.getElementById('lightbox'),boxImg=document.getElementById('lightbox-img');
+  document.querySelectorAll('.hero-figure img,.inline-figure img').forEach(function(img){
+    img.addEventListener('click',function(){boxImg.src=img.currentSrc||img.src;boxImg.alt=img.alt||'放大檢視';box.classList.add('open');box.setAttribute('aria-hidden','false');});
+  });
+  function close(){box.classList.remove('open');box.setAttribute('aria-hidden','true');boxImg.src='';}
+  box.addEventListener('click',close);
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
+})();
+</script>
+
+<script>
+(function(){
+  document.querySelectorAll('.codeblock').forEach(function(box){
+    var btn=document.createElement('button');
+    btn.type='button'; btn.className='copy-btn'; btn.textContent='複製';
+    btn.addEventListener('click',function(){
+      var t=box.cloneNode(true); var b=t.querySelector('.copy-btn'); if(b) b.remove();
+      navigator.clipboard.writeText(t.textContent.trim()).then(function(){
+        btn.textContent='已複製'; btn.classList.add('done');
+        setTimeout(function(){btn.textContent='複製'; btn.classList.remove('done');},1800);
+      });
+    });
+    box.prepend(btn);
+  });
+})();
+</script>
+<!-- 官網共用：滑鼠暖光暈 + 導航列漢堡選單 -->
+<script src="../../spotlight.js"></script>
+
+<!-- 文章自動互聯（相關文章）：兩支已內建，順序不可顛倒，不用再另外加 -->
+<script src="../../articles-data.js"></script>
+<script src="../../related-render.js"></script>
+</body>
+</html>

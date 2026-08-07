@@ -13,14 +13,14 @@
 <meta property="og:url" content="https://jiangyude.com/" />
 <meta property="og:title" content="江江教練 · AI 知識管理" />
 <meta property="og:description" content="江昱德（江江教練）：AI 教練與一人公司主理人。協助知識工作者用 AI 提煉隱性知識、把文件與會議記錄變成可累積的知識資產。" />
-<meta property="og:image" content="https://jiangyude.com/images/intro-jiang.png" />
+<meta property="og:image" content="https://jiangyude.com/images/og/home.jpg" />
 <meta property="og:locale" content="zh_TW" />
 <meta property="og:locale:alternate" content="en_US" />
 <meta property="og:site_name" content="江江教練 · AI 知識管理" />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="江江教練 · AI 知識管理" />
 <meta name="twitter:description" content="江昱德（江江教練）：AI 教練與一人公司主理人。協助知識工作者用 AI 提煉隱性知識、把文件與會議記錄變成可累積的知識資產。" />
-<meta name="twitter:image" content="https://jiangyude.com/images/intro-jiang.png" />
+<meta name="twitter:image" content="https://jiangyude.com/images/og/home.jpg" />
 <meta name="description" content="江昱德（江江教練）：AI 教練與一人公司主理人。協助知識工作者用 AI 提煉隱性知識、把文件與會議記錄變成可累積的知識資產。" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -35,7 +35,7 @@
   "jobTitle": "AI 教練",
   "description": "AI 教練與一人公司主理人。專長是提煉隱性知識：協助知識工作者把散落的文件、會議紀錄、課程錄影、工作經驗，用 AI 工具變成可累積、可重用、可輔助決策的知識資產。",
   "url": "https://jiangyude.com/",
-  "image": "https://jiangyude.com/images/intro-jiang.png",
+  "image": "https://jiangyude.com/images/og/home.jpg",
   "knowsAbout": [
     "AI 知識管理",
     "隱性知識提煉",
@@ -146,40 +146,112 @@
 }
 
 /* ── 1a. Hero 雙欄：文案左、個人照右（2026-08-06 改版） ── */
+.hero { padding-top: 72px; padding-bottom: 36px; border-bottom: 1px solid var(--line); }
 .hero-duo {
   display: grid;
-  grid-template-columns: minmax(0, 1.22fr) minmax(240px, .78fr);
-  gap: 40px;
+  grid-template-columns: minmax(0, 1.18fr) minmax(240px, .82fr);
+  gap: 14px;
   align-items: center;
   text-align: left;
 }
 .hero-duo .hero-cta-row { justify-content: flex-start; }
 .hero-duo .hero-search-row { margin: 20px 0 0; }
-.hero-duo .eyebrow { font-size: 1.15rem; letter-spacing: .1em; }
-.hero-duo h1 { font-size: clamp(2.7rem, 4.8vw, 4.7rem); line-height: 1.18; margin: 14px 0 22px; }
-.hero-duo .subtitle { margin: 0 0 24px; max-width: none; }
-.hero-duo .hero-hook { margin: 0 0 6px; max-width: 640px; }
+.hero-duo .eyebrow { font-size: 1.45rem; letter-spacing: .08em; }
+.hero-duo h1 { font-size: clamp(2.2rem, 3.6vw, 3.5rem); line-height: 1.22; margin: 14px 0 24px; }
+.hero-duo .subtitle { margin: 0 0 26px; max-width: none; font-size: 1.42rem; line-height: 1.75; }
+.hero-duo .hero-hook { margin: 0 0 10px; max-width: 660px; font-size: 1.34rem; line-height: 1.75; }
 @media (max-width: 760px) {
   .hero-duo .subtitle { margin: 0 auto 24px; }
   .hero-duo .hero-hook { margin: 0 auto 6px; }
 }
+
+/* ── 9a. 介紹區改版（2026-08-06）：照片淡出、三 CTA 奶油卡整行 ── */
+.intro-photo, .intro-photo.has-photo {
+  width: 200px;
+  height: 200px;
+  aspect-ratio: 1 / 1;
+  border-radius: 50%;
+  overflow: hidden;
+  background: linear-gradient(180deg, #f6e7cd 0%, #eed3ac 100%);
+  border: 3px solid #fff;
+  box-shadow: 0 12px 28px rgba(120, 90, 40, .18);
+  align-items: flex-start;
+  justify-content: center;
+}
+.intro-photo img, .intro-photo.has-photo img {
+  width: 135%;
+  max-width: none;
+  height: auto;
+  object-fit: cover;
+  object-position: top center;
+  margin-top: 4%;
+}
+.intro-cta-fullrow {
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-top: 30px;
+}
+.intro-cta-fullrow .intro-line-cta {
+  flex: 1 1 240px;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-xl);
+  box-shadow: none;
+  padding: 26px 30px;
+  transition: transform .3s, box-shadow .3s, border-color .3s;
+}
+.intro-cta-fullrow .intro-line-cta:hover {
+  transform: translateY(-3px);
+  border-color: var(--c-sand);
+  box-shadow: 0 14px 30px rgba(120, 90, 40, .10);
+  background: var(--paper);
+}
+.intro-cta-fullrow .intro-line-cta .cta-main { color: var(--ink); }
+.intro-cta-fullrow .intro-line-cta .cta-sub { color: var(--ink-soft); }
 .hero-portrait {
   display: flex;
   justify-content: center;
   align-items: flex-end;
 }
+.hero-portrait {
+  align-self: end;
+  /* 下緣直接切齊 hero 區塊邊界：往下推掉 hero 的底 padding（36px），超出部分被 overflow 裁掉 */
+  margin-bottom: -36px;
+  justify-content: flex-start;
+  margin-left: -18px;
+}
+.hero-portrait .portrait-arch {
+  position: relative;
+  width: min(400px, 100%);
+  height: 400px;
+  overflow: hidden;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+}
+.hero-portrait .portrait-arch::before {
+  content: '';
+  position: absolute;
+  left: -36px; right: -36px; top: 16px; bottom: 0;
+  background: radial-gradient(closest-side, rgba(233, 180, 120, .30), transparent 72%);
+  filter: blur(6px);
+  z-index: 0;
+}
 .hero-portrait img {
-  max-width: 330px;
+  position: relative;
+  z-index: 1;
+  display: block;
   width: 100%;
   height: auto;
-  filter: drop-shadow(0 18px 36px rgba(60, 45, 25, .18));
+  margin-bottom: -4px;
 }
 @media (max-width: 760px) {
   .hero-duo { grid-template-columns: 1fr; text-align: center; gap: 18px; }
   .hero-duo .hero-cta-row { justify-content: center; }
   .hero-duo .hero-search-row { margin: 20px auto 0; }
   .hero-portrait { order: 2; }
-  .hero-portrait img { max-width: 230px; }
+  .hero-portrait .portrait-arch { width: min(240px, 88%); }
 }
 
 /* ── 2. 三支柱 ── */
@@ -811,21 +883,13 @@
           別再追著學工具。<br />
           把資料準備好，讓 AI 來學你。
         </p>
-        <p class="hero-hook">會編輯文件、會分類資料夾，就能打造 AI 讀得懂的知識庫。<br />AI 學會了你，才幫得上你。</p>
-        <div class="verb-chain">
-          提煉 <span>→</span> 累積 <span>→</span> 應用
-        </div>
-        <div class="hero-cta-row">
-          <a class="hero-btn-secondary" href="courses.html">每月免費講座課表</a>
-          <a class="hero-btn-secondary" href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">加入 LINE 社群</a>
-        </div>
-        <form class="hero-search-row" action="/search.html" method="get" role="search" aria-label="全站搜尋">
-          <input type="search" name="q" placeholder="搜尋文章、技能包、課程…" aria-label="搜尋關鍵字" style="flex:1 1 auto; min-width:0; font-family:inherit; font-size:1rem; padding:12px 18px; border:1.5px solid var(--line); border-radius:var(--radius-pill); background:#fff; color:var(--ink);" />
-          <button type="submit" class="hero-btn-secondary" style="border-radius:var(--radius-pill); cursor:pointer;">全站搜尋</button>
-        </form>
+        <p class="hero-hook">我協助專業知識工作者，跟 5 到 10 人的小公司、團隊：<br />用寫文件跟分類資料夾，就能打造 AI 工作流、知識庫。</p>
+        <p class="hero-hook" style="font-weight:700; color:var(--ink);">AI 懂你，才能幫你。</p>
       </div>
       <div class="hero-portrait">
-        <img src="images/intro-jiang.png" alt="江昱德（江江教練）形象照" loading="eager" />
+        <div class="portrait-arch">
+          <img src="images/intro-jiang.png" alt="江昱德（江江教練）形象照" loading="eager" />
+        </div>
       </div>
     </div>
   </div>
@@ -994,44 +1058,8 @@ https://jiangyude.com/</code>
   </div>
 </section>
 
-<!-- ════════════════════════════════════════
-     5. 服務四種（2026-07-05 取代「課程三層體系」；舊三層版型見 git tag backup/2026-07-05-pre-ia）
-     ════════════════════════════════════════ -->
-<section class="tiers-section">
-  <div class="container">
-    <div class="section-head-center">
-      <div class="eyebrow">跟我學</div>
-      <h2 class="section-title">四種方式，<span class="italic">沒有高低之分</span></h2>
-      <p class="section-sub">服務方案重整設計中，價格與細節陸續公告。先讓你知道有這幾種可能。</p>
-    </div>
-    <div class="entry-grid four">
-      <a class="entry-card c2" href="courses.html">
-        <div class="entry-eye">先免費聽</div>
-        <h3>免費講座</h3>
-        <p>每月兩場線上講座，加 LINE 社群就能參加，主題每場不同，現場可以問。</p>
-        <span class="arrow">看近期場次 →</span>
-      </a>
-      <a class="entry-card c1" href="cases.html">
-        <div class="entry-eye">邀我去講</div>
-        <h3>課程邀約</h3>
-        <p>企業、學校、社群邀約授課。講師費每小時 2,000 元，不含車馬費，主題可客製。</p>
-        <span class="arrow">談邀約 →</span>
-      </a>
-      <a class="entry-card c3" href="courses.html">
-        <div class="entry-eye">自己的步調</div>
-        <h3>線上課程</h3>
-        <p>預錄課程重整規劃中，上架後在課程頁公告。</p>
-        <span class="arrow">規劃中 →</span>
-      </a>
-      <a class="entry-card c5" href="cases.html">
-        <div class="entry-eye">帶團隊導入</div>
-        <h3>實體工作坊＋長期陪跑</h3>
-        <p>一天實體工作坊加長期陪跑，方案設計中，想帶團隊導入可以先聊。</p>
-        <span class="arrow">規劃中 →</span>
-      </a>
-    </div>
-  </div>
-</section>
+<!-- 5. 服務四種（跟我學）已於 2026-08-06 移除：與四個入口、介紹區講座資訊、服務方案頁重複（江江：整區重複太繁瑣） -->
+
 
 <!-- ════════════════════════════════════════
      7. 旗艦課深度區
@@ -1130,26 +1158,26 @@ https://jiangyude.com/</code>
     <div class="intro-grid">
       <div class="intro-text">
         <h2 class="intro-name">我是江昱德</h2>
-        <p class="intro-title">AI 知識架構師<br />隱性知識提煉師</p>
         <p class="intro-desc">
-          協助專業人士，只需會寫文件跟分類資料夾，<br />
-          就能打造自己的 AI 助理與知識庫。<br />
+          我每月固定舉辦兩場免費線上講座，<br />
+          講座資訊請看我的 LINE 社群。<br />
           <em>用 AI 放大你的亮點。</em>
         </p>
-        <div class="intro-cta-row">
-          <a class="intro-line-cta" href="https://jiang-yude.github.io/jiang-card/" target="_blank" rel="noopener">
-            <span class="cta-main">讓江江教練的 AI 分身為你介紹</span>
-            <span class="cta-sub">把名片丟給你的 AI，它會依你的工作客製介紹</span>
-          </a>
-          <a class="intro-line-cta" href="https://line.me/R/ti/p/@713kczfc" target="_blank" rel="noopener">
-            <span class="cta-main">歡迎合作邀約</span>
-            <span class="cta-sub">聯繫我請洽 LINE 官方帳號</span>
-          </a>
-        </div>
       </div>
       <div class="intro-photo has-photo">
         <img src="images/intro-jiang.png" alt="江昱德 江江教練" />
       </div>
+    </div>
+
+    <div class="intro-cta-row intro-cta-fullrow">
+      <a class="intro-line-cta" href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">
+        <span class="cta-main">加入 LINE 社群</span>
+        <span class="cta-sub">每月兩場免費線上講座，資訊都在社群裡</span>
+      </a>
+      <a class="intro-line-cta" href="https://line.me/R/ti/p/@713kczfc" target="_blank" rel="noopener">
+        <span class="cta-main">歡迎合作邀約</span>
+        <span class="cta-sub">聯繫我請洽 LINE 官方帳號</span>
+      </a>
     </div>
 
     <!-- 6 圓 icon SVG logo（一列） -->
@@ -1270,22 +1298,7 @@ https://jiangyude.com/</code>
      ════════════════════════════════════════ -->
 <!-- 11. AI 名片區已於 2026-08-06 移除（江江拍板：名片併入官網，見官網看板候選卡「官網雙角色頁＋名片合併退場」） -->
 
-<section class="closing-motto-section" style="padding:90px 0 80px; text-align:center; position:relative; overflow:hidden;">
-  <div class="watercolor wc-peach" style="width:420px;height:340px;top:-60px;left:-100px;opacity:0.10;"></div>
-  <div class="watercolor wc-sand" style="width:380px;height:320px;bottom:-80px;right:-90px;opacity:0.10;"></div>
-  <div class="container narrow">
-    <p style="font-family:'Caveat',cursive; font-size:clamp(2.2rem,5vw,3.4rem); color:var(--c-sand, #C99A5B); font-weight:700; line-height:1.35; margin:0;">流水的 AI 工具，<br />鐵打的知識庫</p>
-    <p style="font-size:1.12rem; color:var(--ink-soft, #6b5d4f); margin:22px 0 0; line-height:1.8;">工具會一直換，你累積下來的知識庫，誰也拿不走。</p>
-    <div class="mika-moment" data-mika-moment="closing">
-      <!-- 圖規格（給 Codex）：咪卡雙手高舉木牌，牌上寫「流水的 AI 工具，鐵打的知識庫」，神情得意滿足 -->
-      <div class="mika-moment-img has-img"><img src="images/mika-closing.png" alt="咪卡雙手舉牌：流水的 AI 工具，鐵打的知識庫" loading="lazy" /></div>
-      <div class="mika-moment-text">
-        <span class="mika-name">咪卡</span>
-        <p class="mika-line">我是咪卡，江江教練訓練出來的 AI 員工。下一個，是你的。</p>
-      </div>
-    </div>
-  </div>
-</section>
+<!-- 12. 結尾招牌句已於 2026-08-06 移除：與 hero 大標重複（江江：這裡又重複了） -->
 
 <!-- ════════════════════════════════════════
      12b. 4O 優化區：人跟 AI 都好找、好讀、好用

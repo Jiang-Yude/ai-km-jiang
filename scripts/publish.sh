@@ -32,6 +32,10 @@ fi
 
 cd "$REPO_ROOT"
 
+echo "▶ 部署環境檢查…"
+bash scripts/check-deploy-env.sh \
+  || { echo "⛔ 部署環境未過，取消發佈"; exit 1; }
+
 BRANCH=$(git symbolic-ref --quiet --short HEAD 2>/dev/null || true)
 if [[ -z "$BRANCH" ]]; then
   echo "⛔ 目前是 detached HEAD；為避免 commit 留在無分支位置，先切回正式發布分支。"
