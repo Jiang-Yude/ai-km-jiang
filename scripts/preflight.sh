@@ -29,7 +29,8 @@ else bad "link-graph 有斷連"; fi
 echo "═══ 4/10 新頁面有進 sitemap 與 llms.txt ═══"
 MISS=0
 for f in *.html; do
-  case "$f" in google*|stats.html|search.html|agent.html|skills.html|index-parallel*.html) continue;; esac
+  # _ 開頭＝本機工具檔（校稿器 tuner 等），跟 _trash/ 同一個慣例，不上線也不進 sitemap
+  case "$f" in _*.html|google*|stats.html|search.html|agent.html|skills.html|index-parallel*.html) continue;; esac
   loc="${f}"; [ "$f" = "index.html" ] && loc="/"
   grep -q "$loc" sitemap.xml || { bad "sitemap 缺 $f"; MISS=1; }
 done
