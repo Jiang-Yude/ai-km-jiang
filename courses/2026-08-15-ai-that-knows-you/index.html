@@ -141,6 +141,31 @@
   section[data-bg="7"] .steprow .v b, section[data-bg="8"] .steprow .v b, section[data-bg="9"] .steprow .v b { color:var(--text-on-dark); }
 
   /* 可直接唸／複製的指令 */
+  /* 現場掃描 QR */
+  .qrbox { display:flex; align-items:center; gap:26px; flex-wrap:wrap; margin:0 0 34px; padding:22px 24px; border:2px solid var(--accent); border-radius:18px; background:rgba(255,248,240,0.7); }
+  .qr-img { width:150px; height:150px; flex:0 0 auto; background:#fff; border-radius:10px; padding:6px; cursor:zoom-in; transition:transform .15s; }
+  .qr-img:hover { transform:scale(1.04); }
+  .qr-side { flex:1 1 240px; min-width:0; }
+  .qr-label { font-family:var(--font-mono); font-size:15px; letter-spacing:0.14em; color:var(--accent); font-weight:700; margin-bottom:8px; }
+  .qr-text { font-size:19px; line-height:1.75; color:var(--text-on-light); margin:0; }
+  .qr-hint { font-size:16px; color:var(--accent); margin:10px 0 0; }
+  #qrOverlay { position:fixed; inset:0; background:rgba(20,16,12,.88); display:none; align-items:center; justify-content:center; z-index:9999; cursor:zoom-out; padding:24px; }
+  #qrOverlay.on { display:flex; }
+  #qrOverlay img { width:min(78vw,78vh); height:auto; background:#fff; border-radius:16px; padding:18px; }
+  /* 每張分身卡的複製指令 */
+  .agent-cmd { margin-top:16px; display:flex; align-items:center; gap:14px; flex-wrap:wrap; }
+  .cmdbtn { font-family:var(--font-body); font-size:16px; font-weight:700; padding:10px 20px; border-radius:999px; border:1.5px solid var(--accent); background:var(--accent); color:#fff; cursor:pointer; transition:opacity .15s; }
+  .cmdbtn:hover { opacity:.85; }
+  .cmdbtn.done { background:#2e7d55; border-color:#2e7d55; }
+  .cmdlink { font-size:16px; color:var(--accent); text-decoration:underline; }
+  /* 摺疊區 */
+  .foldbox { margin-top:26px; border:1px solid var(--accent); border-radius:14px; background:rgba(255,248,240,0.45); padding:0 20px; }
+  .foldbox summary { cursor:pointer; padding:14px 0; font-size:17px; font-weight:700; color:var(--accent); list-style:none; }
+  .foldbox summary::-webkit-details-marker { display:none; }
+  .foldbox summary::before { content:'▸ '; }
+  .foldbox[open] summary::before { content:'▾ '; }
+  .foldbox[open] { padding-bottom:16px; }
+  @media (max-width:640px){ .qrbox{gap:18px;padding:18px} .qr-img{width:118px;height:118px} .qr-text{font-size:17px} }
   .promptbox { text-align:left; margin-top:32px; border:2px solid var(--accent); border-radius:18px; background:rgba(255,248,240,0.7); padding:24px 26px 20px; }
   .promptbox .plabel { font-family:var(--font-mono); font-size:15px; letter-spacing:0.14em; color:var(--accent); font-weight:700; margin-bottom:12px; display:block; }
   .promptbox p { font-size:20px; line-height:1.8; color:var(--text-on-light); margin:0; }
@@ -338,22 +363,77 @@
       <div class="act-cap reveal">ACT 04 · 14:40 第一段 體驗</div>
       <h2 class="display sm reveal d1">先體驗四個做好的代理人</h2>
       <p class="lead reveal d2">拿你事業上真正卡住的問題去問，感受一下懂做事的 AI 跟一般聊天差在哪。</p>
-      <div class="grid-2">
-        <div class="card reveal d1"><div class="num">分身 01</div><h3 class="h2">納瓦爾</h3><p class="body">財富、槓桿、判斷。適合問：我手上的事業，哪一塊真的有槓桿，哪一塊只是在賣時間。</p><p class="body" style="margin-top:10px"><a href="https://github.com/Jiang-Yude/naval-ravikant-skill" target="_blank" rel="noopener" style="font-weight:700;text-decoration:underline;">開啟納瓦爾</a></p></div>
-        <div class="card reveal d2"><div class="num">分身 02</div><h3 class="h2">馬斯克 第一性原理</h3><p class="body">拆到不能再拆。適合問：如果我的成本結構砍掉重練，會長成什麼樣子。也可以叫它靈魂考驗你。</p><p class="body" style="margin-top:10px"><a href="https://github.com/Jiang-Yude/musk-first-principles" target="_blank" rel="noopener" style="font-weight:700;text-decoration:underline;">開啟馬斯克</a></p></div>
-        <div class="card reveal d3"><div class="num">分身 03</div><h3 class="h2">江江教練</h3><p class="body">隱性知識提煉與知識架構。適合問：我腦子裡哪些東西別人學不走，該被提煉出來變成公司的資產。</p><p class="body" style="margin-top:10px"><a href="https://github.com/Jiang-Yude/jiang-coach-agent" target="_blank" rel="noopener" style="font-weight:700;text-decoration:underline;">開啟江江教練</a></p></div>
-        <div class="card reveal d4"><div class="num">分身 04</div><h3 class="h2">扶輪顧問</h3><p class="body">扶輪精神與社團知識傳承。適合問：這個決定拿四大考驗檢視一遍；我們社每年換社長，經驗都留不下來怎麼辦。</p><p class="body" style="margin-top:10px"><a href="https://github.com/Jiang-Yude/rotary-advisor" target="_blank" rel="noopener" style="font-weight:700;text-decoration:underline;">開啟扶輪顧問</a></p></div>
+      <div class="qrbox reveal d1">
+        <img src="qr-course.svg" alt="掃這個 QR 打開本頁" class="qr-img" id="qrImg" />
+        <div class="qr-side">
+          <div class="qr-label">現場掃這個</div>
+          <p class="qr-text">掃完就是你現在看的這一頁。四個分身的指令都在下面，手機上直接複製，貼進你的 ChatGPT。</p>
+          <p class="qr-hint">點 QR 可以放大</p>
+        </div>
       </div>
+
+      <div class="grid-2">
+        <div class="card reveal d1"><div class="num">分身 01</div><h3 class="h2">納瓦爾</h3><p class="body">財富、槓桿、判斷。適合問：我手上的事業，哪一塊真的有槓桿，哪一塊只是在賣時間。</p>
+          <div class="agent-cmd" data-cmd="請打開這個網址，讀完裡面的角色定義：
+https://github.com/Jiang-Yude/naval-ravikant-skill
+
+讀完之後，用這個角色跟我對話。
+開始之前先問我一題：要不要讓你先看看你這邊記得的我（記憶、過去的對話），做一份簡單的個人化分析再開始？
+我說要，你就先分析再聊；我說不要，就直接開始聊。">
+            <button class="cmdbtn" type="button">複製跟納瓦爾聊天的指令</button>
+            <a class="cmdlink" href="https://github.com/Jiang-Yude/naval-ravikant-skill" target="_blank" rel="noopener">看內容</a>
+          </div>
+        </div>
+        <div class="card reveal d2"><div class="num">分身 02</div><h3 class="h2">馬斯克 第一性原理</h3><p class="body">拆到不能再拆。適合問：如果我的成本結構砍掉重練，會長成什麼樣子。也可以叫它靈魂考驗你。</p>
+          <div class="agent-cmd" data-cmd="請打開這個網址，讀完裡面的角色定義：
+https://github.com/Jiang-Yude/musk-first-principles
+
+讀完之後，用這個角色跟我對話。
+開始之前先問我一題：要不要讓你先看看你這邊記得的我（記憶、過去的對話），做一份簡單的個人化分析再開始？
+我說要，你就先分析再聊；我說不要，就直接開始聊。">
+            <button class="cmdbtn" type="button">複製跟馬斯克聊天的指令</button>
+            <a class="cmdlink" href="https://github.com/Jiang-Yude/musk-first-principles" target="_blank" rel="noopener">看內容</a>
+          </div>
+        </div>
+        <div class="card reveal d3"><div class="num">分身 03</div><h3 class="h2">江江教練</h3><p class="body">隱性知識提煉與知識架構。適合問：我腦子裡哪些東西別人學不走，該被提煉出來變成公司的資產。</p>
+          <div class="agent-cmd" data-cmd="請打開這個網址，讀完裡面的角色定義：
+https://github.com/Jiang-Yude/jiang-coach-agent
+
+讀完之後，用這個角色跟我對話。
+開始之前先問我一題：要不要讓你先看看你這邊記得的我（記憶、過去的對話），做一份簡單的個人化分析再開始？
+我說要，你就先分析再聊；我說不要，就直接開始聊。">
+            <button class="cmdbtn" type="button">複製跟江江教練聊天的指令</button>
+            <a class="cmdlink" href="https://github.com/Jiang-Yude/jiang-coach-agent" target="_blank" rel="noopener">看內容</a>
+          </div>
+        </div>
+        <div class="card reveal d4"><div class="num">分身 04</div><h3 class="h2">扶輪顧問</h3><p class="body">扶輪精神與社團知識傳承。適合問：這個決定拿四大考驗檢視一遍；我們社每年換社長，經驗都留不下來怎麼辦。</p>
+          <div class="agent-cmd" data-cmd="請打開這個網址，讀完裡面的角色定義：
+https://github.com/Jiang-Yude/rotary-advisor
+
+讀完之後，用這個角色跟我對話。
+開始之前先問我一題：要不要讓你先看看你這邊記得的我（記憶、過去的對話），做一份簡單的個人化分析再開始？
+我說要，你就先分析再聊；我說不要，就直接開始聊。">
+            <button class="cmdbtn" type="button">複製跟扶輪顧問聊天的指令</button>
+            <a class="cmdlink" href="https://github.com/Jiang-Yude/rotary-advisor" target="_blank" rel="noopener">看內容</a>
+          </div>
+        </div>
+      </div>
+
       <div class="promptbox reveal d4">
-        <span class="plabel">建議第一題 · 指令卡上也有</span>
+        <span class="plabel">貼完之後，建議問的第一題</span>
         <p data-copy>我是［你的行業］的經營者。我哪些工作流程適合做成 AI Agent？我有哪些知識應該被提煉出來？</p>
         <button class="copy" type="button">複製這段</button>
       </div>
-      <div class="stepbox reveal d4">
-        <div class="steprow"><div class="k">怎麼開</div><div class="v">點上面的連結，或掃指令卡的 QR，把網址貼給你的 ChatGPT，說「讀完這個網址，然後用這個角色跟我聊」。</div></div>
-        <div class="steprow"><div class="k">會先問你</div><div class="v">它會問要不要先看看它記得的你，做一份簡單的個人化分析。你說要就先分析，說不要就直接聊。</div></div>
-        <div class="steprow"><div class="k">扶輪顧問</div><div class="v">內容整理自扶輪的公開資料並標明出處，四大考驗附官方英文原文。它<b>不代表國際扶輪或任何扶輪社的官方立場</b>，規章細節請以社裡的章程與官方文件為準。</div></div>
-      </div>
+
+      <details class="foldbox reveal d4">
+        <summary>怎麼開？點開看步驟</summary>
+        <div class="stepbox" style="margin-top:0">
+          <div class="steprow"><div class="k">第一步</div><div class="v">點卡片上的「複製⋯指令」，整段指令就在你的剪貼簿裡了。</div></div>
+          <div class="steprow"><div class="k">第二步</div><div class="v">打開你的 ChatGPT，開一個<b>新對話</b>，直接貼上送出。</div></div>
+          <div class="steprow"><div class="k">會發生什麼</div><div class="v">它會先去讀那個網址，然後問你要不要看看它記得的你，做一份簡單的個人化分析。你說要就先分析，說不要就直接聊。</div></div>
+          <div class="steprow"><div class="k">扶輪顧問</div><div class="v">內容整理自扶輪的公開資料並標明出處，四大考驗附官方英文原文。它<b>不代表國際扶輪或任何扶輪社的官方立場</b>，規章細節請以社裡的章程與官方文件為準。</div></div>
+        </div>
+      </details>
     </div>
   </section>
 
@@ -603,6 +683,49 @@
       });
     });
   });
+
+  // 每張分身卡的「複製跟 XX 聊天的指令」
+  function copyText(text, btn, okLabel) {
+    const done = () => {
+      const old = btn.textContent;
+      btn.textContent = okLabel;
+      btn.classList.add('done');
+      setTimeout(() => { btn.textContent = old; btn.classList.remove('done'); }, 1800);
+    };
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(text).then(done).catch(() => fallback(text, done));
+    } else { fallback(text, done); }
+  }
+  // 舊瀏覽器或非 https 的備援，現場手機比較雜，留一條退路
+  function fallback(text, done) {
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.setAttribute('readonly', '');
+    ta.style.cssText = 'position:fixed;top:-9999px;left:-9999px;opacity:0';
+    document.body.appendChild(ta);
+    ta.select(); ta.setSelectionRange(0, ta.value.length);
+    try { document.execCommand('copy'); done(); } catch (e) { window.prompt('複製這段：', text); }
+    document.body.removeChild(ta);
+  }
+  document.querySelectorAll('.agent-cmd').forEach((box) => {
+    const btn = box.querySelector('.cmdbtn');
+    if (!btn) return;
+    btn.addEventListener('click', () => copyText(box.dataset.cmd || '', btn, '已複製，去貼上'));
+  });
+
+  // QR 點開放大
+  (function () {
+    const img = document.getElementById('qrImg');
+    if (!img) return;
+    const ov = document.createElement('div');
+    ov.id = 'qrOverlay';
+    ov.innerHTML = '<img alt="放大的 QR" src="' + img.getAttribute('src') + '">';
+    document.body.appendChild(ov);
+    const close = () => ov.classList.remove('on');
+    img.addEventListener('click', () => ov.classList.add('on'));
+    ov.addEventListener('click', close);
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') close(); });
+  })();
 })();
 </script>
 <script src="/views.js"></script>
