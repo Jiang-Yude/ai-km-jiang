@@ -54,15 +54,37 @@
     return ok;
   }
 
-  // 搜尋：標題 + 摘要 + 解決 + 適合 + 全部標籤
+  // 搜尋：標題 + 摘要 + 解決 + 適合 + 全部標籤 + 別名庫（search-aliases.js 的訪客口語別名）
   function haystack(a) {
     var parts = [a.title, a.summary, a.problem, a.audience];
     if (a.tags) Object.keys(a.tags).forEach(function (d) { parts = parts.concat(a.tags[d] || []); });
+    if (window.SEARCH_ALIASES && window.SEARCH_ALIASES[a.id]) parts = parts.concat(window.SEARCH_ALIASES[a.id]);
     return parts.join(" ").toLowerCase();
   }
+  // 空格分詞 AND 比對：每個詞都命中才算（跟 search.js 同規則）
   function matchesQuery(a) {
     if (!query) return true;
-    return haystack(a).indexOf(query) !== -1;
+    var hs = haystack(a);
+    return query.split(/\s+/).filter(Boolean).every(function (token) {
+      return hs.indexOf(token) !== -1;
+    });
+  }
+
+  // 搜尋 log（見 api/search-log.js）：找出訪客問法跟站上內容對不上的缺口
+  var lastLogged = "";
+  var logTimer = null;
+  function queueQueryLog(n) {
+    if (!query || query.length < 2 || query === lastLogged) return;
+    clearTimeout(logTimer);
+    var q = query;
+    logTimer = setTimeout(function () {
+      lastLogged = q;
+      try {
+        var body = JSON.stringify({ q: q, n: n, surface: "articles" });
+        if (navigator.sendBeacon) navigator.sendBeacon("/api/search-log", new Blob([body], { type: "application/json" }));
+        else fetch("/api/search-log", { method: "POST", headers: { "Content-Type": "application/json" }, body: body, keepalive: true });
+      } catch (e) {}
+    }, 1200);
   }
 
   function visible(a) { return matchesTags(a) && matchesQuery(a); }
@@ -150,6 +172,7 @@
     elCount.innerHTML = "符合 <b>" + n + "</b> 篇" +
       ((selected.size || query) ? "（共 " + articles.length + " 篇）" : "");
     elEmpty.classList.toggle("show", n === 0);
+    queueQueryLog(n);
   }
 
   function refresh() { renderFilter(); renderSelected(); renderCards(); }

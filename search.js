@@ -52,6 +52,35 @@
     return out;
   }
 
+  // 別名庫：search-aliases.js 定義 window.SEARCH_ALIASES（key＝文章 id，不含 article- 前綴）
+  function aliasesFor(id) {
+    var map = window.SEARCH_ALIASES || {};
+    var plain = String(id || "").replace(/^article-/, "");
+    return map[id] || map[plain] || [];
+  }
+
+  // 搜尋 log：訪客搜了什麼、命中幾筆、點了什麼（見 api/search-log.js）
+  var lastLogged = "";
+  function logSearch(payload) {
+    try {
+      var body = JSON.stringify(payload);
+      if (navigator.sendBeacon) {
+        navigator.sendBeacon("/api/search-log", new Blob([body], { type: "application/json" }));
+      } else {
+        fetch("/api/search-log", { method: "POST", headers: { "Content-Type": "application/json" }, body: body, keepalive: true });
+      }
+    } catch (e) {}
+  }
+  var logTimer = null;
+  function queueQueryLog(q, n) {
+    if (!q || q.length < 2 || q === lastLogged) return;
+    clearTimeout(logTimer);
+    logTimer = setTimeout(function () {
+      lastLogged = q;
+      logSearch({ q: q, n: n, surface: "search" });
+    }, 1200);
+  }
+
   function matchesQuery(item, query) {
     if (!query) return true;
     var haystack = [
@@ -62,6 +91,7 @@
       item.id,
     ]
       .concat(flattenTags(item.tags))
+      .concat(aliasesFor(item.id))
       .join(" ")
       .toLowerCase();
     // 空格分詞 AND 比對：每個詞都命中才算符合（「角色設定 三視圖」= 兩詞都要有）
@@ -113,6 +143,7 @@
     resultsEl.innerHTML = matched.map(renderCard).join("");
     statusEl.innerHTML = "符合 <b>" + matched.length + "</b> 項";
     emptyEl.classList.toggle("show", matched.length === 0);
+    queueQueryLog(query, matched.length);
   }
 
   function setActiveType(type) {
@@ -140,6 +171,14 @@
     });
 
     input.addEventListener("input", render);
+
+    resultsEl.addEventListener("click", function (e) {
+      var card = e.target.closest("a.search-card");
+      if (!card) return;
+      var q = (input.value || "").trim().toLowerCase();
+      if (q.length < 2) return;
+      logSearch({ q: q, surface: "search", click: card.getAttribute("href") || "" });
+    });
 
     fetch("/site-index.json")
       .then(function (res) {
