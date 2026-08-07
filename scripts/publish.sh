@@ -160,6 +160,12 @@ git pull --rebase
 echo "▶ Rebase 後、push 前再掃描…"
 bash "$SAFE_DEPLOY_TOOL" --scan-only "$REPO_ROOT"
 
+# push 前先記下 main 最新建置的位置，push 後用「換了沒」判斷新建置完成
+GIT_MAIN_URL="https://ai-km-jiang-git-main-jiang-coach.vercel.app"
+PREV_TARGET=$(vercel inspect "$GIT_MAIN_URL" --format=json 2>/dev/null \
+  | grep -Eo '"url"[[:space:]]*:[[:space:]]*"[^"]*"' | head -1 \
+  | grep -Eo '[a-z0-9-]+\.vercel\.app' || true)
+
 TAG="publish/$(TZ=Asia/Taipei date +%Y-%m-%d-%H%M%S)"
 echo "▶ Tag ${TAG} + atomic push…"
 git tag "$TAG"
@@ -198,27 +204,44 @@ if [[ ${#EXTRA_VERIFY[@]} -gt 0 ]]; then
   echo "▶ 本次含新文章，驗收清單加入：${EXTRA_VERIFY[*]}"
 fi
 
-# ─── Git 整合自動部署驗收（2026-08-08 起）───
-# push 已觸發 Vercel 從 GitHub 遠端建置，這裡只做驗收，不再從本機推快照。
+# ─── Git 整合自動部署＋別名促轉（2026-08-08 起）───
+# push 已觸發 Vercel 從 GitHub 遠端建置（部署單位＝commit，不再從本機推快照）。
+# 這裡等 main 最新建置 READY，把三個網域促轉過去，再驗收。
 # 驗收三件套（Codex 跨家審查要求）：
-#   ① 本次 commit SHA 的 production deployment 綁上 jiangyude.com
+#   ① main 最新建置換新且 READY、三網域促轉成功
 #   ② 固定五站＋動態文章路徑 curl 200
 #   ③ 抽驗一篇 .vercelignore 擋板草稿仍 404（防擋板在 git 部署下失效）
-SHA=$(git rev-parse HEAD)
-echo "▶ 等待 Vercel Git 自動建置本次 commit（${SHA:0:7}）綁上 jiangyude.com…"
+# 註：網域專案層歸屬目前在「website」專案（2026-07-28 買網域時掛上的舊帳，
+#     待江江在 Vercel 後台 Settings→Domains 搬到 ai-km-jiang；搬完後
+#     production 建置會自動接管網域，本促轉段自動降級為保險絲，不衝突）。
+echo "▶ 等待 Vercel Git 自動建置 main 最新 commit（原建置：${PREV_TARGET:-無}）…"
 DEADLINE=$((SECONDS + 600))
+TARGET=""
 while true; do
-  INSPECT=$(vercel inspect jiangyude.com 2>&1 || true)
-  if grep -q "$SHA" <<<"$INSPECT" && grep -qi "READY" <<<"$INSPECT"; then
-    echo "  ✅ production deployment READY，含本次 commit SHA"
+  _J=$(vercel inspect "$GIT_MAIN_URL" --format=json 2>/dev/null || true)
+  _STATE=$(printf '%s' "$_J" | grep -Eo '"readyState"[[:space:]]*:[[:space:]]*"[A-Z]+"' | grep -Eo '[A-Z]+' | tail -1)
+  TARGET=$(printf '%s' "$_J" | grep -Eo '"url"[[:space:]]*:[[:space:]]*"[^"]*"' | head -1 \
+    | grep -Eo '[a-z0-9-]+\.vercel\.app' || true)
+  if [[ -n "$TARGET" && "$TARGET" != "$PREV_TARGET" && "$_STATE" == "READY" ]]; then
+    echo "  ✅ 新建置 READY：$TARGET"
     break
   fi
   if (( SECONDS > DEADLINE )); then
-    echo "⛔ 等 10 分鐘沒看到本次 commit 的 production 綁上 jiangyude.com。"
-    echo "   內容以 git 為準（push 已完成）；部署層請開 Vercel 後台查建置狀態，回退用 instant rollback。"
+    echo "⛔ 等 10 分鐘沒看到 main 的新建置 READY。內容以 git 為準（push 已完成）；"
+    echo "   部署層請開 Vercel 後台查建置狀態；正式網域仍指舊建置，未受影響。"
     exit 1
   fi
   sleep 10
+done
+
+echo "▶ 三網域促轉到新建置…"
+for _domain in jiangyude.com www.jiangyude.com ai-km-jiang.vercel.app; do
+  if vercel alias set "https://$TARGET" "$_domain" >/dev/null 2>&1; then
+    echo "  ✅ $_domain"
+  else
+    echo "⛔ $_domain 促轉失敗；正式站可能停在舊建置，手動：vercel alias set https://$TARGET $_domain"
+    exit 1
+  fi
 done
 
 echo "▶ 正式站路徑驗收…"
