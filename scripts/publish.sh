@@ -4,8 +4,11 @@
 #   git add -- 明確檔案 && bash scripts/publish.sh "commit 訊息"
 #   bash scripts/publish.sh "commit 訊息" -- 明確檔案 [明確資料夾...]
 # 流程：preflight → 明確範圍 → 秘密掃描 → commit → pull rebase → 再掃描
-#      → atomic push → safe-deploy 候選五站 HTTP 可達性 → 指定別名切換 → 正式五站 HTTP 可達性
-# 2026-07-06 立；2026-07-26 依江江拍板 4B 接入共用 safe-deploy。
+#      → atomic push →（Vercel Git 整合自動建置）→ 等本次 commit 的 production READY
+#      → 固定五站＋動態文章路徑驗收 → 擋板草稿 404 抽驗
+# 2026-07-06 立；2026-07-26 接入共用 safe-deploy；2026-08-08 改接 Git 整合自動部署
+# （江江拍板＋Codex 跨家審查，計畫見主庫 _agent/tmp/2026-08-07 官網部署改造/）。
+# 部署觸發＝push 到 main，不再從本機 CLI 推快照；回退用 Vercel instant rollback。
 # 緊急修站也走這裡，不要手動 vercel。
 set -eo pipefail
 
@@ -195,22 +198,55 @@ if [[ ${#EXTRA_VERIFY[@]} -gt 0 ]]; then
   echo "▶ 本次含新文章，驗收清單加入：${EXTRA_VERIFY[*]}"
 fi
 
-echo "▶ 共用安全部署：候選五站＋本次文章路徑 HTTP 可達性全綠才切指定正式別名…"
-# 2026-07-28 起正式網域＝jiangyude.com（.vercel.app 由 Vercel 專案層 301 轉向主網域，驗收打 .vercel.app 會誤判）
-SAFE_DEPLOY_CALLER="scripts/publish.sh" \
-  bash "$SAFE_DEPLOY_TOOL" "$REPO_ROOT" "jiangyude.com" \
-    "/" \
-    "/offers.html" \
-    "/cases.html" \
-    "/skills.html" \
-    "/site-index.json" \
-    ${EXTRA_VERIFY[@]+"${EXTRA_VERIFY[@]}"}
+# ─── Git 整合自動部署驗收（2026-08-08 起）───
+# push 已觸發 Vercel 從 GitHub 遠端建置，這裡只做驗收，不再從本機推快照。
+# 驗收三件套（Codex 跨家審查要求）：
+#   ① 本次 commit SHA 的 production deployment 綁上 jiangyude.com
+#   ② 固定五站＋動態文章路徑 curl 200
+#   ③ 抽驗一篇 .vercelignore 擋板草稿仍 404（防擋板在 git 部署下失效）
+SHA=$(git rev-parse HEAD)
+echo "▶ 等待 Vercel Git 自動建置本次 commit（${SHA:0:7}）綁上 jiangyude.com…"
+DEADLINE=$((SECONDS + 600))
+while true; do
+  INSPECT=$(vercel inspect jiangyude.com 2>&1 || true)
+  if grep -q "$SHA" <<<"$INSPECT" && grep -qi "READY" <<<"$INSPECT"; then
+    echo "  ✅ production deployment READY，含本次 commit SHA"
+    break
+  fi
+  if (( SECONDS > DEADLINE )); then
+    echo "⛔ 等 10 分鐘沒看到本次 commit 的 production 綁上 jiangyude.com。"
+    echo "   內容以 git 為準（push 已完成）；部署層請開 Vercel 後台查建置狀態，回退用 instant rollback。"
+    exit 1
+  fi
+  sleep 10
+done
 
-echo "▶ 同步 .vercel.app 與 www 別名到同一 deployment（轉向層仍會 301 到主網域）…"
-LATEST=$(vercel alias ls 2>/dev/null | awk '$2=="jiangyude.com"{print $1; exit}')
-if [[ -n "$LATEST" ]]; then
-  vercel alias set "$LATEST" "www.jiangyude.com" >/dev/null 2>&1 || echo "  ⚠️ www 別名切換失敗（不擋發布）"
-  vercel alias set "$LATEST" "ai-km-jiang.vercel.app" >/dev/null 2>&1 || echo "  ⚠️ .vercel.app 別名切換失敗（不擋發布）"
+echo "▶ 正式站路徑驗收…"
+VERIFY_FAIL=0
+for _p in "/" "/offers.html" "/cases.html" "/skills.html" "/site-index.json" ${EXTRA_VERIFY[@]+"${EXTRA_VERIFY[@]}"}; do
+  _code=$(curl -s -o /dev/null -w '%{http_code}' --max-time 20 "https://jiangyude.com${_p}")
+  if [[ "$_code" == "200" ]]; then
+    echo "  ✅ ${_p} 200"
+  else
+    echo "  ❌ ${_p} ${_code}"
+    VERIFY_FAIL=1
+  fi
+done
+
+DRAFT_PATH=$(grep -E '^articles/.+/$' .vercelignore 2>/dev/null | head -1)
+if [[ -n "$DRAFT_PATH" ]]; then
+  _code=$(curl -s -o /dev/null -w '%{http_code}' --max-time 20 "https://jiangyude.com/${DRAFT_PATH}")
+  if [[ "$_code" == "404" ]]; then
+    echo "  ✅ 擋板草稿仍 404（/${DRAFT_PATH}）"
+  else
+    echo "  ❌ 擋板草稿回 ${_code}，疑似擋板失效：/${DRAFT_PATH}"
+    VERIFY_FAIL=1
+  fi
 fi
 
-echo "🟢 發布完成：${TAG}（部署失敗會保留 commit/tag，但不採用壞版；正式切換失敗會把指定別名指回舊 deployment）"
+if [[ $VERIFY_FAIL -ne 0 ]]; then
+  echo "⛔ 正式站驗收未全綠。回退：Vercel 後台 instant rollback 切回前一個 deployment，或 git revert 後再 push。"
+  exit 1
+fi
+
+echo "🟢 發布完成：${TAG}（部署由 GitHub push 自動觸發；回退用 Vercel instant rollback 或 git revert 再 push）"
