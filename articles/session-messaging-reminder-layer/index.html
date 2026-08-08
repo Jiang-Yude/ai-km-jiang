@@ -1,0 +1,315 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="index,follow">
+<title>Claude Code 的對話視窗之間可以直接傳訊息了，但有些小限制還是要注意｜江江教練 · AI 知識管理</title>
+<meta name="description" content="Claude Code 的對話之間可以互傳訊息了。我實測一天後的收編方法：先劃清它傳不到的四個地方，把它定位成提醒層，真相只認檔案，再把判斷寫成交接前的四分支規則。">
+<link rel="canonical" href="https://jiangyude.com/articles/session-messaging-reminder-layer/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Claude Code 的對話視窗之間可以直接傳訊息了，但有些小限制還是要注意｜江江教練">
+<meta property="og:image" content="https://jiangyude.com/images/og/session-messaging-reminder-layer.jpg">
+<meta property="og:description" content="Claude Code 的對話之間可以互傳訊息了。我實測一天後的收編方法：先劃清它傳不到的四個地方，把它定位成提醒層，真相只認檔案，再把判斷寫成交接前的四分支規則。">
+<meta property="og:url" content="https://jiangyude.com/articles/session-messaging-reminder-layer/">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:site_name" content="江江教練 · AI 知識管理">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Claude Code 的對話視窗之間可以直接傳訊息了，但有些小限制還是要注意｜江江教練">
+<meta name="twitter:image" content="https://jiangyude.com/images/og/session-messaging-reminder-layer.jpg">
+<meta name="twitter:description" content="Claude Code 的對話之間可以互傳訊息了。我實測一天後的收編方法：先劃清它傳不到的四個地方，把它定位成提醒層，真相只認檔案，再把判斷寫成交接前的四分支規則。">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Claude Code 的對話視窗之間可以直接傳訊息了，但有些小限制還是要注意","description":"Claude Code 的對話之間可以互傳訊息了。我實測一天後的收編方法：先劃清它傳不到的四個地方，把它定位成提醒層，真相只認檔案，再把判斷寫成交接前的四分支規則。","author":{"@type":"Person","name":"江昱德","alternateName":"江江教練","jobTitle":"隱性知識提煉師、AI 應用規劃師"},"isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://jiangyude.com/"},"inLanguage":"zh-Hant","url":"https://jiangyude.com/articles/session-messaging-reminder-layer/"}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{--ink:#1a1612;--paper:#fefcf8;--muted:#6a635a;--line:#d8cdb8;--green:#5f7553;--blue:#5689b8;--orange:#e85a4f;--soft:#faf5ec;--dark:#2a2018;--shadow:0 18px 45px rgba(107,74,42,.14);--sp-shadow:hsla(35,50%,60%,.15);--sp-shadow-edge:hsla(35,50%,68%,.03);--sp-radius:400px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC","Segoe UI",sans-serif}
+a{color:inherit}
+/* 官網共用導航列 nav.top（與首頁/文章總站同一條） */
+nav.top{position:sticky;top:0;background:rgba(254,252,248,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid #d8cdb8;z-index:100}
+nav.top .container{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:24px;padding:14px 32px}
+.nav-brand-img{justify-self:start;display:flex;align-items:center;text-decoration:none;flex-shrink:0;transition:opacity .2s}
+.nav-brand-img:hover{opacity:.8}.nav-brand-img img{height:40px;width:auto;display:block}
+nav.top ul.nav-menu{justify-self:end;display:flex;gap:22px;list-style:none;margin:0;padding:0;font-size:.95rem;white-space:nowrap}
+nav.top ul.nav-menu a{color:#3a342d;text-decoration:none;transition:color .2s;font-weight:500;white-space:nowrap}
+nav.top ul.nav-menu a:hover{color:#1a1612}nav.top ul.nav-menu a.active{color:#1a1612;font-weight:700}
+.nav-toggle{display:none;background:none;border:none;padding:6px;cursor:pointer;width:36px;height:36px;position:relative}
+.nav-toggle span{display:block;position:absolute;left:8px;right:8px;height:2px;background:#1a1612;border-radius:2px;transition:transform .25s,opacity .25s,top .25s}
+.nav-toggle span:nth-child(1){top:11px}.nav-toggle span:nth-child(2){top:17px}.nav-toggle span:nth-child(3){top:23px}
+.nav-toggle.open span:nth-child(1){top:17px;transform:rotate(45deg)}.nav-toggle.open span:nth-child(2){opacity:0}.nav-toggle.open span:nth-child(3){top:17px;transform:rotate(-45deg)}
+@media(max-width:860px){
+ nav.top .container{grid-template-columns:auto 1fr auto;padding:10px 16px;gap:12px}
+ .nav-brand-img img{height:32px}
+ .nav-toggle{display:block;justify-self:end}
+ nav.top ul.nav-menu{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(254,252,248,.98);backdrop-filter:blur(14px);border-bottom:1px solid #d8cdb8;flex-direction:column;gap:0;padding:8px 0;box-shadow:0 10px 24px rgba(107,74,42,.08)}
+ nav.top ul.nav-menu.open{display:flex}
+ nav.top ul.nav-menu li{border-bottom:1px solid #e8dfc9}
+ nav.top ul.nav-menu li:last-child{border-bottom:none}
+ nav.top ul.nav-menu a{display:block;padding:14px 20px;font-size:1.06rem}
+}
+body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradient(var(--sp-radius) circle at var(--mx,50%) var(--my,50%),var(--sp-shadow) 0%,var(--sp-shadow-edge) 45%,transparent 75%);pointer-events:none;z-index:9999;mix-blend-mode:multiply;transition:background .06s linear}
+.hero{position:relative;overflow:hidden;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:72px;padding:96px clamp(20px,6vw,88px) 80px;background:linear-gradient(180deg,#fffcf0 0%,#f9e9d2 100%);color:#1a1612;border-bottom:1px solid #d8cdb8}
+.hero .wc{position:absolute;border-radius:50%;filter:blur(60px);pointer-events:none;z-index:0}
+.hero .wc1{width:420px;height:360px;top:-120px;right:-80px;background:#e8884b;opacity:.15}
+.hero .wc2{width:360px;height:300px;bottom:-110px;left:-70px;background:#5f7553;opacity:.13}
+.hero .wc3{width:280px;height:260px;top:34%;left:14%;background:#a08144;opacity:.10}
+.hero>div{flex:none;width:860px;max-width:100%;position:relative;z-index:2}
+.hero-figure{margin:0;width:320px;flex:none;position:relative;z-index:2}
+.hero-figure img{display:block;width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:16px;border:1px solid #d8cdb8;box-shadow:0 18px 45px rgba(107,74,42,.16);cursor:zoom-in}
+.hero-figure figcaption{margin-top:10px;font-size:14px;line-height:1.6;color:#6a635a}
+.inline-figure{margin:30px auto 8px;max-width:560px}
+.inline-figure img{display:block;width:100%;border-radius:14px;border:1px solid var(--line);box-shadow:var(--shadow);background:#fff;cursor:zoom-in}
+.inline-figure figcaption{font-size:14px;line-height:1.6;color:var(--muted);margin-top:10px}
+.lightbox{position:fixed;inset:0;z-index:10000;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(12,10,8,.92);cursor:zoom-out;backdrop-filter:blur(4px)}
+.lightbox.open{display:flex}.lightbox img{max-width:96vw;max-height:92vh;border-radius:10px;box-shadow:0 24px 60px rgba(0,0,0,.5)}
+.lightbox-close{position:fixed;top:18px;right:24px;color:#fff;font-size:34px;line-height:1;font-weight:700;cursor:pointer;opacity:.85}
+.kicker{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.55rem;color:#7a5c3a;font-weight:500}
+.hero h1{max-width:none;margin:16px 0 18px;font-size:clamp(36px,6vw,72px);line-height:1.08;overflow-wrap:anywhere}
+.hero p{max-width:none;font-size:clamp(18px,2vw,23px);line-height:1.62;color:#3a342d}
+.section{padding:54px clamp(20px,6vw,88px);border-top:1px solid var(--line)}
+.inner{width:min(1000px,100%);margin:0 auto}
+.section h2{font-size:clamp(26px,4.2vw,48px);line-height:1.12;margin:0 0 18px}
+.section h3{font-size:clamp(21px,3vw,30px);line-height:1.2;margin:30px 0 12px}
+.lead{font-size:clamp(18px,1.6vw,22px);line-height:1.7;color:#3a342d;max-width:900px}
+.section p{font-size:18px;line-height:1.74;color:#3a342d}.section p+p{margin-top:14px}
+.section ul,.section ol{padding-left:1.4em;font-size:18px;line-height:1.74;color:#3a342d}.section li{margin-bottom:8px}
+.meaning{margin:22px 0;padding:16px 18px;border-left:5px solid var(--blue);background:rgba(86,137,184,.12);border-radius:6px;line-height:1.7;font-size:19px}
+.meaning b{display:block;color:var(--blue);margin-bottom:4px}
+.caveat{margin:0 0 8px;padding:16px 18px;border-left:5px solid var(--orange);background:rgba(232,90,79,.1);border-radius:6px;line-height:1.7;font-size:18px;color:#3a342d}
+.caveat b{display:block;color:var(--orange);margin-bottom:4px}
+.infocard{background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px 24px 22px;box-shadow:0 8px 22px rgba(107,74,42,.08);margin-top:8px}
+.infocard-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.info-item{padding:18px 14px 0}
+.info-item b{display:block;font-size:14px;font-weight:900;letter-spacing:.04em;margin-bottom:7px;text-transform:uppercase}
+.info-item:nth-child(1) b{color:var(--green)}.info-item:nth-child(2) b{color:var(--orange)}.info-item:nth-child(3) b{color:var(--blue)}
+.info-item p{margin:0;font-size:17px;line-height:1.6;color:#3a342d}
+.duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:24px}
+.duo.stack{grid-template-columns:1fr}
+.duo .card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:22px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.duo .card.a{border-color:var(--orange)}.duo .card.b{border-color:var(--green);box-shadow:0 8px 24px rgba(95,117,83,.16)}
+.duo .card b{display:block;font-size:22px;line-height:1.3;margin-bottom:12px}.duo .card.a b{color:#c0512f}.duo .card.b b{color:#4a7a59}
+.duo .card p{margin:0;color:#3a342d;line-height:1.75;font-size:18px}
+.duo .card ul{margin:0;padding-left:1.3em;font-size:18px;line-height:1.75;color:#3a342d}
+.workflow-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:24px}
+.workflow-step{background:#fff;border:1px solid var(--line);border-radius:8px;padding:18px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.workflow-step small{display:block;color:var(--orange);font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;margin-bottom:9px}
+.workflow-step b{display:block;font-size:18px;line-height:1.3;margin-bottom:9px}
+.workflow-step p{margin:0;color:#3a342d;line-height:1.6;font-size:16px}
+.codeblock{background:var(--dark);color:#f3ead9;border-radius:8px;padding:18px 20px;font:500 14px/1.65 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;overflow-x:auto;white-space:pre-wrap;margin:20px 0;box-shadow:0 8px 22px rgba(107,74,42,.12)}
+.codeblock .c{color:#f6d7a6;font-weight:600}
+.readmore.near{margin:26px 0 4px;padding:14px 18px;border:1px dashed var(--line);border-radius:10px;background:var(--soft);font-size:16px;line-height:1.7;color:#3a342d}
+.readmore.near small{display:block;font-weight:900;font-size:12px;letter-spacing:.06em;color:var(--muted);margin-bottom:5px}
+.readmore.near a{color:var(--blue);font-weight:700;text-decoration:none}
+.readmore.near a:hover{text-decoration:underline}
+.footer{padding:30px clamp(20px,6vw,88px);font-size:14px;color:var(--muted);background:#fff;border-top:1px solid var(--line)}
+.footer-inner{width:min(1000px,100%);margin:0 auto}
+.footer-links{display:flex;flex-wrap:wrap;gap:6px 12px;margin-bottom:14px}.footer-links a{color:var(--blue);font-weight:900;text-decoration:none;font-size:14px}
+.footer-brand{font-weight:900;font-size:15px;margin-bottom:10px}.footer-note{font-size:13px;line-height:1.6}
+@media(max-width:820px){.infocard-grid{grid-template-columns:1fr}.duo{grid-template-columns:1fr}.workflow-grid{grid-template-columns:1fr}.section{padding:40px 20px}.hero{min-height:52vh;flex-direction:column;justify-content:flex-start;align-items:flex-start;gap:24px}.hero>div{width:100%}.hero-figure{width:100%;max-width:420px}.inline-figure{max-width:100%}}
+@media(max-width:820px){html,body{overflow-x:hidden}.hero h1{word-break:break-word}}
+</style>
+</head>
+<body class="spotlight">
+<nav class="top">
+  <div class="container">
+    <a class="nav-brand-img" href="../../index.html"><img src="../../images/footer-signature.png" alt="江江教練 | 江昱德"></a>
+    <button class="nav-toggle" aria-label="選單"><span></span><span></span><span></span></button>
+    <ul class="nav-menu">
+      <li><a href="../../index.html">首頁</a></li>
+      <li><a href="../../knowledge-architecture.html">知識架構</a></li>
+      <li><a href="../../courses.html">課程</a></li>
+      <li><a href="../../articles.html" class="active">深度文章</a></li>
+      <li><a href="../../skills.html">技能包下載</a></li>
+      <li><a href="../../offers.html">服務方案</a></li>
+      <li class="lang-switch"><a href="../../en/articles.html" hreflang="en">EN</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="wc wc1"></div>
+  <div class="wc wc2"></div>
+  <div class="wc wc3"></div>
+  <div>
+    <div class="kicker">AI 工作流 / 交接機制</div>
+    <h1>Claude Code 的對話視窗之間可以直接傳訊息了，但有些小限制還是要注意</h1>
+    <p>我同一個專案常開好幾個視窗，以前它們互相不知道對方在幹嘛，傳話的人是我。新功能用了一天，最煩的複製貼上消失了，但工作日誌照寫、檔案照存。為什麼，這篇講清楚。</p>
+  </div>
+  <figure class="hero-figure">
+    <img src="../../images/articles/session-messaging-01.jpg" alt="插圖：兩個 Claude Code 對話視窗，一個箭頭從上面的視窗指向下面的視窗，旁邊的黑貓拿著一封信" loading="lazy">
+    <figcaption>A 視窗做到哪，直接傳給 B 視窗。</figcaption>
+  </figure>
+</section>
+
+<main>
+
+<section class="section" id="start">
+  <div class="inner">
+    <p class="lead">我實際用了一天，這篇講三件事：哪些以前要自己動手的麻煩真的消失了；哪四個地方訊息傳不到，所以老方法要留著；還有兩個視窗同時改同一個檔案的時候怎麼防。最後我把這些判斷寫成固定規則，以後每個 AI 視窗都照著走，不用每次重新交代。</p>
+    <div class="duo stack">
+      <div class="card a">
+        <b>適合誰</b>
+        <ul>
+          <li>同一個專案會開好幾個 AI 視窗，常常要自己在中間當傳聲筒的人</li>
+          <li>每次工具出新功能，就猶豫要不要把既有流程打掉重練的人</li>
+          <li>想知道「多視窗協作」的真相該放哪一層的人</li>
+        </ul>
+      </div>
+      <div class="card b">
+        <b>你可以帶走什麼</b>
+        <ul>
+          <li>新功能進場的判斷順序：先弄清楚它做不到什麼，再決定讓它接手什麼</li>
+          <li>交接前的四分支判斷：什麼時候傳訊息就好，什麼時候一定要寫檔案</li>
+          <li>撈舊對話的三步順序，和一個搜尋關鍵字的小技巧</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="s1">
+  <div class="inner">
+    <h2>一、以前的做法：我自己當傳聲筒</h2>
+    <p>我同一個專案常常同時開好幾個視窗。一個在改架構，一個在寫內容。它們互相不知道對方在幹嘛。</p>
+    <p>所以我以前有兩招。第一招，請 A 視窗寫一份交接指令，我複製，貼到 B 視窗。第二招，讓每個視窗都把工作日誌寫進同一個專案資料夾，靠 iCloud 同步，誰要接手就自己去爬進度。</p>
+    <figure class="inline-figure">
+      <img src="../../images/articles/session-messaging-02.jpg" alt="流程圖：上排是 A 視窗、交接指令、複製貼上、B 視窗；下排是工作日誌、專案資料夾、任務視窗自己爬" loading="lazy">
+      <figcaption>以前的兩條路：寫交接指令自己複製貼上，或把進度放進工作日誌讓別的視窗自己爬。</figcaption>
+    </figure>
+    <p>兩招都能用，但傳聲筒是我。每多開一個視窗，我的複製貼上就多一份。</p>
+    <p>現在 A 視窗可以直接傳摘要給 B 視窗，B 收到就知道進度到哪、該從哪裡接。我最頻繁的那段複製貼上，確實消失了。</p>
+  </div>
+</section>
+
+<section class="section" id="s2">
+  <div class="inner">
+    <h2>二、先別急著改流程：這功能傳不到四個地方</h2>
+    <p>新功能一來，我的習慣是先試出它的極限在哪，因為做不到的部分，決定了舊方法要留多少。實測下來，訊息傳不到四個地方：</p>
+    <ol>
+      <li><b>跨機器</b>。我在家用桌機、出門用筆電，兩台機器上的對話互相傳不到。</li>
+      <li><b>跨品牌</b>。Claude 的對話傳不到 Codex，Codex 也發不進來。</li>
+      <li><b>無人值守的任務</b>。排程自動跑的、遠端派出去的，收不到也發不出。</li>
+      <li><b>閒置的對話</b>。訊息送到了，對方視窗沒人在跑，它就躺在那裡等，等到下次有人喚醒才被讀到。</li>
+    </ol>
+    <figure class="inline-figure">
+      <img src="../../images/articles/session-messaging-03.jpg" alt="示意圖：桌機與筆電之間、Claude Code 與 Codex 之間都畫著中斷符號" loading="lazy">
+      <figcaption>四個限制裡最常撞到的是這兩個：桌機和筆電不通，Claude Code 和 Codex 也不通。</figcaption>
+    </figure>
+    <p>這四個地方，我原本的做法一個都不能拆：跨機器靠 iCloud 同步的交接檔，跨品牌靠一份寫清楚的交接模板，無人值守靠檔案，工作日誌照寫。</p>
+    <div class="caveat"><b>Codex 的半套走法</b>Codex 那邊倒是查出一條半套的路：Claude 的每場對話其實都存成本機的對話檔。Codex 進不了訊息系統，但目前可以從這些對話檔側讀，用「按時間排序、再搜內容」的方式，單向看到 Claude 的對話做到哪。能讀，但不能收也不能發。</div>
+    <div class="readmore near"><small>延伸閱讀</small>跨機器那條路我專門寫過一篇：<a href="../laptop-desktop-webpage-sync-icloud-git/">在家裡桌機上用 Codex 做好網頁後，出門用筆電想要改，就找不到檔案了？問題出在你把專案放錯地方</a>。這段講的「傳不到」，那篇給的是完整解法。</div>
+  </div>
+</section>
+
+<section class="section" id="s3">
+  <div class="inner">
+    <h2>三、定位：訊息是提醒層，檔案是真相層</h2>
+    <p>邊界劃完，位子就出來了。我給這個功能的定位是一句話：</p>
+    <div class="meaning"><b>核心原則</b>訊息是提醒層，真相只認檔案。訊息會消失，檔案不會。決定了什麼、做到哪裡、誰在動哪批檔案，這些要落在看板和檔案裡；訊息只負責「喂，我動了，你看一下」。</div>
+    <p>為什麼不讓訊息當真相？因為傳話就像在廚房裡喊「我要用這個爐子」。對方要聽到、而且理你，這句話才有用。如果另一個視窗正埋頭改檔案，它是做完手上那步才會看到訊息，那時候可能已經撞上了。喊聲不是門鎖。</p>
+    <h3>兩個視窗同時改同一批檔案，防撞拆三層</h3>
+    <div class="infocard">
+      <div class="infocard-grid">
+        <div class="info-item"><b>人這層 · 占七成</b><p>開任務的時候，同一批檔案就不要同時丟給兩個視窗。只有我知道自己開了哪些任務，這層只有我能守。</p></div>
+        <div class="info-item"><b>AI 這層 · 占兩成</b><p>動手前喊一聲，加上動手前先看一眼有沒有人登記在動這批檔。喊加看，雙向都做，漏接的機會就小。</p></div>
+        <div class="info-item"><b>版本控制 · 占一成</b><p>就算真的撞了，git 會發現兩邊版本對不上，停下來要求先合併。撞了會卡住，但東西還在，救得回來。</p></div>
+      </div>
+    </div>
+    <p>新功能只補了中間那層。它讓 AI 之間少誤會，但它取代不了我自己不手賤，也取代不了檔案。</p>
+  </div>
+</section>
+
+<section class="section" id="s4">
+  <div class="inner">
+    <h2>四、實戰：當天就上演了一次它該防的事</h2>
+    <p>定位不是純理論，當天就用上了。</p>
+    <p>那天我開了三個相關的視窗：一個在討論這個新功能、一個 fork 出去寫脆文、一個前一晚剛改完官網部署流程。討論到一半才發現：前兩個視窗各自盤點完，都建議在同一個規則檔補同一段話，而且都停在「等我點頭就動筆」。</p>
+    <p>我要是兩邊都點了頭，就是兩個 AI 前後改同一個檔案，真實上演一次打架。</p>
+    <p>收斂的方式就是新功能本身：指定一個視窗當主場，由它發訊息給另外兩個。給脆文視窗的訊息說「這段規則由我這邊寫，你那邊放掉，你已經寫好的記憶檔保留當正本」；給部署視窗的訊息說「規則檔我先改、你排後面，你之後要退役的舊機制我的條文不會綁死」。傳完，三個視窗的分工就對齊了，重複施工消失。</p>
+    <div class="readmore near"><small>延伸閱讀</small>交接指令本身怎麼寫，我整理過一篇完整的：<a href="../ai-handoff-instructions/">交接指令：難的是決定不寫什麼</a>。</div>
+    <h3>順便修好了撈舊對話的順序</h3>
+    <p>這場收斂有個前置動作：得先把那兩個視窗講過什麼「找出來」。就是在這一步，我發現撈舊對話也有它的正確順序。我請 AI 去找「另一個對話講過的內容」，它一開始拿我口中的形容詞去全文搜尋，撈回十筆全是雜訊。後來才確認順序應該是：</p>
+    <div class="workflow-grid">
+      <div class="workflow-step"><small>STEP 1</small><b>先看時間</b><p>對話清單本來就按最後活動時間排。我的習慣是同一時段一口氣開好幾個任務、或從一個對話開分支，目標幾乎都擠在清單頂端。</p></div>
+      <div class="workflow-step"><small>STEP 2</small><b>再看標題</b><p>分支會有標記，同一條線的標題長得很像，標題命中就直接讀內容。</p></div>
+      <div class="workflow-step"><small>STEP 3</small><b>最後才全文搜尋</b><p>而且要搜名詞：功能名、專案名、檔名、人名。事後的形容（「不適合」「很麻煩」）滿庫都是，搜了只有雜訊。</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="s5">
+  <div class="inner">
+    <h2>五、把判斷寫成規則，讓下一個 AI 不用重想一遍</h2>
+    <p>最後一步，是把這些判斷寫成固定規則。我把它們寫進規則主檔和交接模板，寫完丟給另一家模型審。它抓出三個我沒堵住的洞，全部採納：</p>
+    <ol>
+      <li>「發了訊息」可能被 AI 當成「交接完成」。補一句：真相層沒登記，就不算交接完成。</li>
+      <li>「可以不寫交接檔」可能被讀成「可以不留痕」。補一句：決定、進度、責任有變動，仍然要回寫檔案或看板；只有純提醒可以只發訊息。</li>
+      <li>對方閒置沒人看、或在不同工作目錄的，訊息不可靠，退回檔案交接。</li>
+    </ol>
+    <p>寫完之後，交接前的判斷變成固定的四分支，任何一個接手的 AI 都照走：</p>
+    <div class="codeblock"><span class="c">交接前先判斷對象走哪條：</span>
+1. 同一台機器、還活著、同一個工作目錄的 Claude 視窗
+   → 直接傳訊息，可不另寫交接檔；有實質變動仍要回寫真相層
+2. 跨機器 → 交接檔照舊，靠雲端同步
+3. 跨品牌（Codex、Gemini）→ 交接模板照舊
+4. 無人值守、對方閒置、不同工作目錄 → 一律檔案</div>
+    <div class="readmore near"><small>延伸閱讀</small>「把踩過的雷寫成規則」這個習慣本身，我在這篇講得更完整：<a href="../caught-ai-slacking-into-rules/">抓到 AI 偷懶之後，我把它寫進流程規則</a>。</div>
+  </div>
+</section>
+
+<section class="section" id="s6">
+  <div class="inner">
+    <h2>六、我真正想要的東西還沒出現</h2>
+    <p>老實說，我想要的是一個大總控台：桌機、筆電、Claude、Codex 的所有任務，全部統整在一個地方看。這個功能離那裡還很遠，它只打通了「同一台機器上的 Claude 對話」這一小格。</p>
+    <p>所以目前的答案還是老樣子：工作日誌照寫，放進 iCloud 同步，讓所有電腦、所有品牌的 AI，都能在專案資料夾裡讀到進度。</p>
+    <figure class="inline-figure">
+      <img src="../../images/articles/session-messaging-04.jpg" alt="示意圖：iCloud 把工作日誌同步到筆電、桌機、平板與手機，資料夾再分流給多個任務視窗" loading="lazy">
+      <figcaption>工作日誌放進 iCloud，所有電腦和任務視窗都讀得到進度。</figcaption>
+    </figure>
+    <p>這也是我每次遇到新功能都不慌的原因。功能會一直出、也會一直變，但只要重要的東西都留在檔案裡，新功能來了就是多一層方便，走了也不傷筋骨。</p>
+    <p><b>流水的 AI 工具，鐵打的知識庫。</b></p>
+  </div>
+</section>
+
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">江江教練 · AI 知識管理</div>
+    <div class="footer-links">
+      <a href="../../articles.html">← 回深度文章總站</a>
+      <a href="../../index.html">首頁</a>
+      <a href="../../learn.html">自學資源</a>
+      <a href="../../skills.html">技能包下載</a>
+      <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">LINE 社群 ↗</a>
+      <a href="https://www.threads.com/@jiang_yude_coach" target="_blank" rel="noopener">Threads ↗</a>
+      <a href="https://vocus.cc/salon/Jiang_Coach" target="_blank" rel="noopener">方格子 ↗</a>
+    </div>
+    <div class="footer-note">這是一篇案例文章，整理我對「Claude Code 對話視窗互傳訊息」這個新功能的實測與看法，供你參考。</div>
+  </div>
+</footer>
+
+<!-- 點圖放大 lightbox（hero 與內文圖通用） -->
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <span class="lightbox-close" aria-label="關閉">×</span>
+  <img id="lightbox-img" src="" alt="放大檢視">
+</div>
+<script>
+(function(){
+  var box=document.getElementById('lightbox'),boxImg=document.getElementById('lightbox-img');
+  document.querySelectorAll('.hero-figure img,.inline-figure img').forEach(function(img){
+    img.addEventListener('click',function(){boxImg.src=img.currentSrc||img.src;boxImg.alt=img.alt||'放大檢視';box.classList.add('open');box.setAttribute('aria-hidden','false');});
+  });
+  function close(){box.classList.remove('open');box.setAttribute('aria-hidden','true');boxImg.src='';}
+  box.addEventListener('click',close);
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
+})();
+</script>
+
+<script src="../../image-interactions.js"></script>
+<script src="../../spotlight.js"></script>
+<script src="../../articles-data.js"></script>
+<script src="../../related-render.js"></script>
+</body>
+</html>

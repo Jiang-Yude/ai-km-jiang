@@ -276,7 +276,7 @@ window.ARTICLES = [
       content_type: ["案例文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: "https://vocus.cc/salon/Jiang_Coach" },
-    related: ["codex-only-auto-worklog", "decision-ladder-non-programmer", "publish-gate"]
+    related: ["codex-only-auto-worklog", "decision-ladder-non-programmer", "publish-gate", "session-messaging-reminder-layer"]
   },
 
   /* ── 8. AI 之王不上戰場（觀點）── */
@@ -1199,7 +1199,7 @@ window.ARTICLES = [
     summary: "企劃雙軌互審 loop：兩個不同家的 AI 同輸入各自獨立寫完、互相挑錯、整合留決策點、對家終審。以一場真實政府補助提案首跑為案例，附兩段可直接複製的提示詞。",
     tags: {"topic":["AI工作流","跨家審稿","輔助決策"],"level":["基礎"],"content_type":["案例文章"]},
     external: { threads: null, vocus: null },
-    related: ["loop-engineering-guardrails", "a2a-agent-protocol", "docs-as-system-design-agent", "ai-handoff-instructions", "long-task-completion-rate"]
+    related: ["loop-engineering-guardrails", "a2a-agent-protocol", "docs-as-system-design-agent", "ai-handoff-instructions", "long-task-completion-rate", "session-messaging-reminder-layer"]
   },
   {
     id: "dual-centaur-meeting",
@@ -1225,7 +1225,7 @@ window.ARTICLES = [
     summary: "iCloud 適合放文件，程式碼要交給 git。一次真實搬家紀錄，附完整步驟與可複製提示詞，讓多台電腦、多個 AI 助手共用唯一真相。",
     tags: {"topic":["AI工作流","知識管理","工作流程"],"level":["基礎"],"content_type":["教學文章"]},
     external: { threads: null, vocus: null },
-    related: ["docs-as-system-design-agent", "ai-loop-safety-recovery"]
+    related: ["docs-as-system-design-agent", "ai-loop-safety-recovery", "session-messaging-reminder-layer"]
   },
   {
     id: "inspiration-production-system",
@@ -1265,7 +1265,7 @@ window.ARTICLES = [
     summary: "交接指令寫不好，通常不是寫太少而是寫太多。從一次真實的生圖事故拆出核心原則「只寫對方所需」，分成一次交辦、供應商模式、換人續跑三種場景各自的寫法，加上卡住才回吐的自動化分寸與三招防呆，附一張可直接複製的交接單。",
     tags: {"topic":["AI工作流","AIAgent","工作流程"],"level":["基礎"],"content_type":["案例文章"]},
     external: { threads: null, vocus: null },
-    related: ["dual-track-planning-loop", "loop-engineering-guardrails", "how-to-train-your-ai-employee", "intent-first-prompting", "rule-file-rebound", "long-task-completion-rate"]
+    related: ["dual-track-planning-loop", "loop-engineering-guardrails", "how-to-train-your-ai-employee", "intent-first-prompting", "rule-file-rebound", "long-task-completion-rate", "session-messaging-reminder-layer"]
   },
 
   {
@@ -1349,7 +1349,7 @@ window.ARTICLES = [
     summary: "提出「知識作業系統」母架構：存量三庫、八步精煉迴圈、護欄、治理四個構件，加一條三域分流部署軸，圓心是隱性知識提煉。含三重收斂的信度證據（雙 AI 獨立收斂、2023 至 2026 實踐先於命名、跨時內部收斂）、三條真實工作流的驗證設計，與一個立刻能做的對照練習。",
     tags: {"topic":["江江精選","知識管理","隱性知識","AI工作流","知識庫"],"level":["進階"],"content_type":["教學文章"]},
     external: { threads: null, vocus: null },
-    related: ["knowledge-as-employee", "docs-as-system-design-agent", "knowledge-base-three-vault-split", "tag-wiki-method", "what-is-loop-engineering", "talent-vs-expertise", "use-more-ai-not-enough"]
+    related: ["knowledge-as-employee", "docs-as-system-design-agent", "knowledge-base-three-vault-split", "tag-wiki-method", "what-is-loop-engineering", "talent-vs-expertise", "use-more-ai-not-enough", "session-messaging-reminder-layer"]
   },
 
   {
@@ -1635,5 +1635,24 @@ window.ARTICLES = [
     },
     external: { threads: null, vocus: null },
     related: ["ai-native-not-transformation", "knowledge-os-master-map", "strong-ai-models-knowledge-workflow-road", "claude-skills-knowledge-assets", "ai-tools-professional-judgment"]
+  },
+
+  /* ── Claude Code 對話視窗互傳訊息：新功能進場先劃邊界（案例）── */
+  {
+    id: "session-messaging-reminder-layer",
+    url: "articles/session-messaging-reminder-layer/",
+    date: "2026-08-08",
+    updated: "2026-08-08",
+    title: "Claude Code 的對話視窗之間可以直接傳訊息了，但有些小限制還是要注意",
+    problem: "同一個專案開好幾個 AI 視窗，它們互相不知道對方在幹嘛，每次都要自己寫交接指令複製貼上；新功能出來又不知道該不該把既有流程整套改掉。",
+    audience: "同時開好幾個 AI 對話視窗、常常自己在中間當傳聲筒的人，每次工具出新功能就猶豫要不要打掉重練的人，以及想知道多視窗協作的進度真相該放哪一層的人。",
+    summary: "Claude Code 的對話視窗現在可以直接互傳訊息。實測一天後的收編方法：先試出它傳不到的四個地方（跨機器、跨品牌、無人值守、閒置視窗），把它定位成提醒層、真相仍只認檔案，再把兩個視窗同時改同一批檔案的防撞拆成人、AI、版本控制三層。文末附交接前的四分支判斷，可直接抄進自己的規則檔。",
+    tags: {
+      topic: ["AI工作流", "知識管理", "工作流程", "AIAgent"],
+      level: ["基礎"],
+      content_type: ["案例文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["ai-handoff-instructions", "laptop-desktop-webpage-sync-icloud-git", "caught-ai-slacking-into-rules", "dual-track-planning-loop", "knowledge-os-master-map"]
   }
 ];
