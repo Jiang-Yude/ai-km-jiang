@@ -1,0 +1,411 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>我跟 AI 說「很煩」，它自己去加了一道機制｜江江教練 · AI 知識管理</title>
+<meta name="description" content="「快一點」到底是多快，「詳細一點」到底是多詳細？把隨口說的模糊詞變成 AI 每次理解一致的定義。用一個純文字檔就能做，附撈詞提示詞、三行條目格式與六題常見問答。">
+<link rel="canonical" href="https://jiangyude.com/articles/build-your-own-dictionary/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="我跟 AI 說「很煩」，它自己去加了一道機制｜江江教練">
+<!-- 分享封面：hero 文字填好後在 repo 根目錄跑 `node scripts/og-shot.mjs build-your-own-dictionary` 自動截 1200×630 到 images/og/build-your-own-dictionary.jpg（見 README「文章分享封面（OG 圖）機制」）。別退回 intro-jiang.png 直式人像，會被裁成只剩脖子。 -->
+<meta property="og:image" content="https://jiangyude.com/images/og/build-your-own-dictionary.jpg">
+<meta property="og:description" content="「快一點」到底是多快，「詳細一點」到底是多詳細？把隨口說的模糊詞變成 AI 每次理解一致的定義。用一個純文字檔就能做，附撈詞提示詞、三行條目格式與六題常見問答。">
+<meta property="og:url" content="https://jiangyude.com/articles/build-your-own-dictionary/">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:site_name" content="江江教練 · AI 知識管理">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="我跟 AI 說「很煩」，它自己去加了一道機制｜江江教練">
+<meta name="twitter:image" content="https://jiangyude.com/images/og/build-your-own-dictionary.jpg">
+<meta name="twitter:description" content="「快一點」到底是多快，「詳細一點」到底是多詳細？把隨口說的模糊詞變成 AI 每次理解一致的定義。用一個純文字檔就能做，附撈詞提示詞、三行條目格式與六題常見問答。">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"我跟 AI 說「很煩」，它自己去加了一道機制","description":"「快一點」到底是多快，「詳細一點」到底是多詳細？把隨口說的模糊詞變成 AI 每次理解一致的定義。用一個純文字檔就能做，附撈詞提示詞、三行條目格式與六題常見問答。","datePublished":"2026-08-08","dateModified":"2026-08-08","keywords":["提示詞設計","AI工作流","知識管理","知識庫"],"author":{"@type":"Person","name":"江昱德","alternateName":"江江教練","jobTitle":"隱性知識提煉師、AI 應用規劃師"},"isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://jiangyude.com/"},"inLanguage":"zh-Hant","url":"https://jiangyude.com/articles/build-your-own-dictionary/"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"字典要寫幾條才夠？","acceptedAnswer":{"@type":"Answer","text":"三到五條就能開始用。不要一次盤點五十個詞，那會變成做不完的專案然後放棄。遇到一次「它又誤會我」就補一條，兩個禮拜之後會發現常用的就那幾個詞。"}},{"@type":"Question","name":"字典寫多了要怎麼分類？","acceptedAnswer":{"@type":"Answer","text":"二十條以內不用分類。超過會開始難找，最實用的分法是照「什麼情境用」，例如寫作類、會議類、開發類各一段。不要照詞性或字母排，因為你找的時候是想到情境。"}},{"@type":"Question","name":"同一個詞在不同情境意思不一樣，會不會打架？","acceptedAnswer":{"@type":"Answer","text":"在詞後面括號寫情境即可，例如「很詳細（用在會議記錄時）」。同一個詞可以有好幾條各自標情境，不算衝突。要避免的是同一情境下有兩個矛盾定義。"}},{"@type":"Question","name":"自訂指令有字數上限，字典塞不下怎麼辦？","acceptedAnswer":{"@type":"Answer","text":"先把每條定義壓成一句話、細節搬到反例；再把最常用的五到八條留在自訂指令、其餘搬到專案檔案；還是不夠就依情境拆成幾份，不要一份通吃。"}},{"@type":"Question","name":"換一個模型，字典要重寫嗎？","acceptedAnswer":{"@type":"Answer","text":"不用。字典寫的是你的定義，不是某個模型的操作方式，整份複製過去就能用。需要調整的只有放置位置，因為每家的自訂指令與專案功能位置不一樣。"}},{"@type":"Question","name":"我沒有知識庫，只用 ChatGPT，這套有用嗎？","acceptedAnswer":{"@type":"Answer","text":"有用，第一步與第二步完全一樣。差別只在放置位置，用「貼在對話開頭」與「放進自訂指令」就能拿到大部分效果。知識庫是字典長大之後的收納方式，不是入場門檻。"}}]}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{--ink:#1a1612;--paper:#fefcf8;--muted:#6a635a;--line:#d8cdb8;--green:#5f7553;--blue:#5689b8;--orange:#e85a4f;--soft:#faf5ec;--dark:#2a2018;--shadow:0 18px 45px rgba(107,74,42,.14);--sp-shadow:hsla(35,50%,60%,.15);--sp-shadow-edge:hsla(35,50%,68%,.03);--sp-radius:400px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC","Segoe UI",sans-serif}
+a{color:inherit}
+/* 官網共用導航列 nav.top（與首頁/文章總站同一條） */
+nav.top{position:sticky;top:0;background:rgba(254,252,248,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid #d8cdb8;z-index:100}
+nav.top .container{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:24px;padding:14px 32px}
+.nav-brand-img{justify-self:start;display:flex;align-items:center;text-decoration:none;flex-shrink:0;transition:opacity .2s}
+.nav-brand-img:hover{opacity:.8}.nav-brand-img img{height:40px;width:auto;display:block}
+nav.top ul.nav-menu{justify-self:end;display:flex;gap:22px;list-style:none;margin:0;padding:0;font-size:.95rem;white-space:nowrap}
+nav.top ul.nav-menu a{color:#3a342d;text-decoration:none;transition:color .2s;font-weight:500;white-space:nowrap}
+nav.top ul.nav-menu a:hover{color:#1a1612}nav.top ul.nav-menu a.active{color:#1a1612;font-weight:700}
+.nav-toggle{display:none;background:none;border:none;padding:6px;cursor:pointer;width:36px;height:36px;position:relative}
+.nav-toggle span{display:block;position:absolute;left:8px;right:8px;height:2px;background:#1a1612;border-radius:2px;transition:transform .25s,opacity .25s,top .25s}
+.nav-toggle span:nth-child(1){top:11px}.nav-toggle span:nth-child(2){top:17px}.nav-toggle span:nth-child(3){top:23px}
+.nav-toggle.open span:nth-child(1){top:17px;transform:rotate(45deg)}.nav-toggle.open span:nth-child(2){opacity:0}.nav-toggle.open span:nth-child(3){top:17px;transform:rotate(-45deg)}
+@media(max-width:860px){
+ nav.top .container{grid-template-columns:auto 1fr auto;padding:10px 16px;gap:12px}
+ .nav-brand-img img{height:32px}
+ .nav-toggle{display:block;justify-self:end}
+ nav.top ul.nav-menu{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(254,252,248,.98);backdrop-filter:blur(14px);border-bottom:1px solid #d8cdb8;flex-direction:column;gap:0;padding:8px 0;box-shadow:0 10px 24px rgba(107,74,42,.08)}
+ nav.top ul.nav-menu.open{display:flex}
+ nav.top ul.nav-menu li{border-bottom:1px solid #e8dfc9}
+ nav.top ul.nav-menu li:last-child{border-bottom:none}
+ nav.top ul.nav-menu a{display:block;padding:14px 20px;font-size:1.06rem}
+}
+/* 滑鼠暖光暈（與首頁同一支 spotlight.js） */
+body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradient(var(--sp-radius) circle at var(--mx,50%) var(--my,50%),var(--sp-shadow) 0%,var(--sp-shadow-edge) 45%,transparent 75%);pointer-events:none;z-index:9999;mix-blend-mode:multiply;transition:background .06s linear}
+.hero{position:relative;overflow:hidden;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:72px;padding:96px clamp(20px,6vw,88px) 80px;background:linear-gradient(180deg,#fffcf0 0%,#f9e9d2 100%);color:#1a1612;border-bottom:1px solid #d8cdb8}
+.hero .wc{position:absolute;border-radius:50%;filter:blur(60px);pointer-events:none;z-index:0}
+.hero .wc1{width:420px;height:360px;top:-120px;right:-80px;background:#e8884b;opacity:.15}
+.hero .wc2{width:360px;height:300px;bottom:-110px;left:-70px;background:#5f7553;opacity:.13}
+.hero .wc3{width:280px;height:260px;top:34%;left:14%;background:#a08144;opacity:.10}
+.hero>div{flex:none;width:860px;max-width:100%;position:relative;z-index:2}
+.hero-figure{margin:0;width:420px;flex:none;position:relative;z-index:2}
+.hero-figure img{display:block;width:100%;border-radius:16px;border:1px solid #d8cdb8;box-shadow:0 18px 45px rgba(107,74,42,.16);cursor:zoom-in}
+.hero-figure figcaption{margin-top:10px;font-size:14px;line-height:1.6;color:#6a635a}
+.inline-figure{margin:30px auto 8px;max-width:820px}
+.inline-figure img{display:block;width:100%;border-radius:14px;border:1px solid var(--line);box-shadow:var(--shadow);background:#fff;cursor:zoom-in}
+.inline-figure figcaption{font-size:14px;line-height:1.6;color:var(--muted);margin-top:10px}
+.lightbox{position:fixed;inset:0;z-index:10000;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(12,10,8,.92);cursor:zoom-out;backdrop-filter:blur(4px)}
+.lightbox.open{display:flex}.lightbox img{max-width:96vw;max-height:92vh;border-radius:10px;box-shadow:0 24px 60px rgba(0,0,0,.5)}
+.lightbox-close{position:fixed;top:18px;right:24px;color:#fff;font-size:34px;line-height:1;font-weight:700;cursor:pointer;opacity:.85}
+.kicker{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.55rem;color:#7a5c3a;font-weight:500}
+.hero h1{max-width:none;margin:16px 0 18px;font-size:clamp(36px,6vw,72px);line-height:1.08;overflow-wrap:anywhere}
+.hero p{max-width:none;font-size:clamp(18px,2vw,23px);line-height:1.62;color:#3a342d}
+.cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
+.cta a{display:inline-flex;align-items:center;text-decoration:none;border-radius:8px;padding:12px 16px;font-weight:900}
+.cta .primary{background:#fff;color:#1a1612}.cta .ghost{border:1px solid rgba(255,255,255,.32);color:#fff;background:rgba(255,255,255,.08)}
+.section{padding:54px clamp(20px,6vw,88px);border-top:1px solid var(--line)}
+.inner{width:min(1000px,100%);margin:0 auto}
+.section h2{font-size:clamp(26px,4.2vw,48px);line-height:1.12;margin:0 0 18px}
+.section h3{font-size:clamp(21px,3vw,30px);line-height:1.2;margin:30px 0 12px}
+.lead{font-size:clamp(18px,1.6vw,22px);line-height:1.7;color:#3a342d;max-width:900px}
+.section p{font-size:18px;line-height:1.74;color:#3a342d}.section p+p{margin-top:14px}
+.section ul,.section ol{padding-left:1.4em;font-size:18px;line-height:1.74;color:#3a342d}.section li{margin-bottom:8px}
+.meaning{margin:22px 0;padding:16px 18px;border-left:5px solid var(--blue);background:rgba(86,137,184,.12);border-radius:6px;line-height:1.7;font-size:19px}
+.meaning b{display:block;color:var(--blue);margin-bottom:4px}
+.caveat{margin:0 0 8px;padding:16px 18px;border-left:5px solid var(--orange);background:rgba(232,90,79,.1);border-radius:6px;line-height:1.7;font-size:18px;color:#3a342d}
+.caveat b{display:block;color:var(--orange);margin-bottom:4px}
+.infocard{background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px 24px 22px;box-shadow:0 8px 22px rgba(107,74,42,.08);margin-top:8px}
+.infocard-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.info-item{padding:18px 14px 0}
+.info-item b{display:block;font-size:14px;font-weight:900;letter-spacing:.04em;margin-bottom:7px;text-transform:uppercase}
+.info-item:nth-child(1) b{color:var(--green)}.info-item:nth-child(2) b{color:var(--orange)}.info-item:nth-child(3) b{color:var(--blue)}
+.info-item p{margin:0;font-size:17px;line-height:1.6;color:#3a342d}
+.tagrow{display:flex;flex-wrap:wrap;gap:7px;margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
+.tag{font-size:14px;color:var(--muted);background:var(--soft);border:1px solid var(--line);border-radius:999px;padding:4px 11px}
+.duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:24px}
+.duo.stack{grid-template-columns:1fr}
+.duo .card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:22px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.duo .card.a{border-color:var(--orange)}.duo .card.b{border-color:var(--green);box-shadow:0 8px 24px rgba(95,117,83,.16)}
+.duo .card small{display:block;font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.04em;margin-bottom:9px}
+.duo .card.a small{color:var(--orange)}.duo .card.b small{color:var(--green)}
+.duo .card b{display:block;font-size:22px;line-height:1.3;margin-bottom:12px}.duo .card.a b{color:#c0512f}.duo .card.b b{color:#4a7a59}
+.duo .card p{margin:0;color:#3a342d;line-height:1.75;font-size:18px}
+.workflow-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:24px}
+.workflow-step{background:#fff;border:1px solid var(--line);border-radius:8px;padding:18px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.workflow-step small{display:block;color:var(--orange);font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;margin-bottom:9px}
+.workflow-step b{display:block;font-size:18px;line-height:1.3;margin-bottom:9px}
+.workflow-step p{margin:0;color:#3a342d;line-height:1.6;font-size:16px}
+.codeblock{background:var(--dark);color:#f3ead9;border-radius:8px;padding:18px 20px;font:500 14px/1.65 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;overflow-x:auto;white-space:pre-wrap;margin:20px 0;box-shadow:0 8px 22px rgba(107,74,42,.12)}
+.codeblock .c{color:#f6d7a6;font-weight:600}
+.skillcard{background:#fff;border:1px solid var(--green);border-radius:12px;padding:24px;box-shadow:0 10px 26px rgba(95,117,83,.16);margin-top:8px}
+.skillcard b{display:block;font-size:21px;margin-bottom:8px}
+.skillcard p{margin:0 0 16px;font-size:17px;line-height:1.65;color:#3a342d}
+.cta-band{background:#e6f0e5;color:#3a342d}.cta-band .section{border-top:none}
+.cta-band .inner{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(260px,.85fr);gap:26px;align-items:start}
+.cta-band h2{font-size:clamp(26px,4vw,44px);margin:0 0 16px}.cta-band p,.cta-band .lead{color:rgba(58,52,45,.9);font-size:18px;line-height:1.72}
+.cta-card{border:1px solid #cfe0d2;background:#fbfdfa;border-radius:8px;padding:22px}
+.cta-card b{display:block;color:#48b178;margin-bottom:10px;font-size:18px}.cta-card p{margin:0 0 14px}
+.footer{padding:30px clamp(20px,6vw,88px);font-size:14px;color:var(--muted);background:#fff;border-top:1px solid var(--line)}
+.footer-inner{width:min(1000px,100%);margin:0 auto}
+.footer-links{display:flex;flex-wrap:wrap;gap:6px 12px;margin-bottom:14px}.footer-links a{color:var(--blue);font-weight:900;text-decoration:none;font-size:14px}
+.footer-brand{font-weight:900;font-size:15px;margin-bottom:10px}.footer-note{font-size:13px;line-height:1.6}
+@media(max-width:820px){.infocard-grid{grid-template-columns:1fr}.duo{grid-template-columns:1fr}.workflow-grid{grid-template-columns:1fr}.cta-band .inner{grid-template-columns:1fr}.section{padding:40px 20px}.hero{min-height:52vh;flex-direction:column;justify-content:flex-start;align-items:flex-start;gap:24px}.hero>div{width:100%}.hero-figure{width:100%;max-width:560px}}
+@media(max-width:820px){html,body{overflow-x:hidden}.hero h1{word-break:break-word}}
+</style>
+</head>
+<body class="spotlight">
+<!-- 官網共用導航列 nav.top：與首頁/總站同一條，文章不要自己另做極簡 topbar（江江 2026-06-25：要同一個框架、同一條導航列）。把對應頁面的 class="active" 標在自己那欄。 -->
+<nav class="top">
+  <div class="container">
+    <a class="nav-brand-img" href="../../index.html"><img src="../../images/footer-signature.png" alt="江江教練 | 江昱德"></a>
+    <button class="nav-toggle" aria-label="選單"><span></span><span></span><span></span></button>
+    <ul class="nav-menu">
+      <li><a href="../../index.html">首頁</a></li>
+      <li><a href="../../knowledge-architecture.html">知識架構</a></li>
+      <li><a href="../../courses.html">課程</a></li>
+      <li><a href="../../articles.html" class="active">深度文章</a></li>
+      <li><a href="../../skills.html">技能包下載</a></li>
+      <li><a href="../../offers.html">服務方案</a></li>
+      <li class="lang-switch"><a href="../../en/articles.html" hreflang="en">EN</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="wc wc1"></div>
+  <div class="wc wc2"></div>
+  <div class="wc wc3"></div>
+  <div>
+    <div class="kicker">AI 應用 / 提示詞設計</div>
+    <h1>我跟 AI 說「很煩」，它自己去加了一道機制</h1>
+    <p>同一個詞，我每次的意思都一樣，AI 每次的理解卻不一樣。問題不在它不夠聰明，在我從來沒把定義寫下來過。</p>
+  </div>
+</section>
+
+<main>
+
+<section class="section" id="start">
+  <div class="inner">
+    <p class="lead">「快一點」到底是多快，「詳細一點」到底是多詳細。這些話我們每天對 AI 講，它每次的理解都不一樣，只好每次重講一遍。這篇講怎麼把這種隨口說的詞，變成 AI 每次都照同一個標準執行的定義。用一個純文字檔就能做，不用寫程式。</p>
+
+    <div class="duo stack">
+      <div class="infocard">
+        <b style="font-size:22px;color:var(--orange)">適合誰</b>
+        <ul>
+          <li>每天用 AI 工作，常覺得「我明明講了，它就是沒做到」的人</li>
+          <li>已經在寫提示詞，每次開新對話都要重貼一長串設定，覺得很煩的人</li>
+          <li>換一個模型就要把設定重調一次，調到不想換的人</li>
+        </ul>
+      </div>
+      <div class="infocard">
+        <b style="font-size:22px;color:var(--green)">你可以帶走什麼</b>
+        <ul>
+          <li>一段可直接複製的提示詞，讓 AI 從過去對話撈出你的高頻模糊詞</li>
+          <li>三行寫完的字典條目格式，以及最容易被漏掉的那一行</li>
+          <li>字典寫多了之後的分類、衝突、字數上限怎麼處理（文末問答）</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="yongdou">
+  <div class="inner">
+    <h2>從永和豆漿說起</h2>
+    <p>今天早上在 LINE 群組聊到用語音跟 AI 工作。群友說手機的語音辨識效果不好，他口語習慣把永和豆漿講成永豆，怎麼都跑不出正確的字。</p>
+    <p>我當下推薦他改用 ChatGPT 的語音辨識，那個準很多。</p>
+    <p>這是工具層的答案，換一個辨識率更高的工具就解決了。而順著這個對話往下想，我發現底下還有一層更值得處理的問題。</p>
+    <p>永豆這個例子裡，機器沒聽懂的是發音。可是我們每天跟 AI 工作，真正卡住的往往是另一種聽不懂：字它都聽對了，意思它抓不到。</p>
+  </div>
+</section>
+
+<section class="section" id="how-fast">
+  <div class="inner">
+    <h2>你的「快速」到底是多快</h2>
+    <p>我跟 AI 說「快速幫我做一個網頁」。</p>
+    <p>它聽懂了每一個字。然後問題來了，我的快速到底是要多快？是十分鐘給我一個能看的版面就好，還是照完整流程做到能上線？是可以先用假資料，還是內容要真的？</p>
+    <p>我說「幫我做很詳細的會議記錄」。</p>
+    <p>一樣，字全對。而我的很詳細是多詳細？是逐字稿全留，還是三層整理？要不要標出誰說的？要不要把沒講出口的態度也判讀進去？</p>
+    <div class="meaning">
+      <p>這些詞在我腦袋裡是有明確定義的。我做過幾十次會議記錄，我心裡很清楚「詳細」對我來說長什麼樣子。問題是這個定義從來沒有被寫下來過，它只存在我腦子裡。</p>
+    </div>
+    <p>所以每次我都要重講一遍。今天講一次，明天換個對話再講一次，換一個模型再講一次。</p>
+    <p>更麻煩的是第二條路的成本。想靠摸熟每個模型的脾氣來解決，模型三個月改版一次，你剛摸熟它就升級了，而且我們手上通常同時開著好幾家。反過來把我的定義寫下來，這份字典是我的，換誰來讀都一樣，模型改版也不用重寫。</p>
+  </div>
+</section>
+
+<section class="section" id="this-morning">
+  <div class="inner">
+    <h2>今天早上真的發生的事</h2>
+    <p>講一個最新的例子，就發生在今天早上，我用它來說明字典生效的時候長什麼樣子。</p>
+    <p>前一晚我跟 AI 一起做完一件很大的工程。做完之後它沒有寫工作日記，我問它「有寫工作日記了嗎」，它才補寫。</p>
+    <p>補完之後我跟它說了下面這段話：</p>
+    <div class="caveat">
+      <p>收工的時候就要寫工作日記，這個應該就不需要我再講了吧。我記得我寫過這句。做很複雜、有破壞性的工作之前也要先寫，因為這樣做錯了還有工作日記可以查。總是要我提醒你寫工作日記，我覺得很煩耶。</p>
+    </div>
+    <p>它沒有回我「好的我下次會記得」。它做了三件事。</p>
+    <p>第一，去查我說的規則到底存不存在。查完發現規則確實寫過，而且寫在三個地方。也就是說規則沒漏寫，是它自己漏做。</p>
+    <p>第二，往下追一層問「為什麼寫了還是會漏」。答案是那三條規則都只是文字，沒有任何東西在盯著它執行，全靠 AI 自己記得。</p>
+    <p>第三，它幫自己裝了一個檢查：以後只要這次工作動到重要的東西，收工前沒寫日記，就不准自己結束。</p>
+    <div class="meaning">
+      <p>重點在第三件事。它做的不是「答應我下次會記得」，是去建立一個讓自己不可能忘記的機制。</p>
+    </div>
+    <p>我用的是可以自己加檢查的工具，所以它能做到這一步。如果你用的是 ChatGPT 或 Claude 的網頁版，做不到「自動擋下來」，而同樣的效果有簡單版：在你的字典裡寫一條「每次任務結束前，主動列出這次做了什麼、有沒有漏掉我交代過的事」。它一樣會在每次收尾時自己跑一遍，差別只在於它是自願的，不是被擋的。</p>
+  </div>
+</section>
+
+<section class="section" id="what-annoying-means">
+  <div class="inner">
+    <h2>「很煩」在我的字典裡是什麼意思</h2>
+    <p>回頭看這件事。我說的是「很煩耶」。這三個字，字面上是情緒。</p>
+    <div class="meaning">
+      <p>而在我的系統裡，「很煩」有明確的定義：你應該要建立自己的一套機制，自己去審查，自己跑回去檢查，不要再要我提醒。整個機制要設計好。</p>
+    </div>
+    <p>它做出來的東西，完全對上這個定義。</p>
+    <p>這裡有一個關鍵。它之所以做得對，不是靠猜中我的情緒。是因為我的規則檔裡本來就寫著一條「使用者抱怨怎麼講不聽，就主動建議加自動檢查」。那條規則，就是「很煩」這個詞在我的字典裡的定義。</p>
+    <p>我只講了三個字。字典替我講完了後面那一百個字。</p>
+    <p>這件事再往上收一層，講的是同一件事：過去我們想讓機器照我們的意思做事，路徑是人去學程式語言，把想法翻譯成機器懂的語法。現在可以換成讓 AI 來學我的系統。你要寫的不是程式碼，是你自己本來就知道的事。</p>
+
+    <div class="readmore near">
+      <b>為什麼「詞」對 AI 這麼關鍵，我另外寫過一篇</b>
+      <ul>
+        <li><a href="../semantic-rules-before-prompt-templates/">提示詞模板為什麼時好時壞？先懂 AI 是強一億倍的手機輸入法</a>　那篇講底層原理，AI 怎麼靠詞語之間的關聯在運作；這篇講原理之上的實作，你要餵給它的那些詞，怎麼先在自己這邊定義清楚</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="how-to-start">
+  <div class="inner">
+    <h2>怎麼開始建你自己的字典</h2>
+    <p>先講清楚字典是什麼東西，免得聽起來很玄。</p>
+    <div class="meaning">
+      <p>它就是一段純文字。可以是手機備忘錄、記事本、Google 文件、Notion 頁面，隨便什麼你打得開又複製得出來的地方都行。不用寫程式，不用裝任何工具。一開始有三五條就能用。</p>
+    </div>
+    <p>接下來三個步驟，今天就能做完。</p>
+
+    <div class="workflow-grid">
+      <div class="infocard">
+        <b>第一步　撈出高頻模糊詞</b>
+        <p>從你過去的對話裡找。那些「我明明講了它沒做到」的地方，就是模糊詞出沒的位置。</p>
+      </div>
+      <div class="infocard">
+        <b>第二步　一條三行寫下定義</b>
+        <p>詞、我的意思是、反例。三行就夠，不用寫成論文。</p>
+      </div>
+      <div class="infocard">
+        <b>第三步　放在 AI 讀得到的地方</b>
+        <p>貼在對話開頭、放進自訂指令、或存成專案檔案，由簡到繁三選一。</p>
+      </div>
+    </div>
+
+    <h3>第一步：撈出你的高頻模糊詞</h3>
+    <p>你不需要憑空想。把下面這段複製給你常用的 AI，讓它幫你撈：</p>
+    <div class="codeblock"><pre>請幫我做一件事：回顧我們過去的對話，找出我常用、但每次可能指涉不同標準的形容詞或副詞。
+
+例如「快一點」「詳細一點」「簡單一點」「正式一點」「幫我看一下」這類詞。
+
+請列出最多 10 個，每一個附上：
+1. 我實際講過的原句（至少一句）
+2. 你當時是怎麼理解的
+3. 你當時不確定的地方是什麼
+
+只列出你真的看到我用過的，不要幫我想像。</pre></div>
+    <p>第三點是重點，也是這段提示詞跟一般「幫我找關鍵字」最不一樣的地方。AI 當時不確定什麼，那個不確定就是你的字典要填的空格。它會告訴你，你以為講清楚了、其實它在猜的地方在哪裡。</p>
+
+    <h3>第二步：一條三行，寫下定義</h3>
+    <p>一個字典條目不需要寫成論文，三行就夠：</p>
+    <div class="codeblock"><pre>詞：很詳細（用在會議記錄時）
+
+我的意思是：三層整理法，逐字稿保留在附件，正文要標出
+誰說的，並且把沒講出口的態度判讀寫在第三層。
+
+反例（這樣不算）：把逐字稿貼上來改錯字就交。</pre></div>
+    <p>反例那一行最容易被漏掉，也最有用。你講什麼算數，也要講什麼不算數，定義才會收斂。只寫「我要詳細一點」，AI 還是在猜；補一句「這樣不算」，界線就出來了。</p>
+
+    <h3>第三步：放在 AI 每次都會讀到的地方</h3>
+    <p>寫好的字典要放對位置，AI 才讀得到。三種做法，由簡到繁：</p>
+    <div class="table-scroll">
+      <table>
+        <thead><tr><th>做法</th><th>適合誰</th><th>怎麼做</th></tr></thead>
+        <tbody>
+          <tr><td>貼在對話開頭</td><td>剛開始試，還在調整定義</td><td>每次開新對話，先把字典整段貼上去再問問題</td></tr>
+          <tr><td>放進自訂指令</td><td>定義大致穩定了</td><td>ChatGPT 設定裡的自訂指令、Claude 的專案說明，貼進去就每次自動生效</td></tr>
+          <tr><td>放進專案檔案</td><td>字典變長、需要分類</td><td>ChatGPT 的專案、Claude 的 Project 都能上傳檔案，把字典存成一個文字檔傳上去，該專案的每次對話都讀得到</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>從第一種開始就有效，不用一開始就做到第三種。</p>
+
+    <div class="readmore near">
+      <b>規則寫了卻沒在跑，我盤點過一次</b>
+      <ul>
+        <li><a href="../rule-file-rebound/">你寫給 AI 的規則，大部分根本沒在執行</a>　我盤點自己的兩百二十條規則，只有二十四條真的有機制在跑。這篇講怎麼把一個詞定義好，那篇講定義好之後怎麼確認它真的有在跑</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="faq">
+  <div class="inner">
+    <h2>常見問題</h2>
+
+    <h3>字典要寫幾條才夠？</h3>
+    <p>三到五條就能開始用。不要一次盤點五十個詞，那會變成一個做不完的專案然後放棄。做法是遇到一次「它又誤會我」就補一條，兩個禮拜之後你會發現常用的就那幾個詞。</p>
+
+    <h3>字典寫多了要怎麼分類？</h3>
+    <p>字數不多的時候不用分類，一條一條列下去就好。超過大概二十條會開始難找，這時最實用的分法是照「什麼情境用」，例如寫作類、會議類、開發類各一段。不要照詞性或字母排，你找的時候是想到情境，不是想到那個字。</p>
+
+    <h3>同一個詞在不同情境意思不一樣，會不會打架？</h3>
+    <p>會，而且很常見。「詳細」用在會議記錄跟用在提案簡報是兩回事。解法是在條目的詞後面直接括號寫情境，像前面範例的「很詳細（用在會議記錄時）」。同一個詞可以有好幾條，各自標情境，這樣不算衝突。真正要避免的是同一個情境下有兩個矛盾定義，那種就要挑一個留下。</p>
+
+    <h3>自訂指令有字數上限，字典塞不下怎麼辦？</h3>
+    <p>字數上限確實會卡。三個處理順序：先把定義寫短（每條的「我的意思是」壓成一句話，細節搬到反例）；再把最常用的五到八條留在自訂指令、其餘搬到專案檔案；還是不夠就依情境拆成幾份，寫作專案放寫作字典，會議專案放會議字典，不要一份通吃。</p>
+
+    <h3>換一個模型，字典要重寫嗎？</h3>
+    <p>不用。字典寫的是你的定義，不是某個模型的操作方式，整份複製過去就能用。真正需要調整的是放置位置，因為每家的自訂指令、專案功能位置不一樣。這也是建字典比研究模型脾氣划算的地方。</p>
+
+    <h3>我沒有知識庫，只用 ChatGPT，這套有用嗎？</h3>
+    <p>有用，而且第一步跟第二步完全一樣。差別只在第三步的放置位置，你用前兩種做法（貼在對話開頭、放進自訂指令）就能拿到大部分效果。知識庫是字典長大之後的收納方式，不是入場門檻。</p>
+  </div>
+</section>
+
+<section class="section" id="ending">
+  <div class="inner">
+    <h2>最後</h2>
+    <p>回到最開始那個永和豆漿。</p>
+    <p>換一個辨識更準的工具，解決的是機器聽不聽得清楚你的音。而我們每天工作真正卡住的，是機器聽不聽得懂你的意思。</p>
+    <p>意思這件事，工具幫不了你，因為那是你的。你得自己寫下來。</p>
+    <p>好消息是，這件事只要做一次。你的「很煩」定義好了，之後你就繼續講很煩，剩下的一百個字，字典會替你講。</p>
+    <div class="meaning">
+      <p style="font-size:22px;line-height:1.7">與其一直研究哪個模型比較聰明，不如建立你自己的字典。</p>
+    </div>
+  </div>
+</section>
+
+<section class="cta-band">
+  <div class="section">
+    <div class="inner">
+      <h2>寫好第一條，歡迎丟到社群給我看</h2>
+      <p>字典這件事一個人寫容易卡在「我到底該定義哪些詞」。我在 LINE 社群裡會分享自己的條目，也常有人丟出自己的來討論。近期的免費線上講座也會實際跑一次這個流程。</p>
+      <p><a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">加入 LINE 社群 ↗</a>　·　<a href="../../courses.html">看看近期課程與免費講座</a></p>
+    </div>
+  </div>
+</section>
+
+
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">江江教練 · AI 知識管理</div>
+    <div class="footer-links">
+      <a href="../../articles.html">← 回深度文章總站</a>
+      <a href="../../index.html">首頁</a>
+      <a href="../../learn.html">自學資源</a>
+      <a href="../../skills.html">技能包下載</a>
+      <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">LINE 社群 ↗</a>
+      <a href="https://www.threads.com/@jiang_yude_coach" target="_blank" rel="noopener">Threads ↗</a>
+      <a href="https://vocus.cc/salon/Jiang_Coach" target="_blank" rel="noopener">方格子 ↗</a>
+    </div>
+    <div class="footer-note">這是一篇教學文章，整理我對「我跟 AI 說「很煩」，它自己去加了一道機制」的看法，供你參考。</div>
+  </div>
+</footer>
+
+<!-- 點圖放大 lightbox（hero 與內文圖通用，已內建，不用每篇重加） -->
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <span class="lightbox-close" aria-label="關閉">×</span>
+  <img id="lightbox-img" src="" alt="放大檢視">
+</div>
+<script>
+(function(){
+  var box=document.getElementById('lightbox'),boxImg=document.getElementById('lightbox-img');
+  document.querySelectorAll('.hero-figure img,.inline-figure img').forEach(function(img){
+    img.addEventListener('click',function(){boxImg.src=img.currentSrc||img.src;boxImg.alt=img.alt||'放大檢視';box.classList.add('open');box.setAttribute('aria-hidden','false');});
+  });
+  function close(){box.classList.remove('open');box.setAttribute('aria-hidden','true');boxImg.src='';}
+  box.addEventListener('click',close);
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
+})();
+</script>
+
+<script src="../../image-interactions.js"></script>
+
+<!-- 官網共用：滑鼠暖光暈 + 導航列漢堡選單 -->
+<script src="../../spotlight.js"></script>
+
+<!-- 文章自動互聯（相關文章）：兩支已內建，順序不可顛倒，不用再另外加 -->
+<script src="../../articles-data.js"></script>
+<script src="../../related-render.js"></script>
+</body>
+</html>
