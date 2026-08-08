@@ -485,7 +485,7 @@ window.ARTICLES = [
       content_type: ["觀點文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: "https://vocus.cc/salon/Jiang_Coach" },
-    related: ["caught-ai-slacking-into-rules", "how-to-train-your-ai-employee", "docs-as-system-design-agent", "tidy-mess-before-consulting", "program-vs-ai-skill-library", "ai-delegators-optimism", "four-lens-rapid-review", "manage-ai-with-management-knowledge"]
+    related: ["caught-ai-slacking-into-rules", "how-to-train-your-ai-employee", "docs-as-system-design-agent", "tidy-mess-before-consulting", "program-vs-ai-skill-library", "ai-delegators-optimism", "four-lens-rapid-review", "manage-ai-with-management-knowledge", "long-answer-three-layers"]
   },
 
   /* ── 19. 你在 AI 世界的哪一階：AI 能力分級榜（觀點）── */
@@ -709,7 +709,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["agent-workflow-builds-automation"]
+    related: ["agent-workflow-builds-automation", "long-answer-three-layers"]
   },
 
   /* ── 當我開始理解迴圈，把三個工作流設計成 Loop（觀點）── */
@@ -823,7 +823,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["harness-mindset-for-bosses", "prompt-to-loop-map", "map-is-not-the-territory", "ai-handoff-instructions", "ai-that-knows-you", "old-prompts-intent-first-loop-engineering", "ai-employee-four-levels"]
+    related: ["harness-mindset-for-bosses", "prompt-to-loop-map", "map-is-not-the-territory", "ai-handoff-instructions", "ai-that-knows-you", "old-prompts-intent-first-loop-engineering", "ai-employee-four-levels", "long-answer-three-layers"]
   },
 
   /* ── 給老闆的駕馭思維：把不敢對員工說的，講給 AI 聽（系列 02）（教學）── */
@@ -918,7 +918,7 @@ window.ARTICLES = [
       content_type: ["觀點文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["how-to-train-your-ai-employee", "intent-first-prompting", "talent-vs-expertise"]
+    related: ["how-to-train-your-ai-employee", "intent-first-prompting", "talent-vs-expertise", "long-answer-three-layers"]
   },
 
   /* ── 把課前問卷變成簡報，再把流程存成技能包（教學）── */
@@ -1134,7 +1134,7 @@ window.ARTICLES = [
     summary: "整理 AI 時代資料整理基礎班的完整方法：用 Markdown 四個語法、卡片化、連結與受控詞彙，把文件變成人和 AI 都能用的系統，包含可直接複製的提示詞。",
     tags: {"topic":["知識管理","知識庫","AIAgent"],"level":["零基礎入門"],"content_type":["教學文章"]},
     external: { threads: null, vocus: null },
-    related: ["semantic-rules-before-prompt-templates", "notebooklm-knowledge-analysis-assistant", "claude-skills-knowledge-assets", "why-split-data-into-cards"]
+    related: ["semantic-rules-before-prompt-templates", "notebooklm-knowledge-analysis-assistant", "claude-skills-knowledge-assets", "why-split-data-into-cards", "long-answer-three-layers"]
   },
   {
     id: "semantic-rules-before-prompt-templates",
@@ -1654,5 +1654,24 @@ window.ARTICLES = [
     },
     external: { threads: null, vocus: null },
     related: ["ai-handoff-instructions", "laptop-desktop-webpage-sync-icloud-git", "caught-ai-slacking-into-rules", "dual-track-planning-loop", "knowledge-os-master-map"]
+  },
+
+  /* ── 長回答三層理解法（教學） ── */
+  {
+    id: "long-answer-three-layers",
+    url: "articles/long-answer-three-layers/",
+    date: "2026-08-08",
+    updated: "2026-08-08",
+    title: "AI 回答太長看不下去？把內容變成白話、流程圖與互動網頁",
+    problem: "AI 的長回答把條件、例外、推論、風險都寫進去，重要內容常常藏在中後段。人一累就跳過，等於讓沒有被理解的前提直接進入下一步。",
+    audience: "每天收到 AI 長篇回答、常常看到一半就放棄的人，要把 AI 的分析拿去開會報價決策或交件的人，以及每一句都看得懂卻抓不到整體關係的人。",
+    summary: "AI 回答太長，看到一半就滑掉，最後回一句「好好，都可以」。這篇給三層做法：第一層請 AI 用白話重講並保留限制與例外，第二層有步驟分支角色時序就請它畫成流程圖（Codex 走 Mermaid、Claude 走 show_widget 的 inline SVG），第三層資訊量太大時做成可點開細節的互動網頁。三段提示詞可直接複製，文末附回頭核對的三個問題與一個四步工作流。",
+    tags: {
+      topic: ["AI工作流", "輔助決策", "提示詞設計", "工作流程"],
+      level: ["基礎"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["map-is-not-the-territory", "intent-first-prompting", "decision-ladder-non-programmer", "ai-data-organization-usable-system", "give-ai-choices-not-descriptions"]
   }
 ];

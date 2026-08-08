@@ -3,6 +3,7 @@
    維護：新文章上稿時補一條；訪客搜尋 log 發現沒接住的問法，第一線修法＝來這裡補別名。
    key＝articles-data.js 的文章 id。 */
 window.SEARCH_ALIASES = {
+  "long-answer-three-layers": ["AI回答太長", "看不下去", "AI講太複雜", "請AI用白話", "白話重講", "叫AI畫流程圖", "Mermaid流程圖", "show_widget", "做成互動網頁", "好好都可以", "AI回答看不懂", "長回答怎麼看"],
   "session-messaging-reminder-layer": ["對話之間傳訊息","Claude Code多視窗","開好幾個AI視窗","AI視窗互相不知道","交接指令複製貼上","session傳訊息","兩個AI改同一個檔案","桌機筆電AI不通","Claude跟Codex不通","多視窗協作怎麼防撞"],
   "messaging-apps-ai-friendliness": ["通訊軟體選哪個","LINE跟Discord比較","AI放哪個群組","聊天軟體AI整合","Slack Agent","Telegram bot","群組軟體AI友善","哪個通訊軟體適合AI助教"],
   "free-deploy-three-boundaries": ["免費網頁部署","網站放哪裡","GitHub Pages還是Vercel","網頁權限保護","架站要花錢嗎","私密網頁怎麼做","免費架站平台","網站被爬蟲讀"],
