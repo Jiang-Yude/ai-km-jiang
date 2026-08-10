@@ -72,6 +72,25 @@ window.ARTICLES = [
     related: ["after-ai-says-remembered", "three-levels-of-cross-review", "why-split-data-into-cards"]
   },
 
+  /* ── 我跟 AI 說「很煩」，它自己去加了一道機制（教學） ── */
+  {
+    id: "build-your-own-dictionary",
+    url: "articles/build-your-own-dictionary/",
+    date: "2026-08-08",
+    updated: "2026-08-10",
+    title: "我跟 AI 說「很煩」，它自己去加了一道機制",
+    problem: "「快一點」到底是多快、「詳細一點」到底是多詳細，同一個詞我每次的意思都一樣，AI 每次的理解卻不一樣，只好每次重講一遍。",
+    audience: "每天用 AI 工作、常覺得「我明明講了它就是沒做到」的人，已經在寫提示詞但每次都要重寫一長串覺得很累的人，以及想把自己的工作習慣變成 AI 能執行的規則的人。",
+    summary: "與其去摸熟每個模型的脾氣（模型三個月改版一次，摸熟了它就升級），不如把自己的模糊詞定義一次，讓 AI 來認識你。文章從一個真實案例展開：我對 AI 說「很煩耶，我教很多次」，它去查證規則、發現規則只是文字沒有東西盯著執行，於是幫自己裝了一個「沒寫日記就不准收工」的檢查。因為「很煩」在我的規則檔裡有明確定義。後半給三個今天就能做的步驟：字典就是一段純文字、一段可直接複製的撈詞提示詞（重點是問 AI「你當時不確定什麼」）、三行寫完的條目格式（詞、我的意思是、反例），以及三種放置位置的選法，文末六題常見問答涵蓋分類、衝突、字數上限、換模型。",
+    tags: {
+      topic: ["提示詞設計", "AI工作流", "知識管理", "知識庫"],
+      level: ["零基礎入門"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["semantic-rules-before-prompt-templates", "rule-file-rebound", "tag-wiki-method", "my-three-loops", "teach-ai-not-learn-ai"]
+  },
+
   /* ── AI 做的東西看不懂，可以先用再說嗎？：認知債可以欠，重點是懂得還（教學） ── */
   {
     id: "cognitive-debt",
@@ -261,7 +280,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["ten-year-anchor", "ai-native-not-transformation", "timing-and-forecast", "one-on-one-questions", "how-to-train-your-ai-employee", "cognitive-debt"]
+    related: ["ten-year-anchor", "ai-native-not-transformation", "timing-and-forecast", "one-on-one-questions", "how-to-train-your-ai-employee", "cognitive-debt", "build-your-own-dictionary"]
   },
 
   /* ── 一對一系列：資訊時差與市場預測（方法）── */
@@ -880,7 +899,7 @@ window.ARTICLES = [
       content_type: ["觀點文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["what-is-loop-engineering", "ai-loop-safety-recovery", "recovery-over-perfection", "ai-delegators-optimism", "long-task-completion-rate", "meeting-into-verifiable-loop"]
+    related: ["what-is-loop-engineering", "ai-loop-safety-recovery", "recovery-over-perfection", "ai-delegators-optimism", "long-task-completion-rate", "meeting-into-verifiable-loop", "build-your-own-dictionary"]
   },
 
   /* ── 公司護城河：組織模式、共識、影響力與信任（觀點）── */
@@ -918,7 +937,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["questionnaire-to-slides-agent-workflow", "teacher-prep-knowledge-workflow", "knowledge-base-three-vault-split", "docs-as-system-design-agent", "ai-loop-safety-recovery", "inspiration-production-system", "why-split-data-into-cards", "knowledge-os-master-map"]
+    related: ["questionnaire-to-slides-agent-workflow", "teacher-prep-knowledge-workflow", "knowledge-base-three-vault-split", "docs-as-system-design-agent", "ai-loop-safety-recovery", "inspiration-production-system", "why-split-data-into-cards", "knowledge-os-master-map", "build-your-own-dictionary"]
   },
 
   /* ── AI 出錯不可怕，沒有備援才可怕：一次搞壞 170 檔案的教訓（觀點）── */
@@ -1299,7 +1318,7 @@ window.ARTICLES = [
     summary: "提示詞設計的底層原理：AI 是詞語關聯的計算機，像強一億倍的手機輸入法。從課題分離的三步修正、角色設定的限制到負向提示詞的陷阱，先懂語意再套模板。",
     tags: {"topic":["提示詞設計","隱性知識","知識管理"],"level":["基礎"],"content_type":["教學文章"]},
     external: { threads: null, vocus: null },
-    related: ["ai-data-organization-usable-system", "claude-skills-knowledge-assets", "ai-that-knows-you", "chatgpt-work-skills-web-version"]
+    related: ["ai-data-organization-usable-system", "claude-skills-knowledge-assets", "ai-that-knows-you", "chatgpt-work-skills-web-version", "build-your-own-dictionary"]
   },
   {
     id: "claude-skills-knowledge-assets",
@@ -1693,7 +1712,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["ai-handoff-instructions", "what-is-loop-engineering", "why-split-data-into-cards"]
+    related: ["ai-handoff-instructions", "what-is-loop-engineering", "why-split-data-into-cards", "build-your-own-dictionary"]
   },
 
   /* ── 從 Answer 到 Action：企業如何導入 AI Agent（教學）── */
