@@ -1307,7 +1307,7 @@ window.ARTICLES = [
     summary: "用三個模型的成本對照說明一件反直覺的事：用最便宜的模型做到滿分，反而是最貴也最慢的。真正該問的是這次任務需要幾分，附三張對照表。最後把問題放大到人類層級：算力有限、要解的問題滿出來，會排序哪些問題值得解，才是真正的分水嶺。",
     tags: {"topic":["AI趨勢","輔助決策","差異比較"],"level":["基礎"],"content_type":["觀點文章"]},
     external: { threads: null, vocus: null },
-    related: ["ai-tools-professional-judgment", "strong-ai-models-knowledge-workflow-road", "program-vs-ai-skill-library", "ai-capability-tiers", "long-task-completion-rate"]
+    related: ["ai-tools-professional-judgment", "strong-ai-models-knowledge-workflow-road", "program-vs-ai-skill-library", "ai-capability-tiers", "long-task-completion-rate", "openrouter-deepseek-data-routing"]
   },
 
   {
@@ -1524,7 +1524,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["how-ai-connects-software", "ai-capability-tiers", "how-to-train-your-ai-employee"]
+    related: ["how-ai-connects-software", "ai-capability-tiers", "how-to-train-your-ai-employee", "openrouter-deepseek-data-routing"]
   },
   {
     id: "rule-file-rebound",
@@ -1692,5 +1692,24 @@ window.ARTICLES = [
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach/post/Db18DHlk1We", vocus: null },
     related: ["demis-hassabis-agi-science-ai", "ai-capability-tiers", "ai-tools-professional-judgment"]
+  },
+
+  /* ── OpenRouter 與 DeepSeek 資料路由查證（教學） ── */
+  {
+    id: "openrouter-deepseek-data-routing",
+    url: "articles/openrouter-deepseek-data-routing/",
+    date: "2026-08-09",
+    updated: "2026-08-10",
+    title: "OpenRouter 用 DeepSeek，資料就不會經過中國嗎？教你自己查實際路由供應商",
+    problem: "想用 OpenRouter 測試 DeepSeek 或接進正式應用，卻不知道統一 API 背後真正執行推理的是誰，也容易把 ZDR、供應商總部與資料處理地區混在一起。",
+    audience: "想用 OpenRouter 比較多個模型的人、準備把 DeepSeek 接進網站、聊天機器人或內部工具的人，以及需要查清楚資料路由與保留政策的評估者。",
+    summary: "透過 OpenRouter 使用 DeepSeek，不代表資料一定不會經過中國。本文用官方 endpoints 與 providers API 示範如何自行查詢實際供應商、總部與資料中心線索，再整理 allowlist、關閉 fallback、拒絕資料收集與 ZDR 四道路由護欄，並分開測試階段與正式應用的配置。",
+    tags: {
+      topic: ["工具操作", "差異比較", "AI趨勢"],
+      level: ["基礎"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["cli-api-mcp-computer-use", "ai-cp-value-calculus"]
   }
 ];
