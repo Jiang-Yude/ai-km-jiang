@@ -240,7 +240,7 @@ window.ARTICLES = [
       content_type: ["趨勢文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["ai-capability-tiers"]
+    related: ["ai-capability-tiers", "agi-work-and-discovery"]
   },
   {
     id: "apple-wwdc26-siri-lobster-ai",
@@ -504,7 +504,7 @@ window.ARTICLES = [
       content_type: ["觀點文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: "https://vocus.cc/salon/Jiang_Coach" },
-    related: ["ai-king-off-battlefield", "demis-hassabis-agi-science-ai", "spacex-ipo-musk-trillionaire-knowledge-work", "ai-market-microcosm", "vibe-coding-ten-half-products", "apple-wwdc26-siri-lobster-ai", "company-shape-is-the-moat", "ai-delegators-optimism", "chatgpt-work-codex-choice", "one-on-one-questions", "cli-api-mcp-computer-use", "ai-tools-professional-judgment", "ai-cp-value-calculus"]
+    related: ["ai-king-off-battlefield", "demis-hassabis-agi-science-ai", "spacex-ipo-musk-trillionaire-knowledge-work", "ai-market-microcosm", "vibe-coding-ten-half-products", "apple-wwdc26-siri-lobster-ai", "company-shape-is-the-moat", "ai-delegators-optimism", "chatgpt-work-codex-choice", "one-on-one-questions", "cli-api-mcp-computer-use", "ai-tools-professional-judgment", "ai-cp-value-calculus", "agi-work-and-discovery"]
   },
 
   /* ── 20. 文件就是系統：非工程師怎麼設計 Agent 框架（教學）── */
@@ -1293,7 +1293,7 @@ window.ARTICLES = [
     summary: "三名資深工程師靠清理 AI 生成的冗長程式碼收費，一週完整達標一萬美元。他們自己也用 Claude Code，官網卻寫著 the agent doesn't get a vote。搭配 SlopCodeBench 對結構侵蝕的研究，說明工具普及後差異會回到看懂問題、知道哪裡不能碰、判斷結果能不能用。附把工作分成三層的方法、交付 AI 前的三問清單與可直接使用的提示詞。",
     tags: {"topic":["AI趨勢","輔助決策","AIAgent"],"level":["基礎"],"content_type":["觀點文章"]},
     external: { threads: null, vocus: null },
-    related: ["ai-capability-tiers", "how-to-train-your-ai-employee", "vibe-coding-ten-half-products", "strong-ai-models-knowledge-workflow-road", "ai-cp-value-calculus", "ai-employee-four-levels", "use-more-ai-not-enough"]
+    related: ["ai-capability-tiers", "how-to-train-your-ai-employee", "vibe-coding-ten-half-products", "strong-ai-models-knowledge-workflow-road", "ai-cp-value-calculus", "ai-employee-four-levels", "use-more-ai-not-enough", "agi-work-and-discovery"]
   },
 
   {
@@ -1673,5 +1673,24 @@ window.ARTICLES = [
     },
     external: { threads: null, vocus: null },
     related: ["map-is-not-the-territory", "intent-first-prompting", "decision-ladder-non-programmer", "ai-data-organization-usable-system", "give-ai-choices-not-descriptions"]
+  },
+
+  /* ── AI 很會做事，距離 AGI 還差哪一步（觀點）── */
+  {
+    id: "agi-work-and-discovery",
+    url: "articles/agi-work-and-discovery/",
+    date: "2026-08-10",
+    updated: "2026-08-10",
+    title: "AI 很會做事，距離 AGI 還差哪一步？從工作能力到創造新知的兩把尺",
+    problem: "AI 已經會聊天、會操作工具、會完成工作，但這些能力離通用智能、主動發現人的深層盲點與創造新知還有什麼差別。",
+    audience: "看見 AI 每週都有新能力、想知道離 AGI 到底多遠的人，以及在工作上導入 AI、需要判斷能力邊界與驗收方式的人。",
+    summary: "從詞語關聯計算機、會回話的聊天 AI、會做事的 Agent，一路談到江江對 AGI 的個人門檻：AI 能主動補上人的弱項，用更全面的視野提醒深層盲點。文章再對照 OpenAI、Google DeepMind、人機互補與 AI 意識研究，提出工作能力、創造新知兩把尺，以及判讀 AI 進展的五個問題。",
+    tags: {
+      topic: ["AI趨勢", "AIAgent", "輔助決策", "知識管理"],
+      level: ["基礎"],
+      content_type: ["觀點文章"]
+    },
+    external: { threads: "https://www.threads.com/@jiang_yude_coach/post/Db18DHlk1We", vocus: null },
+    related: ["demis-hassabis-agi-science-ai", "ai-capability-tiers", "ai-tools-professional-judgment"]
   }
 ];
