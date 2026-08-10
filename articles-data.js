@@ -50,7 +50,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["three-levels-of-cross-review", "long-document-review-layers", "before-installing-others-skill", "mobile-to-desktop-publish-loop"]
+    related: ["three-levels-of-cross-review", "long-document-review-layers", "before-installing-others-skill", "mobile-to-desktop-publish-loop", "cognitive-debt"]
   },
 
   /* ── AI 改了十幾次還是有錯，怎麼辦？：資料清理只是第一關，長文件審不出錯的三層設計（教學） ── */
@@ -72,6 +72,63 @@ window.ARTICLES = [
     related: ["after-ai-says-remembered", "three-levels-of-cross-review", "why-split-data-into-cards"]
   },
 
+  /* ── AI 做的東西看不懂，可以先用再說嗎？：認知債可以欠，重點是懂得還（教學） ── */
+  {
+    id: "cognitive-debt",
+    url: "articles/cognitive-debt/",
+    date: "2026-08-09",
+    updated: "2026-08-09",
+    title: "AI 做的東西看不懂，可以先用再說嗎？：認知債可以欠，重點是懂得還",
+    problem: "AI 做出來的東西看不太懂，但看起來能用就先跳過了，不懂的東西越積越多，不知道哪天會出事。",
+    audience: "每天用 AI 產出東西、常常看起來沒問題就先用了的人，以及帶團隊用 AI 的主管。",
+    summary: "認知債是技術債的一般工作者版本：你借的是 AI 的產出，欠的是自己的理解。內容包含認知債的定義與出處（MIT 2025 預印本、軟體研究者的定義）、為什麼它是雪崩式而非線性累積、三個當場做得到的還債動作（解釋到懂為止的提示詞、對齊確認、看字數增減抓異常），以及哪些債可以欠的界線。",
+    tags: {
+      topic: ["AI駕馭思維", "知識管理", "對話管理", "AI應用"],
+      level: ["基礎"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["after-ai-says-remembered", "caught-ai-slacking-into-rules", "teach-ai-not-learn-ai", "program-vs-ai-skill-library"]
+  },
+
+  /* ── 同一個問題被問一百次，該親自回答還是丟給 AI（觀點） ── */
+  {
+    id: "answer-in-person-or-ai",
+    url: "articles/answer-in-person-or-ai/",
+    date: "2026-08-09",
+    updated: "2026-08-09",
+    title: "同一個問題被問一百次，該親自回答還是丟給 AI",
+    problem: "同一個問題每場演講都要重講一次，想交給 AI 又怕失去什麼，也不知道 AI 會不會取代講師。",
+    audience: "講師、顧問、老師，任何靠重複輸出專業的人，以及正在做 AI 分身的人。",
+    summary: "判斷標準只有一條：這件事的本質是傳遞知識，還是累積信任。傳遞知識的交給 AI 越快越好，累積信任的講一百次也親自來。內容包含芳療師水氧機問題的真實案例、同一份知識走現場與網路兩條路的分流做法、AI 會不會取代講師的兩半答案，以及 AI 分身命名要跟本人拉開距離的理由。",
+    tags: {
+      topic: ["教學", "AI應用", "價值主張"],
+      level: ["基礎"],
+      content_type: ["觀點文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["company-shape-is-the-moat", "teacher-prep-knowledge-workflow", "questionnaire-to-slides-agent-workflow", "agent-web-turning-point"]
+  },
+
+  /* ── 直接抄別人的 Skills、工作流，其實沒什麼用（觀點） ── */
+  {
+    id: "copied-mechanism-is-no-mechanism",
+    url: "articles/copied-mechanism-is-no-mechanism/",
+    date: "2026-08-09",
+    updated: "2026-08-09",
+    title: "直接抄別人的 Skills、工作流，其實沒什麼用",
+    problem: "收藏了一堆別人的提示詞、技能包、工作流模板，用起來卻總是卡卡的，不知道為什麼。",
+    audience: "到處找大神設定檔的人，以及想把高手用法複製給全團隊的主管。",
+    summary: "機制的本體是判斷，條文只是判斷的影子，抄影子抄不到判斷。內容包含為什麼抄來的機制是空的（每條規則背後都是一次踩雷）、通用機制與私人機制的分辨方法、下載任何技能包前的三問提示詞（風險、衝突、取捨），以及自己的機制從哪裡長出來。與「裝了別人的技能包」那篇分工：這篇講為什麼裝了也沒用，那篇講怎麼安全裝。",
+    tags: {
+      topic: ["技能包設計", "AI工作流", "隱性知識", "規則庫"],
+      level: ["基礎"],
+      content_type: ["觀點文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["before-installing-others-skill", "decision-ladder-non-programmer", "how-to-train-your-ai-employee", "caught-ai-slacking-into-rules"]
+  },
+
   /* ── 裝了別人的技能包，AI 會不會被搞亂？：抄之前我會先做三件事（教學） ── */
   {
     id: "before-installing-others-skill",
@@ -88,7 +145,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["after-ai-says-remembered", "long-document-review-layers", "dual-track-planning-loop"]
+    related: ["after-ai-says-remembered", "long-document-review-layers", "dual-track-planning-loop", "copied-mechanism-is-no-mechanism"]
   },
 
   /* ── 人在外面，可以叫家裡的電腦先做嗎？：手機掃一次 QR code，桌機就開始跑（教學） ── */
@@ -204,7 +261,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["ten-year-anchor", "ai-native-not-transformation", "timing-and-forecast", "one-on-one-questions", "how-to-train-your-ai-employee"]
+    related: ["ten-year-anchor", "ai-native-not-transformation", "timing-and-forecast", "one-on-one-questions", "how-to-train-your-ai-employee", "cognitive-debt"]
   },
 
   /* ── 一對一系列：資訊時差與市場預測（方法）── */
@@ -299,7 +356,7 @@ window.ARTICLES = [
       content_type: ["觀點文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["own-ai-team-at-work", "agent-workflow-builds-automation", "how-ai-connects-software", "decision-ladder-non-programmer", "chatgpt-work-codex-choice", "ai-cp-value-calculus", "ai-employee-four-levels"]
+    related: ["own-ai-team-at-work", "agent-workflow-builds-automation", "how-ai-connects-software", "decision-ladder-non-programmer", "chatgpt-work-codex-choice", "ai-cp-value-calculus", "ai-employee-four-levels", "cognitive-debt"]
   },
 
   /* ── 4-6. 趨勢判讀 ── */
@@ -371,7 +428,7 @@ window.ARTICLES = [
       content_type: ["案例文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: "https://vocus.cc/salon/Jiang_Coach" },
-    related: ["codex-only-auto-worklog", "decision-ladder-non-programmer", "publish-gate", "session-messaging-reminder-layer"]
+    related: ["codex-only-auto-worklog", "decision-ladder-non-programmer", "publish-gate", "session-messaging-reminder-layer", "cognitive-debt"]
   },
 
   /* ── 8. AI 之王不上戰場（觀點）── */
@@ -466,7 +523,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["strong-ai-models-knowledge-workflow-road", "questionnaire-to-slides-agent-workflow", "teacher-prep-knowledge-workflow", "own-ai-team-at-work", "agent-workflow-builds-automation", "line-group-ai-workflow", "elon-musk-live-skill", "codex-log-health-check", "how-ai-connects-software", "meeting-record-agent-workflow", "decision-ladder-non-programmer", "tidy-mess-before-consulting", "diary-driven-agent-3x4", "docs-as-system-design-agent", "what-is-loop-engineering", "map-is-not-the-territory", "intangible-assets-grow-by-sharing", "manage-ai-with-management-knowledge", "ai-handoff-instructions", "train-your-ai-agent-editor", "ai-that-knows-you", "personal-studio-vs-solo-company", "cli-api-mcp-computer-use", "knowledge-as-employee", "mika-to-laika-product-character-design", "agent-native-tools-software-interface", "ai-tools-professional-judgment", "answer-to-action-enterprise-ai-agent", "teach-ai-not-learn-ai", "talent-vs-expertise", "ai-employee-four-levels"]
+    related: ["strong-ai-models-knowledge-workflow-road", "questionnaire-to-slides-agent-workflow", "teacher-prep-knowledge-workflow", "own-ai-team-at-work", "agent-workflow-builds-automation", "line-group-ai-workflow", "elon-musk-live-skill", "codex-log-health-check", "how-ai-connects-software", "meeting-record-agent-workflow", "decision-ladder-non-programmer", "tidy-mess-before-consulting", "diary-driven-agent-3x4", "docs-as-system-design-agent", "what-is-loop-engineering", "map-is-not-the-territory", "intangible-assets-grow-by-sharing", "manage-ai-with-management-knowledge", "ai-handoff-instructions", "train-your-ai-agent-editor", "ai-that-knows-you", "personal-studio-vs-solo-company", "cli-api-mcp-computer-use", "knowledge-as-employee", "mika-to-laika-product-character-design", "agent-native-tools-software-interface", "ai-tools-professional-judgment", "answer-to-action-enterprise-ai-agent", "teach-ai-not-learn-ai", "talent-vs-expertise", "ai-employee-four-levels", "copied-mechanism-is-no-mechanism"]
   },
 
   /* ── 13. LINE 群組也能變成 AI 工作流入口（教學）── */
@@ -580,7 +637,7 @@ window.ARTICLES = [
       content_type: ["觀點文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: "https://vocus.cc/salon/Jiang_Coach" },
-    related: ["caught-ai-slacking-into-rules", "how-to-train-your-ai-employee", "docs-as-system-design-agent", "tidy-mess-before-consulting", "program-vs-ai-skill-library", "ai-delegators-optimism", "four-lens-rapid-review", "manage-ai-with-management-knowledge", "long-answer-three-layers"]
+    related: ["caught-ai-slacking-into-rules", "how-to-train-your-ai-employee", "docs-as-system-design-agent", "tidy-mess-before-consulting", "program-vs-ai-skill-library", "ai-delegators-optimism", "four-lens-rapid-review", "manage-ai-with-management-knowledge", "long-answer-three-layers", "copied-mechanism-is-no-mechanism"]
   },
 
   /* ── 19. 你在 AI 世界的哪一階：AI 能力分級榜（觀點）── */
@@ -618,7 +675,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: "https://vocus.cc/salon/Jiang_Coach" },
-    related: ["strong-ai-models-knowledge-workflow-road", "questionnaire-to-slides-agent-workflow", "teacher-prep-knowledge-workflow", "diary-driven-agent-3x4", "how-ai-connects-software", "how-to-train-your-ai-employee", "decision-ladder-non-programmer", "tidy-mess-before-consulting", "what-is-loop-engineering", "tag-wiki-method", "ai-delegators-optimism", "intangible-assets-grow-by-sharing", "publish-gate", "laptop-desktop-webpage-sync-icloud-git", "manage-ai-with-management-knowledge", "train-your-ai-agent-editor", "knowledge-os-master-map", "knowledge-as-employee", "mika-to-laika-product-character-design", "ai-employee-four-levels", "free-deploy-three-boundaries"]
+    related: ["strong-ai-models-knowledge-workflow-road", "questionnaire-to-slides-agent-workflow", "teacher-prep-knowledge-workflow", "diary-driven-agent-3x4", "how-ai-connects-software", "how-to-train-your-ai-employee", "decision-ladder-non-programmer", "tidy-mess-before-consulting", "what-is-loop-engineering", "tag-wiki-method", "ai-delegators-optimism", "intangible-assets-grow-by-sharing", "publish-gate", "laptop-desktop-webpage-sync-icloud-git", "manage-ai-with-management-knowledge", "train-your-ai-agent-editor", "knowledge-os-master-map", "knowledge-as-employee", "mika-to-laika-product-character-design", "ai-employee-four-levels", "free-deploy-three-boundaries", "copied-mechanism-is-no-mechanism"]
   },
 
   /* ── 21. 你以為在做一個成品，其實在養十個半成品（觀點）── */
@@ -770,7 +827,7 @@ window.ARTICLES = [
       content_type: ["趨勢文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["market-to-ai", "a2a-agent-protocol", "agent-native-tools-software-interface", "free-deploy-three-boundaries"]
+    related: ["market-to-ai", "a2a-agent-protocol", "agent-native-tools-software-interface", "free-deploy-three-boundaries", "answer-in-person-or-ai"]
   },
   {
     id: "four-lens-rapid-review",
@@ -842,7 +899,7 @@ window.ARTICLES = [
       content_type: ["觀點文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["intangible-assets-grow-by-sharing", "ai-king-off-battlefield", "spacex-ipo-musk-trillionaire-knowledge-work", "ai-capability-tiers", "own-ai-team-at-work", "manage-ai-with-management-knowledge", "personal-studio-vs-solo-company"]
+    related: ["intangible-assets-grow-by-sharing", "ai-king-off-battlefield", "spacex-ipo-musk-trillionaire-knowledge-work", "ai-capability-tiers", "own-ai-team-at-work", "manage-ai-with-management-knowledge", "personal-studio-vs-solo-company", "answer-in-person-or-ai"]
   },
 
   /* ── 把標籤變成卡片，知識庫才活起來：標籤連結法 Tag Wiki（教學）── */
@@ -1032,7 +1089,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["teacher-prep-knowledge-workflow", "codex-only-auto-worklog", "how-to-train-your-ai-employee", "how-ai-connects-software", "docs-as-system-design-agent", "diary-driven-agent-3x4", "what-is-loop-engineering", "tag-wiki-method"]
+    related: ["teacher-prep-knowledge-workflow", "codex-only-auto-worklog", "how-to-train-your-ai-employee", "how-ai-connects-software", "docs-as-system-design-agent", "diary-driven-agent-3x4", "what-is-loop-engineering", "tag-wiki-method", "answer-in-person-or-ai"]
   },
 
   /* ── 講師如何用知識管理流程，把備課變成可複用系統（教學）── */
@@ -1051,7 +1108,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["questionnaire-to-slides-agent-workflow", "how-to-train-your-ai-employee", "how-ai-connects-software", "docs-as-system-design-agent", "diary-driven-agent-3x4", "what-is-loop-engineering", "tag-wiki-method", "train-your-ai-agent-editor"]
+    related: ["questionnaire-to-slides-agent-workflow", "how-to-train-your-ai-employee", "how-ai-connects-software", "docs-as-system-design-agent", "diary-driven-agent-3x4", "what-is-loop-engineering", "tag-wiki-method", "train-your-ai-agent-editor", "answer-in-person-or-ai"]
   },
 
   /* ── 發佈閘門：多個 AI 改同一個網站怎麼不打架（教學）── */
