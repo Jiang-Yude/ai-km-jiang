@@ -1,0 +1,305 @@
+/* ─── 咪卡 AI 客服 Widget ─ 獨立樣式（前綴 mkw，不污染官網樣式） ───
+   色票沿用官網 styles.css 暖光系：奶油底 #fefcf8、珊瑚 #e85a4f、沙金 #a08144 */
+
+#mkw-root {
+  --mkw-bg: #fefcf8;
+  --mkw-bg-soft: #faf5ec;
+  --mkw-paper: #ffffff;
+  --mkw-ink: #1a1612;
+  --mkw-ink-soft: #3a342d;
+  --mkw-ink-faint: #6a635a;
+  --mkw-line: #e8dfc9;
+  --mkw-coral: #e85a4f;
+  --mkw-peach: #e8884b;
+  --mkw-sand: #a08144;
+  --mkw-shadow: 0 18px 44px rgba(107, 74, 42, 0.18);
+  --mkw-radius: 22px;
+  font-family: -apple-system, "PingFang TC", "Noto Sans TC", "Inter", sans-serif;
+  font-size: 18px;
+  line-height: 1.65;
+  color: var(--mkw-ink);
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 99990;
+  -webkit-font-smoothing: antialiased;
+}
+#mkw-root *, #mkw-root *::before, #mkw-root *::after { box-sizing: border-box; margin: 0; padding: 0; }
+#mkw-root button { font: inherit; color: inherit; background: none; border: none; cursor: pointer; }
+
+/* ─── 右下角召喚氣泡 ─── */
+#mkw-root .mkw-launcher {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--mkw-paper);
+  border: 1px solid var(--mkw-line);
+  border-radius: 999px;
+  padding: 8px 20px 8px 8px;
+  box-shadow: 0 8px 24px rgba(107, 74, 42, 0.16);
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+#mkw-root .mkw-launcher:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--mkw-shadow);
+}
+#mkw-root .mkw-launcher-avatar {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: var(--mkw-bg-soft) url("images/mika-avatar.png") center / cover no-repeat;
+  border: 2px solid var(--mkw-line);
+  flex: none;
+}
+#mkw-root .mkw-launcher-text {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--mkw-ink-soft);
+  white-space: nowrap;
+}
+#mkw-root .mkw-launcher-dot {
+  position: absolute;
+  top: 2px;
+  left: 46px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--mkw-coral);
+  border: 2px solid var(--mkw-paper);
+  animation: mkw-pulse 2.2s ease-in-out infinite;
+}
+@keyframes mkw-pulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.25); opacity: .7; }
+}
+
+/* ─── 聊天視窗 ─── */
+#mkw-root .mkw-panel {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 384px;
+  max-width: calc(100vw - 32px);
+  height: 560px;
+  max-height: calc(100vh - 48px);
+  max-height: calc(100dvh - 48px);
+  background: var(--mkw-bg);
+  border: 1px solid var(--mkw-line);
+  border-radius: var(--mkw-radius);
+  box-shadow: var(--mkw-shadow);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(16px) scale(.97);
+  transform-origin: bottom right;
+  pointer-events: none;
+  transition: opacity .22s ease, transform .22s ease;
+}
+#mkw-root.mkw-open .mkw-panel {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+}
+#mkw-root.mkw-open .mkw-launcher { display: none; }
+
+/* 頭部 */
+#mkw-root .mkw-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  background: linear-gradient(135deg, #fdf6ea, #f7ecd9);
+  border-bottom: 1px solid var(--mkw-line);
+  flex: none;
+}
+#mkw-root .mkw-head-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--mkw-paper) url("images/mika-avatar.png") center / cover no-repeat;
+  border: 2px solid #fff;
+  box-shadow: 0 2px 8px rgba(107, 74, 42, 0.15);
+  flex: none;
+}
+#mkw-root .mkw-head-title { font-size: 19px; font-weight: 700; line-height: 1.3; }
+#mkw-root .mkw-head-sub { font-size: 18px; color: var(--mkw-ink-faint); line-height: 1.35; }
+#mkw-root .mkw-head-actions { margin-left: auto; display: flex; gap: 4px; }
+#mkw-root .mkw-icon-btn {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  color: var(--mkw-ink-faint);
+  font-size: 20px;
+  transition: background .15s ease;
+}
+#mkw-root .mkw-icon-btn:hover { background: rgba(160, 129, 68, 0.12); color: var(--mkw-ink); }
+
+/* 訊息區 */
+#mkw-root .mkw-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 18px 16px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  scrollbar-width: thin;
+}
+#mkw-root .mkw-msg {
+  display: flex;
+  gap: 8px;
+  max-width: 88%;
+  animation: mkw-in .25s ease;
+}
+@keyframes mkw-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: none; }
+}
+#mkw-root .mkw-msg-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--mkw-paper) url("images/mika-avatar.png") center / cover no-repeat;
+  border: 1.5px solid var(--mkw-line);
+  flex: none;
+  align-self: flex-end;
+}
+#mkw-root .mkw-bubble {
+  padding: 10px 15px;
+  border-radius: 18px;
+  font-size: 18px;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+#mkw-root .mkw-msg.mkw-bot .mkw-bubble {
+  background: var(--mkw-paper);
+  border: 1px solid var(--mkw-line);
+  border-bottom-left-radius: 6px;
+  color: var(--mkw-ink-soft);
+}
+#mkw-root .mkw-msg.mkw-user {
+  align-self: flex-end;
+  flex-direction: row-reverse;
+}
+#mkw-root .mkw-msg.mkw-user .mkw-bubble {
+  background: var(--mkw-coral);
+  color: #fff;
+  border-bottom-right-radius: 6px;
+}
+#mkw-root .mkw-sources {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 10px;
+  padding-top: 8px;
+  border-top: 1px dashed var(--mkw-line);
+}
+#mkw-root .mkw-source-link {
+  font-size: 16px;
+  color: var(--mkw-sand);
+  text-decoration: none;
+  line-height: 1.5;
+}
+#mkw-root .mkw-source-link:hover { text-decoration: underline; color: var(--mkw-coral); }
+#mkw-root .mkw-typing .mkw-bubble { color: var(--mkw-ink-faint); }
+#mkw-root .mkw-typing .mkw-bubble span { animation: mkw-blink 1.2s infinite; }
+#mkw-root .mkw-typing .mkw-bubble span:nth-child(2) { animation-delay: .2s; }
+#mkw-root .mkw-typing .mkw-bubble span:nth-child(3) { animation-delay: .4s; }
+@keyframes mkw-blink { 0%,100% { opacity: .25; } 50% { opacity: 1; } }
+
+/* 快捷問題 */
+#mkw-root .mkw-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 4px 16px 10px;
+  flex: none;
+}
+#mkw-root .mkw-chip {
+  font-size: 18px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--mkw-line);
+  background: var(--mkw-paper);
+  color: var(--mkw-sand);
+  transition: background .15s ease, border-color .15s ease;
+}
+#mkw-root .mkw-chip:hover { background: #fdf6ea; border-color: var(--mkw-sand); }
+
+/* 輸入區 */
+#mkw-root .mkw-foot {
+  flex: none;
+  padding: 10px 12px 12px;
+  border-top: 1px solid var(--mkw-line);
+  background: var(--mkw-bg);
+}
+#mkw-root .mkw-input-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--mkw-paper);
+  border: 1px solid var(--mkw-line);
+  border-radius: 999px;
+  padding: 6px 6px 6px 18px;
+  transition: border-color .15s ease, box-shadow .15s ease;
+}
+#mkw-root .mkw-input-row:focus-within {
+  border-color: var(--mkw-peach);
+  box-shadow: 0 0 0 3px rgba(232, 136, 75, 0.15);
+}
+#mkw-root .mkw-input {
+  flex: 1;
+  border: none;
+  outline: none;
+  background: transparent;
+  font: inherit;
+  font-size: 18px;
+  color: var(--mkw-ink);
+  min-width: 0;
+}
+#mkw-root .mkw-input::placeholder { color: var(--mkw-ink-faint); }
+#mkw-root .mkw-send {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: var(--mkw-coral);
+  color: #fff;
+  display: grid;
+  place-items: center;
+  flex: none;
+  transition: transform .15s ease, background .15s ease;
+}
+#mkw-root .mkw-send:hover { background: #d94b40; transform: scale(1.06); }
+#mkw-root .mkw-send svg { width: 20px; height: 20px; }
+#mkw-root .mkw-note {
+  text-align: center;
+  font-size: 16px;
+  color: var(--mkw-ink-faint);
+  padding-top: 8px;
+}
+#mkw-root .mkw-limit {
+  text-align: right;
+  font-size: 16px;
+  color: var(--mkw-ink-faint);
+  padding: 6px 12px 0;
+  min-height: 0;
+  line-height: 1.5;
+}
+#mkw-root .mkw-limit-over { color: var(--mkw-coral); font-weight: 600; }
+
+/* ─── 手機版：貼齊底部的滿版視窗 ─── */
+@media (max-width: 520px) {
+  #mkw-root { right: 16px; bottom: 16px; }
+  #mkw-root .mkw-launcher-text { font-size: 17px; }
+  #mkw-root .mkw-panel {
+    position: fixed;
+    right: 8px;
+    left: 8px;
+    bottom: 8px;
+    width: auto;
+    height: min(78vh, 640px);
+    height: min(78dvh, 640px);
+  }
+}
