@@ -335,9 +335,15 @@ module.exports = async (req, res) => {
     });
     clearTimeout(timer);
     const data = await r.json();
+    // 上游錯誤要原樣帶出來（只放進 error 欄，widget 不顯示給訪客），
+    // 否則失敗時只看得到「empty reply」，查不出是模型名稱錯、金鑰無效還是參數不支援。
+    if (!r.ok || (data && data.error)) {
+      const up = (data && data.error && (data.error.message || data.error.code)) || ('HTTP ' + r.status);
+      throw new Error('upstream: ' + up);
+    }
     const reply = data && data.choices && data.choices[0] && data.choices[0].message
       ? String(data.choices[0].message.content || '').trim() : '';
-    if (!reply) throw new Error('empty reply');
+    if (!reply) throw new Error('empty reply｜finish_reason=' + (data?.choices?.[0]?.finish_reason || 'na'));
     // 疑似站外時只掛咪卡真的在文字裡提到的文章：
     // 否則會出現「站上沒有相關內容」下面卻附三個連結的自相矛盾（2026-08-08 雙軌互審後修）。
     // 顯示上限 3 篇：抽象模式餵 6 篇給模型判斷，但版面只掛 3 個連結，
