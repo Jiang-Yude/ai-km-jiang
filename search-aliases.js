@@ -3,6 +3,11 @@
    維護：新文章上稿時補一條；訪客搜尋 log 發現沒接住的問法，第一線修法＝來這裡補別名。
    key＝articles-data.js 的文章 id。 */
 window.SEARCH_ALIASES = {
+  "after-ai-says-remembered": ["AI說記住了卻沒做", "交代過的事AI又忘記", "AI每次都要重講一遍", "規則寫了AI沒讀到", "技能包沒被觸發", "觸發詞怎麼寫", "怎麼確認AI真的記住", "讓AI自己跑", "迴圈工程是什麼", "AI答對了卻沒做"],
+  "long-document-review-layers": ["長文件AI檢查", "150頁簡報AI審", "AI改十幾次還是有錯", "換一家模型才抓到", "PDF PPT要先清理", "分區塊檢查", "兩種切法", "規範版本引用錯", "標準搞混", "教材檢查AI"],
+  "before-installing-others-skill": ["別人的技能包能不能裝", "下載技能包安全嗎", "叫AI檢查安不安全", "技能包會不會有惡意程式", "裝了兩個技能包會打架嗎", "AI最近怪怪的", "技能包權限要給多少", "裝一堆技能包怎麼盤點", "如果我裝了兩個功能相近的技能包，它們會不會互相打架？", "網路上有很多人分享技能包，我可以直接下載來用嗎？"],
+  "mobile-to-desktop-publish-loop": ["手機遙控電腦", "手機叫桌機做事", "Codex手機連桌機", "掃QR code連線", "人在外面電腦自己跑", "遠端存取設定", "讓Mac維持喚醒", "發文流程自動化", "圖卡自動檢查", "哪一關不能交給AI"],
+  "three-levels-of-cross-review": ["互審要做多深", "每次都要兩個AI互審嗎", "三種互審難度", "雙軌互審怎麼跑", "只有一家模型怎麼互審", "對家沒回應怎麼辦", "互審跑幾輪要停", "互審成本", "找第二個AI挑錯"],
   "long-answer-three-layers": ["AI回答太長", "看不下去", "AI講太複雜", "請AI用白話", "白話重講", "叫AI畫流程圖", "Mermaid流程圖", "show_widget", "做成互動網頁", "好好都可以", "AI回答看不懂", "長回答怎麼看"],
   "session-messaging-reminder-layer": ["對話之間傳訊息","Claude Code多視窗","開好幾個AI視窗","AI視窗互相不知道","交接指令複製貼上","session傳訊息","兩個AI改同一個檔案","桌機筆電AI不通","Claude跟Codex不通","多視窗協作怎麼防撞"],
   "messaging-apps-ai-friendliness": ["通訊軟體選哪個","LINE跟Discord比較","AI放哪個群組","聊天軟體AI整合","Slack Agent","Telegram bot","群組軟體AI友善","哪個通訊軟體適合AI助教"],

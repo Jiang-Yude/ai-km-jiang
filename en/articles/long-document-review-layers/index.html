@@ -1,0 +1,471 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="index,follow">
+<title>The AI Revised It Ten Times and It Is Still Wrong. Now What?: Cleaning the Data Is Only the First Layer｜Coach Jiang · AI Knowledge Management</title>
+<meta name="description" content="One 150-page training deck, one model that revised it a dozen times and found nothing, another model that immediately caught a standards error. Long documents usually fail because three layers of design are missing: material, slicing, and perspective. This article opens up each layer, including a rule that pins the standard and version, two slicing methods that cover each other&#x27;s blind spots, and a fallback for when you only have one vendor.">
+<link rel="canonical" href="https://jiangyude.com/en/articles/long-document-review-layers/">
+<link rel="alternate" hreflang="zh-Hant" href="https://jiangyude.com/articles/long-document-review-layers/">
+<link rel="alternate" hreflang="en" href="https://jiangyude.com/en/articles/long-document-review-layers/">
+<link rel="alternate" hreflang="x-default" href="https://jiangyude.com/articles/long-document-review-layers/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="The AI Revised It Ten Times and It Is Still Wrong. Now What?: Cleaning the Data Is Only the First Layer｜Coach Jiang">
+<meta property="og:image" content="https://jiangyude.com/images/og/long-document-review-layers.jpg">
+<meta property="og:description" content="Material, slicing, perspective: the three layers behind long-document review, with a version-pinning rule and two slicing methods that cover each other.">
+<meta property="og:url" content="https://jiangyude.com/en/articles/long-document-review-layers/">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Coach Jiang · AI Knowledge Management">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="The AI Revised It Ten Times and It Is Still Wrong. Now What?: Cleaning the Data Is Only the First Layer｜Coach Jiang">
+<meta name="twitter:image" content="https://jiangyude.com/images/og/long-document-review-layers.jpg">
+<meta name="twitter:description" content="Material, slicing, perspective: the three layers behind long-document review, with a version-pinning rule and two slicing methods that cover each other.">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"The AI Revised It Ten Times and It Is Still Wrong. Now What?: Cleaning the Data Is Only the First Layer","description":"One 150-page training deck, one model that revised it a dozen times and found nothing, another model that immediately caught a standards error. Long documents usually fail because three layers of design are missing: material, slicing, and perspective. This article opens up each layer, including a rule that pins the standard and version, two slicing methods that cover each other's blind spots, and a fallback for when you only have one vendor.","author":{"@type":"Person","name":"Jiang Yude","alternateName":"Coach Jiang","jobTitle":"Tacit Knowledge Distiller, AI Application Planner"},"isPartOf":{"@type":"WebSite","name":"Coach Jiang · AI Knowledge Management","url":"https://jiangyude.com/en/"},"inLanguage":"en","datePublished":"2026-08-05","dateModified":"2026-08-05","image":"https://jiangyude.com/images/og/long-document-review-layers.jpg","url":"https://jiangyude.com/en/articles/long-document-review-layers/"}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{--ink:#1a1612;--paper:#fefcf8;--muted:#6a635a;--line:#d8cdb8;--green:#5f7553;--blue:#5689b8;--orange:#e85a4f;--soft:#faf5ec;--dark:#2a2018;--shadow:0 18px 45px rgba(107,74,42,.14);--sp-shadow:hsla(35,50%,60%,.15);--sp-shadow-edge:hsla(35,50%,68%,.03);--sp-radius:400px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC","Segoe UI",sans-serif}
+a{color:inherit}
+/* 官網共用導航列 nav.top（與首頁/文章總站同一條） */
+nav.top{position:sticky;top:0;background:rgba(254,252,248,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid #d8cdb8;z-index:100}
+nav.top .container{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:24px;padding:14px 32px}
+.nav-brand-img{justify-self:start;display:flex;align-items:center;text-decoration:none;flex-shrink:0;transition:opacity .2s}
+.nav-brand-img:hover{opacity:.8}.nav-brand-img img{height:40px;width:auto;display:block}
+nav.top ul.nav-menu{justify-self:end;display:flex;gap:22px;list-style:none;margin:0;padding:0;font-size:.95rem;white-space:nowrap}
+nav.top ul.nav-menu a{color:#3a342d;text-decoration:none;transition:color .2s;font-weight:500;white-space:nowrap}
+nav.top ul.nav-menu a:hover{color:#1a1612}nav.top ul.nav-menu a.active{color:#1a1612;font-weight:700}
+.nav-toggle{display:none;background:none;border:none;padding:6px;cursor:pointer;width:36px;height:36px;position:relative}
+.nav-toggle span{display:block;position:absolute;left:8px;right:8px;height:2px;background:#1a1612;border-radius:2px;transition:transform .25s,opacity .25s,top .25s}
+.nav-toggle span:nth-child(1){top:11px}.nav-toggle span:nth-child(2){top:17px}.nav-toggle span:nth-child(3){top:23px}
+.nav-toggle.open span:nth-child(1){top:17px;transform:rotate(45deg)}.nav-toggle.open span:nth-child(2){opacity:0}.nav-toggle.open span:nth-child(3){top:17px;transform:rotate(-45deg)}
+@media(max-width:860px){
+ nav.top .container{grid-template-columns:auto 1fr auto;padding:10px 16px;gap:12px}
+ .nav-brand-img img{height:32px}
+ .nav-toggle{display:block;justify-self:end}
+ nav.top ul.nav-menu{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(254,252,248,.98);backdrop-filter:blur(14px);border-bottom:1px solid #d8cdb8;flex-direction:column;gap:0;padding:8px 0;box-shadow:0 10px 24px rgba(107,74,42,.08)}
+ nav.top ul.nav-menu.open{display:flex}
+ nav.top ul.nav-menu li{border-bottom:1px solid #e8dfc9}
+ nav.top ul.nav-menu li:last-child{border-bottom:none}
+ nav.top ul.nav-menu a{display:block;padding:14px 20px;font-size:1.06rem}
+}
+/* 滑鼠暖光暈（與首頁同一支 spotlight.js） */
+body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradient(var(--sp-radius) circle at var(--mx,50%) var(--my,50%),var(--sp-shadow) 0%,var(--sp-shadow-edge) 45%,transparent 75%);pointer-events:none;z-index:9999;mix-blend-mode:multiply;transition:background .06s linear}
+.hero{position:relative;overflow:hidden;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:72px;padding:96px clamp(20px,6vw,88px) 80px;background:linear-gradient(180deg,#fffcf0 0%,#f9e9d2 100%);color:#1a1612;border-bottom:1px solid #d8cdb8}
+.hero .wc{position:absolute;border-radius:50%;filter:blur(60px);pointer-events:none;z-index:0}
+.hero .wc1{width:420px;height:360px;top:-120px;right:-80px;background:#e8884b;opacity:.15}
+.hero .wc2{width:360px;height:300px;bottom:-110px;left:-70px;background:#5f7553;opacity:.13}
+.hero .wc3{width:280px;height:260px;top:34%;left:14%;background:#a08144;opacity:.10}
+.hero>div{flex:none;width:860px;max-width:100%;position:relative;z-index:2}
+.hero-figure{margin:0;width:420px;flex:none;position:relative;z-index:2}
+.hero-figure img{display:block;width:100%;border-radius:16px;border:1px solid #d8cdb8;box-shadow:0 18px 45px rgba(107,74,42,.16);cursor:zoom-in}
+.hero-figure figcaption{margin-top:10px;font-size:14px;line-height:1.6;color:#6a635a}
+.inline-figure{margin:30px auto 8px;max-width:820px}
+.inline-figure img{display:block;width:100%;border-radius:14px;border:1px solid var(--line);box-shadow:var(--shadow);background:#fff;cursor:zoom-in}
+.inline-figure figcaption{font-size:14px;line-height:1.6;color:var(--muted);margin-top:10px}
+.lightbox{position:fixed;inset:0;z-index:10000;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(12,10,8,.92);cursor:zoom-out;backdrop-filter:blur(4px)}
+.lightbox.open{display:flex}.lightbox img{max-width:96vw;max-height:92vh;border-radius:10px;box-shadow:0 24px 60px rgba(0,0,0,.5)}
+.lightbox-close{position:fixed;top:18px;right:24px;color:#fff;font-size:34px;line-height:1;font-weight:700;cursor:pointer;opacity:.85}
+.kicker{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.55rem;color:#7a5c3a;font-weight:500}
+.hero h1{max-width:none;margin:16px 0 18px;font-size:clamp(36px,6vw,72px);line-height:1.08;overflow-wrap:anywhere}
+.hero p{max-width:none;font-size:clamp(18px,2vw,23px);line-height:1.62;color:#3a342d}
+.cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
+.cta a{display:inline-flex;align-items:center;text-decoration:none;border-radius:8px;padding:12px 16px;font-weight:900}
+.cta .primary{background:#fff;color:#1a1612}.cta .ghost{border:1px solid rgba(255,255,255,.32);color:#fff;background:rgba(255,255,255,.08)}
+.section{padding:54px clamp(20px,6vw,88px);border-top:1px solid var(--line)}
+.inner{width:min(1000px,100%);margin:0 auto}
+.section h2{font-size:clamp(26px,4.2vw,48px);line-height:1.12;margin:0 0 18px}
+.section h3{font-size:clamp(21px,3vw,30px);line-height:1.2;margin:30px 0 12px}
+.lead{font-size:clamp(18px,1.6vw,22px);line-height:1.7;color:#3a342d;max-width:900px}
+.section p{font-size:18px;line-height:1.74;color:#3a342d}.section p+p{margin-top:14px}
+.section ul,.section ol{padding-left:1.4em;font-size:18px;line-height:1.74;color:#3a342d}.section li{margin-bottom:8px}
+.meaning{margin:22px 0;padding:16px 18px;border-left:5px solid var(--blue);background:rgba(86,137,184,.12);border-radius:6px;line-height:1.7;font-size:19px}
+.meaning b{display:block;color:var(--blue);margin-bottom:4px}
+.caveat{margin:0 0 8px;padding:16px 18px;border-left:5px solid var(--orange);background:rgba(232,90,79,.1);border-radius:6px;line-height:1.7;font-size:18px;color:#3a342d}
+.caveat b{display:block;color:var(--orange);margin-bottom:4px}
+.infocard{background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px 24px 22px;box-shadow:0 8px 22px rgba(107,74,42,.08);margin-top:8px}
+.infocard-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.info-item{padding:18px 14px 0}
+.info-item b{display:block;font-size:14px;font-weight:900;letter-spacing:.04em;margin-bottom:7px;text-transform:uppercase}
+.info-item:nth-child(1) b{color:var(--green)}.info-item:nth-child(2) b{color:var(--orange)}.info-item:nth-child(3) b{color:var(--blue)}
+.info-item p{margin:0;font-size:17px;line-height:1.6;color:#3a342d}
+.tagrow{display:flex;flex-wrap:wrap;gap:7px;margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
+.tag{font-size:14px;color:var(--muted);background:var(--soft);border:1px solid var(--line);border-radius:999px;padding:4px 11px}
+.duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:24px}
+.duo.stack{grid-template-columns:1fr}
+.duo .card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:22px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.duo .card.a{border-color:var(--orange)}.duo .card.b{border-color:var(--green);box-shadow:0 8px 24px rgba(95,117,83,.16)}
+.duo .card small{display:block;font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.04em;margin-bottom:9px}
+.duo .card.a small{color:var(--orange)}.duo .card.b small{color:var(--green)}
+.duo .card b{display:block;font-size:22px;line-height:1.3;margin-bottom:12px}.duo .card.a b{color:#c0512f}.duo .card.b b{color:#4a7a59}
+.duo .card p{margin:0;color:#3a342d;line-height:1.75;font-size:18px}
+.workflow-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:24px}
+.workflow-step{background:#fff;border:1px solid var(--line);border-radius:8px;padding:18px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.workflow-step small{display:block;color:var(--orange);font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;margin-bottom:9px}
+.workflow-step b{display:block;font-size:18px;line-height:1.3;margin-bottom:9px}
+.workflow-step p{margin:0;color:#3a342d;line-height:1.6;font-size:16px}
+.codeblock{background:var(--dark);color:#f3ead9;border-radius:8px;padding:18px 20px;font:500 14px/1.65 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;overflow-x:auto;white-space:pre-wrap;margin:20px 0;box-shadow:0 8px 22px rgba(107,74,42,.12)}
+.codeblock .c{color:#f6d7a6;font-weight:600}
+.skillcard{background:#fff;border:1px solid var(--green);border-radius:12px;padding:24px;box-shadow:0 10px 26px rgba(95,117,83,.16);margin-top:8px}
+.skillcard b{display:block;font-size:21px;margin-bottom:8px}
+.skillcard p{margin:0 0 16px;font-size:17px;line-height:1.65;color:#3a342d}
+.cta-band{background:#e6f0e5;color:#3a342d}.cta-band .section{border-top:none}
+.cta-band .inner{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(260px,.85fr);gap:26px;align-items:start}
+.cta-band h2{font-size:clamp(26px,4vw,44px);margin:0 0 16px}.cta-band p,.cta-band .lead{color:rgba(58,52,45,.9);font-size:18px;line-height:1.72}
+.cta-card{border:1px solid #cfe0d2;background:#fbfdfa;border-radius:8px;padding:22px}
+.cta-card b{display:block;color:#48b178;margin-bottom:10px;font-size:18px}.cta-card p{margin:0 0 14px}
+.footer{padding:30px clamp(20px,6vw,88px);font-size:14px;color:var(--muted);background:#fff;border-top:1px solid var(--line)}
+.footer-inner{width:min(1000px,100%);margin:0 auto}
+.footer-links{display:flex;flex-wrap:wrap;gap:6px 12px;margin-bottom:14px}.footer-links a{color:var(--blue);font-weight:900;text-decoration:none;font-size:14px}
+.footer-brand{font-weight:900;font-size:15px;margin-bottom:10px}.footer-note{font-size:13px;line-height:1.6}
+@media(max-width:820px){.infocard-grid{grid-template-columns:1fr}.duo{grid-template-columns:1fr}.workflow-grid{grid-template-columns:1fr}.cta-band .inner{grid-template-columns:1fr}.section{padding:40px 20px}.hero{min-height:52vh;flex-direction:column;justify-content:flex-start;align-items:flex-start;gap:24px}.hero>div{width:100%}.hero-figure{width:100%;max-width:560px}}
+@media(max-width:820px){html,body{overflow-x:hidden}.hero h1{word-break:break-word}}
+.codeblock{position:relative}
+.copy-btn{position:absolute;top:10px;right:10px;padding:5px 12px;border:1px solid rgba(243,234,217,.35);border-radius:6px;background:rgba(243,234,217,.1);color:#f3ead9;font:700 13px/1.2 -apple-system,"PingFang TC",sans-serif;cursor:pointer;transition:background .2s}
+.copy-btn:hover{background:rgba(243,234,217,.22)}
+.copy-btn.done{background:#5f7553;border-color:#5f7553;color:#fff}
+@media(max-width:820px){.copy-btn{position:static;display:block;margin:0 0 12px auto}}
+.said{margin:26px 0;padding:20px 24px;border-left:5px solid var(--green);border-radius:0 10px 10px 0;background:#f3f6f1;color:#2f3a2a;font-size:clamp(19px,1.9vw,23px);line-height:1.68;font-weight:560}
+.said cite{display:block;margin-top:10px;color:var(--muted);font-size:14px;font-style:normal;font-weight:700;letter-spacing:.02em}
+.said cite::before{content:"— "}
+/* 四欄卡片（文章模板原本只有 .duo 與 .workflow-grid，這裡補上） */
+.grid-4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-top:24px}
+.grid-4 .card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:20px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.grid-4 .card.sage{border-color:var(--green)}
+.grid-4 .card.brick{border-color:var(--orange)}
+.grid-4 .card.paper{background:var(--soft)}
+.grid-4 .card .index{display:block;font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--muted);letter-spacing:.04em;margin-bottom:9px}
+.grid-4 .card h3{font-size:19px;line-height:1.3;margin:0 0 8px}
+.grid-4 .card p{margin:0;font-size:16px;line-height:1.62;color:#3a342d}
+/* 關鍵字格 */
+.keyword-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:24px}
+.keyword{background:#fff;border:1px solid var(--line);border-left:4px solid var(--orange);border-radius:10px;padding:18px 20px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.keyword strong{display:block;font-size:19px;line-height:1.35;margin-bottom:8px;color:#c0512f}
+.keyword p{margin:0;font-size:16px;line-height:1.62;color:#3a342d}
+nav.top ul.nav-menu li.lang-switch a{font-weight:800;letter-spacing:.06em}
+@media(max-width:820px){.grid-4{grid-template-columns:1fr}.keyword-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body class="spotlight">
+<nav class="top">
+  <div class="container">
+    <a class="nav-brand-img" href="../../../index.html"><img src="../../../images/footer-signature.png" alt="Coach Jiang | Jiang Yude"></a>
+    <button class="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
+    <ul class="nav-menu">
+      <li><a href="../../index.html">Home</a></li>
+      <li><a href="../../knowledge-architecture.html">Knowledge Architecture</a></li>
+      <li><a href="../../courses.html">Courses</a></li>
+      <li><a href="../../articles.html" class="active">Articles</a></li>
+      <li><a href="../../skills.html">Skill Packages</a></li>
+      <li><a href="../../offers.html">Services</a></li>
+      <li class="lang-switch"><a href="../../../articles/long-document-review-layers/index.html" hreflang="zh-Hant">中文</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="wc wc1"></div>
+  <div class="wc wc2"></div>
+  <div class="wc wc3"></div>
+  <div>
+    <div class="kicker">AI Application / Document Review</div>
+    <h1>The AI Revised It Ten Times and It Is Still Wrong. Now What?: Cleaning the Data Is Only the First Layer</h1>
+    <p>Same material, same model, same question: the tenth run usually differs from the second only in wording. What you need to change is the layer, not the number of tries.</p>
+  </div>
+</section>
+
+<main>
+<section class="section" id="start">
+  <div class="inner">
+    <h2>What this article covers</h2>
+    <p class="lead">A participant at the talk asked a very good question. He had made a 150-page training deck at work, first using one model to check the content, structure and chapter order repeatedly, revising it more than ten times until he thought it was close. Then he had another model review it once, and it turned up a standards error in the content that the first model had missed even with deep thinking switched on. He later traced it to the difference between two international standards.</p>
+
+    <div class="said">"Both models I used were new, I used deep thinking, and I did it over ten times, and there were still differences. So this should prove you cannot trust just one company's AI, or rather, each company's capabilities and emphases may differ."<cite>Participant question at the talk, 2026-08-02</cite></div>
+
+    <p>He did it more than ten times, both on the latest models, both with deep thinking on, and there was still a gap. Judging by this case, the problem looks more like the design of material, instructions and mechanism than something a stronger model would fix. Though one case cannot completely rule out model capability either.</p>
+    <p>My reading is this: when long documents go wrong, it is usually because three layers of design were never done, and most people only did the first, sometimes not even that. This article opens up all three, and gives you one passage of prompting that works better than "run it again".</p>
+
+    <div class="duo stack">
+      <div class="card a">
+        <b>Who this is for</b>
+        <ul>
+          <li>People who need an AI to check long documents: training materials, reports, standards, contracts, tenders</li>
+          <li>People who have already switched models and turned on deep thinking and still do not feel confident</li>
+          <li>People who want to turn a one-off check into a workflow they can reuse next time</li>
+        </ul>
+      </div>
+      <div class="card b">
+        <b>What you can take away</b>
+        <ul>
+          <li>The order of the three checking layers and the criteria for each</li>
+          <li>How two slicing methods cover each other, and why one is not enough</li>
+          <li>A copy-ready prompt for discussing with the AI why it got something wrong</li>
+        </ul>
+      </div>
+    </div>
+    <div class="meaning"><b>Sections five and seven are not limited to long documents</b>Anyone who goes back and forth with an AI on revisions can use them.</div>
+  </div>
+</section>
+
+<section class="section" id="why-rerun-fails">
+  <div class="inner">
+    <h2>1. Why running it ten more times does not help</h2>
+    <p>An uncomfortable fact first: with the same material, the same model and the same question, the tenth run usually does not differ from the second in any meaningful way. The wording will differ each time, and occasionally it will catch one or two extra things, but a blind spot at a given layer does not disappear because you ran it more times. There are three reasons, and they sit at different layers.</p>
+    <div class="workflow-grid">
+      <div class="workflow-step"><small>Layer one</small><b>Material</b><p>What the AI reads is not what you see. This is what data cleaning solves.</p></div>
+      <div class="workflow-step"><small>Layer two</small><b>Slicing</b><p>Read too much at once and it skips. This is what chunking solves.</p></div>
+      <div class="workflow-step"><small>Layer three</small><b>Perspective</b><p>The same model carries the same set of preferences. What it considered right, it still considers right on review. This is what switching vendors solves.</p></div>
+    </div>
+    <p>Running it again just circles inside the same layer. Ten runs later, the material is still that hard-to-read material, the slicing is still that swallow-it-whole slicing, and the perspective is still the same perspective.</p>
+    <div class="caveat"><b>The order matters</b>First make the material something it can read, then decide how to slice it, and only then find a second perspective. Skip the first two layers and go straight to a second vendor, and all you get is two check reports built on the same misreading.</div>
+  </div>
+</section>
+
+<section class="section" id="layer-material">
+  <div class="inner">
+    <h2>2. Layer one, material: confirm what it reads matches what you see</h2>
+    <p>There are already two articles on the site covering this layer thoroughly, so here are the links:</p>
+    <ul>
+      <li><a href="../why-split-data-into-cards/">Why Split Data into Cards? From PDF Readability to Card-Based AI Retrieval</a>: why PDF and PPT are print formats made for humans while an AI reads coordinates and code, and how to break them up. For how a 150-page deck actually gets converted, read this one.</li>
+      <li><a href="../ai-data-organization-usable-system/">How to organize data in the AI era and turn files into usable systems</a>: what to do after cleaning, to organise it into a system both people and AI can work with.</li>
+    </ul>
+    <p>So rather than repeat that, here are three points that bear directly on <b>reviewing</b>.</p>
+
+    <h3>Serious standards material gets cleaned first</h3>
+    <p>Training materials, regulations, standards, contracts: get one version number or one standard code wrong and the whole conclusion goes with it, and it goes wrong in a way that looks right. For this kind of content I always suggest converting to a plain-text Markdown file first, pulling the chapter structure and a content index out together, and then handing it to the AI. What comes out is a searchable copy for the AI to read, and the original has to be kept: tables, text inside images and footnotes are the things most likely to be lost in conversion, which is why the sampling check below goes back to the original to compare.</p>
+    <div class="said">"Of the cases I have seen where documents produce a lot of hallucination, 90% of people see enormous improvement after cleaning the data."<cite>Live at the talk, 2026-08-02</cite></div>
+
+    <h3>Do one sampling check after cleaning</h3>
+    <p>Do not start reviewing the moment cleaning finishes. Pick three to five spots at random and compare them against the original: did a table skip a row, did a footnote get swallowed, did the text inside an image vanish entirely. Five minutes here saves ten wasted runs later.</p>
+
+    <h3>Make "where it came from" part of the rule</h3>
+    <p>This is what the participant's case suggested to me: since what was wrong was the standard version, then require it to cite sources in the checking rule.</p>
+    <div class="codeblock">Wherever you mention a standard, a specification, a statute or a version number,
+add after the sentence: which document it came from, which chapter or section, which version.
+
+Anywhere you cannot find a source in the original material, do not write it as a statement of fact.
+Change it to "this point has no clear basis in the material" and list it for me.</div>
+    <p>What this does is turn things it says smoothly into things it must produce evidence for. Claims without a source surface by themselves.</p>
+    <p>But this does not stop the error in the case at the top. That participant's deck had two international standards mixed up. Both standards genuinely exist and both are citable, so when it cited the wrong one it could still show you a source, and it looked entirely reasonable. To stop that kind of error, the rule needs one more layer: specify which standard and which version this document is subject to, and then require it to compare every citation against that line.</p>
+    <div class="codeblock">The standard this document is subject to is: {your standard name and version, e.g. XXX Standard 2023 edition}.
+
+Every time you cite a standard, compare it against the line above first:
+1. Matches → write it as normal, with the chapter cited afterwards
+2. Does not match (cites another standard or another version) → mark it [VERSION MISMATCH] and list it
+3. The material does not state which one applies → mark it [VERSION TO CONFIRM]. Do not pick one yourself
+
+At the end, give me one list: which places are [VERSION MISMATCH] and which are [VERSION TO CONFIRM].</div>
+    <p>The key to this layer is the third case. Most standards errors are not invented out of thin air. They are the wrong choice between two things that both hold, and when it chooses, it does not tell you it made a choice. What you have to do is turn "choosing" into an action it must report.</p>
+  </div>
+</section>
+
+<section class="section" id="layer-slicing">
+  <div class="inner">
+    <h2>3. Layer two, slicing, and not just one way</h2>
+    <p>The problem at layer two is that when it reads too much at once, it starts skimming.</p>
+    <p>Throw a hundred-plus pages in whole and the beginning reads clearly, but by the later parts it starts skipping. So chunk it. The real key is the next sentence: do not chunk it the same way twice.</p>
+    <div class="said">"Next time ask it to try checking in chunks, to avoid blowing up the context. Chunk it, and do not use the same way of chunking, use two or three different ways, and that basically makes things much better."<cite>Live at the talk, 2026-08-02</cite></div>
+    <div class="duo">
+      <div class="card a">
+        <b>Slice one: by chapter</b>
+        <p>Ten chapters means ten passes, one analysis per chapter, then one big consolidation of the ten results at the end.</p>
+        <p><b>Blind spot</b>: cross-chapter contradictions are invisible, for example chapter two and chapter eight describing the same thing differently.</p>
+      </div>
+      <div class="card b">
+        <b>Slice two: by theme</b>
+        <p>First have it group the ten chapters into five themes, then run one pass per theme.</p>
+        <p><b>Blind spot</b>: ordering problems inside a chapter are invisible, for example a build-up from simple to complex that has been broken.</p>
+      </div>
+    </div>
+    <p>The two slicing methods cover different areas, and only overlapping them gives you coverage. This is what "use two or more different ways of chunking" actually means. It does not mean running the same slicing twice.</p>
+    <div class="codeblock">Round one: this document has {chapter count} chapters. Analyse one chapter at a time,
+report problems for each chapter separately, then do one cross-chapter consolidation.
+
+Round two: first regroup these chapters into {theme count} themes,
+tell me how you grouped them, then analyse once per theme.
+
+If the two rounds conflict, list the conflicts. Do not pick one yourself.</div>
+    <div class="caveat"><b>That last line matters most</b>If you do not tell it to list conflicts, it will pick one for you, and you will never know it chose.</div>
+  </div>
+</section>
+
+<section class="section" id="layer-perspective">
+  <div class="inner">
+    <h2>4. Layer three, perspective: have both vendors run once, then cross them</h2>
+    <p>Layer three is where you actually switch models.</p>
+    <div class="said">"Have it check chapter by chapter, then cross-multiply with Claude, cross-multiply with GPT, then cross the Claude and GPT results with each other, and that basically makes problems very unlikely."<cite>Live at the talk, 2026-08-02</cite></div>
+    <p>The method: run each slicing method through both vendors once, then cross the two sets of results. That leaves you with four sets of results, and what survives the crossing as disagreement is usually where a human genuinely needs to judge.</p>
+    <p>That participant's experience is the proof of this layer: both models on the latest version, both with deep thinking, more than ten repetitions, and still a gap.</p>
+    <p>My own addition: different models have different weightings, so they have different blind spots. This is not a question of which is stronger. It is that they care about different things.</p>
+    <div class="caveat"><b>What if you only have one vendor</b>Plenty of environments have this constraint: the company only bought one, security policy only allows a specific service. Layer three is out of reach there, but there is still a substitute: with the same model, open two clean new conversations, run one with a "slice by chapter" role setup and one with a "slice by theme, only flag contradictions" role setup, then hand both sets of results to a third conversation to compare. To be honest, this is weaker than crossing vendors, because both sides still share the same preferences. It catches omissions but not a bias the model holds consistently. Treat it as reinforcement, not an equivalent substitute.</div>
+    <div class="caveat"><b>Would three vendors be safer</b>I did the arithmetic and gave up. If every vendor has to review every other vendor, A reviews B then C, B reviews A then C, C reviews A and B, and then you run the whole thing again, the workload multiplies several times over and the time is not there either. In my experience two vendors crossing each other handle the large majority of problems. That is a judgement from experience, not a statistic.</div>
+  </div>
+</section>
+
+<section class="section" id="discuss-mechanism">
+  <div class="inner">
+    <h2>5. More effective than one more run: discuss why it got it wrong</h2>
+    <p>This is the step I think most people miss.</p>
+    <p>After finding an error, most people's reaction is "check it again". But the error has already happened, and running it again is just another roll of the dice. What works better is discussing the thing itself with it directly.</p>
+    <p>What I read out in class was this passage:</p>
+    <div class="codeblock">Why did you produce incorrect information about the standard? How do we make sure the information is correct?
+
+Suppose I am willing to spend more time and more money, to have you re-check a second time,
+or verify from a different angle on a second pass, and cross-check with another AI on a third.
+I also have two model setups I can combine.
+
+Would you work with me to design a review mechanism, a debugging mechanism,
+or an information-tracking mechanism, to make sure everything is correct?</div>
+    <p>This passage does two things.</p>
+    <ol>
+      <li><b>It moves the problem up a layer</b>: from "this one was wrong" to "we need to design a process that does not go wrong again". What you get back is not one correction. It is a checking design you can keep.</li>
+      <li><b>It draws out limits it knows about but will not mention unless asked</b>: which section it was not actually confident about, which comparison it cannot do, which content needs external data to verify.</li>
+    </ol>
+  </div>
+</section>
+
+<section class="section" id="three-sources">
+  <div class="inner">
+    <h2>6. Three sources of error: work out which one this is first</h2>
+    <p>After the discussion you will need to decide which kind of problem this is, because all three are handled completely differently.</p>
+    <div class="said">"Some things are because we did not word the instruction well, some things are because we did not set the mechanism up properly, and some things may be beyond the current ceiling of the model's ability."<cite>Live at the talk, 2026-08-02</cite></div>
+    <div class="workflow-grid">
+      <div class="workflow-step"><small>Source 01</small><b>Instruction not worded well</b><p>Sign: it is doing something different from what you wanted, but doing it earnestly.<br>Fix: write the criteria, scope and output format clearly.</p></div>
+      <div class="workflow-step"><small>Source 02</small><b>Mechanism not set up</b><p>Sign: it got this one right, but misses the same thing next time.<br>Fix: write the checkpoints, the order and the stop condition into a rule.</p></div>
+      <div class="workflow-step"><small>Source 03</small><b>Beyond the model's ceiling</b><p>Sign: switching model, slicing and phrasing all produce the same error.<br>Fix: have a human review this part, or use external data that can be verified.</p></div>
+    </div>
+    <p>That participant's 150-page deck does not look like it exceeded the model's reading range, so I judge it as falling into the first two, a problem of instruction and mechanism. One thing to add: page count does not convert directly into how much a model can take in. What actually matters is the volume of text and the formatting after cleaning, so this is a judgement about this case, not a general rule.</p>
+    <div class="meaning"><b>Getting this wrong wastes work</b>Switch to a stronger model for a mechanism problem and even the most expensive one still misses it. Keep rewriting the instruction for a capability problem and you can rewrite until dawn without getting anywhere.</div>
+  </div>
+</section>
+
+<section class="section" id="stop-rule">
+  <div class="inner">
+    <h2>7. How many rounds before you stop</h2>
+    <p>Easier to miss than "how to review" is this: how many revisions before you stop.</p>
+    <p>If you only tell it "revise according to my standard" with no upper limit, it will keep revising until it thinks the result is good. That usually goes one of two ways: the bill keeps climbing, or the result drifts further off.</p>
+    <p>My work is mainly document analysis and reasoning, and my rule of thumb is two to three rounds. One round here means:</p>
+    <ul>
+      <li>Round one: A reviews B, and B reviews A</li>
+      <li>Round two: A revises once following B's suggestions, B revises once following A's, and then they review each other again</li>
+    </ul>
+    <div class="said">"What is clean after two or three rounds is clean, and what has a problem does not get better either... if two rounds have not solved it, do not sit there, because ten rounds or a hundred rounds are not going to solve it."<cite>Live at the talk, 2026-08-02</cite></div>
+    <p>There is a simple way to judge that it is time to stop: when the same problem sticks in the same place two or three times in a row, stop and report. Do not keep running.</p>
+    <p>After stopping, what you do is go back and look at what the rule left out. Usually it is one of these three:</p>
+    <ol>
+      <li><b>No definition of the criterion</b>: you never said what "correct" means.</li>
+      <li><b>No rule for exceptions</b>: you never said what to do when a situation is not covered.</li>
+      <li><b>No requirement for sources</b>: you never asked it to show why something is right.</li>
+    </ol>
+  </div>
+</section>
+
+<section class="section" id="into-loop">
+  <div class="inner">
+    <h2>8. Last step: turn this into a process it runs on its own</h2>
+    <p>At this point you have a complete checking design: cleaning and sampling, two slicing methods, two vendors crossing, discussing the mechanism, judging the three sources, stop conditions.</p>
+    <p>All of that is still "you walking it through each time". The last step is handing it over.</p>
+    <p>Judging the moment is simple: when you find this standard has run once or twice with no problems, you can tell it:</p>
+    <div class="said">"You know my standard, you should let yourself run it. I want you to be able to review and run to this standard yourself next time, when I am not beside you. That is what loop engineering means."<cite>Live at the talk, 2026-08-02</cite></div>
+    <p>If it can, that is loop engineering. When it cannot, it is usually because it does not know what to do when something is wrong. So go back and add "how to notice it went wrong, how to fix it, when to stop" to the rule.</p>
+    <p>What that participant said at the end of the class stuck with me: once it is confirmed OK, turn it into a skill package. That order is right. Get the process running smoothly first, then save the smooth process, rather than trying to build a perfect skill package from the start.</p>
+  </div>
+</section>
+
+<section class="section" id="start-here">
+  <div class="inner">
+    <h2>How you can start</h2>
+    <div class="workflow-grid">
+      <div class="workflow-step">
+        <small>Today</small>
+        <b>Sample-check your cleaning results</b>
+        <p>Take the document the AI most often misreads, pick three spots at random and compare them against the original. You will find out quickly whether the problem is in the material or the analysis.</p>
+      </div>
+      <div class="workflow-step">
+        <small>This week</small>
+        <b>Run both slicing methods once</b>
+        <p>Run the same document by chapter and by theme, and list the conflicts between them. Do not have it choose for you. The conflict list is itself the value.</p>
+      </div>
+      <div class="workflow-step">
+        <small>After those two</small>
+        <b>Write sources and stop conditions into the rule</b>
+        <p>Then open a new conversation, say only the sentence you would normally say, and test whether it starts up on its own.</p>
+      </div>
+    </div>
+    <p>None of the three steps needs programming. What you need is to state clearly what you check every single time, and that is something only you can do.</p>
+
+    <h3>Three related articles</h3>
+    <ul>
+      <li><a href="../after-ai-says-remembered/">Why Does the AI Keep Forgetting What I Told It?: From "I'll Remember That" to Letting It Run Itself</a>: how to confirm the checking rule really was remembered and really gets triggered.</li>
+      <li><a href="../three-levels-of-cross-review/">How Do You Design Mutual Review Between Two AIs?: Three Levels of Review Mechanism</a>: once layer three is in place, how deep the mutual review should go and how to word the prompt.</li>
+      <li><a href="../why-split-data-into-cards/">Why Split Data into Cards? From PDF Readability to Card-Based AI Retrieval</a>: the full method for layer one, how the material gets cleaned.</li>
+    </ul>
+
+    <div class="tagrow">
+      <span class="tag">AI Workflow</span><span class="tag">Cross-Vendor Review</span><span class="tag">Data Organisation</span><span class="tag">Knowledge Management</span><span class="tag">Foundational</span><span class="tag">Published 2026-08-05</span>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">Coach Jiang · AI Knowledge Management</div>
+    <div class="footer-links">
+      <a href="../../articles.html">← Back to the Articles Hub</a>
+      <a href="../../../index.html">Home</a>
+      <a href="../../../learn.html">Self-Study Resources</a>
+      <a href="../../../skills.html">Skills Download</a>
+      <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">LINE Community ↗</a>
+      <a href="https://www.threads.com/@jiang_yude_coach" target="_blank" rel="noopener">Threads ↗</a>
+      <a href="https://vocus.cc/salon/Jiang_Coach" target="_blank" rel="noopener">Vocus ↗</a>
+    </div>
+    <div class="footer-note">This is a teaching article documenting my own approach to "The AI Revised It Ten Times and It Is Still Wrong. Now What?: Cleaning the Data Is Only the First Layer," shared for your reference.</div>
+  </div>
+</footer>
+
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <span class="lightbox-close" aria-label="Close">×</span>
+  <img id="lightbox-img" src="" alt="Enlarge view">
+</div>
+<script>
+(function(){
+  var box=document.getElementById('lightbox'),boxImg=document.getElementById('lightbox-img');
+  document.querySelectorAll('.hero-figure img,.inline-figure img').forEach(function(img){
+    img.addEventListener('click',function(){boxImg.src=img.currentSrc||img.src;boxImg.alt=img.alt||'Enlarge view';box.classList.add('open');box.setAttribute('aria-hidden','false');});
+  });
+  function close(){box.classList.remove('open');box.setAttribute('aria-hidden','true');boxImg.src='';}
+  box.addEventListener('click',close);
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
+})();
+</script>
+
+<script src="../../../image-interactions.js"></script>
+
+<script>
+(function(){
+  document.querySelectorAll('.codeblock').forEach(function(box){
+    var btn=document.createElement('button');
+    btn.type='button'; btn.className='copy-btn'; btn.textContent='Copy';
+    btn.addEventListener('click',function(){
+      var t=box.cloneNode(true); var b=t.querySelector('.copy-btn'); if(b) b.remove();
+      navigator.clipboard.writeText(t.textContent.trim()).then(function(){
+        btn.textContent='Copied'; btn.classList.add('done');
+        setTimeout(function(){btn.textContent='Copy'; btn.classList.remove('done');},1800);
+      });
+    });
+    box.prepend(btn);
+  });
+})();
+</script>
+<!-- 官網共用：滑鼠暖光暈 + 導航列漢堡Menu -->
+<script src="../../../spotlight.js"></script>
+
+<!-- 文章自動互聯（相關文章）：兩支已內建，順序不可顛倒，不用再另外加 -->
+<script src="../../../articles-data.js"></script>
+<script src="../../../related-render.js"></script>
+</body>
+</html>

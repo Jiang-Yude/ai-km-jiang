@@ -4,11 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="index,follow">
-<title>互審要做多深：三種難度與怎麼選｜江江教練 · AI 知識管理</title>
+<title>怎麼設計讓兩個 AI 互審？：三種不同程度的審查機制設計｜江江教練 · AI 知識管理</title>
 <meta name="description" content="找第二個 AI 挑錯有三種深度：只審結果、雙軌後併回、完整雙軌互審。多數人只用第一種，而它剛好抓不到最貴的那種錯。這篇給三種難度的可複製指令、選擇判準、成本、停止條件、斷線備援，以及只能用一家模型時的替代做法。">
 <link rel="canonical" href="https://jiangyude.com/articles/three-levels-of-cross-review/">
 <meta property="og:type" content="article">
-<meta property="og:title" content="互審要做多深：三種難度與怎麼選｜江江教練">
+<meta property="og:title" content="怎麼設計讓兩個 AI 互審？：三種不同程度的審查機制設計｜江江教練">
 <!-- 分享封面：hero 文字填好後在 repo 根目錄跑 `node scripts/og-shot.mjs three-levels-of-cross-review` 自動截 1200×630 到 images/og/three-levels-of-cross-review.jpg（見 README「文章分享封面（OG 圖）機制」）。別退回 intro-jiang.png 直式人像，會被裁成只剩脖子。 -->
 <meta property="og:image" content="https://jiangyude.com/images/og/three-levels-of-cross-review.jpg">
 <meta property="og:description" content="找第二個 AI 挑錯有三種深度：只審結果、雙軌後併回、完整雙軌互審。多數人只用第一種，而它剛好抓不到最貴的那種錯。這篇給三種難度的可複製指令、選擇判準、成本、停止條件、斷線備援，以及只能用一家模型時的替代做法。">
@@ -16,10 +16,10 @@
 <meta property="og:locale" content="zh_TW">
 <meta property="og:site_name" content="江江教練 · AI 知識管理">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="互審要做多深：三種難度與怎麼選｜江江教練">
+<meta name="twitter:title" content="怎麼設計讓兩個 AI 互審？：三種不同程度的審查機制設計｜江江教練">
 <meta name="twitter:image" content="https://jiangyude.com/images/og/three-levels-of-cross-review.jpg">
 <meta name="twitter:description" content="找第二個 AI 挑錯有三種深度：只審結果、雙軌後併回、完整雙軌互審。多數人只用第一種，而它剛好抓不到最貴的那種錯。這篇給三種難度的可複製指令、選擇判準、成本、停止條件、斷線備援，以及只能用一家模型時的替代做法。">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"互審要做多深：三種難度與怎麼選","description":"找第二個 AI 挑錯有三種深度：只審結果、雙軌後併回、完整雙軌互審。多數人只用第一種，而它剛好抓不到最貴的那種錯。這篇給三種難度的可複製指令、選擇判準、成本、停止條件、斷線備援，以及只能用一家模型時的替代做法。","author":{"@type":"Person","name":"江昱德","alternateName":"江江教練","jobTitle":"隱性知識提煉師、AI 應用規劃師"},"isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://jiangyude.com/"},"inLanguage":"zh-Hant","url":"https://jiangyude.com/articles/three-levels-of-cross-review/"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"怎麼設計讓兩個 AI 互審？：三種不同程度的審查機制設計","description":"找第二個 AI 挑錯有三種深度：只審結果、雙軌後併回、完整雙軌互審。多數人只用第一種，而它剛好抓不到最貴的那種錯。這篇給三種難度的可複製指令、選擇判準、成本、停止條件、斷線備援，以及只能用一家模型時的替代做法。","author":{"@type":"Person","name":"江昱德","alternateName":"江江教練","jobTitle":"隱性知識提煉師、AI 應用規劃師"},"isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://jiangyude.com/"},"inLanguage":"zh-Hant","url":"https://jiangyude.com/articles/three-levels-of-cross-review/"}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
@@ -159,7 +159,7 @@ nav.top ul.nav-menu li.lang-switch a{font-weight:800;letter-spacing:.06em}
       <li><a href="../../articles.html" class="active">深度文章</a></li>
       <li><a href="../../skills.html">技能包下載</a></li>
       <li><a href="../../offers.html">服務方案</a></li>
-      <li class="lang-switch"><a href="../../en/articles.html" hreflang="en">EN</a></li>
+      <li class="lang-switch"><a href="../../en/articles/three-levels-of-cross-review/index.html" hreflang="en">EN</a></li>
     </ul>
   </div>
 </nav>
@@ -170,7 +170,7 @@ nav.top ul.nav-menu li.lang-switch a{font-weight:800;letter-spacing:.06em}
   <div class="wc wc3"></div>
   <div>
     <div class="kicker">AI 應用 / 跨家審稿</div>
-    <h1>互審要做多深：三種難度與怎麼選</h1>
+    <h1>怎麼設計讓兩個 AI 互審？：三種不同程度的審查機制設計</h1>
     <p>多數人只知道第一種深度，而第一種剛好抓不到最貴的那種錯：一開始就走錯路。</p>
   </div>
 </section>
@@ -202,7 +202,7 @@ nav.top ul.nav-menu li.lang-switch a{font-weight:800;letter-spacing:.06em}
       </div>
     </div>
 
-    <div class="meaning"><b>跟另一篇的分工</b>「為什麼要互審」「怎麼確認 AI 真的記住規則」在 <a href="../after-ai-says-remembered/">AI 說「我記住了」之後，我會問七個問題</a> 講過了。這篇不重複概念，只講深度怎麼選、指令怎麼下。</div>
+    <div class="meaning"><b>跟另一篇的分工</b>「為什麼要互審」「怎麼確認 AI 真的記住規則」在 <a href="../after-ai-says-remembered/">交代過的事 AI 為什麼老是忘記？：從『我記住了』到讓 AI 自己跑</a> 講過了。這篇不重複概念，只講深度怎麼選、指令怎麼下。</div>
   </div>
 </section>
 
@@ -305,7 +305,7 @@ B 完成之後，把 B 的成果貼回 A，跟 A 說：
     <div class="caveat"><b>老實說</b>我沒有精確計量過每一種的實際用量，只能給你相對關係。實用的判斷是：日常用難度一、重要決策才用難度三，這比精算數字有用。</div>
     <p><b>那三家會不會更保險？</b>我算過就沒有做：</p>
     <div class="said">「A 要審 B 再審 C，B 要審 A 再審 C，C 要審 A 審 B，然後再重跑一遍。哇，這太容易爆炸了，不是很建議這麼做，太耗時耗力了。這兩家互審，90% 的問題真的都可以處理掉。」<cite>2026-08-02 講座現場</cite></div>
-    <p>如果要每一家都審過每一家，工作量會往上翻好幾倍，時間也耗不起。以我的經驗，兩家已經能處理掉絕大多數問題，第三家換來的那一點邊際效益通常不值得。這是經驗判斷，不是統計數字。</p>
+    <p>如果要每一家都審過每一家，工作量會往上翻好幾倍，時間也耗不起。以我的經驗，兩家已經能處理掉絕大多數問題，第三家換來的那一點邊際效益通常不值得。這裡的 90% 是現場口語估算與經驗判斷，不是統計數字。</p>
   </div>
 </section>
 
@@ -405,9 +405,9 @@ B 完成之後，把 B 的成果貼回 A，跟 A 說：
 
     <h3>相關的三篇</h3>
     <ul>
-      <li><a href="../after-ai-says-remembered/">AI 說「我記住了」之後，我會問七個問題</a>：互審的上一步，怎麼確認規則真的被記住、被啟動。</li>
-      <li><a href="../long-document-review-layers/">資料清理只是第一關：長文件審不出錯的三層設計</a>：長文件要先處理材料與切法，互審才有意義。</li>
-      <li><a href="../mobile-to-desktop-publish-loop/">我在路上用手機把一篇文發完</a>：把這些規則放進一條真的在跑的迴圈裡長什麼樣子。</li>
+      <li><a href="../after-ai-says-remembered/">交代過的事 AI 為什麼老是忘記？：從『我記住了』到讓 AI 自己跑</a>：互審的上一步，怎麼確認規則真的被記住、被啟動。</li>
+      <li><a href="../long-document-review-layers/">AI 改了十幾次還是有錯，怎麼辦？：資料清理只是第一關，長文件審不出錯的三層設計</a>：長文件要先處理材料與切法，互審才有意義。</li>
+      <li><a href="../mobile-to-desktop-publish-loop/">人在外面，可以叫家裡的電腦先做嗎？：手機掃一次 QR code，桌機就開始跑</a>：把這些規則放進一條真的在跑的迴圈裡長什麼樣子。</li>
     </ul>
 
     <div class="tagrow">
@@ -430,7 +430,7 @@ B 完成之後，把 B 的成果貼回 A，跟 A 說：
       <a href="https://www.threads.com/@jiang_yude_coach" target="_blank" rel="noopener">Threads ↗</a>
       <a href="https://vocus.cc/salon/Jiang_Coach" target="_blank" rel="noopener">方格子 ↗</a>
     </div>
-    <div class="footer-note">這是一篇教學文章，整理我對「互審要做多深：三種難度與怎麼選」的看法，供你參考。</div>
+    <div class="footer-note">這是一篇教學文章，整理我對「怎麼設計讓兩個 AI 互審？：三種不同程度的審查機制設計」的看法，供你參考。</div>
   </div>
 </footer>
 
@@ -451,6 +451,8 @@ B 完成之後，把 B 的成果貼回 A，跟 A 說：
 })();
 </script>
 
+<script src="../../image-interactions.js"></script>
+
 <script>
 (function(){
   document.querySelectorAll('.codeblock').forEach(function(box){
@@ -467,8 +469,6 @@ B 完成之後，把 B 的成果貼回 A，跟 A 說：
   });
 })();
 </script>
-<script src="../../image-interactions.js"></script>
-
 <!-- 官網共用：滑鼠暖光暈 + 導航列漢堡選單 -->
 <script src="../../spotlight.js"></script>
 

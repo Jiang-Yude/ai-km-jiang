@@ -34,6 +34,101 @@ window.ARTICLE_TAGS = {
 
 window.ARTICLES = [
 
+  /* ── 交代過的事 AI 為什麼老是忘記？：從『我記住了』到讓 AI 自己跑（教學） ── */
+  {
+    id: "after-ai-says-remembered",
+    url: "articles/after-ai-says-remembered/",
+    date: "2026-08-06",
+    updated: "2026-08-06",
+    title: "交代過的事 AI 為什麼老是忘記？：從『我記住了』到讓 AI 自己跑",
+    problem: "交代過的規則，AI 說記住了，下一次還是用回原本的做法，而你講不出是哪一步漏掉。",
+    audience: "只用 ChatGPT 或 Claude 網頁版、交代過的規則老是被忘記的人，以及寫過規則檔卻發現它沒被讀到、沒被觸發的人。",
+    summary: "「記住」在 AI 那裡有三種意思：記在對話視窗、記成檔案沒啟動、觸發詞沒設好。整理自 8/2 講座現場，給七個追問句、一份可直接複製的月結檢查清單範例、觸發得動與觸發不動的寫法對照，再往下是互審的三種難度、寫進迴圈的四條規則、跑幾輪要停，以及一個現場學員 150 頁教材的真實案例。這篇是總覽，四個段落各有一篇完整版。",
+    tags: {
+      topic: ["AI工作流", "AIAgent", "技能包設計", "跨家審稿"],
+      level: ["基礎"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["three-levels-of-cross-review", "long-document-review-layers", "before-installing-others-skill", "mobile-to-desktop-publish-loop"]
+  },
+
+  /* ── AI 改了十幾次還是有錯，怎麼辦？：資料清理只是第一關，長文件審不出錯的三層設計（教學） ── */
+  {
+    id: "long-document-review-layers",
+    url: "articles/long-document-review-layers/",
+    date: "2026-08-05",
+    updated: "2026-08-05",
+    title: "AI 改了十幾次還是有錯，怎麼辦？：資料清理只是第一關，長文件審不出錯的三層設計",
+    problem: "一份長文件用同一家模型改了十幾次都說沒問題，換一家立刻審出規範錯誤，卻不知道該補哪一層。",
+    audience: "要用 AI 檢查教材、報告、規範、合約、標書的人，以及換過模型、開過深度思考結果還是不放心的人。",
+    summary: "長文件出錯通常是三層設計沒做：材料、切法、視角。這篇拆開三層怎麼做，含把出處變成規則、指定適用規範版本的寫法、兩種切法互相覆蓋的做法、只能用一家模型時的退路，再給一段比「再跑一次」更有效的提示詞，以及出錯三種來源怎麼分。",
+    tags: {
+      topic: ["AI工作流", "跨家審稿", "知識管理"],
+      level: ["基礎"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["after-ai-says-remembered", "three-levels-of-cross-review", "why-split-data-into-cards"]
+  },
+
+  /* ── 裝了別人的技能包，AI 會不會被搞亂？：抄之前我會先做三件事（教學） ── */
+  {
+    id: "before-installing-others-skill",
+    url: "articles/before-installing-others-skill/",
+    date: "2026-08-05",
+    updated: "2026-08-05",
+    title: "裝了別人的技能包，AI 會不會被搞亂？：抄之前我會先做三件事",
+    problem: "想抓現成技能包來用，但不知道要看什麼；已經裝了幾個之後 AI 越來越不聽話，也講不出是哪裡出問題。",
+    audience: "想抓現成技能包來用的人，以及已經裝了五六個、最近覺得 AI 怪怪的人。",
+    summary: "這條路有兩個坑：安全問題多數人會想到但用錯方法檢查，流程衝突多數人不會想到而它發生得更頻繁。內容包含來源三層判斷、叫 AI 檢查為什麼只能當線索與兩個可行替代做法、權限初篩四項、流程衝突四選項、安裝三個決定、驗收三層，最後一節是已經裝了一堆該怎麼回頭盤點。附一份安裝前檢查清單。",
+    tags: {
+      topic: ["技能包設計", "AI工作流", "AIAgent"],
+      level: ["基礎"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["after-ai-says-remembered", "long-document-review-layers", "dual-track-planning-loop"]
+  },
+
+  /* ── 人在外面，可以叫家裡的電腦先做嗎？：手機掃一次 QR code，桌機就開始跑（教學） ── */
+  {
+    id: "mobile-to-desktop-publish-loop",
+    url: "articles/mobile-to-desktop-publish-loop/",
+    date: "2026-08-05",
+    updated: "2026-08-05",
+    title: "人在外面，可以叫家裡的電腦先做嗎？：手機掃一次 QR code，桌機就開始跑",
+    problem: "靈感常常發生在不能坐下來工作的時候，存起來回家再處理通常就沒有然後了。",
+    audience: "有固定要產出的內容、每次都要從頭做一遍的人，以及想知道自動化該自動到哪裡的人。",
+    summary: "手機傳連結加一句語音，桌機分析內容、寫成自己觀點的短文、做圖卡、發文。連線設定只有四步，全部在設定畫面裡點完：打開設定選連線、把允許連線打開、按新增跳出 QR code、手機掃一下，另外要記得打開讓電腦維持喚醒。這篇拆解這條迴圈的五個段落與每一段的完成條件、四項可直接抄的圖片檢查標準、判斷哪一關不能交出去的方法，以及這次跑完發現的兩個缺口怎麼修：漏檢的圖與安靜失敗的社群平台。",
+    tags: {
+      topic: ["AI工作流", "AIAgent", "工作流程"],
+      level: ["基礎"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["after-ai-says-remembered", "before-installing-others-skill", "three-levels-of-cross-review"]
+  },
+
+  /* ── 怎麼設計讓兩個 AI 互審？：三種不同程度的審查機制設計（教學） ── */
+  {
+    id: "three-levels-of-cross-review",
+    url: "articles/three-levels-of-cross-review/",
+    date: "2026-08-06",
+    updated: "2026-08-06",
+    title: "怎麼設計讓兩個 AI 互審？：三種不同程度的審查機制設計",
+    problem: "已經會叫另一個 AI 幫忙看，但不知道什麼時候該看得更深，也不想每件事都跑滿全套。",
+    audience: "想把「找第二顆腦」變成固定流程的知識工作者，以及重要文件送出前會緊張但時間有限的人。",
+    summary: "找第二個 AI 挑錯有三種深度：只審結果、雙軌後併回、完整雙軌互審。多數人只用第一種，而它剛好抓不到最貴的那種錯，也就是一開始就走錯路。這篇給三種難度各自的可複製指令、三個選擇判準與對照表、成本、停止條件兩層寫法、對家斷線的交接四欄，以及只能用一家模型時的替代做法。",
+    tags: {
+      topic: ["跨家審稿", "AI工作流", "輔助決策"],
+      level: ["基礎"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["after-ai-says-remembered", "long-document-review-layers", "mobile-to-desktop-publish-loop"]
+  },
+
   /* ── 通訊軟體 AI 友善度比較（教學） ── */
   {
     id: "messaging-apps-ai-friendliness",
@@ -1199,7 +1294,7 @@ window.ARTICLES = [
     summary: "企劃雙軌互審 loop：兩個不同家的 AI 同輸入各自獨立寫完、互相挑錯、整合留決策點、對家終審。以一場真實政府補助提案首跑為案例，附兩段可直接複製的提示詞。",
     tags: {"topic":["AI工作流","跨家審稿","輔助決策"],"level":["基礎"],"content_type":["案例文章"]},
     external: { threads: null, vocus: null },
-    related: ["loop-engineering-guardrails", "a2a-agent-protocol", "docs-as-system-design-agent", "ai-handoff-instructions", "long-task-completion-rate", "session-messaging-reminder-layer"]
+    related: ["loop-engineering-guardrails", "a2a-agent-protocol", "docs-as-system-design-agent", "ai-handoff-instructions", "long-task-completion-rate", "session-messaging-reminder-layer", "before-installing-others-skill"]
   },
   {
     id: "dual-centaur-meeting",
@@ -1467,7 +1562,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["tag-wiki-method", "diary-driven-agent-3x4", "books-videos-pdf-ai-advisor", "ai-data-organization-usable-system", "rule-file-rebound"]
+    related: ["tag-wiki-method", "diary-driven-agent-3x4", "books-videos-pdf-ai-advisor", "ai-data-organization-usable-system", "rule-file-rebound", "long-document-review-layers"]
   },
 
   /* ── 讓你的 AI 更懂你：從懂我到能幫我做事（教學）── */
