@@ -146,11 +146,26 @@
     height: 660px;
   }
   #mkw-root.mkw-size-l .mkw-panel {
-    /* 大＝閱讀模式，接近整個右半邊，長回覆不用一直捲 */
-    width: min(720px, calc(100vw - 48px));
-    height: calc(100vh - 48px);
-    height: calc(100dvh - 48px);
+    /* 大＝接近全螢幕的閱讀模式（2026-08-10 江江：電腦上聊天應該可以幾乎整個全螢幕）。
+       position 從 absolute 改 fixed，才不會被右下角的容器綁住寬度。 */
+    position: fixed;
+    right: 24px;
+    left: 24px;
+    top: 24px;
+    bottom: 24px;
+    width: auto;
+    height: auto;
+    max-width: none;
+    max-height: none;
   }
+  #mkw-root.mkw-size-l .mkw-body {
+    /* 全螢幕時訊息不要橫跨整個螢幕寬，維持好讀的行長 */
+    align-items: center;
+  }
+  #mkw-root.mkw-size-l .mkw-msg { max-width: min(820px, 92%); width: 100%; }
+  #mkw-root.mkw-size-l .mkw-msg.mkw-user { align-self: center; justify-content: flex-end; }
+  #mkw-root.mkw-size-l .mkw-input-row { max-width: 860px; margin: 0 auto; }
+  #mkw-root.mkw-size-l .mkw-chips { justify-content: center; }
   #mkw-root.mkw-size-l .mkw-bubble,
   #mkw-root.mkw-size-l .mkw-input { font-size: 19px; }
   #mkw-root.mkw-size-l .mkw-msg { max-width: 82%; }

@@ -81,6 +81,8 @@ function loadSiteData() {
     id: a.id,
     title: a.title || '',
     url: a.url || '',
+    date: a.date || '',
+    updated: a.updated || '',
     problem: a.problem || '',
     summary: a.summary || '',
     // ⚠️ 標籤是巢狀 a.tags.{topic,level,content_type}，不是 a.topic。
@@ -116,6 +118,18 @@ function courseLine(c, isPast) {
     : reg.status === 'ended' ? '已結束' : '';
   return `- ${when}｜${c.title}｜${c.type_label || ''}${c.venue_label ? '｜' + c.venue_label : ''}${state ? '｜' + state : ''}`;
 }
+/* 最新文章清單（2026-08-10 江江實測抓到：問「最新的文章」咪卡答不出來，
+   因為候選只餵標題摘要、沒有日期，也沒有全站的時間排序）。
+   跟課程一樣不走檢索，直接放進 prompt。 */
+function buildLatestBlock() {
+  loadSiteData();
+  const dated = CATALOG.filter((a) => a.date).sort((a, b) => b.date.localeCompare(a.date)).slice(0, 8);
+  if (!dated.length) return '';
+  return '【最新的文章（依發布日期新到舊，共 ' + CATALOG.length + ' 篇，這裡列最新 8 篇）】\n'
+    + dated.map((a) => `- ${a.date}｜${a.title}`).join('\n')
+    + '\n訪客問「最新文章」「最近寫了什麼」「有什麼新東西」時，直接用這份清單回答，不要說沒有日期資料。';
+}
+
 function buildCourseBlock() {
   loadSiteData();
   const today = taipeiToday();
@@ -299,7 +313,7 @@ module.exports = async (req, res) => {
         : vague
         ? '站內資料（訪客這次問得比較抽象，以下是可能相關的候選，請先想清楚他真正卡在哪，再挑最貼近的一到兩篇推薦，不要全部倒給他）：\n'
         : '站內資料（依相關度排序，回答時優先引用）：\n')
-      + sources.map((s, i) => `${i + 1}.《${s.title}》\n  難度：${s.level || '未標'}${s.audience ? '｜適合：' + s.audience : ''}\n  這篇解決：${s.problem}\n  摘要：${s.summary}`).join('\n')
+      + sources.map((s, i) => `${i + 1}.《${s.title}》\n  發布：${s.date || '未標'}｜難度：${s.level || '未標'}${s.audience ? '｜適合：' + s.audience : ''}\n  這篇解決：${s.problem}\n  摘要：${s.summary}`).join('\n')
       + '\n（挑文章時要看難度：訪客自稱電腦不熟、剛開始、不會用，就優先推零基礎入門或基礎；他講得出工具名或術語，才推進階或專業。）'
     : '站內資料：這次沒有找到明顯相關的文章。先用一個問題幫訪客把處境講具體一點（例如他手上是什麼資料、卡在哪一步），不要硬推文章，也可以建議他去搜尋頁找找或聯絡江江。';
 
@@ -315,6 +329,7 @@ module.exports = async (req, res) => {
   const system = MIKA_PERSONA
     + (name ? `\n\n訪客請你稱呼他：${name}。` : '')
     + `\n\n${buildCourseBlock()}`
+    + `\n\n${buildLatestBlock()}`
     + `\n\n${sourceBlock}`
     + secondLoopBlock;
 
