@@ -91,6 +91,8 @@
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  /* 滑鼠在頭部、輸入列或邊界留白上滾動時，也不要捲到背後的網頁 */
+  overscroll-behavior: contain;
   opacity: 0;
   transform: translateY(16px) scale(.97);
   transform-origin: bottom right;
@@ -175,6 +177,9 @@
 #mkw-root .mkw-body {
   flex: 1;
   overflow-y: auto;
+  /* 捲到頂或底時不要把捲動事件外溢給背後的網頁（大視窗覆蓋整頁時特別明顯） */
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
   padding: 18px 16px 8px;
   display: flex;
   flex-direction: column;
