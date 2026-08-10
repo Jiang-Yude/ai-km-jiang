@@ -74,7 +74,7 @@ window.SEARCH_ALIASES = {
   "ai-course-map-from-entry-to-workflow": ["江江教練課程系統","AI課程怎麼選","課程路線圖","一人公司營運團隊終點","課程地圖","地基層Agent導入","垂直結構課程系統"],
   "ai-data-organization-usable-system": ["文件變系統","Markdown整理資料","卡片化教學","受控詞彙基礎班","文件找不到接不上工作流","人和AI都能用的系統","四個語法連結與受控詞彙"],
   "semantic-rules-before-prompt-templates": ["提示詞模板為什麼失效","手機輸入法比喻","角色設定限制","負向提示詞陷阱","模板時好時壞","先懂語意再套模板","課題分離三步修正"],
-  "claude-skills-knowledge-assets": ["技能包是什麼","Claude Skills入門","流程變知識資產","技能包怎麼做","技能包備份","操作手冊給AI看","AI 記不住","換對話就忘記","讓 AI 一直記得我的做法","網路上有很多人分享技能包，我可以直接下載來用嗎？"],
+  "claude-skills-knowledge-assets": ["技能包是什麼","Claude Skills入門","流程變知識資產","技能包怎麼做","技能包備份","操作手冊給AI看","AI 記不住","換對話就忘記","讓 AI 一直記得我的做法"],
   "notebooklm-knowledge-analysis-assistant": ["NotebookLM怎麼用","讓報告來讀你","個人檔案設定","PDF陷阱","多來源知識庫","資料整理工具變分析助理"],
   "strong-ai-models-knowledge-workflow-road": ["模型越來越強沒感覺","換了引擎原地打滑","知識庫工作流投資","六步AI鋪路流程","Claude Fable GPT-5.6","泥巴路柏油路高速公路","同樣的AI別人用起來像換引擎","我應該先學工具，還是先建自己的知識庫？"],
   "dual-track-planning-loop": ["企劃被模擬評審打分","雙軌互審","AI寫自己審看不到盲點","政府補助提案案例","兩個AI互相挑錯","對家終審決策點","被自己想法錨定看不到盲點","頂規模型很貴，怎麼把複雜的交給它、其他交給便宜的？","我讓兩個模型互相討論，結果它們沒完沒了地聊下去。"],
@@ -105,5 +105,8 @@ window.SEARCH_ALIASES = {
   "long-task-completion-rate": ["AI跑到一半就停","長流程完工率","Opus 4.8 Fable Opus 5比較","十步驟Loop測試","AI自己跑長流程停在中間","三種卡關反應停住等人","迴圈工程要補的三件事"],
   "talent-vs-expertise": ["找不到自己的強項","天賦怎麼挖","差異提煉法","隨機偶遇法","教練怎麼問出判斷標準","努力學來的專業"],
   "ai-employee-four-levels": ["什麼時候可以放手","駕馭式提問十問","靈魂拷問十問","難度分級放手法","6月7日講座","訓練AI員工四個層次"],
-  "use-more-ai-not-enough": ["AI只是變快沒有結構改變","AI原生不是AI優化","Sam Altman訪談","看倍數不看百分比","工作形狀沒有變","過去的軟體做不到的事","20%到50%的加速不算AI強項"]
+  "use-more-ai-not-enough": ["AI只是變快沒有結構改變","AI原生不是AI優化","Sam Altman訪談","看倍數不看百分比","工作形狀沒有變","過去的軟體做不到的事","20%到50%的加速不算AI強項"],
+  "copied-mechanism-is-no-mechanism": ["別人的機制可以照抄嗎","為什麼別人的工作流我用不順","抄別人的技能包有用嗎","大神的提示詞我用起來沒效"],
+  "cognitive-debt": ["AI 做的東西看不懂怎麼辦","看不懂還能用嗎","AI 產出我不敢用","什麼是認知債"],
+  "answer-in-person-or-ai": ["同樣的問題一直被問怎麼辦","AI 會不會取代講師","哪些事可以交給 AI 回答","要不要做 AI 分身"]
 };
