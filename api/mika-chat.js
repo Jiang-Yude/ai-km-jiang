@@ -52,16 +52,31 @@ const MIKA_PERSONA = `你是咪卡（Mika），江江教練訓練出來的第一
 
 回答模式（教練式導讀，這是你最重要的工作方式）：
 - 你是導讀員，不是代工。訪客帶著問題來，你的工作是告訴他「江江有哪篇文章在講這個、你可以怎麼用」，不是替他把事情做完。
-- 標準回法三步：①指路：推薦最相關的那一篇（提標題，連結系統會自動附上）②教用法：跟他說可以自己讀；覺得太長或懶得讀，也可以直接把文章連結複製貼給他自己的 AI（ChatGPT、Claude、Codex 這些），請他的 AI 照著文章幫他做 ③留一個輕鬆的第一步。
+- **先把他問的答完，再遞給他「帶走的路」**（江江 2026-08-11 定調）。這裡只看得到公開文章，給得出的是通則；他自己的 AI 記得他的脈絡、看得到他的檔案，同一篇文章在那邊跑效果好得多。所以每次回答的收尾都留一條可以帶走的路，讓他自己決定要不要走。
+- 他還想在這裡把事情問清楚，就繼續好好答，不要重複催他離開。催第二次就變成趕人了。
+- 標準回法三步：
+  ①指路：推薦最相關的那一篇（自然地提標題，連結系統會自動附上）
+  ②交代怎麼用：江江的文章多半寫的是方法、機制、工作流、技能包，本來就是設計成可以直接餵給 AI 執行的。如果他有在用 ChatGPT、Claude 或 Codex，就告訴他可以把這篇的連結複製過去，請他的 AI 讀完照著做。**順便附一句他可以直接複製的話**，像「請你讀這篇文章，照裡面的方法幫我把我的會議記錄整理成可重複使用的流程」，讓他不用自己想怎麼開口。指令要貼合他剛才講的處境，不要給罐頭句。他沒在用這些工具，就先把方法講清楚，不用硬推。
+  ③留一個輕鬆的第一步：小範圍、今天就能做完的那種。
+- 聊到第三、四輪還在同一個主題打轉時，可以輕輕提一次：這些方法動手跑一次的收穫，比再多問幾句大得多，卡住了隨時回來。提過就好，他要繼續聊就繼續陪。
 - 碰到「整理資料、建知識庫、改檔案」這類會動到對方資料的主題，多加一句安全提醒：江江自己的系統有好幾層防護，訪客自己的環境不一定有，建議先複製一個資料夾小範圍試，沒問題再放大。這是江江的原則，講得自然一點，像提醒朋友。
-- 精神：教他怎麼讀、怎麼用，讓他帶回自己的環境用自己的 AI 做。授人以漁。
 - **訪客問「為什麼要我把文章丟到自己的 AI 跑」時，用這兩個理由回答**（江江 2026-08-10 定調，講白話不要照抄）：
   ① 效果比較好：你的資料都在你自己那邊。你的 ChatGPT 已經記得你很多事，你的 Codex 裡有你的知識庫。把江江的方法文章丟給你自己的 AI，它能結合你的脈絡跟你的資料來做，比在這裡東問一句西問一句有用得多。這裡的咪卡看不到你的檔案，也不該看到。
   ② 比較安全：資料丟到別人的網站上，隱私等級本來就比較低。在你自己的環境跑，資料不用離開你手上。
   講完可以補一句：不管是為了效果還是安全，都建議這樣做。
 - 訪客覺得咪卡回答得不好、或有想反映的，歡迎直接說。江江會定期收集大家的回饋來修正整個知識庫與咪卡本身。
 
-引用文章時：自然地在句子裡提文章標題，系統會把連結附在回覆下方，你不用貼網址。`;
+引用文章時：自然地在句子裡提文章標題，系統會把連結附在回覆下方，你不用貼網址。
+
+挑文章的方式（重要，2026-08-11 改）：
+- 上面會給你【全站文章總目錄】，那是全部的文章，你可以自己從裡面挑。另外會給你一份【程式初判】，那只是字面上比較接近的幾篇，**參考就好，不準的時候以你自己的判斷為準**。訪客講的是他的處境（例如「老師傅要退休了技術怎麼留下來」），目錄上的標題講的是江江的說法，兩邊字面對不上是常態，你要看的是意思對不對得上。
+- 挑之前先想一下他真正卡在哪，再從目錄找那篇真的回答他問題的。挑一到兩篇就好，最多三篇。
+- 看難度挑：他自稱電腦不熟、剛開始、不會用，就優先推零基礎入門或基礎；他講得出工具名或術語，才推進階或專業。
+- 目錄裡真的沒有對得上的，就誠實說站上沒有寫到這個，不要硬推。硬塞不相關的文章比誠實說沒有更傷信任。
+
+回覆的最後一行，用這個格式標出你這次推薦的文章編號（取自總目錄的編號），系統會據此附上連結與日期：
+[[文章:12,45]]
+沒有推薦任何文章時就寫 [[文章:無]]。這一行訪客看不到，系統會自動移除，所以不要在內文裡重複講網址。`;
 
 /* ── 站內資料載入（articles-data.js + search-aliases.js + courses-data.js，模擬 window 執行） ── */
 let CATALOG = null;
@@ -70,13 +85,15 @@ function loadSiteData() {
   if (CATALOG) return;
   const root = process.cwd();
   const win = {};
-  for (const f of ['articles-data.js', 'search-aliases.js', 'courses-data.js']) {
+  for (const f of ['articles-data.js', 'search-aliases.js', 'courses-data.js', 'article-keywords.js']) {
     try {
       const src = fs.readFileSync(path.join(root, f), 'utf8');
       new Function('window', src)(win);
     } catch (e) { /* 缺檔就用讀到的部分 */ }
   }
   const aliases = win.SEARCH_ALIASES || {};
+  const keywords = win.ARTICLE_KEYWORDS || {};
+  const slugOf = (u) => String(u || '').replace(/^\/+|\/+$/g, '').replace(/^articles\//, '');
   CATALOG = (win.ARTICLES || []).map((a) => ({
     id: a.id,
     title: a.title || '',
@@ -89,12 +106,16 @@ function loadSiteData() {
     // 2026-08-08 SSR 壓測時發現原本寫成 a.level／a.topic，等於檢索完全沒用到標籤（靜默失效）。
     level: [].concat((a.tags && a.tags.level) || []).join('、'),  // 零基礎入門／基礎／進階／專業
     audience: a.audience || '',
+    _topics: [].concat((a.tags && a.tags.topic) || []),  // 主題索引用
     tags: [].concat(
       (a.tags && a.tags.topic) || [],
       (a.tags && a.tags.level) || [],
       (a.tags && a.tags.content_type) || []
     ).join(' '),
     aliases: aliases[a.id] || [],
+    // 內文抽出來的專有名詞（2026-08-11 加）。同學記得的詞常常只在內文出現，
+    // 例如「半人馬」只寫在半人馬會議那篇的內文裡，標題摘要別名三層都沒有。
+    keywords: keywords[slugOf(a.url)] || [],
   }));
   COURSES = win.COURSES || [];
 }
@@ -128,6 +149,59 @@ function buildLatestBlock() {
   return '【最新的文章（依發布日期新到舊，共 ' + CATALOG.length + ' 篇，這裡列最新 8 篇）】\n'
     + dated.map((a) => `- ${a.date}｜${a.title}`).join('\n')
     + '\n訪客問「最新文章」「最近寫了什麼」「有什麼新東西」時，直接用這份清單回答，不要說沒有日期資料。';
+}
+
+/* 全站文章目錄（2026-08-11 改造，江江：「便宜的 GPT Luna 就要能把抽象問題找到精確文章」）
+   原本挑文章是程式的二字詞比對在做，LLM 只看得到程式挑好的 3 到 6 篇，
+   程式沒撈到的，模型再聰明也看不到，換更貴的模型也救不了（瓶頸在檢索層不在模型層）。
+   2026-08-11 用 15 題真人口語實測：10 題被判「抽象」、2 題被判「疑似站外」，
+   其中「老師傅要退休了他的技術怎麼留下來」撈到的三篇全不相關，
+   「我做了筆記但都找不到」撈對了標籤連結法卻被判站外，咪卡會自己把對的文章擋掉。
+   改法：把全站文章的精簡目錄（編號＋日期＋難度＋標題＋這篇解決什麼）直接進 system prompt，
+   讓看得懂語意的那一層自己挑。約 6000 token，system prompt 前綴固定會走 prompt caching，
+   成本可控。程式的二字詞比對降級成「初判提示」，不再是唯一候選。 */
+function buildFullIndexBlock() {
+  loadSiteData();
+  const sorted = [...CATALOG].sort((a, b) => String(b.date).localeCompare(String(a.date)));
+  const lines = sorted.map((a, i) => {
+    a._no = i + 1;
+    // 別名（訪客口語）與內文關鍵詞一起帶上：訪客記得的詞常常不在標題也不在摘要，
+    // 2026-08-11 江江實測「半人馬」與「A2A」都是這樣被漏掉的。
+    const extra = [...new Set([].concat(a.aliases, a.keywords))].filter(Boolean).join('、');
+    return `${i + 1}｜${a.date || '未標'}｜${a.level || '未標'}｜${a.title}｜${String(a.problem || '').slice(0, 45)}`
+      + (extra ? `｜也可能被說成：${extra}` : '');
+  });
+  return topicIndex(sorted)
+    + '\n\n【全站文章總目錄（共 ' + sorted.length + ' 篇，依發布日期新到舊）】\n'
+    + '格式：編號｜發布日期｜難度｜標題｜這篇解決什麼｜也可能被說成（訪客口語別名＋這篇內文出現過的詞）\n'
+    + '「也可能被說成」那一欄很重要：訪客記得的詞常常不在標題裡，而是江江上課講的說法或文章內文的詞。\n'
+    + lines.join('\n');
+}
+
+/* 主題 → 編號的短索引，放在長目錄前面。
+   立因（CX 2026-08-11 跨家審抓到）：長 context 的中段資訊比較容易被模型漏看
+   （lost in the middle），111 筆一長串挑一篇有位置偏差。先給一份按主題聚合的短索引，
+   模型可以先定位主題再回去看細節，等於幫它先縮小範圍。 */
+function topicIndex(sorted) {
+  const byTopic = new Map();
+  sorted.forEach((a) => {
+    [].concat((a._topics || [])).forEach((tp) => {
+      if (!byTopic.has(tp)) byTopic.set(tp, []);
+      byTopic.get(tp).push(a._no);
+    });
+  });
+  const rows = [...byTopic.entries()]
+    .filter(([, ns]) => ns.length >= 2)
+    .sort((x, y) => y[1].length - x[1].length)
+    .map(([tp, ns]) => `- ${tp}（${ns.length} 篇）：${ns.join('、')}`);
+  return '【主題索引：先看這裡縮小範圍，再回總目錄看細節】\n'
+    + '一篇可能同時屬於多個主題。編號對應下方總目錄。\n'
+    + rows.join('\n');
+}
+/* 依編號取回文章（模型挑完用編號標記，程式據此掛連結，不靠標題字串比對） */
+function articleByNo(no) {
+  loadSiteData();
+  return CATALOG.find((a) => a._no === Number(no)) || null;
 }
 
 function buildCourseBlock() {
@@ -304,18 +378,12 @@ module.exports = async (req, res) => {
 
   /* 檢索：清楚走精準 3 篇／抽象放寬 6 篇並開推理／疑似站外要先驗相關性 */
   const { sources, vague, offTopic } = retrieveAdaptive(lastUser.content);
+  /* 程式初判只給編號，不重複貼摘要：目錄裡已經有這些文章的完整資訊，
+     再貼一次等於同一份資料講兩遍，而且這段排在 prompt 尾端不吃 cache（省話一哥 2026-08-11 抓到）。
+     初判用的就是這次要淘汰的字面比對，準的時候模型從目錄也挑得到，不準的時候是噪音。 */
   const sourceBlock = sources.length
-    ? (offTopic
-        ? '站內資料（⚠️ 這次的相關度很低，訪客問的很可能不是這個網站在談的主題）：\n'
-          + '處理方式：先自己判斷下面這幾篇有沒有真的回答他的問題。**沒有就明說站上沒有相關內容，一篇都不要推**，'
-          + '溫暖地告訴他這裡專門談 AI 應用、知識管理與工作流程，他這個問題建議找更專業的來源；只有真的對得上才推薦。'
-          + '硬塞不相關的文章比誠實說沒有更傷信任。\n'
-        : vague
-        ? '站內資料（訪客這次問得比較抽象，以下是可能相關的候選，請先想清楚他真正卡在哪，再挑最貼近的一到兩篇推薦，不要全部倒給他）：\n'
-        : '站內資料（依相關度排序，回答時優先引用）：\n')
-      + sources.map((s, i) => `${i + 1}.《${s.title}》\n  發布：${s.date || '未標'}｜難度：${s.level || '未標'}${s.audience ? '｜適合：' + s.audience : ''}\n  這篇解決：${s.problem}\n  摘要：${s.summary}`).join('\n')
-      + '\n（挑文章時要看難度：訪客自稱電腦不熟、剛開始、不會用，就優先推零基礎入門或基礎；他講得出工具名或術語，才推進階或專業。）'
-    : '站內資料：這次沒有找到明顯相關的文章。先用一個問題幫訪客把處境講具體一點（例如他手上是什麼資料、卡在哪一步），不要硬推文章，也可以建議他去搜尋頁找找或聯絡江江。';
+    ? `【程式初判】字面上比較接近的是第 ${sources.map((s) => s._no).join('、')} 篇，僅供參考，不準就不要用。`
+    : '【程式初判】字面比對沒撈到接近的文章。這很常見，代表訪客的講法跟文章用詞對不上，請直接從總目錄自己挑。';
 
   const secondLoopBlock = recommended.length
     ? `\n\n【這段對話你已經推薦過】${recommended.join('、')}\n`
@@ -326,10 +394,13 @@ module.exports = async (req, res) => {
       + '④ 他如果說「我看完了」「讀過了」「試過了」，先問他實際做到哪一步、卡在哪，再給建議，不要憑空猜。'
     : '';
 
+  /* 目錄放在最前面（緊接人設）：system prompt 前綴固定不變才吃得到 prompt caching，
+     訪客相關的段落（稱呼、初判、第二循環）一律排在後面。 */
   const system = MIKA_PERSONA
-    + (name ? `\n\n訪客請你稱呼他：${name}。` : '')
+    + `\n\n${buildFullIndexBlock()}`
     + `\n\n${buildCourseBlock()}`
     + `\n\n${buildLatestBlock()}`
+    + (name ? `\n\n訪客請你稱呼他：${name}。` : '')
     + `\n\n${sourceBlock}`
     + secondLoopBlock;
 
@@ -362,22 +433,51 @@ module.exports = async (req, res) => {
       const up = (data && data.error && (data.error.message || data.error.code)) || ('HTTP ' + r.status);
       throw new Error('upstream: ' + up);
     }
-    const reply = data && data.choices && data.choices[0] && data.choices[0].message
+    const raw = data && data.choices && data.choices[0] && data.choices[0].message
       ? String(data.choices[0].message.content || '').trim() : '';
-    if (!reply) throw new Error('empty reply｜finish_reason=' + (data?.choices?.[0]?.finish_reason || 'na'));
-    // 疑似站外時只掛咪卡真的在文字裡提到的文章：
-    // 否則會出現「站上沒有相關內容」下面卻附三個連結的自相矛盾（2026-08-08 雙軌互審後修）。
-    // 顯示上限 3 篇：抽象模式餵 6 篇給模型判斷，但版面只掛 3 個連結，
-    // 免得咪卡只推薦一篇、底下卻列六個連結（訊息量過載）。
-    const shown = (offTopic
-      ? sources.filter((s) => s.title && reply.includes(s.title.slice(0, 8)))
-      : sources).slice(0, 3);
+    if (!raw) throw new Error('empty reply｜finish_reason=' + (data?.choices?.[0]?.finish_reason || 'na'));
+
+    /* 掛哪幾篇連結，由模型自己用編號標記決定（2026-08-11 改）。
+       原本是程式挑什麼就掛什麼，模型講的跟底下的連結常常對不起來
+       （最明顯的是問講座場次，底下掛三篇不相關文章）。改成模型挑什麼掛什麼，
+       連標記一起剝掉不讓訪客看到。模型忘了標記時，退回標題字串比對當保險。 */
+    /* 取最後一個標記：模型偶爾會先寫一版再改，後面那個才是它的結論（CX 2026-08-11 抓到）。
+       只收純數字並去重，避免「12,12」或「12、看第 45 篇」這種寫法掛出重複或錯誤連結。 */
+    const tags = [...raw.matchAll(/\[\[\s*文章\s*[:：]\s*([^\]\n]*)\]\]/g)];
+    const tag = tags.length ? tags[tags.length - 1] : null;
+    let picked = [];
+    if (tag) {
+      const seen = new Set();
+      picked = String(tag[1]).split(/[,，、\s]+/)
+        .filter((n) => /^\d+$/.test(n))
+        .map((n) => articleByNo(n))
+        .filter((a) => a && !seen.has(a._no) && seen.add(a._no));
+    } else {
+      /* 完全沒標記才退回標題比對，而且只掛一篇：模型有標記時一律尊重它的選擇，
+         解析不出來就不掛連結，不要讓字面比對覆寫模型的判斷（這正是舊版的病）。
+         取最後提到的那篇：「不是《A》那篇，是《B》」這種句式，結論在後面（CX 2026-08-11 抓到）。 */
+      const hit = loadCatalog()
+        .filter((a) => a.title && raw.includes(a.title.slice(0, 12)))
+        .sort((x, y) => raw.lastIndexOf(x.title.slice(0, 12)) - raw.lastIndexOf(y.title.slice(0, 12)));
+      picked = hit.slice(-1);
+    }
+    /* 剝除：先清完整標記，再掃掉尾端壞掉的殘骸（少一個括號、寫成全形）。
+       訪客看到系統標記比少一個連結更傷。 */
+    const reply = raw
+      .replace(/\[\[\s*文章\s*[:：][^\]\n]*\]\]/g, '')
+      .replace(/\n?\s*[\[［]{0,2}\s*文章\s*[:：][^\n]*$/, '')
+      .trim()
+      || '（咪卡歪頭）我剛剛好像沒講清楚，再問我一次好嗎？';
+
+    const shown = picked.slice(0, 3);
     res.status(200).json({
       reply,
       // 網址一律補成根相對（articles-data.js 存的是 'articles/xxx/' 相對路徑，
       // 在文章頁會被解析成 /articles/目前這篇/articles/xxx/ 而 404，2026-08-10 江江實測抓到）
       sources: shown.map((s) => ({
         title: s.title,
+        // 日期帶到前端（2026-08-11 江江實測回報：推薦的文章看不到日期，日期很重要）
+        date: s.date || '',
         url: /^https?:\/\//.test(s.url) ? s.url : '/' + String(s.url || '').replace(/^\/+/, ''),
       })),
     });
@@ -390,4 +490,4 @@ module.exports = async (req, res) => {
 };
 
 /* 本機測試用（不影響線上行為） */
-module.exports._test = { retrieve, retrieveAdaptive, loadCatalog, buildCourseBlock, MIKA_PERSONA };
+module.exports._test = { retrieve, retrieveAdaptive, loadCatalog, buildCourseBlock, buildFullIndexBlock, articleByNo, MIKA_PERSONA };

@@ -78,7 +78,7 @@ window.SEARCH_ALIASES = {
   "notebooklm-knowledge-analysis-assistant": ["NotebookLM怎麼用","讓報告來讀你","個人檔案設定","PDF陷阱","多來源知識庫","資料整理工具變分析助理"],
   "strong-ai-models-knowledge-workflow-road": ["模型越來越強沒感覺","換了引擎原地打滑","知識庫工作流投資","六步AI鋪路流程","Claude Fable GPT-5.6","泥巴路柏油路高速公路","同樣的AI別人用起來像換引擎","我應該先學工具，還是先建自己的知識庫？"],
   "dual-track-planning-loop": ["企劃被模擬評審打分","雙軌互審","AI寫自己審看不到盲點","政府補助提案案例","兩個AI互相挑錯","對家終審決策點","被自己想法錨定看不到盲點","頂規模型很貴，怎麼把複雜的交給它、其他交給便宜的？","我讓兩個模型互相討論，結果它們沒完沒了地聊下去。"],
-  "dual-centaur-meeting": ["帶Agent開會","人加AI對人加AI","PAAP AAP AA","複雜專案會議太長","雙人馬會議","中間解Agent先過濾資料","納瓦爾對談時間碼"],
+  "dual-centaur-meeting": ["帶Agent開會","人加AI對人加AI","PAAP AAP AA","複雜專案會議太長","半人馬會議","雙人馬會議","半人馬","半人馬模式","人機協作下棋","中間解Agent先過濾資料","納瓦爾對談時間碼"],
   "laptop-desktop-webpage-sync-icloud-git": ["iCloud跟git衝突","多台電腦做網頁","程式碼放哪裡","換筆電找不到檔案","同步搬家","桌機筆電找不到專案"],
   "inspiration-production-system": ["每天硬想發什麼","靈感池","選題卡住","舊素材找不到","熱門話題選題","沒靈感發文","我工作很忙、時間很破碎，根本沒空經營內容。"],
   "post-class-organizing-loop": ["上完課素材散掉","逐字稿三天後就散了","課後六步輸送帶","教學手冊產出","課後整理Loop","兩層審核確保AI整理能用","簡報還是課前骨架版"],

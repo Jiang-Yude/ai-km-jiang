@@ -175,6 +175,13 @@
         a.target = '_blank';
         a.rel = 'noopener';
         a.textContent = '📄 ' + (s.title || s.url);
+        /* 日期另起一個小字（2026-08-11 江江實測回報：推薦文章看不到日期，日期很重要） */
+        if (s.date) {
+          var d = document.createElement('span');
+          d.className = 'mkw-source-date';
+          d.textContent = s.date;
+          a.appendChild(d);
+        }
         box.appendChild(a);
       });
       bub.appendChild(box);
@@ -300,11 +307,20 @@
     }
   }
 
-  /* 三段視窗大小：小（原本）／中／大。存 localStorage，跨頁沿用。 */
+  /* 視窗大小：兩邊都兩段（2026-08-11 江江拍板）。
+     電腦＝中 480×660 與 大全螢幕（原本的小 384×560 退場，桌機看太小）；
+     手機＝貼底與全螢幕（原本三段共用一組循環，但手機 CSS 只有一種尺寸，
+     按放大鈕循環三次畫面完全不變，多按的那次是空的）。存 localStorage，跨頁沿用。 */
   var SIZES = ['s', 'm', 'l'];
   var SIZE_LABEL = { s: '小視窗', m: '中視窗', l: '大視窗' };
+  function isPhone() {
+    try { return window.matchMedia('(max-width: 520px)').matches; } catch (e) { return false; }
+  }
+  function sizeSteps() { return isPhone() ? ['s', 'l'] : ['m', 'l']; }
+  /* 存的那段不在本裝置的循環裡（換裝置、或舊版存了已退場的小視窗）就回到第一段 */
   function getSize() {
-    try { var v = localStorage.getItem(SIZE_KEY); return SIZES.indexOf(v) >= 0 ? v : 's'; } catch (e) { return 's'; }
+    var steps = sizeSteps();
+    try { var v = localStorage.getItem(SIZE_KEY); return steps.indexOf(v) >= 0 ? v : steps[0]; } catch (e) { return steps[0]; }
   }
   function applySize(sz) {
     SIZES.forEach(function (x) { root.classList.remove('mkw-size-' + x); });
@@ -315,8 +331,10 @@
   }
   applySize(getSize());
   root.querySelector('.mkw-size').addEventListener('click', function () {
-    var next = SIZES[(SIZES.indexOf(getSize()) + 1) % SIZES.length];
-    applySize(next);
+    var steps = sizeSteps();
+    // 目前這段不在本裝置的循環裡（例如電腦調成中視窗後換到手機）就從頭開始
+    var i = steps.indexOf(getSize());
+    applySize(steps[(i + 1) % steps.length]);
     scrollBottom();
   });
 
