@@ -16,6 +16,15 @@ if bash scripts/check-deploy-env.sh; then ok "部署環境"; else bad "部署環
 echo "═══ 1/10 站點索引重建（含受控詞彙檢查）═══"
 if node scripts/build-site-index.mjs 2>&1 | tail -1 | grep -q "✅"; then ok "site-index + 詞彙"; else bad "build-site-index 未通過"; fi
 if node scripts/build-en-articles-data.mjs --check; then ok "英文文章索引"; else bad "英文文章索引過期"; fi
+# 咪卡檢索用的內文關鍵詞：每次發布重跑，新文章的專有名詞才會進索引。
+# 立因（2026-08-11）：「半人馬」「A2A」都是只寫在內文、沒進索引，咪卡因此說站上沒有。
+# 這一關重跑後若有變更就擋下，逼發布者把 article-keywords.js 一起帶進本次範圍。
+node scripts/build-article-keywords.mjs > /dev/null 2>&1 || true
+if git diff --quiet -- article-keywords.js 2>/dev/null; then
+  ok "咪卡內文關鍵詞（已是最新）"
+else
+  bad "article-keywords.js 有更新未提交：把它加進本次發布範圍（新文章的關鍵詞沒進索引，咪卡會找不到）"
+fi
 
 echo "═══ 2/10 文章互聯腳本齊全 ═══"
 if node scripts/verify-interlink.js 2>&1 | grep -q "結果：PASS"; then ok "interlink"; else bad "verify-interlink FAIL（有文章缺互聯腳本）"; fi
