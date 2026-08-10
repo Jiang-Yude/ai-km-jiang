@@ -26,7 +26,8 @@ window.ARTICLE_TAGS = {
     "江江精選",
     "知識管理", "AI工作流", "AIAgent", "工作流程", "工具操作",
     "技能包設計", "ClaudeSkills", "知識庫", "輔助決策",
-    "差異比較", "數位轉型", "隱性知識", "提示詞設計", "AI趨勢"
+    "差異比較", "數位轉型", "隱性知識", "提示詞設計", "AI趨勢",
+    "圖片生成", "AI應用", "品牌資產"
   ],
   level: ["零基礎入門", "基礎", "進階", "專業"],
   content_type: ["教學文章", "觀點文章", "趨勢文章", "案例文章"]
@@ -1089,7 +1090,7 @@ window.ARTICLES = [
       content_type: ["觀點文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["how-to-train-your-ai-employee", "intent-first-prompting", "talent-vs-expertise", "long-answer-three-layers"]
+    related: ["how-to-train-your-ai-employee", "intent-first-prompting", "talent-vs-expertise", "long-answer-three-layers", "character-costume-sheet-three-views"]
   },
 
   /* ── 把課前問卷變成簡報，再把流程存成技能包（教學）── */
@@ -1318,7 +1319,7 @@ window.ARTICLES = [
     summary: "提示詞設計的底層原理：AI 是詞語關聯的計算機，像強一億倍的手機輸入法。從課題分離的三步修正、角色設定的限制到負向提示詞的陷阱，先懂語意再套模板。",
     tags: {"topic":["提示詞設計","隱性知識","知識管理"],"level":["基礎"],"content_type":["教學文章"]},
     external: { threads: null, vocus: null },
-    related: ["ai-data-organization-usable-system", "claude-skills-knowledge-assets", "ai-that-knows-you", "chatgpt-work-skills-web-version", "build-your-own-dictionary"]
+    related: ["ai-data-organization-usable-system", "claude-skills-knowledge-assets", "ai-that-knows-you", "chatgpt-work-skills-web-version", "build-your-own-dictionary", "character-costume-sheet-three-views"]
   },
   {
     id: "claude-skills-knowledge-assets",
@@ -1492,7 +1493,7 @@ window.ARTICLES = [
     summary: "當同一張臉出現在不同入口，使用者就會期待相同能力，說明成本會從產品轉嫁到自己身上。記錄我把 LINE 群組助理從咪卡分出萊卡的判斷過程：用三個問題決定該沿用還是拆出新角色，先定義產品分工再決定視覺，最後讓角色名稱與造型自己傳達能力邊界。",
     tags: {"topic":["輔助決策","差異比較","AI應用"],"level":["基礎"],"content_type":["觀點文章"]},
     external: { threads: null, vocus: null },
-    related: ["line-group-ai-workflow", "how-to-train-your-ai-employee", "docs-as-system-design-agent"]
+    related: ["line-group-ai-workflow", "how-to-train-your-ai-employee", "docs-as-system-design-agent", "character-costume-sheet-three-views"]
   },
 
   {
@@ -1939,5 +1940,25 @@ window.ARTICLES = [
     },
     external: { threads: null, vocus: null },
     related: ["harness-mindset-for-bosses", "ai-tools-professional-judgment", "start-with-a-wrong-draft"]
+  }
+,
+
+  /* ── AI 每次生的角色都不一樣：用抽卡、定裝照與三視圖把形象固定下來（教學） ── */
+  {
+    id: "character-costume-sheet-three-views",
+    url: "articles/character-costume-sheet-three-views/",
+    date: "2026-07-23",
+    updated: "2026-08-11",
+    title: "AI 每次生的角色都不一樣：用抽卡、定裝照與三視圖把形象固定下來",
+    problem: "今天生出來的角色很滿意，隔天再生一張，帽子變形狀、毛色變深、體型變胖，看起來像另一隻，每一張都得重抽重挑重改。",
+    audience: "用 AI 生圖做品牌角色、吉祥物或 AI 助理形象但每次都不一致的人；需要同一個角色反覆出現在社群圖卡與官網插圖的人；以及自己就是品牌主角、想讓 AI 生成的形象更像本人的講師與創作者。",
+    summary: "角色不穩定通常不是 AI 不聽話，是這個角色還沒有規格。三步驟把規格生出來：造型未定時用九宮格抽卡，角色、背景、角度固定，一次只改一個變因；抽到滿意的趁 AI 還記得偏好立刻做定裝照，固定毛色體型、配色、配件、神情與畫風；再展開成正面、側面、背面的三視圖，左右不對稱就做成四視圖。附角色本體、固定配件、畫風三組驗收清單，定裝照與四視圖可直接複製的提示詞，萊卡的三次修正實錄，真人品牌怎麼用四張照片與一組表情達成同一件事，以及規格存好之後 AI 還是不照做時的三層做法：生圖時直接再丟參考圖、把素材集中到同一個專案、把規格寫成技能包。",
+    tags: {
+      topic: ["江江精選", "圖片生成", "AI應用", "品牌資產"],
+      level: ["基礎"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["mika-to-laika-product-character-design", "map-is-not-the-territory", "semantic-rules-before-prompt-templates"]
   }
 ];
