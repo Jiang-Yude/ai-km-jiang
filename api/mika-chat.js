@@ -322,7 +322,8 @@ module.exports = async (req, res) => {
       signal: ctrl.signal,
       body: JSON.stringify({
         model: MODEL(),
-        max_tokens: Number(process.env.MIKA_MAX_TOKENS) || 600, // 回覆長度上限，約中文三四百字
+        // GPT-5.6 系列不吃 max_tokens，要用 max_completion_tokens（2026-08-10 上線實測抓到）
+        max_completion_tokens: Number(process.env.MIKA_MAX_TOKENS) || 600, // 回覆長度上限，約中文三四百字
         // 推理按需開：問題清楚（別名命中）＝none，成本與速度最佳；
         // 問得抽象（分數低於門檻）＝low，讓咪卡想清楚哪篇文章真的對得上訪客的處境。
         // 推理 token 算 output 計費且 GPT-5.6 預設 medium，全開等於帳單翻倍，故不用預設值。
