@@ -447,7 +447,7 @@ window.ARTICLES = [
       content_type: ["案例文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: "https://vocus.cc/salon/Jiang_Coach" },
-    related: ["codex-only-auto-worklog", "decision-ladder-non-programmer", "publish-gate", "session-messaging-reminder-layer", "cognitive-debt"]
+    related: ["codex-only-auto-worklog", "decision-ladder-non-programmer", "publish-gate", "session-messaging-reminder-layer", "cognitive-debt", "start-with-a-wrong-draft"]
   },
 
   /* ── 8. AI 之王不上戰場（觀點）── */
@@ -1013,7 +1013,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["intent-first-prompting", "prompt-to-loop-map", "loop-engineering-guardrails", "ai-employee-four-levels"]
+    related: ["intent-first-prompting", "prompt-to-loop-map", "loop-engineering-guardrails", "ai-employee-four-levels", "dont-learn-ai-tools"]
   },
 
   /* ── 從提示詞工程到迴圈工程：一張圖看懂四階段（知識地圖）── */
@@ -1464,7 +1464,7 @@ window.ARTICLES = [
     summary: "三名資深工程師靠清理 AI 生成的冗長程式碼收費，一週完整達標一萬美元。他們自己也用 Claude Code，官網卻寫著 the agent doesn't get a vote。搭配 SlopCodeBench 對結構侵蝕的研究，說明工具普及後差異會回到看懂問題、知道哪裡不能碰、判斷結果能不能用。附把工作分成三層的方法、交付 AI 前的三問清單與可直接使用的提示詞。",
     tags: {"topic":["AI趨勢","輔助決策","AIAgent"],"level":["基礎"],"content_type":["觀點文章"]},
     external: { threads: null, vocus: null },
-    related: ["ai-capability-tiers", "how-to-train-your-ai-employee", "vibe-coding-ten-half-products", "strong-ai-models-knowledge-workflow-road", "ai-cp-value-calculus", "ai-employee-four-levels", "use-more-ai-not-enough", "agi-work-and-discovery"]
+    related: ["ai-capability-tiers", "how-to-train-your-ai-employee", "vibe-coding-ten-half-products", "strong-ai-models-knowledge-workflow-road", "ai-cp-value-calculus", "ai-employee-four-levels", "use-more-ai-not-enough", "agi-work-and-discovery", "meta-prompt-thirty-versions", "dont-learn-ai-tools"]
   },
 
   {
@@ -1657,7 +1657,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["how-to-train-your-ai-employee", "semantic-rules-before-prompt-templates", "intent-first-prompting", "strong-ai-models-knowledge-workflow-road", "ai-course-map-from-entry-to-workflow", "one-on-one-questions"]
+    related: ["how-to-train-your-ai-employee", "semantic-rules-before-prompt-templates", "intent-first-prompting", "strong-ai-models-knowledge-workflow-road", "ai-course-map-from-entry-to-workflow", "one-on-one-questions", "meta-prompt-thirty-versions"]
   },
 
   /* ── AI 常見問題 37 問（觀點）── */
@@ -1712,7 +1712,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["ai-handoff-instructions", "what-is-loop-engineering", "why-split-data-into-cards", "build-your-own-dictionary"]
+    related: ["ai-handoff-instructions", "what-is-loop-engineering", "why-split-data-into-cards", "build-your-own-dictionary", "start-with-a-wrong-draft"]
   },
 
   /* ── 從 Answer 到 Action：企業如何導入 AI Agent（教學）── */
@@ -1882,5 +1882,62 @@ window.ARTICLES = [
     },
     external: { threads: null, vocus: null },
     related: ["cli-api-mcp-computer-use", "ai-cp-value-calculus"]
+  },
+
+  /* ── 元提示詞：同一份提示詞長出三十種版本（教學） ── */
+  {
+    id: "meta-prompt-thirty-versions",
+    url: "articles/meta-prompt-thirty-versions/",
+    date: "2026-08-09",
+    updated: "2026-08-10",
+    title: "同一份提示詞，三十個人做出三十種東西",
+    problem: "準備了一套很好的提示詞發給全班，交回來的作品卻高度雷同，除了名字之外幾乎都一樣。",
+    audience: "要帶一群人用 AI 的講師、帶課老師、社團幹部與企業內訓負責人，以及想讓 AI 產出帶著自己味道的一般使用者。",
+    summary: "元提示詞是一份會生出提示詞的提示詞：學員拿到手之後，AI 會先反過來認識他，再依照他這個人生成一份專屬的提示詞才開始做事，所以同一份東西發給三十個人會長出三十種結果。本文說明一般提示詞為什麼讓大家做出一樣的東西，拆開元提示詞裡實際寫了什麼（角色與品質底線、要向使用者拿什麼素材、素材不足時一層一層退的退路、給三個版本讓他選、定義版本差在哪些層面），並附一份做個人故事海報的完整可複製元提示詞、把現有提示詞改成元提示詞的三個步驟，以及這套方法的前提與不適用情境。",
+    tags: {
+      topic: ["提示詞設計", "技能包設計"],
+      level: ["零基礎入門"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["ai-that-knows-you", "start-with-a-wrong-draft", "ai-tools-professional-judgment"]
+  },
+
+  /* ── 先讓 AI 給一個錯的版本（教學） ── */
+  {
+    id: "start-with-a-wrong-draft",
+    url: "articles/start-with-a-wrong-draft/",
+    date: "2026-08-09",
+    updated: "2026-08-10",
+    title: "不知道怎麼開始，就先讓 AI 給你一個錯的版本",
+    problem: "想用 AI 整理組織的資料，但問對方哪些資料重要，他答不出來；要他先講清楚規格，也講不出來。",
+    audience: "要幫公司或組織導入 AI 的顧問與內部推動者、面對一堆檔案不知道先整理哪一份的人，以及想把同事腦中講不出來的判斷標準寫成文字的主管。",
+    summary: "人從一片空白裡生出結構很難，但看到一份具體又不順眼的東西，意見馬上就冒出來。本文把這個落差變成方法：先讓 AI 生一個很可能是錯的版本，再讓真正懂的人去挑毛病，規則就在糾正的過程中長出來。內容含挑資料的四階遞降法（三到五份、最近三個月、一個月、最近一週）、讓 AI 生排序草稿的可複製提示詞、糾正時要問的三個問題，以及把糾正留下來變成技能包或 SOP 的做法，最後說明三種不該用這招的情況。",
+    tags: {
+      topic: ["AI工作流", "知識管理", "輔助決策"],
+      level: ["基礎"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["meta-prompt-thirty-versions", "rule-file-rebound", "caught-ai-slacking-into-rules", "dont-learn-ai-tools"]
+  },
+
+  /* ── 不教 AI 工具，只教 AI（觀點） ── */
+  {
+    id: "dont-learn-ai-tools",
+    url: "articles/dont-learn-ai-tools/",
+    date: "2026-08-09",
+    updated: "2026-08-10",
+    title: "我上課不教 AI 工具，因為工具是 AI 該操作的",
+    problem: "AI 工具太多學不完，每出一個新的就焦慮一次；上了好幾堂工具課，工作卻沒有真的變輕鬆。",
+    audience: "被工具數量壓得喘不過氣的知識工作者、上過工具課卻沒感覺的人，以及在猶豫要教工具還是教觀念的講師與內訓負責人。",
+    summary: "學會操作工具，你就成為操作工具的那個人，產能上限等於自己能坐在電腦前的時數。學 AI 然後叫 AI 去操作工具，位置就換成交辦的那一方，可以同時派出好幾件事。本文從課堂上「想要用 Canva 的舉手」的現場開場，說明兩種位置的差別、以及為什麼真正的變化發生在數量上，給三個判斷自己正在學哪一種的問題、四步換位置的做法，並誠實劃出哪些工具還是得自己會：要驗收的東西得看得懂、要交辦的工具得知道它能幹嘛、價值在手感的不要外包。",
+    tags: {
+      topic: ["AIAgent", "工具操作"],
+      level: ["零基礎入門"],
+      content_type: ["觀點文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["harness-mindset-for-bosses", "ai-tools-professional-judgment", "start-with-a-wrong-draft"]
   }
 ];
