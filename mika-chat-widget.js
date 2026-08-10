@@ -11,6 +11,7 @@
   var VID_KEY = 'mikaChat.vid.v1';
   var SID_KEY = 'mikaChat.sid.v1';
   var NAME_KEY = 'mikaChat.name.v1';
+  var SIZE_KEY = 'mikaChat.size.v1';   // s／m／l 三段，跨頁記住
   var MAX_HISTORY = 60;
   /* 端點（正式站＝同網域 serverless；file:// 校稿時自動走示意回覆）
      記錄＝匿名統計用：只看大家都問什麼，不追個人軌跡（江江 2026-08-07 拍板，去中心化原則） */
@@ -128,6 +129,7 @@
         '<div><div class="mkw-head-title">咪卡</div>' +
         '<div class="mkw-head-sub">AI 小幫手</div></div>' +
         '<div class="mkw-head-actions">' +
+          '<button class="mkw-icon-btn mkw-size" type="button" title="切換視窗大小" aria-label="切換視窗大小">⤢</button>' +
           '<button class="mkw-icon-btn mkw-clear" type="button" title="清除對話" aria-label="清除對話">⟲</button>' +
           '<button class="mkw-icon-btn mkw-close" type="button" title="收合" aria-label="收合聊天視窗">✕</button>' +
         '</div>' +
@@ -297,6 +299,26 @@
       setTimeout(scrollBottom, 240);
     }
   }
+
+  /* 三段視窗大小：小（原本）／中／大。存 localStorage，跨頁沿用。 */
+  var SIZES = ['s', 'm', 'l'];
+  var SIZE_LABEL = { s: '小視窗', m: '中視窗', l: '大視窗' };
+  function getSize() {
+    try { var v = localStorage.getItem(SIZE_KEY); return SIZES.indexOf(v) >= 0 ? v : 's'; } catch (e) { return 's'; }
+  }
+  function applySize(sz) {
+    SIZES.forEach(function (x) { root.classList.remove('mkw-size-' + x); });
+    root.classList.add('mkw-size-' + sz);
+    try { localStorage.setItem(SIZE_KEY, sz); } catch (e) {}
+    var btn = root.querySelector('.mkw-size');
+    if (btn) btn.title = SIZE_LABEL[sz] + '（點一下換下一段）';
+  }
+  applySize(getSize());
+  root.querySelector('.mkw-size').addEventListener('click', function () {
+    var next = SIZES[(SIZES.indexOf(getSize()) + 1) % SIZES.length];
+    applySize(next);
+    scrollBottom();
+  });
 
   launcher.addEventListener('click', function () { setOpen(true); input.focus(); });
   root.querySelector('.mkw-close').addEventListener('click', function () { setOpen(false); });
