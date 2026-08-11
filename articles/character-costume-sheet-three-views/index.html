@@ -102,13 +102,13 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
 .footer-links{display:flex;flex-wrap:wrap;gap:6px 12px;margin-bottom:14px}.footer-links a{color:var(--blue);font-weight:900;text-decoration:none;font-size:14px}
 .footer-brand{font-weight:900;font-size:15px;margin-bottom:10px}.footer-note{font-size:13px;line-height:1.6}
 @media(max-width:820px){.infocard-grid{grid-template-columns:1fr}.duo{grid-template-columns:1fr}.workflow-grid,.workflow-grid.four{grid-template-columns:1fr}.section{padding:40px 20px}.hero{min-height:52vh;flex-direction:column;justify-content:flex-start;align-items:flex-start;gap:24px}.hero>div{width:100%}.hero-figure{width:100%;max-width:300px}html,body{overflow-x:hidden}.hero h1{word-break:break-word}}
-.art-fig{margin:28px auto 8px;max-width:820px}
-.art-fig img{display:block;width:100%;height:auto;border-radius:14px;border:1px solid var(--line);box-shadow:0 10px 28px rgba(107,74,42,.10);cursor:zoom-in}
+.inline-figure{margin:28px auto 8px;max-width:820px}
+.inline-figure img{display:block;width:100%;height:auto;border-radius:14px;border:1px solid var(--line);box-shadow:0 10px 28px rgba(107,74,42,.10);cursor:zoom-in}
 .lightbox{position:fixed;inset:0;z-index:10000;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(12,10,8,.92);cursor:zoom-out;backdrop-filter:blur(4px)}
 .lightbox.open{display:flex}.lightbox img{max-width:96vw;max-height:92vh;border-radius:10px;box-shadow:0 24px 60px rgba(0,0,0,.5)}
 .lightbox-close{position:fixed;top:18px;right:24px;color:#fff;font-size:34px;line-height:1;font-weight:700;cursor:pointer;opacity:.85}
-.art-fig.mid{max-width:560px}
-.art-fig figcaption{margin-top:10px;font-size:14px;line-height:1.65;color:var(--muted);text-align:center}
+.inline-figure.mid{max-width:560px}
+.inline-figure figcaption{margin-top:10px;font-size:14px;line-height:1.65;color:var(--muted);text-align:center}
 </style>
 </head>
 <body class="spotlight">
@@ -231,7 +231,7 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
     <p>一張定裝照只能證明這個角度好看。角色轉到側面或背面之後，帽子怎麼戴、東西拿在哪一側、尾巴落在哪裡，都還沒有答案。這就是三視圖要接手的工作。</p>
     <p>三視圖就是一個角色的三個角度：正面、側面、背面。我自己會用四視圖，因為左右兩側有時候長得不太一樣。萊卡手上的信件、帽子的方向與左右姿勢都可能產生差異，所以我把側面拆成左側與右側，做成前、左、後、右四個角度。</p>
     <p>三視圖把角色從一張形象照，整理成可以被重複使用的設計規格。之後不管換場景、換動作，或交給不同的圖片生成工具，你都有共同的驗收基準。</p>
-    <figure class="art-fig mid">
+    <figure class="inline-figure mid">
       <img src="../../images/articles/character-costume-sheet-three-views/mika-costume-sheet-four-views.jpg" alt="咪卡角色定妝照：上排四視圖，下排帽子五個角度參考" loading="lazy" width="1000" height="1249">
       <figcaption>咪卡的角色定妝照。上排是四視圖（正面、左、後、右），下排把帽子單獨拉出來做五個角度的參考。</figcaption>
     </figure>
@@ -290,7 +290,7 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
     <p>同一套邏輯也適用真人品牌，而且更簡單，因為你不用抽卡。</p>
     <p>最直接的做法是拍四張照片：正面、左邊、右邊、背面。這四張就是你自己的四視圖。</p>
     <p>表情也可以比照辦理。如果你覺得 AI 改出來的笑容不像自己，就拍自己真正笑起來的樣子餵給它，生成的結果會更準確。</p>
-    <figure class="art-fig">
+    <figure class="inline-figure">
       <img src="../../images/articles/character-costume-sheet-three-views/real-person-four-views-expressions.jpg" alt="真人品牌的四視圖與九宮格表情參考" loading="lazy" width="1200" height="800">
       <figcaption>真人品牌的四視圖與表情參考：左邊是正面、側面、背面三個角度，右邊是九宮格表情。</figcaption>
     </figure>
@@ -390,7 +390,7 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
 <script>
 (function(){
   var box=document.getElementById('lightbox'),boxImg=document.getElementById('lightbox-img');
-  document.querySelectorAll('.hero-figure img,.art-fig img').forEach(function(img){
+  document.querySelectorAll('.hero-figure img,.inline-figure img').forEach(function(img){
     img.addEventListener('click',function(){boxImg.src=img.currentSrc||img.src;boxImg.alt=img.alt||'放大檢視';box.classList.add('open');box.setAttribute('aria-hidden','false');});
   });
   function close(){box.classList.remove('open');box.setAttribute('aria-hidden','true');boxImg.src='';}
