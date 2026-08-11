@@ -22,12 +22,25 @@ import path from 'path';
 import fs from 'fs';
 import { fileURLToPath } from 'url';
 
-// robust import：優先用可解析的 'playwright'，失敗才退回本機全域絕對路徑
+// robust import：優先用可解析的 'playwright'，失敗才依序試各機的全域安裝路徑。
+// 2026-08-11 補：筆電（apple 帳號）的 node 裝在 ~/.local/node22，全域套件不在
+// ESM 預設解析路徑，原本只有桌機那條絕對路徑，這台一律 ERR_MODULE_NOT_FOUND。
 let chromium;
-try {
-  ({ chromium } = await import('playwright'));
-} catch {
-  ({ chromium } = await import('/Users/jiangyude2/.npm-global/lib/node_modules/playwright/index.mjs'));
+const PW_CANDIDATES = [
+  'playwright',
+  `${process.env.HOME}/.local/node22/lib/node_modules/playwright/index.mjs`,
+  `${process.env.HOME}/.npm-global/lib/node_modules/playwright/index.mjs`,
+  '/Users/jiangyude2/.npm-global/lib/node_modules/playwright/index.mjs'
+];
+for (const spec of PW_CANDIDATES) {
+  try {
+    ({ chromium } = await import(spec));
+    break;
+  } catch {}
+}
+if (!chromium) {
+  console.error('找不到 playwright。先跑：npm i -g playwright && npx playwright install chromium');
+  process.exit(1);
 }
 
 const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
