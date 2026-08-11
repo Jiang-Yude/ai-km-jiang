@@ -58,10 +58,24 @@ for (const slug of slugs) {
   const file = path.join(REPO, 'articles', slug, 'index.html');
   if (!fs.existsSync(file)) { console.error(`SKIP ${slug}: no articles/${slug}/index.html`); continue; }
   await page.goto('file://' + file, { waitUntil: 'networkidle' });
-  // 隱藏 sticky nav，把 hero 撐成精準 1200x630 的卡、文字垂直置中、移掉內嵌配圖
+  // 隱藏 sticky nav，把 hero 撐成精準 1200x630 的卡、文字垂直置中
   await page.addStyleTag({ content: `
     nav.top{display:none!important}
     .hero{min-height:${H}px!important;height:${H}px!important;padding-top:0!important;padding-bottom:0!important;box-sizing:border-box!important}
+  `});
+  // 有 hero 封面圖的文章：保留圖並排到右邊（1200x630 是電影比例，直式圖靠右才不會被擠掉）。
+  // 沒有封面圖的文章維持原本的純文字卡。2026-08-11 前這裡一律 display:none，
+  // 導致「已經做了封面圖」的文章 og 圖仍然只有文字。
+  const hasFigure = await page.$('.hero-figure img');
+  await page.addStyleTag({ content: hasFigure ? `
+    .hero{flex-wrap:nowrap!important;justify-content:center!important;gap:56px!important}
+    .hero>div{width:640px!important;flex:none!important}
+    .hero h1{font-size:48px!important;line-height:1.12!important;margin:12px 0 14px!important}
+    .hero p{font-size:19px!important;line-height:1.6!important}
+    .hero .kicker{font-size:1.3rem!important}
+    .hero-figure{display:block!important;width:300px!important;flex:none!important;margin:0!important}
+    .hero-figure figcaption{display:none!important}
+  ` : `
     .hero-figure{display:none!important}
   `});
   await page.waitForTimeout(150);
