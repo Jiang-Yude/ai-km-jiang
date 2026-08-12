@@ -191,7 +191,12 @@ window.COURSES = [
     host: "江江教練",
     tags: ["講師", "Agent", "工作流", "備課"],
     summary: "給講師、知識工作者：用 AI Agent 重新設計備課、知識管理、教材生產流程。",
-    detail_url: "https://jiang-yude.github.io/my-0523-agent-workflow/",
+    // 2026-08-12 設回 null：原本指 https://jiang-yude.github.io/my-0523-agent-workflow/，
+    // 但該頁現在整份是「AI 圖文設計工作坊完整教案」（章節 Positioning／Teaching Mainline／
+    // Advanced Case／Iteration Log／Takeaway），沒有講師 Agent 工作流的內容。repo 名對得上日期，
+    // 內容後來被換掉、repo 名沒改。課程頁「免費講座 · 過去目錄」寫著「含完整簡報或回放，挑有興趣的補看」，
+    // 留著會讓想補看這場的訪客點到另一堂課。找到這場真正的簡報頁再補回來。
+    detail_url: null,
     materials: [],
     registration: {
       status: "ended",
