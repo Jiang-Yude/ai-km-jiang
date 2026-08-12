@@ -3,6 +3,7 @@
    維護：新文章上稿時補一條；訪客搜尋 log 發現沒接住的問法，第一線修法＝來這裡補別名。
    key＝articles-data.js 的文章 id。 */
 window.SEARCH_ALIASES = {
+  "character-costume-sheet-three-views": ["定妝照","角色定妝照","角色模板","角色基準圖","角色一致性","四視圖","抽卡","固定角色","每次生的角色都不一樣"],
   "start-with-a-wrong-draft": ["四階遞降法"],
   "nontech-partner-ai-onboarding": ["系統是你的放大器","一魚三吃","Agent是知識庫的翻譯層","待拍板佇列","真相分層"],
   "meta-prompt-thirty-versions": ["元提示詞","會生出提示詞的提示詞"],

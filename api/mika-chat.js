@@ -175,13 +175,18 @@ function buildFullIndexBlock() {
     // 別名（訪客口語）與內文關鍵詞一起帶上：訪客記得的詞常常不在標題也不在摘要，
     // 2026-08-11 江江實測「半人馬」與「A2A」都是這樣被漏掉的。
     const extra = [...new Set([].concat(a.aliases, a.keywords))].filter(Boolean).join('、');
-    return `${i + 1}｜${a.date || '未標'}｜${a.level || '未標'}｜${a.title}｜${String(a.problem || '').slice(0, 45)}`
-      + (extra ? `｜也可能被說成：${extra}` : '');
+    // 2026-08-12 格式壓縮：日期只留年月（2026-07-23 → 26-07，省 5 字 × 112 行），
+    // 「也可能被說成：」七個字改成 ≈（省 6 字 × 104 行）。兩項合計約省 1,180 字，語意由下方格式說明承擔。
+    // 精確到日的日期沒有檢索價值；要判斷最新文章有 buildLatestBlock 專責，課程日期在 buildCourseBlock。
+    const ym = String(a.date || '').slice(2, 7) || '未標';
+    return `${i + 1}｜${ym}｜${a.level || '未標'}｜${a.title}｜${String(a.problem || '').slice(0, 45)}`
+      + (extra ? `｜≈${extra}` : '');
   });
   return topicIndex(sorted)
     + '\n\n【全站文章總目錄（共 ' + sorted.length + ' 篇，依發布日期新到舊）】\n'
-    + '格式：編號｜發布日期｜難度｜標題｜這篇解決什麼｜也可能被說成（訪客口語別名＋這篇內文出現過的詞）\n'
-    + '「也可能被說成」那一欄很重要：訪客記得的詞常常不在標題裡，而是江江上課講的說法或文章內文的詞。\n'
+    + '格式：編號｜發布年月（YY-MM）｜難度｜標題｜這篇解決什麼｜≈也可能被說成\n'
+    + '≈ 後面那一欄很重要：訪客口語別名加這篇內文出現過的詞。訪客記得的詞常常不在標題裡，'
+    + '而是江江上課講的說法、比喻或金句。\n'
     + lines.join('\n');
 }
 

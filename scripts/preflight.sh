@@ -25,6 +25,15 @@ if git diff --quiet -- article-keywords.js 2>/dev/null; then
 else
   bad "article-keywords.js 有更新未提交：把它加進本次發布範圍（新文章的關鍵詞沒進索引，咪卡會找不到）"
 fi
+# 索引覆蓋率（2026-08-12 立，事故驅動）：上一關只擋「自動抽詞檔沒同步」，
+# 擋不住「人工別名沒補」與「改標題把詞洗掉」。8/12 定裝照那篇上線當輪沒補別名，
+# 江江實測問「角色定妝照」查不到，就是這個洞。盤點另發現 37 篇改過標題、16 篇有詞掉出索引。
+# 這一關與上一關同屬咪卡索引，刻意不另編號，維持「一個發布閘門」。
+if node scripts/check-index-coverage.mjs; then
+  ok "索引覆蓋率（新文章有別名、改標題沒洗掉詞）"
+else
+  bad "索引覆蓋率未過：見上方清單。補 search-aliases.js，或在 index-coverage-ignore.json 寫明不補的理由"
+fi
 
 echo "═══ 2/10 文章互聯腳本齊全 ═══"
 if node scripts/verify-interlink.js 2>&1 | grep -q "結果：PASS"; then ok "interlink"; else bad "verify-interlink FAIL（有文章缺互聯腳本）"; fi
