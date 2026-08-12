@@ -1,0 +1,418 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>換新電腦，軟體設定又要重來一次嗎？：我把 OBS 交給 AI，一個選項都沒點過｜江江教練 · AI 知識管理</title>
+<meta name="description" content="出差帶新筆電要重設 OBS，卻忘了把桌機設定記下來。這次我直接叫 AI 改設定檔，全程沒點過任何選項。文章攤開完整過程、AI 做不到的四件事，以及三個判斷問題：怎麼決定一件事能不能交給 AI。">
+<link rel="canonical" href="https://jiangyude.com/articles/let-ai-do-the-setup/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="換新電腦，軟體設定又要重來一次嗎？：我把 OBS 交給 AI，一個選項都沒點過｜江江教練">
+<!-- 分享封面：hero 文字填好後在 repo 根目錄跑 `node scripts/og-shot.mjs let-ai-do-the-setup` 自動截 1200×630 到 images/og/let-ai-do-the-setup.jpg（見 README「文章分享封面（OG 圖）機制」）。別退回 intro-jiang.png 直式人像，會被裁成只剩脖子。 -->
+<meta property="og:image" content="https://jiangyude.com/images/og/let-ai-do-the-setup.jpg">
+<meta property="og:description" content="出差帶新筆電要重設 OBS，卻忘了把桌機設定記下來。這次我直接叫 AI 改設定檔，全程沒點過任何選項。文章攤開完整過程、AI 做不到的四件事，以及三個判斷問題：怎麼決定一件事能不能交給 AI。">
+<meta property="og:url" content="https://jiangyude.com/articles/let-ai-do-the-setup/">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:site_name" content="江江教練 · AI 知識管理">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="換新電腦，軟體設定又要重來一次嗎？：我把 OBS 交給 AI，一個選項都沒點過｜江江教練">
+<meta name="twitter:image" content="https://jiangyude.com/images/og/let-ai-do-the-setup.jpg">
+<meta name="twitter:description" content="出差帶新筆電要重設 OBS，卻忘了把桌機設定記下來。這次我直接叫 AI 改設定檔，全程沒點過任何選項。文章攤開完整過程、AI 做不到的四件事，以及三個判斷問題：怎麼決定一件事能不能交給 AI。">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"換新電腦，軟體設定又要重來一次嗎？：我把 OBS 交給 AI，一個選項都沒點過","description":"出差帶新筆電要重設 OBS，卻忘了把桌機設定記下來。這次我直接叫 AI 改設定檔，全程沒點過任何選項。文章攤開完整過程、AI 做不到的四件事，以及三個判斷問題：怎麼決定一件事能不能交給 AI。","author":{"@type":"Person","name":"江昱德","alternateName":"江江教練","jobTitle":"隱性知識提煉師、AI 應用規劃師"},"isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://jiangyude.com/"},"inLanguage":"zh-Hant","url":"https://jiangyude.com/articles/let-ai-do-the-setup/"}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{--ink:#1a1612;--paper:#fefcf8;--muted:#6a635a;--line:#d8cdb8;--green:#5f7553;--blue:#5689b8;--orange:#e85a4f;--soft:#faf5ec;--dark:#2a2018;--shadow:0 18px 45px rgba(107,74,42,.14);--sp-shadow:hsla(35,50%,60%,.15);--sp-shadow-edge:hsla(35,50%,68%,.03);--sp-radius:400px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC","Segoe UI",sans-serif}
+a{color:inherit}
+/* 官網共用導航列 nav.top（與首頁/文章總站同一條） */
+nav.top{position:sticky;top:0;background:rgba(254,252,248,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid #d8cdb8;z-index:100}
+nav.top .container{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:24px;padding:14px 32px}
+.nav-brand-img{justify-self:start;display:flex;align-items:center;text-decoration:none;flex-shrink:0;transition:opacity .2s}
+.nav-brand-img:hover{opacity:.8}.nav-brand-img img{height:40px;width:auto;display:block}
+nav.top ul.nav-menu{justify-self:end;display:flex;gap:22px;list-style:none;margin:0;padding:0;font-size:.95rem;white-space:nowrap}
+nav.top ul.nav-menu a{color:#3a342d;text-decoration:none;transition:color .2s;font-weight:500;white-space:nowrap}
+nav.top ul.nav-menu a:hover{color:#1a1612}nav.top ul.nav-menu a.active{color:#1a1612;font-weight:700}
+.nav-toggle{display:none;background:none;border:none;padding:6px;cursor:pointer;width:36px;height:36px;position:relative}
+.nav-toggle span{display:block;position:absolute;left:8px;right:8px;height:2px;background:#1a1612;border-radius:2px;transition:transform .25s,opacity .25s,top .25s}
+.nav-toggle span:nth-child(1){top:11px}.nav-toggle span:nth-child(2){top:17px}.nav-toggle span:nth-child(3){top:23px}
+.nav-toggle.open span:nth-child(1){top:17px;transform:rotate(45deg)}.nav-toggle.open span:nth-child(2){opacity:0}.nav-toggle.open span:nth-child(3){top:17px;transform:rotate(-45deg)}
+@media(max-width:860px){
+ nav.top .container{grid-template-columns:auto 1fr auto;padding:10px 16px;gap:12px}
+ .nav-brand-img img{height:32px}
+ .nav-toggle{display:block;justify-self:end}
+ nav.top ul.nav-menu{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(254,252,248,.98);backdrop-filter:blur(14px);border-bottom:1px solid #d8cdb8;flex-direction:column;gap:0;padding:8px 0;box-shadow:0 10px 24px rgba(107,74,42,.08)}
+ nav.top ul.nav-menu.open{display:flex}
+ nav.top ul.nav-menu li{border-bottom:1px solid #e8dfc9}
+ nav.top ul.nav-menu li:last-child{border-bottom:none}
+ nav.top ul.nav-menu a{display:block;padding:14px 20px;font-size:1.06rem}
+}
+/* 滑鼠暖光暈（與首頁同一支 spotlight.js） */
+body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradient(var(--sp-radius) circle at var(--mx,50%) var(--my,50%),var(--sp-shadow) 0%,var(--sp-shadow-edge) 45%,transparent 75%);pointer-events:none;z-index:9999;mix-blend-mode:multiply;transition:background .06s linear}
+.hero{position:relative;overflow:hidden;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:72px;padding:96px clamp(20px,6vw,88px) 80px;background:linear-gradient(180deg,#fffcf0 0%,#f9e9d2 100%);color:#1a1612;border-bottom:1px solid #d8cdb8}
+.hero .wc{position:absolute;border-radius:50%;filter:blur(60px);pointer-events:none;z-index:0}
+.hero .wc1{width:420px;height:360px;top:-120px;right:-80px;background:#e8884b;opacity:.15}
+.hero .wc2{width:360px;height:300px;bottom:-110px;left:-70px;background:#5f7553;opacity:.13}
+.hero .wc3{width:280px;height:260px;top:34%;left:14%;background:#a08144;opacity:.10}
+.hero>div{flex:none;width:860px;max-width:100%;position:relative;z-index:2}
+.hero-figure{margin:0;width:420px;flex:none;position:relative;z-index:2}
+.hero-figure img{display:block;width:100%;border-radius:16px;border:1px solid #d8cdb8;box-shadow:0 18px 45px rgba(107,74,42,.16);cursor:zoom-in}
+.hero-figure figcaption{margin-top:10px;font-size:14px;line-height:1.6;color:#6a635a}
+.inline-figure{margin:30px auto 8px;max-width:820px}
+.inline-figure img{display:block;width:100%;border-radius:14px;border:1px solid var(--line);box-shadow:var(--shadow);background:#fff;cursor:zoom-in}
+.inline-figure figcaption{font-size:14px;line-height:1.6;color:var(--muted);margin-top:10px}
+.lightbox{position:fixed;inset:0;z-index:10000;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(12,10,8,.92);cursor:zoom-out;backdrop-filter:blur(4px)}
+.lightbox.open{display:flex}.lightbox img{max-width:96vw;max-height:92vh;border-radius:10px;box-shadow:0 24px 60px rgba(0,0,0,.5)}
+.lightbox-close{position:fixed;top:18px;right:24px;color:#fff;font-size:34px;line-height:1;font-weight:700;cursor:pointer;opacity:.85}
+.kicker{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.55rem;color:#7a5c3a;font-weight:500}
+.hero h1{max-width:none;margin:16px 0 18px;font-size:clamp(36px,6vw,72px);line-height:1.08;overflow-wrap:anywhere}
+.hero p{max-width:none;font-size:clamp(18px,2vw,23px);line-height:1.62;color:#3a342d}
+.cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
+.cta a{display:inline-flex;align-items:center;text-decoration:none;border-radius:8px;padding:12px 16px;font-weight:900}
+.cta .primary{background:#fff;color:#1a1612}.cta .ghost{border:1px solid rgba(255,255,255,.32);color:#fff;background:rgba(255,255,255,.08)}
+.section{padding:54px clamp(20px,6vw,88px);border-top:1px solid var(--line)}
+.inner{width:min(1000px,100%);margin:0 auto}
+.section h2{font-size:clamp(26px,4.2vw,48px);line-height:1.12;margin:0 0 18px}
+.section h3{font-size:clamp(21px,3vw,30px);line-height:1.2;margin:30px 0 12px}
+.lead{font-size:clamp(18px,1.6vw,22px);line-height:1.7;color:#3a342d;max-width:900px}
+.section p{font-size:18px;line-height:1.74;color:#3a342d}.section p+p{margin-top:14px}
+.section ul,.section ol{padding-left:1.4em;font-size:18px;line-height:1.74;color:#3a342d}.section li{margin-bottom:8px}
+.meaning{margin:22px 0;padding:16px 18px;border-left:5px solid var(--blue);background:rgba(86,137,184,.12);border-radius:6px;line-height:1.7;font-size:19px}
+.meaning b{display:block;color:var(--blue);margin-bottom:4px}
+.caveat{margin:0 0 8px;padding:16px 18px;border-left:5px solid var(--orange);background:rgba(232,90,79,.1);border-radius:6px;line-height:1.7;font-size:18px;color:#3a342d}
+.caveat b{display:block;color:var(--orange);margin-bottom:4px}
+.infocard{background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px 24px 22px;box-shadow:0 8px 22px rgba(107,74,42,.08);margin-top:8px}
+.infocard-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.info-item{padding:18px 14px 0}
+.info-item b{display:block;font-size:14px;font-weight:900;letter-spacing:.04em;margin-bottom:7px;text-transform:uppercase}
+.info-item:nth-child(1) b{color:var(--green)}.info-item:nth-child(2) b{color:var(--orange)}.info-item:nth-child(3) b{color:var(--blue)}
+.info-item p{margin:0;font-size:17px;line-height:1.6;color:#3a342d}
+.tagrow{display:flex;flex-wrap:wrap;gap:7px;margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
+.tag{font-size:14px;color:var(--muted);background:var(--soft);border:1px solid var(--line);border-radius:999px;padding:4px 11px}
+.duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:24px}
+.duo.stack{grid-template-columns:1fr}
+.duo .card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:22px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.duo .card.a{border-color:var(--orange)}.duo .card.b{border-color:var(--green);box-shadow:0 8px 24px rgba(95,117,83,.16)}
+.duo .card small{display:block;font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.04em;margin-bottom:9px}
+.duo .card.a small{color:var(--orange)}.duo .card.b small{color:var(--green)}
+.duo .card b{display:block;font-size:22px;line-height:1.3;margin-bottom:12px}.duo .card.a b{color:#c0512f}.duo .card.b b{color:#4a7a59}
+.duo .card p{margin:0;color:#3a342d;line-height:1.75;font-size:18px}
+.workflow-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:24px}
+.workflow-step{background:#fff;border:1px solid var(--line);border-radius:8px;padding:18px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.workflow-step small{display:block;color:var(--orange);font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;margin-bottom:9px}
+.workflow-step b{display:block;font-size:18px;line-height:1.3;margin-bottom:9px}
+.workflow-step p{margin:0;color:#3a342d;line-height:1.6;font-size:16px}
+.codeblock{background:var(--dark);color:#f3ead9;border-radius:8px;padding:18px 20px;font:500 14px/1.65 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;overflow-x:auto;white-space:pre-wrap;margin:20px 0;box-shadow:0 8px 22px rgba(107,74,42,.12)}
+.codeblock .c{color:#f6d7a6;font-weight:600}
+.skillcard{background:#fff;border:1px solid var(--green);border-radius:12px;padding:24px;box-shadow:0 10px 26px rgba(95,117,83,.16);margin-top:8px}
+.skillcard b{display:block;font-size:21px;margin-bottom:8px}
+.skillcard p{margin:0 0 16px;font-size:17px;line-height:1.65;color:#3a342d}
+.cta-band{background:#e6f0e5;color:#3a342d}.cta-band .section{border-top:none}
+.cta-band .inner{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(260px,.85fr);gap:26px;align-items:start}
+.cta-band h2{font-size:clamp(26px,4vw,44px);margin:0 0 16px}.cta-band p,.cta-band .lead{color:rgba(58,52,45,.9);font-size:18px;line-height:1.72}
+.cta-card{border:1px solid #cfe0d2;background:#fbfdfa;border-radius:8px;padding:22px}
+.cta-card b{display:block;color:#48b178;margin-bottom:10px;font-size:18px}.cta-card p{margin:0 0 14px}
+.footer{padding:30px clamp(20px,6vw,88px);font-size:14px;color:var(--muted);background:#fff;border-top:1px solid var(--line)}
+.footer-inner{width:min(1000px,100%);margin:0 auto}
+.footer-links{display:flex;flex-wrap:wrap;gap:6px 12px;margin-bottom:14px}.footer-links a{color:var(--blue);font-weight:900;text-decoration:none;font-size:14px}
+.footer-brand{font-weight:900;font-size:15px;margin-bottom:10px}.footer-note{font-size:13px;line-height:1.6}
+@media(max-width:820px){.infocard-grid{grid-template-columns:1fr}.duo{grid-template-columns:1fr}.workflow-grid{grid-template-columns:1fr}.cta-band .inner{grid-template-columns:1fr}.section{padding:40px 20px}.hero{min-height:52vh;flex-direction:column;justify-content:flex-start;align-items:flex-start;gap:24px}.hero>div{width:100%}.hero-figure{width:100%;max-width:560px}}
+.readmore{margin-top:24px;padding:20px 22px;background:var(--soft);border:1px solid var(--line);border-radius:12px}
+.readmore.near{margin:26px 0 6px;background:rgba(86,137,184,.07);border-color:#bcd0e2}
+.readmore.near b{color:var(--blue);font-size:18px}
+.readmore.near li{font-size:17px;line-height:1.7;margin-bottom:10px}
+.readmore b{display:block;margin-bottom:10px;font-size:19px}
+.readmore ul{margin:0;padding-left:1.25em}
+.readmore a{color:var(--blue);font-weight:700;text-decoration:none}
+.readmore a:hover{text-decoration:underline}
+@media(max-width:820px){html,body{overflow-x:hidden}.hero h1{word-break:break-word}}
+</style>
+</head>
+<body class="spotlight">
+<!-- 官網共用導航列 nav.top：與首頁/總站同一條，文章不要自己另做極簡 topbar（江江 2026-06-25：要同一個框架、同一條導航列）。把對應頁面的 class="active" 標在自己那欄。 -->
+<nav class="top">
+  <div class="container">
+    <a class="nav-brand-img" href="../../index.html"><img src="../../images/footer-signature.png" alt="江江教練 | 江昱德"></a>
+    <button class="nav-toggle" aria-label="選單"><span></span><span></span><span></span></button>
+    <ul class="nav-menu">
+      <li><a href="../../index.html">首頁</a></li>
+      <li><a href="../../knowledge-architecture.html">知識架構</a></li>
+      <li><a href="../../courses.html">課程</a></li>
+      <li><a href="../../articles.html" class="active">深度文章</a></li>
+      <li><a href="../../skills.html">技能包下載</a></li>
+      <li><a href="../../offers.html">服務方案</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="wc wc1"></div>
+  <div class="wc wc2"></div>
+  <div class="wc wc3"></div>
+  <div>
+    <div class="kicker">AI 應用</div>
+    <h1>換新電腦，軟體設定又要重來一次嗎？：我把 OBS 交給 AI，一個選項都沒點過</h1>
+    <p>以前遇到不熟的軟體，我要學的是那個軟體。現在我要學的是判斷：哪些事它能整包做完，哪些事它會卡住，卡住的時候我該補上什麼。</p>
+  </div>
+</section>
+
+<main>
+
+<section class="section" id="start">
+  <div class="inner">
+    <h2>這篇在講什麼</h2>
+    <p class="lead">這次出差帶新筆電，要重新設定 OBS 錄螢幕，而我忘記把桌機的設定記下來。以前這種事只能找教學影片，或是自己慢慢翻選項。這次我直接叫 AI 幫我設定好，全程沒有點過任何一個選項。這篇把整個過程攤開來講：AI 實際做了什麼、它做不到的四件事是什麼，以及我用什麼標準判斷「這件事能不能叫 AI 做」。重點不在 OBS，在於換一種面對操作問題的預設反應。</p>
+
+    <div class="duo stack">
+      <div class="card a">
+        <b>適合誰</b>
+        <ul>
+          <li>換了新電腦、重灌了系統，發現一堆軟體要重設，光想到就累</li>
+          <li>每次遇到不熟的軟體，第一個動作是去搜教學影片，看完二十分鐘還是卡在某個選項</li>
+          <li>已經在用 AI，但用途大多停在寫字、翻譯、整理資料，沒想過它能直接處理電腦上的設定</li>
+          <li>心裡有個疑問：什麼事可以放手給 AI，什麼事還是得自己來，界線到底在哪</li>
+        </ul>
+      </div>
+      <div class="card b">
+        <b>你可以帶走什麼</b>
+        <ul>
+          <li>一個真實案例的完整過程，看得到 AI 在每個決策點做了什麼判斷</li>
+          <li>AI 在這類任務上的四個明確邊界，知道哪裡它會停下來要你出手</li>
+          <li>三個判斷問題，下次遇到任何軟體設定，可以自己判斷能不能交出去</li>
+          <li>一句可以直接拿去用的提問</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="forget">
+  <div class="inner">
+    <h2>忘記把設定記下來</h2>
+    <p>出差前我換了新筆電。到了現場要錄線上課，打開 OBS，裡面是空的。</p>
+    <p>OBS 是免費開源的螢幕錄影軟體，功能很強，唯一的缺點是設定很麻煩。它預設什麼都沒有，場景要自己建、來源要自己加、解析度跟錄影格式都要自己調。第一次設定一個小時跑不掉。</p>
+    <p>而我忘記先把桌機的設定記下來。</p>
+    <p>這個處境我猜很多人熟悉。不只是 OBS，換電腦之後要重設的東西一長串，而且每一個都是「當初花了時間研究出來的結果」，現在要從頭再研究一次。</p>
+    <p>以前這種事只有兩條路：找教學影片跟著點，或是自己慢慢翻選項試出來。</p>
+  </div>
+</section>
+
+<section class="section" id="delegate">
+  <div class="inner">
+    <h2>我沒有走那兩條路</h2>
+    <p>我直接問 AI 能不能幫我設定好。</p>
+    <p>這裡要先講清楚我用的環境。我用的是 Claude Code，它能讀寫我電腦上的檔案、能執行命令列指令。這是它跟一般聊天視窗最大的差別：聊天視窗只能告訴你該怎麼做，它可以直接做。</p>
+    <p>它的第一個動作不是給我步驟，是先去看現況。查完回報給我三件事：OBS 32.2.1 已經裝好，但設定是一小時前才生成的，只有一個空場景、零個來源。解析度是 3024×1964 基準、輸出 1662×1080，這是我 MacBook Pro 螢幕的原生比例，不是 16:9，錄出來每個平台都會加黑邊。攝影機只有內建的 FaceTime HD，麥克風是內建單聲道。</p>
+    <p>這段查證我一個字都沒教它。它自己去讀了 OBS 的設定檔、跑了系統的裝置查詢指令。</p>
+
+    <div class="readmore near">
+      <b>為什麼我不從「學會這個軟體」開始，我另外寫過一篇</b>
+      <ul>
+        <li><a href="../dont-learn-ai-tools/">我上課不教 AI 工具，因為工具是 AI 該操作的</a>　這篇是一次實作的現場記錄，那篇談的是這個立場本身：當工具的操作可以交出去，人該把學習的力氣放在哪裡</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="ask-first">
+  <div class="inner">
+    <h2>它先問我用途，才動手</h2>
+    <p>查完現況，它沒有直接開始改，而是問了我兩個問題。</p>
+    <p>第一個問題是用途：這台 OBS 主要拿來做什麼。錄線上課程、錄短影音、直播，還是錄會議。</p>
+    <p>這個問題問得對。同樣是 OBS，錄線上課要的是螢幕為主加人臉小窗、要抓得到學員的聲音；錄短影音要的是人臉滿版加高畫質；直播要設串流金鑰跟位元率。用途不確定就動手，做完一定要重來。</p>
+    <p>第二個問題是施工路徑，它給了我兩條，並且說明了差別。</p>
+
+    <figure class="inline-figure">
+      <img src="../../images/articles/let-ai-do-the-setup-01.jpg" alt="AI 在對話中畫出的決策圖：先由我決定用途，再從兩條施工路徑二選一，最後由 AI 建好場景與參數" loading="lazy">
+      <figcaption>它沒有直接動手，而是先把選項畫出來讓我選。路徑 A 是我關掉 OBS 讓它寫設定檔，路徑 B 是我開啟 WebSocket 讓它遠端設定。</figcaption>
+    </figure>
+
+    <p>它推薦第一條，理由是能一次把場景、來源、參數全部建好；第二條的 WebSocket 有些參數 API 改不到。我選了第一條。</p>
+    <div class="meaning">
+      <b>這裡有個細節值得說</b>
+      它明確告訴我，兩條路都需要我動手一次，因為它不會自己去點 OBS 的視窗。這是我給它的規則，操作螢幕必須我當次授權。它沒有偷偷繞過，而是把這個限制當成選項設計的一部分攤開來講。
+    </div>
+  </div>
+</section>
+
+<section class="section" id="verify">
+  <div class="inner">
+    <h2>它沒有憑記憶寫參數</h2>
+    <p>決定路徑之後，它做的第一件事讓我覺得這輪不會出錯。</p>
+    <p>OBS 的場景是存在一個 json 檔裡的，裡面每個來源都有一個代號。螢幕擷取叫什麼、攝影機叫什麼、系統音叫什麼，這些代號如果寫錯一個字，OBS 打開來場景就是空的，而且不會報錯，你只會看到一片黑。</p>
+    <p>它沒有直接寫。它先跑去 OBS 的程式檔案裡面，把裡面的字串撈出來比對，確認了這幾件事：</p>
+    <ul>
+      <li>螢幕擷取是 <code>screen_capture</code></li>
+      <li>攝影機是 <code>macos-avcapture</code>，而不是網路上教學常寫的舊代號</li>
+      <li>麥克風是 <code>coreaudio_input_capture</code>，系統音是 <code>sck_audio_capture</code></li>
+      <li>錄影格式 <code>hybrid_mp4</code> 確實存在於這個版本</li>
+      <li>場景檔裡的 bounds 欄位存的是整數而不是字串</li>
+    </ul>
+    <p>然後它去讀了 OBS 自己剛剛生成的那個空場景檔，照著它的欄位結構寫新的。</p>
+    <p>這一段是整個過程的關鍵。AI 寫東西最常見的失敗不是不會寫，是憑印象寫出「看起來對」的東西。它自己知道這個風險，所以先去找了真實來源。</p>
+  </div>
+</section>
+
+<section class="section" id="scenes">
+  <div class="inner">
+    <h2>它建了什麼</h2>
+    <p>最後它建了三個場景，畫布統一 1920×1080。</p>
+
+    <figure class="inline-figure">
+      <img src="../../images/articles/let-ai-do-the-setup-02.jpg" alt="三個 OBS 場景的畫面配置：主畫面是螢幕填滿加攝影機小窗、完整螢幕不裁切、開場只有攝影機" loading="lazy">
+      <figcaption>三個場景各有明確用途。錄課主用第一個，要示範選單操作時切第二個，開場白跟結尾用第三個。</figcaption>
+    </figure>
+
+    <p>主畫面是螢幕填滿加攝影機小窗放右下角。螢幕填滿會裁掉一點上下，剛好把選單列跟 Dock 裁掉，錄課反而乾淨。第二個場景是完整螢幕不裁切，要示範選單操作時切過去。第三個是攝影機滿版。</p>
+    <p>參數的部分，解析度改成 1920×1080 30fps，錄影格式從 <code>hybrid_mov</code> 改成 <code>hybrid_mp4</code>。這個格式的好處是當機或斷電不會壞檔，而且不用轉檔就能直接丟進剪輯軟體。編碼維持硬體加速，錄兩小時的課 CPU 不會滿載。存檔位置獨立開一個資料夾。</p>
+    <p>動手之前它把整包設定備份了一份，原本的空設定也留著沒刪。</p>
+    <p>我打開 OBS，就是設好的狀態。我一個選項都沒點過。</p>
+  </div>
+</section>
+
+<section class="section" id="limits">
+  <div class="inner">
+    <h2>它做不到的四件事</h2>
+    <p>這篇如果只寫到上面，就變成一篇吹捧文。真正有用的部分在這裡：它有四件事做不到，而這四件事就是邊界。</p>
+
+    <div class="workflow-grid">
+      <div class="workflow-step">
+        <small>邊界 01</small>
+        <b>不碰螢幕</b>
+        <p>整個過程它沒有點過任何一個視窗。就算沒有這條規則，讓 AI 遙控滑鼠去點介面本來就是最慢最容易錯的做法。改檔案比模擬點擊可靠一個量級。</p>
+      </div>
+      <div class="workflow-step">
+        <small>邊界 02</small>
+        <b>不能替我授權</b>
+        <p>OBS 要錄螢幕、要用相機麥克風，macOS 會跳出權限請求，這個必須本人點。它能做的是提前告訴我會跳哪三個、哪一個給完要重開才生效。</p>
+      </div>
+      <div class="workflow-step">
+        <small>邊界 03</small>
+        <b>不能決定用途</b>
+        <p>它問我要錄什麼，是因為它真的不知道。這類問題不是它偷懶，是這個資訊只存在我腦子裡。</p>
+      </div>
+    </div>
+
+    <div class="caveat">
+      <b>邊界 04：它第一次沒有全對</b>
+      OBS 的設定檔裡，<code>RecFormat2</code> 這個欄位在兩個區段各出現一次，它的腳本只改到第一個。這個錯誤在目前的輸出模式下不影響錄影，但之後切換模式就會踩到。是它自己在驗收時抓出行號才發現的，然後補改。
+    </div>
+
+    <p>第四點我覺得最重要。它不是不會出錯，是它出錯之後有辦法自己抓出來。差別在於有沒有驗收這一步，不在於第一次寫對。</p>
+
+    <div class="readmore near">
+      <b>AI 到底怎麼做到「直接操作軟體」，有一篇專門講</b>
+      <ul>
+        <li><a href="../how-ai-connects-software/">AI Agent 怎麼幫我們直接操作軟體？</a>　這篇是單一案例裡的邊界實測，那篇談的是這件事背後的連接方式，看完會知道為什麼有些軟體交得出去、有些交不出去</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="judge">
+  <div class="inner">
+    <h2>我怎麼判斷一件事能不能叫 AI 做</h2>
+    <p>這次之後我把判斷收成三個問題。遇到任何軟體設定，照這三個問題問一次就知道。</p>
+
+    <h3>第一，這個軟體的設定存在哪裡？</h3>
+    <p>如果設定是存成純文字檔的，ini、json、yaml、plist 這幾種，AI 就可以直接讀寫。OBS 是，VS Code 是，Obsidian 是，終端機是，大部分開發工具都是。反過來，設定存在系統資料庫或加密檔裡的，它就只能給你步驟。</p>
+    <p>判斷方法很簡單，直接把這句話丟給它：</p>
+    <div class="codeblock">這個軟體的設定檔在哪裡？可以直接改嗎？
+如果可以，先告訴我改哪幾個欄位、風險是什麼，我確認後你再動手。</div>
+    <p>它找得到就可以交出去，找不到就回去點介面。後面那句是保險，讓它先講清楚再動手，你才有機會攔下不想要的改動。</p>
+
+    <h3>第二，這件事有沒有哪一步一定要人授權？</h3>
+    <p>權限、密碼、付款、對外送出，這幾類一定要人。有這種步驟不代表不能交給 AI，代表要把工作切開：AI 做前面的準備，你做那一下授權，AI 接著做後面的驗收。</p>
+
+    <h3>第三，做錯了看不看得出來？</h3>
+    <p>錯了能用命令列驗出來的，放心交。像這次的設定檔，改完抓一下欄位就知道對不對。錯了要等到三個月後才發現的，自己來。</p>
+
+    <div class="meaning">
+      <b>三個問題都過，這件事就可以整包交出去</b>
+      設定是純文字、沒有非人不可的授權步驟、錯了驗得出來。三個條件同時成立的事情，比你想的多很多。
+    </div>
+  </div>
+</section>
+
+<section class="section" id="mindset">
+  <div class="inner">
+    <h2>心態上，這不是偷懶</h2>
+    <p>我想把這件事講清楚。</p>
+    <p>這個心態不是偷懶喔。是覺得自己要學會的東西換了：要知道 AI 目前的能力與邊界，以及如何分配工作給 AI。</p>
+    <p>以前遇到不會的軟體，我要學的是那個軟體。翻選單、記快捷鍵、背參數。學會了，換一套軟體再學一次。</p>
+    <p>現在我要學的是判斷。哪些事它能整包做完，哪些事它會卡在哪一步，卡住的時候我該補上什麼。這個判斷是可以累積的，而且換一套軟體不用重學。</p>
+    <p>上面那三個問題就是我目前累積出來的判斷。它不會憑空出現，是每次交出去、看它怎麼做、看它在哪裡卡住，一次一次長出來的。</p>
+    <p>所以真正的差別不在少花了多少時間。是我現在遇到操作相關的事，第一個念頭已經變成「這件事能不能叫 AI 做」，而不是「我要花多久才學得會」。</p>
+
+    <div class="readmore near">
+      <b>把事情交出去會不會讓自己退化，我寫過另一篇</b>
+      <ul>
+        <li><a href="../ai-delegators-optimism/">AI 越來越強，會不會哪天就不需要我了？：越交給 AI 的人越不怕被取代</a>　這篇談的是單次任務怎麼判斷交不交，那篇談的是長期一直交出去之後，人自己會變成什麼樣子</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="cta-band">
+  <div class="section">
+    <div class="inner">
+      <div>
+        <h2>想看更多這種實作現場</h2>
+        <p class="lead">我每個月固定辦兩場免費線上講座，主題輪流，內容大多是這種「真的做過一次，然後把判斷留下來」的東西。場次會先在 LINE 社群公布。</p>
+      </div>
+      <div class="cta-card">
+        <b>免費線上講座</b>
+        <p>加入 LINE 社群，講座場次與連結會在開課前公布。</p>
+        <p><a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">加入 LINE 社群 ↗</a></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">江江教練 · AI 知識管理</div>
+    <div class="footer-links">
+      <a href="../../articles.html">← 回深度文章總站</a>
+      <a href="../../index.html">首頁</a>
+      <a href="../../learn.html">自學資源</a>
+      <a href="../../skills.html">技能包下載</a>
+      <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">LINE 社群 ↗</a>
+      <a href="https://www.threads.com/@jiang_yude_coach" target="_blank" rel="noopener">Threads ↗</a>
+      <a href="https://vocus.cc/salon/Jiang_Coach" target="_blank" rel="noopener">方格子 ↗</a>
+    </div>
+    <div class="footer-note">這是一篇案例文章，整理我對「換新電腦，軟體設定又要重來一次嗎？：我把 OBS 交給 AI，一個選項都沒點過」的看法，供你參考。</div>
+  </div>
+</footer>
+
+<!-- 點圖放大 lightbox（hero 與內文圖通用，已內建，不用每篇重加） -->
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <span class="lightbox-close" aria-label="關閉">×</span>
+  <img id="lightbox-img" src="" alt="放大檢視">
+</div>
+<script>
+(function(){
+  var box=document.getElementById('lightbox'),boxImg=document.getElementById('lightbox-img');
+  document.querySelectorAll('.hero-figure img,.inline-figure img').forEach(function(img){
+    img.addEventListener('click',function(){boxImg.src=img.currentSrc||img.src;boxImg.alt=img.alt||'放大檢視';box.classList.add('open');box.setAttribute('aria-hidden','false');});
+  });
+  function close(){box.classList.remove('open');box.setAttribute('aria-hidden','true');boxImg.src='';}
+  box.addEventListener('click',close);
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
+})();
+</script>
+
+<script src="../../image-interactions.js"></script>
+
+<!-- 官網共用：滑鼠暖光暈 + 導航列漢堡選單 -->
+<script src="../../spotlight.js"></script>
+
+<!-- 文章自動互聯（相關文章）：兩支已內建，順序不可顛倒，不用再另外加 -->
+<script src="../../articles-data.js"></script>
+<script src="../../related-render.js"></script>
+</body>
+</html>
