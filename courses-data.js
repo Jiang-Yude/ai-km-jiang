@@ -46,27 +46,6 @@
 
 window.COURSES = [
   {
-    id: "2026-09-13-senior-ai-story-shuilian",
-    date: "2026-09-13",
-    time: "13:30",
-    duration_min: 180,
-    title: "樂齡 AI 工作坊：把你的故事，做成一張海報",
-    type_label: "外部授課",
-    image: "images/courses/2026-senior-ai-story-workshop.jpg",
-    venue_mode: "physical",
-    venue_label: "實體",
-    host: "江江教練",
-    tags: ["樂齡", "AI生圖", "電影海報", "旅行簡報", "說故事", "零基礎"],
-    summary: "汐止水蓮山莊場。學員說自己的故事，AI 負責視覺、排版與剪輯。先用 ChatGPT 生一張以自己為主角的電影海報，再用 Gemini 把同一段故事延伸成旅行簡報或說書短片。一支手機就可以參加，不用電腦基礎。",
-    detail_url: "courses/senior-ai-story-workshop/",
-    materials: [],
-    registration: {
-      status: "private",
-      host_org: "財團法人社區電腦推廣教育基金會",
-      note: "社區居民專場，非對外公開報名。同一套課程三場：8/20 淡水台北灣、8/27 汐止伯爵山莊、9/13 汐止水蓮山莊。"
-    }
-  },
-  {
     id: "2026-09-09-npo-impact-report-workshop",
     date: "2026-09-09",
     time: "09:30",
@@ -85,27 +64,6 @@ window.COURSES = [
     registration: {
       status: "pending",
       note: "同一梯次四場：9/9（實體）、9/16（線上兩小時）、9/23（實體）、9/30（線上兩小時）。報名方式待主辦單位公告。"
-    }
-  },
-  {
-    id: "2026-08-27-senior-ai-story-earl",
-    date: "2026-08-27",
-    time: "09:00",
-    duration_min: 180,
-    title: "樂齡 AI 工作坊：把你的故事，做成一張海報",
-    type_label: "外部授課",
-    image: "images/courses/2026-senior-ai-story-workshop.jpg",
-    venue_mode: "physical",
-    venue_label: "實體",
-    host: "江江教練",
-    tags: ["樂齡", "AI生圖", "電影海報", "旅行簡報", "說故事", "零基礎"],
-    summary: "汐止伯爵山莊福興里民活動中心場。學員說自己的故事，AI 負責視覺、排版與剪輯。先用 ChatGPT 生一張以自己為主角的電影海報，再用 Gemini 把同一段故事延伸成旅行簡報或說書短片。一支手機就可以參加，不用電腦基礎。",
-    detail_url: "courses/senior-ai-story-workshop/",
-    materials: [],
-    registration: {
-      status: "private",
-      host_org: "財團法人社區電腦推廣教育基金會",
-      note: "社區居民專場，非對外公開報名。同一套課程三場：8/20 淡水台北灣、8/27 汐止伯爵山莊、9/13 汐止水蓮山莊。"
     }
   },
   {
@@ -130,8 +88,9 @@ window.COURSES = [
     }
   },
   {
-    id: "2026-08-20-senior-ai-story-taipeibay",
-    date: "2026-08-20",
+    id: "2026-08-20-senior-ai-story-workshop",
+    date: "2026-09-13",
+    date_label: "三場：8/20、8/27、9/13",
     time: "09:00",
     duration_min: 180,
     title: "樂齡 AI 工作坊：把你的故事，做成一張海報",
@@ -141,7 +100,7 @@ window.COURSES = [
     venue_label: "實體",
     host: "江江教練",
     tags: ["樂齡", "AI生圖", "電影海報", "旅行簡報", "說故事", "零基礎"],
-    summary: "淡水台北灣社區場。學員說自己的故事，AI 負責視覺、排版與剪輯。先用 ChatGPT 生一張以自己為主角的電影海報，再用 Gemini 把同一段故事延伸成旅行簡報或說書短片。一支手機就可以參加，不用電腦基礎。",
+    summary: "同一套課程三場：8/20（四）09:00 淡水台北灣社區、8/27（四）09:00 汐止伯爵山莊福興里民活動中心、9/13（日）13:30 汐止水蓮山莊。學員說自己的故事，AI 負責視覺、排版與剪輯。先用 ChatGPT 生一張以自己為主角的電影海報，再用 Gemini 把同一段故事延伸成旅行簡報或說書短片。一支手機就可以參加，不用電腦基礎。",
     detail_url: "courses/senior-ai-story-workshop/",
     materials: [],
     registration: {
