@@ -24,8 +24,20 @@
     4. 兩支互聯 script 已內建在本檔   <script src="/views.js"></script>
 </body> 前，不用再另外加。
     5. 到 sitemap.xml 與 llms.txt 各補一筆，讓搜尋與 AI 索引得到。
+    6. 到 search-aliases.js 補一條別名（2026-08-12 起 preflight 硬性檢查）。
+       key 用 slug，內容寫「訪客會怎麼問」：上課的說法、比喻、金句、同義詞。
+       至少兩個，不能只是照抄標題，否則 check-index-coverage.mjs 會擋下發布。
+       拼寫變體不用補（模型自己橋得起來），要補的是語意距離遠的詞。
+       立因：8/12 江江實測問「角色定妝照」查不到，追出來是文章上線當輪沒補別名。
+    7. 發布範圍要一起帶上 article-keywords.js 與 site-index.json。
+       preflight 會重跑產生器，這兩個檔有更新未提交就擋。
 
   部署前跑：node scripts/verify-interlink.js 確認互聯腳本齊全。
+
+  ⚠️ 改舊文章的 title / problem / summary 時：被拿掉的詞若該篇內文還在用，
+     check-index-coverage.mjs 會擋。三種處理都算過關：補進 search-aliases.js、
+     寫進 index-coverage-ignore.json 並附理由、或在該檔標記敏感與過期。
+     不強迫補回，因為被移除的可能是錯字、過時名稱或隱私詞。
 ============================================================
 -->
 <!doctype html>
@@ -165,6 +177,9 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
       <li><a href="../../articles.html" class="active">深度文章</a></li>
       <li><a href="../../skills.html">技能包下載</a></li>
       <li><a href="../../offers.html">服務方案</a></li>
+      <!-- 這一行不能少：preflight 第 5 關 check-bilingual-nav.mjs 要求每個 HTML 都有 EN 切換。
+           2026-08-12 補：範本原本漏了它，照範本起手的新文章一律被第 5 關擋下，每個人都得手動補一次。 -->
+      <li class="lang-switch"><a href="../../en/articles.html" hreflang="en">EN</a></li>
     </ul>
   </div>
 </nav>
