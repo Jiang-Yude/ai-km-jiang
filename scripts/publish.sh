@@ -84,6 +84,33 @@ if [[ "${#PUBLISH_PATHS[@]}" -eq 0 && -z "$STAGED_BEFORE" ]]; then
   exit 2
 fi
 
+# ─── 未推送 commit 檢查（2026-08-12 立，事故驅動）───
+# 立因：本腳本結尾用 `HEAD:refs/heads/main` 推整條本機 commit 鏈（見下方 push 段），
+# 只要有別人已 commit 但還沒 push 的東西夾在中間，本次發布會連帶把它送上線。
+# 發布者通常只核對自己 `git add` 的檔案，看不到這一層。
+# 2026-08-12 一天內出事兩次：早上被別人的髒工作區擋下發布，晚上不知情推出了別人的 commit。
+# 掛牌是社交約定，擋不住 atomic push；這一關驗的是 git 的實際狀態，不是別人有沒有登記。
+# 放在 preflight 之前＝早失敗，不做白工也不留殘局。
+if ! git rev-parse --abbrev-ref --symbolic-full-name '@{u}' >/dev/null 2>&1; then
+  echo "⛔ 目前分支沒有設定 upstream，無法判斷哪些 commit 尚未推送。"
+  echo "   這一關不能靜默跳過（跳過等於整關失效）。"
+  echo "   先設定：git branch --set-upstream-to=origin/main"
+  exit 2
+fi
+UNPUSHED=$(git -c core.quotePath=false log --oneline '@{u}..HEAD')
+if [[ -n "$UNPUSHED" ]]; then
+  echo "⚠️  本機有尚未推送的 commit，本次發布會一併送上線："
+  printf '%s\n' "$UNPUSHED" | sed -n '1,20p'
+  [[ $(printf '%s\n' "$UNPUSHED" | wc -l) -gt 20 ]] && echo "   （還有更多，只列前 20 筆）"
+  echo
+  echo "   ⚠️ 上面若有不是你這輪產出的 commit，很可能是另一個 session 的，先停下確認。"
+  echo "      確認過、也同意一起送出後，帶 CONFIRM_UNPUSHED=1 重跑本指令。"
+  if [[ "${CONFIRM_UNPUSHED:-0}" != "1" ]]; then
+    exit 2
+  fi
+  echo "   ✅ 已帶 CONFIRM_UNPUSHED=1，視為已確認，繼續。"
+fi
+
 echo "▶ Preflight…"
 SAFE_DEPLOY_TOOL="$SAFE_DEPLOY_TOOL" bash scripts/preflight.sh \
   || { echo "⛔ preflight 未過，取消發佈"; exit 1; }

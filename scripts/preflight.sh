@@ -81,12 +81,28 @@ echo "═══ 9/10 排隊一致性（擋板與索引不可矛盾）═══"
 # 五站只打首頁/offers/cases/skills/site-index.json，不打新文章路徑。屬「零件各自沒錯、零件間矛盾沒人查」。
 QBAD=0
 BLOCKED=$(grep -E '^articles/[^/]+/$' .vercelignore 2>/dev/null | sed 's#^articles/##; s#/$##')
+# 掃描範圍改為自動偵測（2026-08-12 改，事故驅動）：
+# 原本寫死 articles-data.js／sitemap.xml／llms.txt／site-index.json 四個。
+# article-keywords.js 是 2026-08-11 才長出來的生成檔，沒人回頭把它加進這個清單，
+# 於是被擋文章的內文關鍵詞（含真實人名與私人細節）進了公開索引並上線（2026-08-12 事故，
+# 修補見 commit c046bef：build-article-keywords.mjs 加 .vercelignore 過濾）。
+# 根因是寫死清單的設計本身會週期性失效：每新增一個公開資料檔就多一個洞，且無機制提醒補。
+# 改為自動列舉「進了版控、會被部署的資料檔」，日後新增自動涵蓋，不再依賴有人記得回來加。
+# 排除 scripts/ 與 _templates/（.vercelignore 擋著不上線）、articles/（文章自己的內容不算矛盾）。
+PUBLIC_DATA=$(git ls-files -- '*.js' '*.json' '*.txt' '*.xml' 2>/dev/null \
+  | grep -vE '^(scripts|_templates|node_modules)/' | grep -vE '^articles/')
+if [ -z "$PUBLIC_DATA" ]; then
+  # 前提不成立時硬報錯，不靜默跳過（跳過等於整關失效）
+  bad "排隊一致性：無法列舉公開資料檔（git ls-files 無輸出），本關不能靜默跳過"; QBAD=1
+fi
+PUBDATA_N=$(printf '%s\n' "$PUBLIC_DATA" | grep -c . || true)
 for id in $BLOCKED; do
-  for idx in articles-data.js sitemap.xml llms.txt site-index.json; do
+  while read -r idx; do
+    [ -n "$idx" ] && [ -f "$idx" ] || continue
     if grep -q "$id" "$idx" 2>/dev/null; then
-      bad "排隊矛盾：$id 被 .vercelignore 擋著，卻出現在 $idx（上線後會是 404）"; QBAD=1
+      bad "排隊矛盾：$id 被 .vercelignore 擋著，卻出現在 $idx（上線後 404，或代號外洩到公開檔）"; QBAD=1
     fi
-  done
+  done <<< "$PUBLIC_DATA"
 done
 DECLARED=$(grep -oE 'url: "articles/[^"]+/"' articles-data.js 2>/dev/null | sed 's#url: "articles/##; s#/"##')
 for id in $DECLARED; do
@@ -103,7 +119,7 @@ for d in articles/*/; do
     bad "已上線文章 $id 仍掛 noindex（會上線但永不被收錄）"; QBAD=1
   fi
 done
-[ $QBAD -eq 0 ] && ok "擋板與四索引無矛盾"
+[ $QBAD -eq 0 ] && ok "擋板與 ${PUBDATA_N} 個公開資料檔無矛盾（清單自動偵測，非寫死）"
 
 echo ""
 if [ $FAIL -eq 0 ]; then echo "🟢 PREFLIGHT PASS"; else echo "🔴 PREFLIGHT FAIL：修完再跑"; fi
