@@ -88,11 +88,12 @@ const MIKA_PERSONA = `你是咪卡（Mika），江江教練訓練出來的第一
 /* ── 站內資料載入（articles-data.js + search-aliases.js + courses-data.js，模擬 window 執行） ── */
 let CATALOG = null;
 let COURSES = null;
+let SLIDES = null;
 function loadSiteData() {
   if (CATALOG) return;
   const root = process.cwd();
   const win = {};
-  for (const f of ['articles-data.js', 'search-aliases.js', 'courses-data.js', 'article-keywords.js']) {
+  for (const f of ['articles-data.js', 'search-aliases.js', 'courses-data.js', 'article-keywords.js', 'slides-data.js']) {
     try {
       const src = fs.readFileSync(path.join(root, f), 'utf8');
       new Function('window', src)(win);
@@ -125,6 +126,7 @@ function loadSiteData() {
     keywords: keywords[slugOf(a.url)] || [],
   }));
   COURSES = win.COURSES || [];
+  SLIDES = (win.SLIDES || []).filter((s) => s && s.status === 'live');   // 下架與被取代的不進 prompt
 }
 function loadCatalog() { loadSiteData(); return CATALOG; }
 
@@ -214,6 +216,27 @@ function topicIndex(sorted) {
 function articleByNo(no) {
   loadSiteData();
   return CATALOG.find((a) => a._no === Number(no)) || null;
+}
+
+/* 課程教材頁（2026-08-12 建，江江拍板 1B＋7A）。
+   為什麼要單獨一個區塊：江江上課講的操作步驟大量只存在教案頁，官網文章寫的是判斷與為什麼。
+   8/12 他問「角色定妝照、三視圖」查不到，內容其實在 0523 教案頁 STAGE 02，
+   但索引只吃 articles-data 與課程卡標題，教材頁整份不存在。
+   錨點是關鍵：讓咪卡遞 url#anchor 直接跳到那一段，訪客不用自己在長頁面裡找。 */
+function buildSlidesBlock() {
+  loadSiteData();
+  if (!SLIDES.length) return '';
+  const lines = SLIDES.map((s) => {
+    const secs = (s.sections || []).map((x) =>
+      `    #${x.anchor}｜${x.name}` + (x.terms && x.terms.length ? `｜≈${x.terms.join('、')}` : '')
+    ).join('\n');
+    return `- ${s.title}（${s.kind}，${s.date}）｜${s.url}\n  ${s.summary}\n${secs}`;
+  });
+  return '【課程教材頁（上課用的完整教案，操作步驟通常只有這裡才有，文章寫的是判斷與為什麼）】\n'
+    + '想找「怎麼做」「第幾步」這類操作細節時優先看這裡。推薦時把錨點一起給，'
+    + '例如 網址#mainline，訪客點了直接跳到那一段，不用自己在長頁面裡找。\n'
+    + '≈ 後面是江江上課會講的說法，不是章節的正式用語。\n'
+    + lines.join('\n');
 }
 
 function buildCourseBlock() {
@@ -410,6 +433,7 @@ module.exports = async (req, res) => {
      訪客相關的段落（稱呼、初判、第二循環）一律排在後面。 */
   const system = MIKA_PERSONA
     + `\n\n${buildFullIndexBlock()}`
+    + `\n\n${buildSlidesBlock()}`
     + `\n\n${buildCourseBlock()}`
     + `\n\n${buildLatestBlock()}`
     + (name ? `\n\n訪客請你稱呼他：${name}。` : '')
@@ -502,4 +526,4 @@ module.exports = async (req, res) => {
 };
 
 /* 本機測試用（不影響線上行為） */
-module.exports._test = { retrieve, retrieveAdaptive, loadCatalog, buildCourseBlock, buildFullIndexBlock, articleByNo, MIKA_PERSONA };
+module.exports._test = { retrieve, retrieveAdaptive, loadCatalog, buildCourseBlock, buildSlidesBlock, buildFullIndexBlock, articleByNo, MIKA_PERSONA };
