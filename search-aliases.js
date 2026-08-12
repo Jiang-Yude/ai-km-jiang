@@ -5,7 +5,9 @@
 window.SEARCH_ALIASES = {
   "character-costume-sheet-three-views": ["定妝照","角色定妝照","角色模板","角色基準圖","角色一致性","四視圖","抽卡","固定角色","每次生的角色都不一樣"],
   "start-with-a-wrong-draft": ["四階遞降法"],
-  "nontech-partner-ai-onboarding": ["系統是你的放大器","一魚三吃","Agent是知識庫的翻譯層","待拍板佇列","真相分層"],
+  /* 2026-08-12 移除一筆未上線草稿的別名。本檔會公開部署，
+     被 .vercelignore 擋著的文章不要在這裡留條目，也不要在註解裡寫出它的代號。
+     移除原因與該篇代號記在官網看板，不寫在公開檔案裡。 */
   "meta-prompt-thirty-versions": ["元提示詞","會生出提示詞的提示詞"],
   "let-ai-do-the-setup": ["換電腦設定要重來一次","換新電腦軟體要重設","AI幫我設定軟體","什麼事可以交給AI做","AI的能力與邊界","怎麼分配工作給AI","叫AI做不是偷懶","一個選項都沒點過","OBS設定","AI先做而不是自己學"],
   "dont-learn-ai-tools": ["想用Canva的舉手沒人舉手","從操作者換成交辦的人"],

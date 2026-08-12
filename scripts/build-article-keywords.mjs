@@ -17,6 +17,26 @@ import path from 'path';
 const ROOT = path.resolve(import.meta.dirname, '..');
 const ARTICLES = path.join(ROOT, 'articles');
 
+/* 被 .vercelignore 擋著的文章不進索引（2026-08-12 立，事故驅動）。
+   立因：擋板只擋「頁面上不上線」，擋不住這支腳本 —— 它掃 articles/ 底下所有資料夾，
+   於是一篇不該上線的草稿，頁面線上 404，內文關鍵詞卻進了公開的 article-keywords.js。
+   判準用 .vercelignore 而非 articles-data.js，因為擋板是「不上線」的直接聲明。
+   事故細節與該篇代號記在官網看板，不寫在這裡：本檔在 scripts/ 目前不部署，
+   但生成檔建置化會放行 scripts/，屆時這裡的註解就會公開。 */
+function loadBlocked() {
+  const f = path.join(ROOT, '.vercelignore');
+  if (!fs.existsSync(f)) return new Set();
+  return new Set(
+    fs.readFileSync(f, 'utf8')
+      .split('\n')
+      .map((l) => l.trim())
+      .filter((l) => l.startsWith('articles/'))
+      .map((l) => l.replace(/^articles\//, '').replace(/\/$/, ''))
+      .filter(Boolean)
+  );
+}
+const BLOCKED = loadBlocked();
+
 /* 太通用、抽出來只會變雜訊的詞，不收 */
 const STOP = new Set([
   'AI', 'A', 'I', 'The', 'And', 'You', 'It', 'To', 'In', 'Of', 'For', 'Is', 'This', 'That',
@@ -137,6 +157,7 @@ const VISIBLE = loadVisible();
 const out = {};
 let files = 0;
 for (const slug of fs.readdirSync(ARTICLES)) {
+  if (BLOCKED.has(slug)) continue;   // .vercelignore 擋著的草稿不進公開索引
   const file = path.join(ARTICLES, slug, 'index.html');
   if (!fs.existsSync(file)) continue;
   files++;
