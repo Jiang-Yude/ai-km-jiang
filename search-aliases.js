@@ -16,7 +16,7 @@ window.SEARCH_ALIASES = {
   "before-installing-others-skill": ["別人的技能包能不能裝","下載技能包安全嗎","叫AI檢查安不安全","技能包會不會有惡意程式","裝了兩個技能包會打架嗎","AI最近怪怪的","技能包權限要給多少","裝一堆技能包怎麼盤點","如果我裝了兩個功能相近的技能包，它們會不會互相打架？","網路上有很多人分享技能包，我可以直接下載來用嗎？","縮小到兩三個嫌疑犯"],
   "mobile-to-desktop-publish-loop": ["手機遙控電腦","手機叫桌機做事","Codex手機連桌機","掃QR code連線","人在外面電腦自己跑","遠端存取設定","讓Mac維持喚醒","發文流程自動化","圖卡自動檢查","哪一關不能交給AI","撤銷存取權就是煞車","失敗是安靜的","寫過的東西是複利"],
   "three-levels-of-cross-review": ["互審要做多深","每次都要兩個AI互審嗎","三種互審難度","雙軌互審怎麼跑","只有一家模型怎麼互審","對家沒回應怎麼辦","互審跑幾輪要停","互審成本","找第二個AI挑錯","愛吃辣的廚師需要不吃辣的試吃員","只看到終點看不到路","收拾桌子的球沒有規則"],
-  "long-answer-three-layers": ["AI回答太長", "看不下去", "AI講太複雜", "請AI用白話", "白話重講", "叫AI畫流程圖", "Mermaid流程圖", "show_widget", "做成互動網頁", "好好都可以", "AI回答看不懂", "長回答怎麼看"],
+  "long-answer-three-layers": ["AI回答太長", "看不下去", "AI講太複雜", "請AI用白話", "白話重講", "叫AI畫流程圖", "Mermaid流程圖", "show_widget", "做成互動網頁", "好好都可以", "AI回答看不懂", "長回答怎麼看", "不知道怎麼選", "太複雜了", "選項太多選不出來", "AI給的方案選不出來", "拍板頁", "決策頁", "輔助決策網頁", "幫我做成可以選的網頁", "答案串", "1A2B3A", "Markdown比較省token", "HTML很耗token", "做網頁浪費token", "選項要寫代價", "不要幫我預選"],
   "session-messaging-reminder-layer": ["對話之間傳訊息","Claude Code多視窗","開好幾個AI視窗","AI視窗互相不知道","交接指令複製貼上","session傳訊息","兩個AI改同一個檔案","桌機筆電AI不通","Claude跟Codex不通","多視窗協作怎麼防撞","喊聲不是門鎖","在廚房裡喊我要用這個爐子","我自己當傳聲筒","大總控台","走了也不傷筋骨"],
   "messaging-apps-ai-friendliness": ["通訊軟體選哪個","LINE跟Discord比較","AI放哪個群組","聊天軟體AI整合","Slack Agent","Telegram bot","群組軟體AI友善","哪個通訊軟體適合AI助教","市場收件口","Agent工作流中樞","Agent辦公室控制台","把工作流想成一間辦公室"],
   "openrouter-deepseek-data-routing": ["OpenRouter用DeepSeek會經過中國嗎","DeepSeek資料送去哪裡","OpenRouter安全嗎","OpenRouter provider怎麼查","DeepSeek API路由","模型資料路由","ZDR是什麼","OpenRouter怎麼避開中國供應商","四道鎖"],
