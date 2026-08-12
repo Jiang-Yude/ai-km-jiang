@@ -1,0 +1,426 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="index,follow">
+<title>把照片放進 NotebookLM，生一份用真實照片的簡報｜江江教練 · AI 知識管理</title>
+<meta name="description" content="用你自己的照片排簡報：腳本寫在來源文案裡，指令只留三行規範。附完整的腳本格式與指令模板，可以直接照抄。">
+<link rel="canonical" href="https://jiangyude.com/articles/notebooklm-real-photo-slides/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="把照片放進 NotebookLM，生一份用真實照片的簡報｜江江教練">
+<meta property="og:image" content="https://jiangyude.com/images/og/notebooklm-real-photo-slides.jpg">
+<meta property="og:description" content="用你自己的照片排簡報：腳本寫在來源文案裡，指令只留三行規範。">
+<meta property="og:url" content="https://jiangyude.com/articles/notebooklm-real-photo-slides/">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:site_name" content="江江教練 · AI 知識管理">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="把照片放進 NotebookLM，生一份用真實照片的簡報｜江江教練">
+<meta name="twitter:image" content="https://jiangyude.com/images/og/notebooklm-real-photo-slides.jpg">
+<meta name="twitter:description" content="用你自己的照片排簡報：腳本寫在來源文案裡，指令只留三行規範。">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"把照片放進 NotebookLM，生一份用真實照片的簡報","description":"用你自己的照片排簡報：腳本寫在來源文案裡，指令只留三行規範。","author":{"@type":"Person","name":"江昱德","alternateName":"江江教練","jobTitle":"隱性知識提煉師、AI 應用規劃師"},"isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://jiangyude.com/"},"inLanguage":"zh-Hant","url":"https://jiangyude.com/articles/notebooklm-real-photo-slides/"}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{--ink:#1a1612;--paper:#fefcf8;--muted:#6a635a;--line:#d8cdb8;--green:#5f7553;--blue:#5689b8;--orange:#e85a4f;--soft:#faf5ec;--dark:#2a2018;--shadow:0 18px 45px rgba(107,74,42,.14);--sp-shadow:hsla(35,50%,60%,.15);--sp-shadow-edge:hsla(35,50%,68%,.03);--sp-radius:400px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC","Segoe UI",sans-serif}
+a{color:inherit}
+nav.top{position:sticky;top:0;background:rgba(254,252,248,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid #d8cdb8;z-index:100}
+nav.top .container{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:24px;padding:14px 32px}
+.nav-brand-img{justify-self:start;display:flex;align-items:center;text-decoration:none;flex-shrink:0;transition:opacity .2s}
+.nav-brand-img:hover{opacity:.8}.nav-brand-img img{height:40px;width:auto;display:block}
+nav.top ul.nav-menu{justify-self:end;display:flex;gap:22px;list-style:none;margin:0;padding:0;font-size:.95rem;white-space:nowrap}
+nav.top ul.nav-menu a{color:#3a342d;text-decoration:none;transition:color .2s;font-weight:500;white-space:nowrap}
+nav.top ul.nav-menu a:hover{color:#1a1612}nav.top ul.nav-menu a.active{color:#1a1612;font-weight:700}
+.nav-toggle{display:none;background:none;border:none;padding:6px;cursor:pointer;width:36px;height:36px;position:relative}
+.nav-toggle span{display:block;position:absolute;left:8px;right:8px;height:2px;background:#1a1612;border-radius:2px;transition:transform .25s,opacity .25s,top .25s}
+.nav-toggle span:nth-child(1){top:11px}.nav-toggle span:nth-child(2){top:17px}.nav-toggle span:nth-child(3){top:23px}
+.nav-toggle.open span:nth-child(1){top:17px;transform:rotate(45deg)}.nav-toggle.open span:nth-child(2){opacity:0}.nav-toggle.open span:nth-child(3){top:17px;transform:rotate(-45deg)}
+@media(max-width:860px){
+ nav.top .container{grid-template-columns:auto 1fr auto;padding:10px 16px;gap:12px}
+ .nav-brand-img img{height:32px}
+ .nav-toggle{display:block;justify-self:end}
+ nav.top ul.nav-menu{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(254,252,248,.98);backdrop-filter:blur(14px);border-bottom:1px solid #d8cdb8;flex-direction:column;gap:0;padding:8px 0;box-shadow:0 10px 24px rgba(107,74,42,.08)}
+ nav.top ul.nav-menu.open{display:flex}
+ nav.top ul.nav-menu li{border-bottom:1px solid #e8dfc9}
+ nav.top ul.nav-menu li:last-child{border-bottom:none}
+ nav.top ul.nav-menu a{display:block;padding:14px 20px;font-size:1.06rem}
+}
+body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradient(var(--sp-radius) circle at var(--mx,50%) var(--my,50%),var(--sp-shadow) 0%,var(--sp-shadow-edge) 45%,transparent 75%);pointer-events:none;z-index:9999;mix-blend-mode:multiply;transition:background .06s linear}
+.hero{position:relative;overflow:hidden;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:72px;padding:96px clamp(20px,6vw,88px) 80px;background:linear-gradient(180deg,#fffcf0 0%,#f9e9d2 100%);color:#1a1612;border-bottom:1px solid #d8cdb8}
+.hero .wc{position:absolute;border-radius:50%;filter:blur(60px);pointer-events:none;z-index:0}
+.hero .wc1{width:420px;height:360px;top:-120px;right:-80px;background:#e8884b;opacity:.15}
+.hero .wc2{width:360px;height:300px;bottom:-110px;left:-70px;background:#5f7553;opacity:.13}
+.hero .wc3{width:280px;height:260px;top:34%;left:14%;background:#a08144;opacity:.10}
+.hero>div{flex:none;width:860px;max-width:100%;position:relative;z-index:2}
+.hero-figure{margin:0;width:420px;flex:none;position:relative;z-index:2}
+.hero-figure img{display:block;width:100%;border-radius:16px;border:1px solid #d8cdb8;box-shadow:0 18px 45px rgba(107,74,42,.16);cursor:zoom-in}
+.hero-figure figcaption{margin-top:10px;font-size:14px;line-height:1.6;color:#6a635a}
+.inline-figure{margin:30px auto 8px;max-width:820px}
+.inline-figure img{display:block;width:100%;border-radius:14px;border:1px solid var(--line);box-shadow:var(--shadow);background:#fff;cursor:zoom-in}
+.inline-figure figcaption{font-size:14px;line-height:1.6;color:var(--muted);margin-top:10px}
+.lightbox{position:fixed;inset:0;z-index:10000;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(12,10,8,.92);cursor:zoom-out;backdrop-filter:blur(4px)}
+.lightbox.open{display:flex}.lightbox img{max-width:96vw;max-height:92vh;border-radius:10px;box-shadow:0 24px 60px rgba(0,0,0,.5)}
+.lightbox-close{position:fixed;top:18px;right:24px;color:#fff;font-size:34px;line-height:1;font-weight:700;cursor:pointer;opacity:.85}
+.kicker{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.55rem;color:#7a5c3a;font-weight:500}
+.hero h1{max-width:none;margin:16px 0 18px;font-size:clamp(36px,6vw,72px);line-height:1.08;overflow-wrap:anywhere}
+.hero p{max-width:none;font-size:clamp(18px,2vw,23px);line-height:1.62;color:#3a342d}
+.section{padding:54px clamp(20px,6vw,88px);border-top:1px solid var(--line)}
+.inner{width:min(1000px,100%);margin:0 auto}
+.section h2{font-size:clamp(26px,4.2vw,48px);line-height:1.12;margin:0 0 18px}
+.section h3{font-size:clamp(21px,3vw,30px);line-height:1.2;margin:30px 0 12px}
+.lead{font-size:clamp(18px,1.6vw,22px);line-height:1.7;color:#3a342d;max-width:900px}
+.section p{font-size:18px;line-height:1.74;color:#3a342d}.section p+p{margin-top:14px}
+.section ul,.section ol{padding-left:1.4em;font-size:18px;line-height:1.74;color:#3a342d}.section li{margin-bottom:8px}
+.meaning{margin:22px 0;padding:16px 18px;border-left:5px solid var(--blue);background:rgba(86,137,184,.12);border-radius:6px;line-height:1.7;font-size:19px}
+.meaning b{display:block;color:var(--blue);margin-bottom:4px}
+.caveat{margin:0 0 8px;padding:16px 18px;border-left:5px solid var(--orange);background:rgba(232,90,79,.1);border-radius:6px;line-height:1.7;font-size:18px;color:#3a342d}
+.caveat b{display:block;color:var(--orange);margin-bottom:4px}
+.tagrow{display:flex;flex-wrap:wrap;gap:7px;margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
+.tag{font-size:14px;color:var(--muted);background:var(--soft);border:1px solid var(--line);border-radius:999px;padding:4px 11px}
+.duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:24px}
+.duo.stack{grid-template-columns:1fr}
+.duo .card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:22px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.duo .card.a{border-color:var(--orange)}.duo .card.b{border-color:var(--green);box-shadow:0 8px 24px rgba(95,117,83,.16)}
+.duo .card b{display:block;font-size:22px;line-height:1.3;margin-bottom:12px}.duo .card.a b{color:#c0512f}.duo .card.b b{color:#4a7a59}
+.duo .card p{margin:0;color:#3a342d;line-height:1.75;font-size:18px}
+.duo .card ul{margin:0;padding-left:1.2em}
+.workflow-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:24px}
+.workflow-step{background:#fff;border:1px solid var(--line);border-radius:8px;padding:18px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.workflow-step small{display:block;color:var(--orange);font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;margin-bottom:9px}
+.workflow-step b{display:block;font-size:18px;line-height:1.3;margin-bottom:9px}
+.workflow-step p{margin:0;color:#3a342d;line-height:1.6;font-size:16px}
+.codeblock{background:var(--dark);color:#f3ead9;border-radius:8px;padding:18px 20px;font:500 14px/1.65 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;overflow-x:auto;white-space:pre-wrap;margin:20px 0;box-shadow:0 8px 22px rgba(107,74,42,.12)}
+.codeblock .c{color:#f6d7a6;font-weight:600}
+.tbl{width:100%;border-collapse:collapse;margin-top:20px;font-size:17px;background:#fff;box-shadow:0 8px 22px rgba(107,74,42,.08);border-radius:10px;overflow:hidden}
+.tbl th,.tbl td{padding:13px 15px;text-align:left;border-bottom:1px solid var(--line);line-height:1.6;vertical-align:top}
+.tbl th{background:var(--soft);font-weight:700;font-size:16px}
+.tbl tr:last-child td{border-bottom:none}
+.tbl-wrap{overflow-x:auto}
+.skillcard{background:#fff;border:1px solid var(--green);border-radius:12px;padding:24px;box-shadow:0 10px 26px rgba(95,117,83,.16);margin-top:8px}
+.skillcard b{display:block;font-size:21px;margin-bottom:8px}
+.skillcard p{margin:0 0 16px;font-size:17px;line-height:1.65;color:#3a342d}
+.readmore.near{margin:26px 0 0;padding:16px 18px;border-left:5px solid var(--green);background:rgba(95,117,83,.09);border-radius:6px;font-size:17px;line-height:1.7}
+.readmore.near b{display:block;color:var(--green);margin-bottom:4px;font-size:14px;letter-spacing:.04em}
+.readmore.near a{color:#4a7a59;font-weight:700}
+.cta-band{background:#e6f0e5;color:#3a342d}.cta-band .section{border-top:none}
+.cta-band .inner{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(260px,.85fr);gap:26px;align-items:start}
+.cta-band h2{font-size:clamp(26px,4vw,44px);margin:0 0 16px}.cta-band p,.cta-band .lead{color:rgba(58,52,45,.9);font-size:18px;line-height:1.72}
+.cta-card{border:1px solid #cfe0d2;background:#fbfdfa;border-radius:8px;padding:22px}
+.cta-card b{display:block;color:#48b178;margin-bottom:10px;font-size:18px}.cta-card p{margin:0 0 14px}
+.footer{padding:30px clamp(20px,6vw,88px);font-size:14px;color:var(--muted);background:#fff;border-top:1px solid var(--line)}
+.footer-inner{width:min(1000px,100%);margin:0 auto}
+.footer-links{display:flex;flex-wrap:wrap;gap:6px 12px;margin-bottom:14px}.footer-links a{color:var(--blue);font-weight:900;text-decoration:none;font-size:14px}
+.footer-brand{font-weight:900;font-size:15px;margin-bottom:10px}.footer-note{font-size:13px;line-height:1.6}
+.gallery{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin:26px 0 12px}
+.gallery img{width:100%;display:block;border-radius:8px;border:1px solid var(--line);box-shadow:0 6px 16px rgba(107,74,42,.10);cursor:zoom-in;background:#fff;transition:transform .18s,box-shadow .18s}
+.gallery img:hover{transform:translateY(-3px);box-shadow:0 12px 26px rgba(107,74,42,.18)}
+.gal-hint{font-size:14px;color:var(--muted);margin:0}
+#lb{position:fixed;inset:0;z-index:10001;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(12,10,8,.94);backdrop-filter:blur(4px)}
+#lb.on{display:flex}
+#lb>img{max-width:94vw;max-height:84vh;border-radius:10px;box-shadow:0 24px 60px rgba(0,0,0,.5)}
+.lbbar{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:14px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:999px;padding:8px 16px;backdrop-filter:blur(8px)}
+.lbbar button{background:none;border:none;color:#fff;font-size:24px;line-height:1;cursor:pointer;padding:2px 8px;opacity:.85}
+.lbbar button:hover{opacity:1}
+.lbbar span{color:#fff;font-size:14px;font-variant-numeric:tabular-nums;min-width:52px;text-align:center}
+@media(max-width:820px){.gallery{grid-template-columns:repeat(3,1fr);gap:7px}}
+@media(max-width:820px){.duo{grid-template-columns:1fr}.workflow-grid{grid-template-columns:1fr}.cta-band .inner{grid-template-columns:1fr}.section{padding:40px 20px}.hero{min-height:52vh;flex-direction:column;justify-content:flex-start;align-items:flex-start;gap:24px}.hero>div{width:100%}.hero-figure{width:100%;max-width:560px}}
+@media(max-width:820px){html,body{overflow-x:hidden}.hero h1{word-break:break-word}}
+</style>
+</head>
+<body class="spotlight">
+<nav class="top">
+  <div class="container">
+    <a class="nav-brand-img" href="../../index.html"><img src="../../images/footer-signature.png" alt="江江教練 | 江昱德"></a>
+    <button class="nav-toggle" aria-label="選單"><span></span><span></span><span></span></button>
+    <ul class="nav-menu">
+      <li><a href="../../index.html">首頁</a></li>
+      <li><a href="../../knowledge-architecture.html">知識架構</a></li>
+      <li><a href="../../courses.html">課程</a></li>
+      <li><a href="../../articles.html" class="active">深度文章</a></li>
+      <li><a href="../../skills.html">技能包下載</a></li>
+      <li><a href="../../offers.html">服務方案</a></li>
+      <li class="lang-switch"><a href="../../en/articles.html" hreflang="en">EN</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="wc wc1"></div>
+  <div class="wc wc2"></div>
+  <div class="wc wc3"></div>
+  <div>
+    <div class="kicker">AI 應用 / 內容製作</div>
+    <h1>把照片放進 NotebookLM，生一份用真實照片的簡報</h1>
+    <p>腳本寫在來源文案裡，指令只留三行規範。附完整的腳本格式與指令模板，可以直接照抄。</p>
+  </div>
+  <figure class="hero-figure">
+    <img src="../../images/articles/notebooklm-real-photo-slides-01.jpg" alt="故事簡報單頁，滿版真實照片配直排標題，底部一條深色圖說" loading="lazy">
+    <figcaption>《百岳行旅 · 武陵三秀》故事簡報其中一頁。滿版真實照片、直排標題、底部圖說引用原文。</figcaption>
+  </figure>
+</section>
+
+<main>
+
+<section class="section" id="start">
+  <div class="inner">
+    <p class="lead">把文字丟給 AI、讓它連圖一起生，最快，但成品都長得差不多。如果你手上有真實照片，那是別人生不出來的東西。這篇講怎麼讓 NotebookLM 用你自己的照片排簡報。</p>
+
+    <div class="duo stack">
+      <div class="card a">
+        <b>適合誰</b>
+        <ul>
+          <li>手上有活動現場、產品實拍、旅行紀錄、課程側拍照片的人</li>
+          <li>做過幾份 AI 生成的簡報，開始覺得畫面都長得差不多的人</li>
+        </ul>
+      </div>
+      <div class="card b">
+        <b>你可以帶走什麼</b>
+        <ul>
+          <li>一份可以照抄的腳本格式</li>
+          <li>兩段可以直接複製的指令</li>
+          <li>交出去之前要看的三件事</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>成品長這樣</h2>
+    <p>《百岳行旅 · 武陵三秀》，十五頁，一頁一個場景。文字是吳星瑩寫的遊記，照片是江昱德拍的。</p>
+
+    <div class="gallery" id="wulingGallery"></div>
+    <p class="gal-hint">點任一頁放大，可用左右鍵翻頁</p>
+
+    <figure class="inline-figure">
+      <img src="../../images/articles/notebooklm-real-photo-slides-01.jpg" alt="故事簡報單頁，滿版真實照片配直排標題，底部一條深色圖說" loading="lazy">
+      <figcaption>單頁長這樣：滿版真實照片、直排大字標題、底部圖說直接引用原文。</figcaption>
+    </figure>
+
+    <figure class="inline-figure">
+      <img src="../../images/articles/notebooklm-real-photo-slides-02.jpg" alt="Gemini Notebook 三欄介面，左欄來源清單，右欄工作室顯示已生成的簡報" loading="lazy">
+      <figcaption>右欄「工作室」是生成好的成品，可以直接翻頁看、也能匯出 PDF。</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>核心：腳本寫在文案裡，指令只留規範</h2>
+    <p>整套方法只有這一句。該做什麼寫在來源文案，不能做什麼寫在指令。</p>
+    <p>AI 每多一個沒被決定的問題，就多一個它自己發揮的空間。這段要不要分頁、標題下哪一句、這頁配哪張圖，先決定完，它就只剩渲染的工作。</p>
+    <p>另一個好處是指令可以很短。指令太長容易出事，尤其生影片摘要的時候。</p>
+
+    <figure class="inline-figure">
+      <img src="../../images/articles/notebooklm-real-photo-slides-05.jpg" alt="Gemini Notebook 三欄介面標註圖，紅框標出腳本與 PDF，綠框標出照片來源，藍框標出簡報與影片摘要的生成入口" loading="lazy">
+      <figcaption>三樣東西各有位置。<b>① 文字與規範</b>寫在腳本裡，跟圖文合一 PDF 一起放左欄；<b>② 照片</b>命名 01 02 03，一張一個來源；<b>③ 指令</b>不在左欄，是點右欄的「簡報」或「影片摘要」之後才填。</figcaption>
+    </figure>
+
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>腳本長這樣</h2>
+    <p>一份 Markdown，最前面放規矩，接著逐頁寫清楚。</p>
+
+    <div class="codeblock"><span class="c"># 畫面規範</span>
+1. 不生成擬真照片。看起來像照片的畫面，必須是本專案提供的照片本身。
+2. 不對真實照片做翻轉或鏡像。可以裁切、縮放、改變位置。
+3. 生成的插畫不標任何照片編號與圖說。編號只屬於真實照片。
+4. 有真實照片的畫面，照片必須滿版或至少佔三分之二；插畫只能是淡紙紋、
+   邊框或留白，不可自成一幅完整風景畫跟照片爭主體。
+
+<span class="c"># 照片清單</span>
+P10｜我們紮營兩天的三叉營地｜白天、明亮，一頂咖啡色單人帳篷搭在綠色竹林邊
+P11｜作者 吳星瑩｜苔綠森林中，穿白色紗衣張開雙臂仰望，柔和逆光
+
+<span class="c"># 逐頁分鏡</span>
+### 第 3 頁
+標題：緣起
+內文：武陵三秀行腳，在沒水也沒廁所的三叉營地紮營兩夜，只有我們一頂帳篷。
+配圖：P10
+圖說：我們紮營兩天的三叉營地。真的就是這樣小小一片樹間空地。
+
+### 第 7 頁
+標題：然後在兩個山頭間輕功飛來飛去（？）
+內文：這時好像好適合喊一句：「決戰品田之巔！」
+配圖：無
+插畫內容：淡彩水墨群山，兩個小小的武俠身影在兩座山頭之間騰躍
+
+<span class="c"># 故事全文</span>
+（原文一字不改，生影片摘要時旁白從這裡取句子）</div>
+
+    <p>三個地方特別要注意。</p>
+
+    <div class="meaning">
+      <b>照片清單要附內容描述</b>
+      只給編號它會憑印象重畫。寫上「白天、咖啡色帳篷、竹林邊」，它才有東西可以比對。
+    </div>
+
+    <div class="meaning">
+      <b>沒照片的頁要寫明插畫畫什麼</b>
+      留空它會自由發揮。原文在寫想像或內心戲的段落，本來就沒有照片可拍，這時候用插畫比硬塞照片誠實。
+    </div>
+
+    <div class="meaning">
+      <b>每頁內文壓在六十字以內</b>
+      文字太多的頁容易出現排版疊字，同一段話印兩次。分頁分細一點就不會。
+    </div>
+
+    <p>腳本寫好之後，跟照片一起上傳。除了腳本，再傳一份圖文合一的 PDF（照片嵌在它對應的段落之間，每張下方接一行圖說），還有每張照片各自一個來源。那份 PDF 是把照片跟段落綁在一起的關鍵。</p>
+
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>指令只有兩段</h2>
+
+    <h3>故事簡報</h3>
+    <p>工作室點「簡報」，選自訂，貼進「說明要建立的簡報」那一格。</p>
+    <div class="codeblock">完全依照來源的逐頁分鏡製作，不增頁、不減頁、不改文字。
+配圖照分鏡指定的編號，01 02 就是我上傳的照片，直接使用原檔。
+不生成擬真照片。寫「配圖：無」的頁面用素色底或淡插畫，不標任何照片編號。
+真實照片要滿版當主體，插畫只能當襯底。</div>
+
+    <figure class="inline-figure">
+      <img src="../../images/articles/notebooklm-real-photo-slides-03.jpg" alt="NotebookLM 自訂簡報面板，含格式、語言、長度、來源與說明要建立的簡報欄位" loading="lazy">
+      <figcaption>紅線貼在最下面那格「說明要建立的簡報」。左邊「選擇語言」預設不是中文，記得改成中文（繁體），不然會生出英文簡報。</figcaption>
+    </figure>
+
+    <h3>影片摘要</h3>
+    <p>語言一樣先改成中文（繁體）。視覺風格保持預設的「自動選取」就夠用，這時候只有一格要填。</p>
+
+    <figure class="inline-figure">
+      <img src="../../images/articles/notebooklm-real-photo-slides-04.jpg" alt="NotebookLM 自訂影片摘要面板，語言選中文繁體，視覺風格選自動選取，下方是 AI 主持人應著重哪些部分欄位" loading="lazy">
+      <figcaption>視覺風格選「自動選取」時，只剩下面那一格要填。改選「自訂」才會多出一格「描述自訂的視覺風格」。</figcaption>
+    </figure>
+
+    <p><b>AI 主持人應著重哪些部分</b>，這格管旁白，也是紅線要放的地方。</p>
+    <p>NotebookLM 沒有選旁白性別的參數，寫「請使用女性聲音」命中率很低。改成給它一個角色，聲音就是角色的自然結果。</p>
+    <div class="codeblock">用一位女生主持人的口吻，說[主角]這趟[主題]的故事。
+旁白用來源原文的句子，不要改寫。繁體中文，語氣沉靜。
+封面與所有畫面只用我上傳的真實照片，不要生成擬真畫面。</div>
+    <p>紅線那句放最後一行，被截斷的機率最低。</p>
+
+    <p>想控制插畫的調性再選「自訂」，那時會多出「描述自訂的視覺風格」一格。一兩句就夠，例如「淡彩水墨，低對比、手繪感」「童話故事插圖，柔和色調」「手繪筆記感，鉛筆線條」。不管選哪種都補一句「插畫只當背景襯底，真實照片放大成畫面主體」。</p>
+
+    <div class="caveat">
+      <b>封面那一句不能省</b>
+      封面是整支影片唯一會被單獨拿出去用的畫面，分享卡、預覽圖、嵌入都是它。
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>交出去之前看三件事</h2>
+    <p>成品匯出 PDF，逐頁看過。</p>
+    <ol>
+      <li><b>照片是不是原檔</b>。調出原圖比對主體、光線、人物穿著。不要看圖說就放行，圖說是它寫的。</li>
+      <li><b>純插畫頁有沒有標到照片編號</b>。編號只能掛在真照片上。</li>
+      <li><b>有沒有同一句印兩次</b>。這項最容易漏，因為注意力都在照片上。</li>
+    </ol>
+    <p>同一頁修兩次還沒對就停手，改留白或人工後製。一直重生只會累積版本，不會收斂。</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>說到底</h2>
+    <div class="meaning">
+      <b></b>
+      當所有人都能生出漂亮畫面的時候，漂亮就不值錢了。反而是真實的場景、照片，讓人有信任感。
+    </div>
+
+    <div class="tagrow">
+      <span class="tag">NotebookLM</span>
+      <span class="tag">簡報</span>
+      <span class="tag">提示詞設計</span>
+      <span class="tag">內容製作</span>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<div class="cta-band">
+  <section class="section">
+    <div class="inner">
+      <div>
+        <h2>想實際做一份看看</h2>
+        <p class="lead">這套流程我拿去開了樂齡 AI 工作坊，學員只要會說，剩下交給 AI。一支手機就能參加，當天做出自己的故事簡報。</p>
+        <p>如果你想先自己試，上面的腳本格式與指令都可以直接照抄。有做出來的成品，歡迎到 LINE 社群分享。</p>
+      </div>
+      <div class="cta-card">
+        <b>免費線上講座</b>
+        <p>每個月固定兩場，主題圍繞 AI 應用與知識管理。加入 LINE 社群，開課前半小時公布連結。</p>
+        <p><a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener"><b>加入 LINE 社群 ↗</b></a></p>
+      </div>
+    </div>
+  </section>
+</div>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">江江教練 · AI 知識管理</div>
+    <div class="footer-links">
+      <a href="../../articles.html">← 回深度文章總站</a>
+      <a href="../../index.html">首頁</a>
+      <a href="../../learn.html">自學資源</a>
+      <a href="../../skills.html">技能包下載</a>
+      <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">LINE 社群 ↗</a>
+      <a href="https://www.threads.com/@jiang_yude_coach" target="_blank" rel="noopener">Threads ↗</a>
+      <a href="https://vocus.cc/salon/Jiang_Coach" target="_blank" rel="noopener">方格子 ↗</a>
+    </div>
+    <div class="footer-note">這是一篇教學文章，整理我對「把照片放進 NotebookLM，生一份用真實照片的簡報」的看法，供你參考。素材出自《百岳行旅 武陵三秀》，文字 吳星瑩、攝影 江昱德。</div>
+  </div>
+</footer>
+
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <span class="lightbox-close" aria-label="關閉">×</span>
+  <img id="lightbox-img" src="" alt="放大檢視">
+</div>
+<script>
+(function(){
+  var box=document.getElementById('lightbox'),boxImg=document.getElementById('lightbox-img');
+  document.querySelectorAll('.hero-figure img,.inline-figure img').forEach(function(img){
+    img.addEventListener('click',function(){boxImg.src=img.currentSrc||img.src;boxImg.alt=img.alt||'放大檢視';box.classList.add('open');box.setAttribute('aria-hidden','false');});
+  });
+  function close(){box.classList.remove('open');box.setAttribute('aria-hidden','true');boxImg.src='';}
+  box.addEventListener('click',close);
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
+})();
+</script>
+
+<script>
+(function(){
+  var TOTAL=15, gal=document.getElementById('wulingGallery');
+  if(!gal) return;
+  for(var i=1;i<=TOTAL;i++){
+    var n=String(i).padStart(2,'0'), im=document.createElement('img');
+    im.src='../../images/articles/wuling/p'+n+'.jpg';
+    im.alt='百岳行旅 武陵三秀 故事簡報 第 '+i+' 頁';
+    im.loading='lazy'; im.dataset.i=i; gal.appendChild(im);
+  }
+  var lb=document.createElement('div'); lb.id='lb';
+  lb.innerHTML='<img alt="放大檢視"><div class="lbbar"><button data-a="prev" aria-label="上一頁">&#8249;</button><span id="lbn"></span><button data-a="next" aria-label="下一頁">&#8250;</button><button data-a="close" aria-label="關閉">&times;</button></div>';
+  document.body.appendChild(lb);
+  var lbImg=lb.querySelector('img'), lbN=lb.querySelector('#lbn'), cur=1;
+  function show(i){cur=i<1?TOTAL:i>TOTAL?1:i;lbImg.src='../../images/articles/wuling/p'+String(cur).padStart(2,'0')+'.jpg';lbN.textContent=cur+' / '+TOTAL;}
+  gal.addEventListener('click',function(e){if(e.target.tagName!=='IMG')return;show(Number(e.target.dataset.i));lb.classList.add('on');});
+  lb.addEventListener('click',function(e){var a=e.target.dataset.a;if(a==='prev')show(cur-1);else if(a==='next')show(cur+1);else if(a==='close'||e.target===lb)lb.classList.remove('on');});
+  document.addEventListener('keydown',function(e){if(!lb.classList.contains('on'))return;if(e.key==='Escape')lb.classList.remove('on');else if(e.key==='ArrowRight')show(cur+1);else if(e.key==='ArrowLeft')show(cur-1);});
+})();
+</script>
+
+<script src="../../image-interactions.js"></script>
+<script src="../../spotlight.js"></script>
+<script src="../../articles-data.js"></script>
+<script src="../../related-render.js"></script>
+</body>
+</html>

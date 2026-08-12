@@ -80,7 +80,12 @@ function buildCourseItems() {
     process.exit(2);
   }
   return courses.map((c) => {
-    const url = c.detail_url || "/courses.html";
+    /* 網址優先序（2026-08-12 修）：detail_url → materials 的第一個連結 → 課程總表。
+       立因：8/2 與 8/4 兩場的課堂簡報明明存在，網址就寫在 materials 的「上課簡報 ↗」裡，
+       courses.html 也照常顯示得出來，但本腳本只讀 detail_url，於是索引把它們記成
+       /courses.html（課程總表）。人看得到、索引看不到，咪卡照索引回答就只能給總表連結。 */
+    const firstMaterial = Array.isArray(c.materials) && c.materials.length ? c.materials[0].url : "";
+    const url = c.detail_url || firstMaterial || "/courses.html";
     const normalizedUrl = url.startsWith("http") || url.startsWith("/") ? url : "/" + url;
     return {
       id: "course-" + c.id,
@@ -291,6 +296,43 @@ function collectTagDimensions(items) {
   };
 }
 
+/* ───────────── 5.5 noindex 旗標（2026-08-12 加） ─────────────
+   立因：咪卡客服改吃 site-index.json 之後，索引裡的每一筆都可能被它主動推給訪客。
+   但站上有少數頁面是刻意 noindex 的（專場課堂簡報，內含學員與孩子的現場作品），
+   狀態是「不進搜尋引擎，知道網址才打得開」。這類頁面進得了索引（站內搜尋要找得到），
+   但不該由客服對外主動發連結。
+   作法：掃該筆對應的本機 HTML，meta robots 含 noindex 就標 noindex: true。
+   誰用：api/mika-chat.js 建目錄時跳過這些筆。search.js 不看這個旗標，站內搜尋照舊找得到。 */
+function resolveLocalFile(url) {
+  if (!url || /^https?:\/\//i.test(url)) return null;      // 外站連結不掃
+  const clean = url.split(/[?#]/)[0].replace(/^\/+/, "");  // 去掉錨點與開頭斜線
+  if (!clean) return null;
+  const candidates = clean.endsWith("/") || !path.extname(clean)
+    ? [path.join(clean, "index.html"), clean + ".html"]
+    : [clean];
+  for (const c of candidates) {
+    const full = path.join(ROOT, c);
+    if (fs.existsSync(full) && fs.statSync(full).isFile()) return full;
+  }
+  return null;
+}
+
+function markNoindex(items) {
+  const hit = [];
+  items.forEach((it) => {
+    const file = resolveLocalFile(it.url);
+    if (!file) return;
+    // 只看檔頭：meta robots 一定在 <head>，全檔掃會誤中內文提到 noindex 的文章
+    const head = read(file).slice(0, 6000);
+    const meta = head.match(/<meta[^>]+name=["']robots["'][^>]*>/i);
+    if (meta && /noindex/i.test(meta[0])) {
+      it.noindex = true;
+      hit.push(`${it.type}｜${it.title}`);
+    }
+  });
+  return hit;
+}
+
 /* ───────────── 進入點 ───────────── */
 function main() {
   const oldIndex = JSON.parse(read(path.join(ROOT, "site-index.json")));
@@ -305,6 +347,8 @@ function main() {
 
   checkUniqueIds(items);
   checkNonEmptyUrl(items);
+
+  const noindexHits = markNoindex(items);
 
   const vocabNames = loadVocabNames();
   const warnings = checkVocab(items, vocabNames);
@@ -338,6 +382,11 @@ function main() {
     .forEach((t) => console.log(`  ${t}: ${byType[t]} 筆`));
   console.log(`  合計: ${items.length} 筆`);
   console.log("");
+  if (noindexHits.length) {
+    console.log(`───────── noindex（${noindexHits.length} 筆，站內搜尋找得到，咪卡不主動推） ─────────`);
+    noindexHits.forEach((h) => console.log("  " + h));
+    console.log("");
+  }
   if (warnings.length) {
     console.log("───────── WARN 清單（不在 vocab-public.json，不擋） ─────────");
     warnings.forEach((w) => console.log(w));

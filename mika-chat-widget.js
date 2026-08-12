@@ -13,6 +13,13 @@
   var NAME_KEY = 'mikaChat.name.v1';
   var SIZE_KEY = 'mikaChat.size.v1';   // s／m／l 三段，跨頁記住
   var MAX_HISTORY = 60;
+  /* 來源圖示（2026-08-12 加）。咪卡從「只推文章」擴成推全站八類之後，
+     每一筆都畫 📄 會讓技能包、服務方案看起來像文章。舊訊息沒有 type 欄位，退回 📄。 */
+  var SOURCE_ICONS = {
+    article: '📄', course: '🎓', skill: '🧩', offer: '💼',
+    case: '🏆', resource: '📦', tool: '🔧', page: '🔗',
+  };
+  function SOURCE_ICON(t) { return SOURCE_ICONS[t] || '📄'; }
   /* 端點（正式站＝同網域 serverless；file:// 校稿時自動走示意回覆）
      記錄＝匿名統計用：只看大家都問什麼，不追個人軌跡（江江 2026-08-07 拍板，去中心化原則） */
   var LOG_ENDPOINT = window.MIKA_CHAT_LOG_ENDPOINT || '/api/mika-chat-log';
@@ -163,7 +170,7 @@
     el.innerHTML = (msg.role === 'user' ? '' : '<span class="mkw-msg-avatar"></span>') + bubble;
     var bub = el.querySelector('.mkw-bubble');
     bub.textContent = msg.text;
-    /* 咪卡引用的文章連結（來自自家端點，逐一 DOM 建立，不用 innerHTML） */
+    /* 咪卡引用的站內連結（來自自家端點，逐一 DOM 建立，不用 innerHTML） */
     if (msg.sources && msg.sources.length) {
       var box = document.createElement('div');
       box.className = 'mkw-sources';
@@ -174,7 +181,7 @@
         a.href = s.url;
         a.target = '_blank';
         a.rel = 'noopener';
-        a.textContent = '📄 ' + (s.title || s.url);
+        a.textContent = SOURCE_ICON(s.type) + ' ' + (s.title || s.url);
         /* 日期另起一個小字（2026-08-11 江江實測回報：推薦文章看不到日期，日期很重要） */
         if (s.date) {
           var d = document.createElement('span');

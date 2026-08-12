@@ -315,7 +315,9 @@ window.COURSES = [
     host: "江江教練",
     tags: ["YouTube", "簡報", "時間軸", "重點摘要", "AI工作流"],
     summary: "把 YouTube 連結交給 AI，就能整理出時間軸、截圖、重點摘要，甚至直接做成網頁和簡報。這場免費講座，我會拆解這套工作流怎麼跑。",
-    detail_url: null,
+    // 2026-08-12 補：這場的課程頁一直在線上（HTTP 200、robots index,follow），但沒接進資料，
+    // 等於 courses.html 與咪卡都看不到它。標題自證是同一場（「6/14 免費線上講座」）。
+    detail_url: "https://jiangyude.com/courses/2026-06-14-youtube-report/",
     materials: [],
     registration: {
       status: "ended",
