@@ -619,7 +619,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["questionnaire-to-slides-agent-workflow", "teacher-prep-knowledge-workflow", "how-to-train-your-ai-employee", "agent-workflow-builds-automation", "program-vs-ai-skill-library", "docs-as-system-design-agent", "vibe-coding-ten-half-products", "chatgpt-work-codex-choice", "chatgpt-work-skills-web-version", "cli-api-mcp-computer-use", "agent-native-tools-software-interface"]
+    related: ["questionnaire-to-slides-agent-workflow", "teacher-prep-knowledge-workflow", "how-to-train-your-ai-employee", "agent-workflow-builds-automation", "program-vs-ai-skill-library", "docs-as-system-design-agent", "vibe-coding-ten-half-products", "chatgpt-work-codex-choice", "chatgpt-work-skills-web-version", "cli-api-mcp-computer-use", "agent-native-tools-software-interface", "let-ai-do-the-setup"]
   },
 
   /* ── 17. 我的會議記錄 Agent 工作流（教學）── */
@@ -1052,7 +1052,7 @@ window.ARTICLES = [
       content_type: ["趨勢文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["what-is-loop-engineering", "my-three-loops", "agent-workflow-builds-automation", "docs-as-system-design-agent", "decision-ladder-non-programmer", "ai-capability-tiers", "dual-centaur-meeting"]
+    related: ["what-is-loop-engineering", "my-three-loops", "agent-workflow-builds-automation", "docs-as-system-design-agent", "decision-ladder-non-programmer", "ai-capability-tiers", "dual-centaur-meeting", "let-ai-do-the-setup"]
   },
 
   /* ── 把不知不覺被 AI 改變的行為，抓成一套流程（教學）── */
@@ -1939,7 +1939,7 @@ window.ARTICLES = [
       content_type: ["觀點文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["harness-mindset-for-bosses", "ai-tools-professional-judgment", "start-with-a-wrong-draft"]
+    related: ["harness-mindset-for-bosses", "ai-tools-professional-judgment", "start-with-a-wrong-draft", "let-ai-do-the-setup"]
   }
 ,
 
@@ -1960,5 +1960,21 @@ window.ARTICLES = [
     },
     external: { threads: null, vocus: null },
     related: ["mika-to-laika-product-character-design", "map-is-not-the-territory", "semantic-rules-before-prompt-templates"]
+  },
+  {
+    id: "let-ai-do-the-setup",
+    url: "articles/let-ai-do-the-setup/",
+    date: "2026-08-12",
+    title: "換電腦，設定又要重來一次嗎？：我把 OBS 交給 AI，一個選項都沒點過",
+    problem: "出差帶了新筆電，要重新設定 OBS 錄螢幕，卻忘記把桌機的設定記下來。以前這種事只有兩條路：找教學影片跟著點，或是自己一個選項一個選項慢慢翻。",
+    audience: "換了新電腦或重灌系統、一堆軟體要重設的人；遇到不熟的軟體習慣先去搜教學影片的人；已經在用 AI 但用途還停在寫字、翻譯、整理資料，沒想過它能直接處理電腦上設定的人。",
+    summary: "這次出差重設 OBS，我沒有點過任何一個選項，全部交給 AI 改設定檔完成。文章攤開完整過程：它先查現況、先問用途、給出兩條施工路徑讓我選，再跑進 OBS 的程式檔案裡撈出正確參數才動手，最後建好三個錄課場景。也誠實寫出它做不到的四件事：不碰螢幕、不能替我授權系統權限、不能決定用途、第一次沒有全對（同一個欄位在兩個區段各出現一次，它只改到第一個，是自己驗收時抓出來的）。最後收成三個判斷問題：設定存在哪裡、有沒有非人不可的授權步驟、做錯了看不看得出來，三個都過就可以整包交出去，並附一句可直接複製的提問。",
+    tags: {
+      topic: ["AI應用", "工具操作", "AI工作流"],
+      level: ["基礎"],
+      content_type: ["案例文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["dont-learn-ai-tools", "how-ai-connects-software", "ai-delegators-optimism"]
   }
 ];

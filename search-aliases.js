@@ -7,6 +7,7 @@ window.SEARCH_ALIASES = {
   "start-with-a-wrong-draft": ["四階遞降法"],
   "nontech-partner-ai-onboarding": ["系統是你的放大器","一魚三吃","Agent是知識庫的翻譯層","待拍板佇列","真相分層"],
   "meta-prompt-thirty-versions": ["元提示詞","會生出提示詞的提示詞"],
+  "let-ai-do-the-setup": ["換電腦設定要重來一次","換新電腦軟體要重設","AI幫我設定軟體","什麼事可以交給AI做","AI的能力與邊界","怎麼分配工作給AI","叫AI做不是偷懶","一個選項都沒點過","OBS設定","AI先做而不是自己學"],
   "dont-learn-ai-tools": ["想用Canva的舉手沒人舉手","從操作者換成交辦的人"],
   "build-your-own-dictionary": ["自建字典（你的模糊詞字典）","三行字典條目：詞我的意思是反例","AI反過來學你的系統","字典替你講完後面一百個字"],
   "agi-work-and-discovery": ["詞語關聯計算機","兩把尺：工作能力與創造新知","AGI沒有單一生日","AlphaGo第37手"],
