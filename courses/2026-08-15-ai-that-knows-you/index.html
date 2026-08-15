@@ -164,6 +164,10 @@
   .form-btn { display:inline-block; font-size:18px; font-weight:700; padding:12px 26px; border-radius:999px; background:var(--accent); color:#fff; text-decoration:none; transition:opacity .15s; }
   .form-btn:hover { opacity:.85; }
   .form-note { font-size:17px; line-height:1.75; color:var(--text-on-light); margin:14px 0 0; }
+  .form-row { display:flex; align-items:center; gap:22px; flex-wrap:wrap; }
+  .form-side { flex:1 1 260px; min-width:0; }
+  .form-hint { font-size:16px; color:var(--accent); margin:10px 0 0; }
+  section[data-bg="7"] .form-hint, section[data-bg="8"] .form-hint, section[data-bg="9"] .form-hint { color:var(--accent-on-dark); }
   section[data-bg="7"] .formbox, section[data-bg="8"] .formbox, section[data-bg="9"] .formbox { background:rgba(255,248,240,0.08); border-color:var(--accent-on-dark); }
   section[data-bg="7"] .form-note, section[data-bg="8"] .form-note, section[data-bg="9"] .form-note { color:var(--text-on-dark); }
   section[data-bg="7"] .form-label, section[data-bg="8"] .form-label, section[data-bg="9"] .form-label { color:var(--accent-on-dark); }
@@ -174,7 +178,7 @@
   .foldbox summary::before { content:'▸ '; }
   .foldbox[open] summary::before { content:'▾ '; }
   .foldbox[open] { padding-bottom:16px; }
-  @media (max-width:640px){ .qrbox{gap:18px;padding:18px} .qr-img{width:118px;height:118px} .qr-text{font-size:17px} }
+  @media (max-width:640px){ .qrbox{gap:18px;padding:18px} .qr-img{width:118px;height:118px} .qr-text{font-size:17px} .form-row{gap:16px} }
   .promptbox { text-align:left; margin-top:32px; border:2px solid var(--accent); border-radius:18px; background:rgba(255,248,240,0.7); padding:24px 26px 20px; }
   .promptbox .plabel { font-family:var(--font-mono); font-size:15px; letter-spacing:0.14em; color:var(--accent); font-weight:700; margin-bottom:12px; display:block; }
   .promptbox p { font-size:20px; line-height:1.8; color:var(--text-on-light); margin:0; }
@@ -627,7 +631,13 @@ https://github.com/Jiang-Yude/rotary-advisor
 
       <div class="formbox reveal d2">
         <div class="form-label">寫好之後，貼到這裡</div>
-        <a class="form-btn" href="https://forms.gle/4pfkAzjyesEh8e1i7" target="_blank" rel="noopener">打開現場交流表單 ↗</a>
+        <div class="form-row">
+          <img src="qr-form.svg" alt="掃這個 QR 打開現場交流表單" class="qr-img" />
+          <div class="form-side">
+            <a class="form-btn" href="https://forms.gle/4pfkAzjyesEh8e1i7" target="_blank" rel="noopener">打開現場交流表單 ↗</a>
+            <p class="form-hint">手機掃 QR 直接打開，用電腦的人點按鈕。點 QR 可以放大。</p>
+          </div>
+        </div>
         <p class="form-note">表單四欄：稱呼、公司或單位（可不填）、你剛剛產出的交流檔案、願不願意現場公開配對結果。選「只想自己看」的人<b>不會被投影點名</b>，但一樣會納入分組。</p>
       </div>
 
@@ -774,14 +784,18 @@ https://github.com/Jiang-Yude/rotary-advisor
 
   // QR 點開放大
   (function () {
-    const img = document.getElementById('qrImg');
-    if (!img) return;
+    const imgs = document.querySelectorAll('.qr-img');
+    if (!imgs.length) return;
     const ov = document.createElement('div');
     ov.id = 'qrOverlay';
-    ov.innerHTML = '<img alt="放大的 QR" src="' + img.getAttribute('src') + '">';
+    ov.innerHTML = '<img alt="放大的 QR" src="">';
     document.body.appendChild(ov);
+    const ovImg = ov.querySelector('img');
     const close = () => ov.classList.remove('on');
-    img.addEventListener('click', () => ov.classList.add('on'));
+    imgs.forEach((img) => img.addEventListener('click', () => {
+      ovImg.setAttribute('src', img.getAttribute('src'));
+      ov.classList.add('on');
+    }));
     ov.addEventListener('click', close);
     document.addEventListener('keydown', (e) => { if (e.key === 'Escape') close(); });
   })();
