@@ -1228,7 +1228,7 @@ window.ARTICLES = [
     summary: "把外部材料變成能追問的 AI 顧問完整方法：整理來源、萃取思維框架、寫顧問設定、驗證契合度。以把 Naval 的書與訪談做成數位分身為真實案例。",
     tags: {"topic":["知識管理","AIAgent","技能包設計","輔助決策"],"level":["基礎"],"content_type":["教學文章"]},
     external: { threads: null, vocus: null },
-    related: ["notebooklm-knowledge-analysis-assistant", "youtube-to-opinion-report-workflow", "why-split-data-into-cards"]
+    related: ["notebooklm-knowledge-analysis-assistant", "youtube-to-opinion-report-workflow", "why-split-data-into-cards", "book-to-ai-consultant"]
   },
   {
     id: "liberal-arts-agent-framework",
@@ -1241,7 +1241,7 @@ window.ARTICLES = [
     summary: "給文科生的 Agent 框架設計通識課：駕馭工程三件事、迴圈工程與三種日記、LLM Wiki 知識圖譜與 Tag Wiki 標籤系統，不寫程式也能讓 AI 接手工作。",
     tags: {"topic":["AIAgent","知識管理","知識庫","AI工作流"],"level":["基礎"],"content_type":["教學文章"]},
     external: { threads: null, vocus: null },
-    related: ["what-is-loop-engineering", "loop-engineering-guardrails", "web-chat-ai-vs-desktop-agent"]
+    related: ["what-is-loop-engineering", "loop-engineering-guardrails", "web-chat-ai-vs-desktop-agent", "book-to-ai-consultant"]
   },
   {
     id: "ai-learning-map-reduce-anxiety",
@@ -1994,5 +1994,23 @@ window.ARTICLES = [
     },
     external: { threads: null, vocus: null },
     related: ["character-costume-sheet-three-views", "questionnaire-to-slides-agent-workflow", "mika-to-laika-product-character-design"]
+  },
+
+  /* ── 把一本書變成問得下去的 AI 顧問（教學） ── */
+  {
+    id: "book-to-ai-consultant",
+    url: "articles/book-to-ai-consultant/",
+    date: "2026-08-15",
+    title: "把一本書變成問得下去的 AI 顧問：來源底座、十區塊人格與八個思維引擎",
+    problem: "書、逐字稿與 Podcast 摘要完就放著；直接叫 AI 扮演作者，它會用「感覺像」補出查不到出處的內容。",
+    audience: "想把手上的書、課程逐字稿、Podcast 變成能追問的 AI 顧問，又不希望它亂編的人。",
+    summary: "把書、逐字稿、Podcast 提煉成能追問的 AI 顧問。先建可追溯的來源底座與 A/B/C/D 證據分層，再寫十區塊人格，最後補八個思維引擎子模組（含來源追溯表與框架衝突處理兩個控制層）。附可複製的來源底座提示詞、六項驗收標準與四類測試題，技能包 persona-mind-distiller 中英文 MIT 開源。",
+    tags: {
+      topic: ["知識管理", "AIAgent", "技能包設計", "隱性知識"],
+      level: ["基礎"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["books-videos-pdf-ai-advisor", "elon-musk-live-skill", "liberal-arts-agent-framework"]
   }
 ];
