@@ -1,0 +1,608 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="index,follow">
+<title>把一本書變成問得下去的 AI 顧問：來源底座、十區塊人格與八個思維引擎｜江江教練 · AI 知識管理</title>
+<meta name="description" content="把書、逐字稿、Podcast 提煉成能追問的 AI 顧問：先建可追溯的來源底座與證據分層，再寫十區塊人格，最後補八個思維引擎子模組。附可複製提示詞、十個驗收問句與 MIT 開源技能包。">
+<link rel="canonical" href="https://jiangyude.com/articles/book-to-ai-consultant/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="把一本書變成問得下去的 AI 顧問：來源底座、十區塊人格與八個思維引擎｜江江教練">
+<!-- 分享封面：hero 文字填好後在 repo 根目錄跑 `node scripts/og-shot.mjs book-to-ai-consultant` 自動截 1200×630 到 images/og/book-to-ai-consultant.jpg（見 README「文章分享封面（OG 圖）機制」）。別退回 intro-jiang.png 直式人像，會被裁成只剩脖子。 -->
+<meta property="og:image" content="https://jiangyude.com/images/og/book-to-ai-consultant.jpg">
+<meta property="og:description" content="把書、逐字稿、Podcast 提煉成能追問的 AI 顧問：先建可追溯的來源底座與證據分層，再寫十區塊人格，最後補八個思維引擎子模組。附可複製提示詞、十個驗收問句與 MIT 開源技能包。">
+<meta property="og:url" content="https://jiangyude.com/articles/book-to-ai-consultant/">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:site_name" content="江江教練 · AI 知識管理">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="把一本書變成問得下去的 AI 顧問：來源底座、十區塊人格與八個思維引擎｜江江教練">
+<meta name="twitter:image" content="https://jiangyude.com/images/og/book-to-ai-consultant.jpg">
+<meta name="twitter:description" content="把書、逐字稿、Podcast 提煉成能追問的 AI 顧問：先建可追溯的來源底座與證據分層，再寫十區塊人格，最後補八個思維引擎子模組。附可複製提示詞、十個驗收問句與 MIT 開源技能包。">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"把一本書變成問得下去的 AI 顧問：來源底座、十區塊人格與八個思維引擎","description":"把書、逐字稿、Podcast 提煉成能追問的 AI 顧問：先建可追溯的來源底座與證據分層，再寫十區塊人格，最後補八個思維引擎子模組。附可複製提示詞、十個驗收問句與 MIT 開源技能包。","author":{"@type":"Person","name":"江昱德","alternateName":"江江教練","jobTitle":"隱性知識提煉師、AI 應用規劃師"},"isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://jiangyude.com/"},"inLanguage":"zh-Hant","url":"https://jiangyude.com/articles/book-to-ai-consultant/"}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{--ink:#1a1612;--paper:#fefcf8;--muted:#6a635a;--line:#d8cdb8;--green:#5f7553;--blue:#5689b8;--orange:#e85a4f;--soft:#faf5ec;--dark:#2a2018;--shadow:0 18px 45px rgba(107,74,42,.14);--sp-shadow:hsla(35,50%,60%,.15);--sp-shadow-edge:hsla(35,50%,68%,.03);--sp-radius:400px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC","Segoe UI",sans-serif}
+a{color:inherit}
+/* 官網共用導航列 nav.top（與首頁/文章總站同一條） */
+nav.top{position:sticky;top:0;background:rgba(254,252,248,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid #d8cdb8;z-index:100}
+nav.top .container{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:24px;padding:14px 32px}
+.nav-brand-img{justify-self:start;display:flex;align-items:center;text-decoration:none;flex-shrink:0;transition:opacity .2s}
+.nav-brand-img:hover{opacity:.8}.nav-brand-img img{height:40px;width:auto;display:block}
+nav.top ul.nav-menu{justify-self:end;display:flex;gap:22px;list-style:none;margin:0;padding:0;font-size:.95rem;white-space:nowrap}
+nav.top ul.nav-menu a{color:#3a342d;text-decoration:none;transition:color .2s;font-weight:500;white-space:nowrap}
+nav.top ul.nav-menu a:hover{color:#1a1612}nav.top ul.nav-menu a.active{color:#1a1612;font-weight:700}
+.nav-toggle{display:none;background:none;border:none;padding:6px;cursor:pointer;width:36px;height:36px;position:relative}
+.nav-toggle span{display:block;position:absolute;left:8px;right:8px;height:2px;background:#1a1612;border-radius:2px;transition:transform .25s,opacity .25s,top .25s}
+.nav-toggle span:nth-child(1){top:11px}.nav-toggle span:nth-child(2){top:17px}.nav-toggle span:nth-child(3){top:23px}
+.nav-toggle.open span:nth-child(1){top:17px;transform:rotate(45deg)}.nav-toggle.open span:nth-child(2){opacity:0}.nav-toggle.open span:nth-child(3){top:17px;transform:rotate(-45deg)}
+@media(max-width:860px){
+ nav.top .container{grid-template-columns:auto 1fr auto;padding:10px 16px;gap:12px}
+ .nav-brand-img img{height:32px}
+ .nav-toggle{display:block;justify-self:end}
+ nav.top ul.nav-menu{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(254,252,248,.98);backdrop-filter:blur(14px);border-bottom:1px solid #d8cdb8;flex-direction:column;gap:0;padding:8px 0;box-shadow:0 10px 24px rgba(107,74,42,.08)}
+ nav.top ul.nav-menu.open{display:flex}
+ nav.top ul.nav-menu li{border-bottom:1px solid #e8dfc9}
+ nav.top ul.nav-menu li:last-child{border-bottom:none}
+ nav.top ul.nav-menu a{display:block;padding:14px 20px;font-size:1.06rem}
+}
+/* 滑鼠暖光暈（與首頁同一支 spotlight.js） */
+body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradient(var(--sp-radius) circle at var(--mx,50%) var(--my,50%),var(--sp-shadow) 0%,var(--sp-shadow-edge) 45%,transparent 75%);pointer-events:none;z-index:9999;mix-blend-mode:multiply;transition:background .06s linear}
+.hero{position:relative;overflow:hidden;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:72px;padding:96px clamp(20px,6vw,88px) 80px;background:linear-gradient(180deg,#fffcf0 0%,#f9e9d2 100%);color:#1a1612;border-bottom:1px solid #d8cdb8}
+.hero .wc{position:absolute;border-radius:50%;filter:blur(60px);pointer-events:none;z-index:0}
+.hero .wc1{width:420px;height:360px;top:-120px;right:-80px;background:#e8884b;opacity:.15}
+.hero .wc2{width:360px;height:300px;bottom:-110px;left:-70px;background:#5f7553;opacity:.13}
+.hero .wc3{width:280px;height:260px;top:34%;left:14%;background:#a08144;opacity:.10}
+.hero>div{flex:none;width:860px;max-width:100%;position:relative;z-index:2}
+.hero-figure{margin:0;width:420px;flex:none;position:relative;z-index:2}
+.hero-figure img{display:block;width:100%;border-radius:16px;border:1px solid #d8cdb8;box-shadow:0 18px 45px rgba(107,74,42,.16);cursor:zoom-in}
+.hero-figure figcaption{margin-top:10px;font-size:14px;line-height:1.6;color:#6a635a}
+.inline-figure{margin:30px auto 8px;max-width:820px}
+.inline-figure img{display:block;width:100%;border-radius:14px;border:1px solid var(--line);box-shadow:var(--shadow);background:#fff;cursor:zoom-in}
+.inline-figure figcaption{font-size:14px;line-height:1.6;color:var(--muted);margin-top:10px}
+.lightbox{position:fixed;inset:0;z-index:10000;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(12,10,8,.92);cursor:zoom-out;backdrop-filter:blur(4px)}
+.lightbox.open{display:flex}.lightbox img{max-width:96vw;max-height:92vh;border-radius:10px;box-shadow:0 24px 60px rgba(0,0,0,.5)}
+.lightbox-close{position:fixed;top:18px;right:24px;color:#fff;font-size:34px;line-height:1;font-weight:700;cursor:pointer;opacity:.85}
+.kicker{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.55rem;color:#7a5c3a;font-weight:500}
+.hero h1{max-width:none;margin:16px 0 18px;font-size:clamp(36px,6vw,72px);line-height:1.08;overflow-wrap:anywhere}
+.hero p{max-width:none;font-size:clamp(18px,2vw,23px);line-height:1.62;color:#3a342d}
+.cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
+.cta a{display:inline-flex;align-items:center;text-decoration:none;border-radius:8px;padding:12px 16px;font-weight:900}
+.cta .primary{background:#fff;color:#1a1612}.cta .ghost{border:1px solid rgba(255,255,255,.32);color:#fff;background:rgba(255,255,255,.08)}
+.section{padding:54px clamp(20px,6vw,88px);border-top:1px solid var(--line)}
+.inner{width:min(1000px,100%);margin:0 auto}
+.section h2{font-size:clamp(26px,4.2vw,48px);line-height:1.12;margin:0 0 18px}
+.section h3{font-size:clamp(21px,3vw,30px);line-height:1.2;margin:30px 0 12px}
+.lead{font-size:clamp(18px,1.6vw,22px);line-height:1.7;color:#3a342d;max-width:900px}
+.section p{font-size:18px;line-height:1.74;color:#3a342d}.section p+p{margin-top:14px}
+.section ul,.section ol{padding-left:1.4em;font-size:18px;line-height:1.74;color:#3a342d}.section li{margin-bottom:8px}
+.meaning{margin:22px 0;padding:16px 18px;border-left:5px solid var(--blue);background:rgba(86,137,184,.12);border-radius:6px;line-height:1.7;font-size:19px}
+.meaning b{display:block;color:var(--blue);margin-bottom:4px}
+.caveat{margin:0 0 8px;padding:16px 18px;border-left:5px solid var(--orange);background:rgba(232,90,79,.1);border-radius:6px;line-height:1.7;font-size:18px;color:#3a342d}
+.caveat b{display:block;color:var(--orange);margin-bottom:4px}
+.infocard{background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px 24px 22px;box-shadow:0 8px 22px rgba(107,74,42,.08);margin-top:8px}
+.infocard-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.info-item{padding:18px 14px 0}
+.info-item b{display:block;font-size:14px;font-weight:900;letter-spacing:.04em;margin-bottom:7px;text-transform:uppercase}
+.info-item:nth-child(1) b{color:var(--green)}.info-item:nth-child(2) b{color:var(--orange)}.info-item:nth-child(3) b{color:var(--blue)}
+.info-item p{margin:0;font-size:17px;line-height:1.6;color:#3a342d}
+.tagrow{display:flex;flex-wrap:wrap;gap:7px;margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
+.tag{font-size:14px;color:var(--muted);background:var(--soft);border:1px solid var(--line);border-radius:999px;padding:4px 11px}
+.duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:24px}
+.duo.stack{grid-template-columns:1fr}
+.duo .card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:22px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.duo .card.a{border-color:var(--orange)}.duo .card.b{border-color:var(--green);box-shadow:0 8px 24px rgba(95,117,83,.16)}
+.duo .card small{display:block;font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.04em;margin-bottom:9px}
+.duo .card.a small{color:var(--orange)}.duo .card.b small{color:var(--green)}
+.duo .card b{display:block;font-size:22px;line-height:1.3;margin-bottom:12px}.duo .card.a b{color:#c0512f}.duo .card.b b{color:#4a7a59}
+.duo .card p{margin:0;color:#3a342d;line-height:1.75;font-size:18px}
+.workflow-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:24px}
+.workflow-step{background:#fff;border:1px solid var(--line);border-radius:8px;padding:18px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.workflow-step small{display:block;color:var(--orange);font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;margin-bottom:9px}
+.workflow-step b{display:block;font-size:18px;line-height:1.3;margin-bottom:9px}
+.workflow-step p{margin:0;color:#3a342d;line-height:1.6;font-size:16px}
+.codeblock{background:var(--dark);color:#f3ead9;border-radius:8px;padding:18px 20px;font:500 14px/1.65 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;overflow-x:auto;white-space:pre-wrap;margin:20px 0;box-shadow:0 8px 22px rgba(107,74,42,.12)}
+.codeblock .c{color:#f6d7a6;font-weight:600}
+.skillcard{background:#fff;border:1px solid var(--green);border-radius:12px;padding:24px;box-shadow:0 10px 26px rgba(95,117,83,.16);margin-top:8px}
+.skillcard b{display:block;font-size:21px;margin-bottom:8px}
+.skillcard p{margin:0 0 16px;font-size:17px;line-height:1.65;color:#3a342d}
+.cta-band{background:#e6f0e5;color:#3a342d}.cta-band .section{border-top:none}
+.cta-band .inner{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(260px,.85fr);gap:26px;align-items:start}
+.cta-band h2{font-size:clamp(26px,4vw,44px);margin:0 0 16px}.cta-band p,.cta-band .lead{color:rgba(58,52,45,.9);font-size:18px;line-height:1.72}
+.cta-card{border:1px solid #cfe0d2;background:#fbfdfa;border-radius:8px;padding:22px}
+.cta-card b{display:block;color:#48b178;margin-bottom:10px;font-size:18px}.cta-card p{margin:0 0 14px}
+.footer{padding:30px clamp(20px,6vw,88px);font-size:14px;color:var(--muted);background:#fff;border-top:1px solid var(--line)}
+.footer-inner{width:min(1000px,100%);margin:0 auto}
+.footer-links{display:flex;flex-wrap:wrap;gap:6px 12px;margin-bottom:14px}.footer-links a{color:var(--blue);font-weight:900;text-decoration:none;font-size:14px}
+.footer-brand{font-weight:900;font-size:15px;margin-bottom:10px}.footer-note{font-size:13px;line-height:1.6}
+@media(max-width:820px){.infocard-grid{grid-template-columns:1fr}.duo{grid-template-columns:1fr}.workflow-grid{grid-template-columns:1fr}.cta-band .inner{grid-template-columns:1fr}.section{padding:40px 20px}.hero{min-height:52vh;flex-direction:column;justify-content:flex-start;align-items:flex-start;gap:24px}.hero>div{width:100%}.hero-figure{width:100%;max-width:560px}}
+@media(max-width:820px){html,body{overflow-x:hidden}.hero h1{word-break:break-word}}
+.readmore{margin-top:24px;padding:20px 22px;background:var(--soft);border:1px solid var(--line);border-radius:12px}
+.readmore.near{margin:26px 0 6px;background:rgba(86,137,184,.07);border-color:#bcd0e2}
+.readmore.near b{color:var(--blue);font-size:18px}
+.readmore.near li{font-size:17px;line-height:1.7;margin-bottom:10px}
+.readmore b{display:block;margin-bottom:10px;font-size:19px}
+.readmore ul{margin:0;padding-left:1.25em}
+.readmore a{color:var(--blue);font-weight:700;text-decoration:none}
+.readmore a:hover{text-decoration:underline}
+.section code{background:var(--soft);border:1px solid var(--line);border-radius:4px;padding:1px 6px;font:500 15px/1.5 "JetBrains Mono",ui-monospace,Menlo,monospace}
+.skillcard .cta{margin-top:0}
+.skillcard .cta .primary{background:var(--green);color:#fff;border:1px solid var(--green)}
+.cta-band .cta .primary{background:#48b178;color:#fff}
+</style>
+</head>
+<body class="spotlight">
+<!-- 官網共用導航列 nav.top：與首頁/總站同一條，文章不要自己另做極簡 topbar（江江 2026-06-25：要同一個框架、同一條導航列）。把對應頁面的 class="active" 標在自己那欄。 -->
+<nav class="top">
+  <div class="container">
+    <a class="nav-brand-img" href="../../index.html"><img src="../../images/footer-signature.png" alt="江江教練 | 江昱德"></a>
+    <button class="nav-toggle" aria-label="選單"><span></span><span></span><span></span></button>
+    <ul class="nav-menu">
+      <li><a href="../../index.html">首頁</a></li>
+      <li><a href="../../knowledge-architecture.html">知識架構</a></li>
+      <li><a href="../../courses.html">課程</a></li>
+      <li><a href="../../articles.html" class="active">深度文章</a></li>
+      <li><a href="../../skills.html">技能包下載</a></li>
+      <li><a href="../../offers.html">服務方案</a></li>
+      <!-- 這一行不能少：preflight 第 5 關 check-bilingual-nav.mjs 要求每個 HTML 都有 EN 切換。
+           2026-08-12 補：範本原本漏了它，照範本起手的新文章一律被第 5 關擋下，每個人都得手動補一次。 -->
+      <li class="lang-switch"><a href="../../en/articles.html" hreflang="en">EN</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="wc wc1"></div>
+  <div class="wc wc2"></div>
+  <div class="wc wc3"></div>
+  <div>
+    <div class="kicker">數位分身 · 人格思維提煉</div>
+    <h1>把一本書變成問得下去的 AI 顧問：來源底座、十區塊人格與八個思維引擎</h1>
+    <p>摘要保存的是結論，丟掉的是作者怎麼走到這個結論。這篇把來源底座、十區塊人格與八個思維引擎的完整做法攤開，技能包 MIT 開源，可以直接拿去改。</p>
+  </div>
+</section>
+
+<main>
+
+<section class="section" id="start">
+  <div class="inner">
+    <h2>這篇在講什麼</h2>
+    <p class="lead">很多人問我同一件事：手上有一本很喜歡的書、一堆課程逐字稿、幾十集 Podcast，怎麼讓 AI 把它變成一個可以隨時問的顧問。這篇把我實際在用的流程完整攤開：先建可追溯的來源底座，再寫十區塊人格，最後補八個思維引擎子模組。範本、檢查方式與可複製提示詞都在文章裡，技能包本身是 MIT 開源的，你可以直接拿去改。</p>
+
+    <div class="duo stack">
+      <div class="card a">
+        <b>適合誰</b>
+        <ul>
+          <li>你讀完一本書覺得很有收穫，三個月後想引用某個觀點，卻連它在第幾章都想不起來。</li>
+          <li>你叫 AI 幫你整理書摘，整理出來很整齊，但下次遇到真實決策，那份摘要幫不上忙。</li>
+          <li>你想做「某某人的 AI 分身」，做出來聊兩句就發現它在講廢話，語氣像客服，觀點像百科。</li>
+          <li>你已經在用 AI 幫忙工作，想把手上的專業素材變成一個穩定、不會亂編的顧問。</li>
+        </ul>
+      </div>
+      <div class="card b">
+        <b>你可以帶走什麼</b>
+        <ul>
+          <li>一套兩層做法：來源底座負責「這批素材裡有什麼」，人格顧問負責「根據這批素材，它會怎麼判斷」。</li>
+          <li>八個思維引擎子模組的完整清單與實際填法，含六個內容模組與兩個控制層。</li>
+          <li>一組可直接貼進 AI 的提示詞，以及十個用來驗收的測試問句。</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="why-summary-fails">
+  <div class="inner">
+    <h2>一、摘要留不住一本書</h2>
+    <p>讀完一本書，最常見的下場是：當下很有感，兩週後只剩下幾個名詞。</p>
+    <p>用 AI 做書摘會讓這件事變快，但問題沒有解決。摘要保存的是<b>結論</b>，丟掉的是<b>作者怎麼走到這個結論</b>。你下次遇到的問題跟書裡的例子長得不一樣，你需要的是他的判斷方式，摘要給不了。</p>
+    <p>換個方式說：摘要能回答「這本書講了什麼」，回答不了「如果是他，遇到我這個狀況會怎麼想」。</p>
+
+    <div class="meaning">
+      <b>第二個問題更麻煩</b>
+      你把書丟給 AI，叫它扮演作者，它會演。演得還挺像，語氣有了，金句有了，然後它開始編。編出來的東西聽起來很合理，你查不到出處，因為根本沒有出處，那是模型用「感覺像」補出來的。
+    </div>
+
+    <p>我做這套流程的第一目標，是讓分身<b>可控、穩定、安全、省心</b>。炫不炫是其次。所以整套設計都圍繞一件事：讓每一句判斷都能回頭指到來源，指不到就讓它說「不知道」。</p>
+
+    <div class="readmore near">
+      <b>如果你還沒做過第一個，先看這篇入門版</b>
+      <ul>
+        <li><a href="../books-videos-pdf-ai-advisor/">把書、影片、PDF 轉成可對話的 AI 顧問</a>　那篇用四個步驟講完整條路怎麼走，適合第一次做；這篇是它的進階版，深入到人格背後那層引擎怎麼寫、怎麼防止 AI 亂補</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="source-base">
+  <div class="inner">
+    <h2>二、先建來源底座，不要急著做人格</h2>
+    <p>這是整篇最重要的一段，也是最多人跳過的一步。</p>
+    <p>拿到一本書、一批逐字稿、一整年的文章，第一個動作先不要寫人格設定。先做一份來源底座。</p>
+
+    <h3>兩層各自回答什麼</h3>
+    <div class="duo">
+      <div class="card a">
+        <small>第一層</small>
+        <b>來源型知識底座</b>
+        <p>回答「這批素材裡有什麼」。產物是來源清單、章節索引、主題索引、術語表、框架與原則、反模式、速查表、範圍限制。</p>
+      </div>
+      <div class="card b">
+        <small>第二層</small>
+        <b>人格型 AI 顧問</b>
+        <p>回答「根據這批素材背後的思考方式，這個顧問會怎麼判斷」。產物是十區塊人格、思維引擎、回答工作流、來源追溯表、框架衝突處理、認識論邊界、一頁速查。</p>
+      </div>
+    </div>
+
+    <p>跳過第一層直接做人格，模型就會用「感覺像」把空缺補滿。這是人格分身最常見的失控樣態，而且很難事後補救，因為你分不出哪些是書上真的有、哪些是它自己長出來的。</p>
+
+    <h3>來源底座的最小結構</h3>
+    <div class="codeblock"><span class="c"># [素材名稱] 來源底座</span>
+
+<span class="c">## Scope</span>
+- 這批素材包含：
+- 這批素材不包含：
+- 最可靠的來源：
+- 最薄弱的來源：
+
+<span class="c">## Source Index</span>
+| 來源標記 | 類型 | 日期 | 位置 | 備註 |
+| [書]     | 書籍 | YYYY-MM-DD | ch1-ch12 | 原始文本 |
+| [訪談A]  | 訪談逐字稿 | YYYY-MM-DD | 00:00-90:00 | 原話 |
+
+<span class="c">## Topic Index</span>
+| 主題 | 來源位置 | 可提煉成 |
+| [主題] | [書 ch3]、[訪談A 12:30] | 心智模型／判斷原則／背景 |
+
+<span class="c">## Frameworks / Principles</span>
+| 名稱 | 定義 | 何時使用 | 來源 |
+
+<span class="c">## Anti-patterns</span>
+| 反模式 | 症狀 | 為什麼危險 | 來源 |
+
+<span class="c">## Cheatsheet</span>
+- 最重要的 5-7 條規則
+- 3 個常見適用情境
+- 3 個不適用情境</div>
+
+    <h3>證據分四層</h3>
+    <p>寫任何東西進人格設定前，先問這句話屬於哪一層。</p>
+    <div class="infocard">
+      <div class="infocard-grid">
+        <div class="info-item">
+          <b>A 層｜本人原話</b>
+          <p>原始逐字稿、本人著作。可以寫進核心設定，優先用。</p>
+        </div>
+        <div class="info-item">
+          <b>B 層｜明確行動</b>
+          <p>反覆出現的案例、能交叉驗證的決策。可以寫，但要標依據。</p>
+        </div>
+        <div class="info-item">
+          <b>C 層｜歸納模式</b>
+          <p>你從 A、B 推出來的。可以寫，但要標明「依其思路推導」。</p>
+        </div>
+      </div>
+    </div>
+    <div class="caveat">
+      <b>D 層不進核心人格</b>
+      他人評論、粉絲轉述、模型猜測都屬 D 層，最多列為待查證。找不到來源的條目先標 <code>待補來源</code>，空著比補滿安全。分身說「這個我沒有依據」，比它掰一段漂亮的話有用得多。
+    </div>
+
+    <h3>什麼時候算做完第一層</h3>
+    <p>能回答這五題，才進下一步：</p>
+    <ol>
+      <li>這個顧問最可靠的知識範圍是什麼？</li>
+      <li>哪些主題來源不足？</li>
+      <li>哪些判斷是本人原話，哪些是我歸納的？</li>
+      <li>最容易出現的漂移風險是什麼？</li>
+      <li>出問題時要去哪個來源修？</li>
+    </ol>
+
+    <div class="readmore near">
+      <b>底座跟索引背後那套知識結構，我另外寫過完整版</b>
+      <ul>
+        <li><a href="../liberal-arts-agent-framework/">文科生的 Agent 框架設計通識課</a>　這段講的是單一批素材怎麼建索引，那篇講的是整個知識庫層級的知識圖譜與標籤系統怎麼長，不寫程式也能做</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="ten-blocks">
+  <div class="inner">
+    <h2>三、人格層：十區塊</h2>
+    <p>來源底座做好，才開始寫人格。</p>
+    <p>人格層是<b>對外</b>的那一面：口吻、互動方式、可以聊的話題。一般對話只讀這一層，輕量、便宜。</p>
+    <p>提煉的核心動作有四個，每一個都直接對應到人格設定的某幾個區塊。</p>
+
+    <h3>找他反覆談什麼</h3>
+    <p>列一張主題頻率表，每出現一次劃一筆。三到五個他能講半小時不停的主題，就是這個顧問的主場。</p>
+
+    <h3>抽口吻 DNA</h3>
+    <p>這是擬人化最關鍵的一步，也最容易做得太粗。開一份 <code>voice-dna.md</code>，貼<b>直接引言</b>，不要改寫。分四種情境收：他同意時怎麼說、不同意時怎麼說、被挑戰時怎麼回、鼓勵人時什麼語氣。</p>
+    <p>句子長短要寫實際數字。「短句為主」沒有用，「15 到 25 字一句」才有用。</p>
+
+    <h3>抽判斷原則，寫成 if-then</h3>
+    <p>這一步決定分身有沒有判斷力。不要寫「他重視長期思維」，那種句子 AI 拿到也不知道怎麼用。要寫成「遇到什麼情況，他選什麼」。</p>
+    <p>以 Naval Ravikant 為例，我從素材裡抽出來的樣子是這樣：</p>
+    <ul>
+      <li>如果這件事需要某個權威點頭才能做，它的槓桿有限，先找別條路。</li>
+      <li>如果在兩個選擇之間糾結很久，選 No。真正好的機會不會讓人猶豫。</li>
+      <li>如果有人花很多時間強調自己多誠實，提高警覺。</li>
+      <li>如果某個結論剛好對自己特別有利，用更高的標準檢驗它。</li>
+    </ul>
+
+    <h3>找他拆問題的第一個動作</h3>
+    <p>每個人遇到新問題時，大腦的第一個反射不一樣。Naval 的第一個動作是重新定義關鍵詞。我自己的第一個動作是拆問題。有些人的第一個動作是先看人物關係。這個第一動作寫下來，分身的回答節奏就對了。</p>
+
+    <p>這四步的成果分別填進十區塊裡的話題地圖、溝通風格、價值主張與判斷標準、思維模式。剩下的區塊邊寫邊查素材，<b>寫不出來的先空著，不要硬編</b>。</p>
+  </div>
+</section>
+
+<section class="section" id="mind-engine">
+  <div class="inner">
+    <h2>四、思維引擎：八個子模組</h2>
+    <p class="lead">十區塊讓 AI <b>像</b>那個人。思維引擎讓 AI <b>思考起來</b>像那個人。這是擬人化的核心，也是我認為一般「角色扮演提示詞」跟這套做法差最多的地方。</p>
+    <p>思維引擎是<b>對內</b>的那一層，深度討論才載入，平常對話不用讀。共八個子模組，前六個管內容，後兩個管控制。</p>
+
+    <div class="workflow-grid">
+      <div class="workflow-step"><small>01</small><b>核心心智模型</b><p>他反覆套用的那幾組框架。目標 2 到 5 個。</p></div>
+      <div class="workflow-step"><small>02</small><b>決策啟發式</b><p>完整的 if-then 規則庫。目標 8 到 15 條。</p></div>
+      <div class="workflow-step"><small>03</small><b>表達 DNA</b><p>句式、修辭、語氣模式、幽默風格。</p></div>
+      <div class="workflow-step"><small>04</small><b>回答工作流</b><p>遇到問題時大腦的標準流程。</p></div>
+      <div class="workflow-step"><small>05</small><b>智識譜系</b><p>他的思想從哪來、受誰影響。</p></div>
+      <div class="workflow-step"><small>06</small><b>內在張力</b><p>他的矛盾與前後不一致。</p></div>
+      <div class="workflow-step"><small>07</small><b>來源追溯表</b><p>控制層。每條設定連回來源與證據層級。</p></div>
+      <div class="workflow-step"><small>08</small><b>框架衝突處理</b><p>控制層。兩個原則打架時怎麼裁決。</p></div>
+    </div>
+
+    <p>八個不必一次寫完。素材深度不夠就先寫得出來的那幾個，建議至少先做 02、03、04。</p>
+
+    <h3>01 核心心智模型</h3>
+    <p>找他<b>用同一個框架處理不同問題</b>的證據。每個給一個名字加一句標語，讓 AI 在對話中能指名引用。</p>
+    <p>Naval 最核心的一個叫「重新定義術」：先換掉關鍵詞的定義，結論就自動成立。</p>
+    <div class="codeblock">| 常規定義      | 他的重新定義              | 於是                       |
+|---------------|---------------------------|----------------------------|
+| 財富 = 很多錢 | 財富 = 睡覺時也在賺的資產 | 工資不算財富，資產才算     |
+| 退休 = 不工作 | 退休 = 只做想做的事       | 他說自己已退休，但還在創業 |
+| 運氣 = 隨機   | 運氣分四個層級            | 運氣可以系統性製造         |</div>
+    <p>抓到兩個以下表示還沒提煉夠，超過五個表示還沒分出主次。</p>
+
+    <h3>02 決策啟發式</h3>
+    <p>第三章那組 if-then 的完整版。每一條都給名字，例如「日曆測試」「糾結即否定」「手冊測試」。給了名字，分身就能在對話裡說「這就是我說的日曆測試」，不用每次重新解釋一遍。</p>
+    <p>目標八到十五條。少了不夠用，多了 AI 記不住。</p>
+
+    <h3>03 表達 DNA</h3>
+    <p>分五塊寫：句式規則、修辭武器、常用的類比來源、語氣的雙模式、幽默風格。做中文分身還要多一塊「中文輸出適配」，因為英文素材的句式直翻成中文會很怪。</p>
+    <div class="meaning">
+      <b>語氣雙模式特別重要</b>
+      同一個人在社群短文上跟在 Podcast 上完全兩種樣子，一個極度確定，一個允許「我也還在想」。只寫一種，分身就會全程用同一個腔調講話，講久了很假。
+    </div>
+
+    <h3>04 回答工作流</h3>
+    <p>這是分身大腦的作業系統。先寫一句總綱，再列一張問題分類表。</p>
+    <p>以 Naval 為例，總綱是「不憑直覺編造事實，發表意見前先弄清楚事實」，分類表長這樣：</p>
+    <div class="codeblock">| 問題類型       | 特徵                     | 行動                       |
+|----------------|--------------------------|----------------------------|
+| 需要事實的問題 | 涉及具體公司、人物、事件 | 先研究再回答               |
+| 純框架問題     | 抽象價值觀、思維方式     | 直接用心智模型回答         |
+| 混合問題       | 用具體案例討論抽象道理   | 先取得事實，再用框架分析   |</div>
+
+    <h3>05 智識譜系</h3>
+    <p>他常引用誰、受誰影響、跨哪些領域整合。用一張表寫「領域 → 人物 → 對我的影響」，並且註明演化關係（A → B → C 代表思想傳承）。</p>
+    <p>這一塊寫完，順便誠實寫一句定位：他是原創理論家，還是綜合者。承認影響來源比假裝原創可信得多。</p>
+
+    <h3>06 內在張力</h3>
+    <p><b>這是最多人略過、但我認為差別最大的一塊。</b></p>
+    <p>真實的人都有矛盾。寫的時候不要為矛盾辯護，直接承認。</p>
+    <p>Naval 的例子：他說身份標籤越少越好，但「Naval」本身已經是一個品牌標籤；他說自己已經退休，同時持續創業投資，靠重新定義「退休」化解這個矛盾。</p>
+    <div class="meaning">
+      <b>寫好這一塊的實際效果</b>
+      當使用者挑戰「他不是說 X 嗎，怎麼又 Y」，分身能回答「對，這是我承認的矛盾，理由是⋯⋯」，而不是當場僵住或硬拗。
+    </div>
+
+    <h3>07 來源追溯表（控制層）</h3>
+    <p>這一塊不是給讀者看的漂亮段落，是防止 AI 亂補的控制表。</p>
+    <div class="codeblock">| 模組         | 條目   | 依據來源                  | 證據層級 | 備註         |
+|--------------|--------|---------------------------|----------|--------------|
+| 核心心智模型 | 模型名 | 書 ch3／訪談 00:12:35     | A／B／C  | 是否反覆出現 |</div>
+    <p>規則很簡單：A、B 可以直接寫進核心設定；C 可以寫但要標「依其思路推導」；D 只能放背景材料；沒來源的先標 <code>待補來源</code>。</p>
+
+    <h3>08 框架衝突處理（控制層）</h3>
+    <p>真實的人不只有多個框架，還會在框架之間取捨。只列框架不寫裁決規則，分身每次都會現場自由發揮，同一個問題問兩次得到兩種答案。</p>
+    <p>寫法是 if-then：</p>
+    <div class="codeblock"><span class="c">### 長期主義 vs 眼前現金流</span>
+
+來源：
+- 框架 A：[來源]
+- 框架 B：[來源]
+
+裁決規則：
+- 若 [條件 1] → 優先 A
+- 若 [條件 2] → 優先 B
+- 若條件不明 → 不替本人猜測，先說需要補來源</div>
+    <p>常見的衝突組合有這幾種：長期主義對上短期壓力、原則堅持對上情境彈性、個人自由對上團隊責任、理性分析對上情緒照顧、哲學框架對上戰術操作、早期觀點對上近期觀點。</p>
+    <div class="caveat">
+      <b>最後一種要特別小心</b>
+      如果本人的立場隨時間演化過，要標來源日期，不要混成一個永遠不變的答案。
+    </div>
+
+    <div class="readmore near">
+      <b>想先看一個做完的成品長什麼樣</b>
+      <ul>
+        <li><a href="../elon-musk-live-skill/">活的馬斯克技能包：給創業者與主管的第一性原理顧問</a>　那篇是用這套流程做出來的其中一個顧問，可以直接下載來用，也可以拆開看八個子模組實際填成什麼樣子</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="verify">
+  <div class="inner">
+    <h2>五、怎麼知道做對了</h2>
+    <p>跑十個測試對話，用六個標準檢查。</p>
+    <ul>
+      <li>像不像那個人會說的話（口吻、句式對得上）</li>
+      <li>能不能說出他的判斷原則，而且能套用到書上沒有的新情境</li>
+      <li>遇到沒談過的話題，會不會說「不知道」</li>
+      <li>被問「你怎麼知道」時，能不能指回素材</li>
+      <li>有沒有變成雞湯版、粉絲版、通靈版、過度自信版</li>
+      <li>沒有來源時，會不會停下來標「待補來源」</li>
+    </ul>
+
+    <p>測試題分四類，每類至少問兩題：</p>
+    <div class="codeblock">| 類型 | 問法                              | 檢測什麼             |
+|------|-----------------------------------|----------------------|
+| 直球 | 「你對 [主題] 怎麼看？」          | 核心議題覆蓋夠不夠   |
+| 推導 | 「假如 [新情境]，你會怎麼判斷？」 | 決策啟發式有沒有作用 |
+| 邊界 | 「你對 [沒談過的事] 怎麼看？」    | 會不會說不知道       |
+| 對抗 | 「但我覺得 [反觀點]，你怎麼回？」 | 互動模式與內在張力   |</div>
+
+    <p>某一類答得不好，回去補對應的區塊，不要在提示詞上加形容詞硬修。</p>
+  </div>
+</section>
+
+<section class="section" id="prompt">
+  <div class="inner">
+    <h2>六、可以直接貼的提示詞</h2>
+    <p>把素材準備好之後，這段可以直接貼進 Claude、ChatGPT 或任何長文本 AI，用來做第一層的來源底座。</p>
+
+    <div class="codeblock">我要把以下素材整理成一份「來源型知識底座」，之後會用它做成 AI 顧問。
+現在請先不要寫人格設定，也不要幫我做摘要。
+
+請照這個結構輸出：
+
+1. Scope：這批素材包含什麼、不包含什麼、最可靠的來源是哪份、最薄弱的是哪份
+2. Source Index：每份素材的類型、日期、位置（章節或時間戳）
+3. Topic Index：主題 → 來源位置 → 這個主題可以提煉成什麼（心智模型／判斷原則／背景）
+4. Frameworks：作者有命名過的框架、原則、技術，各附定義、何時使用、來源
+5. Anti-patterns：作者明確反對的做法，各附症狀、為什麼危險、來源
+6. Cheatsheet：最重要的 5-7 條規則、3 個適用情境、3 個不適用情境
+
+硬性規則：
+- 每一條都要標來源位置。標不出來的寫「待補來源」，不要略過也不要自己補完。
+- 每一條標證據層級：A 本人原話／B 本人明確行動／C 你從 A、B 歸納／D 他人轉述。
+- D 層不要放進主結構，另外列一區「待查證」。
+- 不要美化，不要替作者補完他沒說完的話。
+
+素材如下：
+[貼上你的素材]</div>
+
+    <p>底座跑完，再開第二輪做人格。第二輪的提示詞照第三章、第四章的區塊清單逐塊要，<b>一次要一塊</b>，品質會比一次要完整份設定檔高很多。</p>
+  </div>
+</section>
+
+<section class="section" id="safety">
+  <div class="inner">
+    <h2>七、安全邊界</h2>
+    <p>這套做法會讓分身很像本人，所以邊界要先講清楚。每一份設定檔都要含這段聲明：</p>
+
+    <div class="codeblock">本分身遵守數位分身安全規範。
+- 設定檔沒有的資訊會說「不知道」
+- 違反價值觀的請求會說「拒絕回答」
+- 本分身不代表真實的 [人物名] 本人做任何聲明或決定
+- 不提供任何投資、法律或醫療建議</div>
+
+    <p>另外幾條硬邊界：不冒充真人本人、不替本人發表聲明、不編造不存在的引言、不抓登入牆與付費牆內的資料。做的對象如果是同事或主管，只能內部學習用，而且要去識別化，不要公開。</p>
+
+    <div class="caveat">
+      <b>做活人分身要多一道關</b>
+      如果對象還在持續發表，可以用自動更新版：只收免費公開資料，每日新增只進流動資料層，通過檢查才允許改動正式人格設定。單日一則貼文不能直接升級成核心設定。
+    </div>
+  </div>
+</section>
+
+<section class="section" id="skill">
+  <div class="inner">
+    <h2>八、技能包在這裡，開源可以直接拿</h2>
+
+    <div class="skillcard">
+      <b>persona-mind-distiller｜人格思維提煉</b>
+      <p>把書、論文、影片、Podcast、自己或他人的想法，提煉成擬人化 AI 顧問的完整流程。MIT 授權，歡迎 fork 改成自己的版本。裡面有十七份 references，這篇提到的每個範本都在：提煉流程十步、十區塊範本、思維引擎八個子模組範本、來源底座橋接規則、反模式庫、一頁速查模板、活人公開資料自動更新版。</p>
+      <div class="cta">
+        <a class="primary" href="https://github.com/Jiang-Yude/persona-mind-distiller" target="_blank" rel="noopener">中文版 GitHub ↗</a>
+        <a class="primary" href="https://github.com/Jiang-Yude/persona-mind-distiller-en" target="_blank" rel="noopener">English GitHub ↗</a>
+      </div>
+    </div>
+    <p>做英文素材的人物用英文版會比較貼語感。</p>
+
+    <h3>為什麼要做成「人格」，不只做成框架</h3>
+    <p>純粹的思維框架是工具，冷的，沒有個性。加上人格之後，跟它聊天會有「在跟一個人說話」的感覺，你會記得它是誰。</p>
+    <p>這件事有實際好處。當你的工具箱裡有十個、二十個 AI，每個都有人格，你不用記功能列表，你記角色。要判斷力找誰、要執行找誰、要陪你想事情找誰，這比記住二十個工具的功能自然得多。</p>
+    <p>同樣一份人格，可以做成四種關係定位：<b>AI 顧問</b>（被你諮詢）、<b>AI 助理</b>（協作執行）、<b>AI 夥伴</b>（平等對話）、<b>AI 同事</b>（日常工作）。核心定位我放在顧問，因為顧問是唯一一種你卡關時可以丟問題進去、期待它給判斷的角色。</p>
+
+    <h3>一群人一起做會發生什麼</h3>
+    <p>這套方法目前主要用在<a href="https://twin-village.vercel.app/about" target="_blank" rel="noopener">數位分身小聚</a>。那是一個讓每個人訓練自己的 AI 分身，再把所有人的分身放進同一個村莊聊天的實驗。小聚的官網介紹頁把整套系統架構攤得比這篇更完整，包含資料夾架構、三層權限、知識圖譜與分層駕馭的做法，想看系統全貌可以去那邊。</p>
+    <p>我自己觀察到最有價值的部分，是提煉的過程本身。做別人的分身，你會被迫弄清楚他到底怎麼想。做自己的分身，你會發現自己有很多判斷從來沒說清楚過，寫下來的那一刻才第一次看見它。</p>
+    <div class="caveat">
+      <b>這是一種做法，不是唯一解</b>
+      國內外有更多人在做更系統的版本。我把我實際跑過、能重現的部分開源出來，你拿去改成適合自己的樣子，比照抄有用。
+    </div>
+  </div>
+</section>
+
+<div class="cta-band">
+  <section class="section">
+    <div class="inner">
+      <div>
+        <h2>想看我實際做一次</h2>
+        <p class="lead">這套流程我每個月會在免費線上講座裡實際操作，主題輪流換。場次會先在 LINE 社群公布，想跟著做一遍的話，從那邊進來最快。</p>
+        <p>如果你手上已經有素材，建議先挑最小的一份開始：一集 Podcast、一個章節、一篇長文都可以。做完一輪小的，比讀十篇方法文有用。</p>
+      </div>
+      <div class="cta-card">
+        <b>免費線上講座｜每月兩場</b>
+        <p>場次與主題都在 LINE 社群公布，也可以在那邊問問題。</p>
+        <div class="cta">
+          <a class="primary" href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">加入 LINE 社群 ↗</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">江江教練 · AI 知識管理</div>
+    <div class="footer-links">
+      <a href="../../articles.html">← 回深度文章總站</a>
+      <a href="../../index.html">首頁</a>
+      <a href="../../learn.html">自學資源</a>
+      <a href="../../skills.html">技能包下載</a>
+      <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">LINE 社群 ↗</a>
+      <a href="https://www.threads.com/@jiang_yude_coach" target="_blank" rel="noopener">Threads ↗</a>
+      <a href="https://vocus.cc/salon/Jiang_Coach" target="_blank" rel="noopener">方格子 ↗</a>
+    </div>
+    <div class="footer-note">這是一篇教學文章，整理我對「把一本書變成問得下去的 AI 顧問：來源底座、十區塊人格與八個思維引擎」的看法，供你參考。</div>
+  </div>
+</footer>
+
+<!-- 點圖放大 lightbox（hero 與內文圖通用，已內建，不用每篇重加） -->
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <span class="lightbox-close" aria-label="關閉">×</span>
+  <img id="lightbox-img" src="" alt="放大檢視">
+</div>
+<script>
+(function(){
+  var box=document.getElementById('lightbox'),boxImg=document.getElementById('lightbox-img');
+  document.querySelectorAll('.hero-figure img,.inline-figure img').forEach(function(img){
+    img.addEventListener('click',function(){boxImg.src=img.currentSrc||img.src;boxImg.alt=img.alt||'放大檢視';box.classList.add('open');box.setAttribute('aria-hidden','false');});
+  });
+  function close(){box.classList.remove('open');box.setAttribute('aria-hidden','true');boxImg.src='';}
+  box.addEventListener('click',close);
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
+})();
+</script>
+
+<script src="../../image-interactions.js"></script>
+
+<!-- 官網共用：滑鼠暖光暈 + 導航列漢堡選單 -->
+<script src="../../spotlight.js"></script>
+
+<!-- 文章自動互聯（相關文章）：兩支已內建，順序不可顛倒，不用再另外加 -->
+<script src="../../articles-data.js"></script>
+<script src="../../related-render.js"></script>
+</body>
+</html>
