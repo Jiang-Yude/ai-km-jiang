@@ -549,7 +549,7 @@ window.EN_ARTICLES = [
   {
     "slug": "ai-learning-map-reduce-anxiety",
     "title": "Use AI to build a trackable learning map to reduce information anxiety",
-    "summary": "Bookmarks folder full of things saved for later? Use an Agent to organize learning materials scattered everywhere into one visible learning map: skill tree, learning record, personal profile. A three-layer structure with teacher lesson-plan and scheduling-system cases.",
+    "summary": "AI terms never stop coming? Two moves to cut information anxiety: build your own learning map with ChatGPT project mode (beginner and advanced walkthroughs, four copy-ready instructions), then add a personal profile so AI can judge whether something is worth learning at all.",
     "date": "2026-03-29",
     "url": "articles/ai-learning-map-reduce-anxiety/"
   },
