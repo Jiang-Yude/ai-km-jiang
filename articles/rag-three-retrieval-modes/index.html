@@ -5,21 +5,21 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
 <title>把資料丟給 AI，它其實沒有全部看完：RAG 的三種查法與怎麼選｜江江教練 · AI 知識管理</title>
-<meta name="description" content="AI 回答之前會先去你的資料裡查一輪，這個動作叫 RAG。三種查法（比相似度、走關係、讓 AI 自己決定）差在哪、什麼題目該用哪一種，附我自己知識庫三種同時在跑的做法與實測命中率。">
+<meta name="description" content="AI 回答之前會先去你的資料裡查一輪，這個動作叫 RAG。三種查法（比相似度、走關係、讓 AI 自己決定）差在哪、什麼題目該用哪一種，附一張功能對照表與我自己知識庫三種同時在跑的做法。">
 <link rel="canonical" href="https://jiangyude.com/articles/rag-three-retrieval-modes/">
 <meta property="og:type" content="article">
 <meta property="og:title" content="把資料丟給 AI，它其實沒有全部看完：RAG 的三種查法與怎麼選｜江江教練">
 <!-- 分享封面：hero 文字填好後在 repo 根目錄跑 `node scripts/og-shot.mjs rag-three-retrieval-modes` 自動截 1200×630 到 images/og/rag-three-retrieval-modes.jpg（見 README「文章分享封面（OG 圖）機制」）。別退回 intro-jiang.png 直式人像，會被裁成只剩脖子。 -->
 <meta property="og:image" content="https://jiangyude.com/images/og/rag-three-retrieval-modes.jpg">
-<meta property="og:description" content="AI 回答之前會先去你的資料裡查一輪，這個動作叫 RAG。三種查法（比相似度、走關係、讓 AI 自己決定）差在哪、什麼題目該用哪一種，附我自己知識庫三種同時在跑的做法與實測命中率。">
+<meta property="og:description" content="AI 回答之前會先去你的資料裡查一輪，這個動作叫 RAG。三種查法（比相似度、走關係、讓 AI 自己決定）差在哪、什麼題目該用哪一種，附一張功能對照表與我自己知識庫三種同時在跑的做法。">
 <meta property="og:url" content="https://jiangyude.com/articles/rag-three-retrieval-modes/">
 <meta property="og:locale" content="zh_TW">
 <meta property="og:site_name" content="江江教練 · AI 知識管理">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="把資料丟給 AI，它其實沒有全部看完：RAG 的三種查法與怎麼選｜江江教練">
 <meta name="twitter:image" content="https://jiangyude.com/images/og/rag-three-retrieval-modes.jpg">
-<meta name="twitter:description" content="AI 回答之前會先去你的資料裡查一輪，這個動作叫 RAG。三種查法（比相似度、走關係、讓 AI 自己決定）差在哪、什麼題目該用哪一種，附我自己知識庫三種同時在跑的做法與實測命中率。">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"把資料丟給 AI，它其實沒有全部看完：RAG 的三種查法與怎麼選","description":"AI 回答之前會先去你的資料裡查一輪，這個動作叫 RAG。三種查法（比相似度、走關係、讓 AI 自己決定）差在哪、什麼題目該用哪一種，附我自己知識庫三種同時在跑的做法與實測命中率。","author":{"@type":"Person","name":"江昱德","alternateName":"江江教練","jobTitle":"隱性知識提煉師、AI 應用規劃師"},"isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://jiangyude.com/"},"datePublished":"2026-08-16","dateModified":"2026-08-16","inLanguage":"zh-Hant","url":"https://jiangyude.com/articles/rag-three-retrieval-modes/"}</script>
+<meta name="twitter:description" content="AI 回答之前會先去你的資料裡查一輪，這個動作叫 RAG。三種查法（比相似度、走關係、讓 AI 自己決定）差在哪、什麼題目該用哪一種，附一張功能對照表與我自己知識庫三種同時在跑的做法。">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"把資料丟給 AI，它其實沒有全部看完：RAG 的三種查法與怎麼選","description":"AI 回答之前會先去你的資料裡查一輪，這個動作叫 RAG。三種查法（比相似度、走關係、讓 AI 自己決定）差在哪、什麼題目該用哪一種，附一張功能對照表與我自己知識庫三種同時在跑的做法。","author":{"@type":"Person","name":"江昱德","alternateName":"江江教練","jobTitle":"隱性知識提煉師、AI 應用規劃師"},"isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://jiangyude.com/"},"datePublished":"2026-08-16","dateModified":"2026-08-16","inLanguage":"zh-Hant","url":"https://jiangyude.com/articles/rag-three-retrieval-modes/"}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
@@ -173,7 +173,7 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
 <section class="section" id="start">
   <div class="inner">
     <h2>這篇在講什麼</h2>
-    <p class="lead">你把整個資料夾丟給 AI，它回答的時候並沒有全部看過一遍。它只是挑了幾段最像你問題的文字，拿那幾段去回答。這個「回答前先查一輪」的動作有名字，叫 RAG。查法目前主流有三種：比相似度、走關係、讓 AI 自己決定要查幾輪。選錯了就會出現「資料明明在裡面，AI 就是講不出來」的狀況。這篇用白話講清楚三種各自在做什麼，給你一組判斷順序，並攤開我自己知識庫裡三種同時在跑的做法與實測數字。</p>
+    <p class="lead">你把整個資料夾丟給 AI，它回答的時候並沒有全部看過一遍。它只是挑了幾段最像你問題的文字，拿那幾段去回答。這個「回答前先查一輪」的動作有名字，叫 RAG。查法目前主流有三種：比相似度、走關係、讓 AI 自己決定要查幾輪。選錯了就會出現「資料明明在裡面，AI 就是講不出來」的狀況。這篇用白話講清楚三種各自在做什麼，給你一組判斷順序，並攤開我自己知識庫裡三種同時在跑的實際做法。</p>
 
     <div class="duo stack">
       <div class="card a">
@@ -188,7 +188,7 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
         <b>你可以帶走什麼</b>
         <ul>
           <li>一組可以直接照著判斷的順序：什麼題目用哪一種查法，不用每次都問人。</li>
-          <li>我自己知識庫的真實做法：兩顆本機向量索引、一套標籤結構、上層一份路由規則，含實測命中率與它失手的地方。</li>
+          <li>一張三種功能對照表，以及我自己知識庫的真實做法：兩顆本機向量索引、一套標籤結構、上層一份路由規則。</li>
           <li>一段可以複製的提示詞，用來檢查你手上的資料到底適不適合被 AI 查。</li>
         </ul>
       </div>
@@ -314,6 +314,42 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
 
 <section class="section">
   <div class="inner">
+    <h2>三種放在一起對照</h2>
+    <p>把功能面的差別攤成一張表，比記三段文字快。</p>
+    <div class="table-scroll">
+      <table class="report-table">
+        <thead>
+          <tr><th>比較項目</th><th>比相似度</th><th>走關係</th><th>AI 自己決定</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>它實際上在比什麼</td><td>問題與段落的語意距離</td><td>實體之間有沒有連線</td><td>由 AI 判斷這一輪該查什麼</td></tr>
+          <tr><td>事前要準備什麼</td><td>切塊、算向量、建索引</td><td>抽實體、定關係、建圖</td><td>前兩者至少要有一個，再加工具與規則</td></tr>
+          <tr><td>回答一題要幾次檢索</td><td>一次</td><td>一次（沿路徑展開）</td><td>不固定，可能三五次</td></tr>
+          <tr><td>擅長的題型</td><td>答案落在某一段</td><td>要串多份文件、多跳</td><td>問題本身還沒定形</td></tr>
+          <tr><td>接不住的題型</td><td>跨文件彙整、版本新舊</td><td>圖上沒建到的關係</td><td>單純的事實查詢（殺雞用牛刀）</td></tr>
+          <tr><td>持續維護成本</td><td>低（新資料重算即可）</td><td>高（每批新資料都要更新圖）</td><td>中（規則與工具要維護）</td></tr>
+          <tr><td>速度與費用</td><td>最快最便宜</td><td>中等</td><td>最慢最貴</td></tr>
+          <tr><td>出錯時好不好查</td><td>好查（看撈回哪幾段）</td><td>好查（看走了哪條路徑）</td><td>難查（每次路徑可能不同）</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>實務上這三種常常混著用</h3>
+    <p>講成三種是為了說清楚機制，實際系統很少只用一種。常見的混法有三種：</p>
+    <ul>
+      <li><b>詞法加向量（混合檢索）</b>：關鍵字比對負責精準命中專有名詞，向量負責接住換句話說的問法，兩邊結果合併重排。要注意合併不必然更好，我自己那批測試裡，混合排序就沒有贏過單用詞法。</li>
+      <li><b>先走關係再比相似度</b>：先用知識圖譜把範圍縮到相關的那幾份文件，再在那個小範圍裡比相似度。這是 GraphRAG 實作常見的做法，圖負責縮範圍，向量負責找段落。</li>
+      <li><b>上層放判斷，下層放前兩種</b>：第三種本來就不是獨立的檢索方法，它是在前兩種上面加一層決定要用哪個、要不要再查一輪。</li>
+    </ul>
+    <div class="meaning">
+      <b>所以「用哪一種」這個問題，答案常常是「都用，但分工」</b>
+      真正要決定的不是選哪一種技術，是哪一類題目走哪一條路。這也是下一節那組判斷順序在做的事。
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
     <h2>怎麼選：一組可以照著走的判斷順序</h2>
     <p>既然是適用問題，判斷的起點就是題目本身，不是先挑技術。我自己的分法很簡單，照這個順序問下去：</p>
     <div class="table-scroll">
@@ -347,23 +383,20 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
       <li><b>主庫索引</b>：收 286 份文章檔，切成 3,299 個片段。用途是「我明明覺得寫過這件事，但想不起來在哪」。</li>
       <li><b>官網索引</b>：收 101 篇已上線的公開文章，每個片段都帶著公開網址。用途是官網 AI 客服，回答的時候直接附連結給訪客。</li>
     </ul>
-    <p>建的時候我有做驗證：隨機抽題，用「不含標題詞」的口語問句測能不能找回原檔。hit@5 的意思是正確答案有沒有出現在前五筆。</p>
-    <div class="table-scroll">
-      <table class="report-table">
-        <thead>
-          <tr><th>索引</th><th>向量檢索 hit@5</th><th>關鍵字搜尋 hit@5</th></tr>
-        </thead>
-        <tbody>
-          <tr><td>主庫（25 題）</td><td>18/25，約 72%</td><td>15/25，約 60%</td></tr>
-          <tr><td>官網（30 題）</td><td>29/30，約 97%</td><td>20/30，約 67%</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <p>兩顆索引用同一個模型、同一套切塊方式，命中率卻差了 25 個百分點。差別在資料本身：官網文章每篇都有整理過的摘要、清楚的標題階層、一致的結構；主庫是原始筆記，什麼都有，同一件事可能用三種說法寫過。</p>
+    <p>建完我做了一組盲測：隨機抽文章，用「不含標題詞」的口語問句，測系統能不能把原檔找回來。兩個結果值得講。</p>
     <div class="meaning">
-      <b>這件事比命中率本身更值得記住</b>
-      檢索品質的天花板是資料的整理程度，換更貴的模型拉不動它。同一套技術用在整理過的資料上，跟用在原始筆記上，差距大到像兩個系統。
+      <b>結果一：同一套技術，用在整理過的資料上跟用在原始筆記上，差距大到像兩個系統</b>
+      官網那顆明顯高於主庫那顆。兩顆用同一個模型、同一套切塊方式，差別只在資料本身：官網文章每篇都有整理過的摘要、清楚的標題階層、一致的結構；主庫是原始筆記，什麼都有，同一件事可能用三種說法寫過。檢索品質的天花板是資料的整理程度，換更貴的模型拉不動它。
     </div>
+    <div class="meaning">
+      <b>結果二：在我自己的語料上，詞法檢索贏過向量檢索</b>
+      後來我用正式的 BM25 詞法檢索（就是把關鍵字比對做到位的那套演算法）在同一批題目上再測一次，它的命中率高於向量檢索，把兩者混合排序也沒有贏過純 BM25。所以我主庫現在是 BM25 當主力，向量退為兜底，只在詞法找不到的時候補上。
+    </div>
+    <div class="caveat">
+      <b>這裡刻意不放百分比</b>
+      我在寫這篇的時候回頭重算了一次原始測試結果，發現工具的說明檔跟測試紀錄有兩處對不上，欄位可能標反了。數字在確認之前不對外引用，只寫我重算過、兩種算法下都成立的方向。這也是這類實測數據的通則：自己算過才寫，別人的說明檔（包括你自己上個月寫的）不算驗收。
+    </div>
+    <p>第二個結果對「該用哪一種」很有意義：向量檢索不是必然比關鍵字強。中文、專有名詞多、用詞穩定的語料，詞法檢索常常表現很好，而且不用裝模型、不用建庫、冷啟動快。要在自己的資料上實測才知道。</p>
 
     <div class="readmore near">
       <b>整理這一關本身也是一整套工夫</b>
@@ -395,7 +428,7 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
     <div class="caveat">
       <b>RAG 不保證的</b>
       <ul style="margin:8px 0 0;padding-left:1.2em">
-        <li><b>不保證撈得完整。</b>前面那個 72% 就是活生生的例子。撈不到的那 28%，資料明明在庫裡。</li>
+        <li><b>不保證撈得完整。</b>我自己那顆主庫索引，盲測時就有相當比例的題目撈不回原檔，而那些資料明明在庫裡。撈不完整是常態，不是故障。</li>
         <li><b>不保證撈到的是對的版本。</b>舊版跟新版語意一樣像，它分不出來，除非你在資料本身標清楚。</li>
         <li><b>不保證 AI 會照著撈到的東西講。</b>它拿到片段之後還是有可能自己補話。要防這個得靠另一層檢查，跟 RAG 是兩件事。</li>
         <li><b>不保證省下整理資料的工夫。</b>資料越亂，RAG 的效果掉得越快，因為它挑片段的依據就是那些亂資料本身。</li>
