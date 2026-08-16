@@ -565,16 +565,16 @@ window.ARTICLES = [
     related: ["agent-workflow-builds-automation", "codex-only-auto-worklog", "how-to-train-your-ai-employee", "mika-to-laika-product-character-design", "messaging-apps-ai-friendliness"]
   },
 
-  /* ── 14. 活的馬斯克技能包（教學）── */
+  /* ── 14. 馬斯克技能包（教學）── */
   {
     id: "elon-musk-live-skill",
     url: "articles/elon-musk-live-skill/",
     date: "2026-06-22",
     updated: "2026-06-22",
-    title: "活的馬斯克技能包：給創業者與主管的第一性原理顧問",
+    title: "馬斯克技能包：給創業者與主管的第一性原理顧問",
     problem: "創業者、主管和老闆需要有人協助拆問題、反問假設、看見盲點，同時又希望參考公開資料時能分清楚本人內容、公司一手資訊、新聞報導與新聞評論。",
     audience: "想用第一性原理拆產品、團隊、資源配置與決策盲點的創業者、主管、老闆，以及想下載開源技能包實作的人。",
-    summary: "這篇介紹馬斯克第一性原理對練技能包：把馬斯克常見的第一性原理思考方式整理成 AI 顧問流程，陪創業者與主管練習拆產品、市場、團隊與資源配置問題。",
+    summary: "把馬斯克常見的第一性原理思考方式整理成 AI 顧問流程，陪創業者與主管練習拆產品、市場、團隊與資源配置問題。文章同時完整記錄了當初的每日自動更新機制，以及後來為什麼收掉、改成手動維護；判斷哪些自動化值得留、哪些的人工成本不划算，是這篇留下來的重點。",
     tags: {
       topic: ["技能包設計", "AIAgent", "輔助決策", "AI工作流"],
       level: ["零基礎入門"],

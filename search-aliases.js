@@ -40,7 +40,7 @@ window.SEARCH_ALIASES = {
   "ai-market-microcosm": ["市場調查太貴","產品沒人買怎麼辦","landing page被誤解","用AI模擬顧客反應","新產品驗證意願","測反應省市調錢","AI是整個市場的縮影"],
   "how-to-train-your-ai-employee": ["怎麼訓練AI員工","AI員工怎麼帶","隱性知識提煉七層","工作坊教學簡報","問題值多少錢","習慣自己動手不敢交出去","最好的技能包是怎麼來的？","我在自己的產業做出來的 AI 員工，賣得掉嗎？","AI員工駕訓班","員工向內顧問向外框架","鋼鐵不是拿來加固木屋的","員工是積木工作流是機器"],
   "line-group-ai-workflow": ["聊天群組檔案找不到","LINE群組資料整理","群組訊息備份","官方帳號自動下載","LINE圖片PDF歸檔","Mika助教","群組資料過幾天找不回來","群組檔案找不到","聊天記錄找不到","半人馬路線"],
-  "elon-musk-live-skill": ["第一性原理顧問","馬斯克思考方式","拆問題盲點","開源技能包下載","創業者顧問AI","反問假設","活的馬斯克技能包（第一性原理顧問）","靈魂考驗"],
+  "elon-musk-live-skill": ["第一性原理顧問","馬斯克思考方式","拆問題盲點","開源技能包下載","創業者顧問AI","反問假設","活的馬斯克技能包（第一性原理顧問）","靈魂考驗","活的馬斯克技能包","馬斯克技能包","自動更新為什麼收掉","live-data","musk-first-principles"],
   "codex-log-health-check": ["Codex打不開","Codex Desktop當機","Codex重灌","logs_2.sqlite","Codex任務不見了","Codex更新無效","log可以清任務和心血要自己保存"],
   "how-ai-connects-software": ["API CLI MCP是什麼","AI怎麼連軟體","AI操作電腦","AI操作網頁","USB比喻MCP","AI Agent直接操作軟體","（AI接軟體四種方式）","MCP是AI世界的USB"],
   "meeting-record-agent-workflow": ["會議整理流程","逐字稿轉錄","MacWhisper","VibeVoice","會議策略書","開會錄音整理","會議缺待辦風險決策","逐字稿是證據底稿"],
