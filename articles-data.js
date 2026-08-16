@@ -2001,7 +2001,7 @@ window.ARTICLES = [
     id: "book-to-ai-consultant",
     url: "articles/book-to-ai-consultant/",
     date: "2026-08-15",
-    title: "叫 AI 模擬馬斯克，一句話就好了呀：那我為什麼還要花時間提煉",
+    title: "叫 AI 扮演名人就好了，為什麼還要提煉？：四種快做法各自停在哪裡",
     problem: "上網查、一句話叫 AI 模擬某人、丟 PDF、丟 NotebookLM 都能得到答案，但要拿它的判斷去做決定時，這四種做法各自會在不同的地方停下來。",
     audience: "叫 AI 扮演過名人卻覺得內容很空、或已經在用 NotebookLM 但要做決定時還是得自己想的人。",
     summary: "要一個 AI 顧問，有四種比提煉快得多的做法：上網查、一句話叫 AI 模擬、丟 PDF、丟 NotebookLM。這篇一關一關講它們到哪裡為止（含什麼時候用哪個就夠了的判準表），攤開十區塊人格設定檔的核心架構，再用六個設計選擇說明每一個「不這樣做會怎樣」。可追溯的來源、範本與提示詞都在 MIT 開源技能包裡。",
