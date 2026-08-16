@@ -1,0 +1,465 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow"><!-- 草稿待審，解除 .vercelignore 擋板同輪改回 index,follow -->
+<title>LLM、RAG、Agent、MCP 哪個重要？用人體比喻看懂這四個怎麼疊起來｜江江教練 · AI 知識管理</title>
+<meta name="description" content="LLM、RAG、AI Agent、MCP 常被平行列在一起，看起來像四個選項。它們其實是同一套系統的四個部位：大腦、大腦加一疊書、大腦加一雙手、神經系統。這篇用同一個問題貫穿四層，附一張自我檢查表看你手上的 AI 缺哪一塊，以及先補哪一塊。">
+<link rel="canonical" href="https://jiangyude.com/articles/llm-rag-agent-mcp/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="LLM、RAG、Agent、MCP 哪個重要？用人體比喻看懂這四個怎麼疊起來｜江江教練">
+<!-- 分享封面：hero 文字填好後在 repo 根目錄跑 `node scripts/og-shot.mjs llm-rag-agent-mcp` 自動截 1200×630 到 images/og/llm-rag-agent-mcp.jpg（見 README「文章分享封面（OG 圖）機制」）。別退回 intro-jiang.png 直式人像，會被裁成只剩脖子。 -->
+<meta property="og:image" content="https://jiangyude.com/images/og/llm-rag-agent-mcp.jpg">
+<meta property="og:description" content="LLM、RAG、AI Agent、MCP 常被平行列在一起，看起來像四個選項。它們其實是同一套系統的四個部位：大腦、大腦加一疊書、大腦加一雙手、神經系統。這篇用同一個問題貫穿四層，附一張自我檢查表看你手上的 AI 缺哪一塊，以及先補哪一塊。">
+<meta property="og:url" content="https://jiangyude.com/articles/llm-rag-agent-mcp/">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:site_name" content="江江教練 · AI 知識管理">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="LLM、RAG、Agent、MCP 哪個重要？用人體比喻看懂這四個怎麼疊起來｜江江教練">
+<meta name="twitter:image" content="https://jiangyude.com/images/og/llm-rag-agent-mcp.jpg">
+<meta name="twitter:description" content="LLM、RAG、AI Agent、MCP 常被平行列在一起，看起來像四個選項。它們其實是同一套系統的四個部位：大腦、大腦加一疊書、大腦加一雙手、神經系統。這篇用同一個問題貫穿四層，附一張自我檢查表看你手上的 AI 缺哪一塊，以及先補哪一塊。">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"LLM、RAG、Agent、MCP 哪個重要？用人體比喻看懂這四個怎麼疊起來","description":"LLM、RAG、AI Agent、MCP 常被平行列在一起，看起來像四個選項。它們其實是同一套系統的四個部位：大腦、大腦加一疊書、大腦加一雙手、神經系統。這篇用同一個問題貫穿四層，附一張自我檢查表看你手上的 AI 缺哪一塊，以及先補哪一塊。","author":{"@type":"Person","name":"江昱德","alternateName":"江江教練","jobTitle":"隱性知識提煉師、AI 應用規劃師"},"isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://jiangyude.com/"},"inLanguage":"zh-Hant","url":"https://jiangyude.com/articles/llm-rag-agent-mcp/"}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{--ink:#1a1612;--paper:#fefcf8;--muted:#6a635a;--line:#d8cdb8;--green:#5f7553;--blue:#5689b8;--orange:#e85a4f;--soft:#faf5ec;--dark:#2a2018;--shadow:0 18px 45px rgba(107,74,42,.14);--sp-shadow:hsla(35,50%,60%,.15);--sp-shadow-edge:hsla(35,50%,68%,.03);--sp-radius:400px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC","Segoe UI",sans-serif}
+a{color:inherit}
+/* 官網共用導航列 nav.top（與首頁/文章總站同一條） */
+nav.top{position:sticky;top:0;background:rgba(254,252,248,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid #d8cdb8;z-index:100}
+nav.top .container{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:24px;padding:14px 32px}
+.nav-brand-img{justify-self:start;display:flex;align-items:center;text-decoration:none;flex-shrink:0;transition:opacity .2s}
+.nav-brand-img:hover{opacity:.8}.nav-brand-img img{height:40px;width:auto;display:block}
+nav.top ul.nav-menu{justify-self:end;display:flex;gap:22px;list-style:none;margin:0;padding:0;font-size:.95rem;white-space:nowrap}
+nav.top ul.nav-menu a{color:#3a342d;text-decoration:none;transition:color .2s;font-weight:500;white-space:nowrap}
+nav.top ul.nav-menu a:hover{color:#1a1612}nav.top ul.nav-menu a.active{color:#1a1612;font-weight:700}
+.nav-toggle{display:none;background:none;border:none;padding:6px;cursor:pointer;width:36px;height:36px;position:relative}
+.nav-toggle span{display:block;position:absolute;left:8px;right:8px;height:2px;background:#1a1612;border-radius:2px;transition:transform .25s,opacity .25s,top .25s}
+.nav-toggle span:nth-child(1){top:11px}.nav-toggle span:nth-child(2){top:17px}.nav-toggle span:nth-child(3){top:23px}
+.nav-toggle.open span:nth-child(1){top:17px;transform:rotate(45deg)}.nav-toggle.open span:nth-child(2){opacity:0}.nav-toggle.open span:nth-child(3){top:17px;transform:rotate(-45deg)}
+@media(max-width:860px){
+ nav.top .container{grid-template-columns:auto 1fr auto;padding:10px 16px;gap:12px}
+ .nav-brand-img img{height:32px}
+ .nav-toggle{display:block;justify-self:end}
+ nav.top ul.nav-menu{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(254,252,248,.98);backdrop-filter:blur(14px);border-bottom:1px solid #d8cdb8;flex-direction:column;gap:0;padding:8px 0;box-shadow:0 10px 24px rgba(107,74,42,.08)}
+ nav.top ul.nav-menu.open{display:flex}
+ nav.top ul.nav-menu li{border-bottom:1px solid #e8dfc9}
+ nav.top ul.nav-menu li:last-child{border-bottom:none}
+ nav.top ul.nav-menu a{display:block;padding:14px 20px;font-size:1.06rem}
+}
+/* 滑鼠暖光暈（與首頁同一支 spotlight.js） */
+body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradient(var(--sp-radius) circle at var(--mx,50%) var(--my,50%),var(--sp-shadow) 0%,var(--sp-shadow-edge) 45%,transparent 75%);pointer-events:none;z-index:9999;mix-blend-mode:multiply;transition:background .06s linear}
+.hero{position:relative;overflow:hidden;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:72px;padding:96px clamp(20px,6vw,88px) 80px;background:linear-gradient(180deg,#fffcf0 0%,#f9e9d2 100%);color:#1a1612;border-bottom:1px solid #d8cdb8}
+.hero .wc{position:absolute;border-radius:50%;filter:blur(60px);pointer-events:none;z-index:0}
+.hero .wc1{width:420px;height:360px;top:-120px;right:-80px;background:#e8884b;opacity:.15}
+.hero .wc2{width:360px;height:300px;bottom:-110px;left:-70px;background:#5f7553;opacity:.13}
+.hero .wc3{width:280px;height:260px;top:34%;left:14%;background:#a08144;opacity:.10}
+.hero>div{flex:none;width:860px;max-width:100%;position:relative;z-index:2}
+.hero-figure{margin:0;width:420px;flex:none;position:relative;z-index:2}
+.hero-figure img{display:block;width:100%;border-radius:16px;border:1px solid #d8cdb8;box-shadow:0 18px 45px rgba(107,74,42,.16);cursor:zoom-in}
+.hero-figure figcaption{margin-top:10px;font-size:14px;line-height:1.6;color:#6a635a}
+.inline-figure{margin:30px auto 8px;max-width:820px}
+.inline-figure img{display:block;width:100%;border-radius:14px;border:1px solid var(--line);box-shadow:var(--shadow);background:#fff;cursor:zoom-in}
+.inline-figure figcaption{font-size:14px;line-height:1.6;color:var(--muted);margin-top:10px}
+.lightbox{position:fixed;inset:0;z-index:10000;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(12,10,8,.92);cursor:zoom-out;backdrop-filter:blur(4px)}
+.lightbox.open{display:flex}.lightbox img{max-width:96vw;max-height:92vh;border-radius:10px;box-shadow:0 24px 60px rgba(0,0,0,.5)}
+.lightbox-close{position:fixed;top:18px;right:24px;color:#fff;font-size:34px;line-height:1;font-weight:700;cursor:pointer;opacity:.85}
+.kicker{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.55rem;color:#7a5c3a;font-weight:500}
+.hero h1{max-width:none;margin:16px 0 18px;font-size:clamp(36px,6vw,72px);line-height:1.08;overflow-wrap:anywhere}
+.hero p{max-width:none;font-size:clamp(18px,2vw,23px);line-height:1.62;color:#3a342d}
+.cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
+.cta a{display:inline-flex;align-items:center;text-decoration:none;border-radius:8px;padding:12px 16px;font-weight:900}
+.cta .primary{background:#fff;color:#1a1612}.cta .ghost{border:1px solid rgba(255,255,255,.32);color:#fff;background:rgba(255,255,255,.08)}
+.section{padding:54px clamp(20px,6vw,88px);border-top:1px solid var(--line)}
+.inner{width:min(1000px,100%);margin:0 auto}
+.section h2{font-size:clamp(26px,4.2vw,48px);line-height:1.12;margin:0 0 18px}
+.section h3{font-size:clamp(21px,3vw,30px);line-height:1.2;margin:30px 0 12px}
+.lead{font-size:clamp(18px,1.6vw,22px);line-height:1.7;color:#3a342d;max-width:900px}
+.section p{font-size:18px;line-height:1.74;color:#3a342d}.section p+p{margin-top:14px}
+.section ul,.section ol{padding-left:1.4em;font-size:18px;line-height:1.74;color:#3a342d}.section li{margin-bottom:8px}
+.meaning{margin:22px 0;padding:16px 18px;border-left:5px solid var(--blue);background:rgba(86,137,184,.12);border-radius:6px;line-height:1.7;font-size:19px}
+.meaning b{display:block;color:var(--blue);margin-bottom:4px}
+.caveat{margin:0 0 8px;padding:16px 18px;border-left:5px solid var(--orange);background:rgba(232,90,79,.1);border-radius:6px;line-height:1.7;font-size:18px;color:#3a342d}
+.caveat b{display:block;color:var(--orange);margin-bottom:4px}
+.infocard{background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px 24px 22px;box-shadow:0 8px 22px rgba(107,74,42,.08);margin-top:8px}
+.infocard-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.info-item{padding:18px 14px 0}
+.info-item b{display:block;font-size:14px;font-weight:900;letter-spacing:.04em;margin-bottom:7px;text-transform:uppercase}
+.info-item:nth-child(1) b{color:var(--green)}.info-item:nth-child(2) b{color:var(--orange)}.info-item:nth-child(3) b{color:var(--blue)}
+.info-item p{margin:0;font-size:17px;line-height:1.6;color:#3a342d}
+.tagrow{display:flex;flex-wrap:wrap;gap:7px;margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
+.tag{font-size:14px;color:var(--muted);background:var(--soft);border:1px solid var(--line);border-radius:999px;padding:4px 11px}
+.duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:24px}
+.duo.stack{grid-template-columns:1fr}
+.duo .card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:22px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.duo .card.a{border-color:var(--orange)}.duo .card.b{border-color:var(--green);box-shadow:0 8px 24px rgba(95,117,83,.16)}
+.duo .card small{display:block;font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.04em;margin-bottom:9px}
+.duo .card.a small{color:var(--orange)}.duo .card.b small{color:var(--green)}
+.duo .card b{display:block;font-size:22px;line-height:1.3;margin-bottom:12px}.duo .card.a b{color:#c0512f}.duo .card.b b{color:#4a7a59}
+.duo .card p{margin:0;color:#3a342d;line-height:1.75;font-size:18px}
+.workflow-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:24px}
+.workflow-step{background:#fff;border:1px solid var(--line);border-radius:8px;padding:18px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.workflow-step small{display:block;color:var(--orange);font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;margin-bottom:9px}
+.workflow-step b{display:block;font-size:18px;line-height:1.3;margin-bottom:9px}
+.workflow-step p{margin:0;color:#3a342d;line-height:1.6;font-size:16px}
+.codeblock{background:var(--dark);color:#f3ead9;border-radius:8px;padding:18px 20px;font:500 14px/1.65 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;overflow-x:auto;white-space:pre-wrap;margin:20px 0;box-shadow:0 8px 22px rgba(107,74,42,.12)}
+.codeblock .c{color:#f6d7a6;font-weight:600}
+.skillcard{background:#fff;border:1px solid var(--green);border-radius:12px;padding:24px;box-shadow:0 10px 26px rgba(95,117,83,.16);margin-top:8px}
+.skillcard b{display:block;font-size:21px;margin-bottom:8px}
+.skillcard p{margin:0 0 16px;font-size:17px;line-height:1.65;color:#3a342d}
+.cta-band{background:#e6f0e5;color:#3a342d}.cta-band .section{border-top:none}
+.cta-band .inner{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(260px,.85fr);gap:26px;align-items:start}
+.cta-band h2{font-size:clamp(26px,4vw,44px);margin:0 0 16px}.cta-band p,.cta-band .lead{color:rgba(58,52,45,.9);font-size:18px;line-height:1.72}
+.cta-card{border:1px solid #cfe0d2;background:#fbfdfa;border-radius:8px;padding:22px}
+.cta-card b{display:block;color:#48b178;margin-bottom:10px;font-size:18px}.cta-card p{margin:0 0 14px}
+.footer{padding:30px clamp(20px,6vw,88px);font-size:14px;color:var(--muted);background:#fff;border-top:1px solid var(--line)}
+.footer-inner{width:min(1000px,100%);margin:0 auto}
+.footer-links{display:flex;flex-wrap:wrap;gap:6px 12px;margin-bottom:14px}.footer-links a{color:var(--blue);font-weight:900;text-decoration:none;font-size:14px}
+.footer-brand{font-weight:900;font-size:15px;margin-bottom:10px}.footer-note{font-size:13px;line-height:1.6}
+@media(max-width:820px){.infocard-grid{grid-template-columns:1fr}.duo{grid-template-columns:1fr}.workflow-grid{grid-template-columns:1fr}.cta-band .inner{grid-template-columns:1fr}.section{padding:40px 20px}.hero{min-height:52vh;flex-direction:column;justify-content:flex-start;align-items:flex-start;gap:24px}.hero>div{width:100%}.hero-figure{width:100%;max-width:560px}}
+@media(max-width:820px){html,body{overflow-x:hidden}.hero h1{word-break:break-word}}
+.readmore{display:inline-flex;align-items:center;gap:6px;margin-top:12px;color:var(--blue);font-weight:900;text-decoration:none;font-size:17px}
+.readmore:hover{text-decoration:underline}
+.readmore.near{display:block;margin:26px 0 6px;padding:20px 22px;background:rgba(86,137,184,.07);border:1px solid #bcd0e2;border-radius:12px}
+.readmore.near b{display:block;color:var(--blue);font-size:18px;margin-bottom:10px}
+.readmore.near ul{margin:0;padding-left:1.25em}
+.readmore.near li{font-size:17px;line-height:1.7;margin-bottom:10px}
+.readmore.near a{color:var(--blue);font-weight:700;text-decoration:none}
+.readmore.near a:hover{text-decoration:underline}
+.qa{margin:20px 0;padding:18px 22px;background:#fff;border:1px solid var(--line);border-left:5px solid var(--green);border-radius:10px;box-shadow:0 8px 22px rgba(107,74,42,.06)}
+.qa p{margin:0;font-size:18px;line-height:1.74;color:#3a342d}
+.qa p+p{margin-top:11px}
+.qa .lbl{display:inline-block;min-width:2.6em;font-weight:900;color:var(--green)}
+.qa .q{color:var(--muted)}
+.qa .note{font-size:17px;color:var(--muted);line-height:1.72}
+.table-scroll{overflow-x:auto;margin-top:20px}
+.report-table{width:100%;border-collapse:collapse;min-width:600px}
+.report-table th{background:rgba(122,90,71,.09);color:#3a2a1c;font-weight:900}
+.report-table th,.report-table td{padding:13px 15px;border-bottom:1px solid var(--line);vertical-align:top;text-align:left;font-size:16.5px;line-height:1.62}
+.duo .card ul{margin:0;padding-left:1.2em}
+.duo .card li{color:#3a342d;line-height:1.7;font-size:17px}
+@media(max-width:820px){.report-table{min-width:520px}}
+</style>
+</head>
+<body class="spotlight">
+<!-- 官網共用導航列 nav.top：與首頁/總站同一條，文章不要自己另做極簡 topbar（江江 2026-06-25：要同一個框架、同一條導航列）。把對應頁面的 class="active" 標在自己那欄。 -->
+<nav class="top">
+  <div class="container">
+    <a class="nav-brand-img" href="../../index.html"><img src="../../images/footer-signature.png" alt="江江教練 | 江昱德"></a>
+    <button class="nav-toggle" aria-label="選單"><span></span><span></span><span></span></button>
+    <ul class="nav-menu">
+      <li><a href="../../index.html">首頁</a></li>
+      <li><a href="../../knowledge-architecture.html">知識架構</a></li>
+      <li><a href="../../courses.html">課程</a></li>
+      <li><a href="../../articles.html" class="active">深度文章</a></li>
+      <li><a href="../../skills.html">技能包下載</a></li>
+      <li><a href="../../offers.html">服務方案</a></li>
+      <!-- 這一行不能少：preflight 第 5 關 check-bilingual-nav.mjs 要求每個 HTML 都有 EN 切換。
+           2026-08-12 補：範本原本漏了它，照範本起手的新文章一律被第 5 關擋下，每個人都得手動補一次。 -->
+      <li class="lang-switch"><a href="../../en/articles.html" hreflang="en">EN</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="wc wc1"></div>
+  <div class="wc wc2"></div>
+  <div class="wc wc3"></div>
+  <div>
+    <div class="kicker">AI 應用 / 入門地圖</div>
+    <h1>LLM、RAG、Agent、MCP 哪個重要？用人體比喻看懂這四個怎麼疊起來</h1>
+    <p>這四個詞常常被平行列在一起，看起來像四個選項，要你選一個。它們其實是同一套系統的四個部位。這篇用同一個問題貫穿四層，最後給你一張表，看你手上的 AI 現在缺哪一塊。</p>
+  </div>
+  <!-- 封面圖（建議放）：橫式用預設 width:420px；4:5 直式改 .hero-figure{width:320px} 並加 .hero-figure img{aspect-ratio:4/5;object-fit:cover}。沒有封面圖就整個 <figure> 刪掉，hero 會自動置中只剩文字。封面同時設成上面 og:image / twitter:image。 -->
+  <figure class="hero-figure">
+    <img src="../../images/articles/llm-rag-agent-mcp-cover.jpg" alt="手繪風格插圖：大腦、一疊書、一雙填表單的手、連著三個工具方塊的神經網路，四者用細線連成一個系統，各標 LLM、RAG、Agent、MCP" loading="lazy">
+    <figcaption>四個術語對應同一套系統的四個部位，四者等重，沒有先後名次。</figcaption>
+  </figure>
+</section>
+
+<main>
+
+<section class="section" id="start">
+  <div class="inner">
+    <h2>這篇在講什麼</h2>
+    <p class="lead">AI 的術語難懂，有很大一部分是因為它們被平行列出來。LLM、RAG、AI Agent、MCP 放在同一張表裡，看起來像四種可以互相取代的工具，實際上它們負責的是不同層的工作，而且會疊在一起用。這篇借用人體的比喻把四層講清楚：LLM 是大腦、RAG 是大腦加一疊書、AI Agent 是大腦加一雙手、MCP 是神經系統。四段用同一個問題貫穿，你會看到同一句提問在不同層得到什麼樣的回答。最後給一張自我檢查表，和一個補的順序建議。</p>
+
+    <div class="duo stack">
+      <div class="card a">
+        <b>適合誰</b>
+        <ul>
+          <li>聽過這些詞，但每次看到都要重查一遍的人</li>
+          <li>想在公司導入 AI，被廠商的術語清單淹沒，不知道該買哪一層的人</li>
+          <li>已經在用 ChatGPT 或 Claude，覺得哪裡卡住但說不出哪裡的人</li>
+        </ul>
+      </div>
+      <div class="card b">
+        <b>你可以帶走什麼</b>
+        <ul>
+          <li>一組四層對照，看任何 AI 產品的說明時，可以判斷它在講哪一層</li>
+          <li>一張自我檢查表，看你手上的 AI 缺書、缺手，還是缺神經系統</li>
+          <li>一個補的順序建議，以及背後的理由</li>
+        </ul>
+      </div>
+    </div>
+
+    <figure class="inline-figure">
+      <img src="../../images/articles/llm-rag-agent-mcp-01.jpg" alt="四格橫向對照：第一格只有一顆大腦，第二格加上一疊書，第三格再加上一雙手，第四格再加上神經線接三個工具方塊，前面的元素都保留" loading="lazy">
+      <figcaption>四層是一樣一樣加上去的，前面的都沒有消失。這張圖是全文的濃縮版。</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section class="section" id="why">
+  <div class="inner">
+    <h2>一、這四個詞為什麼特別難懂</h2>
+    <p>問題不在詞本身，在它們被擺放的方式。</p>
+    <p>大部分的整理文會把 LLM、RAG、AI Agent、MCP 排成一張表，四列並排，每列一個定義。這種排法會傳達一個沒有明說的訊息：這是四個選項，你要挑一個。</p>
+    <p>於是最常出現的問題就變成「所以哪個比較厲害」「我該學哪一個」。</p>
+    <p>我看過一張用人體來比喻的圖，那個角度比較貼近實際情況。四個詞對應的是身體的四個部位：</p>
+    <ul>
+      <li>LLM 是大腦</li>
+      <li>RAG 是大腦加一疊書</li>
+      <li>AI Agent 是大腦加一雙手</li>
+      <li>MCP 是神經系統</li>
+    </ul>
+    <div class="meaning">
+      <b>部位不會互相取代</b>
+      你不會問「大腦跟手哪個比較重要」，因為少了任何一個，能做的事都會少一塊。
+    </div>
+  </div>
+</section>
+
+<section class="section" id="four">
+  <div class="inner">
+    <h2>二、同一個問題，四層各自怎麼回答</h2>
+    <p class="lead">為了讓差別看得出來，接下來四段我都問同一句話：<strong>「公司出差費怎麼報？」</strong></p>
+
+    <h3>LLM ＝ 大腦</h3>
+    <p>LLM 就是 ChatGPT、Claude、Gemini 這些會講話的模型本體。你問它，它用訓練時記住的東西回答。</p>
+    <div class="qa">
+      <p class="q"><span class="lbl">問</span>公司出差費怎麼報</p>
+      <p><span class="lbl">答</span>一般公司大多是憑發票核銷，通常要在期限內附上單據。</p>
+    </div>
+    <p>答案不算錯，但它講的是通則。它不知道你們公司的差旅辦法寫什麼、期限是三天還是七天、要不要主管先簽。</p>
+    <p>這一層的能力邊界很清楚：它只知道訓練資料裡有的東西。你公司內部的文件、上週開會的決議、昨天改的規則，它都不知道。</p>
+
+    <h3>RAG ＝ 大腦加一疊書</h3>
+    <p>RAG 的做法是在大腦旁邊放一疊書。你問問題的時候，系統先去書裡（你的文件、資料庫、筆記）翻出相關段落，把那幾段連同你的問題一起交給大腦，大腦看著資料回答。</p>
+    <div class="qa">
+      <p class="q"><span class="lbl">問</span>公司出差費怎麼報</p>
+      <p><span class="lbl">答</span>依你們的差旅辦法，三天內附發票，超過五千元要主管先簽。</p>
+    </div>
+    <p>差別是答案有出處，你可以回頭查那份文件確認。</p>
+    <p>這一層要成立，前提是你的資料本身找得到。同一份規則有三個版本散在信箱、雲端硬碟和某個人的電腦裡，翻書這個動作就會翻出互相矛盾的答案。</p>
+    <p>我自己知識庫的做法是先把資料整理成有結構、彼此連得起來的樣子，再加上語意檢索。查得準與否，很大一部分是在資料整理階段決定的，不是在檢索技術。</p>
+
+    <div class="readmore near">
+      <b>翻書要成立，前提是這疊書本身找得到</b>
+      <ul>
+        <li><a href="../tag-wiki-method/">資料越堆越多，AI 反而找不到怎麼辦？：標籤連結法 Tag Wiki</a>　這段講的是 RAG 在做什麼，那篇講的是我怎麼整理這疊書，讓 AI 翻得到。</li>
+      </ul>
+    </div>
+
+    <h3>AI Agent ＝ 大腦加一雙手</h3>
+    <p>前面兩層都只會講話。Agent 這一層是會動手的：能開檔案、改檔案、跑指令、上網查、呼叫其他工具，而且記得剛才做過什麼，一步一步把事情做完。</p>
+    <div class="qa">
+      <p class="q"><span class="lbl">問</span>公司出差費怎麼報</p>
+      <p><span class="lbl">答</span>查好了，報銷單我照差旅辦法填好了，要送出嗎？</p>
+    </div>
+    <p>從「告訴你怎麼做」變成「做完給你看」。</p>
+    <p>這一層的價值不在它會不會講，在它省掉的那段人工搬運。你原本要自己開表單、自己複製貼上、自己核對格式，這些動作它可以接手。</p>
+
+    <div class="readmore near">
+      <b>那雙手實際上怎麼碰到你的軟體</b>
+      <ul>
+        <li><a href="../how-ai-connects-software/">AI Agent 怎麼幫我們直接操作軟體？</a>　這段講的是「手」這個概念，那篇是操作面：AI 到底透過什麼方式碰到你電腦裡的軟體。</li>
+      </ul>
+    </div>
+
+    <h3>MCP ＝ 神經系統</h3>
+    <p>Agent 要用工具，總得有個接法。以前每接一個新工具就要為它寫一套對接，接十個工具就寫十套。</p>
+    <p>MCP 是一套統一的接口規格，一邊接 AI，一邊接你的表單系統、信箱、行事曆、資料庫。</p>
+    <div class="qa">
+      <p class="q"><span class="lbl">問</span>公司出差費怎麼報</p>
+      <p class="note"><span class="lbl">答</span>要回答這句，它得碰到三個地方：差旅辦法的文件、報銷表單系統、簽核用的信箱。MCP 決定的是它用什麼方式碰到這三個地方。</p>
+    </div>
+    <p>這一層讀者通常感覺不到，因為它不直接產出東西。它的影響會出現在另一個地方：接第十一個工具的時候，你是照同一套規格接上去，還是又要從頭寫一套。</p>
+    <div class="caveat">
+      <b>一個常見的誤解</b>
+      MCP 統一的是「接法的規格」，不是「不用接」。每個工具那一端還是要有人先做好對接。它省掉的是「每換一個 AI 就要重寫一次」，不是「完全不用寫」。
+    </div>
+  </div>
+</section>
+
+<section class="section" id="stack">
+  <div class="inner">
+    <h2>三、有了後面那層，前面還是在跑</h2>
+    <p>最容易誤會的地方在這裡。四個詞排成一列的時候，很像從左到右一路進化，好像有了後面的就可以丟掉前面的。</p>
+    <p>實際上每一層都還在跑：</p>
+    <div class="table-scroll">
+      <table class="report-table">
+        <thead>
+          <tr><th style="width:42%">常見誤會</th><th>實際情況</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Agent 比 RAG 高一階，有 Agent 就不用 RAG</td><td>Agent 要用到你的內部資料時，一樣得先查一輪，那一輪就是 RAG。（它去查公開網頁或呼叫 API 屬於另一回事，那不叫 RAG）</td></tr>
+          <tr><td>有了 MCP，前面三個就過時了</td><td>MCP 只負責接線。線接上去之後，思考的還是 LLM、查資料的還是 RAG、動手的還是 Agent</td></tr>
+          <tr><td>挑最新的那個學就好</td><td>每一層解決的問題不同。新出現的那一層不會順便把舊那層的問題也解掉</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>四層不一定要疊滿。很多情況只用到前兩層就夠了：你要的就是一個看得懂自家資料、會回答問題的助理。當你希望它動手做完，而且要接上好幾個系統的時候，後兩層才會變成必要。</p>
+    <div class="meaning">
+      <b>所以「哪個重要」的答案</b>
+      四個都重要，而且是同一個原因：每一層負責的事不一樣，少了哪一層，就少掉那一層能做的事。系統越完整，能做的事就越多。
+    </div>
+  </div>
+</section>
+
+<section class="section" id="check">
+  <div class="inner">
+    <h2>四、檢查你手上的 AI 缺哪一塊</h2>
+    <p class="lead">這組比喻最實用的地方，是可以拿來當診斷工具。下次你覺得手上的 AI 好像不太行，先看是缺哪一塊。</p>
+    <div class="table-scroll">
+      <table class="report-table">
+        <thead>
+          <tr><th style="width:42%">你遇到的狀況</th><th style="width:14%">缺的是</th><th>要補什麼</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>講得頭頭是道，但問到你公司或你專案的事就開始編</td><td>書</td><td>把你的資料整理好，接上檢索</td></tr>
+          <tr><td>答案是對的，但最後還是你自己複製貼上去執行</td><td>手</td><td>換成能動手的工具，或給它可執行的環境</td></tr>
+          <tr><td>每接一個新工具都要重弄一次，接法都不一樣</td><td>神經系統</td><td>改用統一的接口規格</td></tr>
+          <tr><td>資料接上了、手也有了，但答案一直查到過期的版本</td><td>書的品質</td><td>回頭整理資料，不是換更強的模型</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="caveat">
+      <b>最後一列最常被誤判</b>
+      答案不準的時候，直覺反應通常是換一個更聰明的模型。但如果問題出在同一份資料有三個版本，換模型不會解決任何事。
+    </div>
+
+    <h3>補的順序：先補書，再補手</h3>
+    <p>如果四層都缺，我會建議這個順序：</p>
+    <div class="workflow-grid">
+      <div class="workflow-step">
+        <small>STEP 1</small>
+        <b>先補書</b>
+        <p>把資料整理到 AI 查得到，而且查到的是對的版本。</p>
+      </div>
+      <div class="workflow-step">
+        <small>STEP 2</small>
+        <b>再補手</b>
+        <p>資料對了之後，才讓它動手做。</p>
+      </div>
+      <div class="workflow-step">
+        <small>STEP 3</small>
+        <b>神經系統等你真的要接第三個工具再說</b>
+        <p>只接一兩個工具的時候，統一規格帶來的好處還不明顯。</p>
+      </div>
+    </div>
+    <p>順序的理由很簡單：手再快，拿到的資料是錯的，只是錯得比較快。</p>
+    <p>一個會動手的 Agent 配上一疊過期文件，產出的是大量看起來很專業的錯誤。而且因為它動作快，你發現的時候通常已經錯了一整批。</p>
+    <div class="caveat">
+      <b>這是常見路徑，不是通則</b>
+      如果你現在卡住的地方本來就是工具接不起來、資料其實沒什麼問題，那順序就會不一樣。先看第一張表判斷自己缺哪一塊，再決定從哪裡下手。
+    </div>
+  </div>
+</section>
+
+<section class="section" id="use">
+  <div class="inner">
+    <h2>五、怎麼用這組比喻</h2>
+    <p>下次看到一個 AI 產品的介紹，可以先問一句：它在講哪一層？</p>
+    <div class="infocard">
+      <div class="infocard-grid">
+        <div class="info-item">
+          <b>只講模型多聰明</b>
+          <p>跑分、參數量、又贏了哪個對手，那是在講大腦。</p>
+        </div>
+        <div class="info-item">
+          <b>強調用你自己的資料</b>
+          <p>上傳文件就能問、支援你的知識庫，那是在講書。</p>
+        </div>
+        <div class="info-item">
+          <b>強調自動完成與整合</b>
+          <p>幫你執行、一次接上所有工具，那是在講手與神經系統。</p>
+        </div>
+      </div>
+    </div>
+    <p>四層都有人在賣，而且都有它的位置。知道對方在賣哪一層，你才判斷得出來這東西補的是不是你現在缺的那一塊。</p>
+    <div class="tagrow">
+      <span class="tag">LLM</span>
+      <span class="tag">RAG</span>
+      <span class="tag">AI Agent</span>
+      <span class="tag">MCP</span>
+      <span class="tag">AI 入門</span>
+      <span class="tag">知識管理</span>
+    </div>
+  </div>
+</section>
+
+<section class="cta-band">
+  <div class="section">
+    <div class="inner">
+      <div>
+        <h2>想知道自己現在缺的是哪一層？</h2>
+        <p class="lead">我每月固定舉辦兩場免費線上講座，分享善用 AI 作為思考夥伴、把知識與經驗整理成提示詞、技能包、知識庫的實戰方法。對知識管理、AI 知識庫有興趣，歡迎先從社群開始。</p>
+      </div>
+      <div class="cta-card">
+        <b>免費線上講座</b>
+        <p>每個月兩場免費講座，場次會先在社群公布。</p>
+        <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;text-decoration:none;border-radius:8px;padding:12px 16px;font-weight:900;background:#48b178;color:#fff;">點我加入 Line 社群 ↗</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">江江教練 · AI 知識管理</div>
+    <div class="footer-links">
+      <a href="../../articles.html">← 回深度文章總站</a>
+      <a href="../../index.html">首頁</a>
+      <a href="../../learn.html">自學資源</a>
+      <a href="../../skills.html">技能包下載</a>
+      <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">LINE 社群 ↗</a>
+      <a href="https://www.threads.com/@jiang_yude_coach" target="_blank" rel="noopener">Threads ↗</a>
+      <a href="https://vocus.cc/salon/Jiang_Coach" target="_blank" rel="noopener">方格子 ↗</a>
+    </div>
+    <div class="footer-note">這是一篇教學文章，整理我對「LLM、RAG、Agent、MCP 哪個重要？用人體比喻看懂這四個怎麼疊起來」的看法，供你參考。</div>
+  </div>
+</footer>
+
+<!-- 點圖放大 lightbox（hero 與內文圖通用，已內建，不用每篇重加） -->
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <span class="lightbox-close" aria-label="關閉">×</span>
+  <img id="lightbox-img" src="" alt="放大檢視">
+</div>
+<script>
+(function(){
+  var box=document.getElementById('lightbox'),boxImg=document.getElementById('lightbox-img');
+  document.querySelectorAll('.hero-figure img,.inline-figure img').forEach(function(img){
+    img.addEventListener('click',function(){boxImg.src=img.currentSrc||img.src;boxImg.alt=img.alt||'放大檢視';box.classList.add('open');box.setAttribute('aria-hidden','false');});
+  });
+  function close(){box.classList.remove('open');box.setAttribute('aria-hidden','true');boxImg.src='';}
+  box.addEventListener('click',close);
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
+})();
+</script>
+
+<script src="../../image-interactions.js"></script>
+
+<!-- 官網共用：滑鼠暖光暈 + 導航列漢堡選單 -->
+<script src="../../spotlight.js"></script>
+
+<!-- 文章自動互聯（相關文章）：兩支已內建，順序不可顛倒，不用再另外加 -->
+<script src="../../articles-data.js"></script>
+<script src="../../related-render.js"></script>
+</body>
+</html>
