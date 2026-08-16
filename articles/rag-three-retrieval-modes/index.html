@@ -1,0 +1,542 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>把資料丟給 AI，它其實沒有全部看完：RAG 的三種查法與怎麼選｜江江教練 · AI 知識管理</title>
+<meta name="description" content="AI 回答之前會先去你的資料裡查一輪，這個動作叫 RAG。三種查法（比相似度、走關係、讓 AI 自己決定）差在哪、什麼題目該用哪一種，附我自己知識庫三種同時在跑的做法與實測命中率。">
+<link rel="canonical" href="https://jiangyude.com/articles/rag-three-retrieval-modes/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="把資料丟給 AI，它其實沒有全部看完：RAG 的三種查法與怎麼選｜江江教練">
+<!-- 分享封面：hero 文字填好後在 repo 根目錄跑 `node scripts/og-shot.mjs rag-three-retrieval-modes` 自動截 1200×630 到 images/og/rag-three-retrieval-modes.jpg（見 README「文章分享封面（OG 圖）機制」）。別退回 intro-jiang.png 直式人像，會被裁成只剩脖子。 -->
+<meta property="og:image" content="https://jiangyude.com/images/og/rag-three-retrieval-modes.jpg">
+<meta property="og:description" content="AI 回答之前會先去你的資料裡查一輪，這個動作叫 RAG。三種查法（比相似度、走關係、讓 AI 自己決定）差在哪、什麼題目該用哪一種，附我自己知識庫三種同時在跑的做法與實測命中率。">
+<meta property="og:url" content="https://jiangyude.com/articles/rag-three-retrieval-modes/">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:site_name" content="江江教練 · AI 知識管理">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="把資料丟給 AI，它其實沒有全部看完：RAG 的三種查法與怎麼選｜江江教練">
+<meta name="twitter:image" content="https://jiangyude.com/images/og/rag-three-retrieval-modes.jpg">
+<meta name="twitter:description" content="AI 回答之前會先去你的資料裡查一輪，這個動作叫 RAG。三種查法（比相似度、走關係、讓 AI 自己決定）差在哪、什麼題目該用哪一種，附我自己知識庫三種同時在跑的做法與實測命中率。">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"把資料丟給 AI，它其實沒有全部看完：RAG 的三種查法與怎麼選","description":"AI 回答之前會先去你的資料裡查一輪，這個動作叫 RAG。三種查法（比相似度、走關係、讓 AI 自己決定）差在哪、什麼題目該用哪一種，附我自己知識庫三種同時在跑的做法與實測命中率。","author":{"@type":"Person","name":"江昱德","alternateName":"江江教練","jobTitle":"隱性知識提煉師、AI 應用規劃師"},"isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://jiangyude.com/"},"datePublished":"2026-08-16","dateModified":"2026-08-16","inLanguage":"zh-Hant","url":"https://jiangyude.com/articles/rag-three-retrieval-modes/"}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{--ink:#1a1612;--paper:#fefcf8;--muted:#6a635a;--line:#d8cdb8;--green:#5f7553;--blue:#5689b8;--orange:#e85a4f;--soft:#faf5ec;--dark:#2a2018;--shadow:0 18px 45px rgba(107,74,42,.14);--sp-shadow:hsla(35,50%,60%,.15);--sp-shadow-edge:hsla(35,50%,68%,.03);--sp-radius:400px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC","Segoe UI",sans-serif}
+a{color:inherit}
+/* 官網共用導航列 nav.top（與首頁/文章總站同一條） */
+nav.top{position:sticky;top:0;background:rgba(254,252,248,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid #d8cdb8;z-index:100}
+nav.top .container{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:24px;padding:14px 32px}
+.nav-brand-img{justify-self:start;display:flex;align-items:center;text-decoration:none;flex-shrink:0;transition:opacity .2s}
+.nav-brand-img:hover{opacity:.8}.nav-brand-img img{height:40px;width:auto;display:block}
+nav.top ul.nav-menu{justify-self:end;display:flex;gap:22px;list-style:none;margin:0;padding:0;font-size:.95rem;white-space:nowrap}
+nav.top ul.nav-menu a{color:#3a342d;text-decoration:none;transition:color .2s;font-weight:500;white-space:nowrap}
+nav.top ul.nav-menu a:hover{color:#1a1612}nav.top ul.nav-menu a.active{color:#1a1612;font-weight:700}
+.nav-toggle{display:none;background:none;border:none;padding:6px;cursor:pointer;width:36px;height:36px;position:relative}
+.nav-toggle span{display:block;position:absolute;left:8px;right:8px;height:2px;background:#1a1612;border-radius:2px;transition:transform .25s,opacity .25s,top .25s}
+.nav-toggle span:nth-child(1){top:11px}.nav-toggle span:nth-child(2){top:17px}.nav-toggle span:nth-child(3){top:23px}
+.nav-toggle.open span:nth-child(1){top:17px;transform:rotate(45deg)}.nav-toggle.open span:nth-child(2){opacity:0}.nav-toggle.open span:nth-child(3){top:17px;transform:rotate(-45deg)}
+@media(max-width:860px){
+ nav.top .container{grid-template-columns:auto 1fr auto;padding:10px 16px;gap:12px}
+ .nav-brand-img img{height:32px}
+ .nav-toggle{display:block;justify-self:end}
+ nav.top ul.nav-menu{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(254,252,248,.98);backdrop-filter:blur(14px);border-bottom:1px solid #d8cdb8;flex-direction:column;gap:0;padding:8px 0;box-shadow:0 10px 24px rgba(107,74,42,.08)}
+ nav.top ul.nav-menu.open{display:flex}
+ nav.top ul.nav-menu li{border-bottom:1px solid #e8dfc9}
+ nav.top ul.nav-menu li:last-child{border-bottom:none}
+ nav.top ul.nav-menu a{display:block;padding:14px 20px;font-size:1.06rem}
+}
+/* 滑鼠暖光暈（與首頁同一支 spotlight.js） */
+body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradient(var(--sp-radius) circle at var(--mx,50%) var(--my,50%),var(--sp-shadow) 0%,var(--sp-shadow-edge) 45%,transparent 75%);pointer-events:none;z-index:9999;mix-blend-mode:multiply;transition:background .06s linear}
+.hero{position:relative;overflow:hidden;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:72px;padding:96px clamp(20px,6vw,88px) 80px;background:linear-gradient(180deg,#fffcf0 0%,#f9e9d2 100%);color:#1a1612;border-bottom:1px solid #d8cdb8}
+.hero .wc{position:absolute;border-radius:50%;filter:blur(60px);pointer-events:none;z-index:0}
+.hero .wc1{width:420px;height:360px;top:-120px;right:-80px;background:#e8884b;opacity:.15}
+.hero .wc2{width:360px;height:300px;bottom:-110px;left:-70px;background:#5f7553;opacity:.13}
+.hero .wc3{width:280px;height:260px;top:34%;left:14%;background:#a08144;opacity:.10}
+.hero>div{flex:none;width:860px;max-width:100%;position:relative;z-index:2}
+.hero-figure{margin:0;width:420px;flex:none;position:relative;z-index:2}
+.hero-figure img{display:block;width:100%;border-radius:16px;border:1px solid #d8cdb8;box-shadow:0 18px 45px rgba(107,74,42,.16);cursor:zoom-in}
+.hero-figure figcaption{margin-top:10px;font-size:14px;line-height:1.6;color:#6a635a}
+.inline-figure{margin:30px auto 8px;max-width:820px}
+.inline-figure img{display:block;width:100%;border-radius:14px;border:1px solid var(--line);box-shadow:var(--shadow);background:#fff;cursor:zoom-in}
+.inline-figure figcaption{font-size:14px;line-height:1.6;color:var(--muted);margin-top:10px}
+.lightbox{position:fixed;inset:0;z-index:10000;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(12,10,8,.92);cursor:zoom-out;backdrop-filter:blur(4px)}
+.lightbox.open{display:flex}.lightbox img{max-width:96vw;max-height:92vh;border-radius:10px;box-shadow:0 24px 60px rgba(0,0,0,.5)}
+.lightbox-close{position:fixed;top:18px;right:24px;color:#fff;font-size:34px;line-height:1;font-weight:700;cursor:pointer;opacity:.85}
+.kicker{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.55rem;color:#7a5c3a;font-weight:500}
+.hero h1{max-width:none;margin:16px 0 18px;font-size:clamp(36px,6vw,72px);line-height:1.08;overflow-wrap:anywhere}
+.hero p{max-width:none;font-size:clamp(18px,2vw,23px);line-height:1.62;color:#3a342d}
+.cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
+.cta a{display:inline-flex;align-items:center;text-decoration:none;border-radius:8px;padding:12px 16px;font-weight:900}
+.cta .primary{background:#fff;color:#1a1612}.cta .ghost{border:1px solid rgba(255,255,255,.32);color:#fff;background:rgba(255,255,255,.08)}
+.section{padding:54px clamp(20px,6vw,88px);border-top:1px solid var(--line)}
+.inner{width:min(1000px,100%);margin:0 auto}
+.section h2{font-size:clamp(26px,4.2vw,48px);line-height:1.12;margin:0 0 18px}
+.section h3{font-size:clamp(21px,3vw,30px);line-height:1.2;margin:30px 0 12px}
+.lead{font-size:clamp(18px,1.6vw,22px);line-height:1.7;color:#3a342d;max-width:900px}
+.section p{font-size:18px;line-height:1.74;color:#3a342d}.section p+p{margin-top:14px}
+.section ul,.section ol{padding-left:1.4em;font-size:18px;line-height:1.74;color:#3a342d}.section li{margin-bottom:8px}
+.meaning{margin:22px 0;padding:16px 18px;border-left:5px solid var(--blue);background:rgba(86,137,184,.12);border-radius:6px;line-height:1.7;font-size:19px}
+.meaning b{display:block;color:var(--blue);margin-bottom:4px}
+.caveat{margin:0 0 8px;padding:16px 18px;border-left:5px solid var(--orange);background:rgba(232,90,79,.1);border-radius:6px;line-height:1.7;font-size:18px;color:#3a342d}
+.caveat b{display:block;color:var(--orange);margin-bottom:4px}
+.infocard{background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px 24px 22px;box-shadow:0 8px 22px rgba(107,74,42,.08);margin-top:8px}
+.infocard-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.info-item{padding:18px 14px 0}
+.info-item b{display:block;font-size:14px;font-weight:900;letter-spacing:.04em;margin-bottom:7px;text-transform:uppercase}
+.info-item:nth-child(1) b{color:var(--green)}.info-item:nth-child(2) b{color:var(--orange)}.info-item:nth-child(3) b{color:var(--blue)}
+.info-item p{margin:0;font-size:17px;line-height:1.6;color:#3a342d}
+.tagrow{display:flex;flex-wrap:wrap;gap:7px;margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
+.tag{font-size:14px;color:var(--muted);background:var(--soft);border:1px solid var(--line);border-radius:999px;padding:4px 11px}
+.duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:24px}
+.duo.stack{grid-template-columns:1fr}
+.duo .card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:22px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.duo .card.a{border-color:var(--orange)}.duo .card.b{border-color:var(--green);box-shadow:0 8px 24px rgba(95,117,83,.16)}
+.duo .card small{display:block;font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.04em;margin-bottom:9px}
+.duo .card.a small{color:var(--orange)}.duo .card.b small{color:var(--green)}
+.duo .card b{display:block;font-size:22px;line-height:1.3;margin-bottom:12px}.duo .card.a b{color:#c0512f}.duo .card.b b{color:#4a7a59}
+.duo .card p{margin:0;color:#3a342d;line-height:1.75;font-size:18px}
+.workflow-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:24px}
+.workflow-step{background:#fff;border:1px solid var(--line);border-radius:8px;padding:18px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.workflow-step small{display:block;color:var(--orange);font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;margin-bottom:9px}
+.workflow-step b{display:block;font-size:18px;line-height:1.3;margin-bottom:9px}
+.workflow-step p{margin:0;color:#3a342d;line-height:1.6;font-size:16px}
+.codeblock{background:var(--dark);color:#f3ead9;border-radius:8px;padding:18px 20px;font:500 14px/1.65 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;overflow-x:auto;white-space:pre-wrap;margin:20px 0;box-shadow:0 8px 22px rgba(107,74,42,.12)}
+.codeblock .c{color:#f6d7a6;font-weight:600}
+.skillcard{background:#fff;border:1px solid var(--green);border-radius:12px;padding:24px;box-shadow:0 10px 26px rgba(95,117,83,.16);margin-top:8px}
+.skillcard b{display:block;font-size:21px;margin-bottom:8px}
+.skillcard p{margin:0 0 16px;font-size:17px;line-height:1.65;color:#3a342d}
+.cta-band{background:#e6f0e5;color:#3a342d}.cta-band .section{border-top:none}
+.cta-band .inner{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(260px,.85fr);gap:26px;align-items:start}
+.cta-band h2{font-size:clamp(26px,4vw,44px);margin:0 0 16px}.cta-band p,.cta-band .lead{color:rgba(58,52,45,.9);font-size:18px;line-height:1.72}
+.cta-card{border:1px solid #cfe0d2;background:#fbfdfa;border-radius:8px;padding:22px}
+.cta-card b{display:block;color:#48b178;margin-bottom:10px;font-size:18px}.cta-card p{margin:0 0 14px}
+.footer{padding:30px clamp(20px,6vw,88px);font-size:14px;color:var(--muted);background:#fff;border-top:1px solid var(--line)}
+.footer-inner{width:min(1000px,100%);margin:0 auto}
+.footer-links{display:flex;flex-wrap:wrap;gap:6px 12px;margin-bottom:14px}.footer-links a{color:var(--blue);font-weight:900;text-decoration:none;font-size:14px}
+.footer-brand{font-weight:900;font-size:15px;margin-bottom:10px}.footer-note{font-size:13px;line-height:1.6}
+@media(max-width:820px){.infocard-grid{grid-template-columns:1fr}.duo{grid-template-columns:1fr}.workflow-grid{grid-template-columns:1fr}.cta-band .inner{grid-template-columns:1fr}.section{padding:40px 20px}.hero{min-height:52vh;flex-direction:column;justify-content:flex-start;align-items:flex-start;gap:24px}.hero>div{width:100%}.hero-figure{width:100%;max-width:560px}}
+@media(max-width:820px){html,body{overflow-x:hidden}.hero h1{word-break:break-word}}
+.readmore{display:inline-flex;align-items:center;gap:6px;margin-top:12px;color:var(--blue);font-weight:900;text-decoration:none;font-size:17px}
+.readmore:hover{text-decoration:underline}
+.readmore.near{display:block;margin:26px 0 6px;padding:20px 22px;background:rgba(86,137,184,.07);border:1px solid #bcd0e2;border-radius:12px}
+.readmore.near b{display:block;color:var(--blue);font-size:18px;margin-bottom:10px}
+.readmore.near ul{margin:0;padding-left:1.25em}
+.readmore.near li{font-size:17px;line-height:1.7;margin-bottom:10px}
+.readmore.near a{color:var(--blue);font-weight:700;text-decoration:none}
+.readmore.near a:hover{text-decoration:underline}
+.table-scroll{overflow-x:auto;margin-top:20px}
+.report-table{width:100%;border-collapse:collapse;min-width:600px}
+.report-table th{background:rgba(122,90,71,.09);color:#3a2a1c;font-weight:900}
+.report-table th,.report-table td{padding:13px 15px;border-bottom:1px solid var(--line);vertical-align:top;text-align:left;font-size:16.5px;line-height:1.62}
+.duo .card ul{margin:0;padding-left:1.2em}
+.duo .card li{color:#3a342d;line-height:1.7;font-size:17px}
+@media(max-width:820px){.report-table{min-width:520px}}
+</style>
+</head>
+<body class="spotlight">
+<!-- 官網共用導航列 nav.top：與首頁/總站同一條，文章不要自己另做極簡 topbar（江江 2026-06-25：要同一個框架、同一條導航列）。把對應頁面的 class="active" 標在自己那欄。 -->
+<nav class="top">
+  <div class="container">
+    <a class="nav-brand-img" href="../../index.html"><img src="../../images/footer-signature.png" alt="江江教練 | 江昱德"></a>
+    <button class="nav-toggle" aria-label="選單"><span></span><span></span><span></span></button>
+    <ul class="nav-menu">
+      <li><a href="../../index.html">首頁</a></li>
+      <li><a href="../../knowledge-architecture.html">知識架構</a></li>
+      <li><a href="../../courses.html">課程</a></li>
+      <li><a href="../../articles.html" class="active">深度文章</a></li>
+      <li><a href="../../skills.html">技能包下載</a></li>
+      <li><a href="../../offers.html">服務方案</a></li>
+      <!-- 這一行不能少：preflight 第 5 關 check-bilingual-nav.mjs 要求每個 HTML 都有 EN 切換。
+           2026-08-12 補：範本原本漏了它，照範本起手的新文章一律被第 5 關擋下，每個人都得手動補一次。 -->
+      <li class="lang-switch"><a href="../../en/articles.html" hreflang="en">EN</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="wc wc1"></div>
+  <div class="wc wc2"></div>
+  <div class="wc wc3"></div>
+  <div>
+    <div class="kicker">AI 應用 / 知識管理</div>
+    <h1>把資料丟給 AI，它其實沒有全部看完：RAG 的三種查法與怎麼選</h1>
+    <p>它只是挑了幾段最像你問題的文字，拿那幾段去回答。搞懂中間那個「挑」的動作，才知道為什麼資料明明在裡面，AI 就是講不出來。</p>
+  </div>
+</section>
+
+<main>
+
+<section class="section" id="start">
+  <div class="inner">
+    <h2>這篇在講什麼</h2>
+    <p class="lead">你把整個資料夾丟給 AI，它回答的時候並沒有全部看過一遍。它只是挑了幾段最像你問題的文字，拿那幾段去回答。這個「回答前先查一輪」的動作有名字，叫 RAG。查法目前主流有三種：比相似度、走關係、讓 AI 自己決定要查幾輪。選錯了就會出現「資料明明在裡面，AI 就是講不出來」的狀況。這篇用白話講清楚三種各自在做什麼，給你一組判斷順序，並攤開我自己知識庫裡三種同時在跑的做法與實測數字。</p>
+
+    <div class="duo stack">
+      <div class="card a">
+        <b>適合誰</b>
+        <ul>
+          <li>你已經把資料丟給 AI 了，它有時候答得很準，有時候明明資料就在裡面卻說找不到，你不知道問題出在哪。</li>
+          <li>你聽過 RAG、向量資料庫、知識圖譜這些詞，但沒有人用你聽得懂的話講過它們差在哪。</li>
+          <li>你想幫自己或公司建一個 AI 查得到的知識庫，正在猶豫要先做什麼、值不值得花那個力氣。</li>
+        </ul>
+      </div>
+      <div class="card b">
+        <b>你可以帶走什麼</b>
+        <ul>
+          <li>一組可以直接照著判斷的順序：什麼題目用哪一種查法，不用每次都問人。</li>
+          <li>我自己知識庫的真實做法：兩顆本機向量索引、一套標籤結構、上層一份路由規則，含實測命中率與它失手的地方。</li>
+          <li>一段可以複製的提示詞，用來檢查你手上的資料到底適不適合被 AI 查。</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>一個具體問題</h2>
+    <p>你把三十份會議記錄丟進 AI，問它：「這個客戶前後總共答應過我們什麼？」</p>
+    <p>它給你一段看起來很順的回答，但漏了兩件事。你翻回原檔，那兩件事白紙黑字寫在第七份跟第二十四份裡面。</p>
+    <p>你會直覺覺得是 AI 不夠聰明。實際上多半是這樣：它根本沒讀到那兩份。</p>
+    <p>因為它讀不完。三十份會議記錄可能有十幾萬字，塞不進一次對話。所以中間有一個環節，負責在你問完問題之後、AI 回答之前，先去這堆資料裡挑出幾段丟給它。你的問題答得好不好，很大一部分取決於這個環節挑得準不準。</p>
+    <div class="meaning">
+      <b>這個環節就是 RAG</b>
+      你以為 AI 在「讀完你的資料」，實際上它讀的是被挑出來的那幾段。挑的動作發生在你看不到的地方，而它決定了答案的上限。
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>白話定義：RAG 到底是什麼</h2>
+    <p>RAG 的全名是 Retrieval-Augmented Generation，中文常翻成檢索增強生成。名字很嚇人，動作其實很單純：</p>
+    <div class="meaning">
+      <b>一句話定義</b>
+      讓 AI 在回答之前，先去你的資料裡查一輪，再根據查到的東西回答。
+    </div>
+    <p>沒有 RAG 的 AI，回答時憑的是訓練時看過的東西加上你當下貼給它的內容。有 RAG 的 AI，多了一個去你的資料庫翻找的動作。</p>
+    <p>舉個例子。你問一位很博學的顧問「我們公司去年第三季的退貨率是多少」，他再博學也答不出來，因為那份資料在你的抽屜裡。RAG 做的事情，就是在他開口之前，先跑去抽屜幫他抽出相關的那幾張紙。</p>
+    <p>所以有兩件事會決定答案的品質：抽屜裡的東西有沒有整理好，還有那個跑腿的人會不會抽。接下來講的三種查法，講的都是「那個跑腿的人怎麼抽」。</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>三種查法</h2>
+
+    <h3>第一種：比相似度（一般說的 RAG）</h3>
+    <p>流程是這樣：</p>
+    <ol>
+      <li>事前把你的資料切成一段一段，每段轉成一串數字（這串數字叫向量，用來代表這段文字的意思）。</li>
+      <li>你提問的時候，問題也轉成一串數字。</li>
+      <li>系統去找數字最接近的幾段，通常抓前三到前十段。</li>
+      <li>把這幾段連同你的問題一起交給 AI，讓它照著回答。</li>
+    </ol>
+    <p>為什麼要轉成數字？因為這樣可以做到「意思接近就找得到」，不需要用字一模一樣。你問「怎麼讓客戶願意先付訂金」，資料裡寫的是「預收款的溝通方式」，關鍵字搜尋撈不到，換成向量就有機會撈到。</p>
+    <div class="duo">
+      <div class="card b">
+        <small>強在哪</small>
+        <b>快、便宜、幾乎不用維護</b>
+        <p>資料丟進去就能用，適合答案就落在某一頁的問題。找定義、找某次的數字、找某段話怎麼寫的，都屬於這類。</p>
+      </div>
+      <div class="card a">
+        <small>弱在哪</small>
+        <b>撈回來的片段接不起來</b>
+        <p>答案分散在好幾份文件的時候，它會撈回一堆各自獨立的段落，彼此之間的關係它不知道。前面那個「客戶總共答應過什麼」就是典型會失敗的題目。另一個常被忽略的弱點：它只認得意思像不像，不認得重不重要。一份三年前作廢的舊版報價單，語意上一樣像，它一樣會撈回來。</p>
+      </div>
+    </div>
+
+    <h3>第二種：走關係（知識圖譜、GraphRAG）</h3>
+    <p>流程不一樣：</p>
+    <ol>
+      <li>事前先把資料裡的實體抓出來，例如人名、公司名、專案名、產品名。</li>
+      <li>建立它們之間的關係，例如「A 公司 → 負責人是 → B」「B → 參與過 → C 專案」。</li>
+      <li>你提問的時候，先認出問題裡有哪些實體，再沿著它們之間的線走。</li>
+      <li>把走過的那一整串脈絡交給 AI。</li>
+    </ol>
+    <p>這一種的判斷依據是實體之間的關係，跟字面像不像無關。</p>
+    <div class="duo">
+      <div class="card b">
+        <small>強在哪</small>
+        <b>多跳問題</b>
+        <p>所謂多跳，就是「要先知道 A 才能查到 B」的那種問題。「這個人跟我們哪些案子有關，那些案子又牽到誰」用第一種查法幾乎必敗，用這種就是順著線走過去。</p>
+      </div>
+      <div class="card a">
+        <small>弱在哪</small>
+        <b>那張圖不會自己長出來</b>
+        <p>要嘛你手動建，要嘛用 AI 先跑一輪把實體跟關係抽出來，然後每次有新資料進來都要再維護一次。這是持續成本，不是一次性投資。</p>
+      </div>
+    </div>
+    <p>我自己知識庫用的標籤連結法，走的就是這個精神：受控詞彙當節點，wiki-link 當關係線。差別在於走那張圖的是人跟 AI 讀規則，不是自動化的圖遍歷。</p>
+
+    <div class="readmore near">
+      <b>關係層要怎麼自己建，我另外寫過一篇</b>
+      <ul>
+        <li><a href="../tag-wiki-method/">資料越堆越多，AI 反而找不到怎麼辦？：標籤連結法 Tag Wiki</a>　四個維度怎麼分、受控詞彙怎麼維護、為什麼幾乎不用 YAML。這篇談的是三種查法各自在做什麼，那篇談的是關係那一層要怎麼動手建起來</li>
+      </ul>
+    </div>
+
+    <h3>第三種：讓 AI 自己決定（Agentic RAG）</h3>
+    <p>前面兩種都是固定流水線：問題進來，照既定路線查一輪，交出去。第三種是加了一層判斷：</p>
+    <ol>
+      <li>AI 先想這一題要不要查、該查什麼。</li>
+      <li>決定去哪裡查，可能是向量庫、可能是知識圖譜、可能是上網、可能是叫某個工具。</li>
+      <li>查回來以後自己評估：這些證據夠不夠回答？</li>
+      <li>不夠就換個角度再查一輪，夠了才開始寫答案。</li>
+    </ol>
+    <p>關鍵不在它能用比較多工具，在於它自己決定要不要查、查幾次、答案夠不夠好。</p>
+    <div class="duo">
+      <div class="card b">
+        <small>強在哪</small>
+        <b>題目本身很模糊的時候</b>
+        <p>你連自己要查什麼都還不確定，前兩種就沒辦法幫你，因為它們需要一個明確的查詢。</p>
+      </div>
+      <div class="card a">
+        <small>弱在哪</small>
+        <b>慢、貴、難除錯</b>
+        <p>每次跑的路徑可能都不一樣，出錯的時候不容易重現。同一個問題問兩次，中間走的路可能不同。</p>
+      </div>
+    </div>
+    <div class="caveat">
+      <b>嚴格說，第三種已經不太算是一種「檢索方法」</b>
+      它是一個會自己做決定的 AI，檢索只是它手上的工具之一。把它跟前兩種並排比較，其實是拿使用工具的人跟工具在比。這個分別值得記住，因為它決定了你該用什麼心態評估它：你評估的是它的判斷力，不是它的檢索精度。
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>怎麼選：一組可以照著走的判斷順序</h2>
+    <p>我自己的分法很簡單，照這個順序問下去：</p>
+    <div class="table-scroll">
+      <table class="report-table">
+        <thead>
+          <tr><th>先問自己</th><th>是的話</th><th>典型題目長什麼樣</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>這題的答案是不是落在某一份文件、某一段裡？</td><td>用第一種（比相似度）</td><td>找定義、找某次的數字、找某段話怎麼寫的</td></tr>
+          <tr><td>這題要不要把好幾個人、好幾個案子、好幾個時間點串起來看？</td><td>用第二種（走關係）</td><td>問題裡出現「總共」「前後」「這幾個之間」「誰跟誰」</td></tr>
+          <tr><td>我自己都還說不清楚要查什麼嗎？</td><td>才用第三種（AI 自己決定）</td><td>探索型的題目、要先釐清問題本身的題目</td></tr>
+          <tr><td>以上都不是，只是要一份明確的檔案？</td><td>別用 RAG</td><td>知道檔名就直接翻資料夾，比語意檢索快也準</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="caveat">
+      <b>順序反過來用會很痛苦</b>
+      拿第三種去回答「我們的退貨政策寫在哪」，你會等三十秒、花十倍的成本，換到一個第一種零點五秒就能給你的答案。
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>我自己的知識庫怎麼跑這三種</h2>
+    <p>講到這裡都還是原理。以下是我實際做的，包含它失手的地方。我的知識庫是一堆 Markdown 檔，放在 Obsidian 裡，累積了幾年。三種查法我都在用，各自管不同的問題。</p>
+
+    <h3>第一種：兩顆本機向量索引</h3>
+    <p>我在 2026 年 8 月建了兩顆索引，都跑在自己的電腦上（用 Ollama 跑 bge-m3 這個嵌入模型），資料不外送、也不用付 API 費用。</p>
+    <ul>
+      <li><b>主庫索引</b>：收 286 份文章檔，切成 3,299 個片段。用途是「我明明覺得寫過這件事，但想不起來在哪」。</li>
+      <li><b>官網索引</b>：收 101 篇已上線的公開文章，每個片段都帶著公開網址。用途是官網 AI 客服，回答的時候直接附連結給訪客。</li>
+    </ul>
+    <p>建的時候我有做驗證：隨機抽題，用「不含標題詞」的口語問句測能不能找回原檔。hit@5 的意思是正確答案有沒有出現在前五筆。</p>
+    <div class="table-scroll">
+      <table class="report-table">
+        <thead>
+          <tr><th>索引</th><th>向量檢索 hit@5</th><th>關鍵字搜尋 hit@5</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>主庫（25 題）</td><td>18/25，約 72%</td><td>15/25，約 60%</td></tr>
+          <tr><td>官網（30 題）</td><td>29/30，約 97%</td><td>20/30，約 67%</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>兩顆索引用同一個模型、同一套切塊方式，命中率卻差了 25 個百分點。差別在資料本身：官網文章每篇都有整理過的摘要、清楚的標題階層、一致的結構；主庫是原始筆記，什麼都有，同一件事可能用三種說法寫過。</p>
+    <div class="meaning">
+      <b>這件事比命中率本身更值得記住</b>
+      檢索品質的天花板是資料的整理程度，換更貴的模型拉不動它。同一套技術用在整理過的資料上，跟用在原始筆記上，差距大到像兩個系統。
+    </div>
+
+    <div class="readmore near">
+      <b>整理這一關本身也是一整套工夫</b>
+      <ul>
+        <li><a href="../long-document-review-layers/">AI 改了十幾次還是有錯，怎麼辦？：資料清理只是第一關，長文件審不出錯的三層設計</a>　掃描 PDF 缺字跳行、逐字稿錯字口水話這些成本怎麼處理。這篇講的是資料整理好之後怎麼被查到，那篇講的是資料要怎麼先整理到能用</li>
+      </ul>
+    </div>
+
+    <h3>第二種：標籤連結法當關係層</h3>
+    <p>我沒有跑真正的自動化知識圖譜。我用的是標籤連結法：一份受控詞彙字典（人名、主題、專案、文件用途四個維度），每份檔案掛標籤，標籤之間用 wiki-link 互連。</p>
+    <p>要查「這個人最近跟哪些案子有關」，走的是這層，不是向量。因為向量認不得「這兩份文件講的是同一個人」，它只認得字面意思像不像。</p>
+    <p>代價很實在：字典要維護，寫任何標籤前都要先對字典，不能憑印象亂掛。我為此還在流程裡加了機械檢查，不然一定會漏。</p>
+
+    <h3>第三種：上層的路由規則</h3>
+    <p>我的知識庫有一份主規則檔，裡面寫著什麼情況該用哪種查法。AI 接手工作的時候先讀那份，再決定這次要用檔名找、用標籤走、還是用向量查。</p>
+    <p>這就是最上面那層的「自己決定」。它不是什麼高深的架構，本質上是一份用白話寫清楚的判斷規則，讓 AI 照著選路。</p>
+    <p>三層加起來的效果是：大部分的問題在第一層就解決了，第二層處理關係題，第三層只在真的模糊的時候才啟動。這也是我建議的順序，先把便宜的做好，不要一開始就衝最複雜的那個。</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>它保證什麼、不保證什麼</h2>
+    <p>誠實講清楚邊界，免得期待落空。</p>
+    <div class="meaning">
+      <b>RAG 能保證的</b>
+      AI 回答的時候，手上有你的資料可以參考，不是純粹憑印象講。
+    </div>
+    <div class="caveat">
+      <b>RAG 不保證的</b>
+      <ul style="margin:8px 0 0;padding-left:1.2em">
+        <li><b>不保證撈得完整。</b>前面那個 72% 就是活生生的例子。撈不到的那 28%，資料明明在庫裡。</li>
+        <li><b>不保證撈到的是對的版本。</b>舊版跟新版語意一樣像，它分不出來，除非你在資料本身標清楚。</li>
+        <li><b>不保證 AI 會照著撈到的東西講。</b>它拿到片段之後還是有可能自己補話。要防這個得靠另一層檢查，跟 RAG 是兩件事。</li>
+        <li><b>不保證省下整理資料的工夫。</b>資料越亂，RAG 的效果掉得越快，因為它挑片段的依據就是那些亂資料本身。</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>你可以怎麼開始</h2>
+    <p>不需要一上來就建索引。照這個順序做，成本由低到高：</p>
+    <div class="workflow-grid">
+      <div class="workflow-step">
+        <small>STEP 1</small>
+        <b>先確認你的資料能不能被查</b>
+        <p>把一份代表性的資料丟給任何一個 AI，用下面那段提示詞跑一次，看它能不能答得出來。</p>
+      </div>
+      <div class="workflow-step">
+        <small>STEP 2</small>
+        <b>先把命名跟結構做好</b>
+        <p>檔名寫清楚日期跟主題、文件裡有標題階層、同一件事統一用詞。這三件事做完，就算不建索引，AI 的表現也會明顯變好。</p>
+      </div>
+      <div class="workflow-step">
+        <small>STEP 3</small>
+        <b>資料大到翻不動了，再上索引</b>
+        <p>到這個階段再回頭看上面三種查法，你會很清楚自己需要哪一種。多數人卡住的地方其實在第二步。</p>
+      </div>
+    </div>
+
+    <h3>第一步用的檢查提示詞</h3>
+    <p>直接複製，把你的資料貼在後面：</p>
+    <div class="codeblock">我要把這批資料交給 AI 查詢使用。
+請你只根據我貼上的這份內容，回答下面四個問題，不要幫我美化：
+
+1. 這份資料在講什麼？用兩句話說。
+2. 如果我之後要問「這裡面提到的人、時間、金額、決議」，
+   你從這份內容裡答得出來嗎？答不出來的是哪幾類？
+3. 這份內容裡有沒有同一件事用不同說法講了好幾次？列出來。
+4. 有沒有哪些段落，抽出來單獨看會看不懂在講什麼？
+   （例如全篇都是「這個」「那時候」而沒有寫清楚是誰、是什麼）
+
+最後給我一句話：這份資料現在適不適合直接交給 AI 查詢。</div>
+    <p>第 4 題是重點。RAG 是切成片段來查的，一段抽出來看不懂，AI 拿到那段也一樣看不懂。</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>常見的坑</h2>
+    <ul>
+      <li><b>以為丟進去 AI 就會全部看完。</b>它沒有。它每次只讀被撈出來的那幾段。</li>
+      <li><b>以為換更強的模型就會查得更準。</b>查得準不準是檢索那層的事，跟模型聰不聰明是兩件事。</li>
+      <li><b>一開始就要做知識圖譜。</b>關係圖的維護成本是持續性的，資料量還不大的時候，投報率很低。</li>
+      <li><b>忘記可以直接用檔名找。</b>知道檔案叫什麼的時候，語意檢索是繞遠路。</li>
+      <li><b>拿 RAG 當資料整理的替代品。</b>順序是反的，整理是 RAG 的前提。</li>
+    </ul>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>收尾</h2>
+    <p>三種查法，各自的重點一句話：</p>
+    <div class="infocard">
+      <div class="infocard-grid">
+        <div class="info-item">
+          <b>比相似度</b>
+          <p>快、便宜，適合答案在某一頁的問題。</p>
+        </div>
+        <div class="info-item">
+          <b>走關係</b>
+          <p>適合要串好幾份文件的問題，代價是那張圖要一直維護。</p>
+        </div>
+        <div class="info-item">
+          <b>AI 自己決定</b>
+          <p>適合連要查什麼都還不確定的問題，代價是慢、貴、難除錯。</p>
+        </div>
+      </div>
+    </div>
+    <div class="meaning">
+      <b>三種共同的前提只有一個</b>
+      資料要先放得好，AI 才查得到。這件事目前還是得我們自己來，而且它剛好也是唯一不會被下一代模型淘汰的那部分投資。
+    </div>
+  </div>
+</section>
+
+<div class="cta-band">
+  <section class="section">
+    <div class="inner">
+      <div>
+        <h2>想把自己的資料整理成 AI 查得到的知識庫？</h2>
+        <p class="lead">我每月固定辦兩場免費線上講座，分享知識管理與 AI 應用的實戰做法。場次會先在 LINE 社群公布。</p>
+      </div>
+      <div class="cta-card">
+        <b>免費線上講座</b>
+        <p>加入 LINE 社群，開課前半小時會在群組公布參加連結。</p>
+        <a class="readmore" href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">加入 LINE 社群 →</a>
+      </div>
+    </div>
+  </section>
+</div>
+
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">江江教練 · AI 知識管理</div>
+    <div class="footer-links">
+      <a href="../../articles.html">← 回深度文章總站</a>
+      <a href="../../index.html">首頁</a>
+      <a href="../../learn.html">自學資源</a>
+      <a href="../../skills.html">技能包下載</a>
+      <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">LINE 社群 ↗</a>
+      <a href="https://www.threads.com/@jiang_yude_coach" target="_blank" rel="noopener">Threads ↗</a>
+      <a href="https://vocus.cc/salon/Jiang_Coach" target="_blank" rel="noopener">方格子 ↗</a>
+    </div>
+    <div class="footer-note">這是一篇教學文章，整理我對「把資料丟給 AI，它其實沒有全部看完：RAG 的三種查法與怎麼選」的看法，供你參考。</div>
+  </div>
+</footer>
+
+<!-- 點圖放大 lightbox（hero 與內文圖通用，已內建，不用每篇重加） -->
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <span class="lightbox-close" aria-label="關閉">×</span>
+  <img id="lightbox-img" src="" alt="放大檢視">
+</div>
+<script>
+(function(){
+  var box=document.getElementById('lightbox'),boxImg=document.getElementById('lightbox-img');
+  document.querySelectorAll('.hero-figure img,.inline-figure img').forEach(function(img){
+    img.addEventListener('click',function(){boxImg.src=img.currentSrc||img.src;boxImg.alt=img.alt||'放大檢視';box.classList.add('open');box.setAttribute('aria-hidden','false');});
+  });
+  function close(){box.classList.remove('open');box.setAttribute('aria-hidden','true');boxImg.src='';}
+  box.addEventListener('click',close);
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
+})();
+</script>
+
+<script src="../../image-interactions.js"></script>
+
+<!-- 官網共用：滑鼠暖光暈 + 導航列漢堡選單 -->
+<script src="../../spotlight.js"></script>
+
+<!-- 文章自動互聯（相關文章）：兩支已內建，順序不可顛倒，不用再另外加 -->
+<script src="../../articles-data.js"></script>
+<script src="../../related-render.js"></script>
+</body>
+</html>
