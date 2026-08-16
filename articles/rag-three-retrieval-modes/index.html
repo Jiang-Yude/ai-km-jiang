@@ -227,6 +227,10 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
 <section class="section">
   <div class="inner">
     <h2>三種查法</h2>
+    <div class="meaning">
+      <b>先講立場：這三種不是三個等級</b>
+      這三種常被排成越後面越厲害的樣子，用實習生、分析師、資深研究員來比喻。我看的是題目：題目不一樣，該用的查法就不一樣。我自己的知識庫三種同時在跑，各管一種問題，沒有誰取代誰。下面講每一種的時候，講的都是它適合什麼題目、接不住什麼題目，不是它排第幾。
+    </div>
 
     <h3>第一種：比相似度（一般說的 RAG）</h3>
     <p>流程是這樣：</p>
@@ -239,14 +243,14 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
     <p>為什麼要轉成數字？因為這樣可以做到「意思接近就找得到」，不需要用字一模一樣。你問「怎麼讓客戶願意先付訂金」，資料裡寫的是「預收款的溝通方式」，關鍵字搜尋撈不到，換成向量就有機會撈到。</p>
     <div class="duo">
       <div class="card b">
-        <small>強在哪</small>
+        <small>適合的題目</small>
         <b>快、便宜、幾乎不用維護</b>
         <p>資料丟進去就能用，適合答案就落在某一頁的問題。找定義、找某次的數字、找某段話怎麼寫的，都屬於這類。</p>
       </div>
       <div class="card a">
-        <small>弱在哪</small>
+        <small>接不住的題目</small>
         <b>撈回來的片段接不起來</b>
-        <p>答案分散在好幾份文件的時候，它會撈回一堆各自獨立的段落，彼此之間的關係它不知道。前面那個「客戶總共答應過什麼」就是典型會失敗的題目。另一個常被忽略的弱點：它只認得意思像不像，不認得重不重要。一份三年前作廢的舊版報價單，語意上一樣像，它一樣會撈回來。</p>
+        <p>答案分散在好幾份文件的時候，它會撈回一堆各自獨立的段落，彼此之間的關係它不知道。前面那個「客戶總共答應過什麼」就是典型會失敗的題目。另一個常被忽略的限制：它只認得意思像不像，不認得重不重要。一份三年前作廢的舊版報價單，語意上一樣像，它一樣會撈回來。</p>
       </div>
     </div>
 
@@ -261,12 +265,12 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
     <p>這一種的判斷依據是實體之間的關係，跟字面像不像無關。</p>
     <div class="duo">
       <div class="card b">
-        <small>強在哪</small>
+        <small>適合的題目</small>
         <b>多跳問題</b>
-        <p>所謂多跳，就是「要先知道 A 才能查到 B」的那種問題。「這個人跟我們哪些案子有關，那些案子又牽到誰」用第一種查法幾乎必敗，用這種就是順著線走過去。</p>
+        <p>所謂多跳，就是「要先知道 A 才能查到 B」的那種問題。「這個人跟我們哪些案子有關，那些案子又牽到誰」用第一種查法很難答完整，用這種就是順著線走過去。</p>
       </div>
       <div class="card a">
-        <small>弱在哪</small>
+        <small>接不住的題目</small>
         <b>那張圖不會自己長出來</b>
         <p>要嘛你手動建，要嘛用 AI 先跑一輪把實體跟關係抽出來，然後每次有新資料進來都要再維護一次。這是持續成本，不是一次性投資。</p>
       </div>
@@ -291,12 +295,12 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
     <p>關鍵不在它能用比較多工具，在於它自己決定要不要查、查幾次、答案夠不夠好。</p>
     <div class="duo">
       <div class="card b">
-        <small>強在哪</small>
+        <small>適合的題目</small>
         <b>題目本身很模糊的時候</b>
         <p>你連自己要查什麼都還不確定，前兩種就沒辦法幫你，因為它們需要一個明確的查詢。</p>
       </div>
       <div class="card a">
-        <small>弱在哪</small>
+        <small>接不住的題目</small>
         <b>慢、貴、難除錯</b>
         <p>每次跑的路徑可能都不一樣，出錯的時候不容易重現。同一個問題問兩次，中間走的路可能不同。</p>
       </div>
@@ -311,7 +315,7 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
 <section class="section">
   <div class="inner">
     <h2>怎麼選：一組可以照著走的判斷順序</h2>
-    <p>我自己的分法很簡單，照這個順序問下去：</p>
+    <p>既然是適用問題，判斷的起點就是題目本身，不是先挑技術。我自己的分法很簡單，照這個順序問下去：</p>
     <div class="table-scroll">
       <table class="report-table">
         <thead>
@@ -460,15 +464,15 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
       <div class="infocard-grid">
         <div class="info-item">
           <b>比相似度</b>
-          <p>快、便宜，適合答案在某一頁的問題。</p>
+          <p>答案落在某一頁的問題交給它，快又便宜。</p>
         </div>
         <div class="info-item">
           <b>走關係</b>
-          <p>適合要串好幾份文件的問題，代價是那張圖要一直維護。</p>
+          <p>要串好幾份文件的問題交給它，代價是那張圖要一直維護。</p>
         </div>
         <div class="info-item">
           <b>AI 自己決定</b>
-          <p>適合連要查什麼都還不確定的問題，代價是慢、貴、難除錯。</p>
+          <p>連要查什麼都還不確定的問題交給它，代價是慢、貴、難除錯。</p>
         </div>
       </div>
     </div>
