@@ -42,6 +42,61 @@
     '免費講座什麼時候？'
   ];
 
+  /* ── 這一頁的內容（2026-08-17 江江拍板）──
+     學員上課掃 QR 進課程頁，找不到老師講的提示詞時直接問咪卡。原本咪卡只讀得到
+     全站索引的摘要層（標題、一句簡介），頁面正文完全看不到，所以答不出「那段提示詞」。
+     做法＝訪客按一下「我要問這一頁的內容」，widget 才把當頁文字一起送給後端。
+     不預先送：整站每頁 200～25,000 字，沒人要問的時候送過去是白花成本。
+     解鎖只是「多讀這一頁」，全站目錄照樣在，兩邊並存不互斥。
+     首頁不放這顆（首頁就是預設模式，三顆常見問題照舊）。 */
+  var UNLOCK_CHIP = '我要問這一頁的內容';
+  var MAX_PAGE_CHARS = 30000;   // 最長的課程頁實測 25,542 字，留一點餘裕；後端另有一道截斷
+  /* 免點按鈕的口語觸發（江江：學員不會每次都乖乖先按鈕）。
+     命中就自動解鎖，但咪卡要先確認再答，不是悶頭當成在問這一頁。 */
+  var PAGE_HINT_RE = /這一?[頁篇]|本頁|這堂|這場|這門課|剛剛|剛才|方才|老師|講師|上面(說|寫|講)|投影片|簡報|提示詞|指令/;
+  var pageUnlocked = false;
+  var pageAuto = false;      // 這一輪是關鍵詞自動解鎖（要先確認）還是訪客自己按的鈕
+
+  /* 首頁不算，其餘頁面都可以解鎖 */
+  function isHomePage() {
+    var p = location.pathname.replace(/index\.html$/, '');
+    return p === '/' || p === '' || p === '/en/';
+  }
+
+  /* 抽這一頁的文字。走原始 DOM 不動它（不 clone、不暫時隱藏），
+     區塊標籤結尾補換行，段落結構才留得住；咪卡自己的對話框與 script 排除在外。 */
+  var BLOCK_TAGS = /^(P|DIV|LI|H[1-6]|SECTION|ARTICLE|HEADER|FOOTER|TR|TD|TH|DT|DD|BLOCKQUOTE|PRE|BR|FIGCAPTION|SUMMARY|DETAILS)$/;
+  var SKIP_TAGS = /^(SCRIPT|STYLE|NOSCRIPT|SVG|TEMPLATE|IFRAME|CANVAS)$/;
+  function collectText(node, out) {
+    if (node.nodeType === 3) { out.push(node.nodeValue); return; }
+    if (node.nodeType !== 1) return;
+    if (node.id === 'mkw-root') return;
+    var tag = String(node.tagName || '').toUpperCase();
+    if (SKIP_TAGS.test(tag)) return;
+    if (node.getAttribute && node.getAttribute('aria-hidden') === 'true') return;
+    for (var i = 0; i < node.childNodes.length; i++) collectText(node.childNodes[i], out);
+    if (BLOCK_TAGS.test(tag)) out.push('\n');
+  }
+  function extractPageText() {
+    /* 課程頁與首頁沒有 <main>，文章頁有；一律從有內容的那層開始走。
+       列表頁（courses.html、articles.html）的內容是 JS 跑出來的，
+       從畫面上的 DOM 抽才拿得到，從原始檔讀只會拿到空殼。 */
+    var src = document.querySelector('main') || document.body;
+    var out = [];
+    try { collectText(src, out); } catch (e) { return ''; }
+    return out.join('')
+      .replace(/[ \t ]+/g, ' ')
+      .replace(/ ?\n ?/g, '\n')
+      .replace(/\n{3,}/g, '\n\n')
+      .trim()
+      .slice(0, MAX_PAGE_CHARS);
+  }
+  function pageTitle() {
+    var h1 = document.querySelector('h1');
+    var t = (h1 && h1.textContent) || document.title || '';
+    return String(t).replace(/\s+/g, ' ').trim().slice(0, 80);
+  }
+
   /* ── 稱呼（訪客自報，純標籤：不驗證、不是帳號） ── */
   function getName() {
     try { return localStorage.getItem(NAME_KEY) || ''; } catch (e) { return ''; }
@@ -64,10 +119,21 @@
     var recent = history.slice(-12).map(function (m) {
       return { role: m.role, text: m.text };
     });
+    var payload = { messages: recent, name: getName() || undefined, page: location.pathname };
+    /* 解鎖了才帶這一頁的內容過去。每次都重抽，不快取：
+       課程頁與列表頁的內容可能在瀏覽過程中才長出來（展開段落、JS 渲染）。 */
+    if (pageUnlocked) {
+      var t = extractPageText();
+      if (t) {
+        payload.pageText = t;
+        payload.pageTitle = pageTitle();
+        if (pageAuto) payload.pageAuto = 1;
+      }
+    }
     fetch(CHAT_ENDPOINT, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ messages: recent, name: getName() || undefined, page: location.pathname })
+      body: JSON.stringify(payload)
     }).then(function (r) { return r.json(); }).then(function (data) {
       if (data && data.reply) done(data.reply, data.sources || []);
       else done('（咪卡歪歪頭）我這邊怪怪的，等一下再問我一次好嗎？', []);
@@ -163,13 +229,79 @@
   /* ── 渲染 ── */
   function scrollBottom() { body.scrollTop = body.scrollHeight; }
 
+  /* ── 可一鍵複製的區塊（2026-08-17 江江拍板 B 案）──
+     學員要的是「提示詞整段貼進自己的 ChatGPT」，所以複製出去必須是純提示詞，
+     不能夾帶「這是自訂指令的提示詞喔」這種前後話。做法＝咪卡把要給人複製的內容
+     用 ``` 圍起來，這裡切出來單獨成一塊，配自己的複製鈕。
+     ⚠️ 安全：結構用 DOM 建、文字一律走 textContent，不用 innerHTML 塞模型輸出。 */
+  function copyBlock(code) {
+    var wrap = document.createElement('div');
+    wrap.className = 'mkw-code';
+    var pre = document.createElement('pre');
+    pre.className = 'mkw-code-text';
+    pre.textContent = code;
+    var btn = document.createElement('button');
+    btn.className = 'mkw-copy';
+    btn.type = 'button';
+    btn.textContent = '複製';
+    btn.setAttribute('aria-label', '複製這段文字');
+    btn.addEventListener('click', function () {
+      function ok() {
+        btn.textContent = '已複製 ✓';
+        btn.classList.add('mkw-copied');
+        setTimeout(function () { btn.textContent = '複製'; btn.classList.remove('mkw-copied'); }, 2000);
+      }
+      /* 複製不到就把整段選起來，讓訪客長按或 Ctrl+C 自己複製，不要卡在那裡。
+         手機瀏覽器對 clipboard 權限的處理各有差異，這個 fallback 一定要留。 */
+      function fallback() {
+        try {
+          var range = document.createRange();
+          range.selectNodeContents(pre);
+          var sel = window.getSelection();
+          sel.removeAllRanges();
+          sel.addRange(range);
+          btn.textContent = '已選取，請自行複製';
+          setTimeout(function () { btn.textContent = '複製'; }, 3000);
+        } catch (e) {}
+      }
+      try {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(code).then(ok).catch(fallback);
+        } else { fallback(); }
+      } catch (e) { fallback(); }
+    });
+    wrap.appendChild(btn);
+    wrap.appendChild(pre);
+    return wrap;
+  }
+
+  /* 依 ``` 切段：偶數段是一般說明，奇數段是要給人複製的內容 */
+  function fillBubble(bub, text) {
+    var parts = String(text).split(/```/);
+    if (parts.length < 3) { bub.textContent = text; return; }
+    parts.forEach(function (seg, i) {
+      if (i % 2 === 1) {
+        /* 圍欄後面可能跟著語言標記（```text），整行去掉 */
+        var code = seg.replace(/^[^\n]{0,20}\n/, '').replace(/\s+$/, '');
+        if (code) bub.appendChild(copyBlock(code));
+        return;
+      }
+      var t = seg.replace(/^\n+|\n+$/g, '');
+      if (!t) return;
+      var p = document.createElement('div');
+      p.className = 'mkw-text';
+      p.textContent = t;
+      bub.appendChild(p);
+    });
+  }
+
   function renderMsg(msg) {
     var el = document.createElement('div');
     el.className = 'mkw-msg ' + (msg.role === 'user' ? 'mkw-user' : 'mkw-bot');
     var bubble = '<div class="mkw-bubble"></div>';
     el.innerHTML = (msg.role === 'user' ? '' : '<span class="mkw-msg-avatar"></span>') + bubble;
     var bub = el.querySelector('.mkw-bubble');
-    bub.textContent = msg.text;
+    fillBubble(bub, msg.text);
     /* 咪卡引用的站內連結（來自自家端點，逐一 DOM 建立，不用 innerHTML） */
     if (msg.sources && msg.sources.length) {
       var box = document.createElement('div');
@@ -212,14 +344,49 @@
     chipsBox.innerHTML = '';
     var asked = history.some(function (m) { return m.role === 'user' && !m.isName; });
     if (asked) return;
-    CHIPS.forEach(function (q) {
+    /* 首頁維持三顆常見問題；其他頁把第一顆換成解鎖鈕，第二三顆照舊（江江 2026-08-17 拍板） */
+    var list = (isHomePage() || pageUnlocked) ? CHIPS : [UNLOCK_CHIP].concat(CHIPS.slice(1));
+    list.forEach(function (q) {
       var b = document.createElement('button');
-      b.className = 'mkw-chip';
+      b.className = 'mkw-chip' + (q === UNLOCK_CHIP ? ' mkw-chip-page' : '');
       b.type = 'button';
       b.textContent = q;
-      b.addEventListener('click', function () { send(q); });
+      b.addEventListener('click', function () {
+        if (q === UNLOCK_CHIP) unlockPage(); else send(q);
+      });
       chipsBox.appendChild(b);
     });
+  }
+
+  /* 按下解鎖鈕：本地回應不花 LLM，只把這一頁掛上來並告訴訪客可以問了 */
+  function unlockPage() {
+    var text = extractPageText();
+    pageUnlocked = true;
+    var u = { role: 'user', text: UNLOCK_CHIP };
+    history.push(u);
+    saveHistory(history);
+    renderMsg(u);
+    renderChips();
+    scrollBottom();
+    logMsg('user', UNLOCK_CHIP);
+
+    var typing = showTyping();
+    setTimeout(function () {
+      typing.remove();
+      var t = pageTitle();
+      var reply = {
+        role: 'bot',
+        text: text
+          ? '好，這一頁我讀好了 🐾\n' + (t ? '《' + t + '》' : '這一頁')
+            + '想問哪一段都可以。直接打關鍵字最快，例如老師剛講的段落名稱。'
+          : '（咪卡歪歪頭）這一頁的內容我讀不到耶。你直接問我看看，我從官網其他地方幫你找。'
+      };
+      history.push(reply);
+      saveHistory(history);
+      renderMsg(reply);
+      scrollBottom();
+      logMsg('bot', reply.text);
+    }, 500);
   }
 
   function showTyping() {
@@ -265,6 +432,15 @@
     var isNameReply = !getName() && !history.some(function (m) { return m.role === 'user'; })
       && !looksLikeQuestion(text);
     if (isNameReply) setName(text.slice(0, 20));
+
+    /* 免點按鈕的自動解鎖：問句聽起來就是在問這一頁，就把這一頁掛上來。
+       但咪卡要先跟訪客確認再答（後端會收到 pageAuto 並照這個指示走），
+       因為關鍵詞會猜錯：打「老師」也可能是在問「江江是什麼樣的老師」。 */
+    pageAuto = false;
+    if (!isNameReply && !pageUnlocked && !isHomePage() && PAGE_HINT_RE.test(text)) {
+      pageUnlocked = true;
+      pageAuto = true;
+    }
 
     history.push({ role: 'user', text: text, isName: isNameReply || undefined });
     saveHistory(history);

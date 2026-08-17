@@ -249,6 +249,53 @@
   color: var(--mkw-ink-faint);
   white-space: nowrap;
 }
+/* ─── 可一鍵複製的區塊（2026-08-17）───
+   學員在課程頁問「老師那段提示詞」，咪卡把提示詞單獨圍成一塊配複製鈕，
+   複製出去是純提示詞、不夾帶咪卡的說明話，直接貼進自己的 ChatGPT 就能用。
+   刻意不用等寬字：提示詞是中文自然語言，等寬字排中文難讀（沿用官網既有判斷）。 */
+#mkw-root .mkw-text + .mkw-code, #mkw-root .mkw-code + .mkw-text { margin-top: 10px; }
+#mkw-root .mkw-code {
+  position: relative;
+  margin: 10px 0 2px;
+  padding: 34px 12px 12px;
+  background: var(--mkw-bg-soft);
+  border: 1px solid var(--mkw-line);
+  border-left: 3px solid var(--mkw-peach);
+  border-radius: 12px;
+}
+#mkw-root .mkw-code-text {
+  font-family: inherit;
+  font-size: 17px;
+  line-height: 1.6;
+  color: var(--mkw-ink);
+  white-space: pre-wrap;
+  word-break: break-word;
+  max-height: 320px;
+  overflow-y: auto;
+}
+#mkw-root .mkw-copy {
+  position: absolute;
+  top: 6px;
+  right: 8px;
+  font-size: 15px;
+  padding: 3px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--mkw-line);
+  background: var(--mkw-paper);
+  color: var(--mkw-sand);
+  transition: background .15s ease, color .15s ease, border-color .15s ease;
+}
+#mkw-root .mkw-copy:hover { background: #fdf6ea; border-color: var(--mkw-sand); }
+#mkw-root .mkw-copy.mkw-copied { background: var(--mkw-coral); border-color: var(--mkw-coral); color: #fff; }
+/* 「我要問這一頁的內容」是這一頁的主動作，給它比另外兩顆重的份量 */
+#mkw-root .mkw-chip-page {
+  background: #fdf1e4;
+  border-color: var(--mkw-peach);
+  color: #b4551f;
+  font-weight: 600;
+}
+#mkw-root .mkw-chip-page:hover { background: #fbe6d2; border-color: var(--mkw-coral); }
+
 #mkw-root .mkw-typing .mkw-bubble { color: var(--mkw-ink-faint); }
 #mkw-root .mkw-typing .mkw-bubble span { animation: mkw-blink 1.2s infinite; }
 #mkw-root .mkw-typing .mkw-bubble span:nth-child(2) { animation-delay: .2s; }

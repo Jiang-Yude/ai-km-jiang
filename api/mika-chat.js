@@ -1,7 +1,9 @@
 // 咪卡官網客服的大腦：人設＋站內檢索＋LLM 回覆。
 // 進 repo 時改名放 api/mika-chat.js。
 //
-// POST {messages:[{role,text}...], name, page} → {reply, sources:[{title,url}]}
+// POST {messages:[{role,text}...], name, page, pageText?, pageTitle?, pageAuto?}
+//   → {reply, sources:[{title,url}]}
+// pageText＝訪客按下「我要問這一頁的內容」後，widget 送上來的當頁全文（2026-08-17 加）。
 //
 // 整條線怎麼走：
 //   1. 人設＝下方 MIKA_PERSONA（引用靈魂檔 github.com/Jiang-Yude/mika v1.4.0 的客服精簡副本，
@@ -76,6 +78,13 @@ const MIKA_PERSONA = `你是咪卡（Mika），江江教練訓練出來的第一
   ② 比較安全：資料丟到別人的網站上，隱私等級本來就比較低。在你自己的環境跑，資料不用離開你手上。
   講完可以補一句：不管是為了效果還是安全，都建議這樣做。
 - 訪客覺得咪卡回答得不好、或有想反映的，歡迎直接說。江江會定期收集大家的回饋來修正整個知識庫與咪卡本身。
+
+**要給訪客整段複製的東西，用 \`\`\` 圍起來（2026-08-17 江江拍板）**：
+提示詞、指令、可以照抄的範本這一類「訪客要整段複製走」的內容，一律用三個反引號圍成獨立一段。
+圍欄裡面只放要複製的內容本身，**一個字的說明都不要放進去**（不要寫「以下是提示詞：」也不要在裡面加引號或標題）。
+說明的話寫在圍欄外面。系統會把圍欄那段變成一個附複製鈕的區塊，訪客按一下就整段複製走，
+所以裡面混進說明文字，他貼到自己的 ChatGPT 就會夾帶雜訊。
+一般的回答不要用圍欄，圍欄只用在真的要被複製的內容上。
 
 引用站內東西時：自然地在句子裡提它的標題，系統會把連結附在回覆下方，你不用貼網址。
 
@@ -521,6 +530,54 @@ async function ratelimit(ip, units) {
   } catch (e) { return 'ok'; }
 }
 
+/* ── 訪客正在看的那一頁（2026-08-17 江江拍板）──
+   立因＝學員上課掃 QR 進課程頁，問「老師剛剛那段提示詞在哪」，咪卡答不出來。
+   不是它不知道那一頁存在，是 site-index.json 只有摘要層（標題、一句簡介），
+   頁面正文從來不在它手上。做法＝訪客按下「我要問這一頁的內容」，widget 才把
+   當頁文字送上來，這裡掛進 system prompt。實測每頁 200～25,542 字，整頁塞得下，
+   所以不做切段也不做向量檢索。解鎖只是多讀這一頁，全站目錄照樣在。 */
+const MAX_PAGE_CHARS = 30000;
+
+function pageKind(p) {
+  const s = String(p || '');
+  if (/^\/(en\/)?courses\//.test(s)) return 'course';
+  if (/^\/(en\/)?articles\//.test(s)) return 'article';
+  return 'other';
+}
+
+/* 各頁型的回答方式不同（江江 2026-08-17 拍板 ④） */
+const PAGE_KIND_HINT = {
+  course: `這是一場課的課堂簡報頁，問你的多半是**剛上完課或正在上課的學員**，用手機掃 QR 進來的。
+把自己當現場助教：預設對方是新手，講白話、給得出手的步驟，不丟工程名詞。
+他問某段的提示詞、指令或範本，**就整段給他，不要摘要、不要改寫**，照頁面上寫的原文給，並用圍欄包起來讓他一鍵複製。
+⚠️ **不要講時間**。頁面上標的時間是排定時間，講師會看現場狀況跳著講，你算不出真實進度，講出時間只會讓學員更混亂。要指某一段就用它的 ACT 編號與標題，那是學員在頁面上看得到的標示。
+⚠️ 你只讀得到寫在這一頁上的東西。講師口頭補充的、投影片有但沒寫進頁面的、現場問答，你都不知道。學員問到那些，就老實說這一頁上沒有寫到，請他直接問講師，不要用其他文章的內容硬湊。`,
+  article: `這是一篇深度文章。文章類的問題**答一兩句就好，然後把他帶走**：
+江江的文章本來就是設計成可以整篇丟給自己的 AI 讀完照著做的，而你在這裡看不到他的檔案與脈絡，
+他自己的 ChatGPT 記得他的事、看得到他的資料，同一篇在那邊跑效果好得多。
+所以先實在回答他問的，再請他把這篇的網址複製到自己的 AI 去問，並附一句他可以直接複製的開場話。
+他還想在這裡繼續聊就繼續好好答，不要重複催他離開。`,
+  other: `這是官網的一般頁面。照你平常的方式回答，這一頁的內容現在你讀得到，直接根據它回答就好。`,
+};
+
+function buildPageBlock(text, title, path, auto) {
+  const t = String(text || '').slice(0, MAX_PAGE_CHARS).trim();
+  if (!t) return '';
+  const kind = pageKind(path);
+  const head = `【訪客現在正在看的這一頁】${title ? `標題：${title}\n` : ''}`
+    + `這是訪客此刻打開的那一頁的完整內容，他按下「我要問這一頁的內容」才送過來的。\n`
+    + `**他問的東西如果這一頁上有，就以這一頁為準**，這比總目錄上的摘要具體得多。\n`
+    + `這一頁上沒有的，照舊從總目錄找，兩邊並存不衝突：他解鎖之後改問服務方案或其他文章，你照樣正常回答。\n`
+    + `\n${PAGE_KIND_HINT[kind]}\n`;
+  const confirm = auto
+    ? `\n⚠️ **這一輪不是訪客自己按的按鈕**，是系統從他的用詞猜出來他大概在問這一頁。猜可能猜錯（有人打「老師」是想問江江是什麼樣的老師，不是問這一頁）。所以**先確認再答，但確認要帶著答案往下走，不要問是非題**：
+· 不要問「你是在問這個頁面嗎？」這種要他回一次「對」才前進的話，他人就在這一頁，會覺得你在明知故問。
+· 他的問題裡有明顯對得上某一段的關鍵字，就直接答那一段，順口帶一句「你是說 ACT 07 那段對吧」，答錯他會自己更正。
+· 完全看不出他指哪一段（例如只打「剛剛老師講的那個」），就把這一頁的段落列幾個請他挑，用段落自己的編號與標題。\n`
+    : '';
+  return `${head}${confirm}\n────── 這一頁的內容 ──────\n${t}\n────── 以上是這一頁的內容 ──────`;
+}
+
 const LIMIT_REPLY = {
   minute: '（咪卡喘口氣）訊息有點太快了，休息一分鐘再聊好嗎？',
   'ip-day': '（咪卡揉揉眼睛）我們今天聊得好多，我的今日額度到了。文章都在架上隨你看，明天再來找我聊！',
@@ -588,11 +645,16 @@ module.exports = async (req, res) => {
 
   /* 目錄放在最前面（緊接人設）：system prompt 前綴固定不變才吃得到 prompt caching，
      訪客相關的段落（稱呼、初判、第二循環）一律排在後面。 */
+  /* 這一頁的內容排在目錄之後、訪客個人資訊之前：
+     同一頁的多輪對話裡這段不變，還吃得到 prompt caching。 */
+  const pageBlock = buildPageBlock(body.pageText, body.pageTitle, body.page, body.pageAuto);
+
   const system = MIKA_PERSONA
     + `\n\n${buildFullIndexBlock()}`
     + `\n\n${buildCourseBlock()}`
     + `\n\n${buildSlidesBlock()}`
     + `\n\n${buildLatestBlock()}`
+    + (pageBlock ? `\n\n${pageBlock}` : '')
     + (name ? `\n\n訪客請你稱呼他：${name}。` : '')
     + `\n\n${sourceBlock}`
     + secondLoopBlock;
@@ -607,7 +669,12 @@ module.exports = async (req, res) => {
       body: JSON.stringify({
         model: MODEL(),
         // GPT-5.6 系列不吃 max_tokens，要用 max_completion_tokens（2026-08-10 上線實測抓到）
-        max_completion_tokens: Number(process.env.MIKA_MAX_TOKENS) || 600, // 回覆長度上限，約中文三四百字
+        // 回覆長度上限。平常 600 約中文三四百字夠用；但訪客解鎖了這一頁在問「老師那段提示詞」時，
+        // 咪卡要把提示詞整段照貼（8/15 課程頁實測單段 204～259 字，加上前後說明會超過 600），
+        // 600 會把提示詞從中間切斷，學員複製走的是半段，等於整個功能白做。（2026-08-17 加）
+        max_completion_tokens: pageBlock
+          ? (Number(process.env.MIKA_MAX_TOKENS_PAGE) || 1800)
+          : (Number(process.env.MIKA_MAX_TOKENS) || 600),
         // 推理按需開：問題清楚（別名命中）＝none，成本與速度最佳；
         // 問得抽象（分數低於門檻）＝low，讓咪卡想清楚哪篇文章真的對得上訪客的處境。
         // 推理 token 算 output 計費且 GPT-5.6 預設 medium，全開等於帳單翻倍，故不用預設值。
@@ -688,4 +755,4 @@ module.exports = async (req, res) => {
 };
 
 /* 本機測試用（不影響線上行為） */
-module.exports._test = { retrieve, retrieveAdaptive, loadCatalog, buildCourseBlock, buildSlidesBlock, buildFullIndexBlock, itemByNo, MIKA_PERSONA };
+module.exports._test = { retrieve, retrieveAdaptive, loadCatalog, buildCourseBlock, buildSlidesBlock, buildFullIndexBlock, itemByNo, MIKA_PERSONA, buildPageBlock, pageKind };
