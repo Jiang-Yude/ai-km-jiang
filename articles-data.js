@@ -619,7 +619,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["questionnaire-to-slides-agent-workflow", "teacher-prep-knowledge-workflow", "how-to-train-your-ai-employee", "agent-workflow-builds-automation", "program-vs-ai-skill-library", "docs-as-system-design-agent", "vibe-coding-ten-half-products", "chatgpt-work-codex-choice", "chatgpt-work-skills-web-version", "cli-api-mcp-computer-use", "agent-native-tools-software-interface", "let-ai-do-the-setup"]
+    related: ["llm-rag-agent-mcp", "questionnaire-to-slides-agent-workflow", "teacher-prep-knowledge-workflow", "how-to-train-your-ai-employee", "agent-workflow-builds-automation", "program-vs-ai-skill-library", "docs-as-system-design-agent", "vibe-coding-ten-half-products", "chatgpt-work-codex-choice", "chatgpt-work-skills-web-version", "cli-api-mcp-computer-use", "agent-native-tools-software-interface", "let-ai-do-the-setup"]
   },
 
   /* ── 17. 我的會議記錄 Agent 工作流（教學）── */
@@ -809,7 +809,7 @@ window.ARTICLES = [
       content_type: ["趨勢文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["market-to-ai","agent-web-turning-point","dual-track-planning-loop", "dual-centaur-meeting", "agent-native-tools-software-interface"]
+    related: ["llm-rag-agent-mcp", "market-to-ai","agent-web-turning-point","dual-track-planning-loop", "dual-centaur-meeting", "agent-native-tools-software-interface"]
   },
 
   /* ── 可以學用 AI 行銷，還可以學對 AI 行銷（觀點）── */
@@ -938,7 +938,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["questionnaire-to-slides-agent-workflow", "teacher-prep-knowledge-workflow", "knowledge-base-three-vault-split", "docs-as-system-design-agent", "ai-loop-safety-recovery", "inspiration-production-system", "why-split-data-into-cards", "knowledge-os-master-map", "build-your-own-dictionary"]
+    related: ["llm-rag-agent-mcp", "questionnaire-to-slides-agent-workflow", "teacher-prep-knowledge-workflow", "knowledge-base-three-vault-split", "docs-as-system-design-agent", "ai-loop-safety-recovery", "inspiration-production-system", "why-split-data-into-cards", "knowledge-os-master-map", "build-your-own-dictionary"]
   },
 
   /* ── AI 出錯不可怕，沒有備援才可怕：一次搞壞 170 檔案的教訓（觀點）── */
@@ -2012,5 +2012,23 @@ window.ARTICLES = [
     },
     external: { threads: null, vocus: null },
     related: ["books-videos-pdf-ai-advisor", "elon-musk-live-skill", "liberal-arts-agent-framework"]
+  },
+
+  /* ── LLM、RAG、Agent、MCP 入門地圖（教學） ── */
+  {
+    id: "llm-rag-agent-mcp",
+    url: "articles/llm-rag-agent-mcp/",
+    date: "2026-08-16",
+    title: "LLM、RAG、Agent、MCP 哪個重要？用人體比喻看懂這四個怎麼疊起來",
+    problem: "這四個術語常被排成一張表平行列出，看起來像四個選項要你挑一個，於是最常見的問題變成「哪個比較厲害」「我該學哪一個」。",
+    audience: "聽過這些詞但每次都要重查一遍、或想導入 AI 卻被廠商的術語清單淹沒，不知道自己該補哪一層的人。",
+    summary: "LLM、RAG、AI Agent、MCP 常被平行列在一起，看起來像四個選項。它們其實是同一套系統的四個部位：大腦、大腦加一疊書、大腦加一雙手、神經系統。這篇用同一個問題「公司出差費怎麼報」貫穿四層，看同一句提問在每一層得到什麼答案，最後給一張自我檢查表判斷你手上的 AI 缺哪一塊，以及先補哪一塊。",
+    tags: {
+      topic: ["AI應用", "知識管理", "AIAgent", "差異比較"],
+      level: ["零基礎入門"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["tag-wiki-method", "how-ai-connects-software", "a2a-agent-protocol"]
   }
 ];
