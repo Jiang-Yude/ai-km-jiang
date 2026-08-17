@@ -70,7 +70,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["after-ai-says-remembered", "three-levels-of-cross-review", "why-split-data-into-cards"]
+    related: ["after-ai-says-remembered", "three-levels-of-cross-review", "why-split-data-into-cards", "rag-three-retrieval-modes"]
   },
 
   /* ── 我跟 AI 說「很煩」，它自己去加了一道機制（教學） ── */
@@ -938,7 +938,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["llm-rag-agent-mcp", "questionnaire-to-slides-agent-workflow", "teacher-prep-knowledge-workflow", "knowledge-base-three-vault-split", "docs-as-system-design-agent", "ai-loop-safety-recovery", "inspiration-production-system", "why-split-data-into-cards", "knowledge-os-master-map", "build-your-own-dictionary"]
+    related: ["llm-rag-agent-mcp", "questionnaire-to-slides-agent-workflow", "teacher-prep-knowledge-workflow", "knowledge-base-three-vault-split", "docs-as-system-design-agent", "ai-loop-safety-recovery", "inspiration-production-system", "why-split-data-into-cards", "knowledge-os-master-map", "build-your-own-dictionary", "rag-three-retrieval-modes"]
   },
 
   /* ── AI 出錯不可怕，沒有備援才可怕：一次搞壞 170 檔案的教訓（觀點）── */
@@ -2029,6 +2029,24 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["tag-wiki-method", "how-ai-connects-software", "a2a-agent-protocol"]
+    related: ["tag-wiki-method", "how-ai-connects-software", "a2a-agent-protocol", "rag-three-retrieval-modes"]
+  },
+
+  /* ── AI 回答前怎麼查你的資料：RAG 三種查法（教學） ── */
+  {
+    id: "rag-three-retrieval-modes",
+    url: "articles/rag-three-retrieval-modes/",
+    date: "2026-08-16",
+    title: "把資料丟給 AI，它其實沒有全部看完：RAG 的三種查法與怎麼選",
+    problem: "同樣把資料交給 AI，有時候答得很準，有時候明明資料就在裡面卻說找不到。差別在中間那層「它怎麼去你的資料裡找答案」，而那一層有三種做法。",
+    audience: "已經把資料交給 AI 查、卻搞不懂它為什麼有時候找不到，或正在評估自己的知識庫該怎麼建的人。",
+    summary: "AI 回答之前會先去你的資料裡查一輪，這個動作叫 RAG。查法主流有三種：比相似度、走關係、讓 AI 自己決定要查幾輪。這篇講清楚三種各自在比什麼、事前要準備什麼、擅長與接不住哪種題目，附八列功能對照表與實務上三種混用的做法，給一組照著問就能選的判斷順序，並攤開我自己知識庫裡三種同時在跑的實際做法與兩個實測結論。",
+    tags: {
+      topic: ["知識管理", "知識庫", "AI應用", "差異比較"],
+      level: ["基礎"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["llm-rag-agent-mcp", "tag-wiki-method", "long-document-review-layers"]
   }
 ];
