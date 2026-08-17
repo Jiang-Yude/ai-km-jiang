@@ -165,7 +165,12 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
 </style>
 </head>
 <body class="spotlight">
-<!-- 官網共用導航列 nav.top：與首頁/總站同一條，文章不要自己另做極簡 topbar（江江 2026-06-25：要同一個框架、同一條導航列）。把對應頁面的 class="active" 標在自己那欄。 -->
+<!-- 官網共用導航列 nav.top：與首頁/總站同一條，文章不要自己另做極簡 topbar（江江 2026-06-25：要同一個框架、同一條導航列）。把對應頁面的 class="active" 標在自己那欄。
+     ⚠️ 下面 <ul class="nav-menu"> 整塊由 preflight 第 5 關 check-bilingual-nav.mjs 做「逐字比對」，
+        塞任何註解、多一個空白、換行位置不同都會被判導航不一致而擋下發布。要說明就寫在 <ul> 外面（像這裡）。
+        2026-08-16 修：原本的 EN 那行說明註解就夾在 <ul> 裡面，導致照範本起手的新文章一律卡第 5 關
+        （llm-rag-agent-mcp 與 rag-three-retrieval-modes 兩篇同時中招）。註解已移出來，<ul> 內保持乾淨。
+        萬一還是被擋，直接跑：node scripts/check-bilingual-nav.mjs --write --only=<你的檔案路徑> -->
 <nav class="top">
   <div class="container">
     <a class="nav-brand-img" href="../../index.html"><img src="../../images/footer-signature.png" alt="江江教練 | 江昱德"></a>
@@ -177,8 +182,6 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
       <li><a href="../../articles.html" class="active">深度文章</a></li>
       <li><a href="../../skills.html">技能包下載</a></li>
       <li><a href="../../offers.html">服務方案</a></li>
-      <!-- 這一行不能少：preflight 第 5 關 check-bilingual-nav.mjs 要求每個 HTML 都有 EN 切換。
-           2026-08-12 補：範本原本漏了它，照範本起手的新文章一律被第 5 關擋下，每個人都得手動補一次。 -->
       <li class="lang-switch"><a href="../../en/articles.html" hreflang="en">EN</a></li>
     </ul>
   </div>
