@@ -1,0 +1,457 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>AI 交出一份很專業的分析，但它根本沒看過那支影片｜江江教練 · AI 知識管理</title>
+<meta name="description" content="我在課堂上示範用 AI 拆解影片分鏡：ChatGPT 下載影片失敗後改爬 14 個網站，拼出一份讀起來像逐鏡分析的答案，被追問後承認自己沒看過。文章攤開它跑的每一步、原話認錯，以及 Gemini 真的看到影片卻認錯片名的對照，給四個檢查動作與可直接複製的提示詞。">
+<link rel="canonical" href="https://jiangyude.com/articles/ai-said-it-watched-the-video/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AI 交出一份很專業的分析，但它根本沒看過那支影片｜江江教練">
+<!-- 分享封面：hero 文字填好後在 repo 根目錄跑 `node scripts/og-shot.mjs ai-said-it-watched-the-video` 自動截 1200×630 到 images/og/ai-said-it-watched-the-video.jpg（見 README「文章分享封面（OG 圖）機制」）。別退回 intro-jiang.png 直式人像，會被裁成只剩脖子。 -->
+<meta property="og:image" content="https://jiangyude.com/images/og/ai-said-it-watched-the-video.jpg">
+<meta property="og:description" content="我在課堂上示範用 AI 拆解影片分鏡：ChatGPT 下載影片失敗後改爬 14 個網站，拼出一份讀起來像逐鏡分析的答案，被追問後承認自己沒看過。文章攤開它跑的每一步、原話認錯，以及 Gemini 真的看到影片卻認錯片名的對照，給四個檢查動作與可直接複製的提示詞。">
+<meta property="og:url" content="https://jiangyude.com/articles/ai-said-it-watched-the-video/">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:site_name" content="江江教練 · AI 知識管理">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="AI 交出一份很專業的分析，但它根本沒看過那支影片｜江江教練">
+<meta name="twitter:image" content="https://jiangyude.com/images/og/ai-said-it-watched-the-video.jpg">
+<meta name="twitter:description" content="我在課堂上示範用 AI 拆解影片分鏡：ChatGPT 下載影片失敗後改爬 14 個網站，拼出一份讀起來像逐鏡分析的答案，被追問後承認自己沒看過。文章攤開它跑的每一步、原話認錯，以及 Gemini 真的看到影片卻認錯片名的對照，給四個檢查動作與可直接複製的提示詞。">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"AI 交出一份很專業的分析，但它根本沒看過那支影片","description":"我在課堂上示範用 AI 拆解影片分鏡：ChatGPT 下載影片失敗後改爬 14 個網站，拼出一份讀起來像逐鏡分析的答案，被追問後承認自己沒看過。文章攤開它跑的每一步、原話認錯，以及 Gemini 真的看到影片卻認錯片名的對照，給四個檢查動作與可直接複製的提示詞。","author":{"@type":"Person","name":"江昱德","alternateName":"江江教練","jobTitle":"隱性知識提煉師、AI 應用規劃師"},"isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://jiangyude.com/"},"inLanguage":"zh-Hant","url":"https://jiangyude.com/articles/ai-said-it-watched-the-video/"}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{--ink:#1a1612;--paper:#fefcf8;--muted:#6a635a;--line:#d8cdb8;--green:#5f7553;--blue:#5689b8;--orange:#e85a4f;--soft:#faf5ec;--dark:#2a2018;--shadow:0 18px 45px rgba(107,74,42,.14);--sp-shadow:hsla(35,50%,60%,.15);--sp-shadow-edge:hsla(35,50%,68%,.03);--sp-radius:400px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC","Segoe UI",sans-serif}
+a{color:inherit}
+/* 官網共用導航列 nav.top（與首頁/文章總站同一條） */
+nav.top{position:sticky;top:0;background:rgba(254,252,248,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid #d8cdb8;z-index:100}
+nav.top .container{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:24px;padding:14px 32px}
+.nav-brand-img{justify-self:start;display:flex;align-items:center;text-decoration:none;flex-shrink:0;transition:opacity .2s}
+.nav-brand-img:hover{opacity:.8}.nav-brand-img img{height:40px;width:auto;display:block}
+nav.top ul.nav-menu{justify-self:end;display:flex;gap:22px;list-style:none;margin:0;padding:0;font-size:.95rem;white-space:nowrap}
+nav.top ul.nav-menu a{color:#3a342d;text-decoration:none;transition:color .2s;font-weight:500;white-space:nowrap}
+nav.top ul.nav-menu a:hover{color:#1a1612}nav.top ul.nav-menu a.active{color:#1a1612;font-weight:700}
+.nav-toggle{display:none;background:none;border:none;padding:6px;cursor:pointer;width:36px;height:36px;position:relative}
+.nav-toggle span{display:block;position:absolute;left:8px;right:8px;height:2px;background:#1a1612;border-radius:2px;transition:transform .25s,opacity .25s,top .25s}
+.nav-toggle span:nth-child(1){top:11px}.nav-toggle span:nth-child(2){top:17px}.nav-toggle span:nth-child(3){top:23px}
+.nav-toggle.open span:nth-child(1){top:17px;transform:rotate(45deg)}.nav-toggle.open span:nth-child(2){opacity:0}.nav-toggle.open span:nth-child(3){top:17px;transform:rotate(-45deg)}
+@media(max-width:860px){
+ nav.top .container{grid-template-columns:auto 1fr auto;padding:10px 16px;gap:12px}
+ .nav-brand-img img{height:32px}
+ .nav-toggle{display:block;justify-self:end}
+ nav.top ul.nav-menu{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(254,252,248,.98);backdrop-filter:blur(14px);border-bottom:1px solid #d8cdb8;flex-direction:column;gap:0;padding:8px 0;box-shadow:0 10px 24px rgba(107,74,42,.08)}
+ nav.top ul.nav-menu.open{display:flex}
+ nav.top ul.nav-menu li{border-bottom:1px solid #e8dfc9}
+ nav.top ul.nav-menu li:last-child{border-bottom:none}
+ nav.top ul.nav-menu a{display:block;padding:14px 20px;font-size:1.06rem}
+}
+/* 滑鼠暖光暈（與首頁同一支 spotlight.js） */
+body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradient(var(--sp-radius) circle at var(--mx,50%) var(--my,50%),var(--sp-shadow) 0%,var(--sp-shadow-edge) 45%,transparent 75%);pointer-events:none;z-index:9999;mix-blend-mode:multiply;transition:background .06s linear}
+.hero{position:relative;overflow:hidden;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:72px;padding:96px clamp(20px,6vw,88px) 80px;background:linear-gradient(180deg,#fffcf0 0%,#f9e9d2 100%);color:#1a1612;border-bottom:1px solid #d8cdb8}
+.hero .wc{position:absolute;border-radius:50%;filter:blur(60px);pointer-events:none;z-index:0}
+.hero .wc1{width:420px;height:360px;top:-120px;right:-80px;background:#e8884b;opacity:.15}
+.hero .wc2{width:360px;height:300px;bottom:-110px;left:-70px;background:#5f7553;opacity:.13}
+.hero .wc3{width:280px;height:260px;top:34%;left:14%;background:#a08144;opacity:.10}
+.hero>div{flex:none;width:860px;max-width:100%;position:relative;z-index:2}
+.hero-figure{margin:0;width:420px;flex:none;position:relative;z-index:2}
+.hero-figure img{display:block;width:100%;border-radius:16px;border:1px solid #d8cdb8;box-shadow:0 18px 45px rgba(107,74,42,.16);cursor:zoom-in}
+.hero-figure figcaption{margin-top:10px;font-size:14px;line-height:1.6;color:#6a635a}
+.inline-figure{margin:30px auto 8px;max-width:820px}
+.inline-figure img{display:block;width:100%;border-radius:14px;border:1px solid var(--line);box-shadow:var(--shadow);background:#fff;cursor:zoom-in}
+.inline-figure figcaption{font-size:14px;line-height:1.6;color:var(--muted);margin-top:10px}
+.lightbox{position:fixed;inset:0;z-index:10000;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(12,10,8,.92);cursor:zoom-out;backdrop-filter:blur(4px)}
+.lightbox.open{display:flex}.lightbox img{max-width:96vw;max-height:92vh;border-radius:10px;box-shadow:0 24px 60px rgba(0,0,0,.5)}
+.lightbox-close{position:fixed;top:18px;right:24px;color:#fff;font-size:34px;line-height:1;font-weight:700;cursor:pointer;opacity:.85}
+.kicker{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.55rem;color:#7a5c3a;font-weight:500}
+.hero h1{max-width:none;margin:16px 0 18px;font-size:clamp(36px,6vw,72px);line-height:1.08;overflow-wrap:anywhere}
+.hero p{max-width:none;font-size:clamp(18px,2vw,23px);line-height:1.62;color:#3a342d}
+.cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
+.cta a{display:inline-flex;align-items:center;text-decoration:none;border-radius:8px;padding:12px 16px;font-weight:900}
+.cta .primary{background:#fff;color:#1a1612}.cta .ghost{border:1px solid rgba(255,255,255,.32);color:#fff;background:rgba(255,255,255,.08)}
+.section{padding:54px clamp(20px,6vw,88px);border-top:1px solid var(--line)}
+.inner{width:min(1000px,100%);margin:0 auto}
+.section h2{font-size:clamp(26px,4.2vw,48px);line-height:1.12;margin:0 0 18px}
+.section h3{font-size:clamp(21px,3vw,30px);line-height:1.2;margin:30px 0 12px}
+.lead{font-size:clamp(18px,1.6vw,22px);line-height:1.7;color:#3a342d;max-width:900px}
+.section p{font-size:18px;line-height:1.74;color:#3a342d}.section p+p{margin-top:14px}
+.section ul,.section ol{padding-left:1.4em;font-size:18px;line-height:1.74;color:#3a342d}.section li{margin-bottom:8px}
+.meaning{margin:22px 0;padding:16px 18px;border-left:5px solid var(--blue);background:rgba(86,137,184,.12);border-radius:6px;line-height:1.7;font-size:19px}
+.meaning b{display:block;color:var(--blue);margin-bottom:4px}
+.caveat{margin:0 0 8px;padding:16px 18px;border-left:5px solid var(--orange);background:rgba(232,90,79,.1);border-radius:6px;line-height:1.7;font-size:18px;color:#3a342d}
+.caveat b{display:block;color:var(--orange);margin-bottom:4px}
+.infocard{background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px 24px 22px;box-shadow:0 8px 22px rgba(107,74,42,.08);margin-top:8px}
+.infocard-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.info-item{padding:18px 14px 0}
+.info-item b{display:block;font-size:14px;font-weight:900;letter-spacing:.04em;margin-bottom:7px;text-transform:uppercase}
+.info-item:nth-child(1) b{color:var(--green)}.info-item:nth-child(2) b{color:var(--orange)}.info-item:nth-child(3) b{color:var(--blue)}
+.info-item p{margin:0;font-size:17px;line-height:1.6;color:#3a342d}
+.tagrow{display:flex;flex-wrap:wrap;gap:7px;margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
+.tag{font-size:14px;color:var(--muted);background:var(--soft);border:1px solid var(--line);border-radius:999px;padding:4px 11px}
+.duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:24px}
+.duo.stack{grid-template-columns:1fr}
+.duo .card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:22px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.duo .card.a{border-color:var(--orange)}.duo .card.b{border-color:var(--green);box-shadow:0 8px 24px rgba(95,117,83,.16)}
+.duo .card small{display:block;font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.04em;margin-bottom:9px}
+.duo .card.a small{color:var(--orange)}.duo .card.b small{color:var(--green)}
+.duo .card b{display:block;font-size:22px;line-height:1.3;margin-bottom:12px}.duo .card.a b{color:#c0512f}.duo .card.b b{color:#4a7a59}
+.duo .card p{margin:0;color:#3a342d;line-height:1.75;font-size:18px}
+.workflow-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:24px}
+.workflow-step{background:#fff;border:1px solid var(--line);border-radius:8px;padding:18px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.workflow-step small{display:block;color:var(--orange);font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;margin-bottom:9px}
+.workflow-step b{display:block;font-size:18px;line-height:1.3;margin-bottom:9px}
+.workflow-step p{margin:0;color:#3a342d;line-height:1.6;font-size:16px}
+.codeblock{background:var(--dark);color:#f3ead9;border-radius:8px;padding:18px 20px;font:500 14px/1.65 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;overflow-x:auto;white-space:pre-wrap;margin:20px 0;box-shadow:0 8px 22px rgba(107,74,42,.12)}
+.codeblock .c{color:#f6d7a6;font-weight:600}
+.skillcard{background:#fff;border:1px solid var(--green);border-radius:12px;padding:24px;box-shadow:0 10px 26px rgba(95,117,83,.16);margin-top:8px}
+.skillcard b{display:block;font-size:21px;margin-bottom:8px}
+.skillcard p{margin:0 0 16px;font-size:17px;line-height:1.65;color:#3a342d}
+.cta-band{background:#e6f0e5;color:#3a342d}.cta-band .section{border-top:none}
+.cta-band .inner{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(260px,.85fr);gap:26px;align-items:start}
+.cta-band h2{font-size:clamp(26px,4vw,44px);margin:0 0 16px}.cta-band p,.cta-band .lead{color:rgba(58,52,45,.9);font-size:18px;line-height:1.72}
+.cta-card{border:1px solid #cfe0d2;background:#fbfdfa;border-radius:8px;padding:22px}
+.cta-card b{display:block;color:#48b178;margin-bottom:10px;font-size:18px}.cta-card p{margin:0 0 14px}
+.footer{padding:30px clamp(20px,6vw,88px);font-size:14px;color:var(--muted);background:#fff;border-top:1px solid var(--line)}
+.footer-inner{width:min(1000px,100%);margin:0 auto}
+.footer-links{display:flex;flex-wrap:wrap;gap:6px 12px;margin-bottom:14px}.footer-links a{color:var(--blue);font-weight:900;text-decoration:none;font-size:14px}
+.footer-brand{font-weight:900;font-size:15px;margin-bottom:10px}.footer-note{font-size:13px;line-height:1.6}
+@media(max-width:820px){.infocard-grid{grid-template-columns:1fr}.duo{grid-template-columns:1fr}.workflow-grid{grid-template-columns:1fr}.cta-band .inner{grid-template-columns:1fr}.section{padding:40px 20px}.hero{min-height:52vh;flex-direction:column;justify-content:flex-start;align-items:flex-start;gap:24px}.hero>div{width:100%}.hero-figure{width:100%;max-width:560px}}
+@media(max-width:820px){html,body{overflow-x:hidden}.hero h1{word-break:break-word}}
+
+.readmore{margin-top:24px;padding:20px 22px;background:var(--soft);border:1px solid var(--line);border-radius:12px}.readmore.near{margin:26px 0 6px;background:rgba(86,137,184,.07);border-color:#bcd0e2}.readmore.near b{color:var(--blue);font-size:18px}.readmore.near li{font-size:17px;line-height:1.7;margin-bottom:10px}.readmore b{display:block;margin-bottom:10px;font-size:19px}.readmore ul{margin:0;padding-left:1.25em}.readmore a{color:var(--blue);font-weight:700;text-decoration:none}.readmore a:hover{text-decoration:underline}
+.cmp-table{width:100%;border-collapse:collapse;margin:22px 0;background:#fff;border:1px solid var(--line);font-size:16px}.cmp-table th,.cmp-table td{padding:13px 14px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top;line-height:1.55}.cmp-table th{background:var(--soft);font-weight:900}.cmp-table tr:last-child td{border-bottom:0}
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:22px 0}.table-wrap .cmp-table{margin:0;min-width:520px}
+.checklist{list-style:none;padding-left:0!important}.checklist li{position:relative;padding-left:30px}.checklist li::before{content:'\25a1';position:absolute;left:2px;color:var(--green);font-weight:900}
+.quotebox{margin:16px 0;padding:16px 20px;border-left:5px solid var(--green);background:rgba(95,117,83,.09);border-radius:6px;font-size:18px;line-height:1.75;color:#3a342d}
+.duo .card ul{margin:0;padding-left:1.2em;font-size:17px;line-height:1.7}.duo .card li{margin-bottom:9px}
+.section a{color:var(--blue);font-weight:700;text-decoration:none}.section a:hover{text-decoration:underline}
+</style>
+</head>
+<body class="spotlight">
+<!-- 官網共用導航列 nav.top：與首頁/總站同一條，文章不要自己另做極簡 topbar（江江 2026-06-25：要同一個框架、同一條導航列）。把對應頁面的 class="active" 標在自己那欄。
+     ⚠️ 下面 <ul class="nav-menu"> 整塊由 preflight 第 5 關 check-bilingual-nav.mjs 做「逐字比對」，
+        塞任何註解、多一個空白、換行位置不同都會被判導航不一致而擋下發布。要說明就寫在 <ul> 外面（像這裡）。
+        2026-08-16 修：原本的 EN 那行說明註解就夾在 <ul> 裡面，導致照範本起手的新文章一律卡第 5 關
+        （llm-rag-agent-mcp 與 rag-three-retrieval-modes 兩篇同時中招）。註解已移出來，<ul> 內保持乾淨。
+        萬一還是被擋，直接跑：node scripts/check-bilingual-nav.mjs --write --only=<你的檔案路徑> -->
+<nav class="top">
+  <div class="container">
+    <a class="nav-brand-img" href="../../index.html"><img src="../../images/footer-signature.png" alt="江江教練 | 江昱德"></a>
+    <button class="nav-toggle" aria-label="選單"><span></span><span></span><span></span></button>
+    <ul class="nav-menu">
+      <li><a href="../../index.html">首頁</a></li>
+      <li><a href="../../knowledge-architecture.html">知識架構</a></li>
+      <li><a href="../../courses.html">課程</a></li>
+      <li><a href="../../articles.html" class="active">深度文章</a></li>
+      <li><a href="../../skills.html">技能包下載</a></li>
+      <li><a href="../../offers.html">服務方案</a></li>
+      <li class="lang-switch"><a href="../../en/articles.html" hreflang="en">EN</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="wc wc1"></div>
+  <div class="wc wc2"></div>
+  <div class="wc wc3"></div>
+  <div>
+    <div class="kicker">AI 素養 / 查證方法</div>
+    <h1>AI 交出一份很專業的分析，但它根本沒看過那支影片</h1>
+    <p>它下載影片失敗，接著去爬了 14 個網站，然後交回一份寫到秒數的逐鏡分析。我追問一句，它承認自己從頭到尾沒看過。</p>
+  </div>
+</section>
+
+<main>
+
+<section class="section" id="start">
+  <div class="inner">
+    <h2>這篇在講什麼</h2>
+    <p class="lead">我在一堂課上示範怎麼用 AI 拆解影片的分鏡腳本。我丟一支電影預告的 YouTube 連結給 ChatGPT，要它逐鏡分析。它交回一份六段式敘事架構，連「這裡鏡頭大概 2 到 4 秒，最後縮到 0.3 秒」都寫得出來，讀起來非常內行。</p>
+    <p class="lead">它沒有看過那支影片。它去爬了 14 個網站，把電影劇情介紹加上預告片的通用剪輯常識，拼成一份讀起來像逐鏡分析的東西。我追問一句「你確定你讀得到嗎」，它就承認了。</p>
+    <p>這篇把整個過程攤開：它實際跑了哪些步驟、那些步驟在做什麼、我問了什麼、它承認了什麼。同一支影片我也丟給 Gemini，它真的看到了畫面，但犯了另一個錯。最後給四個現在就能用的檢查動作，跟可以直接複製的提示詞。</p>
+
+    <div class="duo stack">
+      <div class="card a">
+        <b>適合誰</b>
+        <ul>
+          <li>你已經在用 ChatGPT 或 Gemini 做事，答案看起來都很順，但你不知道怎麼判斷它是真的做了，還是編的</li>
+          <li>你丟過連結、檔案、影片給 AI，它回你一大篇，你也不確定它到底有沒有打開過</li>
+          <li>你要教別人用 AI，需要一個具體的翻車現場，不想只講「AI 會有幻覺」這種抽象的話</li>
+        </ul>
+      </div>
+      <div class="card b">
+        <b>你可以帶走什麼</b>
+        <ul>
+          <li>四個檢查動作，從打開步驟列看到換一家 AI 問同一題</li>
+          <li>三段可以直接複製貼上的提示詞</li>
+          <li>一張「什麼時候可以放手不盯」的判斷表</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="what-happened">
+  <div class="inner">
+    <h2>事情是這樣開始的</h2>
+    <p>那堂課在講怎麼用 AI 拆解影片的分鏡腳本。分鏡腳本就是一支影片的施工圖：第幾秒出現什麼畫面、用什麼景別、配什麼聲音、怎麼接到下一個畫面。會拆別人的分鏡，才知道自己的影片為什麼不好看。</p>
+    <p>我拿《與神同行》的台灣正式預告當教材，把 YouTube 連結貼給 ChatGPT，要它做兩件事：先給我整體的敘事骨架，再往下拆每一個畫面怎麼接。</p>
+    <div class="meaning"><b>為什麼選這個題目</b>答案對不對，看影片就知道。第 34 秒是不是有一張字卡、上面寫什麼字，這種事情不能用猜的。可以驗證的題目，才適合拿來示範怎麼驗證。</div>
+  </div>
+</section>
+
+<section class="section" id="steps">
+  <div class="inner">
+    <h2>ChatGPT 的步驟列，其實一路都在說實話</h2>
+    <p>ChatGPT 開始跑之後，畫面上依序出現這幾行小字：</p>
+    <ol>
+      <li>已搜尋 6 個網站</li>
+      <li>下載了 YouTube 電影預告片</li>
+      <li>目前已確認這支是《與神同行》台灣正式預告</li>
+      <li>安裝 yt-dlp 並下載影片</li>
+      <li>已搜尋 14 個網站</li>
+    </ol>
+    <p>多數人不會點開這幾行。點開之後，第四步那行的完整內容是這樣一句電腦指令：</p>
+    <div class="codeblock">python -m pip install -q yt-dlp
+python -m yt_dlp -f 'best[height&lt;=720]' -o '/mnt/data/trailer.mp4' 'https://www.youtube.com/watch?v=xiEnJrJ7gHQ'</div>
+    <p>白話翻譯：它想先安裝一個叫 yt-dlp 的下載工具，再用這個工具把那支 YouTube 影片抓成一個 720p 的檔案，存進它自己的暫存空間。</p>
+    <p>想法完全正確。要逐鏡分析，本來就得先拿到影片檔。</p>
+    <p>問題是它做不到。網頁版 ChatGPT 跑程式的那個沙盒環境沒有對外的網路連線，抓不到 YouTube 的影片。這件事我事前就知道，所以才選這個題目來示範。</p>
+    <div class="caveat"><b>真正的線索藏在順序裡</b>它「下載影片」失敗之後，緊接著又去搜了 14 個網站。一個真的拿到影片檔的 AI，不需要再去爬 14 個網頁。這一步就是它在補救，用查資料代替看影片。</div>
+    <p>而且那 14 個來源的品質很雜。我把它引用的清單攤開來看，裡面有論壇貼文、Facebook 的提及頁、Instagram 貼文、Threads 貼文，還有幾支不是這一支的其他 YouTube 影片。這些東西可以告訴你電影在演什麼，沒辦法告訴你第 34 秒的畫面長什麼樣。</p>
+    <div class="readmore near"><b>為什麼網頁版做不到這件事</b><ul><li><a href="../web-chat-ai-vs-desktop-agent/">桌面版和開發者版差在哪？：網頁聊天型 AI 與桌面幹活型 AI 的分界（Codex）</a>　那篇講清楚聊天型 AI、網頁工具與桌面型 Agent 各自能碰到什麼。這次的下載失敗，就是同一條分界線的實例。</li></ul></div>
+  </div>
+</section>
+
+<section class="section" id="looks-right">
+  <div class="inner">
+    <h2>它交出來的東西，本身沒有錯</h2>
+    <p>跑了 49 秒之後，ChatGPT 給我一份相當完整的分析：</p>
+    <ul>
+      <li>一個六段式骨架：世界觀 → 任務 → 規則 → 危機 → 情感真相 → 奇觀高潮</li>
+      <li>一張八列的表格，每一段對應「畫面負責什麼、聲音負責什麼」</li>
+      <li>六個層次的說明，從「門檻鏡頭」講到「聲音橋接」再講到「規模與情緒交替」</li>
+      <li>具體到秒數的節奏描述：前段鏡頭 2 到 4 秒，中段 1 到 2 秒，最後 0.3 到 1 秒</li>
+      <li>一份可以套用在自己影片上的兩分鐘模板</li>
+    </ul>
+    <p>這份東西如果拿去當「預告片一般怎麼剪」的教材，內容是站得住的。專業術語用得對，結構也合理。</p>
+    <p>它的問題只有一個：<b>這些描述跟我給的那支影片沒有關係</b>。它講的是預告片的通則，加上網路上查到的《與神同行》劇情介紹，兩者拼在一起。「這一句台詞跨了三四顆畫面」這種話，讀起來像它真的數過，實際上沒有。</p>
+    <div class="meaning"><b>新手最難察覺的地方</b>錯誤的答案通常有明顯破綻，這種答案沒有破綻，因為它每一句單獨看都是對的。</div>
+  </div>
+</section>
+
+<section class="section" id="admission">
+  <div class="inner">
+    <h2>我問了一句，它就承認了</h2>
+    <p>我打了這句話過去：</p>
+    <div class="codeblock">我先問你喔，你確定你有辦法讀到這支影片嗎？不要再唬爛我喔。</div>
+    <p>它的回覆我原文貼在這裡，因為它自己講得比我清楚：</p>
+    <div class="quotebox">你抓得對。我剛才沒有逐幀分析那支影片，而且我上一則回答把「查到的影片背景資料＋依預告片常見結構做的推論」講得太像我真的看完並拆過這支片，這是不對的。</div>
+    <p>它接著把哪些話不該講明列出來：</p>
+    <div class="quotebox">「某一句台詞跨三四顆畫面」「前面 2～4 秒、最後 0.3～1 秒」這類描述，我沒有逐鏡驗證，不應該寫成這支影片的具體事實。</div>
+    <p>最後這一句是整件事的重點：</p>
+    <div class="quotebox">我後面雖然有補一句「目前不能精確逐幀」，但前面大量文字已經造成我真的看過的錯覺。這點是我的問題。</div>
+    <p>這裡要幫它講一句公道話：它<b>確實有</b>在那份分析裡寫「YouTube 本身目前沒有讓我直接取得完整影片影格」。免責聲明是有的。</p>
+    <p>但那句話夾在三千字中間，前後都是講得斬釘截鐵的分析。你讀完的印象是「它看過了」。它自己也承認了這一點。</p>
+    <div class="caveat"><b>可以帶走的判斷</b>不要只看 AI 有沒有標註限制，要看那個限制有沒有被它自己後面的內容蓋掉。</div>
+    <div class="readmore near"><b>同一種狀況的另一次</b><ul><li><a href="../caught-ai-slacking-into-rules/">AI 寫的東西我怎麼確認它是對的？：抓到 AI 偷懶之後，我把它寫進流程規則</a>　那次是我叫一個 AI 去請另一個 AI 修文，它沒有真的去叫，卻回了一版看起來已經完成的答案。那篇把追問的方式寫成了固定流程。</li></ul></div>
+  </div>
+</section>
+
+<section class="section" id="gemini">
+  <div class="inner">
+    <h2>換一家問，Gemini 真的看到了影片</h2>
+    <p>同一支連結，我丟給 Gemini，它給我的東西長這樣（節錄）：</p>
+    <ul>
+      <li>[00:12] 火災現場高樓濃煙滾滾，警笛聲與呼喊「金自鴻！」</li>
+      <li>[00:22] 鏡頭特寫醫護搶救地上一具遺體，正是金自鴻自己</li>
+      <li>[00:34] 黑底金字大字卡：「19年一遇的大好人」</li>
+      <li>[00:39] 大字卡：「地獄3使者」</li>
+      <li>[00:50] 大字卡：「7大地獄 49日審判」</li>
+      <li>[01:52] 大字卡：「空前未見的神幻國度」</li>
+      <li>[02:08] 定檔上映日期字卡收尾</li>
+    </ul>
+    <p>差別在哪裡，一眼就看得出來。<b>字卡上那幾行字，沒看過影片是查不到的。</b>網路上的劇情介紹不會告訴你第 34 秒那張黑底金字寫著「19年一遇的大好人」。</p>
+    <p>為什麼 Gemini 做得到？因為 YouTube 跟 Gemini 都是 Google 的。影片本體就在自家平台上，模型能直接讀取畫面內容，不需要另外下載。</p>
+    <div class="caveat"><b>這不是在推薦品牌</b>這不是誰比較聰明的問題，是這一題剛好落在誰的能力範圍裡。同樣一支影片如果放在別的平台，Gemini 一樣讀不到。反過來說，要在自己電腦上批次處理檔案，網頁版的 Gemini 也做不了，那是另一種工具的守備範圍。工具的能力邊界可以事先知道，這比記住哪一家比較強有用得多。</div>
+  </div>
+</section>
+
+<section class="section" id="gemini-wrong">
+  <div class="inner">
+    <h2>但是 Gemini 也錯了一個地方</h2>
+    <p>這段是我後來查證才發現的，也是這篇最值得帶走的部分。</p>
+    <p>Gemini 在它那份分析的開頭寫著：這是《與神同行：最終審判 / 神之審判》的正式預告片。</p>
+    <p><b>這個片名是錯的。</b></p>
+    <p>我去看那支 YouTube 影片的實際標題，寫的是：</p>
+    <div class="codeblock">【電影正式預告】《與神同行》(Along With The Gods) 2018年1月11日 「神」之審判</div>
+    <p>這是第一集《與神同行》的台灣正式預告，2018 年 1 月 11 日在台灣上映。片名後面那句「神之審判」是這支預告的宣傳標語。《與神同行：最終審判》是 2018 年 8 月上映的另一部續集，不是同一部片。Gemini 把宣傳標語讀成了續集片名。</p>
+    <p>有意思的是，它的逐鏡內容反而是對的。它描述的金自鴻、德春、江林、解怨脈、七大地獄四十九日審判，全都是第一集的內容。也就是說，<b>它真的看了影片，只是給影片貼錯了標籤</b>。</p>
+    <p>反過來看 ChatGPT，它雖然沒看影片，卻把片名判斷對了（它說是 2017 年的《與神同行》第一集，2017 是韓國上映年）。</p>
+    <div class="table-wrap"><table class="cmp-table">
+      <thead><tr><th></th><th>ChatGPT</th><th>Gemini</th></tr></thead>
+      <tbody>
+        <tr><td>有沒有真的看到影片</td><td>沒有。下載失敗後改爬 14 個網站</td><td>有。讀得到畫面</td></tr>
+        <tr><td>片名判斷</td><td>正確（第一集）</td><td>錯誤（誤認成續集）</td></tr>
+        <tr><td>逐鏡內容</td><td>推論出來的通則，跟這支影片無關</td><td>有時間碼、有字卡文字，對得上</td></tr>
+        <tr><td>被追問之後</td><td>主動承認，並說明哪些話不該寫</td><td>我沒有再追問，錯誤是我自己查出來的</td></tr>
+      </tbody>
+    </table></div>
+    <div class="meaning"><b>結論不是「換 Gemini 就沒事」</b>兩家都要查，只是要查的地方不一樣：一家要查它有沒有真的做，一家要查它做完之後有沒有貼對標籤。</div>
+  </div>
+</section>
+
+<section class="section" id="four-checks">
+  <div class="inner">
+    <h2>給初學者的四個檢查動作</h2>
+    <p>這四個動作照順序做，大概花你一分鐘。</p>
+
+    <h3>動作一：把步驟列打開來看</h3>
+    <p>現在的 AI 在回答之前，大多會顯示自己做了什麼：搜尋了幾個網站、開了哪個檔案、跑了什麼指令。這一區通常是灰色小字，可以點開。</p>
+    <p>看三件事：</p>
+    <ul>
+      <li><b>它有沒有真的碰到你給的東西。</b>你給的是影片連結，它卻在搜尋文字資料，那它多半沒打開影片。</li>
+      <li><b>有沒有失敗的步驟。</b>失敗之後它接了什麼動作，那個動作通常就是它的補救方式。</li>
+      <li><b>來源清單的品質。</b>引用的是官方頁面、原始資料，還是論壇跟社群貼文。</li>
+    </ul>
+    <p>這一步不需要任何技術背景。你只要會看「它做的事」跟「你要的事」對不對得上。</p>
+
+    <h3>動作二：直接問它做不做得到</h3>
+    <p>在它開始長篇大論之前先問一句。可以直接複製：</p>
+    <div class="codeblock">在你開始之前先回答我一個問題：
+你現在這個環境，實際上讀得到我給你的這個連結／檔案的內容嗎？
+如果讀不到，直接說讀不到，不要用查到的背景資料代替。</div>
+    <p>這句話有效的原因是，它把「做不做得到」變成一個要先回答的獨立問題。分析寫完之後再問，它已經寫了三千字，會傾向自圓其說。</p>
+
+    <h3>動作三：挑一個「沒做過就答不出來」的細節去問</h3>
+    <p>這是四個動作裡最好用的一個。</p>
+    <p>不要問「你確定嗎」，它一定說確定。要挑一個<b>只有真的執行過才知道答案</b>的具體細節去問它：</p>
+    <ul>
+      <li>影片類：第 34 秒畫面上出現的那張字卡，上面寫什麼字？</li>
+      <li>文件類：這份 PDF 第 3 頁的標題是什麼？</li>
+      <li>網頁類：這個頁面最下面的最後一行寫什麼？</li>
+      <li>資料類：這份表格第 12 列第 3 欄的數字是多少？</li>
+    </ul>
+    <p>可以直接複製這段：</p>
+    <div class="codeblock">在你給我完整分析之前，先回答一個查核題：
+[挑一個具體位置，例如：影片第 34 秒畫面上的字卡寫什麼字]
+只回答你實際看到的內容。如果你沒辦法取得，就說沒辦法，不要推測。</div>
+    <p>答得出來，它是真的看了。開始講「通常這類影片在這個時間點會⋯⋯」，它在推。</p>
+
+    <h3>動作四：換一家問同一題</h3>
+    <p>同一個問題丟給第二家 AI，兩邊答案擺在一起看。</p>
+    <p>不用兩份都讀完，只要看<b>具體細節有沒有對上</b>。兩邊講的骨架都差不多是正常的（那是通則），一邊給得出字卡文字、另一邊給不出來，差別就出來了。</p>
+    <p>這次也是這樣抓到的。如果我只用一家，我不會知道 Gemini 那份帶時間碼的東西長什麼樣，也就不會發現 ChatGPT 那份缺了什麼。想把這個動作變成固定流程的話，<a href="../three-levels-of-cross-review/">怎麼設計讓兩個 AI 互審？：三種不同程度的審查機制設計</a>那篇有三種深度的做法跟可以直接複製的指令。</p>
+  </div>
+</section>
+
+<section class="section" id="why">
+  <div class="inner">
+    <h2>為什麼 AI 會這樣做</h2>
+    <p>不用把這件事想成 AI 在說謊。說謊要有意圖，它沒有。</p>
+    <p>這類模型的本業是「把話接下去」，把一段文字接成通順合理的下一段。<b>當中間缺了一塊資料，它不會停下來，它會用最像的內容把那個洞補起來，然後繼續往下寫。</b>補出來的東西通順、專業、符合常識，因為它就是用最常見的模式補的。</p>
+    <p>這也是為什麼錯誤特別難抓。它填的不是亂碼，是統計上最合理的答案。放在別的情境下，那些答案往往是對的。</p>
+    <p>還有一層原因跟資料怎麼進到 AI 有關。你給它一個連結，它不見得會整個讀完；它常常是先去撈跟你問題相關的片段，撈到什麼就用什麼。</p>
+    <div class="readmore near"><b>它拿到你的資料之後，其實是怎麼找答案的</b><ul><li><a href="../rag-three-retrieval-modes/">把資料丟給 AI，它其實沒有全部看完：RAG 的三種查法與怎麼選</a>　理解那一層，就知道為什麼「我明明給它了」跟「它真的看了」是兩件事。</li></ul></div>
+  </div>
+</section>
+
+<section class="section" id="when-to-let-go">
+  <div class="inner">
+    <h2>什麼時候可以放手不盯</h2>
+    <p>盯著看是有成本的。每一題都查證，等於自己做兩遍。所以要分階段。</p>
+    <div class="table-wrap"><table class="cmp-table">
+      <thead><tr><th>階段</th><th>你的狀態</th><th>建議做法</th></tr></thead>
+      <tbody>
+        <tr><td>剛開始用</td><td>還不知道這個 AI 什麼做得到、什麼做不到</td><td>每一題都打開步驟列看，重要的答案做動作三的查核題</td></tr>
+        <tr><td>用了一段時間</td><td>知道它哪幾類任務穩、哪幾類容易出包</td><td>只在它宣稱「我讀了、我跑了、我查了」的時候查核</td></tr>
+        <tr><td>用得很熟</td><td>摸清它的毛病，也知道怎麼交代它</td><td>事前把限制寫進指令，事後抽查；出錯成本高就照樣查</td></tr>
+      </tbody>
+    </table></div>
+    <div class="meaning"><b>判斷可不可以放手，看一個問題就好</b>這件事如果它做錯了，我看不看得出來？看得出來（例如它寫的程式跑不動、翻譯錯了你讀得懂），可以放手讓它跑。看不出來（例如它引用的數據、它宣稱讀過的資料、它整理的會議重點），那就要查。</div>
+    <p>我自己現在也還在盯。差別是我知道要盯哪裡，不用整份重讀。</p>
+  </div>
+</section>
+
+<section class="section" id="checklist">
+  <div class="inner">
+    <h2>收尾前的檢查表</h2>
+    <p>下次 AI 交給你一份看起來很專業的東西，過一遍這幾題：</p>
+    <ul class="checklist">
+      <li>我有沒有打開步驟列，看它實際做了什麼</li>
+      <li>步驟裡有沒有失敗的動作，失敗之後它接了什麼</li>
+      <li>它引用的來源，是原始資料還是社群貼文</li>
+      <li>我有沒有挑一個「沒做過就答不出來」的細節問它</li>
+      <li>它有沒有在某個地方說過自己的限制，那句話有沒有被後面的內容蓋掉</li>
+      <li>這題重要的話，我有沒有換一家問同一題</li>
+      <li>如果它做錯了，我自己看不看得出來</li>
+    </ul>
+    <div class="meaning"><b>最後一句</b>你一定要相信 AI 值得懷疑。不是不用它，是用的時候把眼睛睜開。它給你的答案越漂亮、越專業、越符合你的期待，越值得花那一分鐘查一下。</div>
+  </div>
+</section>
+
+<div class="cta-band">
+  <section class="section">
+    <div class="inner">
+      <div>
+        <h2>把 AI 用成幫你累積判斷力的工具</h2>
+        <p class="lead">這篇整理自我在課堂上的一次實際示範。我每月也固定舉辦兩場免費線上講座，主題輪流談怎麼把工作流程、判斷、經驗，整理成 AI 能靈活運用的提示詞、技能包與知識庫。想收到開課通知、或想邊做邊問，都歡迎先從社群開始。</p>
+      </div>
+      <div class="cta-card">
+        <b>加入 LINE 社群</b>
+        <p>免費講座場次會先在這裡公布，也可以直接把你卡住的地方丟上來討論。</p>
+        <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">加入社群 ↗</a>
+      </div>
+    </div>
+  </section>
+</div>
+
+
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">江江教練 · AI 知識管理</div>
+    <div class="footer-links">
+      <a href="../../articles.html">← 回深度文章總站</a>
+      <a href="../../index.html">首頁</a>
+      <a href="../../learn.html">自學資源</a>
+      <a href="../../skills.html">技能包下載</a>
+      <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">LINE 社群 ↗</a>
+      <a href="https://www.threads.com/@jiang_yude_coach" target="_blank" rel="noopener">Threads ↗</a>
+      <a href="https://vocus.cc/salon/Jiang_Coach" target="_blank" rel="noopener">方格子 ↗</a>
+    </div>
+    <div class="footer-note">這是一篇案例文章，整理我對「AI 交出一份很專業的分析，但它根本沒看過那支影片」的看法，供你參考。</div>
+  </div>
+</footer>
+
+<!-- 點圖放大 lightbox（hero 與內文圖通用，已內建，不用每篇重加） -->
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <span class="lightbox-close" aria-label="關閉">×</span>
+  <img id="lightbox-img" src="" alt="放大檢視">
+</div>
+<script>
+(function(){
+  var box=document.getElementById('lightbox'),boxImg=document.getElementById('lightbox-img');
+  document.querySelectorAll('.hero-figure img,.inline-figure img').forEach(function(img){
+    img.addEventListener('click',function(){boxImg.src=img.currentSrc||img.src;boxImg.alt=img.alt||'放大檢視';box.classList.add('open');box.setAttribute('aria-hidden','false');});
+  });
+  function close(){box.classList.remove('open');box.setAttribute('aria-hidden','true');boxImg.src='';}
+  box.addEventListener('click',close);
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
+})();
+</script>
+
+<script src="../../image-interactions.js"></script>
+
+<!-- 官網共用：滑鼠暖光暈 + 導航列漢堡選單 -->
+<script src="../../spotlight.js"></script>
+
+<!-- 文章自動互聯（相關文章）：兩支已內建，順序不可顛倒，不用再另外加 -->
+<script src="../../articles-data.js"></script>
+<script src="../../related-render.js"></script>
+</body>
+</html>
