@@ -70,7 +70,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["after-ai-says-remembered", "three-levels-of-cross-review", "why-split-data-into-cards", "rag-three-retrieval-modes"]
+    related: ["after-ai-says-remembered", "three-levels-of-cross-review", "why-split-data-into-cards", "rag-three-retrieval-modes", "ai-said-it-watched-the-video"]
   },
 
   /* ── 我跟 AI 說「很煩」，它自己去加了一道機制（教學） ── */
@@ -108,7 +108,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["after-ai-says-remembered", "caught-ai-slacking-into-rules", "teach-ai-not-learn-ai", "program-vs-ai-skill-library"]
+    related: ["after-ai-says-remembered", "caught-ai-slacking-into-rules", "teach-ai-not-learn-ai", "program-vs-ai-skill-library", "ai-said-it-watched-the-video"]
   },
 
   /* ── 同一個問題被問一百次，該親自回答還是丟給 AI（觀點） ── */
@@ -203,7 +203,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["after-ai-says-remembered", "long-document-review-layers", "mobile-to-desktop-publish-loop"]
+    related: ["after-ai-says-remembered", "long-document-review-layers", "mobile-to-desktop-publish-loop", "ai-said-it-watched-the-video"]
   },
 
   /* ── 通訊軟體 AI 友善度比較（教學） ── */
@@ -448,7 +448,7 @@ window.ARTICLES = [
       content_type: ["案例文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: "https://vocus.cc/salon/Jiang_Coach" },
-    related: ["codex-only-auto-worklog", "decision-ladder-non-programmer", "publish-gate", "session-messaging-reminder-layer", "cognitive-debt", "start-with-a-wrong-draft"]
+    related: ["codex-only-auto-worklog", "decision-ladder-non-programmer", "publish-gate", "session-messaging-reminder-layer", "cognitive-debt", "start-with-a-wrong-draft", "ai-said-it-watched-the-video"]
   },
 
   /* ── 8. AI 之王不上戰場（觀點）── */
@@ -1280,7 +1280,7 @@ window.ARTICLES = [
     summary: "用新手聽得懂的方式分清聊天型 AI、網頁工具與桌面型 Agent：專案模式的三個痛點、桌面版的範式轉變、Codex 與三層分工工作流，文科生不用寫程式也能上手。",
     tags: {"topic":["差異比較","AIAgent","工具操作","AI工作流"],"level":["零基礎入門"],"content_type":["教學文章"]},
     external: { threads: null, vocus: null },
-    related: ["youtube-to-opinion-report-workflow", "liberal-arts-agent-framework", "train-your-ai-agent-editor", "chatgpt-work-codex-choice", "ai-employee-four-levels", "messaging-apps-ai-friendliness"]
+    related: ["youtube-to-opinion-report-workflow", "liberal-arts-agent-framework", "train-your-ai-agent-editor", "chatgpt-work-codex-choice", "ai-employee-four-levels", "messaging-apps-ai-friendliness", "ai-said-it-watched-the-video"]
   },
   {
     id: "ai-course-map-from-entry-to-workflow",
@@ -2047,6 +2047,25 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["llm-rag-agent-mcp", "tag-wiki-method", "long-document-review-layers"]
+    related: ["llm-rag-agent-mcp", "tag-wiki-method", "long-document-review-layers", "ai-said-it-watched-the-video"]
+  },
+
+  /* ── AI 說它看過那支影片，其實沒有（案例） ── */
+  {
+    id: "ai-said-it-watched-the-video",
+    url: "articles/ai-said-it-watched-the-video/",
+    date: "2026-08-18",
+    updated: "2026-08-18",
+    title: "AI 交出一份很專業的分析，但它根本沒看過那支影片",
+    problem: "AI 給的答案看起來完整又專業，卻沒辦法判斷它是真的做了那件事，還是拿查到的資料推論出來的。",
+    audience: "已經在用 ChatGPT 或 Gemini 做事、但不知道怎麼確認它有沒有真的執行的人，以及要教新手用 AI 的講師。",
+    summary: "課堂示範用 AI 拆解影片分鏡：ChatGPT 下載 YouTube 影片失敗後改爬 14 個網站，交出一份細到秒數的六段式分析，被追問後承認自己沒看過影片，並自己列出哪些話不該寫。同一支影片 Gemini 讀得到畫面、給得出字卡上的字，卻把片名認成續集。文章攤開兩邊實際跑過的步驟與落差，給四個檢查動作、三段可直接複製的提示詞，以及一張什麼時候可以放手不盯的判斷表。",
+    tags: {
+      topic: ["AI應用", "工具操作", "差異比較", "提示詞設計"],
+      level: ["零基礎入門"],
+      content_type: ["案例文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["caught-ai-slacking-into-rules", "web-chat-ai-vs-desktop-agent", "three-levels-of-cross-review", "rag-three-retrieval-modes", "long-document-review-layers", "cognitive-debt"]
   }
 ];
