@@ -164,7 +164,7 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
   <div class="inner">
     <h2>這篇在講什麼</h2>
     <p class="lead">我在一堂課上示範怎麼用 AI 拆解影片的分鏡腳本。我丟一支電影預告的 YouTube 連結給 ChatGPT，要它逐鏡分析。它交回一份六段式敘事架構，連「這裡鏡頭大概 2 到 4 秒，最後縮到 0.3 秒」都寫得出來，讀起來非常內行。</p>
-    <p class="lead">它沒有看過那支影片。它去爬了 14 個網站，把電影劇情介紹加上預告片的通用剪輯常識，拼成一份讀起來像逐鏡分析的東西。我追問一句「你確定你讀得到嗎」，它就承認了。</p>
+    <p class="lead">它沒有看過那支影片。它去爬了 14 個網站，把電影劇情介紹加上預告片的通用剪輯常識，拼成一份讀起來像逐鏡分析的東西。我追問了兩次，它就承認了。</p>
     <p>這篇把整個過程攤開：它實際跑了哪些步驟、那些步驟在做什麼、我問了什麼、它承認了什麼。同一支影片我也丟給 Gemini，它給出了可以跟影片核對的時間碼與字卡文字，卻把片名認錯。最後給四個現在就能用的檢查動作，跟可以直接複製的提示詞。</p>
 
     <div class="duo stack">
@@ -216,6 +216,10 @@ python -m yt_dlp -f 'best[height&lt;=720]' -o '/mnt/data/trailer.%(ext)s' 'https
     <p>想法完全正確。要逐鏡分析，本來就得先拿到影片檔。</p>
     <p>它沒有拿到影片。這件事最直接的證據是它自己講的，我後來追問的時候，它說：「我剛才重新直接嘗試讀你給的 YouTube 連結，這個環境目前抓不到該影片本體。」我事前就知道這條路走不通，所以才選這個題目來示範。</p>
     <p>接著它做了什麼？又去搜了 14 個網站。這一步就是它的補救動作，用查資料代替看影片。</p>
+    <figure class="inline-figure">
+      <img src="../../images/articles/ai-said-it-watched-the-video-cgpt-steps.jpg" alt="ChatGPT 對話中展開的執行步驟列，依序顯示已搜尋 6 個網站、下載了 YouTube 電影預告片、安裝 yt-dlp 並下載影片、已搜尋 14 個網站" loading="lazy">
+      <figcaption>把「處理時間為 49s」點開之後看到的步驟列。第二行寫「下載了 YouTube 電影預告片」，第四行還在「安裝 yt-dlp 並下載影片」，最後一行是「已搜尋 14 個網站」。</figcaption>
+    </figure>
     <p>那些來源的品質也很雜。我把它引用的清單攤開來看（分享連結的原始資料裡看得到），裡面有論壇貼文、Facebook 的提及頁、Instagram 貼文、Threads 貼文，還有幾支不是這一支的其他 YouTube 影片。這些東西可以告訴你電影在演什麼，沒辦法告訴你第 34 秒的畫面長什麼樣。</p>
     <div class="readmore near"><b>為什麼網頁版做不到這件事</b><ul><li><a href="../web-chat-ai-vs-desktop-agent/">桌面版和開發者版差在哪？：網頁聊天型 AI 與桌面幹活型 AI 的分界（Codex）</a>　那篇講清楚聊天型 AI、網頁工具與桌面型 Agent 各自能碰到什麼。這次的下載失敗，就是同一條分界線的實例。</li></ul></div>
   </div>
@@ -240,15 +244,30 @@ python -m yt_dlp -f 'best[height&lt;=720]' -o '/mnt/data/trailer.%(ext)s' 'https
 
 <section class="section" id="admission">
   <div class="inner">
-    <h2>我問了一句，它就承認了</h2>
-    <p>我打了這句話過去：</p>
-    <div class="codeblock">我先問你喔，你確定你有辦法讀到這支影片嗎？不要再唬爛我喔。</div>
+    <h2>我追問了兩次，它就承認了</h2>
+    <p>第一次我這樣問：</p>
+    <div class="codeblock">啊你確定嗎？你真的是有去逐幀分析這支預告片嗎？還是你就根本讀不到，然後就隨便去查別人資料來糊弄我？</div>
     <p>它的回覆我原文貼在這裡，因為它自己講得比我清楚：</p>
     <div class="quotebox">你抓得對。我剛才沒有逐幀分析那支影片，而且我上一則回答把「查到的影片背景資料＋依預告片常見結構做的推論」講得太像我真的看完並拆過這支片，這是不對的。</div>
     <p>它接著把哪些話不該講明列出來：</p>
     <div class="quotebox">「某一句台詞跨三四顆畫面」「前面 2～4 秒、最後 0.3～1 秒」這類描述，我沒有逐鏡驗證，不應該寫成這支影片的具體事實。</div>
     <p>最後這一句是整件事的重點：</p>
     <div class="quotebox">我後面雖然有補一句「目前不能精確逐幀」，但前面大量文字已經造成我真的看過的錯覺。這點是我的問題。</div>
+    <figure class="inline-figure">
+      <img src="../../images/articles/ai-said-it-watched-the-video-cgpt-admit.jpg" alt="ChatGPT 回覆截圖，開頭寫「你抓得對。我剛才沒有逐幀分析那支影片」，並列出三點說明哪些描述不該寫成事實" loading="lazy">
+      <figcaption>第一次追問之後它的回覆。中間那句「這個環境目前抓不到該影片本體，所以我實際上沒有取得它的影像時間軸」，是整件事最硬的證據。</figcaption>
+    </figure>
+
+    <h3>第二次追問，它把話講得更死</h3>
+    <p>後面我又問了一次：</p>
+    <div class="codeblock">我先問你喔，你確定你有辦法讀到這支影片嗎？不要再唬爛我喔。</div>
+    <p>這次它直接把做得到與做不到列出來：</p>
+    <div class="quotebox">不確定，而且就目前這個環境來說，我不能保證能直接「讀到並逐幀觀看」那支 YouTube 影片。我能做的是：讀網頁上的標題、說明、部分字幕或公開資料；如果影片有可取得的逐字稿，我可以分析文字。但僅靠 YouTube 連結，我現在不能可靠地逐幀檢視整支影片，也不能假裝有看到每個畫面。</div>
+    <figure class="inline-figure">
+      <img src="../../images/articles/ai-said-it-watched-the-video-cgpt-cannot.jpg" alt="ChatGPT 回覆截圖，說明它只能讀網頁標題說明與字幕，僅靠 YouTube 連結不能逐幀檢視整支影片" loading="lazy">
+      <figcaption>問到第二次，它把能力邊界講清楚了：只讀得到網頁上的文字資料，沒辦法逐幀看影片。同一件事，第一次問跟第二次問拿到的清楚程度差很多。</figcaption>
+    </figure>
+
     <p>這裡要幫它講一句公道話：它<b>確實有</b>在那份分析裡寫「YouTube 本身目前沒有讓我直接取得完整影片影格」。免責聲明是有的。</p>
     <p>但那句話夾在三千字中間，前後都是講得斬釘截鐵的分析。你讀完的印象是「它看過了」。它自己也承認了這一點。</p>
     <div class="caveat"><b>可以帶走的判斷</b>不要只看 AI 有沒有標註限制，要看那個限制有沒有被它自己後面的內容蓋掉。</div>
@@ -269,6 +288,10 @@ python -m yt_dlp -f 'best[height&lt;=720]' -o '/mnt/data/trailer.%(ext)s' 'https
       <li>[01:52] 大字卡：「空前未見的神幻國度」</li>
       <li>[02:08] 定檔上映日期字卡收尾</li>
     </ul>
+    <figure class="inline-figure">
+      <img src="../../images/articles/ai-said-it-watched-the-video-gemini.jpg" alt="Gemini 分析的匯出畫面，以時間碼逐段列出畫面內容與字卡文字" loading="lazy">
+      <figcaption>Gemini 那份分析的其中一頁。每一段都帶時間碼，寫得出畫面裡的字卡文字與台詞。</figcaption>
+    </figure>
     <p>差別在哪裡，一眼就看得出來。<b>字卡上那幾行字，在劇情介紹裡是查不到的。</b>網路上的文章不會告訴你第 34 秒那張黑底金字寫著「19年一遇的大好人」。這些內容我拿回去對影片，對得上。</p>
     <p>Gemini 讀得到 YouTube 這件事，Google 官方文件有寫：可以直接把 YouTube 網址交給它，讓它理解影片內容、指出特定時間點在演什麼，同時也列了限制，例如只讀得到公開影片（<a href="https://ai.google.dev/gemini-api/docs/video-understanding" target="_blank" rel="noopener">Google 官方文件</a>）。</p>
     <div class="caveat"><b>這裡我只能講到這麼多</b>我能確認的是「它給的時間碼與字卡文字跟影片對得上」。至於這一次它走的是哪條路（讀畫面、讀字幕，還是別的方式），我沒辦法從輸出反推，所以不寫成結論。誰比較聰明也不是重點，重點是這一題剛好落在誰的能力範圍裡，而每個工具的邊界跟平台、介面、當下的設定都有關。先知道邊界在哪，比記住哪一家比較強有用。</div>
