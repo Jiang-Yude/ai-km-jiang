@@ -15,11 +15,28 @@ MSG="${2:?缺 commit 訊息}"
 REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$REPO_ROOT"
 
-# 必須在主 clone 的 main 上跑（worktree 裡 main 沒 checkout，publish.sh 也會擋）
+# 必須在「checkout 了 main 的地方」跑。主 clone 常被別的 session 切到 feature 分支，
+# 那時就在 ~/Developer/ai-km-jiang-worktrees/ 另開一張 main 桌子來發布，一樣合法：
+#   git worktree add <路徑>/main-desk main
+# （2026-08-19 首次上線實測：主 clone 當時在 feature/offers-mika-visuals，走 main 桌子順利發布。）
 CUR_BRANCH=$(git symbolic-ref --quiet --short HEAD || true)
 if [[ "$CUR_BRANCH" != "main" ]]; then
-  echo "⛔ merge-publish 只能在主 clone 的 main 分支上跑；目前是 ${CUR_BRANCH:-detached}。"
+  echo "⛔ merge-publish 要在 checkout 了 main 的工作區跑；目前是 ${CUR_BRANCH:-detached}。"
+  echo "   主 clone 被別人佔用時，另開一張 main 桌子："
+  echo "   git worktree add \"\$HOME/Developer/ai-km-jiang-worktrees/main-desk\" main"
   exit 2
+fi
+
+# 同上：main 桌子也需要 .vercel/project.json，缺了 check-deploy-env.sh 會擋。
+if [[ ! -f "$REPO_ROOT/.vercel/project.json" ]]; then
+  for _src in "$HOME/Documents/repo-workspace/ai-km-jiang/.vercel/project.json"; do
+    if [[ -f "$_src" ]]; then
+      mkdir -p "$REPO_ROOT/.vercel"
+      cp "$_src" "$REPO_ROOT/.vercel/project.json"
+      echo "▶ 已從主 clone 帶入 .vercel/project.json（發布環境檢查需要）"
+      break
+    fi
+  done
 fi
 
 GIT_COMMON_DIR="$(git rev-parse --git-common-dir)"
