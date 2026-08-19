@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="robots" content="noindex, nofollow" />
+<title>六站場景照片複製區 · 淡水公共藝術 AI 創作課</title>
+<style>
+  :root {
+    --bg-1:#F5EDE7; --bg-3:#E8DED9; --card:#FFF8F0;
+    --text:#4E342E; --text-soft:#5D4037; --muted:#8D6E63;
+    --accent:#D88C3A; --line:#BCAAA4;
+    --ok:#3E7C59; --bad:#A8432C;
+    --font-body:"PingFang TC","Noto Sans TC","Inter",system-ui,sans-serif;
+    --font-mono:"JetBrains Mono","SF Mono",ui-monospace,monospace;
+  }
+  * { box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+  body { margin:0; background:var(--bg-1); color:var(--text); font-family:var(--font-body);
+         font-size:18px; line-height:1.7; -webkit-text-size-adjust:100%; -webkit-font-smoothing:antialiased; }
+  .wrap { max-width:1080px; margin:0 auto; padding:22px 18px 96px; }
+
+  .back { display:inline-block; font-family:var(--font-mono); font-size:15px; letter-spacing:.08em;
+          color:var(--accent); text-decoration:none; padding:6px 0; }
+  h1 { font-size:clamp(27px,5.4vw,36px); line-height:1.2; font-weight:800; margin:10px 0 12px; letter-spacing:-0.01em; }
+  .lede { color:var(--text-soft); font-size:17px; margin:0 0 18px; }
+  .note { font-size:16px; line-height:1.65; color:var(--text-soft); background:rgba(216,140,58,0.10);
+          border-left:4px solid var(--accent); padding:12px 16px; border-radius:0 10px 10px 0; margin:0 0 18px; }
+  .note b { color:var(--text); }
+
+  /* 站別導覽列 */
+  .stationbar { position:sticky; top:0; z-index:20; margin:0 -18px 24px; padding:10px 18px;
+                background:rgba(245,237,231,0.95); backdrop-filter:blur(8px);
+                border-bottom:1px solid var(--line); }
+  .stationbar .row { display:flex; gap:8px; overflow-x:auto; -webkit-overflow-scrolling:touch;
+                     scrollbar-width:none; padding-bottom:2px; }
+  .stationbar .row::-webkit-scrollbar { display:none; }
+  .chip { flex:0 0 auto; display:flex; flex-direction:column; align-items:center; gap:0;
+          min-width:82px; padding:8px 13px; border-radius:13px; border:1px solid var(--line);
+          background:var(--card); color:var(--text); text-decoration:none; line-height:1.35;
+          -webkit-tap-highlight-color:transparent; }
+  .chip .code { font-family:var(--font-mono); font-size:12px; letter-spacing:.1em; color:var(--muted); font-weight:700; }
+  .chip .nm { font-size:16px; font-weight:600; white-space:nowrap; }
+  .chip.on { background:var(--accent); border-color:var(--accent); }
+  .chip.on .code, .chip.on .nm { color:#fff; }
+
+  .station { scroll-margin-top:78px; margin-bottom:40px; }
+  .station h2 { font-size:24px; font-weight:800; margin:0 0 2px; }
+  .station h2 .code { font-family:var(--font-mono); font-size:15px; letter-spacing:.12em; color:var(--accent); margin-right:10px; }
+  .station .sub { font-size:16px; color:var(--muted); margin:0 0 14px; }
+
+  .grid { display:grid; grid-template-columns:repeat(2,1fr); gap:12px; }
+  @media (min-width:560px) { .grid { grid-template-columns:repeat(3,1fr); } }
+  @media (min-width:860px) { .grid { grid-template-columns:repeat(5,1fr); gap:14px; } }
+  .shot { background:var(--card); border:1px solid var(--line); border-radius:14px; padding:8px;
+          cursor:zoom-in; -webkit-tap-highlight-color:transparent; }
+  .shot:hover { border-color:var(--accent); }
+  .shot img { display:block; width:100%; aspect-ratio:4/3; object-fit:cover; border-radius:10px;
+              background:var(--bg-3); }
+  .shot .cnt { font-family:var(--font-mono); font-size:12px; letter-spacing:.06em; color:var(--muted); margin:7px 2px 1px; }
+
+  /* 點圖放大 */
+  .lb { position:fixed; inset:0; z-index:60; background:rgba(62,39,35,0.93); display:none;
+        align-items:center; justify-content:center; padding:20px; }
+  .lb.on { display:flex; }
+  .lb figure { margin:0; max-width:100%; text-align:center; }
+  .lb img { max-width:100%; max-height:82vh; border-radius:12px; display:block; margin:0 auto; }
+  .lb .cap { color:#F5EDE0; font-family:var(--font-mono); font-size:14px; letter-spacing:.08em; margin-top:12px; }
+  .lb .x { position:absolute; top:14px; right:16px; width:44px; height:44px; border-radius:50%;
+           border:0; background:rgba(245,237,231,0.92); color:var(--text); font-size:24px;
+           line-height:1; cursor:pointer; margin:0; padding:0; }
+  .lb .acts { display:flex; gap:12px; justify-content:center; margin-top:16px; }
+  .lb .acts button { font:inherit; font-size:17px; font-weight:700; min-width:150px; min-height:52px;
+                     padding:13px 26px; border-radius:999px; cursor:pointer; border:0;
+                     -webkit-tap-highlight-color:transparent; }
+  .lb .acts .go { background:var(--accent); color:#fff; }
+  .lb .acts .go:hover { opacity:.88; }
+  .lb .acts .go:disabled { opacity:.55; }
+  .lb .acts .cancel { background:transparent; color:#F5EDE0; border:1px solid rgba(245,237,224,0.55); }
+  .lb .acts .cancel:hover { background:rgba(245,237,224,0.12); }
+  .lb .log { font-size:15px; line-height:1.6; margin-top:12px; color:#F5EDE0; text-align:center; min-height:1.6em; }
+  .lb .log.ok { color:#A8D8B9; font-weight:600; }
+  .lb .log.bad { color:#F0A99B; }
+  @media (max-width:520px) { .lb .acts button { min-width:0; flex:1; font-size:16px; padding:13px 12px; } }
+
+  footer { color:var(--muted); font-size:15px; text-align:center; margin-top:34px; line-height:1.7; }
+  @media (max-width:520px) { .wrap { padding:18px 14px 96px; } .stationbar { margin:0 -14px 20px; padding:10px 14px; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="../">← 回上課簡報</a>
+  <h1>六站場景照片複製區</h1>
+  <p class="lede">全部照片都在這一頁。<b>點縮圖放大確認</b>，再按「複製圖片」或「取消」。複製好回到 ChatGPT 長按輸入框貼上，不用下載也不用上傳。</p>
+
+  <nav class="stationbar" aria-label="站別導覽"><div class="row" id="barrow"></div></nav>
+
+  <div id="warn"></div>
+  <div id="app"></div>
+
+  <div class="lb" id="lb" role="dialog" aria-label="放大檢視">
+    <button class="x" type="button" aria-label="關閉">×</button>
+    <figure>
+      <img alt="" />
+      <figcaption class="cap"></figcaption>
+      <div class="acts">
+        <button class="go" type="button">複製圖片</button>
+        <button class="cancel" type="button">取消</button>
+      </div>
+      <div class="log" id="lblog"></div>
+    </figure>
+  </div>
+
+  <footer>淡水公共藝術 AI 創作課 · 旅學堂 × 江江教練<br/>照片為淡海輕軌綠山線現場實拍</footer>
+</div>
+
+<script>
+(function(){
+  // ── 站別資料：每站的照片檔名是 代碼-編號.jpg ────────────────
+  var DIR = '../../../images/courses/danhai-scenes/';
+  var STATIONS = [
+    { code:'V01', name:'紅樹林',   subject:'閉眼女孩與許願樹',         n:5 },
+    { code:'V03', name:'淡金鄧公', subject:'層層堆疊的帽子與滑板女孩', n:5 },
+    { code:'V04', name:'淡江大學', subject:'巨大大貓',                 n:5 },
+    { code:'V05', name:'淡金北新', subject:'夢幻色彩的毛毛蟲',         n:5 },
+    { code:'V08', name:'濱海義山', subject:'小女孩與展翅大鳥',         n:5 },
+    { code:'V11', name:'崁頂',     subject:'盛開的許願樹',             n:5 }
+  ];
+  // ──────────────────────────────────────────────────────────
+
+  var ua = navigator.userAgent;
+  var isLineApp = /\bLine\//i.test(ua);
+  var canWriteClip = !!(navigator.clipboard && window.ClipboardItem && navigator.clipboard.write);
+  var app = document.getElementById('app');
+  var barrow = document.getElementById('barrow');
+  var warnBox = document.getElementById('warn');
+
+  function esc(s){ return String(s).replace(/[&<>"]/g, function(c){
+    return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+
+  // 提醒只出現一次，放在頁面最上面
+  var w = '';
+  if (isLineApp) w += '<div class="note"><b>你現在是用 LINE 內建瀏覽器開的</b>，複製圖片可能會失敗。點右上角選單選「用其他瀏覽器開啟」（Safari 或 Chrome）再試一次。</div>';
+  if (!canWriteClip) w += '<div class="note"><b>這台裝置不支援一鍵複製圖片</b>，改成長按圖片選「拷貝」，一樣可以貼進 ChatGPT。</div>';
+  warnBox.innerHTML = w;
+
+  // 站別導覽列
+  barrow.innerHTML = STATIONS.map(function(s){
+    return '<a class="chip" href="#' + s.code.toLowerCase() + '">'
+      + '<span class="code">' + esc(s.code) + '</span><span class="nm">' + esc(s.name) + '</span></a>';
+  }).join('');
+
+  // 全部站別一次列出來
+  app.innerHTML = STATIONS.map(function(st){
+    var shots = '';
+    for (var i = 1; i <= st.n; i++) {
+      var src = DIR + st.code.toLowerCase() + '-' + i + '.jpg';
+      var alt = st.name + ' ' + st.subject + ' 第 ' + i + ' 張';
+      shots += '<div class="shot" data-src="' + esc(src) + '" data-cap="' + esc(st.code + ' ' + st.name + ' · 第 ' + i + ' 張') + '" role="button" tabindex="0">'
+        + '<img src="' + esc(src) + '" alt="' + esc(alt) + '" loading="lazy">'
+        + '<p class="cnt">' + esc(st.code) + ' · 第 ' + i + ' 張</p></div>';
+    }
+    return '<section class="station" id="' + st.code.toLowerCase() + '">'
+      + '<h2><span class="code">' + esc(st.code) + '</span>' + esc(st.name) + '</h2>'
+      + '<p class="sub">' + esc(st.subject) + '　共 ' + st.n + ' 張</p>'
+      + '<div class="grid">' + shots + '</div></section>';
+  }).join('');
+
+  // 燈箱
+  var lb = document.getElementById('lb');
+  var lbImg = lb.querySelector('img');
+  var lbCap = lb.querySelector('.cap');
+  var lbLog = document.getElementById('lblog');
+  var lbGo = lb.querySelector('.go');
+  var lbCancel = lb.querySelector('.cancel');
+  var current = null;
+
+  function openLightbox(src, alt, cap){
+    current = src;
+    lbImg.src = src; lbImg.alt = alt || ''; lbCap.textContent = cap || '';
+    say(lbLog, '', ''); lbGo.disabled = false; lbGo.textContent = '複製圖片';
+    lb.classList.add('on');
+  }
+  function closeLightbox(){ lb.classList.remove('on'); lbImg.removeAttribute('src'); current = null; }
+
+  // 點背景關掉，點圖或按鈕不關
+  lb.addEventListener('click', function(e){ if (e.target === lb) closeLightbox(); });
+  lb.querySelector('.x').addEventListener('click', closeLightbox);
+  lbCancel.addEventListener('click', closeLightbox);
+  lbGo.addEventListener('click', function(){ if (current) doCopy(current, lbLog, lbGo); });
+  document.addEventListener('keydown', function(e){ if (e.key === 'Escape') closeLightbox(); });
+
+  Array.prototype.forEach.call(app.querySelectorAll('.shot'), function(card){
+    function open(){
+      openLightbox(card.getAttribute('data-src'), card.querySelector('img').getAttribute('alt'), card.getAttribute('data-cap'));
+    }
+    card.addEventListener('click', open);
+    card.addEventListener('keydown', function(e){
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(); }
+    });
+  });
+
+  function say(box, msg, cls){ box.textContent = msg; box.className = 'log' + (cls ? ' ' + cls : ''); }
+
+  function toPng(blob){
+    return new Promise(function(resolve, reject){
+      var url = URL.createObjectURL(blob);
+      var img = new Image();
+      img.onload = function(){
+        var c = document.createElement('canvas');
+        c.width = img.naturalWidth; c.height = img.naturalHeight;
+        c.getContext('2d').drawImage(img, 0, 0);
+        URL.revokeObjectURL(url);
+        c.toBlob(function(out){ out ? resolve(out) : reject(new Error('轉檔失敗')); }, 'image/png');
+      };
+      img.onerror = function(){ URL.revokeObjectURL(url); reject(new Error('圖片讀取失敗')); };
+      img.src = url;
+    });
+  }
+
+  function doCopy(src, box, btn){
+    if (!canWriteClip){ say(box, '不支援一鍵複製，請長按圖片選「拷貝」。', 'bad'); return; }
+    say(box, '複製中…');
+    btn.disabled = true;
+    // iOS Safari 要在點擊當下就建立 ClipboardItem，裡面塞 Promise，
+    // 不能先 await 拿到 blob 再寫，否則會失去使用者手勢授權。
+    var pngPromise = fetch(src, { cache:'force-cache' })
+      .then(function(r){ if(!r.ok) throw new Error('HTTP ' + r.status); return r.blob(); })
+      .then(function(b){ return b.type === 'image/png' ? b : toPng(b); });
+
+    var done = function(){
+      btn.disabled = false; btn.textContent = '再複製一次';
+      say(box, '已複製。回到 ChatGPT 長按輸入框選「貼上」。', 'ok');
+    };
+    var fail = function(err){ btn.disabled = false;
+      say(box, '複製失敗：' + (err && err.message || err) + '\n請改成長按圖片選「拷貝」。', 'bad'); };
+    try {
+      navigator.clipboard.write([ new ClipboardItem({ 'image/png': pngPromise }) ])
+        .then(done).catch(function(err){
+          pngPromise.then(function(png){
+            return navigator.clipboard.write([ new ClipboardItem({ 'image/png': png }) ]);
+          }).then(done).catch(function(){ fail(err); });
+        });
+    } catch(err){ fail(err); }
+  }
+
+  // 捲到哪一站，導覽列就highlight哪一顆
+  var chips = [].slice.call(barrow.querySelectorAll('.chip'));
+  var sections = [].slice.call(app.querySelectorAll('.station'));
+  function setActive(i){
+    chips.forEach(function(c, n){ c.classList.toggle('on', n === i); });
+    if (chips[i] && chips[i].scrollIntoView) chips[i].scrollIntoView({ block:'nearest', inline:'center' });
+  }
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if (e.isIntersecting) setActive(sections.indexOf(e.target));
+      });
+    }, { rootMargin:'-80px 0px -60% 0px', threshold:0 });
+    sections.forEach(function(sec){ io.observe(sec); });
+  }
+  setActive(0);
+})();
+</script>
+</body>
+</html>

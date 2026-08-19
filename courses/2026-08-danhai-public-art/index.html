@@ -167,6 +167,8 @@
   .promptbox pre { margin:0; padding:18px 20px; background:rgba(62,39,35,0.06); border-radius:12px; font-family:var(--font-mono); font-size:15px; line-height:1.75; white-space:pre-wrap; word-break:break-word; max-height:52vh; overflow-y:auto; color:var(--text-on-light); }
   .promptbox .copy { margin-top:16px; font-family:var(--font-body); font-size:17px; font-weight:600; padding:11px 26px; border-radius:999px; border:1px solid var(--accent); background:var(--accent); color:#fff; cursor:pointer; }
   .promptbox .copy:hover { opacity:.86; }
+  .deck-link { display:inline-block; font-family:var(--font-body); font-size:17px; font-weight:600; padding:9px 22px; border-radius:999px; border:1px solid var(--accent); background:var(--accent); color:#fff; text-decoration:none; }
+  .deck-link:hover { opacity:.86; }
   .promptbox .ptip { font-size:17px; line-height:1.7; color:var(--text-soft-light); margin:0 0 14px; }
   section[data-bg="8"] .promptbox, section[data-bg="9"] .promptbox { background:rgba(255,248,240,0.08); border-color:var(--accent-on-dark); }
   section[data-bg="8"] .promptbox pre, section[data-bg="9"] .promptbox pre { background:rgba(0,0,0,0.22); color:var(--text-on-dark); }
@@ -219,6 +221,7 @@
   .cmp .tagline { font-family:var(--font-mono); font-size:14px; letter-spacing:0.12em; font-weight:700; color:var(--accent); display:block; margin-bottom:8px; }
   .cmp h3 { font-size:20px; margin:0 0 8px; color:var(--text-on-light); }
   .cmp p { font-size:17px; line-height:1.65; margin:0; color:var(--text-soft-light); }
+  .cmp.one { grid-template-columns:1fr; max-width:920px; margin-left:auto; margin-right:auto; }
   @media (max-width: 980px) { .cmp { grid-template-columns:1fr; } }
 
   /* 圖片點開放大 */
@@ -329,9 +332,11 @@
     <a href="#act-09" data-i="8"><span class="lbl">09 · 場景要給參考</span></a>
     <a href="#act-10" data-i="9"><span class="lbl">10 · 段落二 共創角色</span></a>
     <a href="#act-11" data-i="10"><span class="lbl">11 · 段落二 注意</span></a>
-    <a href="#act-12" data-i="11"><span class="lbl">12 · 段落三 故事創作</span></a>
-    <a href="#act-13" data-i="12"><span class="lbl">13 · 段落三 注意</span></a>
-    <a href="#act-14" data-i="13"><span class="lbl">14 · 收尾</span></a>
+    <a href="#act-12" data-i="11"><span class="lbl">12 · 段落三 說故事</span></a>
+    <a href="#act-13" data-i="12"><span class="lbl">13 · 段落三 分鏡</span></a>
+    <a href="#act-14" data-i="13"><span class="lbl">14 · 段落三 封面</span></a>
+    <a href="#act-15" data-i="14"><span class="lbl">15 · 各組簡報</span></a>
+    <a href="#act-16" data-i="15"><span class="lbl">16 · 收尾</span></a>
   </nav>
 
   <!-- ACT 01 封面橫幅 -->
@@ -548,10 +553,10 @@
     <div class="wrap wide">
       <div class="act-cap reveal">段落一 · 50 分 ｜ 你的手機</div>
       <h2 class="display sm reveal d1">每個人的淡水形象照</h2>
-      <p class="lead reveal d2">用你手機上的 <b>ChatGPT，免費版就可以</b>。開一個新對話，把下面這份指令整段貼進去，然後照著它問你的問題回答。</p>
+      <p class="lead reveal d2">用你手機上的 <b>ChatGPT，免費版就可以</b>。開一個新對話，把下面這份指令整段貼進去；它會一次列出完整回答單，你填完後再確認風格，就能生成圖片。</p>
       <div class="stepbox reveal d3">
         <div class="steprow"><div class="k">1 ｜ 3 分</div><div class="v">互相幫忙拍一張照（半身即可、光線亮、背景乾淨），或用手機裡<b>自己最好看的那一張</b></div></div>
-        <div class="steprow hi"><div class="k">2 ｜ 20 分</div><div class="v">開<b>新對話</b>，貼下面這份指令，上傳照片，照著它的問題回答，確認設定卡，看三個風格，<b>一個風格生一次，最多三次</b></div></div>
+        <div class="steprow hi"><div class="k">2 ｜ 20 分</div><div class="v">開<b>新對話</b>，貼下面這份指令，上傳照片，<b>一次把 A 到 H 的回答單填完</b>，確認設定卡，挑一個風格，<b>一個風格生一次，最多三次</b></div></div>
         <div class="steprow"><div class="k">3 ｜ 2 分</div><div class="v">把圖存下來（點進圖片再按下載），檔名寫「組別-姓名-形象照」，交給桌長收進雲端組別夾</div></div>
         <div class="steprow"><div class="k">4 ｜ 25 分</div><div class="v">全體分享，每人 1 分鐘，講你怎麼把感受變成這張圖</div></div>
       </div>
@@ -559,31 +564,33 @@
       <details class="promptbox reveal d4" open>
         <summary><span><span class="plabel">段落一 指令</span><br/><span class="ptitle">我的淡水形象</span></span><span class="phint">整段複製，貼進新對話，再上傳你的照片。</span></summary>
         <div class="pbody">
-          <p class="ptip">它會先問你問題，設定卡沒確認之前不會生圖。看到它一直在問是正常的，不要催。</p>
+          <p class="ptip">你只需要回答兩次：先把 A 到 H 的回答單一次填完；再看設定卡和三個風格，回覆「確認，第幾版」後才生圖。沒填的項目它會走預設值，不會回頭追問。</p>
           <pre data-copy>你是「我的淡水」工作坊的形象設計助教，陪我把今天在淡水的感受做成一張屬於我的插畫角色。
+我會上傳一張自己的照片。
 
-【第一步：先聊，不要生圖】
-一次問我一個問題，用簡單好回答的說法，優先用我的原話，不要幫我加我沒說過的事。
-要問到這六件事：
-1 今天在淡水最難忘的一個畫面
-2 三個「對外的畫面詞」，形容淡水給你的視覺印象（例如遼闊、明亮、古老）
-3 三個「對內的情緒詞」，形容你當時的心情（例如療癒、自在、驚喜）
-4 今天聽到的在地故事，哪一個最想放進自己的形象
-5 如果把你畫進淡水，你正在做什麼
-6 有沒有不希望出現在畫面裡的東西
+【最重要的規則：不要一題一題問】
+你只跟我來回兩次就要生圖。
+第一次：把下面那張回答單整份列給我，我一次填完。
+第二次：你給我設定卡加三個風格，我挑一版。
+我沒填的項目就照預設值走，不要回頭追問，也不要中途生圖。
 
-我會上傳一張自己的照片。只記錄照片裡看得見的外觀，不要推測我的身分、職業或個性。
-不是全身照的話，要再問我下半身穿什麼、鞋子、外套飾品眼鏡帽子背包要不要留。
-我答不出來就給三個選項讓我挑，不要替我決定。
+【第一次：把這張回答單整份列給我，列完就停】
+A 今天在淡水最難忘的一個畫面
+B 三個畫面詞：淡水給我的視覺印象（例如遼闊、明亮、古老）
+C 三個情緒詞：我當時的心情（例如療癒、自在、驚喜）
+D 今天聽到的在地故事，哪一個最想放進我的形象
+E 如果把我畫進淡水，我正在做什麼
+F 不希望出現在畫面裡的東西（沒有就寫「沒有」）
+G 下半身與鞋子（預設：日常長褲、平底鞋）
+H 外套、飾品、眼鏡、帽子、背包（預設：都不加）
 
-問完整理成一張【我的淡水形象設定卡】給我確認，我回覆「確認」之前不要生圖。
+【第二次：設定卡和三個風格一起給我，給完就停】
+我一次回答完之後，你在同一則訊息裡給我兩樣東西：
+1 一張【我的淡水形象設定卡】。用我的原話整理，不要幫我加我沒說過的事。照片只記錄看得見的外觀，不要推測我的身分、職業或個性。
+2 三個插畫風格版本，每一版三行：風格名稱、為什麼配我講的話、畫面大概長什麼樣。三版差異要明顯。
+然後等我回「確認，第幾版」，我沒說之前不要生圖。
 
-【第二步：三個風格版本】
-從我的六個詞長出三個插畫風格版本讓我挑，每一版三行：
-風格名稱、為什麼配我講的話、畫面大概長什麼樣。
-三版差異要明顯。給完先停，等我說要生哪一版。
-
-【第三步：生圖】
+【第三次：生圖】
 我說哪一版就生哪一版，一版只生一次，不要自動重生。
 全身、插畫風格、乾淨單色背景。
 保留我照片裡的五官特徵與髮型，要看得出是我本人，不要畫成通用的卡通臉。
@@ -632,7 +639,7 @@
         <summary>桌長小卡</summary>
         <div class="hbody">
           <ul>
-            <li><b>半身照要補問下半身</b>。現場多半只拍得到半身，但形象圖是全身。沒補問的話 AI 會自己補，出來的樣子容易不像本人。指令裡已經寫了，確認它有問到就好。</li>
+            <li><b>下半身在回答單的 G、H</b>。現場多半只拍得到半身，但形象圖是全身。這兩項沒填就會走預設（長褲、平底鞋、不加配件），想要特定造型的人提醒他一起填。</li>
             <li><b>需要協助時就接手</b>：試過幾次還沒到位，你直接用自己的帳號協助完成一張，幾分鐘就好。這一關的目標是你這一桌每個人手上都有自己的圖。</li>
             <li><b>備援</b>：額度用完就用素材夾的原始照片，配上自己寫的文字，圖文故事一樣成立。</li>
             <li><b>手機存圖</b>：要點進圖片再按下載，用「分享」只會把連結傳走。這一步記得帶大家做一次。</li>
@@ -700,7 +707,7 @@
       </div>
 
       <details class="promptbox reveal d4">
-        <summary><span><span class="plabel">段落二 指令</span><br/><span class="ptitle">共創角色設計</span></span><span class="phint">桌長筆電用。關鍵字與大家的整理，整份貼進去就好。</span></summary>
+        <summary><span><span class="plabel">段落二 指令</span><br/><span class="ptitle">共創角色設計＋角色三視圖</span></span><span class="phint">桌長筆電用。關鍵字與大家的整理，整份貼進去就好。</span></summary>
         <div class="pbody">
           <p class="ptip">這份指令可以直接讀還沒整理過的筆記。順序不一定、講法各自不同都沒關係，它會自己統整。</p>
           <pre data-copy>你是這一桌的共創角色設計助教。
@@ -739,7 +746,7 @@
 
 【收到「設定卡確認」才做】
 生一張角色設定表，同一張圖包含三個部分：
-1 三視圖：正面、側面、背面並排，同一水平線、同樣頭身比例
+1 角色三視圖：正面、側面、背面並排，同一水平線、同樣頭身比例
 2 臉部表情 3 到 5 個
 3 代表動作 1 到 2 個（全身）
 
@@ -751,7 +758,19 @@
         </div>
       </details>
 
-      <div class="outcome reveal d4"><span>預期達成</span>一個全桌都認的主角＋一張角色設定表（三視圖＋表情＋動作）</div>
+      <div class="cmp one reveal d4">
+        <figure>
+          <img src="../../images/courses/danhai-character-sheet-example.jpg" alt="角色三視圖設定表範例：左邊是正面側面背面三視圖，右上是三個臉部表情，右下是拿畫筆作畫的代表動作" loading="lazy" />
+          <figcaption>
+            <span class="tagline">角色三視圖 · 長這樣就對了</span>
+            <h3>一張圖要有三個部分</h3>
+            <p>左邊三視圖（正面、側面、背面，同一水平線、同樣頭身比例），右上臉部表情，右下代表動作。後面六格分鏡都靠這張圖維持同一個人，所以這張先確認好再往下走。</p>
+          </figcaption>
+        </figure>
+      </div>
+      <p class="mono-note reveal d4">↑ 點圖可以放大看細節 ↑</p>
+
+      <div class="outcome reveal d4"><span>預期達成</span>一個全桌都認的主角＋一張角色設定表（角色三視圖＋表情＋動作）</div>
     </div>
   </section>
 
@@ -792,7 +811,7 @@
     </div>
   </section>
 
-  <!-- ACT 11 段落三 -->
+  <!-- ACT 11 段落三 · 第一步 說故事 -->
   <section id="act-12" data-block data-bg="2">
     <div class="wrap wide">
       <div class="act-cap reveal">段落三 · 60 分</div>
@@ -811,9 +830,92 @@
       </div>
 
       <details class="promptbox reveal d4">
-        <summary><span><span class="plabel">段落三 指令</span><br/><span class="ptitle">六段故事與六格分鏡</span></span><span class="phint">桌長筆電用。貼完再上傳角色設定表與六張實拍照片。</span></summary>
+        <summary><span><span class="plabel">段落三 · 第一步</span><br/><span class="ptitle">Vivi 的說故事指令</span></span><span class="phint">桌長筆電用。先跑這一份，六段故事出來再進下一段的分鏡。</span></summary>
         <div class="pbody">
-          <p class="ptip">場景是實拍的，這份指令不設計場景，只設計主角在那個場景裡的動作與表情。<br/><b>六站照片在這裡拿</b>：<a href="https://danhai-photos-k7m3q9.vercel.app" target="_blank" rel="noopener">六站照片複製區</a> — 點站別進去，按「複製圖片」，回到 ChatGPT 長按輸入框貼上，不用下載再上傳。</p>
+          <p class="ptip">這一份的架構來自<b>吳宛庭 Vivi 的公共藝術敘事轉譯研究</b>：不直接幫你寫，而是用這條輕軌的情緒旅程，陪你把感受收成一句自己的話。<b>它只問一次</b>，六個人的答案一次填完，它一次把六段故事給你。</p>
+          <pre data-copy>你是「公共藝術說故事引導員」，架構來自吳宛庭 Vivi 的敘事轉譯研究。
+陪我們把今天在淡海輕軌看到的公共藝術，變成屬於自己的一段故事。
+
+【最重要的規則：不要一題一題問】
+你只跟我來回一次。先把下面的回答單整份列給我，我一次填完，你再一次把六段故事給我。
+中間不要追問，不要替我決定我的感受，也不要幫我加我沒說過的話。
+
+【第一次：把這張回答單列給我，列完就停】
+一站一組，我們這一桌幾個人就填幾組：
+1 站別
+2 負責的人
+3 我現在的感覺：三個詞（例如等待、迷路、勇氣）
+4 我想問這件公共藝術的一句話
+5 我在現場看見了什麼：一句就好（例如「公共藝術旁的停留姿態」）
+
+【這條輕軌的情緒旅程】
+出發段（紅樹林、竿蓁林、淡金鄧公）：離開、不安、猶豫，帶著迷惘上路。
+探索段（淡江大學、淡金北新、新市一路、淡水行政中心）：陪伴、想像、拉扯，迷惘變成創造力。
+安頓段（濱海義山、濱海沙崙、濱海新市鎮、崁頂）：釋然、療癒、歸屬，學會跟不確定共處。
+
+各站的觀察入口與收尾方向（沒列到的站，用同一段的精神去寫）：
+紅樹林｜閉眼女孩與許願樹｜也許出發不是因為答案已經清楚，而是因為心裡還願意許願
+竿蓁林｜城市與鄉村交會的車窗風景｜當風景開始移動，迷惘有時只是還沒選定路線
+淡金鄧公｜層層堆疊的帽子與滑板女孩｜故事不是抵達後才開始，是在決定出發時就開始
+淡江大學｜巨大大貓｜停下來不是落後，是讓心重新找到可以靠著的位置
+淡金北新｜夢幻色彩的毛毛蟲｜在鮮豔的夢裡，看見改變之前的自己
+新市一路｜層層堆疊的帽子｜有些故事會在鬆手之後才開始長出來
+淡水行政中心｜公司田溪與重造公司橋碑記｜移動不只是經過，也是在理解誰曾經為了相遇付出
+濱海義山｜小女孩與展翅大鳥｜有些方向不是出發前就知道，是在風裡站久了才慢慢指向那邊
+崁頂｜盛開的許願樹｜終點不是結束，是把一路收集的碎片拼成新的自己
+
+【第二次：每一站給我這四塊】
+1 這一站的標題：一句有畫面的話
+2 我的觀察亮點：我的三個感覺詞放進這一站之後，這件作品變成了什麼
+3 我的一句話：15 到 30 個字，有畫面、有情緒，是「我的」不是作品介紹。從我想問的那句話開場，收在這一站的收尾方向
+4 分鏡用的短句：25 字以內，等一下要貼進分鏡指令
+
+只能用我們自己講過的話，不要新增沒說過的內容，也不要講藝術理論。
+
+【最後再做一件事】
+把這幾段排一個先後順序，告訴我哪一段開場、哪一段收尾、為什麼。
+然後整齊列成一份，一行一站：站名｜負責的人｜分鏡用的短句。
+這一份我等一下會直接貼進分鏡指令。</pre>
+          <button class="copy" type="button">複製這份指令</button>
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <!-- ACT 12 段落三 · 第二步 分鏡與修圖 -->
+  <section id="act-13" data-block data-bg="4">
+    <div class="wrap wide">
+      <div class="act-cap reveal">段落三 · 第二步 分鏡</div>
+      <h2 class="display sm reveal d1">六格分鏡怎麼排</h2>
+      <p class="lead reveal d2">故事整理好之後，換這一份把六段排成六格分鏡。<b>場景不要動</b>：照片是現場實拍的，這份指令只設計主角在那個場景裡的位置、動作與表情。</p>
+      <h3 class="h2 reveal d1" style="max-width:900px;margin:46px auto 20px;">先講清楚這四件事，再複製指令</h3>
+      <div class="grid-2">
+        <div class="card reveal d1">
+          <div class="num">注意 01</div>
+          <h3 class="h2">場景不要動，只動角色</h3>
+          <p class="body">照片是現場實拍的淡水，構圖、光線、雕像的樣子都要原封保留，要讓人一眼認出是那個地方。AI 只負責把角色加進去。生圖時<b>一定要上傳那張照片</b>，沒放參考圖，出來的車站會是錯的。</p>
+        </div>
+        <div class="card reveal d2">
+          <div class="num">注意 02</div>
+          <h3 class="h2">故事先確認，再排分鏡</h3>
+          <p class="body">指令會先給你們六段故事，全桌看過、確認了才往下排分鏡。故事定了、照片選好了，分鏡通常一次就對。分鏡那個對話從頭到尾不生圖。</p>
+        </div>
+        <div class="card reveal d3">
+          <div class="num">注意 03</div>
+          <h3 class="h2">生自己那一格，開新對話</h3>
+          <p class="body">六格一人一張，各自開一個新對話貼自己那一份指令。同一個對話連續生不同格，畫風容易跑掉。生三次還不滿意就先收下最接近的那張，<b>六格湊齊優先於每格都好。</b></p>
+        </div>
+        <div class="card reveal d4">
+          <div class="num">注意 04</div>
+          <h3 class="h2">文字留白，規格照分鏡走</h3>
+          <p class="body">圖裡先不生文字，只留白。AI 生中文字經常出錯字，現場沒有時間逐字校對重生。分鏡會給每一格的文字位置與規格（字體感、顏色、大小），排 Google 簡報初版時照著走就對得起來。</p>
+        </div>
+      </div>
+
+      <details class="promptbox reveal d4">
+        <summary><span><span class="plabel">段落三 · 第二步</span><br/><span class="ptitle">六段故事與六格分鏡</span></span><span class="phint">桌長筆電用。貼完再上傳角色設定表與六張實拍照片。</span></summary>
+        <div class="pbody">
+          <p class="ptip"><b>建議先跑上一段那份 Vivi 的說故事指令</b>，把六段故事整理好，再把成果貼進這份指令的第三項。沒跑也不影響，這份自己會整理。<br/>照片在下面那一區拿，貼完指令再上傳角色設定表與六張實拍照片。</p>
           <pre data-copy>你是這一桌繪本的分鏡設計。
 
 我會給你三樣東西：
@@ -864,10 +966,19 @@
         </div>
       </details>
 
+      <div class="factbox reveal d3">
+        <p><b>六站的實拍照片在這裡拿。</b>點站別，找到你要的那張，按「複製圖片」，回到 ChatGPT 長按輸入框貼上，不用下載再上傳。<b>手機請用 Safari 或 Chrome 開</b>，LINE 內建瀏覽器複製會失敗。</p>
+        <p style="margin-top:14px;"><a class="deck-link" href="scenes/" target="_blank" rel="noopener">打開六站場景照片複製區</a></p>
+      </div>
+
+      <div class="factbox reveal d3">
+        <p><b>不滿意的時候，用講的修，不要一直重新生成。</b>角色的樣子不對、或是角色跟場景看起來像兩張圖拼起來，把你要的情境、表情、動作描述清楚，比反覆重生有效，也省額度。<b>這是今天最值得學的一招。</b></p>
+      </div>
+
       <details class="promptbox reveal d4">
-        <summary><span><span class="plabel">段落三 · 修圖</span><br/><span class="ptitle">生出來不太搭的時候</span></span><span class="phint">這一段是今天最值得學的：用描述去修，不是一直重新生成。</span></summary>
+        <summary><span><span class="plabel">段落三 · 第二步 修圖</span><br/><span class="ptitle">生出來不太搭的時候</span></span><span class="phint">直接複製，括號填成你這一格的狀況。</span></summary>
         <div class="pbody">
-          <p class="ptip">角色的感覺不對、或是角色跟場景像兩張圖拼起來，都可以用講的修。把你要的情境、表情、動作描述清楚，比反覆重新生成有效，也省額度。</p>
+          <p class="ptip">括號填成你這一格的狀況再送出，沒發生的那一項整行刪掉就好。</p>
           <pre data-copy>這張很接近了，但有三個地方要改，其他都保留：
 
 1 角色的樣子跟設定表不一樣（臉／髮型／服裝顏色／道具），請照設定表。
@@ -881,10 +992,37 @@
         </div>
       </details>
 
+      <p class="body reveal d4" style="max-width:900px;margin:36px auto 0;"><b>你生完自己那一格，照這六件事看一遍</b>，都過了再交給桌長。</p>
+      <ul class="chk reveal d4">
+        <li>主角外型跟角色設定表一致（臉、髮型、服裝、配件有沒有掉）</li>
+        <li>幾米公共藝術有出現且沒被擋住</li>
+        <li>月台有出現</li>
+        <li>畫風跟前面幾格一致</li>
+        <li>沒有多餘人物、錯誤肢體、重複配件</li>
+        <li>文字留白區有留出來</li>
+      </ul>
+
+      <details class="hostbox reveal d4">
+        <summary>桌長小卡 · 選照片與六個失敗樣態</summary>
+        <div class="hbody">
+          <p><b>空景照的挑選標準，這是最重要的一條</b>：優先選本身就同時拍到「公共藝術雕像＋月台」的那張。這樣 AI 只需要新增一個角色，不必自己拼裝兩個場景來源，拼裝就是走鐘的開始。</p>
+          <p><b>六個已知的失敗樣態</b>（生完照這個順序檢查）：角色遮住雕像；雕像被 AI 誤認成第二個活角色（會長出表情或動作）；為了放大角色，月台辨識度整個消失；月台標示、軌道、雕像結構被 AI 重畫成別的樣子；角色道具太多搶走公共藝術焦點；三元素塞滿後沒有文字安全區。</p>
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <!-- ACT 13 段落三 · 第三步 封面 -->
+  <section id="act-14" data-block data-bg="6">
+    <div class="wrap wide">
+      <div class="act-cap reveal">段落三 · 第三步 封面</div>
+      <h2 class="display sm reveal d1">最後做一張封面</h2>
+      <p class="lead reveal d2">六格都生完之後做封面。劇本、角色、場景都已經在同一個對話裡了，接著講就好，不用重講一次。</p>
+
       <details class="promptbox reveal d4">
-        <summary><span><span class="plabel">段落三 · 封面</span><br/><span class="ptitle">這一組的封面</span></span><span class="phint">桌長筆電用。接在分鏡的同一個對話裡，不用重講一次。</span></summary>
+        <summary><span><span class="plabel">段落三 · 第三步</span><br/><span class="ptitle">這一組的封面</span></span><span class="phint">桌長筆電用。接在分鏡的同一個對話裡，不用重講一次。</span></summary>
         <div class="pbody">
-          <p class="ptip">六格都生完之後做封面。因為劇本、角色、場景都已經在這個對話裡了，直接接著講就好。<b>記得先挑一張實際拍到的地點照片</b>當背景，封面才會跟這條線有關係，不會變成通用插圖。</p>
+          <p class="ptip"><b>記得先挑一張實際拍到的地點照片</b>當背景，封面才會跟這條路線有關係，不會變成通用插圖。</p>
           <pre data-copy>我們這一組六格都完成了，現在要做一張封面。
 
 【素材】
@@ -910,77 +1048,52 @@
       <details class="hostbox reveal d4">
         <summary>桌長小卡</summary>
         <div class="hbody">
-          <p><b>封面要生</b>：六格完成後用上面的封面指令做一張，大標小標由你這桌挑，成員名字寫上去（想匿名的用暱稱，但每個人都要出現）。地點照片挑一張實際拍到的，不要用生成的假景。</p>
+          <p><b>封面要生</b>：六格完成後用這一段的封面指令做一張，大標小標由你這桌挑，成員名字寫上去（想匿名的用暱稱，但每個人都要出現）。地點照片挑一張實際拍到的，不要用生成的假景。</p>
           <p><b>你在段落一分享時就開始收材料了</b>，這一關直接沿用，不用重新訪談。有人的內容太長，你當場問一句「這一段裡面你最想留下來的是哪一句」。</p>
           <p><b>認站要對一次</b>：把破冰時寫的認站便條紙拿出來，一人一站不重複，這份要跟資料一起貼給 AI。</p>
           <p><b>LINE 群怎麼用</b>：分鏡確認之後，你把<b>角色設定表</b>發到群裡（六個人都要），再把<b>每個人那一站的照片與那一格的生圖指令</b>個別貼給對應的人。大家生好的圖也傳回群裡，你統一收。</p>
           <p><b>各自開新對話</b>：提醒大家生自己那一格要開新的對話，同一個對話連續生不同格，畫風容易跑掉。</p>
           <p><b>額度不夠的夥伴</b>：那一格請額度還有的組員協助完成，他改成負責文案與挑圖。六格湊齊優先。</p>
-          <p><b>如果拿到 Vivi 的共創故事指令</b>：先跑她那一份把六段故事整理好，再把成果貼進上面的分鏡指令第三項，故事會更完整。沒拿到也不影響，分鏡指令自己會整理。</p>
+          <p><b>先跑 Vivi 的說故事指令</b>：段落三第一步那份就是，先用它把六段故事整理好，再把成果貼進分鏡指令第三項，故事會更完整。時間不夠就跳過，分鏡指令自己會整理。</p>
           <p><b>初版排版當天現場說明</b>：一頁一格，圖放上去、文字打上去，封面放第一頁。不用排得漂亮，發表能投影就行。<b>這只是當天的暫時版，正式成品活動後另外做</b>，所以不用花時間排版。</p>
           <p><b>收檔</b>：六格圖依序編號 01 到 06，連同 Google 簡報連結一起傳給 Vicky。<b>記得跟全桌說一次</b>：今天是初版，之後會統整成正式網頁放到官網，再發連結。</p>
         </div>
       </details>
 
-      <div class="outcome reveal d4"><span>預期達成</span>六段故事＋六格繪本＋封面＋一份可以投影的初版</div>
-    </div>
-  </section>
-
-  <!-- ACT 12 段落三 注意事項 -->
-  <section id="act-13" data-block data-bg="3">
-    <div class="wrap wide">
-      <div class="act-cap reveal">段落三 · 注意事項</div>
-      <h2 class="display sm reveal d1">這一段要注意四件事</h2>
-      <div class="grid-2">
-        <div class="card reveal d1">
-          <div class="num">注意 01</div>
-          <h3 class="h2">場景不要動，只動角色</h3>
-          <p class="body">照片是現場實拍的淡水，構圖、光線、雕像的樣子都要原封保留，要讓人一眼認出是那個地方。AI 只負責把角色加進去。生圖時<b>一定要上傳那張照片</b>，沒放參考圖，出來的車站會是錯的。</p>
-        </div>
-        <div class="card reveal d2">
-          <div class="num">注意 02</div>
-          <h3 class="h2">故事先確認，再排分鏡</h3>
-          <p class="body">指令會先給你們六段故事，全桌看過、確認了才往下排分鏡。故事定了、照片選好了，分鏡通常一次就對。分鏡那個對話從頭到尾不生圖。</p>
-        </div>
-        <div class="card reveal d3">
-          <div class="num">注意 03</div>
-          <h3 class="h2">生自己那一格，開新對話</h3>
-          <p class="body">六格一人一張，各自開一個新對話貼自己那一份指令。同一個對話連續生不同格，畫風容易跑掉。生三次還不滿意就先收下最接近的那張，<b>六格湊齊優先於每格都好。</b></p>
-        </div>
-        <div class="card reveal d4">
-          <div class="num">注意 04</div>
-          <h3 class="h2">文字留白，規格照分鏡走</h3>
-          <p class="body">圖裡先不生文字，只留白。AI 生中文字經常出錯字，現場沒有時間逐字校對重生。分鏡會給每一格的文字位置與規格（字體感、顏色、大小），排 Google 簡報初版時照著走就對得起來。</p>
-        </div>
-      </div>
-      <p class="body reveal d4" style="max-width:900px;margin:36px auto 0;"><b>你生完自己那一格，照這六件事看一遍</b>，都過了再交給桌長。</p>
-      <ul class="chk reveal d4">
-        <li>主角外型跟角色設定表一致（臉、髮型、服裝、配件有沒有掉）</li>
-        <li>幾米公共藝術有出現且沒被擋住</li>
-        <li>月台有出現</li>
-        <li>畫風跟前面幾格一致</li>
-        <li>沒有多餘人物、錯誤肢體、重複配件</li>
-        <li>文字留白區有留出來</li>
-      </ul>
       <div class="factbox reveal d4">
         <p><b>發表時全組一起站上去，講三件事</b>：我們這組的主角是誰、他身上有誰的什麼；故事線從哪一站走到哪一站；哪一格最喜歡。</p>
         <p><b>今天交出去的是初版。</b>活動後我們會把六組作品統整成正式的網頁放到官網，到時候發連結給大家。</p>
       </div>
-      <details class="hostbox reveal d4">
-        <summary>桌長小卡</summary>
-        <div class="hbody">
-          <p><b>空景照的挑選標準，這是最重要的一條</b>：優先選本身就同時拍到「公共藝術雕像＋月台」的那張。這樣 AI 只需要新增一個角色，不必自己拼裝兩個場景來源，拼裝就是走鐘的開始。</p>
-          <p><b>六個已知的失敗樣態</b>（生完照這個順序檢查）：角色遮住雕像；雕像被 AI 誤認成第二個活角色（會長出表情或動作）；為了放大角色，月台辨識度整個消失；月台標示、軌道、雕像結構被 AI 重畫成別的樣子；角色道具太多搶走公共藝術焦點；三元素塞滿後沒有文字安全區。</p>
-        </div>
-      </details>
+
+      <div class="outcome reveal d4"><span>預期達成</span>六段故事＋六格繪本＋封面＋一份可以投影的初版</div>
     </div>
   </section>
 
+  <!-- ACT 15 成果發表簡報 -->
+  <section id="act-15" data-block data-bg="3">
+    <div class="wrap wide">
+      <div class="act-cap reveal">成果發表 · 桌長用</div>
+      <h2 class="display sm reveal d1">成果發表的簡報</h2>
+      <p class="lead reveal d2">六格圖文湊齊之後，桌長點自己這一組的連結，把圖跟文字排進去，發表時直接投影。<b>一頁一格，封面放第一頁</b>，不用排得漂亮，能投影就行。</p>
+      <div class="stepbox reveal d3">
+        <div class="steprow"><div class="k">第一組</div><div class="v"><a class="deck-link" href="https://docs.google.com/presentation/d/1Ae5b8KxA-WAburyXqr94Z4Wwdgu6UdluemlP7PEAOUg/edit?usp=sharing" target="_blank" rel="noopener">打開旅學堂 0821-第一組 的簡報</a></div></div>
+        <div class="steprow hi"><div class="k">第二組</div><div class="v"><a class="deck-link" href="https://docs.google.com/presentation/d/1EsSuMfKi4JFUAyFdU0du0g1OnNXLS6BZmNH-DAKU_1o/edit?usp=sharing" target="_blank" rel="noopener">打開旅學堂 0821-第二組 的簡報</a></div></div>
+        <div class="steprow"><div class="k">第三組</div><div class="v"><a class="deck-link" href="https://docs.google.com/presentation/d/1Md61wZTo6HqdP30-ClVmt612mUN7diVuoiEPMBD-xuE/edit?usp=sharing" target="_blank" rel="noopener">打開旅學堂 0821-第三組 的簡報</a></div></div>
+        <div class="steprow hi"><div class="k">第四組</div><div class="v"><a class="deck-link" href="https://docs.google.com/presentation/d/1DNcEDWqnfOwpVps2a_3g3TiiiGo1BBUuvz283SSYYrc/edit?usp=sharing" target="_blank" rel="noopener">打開旅學堂 0821-第四組 的簡報</a></div></div>
+        <div class="steprow"><div class="k">第五組</div><div class="v"><a class="deck-link" href="https://docs.google.com/presentation/d/12cK-kqRolQWe6Pt9nXNqEsAQtMG1XnQprRO2qbz8Zn4/edit?usp=sharing" target="_blank" rel="noopener">打開旅學堂 0821-第五組 的簡報</a></div></div>
+        <div class="steprow hi"><div class="k">第六組</div><div class="v"><a class="deck-link" href="https://docs.google.com/presentation/d/1NB47cnDk4aqhIC9g9v9D-CJk_lAsK1uLYx6Yx_ype-k/edit?usp=sharing" target="_blank" rel="noopener">打開旅學堂 0821-第六組 的簡報</a></div></div>
+      </div>
+      <div class="factbox reveal d4">
+        <p><b>只點自己那一組。</b>六份簡報都可以編輯，點錯組會改到別桌的東西。</p>
+        <p><b>今天交出去的是初版。</b>六格圖依序編號 01 到 06，連同這份簡報連結一起傳給 Vicky。活動之後我們會把六組作品統整成正式的網頁放到官網，再發連結給大家。</p>
+      </div>
+    </div>
+  </section>
 
-  <!-- ACT 14 收尾 -->
-  <section id="act-14" data-block data-bg="9">
+  <!-- ACT 16 收尾 -->
+  <section id="act-16" data-block data-bg="9">
     <div class="wrap left">
-      <div class="act-cap reveal">ACT 14 · 帶回去</div>
+      <div class="act-cap reveal">ACT 16 · 帶回去</div>
       <h2 class="display sm reveal d1" style="text-align:left;">回去自己再做一次</h2>
       <p class="lead reveal d2" style="text-align:left;margin:0;">今天做的事串起來就是一句話：先把感受聊清楚，再決定風格，才生圖。這套方法你回去可以用在任何一個地方，不只是淡水。</p>
       <div class="footer-grid">
