@@ -1,0 +1,544 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="index,follow">
+<title>你的網頁其實沒鎖：網站內容防護六個等級，付費講義該放哪一層｜江江教練 · AI 知識管理</title>
+<meta name="description" content="加了 noindex 只是搜尋不到，網址拿到照樣打得開。用房屋安全的六個等級說清楚網站內容防護，每一層都對照真實技術，分開處理工作人員、長期客戶與付費學員，並附兩個你自己就能做的驗收測試。">
+<link rel="canonical" href="https://jiangyude.com/articles/who-can-see-your-site/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="你的網頁其實沒鎖：網站內容防護六個等級，付費講義該放哪一層｜江江教練">
+<!-- 分享封面：hero 文字填好後在 repo 根目錄跑 `node scripts/og-shot.mjs who-can-see-your-site` 自動截 1200×630 到 images/og/who-can-see-your-site.jpg（見 README「文章分享封面（OG 圖）機制」）。別退回 intro-jiang.png 直式人像，會被裁成只剩脖子。 -->
+<meta property="og:image" content="https://jiangyude.com/images/og/who-can-see-your-site.jpg">
+<meta property="og:description" content="加了 noindex 只是搜尋不到，網址拿到照樣打得開。用房屋安全的六個等級說清楚網站內容防護，每一層都對照真實技術，分開處理工作人員、長期客戶與付費學員，並附兩個你自己就能做的驗收測試。">
+<meta property="og:url" content="https://jiangyude.com/articles/who-can-see-your-site/">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:site_name" content="江江教練 · AI 知識管理">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="你的網頁其實沒鎖：網站內容防護六個等級，付費講義該放哪一層｜江江教練">
+<meta name="twitter:image" content="https://jiangyude.com/images/og/who-can-see-your-site.jpg">
+<meta name="twitter:description" content="加了 noindex 只是搜尋不到，網址拿到照樣打得開。用房屋安全的六個等級說清楚網站內容防護，每一層都對照真實技術，分開處理工作人員、長期客戶與付費學員，並附兩個你自己就能做的驗收測試。">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"你的網頁其實沒鎖：網站內容防護六個等級，付費講義該放哪一層","description":"加了 noindex 只是搜尋不到，網址拿到照樣打得開。用房屋安全的六個等級說清楚網站內容防護，每一層都對照真實技術，分開處理工作人員、長期客戶與付費學員，並附兩個你自己就能做的驗收測試。","author":{"@type":"Person","name":"江昱德","alternateName":"江江教練","jobTitle":"隱性知識提煉師、AI 應用規劃師"},"isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://jiangyude.com/"},"inLanguage":"zh-Hant","url":"https://jiangyude.com/articles/who-can-see-your-site/"}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{--ink:#1a1612;--paper:#fefcf8;--muted:#6a635a;--line:#d8cdb8;--green:#5f7553;--blue:#5689b8;--orange:#e85a4f;--soft:#faf5ec;--dark:#2a2018;--shadow:0 18px 45px rgba(107,74,42,.14);--sp-shadow:hsla(35,50%,60%,.15);--sp-shadow-edge:hsla(35,50%,68%,.03);--sp-radius:400px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC","Segoe UI",sans-serif}
+a{color:inherit}
+/* 官網共用導航列 nav.top（與首頁/文章總站同一條） */
+nav.top{position:sticky;top:0;background:rgba(254,252,248,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid #d8cdb8;z-index:100}
+nav.top .container{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:24px;padding:14px 32px}
+.nav-brand-img{justify-self:start;display:flex;align-items:center;text-decoration:none;flex-shrink:0;transition:opacity .2s}
+.nav-brand-img:hover{opacity:.8}.nav-brand-img img{height:40px;width:auto;display:block}
+nav.top ul.nav-menu{justify-self:end;display:flex;gap:22px;list-style:none;margin:0;padding:0;font-size:.95rem;white-space:nowrap}
+nav.top ul.nav-menu a{color:#3a342d;text-decoration:none;transition:color .2s;font-weight:500;white-space:nowrap}
+nav.top ul.nav-menu a:hover{color:#1a1612}nav.top ul.nav-menu a.active{color:#1a1612;font-weight:700}
+.nav-toggle{display:none;background:none;border:none;padding:6px;cursor:pointer;width:36px;height:36px;position:relative}
+.nav-toggle span{display:block;position:absolute;left:8px;right:8px;height:2px;background:#1a1612;border-radius:2px;transition:transform .25s,opacity .25s,top .25s}
+.nav-toggle span:nth-child(1){top:11px}.nav-toggle span:nth-child(2){top:17px}.nav-toggle span:nth-child(3){top:23px}
+.nav-toggle.open span:nth-child(1){top:17px;transform:rotate(45deg)}.nav-toggle.open span:nth-child(2){opacity:0}.nav-toggle.open span:nth-child(3){top:17px;transform:rotate(-45deg)}
+@media(max-width:860px){
+ nav.top .container{grid-template-columns:auto 1fr auto;padding:10px 16px;gap:12px}
+ .nav-brand-img img{height:32px}
+ .nav-toggle{display:block;justify-self:end}
+ nav.top ul.nav-menu{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(254,252,248,.98);backdrop-filter:blur(14px);border-bottom:1px solid #d8cdb8;flex-direction:column;gap:0;padding:8px 0;box-shadow:0 10px 24px rgba(107,74,42,.08)}
+ nav.top ul.nav-menu.open{display:flex}
+ nav.top ul.nav-menu li{border-bottom:1px solid #e8dfc9}
+ nav.top ul.nav-menu li:last-child{border-bottom:none}
+ nav.top ul.nav-menu a{display:block;padding:14px 20px;font-size:1.06rem}
+}
+/* 滑鼠暖光暈（與首頁同一支 spotlight.js） */
+body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradient(var(--sp-radius) circle at var(--mx,50%) var(--my,50%),var(--sp-shadow) 0%,var(--sp-shadow-edge) 45%,transparent 75%);pointer-events:none;z-index:9999;mix-blend-mode:multiply;transition:background .06s linear}
+.hero{position:relative;overflow:hidden;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:72px;padding:96px clamp(20px,6vw,88px) 80px;background:linear-gradient(180deg,#fffcf0 0%,#f9e9d2 100%);color:#1a1612;border-bottom:1px solid #d8cdb8}
+.hero .wc{position:absolute;border-radius:50%;filter:blur(60px);pointer-events:none;z-index:0}
+.hero .wc1{width:420px;height:360px;top:-120px;right:-80px;background:#e8884b;opacity:.15}
+.hero .wc2{width:360px;height:300px;bottom:-110px;left:-70px;background:#5f7553;opacity:.13}
+.hero .wc3{width:280px;height:260px;top:34%;left:14%;background:#a08144;opacity:.10}
+.hero>div{flex:none;width:860px;max-width:100%;position:relative;z-index:2}
+.hero-figure{margin:0;width:420px;flex:none;position:relative;z-index:2}
+.hero-figure img{display:block;width:100%;border-radius:16px;border:1px solid #d8cdb8;box-shadow:0 18px 45px rgba(107,74,42,.16);cursor:zoom-in}
+.hero-figure figcaption{margin-top:10px;font-size:14px;line-height:1.6;color:#6a635a}
+.inline-figure{margin:30px auto 8px;max-width:820px}
+.inline-figure img{display:block;width:100%;border-radius:14px;border:1px solid var(--line);box-shadow:var(--shadow);background:#fff;cursor:zoom-in}
+.inline-figure figcaption{font-size:14px;line-height:1.6;color:var(--muted);margin-top:10px}
+.lightbox{position:fixed;inset:0;z-index:10000;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(12,10,8,.92);cursor:zoom-out;backdrop-filter:blur(4px)}
+.lightbox.open{display:flex}.lightbox img{max-width:96vw;max-height:92vh;border-radius:10px;box-shadow:0 24px 60px rgba(0,0,0,.5)}
+.lightbox-close{position:fixed;top:18px;right:24px;color:#fff;font-size:34px;line-height:1;font-weight:700;cursor:pointer;opacity:.85}
+.kicker{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.55rem;color:#7a5c3a;font-weight:500}
+.hero h1{max-width:none;margin:16px 0 18px;font-size:clamp(36px,6vw,72px);line-height:1.08;overflow-wrap:anywhere}
+.hero p{max-width:none;font-size:clamp(18px,2vw,23px);line-height:1.62;color:#3a342d}
+.cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
+.cta a{display:inline-flex;align-items:center;text-decoration:none;border-radius:8px;padding:12px 16px;font-weight:900}
+.cta .primary{background:#fff;color:#1a1612}.cta .ghost{border:1px solid rgba(255,255,255,.32);color:#fff;background:rgba(255,255,255,.08)}
+.section{padding:54px clamp(20px,6vw,88px);border-top:1px solid var(--line)}
+.inner{width:min(1000px,100%);margin:0 auto}
+.section h2{font-size:clamp(26px,4.2vw,48px);line-height:1.12;margin:0 0 18px}
+.section h3{font-size:clamp(21px,3vw,30px);line-height:1.2;margin:30px 0 12px}
+.lead{font-size:clamp(18px,1.6vw,22px);line-height:1.7;color:#3a342d;max-width:900px}
+.section p{font-size:18px;line-height:1.74;color:#3a342d}.section p+p{margin-top:14px}
+.section ul,.section ol{padding-left:1.4em;font-size:18px;line-height:1.74;color:#3a342d}.section li{margin-bottom:8px}
+.meaning{margin:22px 0;padding:16px 18px;border-left:5px solid var(--blue);background:rgba(86,137,184,.12);border-radius:6px;line-height:1.7;font-size:19px}
+.meaning b{display:block;color:var(--blue);margin-bottom:4px}
+.caveat{margin:0 0 8px;padding:16px 18px;border-left:5px solid var(--orange);background:rgba(232,90,79,.1);border-radius:6px;line-height:1.7;font-size:18px;color:#3a342d}
+.caveat b{display:block;color:var(--orange);margin-bottom:4px}
+.infocard{background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px 24px 22px;box-shadow:0 8px 22px rgba(107,74,42,.08);margin-top:8px}
+.infocard-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.info-item{padding:18px 14px 0}
+.info-item b{display:block;font-size:14px;font-weight:900;letter-spacing:.04em;margin-bottom:7px;text-transform:uppercase}
+.info-item:nth-child(1) b{color:var(--green)}.info-item:nth-child(2) b{color:var(--orange)}.info-item:nth-child(3) b{color:var(--blue)}
+.info-item p{margin:0;font-size:18px;line-height:1.65;color:#3a342d}
+.tagrow{display:flex;flex-wrap:wrap;gap:7px;margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
+.tag{font-size:14px;color:var(--muted);background:var(--soft);border:1px solid var(--line);border-radius:999px;padding:4px 11px}
+.duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:24px}
+.duo.stack{grid-template-columns:1fr}
+.duo .card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:22px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.duo .card.a{border-color:var(--orange)}.duo .card.b{border-color:var(--green);box-shadow:0 8px 24px rgba(95,117,83,.16)}
+.duo .card small{display:block;font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.04em;margin-bottom:9px}
+.duo .card.a small{color:var(--orange)}.duo .card.b small{color:var(--green)}
+.duo .card b{display:block;font-size:22px;line-height:1.3;margin-bottom:12px}.duo .card.a b{color:#c0512f}.duo .card.b b{color:#4a7a59}
+.duo .card p{margin:0;color:#3a342d;line-height:1.75;font-size:18px}
+.workflow-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:24px}
+.workflow-step{background:#fff;border:1px solid var(--line);border-radius:8px;padding:18px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.workflow-step small{display:block;color:var(--orange);font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;margin-bottom:9px}
+.workflow-step b{display:block;font-size:18px;line-height:1.3;margin-bottom:9px}
+.workflow-step p{margin:0;color:#3a342d;line-height:1.68;font-size:18px}
+.codeblock{background:var(--dark);color:#f3ead9;border-radius:8px;padding:18px 20px;font:500 14px/1.65 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;overflow-x:auto;white-space:pre-wrap;margin:20px 0;box-shadow:0 8px 22px rgba(107,74,42,.12)}
+.codeblock .c{color:#f6d7a6;font-weight:600}
+.skillcard{background:#fff;border:1px solid var(--green);border-radius:12px;padding:24px;box-shadow:0 10px 26px rgba(95,117,83,.16);margin-top:8px}
+.skillcard b{display:block;font-size:21px;margin-bottom:8px}
+.skillcard p{margin:0 0 16px;font-size:17px;line-height:1.65;color:#3a342d}
+.cta-band{background:#e6f0e5;color:#3a342d}.cta-band .section{border-top:none}
+.cta-band .inner{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(260px,.85fr);gap:26px;align-items:start}
+.cta-band h2{font-size:clamp(26px,4vw,44px);margin:0 0 16px}.cta-band p,.cta-band .lead{color:rgba(58,52,45,.9);font-size:18px;line-height:1.72}
+.cta-card{border:1px solid #cfe0d2;background:#fbfdfa;border-radius:8px;padding:22px}
+.cta-card b{display:block;color:#48b178;margin-bottom:10px;font-size:18px}.cta-card p{margin:0 0 14px}
+.footer{padding:30px clamp(20px,6vw,88px);font-size:14px;color:var(--muted);background:#fff;border-top:1px solid var(--line)}
+.footer-inner{width:min(1000px,100%);margin:0 auto}
+.footer-links{display:flex;flex-wrap:wrap;gap:6px 12px;margin-bottom:14px}.footer-links a{color:var(--blue);font-weight:900;text-decoration:none;font-size:14px}
+.footer-brand{font-weight:900;font-size:15px;margin-bottom:10px}.footer-note{font-size:13px;line-height:1.6}
+@media(max-width:820px){.infocard-grid{grid-template-columns:1fr}.duo{grid-template-columns:1fr}.workflow-grid{grid-template-columns:1fr}.cta-band .inner{grid-template-columns:1fr}.section{padding:40px 20px}.hero{min-height:52vh;flex-direction:column;justify-content:flex-start;align-items:flex-start;gap:24px}.hero>div{width:100%}.hero-figure{width:100%;max-width:560px}}
+@media(max-width:820px){html,body{overflow-x:hidden}.hero h1{word-break:break-word}}
+
+/* 表格：桌機正常呈現，窄螢幕在自己的容器內橫向捲動，頁面本體不溢出 */
+.tablewrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:22px 0;border:1px solid var(--line);border-radius:10px;background:#fff;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.tablewrap table{border-collapse:collapse;width:100%;min-width:600px;font-size:18px;line-height:1.65}
+.tablewrap .zh{display:block;margin-top:5px;font-size:16px;line-height:1.55;color:var(--muted);font-weight:400}
+.tablewrap th,.tablewrap td{padding:12px 14px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top;color:#3a342d}
+.tablewrap thead th{background:var(--soft);font-weight:900;font-size:18px;color:#1a1612;white-space:nowrap}
+.tablewrap tbody tr:last-child td{border-bottom:none}
+.tablewrap td code,.section code{background:var(--soft);border:1px solid var(--line);border-radius:5px;padding:1px 6px;font:500 15px/1.5 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace}
+.readmore{list-style:none;padding-left:0;margin:18px 0 0}
+.readmore li{margin-bottom:12px;padding-left:0;line-height:1.7;font-size:18px}
+.readmore a{color:var(--blue);font-weight:700;text-decoration:none}.readmore a:hover{text-decoration:underline}
+.readmore li span{color:var(--muted);font-size:18px}
+.readmore.near{margin-top:28px;padding:18px 20px;background:var(--soft);border:1px solid var(--line);border-radius:10px}
+.readmore.near>b{display:block;font-size:15px;letter-spacing:.04em;color:var(--green);margin-bottom:2px}
+.toc{margin:26px 0 0;padding:20px 22px;background:#fff;border:1px solid var(--line);border-radius:10px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.toc>b{display:block;font-size:15px;letter-spacing:.05em;color:var(--green);margin-bottom:10px}
+.toc ol{margin:0;padding-left:1.35em;font-size:18px;line-height:1.7}
+.toc li{margin-bottom:7px;color:#3a342d}
+.toc a{color:var(--blue);font-weight:700;text-decoration:none}.toc a:hover{text-decoration:underline}
+.toc-hint{margin:12px 0 0!important;font-size:18px!important;color:var(--muted)!important;border-top:1px solid var(--line);padding-top:12px}
+.section ol li{margin-bottom:10px}
+.duo .card ul{margin:0;padding-left:1.2em;font-size:18px;line-height:1.75}
+.duo .card ul li{margin-bottom:9px}
+.cta-card a{color:#2f7d52;font-weight:900;text-decoration:none}
+@media(max-width:820px){
+  .tablewrap table{min-width:560px;font-size:18px}
+  /* 窄螢幕提示表格可左右滑動 */
+  .tablewrap{position:relative}
+  .tablewrap::after{content:"表格可左右滑動 →";position:sticky;left:0;display:block;font-size:15px;color:var(--muted);background:var(--soft);border-top:1px solid var(--line);padding:7px 12px;width:100%}
+  html,body{overflow-x:hidden;max-width:100%}
+}
+@media(max-width:400px){
+  .tablewrap table{min-width:520px}
+}
+</style>
+</head>
+<body class="spotlight">
+<nav class="top">
+  <div class="container">
+    <a class="nav-brand-img" href="../../index.html"><img src="../../images/footer-signature.png" alt="江江教練 | 江昱德"></a>
+    <button class="nav-toggle" aria-label="選單"><span></span><span></span><span></span></button>
+    <ul class="nav-menu">
+      <li><a href="../../index.html">首頁</a></li>
+      <li><a href="../../knowledge-architecture.html">知識架構</a></li>
+      <li><a href="../../courses.html">課程</a></li>
+      <li><a href="../../articles.html" class="active">深度文章</a></li>
+      <li><a href="../../skills.html">技能包下載</a></li>
+      <li><a href="../../offers.html">服務方案</a></li>
+      <li class="lang-switch"><a href="../../en/articles.html" hreflang="en">EN</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="wc wc1"></div>
+  <div class="wc wc2"></div>
+  <div class="wc wc3"></div>
+  <div>
+    <div class="kicker">網站安全 / 存取控制</div>
+    <h1>你的網頁其實沒鎖：網站內容防護六個等級，付費講義該放哪一層</h1>
+    <p>加了 noindex 只是搜尋不到，網址拿到照樣打得開。六個防護等級每一層都對照真實技術，並分開處理工作人員、長期客戶與付費學員。</p>
+  </div>
+  <!-- 封面圖（建議放）：橫式用預設 width:420px；4:5 直式改 .hero-figure{width:320px} 並加 .hero-figure img{aspect-ratio:4/5;object-fit:cover}。沒有封面圖就整個 <figure> 刪掉，hero 會自動置中只剩文字。封面同時設成上面 og:image / twitter:image。 -->
+</section>
+
+<main>
+<section class="section" id="start">
+  <div class="inner">
+    <h2>這篇在講什麼</h2>
+    <p class="lead">很多人以為加了 noindex 就等於把網頁鎖起來了。這篇用房屋安全的六層比喻，把「搜尋不到」跟「進不去」這兩件常被混在一起的事分開，每一層都對照到真實技術，說清楚它擋得住什麼、擋不住什麼。最後分開處理工作人員、長期客戶、付費學員這三種人，因為它們的正確解法完全不同。</p>
+
+    <div class="duo stack">
+      <div class="card a">
+        <b>適合誰</b>
+        <ul>
+          <li>有人跟你說「加 noindex 就搜尋不到了，很安全」，你隱約覺得哪裡怪。</li>
+          <li>你要幫學員開一區「登入才看得到講義」，但不確定怎麼做才是真的擋住。</li>
+          <li>你有工作人員要進後台，也有幾位長期客戶要看專屬內容，兩種人的解法你分不清楚。</li>
+          <li>你發過「網址很長很難猜」的私密頁，現在想知道那樣到底夠不夠。</li>
+          <li>你要跟客戶承諾內容安全，但你不確定能承諾到哪裡。</li>
+        </ul>
+      </div>
+      <div class="card b">
+        <b>你可以帶走什麼</b>
+        <ul>
+          <li>六層存取分級的判斷順序，每一層都對照真實技術，不只是比喻。</li>
+          <li>一組判斷：哪些內容該放哪一層，問自己一句話就知道。</li>
+          <li>工作人員、長期客戶、付費學員三種人的對照表，各自該用哪一招。</li>
+          <li>兩個你自己就能做的驗收測試，測完才知道有沒有真的擋住。</li>
+          <li>一段誠實的邊界說明：這套方法保證什麼、不保證什麼。</li>
+        </ul>
+      </div>
+    </div>
+
+    <nav class="toc" aria-label="本篇目錄">
+      <b>本篇目錄</b>
+      <ol>
+        <li><a href="#findable">能不能被找到，跟找到之後能不能進去</a>（整篇最重要的一組區分）</li>
+        <li><a href="#six-layers">六層房屋安全</a>：從公開展示間到房屋裡的保險箱</li>
+        <li><a href="#semi-private">我的半私密網頁做法，以及它的限制</a></li>
+        <li><a href="#three-roles">工作人員、長期客戶、付費學員：三種人，三種解法</a></li>
+        <li><a href="#ai-write">那我可以叫 AI 幫我寫嗎</a>（含兩個自己驗收的測試）</li>
+        <li><a href="#guarantee">這套方法保證什麼，不保證什麼</a>／<a href="#recap">收尾 Recap</a>／<a href="#pitfalls">常見的坑</a></li>
+      </ol>
+    </nav>
+  </div>
+</section>
+<section class="section" id="problem">
+  <div class="inner">
+    <h2>一個具體問題</h2>
+    <p>我打算幫講師、顧問和商用客戶架網站。他們的需求長得很像：公開訪客要看得到講師介紹、課程介紹和公開文章；付費學員登入之後才能看到完整講義和簡報；工作人員登入之後可以進後台。一堂課大概一百位學員。</p>
+    <p>這三種人湊在一起，就會撞出一個必須先回答的問題：這一百個人、那幾個工作人員、還有路過的陌生訪客，網站要怎麼分辨他們，而且分辨錯了會怎樣。</p>
+    <div class="meaning"><b>核心判斷</b>先決定每一種人能看到什麼，再決定用什麼技術去擋。反過來做，你會先挑一個工具，然後把內容硬塞進那個工具做得到的形狀。</div>
+    <p>選平台這件事我另外寫了一篇，這篇只處理「誰能看到什麼」。</p>
+    <div class="readmore near">
+      <b>延伸閱讀</b>
+      <ul class="readmore">
+        <li><a href="../github-vercel-cloudflare-compare/">網站放 GitHub、Vercel 還是 Cloudflare？三家免費額度、商用限制與功能差異</a><br><span>那篇是三家平台的角色分工、免費額度與商用條款查證，以及只付網域費就能跑起來的架構。這篇講的分級，最後會落在那篇的架構上。</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+<section class="section" id="findable">
+  <div class="inner">
+    <h2>能不能被找到，跟找到之後能不能進去</h2>
+    <p>這是整篇最重要的一組區分，也是最容易被說反的一組。</p>
+    <div class="duo">
+      <div class="card a"><small>第一件事</small><b>能不能被找到</b><p>講的是曝光。你的網址有沒有出現在 Google 搜尋結果、有沒有被 AI 摘要引用、有沒有掛在你的導覽列上。</p></div>
+      <div class="card b"><small>第二件事</small><b>能不能進去</b><p>講的是存取控制。一個人拿到網址、貼進瀏覽器之後，伺服器會不會把內容送給他。</p></div>
+    </div>
+    <p><code>noindex</code>、<code>robots.txt</code>、隨機網址、不放 sitemap，這四招全部都只影響第一件事。它們一個字都沒有動到第二件事。具體來說：</p>
+    <ul>
+      <li><b><code>noindex</code> 的真正作用</b>是告訴遵守規範的搜尋引擎「請不要把這一頁放進索引」。它是一個請求，對象是爬蟲（搜尋引擎派出來自動讀取網頁的程式）。任何人直接打開這個網址，伺服器照樣把完整內容送出去。</li>
+      <li><b><code>X-Robots-Tag</code></b> 是同一件事的 HTTP 標頭版本。HTTP 標頭是伺服器送出檔案時附帶的一組說明，訪客看不到，但爬蟲讀得到，所以它適用於 HTML 以外的檔案（例如 PDF）。作用範圍一樣，只管索引。</li>
+      <li><b><code>robots.txt</code> 的真正作用</b>是告訴爬蟲哪些路徑不要抓。它是公開檔案，任何人都可以打開「你的網域/robots.txt」看裡面寫了什麼。所以把敏感路徑寫進 <code>robots.txt</code>，效果是反過來的：你等於公布了一份「這裡有東西」的清單。</li>
+      <li><b>隨機網址能降低什麼風險</b>：它降低「被隨機猜到」和「被搜尋到」的機率。它擋不住的是「拿到網址的人轉傳給別人」。而網址一旦離開你手上，你沒有辦法收回，因為那個網址本身就是唯一的通行證。</li>
+    </ul>
+    <div class="caveat"><b>請當成硬規則記住</b><code>robots.txt</code> 不能作為敏感資料的保護機制。正確的心智模型是：這些技巧把你的房子從地圖上抹掉，但房子的門還是開著的。</div>
+  </div>
+</section>
+<section class="section" id="six-layers">
+  <div class="inner">
+    <h2>六層房屋安全</h2>
+    <p>我用房子來說明六個層級。每一層後面我都會接上真實的技術，因為比喻只能幫你進門，不能取代做法。</p>
+    <div class="caveat"><b>先講一件容易誤解的事</b>這六層是六種存取狀態，防護強度大致由淺到深，但第三層是例外。第三層看起來比第二層更安全，實際上沒有，它是一個常見的誤用示範。我把它放進來，是因為太多網站正停在那一層還以為自己安全了。看的時候請把它當成警示，不要當成一個可以選的等級。</div>
+
+    <h3>第一層：公開展示間</h3>
+    <p>任何人都能找到，任何人都能進來。這是設計上就要被看到的東西。</p>
+    <p><b>對應的真實做法：</b>公開網站、產出 sitemap、開放搜尋引擎索引、GitHub Pages 公開內容、公開的 Cloudflare Pages 站台。</p>
+    <p><b>適合放：</b>講師介紹、課程介紹、公開文章、招生頁、聯絡方式。這一層要主動做好曝光，不要不小心把它擋掉。</p>
+
+    <h3>第二層：從地圖上抹除的房子</h3>
+    <p>房子還在，門也還開著，只是地址很難被發現。</p>
+    <p><b>對應的真實做法：</b>隨機且不容易猜的網址、HTML 的 <code>noindex</code>、<code>X-Robots-Tag</code> 標頭、依需要調整 <code>robots.txt</code>、不放進公開 sitemap（給搜尋引擎看的網站地圖，列出你希望被收錄的所有頁面）、不掛在導覽列與書籤頁。</p>
+    <div class="caveat"><b>這一層降低的是曝光，沒有提升房子本身的防禦力</b>拿到網址的人，一律進得去。適合放時效性的校稿頁、給特定對象看過就算了的一次性內容、內容外流不會造成損失的東西。</div>
+
+    <h3>第三層：拉起紅線</h3>
+    <p>門口拉了一條紅線，上面寫「請勿進入」。但東西已經擺在門內，而且門根本沒鎖。</p>
+    <p><b>對應的真實做法：</b>用 CSS 把區塊隱藏、用 JavaScript 決定要不要顯示、在前端判斷「這個人是不是會員」、把完整講義整份寫進 HTML，再用一顆按鈕決定顯示或不顯示。</p>
+    <div class="caveat"><b>這一層要非常小心</b>只要資料已經送到瀏覽器，懂得開發者工具的人就可能取得它。按右鍵看原始碼、打開 Network 分頁、把 <code>display:none</code> 改掉，這些都是幾秒鐘的事。</div>
+    <p>前端的顯示與隱藏，是<b>體驗設計</b>，不是存取控制。它可以拿來做「先看摘要，點開看全文」這種介面互動，不能拿來擋付費內容。</p>
+
+    <h3>第四層：有警衛的鐵門</h3>
+    <p>有人站在門口。你要先證明你是誰，警衛確認名單上有你，才會放你進去。在你通過之前，請求根本不會抵達你的網站。</p>
+    <p><b>對應的真實做法：</b>Cloudflare Access、Email OTP（收一次性驗證碼）、Google 或其他身分提供者（你已經有帳號的服務，借它來證明你是誰，就是常見的「用 Google 登入」）登入、Allow policy 白名單（事先列好誰可以進來，沒列到的一律擋）、預設拒絕、Session 管理（登入之後這個狀態能維持多久）與權限撤銷。</p>
+    <p><b>適合：</b>工作人員、固定合作夥伴、少量長期客戶、內部後台、審稿站、固定客戶專區。</p>
+    <p>Cloudflare Access 的免費席次上限與每人單價，還有它跟另外兩家的存取保護能力差在哪，在另一篇：<a href="../github-vercel-cloudflare-compare/">網站放 GitHub、Vercel 還是 Cloudflare？三家免費額度、商用限制與功能差異</a></p>
+    <p>這一層有三個實務提醒，都是會出事的地方：</p>
+    <ol>
+      <li><b>所有的備用入口都要一起保護。</b>你的正式網域、<code>pages.dev</code> 或 <code>vercel.app</code> 的預設網址、原始主機的 IP、還有你的 API 端點，全部都要一起關起來。只保護正式網域，等於前門裝了鐵門，後門還開著。</li>
+      <li><b>席次是登入席次。</b>Access 算的是通過驗證的人，公開訪客不算。不要把「免費方案的席次上限」誤解成「網站只能服務這麼多位訪客」，這兩個是完全不同的量。</li>
+      <li><b>人數規模要事先算。</b>席次一旦被佔用，要手動移除或設定自動到期才會釋放。一百位學員全部走 Access 這條路，成本結構會跟你想的差很多。</li>
+    </ol>
+
+    <h3>第五層：大樓門禁加房間權限</h3>
+    <p>每個人有自己的門禁卡。刷卡進大樓之後，你的卡只能開你自己那間房。買了第一堂課的人，第二堂課的門刷不開。</p>
+    <p>這一層對應的是你<b>自己網站的會員與授權機制</b>，Cloudflare 或 Vercel 都不會直接給你這個。要拆成兩件事：</p>
+    <div class="duo">
+      <div class="card a"><small>AUTHENTICATION</small><b>驗證</b><p>確認這個人是誰。email 加一次性驗證碼、第三方登入、密碼，都屬於這一層。</p></div>
+      <div class="card b"><small>AUTHORIZATION</small><b>授權</b><p>確認這個人能看什麼。要靠課程購買紀錄與角色欄位（staff／student／customer）來判斷。</p></div>
+    </div>
+    <p>判斷流程長這樣：</p>
+    <ol>
+      <li><b>未登入的訪客</b>：伺服器只回傳課程介紹。完整講義的內容從頭到尾沒有離開伺服器。</li>
+      <li><b>已登入但沒買這堂課</b>：伺服器回傳 403（代表「認得你，但這個你不能看」的狀態碼），或是一個「你還沒購買這堂課」的提示頁。</li>
+      <li><b>已登入而且已購買</b>：伺服器確認購買紀錄之後，才把完整講義送出去。</li>
+      <li><b>staff</b>：伺服器確認 staff 權限之後，才送出後台。</li>
+    </ol>
+    <div class="meaning"><b>關鍵字是「伺服器端」</b>這一步如果放在瀏覽器做，就退回第三層了。在 Cloudflare 上，這一層的零件對應是：Workers 負責寫判斷邏輯，D1 負責存使用者、角色、課程與購買紀錄。程式要自己寫。</div>
+
+    <h3>第六層：房屋裡的保險箱</h3>
+    <p>人進了房間，也不代表能直接把櫃子裡的東西搬走。保險箱要另外開，而且每次開都要重新確認。</p>
+    <p><b>對應的真實做法：</b>R2 私有儲存空間、檔案沒有公開網址、每次下載由伺服器產生一個短效簽名網址（一條臨時的專屬連結，帶著一組會過期的通行碼，例如十分鐘後就打不開）、網址過期就失效、每一次下載都重新檢查權限、留下下載紀錄、必要時在檔案上加浮水印、隨時可以撤銷權限。</p>
+    <p><b>適合放：</b>完整講義、付費教材、可下載的檔案。</p>
+    <p>為什麼要多這一層？因為第五層保護的是「頁面」，而檔案常常是另一條路。如果你的 PDF 放在一個固定的公開網址上，那頁面擋得再好，只要有人把那個 PDF 網址複製出去，就結束了。短效簽名網址讓那個連結在幾分鐘後自動失效，轉傳出去的價值就大幅下降。</p>
+  </div>
+</section>
+<section class="section" id="vercel-auth">
+  <div class="inner">
+    <h3>Vercel Authentication 跟會員登入的差別</h3>
+    <p>Deployment Protection 底下的 Vercel Authentication，擋的是「有沒有 Vercel 帳號、而且是不是這個團隊的成員」。它是給開發團隊看預覽版用的門，不是給你的付費學員用的會員系統。</p>
+    <p>Password Protection 在 Pro 上是加購項目，而且它是整站一組密碼，沒有個別身分、沒有誰買了哪堂課的概念、也沒有辦法單獨撤銷某一個人。</p>
+    <p>如果你要的是「A 學員能看第一堂、B 學員能看第一和第二堂」，這兩個功能都做不到。那需要你自己的會員與授權機制，後面第五層會講。</p>
+  </div>
+</section>
+<section class="section" id="semi-private">
+  <div class="inner">
+    <h2>我的半私密網頁做法，以及它的限制</h2>
+    <p>我自己有一套做法，內部叫它「半私密網頁」。這是我給它取的名字，不是業界通用詞。它長這樣：</p>
+    <ul>
+      <li>使用隨機、不容易猜到的網址</li>
+      <li>HTML 加 <code>noindex</code></li>
+      <li>加 <code>X-Robots-Tag</code></li>
+      <li>依頁面需求設定 <code>robots.txt</code></li>
+      <li>不放到公開 sitemap、書籤頁或導覽列</li>
+      <li>不開登入，也不開伺服器存取保護</li>
+    </ul>
+    <div class="meaning"><b>對照上面的六層</b>這套半私密網頁的做法，完整落在第二層。它是一棟從地圖上被抹掉的房子，門是開著的。</div>
+
+    <h3>半私密網頁適合放什麼</h3>
+    <ul>
+      <li>給既有合作成員看的進度頁、對齊頁</li>
+      <li>一次性的審稿頁、校稿頁</li>
+      <li>內容外流不會造成金錢或信任損失的資料</li>
+      <li>需要「拿到連結就能直接開，不要卡登入」的臨時交付</li>
+    </ul>
+    <p>它的好處是真實存在的：零成本、零設定、對方不用註冊帳號、手機點開就看得到。對於「五分鐘後就要在會議上一起看」這種場景，它是對的工具。</p>
+
+    <h3>哪些內容不該用半私密網頁裝</h3>
+    <ul>
+      <li><b>付費學員的完整講義。</b>這是我的課程收入本體，第二層擋不住轉傳。</li>
+      <li><b>含報價、分潤、談判紀錄的內部文件。</b>這類外流的後果是關係損失，不只是內容損失。</li>
+      <li><b>含個人資料的名單。</b>任何有真實姓名、聯絡方式、健康或財務資訊的東西，都不該只靠網址難猜。</li>
+      <li><b>需要事後撤銷的東西。</b>半私密網址一旦發出去就收不回，你唯一能做的是換一個網址，然後重新通知所有人。</li>
+    </ul>
+    <div class="meaning"><b>一句話判斷</b>問自己：這份東西被完整轉貼到公開群組，我會不會有損失？會的話，它至少要走第四層或第五層。</div>
+  </div>
+</section>
+<section class="section" id="three-roles">
+  <div class="inner">
+    <h2>工作人員、長期客戶、付費學員：三種人，三種解法</h2>
+    <p>這三種人常常被放在同一句話裡討論，但它們的正確解法完全不同。</p>
+    <div class="tablewrap"><table>
+      <thead><tr><th>對象</th><th>人數規模</th><th>建議層級</th><th>為什麼</th></tr></thead>
+      <tbody>
+        <tr><td>工作人員</td><td>少數、固定、你認識</td><td>第四層 Cloudflare Access</td><td>名單短、變動少、不需要自己寫程式，設定一次就好</td></tr>
+        <tr><td>固定合作夥伴</td><td>少數、固定</td><td>第四層 Cloudflare Access</td><td>用 Allow policy 白名單直接列 email</td></tr>
+        <tr><td>少量長期客戶</td><td>個位數到數十</td><td>第四層 Cloudflare Access</td><td>在席次可控範圍內，這是最省工的做法</td></tr>
+        <tr><td>付費學員</td><td>一堂課約一百人，會一直換</td><td>第五層自建會員加第六層私有檔案</td><td>人數會成長、名單一直換、而且要判斷「誰買了哪一堂」</td></tr>
+      </tbody>
+    </table></div>
+    <p>為什麼付費學員不走 Access？三個理由：</p>
+    <ol>
+      <li><b>席次會被佔滿。</b>上完課的學員仍然佔著席次，除非你手動移除，或事先設定了自動到期。</li>
+      <li><b>Access 沒有「誰買了哪一堂課」的概念。</b>它判斷的是「這個 email 在不在允許名單上」，沒有課程與購買的關聯。</li>
+      <li><b>成本結構不對。</b>如果每人每月要付費，一百位學員的年度成本會遠高於自建。（實際單價官方定價頁目前沒有公開，請自行向官方確認後再算。）</li>
+    </ol>
+    <p>反過來，工作人員為什麼不自建？因為五個人的名單，寫一套會員系統的成本遠高於在後台加五個 email。</p>
+    <div class="meaning"><b>一句話收</b>固定的少數人用門禁，變動的多數人用會員系統。</div>
+  </div>
+</section>
+<section class="section" id="ai-write">
+  <div class="inner">
+    <h2>那我可以叫 AI 幫我寫嗎</h2>
+    <p>可以。第五層需要的東西（登入、購買紀錄、判斷這個人能看哪些內容）是相當標準的功能，現在請 AI 寫，成本已經很低了。你不需要先變成工程師才能做這件事。</p>
+    <p>只是有三件事 AI 幫不了你，而這三件剛好是決定「會不會外流」的關鍵。</p>
+    <div class="workflow-grid">
+      <div class="workflow-step"><small>AI 幫不了 1</small><b>決定要擋什麼</b><p>你得先把內容分堆，知道哪些要擋、擋誰、被看到會怎樣。AI 不知道哪份講義外流會影響你的收入，也不知道你跟哪個客戶簽了保密條款。</p></div>
+      <div class="workflow-step"><small>AI 幫不了 2</small><b>要求做在伺服器端</b><p>你說「登入後才顯示講義」，AI 很可能給你一個在瀏覽器裡隱藏的版本，也就是第三層。畫面看起來一樣，實際上完全擋不住。你要明確講出「這個判斷要在伺服器端做，沒通過就不要把內容送出去」。</p></div>
+      <div class="workflow-step"><small>AI 幫不了 3</small><b>驗收</b><p>程式跑得動，不代表擋得住。AI 不會主動告訴你它做的是第三層還是第五層，你要自己測。</p></div>
+    </div>
+
+    <h3>兩個你自己就能做的驗收測試</h3>
+    <p>不用懂程式，開個瀏覽器就能測。這兩題答對了，你才算真的做到第五層。</p>
+    <div class="duo">
+      <div class="card a"><small>測試一</small><b>登出後直接貼網址</b><p>先登入，複製講義頁的網址。然後完全登出（或另外開一個無痕視窗），把網址貼進去。<br><br><b>看得到內容就是沒擋住。</b>正確的結果是看到登入頁，或是一個「請先登入」的提示，而且原始碼裡不該找得到講義內文。</p></div>
+      <div class="card b"><small>測試二</small><b>用沒買課的帳號貼網址</b><p>用一個已經登入、但沒有買這堂課的帳號，把同一個網址貼進去。<br><br><b>看得到內容就是只做了登入沒做授權。</b>正確的結果是看到「你還沒購買這堂課」，而且一樣，原始碼裡不該有講義內文。</p></div>
+    </div>
+    <div class="caveat"><b>怎麼看原始碼</b>在頁面上按右鍵選「檢視網頁原始碼」，或按 F12 打開開發者工具。用搜尋功能找講義裡的某一句話。找得到，就代表內容已經送到瀏覽器了，畫面上有沒有顯示不重要。這一招也是第三層為什麼不算數的原因。</div>
+    <div class="meaning"><b>所以誠實的說法是</b>AI 把「寫出來」的成本降到很低，但「決定要擋什麼」跟「驗收有沒有真的擋住」仍然是你的工作。前者是這篇前半在講的內容分堆與六層判斷，後者就是上面那兩個測試。這兩件事做好了，AI 才是幫手。</div>
+  </div>
+</section>
+<section class="section" id="guarantee">
+  <div class="inner">
+    <h2>這套方法保證什麼，不保證什麼</h2>
+    <p>我要把邊界講清楚，因為這是誠信問題。</p>
+    <div class="duo">
+      <div class="card b"><small>保證的</small><b>技術做得到</b><p>1. 沒有身分的人拿不到完整講義。伺服器端判斷會在資料離開伺服器之前就擋下來。<br><br>2. 你可以撤銷單一個人的權限。改一列資料庫紀錄，那個人下次就進不去了。<br><br>3. 你有紀錄可以查。誰在什麼時候下載了什麼，可以留下來。<br><br>4. 檔案連結會過期。短效簽名網址轉傳出去之後，過一段時間就打不開。</p></div>
+      <div class="card a"><small>不保證的</small><b>技術做不到</b><p>已經授權的人，仍然可能截圖、錄影或轉傳。<br><br>一個人如果合法登入、合法看到了你的講義，他的眼睛看得到，他的螢幕就截得到；他的手機拍得到，他的鍵盤複製得到。市面上所有的防截圖、防右鍵、浮水印，都只能提高麻煩程度或事後追溯，沒有任何一種能真正阻止。</p></div>
+    </div>
+    <div class="meaning"><b>誠實的說法</b>存取控制解決的是「沒授權的人拿不到」，解決不了「有授權的人拿去做別的事」。後者要靠的是使用規範、合約條款、浮水印帶來的追溯壓力，還有你跟學員之間的信任關係。</div>
+    <p>我建議的做法是兩件事一起做：技術上做到第五層與第六層，同時在課程頁與講義上明確寫出使用規範，讓學員知道什麼可以、什麼不可以。清楚告知本身就是一種保護，對雙方都是。</p>
+    <div class="caveat"><b>不要說百分之百防破解</b>沒有這種東西，說了之後出事你會很難處理。</div>
+  </div>
+</section>
+<section class="section" id="recap">
+  <div class="inner">
+    <h2>收尾 Recap</h2>
+    <ol>
+      <li>能不能被找到，跟找到之後能不能進去，是兩件事。noindex、robots.txt、隨機網址，只管前者。</li>
+      <li>robots.txt 是公開檔案，把敏感路徑寫進去等於公布一份「這裡有東西」的清單。它不是保護機制。</li>
+      <li>隨機網址擋得住「被猜到」，擋不住「被轉傳」。網址發出去就收不回。</li>
+      <li>前端的顯示與隱藏是體驗設計。資料一旦送到瀏覽器，就當它已經公開。</li>
+      <li>六層由淺到深：公開展示間、從地圖抹除、拉紅線、有警衛的鐵門、大樓門禁加房間權限、房屋裡的保險箱。第三層是誤用示範，不是可以選的等級。</li>
+      <li>固定的少數人用門禁（Cloudflare Access），變動的多數人用自建會員系統。這兩種人不要用同一招。</li>
+      <li>第五層的關鍵字是伺服器端。同一句「擋起來」做在瀏覽器就是第三層，做在伺服器才是第五層。</li>
+      <li>頁面擋好了，檔案還是另一條路。講義 PDF 要走第六層的短效簽名網址。</li>
+      <li>寫程式可以請 AI，但決定要擋什麼跟驗收有沒有擋住，是你的工作。</li>
+      <li>已授權的人仍然可能截圖轉傳。技術做到第六層，剩下的靠使用規範與信任。</li>
+    </ol>
+    <p>知道自己要哪一層之後，下一步是選平台。三家的免費額度、商用條款與價格在另一篇：<a href="../github-vercel-cloudflare-compare/">網站放 GitHub、Vercel 還是 Cloudflare？三家免費額度、商用限制與功能差異</a></p>
+  </div>
+</section>
+<section class="section" id="pitfalls">
+  <div class="inner">
+    <h2>常見的坑</h2>
+    <div class="tablewrap"><table>
+      <thead><tr><th>坑</th><th>對策</th></tr></thead>
+      <tbody>
+        <tr><td>以為加了 noindex 就等於鎖起來了</td><td>noindex 只是請搜尋引擎不要收錄。任何人拿到網址照樣打得開</td></tr>
+        <tr><td>把敏感路徑寫進 robots.txt</td><td>那是公開檔案，等於公布清單。改成真正的存取控制</td></tr>
+        <tr><td>用前端 JavaScript 判斷會員狀態</td><td>開發者工具幾秒就繞過。判斷要放在伺服器端</td></tr>
+        <tr><td>只保護正式網域，忘了 pages.dev 或 vercel.app 預設網址</td><td>所有備用入口、原始主機與 API 都要一起關</td></tr>
+        <tr><td>把一百位學員全丟進 Cloudflare Access</td><td>席次會被佔滿而且不自動釋放，也沒有「誰買了哪一堂」的概念。改用自建會員系統</td></tr>
+        <tr><td>以為 Revoke 就釋放席次了</td><td>Revoke 只終止連線階段，要 Remove 才釋放</td></tr>
+        <tr><td>頁面擋好了就以為安全</td><td>講義 PDF 若放在固定公開網址，網址一被複製出去就結束了。改用短效簽名網址</td></tr>
+        <tr><td>叫 AI 寫完就上線，沒驗收</td><td>做上面那兩個測試。登出後貼網址、用沒買課的帳號貼網址，兩題都對才算數</td></tr>
+        <tr><td>用半私密網頁裝付費講義</td><td>那只是第二層，門是開著的。付費內容至少要第五層</td></tr>
+        <tr><td>跟客戶說百分之百防破解</td><td>沒有這種東西。誠實說明邊界，寫清楚使用規範</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+</section>
+<section class="section" id="positioning">
+  <div class="inner">
+    <h2>給自己的定位提醒</h2>
+    <p>這六層不是我發明的，它是把業界已經在用的做法排成一個順序，讓不寫程式的人也能判斷自己站在哪裡。真正做資安的人分得比這細很多，也嚴謹很多。我這份的用途是幫你做決定，不是拿來當資安規格書。</p>
+    <p>如果你的內容涉及個資、醫療、財務或合約，該找的是專業的人，不是這篇文章。</p>
+    <div class="meaning"><b>真正能帶走的</b>那個判斷順序：先分堆，再問後果，再對照層級，最後才選技術。這個順序不會因為哪個工具改版而失效。</div>
+    <div class="tagrow">
+      <span class="tag">存取控制</span><span class="tag">noindex</span><span class="tag">robots.txt</span><span class="tag">會員系統</span><span class="tag">Cloudflare Access</span><span class="tag">網站安全</span>
+    </div>
+  </div>
+</section>
+<div class="cta-band">
+<section class="section">
+  <div class="inner">
+    <div>
+      <h2>想繼續聊這個</h2>
+      <p class="lead">我每個月固定辦兩場免費線上講座，分享 AI 應用與知識管理的實戰做法。如果你正在幫自己或客戶決定網站要放哪裡、怎麼分級，歡迎先從社群開始。</p>
+      <p>本篇所有價格與額度為 2026 年 8 月 19 日查證結果，皆為美元、未稅。平台方案隨時可能調整，重要決策前請重新核對官方頁面。</p>
+    </div>
+    <div class="cta-card">
+      <b>江江教練</b>
+      <p>隱性知識提煉師、AI 應用規劃師</p>
+      <p><a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">加入 LINE 社群 →</a></p>
+      <p><a href="../../offers.html">看服務方案 →</a></p>
+    </div>
+  </div>
+</section>
+</div>
+<section class="section" id="sources">
+  <div class="inner">
+    <h2>本篇引用來源</h2>
+    <p>全部為官方來源，查證日 2026-08-19。</p>
+    <ul class="readmore">
+      <li><a href="https://developers.cloudflare.com/cloudflare-one/team-and-resources/users/seat-management/" target="_blank" rel="noopener">Cloudflare One 席次管理（席次怎麼算、Revoke 與 Remove 的差別、自動到期）</a></li>
+      <li><a href="https://www.cloudflare.com/plans/zero-trust-services/" target="_blank" rel="noopener">Cloudflare Zero Trust 服務方案頁（本輪未取得每人單價與免費席次上限）</a></li>
+      <li><a href="https://developers.cloudflare.com/r2/pricing/" target="_blank" rel="noopener">Cloudflare R2 定價（私有檔案儲存與流量費用）</a></li>
+      <li><a href="https://docs.github.com/en/enterprise-cloud@latest/pages/getting-started-with-github-pages/changing-the-visibility-of-your-github-pages-site" target="_blank" rel="noopener">GitHub：私密發布 Pages 需要 Enterprise Cloud</a></li>
+      <li><a href="https://vercel.com/docs/plans/hobby" target="_blank" rel="noopener">Vercel Hobby 方案（Deployment Protection 與 Vercel Authentication 的範圍）</a></li>
+    </ul>
+    <p>三家平台的完整價格與免費額度查證，在另一篇：<a href="../github-vercel-cloudflare-compare/">網站放 GitHub、Vercel 還是 Cloudflare？三家免費額度、商用限制與功能差異</a></p>
+  </div>
+</section>
+
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">江江教練 · AI 知識管理</div>
+    <div class="footer-links">
+      <a href="../../articles.html">← 回深度文章總站</a>
+      <a href="../../index.html">首頁</a>
+      <a href="../../learn.html">自學資源</a>
+      <a href="../../skills.html">技能包下載</a>
+      <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">LINE 社群 ↗</a>
+      <a href="https://www.threads.com/@jiang_yude_coach" target="_blank" rel="noopener">Threads ↗</a>
+      <a href="https://vocus.cc/salon/Jiang_Coach" target="_blank" rel="noopener">方格子 ↗</a>
+    </div>
+    <div class="footer-note">這是一篇教學文章，整理我對「你的網頁其實沒鎖：網站內容防護六個等級，付費講義該放哪一層」的看法，供你參考。</div>
+  </div>
+</footer>
+
+<!-- 點圖放大 lightbox（hero 與內文圖通用，已內建，不用每篇重加） -->
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <span class="lightbox-close" aria-label="關閉">×</span>
+  <img id="lightbox-img" src="" alt="放大檢視">
+</div>
+<script>
+(function(){
+  var box=document.getElementById('lightbox'),boxImg=document.getElementById('lightbox-img');
+  document.querySelectorAll('.hero-figure img,.inline-figure img').forEach(function(img){
+    img.addEventListener('click',function(){boxImg.src=img.currentSrc||img.src;boxImg.alt=img.alt||'放大檢視';box.classList.add('open');box.setAttribute('aria-hidden','false');});
+  });
+  function close(){box.classList.remove('open');box.setAttribute('aria-hidden','true');boxImg.src='';}
+  box.addEventListener('click',close);
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
+})();
+</script>
+
+<script src="../../image-interactions.js"></script>
+
+<!-- 官網共用：滑鼠暖光暈 + 導航列漢堡選單 -->
+<script src="../../spotlight.js"></script>
+
+<!-- 文章自動互聯（相關文章）：兩支已內建，順序不可顛倒，不用再另外加 -->
+<script src="../../articles-data.js"></script>
+<script src="../../related-render.js"></script>
+</body>
+</html>
