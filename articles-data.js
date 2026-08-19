@@ -146,7 +146,7 @@ window.ARTICLES = [
       content_type: ["觀點文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["before-installing-others-skill", "decision-ladder-non-programmer", "how-to-train-your-ai-employee", "caught-ai-slacking-into-rules"]
+    related: ["before-installing-others-skill", "decision-ladder-non-programmer", "how-to-train-your-ai-employee", "caught-ai-slacking-into-rules", "parallel-site-editing"]
   },
 
   /* ── 裝了別人的技能包，AI 會不會被搞亂？：抄之前我會先做三件事（教學） ── */
@@ -1371,7 +1371,7 @@ window.ARTICLES = [
     summary: "企劃雙軌互審 loop：兩個不同家的 AI 同輸入各自獨立寫完、互相挑錯、整合留決策點、對家終審。以一場真實政府補助提案首跑為案例，附兩段可直接複製的提示詞。",
     tags: {"topic":["AI工作流","跨家審稿","輔助決策"],"level":["基礎"],"content_type":["案例文章"]},
     external: { threads: null, vocus: null },
-    related: ["loop-engineering-guardrails", "a2a-agent-protocol", "docs-as-system-design-agent", "ai-handoff-instructions", "long-task-completion-rate", "session-messaging-reminder-layer", "before-installing-others-skill"]
+    related: ["loop-engineering-guardrails", "a2a-agent-protocol", "docs-as-system-design-agent", "ai-handoff-instructions", "long-task-completion-rate", "session-messaging-reminder-layer", "before-installing-others-skill", "parallel-site-editing"]
   },
   {
     id: "dual-centaur-meeting",
@@ -2085,6 +2085,24 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["after-ai-says-remembered", "meeting-record-agent-workflow", "how-to-train-your-ai-employee", "what-is-loop-engineering", "prompt-to-loop-map"]
+    related: ["after-ai-says-remembered", "meeting-record-agent-workflow", "how-to-train-your-ai-employee", "what-is-loop-engineering", "prompt-to-loop-map", "parallel-site-editing"]
+  },
+  /* ── 兩個 AI 同時改一個網站，為什麼會打架？（教學）── */
+  {
+    id: "parallel-site-editing",
+    url: "articles/parallel-site-editing/",
+    date: "2026-08-19",
+    updated: "2026-08-19",
+    title: "兩個 AI 同時改一個網站，為什麼會打架？",
+    problem: "讓多個 AI 分頭維護同一個網站，結果這個做到一半、那個不敢動，還發生過正式版本被蓋回舊版。規則越立越多，排隊越排越長。",
+    audience: "已經讓兩個以上的 AI 幫忙顧網站的人、幫客戶做網站想把多人維護設計進交付規格的接案者、開始怕上錯版本的小團隊。",
+    summary: "用我官網當天的真實事故當教材：兩篇文章同時要上線卻互相排隊，挖出根因是所有 AI 共用同一個本機資料夾，排隊規則解的是症狀。解法三件套：git worktree 一篇文章一張桌子分軌施工、合併上線壓成單一 commit 並用 commit 編號驗收、全站檢查改成每日巡檢抓漏不擋人。中段攤開另一家 AI 互審抓出的三個洞（生成檔衝突提早引爆、中間狀態被部署、驗收驗到別人的建置），文末給六步落地清單與一段可直接貼給 AI 的委託指令。",
+    tags: {
+      topic: ["AI工作流", "AI應用", "工作流程"],
+      level: ["進階"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["copied-mechanism-is-no-mechanism", "dual-track-planning-loop", "eight-ai-system-concepts-2026"]
   }
 ];
