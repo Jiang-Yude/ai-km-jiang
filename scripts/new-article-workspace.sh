@@ -36,6 +36,16 @@ else
   git worktree add -b "$BRANCH" "$WT_DIR" origin/main
 fi
 
+# .vercel/project.json 不進 git（.gitignore 擋著），所以新桌子一定缺這個檔，
+# 而 check-deploy-env.sh 沒有它就直接擋下發布。開桌時順手帶過去。
+# 內容只有 projectId／orgId／projectName，沒有金鑰；沒有它反而會誘發手動 vercel link，
+# 那才是真正危險的一步（綁錯專案會蓋掉別的站）。2026-08-19 首次上線實測踩到後補。
+if [ -f "$REPO_ROOT/.vercel/project.json" ]; then
+  mkdir -p "$WT_DIR/.vercel"
+  cp "$REPO_ROOT/.vercel/project.json" "$WT_DIR/.vercel/project.json"
+  echo "   （已帶上 .vercel/project.json，發布環境檢查才會過）"
+fi
+
 echo ""
 echo "✅ 桌子開好：$WT_DIR"
 echo "   分支：$BRANCH（基於 origin/main 最新）"
