@@ -140,7 +140,7 @@ window.COURSES = [
     duration_min: 360,
     title: "數位起步走 輕鬆玩創作：8 月數位創作課程 四天系列",
     type_label: "外部授課",
-    image: null,
+    image: "images/courses/2026-08-04-digital-creation-1.jpg",
     venue_mode: "physical",
     venue_label: "臺中",
     host: "江江教練",
@@ -148,12 +148,13 @@ window.COURSES = [
     summary: "八月數位創作課程，四天：8/4、8/11、8/18、8/25，對象是只用手機、多數沒碰過 AI 的中高齡學員。第一天用五個問題讓 AI 認識你、做出個人設定檔，再用自己的照片生出形象照；接著是圖文創作、剪輯與社群發布、互動經營。簡報一個入口，隨四天課程陸續更新，完課後整合四天內容與學員作品集。簡報裡所有指令都可以整段複製直接用。",
     detail_url: null,
     materials: [
-      { label: "上課簡報 ↗", url: "https://jiangyude.com/courses/2026-08-04-digital-creation-1/" }
+      { label: "上課簡報 ↗", url: "https://jiangyude.com/courses/2026-08-04-digital-creation-1/" },
+      { label: "主辦單位招生公告（Facebook）↗", url: "https://www.facebook.com/tswa.sun/posts/pfbid0Fan4rZHUWJWawaTPKhTxgVB3deNG3hr9UhB7UzFDJJ2YoxYcnXZikhU5ebs9eSLkl" }
     ],
     registration: {
       status: "private",
-      host_org: "臺中市女兒館",
-      note: "四堂系列課 8/4、8/11、8/18、8/25，機構邀約授課，不對外報名。"
+      host_org: "社團法人台灣陽光婦女協會",
+      note: "115 年中高齡女性培力課程「數位創作學堂」，四堂系列 8/4、8/11、8/18、8/25，由社團法人台灣陽光婦女協會主辦並公開招生（臺中市 45 到 64 歲中高齡婦女優先錄取），本梯次報名已截止。第一堂於迎光智社福館，第二至四堂於臺中市女兒館。"
     }
   },
   {
