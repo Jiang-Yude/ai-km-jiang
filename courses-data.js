@@ -90,7 +90,7 @@ window.COURSES = [
   {
     id: "2026-08-20-senior-ai-story-workshop",
     date: "2026-09-13",
-    date_label: "三場：8/20、8/27、9/13",
+    date_label: "邀約開課",
     time: "09:00",
     duration_min: 180,
     title: "樂齡 AI 工作坊：把你的故事，做成一張海報",
@@ -100,13 +100,13 @@ window.COURSES = [
     venue_label: "實體",
     host: "江江教練",
     tags: ["樂齡", "AI生圖", "電影海報", "旅行簡報", "說故事", "零基礎"],
-    summary: "同一套課程三場：8/20（四）09:00 淡水台北灣社區、8/27（四）09:00 汐止伯爵山莊福興里民活動中心、9/13（日）13:30 汐止水蓮山莊。學員說自己的故事，AI 負責視覺、排版與剪輯。先用 ChatGPT 生一張以自己為主角的電影海報，再用 Gemini 把同一段故事延伸成旅行簡報或說書短片。一支手機就可以參加，不用電腦基礎。",
+    summary: "學員說自己的故事，AI 負責視覺、排版與剪輯。先用 ChatGPT 生一張以自己為主角的個人生活風格照，時間夠再把同一段故事變成一首歌、一份故事簡報、一支說故事短片和一張個人簡介。一支手機就可以參加，不用電腦基礎。",
     detail_url: "courses/senior-ai-story-workshop/",
     materials: [],
     registration: {
       status: "private",
       host_org: "財團法人社區電腦推廣教育基金會",
-      note: "社區居民專場，非對外公開報名。同一套課程三場：8/20 淡水台北灣、8/27 汐止伯爵山莊、9/13 汐止水蓮山莊。"
+      note: "社區居民專場，非對外公開報名。"
     }
   },
   {
@@ -140,7 +140,7 @@ window.COURSES = [
     duration_min: 360,
     title: "數位起步走 輕鬆玩創作：8 月數位創作課程 四天系列",
     type_label: "外部授課",
-    image: "images/courses/2026-08-04-digital-creation-1.jpg",
+    image: null,
     venue_mode: "physical",
     venue_label: "臺中",
     host: "江江教練",
@@ -148,13 +148,12 @@ window.COURSES = [
     summary: "八月數位創作課程，四天：8/4、8/11、8/18、8/25，對象是只用手機、多數沒碰過 AI 的中高齡學員。第一天用五個問題讓 AI 認識你、做出個人設定檔，再用自己的照片生出形象照；接著是圖文創作、剪輯與社群發布、互動經營。簡報一個入口，隨四天課程陸續更新，完課後整合四天內容與學員作品集。簡報裡所有指令都可以整段複製直接用。",
     detail_url: null,
     materials: [
-      { label: "上課簡報 ↗", url: "https://jiangyude.com/courses/2026-08-04-digital-creation-1/" },
-      { label: "主辦單位招生公告（Facebook）↗", url: "https://www.facebook.com/tswa.sun/posts/pfbid0Fan4rZHUWJWawaTPKhTxgVB3deNG3hr9UhB7UzFDJJ2YoxYcnXZikhU5ebs9eSLkl" }
+      { label: "上課簡報 ↗", url: "https://jiangyude.com/courses/2026-08-04-digital-creation-1/" }
     ],
     registration: {
       status: "private",
-      host_org: "社團法人台灣陽光婦女協會",
-      note: "115 年中高齡女性培力課程「數位創作學堂」，四堂系列 8/4、8/11、8/18、8/25，由社團法人台灣陽光婦女協會主辦並公開招生（臺中市 45 到 64 歲中高齡婦女優先錄取），本梯次報名已截止。第一堂於迎光智社福館，第二至四堂於臺中市女兒館。"
+      host_org: "臺中市女兒館",
+      note: "四堂系列課 8/4、8/11、8/18、8/25，機構邀約授課，不對外報名。"
     }
   },
   {
