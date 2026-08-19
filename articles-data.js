@@ -51,7 +51,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["three-levels-of-cross-review", "long-document-review-layers", "before-installing-others-skill", "mobile-to-desktop-publish-loop", "cognitive-debt"]
+    related: ["three-levels-of-cross-review", "long-document-review-layers", "before-installing-others-skill", "mobile-to-desktop-publish-loop", "cognitive-debt", "eight-ai-system-concepts-2026"]
   },
 
   /* ── AI 改了十幾次還是有錯，怎麼辦？：資料清理只是第一關，長文件審不出錯的三層設計（教學） ── */
@@ -543,7 +543,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["strong-ai-models-knowledge-workflow-road", "questionnaire-to-slides-agent-workflow", "teacher-prep-knowledge-workflow", "own-ai-team-at-work", "agent-workflow-builds-automation", "line-group-ai-workflow", "elon-musk-live-skill", "codex-log-health-check", "how-ai-connects-software", "meeting-record-agent-workflow", "decision-ladder-non-programmer", "tidy-mess-before-consulting", "diary-driven-agent-3x4", "docs-as-system-design-agent", "what-is-loop-engineering", "map-is-not-the-territory", "intangible-assets-grow-by-sharing", "manage-ai-with-management-knowledge", "ai-handoff-instructions", "train-your-ai-agent-editor", "ai-that-knows-you", "personal-studio-vs-solo-company", "cli-api-mcp-computer-use", "knowledge-as-employee", "mika-to-laika-product-character-design", "agent-native-tools-software-interface", "ai-tools-professional-judgment", "answer-to-action-enterprise-ai-agent", "teach-ai-not-learn-ai", "talent-vs-expertise", "ai-employee-four-levels", "copied-mechanism-is-no-mechanism"]
+    related: ["strong-ai-models-knowledge-workflow-road", "questionnaire-to-slides-agent-workflow", "teacher-prep-knowledge-workflow", "own-ai-team-at-work", "agent-workflow-builds-automation", "line-group-ai-workflow", "elon-musk-live-skill", "codex-log-health-check", "how-ai-connects-software", "meeting-record-agent-workflow", "decision-ladder-non-programmer", "tidy-mess-before-consulting", "diary-driven-agent-3x4", "docs-as-system-design-agent", "what-is-loop-engineering", "map-is-not-the-territory", "intangible-assets-grow-by-sharing", "manage-ai-with-management-knowledge", "ai-handoff-instructions", "train-your-ai-agent-editor", "ai-that-knows-you", "personal-studio-vs-solo-company", "cli-api-mcp-computer-use", "knowledge-as-employee", "mika-to-laika-product-character-design", "agent-native-tools-software-interface", "ai-tools-professional-judgment", "answer-to-action-enterprise-ai-agent", "teach-ai-not-learn-ai", "talent-vs-expertise", "ai-employee-four-levels", "copied-mechanism-is-no-mechanism", "eight-ai-system-concepts-2026"]
   },
 
   /* ── 13. LINE 群組也能變成 AI 工作流入口（教學）── */
@@ -638,7 +638,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: "https://vocus.cc/salon/Jiang_Coach" },
-    related: ["agent-workflow-builds-automation", "codex-only-auto-worklog", "how-to-train-your-ai-employee", "diary-driven-agent-3x4", "tidy-mess-before-consulting", "meeting-into-verifiable-loop", "ai-employee-four-levels"]
+    related: ["agent-workflow-builds-automation", "codex-only-auto-worklog", "how-to-train-your-ai-employee", "diary-driven-agent-3x4", "tidy-mess-before-consulting", "meeting-into-verifiable-loop", "ai-employee-four-levels", "eight-ai-system-concepts-2026"]
   },
 
   /* ── 18. 不寫程式的人也能用的決策階梯（觀點）── */
@@ -771,7 +771,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["strong-ai-models-knowledge-workflow-road", "questionnaire-to-slides-agent-workflow", "teacher-prep-knowledge-workflow", "docs-as-system-design-agent", "how-to-train-your-ai-employee", "my-three-loops", "ai-loop-safety-recovery", "recovery-over-perfection", "ai-changed-behavior-into-workflow", "ai-delegators-optimism", "publish-gate", "loop-engineering-guardrails", "long-task-completion-rate", "dual-centaur-meeting", "manage-ai-with-management-knowledge", "old-prompts-intent-first-loop-engineering", "rule-file-rebound", "knowledge-os-master-map", "meeting-into-verifiable-loop"]
+    related: ["strong-ai-models-knowledge-workflow-road", "questionnaire-to-slides-agent-workflow", "teacher-prep-knowledge-workflow", "docs-as-system-design-agent", "how-to-train-your-ai-employee", "my-three-loops", "ai-loop-safety-recovery", "recovery-over-perfection", "ai-changed-behavior-into-workflow", "ai-delegators-optimism", "publish-gate", "loop-engineering-guardrails", "long-task-completion-rate", "dual-centaur-meeting", "manage-ai-with-management-knowledge", "old-prompts-intent-first-loop-engineering", "rule-file-rebound", "knowledge-os-master-map", "meeting-into-verifiable-loop", "eight-ai-system-concepts-2026"]
   },
 
   /* ── 無形資產，越分享越豐盛（觀點）── */
@@ -1033,7 +1033,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["intent-first-prompting", "harness-mindset-for-bosses", "old-prompts-intent-first-loop-engineering", "one-on-one-questions"]
+    related: ["intent-first-prompting", "harness-mindset-for-bosses", "old-prompts-intent-first-loop-engineering", "one-on-one-questions", "eight-ai-system-concepts-2026"]
   },
 
   /* ── 越把工作交給 AI 的人，越希望 AI 更強，越不怕被取代（趨勢）── */
@@ -2067,5 +2067,24 @@ window.ARTICLES = [
     },
     external: { threads: null, vocus: null },
     related: ["caught-ai-slacking-into-rules", "web-chat-ai-vs-desktop-agent", "three-levels-of-cross-review", "rag-three-retrieval-modes", "long-document-review-layers", "cognitive-debt"]
+  },
+
+  /* ── 2026 年知識工作者的八個 AI 系統概念（教學）── */
+  {
+    id: "eight-ai-system-concepts-2026",
+    url: "articles/eight-ai-system-concepts-2026/",
+    date: "2026-08-19",
+    updated: "2026-08-19",
+    title: "2026 年知識工作者的八個 AI 系統概念：從提示詞寫得好，到把系統搭起來",
+    problem: "昨天花半小時教會 AI 的規則，今天開新對話又要重講一次。問題不在提示詞寫得夠不夠好，在於那些規則沒有一個固定的地方住。",
+    audience: "已經天天在用 AI、指令也下得順，但總覺得每次都在重新開始的人；看到「上下文工程」「記憶工程」這些詞卻不確定跟自己有什麼關係的非工程師。",
+    summary: "迴圈工程、事前規劃、上下文工程、記憶工程、工作流圖、子代理、統一接頭、給 AI 獨立權限，八個概念各給一段白話定義，再攤開我自己知識庫裡的實際做法：驗收標準怎麼寫、會議記錄要補哪三層脈絡、3X4 資料整理法的三種日記乘四種時效怎麼同時當檢索路徑、搜尋為什麼要拆成官方與正面與負面三角度獨立派、以及把 AI 當成剛畢業的學霸來帶是什麼意思。每一項都附一格可以直接複製進自己規則檔的三到四行。",
+    tags: {
+      topic: ["AI工作流", "知識管理", "AIAgent", "AI應用"],
+      level: ["基礎"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["after-ai-says-remembered", "meeting-record-agent-workflow", "how-to-train-your-ai-employee", "what-is-loop-engineering", "prompt-to-loop-map"]
   }
 ];
