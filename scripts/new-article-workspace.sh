@@ -1,0 +1,45 @@
+#!/bin/bash
+# 開新桌子：為一篇文章建立獨立 worktree＋專屬分支（並行施工機制，2026-08-19 立）
+# 用法：bash scripts/new-article-workspace.sh <slug>
+#   在主 clone 或任一 worktree 內執行皆可；桌子開在 ~/Developer/ai-km-jiang-worktrees/<slug>
+# 之後這篇文章的所有施工都在那個資料夾做，跟其他 session 物理隔離。
+# 寫完要上線：回主 clone 跑 bash scripts/merge-publish.sh article/<slug> "commit 訊息"
+set -euo pipefail
+
+SLUG="${1:?用法：bash scripts/new-article-workspace.sh <slug>（例：my-new-article）}"
+case "$SLUG" in
+  *[!a-zA-Z0-9._-]*|.*)
+    echo "⛔ slug 只收英數、點、底線、連字號，且不可以點開頭：$SLUG"
+    exit 1
+    ;;
+esac
+
+REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+WT_ROOT="$HOME/Developer/ai-km-jiang-worktrees"
+BRANCH="article/$SLUG"
+WT_DIR="$WT_ROOT/$SLUG"
+
+cd "$REPO_ROOT"
+
+if [[ -e "$WT_DIR" ]]; then
+  echo "⛔ 桌子已存在：$WT_DIR"
+  echo "   要繼續寫就直接進去；要重開先 git worktree remove（確認沒有未提交內容）。"
+  exit 1
+fi
+
+mkdir -p "$WT_ROOT"
+git fetch origin main
+
+if git show-ref --verify --quiet "refs/heads/$BRANCH"; then
+  git worktree add "$WT_DIR" "$BRANCH"
+else
+  git worktree add -b "$BRANCH" "$WT_DIR" origin/main
+fi
+
+echo ""
+echo "✅ 桌子開好：$WT_DIR"
+echo "   分支：$BRANCH（基於 origin/main 最新）"
+echo "   注意：分支只 commit 來源檔（文章目錄、配圖、articles-data.js 自己那筆）。"
+echo "   生成檔（site-index.json、article-keywords.js、en 資料、sitemap）不要 commit，"
+echo "   merge-publish 會在上線時統一重建。"
+echo "   上線：cd 回主 clone，跑 bash scripts/merge-publish.sh $BRANCH \"commit 訊息\""
