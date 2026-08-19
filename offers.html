@@ -59,7 +59,7 @@
         "item": {
           "@type": "Service",
           "name": "個人陪跑",
-          "description": "線上盤點 1 小時、實體 3 小時、線上收尾 1 小時，共 5 小時。給專業人士與高階主管，做出一條你真的在用的工作流與一位 AI 員工。",
+          "description": "線上盤點 1 小時、實體 3 小時、線上收尾 1 小時，共 5 小時。給專業人士與高階主管，搭出自己的 AI 辦公室，並學會把常做的事寫成技能包。",
           "url": "https://jiangyude.com/offers/companion/",
           "provider": {"@type": "Person", "name": "江昱德", "alternateName": "江江教練"},
           "offers": {
@@ -342,6 +342,32 @@
         #eee1cf;
     }
 
+    .companion-visual {
+      display: grid;
+      place-items: center;
+      padding: clamp(30px, 4.5vw, 54px);
+      background:
+        radial-gradient(circle at 86% 12%, rgba(201, 78, 69, 0.13), transparent 28%),
+        #eee1cf;
+    }
+
+    .companion-visual img {
+      display: block;
+      width: 100%;
+      max-width: 430px;
+      height: auto;
+      border-radius: 26px;
+    }
+
+    .map-visual {
+      display: block;
+      width: 100%;
+      max-width: 340px;
+      height: auto;
+      border-radius: 20px;
+      margin: 0 auto 10px;
+    }
+
     .map-step {
       display: grid;
       grid-template-columns: 44px 1fr;
@@ -588,6 +614,102 @@
         transition: none;
       }
     }
+    /* ── 名詞說明浮框 ── */
+    .term {
+      display: inline;
+      font: inherit;
+      color: var(--offer-green);
+      background: none;
+      border: 0;
+      padding: 0;
+      cursor: help;
+      border-bottom: 1px dashed rgba(49, 95, 77, 0.55);
+      transition: border-bottom-color 0.2s ease;
+    }
+
+    .term:hover,
+    .term:focus-visible {
+      border-bottom-color: var(--offer-green);
+      border-bottom-style: solid;
+      outline: none;
+    }
+
+    .term-tip {
+      position: absolute;
+      z-index: 90;
+      width: min(360px, calc(100vw - 28px));
+      padding: 20px 22px 18px;
+      background: var(--offer-paper);
+      border: 1px solid var(--offer-line);
+      border-radius: 22px;
+      box-shadow: var(--offer-shadow);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(6px);
+      transition: opacity 0.18s ease, transform 0.18s ease, visibility 0.18s;
+      pointer-events: none;
+    }
+
+    .term-tip.is-open {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+
+    .term-tip img {
+      display: block;
+      float: right;
+      width: 116px;
+      height: auto;
+      margin: 2px 0 10px 16px;
+      border-radius: 16px;
+    }
+
+    .term-tip h4 {
+      margin: 0 0 10px;
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--offer-ink);
+    }
+
+    .term-tip p {
+      margin: 0;
+      font-size: 0.95rem;
+      line-height: 1.75;
+      color: var(--offer-muted);
+    }
+
+    .term-tip .term-tip-link {
+      display: inline-block;
+      clear: both;
+      margin-top: 14px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--offer-green);
+      text-decoration: none;
+      border-bottom: 1px solid rgba(49, 95, 77, 0.35);
+    }
+
+    .term-tip .term-tip-link:hover {
+      border-bottom-color: var(--offer-green);
+    }
+
+    .term-tip .term-tip-note {
+      display: block;
+      clear: both;
+      margin-top: 14px;
+      font-size: 0.85rem;
+      opacity: 0.7;
+    }
+
+    @media (max-width: 640px) {
+      .term-tip img {
+        width: 88px;
+        margin-left: 12px;
+      }
+    }
+
   </style>
 <!-- tracking:vercel-analytics -->
 <script defer src="/_vercel/insights/script.js"></script>
@@ -649,6 +771,9 @@
               <a class="offer-button offer-button-ghost" href="courses.html">看過去的課程紀錄</a>
             </div>
           </div>
+          <div class="companion-visual">
+            <img src="images/offers/mika-speaking.jpg" alt="咪卡拿著麥克風站在講台上，身後是投影幕，台下坐著一群人" loading="lazy" width="900" height="900">
+          </div>
         </div>
       </div>
     </section>
@@ -658,7 +783,7 @@
       <div class="offer-shell">
         <div class="offer-heading">
           <div class="offer-section-index">02 · One-to-One Companion</div>
-          <h2 id="solo-title">個人陪跑：一次做出一條你真的在用的工作流</h2>
+          <h2 id="solo-title">個人陪跑：搭出你自己的 AI 辦公室，學會寫技能包</h2>
           <p>給專業人士與高階主管，也就是要讓自己這段工作變輕的人。你已經知道自己卡在哪，需要有人跟你一起把它做出來，並且在你回去用過一輪之後再一起修一次。</p>
         </div>
 
@@ -666,26 +791,28 @@
           <div class="companion-copy">
             <div class="offer-status">三段一次完成 · 共 5 小時</div>
             <div class="companion-price"><small>NT$</small>8,000<small>未稅</small></div>
-            <p>教的是怎麼指揮 AI、它的能力與邊界在哪、怎麼做出自己的 AI 辦公室與知識庫。做法是直接拿你手上真正在做的工作來練。價格未稅，另加 5% 營業稅，可開發票。</p>
+            <p>教的是怎麼指揮 AI、它的能力與邊界在哪，然後帶你把自己的 <span class="term" data-term="ai-office" tabindex="0" role="button" aria-describedby="term-tip">AI 辦公室</span>搭起來，把你最常重複做的那件事寫成一個<span class="term" data-term="skill-pack" tabindex="0" role="button" aria-describedby="term-tip">技能包</span>。做法是直接拿你手上真正在做的工作來練。</p>
             <ul class="offer-checks">
-              <li>一條你自己工作裡真的在跑的工作流</li>
-              <li>一位懂你判斷標準的 AI 員工，存在你自己的電腦裡</li>
+              <li>你自己的 AI 辦公室：工具、檔案與規則各就各位，之後每次工作從這裡開始</li>
+              <li>你自己的第一個技能包：把最常重複做的那件事寫成 AI 照著做的規則</li>
+              <li>寫技能包的方法，之後第二個、第三個你自己寫得出來</li>
               <li>規則用一般文字寫成，你看得懂也改得動，日後換工具帶得走</li>
             </ul>
-            <p style="font-size:0.95rem; opacity:0.75;">不含事後的檔案整理與交付文件撰寫，也不含三段之外的線上答疑。想要完整的知識庫地基與多位 AI 員工，看下面的企業陪跑。</p>
+            <p style="font-size:0.95rem; opacity:0.8;">可先預約個人諮詢 NT$2,000／小時，可折抵未來陪跑計劃。</p>
             <div class="offer-jump" style="justify-content:flex-start; margin-top:0;">
               <a class="offer-button" href="https://line.me/R/ti/p/@713kczfc" target="_blank" rel="noopener">先約 20 分鐘免費線上諮詢</a>
               <a class="offer-button offer-button-ghost" href="offers/companion/">看陪跑完整介紹</a>
             </div>
           </div>
           <div class="companion-map" aria-label="個人陪跑三段流程">
+            <img class="map-visual" src="images/offers/mika-companion-solo.jpg" alt="咪卡和一個人隔著圓桌對坐，桌上有兩杯咖啡與一台筆電，像在輕鬆討論事情" loading="lazy" width="900" height="900">
             <article class="map-step">
               <span>01</span>
               <div><h3>事前盤點 · 線上 1 小時</h3><p>看你現在怎麼工作，一起挑出這次要做的那一件。</p></div>
             </article>
             <article class="map-step">
               <span>02</span>
-              <div><h3>主場 · 實體 3 小時</h3><p>當場把工作流與 AI 員工做出來，你自己動手，我在旁邊。</p></div>
+              <div><h3>主場 · 實體 3 小時</h3><p>當場把 AI 辦公室搭起來，把第一個技能包寫出來。你自己動手，我在旁邊。</p></div>
             </article>
             <article class="map-step">
               <span>03</span>
@@ -702,7 +829,7 @@
       <div class="offer-shell">
         <div class="offer-heading">
           <div class="offer-section-index">03 · Team Companion</div>
-          <h2 id="team-title">企業陪跑：一個月之後，團隊自己跑得動</h2>
+          <h2 id="team-title">企業陪跑：整個團隊的人機協作，一個月之後自己跑得起來</h2>
           <p>給一人公司、老闆，以及 2 到 10 人的組織團隊，也就是有一個事業體要運轉的人。<strong>這條線是我和其他企業顧問一同進行的，掛在永力智庫底下。</strong></p>
         </div>
 
@@ -710,20 +837,23 @@
           <div class="companion-copy">
             <div class="offer-status">一個月四次 · 每週一次</div>
             <div class="companion-price"><small>NT$</small>30,000<small>起 · 未稅</small></div>
-            <p>依人數與工作複雜度落在 3 到 6 萬之間，聊過之後給你確切數字。教的三件事跟個人陪跑相同，差別在做出來的規模。價格未稅，另加 5% 營業稅，可開發票。</p>
+            <p>依人數與工作複雜度落在 3 到 6 萬之間，聊過之後給你確切數字。個人陪跑是把你自己的 AI 辦公室與技能包做起來；這條線再往上做一層，包含<span class="term" data-term="ai-employee" tabindex="0" role="button">AI 員工</span>、把技能包串成<span class="term" data-term="workflow" tabindex="0" role="button">Agent 工作流</span>，以及能長期累積的<span class="term" data-term="knowledge-base" tabindex="0" role="button">知識庫</span>。</p>
             <ul class="offer-checks">
+              <li>個人陪跑那一層也包含在內：AI 辦公室與技能包，再把技能包接成一整段流程</li>
               <li>五位依你們工作流程設計的 AI 員工</li>
+              <li>一個能長期累積的知識庫，加一份判斷規則地基，讓產出像你們自己做的</li>
               <li>一個放得下你專業內容的個人品牌網站</li>
-              <li>一份判斷規則地基，讓產出像你們自己做的</li>
               <li>成品放在你自己的電腦與帳號裡，方法留在人身上</li>
             </ul>
             <p style="font-size:0.95rem; opacity:0.75;">如果你是輔導多個團隊的顧問，這套方法可以帶進你自己的案子，條件我們另外聊。</p>
+            <p style="font-size:0.95rem; opacity:0.8;">可先預約個人諮詢 NT$2,000／小時，可折抵未來陪跑計劃。</p>
             <div class="offer-jump" style="justify-content:flex-start; margin-top:0;">
               <a class="offer-button" href="https://yongli-thinktank.pages.dev/service" target="_blank" rel="noopener">看永力智庫完整方案</a>
               <a class="offer-button offer-button-ghost" href="https://line.me/R/ti/p/@713kczfc" target="_blank" rel="noopener">先約 20 分鐘免費線上諮詢</a>
             </div>
           </div>
           <div class="companion-map" aria-label="企業陪跑四週節奏">
+            <img class="map-visual" src="images/offers/mika-companion-team.jpg" alt="咪卡拿著指揮棒站在畫著甘特圖的白板前，一個小團隊圍桌開會，其中一人舉手發問" loading="lazy" width="900" height="900">
             <article class="map-step">
               <span>01</span>
               <div><h3>第一週 · 實體 3 小時</h3><p>盤點團隊真正在做的工作，選出要做成 AI 員工的那幾件。</p></div>
@@ -827,5 +957,160 @@
     });
   </script>
   <script src="/mika-chat-widget.js" defer></script>
+  <script>
+  (function () {
+    var TERMS = {
+      'ai-office': {
+        title: 'AI 辦公室',
+        desc: '一個固定的地方，把你常用的 AI 工具、常用的檔案跟你自己的規則放在一起。之後每次要做事從這裡開始，需要重新交代的背景會少很多。',
+        img: 'images/offers/term-ai-office.jpg',
+        note: '這個概念還沒有單獨的文章，想先聊聊可以用 LINE 找我。'
+      },
+      'skill-pack': {
+        title: '技能包',
+        desc: '把一件你常做的事，寫成 AI 可以照著做的規則。寫一次，之後叫它出來就照這套走。規則寫得多細，它照做的程度就到哪裡。',
+        img: 'images/offers/term-skill-pack.jpg',
+        href: 'articles/claude-skills-knowledge-assets/',
+        linkText: '看深度文章：技能包是什麼'
+      },
+      'ai-employee': {
+        title: 'AI 員工',
+        desc: '一份寫好的工作規則加一組指令，存在你自己的電腦裡。規則裡寫的是你怎麼看事情、什麼能說什麼不能說。它仍然會出錯，所以對外的東西一律留一個你親自確認的環節。',
+        img: 'images/offers/term-ai-employee.jpg',
+        href: 'articles/ai-employee-four-levels/',
+        linkText: '看深度文章：訓練 AI 員工的四個層次'
+      },
+      'workflow': {
+        title: '工作流',
+        desc: '把好幾個技能包接起來，變成一整段流程。你交代一次，中間的步驟它接著做，該由你判斷的地方會停下來等你。',
+        img: 'images/offers/term-workflow.jpg',
+        href: 'articles/what-is-loop-engineering/',
+        linkText: '看深度文章：什麼是迴圈工程'
+      },
+      'knowledge-base': {
+        title: '知識庫',
+        desc: '你的講義、案例、逐字稿與報告，用一種 AI 讀得到、你自己也找得到的方式存起來。這一步最花時間，但存進去的東西會留下來，之後每次做事都用得到。',
+        img: 'images/offers/term-knowledge-base.jpg',
+        href: 'articles/teach-ai-not-learn-ai/',
+        linkText: '看深度文章：教 AI 的四個步驟'
+      }
+    };
+
+    var terms = document.querySelectorAll('.term');
+    if (!terms.length) return;
+
+    var tip = document.createElement('div');
+    tip.className = 'term-tip';
+    tip.id = 'term-tip';
+    tip.setAttribute('role', 'tooltip');
+    document.body.appendChild(tip);
+
+    var current = null;
+    var closeTimer = null;
+    var isTouch = window.matchMedia('(hover: none)').matches;
+
+    function render(key) {
+      var d = TERMS[key];
+      if (!d) return false;
+      var html = '';
+      if (d.img) {
+        html += '<img src="' + d.img + '" alt="" loading="lazy" width="1024" height="1024">';
+      }
+      html += '<h4>' + d.title + '</h4><p>' + d.desc + '</p>';
+      if (d.href) {
+        html += '<a class="term-tip-link" href="' + d.href + '">' + d.linkText + ' \u2192</a>';
+      } else if (d.note) {
+        html += '<span class="term-tip-note">' + d.note + '</span>';
+      }
+      tip.innerHTML = html;
+      return true;
+    }
+
+    function place(el) {
+      var r = el.getBoundingClientRect();
+      var sx = window.pageXOffset;
+      var sy = window.pageYOffset;
+      tip.style.left = '0px';
+      tip.style.top = '0px';
+      var w = tip.offsetWidth;
+      var h = tip.offsetHeight;
+      var left = r.left + sx + r.width / 2 - w / 2;
+      var max = document.documentElement.clientWidth - w - 14;
+      if (left < 14) left = 14;
+      if (left > max) left = Math.max(14, max);
+      var top = r.bottom + sy + 12;
+      if (r.bottom + h + 24 > window.innerHeight && r.top > h + 24) {
+        top = r.top + sy - h - 12;
+      }
+      tip.style.left = Math.round(left) + 'px';
+      tip.style.top = Math.round(top) + 'px';
+    }
+
+    function open(el) {
+      clearTimeout(closeTimer);
+      var key = el.getAttribute('data-term');
+      if (!render(key)) return;
+      current = el;
+      tip.classList.add('is-open');
+      place(el);
+    }
+
+    function close() {
+      tip.classList.remove('is-open');
+      current = null;
+    }
+
+    function scheduleClose() {
+      clearTimeout(closeTimer);
+      closeTimer = setTimeout(close, 220);
+    }
+
+    Array.prototype.forEach.call(terms, function (el) {
+      if (!isTouch) {
+        el.addEventListener('mouseenter', function () { open(el); });
+        el.addEventListener('mouseleave', scheduleClose);
+      }
+      el.addEventListener('focus', function () {
+        if (el.dataset.pointerActive === '1') return;
+        open(el);
+      });
+      el.addEventListener('blur', scheduleClose);
+      el.addEventListener('pointerdown', function () {
+        el.dataset.pointerActive = '1';
+        setTimeout(function () { delete el.dataset.pointerActive; }, 500);
+      });
+      el.addEventListener('touchend', function (e) {
+        e.preventDefault();
+        if (current === el) { close(); } else { open(el); }
+      });
+      el.addEventListener('click', function (e) {
+        e.preventDefault();
+        if (current === el) { close(); } else { open(el); }
+      });
+      el.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          if (current === el) { close(); } else { open(el); }
+        }
+      });
+    });
+
+    tip.addEventListener('mouseenter', function () { clearTimeout(closeTimer); });
+    tip.addEventListener('mouseleave', scheduleClose);
+
+    document.addEventListener('click', function (e) {
+      if (!current) return;
+      if (tip.contains(e.target) || current.contains(e.target)) return;
+      close();
+    });
+
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && current) close();
+    });
+
+    window.addEventListener('resize', function () { if (current) place(current); });
+    window.addEventListener('scroll', function () { if (current) place(current); }, { passive: true });
+  })();
+  </script>
 </body>
 </html>
