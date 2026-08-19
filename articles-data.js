@@ -376,7 +376,7 @@ window.ARTICLES = [
       content_type: ["觀點文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["own-ai-team-at-work", "agent-workflow-builds-automation", "how-ai-connects-software", "decision-ladder-non-programmer", "chatgpt-work-codex-choice", "ai-cp-value-calculus", "ai-employee-four-levels", "cognitive-debt"]
+    related: ["own-ai-team-at-work", "agent-workflow-builds-automation", "how-ai-connects-software", "decision-ladder-non-programmer", "chatgpt-work-codex-choice", "ai-cp-value-calculus", "ai-employee-four-levels", "cognitive-debt", "same-question-different-answers"]
   },
 
   /* ── 4-6. 趨勢判讀 ── */
@@ -771,7 +771,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["strong-ai-models-knowledge-workflow-road", "questionnaire-to-slides-agent-workflow", "teacher-prep-knowledge-workflow", "docs-as-system-design-agent", "how-to-train-your-ai-employee", "my-three-loops", "ai-loop-safety-recovery", "recovery-over-perfection", "ai-changed-behavior-into-workflow", "ai-delegators-optimism", "publish-gate", "loop-engineering-guardrails", "long-task-completion-rate", "dual-centaur-meeting", "manage-ai-with-management-knowledge", "old-prompts-intent-first-loop-engineering", "rule-file-rebound", "knowledge-os-master-map", "meeting-into-verifiable-loop", "eight-ai-system-concepts-2026"]
+    related: ["strong-ai-models-knowledge-workflow-road", "questionnaire-to-slides-agent-workflow", "teacher-prep-knowledge-workflow", "docs-as-system-design-agent", "how-to-train-your-ai-employee", "my-three-loops", "ai-loop-safety-recovery", "recovery-over-perfection", "ai-changed-behavior-into-workflow", "ai-delegators-optimism", "publish-gate", "loop-engineering-guardrails", "long-task-completion-rate", "dual-centaur-meeting", "manage-ai-with-management-knowledge", "old-prompts-intent-first-loop-engineering", "rule-file-rebound", "knowledge-os-master-map", "meeting-into-verifiable-loop", "eight-ai-system-concepts-2026", "same-question-different-answers"]
   },
 
   /* ── 無形資產，越分享越豐盛（觀點）── */
@@ -1358,7 +1358,7 @@ window.ARTICLES = [
     summary: "Claude Fable、GPT-5.6 Sol 這類強模型出現後，知識庫、工作流、規則與驗收方式造成的差距更明顯。用泥巴路、柏油路與高速公路三種道路環境，帶你完成六步 AI 鋪路流程。",
     tags: {"topic":["AI趨勢","知識管理","AI工作流","駕馭工程 HarnessEngineering"],"level":["基礎"],"content_type":["教學文章"]},
     external: { threads: null, vocus: null },
-    related: ["docs-as-system-design-agent", "what-is-loop-engineering", "how-to-train-your-ai-employee", "ai-that-knows-you", "knowledge-as-employee", "ai-tools-professional-judgment", "ai-cp-value-calculus", "use-more-ai-not-enough"]
+    related: ["docs-as-system-design-agent", "what-is-loop-engineering", "how-to-train-your-ai-employee", "ai-that-knows-you", "knowledge-as-employee", "ai-tools-professional-judgment", "ai-cp-value-calculus", "use-more-ai-not-enough", "same-question-different-answers"]
   },
   {
     id: "dual-track-planning-loop",
@@ -2086,6 +2086,25 @@ window.ARTICLES = [
     },
     external: { threads: null, vocus: null },
     related: ["after-ai-says-remembered", "meeting-record-agent-workflow", "how-to-train-your-ai-employee", "what-is-loop-engineering", "prompt-to-loop-map"]
+  },
+
+  /* ── 同一個問題問兩次，AI 為什麼給出不同答案？（教學）── */
+  {
+    id: "same-question-different-answers",
+    url: "articles/same-question-different-answers/",
+    date: "2026-08-19",
+    updated: "2026-08-19",
+    title: "同一個問題問兩次，AI 為什麼給出不同答案？：程式與 AI 的差異",
+    problem: "同一句話問 AI 兩次，答案卻不完全一樣，第一個反應常常是它不可靠。真正的差別在於傳統程式與生成式 AI 決定輸出的方式本來就不同，不先弄懂這件事，就不知道哪些步驟該追求穩定、哪些可以保留彈性。",
+    audience: "同一句話問 AI 兩次看到不同答案、開始懷疑它到底可不可靠的人；已經在用 AI 但不確定哪些工作能放心交出去的人；正準備把 AI 接進自己工作流程的非工程師。",
+    summary: "在試算表寫好公式重算很多次結果都一樣，把同一段會議筆記交給 AI 整理兩次卻不完全相同。這篇從輸出為什麼會變講起：傳統程式執行預先寫好的規則，生成式 AI 依當下脈絡即時生成，而你以為相同的輸入，系統看到的其實包含系統指令、前文、檢索到的文件與記憶。答不準的時候，用「關聯性錯位」比用「幻覺」更能幫你判斷該修哪裡。後半給可以直接用的兩套工具：把「完成」拆成機器驗收、資料複驗、人工判斷、跨模型審查四層，以及把工作流程分成規則層、生成層、驗收層，再附四個拆解問題，先問做錯能不能復原，再決定這一步交給程式還是 AI。",
+    tags: {
+      topic: ["AI應用", "AI工作流", "差異比較"],
+      level: ["零基礎入門"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["what-is-loop-engineering", "program-vs-ai-skill-library", "strong-ai-models-knowledge-workflow-road"]
   },
 
   /* ── 網站放 GitHub、Vercel 還是 Cloudflare？（教學）── */
