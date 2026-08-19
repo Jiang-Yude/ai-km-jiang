@@ -1,0 +1,375 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="index,follow">
+<title>兩個 AI 同時改一個網站，為什麼會打架？｜江江教練 · AI 知識管理</title>
+<meta name="description" content="兩個 AI 或兩個人同時維護同一個網站，為什麼會互卡、蓋掉彼此的版本？根因是共用同一個工作資料夾。這篇教你用三件套解決：git worktree 分軌施工、合併上線壓成單一 commit、每日巡檢抓漏，附落地六步與可直接貼給 AI 的委託指令。">
+<link rel="canonical" href="https://jiangyude.com/articles/parallel-site-editing/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="兩個 AI 同時改一個網站，為什麼會打架？｜江江教練">
+<meta property="og:image" content="https://jiangyude.com/images/og/parallel-site-editing.jpg">
+<meta property="og:description" content="兩個 AI 或兩個人同時維護同一個網站，為什麼會互卡、蓋掉彼此的版本？根因是共用同一個工作資料夾。這篇教你用三件套解決：git worktree 分軌施工、合併上線壓成單一 commit、每日巡檢抓漏，附落地六步與可直接貼給 AI 的委託指令。">
+<meta property="og:url" content="https://jiangyude.com/articles/parallel-site-editing/">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:site_name" content="江江教練 · AI 知識管理">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="兩個 AI 同時改一個網站，為什麼會打架？｜江江教練">
+<meta name="twitter:image" content="https://jiangyude.com/images/og/parallel-site-editing.jpg">
+<meta name="twitter:description" content="兩個 AI 或兩個人同時維護同一個網站，為什麼會互卡、蓋掉彼此的版本？根因是共用同一個工作資料夾。這篇教你用三件套解決：git worktree 分軌施工、合併上線壓成單一 commit、每日巡檢抓漏，附落地六步與可直接貼給 AI 的委託指令。">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"兩個 AI 同時改一個網站，為什麼會打架？","description":"兩個 AI 或兩個人同時維護同一個網站，為什麼會互卡、蓋掉彼此的版本？根因是共用同一個工作資料夾。這篇教你用三件套解決：git worktree 分軌施工、合併上線壓成單一 commit、每日巡檢抓漏，附落地六步與可直接貼給 AI 的委託指令。","author":{"@type":"Person","name":"江昱德","alternateName":"江江教練","jobTitle":"隱性知識提煉師、AI 應用規劃師"},"isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://jiangyude.com/"},"inLanguage":"zh-Hant","url":"https://jiangyude.com/articles/parallel-site-editing/"}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{--ink:#1a1612;--paper:#fefcf8;--muted:#6a635a;--line:#d8cdb8;--green:#5f7553;--blue:#5689b8;--orange:#e85a4f;--soft:#faf5ec;--dark:#2a2018;--shadow:0 18px 45px rgba(107,74,42,.14);--sp-shadow:hsla(35,50%,60%,.15);--sp-shadow-edge:hsla(35,50%,68%,.03);--sp-radius:400px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC","Segoe UI",sans-serif}
+a{color:inherit}
+/* 官網共用導航列 nav.top（與首頁/文章總站同一條） */
+nav.top{position:sticky;top:0;background:rgba(254,252,248,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid #d8cdb8;z-index:100}
+nav.top .container{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:24px;padding:14px 32px}
+.nav-brand-img{justify-self:start;display:flex;align-items:center;text-decoration:none;flex-shrink:0;transition:opacity .2s}
+.nav-brand-img:hover{opacity:.8}.nav-brand-img img{height:40px;width:auto;display:block}
+nav.top ul.nav-menu{justify-self:end;display:flex;gap:22px;list-style:none;margin:0;padding:0;font-size:.95rem;white-space:nowrap}
+nav.top ul.nav-menu a{color:#3a342d;text-decoration:none;transition:color .2s;font-weight:500;white-space:nowrap}
+nav.top ul.nav-menu a:hover{color:#1a1612}nav.top ul.nav-menu a.active{color:#1a1612;font-weight:700}
+.nav-toggle{display:none;background:none;border:none;padding:6px;cursor:pointer;width:36px;height:36px;position:relative}
+.nav-toggle span{display:block;position:absolute;left:8px;right:8px;height:2px;background:#1a1612;border-radius:2px;transition:transform .25s,opacity .25s,top .25s}
+.nav-toggle span:nth-child(1){top:11px}.nav-toggle span:nth-child(2){top:17px}.nav-toggle span:nth-child(3){top:23px}
+.nav-toggle.open span:nth-child(1){top:17px;transform:rotate(45deg)}.nav-toggle.open span:nth-child(2){opacity:0}.nav-toggle.open span:nth-child(3){top:17px;transform:rotate(-45deg)}
+@media(max-width:860px){
+ nav.top .container{grid-template-columns:auto 1fr auto;padding:10px 16px;gap:12px}
+ .nav-brand-img img{height:32px}
+ .nav-toggle{display:block;justify-self:end}
+ nav.top ul.nav-menu{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(254,252,248,.98);backdrop-filter:blur(14px);border-bottom:1px solid #d8cdb8;flex-direction:column;gap:0;padding:8px 0;box-shadow:0 10px 24px rgba(107,74,42,.08)}
+ nav.top ul.nav-menu.open{display:flex}
+ nav.top ul.nav-menu li{border-bottom:1px solid #e8dfc9}
+ nav.top ul.nav-menu li:last-child{border-bottom:none}
+ nav.top ul.nav-menu a{display:block;padding:14px 20px;font-size:1.06rem}
+}
+/* 滑鼠暖光暈（與首頁同一支 spotlight.js） */
+body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradient(var(--sp-radius) circle at var(--mx,50%) var(--my,50%),var(--sp-shadow) 0%,var(--sp-shadow-edge) 45%,transparent 75%);pointer-events:none;z-index:9999;mix-blend-mode:multiply;transition:background .06s linear}
+.hero{position:relative;overflow:hidden;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:72px;padding:96px clamp(20px,6vw,88px) 80px;background:linear-gradient(180deg,#fffcf0 0%,#f9e9d2 100%);color:#1a1612;border-bottom:1px solid #d8cdb8}
+.hero .wc{position:absolute;border-radius:50%;filter:blur(60px);pointer-events:none;z-index:0}
+.hero .wc1{width:420px;height:360px;top:-120px;right:-80px;background:#e8884b;opacity:.15}
+.hero .wc2{width:360px;height:300px;bottom:-110px;left:-70px;background:#5f7553;opacity:.13}
+.hero .wc3{width:280px;height:260px;top:34%;left:14%;background:#a08144;opacity:.10}
+.hero>div{flex:none;width:860px;max-width:100%;position:relative;z-index:2}
+.hero-figure{margin:0;width:420px;flex:none;position:relative;z-index:2}
+.hero-figure img{display:block;width:100%;border-radius:16px;border:1px solid #d8cdb8;box-shadow:0 18px 45px rgba(107,74,42,.16);cursor:zoom-in}
+.hero-figure figcaption{margin-top:10px;font-size:14px;line-height:1.6;color:#6a635a}
+.inline-figure{margin:30px auto 8px;max-width:820px}
+.inline-figure img{display:block;width:100%;border-radius:14px;border:1px solid var(--line);box-shadow:var(--shadow);background:#fff;cursor:zoom-in}
+.inline-figure figcaption{font-size:14px;line-height:1.6;color:var(--muted);margin-top:10px}
+.lightbox{position:fixed;inset:0;z-index:10000;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(12,10,8,.92);cursor:zoom-out;backdrop-filter:blur(4px)}
+.lightbox.open{display:flex}.lightbox img{max-width:96vw;max-height:92vh;border-radius:10px;box-shadow:0 24px 60px rgba(0,0,0,.5)}
+.lightbox-close{position:fixed;top:18px;right:24px;color:#fff;font-size:34px;line-height:1;font-weight:700;cursor:pointer;opacity:.85}
+.kicker{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.55rem;color:#7a5c3a;font-weight:500}
+.hero h1{max-width:none;margin:16px 0 18px;font-size:clamp(36px,6vw,72px);line-height:1.08;overflow-wrap:anywhere}
+.hero p{max-width:none;font-size:clamp(18px,2vw,23px);line-height:1.62;color:#3a342d}
+.cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
+.cta a{display:inline-flex;align-items:center;text-decoration:none;border-radius:8px;padding:12px 16px;font-weight:900}
+.cta .primary{background:#fff;color:#1a1612}.cta .ghost{border:1px solid rgba(255,255,255,.32);color:#fff;background:rgba(255,255,255,.08)}
+.section{padding:54px clamp(20px,6vw,88px);border-top:1px solid var(--line)}
+.inner{width:min(1000px,100%);margin:0 auto}
+.section h2{font-size:clamp(26px,4.2vw,48px);line-height:1.12;margin:0 0 18px}
+.section h3{font-size:clamp(21px,3vw,30px);line-height:1.2;margin:30px 0 12px}
+.lead{font-size:clamp(18px,1.6vw,22px);line-height:1.7;color:#3a342d;max-width:900px}
+.section p{font-size:18px;line-height:1.74;color:#3a342d}.section p+p{margin-top:14px}
+.section ul,.section ol{padding-left:1.4em;font-size:18px;line-height:1.74;color:#3a342d}.section li{margin-bottom:8px}
+.meaning{margin:22px 0;padding:16px 18px;border-left:5px solid var(--blue);background:rgba(86,137,184,.12);border-radius:6px;line-height:1.7;font-size:19px}
+.meaning b{display:block;color:var(--blue);margin-bottom:4px}
+.caveat{margin:0 0 8px;padding:16px 18px;border-left:5px solid var(--orange);background:rgba(232,90,79,.1);border-radius:6px;line-height:1.7;font-size:18px;color:#3a342d}
+.caveat b{display:block;color:var(--orange);margin-bottom:4px}
+.infocard{background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px 24px 22px;box-shadow:0 8px 22px rgba(107,74,42,.08);margin-top:8px}
+.infocard-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.info-item{padding:18px 14px 0}
+.info-item b{display:block;font-size:14px;font-weight:900;letter-spacing:.04em;margin-bottom:7px;text-transform:uppercase}
+.info-item:nth-child(1) b{color:var(--green)}.info-item:nth-child(2) b{color:var(--orange)}.info-item:nth-child(3) b{color:var(--blue)}
+.info-item p{margin:0;font-size:17px;line-height:1.6;color:#3a342d}
+.tagrow{display:flex;flex-wrap:wrap;gap:7px;margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
+.tag{font-size:14px;color:var(--muted);background:var(--soft);border:1px solid var(--line);border-radius:999px;padding:4px 11px}
+.duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:24px}
+.duo.stack{grid-template-columns:1fr}
+.duo .card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:22px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.duo .card.a{border-color:var(--orange)}.duo .card.b{border-color:var(--green);box-shadow:0 8px 24px rgba(95,117,83,.16)}
+.duo .card small{display:block;font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.04em;margin-bottom:9px}
+.duo .card.a small{color:var(--orange)}.duo .card.b small{color:var(--green)}
+.duo .card b{display:block;font-size:22px;line-height:1.3;margin-bottom:12px}.duo .card.a b{color:#c0512f}.duo .card.b b{color:#4a7a59}
+.duo .card p{margin:0;color:#3a342d;line-height:1.75;font-size:18px}
+.duo .card ul{margin:0;padding-left:1.25em;font-size:18px;line-height:1.75;color:#3a342d}
+.workflow-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:24px}
+.workflow-step{background:#fff;border:1px solid var(--line);border-radius:8px;padding:18px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.workflow-step small{display:block;color:var(--orange);font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;margin-bottom:9px}
+.workflow-step b{display:block;font-size:18px;line-height:1.3;margin-bottom:9px}
+.workflow-step p{margin:0;color:#3a342d;line-height:1.6;font-size:16px}
+.codeblock{background:var(--dark);color:#f3ead9;border-radius:8px;padding:18px 20px;font:500 14px/1.65 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;overflow-x:auto;white-space:pre-wrap;margin:20px 0;box-shadow:0 8px 22px rgba(107,74,42,.12)}
+.codeblock .c{color:#f6d7a6;font-weight:600}
+.skillcard{background:#fff;border:1px solid var(--green);border-radius:12px;padding:24px;box-shadow:0 10px 26px rgba(95,117,83,.16);margin-top:8px}
+.skillcard b{display:block;font-size:21px;margin-bottom:8px}
+.skillcard p{margin:0 0 16px;font-size:17px;line-height:1.65;color:#3a342d}
+.readmore{margin-top:24px;padding:20px 22px;background:var(--soft);border:1px solid var(--line);border-radius:12px}
+.readmore.near{margin:26px 0 6px;background:rgba(86,137,184,.07);border-color:#bcd0e2}
+.readmore.near b{color:var(--blue);font-size:18px}
+.readmore.near li{font-size:17px;line-height:1.7;margin-bottom:10px}
+.readmore b{display:block;margin-bottom:10px;font-size:19px}
+.readmore ul{margin:0;padding-left:1.25em}
+.readmore a{color:var(--blue);font-weight:700;text-decoration:none}
+.readmore a:hover{text-decoration:underline}
+.cta-band{background:#e6f0e5;color:#3a342d}.cta-band .section{border-top:none}
+.cta-band .inner{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(260px,.85fr);gap:26px;align-items:start}
+.cta-band h2{font-size:clamp(26px,4vw,44px);margin:0 0 16px}.cta-band p,.cta-band .lead{color:rgba(58,52,45,.9);font-size:18px;line-height:1.72}
+.cta-card{border:1px solid #cfe0d2;background:#fbfdfa;border-radius:8px;padding:22px}
+.cta-card b{display:block;color:#48b178;margin-bottom:10px;font-size:18px}.cta-card p{margin:0 0 14px}
+.footer{padding:30px clamp(20px,6vw,88px);font-size:14px;color:var(--muted);background:#fff;border-top:1px solid var(--line)}
+.footer-inner{width:min(1000px,100%);margin:0 auto}
+.footer-links{display:flex;flex-wrap:wrap;gap:6px 12px;margin-bottom:14px}.footer-links a{color:var(--blue);font-weight:900;text-decoration:none;font-size:14px}
+.footer-brand{font-weight:900;font-size:15px;margin-bottom:10px}.footer-note{font-size:13px;line-height:1.6}
+@media(max-width:820px){.infocard-grid{grid-template-columns:1fr}.duo{grid-template-columns:1fr}.workflow-grid{grid-template-columns:1fr}.cta-band .inner{grid-template-columns:1fr}.section{padding:40px 20px}.hero{min-height:52vh;flex-direction:column;justify-content:flex-start;align-items:flex-start;gap:24px}.hero>div{width:100%}.hero-figure{width:100%;max-width:560px}}
+@media(max-width:820px){html,body{overflow-x:hidden}.hero h1{word-break:break-word}}
+</style>
+</head>
+<body class="spotlight">
+<!-- 官網共用導航列：與首頁/總站同一條。選單區塊由 preflight 第 5 關逐字比對，說明寫在這裡、選單內保持乾淨。 -->
+<nav class="top">
+  <div class="container">
+    <a class="nav-brand-img" href="../../index.html"><img src="../../images/footer-signature.png" alt="江江教練 | 江昱德"></a>
+    <button class="nav-toggle" aria-label="選單"><span></span><span></span><span></span></button>
+    <ul class="nav-menu">
+      <li><a href="../../index.html">首頁</a></li>
+      <li><a href="../../knowledge-architecture.html">知識架構</a></li>
+      <li><a href="../../courses.html">課程</a></li>
+      <li><a href="../../articles.html" class="active">深度文章</a></li>
+      <li><a href="../../skills.html">技能包下載</a></li>
+      <li><a href="../../offers.html">服務方案</a></li>
+      <li class="lang-switch"><a href="../../en/articles.html" hreflang="en">EN</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="wc wc1"></div>
+  <div class="wc wc2"></div>
+  <div class="wc wc3"></div>
+  <div>
+    <div class="kicker">AI 工作流 / 教學文章</div>
+    <h1>兩個 AI 同時改一個網站，為什麼會打架？</h1>
+    <p>我的官網有兩篇文章同時要上線，一篇檢查全過卻只能排隊。當天我把根因挖出來、設計了新機制、請另一家 AI 審查、當天上線。這篇把整個過程拆開來教：用「三張桌子」解決互卡與版本衝突。</p>
+  </div>
+  <figure class="hero-figure">
+    <img src="../../images/articles/parallel-site-editing-cover.jpg" alt="左邊兩隻咪卡擠在同一張大桌子上稿紙交疊，右邊三張小桌子各坐一隻咪卡安心寫稿" loading="lazy">
+    <figcaption>擠一張桌子就要排隊，一人一張桌子就不用。整篇文章講的機制，濃縮成這一張圖。</figcaption>
+  </figure>
+</section>
+
+<main>
+
+<section class="section" id="start">
+  <div class="inner">
+    <p class="lead">這篇在講什麼：當多個 AI（或多個人）同時維護同一個網站，會出現互相排隊、蓋掉彼此版本、目錄與內容不同步三種病。這篇用我自己官網當天的真實事故當教材，講清楚根因（所有人共用同一個工作資料夾），並給出一套當天就上線的解法：分軌施工、合併上線、每日巡檢。</p>
+    <div class="duo stack">
+      <div class="card a">
+        <b>適合誰</b>
+        <ul>
+          <li>已經讓兩個以上的 AI 幫忙顧網站，常常這個做到一半、那個不敢動的人</li>
+          <li>幫客戶做網站，想把「多人維護不打架」設計進交付規格的接案者</li>
+          <li>網站更新越來越頻繁，開始怕「上錯版本、蓋掉別人」的團隊</li>
+        </ul>
+      </div>
+      <div class="card b">
+        <b>你可以帶走什麼</b>
+        <ul>
+          <li>一套三件套機制：git worktree 分軌施工、合併上線壓單一 commit、每日巡檢抓漏</li>
+          <li>六步落地清單，自己的站或客戶的站都能照裝</li>
+          <li>一段可以直接貼給 AI 的委託指令，讓它幫你把機制建起來</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="story">
+  <div class="inner">
+    <h2>今天早上，兩篇文章互卡了</h2>
+    <p>場景是這樣的：我的官網由多個 AI session 分頭維護，A 在改服務方案頁，B 的新文章已經全部就緒，發布前的十項檢查全數通過，只差最後一步推送。</p>
+    <p>然後 B 停下來了。因為它看到 A 還在同一個資料夾裡施工，按照我們立過的安全規則（同一時段只准一個 session 施工，動工前要掛牌登記），它只能排隊。</p>
+    <p>我當下說了兩句話：「我希望可以是單篇、單頁，部署不會影響。」還有一句更真實的：「安全機制太擋，很麻煩。」</p>
+    <p>這不是第一次。更早之前發生過一方為了發布、動了另一方還沒完成的檔案；也發生過正式網域被舊版本蓋回去。每出一次事，我們就多立一條規則，規則越立越多，排隊越排越長。</p>
+  </div>
+</section>
+
+<section class="section" id="root-cause">
+  <div class="inner">
+    <h2>先講結論：打架的根因只有一個</h2>
+    <p>很多人以為是部署的問題。我的網站早就改成 Git 整合自動部署了：推送一個 commit，平台自動建置上線，部署的單位是 commit，理論上誰都不會蓋掉誰。</p>
+    <p>那為什麼還會打架？因為<b>所有 AI 共用同一個本機資料夾</b>。</p>
+    <p>想像一群人擠在同一張桌子上寫稿。桌上只要有別人還沒收走的稿紙，你就不敢動，怕弄亂別人的東西；你要出門送印，也得先確認桌上沒有別人的半成品會被夾進去。於是大家立了規矩：同一時段只准一個人用桌子，用之前要掛牌登記。</p>
+    <div class="meaning"><b>關鍵判斷</b>排隊規則有用，它擋下過好幾次事故。但它解的是症狀，根因還留在原地：只要大家還共用一張桌子，排隊就永遠存在。要消滅排隊，要動的是桌子，而非規則。</div>
+    <div class="readmore near">
+      <b>為什麼我總是先挖根因，再立機制</b>
+      <ul>
+        <li><a href="../copied-mechanism-is-no-mechanism/">直接抄別人的 Skills、工作流，其實沒什麼用</a>　這段講的「規則越補越多、問題還在」正是那篇的主題：機制要長在自己的根因上，抄表面的規則沒有用</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="three-parts">
+  <div class="inner">
+    <h2>解法三件套</h2>
+    <div class="workflow-grid">
+      <div class="workflow-step"><small>PART 1</small><b>分軌施工</b><p>每篇文章一張自己的桌子（git worktree），物理隔離，施工完全不排隊。</p></div>
+      <div class="workflow-step"><small>PART 2</small><b>合併上線</b><p>上線走一支合併腳本，唯一的排隊點從「整段施工」縮到五到十分鐘。</p></div>
+      <div class="workflow-step"><small>PART 3</small><b>每日巡檢</b><p>全站檢查改成每天自動跑一次，抓漏但不擋人。</p></div>
+    </div>
+    <figure class="inline-figure">
+      <img src="../../images/articles/parallel-site-editing-trio.jpg" alt="三格示意：多張桌子各自施工、合併窗口前排隊、咪卡拿放大鏡巡檢網站" loading="lazy">
+      <figcaption>三件套各管一段：施工期零排隊、上線期短排隊、檢查期不排隊。</figcaption>
+    </figure>
+
+    <h3>第一件：一個單元一張桌子（git worktree）</h3>
+    <p>每篇文章（或每個獨立更新的頁面）開一個專屬分支，加一個專屬資料夾。Git 內建的 worktree 功能就是做這件事的：</p>
+    <div class="codeblock"><span class="c"># 為一篇文章開一張專屬桌子（分支＋獨立資料夾）</span>
+git worktree add ~/桌子資料夾/文章名 -b article/文章名 origin/main</div>
+    <p>從此 A 文章和 B 文章各寫各的，彼此完全看不到對方未完成的檔案，排隊制度直接失去存在的理由。附帶的好處：分支推上去就有預覽網址，草稿給人審不必先上線。</p>
+    <div class="caveat"><b>鐵則：分支只放來源檔，禁止放生成檔</b>生成檔指網站的目錄、索引、sitemap 這類「跑腳本長出來的檔案」。為什麼要禁？下一件講到合併時你就會看到，這是整套機制第一個會爆的地雷。</div>
+
+    <h3>第二件：合併上線，唯一的排隊點縮到幾分鐘</h3>
+    <p>文章寫完要上線，走一支合併腳本，一次做完六步：</p>
+    <ol>
+      <li>取鎖（同時只能有一個合併在跑）</li>
+      <li>確認主資料夾乾淨、同步遠端</li>
+      <li>把文章分支合併進來</li>
+      <li>重跑全部生成器，把目錄、索引、sitemap 重新編一次</li>
+      <li>以上全部壓成一個 commit 推送，平台自動建置</li>
+      <li>用這個 commit 的編號核對線上建置，對得上才放鎖</li>
+    </ol>
+    <p>整段大約五到十分鐘，這是新機制裡唯一要排隊的地方。跟原本「整段施工都要排隊、動輒半天」相比，體感就是換了一套機制，而非又多了幾條規則。</p>
+
+    <h3>第三件：每日巡檢，事後抓漏取代事前全擋</h3>
+    <p>舊做法是每次發布都跑全站檢查，檢查越多、發布越卡。新做法把檢查拆成兩層：發布當下只檢查「我這篇沒壞」；全站級的檢查（文章互聯是否完整、索引有沒有漏頁、線上隨機抽測、AI 客服的檢索資料是否正常）做成一支腳本，每天自動跑一次，有問題開卡回報，交人判斷，它自己不修東西，也不擋任何人。</p>
+    <div class="meaning"><b>一句話記住分工</b>發布閘門管「我這頁沒壞」，每日巡檢管「全站沒壞」。</div>
+  </div>
+</section>
+
+<section class="section" id="three-holes">
+  <div class="inner">
+    <h2>最有教學價值的部分：另一家 AI 抓出的三個洞</h2>
+    <p>機制是我和 Claude 一起設計的。設計完我沒有直接上，先丟給另一家的 AI（Codex）審查，而且刻意讓它先不看我的方案、自己獨立設計一次，再來互審，避免被我的想法帶著走。</p>
+    <p>它的獨立設計和我的方向幾乎一致，這是好消息。更值錢的是它抓出三個「會實際出事」的洞：</p>
+    <div class="caveat"><b>洞一：生成檔的衝突會提早引爆</b>我原本想「索引重跑就好」，但如果兩個分支都提交了生成檔，合併時 Git 會先報衝突，根本走不到重跑那一步。所以鐵則改成：分支禁止提交生成檔，生成檔只在合併時重建。</div>
+    <div class="caveat"><b>洞二：中間狀態會被部署出去</b>如果「合併文章」和「更新索引」是兩個 commit，平台可能在中間那一刻建置，上線一個「文章進來了、目錄還沒更新」的版本，訪客就會撞到目錄有、點進去卻找不到頁面。所以六步要壓成單一 commit。</div>
+    <div class="caveat"><b>洞三：驗收可能驗到別人的建置</b>多條線並行時，「線上有新建置」推不出「那是我的建置」。所以驗收要核對 commit 編號，對得上才算數。</div>
+    <p>這三個洞的共通點：單獨看每一步都合理，串起來才看得到破口。這正是找第二顆腦、而且找不同家模型審查的價值。</p>
+    <div class="readmore near">
+      <b>讓兩家 AI 互相挑錯，我有一整套做法</b>
+      <ul>
+        <li><a href="../dual-track-planning-loop/">如何讓兩個不同的 AI 互相挑錯、自己訂正？</a>　這節只用到「獨立設計再互審」一招，那篇是完整版：兩軌各自跑完、互審、整合、終審的全流程</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="fit">
+  <div class="inner">
+    <h2>你需要這套嗎？先看兩個條件</h2>
+    <div class="duo">
+      <div class="card a">
+        <b>條件一：部署走 Git 整合</b>
+        <p>網站用 Git 託管，推送就自動建置上線（Vercel、Netlify、Cloudflare Pages 的 Git 整合都算）。這是並行的地基；還在用本機資料夾直接推的，先改這個。</p>
+      </div>
+      <div class="card b">
+        <b>條件二：兩個以上的人或 AI 同時改站</b>
+        <p>只有多人（或多 AI）並行才會打架。單人維護的小站不需要這套，直接在主線上小步快跑就好。</p>
+      </div>
+    </div>
+    <p>兩個都符合，才值得裝三件套。</p>
+  </div>
+</section>
+
+<section class="section" id="playbook">
+  <div class="inner">
+    <h2>給你的落地清單</h2>
+    <p>想在自己的網站（或幫客戶的網站）裝這套，照這六步：</p>
+    <ol>
+      <li>確認部署是 Git 整合（推送即建置）。</li>
+      <li>盤點站內的生成檔，列成「合併時要重跑的生成器清單」。</li>
+      <li>寫三支腳本：開桌子、合併上線、每日巡檢。</li>
+      <li>定義施工單元的粒度（一頁？一篇？一個功能？），單元越獨立越不衝突。</li>
+      <li>教會團隊三句話：開新工作等於開桌子；上線等於跑合併腳本等它全綠；每天看一眼巡檢報告。</li>
+      <li>沒有排程能力就把巡檢降級成每週人工跑一次，寫進交接文件。</li>
+    </ol>
+    <p>懶得自己想的話，把這段直接貼給你的 AI：</p>
+    <div class="codeblock">我的網站用 Git 託管、部署走推送即自動建置。請幫我設計並行施工機制：
+每個更新單元開專屬分支加 git worktree 隔離施工；
+上線走一支合併腳本（取鎖、合併、重跑所有生成器、壓成單一 commit、
+用 commit 編號驗收線上建置）；
+另外寫一支每日巡檢腳本檢查全站連結與索引。
+注意三件事：分支禁止提交生成檔、合併與索引更新必須是同一個 commit、
+驗收要核對 commit 編號。</div>
+    <div class="readmore near">
+      <b>想先補系統概念再動手</b>
+      <ul>
+        <li><a href="../eight-ai-system-concepts-2026/">2026 年知識工作者的八個 AI 系統概念</a>　這篇用到的分支、commit、生成器都在那張概念地圖上，先看它會更容易理解這套機制在做什麼</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="dogfood">
+  <div class="inner">
+    <h2>最後一個彩蛋：新機制的第一個使用者是它自己</h2>
+    <p>拍板之後，施工這套機制本身就是用這套機制做的：開一張獨立的桌子（worktree 分支），三支腳本在裡面寫完、測完、推上去，全程沒有碰主資料夾一根指頭。當時主資料夾裡還有另外兩個 AI 的在途工作，一個都沒被影響。</p>
+    <p>連你現在讀的這篇文章，也是在自己的專屬桌子上寫出來的。機制能不能用，最快的驗證方式就是讓它處理自己的誕生。</p>
+    <div class="tagrow">
+      <span class="tag">AI工作流</span><span class="tag">AI應用</span><span class="tag">工作流程</span><span class="tag">教學文章</span><span class="tag">進階</span>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">江江教練 · AI 知識管理</div>
+    <div class="footer-links">
+      <a href="../../articles.html">← 回深度文章總站</a>
+      <a href="../../index.html">首頁</a>
+      <a href="../../learn.html">自學資源</a>
+      <a href="../../skills.html">技能包下載</a>
+      <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">LINE 社群 ↗</a>
+      <a href="https://www.threads.com/@jiang_yude_coach" target="_blank" rel="noopener">Threads ↗</a>
+      <a href="https://vocus.cc/salon/Jiang_Coach" target="_blank" rel="noopener">方格子 ↗</a>
+    </div>
+    <div class="footer-note">這是一篇教學文章，整理我對「兩個 AI 同時改一個網站，為什麼會打架？」的看法，供你參考。</div>
+  </div>
+</footer>
+
+<!-- 點圖放大 lightbox（hero 與內文圖通用，已內建，不用每篇重加） -->
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <span class="lightbox-close" aria-label="關閉">×</span>
+  <img id="lightbox-img" src="" alt="放大檢視">
+</div>
+<script>
+(function(){
+  var box=document.getElementById('lightbox'),boxImg=document.getElementById('lightbox-img');
+  document.querySelectorAll('.hero-figure img,.inline-figure img').forEach(function(img){
+    img.addEventListener('click',function(){boxImg.src=img.currentSrc||img.src;boxImg.alt=img.alt||'放大檢視';box.classList.add('open');box.setAttribute('aria-hidden','false');});
+  });
+  function close(){box.classList.remove('open');box.setAttribute('aria-hidden','true');boxImg.src='';}
+  box.addEventListener('click',close);
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
+})();
+</script>
+
+<script src="../../image-interactions.js"></script>
+
+<!-- 官網共用：滑鼠暖光暈 + 導航列漢堡選單 -->
+<script src="../../spotlight.js"></script>
+
+<!-- 文章自動互聯（相關文章）：兩支已內建，順序不可顛倒，不用再另外加 -->
+<script src="../../articles-data.js"></script>
+<script src="../../related-render.js"></script>
+</body>
+</html>
