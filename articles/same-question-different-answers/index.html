@@ -1,0 +1,369 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>同一個問題問兩次，AI 為什麼給出不同答案？｜江江教練 · AI 知識管理</title>
+<meta name="description" content="同一句話問 AI 兩次，答案卻不一樣。從詞語關聯性、關聯性錯位講到四層驗收，帶你看懂傳統軟體與生成式 AI 的差異，並用規則層、生成層、驗收層拆解自己的工作流程。">
+<link rel="canonical" href="https://jiangyude.com/articles/same-question-different-answers/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="同一個問題問兩次，AI 為什麼給出不同答案？｜江江教練">
+<!-- 分享封面：hero 文字填好後在 repo 根目錄跑 `node scripts/og-shot.mjs same-question-different-answers` 自動截 1200×630 到 images/og/same-question-different-answers.jpg（見 README「文章分享封面（OG 圖）機制」）。別退回 intro-jiang.png 直式人像，會被裁成只剩脖子。 -->
+<meta property="og:image" content="https://jiangyude.com/images/og/same-question-different-answers.jpg">
+<meta property="og:description" content="同一句話問 AI 兩次，答案卻不一樣。從詞語關聯性、關聯性錯位講到四層驗收，帶你看懂傳統軟體與生成式 AI 的差異，並用規則層、生成層、驗收層拆解自己的工作流程。">
+<meta property="og:url" content="https://jiangyude.com/articles/same-question-different-answers/">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:site_name" content="江江教練 · AI 知識管理">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="同一個問題問兩次，AI 為什麼給出不同答案？｜江江教練">
+<meta name="twitter:image" content="https://jiangyude.com/images/og/same-question-different-answers.jpg">
+<meta name="twitter:description" content="同一句話問 AI 兩次，答案卻不一樣。從詞語關聯性、關聯性錯位講到四層驗收，帶你看懂傳統軟體與生成式 AI 的差異，並用規則層、生成層、驗收層拆解自己的工作流程。">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"同一個問題問兩次，AI 為什麼給出不同答案？","description":"同一句話問 AI 兩次，答案卻不一樣。從詞語關聯性、關聯性錯位講到四層驗收，帶你看懂傳統軟體與生成式 AI 的差異，並用規則層、生成層、驗收層拆解自己的工作流程。","author":{"@type":"Person","name":"江昱德","alternateName":"江江教練","jobTitle":"隱性知識提煉師、AI 應用規劃師"},"isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://jiangyude.com/"},"inLanguage":"zh-Hant","url":"https://jiangyude.com/articles/same-question-different-answers/"}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{--ink:#1a1612;--paper:#fefcf8;--muted:#6a635a;--line:#d8cdb8;--green:#5f7553;--blue:#5689b8;--orange:#e85a4f;--soft:#faf5ec;--dark:#2a2018;--shadow:0 18px 45px rgba(107,74,42,.14);--sp-shadow:hsla(35,50%,60%,.15);--sp-shadow-edge:hsla(35,50%,68%,.03);--sp-radius:400px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC","Segoe UI",sans-serif}
+a{color:inherit}
+/* 官網共用導航列 nav.top（與首頁/文章總站同一條） */
+nav.top{position:sticky;top:0;background:rgba(254,252,248,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid #d8cdb8;z-index:100}
+nav.top .container{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:24px;padding:14px 32px}
+.nav-brand-img{justify-self:start;display:flex;align-items:center;text-decoration:none;flex-shrink:0;transition:opacity .2s}
+.nav-brand-img:hover{opacity:.8}.nav-brand-img img{height:40px;width:auto;display:block}
+nav.top ul.nav-menu{justify-self:end;display:flex;gap:22px;list-style:none;margin:0;padding:0;font-size:.95rem;white-space:nowrap}
+nav.top ul.nav-menu a{color:#3a342d;text-decoration:none;transition:color .2s;font-weight:500;white-space:nowrap}
+nav.top ul.nav-menu a:hover{color:#1a1612}nav.top ul.nav-menu a.active{color:#1a1612;font-weight:700}
+.nav-toggle{display:none;background:none;border:none;padding:6px;cursor:pointer;width:36px;height:36px;position:relative}
+.nav-toggle span{display:block;position:absolute;left:8px;right:8px;height:2px;background:#1a1612;border-radius:2px;transition:transform .25s,opacity .25s,top .25s}
+.nav-toggle span:nth-child(1){top:11px}.nav-toggle span:nth-child(2){top:17px}.nav-toggle span:nth-child(3){top:23px}
+.nav-toggle.open span:nth-child(1){top:17px;transform:rotate(45deg)}.nav-toggle.open span:nth-child(2){opacity:0}.nav-toggle.open span:nth-child(3){top:17px;transform:rotate(-45deg)}
+@media(max-width:860px){
+ nav.top .container{grid-template-columns:auto 1fr auto;padding:10px 16px;gap:12px}
+ .nav-brand-img img{height:32px}
+ .nav-toggle{display:block;justify-self:end}
+ nav.top ul.nav-menu{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(254,252,248,.98);backdrop-filter:blur(14px);border-bottom:1px solid #d8cdb8;flex-direction:column;gap:0;padding:8px 0;box-shadow:0 10px 24px rgba(107,74,42,.08)}
+ nav.top ul.nav-menu.open{display:flex}
+ nav.top ul.nav-menu li{border-bottom:1px solid #e8dfc9}
+ nav.top ul.nav-menu li:last-child{border-bottom:none}
+ nav.top ul.nav-menu a{display:block;padding:14px 20px;font-size:1.06rem}
+}
+/* 滑鼠暖光暈（與首頁同一支 spotlight.js） */
+body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradient(var(--sp-radius) circle at var(--mx,50%) var(--my,50%),var(--sp-shadow) 0%,var(--sp-shadow-edge) 45%,transparent 75%);pointer-events:none;z-index:9999;mix-blend-mode:multiply;transition:background .06s linear}
+.hero{position:relative;overflow:hidden;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:72px;padding:96px clamp(20px,6vw,88px) 80px;background:linear-gradient(180deg,#fffcf0 0%,#f9e9d2 100%);color:#1a1612;border-bottom:1px solid #d8cdb8}
+.hero .wc{position:absolute;border-radius:50%;filter:blur(60px);pointer-events:none;z-index:0}
+.hero .wc1{width:420px;height:360px;top:-120px;right:-80px;background:#e8884b;opacity:.15}
+.hero .wc2{width:360px;height:300px;bottom:-110px;left:-70px;background:#5f7553;opacity:.13}
+.hero .wc3{width:280px;height:260px;top:34%;left:14%;background:#a08144;opacity:.10}
+.hero>div{flex:none;width:860px;max-width:100%;position:relative;z-index:2}
+.hero-figure{margin:0;width:420px;flex:none;position:relative;z-index:2}
+.hero-figure img{display:block;width:100%;border-radius:16px;border:1px solid #d8cdb8;box-shadow:0 18px 45px rgba(107,74,42,.16);cursor:zoom-in}
+.hero-figure figcaption{margin-top:10px;font-size:14px;line-height:1.6;color:#6a635a}
+.inline-figure{margin:30px auto 8px;max-width:820px}
+.inline-figure img{display:block;width:100%;border-radius:14px;border:1px solid var(--line);box-shadow:var(--shadow);background:#fff;cursor:zoom-in}
+.inline-figure figcaption{font-size:14px;line-height:1.6;color:var(--muted);margin-top:10px}
+.lightbox{position:fixed;inset:0;z-index:10000;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(12,10,8,.92);cursor:zoom-out;backdrop-filter:blur(4px)}
+.lightbox.open{display:flex}.lightbox img{max-width:96vw;max-height:92vh;border-radius:10px;box-shadow:0 24px 60px rgba(0,0,0,.5)}
+.lightbox-close{position:fixed;top:18px;right:24px;color:#fff;font-size:34px;line-height:1;font-weight:700;cursor:pointer;opacity:.85}
+.kicker{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.55rem;color:#7a5c3a;font-weight:500}
+.hero h1{max-width:none;margin:16px 0 18px;font-size:clamp(36px,6vw,72px);line-height:1.08;overflow-wrap:anywhere}
+.hero p{max-width:none;font-size:clamp(18px,2vw,23px);line-height:1.62;color:#3a342d}
+.cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
+.cta a{display:inline-flex;align-items:center;text-decoration:none;border-radius:8px;padding:12px 16px;font-weight:900}
+.cta .primary{background:#fff;color:#1a1612}.cta .ghost{border:1px solid rgba(255,255,255,.32);color:#fff;background:rgba(255,255,255,.08)}
+.section{padding:54px clamp(20px,6vw,88px);border-top:1px solid var(--line)}
+.inner{width:min(1000px,100%);margin:0 auto}
+.section h2{font-size:clamp(26px,4.2vw,48px);line-height:1.12;margin:0 0 18px}
+.section h3{font-size:clamp(21px,3vw,30px);line-height:1.2;margin:30px 0 12px}
+.lead{font-size:clamp(18px,1.6vw,22px);line-height:1.7;color:#3a342d;max-width:900px}
+.section p{font-size:18px;line-height:1.74;color:#3a342d}.section p+p{margin-top:14px}
+.section ul,.section ol{padding-left:1.4em;font-size:18px;line-height:1.74;color:#3a342d}.section li{margin-bottom:8px}
+.meaning{margin:22px 0;padding:16px 18px;border-left:5px solid var(--blue);background:rgba(86,137,184,.12);border-radius:6px;line-height:1.7;font-size:19px}
+.meaning b{display:block;color:var(--blue);margin-bottom:4px}
+.caveat{margin:0 0 8px;padding:16px 18px;border-left:5px solid var(--orange);background:rgba(232,90,79,.1);border-radius:6px;line-height:1.7;font-size:18px;color:#3a342d}
+.caveat b{display:block;color:var(--orange);margin-bottom:4px}
+.infocard{background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px 24px 22px;box-shadow:0 8px 22px rgba(107,74,42,.08);margin-top:8px}
+.infocard-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.info-item{padding:18px 14px 0}
+.info-item b{display:block;font-size:14px;font-weight:900;letter-spacing:.04em;margin-bottom:7px;text-transform:uppercase}
+.info-item:nth-child(1) b{color:var(--green)}.info-item:nth-child(2) b{color:var(--orange)}.info-item:nth-child(3) b{color:var(--blue)}
+.info-item p{margin:0;font-size:17px;line-height:1.6;color:#3a342d}
+.tagrow{display:flex;flex-wrap:wrap;gap:7px;margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
+.tag{font-size:14px;color:var(--muted);background:var(--soft);border:1px solid var(--line);border-radius:999px;padding:4px 11px}
+.duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:24px}
+.duo.stack{grid-template-columns:1fr}
+.duo .card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:22px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.duo .card.a{border-color:var(--orange)}.duo .card.b{border-color:var(--green);box-shadow:0 8px 24px rgba(95,117,83,.16)}
+.duo .card small{display:block;font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.04em;margin-bottom:9px}
+.duo .card.a small{color:var(--orange)}.duo .card.b small{color:var(--green)}
+.duo .card b{display:block;font-size:22px;line-height:1.3;margin-bottom:12px}.duo .card.a b{color:#c0512f}.duo .card.b b{color:#4a7a59}
+.duo .card p{margin:0;color:#3a342d;line-height:1.75;font-size:18px}
+.workflow-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:24px}
+.workflow-step{background:#fff;border:1px solid var(--line);border-radius:8px;padding:18px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.workflow-step small{display:block;color:var(--orange);font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;margin-bottom:9px}
+.workflow-step b{display:block;font-size:18px;line-height:1.3;margin-bottom:9px}
+.workflow-step p{margin:0;color:#3a342d;line-height:1.6;font-size:16px}
+.codeblock{background:var(--dark);color:#f3ead9;border-radius:8px;padding:18px 20px;font:500 14px/1.65 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;overflow-x:auto;white-space:pre-wrap;margin:20px 0;box-shadow:0 8px 22px rgba(107,74,42,.12)}
+.codeblock .c{color:#f6d7a6;font-weight:600}
+.skillcard{background:#fff;border:1px solid var(--green);border-radius:12px;padding:24px;box-shadow:0 10px 26px rgba(95,117,83,.16);margin-top:8px}
+.skillcard b{display:block;font-size:21px;margin-bottom:8px}
+.skillcard p{margin:0 0 16px;font-size:17px;line-height:1.65;color:#3a342d}
+.cta-band{background:#e6f0e5;color:#3a342d}.cta-band .section{border-top:none}
+.cta-band .inner{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(260px,.85fr);gap:26px;align-items:start}
+.cta-band h2{font-size:clamp(26px,4vw,44px);margin:0 0 16px}.cta-band p,.cta-band .lead{color:rgba(58,52,45,.9);font-size:18px;line-height:1.72}
+.cta-card{border:1px solid #cfe0d2;background:#fbfdfa;border-radius:8px;padding:22px}
+.cta-card b{display:block;color:#48b178;margin-bottom:10px;font-size:18px}.cta-card p{margin:0 0 14px}
+.footer{padding:30px clamp(20px,6vw,88px);font-size:14px;color:var(--muted);background:#fff;border-top:1px solid var(--line)}
+.footer-inner{width:min(1000px,100%);margin:0 auto}
+.footer-links{display:flex;flex-wrap:wrap;gap:6px 12px;margin-bottom:14px}.footer-links a{color:var(--blue);font-weight:900;text-decoration:none;font-size:14px}
+.footer-brand{font-weight:900;font-size:15px;margin-bottom:10px}.footer-note{font-size:13px;line-height:1.6}
+@media(max-width:820px){.infocard-grid{grid-template-columns:1fr}.duo{grid-template-columns:1fr}.workflow-grid{grid-template-columns:1fr}.cta-band .inner{grid-template-columns:1fr}.section{padding:40px 20px}.hero{min-height:52vh;flex-direction:column;justify-content:flex-start;align-items:flex-start;gap:24px}.hero>div{width:100%}.hero-figure{width:100%;max-width:560px}}
+@media(max-width:820px){html,body{overflow-x:hidden}.hero h1{word-break:break-word}}
+</style>
+</head>
+<body class="spotlight">
+<!-- 官網共用導航列 nav.top：與首頁/總站同一條，文章不要自己另做極簡 topbar（江江 2026-06-25：要同一個框架、同一條導航列）。把對應頁面的 class="active" 標在自己那欄。
+     ⚠️ 下面 <ul class="nav-menu">
+      <li><a href="../../index.html">首頁</a></li>
+      <li><a href="../../knowledge-architecture.html">知識架構</a></li>
+      <li><a href="../../courses.html">課程</a></li>
+      <li><a href="../../articles.html" class="active">深度文章</a></li>
+      <li><a href="../../skills.html">技能包下載</a></li>
+      <li><a href="../../offers.html">服務方案</a></li>
+      <li class="lang-switch"><a href="../../en/articles.html" hreflang="en">EN</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="wc wc1"></div>
+  <div class="wc wc2"></div>
+  <div class="wc wc3"></div>
+  <div>
+    <div class="kicker">AI 應用 / 新手概念</div>
+    <h1>同一個問題問兩次，AI 為什麼給出不同答案？</h1>
+    <p>理解傳統軟體與生成式 AI 的差異，才能知道哪些步驟要追求固定結果，哪些步驟可以保留生成的彈性。</p>
+  </div>
+  <!-- 封面圖（建議放）：橫式用預設 width:420px；4:5 直式改 .hero-figure{width:320px} 並加 .hero-figure img{aspect-ratio:4/5;object-fit:cover}。沒有封面圖就整個 <figure> 刪掉，hero 會自動置中只剩文字。封面同時設成上面 og:image / twitter:image。 -->
+  <figure class="hero-figure">
+    <img src="../../images/articles/same-question-different-answers-cover.jpg" alt="傳統軟體依固定規則運作、生成式 AI 依情境生成的對比圖卡" loading="lazy">
+    <figcaption>兩種思路各自擅長的位置不同，一套工作流程裡通常兩個都會用到</figcaption>
+  </figure>
+</section>
+
+<main>
+<section class="section" id="start">
+  <div class="inner">
+    <p class="lead">在試算表裡寫好公式，重算很多次結果通常都一樣。把同一段會議筆記交給 AI，請它整理成三個重點，第二次的用詞、順序或分段方式卻可能不同。這不代表 AI 壞掉了，而是兩種不同的運作思路。這篇從「答案為什麼會變」講起，帶你看懂差別在哪，並把工作流程拆成規則層、生成層、驗收層三層。</p>
+    <div class="duo stack">
+      <div class="card a">
+        <b>適合誰</b>
+        <ul>
+          <li>同一句話問 AI 兩次，看到不同答案，開始懷疑它到底可不可靠</li>
+          <li>已經在用 AI，但不確定哪些工作可以放心交出去、哪些不行</li>
+          <li>正準備把 AI 接進自己的工作流程，想先弄懂它的脾氣</li>
+        </ul>
+      </div>
+      <div class="card b">
+        <b>你可以帶走什麼</b>
+        <ul>
+          <li>一個判斷 AI 答錯的角度：關聯性錯位，比「幻覺」更好用</li>
+          <li>四層驗收的分法，讓「完成」這兩個字有明確定義</li>
+          <li>規則層、生成層、驗收層三層架構，加四個拆解工作的問題</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>先看兩個日常場景</h2>
+    <p>在試算表裡寫好公式，只要資料與條件沒有改變，重算很多次，結果通常都一樣。這種穩定性符合我們過去使用軟體的經驗。</p>
+    <p>把同一段會議筆記交給 AI，請它整理成三個重點，第二次的用詞、順序或分段方式可能不同。兩份內容也許都合理，字句卻不會完全相同。</p>
+    <p>這個差異不代表 AI 壞掉了。它反映的是兩種不同的運作思路。</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>真正的差別，在於行為由什麼決定</h2>
+    <p>AI 模型本身也是軟體，也需要程式、伺服器、資料庫與介面才能運作。這裡要比較的，是傳統軟體與生成式 AI 如何決定輸出。</p>
+    <div class="duo">
+      <div class="card a">
+        <b>傳統軟體：執行預先寫好的規則</b>
+        <p>開發者先定義邏輯、條件與步驟。在相同條件下，系統設計上追求一致、可重複的結果。</p>
+      </div>
+      <div class="card b">
+        <b>生成式 AI：依輸入脈絡即時生成</b>
+        <p>模型根據學到的語言關係，結合當下提示與脈絡，逐步產生回應。生成結果可能有所變動。</p>
+      </div>
+    </div>
+    <figure class="inline-figure">
+      <img src="../../images/articles/same-question-different-answers-01.jpg" alt="軟體照規則跑、AI 照情境生成的直式對比圖卡" loading="lazy">
+      <figcaption>差別不在誰比較聰明，在於輸出由什麼決定</figcaption>
+    </figure>
+    <p>我在講 AI 本質的時候，常用一句話概括它的運作方式：詞語關聯性的搜尋、分析、重組。</p>
+    <p>當你問「1+1 等於多少」，AI 不是在算數學。它是在知識庫裡找：當人類說「1+1」，通常會接「等於 2」。所以 AI 不知道 1+1 是什麼意思，也不知道等於 2 是什麼意思。它只知道，這樣回答不會被罵。</p>
+    <div class="meaning"><b>先講清楚</b>這句話聽起來像在貶低 AI，其實不是。理解它是靠關聯性運作，你才會知道自己該在哪裡使力。</div>
+    <p>傳統軟體很適合處理有明確規則、固定格式與唯一答案的工作。生成式 AI 能處理文字、圖片與各種格式不一的資料，適合需要整理、轉譯或產生內容的環節。兩種思路各有適用場景。</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>你以為輸入相同，系統看到的可能不同</h2>
+    <p>使用者看到的輸入，常常只有自己剛打出的那句話。AI 實際收到的內容，還可能包含系統指令、前面的對話、工具傳回的資料、檢索到的文件，以及平台提供的記憶內容。</p>
+    <p>其中任何一項改變，整體輸入就已經不同。因此，兩次看似相同的提問出現不同答案，部分原因可能來自脈絡不同。</p>
+    <div class="meaning"><b>換個角度看輸入</b>對 AI 來說，輸入是當下可用的整體脈絡，不只包含你剛打的那一句。</div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>答不對的時候，它不是壞掉，是關聯性錯位</h2>
+    <p>生成式 AI 產生文字時，會根據目前的內容，計算接下來哪些字詞比較可能出現，再從候選中選出下一步。這個過程會一路重複，直到形成完整回答。</p>
+    <p>不同的取樣設定，會讓回答比較集中，或保留較多變化。即使把設定調得保守，雲端服務的模型版本、執行環境與完整脈絡仍可能改變，因此很難把每次回答視為逐字固定的結果。</p>
+    <h3>那 AI 講出一個明顯不對的答案時，是怎麼回事</h3>
+    <p>業界普遍把這個現象叫「AI 幻覺」。這個說法有用，因為它能提醒一般使用者，不要全信 AI 講的話，要主動驗證。當作警語很好。</p>
+    <p>但如果想更精準地理解 AI，「幻覺」這個比喻會誤導我們。幻覺是大腦明明沒有刺激，卻產生感官經驗，它隱含「主體出問題」這個前提。AI 根本沒有主體，也沒有「應該知道事實」的內建程式。它從頭到尾就只是在找關聯性。</p>
+    <div class="meaning"><b>我自己的說法</b>我把這個情況叫做「關聯性錯位」。AI 依照你的提問去找出最有關聯的詞語，重組回給你。有時候它找到的關聯性，跟你想要的不一樣，或者跟客觀事實不一樣。</div>
+    <p>理解這件事之後，幾件事會突然變得很合理：</p>
+    <ul>
+      <li>為什麼有些問題 AI 答得超好。那個問題的關聯性很清楚，訓練資料有大量正確答案。</li>
+      <li>為什麼有些問題 AI 答得超爛。訓練資料對那個問題沒有清楚的關聯性，或者錯誤關聯性太多。</li>
+      <li>為什麼只要把問題問清楚一點，答案就會變好。你提供了更多關聯線索，AI 找得更準。</li>
+    </ul>
+    <p>所以有機率性，不等於毫無控制。提示、範例、可選範圍、輸出格式與查核方式，都能提高穩定程度。工作流程需要控制的重點，是輸入邊界與驗收關卡。</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>流暢度與正確度，要分開驗收</h2>
+    <p>AI 能接續語氣、整理前文，也能依照上下文回應。這些能力讓人感覺它掌握了自己的意思。</p>
+    <p>但語句流暢，無法直接證明內容正確。模型可能少處理幾筆資料、混淆來源，或用很肯定的語氣說出未經查證的內容。閱讀時覺得順，不等於結果已經通過驗收。</p>
+    <p>我自己在工作流裡的做法，是把「完成」拆成幾種層次，因為 AI 很容易回報一句「完成」就結束：</p>
+    <div class="infocard">
+      <div class="infocard-grid">
+        <div class="info-item">
+          <b>機器驗收</b>
+          <p>檔案是否存在、連結是否可開、圖片大小是否符合規格。</p>
+        </div>
+        <div class="info-item">
+          <b>資料複驗</b>
+          <p>數字、人名、來源、日期。</p>
+        </div>
+        <div class="info-item">
+          <b>人工判斷</b>
+          <p>語氣、策略、是否符合真實意圖。</p>
+        </div>
+        <div class="info-item">
+          <b>跨模型審查</b>
+          <p>重大結論、公開文章、規則更新。</p>
+        </div>
+      </div>
+    </div>
+    <p>所以我現在會要求 AI 回報時補上驗收證據，講清楚哪些項目是機器驗收、哪些是人工檢查、哪些仍需要我確認。這樣工作流會開始留下可追蹤的證據，而不是只收到一句「完成」。</p>
+    <div class="caveat"><b>驗收要具體</b>驗收方式越具體，AI 產出的彈性越容易被安全使用。反過來說，標準寫不清楚，它就會一直交半成品給你。</div>
+    <div class="readmore near">
+      <b>把驗收變成會自己跑的循環，我另外寫過完整版</b>
+      <ul>
+        <li><a href="../what-is-loop-engineering/">用我寫一篇文章的工作流，講清楚什麼是迴圈工程</a>　這段只講了驗收要分層，那篇講的是把標準寫清楚之後，怎麼讓 AI 做完自己對照、自己修到通過為止</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>一套可用的 AI 工作流程，至少有三層</h2>
+    <div class="workflow-grid">
+      <div class="workflow-step"><small>LAYER 01</small><b>規則層</b><p>交給傳統軟體處理明確、可計算、需要重複一致的步驟。例如日期換算、固定欄位、數量計算、格式驗證。</p></div>
+      <div class="workflow-step"><small>LAYER 02</small><b>生成層</b><p>交給 AI 處理格式不一、需要依脈絡整理或產生內容的工作。例如整理雜亂筆記、摘要文件、分類文字、調整語氣。</p></div>
+      <div class="workflow-step"><small>LAYER 03</small><b>驗收層</b><p>由軟體與人共同檢查輸出，決定通過、重試或退回處理。例如對帳來源、檢查欄位、確認名單、人工核可。</p></div>
+    </div>
+    <p>驗收層讓生成結果有明確出口。AI 可以先提出候選內容，程式負責檢查格式與數字，人負責高風險、對外或不可逆的決定。</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>拆工作流程時，先問四個問題</h2>
+    <div class="workflow-grid">
+      <div class="workflow-step"><small>Q1</small><b>做錯之後，結果能不能復原？</b><p>牽涉付款、刪除、公開送出或其他不可逆動作，不論這步最後交給軟體或 AI，都要保留人工核可。</p></div>
+      <div class="workflow-step"><small>Q2</small><b>答案是否唯一，而且能寫成清楚規則？</b><p>可以的話，優先使用傳統軟體處理。</p></div>
+      <div class="workflow-step"><small>Q3</small><b>輸出能不能用數量、欄位、格式或清單檢查？</b><p>能檢查時，可以讓 AI 產生，再用固定的檢查清單核對；有程式的話，也可以自動驗收。</p></div>
+      <div class="workflow-step"><small>Q4</small><b>每次進來的資料格式是否都不一樣？</b><p>格式變化大時，可以讓 AI 先整理成規則層能處理的結構。</p></div>
+    </div>
+    <p>這四題不用一次判斷整份工作。先把工作拆成一個個步驟，再逐步判斷。很多流程最後會同時使用傳統軟體、AI 與人工確認。</p>
+    <div class="readmore near">
+      <b>同一條分界線放到公司裡，我另外寫過一篇</b>
+      <ul>
+        <li><a href="../../ai-trends/program-vs-ai-skill-library/">有標準答案的交給程式，沒標準答案的才輪到 AI</a>　這篇談個人怎麼拆自己的工作，那篇談企業導入怎麼分，還往下講到技能庫是怎麼長出來的</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>今天可以先做的一件事</h2>
+    <p>挑一件這週重複做過三次以上的工作，把它拆成步驟，再逐一套用上面四個問題。</p>
+    <p>你可能會發現，有些步驟用固定規則處理更穩；有些步驟適合交給 AI；還有一些步驟需要補上清楚的驗收與人工核可。</p>
+    <div class="meaning"><b>挑工作的標準</b>重複發生的工作，才值得花時間鋪路。</div>
+    <div class="readmore near">
+      <b>路本身長什麼樣、要按什麼順序鋪</b>
+      <ul>
+        <li><a href="../strong-ai-models-knowledge-workflow-road/">先學工具還是先建知識庫？：模型像超跑，知識庫與工作流是你腳下的路</a>　那篇講的第一步也是先挑一件會重複的工作，接著往下講整條路怎麼鋪</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">江江教練 · AI 知識管理</div>
+    <div class="footer-links">
+      <a href="../../articles.html">← 回深度文章總站</a>
+      <a href="../../index.html">首頁</a>
+      <a href="../../learn.html">自學資源</a>
+      <a href="../../skills.html">技能包下載</a>
+      <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">LINE 社群 ↗</a>
+      <a href="https://www.threads.com/@jiang_yude_coach" target="_blank" rel="noopener">Threads ↗</a>
+      <a href="https://vocus.cc/salon/Jiang_Coach" target="_blank" rel="noopener">方格子 ↗</a>
+    </div>
+    <div class="footer-note">這是一篇教學文章，整理我對「同一個問題問兩次，AI 為什麼給出不同答案？」的看法，供你參考。</div>
+  </div>
+</footer>
+
+<!-- 點圖放大 lightbox（hero 與內文圖通用，已內建，不用每篇重加） -->
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <span class="lightbox-close" aria-label="關閉">×</span>
+  <img id="lightbox-img" src="" alt="放大檢視">
+</div>
+<script>
+(function(){
+  var box=document.getElementById('lightbox'),boxImg=document.getElementById('lightbox-img');
+  document.querySelectorAll('.hero-figure img,.inline-figure img').forEach(function(img){
+    img.addEventListener('click',function(){boxImg.src=img.currentSrc||img.src;boxImg.alt=img.alt||'放大檢視';box.classList.add('open');box.setAttribute('aria-hidden','false');});
+  });
+  function close(){box.classList.remove('open');box.setAttribute('aria-hidden','true');boxImg.src='';}
+  box.addEventListener('click',close);
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
+})();
+</script>
+
+<script src="../../image-interactions.js"></script>
+
+<!-- 官網共用：滑鼠暖光暈 + 導航列漢堡選單 -->
+<script src="../../spotlight.js"></script>
+
+<!-- 文章自動互聯（相關文章）：兩支已內建，順序不可顛倒，不用再另外加 -->
+<script src="../../articles-data.js"></script>
+<script src="../../related-render.js"></script>
+</body>
+</html>
