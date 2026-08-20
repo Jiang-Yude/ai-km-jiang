@@ -492,17 +492,28 @@ function retrieveAdaptive(query) {
 /* ── 用量上限（2026-08-07 江江拍板的數字；都可用環境變數調）──
    MIKA_RATE_PER_MIN    同 IP 每分鐘   預設 20（防灌爆）
    MIKA_RATE_PER_DAY    同 IP 每天     預設 100（單一訪客上限）
-   MIKA_DAILY_LIMIT     全站每天       預設 1000
+   MIKA_RATE_PER_MIN_COURSE  課程頁每 IP 每分鐘  預設 120（整班同一個 WiFi＝同一個 IP）
+   MIKA_RATE_PER_DAY_COURSE  課程頁每 IP 每天    預設 800
+   MIKA_DAILY_LIMIT     全站每天       預設 2000
    MIKA_MONTHLY_LIMIT   全站每月       預設 10000（總開銷天花板）
    計次規則（2026-08-07 江江拍板）：以輸入字數計，每 100 字算 1 次、無條件進位
    （一口氣打 500 字＝吃 5 次額度）。中英文都算字元數，機械計算抓大概即可。
    單則訊息上限 500 字，所以一則最多 5 次。
    回傳 'ok'｜'minute'｜'ip-day'｜'site-day'｜'site-month' */
-async function ratelimit(ip, units) {
+/* 課堂額度（2026-08-20 加，江江問「不同學員會不會撞到一分鐘 20 次」查出來的）：
+   節流綁 IP，但**教室整班連同一個 WiFi，對外就是同一個 IP**。
+   舊值套到現場＝老師喊「大家打開咪卡」時 20 人同時按就吃掉整分鐘的額度，第 21 個當場被擋；
+   每 IP 每天 100 次更是 20 人各走一輪（約 3 次）就用掉六成，有人多問幾句後面的人整天不能用。
+   被擋時咪卡只會說「訊息有點太快了」，學員會以為是自己手機的問題，現場很難救。
+   做法＝只有課程頁的請求走寬額度，其他頁維持原本的嚴格值（那才是防薅的主要戰場）。
+   全站每天與每月的天花板照舊擋在最外層，最壞情況的總開銷仍然有上限。 */
+async function ratelimit(ip, units, onCourse) {
   if (!KV_URL() || !KV_TOKEN()) return 'ok';
-  const perMin = Number(process.env.MIKA_RATE_PER_MIN) || 20;
-  const perDay = Number(process.env.MIKA_RATE_PER_DAY) || 100;
-  const siteDay = Number(process.env.MIKA_DAILY_LIMIT) || 1000;
+  const perMin = Number(onCourse ? process.env.MIKA_RATE_PER_MIN_COURSE : process.env.MIKA_RATE_PER_MIN)
+    || (onCourse ? 120 : 20);
+  const perDay = Number(onCourse ? process.env.MIKA_RATE_PER_DAY_COURSE : process.env.MIKA_RATE_PER_DAY)
+    || (onCourse ? 800 : 100);
+  const siteDay = Number(process.env.MIKA_DAILY_LIMIT) || 2000;
   const siteMonth = Number(process.env.MIKA_MONTHLY_LIMIT) || 10000;
   const day = new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Taipei' }).format(new Date());
   const month = day.slice(0, 7);
@@ -666,7 +677,7 @@ module.exports = async (req, res) => {
   /* 以字計次：每 100 字算 1 次，無條件進位 */
   const units = Math.max(1, Math.ceil(lastUser.content.length / 100));
   const ip = String(req.headers['x-forwarded-for'] || '').split(',')[0].trim() || 'na';
-  const limited = await ratelimit(ip, units);
+  const limited = await ratelimit(ip, units, /^\/(en\/)?courses\//.test(String(body.page || '')));
   if (limited !== 'ok') {
     res.status(429).json({ reply: LIMIT_REPLY[limited] });
     return;
