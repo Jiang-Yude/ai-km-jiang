@@ -208,6 +208,33 @@
   .promptbox .copy:hover { opacity:.86; }
   .promptbox .ptip { font-size:20px; line-height:1.7; color:var(--text-soft-light); margin:0 0 14px; }
 
+  /* 現場實錄折疊（課後回填） */
+  .classnote { text-align:left; margin-top:28px; border:1px solid var(--accent); border-radius:16px;
+    background:rgba(216,140,58,0.07); overflow:hidden; }
+  .classnote > summary { list-style:none; cursor:pointer; padding:18px 24px; display:flex; align-items:center;
+    justify-content:space-between; gap:14px; flex-wrap:wrap; }
+  .classnote > summary::-webkit-details-marker { display:none; }
+  .classnote > summary .cn-tag { font-family:var(--font-mono); font-size:20px; letter-spacing:0.12em;
+    color:var(--accent); font-weight:700; }
+  .classnote > summary .cn-title { font-size:22px; font-weight:700; color:var(--text-on-light); }
+  .classnote > summary::before { content:"\25B8 \5C55\958B"; font-family:var(--font-mono); font-size:20px; color:var(--accent); order:9; }
+  .classnote[open] > summary::before { content:"\25BE \6536\8D77"; }
+  .classnote .cn-body { padding:0 24px 24px; font-size:20px; line-height:1.8; color:var(--text-soft-light); }
+  .classnote .cn-body h4 { margin:24px 0 8px; font-size:21px; line-height:1.4; color:var(--text-on-light); }
+  .classnote .cn-body p { margin:12px 0; }
+  .classnote .cn-body b { color:var(--text-on-light); }
+  .classnote .cn-body ul { margin:12px 0 16px; padding-left:1.4em; }
+  .classnote .cn-body li { margin:7px 0; }
+  .classnote .cn-body blockquote { margin:18px 0; padding:14px 20px; border-left:4px solid var(--accent);
+    background:rgba(255,248,240,0.78); color:var(--text-on-light); border-radius:0 12px 12px 0; }
+  .cn-wrapt { overflow-x:auto; margin:16px 0; }
+  .cn-wrapt table { width:100%; border-collapse:collapse; min-width:520px; background:rgba(255,248,240,0.72); }
+  .cn-wrapt th, .cn-wrapt td { border:1px solid var(--subtle-light); padding:10px 12px; vertical-align:top; text-align:left; }
+  .cn-wrapt th { color:var(--text-on-light); background:rgba(216,140,58,0.12); }
+  section[data-bg="7"] .classnote, section[data-bg="8"] .classnote, section[data-bg="9"] .classnote { background:rgba(255,248,240,0.10); }
+  section[data-bg="7"] .classnote > summary .cn-title, section[data-bg="8"] .classnote > summary .cn-title { color:var(--text-on-dark); }
+  section[data-bg="7"] .classnote .cn-body, section[data-bg="8"] .classnote .cn-body { color:var(--text-soft-dark); }
+
   /* 配樂電子書 demo */
   .ebook { margin-top:38px; border:2px solid var(--accent); border-radius:20px; background:rgba(255,248,240,0.72);
     padding:20px 22px 24px; text-align:left; }
@@ -435,6 +462,7 @@
         <div class="card reveal d2"><div class="num">學什麼</div><h3 class="h2">把故事變成作品的方法</h3><p class="body">怎麼把腦中的回憶講成一段能用的素材，怎麼讓 AI 生出你想要的畫面，怎麼調到滿意為止。</p></div>
         <div class="card reveal d3"><div class="num">怎麼上</div><h3 class="h2">一邊講一邊做</h3><p class="body">每個環節都是當場動手。講完就做，做完就看得到成果，不用等回家練習。</p></div>
       </div>
+      <p class="mono-note reveal d4">各段落下方可以展開「現場實錄 · 8/20 淡水台北灣場」，看第一場實際怎麼跑</p>
     </div>
   </section>
   <!-- ACT 03 成品一 個人生活風格照 -->
@@ -461,6 +489,24 @@
         </figure>
       </div>
       <p class="mono-note reveal d4">兩種都是同一套方法，差別只在你想說的是什麼故事</p>
+
+      <details class="classnote">
+        <summary><span><span class="cn-tag">現場實錄 · 8/20 淡水台北灣場</span><br/><span class="cn-title">這一場做出來的十五件作品</span></span></summary>
+        <div class="cn-body">
+          <p>開場先舉手做了一次調查：想做<b>電影海報</b>的舉手，想做<b>美美的個人形象</b>的舉手。個人形象明顯比較多，所以第一場的主線就當場收斂成「個人形象 · 旅遊風格」。</p>
+          <p>指令也是當著全班改的。江江直接請 ChatGPT 把上課用的那條指令改寫成旅遊風格版，改完貼進 LINE 群給大家複製。</p>
+          <blockquote>這個跟我想的不一樣怎麼辦呢？沒關係，來，我叫 AI 幫我改一下，等我一下，立刻現場改。</blockquote>
+          <h4>學員做出來的東西</h4>
+          <p>麗江古城、京都、日本、草原、花園、紅色跑車、騎駱駝、淡江大橋逆光、台北灣社區、家族旅行合照、Q 版插畫，還有一件自己下標題的電影海報《追風的他》。有人乾脆把整趟埃及行程的元素全部放進去，金字塔、尼羅河遊輪、神殿一次到位。</p>
+          <h4>現場長出來的三個發現</h4>
+          <ul>
+            <li><b>會擺姿勢的人成品特別好。</b>照片裡姿勢先擺好，等於直接給 AI 一份構圖參考，不會用文字形容也沒關係。</li>
+            <li><b>把整趟行程的元素拼在一起</b>，效果常常比單一場景好看。</li>
+            <li><b>合照可以加日期跟感想。</b>以前跟朋友出去只能拍一張合照，現在可以把日期和當天的一句話一起放上去。這件事在現場被全班拍手。</li>
+          </ul>
+        </div>
+      </details>
+
     </div>
   </section>
 
@@ -473,6 +519,33 @@
       <p class="madewith reveal d2">用 <b>Suno AI</b> 製作　<a href="https://suno.com/s/ppkmF2IiA11vmuGP" target="_blank" rel="noopener">聽這首範例 ⤢</a>　<a href="https://suno.com" target="_blank" rel="noopener">打開 Suno ⤢</a></p>
       <audio class="songbox reveal d3" controls preload="none" src="audio/song.mp3" title="範例歌曲：我不趕路了"></audio>
       <p class="linknote reveal d3">這首是《我不趕路了》，配的就是下一段那份故事簡報。</p>
+
+      <details class="classnote">
+        <summary><span><span class="cn-tag">現場實錄 · 8/20 淡水台北灣場</span><br/><span class="cn-title">Suno 的額度、註冊、兩種模式</span></span></summary>
+        <div class="cn-body">
+          <p>三小時的最後半小時才進到這一段，多數人還在下載與註冊，真正做出歌的是少數。流程本身很短，卡的是前置。</p>
+          <h4>額度</h4>
+          <p>每天送 50 點，一首歌 5 點，等於每天十首。但每按一次生成會<b>同時出兩首讓你 AB 選</b>，所以實際上是每天玩五次。</p>
+          <h4>註冊會遇到的三件事</h4>
+          <ul>
+            <li>一定要登入，用 Google 帳號最快。</li>
+            <li>會要求輸入年齡，確認滿 18 歲。</li>
+            <li>會問你喜歡的興趣和曲風，隨便點就好，最後生成只吃提示詞。</li>
+          </ul>
+          <h4>兩種模式怎麼選</h4>
+          <div class="cn-wrapt">
+          <table>
+            <tr><th>模式</th><th>怎麼用</th><th>適合誰</th></tr>
+            <tr><td>簡單版</td><td>一格全部貼上去，它自己想辦法</td><td>手機操作、當天的多數人</td></tr>
+            <tr><td>進階版</td><td>分格貼：歌詞一格、曲風一格、男女聲與曲調一格</td><td>家裡有電腦的人。要做到一句歌詞配一個畫面，只能用這個</td></tr>
+          </table>
+          </div>
+          <blockquote>我們先叫 ChatGPT 把歌詞跟曲風想好之後，再貼到 Suno 會比較好一點。因為 Suno 自己生的歌詞我覺得不是很可控。</blockquote>
+          <h4>延伸玩法</h4>
+          <p>先把歌詞寫好，一句歌詞配一個畫面，就可以剪成一支自己的旅行短片。不過這件事推薦用電腦做，在手機上會非常辛苦。</p>
+        </div>
+      </details>
+
     </div>
   </section>
 
@@ -487,6 +560,15 @@
       <p class="gal-hint reveal d4">點任一頁放大，可用左右鍵翻頁</p>
       <a class="deck-cta reveal d4" href="wuling-mountain-journal.pdf" target="_blank" rel="noopener">線上看原版 PDF 範例</a>
       <p class="body reveal d4" style="margin:26px auto 0;">同一段故事也可以丟進 NotebookLM，做成資訊圖表或有旁白的解說影片。<a class="exlink" href="https://notebook.google.com/notebook/98833b0c-2952-4575-8212-bb7985555bd9" target="_blank" rel="noopener">看範例筆記本 ⤢</a></p>
+
+      <details class="classnote">
+        <summary><span><span class="cn-tag">現場實錄 · 8/20 淡水台北灣場</span><br/><span class="cn-title">這一場沒做到的一樣</span></span></summary>
+        <div class="cn-body">
+          <p>第一場三小時做到<b>海報</b>和<b>歌</b>就滿了，故事簡報沒有跑到，留成回家作業。</p>
+          <p>不過開場放《百岳行旅 · 武陵三秀》當示範的時候，現場就有人主動來問能不能做這種故事書。這一段在後面的場次會往前挪。</p>
+        </div>
+      </details>
+
     </div>
   </section>
 
@@ -543,6 +625,37 @@
       <h2 class="display sm reveal d1">AI 基礎概論</h2>
       <a class="biglink reveal d3" href="https://gamma.app/docs/AI-112--71kpobryyh1vgy5" target="_blank" rel="noopener">打開簡報 <span class="u">gamma.app</span></a>
       <p class="linknote reveal d3">網址：<a href="https://gamma.app/docs/AI-112--71kpobryyh1vgy5" target="_blank" rel="noopener" style="font-family:var(--font-mono);font-size:20px;word-break:break-all;">https://gamma.app/docs/AI-112--71kpobryyh1vgy5</a></p>
+
+      <details class="classnote">
+        <summary><span><span class="cn-tag">現場實錄 · 8/20 淡水台北灣場</span><br/><span class="cn-title">這十分鐘實際是這樣講的</span></span></summary>
+        <div class="cn-body">
+          <blockquote>我只要有教 AI 的課程，我一定會科普 AI，因為大家要知道他到底會做什麼、不會做什麼。AI 好像很厲害，很容易讓大家覺得他無所不能。</blockquote>
+          <p>最容易讓人誤會的是陪你聊天的那種 AI，因為它太會聊，聊得跟真的一樣，聊得好像什麼都會。所以這十分鐘的目的很明確：教大家怎麼避免被它騙。</p>
+          <h4>四個橋段，依序講</h4>
+          <div class="cn-wrapt">
+          <table>
+            <tr><th>橋段</th><th>怎麼講</th><th>要帶出的觀念</th></tr>
+            <tr><td>貓咪辨識</td><td>早期人類要一條一條描述特徵（毛茸茸、鬍鬚、爪子、瞳孔瞇成一條線），後來人類偷懶，改成丟一大堆貓的照片叫它自己學會</td><td>它學會了，但<b>人類其實不知道它怎麼學會的</b>。所以它講錯的時候，我們也不知道怎麼改</td></tr>
+            <tr><td>火星文遊戲</td><td>請全班當 AI，教兩個看不懂的符號各對應一張圖，然後當場考試。全班都答對</td><td>答得出來不等於看得懂。這就是 AI</td></tr>
+            <tr><td>1 加 1 等於 2</td><td>AI 不是算出來的。它是發現「人類講 1 加 1 的時候，後面通常接等於 2」</td><td>它找的是<b>最多人用的那個答案</b>。最多人用不等於正確，也不等於適合我</td></tr>
+            <tr><td>2 加 2 等於 5</td><td>簡報上明明寫 2 加 2 等於 5，問全班等於多少，大家答 4</td><td>有時候 AI 答錯，是<b>人類原本的資料就錯了</b>。不用生氣，它只是把人類整理過的東西講出來</td></tr>
+          </table>
+          </div>
+          <h4>接著帶出三個結論</h4>
+          <ul>
+            <li><b>問它會不會毀滅人類，它只是在念台詞。</b>資料庫裡一大堆小說和電影這樣寫，它就照著回。它不知道什麼叫毀滅。</li>
+            <li><b>它安慰人講得很好，不是因為它溫柔。</b>是人類寫過很多很溫柔的話，被它找回來給我們。</li>
+            <li><b>它很會找資料、很會關聯，但不會判斷對錯。</b>所以肚子痛不要問它，它只會找一般人肚子痛怎麼辦，不會像醫生量血壓、做檢查。看病還是要找醫生。</li>
+          </ul>
+          <blockquote>現在 AI 很厲害，但是他還不會讀心，他也不會通靈。</blockquote>
+          <h4>兩個馬上用得到的延伸</h4>
+          <ul>
+            <li><b>吃素的例子。</b>吃素的人少，所以問它「哪裡有好吃的」，它預設會找葷的。要自己講。ChatGPT 有記憶，講過一次它會記住，下次就不用再講。</li>
+            <li><b>隱私邊界：聊資訊就好，不要聊隱私。</b>吃素、不喜歡曬太陽、喜歡看什麼，這些可以講。電話、信用卡帳號不要講。</li>
+          </ul>
+        </div>
+      </details>
+
     </div>
   </section>
 
@@ -572,6 +685,22 @@
           <span class="turl">蘋果　<a href="https://apps.apple.com/tw/app/id6737527615" target="_blank" rel="noopener">https://apps.apple.com/tw/app/id6737527615</a></span>
         </li>
       </ul>
+
+      <details class="classnote">
+        <summary><span><span class="cn-tag">現場實錄 · 8/20 淡水台北灣場</span><br/><span class="cn-title">開場那半小時實際在做什麼</span></span></summary>
+        <div class="cn-body">
+          <p>第一場的前半小時幾乎都花在這三件事上。<b>如果課前先做完，這半小時就能拿去做作品。</b></p>
+          <ul>
+            <li><b>加 LINE 群組。</b>全場所有可以複製的指令都從這個群組發，這是整堂課的動線核心。</li>
+            <li><b>用官方連結下載。</b>ChatGPT 的仿冒 App 很多，一律用課程頁上這三組連結，安卓和蘋果分開點。</li>
+            <li><b>確認登得進去。</b>今天只用免費版，不需要付費。</li>
+          </ul>
+          <h4>現場真的會卡的地方</h4>
+          <p>手機儲存空間不足裝不下、帳號登不進去、晚到的人要重貼一次連結。這些都是課堂時間，不是技術問題。</p>
+          <p>辦課單位如果能在課前先把 LINE 群建好、請學員先裝好 App、先處理掉帳號問題，整堂課的完成率會差很多。</p>
+        </div>
+      </details>
+
     </div>
   </section>
 
@@ -604,6 +733,29 @@
 我答不出來的地方，給我三個選項讓我挑，不要一直問。
 我說「好了」的時候，就用我已經講的直接整理。</pre>
           <button class="copy" type="button">複製這份指令</button>
+        </div>
+      </details>
+
+
+      <details class="classnote">
+        <summary><span><span class="cn-tag">現場實錄 · 8/20 淡水台北灣場</span><br/><span class="cn-title">這一場的暖身是用「規劃一天的行程」開場</span></span></summary>
+        <div class="cn-body">
+          <p>第一場沒有直接跑故事訪問，而是先用一個生活題暖身，讓大家先體會「怎麼跟 AI 講話」。</p>
+          <h4>示範題目</h4>
+          <p>從淡水的社區出發，早上九點半，想搭公車去陽明山擎天崗看牛，中午十二點多會餓、可以接受超商，傍晚五六點要回到家，中間要吃飯休息上廁所，本人吃素。全部一次講清楚。</p>
+          <p>AI 回出完整的公車班次、時刻表、路線和注意事項。接著現場一路追問，追的都是長輩真的會遇到的狀況：</p>
+          <ul>
+            <li>我怕在超商吃到十點半才出發怎麼辦</li>
+            <li>公車沒搭到怎麼辦</li>
+            <li>我睡過頭了怎麼辦</li>
+            <li>中午到擎天崗大太陽會不會很曬，有沒有不曬又差不多的地方</li>
+          </ul>
+          <p>最後一題它自己去查，改推冷水坑、牛奶湖、二子坪。</p>
+          <h4>這一段真正要教的兩句話</h4>
+          <blockquote>就像我們跟人對話，我們講得越清楚，他才會知道我們要做什麼。</blockquote>
+          <blockquote>老師我不知道怎麼問。你問我的問題，問他就好。</blockquote>
+          <p>還有一句：<b>盡量描述你要的目標，不要描述步驟</b>，剩下讓它自己去找辦法。</p>
+          <p>下一場會把上面這條「讓 AI 訪問你」的準備指令補回流程裡，讓故事那一段真的先產出來，後面的海報和歌都接得上。</p>
         </div>
       </details>
 
@@ -644,6 +796,45 @@
 
 比例 9:16 直式。</pre>
           <button class="copy" type="button">複製這份指令</button>
+        </div>
+      </details>
+
+
+      <details class="classnote">
+        <summary><span><span class="cn-tag">現場實錄 · 8/20 淡水台北灣場</span><br/><span class="cn-title">手機四步驟、省額度四招，還有兩個修圖技巧</span></span></summary>
+        <div class="cn-body">
+          <h4>手機操作，四步就好</h4>
+          <ul>
+            <li>在 LINE 裡<b>長按</b>指令文字，複製。（指令很長看不到全部沒關係，長按一樣整段複製。）</li>
+            <li>回 ChatGPT，點<b>右上角那個筆和紙的圖示</b>，開一個新對話。</li>
+            <li>對話框點一下，跳出「貼上」，點下去。</li>
+            <li>旁邊那個白色箭頭，送出。</li>
+          </ul>
+          <p>為什麼一定要開新對話：剛剛才問過旅遊行程，現在叫它生照片，它很容易錯亂。<b>換一件事就換一個對話。</b></p>
+          <h4>傳照片</h4>
+          <p>選一張<b>臉正面、清楚、不要太暗</b>的照片就好，不需要有風景。場景 AI 會生。</p>
+          <h4>免費版額度，省著用的四招</h4>
+          <ul>
+            <li><b>先看文字風格稿，再生圖。</b>先叫它把三種風格用文字寫出來，選一個再生。標題寫錯、細節不對，在文字階段改最省。</li>
+            <li><b>生成中不要打斷。</b>它已經在畫了，這時候插一句話，它會重新生一張，第一張就不見了，等於白白用掉一次。</li>
+            <li><b>一家人拍合照。</b>免費版能傳的照片有限，五個人不要一人一張，請旁邊的人幫忙拍一張合照，一張解決。</li>
+            <li><b>沒額度就換 Gemini。</b>當天現場實測：Gemini 給的次數大方很多，但幻覺明顯比 ChatGPT 多，畫質和質感也差一截，還沒給照片就先自己生了一張。當備援可以，當主力不行。</li>
+          </ul>
+          <p>額度本身是隨機的。當天有人一次生了三張，有人第一張就滿了，同一份指令、同一個時間。前一週的場次多數人都能生兩三張。這是各家廠商互相制衡下的常態，昨天可以今天不行很正常。要穩定就只有付費一條路（ChatGPT 約每月 690 元台幣）。</p>
+          <h4>生出來不滿意，可以只改一小塊</h4>
+          <p>點進生成的圖，會看到編輯功能：</p>
+          <ul>
+            <li><b>移除</b>：把不要的東西塗一塗就消失，AI 自動補上背景。在淡水老街拍照後面路人一堆，這招最實用。</li>
+            <li><b>註解</b>：<b>直接在圖上點那個位置</b>再說要改什麼。用嘴巴講「左上角」它常常會搞錯，點下去就不會。可以加字、換字的顏色和位置、換車子顏色、關掉車燈、笑容再多一點。</li>
+          </ul>
+          <p>提醒一件事：叫 AI 改五官（例如眼睛放大），整個表情容易跑掉。改一次不一定到位，多試幾次比較好。</p>
+          <h4>逆光的地方怎麼拍才不會臉黑</h4>
+          <p>這招是攝影底子的延伸。海邊夕陽逆光，人臉一定黑。做法是<b>拍兩張</b>：</p>
+          <ul>
+            <li>第一張拍背景，逆光的海和夕陽。</li>
+            <li>第二張人稍微側到旁邊，找到有光的角度把臉拍亮。不要離太遠，離太遠場景會對不上。</li>
+          </ul>
+          <p>兩張一起丟給 AI 合成。因為原本就是真實照片、同樣的光線和場景，融合度非常高。代價是會用掉兩張額度，自己斟酌。</p>
         </div>
       </details>
 
@@ -724,6 +915,19 @@ Style of Music: New Age, Calm and Meditative, Instrumental, 60 BPM, C Major, Har
         </div>
       </details>
 
+
+      <details class="classnote">
+        <summary><span><span class="cn-tag">現場實錄 · 8/20 淡水台北灣場</span><br/><span class="cn-title">懶人做法：不用重講一次故事</span></span></summary>
+        <div class="cn-body">
+          <p>前面已經跟 ChatGPT 聊過故事和風格了，它都記得。所以生歌詞這一段<b>不用開新對話</b>，直接在剛剛生海報的那個對話往下貼就好。</p>
+          <blockquote>你就幫我看我前面講的那些東西，直接幫我生成歌詞跟曲風，一樣三個版本，然後我是男生，我要男生的聲音。</blockquote>
+          <p>當天它給的三個版本是：<b>電影公路感</b>、<b>詩意山林</b>、<b>山野自由感</b>，各附一段設計理念。</p>
+          <h4>複製到 Suno 的時候，選取範圍要對</h4>
+          <p>從<b>歌名標題開始</b>選，選到<b>歌詞結束</b>為止。設計理念那段不用帶進去。</p>
+          <p>如果覺得這樣還是太麻煩，最簡單的做法是登入 Suno 之後直接打一句話，例如「我要一首熱血澎湃、在森林裡騎越野車的歌，男生唱」。它一樣會生，但曲風和歌詞就很難控制，跟你的故事和照片也接不太上。</p>
+        </div>
+      </details>
+
     </div>
   </section>
 
@@ -767,6 +971,15 @@ Style of Music: New Age, Calm and Meditative, Instrumental, 60 BPM, C Major, Har
       </details>
 
       <p class="mono-note reveal d4">卡住的時候舉手。做不完沒關係，這一頁隨時打得開</p>
+
+      <details class="classnote">
+        <summary><span><span class="cn-tag">現場實錄 · 8/20 淡水台北灣場</span><br/><span class="cn-title">第一場沒跑到這一段</span></span></summary>
+        <div class="cn-body">
+          <p>三小時的時間分配是：前半小時裝 App 和加群組，十分鐘 AI 基礎，一小時生海報和互相看作品，最後半小時生歌。NotebookLM 這一段沒有跑到。</p>
+          <p>開場示範的那份十五頁故事簡報就是用這一段做的，現場反應很好，後面的場次會把它往前挪或另外開一堂。</p>
+        </div>
+      </details>
+
     </div>
   </section>
 
