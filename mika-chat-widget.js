@@ -387,7 +387,13 @@
       b.textContent = q;
       b.addEventListener('click', function () {
         if (q === UNLOCK_CHIP) { unlockPage(); return; }
-        if (q === SIMPLE_CHIP) setSimple(true);
+        if (q === SIMPLE_CHIP) {
+          setSimple(true);
+          /* 新手鈕自動先讀這一頁（2026-08-20 江江看實測後加）：
+             沒讀到頁面時咪卡不知道今天有哪幾段，只能自己編選項，學員就選錯段落。
+             現場只教一顆按鈕最單純，所以這裡替他把「讀這一頁」一起做掉。 */
+          if (!pageUnlocked && !isHomePage()) { unlockPage(q); return; }
+        }
         send(q);
       });
       chipsBox.appendChild(b);
