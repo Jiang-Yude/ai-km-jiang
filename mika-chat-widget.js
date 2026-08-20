@@ -36,6 +36,18 @@
   document.head.appendChild(css);
 
   var GREETING = '嗨，我是咪卡，江江教練官網的 AI 小幫手 🐾\n關於課程、講座、1 對 1 陪跑或知識庫方法，都可以問我！\n先請問一下，怎麼稱呼你呢？';
+  /* 簡單模式（2026-08-20 江江拍板）：學員說一句「簡單模式」或按新手鈕就切過去，
+     之後一直維持（存 localStorage，跨頁沿用）。複雜版沒有退場，只是不再一次攤在他眼前。 */
+  var SIMPLE_KEY = 'mikaChat.simple.v1';
+  var SIMPLE_CHIP = '我是新手，帶我簡單做';
+  var SIMPLE_RE = /簡單模式|簡單版|簡易模式|簡單一點|簡單點|我是新手|新手模式|帶我做|不會用/;
+  function isSimple() {
+    try { return localStorage.getItem(SIMPLE_KEY) === '1'; } catch (e) { return false; }
+  }
+  function setSimple(v) {
+    try { localStorage.setItem(SIMPLE_KEY, v ? '1' : '0'); } catch (e) {}
+  }
+
   var CHIPS = [
     '江江提供哪些服務？',
     '怎麼預約 1 對 1？',
@@ -49,7 +61,7 @@
      不預先送：整站每頁 200～25,000 字，沒人要問的時候送過去是白花成本。
      解鎖只是「多讀這一頁」，全站目錄照樣在，兩邊並存不互斥。
      首頁不放這顆（首頁就是預設模式，三顆常見問題照舊）。 */
-  var UNLOCK_CHIP = '我要問這一頁的內容';
+  var UNLOCK_CHIP = '我要讀這一頁完整內容';
   var MAX_PAGE_CHARS = 30000;   // 最長的課程頁實測 25,542 字，留一點餘裕；後端另有一道截斷
   /* 免點按鈕的口語觸發（江江：學員不會每次都乖乖先按鈕）。
      命中就自動解鎖，但咪卡要先確認再答，不是悶頭當成在問這一頁。 */
@@ -61,6 +73,11 @@
   function isHomePage() {
     var p = location.pathname.replace(/index\.html$/, '');
     return p === '/' || p === '' || p === '/en/';
+  }
+
+  /* 課程頁＝現場學員拿手機掃 QR 進來的那些頁，快捷鈕要換成他們用得到的 */
+  function isCoursePage() {
+    return /^\/(en\/)?courses\//.test(location.pathname);
   }
 
   /* 抽這一頁的文字。走原始 DOM 不動它（不 clone、不暫時隱藏），
@@ -105,8 +122,16 @@
     try { localStorage.setItem(NAME_KEY, n); } catch (e) {}
   }
   /* 看起來像問題就不是稱呼（訪客跳過提問也沒關係，不追問） */
-  function looksLikeQuestion(t) {
-    return t.length > 10 || /[?？]|嗎|請問|怎麼|什麼|如何|哪/.test(t);
+  /* 第一句要不要收成稱呼（2026-08-20 收窄，事故驅動）──
+     舊寫法是「10 字以內又沒有疑問詞就當名字」，門檻太鬆。8/20 樂齡課現場有學員
+     第一句打「suno 指令 給我」（剛好 10 字、沒有問號），整串被存成稱呼，標題變成
+     「嗨，suno 指令 給我」，而且他真正的需求被吃掉，咪卡只回了一句「你好」。
+     改成正面判定「這看起來像名字嗎」：超過 6 字、帶空格、或含需求詞一律不算。
+     判錯的代價是不對稱的——當成問題只是少喊一聲名字，當成名字卻會一直掛在標題上，
+     所以這裡故意從嚴。 */
+  var NOT_NAME_RE = /[?？，。！、·]|給我|指令|提示詞|教我|幫我|怎麼|什麼|如何|哪|嗎|請問|可以|想要|要問|想問|我想|生成|圖片|課程|老師|模式|新手/;
+  function looksLikeName(t) {
+    return t.length <= 6 && !/\s/.test(t) && !NOT_NAME_RE.test(t);
   }
 
   /* ── 示意回覆（file:// 校稿模式與斷線備援用） ── */
@@ -120,6 +145,7 @@
       return { role: m.role, text: m.text };
     });
     var payload = { messages: recent, name: getName() || undefined, page: location.pathname };
+    if (isSimple()) payload.simple = true;
     /* 解鎖了才帶這一頁的內容過去。每次都重抽，不快取：
        課程頁與列表頁的內容可能在瀏覽過程中才長出來（展開段落、JS 渲染）。 */
     if (pageUnlocked) {
@@ -342,33 +368,59 @@
   function renderChips() {
     /* 快捷問題在訪客問出第一個真問題前都顯示（自報稱呼那句不算問題） */
     chipsBox.innerHTML = '';
-    var asked = history.some(function (m) { return m.role === 'user' && !m.isName; });
+    var asked = history.some(function (m) {
+      return m.role === 'user' && !m.isName && !m.isUnlock;
+    });
     if (asked) return;
-    /* 首頁維持三顆常見問題；其他頁把第一顆換成解鎖鈕，第二三顆照舊（江江 2026-08-17 拍板） */
-    var list = (isHomePage() || pageUnlocked) ? CHIPS : [UNLOCK_CHIP].concat(CHIPS.slice(1));
+    /* 首頁維持三顆常見問題；課程頁把「江江提供哪些服務」換成新手鈕（現場學員用不到服務介紹）；
+       其他內頁照舊解鎖鈕＋兩顆常見問題。 */
+    var list;
+    if (isHomePage()) list = CHIPS;
+    /* 課程簡報頁只給兩顆（江江 2026-08-20 拍板）：現場是他一步一步帶，
+       選項越少越好，服務方案那類問題對現場學員沒用。 */
+    else if (isCoursePage()) list = pageUnlocked ? [SIMPLE_CHIP] : [UNLOCK_CHIP, SIMPLE_CHIP];
+    else list = pageUnlocked ? CHIPS : [UNLOCK_CHIP].concat(CHIPS.slice(1));
     list.forEach(function (q) {
       var b = document.createElement('button');
       b.className = 'mkw-chip' + (q === UNLOCK_CHIP ? ' mkw-chip-page' : '');
       b.type = 'button';
       b.textContent = q;
       b.addEventListener('click', function () {
-        if (q === UNLOCK_CHIP) unlockPage(); else send(q);
+        if (q === UNLOCK_CHIP) { unlockPage(); return; }
+        if (q === SIMPLE_CHIP) setSimple(true);
+        send(q);
       });
       chipsBox.appendChild(b);
     });
   }
 
-  /* 按下解鎖鈕：本地回應不花 LLM，只把這一頁掛上來並告訴訪客可以問了 */
-  function unlockPage() {
+  /* 學員問了這一頁的事但還沒開助教模式：只遞一顆按鈕給他，按了會接著回答他剛才那句 */
+  function renderUnlockChip(pending) {
+    chipsBox.innerHTML = '';
+    var b = document.createElement('button');
+    b.className = 'mkw-chip mkw-chip-page';
+    b.type = 'button';
+    b.textContent = UNLOCK_CHIP;
+    b.addEventListener('click', function () { unlockPage(pending); });
+    chipsBox.appendChild(b);
+  }
+
+  /* 按下解鎖鈕：本地回應不花 LLM，只把這一頁掛上來並告訴訪客可以問了。
+     帶 pending 進來時（他剛才已經問過了），就不講場面話，直接把那句重問一次。 */
+  function unlockPage(pending) {
     var text = extractPageText();
     pageUnlocked = true;
-    var u = { role: 'user', text: UNLOCK_CHIP };
+    /* 標記 isUnlock：按解鎖鈕不算「問過問題」，快捷鈕要留著，
+       學員的下一步（新手鈕）才不會憑空消失（2026-08-20 實測抓到）。 */
+    var u = { role: 'user', text: UNLOCK_CHIP, isUnlock: true };
     history.push(u);
     saveHistory(history);
     renderMsg(u);
     renderChips();
     scrollBottom();
     logMsg('user', UNLOCK_CHIP);
+
+    if (pending) { send(pending); return; }
 
     var typing = showTyping();
     setTimeout(function () {
@@ -430,17 +482,20 @@
 
     /* 第一句而且不像問題 → 當成稱呼收下 */
     var isNameReply = !getName() && !history.some(function (m) { return m.role === 'user'; })
-      && !looksLikeQuestion(text);
+      && looksLikeName(text);
     if (isNameReply) setName(text.slice(0, 20));
 
-    /* 免點按鈕的自動解鎖：問句聽起來就是在問這一頁，就把這一頁掛上來。
-       但咪卡要先跟訪客確認再答（後端會收到 pageAuto 並照這個指示走），
-       因為關鍵詞會猜錯：打「老師」也可能是在問「江江是什麼樣的老師」。 */
+    /* 學員自己打「簡單模式」「我是新手」也算，不必按鈕（江江：他就是會直接用講的） */
+    if (SIMPLE_RE.test(text)) setSimple(true);
+
+    /* 純按鈕制（2026-08-20 江江拍板）：關鍵詞自動解鎖退場。
+       「我要問這一頁的內容」是課程助教模式的唯一開關，咪卡不再自己猜。
+       立因＝猜就會猜錯（打「老師」也可能是在問江江是什麼樣的老師），猜錯就要先確認，
+       現場多這一輪確認只會讓學員更亂。改成：看得出他在問這一頁但還沒開，
+       就本地回一句、把按鈕遞到他面前，他按了才進助教模式，這一輪不花 LLM。
+       他按下去之後，剛才那個問題會自動重問一次，不用他再打一遍。 */
     pageAuto = false;
-    if (!isNameReply && !pageUnlocked && !isHomePage() && PAGE_HINT_RE.test(text)) {
-      pageUnlocked = true;
-      pageAuto = true;
-    }
+    var needsPage = !isNameReply && !pageUnlocked && !isHomePage() && PAGE_HINT_RE.test(text);
 
     history.push({ role: 'user', text: text, isName: isNameReply || undefined });
     saveHistory(history);
@@ -464,7 +519,12 @@
       logMsg('bot', reply.text);
     }
 
-    if (isNameReply) {
+    if (needsPage) {
+      setTimeout(function () {
+        finish('這一頁的內容我還沒讀到喔 🐾\n按一下下面這顆，我把整頁看過就回來回答你。');
+        renderUnlockChip(text);
+      }, 600);
+    } else if (isNameReply) {
       /* 收稱呼不花 LLM，本地暖回應 */
       setTimeout(function () {
         finish(getName() + ' 你好，很高興認識你！🐾\n想了解什麼都可以直接問，下面幾個是大家常問的。');
@@ -526,6 +586,11 @@
   root.querySelector('.mkw-clear').addEventListener('click', function () {
     history = [];
     saveHistory(history);
+    /* 稱呼與模式一起清（2026-08-20 加）。原本只清對話，誤收的稱呼會一直留在標題上，
+       學員想重來只能換瀏覽器。 */
+    try { localStorage.removeItem(NAME_KEY); } catch (e) {}
+    setSimple(false);
+    updateSub();
     renderAll();
   });
   root.querySelector('.mkw-send').addEventListener('click', function () { send(input.value); });
