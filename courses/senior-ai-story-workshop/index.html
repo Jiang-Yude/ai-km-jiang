@@ -203,10 +203,20 @@
   .promptbox > summary::before { content:"\25B8 \5C55\958B"; font-family:var(--font-mono); font-size:20px; color:var(--accent); order:9; }
   .promptbox[open] > summary::before { content:"\25BE \6536\8D77"; }
   .promptbox .pbody { padding:0 24px 22px; }
-  .promptbox pre { margin:0; padding:18px 20px; background:rgba(62,39,35,0.06); border-radius:12px; font-family:var(--font-mono); font-size:15px; line-height:1.75; white-space:pre-wrap; word-break:break-word; max-height:52vh; overflow-y:auto; color:var(--text-on-light); }
-  .promptbox .copy { margin-top:16px; font-family:var(--font-body); font-size:20px; font-weight:600; padding:11px 26px; border-radius:999px; border:1px solid var(--accent); background:var(--accent); color:#fff; cursor:pointer; }
-  .promptbox .copy:hover { opacity:.86; }
-  .promptbox .ptip { font-size:20px; line-height:1.7; color:var(--text-soft-light); margin:0 0 14px; }
+  .simplebox .pbody { padding:14px 24px 22px; }
+  .promptbox pre, .simplebox pre { margin:0; padding:18px 20px; background:rgba(62,39,35,0.06); border-radius:12px; font-family:var(--font-mono); font-size:15px; line-height:1.75; white-space:pre-wrap; word-break:break-word; max-height:52vh; overflow-y:auto; color:var(--text-on-light); }
+  .promptbox .copy, .simplebox .copy { margin-top:16px; font-family:var(--font-body); font-size:20px; font-weight:600; padding:11px 26px; border-radius:999px; border:1px solid var(--accent); background:var(--accent); color:#fff; cursor:pointer; }
+  .promptbox .copy:hover, .simplebox .copy:hover { opacity:.86; }
+  .promptbox .ptip, .simplebox .ptip { font-size:20px; line-height:1.7; color:var(--text-soft-light); margin:0 0 14px; }
+
+  /* 簡單版指令：直接攤開，不折疊 */
+  .simplebox { text-align:left; margin-top:28px; border:2px solid var(--accent); border-radius:18px;
+    background:rgba(255,248,240,0.86); overflow:hidden; }
+  .simplebox .sb-head { padding:20px 24px 0; }
+  .simplebox .sb-label { font-family:var(--font-mono); font-size:20px; letter-spacing:0.12em; color:var(--accent); font-weight:700; }
+  .simplebox .sb-title { font-size:23px; font-weight:700; color:var(--text-on-light); margin:6px 0 0; }
+  .versionhint { font-size:20px; line-height:1.7; color:var(--text-soft-light); margin:22px 0 0; text-align:left; }
+  .versionhint b { color:var(--text-on-light); }
 
   /* 現場實錄折疊（課後回填） */
   .classnote { text-align:left; margin-top:28px; border:1px solid var(--accent); border-radius:16px;
@@ -493,7 +503,7 @@
       <details class="classnote">
         <summary><span><span class="cn-tag">現場實錄 · 8/20 淡水台北灣場</span><br/><span class="cn-title">這一場做出來的十五件作品</span></span></summary>
         <div class="cn-body">
-          <p>開場先舉手做了一次調查：想做<b>電影海報</b>的舉手，想做<b>美美的個人形象</b>的舉手。個人形象明顯比較多，所以第一場的主線就當場收斂成「個人形象 · 旅遊風格」。</p>
+          <p>開場先舉手做了一次調查：想做<b>電影海報</b>的舉手，想做<b>美美的個人形象</b>的舉手。兩種都是這一段的成品一，只是風格不同，第一場個人形象比較多，主線就往那邊走。</p>
           <p>指令也是當著全班改的。江江直接請 ChatGPT 把上課用的那條指令改寫成旅遊風格版，改完貼進 LINE 群給大家複製。</p>
           <blockquote>這個跟我想的不一樣怎麼辦呢？沒關係，來，我叫 AI 幫我改一下，等我一下，立刻現場改。</blockquote>
           <h4>學員做出來的東西</h4>
@@ -562,10 +572,11 @@
       <p class="body reveal d4" style="margin:26px auto 0;">同一段故事也可以丟進 NotebookLM，做成資訊圖表或有旁白的解說影片。<a class="exlink" href="https://notebook.google.com/notebook/98833b0c-2952-4575-8212-bb7985555bd9" target="_blank" rel="noopener">看範例筆記本 ⤢</a></p>
 
       <details class="classnote">
-        <summary><span><span class="cn-tag">現場實錄 · 8/20 淡水台北灣場</span><br/><span class="cn-title">這一場沒做到的一樣</span></span></summary>
+        <summary><span><span class="cn-tag">現場實錄 · 8/20 淡水台北灣場</span><br/><span class="cn-title">光是看到成品，現場就亮了</span></span></summary>
         <div class="cn-body">
-          <p>第一場三小時做到<b>海報</b>和<b>歌</b>就滿了，故事簡報沒有跑到，留成回家作業。</p>
-          <p>不過開場放《百岳行旅 · 武陵三秀》當示範的時候，現場就有人主動來問能不能做這種故事書。這一段在後面的場次會往前挪。</p>
+          <p>第一場三小時做到<b>海報</b>和<b>歌</b>，故事簡報這一段留到下一次。</p>
+          <p>但開場放《百岳行旅 · 武陵三秀》的時候，<b>現場眼睛都亮起來</b>，主辦方當場就跟江江約了十月的場次要專門做這個。</p>
+          <p>這也是這堂課刻意的設計：<b>先讓大家看到有幾種可能，再挑一種做完</b>。看到的和做到的不必是同一樣，看到就會想要，想要就會有下一堂。</p>
         </div>
       </details>
 
@@ -664,27 +675,33 @@
     <div class="wrap">
       <div class="act-cap reveal">ACT 08 · 相關工具的網址</div>
       <h2 class="display sm reveal d1">今天會用到<br/>這三個</h2>
-      <p class="lead reveal d2">手機沒裝 App 也可以，用瀏覽器開官網一樣能用。</p>
+      <p class="lead reveal d2"><b>不用裝 App。</b>手機的瀏覽器直接開下面的網址，用 Google 帳號登入就可以開始，省下安裝、更新、空間不足這些麻煩。</p>
+      <div class="stepbox reveal d2">
+        <div class="steprow"><div class="k">怎麼開</div><div class="v">複製網址貼進手機瀏覽器，或直接點下面的連結。<b>建議用 Chrome 或 Safari 開</b>，從 LINE 裡點開的內建瀏覽器有些功能會不完整。</div></div>
+        <div class="steprow"><div class="k">卡住問誰</div><div class="v">問<b>咪卡</b>（頁面右下角那顆按鈕）。她是這堂課的線上助教，會直接給你可以複製的指令。她預設給完整版，<b>跟她說「我是新手」或「簡單模式」</b>，她就改給簡單版，一次只問你一件事。</div></div>
+        <div class="steprow"><div class="k">額度滿了</div><div class="v">ChatGPT 免費版的生圖次數是隨機的，有人一天三張、有人一張就滿。滿了就<b>換 Gemini</b>，一樣的指令、一樣的玩法貼過去就好。畫質和穩定度比 ChatGPT 差一些，但次數大方很多。</div></div>
+      </div>
       <ul class="toollist reveal d3">
         <li>
           <span class="tname">ChatGPT</span><span class="tuse">說出故事、生個人生活風格照</span>
           <span class="turl">官網　<a href="https://chatgpt.com" target="_blank" rel="noopener">https://chatgpt.com</a></span>
-          <span class="turl">安卓　<a href="https://play.google.com/store/apps/details?id=com.openai.chatgpt" target="_blank" rel="noopener">https://play.google.com/store/apps/details?id=com.openai.chatgpt</a></span>
+          <span class="turl">App（想裝再裝）安卓　<a href="https://play.google.com/store/apps/details?id=com.openai.chatgpt" target="_blank" rel="noopener">https://play.google.com/store/apps/details?id=com.openai.chatgpt</a></span>
           <span class="turl">蘋果　<a href="https://apps.apple.com/tw/app/id6448311069" target="_blank" rel="noopener">https://apps.apple.com/tw/app/id6448311069</a></span>
         </li>
         <li>
           <span class="tname">Suno</span><span class="tuse">把故事變成一首歌</span>
           <span class="turl">官網　<a href="https://suno.com" target="_blank" rel="noopener">https://suno.com</a></span>
-          <span class="turl">安卓　<a href="https://play.google.com/store/apps/details?id=com.suno.android" target="_blank" rel="noopener">https://play.google.com/store/apps/details?id=com.suno.android</a></span>
+          <span class="turl">App（想裝再裝）安卓　<a href="https://play.google.com/store/apps/details?id=com.suno.android" target="_blank" rel="noopener">https://play.google.com/store/apps/details?id=com.suno.android</a></span>
           <span class="turl">蘋果　<a href="https://apps.apple.com/tw/app/id6480136315" target="_blank" rel="noopener">https://apps.apple.com/tw/app/id6480136315</a></span>
         </li>
         <li>
           <span class="tname">NotebookLM</span><span class="tuse">做故事簡報、故事短片、個人簡介　（手機 App 的名字叫 Gemini Notebook）</span>
           <span class="turl">官網　<a href="https://notebook.google.com" target="_blank" rel="noopener">https://notebook.google.com</a></span>
-          <span class="turl">安卓　<a href="https://play.google.com/store/apps/details?id=com.google.android.apps.labs.language.tailwind" target="_blank" rel="noopener">https://play.google.com/store/apps/details?id=com.google.android.apps.labs.language.tailwind</a></span>
+          <span class="turl">App（想裝再裝）安卓　<a href="https://play.google.com/store/apps/details?id=com.google.android.apps.labs.language.tailwind" target="_blank" rel="noopener">https://play.google.com/store/apps/details?id=com.google.android.apps.labs.language.tailwind</a></span>
           <span class="turl">蘋果　<a href="https://apps.apple.com/tw/app/id6737527615" target="_blank" rel="noopener">https://apps.apple.com/tw/app/id6737527615</a></span>
         </li>
       </ul>
+      <p class="mono-note reveal d4">額度滿了的備援：Gemini　<a class="exlink" href="https://gemini.google.com" target="_blank" rel="noopener">https://gemini.google.com ⤢</a></p>
 
       <details class="classnote">
         <summary><span><span class="cn-tag">現場實錄 · 8/20 淡水台北灣場</span><br/><span class="cn-title">開場那半小時實際在做什麼</span></span></summary>
@@ -697,7 +714,12 @@
           </ul>
           <h4>現場真的會卡的地方</h4>
           <p>手機儲存空間不足裝不下、帳號登不進去、晚到的人要重貼一次連結。這些都是課堂時間，不是技術問題。</p>
-          <p>辦課單位如果能在課前先把 LINE 群建好、請學員先裝好 App、先處理掉帳號問題，整堂課的完成率會差很多。</p>
+          <h4>所以第二場起改成這樣</h4>
+          <ul>
+            <li><b>不裝 App，全部用網頁版。</b>瀏覽器開網址、Google 帳號登入就能用，安裝與空間的問題一次消失。</li>
+            <li><b>LINE 群課前先建好。</b>指令從群組發，這是全場的動線核心，不該佔用上課時間。</li>
+            <li><b>額度的備援先講清楚。</b>ChatGPT 滿了就換 Gemini，同一份指令貼過去就好。</li>
+          </ul>
         </div>
       </details>
 
@@ -710,8 +732,28 @@
       <div class="act-cap reveal">ACT 09 · 開始之前</div>
       <h2 class="display sm reveal d1">先把故事<br/>講出來</h2>
       <p class="lead reveal d2">先講，不用先想怎麼寫，講三到五分鐘就夠。這一段等一下每一樣成品都會用到。</p>
+      <div class="simplebox reveal d3">
+        <div class="sb-head">
+          <span class="sb-label">簡單版 · 先用這個</span>
+          <p class="sb-title">不想講那麼多？填四個空格就好</p>
+        </div>
+        <div class="pbody">
+          <p class="ptip">括號裡填你自己的，其他不用改。填完整段複製貼進 ChatGPT，它<b>不會再問你問題</b>，直接寫給你。</p>
+          <pre data-copy>幫我把下面這幾件事，整理成一小段我的故事，一百字左右就好。
+不用問我問題，直接寫。
+
+我是：（例如 退休的小學老師、三個孫子的阿嬤）
+我想講的是：（例如 年輕時第一次出國、每天早上散步的那條路）
+那時候在：（例如 台東、淡水河邊、日本京都）
+心情是：（例如 開心、懷念、有點捨不得）
+
+用我的口氣寫，不要加我沒說過的事。</pre>
+          <button class="copy" type="button">複製這份指令</button>
+        </div>
+      </div>
+      <p class="versionhint reveal d4"><b>想講得更完整？</b>下面這份會像記者一樣訪問你，三輪把故事問出來，適合想認真整理一段人生故事的人。</p>
       <details class="promptbox reveal d4">
-        <summary><span><span class="plabel">準備</span><br/><span class="ptitle">讓 AI 訪問你，把故事問出來</span></span><span class="phint">整段複製，貼進新對話，照著它問的回答就好。</span></summary>
+        <summary><span><span class="plabel">完整版</span><br/><span class="ptitle">讓 AI 訪問你，把故事問出來</span></span><span class="phint">整段複製，貼進新對話，照著它問的回答就好。</span></summary>
         <div class="pbody">
           <p class="ptip">不用自己想怎麼開頭。它會一次把問題問完，最多三輪就整理好，不會一直纏著你問。用<b>語音輸入</b>回答最快。</p>
           <pre data-copy>我想講一段自己的人生故事，你幫我把它問出來。
@@ -755,7 +797,13 @@
           <blockquote>就像我們跟人對話，我們講得越清楚，他才會知道我們要做什麼。</blockquote>
           <blockquote>老師我不知道怎麼問。你問我的問題，問他就好。</blockquote>
           <p>還有一句：<b>盡量描述你要的目標，不要描述步驟</b>，剩下讓它自己去找辦法。</p>
-          <p>下一場會把上面這條「讓 AI 訪問你」的準備指令補回流程裡，讓故事那一段真的先產出來，後面的海報和歌都接得上。</p>
+          <h4>指令因此改成兩個版本</h4>
+          <p>三輪訪問的完整版對想認真整理一段人生故事的人很好用，但現場看下來<b>對多數人來說太長了</b>。所以現在上面每一段都改成兩份：</p>
+          <ul>
+            <li><b>簡單版直接攤開</b>：填幾個關鍵字就生，AI 不再問你問題。多數人用這份就夠了，做出來一樣好看。</li>
+            <li><b>完整版收在折疊裡</b>：想控制細節、想認真學怎麼下提示詞的人再打開。</li>
+          </ul>
+          <p>兩份都在頁面上，不用選邊。先用簡單版做出一張，想再深一點就打開完整版。</p>
         </div>
       </details>
 
@@ -768,8 +816,37 @@
       <div class="act-cap reveal">ACT 10 · 玩法一</div>
       <h2 class="display sm reveal d1">個人<br/>生活風格</h2>
       <p class="lead reveal d2">一個指令，兩種風格自己選：<b>電影海報</b>文字多、標題大、有張力，<b>手機桌布</b>清爽留白、可以直接當手機桌面。都是直式 9:16。</p>
+      <div class="simplebox reveal d3">
+        <div class="sb-head">
+          <span class="sb-label">簡單版 · 先用這個</span>
+          <p class="sb-title">照片＋五個關鍵字，直接生</p>
+        </div>
+        <div class="pbody">
+          <p class="ptip"><b>先在對話框上傳一張自己的照片</b>，再把這段貼上去。括號裡填你想去的地方跟感覺就好，它不會一直問你。</p>
+          <pre data-copy>這是我的照片。幫我做一張以我為主角的海報。
+不用問我問題，照下面的關鍵字直接生。
+
+想去的地方：（例如 法國、阿里山、京都、海邊）
+季節或天氣：（例如 春天、黃昏、下過雨、下雪）
+我正在做什麼：（例如 散步、喝咖啡、看風景、騎車）
+喜歡的感覺：（例如 溫暖、清爽、復古、熱鬧）
+要哪一種：電影海報 或 手機桌布（二選一）
+
+臉部表情和五官請盡量保持原樣，要看得出是我本人。
+姿勢、背景、光線、服裝、排版都可以配合場景調整。
+比例 9:16 直式。</pre>
+          <button class="copy" type="button">複製這份指令</button>
+        </div>
+      </div>
+      <div class="stepbox reveal d4">
+        <div class="steprow"><div class="k">存下來</div><div class="v">圖生好之後，<b>先存到手機相簿</b>再做別的。點圖片右上角的分享或下載，選「儲存影像」，之後在<b>相簿</b>裡就找得到。</div></div>
+        <div class="steprow"><div class="k">怎麼找回來</div><div class="v">ChatGPT 的<b>左上角選單</b>可以看到你所有的對話，點回去就能看到當時生的圖。<b>不要把對話刪掉</b>，刪掉就找不回來了。傳到 LINE 群不等於存在你手機裡。</div></div>
+        <div class="steprow"><div class="k">傳給別人</div><div class="v">先存到相簿，再從 LINE 的相簿選圖傳出去。這樣傳出去的是圖片本身，對方一定看得到。</div></div>
+      </div>
+
+      <p class="versionhint reveal d4"><b>想自己挑風格？</b>下面這份會先給你三種風格方向讓你選，選完再生圖，適合想多控制一點的人。</p>
       <details class="promptbox reveal d4">
-        <summary><span><span class="plabel">玩法一</span><br/><span class="ptitle">生活風格海報</span></span><span class="phint">先上傳照片，再整段複製貼上。</span></summary>
+        <summary><span><span class="plabel">完整版</span><br/><span class="ptitle">生活風格海報</span></span><span class="phint">先上傳照片，再整段複製貼上。</span></summary>
         <div class="pbody">
           <p class="ptip">手機裡現成的照片就可以，臉看得清楚、不要太暗。<b>風格在指令裡面選</b>，它會先問你幾件事，最多兩輪就生圖。生出來不像的時候，回一句「<b>臉和五官回到我上傳的照片那張臉</b>，其他可以改」。</p>
           <pre data-copy>這是我的照片。我想做一張以自己為主角的生活風格海報，主題是我剛剛講的那段故事。
@@ -852,8 +929,29 @@
         <div class="steprow"><div class="k">會拿到什麼</div><div class="v">一次生<b>兩個版本</b>，挑一首喜歡的。可以下載，也可以直接分享連結。</div></div>
       </div>
       <a class="biglink reveal d3" href="https://suno.com" target="_blank" rel="noopener">打開 Suno <span class="u">suno.com</span></a>
+      <div class="simplebox reveal d3">
+        <div class="sb-head">
+          <span class="sb-label">簡單版 · 先用這個</span>
+          <p class="sb-title">三個空格，直接給你可以貼進 Suno 的東西</p>
+        </div>
+        <div class="pbody">
+          <p class="ptip">如果你前面已經跟它聊過故事，<b>就在同一個對話往下貼</b>，第一行改成「用我前面講的那段故事」，它都記得。</p>
+          <pre data-copy>幫我寫一首歌，直接給我可以貼進 Suno 的格式，不用問我問題。
+
+歌要講的是：（例如 我年輕時在花蓮的日子、我和孫子的週末）
+心情：（例如 溫暖、懷念、輕快）
+誰來唱：男生 或 女生
+
+請直接給我三樣，不要多問：
+曲名
+曲風（英文一行，要含 BPM）
+歌詞</pre>
+          <button class="copy" type="button">複製這份指令</button>
+        </div>
+      </div>
+      <p class="versionhint reveal d4"><b>想調曲風、速度、樂器？</b>下面這份是完整的音樂小助教，會一步一步陪你設計，適合想玩細一點的人。</p>
       <details class="promptbox reveal d4">
-        <summary><span><span class="plabel">玩法二</span><br/><span class="ptitle">音樂小助教</span></span><span class="phint">它會問你曲風、速度、樂器，最後給你可以直接貼進 Suno 的格式。</span></summary>
+        <summary><span><span class="plabel">完整版</span><br/><span class="ptitle">音樂小助教</span></span><span class="phint">它會問你曲風、速度、樂器，最後給你可以直接貼進 Suno 的格式。</span></summary>
         <div class="pbody">
           <p class="ptip">跟它講你剛剛那段故事，或講幾個關鍵字都可以。它會把曲名、曲風、歌詞一次整理好，<b>曲風那一行是英文的，貼進 Suno 的 Styles 欄</b>，歌詞貼進 Lyrics 欄。<br/>它問得比較細，覺得慢就回一句「<b>我要快的，一次問完，剩下你幫我決定</b>」。</p>
           <pre data-copy>請你當任音樂小助教，協助用戶把想法轉換成詞曲，並且符合 Suno AI 音樂生成的提示詞格式。過程中請幽默、耐心，並給予鼓勵。
@@ -944,8 +1042,24 @@ Style of Music: New Age, Calm and Meditative, Instrumental, 60 BPM, C Major, Har
         <div class="steprow"><div class="k">個人簡介</div><div class="v">在 Studio 選<b>資訊圖表</b>，整段故事變成一張看得懂的圖，可以當自我介紹用。</div></div>
       </div>
       <a class="biglink reveal d3" href="https://notebook.google.com" target="_blank" rel="noopener">打開 NotebookLM <span class="u">notebook.google.com</span></a>
+      <div class="simplebox reveal d3">
+        <div class="sb-head">
+          <span class="sb-label">簡單版 · 先用這個</span>
+          <p class="sb-title">四行就好</p>
+        </div>
+        <div class="pbody">
+          <p class="ptip">把故事文字和自己的照片都放進來源之後，在 Studio 的客製指令欄貼這四行。簡報、短片、資訊圖表<b>一次生一種</b>。</p>
+          <pre data-copy>這是我自己的故事，附上的照片也是我本人。
+
+用日常的話講，字大一點，感覺溫暖一點。
+只能用我提供的內容，不要自己補外面查到的資料。
+畫面裡的人只能用我上傳的真實照片，不要自己生人物、不要換臉。</pre>
+          <button class="copy" type="button">複製這份指令</button>
+        </div>
+      </div>
+      <p class="versionhint reveal d4"><b>想講究一點？</b>下面這份寫得更完整，包含要強調哪四件事、以及襯圖可以怎麼用。</p>
       <details class="promptbox reveal d4">
-        <summary><span><span class="plabel">玩法三</span><br/><span class="ptitle">三樣都用這一段</span></span><span class="phint">貼進 Studio 的客製指令欄。</span></summary>
+        <summary><span><span class="plabel">完整版</span><br/><span class="ptitle">三樣都用這一段</span></span><span class="phint">貼進 Studio 的客製指令欄。</span></summary>
         <div class="pbody">
           <p class="ptip">三種產出都貼同一段就可以。簡報、短片、資訊圖表分開生，一次生一種。<br/><b>記得把自己的照片一起上傳當來源</b>，指令裡有寫死只能用你的真實照片，不准它自己生人物。</p>
           <pre data-copy>這是一個人親身經歷的故事，主角就是我本人，附上的照片也是我。
@@ -973,10 +1087,11 @@ Style of Music: New Age, Calm and Meditative, Instrumental, 60 BPM, C Major, Har
       <p class="mono-note reveal d4">卡住的時候舉手。做不完沒關係，這一頁隨時打得開</p>
 
       <details class="classnote">
-        <summary><span><span class="cn-tag">現場實錄 · 8/20 淡水台北灣場</span><br/><span class="cn-title">第一場沒跑到這一段</span></span></summary>
+        <summary><span><span class="cn-tag">現場實錄 · 8/20 淡水台北灣場</span><br/><span class="cn-title">留到下一堂的那一樣</span></span></summary>
         <div class="cn-body">
-          <p>三小時的時間分配是：前半小時裝 App 和加群組，十分鐘 AI 基礎，一小時生海報和互相看作品，最後半小時生歌。NotebookLM 這一段沒有跑到。</p>
-          <p>開場示範的那份十五頁故事簡報就是用這一段做的，現場反應很好，後面的場次會把它往前挪或另外開一堂。</p>
+          <p>第一場三小時的分配是：前半小時裝 App 和加群組，十分鐘 AI 基礎，一小時生海報和互相看作品，最後半小時生歌。這一段留到下一次。</p>
+          <p>不過開場示範的那份十五頁故事簡報就是用這一段做的，<b>現場反應最好的就是它</b>，主辦方當場就約了十月的場次專門做故事書。</p>
+          <p>第二場起不裝 App，前半小時省下來，這一段就有機會當場跑到。</p>
         </div>
       </details>
 
