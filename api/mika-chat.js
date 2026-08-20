@@ -492,13 +492,16 @@ function retrieveAdaptive(query) {
 /* ── 用量上限（2026-08-07 江江拍板的數字；都可用環境變數調）──
    MIKA_RATE_PER_MIN    同 IP 每分鐘   預設 20（防灌爆）
    MIKA_RATE_PER_DAY    同 IP 每天     預設 100（單一訪客上限）
-   MIKA_RATE_PER_MIN_COURSE  課程頁每 IP 每分鐘  預設 120（整班同一個 WiFi＝同一個 IP）
-   MIKA_RATE_PER_DAY_COURSE  課程頁每 IP 每天    預設 800
-   MIKA_DAILY_LIMIT     全站每天       預設 2000
+   MIKA_RATE_PER_MIN_COURSE  課程頁每 IP 每分鐘  預設 300（整班同一個 WiFi＝同一個 IP）
+   MIKA_RATE_PER_DAY_COURSE  課程頁每 IP 每天    預設 3000（現場碰不到，這是被薅時的停損）
+   MIKA_DAILY_LIMIT     全站每天       預設 5000
    MIKA_MONTHLY_LIMIT   全站每月       預設 10000（總開銷天花板）
    計次規則（2026-08-07 江江拍板）：以輸入字數計，每 100 字算 1 次、無條件進位
    （一口氣打 500 字＝吃 5 次額度）。中英文都算字元數，機械計算抓大概即可。
    單則訊息上限 500 字，所以一則最多 5 次。
+   ⚠️ 例外（2026-08-20 江江拍板）：**課程頁不按字數計，一則就是一次**。
+   現場學員本來就會整段貼、會一次講很多，按字數算等於罰認真描述的人，
+   而那正是這堂課要教的事（講得細的人圖明顯比較好）。
    回傳 'ok'｜'minute'｜'ip-day'｜'site-day'｜'site-month' */
 /* 課堂額度（2026-08-20 加，江江問「不同學員會不會撞到一分鐘 20 次」查出來的）：
    節流綁 IP，但**教室整班連同一個 WiFi，對外就是同一個 IP**。
@@ -510,10 +513,10 @@ function retrieveAdaptive(query) {
 async function ratelimit(ip, units, onCourse) {
   if (!KV_URL() || !KV_TOKEN()) return 'ok';
   const perMin = Number(onCourse ? process.env.MIKA_RATE_PER_MIN_COURSE : process.env.MIKA_RATE_PER_MIN)
-    || (onCourse ? 120 : 20);
+    || (onCourse ? 300 : 20);
   const perDay = Number(onCourse ? process.env.MIKA_RATE_PER_DAY_COURSE : process.env.MIKA_RATE_PER_DAY)
-    || (onCourse ? 800 : 100);
-  const siteDay = Number(process.env.MIKA_DAILY_LIMIT) || 2000;
+    || (onCourse ? 3000 : 100);
+  const siteDay = Number(process.env.MIKA_DAILY_LIMIT) || 5000;
   const siteMonth = Number(process.env.MIKA_MONTHLY_LIMIT) || 10000;
   const day = new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Taipei' }).format(new Date());
   const month = day.slice(0, 7);
@@ -674,10 +677,13 @@ module.exports = async (req, res) => {
   const lastUser = [...msgs].reverse().find((m) => m.role === 'user');
   if (!lastUser) { res.status(200).json({ reply: '想聊什麼呢？' }); return; }
 
-  /* 以字計次：每 100 字算 1 次，無條件進位 */
-  const units = Math.max(1, Math.ceil(lastUser.content.length / 100));
+  /* 以字計次：每 100 字算 1 次，無條件進位。
+     課程頁例外，一則就是一次（江江 2026-08-20）：現場鼓勵學員講得細，
+     按字數計等於罰認真描述的人。 */
+  const onCoursePage = /^\/(en\/)?courses\//.test(String(body.page || ''));
+  const units = onCoursePage ? 1 : Math.max(1, Math.ceil(lastUser.content.length / 100));
   const ip = String(req.headers['x-forwarded-for'] || '').split(',')[0].trim() || 'na';
-  const limited = await ratelimit(ip, units, /^\/(en\/)?courses\//.test(String(body.page || '')));
+  const limited = await ratelimit(ip, units, onCoursePage);
   if (limited !== 'ok') {
     res.status(429).json({ reply: LIMIT_REPLY[limited] });
     return;
