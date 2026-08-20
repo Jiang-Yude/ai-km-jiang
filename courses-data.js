@@ -140,7 +140,7 @@ window.COURSES = [
     duration_min: 360,
     title: "數位起步走 輕鬆玩創作：8 月數位創作課程 四天系列",
     type_label: "外部授課",
-    image: null,
+    image: "images/courses/2026-08-04-digital-creation-1.jpg",
     venue_mode: "physical",
     venue_label: "臺中",
     host: "江江教練",
