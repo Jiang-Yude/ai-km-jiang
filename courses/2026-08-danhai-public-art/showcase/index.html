@@ -41,14 +41,16 @@
 
   /* ── 封面 ─────────────────────────────────── */
   .hero { position:relative; }
-  .hero-img { position:relative; overflow:hidden; }
-  .hero-img img { width:100%; height:clamp(320px,62vh,660px); object-fit:cover; object-position:center 34%; }
-  .hero-img::after { content:""; position:absolute; inset:0;
-    background:linear-gradient(180deg, rgba(62,39,35,0.30) 0%, rgba(62,39,35,0.05) 42%, rgba(245,237,231,0.92) 100%); }
-  .hero-txt { position:relative; margin:-96px auto 0; max-width:960px; padding:0 28px 64px; text-align:center; z-index:2; }
+  /* 圖上本來就有毛筆標題，完整顯示不裁切；點擊可放大看細節 */
+  .hero-img { position:relative; overflow:hidden; background:var(--bg-1); cursor:zoom-in; }
+  .hero-img img, .hero-img.shot img { width:100%; height:auto; object-fit:unset; background:transparent; }
+  .hero-img::after { content:""; position:absolute; left:0; right:0; bottom:0; height:22%; pointer-events:none;
+    background:linear-gradient(180deg, rgba(245,237,231,0) 0%, rgba(245,237,231,0.82) 68%, var(--bg-1) 100%); }
+  .hero-txt { position:relative; margin:-40px auto 0; max-width:960px; padding:0 28px 64px; text-align:center; z-index:2; }
   .kicker { font-family:var(--mono); font-size:13px; letter-spacing:0.2em; text-transform:uppercase;
     color:var(--accent); font-weight:700; margin-bottom:18px; }
-  .hero-txt h1 { font-size:clamp(34px,6vw,68px); line-height:1.16; font-weight:800; letter-spacing:-0.02em; margin:0 0 20px; }
+  .sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden;
+    clip:rect(0 0 0 0); white-space:nowrap; border:0; }
   .hero-sub { font-size:clamp(17px,2vw,21px); line-height:1.8; color:var(--ink-soft); max-width:720px; margin:0 auto; }
   .meta-row { display:flex; flex-wrap:wrap; justify-content:center; gap:10px; margin-top:28px; }
   .chip { font-size:14px; padding:7px 15px; border-radius:999px; background:var(--paper);
@@ -174,12 +176,12 @@
 
 <!-- 封面 -->
 <header class="hero">
-  <div class="hero-img">
-    <img src="img/g1-hero.jpg" alt="四位學員站在淡金鄧公站的輕軌月台前，身上的衣裙印著淡水河、觀音山、淡江大橋與輕軌列車的風景" />
+  <div class="hero-img shot" data-cap="第一組｜主視覺：把淡水穿在身上，讓故事帶我旅行">
+    <img src="img/g1-hero.jpg" alt="四位學員站在淡金鄧公站的輕軌月台前，身上的衣裙印著淡水河、觀音山、淡江大橋與輕軌列車的風景，畫面左上是毛筆字標題「把淡水穿在身上，讓故事帶我旅行。」" />
   </div>
   <div class="hero-txt">
+    <h1 class="sr-only">把淡水穿在身上，讓故事帶我旅行 · 淡海輕軌公共藝術走讀 AI 故事共創成果發表</h1>
     <div class="kicker rv">2026 · 08 · 21 　成果發表</div>
-    <h1 class="rv">把淡水穿在身上，<br/>讓故事帶我旅行。</h1>
     <p class="hero-sub rv">早上走一趟淡海輕軌，看六站的公共藝術；下午把看到的風景、想起的回憶，變成一件穿在身上的衣服。這是這一天四組學員完成的二十七件作品。</p>
     <div class="meta-row rv">
       <span class="chip"><b>8/21（五）</b> 09:30–16:00</span>
