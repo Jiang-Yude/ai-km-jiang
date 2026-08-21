@@ -168,8 +168,8 @@
   .promptbox[open] > summary::before { content:"▾ 收起"; }
   .promptbox .pbody { padding:0 24px 22px; }
   .promptbox pre { margin:0; padding:18px 20px; background:rgba(62,39,35,0.06); border-radius:12px; font-family:var(--font-mono); font-size:15px; line-height:1.75; white-space:pre-wrap; word-break:break-word; max-height:52vh; overflow-y:auto; color:var(--text-on-light); }
-  .promptbox .copy { margin-top:16px; font-family:var(--font-body); font-size:17px; font-weight:600; padding:11px 26px; border-radius:999px; border:1px solid var(--accent); background:var(--accent); color:#fff; cursor:pointer; }
-  .promptbox .copy:hover { opacity:.86; }
+  .promptbox .copy, .ipcopy .copy { margin-top:16px; font-family:var(--font-body); font-size:17px; font-weight:600; padding:11px 26px; border-radius:999px; border:1px solid var(--accent); background:var(--accent); color:#fff; cursor:pointer; }
+  .promptbox .copy:hover, .ipcopy .copy:hover { opacity:.86; }
   .deck-link { display:inline-block; font-family:var(--font-body); font-size:17px; font-weight:600; padding:9px 22px; border-radius:999px; border:1px solid var(--accent); background:var(--accent); color:#fff; text-decoration:none; }
   .deck-link:hover { opacity:.86; }
   .promptbox .ptip { font-size:17px; line-height:1.7; color:var(--text-soft-light); margin:0 0 14px; }
@@ -225,6 +225,21 @@
   .cmp h3 { font-size:20px; margin:0 0 8px; color:var(--text-on-light); }
   .cmp p { font-size:17px; line-height:1.65; margin:0; color:var(--text-soft-light); }
   .cmp.one { grid-template-columns:1fr; max-width:920px; margin-left:auto; margin-right:auto; }
+  .cmp.two { grid-template-columns:repeat(2,1fr); max-width:1040px; margin-left:auto; margin-right:auto; }
+  @media (max-width: 860px) { .cmp.two { grid-template-columns:1fr; } }
+  .ipcopy { margin-top:14px; }
+  .ipcopy details { margin-bottom:12px; }
+  .ipcopy details > summary { cursor:pointer; font-family:var(--font-mono); font-size:14px; letter-spacing:0.08em; color:var(--accent); }
+  .ipcopy .copyimg { display:block; width:100%; margin-top:4px; font-family:var(--font-body); font-size:17px; font-weight:700; padding:13px 20px; border-radius:999px; border:1px solid var(--accent); background:var(--accent); color:#fff; cursor:pointer; }
+  .ipcopy .copyimg:hover { opacity:.86; }
+  .ipcopy .copyimg:disabled { opacity:.55; cursor:default; }
+  .ipcopy .copy { display:block; width:100%; }
+  .ipcopy .log { white-space:pre-wrap; font-family:var(--font-mono); font-size:14px; line-height:1.6; margin:10px 0 0; min-height:1.2em; color:var(--text-soft-light); }
+  .ipcopy .log.ok { color:var(--accent); font-weight:700; }
+  .ipcopy .log.bad { color:#C2603C; font-weight:700; }
+  .ipwarn { max-width:1040px; margin:18px auto 0; font-size:15px; line-height:1.7; }
+  .ipwarn .note { background:rgba(194,96,60,0.10); border-left:3px solid #C2603C; border-radius:10px; padding:12px 16px; margin-top:10px; }
+  .ipcopy pre { white-space:pre-wrap; font-family:var(--font-mono); font-size:14px; line-height:1.7; background:rgba(0,0,0,0.05); border-radius:12px; padding:14px 16px; margin:12px 0 0; overflow-x:auto; }
   @media (max-width: 980px) { .cmp { grid-template-columns:1fr; } }
 
   /* 圖片點開放大 */
@@ -523,7 +538,7 @@
       <details class="hostbox reveal d4">
         <summary>桌長小卡</summary>
         <div class="hbody">
-          <p>這一段你不用帶，Vivi 會用她的一頁式網站講，底下有三團子的影片可以播。<b>趁這 15 分鐘把桌上準備好</b>：便條紙與筆發下去、筆電開機連上網、確認你這一桌今天實際幾個人（等一下五人桌的欄位要合併，先知道比較好安排）。</p>
+          <p>這一段你不用帶，Vivi 會用她的一頁式網站講，底下有三糰子的影片可以播。<b>趁這 15 分鐘把桌上準備好</b>：便條紙與筆發下去、筆電開機連上網、確認你這一桌今天實際幾個人（等一下五人桌的欄位要合併，先知道比較好安排）。</p>
           <p>如果有人問你三階段叫什麼、對應哪一站，以 Vivi 現場講的版本為準，不用自己補。</p>
         </div>
       </details>
@@ -831,6 +846,40 @@ G 一個代表我的小物件，當作畫面裡認得出我的記號（例如常
       </div>
       <p class="mono-note reveal d4">↑ 點圖可以放大看細節 ↑</p>
 
+      <div class="factbox reveal d4" style="margin-top:52px;">
+        <p><b>沒時間就用旅學堂先做好的角色。</b>討論十分鐘還收斂不了，或是全桌想直接往下走，就從下面兩個公用角色挑一個。做法一樣：角色的長相不動，把六個人講過的意象加在表情、動作、配件與場景上，一樣每個人都會在裡面。</p>
+        <p><b>怎麼用</b>：按<b>複製圖</b>，回到 ChatGPT 長按輸入框選「貼上」，圖就進去了，不用先存到相簿。指令用上面段落二那一份，把角色設定改成「照我上傳的這張圖，長相不要改」就好。</p>
+      </div>
+
+      <div class="cmp two reveal d4">
+        <figure>
+          <img src="../../images/courses/danhai-ip-sandanzi.jpg" alt="旅學堂公用角色三糰子的角色設定圖：紫蘭是耳朵尾巴桃紅漸層的白色長毛狐狸，空幽是眼睛裡有綠色星芒的薄荷綠青蛙，星晞是尾巴水藍漸層、額頭有金色星星的白色長毛狐狸，各有四個角度" loading="lazy" />
+          <figcaption>
+            <span class="tagline">公用角色 A · 三隻一組</span>
+            <h3>三糰子</h3>
+            <p>紫蘭、空幽、星晞三隻一組，水彩手繪風。三個角色可以分別對應不同人的感受，適合意見比較分歧、一個角色裝不下的桌。</p>
+            <div class="ipcopy">
+              <button class="copyimg" type="button" data-copy-img="../../images/courses/danhai-ip-sandanzi.jpg">複製三糰子的圖</button>
+              <p class="log"></p>
+                          </div>
+          </figcaption>
+        </figure>
+        <figure>
+          <img src="../../images/courses/danhai-ip-travelcat.jpg" alt="旅學堂公用角色旅貓的角色設定圖：白色貓咪粗黑線條簡筆風，右耳邊一朵白色小花，胸前掛紅色相機，上排是正面側面背面三視圖，下排是六個表情動作" loading="lazy" />
+          <figcaption>
+            <span class="tagline">公用角色 B · 單一主角</span>
+            <h3>旅貓</h3>
+            <p>白貓掛著紅色相機，粗線條簡筆風。已經有三視圖與六種表情動作，下午做六格分鏡時最好接，適合想直接開始畫故事的桌。</p>
+            <div class="ipcopy">
+              <button class="copyimg" type="button" data-copy-img="../../images/courses/danhai-ip-travelcat.jpg">複製旅貓的圖</button>
+              <p class="log"></p>
+                          </div>
+          </figcaption>
+        </figure>
+      </div>
+      <div class="ipwarn" id="ipwarn"></div>
+      <p class="mono-note reveal d4">↑ 兩張設定圖都可以點開放大 ↑</p>
+
       <div class="outcome reveal d4"><span>預期達成</span>一個全桌都認的主角＋一張角色設定表（角色三視圖＋表情＋動作）</div>
     </div>
   </section>
@@ -860,7 +909,7 @@ G 一個代表我的小物件，當作畫面裡認得出我的記號（例如常
       <details class="hostbox reveal d4">
         <summary>桌長小卡</summary>
         <div class="hbody">
-          <p>這一關的討論容易延長，時間由你控。<b>十分鐘還沒收斂，你就宣布改用公用 IP 往下走</b>，旅學堂提供兩個：<b>三團子</b>（Vivi 的角色）與<b>羽毛</b>，做法一樣是把六個人的意象加在公用 IP 身上。先把作品完成，細節之後還可以再調。</p>
+          <p>這一關的討論容易延長，時間由你控。<b>十分鐘還沒收斂，你就宣布改用旅學堂的公用角色往下走</b>，兩個角色的設定圖與可以直接複製的指令都放在上面那一區（<b>三糰子</b>是 Vivi 的角色，<b>旅貓</b>已經有三視圖與表情，下午分鏡最好接）。做法一樣是把六個人的意象加在公用角色身上。先把作品完成，細節之後還可以再調。</p>
           <p><b>你在段落一分享時就開始工作</b>：一邊聽一邊記關鍵字，尤其是造型線索（穿什麼、什麼顏色、帶什麼）與情緒詞。這份筆記就是這一關要貼進 AI 的主要材料，不用等到這一關才收。</p>
           <p><b>人數不足不影響</b>：這份指令吃的是內容不是欄位，五個人四個人都跑得動，只要在開頭寫清楚本組幾個人。</p>
           <p><b>你開場記得先說一句</b>：個人形象照不會被更動，那一版帶回家；接下來要做的是這一桌共同的主角。這句先講，後面比較不會有人捨不得。</p>
@@ -1282,11 +1331,79 @@ G 一個代表我的小物件，當作畫面裡認得出我的記號（例如常
     document.addEventListener('keydown', (e) => { if (e.key === 'Escape') close(); });
   }
 
+  // 角色設定圖一鍵複製（沿用 scenes 頁的 iOS 寫法）
+  (function(){
+    var btns = [].slice.call(document.querySelectorAll('.copyimg'));
+    if (!btns.length) return;
+    var ua = navigator.userAgent;
+    var isLineApp = /\bLine\//i.test(ua);
+    var canWriteClip = !!(navigator.clipboard && window.ClipboardItem && navigator.clipboard.write);
+    var warnBox = document.getElementById('ipwarn');
+    if (warnBox) {
+      var w = '';
+      if (isLineApp) w += '<div class="note"><b>你現在是用 LINE 內建瀏覽器開的</b>，複製圖片可能會失敗。點右上角選單選「用其他瀏覽器開啟」（Safari 或 Chrome）再試一次。</div>';
+      if (!canWriteClip) w += '<div class="note"><b>這台裝置不支援一鍵複製圖片</b>，改成長按圖片選「拷貝」，一樣可以貼進 ChatGPT。</div>';
+      warnBox.innerHTML = w;
+    }
+
+    function say(box, msg, cls){ if(!box) return; box.textContent = msg; box.className = 'log' + (cls ? ' ' + cls : ''); }
+
+    function toPng(blob){
+      return new Promise(function(resolve, reject){
+        var url = URL.createObjectURL(blob);
+        var img = new Image();
+        img.onload = function(){
+          var c = document.createElement('canvas');
+          c.width = img.naturalWidth; c.height = img.naturalHeight;
+          c.getContext('2d').drawImage(img, 0, 0);
+          URL.revokeObjectURL(url);
+          c.toBlob(function(out){ out ? resolve(out) : reject(new Error('轉檔失敗')); }, 'image/png');
+        };
+        img.onerror = function(){ URL.revokeObjectURL(url); reject(new Error('圖片讀取失敗')); };
+        img.src = url;
+      });
+    }
+
+    btns.forEach(function(btn){
+      var box = btn.parentNode.querySelector('.log');
+      btn.addEventListener('click', function(ev){
+        ev.preventDefault();
+        var src = btn.getAttribute('data-copy-img');
+        if (!canWriteClip){ say(box, '不支援一鍵複製，請長按圖片選「拷貝」。', 'bad'); return; }
+        say(box, '複製中…');
+        btn.disabled = true;
+        // iOS Safari 要在點擊當下就建立 ClipboardItem，裡面塞 Promise，
+        // 不能先 await 拿到 blob 再寫，否則會失去使用者手勢授權。
+        var pngPromise = fetch(src, { cache:'force-cache' })
+          .then(function(r){ if(!r.ok) throw new Error('HTTP ' + r.status); return r.blob(); })
+          .then(function(b){ return b.type === 'image/png' ? b : toPng(b); });
+        var done = function(){
+          btn.disabled = false; btn.textContent = '再複製一次';
+          say(box, '已複製。回到 ChatGPT 長按輸入框選「貼上」。', 'ok');
+        };
+        var fail = function(err){
+          btn.disabled = false;
+          say(box, '複製失敗：' + (err && err.message || err) + '\n請改成長按圖片選「拷貝」。', 'bad');
+        };
+        try {
+          navigator.clipboard.write([ new ClipboardItem({ 'image/png': pngPromise }) ])
+            .then(done).catch(function(err){
+              pngPromise.then(function(png){
+                return navigator.clipboard.write([ new ClipboardItem({ 'image/png': png }) ]);
+              }).then(done).catch(function(){ fail(err); });
+            });
+        } catch(err){ fail(err); }
+      });
+    });
+  })();
+
   // 指令一鍵複製
-  document.querySelectorAll('.promptbox .copy').forEach((btn) => {
+  document.querySelectorAll('.promptbox .copy, .ipcopy .copy').forEach((btn) => {
     btn.addEventListener('click', (ev) => {
       ev.preventDefault();
-      const text = btn.closest('.pbody').querySelector('[data-copy]').innerText.trim();
+      const scope = btn.closest('.pbody') || btn.closest('.ipcopy');
+      const src = scope.querySelector('[data-copy]');
+      const text = (src.innerText || src.textContent).trim();
       navigator.clipboard.writeText(text).then(() => {
         const old = btn.textContent;
         btn.textContent = '已複製';
