@@ -10,7 +10,7 @@ cd "$REPO"
 # ─── 秘密掃描（所有 push，含分支；2026-08-08 立）───
 # Git 整合自動部署後，分支 push 會自動產生「公開可存取」的 preview 網址，
 # 等同 push 即曝光，掃描必須前移到 hook 層（Codex 跨家審查要求）。
-SAFE_DEPLOY_TOOL="${SAFE_DEPLOY_TOOL:-/Users/jiangyude2/Library/Mobile Documents/iCloud~md~obsidian/Documents/江昱德 主知識庫/_agent/tools/safe-deploy/safe-deploy.sh}"
+SAFE_DEPLOY_TOOL="${SAFE_DEPLOY_TOOL:-$HOME/Library/Mobile Documents/iCloud~md~obsidian/Documents/江昱德 主知識庫/_agent/tools/safe-deploy/safe-deploy.sh}"
 if [[ "${SKIP_SECRET_SCAN:-0}" != "1" ]]; then
   if [[ -f "$SAFE_DEPLOY_TOOL" ]]; then
     bash "$SAFE_DEPLOY_TOOL" --scan-only "$REPO" < /dev/null \

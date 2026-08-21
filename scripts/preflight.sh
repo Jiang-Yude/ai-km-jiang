@@ -5,7 +5,7 @@
 # 2026-07-06 立：把人工健檢清單機器化，錯誤在部署前擋下。
 set -uo pipefail
 cd "$(dirname "$0")/.."
-SAFE_DEPLOY_TOOL="${SAFE_DEPLOY_TOOL:-/Users/jiangyude2/Library/Mobile Documents/iCloud~md~obsidian/Documents/江昱德 主知識庫/_agent/tools/safe-deploy/safe-deploy.sh}"
+SAFE_DEPLOY_TOOL="${SAFE_DEPLOY_TOOL:-$HOME/Library/Mobile Documents/iCloud~md~obsidian/Documents/江昱德 主知識庫/_agent/tools/safe-deploy/safe-deploy.sh}"
 FAIL=0
 ok(){ echo "  ✅ $1"; }
 bad(){ echo "  ❌ $1"; FAIL=1; }

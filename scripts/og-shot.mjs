@@ -29,8 +29,7 @@ let chromium;
 const PW_CANDIDATES = [
   'playwright',
   `${process.env.HOME}/.local/node22/lib/node_modules/playwright/index.mjs`,
-  `${process.env.HOME}/.npm-global/lib/node_modules/playwright/index.mjs`,
-  '/Users/jiangyude2/.npm-global/lib/node_modules/playwright/index.mjs'
+  `${process.env.HOME}/.npm-global/lib/node_modules/playwright/index.mjs`
 ];
 for (const spec of PW_CANDIDATES) {
   try {

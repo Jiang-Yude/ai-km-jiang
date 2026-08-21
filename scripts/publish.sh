@@ -13,7 +13,7 @@
 set -eo pipefail
 
 REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-SAFE_DEPLOY_TOOL="${SAFE_DEPLOY_TOOL:-/Users/jiangyude2/Library/Mobile Documents/iCloud~md~obsidian/Documents/江昱德 主知識庫/_agent/tools/safe-deploy/safe-deploy.sh}"
+SAFE_DEPLOY_TOOL="${SAFE_DEPLOY_TOOL:-$HOME/Library/Mobile Documents/iCloud~md~obsidian/Documents/江昱德 主知識庫/_agent/tools/safe-deploy/safe-deploy.sh}"
 EXPECTED_BRANCH="main"
 MSG="${1:?用法：bash scripts/publish.sh \"commit 訊息\"}"
 shift

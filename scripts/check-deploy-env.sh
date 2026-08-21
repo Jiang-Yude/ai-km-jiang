@@ -8,7 +8,7 @@ cd "$(dirname "$0")/.."
 FAIL=0
 WARN=0
 EXPECTED_NODE_MAJOR="${EXPECTED_NODE_MAJOR:-22}"
-SAFE_DEPLOY_TOOL="${SAFE_DEPLOY_TOOL:-/Users/jiangyude2/Library/Mobile Documents/iCloud~md~obsidian/Documents/江昱德 主知識庫/_agent/tools/safe-deploy/safe-deploy.sh}"
+SAFE_DEPLOY_TOOL="${SAFE_DEPLOY_TOOL:-$HOME/Library/Mobile Documents/iCloud~md~obsidian/Documents/江昱德 主知識庫/_agent/tools/safe-deploy/safe-deploy.sh}"
 EXPECTED_GIT_EMAIL="${EXPECTED_GIT_EMAIL:-130630081+Jiang-Yude@users.noreply.github.com}"
 
 ok(){ echo "  ✅ $1"; }
