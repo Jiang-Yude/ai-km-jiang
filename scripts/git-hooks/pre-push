@@ -17,7 +17,8 @@ if [[ "${SKIP_SECRET_SCAN:-0}" != "1" ]]; then
       || { echo "⛔ 秘密掃描未過，push 已擋下（分支 push 也會產生公開 preview，不放行）。"; exit 1; }
   else
     echo "⛔ 找不到秘密掃描工具：$SAFE_DEPLOY_TOOL"
-    echo "   iCloud 未同步先等同步；緊急時 SKIP_SECRET_SCAN=1 git push 可跳過（風險自負）。"
+    echo "   知識庫可能還沒同步完，等 iCloud 下載完成再推。"
+    echo "   （分支 push 也會產生公開 preview 網址，未掃描一律不放行）"
     exit 1
   fi
 fi
