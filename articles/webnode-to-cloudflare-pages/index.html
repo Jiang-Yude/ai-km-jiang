@@ -1,0 +1,487 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="index,follow">
+<title>官網搬家一個月零元：把攝影網站從 Webnode 整站搬到 Cloudflare Pages｜江江教練 · AI 知識管理</title>
+<meta name="description" content="161 頁、14,495 個檔案、2.5 GB 的攝影公司網站，從 Webnode 整站搬到 Cloudflare Pages，掛自己的網域，一比一還原，每月零元。這篇講為什麼搬（台幣價格表與網域歸屬）、怎麼搬（五步驟與前兩次失敗的原因：相簿圖藏在 JSON 裡）、搬完多了什麼，流程做成技能包免費下載。">
+<link rel="canonical" href="https://jiangyude.com/articles/webnode-to-cloudflare-pages/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="官網搬家一個月零元：把攝影網站從 Webnode 整站搬到 Cloudflare Pages｜江江教練">
+<!-- 分享封面：hero 文字填好後在 repo 根目錄跑 `node scripts/og-shot.mjs webnode-to-cloudflare-pages` 自動截 1200×630 到 images/og/webnode-to-cloudflare-pages.jpg（見 README「文章分享封面（OG 圖）機制」）。別退回 intro-jiang.png 直式人像，會被裁成只剩脖子。 -->
+<meta property="og:image" content="https://jiangyude.com/images/og/webnode-to-cloudflare-pages.jpg">
+<meta property="og:description" content="161 頁、14,495 個檔案、2.5 GB 的攝影公司網站，從 Webnode 整站搬到 Cloudflare Pages，掛自己的網域，一比一還原，每月零元。這篇講為什麼搬（台幣價格表與網域歸屬）、怎麼搬（五步驟與前兩次失敗的原因：相簿圖藏在 JSON 裡）、搬完多了什麼，流程做成技能包免費下載。">
+<meta property="og:url" content="https://jiangyude.com/articles/webnode-to-cloudflare-pages/">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:site_name" content="江江教練 · AI 知識管理">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="官網搬家一個月零元：把攝影網站從 Webnode 整站搬到 Cloudflare Pages｜江江教練">
+<meta name="twitter:image" content="https://jiangyude.com/images/og/webnode-to-cloudflare-pages.jpg">
+<meta name="twitter:description" content="161 頁、14,495 個檔案、2.5 GB 的攝影公司網站，從 Webnode 整站搬到 Cloudflare Pages，掛自己的網域，一比一還原，每月零元。這篇講為什麼搬（台幣價格表與網域歸屬）、怎麼搬（五步驟與前兩次失敗的原因：相簿圖藏在 JSON 裡）、搬完多了什麼，流程做成技能包免費下載。">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"官網搬家一個月零元：把攝影網站從 Webnode 整站搬到 Cloudflare Pages","description":"161 頁、14,495 個檔案、2.5 GB 的攝影公司網站，從 Webnode 整站搬到 Cloudflare Pages，掛自己的網域，一比一還原，每月零元。這篇講為什麼搬（台幣價格表與網域歸屬）、怎麼搬（五步驟與前兩次失敗的原因：相簿圖藏在 JSON 裡）、搬完多了什麼，流程做成技能包免費下載。","author":{"@type":"Person","name":"江昱德","alternateName":"江江教練","jobTitle":"隱性知識提煉師、AI 應用規劃師"},"isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://jiangyude.com/"},"inLanguage":"zh-Hant","url":"https://jiangyude.com/articles/webnode-to-cloudflare-pages/"}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{--ink:#1a1612;--paper:#fefcf8;--muted:#6a635a;--line:#d8cdb8;--green:#5f7553;--blue:#5689b8;--orange:#e85a4f;--soft:#faf5ec;--dark:#2a2018;--shadow:0 18px 45px rgba(107,74,42,.14);--sp-shadow:hsla(35,50%,60%,.15);--sp-shadow-edge:hsla(35,50%,68%,.03);--sp-radius:400px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC","Segoe UI",sans-serif}
+a{color:inherit}
+/* 官網共用導航列 nav.top（與首頁/文章總站同一條） */
+nav.top{position:sticky;top:0;background:rgba(254,252,248,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid #d8cdb8;z-index:100}
+nav.top .container{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:24px;padding:14px 32px}
+.nav-brand-img{justify-self:start;display:flex;align-items:center;text-decoration:none;flex-shrink:0;transition:opacity .2s}
+.nav-brand-img:hover{opacity:.8}.nav-brand-img img{height:40px;width:auto;display:block}
+nav.top ul.nav-menu{justify-self:end;display:flex;gap:22px;list-style:none;margin:0;padding:0;font-size:.95rem;white-space:nowrap}
+nav.top ul.nav-menu a{color:#3a342d;text-decoration:none;transition:color .2s;font-weight:500;white-space:nowrap}
+nav.top ul.nav-menu a:hover{color:#1a1612}nav.top ul.nav-menu a.active{color:#1a1612;font-weight:700}
+.nav-toggle{display:none;background:none;border:none;padding:6px;cursor:pointer;width:36px;height:36px;position:relative}
+.nav-toggle span{display:block;position:absolute;left:8px;right:8px;height:2px;background:#1a1612;border-radius:2px;transition:transform .25s,opacity .25s,top .25s}
+.nav-toggle span:nth-child(1){top:11px}.nav-toggle span:nth-child(2){top:17px}.nav-toggle span:nth-child(3){top:23px}
+.nav-toggle.open span:nth-child(1){top:17px;transform:rotate(45deg)}.nav-toggle.open span:nth-child(2){opacity:0}.nav-toggle.open span:nth-child(3){top:17px;transform:rotate(-45deg)}
+@media(max-width:860px){
+ nav.top .container{grid-template-columns:auto 1fr auto;padding:10px 16px;gap:12px}
+ .nav-brand-img img{height:32px}
+ .nav-toggle{display:block;justify-self:end}
+ nav.top ul.nav-menu{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(254,252,248,.98);backdrop-filter:blur(14px);border-bottom:1px solid #d8cdb8;flex-direction:column;gap:0;padding:8px 0;box-shadow:0 10px 24px rgba(107,74,42,.08)}
+ nav.top ul.nav-menu.open{display:flex}
+ nav.top ul.nav-menu li{border-bottom:1px solid #e8dfc9}
+ nav.top ul.nav-menu li:last-child{border-bottom:none}
+ nav.top ul.nav-menu a{display:block;padding:14px 20px;font-size:1.06rem}
+}
+/* 滑鼠暖光暈（與首頁同一支 spotlight.js） */
+body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradient(var(--sp-radius) circle at var(--mx,50%) var(--my,50%),var(--sp-shadow) 0%,var(--sp-shadow-edge) 45%,transparent 75%);pointer-events:none;z-index:9999;mix-blend-mode:multiply;transition:background .06s linear}
+.hero{position:relative;overflow:hidden;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:72px;padding:96px clamp(20px,6vw,88px) 80px;background:linear-gradient(180deg,#fffcf0 0%,#f9e9d2 100%);color:#1a1612;border-bottom:1px solid #d8cdb8}
+.hero .wc{position:absolute;border-radius:50%;filter:blur(60px);pointer-events:none;z-index:0}
+.hero .wc1{width:420px;height:360px;top:-120px;right:-80px;background:#e8884b;opacity:.15}
+.hero .wc2{width:360px;height:300px;bottom:-110px;left:-70px;background:#5f7553;opacity:.13}
+.hero .wc3{width:280px;height:260px;top:34%;left:14%;background:#a08144;opacity:.10}
+.hero>div{flex:none;width:860px;max-width:100%;position:relative;z-index:2}
+.hero-figure{margin:0;width:420px;flex:none;position:relative;z-index:2}
+.hero-figure img{display:block;width:100%;border-radius:16px;border:1px solid #d8cdb8;box-shadow:0 18px 45px rgba(107,74,42,.16);cursor:zoom-in}
+.hero-figure figcaption{margin-top:10px;font-size:14px;line-height:1.6;color:#6a635a}
+.inline-figure{margin:30px auto 8px;max-width:820px}
+.inline-figure.wide{max-width:880px}
+.tablewrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:22px 0;border:1px solid var(--line);border-radius:10px;background:#fff;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.tablewrap table{border-collapse:collapse;width:100%;min-width:600px;font-size:18px;line-height:1.65}
+.tablewrap .zh{display:block;margin-top:5px;font-size:16px;line-height:1.55;color:var(--muted);font-weight:400}
+.tablewrap th,.tablewrap td{padding:12px 14px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top;color:#3a342d}
+.tablewrap thead th{background:var(--soft);font-weight:900;font-size:18px;color:#1a1612;white-space:nowrap}
+.tablewrap tbody tr:last-child td{border-bottom:none}
+.readmore{list-style:none;padding-left:0;margin:18px 0 0}
+.readmore li{margin-bottom:12px;padding-left:0;line-height:1.7;font-size:18px}
+.readmore a{color:var(--blue);font-weight:700;text-decoration:none}.readmore a:hover{text-decoration:underline}
+.readmore li span{color:var(--muted);font-size:18px}
+.readmore.near{margin-top:28px;padding:18px 20px;background:var(--soft);border:1px solid var(--line);border-radius:10px}
+.readmore.near>b{display:block;font-size:15px;letter-spacing:.04em;color:var(--green);margin-bottom:2px}
+.toc{margin:26px 0 0;padding:20px 22px;background:#fff;border:1px solid var(--line);border-radius:10px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.toc>b{display:block;font-size:15px;letter-spacing:.05em;color:var(--green);margin-bottom:10px}
+.toc ol{margin:0;padding-left:1.35em;font-size:18px;line-height:1.7}
+.toc li{margin-bottom:7px;color:#3a342d}
+.toc a{color:var(--blue);font-weight:700;text-decoration:none}.toc a:hover{text-decoration:underline}
+.toc-hint{margin:12px 0 0!important;font-size:18px!important;color:var(--muted)!important;border-top:1px solid var(--line);padding-top:12px}
+.tablewrap td code,.section code{background:var(--soft);border:1px solid var(--line);border-radius:5px;padding:1px 6px;font:500 15px/1.5 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace}
+.inline-figure img{display:block;width:100%;border-radius:14px;border:1px solid var(--line);box-shadow:var(--shadow);background:#fff;cursor:zoom-in}
+.inline-figure figcaption{font-size:14px;line-height:1.6;color:var(--muted);margin-top:10px}
+.lightbox{position:fixed;inset:0;z-index:10000;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(12,10,8,.92);cursor:zoom-out;backdrop-filter:blur(4px)}
+.lightbox.open{display:flex}.lightbox img{max-width:96vw;max-height:92vh;border-radius:10px;box-shadow:0 24px 60px rgba(0,0,0,.5)}
+.lightbox-close{position:fixed;top:18px;right:24px;color:#fff;font-size:34px;line-height:1;font-weight:700;cursor:pointer;opacity:.85}
+.kicker{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.55rem;color:#7a5c3a;font-weight:500}
+.hero h1{max-width:none;margin:16px 0 18px;font-size:clamp(36px,6vw,72px);line-height:1.08;overflow-wrap:anywhere}
+.hero p{max-width:none;font-size:clamp(18px,2vw,23px);line-height:1.62;color:#3a342d}
+.cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
+.cta a{display:inline-flex;align-items:center;text-decoration:none;border-radius:8px;padding:12px 16px;font-weight:900}
+.cta .primary{background:#fff;color:#1a1612}.cta .ghost{border:1px solid rgba(255,255,255,.32);color:#fff;background:rgba(255,255,255,.08)}
+.section{padding:54px clamp(20px,6vw,88px);border-top:1px solid var(--line)}
+.inner{width:min(1000px,100%);margin:0 auto}
+.section h2{font-size:clamp(26px,4.2vw,48px);line-height:1.12;margin:0 0 18px}
+.section h3{font-size:clamp(21px,3vw,30px);line-height:1.2;margin:30px 0 12px}
+.lead{font-size:clamp(18px,1.6vw,22px);line-height:1.7;color:#3a342d;max-width:900px}
+.section p{font-size:18px;line-height:1.74;color:#3a342d}.section p+p{margin-top:14px}
+.section ul,.section ol{padding-left:1.4em;font-size:18px;line-height:1.74;color:#3a342d}.section li{margin-bottom:8px}
+.meaning{margin:22px 0;padding:16px 18px;border-left:5px solid var(--blue);background:rgba(86,137,184,.12);border-radius:6px;line-height:1.7;font-size:19px}
+.meaning b{display:block;color:var(--blue);margin-bottom:4px}
+.caveat{margin:0 0 8px;padding:16px 18px;border-left:5px solid var(--orange);background:rgba(232,90,79,.1);border-radius:6px;line-height:1.7;font-size:18px;color:#3a342d}
+.caveat b{display:block;color:var(--orange);margin-bottom:4px}
+.infocard{background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px 24px 22px;box-shadow:0 8px 22px rgba(107,74,42,.08);margin-top:8px}
+.infocard-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.info-item{padding:18px 14px 0}
+.info-item b{display:block;font-size:14px;font-weight:900;letter-spacing:.04em;margin-bottom:7px;text-transform:uppercase}
+.info-item:nth-child(1) b{color:var(--green)}.info-item:nth-child(2) b{color:var(--orange)}.info-item:nth-child(3) b{color:var(--blue)}
+.info-item p{margin:0;font-size:17px;line-height:1.6;color:#3a342d}
+.tagrow{display:flex;flex-wrap:wrap;gap:7px;margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
+.tag{font-size:14px;color:var(--muted);background:var(--soft);border:1px solid var(--line);border-radius:999px;padding:4px 11px}
+.duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:24px}
+.duo.stack{grid-template-columns:1fr}
+.duo .card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:22px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.duo .card.a{border-color:var(--orange)}.duo .card.b{border-color:var(--green);box-shadow:0 8px 24px rgba(95,117,83,.16)}
+.duo .card small{display:block;font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.04em;margin-bottom:9px}
+.duo .card.a small{color:var(--orange)}.duo .card.b small{color:var(--green)}
+.duo .card b{display:block;font-size:22px;line-height:1.3;margin-bottom:12px}.duo .card.a b{color:#c0512f}.duo .card.b b{color:#4a7a59}
+.duo .card p{margin:0;color:#3a342d;line-height:1.75;font-size:18px}
+.workflow-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:24px}
+.workflow-step{background:#fff;border:1px solid var(--line);border-radius:8px;padding:18px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.workflow-step small{display:block;color:var(--orange);font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;margin-bottom:9px}
+.workflow-step b{display:block;font-size:18px;line-height:1.3;margin-bottom:9px}
+.workflow-step p{margin:0;color:#3a342d;line-height:1.6;font-size:16px}
+.codeblock{background:var(--dark);color:#f3ead9;border-radius:8px;padding:18px 20px;font:500 14px/1.65 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;overflow-x:auto;white-space:pre-wrap;margin:20px 0;box-shadow:0 8px 22px rgba(107,74,42,.12)}
+.codeblock .c{color:#f6d7a6;font-weight:600}
+.skillcard{background:#fff;border:1px solid var(--green);border-radius:12px;padding:24px;box-shadow:0 10px 26px rgba(95,117,83,.16);margin-top:8px}
+.skillcard b{display:block;font-size:21px;margin-bottom:8px}
+.skillcard p{margin:0 0 16px;font-size:17px;line-height:1.65;color:#3a342d}
+.cta-band{background:#e6f0e5;color:#3a342d}.cta-band .section{border-top:none}
+.cta-band .inner{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(260px,.85fr);gap:26px;align-items:start}
+.cta-band h2{font-size:clamp(26px,4vw,44px);margin:0 0 16px}.cta-band p,.cta-band .lead{color:rgba(58,52,45,.9);font-size:18px;line-height:1.72}
+.cta-card{border:1px solid #cfe0d2;background:#fbfdfa;border-radius:8px;padding:22px}
+.cta-card b{display:block;color:#48b178;margin-bottom:10px;font-size:18px}.cta-card p{margin:0 0 14px}
+.footer{padding:30px clamp(20px,6vw,88px);font-size:14px;color:var(--muted);background:#fff;border-top:1px solid var(--line)}
+.footer-inner{width:min(1000px,100%);margin:0 auto}
+.footer-links{display:flex;flex-wrap:wrap;gap:6px 12px;margin-bottom:14px}.footer-links a{color:var(--blue);font-weight:900;text-decoration:none;font-size:14px}
+.footer-brand{font-weight:900;font-size:15px;margin-bottom:10px}.footer-note{font-size:13px;line-height:1.6}
+@media(max-width:820px){.infocard-grid{grid-template-columns:1fr}.duo{grid-template-columns:1fr}.workflow-grid{grid-template-columns:1fr}.cta-band .inner{grid-template-columns:1fr}.section{padding:40px 20px}.hero{min-height:52vh;flex-direction:column;justify-content:flex-start;align-items:flex-start;gap:24px}.hero>div{width:100%}.hero-figure{width:100%;max-width:560px}}
+@media(max-width:820px){html,body{overflow-x:hidden}.hero h1{word-break:break-word}}
+
+/* 長標題＋橫式封面：收窄文字容器避免封面圖 wrap（02-design-system 2026-08-23 規則，橫式 420px 圖） */
+.hero{gap:56px!important}
+.hero>div:not(.wc){width:620px!important}
+.hero h1{font-size:clamp(28px,3vw,40px)!important;line-height:1.18!important;margin:12px 0 16px!important}
+.hero p{font-size:clamp(16px,1.3vw,18px)!important;line-height:1.65!important}
+@media(max-width:820px){.hero>div:not(.wc){width:100%!important}}
+@media(max-width:820px){.tablewrap table{min-width:560px;font-size:18px}.tablewrap{position:relative}.tablewrap::after{content:"表格可左右滑動 →";position:sticky;left:0;display:block;font-size:15px;color:var(--muted);background:var(--soft);border-top:1px solid var(--line);padding:7px 12px;width:100%}}
+</style>
+</head>
+<body class="spotlight">
+<nav class="top">
+  <div class="container">
+    <a class="nav-brand-img" href="../../index.html"><img src="../../images/footer-signature.png" alt="江江教練 | 江昱德"></a>
+    <button class="nav-toggle" aria-label="選單"><span></span><span></span><span></span></button>
+    <ul class="nav-menu">
+      <li><a href="../../index.html">首頁</a></li>
+      <li><a href="../../knowledge-architecture.html">知識架構</a></li>
+      <li><a href="../../courses.html">課程</a></li>
+      <li><a href="../../articles.html" class="active">深度文章</a></li>
+      <li><a href="../../skills.html">技能包下載</a></li>
+      <li><a href="../../offers.html">服務方案</a></li>
+      <li class="lang-switch"><a href="../../en/articles.html" hreflang="en">EN</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="wc wc1"></div>
+  <div class="wc wc2"></div>
+  <div class="wc wc3"></div>
+  <div>
+    <div class="kicker">網頁設計 / 差異比較 / 工具操作</div>
+    <h1>官網搬家一個月零元：把攝影網站從 Webnode 整站搬到 Cloudflare Pages</h1>
+    <p>攝影公司的網站，大量照片範例，161 頁、一萬四千多個檔案、2.5 GB。2026 年 8 月我把它整站搬到 Cloudflare Pages，掛在自己已經有的網域底下，畫面一比一還原，每個月零元。這篇講為什麼搬、怎麼搬、搬完多了什麼，以及前兩次為什麼都以為搬完了其實沒有。</p>
+  </div>
+  <!-- 封面圖（建議放）：橫式用預設 width:420px；4:5 直式改 .hero-figure{width:320px} 並加 .hero-figure img{aspect-ratio:4/5;object-fit:cover}。沒有封面圖就整個 <figure> 刪掉，hero 會自動置中只剩文字。封面同時設成上面 og:image / twitter:image。 -->
+  <figure class="hero-figure">
+    <img src="../../images/articles/webnode-to-cloudflare-pages-cover.jpg" alt="咪卡推著裝著整棟網站小房子的手推車，從 Webnode 的地基搬到 Cloudflare Pages 的地基" loading="lazy">
+    <figcaption>整棟搬過去：161 頁、14,495 個檔案，畫面一比一還原。</figcaption>
+  </figure>
+</section>
+
+<main>
+<section class="section" id="start">
+  <div class="inner">
+    <h2>這篇在講什麼</h2>
+    <p class="lead">光的故事是一個攝影公司的網站，放了大量照片範例，161 頁、一萬四千多個檔案、2.5 GB，在 Webnode 上放了很多年。2026 年 8 月我把它整站搬到 Cloudflare Pages，掛在自己已經有的網域底下，畫面一比一還原，每個月零元。這篇把三件事講清楚：為什麼搬（價格表與網域歸屬）、怎麼搬（五個步驟，其中一個坑讓我前兩次都以為搬完了其實沒有）、搬完之後多了什麼。流程整套做成技能包，免費下載。</p>
+
+    <div class="duo stack">
+      <div class="card a">
+        <b>適合誰</b>
+        <ul>
+          <li>還在付 Webnode、Wix、Strikingly 月費的小工作室、攝影師、個人品牌，想知道每個月付的錢有沒有零元的選項。</li>
+          <li>不會寫網頁、以前靠建站平台拖拉模板，現在會用 AI 了，想知道能不能自己接手。</li>
+          <li>已經試過把網站抓下來備份，但不確定抓得完不完整的人。</li>
+        </ul>
+      </div>
+      <div class="card b">
+        <b>你可以帶走什麼</b>
+        <ul>
+          <li>一張 Webnode 與 Cloudflare Pages 的台幣價格對照表，四個欄位：儲存、頻寬、自己的網域、移除平台商標。</li>
+          <li>搬站五步驟與最容易漏的那一步：相簿圖藏在 JSON 裡，一般抓站工具抓不到。</li>
+          <li>一份技能包，從偵察、抓取、補抓相簿圖、重新編譯到部署驗收，給你的 AI 照著做。</li>
+        </ul>
+      </div>
+    </div>
+
+    <nav class="toc" aria-label="本篇目錄">
+      <b>本篇目錄</b>
+      <ol>
+        <li><a href="#price">先講錢：同樣的需求，一年差八千多</a></li>
+        <li><a href="#domain">比錢更重要的：網址掛在誰名下</a></li>
+        <li><a href="#why-webnode">以前為什麼選 Webnode</a></li>
+        <li><a href="#how">搬站實際怎麼做：五個步驟</a>（第三步是整篇最重要的一段）</li>
+        <li><a href="#after">搬完之後多了什麼</a></li>
+        <li><a href="#first-step">你的第一步</a>（三個問題、一段給 AI 的指令、技能包）</li>
+      </ol>
+    </nav>
+
+    <figure class="inline-figure wide">
+      <img src="../../images/articles/webnode-to-cloudflare-pages-summary-wide.jpg" alt="官網搬家一頁總結：161 頁 14,495 個檔案 2.5 GB、Webnode 8,744 元一年對 Cloudflare Pages 0 元、搬站五步偵察抓取補抓相簿圖重新編譯部署驗收、最容易漏的一步是 9080 張相簿圖佔全站 65%、網域要買自己的" loading="lazy">
+      <figcaption>一頁看完這篇：規模、價差、五步驟、最容易漏的那一步。</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section class="section" id="price">
+  <div class="inner">
+    <h2>先講錢：同樣的需求，一年差八千多</h2>
+    <p>我的需求很單純：要有 SEO，能放大量攝影作品。攤開來就是三件事：自己的網域、拿掉平台商標、頻寬不設限。</p>
+    <p>Webnode 的方案以年繳折扣後的月價計算（2026 年 8 月 23 日查官方定價頁，台幣用當日匯率 1 美元 31.82 元換算）：</p>
+    <div class="tablewrap"><table>
+      <thead><tr><th>方案</th><th>台幣／月</th><th>儲存</th><th>頻寬</th><th>自己的網域</th><th>移除 Webnode 商標</th></tr></thead>
+      <tbody>
+        <tr><td>免費</td><td>0</td><td>100 MB</td><td>500 MB／月</td><td>不可，掛 webnode 子網域</td><td>不可，掛 Webnode 廣告</td></tr>
+        <tr><td>Limited</td><td>143</td><td>500 MB</td><td>1 GB</td><td>可</td><td>不可</td></tr>
+        <tr><td>Mini</td><td>270</td><td>3 GB</td><td>3 GB</td><td>可</td><td>不可</td></tr>
+        <tr><td>Standard</td><td>410</td><td>10 GB</td><td>10 GB</td><td>可</td><td>可</td></tr>
+        <tr><td>Professional</td><td>729</td><td>50 GB</td><td>無限制</td><td>可</td><td>可</td></tr>
+        <tr><td>Business</td><td>1,015</td><td>100 GB</td><td>無限制</td><td>可</td><td>可</td></tr>
+      </tbody>
+    </table></div>
+    <p>2.5 GB 的攝影站，儲存塞得進 Mini，但 3 GB 的月頻寬對圖站不實際；要拿掉商標最低 Standard；三個條件一起滿足的最低方案是 Professional，年繳 274.80 美元，換算約 8,744 元（月價是四捨五入後的數字，直接乘 12 會差幾塊）。</p>
+    <p>Cloudflare Pages 的免費方案：</p>
+    <div class="tablewrap"><table>
+      <thead><tr><th>項目</th><th>數值</th></tr></thead>
+      <tbody>
+        <tr><td>靜態資源的請求與頻寬</td><td>不設上限</td></tr>
+        <tr><td>每次部署的檔案數</td><td>20,000 檔</td></tr>
+        <tr><td>單檔大小</td><td>25 MiB</td></tr>
+        <tr><td>自訂網域</td><td>每個專案 100 個，SSL 自動發</td></tr>
+        <tr><td>每月建置次數</td><td>500 次</td></tr>
+        <tr><td>費用</td><td>0</td></tr>
+      </tbody>
+    </table></div>
+    <figure class="inline-figure">
+      <img src="../../images/articles/webnode-to-cloudflare-pages-02.jpg" alt="左欄 Webnode 一年 8,744 元，右欄 Cloudflare Pages 免費方案 0 元，兩隻咪卡各據一邊" loading="lazy">
+      <figcaption>同樣三個條件（自己的網域、拿掉商標、頻寬不設限），兩邊的年費。</figcaption>
+    </figure>
+    <p>光的故事 14,495 個檔案、最大單檔沒超過 25 MiB，整個在免費額度內。搬完的成品長這樣：<a href="https://lightstory.jiangyude.com/" target="_blank" rel="noopener">lightstory.jiangyude.com</a>，跟原本在 Webnode 上的畫面一比一還原。</p>
+    <div class="caveat"><b>先說清楚免費的範圍</b>Cloudflare Pages 免費的是靜態部分。文章後面提到的「在自己的站上加 AI 客服」會用到它的 Functions，免費額度是每天十萬次請求，超過才計費。</div>
+    <div class="readmore near">
+      <b>延伸閱讀</b>
+      <ul class="readmore">
+        <li><a href="../github-vercel-cloudflare-compare/">網站放 GitHub、Vercel 還是 Cloudflare？三家免費額度、商用限制與功能差異</a><br><span>那篇是「搬去哪」的選擇題，三家平台的免費額度與商用條款都查過。這篇是選定 Cloudflare 之後怎麼搬。</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="domain">
+  <div class="inner">
+    <h2>比錢更重要的：網址掛在誰名下</h2>
+    <p>這件事很多人沒注意。</p>
+    <p>沒買網域的時候，網址是 <code>xxx.webnode.page</code> 這種平台子網域。子網域的控制權在平台手上，你拿不到 DNS，也拿不到伺服器。後果是：</p>
+    <ul>
+      <li>不能設 301 轉址。哪天要搬家，舊網址指不到新站。</li>
+      <li>網址能不能保留、保留多久，逐平台逐方案不同，要查該平台的官方說明。</li>
+      <li>搜尋引擎在舊網址上累積的訊號不會自動轉移。新站可以重新被索引，但要時間。</li>
+    </ul>
+    <figure class="inline-figure">
+      <img src="../../images/articles/webnode-to-cloudflare-pages-04.jpg" alt="兩個門牌：左邊 xxx.webnode.page 被小鎖鏈拴在地上，右邊「自己的網域」底下是一個手提箱，咪卡拎著手提箱往前走" loading="lazy">
+      <figcaption>左邊那個網址是平台的，右邊那個是你的。</figcaption>
+    </figure>
+    <p>SEO 的基礎是自己的網域。這點 Webnode 官方的 SEO 設定說明自己也這樣講：自訂網域比免費子網域在 SEO 上基礎更強。差別在於，Webnode 要付費方案才能綁自己的網域，Cloudflare Pages 免費方案就能綁。</p>
+    <div class="meaning"><b>這次搬站如果只學一件事</b>放在自己的網域底下，以後搬到哪都帶得走。</div>
+  </div>
+</section>
+
+<section class="section" id="why-webnode">
+  <div class="inner">
+    <h2>以前為什麼選 Webnode</h2>
+    <p>以前會選 Webnode，是因為我不會寫網頁，也不會架站。照片丟上去，版面拍一拍就很好看。所以貴歸貴，好用就忍著。</p>
+    <p>Webnode 還是好用，只是時代變了。現在 AI 做網頁又快又好，我自己也知道怎麼叫 AI 設計出好看的版型。用 AI 用得更順手，就換個地方放。</p>
+    <figure class="inline-figure">
+      <img src="../../images/articles/webnode-to-cloudflare-pages-03.jpg" alt="左邊舊相簿資料夾標著 Webnode，右邊發亮的新資料夾標著 AI 排版，咪卡從新資料夾後面探出來拿著小魔杖" loading="lazy">
+      <figcaption>兩個資料夾都乾淨，重點在換了解法。</figcaption>
+    </figure>
+    <p>這裡沒有要踩 Webnode 的意思。它解決的問題是「不會寫網頁的人也能有好看的網站」，這個問題現在換了另一種解法而已。</p>
+  </div>
+</section>
+
+<section class="section" id="how">
+  <div class="inner">
+    <h2>搬站實際怎麼做：五個步驟</h2>
+    <p>這整套在我的知識庫裡是一份 SOP，首例就是光的故事。這裡講骨架，細節與指令在技能包裡。</p>
+
+    <h3>第一步：偵察，先看清楚再動手</h3>
+    <p>先讀 <code>robots.txt</code> 與 <code>sitemap.xml</code>，把所有頁面網址列出來。光的故事的 sitemap 有 161 筆。</p>
+    <p>但 sitemap 不是唯一來源。它可能過期、可能漏頁。正確做法是取聯集：sitemap、站內爬連結、平台後台的頁面清單、分析工具的網址紀錄，四個來源合起來才是全部。</p>
+    <p>接著看資源放在哪個網域。這步不能跳過。Webnode 把圖片放在獨立的 CDN 網域，CSS 與 JS 放在另一個，主網域的 HTML 只是骨架。不先看清楚，下一步一張圖都抓不到。</p>
+
+    <h3>第二步：抓取，兩個必開的開關</h3>
+    <p>用 <code>wget --mirror</code> 抓，但有兩個開關不開就白抓：</p>
+    <div class="tablewrap"><table>
+      <thead><tr><th>開關</th><th>不開會怎樣</th></tr></thead>
+      <tbody>
+        <tr><td>用網址清單餵進去，不是從首頁往下爬</td><td>漏掉沒有內部連結指向的孤兒頁。光的故事有 22 頁只能靠直接輸入網址進入，爬蟲永遠走不到</td></tr>
+        <tr><td>跨網域抓取，把 CDN 網域列進去</td><td>一張圖都抓不到。第一輪抓回來 15 MB 全是 HTML，開起來是沒有圖沒有排版的裸文字</td></tr>
+      </tbody>
+    </table></div>
+
+    <h3>第三步：補抓藏在 JSON 裡的相簿圖，這是整篇最重要的一段</h3>
+    <p>光的故事的相簿、燈箱、輪播圖片網址，寫在 HTML 內嵌的 JSON 設定字串裡，不在 <code>&lt;img src&gt;</code> 上。而 <code>wget</code> 只改寫它自己認得的網址（標籤屬性、CSS 的 <code>url()</code>），不解析 JSON 字串。</p>
+    <div class="caveat"><b>後果</b>那批圖從頭到尾沒被下載，網址還指著線上。在平台還活著的時候，本地打開一切正常，因為它偷偷連回線上。平台一到期，相簿整批空白，而那正是你要備份的東西。</div>
+    <p>規模：9,080 張圖，佔全站圖片的 65%。</p>
+    <p>同一個站前後被抓過三次，前兩次都自認完整，實際上都漏了這 9,080 張，漏的原因完全相同。那份 SOP 存在的唯一目的，就是不要再漏第三次。</p>
+    <p>補抓的做法是寫一段小程式掃所有 HTML，把 JSON 裡的圖片網址撈出來。要做三層還原（HTML 實體、JSON 跳脫斜線、副檔名當右邊界），少一層就漏。細節與程式碼在技能包裡。</p>
+
+    <h3>第四步：重新編譯，Webnode 的結構跟 Cloudflare 不一樣</h3>
+    <p>抓回來的東西不能直接部署，要整理成靜態站的結構：</p>
+    <ul>
+      <li><b>檔名帶 query 參數</b>：磁碟上存成 <code>DSC04268.jpg?ph=abc123</code>，靜態託管會把 <code>?</code> 當參數分隔符，上線後全部載不出來。要建一份原始網址到本地檔名的對照表改寫。</li>
+      <li><b>同名圖片</b>：全站有 25 組同名圖片，放在不同的 CDN 路徑底下。整理目錄時要保留 CDN 網域當子目錄，不能把圖片扁平化到一個資料夾，否則互相覆蓋。</li>
+      <li><b>導覽列指向 www 版本</b>：161 頁的選單都連到 <code>www.</code> 開頭的網址，而 www 版只抓到 139 頁。要把導覽連結改寫回完整版再丟掉重複資料夾，不然整站選單全斷。</li>
+      <li><b>分享連結與追蹤碼</b>：<code>og:url</code> 指向舊站要改掉，否則分享到 LINE 時預覽連回死站；GTM 與 GA 追蹤碼先問帳號歸屬再決定留不留。</li>
+    </ul>
+    <p>做完這一步，畫面就是一比一還原。</p>
+
+    <h3>第五步：部署到 Cloudflare Pages，然後真的驗收</h3>
+    <p>部署用 <code>wrangler pages deploy</code>，一萬四千多個檔案用指令列比較好控制與重試。第一次整包上傳，之後增量部署只傳變動的檔，161 檔 6 秒。</p>
+    <p>驗收才是重點。前兩次失敗的真正原因，是兩個看起來很像驗收、實際上什麼都沒驗到的做法：</p>
+    <div class="tablewrap"><table>
+      <thead><tr><th>假驗收</th><th>為什麼是假的</th></tr></thead>
+      <tbody>
+        <tr><td>用程式檢查檔案存不存在</td><td>macOS 檔名正規化不敏感，磁碟比對會過，瀏覽器的 HTTP 請求卻失敗。必須發真實 HTTP 請求</td></tr>
+        <tr><td>用 grep 找不到線上網址殘留就宣稱乾淨</td><td>檢查腳本刻意跳過所有 <code>http://</code> 開頭的連結，而漏掉的圖恰好全是那種。grep 沒殘留不等於沒問題，要看檢查範圍涵蓋了什麼</td></tr>
+      </tbody>
+    </table></div>
+    <p>真驗收有六項：頁數比對（sitemap 每一筆都要有對應檔案）、全站 HTTP 掃描（只看 200 不夠，錯誤頁也可能回 200，要一併看內容型別與長度）、資源全量實測（不是抽樣，光的故事測了 14,165 個）、抽取範圍涵蓋 HTML 內嵌 JSON、檔案完整性（0 bytes 與檔頭檢查）、殘留線上網址三種寫法都掃。</p>
+    <div class="readmore near">
+      <b>延伸閱讀</b>
+      <ul class="readmore">
+        <li><a href="../parallel-site-editing/">兩個 AI 同時改一個網站，為什麼會打架？</a><br><span>站搬到自己手上之後，下一個問題是多個 AI 一起維護。那篇講的是同一個 repo 兩個 session 互卡的實際事故與防打架規則。</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="after">
+  <div class="inner">
+    <h2>搬完之後多了什麼</h2>
+    <p>搬站當下的目標只是「備份、不要付錢」。搬完之後才發現多了幾件原本在平台上做不到的事：</p>
+    <ul>
+      <li><b>自己的網域</b>：<a href="https://lightstory.jiangyude.com/" target="_blank" rel="noopener">lightstory.jiangyude.com</a> 上線，成本 0 元。</li>
+      <li><b>4O 的技術地基</b>：161 頁統一補了 robots、sitemap、canonical。在平台上這些能不能自己改，要看方案。</li>
+      <li><b>課程頁直接長在站上</b>：兩個手機 AI 創作課的頁面從知識官網複製過來，其中一個課程簡報加了密碼，只給上過課的人看。這種「一頁一個規則」在建站平台上能不能做，要看方案有沒有開。</li>
+      <li><b>之後要加 AI 客服，也是在自己的站上加</b>：不用等平台開功能。這件事還沒做完，目前卡在 Cloudflare Workers 的執行環境限制，寫出來是因為它是搬到自己地盤之後才有的選項。</li>
+    </ul>
+    <div class="readmore near">
+      <b>延伸閱讀</b>
+      <ul class="readmore">
+        <li><a href="../who-can-see-your-site/">你的網頁其實沒鎖：公開資訊、付費內容、機密隱私該放哪一層</a><br><span>課程簡報加密碼那段的原理在那篇：搜尋不到跟進不去是兩件事，六層存取分級怎麼判斷。</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="first-step">
+  <div class="inner">
+    <h2>你的第一步</h2>
+    <p>搬之前先問自己三個問題：</p>
+    <div class="tablewrap"><table>
+      <thead><tr><th>問題</th><th>為什麼要先問</th></tr></thead>
+      <tbody>
+        <tr><td>方案哪天到期？</td><td>到期的後果逐平台不同，要查該平台官方說明。有些補救（例如在舊站加新網址公告）只能在到期前做</td></tr>
+        <tr><td>站上有沒有動態功能？</td><td>表單、會員、購物車、留言，靜態備份一律救不回來，只剩外觀</td></tr>
+        <tr><td>有沒有自己的網域？</td><td>沒有的話，這次搬家是買網域的最好時機，否則下次搬家一樣被綁住</td></tr>
+      </tbody>
+    </table></div>
+    <p>三題都答完了，把這段貼給你的 AI：</p>
+    <div class="codeblock">我有一個放在 [平台名稱] 上的網站，網址是 [網址]。
+請先幫我做偵察，不要動手抓：
+1. 讀 robots.txt 與 sitemap.xml，列出所有頁面網址與總數
+2. 看首頁的圖片、CSS、JS 各放在哪些網域
+3. 找出有沒有圖片網址寫在 HTML 內嵌的 JSON 字串裡，不在 &lt;img src&gt; 上
+4. 告訴我這個站有沒有表單、會員、購物車這類靜態備份救不回來的功能
+偵察結果列成表格給我，我再決定要不要搬。</div>
+    <figure class="inline-figure">
+      <img src="../../images/articles/webnode-to-cloudflare-pages-05.jpg" alt="四格流程：整站抓下來、補抓漏掉的相簿圖、重新編譯一比一還原、部署驗收，咪卡扶著連接四格的箭頭" loading="lazy">
+      <figcaption>技能包做的就是這四格。</figcaption>
+    </figure>
+    <div class="skillcard">
+      <b>技能包：saas-site-migration</b>
+      <p>整套流程做成技能包：偵察、抓取的兩個開關、補抓 JSON 裡相簿圖的程式碼、重新編譯的路徑規則、部署與六項真驗收清單。免費，下載後放進你的 AI 工具技能包資料夾，跟它說「整站備份」或「幫我把 [網址] 整站搬走」。</p>
+      <p><a href="https://github.com/Jiang-Yude/saas-site-migration" target="_blank" rel="noopener">GitHub 完整說明 →</a>　<a href="../../skills.html">看所有技能包 →</a></p>
+    </div>
+  </div>
+</section>
+
+<div class="cta-band">
+<section class="section">
+  <div class="inner">
+    <div>
+      <h2>想繼續聊這個</h2>
+      <p class="lead">我每個月固定辦兩場免費線上講座，分享 AI 應用與知識管理的實戰做法。如果你正在幫自己或客戶決定網站要不要搬、搬去哪，歡迎先從社群開始。</p>
+      <p>本篇所有價格與額度為 2026 年 8 月 23 日查證結果，台幣為當日匯率換算。平台方案隨時可能調整，重要決策前請重新核對官方頁面。</p>
+    </div>
+    <div class="cta-card">
+      <b>江江教練</b>
+      <p>隱性知識提煉師、AI 應用規劃師</p>
+      <p><a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">加入 LINE 社群 →</a></p>
+      <p><a href="../../offers.html">看服務方案 →</a></p>
+    </div>
+  </div>
+</section>
+</div>
+
+<section class="section" id="sources">
+  <div class="inner">
+    <h2>本篇引用來源</h2>
+    <ul>
+      <li><a href="https://www.webnode.com/zh/pricing/" target="_blank" rel="noopener">Webnode 定價頁</a>、<a href="https://www.webnode.com/support/website-for-free/" target="_blank" rel="noopener">Webnode 免費網站說明</a>（2026-08-23 查；台幣以 1 USD ＝ 31.82 TWD 換算）</li>
+      <li><a href="https://www.webnode.com/blog/seo-settings-in-webnode-website-builder/" target="_blank" rel="noopener">Webnode SEO 設定說明</a>（自訂網域比免費子網域在 SEO 上基礎更強）</li>
+      <li><a href="https://developers.cloudflare.com/pages/platform/limits/" target="_blank" rel="noopener">Cloudflare Pages Limits</a>、<a href="https://developers.cloudflare.com/pages/functions/pricing/" target="_blank" rel="noopener">Cloudflare Pages Functions Pricing</a></li>
+      <li>光的故事搬站數字（161 頁、14,495 檔、2.5 GB、9,080 張相簿圖、22 頁孤兒頁、25 組同名圖、14,165 個資源實測）：我的整站備份 SOP，2026-08-21 實作紀錄</li>
+    </ul>
+  </div>
+</section>
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">江江教練 · AI 知識管理</div>
+    <div class="footer-links">
+      <a href="../../articles.html">← 回深度文章總站</a>
+      <a href="../../index.html">首頁</a>
+      <a href="../../learn.html">自學資源</a>
+      <a href="../../skills.html">技能包下載</a>
+      <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">LINE 社群 ↗</a>
+      <a href="https://www.threads.com/@jiang_yude_coach" target="_blank" rel="noopener">Threads ↗</a>
+      <a href="https://vocus.cc/salon/Jiang_Coach" target="_blank" rel="noopener">方格子 ↗</a>
+    </div>
+    <div class="footer-note">這是一篇教學文章，整理我對「官網搬家一個月零元：把攝影網站從 Webnode 整站搬到 Cloudflare Pages」的看法，供你參考。</div>
+  </div>
+</footer>
+
+<!-- 點圖放大 lightbox（hero 與內文圖通用，已內建，不用每篇重加） -->
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <span class="lightbox-close" aria-label="關閉">×</span>
+  <img id="lightbox-img" src="" alt="放大檢視">
+</div>
+<script>
+(function(){
+  var box=document.getElementById('lightbox'),boxImg=document.getElementById('lightbox-img');
+  document.querySelectorAll('.hero-figure img,.inline-figure img').forEach(function(img){
+    img.addEventListener('click',function(){boxImg.src=img.currentSrc||img.src;boxImg.alt=img.alt||'放大檢視';box.classList.add('open');box.setAttribute('aria-hidden','false');});
+  });
+  function close(){box.classList.remove('open');box.setAttribute('aria-hidden','true');boxImg.src='';}
+  box.addEventListener('click',close);
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
+})();
+</script>
+
+<script src="../../image-interactions.js"></script>
+
+<!-- 官網共用：滑鼠暖光暈 + 導航列漢堡選單 -->
+<script src="../../spotlight.js"></script>
+
+<!-- 文章自動互聯（相關文章）：兩支已內建，順序不可顛倒，不用再另外加 -->
+<script src="../../articles-data.js"></script>
+<script src="../../related-render.js"></script>
+</body>
+</html>
