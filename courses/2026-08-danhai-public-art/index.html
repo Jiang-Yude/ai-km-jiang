@@ -256,6 +256,47 @@
   .ipcopy pre { white-space:pre-wrap; font-family:var(--font-mono); font-size:14px; line-height:1.7; background:rgba(0,0,0,0.05); border-radius:12px; padding:14px 16px; margin:12px 0 0; overflow-x:auto; }
   @media (max-width: 980px) { .cmp { grid-template-columns:1fr; } }
 
+  /* 段落一 範例作品四張小圖（點開放大） */
+  .four-samples { margin-top:44px; }
+  .four-samples .fs-head { text-align:center; margin-bottom:22px; }
+  .four-samples .fs-head .tagline { font-family:var(--font-mono); font-size:20px; letter-spacing:0.12em; font-weight:700; color:var(--accent); display:block; margin-bottom:8px; }
+  .four-samples .fs-head h3 { font-size:23px; margin:0 0 8px; color:var(--text-on-light); }
+  .four-samples .fs-head p { font-size:20px; line-height:1.65; margin:0 auto; max-width:640px; color:var(--text-soft-light); }
+  .four-samples .fs-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
+  .four-samples figure { margin:0; text-align:center; }
+  .four-samples img { width:100%; height:auto; display:block; border-radius:12px; border:1px solid var(--subtle-light); box-shadow:0 12px 30px rgba(62,39,35,0.16); background:#fff; transition:transform .2s; }
+  .four-samples img:hover { transform:translateY(-3px); }
+  .four-samples figcaption { margin-top:10px; font-size:20px; line-height:1.5; color:var(--text-soft-light); }
+  .four-samples figcaption b { display:block; color:var(--text-on-light); }
+  @media (max-width:820px){ .four-samples .fs-grid { grid-template-columns:repeat(2,1fr); } }
+  /* 通關密碼閘門：ACT 04 起是當天簡報正式內容 */
+  .gate { display:none; }
+  body.locked .gate { display:grid; }
+  body.locked section[data-block].gated { display:none !important; }
+  body.locked .dot-indicator a.gated { display:none; }
+  .gate-card { max-width:620px; margin:0 auto; text-align:center;
+    border:2px solid var(--accent); border-radius:22px; padding:44px 38px;
+    background:rgba(255,248,240,0.86); }
+  .gate-card .lockicon { font-size:44px; line-height:1; margin-bottom:18px; }
+  .gate-card h2 { font-size:clamp(28px,3.4vw,40px); margin:0 0 16px; color:var(--text-on-light); }
+  .gate-card p { font-size:20px; line-height:1.75; color:var(--text-soft-light); margin:0 0 14px; }
+  .gate-form { display:flex; gap:12px; justify-content:center; margin:28px 0 12px; flex-wrap:wrap; }
+  .gate-form input { font-family:var(--font-mono); font-size:24px; letter-spacing:0.28em;
+    text-align:center; width:190px; padding:14px 16px; border-radius:12px;
+    border:2px solid var(--subtle-light); background:#fff; color:var(--text-on-light); }
+  .gate-form input:focus { outline:none; border-color:var(--accent); }
+  .gate-form button { font-family:var(--font-body); font-size:20px; font-weight:700;
+    padding:14px 34px; border-radius:999px; border:1px solid var(--accent);
+    background:var(--accent); color:#fff; cursor:pointer; }
+  .gate-form button:hover { opacity:.87; }
+  .gate-msg { min-height:26px; font-size:19px; color:var(--accent); font-weight:700; }
+  .gate-hint { font-size:19px; color:var(--text-soft-light); margin-top:20px;
+    padding-top:20px; border-top:1px solid var(--subtle-light); }
+  .gate-alt { display:inline-block; margin-top:18px; font-size:20px; font-weight:700;
+    padding:13px 30px; border-radius:999px; border:2px solid var(--accent);
+    color:var(--accent); text-decoration:none; }
+  .gate-alt:hover { background:var(--accent); color:#fff; }
+
   /* 圖片點開放大 */
   .zoomable { cursor: zoom-in; }
   .lb { position:fixed; inset:0; z-index:400; background:rgba(30,20,16,0.92); display:none;
@@ -269,6 +310,23 @@
   .lb .lb-close:hover { background:rgba(245,237,224,0.16); }
   .lb .lb-cap { position:absolute; bottom:20px; left:0; right:0; text-align:center;
     color:rgba(245,237,224,0.8); font-size:15px; padding:0 24px; }
+  /* 群組輪播：同一區的縮圖點開後可用左右鍵或箭頭切換 */
+  .lb .lb-nav { position:absolute; top:50%; transform:translateY(-50%); width:56px; height:56px;
+    border-radius:50%; border:1px solid rgba(245,237,224,0.4); background:rgba(0,0,0,0.34);
+    color:#F5EDE0; font-size:34px; line-height:1; cursor:pointer; display:none;
+    align-items:center; justify-content:center; padding:0 0 4px; }
+  .lb .lb-nav:hover { background:rgba(245,237,224,0.18); }
+  .lb .lb-prev { left:20px; }
+  .lb .lb-next { right:20px; }
+  .lb.has-group .lb-nav { display:flex; }
+  .lb .lb-count { position:absolute; top:22px; left:0; right:0; text-align:center;
+    font-family:var(--font-mono); font-size:15px; letter-spacing:0.1em;
+    color:rgba(245,237,224,0.75); display:none; }
+  .lb.has-group .lb-count { display:block; }
+  @media (max-width: 860px) {
+    .lb .lb-nav { width:46px; height:46px; font-size:28px; }
+    .lb .lb-prev { left:8px; } .lb .lb-next { right:8px; }
+  }
 
   @media (prefers-reduced-motion: reduce) { html { scroll-behavior:auto; } .reveal { opacity:1 !important; transform:none !important; } }
   @media (max-width: 1080px) {
@@ -348,7 +406,10 @@
 
   <div class="lb" id="lightbox" role="dialog" aria-modal="true" aria-label="放大檢視">
     <button class="lb-close" type="button" aria-label="關閉">×</button>
+    <button class="lb-nav lb-prev" type="button" aria-label="上一張">‹</button>
+    <button class="lb-nav lb-next" type="button" aria-label="下一張">›</button>
     <img alt="" />
+    <div class="lb-count" aria-live="polite"></div>
     <div class="lb-cap"></div>
   </div>
 
@@ -356,20 +417,20 @@
     <a href="#act-01" data-i="0"><span class="lbl">01 · 封面</span></a>
     <a href="#act-02" data-i="1"><span class="lbl">02 · 今天的流程</span></a>
     <a href="#act-03" data-i="2"><span class="lbl">03 · 你會帶走</span></a>
-    <a href="#act-04" data-i="3"><span class="lbl">04 · 三個元素</span></a>
-    <a href="#act-05" data-i="4"><span class="lbl">05 · 敘事轉譯</span></a>
-    <a href="#act-06" data-i="5"><span class="lbl">06 · 破冰採集</span></a>
-    <a href="#act-07" data-i="6"><span class="lbl">07 · 段落一 形象照</span></a>
-    <a href="#act-08" data-i="7"><span class="lbl">08 · 段落一 注意</span></a>
-    <a href="#act-09" data-i="8"><span class="lbl">09 · 場景要給參考</span></a>
-    <a href="#act-10" data-i="9"><span class="lbl">10 · 段落二 共創角色</span></a>
-    <a href="#act-11" data-i="10"><span class="lbl">11 · 段落二 注意</span></a>
-    <a href="#act-12" data-i="11"><span class="lbl">12 · 段落三 說故事</span></a>
-    <a href="#act-13" data-i="12"><span class="lbl">13 · 段落三 分鏡</span></a>
-    <a href="#act-photos" data-i="13"><span class="lbl">14 · 場景照片</span></a>
-    <a href="#act-14" data-i="14"><span class="lbl">15 · 段落三 封面</span></a>
-    <a href="#act-15" data-i="15"><span class="lbl">16 · 各組簡報</span></a>
-    <a href="#act-16" data-i="16"><span class="lbl">17 · 收尾</span></a>
+    <a href="#act-04" data-i="3" class="gated"><span class="lbl">04 · 三個元素</span></a>
+    <a href="#act-05" data-i="4" class="gated"><span class="lbl">05 · 敘事轉譯</span></a>
+    <a href="#act-06" data-i="5" class="gated"><span class="lbl">06 · 破冰採集</span></a>
+    <a href="#act-07" data-i="6" class="gated"><span class="lbl">07 · 段落一 形象照</span></a>
+    <a href="#act-08" data-i="7" class="gated"><span class="lbl">08 · 段落一 注意</span></a>
+    <a href="#act-09" data-i="8" class="gated"><span class="lbl">09 · 場景要給參考</span></a>
+    <a href="#act-10" data-i="9" class="gated"><span class="lbl">10 · 段落二 共創角色</span></a>
+    <a href="#act-11" data-i="10" class="gated"><span class="lbl">11 · 段落二 注意</span></a>
+    <a href="#act-12" data-i="11" class="gated"><span class="lbl">12 · 段落三 說故事</span></a>
+    <a href="#act-13" data-i="12" class="gated"><span class="lbl">13 · 段落三 分鏡</span></a>
+    <a href="#act-photos" data-i="13" class="gated"><span class="lbl">14 · 場景照片</span></a>
+    <a href="#act-14" data-i="14" class="gated"><span class="lbl">15 · 段落三 封面</span></a>
+    <a href="#act-15" data-i="15" class="gated"><span class="lbl">16 · 各組簡報</span></a>
+    <a href="#act-16" data-i="16" class="gated"><span class="lbl">17 · 收尾</span></a>
   </nav>
 
   <!-- ACT 01 封面橫幅 -->
@@ -525,8 +586,31 @@
     </div>
   </section>
 
+  <!-- 通關密碼閘門：從 ACT 04 開始是當天簡報的正式內容 -->
+  <section id="act-gate" class="gate" data-bg="3">
+    <div class="wrap">
+      <div class="gate-card">
+        <div class="lockicon">🔒</div>
+        <h2>接下來是當天的上課簡報</h2>
+        <p>從這裡開始，是 <b>8/21 淡海輕軌公共藝術走讀</b> 當天的正式簡報內容：完整流程、每一段的可複製指令、桌長帶法與現場注意事項。</p>
+        <p>參加課程的學員請輸入通關密碼：<b>上課日期的四碼數字</b>。例如 8 月 21 日就輸入 <b>0821</b>。</p>
+        <form class="gate-form" id="gateForm" autocomplete="off">
+          <input type="text" id="gateInput" inputmode="numeric" maxlength="4" placeholder="日期四碼" aria-label="通關密碼：上課日期四碼" />
+          <button type="submit">解鎖簡報</button>
+        </form>
+        <div class="gate-msg" id="gateMsg" aria-live="polite"></div>
+        <div class="gate-hint">
+          <b>沒有密碼？</b>通關密碼請洽詢<b>講師或主辦單位</b>。<br/>
+          你也可以直接看這一場做出來的作品，那一頁是公開的。
+          <br/>
+          <a class="gate-alt" href="showcase/">看 8/21 的成果發表 →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- ACT 04 三個元素 -->
-  <section id="act-04" data-block data-bg="4">
+  <section id="act-04" data-block data-bg="4" class="gated">
     <div class="wrap">
       <div class="act-cap reveal">ACT 04 · 作品的三個共同元素</div>
       <h2 class="display sm reveal d1">下午的作品，<br/>要接得上早上的走讀</h2>
@@ -545,7 +629,7 @@
   </section>
 
   <!-- ACT 05 敘事轉譯 -->
-  <section id="act-05" data-block data-bg="5">
+  <section id="act-05" data-block data-bg="5" class="gated">
     <div class="wrap">
       <div class="act-cap reveal">ACT 05 · 15 分 ｜ Vivi 吳宛庭</div>
       <h2 class="display sm reveal d1">同一件作品，<br/>換你來說一次</h2>
@@ -577,7 +661,7 @@
   </section>
 
   <!-- ACT 06 破冰 -->
-  <section id="act-06" data-block data-bg="6">
+  <section id="act-06" data-block data-bg="6" class="gated">
     <div class="wrap">
       <div class="act-cap reveal">ACT 06 · 破冰 15 分 ｜ 桌長帶</div>
       <h2 class="display sm reveal d1">先把感受聊出來</h2>
@@ -610,33 +694,23 @@
   </section>
 
   <!-- ACT 07 段落一 -->
-  <section id="act-07" data-block data-bg="2">
+  <section id="act-07" data-block data-bg="2" class="gated">
     <div class="wrap wide">
       <div class="act-cap reveal">段落一 · 50 分 ｜ 你的手機</div>
       <h2 class="display sm reveal d1">每個人的淡水形象照</h2>
-      <p class="lead reveal d2">用你手機上的 <b>ChatGPT，免費版就可以</b>。開一個新對話，把下面這份指令整段貼進去；它會一次列出完整回答單，你填完後再確認風格，就能生成圖片。</p>
+      <p class="lead reveal d2">用你手機上的 <b>ChatGPT，免費版就可以</b>。開一個新對話，把下面第一份指令整段貼進去；它會一次列出完整回答單，你填完、確認設定卡，就會生出<b>插畫版</b>。插畫版好了之後，在<b>同一個對話</b>往下貼第二份指令，同一個人就會變成一張<b>電影海報版</b>。</p>
       <div class="stepbox reveal d3">
         <div class="steprow"><div class="k">1 ｜ 3 分</div><div class="v">互相幫忙拍一張照（半身即可、光線亮、背景乾淨），或用手機裡<b>自己最好看的那一張</b></div></div>
-        <div class="steprow hi"><div class="k">2 ｜ 20 分</div><div class="v">開<b>新對話</b>，貼下面這份指令，上傳照片，<b>一次把 A 到 G 的回答單填完</b>，確認設定卡，挑一個風格，<b>先生一張就好</b></div></div>
-        <div class="steprow"><div class="k">3 ｜ 2 分</div><div class="v">把圖存下來（點進圖片再按下載），檔名寫「組別-姓名-形象照」，交給桌長收進雲端組別夾</div></div>
-        <div class="steprow"><div class="k">4 ｜ 25 分</div><div class="v">全體分享，每人 1 分鐘，講你怎麼把感受變成這張圖</div></div>
-      </div>
-
-      <div class="cmp one reveal d3">
-        <figure>
-          <img src="../../images/courses/danhai-wear-tamsui.jpg" alt="我的淡水形象設計提案 A+C 組合版對照圖：左邊 A 風景感受型，人物坐在輕軌上看窗外的山與河；右邊 C 個人象徵型，同一個人的裙襬融入淡水河、城市與公共藝術圖案" loading="lazy" />
-          <figcaption>
-            <span class="tagline">兩個方向 · 今天做的是右邊那個</span>
-            <h3>把淡水穿在身上，讓故事帶我旅行</h3>
-            <p>同一個人、同一節輕軌，兩種做法。左邊 <b>A 風景感受型</b>把淡水放在窗外，畫的是你看見的風景；右邊 <b>C 個人象徵型</b>把淡水穿在身上，河、山、公共藝術變成衣服的圖案。<b>今天走的是右邊這條路。</b>衣服長什麼樣不用你描述，AI 會看你的照片和你講的話自己決定。</p>
-          </figcaption>
-        </figure>
+        <div class="steprow hi"><div class="k">2 ｜ 20 分</div><div class="v">開<b>新對話</b>，貼<b>第一份指令</b>，上傳照片，<b>一次把 A 到 G 的回答單填完</b>，確認設定卡，生出<b>插畫版</b></div></div>
+        <div class="steprow hi"><div class="k">3 ｜ 5 分</div><div class="v"><b>同一個對話</b>往下貼<b>第二份指令</b>，同一個人變成<b>電影海報版</b>。不用重新設定、不用重傳照片</div></div>
+        <div class="steprow"><div class="k">4 ｜ 2 分</div><div class="v"><b>兩張都存下來</b>（點進圖片再按下載），檔名寫「組別-姓名-插畫」「組別-姓名-海報」，交給桌長收進雲端組別夾</div></div>
+        <div class="steprow"><div class="k">5 ｜ 20 分</div><div class="v">全體分享，每人 1 分鐘，講你怎麼把感受變成這兩張圖</div></div>
       </div>
 
       <details class="promptbox reveal d4" open>
-        <summary><span><span class="plabel">段落一 指令</span><br/><span class="ptitle">把淡水穿在身上，讓故事帶我旅行</span></span><span class="phint">整段複製，貼進新對話，再上傳你的照片。</span></summary>
+        <summary><span><span class="plabel">段落一 · 第一份指令</span><br/><span class="ptitle">插畫版：把淡水穿在身上，讓故事帶我旅行</span></span><span class="phint">整段複製，貼進新對話，再上傳你的照片。這張就是你的手機桌布。</span></summary>
         <div class="pbody">
-          <p class="ptip">你只需要回答兩次：先把 A 到 G 的回答單一次填完；再看設定卡和三個風格，回覆「確認，第幾版」後才生圖。沒填的項目它會走預設值，不會回頭追問。</p>
+          <p class="ptip">你只需要回答兩次：先把 A 到 G 的回答單一次填完；再看設定卡，回覆「設定卡確認」後才生圖。沒填的項目它會自己合理決定，不會回頭追問。<br/><b>這一份的成品是淡雅的插畫，人物置中、上方留白</b>，存到手機直接就能當桌布。</p>
           <pre data-copy>你是「我的淡水」工作坊的形象設計助教，陪我把今天在淡水的感受做成一張屬於我的插畫角色。
 我會上傳一張自己的照片。
 
@@ -662,15 +736,22 @@ G 一個代表我的小物件，當作畫面裡認得出我的記號（例如常
 
 服裝樣式我不描述，你看我的照片和我上面講的話自己判斷。
 
-【第二次：設定卡和三個風格一起給我，給完就停】
-我一次回答完之後，你在同一則訊息裡給我兩樣東西：
-1 一張【我的淡水形象設定卡】。用我的原話整理，不要幫我加我沒說過的事。照片只記錄看得見的外觀，不要推測我的身分、職業或個性。
-2 三個插畫風格版本，每一版三行：風格名稱、為什麼配我講的話、畫面大概長什麼樣。三版差異要明顯。
-然後等我回「確認，第幾版」，我沒說之前不要生圖。
+【第二次：設定卡給我，給完就停】
+我一次回答完之後，給我一張【我的淡水形象設定卡】。
+用我的原話整理，不要幫我加我沒說過的事。
+照片只記錄看得見的外觀，不要推測我的身分、職業或個性。
+不用給我風格選項，畫面的感覺你依照我講的話自己決定。
+然後等我回「設定卡確認」，我沒說之前不要生圖。
 
-【第三次：生圖】
-我說哪一版就生哪一版，一版只生一次，不要自動重生。
-全身、插畫風格、乾淨單色背景。
+【第三步：生插畫版，不用再問我】
+收到「設定卡確認」才生，一次只生一張，不要自動重生。
+
+畫風：手繪插畫、淡彩，整體乾淨淡雅。
+背景：不要純白，也不要重色。用很淡的米白或淡彩打底，
+底上可以有淡淡的、我講過的那些場景元素（河、山、輕軌、街屋、公共藝術），
+像水彩暈開的襯圖，要很輕，不可以搶過人物。
+人物：全身，置中，看得到腳。
+上方和中間留白（那裡會被手機的時鐘和圖示蓋住）。
 
 把我講的淡水景物、公共藝術與情緒，轉化成我身上服裝的圖案與象徵：
 衣料或裙襬裡可以看見淡水河、輕軌、觀音山與街屋的輪廓，圖案要像織進布裡，不是貼上去的貼紙。
@@ -678,17 +759,68 @@ G 一個代表我的小物件，當作畫面裡認得出我的記號（例如常
 畫面裡放進我說的那個小物件，讓人一眼認得出這是我。
 保留我照片裡的五官特徵與髮型，要看得出是我本人，不要畫成通用的卡通臉。
 不模仿吉卜力，不模仿幾米，用原創的插畫語言。
-不要文字、不要浮水印。我說過不希望出現的東西不要出現。</pre>
+比例 9:16 直式。不要浮水印。我說過不希望出現的東西不要出現。</pre>
           <button class="copy" type="button">複製這份指令</button>
         </div>
       </details>
 
-      <div class="outcome reveal d4"><span>預期達成</span>全桌每個人都有一張自己的角色圖</div>
+      <details class="promptbox reveal d4" open>
+        <summary><span><span class="plabel">段落一 · 第二份指令</span><br/><span class="ptitle">電影海報版：同一個人，換成實拍</span></span><span class="phint">插畫版做好之後，在同一個對話往下貼。</span></summary>
+        <div class="pbody">
+          <p class="ptip"><b>不用重新設定，也不用重傳照片。</b>它記得剛剛那個人長什麼樣、穿什麼衣服。前面花那些時間把設定做好，就是為了這一步可以直接接著長。<br/>整段複製，貼進<b>剛剛生插畫的那個對話</b>，不要開新對話。</p>
+          <pre data-copy>用剛剛那張插畫的人物設定，幫我生成一張電影海報版本。
+同一個人、同一套衣服、同一個小物件，臉不要換、造型不要改。
+
+風格換成：寫實攝影、實拍質感、電影感的光線與景深。
+場景：把人放回真實的場景，就是我前面講的那個地方。
+構圖：攝影構圖，角度要有張力，像電影劇照，不要正面呆站。
+動作：依照我前面講的「我正在做什麼」自己去協調，要有動態感。
+
+排版：
+上方放一個大標題，是把我講的那段故事濃縮成的片名，字體要設計過。
+標題附近放三到四行小字，把我講的內容改寫成旁白式的短句，
+一行一句，不要寫成說明文。
+角落放我的名字或組別。
+文字的字體、大小、位置與顏色你自己協調，整體要像一張真的電影海報。
+
+看起來要很有劇情、有故事性。
+比例 9:16 直式。不要浮水印。我說過不希望出現的東西不要出現。</pre>
+          <button class="copy" type="button">複製這份指令</button>
+        </div>
+      </details>
+
+      <div class="outcome reveal d4"><span>預期達成</span>全桌每個人都有兩張：一張插畫版（手機桌布）、一張電影海報版</div>
+
+      <div class="four-samples reveal d4">
+        <div class="fs-head">
+          <span class="tagline">兩個人 · 各兩張 · 點圖放大後可用左右鍵翻頁</span>
+          <h3>做出來會長這樣</h3>
+          <p>同一個人、同一套設定，先出插畫版當手機桌布，再接第二份指令變成電影海報版。左邊兩張是同一個人，右邊兩張是另一個人。</p>
+        </div>
+        <div class="fs-grid">
+          <figure>
+            <img src="../../images/courses/danhai-sample-vicky-illust.jpg" alt="插畫版範例：水彩插畫風格，長髮女子拿著相機站立，米白外套與長裙上融入淡水河、觀音山、輕軌列車與紅樓的圖案，淡色底配橘藍色調的水彩暈染與夕陽" loading="lazy" />
+            <figcaption><b>插畫版</b>手機桌布用</figcaption>
+          </figure>
+          <figure>
+            <img src="../../images/courses/danhai-sample-vicky-poster.jpg" alt="電影海報版範例：大標題「把淡水的故事穿回家」，同一位女子拿著相機站在淡水站月台上，裙襬裡是淡江大橋與淡水河的圖案，腳邊一隻橘白色的貓，背景是輕軌列車、跨海大橋與雲隙灑下的陽光" loading="lazy" />
+            <figcaption><b>電影海報版</b>同一個人接續生成</figcaption>
+          </figure>
+          <figure>
+            <img src="../../images/courses/danhai-sample-lili-illust.jpg" alt="插畫版範例：水彩插畫風格，長髮女子拿著相機，白色長裙上是藍橘色調的海浪、渡船、紅樓與輕軌列車，右側有橘色夕陽與飛鳥" loading="lazy" />
+            <figcaption><b>插畫版</b>手機桌布用</figcaption>
+          </figure>
+          <figure>
+            <img src="../../images/courses/danhai-sample-lili-poster.jpg" alt="電影海報版範例：標題「把淡水穿在身上，讓故事帶我旅行」，同一位女子戴帽子拿著相機坐在河岸邊，身後一排釣客的長竿與黃昏的天空" loading="lazy" />
+            <figcaption><b>電影海報版</b>同一個人接續生成</figcaption>
+          </figure>
+        </div>
+      </div>
     </div>
   </section>
 
   <!-- ACT 08 段落一 注意事項 -->
-  <section id="act-08" data-block data-bg="3">
+  <section id="act-08" data-block data-bg="3" class="gated">
     <div class="wrap wide">
       <div class="act-cap reveal">段落一 · 注意事項</div>
       <h2 class="display sm reveal d1">這一段要注意五件事</h2>
@@ -712,20 +844,22 @@ G 一個代表我的小物件，當作畫面裡認得出我的記號（例如常
         </div>
         <div class="card reveal d3">
           <div class="num">注意 03</div>
-          <h3 class="h2">先生一張就好</h3>
+          <h3 class="h2">一張插畫，一張海報</h3>
           <ul>
-            <li>三個風格挑一個，<b>先生一張</b></li>
-            <li>滿意就收工，這張就是你帶回家的</li>
-            <li>真的想再試，最多再一張</li>
-            <li>換風格<b>不用重傳照片</b>，說「用我剛才那張照片，改成某某風格」</li>
+            <li>先把<b>插畫版</b>生出來，滿意了再接第二份指令生海報版</li>
+            <li>一次只生一張，<b>不要連按</b>，它還在畫的時候插話會重新生</li>
+            <li>海報版<b>不用重傳照片、不用重做設定</b>，同一個對話往下貼就好</li>
+            <li>真的想重來，同一版最多再一張</li>
           </ul>
         </div>
         <div class="card reveal d4">
           <div class="num">注意 04</div>
           <h3 class="h2">額度從第一次生圖開始算</h3>
           <ul>
-            <li>免費版<b>一天 1 到 3 張</b></li>
-            <li>想多玩幾種：<b>Gemini</b> 一天約 100 張，沒那麼精緻<br/><a href="https://gemini.google.com/app" target="_blank" rel="noopener">gemini.google.com</a></li>
+            <li>免費版<b>一天 1 到 3 張</b>，這一段每人要生<b>兩張</b>（插畫＋海報）</li>
+            <li><b>額度優先給插畫版</b>。它是設定的成果，海報是它的延伸</li>
+            <li>生不出第二張就<b>舉手</b>，桌長的筆電有付費版</li>
+            <li>備援：<b>Gemini</b> 一天約 100 張，沒那麼精緻<br/><a href="https://gemini.google.com/app" target="_blank" rel="noopener">gemini.google.com</a></li>
           </ul>
         </div>
         <div class="card reveal d4">
@@ -758,7 +892,7 @@ G 一個代表我的小物件，當作畫面裡認得出我的記號（例如常
 
   <!-- ACT 09 段落二 -->
   <!-- ACT 09 場景要給參考 -->
-  <section id="act-09" data-block data-bg="4">
+  <section id="act-09" data-block data-bg="4" class="gated">
     <div class="wrap wide">
       <div class="act-cap reveal">段落一 · 一個重要的觀念</div>
       <h2 class="display sm reveal d1">AI 只認得<br/>你給它看過的東西</h2>
@@ -797,7 +931,7 @@ G 一個代表我的小物件，當作畫面裡認得出我的記號（例如常
     </div>
   </section>
 
-  <section id="act-10" data-block data-bg="4">
+  <section id="act-10" data-block data-bg="4" class="gated">
     <div class="wrap wide">
       <div class="act-cap reveal">段落二 · 30 分</div>
       <h2 class="display sm reveal d1">大家共創角色</h2>
@@ -916,7 +1050,7 @@ G 一個代表我的小物件，當作畫面裡認得出我的記號（例如常
   </section>
 
   <!-- ACT 10 段落二 注意事項 -->
-  <section id="act-11" data-block data-bg="5">
+  <section id="act-11" data-block data-bg="5" class="gated">
     <div class="wrap wide">
       <div class="act-cap reveal">段落二 · 注意事項</div>
       <h2 class="display sm reveal d1">這一段要注意三件事</h2>
@@ -953,7 +1087,7 @@ G 一個代表我的小物件，當作畫面裡認得出我的記號（例如常
   </section>
 
   <!-- ACT 11 段落三 · 第一步 說故事 -->
-  <section id="act-12" data-block data-bg="2">
+  <section id="act-12" data-block data-bg="2" class="gated">
     <div class="wrap wide">
       <div class="act-cap reveal">段落三 · 60 分</div>
       <h2 class="display sm reveal d1">淡水故事創作</h2>
@@ -1024,7 +1158,7 @@ G 一個代表我的小物件，當作畫面裡認得出我的記號（例如常
   </section>
 
   <!-- ACT 12 段落三 · 第二步 分鏡與修圖 -->
-  <section id="act-13" data-block data-bg="4">
+  <section id="act-13" data-block data-bg="4" class="gated">
     <div class="wrap wide">
       <div class="act-cap reveal">段落三 · 第二步 分鏡</div>
       <h2 class="display sm reveal d1">六格分鏡怎麼排</h2>
@@ -1154,7 +1288,7 @@ G 一個代表我的小物件，當作畫面裡認得出我的記號（例如常
 
   <!-- ACT 13 段落三 · 第三步 封面 -->
   <!-- 場景照片複製區（獨立一段，段落三分鏡要用） -->
-  <section id="act-photos" data-block data-bg="7">
+  <section id="act-photos" data-block data-bg="7" class="gated">
     <div class="wrap">
       <div class="act-cap reveal">段落三 · 素材</div>
       <h2 class="display sm reveal d1">六站的實拍照片在這裡拿</h2>
@@ -1167,7 +1301,7 @@ G 一個代表我的小物件，當作畫面裡認得出我的記號（例如常
   </section>
 
   <!-- ACT 14 段落三 第三步 封面 -->
-  <section id="act-14" data-block data-bg="6">
+  <section id="act-14" data-block data-bg="6" class="gated">
     <div class="wrap wide">
       <div class="act-cap reveal">段落三 · 第三步 封面</div>
       <h2 class="display sm reveal d1">最後做一張封面</h2>
@@ -1235,11 +1369,16 @@ G 一個代表我的小物件，當作畫面裡認得出我的記號（例如常
   </section>
 
   <!-- ACT 15 成果發表簡報 -->
-  <section id="act-15" data-block data-bg="3">
+  <section id="act-15" data-block data-bg="3" class="gated">
     <div class="wrap wide">
       <div class="act-cap reveal">成果發表 · 桌長用</div>
       <h2 class="display sm reveal d1">成果發表的簡報</h2>
-      <p class="lead reveal d2">六格圖文湊齊之後，桌長點自己這一組的連結，把圖跟文字排進去，發表時直接投影。<b>一頁一格，封面放第一頁</b>，不用排得漂亮，能投影就行。</p>
+      <p class="lead reveal d2">桌長點自己這一組的連結，把大家的圖排進去，發表時直接投影。不用排得漂亮，能投影就行。</p>
+      <div class="stepbox reveal d3" style="text-align:left;margin-top:32px;">
+        <div class="steprow hi"><div class="k">第一頁 ｜ 封面</div><div class="v"><b>全組的合照</b>。桌長找人幫忙拍一張，或用現場拍好的，放第一頁當封面，加上組別。<br/><span style="opacity:.75;">（如果你這一桌有做到段落三的繪本，AI 生的那張繪本封面放在合照後面，不取代合照）</span></div></div>
+        <div class="steprow hi"><div class="k">中間 ｜ 一人一頁</div><div class="v">每個人一頁，放<b>兩張圖</b>：左邊<b>插畫版</b>（那張可以拿去當手機桌布），右邊<b>電影海報版</b>。標上名字</div></div>
+        <div class="steprow hi"><div class="k">最後一頁 ｜ 全組串起來</div><div class="v">把全組每個人的故事<b>串成一首詩、一段歌詞，或一個小故事</b>，放最後一頁。做法：把大家的設定卡與海報上的句子整份貼給 AI，請它串成一首，人人都要在裡面</div></div>
+      </div>
       <p class="body reveal d2" style="max-width:680px;margin:14px auto 0;"><b>記得加上旅學堂的 logo</b>，簡報頁面裡已經放好了，拉到你要的位置就行，不用自己去找檔案。</p>
       <div class="stepbox reveal d3">
         <div class="steprow"><div class="k">第一組</div><div class="v"><a class="deck-link" href="https://docs.google.com/presentation/d/1Ae5b8KxA-WAburyXqr94Z4Wwdgu6UdluemlP7PEAOUg/edit?usp=sharing" target="_blank" rel="noopener">打開旅學堂 0821-第一組 的簡報</a></div></div>
@@ -1251,7 +1390,32 @@ G 一個代表我的小物件，當作畫面裡認得出我的記號（例如常
       </div>
       <div class="factbox reveal d4">
         <p><b>只點自己那一組。</b>六份簡報都可以編輯，點錯組會改到別桌的東西。</p>
-        <p><b>今天交出去的是初版。</b>六格圖依序編號 01 到 06，連同這份簡報連結一起傳給 Vicky。活動之後我們會把六組作品統整成正式的網頁放到官網，再發連結給大家。</p>
+        <p><b>今天交出去的是初版。</b>每個人的兩張圖照「組別-姓名-插畫」「組別-姓名-海報」命名，連同這份簡報連結一起傳給 Vicky。活動之後我們會把各組作品統整成正式的網頁放到官網，再發連結給大家。</p>
+
+        <details class="promptbox" open style="margin-top:28px;">
+          <summary><span><span class="plabel">最後一頁 · 桌長用</span><br/><span class="ptitle">把全組的故事串成一首</span></span><span class="phint">收齊大家的句子之後貼給 AI。</span></summary>
+          <div class="pbody">
+            <p class="ptip">把每個人的<b>設定卡</b>，或是他們海報上的那幾行小字，整份貼進去就好，不用先分類。詩、歌詞、小故事三選一，現場想投哪一種就改哪一個字。</p>
+            <pre data-copy>我們這一桌有（　）個人，今天一起走了淡海輕軌的公共藝術。
+下面是每個人自己整理的形象設定與句子，我一次貼給你。
+
+請把這些串成【一首詩】，放在我們成果發表的最後一頁。
+（想要別種就把上面那四個字改成【一段歌詞】或【一個小故事】）
+
+規則：
+1 每個人都要在裡面，一個都不能漏。
+2 只能用他們自己講過的話與意象，不要幫他們加沒說過的事。
+3 順序照我們走過的站，從第一站排到最後一站。
+4 長度控制在一頁投影片放得下，字不要太小。
+5 最後一句要收在「我們一起走完這一天」的感覺，你自己想怎麼寫。
+
+先給我一版，我看過再說要不要調。
+
+以下是大家的內容：
+（把每個人的設定卡或海報句子貼在這裡）</pre>
+            <button class="copy" type="button">複製這份指令</button>
+          </div>
+        </details>
       </div>
 
       <div class="reveal d4" style="margin-top:34px;text-align:center;">
@@ -1267,7 +1431,7 @@ G 一個代表我的小物件，當作畫面裡認得出我的記號（例如常
   </section>
 
   <!-- ACT 16 收尾 -->
-  <section id="act-16" data-block data-bg="9">
+  <section id="act-16" data-block data-bg="9" class="gated">
     <div class="wrap left">
       <div class="act-cap reveal">ACT 16 · 帶回去</div>
       <h2 class="display sm reveal d1" style="text-align:left;">回去自己再做一次</h2>
@@ -1343,28 +1507,120 @@ G 一個代表我的小物件，當作畫面裡認得出我的記號（例如常
   updateProgress();
 
 
-  // 圖片點開放大：頁面裡所有內容圖都可點
+  // 通關密碼閘門：ACT 04 起是當天簡報正式內容，未解鎖只看得到前三段與成果發表
+  (function(){
+    var KEY = 'danhai-0821-unlocked';
+    var form = document.getElementById('gateForm');
+    if (!form) return;
+    // 密碼＝日期四碼 MMDD。兩種都開得了：
+    //   1 裝置上的「今天」日期（當天上課的人直接輸入今天就好）
+    //   2 已排定的場次日期（學員回家後補看，輸入他那一場的日期）
+    // 前端擋不住看原始碼的人，這只是禮貌性門檻，不是存取控制。
+    // 要加新場次：把日期四碼字串加進 SESSION_DATES。
+    var SESSION_DATES = ['0821', '0912'];
+    var pad2 = function(n){ return (n < 10 ? '0' : '') + n; };
+    var todayMMDD = function(){
+      var d = new Date();
+      return pad2(d.getMonth() + 1) + pad2(d.getDate());
+    };
+    var check = function(v){
+      var s = String(v || '').trim();
+      if (!/^\d{4}$/.test(s)) return false;
+      if (s === todayMMDD()) return true;
+      return SESSION_DATES.indexOf(s) !== -1;
+    };
+   var input = document.getElementById('gateInput');
+    var msg = document.getElementById('gateMsg');
+    var unlock = function(remember){
+      document.body.classList.remove('locked');
+      if (remember) { try { localStorage.setItem(KEY, '1'); } catch (e) {} }
+    };
+    try { if (localStorage.getItem(KEY) === '1') { unlock(false); } else { document.body.classList.add('locked'); } }
+    catch (e) { document.body.classList.add('locked'); }
+    form.addEventListener('submit', function(e){
+      e.preventDefault();
+      if (check(input.value)) {
+        msg.textContent = '解鎖成功，往下就是完整簡報';
+        unlock(true);
+        setTimeout(function(){
+          var t = document.getElementById('act-04');
+          if (t) t.scrollIntoView({ behavior: 'smooth' });
+        }, 120);
+      } else {
+        msg.textContent = '密碼不對，再試一次';
+        input.value = '';
+        input.focus();
+      }
+    });
+  })();
+
+  // 圖片點開放大＋同區群組輪播：頁面裡所有內容圖都可點，同一區的縮圖可用左右鍵翻頁
   const lb = document.getElementById('lightbox');
   if (lb) {
     const lbImg = lb.querySelector('img');
     const lbCap = lb.querySelector('.lb-cap');
+    const lbCount = lb.querySelector('.lb-count');
+    const btnPrev = lb.querySelector('.lb-prev');
+    const btnNext = lb.querySelector('.lb-next');
+    let group = [], idx = 0;
+
+    // 分組規則：優先用最近的 [data-gallery] 祖先；沒有就往上最多三層，
+    // 找到第一個「內含兩張以上圖片」的容器當作同一組；都沒有就自己一張。
+    const groupOf = (img) => {
+      const explicit = img.closest('[data-gallery]');
+      if (explicit) return Array.prototype.slice.call(explicit.querySelectorAll('img'));
+      let node = img.parentElement, hops = 0;
+      while (node && hops < 3) {
+        const imgs = node.querySelectorAll('img');
+        if (imgs.length >= 2) return Array.prototype.slice.call(imgs);
+        node = node.parentElement; hops++;
+      }
+      return [img];
+    };
+
+    const show = (i) => {
+      if (!group.length) return;
+      idx = (i + group.length) % group.length;
+      const img = group[idx];
+      lbImg.src = img.currentSrc || img.src;
+      lbImg.alt = img.alt || '';
+      lbCap.textContent = img.alt || '';
+      lbCount.textContent = group.length > 1 ? (idx + 1) + ' / ' + group.length : '';
+      lb.classList.toggle('has-group', group.length > 1);
+    };
+
     document.querySelectorAll('section img').forEach((img) => {
       img.classList.add('zoomable');
       img.setAttribute('tabindex', '0');
       const open = () => {
-        lbImg.src = img.currentSrc || img.src;
-        lbImg.alt = img.alt || '';
-        lbCap.textContent = img.alt || '';
+        group = groupOf(img);
+        show(group.indexOf(img));
         lb.classList.add('open');
         document.body.style.overflow = 'hidden';
       };
       img.addEventListener('click', open);
       img.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(); } });
     });
-    const close = () => { lb.classList.remove('open'); document.body.style.overflow = ''; };
-    lb.addEventListener('click', close);
+
+    const close = () => { lb.classList.remove('open'); lb.classList.remove('has-group'); document.body.style.overflow = ''; };
+    // 點背景才關閉，點到圖片或按鈕不關
+    lb.addEventListener('click', (e) => { if (e.target === lb) close(); });
     lb.querySelector('.lb-close').addEventListener('click', close);
-    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') close(); });
+    btnPrev.addEventListener('click', (e) => { e.stopPropagation(); show(idx - 1); });
+    btnNext.addEventListener('click', (e) => { e.stopPropagation(); show(idx + 1); });
+    document.addEventListener('keydown', (e) => {
+      if (!lb.classList.contains('open')) return;
+      if (e.key === 'Escape') { close(); }
+      else if (e.key === 'ArrowLeft') { e.preventDefault(); show(idx - 1); }
+      else if (e.key === 'ArrowRight') { e.preventDefault(); show(idx + 1); }
+    });
+    // 手機左右滑動翻頁
+    let tx = 0, ty = 0;
+    lb.addEventListener('touchstart', (e) => { tx = e.changedTouches[0].clientX; ty = e.changedTouches[0].clientY; }, { passive: true });
+    lb.addEventListener('touchend', (e) => {
+      const dx = e.changedTouches[0].clientX - tx, dy = e.changedTouches[0].clientY - ty;
+      if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) show(idx + (dx < 0 ? 1 : -1));
+    }, { passive: true });
   }
 
   // 角色設定圖一鍵複製（沿用 scenes 頁的 iOS 寫法）
@@ -1450,5 +1706,9 @@ G 一個代表我的小物件，當作畫面裡認得出我的記號（例如常
 })();
 </script>
   <script src="/mika-chat-widget.js" defer></script>
+<!-- tracking:cloudflare -->
+<script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "c3e3c857121d416ab405270557d017d3"}'></script>
+<!-- tracking:views-counter -->
+<script src="/views.js"></script>
 </body>
 </html>

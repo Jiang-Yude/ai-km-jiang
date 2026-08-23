@@ -1202,7 +1202,7 @@ window.ARTICLES = [
     summary: "親子說故事 AI 工作坊完整記錄：紅番茄協議的引導方法、順稿與插畫提示詞、真人電影海報技巧，一份親子故事長出五種成品，最後回到家庭對話。",
     tags: {"topic":["AI工作流","工具操作","知識管理"],"level":["零基礎入門"],"content_type":["案例文章"]},
     external: { threads: null, vocus: null },
-    related: ["relationship-boundary-ai-practice", "books-videos-pdf-ai-advisor"]
+    related: ["relationship-boundary-ai-practice", "books-videos-pdf-ai-advisor", "personal-poster-and-wallpaper"]
   },
   {
     id: "ai-mvp-validation-before-product",
@@ -1493,7 +1493,7 @@ window.ARTICLES = [
     summary: "當同一張臉出現在不同入口，使用者就會期待相同能力，說明成本會從產品轉嫁到自己身上。記錄我把 LINE 群組助理從咪卡分出萊卡的判斷過程：用三個問題決定該沿用還是拆出新角色，先定義產品分工再決定視覺，最後讓角色名稱與造型自己傳達能力邊界。",
     tags: {"topic":["輔助決策","差異比較","AI應用"],"level":["基礎"],"content_type":["觀點文章"]},
     external: { threads: null, vocus: null },
-    related: ["line-group-ai-workflow", "how-to-train-your-ai-employee", "docs-as-system-design-agent", "character-costume-sheet-three-views"]
+    related: ["line-group-ai-workflow", "how-to-train-your-ai-employee", "docs-as-system-design-agent", "character-costume-sheet-three-views", "personal-poster-and-wallpaper"]
   },
 
   {
@@ -1658,7 +1658,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["how-to-train-your-ai-employee", "semantic-rules-before-prompt-templates", "intent-first-prompting", "strong-ai-models-knowledge-workflow-road", "ai-course-map-from-entry-to-workflow", "one-on-one-questions", "meta-prompt-thirty-versions"]
+    related: ["how-to-train-your-ai-employee", "semantic-rules-before-prompt-templates", "intent-first-prompting", "strong-ai-models-knowledge-workflow-road", "ai-course-map-from-entry-to-workflow", "one-on-one-questions", "meta-prompt-thirty-versions", "personal-poster-and-wallpaper"]
   },
 
   /* ── AI 常見問題 37 問（觀點）── */
@@ -1901,7 +1901,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["ai-that-knows-you", "start-with-a-wrong-draft", "ai-tools-professional-judgment"]
+    related: ["ai-that-knows-you", "start-with-a-wrong-draft", "ai-tools-professional-judgment", "personal-poster-and-wallpaper"]
   },
 
   /* ── 先讓 AI 給一個錯的版本（教學） ── */
@@ -2161,5 +2161,25 @@ window.ARTICLES = [
     },
     external: { threads: null, vocus: null },
     related: ["copied-mechanism-is-no-mechanism", "dual-track-planning-loop", "eight-ai-system-concepts-2026"]
-  }
+  },
+
+  /* ── 用手機做一張自己的電影海報和手機桌布（教學） ── */
+  {
+    id: "personal-poster-and-wallpaper",
+    url: "articles/personal-poster-and-wallpaper/",
+    date: "2026-08-23",
+    updated: "2026-08-23",
+    title: "用手機做一張自己的電影海報和手機桌布：先讓 AI 認識你，它才畫得出你",
+    problem: "同一份指令發給一整班，有人做出來一眼就認得出是他本人，有人做出來像個陌生人。",
+    audience: "想做一張自己的圖當自我介紹、當手機桌面或印出來送人，但沒學過任何工具的人；帶長輩、社區班與親子場用 AI 的講師與助教；以及生過幾次圖，覺得每次都很漂亮但就是不像自己的人。",
+    summary: "兩種成品是先後兩步不是二選一：先把個人設定做扎實，兩次來回生出一張淡雅插畫版直接當手機桌布，再在同一個對話往下貼一段指令，把同一個人轉成寫實電影海報，不用重傳照片也不用重講故事。整理自 8/20 樂齡 AI 故事工作坊與 8/21 淡海輕軌公共藝術走讀兩場實體課，內容包含六項回答單與設定卡這道確認關卡、把場景穿在身上的轉化手法、三份可直接複製的指令（插畫版、海報接續版、五個空格的簡單版）、免費額度的四個省法、一張合照讓全家都進同一張海報的做法、生出來不像自己時分辨「故事不像」與「臉不像」的兩種救法，以及把圖存回相簿這個最容易漏掉的最後一步。",
+    tags: {
+      topic: ["圖片生成", "提示詞設計"],
+      level: ["零基礎入門"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["meta-prompt-thirty-versions", "parenting-story-ai-family-dialogue", "mika-to-laika-product-character-design", "ai-that-knows-you"]
+  },
+
 ];
