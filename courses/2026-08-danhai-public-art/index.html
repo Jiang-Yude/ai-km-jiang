@@ -480,6 +480,7 @@
           <div class="steprow"><div class="k">引路人</div><div class="v">旅學堂</div></div>
           <div class="steprow"><div class="k">活動日期</div><div class="v">8/21（五）09:30-16:00</div></div>
           <div class="steprow"><div class="k">報名</div><div class="v"><a href="https://www.accupass.com/go/artflow" target="_blank" rel="noopener">https://www.accupass.com/go/artflow</a></div></div>
+          <div class="steprow"><div class="k">完整介紹</div><div class="v"><a href="https://tamsuitraveler.vercel.app/public-art-speaking" target="_blank" rel="noopener">旅學堂：如果公共藝術會說話 ↗</a><br/><span style="font-size:19px;color:var(--text-soft-light);">活動緣起、走讀路線與旅學堂的完整說明</span></div></div>
         </div>
       </div>
     </div>
@@ -593,9 +594,9 @@
         <div class="lockicon">🔒</div>
         <h2>接下來是當天的上課簡報</h2>
         <p>從這裡開始，是 <b>8/21 淡海輕軌公共藝術走讀</b> 當天的正式簡報內容：完整流程、每一段的可複製指令、桌長帶法與現場注意事項。</p>
-        <p>參加課程的學員請輸入通關密碼：<b>上課日期的四碼數字</b>。例如 8 月 21 日就輸入 <b>0821</b>。</p>
+        <p>參加課程的學員，請輸入講師在課堂上給的<b>通關密碼</b>。</p>
         <form class="gate-form" id="gateForm" autocomplete="off">
-          <input type="text" id="gateInput" inputmode="numeric" maxlength="4" placeholder="日期四碼" aria-label="通關密碼：上課日期四碼" />
+          <input type="text" id="gateInput" inputmode="numeric" maxlength="4" placeholder="通關密碼" aria-label="通關密碼" />
           <button type="submit">解鎖簡報</button>
         </form>
         <div class="gate-msg" id="gateMsg" aria-live="polite"></div>
@@ -1512,11 +1513,11 @@ G 一個代表我的小物件，當作畫面裡認得出我的記號（例如常
     var KEY = 'danhai-0821-unlocked';
     var form = document.getElementById('gateForm');
     if (!form) return;
-    // 密碼＝日期四碼 MMDD。兩種都開得了：
-    //   1 裝置上的「今天」日期（當天上課的人直接輸入今天就好）
-    //   2 已排定的場次日期（學員回家後補看，輸入他那一場的日期）
-    // 前端擋不住看原始碼的人，這只是禮貌性門檻，不是存取控制。
-    // 要加新場次：把日期四碼字串加進 SESSION_DATES。
+    // 通關密碼由講師在課堂上口頭給，頁面上不寫規則（寫了等於沒有密碼）。
+    // 兩種都開得了：當天日期，或 SESSION_DATES 列出的場次日期。
+    // 要加新場次：把四碼字串加進 SESSION_DATES。
+    // 前端擋不住看原始碼的人，這是禮貌性門檻不是存取控制；
+    // 真的要鎖住內容，要用內容加密（見光的故事站那套 PBKDF2 信封式做法）。
     var SESSION_DATES = ['0821', '0912'];
     var pad2 = function(n){ return (n < 10 ? '0' : '') + n; };
     var todayMMDD = function(){
