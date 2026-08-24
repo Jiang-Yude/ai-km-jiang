@@ -85,9 +85,11 @@
   const FEE_LABEL = { free: '免費課', paid: '付費課', external: '邀約課', podcast: '邀約課' };
   const FEE_COLOR = { free: 'var(--c-mint)', paid: 'var(--c-coral)', external: 'var(--c-sand)', podcast: 'var(--c-sand)' };
   function feeBadgeHTML(c) {
-    const ft = inferType(c);
+    let ft = inferType(c);
+    // 封閉邀約場（type_label 沒寫「外部」但 registration 是 private）也標邀約課，過去目錄合併後靠標籤分類
+    if (ft === 'other' && ((c.registration || {}).status === 'private')) ft = 'external';
     if (!FEE_LABEL[ft]) return '';
-    return `<span class="mode-badge" style="background:transparent;border:1px solid ${FEE_COLOR[ft]};color:${FEE_COLOR[ft]}">${FEE_LABEL[ft]}</span>`;
+    return `<span class="mode-badge" style="background:transparent;border:1.5px solid ${FEE_COLOR[ft]};color:${FEE_COLOR[ft]};font-size:0.9rem;font-weight:700;padding:4px 12px;">${FEE_LABEL[ft]}</span>`;
   }
   function modeBadgesHTML(c) {
     const v = c.venue_mode || (c.type === 'podcast' ? 'podcast' : null);
@@ -404,25 +406,28 @@
         html += grid(offers.map(paidCardHTML).concat(paidRuns.map(cardHTML)));
       }
     }
-    // 免費講座（未來場次 + 過去目錄）
+    // 免費講座（只放未來場次；過去場次統一進下方「過去目錄」，2026-08-24 江江指示）
+    const isInvited = (c) => inferType(c) === 'external' || inferType(c) === 'podcast' || (inferType(c) === 'other' && (c.registration || {}).status === 'private');
     if (F.type === 'all' || F.type === 'free') {
-      const free = COURSES.filter(c => inferType(c) === 'free' && hitVenue(c.venue_mode) && hitQ([c.title, c.summary||'', (c.tags||[]).join(' ')]));
-      const up = free.filter(isUpcoming).sort((a,b)=>parseDate(a.date)-parseDate(b.date));
-      const past = free.filter(isPast).sort((a,b)=>parseDate(b.date)-parseDate(a.date));
+      const up = COURSES.filter(c => inferType(c) === 'free' && isUpcoming(c) && hitVenue(c.venue_mode) && hitQ([c.title, c.summary||'', (c.tags||[]).join(' ')]))
+        .sort((a,b)=>parseDate(a.date)-parseDate(b.date));
       if (up.length) { html += header('免費講座 · 近期', up.length); html += grid(up.map(cardHTML)); }
-      else if (F.type === 'free' || F.type === 'all') {
-        html += header('免費講座', 0, '');
-        html += `<div class="note-box" style="margin-bottom:28px;"><h3>下個月的免費課表還在規劃中</h3><p>加入 <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener" style="color:var(--c-coral);">LINE 社群</a> 提出你想聽的主題，好的問題很可能就是下一場講座。</p></div>`;
-      }
-      if (past.length) { html += header('免費講座 · 過去目錄', past.length, '已上過的講座，含完整簡報或回放，挑有興趣的補看。'); html += grid(past.map(cardHTML)); }
     }
-    // 邀約授課（外部授課 + Podcast）
+    // 邀約授課（只放未來場次）
     if (F.type === 'all' || F.type === 'invited') {
-      const inv = COURSES.filter(c => (inferType(c) === 'external' || inferType(c) === 'podcast' || (inferType(c) === 'other' && (c.registration || {}).status === 'private')) && hitVenue(c.venue_mode) && hitQ([c.title, c.summary||'', (c.tags||[]).join(' ')]));
-      const up = inv.filter(isUpcoming).sort((a,b)=>parseDate(a.date)-parseDate(b.date));
-      const past = inv.filter(isPast).sort((a,b)=>parseDate(b.date)-parseDate(a.date));
+      const up = COURSES.filter(c => isInvited(c) && isUpcoming(c) && hitVenue(c.venue_mode) && hitQ([c.title, c.summary||'', (c.tags||[]).join(' ')]))
+        .sort((a,b)=>parseDate(a.date)-parseDate(b.date));
       if (up.length) { html += header('邀約授課 · 近期受邀', up.length); html += grid(up.map(cardHTML)); }
-      if (past.length) { html += header('邀約授課 · 講過的場次', past.length, '企業、學校、社群的邀約場。想邀課請走服務方案頁。'); html += grid(past.map(cardHTML)); }
+    }
+    // 過去目錄：所有已上過的場次照時間排、不分區，靠卡片上的標籤分免費課／邀約課／付費課（2026-08-24 江江指示）
+    {
+      const typeHit = (c) => F.type === 'all'
+        || (F.type === 'free' && inferType(c) === 'free')
+        || (F.type === 'paid' && inferType(c) === 'paid')
+        || (F.type === 'invited' && isInvited(c));
+      const past = COURSES.filter(c => isPast(c) && typeHit(c) && hitVenue(c.venue_mode) && hitQ([c.title, c.summary||'', (c.tags||[]).join(' '), c.type_label||'']))
+        .sort((a,b)=>parseDate(b.date)-parseDate(a.date));
+      if (past.length) { html += header('過去目錄', past.length, '已上過的場次照時間排，免費課、邀約課、付費課看卡片標籤；含簡報或回放的可補看。'); html += grid(past.map(cardHTML)); }
     }
 
     if (!html) html = `<p style="text-align:center;color:var(--ink-faint);padding:48px;">沒有符合條件的課程，換個篩選或關鍵字試試。</p>`;

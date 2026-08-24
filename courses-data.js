@@ -67,6 +67,30 @@ window.COURSES = [
     }
   },
   {
+    id: "2026-08-30-eight-ai-mechanisms",
+    date: "2026-08-30",
+    time: "20:00",
+    duration_min: null,
+    title: "2026 年知識工作者該學的八個 AI 機制",
+    type_label: "免費線上講座",
+    image: "images/courses/2026-08-30-eight-ai-mechanisms.jpg",
+    venue_mode: "online",
+    venue_label: "線上",
+    host: "江江教練",
+    tags: ["AIAgent", "AI工作流", "上下文工程", "記憶管理", "MCP", "迴圈工程"],
+    summary: "八個機制：迴圈工程（讓它自己檢查完再交給你，你不用再當人肉校稿機）、事前規劃（開工前三分鐘講清楚，省掉後面改十遍）、上下文工程（把它猜不到的事先補給它，判斷才會準）、記憶工程（昨天教過的規矩，今天不用再教一次）、工作流圖（事情做到一半斷掉，下次從那一格接回去，不用整條重跑）、子代理（查資料、翻一整堆檔案這種累活派出去，回來只給你整理好的一頁）、統一接頭 MCP（每天手動複製貼上的東西，直接接起來讓它自己搬）、給 AI 獨立權限（放手讓它自己去做，但你查得到它做過什麼、關得掉）。",
+    detail_url: null,
+    materials: [
+      { label: "文章｜2026 年知識工作者的八個 AI 系統概念 ↗", url: "https://jiangyude.com/articles/eight-ai-system-concepts-2026/" }
+    ],
+    registration: {
+      status: "open",
+      url: "https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ",
+      label: "加入 LINE 社群 ↗",
+      note: "免費參加，上課連結會在開課前半小時公布在 LINE 社群"
+    }
+  },
+  {
     id: "2026-08-21-danhai-public-art",
     date: "2026-08-21",
     time: null,
