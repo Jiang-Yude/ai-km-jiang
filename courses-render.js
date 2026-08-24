@@ -378,27 +378,20 @@
     const header = (t, n, intro) => `<div class="group-header"><h2>${t}</h2><span class="group-count">${n} 項</span></div>` + (intro ? `<p class="group-intro">${intro}</p>` : '');
     let html = '';
 
-    // 近期課程置頂：免費、付費、邀約合看，最近要上的排最前（2026-07-08 江江指示）
+    // 近期課程置頂：免費、付費、邀約合看，全部近期場次都在這一區，下方分類區不重複（2026-08-24 江江指示）
+    // 籌備中區已移除：日期未定的課不上頁面（2026-08-24 江江指示），資料層 phase: incubating 只當隱藏標記
     if (F.type === 'all') {
       const soon = COURSES
-        .filter(c => isUpcoming(c) && hitVenue(c.venue_mode) && hitQ([c.title, c.summary || '', (c.tags || []).join(' '), c.type_label || '']))
-        .sort((a, b) => parseDate(a.date) - parseDate(b.date))
-        .slice(0, 6);
+        .filter(c => isUpcoming(c) && !isIncubating(c) && hitVenue(c.venue_mode) && hitQ([c.title, c.summary || '', (c.tags || []).join(' '), c.type_label || '']))
+        .sort((a, b) => parseDate(a.date) - parseDate(b.date));
       if (soon.length) {
         html += header('近期課程', soon.length, '最近要上的課排最前面；免費課、付費課、邀約課看卡片上的標籤。');
         html += grid(soon.map(cardHTML));
       }
-
-      const incubating = COURSES
-        .filter(c => isIncubating(c) && hitVenue(c.venue_mode) && hitQ([c.title, c.summary || '', (c.tags || []).join(' '), c.type_label || '']));
-      if (incubating.length) {
-        html += header('籌備中', incubating.length, '日期與報名方式尚未確定的課程。');
-        html += grid(incubating.map(cardHTML));
-      }
     }
 
-    // 收費課程（常設 offers + 有日期的付費場次）
-    if (F.type === 'all' || F.type === 'paid') {
+    // 收費課程（常設 offers + 有日期的付費場次）：只在「收費課」篩選下顯示，全部視圖交給近期課程區
+    if (F.type === 'paid') {
       const offers = (window.PAID_OFFERS || []).filter(o => hitVenue(o.venue_mode) && hitQ([o.title, o.brief, o.level, (o.tags||[]).join(' ')]));
       const paidRuns = COURSES.filter(c => inferType(c) === 'paid' && !isIncubating(c) && hitVenue(c.venue_mode) && hitQ([c.title, c.summary||'', (c.tags||[]).join(' ')]));
       if (offers.length + paidRuns.length) {
@@ -408,13 +401,13 @@
     }
     // 免費講座（只放未來場次；過去場次統一進下方「過去目錄」，2026-08-24 江江指示）
     const isInvited = (c) => inferType(c) === 'external' || inferType(c) === 'podcast' || (inferType(c) === 'other' && (c.registration || {}).status === 'private');
-    if (F.type === 'all' || F.type === 'free') {
+    if (F.type === 'free') {
       const up = COURSES.filter(c => inferType(c) === 'free' && isUpcoming(c) && hitVenue(c.venue_mode) && hitQ([c.title, c.summary||'', (c.tags||[]).join(' ')]))
         .sort((a,b)=>parseDate(a.date)-parseDate(b.date));
       if (up.length) { html += header('免費講座 · 近期', up.length); html += grid(up.map(cardHTML)); }
     }
     // 邀約授課（只放未來場次）
-    if (F.type === 'all' || F.type === 'invited') {
+    if (F.type === 'invited') {
       const up = COURSES.filter(c => isInvited(c) && isUpcoming(c) && hitVenue(c.venue_mode) && hitQ([c.title, c.summary||'', (c.tags||[]).join(' ')]))
         .sort((a,b)=>parseDate(a.date)-parseDate(b.date));
       if (up.length) { html += header('邀約授課 · 近期受邀', up.length); html += grid(up.map(cardHTML)); }
