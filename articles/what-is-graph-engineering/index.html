@@ -4,22 +4,22 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="index,follow">
-<title>一間辦公室，講清楚什麼是圖譜工程｜江江教練 · AI 知識管理</title>
-<meta name="description" content="圖譜工程聽起來是新名詞，核心跟寫程式沒關係。用一間辦公室講清楚：桌上的交接本是狀態、牆上的派工規則表是邊、上場的助理是節點。再切開六個容易混淆的概念（知識圖譜、迴圈工程、專案管理、互相監督、自動化、狀態機），最後誠實盤點我自己那套機制裡哪些真的算、哪些不算。">
+<title>讓 AI 學會自己完成任務，不用我們守在電腦前監工！迴圈工程與圖譜工程說明｜江江教練 · AI 知識管理</title>
+<meta name="description" content="不會寫程式，也能讓 AI 自己把一件事跑完。只要把目標、規則、審核標準寫清楚，AI 會自己跑、自己檢查、自己修正。這篇用一間辦公室講清楚兩層：迴圈工程讓一件事自己跑完，圖譜工程讓好幾件事接得起來。">
 <link rel="canonical" href="https://jiangyude.com/articles/what-is-graph-engineering/">
 <meta property="og:type" content="article">
-<meta property="og:title" content="一間辦公室，講清楚什麼是圖譜工程｜江江教練">
+<meta property="og:title" content="讓 AI 學會自己完成任務，不用我們守在電腦前監工！迴圈工程與圖譜工程說明｜江江教練">
 <!-- 分享封面：hero 文字填好後在 repo 根目錄跑 `node scripts/og-shot.mjs what-is-graph-engineering` 自動截 1200×630 到 images/og/what-is-graph-engineering.jpg（見 README「文章分享封面（OG 圖）機制」）。別退回 intro-jiang.png 直式人像，會被裁成只剩脖子。 -->
 <meta property="og:image" content="https://jiangyude.com/images/og/what-is-graph-engineering.jpg">
-<meta property="og:description" content="圖譜工程聽起來是新名詞，核心跟寫程式沒關係。用一間辦公室講清楚：桌上的交接本是狀態、牆上的派工規則表是邊、上場的助理是節點。再切開六個容易混淆的概念（知識圖譜、迴圈工程、專案管理、互相監督、自動化、狀態機），最後誠實盤點我自己那套機制裡哪些真的算、哪些不算。">
+<meta property="og:description" content="不會寫程式，也能讓 AI 自己把一件事跑完。只要把目標、規則、審核標準寫清楚，AI 會自己跑、自己檢查、自己修正。這篇用一間辦公室講清楚兩層：迴圈工程讓一件事自己跑完，圖譜工程讓好幾件事接得起來。">
 <meta property="og:url" content="https://jiangyude.com/articles/what-is-graph-engineering/">
 <meta property="og:locale" content="zh_TW">
 <meta property="og:site_name" content="江江教練 · AI 知識管理">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="一間辦公室，講清楚什麼是圖譜工程｜江江教練">
+<meta name="twitter:title" content="讓 AI 學會自己完成任務，不用我們守在電腦前監工！迴圈工程與圖譜工程說明｜江江教練">
 <meta name="twitter:image" content="https://jiangyude.com/images/og/what-is-graph-engineering.jpg">
-<meta name="twitter:description" content="圖譜工程聽起來是新名詞，核心跟寫程式沒關係。用一間辦公室講清楚：桌上的交接本是狀態、牆上的派工規則表是邊、上場的助理是節點。再切開六個容易混淆的概念（知識圖譜、迴圈工程、專案管理、互相監督、自動化、狀態機），最後誠實盤點我自己那套機制裡哪些真的算、哪些不算。">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"一間辦公室，講清楚什麼是圖譜工程","description":"圖譜工程聽起來是新名詞，核心跟寫程式沒關係。用一間辦公室講清楚：桌上的交接本是狀態、牆上的派工規則表是邊、上場的助理是節點。再切開六個容易混淆的概念（知識圖譜、迴圈工程、專案管理、互相監督、自動化、狀態機），最後誠實盤點我自己那套機制裡哪些真的算、哪些不算。","author":{"@type":"Person","name":"江昱德","alternateName":"江江教練","jobTitle":"隱性知識提煉師、AI 應用規劃師"},"isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://jiangyude.com/"},"inLanguage":"zh-Hant","url":"https://jiangyude.com/articles/what-is-graph-engineering/"}</script>
+<meta name="twitter:description" content="不會寫程式，也能讓 AI 自己把一件事跑完。只要把目標、規則、審核標準寫清楚，AI 會自己跑、自己檢查、自己修正。這篇用一間辦公室講清楚兩層：迴圈工程讓一件事自己跑完，圖譜工程讓好幾件事接得起來。">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"讓 AI 學會自己完成任務，不用我們守在電腦前監工！迴圈工程與圖譜工程說明","description":"不會寫程式，也能讓 AI 自己把一件事跑完。只要把目標、規則、審核標準寫清楚，AI 會自己跑、自己檢查、自己修正。這篇用一間辦公室講清楚兩層：迴圈工程讓一件事自己跑完，圖譜工程讓好幾件事接得起來。","author":{"@type":"Person","name":"江昱德","alternateName":"江江教練","jobTitle":"隱性知識提煉師、AI 應用規劃師"},"isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://jiangyude.com/"},"inLanguage":"zh-Hant","url":"https://jiangyude.com/articles/what-is-graph-engineering/"}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
@@ -168,8 +168,8 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
   <div class="wc wc3"></div>
   <div>
     <div class="kicker">AI 工作流 / 系統設計</div>
-    <h1>一間辦公室，講清楚什麼是圖譜工程</h1>
-    <p>工程師圈從七月開始在講「圖譜工程」。這篇用一間辦公室把它講清楚，全程不用程式例子，並且處理兩件更重要的事：它跟哪些你已經知道的概念很像但其實不同，以及我自己那套機制裡哪些真的算、哪些其實不算。</p>
+    <h1>讓 AI 學會自己完成任務，不用我們守在電腦前監工！迴圈工程與圖譜工程說明</h1>
+    <p>不會寫程式，也想讓 AI 自己去跑一些工作，不用一直守在電腦前面看它做到哪。這件事現在真的做得到，前提是你要把目標、規則、審核標準交代清楚。這篇用一間辦公室講清楚兩層：一件事怎麼讓它自己跑完（迴圈工程），好幾件事怎麼接得起來（圖譜工程），全程不用程式例子。最後也誠實盤點我自己那套機制裡，哪些真的算、哪些其實不算。</p>
   </div>
   <!-- 封面圖（建議放）：橫式用預設 width:420px；4:5 直式改 .hero-figure{width:320px} 並加 .hero-figure img{aspect-ratio:4/5;object-fit:cover}。沒有封面圖就整個 <figure> 刪掉，hero 會自動置中只剩文字。封面同時設成上面 og:image / twitter:image。 -->
   <figure class="hero-figure">
@@ -489,7 +489,7 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
       <a href="https://www.threads.com/@jiang_yude_coach" target="_blank" rel="noopener">Threads ↗</a>
       <a href="https://vocus.cc/salon/Jiang_Coach" target="_blank" rel="noopener">方格子 ↗</a>
     </div>
-    <div class="footer-note">這是一篇教學文章，整理我對「一間辦公室，講清楚什麼是圖譜工程」的看法，供你參考。</div>
+    <div class="footer-note">這是一篇教學文章，整理我對「讓 AI 學會自己完成任務，不用我們守在電腦前監工！迴圈工程與圖譜工程說明」的看法，供你參考。</div>
   </div>
 </footer>
 
