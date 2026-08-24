@@ -1,0 +1,500 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="index,follow">
+<title>一間辦公室，講清楚什麼是圖譜工程｜江江教練 · AI 知識管理</title>
+<meta name="description" content="圖譜工程聽起來是新名詞，核心跟寫程式沒關係。用一間辦公室講清楚：桌上的交接本是狀態、牆上的派工規則表是邊、上場的助理是節點。再切開六個容易混淆的概念（知識圖譜、迴圈工程、專案管理、互相監督、自動化、狀態機），最後誠實盤點我自己那套機制裡哪些真的算、哪些不算。">
+<link rel="canonical" href="https://jiangyude.com/articles/what-is-graph-engineering/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="一間辦公室，講清楚什麼是圖譜工程｜江江教練">
+<!-- 分享封面：hero 文字填好後在 repo 根目錄跑 `node scripts/og-shot.mjs what-is-graph-engineering` 自動截 1200×630 到 images/og/what-is-graph-engineering.jpg（見 README「文章分享封面（OG 圖）機制」）。別退回 intro-jiang.png 直式人像，會被裁成只剩脖子。 -->
+<meta property="og:image" content="https://jiangyude.com/images/og/what-is-graph-engineering.jpg">
+<meta property="og:description" content="圖譜工程聽起來是新名詞，核心跟寫程式沒關係。用一間辦公室講清楚：桌上的交接本是狀態、牆上的派工規則表是邊、上場的助理是節點。再切開六個容易混淆的概念（知識圖譜、迴圈工程、專案管理、互相監督、自動化、狀態機），最後誠實盤點我自己那套機制裡哪些真的算、哪些不算。">
+<meta property="og:url" content="https://jiangyude.com/articles/what-is-graph-engineering/">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:site_name" content="江江教練 · AI 知識管理">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="一間辦公室，講清楚什麼是圖譜工程｜江江教練">
+<meta name="twitter:image" content="https://jiangyude.com/images/og/what-is-graph-engineering.jpg">
+<meta name="twitter:description" content="圖譜工程聽起來是新名詞，核心跟寫程式沒關係。用一間辦公室講清楚：桌上的交接本是狀態、牆上的派工規則表是邊、上場的助理是節點。再切開六個容易混淆的概念（知識圖譜、迴圈工程、專案管理、互相監督、自動化、狀態機），最後誠實盤點我自己那套機制裡哪些真的算、哪些不算。">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"一間辦公室，講清楚什麼是圖譜工程","description":"圖譜工程聽起來是新名詞，核心跟寫程式沒關係。用一間辦公室講清楚：桌上的交接本是狀態、牆上的派工規則表是邊、上場的助理是節點。再切開六個容易混淆的概念（知識圖譜、迴圈工程、專案管理、互相監督、自動化、狀態機），最後誠實盤點我自己那套機制裡哪些真的算、哪些不算。","author":{"@type":"Person","name":"江昱德","alternateName":"江江教練","jobTitle":"隱性知識提煉師、AI 應用規劃師"},"isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://jiangyude.com/"},"inLanguage":"zh-Hant","url":"https://jiangyude.com/articles/what-is-graph-engineering/"}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{--ink:#1a1612;--paper:#fefcf8;--muted:#6a635a;--line:#d8cdb8;--green:#5f7553;--blue:#5689b8;--orange:#e85a4f;--soft:#faf5ec;--dark:#2a2018;--shadow:0 18px 45px rgba(107,74,42,.14);--sp-shadow:hsla(35,50%,60%,.15);--sp-shadow-edge:hsla(35,50%,68%,.03);--sp-radius:400px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC","Segoe UI",sans-serif}
+a{color:inherit}
+/* 官網共用導航列 nav.top（與首頁/文章總站同一條） */
+nav.top{position:sticky;top:0;background:rgba(254,252,248,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid #d8cdb8;z-index:100}
+nav.top .container{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:24px;padding:14px 32px}
+.nav-brand-img{justify-self:start;display:flex;align-items:center;text-decoration:none;flex-shrink:0;transition:opacity .2s}
+.nav-brand-img:hover{opacity:.8}.nav-brand-img img{height:40px;width:auto;display:block}
+nav.top ul.nav-menu{justify-self:end;display:flex;gap:22px;list-style:none;margin:0;padding:0;font-size:.95rem;white-space:nowrap}
+nav.top ul.nav-menu a{color:#3a342d;text-decoration:none;transition:color .2s;font-weight:500;white-space:nowrap}
+nav.top ul.nav-menu a:hover{color:#1a1612}nav.top ul.nav-menu a.active{color:#1a1612;font-weight:700}
+.nav-toggle{display:none;background:none;border:none;padding:6px;cursor:pointer;width:36px;height:36px;position:relative}
+.nav-toggle span{display:block;position:absolute;left:8px;right:8px;height:2px;background:#1a1612;border-radius:2px;transition:transform .25s,opacity .25s,top .25s}
+.nav-toggle span:nth-child(1){top:11px}.nav-toggle span:nth-child(2){top:17px}.nav-toggle span:nth-child(3){top:23px}
+.nav-toggle.open span:nth-child(1){top:17px;transform:rotate(45deg)}.nav-toggle.open span:nth-child(2){opacity:0}.nav-toggle.open span:nth-child(3){top:17px;transform:rotate(-45deg)}
+@media(max-width:860px){
+ nav.top .container{grid-template-columns:auto 1fr auto;padding:10px 16px;gap:12px}
+ .nav-brand-img img{height:32px}
+ .nav-toggle{display:block;justify-self:end}
+ nav.top ul.nav-menu{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(254,252,248,.98);backdrop-filter:blur(14px);border-bottom:1px solid #d8cdb8;flex-direction:column;gap:0;padding:8px 0;box-shadow:0 10px 24px rgba(107,74,42,.08)}
+ nav.top ul.nav-menu.open{display:flex}
+ nav.top ul.nav-menu li{border-bottom:1px solid #e8dfc9}
+ nav.top ul.nav-menu li:last-child{border-bottom:none}
+ nav.top ul.nav-menu a{display:block;padding:14px 20px;font-size:1.06rem}
+}
+/* 滑鼠暖光暈（與首頁同一支 spotlight.js） */
+body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradient(var(--sp-radius) circle at var(--mx,50%) var(--my,50%),var(--sp-shadow) 0%,var(--sp-shadow-edge) 45%,transparent 75%);pointer-events:none;z-index:9999;mix-blend-mode:multiply;transition:background .06s linear}
+.hero{position:relative;overflow:hidden;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:72px;padding:96px clamp(20px,6vw,88px) 80px;background:linear-gradient(180deg,#fffcf0 0%,#f9e9d2 100%);color:#1a1612;border-bottom:1px solid #d8cdb8}
+.hero .wc{position:absolute;border-radius:50%;filter:blur(60px);pointer-events:none;z-index:0}
+.hero .wc1{width:420px;height:360px;top:-120px;right:-80px;background:#e8884b;opacity:.15}
+.hero .wc2{width:360px;height:300px;bottom:-110px;left:-70px;background:#5f7553;opacity:.13}
+.hero .wc3{width:280px;height:260px;top:34%;left:14%;background:#a08144;opacity:.10}
+.hero>div{flex:none;width:860px;max-width:100%;position:relative;z-index:2}
+.hero-figure{margin:0;width:420px;flex:none;position:relative;z-index:2}
+.hero-figure img{display:block;width:100%;border-radius:16px;border:1px solid #d8cdb8;box-shadow:0 18px 45px rgba(107,74,42,.16);cursor:zoom-in}
+.hero-figure figcaption{margin-top:10px;font-size:14px;line-height:1.6;color:#6a635a}
+.inline-figure{margin:30px auto 8px;max-width:820px}
+.inline-figure img{display:block;width:100%;border-radius:14px;border:1px solid var(--line);box-shadow:var(--shadow);background:#fff;cursor:zoom-in}
+.inline-figure figcaption{font-size:14px;line-height:1.6;color:var(--muted);margin-top:10px}
+.lightbox{position:fixed;inset:0;z-index:10000;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(12,10,8,.92);cursor:zoom-out;backdrop-filter:blur(4px)}
+.lightbox.open{display:flex}.lightbox img{max-width:96vw;max-height:92vh;border-radius:10px;box-shadow:0 24px 60px rgba(0,0,0,.5)}
+.lightbox-close{position:fixed;top:18px;right:24px;color:#fff;font-size:34px;line-height:1;font-weight:700;cursor:pointer;opacity:.85}
+.kicker{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.55rem;color:#7a5c3a;font-weight:500}
+.hero h1{max-width:none;margin:16px 0 18px;font-size:clamp(36px,6vw,72px);line-height:1.08;overflow-wrap:anywhere}
+.hero p{max-width:none;font-size:clamp(18px,2vw,23px);line-height:1.62;color:#3a342d}
+.cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
+.cta a{display:inline-flex;align-items:center;text-decoration:none;border-radius:8px;padding:12px 16px;font-weight:900}
+.cta .primary{background:#fff;color:#1a1612}.cta .ghost{border:1px solid rgba(255,255,255,.32);color:#fff;background:rgba(255,255,255,.08)}
+.section{padding:54px clamp(20px,6vw,88px);border-top:1px solid var(--line)}
+.inner{width:min(1000px,100%);margin:0 auto}
+.section h2{font-size:clamp(26px,4.2vw,48px);line-height:1.12;margin:0 0 18px}
+.section h3{font-size:clamp(21px,3vw,30px);line-height:1.2;margin:30px 0 12px}
+.lead{font-size:clamp(18px,1.6vw,22px);line-height:1.7;color:#3a342d;max-width:900px}
+.section p{font-size:18px;line-height:1.74;color:#3a342d}.section p+p{margin-top:14px}
+.section ul,.section ol{padding-left:1.4em;font-size:18px;line-height:1.74;color:#3a342d}.section li{margin-bottom:8px}
+.meaning{margin:22px 0;padding:16px 18px;border-left:5px solid var(--blue);background:rgba(86,137,184,.12);border-radius:6px;line-height:1.7;font-size:19px}
+.meaning b{display:block;color:var(--blue);margin-bottom:4px}
+.caveat{margin:0 0 8px;padding:16px 18px;border-left:5px solid var(--orange);background:rgba(232,90,79,.1);border-radius:6px;line-height:1.7;font-size:18px;color:#3a342d}
+.caveat b{display:block;color:var(--orange);margin-bottom:4px}
+.infocard{background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px 24px 22px;box-shadow:0 8px 22px rgba(107,74,42,.08);margin-top:8px}
+.infocard-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.info-item{padding:18px 14px 0}
+.info-item b{display:block;font-size:14px;font-weight:900;letter-spacing:.04em;margin-bottom:7px;text-transform:uppercase}
+.info-item:nth-child(1) b{color:var(--green)}.info-item:nth-child(2) b{color:var(--orange)}.info-item:nth-child(3) b{color:var(--blue)}
+.info-item p{margin:0;font-size:17px;line-height:1.6;color:#3a342d}
+.tagrow{display:flex;flex-wrap:wrap;gap:7px;margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
+.tag{font-size:14px;color:var(--muted);background:var(--soft);border:1px solid var(--line);border-radius:999px;padding:4px 11px}
+.duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:24px}
+.duo.stack{grid-template-columns:1fr}
+.duo .card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:22px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.duo .card.a{border-color:var(--orange)}.duo .card.b{border-color:var(--green);box-shadow:0 8px 24px rgba(95,117,83,.16)}
+.duo .card small{display:block;font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.04em;margin-bottom:9px}
+.duo .card.a small{color:var(--orange)}.duo .card.b small{color:var(--green)}
+.duo .card b{display:block;font-size:22px;line-height:1.3;margin-bottom:12px}.duo .card.a b{color:#c0512f}.duo .card.b b{color:#4a7a59}
+.duo .card p{margin:0;color:#3a342d;line-height:1.75;font-size:18px}
+.workflow-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:24px}
+.workflow-step{background:#fff;border:1px solid var(--line);border-radius:8px;padding:18px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.workflow-step small{display:block;color:var(--orange);font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;margin-bottom:9px}
+.workflow-step b{display:block;font-size:18px;line-height:1.3;margin-bottom:9px}
+.workflow-step p{margin:0;color:#3a342d;line-height:1.6;font-size:16px}
+.codeblock{background:var(--dark);color:#f3ead9;border-radius:8px;padding:18px 20px;font:500 14px/1.65 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;overflow-x:auto;white-space:pre-wrap;margin:20px 0;box-shadow:0 8px 22px rgba(107,74,42,.12)}
+.codeblock .c{color:#f6d7a6;font-weight:600}
+.skillcard{background:#fff;border:1px solid var(--green);border-radius:12px;padding:24px;box-shadow:0 10px 26px rgba(95,117,83,.16);margin-top:8px}
+.skillcard b{display:block;font-size:21px;margin-bottom:8px}
+.skillcard p{margin:0 0 16px;font-size:17px;line-height:1.65;color:#3a342d}
+.cta-band{background:#e6f0e5;color:#3a342d}.cta-band .section{border-top:none}
+.cta-band .inner{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(260px,.85fr);gap:26px;align-items:start}
+.cta-band h2{font-size:clamp(26px,4vw,44px);margin:0 0 16px}.cta-band p,.cta-band .lead{color:rgba(58,52,45,.9);font-size:18px;line-height:1.72}
+.cta-card{border:1px solid #cfe0d2;background:#fbfdfa;border-radius:8px;padding:22px}
+.cta-card b{display:block;color:#48b178;margin-bottom:10px;font-size:18px}.cta-card p{margin:0 0 14px}
+.footer{padding:30px clamp(20px,6vw,88px);font-size:14px;color:var(--muted);background:#fff;border-top:1px solid var(--line)}
+.footer-inner{width:min(1000px,100%);margin:0 auto}
+.footer-links{display:flex;flex-wrap:wrap;gap:6px 12px;margin-bottom:14px}.footer-links a{color:var(--blue);font-weight:900;text-decoration:none;font-size:14px}
+.footer-brand{font-weight:900;font-size:15px;margin-bottom:10px}.footer-note{font-size:13px;line-height:1.6}
+@media(max-width:820px){.infocard-grid{grid-template-columns:1fr}.duo{grid-template-columns:1fr}.workflow-grid{grid-template-columns:1fr}.cta-band .inner{grid-template-columns:1fr}.section{padding:40px 20px}.hero{min-height:52vh;flex-direction:column;justify-content:flex-start;align-items:flex-start;gap:24px}.hero>div{width:100%}.hero-figure{width:100%;max-width:560px}}
+@media(max-width:820px){html,body{overflow-x:hidden}.hero h1{word-break:break-word}}
+@media(max-width:820px){.tablewrap table{min-width:560px;font-size:18px}.tablewrap{position:relative}.tablewrap::after{content:"表格可左右滑動 →";position:sticky;left:0;display:block;font-size:15px;color:var(--muted);background:var(--soft);border-top:1px solid var(--line);padding:7px 12px;width:100%}}
+</style>
+</head>
+<body class="spotlight">
+<nav class="top">
+  <div class="container">
+    <a class="nav-brand-img" href="../../index.html"><img src="../../images/footer-signature.png" alt="江江教練 | 江昱德"></a>
+    <button class="nav-toggle" aria-label="選單"><span></span><span></span><span></span></button>
+    <ul class="nav-menu">
+      <li><a href="../../index.html">首頁</a></li>
+      <li><a href="../../knowledge-architecture.html">知識架構</a></li>
+      <li><a href="../../courses.html">課程</a></li>
+      <li><a href="../../articles.html" class="active">深度文章</a></li>
+      <li><a href="../../skills.html">技能包下載</a></li>
+      <li><a href="../../offers.html">服務方案</a></li>
+      <li class="lang-switch"><a href="../../en/articles.html" hreflang="en">EN</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="wc wc1"></div>
+  <div class="wc wc2"></div>
+  <div class="wc wc3"></div>
+  <div>
+    <div class="kicker">AI 工作流 / 系統設計</div>
+    <h1>一間辦公室，講清楚什麼是圖譜工程</h1>
+    <p>工程師圈從七月開始在講「圖譜工程」。這篇用一間辦公室把它講清楚，全程不用程式例子，並且處理兩件更重要的事：它跟哪些你已經知道的概念很像但其實不同，以及我自己那套機制裡哪些真的算、哪些其實不算。</p>
+  </div>
+  <!-- 封面圖（建議放）：橫式用預設 width:420px；4:5 直式改 .hero-figure{width:320px} 並加 .hero-figure img{aspect-ratio:4/5;object-fit:cover}。沒有封面圖就整個 <figure> 刪掉，hero 會自動置中只剩文字。封面同時設成上面 og:image / twitter:image。 -->
+  <figure class="hero-figure">
+    <img src="../../images/articles/what-is-graph-engineering-cover.jpg" alt="迴圈工程與圖譜工程的分界示意圖" loading="lazy">
+    <figcaption>一件事自己跑完，跟好幾件事接得起來，差在哪裡。</figcaption>
+  </figure>
+</section>
+
+<main>
+<section class="section" id="start">
+  <div class="inner">
+    <h2>這篇在講什麼</h2>
+    <p class="lead">工程師圈從七月開始在講「圖譜工程」。聽起來又是一個新名詞，但它的核心跟寫程式沒關係。這篇用一間辦公室把它講清楚，全程不用程式例子。講完之後處理兩件更重要的事：它跟哪些你已經知道的概念很像但其實不同，以及我自己那套機制裡，哪些真的算、哪些其實不算。第二件事我會誠實挑，符合的就說符合，不符合的就直說不算，不硬湊。</p>
+
+    <div class="duo stack">
+      <div class="card a">
+        <b>適合誰</b>
+        <ul>
+          <li>已經會讓 AI 自己跑完一件事，想知道再上去那層是什麼的人。</li>
+          <li>同時在做好幾種產出，覺得它們各做各的、串不起來的人。</li>
+          <li>看到「圖譜工程」到處被討論，想知道它跟自己有沒有關係的人。</li>
+        </ul>
+      </div>
+      <div class="card b">
+        <b>你可以帶走什麼</b>
+        <ul>
+          <li>一個辦公室場景，看完就記得住定義。</li>
+          <li>六個容易混淆的概念，每個都切開講清楚。</li>
+          <li>一份誠實的對照：什麼樣的東西算圖，什麼樣的不算。</li>
+          <li>一段可以直接複製的審查提示詞，今天就能用。</li>
+        </ul>
+      </div>
+    </div>
+
+    <nav class="toc" aria-label="本篇目錄">
+      <b>本篇目錄</b>
+      <ol>
+        <li><a href="#loop">先講前一層：迴圈工程</a>（兩分鐘）</li>
+        <li><a href="#office">換一個場景：一間辦公室</a>：交接本、派工規則表、助理</li>
+        <li><a href="#names">這三樣東西的正式名字</a>（含「邊」最容易接錯的地方）</li>
+        <li><a href="#confuse">跟哪些概念容易混</a>：六個一次切開</li>
+        <li><a href="#mine">我自己的機制裡哪些真的算</a>（也列不算的）</li>
+        <li><a href="#firststep">你的第一步</a>：一段可複製的審查提示詞</li>
+        <li><a href="#boundary">誠實的邊界</a></li>
+      </ol>
+    </nav>
+  </div>
+</section>
+
+<section class="section" id="loop">
+  <div class="inner">
+    <h2>一、先講前一層：迴圈工程</h2>
+
+    <p>圖譜工程是接在迴圈工程後面的一層。先花兩分鐘把前一層講完，後面會好懂很多。</p>
+
+    <p><b>迴圈工程，就是把「你一直在做的那個循環」交給一個會自己跑完的系統。</b></p>
+
+    <p>以前你要 AI 做一件事，是給它東西、看它回什麼、再叫它改、再看、再改。那個一圈一圈轉的角色是你自己在當。迴圈工程做的事，是把這個循環從你手上接走：它做完自己檢查，發現不對自己修，修完再檢查，直到過關才回來找你。</p>
+
+    <figure class="inline-figure wide">
+      <img src="../../images/articles/what-is-graph-engineering-loop.jpg" alt="迴圈工程的場景：一個助理坐在桌前，自己做、自己檢查、發現問題自己修，反覆到過關為止" loading="lazy">
+      <figcaption>迴圈工程的樣子：一個助理把一件事自己做到好，中間不用你盯。</figcaption>
+    </figure>
+
+    <p>一個助理，一件事，自己反覆做到好。這就是迴圈。</p>
+
+    <div class="readmore near">
+      <b>想深入了解這一層</b>
+      <ul class="readmore">
+        <li><a href="../what-is-loop-engineering/">用我寫一篇文章的工作流，講清楚什麼是迴圈工程</a><br><span>那篇用「我寫一篇文章」當案例整篇講透：一個迴圈的五個階段、最少要哪幾個零件、兩個真實案例、三個判斷它有沒有用的方法。這篇底下只講到「一個助理自己做完」這個程度，夠用來理解圖譜工程就好。</span></li>
+      </ul>
+    </div>
+
+    <p>接下來的問題是：<b>一個助理做得完一件事，那好幾件事、好幾個助理呢？</b>這就是圖譜工程要處理的。</p>
+  </div>
+</section>
+
+<section class="section" id="office">
+  <div class="inner">
+    <h2>二、換一個場景：一間辦公室</h2>
+    <p>想像一間辦公室，裡面有三樣東西。</p>
+    <p><b>桌子中間放著一本交接本。</b>誰都看得到，上面寫著這件事現在的進展。</p>
+    <p><b>牆上貼著一張派工規則表。</b>誰都看得到，上面寫著什麼情況下換誰上場。</p>
+    <p><b>助理們坐在旁邊等。</b>一個一個上場，做完把結果寫進交接本，然後照規則表喊下一個人。這裡的「助理」是廣義的：可以是一個 AI、一支自動執行的小程式、一個工具，也可以是你自己。</p>
+
+    <figure class="inline-figure wide">
+      <img src="../../images/articles/what-is-graph-engineering-office.jpg" alt="辦公室場景：桌子中間的交接本代表狀態，牆上的派工規則表代表邊，一個一個上場的助理代表節點" loading="lazy">
+      <figcaption>整間辦公室就這樣運轉：助理做完事寫回交接本，規則表看一眼交接本，喊下一個人上場。</figcaption>
+    </figure>
+
+    <p>這就是圖譜工程的全部。</p>
+
+    <h3>三個容易看錯的地方</h3>
+    <p><b>第一，規則表不是主管。</b>主管會判斷、會裁量、會看情況通融。規則表只做條件對照，上面寫什麼就照什麼。</p>
+    <p>規則表上其實有兩種寫法，兩種都常見：</p>
+    <div class="tablewrap"><table>
+      <thead><tr><th>寫法</th><th>長什麼樣</th><th>什麼時候用</th></tr></thead>
+      <tbody>
+        <tr><td>寫死順序</td><td>排版做完換校對，永遠一樣</td><td>步驟固定的流程</td></tr>
+        <tr><td>看狀況決定</td><td>看交接本，對外的送審查，內部的直接發</td><td>需要分岔的流程</td></tr>
+      </tbody>
+    </table></div>
+    <p>還有第三種：讓 AI 讀完交接本自己決定下一個誰上。那確實比較像主管，有裁量空間。三種都可以，重點是你要知道自己用的是哪一種。</p>
+    <p><b>第二，助理不自己決定要不要插手。</b>沒被喊到就不動。這點很重要，少了它就會滑成一群人各自為政，那正好是這套東西要解決的問題。</p>
+    <p><b>第三，可以同時開工，但那是規則表寫的。</b>規則表可以寫「文字稿定稿之後，配圖跟排版同時開始」，兩邊做完各自寫回交接本，規則表再決定下一步。同時開工是被安排的，不是助理自己揪團。</p>
+  </div>
+</section>
+
+<section class="section" id="names">
+  <div class="inner">
+    <h2>三、這三樣東西的正式名字</h2>
+    <div class="tablewrap"><table>
+      <thead><tr><th>辦公室裡的東西</th><th>正式名字</th><th>它在做什麼</th></tr></thead>
+      <tbody>
+        <tr><td>桌上的交接本</td><td><b>狀態</b></td><td>記錄現在進行到哪、手上有什麼</td></tr>
+        <tr><td>牆上的派工規則表</td><td><b>邊</b></td><td>決定接下來輪到誰。可以寫死順序，也可以看交接本的狀況分岔</td></tr>
+        <tr><td>上場的助理</td><td><b>節點</b></td><td>做事的那一步，做完把結果寫回狀態</td></tr>
+      </tbody>
+    </table></div>
+    <div class="meaning"><b>一句話定義</b>圖譜工程，就是把好幾條各自能跑完的線接起來，讓它們共用同一份紀錄、講好誰等誰。</div>
+    <p>要精確一點的話，官方文件講的狀態是「這個應用當下的完整快照」，比「進度」大一些，做到什麼程度、手上有哪些東西都算在裡面。用交接本去想大致不會偏。</p>
+
+    <h3>「邊」這個字最容易接錯</h3>
+    <p>中文的「邊」很容易讀成邊界、界線、誰管到哪裡。這裡完全不是那個意思。</p>
+    <div class="caveat"><b>邊的工作只有一件</b>決定接下來輪到誰。它是流程圖上的箭頭，不是組織圖上的框線。</div>
+    <p>會特別提這件事，是因為我自己在跟人討論的時候真的接錯過。把邊理解成權責界線，整張圖就會被讀成組織分工圖，那是另一回事。</p>
+
+    <h3>交接本上放什麼，不放什麼</h3>
+    <p>放的是這件事的進展，還有做到現在手上有哪些東西。</p>
+    <p>不放的是各個助理自己的事：這個 AI 記得什麼、環境怎麼設定、用哪個模型。那些全部塞進共同的交接本，它會變成一個什麼都有、誰也看不懂的雜物櫃。</p>
+    <div class="meaning"><b>判準</b>其他人需不需要看到它才知道下一步怎麼走。需要就放上去，不需要就留在各自手上。</div>
+  </div>
+</section>
+
+<section class="section" id="confuse">
+  <div class="inner">
+    <h2>四、跟哪些概念容易混</h2>
+    <p>圖譜工程跟好幾個你已經知道的東西長得很像，一個一個切開。</p>
+
+    <h3>混淆一：知識圖譜</h3>
+    <p>看到「圖譜」兩個字，多數人第一個想到的是知識圖譜。</p>
+    <div class="tablewrap"><table>
+      <thead><tr><th></th><th>知識圖譜</th><th>圖譜工程</th></tr></thead>
+      <tbody>
+        <tr><td>連起來的是</td><td>概念跟概念的關聯</td><td>工作跟工作的順序</td></tr>
+        <tr><td>你問它</td><td>這個題目牽涉到哪些東西</td><td>這件事做完之後輪到誰</td></tr>
+        <tr><td>成品長怎樣</td><td>一張可以瀏覽的關聯網</td><td>一條跑得動的流程</td></tr>
+      </tbody>
+    </table></div>
+    <p>兩個都有節點跟連線，管的東西完全不同。我自己兩種都有，第四節會拿來對照。</p>
+
+    <h3>混淆二：迴圈工程</h3>
+    <p>第一節講過了，這裡放一張對照表方便回頭看。</p>
+    <div class="tablewrap"><table>
+      <thead><tr><th></th><th>迴圈工程</th><th>圖譜工程</th></tr></thead>
+      <tbody>
+        <tr><td>講的是</td><td><b>一件事</b>自己跑完</td><td><b>好幾件事</b>接得起來</td></tr>
+        <tr><td>做完的樣子</td><td>AI 自己檢查、自己修，直到過關</td><td>各條線共用一份進度，誰等誰講清楚</td></tr>
+        <tr><td>辦公室裡的對應</td><td>一個助理自己把事情做到好</td><td>交接本加規則表，讓一群助理接得起來</td></tr>
+      </tbody>
+    </table></div>
+    <div class="meaning"><b>一句話分清楚</b>迴圈管一條線怎麼跑完，圖譜管好幾條線怎麼接在一起。</div>
+    <p>這個分層是我用來理解的方式，方便記，不是嚴格的業界定義。實務上一張圖裡面也可以有迴圈，兩者不互斥。</p>
+    <div class="readmore near">
+      <b>延伸閱讀</b>
+      <ul class="readmore">
+        <li><a href="../what-is-loop-engineering/">用我寫一篇文章的工作流，講清楚什麼是迴圈工程</a><br><span>這篇的前一層。那篇用「寫一篇文章」當案例，同樣不用程式例子。</span></li>
+      </ul>
+    </div>
+
+    <h3>混淆三：專案管理</h3>
+    <p>你可能會想：這不就是專案管理嗎？我看板本來就這樣用。</p>
+    <p>最關鍵的一個差別是：<b>助理從人變成 AI 了。</b>其他差別也有，但這個最直接影響你要怎麼寫。</p>
+    <p>傳統看板是給人看的。人看到卡片停在「待確認」，心裡會自己補上一句「喔對，我還沒給主管看過」。人有常識，會覺得這件事怪怪的先問一下，會記得上禮拜講過什麼。這些判斷從來沒有寫在看板上，它們在人的腦袋裡。</p>
+    <p>當你開始讓 AI 跑其中幾格，那些沒寫出來的判斷就跟著消失了。</p>
+    <div class="tablewrap"><table>
+      <thead><tr><th></th><th>助理是人</th><th>助理是 AI</th></tr></thead>
+      <tbody>
+        <tr><td>完成條件</td><td>可以寫得模糊，人會自己補</td><td>要寫到不用猜</td></tr>
+        <tr><td>遇到怪事</td><td>多半會停下來問</td><td>多半照跑</td></tr>
+        <tr><td>誰等誰</td><td>大家心裡有數</td><td>沒寫就是沒有</td></tr>
+        <tr><td>出錯的速度</td><td>慢，中間有人會發現</td><td>快，而且一路跑到底</td></tr>
+      </tbody>
+    </table></div>
+    <p>所以你原本的看板不用打掉重練，它已經是地基了。要補的是那些你一直放在腦袋裡、沒寫出來的判斷。</p>
+
+    <h3>混淆四：互相監督</h3>
+    <p>有些文章把圖譜工程講成「多個 AI 互相監督、互相修正」。</p>
+    <p>換一家 AI 來審確實很有用，理由第五節會講。但那是<b>一種節點</b>，串在邊的後面，跟「圖是什麼」是兩件事。把一種好用的節點當成整張圖，會讓人以為沒有互審就不算圖。</p>
+
+    <h3>混淆五：自動化</h3>
+    <p>「整條線更自動化」聽起來像圖譜工程，但自動化程度跟是不是一張圖沒有直接關係。</p>
+    <div class="caveat"><b>兩個方向都成立</b>全手動也可以是一張圖（交接本跟規則表都在紙上，人照著跑）；全自動也可以完全不是圖（跑得很順，但沒人說得出現在到哪、下一步憑什麼）。</div>
+
+    <h3>混淆六：狀態機、工作流編排</h3>
+    <p>如果你做過流程設計，可能會覺得這些詞講的是同一件事。很大程度上確實是。</p>
+    <p>圖譜工程這個講法的重點在於：這張圖上跑的是 AI，而且它上面的節點自己也可能是一個會自己跑完的迴圈。至於「有狀態、有節點、有轉移條件」這個骨架，流程設計領域早就有了，這不是新發明。</p>
+  </div>
+</section>
+
+<section class="section" id="mine">
+  <div class="inner">
+    <h2>五、我自己的機制裡，哪些真的算</h2>
+    <p>這一節照一個原則寫：有就有，沒有就不要硬選。</p>
+
+    <div class="meaning"><b>先講結論</b>我的知識庫已經是一張圖了，只是我一直沒用這個名字叫它。</div>
+
+    <p>把辦公室裡那三樣東西，對到我手上真實在跑的東西：</p>
+
+    <div class="tablewrap"><table>
+      <thead><tr><th>圖的元件</th><th>辦公室場景</th><th>我這邊真實存在的東西</th></tr></thead>
+      <tbody>
+        <tr><td><b>狀態</b></td><td>桌上的交接本</td><td>各個看板的欄位、專案位置總表、施工中掛牌區、專案的現況快照檔</td></tr>
+        <tr><td><b>邊</b></td><td>牆上的派工規則表</td><td>33 個自動檢查程式（分成 5 種觸發時機）、部署前的六道關卡、發布前的十道檢查、同步分級規則</td></tr>
+        <tr><td><b>節點</b></td><td>上場的助理</td><td>各個技能包定義的角色、子代理、另一家公司的 AI、排程執行的任務</td></tr>
+      </tbody>
+    </table></div>
+
+    <p>其中最標準的一個是<b>官網文章看板</b>：欄位是候選、排版中、待確認、待部署、已發布，每一格有明確的進入條件，沒到條件不准往下移。交接本、規則表、助理三樣都齊。</p>
+
+    <p><b>發布前的十道檢查</b>是最嚴格的一段邊：索引重建、文章互聯、雙向連結、網站地圖、導覽列、內部連結、機密掃描、用字檢查、排隊狀態。前一關過才到下一關，任何一關沒過就整批停住。</p>
+
+    <h3>不算的</h3>
+    <p>這些是我原本以為算、後來想清楚不算的。</p>
+    <div class="tablewrap"><table>
+      <thead><tr><th>我手上的東西</th><th>為什麼不算</th></tr></thead>
+      <tbody>
+        <tr><td>標籤連結法（整個知識庫用標籤把概念連起來）</td><td>那是知識圖譜，管概念關聯，跟工作順序無關</td></tr>
+        <tr><td>整櫃的技能包</td><td>一櫃子工具本身沒有共用進度、也沒有規則表決定誰下一個上，那一櫃不是圖。（但單一個技能包被叫上場做事的時候，它就是在當節點。同一個東西，看你問的是哪個問題。）</td></tr>
+        <tr><td>換一家公司的 AI 審稿</td><td>我很重視的一條規則，但它是節點的一種</td></tr>
+        <tr><td>規則分層</td><td>規則放哪裡的問題，跟流程編排是兩件事</td></tr>
+        <tr><td>寫單篇文章的流程</td><td>如果拆成明確的狀態與轉移條件，它也可以是一張小圖。我歸在迴圈工程，是因為我實際上沒那樣建</td></tr>
+      </tbody>
+    </table></div>
+
+    <h3>一個誠實的補充</h3>
+    <p>上面「算的」那四項裡，看板跟十道檢查是真的有東西在執行轉移，沒到條件就是過不去。至於那四條內容線，比較準確的說法是<b>「可以建成一張圖」</b>：依賴關係我講得出來，共用素材也真的共用，但實際上的協調是我自己在腦袋裡做的，沒有一個系統在執行它。</p>
+    <div class="meaning"><b>這個區別值得記住</b>畫得出來、講得出來，跟真的有東西在跑，是三件事。</div>
+
+    <h3>我用的判斷方法</h3>
+    <p><b>這是我自己的判斷法，不是什麼業界標準。</b>問兩個問題：這裡面有沒有一份大家共用的紀錄，還有一張決定誰下一個上場的規則表？</p>
+    <p>兩個都有，它是圖。少一個，它可能很有用，但先不要叫它圖。</p>
+  </div>
+</section>
+
+<section class="section" id="firststep">
+  <div class="inner">
+    <h2>六、你的第一步</h2>
+    <p>如果只做一件事，我建議做這個，因為它最便宜也最有感：<b>你平常用哪個 AI 產出，就固定用另一家的 AI 審。</b></p>
+    <p>ChatGPT 寫的用 Claude 或 Gemini 審，反過來也一樣。重點是換公司，不是換對話視窗。</p>
+    <p>理由是我的假設：同一家的模型訓練來源接近，看不到的地方可能也接近。這個假設我沒有實測數據，但實際跑下來，換一家審確實抓到過好幾次同一家審不出來的東西。</p>
+    <p>舉一個這幾天真的發生的：我讓 AI 寫一段價格比較，年費算出來是 8,744 元，月費寫的是 729 元。你自己乘一下，729 乘 12 等於 8,748。我沒看出來，寫的那個 AI 也沒看出來。換一家審，三十秒指出這個矛盾。</p>
+    <p>後來查清楚，月費是四捨五入後的數字，用原始金額換算的答案確實是 8,744。結論對，但文章裡沒交代推導過程，讀者自己乘就會覺得算錯。</p>
+    <p>審的時候不要問「這樣可以嗎」，那種問法很容易拿到客套話。把這段貼給審查的那一方：</p>
+    <div class="codeblock">你是這份稿子的審查者，你的任務是挑出問題，不是稱讚。
+不要客套，不要總結我寫了什麼，直接講四件事：
+
+1. 我引用的定義、數字或事實，有沒有哪一項其實是二手轉述、
+   或推導不出來？（可以的話請實際查一次、算一次）
+2. 有沒有哪個主張沒有來源，但被寫得像已經確定的事？
+3. 語氣上有沒有踩低別人、把自己寫成權威？
+4. 哪一段最可能被讀者跳過？為什麼？
+
+每題最多三點。沒有問題就說沒有，不要湊。</div>
+    <div class="caveat"><b>最後一句很重要</b>不加的話，AI 會為了顯得有用而硬挑，你會收到一堆假問題。</div>
+    <p>這個節點裝上去、跑順了，再考慮讓條件自動擋人。順序反過來會很痛苦，因為你會先蓋一堆規則，然後發現沒人執行。</p>
+  </div>
+</section>
+
+<section class="section" id="boundary">
+  <div class="inner">
+    <h2>七、誠實的邊界</h2>
+    <p><b>這個詞很新，定義還在浮動。</b>圖譜工程是 2026 年 7 月起被廣泛討論的詞，起源怎麼算、誰先講的，網路上說法不一致，我沒有一手考據，這篇不做起源判斷。可以確定的是這個技術本身早就存在，七月發生的是這個詞被放大討論。看到「新典範」這種說法可以先打個折。</p>
+    <p><b>圖不保證正確。</b>它降低的是「錯的東西一路跑到底」的機率。上面那個算錯的價格抓到了，但一定還有沒抓到的。</p>
+    <p><b>每加一關都有成本。</b>我的發布流程現在要跑十道檢查加線上驗收，大概五到十分鐘。值不值得看你的產出出錯的代價。對外發布、客戶交付我認為值得，內部草稿不用。</p>
+    <p><b>這篇寫的是一個人工作的尺度。</b>大公司在這件事上做得更早也更系統，用的是專門的開發框架。我做的是把同樣的觀念縮到個人與小團隊能用的大小。</p>
+  </div>
+</section>
+
+<div class="cta-band">
+<section class="section">
+  <div class="inner">
+    <div>
+      <h2>想繼續聊這個</h2>
+      <p class="lead">我每個月固定辦兩場免費線上講座，分享 AI 應用與知識管理的實戰做法。如果你正在把手上的工作接成一張圖，歡迎先從社群開始。</p>
+    </div>
+    <div class="cta-card">
+      <b>江江教練</b>
+      <p>隱性知識提煉師、AI 應用規劃師</p>
+      <p><a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">加入 LINE 社群 →</a></p>
+      <p><a href="../../offers.html">看服務方案 →</a></p>
+    </div>
+  </div>
+</section>
+</div>
+
+<section class="section" id="sources">
+  <div class="inner">
+    <h2>本篇引用來源</h2>
+    <ul>
+      <li>狀態、節點、邊三個組成：<a href="https://docs.langchain.com/oss/python/langgraph/graph-api" target="_blank" rel="noopener">LangGraph 官方文件</a></li>
+      <li>729 乘 12 那個例子、十道檢查、看板五欄、四條內容線：2026 年 8 月 23 日我自己這邊實際發生與跑過的紀錄</li>
+    </ul>
+  </div>
+</section>
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">江江教練 · AI 知識管理</div>
+    <div class="footer-links">
+      <a href="../../articles.html">← 回深度文章總站</a>
+      <a href="../../index.html">首頁</a>
+      <a href="../../learn.html">自學資源</a>
+      <a href="../../skills.html">技能包下載</a>
+      <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">LINE 社群 ↗</a>
+      <a href="https://www.threads.com/@jiang_yude_coach" target="_blank" rel="noopener">Threads ↗</a>
+      <a href="https://vocus.cc/salon/Jiang_Coach" target="_blank" rel="noopener">方格子 ↗</a>
+    </div>
+    <div class="footer-note">這是一篇教學文章，整理我對「一間辦公室，講清楚什麼是圖譜工程」的看法，供你參考。</div>
+  </div>
+</footer>
+
+<!-- 點圖放大 lightbox（hero 與內文圖通用，已內建，不用每篇重加） -->
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <span class="lightbox-close" aria-label="關閉">×</span>
+  <img id="lightbox-img" src="" alt="放大檢視">
+</div>
+<script>
+(function(){
+  var box=document.getElementById('lightbox'),boxImg=document.getElementById('lightbox-img');
+  document.querySelectorAll('.hero-figure img,.inline-figure img').forEach(function(img){
+    img.addEventListener('click',function(){boxImg.src=img.currentSrc||img.src;boxImg.alt=img.alt||'放大檢視';box.classList.add('open');box.setAttribute('aria-hidden','false');});
+  });
+  function close(){box.classList.remove('open');box.setAttribute('aria-hidden','true');boxImg.src='';}
+  box.addEventListener('click',close);
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
+})();
+</script>
+
+<script src="../../image-interactions.js"></script>
+
+<!-- 官網共用：滑鼠暖光暈 + 導航列漢堡選單 -->
+<script src="../../spotlight.js"></script>
+
+<!-- 文章自動互聯（相關文章）：兩支已內建，順序不可顛倒，不用再另外加 -->
+<script src="../../articles-data.js"></script>
+<script src="../../related-render.js"></script>
+</body>
+</html>

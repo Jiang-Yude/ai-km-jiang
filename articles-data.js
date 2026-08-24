@@ -34,6 +34,25 @@ window.ARTICLE_TAGS = {
 };
 
 window.ARTICLES = [
+  /* ── 一間辦公室，講清楚什麼是圖譜工程（教學）── */
+  {
+    id: "what-is-graph-engineering",
+    url: "articles/what-is-graph-engineering/",
+    date: "2026-08-24",
+    updated: "2026-08-24",
+    title: "一間辦公室，講清楚什麼是圖譜工程",
+    problem: "工程師圈在講「圖譜工程」，聽起來又是一個新名詞。網路上的解釋彼此不一致，而且看完不知道跟自己有什麼關係。",
+    audience: "已經會讓 AI 自己跑完一件事、想知道再上去那層是什麼的人；同時在做好幾種產出、覺得它們串不起來的人；用看板管專案、想知道這個新名詞跟自己有沒有關係的人。",
+    summary: "用一間辦公室把圖譜工程講清楚，全程不用程式例子：桌上的交接本是狀態、牆上的派工規則表是邊、上場的助理是節點。先花兩分鐘講前一層的迴圈工程（一個助理把一件事自己做到好），再進到圖譜（好幾個助理怎麼接起來）。接著切開六個容易混淆的概念：知識圖譜、迴圈工程、專案管理、互相監督、自動化、狀態機與工作流編排，其中專案管理那個的關鍵差別是助理從人變成 AI，人會自己補上沒寫出來的判斷，AI 不會。最後誠實盤點作者自己的機制，哪些真的算、哪些其實不算，並給一段可直接複製的跨家審查提示詞。",
+    tags: {
+      topic: ["AI工作流", "系統設計", "知識管理", "AIAgent"],
+      level: ["基礎"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["what-is-loop-engineering", "parallel-site-editing", "webnode-to-cloudflare-pages"]
+  },
+
 
   /* ── 交代過的事 AI 為什麼老是忘記？：從『我記住了』到讓 AI 自己跑（教學） ── */
   {
@@ -771,7 +790,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["strong-ai-models-knowledge-workflow-road", "questionnaire-to-slides-agent-workflow", "teacher-prep-knowledge-workflow", "docs-as-system-design-agent", "how-to-train-your-ai-employee", "my-three-loops", "ai-loop-safety-recovery", "recovery-over-perfection", "ai-changed-behavior-into-workflow", "ai-delegators-optimism", "publish-gate", "loop-engineering-guardrails", "long-task-completion-rate", "dual-centaur-meeting", "manage-ai-with-management-knowledge", "old-prompts-intent-first-loop-engineering", "rule-file-rebound", "knowledge-os-master-map", "meeting-into-verifiable-loop", "eight-ai-system-concepts-2026", "same-question-different-answers"]
+    related: ["what-is-graph-engineering", "strong-ai-models-knowledge-workflow-road", "questionnaire-to-slides-agent-workflow"]
   },
 
   /* ── 無形資產，越分享越豐盛（觀點）── */
@@ -2179,7 +2198,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["webnode-to-cloudflare-pages", "copied-mechanism-is-no-mechanism", "dual-track-planning-loop"]
+    related: ["what-is-graph-engineering", "webnode-to-cloudflare-pages", "copied-mechanism-is-no-mechanism"]
   },
 
   /* ── 用手機做一張自己的電影海報和手機桌布（教學） ── */
