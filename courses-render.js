@@ -400,7 +400,7 @@
       const offers = (window.PAID_OFFERS || []).filter(o => hitVenue(o.venue_mode) && hitQ([o.title, o.brief, o.level, (o.tags||[]).join(' ')]));
       const paidRuns = COURSES.filter(c => inferType(c) === 'paid' && !isIncubating(c) && hitVenue(c.venue_mode) && hitQ([c.title, c.summary||'', (c.tags||[]).join(' ')]));
       if (offers.length + paidRuns.length) {
-        html += header('收費課程', offers.length + paidRuns.length, '服務方案重整設計中，價格與細節陸續公告。');
+        html += header('收費課程', offers.length + paidRuns.length, '');
         html += grid(offers.map(paidCardHTML).concat(paidRuns.map(cardHTML)));
       }
     }

@@ -576,9 +576,12 @@ window.COURSES = [
 /* ─── 常設收費課程（課程總覽頁「收費課程」區資料源） ───
  * 與 window.COURSES 分開：COURSES 是有日期的場次，PAID_OFFERS 是常設報名項目。
  * 舊渲染器（首頁最近的課、邀約授課頁）只讀 COURSES，不受這個陣列影響。
- * 詳細介紹與報名都在 offers.html 對應錨點（銷售頁保留不動）。
+ * 2026-08-24 江江指示：服務方案已有 offers.html 專頁，這裡的常設卡先下架，
+ * 收費項目確認後再把下方 _PAID_OFFERS_ARCHIVED 的內容放回 PAID_OFFERS。
  */
-window.PAID_OFFERS = [
+window.PAID_OFFERS = [];
+
+const _PAID_OFFERS_ARCHIVED = [
   {
     id: "offer-invite",
     title: "課程邀約",
