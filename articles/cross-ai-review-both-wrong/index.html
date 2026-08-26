@@ -47,6 +47,7 @@ nav.top ul.nav-menu a:hover{color:#1a1612}nav.top ul.nav-menu a.active{color:#1a
 .tablewrap tbody tr:last-child td{border-bottom:none}
 .tablewrap td code,.section code{background:var(--soft);border:1px solid var(--line);border-radius:5px;padding:1px 6px;font:500 15px/1.5 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace}
 .inline-figure.wide{max-width:1000px}
+.inline-figure.portrait{max-width:440px}
 .toc{margin:26px 0 0;padding:20px 22px;background:#fff;border:1px solid var(--line);border-radius:10px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
 .toc>b{display:block;font-size:15px;letter-spacing:.05em;color:var(--green);margin-bottom:10px}
 .toc ol{margin:0;padding-left:1.35em;font-size:18px;line-height:1.7}
@@ -90,7 +91,7 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
 .lightbox.open{display:flex}.lightbox img{max-width:96vw;max-height:92vh;border-radius:10px;box-shadow:0 24px 60px rgba(0,0,0,.5)}
 .lightbox-close{position:fixed;top:18px;right:24px;color:#fff;font-size:34px;line-height:1;font-weight:700;cursor:pointer;opacity:.85}
 .kicker{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.55rem;color:#7a5c3a;font-weight:500}
-.hero h1{max-width:none;margin:16px 0 18px;font-size:clamp(36px,6vw,72px);line-height:1.08;overflow-wrap:anywhere}
+.hero h1{max-width:none;margin:16px 0 18px;font-size:clamp(30px,3.8vw,50px);line-height:1.16;overflow-wrap:anywhere}
 .hero p{max-width:none;font-size:clamp(18px,2vw,23px);line-height:1.62;color:#3a342d}
 .cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
 .cta a{display:inline-flex;align-items:center;text-decoration:none;border-radius:8px;padding:12px 16px;font-weight:900}
@@ -183,7 +184,7 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
 
 <section class="section" id="start">
   <div class="inner">
-    <figure class="article-figure"><img src="../../images/articles/cross-ai-review-both-wrong/01.jpg" alt="codex-plugin-cc：讓 Claude 可以直接呼叫 Codex 來幫忙、審查"><figcaption>OpenAI 官方外掛 codex-plugin-cc，打一行 /codex:adversarial-review，Codex 會專挑設計選擇跟沒說出口的假設。</figcaption></figure>
+    <figure class="inline-figure portrait"><img src="../../images/articles/cross-ai-review-both-wrong/01.jpg" alt="codex-plugin-cc：讓 Claude 可以直接呼叫 Codex 來幫忙、審查"><figcaption>OpenAI 官方外掛 codex-plugin-cc，打一行 /codex:adversarial-review，Codex 會專挑設計選擇跟沒說出口的假設。</figcaption></figure>
     <p class="lead">OpenAI 在 2026 年 3 月推出了官方外掛 codex-plugin-cc，讓 Claude Code 可以直接呼叫 Codex 來審。這剛好接上我平常的工作方式：重要的事情交給 AI 之前，我習慣先叫另外一家 AI 來審一次。原因是同一個 AI 檢查自己寫的東西，它會帶著同一套偏見再讀一遍，錯的前提在它眼裡依然成立。這篇用一次真實的互審過程說明這件事：三輪退件九項，其中三項是真的寫錯了事實，但審查的那一家自己也錯了兩項。文章會講這個外掛怎麼裝、能做到什麼與做不到什麼，拆解跨家審查的機制，以及三個從零成本到流程化的具體做法。</p>
 
     <div class="duo stack">
@@ -259,12 +260,16 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
     <h2>但它自己也錯了兩項</h2>
     <p>這是我覺得最該講的一段。</p>
     <p>Codex 那九項退件裡，有兩項我實測之後不成立。它憑著讀原始碼推論出一個結論，聽起來很有道理，但我實際跑一次，行為跟它說的不一樣。</p>
-    <table class="route-table">
-      <tr><th>它的主張</th><th>我怎麼驗</th><th>實際結果</th><th>採納嗎</th></tr>
-      <tr><td>「這些指令都必須本人親自輸入」是錯的，有兩支不是</td><td>去讀八支指令的設定檔，看有沒有禁止旗標</td><td>只有六支標了禁止，另外兩支確實沒有</td><td>採納，我改了</td></tr>
-      <tr><td>非 git 資料夾不是「審不出東西」，是直接被擋</td><td>實際在沒有版本控制的資料夾跑一次審查指令</td><td>回一行錯誤訊息就結束，根本沒開始審</td><td>採納，我改了</td></tr>
-      <tr><td>某段描述與原始碼行為不符（它讀原始碼推論的）</td><td>照它說的情境實際跑一次</td><td>行為跟它說的不一樣，我原本寫的才對</td><td>不採納，維持原樣</td></tr>
-    </table>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>它的主張</th><th>我怎麼驗</th><th>實際結果</th><th>採納嗎</th></tr></thead>
+        <tbody>
+          <tr><td>「這些指令都必須本人親自輸入」是錯的，有兩支不是</td><td>去讀八支指令的設定檔，看有沒有禁止旗標</td><td>只有六支標了禁止，另外兩支確實沒有</td><td>採納，我改了</td></tr>
+          <tr><td>非 git 資料夾不是「審不出東西」，是直接被擋</td><td>實際在沒有版本控制的資料夾跑一次審查指令</td><td>回一行錯誤訊息就結束，根本沒開始審</td><td>採納，我改了</td></tr>
+          <tr><td>某段描述與原始碼行為不符（它讀原始碼推論的）</td><td>照它說的情境實際跑一次</td><td>行為跟它說的不一樣，我原本寫的才對</td><td>不採納，維持原樣</td></tr>
+        </tbody>
+      </table>
+    </div>
     <p>第三列就是我說的那種情況。它的推論聽起來很有道理，如果我當時直接照改，我會把一個正確的描述改成錯的。</p>
     <div class="meaning"><b>兩家都會錯，而且錯的地方不一樣</b><p>這種錯比原本的錯更難發現，因為它披著「已經跨家審查過」的外衣。</p></div>
   </div>
@@ -290,13 +295,17 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
     <div class="codeblock">這份內容裡面，有哪些是事實錯誤？逐條列出，每條寫清楚你判斷的依據是什麼，以及我可以怎麼自己驗證。</div>
     <p>問法有兩個地方是刻意的。第一，只問事實錯誤，不問「你覺得怎麼樣」，後者會得到一堆客套的建議。第二，要求它給「我可以怎麼驗證」，這樣你才有辦法動手查，而不是只能選擇相信或不相信。</p>
     <p>拿到兩份回覆之後，這樣處理：</p>
-    <table class="route-table">
-      <tr><th>情況</th><th>怎麼處理</th></tr>
-      <tr><td>兩家都提到的</td><td>優先查。一致不等於對，只代表值得先看</td></tr>
-      <tr><td>只有一家提到的</td><td>次之，可能是視角差異，也可能是真的漏看</td></tr>
-      <tr><td>兩家講法互相矛盾的</td><td>強制查，自己動手測，不要投票決定</td></tr>
-      <tr><td>兩家都沒提到的</td><td>不代表沒問題，只代表這兩家都看不到</td></tr>
-    </table>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>情況</th><th>怎麼處理</th></tr></thead>
+        <tbody>
+          <tr><td>兩家都提到的</td><td>優先查。一致不等於對，只代表值得先看</td></tr>
+          <tr><td>只有一家提到的</td><td>次之，可能是視角差異，也可能是真的漏看</td></tr>
+          <tr><td>兩家講法互相矛盾的</td><td>強制查，自己動手測，不要投票決定</td></tr>
+          <tr><td>兩家都沒提到的</td><td>不代表沒問題，只代表這兩家都看不到</td></tr>
+        </tbody>
+      </table>
+    </div>
     <p>最後那一行是我自己踩過才寫的。跨家審查能降低盲點，它降不到零。</p>
 
     <h3>層次二：讓 AI 之間直接對話</h3>
