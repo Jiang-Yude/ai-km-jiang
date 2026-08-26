@@ -53,19 +53,36 @@ for (const f of files) {
   // 表格：不綁單一寫法（站上有 .tablewrap、.cmp-wrap+table.cmp、bare table{}、inline style 四種），
   // 只確認每張表真的吃得到樣式，否則桌機版會退回瀏覽器預設（沒框沒底沒對齊）。
   const selectors = [...styles.matchAll(/([^{}]+)\{/g)].map(m => m[1].replace(/\s+/g, ' ').trim());
-  // 有沒有任何一條規則會打到裸的 table／th／td（不論是 `table{}` 還是 `.x table{}`）
-  const hasElementTableRule = selectors.some(s =>
-    /(^|[\s,>+~])(table|th|td|thead|tbody)([\s,.:\[)]|$)/.test(s));
+  // 逗號群組要拆開逐條判斷：`.tablewrap th,.tablewrap td` 是兩條各自有祖先限定的規則。
+  const sels = selectors.flatMap(g => g.split(',').map(x => x.trim())).filter(Boolean);
+
+  // 「元素層規則」＝能打到任意一張裸 table 的規則，必須是純元素選擇器（table{}、th,td{}），
+  // 不能有任何組合子。2026-08-27 修：舊版把 `.tablewrap table` 這種【後代選擇器】也算進來，
+  // 而每篇有表格樣式的文章都有這行，旗標永遠 true，害下面每張表格都被 continue 跳過，
+  // 表格這一關實質上是空的（cross-ai-review-both-wrong 的兩個 route-table 就是這樣漏掉的）。
+  const isBareElementRule = s => !/[\s>+~]/.test(s) &&
+    /^(table|th|td|thead|tbody|tr)(:[\w-]+(\([^)]*\))?)*$/.test(s);
+  const hasElementTableRule = sels.some(isBareElementRule);
+
+  // `.x table{}` 形式：只有被 .x 包住的表格吃得到，記下 x 供下面比對容器。
+  const wrapperClasses = new Set(sels
+    .map(s => (s.match(/^\.([\w-]+)\s+(?:table|th|td|thead|tbody|tr)\b/) || [, null])[1])
+    .filter(Boolean));
+  const styledClasses = new Set();
+  for (const s of sels) for (const m of s.matchAll(/\.([\w-]+)/g)) styledClasses.add(m[1]);
+
   for (const m of body.matchAll(/<table\b([^>]*)>/g)) {
     const attrs = m[1];
     if (/\sstyle=/.test(attrs)) continue;                       // 自帶 inline style
-    if (hasElementTableRule) continue;                          // 有元素層規則
+    if (hasElementTableRule) continue;                          // 真的有元素層規則
     const cls = (attrs.match(/class="([^"]+)"/) || [, ''])[1].split(/\s+/).filter(Boolean);
-    const styledByOwnClass = cls.some(c => selectors.some(s =>
-      new RegExp('\\.' + c.replace(/-/g, '\\-') + '(?![\\w-])').test(s)));
-    if (!styledByOwnClass) {
-      missing.push(`<table${cls.length ? ' class="' + cls.join(' ') + '"' : ''}> 吃不到任何表格樣式`);
-    }
+    if (cls.some(c => styledClasses.has(c))) continue;          // 自己的 class 有樣式
+    // 被有樣式的容器包住（.tablewrap table 這種寫法）：往前找最近的容器開標籤比對。
+    const before = body.slice(Math.max(0, m.index - 400), m.index);
+    const wraps = [...before.matchAll(/<(?:div|section|main|article|aside|figure)[^>]*\sclass="([^"]+)"/g)];
+    const near = wraps.length ? wraps[wraps.length - 1][1].split(/\s+/) : [];
+    if (near.some(c => wrapperClasses.has(c))) continue;
+    missing.push(`<table${cls.length ? ' class="' + cls.join(' ') + '"' : ''}> 吃不到任何表格樣式`);
   }
   checked++;
   if (missing.length) { fail = 1; console.log(`  ❌ ${f}\n     缺樣式：${missing.join('、')}`); }
