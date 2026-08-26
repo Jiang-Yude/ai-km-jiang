@@ -1,0 +1,389 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="index,follow">
+<title>OpenAI 出了官方外掛，讓 Codex 能接到 Claude Code 一起工作｜codex-plugin-cc</title>
+<meta name="description" content="OpenAI 在 2026 年 3 月推出官方外掛 codex-plugin-cc，讓 Claude Code 可以直接呼叫 Codex 來審。這篇講它怎麼裝、能做到什麼、做不到什麼，加上一次真實的互審：三輪退我九項，但審查的那一家自己也錯了兩項。內含零成本互審提示詞、意見處理表與三個實測才知道的限制。">
+<link rel="canonical" href="https://jiangyude.com/articles/cross-ai-review-both-wrong/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="OpenAI 出了官方外掛，讓 Codex 能接到 Claude Code 一起工作｜codex-plugin-cc｜江江教練">
+<!-- 分享封面：hero 文字填好後在 repo 根目錄跑 `node scripts/og-shot.mjs cross-ai-review-both-wrong` 自動截 1200×630 到 images/og/cross-ai-review-both-wrong.jpg（見 README「文章分享封面（OG 圖）機制」）。別退回 intro-jiang.png 直式人像，會被裁成只剩脖子。 -->
+<meta property="og:image" content="https://jiangyude.com/images/og/cross-ai-review-both-wrong.jpg">
+<meta property="og:description" content="OpenAI 在 2026 年 3 月推出官方外掛 codex-plugin-cc，讓 Claude Code 可以直接呼叫 Codex 來審。這篇講它怎麼裝、能做到什麼、做不到什麼，加上一次真實的互審：三輪退我九項，但審查的那一家自己也錯了兩項。內含零成本互審提示詞、意見處理表與三個實測才知道的限制。">
+<meta property="og:url" content="https://jiangyude.com/articles/cross-ai-review-both-wrong/">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:site_name" content="江江教練 · AI 知識管理">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="OpenAI 出了官方外掛，讓 Codex 能接到 Claude Code 一起工作｜codex-plugin-cc｜江江教練">
+<meta name="twitter:image" content="https://jiangyude.com/images/og/cross-ai-review-both-wrong.jpg">
+<meta name="twitter:description" content="OpenAI 在 2026 年 3 月推出官方外掛 codex-plugin-cc，讓 Claude Code 可以直接呼叫 Codex 來審。這篇講它怎麼裝、能做到什麼、做不到什麼，加上一次真實的互審：三輪退我九項，但審查的那一家自己也錯了兩項。內含零成本互審提示詞、意見處理表與三個實測才知道的限制。">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"OpenAI 出了官方外掛，讓 Codex 能接到 Claude Code 一起工作｜codex-plugin-cc","description":"OpenAI 在 2026 年 3 月推出官方外掛 codex-plugin-cc，讓 Claude Code 可以直接呼叫 Codex 來審。這篇講它怎麼裝、能做到什麼、做不到什麼，加上一次真實的互審：三輪退我九項，但審查的那一家自己也錯了兩項。內含零成本互審提示詞、意見處理表與三個實測才知道的限制。","author":{"@type":"Person","name":"江昱德","alternateName":"江江教練","jobTitle":"隱性知識提煉師、AI 應用規劃師"},"isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://jiangyude.com/"},"inLanguage":"zh-Hant","url":"https://jiangyude.com/articles/cross-ai-review-both-wrong/"}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{--ink:#1a1612;--paper:#fefcf8;--muted:#6a635a;--line:#d8cdb8;--green:#5f7553;--blue:#5689b8;--orange:#e85a4f;--soft:#faf5ec;--dark:#2a2018;--shadow:0 18px 45px rgba(107,74,42,.14);--sp-shadow:hsla(35,50%,60%,.15);--sp-shadow-edge:hsla(35,50%,68%,.03);--sp-radius:400px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC","Segoe UI",sans-serif}
+a{color:inherit}
+/* 官網共用導航列 nav.top（與首頁/文章總站同一條） */
+nav.top{position:sticky;top:0;background:rgba(254,252,248,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid #d8cdb8;z-index:100}
+nav.top .container{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:24px;padding:14px 32px}
+.nav-brand-img{justify-self:start;display:flex;align-items:center;text-decoration:none;flex-shrink:0;transition:opacity .2s}
+.nav-brand-img:hover{opacity:.8}.nav-brand-img img{height:40px;width:auto;display:block}
+nav.top ul.nav-menu{justify-self:end;display:flex;gap:22px;list-style:none;margin:0;padding:0;font-size:.95rem;white-space:nowrap}
+nav.top ul.nav-menu a{color:#3a342d;text-decoration:none;transition:color .2s;font-weight:500;white-space:nowrap}
+nav.top ul.nav-menu a:hover{color:#1a1612}nav.top ul.nav-menu a.active{color:#1a1612;font-weight:700}
+.nav-toggle{display:none;background:none;border:none;padding:6px;cursor:pointer;width:36px;height:36px;position:relative}
+.nav-toggle span{display:block;position:absolute;left:8px;right:8px;height:2px;background:#1a1612;border-radius:2px;transition:transform .25s,opacity .25s,top .25s}
+.nav-toggle span:nth-child(1){top:11px}.nav-toggle span:nth-child(2){top:17px}.nav-toggle span:nth-child(3){top:23px}
+.nav-toggle.open span:nth-child(1){top:17px;transform:rotate(45deg)}.nav-toggle.open span:nth-child(2){opacity:0}.nav-toggle.open span:nth-child(3){top:17px;transform:rotate(-45deg)}
+.tablewrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:22px 0;border:1px solid var(--line);border-radius:10px;background:#fff;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.tablewrap table{border-collapse:collapse;width:100%;min-width:600px;font-size:18px;line-height:1.65}
+.tablewrap .zh{display:block;margin-top:5px;font-size:16px;line-height:1.55;color:var(--muted);font-weight:400}
+.tablewrap th,.tablewrap td{padding:12px 14px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top;color:#3a342d}
+.tablewrap thead th{background:var(--soft);font-weight:900;font-size:18px;color:#1a1612;white-space:nowrap}
+.tablewrap tbody tr:last-child td{border-bottom:none}
+.tablewrap td code,.section code{background:var(--soft);border:1px solid var(--line);border-radius:5px;padding:1px 6px;font:500 15px/1.5 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace}
+.inline-figure.wide{max-width:1000px}
+.toc{margin:26px 0 0;padding:20px 22px;background:#fff;border:1px solid var(--line);border-radius:10px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.toc>b{display:block;font-size:15px;letter-spacing:.05em;color:var(--green);margin-bottom:10px}
+.toc ol{margin:0;padding-left:1.35em;font-size:18px;line-height:1.7}
+.toc li{margin-bottom:7px;color:#3a342d}
+.toc a{color:var(--blue);font-weight:700;text-decoration:none}.toc a:hover{text-decoration:underline}
+.toc-hint{margin:12px 0 0!important;font-size:18px!important;color:var(--muted)!important;border-top:1px solid var(--line);padding-top:12px}
+.readmore{margin-top:24px;padding:20px 22px;background:var(--soft);border:1px solid var(--line);border-radius:12px}
+.readmore.near{margin:26px 0 6px;background:rgba(86,137,184,.07);border-color:#bcd0e2}
+.readmore.near b{color:var(--blue);font-size:18px}
+.readmore.near li{font-size:17px;line-height:1.7;margin-bottom:10px}
+.readmore b{display:block;margin-bottom:10px;font-size:19px}
+.readmore ul{margin:0;padding-left:1.25em}
+.readmore a{color:var(--blue);font-weight:700;text-decoration:none}
+.readmore a:hover{text-decoration:underline}
+@media(max-width:820px){.tablewrap table{min-width:560px;font-size:18px}.tablewrap{position:relative}.tablewrap::after{content:"表格可左右滑動 →";position:sticky;left:0;display:block;font-size:15px;color:var(--muted);background:var(--soft);border-top:1px solid var(--line);padding:7px 12px;width:100%}}
+@media(max-width:860px){
+ nav.top .container{grid-template-columns:auto 1fr auto;padding:10px 16px;gap:12px}
+ .nav-brand-img img{height:32px}
+ .nav-toggle{display:block;justify-self:end}
+ nav.top ul.nav-menu{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(254,252,248,.98);backdrop-filter:blur(14px);border-bottom:1px solid #d8cdb8;flex-direction:column;gap:0;padding:8px 0;box-shadow:0 10px 24px rgba(107,74,42,.08)}
+ nav.top ul.nav-menu.open{display:flex}
+ nav.top ul.nav-menu li{border-bottom:1px solid #e8dfc9}
+ nav.top ul.nav-menu li:last-child{border-bottom:none}
+ nav.top ul.nav-menu a{display:block;padding:14px 20px;font-size:1.06rem}
+}
+/* 滑鼠暖光暈（與首頁同一支 spotlight.js） */
+body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradient(var(--sp-radius) circle at var(--mx,50%) var(--my,50%),var(--sp-shadow) 0%,var(--sp-shadow-edge) 45%,transparent 75%);pointer-events:none;z-index:9999;mix-blend-mode:multiply;transition:background .06s linear}
+.hero{position:relative;overflow:hidden;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:72px;padding:96px clamp(20px,6vw,88px) 80px;background:linear-gradient(180deg,#fffcf0 0%,#f9e9d2 100%);color:#1a1612;border-bottom:1px solid #d8cdb8}
+.hero .wc{position:absolute;border-radius:50%;filter:blur(60px);pointer-events:none;z-index:0}
+.hero .wc1{width:420px;height:360px;top:-120px;right:-80px;background:#e8884b;opacity:.15}
+.hero .wc2{width:360px;height:300px;bottom:-110px;left:-70px;background:#5f7553;opacity:.13}
+.hero .wc3{width:280px;height:260px;top:34%;left:14%;background:#a08144;opacity:.10}
+.hero>div{flex:none;width:860px;max-width:100%;position:relative;z-index:2}
+.hero-figure{margin:0;width:420px;flex:none;position:relative;z-index:2}
+.hero-figure img{display:block;width:100%;border-radius:16px;border:1px solid #d8cdb8;box-shadow:0 18px 45px rgba(107,74,42,.16);cursor:zoom-in}
+.hero-figure figcaption{margin-top:10px;font-size:14px;line-height:1.6;color:#6a635a}
+.inline-figure{margin:30px auto 8px;max-width:820px}
+.inline-figure img{display:block;width:100%;border-radius:14px;border:1px solid var(--line);box-shadow:var(--shadow);background:#fff;cursor:zoom-in}
+.inline-figure figcaption{font-size:14px;line-height:1.6;color:var(--muted);margin-top:10px}
+.lightbox{position:fixed;inset:0;z-index:10000;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(12,10,8,.92);cursor:zoom-out;backdrop-filter:blur(4px)}
+.lightbox.open{display:flex}.lightbox img{max-width:96vw;max-height:92vh;border-radius:10px;box-shadow:0 24px 60px rgba(0,0,0,.5)}
+.lightbox-close{position:fixed;top:18px;right:24px;color:#fff;font-size:34px;line-height:1;font-weight:700;cursor:pointer;opacity:.85}
+.kicker{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.55rem;color:#7a5c3a;font-weight:500}
+.hero h1{max-width:none;margin:16px 0 18px;font-size:clamp(36px,6vw,72px);line-height:1.08;overflow-wrap:anywhere}
+.hero p{max-width:none;font-size:clamp(18px,2vw,23px);line-height:1.62;color:#3a342d}
+.cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
+.cta a{display:inline-flex;align-items:center;text-decoration:none;border-radius:8px;padding:12px 16px;font-weight:900}
+.cta .primary{background:#fff;color:#1a1612}.cta .ghost{border:1px solid rgba(255,255,255,.32);color:#fff;background:rgba(255,255,255,.08)}
+.section{padding:54px clamp(20px,6vw,88px);border-top:1px solid var(--line)}
+.inner{width:min(1000px,100%);margin:0 auto}
+.section h2{font-size:clamp(26px,4.2vw,48px);line-height:1.12;margin:0 0 18px}
+.section h3{font-size:clamp(21px,3vw,30px);line-height:1.2;margin:30px 0 12px}
+.lead{font-size:clamp(18px,1.6vw,22px);line-height:1.7;color:#3a342d;max-width:900px}
+.section p{font-size:18px;line-height:1.74;color:#3a342d}.section p+p{margin-top:14px}
+.section ul,.section ol{padding-left:1.4em;font-size:18px;line-height:1.74;color:#3a342d}.section li{margin-bottom:8px}
+.meaning{margin:22px 0;padding:16px 18px;border-left:5px solid var(--blue);background:rgba(86,137,184,.12);border-radius:6px;line-height:1.7;font-size:19px}
+.meaning b{display:block;color:var(--blue);margin-bottom:4px}
+.caveat{margin:0 0 8px;padding:16px 18px;border-left:5px solid var(--orange);background:rgba(232,90,79,.1);border-radius:6px;line-height:1.7;font-size:18px;color:#3a342d}
+.caveat b{display:block;color:var(--orange);margin-bottom:4px}
+.infocard{background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px 24px 22px;box-shadow:0 8px 22px rgba(107,74,42,.08);margin-top:8px}
+.infocard-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.info-item{padding:18px 14px 0}
+.info-item b{display:block;font-size:14px;font-weight:900;letter-spacing:.04em;margin-bottom:7px;text-transform:uppercase}
+.info-item:nth-child(1) b{color:var(--green)}.info-item:nth-child(2) b{color:var(--orange)}.info-item:nth-child(3) b{color:var(--blue)}
+.info-item p{margin:0;font-size:17px;line-height:1.6;color:#3a342d}
+.tagrow{display:flex;flex-wrap:wrap;gap:7px;margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
+.tag{font-size:14px;color:var(--muted);background:var(--soft);border:1px solid var(--line);border-radius:999px;padding:4px 11px}
+.duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:24px}
+.duo.stack{grid-template-columns:1fr}
+.duo .card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:22px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.duo .card.a{border-color:var(--orange)}.duo .card.b{border-color:var(--green);box-shadow:0 8px 24px rgba(95,117,83,.16)}
+.duo .card small{display:block;font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.04em;margin-bottom:9px}
+.duo .card.a small{color:var(--orange)}.duo .card.b small{color:var(--green)}
+.duo .card b{display:block;font-size:22px;line-height:1.3;margin-bottom:12px}.duo .card.a b{color:#c0512f}.duo .card.b b{color:#4a7a59}
+.duo .card p{margin:0;color:#3a342d;line-height:1.75;font-size:18px}
+.workflow-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:24px}
+.workflow-step{background:#fff;border:1px solid var(--line);border-radius:8px;padding:18px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.workflow-step small{display:block;color:var(--orange);font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;margin-bottom:9px}
+.workflow-step b{display:block;font-size:18px;line-height:1.3;margin-bottom:9px}
+.workflow-step p{margin:0;color:#3a342d;line-height:1.6;font-size:16px}
+.codeblock{background:var(--dark);color:#f3ead9;border-radius:8px;padding:18px 20px;font:500 14px/1.65 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;overflow-x:auto;white-space:pre-wrap;margin:20px 0;box-shadow:0 8px 22px rgba(107,74,42,.12)}
+.codeblock .c{color:#f6d7a6;font-weight:600}
+.skillcard{background:#fff;border:1px solid var(--green);border-radius:12px;padding:24px;box-shadow:0 10px 26px rgba(95,117,83,.16);margin-top:8px}
+.skillcard b{display:block;font-size:21px;margin-bottom:8px}
+.skillcard p{margin:0 0 16px;font-size:17px;line-height:1.65;color:#3a342d}
+.cta-band{background:#e6f0e5;color:#3a342d}.cta-band .section{border-top:none}
+.cta-band .inner{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(260px,.85fr);gap:26px;align-items:start}
+.cta-band h2{font-size:clamp(26px,4vw,44px);margin:0 0 16px}.cta-band p,.cta-band .lead{color:rgba(58,52,45,.9);font-size:18px;line-height:1.72}
+.cta-card{border:1px solid #cfe0d2;background:#fbfdfa;border-radius:8px;padding:22px}
+.cta-card b{display:block;color:#48b178;margin-bottom:10px;font-size:18px}.cta-card p{margin:0 0 14px}
+.footer{padding:30px clamp(20px,6vw,88px);font-size:14px;color:var(--muted);background:#fff;border-top:1px solid var(--line)}
+.footer-inner{width:min(1000px,100%);margin:0 auto}
+.footer-links{display:flex;flex-wrap:wrap;gap:6px 12px;margin-bottom:14px}.footer-links a{color:var(--blue);font-weight:900;text-decoration:none;font-size:14px}
+.footer-brand{font-weight:900;font-size:15px;margin-bottom:10px}.footer-note{font-size:13px;line-height:1.6}
+@media(max-width:820px){.infocard-grid{grid-template-columns:1fr}.duo{grid-template-columns:1fr}.workflow-grid{grid-template-columns:1fr}.cta-band .inner{grid-template-columns:1fr}.section{padding:40px 20px}.hero{min-height:52vh;flex-direction:column;justify-content:flex-start;align-items:flex-start;gap:24px}.hero>div{width:100%}.hero-figure{width:100%;max-width:560px}}
+@media(max-width:820px){html,body{overflow-x:hidden}.hero h1{word-break:break-word}}
+</style>
+</head>
+<body class="spotlight">
+<!-- 官網共用導航列 nav.top：與首頁/總站同一條，文章不要自己另做極簡 topbar（江江 2026-06-25：要同一個框架、同一條導航列）。把對應頁面的 class="active" 標在自己那欄。
+     ⚠️ 下面 ul.nav-menu 整塊由 preflight 第 5 關 check-bilingual-nav.mjs 做「逐字比對」，
+        塞任何註解、多一個空白、換行位置不同都會被判導航不一致而擋下發布。要說明就寫在 <ul> 外面（像這裡）。
+        2026-08-16 修：原本的 EN 那行說明註解就夾在 <ul> 裡面，導致照範本起手的新文章一律卡第 5 關
+        （llm-rag-agent-mcp 與 rag-three-retrieval-modes 兩篇同時中招）。註解已移出來，<ul> 內保持乾淨。
+        萬一還是被擋，直接跑：node scripts/check-bilingual-nav.mjs --write --only=<你的檔案路徑> -->
+<nav class="top">
+  <div class="container">
+    <a class="nav-brand-img" href="../../index.html"><img src="../../images/footer-signature.png" alt="江江教練 | 江昱德"></a>
+    <button class="nav-toggle" aria-label="選單"><span></span><span></span><span></span></button>
+    <ul class="nav-menu">
+      <li><a href="../../index.html">首頁</a></li>
+      <li><a href="../../knowledge-architecture.html">知識架構</a></li>
+      <li><a href="../../courses.html">課程</a></li>
+      <li><a href="../../articles.html" class="active">深度文章</a></li>
+      <li><a href="../../skills.html">技能包下載</a></li>
+      <li><a href="../../offers.html">服務方案</a></li>
+      <li class="lang-switch"><a href="../../en/articles.html" hreflang="en">EN</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="wc wc1"></div>
+  <div class="wc wc2"></div>
+  <div class="wc wc3"></div>
+  <div>
+    <div class="kicker">AI 工作流 / 跨家審查</div>
+    <h1>OpenAI 出了官方外掛，讓 Codex 能接到 Claude Code 一起工作｜<span style="white-space:nowrap">codex-plugin-cc</span></h1>
+    <p>同一個 AI 檢查自己寫的東西，會帶著同一套偏見再讀一遍。換一家來看比較不會漏掉盲點，但兩家都會錯，而且錯的地方不一樣。</p>
+  </div>
+</section>
+
+<main>
+
+<section class="section" id="start">
+  <div class="inner">
+    <p class="lead">OpenAI 在 2026 年 3 月推出了官方外掛 codex-plugin-cc，讓 Claude Code 可以直接呼叫 Codex 來審。這剛好接上我平常的工作方式：重要的事情交給 AI 之前，我習慣先叫另外一家 AI 來審一次。原因是同一個 AI 檢查自己寫的東西，它會帶著同一套偏見再讀一遍，錯的前提在它眼裡依然成立。這篇用一次真實的互審過程說明這件事：三輪退件九項，其中三項是真的寫錯了事實，但審查的那一家自己也錯了兩項。文章會講這個外掛怎麼裝、能做到什麼與做不到什麼，拆解跨家審查的機制，以及三個從零成本到流程化的具體做法。</p>
+
+    <div class="duo stack">
+      <div class="infocard">
+        <b style="color:#c9722f">適合誰</b>
+        <ul>
+          <li>每天用 AI 寫提案、文案或報告，交出去之前總有點不放心，但也不知道該怎麼查</li>
+          <li>要把 AI 產出的內容給主管或客戶看，最怕裡面有錯被當場抓包</li>
+          <li>一個人工作，沒有同事會在你交件之前幫你看一眼</li>
+        </ul>
+      </div>
+      <div class="infocard">
+        <b style="color:#4f8a5b">你可以帶走什麼</b>
+        <ul>
+          <li>一句可以直接複製的互審提示詞，今天就能用，不用裝任何東西</li>
+          <li>一張處理表：兩家意見一致、只有一家提到、兩家互相矛盾，各該怎麼處理</li>
+          <li>一個判斷標準：什麼情況值得花雙倍時間跨家審，什麼情況不用</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="plugin">
+  <div class="inner">
+    <h2>OpenAI 推出了一個讓 Claude Code 直接呼叫 Codex 的外掛</h2>
+    <p>2026 年 3 月，OpenAI 發布了官方外掛 codex-plugin-cc（<a href="https://github.com/openai/codex-plugin-cc" target="_blank" rel="noopener">原始碼公開在 GitHub ↗</a>），把「叫另一家 AI 來審」變成一個指令。裝好之後，在 Claude Code 裡面打一行指令，Codex 就會去審，審完把結果送回來。</p>
+    <p>這剛好接上我平常的工作方式。遇到重要任務，或者要做決定的時候，我都會叫另外一家 AI 再審一次。這件事我自己做了一段時間，做法一直是手動的：從一家複製貼上到另一家，再把意見貼回來。</p>
+    <p>所以這個外掛的實際作用是省掉搬運。底層還是同一支你本機裝的 Codex，同一組帳號、同一份用量額度。它沒有讓連線變得更穩，變順的是流程。</p>
+    <div class="caveat"><b>值得說清楚的一點</b><p>很多人會以為裝了官方外掛就等於升級。實際上升級的是「你不會忘記做這件事」，還有「結果不會在複製貼上的過程中掉字」。</p></div>
+    <p>八個指令裡我最常用的是 adversarial-review，中文可以理解成對抗式審查：它的任務不是幫你確認，是專門挑戰你的設計選擇跟你沒講出來的假設。</p>
+    <h3>怎麼裝、怎麼用</h3>
+    <p>在 Claude Code 的對話框打這三行：</p>
+    <div class="codeblock">/plugin marketplace add openai/codex-plugin-cc<br>/plugin install codex@openai-codex<br>/reload-plugins</div>
+    <p>裝完打 <code>/codex:setup</code> 檢查狀態，要審就打 <code>/codex:adversarial-review</code>。前提是你本機已經裝好 Codex 也登入過，這個外掛只是橋，真正做事的是本機那一支。</p>
+    <p><b>先分清楚哪支能用在哪。</b><code>/codex:review</code> 與 <code>/codex:adversarial-review</code> 都是拿版本控制的變更當審查對象，只能在 git 資料夾裡跑。要審文章、企劃、規則這類不在 git 裡的東西，改用 <code>/codex:rescue</code>，並且在指令後面把「唯讀、不准動任何檔」跟你要它看的角度寫清楚。</p>
+  </div>
+</section>
+<section class="section" id="habit">
+  <div class="inner">
+    <h2>為什麼我不會只問一個 AI</h2>
+    <p>這跟信不信任手上這一家沒有關係。原因在於同一個 AI 審自己寫的東西，它的偏見會跟著一起帶進去。它認為對的地方，複查的時候還是會認為對。</p>
+    <p>換一家來看，比較不會漏掉盲點。</p>
+    <p>我的主力是 Claude，日常寫作、規劃、整理都在這裡。碰到重要的東西，我會叫 Codex 來審一次。兩家模型的訓練、系統設定、可用工具與推論脈絡都不完全相同，所以它們看同一份東西，關注的重點會不一樣。</p>
+  </div>
+</section>
+
+<section class="section" id="why">
+  <div class="inner">
+    <h2>為什麼同一家 AI 自我檢查，容易漏掉同一個錯誤前提</h2>
+    <p>這件事的機制其實不複雜。</p>
+    <p>AI 產生答案的時候，是根據它當下理解的脈絡往下推。如果它一開始就把某個前提記錯了，後面每一步都會建立在那個錯誤上，而且每一步都會看起來很合理。</p>
+    <p>你回頭叫它「檢查一下有沒有錯」，它重新讀一遍，讀到的還是同一份脈絡，用的還是同一套判斷。錯字、前後矛盾這類表面問題它抓得到，但那個錯誤的前提在它眼裡依然成立，所以它會告訴你「檢查過了，沒有問題」。</p>
+    <div class="meaning"><b>這不是它偷懶</b><p>是它沒有第二個視角可以用。換一家 AI 就不一樣，它沒有參與前面的推論，它是拿著結果回頭看，比較容易問出「這個前提是哪來的」。要提醒的是，換一家增加的是不同視角，它不保證獨立，也不保證正確。</p></div>
+    <div class="readmore near"><b>如果你想先看「怎麼發現 AI 在唬你」</b><ul><li><a href="../caught-ai-slacking-into-rules/">AI 寫的東西我怎麼確認它是對的？抓到 AI 偷懶之後，我把它寫進流程規則</a>　那篇講的是單一 AI 出錯時怎麼抓，這篇往下一層，講抓不到的時候找另一家來看。</li></ul></div>
+  </div>
+</section>
+
+<section class="section" id="case">
+  <div class="inner">
+    <h2>一次真實的互審：三輪，退我九項</h2>
+    <p>前幾天我改了一份自己的工作規則。改完覺得沒問題，就丟給 Codex 審。</p>
+    <p>第一輪，退六項。</p>
+    <p>其中一項是我在兩個地方重複寫了同一件事，這在我自己的規則裡是明文禁止的，我寫的時候完全沒察覺。另外兩項更嚴重，是我寫錯了事實：我寫「這些指令都必須本人親自輸入」，實際上有兩個指令不是；我寫「在沒有版本控制的資料夾裡會審不出東西」，實際上是直接被擋，根本跑不起來。</p>
+    <p>我沒有直接照改。我一項一項自己去驗：去讀那些指令的設定檔、去實際跑一次看它回什麼。驗完確認 Codex 說得對。</p>
+    <p>改完再送審，第二輪又退三項，還多指出三個我沒想到的問題，包括一個真的會出事的：我寫的指令範例如果直接套用，遇到特殊符號會被系統當成指令執行。</p>
+    <p>第三輪才通過。</p>
+  </div>
+</section>
+
+<section class="section" id="both-wrong">
+  <div class="inner">
+    <h2>但它自己也錯了兩項</h2>
+    <p>這是我覺得最該講的一段。</p>
+    <p>Codex 那九項退件裡，有兩項我實測之後不成立。它憑著讀原始碼推論出一個結論，聽起來很有道理，但我實際跑一次，行為跟它說的不一樣。</p>
+    <table class="route-table">
+      <tr><th>它的主張</th><th>我怎麼驗</th><th>實際結果</th><th>採納嗎</th></tr>
+      <tr><td>「這些指令都必須本人親自輸入」是錯的，有兩支不是</td><td>去讀八支指令的設定檔，看有沒有禁止旗標</td><td>只有六支標了禁止，另外兩支確實沒有</td><td>採納，我改了</td></tr>
+      <tr><td>非 git 資料夾不是「審不出東西」，是直接被擋</td><td>實際在沒有版本控制的資料夾跑一次審查指令</td><td>回一行錯誤訊息就結束，根本沒開始審</td><td>採納，我改了</td></tr>
+      <tr><td>某段描述與原始碼行為不符（它讀原始碼推論的）</td><td>照它說的情境實際跑一次</td><td>行為跟它說的不一樣，我原本寫的才對</td><td>不採納，維持原樣</td></tr>
+    </table>
+    <p>第三列就是我說的那種情況。它的推論聽起來很有道理，如果我當時直接照改，我會把一個正確的描述改成錯的。</p>
+    <div class="meaning"><b>兩家都會錯，而且錯的地方不一樣</b><p>這種錯比原本的錯更難發現，因為它披著「已經跨家審查過」的外衣。</p></div>
+  </div>
+</section>
+
+<section class="section" id="decide">
+  <div class="inner">
+    <h2>決定還是我下的</h2>
+    <p>我對 AI 互審的定位很清楚：它把我看不到的角落翻出來，讓我自己去驗。</p>
+    <p>它做的事情是讓我在下決定之前，多看到幾個角度。</p>
+    <p>一個人工作最容易掉的坑，是把 AI 的答案當結論。兩家互審之後你會發現一件事：兩邊的分歧特別值錢。一致的地方優先查，分歧的地方一定要查，兩種都不能直接當成結論。</p>
+    <p>所以互審真正的產出，是一張待驗清單，不是一份標準答案。</p>
+  </div>
+</section>
+
+<section class="section" id="how">
+  <div class="inner">
+    <h2>你可以怎麼做</h2>
+    <p>三個層次，從最低成本開始。</p>
+
+    <h3>層次一：不用裝任何東西，今天就能做</h3>
+    <p>同一份東西丟給兩家 AI，只問一句：</p>
+    <div class="codeblock">這份內容裡面，有哪些是事實錯誤？逐條列出，每條寫清楚你判斷的依據是什麼，以及我可以怎麼自己驗證。</div>
+    <p>問法有兩個地方是刻意的。第一，只問事實錯誤，不問「你覺得怎麼樣」，後者會得到一堆客套的建議。第二，要求它給「我可以怎麼驗證」，這樣你才有辦法動手查，而不是只能選擇相信或不相信。</p>
+    <p>拿到兩份回覆之後，這樣處理：</p>
+    <table class="route-table">
+      <tr><th>情況</th><th>怎麼處理</th></tr>
+      <tr><td>兩家都提到的</td><td>優先查。一致不等於對，只代表值得先看</td></tr>
+      <tr><td>只有一家提到的</td><td>次之，可能是視角差異，也可能是真的漏看</td></tr>
+      <tr><td>兩家講法互相矛盾的</td><td>強制查，自己動手測，不要投票決定</td></tr>
+      <tr><td>兩家都沒提到的</td><td>不代表沒問題，只代表這兩家都看不到</td></tr>
+    </table>
+    <p>最後那一行是我自己踩過才寫的。跨家審查能降低盲點，它降不到零。</p>
+
+    <h3>層次二：讓 AI 之間直接對話</h3>
+    <p>如果你已經在用 Claude Code 或 Codex 這類可以讀你檔案的工具，就裝上面那個官方外掛，讓它們直接互相呼叫，省掉手動搬運。裝法與哪支指令用在哪，前面「怎麼裝、怎麼用」那段已經寫了。</p>
+    <p>這一層真正的差別不在於快，在於你不會忘記做這件事。手動複製貼上的時候，趕時間就會跳過；變成一個指令之後，跳過的成本跟執行的成本一樣低。</p>
+
+    <h3>層次三：把它變成流程，不靠記性</h3>
+    <p>這是我自己現在的做法。我把「什麼情況一定要跨家審」寫成規則，寫進 AI 每次都會讀到的設定檔裡。</p>
+    <p>我的判斷標準是：這件事做錯了，收拾起來很麻煩嗎？</p>
+    <p>會麻煩的就審。包括改規則、對外發布、部署上線、金錢相關、跟別人的承諾。不會麻煩的就不審，例如整理筆記、改個錯字。</p>
+    <p>寫成規則的好處是不用每次靠自己想起來。壞處是規則會過期，所以要記得標日期，並且定期回頭驗一次「這條當初的假設現在還成立嗎」。</p>
+    <p><b>再往上一層，是雙軌互審。</b>我現在做重要企劃會這樣跑：同一份輸入丟給兩家 AI，讓它們各自獨立寫完一份完整的，過程中不准看對方寫了什麼。兩邊都寫完了，才交換審對方那一份。</p>
+<p>差別在於，如果一開始就讓它們一起討論，後面那家會被前面那家的思路帶著走，你會拿到兩份很像的東西，看起來有兩個意見，其實只有一個。各寫各的，你才會看到真正的分歧在哪裡。那些分歧就是需要你親自決定的地方，AI 幫你把它們找出來，決定還是你下。</p>
+<div class="readmore near"><b>想把互審做成正式機制，下一步看這篇</b><ul><li><a href="../three-levels-of-cross-review/">怎麼設計讓兩個 AI 互審？三種不同程度的審查機制設計</a>　這篇講的是我為什麼要互審、實際跑起來長什麼樣；那篇往下一層，講三種深淺不同的機制怎麼選、怎麼搭。</li></ul></div>
+  </div>
+</section>
+
+<section class="section" id="limits">
+  <div class="inner">
+    <h2>誠實講幾個限制</h2>
+    <div class="caveat"><b>外掛不會跟著你換電腦</b><p>這種外掛裝在你電腦本機，不會跟著雲端筆記同步。我七月在一台電腦上裝好、也記錄了，這次要用才發現另一台上面根本沒有，紀錄還好好寫著「已經裝好」。規則沒壞，是我把它掛在一個不會跟著我走的地方。所以每換一台機器都要重裝，而且不能拿另一台的紀錄當作這台也有。</p></div>
+    <div class="caveat"><b>兩個主要的審查指令只能在 git 資料夾裡跑</b><p>八個指令裡，<code>/codex:review</code> 與 <code>/codex:adversarial-review</code> 是設計給程式碼用的，審查對象是版本控制記錄下來的變更。我的筆記庫沒有版本控制，所以這兩支在裡面直接被擋，回一行「必須在 git repository 裡執行」就結束。要審文章、企劃、規則這類東西，得改走 <code>/codex:rescue</code>，或退回手動複製貼上。這件事官方說明裡沒有寫，我是實際跑一次才知道的。</p></div>
+    <div class="caveat"><b>跨家審查會多花時間跟額度</b><p>一份東西審三輪就要多跑三次，等待與用量都會往上加。所以我不是每件事都審，只審「錯了很麻煩」的那些。</p></div>
+    <div class="caveat"><b>兩家都同意，不等於對</b><p>前面那張表最後一行講過，這裡再說一次，因為這是最容易鬆懈的地方。</p></div>
+    <div class="readmore near"><b>如果你的問題是「長文件怎麼審都還是有錯」</b><ul><li><a href="../long-document-review-layers/">AI 改了十幾次還是有錯，怎麼辦？資料清理只是第一關，長文件審不出錯的三層設計</a>　那篇處理的是同一份文件反覆審還是漏，這篇處理的是換一雙眼睛來看。</li></ul></div>
+  </div>
+</section>
+
+<section class="section" id="end">
+  <div class="inner">
+    <h2>如果你不熟這個領域，怎麼驗</h2>
+    <p>前面一直說「自己去驗」，但如果那份內容剛好是你不熟的領域，驗這件事本身就是門檻。我的順序是這樣：</p>
+    <ol>
+      <li><b>先找官方文件或原始資料。</b>兩家 AI 的說法都是二手的，官方說明、原始碼、原始報告是一手的。</li>
+      <li><b>再實際跑一次或試一次。</b>能動手測的就測，這是最硬的證據。我這次三項採納、一項不採納，全部是靠實際跑一次分出來的。</li>
+      <li><b>都不行才問有責任能力的專業人士。</b>醫療、法律、財稅、工程這類，AI 的分歧不該由你自己拍板。</li>
+    </ol>
+    <p>三步都做不到的時候，正確的處理是把那一項標成「未驗證」，不要當成已經確認的事情往下用。</p>
+
+    <h2>收尾</h2>
+    <p>我覺得這件事的重點，不在於哪一家 AI 比較強。</p>
+    <p>在於你有沒有給自己留一個「被挑戰」的位置。一個人工作，沒有同事會在你交出去之前問你「你這個前提哪來的」。跨家審查是把這個角色補回來，補得不完美，但比完全沒有好。</p>
+    <p>而且它問的問題，最後還是要你自己去驗。這一步不能外包，外包了就等於換了一個你不知道對不對的答案，繼續往下走。</p>
+  </div>
+</section>
+
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">江江教練 · AI 知識管理</div>
+    <div class="footer-links">
+      <a href="../../articles.html">← 回深度文章總站</a>
+      <a href="../../index.html">首頁</a>
+      <a href="../../learn.html">自學資源</a>
+      <a href="../../skills.html">技能包下載</a>
+      <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">LINE 社群 ↗</a>
+      <a href="https://www.threads.com/@jiang_yude_coach" target="_blank" rel="noopener">Threads ↗</a>
+      <a href="https://vocus.cc/salon/Jiang_Coach" target="_blank" rel="noopener">方格子 ↗</a>
+    </div>
+    <div class="footer-note">這是一篇教學文章，整理我對「OpenAI 出了官方外掛，讓 Codex 能接到 Claude Code 一起工作｜codex-plugin-cc」的看法，供你參考。</div>
+  </div>
+</footer>
+
+<!-- 點圖放大 lightbox（hero 與內文圖通用，已內建，不用每篇重加） -->
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <span class="lightbox-close" aria-label="關閉">×</span>
+  <img id="lightbox-img" src="" alt="放大檢視">
+</div>
+<script>
+(function(){
+  var box=document.getElementById('lightbox'),boxImg=document.getElementById('lightbox-img');
+  document.querySelectorAll('.hero-figure img,.inline-figure img').forEach(function(img){
+    img.addEventListener('click',function(){boxImg.src=img.currentSrc||img.src;boxImg.alt=img.alt||'放大檢視';box.classList.add('open');box.setAttribute('aria-hidden','false');});
+  });
+  function close(){box.classList.remove('open');box.setAttribute('aria-hidden','true');boxImg.src='';}
+  box.addEventListener('click',close);
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
+})();
+</script>
+
+<script src="../../image-interactions.js"></script>
+
+<!-- 官網共用：滑鼠暖光暈 + 導航列漢堡選單 -->
+<script src="../../spotlight.js"></script>
+
+<!-- 文章自動互聯（相關文章）：兩支已內建，順序不可顛倒，不用再另外加 -->
+<script src="../../articles-data.js"></script>
+<script src="../../related-render.js"></script>
+</body>
+</html>

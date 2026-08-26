@@ -89,7 +89,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["after-ai-says-remembered", "three-levels-of-cross-review", "why-split-data-into-cards", "rag-three-retrieval-modes", "ai-said-it-watched-the-video"]
+    related: ["after-ai-says-remembered", "three-levels-of-cross-review", "why-split-data-into-cards", "rag-three-retrieval-modes", "ai-said-it-watched-the-video", "cross-ai-review-both-wrong"]
   },
 
   /* ── 我跟 AI 說「很煩」，它自己去加了一道機制（教學） ── */
@@ -222,7 +222,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["after-ai-says-remembered", "long-document-review-layers", "mobile-to-desktop-publish-loop", "ai-said-it-watched-the-video"]
+    related: ["after-ai-says-remembered", "long-document-review-layers", "mobile-to-desktop-publish-loop", "ai-said-it-watched-the-video", "cross-ai-review-both-wrong"]
   },
 
   /* ── 通訊軟體 AI 友善度比較（教學） ── */
@@ -467,7 +467,7 @@ window.ARTICLES = [
       content_type: ["案例文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: "https://vocus.cc/salon/Jiang_Coach" },
-    related: ["codex-only-auto-worklog", "decision-ladder-non-programmer", "publish-gate", "session-messaging-reminder-layer", "cognitive-debt", "start-with-a-wrong-draft", "ai-said-it-watched-the-video"]
+    related: ["codex-only-auto-worklog", "decision-ladder-non-programmer", "publish-gate", "session-messaging-reminder-layer", "cognitive-debt", "start-with-a-wrong-draft", "ai-said-it-watched-the-video", "cross-ai-review-both-wrong"]
   },
 
   /* ── 8. AI 之王不上戰場（觀點）── */
@@ -2218,6 +2218,24 @@ window.ARTICLES = [
     },
     external: { threads: null, vocus: null },
     related: ["meta-prompt-thirty-versions", "parenting-story-ai-family-dialogue", "mika-to-laika-product-character-design", "ai-that-knows-you"]
+  },
+
+  {
+    id: "cross-ai-review-both-wrong",
+    url: "articles/cross-ai-review-both-wrong/",
+    date: "2026-08-26",
+    updated: "2026-08-26",
+    title: "OpenAI 出了官方外掛，讓 Codex 能接到 Claude Code 一起工作｜codex-plugin-cc",
+    problem: "同一個 AI 檢查自己寫的東西，會帶著同一套偏見再讀一遍，錯的前提在它眼裡依然成立。",
+    audience: "每天用 AI 寫提案、文案或報告，交出去前總有點不放心卻不知道怎麼查的人；要把 AI 產出給主管或客戶看，怕裡面有錯被當場抓包的人；以及一個人工作，沒有同事會在交件前幫忙看一眼的人。",
+    summary: "用一次真實的互審過程說明為什麼重要決定要換一家 AI 來審：三輪退件九項，其中三項是真的寫錯了事實，但審查的那一家自己也錯了兩項。內容包含自我檢查為何容易漏掉同一個錯誤前提、一張列出「它的主張／怎麼驗／實際結果／採納與否」的案例表、零成本就能用的互審提示詞、四種意見情況的處理表、OpenAI 官方外掛 codex-plugin-cc 的安裝方式與兩支主要審查指令只能在 git 資料夾跑的限制，以及不熟該領域時的三步查證順序。核心判斷是互審產出的是一張待驗清單，驗證與決定都還是自己的事。",
+    tags: {
+      topic: ["AI工作流", "輔助決策"],
+      level: ["基礎"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["three-levels-of-cross-review", "caught-ai-slacking-into-rules", "long-document-review-layers"]
   },
 
 ];
