@@ -1,0 +1,27 @@
+# jiangyude：禁用詞掃描範圍
+# 一行一筆，支援 glob（* 與 **）。# 開頭是註解。
+#
+# 為什麼要限範圍：同一句話換個地方意思完全不同。
+# 「第一個 AI 員工」在 articles/ 底下是文章主題（如何訓練你的 AI 員工），完全合法；
+# 只有在下面這幾個「接待腳本」檔裡才是違規，因為那是官網對外自我介紹的講法。
+# 掃全站會大量誤報，誤報多了就沒人看，機制等於沒有。
+#
+# 2026-08-26 加第九檔 api/mika-chat.js：8/25 那輪只改了八個靜態檔，漏掉這支。
+# 它是線上咪卡客服真正吃的人設（MIKA_PERSONA 常數），漏掉的代價比靜態文案大得多，
+# 因為訪客是直接跟它對話。這一筆就是本健檢自己抓出來的。
+#
+# 2026-08-26 再加第十檔 mika-chat-widget.js（Codex 跨家審抓出）：它裡面的 GREETING
+# 常數是每個訪客看到的第一句話，而且整支檔案連一個版本標記都沒有。
+# 前一輪只補到 api/mika-chat.js（管訪客送出訊息後的回答），沒想到開場白是另一支檔在管。
+# 教訓：找「同一份腳本抄了幾份」要照使用者看到的順序找，不要照檔案類型找。
+
+llms.txt
+llms-full.txt
+index.html
+agent.html
+profile.json
+en/index.html
+en/agent.html
+en/cases.html
+api/mika-chat.js
+mika-chat-widget.js

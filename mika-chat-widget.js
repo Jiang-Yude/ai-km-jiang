@@ -1,7 +1,12 @@
 /* ─── 咪卡 AI 客服 Widget ───
    用法：每個頁面加一行 <script src="mika-chat-widget.js" defer></script>
    會自動注入 CSS 與 HTML。聊天記錄與開合狀態存 localStorage，跨頁面延續。
-   目前為純介面：回覆是示意文字，後端接上後把 fakeReply() 換成真 API 呼叫。 */
+   目前為純介面：回覆是示意文字，後端接上後把 fakeReply() 換成真 API 呼叫。
+
+   人設來源：github.com/Jiang-Yude/mika SKILL.md v1.6.0（commit 16a334d，唯一真相）。
+   本檔管的是「訪客看到的第一句話」（GREETING 與標題列），api/mika-chat.js 管的是
+   送出訊息之後的模型回答，兩支都是同一份人設的下游副本，改一支要記得改另一支。
+   2026-08-26 補這段版本標記：在那之前整支檔零標記，所以自介停在舊講法沒人發現。 */
 (function () {
   'use strict';
   if (document.getElementById('mkw-root')) return;
@@ -35,7 +40,17 @@
   css.href = base + 'mika-chat-widget.css';
   document.head.appendChild(css);
 
-  var GREETING = '嗨，我是咪卡，江江教練官網的 AI 小幫手 🐾\n關於課程、講座、1 對 1 陪跑或知識庫方法，都可以問我！\n先請問一下，怎麼稱呼你呢？';
+  /* 開場白（2026-08-26 江江拍板，同步上游 v1.6.0）──
+     三處都改了：①自介從「江江教練官網的 AI 小幫手」改成核可寫法「江江教練的 AI 助理」
+     ②第一句問的不再是稱呼，改成先問他最近想做想學什麼（上游規定問句在選單前面）
+     ③下面三顆快捷鈕當備案，給講不出來的人挑。
+     ⚠️ 快捷鈕不等於上游 SKILL.md 第六節那份數字選單（看內容／拿工具／看服務與案例）。
+     2026-08-27 江江拍板「留這版」：widget 這三顆維持官網自己的常見問題，
+     不對齊上游第六節。兩邊刻意不同，這是決定不是漏改，後人不要自作主張改掉。
+     （差別在導向：現版三顆有兩顆通往服務，上游那版三顆只有一顆。）
+     連帶把「把第一句當稱呼收下」的邏輯整段移除，不問了就不該再收，
+     留著會把訪客的需求誤存成名字（8/20 樂齡課出過這個事故）。 */
+  var GREETING = '嗨，我是咪卡，江江教練的 AI 助理 🐾\n最近有什麼想做、想學的事情嗎？';
   /* 簡單模式（2026-08-20 江江拍板）：學員說一句「簡單模式」或按新手鈕就切過去，
      之後一直維持（存 localStorage，跨頁沿用）。複雜版沒有退場，只是不再一次攤在他眼前。 */
   var SIMPLE_KEY = 'mikaChat.simple.v1';
@@ -118,21 +133,13 @@
   function getName() {
     try { return localStorage.getItem(NAME_KEY) || ''; } catch (e) { return ''; }
   }
-  function setName(n) {
-    try { localStorage.setItem(NAME_KEY, n); } catch (e) {}
-  }
-  /* 看起來像問題就不是稱呼（訪客跳過提問也沒關係，不追問） */
-  /* 第一句要不要收成稱呼（2026-08-20 收窄，事故驅動）──
-     舊寫法是「10 字以內又沒有疑問詞就當名字」，門檻太鬆。8/20 樂齡課現場有學員
-     第一句打「suno 指令 給我」（剛好 10 字、沒有問號），整串被存成稱呼，標題變成
-     「嗨，suno 指令 給我」，而且他真正的需求被吃掉，咪卡只回了一句「你好」。
-     改成正面判定「這看起來像名字嗎」：超過 6 字、帶空格、或含需求詞一律不算。
-     判錯的代價是不對稱的——當成問題只是少喊一聲名字，當成名字卻會一直掛在標題上，
-     所以這裡故意從嚴。 */
-  var NOT_NAME_RE = /[?？，。！、·]|給我|指令|提示詞|教我|幫我|怎麼|什麼|如何|哪|嗎|請問|可以|想要|要問|想問|我想|生成|圖片|課程|老師|模式|新手/;
-  function looksLikeName(t) {
-    return t.length <= 6 && !/\s/.test(t) && !NOT_NAME_RE.test(t);
-  }
+  /* 「把第一句當稱呼收下」已於 2026-08-26 移除（江江拍板改開場白，不再問稱呼）。
+     原本的 looksLikeName／NOT_NAME_RE 一併刪掉：開場不問了還留著收，
+     會把訪客的第一個需求誤存成名字，那正是 8/20 樂齡課的事故
+     （學員打「suno 指令 給我」被整串存成稱呼，需求還被吃掉）。
+     getName() 保留：舊訪客瀏覽器裡已經存過的稱呼照樣認，只是不再收新的。
+     setName() 一併刪掉：沒有任何地方會再寫入，留著是死碼。
+     清除鈕的 removeItem 保留，讓存過舊稱呼的訪客有辦法清掉。 */
 
   /* ── 示意回覆（file:// 校稿模式與斷線備援用） ── */
   function fakeReply(userText) {
@@ -226,7 +233,7 @@
       '<div class="mkw-head">' +
         '<span class="mkw-head-avatar"></span>' +
         '<div><div class="mkw-head-title">咪卡</div>' +
-        '<div class="mkw-head-sub">AI 小幫手</div></div>' +
+        '<div class="mkw-head-sub">AI 助理</div></div>' +
         '<div class="mkw-head-actions">' +
           '<button class="mkw-icon-btn mkw-size" type="button" title="切換視窗大小" aria-label="切換視窗大小">⤢</button>' +
           '<button class="mkw-icon-btn mkw-clear" type="button" title="清除對話" aria-label="清除對話">⟲</button>' +
@@ -486,11 +493,6 @@
     limitNote.textContent = '';
     limitNote.classList.remove('mkw-limit-over');
 
-    /* 第一句而且不像問題 → 當成稱呼收下 */
-    var isNameReply = !getName() && !history.some(function (m) { return m.role === 'user'; })
-      && looksLikeName(text);
-    if (isNameReply) setName(text.slice(0, 20));
-
     /* 學員自己打「簡單模式」「我是新手」也算，不必按鈕（江江：他就是會直接用講的） */
     if (SIMPLE_RE.test(text)) setSimple(true);
 
@@ -501,9 +503,9 @@
        就本地回一句、把按鈕遞到他面前，他按了才進助教模式，這一輪不花 LLM。
        他按下去之後，剛才那個問題會自動重問一次，不用他再打一遍。 */
     pageAuto = false;
-    var needsPage = !isNameReply && !pageUnlocked && !isHomePage() && PAGE_HINT_RE.test(text);
+    var needsPage = !pageUnlocked && !isHomePage() && PAGE_HINT_RE.test(text);
 
-    history.push({ role: 'user', text: text, isName: isNameReply || undefined });
+    history.push({ role: 'user', text: text });
     saveHistory(history);
     renderMsg(history[history.length - 1]);
     renderChips();
@@ -530,11 +532,6 @@
         finish('這一頁的內容我還沒讀到喔 🐾\n按一下下面這顆，我把整頁看過就回來回答你。');
         renderUnlockChip(text);
       }, 600);
-    } else if (isNameReply) {
-      /* 收稱呼不花 LLM，本地暖回應 */
-      setTimeout(function () {
-        finish(getName() + ' 你好，很高興認識你！🐾\n想了解什麼都可以直接問，下面幾個是大家常問的。');
-      }, 900);
     } else if (IS_DEMO) {
       setTimeout(function () { finish(fakeReply(text)); }, 900);
     } else {
@@ -544,7 +541,7 @@
 
   function updateSub() {
     var n = getName();
-    root.querySelector('.mkw-head-sub').textContent = n ? '嗨，' + n : 'AI 小幫手';
+    root.querySelector('.mkw-head-sub').textContent = n ? '嗨，' + n : 'AI 助理';
   }
 
   function setOpen(open) {
