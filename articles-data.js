@@ -34,6 +34,20 @@ window.ARTICLE_TAGS = {
 };
 
 window.ARTICLES = [
+  {
+    id: "ai-usage-audit",
+    url: "articles/ai-usage-audit/",
+    date: "2026-08-26",
+    updated: "2026-08-26",
+    title: "AI 越用越貴，我掃了自己一個月的用量",
+    problem: "沒有多接案子、也沒開發新東西，AI 額度卻用得越來越快；升到更高的方案之後，還是常常覺得不夠用，而且完全不知道錢花到哪去了。",
+    audience: "用 AI 工具做事、覺得額度越來越不夠用的人；幫自己建了一整套規則與技能包、開始懷疑是不是養太大的人；想知道自己的 AI 到底把錢花在哪，而不是只看到一個總額數字的人。",
+    summary: "掃完自己一個月 19,287 次 API 呼叫的實測紀錄，發現原本猜的原因（知識庫太肥）只佔 26%，另外四分之三是三個使用習慣：一個對話開一整天、同一件事開兩個視窗、什麼工作都用最貴的模型。先講清楚一個大部分人不知道的計費機制：AI 每問一句都在重讀整段對話，所以第 800 句時打二十個字，帳單算的是四十萬。接著給兩個開關（模型切換點、對話斷點）與實測的省下倍數，說明為什麼這件事沒辦法寫成自動化規則（AI 技術上切不了模型、攔截器不知道你跑到第幾步），以及自己原本就有的三條省錢規則為什麼兩個月來一條都沒被執行。最後附一支可直接跑的量測腳本，讓你量自己的實際用量。",
+    tags: {"topic":["AI工作流","知識管理","工具操作"],"level":["基礎"],"content_type":["觀點文章"]},
+    external: { threads: null, vocus: null },
+    related: ["ai-cp-value-calculus", "copied-mechanism-is-no-mechanism", "program-vs-ai-skill-library", "cognitive-debt"]
+  },
+
   /* ── 一間辦公室，講清楚什麼是圖譜工程（教學）── */
   {
     id: "what-is-graph-engineering",
@@ -165,7 +179,7 @@ window.ARTICLES = [
       content_type: ["觀點文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["before-installing-others-skill", "decision-ladder-non-programmer", "how-to-train-your-ai-employee", "caught-ai-slacking-into-rules", "parallel-site-editing"]
+    related: ["ai-usage-audit", "before-installing-others-skill", "decision-ladder-non-programmer", "how-to-train-your-ai-employee", "caught-ai-slacking-into-rules", "parallel-site-editing"]
   },
 
   /* ── 裝了別人的技能包，AI 會不會被搞亂？：抄之前我會先做三件事（教學） ── */
@@ -1498,7 +1512,7 @@ window.ARTICLES = [
     summary: "用三個模型的成本對照說明一件反直覺的事：用最便宜的模型做到滿分，反而是最貴也最慢的。真正該問的是這次任務需要幾分，附三張對照表。最後把問題放大到人類層級：算力有限、要解的問題滿出來，會排序哪些問題值得解，才是真正的分水嶺。",
     tags: {"topic":["AI趨勢","輔助決策","差異比較"],"level":["基礎"],"content_type":["觀點文章"]},
     external: { threads: null, vocus: null },
-    related: ["ai-tools-professional-judgment", "strong-ai-models-knowledge-workflow-road", "program-vs-ai-skill-library", "ai-capability-tiers", "long-task-completion-rate", "openrouter-deepseek-data-routing"]
+    related: ["ai-usage-audit", "ai-tools-professional-judgment", "strong-ai-models-knowledge-workflow-road", "program-vs-ai-skill-library", "ai-capability-tiers", "long-task-completion-rate", "openrouter-deepseek-data-routing"]
   },
 
   {

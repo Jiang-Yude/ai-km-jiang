@@ -1,0 +1,732 @@
+<!--
+============================================================
+  article-template.html  ·  深度文章新頁模板（暖色拿鐵版型）
+------------------------------------------------------------
+  新增一篇文章的步驟：
+    1. 複製本檔到 articles/<slug>/index.html
+       （趨勢文章放 ai-trends/<slug>/index.html）。
+    2. 全檔填掉所有 {{...}} placeholder：
+         {{TITLE}}        文章標題（純文字）
+         {{DESCRIPTION}}  meta description / og:description
+         {{SLUG}}         網址 slug，對應資料夾名
+         {{SECTION}}      所屬區段：articles 或 ai-trends
+         {{KICKER}}       hero 上方小標（例：AI 應用 / 需求驗證）
+         {{HERO_LEAD}}    hero 大標下的一段引言
+         {{BODY}}         正文（用下方 .section 區塊堆疊；可參考
+                          現有文章如 articles/ai-market-microcosm/）
+         {{CONTENT_TYPE}} 文章類型（教學文章／觀點文章／趨勢文章／案例文章）
+       canonical / og / twitter / JSON-LD 的網址也都用
+       https://jiangyude.com/{{SECTION}}/{{SLUG}}/ 帶入。
+    3. 到 articles-data.js 的 window.ARTICLES 陣列尾端加一筆物件
+       （含 id、url「{{SECTION}}/{{SLUG}}/」、date、title、summary、
+        tags.topic / level / content_type，related 為可選）。
+       標籤一律從 window.ARTICLE_TAGS 受控清單挑，不要自創字串。
+    4. 兩支互聯 script 已內建在本檔   <script src="/views.js"></script>
+</body> 前，不用再另外加。
+    5. 到 sitemap.xml 與 llms.txt 各補一筆，讓搜尋與 AI 索引得到。
+    6. 到 search-aliases.js 補一條別名（2026-08-12 起 preflight 硬性檢查）。
+       key 用 slug，內容寫「訪客會怎麼問」：上課的說法、比喻、金句、同義詞。
+       至少兩個，不能只是照抄標題，否則 check-index-coverage.mjs 會擋下發布。
+       拼寫變體不用補（模型自己橋得起來），要補的是語意距離遠的詞。
+       立因：8/12 江江實測問「角色定妝照」查不到，追出來是文章上線當輪沒補別名。
+    7. 發布範圍要一起帶上 article-keywords.js 與 site-index.json。
+       preflight 會重跑產生器，這兩個檔有更新未提交就擋。
+
+  部署前跑：node scripts/verify-interlink.js 確認互聯腳本齊全。
+
+  ⚠️ 改舊文章的 title / problem / summary 時：被拿掉的詞若該篇內文還在用，
+     check-index-coverage.mjs 會擋。三種處理都算過關：補進 search-aliases.js、
+     寫進 index-coverage-ignore.json 並附理由、或在該檔標記敏感與過期。
+     不強迫補回，因為被移除的可能是錯字、過時名稱或隱私詞。
+============================================================
+-->
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="index,follow">
+<title>AI 越用越貴，我掃了自己一個月的用量</title>
+<meta name="description" content="我沒多接案子，但 AI 額度用得越來越快。掃完一個月 19,287 次呼叫的實測紀錄後發現，我原本以為的原因只佔四分之一，另外四分之三是我自己的三個使用習慣。附可直接跑的量測腳本。">
+<link rel="canonical" href="https://jiangyude.com/articles/ai-usage-audit/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AI 越用越貴，我掃了自己一個月的用量｜江江教練">
+<!-- 分享封面：hero 文字填好後在 repo 根目錄跑 `node scripts/og-shot.mjs ai-usage-audit` 自動截 1200×630 到 images/og/ai-usage-audit.jpg（見 README「文章分享封面（OG 圖）機制」）。別退回 intro-jiang.png 直式人像，會被裁成只剩脖子。 -->
+<meta property="og:image" content="https://jiangyude.com/images/og/ai-usage-audit.jpg">
+<meta property="og:description" content="我沒多接案子，但 AI 額度用得越來越快。掃完一個月 19,287 次呼叫的實測紀錄後發現，我原本以為的原因只佔四分之一，另外四分之三是我自己的三個使用習慣。附可直接跑的量測腳本。">
+<meta property="og:url" content="https://jiangyude.com/articles/ai-usage-audit/">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:site_name" content="江江教練 · AI 知識管理">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="AI 越用越貴，我掃了自己一個月的用量｜江江教練">
+<meta name="twitter:image" content="https://jiangyude.com/images/og/ai-usage-audit.jpg">
+<meta name="twitter:description" content="我沒多接案子，但 AI 額度用得越來越快。掃完一個月 19,287 次呼叫的實測紀錄後發現，我原本以為的原因只佔四分之一，另外四分之三是我自己的三個使用習慣。附可直接跑的量測腳本。">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"AI 越用越貴，我掃了自己一個月的用量","description":"我沒多接案子，但 AI 額度用得越來越快。掃完一個月 19,287 次呼叫的實測紀錄後發現，我原本以為的原因只佔四分之一，另外四分之三是我自己的三個使用習慣。附可直接跑的量測腳本。","author":{"@type":"Person","name":"江昱德","alternateName":"江江教練","jobTitle":"隱性知識提煉師、AI 應用規劃師"},"isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://jiangyude.com/"},"inLanguage":"zh-Hant","url":"https://jiangyude.com/articles/ai-usage-audit/"}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{--ink:#1a1612;--paper:#fefcf8;--muted:#6a635a;--line:#d8cdb8;--green:#5f7553;--blue:#5689b8;--orange:#e85a4f;--soft:#faf5ec;--dark:#2a2018;--shadow:0 18px 45px rgba(107,74,42,.14);--sp-shadow:hsla(35,50%,60%,.15);--sp-shadow-edge:hsla(35,50%,68%,.03);--sp-radius:400px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC","Segoe UI",sans-serif}
+a{color:inherit}
+/* 官網共用導航列 nav.top（與首頁/文章總站同一條） */
+nav.top{position:sticky;top:0;background:rgba(254,252,248,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid #d8cdb8;z-index:100}
+nav.top .container{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:24px;padding:14px 32px}
+.nav-brand-img{justify-self:start;display:flex;align-items:center;text-decoration:none;flex-shrink:0;transition:opacity .2s}
+.nav-brand-img:hover{opacity:.8}.nav-brand-img img{height:40px;width:auto;display:block}
+nav.top ul.nav-menu{justify-self:end;display:flex;gap:22px;list-style:none;margin:0;padding:0;font-size:.95rem;white-space:nowrap}
+nav.top ul.nav-menu a{color:#3a342d;text-decoration:none;transition:color .2s;font-weight:500;white-space:nowrap}
+nav.top ul.nav-menu a:hover{color:#1a1612}nav.top ul.nav-menu a.active{color:#1a1612;font-weight:700}
+.nav-toggle{display:none;background:none;border:none;padding:6px;cursor:pointer;width:36px;height:36px;position:relative}
+.nav-toggle span{display:block;position:absolute;left:8px;right:8px;height:2px;background:#1a1612;border-radius:2px;transition:transform .25s,opacity .25s,top .25s}
+.nav-toggle span:nth-child(1){top:11px}.nav-toggle span:nth-child(2){top:17px}.nav-toggle span:nth-child(3){top:23px}
+.nav-toggle.open span:nth-child(1){top:17px;transform:rotate(45deg)}.nav-toggle.open span:nth-child(2){opacity:0}.nav-toggle.open span:nth-child(3){top:17px;transform:rotate(-45deg)}
+.tablewrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:22px 0;border:1px solid var(--line);border-radius:10px;background:#fff;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.tablewrap table{border-collapse:collapse;width:100%;min-width:600px;font-size:18px;line-height:1.65}
+.tablewrap .zh{display:block;margin-top:5px;font-size:16px;line-height:1.55;color:var(--muted);font-weight:400}
+.tablewrap th,.tablewrap td{padding:12px 14px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top;color:#3a342d}
+.tablewrap thead th{background:var(--soft);font-weight:900;font-size:18px;color:#1a1612;white-space:nowrap}
+.tablewrap tbody tr:last-child td{border-bottom:none}
+.tablewrap td code,.section code{background:var(--soft);border:1px solid var(--line);border-radius:5px;padding:1px 6px;font:500 15px/1.5 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace}
+/* 程式碼區塊（2026-08-26 加）：模板原本沒有 pre 樣式，手機上會超出畫面且無法左右滑 */
+.section pre{overflow-x:auto;-webkit-overflow-scrolling:touch;background:var(--soft);border:1px solid var(--line);border-radius:10px;padding:16px 18px;margin:22px 0}
+.section pre code{background:none;border:0;padding:0;border-radius:0;font-size:13.5px;line-height:1.7;white-space:pre;display:block;color:#3a342d}
+/* 流程圖區塊（2026-08-26 加）：一場健檢的七個步驟與模型切換點 */
+.flowfig{margin:30px 0 10px;border:1px solid var(--line);border-radius:14px;background:#fff;box-shadow:0 8px 22px rgba(107,74,42,.08);overflow:hidden}
+.flowfig .flowfig-cap{padding:14px 20px;background:var(--soft);border-bottom:1px solid var(--line);font-size:16px;line-height:1.65;color:#3a342d;font-weight:700}
+.flow-stage{padding:22px 20px 20px}
+.flow-stage-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:10px;margin-bottom:16px}
+.flow-stage-head b{font-size:19px;color:var(--green)}
+.flow-stage-head span{font-size:15px;color:var(--muted)}
+.flow-stage.fix .flow-stage-head b{color:#7b5ea7}
+.flow-row{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;align-items:stretch}
+.flow-row.three{grid-template-columns:repeat(3,1fr)}
+.flow-step{position:relative;border:1px solid var(--line);border-radius:10px;padding:14px 14px 13px;background:var(--soft)}
+.flow-step.hi{border-color:#e0b48a;background:#fdf3e8}
+.flow-step.opt{border-style:dashed;background:#fff}
+.flow-step::after{content:"→";position:absolute;right:-18px;top:50%;transform:translateY(-50%);color:#c8bda8;font-size:17px;font-weight:900;line-height:1}
+.flow-step:last-child::after{content:none}
+.flow-n{font-size:13px;font-weight:900;color:var(--muted);margin-bottom:4px}
+.flow-t{font-size:17px;font-weight:900;line-height:1.35;color:#1a1612}
+.flow-d{font-size:14px;line-height:1.55;color:var(--muted);margin:6px 0 10px}
+.flow-tag{display:inline-block;font-size:13px;font-weight:700;border-radius:999px;padding:3px 10px;line-height:1.5}
+.tag-mid{background:#e6efe2;color:#41563a}
+.tag-high{background:#f6e0cd;color:#8a4f22}
+.tag-sub{background:#e9e4d8;color:#5b5347}
+.flow-switch{position:absolute;top:-11px;right:10px;font-size:12px;font-weight:900;background:#c2703d;color:#fff;border-radius:999px;padding:3px 9px;line-height:1.5;white-space:nowrap}
+.flowfig .flow-note{margin:16px 0 0!important;font-size:15px!important;line-height:1.7;color:var(--muted)!important}
+.flow-break{display:flex;align-items:center;gap:14px;padding:0 20px 6px;color:#c2703d;font-size:15px;font-weight:900}
+.flow-break::before,.flow-break::after{content:"";flex:1;border-top:2px dashed #e6cbae}
+@media(max-width:820px){
+ .flow-row,.flow-row.three{grid-template-columns:1fr;gap:26px}
+ .flow-step::after{content:"↓";right:auto;left:50%;top:auto;bottom:-19px;transform:translateX(-50%)}
+ .flow-switch{position:static;display:inline-block;margin-bottom:8px}
+}
+.inline-figure.wide{max-width:1000px}
+/* 對照表（2026-08-27 補）：本篇用了 7 個 class="compare" 的表格但模板沒帶這條樣式，
+   導致表格沒有框線與底色。定義沿用 ai-cp-value-calculus 那篇 */
+.compare{width:100%;border-collapse:collapse;margin:22px 0;font-size:17px}
+.compare th,.compare td{border:1px solid var(--line);padding:10px 12px;text-align:left;line-height:1.6;vertical-align:top}
+.compare th{background:var(--soft);font-weight:900;color:#1a1612}
+.compare tr:nth-child(even) td{background:rgba(250,245,236,.5)}
+@media(max-width:700px){.compare{font-size:15px}.compare th,.compare td{padding:8px 9px}}
+/* 直式 4:5 圖卡（2026-08-27 加）：滿寬會佔掉整個螢幕，限寬置中 */
+.inline-figure.card{max-width:420px}
+.toc{margin:26px 0 0;padding:20px 22px;background:#fff;border:1px solid var(--line);border-radius:10px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.toc>b{display:block;font-size:15px;letter-spacing:.05em;color:var(--green);margin-bottom:10px}
+.toc ol{margin:0;padding-left:1.35em;font-size:18px;line-height:1.7}
+.toc li{margin-bottom:7px;color:#3a342d}
+.toc a{color:var(--blue);font-weight:700;text-decoration:none}.toc a:hover{text-decoration:underline}
+.toc-hint{margin:12px 0 0!important;font-size:18px!important;color:var(--muted)!important;border-top:1px solid var(--line);padding-top:12px}
+.readmore{margin-top:24px;padding:20px 22px;background:var(--soft);border:1px solid var(--line);border-radius:12px}
+.readmore.near{margin:26px 0 6px;background:rgba(86,137,184,.07);border-color:#bcd0e2}
+.readmore.near b{color:var(--blue);font-size:18px}
+.readmore.near li{font-size:17px;line-height:1.7;margin-bottom:10px}
+.readmore b{display:block;margin-bottom:10px;font-size:19px}
+.readmore ul{margin:0;padding-left:1.25em}
+.readmore a{color:var(--blue);font-weight:700;text-decoration:none}
+.readmore a:hover{text-decoration:underline}
+@media(max-width:820px){.tablewrap table{min-width:560px;font-size:18px}.tablewrap{position:relative}.tablewrap::after{content:"表格可左右滑動 →";position:sticky;left:0;display:block;font-size:15px;color:var(--muted);background:var(--soft);border-top:1px solid var(--line);padding:7px 12px;width:100%}}
+@media(max-width:860px){
+ nav.top .container{grid-template-columns:auto 1fr auto;padding:10px 16px;gap:12px}
+ .nav-brand-img img{height:32px}
+ .nav-toggle{display:block;justify-self:end}
+ nav.top ul.nav-menu{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(254,252,248,.98);backdrop-filter:blur(14px);border-bottom:1px solid #d8cdb8;flex-direction:column;gap:0;padding:8px 0;box-shadow:0 10px 24px rgba(107,74,42,.08)}
+ nav.top ul.nav-menu.open{display:flex}
+ nav.top ul.nav-menu li{border-bottom:1px solid #e8dfc9}
+ nav.top ul.nav-menu li:last-child{border-bottom:none}
+ nav.top ul.nav-menu a{display:block;padding:14px 20px;font-size:1.06rem}
+}
+/* 滑鼠暖光暈（與首頁同一支 spotlight.js） */
+body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradient(var(--sp-radius) circle at var(--mx,50%) var(--my,50%),var(--sp-shadow) 0%,var(--sp-shadow-edge) 45%,transparent 75%);pointer-events:none;z-index:9999;mix-blend-mode:multiply;transition:background .06s linear}
+.hero{position:relative;overflow:hidden;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:72px;padding:96px clamp(20px,6vw,88px) 80px;background:linear-gradient(180deg,#fffcf0 0%,#f9e9d2 100%);color:#1a1612;border-bottom:1px solid #d8cdb8}
+.hero .wc{position:absolute;border-radius:50%;filter:blur(60px);pointer-events:none;z-index:0}
+.hero .wc1{width:420px;height:360px;top:-120px;right:-80px;background:#e8884b;opacity:.15}
+.hero .wc2{width:360px;height:300px;bottom:-110px;left:-70px;background:#5f7553;opacity:.13}
+.hero .wc3{width:280px;height:260px;top:34%;left:14%;background:#a08144;opacity:.10}
+.hero>div{flex:none;width:860px;max-width:100%;position:relative;z-index:2}
+.hero-figure{margin:0;width:420px;flex:none;position:relative;z-index:2}
+.hero-figure img{display:block;width:100%;border-radius:16px;border:1px solid #d8cdb8;box-shadow:0 18px 45px rgba(107,74,42,.16);cursor:zoom-in}
+.hero-figure figcaption{margin-top:10px;font-size:14px;line-height:1.6;color:#6a635a}
+.inline-figure{margin:30px auto 8px;max-width:820px}
+.inline-figure img{display:block;width:100%;border-radius:14px;border:1px solid var(--line);box-shadow:var(--shadow);background:#fff;cursor:zoom-in}
+.inline-figure figcaption{font-size:14px;line-height:1.6;color:var(--muted);margin-top:10px}
+.lightbox{position:fixed;inset:0;z-index:10000;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(12,10,8,.92);cursor:zoom-out;backdrop-filter:blur(4px)}
+.lightbox.open{display:flex}.lightbox img{max-width:96vw;max-height:92vh;border-radius:10px;box-shadow:0 24px 60px rgba(0,0,0,.5)}
+.lightbox-close{position:fixed;top:18px;right:24px;color:#fff;font-size:34px;line-height:1;font-weight:700;cursor:pointer;opacity:.85}
+.kicker{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.55rem;color:#7a5c3a;font-weight:500}
+.hero h1{max-width:none;margin:16px 0 18px;font-size:clamp(36px,6vw,72px);line-height:1.08;overflow-wrap:anywhere}
+.hero p{max-width:none;font-size:clamp(18px,2vw,23px);line-height:1.62;color:#3a342d}
+.cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
+.cta a{display:inline-flex;align-items:center;text-decoration:none;border-radius:8px;padding:12px 16px;font-weight:900}
+.cta .primary{background:#fff;color:#1a1612}.cta .ghost{border:1px solid rgba(255,255,255,.32);color:#fff;background:rgba(255,255,255,.08)}
+.section{padding:54px clamp(20px,6vw,88px);border-top:1px solid var(--line)}
+.inner{width:min(1000px,100%);margin:0 auto}
+.section h2{font-size:clamp(26px,4.2vw,48px);line-height:1.12;margin:0 0 18px}
+.section h3{font-size:clamp(21px,3vw,30px);line-height:1.2;margin:30px 0 12px}
+.lead{font-size:clamp(18px,1.6vw,22px);line-height:1.7;color:#3a342d;max-width:900px}
+.section p{font-size:18px;line-height:1.74;color:#3a342d}.section p+p{margin-top:14px}
+.section ul,.section ol{padding-left:1.4em;font-size:18px;line-height:1.74;color:#3a342d}.section li{margin-bottom:8px}
+.meaning{margin:22px 0;padding:16px 18px;border-left:5px solid var(--blue);background:rgba(86,137,184,.12);border-radius:6px;line-height:1.7;font-size:19px}
+.meaning b{display:block;color:var(--blue);margin-bottom:4px}
+.caveat{margin:0 0 8px;padding:16px 18px;border-left:5px solid var(--orange);background:rgba(232,90,79,.1);border-radius:6px;line-height:1.7;font-size:18px;color:#3a342d}
+.caveat b{display:block;color:var(--orange);margin-bottom:4px}
+.infocard{background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px 24px 22px;box-shadow:0 8px 22px rgba(107,74,42,.08);margin-top:8px}
+.infocard-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.info-item{padding:18px 14px 0}
+.info-item b{display:block;font-size:14px;font-weight:900;letter-spacing:.04em;margin-bottom:7px;text-transform:uppercase}
+.info-item:nth-child(1) b{color:var(--green)}.info-item:nth-child(2) b{color:var(--orange)}.info-item:nth-child(3) b{color:var(--blue)}
+.info-item p{margin:0;font-size:17px;line-height:1.6;color:#3a342d}
+.tagrow{display:flex;flex-wrap:wrap;gap:7px;margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
+.tag{font-size:14px;color:var(--muted);background:var(--soft);border:1px solid var(--line);border-radius:999px;padding:4px 11px}
+.duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:24px}
+.duo.stack{grid-template-columns:1fr}
+.duo .card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:22px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.duo .card.a{border-color:var(--orange)}.duo .card.b{border-color:var(--green);box-shadow:0 8px 24px rgba(95,117,83,.16)}
+.duo .card small{display:block;font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.04em;margin-bottom:9px}
+.duo .card.a small{color:var(--orange)}.duo .card.b small{color:var(--green)}
+.duo .card b{display:block;font-size:22px;line-height:1.3;margin-bottom:12px}.duo .card.a b{color:#c0512f}.duo .card.b b{color:#4a7a59}
+.duo .card p{margin:0;color:#3a342d;line-height:1.75;font-size:18px}
+.workflow-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:24px}
+.workflow-step{background:#fff;border:1px solid var(--line);border-radius:8px;padding:18px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.workflow-step small{display:block;color:var(--orange);font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;margin-bottom:9px}
+.workflow-step b{display:block;font-size:18px;line-height:1.3;margin-bottom:9px}
+.workflow-step p{margin:0;color:#3a342d;line-height:1.6;font-size:16px}
+.codeblock{background:var(--dark);color:#f3ead9;border-radius:8px;padding:18px 20px;font:500 14px/1.65 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;overflow-x:auto;white-space:pre-wrap;margin:20px 0;box-shadow:0 8px 22px rgba(107,74,42,.12)}
+.codeblock .c{color:#f6d7a6;font-weight:600}
+.skillcard{background:#fff;border:1px solid var(--green);border-radius:12px;padding:24px;box-shadow:0 10px 26px rgba(95,117,83,.16);margin-top:8px}
+.skillcard b{display:block;font-size:21px;margin-bottom:8px}
+.skillcard p{margin:0 0 16px;font-size:17px;line-height:1.65;color:#3a342d}
+.cta-band{background:#e6f0e5;color:#3a342d}.cta-band .section{border-top:none}
+.cta-band .inner{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(260px,.85fr);gap:26px;align-items:start}
+.cta-band h2{font-size:clamp(26px,4vw,44px);margin:0 0 16px}.cta-band p,.cta-band .lead{color:rgba(58,52,45,.9);font-size:18px;line-height:1.72}
+.cta-card{border:1px solid #cfe0d2;background:#fbfdfa;border-radius:8px;padding:22px}
+.cta-card b{display:block;color:#48b178;margin-bottom:10px;font-size:18px}.cta-card p{margin:0 0 14px}
+.footer{padding:30px clamp(20px,6vw,88px);font-size:14px;color:var(--muted);background:#fff;border-top:1px solid var(--line)}
+.footer-inner{width:min(1000px,100%);margin:0 auto}
+.footer-links{display:flex;flex-wrap:wrap;gap:6px 12px;margin-bottom:14px}.footer-links a{color:var(--blue);font-weight:900;text-decoration:none;font-size:14px}
+.footer-brand{font-weight:900;font-size:15px;margin-bottom:10px}.footer-note{font-size:13px;line-height:1.6}
+@media(max-width:820px){.infocard-grid{grid-template-columns:1fr}.duo{grid-template-columns:1fr}.workflow-grid{grid-template-columns:1fr}.cta-band .inner{grid-template-columns:1fr}.section{padding:40px 20px}.hero{min-height:52vh;flex-direction:column;justify-content:flex-start;align-items:flex-start;gap:24px}.hero>div{width:100%}.hero-figure{width:100%;max-width:560px}}
+@media(max-width:820px){html,body{overflow-x:hidden}.hero h1{word-break:break-word}}
+</style>
+</head>
+<body class="spotlight">
+<!-- 官網共用導航列 nav.top：與首頁/總站同一條，文章不要自己另做極簡 topbar（江江 2026-06-25：要同一個框架、同一條導航列）。把對應頁面的 class="active" 標在自己那欄。
+     ⚠️ 下面 ul.nav-menu 整塊由 preflight 第 5 關 check-bilingual-nav.mjs 做「逐字比對」，
+        塞任何註解、多一個空白、換行位置不同都會被判導航不一致而擋下發布。要說明就寫在 <ul> 外面（像這裡）。
+        2026-08-16 修：原本的 EN 那行說明註解就夾在 <ul> 裡面，導致照範本起手的新文章一律卡第 5 關
+        （llm-rag-agent-mcp 與 rag-three-retrieval-modes 兩篇同時中招）。註解已移出來，<ul> 內保持乾淨。
+        萬一還是被擋，直接跑：node scripts/check-bilingual-nav.mjs --write --only=<你的檔案路徑> -->
+<nav class="top">
+  <div class="container">
+    <a class="nav-brand-img" href="../../index.html"><img src="../../images/footer-signature.png" alt="江江教練 | 江昱德"></a>
+    <button class="nav-toggle" aria-label="選單"><span></span><span></span><span></span></button>
+    <ul class="nav-menu">
+      <li><a href="../../index.html">首頁</a></li>
+      <li><a href="../../knowledge-architecture.html">知識架構</a></li>
+      <li><a href="../../courses.html">課程</a></li>
+      <li><a href="../../articles.html" class="active">深度文章</a></li>
+      <li><a href="../../skills.html">技能包下載</a></li>
+      <li><a href="../../offers.html">服務方案</a></li>
+      <li class="lang-switch"><a href="../../en/articles.html" hreflang="en">EN</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="wc wc1"></div>
+  <div class="wc wc2"></div>
+  <div class="wc wc3"></div>
+  <div>
+    <div class="kicker">AI 工作流</div>
+    <h1>AI 越用越貴，我掃了自己一個月的用量</h1>
+    <p>我以為問題是知識庫養太大了。掃完自己一個月的實測紀錄，發現那只佔四分之一。</p>
+  </div>
+  <!-- 封面圖（建議放）：橫式用預設 width:420px；4:5 直式改 .hero-figure{width:320px} 並加 .hero-figure img{aspect-ratio:4/5;object-fit:cover}。沒有封面圖就整個 <figure> 刪掉，hero 會自動置中只剩文字。封面同時設成上面 og:image / twitter:image。 -->
+  <figure class="hero-figure">
+    <img src="../../images/articles/ai-usage-audit-cover.jpg" alt="AI 越用越貴：用 Agent 就會狂燒 Token 狂噴錢？" loading="lazy">
+    <figcaption>掃完一個月的實際紀錄，錢花在哪跟我原本想的不一樣。</figcaption>
+  </figure>
+</section>
+
+<main>
+<section class="section" id="lead"><div class="inner">
+
+<p class="lead">我沒有多接案子，沒有開發新產品，大部分時間就是整理知識庫、寫文章、備課。但我的 AI 額度用得越來越快。以前的方案用起來還算寬鬆，後來升到額度大二十倍的方案，感覺跟以前差不多，還是常常不夠用。</p>
+
+<p>我的第一個猜測是：我的知識庫太臃腫了。一百多個技能包、三萬字的規則主檔、一堆自動化腳本，每次開對話都要載入這一整套。是不是光「開機」就把錢燒掉了？</p>
+
+<p>我請 AI 掃了我電腦上的實際紀錄，把這個猜測驗證一遍。結論是：<b>我猜對了四分之一，錯了四分之三。</b></p>
+
+<div class="duo stack">
+  <div class="card">
+    <b style="font-size:22px;color:#c2703d">適合誰</b>
+    <ul>
+      <li>用 AI 工具（Claude Code、Cursor、ChatGPT Projects 之類）做事，覺得額度越來越不夠用的人</li>
+      <li>幫自己建了一整套規則、技能包、知識庫，開始懷疑是不是養太大的人</li>
+      <li>想知道自己的 AI 到底把錢花在哪，而不是只看到一個總額數字的人</li>
+    </ul>
+  </div>
+  <div class="card">
+    <b style="font-size:22px;color:#5b8c5a">你可以帶走什麼</b>
+    <ul>
+      <li>一個大部分人不知道的計費機制：AI 每問一句，都在重讀整段對話</li>
+      <li>三個具體的壞習慣，跟每一個對應的改法</li>
+      <li>一支可以直接跑的腳本，量自己的實際用量</li>
+    </ul>
+  </div>
+</div>
+
+</div></section>
+
+<section class="section" id="mechanism"><div class="inner">
+<h2>先搞懂一件事：AI 每問一句，都在重讀整段對話</h2>
+
+<p>這是最需要先講清楚的機制，因為它違反直覺。</p>
+
+<p>你跟 AI 對話的時候，感覺像在聊天：你講一句，它回一句，它記得前面講過什麼。但實際上 AI 沒有記憶。<b>每問一句話，系統都會把「這個對話從頭到現在的全部內容」重新送給它看一次。</b></p>
+
+<p>所以在同一個對話裡：</p>
+
+<table class="compare">
+  <tr><th>你講到第幾句</th><th>系統送給 AI 看的量</th></tr>
+  <tr><td>第 1 句</td><td>7 萬</td></tr>
+  <tr><td>第 100 句</td><td>20 萬</td></tr>
+  <tr><td>第 800 句</td><td>40 萬</td></tr>
+</table>
+
+<p>你在第 800 句只打了二十個字，帳單上算的是四十萬。</p>
+
+<figure class="inline-figure card">
+  <img src="../../images/articles/ai-usage-audit-01.jpg" alt="AI 沒有記憶：你每問一句，它都在重讀整段對話。第 1 句 7 萬、第 100 句 20 萬、第 800 句 40 萬" loading="lazy">
+  <figcaption>同一個對話裡，你講得越久，每一句要重讀的量堆得越高。</figcaption>
+</figure>
+
+<p><b>你付的錢，跟你做了多少事沒什麼關係，跟你在同一個視窗待了多久關係很大。</b></p>
+
+<p>這件事沒有人會主動告訴你，因為介面上完全看不出來。畫面上就是一個對話框，你打字，它回話，沒有任何東西顯示「你現在每問一句要花多少」。</p>
+</div></section>
+
+<section class="section" id="data"><div class="inner">
+<h2>我掃了自己一個月：19,287 次呼叫</h2>
+
+<p>那些對話紀錄存在本機，一個月份共 166 個對話檔，加起來 255MB。掃出來的數字：</p>
+
+<table class="compare">
+  <tr><th>項目</th><th>實測</th></tr>
+  <tr><td>一個月的 API 呼叫次數</td><td>19,287 次</td></tr>
+  <tr><td>每次呼叫平均要重讀的內容</td><td><b>27.3 萬 token</b></td></tr>
+  <tr><td>重讀量超過 20 萬的呼叫佔比</td><td><b>60.5%</b></td></tr>
+  <tr><td>重讀量超過 40 萬的呼叫佔比</td><td><b>22.1%</b></td></tr>
+  <tr><td>前 10 個對話吃掉的額度</td><td><b>48.5%</b></td></tr>
+  <tr><td>我實際產出的字（output）</td><td>每次呼叫平均只有 1,277 token</td></tr>
+</table>
+
+<p>最後一行是重點。<b>我的錢絕大部分花在「重讀」，不在「產出」。</b></p>
+
+<figure class="inline-figure card">
+  <img src="../../images/articles/ai-usage-audit-02.jpg" alt="錢花在重讀，不在產出：每次呼叫平均重讀 27.3 萬，平均產出只有 1,277" loading="lazy">
+  <figcaption>重讀量跟產出量差了兩百多倍，帳單算的是前面那個。</figcaption>
+</figure>
+
+<p>再看最貴的幾個對話：</p>
+
+<table class="compare">
+  <tr><th>對話</th><th>我發言次數</th><th>結束時的重讀量</th></tr>
+  <tr><td>A</td><td>31 次</td><td>55.9 萬</td></tr>
+  <tr><td>B</td><td>110 次</td><td>15.3 萬</td></tr>
+  <tr><td>C</td><td>99 次</td><td><b>76.1 萬</b></td></tr>
+  <tr><td>D</td><td>24 次</td><td>67.0 萬</td></tr>
+  <tr><td>E</td><td>36 次</td><td><b>88.8 萬</b></td></tr>
+</table>
+
+<p>看 A 跟 D：我只講了三十一次跟二十四次話。過程中 AI 讀了大量檔案，之後每一輪都在重讀那些早就用不到的東西。</p>
+
+<p>看 B 跟 C：兩個對話同一分鐘開的，第一句話一模一樣。那是我在同一件事上開了兩個視窗，同一件事付了兩次錢。兩個加起來佔我整個月的 12.4%。</p>
+</div></section>
+
+<section class="section" id="habits"><div class="inner">
+<h2>三個壞習慣</h2>
+
+<p>數字攤開之後，我的問題就很清楚了。</p>
+
+<figure class="inline-figure card">
+  <img src="../../images/articles/ai-usage-audit-03.jpg" alt="三個壞習慣：一個對話開一整天、同一件事開兩個視窗、什麼工作都用最貴的模型" loading="lazy">
+  <figcaption>三個習慣單獨看都不嚴重，加在一起就是我的帳單。</figcaption>
+</figure>
+
+<h3>壞習慣一：一個對話開到天荒地老</h3>
+
+<p>我習慣一個任務從頭做到尾都在同一個對話裡。前面查了什麼、讀了什麼檔案，全部堆著。堆到後面，每問一句都在付一次全額。</p>
+
+<p>而且這不只是錢的問題。四十萬字的對話裡有一大半是早就用不到的舊內容，AI 要在裡面找重點，判斷力反而下降。<b>貴，而且變笨。</b></p>
+
+<h3>壞習慣二：同一件事開兩個視窗</h3>
+
+<p>有時候我覺得對話卡住了，就另開一個重問。舊的沒關，新的又從頭載入一次。做同一件事，付兩份錢。</p>
+
+<h3>壞習慣三：什麼工作都用最貴的模型</h3>
+
+<p>我掃出來的模型分布：</p>
+
+<table class="compare">
+  <tr><th>模型</th><th>佔我一個月的用量</th></tr>
+  <tr><td>最高階模型</td><td><b>86.1%</b></td></tr>
+  <tr><td>中階模型</td><td>1.7%</td></tr>
+  <tr><td>其他</td><td>12.2%</td></tr>
+</table>
+
+<p>整理檔案、批次改名、盤點清單這種完全機械的工作，我也在用最高階的模型跑。以價格來說，高階模型大約是中階的五倍。</p>
+
+<div class="readmore near">
+  <b>模型怎麼選這件事，我另外寫過一篇</b>
+  <ul>
+    <li><a href="../ai-cp-value-calculus/">模型不是越聰明越好：我開始學著算 AI 的 CP 值</a>　這段只講了我用錯模型，那篇講的是怎麼算「什麼工作值得用貴的」，含迭代次數的算法</li>
+  </ul>
+</div>
+</div></section>
+
+<section class="section" id="quarter"><div class="inner">
+<h2>我原本以為的原因，只佔四分之一</h2>
+
+<p>回到我一開始的猜測：知識庫太肥。</p>
+
+<p>實測結果是，我每開一個新對話，還沒說任何話，系統已經載入 <b>7.3 萬 token</b>（中位數，最大的一個到 12.2 萬）。組成大概是規則主檔、技能包描述清單、掛上去的各種外部連接器、系統提示與工具定義。</p>
+
+<p>這筆固定開銷每次呼叫都要帶著跑。19,287 次乘上 7.3 萬，大約十四億，佔我總量的 <b>26%</b>。</p>
+
+<p><b>所以知識庫確實有貢獻，但它佔四分之一。另外四分之三是對話累積出來的。</b>我如果把規則主檔砍一半，只能省下大約 8%，而且會犧牲 AI 對我工作方式的理解。</p>
+
+<p>順帶一提，我還掃出一件蠢事：我掛了一堆從來沒用過的外部連接器。實際三十天的呼叫紀錄顯示，設計工具、簡報工具、信箱、手機模擬器這幾個，<b>一次都沒被呼叫過</b>，其中一個畫圖工具還被重複掛了兩份。這些每次開對話都在載入。關掉它們大概能讓開場從 7.3 萬降到 5.5 萬到 6 萬之間。</p>
+</div></section>
+
+<section class="section" id="solution"><div class="inner">
+<h2>解法：兩個開關</h2>
+
+<p>問題定位完，解法就簡單了。兩個開關，一個管單價，一個管數量。</p>
+
+<h3>開關一：模型切換點</h3>
+
+<p>不需要判斷力的工作切便宜模型，需要判斷的切回高階。</p>
+
+<p>哪些可以切便宜：讀檔盤點、搜尋比對、批次改名、格式轉換、寫檔開卡。共同特徵是<b>輸出格式明確、低風險可逆、錯了機器驗得出來</b>。</p>
+
+<p>哪些絕對不能切：語氣文案、對外內容、策略判斷、規則變更、破壞性批次操作、驗收複查。</p>
+
+<h3>開關二：對話斷點</h3>
+
+<p>一個階段做完，把對話斷掉，重新開一個。</p>
+
+<p>判斷斷點，看<b>有沒有做出一個可以驗收的東西</b>。時間長短不算。規劃完是一個斷點，執行完是一個斷點，驗收完是一個斷點。斷之前寫一份交接文（進度、下一步、涉及檔案、注意事項），新對話第一句貼交接文路徑。</p>
+
+<p>我算過這兩種做法的差別：</p>
+
+<table class="compare">
+  <tr><th>做法</th><th>省下</th></tr>
+  <tr><td>只切模型</td><td>約 5 倍單價</td></tr>
+  <tr><td>只斷對話</td><td>約 3 到 4 倍的量</td></tr>
+  <tr><td><b>兩個一起做</b></td><td><b>15 倍以上</b></td></tr>
+</table>
+
+<p>只做一個都不夠。切了模型但對話還是開一整天，便宜模型也會被四十萬的重讀量拖垮。</p>
+
+<figure class="inline-figure card">
+  <img src="../../images/articles/ai-usage-audit-04.jpg" alt="兩個開關一起開：只切模型省 5 倍、只斷對話省 3 到 4 倍、兩個一起做省 15 倍以上" loading="lazy">
+  <figcaption>一個管單價，一個管數量，兩個一起開才有倍數效果。</figcaption>
+</figure>
+
+<h3>還有一個開關：把讀檔外包出去</h3>
+
+<p>這是我原本就有、但用得不夠的做法。</p>
+
+<p>派一個「子代理」去讀檔案，它讀完五十個檔案，只回報一頁摘要給主對話。<b>那五十個檔案的內容不會留在主對話裡</b>，之後每一輪都不用重讀。</p>
+
+<p>我的實測數字證明這招有效：子代理只佔我一個月用量的 <b>4.2%</b>，卻做掉了不少盤點工作。它省的是後續每一輪重讀的成本，模型單價本身沒變。</p>
+</div></section>
+
+<section class="section" id="why-not-hook"><div class="inner">
+<h2>為什麼我沒有寫成自動化規則</h2>
+
+<p>我第一個念頭是：那就寫一條規則，讓 AI 自己切模型不就好了。</p>
+
+<p>我實際去查了，這條路走不通，原因有三層：</p>
+
+<p><b>第一，AI 技術上切不了。</b>主對話用哪個模型，是這個對話啟動時就決定的，AI 自己改不了。這是機制上的限制，改設計也解決不了。</p>
+
+<p><b>第二，攔截器（hook）不知道你在做什麼。</b>攔截器可以在每次你送出訊息時注入一段提醒文字，但它不知道你現在跑到第幾步。它只能一直喊「記得切模型」，喊久了就變成背景噪音，而且<b>那段提醒本身每一輪都要付錢</b>。我算過，一段 280 字元的提醒，一個月大約五百萬 token。</p>
+
+<p><b>第三，我原本就有規則，但沒被執行。</b>這是最刺的一點。我去讀我自己的健檢技能包，發現裡面早就寫了：</p>
+
+<ul>
+  <li>「主控模型用什麼都可以，包含中階模型」</li>
+  <li>「健檢是唯讀的，整改另開任務執行」</li>
+  <li>「整場新增量控制在五萬 token 以內」</li>
+</ul>
+
+<p>三條規則從兩個月前就寫在那裡。實際跑出來呢？整場用最高階模型、整改接在同一個對話做完、最貴那場一千零五十六次呼叫。</p>
+
+<p><b>規則早就有了，缺的是三樣東西：什麼時候切、在哪裡斷、跑完怎麼驗。</b></p>
+
+<div class="readmore near">
+  <b>「有規則不等於有機制」這件事，我寫過完整的一篇</b>
+  <ul>
+    <li><a href="../copied-mechanism-is-no-mechanism/">直接抄別人的 Skills、工作流，其實沒什麼用</a>　那篇講的是為什麼抄來的流程在你身上跑不動，跟我這次踩到的是同一個坑：文字寫下來了，但沒有東西讓它真的發生</li>
+  </ul>
+</div>
+</div></section>
+
+<section class="section" id="decision"><div class="inner">
+<h2>定案：我改了什麼</h2>
+
+<p>我把改動放在技能包裡，不放在攔截器，也不放在通用規則主檔。理由是技能包本身就是流程，流程的每一步就是掛載點，提醒可以放在對的位置，不會變成噪音。</p>
+
+<p>四處改動：</p>
+
+<figure class="flowfig">
+  <figcaption class="flowfig-cap">我自己的健檢流程，改完之後長這樣。橘色標籤的那兩個位置，就是「AI 出提示、我手動切模型」的節點。</figcaption>
+
+  <div class="flow-stage">
+    <div class="flow-stage-head"><b>健檢段</b><span>唯讀，只列清單，不動任何檔案</span></div>
+    <div class="flow-row">
+      <div class="flow-step">
+        <div class="flow-n">第 1 步</div>
+        <div class="flow-t">開場定範圍</div>
+        <div class="flow-d">讀上一次的報告，決定這場要看哪些地方</div>
+        <span class="flow-tag tag-mid">中階模型</span>
+      </div>
+      <div class="flow-step">
+        <div class="flow-n">第 2 步</div>
+        <div class="flow-t">盤點現況</div>
+        <div class="flow-d">派子代理去讀檔，只把摘要帶回主對話</div>
+        <span class="flow-tag tag-sub">子代理</span>
+      </div>
+      <div class="flow-step hi">
+        <span class="flow-switch">手動切高階</span>
+        <div class="flow-n">第 3 步</div>
+        <div class="flow-t">分析診斷</div>
+        <div class="flow-d">這一步要判斷，是紅線，不降級</div>
+        <span class="flow-tag tag-high">高階模型</span>
+      </div>
+      <div class="flow-step">
+        <div class="flow-n">第 4 步</div>
+        <div class="flow-t">寫報告、開卡</div>
+        <div class="flow-d">順手記下這一場自己花了多少</div>
+        <span class="flow-tag tag-mid">中階模型</span>
+      </div>
+    </div>
+    <p class="flow-note">這一段只列清單。要不要改、怎麼改，等我看完報告再決定。</p>
+  </div>
+
+  <div class="flow-break">清空對話，整改另開一場</div>
+
+  <div class="flow-stage fix">
+    <div class="flow-stage-head"><b>整改段</b><span>開始動檔案，從新對話重新起算</span></div>
+    <div class="flow-row three">
+      <div class="flow-step">
+        <div class="flow-n">第 5 步</div>
+        <div class="flow-t">執行整改</div>
+        <div class="flow-d">貼上交接文，從那裡接手</div>
+        <span class="flow-tag tag-mid">中階模型</span>
+      </div>
+      <div class="flow-step hi">
+        <span class="flow-switch">手動切高階</span>
+        <div class="flow-n">第 6 步</div>
+        <div class="flow-t">複驗</div>
+        <div class="flow-d">子代理說做完了不算數，要自己驗過</div>
+        <span class="flow-tag tag-high">高階模型</span>
+      </div>
+      <div class="flow-step opt">
+        <div class="flow-n">第 7 步</div>
+        <div class="flow-t">找另一家 AI 複查</div>
+        <div class="flow-d">只有動到規則主檔這種等級才跑</div>
+        <span class="flow-tag tag-sub">選用</span>
+      </div>
+    </div>
+    <p class="flow-note">整改做完不用再清一次對話，下個月從第 1 步重來。</p>
+  </div>
+</figure>
+
+<p><b>一、主控模型明訂預設值。</b>從「用什麼都可以」改成「預設中階模型，只有分析那一步切高階」。</p>
+
+<p><b>二、新增四個切換提示節點。</b>AI 在這四個位置必須輸出固定格式的一行提示，缺一不得往下走：</p>
+
+<table class="compare">
+  <tr><th>節點</th><th>提示</th></tr>
+  <tr><td>盤點完、要進分析前</td><td>切高階：接下來是分析，不降級</td></tr>
+  <tr><td>分析完、要寫報告前</td><td>可切回中階：接下來只是寫檔開卡</td></tr>
+  <tr><td>報告存檔、開完卡後</td><td>健檢結束，建議清空對話：整改是另案</td></tr>
+  <tr><td>整改完、要複驗前</td><td>切高階：複驗要判斷</td></tr>
+</table>
+
+<p>用固定的符號開頭，我在對話裡掃一眼就看得到。<b>AI 提示，我手動切。</b>這個分工是刻意的，因為切換時機常常要看當下狀況，機器判斷不了。</p>
+
+<p><b>三、把「另開任務」講明成「另開對話」。</b>原本的規則寫「整改另開任務執行」，這句話太模糊，實際執行時就變成同一個對話接著做。改成明確的動作：報告寫完就清空對話，整改在新對話裡從頭起算。</p>
+
+<p><b>四、加上成本驗收。</b>這是最重要的一條。原本那三條省錢規則之所以沒被執行，是因為<b>沒有任何方法檢查它有沒有被執行</b>。</p>
+
+<p>我寫了一支唯讀的量測腳本，健檢報告新增一欄記錄四個數字：這一場的 API 呼叫次數、結束時的重讀量、子代理佔比、模型分布。異常門檻設在「呼叫超過三百次」或「結束時重讀量超過二十萬」，超過就要在報告裡寫明卡在哪一步。</p>
+
+<p>設完門檻我才發現，我最貴那場健檢的結束重讀量是 <b>55.9 萬</b>，另外還有幾場到 <b>88.8 萬</b>。門檻沒設錯，是實際狀況比我想像的糟。</p>
+</div></section>
+
+<section class="section" id="howto"><div class="inner">
+<h2>你可以怎麼照做</h2>
+
+<p>不用有我這套知識庫，這幾件事任何人都適用。</p>
+
+<p><b>第一步，一件事做完就開新對話。</b>這是最大的單一槓桿，什麼設定都不用改。判斷時機：一個任務收尾了，或話題轉到不相關的事，就清。代價是要重新交代脈絡，但寫一份交接文大概三千到五千 token，比拖著四十萬跑二十輪便宜得多。</p>
+
+<p><b>第二步，開場先決定這場用哪個模型。</b></p>
+
+<table class="compare">
+  <tr><th>這場要做的事</th><th>開場先切</th></tr>
+  <tr><td>整理檔案、盤點、搬移、格式轉換</td><td>中階模型</td></tr>
+  <tr><td>寫作、策略、改規則、對外內容</td><td>高階模型</td></tr>
+  <tr><td>不確定</td><td>高階，需要時再說</td></tr>
+</table>
+
+<p>切模型不會清空對話，前面講的都還在。所以「便宜模型跑完切回高階驗收」可以在同一個對話裡完成。</p>
+
+<p><b>第三步，關掉沒在用的外部連接器。</b>去設定裡看一遍，三十天沒用過的就關。要用時再開，大概三十秒的事。</p>
+
+<p><b>第四步，讓 AI 派子代理去讀檔。</b>需要大量翻檔案的時候，明講「派一個子代理去讀，只回報摘要」。讀過的內容不會留在主對話裡。</p>
+
+<p><b>第五步，也是最容易被跳過的一步：量給自己看。</b>沒有量測，前面四步做了也不知道有沒有效。</p>
+</div></section>
+
+<section class="section" id="script"><div class="inner">
+<h2>量給自己看</h2>
+
+<p>我把量測腳本整理成可以直接跑的版本。它只讀本機的對話紀錄，不寫任何檔案、不上傳任何東西。</p>
+
+<pre><code>import json, os, glob, collections
+
+BASE = os.path.expanduser("~/.claude/projects")
+mon = collections.defaultdict(collections.Counter)
+
+for fp in glob.glob(os.path.join(BASE, "**", "*.jsonl"), recursive=True):
+    with open(fp, errors="ignore") as f:
+        for line in f:
+            if '"usage"' not in line:
+                continue
+            try:
+                d = json.loads(line)
+            except Exception:
+                continue
+            u = (d.get("message") or {}).get("usage") or {}
+            ts = d.get("timestamp", "")
+            if not u or not ts:
+                continue
+            c = mon[ts[:7]]                      # 按月份分組
+            c["calls"] += 1
+            c["in"]  += u.get("input_tokens", 0)
+            c["cc"]  += u.get("cache_creation_input_tokens", 0)
+            c["cr"]  += u.get("cache_read_input_tokens", 0)
+            c["out"] += u.get("output_tokens", 0)
+
+print(f"{'月份':&lt;9}{'呼叫次數':&gt;10}{'平均每次重讀':&gt;14}{'加權等效':&gt;12}")
+for m in sorted(mon):
+    c = mon[m]
+    reread = (c["cr"] + c["cc"]) / c["calls"] if c["calls"] else 0
+    # 加權：cache 讀 0.1 倍、cache 寫 1.25 倍、output 5 倍，折成 input 等效
+    w = (c["in"] + c["cc"] * 1.25 + c["cr"] * 0.1 + c["out"] * 5) / 1e6
+    print(f"{m:&lt;9}{c['calls']:&gt;10,}{reread:&gt;14,.0f}{w:&gt;11,.1f}M")
+</code></pre>
+
+<p>存成 <code>usage.py</code>，在終端機跑 <code>python3 usage.py</code>。</p>
+
+<p><b>怎麼看結果：</b></p>
+
+<ul>
+  <li><b>平均每次重讀</b>超過 20 萬，代表你的對話開太久了</li>
+  <li><b>呼叫次數</b>除以你實際做的事，如果比例高得離譜，代表你在同一件事上來回太多輪</li>
+</ul>
+
+
+<p><b>如果你不是用 Claude Code：</b>這支腳本讀的是 Claude Code 存在本機的紀錄。你如果主要用 ChatGPT、Gemini 的網頁版，那些工具不會把逐次用量存在你的電腦上，這支跑不了。改用這三個替代做法：</p>
+
+<ul>
+  <li><b>看官方的用量頁</b>：ChatGPT 與 Gemini 都有訂閱或 API 用量的頁面，至少能看到總量趨勢。看不到「每次重讀多少」，但總量往上跳的月份可以回想那個月在做什麼。</li>
+  <li><b>用對話長度當代理指標</b>：一個對話裡你來回超過三十次，大概就到了該開新對話的點。不用精算，養成習慣比算得準重要。</li>
+  <li><b>如果你用 API</b>：回應裡本來就有 <code>usage</code> 欄位，把 <code>cache_read_input_tokens</code> 跟 <code>input_tokens</code> 記下來，算法跟上面那支腳本一樣。</li>
+</ul>
+
+<p>這個路徑對照的是 Claude Code 的紀錄位置。你如果用別的工具，位置不同，但概念一樣：找到它存對話紀錄的地方，算「平均每次重讀多少」。</p>
+</div></section>
+
+<section class="section" id="closing"><div class="inner">
+<h2>最後</h2>
+
+<p>我原本以為問題是「我的知識庫養太大了」，想砍規則、砍技能包。</p>
+
+<p>實測告訴我，那條路只能省 8%，而且會犧牲掉 AI 對我工作方式的理解，得不償失。真正的問題在我怎麼用它：一個對話開一整天、什麼工作都用最貴的模型、規則寫了但沒有檢查機制。</p>
+
+<p><b>規則寫了不等於規則有在執行。</b>這件事我付了兩個月的帳單才學會。中間差的是三樣東西：明確的觸發位置、明確的動作、以及一個能檢查它有沒有發生的方法。</p>
+
+<p>三樣缺一樣，規則就只是一段好看的文字。</p>
+</div></section>
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">江江教練 · AI 知識管理</div>
+    <div class="footer-links">
+      <a href="../../articles.html">← 回深度文章總站</a>
+      <a href="../../index.html">首頁</a>
+      <a href="../../learn.html">自學資源</a>
+      <a href="../../skills.html">技能包下載</a>
+      <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">LINE 社群 ↗</a>
+      <a href="https://www.threads.com/@jiang_yude_coach" target="_blank" rel="noopener">Threads ↗</a>
+      <a href="https://vocus.cc/salon/Jiang_Coach" target="_blank" rel="noopener">方格子 ↗</a>
+    </div>
+    <div class="footer-note">這是一篇觀點文章，整理我對「AI 越用越貴，我掃了自己一個月的用量」的看法，供你參考。</div>
+  </div>
+</footer>
+
+<!-- 點圖放大 lightbox（hero 與內文圖通用，已內建，不用每篇重加） -->
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <span class="lightbox-close" aria-label="關閉">×</span>
+  <img id="lightbox-img" src="" alt="放大檢視">
+</div>
+<script>
+(function(){
+  var box=document.getElementById('lightbox'),boxImg=document.getElementById('lightbox-img');
+  document.querySelectorAll('.hero-figure img,.inline-figure img').forEach(function(img){
+    img.addEventListener('click',function(){boxImg.src=img.currentSrc||img.src;boxImg.alt=img.alt||'放大檢視';box.classList.add('open');box.setAttribute('aria-hidden','false');});
+  });
+  function close(){box.classList.remove('open');box.setAttribute('aria-hidden','true');boxImg.src='';}
+  box.addEventListener('click',close);
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
+})();
+</script>
+
+<script src="../../image-interactions.js"></script>
+
+<!-- 官網共用：滑鼠暖光暈 + 導航列漢堡選單 -->
+<script src="../../spotlight.js"></script>
+
+<!-- 文章自動互聯（相關文章）：兩支已內建，順序不可顛倒，不用再另外加 -->
+<script src="../../articles-data.js"></script>
+<script src="../../related-render.js"></script>
+</body>
+</html>
