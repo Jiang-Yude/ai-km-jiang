@@ -91,6 +91,30 @@ window.COURSES = [
     }
   },
   {
+    id: "2026-09-12-danhai-public-art",
+    date: "2026-09-12",
+    time: "09:30",
+    duration_min: 390,
+    title: "如果公共藝術會說話：淡海輕軌走讀 × AI 故事共創",
+    type_label: "外部授課（旅學堂特約合作）",
+    image: "images/courses/2026-09-12-danhai-public-art.jpg",
+    venue_mode: "physical",
+    venue_label: "實體",
+    host: "江江教練",
+    tags: ["公共藝術", "淡海輕軌", "敘事轉譯", "AI生圖", "在地故事", "零基礎"],
+    summary: "《藝術流》2026 新北市公共藝術推廣計畫的藍海線場。9/12（六）09:30 淡水漁人碼頭站集合，上午跟著旅學堂走讀淡海輕軌沿線的公共藝術，下午用導覽、敘事、AI 生成三段接起來，把整天聽到的故事做成一張以自己為主角的電影海報。一支手機就可以參加，不用先會用 AI。",
+    detail_url: "courses/2026-09-12-danhai-public-art/",
+    detail_label: "課程預告與上一場成果 ↗",
+    materials: [],
+    registration: {
+      status: "open",
+      url: "https://www.accupass.com/go/artflow",
+      label: "前往報名 ↗",
+      host_org: "旅學堂",
+      note: "報名與售票由旅學堂於 Accupass 開放，8/28 上午 10:00 開賣，名額與費用以該頁公告為準。"
+    }
+  },
+  {
     id: "2026-08-21-danhai-public-art",
     date: "2026-08-21",
     time: null,
