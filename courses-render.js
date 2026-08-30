@@ -6,8 +6,16 @@
   // ─── 工具 ───
   function parseDate(s) { return s ? new Date(s) : new Date(8640000000000000); }
   function isIncubating(c) { return c.phase === "incubating"; }
-  function isUpcoming(c) { return !isIncubating(c) && !!c.date && parseDate(c.date) >= TODAY; }
-  function isPast(c) { return !isIncubating(c) && !!c.date && parseDate(c.date) < TODAY; }
+  // pinned：釘選卡。永遠算「未來」、永遠排最前、日期過了也不會掉進過去目錄。
+  // 下架方式＝把 courses-data.js 該卡的 pinned 拿掉（江江 2026-08-30 指示：沒說下架就不下架）。
+  function isPinned(c) { return c.pinned === true; }
+  function isUpcoming(c) { return !isIncubating(c) && (isPinned(c) || (!!c.date && parseDate(c.date) >= TODAY)); }
+  function isPast(c) { return !isIncubating(c) && !isPinned(c) && !!c.date && parseDate(c.date) < TODAY; }
+  // 未來場次排序：釘選的永遠在最前，其餘照日期由近到遠
+  function byPinnedThenDate(a, b) {
+    if (isPinned(a) !== isPinned(b)) return isPinned(a) ? -1 : 1;
+    return parseDate(a.date) - parseDate(b.date);
+  }
   function monthKey(c) { return c.date ? c.date.slice(0, 7) : 'tbd'; }   // "2026-05"
   function fmtDate(c) {
     if (c.date_label) return c.date_label;   // 多日系列課給 date_label 直接顯示（date 仍管排序與過期）
@@ -157,13 +165,21 @@
   }
 
   // ─── 單張卡片 HTML（極簡版：圖 + 日期 + 標題 + 模式 badges + 詳細連結 + CTA） ───
+  // 釘選角標：圖釘 + 「近期主推」，貼在卡片左上角。
+  // 2026-08-30 江江指定為釘選課程的固定樣式，以後所有釘選卡都長這樣，不要各做各的。
+  function pinBadgeHTML(c) {
+    if (!isPinned(c)) return '';
+    return `<div class="pin-badge"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14.4 2.6a1.4 1.4 0 0 0-2 0l-.5.5a1.4 1.4 0 0 0 0 2l.2.2-3.3 3.3-2.4-.5a1.3 1.3 0 0 0-1.2 2.2l3.2 3.2-4.6 5.6a.8.8 0 0 0 1.1 1.1l5.6-4.6 3.2 3.2a1.3 1.3 0 0 0 2.2-1.2l-.5-2.4 3.3-3.3.2.2a1.4 1.4 0 0 0 2 0l.5-.5a1.4 1.4 0 0 0 0-2z"/></svg><span>近期主推</span></div>`;
+  }
+
   function cardHTML(c) {
     const thumb = c.image
       ? `<div class="card-thumbnail"><img src="${escapeHtml(c.image)}" alt="${escapeHtml(c.title)}" loading="lazy" /></div>`
       : placeholderHTML(c);
 
     return `
-      <div class="list-card course-card${c.image ? ' has-thumb' : ''}" data-course-id="${escapeHtml(c.id)}">
+      <div class="list-card course-card${c.image ? ' has-thumb' : ''}${isPinned(c) ? ' is-pinned' : ''}" data-course-id="${escapeHtml(c.id)}">
+        ${pinBadgeHTML(c)}
         ${thumb}
         <div class="card-body">
           <div class="card-meta">
@@ -178,6 +194,51 @@
       </div>`;
   }
 
+  // ─── 釘選課程大橫幅（courses.html 頂部）───
+  // 資料源＝courses-data.js 裡 pinned:true 且有 banner 物件的那張卡。
+  // 拿掉 pinned 或 banner，橫幅自動消失，不用改這支。同時間只該有一張。
+  window.renderPinnedBanner = function (selector) {
+    const target = document.querySelector(selector);
+    if (!target) return;
+    const c = COURSES.find(x => isPinned(x) && x.banner);
+    if (!c) { target.innerHTML = ''; target.style.display = 'none'; return; }
+    const b = c.banner;
+    const reg = c.registration || {};
+    const facts = [
+      c.date_label ? `${escapeHtml(c.date_label)} ${escapeHtml(c.time || '')}` : escapeHtml(fmtDate(c)),
+      c.duration_min ? `六堂 · 每堂 ${Math.round(c.duration_min / 60)} 小時` : '',
+      escapeHtml(c.venue_label || '')
+    ].filter(Boolean);
+    // 按鈕順序：主鈕先進報名頁看完整內容，第二顆才直跳 Portaly 付款
+    // （2026-08-30 江江拍板：橫幅只有三行賣點，不直接叫人掏 3,000）
+    const primary = c.detail_url
+      ? `<a class="pb-btn primary" href="${escapeHtml(c.detail_url)}">看完整課程內容 →</a>`
+      : '';
+    const buy = reg.url
+      ? `<a class="pb-btn buy" href="${escapeHtml(reg.url)}" target="_blank" rel="noopener">點我報名 ↗</a>`
+      : '';
+    const second = b.secondary
+      ? `<a class="pb-btn ghost" href="${escapeHtml(b.secondary.url)}">${escapeHtml(b.secondary.label)}</a>`
+      : '';
+    target.style.display = '';
+    target.innerHTML = `
+      <div class="pinned-banner">
+        <a class="pb-poster" href="${escapeHtml(c.detail_url || '#')}">
+          <img src="${escapeHtml(b.poster)}" alt="${escapeHtml(c.title)}" loading="eager" />
+        </a>
+        <div class="pb-body">
+          <div class="pb-flag">正在招生</div>
+          <div class="pb-kicker">${escapeHtml(b.kicker || c.type_label || '')}</div>
+          <h2 class="pb-title"><a href="${escapeHtml(c.detail_url || '#')}">${escapeHtml(c.title)}</a></h2>
+          ${b.lead ? `<p class="pb-lead">${escapeHtml(b.lead)}</p>` : ''}
+          <ul class="pb-points">${(b.points || []).map(t => `<li>${escapeHtml(t)}</li>`).join('')}</ul>
+          <div class="pb-facts">${facts.map(t => `<span>${t}</span>`).join('')}</div>
+          <div class="pb-cta">${primary}${buy}${second}</div>
+        </div>
+      </div>`;
+    if (window.attachLocalSpotlight) target.querySelectorAll('.pinned-banner').forEach(window.attachLocalSpotlight);
+  };
+
   // ─── 首頁：最近的課（未來 N 場） ───
   window.renderHomeUpcoming = function (selector, n) {
     const target = document.querySelector(selector);
@@ -185,7 +246,7 @@
     const upcoming = COURSES
       .filter(isUpcoming)
       .filter(c => inferType(c) !== 'external' && inferType(c) !== 'podcast')
-      .sort((a,b) => parseDate(a.date) - parseDate(b.date))
+      .sort(byPinnedThenDate)
       .slice(0, n);
     if (upcoming.length === 0) {
       target.innerHTML = `<p style="text-align:center;color:var(--ink-faint);font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.1rem;padding:32px;">最近的課正在規劃中，<a href="courses.html" style="color:var(--c-coral);border-bottom:1px dashed var(--c-coral);">看看全部課程 →</a></p>`;
@@ -229,7 +290,7 @@
 
     // 課程預告只顯示未來場次；已結束課程整理到 resources.html。
     const incubating = filtered.filter(isIncubating);
-    const trueUpcoming = filtered.filter(isUpcoming).sort((a,b)=>parseDate(a.date)-parseDate(b.date));
+    const trueUpcoming = filtered.filter(isUpcoming).sort(byPinnedThenDate);
     // 空窗判斷：完全沒有未來的免費場 → 顯示「下月規劃中、加社群」提示，不補過去場硬湊
     const isFreeGap = trueUpcoming.length === 0;
     let upcoming = trueUpcoming;
@@ -336,7 +397,7 @@
     const target = document.querySelector(selector);
     if (!target) return;
     const all = COURSES.filter(c => inferType(c) === 'external' || inferType(c) === 'podcast');
-    const upcoming = all.filter(isUpcoming).sort((a,b)=>parseDate(a.date)-parseDate(b.date));
+    const upcoming = all.filter(isUpcoming).sort(byPinnedThenDate);
     const past = all.filter(isPast).sort((a,b)=>parseDate(b.date)-parseDate(a.date));
     function block(title, items) {
       if (!items.length) return '';
@@ -383,7 +444,7 @@
     if (F.type === 'all') {
       const soon = COURSES
         .filter(c => isUpcoming(c) && !isIncubating(c) && hitVenue(c.venue_mode) && hitQ([c.title, c.summary || '', (c.tags || []).join(' '), c.type_label || '']))
-        .sort((a, b) => parseDate(a.date) - parseDate(b.date));
+        .sort(byPinnedThenDate);
       if (soon.length) {
         html += header('近期課程', soon.length, '最近要上的課排最前面；免費課、付費課、邀約課看卡片上的標籤。');
         html += grid(soon.map(cardHTML));
@@ -403,13 +464,13 @@
     const isInvited = (c) => inferType(c) === 'external' || inferType(c) === 'podcast' || (inferType(c) === 'other' && (c.registration || {}).status === 'private');
     if (F.type === 'free') {
       const up = COURSES.filter(c => inferType(c) === 'free' && isUpcoming(c) && hitVenue(c.venue_mode) && hitQ([c.title, c.summary||'', (c.tags||[]).join(' ')]))
-        .sort((a,b)=>parseDate(a.date)-parseDate(b.date));
+        .sort(byPinnedThenDate);
       if (up.length) { html += header('免費講座 · 近期', up.length); html += grid(up.map(cardHTML)); }
     }
     // 邀約授課（只放未來場次）
     if (F.type === 'invited') {
       const up = COURSES.filter(c => isInvited(c) && isUpcoming(c) && hitVenue(c.venue_mode) && hitQ([c.title, c.summary||'', (c.tags||[]).join(' ')]))
-        .sort((a,b)=>parseDate(a.date)-parseDate(b.date));
+        .sort(byPinnedThenDate);
       if (up.length) { html += header('邀約授課 · 近期受邀', up.length); html += grid(up.map(cardHTML)); }
     }
     // 過去目錄：所有已上過的場次照時間排、不分區，靠卡片上的標籤分免費課／邀約課／付費課（2026-08-24 江江指示）
@@ -429,6 +490,7 @@
   };
 
   document.addEventListener('DOMContentLoaded', () => {
+    if (document.getElementById('pinned-banner')) window.renderPinnedBanner('#pinned-banner');
     if (!document.getElementById('merged-courses')) return;
     window.renderMergedCourses('#merged-courses');
     const s = document.getElementById('merged-search');

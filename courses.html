@@ -36,6 +36,42 @@
   .msearch{font:inherit; font-size:0.95rem; padding:7px 16px; border-radius:999px; border:1px solid var(--line);
     background:var(--paper); color:var(--ink); width:200px;}
   .msearch:focus{outline:none; border-color:var(--c-sand);}
+
+  /* ─── 釘選課程大橫幅（資料源：courses-data.js 的 pinned + banner）─── */
+  #pinned-banner{margin:0 0 34px;}
+  .pinned-banner{position:relative; display:grid; grid-template-columns:minmax(0,340px) minmax(0,1fr); gap:clamp(20px,3vw,40px);
+    align-items:center; padding:clamp(20px,2.6vw,34px); border:1px solid var(--line); border-radius:20px;
+    background:linear-gradient(135deg,#fffdf7 0%,#faf3e6 100%); box-shadow:0 16px 40px rgba(107,74,42,.10); overflow:hidden;}
+  .pb-poster{display:block; border-radius:14px; overflow:hidden; box-shadow:0 10px 26px rgba(107,74,42,.18); transition:transform .25s;}
+  .pb-poster:hover{transform:translateY(-3px);}
+  .pb-poster img{display:block; width:100%; height:auto;}
+  .pb-body{min-width:0;}
+  .pb-flag{display:inline-block; font-size:.8rem; font-weight:700; letter-spacing:.06em; color:#fff;
+    background:var(--c-coral); border-radius:999px; padding:4px 13px; margin-bottom:12px;}
+  .pb-kicker{font-size:.92rem; font-weight:600; color:var(--c-sage); letter-spacing:.04em; margin-bottom:6px;}
+  .pb-title{margin:0 0 12px; font-size:clamp(22px,2.6vw,32px); line-height:1.25;}
+  .pb-title a{color:var(--ink); text-decoration:none; border-bottom:2px solid transparent; transition:border-color .2s;}
+  .pb-title a:hover{border-bottom-color:var(--c-coral);}
+  .pb-lead{margin:0 0 14px; font-size:1.02rem; line-height:1.7; color:var(--ink-soft);}
+  .pb-points{margin:0 0 16px; padding:0; list-style:none; display:grid; gap:7px;}
+  .pb-points li{position:relative; padding-left:20px; font-size:.95rem; line-height:1.6; color:var(--ink-soft);}
+  .pb-points li::before{content:''; position:absolute; left:4px; top:.62em; width:6px; height:6px; border-radius:50%; background:var(--c-sage);}
+  .pb-facts{display:flex; flex-wrap:wrap; gap:8px; margin-bottom:18px;}
+  .pb-facts span{font-size:.88rem; font-weight:600; color:var(--ink-faint);
+    background:rgba(160,129,68,.10); border:1px solid var(--line-soft); border-radius:999px; padding:4px 12px;}
+  .pb-cta{display:flex; flex-wrap:wrap; gap:10px;}
+  .pb-btn{display:inline-block; font-size:.98rem; font-weight:700; padding:11px 24px; border-radius:999px;
+    text-decoration:none; transition:all .18s; border:1px solid transparent;}
+  .pb-btn.primary{background:var(--c-coral); color:#fff;}
+  .pb-btn.primary:hover{background:#d64a3f; transform:translateY(-1px);}
+  .pb-btn.ghost{background:transparent; color:var(--ink-soft); border-color:var(--line);}
+  .pb-btn.buy{background:var(--c-sage); color:#fff;}
+  .pb-btn.buy:hover{background:#4e6344; transform:translateY(-1px);}
+  .pb-btn.ghost:hover{border-color:var(--c-sand); color:var(--ink);}
+  @media (max-width:820px){
+    .pinned-banner{grid-template-columns:1fr; gap:20px;}
+    .pb-poster{max-width:400px; margin:0 auto;}
+  }
 </style>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"課程 · 江江教練 · AI 知識管理","description":"江江教練的課程總覽：收費課程、每月免費線上講座、企業與學校邀約授課，一頁看完。","url":"https://jiangyude.com/courses.html","inLanguage":"zh-Hant","isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://jiangyude.com/"},"about":{"@type":"Person","name":"江昱德","alternateName":"江江教練","jobTitle":"隱性知識提煉師、AI 應用規劃師"}}</script>
 <!-- tracking:vercel-analytics -->
@@ -75,6 +111,10 @@
 
 <section>
   <div class="container">
+
+    <!-- 釘選課程大橫幅：courses-render.js 的 renderPinnedBanner 渲染（資料源 courses-data.js 的 pinned + banner）
+         下架＝把該卡的 pinned 拿掉，橫幅自動消失，不用動這裡 -->
+    <div id="pinned-banner"></div>
 
     <div class="mfilter">
       <div class="grp"><b>類型</b>
@@ -132,8 +172,8 @@
   </div>
 </footer>
 
-<script src="courses-data.js?v=20260730-course-refresh" defer></script>
-<script src="courses-render.js?v=20260730-course-refresh" defer></script>
+<script src="courses-data.js?v=20260830-pinned-banner" defer></script>
+<script src="courses-render.js?v=20260830-pinned-banner" defer></script>
 <script src="spotlight.js" defer></script>
   <script src="/views.js"></script>
   <script src="/mika-chat-widget.js" defer></script>

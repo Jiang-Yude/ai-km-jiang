@@ -22,6 +22,10 @@
  *   detail_label - 內頁連結文字；不填時預設「完整課程內容與簡報 ↗」
  *   materials    - 簡報、技能包等延伸資源（之後做才填）
  *
+ *   pinned       - true = 釘選卡。永遠排在最前面、日期過了也不會掉進過去目錄。
+ *                  下架方式＝把這一行拿掉（江江 2026-08-30 指示：沒說下架就不下架）。
+ *                  courses.html 的大橫幅也讀這欄，同時間只該有一張卡是 pinned。
+ *
  *   phase        - 課程階段：
  *                  不填或 "scheduled" = 依日期排（未來/過去）
  *                  "incubating"        = 籌備中（等邀約、等夥伴、等啟動），歸籌備區
@@ -53,7 +57,19 @@ window.COURSES = [
     duration_min: 120,
     title: "AI 到底能用到什麼程度：我用 Codex 跟 Claude 示範給你看",
     type_label: "付費線上系列課",
-    image: null,
+    pinned: true,
+    image: "images/courses/2026-09-ai-series.jpg",
+    banner: {
+      poster: "images/courses/2026-09-ai-series-poster.jpg",
+      kicker: "六堂線上系列課 · 中階",
+      lead: "你會下提示詞、會叫它整理資料，但你心裡知道，你一直停在同一個位置。",
+      points: [
+        "技能包 → 迴圈工程 → API・MCP・CLI → 找得到資料 → 找對資料 → 完成自己的工作流",
+        "每堂重點是判斷不是操作，開螢幕現場做一件真實的事，示範佔一半以上時間",
+        "報名含專屬 LINE 群組，星星在課前課後帶思維引導"
+      ],
+      secondary: { label: "先參加 9/13 免費場", url: "courses/2026-09-ai-series/#free" }
+    },
     venue_mode: "online",
     venue_label: "線上",
     host: "江昱德（江江教練）· 吳星瑩（思維助教）",
