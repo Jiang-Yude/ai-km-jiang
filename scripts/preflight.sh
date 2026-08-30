@@ -66,6 +66,11 @@ echo "═══ 7/11 文章版面樣式完整 ═══"
 # 新文章用到表格就得自己手抄 CSS，抄漏＝整塊退回瀏覽器預設。8/23、8/24 連兩篇上線後才被江江看到。
 # 模板已補齊，這一關是保底。
 if node scripts/check-article-css.mjs; then ok "文章版面樣式"; else bad "有文章用到版面 class 卻沒有對應 CSS（見上）"; fi
+# 咪卡 widget 全站覆蓋（2026-08-30 立，事故驅動）：8/10 上線是一次性回填，模板漏行，
+# 之後新文章全漏（累 13 篇）、en/ 的排除只寫在 commit 訊息裡沒人看得到。
+# 模板已補行、全站已補齊，這一關是保底；刻意不掛的頁寫進 check-mika-widget.mjs 的 EXEMPT 附原因。
+# 與上一關同屬「模板保底」，刻意不另編號（同索引覆蓋率關的慣例）。
+if node scripts/check-mika-widget.mjs; then ok "咪卡 widget 覆蓋"; else bad "有頁面缺咪卡 widget 掛載（見上）"; fi
 
 echo "═══ 8/11 秘密掃描（未提交變更檔）═══"
 if [[ ! -f "$SAFE_DEPLOY_TOOL" ]]; then
