@@ -46,6 +46,30 @@
 
 window.COURSES = [
   {
+    id: "2026-09-20-ai-series-six-lessons",
+    date: "2026-09-20",
+    date_label: "9/20 起，每週日",
+    time: "19:30",
+    duration_min: 120,
+    title: "AI 到底能用到什麼程度：我用 Codex 跟 Claude 示範給你看",
+    type_label: "付費線上系列課",
+    image: null,
+    venue_mode: "online",
+    venue_label: "線上",
+    host: "江昱德（江江教練）· 吳星瑩（思維助教）",
+    tags: ["AIAgent", "技能包", "迴圈工程", "MCP", "知識庫", "系列課"],
+    summary: "六堂線上系列課，9/20 起每週日 19:30 開課，每堂兩小時，11/1 結業（10/11 國慶連假休息一週）。從技能包、迴圈工程，到 API／MCP／CLI 的差別，再到 Agent 找得到資料、找得到對的資料，最後用一個真實的產品開發過程走完一圈。每堂重點放在判斷不是操作，示範佔一半以上時間。報名含專屬 LINE 群組，星星在課前課後帶思維引導。六堂 3,000 元，報名皆有回放。9/13（日）另有免費第零堂。",
+    detail_url: "courses/2026-09-ai-series/",
+    detail_label: "完整課程內容與報名 ↗",
+    materials: [],
+    registration: {
+      status: "open",
+      url: "https://portaly.cc/Jiang_Yude/product/cX2tx7cTT9ODxU7x8jPl",
+      label: "前往報名 ↗",
+      note: "六堂 3,000 元，一次收。9/17（三）23:59 前覺得不如預期可全額退費。9/13（日）19:30 另有免費第零堂，加 LINE 社群即可參加。"
+    }
+  },
+  {
     id: "2026-09-09-npo-impact-report-workshop",
     date: "2026-09-09",
     time: "09:30",
