@@ -3,6 +3,7 @@
    維護：新文章上稿時補一條；訪客搜尋 log 發現沒接住的問法，第一線修法＝來這裡補別名。
    key＝articles-data.js 的文章 id。 */
 window.SEARCH_ALIASES = {
+  "webmcp-day-one": ["WebMCP是什麼","AI可以直接操作我的網站嗎","Site tools","網站給AI用的工具","AI逛我的網站","MCP跟WebMCP差在哪","document.modelContext","網站怎麼被AI使用","讓AI查我的網站內容","AI友善網站怎麼做","趨勢出來當天就接上","給AI的服務台"],
   "character-costume-sheet-three-views": ["定妝照","角色定妝照","角色模板","角色基準圖","角色一致性","四視圖","抽卡","固定角色","每次生的角色都不一樣"],
   "start-with-a-wrong-draft": ["四階遞降法"],
   /* 2026-08-12 移除一筆未上線草稿的別名。本檔會公開部署，

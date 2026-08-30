@@ -1,0 +1,355 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="index,follow">
+<title>AI 開始會用網站了，我當天把官網接上｜WebMCP 唯讀工具層實作記錄</title>
+<meta name="description" content="OpenAI 推出了採用 WebMCP 的 Site tools：AI 逛網站除了讀網頁，還能直接使用網站提供的工具。我當天在自己的知識官網做了四個給 AI 的唯讀查詢工具，上線前讓另一家 AI 審了七輪。這篇記錄做了什麼、為什麼只做唯讀、log 的取捨，以及一段你可以直接貼給自己 AI 的委託指令。">
+<link rel="canonical" href="https://jiangyude.com/articles/webmcp-day-one/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AI 開始會用網站了，我當天把官網接上｜WebMCP 唯讀工具層實作記錄｜江江教練">
+<meta property="og:image" content="https://jiangyude.com/images/og/webmcp-day-one.jpg">
+<meta property="og:description" content="OpenAI 推出了採用 WebMCP 的 Site tools：AI 逛網站除了讀網頁，還能直接使用網站提供的工具。我當天在官網做了四個唯讀工具，上線前讓另一家 AI 審了七輪。">
+<meta property="og:url" content="https://jiangyude.com/articles/webmcp-day-one/">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:site_name" content="江江教練 · AI 知識管理">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="AI 開始會用網站了，我當天把官網接上｜WebMCP 唯讀工具層實作記錄｜江江教練">
+<meta name="twitter:image" content="https://jiangyude.com/images/og/webmcp-day-one.jpg">
+<meta name="twitter:description" content="OpenAI 推出了採用 WebMCP 的 Site tools：AI 逛網站除了讀網頁，還能直接使用網站提供的工具。我當天在官網做了四個唯讀工具，上線前讓另一家 AI 審了七輪。">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"AI 開始會用網站了，我當天把官網接上｜WebMCP 唯讀工具層實作記錄","description":"OpenAI 推出了採用 WebMCP 的 Site tools：AI 逛網站除了讀網頁，還能直接使用網站提供的工具。我當天在自己的知識官網做了四個給 AI 的唯讀查詢工具，上線前讓另一家 AI 審了七輪。","author":{"@type":"Person","name":"江昱德","alternateName":"江江教練","jobTitle":"隱性知識提煉師、AI 應用規劃師"},"isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://jiangyude.com/"},"inLanguage":"zh-Hant","url":"https://jiangyude.com/articles/webmcp-day-one/"}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{--ink:#1a1612;--paper:#fefcf8;--muted:#6a635a;--line:#d8cdb8;--green:#5f7553;--blue:#5689b8;--orange:#e85a4f;--soft:#faf5ec;--dark:#2a2018;--shadow:0 18px 45px rgba(107,74,42,.14);--sp-shadow:hsla(35,50%,60%,.15);--sp-shadow-edge:hsla(35,50%,68%,.03);--sp-radius:400px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC","Segoe UI",sans-serif}
+a{color:inherit}
+nav.top{position:sticky;top:0;background:rgba(254,252,248,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid #d8cdb8;z-index:100}
+nav.top .container{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:24px;padding:14px 32px}
+.nav-brand-img{justify-self:start;display:flex;align-items:center;text-decoration:none;flex-shrink:0;transition:opacity .2s}
+.nav-brand-img:hover{opacity:.8}.nav-brand-img img{height:40px;width:auto;display:block}
+nav.top ul.nav-menu{justify-self:end;display:flex;gap:22px;list-style:none;margin:0;padding:0;font-size:.95rem;white-space:nowrap}
+nav.top ul.nav-menu a{color:#3a342d;text-decoration:none;transition:color .2s;font-weight:500;white-space:nowrap}
+nav.top ul.nav-menu a:hover{color:#1a1612}nav.top ul.nav-menu a.active{color:#1a1612;font-weight:700}
+.nav-toggle{display:none;background:none;border:none;padding:6px;cursor:pointer;width:36px;height:36px;position:relative}
+.nav-toggle span{display:block;position:absolute;left:8px;right:8px;height:2px;background:#1a1612;border-radius:2px;transition:transform .25s,opacity .25s,top .25s}
+.nav-toggle span:nth-child(1){top:11px}.nav-toggle span:nth-child(2){top:17px}.nav-toggle span:nth-child(3){top:23px}
+.nav-toggle.open span:nth-child(1){top:17px;transform:rotate(45deg)}.nav-toggle.open span:nth-child(2){opacity:0}.nav-toggle.open span:nth-child(3){top:17px;transform:rotate(-45deg)}
+.tablewrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:22px 0;border:1px solid var(--line);border-radius:10px;background:#fff;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.tablewrap table{border-collapse:collapse;width:100%;min-width:600px;font-size:18px;line-height:1.65}
+.tablewrap th,.tablewrap td{padding:12px 14px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top;color:#3a342d}
+.tablewrap thead th{background:var(--soft);font-weight:900;font-size:18px;color:#1a1612;white-space:nowrap}
+.tablewrap tbody tr:last-child td{border-bottom:none}
+.tablewrap td code,.section code{background:var(--soft);border:1px solid var(--line);border-radius:5px;padding:1px 6px;font:500 15px/1.5 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace}
+.readmore{margin-top:24px;padding:20px 22px;background:var(--soft);border:1px solid var(--line);border-radius:12px}
+.readmore.near{margin:26px 0 6px;background:rgba(86,137,184,.07);border-color:#bcd0e2}
+.readmore.near b{color:var(--blue);font-size:18px}
+.readmore.near li{font-size:17px;line-height:1.7;margin-bottom:10px}
+.readmore b{display:block;margin-bottom:10px;font-size:19px}
+.readmore ul{margin:0;padding-left:1.25em}
+.readmore a{color:var(--blue);font-weight:700;text-decoration:none}
+.readmore a:hover{text-decoration:underline}
+@media(max-width:820px){.tablewrap table{min-width:560px;font-size:18px}.tablewrap{position:relative}.tablewrap::after{content:"表格可左右滑動 →";position:sticky;left:0;display:block;font-size:15px;color:var(--muted);background:var(--soft);border-top:1px solid var(--line);padding:7px 12px;width:100%}}
+@media(max-width:860px){
+ nav.top .container{grid-template-columns:auto 1fr auto;padding:10px 16px;gap:12px}
+ .nav-brand-img img{height:32px}
+ .nav-toggle{display:block;justify-self:end}
+ nav.top ul.nav-menu{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(254,252,248,.98);backdrop-filter:blur(14px);border-bottom:1px solid #d8cdb8;flex-direction:column;gap:0;padding:8px 0;box-shadow:0 10px 24px rgba(107,74,42,.08)}
+ nav.top ul.nav-menu.open{display:flex}
+ nav.top ul.nav-menu li{border-bottom:1px solid #e8dfc9}
+ nav.top ul.nav-menu li:last-child{border-bottom:none}
+ nav.top ul.nav-menu a{display:block;padding:14px 20px;font-size:1.06rem}
+}
+body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradient(var(--sp-radius) circle at var(--mx,50%) var(--my,50%),var(--sp-shadow) 0%,var(--sp-shadow-edge) 45%,transparent 75%);pointer-events:none;z-index:9999;mix-blend-mode:multiply;transition:background .06s linear}
+.hero{position:relative;overflow:hidden;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:72px;padding:96px clamp(20px,6vw,88px) 80px;background:linear-gradient(180deg,#fffcf0 0%,#f9e9d2 100%);color:#1a1612;border-bottom:1px solid #d8cdb8}
+.hero .wc{position:absolute;border-radius:50%;filter:blur(60px);pointer-events:none;z-index:0}
+.hero .wc1{width:420px;height:360px;top:-120px;right:-80px;background:#e8884b;opacity:.15}
+.hero .wc2{width:360px;height:300px;bottom:-110px;left:-70px;background:#5f7553;opacity:.13}
+.hero .wc3{width:280px;height:260px;top:34%;left:14%;background:#a08144;opacity:.10}
+.hero>div{flex:none;width:860px;max-width:100%;position:relative;z-index:2}
+.hero-figure{margin:0;width:420px;flex:none;position:relative;z-index:2}
+.hero-figure img{display:block;width:100%;border-radius:16px;border:1px solid #d8cdb8;box-shadow:0 18px 45px rgba(107,74,42,.16);cursor:zoom-in}
+.hero-figure figcaption{margin-top:10px;font-size:14px;line-height:1.6;color:#6a635a}
+.inline-figure{margin:30px auto 8px;max-width:820px}
+.inline-figure img{display:block;width:100%;border-radius:14px;border:1px solid var(--line);box-shadow:var(--shadow);background:#fff;cursor:zoom-in}
+.inline-figure figcaption{font-size:14px;line-height:1.6;color:var(--muted);margin-top:10px}
+.lightbox{position:fixed;inset:0;z-index:10000;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(12,10,8,.92);cursor:zoom-out;backdrop-filter:blur(4px)}
+.lightbox.open{display:flex}.lightbox img{max-width:96vw;max-height:92vh;border-radius:10px;box-shadow:0 24px 60px rgba(0,0,0,.5)}
+.lightbox-close{position:fixed;top:18px;right:24px;color:#fff;font-size:34px;line-height:1;font-weight:700;cursor:pointer;opacity:.85}
+.kicker{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.55rem;color:#7a5c3a;font-weight:500}
+.hero h1{max-width:none;margin:16px 0 18px;font-size:clamp(36px,6vw,72px);line-height:1.08;overflow-wrap:anywhere}
+.hero p{max-width:none;font-size:clamp(18px,2vw,23px);line-height:1.62;color:#3a342d}
+.section{padding:54px clamp(20px,6vw,88px);border-top:1px solid var(--line)}
+.inner{width:min(1000px,100%);margin:0 auto}
+.section h2{font-size:clamp(26px,4.2vw,48px);line-height:1.12;margin:0 0 18px}
+.section h3{font-size:clamp(21px,3vw,30px);line-height:1.2;margin:30px 0 12px}
+.lead{font-size:clamp(18px,1.6vw,22px);line-height:1.7;color:#3a342d;max-width:900px}
+.section p{font-size:18px;line-height:1.74;color:#3a342d}.section p+p{margin-top:14px}
+.section ul,.section ol{padding-left:1.4em;font-size:18px;line-height:1.74;color:#3a342d}.section li{margin-bottom:8px}
+.meaning{margin:22px 0;padding:16px 18px;border-left:5px solid var(--blue);background:rgba(86,137,184,.12);border-radius:6px;line-height:1.7;font-size:19px}
+.meaning b{display:block;color:var(--blue);margin-bottom:4px}
+.caveat{margin:0 0 8px;padding:16px 18px;border-left:5px solid var(--orange);background:rgba(232,90,79,.1);border-radius:6px;line-height:1.7;font-size:18px;color:#3a342d}
+.caveat b{display:block;color:var(--orange);margin-bottom:4px}
+.tagrow{display:flex;flex-wrap:wrap;gap:7px;margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
+.tag{font-size:14px;color:var(--muted);background:var(--soft);border:1px solid var(--line);border-radius:999px;padding:4px 11px}
+.duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:24px}
+.duo.stack{grid-template-columns:1fr}
+.duo .card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:22px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.duo .card.a{border-color:var(--orange)}.duo .card.b{border-color:var(--green);box-shadow:0 8px 24px rgba(95,117,83,.16)}
+.duo .card b{display:block;font-size:22px;line-height:1.3;margin-bottom:12px}.duo .card.a b{color:#c0512f}.duo .card.b b{color:#4a7a59}
+.duo .card p{margin:0;color:#3a342d;line-height:1.75;font-size:18px}
+.codeblock{background:var(--dark);color:#f3ead9;border-radius:8px;padding:18px 20px;font:500 14px/1.65 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;overflow-x:auto;white-space:pre-wrap;margin:20px 0;box-shadow:0 8px 22px rgba(107,74,42,.12)}
+.codewrap{position:relative}
+.copybtn{position:absolute;top:10px;right:10px;background:#f3ead9;color:#2a2018;border:none;border-radius:6px;padding:6px 12px;font-size:14px;font-weight:700;cursor:pointer;opacity:.92}
+.copybtn:hover{opacity:1}
+.footer{padding:30px clamp(20px,6vw,88px);font-size:14px;color:var(--muted);background:#fff;border-top:1px solid var(--line)}
+.footer-inner{width:min(1000px,100%);margin:0 auto}
+.footer-links{display:flex;flex-wrap:wrap;gap:6px 12px;margin-bottom:14px}.footer-links a{color:var(--blue);font-weight:900;text-decoration:none;font-size:14px}
+.footer-brand{font-weight:900;font-size:15px;margin-bottom:10px}.footer-note{font-size:13px;line-height:1.6}
+@media(max-width:820px){.duo{grid-template-columns:1fr}.section{padding:40px 20px}.hero{min-height:52vh;flex-direction:column;justify-content:flex-start;align-items:flex-start;gap:24px}.hero>div{width:100%}.hero-figure{width:100%;max-width:560px}}
+@media(max-width:820px){html,body{overflow-x:hidden}.hero h1{word-break:break-word}}
+</style>
+</head>
+<body class="spotlight">
+<nav class="top">
+  <div class="container">
+    <a class="nav-brand-img" href="../../index.html"><img src="../../images/footer-signature.png" alt="江江教練 | 江昱德"></a>
+    <button class="nav-toggle" aria-label="選單"><span></span><span></span><span></span></button>
+    <ul class="nav-menu">
+      <li><a href="../../index.html">首頁</a></li>
+      <li><a href="../../knowledge-architecture.html">知識架構</a></li>
+      <li><a href="../../courses.html">課程</a></li>
+      <li><a href="../../articles.html" class="active">深度文章</a></li>
+      <li><a href="../../skills.html">技能包下載</a></li>
+      <li><a href="../../offers.html">服務方案</a></li>
+      <li class="lang-switch"><a href="../../en/articles.html" hreflang="en">EN</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="wc wc1"></div>
+  <div class="wc wc2"></div>
+  <div class="wc wc3"></div>
+  <div>
+    <div class="kicker">AI 趨勢 / 系統設計</div>
+    <h1>AI 開始會用網站了，我當天把官網接上｜WebMCP 唯讀工具層實作記錄</h1>
+    <p>OpenAI 推出了採用 WebMCP 的 Site tools：AI 逛網站除了讀網頁，還可以直接使用網站提供的工具。我知道這件事之後，當天就在自己的知識官網做了四個給 AI 的唯讀查詢工具，上線前讓另一家 AI 審了七輪。</p>
+  </div>
+  <figure class="hero-figure">
+    <img src="../../images/articles/webmcp-day-one-cover.jpg" alt="咪卡在官網接待櫃檯把一張卡片遞給來訪的白色小機器人" loading="lazy">
+    <figcaption>官網櫃檯多了給 AI 用的工具：咪卡把查到的卡片直接遞給來訪的 AI。</figcaption>
+  </figure>
+</section>
+
+<main>
+
+<section class="section" id="start">
+  <div class="inner">
+    <p class="lead">這篇記錄一次「趨勢出來當天就接上」的完整過程：WebMCP 是什麼、跟 MCP 差在哪、我在官網實際做了哪四個工具、為什麼第一版刻意只做唯讀、要不要記錄 AI 查了什麼的取捨，以及讓另一家 AI 審七輪攔下哪些我自己看不到的問題。文末有一段可以直接貼給你自己 AI 的委託指令。</p>
+    <div class="duo stack">
+      <div class="card a">
+        <b>適合誰</b>
+        <p>・有自己的網站，想讓訪客帶來的 AI 好好認識你、查得到你的東西的人<br>
+        ・聽過 MCP 或 WebMCP，想看一個真實上線案例長什麼樣的人<br>
+        ・不會寫程式，但想知道怎麼把這件事交辦給 AI 做的人</p>
+      </div>
+      <div class="card b">
+        <b>你可以帶走什麼</b>
+        <p>・一個四步驟的判斷順序：先有索引、只做唯讀、漸進增強、有記錄就揭露<br>
+        ・一段可整段複製、貼給你自己 AI 的委託指令（含審查與不准部署的護欄）<br>
+        ・「檢查器自己也要被檢查」：跨家審七輪實際抓到的三類問題</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="what">
+  <div class="inner">
+    <h2>一、先講 WebMCP 是什麼：把「給 AI 的服務台」直接蓋在網頁上</h2>
+    <p>過去 AI 幫你逛網站，靠的是讀頁面上的字、辨識畫面，再自己推測該怎麼操作。對 AI 來說，網站是一份要自己想辦法看懂的文件。</p>
+    <p><strong>WebMCP 改變的是網站的角色：網頁可以直接告訴來訪的 AI「我這裡有幾個工具，你可以直接用」。</strong>運作方式用白話講就三步：</p>
+    <ol>
+      <li><strong>網站在頁面裡放一份工具清單。</strong>每個工具寫清楚名字、用途、要給什麼資料，像櫃檯上擺好的服務項目牌。</li>
+      <li><strong>訪客的 AI 走進這一頁，就看得到這份清單。</strong>支援 WebMCP 的瀏覽器會把清單交給 AI。</li>
+      <li><strong>AI 要用就直接呼叫。</strong>工具的程式在訪客自己的瀏覽器裡執行，把整理好的答案直接回給 AI。AI 不用再爬整個網站猜結構，網站也不用把全部內容塞給它。</li>
+    </ol>
+    <p>技術上，網站是用瀏覽器的新介面 <code>document.modelContext.registerTool()</code> 把工具登記給支援的環境；不寫程式的讀者，記得「頁面主動提供工具清單」這個概念就夠。</p>
+    <div class="meaning"><b>跟 MCP 的關係</b>如果你聽過 MCP（讓 AI 接上各種工具的通用插座），WebMCP 就是把這個插座裝到網頁上的版本。兩者用途不同、可以並存：MCP 通常要另外設一個本機或遠端的服務讓 AI 連過來，離開網頁也能運作；WebMCP 則是由你正在看的那個網頁直接提供工具。像我這種已經有公開索引與搜尋功能的內容網站，可以在前端沿用既有的東西，成本很低；但每個網站的現況不同，「加一個檔案就好」是我的情況，不是通則。</div>
+    <p>比如購物網站可以提供「搜尋商品」「加入購物車」；我的知識官網提供的是「搜站內文章」「查分類」這種查詢工具。</p>
+    <h3>三件要誠實講清楚的事</h3>
+    <ol>
+      <li><strong>它目前仍是草案。</strong>WebMCP 是 W3C 社群草案（Community Group Draft），規格還在改，距離正式標準還有一段路。</li>
+      <li><strong>支援的環境還很少。</strong>截至 2026 年 8 月 30 日：OpenAI 已在 ChatGPT 內建瀏覽器用 Site tools 這個功能實作 WebMCP；Chrome 149 起則開放限期的實驗計畫（origin trial）讓網站報名測試。兩者狀態不同，而大多數人的瀏覽器現在都感覺不到差別。</li>
+      <li><strong>工具跟提供它的頁面綁在一起。</strong>以目前 OpenAI 的做法與我採用的註冊方式，AI 離開或關掉那一頁，工具就可能用不到了；所以我把同一組工具分別掛到三個主要頁面。</li>
+    </ol>
+    <p>那為什麼還要當天就做？因為我的網站本來就有一整層是做給 AI 讀的，WebMCP 剛好補上缺的那一塊。</p>
+  </div>
+</section>
+
+<section class="section" id="why">
+  <div class="inner">
+    <h2>二、我的網站本來就有「給 AI 讀的層」，缺的是「給 AI 用的層」</h2>
+    <p>我的官網一直有三個東西是專門做給 AI 的：一份 <a href="../../agent.html">AI 接待說明</a>（agent.html，AI 讀了就知道怎麼代替我介紹這個網站）、一份給 AI 的網站摘要（llms.txt）、一份公開內容目錄（site-index.json，全站兩百多筆）。這套做法我叫它 AXO：讓網站從「一本放著等人翻的型錄」變成「會接待訪客 AI 的主人」。</p>
+    <div class="meaning"><b>這一層原本的天花板</b>AI 只能讀，不能問。想找一篇文章，它得把整份索引抓下來自己翻，兩百多筆、二十幾萬字元，又慢，又燒掉訪客 AI 一大截處理量。</div>
+    <p>WebMCP 補的就是這一塊。接待說明還在、索引還在，只是現在櫃檯上多了工具：AI 可以直接問「幫我搜『會議記錄』相關的內容，只要前五筆」，拿到的就是五筆乾淨的結構化資料，每筆附正式網址。</p>
+  </div>
+</section>
+
+<section class="section" id="build">
+  <div class="inner">
+    <h2>三、我實際做了什麼：四個工具，全部唯讀</h2>
+    <div class="tablewrap"><table>
+      <thead><tr><th>工具</th><th>給 AI 做什麼</th></tr></thead>
+      <tbody>
+        <tr><td><code>search_knowledge</code></td><td>搜站內公開內容：文章、課程、案例、技能包、資源、服務入口。連我學員的口語問法（像「定妝照」）都查得到，因為它直接沿用站內搜尋既有的別名庫</td></tr>
+        <tr><td><code>get_knowledge_item</code></td><td>用精確編號拿單筆資料與正式網址</td></tr>
+        <tr><td><code>list_knowledge_taxonomy</code></td><td>列出全站的分類方式與每類有幾筆</td></tr>
+        <tr><td><code>get_site_capabilities</code></td><td>自我介紹：這個站是什麼、開放哪些入口、資料邊界在哪</td></tr>
+      </tbody>
+    </table></div>
+    <h3>幾個設計決定，順序照重要性排</h3>
+    <p><strong>只做唯讀。</strong>報名、表單、付款都沒有。AI 代替訪客「做事」需要更嚴謹的確認機制，先把「查」做穩，才有資格談「做」。</p>
+    <p><strong>不支援的瀏覽器完全無感。</strong>開頭先偵測環境，不支援就安靜退場，不留任何錯誤。新能力是加分，不能讓現有訪客付代價。</p>
+    <p><strong>不另外建一份資料。</strong>工具跟站內搜尋讀同一份索引、同一份別名庫，大幅減少兩邊答案分岔的機會。</p>
+    <p><strong>價格不寫進工具。</strong>價格的真相只在官網服務方案頁，工具只給連結；寫死在程式裡的價格，改版時很容易漏掉沒同步。</p>
+  </div>
+</section>
+
+<section class="section" id="review">
+  <div class="inner">
+    <h2>四、過程裡最有價值的一段：讓另一家 AI 審了七輪</h2>
+    <p>這次的工作方式是我平常的半人馬做法：我拍板方向與邊界，AI 施工，然後<strong>讓另一家的 AI 當審稿者</strong>。我的施工方是 Claude，審稿方是 OpenAI 的 Codex，前後審了七輪才拿到兩個 APPROVE。</p>
+    <p>七輪聽起來多，但每一輪都抓到真問題。挑三個講：</p>
+    <p><strong>它抓到「說一套做一套」。</strong>工具對外公告只接受 1 到 10 的整數，但實際程式碼會把 2.7、字串「2」、甚至 true 都悄悄當成合法值。使用上暫時沒差，但規格與行為不一致，之後很可能變成難追的 bug。改成嚴格驗證，不合規格就明確回報錯誤。</p>
+    <p><strong>它抓到「檢查器自己是假的」。</strong>我寫了一支驗證腳本宣稱「保證這支程式沒有偷偷送資料出去」，Codex 指出那個檢查有好幾種寫法可以繞過：檢查存在，但擋不住它宣稱要擋的事。這種「有問題卻顯示全綠」的檢查比沒有檢查更危險，因為它給你假的安心。最後改成直接執行程式驗證行為，還放了誘餌欄位：故意餵假的 IP 和帳號進去，斷言它們絕不出現在記錄裡。</p>
+    <p><strong>它抓到「宣告跟事實對不上」。</strong>我在給 AI 讀的說明裡寫「本站沒有回傳機制」，但同一版我加了匿名使用記錄，兩句話自相矛盾。改成誠實版：明列會記錄哪幾個欄位（查詢字串、命中數、時間、來源、工具名），明寫沒有 IP 與帳號。</p>
+    <div class="meaning"><b>這段的重點只有一句</b>自己審自己的東西，容易沿用施工當下的假設；換一家 AI 來審，它注意的地方跟施工方不一樣，會多出一組檢查視角。不同家族不保證一定抓得到問題，但這次七輪，確實在上線前攔下了三類具體的落差。</div>
+    <div class="readmore near"><b>延伸讀這篇</b>
+      <ul><li><a href="../three-levels-of-cross-review/">怎麼設計讓兩個 AI 互審？：三種不同程度的審查機制設計</a>：這次用的跨家審做法，那篇有三種難度的完整指令範本，教你依任務風險挑審查深度。</li></ul>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="log">
+  <div class="inner">
+    <h2>五、一個真的要取捨的決定：要不要記錄 AI 問了什麼</h2>
+    <p>做到一半有一個決策點：工具要不要記錄「來訪的 AI 都查了什麼」？</p>
+    <p>不記的話，工具照樣把查詢結果回給 AI，只是站方不另外保存任何查詢紀錄，這是最保守的版本。代價是我不會知道 AI 都在問什麼、哪些問法查不到東西，等於這一層裝了卻沒有回饋，之後要不要投資、往哪補內容，全靠猜。</p>
+    <p>我最後選擇記，但有三個條件：<strong>匿名</strong>（只記查詢字串、命中數、時間、來源與工具名，沒有 IP、沒有帳號）、<strong>沿用既有機制</strong>（跟站內搜尋的記錄同一套，不另建系統）、<strong>誠實揭露</strong>（給 AI 讀的每一層說明都明寫會記錄什麼）。查不到東西的問法會自動進缺口排行，第一線的修法很便宜：補一條別名就好。</p>
+    <div class="caveat"><b>這個取捨沒有標準答案</b>如果你的站完全不想碰記錄，純唯讀版一樣成立，只是你要接受用猜的來決定下一步。</div>
+  </div>
+</section>
+
+<section class="section" id="seo">
+  <div class="inner">
+    <h2>六、這對 SEO 有幫助嗎？目前沒有證據顯示有直接幫助</h2>
+    <p>先把期待管理好：<strong>目前沒有任何官方證據顯示 WebMCP 是 Google 的排名訊號，也沒有「會被 AI 引用」的保證。</strong>想靠裝這個讓搜尋排名變好，會失望。</p>
+    <p>它改善的是另一件事：<strong>當訪客帶著他的 AI 來到你的網站時，那次體驗的品質。</strong>AI 少掉好幾個步驟就拿到結構化資料，每筆都附正式網址，引用你的連結時比較容易對到正確的頁面。這些是體驗層的改善，跟排名機制是兩回事。</p>
+    <p>另一個收穫：護欄變硬了一階。以前我對來訪 AI 的約束寫在接待說明裡，屬於「拜託你不要亂講」；現在工具層的約束寫在程式裡，價格查不到就是查不到。<strong>從口頭請求變成程式限制</strong>，當然，程式限制的效果仍取決於實作跟測試有沒有做扎實，這次那七輪審查就是在補這一塊。</p>
+    <div class="readmore near"><b>延伸讀這篇</b>
+      <ul><li><a href="../agent-web-turning-point/">網路上一半以上的訪問已經不是人了，你的內容準備好被機器讀了嗎？</a>：為什麼「訪客的 AI」值得當一種正式受眾來經營，那篇講的是大環境，這篇是實作。</li></ul>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="howto">
+  <div class="inner">
+    <h2>七、你想照做的話：判斷順序與一段可以直接貼的委託指令</h2>
+    <p>記四個原則就夠，細節交給你的 AI：</p>
+    <ol>
+      <li><strong>先有公開索引。</strong>這是地基，不裝 WebMCP 也有用；索引本身也可以交辦給 AI 盤點。</li>
+      <li><strong>第一版只做唯讀查詢。</strong>會改變狀態的工具（報名、留言、付款）留給想清楚確認機制之後。</li>
+      <li><strong>漸進增強。</strong>不支援的瀏覽器必須完全無感。</li>
+      <li><strong>有記錄就要揭露。</strong>記什麼、不記什麼，寫在給 AI 讀的說明裡。</li>
+    </ol>
+    <p>然後把下面這段貼給你自己的 AI（要能讀寫你網站程式碼的那種，例如 Claude Code 或 Codex）：</p>
+    <div class="codewrap">
+    <button class="copybtn" data-copy="webmcp-brief">複製整段</button>
+    <div class="codeblock" id="webmcp-brief">請幫我的網站加上 WebMCP 唯讀工具層：
+1. 先查證官方現行規格再動手（W3C WebMCP 草案、OpenAI 與 Chrome 的 WebMCP 文件）。
+2. 只做唯讀查詢工具，資料源只用我網站既有的公開索引，不建第二份資料。
+3. 漸進增強：不支援 WebMCP 的瀏覽器必須完全不報錯、零副作用。
+4. 所有輸入都要驗證，錯誤回結構化訊息，不洩露內部細節。
+5. 附一支驗證腳本。做完給我修改差異清單（diff），我會找另一家 AI 審過才上線；過程不准部署、不准上傳程式碼（push）。</div>
+    </div>
+    <p>最後一行是認真的。這次的七輪審查，在上線前實際攔下了三類落差：規格與行為不一致、檢查器有洞卻顯示全綠、對外宣告跟實作對不上。功能表面上都會動，這三類落差，都是在第二家審查時被抓到的。</p>
+  </div>
+</section>
+
+<section class="section" id="limits">
+  <div class="inner">
+    <h2>邊界與不保證</h2>
+    <ul>
+      <li>WebMCP 是 W3C 社群草案，API 可能再改；改了我就得跟著改，這是採用早期規格的固定成本。</li>
+      <li>目前只有少數環境支援（例如 OpenAI 的 Site tools、Chrome 的 origin trial），多數訪客的 AI 暫時用不到。</li>
+      <li>工具只在掛載它的頁面生效；我第一版只掛三頁（首頁、全站搜尋、agent.html），觸及面刻意窄，等有真實使用信號再擴。</li>
+      <li>本文寫的是知識型內容網站的做法。電商、預約制服務這類「工具要能做事」的網站，確認機制的設計比這篇難得多，不能直接套。</li>
+    </ul>
+    <div class="tagrow">
+      <span class="tag">AI 趨勢</span><span class="tag">AIAgent</span><span class="tag">系統設計</span><span class="tag">AI 工作流</span><span class="tag">WebMCP</span><span class="tag">AXO</span>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">江江教練 · AI 知識管理</div>
+    <div class="footer-links">
+      <a href="../../articles.html">← 回深度文章總站</a>
+      <a href="../../index.html">首頁</a>
+      <a href="../../learn.html">自學資源</a>
+      <a href="../../skills.html">技能包下載</a>
+      <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">LINE 社群 ↗</a>
+      <a href="https://www.threads.com/@jiang_yude_coach" target="_blank" rel="noopener">Threads ↗</a>
+      <a href="https://vocus.cc/salon/Jiang_Coach" target="_blank" rel="noopener">方格子 ↗</a>
+    </div>
+    <div class="footer-note">這是一篇案例文章，整理我把 WebMCP 接上官網的完整過程，供你參考。</div>
+  </div>
+</footer>
+
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <span class="lightbox-close" aria-label="關閉">×</span>
+  <img id="lightbox-img" src="" alt="放大檢視">
+</div>
+<script>
+(function(){
+  var box=document.getElementById('lightbox'),boxImg=document.getElementById('lightbox-img');
+  document.querySelectorAll('.hero-figure img,.inline-figure img').forEach(function(img){
+    img.addEventListener('click',function(){boxImg.src=img.currentSrc||img.src;boxImg.alt=img.alt||'放大檢視';box.classList.add('open');box.setAttribute('aria-hidden','false');});
+  });
+  function close(){box.classList.remove('open');box.setAttribute('aria-hidden','true');boxImg.src='';}
+  box.addEventListener('click',close);
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
+})();
+(function(){
+  document.querySelectorAll('.copybtn').forEach(function(btn){
+    btn.addEventListener('click',function(){
+      var el=document.getElementById(btn.getAttribute('data-copy'));
+      if(!el)return;
+      var text=el.innerText;
+      function done(){btn.textContent='已複製';setTimeout(function(){btn.textContent='複製整段';},1600);}
+      if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(done).catch(fallback);}else{fallback();}
+      function fallback(){var ta=document.createElement('textarea');ta.value=text;document.body.appendChild(ta);ta.select();try{document.execCommand('copy');done();}catch(e){btn.textContent='請手動選取複製';}document.body.removeChild(ta);}
+    });
+  });
+})();
+(function(){
+  var t=document.querySelector('.nav-toggle'),m=document.querySelector('ul.nav-menu');
+  if(t&&m){t.addEventListener('click',function(){t.classList.toggle('open');m.classList.toggle('open');});}
+})();
+</script>
+<script src="../../spotlight.js"></script>
+<script src="../../image-interactions.js"></script>
+
+<!-- 文章自動互聯（相關文章）：兩支順序不可顛倒 -->
+<script src="../../articles-data.js"></script>
+<script src="../../related-render.js"></script>
+<script src="/views.js"></script>
+<script src="/mika-chat-widget.js" defer></script>
+</body>
+</html>

@@ -236,7 +236,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["after-ai-says-remembered", "long-document-review-layers", "mobile-to-desktop-publish-loop", "ai-said-it-watched-the-video", "cross-ai-review-both-wrong"]
+    related: ["after-ai-says-remembered", "long-document-review-layers", "mobile-to-desktop-publish-loop", "ai-said-it-watched-the-video", "cross-ai-review-both-wrong", "webmcp-day-one"]
   },
 
   /* ── 通訊軟體 AI 友善度比較（教學） ── */
@@ -880,7 +880,7 @@ window.ARTICLES = [
       content_type: ["趨勢文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["market-to-ai", "a2a-agent-protocol", "agent-native-tools-software-interface", "free-deploy-three-boundaries", "answer-in-person-or-ai"]
+    related: ["market-to-ai", "a2a-agent-protocol", "agent-native-tools-software-interface", "free-deploy-three-boundaries", "answer-in-person-or-ai", "webmcp-day-one"]
   },
   {
     id: "four-lens-rapid-review",
@@ -2249,7 +2249,25 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["three-levels-of-cross-review", "caught-ai-slacking-into-rules", "long-document-review-layers"]
+    related: ["three-levels-of-cross-review", "caught-ai-slacking-into-rules", "long-document-review-layers", "webmcp-day-one"]
+  },
+
+  {
+    id: "webmcp-day-one",
+    url: "articles/webmcp-day-one/",
+    date: "2026-08-30",
+    updated: "2026-08-30",
+    title: "AI 開始會用網站了，我當天把官網接上｜WebMCP 唯讀工具層實作記錄",
+    problem: "訪客帶著 AI 來看你的網站，AI 只能把整頁讀完自己猜，找不找得到你的東西全看運氣；你也不知道它問了什麼、哪些問法查不到。",
+    audience: "有自己的網站或正想做一個、希望訪客的 AI 能好好認識自己的人；聽過 MCP 或 WebMCP 想看真實上線案例的人；不會寫程式但想知道怎麼把這件事交辦給 AI 的人。",
+    summary: "OpenAI 推出採用 WebMCP 的 Site tools 之後，當天把知識官網接上的完整記錄。先用白話三步講清楚機制（網頁放工具清單、訪客的 AI 看得到、要用就直接呼叫），說明它跟 MCP 的差別與可並存關係；接著是實際做的四個唯讀工具、四個設計決定（只做唯讀、漸進增強、不建第二份資料、價格不寫進工具），跨家審七輪抓到的三類問題（規格與行為不一致、檢查器有洞卻顯示全綠、對外宣告與實作對不上），要不要記錄 AI 查詢的取捨與揭露方式，以及對 SEO 的誠實期待管理。文末給四個判斷原則與一段可直接貼給自己 AI 的委託指令。",
+    tags: {
+      topic: ["AI趨勢", "系統設計", "AIAgent", "AI工作流"],
+      level: ["基礎"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["three-levels-of-cross-review", "agent-web-turning-point", "cross-ai-review-both-wrong"]
   },
 
 ];
