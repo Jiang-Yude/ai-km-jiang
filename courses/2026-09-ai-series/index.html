@@ -59,6 +59,10 @@ nav.top ul.nav-menu a:hover{color:#1a1612}nav.top ul.nav-menu a.active{color:#1a
 .hero .hero-text{min-width:0}
 .hero .hero-poster{min-width:0;justify-self:center;width:100%;max-width:392px}
 .hero .hero-poster img{display:block;width:100%;height:auto;border-radius:16px;box-shadow:0 20px 46px rgba(107,74,42,.22);border:1px solid rgba(216,205,184,.7)}
+.hero .hero-poster img{cursor:zoom-in}
+.lightbox{position:fixed;inset:0;z-index:10000;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(12,10,8,.92);cursor:zoom-out;backdrop-filter:blur(4px)}
+.lightbox.open{display:flex}.lightbox img{max-width:96vw;max-height:92vh;border-radius:10px;box-shadow:0 24px 60px rgba(0,0,0,.5)}
+.lightbox-close{position:fixed;top:18px;right:24px;color:#fff;font-size:34px;line-height:1;font-weight:700;cursor:pointer;opacity:.85}
 @media (max-width:880px){
   .hero .hero-grid{grid-template-columns:1fr;gap:26px}
   .hero .hero-poster{order:-1;max-width:340px}
@@ -242,7 +246,7 @@ nav.top ul.nav-menu a:hover{color:#1a1612}nav.top ul.nav-menu a.active{color:#1a
         <p class="lvl">學習難度 ⭐⭐⭐ 中階｜適合已經在用 AI，想知道它還能往哪裡走的人<br>報名含專屬 LINE 群組，課前課後有<a href="#hosts" style="color:#8a4a2f;font-weight:700">思維顧問</a>陪你把想法問出來</p>
       </div>
       <div class="hero-poster">
-        <img src="../../images/courses/2026-09-ai-series-poster.jpg" alt="AI 到底能用到什麼程度：六堂線上系列課，9/20 起每週日 19:30，六堂 3,000 元" loading="eager">
+        <img class="interactive-image" src="../../images/courses/2026-09-ai-series-poster.jpg" alt="AI 到底能用到什麼程度：六堂線上系列課，9/20 起每週日 19:30，六堂 3,000 元" loading="eager">
       </div>
     </div>
 
@@ -683,5 +687,24 @@ nav.top ul.nav-menu a:hover{color:#1a1612}nav.top ul.nav-menu a.active{color:#1a
   }
 })();
 </script>
+
+<!-- 點圖放大 lightbox（照官網文章範本同一套，2026-08-30 補；江江規則：所有圖片點選都放大） -->
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <span class="lightbox-close" aria-label="關閉">×</span>
+  <img id="lightbox-img" src="" alt="放大檢視">
+</div>
+<script>
+(function(){
+  var box=document.getElementById('lightbox'),boxImg=document.getElementById('lightbox-img');
+  document.querySelectorAll('.hero-poster img,.inline-figure img,img.interactive-image').forEach(function(img){
+    img.addEventListener('click',function(){boxImg.src=img.currentSrc||img.src;boxImg.alt=img.alt||'放大檢視';box.classList.add('open');box.setAttribute('aria-hidden','false');});
+  });
+  function close(){box.classList.remove('open');box.setAttribute('aria-hidden','true');boxImg.src='';}
+  box.addEventListener('click',close);
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
+})();
+</script>
+<script src="../../image-interactions.js"></script>
+
 </body>
 </html>

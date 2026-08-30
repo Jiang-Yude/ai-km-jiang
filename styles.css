@@ -1456,18 +1456,27 @@ footer .foot-meta {
 /* ─── 釘選角標：圖釘 + 近期主推（2026-08-30 江江指定，釘選卡的固定樣式）───
    套用條件＝courses-data.js 該卡 pinned: true，courses-render.js 的 pinBadgeHTML 產出。
    以後任何釘選卡都用這一組，不要各頁另做一套。 */
-.list-card.is-pinned { border-color: var(--c-coral); }
-.pin-badge {
-  position: absolute; top: 10px; left: 10px; z-index: 3;
-  display: inline-flex; align-items: center; gap: 5px;
-  padding: 5px 11px 5px 9px;
-  background: var(--c-coral); color: #fff;
-  font-size: .76rem; font-weight: 700; letter-spacing: .03em;
-  border-radius: 999px;
-  box-shadow: 0 2px 8px rgba(232, 90, 79, .35);
-  pointer-events: none;
+.list-card.is-pinned {
+  border-color: var(--c-coral);
+  /* 角標要出框，所以這張卡放開裁切。縮圖自己有 overflow:hidden，圓角不受影響 */
+  overflow: visible;
 }
-.pin-badge svg { width: 12px; height: 12px; fill: currentColor; flex-shrink: 0; }
+/* 放開裁切後，光暈要自己補圓角，否則會露出方角 */
+.list-card.is-pinned::before { border-radius: var(--radius-lg); }
+/* 角標往左上出框，像貼紙掛在卡片外緣（2026-08-30 江江指定） */
+.pin-badge {
+  position: absolute; top: -11px; left: -11px; z-index: 4;
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 6px 13px 6px 11px;
+  background: var(--c-coral); color: #fff;
+  font-size: .8rem; font-weight: 700; letter-spacing: .03em;
+  border-radius: 999px;
+  border: 2px solid var(--bg);
+  box-shadow: 0 4px 12px rgba(232, 90, 79, .38);
+  pointer-events: none;
+  transform: rotate(-3deg);
+}
+.pin-badge svg { width: 13px; height: 13px; fill: currentColor; flex-shrink: 0; }
 .pin-badge span { line-height: 1; }
 .course-card .card-body {
   padding: 20px 24px 22px;

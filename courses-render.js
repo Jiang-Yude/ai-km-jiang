@@ -9,6 +9,11 @@
   // pinned：釘選卡。永遠算「未來」、永遠排最前、日期過了也不會掉進過去目錄。
   // 下架方式＝把 courses-data.js 該卡的 pinned 拿掉（江江 2026-08-30 指示：沒說下架就不下架）。
   function isPinned(c) { return c.pinned === true; }
+  // 釘選有兩種樣式（2026-08-30 江江定義）：
+  //   釘選大橫幅＝pinned + banner，課程頁頂部整條橫幅（海報＋賣點＋三顆按鈕）
+  //   釘選小卡＝pinned 但沒有 banner，一般直式卡片，左上角掛出框的「近期主推」角標
+  // 有大橫幅時，下方卡片清單就不再放同一張卡，避免同一頁看到兩次。
+  function inBanner(c) { return isPinned(c) && !!c.banner; }
   function isUpcoming(c) { return !isIncubating(c) && (isPinned(c) || (!!c.date && parseDate(c.date) >= TODAY)); }
   function isPast(c) { return !isIncubating(c) && !isPinned(c) && !!c.date && parseDate(c.date) < TODAY; }
   // 未來場次排序：釘選的永遠在最前，其餘照日期由近到遠
@@ -167,9 +172,11 @@
   // ─── 單張卡片 HTML（極簡版：圖 + 日期 + 標題 + 模式 badges + 詳細連結 + CTA） ───
   // 釘選角標：圖釘 + 「近期主推」，貼在卡片左上角。
   // 2026-08-30 江江指定為釘選課程的固定樣式，以後所有釘選卡都長這樣，不要各做各的。
+  const PIN_SVG = '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14.4 2.6a1.4 1.4 0 0 0-2 0l-.5.5a1.4 1.4 0 0 0 0 2l.2.2-3.3 3.3-2.4-.5a1.3 1.3 0 0 0-1.2 2.2l3.2 3.2-4.6 5.6a.8.8 0 0 0 1.1 1.1l5.6-4.6 3.2 3.2a1.3 1.3 0 0 0 2.2-1.2l-.5-2.4 3.3-3.3.2.2a1.4 1.4 0 0 0 2 0l.5-.5a1.4 1.4 0 0 0 0-2z"/></svg>';
+  const PIN_LABEL = '近期主推';
   function pinBadgeHTML(c) {
     if (!isPinned(c)) return '';
-    return `<div class="pin-badge"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14.4 2.6a1.4 1.4 0 0 0-2 0l-.5.5a1.4 1.4 0 0 0 0 2l.2.2-3.3 3.3-2.4-.5a1.3 1.3 0 0 0-1.2 2.2l3.2 3.2-4.6 5.6a.8.8 0 0 0 1.1 1.1l5.6-4.6 3.2 3.2a1.3 1.3 0 0 0 2.2-1.2l-.5-2.4 3.3-3.3.2.2a1.4 1.4 0 0 0 2 0l.5-.5a1.4 1.4 0 0 0 0-2z"/></svg><span>近期主推</span></div>`;
+    return `<div class="pin-badge">${PIN_SVG}<span>${PIN_LABEL}</span></div>`;
   }
 
   function cardHTML(c) {
@@ -227,7 +234,7 @@
           <img src="${escapeHtml(b.poster)}" alt="${escapeHtml(c.title)}" loading="eager" />
         </a>
         <div class="pb-body">
-          <div class="pb-flag">正在招生</div>
+          <div class="pb-flag">${PIN_SVG}<span>${PIN_LABEL}</span></div>
           <div class="pb-kicker">${escapeHtml(b.kicker || c.type_label || '')}</div>
           <h2 class="pb-title"><a href="${escapeHtml(c.detail_url || '#')}">${escapeHtml(c.title)}</a></h2>
           ${b.lead ? `<p class="pb-lead">${escapeHtml(b.lead)}</p>` : ''}
@@ -443,7 +450,7 @@
     // 籌備中區已移除：日期未定的課不上頁面（2026-08-24 江江指示），資料層 phase: incubating 只當隱藏標記
     if (F.type === 'all') {
       const soon = COURSES
-        .filter(c => isUpcoming(c) && !isIncubating(c) && hitVenue(c.venue_mode) && hitQ([c.title, c.summary || '', (c.tags || []).join(' '), c.type_label || '']))
+        .filter(c => isUpcoming(c) && !isIncubating(c) && !inBanner(c) && hitVenue(c.venue_mode) && hitQ([c.title, c.summary || '', (c.tags || []).join(' '), c.type_label || '']))
         .sort(byPinnedThenDate);
       if (soon.length) {
         html += header('近期課程', soon.length, '最近要上的課排最前面；免費課、付費課、邀約課看卡片上的標籤。');
@@ -454,7 +461,7 @@
     // 收費課程（常設 offers + 有日期的付費場次）：只在「收費課」篩選下顯示，全部視圖交給近期課程區
     if (F.type === 'paid') {
       const offers = (window.PAID_OFFERS || []).filter(o => hitVenue(o.venue_mode) && hitQ([o.title, o.brief, o.level, (o.tags||[]).join(' ')]));
-      const paidRuns = COURSES.filter(c => inferType(c) === 'paid' && !isIncubating(c) && hitVenue(c.venue_mode) && hitQ([c.title, c.summary||'', (c.tags||[]).join(' ')]));
+      const paidRuns = COURSES.filter(c => inferType(c) === 'paid' && !isIncubating(c) && !inBanner(c) && hitVenue(c.venue_mode) && hitQ([c.title, c.summary||'', (c.tags||[]).join(' ')]));
       if (offers.length + paidRuns.length) {
         html += header('收費課程', offers.length + paidRuns.length, '');
         html += grid(offers.map(paidCardHTML).concat(paidRuns.map(cardHTML)));
