@@ -2,7 +2,7 @@
 // 目的：找出「訪客的問法」跟「站上內容」對不上的缺口（第一線修法＝補 search-aliases.js 的別名）。
 // 資料存 Upstash Redis，跟 view.js 同一套環境變數；每月一個 list，各留最近 5000 筆。
 //
-// POST {q, n, surface, click}   q=搜尋字串  n=命中筆數  surface=search|articles  click=點擊的結果 id（點擊事件才有）
+// POST {q, n, surface, click, tool}   q=搜尋字串  n=命中筆數  surface=search|articles|webmcp  click=點擊的結果 id（點擊事件才有）  tool=WebMCP 工具名（surface=webmcp 才有）
 // GET  ?month=YYYY-MM&limit=500 讀當月紀錄（新到舊），給江江或 AI 整理缺口清單用。
 
 const URL = () => process.env.UPSTASH_REDIS_REST_URL || process.env.KV_REST_API_URL;
@@ -62,12 +62,14 @@ module.exports = async (req, res) => {
 
   const stamp = taipeiStamp();               // "YYYY-MM-DD, HH:MM"
   const month = stamp.slice(0, 7);
+  const surface = ['search', 'articles', 'webmcp'].includes(body.surface) ? body.surface : 'other';
   const entry = JSON.stringify({
     t: stamp.replace(', ', ' '),
     q,
     n: Number.isFinite(Number(body.n)) ? Number(body.n) : null,
-    surface: ['search', 'articles'].includes(body.surface) ? body.surface : 'other',
+    surface,
     click: body.click ? String(body.click).slice(0, 120) : undefined,
+    tool: body.tool ? String(body.tool).slice(0, 40) : undefined,
   });
 
   try {
@@ -76,7 +78,10 @@ module.exports = async (req, res) => {
       ['LTRIM', `search:log:${month}`, 0, 4999],
     ];
     // 零命中另掛計數，缺口排行一眼看：ZINCRBY 1 分給該查詢字串
-    if (Number(body.n) === 0 && !body.click) cmds.push(['ZINCRBY', `search:miss:${month}`, 1, q]);
+    // webmcp 只讓 search_knowledge 進缺口排行（get_knowledge_item 的錯誤 ID、
+    // taxonomy 維度名不是搜尋缺口，混進來會污染排行）
+    const missEligible = surface !== 'webmcp' || body.tool === 'search_knowledge';
+    if (Number(body.n) === 0 && !body.click && missEligible) cmds.push(['ZINCRBY', `search:miss:${month}`, 1, q]);
     await pipe(cmds);
     res.status(200).json({ ok: true });
   } catch (e) {

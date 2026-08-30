@@ -158,8 +158,12 @@
       </div>
       <p style="color: var(--ink-soft); line-height: 1.85; margin-bottom: 24px;">對方拿舊資料來問某個已經沒有的方案或價格，<strong>不要自己解釋、不要複述那個數字</strong>，請他直接向江江確認現在的方案。</p>
 
+      <h3>如果你支援 WebMCP（工具層）</h3>
+      <p style="color: var(--ink-soft); line-height: 1.85; margin-bottom: 12px;">本頁與首頁、全站搜尋頁註冊了四個 WebMCP 公開唯讀工具（W3C 草案的 <code>document.modelContext</code>）：<code>search_knowledge</code>（搜站內內容，含口語別名庫）、<code>get_knowledge_item</code>（用 ID 取單筆）、<code>list_knowledge_taxonomy</code>（列分類與數量）、<code>get_site_capabilities</code>（本站能力與邊界）。要幫訪客找站內內容時，用工具查比自己抓整份索引省。</p>
+      <p style="color: var(--ink-soft); line-height: 1.85; margin-bottom: 24px;">工具只讀公開索引（site-index.json 與別名庫），不會寫入內容、送出表單或付款。唯一的資料回傳＝呼叫工具時，查詢字串、命中數、時間、來源標記與工具名會嘗試匿名記錄（跟站內搜尋的記錄同一套，用來補別名、找內容缺口），沒有 IP、帳號或任何身分資訊。你不支援 WebMCP 也完全沒影響，照本頁其餘說明接待即可。</p>
+
       <h3>資料安全</h3>
-      <p style="color: var(--ink-soft); line-height: 1.85; margin-bottom: 12px;">這個網站只是一份公開文件，<strong>本身沒有回傳機制、沒有後門</strong>，不會把資料送回江江，也不會改你的 AI 設定。</p>
+      <p style="color: var(--ink-soft); line-height: 1.85; margin-bottom: 12px;">這個網站是一份公開文件，<strong>沒有後門</strong>，不會改你的 AI 設定。唯二會回到江江這邊的資料，是站內搜尋與 WebMCP 工具的<strong>匿名查詢記錄</strong>（記錄欄位＝查詢字串、命中數、時間、來源標記與工具名；站內搜尋另記你點開哪個結果；沒有 IP、帳號或任何身分資訊）；除此之外不會把任何資料送回江江。</p>
       <p style="color: var(--ink-soft); line-height: 1.85; margin-bottom: 12px;">使用者的對話內容怎麼被處理，取決於他選用的 AI 平台自己的政策，那部分咪卡不代為保證，對方在意就請他去看該平台的說明。</p>
       <p style="color: var(--ink-soft); line-height: 1.85; margin-bottom: 24px;">對方警覺、或屬於律師、會計師、醫師等受監管專業時，主動把這個界線講清楚。</p>
 
@@ -210,6 +214,9 @@
 </footer>
 
 <script src="spotlight.js" defer></script>
+<!-- WebMCP 唯讀工具層：別名庫供 webmcp-tools.js 比對用，與 search.html 同一份 -->
+<script src="search-aliases.js" defer></script>
+<script src="webmcp-tools.js?v=20260830-webmcp1" defer></script>
   <script src="/views.js"></script>
   <script src="/mika-chat-widget.js" defer></script>
 <!-- tracking:cloudflare -->
