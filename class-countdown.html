@@ -91,8 +91,9 @@
     box-shadow:0 8px 24px rgba(0,0,0,.14);
     transition:opacity .5s, transform .15s;
   }
-  .menu-btn:hover{transform:scale(1.06);}
-  body:not(.ui-on) .menu-btn{opacity:0; pointer-events:none;}
+  .menu-btn:hover{transform:scale(1.06); opacity:1;}
+  /* 選單鈕不隱藏，只變淡。原本整顆消失，新手根本找不到入口 */
+  body:not(.ui-on) .menu-btn{opacity:.55;}
   .brand{
     margin-top:14px;
     font-size:clamp(18px,2.2vh,26px); color:var(--tea); letter-spacing:.1em; font-weight:600;
@@ -197,13 +198,16 @@
   }
   body.ui-on .block:hover .grip, body.ui-on .block:hover .rz, body.ui-on .block:hover .del,
   .block.dragging .grip, .block.dragging .rz{opacity:1;}
+  /* 游標移上去就把整塊提到前面。不然區塊重疊時，右下角的縮放把手會被
+     壓在別的區塊底下，看得到卻抓不到 */
+  body.ui-on .block:hover{z-index:5;}
   .block.dragging{z-index:6;}
   .block.dragging .grip{cursor:grabbing;}
 
   /* 文字區塊 */
   .block.b-text .txt{
     font-family:"Noto Serif TC","Songti TC",serif;
-    font-weight:700; line-height:1.42; color:var(--bark);
+    color:var(--bark);
     white-space:pre-wrap;   /* 沒有這行，換行會被吃掉，條列排不出來 */
     outline:none; border-radius:16px; padding:.15em .3em;
     transition:background .25s; min-height:1.4em;
@@ -707,7 +711,13 @@
          一模一樣的值，看起來不會變。 */
       if(b.fv==null) b.fv=b.w*0.1*k;
       var t=el.querySelector(".txt");
-      t.style.fontSize=Math.max(10,Math.round(vw(b.fv)))+"px";
+      var px=Math.max(10,Math.round(vw(b.fv)));
+      t.style.fontSize=px+"px";
+      /* 粗體襯線加緊行距拿來排長文會變一坨。字大就當標題，字小自動切成內文排版 */
+      var big=px>=34;
+      t.style.fontWeight   = big? "700" : "400";
+      t.style.lineHeight   = big? "1.28" : "1.85";
+      t.style.letterSpacing= big? "0"    : ".02em";
       t.style.minHeight=(b.h!=null? b.h+"vh" : "");
     }else if(b.type==="count"){
       el.style.fontSize=Math.max(12,Math.round(vw(b.w)*0.1*k))+"px";
@@ -755,8 +765,10 @@
       el.classList.add("dragging");
       var sx=e.clientX, sy=e.clientY, ow=b.w;
       var txtEl=el.querySelector(".txt");
-      var oh=(b.h!=null) ? b.h
-           : (txtEl ? txtEl.offsetHeight/window.innerHeight*100 : 0);
+      /* 起算點要用畫面上看到的高度，不能用存起來的 b.h。
+         文字比 b.h 高時畫面是被內容撐開的，拿 b.h 起算會先吃掉一段拖曳距離，
+         變成拖 150px 只長 60px。 */
+      var oh=(txtEl ? txtEl.offsetHeight/window.innerHeight*100 : (b.h||0));
       function mv(ev){
         b.w=Math.min(96,Math.max(6,ow+(ev.clientX-sx)/window.innerWidth*100));
         /* 只有文字區塊拉高度。圖片拉高會變形、倒數是單一置中元素，都維持只拉寬 */
