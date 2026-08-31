@@ -19,7 +19,8 @@ const TAG_RE = /<script src="\/mika-chat-widget\.js" defer><\/script>/g;
 
 // 刻意不掛的頁（路徑前綴或完整路徑｜原因）。要加豁免請附原因，不准無註解加行。
 const EXEMPT = [
-  // 目前沒有豁免頁：2026-08-30 江江拍板全站都要有（含 en/ 與簡報頁）。
+  // class-countdown 是投影用全螢幕互動工具，掛聊天 widget 會干擾倒數畫面與拖拉/全螢幕操作。
+  'class-countdown.html',
 ];
 
 // 非「對外頁面」的 HTML：不是給訪客看的，不在本關範圍。
