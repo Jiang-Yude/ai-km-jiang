@@ -252,7 +252,9 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
     - 封面：放上面 hero 的 .hero-figure（橫式預設，或 4:5 直式）。沒封面圖就把 hero 裡的 <figure> 刪掉。
     - 分享封面（og:image / twitter:image）：不論有沒有插圖，都跑 `node scripts/og-shot.mjs {{SLUG}}` 自動截 hero 標題卡成 1200×630（見 README）。og:image 已預設指向 images/og/{{SLUG}}.jpg，截好即生效，不要退回 intro-jiang.png。
     - 內文圖：用 <figure class="inline-figure"><img loading="lazy" alt><figcaption>。圖要緊跟相關段落、跟內容互相搭配，不要全堆在一起、也不要放跟文意無關的圖。
-    - 所有圖（hero＋內文）都會自動有「點圖放大」lightbox，並載入 image-interactions.js：讀者可點選圖片後拖曳、用四角把手等比例縮放、雙擊或按 R 重設；一般點擊仍會放大。
+    - 所有圖（hero＋內文）都會自動有「點圖放大」lightbox。
+    - 圖片預設「不可拖移、不可縮放」（2026-08-31 江江拍板）：image-interactions.js 只認明寫 data-interactive-image 的圖，且全站關掉瀏覽器原生的圖片拖曳。
+      真的要讓某張圖能被讀者拖曳縮放，在那張 <img> 上加 data-interactive-image；不要為了這個去放寬 image-interactions.js 的 selector（preflight 會擋）。
     - 不要把這個互動套到 logo、導覽小圖或卡片縮圖；若某張內容圖不想互動，在 figure 或 img 加 data-no-image-interaction。
     - 圖先 sips 縮圖（JPG、寬 1400、<400K）放 images/articles/，原圖留主庫 11圖片待整。
 -->

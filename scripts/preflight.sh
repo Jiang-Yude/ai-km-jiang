@@ -71,6 +71,11 @@ if node scripts/check-article-css.mjs; then ok "文章版面樣式"; else bad "�
 # 模板已補行、全站已補齊，這一關是保底；刻意不掛的頁寫進 check-mika-widget.mjs 的 EXEMPT 附原因。
 # 與上一關同屬「模板保底」，刻意不另編號（同索引覆蓋率關的慣例）。
 if node scripts/check-mika-widget.mjs; then ok "咪卡 widget 覆蓋"; else bad "有頁面缺咪卡 widget 掛載（見上）"; fi
+# 圖片拖曳護欄（2026-08-31 立，事故驅動：同一個雷炸兩次）：8/07 加的全站圖片互動預設把 hero
+# 與內文圖全吃進去，讀者能把封面拖走、拉四角縮放。8/19 江江抓到一次、改好了，但 commit 停在分支
+# 沒 merge 沒部署，且留著 img.interactive-image 開關，8/30 課程頁 hero 誤用，8/31 又被抓到。
+# 現在 selector 改成明確 opt-in（只認 data-interactive-image），這一關擋「有人再把它放寬回去」。
+if node scripts/check-image-drag.mjs; then ok "圖片拖曳護欄"; else bad "圖片互動 selector 被放寬或原生拖曳護欄被拿掉（見上）"; fi
 
 echo "═══ 8/11 秘密掃描（未提交變更檔）═══"
 if [[ ! -f "$SAFE_DEPLOY_TOOL" ]]; then

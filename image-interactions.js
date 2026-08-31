@@ -2,7 +2,15 @@
   'use strict';
 
   var DEFAULTS = {
-    selector: '.hero-figure img, .inline-figure img, img.interactive-image, img[data-interactive-image]',
+    // 2026-08-31 改為「明確開才有」（江江拍板）。原本是 opt-out：
+    //   '.hero-figure img, .inline-figure img, img.interactive-image, img[data-interactive-image]'
+    // 那樣預設全站每張圖都能被讀者拖走、拉四角縮放，版面會被玩壞。
+    // 2026-08-19 只拿掉 .hero-figure img（commit 0a56363），但那次沒上線，
+    // 而且留著的 img.interactive-image 開關在 8/30 被課程頁 hero 誤用，同一個雷炸第二次。
+    // 現在唯一入口＝在那張 <img> 上明寫 data-interactive-image，沒寫的一律不可拖。
+    // 想開某張圖：<img src="..." data-interactive-image>
+    // 這條 selector 有機械保底：scripts/check-image-drag.mjs，preflight 會擋下放寬。
+    selector: 'img[data-interactive-image]',
     dragThresholdPx: 4,
     touchDragThresholdPx: 6,
     viewportMarginPx: 8,
@@ -21,6 +29,23 @@
   var active = null;
   var lastGestureEndedAt = 0;
   var stylesReady = false;
+  var guardReady = false;
+
+  // 全站原生拖曳護欄（2026-08-31 立）：瀏覽器預設 <img draggable=true>，
+  // 讀者可以把圖直接拖出頁面拖到桌面／別的視窗，看起來就是「圖被拖走了」。
+  // 這一段不管圖有沒有開互動功能，一律關掉原生拖曳。
+  // 這支 js 全站 146 頁都有載，所以放這裡等於一次覆蓋全站。
+  function injectDragGuard() {
+    if (guardReady || document.getElementById('image-drag-guard-style')) return;
+    guardReady = true;
+    var style = document.createElement('style');
+    style.id = 'image-drag-guard-style';
+    style.textContent = 'img{-webkit-user-drag:none;user-drag:none}';
+    (document.head || document.documentElement).appendChild(style);
+    document.addEventListener('dragstart', function (event) {
+      if (event.target && event.target.tagName === 'IMG') event.preventDefault();
+    });
+  }
 
   function injectStyles() {
     if (stylesReady || document.getElementById('image-interactions-style')) return;
@@ -303,6 +328,7 @@
   }
 
   function init() {
+    injectDragGuard();
     Array.prototype.forEach.call(document.querySelectorAll(DEFAULTS.selector), function (img) {
       if (isReadyImage(img)) enhanceImage(img);
       else if (img && img.tagName === 'IMG' && !closestOptOut(img)) img.addEventListener('load', function () { enhanceImage(img); }, { once: true });
