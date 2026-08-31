@@ -203,7 +203,8 @@
   /* 文字區塊 */
   .block.b-text .txt{
     font-family:"Noto Serif TC","Songti TC",serif;
-    font-weight:700; line-height:1.32; color:var(--bark);
+    font-weight:700; line-height:1.42; color:var(--bark);
+    white-space:pre-wrap;   /* 沒有這行，換行會被吃掉，條列排不出來 */
     outline:none; border-radius:16px; padding:.15em .3em;
     transition:background .25s; min-height:1.4em;
     cursor:text; -webkit-user-select:text; user-select:text;
@@ -468,7 +469,7 @@
         <button class="btn ghost" id="resetLayout">重排版面</button>
         <button class="btn ghost" id="resetDefaults" title="清掉這台瀏覽器的自訂文案與版面，回到第一次打開的樣子">還原預設</button>
       </div>
-      <div class="menu-hint">畫面上的字點下去就能改（標題、文字塊、「距離上課還有」、時分秒、目標時間那行、「上課囉！」都算）。Cmd+V 貼截圖、拖圖片進畫面都會新增。區塊可拖移、拖右下角縮放、按 ✕ 刪除，游標移上去會出現 A− A＋ 單獨調字級。時間比現在早會自動算成明天。<br><br>你改的東西只存在你自己的瀏覽器，不會動到別人看到的版本；按「還原預設」可以清掉本機自訂內容。</div>
+      <div class="menu-hint">畫面上的字點下去就能改（標題、文字塊、「距離上課還有」、時分秒、目標時間那行、「上課囉！」都算）。Cmd+V 貼截圖、拖圖片進畫面都會新增。區塊可拖移、按 ✕ 刪除。**拖右下角可以同時調寬跟高**，字級是分開的，游標移上去用 A− A＋ 調，所以想要「寬框小字」放長段落沒問題。時間比現在早會自動算成明天。<br><br>你改的東西只存在你自己的瀏覽器，不會動到別人看到的版本；按「還原預設」可以清掉本機自訂內容。</div>
       <div class="menu-sep"></div>
       <div class="credit">
         <div class="who">開發者　江昱德｜江江教練</div>
@@ -676,8 +677,9 @@
   function defaultMika(){ return {id:"mika", type:"mika", x:79, y:58, w:15}; }
   function defaultBlocks(){
     return [
-      {id:"t1", type:"text",  x:6,  y:14, w:40, content:"歡迎來上課"},
-      {id:"t2", type:"text",  x:8,  y:30, w:42, content:"先找個舒服的位置坐下，開課前可以裝杯水、測一下麥克風，也把想問的問題先記下來。"},
+      {id:"t1", type:"text",  x:6,  y:12, w:38, fv:4.0, content:"歡迎來上課"},
+      {id:"t2", type:"text",  x:6,  y:25, w:34, fv:1.35, h:22,
+       content:"這幾行是範例，改成你自己的內容就好\n\n・畫面上的字點一下就能改\n・拖右下角調寬高，A− A＋ 調字級\n・左上選單設上課時間、加文字圖片\n・貼 YouTube 網址就有背景音樂\n・改亂了按「還原預設」"},
       {id:"count", type:"count", x:26, y:56, w:48},
       defaultMika()
     ];
@@ -700,7 +702,13 @@
     el.style.width=b.w+"vw";
     var k=b.fs||1;
     if(b.type==="text"){
-      el.querySelector(".txt").style.fontSize=Math.max(10,Math.round(vw(b.w)*0.1*k))+"px";
+      /* 舊版字級是用寬度算的，所以拉寬字就變大，想要「寬框小字」做不到。
+         改成獨立的 fv（字級佔視窗寬度的百分比）。舊資料第一次載入時換算成
+         一模一樣的值，看起來不會變。 */
+      if(b.fv==null) b.fv=b.w*0.1*k;
+      var t=el.querySelector(".txt");
+      t.style.fontSize=Math.max(10,Math.round(vw(b.fv)))+"px";
+      t.style.minHeight=(b.h!=null? b.h+"vh" : "");
     }else if(b.type==="count"){
       el.style.fontSize=Math.max(12,Math.round(vw(b.w)*0.1*k))+"px";
     }
@@ -745,9 +753,16 @@
       try{ rzEl.setPointerCapture(e.pointerId); }catch(err){}
       document.body.classList.add("dragging-now");
       el.classList.add("dragging");
-      var sx=e.clientX, ow=b.w;
+      var sx=e.clientX, sy=e.clientY, ow=b.w;
+      var txtEl=el.querySelector(".txt");
+      var oh=(b.h!=null) ? b.h
+           : (txtEl ? txtEl.offsetHeight/window.innerHeight*100 : 0);
       function mv(ev){
         b.w=Math.min(96,Math.max(6,ow+(ev.clientX-sx)/window.innerWidth*100));
+        /* 只有文字區塊拉高度。圖片拉高會變形、倒數是單一置中元素，都維持只拉寬 */
+        if(b.type==="text"){
+          b.h=Math.min(92,Math.max(2,oh+(ev.clientY-sy)/window.innerHeight*100));
+        }
         applyBlock(b);
       }
       function up(){
@@ -770,8 +785,13 @@
       btn.addEventListener("click",function(e){
         e.stopPropagation();
         var dir=parseInt(btn.getAttribute("data-fs"),10);
-        var cur=b.fs||1;
-        b.fs=Math.min(6,Math.max(0.25, dir>0 ? cur*1.15 : cur/1.15));
+        if(b.type==="text"){
+          if(b.fv==null) b.fv=b.w*0.1*(b.fs||1);
+          b.fv=Math.min(40,Math.max(0.35, dir>0 ? b.fv*1.15 : b.fv/1.15));
+        }else{
+          var cur=b.fs||1;
+          b.fs=Math.min(6,Math.max(0.25, dir>0 ? cur*1.15 : cur/1.15));
+        }
         applyBlock(b); saveState();
       });
     });
@@ -795,7 +815,8 @@
       '<button class="del" title="刪除文字">✕</button><div class="rz" title="拖角落縮放"></div>';
     var txt=el.querySelector(".txt");
     txt.textContent=b.content||"";
-    txt.addEventListener("input",function(){ b.content=txt.textContent; saveState(); });
+    /* textContent 會把 contenteditable 的換行吃掉，要用 innerText 才讀得回來 */
+    txt.addEventListener("input",function(){ b.content=txt.innerText; saveState(); });
     el.querySelector(".del").addEventListener("click",function(){ removeBlock(b); });
     layer.appendChild(el); els[b.id]=el;
     attachDrag(el,b,el.querySelector(".grip"));
@@ -1070,7 +1091,7 @@
   document.getElementById("resetLayout").addEventListener("click",function(){
     var ti=0, ii=0;
     blocks.forEach(function(b){
-      if(b.type==="text"){ b.x=6+(ti%2)*2; b.y=14+ti*16; b.w=ti===0?40:42; ti++; }
+      if(b.type==="text"){ b.x=6; b.y=14+ti*16; b.w=40; b.h=null; ti++; }
       else if(b.type==="image"){ b.x=58+(ii%2)*4; b.y=12+ii*10; b.w=30; ii++; }
       else if(b.type==="count"){ b.x=26; b.y=56; b.w=48; }
       else if(b.type==="mika"){ b.x=79; b.y=58; b.w=15; }
