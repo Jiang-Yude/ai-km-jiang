@@ -93,7 +93,10 @@
   function areaChart(host, data, color, unit) {
     host.innerHTML = '';
     if (!data.length) { host.innerHTML = '<p class="read">這個月還沒有資料。</p>'; return; }
-    var W = Math.max(host.clientWidth || 640, data.length * 26), H = 210, PL = 46, PR = 34, PT = 22, PB = 30;
+    /* 每點寬度隨資料量縮：30 天的範圍給每天 26px 好點；
+       90 天以上改成 8px，整張圖才塞得進容器，不然右半邊（最新的資料）要捲才看得到。 */
+    var per = data.length > 60 ? 8 : (data.length > 40 ? 14 : 26);
+    var W = Math.max(host.clientWidth || 640, data.length * per), H = 210, PL = 46, PR = 34, PT = 22, PB = 30;
     var iw = W - PL - PR, ih = H - PT - PB;
     var max = Math.max.apply(null, data.map(function (d) { return d.v; }).concat([1]));
     var step = data.length > 1 ? iw / (data.length - 1) : 0;
@@ -111,7 +114,7 @@
     svg.push('<polygon points="' + PL + ',' + (PT + ih) + ' ' + pts + ' ' + x(data.length - 1) + ',' + (PT + ih) + '" fill="' + color + '" opacity=".13"/>');
     svg.push('<polyline points="' + pts + '" fill="none" stroke="' + color + '" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>');
     data.forEach(function (d, i) {
-      if (d.v > 0) svg.push('<circle cx="' + x(i) + '" cy="' + y(d.v) + '" r="3.4" fill="' + color + '"/>');
+      if (d.v > 0 && data.length <= 60) svg.push('<circle cx="' + x(i) + '" cy="' + y(d.v) + '" r="3.4" fill="' + color + '"/>');
       // 命中區：整條垂直帶，比點好按
       svg.push('<rect x="' + (x(i) - step / 2) + '" y="' + PT + '" width="' + Math.max(step, 10) + '" height="' + ih + '" fill="transparent"><title>' + esc(d.d) + '：' + d.v + ' ' + unit + '</title></rect>');
     });
