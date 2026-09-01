@@ -34,6 +34,24 @@ window.ARTICLE_TAGS = {
 };
 
 window.ARTICLES = [
+  /* ── 迴圈的圈數上限，三行寫進規則檔（教學）── */
+  {
+    id: "loop-round-limit",
+    url: "articles/loop-round-limit/",
+    date: "2026-09-01",
+    updated: "2026-09-01",
+    title: "AI 自己跑，會不會一直跑到額度燒完？｜迴圈的圈數上限，三行寫進規則檔",
+    problem: "讓 AI 自己跑迴圈，做完自己檢查、沒過自己修，聽起來很好用，而它一直沒過的時候不會停下來問你，一個晚上就能把額度燒完。",
+    audience: "已經在用迴圈或自動任務、發現額度掉很快的人，以及讓兩個 AI 互審結果它們沒完沒了聊下去的人。",
+    summary: "迴圈沒設圈數上限，AI 可以修一百遍。這篇給一張圈數表（一般任務兩輪、重要決策三輪、第三輪強制停下來回報）、三行可直接貼進規則檔的停止條件，以及最容易漏掉的第三行：停手的時候要交什麼。另外拆開四種卡住的原因怎麼分辨、「一輪」怎麼算、上限跟報酬遞減曲線的兩層分工，並用一篇實際跑了四輪的文章說明多出來的那一輪為什麼是人批准的。",
+    tags: {
+      topic: ["AI工作流", "AIAgent", "工作流程"],
+      level: ["基礎"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["what-is-loop-engineering", "loop-engineering-guardrails", "after-ai-says-remembered", "dual-track-planning-loop", "what-is-graph-engineering", "ai-usage-audit"]
+  },
   {
     id: "ai-usage-audit",
     url: "articles/ai-usage-audit/",
@@ -45,7 +63,7 @@ window.ARTICLES = [
     summary: "掃完自己一個月 19,287 次 API 呼叫的實測紀錄，發現原本猜的原因（知識庫太肥）只佔 26%，另外四分之三是三個使用習慣：一個對話開一整天、同一件事開兩個視窗、什麼工作都用最貴的模型。先講清楚一個大部分人不知道的計費機制：AI 每問一句都在重讀整段對話，所以第 800 句時打二十個字，帳單算的是四十萬。接著給兩個開關（模型切換點、對話斷點）與實測的省下倍數，說明為什麼這件事沒辦法寫成自動化規則（AI 技術上切不了模型、攔截器不知道你跑到第幾步），以及自己原本就有的三條省錢規則為什麼兩個月來一條都沒被執行。最後附一支可直接跑的量測腳本，讓你量自己的實際用量。",
     tags: {"topic":["AI工作流","知識管理","工具操作"],"level":["基礎"],"content_type":["觀點文章"]},
     external: { threads: null, vocus: null },
-    related: ["ai-cp-value-calculus", "copied-mechanism-is-no-mechanism", "program-vs-ai-skill-library", "cognitive-debt"]
+    related: ["ai-cp-value-calculus", "copied-mechanism-is-no-mechanism", "program-vs-ai-skill-library", "cognitive-debt", "loop-round-limit"]
   },
 
   /* ── 一間辦公室，講清楚什麼是圖譜工程（教學）── */
@@ -84,7 +102,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["three-levels-of-cross-review", "long-document-review-layers", "before-installing-others-skill", "mobile-to-desktop-publish-loop", "cognitive-debt", "eight-ai-system-concepts-2026"]
+    related: ["three-levels-of-cross-review", "long-document-review-layers", "before-installing-others-skill", "mobile-to-desktop-publish-loop", "cognitive-debt", "eight-ai-system-concepts-2026", "loop-round-limit"]
   },
 
   /* ── AI 改了十幾次還是有錯，怎麼辦？：資料清理只是第一關，長文件審不出錯的三層設計（教學） ── */
@@ -804,7 +822,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["what-is-graph-engineering", "strong-ai-models-knowledge-workflow-road", "questionnaire-to-slides-agent-workflow"]
+    related: ["what-is-graph-engineering", "strong-ai-models-knowledge-workflow-road", "questionnaire-to-slides-agent-workflow", "loop-round-limit"]
   },
 
   /* ── 無形資產，越分享越豐盛（觀點）── */
@@ -1222,7 +1240,7 @@ window.ARTICLES = [
     summary: "把駕馭工程和迴圈工程接在一起的五條護欄：未抗辯假設、三視角抗辯、Non-goals 與允許路徑、換路煞車、驗收證據分級。讓 AI 連續自動工作時，錯誤不會一路滾大。",
     tags: {"topic":["AI工作流","AIAgent","跨家審稿"],"level":["基礎"],"content_type":["教學文章"]},
     external: { threads: null, vocus: null },
-    related: ["what-is-loop-engineering","harness-mindset-for-bosses","ai-loop-safety-recovery","dual-track-planning-loop","ai-handoff-instructions","long-task-completion-rate", "meeting-into-verifiable-loop"]
+    related: ["what-is-loop-engineering","harness-mindset-for-bosses","ai-loop-safety-recovery","dual-track-planning-loop","ai-handoff-instructions","long-task-completion-rate", "meeting-into-verifiable-loop", "loop-round-limit"]
   },
   {
     id: "parenting-story-ai-family-dialogue",
