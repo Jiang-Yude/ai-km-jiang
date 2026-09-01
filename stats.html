@@ -1,119 +1,241 @@
 <!doctype html>
 <html lang="zh-Hant">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="robots" content="noindex,follow">
-<title>網站流量統計</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="robots" content="noindex,nofollow" />
+<title>站長儀表板 · 江江教練</title>
+<meta name="description" content="知識官網的流量、內容表現與咪卡客服提問分析。" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" />
+<link rel="stylesheet" href="styles.css?v=20260603-learning-map" />
 <style>
-:root{--ink:#1a1612;--paper:#fefcf8;--muted:#6a635a;--line:#d8cdb8;--green:#5f7553;--blue:#5689b8;--orange:#e85a4f;--soft:#faf5ec;--sand:#a08144}
-*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC","Segoe UI",sans-serif}
-a{color:inherit}
-nav.top{position:sticky;top:0;background:rgba(254,252,248,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);z-index:100}
-nav.top .container{max-width:1180px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:24px;padding:14px 32px}
-nav.top a.brand{display:flex;align-items:center;text-decoration:none}
-nav.top a.brand img{height:36px}
-nav.top .links{display:flex;gap:20px;font-size:.95rem}
-nav.top .links a{color:#3a342d;text-decoration:none;font-weight:500}
-.hero{padding:64px clamp(20px,6vw,88px) 36px;background:linear-gradient(180deg,#fffcf0 0%,#f9e9d2 100%);border-bottom:1px solid var(--line)}
-.hero .kicker{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.4rem;color:#7a5c3a}
-.hero h1{margin:8px 0 6px;font-size:clamp(30px,5vw,52px)}
-.hero p{margin:0;color:#3a342d;font-size:18px}
-.wrap{max-width:1000px;margin:0 auto;padding:40px clamp(20px,6vw,60px) 80px}
-.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:44px}
-.card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:22px;box-shadow:0 8px 22px rgba(107,74,42,.08);text-align:center}
-.card .n{font:700 40px/1 "JetBrains Mono",monospace;color:var(--ink)}
-.card .l{margin-top:8px;font-size:15px;color:var(--muted)}
-h2{font-size:clamp(22px,3.2vw,30px);margin:36px 0 6px}
-.sub{color:var(--muted);font-size:14px;margin:0 0 18px}
-.chart{display:flex;align-items:flex-end;gap:6px;height:220px;padding:14px 4px 0;border-bottom:2px solid var(--line);overflow-x:auto}
-.bar{flex:1 0 18px;min-width:14px;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%}
-.bar .fill{width:70%;min-height:2px;background:linear-gradient(180deg,#e8884b,#a08144);border-radius:4px 4px 0 0;transition:height .3s}
-.bar .v{font:600 11px/1 "JetBrains Mono",monospace;color:var(--muted);margin-bottom:4px}
-.bar .d{font-size:10px;color:var(--muted);margin-top:6px;writing-mode:vertical-rl;height:34px}
-.months{list-style:none;padding:0;margin:12px 0 0}
-.months li{display:flex;justify-content:space-between;padding:12px 16px;border:1px solid var(--line);border-radius:10px;background:#fff;margin-bottom:8px;font-size:16px}
-.months li b{font:700 16px/1 "JetBrains Mono",monospace}
-.foot{margin-top:48px;padding-top:20px;border-top:1px solid var(--line);color:var(--muted);font-size:13px;line-height:1.7}
-.loading{color:var(--muted);padding:30px 0}
-@media(max-width:640px){.cards{grid-template-columns:1fr}nav.top .links{display:none}}
+/* ── 站長儀表板專屬樣式 ───────────────────────────────
+   類別色為圖表專用，不是官網五色暖光原值：原值的 sky 跟 lavender
+   在色盲模擬下 ΔE 只有 1.2，直接拿來當類別色會分不出來。
+   下面這組是加深彩度並重排順序後跑過 dataviz validator 的版本
+   （六項檢查全過，色序固定不可輪播；sand↔mint 在 protan 下 ΔE 7.5，
+   所以凡用到這兩色的圖都必須有直接標籤或間隙當第二重編碼）。 */
+:root{
+  --k1:#c9463a; --k2:#2f7fb5; --k3:#b8791f; --k4:#2c8a63; --k5:#6b4f9e; --k6:#8a8f2a;
+  --seq1:#e3eef6; --seq2:#bcd8ea; --seq3:#8ebdd9; --seq4:#5c9cc4; --seq5:#2f7fb5; --seq6:#1d5a83;
+  --grid:#ece4d4;
+}
+.dash{max-width:1180px;margin:0 auto;padding:28px clamp(16px,4vw,40px) 90px}
+.gate{max-width:460px;margin:80px auto;padding:34px 30px;background:var(--paper);border:1px solid var(--line);border-radius:var(--radius-lg);box-shadow:var(--shadow);text-align:center}
+.gate h2{font-size:24px;margin-bottom:8px}
+.gate p{color:var(--ink-faint);font-size:16px;margin-bottom:20px;line-height:1.7}
+.gate input{width:100%;font-family:inherit;font-size:19px;padding:13px 16px;border:1px solid var(--line);border-radius:var(--radius-pill);background:#fff;color:var(--ink);text-align:center;letter-spacing:.12em}
+.gate input:focus{outline:none;border-color:var(--k2);box-shadow:0 0 0 3px rgba(47,127,181,.16)}
+.gate button{margin-top:14px;width:100%;font-family:inherit;font-size:18px;font-weight:700;padding:13px;border:none;border-radius:var(--radius-pill);background:var(--ink);color:#fff;cursor:pointer}
+.gate button:hover{background:#000}
+.gate .err{margin-top:12px;color:var(--k1);font-size:16px;min-height:24px}
+.gate .hint{margin-top:16px;font-size:15px;color:var(--ink-faint)}
+
+.toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:24px}
+.toolbar select,.toolbar input[type=search]{font-family:inherit;font-size:17px;padding:9px 14px;border:1px solid var(--line);border-radius:var(--radius-pill);background:#fff;color:var(--ink)}
+.toolbar .spacer{flex:1}
+.toolbar .stamp{font-size:15px;color:var(--ink-faint)}
+.btn-lite{font-family:inherit;font-size:16px;padding:9px 16px;border:1px solid var(--line);border-radius:var(--radius-pill);background:#fff;color:var(--ink-soft);cursor:pointer}
+.btn-lite:hover{border-color:var(--ink-faint)}
+.btn-lite.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(142px,1fr));gap:12px;margin-bottom:34px}
+.tile{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius-md);padding:16px 16px}
+.tile .n{font:700 30px/1.05 "JetBrains Mono",monospace;color:var(--ink);white-space:nowrap}
+.tile .l{margin-top:7px;font-size:15px;color:var(--ink-faint)}
+.tile .d{margin-top:5px;font-size:15px}
+.tile .d.up{color:var(--k4)} .tile .d.down{color:var(--k1)} .tile .d.flat{color:var(--ink-faint)}
+
+.panel{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius-lg);padding:24px clamp(16px,3vw,28px);margin-bottom:26px}
+.panel h2{font-size:clamp(21px,2.6vw,26px);margin-bottom:4px}
+.panel .read{font-size:16px;color:var(--ink-faint);line-height:1.7;margin-bottom:18px}
+.panel .read b{color:var(--ink-soft)}
+.scroll{overflow-x:auto}
+.scroll.tall{max-height:66vh;overflow-y:auto;border:1px solid var(--line-soft);border-radius:10px}
+.scroll.tall table.list th{position:sticky;top:0;background:var(--paper);z-index:2}
+figure{margin:0}
+figcaption{margin-top:10px;font-size:15px;color:var(--ink-faint);line-height:1.65}
+
+.legend{display:flex;flex-wrap:wrap;gap:14px;margin:0 0 12px;font-size:15px;color:var(--ink-soft)}
+.legend i{display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:6px;vertical-align:baseline}
+
+.hbar{display:grid;grid-template-columns:minmax(0,1fr);gap:7px}
+.hbar .row{display:grid;grid-template-columns:minmax(150px,300px) 1fr auto;gap:12px;align-items:center;font-size:16px;cursor:pointer;padding:3px 4px;border-radius:8px}
+.hbar .row:hover{background:var(--bg-soft)}
+.hbar .row.sel{background:#f3ece0;box-shadow:inset 0 0 0 1px var(--line)}
+.hbar .lb{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--ink-soft)}
+.hbar .tr{background:var(--bg-soft);border-radius:4px;height:19px;position:relative;overflow:hidden}
+.hbar .fl{position:absolute;left:0;top:0;bottom:0;border-radius:0 4px 4px 0;background:var(--k2)}
+.hbar .vv{font:600 15px/1 "JetBrains Mono",monospace;color:var(--ink-faint);min-width:42px;text-align:right}
+
+table.grid{border-collapse:separate;border-spacing:2px;font-size:15px}
+table.grid th{font-weight:500;color:var(--ink-faint);text-align:left;padding:4px 8px;white-space:nowrap;font-size:14px}
+table.grid th.rot{writing-mode:vertical-rl;transform:rotate(180deg);height:96px;padding:6px 2px;text-align:right}
+table.grid td.cell{width:44px;height:34px;text-align:center;border-radius:5px;font:600 14px/1 "JetBrains Mono",monospace;cursor:pointer;color:#1a1612}
+table.grid td.cell.z{color:#c9c0ae}
+table.grid td.cell:hover{outline:2px solid var(--ink);outline-offset:-2px}
+table.grid td.rowlb{padding:4px 10px 4px 4px;white-space:nowrap;max-width:270px;overflow:hidden;text-overflow:ellipsis;color:var(--ink-soft)}
+table.grid td.tot{font:600 14px/1 "JetBrains Mono",monospace;color:var(--ink-faint);padding-left:8px}
+
+table.list{width:100%;border-collapse:collapse;font-size:16px}
+table.list th{text-align:left;font-weight:500;font-size:15px;color:var(--ink-faint);border-bottom:1px solid var(--line);padding:8px 10px;white-space:nowrap}
+table.list td{border-bottom:1px solid var(--line-soft);padding:9px 10px;vertical-align:top;line-height:1.6}
+table.list td.t{font:500 14px/1.5 "JetBrains Mono",monospace;color:var(--ink-faint);white-space:nowrap}
+table.list td.p{font-size:14px;color:var(--ink-faint);max-width:210px;word-break:break-all}
+table.list tr.bot td{color:var(--ink-faint);background:var(--bg-soft)}
+
+.tag{display:inline-block;font-size:14px;padding:2px 9px;border-radius:999px;border:1px solid var(--line);color:var(--ink-soft);white-space:nowrap}
+.tag.alert{border-color:var(--k1);color:var(--k1)}
+details.raw{margin-top:16px}
+details.raw>summary{cursor:pointer;font-size:16px;color:var(--ink-faint);padding:8px 0}
+.note{font-size:15px;color:var(--ink-faint);line-height:1.7;margin-top:12px;padding-top:12px;border-top:1px dashed var(--line)}
+.flag{display:flex;gap:10px;align-items:flex-start;padding:12px 14px;border-radius:10px;background:#fdf3f1;border:1px solid #f0c9c2;font-size:16px;line-height:1.65;margin-bottom:10px}
+.flag.ok{background:#f0f6f2;border-color:#c9e0d3}
+.flag .ic{font-size:19px;line-height:1.3}
+@media(max-width:720px){
+  .hbar .row{grid-template-columns:minmax(110px,1fr) 1fr auto}
+  .tile .n{font-size:28px}
+}
 </style>
-<!-- tracking:vercel-analytics -->
-<script defer src="/_vercel/insights/script.js"></script>
-<script defer src="/_vercel/speed-insights/script.js"></script>
 </head>
 <body>
-<nav class="top"><div class="container">
-  <a class="brand" href="index.html"><img src="images/footer-signature.png" alt="江江教練"></a>
-  <div class="links"><a href="index.html">首頁</a><a href="articles.html">深度文章</a><a href="offers.html">服務方案</a></div>
-</div></nav>
+<nav class="top">
+  <div class="container">
+    <a class="nav-brand-img" href="index.html"><img src="images/footer-signature.png" alt="江江教練 | 江昱德" /></a>
+    <button class="nav-toggle" aria-label="選單"><span></span><span></span><span></span></button>
+    <ul class="nav-menu">
+      <li><a href="index.html">首頁</a></li>
+      <li><a href="knowledge-architecture.html">知識架構</a></li>
+      <li><a href="courses.html">課程</a></li>
+      <li><a href="articles.html">深度文章</a></li>
+      <li><a href="skills.html">技能包下載</a></li>
+      <li><a href="offers.html">服務方案</a></li>
+      <li class="lang-switch"><a href="en/index.html" hreflang="en">EN</a></li>
+    </ul>
+  </div>
+</nav>
 
-<section class="hero">
-  <div class="kicker">Site Traffic</div>
-  <h1>網站流量統計</h1>
-  <p>這個網站累計被看了 <b data-views="global">…</b> 次。資料自動累計，不經過 Google。</p>
+<section class="gate" id="gate">
+  <h2>站長儀表板</h2>
+  <p>這頁是後台，要密碼才看得到。<br>公開的全站瀏覽數在頁面底部一樣看得到。</p>
+  <input type="password" id="pw" autocomplete="current-password" placeholder="密碼" />
+  <button id="go">進入</button>
+  <div class="err" id="err"></div>
+  <div class="hint">提示：密碼結尾有一個空格，貼上時不要漏掉。</div>
 </section>
 
-<div class="wrap">
-  <div class="cards">
-    <div class="card"><div class="n" id="c-total">…</div><div class="l">全站累計瀏覽</div></div>
-    <div class="card"><div class="n" id="c-month">…</div><div class="l">本月累計</div></div>
-    <div class="card"><div class="n" id="c-today">…</div><div class="l">今日</div></div>
+<main class="dash" id="dash" hidden>
+
+  <div class="toolbar">
+    <select id="mon" aria-label="月份"></select>
+    <button class="btn-lite" id="reload">重新讀取</button>
+    <div class="spacer"></div>
+    <span class="stamp" id="stamp"></span>
+    <button class="btn-lite" id="lock">鎖上</button>
   </div>
 
-  <h2>本月每日流量</h2>
-  <p class="sub" id="month-label">載入中…</p>
-  <div class="chart" id="daily"><div class="loading">載入中…</div></div>
+  <div class="tiles" id="tiles"></div>
 
-  <h2>歷月流量</h2>
-  <ul class="months" id="monthly"><li class="loading">載入中…</li></ul>
+  <section class="panel">
+    <h2>流量趨勢</h2>
+    <p class="read">怎麼讀：<b>看形狀不看單日數字。</b>上面是每天有多少人看網頁，下面是每天有多少人跟咪卡講話。兩張圖分開畫（不共用一個 Y 軸），因為量級差十倍以上，疊在一起看不出小的那條在動。發文、開課、講座之後這兩條會一起翹起來。</p>
+    <figure>
+      <div class="scroll"><div id="chart-pv"></div></div>
+      <figcaption id="cap-pv"></figcaption>
+    </figure>
+    <figure style="margin-top:22px">
+      <div class="scroll"><div id="chart-chat"></div></div>
+      <figcaption id="cap-chat"></figcaption>
+    </figure>
+  </section>
 
-  <div class="foot">
-    數字為自動累計，同一瀏覽器同一頁一小時只計一次。統計方式：自建 Vercel Function + Upstash Redis，不使用 Google Analytics。
-  </div>
-</div>
+  <section class="panel">
+    <h2>哪些頁面被看</h2>
+    <p class="read">怎麼讀：<b>這是從開站到現在的累計，不是本月。</b>條越長看的人越多。點任何一列，下面的「咪卡對話明細」會只留這一頁的提問，看得到讀者在這頁卡在哪。</p>
+    <div class="toolbar" style="margin-bottom:14px">
+      <button class="btn-lite on" data-scope="all">全部</button>
+      <button class="btn-lite" data-scope="articles">深度文章</button>
+      <button class="btn-lite" data-scope="courses">課程</button>
+      <button class="btn-lite" data-scope="other">其他頁</button>
+      <input type="search" id="pgq" placeholder="搜尋頁面網址" />
+    </div>
+    <figure>
+      <div class="hbar" id="pages"></div>
+      <figcaption id="cap-pages"></figcaption>
+    </figure>
+    <details class="raw"><summary>看完整清單（含冷門頁）</summary><div class="scroll tall" id="pages-all"></div></details>
+  </section>
 
-<script>
-(function(){
-  fetch('/api/stats').then(function(r){return r.json();}).then(function(d){
-    var total=d.total||0;
-    document.getElementById('c-total').textContent=total.toLocaleString();
-    var days=d.days||[], months=d.months||[];
-    // 本月累計＋今日
-    var monthSum=days.reduce(function(a,x){return a+(x.count||0);},0);
-    var todayCount=days.length?days[days.length-1].count:0;
-    document.getElementById('c-month').textContent=monthSum.toLocaleString();
-    document.getElementById('c-today').textContent=(todayCount||0).toLocaleString();
-    document.getElementById('month-label').textContent=(d.today?d.today.slice(0,7):'')+'　共 '+days.length+' 天';
-    // 每日長條
-    var chart=document.getElementById('daily'); chart.innerHTML='';
-    var max=Math.max.apply(null,days.map(function(x){return x.count||0;}).concat([1]));
-    days.forEach(function(x){
-      var bar=document.createElement('div');bar.className='bar';
-      var pct=Math.round((x.count||0)/max*100);
-      bar.innerHTML='<div class="v">'+(x.count||0)+'</div><div class="fill" style="height:'+pct+'%"></div><div class="d">'+x.date.slice(5)+'</div>';
-      chart.appendChild(bar);
-    });
-    if(!days.length) chart.innerHTML='<div class="loading">尚無資料</div>';
-    // 歷月（新到舊）
-    var ul=document.getElementById('monthly'); ul.innerHTML='';
-    months.slice().reverse().forEach(function(m){
-      var li=document.createElement('li');
-      li.innerHTML='<span>'+m.month+'</span><b>'+(m.count||0).toLocaleString()+'</b>';
-      ul.appendChild(li);
-    });
-    if(!months.length) ul.innerHTML='<li class="loading">尚無資料</li>';
-  }).catch(function(){
-    document.getElementById('daily').innerHTML='<div class="loading">讀取失敗（可能還沒設定 Upstash 或還沒部署）</div>';
-  });
-})();
-</script>
-<script src="views.js"></script>
-  <script src="/mika-chat-widget.js" defer></script>
-<!-- tracking:cloudflare -->
-<script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "c3e3c857121d416ab405270557d017d3"}'></script>
+  <section class="panel">
+    <h2>本月誰在動</h2>
+    <p class="read">怎麼讀：<b>這張只算本月，跟上面的累計榜互補。</b>累計榜是老本，這張是現在的動能。左邊的長條是本月瀏覽數，灰字是累計。只有 2026-09 之後才有資料，先前沒有記每頁每日。</p>
+    <figure>
+      <div class="hbar" id="pages-month"></div>
+      <figcaption id="cap-pmonth"></figcaption>
+    </figure>
+  </section>
+
+  <section class="panel">
+    <h2>咪卡客服：大家都問什麼</h2>
+    <p class="read">怎麼讀：<b>格子越深表示在那一頁問那類問題的人越多。</b>點任何一個格子，下面的明細會只留那一格的對話。問題分類是<b>關鍵詞規則自動分的，不是 AI 判讀</b>，分不出來的一律歸「其他」，原句在最下面的明細都查得到。</p>
+    <div class="legend" id="lg-kind"></div>
+    <figure>
+      <div class="hbar" id="kinds"></div>
+      <figcaption id="cap-kinds"></figcaption>
+    </figure>
+    <figure style="margin-top:26px">
+      <div class="scroll"><div id="chart-stack"></div></div>
+      <figcaption id="cap-stack"></figcaption>
+    </figure>
+    <figure style="margin-top:26px">
+      <div class="scroll"><table class="grid" id="matrix"></table></div>
+      <figcaption id="cap-matrix"></figcaption>
+    </figure>
+  </section>
+
+  <section class="panel">
+    <h2>要注意的事</h2>
+    <p class="read">怎麼讀：這區是<b>機器用規則掃出來的異常訊號</b>，不是結論。每條都附可以直接查的原句，看過才算數。</p>
+    <div id="flags"></div>
+  </section>
+
+  <section class="panel">
+    <h2>咪卡對話明細</h2>
+    <p class="read">怎麼讀：上面的圖點下去會篩這裡。<b>訪客原話一字不改</b>，只看得到瀏覽器識別碼，看不到是誰。</p>
+    <div class="toolbar" style="margin-bottom:14px">
+      <span class="stamp" id="filt">目前：全部</span>
+      <button class="btn-lite" id="clearf">清除篩選</button>
+      <input type="search" id="cq" placeholder="搜尋對話內容" />
+      <label style="font-size:16px;color:var(--ink-faint)"><input type="checkbox" id="showbot" /> 一起看咪卡的回答</label>
+    </div>
+    <div class="scroll tall"><table class="list" id="chatlist"></table></div>
+  </section>
+
+  <section class="panel">
+    <h2>站內搜尋：找不到的東西</h2>
+    <p class="read">怎麼讀：<b>零命中的搜尋詞就是內容缺口或別名缺口。</b>詞在站上有對應內容卻搜不到，補 <code>search-aliases.js</code> 的別名；真的沒有內容，那就是下一篇要寫的題目。</p>
+    <div class="scroll"><table class="list" id="misslist"></table></div>
+    <div class="note" id="searchnote"></div>
+  </section>
+
+  <section class="panel">
+    <h2>統計機制自我檢查</h2>
+    <p class="read">怎麼讀：這區在回答「<b>這些數字本身可不可信</b>」。埋點漏一頁，那一頁的流量就是零，看起來像沒人看，其實是沒在數。</p>
+    <div id="health"></div>
+    <div class="note">
+      記錄方式：自建 Vercel Function ＋ Upstash Redis，不經過 Google。
+      瀏覽數同一瀏覽器同一頁一小時只計一次；機器人 User-Agent 不計。
+      咪卡對話只記匿名瀏覽器識別碼，不做會員、不追個人軌跡。
+    </div>
+  </section>
+
+</main>
+
+<!-- 這頁刻意不引 views.js：後台是江江自己在看，計進流量會污染數字（Codex 跨家審查提的）。
+     咪卡 widget 保留（江江要求每頁都要有），但儀表板統計時會把 /stats.html 的對話濾掉。 -->
+<script src="/stats-dash.js"></script>
+<script src="/mika-chat-widget.js" defer></script>
 </body>
 </html>
