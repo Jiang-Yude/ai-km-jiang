@@ -140,7 +140,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["after-ai-says-remembered", "three-levels-of-cross-review", "why-split-data-into-cards", "rag-three-retrieval-modes", "ai-said-it-watched-the-video", "cross-ai-review-both-wrong"]
+    related: ["after-ai-says-remembered", "three-levels-of-cross-review", "why-split-data-into-cards", "rag-three-retrieval-modes", "ai-said-it-watched-the-video", "cross-ai-review-both-wrong", "what-are-subagents"]
   },
 
   /* ── 我跟 AI 說「很煩」，它自己去加了一道機制（教學） ── */
@@ -2193,7 +2193,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["what-is-loop-engineering", "program-vs-ai-skill-library", "strong-ai-models-knowledge-workflow-road"]
+    related: ["what-is-loop-engineering", "program-vs-ai-skill-library", "strong-ai-models-knowledge-workflow-road", "what-are-subagents"]
   },
 
   /* ── 官網搬家一個月零元：Webnode 搬到 Cloudflare Pages（教學）── */
@@ -2268,7 +2268,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["what-is-graph-engineering", "webnode-to-cloudflare-pages", "copied-mechanism-is-no-mechanism"]
+    related: ["what-is-graph-engineering", "webnode-to-cloudflare-pages", "copied-mechanism-is-no-mechanism", "what-are-subagents"]
   },
 
   /* ── 用手機做一張自己的電影海報和手機桌布（教學） ── */
@@ -2342,6 +2342,24 @@ window.ARTICLES = [
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
     related: ["web-chat-ai-vs-desktop-agent", "chatgpt-work-codex-choice"]
+  },
+
+  {
+    id: "what-are-subagents",
+    url: "articles/what-are-subagents/",
+    date: "2026-09-01",
+    updated: "2026-09-02",
+    title: "什麼叫子代理？從分頭查資料到 30 人工作坊頁面",
+    problem: "問 AI 某個工具好不好用，拿回來的答案總是很像產品介紹；手上一批同版型、內容各自不同的重複工作，又不知道怎麼交給 AI 分批做完。",
+    audience: "想比較多個工具、又擔心 AI 太早選邊站的人；手上有一批同版型重複工作的人；已經會叫 AI 做事，接下來想學怎麼分批派工與整併的人。",
+    summary: "子代理就是讓 Agent 開分身，分頭工作後再一起整併。文章用兩個實際案例說明兩種並行方式：一是把同一個問題拆成官方說法、網路正面評價、網路負面評價三組獨立搜尋，附可直接複製的提示詞、三組回來後要先查的五件事，以及矛盾要保留不要磨平的處理原則；二是替 29 位工作坊學員製作同版型獨立頁面，用分批派工的五步流程與一段完整派工提示詞，成果頁附上線連結。最後講清楚子代理的限制：上下文不會自動跟著走，每隻子代理都要拿到五項脈絡封包，並附收工前的七題驗收清單。",
+    tags: {
+      topic: ["AIAgent", "AI工作流", "提示詞設計", "工作流程"],
+      level: ["基礎"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
+    related: ["parallel-site-editing", "same-question-different-answers", "long-document-review-layers"]
   },
 
 ];

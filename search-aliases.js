@@ -3,6 +3,7 @@
    維護：新文章上稿時補一條；訪客搜尋 log 發現沒接住的問法，第一線修法＝來這裡補別名。
    key＝articles-data.js 的文章 id。 */
 window.SEARCH_ALIASES = {
+  "what-are-subagents": ["子代理是什麼","什麼叫子代理","subagent","AI開分身","讓AI分頭做事","AI分頭查資料","三次獨立搜尋","分三組查資料","官方說法跟網路評價分開查","AI查工具好不好用都像廣告","一次做30個頁面","同版型大量製作","分批派工","AI派工提示詞","主Agent跟子代理","子代理看不到前面的對話","上下文沒有跟著走","並行處理","多個AI同時做事"],
   "ai-era-websites-for-agents": ["AI時代網站要怎麼改","怎麼讓AI讀懂我的文章","怎麼讓ChatGPT引用我的文章","AIO GEO AXO是什麼","網站給AI用","AI可以直接用我的網站嗎","Claude匯入Cookie","ChatGPT Site tools","WebMCP是ChatGPT推出的嗎","網站怎麼做WebMCP","AI友善網站","線上微型Agent應用","網站同時服務人和AI"],
   "webmcp-day-one": ["WebMCP是什麼","AI可以直接操作我的網站嗎","Site tools","網站給AI用的工具","AI逛我的網站","MCP跟WebMCP差在哪","document.modelContext","網站怎麼被AI使用","讓AI查我的網站內容","AI友善網站怎麼做","趨勢出來當天就接上","給AI的服務台"],
   "character-costume-sheet-three-views": ["定妝照","角色定妝照","角色模板","角色基準圖","角色一致性","四視圖","抽卡","固定角色","每次生的角色都不一樣"],
