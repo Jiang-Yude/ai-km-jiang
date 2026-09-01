@@ -48,6 +48,15 @@ module.exports = async (req, res) => {
   body = body || {};
 
   const path = normalizePath(body.path);
+  /* 來源網站：只留主機名，過濾掉自家網域（站內互點不是外部來源） */
+  let ref = '';
+  try {
+    const r = String(body.ref || '').trim();
+    if (r) {
+      const h = new URL(r).hostname.replace(/^www\./, '');
+      if (h && !h.endsWith('jiangyude.com') && !h.endsWith('ai-km-jiang.vercel.app')) ref = h.slice(0, 60);
+    }
+  } catch { /* 壞掉的 referrer 就當沒有 */ }
   const ua = String(req.headers['user-agent'] || '');
   const isBot = /bot|crawl|spider|slurp|headless|preview|facebookexternalhit|monitor|lighthouse/i.test(ua);
   const increment = body.increment !== false && !isBot;
@@ -57,8 +66,21 @@ module.exports = async (req, res) => {
   const seg = path.split('/').filter(Boolean);
   const section = seg.length >= 2 ? seg[0] : null; // 例如 /articles/foo/ → section = "articles"；/articles/ 列表頁不計 section
 
-  const cmds = [];
+  /* 限流（2026-09-01 Codex 跨家審抓到）：這支端點原本誰都能狂打，
+     可以無限灌高計數、也會把 Upstash 的免費額度燒光。
+     同一 IP 每分鐘最多 30 次寫入，超過就只讀不寫（不回錯誤，避免變成偵測工具）。 */
+  const ip = String(req.headers['x-forwarded-for'] || '').split(',')[0].trim() || 'na';
+  let allowWrite = increment;
   if (increment) {
+    try {
+      const rk = `viewrate:${ip}:${Math.floor(Date.now() / 60000)}`;
+      const [n] = (await pipe([['INCR', rk], ['EXPIRE', rk, 90]])).map((o) => (o && o.result != null ? o.result : 0));
+      if (Number(n) > 30) allowWrite = false;
+    } catch (e) { /* 限流壞掉不擋計數 */ }
+  }
+
+  const cmds = [];
+  if (allowWrite) {
     cmds.push(['INCR', `page:${path}`]);
     cmds.push(['INCR', 'global']);
     cmds.push(['INCR', `global:day:${day}`]);
@@ -74,6 +96,16 @@ module.exports = async (req, res) => {
        3. 保留 90 天 */
     if (path.length <= 120) cmds.push(['HINCRBY', `pageday:${day}`, path, 1]);
     // 索引（score 用日期本身，保證時間順序）
+    /* 獨立訪客（2026-09-01 加）：用 HyperLogLog 存瀏覽器識別碼，一天一個 key、一個月一個 key。
+       HLL 上限 12KB、誤差 0.81%，而且**存不下原始值**，
+       所以「想反查某個人看過哪些頁」在資料結構上就辦不到，這是刻意選它的原因。 */
+    if (body.vid) {
+      cmds.push(['PFADD', `uv:day:${day}`, String(body.vid).slice(0, 24)]);
+      cmds.push(['PFADD', `uv:month:${month}`, String(body.vid).slice(0, 24)]);
+    }
+    /* 來源網站（2026-09-01 加）：只記主機名不記完整網址，
+       完整網址常夾帶查詢字串與個資。自家連自家不算來源。 */
+    if (ref) cmds.push(['ZINCRBY', `ref:${month}`, 1, ref]);
     cmds.push(['ZADD', 'idx:days', Number(day.replace(/-/g, '')), day]);
     cmds.push(['ZADD', 'idx:months', Number(month.replace('-', '')), month]);
   }
@@ -89,7 +121,7 @@ module.exports = async (req, res) => {
        這裡一定要 await：serverless function 在回應送出後會被凍結，
        沒 await 的 promise 不保證送得出去（2026-09-01 上線第一版就是這樣，
        TTL 沒設成，pageday key 變成永不過期）。首筆一天只有一次，多一趟往返可以接受。 */
-    if (increment && path.length <= 120) {
+    if (allowWrite && path.length <= 120) {
       const hIdx = cmds.findIndex((c) => c[0] === 'HINCRBY');
       if (hIdx >= 0 && Number(results[hIdx]) === 1) {
         try { await pipe([['EXPIRE', `pageday:${day}`, 7776000]]); } catch { /* 設不成不擋計數 */ }
