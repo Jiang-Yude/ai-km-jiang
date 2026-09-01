@@ -85,11 +85,14 @@ module.exports = async (req, res) => {
   try {
     const out = await pipe(cmds);
     const results = out.map((o) => (o && o.result != null ? o.result : 0));
-    /* 當天這個 hash 的第一筆（HINCRBY 回 1）才設過期時間，之後不再重設 */
+    /* 當天這個 hash 的第一筆（HINCRBY 回 1）才設過期時間，之後不再重設。
+       這裡一定要 await：serverless function 在回應送出後會被凍結，
+       沒 await 的 promise 不保證送得出去（2026-09-01 上線第一版就是這樣，
+       TTL 沒設成，pageday key 變成永不過期）。首筆一天只有一次，多一趟往返可以接受。 */
     if (increment && path.length <= 120) {
       const hIdx = cmds.findIndex((c) => c[0] === 'HINCRBY');
       if (hIdx >= 0 && Number(results[hIdx]) === 1) {
-        pipe([['EXPIRE', `pageday:${day}`, 7776000]]).catch(() => {});
+        try { await pipe([['EXPIRE', `pageday:${day}`, 7776000]]); } catch { /* 設不成不擋計數 */ }
       }
     }
     let sectionVal = null;
