@@ -222,10 +222,14 @@
      但江江在後台跟咪卡講的話不是訪客行為，統計時一律濾掉，
      否則越用這頁、數字越髒（Codex 跨家審查提的）。 */
   function isOwnPage(p) { return norm(p) === '/stats.html'; }
+  /* Redis list 是新的在前，時間戳只到分鐘。同一分鐘內的問與答只靠 t 排不出先後，
+     會出現「咪卡先回答、訪客後提問」。所以保留原始位置當第二排序鍵：index 大的是舊的。 */
+  function seqSort(a, b) { return a.t < b.t ? -1 : (a.t > b.t ? 1 : (b._i - a._i)); }
   function chatRows() { return (S.chat || []).filter(function (r) { return !isOwnPage(r.page); }); }
   function userRows() { return chatRows().filter(function (r) { return r.role === 'user'; }); }
 
   function render() {
+    (S.chat || []).forEach(function (r, i) { r._i = i; });
     var uq = userRows();
     uq.forEach(function (r) { r._k = classify(r.text).k; r._p = norm(r.page); });
 
@@ -395,34 +399,86 @@
       $('cap-matrix').textContent = '';
     }
 
-    // 明細
+    // 明細：同一個訪客（vid）的對話全部串在一起，跨頁、跨天都收在同一張卡
     var q = ($('cq').value || '').trim().toLowerCase();
-    var showBot = $('showbot').checked;
-    var rows = chatRows().filter(function (r) {
-      if (!showBot && r.role !== 'user') return false;
+    var expand = $('showbot').checked;
+
+    function hits(r) {
+      if (r.role !== 'user') return false;
       if (sel.page && norm(r.page) !== sel.page) return false;
-      if (sel.kind && r.role === 'user' && classify(r.text).k !== sel.kind) return false;
-      if (sel.kind && r.role !== 'user') return false;
+      if (sel.kind && classify(r.text).k !== sel.kind) return false;
       if (q && r.text.toLowerCase().indexOf(q) < 0) return false;
       return true;
+    }
+
+    var filtering = !!(sel.page || sel.kind || q);
+    var byVid = {};
+    chatRows().forEach(function (r) { (byVid[r.vid] = byVid[r.vid] || []).push(r); });
+    var convs = Object.keys(byVid).map(function (v) {
+      var list = byVid[v].slice().sort(seqSort);
+      return { vid: v, list: list, hit: list.filter(hits).length, last: list[list.length - 1].t };
     });
+    // 有篩選條件時只留命中的訪客；沒有條件時全部留下
+    var show = convs.filter(function (c) { return !filtering || c.hit > 0; })
+      .sort(function (a, b) { return a.last < b.last ? 1 : -1; });
+
     var f = [];
     if (sel.page) f.push('頁面：' + title(sel.page));
     if (sel.kind) f.push('類型：' + kindOf(sel.kind).n);
-    $('filt').textContent = '目前：' + (f.length ? f.join('　') : '全部') + '　共 ' + rows.length + ' 筆';
-    var h = ['<thead><tr><th>時間</th><th>訪客</th><th>內容</th><th>頁面</th></tr></thead><tbody>'];
-    rows.slice(0, 400).forEach(function (r) {
-      var k = r.role === 'user' ? classify(r.text) : null;
-      h.push('<tr class="' + (r.role === 'user' ? '' : 'bot') + '">'
-        + '<td class="t">' + esc(r.t.slice(5)) + '</td>'
-        + '<td class="t">' + esc(r.role === 'user' ? (r.name ? r.name.slice(0, 8) : r.vid.slice(0, 6)) : '咪卡') + '</td>'
-        + '<td>' + (k ? '<span class="tag' + (k.k === 'attack' ? ' alert' : '') + '" style="margin-right:8px">' + esc(k.n) + '</span>' : '')
-        + esc(r.text) + '</td>'
-        + '<td class="p">' + esc(title(r.page)) + '</td></tr>');
+    if (q) f.push('關鍵字：' + q);
+    var totalQ = show.reduce(function (a, c) { return a + c.list.filter(function (r) { return r.role === 'user'; }).length; }, 0);
+    $('filt').textContent = '目前：' + (f.length ? f.join('　') : '全部')
+      + '　' + show.length + ' 位訪客 / ' + totalQ + ' 則提問';
+
+    var out = [];
+    show.slice(0, 60).forEach(function (c) {
+      var qs = c.list.filter(function (r) { return r.role === 'user'; });
+      var pages = {}, names = {};
+      c.list.forEach(function (r) { pages[norm(r.page)] = 1; if (r.name) names[r.name] = 1; });
+      var pageKeys = Object.keys(pages);
+      var days = {};
+      c.list.forEach(function (r) { days[r.t.slice(0, 10)] = 1; });
+      /* 名字是訪客自己在對話裡打的，不是帳號。有時候他們把問題直接打進去，
+         所以識別碼擺前面當主鍵，自稱放後面當補充。 */
+      var nameList = Object.keys(names);
+      var who = '訪客 ' + c.vid.slice(0, 8) + (nameList.length ? '（自稱 ' + nameList.join('、') + '）' : '');
+
+      out.push('<div class="conv' + (c.hit ? ' hit' : '') + '">');
+      out.push('<div class="ch">'
+        + '<span class="who">👤 ' + esc(who) + '</span>'
+        + '<span class="pg">' + esc(pageKeys.length === 1 ? title(pageKeys[0]) : '走過 ' + pageKeys.length + ' 個頁面') + '</span>'
+        + '<span>' + esc(c.list[0].t.slice(0, 10)) + (Object.keys(days).length > 1 ? ' 起 ' + Object.keys(days).length + ' 天' : '') + '</span>'
+        + '<span class="cnt">' + qs.length + ' 問 / ' + (c.list.length - qs.length) + ' 答</span>'
+        + '</div><div class="body">');
+
+      var lastSid = null, lastPage = null;
+      c.list.forEach(function (r) {
+        var p = norm(r.page);
+        if (lastSid !== null && (r.sid !== lastSid || p !== lastPage)) {
+          out.push('<div class="sep"><span>' + esc(r.t.slice(5, 16)) + '　' + esc(title(p)) + '</span></div>');
+        }
+        lastSid = r.sid; lastPage = p;
+        if (r.role === 'user') {
+          var k = classify(r.text);
+          out.push('<div class="msg u' + (filtering && hits(r) ? ' on' : '') + '">'
+            + '<span class="t">' + esc(r.t.slice(5, 16)) + '</span>'
+            + '<span class="bub"><span class="kd">' + esc(k.n) + '</span>' + esc(r.text) + '</span></div>');
+        } else {
+          var long = r.text.length > 150;
+          out.push('<div class="msg b">'
+            + '<span class="ava">🐱</span>'
+            + '<span class="bub' + (long && !expand ? ' clip' : '') + '">' + esc(r.text) + '</span></div>');
+        }
+      });
+      out.push('</div></div>');
     });
-    h.push('</tbody>');
-    if (!rows.length) h = ['<tbody><tr><td style="padding:18px;color:var(--ink-faint)">這個條件下沒有對話。</td></tr></tbody>'];
-    $('chatlist').innerHTML = h.join('');
+    if (!show.length) out.push('<p class="read">這個條件下沒有對話。</p>');
+    else if (show.length > 60) out.push('<p class="read">只畫了最近 60 位訪客，其餘 ' + (show.length - 60) + ' 位請用篩選或搜尋縮小範圍。</p>');
+    $('chatlist').innerHTML = out.join('');
+    // 折疊的長回答點一下展開
+    Array.prototype.forEach.call($('chatlist').querySelectorAll('.bub.clip'), function (b) {
+      b.addEventListener('click', function () { b.classList.remove('clip'); });
+    });
   }
 
   /* ── 異常訊號：規則掃出來的，不是結論 ───────────────── */
@@ -531,9 +587,9 @@
       method: 'POST', headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ pw: pw, month: month || undefined }),
     }).then(function (r) {
-      if (r.status === 403) throw new Error('密碼不對。注意結尾有一個空格。');
+      if (r.status === 403) throw new Error('密碼不對。');
       if (r.status === 429) throw new Error('嘗試太多次，等一分鐘再試。');
-      if (r.status === 503) throw new Error('伺服器還沒設定密碼（環境變數 STATS_PASSWORD_B64）。');
+      if (r.status === 503) throw new Error('伺服器還沒設定密碼。');
       return r.json();
     }).then(function (d) {
       if (d.error) throw new Error(d.error);

@@ -31,7 +31,6 @@
 .gate button{margin-top:14px;width:100%;font-family:inherit;font-size:18px;font-weight:700;padding:13px;border:none;border-radius:var(--radius-pill);background:var(--ink);color:#fff;cursor:pointer}
 .gate button:hover{background:#000}
 .gate .err{margin-top:12px;color:var(--k1);font-size:16px;min-height:24px}
-.gate .hint{margin-top:16px;font-size:15px;color:var(--ink-faint)}
 
 .toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:24px}
 .toolbar select,.toolbar input[type=search]{font-family:inherit;font-size:17px;padding:9px 14px;border:1px solid var(--line);border-radius:var(--radius-pill);background:#fff;color:var(--ink)}
@@ -72,13 +71,39 @@ figcaption{margin-top:10px;font-size:15px;color:var(--ink-faint);line-height:1.6
 
 table.grid{border-collapse:separate;border-spacing:2px;font-size:15px}
 table.grid th{font-weight:500;color:var(--ink-faint);text-align:left;padding:4px 8px;white-space:nowrap;font-size:14px}
-table.grid th.rot{writing-mode:vertical-rl;transform:rotate(180deg);height:96px;padding:6px 2px;text-align:right}
+table.grid th.rot{writing-mode:vertical-rl;height:104px;padding:6px 2px;text-align:right;line-height:1.15}
 table.grid td.cell{width:44px;height:34px;text-align:center;border-radius:5px;font:600 14px/1 "JetBrains Mono",monospace;cursor:pointer;color:#1a1612}
 table.grid td.cell.z{color:#c9c0ae}
 table.grid td.cell:hover{outline:2px solid var(--ink);outline-offset:-2px}
 table.grid td.rowlb{padding:4px 10px 4px 4px;white-space:nowrap;max-width:270px;overflow:hidden;text-overflow:ellipsis;color:var(--ink-soft)}
 table.grid td.tot{font:600 14px/1 "JetBrains Mono",monospace;color:var(--ink-faint);padding-left:8px}
 
+/* 對話串：一段對話一張卡，訪客靠右、咪卡靠左，看起來就是聊天記錄。
+   原本一列一列的表格看不出誰問誰答，江江 2026-09-01 反應「搞不懂」後改的。 */
+.conv{border:1px solid var(--line);border-radius:var(--radius-md);margin-bottom:14px;overflow:hidden;background:var(--paper)}
+.conv.hit{box-shadow:0 0 0 2px rgba(47,127,181,.35)}
+.conv .ch{display:flex;flex-wrap:wrap;gap:10px;align-items:baseline;padding:11px 16px;background:var(--bg-soft);border-bottom:1px solid var(--line-soft);font-size:15px;color:var(--ink-faint)}
+.conv .ch .pg{color:var(--ink-soft);font-weight:500}
+.conv .ch .pg a{color:inherit}
+.conv .ch .who{font-family:"JetBrains Mono",monospace;font-size:14px}
+.conv .ch .cnt{margin-left:auto;white-space:nowrap}
+.conv .sep{display:flex;align-items:center;gap:10px;margin:16px 0 12px;font-size:14px;color:var(--ink-faint)}
+.conv .sep::before,.conv .sep::after{content:"";height:1px;background:var(--line-soft);flex:1}
+.conv .sep span{white-space:nowrap}
+.msg.on .bub{outline:2px solid var(--k3);outline-offset:2px}
+.conv .body{padding:14px 16px}
+.msg{display:flex;margin-bottom:11px;gap:9px}
+.msg:last-child{margin-bottom:0}
+.msg.u{justify-content:flex-end}
+.msg .bub{max-width:min(660px,84%);padding:10px 14px;border-radius:14px;font-size:16px;line-height:1.65;white-space:pre-wrap;word-break:break-word}
+.msg.u .bub{background:#2f7fb5;color:#fff;border-bottom-right-radius:5px}
+.msg.b .bub{background:var(--bg-soft);color:var(--ink);border:1px solid var(--line-soft);border-bottom-left-radius:5px}
+.msg.b .bub.clip{max-height:5.4em;overflow:hidden;position:relative;cursor:pointer}
+.msg.b .bub.clip::after{content:"";position:absolute;left:0;right:0;bottom:0;height:2.2em;background:linear-gradient(180deg,rgba(250,245,236,0),var(--bg-soft))}
+.msg .ava{width:28px;height:28px;border-radius:50%;background:var(--bg-soft);border:1px solid var(--line);flex:0 0 28px;display:flex;align-items:center;justify-content:center;font-size:15px}
+.msg .t{font:500 13px/1.9 "JetBrains Mono",monospace;color:var(--ink-faint);flex:0 0 auto;align-self:flex-end}
+.msg .kd{display:inline-block;font-size:13px;padding:1px 8px;border-radius:999px;background:rgba(255,255,255,.22);margin-right:7px;vertical-align:1px}
+.msg.b .more{font-size:14px;color:var(--k2);cursor:pointer;margin-top:4px}
 table.list{width:100%;border-collapse:collapse;font-size:16px}
 table.list th{text-align:left;font-weight:500;font-size:15px;color:var(--ink-faint);border-bottom:1px solid var(--line);padding:8px 10px;white-space:nowrap}
 table.list td{border-bottom:1px solid var(--line-soft);padding:9px 10px;vertical-align:top;line-height:1.6}
@@ -119,11 +144,10 @@ details.raw>summary{cursor:pointer;font-size:16px;color:var(--ink-faint);padding
 
 <section class="gate" id="gate">
   <h2>站長儀表板</h2>
-  <p>這頁是後台，要密碼才看得到。<br>公開的全站瀏覽數在頁面底部一樣看得到。</p>
+  <p>這頁要密碼。</p>
   <input type="password" id="pw" autocomplete="current-password" placeholder="密碼" />
   <button id="go">進入</button>
   <div class="err" id="err"></div>
-  <div class="hint">提示：密碼結尾有一個空格，貼上時不要漏掉。</div>
 </section>
 
 <main class="dash" id="dash" hidden>
@@ -203,14 +227,14 @@ details.raw>summary{cursor:pointer;font-size:16px;color:var(--ink-faint);padding
 
   <section class="panel">
     <h2>咪卡對話明細</h2>
-    <p class="read">怎麼讀：上面的圖點下去會篩這裡。<b>訪客原話一字不改</b>，只看得到瀏覽器識別碼，看不到是誰。</p>
+    <p class="read">怎麼讀：<b>一段對話一張卡</b>，藍色是訪客說的、灰色是咪卡回的，由上往下就是當時的先後順序。上面的圖點下去會只留有命中的那幾段，命中的那句會亮起來。訪客原話一字不改，只看得到瀏覽器識別碼，看不到是誰。</p>
     <div class="toolbar" style="margin-bottom:14px">
       <span class="stamp" id="filt">目前：全部</span>
       <button class="btn-lite" id="clearf">清除篩選</button>
       <input type="search" id="cq" placeholder="搜尋對話內容" />
-      <label style="font-size:16px;color:var(--ink-faint)"><input type="checkbox" id="showbot" /> 一起看咪卡的回答</label>
+      <label style="font-size:16px;color:var(--ink-faint)"><input type="checkbox" id="showbot" /> 展開咪卡的完整回答</label>
     </div>
-    <div class="scroll tall"><table class="list" id="chatlist"></table></div>
+    <div class="scroll tall" id="chatlist"></div>
   </section>
 
   <section class="panel">
