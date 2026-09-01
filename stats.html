@@ -80,6 +80,37 @@ table.grid td.tot{font:600 14px/1 "JetBrains Mono",monospace;color:var(--ink-fai
 
 /* 對話串：一段對話一張卡，訪客靠右、咪卡靠左，看起來就是聊天記錄。
    原本一列一列的表格看不出誰問誰答，江江 2026-09-01 反應「搞不懂」後改的。 */
+.toolbar .rng{display:inline-flex;align-items:center;gap:7px;font-size:15px;color:var(--ink-faint)}
+.toolbar .rng input[type=date]{font-family:inherit;font-size:15px;padding:7px 9px;width:138px;border:1px solid var(--line);border-radius:var(--radius-pill);background:#fff;color:var(--ink)}
+
+/* 訪客清單：先看誰來過、問了幾次、在問什麼，點開才展開那個人的對話串。
+   36 位訪客的對話一次全攤開有七千像素，江江 2026-09-01 反應「打不開」後改的。 */
+.vlist{border:1px solid var(--line);border-radius:var(--radius-md);overflow:hidden}
+.vrow{display:grid;grid-template-columns:minmax(150px,1.3fr) 62px 62px 96px minmax(140px,1fr);gap:12px;align-items:center;
+  padding:12px 16px;border-bottom:1px solid var(--line-soft);cursor:pointer;font-size:16px;background:var(--paper)}
+.vrow:last-child{border-bottom:none}
+.vrow:hover{background:var(--bg-soft)}
+.vrow.open{background:#f3ece0}
+.vrow.hit{box-shadow:inset 3px 0 0 var(--k2)}
+.vrow .nm{display:flex;align-items:center;gap:8px;min-width:0}
+.vrow .nm .cav{width:26px;height:26px;border-radius:50%;background:var(--bg-soft);border:1px solid var(--line);flex:0 0 26px;display:flex;align-items:center;justify-content:center;font-size:14px}
+.vrow .nm b{font:500 15px/1.4 "JetBrains Mono",monospace;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.vrow .nm small{color:var(--ink-faint);font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.vrow .n{font:600 16px/1 "JetBrains Mono",monospace;text-align:right;color:var(--ink)}
+.vrow .dt{font:500 14px/1 "JetBrains Mono",monospace;color:var(--ink-faint)}
+.vrow .tp{font-size:15px;color:var(--ink-soft);display:flex;align-items:center;gap:7px;min-width:0}
+.vrow .tp i{width:10px;height:10px;border-radius:3px;flex:0 0 10px}
+.vrow .tp span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.vhead{display:grid;grid-template-columns:minmax(150px,1.3fr) 62px 62px 96px minmax(140px,1fr);gap:12px;
+  padding:9px 16px;background:var(--bg-soft);border-bottom:1px solid var(--line);font-size:14px;color:var(--ink-faint)}
+.vhead .n{text-align:right}
+.vbody{display:none;padding:16px;background:#fdfbf6;border-bottom:1px solid var(--line-soft)}
+.vbody.on{display:block}
+@media(max-width:720px){
+  .vrow,.vhead{grid-template-columns:1fr 54px 78px;gap:8px}
+  .vrow .dt,.vhead .dt,.vrow .tp,.vhead .tp{display:none}
+  .vrow .tp.m{display:flex;grid-column:1/-1;margin-top:2px}
+}
 .conv{border:1px solid var(--line);border-radius:var(--radius-md);margin-bottom:14px;overflow:hidden;background:var(--paper)}
 .conv.hit{box-shadow:0 0 0 2px rgba(47,127,181,.35)}
 .conv .ch{display:flex;flex-wrap:wrap;gap:10px;align-items:baseline;padding:11px 16px;background:var(--bg-soft);border-bottom:1px solid var(--line-soft);font-size:15px;color:var(--ink-faint)}
@@ -122,6 +153,13 @@ details.raw>summary{cursor:pointer;font-size:16px;color:var(--ink-faint);padding
 @media(max-width:720px){
   .hbar .row{grid-template-columns:minmax(110px,1fr) 1fr auto}
   .tile .n{font-size:28px}
+  /* 手機上日期範圍那組會撐破 390px，讓它自己占一整行並平分寬度 */
+  .toolbar .rng{width:100%;flex-wrap:nowrap}
+  .toolbar .rng input[type=date]{flex:1 1 0;min-width:0;padding:7px 8px;font-size:15px}
+  .toolbar .rng>span{flex:0 0 auto}
+  .toolbar{gap:8px}
+  .toolbar .btn-lite{font-size:15px;padding:8px 12px}
+  .dash{padding-left:12px;padding-right:12px}
 }
 </style>
 </head>
@@ -153,12 +191,16 @@ details.raw>summary{cursor:pointer;font-size:16px;color:var(--ink-faint);padding
 <main class="dash" id="dash" hidden>
 
   <div class="toolbar">
-    <select id="mon" aria-label="月份"></select>
-    <button class="btn-lite" id="reload">重新讀取</button>
+    <button class="btn-lite" data-span="30">近 30 天</button>
+    <button class="btn-lite" data-span="90">近 3 個月</button>
+    <button class="btn-lite" data-span="180">近半年</button>
+    <button class="btn-lite" data-span="365">近一年</button>
+    <button class="btn-lite" data-span="all">全部</button>
+    <span class="rng"><input type="date" id="d1" aria-label="開始日期"><span>到</span><input type="date" id="d2" aria-label="結束日期"><button class="btn-lite" id="go2">看這段</button></span>
     <div class="spacer"></div>
-    <span class="stamp" id="stamp"></span>
     <button class="btn-lite" id="lock">鎖上</button>
   </div>
+  <p class="sub" style="margin:-14px 0 22px"><span id="rangelabel"></span>　<span class="stamp" id="stamp"></span></p>
 
   <div class="tiles" id="tiles"></div>
 
@@ -177,7 +219,7 @@ details.raw>summary{cursor:pointer;font-size:16px;color:var(--ink-faint);padding
 
   <section class="panel">
     <h2>哪些頁面被看</h2>
-    <p class="read">怎麼讀：<b>這是從開站到現在的累計，不是本月。</b>條越長看的人越多。點任何一列，下面的「咪卡對話明細」會只留這一頁的提問，看得到讀者在這頁卡在哪。</p>
+    <p class="read">怎麼讀：<b>這是從開站到現在的累計，不受上面的期間選擇影響。</b>條越長看的人越多。點任何一列，下面的「咪卡對話明細」會只留這一頁的提問，看得到讀者在這頁卡在哪。</p>
     <div class="toolbar" style="margin-bottom:14px">
       <button class="btn-lite on" data-scope="all">全部</button>
       <button class="btn-lite" data-scope="articles">深度文章</button>
@@ -193,8 +235,8 @@ details.raw>summary{cursor:pointer;font-size:16px;color:var(--ink-faint);padding
   </section>
 
   <section class="panel">
-    <h2>本月誰在動</h2>
-    <p class="read">怎麼讀：<b>這張只算本月，跟上面的累計榜互補。</b>累計榜是老本，這張是現在的動能。左邊的長條是本月瀏覽數，灰字是累計。只有 2026-09 之後才有資料，先前沒有記每頁每日。</p>
+    <h2>這段期間誰在動</h2>
+    <p class="read">怎麼讀：<b>這張只算你選的期間，跟上面的累計榜互補。</b>累計榜是老本，這張是現在的動能。長條是期間內的瀏覽數，灰字是開站到現在的累計。每頁每日的記錄從 2026-09-01 才開始，在那之前沒有這個維度。</p>
     <figure>
       <div class="hbar" id="pages-month"></div>
       <figcaption id="cap-pmonth"></figcaption>
@@ -239,7 +281,7 @@ details.raw>summary{cursor:pointer;font-size:16px;color:var(--ink-faint);padding
 
   <section class="panel">
     <h2>站內搜尋：找不到的東西</h2>
-    <p class="read">怎麼讀：<b>零命中的搜尋詞就是內容缺口或別名缺口。</b>詞在站上有對應內容卻搜不到，補 <code>search-aliases.js</code> 的別名；真的沒有內容，那就是下一篇要寫的題目。</p>
+    <p class="read">怎麼讀：<b>零命中的搜尋詞就是內容缺口或別名缺口。</b>這一項的原始資料是以月為單位存的，期間跨月時是整月相加，切不到單日。詞在站上有對應內容卻搜不到，補 <code>search-aliases.js</code> 的別名；真的沒有內容，那就是下一篇要寫的題目。</p>
     <div class="scroll"><table class="list" id="misslist"></table></div>
     <div class="note" id="searchnote"></div>
   </section>
