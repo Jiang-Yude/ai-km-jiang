@@ -1313,7 +1313,7 @@ window.ARTICLES = [
     summary: "用新手聽得懂的方式分清聊天型 AI、網頁工具與桌面型 Agent：專案模式的三個痛點、桌面版的範式轉變、Codex 與三層分工工作流，文科生不用寫程式也能上手。",
     tags: {"topic":["差異比較","AIAgent","工具操作","AI工作流"],"level":["零基礎入門"],"content_type":["教學文章"]},
     external: { threads: null, vocus: null },
-    related: ["youtube-to-opinion-report-workflow", "liberal-arts-agent-framework", "train-your-ai-agent-editor", "chatgpt-work-codex-choice", "ai-employee-four-levels", "messaging-apps-ai-friendliness", "ai-said-it-watched-the-video"]
+    related: ["youtube-to-opinion-report-workflow", "liberal-arts-agent-framework", "train-your-ai-agent-editor", "chatgpt-work-codex-choice", "mac-for-agent-beginners", "ai-employee-four-levels", "messaging-apps-ai-friendliness", "ai-said-it-watched-the-video"]
   },
   {
     id: "ai-course-map-from-entry-to-workflow",
@@ -1624,7 +1624,7 @@ window.ARTICLES = [
     summary: "ChatGPT Work、Codex 與一般 ChatGPT 都能幫忙做事，真正要分的是工作會不會碰本機資料、需不需要長期累積、以及該用哪一套限制。整理實際三路分工法，補上 OpenAI 官方文件能支持到哪裡，附一個圖文網頁的分工實例、一張能力邊界表與一份可直接照判斷的檢查清單。",
     tags: {"topic":["差異比較","AI工作流","工具操作"],"level":["基礎"],"content_type":["教學文章"]},
     external: { threads: null, vocus: null },
-    related: ["web-chat-ai-vs-desktop-agent", "how-ai-connects-software", "ai-capability-tiers", "program-vs-ai-skill-library", "chatgpt-work-skills-web-version"]
+    related: ["web-chat-ai-vs-desktop-agent", "mac-for-agent-beginners", "how-ai-connects-software", "ai-capability-tiers", "program-vs-ai-skill-library", "chatgpt-work-skills-web-version"]
   },
 
   {
@@ -2268,6 +2268,24 @@ window.ARTICLES = [
     },
     external: { threads: null, vocus: null },
     related: ["three-levels-of-cross-review", "agent-web-turning-point", "cross-ai-review-both-wrong"]
+  },
+
+  {
+    id: "mac-for-agent-beginners",
+    url: "articles/mac-for-agent-beginners/",
+    date: "2026-09-01",
+    updated: "2026-09-01",
+    title: "想學 Agent，我為什麼會先推薦 Mac？",
+    problem: "想開始學 Agent，卻不知道 Mac 與 Windows 哪一種比較適合新手，也擔心為了換設備花一筆不必要的錢。",
+    audience: "第一次接觸 Agent、正在選設備的人；已經有 Windows，想判斷自己需不需要換電腦的人；希望少把時間花在安裝與排錯的人。",
+    summary: "整理我累積幫大約 50 個人安裝 Agent、協助搭建 AI 辦公室後的實際觀察。先講我為什麼通常會推薦 Mac，再用動線清楚的辦公室與一條大路、多個岔路的比喻，說明新手起步時的差異。同時保留 Windows 的適用情況，給三個選設備前可以先問自己的問題，以及一段讓 Agent 安全排錯的簡單交代方式。",
+    tags: {
+      topic: ["AI應用", "AIAgent", "差異比較", "工具操作"],
+      level: ["零基礎入門"],
+      content_type: ["觀點文章"]
+    },
+    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
+    related: ["web-chat-ai-vs-desktop-agent", "chatgpt-work-codex-choice"]
   },
 
 ];
