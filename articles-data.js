@@ -50,7 +50,7 @@ window.ARTICLES = [
       content_type: ["趨勢文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["webmcp-day-one", "agent-web-turning-point", "web-chat-ai-vs-desktop-agent", "a2a-agent-protocol"]
+    related: ["webmcp-day-one", "agent-web-turning-point", "web-chat-ai-vs-desktop-agent", "a2a-agent-protocol", "five-loops-content-line"]
   },
 
   /* ── 迴圈的圈數上限，三行寫進規則檔（教學）── */
@@ -101,7 +101,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["what-is-loop-engineering", "parallel-site-editing", "webnode-to-cloudflare-pages"]
+    related: ["what-is-loop-engineering", "parallel-site-editing", "webnode-to-cloudflare-pages", "five-loops-content-line"]
   },
 
 
@@ -841,7 +841,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["what-is-graph-engineering", "strong-ai-models-knowledge-workflow-road", "questionnaire-to-slides-agent-workflow", "loop-round-limit"]
+    related: ["what-is-graph-engineering", "strong-ai-models-knowledge-workflow-road", "questionnaire-to-slides-agent-workflow", "loop-round-limit", "five-loops-content-line"]
   },
 
   /* ── 無形資產，越分享越豐盛（觀點）── */
@@ -2360,6 +2360,24 @@ window.ARTICLES = [
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
     related: ["parallel-site-editing", "same-question-different-answers", "long-document-review-layers"]
+  },
+
+  {
+    id: "five-loops-content-line",
+    url: "articles/five-loops-content-line/",
+    date: "2026-09-01",
+    updated: "2026-09-01",
+    title: "哪些事可以交給 AI 自己跑完？｜我把內容產線拆成五個小迴圈",
+    problem: "同樣的流程重複做過幾百次，想交給 AI 又不知道哪些交得出去；交出去之後還要整個重看一遍，等於沒省到。",
+    audience: "有一套自己重複在做的流程、每次都要從頭盯到尾的人；試過把工作交給 AI 但沒省到力氣的人；想要一條判準來分辨哪些該交出去、哪些無論如何要自己來的人。",
+    summary: "把我實際在跑的內容產線整條攤開：一個連結進來，怎麼變成脆文、圖卡、官網文章，最後上線。核心是一條兩層判準，先問能不能用客觀標準驗出對錯，再問錯了可不可逆，兩層都過才交給 AI 自己跑完。五個小迴圈逐一拆解，每個都附回頭條件與實際踩過的坑，包含抓逐字稿的三條換路順序、圖卡生成的四項自我檢查、Threads 發布媒體參數只吃公開網址所以要架固定中繼站、文章審查三道關卡、部署的掛牌與同步順序。文末給四個步驟，讓你拿自己的流程對一次。",
+    tags: {
+      topic: ["AI工作流", "系統設計", "AI應用"],
+      level: ["基礎"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["what-is-loop-engineering", "what-is-graph-engineering", "ai-era-websites-for-agents"]
   },
 
 ];
