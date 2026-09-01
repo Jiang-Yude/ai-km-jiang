@@ -64,6 +64,15 @@ module.exports = async (req, res) => {
     cmds.push(['INCR', `global:day:${day}`]);
     cmds.push(['INCR', `global:month:${month}`]);
     if (section) cmds.push(['INCR', `section:${section}`]);
+    /* 每頁每日（2026-09-01 加）：一天一個 hash，欄位是路徑。
+       為的是回答「這篇這週紅不紅」：page:<path> 只有累計總數，看不出時間趨勢。
+       一天一個 key（不是一頁一天一個 key），所以 key 數量不會爆。
+       三個保護（Codex 跨家審查提的）：
+       1. path 超過 120 字元就不記，避免有人用長亂碼灌爆這個 hash
+       2. EXPIREAT 只在當天第一筆設定（HINCRBY 回 1 代表這個 hash 剛建），
+          不是每次都 EXPIRE，省一個 Redis 指令
+       3. 保留 90 天 */
+    if (path.length <= 120) cmds.push(['HINCRBY', `pageday:${day}`, path, 1]);
     // 索引（score 用日期本身，保證時間順序）
     cmds.push(['ZADD', 'idx:days', Number(day.replace(/-/g, '')), day]);
     cmds.push(['ZADD', 'idx:months', Number(month.replace('-', '')), month]);
@@ -76,6 +85,13 @@ module.exports = async (req, res) => {
   try {
     const out = await pipe(cmds);
     const results = out.map((o) => (o && o.result != null ? o.result : 0));
+    /* 當天這個 hash 的第一筆（HINCRBY 回 1）才設過期時間，之後不再重設 */
+    if (increment && path.length <= 120) {
+      const hIdx = cmds.findIndex((c) => c[0] === 'HINCRBY');
+      if (hIdx >= 0 && Number(results[hIdx]) === 1) {
+        pipe([['EXPIRE', `pageday:${day}`, 7776000]]).catch(() => {});
+      }
+    }
     let sectionVal = null;
     if (section) sectionVal = Number(results.pop()) || 0;
     const globalVal = Number(results.pop()) || 0;

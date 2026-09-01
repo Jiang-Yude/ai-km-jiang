@@ -31,6 +31,16 @@ module.exports = async (req, res) => {
   if (!URL() || !TOKEN()) { res.status(200).json({ ok: false, note: 'storage not configured' }); return; }
 
   if (req.method === 'GET') {
+    /* 2026-09-01 補驗證（Codex 跨家審查抓到本端點原本任何人都讀得到）。
+       搜尋字串會夾帶訪客在想什麼，跟聊天紀錄同級，不該公開。
+       密碼＝站長儀表板那一支，存環境變數 STATS_PASSWORD_B64（base64，尾端空白才存得住）。 */
+    const want = (() => {
+      const b64 = process.env.STATS_PASSWORD_B64;
+      if (b64) { try { return Buffer.from(b64, 'base64').toString('utf8'); } catch { /* 壞掉當沒設 */ } }
+      return process.env.STATS_PASSWORD || process.env.MIKA_CHAT_READ_TOKEN || '';
+    })();
+    const given = String(req.headers['x-read-token'] || '');
+    if (!want || given !== want) { res.status(403).json({ error: 'token required' }); return; }
     const month = String((req.query && req.query.month) || '').match(/^\d{4}-\d{2}$/)
       ? req.query.month
       : taipeiStamp().slice(0, 7);
