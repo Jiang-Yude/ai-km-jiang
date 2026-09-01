@@ -49,14 +49,19 @@ module.exports = async (req, res) => {
 
   const path = normalizePath(body.path);
   /* 來源網站：只留主機名，過濾掉自家網域（站內互點不是外部來源） */
+  /* 來源網站：只留主機名，過濾掉自家網域（站內互點不是外部來源）。
+     ⚠️ 刻意不用 new URL()：第一版用了，線上實測 ref 永遠是空的、
+     而同一段程式碼裡的 PFADD 卻正常寫入，判斷是建構子在這個 runtime 拋錯後
+     被 catch 吞掉。改成正則取主機名，不依賴任何 runtime API。 */
   let ref = '';
-  try {
-    const r = String(body.ref || '').trim();
-    if (r) {
-      const h = new URL(r).hostname.replace(/^www\./, '');
+  const rawRef = String((body && body.ref) || '').trim();
+  if (rawRef) {
+    const m = rawRef.match(/^https?:\/\/([^/:?#]+)/i);
+    if (m && m[1]) {
+      const h = m[1].toLowerCase().replace(/^www\./, '');
       if (h && !h.endsWith('jiangyude.com') && !h.endsWith('ai-km-jiang.vercel.app')) ref = h.slice(0, 60);
     }
-  } catch { /* 壞掉的 referrer 就當沒有 */ }
+  }
   const ua = String(req.headers['user-agent'] || '');
   const isBot = /bot|crawl|spider|slurp|headless|preview|facebookexternalhit|monitor|lighthouse/i.test(ua);
   const increment = body.increment !== false && !isBot;
