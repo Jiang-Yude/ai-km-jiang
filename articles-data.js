@@ -34,6 +34,25 @@ window.ARTICLE_TAGS = {
 };
 
 window.ARTICLES = [
+  /* ── AI 時代，網站開始同時服務人與 AI（趨勢）── */
+  {
+    id: "ai-era-websites-for-agents",
+    url: "articles/ai-era-websites-for-agents/",
+    date: "2026-09-01",
+    updated: "2026-09-01",
+    title: "AI 時代，網站開始同時服務人與 AI｜從 Claude 匯入 Cookie 到 WebMCP",
+    problem: "AI 已經會帶著登入狀態逛網站，也開始能直接呼叫網站提供的工具；內容創作者與網站經營者卻不確定 SEO、AIO、GEO、AXO 各自要做什麼。",
+    audience: "有個人網站、知識官網或內容網站，想讓文章更容易被 AI 讀懂、找到與引用，並評估網站是否要開放 AI 工具的人。",
+    summary: "從 Claude 內建瀏覽器逐站匯入 Cookie 的介面出發，拆解網站 AI 化的兩大方向：讓 AI 延續使用者登入狀態操作既有介面，以及讓網站主動提供結構化工具。文章釐清 WebMCP 並非 ChatGPT 推出的協議，但 ChatGPT 桌面版已透過 Site tools 採用它；同時分開 WebMCP 與 ChatGPT Apps＋MCP 的技術層。接著用 SEO、AIO、GEO、AXO 四層框架，整理曝光頁面、線上知識庫、微型 Agent 應用三層改造順序，附安全邊界、六步工具設計流程與可直接複製的網站盤點提示詞。",
+    tags: {
+      topic: ["AI趨勢", "AIAgent", "AI應用", "知識管理"],
+      level: ["基礎"],
+      content_type: ["趨勢文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["webmcp-day-one", "agent-web-turning-point", "web-chat-ai-vs-desktop-agent", "a2a-agent-protocol"]
+  },
+
   /* ── 迴圈的圈數上限，三行寫進規則檔（教學）── */
   {
     id: "loop-round-limit",
@@ -860,7 +879,7 @@ window.ARTICLES = [
       content_type: ["趨勢文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["llm-rag-agent-mcp", "market-to-ai","agent-web-turning-point","dual-track-planning-loop", "dual-centaur-meeting", "agent-native-tools-software-interface"]
+    related: ["llm-rag-agent-mcp", "market-to-ai","agent-web-turning-point","dual-track-planning-loop", "dual-centaur-meeting", "agent-native-tools-software-interface", "ai-era-websites-for-agents"]
   },
 
   /* ── 可以學用 AI 行銷，還可以學對 AI 行銷（觀點）── */
@@ -898,7 +917,7 @@ window.ARTICLES = [
       content_type: ["趨勢文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["market-to-ai", "a2a-agent-protocol", "agent-native-tools-software-interface", "free-deploy-three-boundaries", "answer-in-person-or-ai", "webmcp-day-one"]
+    related: ["market-to-ai", "a2a-agent-protocol", "agent-native-tools-software-interface", "free-deploy-three-boundaries", "answer-in-person-or-ai", "webmcp-day-one", "ai-era-websites-for-agents"]
   },
   {
     id: "four-lens-rapid-review",
@@ -1331,7 +1350,7 @@ window.ARTICLES = [
     summary: "用新手聽得懂的方式分清聊天型 AI、網頁工具與桌面型 Agent：專案模式的三個痛點、桌面版的範式轉變、Codex 與三層分工工作流，文科生不用寫程式也能上手。",
     tags: {"topic":["差異比較","AIAgent","工具操作","AI工作流"],"level":["零基礎入門"],"content_type":["教學文章"]},
     external: { threads: null, vocus: null },
-    related: ["youtube-to-opinion-report-workflow", "liberal-arts-agent-framework", "train-your-ai-agent-editor", "chatgpt-work-codex-choice", "mac-for-agent-beginners", "ai-employee-four-levels", "messaging-apps-ai-friendliness", "ai-said-it-watched-the-video"]
+    related: ["youtube-to-opinion-report-workflow", "liberal-arts-agent-framework", "train-your-ai-agent-editor", "chatgpt-work-codex-choice", "mac-for-agent-beginners", "ai-employee-four-levels", "messaging-apps-ai-friendliness", "ai-said-it-watched-the-video", "ai-era-websites-for-agents"]
   },
   {
     id: "ai-course-map-from-entry-to-workflow",
@@ -2285,7 +2304,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["three-levels-of-cross-review", "agent-web-turning-point", "cross-ai-review-both-wrong"]
+    related: ["three-levels-of-cross-review", "agent-web-turning-point", "cross-ai-review-both-wrong", "ai-era-websites-for-agents"]
   },
 
   {

@@ -1,0 +1,591 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="index,follow">
+<title>AI 時代，網站開始同時服務人與 AI｜從 Claude 匯入 Cookie 到 WebMCP</title>
+<meta name="description" content="Claude 內建瀏覽器能逐站匯入 Cookie，WebMCP 與 ChatGPT Apps＋MCP 則讓網站或服務主動提供工具。這篇用兩大方向、三個落點，拆解 SEO、AIO、GEO、AXO 的分工，並附網站三層改造清單與可複製提示詞。">
+<link rel="canonical" href="https://jiangyude.com/articles/ai-era-websites-for-agents/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AI 時代，網站開始同時服務人與 AI｜從 Claude 匯入 Cookie 到 WebMCP｜江江教練">
+<meta property="og:image" content="https://jiangyude.com/images/og/ai-era-websites-for-agents.jpg">
+<meta property="og:description" content="Claude 內建瀏覽器能逐站匯入 Cookie，WebMCP 與 ChatGPT Apps＋MCP 則讓網站或服務主動提供工具。這篇用兩大方向、三個落點，拆解 SEO、AIO、GEO、AXO 的分工，並附網站三層改造清單與可複製提示詞。">
+<meta property="og:url" content="https://jiangyude.com/articles/ai-era-websites-for-agents/">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:site_name" content="江江教練 · AI 知識管理">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="AI 時代，網站開始同時服務人與 AI｜從 Claude 匯入 Cookie 到 WebMCP｜江江教練">
+<meta name="twitter:image" content="https://jiangyude.com/images/og/ai-era-websites-for-agents.jpg">
+<meta name="twitter:description" content="Claude 內建瀏覽器能逐站匯入 Cookie，WebMCP 與 ChatGPT Apps＋MCP 則讓網站或服務主動提供工具。這篇用兩大方向、三個落點，拆解 SEO、AIO、GEO、AXO 的分工，並附網站三層改造清單與可複製提示詞。">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"AI 時代，網站開始同時服務人與 AI｜從 Claude 匯入 Cookie 到 WebMCP","description":"Claude 內建瀏覽器能逐站匯入 Cookie，WebMCP 與 ChatGPT Apps＋MCP 則讓網站或服務主動提供工具。這篇用兩大方向、三個落點，拆解 SEO、AIO、GEO、AXO 的分工，並附網站三層改造清單與可複製提示詞。","datePublished":"2026-09-01","dateModified":"2026-09-01","author":{"@type":"Person","name":"江昱德","alternateName":"江江教練","jobTitle":"隱性知識提煉師、AI 應用規劃師"},"isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://jiangyude.com/"},"inLanguage":"zh-Hant","url":"https://jiangyude.com/articles/ai-era-websites-for-agents/"}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{--ink:#1a1612;--paper:#fefcf8;--muted:#6a635a;--line:#d8cdb8;--green:#5f7553;--blue:#5689b8;--orange:#e85a4f;--soft:#faf5ec;--dark:#2a2018;--shadow:0 18px 45px rgba(107,74,42,.14);--sp-shadow:hsla(35,50%,60%,.15);--sp-shadow-edge:hsla(35,50%,68%,.03);--sp-radius:400px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC","Segoe UI",sans-serif}
+a{color:inherit}
+nav.top{position:sticky;top:0;background:rgba(254,252,248,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid #d8cdb8;z-index:100}
+nav.top .container{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:24px;padding:14px 32px}
+.nav-brand-img{justify-self:start;display:flex;align-items:center;text-decoration:none;flex-shrink:0;transition:opacity .2s}
+.nav-brand-img:hover{opacity:.8}.nav-brand-img img{height:40px;width:auto;display:block}
+nav.top ul.nav-menu{justify-self:end;display:flex;gap:22px;list-style:none;margin:0;padding:0;font-size:.95rem;white-space:nowrap}
+nav.top ul.nav-menu a{color:#3a342d;text-decoration:none;transition:color .2s;font-weight:500;white-space:nowrap}
+nav.top ul.nav-menu a:hover{color:#1a1612}nav.top ul.nav-menu a.active{color:#1a1612;font-weight:700}
+.nav-toggle{display:none;background:none;border:none;padding:6px;cursor:pointer;width:36px;height:36px;position:relative}
+.nav-toggle span{display:block;position:absolute;left:8px;right:8px;height:2px;background:#1a1612;border-radius:2px;transition:transform .25s,opacity .25s,top .25s}
+.nav-toggle span:nth-child(1){top:11px}.nav-toggle span:nth-child(2){top:17px}.nav-toggle span:nth-child(3){top:23px}
+.nav-toggle.open span:nth-child(1){top:17px;transform:rotate(45deg)}.nav-toggle.open span:nth-child(2){opacity:0}.nav-toggle.open span:nth-child(3){top:17px;transform:rotate(-45deg)}
+.tablewrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:22px 0;border:1px solid var(--line);border-radius:10px;background:#fff;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.tablewrap table{border-collapse:collapse;width:100%;min-width:600px;font-size:18px;line-height:1.65}
+.tablewrap .zh{display:block;margin-top:5px;font-size:16px;line-height:1.55;color:var(--muted);font-weight:400}
+.tablewrap th,.tablewrap td{padding:12px 14px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top;color:#3a342d}
+.tablewrap thead th{background:var(--soft);font-weight:900;font-size:18px;color:#1a1612;white-space:nowrap}
+.tablewrap tbody tr:last-child td{border-bottom:none}
+.tablewrap td code,.section code{background:var(--soft);border:1px solid var(--line);border-radius:5px;padding:1px 6px;font:500 15px/1.5 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace}
+.inline-figure.wide{max-width:1000px}
+.toc{margin:26px 0 0;padding:20px 22px;background:#fff;border:1px solid var(--line);border-radius:10px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.toc>b{display:block;font-size:15px;letter-spacing:.05em;color:var(--green);margin-bottom:10px}
+.toc ol{margin:0;padding-left:1.35em;font-size:18px;line-height:1.7}
+.toc li{margin-bottom:7px;color:#3a342d}
+.toc a{color:var(--blue);font-weight:700;text-decoration:none}.toc a:hover{text-decoration:underline}
+.toc-hint{margin:12px 0 0!important;font-size:18px!important;color:var(--muted)!important;border-top:1px solid var(--line);padding-top:12px}
+.readmore{margin-top:24px;padding:20px 22px;background:var(--soft);border:1px solid var(--line);border-radius:12px}
+.readmore.near{margin:26px 0 6px;background:rgba(86,137,184,.07);border-color:#bcd0e2}
+.readmore.near b{color:var(--blue);font-size:18px}
+.readmore.near li{font-size:17px;line-height:1.7;margin-bottom:10px}
+.readmore b{display:block;margin-bottom:10px;font-size:19px}
+.readmore ul{margin:0;padding-left:1.25em}
+.readmore a{color:var(--blue);font-weight:700;text-decoration:none}
+.readmore a:hover{text-decoration:underline}
+@media(max-width:820px){.tablewrap table{min-width:560px;font-size:18px}.tablewrap{position:relative}.tablewrap::after{content:"表格可左右滑動 →";position:sticky;left:0;display:block;font-size:15px;color:var(--muted);background:var(--soft);border-top:1px solid var(--line);padding:7px 12px;width:100%}}
+@media(max-width:860px){
+ nav.top .container{grid-template-columns:auto 1fr auto;padding:10px 16px;gap:12px}
+ .nav-brand-img img{height:32px}
+ .nav-toggle{display:block;justify-self:end}
+ nav.top ul.nav-menu{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(254,252,248,.98);backdrop-filter:blur(14px);border-bottom:1px solid #d8cdb8;flex-direction:column;gap:0;padding:8px 0;box-shadow:0 10px 24px rgba(107,74,42,.08)}
+ nav.top ul.nav-menu.open{display:flex}
+ nav.top ul.nav-menu li{border-bottom:1px solid #e8dfc9}
+ nav.top ul.nav-menu li:last-child{border-bottom:none}
+ nav.top ul.nav-menu a{display:block;padding:14px 20px;font-size:1.06rem}
+}
+body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradient(var(--sp-radius) circle at var(--mx,50%) var(--my,50%),var(--sp-shadow) 0%,var(--sp-shadow-edge) 45%,transparent 75%);pointer-events:none;z-index:9999;mix-blend-mode:multiply;transition:background .06s linear}
+.hero{position:relative;overflow:hidden;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:72px;padding:96px clamp(20px,6vw,88px) 80px;background:linear-gradient(180deg,#fffcf0 0%,#f9e9d2 100%);color:#1a1612;border-bottom:1px solid #d8cdb8}
+.hero .wc{position:absolute;border-radius:50%;filter:blur(60px);pointer-events:none;z-index:0}
+.hero .wc1{width:420px;height:360px;top:-120px;right:-80px;background:#e8884b;opacity:.15}
+.hero .wc2{width:360px;height:300px;bottom:-110px;left:-70px;background:#5f7553;opacity:.13}
+.hero .wc3{width:280px;height:260px;top:34%;left:14%;background:#a08144;opacity:.10}
+.hero>div{flex:none;width:860px;max-width:100%;position:relative;z-index:2}
+.hero-figure{margin:0;width:420px;flex:none;position:relative;z-index:2}
+.hero-figure img{display:block;width:100%;border-radius:16px;border:1px solid #d8cdb8;box-shadow:0 18px 45px rgba(107,74,42,.16);cursor:zoom-in}
+.hero-figure figcaption{margin-top:10px;font-size:14px;line-height:1.6;color:#6a635a}
+.inline-figure{margin:30px auto 8px;max-width:820px}
+.inline-figure img{display:block;width:100%;border-radius:14px;border:1px solid var(--line);box-shadow:var(--shadow);background:#fff;cursor:zoom-in}
+.inline-figure figcaption{font-size:14px;line-height:1.6;color:var(--muted);margin-top:10px}
+.lightbox{position:fixed;inset:0;z-index:10000;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(12,10,8,.92);cursor:zoom-out;backdrop-filter:blur(4px)}
+.lightbox.open{display:flex}.lightbox img{max-width:96vw;max-height:92vh;border-radius:10px;box-shadow:0 24px 60px rgba(0,0,0,.5)}
+.lightbox-close{position:fixed;top:18px;right:24px;color:#fff;font-size:34px;line-height:1;font-weight:700;cursor:pointer;opacity:.85}
+.kicker{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.55rem;color:#7a5c3a;font-weight:500}
+.hero h1{max-width:none;margin:16px 0 18px;font-size:clamp(36px,6vw,72px);line-height:1.08;overflow-wrap:anywhere}
+.hero p{max-width:none;font-size:clamp(18px,2vw,23px);line-height:1.62;color:#3a342d}
+.hero{gap:56px}
+.hero>div:not(.wc){width:660px}
+.hero h1{font-size:clamp(30px,3.3vw,46px);line-height:1.16;margin:12px 0 16px}
+.hero p{font-size:clamp(16px,1.35vw,19px);line-height:1.65}
+.hero .kicker{font-size:1.28rem}
+.article-meta{margin-top:14px;font-size:14px;line-height:1.6;color:#6a635a;font-weight:700}
+@media(max-width:1120px){
+  .hero{gap:32px;flex-direction:column;align-items:flex-start}
+  .hero>div:not(.wc){width:100%}
+  .hero h1{font-size:clamp(28px,5vw,40px)}
+}
+.cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
+.cta a{display:inline-flex;align-items:center;text-decoration:none;border-radius:8px;padding:12px 16px;font-weight:900}
+.cta .primary{background:#fff;color:#1a1612}.cta .ghost{border:1px solid rgba(255,255,255,.32);color:#fff;background:rgba(255,255,255,.08)}
+.section{padding:54px clamp(20px,6vw,88px);border-top:1px solid var(--line)}
+.inner{width:min(1000px,100%);margin:0 auto}
+.section h2{font-size:clamp(26px,4.2vw,48px);line-height:1.12;margin:0 0 18px}
+.section h3{font-size:clamp(21px,3vw,30px);line-height:1.2;margin:30px 0 12px}
+.lead{font-size:clamp(18px,1.6vw,22px);line-height:1.7;color:#3a342d;max-width:900px}
+.section p{font-size:18px;line-height:1.74;color:#3a342d}.section p+p{margin-top:14px}
+.section ul,.section ol{padding-left:1.4em;font-size:18px;line-height:1.74;color:#3a342d}.section li{margin-bottom:8px}
+.meaning{margin:22px 0;padding:16px 18px;border-left:5px solid var(--blue);background:rgba(86,137,184,.12);border-radius:6px;line-height:1.7;font-size:19px}
+.meaning b{display:block;color:var(--blue);margin-bottom:4px}
+.caveat{margin:0 0 8px;padding:16px 18px;border-left:5px solid var(--orange);background:rgba(232,90,79,.1);border-radius:6px;line-height:1.7;font-size:18px;color:#3a342d}
+.caveat b{display:block;color:var(--orange);margin-bottom:4px}
+.infocard{background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px 24px 22px;box-shadow:0 8px 22px rgba(107,74,42,.08);margin-top:8px}
+.infocard-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.info-item{padding:18px 14px 0}
+.info-item b{display:block;font-size:14px;font-weight:900;letter-spacing:.04em;margin-bottom:7px;text-transform:uppercase}
+.info-item:nth-child(1) b{color:var(--green)}.info-item:nth-child(2) b{color:var(--orange)}.info-item:nth-child(3) b{color:var(--blue)}
+.info-item p{margin:0;font-size:17px;line-height:1.6;color:#3a342d}
+.tagrow{display:flex;flex-wrap:wrap;gap:7px;margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
+.tag{font-size:14px;color:var(--muted);background:var(--soft);border:1px solid var(--line);border-radius:999px;padding:4px 11px}
+.duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:24px}
+.duo.stack{grid-template-columns:1fr}
+.duo .card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:22px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.duo .card.a{border-color:var(--orange)}.duo .card.b{border-color:var(--green);box-shadow:0 8px 24px rgba(95,117,83,.16)}
+.duo .card small{display:block;font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.04em;margin-bottom:9px}
+.duo .card.a small{color:var(--orange)}.duo .card.b small{color:var(--green)}
+.duo .card b{display:block;font-size:22px;line-height:1.3;margin-bottom:12px}.duo .card.a b{color:#c0512f}.duo .card.b b{color:#4a7a59}
+.duo .card p{margin:0;color:#3a342d;line-height:1.75;font-size:18px}
+.workflow-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:24px}
+.workflow-step{background:#fff;border:1px solid var(--line);border-radius:8px;padding:18px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.workflow-step small{display:block;color:var(--orange);font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;margin-bottom:9px}
+.workflow-step b{display:block;font-size:18px;line-height:1.3;margin-bottom:9px}
+.workflow-step p{margin:0;color:#3a342d;line-height:1.6;font-size:16px}
+.codeblock{background:var(--dark);color:#f3ead9;border-radius:8px;padding:18px 20px;font:500 14px/1.65 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;overflow-x:auto;white-space:pre-wrap;margin:0;box-shadow:0 8px 22px rgba(107,74,42,.12)}
+.codeblock code{font:inherit;color:inherit;background:none;border:0;padding:0;display:block}
+.codeblock .c{color:#f6d7a6;font-weight:600}
+.codewrap{position:relative;margin:20px 0}
+.copybtn{position:absolute;top:10px;right:10px;background:rgba(243,234,217,.14);color:#f3ead9;border:1px solid rgba(243,234,217,.34);border-radius:6px;padding:6px 12px;font:700 13px/1 -apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC",sans-serif;cursor:pointer;transition:background .2s}
+.copybtn:hover{background:rgba(243,234,217,.28)}
+.copybtn.done{background:var(--green);border-color:var(--green)}
+@media(max-width:820px){.copybtn{position:static;display:block;margin:0 0 12px auto}}
+.skillcard{background:#fff;border:1px solid var(--green);border-radius:12px;padding:24px;box-shadow:0 10px 26px rgba(95,117,83,.16);margin-top:8px}
+.skillcard b{display:block;font-size:21px;margin-bottom:8px}
+.skillcard p{margin:0 0 16px;font-size:17px;line-height:1.65;color:#3a342d}
+.cta-band{background:#e6f0e5;color:#3a342d}.cta-band .section{border-top:none}
+.cta-band .inner{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(260px,.85fr);gap:26px;align-items:start}
+.cta-band h2{font-size:clamp(26px,4vw,44px);margin:0 0 16px}.cta-band p,.cta-band .lead{color:rgba(58,52,45,.9);font-size:18px;line-height:1.72}
+.cta-card{border:1px solid #cfe0d2;background:#fbfdfa;border-radius:8px;padding:22px}
+.cta-card b{display:block;color:#48b178;margin-bottom:10px;font-size:18px}.cta-card p{margin:0 0 14px}
+.footer{padding:30px clamp(20px,6vw,88px);font-size:14px;color:var(--muted);background:#fff;border-top:1px solid var(--line)}
+.footer-inner{width:min(1000px,100%);margin:0 auto}
+.footer-links{display:flex;flex-wrap:wrap;gap:6px 12px;margin-bottom:14px}.footer-links a{color:var(--blue);font-weight:900;text-decoration:none;font-size:14px}
+.footer-brand{font-weight:900;font-size:15px;margin-bottom:10px}.footer-note{font-size:13px;line-height:1.6}
+@media(max-width:820px){.infocard-grid{grid-template-columns:1fr}.duo{grid-template-columns:1fr}.workflow-grid{grid-template-columns:1fr}.cta-band .inner{grid-template-columns:1fr}.section{padding:40px 20px}.hero{min-height:52vh;flex-direction:column;justify-content:flex-start;align-items:flex-start;gap:24px}.hero>div{width:100%}.hero-figure{width:100%;max-width:560px}}
+@media(max-width:820px){html,body{overflow-x:hidden}.hero h1{word-break:break-word}}
+</style>
+</head>
+<body class="spotlight">
+<nav class="top">
+  <div class="container">
+    <a class="nav-brand-img" href="../../index.html"><img src="../../images/footer-signature.png" alt="江江教練 | 江昱德"></a>
+    <button class="nav-toggle" aria-label="選單"><span></span><span></span><span></span></button>
+    <ul class="nav-menu">
+      <li><a href="../../index.html">首頁</a></li>
+      <li><a href="../../knowledge-architecture.html">知識架構</a></li>
+      <li><a href="../../courses.html">課程</a></li>
+      <li><a href="../../articles.html" class="active">深度文章</a></li>
+      <li><a href="../../skills.html">技能包下載</a></li>
+      <li><a href="../../offers.html">服務方案</a></li>
+      <li class="lang-switch"><a href="../../en/articles.html" hreflang="en">EN</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="wc wc1"></div>
+  <div class="wc wc2"></div>
+  <div class="wc wc3"></div>
+  <div>
+    <div class="kicker">AI 趨勢 / 網站設計 / 4O</div>
+    <h1>AI 時代，網站開始同時服務人與 AI｜從 Claude 匯入 Cookie 到 WebMCP</h1>
+    <p>網站正在多出一種新使用者：AI Agent。它可以帶著你的登入狀態進入既有網站，也可以直接呼叫網站或服務公開的工具。這篇把兩大方向、三個落點與實際改造順序講清楚。</p>
+    <div class="article-meta">發佈 2026-09-01 ｜ 最後更新 2026-09-01</div>
+  </div>
+  <figure class="hero-figure">
+    <img src="../../images/articles/ai-era-websites-for-agents-cover.jpg" alt="AI 時代網站同時服務人與 AI 的兩條路線總結圖" loading="lazy">
+    <figcaption>一條路線讓 AI 延續使用者登入狀態，另一條路線讓網站主動提供可呼叫功能。</figcaption>
+  </figure>
+</section>
+
+<main>
+
+<section class="section" id="start">
+  <div class="inner">
+    <p class="lead">Claude 桌面版最近出現一個新介面：可以從瀏覽器挑選網站，把 Cookie 匯入 Claude 內建的瀏覽器，讓 Claude 打開這些網站時延續原本的登入狀態。另一條正在成形的路線，是讓網站主動把搜尋、填表、預約等功能註冊成 AI 可呼叫的工具。這篇拆成兩大方向、三個落點來看，並釐清 WebMCP、ChatGPT Apps＋MCP 各自的規格歸屬。</p>
+
+    <div class="duo stack">
+      <div class="card a">
+        <b>適合誰</b>
+        <ul>
+          <li>已經有個人網站、知識官網或內容網站，想知道 AI 時代要改什麼的人</li>
+          <li>希望自己的文章被 ChatGPT、Claude、Perplexity 等 AI 找到、整理或引用的內容創作者</li>
+          <li>想把網站往線上知識庫、AI 客服或微型 Agent 應用推進，但還不知道從哪一層開始的人</li>
+        </ul>
+      </div>
+      <div class="card b">
+        <b>你可以帶走什麼</b>
+        <ul>
+          <li>看懂網站 AI 化的兩大方向，以及 Claude 瀏覽器、WebMCP、ChatGPT Apps＋MCP 三個落點</li>
+          <li>分清楚 SEO、AIO、GEO 與我在 4O 裡所說的 AXO 各自處理哪一層</li>
+          <li>一份可以直接盤點自己網站的三層改造清單與提示詞</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="cookie">
+  <div class="inner">
+    <h2>一個 Cookie 匯入畫面，透露了網站正在改變</h2>
+    <p>我在 Claude 桌面版看到一個新介面。</p>
+    <p>它先問我要不要從瀏覽器匯入 Cookie，讓網站在 Claude 的內建瀏覽器裡保持登入。這個畫面列出三件事：只匯入 Cookie，不匯入密碼；網站由使用者自己挑；資料不會離開這台電腦。</p>
+
+    <figure class="inline-figure">
+      <img src="../../images/articles/ai-era-websites-for-agents-claude-cookie.png" alt="Claude 桌面版詢問是否從瀏覽器匯入 Cookie 的畫面" loading="lazy">
+      <figcaption>Claude 內建瀏覽器的 Cookie 匯入說明畫面。下一步會列出瀏覽器裡有 Cookie 的網站讓使用者逐站挑選，那張選站畫面含個人網站清單，公開版不放。</figcaption>
+    </figure>
+
+    <p>下一個畫面會列出瀏覽器裡有 Cookie 的網站，讓使用者逐站選擇。銀行、付款、電子郵件與登入服務會被特別標示，並預設不勾選。</p>
+    <p>第一張畫面另外寫明，匯入之後這些登入狀態會套用到後續每一個 Cowork 與 Code 工作階段。Anthropic 的支援文件則補充，這個內建瀏覽器和使用者原本的瀏覽器分開，登入狀態留在這台電腦，Claude 只有在你主動選擇匯入時才會取得。</p>
+    <p>這件事的意義，不只是在少輸入幾次帳號密碼。</p>
+    <p>過去 AI 逛網站時，常常停在公開頁面。它看得到官網首頁，卻進不了你的後台、會員頁、專案系統或已登入的 SaaS。Cookie 匯入之後，AI 可以在你授權的網站裡延續既有工作情境。它看到的頁面，更接近你平常工作時看到的頁面。</p>
+    <p>這是一條很直接的路線：網站本身不一定要改，先讓 AI 帶著使用者的登入狀態進去操作。</p>
+  </div>
+</section>
+
+<section class="section" id="route1">
+  <div class="inner">
+    <h2>第一條路線：讓 AI 帶著你的身分逛網站</h2>
+    <p>這條路線解決的是「AI 怎麼進得去」。</p>
+    <p>網站原本就有給人使用的介面。AI 進去之後，仍然透過頁面、按鈕、表單與選單工作，只是多了可以延續登入狀態的能力。</p>
+    <p>適合的情境包括：</p>
+    <ul>
+      <li>進入已登入的內容平台，整理自己的文章或後台資料</li>
+      <li>進入專案工具，讀取目前狀態並協助更新</li>
+      <li>進入會員型服務，取得使用者已被授權看到的內容</li>
+      <li>在多個網站之間完成原本需要人反覆切換的工作</li>
+    </ul>
+    <p>它的優點是網站不用先重做。只要原本的人類介面可以操作，瀏覽器 Agent 就有機會使用。</p>
+    <p>限制也很明確。AI 仍要理解畫面，判斷哪個按鈕該按、哪個欄位該填。網站改版、彈出視窗、模糊的按鈕命名，都可能讓操作變得不穩定。登入狀態也會過期，雙重驗證與風險檢查仍然存在。</p>
+
+    <div class="caveat">
+      <b>安全邊界要注意</b>
+      Anthropic 官方提醒，瀏覽器 Agent 可能遇到網頁中的提示詞注入。它也明確建議，不要用內建瀏覽器或 Claude in Chrome 處理財務帳戶、醫療資訊或他人的個人資料等敏感工作。Cookie 讓 AI 進得去，同時也讓「授權了哪些網站」變成新的權限管理問題。目前官方說明沒有列出逐站撤銷已匯入 Cookie 的操作步驟，所以不要把匯入當成一次性的選擇。重要網站一開始就不要匯入；不再使用時，應在 Claude 內建瀏覽器登出該站，並再次確認後續工作階段已無法進入。
+    </div>
+
+    <div class="readmore near">
+      <b>延伸閱讀</b>
+      <ul>
+        <li><a href="../web-chat-ai-vs-desktop-agent/">桌面版和開發者版差在哪？：網頁聊天型 AI 與桌面幹活型 AI 的分界（Codex）</a>　這篇拆解網頁聊天型 AI 跟桌面幹活型 AI 的分界，跟 Claude 帶著登入狀態逛網站是同一組能力光譜的兩端</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="route2">
+  <div class="inner">
+    <h2>第二條路線：網站把功能直接註冊給 AI</h2>
+    <p>另一條路線解決的是「AI 進來以後，怎麼更可靠地做事」。先說清楚現況：WebMCP 目前是規格提案，還沒有成為普及標準。下面的例子是在說明設計方向，並非今天打開所有瀏覽器都能直接使用的功能。</p>
+    <p>WebMCP 的概念，是讓網站把現有功能包成有名稱、說明與輸入格式的工具。例如：</p>
+    <ul>
+      <li><code>search_articles</code>：依問題或主題搜尋文章</li>
+      <li><code>filter_courses</code>：依日期、程度與主題篩選課程</li>
+      <li><code>book_slot</code>：把使用者選好的時段帶入預約流程</li>
+      <li><code>run_diagnostics</code>：在系統裡執行一組明確的檢查</li>
+    </ul>
+    <p>AI 不必只靠看畫面猜按鈕用途。網站會把「這個功能做什麼、需要哪些參數、回傳什麼結果」說清楚，再由瀏覽器居中協調工具呼叫。</p>
+    <p>依目前 WebMCP 草案，網站可以透過 JavaScript 的 <code>document.modelContext.registerTool()</code> 註冊工具，也可以在 HTML 表單上加入宣告式標記。早期文件曾使用 <code>navigator.modelContext</code>，草案期間名稱已經變動過，實作前仍要核對當日版本。這讓同一份網站功能可以繼續給人操作，同時提供更結構化的入口給 AI Agent。</p>
+
+    <div class="caveat">
+      <b>規格狀態</b>
+      2026 年 8 月 26 日的文件是 W3C Web Machine Learning Community Group 發布的 Draft Community Group Report。這屬於社群群組報告，不代表 W3C 已經採納或背書；文件也明載它尚未成為 W3C 標準，不在 W3C Standards Track 上。Chrome 已提供實驗與 Origin Trial，ChatGPT 桌面版也已用 Site tools 支援 WebMCP，但可用帳號、模型與網站仍有限。這仍是需要追蹤相容性與安全設計的早期階段。
+    </div>
+  </div>
+</section>
+
+<section class="section" id="attribution">
+  <div class="inner">
+    <h2>先修正一個容易混在一起的說法</h2>
+    <p>WebMCP 並非 ChatGPT 推出的協議。</p>
+    <p>目前 WebMCP 草案的編輯來自 Microsoft 與 Google，規格文件由 W3C 旗下的 Web Machine Learning Community Group 發布。OpenAI 並非這份規格的推出者，但 ChatGPT 桌面版已透過 Site tools 採用 WebMCP。OpenAI 同時也推進另一條 Apps SDK 與 MCP 應用路線，讓開發者建立可以在 ChatGPT 裡運作的應用。</p>
+    <p>後兩個落點都屬於「網站或服務主動提供 AI 介面」這個大方向，但功能所在位置與連接方式不同：</p>
+
+    <div class="tablewrap">
+      <table>
+        <thead>
+          <tr><th>路線</th><th>功能放在哪裡</th><th>AI 怎麼取得</th><th>現階段代表</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>帶著登入狀態逛網站</td><td>既有人類網頁介面</td><td>AI 在瀏覽器裡看頁面、點擊、輸入</td><td>Claude Cowork 內建瀏覽器、Claude in Chrome</td></tr>
+          <tr><td>WebMCP</td><td>當前網頁的前端功能</td><td>網頁向瀏覽器註冊結構化工具</td><td>W3C 社群草案、Chrome 實驗、ChatGPT Site tools</td></tr>
+          <tr><td>ChatGPT Apps＋MCP</td><td>網站或服務的遠端後端能力</td><td>ChatGPT 連接 MCP 應用與工具</td><td>OpenAI Apps SDK、ChatGPT Developer Mode</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>兩大方向的分工因此很清楚：一條是 AI 去適應既有網站，另一條是網站主動提供 AI 介面。容易混淆的是規格名稱與產品歸屬。WebMCP 與 ChatGPT Apps 位在不同技術層，看到「網站給 AI 用」就把它們當成同一件事，會判斷錯投入方向。</p>
+  </div>
+</section>
+
+<section class="section" id="4o">
+  <div class="inner">
+    <h2>從 SEO、AIO、GEO 走到 AXO</h2>
+    <p>我把網站在 AI 時代要處理的工作，整理成 4O：</p>
+
+    <div class="tablewrap">
+      <table>
+        <thead>
+          <tr><th>層次</th><th>要解決的問題</th><th>網站要準備什麼</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>SEO</td><td>人能不能在搜尋引擎找到你</td><td>可索引頁面、清楚標題、穩定網址、內部連結</td></tr>
+          <tr><td>AIO</td><td>AI 能不能把你的內容整理成答案</td><td>問題導向結構、直接回答、表格、清單、可核對資料</td></tr>
+          <tr><td>GEO</td><td>生成式 AI 願不願意提及或引用你的觀點</td><td>原創觀點、清楚署名、來源、可信度、跨站識別</td></tr>
+          <tr><td>AXO</td><td>AI Agent 能不能讀懂、調用並完成事情</td><td>工具、權限、輸入輸出格式、確認機制、行為護欄</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>4O 是我用來規劃網站的工作框架。AXO 在這裡指 Agent Experience Optimization，也就是網站如何提供 AI Agent 可理解、可調用、可控管的使用體驗。</p>
+    <p>AIO 與 GEO 關心內容能不能進入 AI 的回答。AXO 再往前一步，關心 AI 能不能在你的網站裡完成一件事。</p>
+    <p>例如，一篇「如何建立個人知識庫」的文章，經過 AIO 與 GEO 優化後，AI 比較容易讀懂文章在回答什麼，也比較容易在相關問題裡引用。到了 AXO，網站還可以提供 <code>search_articles</code>、<code>build_learning_path</code> 等工具，讓訪客的 AI 依照他的程度與目標，從你的文章庫裡組出一條閱讀路線。</p>
+
+    <div class="readmore near">
+      <b>延伸閱讀</b>
+      <ul>
+        <li><a href="../agent-web-turning-point/">網路上一半以上的訪問已經不是人了，你的內容準備好被機器讀了嗎？</a>　這篇講機器人流量超過真人這件事對網站經濟模式的衝擊，是 4O 這套框架要處理的大背景</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="layers">
+  <div class="inner">
+    <h2>網站可以重新想成三層</h2>
+
+    <h3>第一層：給人看的曝光頁面</h3>
+    <p>這一層保留網站原本的角色。讀者可以認識你、閱讀文章、看服務、看案例，也能判斷要不要繼續接觸。</p>
+    <p>這一層先把 SEO 與基本可讀性做好。重要內容放進伺服器直接回傳的 HTML，標題層級清楚，每篇文章有穩定網址、摘要、作者、更新日期與來源。</p>
+
+    <h3>第二層：線上的知識庫</h3>
+    <p>網站不只陳列文章，也要讓人與 AI 都能快速找到正確內容。</p>
+    <p>可以先做：</p>
+    <ul>
+      <li>文章索引與主題分類</li>
+      <li>每篇文章的摘要、適用對象與可帶走成果</li>
+      <li>同義詞與讀者常用問法</li>
+      <li>穩定的文章識別字與更新日期</li>
+      <li>文章之間的延伸閱讀與來源連結</li>
+      <li>站內搜尋紀錄，用來找出讀者一直找不到的問題</li>
+    </ul>
+    <p>這些工作還沒有碰到複雜 Agent，就已經能同時改善人類搜尋、AIO 與 GEO。</p>
+
+    <h3>第三層：線上的微型 Agent 應用</h3>
+    <p>當知識層穩定之後，網站可以挑一件高頻、低風險的事，做成 AI 可呼叫的功能。</p>
+    <p>以我的知識網站為例，第一批功能可以是：</p>
+    <ol>
+      <li><code>search_articles(query)</code>：依讀者的問題找出相關文章</li>
+      <li><code>get_article(slug)</code>：回傳文章摘要、來源、更新日期與網址</li>
+      <li><code>build_learning_path(goal, level)</code>：依目標與程度組出閱讀順序</li>
+    </ol>
+    <p>這三個都以讀取與整理為主，風險比發文、刪除、付款、寄信或建立正式預約低。等工具的輸入、輸出與錯誤情境都跑穩，再考慮加入會改變外部狀態的功能。</p>
+
+    <div class="meaning">
+      <b>今天真正能做的事</b>
+      這三個功能今天可以先寫成清楚的功能規格，接到既有的站內搜尋，或包成自用、合作使用的 MCP Server。等 WebMCP 在瀏覽器端穩定落地，再把同一份能力註冊給訪客帶來的 AI。現階段不用為了 WebMCP 重寫整個網站。
+    </div>
+  </div>
+</section>
+
+<section class="section" id="small-tool">
+  <div class="inner">
+    <h2>別急著把整個網站都做成 Agent</h2>
+    <p>網站要對 AI 開放功能時，最容易犯的錯，是一次註冊太多工具。</p>
+    <p>工具越多，AI 越需要判斷該用哪一個；名稱與說明越模糊，誤用機率越高。涉及寫入、付款、發送與刪除的工具，也會把安全問題放大。</p>
+    <p>比較穩的順序是：</p>
+
+    <div class="workflow-grid">
+      <div class="workflow-step">
+        <small>STEP 1</small>
+        <b>先挑一個真實、高頻的使用者目標</b>
+        <p>不要一開始就想覆蓋所有功能。</p>
+      </div>
+      <div class="workflow-step">
+        <small>STEP 2</small>
+        <b>先做讀取型工具</b>
+        <p>回傳來源與更新日期，風險最低。</p>
+      </div>
+      <div class="workflow-step">
+        <small>STEP 3</small>
+        <b>為每個參數寫清楚規格</b>
+        <p>用途、格式與必要條件都要交代。</p>
+      </div>
+      <div class="workflow-step">
+        <small>STEP 4</small>
+        <b>把錯誤明確回傳</b>
+        <p>找不到、資料過期、權限不足都要有明確狀態。</p>
+      </div>
+      <div class="workflow-step">
+        <small>STEP 5</small>
+        <b>用實際問題測試</b>
+        <p>確認 AI 會在對的情境呼叫工具。</p>
+      </div>
+      <div class="workflow-step">
+        <small>STEP 6</small>
+        <b>保留確認與紀錄</b>
+        <p>需要改變狀態的動作，保留使用者確認與操作紀錄。</p>
+      </div>
+    </div>
+
+    <div class="caveat">
+      <b>官方安全指引</b>
+      WebMCP 的官方安全指引也提醒，提示詞注入無法被保證完全消除。即使是只讀工具，也可能洩漏使用者資料。工具要標示是否只讀、回傳內容是否來自不可信來源，也要限制可以存取工具的來源。
+    </div>
+  </div>
+</section>
+
+<section class="section" id="my-order">
+  <div class="inner">
+    <h2>我現在會怎麼應用</h2>
+    <p>如果目標是讓 AI 讀懂我的文章，並在別人問問題時引用到我，我會先完成前兩層：</p>
+    <ul>
+      <li>把文章寫成直接回答問題的結構</li>
+      <li>每篇都有清楚摘要、適合誰、讀者能得到什麼</li>
+      <li>把原創方法、案例、來源與更新日期交代清楚</li>
+      <li>建立穩定的文章索引、內部連結與主題頁</li>
+      <li>用讀者真正會問的句子補搜尋別名</li>
+    </ul>
+    <p>這是 AIO 與 GEO 的主場。</p>
+    <p>接著，再挑一個最能代表網站價值的動作做 AXO。我的第一個候選會是「依問題找文章並組閱讀路線」，因為它能直接使用既有知識資產，也不必一開始就碰高風險寫入權限。</p>
+    <p>等這條路徑跑穩，網站才會從文章集合，慢慢長成一個能被 AI 使用的知識服務。</p>
+
+    <div class="readmore near">
+      <b>延伸閱讀</b>
+      <ul>
+        <li><a href="../a2a-agent-protocol/">AI 代理要接手工作了，你的流程和知識準備好了嗎？</a>　這篇講 AI 代理彼此協作的 A2A 協議，是網站三層改造之後，工具還可能往哪裡延伸的下一步</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="prompt">
+  <div class="inner">
+    <h2>一份可以直接拿去盤點網站的提示詞</h2>
+    <p>把下面這段貼給 AI，換成你自己的網站資訊即可開始。</p>
+
+    <div class="codewrap">
+      <button class="copybtn" type="button">複製整段</button>
+      <pre class="codeblock"><code>請把我的網站當成「同時給人與 AI 使用的知識服務」來盤點。
+
+網站網址或內容：【貼上】
+主要讀者：【填寫】
+我最希望讀者完成的三件事：【填寫】
+
+請分成三層檢查：
+1. 曝光頁面：人是否能快速理解我是誰、這裡有什麼、下一步去哪裡。
+2. 線上知識庫：文章是否有穩定網址、摘要、適用對象、更新日期、來源、主題分類、延伸閱讀與可搜尋別名。
+3. 微型 Agent 應用：列出 3 個適合做成 AI 工具的高頻任務，為每個工具寫名稱、用途、輸入、輸出、權限、錯誤情境與是否需要人工確認。
+
+最後請分成：
+- 現在就能做
+- 需要整理資料後再做
+- 涉及登入、個資、付款、發送或刪除，暫時不要做
+
+不要保證能被 AI 引用。所有推論要標示依據，缺資料就列出待補項目。</code></pre>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="conclusion">
+  <div class="inner">
+    <h2>最後真正要改的，是網站對「使用者」的定義</h2>
+    <p>以前我們做網站，腦中想的是訪客會怎麼看、怎麼點、怎麼填表。</p>
+    <p>現在要多問一層：如果訪客帶著自己的 AI 來，這個 AI 看得懂我的內容嗎？找得到可靠來源嗎？知道哪些功能可以用嗎？遇到高風險動作時，會把控制權交還給人嗎？</p>
+    <p>Claude 的 Cookie 匯入，讓 AI 更容易進入既有網站。WebMCP 與 ChatGPT Apps＋MCP，則分別從網頁前端與服務端，讓網站與服務開始主動說明自己能做什麼。</p>
+    <p>這兩大方向、三個落點最後會在同一個地方交會：網站除了是給人看的頁面，也會成為線上的知識庫，以及一個有清楚權限與行為邊界的微型 Agent 應用。</p>
+  </div>
+</section>
+
+<section class="section" id="sources">
+  <div class="inner">
+    <h2>官方資料</h2>
+    <ul>
+      <li><a href="https://support.claude.com/en/articles/16607400-use-the-built-in-browser-in-claude-cowork" target="_blank" rel="noopener">Anthropic：Use the built-in browser in Claude Cowork</a></li>
+      <li><a href="https://webmachinelearning.github.io/webmcp/" target="_blank" rel="noopener">WebMCP Draft Community Group Report</a></li>
+      <li><a href="https://developer.chrome.com/docs/ai/webmcp" target="_blank" rel="noopener">Chrome for Developers：WebMCP</a></li>
+      <li><a href="https://developer.chrome.com/docs/ai/webmcp/secure-tools" target="_blank" rel="noopener">Chrome for Developers：WebMCP tool security</a></li>
+      <li><a href="https://help.openai.com/en/articles/20001423-using-site-tools-in-the-chatgpt-desktop-app" target="_blank" rel="noopener">OpenAI：Using site tools in the ChatGPT desktop app</a></li>
+      <li><a href="https://help.openai.com/en/articles/12515353-build-with-the-apps-sdk" target="_blank" rel="noopener">OpenAI：Build with the Apps SDK</a></li>
+      <li><a href="https://help.openai.com/en/articles/12584461-developer-mode-and-mcp-apps-in-chatgpt" target="_blank" rel="noopener">OpenAI：Developer mode and MCP apps in ChatGPT</a></li>
+    </ul>
+  </div>
+</section>
+
+<section class="cta-band">
+  <div class="section">
+    <div class="inner">
+      <h2>我是江江教練</h2>
+      <p class="lead">隱性知識提煉師、AI 應用規劃師</p>
+      <p>對 AI × 知識管理、隱性知識提煉有興趣？歡迎加入我的 LINE 社群。我每月固定舉辦兩場免費線上講座，分享實戰經驗與方法論。如果你對這些主題感興趣，想持續學習，或是有顧問需求，都歡迎先從社群開始。</p>
+      <p>主要討論：<br>
+      🔸 善用 AI 作為思考夥伴，提升決策品質與思考深度。<br>
+      🔸 把知識、經驗，整理成提示詞、技能包、知識庫，讓 AI 能靈活運用。</p>
+      <div class="cta-card">
+        <b>加入 LINE 社群</b>
+        <p>每月兩場免費線上講座，分享實戰經驗與方法論。</p>
+        <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener" style="color:var(--blue);font-weight:900;text-decoration:none">前往 LINE 社群 ↗</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">江江教練 · AI 知識管理</div>
+    <div class="footer-links">
+      <a href="../../articles.html">← 回深度文章總站</a>
+      <a href="../../index.html">首頁</a>
+      <a href="../../learn.html">自學資源</a>
+      <a href="../../skills.html">技能包下載</a>
+      <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">LINE 社群 ↗</a>
+      <a href="https://www.threads.com/@jiang_yude_coach" target="_blank" rel="noopener">Threads ↗</a>
+      <a href="https://vocus.cc/salon/Jiang_Coach" target="_blank" rel="noopener">方格子 ↗</a>
+    </div>
+    <div class="footer-note">這是一篇趨勢文章，整理我對「AI 時代，網站開始同時服務人與 AI」的看法，供你參考。</div>
+  </div>
+</footer>
+
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <span class="lightbox-close" aria-label="關閉">×</span>
+  <img id="lightbox-img" src="" alt="放大檢視">
+</div>
+<script>
+(function(){
+  var box=document.getElementById('lightbox'),boxImg=document.getElementById('lightbox-img');
+  document.querySelectorAll('.hero-figure img,.inline-figure img').forEach(function(img){
+    img.addEventListener('click',function(){boxImg.src=img.currentSrc||img.src;boxImg.alt=img.alt||'放大檢視';box.classList.add('open');box.setAttribute('aria-hidden','false');});
+  });
+  function close(){box.classList.remove('open');box.setAttribute('aria-hidden','true');boxImg.src='';}
+  box.addEventListener('click',close);
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
+})();
+</script>
+
+<script src="../../image-interactions.js"></script>
+
+<script src="../../spotlight.js"></script>
+
+<script src="../../articles-data.js"></script>
+<script src="../../related-render.js"></script>
+<script>
+(function(){
+  document.querySelectorAll('.copybtn').forEach(function(btn){
+    btn.addEventListener('click',function(){
+      var code=btn.parentElement.querySelector('code');
+      if(!code)return;
+      var text=code.innerText;
+      function done(){btn.textContent='已複製';btn.classList.add('done');setTimeout(function(){btn.textContent='複製整段';btn.classList.remove('done');},1600);}
+      function fallback(){
+        var ta=document.createElement('textarea');
+        ta.value=text;ta.setAttribute('readonly','');ta.style.position='fixed';ta.style.top='-1000px';
+        document.body.appendChild(ta);ta.select();
+        var ok=false;try{ok=document.execCommand('copy');}catch(e){}
+        document.body.removeChild(ta);
+        if(ok){done();}else{btn.textContent='請手動選取複製';setTimeout(function(){btn.textContent='複製整段';},2600);}
+      }
+      if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(done,fallback);}
+      else{fallback();}
+    });
+  });
+})();
+</script>
+  <script src="/mika-chat-widget.js" defer></script>
+</body>
+</html>
