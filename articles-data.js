@@ -2158,6 +2158,25 @@ window.ARTICLES = [
     related: ["after-ai-says-remembered", "meeting-record-agent-workflow", "how-to-train-your-ai-employee", "what-is-loop-engineering", "prompt-to-loop-map", "parallel-site-editing"]
   },
 
+  /* ── 從駕馭工程到迴圈工程的那一步（教學）── */
+  {
+    id: "harness-to-loop",
+    url: "articles/harness-to-loop/",
+    date: "2026-09-01",
+    updated: "2026-09-01",
+    title: "AI 每一步都要我按確認，我可以放手到哪裡？｜從駕馭工程到迴圈工程的那一步",
+    problem: "AI 代理每一步都停下來問，前幾次你會仔細看，看到第十次已經在無腦按同意。那道確認關卡其實已經失效，變成儀式。",
+    audience: "已經在用 AI 代理做事、每天花很多時間按確認的人；想放手又怕它跑歪跑爆的人；聽過駕馭工程與迴圈工程但不確定自己站在哪一站的非工程師。",
+    summary: "駕馭工程是你坐在馬背上控制它，迴圈工程是你蓋一座馬場讓它自己跑。這篇講兩站之間那一步怎麼跨：那些重複到你已經不看的確認，就是你還沒寫出來的規則。內容包含一個真實案例（Codex 停下來問 16 份文件要不要保留各人資料，該補的是規矩不是誇它），迴圈要交代的四件事，三行可直接複製的護欄（完成條件、檢查方式、停止條件），標準要細到什麼程度才驗得動，為什麼審查那端要換一家，圈數怎麼設（2 輪、3 輪、停手），實測整條流程 95% 自己跑完，以及我到今天仍然要求它停下來問我的四類事。另誠實處理一個名詞張力：照 OpenAI 的定義建立迴圈本來就算在駕馭工程裡，這篇用的是另一個尺度。",
+    tags: {
+      topic: ["AI工作流", "AIAgent", "知識管理", "AI應用"],
+      level: ["基礎"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["what-is-loop-engineering", "loop-engineering-guardrails", "prompt-to-loop-map", "eight-ai-system-concepts-2026", "cross-ai-review-both-wrong", "how-to-train-your-ai-employee"]
+  },
+
   /* ── 同一個問題問兩次，AI 為什麼給出不同答案？（教學）── */
   {
     id: "same-question-different-answers",

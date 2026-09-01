@@ -1,0 +1,536 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="index,follow">
+<title>AI 每一步都要我按確認，我可以放手到哪裡？｜從駕馭工程到迴圈工程的那一步</title>
+<meta name="description" content="駕馭工程是你坐在馬背上控制它，迴圈工程是你蓋一座馬場讓它自己跑。這篇講兩站之間那一步怎麼跨：什麼事可以授權、授權到什麼程度、哪四件事我到現在仍然要求它停下來問我。附三行可直接複製的護欄與我自己的圈數設定。">
+<link rel="canonical" href="https://jiangyude.com/articles/harness-to-loop/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AI 每一步都要我按確認，我可以放手到哪裡？｜從駕馭工程到迴圈工程的那一步｜江江教練">
+<!-- 分享封面：hero 文字填好後在 repo 根目錄跑 `node scripts/og-shot.mjs harness-to-loop` 自動截 1200×630 到 images/og/harness-to-loop.jpg（見 README「文章分享封面（OG 圖）機制」）。別退回 intro-jiang.png 直式人像，會被裁成只剩脖子。 -->
+<meta property="og:image" content="https://jiangyude.com/images/og/harness-to-loop.jpg">
+<meta property="og:description" content="駕馭工程是你坐在馬背上控制它，迴圈工程是你蓋一座馬場讓它自己跑。這篇講兩站之間那一步怎麼跨：什麼事可以授權、授權到什麼程度、哪四件事我到現在仍然要求它停下來問我。附三行可直接複製的護欄與我自己的圈數設定。">
+<meta property="og:url" content="https://jiangyude.com/articles/harness-to-loop/">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:site_name" content="江江教練 · AI 知識管理">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="AI 每一步都要我按確認，我可以放手到哪裡？｜從駕馭工程到迴圈工程的那一步｜江江教練">
+<meta name="twitter:image" content="https://jiangyude.com/images/og/harness-to-loop.jpg">
+<meta name="twitter:description" content="駕馭工程是你坐在馬背上控制它，迴圈工程是你蓋一座馬場讓它自己跑。這篇講兩站之間那一步怎麼跨：什麼事可以授權、授權到什麼程度、哪四件事我到現在仍然要求它停下來問我。附三行可直接複製的護欄與我自己的圈數設定。">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"AI 每一步都要我按確認，我可以放手到哪裡？｜從駕馭工程到迴圈工程的那一步","description":"駕馭工程是你坐在馬背上控制它，迴圈工程是你蓋一座馬場讓它自己跑。這篇講兩站之間那一步怎麼跨：什麼事可以授權、授權到什麼程度、哪四件事我到現在仍然要求它停下來問我。附三行可直接複製的護欄與我自己的圈數設定。","author":{"@type":"Person","name":"江昱德","alternateName":"江江教練","jobTitle":"隱性知識提煉師、AI 應用規劃師"},"isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://jiangyude.com/"},"inLanguage":"zh-Hant","url":"https://jiangyude.com/articles/harness-to-loop/"}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{--ink:#1a1612;--paper:#fefcf8;--muted:#6a635a;--line:#d8cdb8;--green:#5f7553;--blue:#5689b8;--orange:#e85a4f;--soft:#faf5ec;--dark:#2a2018;--shadow:0 18px 45px rgba(107,74,42,.14);--sp-shadow:hsla(35,50%,60%,.15);--sp-shadow-edge:hsla(35,50%,68%,.03);--sp-radius:400px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC","Segoe UI",sans-serif}
+a{color:inherit}
+/* 官網共用導航列 nav.top（與首頁/文章總站同一條） */
+nav.top{position:sticky;top:0;background:rgba(254,252,248,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid #d8cdb8;z-index:100}
+nav.top .container{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:24px;padding:14px 32px}
+.nav-brand-img{justify-self:start;display:flex;align-items:center;text-decoration:none;flex-shrink:0;transition:opacity .2s}
+.nav-brand-img:hover{opacity:.8}.nav-brand-img img{height:40px;width:auto;display:block}
+nav.top ul.nav-menu{justify-self:end;display:flex;gap:22px;list-style:none;margin:0;padding:0;font-size:.95rem;white-space:nowrap}
+nav.top ul.nav-menu a{color:#3a342d;text-decoration:none;transition:color .2s;font-weight:500;white-space:nowrap}
+nav.top ul.nav-menu a:hover{color:#1a1612}nav.top ul.nav-menu a.active{color:#1a1612;font-weight:700}
+.nav-toggle{display:none;background:none;border:none;padding:6px;cursor:pointer;width:36px;height:36px;position:relative}
+.nav-toggle span{display:block;position:absolute;left:8px;right:8px;height:2px;background:#1a1612;border-radius:2px;transition:transform .25s,opacity .25s,top .25s}
+.nav-toggle span:nth-child(1){top:11px}.nav-toggle span:nth-child(2){top:17px}.nav-toggle span:nth-child(3){top:23px}
+.nav-toggle.open span:nth-child(1){top:17px;transform:rotate(45deg)}.nav-toggle.open span:nth-child(2){opacity:0}.nav-toggle.open span:nth-child(3){top:17px;transform:rotate(-45deg)}
+.tablewrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:22px 0;border:1px solid var(--line);border-radius:10px;background:#fff;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.tablewrap table{border-collapse:collapse;width:100%;min-width:600px;font-size:18px;line-height:1.65}
+.tablewrap .zh{display:block;margin-top:5px;font-size:16px;line-height:1.55;color:var(--muted);font-weight:400}
+.tablewrap th,.tablewrap td{padding:12px 14px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top;color:#3a342d}
+.tablewrap thead th{background:var(--soft);font-weight:900;font-size:18px;color:#1a1612;white-space:nowrap}
+.tablewrap tbody tr:last-child td{border-bottom:none}
+.tablewrap td code,.section code{background:var(--soft);border:1px solid var(--line);border-radius:5px;padding:1px 6px;font:500 15px/1.5 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace}
+.inline-figure.wide{max-width:1000px}
+.toc{margin:26px 0 0;padding:20px 22px;background:#fff;border:1px solid var(--line);border-radius:10px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.toc>b{display:block;font-size:15px;letter-spacing:.05em;color:var(--green);margin-bottom:10px}
+.toc ol{margin:0;padding-left:1.35em;font-size:18px;line-height:1.7}
+.toc li{margin-bottom:7px;color:#3a342d}
+.toc a{color:var(--blue);font-weight:700;text-decoration:none}.toc a:hover{text-decoration:underline}
+.toc-hint{margin:12px 0 0!important;font-size:18px!important;color:var(--muted)!important;border-top:1px solid var(--line);padding-top:12px}
+.readmore{margin-top:24px;padding:20px 22px;background:var(--soft);border:1px solid var(--line);border-radius:12px}
+.readmore.near{margin:26px 0 6px;background:rgba(86,137,184,.07);border-color:#bcd0e2}
+.readmore.near b{color:var(--blue);font-size:18px}
+.readmore.near li{font-size:17px;line-height:1.7;margin-bottom:10px}
+.readmore b{display:block;margin-bottom:10px;font-size:19px}
+.readmore ul{margin:0;padding-left:1.25em}
+.readmore a{color:var(--blue);font-weight:700;text-decoration:none}
+.readmore a:hover{text-decoration:underline}
+@media(max-width:820px){.tablewrap table{min-width:560px;font-size:18px}.tablewrap{position:relative}.tablewrap::after{content:"表格可左右滑動 →";position:sticky;left:0;display:block;font-size:15px;color:var(--muted);background:var(--soft);border-top:1px solid var(--line);padding:7px 12px;width:100%}}
+@media(max-width:860px){
+ nav.top .container{grid-template-columns:auto 1fr auto;padding:10px 16px;gap:12px}
+ .nav-brand-img img{height:32px}
+ .nav-toggle{display:block;justify-self:end}
+ nav.top ul.nav-menu{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(254,252,248,.98);backdrop-filter:blur(14px);border-bottom:1px solid #d8cdb8;flex-direction:column;gap:0;padding:8px 0;box-shadow:0 10px 24px rgba(107,74,42,.08)}
+ nav.top ul.nav-menu.open{display:flex}
+ nav.top ul.nav-menu li{border-bottom:1px solid #e8dfc9}
+ nav.top ul.nav-menu li:last-child{border-bottom:none}
+ nav.top ul.nav-menu a{display:block;padding:14px 20px;font-size:1.06rem}
+}
+/* 滑鼠暖光暈（與首頁同一支 spotlight.js） */
+body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradient(var(--sp-radius) circle at var(--mx,50%) var(--my,50%),var(--sp-shadow) 0%,var(--sp-shadow-edge) 45%,transparent 75%);pointer-events:none;z-index:9999;mix-blend-mode:multiply;transition:background .06s linear}
+.hero{position:relative;overflow:hidden;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:72px;padding:96px clamp(20px,6vw,88px) 80px;background:linear-gradient(180deg,#fffcf0 0%,#f9e9d2 100%);color:#1a1612;border-bottom:1px solid #d8cdb8}
+.hero .wc{position:absolute;border-radius:50%;filter:blur(60px);pointer-events:none;z-index:0}
+.hero .wc1{width:420px;height:360px;top:-120px;right:-80px;background:#e8884b;opacity:.15}
+.hero .wc2{width:360px;height:300px;bottom:-110px;left:-70px;background:#5f7553;opacity:.13}
+.hero .wc3{width:280px;height:260px;top:34%;left:14%;background:#a08144;opacity:.10}
+.hero>div{flex:none;width:860px;max-width:100%;position:relative;z-index:2}
+.hero-figure{margin:0;width:420px;flex:none;position:relative;z-index:2}
+.hero-figure img{display:block;width:100%;border-radius:16px;border:1px solid #d8cdb8;box-shadow:0 18px 45px rgba(107,74,42,.16);cursor:zoom-in}
+.hero-figure figcaption{margin-top:10px;font-size:14px;line-height:1.6;color:#6a635a}
+.inline-figure{margin:30px auto 8px;max-width:820px}
+.inline-figure img{display:block;width:100%;border-radius:14px;border:1px solid var(--line);box-shadow:var(--shadow);background:#fff;cursor:zoom-in}
+.inline-figure figcaption{font-size:14px;line-height:1.6;color:var(--muted);margin-top:10px}
+.lightbox{position:fixed;inset:0;z-index:10000;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(12,10,8,.92);cursor:zoom-out;backdrop-filter:blur(4px)}
+.lightbox.open{display:flex}.lightbox img{max-width:96vw;max-height:92vh;border-radius:10px;box-shadow:0 24px 60px rgba(0,0,0,.5)}
+.lightbox-close{position:fixed;top:18px;right:24px;color:#fff;font-size:34px;line-height:1;font-weight:700;cursor:pointer;opacity:.85}
+.kicker{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.55rem;color:#7a5c3a;font-weight:500}
+.hero h1{max-width:none;margin:16px 0 18px;font-size:clamp(36px,6vw,72px);line-height:1.08;overflow-wrap:anywhere}
+.hero p{max-width:none;font-size:clamp(18px,2vw,23px);line-height:1.62;color:#3a342d}
+.cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
+.cta a{display:inline-flex;align-items:center;text-decoration:none;border-radius:8px;padding:12px 16px;font-weight:900}
+.cta .primary{background:#fff;color:#1a1612}.cta .ghost{border:1px solid rgba(255,255,255,.32);color:#fff;background:rgba(255,255,255,.08)}
+.section{padding:54px clamp(20px,6vw,88px);border-top:1px solid var(--line)}
+.inner{width:min(1000px,100%);margin:0 auto}
+.section h2{font-size:clamp(26px,4.2vw,48px);line-height:1.12;margin:0 0 18px}
+.section h3{font-size:clamp(21px,3vw,30px);line-height:1.2;margin:30px 0 12px}
+.lead{font-size:clamp(18px,1.6vw,22px);line-height:1.7;color:#3a342d;max-width:900px}
+.section p{font-size:18px;line-height:1.74;color:#3a342d}.section p+p{margin-top:14px}
+.section ul,.section ol{padding-left:1.4em;font-size:18px;line-height:1.74;color:#3a342d}.section li{margin-bottom:8px}
+.meaning{margin:22px 0;padding:16px 18px;border-left:5px solid var(--blue);background:rgba(86,137,184,.12);border-radius:6px;line-height:1.7;font-size:19px}
+.meaning b{display:block;color:var(--blue);margin-bottom:4px}
+.caveat{margin:0 0 8px;padding:16px 18px;border-left:5px solid var(--orange);background:rgba(232,90,79,.1);border-radius:6px;line-height:1.7;font-size:18px;color:#3a342d}
+.caveat b{display:block;color:var(--orange);margin-bottom:4px}
+.infocard{background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px 24px 22px;box-shadow:0 8px 22px rgba(107,74,42,.08);margin-top:8px}
+.infocard-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.info-item{padding:18px 14px 0}
+.info-item b{display:block;font-size:14px;font-weight:900;letter-spacing:.04em;margin-bottom:7px;text-transform:uppercase}
+.info-item:nth-child(1) b{color:var(--green)}.info-item:nth-child(2) b{color:var(--orange)}.info-item:nth-child(3) b{color:var(--blue)}
+.info-item p{margin:0;font-size:17px;line-height:1.6;color:#3a342d}
+.tagrow{display:flex;flex-wrap:wrap;gap:7px;margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
+.tag{font-size:14px;color:var(--muted);background:var(--soft);border:1px solid var(--line);border-radius:999px;padding:4px 11px}
+.duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:24px}
+.duo.stack{grid-template-columns:1fr}
+.duo .card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:22px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.duo .card.a{border-color:var(--orange)}.duo .card.b{border-color:var(--green);box-shadow:0 8px 24px rgba(95,117,83,.16)}
+.duo .card small{display:block;font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.04em;margin-bottom:9px}
+.duo .card.a small{color:var(--orange)}.duo .card.b small{color:var(--green)}
+.duo .card b{display:block;font-size:22px;line-height:1.3;margin-bottom:12px}.duo .card.a b{color:#c0512f}.duo .card.b b{color:#4a7a59}
+.duo .card p{margin:0;color:#3a342d;line-height:1.75;font-size:18px}
+.workflow-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:24px}
+.workflow-step{background:#fff;border:1px solid var(--line);border-radius:8px;padding:18px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.workflow-step small{display:block;color:var(--orange);font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;margin-bottom:9px}
+.workflow-step b{display:block;font-size:18px;line-height:1.3;margin-bottom:9px}
+.workflow-step p{margin:0;color:#3a342d;line-height:1.6;font-size:16px}
+.codeblock{background:var(--dark);color:#f3ead9;border-radius:8px;padding:18px 20px;font:500 14px/1.65 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;overflow-x:auto;white-space:pre-wrap;margin:20px 0;box-shadow:0 8px 22px rgba(107,74,42,.12)}
+.codeblock .c{color:#f6d7a6;font-weight:600}
+.skillcard{background:#fff;border:1px solid var(--green);border-radius:12px;padding:24px;box-shadow:0 10px 26px rgba(95,117,83,.16);margin-top:8px}
+.skillcard b{display:block;font-size:21px;margin-bottom:8px}
+.skillcard p{margin:0 0 16px;font-size:17px;line-height:1.65;color:#3a342d}
+.cta-band{background:#e6f0e5;color:#3a342d}.cta-band .section{border-top:none}
+.cta-band .inner{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(260px,.85fr);gap:26px;align-items:start}
+.cta-band h2{font-size:clamp(26px,4vw,44px);margin:0 0 16px}.cta-band p,.cta-band .lead{color:rgba(58,52,45,.9);font-size:18px;line-height:1.72}
+.cta-card{border:1px solid #cfe0d2;background:#fbfdfa;border-radius:8px;padding:22px}
+.cta-card b{display:block;color:#48b178;margin-bottom:10px;font-size:18px}.cta-card p{margin:0 0 14px}
+.footer{padding:30px clamp(20px,6vw,88px);font-size:14px;color:var(--muted);background:#fff;border-top:1px solid var(--line)}
+.footer-inner{width:min(1000px,100%);margin:0 auto}
+.footer-links{display:flex;flex-wrap:wrap;gap:6px 12px;margin-bottom:14px}.footer-links a{color:var(--blue);font-weight:900;text-decoration:none;font-size:14px}
+.footer-brand{font-weight:900;font-size:15px;margin-bottom:10px}.footer-note{font-size:13px;line-height:1.6}
+@media(max-width:820px){.infocard-grid{grid-template-columns:1fr}.duo{grid-template-columns:1fr}.workflow-grid{grid-template-columns:1fr}.cta-band .inner{grid-template-columns:1fr}.section{padding:40px 20px}.hero{min-height:52vh;flex-direction:column;justify-content:flex-start;align-items:flex-start;gap:24px}.hero>div{width:100%}.hero-figure{width:100%;max-width:560px}}
+@media(max-width:820px){html,body{overflow-x:hidden}.hero h1{word-break:break-word}}
+</style>
+</head>
+<body class="spotlight">
+<!-- 官網共用導航列 nav.top：與首頁/總站同一條，文章不要自己另做極簡 topbar（江江 2026-06-25：要同一個框架、同一條導航列）。把對應頁面的 class="active" 標在自己那欄。
+     ⚠️ 下面 ul.nav-menu 整塊由 preflight 第 5 關 check-bilingual-nav.mjs 做「逐字比對」，
+        塞任何註解、多一個空白、換行位置不同都會被判導航不一致而擋下發布。要說明就寫在 <ul> 外面（像這裡）。
+        2026-08-16 修：原本的 EN 那行說明註解就夾在 <ul> 裡面，導致照範本起手的新文章一律卡第 5 關
+        （llm-rag-agent-mcp 與 rag-three-retrieval-modes 兩篇同時中招）。註解已移出來，<ul> 內保持乾淨。
+        萬一還是被擋，直接跑：node scripts/check-bilingual-nav.mjs --write --only=<你的檔案路徑> -->
+<nav class="top">
+  <div class="container">
+    <a class="nav-brand-img" href="../../index.html"><img src="../../images/footer-signature.png" alt="江江教練 | 江昱德"></a>
+    <button class="nav-toggle" aria-label="選單"><span></span><span></span><span></span></button>
+    <ul class="nav-menu">
+      <li><a href="../../index.html">首頁</a></li>
+      <li><a href="../../knowledge-architecture.html">知識架構</a></li>
+      <li><a href="../../courses.html">課程</a></li>
+      <li><a href="../../articles.html" class="active">深度文章</a></li>
+      <li><a href="../../skills.html">技能包下載</a></li>
+      <li><a href="../../offers.html">服務方案</a></li>
+      <li class="lang-switch"><a href="../../en/articles.html" hreflang="en">EN</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="wc wc1"></div>
+  <div class="wc wc2"></div>
+  <div class="wc wc3"></div>
+  <div>
+    <div class="kicker">AI 工作流 / 迴圈工程</div>
+    <h1>AI 每一步都要我按確認，我可以放手到哪裡？｜從駕馭工程到迴圈工程的那一步</h1>
+    <p>你今天按了幾次同意？每一步都停下來問，前幾次你會仔細看，看到第十次你已經在無腦按了。這篇講的是那些重複的確認怎麼變成規則，以及放手的尺度怎麼定。</p>
+  </div>
+  <figure class="hero-figure">
+    <img src="../../images/articles/harness-to-loop-01.jpg" alt="封面圖卡：左邊一個人坐在馬背上握韁繩，右邊一座圓圈賽道，馬沿著跑道跑，外圈圍欄留著一道開著的門，咪卡站在中間一手指左一手指右" loading="lazy">
+    <figcaption>右邊那道門是刻意留的。護欄不是為了關住牠</figcaption>
+  </figure>
+</section>
+
+<main>
+
+<section class="section" id="start">
+  <div class="inner">
+    <p class="lead">AI 幫你做事的時候每一步都停下來問，這件事有兩種解法。一種是繼續盯著每一步看，這叫駕馭工程。另一種是把你的標準一次寫清楚，讓它自己跑完再回來找你，這叫迴圈工程。多數人卡在中間：知道應該要放手，但不知道放到哪裡才不會出事。這篇講那一步怎麼跨，以及我到今天仍然不放手的四件事。</p>
+
+    <div class="duo stack">
+      <div class="card a">
+        <b>適合誰</b>
+        <ul>
+          <li>已經在用 AI 代理做事，但每天花很多時間在按確認，按到自己都不看了</li>
+          <li>想放手讓 AI 自己跑完，又怕它跑歪、跑爆額度、跑到不可收拾</li>
+          <li>聽過駕馭工程跟迴圈工程這兩個詞，不確定差在哪、自己現在站在哪一站</li>
+        </ul>
+      </div>
+      <div class="card b">
+        <b>你可以帶走什麼</b>
+        <ul>
+          <li>一個判斷授權範圍的方法：哪些事可以交出去、哪些事永遠留著</li>
+          <li>三行可以直接貼進規則檔的護欄，完成條件、檢查方式、停止條件</li>
+          <li>我自己的圈數設定與實測數字，還有我到現在仍然坐在馬背上的四件事</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="harness">
+  <div class="inner">
+    <h2>一、先說清楚駕馭工程在解什麼問題</h2>
+
+    <div class="meaning">
+      <b>白話定義</b>
+      模型已經夠強了，你要學的是怎麼帶著它往你要的方向走。像一匹野馬，你幫牠套上馬鞍與韁繩，坐上去控制牠。
+    </div>
+
+    <p>駕馭工程這個說法大概是 2025 年底到 2026 年初出現的。那個時間點大家發現一件事：模型已經很強了。</p>
+    <p>強到什麼程度？強到大家問的問題換了一個。以前問「它會不會」，現在問「它會照我的意思做嗎」。</p>
+    <p>所以這一站的做法都圍繞著控制：把你的意圖講清楚、把底線寫出來、把每一步的判斷交代明白。做得好的話，AI 的產出會非常接近你要的東西。</p>
+
+    <h3>這個詞的原始定義</h3>
+    <p>駕馭工程的英文是 Harness Engineering，harness 原意是韁繩。OpenAI 2026 年的說法是：Agent 等於 AI 模型加上駕馭工程，模型是大腦，駕馭工程是控制大腦的那套工程。</p>
+    <p>對非工程師來說，這套工程包含三件事：設計環境（你的資料夾結構）、定義意圖（每個資料夾拿來做什麼）、建立迴圈（讓 AI 照著你的路徑跑）。</p>
+
+    <div class="caveat">
+      <b>一個名詞上的張力，先講清楚</b>
+      照 OpenAI 那個定義，建立迴圈本來就算在駕馭工程裡面。但在我自己畫的四階段地圖裡，迴圈工程是駕馭工程的下一站。兩種講法不衝突，差在看的尺度：從「怎麼控制一個模型」的尺度看，迴圈是控制手段之一；從「你每天怎麼工作」的尺度看，人在不在場是一條很清楚的分界，值得另外站一格。這篇講的是後者。
+    </div>
+
+    <p>回到代價的部分。</p>
+  </div>
+</section>
+
+<section class="section" id="cost">
+  <div class="inner">
+    <h2>二、駕馭工程的代價：你人得一直待在馬背上</h2>
+
+    <figure class="inline-figure">
+      <img src="../../images/articles/harness-to-loop-02.jpg" alt="圖卡：一疊堆得很高的同意按鈕，一根手指懸在最上面，旁邊時鐘顯示時間流逝，咪卡抱著一疊確認單" loading="lazy">
+      <figcaption>按到第十次的時候，那道關卡已經變成儀式</figcaption>
+    </figure>
+
+    <p>騎馬要人在馬背上。這句話翻譯成日常，就是每一步都要你在場。</p>
+    <p>用過 AI 代理的人對這個狀態很有感：確認下一步、確認下一步、要不要執行、要不要覆寫。一整天下來你以為自己在指揮，實際上你在當一個很貴的確認鍵。</p>
+    <p>更值得注意的是第二個代價。當同一個確認動作重複到第五次、第十次，你已經不會認真看了，你只是把它按掉。這時候那道確認關卡其實已經失效，它變成儀式，失去了把關的作用。</p>
+    <p>所以真正的問題不是要不要監督，是監督應該花在哪裡。</p>
+  </div>
+</section>
+
+<section class="section" id="turn">
+  <div class="inner">
+    <h2>三、那個關鍵問題：這件事我已經回答過五次了</h2>
+
+    <p>我在講座上講過一段，那是我自己跨過去的那一步：</p>
+
+    <div class="meaning">
+      <b>當時我說的</b>
+      如果這一個標準、這一個確認的動作，我已經重複做好幾次了，我的標準就是這個樣子，你應該知道我的水準到哪裡。這種事情這個規則是我願意授權的，那你為什麼還要再問我呢？
+    </div>
+
+    <p>這句話有兩層。第一層是抱怨，第二層才是重點：如果我願意授權，代表這件事有一個我心裡已經有答案的標準。那個標準沒有被寫出來，所以它每次都得問。</p>
+
+    <h3>一個真實的例子</h3>
+    <p>八月我朋友遇到一件事，剛好可以說明。</p>
+    <p>他做了一套文件系統，裡面 16 個人各一份。他改完其中一份，叫 Codex 把剩下 15 份照樣改。Codex 改到一半停下來問他：每份文件裡各人自己的那些內容要不要留。</p>
+    <p>朋友覺得 Codex 蠻聰明的，還會自己發現問題。</p>
+    <p>我聽完的第一個念頭不太一樣。16 個人本來就 16 個名字，每個人當然不一樣，這種事還要停下來問嗎。</p>
+    <p>但我很快改口了。它敢舉手是對的，沒給它規矩的人是我。</p>
+    <p>所以正確的回應不是誇它也不是嫌它，是給它一條規矩：</p>
+    <div class="codeblock">每個人自己的資料各自保留，同樣規格的部分照改。
+再遇到這種情況不用問我，自己全部做完。</div>
+    <p>這一句話講出口的那一刻，你就從駕馭工程走進迴圈工程了。差別只在於，你把一次性的回答，變成一條下次會被執行的規則。</p>
+  </div>
+</section>
+
+<section class="section" id="loop">
+  <div class="inner">
+    <h2>四、迴圈工程：與其坐在馬背上，不如蓋一座馬場</h2>
+
+    <figure class="inline-figure">
+      <img src="../../images/articles/harness-to-loop-03.jpg" alt="圖卡：圓圈賽道的斜俯視圖，馬沿著跑道跑，沙地上有耙過的紋路與馬蹄痕，左側列出初始內容、完成目標、對照標準、自檢與修正四項，對照標準加重，咪卡在圍欄外釘木樁" loading="lazy">
+      <figcaption>跑道是被反覆跑出來的。咪卡在做的是蓋護欄，不是趕馬</figcaption>
+    </figure>
+
+    <div class="meaning">
+      <b>白話定義</b>
+      與其坐在馬背上控制牠，不如蓋一座馬場，把護欄做好，讓牠自己在裡面跑。護欄夠清楚，牠跑不出去，你也不用一直在場。
+    </div>
+
+    <p>實際上要交代給 AI 的有四件事：</p>
+
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>要交代什麼</th><th>講白話</th></tr></thead>
+        <tbody>
+          <tr><td>初始內容</td><td>我給你的材料是什麼</td></tr>
+          <tr><td>完成目標</td><td>做出來要長什麼樣</td></tr>
+          <tr><td>對照標準</td><td>用什麼來判斷做完了沒（這一項最關鍵）</td></tr>
+          <tr><td>自檢與修正</td><td>做完自己對照，沒過就修，修完再對照</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>第三項是整條迴圈的重心。標準寫得清楚，AI 自己就能判斷做完了沒；標準寫得模糊，它會一直交半成品，而且它以為自己交的是成品。</p>
+    <p>我對這件事有感的那一刻，是發現 AI 已經知道我的標準了。我把每一次的標準都寫清楚之後，它就照著做，不用我再講一遍。</p>
+
+    <div class="readmore near">
+      <b>迴圈本身怎麼建，我另外寫過完整的一篇</b>
+      <ul>
+        <li><a href="../what-is-loop-engineering/">用我寫一篇文章的工作流，講清楚什麼是迴圈工程</a>　這篇講的是從駕馭跨到迴圈的那一步，那篇是迴圈本身的完整說明：五個階段、最少要哪幾個零件、什麼時候才值得做成迴圈</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="guardrail">
+  <div class="inner">
+    <h2>五、護欄怎麼寫：先寫三行</h2>
+
+    <p>不用一次寫出一整套規則。從三行開始就有效果：</p>
+
+    <div class="codeblock"><span class="c">完成條件：</span>什麼狀態算做完，要能用眼睛或指令檢查
+<span class="c">檢查方式：</span>怎麼驗，最好是具體動作而不是感覺
+<span class="c">停止條件：</span>最多幾輪，什麼情況要停下來問人</div>
+
+    <p>這三行貼進你的提示詞或規則檔，就是一個最小的迴圈。</p>
+
+    <div class="caveat">
+      <b>這裡的護欄跟另一篇的護欄不是同一層</b>
+      我另外寫過〈迴圈護欄的五條規則〉，那五條講的是迴圈已經在跑之後，怎麼讓它不要一直停下來要授權。這裡的三行講的是更前面一步：迴圈開跑之前，你要先寫出什麼叫做完。先有這三行，那五條才有東西可以護。
+    </div>
+
+    <h3>標準要寫多細才驗得動</h3>
+    <p>講座上有位學員寫了他的版本：站完之後用我的角度檢查，新人看得懂嗎，有沒有太理論。</p>
+    <p>大方向是對的，但這樣寫 AI 驗不動，因為每一個詞都還可以再問一層：</p>
+    <ul>
+      <li><b>新人是多新？</b>完全沒接觸過，還是已經用過一陣子</li>
+      <li><b>看得懂的定義是什麼？</b>有沒有可以當範本的文章，例如「這三篇是大家看了立刻懂的，照這個水準」</li>
+      <li><b>怎樣叫真正實用可執行？</b>有沒有可以對照的檢查點</li>
+      <li><b>要改到什麼程度才算及格？</b>60 分可以用就好，還是要 80 分</li>
+    </ul>
+    <p>把這幾層補上去，AI 才有東西可以對照。標準的顆粒度，決定了它能不能自己判斷。</p>
+  </div>
+</section>
+
+<section class="section" id="reviewer">
+  <div class="inner">
+    <h2>六、誰來檢查：不要讓同一個 AI 審自己</h2>
+
+    <p>迴圈裡有一個角色很容易被忽略，就是審查的那一端。</p>
+    <p>同一個模型自己審自己是危險的，它很難檢查到自己的盲點。我用的比喻是廚師：有一個廚師超級愛吃辣，對他來說辣就是好吃。辦比賽的時候他煮最辣的那道，輪到他當評審，他也給辣的最高分。</p>
+    <p>他不是故意偏心。他做的跟他評的，用的是同一把尺。</p>
+    <p>AI 也一樣。它產生答案的時候是根據當下理解的脈絡往下推，你叫它回頭檢查，它讀到的還是同一份脈絡，用的還是同一套判斷。表面的錯字與矛盾它抓得到，錯誤的前提在它眼裡依然成立。</p>
+    <p>所以我的迴圈設計成：一家跑完，換另一家審。</p>
+
+    <div class="readmore near">
+      <b>怎麼把兩家接起來，還有我實測被退九項的過程</b>
+      <ul>
+        <li><a href="../cross-ai-review-both-wrong/">OpenAI 出了官方外掛，讓 Codex 能接到 Claude Code 一起工作</a>　三行安裝指令、能做到與做不到什麼，以及一次真實互審：三輪退九項，但審查的那一家自己也錯了兩項</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="rounds">
+  <div class="inner">
+    <h2>七、圈數：一個會燒爆額度的地雷</h2>
+
+    <figure class="inline-figure">
+      <img src="../../images/articles/harness-to-loop-04.jpg" alt="圖卡：圓形跑道上三個標記點，第三點之後岔出一條路通向寫著停的牌子，咪卡拿懷錶在跑道邊記圈數" loading="lazy">
+      <figcaption>跑道要有岔出去的那一條，不然它會一直繞</figcaption>
+    </figure>
+
+    <p>迴圈的規則是「沒過就修，修到通過」。這句話裡藏著一個問題：如果它一直沒過呢。</p>
+    <p>它會修一百遍，會跑一千遍。真的有可能，然後你的額度一個晚上就燒完了。</p>
+    <p>所以迴圈一定要設圈數。我自己的預設是這樣：</p>
+
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>任務類型</th><th>圈數</th></tr></thead>
+        <tbody>
+          <tr><td>一般的文章與決策，兩家模型互審</td><td>2 輪</td></tr>
+          <tr><td>很重要的會議、很重要的決策</td><td>3 輪</td></tr>
+          <tr><td>3 輪還沒解決</td><td>停手，把問題寫清楚回報，我自己判斷</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>為什麼是停手。因為跑不出來，通常代表我這邊講不清楚。我講不清楚的事情，它討論一百遍也一樣講不清楚。這時候要修的是我的標準，再跑一輪沒有用。</p>
+    <p>不確定要幾圈的話，你也可以直接問它：這個任務跑幾圈差不多。</p>
+  </div>
+</section>
+
+<section class="section" id="measured">
+  <div class="inner">
+    <h2>八、我實測跑到哪裡</h2>
+
+    <p>給一個具體的數字。</p>
+    <p>在標準都寫清楚、而且已經固化成技能包的前提下，讓兩家模型互跑，我實測一整條流程大約 95% 可以自己跑完。剩下的是它不確定的部分，那些才回到我手上做決策。</p>
+    <p>我現在的授權寫法比這個更進一步：</p>
+
+    <div class="codeblock">遇事不決問另外一家。標準就在那邊，你們兩個都審一下。
+兩邊意見一致就直接做，不要問我。
+分歧很大再問我。
+真的不想被打斷的時候，能做的就做，
+有問題的寫進工作日誌，我事後去檢查。</div>
+
+    <p>這段話本身就是護欄。它定義了三種情況各自怎麼處理，所以 AI 不用每次都回頭問。</p>
+  </div>
+</section>
+
+<section class="section" id="still-riding">
+  <div class="inner">
+    <h2>九、我到現在還坐在馬背上的事</h2>
+
+    <figure class="inline-figure">
+      <img src="../../images/articles/harness-to-loop-05.jpg" alt="圖卡：四個上鎖的圖示排成一列，分別是垃圾桶、信封、錢幣、規則本，各標不可逆、對外送出、牽涉金錢、改規則本身，咪卡把四把鑰匙收在身上" loading="lazy">
+      <figcaption>這四把鑰匙我自己留著</figcaption>
+    </figure>
+
+    <p>前面講了很多放手，這一節講不放手的。</p>
+    <p>有四類事情，我到今天仍然要求 AI 停下來問我，而且寫進規則裡：</p>
+    <ul>
+      <li><b>不可逆的動作</b>：刪除、覆寫、搬移。我的規則是刪除只有一個入口，一律搬到帶日期的回收資料夾，不准直接刪</li>
+      <li><b>對外送出</b>：發文、寄信、送出表單、公開上線。內容可以先做好，送出那一下要我點頭</li>
+      <li><b>牽涉金錢</b>：付款、報價、承諾價格</li>
+      <li><b>改規則本身</b>：規則檔、技能包、攔截程式。改這些等於改未來所有的判斷，錯了會擴散</li>
+    </ul>
+    <p>這四類的共同點是「錯了救不回來，或救回來的成本很高」。迴圈可以幫你省掉重複的判斷，救不回來的那一類不在裡面。</p>
+
+    <div class="caveat">
+      <b>還有一個我踩過的坑</b>
+      子代理回報「完成」不等於真的完成。曾經有一次子代理把一百多個檔案打壞，回報還是完成。所以我的規則是它說做完了，我要自己去確認產物真的存在、內容真的對。放手的是執行，驗收不放手。
+    </div>
+  </div>
+</section>
+
+<section class="section" id="todo">
+  <div class="inner">
+    <h2>十、可以直接照做的</h2>
+
+    <p>如果你現在就想跨那一步，從你今天按過最多次的那個確認開始：</p>
+    <ol>
+      <li><b>找出那個重複的確認</b>：今天你按了哪一個同意超過三次，而且每次的答案都一樣</li>
+      <li><b>把答案寫成一條規矩</b>：這次不要只回答它。寫成一句「以後遇到這種情況照這樣做，不用問我」</li>
+      <li><b>補上三行護欄</b>：完成條件、檢查方式、停止條件</li>
+      <li><b>設圈數</b>：先設兩輪，跑不出來就停下來回報</li>
+    </ol>
+    <p>做完這四步，你就有一條最小的迴圈了。下次同樣的事，它不會再問你。</p>
+  </div>
+</section>
+
+<section class="section" id="recap">
+  <div class="inner">
+    <h2>收尾</h2>
+
+    <p>我在七月寫過一句分界，現在看還是準的：迴圈工程解的是事情怎麼一輪一輪往前推，駕馭工程解的是人怎麼控制 AI 的方向、邊界和責任。</p>
+    <p>兩者是同一件事的兩個階段。駕馭是你帶著它跑，迴圈是你把跑道畫好。</p>
+    <p>你要跨的那一步，其實只是把心裡已經有答案的標準寫出來，讓它變成下次會被執行的規則。</p>
+    <p>那些你每天重複按的確認，就是你還沒寫出來的規則清單。從按最多次的那一個開始寫。</p>
+
+    <div class="tagrow">
+      <span class="tag">AI工作流</span>
+      <span class="tag">AIAgent</span>
+      <span class="tag">知識管理</span>
+      <span class="tag">AI應用</span>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="further">
+  <div class="inner">
+    <h2>延伸閱讀</h2>
+    <div class="readmore">
+      <b>這條主軸的其他幾站</b>
+      <ul>
+        <li><a href="../prompt-to-loop-map/">從提示詞工程到迴圈工程：一張圖看懂四階段</a>　整條主軸的知識地圖，二十幾篇文章掛在四個階段上</li>
+        <li><a href="../what-is-loop-engineering/">用我寫一篇文章的工作流，講清楚什麼是迴圈工程</a>　迴圈本身的完整說明</li>
+        <li><a href="../loop-engineering-guardrails/">AI 一直停下來要授權，怎麼讓它順順跑完：迴圈護欄的五條規則</a>　跑起來之後怎麼不被打斷</li>
+        <li><a href="../eight-ai-system-concepts-2026/">2026 年知識工作者的八個 AI 系統概念</a>　把八項擺在一起看的地圖，含 8/30 講座的現場實錄</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">江江教練 · AI 知識管理</div>
+    <div class="footer-links">
+      <a href="../../articles.html">← 回深度文章總站</a>
+      <a href="../../index.html">首頁</a>
+      <a href="../../learn.html">自學資源</a>
+      <a href="../../skills.html">技能包下載</a>
+      <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">LINE 社群 ↗</a>
+      <a href="https://www.threads.com/@jiang_yude_coach" target="_blank" rel="noopener">Threads ↗</a>
+      <a href="https://vocus.cc/salon/Jiang_Coach" target="_blank" rel="noopener">方格子 ↗</a>
+    </div>
+    <div class="footer-note">這是一篇教學文章，整理我對「AI 每一步都要我按確認，我可以放手到哪裡？｜從駕馭工程到迴圈工程的那一步」的看法，供你參考。</div>
+  </div>
+</footer>
+
+<!-- 點圖放大 lightbox（hero 與內文圖通用，已內建，不用每篇重加） -->
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <span class="lightbox-close" aria-label="關閉">×</span>
+  <img id="lightbox-img" src="" alt="放大檢視">
+</div>
+<script>
+(function(){
+  var box=document.getElementById('lightbox'),boxImg=document.getElementById('lightbox-img');
+  document.querySelectorAll('.hero-figure img,.inline-figure img').forEach(function(img){
+    img.addEventListener('click',function(){boxImg.src=img.currentSrc||img.src;boxImg.alt=img.alt||'放大檢視';box.classList.add('open');box.setAttribute('aria-hidden','false');});
+  });
+  function close(){box.classList.remove('open');box.setAttribute('aria-hidden','true');boxImg.src='';}
+  box.addEventListener('click',close);
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
+})();
+</script>
+
+<script src="../../image-interactions.js"></script>
+
+<!-- 官網共用：滑鼠暖光暈 + 導航列漢堡選單 -->
+<script src="../../spotlight.js"></script>
+
+<!-- 文章自動互聯（相關文章）：兩支已內建，順序不可顛倒，不用再另外加 -->
+<script src="../../articles-data.js"></script>
+<script src="../../related-render.js"></script>
+  <script src="/mika-chat-widget.js" defer></script>
+</body>
+</html>
