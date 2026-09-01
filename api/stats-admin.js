@@ -188,8 +188,26 @@ module.exports = async (req, res) => {
     const misses = Object.keys(missMap).map((q) => ({ q, n: missMap[q] }))
       .sort((a, b) => b.n - a.n).slice(0, 60);
 
+    /* 獨立訪客（HyperLogLog 近似值，誤差 0.81%）與來源網站。
+       兩者都 2026-09-01 才開始記，之前的區間會是 0。 */
+    const uvDayKeys = rangeDays.map((d) => `uv:day:${d}`);
+    const uvRange = uvDayKeys.length ? Number((await pipe([['PFCOUNT', ...uvDayKeys]]))[0] || 0) : 0;
+    const uvByDay = uvDayKeys.length
+      ? (await pipe(uvDayKeys.map((k) => ['PFCOUNT', k]))).map((v, i) => ({ date: rangeDays[i], uv: Number(v || 0) }))
+      : [];
+
+    const refFlat = await pipe(spanMonths.map((m) => ['ZRANGE', `ref:${m}`, 0, 99, 'REV', 'WITHSCORES']));
+    const refMap = {};
+    refFlat.forEach((flat) => {
+      flat = flat || [];
+      for (let i = 0; i < flat.length; i += 2) refMap[flat[i]] = (refMap[flat[i]] || 0) + Number(flat[i + 1] || 0);
+    });
+    const refs = Object.keys(refMap).map((h) => ({ host: h, n: refMap[h] }))
+      .sort((a, b) => b.n - a.n).slice(0, 40);
+
     res.status(200).json({
       ok: true, today, from, to, spanDays, earliest,
+      uvRange, uvByDay, refs,
       prevFrom, prevTo, prevTotal,
       chatMonths, availableMonths: months.map((m) => m.month),
       total, days, months, pages, sections, pageDaily,

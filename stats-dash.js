@@ -269,6 +269,7 @@
     $('tiles').innerHTML = [
       ['這段期間瀏覽', num(rangePV), dtxt, dcls],
       ['平均每天', num(perDay), S.spanDays + ' 天平均', 'flat'],
+      ['幾個人來過', S.uvRange ? num(S.uvRange) : '—', S.uvRange ? '獨立瀏覽器，誤差約 1%' : '2026-09-01 起才開始記', 'flat'],
       ['今日瀏覽', num(todayPV), S.today, 'flat'],
       ['有人問咪卡', num(uq.length) + ' 則', Object.keys(sids).length + ' 段對話 / ' + Object.keys(vids).length + ' 人', 'flat'],
       ['咪卡答不出來', failRate == null ? '—' : failRate + '%', botAll.length ? botFail.length + ' / ' + botAll.length + ' 則回答' : '這段期間沒有回答紀錄', failRate != null && failRate > 20 ? 'down' : 'flat'],
@@ -293,6 +294,7 @@
     renderMonthPages();
     renderChat();
     renderFlags();
+    renderRefs();
     renderSearch();
     renderHealth();
   }
@@ -523,6 +525,31 @@
     }
   }
 
+  /* ── 人從哪裡來：AI 平台獨立一組，那是 GEO 的成效指標 ───────── */
+  var AI_HOSTS = /^(chatgpt\.com|chat\.openai\.com|perplexity\.ai|www\.perplexity\.ai|claude\.ai|gemini\.google\.com|copilot\.microsoft\.com|you\.com|poe\.com|felo\.ai|genspark\.ai)$/i;
+  function renderRefs() {
+    var all = S.refs || [];
+    var ai = all.filter(function (r) { return AI_HOSTS.test(r.host); });
+    var rest = all.filter(function (r) { return !AI_HOSTS.test(r.host); });
+    var aiSum = ai.reduce(function (a, r) { return a + r.n; }, 0);
+    var allSum = all.reduce(function (a, r) { return a + r.n; }, 0);
+
+    $('ref-ai').innerHTML = ai.length
+      ? '<div class="flag ok"><span class="ic">🤖</span><span><b>從 AI 平台點進來 ' + aiSum + ' 次</b><br>'
+        + ai.map(function (r) { return esc(r.host) + ' ' + r.n; }).join('、')
+        + '<br>這是 4O 裡 GEO 那一塊唯一量得到的成效：有人在 AI 那邊看到你的內容，然後真的點過來。</span></div>'
+      : '<div class="flag"><span class="ic">🤖</span><span><b>這段期間沒有從 AI 平台點進來的紀錄</b><br>'
+        + '可能是真的沒有，也可能是那些平台不送 referrer（部分 AI 介面會把來源洗掉）。'
+        + '不能只用這個數字判斷 GEO 沒效果。</span></div>';
+
+    hbars($('refs'), rest.slice(0, 15).map(function (r) {
+      return { key: r.host, label: r.host, v: r.n, color: 'var(--k5)' };
+    }), {});
+    $('cap-refs').textContent = allSum
+      ? '這段期間有 ' + allSum + ' 次是從站外點進來的（' + all.length + ' 個來源）。直接輸入網址或從書籤進來的不會有來源，所以這個數字一定小於總瀏覽數。'
+      : '這段期間沒有外部來源紀錄。2026-09-01 才開始記這一項。';
+  }
+
   /* ── 異常訊號：規則掃出來的，不是結論 ───────────────── */
   function renderFlags() {
     var uq = userRows();
@@ -617,7 +644,11 @@
       ? '已開始記錄，本月有 ' + S.pageDaily.length + ' 天資料'
       : '2026-09-01 才開始記，在那之前只有累計總數，看不出單頁的時間趨勢', !!(S.pageDaily && S.pageDaily.length)]);
     rows.push(['💬', '咪卡對話保存', '每月一份，各留最近 20000 筆；目前有 ' + (S.chatMonths || []).join('、'), true]);
-    rows.push(['🔍', '沒有記錄的東西', '停留時間、來源網站（referrer）、獨立訪客數都沒有在記。想知道人從哪裡來，要另外加埋點。', false]);
+    rows.push(['🤖', 'AI 爬蟲這套量不到（4O 的重要邊界）',
+      '埋點是 JavaScript，而 GPTBot、OAI-SearchBot、PerplexityBot、ClaudeBot 這些爬蟲**不執行 JavaScript**，'
+      + '所以它們來讀過幾次，這頁完全看不到。robots.txt 放行 AI 爬蟲（AXO）的成效，要從伺服器端日誌才量得到。'
+      + '這頁量得到的只有另一半：**有人從 AI 平台點連結過來**，那個在上面「人從哪裡來」看得到。', false]);
+    rows.push(['🔍', '沒有記錄的東西', '停留時間、捲動深度、離開頁面都沒有記。來源網站與獨立訪客 2026-09-01 起有了，在那之前是空的。', false]);
     $('health').innerHTML = rows.map(function (f) {
       return '<div class="flag' + (f[3] ? ' ok' : '') + '"><span class="ic">' + f[0] + '</span><span><b>' + esc(f[1]) + '</b><br>' + esc(f[2]) + '</span></div>';
     }).join('');
