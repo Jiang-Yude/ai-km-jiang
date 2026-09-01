@@ -57,8 +57,21 @@ module.exports = async (req, res) => {
   const seg = path.split('/').filter(Boolean);
   const section = seg.length >= 2 ? seg[0] : null; // 例如 /articles/foo/ → section = "articles"；/articles/ 列表頁不計 section
 
-  const cmds = [];
+  /* 限流（2026-09-01 Codex 跨家審抓到）：這支端點原本誰都能狂打，
+     可以無限灌高計數、也會把 Upstash 的免費額度燒光。
+     同一 IP 每分鐘最多 30 次寫入，超過就只讀不寫（不回錯誤，避免變成偵測工具）。 */
+  const ip = String(req.headers['x-forwarded-for'] || '').split(',')[0].trim() || 'na';
+  let allowWrite = increment;
   if (increment) {
+    try {
+      const rk = `viewrate:${ip}:${Math.floor(Date.now() / 60000)}`;
+      const [n] = (await pipe([['INCR', rk], ['EXPIRE', rk, 90]])).map((o) => (o && o.result != null ? o.result : 0));
+      if (Number(n) > 30) allowWrite = false;
+    } catch (e) { /* 限流壞掉不擋計數 */ }
+  }
+
+  const cmds = [];
+  if (allowWrite) {
     cmds.push(['INCR', `page:${path}`]);
     cmds.push(['INCR', 'global']);
     cmds.push(['INCR', `global:day:${day}`]);
@@ -89,7 +102,7 @@ module.exports = async (req, res) => {
        這裡一定要 await：serverless function 在回應送出後會被凍結，
        沒 await 的 promise 不保證送得出去（2026-09-01 上線第一版就是這樣，
        TTL 沒設成，pageday key 變成永不過期）。首筆一天只有一次，多一趟往返可以接受。 */
-    if (increment && path.length <= 120) {
+    if (allowWrite && path.length <= 120) {
       const hIdx = cmds.findIndex((c) => c[0] === 'HINCRBY');
       if (hIdx >= 0 && Number(results[hIdx]) === 1) {
         try { await pipe([['EXPIRE', `pageday:${day}`, 7776000]]); } catch { /* 設不成不擋計數 */ }
