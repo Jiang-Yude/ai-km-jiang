@@ -1,8 +1,11 @@
 // 站長儀表板資料源：/stats.html 密碼門後面那一整頁的資料，一次回傳。
 // 只讀不寫（除了驗證失敗的限流計數）。資料來源同 view.js 的 Upstash Redis。
 //
-// POST { pw, month }  pw=密碼（明文比對，見下）  month=YYYY-MM（省略＝當月）
-//   驗證通過才回資料。密碼錯誤回 403，同一 IP 每分鐘最多 10 次嘗試，超過回 429。
+// POST { pw, from, to }
+//   pw   密碼（明文比對，見下）
+//   from 起日 YYYY-MM-DD、to 迄日 YYYY-MM-DD，兩個都省略＝最近 30 天。
+//   範圍是日期不是月份：月初打開頁面時「當月」只有一兩天，
+//   畫出來是一個孤點、對話也只剩兩三則，看起來像資料不見了（江江 2026-09-01 反應）。
 //
 // 密碼存環境變數，**不寫進 repo**（ai-km-jiang 是 public repo）：
 //   STATS_PASSWORD_B64＝密碼的 base64（優先讀這個）
@@ -50,6 +53,28 @@ function taipeiDay(d = new Date()) {
   }).format(d);
 }
 
+const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
+
+/* 從 YYYY-MM-DD 往前推 n 天，純字串算不碰時區 */
+function shiftDay(day, n) {
+  const d = new Date(day + 'T00:00:00Z');
+  d.setUTCDate(d.getUTCDate() + n);
+  return d.toISOString().slice(0, 10);
+}
+
+/* 範圍涵蓋哪幾個 YYYY-MM，用來決定要撈哪幾份月份清單 */
+function monthsBetween(from, to) {
+  const out = [];
+  let y = Number(from.slice(0, 4)), m = Number(from.slice(5, 7));
+  const ey = Number(to.slice(0, 4)), em = Number(to.slice(5, 7));
+  while (y < ey || (y === ey && m <= em)) {
+    out.push(`${y}-${String(m).padStart(2, '0')}`);
+    m += 1; if (m > 12) { m = 1; y += 1; }
+    if (out.length > 120) break; // 防呆：最多十年
+  }
+  return out;
+}
+
 function parseRows(list) {
   return (list || []).map((s) => { try { return JSON.parse(s); } catch { return null; } }).filter(Boolean);
 }
@@ -85,45 +110,49 @@ module.exports = async (req, res) => {
   }
 
   const today = taipeiDay();
-  const curMonth = today.slice(0, 7);
-  const month = /^\d{4}-\d{2}$/.test(String(body.month || '')) ? body.month : curMonth;
 
   try {
-    // ── 全站數字與時間序列
-    const monthList = (await pipe([['ZRANGE', 'idx:months', '0', '-1']]))[0] || [];
     const dayList = (await pipe([['ZRANGE', 'idx:days', '0', '-1']]))[0] || [];
-    const monthDays = dayList.filter((d) => String(d).startsWith(month));
+    const monthList = (await pipe([['ZRANGE', 'idx:months', '0', '-1']]))[0] || [];
+    const earliest = dayList.length ? dayList[0] : today;
 
-    const [total, monthVals, dayVals] = await pipe([
-      ['GET', 'global'],
-      monthList.length ? ['MGET', ...monthList.map((m) => `global:month:${m}`)] : ['PING'],
-      monthDays.length ? ['MGET', ...monthDays.map((d) => `global:day:${d}`)] : ['PING'],
-    ]);
+    let to = DATE_RE.test(String(body.to || '')) ? body.to : today;
+    let from = DATE_RE.test(String(body.from || '')) ? body.from : shiftDay(to, -29);
+    if (from > to) { const t = from; from = to; to = t; }
+    if (from < earliest) from = earliest;
 
+    // ── 範圍內每日全站瀏覽
+    const rangeDays = dayList.filter((d) => d >= from && d <= to);
+    const dayVals = rangeDays.length ? (await pipe([['MGET', ...rangeDays.map((d) => `global:day:${d}`)]]))[0] : [];
+    const days = rangeDays.map((d, i) => ({ date: d, count: Number((dayVals || [])[i] || 0) }));
+
+    // ── 前一段等長區間，用來算「比上一段多多少」
+    const spanDays = Math.max(1, Math.round((new Date(to) - new Date(from)) / 86400000) + 1);
+    const prevTo = shiftDay(from, -1), prevFrom = shiftDay(prevTo, -(spanDays - 1));
+    const prevDays = dayList.filter((d) => d >= prevFrom && d <= prevTo);
+    const prevVals = prevDays.length ? (await pipe([['MGET', ...prevDays.map((d) => `global:day:${d}`)]]))[0] : [];
+    const prevTotal = (prevVals || []).reduce((a, v) => a + Number(v || 0), 0);
+
+    // ── 歷月（趨勢用）與全站總數
+    const monthVals = monthList.length ? (await pipe([['MGET', ...monthList.map((m) => `global:month:${m}`)]]))[0] : [];
     const months = monthList.map((m, i) => ({ month: m, count: Number((monthVals || [])[i] || 0) }));
-    const days = monthDays.map((d, i) => ({ date: d, count: Number((dayVals || [])[i] || 0) }));
+    const total = Number((await pipe([['GET', 'global']]))[0] || 0);
 
-    /* 最近 14 天（會跨月，所以不能拿當月那組來算「這週比上週」） */
-    const last14 = dayList.slice(-14);
-    const last14Vals = last14.length ? (await pipe([['MGET', ...last14.map((d) => `global:day:${d}`)]]))[0] : [];
-    const recent = last14.map((d, i) => ({ date: d, count: Number((last14Vals || [])[i] || 0) }));
-
-    // ── 每頁累計
+    // ── 每頁累計（跟範圍無關，是開站到現在）
     const pageKeys = (await pipe([['KEYS', 'page:*']]))[0] || [];
     const pageVals = pageKeys.length ? (await pipe([['MGET', ...pageKeys]]))[0] : [];
     const pages = pageKeys
       .map((k, i) => ({ path: String(k).slice(5), views: Number((pageVals || [])[i] || 0) }))
       .sort((a, b) => b.views - a.views);
 
-    // ── 分區
     const secKeys = (await pipe([['KEYS', 'section:*']]))[0] || [];
     const secVals = secKeys.length ? (await pipe([['MGET', ...secKeys]]))[0] : [];
     const sections = secKeys.map((k, i) => ({ name: String(k).slice(8), views: Number((secVals || [])[i] || 0) }))
       .sort((a, b) => b.views - a.views);
 
-    // ── 每頁每日（2026-09-01 起才開始記，之前沒有）
-    const pagedayKeys = (await pipe([['KEYS', 'pageday:*']]))[0] || [];
-    const pagedayDays = pagedayKeys.map((k) => String(k).slice(8)).filter((d) => d.startsWith(month)).sort();
+    // ── 範圍內每頁每日（2026-09-01 起才開始記）
+    const pagedayDays = ((await pipe([['KEYS', 'pageday:*']]))[0] || [])
+      .map((k) => String(k).slice(8)).filter((d) => d >= from && d <= to).sort();
     let pageDaily = [];
     if (pagedayDays.length) {
       const hashes = await pipe(pagedayDays.map((d) => ['HGETALL', `pageday:${d}`]));
@@ -135,23 +164,35 @@ module.exports = async (req, res) => {
       });
     }
 
-    // ── 咪卡對話
+    // ── 咪卡對話與站內搜尋：逐月撈回來再依日期過濾（list 是每月一份）
+    const spanMonths = monthsBetween(from, to);
     const chatMonths = ((await pipe([['KEYS', 'mika:chat:*']]))[0] || [])
       .map((k) => String(k).slice(10)).sort();
-    const chat = parseRows((await pipe([['LRANGE', `mika:chat:${month}`, 0, 19999]]))[0]);
 
-    // ── 站內搜尋
-    const search = parseRows((await pipe([['LRANGE', `search:log:${month}`, 0, 4999]]))[0]);
-    const missFlat = (await pipe([['ZRANGE', `search:miss:${month}`, 0, 49, 'REV', 'WITHSCORES']]))[0] || [];
-    const misses = [];
-    for (let i = 0; i < missFlat.length; i += 2) misses.push({ q: missFlat[i], n: Number(missFlat[i + 1] || 0) });
+    const chatRaw = await pipe(spanMonths.map((m) => ['LRANGE', `mika:chat:${m}`, 0, 19999]));
+    const chat = spanMonths.flatMap((m, i) => parseRows(chatRaw[i]))
+      .filter((r) => r.t && r.t.slice(0, 10) >= from && r.t.slice(0, 10) <= to);
+
+    const searchRaw = await pipe(spanMonths.map((m) => ['LRANGE', `search:log:${m}`, 0, 4999]));
+    const search = spanMonths.flatMap((m, i) => parseRows(searchRaw[i]))
+      .filter((r) => r.t && r.t.slice(0, 10) >= from && r.t.slice(0, 10) <= to);
+
+    /* 零命中詞是每月一個 ZSET，只能整月合併，沒辦法切到日。
+       範圍跨月時把各月分數相加，前端會標明這一項是以月為單位。 */
+    const missRaw = await pipe(spanMonths.map((m) => ['ZRANGE', `search:miss:${m}`, 0, 99, 'REV', 'WITHSCORES']));
+    const missMap = {};
+    spanMonths.forEach((m, i) => {
+      const flat = missRaw[i] || [];
+      for (let j = 0; j < flat.length; j += 2) missMap[flat[j]] = (missMap[flat[j]] || 0) + Number(flat[j + 1] || 0);
+    });
+    const misses = Object.keys(missMap).map((q) => ({ q, n: missMap[q] }))
+      .sort((a, b) => b.n - a.n).slice(0, 60);
 
     res.status(200).json({
-      ok: true, today, month,
-      availableMonths: months.map((m) => m.month),
-      chatMonths,
-      total: Number(total || 0),
-      days, months, recent, pages, sections, pageDaily,
+      ok: true, today, from, to, spanDays, earliest,
+      prevFrom, prevTo, prevTotal,
+      chatMonths, availableMonths: months.map((m) => m.month),
+      total, days, months, pages, sections, pageDaily,
       chat, search, misses,
     });
   } catch (e) {

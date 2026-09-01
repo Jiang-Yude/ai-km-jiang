@@ -18,6 +18,12 @@
     });
   }
   function num(n) { return (Number(n) || 0).toLocaleString(); }
+  /* 純字串日期加減，不碰時區 */
+  function shiftDay(day, n) {
+    var d = new Date(day + 'T00:00:00Z');
+    d.setUTCDate(d.getUTCDate() + n);
+    return d.toISOString().slice(0, 10);
+  }
 
   /* ── 問題分類：關鍵詞規則，不是 AI 判讀 ───────────────
      順序就是判定順序，先命中先算。attack 與 readpage 一定要排在前面，
@@ -234,24 +240,22 @@
     uq.forEach(function (r) { r._k = classify(r.text).k; r._p = norm(r.page); });
 
     // 數字卡
-    var monthPV = (S.days || []).reduce(function (a, d) { return a + d.count; }, 0);
+    var rangePV = (S.days || []).reduce(function (a, d) { return a + d.count; }, 0);
     var todayPV = 0;
     (S.days || []).forEach(function (d) { if (d.date === S.today) todayPV = d.count; });
-    var mi = (S.months || []).map(function (m) { return m.month; }).indexOf(S.month);
-    var prev = mi > 0 ? S.months[mi - 1].count : 0;
-    var delta = prev ? Math.round((monthPV - prev) / prev * 100) : null;
+
+    /* 跟「前一段等長期間」比，不是跟上個月比。
+       月初打開頁面時「本月 vs 上月」會顯示比上月少 99%，那是天數不對等造成的假訊號。 */
+    var prev = Number(S.prevTotal || 0);
+    var delta = prev ? Math.round((rangePV - prev) / prev * 100) : null;
+    var dcls = delta == null ? 'flat' : (delta > 0 ? 'up' : (delta < 0 ? 'down' : 'flat'));
+    var dtxt = delta == null ? '前一段沒有資料可比'
+      : (delta > 0 ? '比前 ' + S.spanDays + ' 天多 ' + delta + '%'
+        : (delta < 0 ? '比前 ' + S.spanDays + ' 天少 ' + Math.abs(delta) + '%' : '跟前一段一樣'));
+    var perDay = S.spanDays ? Math.round(rangePV / S.spanDays) : 0;
+
     var sids = {}, vids = {};
     chatRows().forEach(function (r) { sids[r.sid] = 1; vids[r.vid] = 1; });
-    var dcls = delta == null ? 'flat' : (delta > 0 ? 'up' : (delta < 0 ? 'down' : 'flat'));
-    var dtxt = delta == null ? '沒有上月可比' : (delta > 0 ? '比上月多 ' + delta + '%' : (delta < 0 ? '比上月少 ' + Math.abs(delta) + '%' : '跟上月一樣'));
-
-    /* 近 7 日 vs 前 7 日：跨月也算得出來，比「本月累計」更早看得到趨勢反轉 */
-    var rc = S.recent || [];
-    var w1 = rc.slice(-7).reduce(function (a, d) { return a + d.count; }, 0);
-    var w0 = rc.slice(-14, -7).reduce(function (a, d) { return a + d.count; }, 0);
-    var wd = w0 ? Math.round((w1 - w0) / w0 * 100) : null;
-    var wcls = wd == null ? 'flat' : (wd > 0 ? 'up' : (wd < 0 ? 'down' : 'flat'));
-    var wtxt = wd == null ? '前七天沒有資料可比' : (wd > 0 ? '比前七天多 ' + wd + '%' : (wd < 0 ? '比前七天少 ' + Math.abs(wd) + '%' : '跟前七天一樣'));
 
     /* 咪卡答不出來的比例：CX 說這是四個「導向行動」的指標之一 */
     var FAILRE = /查不到|找不到|沒有相關|站上沒有|站內沒有|目前沒有|沒有這方面|還沒有寫|沒有收錄/;
@@ -260,16 +264,11 @@
     var failRate = botAll.length ? Math.round(botFail.length / botAll.length * 100) : null;
 
     $('tiles').innerHTML = [
-      ['近 7 日瀏覽', num(w1), wtxt, wcls],
-      ['本月瀏覽', num(monthPV), dtxt, dcls],
-      (S.month === (S.today || '').slice(0, 7)
-        ? ['今日瀏覽', num(todayPV), S.today, 'flat']
-        : (function () {
-            var pk = (S.days || []).reduce(function (a, b) { return b.count > a.count ? b : a; }, { date: '', count: 0 });
-            return ['這個月最高的一天', num(pk.count), pk.date || '沒有資料', 'flat'];
-          })()),
-      ['本月有人問咪卡', num(uq.length) + ' 則', Object.keys(sids).length + ' 段對話 / ' + Object.keys(vids).length + ' 人', 'flat'],
-      ['咪卡答不出來', failRate == null ? '—' : failRate + '%', botAll.length ? botFail.length + ' / ' + botAll.length + ' 則回答' : '本月沒有回答紀錄', failRate != null && failRate > 20 ? 'down' : 'flat'],
+      ['這段期間瀏覽', num(rangePV), dtxt, dcls],
+      ['平均每天', num(perDay), S.spanDays + ' 天平均', 'flat'],
+      ['今日瀏覽', num(todayPV), S.today, 'flat'],
+      ['有人問咪卡', num(uq.length) + ' 則', Object.keys(sids).length + ' 段對話 / ' + Object.keys(vids).length + ' 人', 'flat'],
+      ['咪卡答不出來', failRate == null ? '—' : failRate + '%', botAll.length ? botFail.length + ' / ' + botAll.length + ' 則回答' : '這段期間沒有回答紀錄', failRate != null && failRate > 20 ? 'down' : 'flat'],
       ['站內搜尋', num((S.search || []).length) + ' 次', (S.misses || []).length + ' 個詞找不到東西', 'flat'],
       ['全站累計瀏覽', num(S.total), '開站到現在（背景數字）', 'flat'],
     ].map(function (t) {
@@ -284,8 +283,8 @@
     var chatDays = Object.keys(byDay).sort().map(function (d) { return { d: d, v: byDay[d] }; });
     areaChart($('chart-chat'), chatDays, 'var(--k1)', '則提問');
     var peakDay = chatDays.reduce(function (a, b) { return b.v > a.v ? b : a; }, { d: '', v: 0 });
-    $('cap-pv').textContent = '本月每日瀏覽數。' + (delta == null ? '' : dtxt + '。') + '滑過任一天看數字。';
-    $('cap-chat').textContent = '本月每日有多少則訪客提問。' + (peakDay.v ? '最多的一天是 ' + peakDay.d + '，' + peakDay.v + ' 則。' : '') + '這條動起來通常代表當天有課或有人在現場用。';
+    $('cap-pv').textContent = S.from + ' 到 ' + S.to + ' 每日瀏覽數。' + (delta == null ? '' : dtxt + '。') + '滑過任一天看數字。';
+    $('cap-chat').textContent = '同一段期間每日有多少則訪客提問。' + (peakDay.v ? '最多的一天是 ' + peakDay.d + '，' + peakDay.v + ' 則。' : '') + '這條動起來通常代表當天有課或有人在現場用。';
 
     renderPages();
     renderMonthPages();
@@ -332,7 +331,7 @@
     var keys = Object.keys(agg);
     var host = $('pages-month');
     if (!keys.length) {
-      host.innerHTML = '<p class="read">還沒有本月每頁資料。每頁每日的記錄從 2026-09-01 才開始，在那之前只有累計總數。</p>';
+      host.innerHTML = '<p class="read">這段期間還沒有每頁每日資料。每頁每日的記錄從 2026-09-01 才開始，在那之前只有累計總數。</p>';
       $('cap-pmonth').textContent = '';
       return;
     }
@@ -341,7 +340,7 @@
     var rows = keys.map(function (p) { return { key: p, label: title(p), v: agg[p], sub: cum[p] || 0, color: 'var(--k3)' }; })
       .sort(function (a, b) { return b.v - a.v; }).slice(0, 15);
     hbars(host, rows, { selKey: sel.page, onPick: function (r) { sel.page = (sel.page === r.key ? null : r.key); renderPages(); renderMonthPages(); renderChat(); } });
-    $('cap-pmonth').textContent = '本月瀏覽前 15 名，灰色斜線後面是累計數。本月排前面但累計不高的，就是正在被看的新內容。';
+    $('cap-pmonth').textContent = '這段期間瀏覽前 15 名，灰色斜線後面是開站到現在的累計數。這段期間排前面但累計不高的，就是正在被看的新內容。';
   }
 
   function renderChat() {
@@ -363,21 +362,33 @@
     $('cap-kinds').textContent = topk ? ('本月 ' + uq.length + ' 則提問，最多的是「' + topk.label + '」' + topk.v + ' 則（' + Math.round(topk.v / uq.length * 100) + '%）。點一條只看那一類。')
       : '本月還沒有提問。';
 
-    // 意圖佔比隨時間變化（依當月分週）
-    var buckets = [];
-    for (var w = 0; w < 5; w++) {
-      var lo = w * 7 + 1, hi = Math.min(lo + 6, 31);
-      buckets.push({ label: lo + '–' + hi + ' 日', c: {}, total: 0 });
-    }
+    // 意圖佔比隨時間變化：依範圍長度決定一桶幾天，短範圍看週、長範圍看月
+    var bucketDays = S.spanDays <= 45 ? 7 : (S.spanDays <= 200 ? 30 : 90);
+    var bucketName = bucketDays === 7 ? '週' : (bucketDays === 30 ? '月' : '季');
+    var buckets = [], bmap = {};
+    (function () {
+      var d = S.from;
+      while (d <= S.to) {
+        var end = shiftDay(d, bucketDays - 1);
+        if (end > S.to) end = S.to;
+        var b = { label: d.slice(5) + '～' + end.slice(5), from: d, to: end, c: {}, total: 0 };
+        buckets.push(b);
+        d = shiftDay(end, 1);
+        if (buckets.length > 40) break;
+      }
+    })();
     uq.forEach(function (r) {
-      var dd = Number(r.t.slice(8, 10));
-      var b = buckets[Math.min(4, Math.floor((dd - 1) / 7))];
-      b.c[r._k] = (b.c[r._k] || 0) + 1; b.total += 1;
+      var day = r.t.slice(0, 10);
+      for (var i = 0; i < buckets.length; i++) {
+        if (day >= buckets[i].from && day <= buckets[i].to) {
+          buckets[i].c[r._k] = (buckets[i].c[r._k] || 0) + 1; buckets[i].total += 1; break;
+        }
+      }
     });
     stackChart($('chart-stack'), buckets, kinds);
     var liveB = buckets.filter(function (b) { return b.total > 0; });
     $('cap-stack').textContent = liveB.length >= 2
-      ? '同一個月裡，每一週的問題種類佔比。看的是比例不是數量，因為數量會被「那週有沒有上課」帶著跑。某一類的比例一直往上，代表那件事變成常態需求，值得直接做成頁面而不是每次讓咪卡回答。'
+      ? '每一' + bucketName + '的問題種類佔比。看的是比例不是數量，因為數量會被「那段時間有沒有上課」帶著跑。某一類的比例一直往上，代表那件事變成常態需求，值得直接做成頁面而不是每次讓咪卡回答。'
       : '';
 
     // 熱區矩陣
@@ -399,7 +410,7 @@
       $('cap-matrix').textContent = '';
     }
 
-    // 明細：同一個訪客（vid）的對話全部串在一起，跨頁、跨天都收在同一張卡
+    // 明細：先列訪客清單，點某一位才展開他的對話串（36 位全攤開會有七千像素）
     var q = ($('cq').value || '').trim().toLowerCase();
     var expand = $('showbot').checked;
 
@@ -410,15 +421,28 @@
       if (q && r.text.toLowerCase().indexOf(q) < 0) return false;
       return true;
     }
-
     var filtering = !!(sel.page || sel.kind || q);
+
     var byVid = {};
     chatRows().forEach(function (r) { (byVid[r.vid] = byVid[r.vid] || []).push(r); });
     var convs = Object.keys(byVid).map(function (v) {
       var list = byVid[v].slice().sort(seqSort);
-      return { vid: v, list: list, hit: list.filter(hits).length, last: list[list.length - 1].t };
+      var qs = list.filter(function (r) { return r.role === 'user'; });
+      var pages = {}, names = {}, kc = {};
+      list.forEach(function (r) {
+        pages[norm(r.page)] = 1;
+        if (r.name) names[r.name] = 1;
+        if (r.role === 'user') { var k = classify(r.text).k; kc[k] = (kc[k] || 0) + 1; }
+      });
+      var topK = Object.keys(kc).sort(function (a, b) { return kc[b] - kc[a]; })[0];
+      return {
+        vid: v, list: list, qs: qs.length, pages: Object.keys(pages).length,
+        names: Object.keys(names), topK: topK, topN: topK ? kc[topK] : 0,
+        first: list[0].t, last: list[list.length - 1].t,
+        /* 沒有篩選條件時每一列都會「命中」，那條藍邊就失去意義，所以只在有篩選時算 */
+        hit: filtering ? list.filter(hits).length : 0,
+      };
     });
-    // 有篩選條件時只留命中的訪客；沒有條件時全部留下
     var show = convs.filter(function (c) { return !filtering || c.hit > 0; })
       .sort(function (a, b) { return a.last < b.last ? 1 : -1; });
 
@@ -426,59 +450,74 @@
     if (sel.page) f.push('頁面：' + title(sel.page));
     if (sel.kind) f.push('類型：' + kindOf(sel.kind).n);
     if (q) f.push('關鍵字：' + q);
-    var totalQ = show.reduce(function (a, c) { return a + c.list.filter(function (r) { return r.role === 'user'; }).length; }, 0);
+    var totalQ = show.reduce(function (a, c) { return a + c.qs; }, 0);
     $('filt').textContent = '目前：' + (f.length ? f.join('　') : '全部')
       + '　' + show.length + ' 位訪客 / ' + totalQ + ' 則提問';
 
-    var out = [];
-    show.slice(0, 60).forEach(function (c) {
-      var qs = c.list.filter(function (r) { return r.role === 'user'; });
-      var pages = {}, names = {};
-      c.list.forEach(function (r) { pages[norm(r.page)] = 1; if (r.name) names[r.name] = 1; });
-      var pageKeys = Object.keys(pages);
-      var days = {};
-      c.list.forEach(function (r) { days[r.t.slice(0, 10)] = 1; });
-      /* 名字是訪客自己在對話裡打的，不是帳號。有時候他們把問題直接打進去，
-         所以識別碼擺前面當主鍵，自稱放後面當補充。 */
-      var nameList = Object.keys(names);
-      var who = '訪客 ' + c.vid.slice(0, 8) + (nameList.length ? '（自稱 ' + nameList.join('、') + '）' : '');
+    var out = ['<div class="vlist">',
+      '<div class="vhead"><span>訪客</span><span class="n">問</span><span class="n">頁</span><span class="dt">最後出現</span><span class="tp">主要在問</span></div>'];
+    show.forEach(function (c, idx) {
+      var k = c.topK ? kindOf(c.topK) : null;
+      out.push('<div class="vrow' + (c.hit ? ' hit' : '') + '" data-i="' + idx + '">'
+        + '<span class="nm"><span class="cav">👤</span><b>' + esc(c.vid.slice(0, 8)) + '</b>'
+        + (c.names.length ? '<small>' + esc(c.names.join('、')) + '</small>' : '') + '</span>'
+        + '<span class="n">' + c.qs + '</span>'
+        + '<span class="n">' + c.pages + '</span>'
+        + '<span class="dt">' + esc(c.last.slice(5, 10)) + '</span>'
+        + '<span class="tp">' + (k ? '<i style="background:' + k.c + '"></i><span>' + esc(k.n) + ' ×' + c.topN + '</span>' : '') + '</span>'
+        + '</div>');
+      out.push('<div class="vbody" data-b="' + idx + '"></div>');
+    });
+    out.push('</div>');
+    if (!show.length) out = ['<p class="read">這個條件下沒有對話。</p>'];
+    $('chatlist').innerHTML = out.join('');
 
-      out.push('<div class="conv' + (c.hit ? ' hit' : '') + '">');
-      out.push('<div class="ch">'
-        + '<span class="who">👤 ' + esc(who) + '</span>'
-        + '<span class="pg">' + esc(pageKeys.length === 1 ? title(pageKeys[0]) : '走過 ' + pageKeys.length + ' 個頁面') + '</span>'
-        + '<span>' + esc(c.list[0].t.slice(0, 10)) + (Object.keys(days).length > 1 ? ' 起 ' + Object.keys(days).length + ' 天' : '') + '</span>'
-        + '<span class="cnt">' + qs.length + ' 問 / ' + (c.list.length - qs.length) + ' 答</span>'
-        + '</div><div class="body">');
-
+    /* 對話串等到真的點開才畫，不要一次生三百則訊息的 DOM */
+    function drawConv(c, host) {
+      var o = [];
       var lastSid = null, lastPage = null;
       c.list.forEach(function (r) {
         var p = norm(r.page);
         if (lastSid !== null && (r.sid !== lastSid || p !== lastPage)) {
-          out.push('<div class="sep"><span>' + esc(r.t.slice(5, 16)) + '　' + esc(title(p)) + '</span></div>');
+          o.push('<div class="sep"><span>' + esc(r.t.slice(5, 16)) + '　' + esc(title(p)) + '</span></div>');
+        } else if (lastSid === null) {
+          o.push('<div class="sep"><span>' + esc(r.t.slice(5, 16)) + '　' + esc(title(p)) + '</span></div>');
         }
         lastSid = r.sid; lastPage = p;
         if (r.role === 'user') {
           var k = classify(r.text);
-          out.push('<div class="msg u' + (filtering && hits(r) ? ' on' : '') + '">'
+          o.push('<div class="msg u' + (filtering && hits(r) ? ' on' : '') + '">'
             + '<span class="t">' + esc(r.t.slice(5, 16)) + '</span>'
             + '<span class="bub"><span class="kd">' + esc(k.n) + '</span>' + esc(r.text) + '</span></div>');
         } else {
           var long = r.text.length > 150;
-          out.push('<div class="msg b">'
+          o.push('<div class="msg b">'
             + '<span class="ava">🐱</span>'
             + '<span class="bub' + (long && !expand ? ' clip' : '') + '">' + esc(r.text) + '</span></div>');
         }
       });
-      out.push('</div></div>');
+      host.innerHTML = o.join('');
+      Array.prototype.forEach.call(host.querySelectorAll('.bub.clip'), function (b) {
+        b.addEventListener('click', function (e) { e.stopPropagation(); b.classList.remove('clip'); });
+      });
+    }
+
+    Array.prototype.forEach.call($('chatlist').querySelectorAll('.vrow'), function (row) {
+      row.addEventListener('click', function () {
+        var i = Number(row.getAttribute('data-i'));
+        var host = $('chatlist').querySelector('[data-b="' + i + '"]');
+        var opening = !host.classList.contains('on');
+        if (opening && !host.innerHTML) drawConv(show[i], host);
+        host.classList.toggle('on', opening);
+        row.classList.toggle('open', opening);
+      });
     });
-    if (!show.length) out.push('<p class="read">這個條件下沒有對話。</p>');
-    else if (show.length > 60) out.push('<p class="read">只畫了最近 60 位訪客，其餘 ' + (show.length - 60) + ' 位請用篩選或搜尋縮小範圍。</p>');
-    $('chatlist').innerHTML = out.join('');
-    // 折疊的長回答點一下展開
-    Array.prototype.forEach.call($('chatlist').querySelectorAll('.bub.clip'), function (b) {
-      b.addEventListener('click', function () { b.classList.remove('clip'); });
-    });
+
+    /* 有篩選條件而且只命中一位訪客時，直接幫他打開，少一次點擊 */
+    if (filtering && show.length === 1) {
+      var r0 = $('chatlist').querySelector('.vrow');
+      if (r0) r0.click();
+    }
   }
 
   /* ── 異常訊號：規則掃出來的，不是結論 ───────────────── */
@@ -520,7 +559,7 @@
       out.push([rate > 20 ? '🕳️' : '✅', '咪卡答不出來的比例：' + rate + '%',
         bots.length + ' 則回答裡有 ' + fails.length + ' 則說了「查不到／站上沒有」。'
         + (rate > 20 ? '偏高，多半是內容缺口或別名沒補。' : '在正常範圍。')
-        + '要撈出對應的問句：node scripts/mika-failed-queries.mjs ' + S.month, rate <= 20]);
+        + '要撈出對應的問句：node scripts/mika-failed-queries.mjs ' + S.to.slice(0, 7), rate <= 20]);
     }
 
     // 有人問但那一頁沒被記流量
@@ -549,13 +588,13 @@
       h.push('<tr><td>' + esc(r.q) + '</td><td style="text-align:right;font-family:JetBrains Mono,monospace">' + r.n + '</td></tr>');
     });
     h.push('</tbody>');
-    if (!m.length) h = ['<tbody><tr><td style="padding:16px;color:var(--ink-faint)">這個月沒有零命中的搜尋。</td></tr></tbody>'];
+    if (!m.length) h = ['<tbody><tr><td style="padding:16px;color:var(--ink-faint)">這段期間沒有零命中的搜尋。</td></tr></tbody>'];
     $('misslist').innerHTML = h.join('');
     var s = S.search || [];
     var top = {};
     s.forEach(function (r) { if (r.q) top[r.q] = (top[r.q] || 0) + 1; });
     var tk = Object.keys(top).sort(function (a, b) { return top[b] - top[a]; }).slice(0, 8);
-    $('searchnote').textContent = '本月站內搜尋共 ' + s.length + ' 次'
+    $('searchnote').textContent = '這段期間站內搜尋共 ' + s.length + ' 次'
       + (tk.length ? '，最常搜的是：' + tk.map(function (k) { return k + '（' + top[k] + '）'; }).join('、') : '')
       + '。搜尋次數本來就遠少於提問次數，因為多數人直接問咪卡。';
   }
@@ -582,10 +621,12 @@
   }
 
   /* ── 取資料 ───────────────── */
-  function load(pw, month) {
+  var range = { from: null, to: null };   // null = 交給後端給預設（最近 30 天）
+  function load(pw, r) {
+    r = r || {};
     return fetch('/api/stats-admin', {
       method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ pw: pw, month: month || undefined }),
+      body: JSON.stringify({ pw: pw, from: r.from || undefined, to: r.to || undefined }),
     }).then(function (r) {
       if (r.status === 403) throw new Error('密碼不對。');
       if (r.status === 429) throw new Error('嘗試太多次，等一分鐘再試。');
@@ -599,22 +640,50 @@
 
   function boot(d) {
     S = d;
+    range = { from: S.from, to: S.to };
     $('gate').hidden = true;
     $('dash').hidden = false;
-    var sel2 = $('mon');
-    var all = (S.availableMonths || []).slice();
-    (S.chatMonths || []).forEach(function (m) { if (all.indexOf(m) < 0) all.push(m); });
-    all.sort().reverse();
-    sel2.innerHTML = all.map(function (m) { return '<option value="' + m + '"' + (m === S.month ? ' selected' : '') + '>' + m + '</option>'; }).join('');
-    $('stamp').textContent = '資料讀取時間 ' + new Date().toLocaleString('zh-TW', { hour12: false });
+    $('d1').value = S.from; $('d2').value = S.to;
+    $('d1').min = S.earliest; $('d2').max = S.today;
+    $('d1').max = S.today; $('d2').min = S.earliest;
+    markSpan();
+    $('rangelabel').textContent = S.from + ' 到 ' + S.to + '（' + S.spanDays + ' 天）'
+      + '　資料最早到 ' + S.earliest;
+    $('stamp').textContent = '讀取於 ' + new Date().toLocaleString('zh-TW', { hour12: false });
     render();
+  }
+
+  /* 哪一顆範圍鈕該亮：用實際天數回推，自訂範圍就一顆都不亮 */
+  function markSpan() {
+    Array.prototype.forEach.call(document.querySelectorAll('[data-span]'), function (b) {
+      var v = b.getAttribute('data-span');
+      var on = (v === 'all')
+        ? (S.from === S.earliest && S.to === S.today)
+        : (Number(v) === S.spanDays && S.to === S.today);
+      b.classList.toggle('on', on);
+    });
+  }
+
+  function reload(r) {
+    var pw = '';
+    try { pw = sessionStorage.getItem(PW_KEY) || ''; } catch (e) { /* 忽略 */ }
+    $('stamp').textContent = '讀取中…';
+    load(pw, r).then(function (d) {
+      S = d; range = { from: S.from, to: S.to };
+      sel.page = null; sel.kind = null;
+      $('d1').value = S.from; $('d2').value = S.to;
+      markSpan();
+      $('rangelabel').textContent = S.from + ' 到 ' + S.to + '（' + S.spanDays + ' 天）　資料最早到 ' + S.earliest;
+      $('stamp').textContent = '讀取於 ' + new Date().toLocaleString('zh-TW', { hour12: false });
+      render();
+    }).catch(function (e) { $('stamp').textContent = '讀取失敗：' + (e.message || e); });
   }
 
   function fail(msg) { $('err').textContent = msg; }
 
-  function tryEnter(pw, month) {
+  function tryEnter(pw) {
     fail('讀取中…');
-    load(pw, month).then(function (d) {
+    load(pw, null).then(function (d) {
       try { sessionStorage.setItem(PW_KEY, pw); } catch (e) { /* 私密視窗會丟例外 */ }
       fail('');
       boot(d);
@@ -628,13 +697,18 @@
 
     $('go').addEventListener('click', function () { tryEnter($('pw').value); });
     $('pw').addEventListener('keydown', function (e) { if (e.key === 'Enter') tryEnter($('pw').value); });
-    $('mon').addEventListener('change', function () {
-      var pw = sessionStorage.getItem(PW_KEY) || '';
-      load(pw, $('mon').value).then(function (d) { S = d; sel.page = null; sel.kind = null; render(); });
+
+    Array.prototype.forEach.call(document.querySelectorAll('[data-span]'), function (b) {
+      b.addEventListener('click', function () {
+        var v = b.getAttribute('data-span');
+        if (v === 'all') reload({ from: S.earliest, to: S.today });
+        else reload({ from: shiftDay(S.today, -(Number(v) - 1)), to: S.today });
+      });
     });
-    $('reload').addEventListener('click', function () {
-      var pw = sessionStorage.getItem(PW_KEY) || '';
-      load(pw, $('mon').value).then(function (d) { S = d; render(); $('stamp').textContent = '資料讀取時間 ' + new Date().toLocaleString('zh-TW', { hour12: false }); });
+    $('go2').addEventListener('click', function () {
+      var a = $('d1').value, b2 = $('d2').value;
+      if (!a || !b2) { $('stamp').textContent = '起訖日期兩個都要選'; return; }
+      reload({ from: a, to: b2 });
     });
     $('lock').addEventListener('click', function () {
       try { sessionStorage.removeItem(PW_KEY); } catch (e) { /* 忽略 */ }
