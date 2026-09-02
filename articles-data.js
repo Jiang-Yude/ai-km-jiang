@@ -2380,4 +2380,22 @@ window.ARTICLES = [
     related: ["what-is-loop-engineering", "what-is-graph-engineering", "ai-era-websites-for-agents"]
   },
 
+  {
+    id: "cloudflare-free-plan-limits",
+    url: "articles/cloudflare-free-plan-limits/",
+    date: "2026-09-02",
+    updated: "2026-09-02",
+    title: "Cloudflare 免費方案夠用嗎？｜每天十萬次很寬，每一輪五十件事很緊",
+    problem: "把一個會自己跑的小服務放上 Cloudflare 免費方案，看過每天十萬次請求就放心上線，結果東西跑得很慢又查不出原因；也不知道什麼時候該花每月五美元升級。",
+    audience: "已經用 AI 做出 LINE 機器人、定時備份、表單後端這類會自己跑的小服務並放在 Cloudflare 上的人；看過免費額度就上線卻跑得很慢的人；正在決定要不要升級付費方案的人。",
+    summary: "用我的 LINE 群助理萊卡當案例：它在 Cloudflare 免費方案上自動把群組照片備份到 Google 雲端硬碟，每一輪只存得下兩三張，查完發現每天總用量連上限百分之一都不到。把免費方案的規則拆成兩種額度，每天總量與每一輪上限，兩張表對照萊卡實際用量。五個實際踩到的雷：每輪五十個呼叫一張照片吃掉十幾個、額度不夠時整批放棄變成永遠零、cron 全帳號只有五個換 Worker 時新舊並存掛不上、藍綠切換推錯程式線把整條備份丟掉、2026 年 9 月起 D1 超額直接失敗。附付費判準表與上線前三題自檢。",
+    tags: {
+      topic: ["AI應用", "AI工作流", "工具操作"],
+      level: ["基礎"],
+      content_type: ["案例文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["line-group-ai-workflow", "github-vercel-cloudflare-compare", "what-is-loop-engineering", "mika-to-laika-product-character-design"]
+  },
+
 ];
