@@ -46,9 +46,33 @@ if [ -f "$REPO_ROOT/.vercel/project.json" ]; then
   echo "   （已帶上 .vercel/project.json，發布環境檢查才會過）"
 fi
 
+
+# ─── 登記簿（圖譜工程 v2 P2，2026-09-05）：開桌即登記，讓別的 session 看得到「誰在動哪些檔」 ───
+# 第一版純警告：同 slug 已有人在做、或範圍跟別人重疊，只印警告不擋。工具不在這台就略過。
+# articles-data.js 與 search-aliases.js 是「預期共享熱點」（hotzones.json shared_hotspots），每篇都要 append，
+# 重疊只會給低階提示不給警告；真正的合併衝突交 merge-publish 的 both-added 處理。
+KB="${HOME}/Library/Mobile Documents/iCloud~md~obsidian/Documents/江昱德 主知識庫"
+COORD="${KB}/_agent/tools/agent-coordinator/coordinator.py"
+if [[ -f "${COORD}" && -d "${AGENT_STATE_DIR:-${HOME}/Developer/agent-state}" ]]; then
+  echo ""
+  echo "▶ 登記簿：登記這張桌子的範圍…"
+  python3 "${COORD}" claim \
+    --task-key "site-${SLUG}" \
+    --scope "site:articles/${SLUG}/**" \
+    --scope "site:articles-data.js" \
+    --scope "site:search-aliases.js" \
+    --scope "site:images/og/${SLUG}.jpg" \
+    --scope "site:images/articles/${SLUG}-*" \
+    --intent "官網工作桌 ${SLUG}（new-article-workspace 自動登記）" \
+    --branch "${BRANCH}" --worktree "${WT_DIR}" >/dev/null \
+    || echo "   （登記失敗，不影響開桌；請手動 claim）"
+  echo "   收工時記得 release：python3 \"${COORD}\" release --claim site-${SLUG}"
+else
+  echo "   （這台沒有登記簿工具或 clone，略過登記）"
+fi
 echo ""
 echo "✅ 桌子開好：$WT_DIR"
-echo "   分支：$BRANCH（基於 origin/main 最新）"
+echo "   分支：${BRANCH}（基於 origin/main 最新）"
 echo "   注意：分支只 commit 來源檔（文章目錄、配圖、articles-data.js 自己那筆）。"
 echo "   生成檔（site-index.json、article-keywords.js、en 資料、sitemap）不要 commit，"
 echo "   merge-publish 會在上線時統一重建。"

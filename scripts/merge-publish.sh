@@ -42,7 +42,7 @@ fi
 GIT_COMMON_DIR="$(git rev-parse --git-common-dir)"
 LOCK="$GIT_COMMON_DIR/merge-publish.lock"
 if ! mkdir "$LOCK" 2>/dev/null; then
-  echo "⛔ 另一個 merge-publish 正在進行（鎖：$LOCK）。"
+  echo "⛔ 另一個 merge-publish 正在進行（鎖：${LOCK}）。"
   echo "   合併排隊是本機制唯一的排隊點，等它跑完（含線上驗收約 5-10 分鐘）再重跑。"
   echo "   確認沒有別的 merge-publish 在跑卻留著鎖，才手動 rmdir 該資料夾。"
   exit 1
@@ -59,7 +59,7 @@ fi
 
 if ! git show-ref --verify --quiet "refs/heads/$BRANCH" \
    && ! git show-ref --verify --quiet "refs/remotes/origin/$BRANCH"; then
-  echo "⛔ 找不到分支：$BRANCH（本地與 origin 都沒有）。"
+  echo "⛔ 找不到分支：${BRANCH}（本地與 origin 都沒有）。"
   exit 1
 fi
 
@@ -92,6 +92,11 @@ if git diff --cached --quiet; then
   exit 1
 fi
 
+# ─── 第三道出口（圖譜工程 v2 P2，2026-09-05）：實際要上線的檔案 vs 登記單範圍，純警告 ───
+claim_files=()
+while IFS= read -r -d '' f; do claim_files+=("${f}"); done < <(git -c core.quotePath=false diff --cached --name-only -z)
+bash scripts/agent-claim-check.sh "${BRANCH}" "${claim_files[@]}" || true
+
 echo "▶ 交給 publish.sh（preflight、秘密掃描、commit、push、等建置、路徑驗收）…"
 bash scripts/publish.sh "$MSG"
 
@@ -102,7 +107,7 @@ DEPLOY_JSON=$(vercel inspect "$GIT_MAIN_URL" --format=json 2>/dev/null || true)
 if [[ -n "$DEPLOY_JSON" ]] && grep -q "$EXPECT_SHA" <<<"$DEPLOY_JSON"; then
   echo "✅ SHA 驗收通過：線上建置對應本次 commit $EXPECT_SHA"
 else
-  echo "⚠️ SHA 驗收無法確認（vercel inspect 沒回傳或未含 $EXPECT_SHA）。"
+  echo "⚠️ SHA 驗收無法確認（vercel inspect 沒回傳或未含 ${EXPECT_SHA}）。"
   echo "   不代表失敗，但要人工到 Vercel 後台核對最新 production 建置的 commit。"
   echo "   在核對完成前，本次發布只能標「已 push、驗收待確認」。"
   exit 3
@@ -111,4 +116,4 @@ fi
 echo ""
 echo "✅ merge-publish 完成。收尾建議："
 echo "   桌子可以收：git worktree remove \"\$HOME/Developer/ai-km-jiang-worktrees/<slug>\""
-echo "   分支可以刪：git branch -d $BRANCH（已合併，-d 安全）"
+echo "   分支可以刪：git branch -d ${BRANCH}（已合併，-d 安全）"
