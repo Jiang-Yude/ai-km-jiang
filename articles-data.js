@@ -34,6 +34,23 @@ window.ARTICLE_TAGS = {
 };
 
 window.ARTICLES = [
+  {
+    id: "what-is-ai-office",
+    url: "articles/what-is-ai-office/",
+    date: "2026-09-05",
+    updated: "2026-09-05",
+    title: "AI 辦公室是什麼？怎麼開始最簡單？｜不用去學 AI，叫 AI 來學你",
+    problem: "已經會用 ChatGPT，但做完的東西還是要自己複製貼上存檔；聽過 AI 員工卻不知道跟聊天框差在哪；教學一開頭就叫你開終端機。",
+    audience: "會用 AI 聊天但還沒讓 AI 進到工作流的人，組織裡雜事很多想丟給 AI 的人，以及看到終端機就關掉的人。",
+    summary: "AI 辦公室＝agent、固定資料夾、規則檔三樣東西。三步開起來：下載桌面版、開一個資料夾、叫它自己寫規則檔，每步附可複製指令。整理自 2026 年 9 月跟兩個非營利組織的對談，文末列自己做不來時的三條路。",
+    tags: {
+      topic: ["AI應用", "AIAgent", "工具操作", "AI工作流"],
+      level: ["零基礎入門"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: "https://vocus.cc/salon/Jiang_Coach" },
+    related: ["web-chat-ai-vs-desktop-agent", "diary-driven-agent-3x4", "codex-only-auto-worklog", "what-is-loop-engineering"]
+  },
   /* ── AI 時代，網站開始同時服務人與 AI（趨勢）── */
   {
     id: "ai-era-websites-for-agents",
@@ -427,7 +444,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: "https://vocus.cc/salon/Jiang_Coach" },
-    related: ["questionnaire-to-slides-agent-workflow", "own-ai-team-at-work", "caught-ai-slacking-into-rules", "line-group-ai-workflow", "codex-log-health-check", "meeting-record-agent-workflow", "vibe-coding-ten-half-products"]
+    related: ["questionnaire-to-slides-agent-workflow", "own-ai-team-at-work", "caught-ai-slacking-into-rules", "line-group-ai-workflow", "codex-log-health-check", "meeting-record-agent-workflow", "vibe-coding-ten-half-products", "what-is-ai-office"]
   },
 
   /* ── 3. 有標準答案的交給程式，沒標準答案的才輪到 AI（觀點）── */
@@ -822,7 +839,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: "https://vocus.cc/salon/Jiang_Coach" },
-    related: ["questionnaire-to-slides-agent-workflow", "teacher-prep-knowledge-workflow", "docs-as-system-design-agent", "how-to-train-your-ai-employee", "knowledge-base-three-vault-split", "tidy-mess-before-consulting", "meeting-record-agent-workflow", "inspiration-production-system", "why-split-data-into-cards"]
+    related: ["questionnaire-to-slides-agent-workflow", "teacher-prep-knowledge-workflow", "docs-as-system-design-agent", "how-to-train-your-ai-employee", "knowledge-base-three-vault-split", "tidy-mess-before-consulting", "meeting-record-agent-workflow", "inspiration-production-system", "why-split-data-into-cards", "what-is-ai-office"]
   },
 
   /* ── 24. 用我寫一篇文章的工作流，講清楚什麼是迴圈工程（教學）── */
@@ -841,7 +858,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["what-is-graph-engineering", "strong-ai-models-knowledge-workflow-road", "questionnaire-to-slides-agent-workflow", "loop-round-limit", "five-loops-content-line"]
+    related: ["what-is-graph-engineering", "strong-ai-models-knowledge-workflow-road", "questionnaire-to-slides-agent-workflow", "loop-round-limit", "five-loops-content-line", "what-is-ai-office"]
   },
 
   /* ── 無形資產，越分享越豐盛（觀點）── */
@@ -1350,7 +1367,7 @@ window.ARTICLES = [
     summary: "用新手聽得懂的方式分清聊天型 AI、網頁工具與桌面型 Agent：專案模式的三個痛點、桌面版的範式轉變、Codex 與三層分工工作流，文科生不用寫程式也能上手。",
     tags: {"topic":["差異比較","AIAgent","工具操作","AI工作流"],"level":["零基礎入門"],"content_type":["教學文章"]},
     external: { threads: null, vocus: null },
-    related: ["youtube-to-opinion-report-workflow", "liberal-arts-agent-framework", "train-your-ai-agent-editor", "chatgpt-work-codex-choice", "mac-for-agent-beginners", "ai-employee-four-levels", "messaging-apps-ai-friendliness", "ai-said-it-watched-the-video", "ai-era-websites-for-agents"]
+    related: ["youtube-to-opinion-report-workflow", "liberal-arts-agent-framework", "train-your-ai-agent-editor", "chatgpt-work-codex-choice", "mac-for-agent-beginners", "ai-employee-four-levels", "messaging-apps-ai-friendliness", "ai-said-it-watched-the-video", "ai-era-websites-for-agents", "what-is-ai-office"]
   },
   {
     id: "ai-course-map-from-entry-to-workflow",
