@@ -1,0 +1,375 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="index,follow">
+<title>逐字稿轉出來了，可以直接丟給 AI 摘要嗎｜先清稿再分析，錯字會被當成事實</title>
+<meta name="description" content="上一篇把錄音變成了文字，但那份文字有錯字、沒標點、不知道誰說的。這篇講中間這一步：清稿。清稿的意思是修錯字、保結構、留脈絡，它跟摘要是兩件事。我會講三條我自己立下的鐵則、三個核心方法、一個可以直接貼的提示詞，還有為什麼我">
+<link rel="canonical" href="https://jiangyude.com/articles/meeting-notes-2-clean/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="逐字稿轉出來了，可以直接丟給 AI 摘要嗎｜先清稿再分析，錯字會被當成事實｜江江教練">
+<!-- 分享封面：hero 文字填好後在 repo 根目錄跑 `node scripts/og-shot.mjs meeting-notes-2-clean` 自動截 1200×630 到 images/og/meeting-notes-2-clean.jpg（見 README「文章分享封面（OG 圖）機制」）。別退回 intro-jiang.png 直式人像，會被裁成只剩脖子。 -->
+<meta property="og:image" content="https://jiangyude.com/images/og/meeting-notes-2-clean.jpg">
+<meta property="og:description" content="上一篇把錄音變成了文字，但那份文字有錯字、沒標點、不知道誰說的。這篇講中間這一步：清稿。清稿的意思是修錯字、保結構、留脈絡，它跟摘要是兩件事。我會講三條我自己立下的鐵則、三個核心方法、一個可以直接貼的提示詞，還有為什麼我">
+<meta property="og:url" content="https://jiangyude.com/articles/meeting-notes-2-clean/">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:site_name" content="江江教練 · AI 知識管理">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="逐字稿轉出來了，可以直接丟給 AI 摘要嗎｜先清稿再分析，錯字會被當成事實｜江江教練">
+<meta name="twitter:image" content="https://jiangyude.com/images/og/meeting-notes-2-clean.jpg">
+<meta name="twitter:description" content="上一篇把錄音變成了文字，但那份文字有錯字、沒標點、不知道誰說的。這篇講中間這一步：清稿。清稿的意思是修錯字、保結構、留脈絡，它跟摘要是兩件事。我會講三條我自己立下的鐵則、三個核心方法、一個可以直接貼的提示詞，還有為什麼我">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"逐字稿轉出來了，可以直接丟給 AI 摘要嗎｜先清稿再分析，錯字會被當成事實","description":"上一篇把錄音變成了文字，但那份文字有錯字、沒標點、不知道誰說的。這篇講中間這一步：清稿。清稿的意思是修錯字、保結構、留脈絡，它跟摘要是兩件事。我會講三條我自己立下的鐵則、三個核心方法、一個可以直接貼的提示詞，還有為什麼我","author":{"@type":"Person","name":"江昱德","alternateName":"江江教練","jobTitle":"隱性知識提煉師、AI 應用規劃師"},"isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://jiangyude.com/"},"inLanguage":"zh-Hant","url":"https://jiangyude.com/articles/meeting-notes-2-clean/"}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{--ink:#1a1612;--paper:#fefcf8;--muted:#6a635a;--line:#d8cdb8;--green:#5f7553;--blue:#5689b8;--orange:#e85a4f;--soft:#faf5ec;--dark:#2a2018;--shadow:0 18px 45px rgba(107,74,42,.14);--sp-shadow:hsla(35,50%,60%,.15);--sp-shadow-edge:hsla(35,50%,68%,.03);--sp-radius:400px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC","Segoe UI",sans-serif}
+a{color:inherit}
+/* 官網共用導航列 nav.top（與首頁/文章總站同一條） */
+nav.top{position:sticky;top:0;background:rgba(254,252,248,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid #d8cdb8;z-index:100}
+nav.top .container{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:24px;padding:14px 32px}
+.nav-brand-img{justify-self:start;display:flex;align-items:center;text-decoration:none;flex-shrink:0;transition:opacity .2s}
+.nav-brand-img:hover{opacity:.8}.nav-brand-img img{height:40px;width:auto;display:block}
+nav.top ul.nav-menu{justify-self:end;display:flex;gap:22px;list-style:none;margin:0;padding:0;font-size:.95rem;white-space:nowrap}
+nav.top ul.nav-menu a{color:#3a342d;text-decoration:none;transition:color .2s;font-weight:500;white-space:nowrap}
+nav.top ul.nav-menu a:hover{color:#1a1612}nav.top ul.nav-menu a.active{color:#1a1612;font-weight:700}
+.nav-toggle{display:none;background:none;border:none;padding:6px;cursor:pointer;width:36px;height:36px;position:relative}
+.nav-toggle span{display:block;position:absolute;left:8px;right:8px;height:2px;background:#1a1612;border-radius:2px;transition:transform .25s,opacity .25s,top .25s}
+.nav-toggle span:nth-child(1){top:11px}.nav-toggle span:nth-child(2){top:17px}.nav-toggle span:nth-child(3){top:23px}
+.nav-toggle.open span:nth-child(1){top:17px;transform:rotate(45deg)}.nav-toggle.open span:nth-child(2){opacity:0}.nav-toggle.open span:nth-child(3){top:17px;transform:rotate(-45deg)}
+.tablewrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:22px 0;border:1px solid var(--line);border-radius:10px;background:#fff;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.tablewrap table{border-collapse:collapse;width:100%;min-width:600px;font-size:18px;line-height:1.65}
+.tablewrap .zh{display:block;margin-top:5px;font-size:16px;line-height:1.55;color:var(--muted);font-weight:400}
+.tablewrap th,.tablewrap td{padding:12px 14px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top;color:#3a342d}
+.tablewrap thead th{background:var(--soft);font-weight:900;font-size:18px;color:#1a1612;white-space:nowrap}
+.tablewrap tbody tr:last-child td{border-bottom:none}
+.tablewrap td code,.section code{background:var(--soft);border:1px solid var(--line);border-radius:5px;padding:1px 6px;font:500 15px/1.5 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace}
+.inline-figure.wide{max-width:1000px}
+.toc{margin:26px 0 0;padding:20px 22px;background:#fff;border:1px solid var(--line);border-radius:10px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.toc>b{display:block;font-size:15px;letter-spacing:.05em;color:var(--green);margin-bottom:10px}
+.toc ol{margin:0;padding-left:1.35em;font-size:18px;line-height:1.7}
+.toc li{margin-bottom:7px;color:#3a342d}
+.toc a{color:var(--blue);font-weight:700;text-decoration:none}.toc a:hover{text-decoration:underline}
+.toc-hint{margin:12px 0 0!important;font-size:18px!important;color:var(--muted)!important;border-top:1px solid var(--line);padding-top:12px}
+.readmore{margin-top:24px;padding:20px 22px;background:var(--soft);border:1px solid var(--line);border-radius:12px}
+.readmore.near{margin:26px 0 6px;background:rgba(86,137,184,.07);border-color:#bcd0e2}
+.readmore.near b{color:var(--blue);font-size:18px}
+.readmore.near li{font-size:17px;line-height:1.7;margin-bottom:10px}
+.readmore b{display:block;margin-bottom:10px;font-size:19px}
+.readmore ul{margin:0;padding-left:1.25em}
+.readmore a{color:var(--blue);font-weight:700;text-decoration:none}
+.readmore a:hover{text-decoration:underline}
+@media(max-width:820px){.tablewrap table{min-width:560px;font-size:18px}.tablewrap{position:relative}.tablewrap::after{content:"表格可左右滑動 →";position:sticky;left:0;display:block;font-size:15px;color:var(--muted);background:var(--soft);border-top:1px solid var(--line);padding:7px 12px;width:100%}}
+@media(max-width:860px){
+ nav.top .container{grid-template-columns:auto 1fr auto;padding:10px 16px;gap:12px}
+ .nav-brand-img img{height:32px}
+ .nav-toggle{display:block;justify-self:end}
+ nav.top ul.nav-menu{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(254,252,248,.98);backdrop-filter:blur(14px);border-bottom:1px solid #d8cdb8;flex-direction:column;gap:0;padding:8px 0;box-shadow:0 10px 24px rgba(107,74,42,.08)}
+ nav.top ul.nav-menu.open{display:flex}
+ nav.top ul.nav-menu li{border-bottom:1px solid #e8dfc9}
+ nav.top ul.nav-menu li:last-child{border-bottom:none}
+ nav.top ul.nav-menu a{display:block;padding:14px 20px;font-size:1.06rem}
+}
+/* 滑鼠暖光暈（與首頁同一支 spotlight.js） */
+body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradient(var(--sp-radius) circle at var(--mx,50%) var(--my,50%),var(--sp-shadow) 0%,var(--sp-shadow-edge) 45%,transparent 75%);pointer-events:none;z-index:9999;mix-blend-mode:multiply;transition:background .06s linear}
+.hero{position:relative;overflow:hidden;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:72px;padding:96px clamp(20px,6vw,88px) 80px;background:linear-gradient(180deg,#fffcf0 0%,#f9e9d2 100%);color:#1a1612;border-bottom:1px solid #d8cdb8}
+.hero .wc{position:absolute;border-radius:50%;filter:blur(60px);pointer-events:none;z-index:0}
+.hero .wc1{width:420px;height:360px;top:-120px;right:-80px;background:#e8884b;opacity:.15}
+.hero .wc2{width:360px;height:300px;bottom:-110px;left:-70px;background:#5f7553;opacity:.13}
+.hero .wc3{width:280px;height:260px;top:34%;left:14%;background:#a08144;opacity:.10}
+.hero>div{flex:none;width:860px;max-width:100%;position:relative;z-index:2}
+.hero-figure{margin:0;width:420px;flex:none;position:relative;z-index:2}
+.hero-figure img{display:block;width:100%;border-radius:16px;border:1px solid #d8cdb8;box-shadow:0 18px 45px rgba(107,74,42,.16);cursor:zoom-in}
+.hero-figure figcaption{margin-top:10px;font-size:14px;line-height:1.6;color:#6a635a}
+.inline-figure{margin:30px auto 8px;max-width:820px}
+.inline-figure img{display:block;width:100%;border-radius:14px;border:1px solid var(--line);box-shadow:var(--shadow);background:#fff;cursor:zoom-in}
+.inline-figure figcaption{font-size:14px;line-height:1.6;color:var(--muted);margin-top:10px}
+.lightbox{position:fixed;inset:0;z-index:10000;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(12,10,8,.92);cursor:zoom-out;backdrop-filter:blur(4px)}
+.lightbox.open{display:flex}.lightbox img{max-width:96vw;max-height:92vh;border-radius:10px;box-shadow:0 24px 60px rgba(0,0,0,.5)}
+.lightbox-close{position:fixed;top:18px;right:24px;color:#fff;font-size:34px;line-height:1;font-weight:700;cursor:pointer;opacity:.85}
+.kicker{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.55rem;color:#7a5c3a;font-weight:500}
+.hero h1{max-width:none;margin:16px 0 18px;font-size:clamp(36px,6vw,72px);line-height:1.08;overflow-wrap:anywhere}
+.hero p{max-width:none;font-size:clamp(18px,2vw,23px);line-height:1.62;color:#3a342d}
+.cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
+.cta a{display:inline-flex;align-items:center;text-decoration:none;border-radius:8px;padding:12px 16px;font-weight:900}
+.cta .primary{background:#fff;color:#1a1612}.cta .ghost{border:1px solid rgba(255,255,255,.32);color:#fff;background:rgba(255,255,255,.08)}
+.section{padding:54px clamp(20px,6vw,88px);border-top:1px solid var(--line)}
+.inner{width:min(1000px,100%);margin:0 auto}
+.section h2{font-size:clamp(26px,4.2vw,48px);line-height:1.12;margin:0 0 18px}
+.section h3{font-size:clamp(21px,3vw,30px);line-height:1.2;margin:30px 0 12px}
+.lead{font-size:clamp(18px,1.6vw,22px);line-height:1.7;color:#3a342d;max-width:900px}
+.section p{font-size:18px;line-height:1.74;color:#3a342d}.section p+p{margin-top:14px}
+.section ul,.section ol{padding-left:1.4em;font-size:18px;line-height:1.74;color:#3a342d}.section li{margin-bottom:8px}
+.meaning{margin:22px 0;padding:16px 18px;border-left:5px solid var(--blue);background:rgba(86,137,184,.12);border-radius:6px;line-height:1.7;font-size:19px}
+.meaning b{display:block;color:var(--blue);margin-bottom:4px}
+.caveat{margin:0 0 8px;padding:16px 18px;border-left:5px solid var(--orange);background:rgba(232,90,79,.1);border-radius:6px;line-height:1.7;font-size:18px;color:#3a342d}
+.caveat b{display:block;color:var(--orange);margin-bottom:4px}
+.infocard{background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px 24px 22px;box-shadow:0 8px 22px rgba(107,74,42,.08);margin-top:8px}
+.infocard-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.info-item{padding:18px 14px 0}
+.info-item b{display:block;font-size:14px;font-weight:900;letter-spacing:.04em;margin-bottom:7px;text-transform:uppercase}
+.info-item:nth-child(1) b{color:var(--green)}.info-item:nth-child(2) b{color:var(--orange)}.info-item:nth-child(3) b{color:var(--blue)}
+.info-item p{margin:0;font-size:17px;line-height:1.6;color:#3a342d}
+.tagrow{display:flex;flex-wrap:wrap;gap:7px;margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
+.tag{font-size:14px;color:var(--muted);background:var(--soft);border:1px solid var(--line);border-radius:999px;padding:4px 11px}
+.duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:24px}
+.duo.stack{grid-template-columns:1fr}
+.duo .card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:22px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.duo .card.a{border-color:var(--orange)}.duo .card.b{border-color:var(--green);box-shadow:0 8px 24px rgba(95,117,83,.16)}
+.duo .card small{display:block;font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.04em;margin-bottom:9px}
+.duo .card.a small{color:var(--orange)}.duo .card.b small{color:var(--green)}
+.duo .card b{display:block;font-size:22px;line-height:1.3;margin-bottom:12px}.duo .card.a b{color:#c0512f}.duo .card.b b{color:#4a7a59}
+.duo .card p{margin:0;color:#3a342d;line-height:1.75;font-size:18px}
+.workflow-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:24px}
+.workflow-step{background:#fff;border:1px solid var(--line);border-radius:8px;padding:18px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.workflow-step small{display:block;color:var(--orange);font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;margin-bottom:9px}
+.workflow-step b{display:block;font-size:18px;line-height:1.3;margin-bottom:9px}
+.workflow-step p{margin:0;color:#3a342d;line-height:1.6;font-size:16px}
+.codeblock{background:var(--dark);color:#f3ead9;border-radius:8px;padding:18px 20px;font:500 14px/1.65 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;overflow-x:auto;white-space:pre-wrap;margin:20px 0;box-shadow:0 8px 22px rgba(107,74,42,.12)}
+.codeblock .c{color:#f6d7a6;font-weight:600}
+.skillcard{background:#fff;border:1px solid var(--green);border-radius:12px;padding:24px;box-shadow:0 10px 26px rgba(95,117,83,.16);margin-top:8px}
+.skillcard b{display:block;font-size:21px;margin-bottom:8px}
+.skillcard p{margin:0 0 16px;font-size:17px;line-height:1.65;color:#3a342d}
+.cta-band{background:#e6f0e5;color:#3a342d}.cta-band .section{border-top:none}
+.cta-band .inner{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(260px,.85fr);gap:26px;align-items:start}
+.cta-band h2{font-size:clamp(26px,4vw,44px);margin:0 0 16px}.cta-band p,.cta-band .lead{color:rgba(58,52,45,.9);font-size:18px;line-height:1.72}
+.cta-card{border:1px solid #cfe0d2;background:#fbfdfa;border-radius:8px;padding:22px}
+.cta-card b{display:block;color:#48b178;margin-bottom:10px;font-size:18px}.cta-card p{margin:0 0 14px}
+.footer{padding:30px clamp(20px,6vw,88px);font-size:14px;color:var(--muted);background:#fff;border-top:1px solid var(--line)}
+.footer-inner{width:min(1000px,100%);margin:0 auto}
+.footer-links{display:flex;flex-wrap:wrap;gap:6px 12px;margin-bottom:14px}.footer-links a{color:var(--blue);font-weight:900;text-decoration:none;font-size:14px}
+.footer-brand{font-weight:900;font-size:15px;margin-bottom:10px}.footer-note{font-size:13px;line-height:1.6}
+@media(max-width:820px){.infocard-grid{grid-template-columns:1fr}.duo{grid-template-columns:1fr}.workflow-grid{grid-template-columns:1fr}.cta-band .inner{grid-template-columns:1fr}.section{padding:40px 20px}.hero{min-height:52vh;flex-direction:column;justify-content:flex-start;align-items:flex-start;gap:24px}.hero>div{width:100%}.hero-figure{width:100%;max-width:560px}}
+@media(max-width:820px){html,body{overflow-x:hidden}.hero h1{word-break:break-word}}
+</style>
+</head>
+<body class="spotlight">
+<!-- 官網共用導航列 nav.top：與首頁/總站同一條，文章不要自己另做極簡 topbar（江江 2026-06-25：要同一個框架、同一條導航列）。把對應頁面的 class="active" 標在自己那欄。
+     ⚠️ 下面 ul.nav-menu 整塊由 preflight 第 5 關 check-bilingual-nav.mjs 做「逐字比對」，
+        塞任何註解、多一個空白、換行位置不同都會被判導航不一致而擋下發布。要說明就寫在 <ul> 外面（像這裡）。
+        2026-08-16 修：原本的 EN 那行說明註解就夾在 <ul> 裡面，導致照範本起手的新文章一律卡第 5 關
+        （llm-rag-agent-mcp 與 rag-three-retrieval-modes 兩篇同時中招）。註解已移出來，<ul> 內保持乾淨。
+        萬一還是被擋，直接跑：node scripts/check-bilingual-nav.mjs --write --only=<你的檔案路徑> -->
+<nav class="top">
+  <div class="container">
+    <a class="nav-brand-img" href="../../index.html"><img src="../../images/footer-signature.png" alt="江江教練 | 江昱德"></a>
+    <button class="nav-toggle" aria-label="選單"><span></span><span></span><span></span></button>
+    <ul class="nav-menu">
+      <li><a href="../../index.html">首頁</a></li>
+      <li><a href="../../knowledge-architecture.html">知識架構</a></li>
+      <li><a href="../../courses.html">課程</a></li>
+      <li><a href="../../articles.html" class="active">深度文章</a></li>
+      <li><a href="../../skills.html">技能包下載</a></li>
+      <li><a href="../../offers.html">服務方案</a></li>
+      <li class="lang-switch"><a href="../../en/articles.html" hreflang="en">EN</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="wc wc1"></div>
+  <div class="wc wc2"></div>
+  <div class="wc wc3"></div>
+  <div>
+    <div class="kicker">會議記錄三部曲 · 第二篇</div>
+    <p class="article-date" style="margin:0 0 6px;font-size:14px;line-height:1.6;color:#6a635a;">發佈 2026-09-05 ｜ 最後更新 2026-09-05</p>
+    <h1>逐字稿轉出來了，可以直接丟給 AI 摘要嗎｜先清稿再分析，錯字會被當成事實</h1>
+    <p>上一篇把錄音變成了文字，但那份文字有錯字、沒標點、不知道誰說的。這篇講中間這一步：清稿。清稿的意思是修錯字、保結構、留脈絡，它跟摘要是兩件事。我會講三條我自己立下的鐵則、三個核心方法、一個可以直接貼的提示詞，還有為什麼我的系統在這一步刻意不做摘要。</p>
+  </div>
+</section>
+
+<main>
+
+<section class="section" id="start">
+  <div class="inner">
+    <p class="lead">上一篇把錄音變成了文字，但那份文字有錯字、沒標點、不知道誰說的。這篇講中間這一步：清稿。清稿的意思是修錯字、保結構、留脈絡，它跟摘要是兩件事。我會講三條我自己立下的鐵則、三個核心方法、一個可以直接貼的提示詞，還有為什麼我的系統在這一步刻意不做摘要。</p>
+    <div class="duo stack">
+      <div class="card a"><b>適合誰</b><ul><li>轉出來的稿滿是錯字，不知道從哪裡開始改</li><li>曾經把逐字稿直接丟給 ChatGPT 說「幫我整理重點」，出來的摘要看起來很順，但裡面有些名詞你根本沒聽過</li><li>清完之後把原始檔刪了，事後有爭議想回去查，發現回不去</li><li>你們是平起平坐一起做事的關係，逐字稿是拿來對帳和回想的，不是拿來評鑑誰的</li></ul></div>
+      <div class="card b"><b>你可以帶走什麼</b><ul><li>三條鐵則，每條配一個我真實踩過的雷</li><li>受控詞彙表怎麼從零開始建，以及它為什麼是唯一能救回「一致地錯」的東西</li><li>一句給 AI 的授權句，有這句和沒這句，錯字修正率差六倍</li><li>講者怎麼補，免費路線和付費路線各怎麼做</li><li>一個可以直接貼的清稿提示詞</li></ul></div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>先講一個翻車現場</h2>
+    <p>2026 年 5 月 23 日，我在整理一場講師工作流的錄音。MacWhisper 轉出來的稿裡有這些詞：Adrian、紙袋裡、貝克、膠覆餅、Verso、Codec、隱形知識體練師。</p>
+    <p>正確的是：Agent、子代理、備課、做簡報、Vercel、Codex、隱性知識提煉師。</p>
+    <p>如果我當時直接把這份稿丟給 AI 說「幫我摘要」，出來的東西會寫「Adrian 工作流」「膠覆餅技巧」，而且寫得很通順。錯字會被當成事實，然後隱性流傳。真正的關鍵字、人名、指標，會在摘要的過程裡被洗掉。</p>
+    <p>那天之後我在技能包裡鎖了一條規則：MacWhisper 出來的逐字稿，不准直接餵 LLM 整理。先清，再餵。</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>三條鐵則</h2>
+    <h3>鐵則一：原始逐字稿永遠不刪</h3>
+    <p>清稿、順稿、提煉，每一步都會丟資訊。被精簡掉的細節、被誤合的句子、被改寫的口語，事後真的有爭議、引述不確定、要回查語境的時候，你要能回到原始版本。整理版只是為了快速使用的衍生產物，原版才是法定來源。</p>
+    <p>做法很簡單：原始稿的檔名帶「原始逐字稿」前綴，不動它。清理版另存新檔，檔頭放一個連結指回原始稿。只有兩種情況可以刪原始稿：使用者明確說要刪，或副本已經備份到別的地方。</p>
+    <h3>鐵則二：不直接餵 LLM 摘要</h3>
+    <p>上面那個翻車現場就是理由。補一句它背後的邏輯：LLM 摘要的時候，會把「看起來像事實的東西」當事實。錯字在它眼裡跟正確詞沒有差別，它只會把它們寫得更順。所以清稿必須在摘要之前，順序不能反。</p>
+    <h3>鐵則三：字數用 Python 算，不用 wc</h3>
+    <p>這條看起來很小，但它讓我重寫過一次提示詞。macOS 的 wc -m 在預設語系下算的是 bytes 不是字元，中文會差三倍。你叫 AI「壓縮到原文的 40% 到 50%」，它抓不準；你給它「目標 19,000 到 24,000 字」，它抓得準。所以要先用 Python 算原文字數，再換算成字元數區間寫進提示詞。</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>三個核心方法</h2>
+    <h3>方法一：受控詞彙表</h3>
+    <p>上一篇那張表，「永力」八種配置全錯成「永利」，「田祖」八種全錯。兩份稿對照會發現它們完全同意，一起錯。這種「一致地錯」，任何交叉比對都抓不到。</p>
+    <p>唯一能救的，是你自己的詞彙表。你的客戶名、合作對象名、地名、你常用的術語，列成一張表。清稿之前先餵給 AI，告訴它「這些詞以表為準」。</p>
+    <p>怎麼開始建：從你最近三場會議的錄音裡，把 AI 聽錯的專有名詞抓出來，正確詞和錯誤詞各一欄。三場之後你會發現，錯的永遠是那幾個。我的技能包裡有一條規則：受控詞彙表裡有的詞，一律以詞彙表為準，就算兩份稿都寫「永利」，還是要改成「永力」。</p>
+    <h3>方法二：給 AI 一句「主動修正」的授權</h3>
+    <p>2026 年 5 月 22 日我做過一個對照測試。同一份有六個 Whisper 聽錯的稿，交給 Sonnet 清。沒有授權句的版本，它只修了一個；Gemini 自由度高，自己修了六個。Sonnet 預設保守，你不明說它不會改。</p>
+    <p>所以我的清稿規則模板現在必加這一段：</p>
+    <div class="codeblock">【主動修正 Whisper 聽錯】
+看到語意不通、明顯音近誤判的詞，主動修正。判斷依據：
+一、上下文已出現過正確版本（前文「扶輪社」、後文「弗洛倫」，改回扶輪社）
+二、音近但語意明顯錯誤（「家子在處理」改「價錢在處理」）
+三、專有名詞、組織名、人名、地名特別注意
+修正後在該段落結尾用「※ 修正：弗洛倫→扶輪社」標註，方便校對。
+不確定的不要硬改，標 [聽不清] 或保留原文。</div>
+    <p>那個標註格式很重要。它讓你事後可以只看標註處校對，不用整篇重讀。</p>
+    <h3>方法三：兩份稿對照</h3>
+    <p>上一篇說過，兩個引擎的缺口是互補的。9 月 4 日我用花東 18 支錄音做過全量實測：MacWhisper 分得出四到七個人、標點順，但專有名詞錯很多；Qwen3-ASR 專有名詞準很多，但講者幾乎全歸成同一人、沒標點。</p>
+    <p>所以我的做法是兩個都跑，結構層（講者、斷句、標點）取 MacWhisper，內容層（專有名詞、語意）兩版逐句對照，不一致的地方人工判。</p>
+    <p>這裡有一個我今年 9 月才定案的細節。我的技能包原本寫「專有名詞以 Qwen 版為準」，但實測發現 Qwen 也會錯，而且兩版會一致地錯。所以定案改成兩層：結構層（講者、斷句、標點）取 MacWhisper，那是能力限制；內容層（專有名詞、語意）兩版逐句互校，不預設誰對，不一致處人工判，一致但可疑處標為未查證。同一個音軌兩個模型各自跑、互相校正，這才是雙模比對的意思。</p>
+    <p>對照這件事真的救過我一次。花東那批錄音裡有一句，MacWhisper 聽成「明度報告，很致死」，Qwen 聽成「年度報告，蠻傳統的」。對照之後確認是後者。這一句校正回來，我才知道對方的年度報告做法偏保守，那是整場會議真正的切入口。沒有對照，這句話會被摘要洗掉，或者更糟，被當成「他們的報告很致命」寫進紀錄。</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>講者怎麼補</h2>
+    <p>上一篇留了一個缺口：免費方案沒有講者分離。這一段補上。</p>
+    <div class="tablewrap"><table><thead><tr><th>路線</th><th>講者從哪來</th><th>適合誰</th></tr></thead><tbody><tr><td>免費路線</td><td>人工標。清稿的時候聽一遍，在段落前面加「江江：」「對方：」</td><td>兩三個人的會議，你自己在場</td></tr><tr><td>付費路線</td><td>MacWhisper 的 SpeakerKit，分得出四到七人，輸出格式是「Speaker 1:」</td><td>人多、你不在場、或要批次處理</td></tr><tr><td>雙模路線</td><td>Qwen 的講者標記幾乎全歸同一人，不能用；還是靠 MacWhisper 或人工</td><td>要專有名詞準又要講者</td></tr></tbody></table></div>
+    <p>時間碼的部分，whisper.cpp 的 SRT 輸出本來就有，每句一個時間戳。Vibe 的命令列預設輸出是整塊純文字沒有時間碼，要時間碼得用它的圖形介面或改用 whisper.cpp。第三篇的分析會用到時間碼，因為你要能說「這句話出現在 14 分 24 秒」。</p>
+    <p>人工標講者聽起來很土，但它有一個副作用：你會再聽一遍。再聽一遍的時候，你會注意到誰在哪個議題沉默、誰轉了話題，那是第三篇要用的東西。</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>我自己的系統怎麼做這一步</h2>
+    <p>上面是方法。這一段講我的技能包和迴圈怎麼設計。</p>
+    <p>清稿在我的系統裡是 meeting-transcript-cleaner 的 Mode 6。它有三個詳細度：超詳細、很詳細、1:1。1:1 的意思是只校正錯字，保留所有語氣詞和語助詞，一個字都不砍。</p>
+    <p>一條實務規則：清稿一律開子代理跑，不在主對話裡做。原因是一場兩小時的會議逐字稿有兩三萬字，在主對話裡跑會把上下文塞爆，後面的分析就沒空間了。主模型只負責派工、複驗、接下游。</p>
+    <p>還有一個我花了不少時間才定案的機制：跨家審稿的例外。我的系統規定 AI 產出要由另一家模型審過才算數，Claude 寫的 Codex 審，反過來也一樣。但純清稿這一步，同一個模型自我抽查就夠，不用跨家。前提是要先跑一組閘門，確認這份稿真的只是「原始逐字稿到清理稿」，沒有摻進摘要、分析、改寫。閘門過了才准自我抽查，抽查比例不低於 30%，抽查發現系統性失真就退回跨家。這條例外的邊界寫得很細，因為它一鬆，後面所有衍生內容都會跟著鬆。</p>
+    <p>雙模比對是今年 9 月才定案的 Mode 8。它的來歷是這樣：9 月 3 日我原本假設兩個引擎的關係是「用 B 修 A 的錯字」，9 月 4 日全量實測推翻了這個假設，發現是「缺口互補」。定案之後派 Codex 審，它退回一條：我寫「引用發言看 MacWhisper」太硬，因為 MacWhisper 連整句語意都會聽歪，改成「引文須兩版語意對得上才用」。這就是我的迴圈：先做，做完派另一家審，審完才寫進技能包。</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>為什麼我的系統在這一步只做清理，不做摘要</h2>
+    <p>這是策略面，也是三篇的貫穿線。</p>
+    <p>摘要的邏輯是留結論丟過程。但你事後回頭想「早知道」的時候，需要的是過程裡的某一句話、某一個轉折、某一個當時沒注意的訊號。「年度報告，蠻傳統的」這句話在摘要裡不會出現，它太小了。但它是整場會議的切入口。</p>
+    <p>千金難買早知道。摘要買不到，因為它把早知道的線索先丟了。所以我的系統在清稿這一步只做一件事：把稿弄乾淨、弄完整，一個細節都不丟。分析是第三篇的事，而分析的前提是細節還在。第三篇的第一層還是會有一份摘要，但那是入口，後面兩層才是這套方法存在的理由。</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>可以直接貼的清稿提示詞</h2>
+    <div class="codeblock">你是逐字稿清理員。以下是一場會議的原始逐字稿，請做「清理」不做「摘要」。
+
+清理的定義：修錯字、補標點、分段落、標講者。保留所有內容，不刪句子，不改語意，不加你自己的話。
+
+受控詞彙表（這些詞一律以表為準）：
+[貼你的詞彙表，格式：正確詞 ← 常見錯法]
+
+【主動修正 Whisper 聽錯】
+看到語意不通、明顯音近誤判的詞，主動修正。判斷依據：上下文已出現過正確版本、音近但語意明顯錯誤、專有名詞人名地名特別注意。修正後在段落結尾標「※ 修正：錯→對」。不確定的標 [聽不清]，不硬改。
+
+講者：[如果原稿有講者標籤，保留；沒有的話，依你能判斷的標「A：」「B：」，判斷不了的標「？：」]
+
+輸出字數目標：[用 Python 算原文字數後填字元數區間]
+
+原始逐字稿：
+[貼上]</div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>它保證什麼、不保證什麼</h2>
+    <p>保證：錯字修正有標註可校對、原始稿還在、結構沒被打散。</p>
+    <p>不保證：兩份稿一致地錯的詞，只有詞彙表救得回來，AI 救不了。講者人工標會有你自己的判斷誤差。這一步的產出是「可讀的稿」，還沒有洞察。</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>你可以怎麼開始</h2>
+    <p>拿上一篇轉出來的稿，先做一件事：把裡面你看得出來的錯字列出來，正確詞和錯字各一欄。這就是你的詞彙表第一版。然後用上面的提示詞跑一次，看標註處。</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <div class="readmore near"><b>下一篇</b><p>清理稿只是可讀。第三篇講為什麼會議記錄不能只有重點摘要，以及風險隱憂怎麼從逐字稿裡看出來。</p></div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>我是江江教練</h2>
+    <p>隱性知識提煉師、AI 應用規劃師</p>
+    <p>對AI × 知識管理、隱性知識提煉有興趣？歡迎加入我的LINE社群</p>
+    <p><a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ</a></p>
+    <p>我每月固定舉辦兩場免費線上講座，分享實戰經驗與方法論。如果你對這些主題感興趣，想持續學習，或是有顧問需求，都歡迎先從社群開始。</p>
+    <p>主要討論：</p>
+    <p>🔸 善用 AI 作為思考夥伴，提升決策品質與思考深度。</p>
+    <p>🔸 把知識、經驗，整理成提示詞、技能包、知識庫，讓 AI 能靈活運用。</p>
+  </div>
+</section>
+
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">江江教練 · AI 知識管理</div>
+    <div class="footer-links">
+      <a href="../../articles.html">← 回深度文章總站</a>
+      <a href="../../index.html">首頁</a>
+      <a href="../../learn.html">自學資源</a>
+      <a href="../../skills.html">技能包下載</a>
+      <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">LINE 社群 ↗</a>
+      <a href="https://www.threads.com/@jiang_yude_coach" target="_blank" rel="noopener">Threads ↗</a>
+      <a href="https://vocus.cc/salon/Jiang_Coach" target="_blank" rel="noopener">方格子 ↗</a>
+    </div>
+    <div class="footer-note">這是一篇教學文章，整理我對「逐字稿轉出來了，可以直接丟給 AI 摘要嗎」的看法，供你參考。</div>
+  </div>
+</footer>
+
+<!-- 點圖放大 lightbox（hero 與內文圖通用，已內建，不用每篇重加） -->
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <span class="lightbox-close" aria-label="關閉">×</span>
+  <img id="lightbox-img" src="" alt="放大檢視">
+</div>
+<script>
+(function(){
+  var box=document.getElementById('lightbox'),boxImg=document.getElementById('lightbox-img');
+  document.querySelectorAll('.hero-figure img,.inline-figure img').forEach(function(img){
+    img.addEventListener('click',function(){boxImg.src=img.currentSrc||img.src;boxImg.alt=img.alt||'放大檢視';box.classList.add('open');box.setAttribute('aria-hidden','false');});
+  });
+  function close(){box.classList.remove('open');box.setAttribute('aria-hidden','true');boxImg.src='';}
+  box.addEventListener('click',close);
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
+})();
+</script>
+
+<script src="../../image-interactions.js"></script>
+
+<!-- 官網共用：滑鼠暖光暈 + 導航列漢堡選單 -->
+<script src="../../spotlight.js"></script>
+
+<!-- 文章自動互聯（相關文章）：兩支已內建，順序不可顛倒，不用再另外加 -->
+<script src="../../articles-data.js"></script>
+<script src="../../related-render.js"></script>
+  <script src="/mika-chat-widget.js" defer></script>
+</body>
+</html>

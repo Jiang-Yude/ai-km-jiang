@@ -1,0 +1,345 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="index,follow">
+<title>開會錄音要怎麼變成文字，一定要花錢或上傳嗎｜八種本機配置實測，免費的比付費的快</title>
+<meta name="description" content="同一段 6 分 46 秒的真實會議錄音，我在自己的 Mac 上跑了八種語音辨識配置，從免費開源的 Vibe、whisper.cpp，到我付費買的 MacWhisper，再到本機跑的 Qwen3-ASR。全部離線，沒有任何">
+<link rel="canonical" href="https://jiangyude.com/articles/meeting-notes-1-transcribe/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="開會錄音要怎麼變成文字，一定要花錢或上傳嗎｜八種本機配置實測，免費的比付費的快｜江江教練">
+<!-- 分享封面：hero 文字填好後在 repo 根目錄跑 `node scripts/og-shot.mjs meeting-notes-1-transcribe` 自動截 1200×630 到 images/og/meeting-notes-1-transcribe.jpg（見 README「文章分享封面（OG 圖）機制」）。別退回 intro-jiang.png 直式人像，會被裁成只剩脖子。 -->
+<meta property="og:image" content="https://jiangyude.com/images/og/meeting-notes-1-transcribe.jpg">
+<meta property="og:description" content="同一段 6 分 46 秒的真實會議錄音，我在自己的 Mac 上跑了八種語音辨識配置，從免費開源的 Vibe、whisper.cpp，到我付費買的 MacWhisper，再到本機跑的 Qwen3-ASR。全部離線，沒有任何">
+<meta property="og:url" content="https://jiangyude.com/articles/meeting-notes-1-transcribe/">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:site_name" content="江江教練 · AI 知識管理">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="開會錄音要怎麼變成文字，一定要花錢或上傳嗎｜八種本機配置實測，免費的比付費的快｜江江教練">
+<meta name="twitter:image" content="https://jiangyude.com/images/og/meeting-notes-1-transcribe.jpg">
+<meta name="twitter:description" content="同一段 6 分 46 秒的真實會議錄音，我在自己的 Mac 上跑了八種語音辨識配置，從免費開源的 Vibe、whisper.cpp，到我付費買的 MacWhisper，再到本機跑的 Qwen3-ASR。全部離線，沒有任何">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"開會錄音要怎麼變成文字，一定要花錢或上傳嗎｜八種本機配置實測，免費的比付費的快","description":"同一段 6 分 46 秒的真實會議錄音，我在自己的 Mac 上跑了八種語音辨識配置，從免費開源的 Vibe、whisper.cpp，到我付費買的 MacWhisper，再到本機跑的 Qwen3-ASR。全部離線，沒有任何","author":{"@type":"Person","name":"江昱德","alternateName":"江江教練","jobTitle":"隱性知識提煉師、AI 應用規劃師"},"isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://jiangyude.com/"},"inLanguage":"zh-Hant","url":"https://jiangyude.com/articles/meeting-notes-1-transcribe/"}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{--ink:#1a1612;--paper:#fefcf8;--muted:#6a635a;--line:#d8cdb8;--green:#5f7553;--blue:#5689b8;--orange:#e85a4f;--soft:#faf5ec;--dark:#2a2018;--shadow:0 18px 45px rgba(107,74,42,.14);--sp-shadow:hsla(35,50%,60%,.15);--sp-shadow-edge:hsla(35,50%,68%,.03);--sp-radius:400px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC","Segoe UI",sans-serif}
+a{color:inherit}
+/* 官網共用導航列 nav.top（與首頁/文章總站同一條） */
+nav.top{position:sticky;top:0;background:rgba(254,252,248,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid #d8cdb8;z-index:100}
+nav.top .container{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:24px;padding:14px 32px}
+.nav-brand-img{justify-self:start;display:flex;align-items:center;text-decoration:none;flex-shrink:0;transition:opacity .2s}
+.nav-brand-img:hover{opacity:.8}.nav-brand-img img{height:40px;width:auto;display:block}
+nav.top ul.nav-menu{justify-self:end;display:flex;gap:22px;list-style:none;margin:0;padding:0;font-size:.95rem;white-space:nowrap}
+nav.top ul.nav-menu a{color:#3a342d;text-decoration:none;transition:color .2s;font-weight:500;white-space:nowrap}
+nav.top ul.nav-menu a:hover{color:#1a1612}nav.top ul.nav-menu a.active{color:#1a1612;font-weight:700}
+.nav-toggle{display:none;background:none;border:none;padding:6px;cursor:pointer;width:36px;height:36px;position:relative}
+.nav-toggle span{display:block;position:absolute;left:8px;right:8px;height:2px;background:#1a1612;border-radius:2px;transition:transform .25s,opacity .25s,top .25s}
+.nav-toggle span:nth-child(1){top:11px}.nav-toggle span:nth-child(2){top:17px}.nav-toggle span:nth-child(3){top:23px}
+.nav-toggle.open span:nth-child(1){top:17px;transform:rotate(45deg)}.nav-toggle.open span:nth-child(2){opacity:0}.nav-toggle.open span:nth-child(3){top:17px;transform:rotate(-45deg)}
+.tablewrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:22px 0;border:1px solid var(--line);border-radius:10px;background:#fff;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.tablewrap table{border-collapse:collapse;width:100%;min-width:600px;font-size:18px;line-height:1.65}
+.tablewrap .zh{display:block;margin-top:5px;font-size:16px;line-height:1.55;color:var(--muted);font-weight:400}
+.tablewrap th,.tablewrap td{padding:12px 14px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top;color:#3a342d}
+.tablewrap thead th{background:var(--soft);font-weight:900;font-size:18px;color:#1a1612;white-space:nowrap}
+.tablewrap tbody tr:last-child td{border-bottom:none}
+.tablewrap td code,.section code{background:var(--soft);border:1px solid var(--line);border-radius:5px;padding:1px 6px;font:500 15px/1.5 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace}
+.inline-figure.wide{max-width:1000px}
+.toc{margin:26px 0 0;padding:20px 22px;background:#fff;border:1px solid var(--line);border-radius:10px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.toc>b{display:block;font-size:15px;letter-spacing:.05em;color:var(--green);margin-bottom:10px}
+.toc ol{margin:0;padding-left:1.35em;font-size:18px;line-height:1.7}
+.toc li{margin-bottom:7px;color:#3a342d}
+.toc a{color:var(--blue);font-weight:700;text-decoration:none}.toc a:hover{text-decoration:underline}
+.toc-hint{margin:12px 0 0!important;font-size:18px!important;color:var(--muted)!important;border-top:1px solid var(--line);padding-top:12px}
+.readmore{margin-top:24px;padding:20px 22px;background:var(--soft);border:1px solid var(--line);border-radius:12px}
+.readmore.near{margin:26px 0 6px;background:rgba(86,137,184,.07);border-color:#bcd0e2}
+.readmore.near b{color:var(--blue);font-size:18px}
+.readmore.near li{font-size:17px;line-height:1.7;margin-bottom:10px}
+.readmore b{display:block;margin-bottom:10px;font-size:19px}
+.readmore ul{margin:0;padding-left:1.25em}
+.readmore a{color:var(--blue);font-weight:700;text-decoration:none}
+.readmore a:hover{text-decoration:underline}
+@media(max-width:820px){.tablewrap table{min-width:560px;font-size:18px}.tablewrap{position:relative}.tablewrap::after{content:"表格可左右滑動 →";position:sticky;left:0;display:block;font-size:15px;color:var(--muted);background:var(--soft);border-top:1px solid var(--line);padding:7px 12px;width:100%}}
+@media(max-width:860px){
+ nav.top .container{grid-template-columns:auto 1fr auto;padding:10px 16px;gap:12px}
+ .nav-brand-img img{height:32px}
+ .nav-toggle{display:block;justify-self:end}
+ nav.top ul.nav-menu{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(254,252,248,.98);backdrop-filter:blur(14px);border-bottom:1px solid #d8cdb8;flex-direction:column;gap:0;padding:8px 0;box-shadow:0 10px 24px rgba(107,74,42,.08)}
+ nav.top ul.nav-menu.open{display:flex}
+ nav.top ul.nav-menu li{border-bottom:1px solid #e8dfc9}
+ nav.top ul.nav-menu li:last-child{border-bottom:none}
+ nav.top ul.nav-menu a{display:block;padding:14px 20px;font-size:1.06rem}
+}
+/* 滑鼠暖光暈（與首頁同一支 spotlight.js） */
+body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradient(var(--sp-radius) circle at var(--mx,50%) var(--my,50%),var(--sp-shadow) 0%,var(--sp-shadow-edge) 45%,transparent 75%);pointer-events:none;z-index:9999;mix-blend-mode:multiply;transition:background .06s linear}
+.hero{position:relative;overflow:hidden;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:72px;padding:96px clamp(20px,6vw,88px) 80px;background:linear-gradient(180deg,#fffcf0 0%,#f9e9d2 100%);color:#1a1612;border-bottom:1px solid #d8cdb8}
+.hero .wc{position:absolute;border-radius:50%;filter:blur(60px);pointer-events:none;z-index:0}
+.hero .wc1{width:420px;height:360px;top:-120px;right:-80px;background:#e8884b;opacity:.15}
+.hero .wc2{width:360px;height:300px;bottom:-110px;left:-70px;background:#5f7553;opacity:.13}
+.hero .wc3{width:280px;height:260px;top:34%;left:14%;background:#a08144;opacity:.10}
+.hero>div{flex:none;width:860px;max-width:100%;position:relative;z-index:2}
+.hero-figure{margin:0;width:420px;flex:none;position:relative;z-index:2}
+.hero-figure img{display:block;width:100%;border-radius:16px;border:1px solid #d8cdb8;box-shadow:0 18px 45px rgba(107,74,42,.16);cursor:zoom-in}
+.hero-figure figcaption{margin-top:10px;font-size:14px;line-height:1.6;color:#6a635a}
+.inline-figure{margin:30px auto 8px;max-width:820px}
+.inline-figure img{display:block;width:100%;border-radius:14px;border:1px solid var(--line);box-shadow:var(--shadow);background:#fff;cursor:zoom-in}
+.inline-figure figcaption{font-size:14px;line-height:1.6;color:var(--muted);margin-top:10px}
+.lightbox{position:fixed;inset:0;z-index:10000;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(12,10,8,.92);cursor:zoom-out;backdrop-filter:blur(4px)}
+.lightbox.open{display:flex}.lightbox img{max-width:96vw;max-height:92vh;border-radius:10px;box-shadow:0 24px 60px rgba(0,0,0,.5)}
+.lightbox-close{position:fixed;top:18px;right:24px;color:#fff;font-size:34px;line-height:1;font-weight:700;cursor:pointer;opacity:.85}
+.kicker{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.55rem;color:#7a5c3a;font-weight:500}
+.hero h1{max-width:none;margin:16px 0 18px;font-size:clamp(36px,6vw,72px);line-height:1.08;overflow-wrap:anywhere}
+.hero p{max-width:none;font-size:clamp(18px,2vw,23px);line-height:1.62;color:#3a342d}
+.cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
+.cta a{display:inline-flex;align-items:center;text-decoration:none;border-radius:8px;padding:12px 16px;font-weight:900}
+.cta .primary{background:#fff;color:#1a1612}.cta .ghost{border:1px solid rgba(255,255,255,.32);color:#fff;background:rgba(255,255,255,.08)}
+.section{padding:54px clamp(20px,6vw,88px);border-top:1px solid var(--line)}
+.inner{width:min(1000px,100%);margin:0 auto}
+.section h2{font-size:clamp(26px,4.2vw,48px);line-height:1.12;margin:0 0 18px}
+.section h3{font-size:clamp(21px,3vw,30px);line-height:1.2;margin:30px 0 12px}
+.lead{font-size:clamp(18px,1.6vw,22px);line-height:1.7;color:#3a342d;max-width:900px}
+.section p{font-size:18px;line-height:1.74;color:#3a342d}.section p+p{margin-top:14px}
+.section ul,.section ol{padding-left:1.4em;font-size:18px;line-height:1.74;color:#3a342d}.section li{margin-bottom:8px}
+.meaning{margin:22px 0;padding:16px 18px;border-left:5px solid var(--blue);background:rgba(86,137,184,.12);border-radius:6px;line-height:1.7;font-size:19px}
+.meaning b{display:block;color:var(--blue);margin-bottom:4px}
+.caveat{margin:0 0 8px;padding:16px 18px;border-left:5px solid var(--orange);background:rgba(232,90,79,.1);border-radius:6px;line-height:1.7;font-size:18px;color:#3a342d}
+.caveat b{display:block;color:var(--orange);margin-bottom:4px}
+.infocard{background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px 24px 22px;box-shadow:0 8px 22px rgba(107,74,42,.08);margin-top:8px}
+.infocard-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.info-item{padding:18px 14px 0}
+.info-item b{display:block;font-size:14px;font-weight:900;letter-spacing:.04em;margin-bottom:7px;text-transform:uppercase}
+.info-item:nth-child(1) b{color:var(--green)}.info-item:nth-child(2) b{color:var(--orange)}.info-item:nth-child(3) b{color:var(--blue)}
+.info-item p{margin:0;font-size:17px;line-height:1.6;color:#3a342d}
+.tagrow{display:flex;flex-wrap:wrap;gap:7px;margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
+.tag{font-size:14px;color:var(--muted);background:var(--soft);border:1px solid var(--line);border-radius:999px;padding:4px 11px}
+.duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:24px}
+.duo.stack{grid-template-columns:1fr}
+.duo .card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:22px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.duo .card.a{border-color:var(--orange)}.duo .card.b{border-color:var(--green);box-shadow:0 8px 24px rgba(95,117,83,.16)}
+.duo .card small{display:block;font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.04em;margin-bottom:9px}
+.duo .card.a small{color:var(--orange)}.duo .card.b small{color:var(--green)}
+.duo .card b{display:block;font-size:22px;line-height:1.3;margin-bottom:12px}.duo .card.a b{color:#c0512f}.duo .card.b b{color:#4a7a59}
+.duo .card p{margin:0;color:#3a342d;line-height:1.75;font-size:18px}
+.workflow-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:24px}
+.workflow-step{background:#fff;border:1px solid var(--line);border-radius:8px;padding:18px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.workflow-step small{display:block;color:var(--orange);font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;margin-bottom:9px}
+.workflow-step b{display:block;font-size:18px;line-height:1.3;margin-bottom:9px}
+.workflow-step p{margin:0;color:#3a342d;line-height:1.6;font-size:16px}
+.codeblock{background:var(--dark);color:#f3ead9;border-radius:8px;padding:18px 20px;font:500 14px/1.65 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;overflow-x:auto;white-space:pre-wrap;margin:20px 0;box-shadow:0 8px 22px rgba(107,74,42,.12)}
+.codeblock .c{color:#f6d7a6;font-weight:600}
+.skillcard{background:#fff;border:1px solid var(--green);border-radius:12px;padding:24px;box-shadow:0 10px 26px rgba(95,117,83,.16);margin-top:8px}
+.skillcard b{display:block;font-size:21px;margin-bottom:8px}
+.skillcard p{margin:0 0 16px;font-size:17px;line-height:1.65;color:#3a342d}
+.cta-band{background:#e6f0e5;color:#3a342d}.cta-band .section{border-top:none}
+.cta-band .inner{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(260px,.85fr);gap:26px;align-items:start}
+.cta-band h2{font-size:clamp(26px,4vw,44px);margin:0 0 16px}.cta-band p,.cta-band .lead{color:rgba(58,52,45,.9);font-size:18px;line-height:1.72}
+.cta-card{border:1px solid #cfe0d2;background:#fbfdfa;border-radius:8px;padding:22px}
+.cta-card b{display:block;color:#48b178;margin-bottom:10px;font-size:18px}.cta-card p{margin:0 0 14px}
+.footer{padding:30px clamp(20px,6vw,88px);font-size:14px;color:var(--muted);background:#fff;border-top:1px solid var(--line)}
+.footer-inner{width:min(1000px,100%);margin:0 auto}
+.footer-links{display:flex;flex-wrap:wrap;gap:6px 12px;margin-bottom:14px}.footer-links a{color:var(--blue);font-weight:900;text-decoration:none;font-size:14px}
+.footer-brand{font-weight:900;font-size:15px;margin-bottom:10px}.footer-note{font-size:13px;line-height:1.6}
+@media(max-width:820px){.infocard-grid{grid-template-columns:1fr}.duo{grid-template-columns:1fr}.workflow-grid{grid-template-columns:1fr}.cta-band .inner{grid-template-columns:1fr}.section{padding:40px 20px}.hero{min-height:52vh;flex-direction:column;justify-content:flex-start;align-items:flex-start;gap:24px}.hero>div{width:100%}.hero-figure{width:100%;max-width:560px}}
+@media(max-width:820px){html,body{overflow-x:hidden}.hero h1{word-break:break-word}}
+</style>
+</head>
+<body class="spotlight">
+<!-- 官網共用導航列 nav.top：與首頁/總站同一條，文章不要自己另做極簡 topbar（江江 2026-06-25：要同一個框架、同一條導航列）。把對應頁面的 class="active" 標在自己那欄。
+     ⚠️ 下面 ul.nav-menu 整塊由 preflight 第 5 關 check-bilingual-nav.mjs 做「逐字比對」，
+        塞任何註解、多一個空白、換行位置不同都會被判導航不一致而擋下發布。要說明就寫在 <ul> 外面（像這裡）。
+        2026-08-16 修：原本的 EN 那行說明註解就夾在 <ul> 裡面，導致照範本起手的新文章一律卡第 5 關
+        （llm-rag-agent-mcp 與 rag-three-retrieval-modes 兩篇同時中招）。註解已移出來，<ul> 內保持乾淨。
+        萬一還是被擋，直接跑：node scripts/check-bilingual-nav.mjs --write --only=<你的檔案路徑> -->
+<nav class="top">
+  <div class="container">
+    <a class="nav-brand-img" href="../../index.html"><img src="../../images/footer-signature.png" alt="江江教練 | 江昱德"></a>
+    <button class="nav-toggle" aria-label="選單"><span></span><span></span><span></span></button>
+    <ul class="nav-menu">
+      <li><a href="../../index.html">首頁</a></li>
+      <li><a href="../../knowledge-architecture.html">知識架構</a></li>
+      <li><a href="../../courses.html">課程</a></li>
+      <li><a href="../../articles.html" class="active">深度文章</a></li>
+      <li><a href="../../skills.html">技能包下載</a></li>
+      <li><a href="../../offers.html">服務方案</a></li>
+      <li class="lang-switch"><a href="../../en/articles.html" hreflang="en">EN</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="wc wc1"></div>
+  <div class="wc wc2"></div>
+  <div class="wc wc3"></div>
+  <div>
+    <div class="kicker">會議記錄三部曲 · 第一篇</div>
+    <p class="article-date" style="margin:0 0 6px;font-size:14px;line-height:1.6;color:#6a635a;">發佈 2026-09-05 ｜ 最後更新 2026-09-05</p>
+    <h1>開會錄音要怎麼變成文字，一定要花錢或上傳嗎｜八種本機配置實測，免費的比付費的快</h1>
+    <p>同一段 6 分 46 秒的真實會議錄音，我在自己的 Mac 上跑了八種語音辨識配置，從免費開源的 Vibe、whisper.cpp，到我付費買的 MacWhisper，再到本機跑的 Qwen3-ASR。全部離線，沒有任何一秒音訊離開電腦。這篇把速度、辨識品質、安裝過程、還有我自己的技能包怎麼派工這件事，全部攤開。</p>
+  </div>
+</section>
+
+<main>
+
+<section class="section" id="start">
+  <div class="inner">
+    <p class="lead">同一段 6 分 46 秒的真實會議錄音，我在自己的 Mac 上跑了八種語音辨識配置，從免費開源的 Vibe、whisper.cpp，到我付費買的 MacWhisper，再到本機跑的 Qwen3-ASR。全部離線，沒有任何一秒音訊離開電腦。這篇把速度、辨識品質、安裝過程、還有我自己的技能包怎麼派工這件事，全部攤開。</p>
+    <div class="duo stack">
+      <div class="card a"><b>適合誰</b><ul><li>開完會手機裡一堆錄音，從來沒打開過，因為不知道怎麼變成文字</li><li>聽說轉文字要付費或要上傳雲端，客戶的會議錄音不敢傳出去</li><li>裝過某個免費工具，跳出「來自未識別的開發者」就放棄了</li><li>你們是平起平坐一起做事的關係，會議是討論不是交辦，錄音是為了事後對帳不是為了考核誰</li></ul></div>
+      <div class="card b"><b>你可以帶走什麼</b><ul><li>八種配置的速度與品質對照表，直接看哪個適合你</li><li>三個跟直覺相反的實測結論，其中一個會讓你少走網路教學的冤枉路</li><li>一套安裝步驟，四步，最後一步是學員最容易卡住的地方</li><li>我自己怎麼用技能包把「該用哪個工具」這個判斷寫死，以及這條路上踩過的三個雷</li></ul></div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>一段錄音，八種跑法</h2>
+    <p>素材是 2026 年 9 月 3 日花東參訪第二天早上，車上的晨間會議。405 秒，兩到三個人講話，有專有名詞（合作對象的名字、地名），有口語重複。我選它是因為同一段錄音已經有一份人工校對過的清理稿，可以當正確答案來比。</p>
+    <p>機器是 Apple M2 Pro、16GB 記憶體。每個配置單獨跑、單獨計時，跑的時候沒有其他運算任務搶資源。</p>
+    <div class="tablewrap"><table><thead><tr><th>配置</th><th>耗時</th><th>換算實時倍速</th><th>與清理稿相似度</th></tr></thead><tbody><tr><td>whisper.cpp small</td><td>17 秒</td><td>23.8 倍</td><td>83.8%</td></tr><tr><td>whisper.cpp large-v3-turbo</td><td>24 秒</td><td>16.9 倍</td><td>89.2%</td></tr><tr><td>whisper.cpp medium</td><td>36 秒</td><td>11.2 倍</td><td>91.5%</td></tr><tr><td>whisper.cpp medium 加繁體提示</td><td>37 秒</td><td>10.9 倍</td><td>87.9%</td></tr><tr><td>MacWhisper large-v3 含講者分離（付費）</td><td>38 秒</td><td>10.7 倍</td><td>85.5%</td></tr><tr><td>Vibe 原生 CLI 用 turbo</td><td>39 秒</td><td>10.4 倍</td><td>88.1%</td></tr><tr><td>whisper.cpp large-v1</td><td>60 秒</td><td>6.8 倍</td><td>94.9%</td></tr><tr><td>Qwen3-ASR 1.7B</td><td>138 秒</td><td>2.9 倍</td><td>84.7%</td></tr></tbody></table></div>
+    <p>換算成你會遇到的情境：一小時的會議錄音，用免費的 large-v3-turbo，三分半跑完。</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>三個跟直覺相反的結論</h2>
+    <h3>付費版沒有比較快</h3>
+    <p>我花一千六百多買的 MacWhisper，跑 10.7 倍實時。免費的 whisper.cpp 用 large-v3-turbo 模型，跑 16.9 倍，快了 58%。付費版買到的是講者分離和一個好用的介面，速度這件事免費的贏。</p>
+    <h3>加繁體中文提示沒有用，還更差</h3>
+    <p>網路上很多教學說，跑 Whisper 的時候加一句「以下是繁體中文的會議錄音」當提示，輸出就會是繁體。我實測：加了提示之後，相似度從 91.5% 掉到 87.9%，簡體字的數量一個都沒少。這招在這段素材上是無效的。你要是在課堂上教這招，學員回去試了沒效果，會回頭問你。</p>
+    <h3>模型變大，專有名詞沒有變準</h3>
+    <p>small 模型的斷句很粗，九秒一大段；medium 的斷句就像人話，兩三秒一句。但兩個模型都把「田祖」聽錯，small 聽成「天主」，medium 聽成「田主」。large 也一樣錯。專有名詞這件事，換更大的模型救不了，要靠後面的清稿流程，那是第二篇的事。</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>專有名詞這張表，八種配置全軍覆沒</h2>
+    <p>這是整份實測我最在意的一張表。</p>
+    <div class="tablewrap"><table><thead><tr><th>正確詞</th><th>small</th><th>medium</th><th>large-v1</th><th>turbo</th><th>Vibe CLI</th><th>MacWhisper（付費）</th><th>Qwen3-ASR</th></tr></thead><tbody><tr><td>永力</td><td>勇力</td><td>永利</td><td>永利</td><td>永利</td><td>永利</td><td>永利</td><td>永利、永立</td></tr><tr><td>田祖</td><td>天主</td><td>田主</td><td>填組、田主</td><td>田主</td><td>田主</td><td>田主</td><td>填主、田主</td></tr><tr><td>陪跑（5 次）</td><td>3 次對</td><td>5 次對</td><td>2 次對</td><td>賠跑</td><td>PayPal</td><td>0 次對</td><td>6 次</td></tr></tbody></table></div>
+    <p>「永力」是一個智庫的名字，八種配置沒有一個答對，全部聽成「永利」或「勇力」。「田祖」也是八種全錯。Vibe 把「陪跑」聽成 PayPal 三次，是所有配置裡最離譜的。</p>
+    <p>這件事的意思是：兩份稿拿來對照，會發現它們完全同意，然後一起錯下去。這叫「一致地錯」，交叉比對抓不到，只有你自己的詞彙表救得回來。第二篇會講怎麼建。</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>免費方案的真正天花板</h2>
+    <p>不是速度，也不是錯字。是講者分離。</p>
+    <p>Vibe 內建一個命令列工具叫 vibe-server，它的說明第一行就寫「Speech-to-text powered by whisper.cpp」。我把它的參數列表整個看過一遍，沒有任何跟講者分離有關的選項。whisper.cpp 本身有一個叫 diarize 的參數，但那是靠立體聲左右聲道猜，你手機錄的是單聲道，用不上。</p>
+    <p>所以免費方案能給你的是：一份有時間碼、有文字、沒有「誰說的」的稿。要「誰說了什麼」，只有兩條路，一是付費工具（MacWhisper 的 SpeakerKit 可以分出四到七個人），二是人工標。第二篇會講清稿的時候怎麼補講者。</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>學員裝得起來嗎</h2>
+    <p>我實際裝了一次 Vibe，記錄每一步。</p>
+    <div class="tablewrap"><table><thead><tr><th>步驟</th><th>實測</th></tr></thead><tbody><tr><td>下載</td><td>官方 GitHub 下載 dmg，37MB，33 秒。要選對晶片，Apple Silicon 選 aarch64</td></tr><tr><td>拖進 Applications</td><td>標準 macOS 安裝，沒有安裝精靈、不用註冊、不用帳號</td></tr><tr><td>開啟</td><td>已通過 Apple 公證，雙擊直接開，不會跳「來自未識別的開發者」</td></tr><tr><td>下載模型</td><td>App 本身不含模型，第一次用要另外抓，turbo 約 1.6GB</td></tr></tbody></table></div>
+    <p>第三步值得多講一句。大部分 GitHub 上的免費工具沒付 Apple 的開發者費用，學員裝完會撞到系統警告，得教他們去「系統設定、隱私權與安全性」按允許，現場很容易亂。Vibe 的開發者做了公證，這一關直接消失。我查了簽章，Developer ID 是 Jacob Kolani，TeamIdentifier VSTAWC326G，Gatekeeper 回傳 accepted。</p>
+    <p>第四步是學員最會卡住的地方。1.6GB 在教室的 Wi-Fi 上要等，講義要寫清楚讓他們回家先抓。</p>
+    <p>順帶驗證貼文上的說法：7,307 顆星、MIT 授權、v3.2.1 在 2026 年 9 月 4 日發布，全部屬實。</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>我自己是怎麼派工的：技能包裡的工具選擇 Gate</h2>
+    <p>上面是給讀者用的方法。這一段講我自己的系統怎麼做這件事。</p>
+    <p>我有一個技能包叫 meeting-transcript-cleaner，它是逐字稿全生命週期的派工中心。裡面有一段叫「語音轉逐字稿工具選擇 Gate」，規則是：不要用單一關鍵字硬啟動工具。使用者只說「幫我轉錄」「會議錄音」，預設走 MacWhisper；只有明確指定別的工具，或者是公開課要教一整套本機工作流，才重新評估其他路線。</p>
+    <p>為什麼要寫成 Gate。因為我踩過的雷是，AI 看到「講者分離」四個字就自動切換到一條已經退役的路線，跑了半天才發現工具早就不能用了。Gate 的意思是先問「使用者到底要什麼」，再決定工具，順序不能反。</p>
+    <p>技能包裡還有一張決策樹。第一階段轉錄，存原始逐字稿，檔名帶「原始逐字稿」前綴，永不覆蓋。第二階段判斷「誰的內容乘以什麼用途」：我自己的課程逐字稿走教學組織模式，外部講師的課程只提煉思維框架，會議記錄走另一個技能包 meeting-record-strategy。這張圖的價值是，AI 讀完就知道該把稿子丟給誰，不用每次問我。</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>這條路上踩過的三個雷</h2>
+    <p>第一個雷，同一個 bug 踩三次。我的部署工具在 macOS 內建的 bash 3.2 底下會炸，原因是 bash 3.2 會把變數後面緊接的全形字元吃進變數名。9 月 3 日踩到，用切換語系繞過；9 月 4 日另一個自動化腳本又踩到；9 月 5 日我做這篇實測的報告網頁時第三次踩到，才回頭修根因，全檔十七處改成大括號寫法，這件事記在當天的工作日記裡。教訓是「繞過」會讓 bug 活得更久。</p>
+    <p>第二個雷，我自己的比對腳本抓過一次錯。MacWhisper 的講者標籤格式是「Speaker 1:」，Qwen 的是「說話者1：」，我第一版只清了後者，把前者算進字數，得出 MacWhisper 只有 60.2% 相似度的假數字。修正後是 85.5%。這件事讓我在報告裡加了一段：相似度的比對基準是人工清理稿，而那份清理稿的文字骨架來自 whisper 的輸出，所以這個指標對 whisper 家族有系統性優勢，Qwen 的數字是被低估的。跨家族要比，只能看專有名詞那張表。</p>
+    <p>第三個雷，實測的另一個結論跟我技能包裡寫的不一樣。技能包記載 Qwen3-ASR「專有名詞幾乎全對」，那是 9 月 4 日用 18 支錄音、3 小時 40 分做的全量實測。但這次 6 分 46 秒的素材上，Qwen 沒有勝出，同一個詞還出現兩種寫法。我沒有拿這一小段去改技能包，因為單一素材推翻不了全量實測，只列為待複驗。這是迴圈工程的一條規則：新證據夠不夠推翻舊結論，要看樣本，不看誰最近。</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>這份實測只證明什麼</h2>
+    <p>單一錄音、單一設備、當時的軟體版本。它證明的是「這段素材在這台機器上的結果」和「我用的測試方法」，不是普遍排名。換成吵雜環境、口音更重、術語更密的錄音，數字會不一樣。相似度那欄的基準偏誤上面說過了。GUI 我沒測到，全部數據來自命令列，Vibe 的圖形介面預設輸出可能跟命令列不同。</p>
+    <p>完整實測報告的網頁版在這裡，含長條圖與散佈圖：<a href="https://asr-bench-k7m3x9.pages.dev" target="_blank" rel="noopener">https://asr-bench-k7m3x9.pages.dev</a></p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>你可以怎麼開始</h2>
+    <p>拿一段你自己知道答案的錄音，三到十分鐘，裡面要有你的客戶名字或常用術語。裝 Vibe，選 large-v3-turbo，跑一次。看三件事：花了幾秒、你的專有名詞對了幾個、你能不能分辨誰在講話。三分鐘看出你的環境能到哪，比看任何評測都準。</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <div class="readmore near"><b>下一篇</b><p>轉出來的稿有錯字、沒有講者、原始檔該不該留。第二篇講清稿，包括為什麼轉完的稿不能直接丟給 AI 做摘要。</p></div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>我是江江教練</h2>
+    <p>隱性知識提煉師、AI 應用規劃師</p>
+    <p>對AI × 知識管理、隱性知識提煉有興趣？歡迎加入我的LINE社群</p>
+    <p><a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ</a></p>
+    <p>我每月固定舉辦兩場免費線上講座，分享實戰經驗與方法論。如果你對這些主題感興趣，想持續學習，或是有顧問需求，都歡迎先從社群開始。</p>
+    <p>主要討論：</p>
+    <p>🔸 善用 AI 作為思考夥伴，提升決策品質與思考深度。</p>
+    <p>🔸 把知識、經驗，整理成提示詞、技能包、知識庫，讓 AI 能靈活運用。</p>
+  </div>
+</section>
+
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">江江教練 · AI 知識管理</div>
+    <div class="footer-links">
+      <a href="../../articles.html">← 回深度文章總站</a>
+      <a href="../../index.html">首頁</a>
+      <a href="../../learn.html">自學資源</a>
+      <a href="../../skills.html">技能包下載</a>
+      <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">LINE 社群 ↗</a>
+      <a href="https://www.threads.com/@jiang_yude_coach" target="_blank" rel="noopener">Threads ↗</a>
+      <a href="https://vocus.cc/salon/Jiang_Coach" target="_blank" rel="noopener">方格子 ↗</a>
+    </div>
+    <div class="footer-note">這是一篇教學文章，整理我對「開會錄音要怎麼變成文字，一定要花錢或上傳嗎」的看法，供你參考。</div>
+  </div>
+</footer>
+
+<!-- 點圖放大 lightbox（hero 與內文圖通用，已內建，不用每篇重加） -->
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <span class="lightbox-close" aria-label="關閉">×</span>
+  <img id="lightbox-img" src="" alt="放大檢視">
+</div>
+<script>
+(function(){
+  var box=document.getElementById('lightbox'),boxImg=document.getElementById('lightbox-img');
+  document.querySelectorAll('.hero-figure img,.inline-figure img').forEach(function(img){
+    img.addEventListener('click',function(){boxImg.src=img.currentSrc||img.src;boxImg.alt=img.alt||'放大檢視';box.classList.add('open');box.setAttribute('aria-hidden','false');});
+  });
+  function close(){box.classList.remove('open');box.setAttribute('aria-hidden','true');boxImg.src='';}
+  box.addEventListener('click',close);
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
+})();
+</script>
+
+<script src="../../image-interactions.js"></script>
+
+<!-- 官網共用：滑鼠暖光暈 + 導航列漢堡選單 -->
+<script src="../../spotlight.js"></script>
+
+<!-- 文章自動互聯（相關文章）：兩支已內建，順序不可顛倒，不用再另外加 -->
+<script src="../../articles-data.js"></script>
+<script src="../../related-render.js"></script>
+  <script src="/mika-chat-widget.js" defer></script>
+</body>
+</html>
