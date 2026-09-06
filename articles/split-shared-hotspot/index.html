@@ -5,21 +5,21 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="index,follow">
 <title>兩個 AI 一起加資料，為什麼總是撞在同一個檔？｜把大檔拆成一單位一檔，讓它們不用排隊</title>
-<meta name="description" content="多個 AI 分頭維護同一個網站，其他檔都不撞，只有文章總清單每篇上線都要加一筆、每次都衝突。這篇講我怎麼把 135 篇的清單檔拆成一篇一個小檔，讓清單變成機器算出來的生成檔，兩桌同時上線不用互等。中段攤開另一家 AI 三輪審稿抓出的八個洞，文末給判斷共享熱點的三個問題、生成器最小骨架與可直接貼給 AI 的委託指令。">
+<meta name="description" content="多個 AI 分頭維護同一個網站，其他檔都不撞，只有文章總清單每篇上線都要加一筆、每次都衝突。這篇講我怎麼把 135 篇的清單檔拆成一篇一個小檔，讓清單變成機器算出來的生成檔，兩桌同時上線不再在這個檔上撞。中段攤開另一家 AI 三輪審稿抓出的八個洞，文末給判斷共享熱點的三個問題、生成器最小骨架與可直接貼給 AI 的委託指令。">
 <link rel="canonical" href="https://jiangyude.com/articles/split-shared-hotspot/">
 <meta property="og:type" content="article">
 <meta property="og:title" content="兩個 AI 一起加資料，為什麼總是撞在同一個檔？｜把大檔拆成一單位一檔，讓它們不用排隊｜江江教練">
 <!-- 分享封面：hero 文字填好後在 repo 根目錄跑 `node scripts/og-shot.mjs split-shared-hotspot` 自動截 1200×630 到 images/og/split-shared-hotspot.jpg（見 README「文章分享封面（OG 圖）機制」）。別退回 intro-jiang.png 直式人像，會被裁成只剩脖子。 -->
 <meta property="og:image" content="https://jiangyude.com/images/og/split-shared-hotspot.jpg">
-<meta property="og:description" content="多個 AI 分頭維護同一個網站，其他檔都不撞，只有文章總清單每篇上線都要加一筆、每次都衝突。這篇講我怎麼把 135 篇的清單檔拆成一篇一個小檔，讓清單變成機器算出來的生成檔，兩桌同時上線不用互等。中段攤開另一家 AI 三輪審稿抓出的八個洞，文末給判斷共享熱點的三個問題、生成器最小骨架與可直接貼給 AI 的委託指令。">
+<meta property="og:description" content="多個 AI 分頭維護同一個網站，其他檔都不撞，只有文章總清單每篇上線都要加一筆、每次都衝突。這篇講我怎麼把 135 篇的清單檔拆成一篇一個小檔，讓清單變成機器算出來的生成檔，兩桌同時上線不再在這個檔上撞。中段攤開另一家 AI 三輪審稿抓出的八個洞，文末給判斷共享熱點的三個問題、生成器最小骨架與可直接貼給 AI 的委託指令。">
 <meta property="og:url" content="https://jiangyude.com/articles/split-shared-hotspot/">
 <meta property="og:locale" content="zh_TW">
 <meta property="og:site_name" content="江江教練 · AI 知識管理">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="兩個 AI 一起加資料，為什麼總是撞在同一個檔？｜把大檔拆成一單位一檔，讓它們不用排隊｜江江教練">
 <meta name="twitter:image" content="https://jiangyude.com/images/og/split-shared-hotspot.jpg">
-<meta name="twitter:description" content="多個 AI 分頭維護同一個網站，其他檔都不撞，只有文章總清單每篇上線都要加一筆、每次都衝突。這篇講我怎麼把 135 篇的清單檔拆成一篇一個小檔，讓清單變成機器算出來的生成檔，兩桌同時上線不用互等。中段攤開另一家 AI 三輪審稿抓出的八個洞，文末給判斷共享熱點的三個問題、生成器最小骨架與可直接貼給 AI 的委託指令。">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"兩個 AI 一起加資料，為什麼總是撞在同一個檔？｜把大檔拆成一單位一檔，讓它們不用排隊","description":"多個 AI 分頭維護同一個網站，其他檔都不撞，只有文章總清單每篇上線都要加一筆、每次都衝突。這篇講我怎麼把 135 篇的清單檔拆成一篇一個小檔，讓清單變成機器算出來的生成檔，兩桌同時上線不用互等。中段攤開另一家 AI 三輪審稿抓出的八個洞，文末給判斷共享熱點的三個問題、生成器最小骨架與可直接貼給 AI 的委託指令。","author":{"@type":"Person","name":"江昱德","alternateName":"江江教練","jobTitle":"隱性知識提煉師、AI 應用規劃師"},"isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://jiangyude.com/"},"inLanguage":"zh-Hant","url":"https://jiangyude.com/articles/split-shared-hotspot/"}</script>
+<meta name="twitter:description" content="多個 AI 分頭維護同一個網站，其他檔都不撞，只有文章總清單每篇上線都要加一筆、每次都衝突。這篇講我怎麼把 135 篇的清單檔拆成一篇一個小檔，讓清單變成機器算出來的生成檔，兩桌同時上線不再在這個檔上撞。中段攤開另一家 AI 三輪審稿抓出的八個洞，文末給判斷共享熱點的三個問題、生成器最小骨架與可直接貼給 AI 的委託指令。">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"兩個 AI 一起加資料，為什麼總是撞在同一個檔？｜把大檔拆成一單位一檔，讓它們不用排隊","description":"多個 AI 分頭維護同一個網站，其他檔都不撞，只有文章總清單每篇上線都要加一筆、每次都衝突。這篇講我怎麼把 135 篇的清單檔拆成一篇一個小檔，讓清單變成機器算出來的生成檔，兩桌同時上線不再在這個檔上撞。中段攤開另一家 AI 三輪審稿抓出的八個洞，文末給判斷共享熱點的三個問題、生成器最小骨架與可直接貼給 AI 的委託指令。","author":{"@type":"Person","name":"江昱德","alternateName":"江江教練","jobTitle":"隱性知識提煉師、AI 應用規劃師"},"isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://jiangyude.com/"},"inLanguage":"zh-Hant","url":"https://jiangyude.com/articles/split-shared-hotspot/"}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
@@ -178,7 +178,7 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
 
 <section class="section" id="start">
   <div class="inner">
-    <p class="lead">這篇在講什麼：我的官網有一份 135 篇文章的總清單檔，每篇文章上線都要往裡面加一筆。多個 AI 分頭寫文章時，別的檔都不撞，就這一個檔每次都撞。這篇講我怎麼把它拆成「一篇文章一個小檔」，讓清單檔變成機器算出來的生成檔，兩張桌子同時上線也不用互等。中段攤開另一家 AI 三輪審稿抓出的八個洞，最後給你判斷自己手上哪個檔該拆的三個問題、生成器的最小骨架，和一段可以直接貼給 AI 的委託指令。</p>
+    <p class="lead">這篇在講什麼：我的官網有一份 135 篇文章的總清單檔，每篇文章上線都要往裡面加一筆。多個 AI 分頭寫文章時，別的檔都不撞，就這一個檔每次都撞。這篇講我怎麼把它拆成「一篇文章一個小檔」，讓清單檔變成機器算出來的生成檔，兩張桌子同時上線，不會再在這個檔上撞。中段攤開另一家 AI 三輪審稿抓出的八個洞，最後給你判斷自己手上哪個檔該拆的三個問題、生成器的最小骨架，和一段可以直接貼給 AI 的委託指令。</p>
     <div class="duo stack">
       <div class="card a">
         <b>適合誰</b>
@@ -202,17 +202,17 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
 
 <section class="section" id="recap">
   <div class="inner">
-    <h2>前情：掛牌講好了誰等誰，沒解掉為什麼要等</h2>
+    <h2>前情：掛牌講好了誰等誰，沒拿掉那個每次要解的衝突</h2>
     <p>前一篇〈兩個 AI 同時改一個網站，為什麼會打架？〉講的是把共用的一張桌子拆成一人一桌（git worktree），上線時走一支合併腳本。裝完之後，施工期真的不排隊了。</p>
     <p>但我在 9 月 5 日做「圖譜工程 v2」的雙軌分析時，讓 Claude 與 Codex 各自獨立看整套流程，兩邊不約而同指到同一個檔：<code>articles-data.js</code>。</p>
     <p>它是官網深度文章的總清單，瀏覽器靠它畫出文章總覽，也靠它畫出每篇文章底下的相關文章。135 篇文章的標題、摘要、標籤、關聯全寫在裡面，單檔 188,593 bytes。每篇新文章上線，都要往裡面加一筆。</p>
-    <p>於是它成了唯一「每次都撞」的地方。兩張桌子各寫各的文章，其他檔案完全不相干；只有合併進主線時，兩邊都在這個檔的同一個位置加了一行，Git 一定報衝突。我們原本的對策是把它列進「共享熱點」清單：開桌時登記、合併時人工看一眼。</p>
-    <p>登記制講清楚了誰先誰後。可是只要這個檔還在，排隊就永遠在。</p>
+    <p>於是它成了唯一「每次都撞」的地方。兩張桌子各寫各的文章，其他檔案完全不相干；只有合併進主線時，兩邊都在這個檔的同一個位置加了一行，Git 多半會報衝突。我們原本的對策是把它列進「共享熱點」清單：開桌時登記、合併時人工看一眼。</p>
+    <p>登記制講清楚了誰先誰後。可是只要這個檔還在，每次合併都得有人停下來解它的衝突。</p>
     <figure class="inline-figure">
       <img src="../../images/articles/parallel-site-editing-trio.jpg" alt="三格示意：多張桌子各自施工、合併窗口前排隊、拿放大鏡巡檢網站" loading="lazy">
-      <figcaption>前一篇解掉的是左邊施工期的排隊。中間合併窗口前那條隊還在，因為大家手上都拿著同一份清單要改。</figcaption>
+      <figcaption>前一篇解掉的是左邊施工期的排隊。中間的合併窗口本來就一次只放一個進去；這篇處理的是每個人進窗口時，手上那份都要改的清單。</figcaption>
     </figure>
-    <div class="meaning"><b>關鍵判斷</b>掛牌是「講好誰等誰」，拆檔是「讓人不用等」。前者是規則，後者是結構。規則要人記得遵守，結構不用。</div>
+    <div class="meaning"><b>關鍵判斷</b>掛牌是「講好誰等誰」，拆檔是「把會撞的東西拿掉」。合併窗口仍然一次一個，但進去的人不用再停下來解清單衝突。前者是規則，後者是結構。規則要人記得遵守，結構不用。</div>
     <div class="readmore near">
       <b>這篇是前一篇的下一步，還沒讀過的先看那篇</b>
       <ul>
@@ -250,7 +250,7 @@ articles-data.js      <span class="c">生成檔，機器算出來，不要手改
   "tags": { "topic": ["AI工作流"], "level": ["進階"], "content_type": ["教學文章"] },
   "related": ["parallel-site-editing", "publish-gate"]
 }</div>
-    <p>寫新文章的人，只動自己資料夾裡的兩個檔。兩張桌子同時上線，各自新增的是不同資料夾裡的不同檔案，Git 沒有東西可以衝突。</p>
+    <p>寫新文章的人，只動自己資料夾裡的兩個檔。兩張桌子同時上線，各自新增的是不同資料夾裡的不同檔案，在清單這件事上沒有東西可以衝突。（兩個人同時改同一篇的 <code>article.json</code> 還是會撞，但那是真的在改同一篇文章，本來就該撞。）</p>
 
     <h3>生成器做四件事</h3>
     <p>一支腳本 <code>build-articles-data.mjs</code>，讀所有 <code>article.json</code>，然後：</p>
@@ -260,7 +260,7 @@ articles-data.js      <span class="c">生成檔，機器算出來，不要手改
       <li><b>輸出</b>：寫成跟舊手寫版一模一樣格式的 <code>articles-data.js</code>。</li>
       <li><b>守門</b>：發現有人照舊習慣直接手改了生成檔，停下來列出是哪幾筆，不靜默覆蓋。</li>
     </ol>
-    <p>第 3 點值得多說一句。官網另外有三支腳本用正規表達式（regex）直接讀這個檔的文字，沒有用 JavaScript 載入。只要輸出格式跟舊版一個字元都不差，那三支腳本一行都不用改。實測 135 篇逐筆比對內容相同，三支腳本對新舊檔的解析結果相同。改一個東西的時候，讓吃它的人完全無感，是拆檔能不能安全上線的關鍵。</p>
+    <p>第 3 點值得多說一句。官網另外有三支腳本用正規表達式（regex）直接讀這個檔的文字，沒有用 JavaScript 載入。輸出格式照舊版的寫法（key 不加引號、縮排與每筆的收尾方式都一樣），那三支腳本一行都不用改。實測 135 篇逐筆比對內容相同，三支腳本對新舊檔的解析結果相同。改一個東西的時候，讓吃它的人完全無感，是拆檔能不能安全上線的關鍵。</p>
 
     <h3>四種模式</h3>
     <div class="tablewrap"><table>
@@ -275,7 +275,7 @@ articles-data.js      <span class="c">生成檔，機器算出來，不要手改
 
     <h3>合併時統一重建</h3>
     <p>上線用的合併腳本多了一段：先合併分支，重跑生成器，再把重建結果跟文章壓成同一個 commit 推出去。如果合併時 <code>articles-data.js</code> 本身報衝突（例如某張舊桌子照舊習慣手改了它），腳本先收下分支那一版，再交給生成器判定；另外三個生成檔（站內索引、關鍵詞、英文清單）直接收主線版然後重建。</p>
-    <div class="caveat"><b>邊界：只有這四個生成檔會自動收</b><code>sitemap.xml</code> 與 <code>llms.txt</code> 這兩個給搜尋引擎和 AI 讀的檔，目前還是人手維護，撞到還是人工解。它們沒拆的理由在決策面那一節。</div>
+    <div class="caveat"><b>邊界：只有這四個生成檔會自動收</b><code>sitemap.xml</code>、<code>llms.txt</code>、<code>llms-full.txt</code> 這幾個給搜尋引擎和 AI 讀的檔，目前還是人手維護，撞到還是人工解。它們沒納入的理由在決策面那一節。</div>
     <div class="readmore near">
       <b>上線前的檢查閘門，我另外寫過一篇</b>
       <ul>
@@ -334,7 +334,7 @@ articles-data.js      <span class="c">生成檔，機器算出來，不要手改
 
     <h3>一個回不了頭的決定：順序</h3>
     <p>舊清單的順序是這幾個月手工 prepend 與 append 混出來的，沒有任何規則能從資料重建它。生成器必須選一個確定的排序，我選了跟總覽頁顯示邏輯一致的：更新日或發布日新到舊。代價是同一天發的文章，彼此的相對位置會變：135 個位置裡有 67 個換位，全部是同日之內互換。</p>
-    <p>Codex 第一輪就點出這會連動總覽頁、相關文章的同分推薦、站內搜尋與 AI 客服的編號，要先告訴站主。所以合併之前，我先確認過訪客看得到的差別只有這一項，拍板才推。</p>
+    <p>Codex 第一輪就點出這會連動總覽頁、相關文章的同分推薦、站內搜尋與 AI 客服（咪卡）的編號，要先告訴站主。所以合併之前，我先確認過訪客看得到的差別只有這一項，拍板才推。</p>
     <div class="meaning"><b>拆檔前先找的東西</b>這類「無法從資料重建的隱性狀態」，拆檔前一定要先找出來。它不會報錯，只會在上線後讓人覺得順序怪怪的。</div>
 
     <h3>三個問題，判斷哪個檔是共享熱點</h3>
@@ -343,14 +343,14 @@ articles-data.js      <span class="c">生成檔，機器算出來，不要手改
       <div class="workflow-step"><small>問題 2</small><b>兩個以上的人或 AI 會同時加嗎？</b><p>只有你一個人加，它就只是大檔，還算不上熱點。</p></div>
       <div class="workflow-step"><small>問題 3</small><b>它能不能從別的東西算出來？</b><p>算得出來的就該變成生成檔；算不出來的（例如人工排的精選順序）要另想辦法。</p></div>
     </div>
-    <p>三個都是「是」，就拆。</p>
+    <p>三個都是「是」，它就是拆的候選。要不要真的拆，還要看上一段那種回不了頭的隱性狀態有多少、值不值得。</p>
 
-    <h3>沒拆的兩個檔，和一份還沒改的清單</h3>
-    <p><code>sitemap.xml</code> 與 <code>llms.txt</code> 也符合前兩個問題，這次我刻意沒拆。原因有兩個：這一輪的範圍是解掉「每次都撞」的那一個，它們撞的頻率低得多；而且 <code>llms.txt</code> 每一筆的摘要是寫給 AI 讀的，我還想保留人工寫的空間。站內搜尋的別名檔 <code>search-aliases.js</code> 是下一個候選，同一招可用。</p>
+    <h3>沒動的幾個檔，和一份還沒改的清單</h3>
+    <p><code>sitemap.xml</code>、<code>llms.txt</code>、<code>llms-full.txt</code> 也符合前兩個問題，這次我刻意沒動：這一輪的範圍只解掉「每次都撞」的那一個，它們是手維護檔，合併腳本也刻意不把它們納入自動收。站內搜尋的別名檔 <code>search-aliases.js</code> 是下一個候選，同一招可用。</p>
     <p>另外誠實說兩件還沒收尾的事。第一，登記簿的共享熱點清單（<code>hotzones.json</code>）到現在還列著 <code>articles-data.js</code>。功能上已經沒有影響，因為不再有人需要登記它，但清單本身還沒改，等 9 月 19 日的復盤一併整理。第二，既有文章有 17 處主題標籤不在受控清單裡，生成器只提醒、不擋；要不要把那些詞納入清單是內容決定，還在我手上。</p>
 
     <h3>這套做法不新</h3>
-    <p>一篇一檔、機器合併成清單，是靜態網站產生器（Jekyll、Hugo 這類）早就在做的事，每篇文章頂端的 front matter 就是這裡的 <code>article.json</code>。我做得晚，是因為網站起步時只有一個 AI 在維護，單檔最省事。真正逼我拆的是「多個 AI 並行」這個新情況，它把原本無所謂的大檔變成了瓶頸。如果你的站一開始就用產生器架，拆檔這件事你早就有了，這篇對你的價值在三方判定與上面那三個判斷問題。</p>
+    <p>一篇一檔、機器合併成清單，是靜態網站產生器（Jekyll、Hugo 這類）早就在做的事，每篇文章頂端的 front matter 就是這裡的 <code>article.json</code>。我做得晚。真正逼我拆的是「多個 AI 並行」這個新情況，它把原本無所謂的大檔變成了瓶頸。如果你的站一開始就用產生器架，拆檔這件事你早就有了，這篇對你的價值在三方判定與上面那三個判斷問題。</p>
     <div class="readmore near">
       <b>哪些事可以放心交給機器算，我用的是同一條判準</b>
       <ul>
@@ -395,7 +395,7 @@ articles-data.js      <span class="c">生成檔，機器算出來，不要手改
 
 <section class="section" id="dogfood">
   <div class="inner">
-    <h2>彩蛋：這篇是拆檔上線後開的第一張桌子</h2>
+    <h2>彩蛋：這篇是在拆檔上線之後才開桌寫的</h2>
     <p>這篇文章的資料就寫在 <code>articles/split-shared-hotspot/article.json</code>，我從頭到尾沒有碰 <code>articles-data.js</code>。它上線時，合併腳本會自己把它算進清單。前一篇的彩蛋是「機制的第一個使用者是它自己」，這篇延續同一件事。</p>
     <div class="tagrow">
       <span class="tag">AI工作流</span><span class="tag">AI應用</span><span class="tag">工作流程</span><span class="tag">教學文章</span><span class="tag">進階</span>
