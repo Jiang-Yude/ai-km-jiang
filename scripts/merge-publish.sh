@@ -5,6 +5,7 @@
 # 流程：取鎖 → main 乾淨檢查 → pull rebase → squash merge 分支 → 重建全部生成檔
 #      → 壓成單一 staged 變更交 publish.sh（preflight、秘密掃描、commit、push、等建置、路徑驗收）
 #      → 用本次 commit SHA 核對線上建置 → 放鎖
+# 2026-09-06：articles-data.js 改為生成檔（來源＝一篇一檔 article.json）；它與其餘三個重建檔的衝突自動收 main 版再重建。
 # Codex 三修正：①分支禁 commit 生成檔，生成檔只在本步重建 ②merge＋重建壓單一 commit，
 #              不讓 Vercel 部署到「文章已進、索引未更新」的中間態 ③驗收核對 commit SHA。
 set -euo pipefail
@@ -67,21 +68,60 @@ echo "▶ 同步 main…"
 git fetch origin
 git pull --rebase
 
+# 本步「重建全部生成檔」會整個重寫的檔：衝突時直接收下 main 版再重建即可，不必人工合併。
+# articles-data.js 自 2026-09-06 起也是生成檔（一篇一檔 article.json 合併而成，見 build-articles-data.mjs），
+# 過去「兩篇同時 append 撞 both-added」的那類衝突從此在這裡自動收掉。
+# sitemap.xml、llms.txt、llms-full.txt 仍是手維護檔，不在此列，衝突照舊人工判斷。
+REGENERATED=(articles-data.js site-index.json article-keywords.js en/articles-data.js)
+
+# 漂移偵測的基準版（Codex R2 條件 1）：squash 之後 merge-base 會變成 main 自己，
+# 所以在這裡先算「main 與分支的分叉點」，連同 main HEAD 一起交給生成器。
+# 分支從分叉點之後對生成檔的任何非來源改動都會被抓到；main 在這期間更新過的舊筆不會被誤判。
+FORK_POINT="$(git merge-base HEAD "$BRANCH" 2>/dev/null || true)"
+export ARTICLES_DATA_BASELINES="${FORK_POINT} $(git rev-parse HEAD)"
+
 echo "▶ squash merge $BRANCH …"
 if ! git merge --squash "$BRANCH"; then
-  echo ""
-  echo "⛔ merge 有衝突。處理原則："
-  echo "   - articles-data.js 兩篇同時 append（both-added）：兩筆都保留，再 git add。"
-  echo "   - 生成檔（site-index.json、article-keywords.js、en/articles-data.js、sitemap.xml、"
-  echo "     llms.txt、llms-full.txt）出現衝突＝該分支違規 commit 了生成檔："
-  echo "     直接 git checkout --ours 收下 main 版，反正下一步會全部重建。"
-  echo "   - 其他衝突逐一人工判斷；解完 git add 後重跑本指令會擋（已有 staged），"
-  echo "     改為手動：解衝突 → 重建生成檔 → git add → bash scripts/publish.sh \"訊息\""
-  echo "   要放棄本次合併：git reset --merge"
-  exit 1
+  CONFLICTS=()
+  while IFS= read -r -d '' f; do CONFLICTS+=("${f}"); done < <(git -c core.quotePath=false diff --name-only --diff-filter=U -z)
+  MANUAL=()
+  for f in "${CONFLICTS[@]}"; do
+    is_gen=0
+    for g in "${REGENERATED[@]}"; do [[ "${f}" == "${g}" ]] && is_gen=1; done
+    if [[ "${f}" == "articles-data.js" ]]; then
+      # 這一個收「分支版」不收 main 版：分支若是舊習慣直接在 articles-data.js 加了一筆、沒建 article.json，
+      # 收 main 版會讓那一筆在重建前就消失，生成器的漂移偵測看不到、文章就無聲掉出索引。
+      # 收分支版則交給下一步的生成器判：那一筆來源沒有→停下要求 --adopt；有 article.json→正常重建。
+      git checkout --theirs -- "${f}" && git add -- "${f}"
+      echo "   ↻ articles-data.js 衝突先收分支版：${f}（下一步生成器會比對來源，有手改會停下）"
+    elif [[ ${is_gen} -eq 1 ]]; then
+      git checkout --ours -- "${f}" && git add -- "${f}"
+      echo "   ↻ 生成檔衝突自動收下 main 版：${f}（下一步會整個重建）"
+    else
+      MANUAL+=("${f}")
+    fi
+  done
+  if [[ ${#MANUAL[@]} -gt 0 ]]; then
+    echo ""
+    echo "⛔ merge 有生成檔以外的衝突，需要人工判斷："
+    printf '   - %s\n' "${MANUAL[@]}"
+    echo "   處理原則："
+    echo "   - 文章資料改在 articles/<id>/article.json（一篇一檔），兩桌各動各的檔，理論上不會撞；"
+    echo "     若撞的是同一篇的 article.json，表示兩桌在改同一篇，先對一下登記簿。"
+    echo "   - 解完 git add 後重跑本指令會擋（已有 staged），改為手動（基準版要自己帶，腳本退出後環境變數就沒了）："
+    echo "     解衝突 → ARTICLES_DATA_BASELINES=\"${FORK_POINT} $(git rev-parse HEAD)\" node scripts/build-articles-data.mjs"
+    echo "     → 重建其餘生成檔 → git add → bash scripts/publish.sh \"訊息\""
+    echo "   要放棄本次合併：git reset --merge"
+    exit 1
+  fi
+  echo "   衝突只有生成檔，已全部自動處理，繼續。"
 fi
 
 echo "▶ 重建全部生成檔…"
+# 順序有意義：articles-data.js 先，site-index 與 article-keywords 都讀它。
+# 這一步若停下（exit 2）＝有人直接手改了 articles-data.js 而沒動 article.json：
+# 到該分支跑 node scripts/build-articles-data.mjs --adopt 把手改回寫成來源檔，再重跑本指令。
+node scripts/build-articles-data.mjs
 node scripts/build-site-index.mjs
 node scripts/build-article-keywords.mjs
 node scripts/build-en-articles-data.mjs

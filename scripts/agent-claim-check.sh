@@ -5,7 +5,8 @@
 #   把本次實際要上線的檔案清單拿去跟登記簿（~/Developer/agent-state）裡這個分支的登記單比對。
 # 第一版純警告不擋（Q5A，兩週後 P6 復盤再決定要不要開 --strict）。
 # 登記簿工具不在這台機器上 → 印一行說明後放行（fail open），不能因為工具沒裝就擋住上線。
-# 生成檔不算越界：merge-publish 自己重建的六個檔（site-index.json、article-keywords.js、en/articles-data.js、sitemap.xml、llms.txt、llms-full.txt）。
+# 生成檔不算越界：merge-publish 自己重建的檔（articles-data.js〔2026-09-06 起，一篇一檔合併而成〕、site-index.json、article-keywords.js、en/articles-data.js）
+#   加上 sitemap.xml、llms.txt、llms-full.txt（每篇上線都要 append 的公共索引，沿用原白名單）。
 # en/ 底下其他檔是英文來源檔，不在白名單（Codex P2 審：en/* 過寬）。
 set -uo pipefail
 
@@ -29,7 +30,7 @@ fi
 FILTERED=()
 for f in "$@"; do
   case "${f}" in
-    site-index.json|article-keywords.js|en/articles-data.js|sitemap.xml|llms.txt|llms-full.txt) ;;
+    articles-data.js|site-index.json|article-keywords.js|en/articles-data.js|sitemap.xml|llms.txt|llms-full.txt) ;;
     *) FILTERED+=("${f}") ;;
   esac
 done

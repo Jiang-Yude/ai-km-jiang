@@ -1,40 +1,45 @@
-/* ====="江江精選",=======================================================
-   articles-data.js  ·  深度文章總站唯一資料源（Single Source of Truth）
+/* ============================================================
+   articles-data.js  ·  深度文章總站資料源（生成檔，不要手改）
    ------------------------------------------------------------
-   新增一篇文章 = 在 window.ARTICLES 陣列尾端加一個物件即可。
-   articles.html 會自動長出卡片與交集篩選。
+   本檔由 scripts/build-articles-data.mjs 從一篇一檔合併而成：
+     來源：articles/<id>/article.json、ai-trends/<id>/article.json
+     標籤：articles-tags.json（受控清單，對齊知識庫 tag-dictionary.md）
+   新增一篇文章 ＝ 在文章資料夾放 article.json（範本：_templates/article.example.json），
+   本機預覽相關文章時跑 node scripts/build-articles-data.mjs；
+   上線時 merge-publish 會統一重建本檔，分支不必 commit 它。
+   直接改本檔會被 preflight 的 --check 擋下；要保留手改請跑 --adopt 回寫到來源。
 
-   ⚠️ 標籤一律從 window.ARTICLE_TAGS 的受控清單挑，對齊知識庫
-      tag-dictionary.md，不要自創字串。三個篩選維度：
-        topic        主題  → D2內容（這篇在講什麼）
-        level        難度  → D3難度等級（零基礎入門/基礎/進階/專業）
-        content_type 類型  → 文章種類（教學/觀點/趨勢/案例）
-   「適合誰」不做篩選（身份會重疊），只用 audience 欄位寫成一句話放卡片。
-
-   ⚠️ related 雙向對稱：A 的 related 列了 B，B 的 related 也要列回 A。
-      手寫精選版頁面（own-ai-team-at-work）的相關文章在 HTML 內手寫，
-      不靠本檔，故不在這裡跟它做雙向。
-
-   待辦（受控詞彙四方同步，尚未做到 Obsidian 字典）：
-     新增 D3文件用途：教學文章/觀點文章/趨勢文章/案例文章
-     新增 D2主題：AI趨勢；D2工具：Codex
-     難度 D3：零基礎→零基礎入門（或補別名）
+   三個篩選維度：topic 主題（D2內容）／level 難度（D3難度等級）／content_type 類型。
+   「適合誰」不做篩選（身份會重疊），audience 欄位只寫一句話放卡片。
+   related 雙向對稱由 scripts/link-graph.js check 把關。
+   順序：依 (updated 或 date) 新到舊，與 articles-render.js 顯示排序一致。
    ============================================================ */
 
 window.ARTICLE_TAGS = {
-  topic: [
-    "江江精選",
-    "知識管理", "AI工作流", "AIAgent", "工作流程", "工具操作",
-    "技能包設計", "ClaudeSkills", "知識庫", "輔助決策",
-    "差異比較", "數位轉型", "隱性知識", "提示詞設計", "AI趨勢",
-    "圖片生成", "AI應用", "品牌資產"
-  ],
+  topic: ["江江精選", "知識管理", "AI工作流", "AIAgent", "工作流程", "工具操作", "技能包設計", "ClaudeSkills", "知識庫", "輔助決策", "差異比較", "數位轉型", "隱性知識", "提示詞設計", "AI趨勢", "圖片生成", "AI應用", "品牌資產"],
   level: ["零基礎入門", "基礎", "進階", "專業"],
   content_type: ["教學文章", "觀點文章", "趨勢文章", "案例文章"]
 };
 
 window.ARTICLES = [
-  /* ── AI 時代，網站開始同時服務人與 AI（趨勢）── */
+  {
+    id: "what-are-subagents",
+    url: "articles/what-are-subagents/",
+    date: "2026-09-01",
+    updated: "2026-09-02",
+    title: "什麼叫子代理？從分頭查資料到 30 人工作坊頁面",
+    problem: "問 AI 某個工具好不好用，拿回來的答案總是很像產品介紹；手上一批同版型、內容各自不同的重複工作，又不知道怎麼交給 AI 分批做完。",
+    audience: "想比較多個工具、又擔心 AI 太早選邊站的人；手上有一批同版型重複工作的人；已經會叫 AI 做事，接下來想學怎麼分批派工與整併的人。",
+    summary: "子代理就是讓 Agent 開分身，分頭工作後再一起整併。文章用兩個實際案例說明兩種並行方式：一是把同一個問題拆成官方說法、網路正面評價、網路負面評價三組獨立搜尋，附可直接複製的提示詞、三組回來後要先查的五件事，以及矛盾要保留不要磨平的處理原則；二是替 29 位工作坊學員製作同版型獨立頁面，用分批派工的五步流程與一段完整派工提示詞，成果頁附上線連結。最後講清楚子代理的限制：上下文不會自動跟著走，每隻子代理都要拿到五項脈絡封包，並附收工前的七題驗收清單。",
+    tags: {
+      topic: ["AIAgent", "AI工作流", "提示詞設計", "工作流程"],
+      level: ["基礎"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
+    related: ["parallel-site-editing", "same-question-different-answers", "long-document-review-layers"]
+  },
+
   {
     id: "ai-era-websites-for-agents",
     url: "articles/ai-era-websites-for-agents/",
@@ -53,2112 +58,24 @@ window.ARTICLES = [
     related: ["webmcp-day-one", "agent-web-turning-point", "web-chat-ai-vs-desktop-agent", "a2a-agent-protocol", "five-loops-content-line"]
   },
 
-  /* ── 迴圈的圈數上限，三行寫進規則檔（教學）── */
   {
-    id: "loop-round-limit",
-    url: "articles/loop-round-limit/",
+    id: "five-loops-content-line",
+    url: "articles/five-loops-content-line/",
     date: "2026-09-01",
     updated: "2026-09-01",
-    title: "AI 自己跑，會不會一直跑到額度燒完？｜迴圈的圈數上限，三行寫進規則檔",
-    problem: "讓 AI 自己跑迴圈，做完自己檢查、沒過自己修，聽起來很好用，而它一直沒過的時候不會停下來問你，一個晚上就能把額度燒完。",
-    audience: "已經在用迴圈或自動任務、發現額度掉很快的人，以及讓兩個 AI 互審結果它們沒完沒了聊下去的人。",
-    summary: "迴圈沒設圈數上限，AI 可以修一百遍。這篇給一張圈數表（一般任務兩輪、重要決策三輪、第三輪強制停下來回報）、三行可直接貼進規則檔的停止條件，以及最容易漏掉的第三行：停手的時候要交什麼。另外拆開四種卡住的原因怎麼分辨、「一輪」怎麼算、上限跟報酬遞減曲線的兩層分工，並用一篇實際跑了四輪的文章說明多出來的那一輪為什麼是人批准的。",
+    title: "哪些事可以交給 AI 自己跑完？｜我把內容產線拆成五個小迴圈",
+    problem: "同樣的流程重複做過幾百次，想交給 AI 又不知道哪些交得出去；交出去之後還要整個重看一遍，等於沒省到。",
+    audience: "有一套自己重複在做的流程、每次都要從頭盯到尾的人；試過把工作交給 AI 但沒省到力氣的人；想要一條判準來分辨哪些該交出去、哪些無論如何要自己來的人。",
+    summary: "把我實際在跑的內容產線整條攤開：一個連結進來，怎麼變成脆文、圖卡、官網文章，最後上線。核心是一條兩層判準，先問能不能用客觀標準驗出對錯，再問錯了可不可逆，兩層都過才交給 AI 自己跑完。五個小迴圈逐一拆解，每個都附回頭條件與實際踩過的坑，包含抓逐字稿的三條換路順序、圖卡生成的四項自我檢查、Threads 發布媒體參數只吃公開網址所以要架固定中繼站、文章審查三道關卡、部署的掛牌與同步順序。文末給四個步驟，讓你拿自己的流程對一次。",
     tags: {
-      topic: ["AI工作流", "AIAgent", "工作流程"],
+      topic: ["AI工作流", "系統設計", "AI應用"],
       level: ["基礎"],
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["what-is-loop-engineering", "loop-engineering-guardrails", "after-ai-says-remembered", "dual-track-planning-loop", "what-is-graph-engineering", "ai-usage-audit"]
+    related: ["what-is-loop-engineering", "what-is-graph-engineering", "ai-era-websites-for-agents"]
   },
-  {
-    id: "ai-usage-audit",
-    url: "articles/ai-usage-audit/",
-    date: "2026-08-26",
-    updated: "2026-08-26",
-    title: "AI 越用越貴，我掃了自己一個月的用量",
-    problem: "沒有多接案子、也沒開發新東西，AI 額度卻用得越來越快；升到更高的方案之後，還是常常覺得不夠用，而且完全不知道錢花到哪去了。",
-    audience: "用 AI 工具做事、覺得額度越來越不夠用的人；幫自己建了一整套規則與技能包、開始懷疑是不是養太大的人；想知道自己的 AI 到底把錢花在哪，而不是只看到一個總額數字的人。",
-    summary: "掃完自己一個月 19,287 次 API 呼叫的實測紀錄，發現原本猜的原因（知識庫太肥）只佔 26%，另外四分之三是三個使用習慣：一個對話開一整天、同一件事開兩個視窗、什麼工作都用最貴的模型。先講清楚一個大部分人不知道的計費機制：AI 每問一句都在重讀整段對話，所以第 800 句時打二十個字，帳單算的是四十萬。接著給兩個開關（模型切換點、對話斷點）與實測的省下倍數，說明為什麼這件事沒辦法寫成自動化規則（AI 技術上切不了模型、攔截器不知道你跑到第幾步），以及自己原本就有的三條省錢規則為什麼兩個月來一條都沒被執行。最後附一支可直接跑的量測腳本，讓你量自己的實際用量。",
-    tags: {"topic":["AI工作流","知識管理","工具操作"],"level":["基礎"],"content_type":["觀點文章"]},
-    external: { threads: null, vocus: null },
-    related: ["ai-cp-value-calculus", "copied-mechanism-is-no-mechanism", "program-vs-ai-skill-library", "cognitive-debt", "loop-round-limit"]
-  },
-
-  /* ── 一間辦公室，講清楚什麼是圖譜工程（教學）── */
-  {
-    id: "what-is-graph-engineering",
-    url: "articles/what-is-graph-engineering/",
-    date: "2026-08-24",
-    updated: "2026-08-31",
-    title: "可以放著讓 AI 自己跑完嗎？｜迴圈工程與圖譜工程不用會寫程式也學得會",
-    problem: "很想用 AI 把工作自動化，但不會寫程式，看到「迴圈工程」「圖譜工程」這種名詞就先卡住。網路上的解釋彼此不一致，而且看完還是不知道跟自己有什麼關係、自己能不能用。",
-    audience: "不會寫程式、但想讓 AI 自己把工作跑完的人；已經會讓 AI 跑完一件事、想知道再上去那層是什麼的人；同時在做好幾種產出、覺得它們串不起來的人；用看板管專案、想知道這個新名詞跟自己有沒有關係的人。",
-    summary: "不會寫程式也能讓 AI 自己把一件事跑完，前提是把目標、規則、審核標準交代清楚。這篇用一間辦公室講清楚圖譜工程，全程不用程式例子：桌上的交接本是狀態、牆上的派工規則表是邊、上場的助理是節點，規則表不是主管，它只做條件對照。接著處理一件多數人會踩的事：「圖譜」這個字有兩個主人，一個管工作跟工作的順序，一個管概念跟概念的關聯，作者自己就遇過一次 AI 把兩者答混，靠知識庫裡寫下的定義才抓回來。再切開五個容易混淆的概念：迴圈工程、專案管理、互相監督、自動化、流程設計的老方法，其中專案管理那個的關鍵差別是助理從人變成 AI，人會自己補上沒寫出來的判斷，AI 不會。最後誠實盤點作者自己的機制，哪些真的算、哪些介於中間、哪些其實不算，並給一段可直接複製的跨家審查提示詞。",
-    tags: {
-      topic: ["AI工作流", "系統設計", "知識管理", "AIAgent"],
-      level: ["基礎"],
-      content_type: ["教學文章"]
-    },
-    external: { threads: null, vocus: null },
-    related: ["what-is-loop-engineering", "parallel-site-editing", "webnode-to-cloudflare-pages", "five-loops-content-line"]
-  },
-
-
-  /* ── 交代過的事 AI 為什麼老是忘記？：從『我記住了』到讓 AI 自己跑（教學） ── */
-  {
-    id: "after-ai-says-remembered",
-    url: "articles/after-ai-says-remembered/",
-    date: "2026-08-06",
-    updated: "2026-08-06",
-    title: "交代過的事 AI 為什麼老是忘記？：從『我記住了』到讓 AI 自己跑",
-    problem: "交代過的規則，AI 說記住了，下一次還是用回原本的做法，而你講不出是哪一步漏掉。",
-    audience: "只用 ChatGPT 或 Claude 網頁版、交代過的規則老是被忘記的人，以及寫過規則檔卻發現它沒被讀到、沒被觸發的人。",
-    summary: "「記住」在 AI 那裡有三種意思：記在對話視窗、記成檔案沒啟動、觸發詞沒設好。整理自 8/2 講座現場，給七個追問句、一份可直接複製的月結檢查清單範例、觸發得動與觸發不動的寫法對照，再往下是互審的三種難度、寫進迴圈的四條規則、跑幾輪要停，以及一個現場學員 150 頁教材的真實案例。這篇是總覽，四個段落各有一篇完整版。",
-    tags: {
-      topic: ["AI工作流", "AIAgent", "技能包設計", "跨家審稿"],
-      level: ["基礎"],
-      content_type: ["教學文章"]
-    },
-    external: { threads: null, vocus: null },
-    related: ["three-levels-of-cross-review", "long-document-review-layers", "before-installing-others-skill", "mobile-to-desktop-publish-loop", "cognitive-debt", "eight-ai-system-concepts-2026", "loop-round-limit"]
-  },
-
-  /* ── AI 改了十幾次還是有錯，怎麼辦？：資料清理只是第一關，長文件審不出錯的三層設計（教學） ── */
-  {
-    id: "long-document-review-layers",
-    url: "articles/long-document-review-layers/",
-    date: "2026-08-05",
-    updated: "2026-08-05",
-    title: "AI 改了十幾次還是有錯，怎麼辦？：資料清理只是第一關，長文件審不出錯的三層設計",
-    problem: "一份長文件用同一家模型改了十幾次都說沒問題，換一家立刻審出規範錯誤，卻不知道該補哪一層。",
-    audience: "要用 AI 檢查教材、報告、規範、合約、標書的人，以及換過模型、開過深度思考結果還是不放心的人。",
-    summary: "長文件出錯通常是三層設計沒做：材料、切法、視角。這篇拆開三層怎麼做，含把出處變成規則、指定適用規範版本的寫法、兩種切法互相覆蓋的做法、只能用一家模型時的退路，再給一段比「再跑一次」更有效的提示詞，以及出錯三種來源怎麼分。",
-    tags: {
-      topic: ["AI工作流", "跨家審稿", "知識管理"],
-      level: ["基礎"],
-      content_type: ["教學文章"]
-    },
-    external: { threads: null, vocus: null },
-    related: ["after-ai-says-remembered", "three-levels-of-cross-review", "why-split-data-into-cards", "rag-three-retrieval-modes", "ai-said-it-watched-the-video", "cross-ai-review-both-wrong", "what-are-subagents"]
-  },
-
-  /* ── 我跟 AI 說「很煩」，它自己去加了一道機制（教學） ── */
-  {
-    id: "build-your-own-dictionary",
-    url: "articles/build-your-own-dictionary/",
-    date: "2026-08-08",
-    updated: "2026-08-10",
-    title: "我跟 AI 說「很煩」，它自己去加了一道機制",
-    problem: "「快一點」到底是多快、「詳細一點」到底是多詳細，同一個詞我每次的意思都一樣，AI 每次的理解卻不一樣，只好每次重講一遍。",
-    audience: "每天用 AI 工作、常覺得「我明明講了它就是沒做到」的人，已經在寫提示詞但每次都要重寫一長串覺得很累的人，以及想把自己的工作習慣變成 AI 能執行的規則的人。",
-    summary: "與其去摸熟每個模型的脾氣（模型三個月改版一次，摸熟了它就升級），不如把自己的模糊詞定義一次，讓 AI 來認識你。文章從一個真實案例展開：我對 AI 說「很煩耶，我教很多次」，它去查證規則、發現規則只是文字沒有東西盯著執行，於是幫自己裝了一個「沒寫日記就不准收工」的檢查。因為「很煩」在我的規則檔裡有明確定義。後半給三個今天就能做的步驟：字典就是一段純文字、一段可直接複製的撈詞提示詞（重點是問 AI「你當時不確定什麼」）、三行寫完的條目格式（詞、我的意思是、反例），以及三種放置位置的選法，文末六題常見問答涵蓋分類、衝突、字數上限、換模型。",
-    tags: {
-      topic: ["提示詞設計", "AI工作流", "知識管理", "知識庫"],
-      level: ["零基礎入門"],
-      content_type: ["教學文章"]
-    },
-    external: { threads: null, vocus: null },
-    related: ["semantic-rules-before-prompt-templates", "rule-file-rebound", "tag-wiki-method", "my-three-loops", "teach-ai-not-learn-ai"]
-  },
-
-  /* ── AI 做的東西看不懂，可以先用再說嗎？：認知債可以欠，重點是懂得還（教學） ── */
-  {
-    id: "cognitive-debt",
-    url: "articles/cognitive-debt/",
-    date: "2026-08-09",
-    updated: "2026-08-09",
-    title: "AI 做的東西看不懂，可以先用再說嗎？：認知債可以欠，重點是懂得還",
-    problem: "AI 做出來的東西看不太懂，但看起來能用就先跳過了，不懂的東西越積越多，不知道哪天會出事。",
-    audience: "每天用 AI 產出東西、常常看起來沒問題就先用了的人，以及帶團隊用 AI 的主管。",
-    summary: "認知債是技術債的一般工作者版本：你借的是 AI 的產出，欠的是自己的理解。內容包含認知債的定義與出處（MIT 2025 預印本、軟體研究者的定義）、為什麼它是雪崩式而非線性累積、三個當場做得到的還債動作（解釋到懂為止的提示詞、對齊確認、看字數增減抓異常），以及哪些債可以欠的界線。",
-    tags: {
-      topic: ["AI駕馭思維", "知識管理", "對話管理", "AI應用"],
-      level: ["基礎"],
-      content_type: ["教學文章"]
-    },
-    external: { threads: null, vocus: null },
-    related: ["after-ai-says-remembered", "caught-ai-slacking-into-rules", "teach-ai-not-learn-ai", "program-vs-ai-skill-library", "ai-said-it-watched-the-video"]
-  },
-
-  /* ── 同一個問題被問一百次，該親自回答還是丟給 AI（觀點） ── */
-  {
-    id: "answer-in-person-or-ai",
-    url: "articles/answer-in-person-or-ai/",
-    date: "2026-08-09",
-    updated: "2026-08-09",
-    title: "同一個問題被問一百次，該親自回答還是丟給 AI",
-    problem: "同一個問題每場演講都要重講一次，想交給 AI 又怕失去什麼，也不知道 AI 會不會取代講師。",
-    audience: "講師、顧問、老師，任何靠重複輸出專業的人，以及正在做 AI 分身的人。",
-    summary: "判斷標準只有一條：這件事的本質是傳遞知識，還是累積信任。傳遞知識的交給 AI 越快越好，累積信任的講一百次也親自來。內容包含芳療師水氧機問題的真實案例、同一份知識走現場與網路兩條路的分流做法、AI 會不會取代講師的兩半答案，以及 AI 分身命名要跟本人拉開距離的理由。",
-    tags: {
-      topic: ["教學", "AI應用", "價值主張"],
-      level: ["基礎"],
-      content_type: ["觀點文章"]
-    },
-    external: { threads: null, vocus: null },
-    related: ["company-shape-is-the-moat", "teacher-prep-knowledge-workflow", "questionnaire-to-slides-agent-workflow", "agent-web-turning-point"]
-  },
-
-  /* ── 直接抄別人的 Skills、工作流，其實沒什麼用（觀點） ── */
-  {
-    id: "copied-mechanism-is-no-mechanism",
-    url: "articles/copied-mechanism-is-no-mechanism/",
-    date: "2026-08-09",
-    updated: "2026-08-09",
-    title: "直接抄別人的 Skills、工作流，其實沒什麼用",
-    problem: "收藏了一堆別人的提示詞、技能包、工作流模板，用起來卻總是卡卡的，不知道為什麼。",
-    audience: "到處找大神設定檔的人，以及想把高手用法複製給全團隊的主管。",
-    summary: "機制的本體是判斷，條文只是判斷的影子，抄影子抄不到判斷。內容包含為什麼抄來的機制是空的（每條規則背後都是一次踩雷）、通用機制與私人機制的分辨方法、下載任何技能包前的三問提示詞（風險、衝突、取捨），以及自己的機制從哪裡長出來。與「裝了別人的技能包」那篇分工：這篇講為什麼裝了也沒用，那篇講怎麼安全裝。",
-    tags: {
-      topic: ["技能包設計", "AI工作流", "隱性知識", "規則庫"],
-      level: ["基礎"],
-      content_type: ["觀點文章"]
-    },
-    external: { threads: null, vocus: null },
-    related: ["ai-usage-audit", "before-installing-others-skill", "decision-ladder-non-programmer", "how-to-train-your-ai-employee", "caught-ai-slacking-into-rules", "parallel-site-editing"]
-  },
-
-  /* ── 裝了別人的技能包，AI 會不會被搞亂？：抄之前我會先做三件事（教學） ── */
-  {
-    id: "before-installing-others-skill",
-    url: "articles/before-installing-others-skill/",
-    date: "2026-08-05",
-    updated: "2026-08-05",
-    title: "裝了別人的技能包，AI 會不會被搞亂？：抄之前我會先做三件事",
-    problem: "想抓現成技能包來用，但不知道要看什麼；已經裝了幾個之後 AI 越來越不聽話，也講不出是哪裡出問題。",
-    audience: "想抓現成技能包來用的人，以及已經裝了五六個、最近覺得 AI 怪怪的人。",
-    summary: "這條路有兩個坑：安全問題多數人會想到但用錯方法檢查，流程衝突多數人不會想到而它發生得更頻繁。內容包含來源三層判斷、叫 AI 檢查為什麼只能當線索與兩個可行替代做法、權限初篩四項、流程衝突四選項、安裝三個決定、驗收三層，最後一節是已經裝了一堆該怎麼回頭盤點。附一份安裝前檢查清單。",
-    tags: {
-      topic: ["技能包設計", "AI工作流", "AIAgent"],
-      level: ["基礎"],
-      content_type: ["教學文章"]
-    },
-    external: { threads: null, vocus: null },
-    related: ["after-ai-says-remembered", "long-document-review-layers", "dual-track-planning-loop", "copied-mechanism-is-no-mechanism"]
-  },
-
-  /* ── 人在外面，可以叫家裡的電腦先做嗎？：手機掃一次 QR code，桌機就開始跑（教學） ── */
-  {
-    id: "mobile-to-desktop-publish-loop",
-    url: "articles/mobile-to-desktop-publish-loop/",
-    date: "2026-08-05",
-    updated: "2026-08-05",
-    title: "人在外面，可以叫家裡的電腦先做嗎？：手機掃一次 QR code，桌機就開始跑",
-    problem: "靈感常常發生在不能坐下來工作的時候，存起來回家再處理通常就沒有然後了。",
-    audience: "有固定要產出的內容、每次都要從頭做一遍的人，以及想知道自動化該自動到哪裡的人。",
-    summary: "手機傳連結加一句語音，桌機分析內容、寫成自己觀點的短文、做圖卡、發文。連線設定只有四步，全部在設定畫面裡點完：打開設定選連線、把允許連線打開、按新增跳出 QR code、手機掃一下，另外要記得打開讓電腦維持喚醒。這篇拆解這條迴圈的五個段落與每一段的完成條件、四項可直接抄的圖片檢查標準、判斷哪一關不能交出去的方法，以及這次跑完發現的兩個缺口怎麼修：漏檢的圖與安靜失敗的社群平台。",
-    tags: {
-      topic: ["AI工作流", "AIAgent", "工作流程"],
-      level: ["基礎"],
-      content_type: ["教學文章"]
-    },
-    external: { threads: null, vocus: null },
-    related: ["after-ai-says-remembered", "before-installing-others-skill", "three-levels-of-cross-review"]
-  },
-
-  /* ── 怎麼設計讓兩個 AI 互審？：三種不同程度的審查機制設計（教學） ── */
-  {
-    id: "three-levels-of-cross-review",
-    url: "articles/three-levels-of-cross-review/",
-    date: "2026-08-06",
-    updated: "2026-08-06",
-    title: "怎麼設計讓兩個 AI 互審？：三種不同程度的審查機制設計",
-    problem: "已經會叫另一個 AI 幫忙看，但不知道什麼時候該看得更深，也不想每件事都跑滿全套。",
-    audience: "想把「找第二顆腦」變成固定流程的知識工作者，以及重要文件送出前會緊張但時間有限的人。",
-    summary: "找第二個 AI 挑錯有三種深度：只審結果、雙軌後併回、完整雙軌互審。多數人只用第一種，而它剛好抓不到最貴的那種錯，也就是一開始就走錯路。這篇給三種難度各自的可複製指令、三個選擇判準與對照表、成本、停止條件兩層寫法、對家斷線的交接四欄，以及只能用一家模型時的替代做法。",
-    tags: {
-      topic: ["跨家審稿", "AI工作流", "輔助決策"],
-      level: ["基礎"],
-      content_type: ["教學文章"]
-    },
-    external: { threads: null, vocus: null },
-    related: ["after-ai-says-remembered", "long-document-review-layers", "mobile-to-desktop-publish-loop", "ai-said-it-watched-the-video", "cross-ai-review-both-wrong", "webmcp-day-one"]
-  },
-
-  /* ── 通訊軟體 AI 友善度比較（教學） ── */
-  {
-    id: "messaging-apps-ai-friendliness",
-    url: "articles/messaging-apps-ai-friendliness/",
-    date: "2026-07-29",
-    updated: "2026-07-29",
-    title: "通訊軟體 AI 友善度比較：LINE、Telegram、Discord、Slack，你的 AI 該住在哪？",
-    problem: "想讓 AI 幫忙顧群組、當助教、把對話收成知識庫，卻不知道該用哪個通訊軟體，也分不清「平台自己有 AI」「AI 能當成員」「外部 Agent 讀得到」是三件不同的事。",
-    audience: "想加 AI 助教的講師與社群經營者、想讓 AI 整理群組對話的知識工作者，以及要向主管解釋平台選擇的評估者。",
-    summary: "先把「AI 友善度」拆成 AI 功能整合度、AI 成員化能力、Agent 控制台支援三件事，再用六個指標加評分錨點比較四個平台，附互動長條圖、雷達圖與能力矩陣。第三節整理 2026 上半年的實際變動：Slack 官方託管 MCP Server 與三種官方 Agent 進駐方式（頻道成員型、標記執行型、側欄助理型），Telegram 三波 Bot API 更新，Discord 的開發文件 MCP 為何不能讀聊天，LINE 原生 AI 的地區與次數限制，全部附官方來源。最後給三個判斷問題，加一份可直接複製的測試提示詞與三分支判準，讓你不用先做 bot 就能確認自己需要哪一種 AI。",
-    tags: {
-      topic: ["差異比較", "工具操作", "AIAgent", "AI工作流"],
-      level: ["基礎"],
-      content_type: ["教學文章"]
-    },
-    external: { threads: null, vocus: null },
-    related: ["line-group-ai-workflow", "web-chat-ai-vs-desktop-agent", "free-deploy-three-boundaries", "ai-employee-four-levels"]
-  },
-
-
-  /* ── 部署平台選擇：免費版的三道邊界（教學） ── */
-  {
-    id: "free-deploy-three-boundaries",
-    url: "articles/free-deploy-three-boundaries/",
-    date: "2026-07-28",
-    updated: "2026-07-28",
-    title: "AI 幫你把網頁做好了，該放哪？GitHub Pages 與 Vercel 完整比較",
-    problem: "用 AI 幾分鐘做好網頁，卻不知道該放哪個平台，也分不清「不被搜到」跟「別人進不去」的差別，更沒查過真正的權限保護要多少錢。",
-    audience: "用 AI 做網頁的知識工作者、講師、接案者，以及有些內容只想給特定人看的一人公司。",
-    summary: "先給三個判斷問題（誰能看到、是否商用、未來要加什麼），再用四層配置示範怎麼依內容敏感度分類，接著比較兩平台的免費額度、原始碼公開規則與權限控制費用，全部附官方來源。最後拆解一個反直覺的情況：如果你的目標是被 AI 引用，選平台的邏輯會反過來，因為爬蟲流量在按請求計費的平台上是成本。",
-    tags: {
-      topic: ["差異比較", "工具操作", "AI工作流"],
-      level: ["零基礎入門"],
-      content_type: ["教學文章"]
-    },
-    external: { threads: null, vocus: null },
-    related: ["agent-web-turning-point", "docs-as-system-design-agent", "knowledge-base-three-vault-split", "recovery-over-perfection", "messaging-apps-ai-friendliness", "github-vercel-cloudflare-compare", "who-can-see-your-site"]
-  },
-
-
-  /* ── 一對一系列：AI 知識焦慮的解法（觀點）── */
-  {
-    id: "ten-year-anchor",
-    url: "articles/ten-year-anchor/",
-    date: "2026-07-26",
-    updated: "2026-07-26",
-    title: "AI 知識焦慮的解法：在快速變動的時代，找到十年不變的錨點",
-    problem: "AI 每天都在更新，追不完，覺得自己一直在追、一直沒追上。",
-    audience: "被 AI 新聞洗版、學了很多工具卻講不出自己在累積什麼的人。",
-    summary: "該焦慮的是 AI，不是我們。解法不是追得更快，是先找到一個十年不會變的錨點：你的天賦，交集上趨勢裡不會變的部分。錨點鎖住目標、方法隨時代換。附三句錨點驗證自問，以及把資訊篩選外包給 AI 的提示詞。",
-    tags: {
-      topic: ["知識管理", "隱性知識"],
-      level: ["基礎"],
-      content_type: ["觀點文章"]
-    },
-    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["teach-ai-not-learn-ai", "timing-and-forecast", "ai-native-not-transformation", "one-on-one-questions", "talent-vs-expertise"]
-  },
-
-  /* ── 一對一系列：教 AI 的四個步驟（教學）── */
-  {
-    id: "teach-ai-not-learn-ai",
-    url: "articles/teach-ai-not-learn-ai/",
-    date: "2026-07-26",
-    updated: "2026-07-26",
-    title: "為什麼你的 AI 每次都要重講一遍：教 AI 的四個步驟",
-    problem: "每次用 AI 都要從頭講一遍需求，文件很多但 AI 抓不到重點。",
-    audience: "覺得還沒學會 AI 所以不敢開始的人，以及本來就會帶團隊、卻覺得跟科技無緣的主管與老闆。",
-    summary: "問題不在 AI 笨，在沒有人教過它你的判斷。教 AI 的四個步驟：分清楚資料庫、知識庫、規則庫；用 3X4（三種日記 × 四種時效）擺放文件；寫出一條含情況、動作、理由的規則；把你原本帶人的方式搬過來。附可直接複製的新人上工說明與三週上手排程。",
-    tags: {
-      topic: ["知識管理", "隱性知識", "AI工作流", "知識庫"],
-      level: ["零基礎入門"],
-      content_type: ["教學文章"]
-    },
-    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["ten-year-anchor", "ai-native-not-transformation", "timing-and-forecast", "one-on-one-questions", "how-to-train-your-ai-employee", "cognitive-debt", "build-your-own-dictionary"]
-  },
-
-  /* ── 一對一系列：資訊時差與市場預測（方法）── */
-  {
-    id: "timing-and-forecast",
-    url: "articles/timing-and-forecast/",
-    date: "2026-07-26",
-    updated: "2026-07-26",
-    title: "資訊時差與市場預測：怎麼比市場早一步，又不會早太多",
-    problem: "抓不準題目的時機，不是講太早沒人聽得懂，就是等到市場已經很擠。",
-    audience: "做內容、做課程、做顧問，需要決定什麼時候押什麼題目的人。",
-    summary: "資訊擴散有固定節奏：從國外最尖端到台灣政府開課大約兩年。這篇把六格節奏表與市場預測三步法接在一起，往後看知道客戶在哪一格、該用什麼形式交付，往前看知道下一個痛點什麼時候會被解掉、現在該準備什麼。附痛點反推提示詞。",
-    tags: {
-      topic: ["AI趨勢", "知識管理"],
-      level: ["基礎"],
-      content_type: ["觀點文章"]
-    },
-    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["ten-year-anchor", "teach-ai-not-learn-ai", "ai-native-not-transformation"]
-  },
-
-  /* ── 一對一系列：為什麼你的 AI 導入沒有效果（觀點）── */
-  {
-    id: "ai-native-not-transformation",
-    url: "articles/ai-native-not-transformation/",
-    date: "2026-07-26",
-    updated: "2026-07-26",
-    title: "為什麼你的 AI 導入沒有效果：從三層論到組織那面牆",
-    problem: "工具都買了、課也上了，AI 導入的效果卻停在「快了一點」。",
-    audience: "在公司裡推 AI 推不動的人，以及工具買了卻沒看到效果的企業主。",
-    summary: "問題出在兩個地方。方向上，多數導入停在第一層節點加速（流程沒變，只是某個環節快了一點），真正的機會在第三層原生設計。阻力上，效率增十倍而薪水不變，聰明員工必然裝死；權限開不了是組織治理問題不是 AI 問題。附三句問出第三層的問題，與給老闆的價值換算方式。",
-    tags: {
-      topic: ["數位轉型", "AI工作流", "輔助決策"],
-      level: ["基礎"],
-      content_type: ["觀點文章"]
-    },
-    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["ten-year-anchor", "teach-ai-not-learn-ai", "timing-and-forecast", "one-on-one-questions", "ai-employee-four-levels", "use-more-ai-not-enough"]
-  },
-
-  /* ── 1. 代理工作流蓋自動化工作流（案例）── */
-  {
-    id: "agent-workflow-builds-automation",
-    url: "articles/agent-workflow-builds-automation/",
-    date: "2026-06-16",
-    updated: "2026-06-16",
-    title: "所謂的 AI 自動化，到底是 AI 在跑還是程式在跑？｜我用 Agent 設一套程式自動化工作流",
-    problem: "搞不清楚「AI 自動化」到底是 AI 在跑、還是程式在跑，也不知道 AI 該插手在哪一段。",
-    audience: "想把重複工作變成會自己跑的流程、又分不清 AI 與程式分工的人。",
-    summary: "自動化要分成兩個概念看：Agent 工作流幫我把流程建起來，程式自動化工作流建好之後自己跑。用 Codex 設定 LINE 備份機器人的案例，拆解兩者的分工，並給一個判斷哪一段交給 AI、哪一段交給程式的實用框架。",
-    tags: {
-      topic: ["AI工作流", "AIAgent", "工作流程", "工具操作"],
-      level: ["基礎"],
-      content_type: ["案例文章"]
-    },
-    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["program-vs-ai-skill-library", "how-to-train-your-ai-employee", "line-group-ai-workflow", "codex-log-health-check", "how-ai-connects-software", "meeting-record-agent-workflow", "vibe-coding-ten-half-products", "ai-delegators-optimism", "ai-changed-behavior-into-workflow", "give-ai-choices-not-descriptions"]
-  },
-
-  /* ── 2. 只用 Codex 建立自動工作日誌（教學）── */
-  {
-    id: "codex-only-auto-worklog",
-    url: "articles/codex-only-auto-worklog/",
-    date: "2026-06-16",
-    updated: "2026-06-16",
-    title: "工作日記老是忘記寫，能叫 AI 自動收集嗎？：只用 Codex 就能做到",
-    problem: "用 AI 做完一輪事，晚上卻說不清楚今天完成了什麼；工具一多，工作痕跡更散。",
-    audience: "剛開始用 Codex、想讓它幫你記錄每天工作的人，以及在猶豫要不要上跨 Agent 工作鏡子的人。",
-    summary: "只用 Codex 就用它的定時任務自動記錄；同時用多款 Agent，才需要跨 Agent 工作鏡子。附可直接複製的提示詞。",
-    tags: {
-      topic: ["AI工作流", "AIAgent", "工作流程", "知識管理"],
-      level: ["零基礎入門"],
-      content_type: ["教學文章"]
-    },
-    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: "https://vocus.cc/salon/Jiang_Coach" },
-    related: ["questionnaire-to-slides-agent-workflow", "own-ai-team-at-work", "caught-ai-slacking-into-rules", "line-group-ai-workflow", "codex-log-health-check", "meeting-record-agent-workflow", "vibe-coding-ten-half-products"]
-  },
-
-  /* ── 3. 有標準答案的交給程式，沒標準答案的才輪到 AI（觀點）── */
-  {
-    id: "program-vs-ai-skill-library",
-    url: "ai-trends/program-vs-ai-skill-library/",
-    date: "2026-06-15",
-    updated: "2026-06-15",
-    title: "有標準答案的交給程式，沒標準答案的才輪到 AI",
-    problem: "企業導入 AI 卡在不知道用在哪、也不知道怎麼讓 AI 真的會做公司的事。",
-    audience: "想導入 AI、又怕用錯地方的經營者與團隊負責人。",
-    summary: "用一個判斷框架把工作分成確定與不確定：確定交給程式和 ERP，不確定才輪到 AI，再把它整合成技能庫。",
-    tags: {
-      topic: ["ClaudeSkills", "技能包設計", "知識庫", "差異比較", "數位轉型"],
-      level: ["進階"],
-      content_type: ["觀點文章"]
-    },
-    external: { threads: null, vocus: null },
-    related: ["own-ai-team-at-work", "agent-workflow-builds-automation", "how-ai-connects-software", "decision-ladder-non-programmer", "chatgpt-work-codex-choice", "ai-cp-value-calculus", "ai-employee-four-levels", "cognitive-debt", "same-question-different-answers"]
-  },
-
-  /* ── 4-6. 趨勢判讀 ── */
-  {
-    id: "spacex-ipo-musk-trillionaire-knowledge-work",
-    url: "ai-trends/spacex-ipo-musk-trillionaire-knowledge-work/",
-    date: "2026-06-13",
-    updated: "2026-06-13",
-    title: "世界首富用一兆美金，替知識工作者指出的那條路",
-    problem: "執行被自動化後，知識工作者還剩下什麼價值、該守住什麼。",
-    audience: "擔心工作被 AI 取代、想找到不可替代位置的知識工作者。",
-    summary: "從 SpaceX 上市與招股書「自動化知識工作」，看執行被自動化後，該守住的判斷與該做的知識庫。",
-    tags: {
-      topic: ["AI趨勢", "知識管理"],
-      level: ["基礎"],
-      content_type: ["趨勢文章"]
-    },
-    external: { threads: null, vocus: null },
-    related: ["elon-musk-live-skill", "ai-capability-tiers", "company-shape-is-the-moat"]
-  },
-  {
-    id: "demis-hassabis-agi-science-ai",
-    url: "ai-trends/demis-hassabis-agi-science-ai/",
-    date: "2026-06-09",
-    updated: "2026-06-09",
-    title: "AGI 山腳下，真正被改寫的是稀缺時代的規則",
-    problem: "AGI 與後稀缺時代，個人與組織的知識管理規則會怎麼變。",
-    audience: "想提前看懂 AI 長期趨勢、為知識資產佈局的人。",
-    summary: "從 Stanford GSB 對談出發，看 AGI、後稀缺、智能與意識分離，如何改寫 AI 知識管理與 AI 員工。",
-    tags: {
-      topic: ["AI趨勢", "知識管理"],
-      level: ["基礎"],
-      content_type: ["趨勢文章"]
-    },
-    external: { threads: null, vocus: null },
-    related: ["ai-capability-tiers", "agi-work-and-discovery"]
-  },
-  {
-    id: "apple-wwdc26-siri-lobster-ai",
-    url: "ai-trends/apple-wwdc26-siri-lobster-ai/",
-    date: "2026-06-09",
-    updated: "2026-06-09",
-    title: "蘋果的 Siri 終於要往「龍蝦 AI」進化了",
-    problem: "各家大廠都把助理推向能讀介面、叫工具、串 App 完成任務，這對個人工作流代表什麼。",
-    audience: "想跟上 AI 助理形態變化、調整自己工作流的人。",
-    summary: "從 WWDC26 看 Apple Intelligence、App Intents 到 Xcode agents，判讀助理正在變成會自己動手的形態。",
-    tags: {
-      topic: ["AI趨勢", "AIAgent"],
-      level: ["基礎"],
-      content_type: ["趨勢文章"]
-    },
-    external: { threads: null, vocus: null },
-    related: ["ai-capability-tiers", "vibe-coding-ten-half-products"]
-  },
-
-  /* ── 7. 抓到 AI 偷懶之後，把它寫進流程規則（案例）── */
-  {
-    id: "caught-ai-slacking-into-rules",
-    url: "articles/caught-ai-slacking-into-rules/",
-    date: "2026-06-08",
-    updated: "2026-06-08",
-    title: "AI 寫的東西我怎麼確認它是對的？：抓到 AI 偷懶之後，我把它寫進流程規則",
-    problem: "AI 可能沒有執行外部動作，卻用一個看起來完成任務的回答蓋過去，你不確定它有沒有真的照流程做事。",
-    audience: "已經開始用 ChatGPT、Codex、Claude、Gemini 分工，常叫 AI 去查、去叫另一個模型、幫我記住的人。",
-    summary: "我叫 Codex 請 Claude 修文，它沒真的叫卻回了一版像完成的答案。復盤怎麼追問 AI 有沒有真的執行外部動作，並把踩坑寫成規則。附可直接複製的檢查句。",
-    tags: {
-      topic: ["AIAgent", "AI工作流", "工作流程"],
-      level: ["基礎"],
-      content_type: ["案例文章"]
-    },
-    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: "https://vocus.cc/salon/Jiang_Coach" },
-    related: ["codex-only-auto-worklog", "decision-ladder-non-programmer", "publish-gate", "session-messaging-reminder-layer", "cognitive-debt", "start-with-a-wrong-draft", "ai-said-it-watched-the-video", "cross-ai-review-both-wrong"]
-  },
-
-  /* ── 8. AI 之王不上戰場（觀點）── */
-  {
-    id: "ai-king-off-battlefield",
-    url: "articles/ai-king-off-battlefield/",
-    date: "2026-06-17",
-    updated: "2026-06-17",
-    title: "AI 之王不上戰場：換個角度看蘋果、Google 與 AI 入口",
-    problem: "看 AI 發展很容易只盯著誰跑分高、誰的模型強，少了從產業結構與入口角度看趨勢的視角。",
-    audience: "常追 AI 新聞、習慣用跑分和排行榜看誰強，想拉遠一點理解 AI 趨勢的人。",
-    summary: "一個角度而非預言：把模型公司想成將軍、掌握入口的公司想成後台的王。當模型越來越商品化，真正稀缺的可能是入口。不是要你相信結論，是多一個觀察趨勢的視角。",
-    tags: {
-      topic: ["AI趨勢", "差異比較", "數位轉型"],
-      level: ["基礎"],
-      content_type: ["觀點文章"]
-    },
-    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: "https://vocus.cc/salon/Jiang_Coach" },
-    related: ["ai-capability-tiers", "company-shape-is-the-moat", "agent-native-tools-software-interface"]
-  },
-
-  /* ── 9. 知識庫太大，改成三庫分流（教學）── */
-  {
-    id: "knowledge-base-three-vault-split",
-    url: "articles/knowledge-base-three-vault-split/",
-    date: "2026-06-19",
-    updated: "2026-06-19",
-    title: "知識庫太大，資料該怎麼分庫？：我改成三庫分流",
-    problem: "知識庫越長越大、全部混在一個庫，找文件要捲很久，AI 也常讀到用不到的東西、找不到該執行的程式。想拆開又不知道照什麼標準拆。",
-    audience: "知識庫越長越大、開始翻不動，想把它拆開又不知道該照什麼標準拆的人。",
-    summary: "一套可以照做的拆庫方法：別用檔案型別分，改問「這東西是誰要用的」，分成主庫（人用）、副庫（AI 執行）、對外庫（受眾），再立一條先讀檢索頁再存檔的流程，外加一個以能運作為準的例外處理。",
-    tags: {
-      topic: ["知識管理", "知識庫", "AIAgent"],
-      level: ["基礎"],
-      content_type: ["教學文章"]
-    },
-    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: "https://vocus.cc/salon/Jiang_Coach" },
-    related: ["diary-driven-agent-3x4", "tag-wiki-method", "knowledge-os-master-map", "free-deploy-three-boundaries"]
-  },
-
-  /* ── 10. 在公司上班，你也可以有自己的 AI 團隊（觀點，手寫精選版）── */
-  {
-    id: "own-ai-team-at-work",
-    url: "articles/own-ai-team-at-work/",
-    date: "2026-06-20",
-    updated: "2026-06-20",
-    title: "效率提升好幾倍，公司又不加薪，為什麼要做？：在公司上班也能有自己的 AI 團隊",
-    problem: "在公司上班，總覺得多做也沒用，想把工作變成自己的系統卻不知道從哪開始，也一直訓練不出自己的 AI。",
-    audience: "在公司上班、又想把工作做成一套系統的人，特別是有資源的中高階主管，以及想經營副業、未來自己接案的資深工作者。",
-    summary: "把自己從員工心態切換成一人公司老闆，公司是你目前唯一的長期固定客戶。同樣的事差別只在心態，而沒有這個轉換，是訓練不出自己的 AI 團隊的。",
-    tags: {
-      topic: ["AIAgent", "數位轉型"],
-      level: ["零基礎入門"],
-      content_type: ["觀點文章"]
-    },
-    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["codex-only-auto-worklog", "program-vs-ai-skill-library", "how-to-train-your-ai-employee", "elon-musk-live-skill", "personal-studio-vs-solo-company"]
-  },
-
-  /* ── 11. AI 就是整個市場的縮影：先用 AI 測反應（教學）── */
-  {
-    id: "ai-market-microcosm",
-    url: "articles/ai-market-microcosm/",
-    date: "2026-06-20",
-    updated: "2026-06-20",
-    title: "AI 就是整個市場的縮影：在花錢做市調前，先用 AI 測反應",
-    problem: "想推新產品、新課程、新服務，又沒把握有沒有人買；做大規模市場調查又慢又貴，landing page 哪裡被誤解也看不出來。",
-    audience: "想推新產品、新課程、新服務但還沒把握有沒有人買的人；做一人公司或中小企業、沒預算大規模做市調的人；已有 landing page 想先檢查哪裡被誤解的人。",
-    summary: "AI 讀過海量真實的人寫的東西，本身就是市場的縮影。高露潔與 PyMC Labs 的研究證實，先讓 AI 寫反應再換算成分數，模擬購買意願能接近真人自我一致性的九成。附可複製提示詞與免費技能包。",
-    tags: {
-      topic: ["輔助決策", "AI工作流", "提示詞設計"],
-      level: ["零基礎入門"],
-      content_type: ["教學文章"]
-    },
-    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["elon-musk-live-skill", "ai-capability-tiers"]
-  },
-
-  /* ── 12. 如何訓練自己的 AI 員工：員工＋顧問框架（教學）── */
-  {
-    id: "how-to-train-your-ai-employee",
-    url: "articles/how-to-train-your-ai-employee/",
-    date: "2026-06-21",
-    updated: "2026-06-21",
-    title: "如何訓練自己的 AI 員工：員工＋顧問框架",
-    problem: "知道該用 AI，卻習慣自己動手操作工具；想把工作交出去，又不知道怎麼把第一個 AI 員工真的訓練出來。",
-    audience: "想把重複的行政、文書、查證交給 AI，並開始建立自己一套 AI 工作流的工作者、一人公司與創作者。",
-    summary: "一場實作工作坊的教學簡報。把 AI 當員工照你的方式幹活，再加一群顧問幫你挑盲點；從組織架構、隱性知識提煉七層，到把節點串成工作流，最後是真正最值錢的能力：判斷一個問題值多少。",
-    tags: {
-      topic: ["AIAgent", "AI工作流", "隱性知識"],
-      level: ["零基礎入門"],
-      content_type: ["教學文章"]
-    },
-    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["strong-ai-models-knowledge-workflow-road", "questionnaire-to-slides-agent-workflow", "teacher-prep-knowledge-workflow", "own-ai-team-at-work", "agent-workflow-builds-automation", "line-group-ai-workflow", "elon-musk-live-skill", "codex-log-health-check", "how-ai-connects-software", "meeting-record-agent-workflow", "decision-ladder-non-programmer", "tidy-mess-before-consulting", "diary-driven-agent-3x4", "docs-as-system-design-agent", "what-is-loop-engineering", "map-is-not-the-territory", "intangible-assets-grow-by-sharing", "manage-ai-with-management-knowledge", "ai-handoff-instructions", "train-your-ai-agent-editor", "ai-that-knows-you", "personal-studio-vs-solo-company", "cli-api-mcp-computer-use", "knowledge-as-employee", "mika-to-laika-product-character-design", "agent-native-tools-software-interface", "ai-tools-professional-judgment", "answer-to-action-enterprise-ai-agent", "teach-ai-not-learn-ai", "talent-vs-expertise", "ai-employee-four-levels", "copied-mechanism-is-no-mechanism", "eight-ai-system-concepts-2026"]
-  },
-
-  /* ── 13. LINE 群組也能變成 AI 工作流入口（教學）── */
-  {
-    id: "line-group-ai-workflow",
-    url: "articles/line-group-ai-workflow/",
-    date: "2026-06-22",
-    updated: "2026-06-22",
-    title: "散在 LINE 各群組的資料，怎麼每天自動下載歸檔",
-    problem: "團隊資料散在 LINE 群組裡，文字、圖片、PDF 和連結當下看得到，過幾天要整理時卻很難找回來。",
-    audience: "已經有 LINE 群組的課程、社群、小團隊與專案協作者，想把散在各群組的資料先收回來再交給 AI 整理的人。",
-    summary: "把散在 LINE 各群組的訊息、圖片、PDF 和檔案，用官方帳號每天自動收下來、分資料夾歸檔，再讓 Agent 整理。Mika 是示範角色。",
-    tags: {
-      topic: ["AI工作流", "AIAgent", "工具操作"],
-      level: ["零基礎入門"],
-      content_type: ["教學文章"]
-    },
-    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["agent-workflow-builds-automation", "codex-only-auto-worklog", "how-to-train-your-ai-employee", "mika-to-laika-product-character-design", "messaging-apps-ai-friendliness"]
-  },
-
-  /* ── 14. 馬斯克技能包（教學）── */
-  {
-    id: "elon-musk-live-skill",
-    url: "articles/elon-musk-live-skill/",
-    date: "2026-06-22",
-    updated: "2026-08-16",
-    title: "馬斯克技能包：給創業者與主管的第一性原理顧問",
-    problem: "創業者、主管和老闆需要有人協助拆問題、反問假設、看見盲點，同時又希望參考公開資料時能分清楚本人內容、公司一手資訊、新聞報導與新聞評論。",
-    audience: "想用第一性原理拆產品、團隊、資源配置與決策盲點的創業者、主管、老闆，以及想下載開源技能包實作的人。",
-    summary: "把馬斯克常見的第一性原理思考方式整理成 AI 顧問流程，陪創業者與主管練習拆產品、市場、團隊與資源配置問題。文章同時完整記錄了當初的每日自動更新機制，以及後來為什麼收掉、改成手動維護；判斷哪些自動化值得留、哪些的人工成本不划算，是這篇留下來的重點。",
-    tags: {
-      topic: ["技能包設計", "AIAgent", "輔助決策", "AI工作流"],
-      level: ["零基礎入門"],
-      content_type: ["教學文章"]
-    },
-    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["spacex-ipo-musk-trillionaire-knowledge-work", "how-to-train-your-ai-employee", "own-ai-team-at-work", "ai-market-microcosm", "vibe-coding-ten-half-products"]
-  },
-
-  /* ── 15. Codex log 健康巡檢（教學）── */
-  {
-    id: "codex-log-health-check",
-    url: "articles/codex-log-health-check/",
-    date: "2026-06-23",
-    updated: "2026-06-23",
-    title: "Codex 整個大當機？重安裝後第一步先檢查 logs_2.sqlite",
-    problem: "Codex Desktop 打不開、更新無效、最後只能重安裝，重裝後任務和本機工作現場也可能一起消失。",
-    audience: "每天使用 Codex Desktop 的知識工作者、講師、一人公司與 AI Agent 使用者，特別是已經把 Codex 當成日常工作台的人。",
-    summary: "用學員實際當機畫面當案例，整理 logs_2.sqlite 是什麼、出事時怎麼安全處理、怎麼設定每 3 到 5 天自動巡檢，以及如何靠工作日誌和技能包避免任務心血跟著工具故障一起不見。",
-    tags: {
-      topic: ["工具操作", "AI工作流", "AIAgent"],
-      level: ["零基礎入門"],
-      content_type: ["教學文章"]
-    },
-    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["codex-only-auto-worklog", "agent-workflow-builds-automation", "how-to-train-your-ai-employee"]
-  },
-
-  /* ── 16. AI Agent 怎麼直接操作軟體（教學）── */
-  {
-    id: "how-ai-connects-software",
-    url: "articles/how-ai-connects-software/",
-    date: "2026-06-24",
-    updated: "2026-06-24",
-    title: "AI Agent 怎麼幫我們直接操作軟體？",
-    problem: "一聽到 API、CLI、MCP 就覺得很工程，搞不懂 AI Agent 到底怎麼幫你直接操作軟體、哪些事可以放心交辦。",
-    audience: "想用 AI 幫忙做事卻被名詞卡住的知識工作者，以及已經在用 Codex、Claude，想搞懂它怎麼接軟體的一人公司、主管與老闆。",
-    summary: "把 AI 接軟體的四種方式（協議直連、CLI、操作網頁、操作電腦）翻成白話，每種配上實際用 Codex 的例子，給一個判斷順序，再用 USB 比喻講清楚 MCP，最後談知識工作者可以怎麼開始用。",
-    tags: {
-      topic: ["AIAgent", "AI工作流", "工具操作", "差異比較"],
-      level: ["零基礎入門"],
-      content_type: ["教學文章"]
-    },
-    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["llm-rag-agent-mcp", "questionnaire-to-slides-agent-workflow", "teacher-prep-knowledge-workflow", "how-to-train-your-ai-employee", "agent-workflow-builds-automation", "program-vs-ai-skill-library", "docs-as-system-design-agent", "vibe-coding-ten-half-products", "chatgpt-work-codex-choice", "chatgpt-work-skills-web-version", "cli-api-mcp-computer-use", "agent-native-tools-software-interface", "let-ai-do-the-setup"]
-  },
-
-  /* ── 17. 我的會議記錄 Agent 工作流（教學）── */
-  {
-    id: "meeting-record-agent-workflow",
-    url: "articles/meeting-record-agent-workflow/",
-    date: "2026-06-23",
-    updated: "2026-07-10",
-    title: "會議有錄音也有逐字稿，為什麼事後還是查不到重點？｜我的會議記錄 Agent 工作流",
-    problem: "會議有錄音、有逐字稿，卻缺少待辦、風險、決策脈絡與現場觀察，之後很難回查，也難以支持下一步判斷。",
-    audience: "常開會、做顧問或跑合作，需要把談話沉澱成知識資產，並希望用 AI 協助整理與分析的人。",
-    summary: "從現場錄音、OBS 線上錄影、MacWhisper 或 VibeVoice-ASR 轉錄開始，逐步補上現場觀察、保留原始資料、生成會議策略書與交付初稿，再用多種思維模型檢測盲點。",
-    tags: {
-      topic: ["AI工作流", "知識管理", "工作流程", "輔助決策", "工具操作"],
-      level: ["基礎"],
-      content_type: ["教學文章"]
-    },
-    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: "https://vocus.cc/salon/Jiang_Coach" },
-    related: ["agent-workflow-builds-automation", "codex-only-auto-worklog", "how-to-train-your-ai-employee", "diary-driven-agent-3x4", "tidy-mess-before-consulting", "meeting-into-verifiable-loop", "ai-employee-four-levels", "eight-ai-system-concepts-2026"]
-  },
-
-  /* ── 18. 不寫程式的人也能用的決策階梯（觀點）── */
-  {
-    id: "decision-ladder-non-programmer",
-    url: "articles/decision-ladder-non-programmer/",
-    date: "2026-06-24",
-    updated: "2026-06-24",
-    title: "叫 AI 講簡潔一點，它還是一堆廢話？｜Ponytail 決策階梯，不寫程式也能用",
-    problem: "AI 很愛講廢話，寫文章越寫越發散、整理資料囉嗦、請它規劃越講越大包，只說「簡潔一點」它根本照不了。",
-    audience: "每天用 AI 寫文章、整理資料、做決策但不寫程式，或正在訓練自己 AI 員工、想讓它先判斷再行動的人。",
-    summary: "我把工程師技能包 Ponytail 的「決策階梯」搬到不寫程式的場景，講清楚一條能一格一格打勾的階梯怎麼用，以及讓它真正生效的關鍵：舉證反轉。",
-    tags: {
-      topic: ["輔助決策", "技能包設計", "AI工作流", "知識管理", "提示詞設計"],
-      level: ["基礎"],
-      content_type: ["觀點文章"]
-    },
-    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: "https://vocus.cc/salon/Jiang_Coach" },
-    related: ["caught-ai-slacking-into-rules", "how-to-train-your-ai-employee", "docs-as-system-design-agent", "tidy-mess-before-consulting", "program-vs-ai-skill-library", "ai-delegators-optimism", "four-lens-rapid-review", "manage-ai-with-management-knowledge", "long-answer-three-layers", "copied-mechanism-is-no-mechanism"]
-  },
-
-  /* ── 19. 你在 AI 世界的哪一階：AI 能力分級榜（觀點）── */
-  {
-    id: "ai-capability-tiers",
-    url: "articles/ai-capability-tiers/",
-    date: "2026-06-26",
-    updated: "2026-06-26",
-    title: "我到底算不算「會用 AI」的人？：AI 能力分級，用對產業的影響力排一張表",
-    problem: "不知道自己在 AI 浪潮裡站在什麼位置，也不知道下一步該往哪走。",
-    audience: "想對照自己在 AI 領域位置、或要判斷團隊裡誰適合做哪種 AI 工作的人。",
-    summary: "我用「對產業的影響力」當軸，把個人對 AI 的位置從 T0 到 T13 排成一張十四層的表，幫你對照自己、找到下一步方向。",
-    tags: {
-      topic: ["AI趨勢", "輔助決策", "差異比較", "AIAgent"],
-      level: ["基礎"],
-      content_type: ["觀點文章"]
-    },
-    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: "https://vocus.cc/salon/Jiang_Coach" },
-    related: ["ai-king-off-battlefield", "demis-hassabis-agi-science-ai", "spacex-ipo-musk-trillionaire-knowledge-work", "ai-market-microcosm", "vibe-coding-ten-half-products", "apple-wwdc26-siri-lobster-ai", "company-shape-is-the-moat", "ai-delegators-optimism", "chatgpt-work-codex-choice", "one-on-one-questions", "cli-api-mcp-computer-use", "ai-tools-professional-judgment", "ai-cp-value-calculus", "agi-work-and-discovery"]
-  },
-
-  /* ── 20. 文件就是系統：非工程師怎麼設計 Agent 框架（教學）── */
-  {
-    id: "docs-as-system-design-agent",
-    url: "articles/docs-as-system-design-agent/",
-    date: "2026-06-25",
-    updated: "2026-06-27",
-    title: "文件就是系統：非工程師怎麼設計 Agent 框架",
-    problem: "不會寫程式，卡在「設計 Agent 好像是工程師的事」，不知道怎麼把一個角色做成會自己判斷的 AI。",
-    audience: "會帶人、會設計流程，卻被「Agent 很技術」擋住的創作者、老師與經營者。",
-    summary: "我帶你看「文件就是系統」這個觀念，從人格思維提煉把角色做到會自己判斷，一路長到單一 Agent 與多 Agent 系統，並附上可複用的提示詞。",
-    tags: {
-      topic: ["AIAgent", "技能包設計", "AI工作流", "隱性知識", "提示詞設計"],
-      level: ["基礎"],
-      content_type: ["教學文章"]
-    },
-    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: "https://vocus.cc/salon/Jiang_Coach" },
-    related: ["strong-ai-models-knowledge-workflow-road", "questionnaire-to-slides-agent-workflow", "teacher-prep-knowledge-workflow", "diary-driven-agent-3x4", "how-ai-connects-software", "how-to-train-your-ai-employee", "decision-ladder-non-programmer", "tidy-mess-before-consulting", "what-is-loop-engineering", "tag-wiki-method", "ai-delegators-optimism", "intangible-assets-grow-by-sharing", "publish-gate", "laptop-desktop-webpage-sync-icloud-git", "manage-ai-with-management-knowledge", "train-your-ai-agent-editor", "knowledge-os-master-map", "knowledge-as-employee", "mika-to-laika-product-character-design", "ai-employee-four-levels", "free-deploy-three-boundaries", "copied-mechanism-is-no-mechanism"]
-  },
-
-  /* ── 21. 你以為在做一個成品，其實在養十個半成品（觀點）── */
-  {
-    id: "vibe-coding-ten-half-products",
-    url: "articles/vibe-coding-ten-half-products/",
-    date: "2026-06-26",
-    updated: "2026-06-26",
-    title: "學了一堆 AI 工具，不知道要拿來幹嘛？：你以為在做成品，其實在養十個半成品",
-    problem: "什麼都想用 AI 做，結果手上一堆開到一半、收不了尾的專案，不知道怎麼停。",
-    audience: "還停在網頁版 AI 聊天、想試 vibe coding、或剛開始用 Agent 的人。",
-    summary: "我用一支從聊天到 Agent 的訪談短片，帶你看工具怎麼把慾望放大，再附上我自己用 AI 顧問做第一性原理收斂、把八個專案篩成三個的真實做法。",
-    tags: {
-      topic: ["AIAgent", "AI工作流", "輔助決策", "工具操作", "AI趨勢"],
-      level: ["基礎"],
-      content_type: ["觀點文章"]
-    },
-    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["elon-musk-live-skill", "codex-only-auto-worklog", "ai-capability-tiers", "how-ai-connects-software", "agent-workflow-builds-automation", "apple-wwdc26-siri-lobster-ai", "ai-tools-professional-judgment"]
-  },
-
-  /* ── 22. 找顧問前，先讓 AI 幫你把混亂整理成問題（教學）── */
-  {
-    id: "tidy-mess-before-consulting",
-    url: "articles/tidy-mess-before-consulting/",
-    date: "2026-06-26",
-    updated: "2026-06-26",
-    title: "找顧問前，先讓 AI 幫你把混亂整理成問題",
-    problem: "想找人討論，卻連自己卡在哪都講不清楚，被請「先整理好再來」卻整理不出來。",
-    audience: "想找顧問或團隊討論、卻講不清楚問題，或想用 AI 理思緒卻不知從何開始的人。",
-    summary: "我教你開一個 ChatGPT 專案資料夾把資料集中，讓 AI 先把一團亂拆成三層、整理成一個別人接得住的問題，附一段可直接貼的提示詞。",
-    tags: {
-      topic: ["知識管理", "AI工作流", "提示詞設計", "輔助決策", "工作流程"],
-      level: ["零基礎入門"],
-      content_type: ["教學文章"]
-    },
-    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: "https://vocus.cc/salon/Jiang_Coach" },
-    related: ["how-to-train-your-ai-employee", "diary-driven-agent-3x4", "decision-ladder-non-programmer", "docs-as-system-design-agent", "meeting-record-agent-workflow"]
-  },
-
-  /* ── 23. 寫日記，就讓 AI 乖乖幫你做事：3X4 資料整理法（教學）── */
-  {
-    id: "diary-driven-agent-3x4",
-    url: "articles/diary-driven-agent-3x4/",
-    date: "2026-05-28",
-    updated: "2026-05-28",
-    title: "寫日記，就讓 AI 乖乖幫你做事：3X4 資料整理法",
-    problem: "想建知識庫卻不知從哪開始，AI 老是抓不到自己的重點。",
-    audience: "已經在用 AI 卻覺得它抓不到重點、想建知識庫卻不知從何下手的一人公司、自由工作者、創業者。",
-    summary: "我用自己在用的 3X4 資料整理法，三種日記決定寫什麼、四種時效決定放哪裡，帶你把散亂資料整理成任何一家 AI 都讀得懂的知識庫，不用寫程式。",
-    tags: {
-      topic: ["知識管理", "知識庫", "AIAgent", "隱性知識", "AI工作流"],
-      level: ["零基礎入門"],
-      content_type: ["教學文章"]
-    },
-    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: "https://vocus.cc/salon/Jiang_Coach" },
-    related: ["questionnaire-to-slides-agent-workflow", "teacher-prep-knowledge-workflow", "docs-as-system-design-agent", "how-to-train-your-ai-employee", "knowledge-base-three-vault-split", "tidy-mess-before-consulting", "meeting-record-agent-workflow", "inspiration-production-system", "why-split-data-into-cards"]
-  },
-
-  /* ── 24. 用我寫一篇文章的工作流，講清楚什麼是迴圈工程（教學）── */
-  {
-    id: "what-is-loop-engineering",
-    url: "articles/what-is-loop-engineering/",
-    date: "2026-06-27",
-    updated: "2026-06-27",
-    title: "每件事 AI 都要我確認，怎麼可以更自動？｜什麼是迴圈工程 Loop Engineering",
-    problem: "你已經會用 AI，但每次做事都要一步一步叫它，叫到很累；聽過「要設計 loop，不要只寫提示詞」卻不知道那是什麼意思。",
-    audience: "常做同一類工作（寫文章、整理會議、回客戶），想把重複流程變成會自己跑完的迴圈的非工程師。",
-    summary: "全程不用程式，用我寫一篇文章的工作流，把迴圈工程講清楚：它跟提示詞差在哪、一個迴圈的五個階段與最少零件、什麼時候才值得做成迴圈。",
-    tags: {
-      topic: ["AI工作流", "工作流程", "提示詞設計", "AIAgent"],
-      level: ["基礎"],
-      content_type: ["教學文章"]
-    },
-    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["what-is-graph-engineering", "strong-ai-models-knowledge-workflow-road", "questionnaire-to-slides-agent-workflow", "loop-round-limit", "five-loops-content-line"]
-  },
-
-  /* ── 無形資產，越分享越豐盛（觀點）── */
-  {
-    id: "intangible-assets-grow-by-sharing",
-    url: "articles/intangible-assets-grow-by-sharing/",
-    date: "2026-06-28",
-    updated: "2026-06-28",
-    title: "把專業提煉給 AI，會不會被學走？：無形資產越分享越豐盛",
-    problem: "你天天在累積經驗、做判斷，但這些無形的東西好像留不下來，也換不成錢。",
-    audience: "想把自己的經驗、思維變成可以累積的資產，而不只是賣時間的知識工作者。",
-    summary: "從一顆蘋果跟一個微笑的故事講起，說明無形資產為什麼越分享越豐盛；在 AI 時代，經驗與判斷可以被放大成知識資本，並分享我從自媒體到數位商會、想成為無形資本家的前進階梯。",
-    tags: {
-      topic: ["知識管理", "AIAgent", "知識庫"],
-      level: ["基礎"],
-      content_type: ["觀點文章"]
-    },
-    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["how-to-train-your-ai-employee", "docs-as-system-design-agent", "company-shape-is-the-moat", "personal-studio-vs-solo-company", "knowledge-as-employee"]
-  },
-
-  /* ── 當 AI 代理開始互相對話：A2A 機制（趨勢）── */
-  {
-    id: "a2a-agent-protocol",
-    url: "articles/a2a-agent-protocol/",
-    date: "2026-06-28",
-    updated: "2026-06-30",
-    title: "AI 代理要接手工作了，你的流程和知識準備好了嗎？",
-    problem: "AI 代理開始能互相交辦工作，但企業的流程還沒被整理成機器讀得懂的結構。",
-    audience: "想在 AI 代理協作時代先把組織流程與知識準備好的個人工作者與小團隊。",
-    summary: "當 AI 代理開始能互相交辦工作，真正的瓶頸不在技術，在於企業的流程有沒有被整理成機器讀得懂的結構。從知識架構的角度，談組織該怎麼盤點流程、立唯一真相來源、拆解任務、劃清資料邊界與審核點，附名片示範與一個可立刻試的小實驗。",
-    tags: {
-      topic: ["AIAgent", "AI趨勢", "AI工作流"],
-      level: ["基礎"],
-      content_type: ["趨勢文章"]
-    },
-    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["llm-rag-agent-mcp", "market-to-ai","agent-web-turning-point","dual-track-planning-loop", "dual-centaur-meeting", "agent-native-tools-software-interface", "ai-era-websites-for-agents"]
-  },
-
-  /* ── 可以學用 AI 行銷，還可以學對 AI 行銷（觀點）── */
-  {
-    id: "market-to-ai",
-    url: "articles/market-to-ai/",
-    date: "2026-06-29",
-    updated: "2026-06-29",
-    title: "大家都用 AI 搜尋了，SEO 還有用嗎？：學用 AI 行銷，也學對 AI 行銷",
-    problem: "現在才要開始學行銷，不知道時間該花在用 AI 做行銷，還是別的地方。",
-    audience: "現在才要開始學行銷，靠專業被看見的個人工作者、一人公司與中小團隊。",
-    summary: "當 AI 開始幫人做決定，行銷的對象就多出一個 AI。用 AI 行銷是把 AI 當工具，對 AI 行銷是把 AI 當受眾。兩件都值得學，但對 AI 行銷現在才剛打開、還沒擠。附四步開始與名片自測。",
-    tags: {
-      topic: ["AI趨勢", "AIAgent", "差異比較"],
-      level: ["基礎"],
-      content_type: ["觀點文章"]
-    },
-    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["a2a-agent-protocol", "agent-web-turning-point"]
-  },
-
-  /* ── 一半以上的網路訪問已經不是人：付錢邏輯正在換（趨勢）── */
-  {
-    id: "agent-web-turning-point",
-    url: "articles/agent-web-turning-point/",
-    date: "2026-07-25",
-    updated: "2026-07-25",
-    title: "網路上一半以上的訪問已經不是人了，你的內容準備好被機器讀了嗎？",
-    problem: "機器人流量已超過真人，靠內容被看見的人不知道這件事會怎麼影響自己，也不知道現在該準備什麼。",
-    audience: "有在寫內容、經營網站或個人品牌，以及幫組織做官網與知識庫的個人工作者與小團隊。",
-    summary: "機器人流量首次超過人類，比原本預估提前。這篇把有一手出處的事實、他人的預測、我的判斷分三層講清楚，中間談為什麼不同來源的數字不能互換著用，最後拆成內容層、協議層、平台層、服務層四個機會，附準備節奏、七件可以先做的事，與一個十分鐘自測。",
-    tags: {
-      topic: ["AI趨勢", "AIAgent", "數位轉型"],
-      level: ["基礎"],
-      content_type: ["趨勢文章"]
-    },
-    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["market-to-ai", "a2a-agent-protocol", "agent-native-tools-software-interface", "free-deploy-three-boundaries", "answer-in-person-or-ai", "webmcp-day-one", "ai-era-websites-for-agents"]
-  },
-  {
-    id: "four-lens-rapid-review",
-    url: "articles/four-lens-rapid-review/",
-    date: "2026-06-30",
-    updated: "2026-06-30",
-    title: "忙到迷惘時，用四視角快速復盤找回方向",
-    problem: "手上同時開好幾條線，每條都在動，忙得很充實，卻說不出哪一條真正重要。",
-    audience: "同時推好幾個專案、抓不到重點的經營者、團隊主管，與得自己當軍師的一人公司。",
-    summary: "一套六步快速復盤法：攤平事實、回饋槓桿象限、四視角輪審、外化路徑篩子，最後收斂成本週一個動作。忙到發散時用來校準方向，一張紙就能跑。",
-    tags: {
-      topic: ["輔助決策", "一人公司"],
-      level: ["基礎"],
-      content_type: ["觀點文章"]
-    },
-    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["decision-ladder-non-programmer"]
-  },
-  {
-    id: "give-ai-choices-not-descriptions",
-    url: "articles/give-ai-choices-not-descriptions/",
-    date: "2026-06-30",
-    updated: "2026-06-30",
-    title: "跟 AI 調配色，別讓它一直猜：六組一次給你挑，挑了再微調",
-    problem: "跟 AI 調配色、調樣式，最耗時的就是它猜一個、你說不對、它再猜的來回，又慢又燒額度。",
-    audience: "會用 AI 做網頁、圖卡、簡報，卡在配色與樣式來回試的人。",
-    summary: "與其讓 AI 一次次猜，不如請它一次配六組並排你直接挑，挑中當場微調，定稿一鍵複製。文章內有可以直接玩的互動配色校稿器，並連到公開技能包 ai-web-tuner。",
-    tags: {
-      topic: ["AI工作流", "AIAgent"],
-      level: ["基礎"],
-      content_type: ["教學文章"]
-    },
-    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["agent-workflow-builds-automation", "long-answer-three-layers"]
-  },
-
-  /* ── 當我開始理解迴圈，把三個工作流設計成 Loop（觀點）── */
-  {
-    id: "my-three-loops",
-    url: "articles/my-three-loops/",
-    date: "2026-06-30",
-    updated: "2026-06-30",
-    title: "同樣的事，每次都要重新跟 AI 交代一遍？｜我把發文、提煉、復盤三件事設計成 Loop",
-    problem: "每天用 AI 做事，卻每次都要把同樣的事重新交代一遍，覺得不夠有系統、又怕這要會寫程式才做得到。",
-    audience: "不會寫程式、但想更有系統地讓 AI 幫自己做事的知識工作者、一人公司與小團隊。",
-    summary: "你不用會寫程式，只要會寫規則，就能讓 AI 有系統地照你的方法做事。提示詞是這次幫我做這個，規則是以後每次都照這樣做。用三條我自己在跑的 loop 當例子，加一個今天就能做的第一步。",
-    tags: {
-      topic: ["AI工作流", "AIAgent", "工作流程"],
-      level: ["基礎"],
-      content_type: ["觀點文章"]
-    },
-    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["what-is-loop-engineering", "ai-loop-safety-recovery", "recovery-over-perfection", "ai-delegators-optimism", "long-task-completion-rate", "meeting-into-verifiable-loop", "build-your-own-dictionary"]
-  },
-
-  /* ── 公司護城河：組織模式、共識、影響力與信任（觀點）── */
-  {
-    id: "company-shape-is-the-moat",
-    url: "articles/company-shape-is-the-moat/",
-    date: "2026-06-30",
-    updated: "2026-06-30",
-    title: "AI 時代，公司還剩什麼別人拿不走？：真正的護城河是組織模式與信任",
-    problem: "模型、產品、技術都被快速複製，搞不清楚 AI 時代一家公司還剩下什麼別人拿不走。",
-    audience: "在建團隊或一人公司、或正在選擇加入哪家公司，想知道什麼值得長期投資的人。",
-    summary: "創投人 Jaya Gupta 主張護城河是公司長成的樣子，我整理她的論述，再補上更具體的看法：組織模式像骨架可以照畫，真正抄不走的是共識、影響力與使用者信任這些時間長出來的累積。",
-    tags: {
-      topic: ["AI趨勢", "知識管理"],
-      level: ["基礎"],
-      content_type: ["觀點文章"]
-    },
-    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["intangible-assets-grow-by-sharing", "ai-king-off-battlefield", "spacex-ipo-musk-trillionaire-knowledge-work", "ai-capability-tiers", "own-ai-team-at-work", "manage-ai-with-management-knowledge", "personal-studio-vs-solo-company", "answer-in-person-or-ai"]
-  },
-
-  /* ── 把標籤變成卡片，知識庫才活起來：標籤連結法 Tag Wiki（教學）── */
-  {
-    id: "tag-wiki-method",
-    url: "articles/tag-wiki-method/",
-    date: "2026-07-01",
-    updated: "2026-07-06",
-    title: "資料越堆越多，AI 反而找不到怎麼辦？：標籤連結法 Tag Wiki",
-    problem: "資料越存越多卻越來越找不到，標籤亂增生，最後變成存了等於沒存。",
-    audience: "個人知識工作者、顧問、想讓 AI 讀懂自己知識庫的人。",
-    summary: "把標籤從貼上去的關鍵字，升級成一張能自己下定義、又能互連的卡片。用受控維度管理、幾乎不用 YAML，並講清楚這套方法跟密集互聯、RAG 之間是互補不是取代的關係，外加顧問跨客戶做知識整合的隔離原則，以及受控詞彙的版本控管機制（字典檔唯一真相、逐版變更紀錄、機器可讀衍生檔驗證）。",
-    tags: {
-      topic: ["知識管理", "知識庫", "工具操作"],
-      level: ["基礎"],
-      content_type: ["教學文章"]
-    },
-    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["llm-rag-agent-mcp", "questionnaire-to-slides-agent-workflow", "teacher-prep-knowledge-workflow", "knowledge-base-three-vault-split", "docs-as-system-design-agent", "ai-loop-safety-recovery", "inspiration-production-system", "why-split-data-into-cards", "knowledge-os-master-map", "build-your-own-dictionary", "rag-three-retrieval-modes"]
-  },
-
-  /* ── AI 出錯不可怕，沒有備援才可怕：一次搞壞 170 檔案的教訓（觀點）── */
-  {
-    id: "ai-loop-safety-recovery",
-    url: "articles/ai-loop-safety-recovery/",
-    date: "2026-07-01",
-    updated: "2026-07-01",
-    title: "AI 出錯不可怕，沒有備援才可怕：一次搞壞 170 檔案的教訓",
-    problem: "讓 AI 自動跑比較大的批次工作，最怕出錯又不知道怎麼收場。",
-    audience: "已經開始讓 AI 自動執行任務、擔心出錯沒辦法挽回的知識工作者與一人公司。",
-    summary: "一次全自動改名任務，子代理把 170 個檔案打壞還回報「完成」。這篇整理我怎麼靠獨立複驗、驗證過的備份、跨家驗證三道防線零遺失收場，以及看懂這件事之後，Loop 工程真正該設計的是什麼。",
-    tags: {
-      topic: ["AI工作流", "工作流程", "AIAgent"],
-      level: ["基礎"],
-      content_type: ["觀點文章"]
-    },
-    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["what-is-loop-engineering", "my-three-loops", "tag-wiki-method", "recovery-over-perfection", "loop-engineering-guardrails", "laptop-desktop-webpage-sync-icloud-git"]
-  },
-
-  /* ── 與其期待不出錯的 AI 系統，不如設計能容錯的 Loop（教學）── */
-  {
-    id: "recovery-over-perfection",
-    url: "articles/recovery-over-perfection/",
-    date: "2026-07-02",
-    updated: "2026-07-02",
-    title: "AI 自動跑出錯了怎麼收拾？：設計能容錯的 Loop",
-    problem: "讓 AI 自動跑比較大的任務時，最怕出錯又不知道從哪裡開始收拾。",
-    audience: "已經開始把整理檔案、批次修改、系統設定交給 AI 執行，想要一套具體步驟、不只是原則的知識工作者。",
-    summary: "AI 一定會出錯，人也會下錯指令，設計不會犯錯的系統不可能。這篇整理容錯 Loop 六步：分大小、留後路、先小試、分批留痕、換腦驗收、寫收工筆記，每步都有完成條件與常見的坑，附一個 300 份檔案改名的完整示範，以及出錯之後的五個標準動作。",
-    tags: {
-      topic: ["AI工作流", "工作流程", "AIAgent"],
-      level: ["基礎"],
-      content_type: ["教學文章"]
-    },
-    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["ai-loop-safety-recovery", "my-three-loops", "what-is-loop-engineering", "long-task-completion-rate", "free-deploy-three-boundaries"]
-  },
-
-  /* ── 別再寫死指令：把你要什麼講清楚，剩下交給 AI（系列 01）（教學）── */
-  {
-    id: "intent-first-prompting",
-    url: "articles/intent-first-prompting/",
-    date: "2026-06-27",
-    updated: "2026-07-02",
-    title: "指令越寫越長，AI 卻沒更好？：把你要什麼講清楚，剩下交給 AI（系列 01）",
-    problem: "學過提示詞、指令越寫越長，AI 卻還是只照你寫的做，沒有更好的表現。",
-    audience: "會下指令但覺得 AI 發揮不出來的知識工作者，以及想搞懂提示詞、上下文、駕馭、迴圈這幾個詞差在哪的人。",
-    summary: "2024 年 AI 只有 60 分，把流程寫死是在幫它；現在它能想到你想不到的做法，寫死反而綁住它。這篇講意圖優先：把為什麼做、做到什麼程度講清楚，方法留給 AI，附三組可複製提示詞與四個名詞的賽馬圖解。",
-    tags: {
-      topic: ["提示詞設計", "AI工作流"],
-      level: ["零基礎入門"],
-      content_type: ["教學文章"]
-    },
-    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["harness-mindset-for-bosses", "prompt-to-loop-map", "map-is-not-the-territory", "ai-handoff-instructions", "ai-that-knows-you", "old-prompts-intent-first-loop-engineering", "ai-employee-four-levels", "long-answer-three-layers"]
-  },
-
-  /* ── 給老闆的駕馭思維：把不敢對員工說的，講給 AI 聽（系列 02）（教學）── */
-  {
-    id: "harness-mindset-for-bosses",
-    url: "articles/harness-mindset-for-bosses/",
-    date: "2026-07-02",
-    updated: "2026-07-02",
-    title: "給老闆的駕馭思維：把不敢對員工說的，講給 AI 聽（系列 02）",
-    problem: "當了幾十年老闆、主管，帶人很有一套，但覺得學 AI 工具很痛苦，AI 產出也只是看起來還行。",
-    audience: "中小企業老闆、主管、一人公司：帶人有經驗、想把管理本事直接用到 AI 上的人。",
-    summary: "AI 已經能當員工，而且你可以對它比對員工狠十倍：它不會離職、不會抱怨。這篇講駕馭思維，附駕馭十問、向內反問、好老闆對照表，全部可直接複製，最後補 Anthropic 創業手冊的提醒：AI 讓你做得快，做對的判斷反而更值錢。",
-    tags: {
-      topic: ["提示詞設計", "輔助決策"],
-      level: ["零基礎入門"],
-      content_type: ["教學文章"]
-    },
-    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["intent-first-prompting", "prompt-to-loop-map", "loop-engineering-guardrails", "ai-employee-four-levels", "dont-learn-ai-tools"]
-  },
-
-  /* ── 從提示詞工程到迴圈工程：一張圖看懂四階段（知識地圖）── */
-  {
-    id: "prompt-to-loop-map",
-    url: "articles/prompt-to-loop-map/",
-    date: "2026-07-02",
-    updated: "2026-07-02",
-    title: "跟 AI 合作該從哪裡學起？｜從提示詞工程到迴圈工程，一張圖看懂四階段",
-    problem: "文章一篇一篇散著讀，抓不到「怎麼跟 AI 合作」這件事的全貌跟先後順序。",
-    audience: "想有系統地把這個站的 AI 協作文章從頭讀到尾、需要一張總覽地圖的人。",
-    summary: "提示詞工程、上下文工程、駕馭工程、迴圈工程，四個階段一條主軸，把 20 篇文章全部掛上去：越往下，你越不用管 AI 怎麼做，越專心在你要什麼。從任一站進去，順著往下讀。",
-    tags: {
-      topic: ["AI工作流", "提示詞設計"],
-      level: ["零基礎入門"],
-      content_type: ["教學文章"]
-    },
-    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["intent-first-prompting", "harness-mindset-for-bosses", "old-prompts-intent-first-loop-engineering", "one-on-one-questions", "eight-ai-system-concepts-2026"]
-  },
-
-  /* ── 越把工作交給 AI 的人，越希望 AI 更強，越不怕被取代（趨勢）── */
-  {
-    id: "ai-delegators-optimism",
-    url: "articles/ai-delegators-optimism/",
-    date: "2026-07-01",
-    updated: "2026-07-01",
-    title: "AI 越來越強，會不會哪天就不需要我了？：越交給 AI 的人越不怕被取代",
-    problem: "每天用 AI，心裡卻偶爾冒出一句：它越來越強，會不會哪天就不需要我了。",
-    audience: "一人公司、接案者、組織裡以讀想寫判斷為主的知識工作者。",
-    summary: "從 Anthropic Cadences 報告的五張圖表拆起，看越會把工作交給 AI 的人為什麼越不怕被取代；附一套把任務分三層、把流程做成技能包的做法。分清報告事實、受訪者預期與我的判斷，並標明樣本限制。",
-    tags: {
-      topic: ["AI趨勢", "AI工作流", "輔助決策", "AIAgent"],
-      level: ["基礎"],
-      content_type: ["趨勢文章"]
-    },
-    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["what-is-loop-engineering", "my-three-loops", "agent-workflow-builds-automation", "docs-as-system-design-agent", "decision-ladder-non-programmer", "ai-capability-tiers", "dual-centaur-meeting", "let-ai-do-the-setup"]
-  },
-
-  /* ── 把不知不覺被 AI 改變的行為，抓成一套流程（教學）── */
-  {
-    id: "ai-changed-behavior-into-workflow",
-    url: "articles/ai-changed-behavior-into-workflow/",
-    date: "2026-07-04",
-    updated: "2026-07-04",
-    title: "把不知不覺被 AI 改變的行為，抓成一套流程",
-    problem: "已經常常用 AI，卻沒發現自己的工作習慣早就被改變，也沒把它固定成流程。",
-    audience: "想把自己已經在做、卻還沒固定下來的 AI 用法，變成可重複流程的知識工作者。",
-    summary: "出差查行程時，我發現第一個動作已從打開地圖變成問 AI。用迴圈工程四步（找出行為、觀察變數、固定流程、變成提示詞）把不知不覺的 AI 習慣整理成可重複執行的流程，文末附可複製的提示詞。",
-    tags: {
-      topic: ["AI工作流", "工作流程", "提示詞設計", "隱性知識"],
-      level: ["基礎"],
-      content_type: ["觀點文章"]
-    },
-    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["what-is-loop-engineering", "agent-workflow-builds-automation"]
-  },
-
-  /* ── 地圖不等於實際地形（觀點）── */
-  {
-    id: "map-is-not-the-territory",
-    url: "articles/map-is-not-the-territory/",
-    date: "2026-07-05",
-    updated: "2026-07-05",
-    title: "為什麼 AI 一直猜錯、要我重講一遍？：地圖不等於實際地形",
-    problem: "跟 AI 工作常卡住，它一直猜錯、要你重講一遍，卻說不清楚問題到底出在哪。",
-    audience: "天天用 AI、想把專業判斷交給它，卻發現最難的是把判斷「講清楚」的顧問、教練、知識工作者。",
-    summary: "從 Anthropic 工程師 Thariq 的「地圖不等於實際地形」談起，把四種未知接到隱性知識提煉：先把地圖畫清楚，AI 跑真實任務的成功率就高很多。附動手前就能用的提問法。",
-    tags: {
-      topic: ["隱性知識", "提示詞設計", "知識管理"],
-      level: ["基礎"],
-      content_type: ["觀點文章"]
-    },
-    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["how-to-train-your-ai-employee", "intent-first-prompting", "talent-vs-expertise", "long-answer-three-layers", "character-costume-sheet-three-views"]
-  },
-
-  /* ── 把課前問卷變成簡報，再把流程存成技能包（教學）── */
-  {
-    id: "questionnaire-to-slides-agent-workflow",
-    url: "articles/questionnaire-to-slides-agent-workflow/",
-    date: "2026-07-06",
-    updated: "2026-07-16",
-    title: "把課前問卷變成簡報，再把流程存成技能包",
-    problem: "剛開始學 Agent，知道 AI 可以做簡報，卻不清楚怎麼從資料蒐集、整理、產出成品，一路沉澱成可重複的工作流，也不知道怎麼連到技能包與知識庫。",
-    audience: "AI 新手、講師、顧問、內容創作者，以及想把備課或簡報流程做成可複用系統的人。",
-    summary: "一篇新手必讀的 Agent 基礎教學示範與正式 SOP 入口：從課前問卷和課綱整理出教學簡報，再把做簡報的步驟沉澱成 Agent 工作流、lecture-prep 技能包與知識庫。",
-    tags: {
-      topic: ["AIAgent", "AI工作流", "技能包設計", "知識庫"],
-      level: ["零基礎入門"],
-      content_type: ["教學文章"]
-    },
-    external: { threads: null, vocus: null },
-    related: ["teacher-prep-knowledge-workflow", "codex-only-auto-worklog", "how-to-train-your-ai-employee", "how-ai-connects-software", "docs-as-system-design-agent", "diary-driven-agent-3x4", "what-is-loop-engineering", "tag-wiki-method", "answer-in-person-or-ai"]
-  },
-
-  /* ── 講師如何用知識管理流程，把備課變成可複用系統（教學）── */
-  {
-    id: "teacher-prep-knowledge-workflow",
-    url: "articles/teacher-prep-knowledge-workflow/",
-    date: "2026-05-23",
-    updated: "2026-05-23",
-    title: "講師如何用知識管理流程，把備課變成可複用系統",
-    problem: "講師平常累積很多素材、靈感和學員問題，但真正要備課時仍然常從零開始，課後資料也沒有回到下一次流程。",
-    audience: "講師、顧問、老師、內容創作者，以及想把課程、簡報與課後整理變成可複用系統的知識工作者。",
-    summary: "從「講師的 Agent 工作流」整理出八階段知識管理流程：找資料、靈感池、課前問卷、開課前推廣、備課、交付品、課後再製、跨課程複用，讓每次上課都餵養下一次。",
-    tags: {
-      topic: ["知識管理", "AI工作流", "AIAgent", "知識庫"],
-      level: ["基礎"],
-      content_type: ["教學文章"]
-    },
-    external: { threads: null, vocus: null },
-    related: ["questionnaire-to-slides-agent-workflow", "how-to-train-your-ai-employee", "how-ai-connects-software", "docs-as-system-design-agent", "diary-driven-agent-3x4", "what-is-loop-engineering", "tag-wiki-method", "train-your-ai-agent-editor", "answer-in-person-or-ai"]
-  },
-
-  /* ── 發佈閘門：多個 AI 改同一個網站怎麼不打架（教學）── */
-  {
-    id: "publish-gate",
-    url: "articles/publish-gate/",
-    date: "2026-07-06",
-    updated: "2026-07-06",
-    title: "多個 AI 改同一個網站，怎麼不打架：發佈閘門",
-    problem: "用 AI 維護網站，多個任務改來改去開始版本錯亂，部署後才發現連結壞了、索引沒跟上。",
-    audience: "已經有網站、常請 AI 幫忙改版，或同時開多個 AI 任務的人。",
-    summary: "用我自己的翻車現場，講版本錯亂的三個來源，給一套三層防護：工作區隔離（git worktree）、發佈閘門（preflight＋一鍵發佈）、強制力（pre-push hook）。附公開技能包 publish-gate，交給你的 AI 五步裝完。",
-    tags: {
-      topic: ["AI工作流", "工作流程", "工具操作"],
-      level: ["基礎"],
-      content_type: ["教學文章"]
-    },
-    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["docs-as-system-design-agent", "what-is-loop-engineering", "caught-ai-slacking-into-rules"]
-  }
-,
-
-  /* ── 簡報轉深度文章批次 2026-07-07 ── */
-  {
-    id: "yongli-ai-workshop-tools-to-workflow",
-    url: "articles/yongli-ai-workshop-tools-to-workflow/",
-    date: "2026-05-30",
-    updated: "2026-05-30",
-    title: "商會一日 AI 工作坊：從工具理解到工作流程與知識庫",
-    problem: "企業 AI 課程容易停在工具展示，學員不知道怎麼回到日常工作與知識庫。",
-    audience: "商會、中小企業主、內訓規劃者，以及想把 AI 導入工作流程的人。",
-    summary: "一場商會一日 AI 工作坊的完整記錄：從拆掉工具焦慮、認識 AI 邊界，到 ChatGPT 專案、NotebookLM、桌面型 Agent 與技能包，帶企業主把 AI 放進真實工作流程。",
-    tags: {"topic":["AI工作流","工具操作","知識庫","數位轉型"],"level":["零基礎入門"],"content_type":["案例文章"]},
-    external: { threads: null, vocus: null },
-    related: ["web-chat-ai-vs-desktop-agent", "claude-skills-knowledge-assets"]
-  },
-  {
-    id: "youtube-to-opinion-report-workflow",
-    url: "articles/youtube-to-opinion-report-workflow/",
-    date: "2026-06-14",
-    updated: "2026-06-14",
-    title: "影片看完就忘了，怎麼變成用得上的東西？｜把一支 YouTube 變成觀點報告網頁",
-    problem: "影片看完後很難沉澱成報告、教案與可重複工作流。",
-    audience: "內容創作者、講師、知識工作者，以及想示範 Agent 工作流的新手。",
-    summary: "完整示範把 YouTube 影片變成觀點報告網頁：NotebookLM 轉逐字稿、桌面型 Agent 本機整理、設計技能包排版，加上交任務、驗收、沉澱技能包的思考方式。",
-    tags: {"topic":["AI工作流","工具操作","技能包設計"],"level":["基礎"],"content_type":["教學文章"]},
-    external: { threads: null, vocus: null },
-    related: ["notebooklm-knowledge-analysis-assistant", "web-chat-ai-vs-desktop-agent"]
-  },
-  {
-    id: "loop-engineering-guardrails",
-    url: "articles/loop-engineering-guardrails/",
-    date: "2026-07-06",
-    updated: "2026-07-06",
-    title: "AI 一直停下來要授權，怎麼讓它順順跑完？：迴圈護欄的五條規則",
-    problem: "AI 能連續自動工作之後，一個沒被挑戰過的錯誤判斷，會被後面每一圈放大。",
-    audience: "已經讓 AI 自動連跑任務、常把工作交接給第二個 AI 或子代理的人。",
-    summary: "把駕馭工程和迴圈工程接在一起的五條護欄：未抗辯假設、三視角抗辯、Non-goals 與允許路徑、換路煞車、驗收證據分級。讓 AI 連續自動工作時，錯誤不會一路滾大。",
-    tags: {"topic":["AI工作流","AIAgent","跨家審稿"],"level":["基礎"],"content_type":["教學文章"]},
-    external: { threads: null, vocus: null },
-    related: ["what-is-loop-engineering","harness-mindset-for-bosses","ai-loop-safety-recovery","dual-track-planning-loop","ai-handoff-instructions","long-task-completion-rate", "meeting-into-verifiable-loop", "loop-round-limit"]
-  },
-  {
-    id: "parenting-story-ai-family-dialogue",
-    url: "articles/parenting-story-ai-family-dialogue/",
-    date: "2026-06-27",
-    updated: "2026-06-27",
-    title: "用 AI 把親子日常變成故事、插畫與家庭對話素材",
-    problem: "親子日常容易消散，也不知道怎麼用 AI 變成有溫度的共同創作。",
-    audience: "想和孩子一起用 AI 創作的家長，以及設計親子 AI 課程的人。",
-    summary: "親子說故事 AI 工作坊完整記錄：紅番茄協議的引導方法、順稿與插畫提示詞、真人電影海報技巧，一份親子故事長出五種成品，最後回到家庭對話。",
-    tags: {"topic":["AI工作流","工具操作","知識管理"],"level":["零基礎入門"],"content_type":["案例文章"]},
-    external: { threads: null, vocus: null },
-    related: ["relationship-boundary-ai-practice", "books-videos-pdf-ai-advisor", "personal-poster-and-wallpaper"]
-  },
-  {
-    id: "ai-mvp-validation-before-product",
-    url: "articles/ai-mvp-validation-before-product/",
-    date: "2025-09-10",
-    updated: "2025-09-10",
-    title: "花大錢做產品前，先用 AI 驗證創業點子",
-    problem: "很多創業點子還沒驗證真實需求，就先投入產品、課程或服務開發。",
-    audience: "有產品或課程點子、正在規劃 MVP 或前期市場驗證的人。",
-    summary: "客戶都說很棒但就是不買單？用真實需求調查法加 AI 顧問驗證創業點子：三大提問心法、VJPD 框架、承諾訊號評分，先驗證需求再投入產品開發。",
-    tags: {"topic":["輔助決策","AI工作流","提示詞設計"],"level":["零基礎入門"],"content_type":["教學文章"]},
-    external: { threads: null, vocus: null },
-    related: ["ai-market-microcosm", "personal-studio-vs-solo-company"]
-  },
-  {
-    id: "books-videos-pdf-ai-advisor",
-    url: "articles/books-videos-pdf-ai-advisor/",
-    date: "2026-05-03",
-    updated: "2026-05-03",
-    title: "把書、影片、PDF 轉成可對話的 AI 顧問",
-    problem: "書、影片與 PDF 常被摘要完就放著，沒有轉成能追問與協助判斷的顧問系統。",
-    audience: "想把外部資料變成可對話顧問、正在設計人格技能包的人。",
-    summary: "把外部材料變成能追問的 AI 顧問完整方法：整理來源、萃取思維框架、寫顧問設定、驗證契合度。以把 Naval 的書與訪談做成數位分身為真實案例。",
-    tags: {"topic":["知識管理","AIAgent","技能包設計","輔助決策"],"level":["基礎"],"content_type":["教學文章"]},
-    external: { threads: null, vocus: null },
-    related: ["notebooklm-knowledge-analysis-assistant", "youtube-to-opinion-report-workflow", "why-split-data-into-cards", "book-to-ai-consultant"]
-  },
-  {
-    id: "liberal-arts-agent-framework",
-    url: "articles/liberal-arts-agent-framework/",
-    date: "2026-04-20",
-    updated: "2026-04-20",
-    title: "現在還需要學寫程式嗎？：文科生也能設計自己的 Agent 框架",
-    problem: "文科背景的人常以為 Agent 框架只能從工程語法開始學。",
-    audience: "文科背景知識工作者、講師，以及想把個人知識庫變成 AI 工作系統的人。",
-    summary: "給文科生的 Agent 框架設計通識課：駕馭工程三件事、迴圈工程與三種日記、LLM Wiki 知識圖譜與 Tag Wiki 標籤系統，不寫程式也能讓 AI 接手工作。",
-    tags: {"topic":["AIAgent","知識管理","知識庫","AI工作流"],"level":["基礎"],"content_type":["教學文章"]},
-    external: { threads: null, vocus: null },
-    related: ["what-is-loop-engineering", "loop-engineering-guardrails", "web-chat-ai-vs-desktop-agent", "book-to-ai-consultant"]
-  },
-  {
-    id: "ai-learning-map-reduce-anxiety",
-    url: "articles/ai-learning-map-reduce-anxiety/",
-    date: "2026-03-29",
-    updated: "2026-03-29",
-    title: "AI 資訊太多，下一步怎麼辦？：一張可追蹤的學習地圖降低焦慮",
-    problem: "AI 資訊太多，學習者容易一直收藏資源，卻不知道下一步。",
-    audience: "正在學 AI 的新手、課程設計者，以及想建立技能樹的人。",
-    summary: "收藏夾存了一堆「以後再看」？用 Agent 把散落各處的學習資料整理成看得見的學習地圖：技能樹、學習履歷、個人設定檔，三層架構含老師教案與排班系統案例。",
-    tags: {"topic":["知識管理","AIAgent","工作流程"],"level":["零基礎入門"],"content_type":["教學文章"]},
-    external: { threads: null, vocus: null },
-    related: ["ai-course-map-from-entry-to-workflow", "ai-data-organization-usable-system", "one-on-one-questions"]
-  },
-  {
-    id: "relationship-boundary-ai-practice",
-    url: "articles/relationship-boundary-ai-practice/",
-    date: "2026-05-20",
-    updated: "2026-05-20",
-    title: "用 AI 練習課題分離、責任歸還與情緒回應",
-    problem: "關係溝通裡的情緒、責任與界線常混在一起，讓人不知道怎麼回應。",
-    audience: "想用 AI 做低風險溝通練習、理解課題分離與責任歸還的人。",
-    summary: "關係不內耗練習課完整整理：課題分離與責任歸還的引導方法、冷分析與熱陪伴兩種 AI 練習模式、視角翻譯與抗拒應對，以及最重要的紅線清單。AI 是練習場，不是心理治療。",
-    tags: {"topic":["輔助決策","提示詞設計","AI工作流"],"level":["零基礎入門"],"content_type":["教學文章"]},
-    external: { threads: null, vocus: null },
-    related: ["parenting-story-ai-family-dialogue", "semantic-rules-before-prompt-templates"]
-  },
-  {
-    id: "web-chat-ai-vs-desktop-agent",
-    url: "articles/web-chat-ai-vs-desktop-agent/",
-    date: "2026-05-11",
-    updated: "2026-05-11",
-    title: "桌面版和開發者版差在哪？：網頁聊天型 AI 與桌面幹活型 AI 的分界（Codex）",
-    problem: "新手常把所有 AI 都當聊天框，不知道桌面型 Agent 可以直接接工作流程。",
-    audience: "剛開始分辨 AI 工具的人，以及想教新手理解 Codex 的講師。",
-    summary: "用新手聽得懂的方式分清聊天型 AI、網頁工具與桌面型 Agent：專案模式的三個痛點、桌面版的範式轉變、Codex 與三層分工工作流，文科生不用寫程式也能上手。",
-    tags: {"topic":["差異比較","AIAgent","工具操作","AI工作流"],"level":["零基礎入門"],"content_type":["教學文章"]},
-    external: { threads: null, vocus: null },
-    related: ["youtube-to-opinion-report-workflow", "liberal-arts-agent-framework", "train-your-ai-agent-editor", "chatgpt-work-codex-choice", "mac-for-agent-beginners", "ai-employee-four-levels", "messaging-apps-ai-friendliness", "ai-said-it-watched-the-video", "ai-era-websites-for-agents"]
-  },
-  {
-    id: "ai-course-map-from-entry-to-workflow",
-    url: "articles/ai-course-map-from-entry-to-workflow/",
-    date: "2026-03-20",
-    updated: "2026-03-20",
-    title: "不知道該從哪一堂課開始上？｜江江教練 AI 課程地圖，從入門到工作流",
-    problem: "AI 課程如果只看單堂主題，學員很難知道每一堂課如何連成能力路線。",
-    audience: "想理解江江教練課程系統的新學員，以及規劃 AI 課程地圖的教學者。",
-    summary: "一張垂直結構的 AI 課程地圖：地基層 Agent 導入、往上套用現成工作流、往下深挖資料整理、隱性知識與語意工程三條線，終點是 Agent 一人公司營運團隊。",
-    tags: {"topic":["AI工作流","知識管理","技能包設計"],"level":["零基礎入門"],"content_type":["觀點文章"]},
-    external: { threads: null, vocus: null },
-    related: ["ai-learning-map-reduce-anxiety", "claude-skills-knowledge-assets", "ai-that-knows-you", "one-on-one-questions"]
-  },
-  {
-    id: "ai-data-organization-usable-system",
-    url: "articles/ai-data-organization-usable-system/",
-    date: "2026-03-09",
-    updated: "2026-03-09",
-    title: "AI 時代怎麼整理資料，讓文件變成可用的系統",
-    problem: "文件很多但找不到、接不上工作流，AI 也無法穩定讀懂。",
-    audience: "剛開始整理知識庫、想讓 AI 能使用自己資料的人。",
-    summary: "整理 AI 時代資料整理基礎班的完整方法：用 Markdown 四個語法、卡片化、連結與受控詞彙，把文件變成人和 AI 都能用的系統，包含可直接複製的提示詞。",
-    tags: {"topic":["知識管理","知識庫","AIAgent"],"level":["零基礎入門"],"content_type":["教學文章"]},
-    external: { threads: null, vocus: null },
-    related: ["semantic-rules-before-prompt-templates", "notebooklm-knowledge-analysis-assistant", "claude-skills-knowledge-assets", "why-split-data-into-cards", "long-answer-three-layers"]
-  },
-  {
-    id: "semantic-rules-before-prompt-templates",
-    url: "articles/semantic-rules-before-prompt-templates/",
-    date: "2026-01-24",
-    updated: "2026-01-24",
-    title: "提示詞模板為什麼時好時壞？先懂 AI 是強一億倍的手機輸入法",
-    problem: "只背提示詞模板時，遇到任務變形就容易讓模型誤解。",
-    audience: "想理解提示詞底層邏輯、正在建立知識庫與工作規則的人。",
-    summary: "提示詞設計的底層原理：AI 是詞語關聯的計算機，像強一億倍的手機輸入法。從課題分離的三步修正、角色設定的限制到負向提示詞的陷阱，先懂語意再套模板。",
-    tags: {"topic":["提示詞設計","隱性知識","知識管理"],"level":["基礎"],"content_type":["教學文章"]},
-    external: { threads: null, vocus: null },
-    related: ["ai-data-organization-usable-system", "claude-skills-knowledge-assets", "ai-that-knows-you", "chatgpt-work-skills-web-version", "build-your-own-dictionary", "character-costume-sheet-three-views"]
-  },
-  {
-    id: "claude-skills-knowledge-assets",
-    url: "articles/claude-skills-knowledge-assets/",
-    date: "2026-02-28",
-    updated: "2026-02-28",
-    title: "Claude Skills 是什麼？把你的專業流程，變成 AI 能重複執行的知識資產",
-    problem: "很多工作流程只留在一次對話裡，下一次 AI 仍然要重新學。",
-    audience: "第一次聽到 Claude Skills、想把固定流程沉澱成知識資產的人。",
-    summary: "用 Claude Skills 理解技能包：它是給 AI 看的操作手冊，把你的專業流程、格式標準、最佳狀態封裝成可重複執行的知識資產。含兩種製作方法與備份要點。",
-    tags: {"topic":["ClaudeSkills","技能包設計","知識管理"],"level":["零基礎入門"],"content_type":["教學文章"]},
-    external: { threads: null, vocus: null },
-    related: ["semantic-rules-before-prompt-templates", "ai-data-organization-usable-system", "manage-ai-with-management-knowledge", "chatgpt-work-skills-web-version", "old-prompts-intent-first-loop-engineering", "ai-employee-four-levels", "use-more-ai-not-enough"]
-  },
-  {
-    id: "notebooklm-knowledge-analysis-assistant",
-    url: "articles/notebooklm-knowledge-analysis-assistant/",
-    date: "2026-01-04",
-    updated: "2026-01-04",
-    title: "NotebookLM 怎麼從資料整理工具變成知識分析助理",
-    problem: "NotebookLM 常被拿來摘要資料，卻沒有用來追問、比對與找盲點。",
-    audience: "剛開始使用 NotebookLM，想建立可追問知識庫的人。",
-    summary: "NotebookLM 應用大全：從讓 AI 摘要，進化到讓報告來讀你。個人檔案設定、多來源知識庫、跨領域課綱合作案例，加上 PDF 陷阱與 Markdown 內容邊界兩個整理技巧。",
-    tags: {"topic":["知識管理","工具操作","輔助決策"],"level":["零基礎入門"],"content_type":["教學文章"]},
-    external: { threads: null, vocus: null },
-    related: ["youtube-to-opinion-report-workflow", "books-videos-pdf-ai-advisor"]
-  },
-  {
-    id: "strong-ai-models-knowledge-workflow-road",
-    url: "articles/strong-ai-models-knowledge-workflow-road/",
-    date: "2026-07-10",
-    updated: "2026-07-11",
-    title: "先學工具還是先建知識庫？：模型像超跑，知識庫與工作流是你腳下的路",
-    problem: "模型一代比一代強，為什麼同樣的 AI，別人用起來像換了引擎，你用起來還是原地打滑。",
-    audience: "已經在用 AI、想知道下一步該投資什麼的知識工作者與一人公司。",
-    summary: "Claude Fable、GPT-5.6 Sol 這類強模型出現後，知識庫、工作流、規則與驗收方式造成的差距更明顯。用泥巴路、柏油路與高速公路三種道路環境，帶你完成六步 AI 鋪路流程。",
-    tags: {"topic":["AI趨勢","知識管理","AI工作流","駕馭工程 HarnessEngineering"],"level":["基礎"],"content_type":["教學文章"]},
-    external: { threads: null, vocus: null },
-    related: ["docs-as-system-design-agent", "what-is-loop-engineering", "how-to-train-your-ai-employee", "ai-that-knows-you", "knowledge-as-employee", "ai-tools-professional-judgment", "ai-cp-value-calculus", "use-more-ai-not-enough", "same-question-different-answers"]
-  },
-  {
-    id: "dual-track-planning-loop",
-    url: "articles/dual-track-planning-loop/",
-    date: "2026-07-12",
-    updated: "2026-07-12",
-    title: "如何讓兩個不同的 AI 互相挑錯、自己訂正？：我的企劃送出前先被模擬評審打了 2/5 分",
-    problem: "AI 寫企劃又快又順，但單一模型自己寫自己審，看不到自己的盲點，還會被你的想法錨定。",
-    audience: "用 AI 寫提案、企劃、報告，輸不起一次盲點的知識工作者與一人公司。",
-    summary: "企劃雙軌互審 loop：兩個不同家的 AI 同輸入各自獨立寫完、互相挑錯、整合留決策點、對家終審。以一場真實政府補助提案首跑為案例，附兩段可直接複製的提示詞。",
-    tags: {"topic":["AI工作流","跨家審稿","輔助決策"],"level":["基礎"],"content_type":["案例文章"]},
-    external: { threads: null, vocus: null },
-    related: ["loop-engineering-guardrails", "a2a-agent-protocol", "docs-as-system-design-agent", "ai-handoff-instructions", "long-task-completion-rate", "session-messaging-reminder-layer", "before-installing-others-skill", "parallel-site-editing"]
-  },
-  {
-    id: "dual-centaur-meeting",
-    url: "articles/dual-centaur-meeting/",
-    date: "2026-07-11",
-    updated: "2026-07-12",
-    title: "開會兩三小時才對齊，有辦法快一點嗎？｜半人馬會議，我帶我的 Agent 你帶你的 Agent",
-    problem: "複雜專案的會議常開兩三個小時才對齊目標，全部交給 AI 代理去談，又會掉太多細節。",
-    audience: "跟客戶或合作夥伴談複雜專案、已經有自己常用 AI，想讓它從打草稿進到正式協作流程的知識工作者。",
-    summary: "半人馬會議是中間解：人加 Agent 對 人加 Agent，Agent 先把資料過濾完，人只聊決策、信任與承諾。附五步流程與 PAAP、AAP、AA 三階段演進判斷，以及納瓦爾對談的兩個可回看時間碼。",
-    tags: {"topic":["AIAgent","AI工作流","AI趨勢"],"level":["基礎"],"content_type":["觀點文章"]},
-    external: { threads: null, vocus: null },
-    related: ["a2a-agent-protocol", "ai-delegators-optimism", "what-is-loop-engineering"]
-  },
-  {
-    id: "laptop-desktop-webpage-sync-icloud-git",
-    url: "articles/laptop-desktop-webpage-sync-icloud-git/",
-    date: "2026-07-11",
-    updated: "2026-07-12",
-    title: "在家裡桌機上用 Codex 做好網頁後，出門用筆電想要改，就找不到檔案了？問題出在你把專案放錯地方",
-    problem: "在桌機用 AI 做好網頁，換一台筆電想改，卻找不到檔案；把程式碼放進 iCloud 又常常撞同步衝突。",
-    audience: "用多台電腦、多個 AI 助手做網頁或程式專案，被檔案同步與版本混亂困擾、非工程背景的創作者。",
-    summary: "iCloud 適合放文件，程式碼要交給 git。一次真實搬家紀錄，附完整步驟與可複製提示詞，讓多台電腦、多個 AI 助手共用唯一真相。",
-    tags: {"topic":["AI工作流","知識管理","工作流程"],"level":["基礎"],"content_type":["教學文章"]},
-    external: { threads: null, vocus: null },
-    related: ["docs-as-system-design-agent", "ai-loop-safety-recovery", "session-messaging-reminder-layer", "github-vercel-cloudflare-compare", "who-can-see-your-site"]
-  },
-  {
-    id: "inspiration-production-system",
-    url: "articles/inspiration-production-system/",
-    date: "2026-07-13",
-    updated: "2026-07-13",
-    title: "工作很忙、時間很破碎，沒空經營內容？：靈感產出系統與靈感池",
-    problem: "每天硬想今天發什麼想到累；有一堆舊素材卻要用時找不到。",
-    audience: "一人公司、自媒體、想穩定經營社群卻卡在選題的知識工作者。",
-    summary: "把靈感當成可以系統性產出的東西：三個來源（過去累積的內容、AI 模擬受眾、熱門話題）加上標籤撈取系統，配一套從話題到貼文的實操流程，以及沒靈感時請 AI 搜話題並從大眾與專業兩個角度選題的流程，讓有個人特色的穩定發文變成一套會自己運轉的系統。",
-    tags: {"topic":["AI工作流","工作流程","知識管理"],"level":["基礎"],"content_type":["教學文章"]},
-    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["tag-wiki-method", "diary-driven-agent-3x4", "train-your-ai-agent-editor"]
-  },
-  {
-    id: "post-class-organizing-loop",
-    url: "articles/post-class-organizing-loop/",
-    date: "2026-07-15",
-    updated: "2026-07-15",
-    title: "一堂課上完之後，我怎麼把它變成可以重複用的知識：課後整理 Loop 全流程拆解",
-    problem: "一堂課上完，留下逐字稿、課前簡報、學員提問，散著沒整理，三天後就散掉，簡報還是課前骨架版，學員問過的好問題下次備課想引用卻找不到。",
-    audience: "會上課、開講座、帶工作坊，每次結束都留下大量素材卻常放到爛掉，想用 AI 整理課程內容卻不知道怎麼設標準的講師與教學者。",
-    summary: "把課後整理拆成一條六步輸送帶：同一份材料生出教學手冊、課後實錄版簡報、官網課程頁三種成品，並用兩層審核確保 AI 整理出來的東西能用。附觸發分流、六步交付物、兩層審核分法與常見坑，可照著替自己的整理流程搭一條一樣的輸送帶。",
-    tags: {"topic":["AI工作流","知識管理","工作流程"],"level":["零基礎入門"],"content_type":["教學文章"]},
-    external: { threads: null, vocus: null },
-    related: ["how-to-train-your-ai-employee", "docs-as-system-design-agent", "inspiration-production-system", "train-your-ai-agent-editor", "meeting-into-verifiable-loop"]
-  },
-
-  {
-    id: "ai-handoff-instructions",
-    url: "articles/ai-handoff-instructions/",
-    date: "2026-07-15",
-    updated: "2026-07-15",
-    title: "換了另一家 AI，技能包要怎麼搬？：交接指令，難的是決定不寫什麼",
-    problem: "換模型、換一家 AI、換機器、換人操作，每次都要交代一句話，結果講太多，連自己回頭要做的事也塞了進去。",
-    audience: "需要在多個 AI、多台機器或多個人之間換手做事，卻常常交接完還要重講一次的一人公司、內容創作者與團隊主管。",
-    summary: "交接指令寫不好，通常不是寫太少而是寫太多。從一次真實的生圖事故拆出核心原則「只寫對方所需」，分成一次交辦、供應商模式、換人續跑三種場景各自的寫法，加上卡住才回吐的自動化分寸與三招防呆，附一張可直接複製的交接單。",
-    tags: {"topic":["AI工作流","AIAgent","工作流程"],"level":["基礎"],"content_type":["案例文章"]},
-    external: { threads: null, vocus: null },
-    related: ["dual-track-planning-loop", "loop-engineering-guardrails", "how-to-train-your-ai-employee", "intent-first-prompting", "rule-file-rebound", "long-task-completion-rate", "session-messaging-reminder-layer"]
-  },
-
-  {
-    id: "manage-ai-with-management-knowledge",
-    url: "articles/manage-ai-with-management-knowledge/",
-    date: "2026-07-16",
-    updated: "2026-07-16",
-    title: "用你已經有的管理知識來管理 AI，以豐田 TPS 為例",
-    problem: "公司想開始用 AI，第一個反應是覺得要從零學一套新技術、得先招工程師先買系統，於是一直停在之後再說。",
-    audience: "已經有一套管人、管流程、管品質經驗，卻覺得 AI 是工程師的事、不知道自己的管理經驗算不算數的經營者或主管。",
-    summary: "多數企業導入 AI 不缺底子：你管人、管流程、管品質的管理知識，本來就能翻譯成管理 AI 的方法。用豐田 TPS 當例子，把標準化、自働化停線、持續改善對應成 AI 可落地的規則主檔、自動攔截、回寫標準，附一張把既有管理知識翻成 AI 流程的檢查表與可先動的第一步。",
-    tags: {"topic":["數位轉型","知識管理","AI工作流","隱性知識"],"level":["零基礎入門"],"content_type":["教學文章"]},
-    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["how-to-train-your-ai-employee", "docs-as-system-design-agent", "what-is-loop-engineering", "claude-skills-knowledge-assets", "company-shape-is-the-moat", "decision-ladder-non-programmer"]
-  },
-
-  {
-    id: "ai-tools-professional-judgment",
-    url: "articles/ai-tools-professional-judgment/",
-    date: "2026-07-17",
-    updated: "2026-07-17",
-    title: "工具跟別人一樣，我的差異剩什麼？：拉開差距的是判斷力",
-    problem: "已經在用 ChatGPT、Claude 或 Codex 工作，工具跟別人一樣，開始擔心自己的差異到底剩下什麼。",
-    audience: "想讓 AI 幫忙加速、又不想把重要判斷全部交出去的人，以及正在累積顧問、教學、管理、內容或其他專業能力的人。",
-    summary: "三名資深工程師靠清理 AI 生成的冗長程式碼收費，一週完整達標一萬美元。他們自己也用 Claude Code，官網卻寫著 the agent doesn't get a vote。搭配 SlopCodeBench 對結構侵蝕的研究，說明工具普及後差異會回到看懂問題、知道哪裡不能碰、判斷結果能不能用。附把工作分成三層的方法、交付 AI 前的三問清單與可直接使用的提示詞。",
-    tags: {"topic":["AI趨勢","輔助決策","AIAgent"],"level":["基礎"],"content_type":["觀點文章"]},
-    external: { threads: null, vocus: null },
-    related: ["ai-capability-tiers", "how-to-train-your-ai-employee", "vibe-coding-ten-half-products", "strong-ai-models-knowledge-workflow-road", "ai-cp-value-calculus", "ai-employee-four-levels", "use-more-ai-not-enough", "agi-work-and-discovery", "meta-prompt-thirty-versions", "dont-learn-ai-tools"]
-  },
-
-  {
-    id: "ai-cp-value-calculus",
-    url: "articles/ai-cp-value-calculus/",
-    date: "2026-07-14",
-    updated: "2026-07-14",
-    title: "模型不是越聰明越好：我開始學著算 AI 的 CP 值",
-    problem: "同時有好幾個模型可以用，每次都習慣直接開最強那個，帳單卻一路往上走。",
-    audience: "開始感覺到 API 帳單或訂閱費在增加，想知道什麼任務該用哪一級模型的 AI 重度使用者。",
-    summary: "用三個模型的成本對照說明一件反直覺的事：用最便宜的模型做到滿分，反而是最貴也最慢的。真正該問的是這次任務需要幾分，附三張對照表。最後把問題放大到人類層級：算力有限、要解的問題滿出來，會排序哪些問題值得解，才是真正的分水嶺。",
-    tags: {"topic":["AI趨勢","輔助決策","差異比較"],"level":["基礎"],"content_type":["觀點文章"]},
-    external: { threads: null, vocus: null },
-    related: ["ai-usage-audit", "ai-tools-professional-judgment", "strong-ai-models-knowledge-workflow-road", "program-vs-ai-skill-library", "ai-capability-tiers", "long-task-completion-rate", "openrouter-deepseek-data-routing"]
-  },
-
-  {
-    id: "mika-to-laika-product-character-design",
-    url: "articles/mika-to-laika-product-character-design/",
-    date: "2026-07-14",
-    updated: "2026-07-14",
-    title: "AI 助理換個平台，能力就不一樣：我為什麼把它拆成兩個角色",
-    problem: "同一個 AI 助理放進不同入口，能力與權限其實不一樣，但使用者會沿用原本的理解，於是每次互動前都得先解釋一次。",
-    audience: "正在設計 AI 助理、聊天機器人或數位角色，卻發現不同入口能力不一致的人；以及同一個服務放進不同平台後，需要一直向使用者解釋差異的人。",
-    summary: "當同一張臉出現在不同入口，使用者就會期待相同能力，說明成本會從產品轉嫁到自己身上。記錄我把 LINE 群組助理從咪卡分出萊卡的判斷過程：用三個問題決定該沿用還是拆出新角色，先定義產品分工再決定視覺，最後讓角色名稱與造型自己傳達能力邊界。",
-    tags: {"topic":["輔助決策","差異比較","AI應用"],"level":["基礎"],"content_type":["觀點文章"]},
-    external: { threads: null, vocus: null },
-    related: ["line-group-ai-workflow", "how-to-train-your-ai-employee", "docs-as-system-design-agent", "character-costume-sheet-three-views", "personal-poster-and-wallpaper"]
-  },
-
-  {
-    id: "agent-native-tools-software-interface",
-    url: "articles/agent-native-tools-software-interface/",
-    date: "2026-07-12",
-    updated: "2026-07-12",
-    title: "Agent 原生工具會讓軟體介面退到後台嗎？",
-    problem: "每接觸一個新軟體，就要先學會它的介面與一堆操作，才能完成其實很單純的一件任務。",
-    audience: "在學 AI 應用、想知道該怎麼開始把整段工作交辦出去的人，以及正在開發 AI 應用、思考功能與任務該怎麼切的人。",
-    summary: "看到能直接在時間線上剪片的 Agent 原生工具，第一眼想到的是介面可能會退到後台。這件事很像找外包團隊：你交代任務、驗收成果，不必自己學會每個操作。談我現在怎麼把工作交給 AI，以及為什麼覺得現在可以開始這樣想。",
-    tags: {"topic":["AIAgent","AI趨勢","AI工作流"],"level":["基礎"],"content_type":["觀點文章"]},
-    external: { threads: null, vocus: null },
-    related: ["how-ai-connects-software", "a2a-agent-protocol", "agent-web-turning-point", "how-to-train-your-ai-employee", "ai-king-off-battlefield"]
-  },
-
-  {
-    id: "knowledge-os-master-map",
-    url: "articles/knowledge-os-master-map/",
-    date: "2026-07-10",
-    updated: "2026-07-10",
-    title: "學了一堆整理法跟 AI 工作流，為什麼兜不起來？｜知識作業系統母架構",
-    problem: "學了很多整理法、筆記法、AI 工作流，卻覺得它們彼此兜不起來，看不到整個系統長什麼樣子。",
-    audience: "想讓 AI 接手自己工作流程、並且想先看清整個系統全貌的知識工作者，以及正在把專業方法整理成體系、課程或產品的顧問與講師。",
-    summary: "提出「知識作業系統」母架構：存量三庫、八步精煉迴圈、護欄、治理四個構件，加一條三域分流部署軸，圓心是隱性知識提煉。含三重收斂的信度證據（雙 AI 獨立收斂、2023 至 2026 實踐先於命名、跨時內部收斂）、三條真實工作流的驗證設計，與一個立刻能做的對照練習。",
-    tags: {"topic":["江江精選","知識管理","隱性知識","AI工作流","知識庫"],"level":["進階"],"content_type":["教學文章"]},
-    external: { threads: null, vocus: null },
-    related: ["knowledge-as-employee", "docs-as-system-design-agent", "knowledge-base-three-vault-split", "tag-wiki-method", "what-is-loop-engineering", "talent-vs-expertise", "use-more-ai-not-enough", "session-messaging-reminder-layer"]
-  },
-
-  {
-    id: "knowledge-as-employee",
-    url: "articles/knowledge-as-employee/",
-    date: "2026-07-10",
-    updated: "2026-07-10",
-    title: "做過筆記也建過知識庫，還缺什麼？：把知識當員工的分水嶺",
-    problem: "已經在用 AI，卻覺得跟別人用起來沒差多少；做過筆記、建過知識庫，也說不出舊方法在 AI 時代還缺什麼。",
-    audience: "聽過 AI 員工、AI 辦公室，想知道那份能力究竟從哪裡來的人，以及做過知識管理、想知道舊方法還缺哪一塊的人。",
-    summary: "傳統知識管理把知識當工具，整理好之後人去用它；AI 時代的思維是把知識當員工，架構好之後知識搭配 AI 自己去工作。用七個面向與流程逐站對照兩種思路，說明知識變成員工之後制度要跟著長出什麼，答案落在隱性知識提煉。",
-    tags: {"topic":["江江精選","知識管理","隱性知識","AIAgent","數位轉型"],"level":["基礎"],"content_type":["觀點文章"]},
-    external: { threads: null, vocus: null },
-    related: ["knowledge-os-master-map", "how-to-train-your-ai-employee", "docs-as-system-design-agent", "strong-ai-models-knowledge-workflow-road", "intangible-assets-grow-by-sharing", "talent-vs-expertise", "ai-employee-four-levels"]
-  },
-
-  {
-    id: "meeting-into-verifiable-loop",
-    url: "articles/meeting-into-verifiable-loop/",
-    date: "2026-07-07",
-    updated: "2026-07-07",
-    title: "一場會議整理，我把它做成了一條可驗收的迴圈",
-    problem: "同一串會議整理流程每週都要手動一步步推，方法都會、筆記也做過，只是每次都得自己重新串起來。",
-    audience: "同一串流程每週都要手動重推一遍的知識工作者，以及想把散落各處的做法收成一條自己會跑的流程的人。",
-    summary: "每一步的規則與標準其實早就寫成技能包了，缺的是把它們串起來。講怎麼把這些現成的規則模組，串成一條喊一聲就自己跑完、還會驗收的迴圈，附可照做的起步順序，以及一份誠實的邊界說明：這條迴圈保證什麼、不保證什麼。",
-    tags: {"topic":["AI工作流","工作流程","知識管理"],"level":["進階"],"content_type":["案例文章"]},
-    external: { threads: null, vocus: null },
-    related: ["what-is-loop-engineering", "meeting-record-agent-workflow", "my-three-loops", "loop-engineering-guardrails", "post-class-organizing-loop"]
-  },
-
-  {
-    id: "old-prompts-intent-first-loop-engineering",
-    url: "articles/old-prompts-intent-first-loop-engineering/",
-    date: "2026-07-16",
-    updated: "2026-07-16",
-    title: "舊提示詞不必丟：用它提煉你的意圖，再走向迴圈工程",
-    problem: "現在隨手下一句提示詞，AI 有時做得很好；以前很認真寫的技能包和詳細提示詞，效果卻不一定理想，開始懷疑那些時間是不是白花了。",
-    audience: "寫過很長的提示詞或技能包、卻開始覺得它們把 AI 卡住的人，以及聽過迴圈工程但不知道它跟提示詞怎麼接起來的人。",
-    summary: "舊技能包不是包袱，是地基：它裝著你在意的成果標準、慣用的思考順序、角色語氣與不能碰的紅線。把「照著步驟做」升級成「先理解我想達成什麼、我怎麼判斷好不好」，讓 AI 有空間用更合適的方法。附一段可直接複製的意圖優先提示詞，以及從意圖優先走到迴圈工程的最小流程。",
-    tags: {"topic":["提示詞設計","AI工作流","技能包設計"],"level":["基礎"],"content_type":["教學文章"]},
-    external: { threads: null, vocus: null },
-    related: ["what-is-loop-engineering", "intent-first-prompting", "prompt-to-loop-map", "claude-skills-knowledge-assets"]
-  },
-
-  {
-    id: "chatgpt-work-skills-web-version",
-    url: "articles/chatgpt-work-skills-web-version/",
-    date: "2026-07-13",
-    updated: "2026-07-13",
-    title: "ChatGPT 網頁版終於能用技能包了：ChatGPT Work 從上手到兩個雷",
-    problem: "以前技能包只有 Claude、Grok 這種要付高費的網頁版才有，打開 ChatGPT 網頁版做重複性工作時，每次都要重貼一遍規則和格式。",
-    audience: "已經在用 ChatGPT 網頁版、想用「專案加技能包」做出穩定公版產出，卻還分不清技能包和提示詞差在哪的內容工作者與一人公司。",
-    summary: "ChatGPT Work 讓網頁版 AI 終於能用技能包。從 7/12 免費講座的實際示範整理成文字：技能包跟提示詞差在哪、怎麼用「專案存資料、技能包存判斷」做出穩定公版產出，以及用到深處一定會撞到的兩個雷點。",
-    tags: {"topic":["技能包設計","AI工作流","工具操作"],"level":["基礎"],"content_type":["教學文章"]},
-    external: { threads: null, vocus: null },
-    related: ["chatgpt-work-codex-choice", "claude-skills-knowledge-assets", "how-ai-connects-software", "semantic-rules-before-prompt-templates"]
-  },
-
-  {
-    id: "chatgpt-work-codex-choice",
-    url: "articles/chatgpt-work-codex-choice/",
-    date: "2026-07-16",
-    updated: "2026-07-16",
-    title: "ChatGPT Work、Codex、一般 ChatGPT 怎麼分工？先看電腦、資料與額度",
-    problem: "同時有 ChatGPT Work、Codex 和一般 ChatGPT，每次要做事都不知道該開哪一個，還常把個人用法當成所有帳號都適用的規則。",
-    audience: "已經在用 ChatGPT Plus 或 Pro，卻常搞不清該開 Work、Codex 還是一般 Chat 的使用者，含電腦裝得了與裝不了 Codex 兩種情況。",
-    summary: "ChatGPT Work、Codex 與一般 ChatGPT 都能幫忙做事，真正要分的是工作會不會碰本機資料、需不需要長期累積、以及該用哪一套限制。整理實際三路分工法，補上 OpenAI 官方文件能支持到哪裡，附一個圖文網頁的分工實例、一張能力邊界表與一份可直接照判斷的檢查清單。",
-    tags: {"topic":["差異比較","AI工作流","工具操作"],"level":["基礎"],"content_type":["教學文章"]},
-    external: { threads: null, vocus: null },
-    related: ["web-chat-ai-vs-desktop-agent", "mac-for-agent-beginners", "how-ai-connects-software", "ai-capability-tiers", "program-vs-ai-skill-library", "chatgpt-work-skills-web-version"]
-  },
-
-  {
-    id: "personal-studio-vs-solo-company",
-    url: "articles/personal-studio-vs-solo-company/",
-    date: "2026-07-16",
-    updated: "2026-07-16",
-    title: "個人工作室與一人公司差在哪？我會看兩件事",
-    problem: "接案接到滿，收入卻永遠跟工時綁在一起，停下來就沒有進帳，也說不清楚自己到底算不算一人公司。",
-    audience: "已經在接案或開個人工作室，想把專業變成能重複賣的產品、不再用時間換錢的自由工作者與獨立顧問。",
-    summary: "個人工作室靠時間與專業完成單次交付，一人公司把專業產品化、建立能重複運作的商業系統。用收入怎麼產生、這套事業服務誰兩個對比切開兩種模式，帶到產品化自己的五個步驟與三套可直接開始的技能包入口，並以馬斯克當極端例子說明系統思維的上限。",
-    tags: {"topic":["差異比較","數位轉型","隱性知識"],"level":["基礎"],"content_type":["觀點文章"]},
-    external: { threads: null, vocus: null },
-    related: ["company-shape-is-the-moat", "how-to-train-your-ai-employee", "ai-mvp-validation-before-product", "own-ai-team-at-work", "intangible-assets-grow-by-sharing"]
-  },
-
-  {
-    id: "train-your-ai-agent-editor",
-    url: "articles/train-your-ai-agent-editor/",
-    date: "2026-07-16",
-    updated: "2026-07-16",
-    title: "沒空寫，可以叫 AI 幫我寫嗎？：讓 AI 認識你，比學會用 AI 更重要",
-    problem: "學了很多 AI 工具，卻每次都要重講背景、自己複製貼上和操作，AI 還不像真的小編。",
-    audience: "想把 AI 從聊天工具訓練成能整理問卷、做簡報、寫社群、記住風格與流程的一人公司、內容創作者、小編、講師與小微企業主。",
-    summary: "從嘉我好漾課程整理出的 AI Agent 小編訓練法：分清聊天型 AI 和幹活型 Agent，先用安全資料夾練習，再把問卷變簡報、工作日誌、技能包、交接文件與靈感池串起來，讓 AI 認識你、記住你的判斷，成為真正能交辦的工作夥伴。內含九段可直接複製的提示詞，從禁止刪除的安全規矩到把零散筆記變成一週發文靈感。",
-    tags: {"topic":["AIAgent","AI工作流","知識庫","技能包設計"],"level":["零基礎入門"],"content_type":["教學文章"]},
-    external: { threads: null, vocus: null },
-    related: ["how-to-train-your-ai-employee", "web-chat-ai-vs-desktop-agent", "docs-as-system-design-agent", "inspiration-production-system", "post-class-organizing-loop", "teacher-prep-knowledge-workflow", "answer-to-action-enterprise-ai-agent", "ai-employee-four-levels"]
-  },
-
-  /* ── 為什麼要把資料拆成卡片：從 PDF 難讀到 AI 檢索的卡片化教學（教學·江江精選）── */
-  {
-    id: "why-split-data-into-cards",
-    url: "articles/why-split-data-into-cards/",
-    date: "2026-07-20",
-    updated: "2026-07-20",
-    featured: true,
-    title: "檔案有圖有文，Markdown 放不了圖怎麼辦？：為什麼要把資料拆成卡片",
-    problem: "手上一堆 PPT 跟 PDF 想讓 AI 幫忙整理，結果 AI 讀不懂、答不準，不知道問題出在哪。",
-    audience: "教材塞滿 PPT 與 PDF 的講師、聽過卡片盒筆記法但不知道它跟 AI 有什麼關係的人、想把舊資料變成可重複使用素材庫的知識工作者。",
-    summary: "PDF 是印刷格式，AI 讀起來是座標跟亂碼；丟越多資料給 AI，準確度越是雪崩式下滑。這篇用投影頁互動動畫講整條邏輯：拉滑桿看資料量與準確度的關係、點標籤體驗檢索、看卡片怎麼拆解合併重組，文末附可直接複製的原子化拆解提示詞。",
-    tags: {
-      topic: ["江江精選", "知識管理", "知識庫", "AI工作流"],
-      level: ["零基礎入門"],
-      content_type: ["教學文章"]
-    },
-    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["tag-wiki-method", "diary-driven-agent-3x4", "books-videos-pdf-ai-advisor", "ai-data-organization-usable-system", "rule-file-rebound", "long-document-review-layers"]
-  },
-
-  /* ── 讓你的 AI 更懂你：從懂我到能幫我做事（教學）── */
-  {
-    id: "ai-that-knows-you",
-    url: "articles/ai-that-knows-you/",
-    date: "2026-07-21",
-    updated: "2026-07-21",
-    title: "AI 回答總是不夠懂我，怎麼讓他更聰明？：從「懂我」到「能幫我做事」",
-    problem: "AI 有時候答得很好、有時候卻不是你要的，同樣的事還得一再交代，不知道問題出在哪。",
-    audience: "已經在用 ChatGPT 但覺得回答總是不夠貼的人、聽過數位分身卻只想到虛擬人像的經營者、手上只有手機也想開始用 AI 的人。",
-    summary: "多數人想到數位分身是一張像你的臉，但真正能幫你做事的那一個，重點不在長相，在它懂不懂你怎麼做事。這篇拆開「複製外型」與「複製做事方式」的差別，用培訓員工的比喻講清楚為什麼順序是先懂我、後幫我做事，並給三個手機十分鐘做得完的設定，含一段可直接唸給 AI 聽的自我描述提示詞與一個立刻驗收成效的方法。",
-    tags: {
-      topic: ["AIAgent", "提示詞設計", "工具操作"],
-      level: ["零基礎入門"],
-      content_type: ["教學文章"]
-    },
-    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["how-to-train-your-ai-employee", "semantic-rules-before-prompt-templates", "intent-first-prompting", "strong-ai-models-knowledge-workflow-road", "ai-course-map-from-entry-to-workflow", "one-on-one-questions", "meta-prompt-thirty-versions", "personal-poster-and-wallpaper"]
-  },
-
-  /* ── AI 常見問題 37 問（觀點）── */
-  {
-    id: "one-on-one-questions",
-    url: "articles/one-on-one-questions/",
-    date: "2026-07-22",
-    updated: "2026-07-22",
-    title: "AI 常見問題 37 問：知識庫怎麼建、技能包怎麼用、公司裡怎麼推",
-    problem: "已經在用 AI，卻說不出自己算不算會用；想建知識庫不知道資料怎麼放、判斷標準怎麼給；在公司想推又卡在制度。",
-    audience: "覺得自己 AI 沒用在對的地方的人、想建知識庫卻不知從哪開始的人、在公司或體制內想推 AI 卻卡住的人。",
-    summary: "一輪免費一對一線上聊收到的 37 個真實問題，分九個區塊：學習心態、知識庫、技能包、模型與工具選擇、自動化與驗證、職場組織現實、被 AI 搜尋找到、商業化、教學現場。每題都有完整回答，其中 26 題附上已寫好的深度文章連結，可以順著讀下去。整理後發現一件事：真正在問「工具怎麼操作」的很少，大家卡住的位置比想像中前面。",
-    tags: {
-      topic: ["知識管理", "AI工作流", "知識庫"],
-      level: ["零基礎入門"],
-      content_type: ["觀點文章"]
-    },
-    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["ai-capability-tiers", "ai-learning-map-reduce-anxiety", "ai-that-knows-you", "ai-course-map-from-entry-to-workflow", "prompt-to-loop-map", "ten-year-anchor", "teach-ai-not-learn-ai", "ai-native-not-transformation"]
-  },
-
-  /* ── 叫 AI 幫你點餐，就懂 CLI、API、MCP（教學）── */
-  {
-    id: "cli-api-mcp-computer-use",
-    url: "articles/cli-api-mcp-computer-use/",
-    date: "2026-07-22",
-    updated: "2026-07-22",
-    title: "叫 AI 幫你點餐，就懂 CLI、API、MCP",
-    problem: "CLI、API、MCP、computer use 每次看到都有聽沒有懂，被硬排成一列比大小，越比越糊。",
-    audience: "常聽到這幾個詞卻分不清差別的人、想讓 AI 接某個服務卻不知道該用哪種方式的人、需要一個一講就懂的比喻去跟同事或學員解釋的人。",
-    summary: "用「叫 AI 幫你去餐廳點餐」一個比喻，把 GUI、computer use、CLI、API、MCP 五個詞各拆成名詞、原理、餐廳場景、實際行為四層講清楚。主軸是一個反直覺的規律：對人越好用的介面，對 AI 越難用，所以 AI 助手才幾乎都長成 CLI 的樣子。文末給一組可以直接用的判斷順序，先問有沒有 MCP，再問有沒有 API，都沒有才輪到最慢最燒 Token 的 computer use。",
-    tags: {
-      topic: ["AIAgent", "差異比較", "AI工作流"],
-      level: ["零基礎入門"],
-      content_type: ["教學文章"]
-    },
-    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["how-ai-connects-software", "ai-capability-tiers", "how-to-train-your-ai-employee", "openrouter-deepseek-data-routing"]
-  },
-  {
-    id: "rule-file-rebound",
-    url: "articles/rule-file-rebound/",
-    date: "2026-07-22",
-    updated: "2026-07-22",
-    title: "規則檔越寫越長，AI 有照做嗎？：你寫的規則大部分沒在執行",
-    problem: "給 AI 看的規則檔越寫越長，精簡過一次，過幾週又長回原樣，不知道問題出在哪。",
-    audience: "有一份給 AI 讀的規則檔而且越寫越長的人、精簡過但發現會復胖的人、看到「模型越強指令要越少」想知道該不該照做的人。",
-    summary: "盤完自己寫給 AI 的約 220 條規則，真的有機制在執行的約 24 條；把代價最高的挑出來共 60 條，其中 48 條完全靠 AI 自己記得，包括「禁止自己審自己」這條品質基石。文章給一張四欄盤點表（觸發器、執行器、證據、跨家覆蓋）、三題准入閘（可直接複製），以及沒有 Hook 環境時用試算表做的手動版。另附一條真實曲線：規則主檔從 25,036 字砍到 15,822（砍掉三分之一），18 天後回到 24,219，離砍之前只剩 817 字；作者把復胖歸因於減法三零件缺了「舉證反轉」這個引擎，並說明這是自己的解釋而非實驗結論；最後一步是排一個每週複查的固定行程，因為複查如果只靠記得，它自己就會變成第 48 條沒人執行的規則。",
-    tags: {
-      topic: ["AI工作流", "知識庫", "工作流程"],
-      level: ["進階"],
-      content_type: ["教學文章"]
-    },
-    external: { threads: null, vocus: null },
-    related: ["ai-handoff-instructions", "what-is-loop-engineering", "why-split-data-into-cards", "build-your-own-dictionary", "start-with-a-wrong-draft"]
-  },
-
-  /* ── 從 Answer 到 Action：企業如何導入 AI Agent（教學）── */
-  {
-    id: "answer-to-action-enterprise-ai-agent",
-    url: "articles/answer-to-action-enterprise-ai-agent/",
-    date: "2026-07-25",
-    updated: "2026-07-25",
-    title: "從 Answer 到 Action：我從簡立峰老師的公開觀察，看企業如何導入 AI Agent",
-    problem: "企業已經開始使用生成式 AI，成果卻停在問答、摘要與個人效率，不知道第一個 Agent 流程該從哪裡開始。",
-    audience: "想導入 AI Agent、需要先選一個可控場景做試點，並同時處理資料、權限、人工檢核與責任分工的企業管理者、專案負責人與內部推動團隊。",
-    summary: "依簡立峰老師公開演講與媒體報導，整理 AI 從 Answer 走向 Action 的變化，再延伸成企業可執行的導入框架：四類起步場景、六題篩選表、六步小型試點、資料與系統準備、三層權限護欄，以及 90 天第一輪學習路線。文中清楚區分公開觀點與江江教練的實務整理。",
-    tags: {
-      topic: ["AIAgent", "AI工作流", "數位轉型", "工作流程"],
-      level: ["基礎"],
-      content_type: ["教學文章"]
-    },
-    external: { threads: null, vocus: null },
-    related: ["how-to-train-your-ai-employee", "train-your-ai-agent-editor"]
-  },
-
-  /* ── 長流程完工率：10 步驟 Loop 的三種卡關反應（觀點）── */
-  {
-    id: "long-task-completion-rate",
-    url: "articles/long-task-completion-rate/",
-    date: "2026-07-25",
-    updated: "2026-07-25",
-    title: "Opus 5 實測：10 個步驟的 Loop，你的 AI 跑到第幾步就停了",
-    problem: "把多步驟流程交給 AI 自己跑完，回來常發現它停在中間某一步，後面全部沒做，即便已經交代過「有問題就跳過」。",
-    audience: "已經在讓 AI 自己跑長流程、卻常常回來發現它停在半路的人，以及手上有多個模型、不知道複雜任務該派給誰的人。",
-    summary: "同一條十步驟長流程、同一種交代方式，交給 Opus 4.8、Fable、Opus 5 Max 自己跑完，觀察到三種卡關反應：停住等人、找 Codex CLI 討論到解掉、記錄後跳過繼續跑。文章定義「長流程完工率」（在安全紅線內走到明確結局的步驟數除以總步驟數，品質另計），拆解為什麼斷點多半出現在判斷標準不足而非技術難度，並給迴圈工程要補的三件事與一段可直接複製的長流程續跑指令。全篇為個人實測體感，並標明三個模型的流程配置不對等、不能當模型能力排名。",
-    tags: {
-      topic: ["AI工作流", "差異比較", "AIAgent", "輔助決策"],
-      level: ["進階"],
-      content_type: ["觀點文章"]
-    },
-    external: { threads: null, vocus: null },
-    related: ["what-is-loop-engineering", "my-three-loops", "loop-engineering-guardrails", "ai-cp-value-calculus", "ai-handoff-instructions", "recovery-over-perfection", "dual-track-planning-loop"]
-  },
-
-  /* ── 專業與天賦的分辨，兩個自己就能做的提煉技巧（觀點）── */
-  {
-    id: "talent-vs-expertise",
-    url: "articles/talent-vs-expertise/",
-    date: "2026-07-26",
-    updated: "2026-07-26",
-    title: "我的強項到底是什麼？：努力學來的是專業，輕鬆就會的才是天賦",
-    problem: "要講「我的強項是什麼」就卡住，把辛苦學來的專業當成天賦，真正輕鬆就會的那件事反而被自己忽略。",
-    audience: "想找出自己定位的知識工作者，想把專業變成課程、產品或 AI 規則的人，以及需要挖出對方講不出來的判斷標準的教練與顧問。",
-    summary: "很多人把努力學來的專業當成天賦。天賦反而是你做起來非常簡單、簡單到以為每個人都會的那件事，正因為理所當然，你不會把它算進自己的本事裡。文章用雙足行走的對照說明為什麼天賦要靠比較才看得出來，接到隱性知識的三個代價（交接不了、教不了、交不給 AI），再給兩個自己就能做的提煉技巧：差異提煉法與隨機偶遇法，各附可直接複製的提問，另加兩個不用工具的日常訊號。",
-    tags: {
-      topic: ["隱性知識", "知識管理", "輔助決策"],
-      level: ["基礎"],
-      content_type: ["觀點文章"]
-    },
-    external: { threads: null, vocus: null },
-    related: ["map-is-not-the-territory", "knowledge-as-employee", "knowledge-os-master-map", "how-to-train-your-ai-employee", "ten-year-anchor"]
-  },
-
-  /* ── 6/7 免費線上講座文章版：訓練 AI 員工的四個層次（教學）── */
-  {
-    id: "ai-employee-four-levels",
-    url: "articles/ai-employee-four-levels/",
-    date: "2026-07-28",
-    updated: "2026-07-28",
-    title: "訓練 AI 員工的四個層次：從自己會用，到讓 AI 幫你訓練 AI",
-    problem: "會用 ChatGPT，但每次都要把背景重講一遍；想把重複的工作交出去，卻不知道第一個 AI 員工要從哪裡開始訓練、什麼時候可以放手。",
-    audience: "想把重複的行政、文書、整理工作交出去的老闆、創業者、一人公司與接案者，以及正在想「怎麼讓公司的人用 AI」的主管。",
-    summary: "整理自 6 月 7 日免費線上講座「怎麼訓練自己的 AI 員工」。從 2022 年跟 AI 吵架那次領悟講起，鋪出訓練 AI 員工的四個層次（自己訓練、教夥伴訓練、AI 員工教新員工、AI 員工幫夥伴訓練），再給訓練第一個員工的四個步驟、兩組可直接複製的提問（駕馭式提問十問、靈魂拷問十問），以及判斷什麼能交、什麼不能交的標準與難度分級放手法。文末附一段可貼給 Codex 的挑任務指令。",
-    tags: {
-      topic: ["AIAgent", "AI工作流", "技能包設計", "知識庫"],
-      level: ["零基礎入門"],
-      content_type: ["教學文章"]
-    },
-    external: { threads: null, vocus: null },
-    related: ["how-to-train-your-ai-employee", "harness-mindset-for-bosses", "train-your-ai-agent-editor", "ai-native-not-transformation", "web-chat-ai-vs-desktop-agent", "knowledge-as-employee", "claude-skills-knowledge-assets", "docs-as-system-design-agent", "ai-tools-professional-judgment", "meeting-record-agent-workflow", "program-vs-ai-skill-library", "intent-first-prompting", "messaging-apps-ai-friendliness"]
-  },
-  {
-    id: "use-more-ai-not-enough",
-    url: "articles/use-more-ai-not-enough/",
-    date: "2026-07-30",
-    updated: "2026-07-30",
-    title: "多數人只是用更多 AI，工作的形狀沒有變",
-    problem: "AI 用了一段時間，工作只是變快，講不出跟半年前有什麼結構性差別；也不知道手上哪件事真的該交給 AI。",
-    audience: "已經天天在用 AI 但看不到結構性改變的個人工作者，想導入 AI 卻只想得到「把現有流程加速」的團隊，以及手上有很多經驗說不清楚、教不會別人的資深工作者。",
-    summary: "AI 時代沒有 AI 優化，只有 AI 原生：過去能被數位優化的事，軟體都已經做得差不多好了，該找的是過去的軟體系統做不到的事。判斷一件事該不該交給 AI，看倍數不看百分比，只提高 20% 到 50% 的大概不是 AI 的強項。後半整理 Sam Altman 69 分鐘訪談裡的三件事：為還不划算的事鋪路、把「學得會但教不會」的判斷外化、用持續性與倍數重篩工具，每件都附這週可以做的第一步，含一段可直接複製的追問提示詞。",
-    tags: {
-      topic: ["AI趨勢", "知識管理", "隱性知識", "數位轉型"],
-      level: ["基礎"],
-      content_type: ["觀點文章"]
-    },
-    external: { threads: null, vocus: null },
-    related: ["ai-native-not-transformation", "knowledge-os-master-map", "strong-ai-models-knowledge-workflow-road", "claude-skills-knowledge-assets", "ai-tools-professional-judgment"]
-  },
-
-  /* ── Claude Code 對話視窗互傳訊息：新功能進場先劃邊界（案例）── */
-  {
-    id: "session-messaging-reminder-layer",
-    url: "articles/session-messaging-reminder-layer/",
-    date: "2026-08-08",
-    updated: "2026-08-08",
-    title: "Claude Code 的對話視窗之間可以直接傳訊息了，但有些小限制還是要注意",
-    problem: "同一個專案開好幾個 AI 視窗，它們互相不知道對方在幹嘛，每次都要自己寫交接指令複製貼上；新功能出來又不知道該不該把既有流程整套改掉。",
-    audience: "同時開好幾個 AI 對話視窗、常常自己在中間當傳聲筒的人，每次工具出新功能就猶豫要不要打掉重練的人，以及想知道多視窗協作的進度真相該放哪一層的人。",
-    summary: "Claude Code 的對話視窗現在可以直接互傳訊息。實測一天後的收編方法：先試出它傳不到的四個地方（跨機器、跨品牌、無人值守、閒置視窗），把它定位成提醒層、真相仍只認檔案，再把兩個視窗同時改同一批檔案的防撞拆成人、AI、版本控制三層。文末附交接前的四分支判斷，可直接抄進自己的規則檔。",
-    tags: {
-      topic: ["AI工作流", "知識管理", "工作流程", "AIAgent"],
-      level: ["基礎"],
-      content_type: ["案例文章"]
-    },
-    external: { threads: null, vocus: null },
-    related: ["ai-handoff-instructions", "laptop-desktop-webpage-sync-icloud-git", "caught-ai-slacking-into-rules", "dual-track-planning-loop", "knowledge-os-master-map"]
-  },
-
-  /* ── 長回答三層理解法（教學） ── */
-  {
-    id: "long-answer-three-layers",
-    url: "articles/long-answer-three-layers/",
-    date: "2026-08-08",
-    updated: "2026-08-12",
-    title: "AI 回答太長看不下去？把內容變成白話、流程圖與說明網頁",
-    problem: "AI 的長回答把條件、例外、推論、風險都寫進去，重要內容常常藏在中後段。人一累就跳過，等於讓沒有被理解的前提直接進入下一步。",
-    audience: "每天收到 AI 長篇回答、常常看到一半就放棄的人，要把 AI 的分析拿去開會報價決策或交件的人，以及每一句都看得懂卻抓不到整體關係的人。",
-    summary: "AI 回答太長，看到一半就滑掉，最後回一句「好好，都可以」。這篇給三層做法：第一層請 AI 用白話重講並保留限制與例外，第二層有步驟分支角色時序就請它畫成流程圖（Codex 走 Mermaid、Claude 走 show_widget 的 inline SVG），第三層資訊量太大時做成可點開細節的說明網頁。2026-08-12 增補兩節：一節用 Cloudflare 官方、OpenAI 社群、W3C 簡報等公開實測回應「做成網頁不是很浪費 token 嗎」，指出倍數從 1.77 到 16.9 倍都有、「固定多 4 到 5 倍」沒有實測依據，而且多數測試測的是餵網頁進 AI 不是請 AI 產出網頁；一節寫第三層的特例「這份內容是要你做決定的」，含抽決策點的判準、代價的寫法、不預選不標建議、五條不能砍的紅線、決策網頁提示詞，以及開源的免費技能包與可以直接點的示範頁。四段提示詞可直接複製，文末附回頭核對的三個問題與一個五步工作流。",
-    tags: {
-      topic: ["AI工作流", "輔助決策", "提示詞設計", "工作流程"],
-      level: ["基礎"],
-      content_type: ["教學文章"]
-    },
-    external: { threads: null, vocus: null },
-    related: ["map-is-not-the-territory", "intent-first-prompting", "decision-ladder-non-programmer", "ai-data-organization-usable-system", "give-ai-choices-not-descriptions"]
-  },
-
-  /* ── AI 很會做事，距離 AGI 還差哪一步（觀點）── */
-  {
-    id: "agi-work-and-discovery",
-    url: "articles/agi-work-and-discovery/",
-    date: "2026-08-10",
-    updated: "2026-08-10",
-    title: "AI 很會做事，距離 AGI 還差哪一步？從工作能力到創造新知的兩把尺",
-    problem: "AI 已經會聊天、會操作工具、會完成工作，但這些能力離通用智能、主動發現人的深層盲點與創造新知還有什麼差別。",
-    audience: "看見 AI 每週都有新能力、想知道離 AGI 到底多遠的人，以及在工作上導入 AI、需要判斷能力邊界與驗收方式的人。",
-    summary: "從詞語關聯計算機、會回話的聊天 AI、會做事的 Agent，一路談到江江對 AGI 的個人門檻：AI 能主動補上人的弱項，用更全面的視野提醒深層盲點。文章再對照 OpenAI、Google DeepMind、人機互補與 AI 意識研究，提出工作能力、創造新知兩把尺，以及判讀 AI 進展的五個問題。",
-    tags: {
-      topic: ["AI趨勢", "AIAgent", "輔助決策", "知識管理"],
-      level: ["基礎"],
-      content_type: ["觀點文章"]
-    },
-    external: { threads: "https://www.threads.com/@jiang_yude_coach/post/Db18DHlk1We", vocus: null },
-    related: ["demis-hassabis-agi-science-ai", "ai-capability-tiers", "ai-tools-professional-judgment"]
-  },
-
-  /* ── OpenRouter 與 DeepSeek 資料路由查證（教學） ── */
-  {
-    id: "openrouter-deepseek-data-routing",
-    url: "articles/openrouter-deepseek-data-routing/",
-    date: "2026-08-09",
-    updated: "2026-08-10",
-    title: "OpenRouter 用 DeepSeek，資料就不會經過中國嗎？教你自己查實際路由供應商",
-    problem: "想用 OpenRouter 測試 DeepSeek 或接進正式應用，卻不知道統一 API 背後真正執行推理的是誰，也容易把 ZDR、供應商總部與資料處理地區混在一起。",
-    audience: "想用 OpenRouter 比較多個模型的人、準備把 DeepSeek 接進網站、聊天機器人或內部工具的人，以及需要查清楚資料路由與保留政策的評估者。",
-    summary: "透過 OpenRouter 使用 DeepSeek，不代表資料一定不會經過中國。本文用官方 endpoints 與 providers API 示範如何自行查詢實際供應商、總部與資料中心線索，再整理 allowlist、關閉 fallback、拒絕資料收集與 ZDR 四道路由護欄，並分開測試階段與正式應用的配置。",
-    tags: {
-      topic: ["工具操作", "差異比較", "AI趨勢"],
-      level: ["基礎"],
-      content_type: ["教學文章"]
-    },
-    external: { threads: null, vocus: null },
-    related: ["cli-api-mcp-computer-use", "ai-cp-value-calculus"]
-  },
-
-  /* ── 元提示詞：同一份提示詞長出三十種版本（教學） ── */
-  {
-    id: "meta-prompt-thirty-versions",
-    url: "articles/meta-prompt-thirty-versions/",
-    date: "2026-08-09",
-    updated: "2026-08-10",
-    title: "同一份提示詞，三十個人做出三十種東西",
-    problem: "準備了一套很好的提示詞發給全班，交回來的作品卻高度雷同，除了名字之外幾乎都一樣。",
-    audience: "要帶一群人用 AI 的講師、帶課老師、社團幹部與企業內訓負責人，以及想讓 AI 產出帶著自己味道的一般使用者。",
-    summary: "元提示詞是一份會生出提示詞的提示詞：學員拿到手之後，AI 會先反過來認識他，再依照他這個人生成一份專屬的提示詞才開始做事，所以同一份東西發給三十個人會長出三十種結果。本文說明一般提示詞為什麼讓大家做出一樣的東西，拆開元提示詞裡實際寫了什麼（角色與品質底線、要向使用者拿什麼素材、素材不足時一層一層退的退路、給三個版本讓他選、定義版本差在哪些層面），並附一份做個人故事海報的完整可複製元提示詞、把現有提示詞改成元提示詞的三個步驟，以及這套方法的前提與不適用情境。",
-    tags: {
-      topic: ["提示詞設計", "技能包設計"],
-      level: ["零基礎入門"],
-      content_type: ["教學文章"]
-    },
-    external: { threads: null, vocus: null },
-    related: ["ai-that-knows-you", "start-with-a-wrong-draft", "ai-tools-professional-judgment", "personal-poster-and-wallpaper"]
-  },
-
-  /* ── 先讓 AI 給一個錯的版本（教學） ── */
-  {
-    id: "start-with-a-wrong-draft",
-    url: "articles/start-with-a-wrong-draft/",
-    date: "2026-08-09",
-    updated: "2026-08-10",
-    title: "不知道怎麼開始，就先讓 AI 給你一個錯的版本",
-    problem: "想用 AI 整理組織的資料，但問對方哪些資料重要，他答不出來；要他先講清楚規格，也講不出來。",
-    audience: "要幫公司或組織導入 AI 的顧問與內部推動者、面對一堆檔案不知道先整理哪一份的人，以及想把同事腦中講不出來的判斷標準寫成文字的主管。",
-    summary: "人從一片空白裡生出結構很難，但看到一份具體又不順眼的東西，意見馬上就冒出來。本文把這個落差變成方法：先讓 AI 生一個很可能是錯的版本，再讓真正懂的人去挑毛病，規則就在糾正的過程中長出來。內容含挑資料的四階遞降法（三到五份、最近三個月、一個月、最近一週）、讓 AI 生排序草稿的可複製提示詞、糾正時要問的三個問題，以及把糾正留下來變成技能包或 SOP 的做法，最後說明三種不該用這招的情況。",
-    tags: {
-      topic: ["AI工作流", "知識管理", "輔助決策"],
-      level: ["基礎"],
-      content_type: ["教學文章"]
-    },
-    external: { threads: null, vocus: null },
-    related: ["meta-prompt-thirty-versions", "rule-file-rebound", "caught-ai-slacking-into-rules", "dont-learn-ai-tools"]
-  },
-
-  /* ── 不教 AI 工具，只教 AI（觀點） ── */
-  {
-    id: "dont-learn-ai-tools",
-    url: "articles/dont-learn-ai-tools/",
-    date: "2026-08-09",
-    updated: "2026-08-10",
-    title: "我上課不教 AI 工具，因為工具是 AI 該操作的",
-    problem: "AI 工具太多學不完，每出一個新的就焦慮一次；上了好幾堂工具課，工作卻沒有真的變輕鬆。",
-    audience: "被工具數量壓得喘不過氣的知識工作者、上過工具課卻沒感覺的人，以及在猶豫要教工具還是教觀念的講師與內訓負責人。",
-    summary: "學會操作工具，你就成為操作工具的那個人，產能上限等於自己能坐在電腦前的時數。學 AI 然後叫 AI 去操作工具，位置就換成交辦的那一方，可以同時派出好幾件事。本文從課堂上「想要用 Canva 的舉手」的現場開場，說明兩種位置的差別、以及為什麼真正的變化發生在數量上，給三個判斷自己正在學哪一種的問題、四步換位置的做法，並誠實劃出哪些工具還是得自己會：要驗收的東西得看得懂、要交辦的工具得知道它能幹嘛、價值在手感的不要外包。",
-    tags: {
-      topic: ["AIAgent", "工具操作"],
-      level: ["零基礎入門"],
-      content_type: ["觀點文章"]
-    },
-    external: { threads: null, vocus: null },
-    related: ["harness-mindset-for-bosses", "ai-tools-professional-judgment", "start-with-a-wrong-draft", "let-ai-do-the-setup"]
-  }
-,
-
-  /* ── AI 每次生的角色都不一樣：用抽卡、定裝照與三視圖把形象固定下來（教學） ── */
-  {
-    id: "character-costume-sheet-three-views",
-    url: "articles/character-costume-sheet-three-views/",
-    date: "2026-07-23",
-    updated: "2026-08-11",
-    title: "AI 每次生的角色都不一樣，用定裝照解決｜角色三視圖",
-    problem: "今天生出來的角色很滿意，隔天再生一張，帽子變形狀、毛色變深、體型變胖，看起來像另一隻，每一張都得重抽重挑重改。",
-    audience: "用 AI 生圖做品牌角色、吉祥物或 AI 助理形象但每次都不一致的人；需要同一個角色反覆出現在社群圖卡與官網插圖的人；以及自己就是品牌主角、想讓 AI 生成的形象更像本人的講師與創作者。",
-    summary: "角色不穩定通常不是 AI 不聽話，是這個角色還沒有規格。三步驟把規格生出來：造型未定時用九宮格抽卡，角色、背景、角度固定，一次只改一個變因；抽到滿意的趁 AI 還記得偏好立刻做定裝照，固定毛色體型、配色、配件、神情與畫風；再展開成正面、側面、背面的三視圖，左右不對稱就做成四視圖。附角色本體、固定配件、畫風三組驗收清單，定裝照與四視圖可直接複製的提示詞，萊卡的三次修正實錄，真人品牌怎麼用四張照片與一組表情達成同一件事，以及規格存好之後 AI 還是不照做時的三層做法：生圖時直接再丟參考圖、把素材集中到同一個專案、把規格寫成技能包。",
-    tags: {
-      topic: ["江江精選", "圖片生成", "AI應用", "品牌資產"],
-      level: ["基礎"],
-      content_type: ["教學文章"]
-    },
-    external: { threads: null, vocus: null },
-    related: ["mika-to-laika-product-character-design", "map-is-not-the-territory", "semantic-rules-before-prompt-templates"]
-  },
-  {
-    id: "let-ai-do-the-setup",
-    url: "articles/let-ai-do-the-setup/",
-    date: "2026-08-12",
-    title: "換電腦，設定又要重來一次嗎？：我把 OBS 交給 AI，一個選項都沒點過",
-    problem: "出差帶了新筆電，要重新設定 OBS 錄螢幕，卻忘記把桌機的設定記下來。以前這種事只有兩條路：找教學影片跟著點，或是自己一個選項一個選項慢慢翻。",
-    audience: "換了新電腦或重灌系統、一堆軟體要重設的人；遇到不熟的軟體習慣先去搜教學影片的人；已經在用 AI 但用途還停在寫字、翻譯、整理資料，沒想過它能直接處理電腦上設定的人。",
-    summary: "這次出差重設 OBS，我沒有點過任何一個選項，全部交給 AI 改設定檔完成。文章攤開完整過程：它先查現況、先問用途、給出兩條施工路徑讓我選，再跑進 OBS 的程式檔案裡撈出正確參數才動手，最後建好三個錄課場景。也誠實寫出它做不到的四件事：不碰螢幕、不能替我授權系統權限、不能決定用途、第一次沒有全對（同一個欄位在兩個區段各出現一次，它只改到第一個，是自己驗收時抓出來的）。最後收成三個判斷問題：設定存在哪裡、有沒有非人不可的授權步驟、做錯了看不看得出來，三個都過就可以整包交出去，並附一句可直接複製的提問。",
-    tags: {
-      topic: ["AI應用", "工具操作", "AI工作流"],
-      level: ["基礎"],
-      content_type: ["案例文章"]
-    },
-    external: { threads: null, vocus: null },
-    related: ["dont-learn-ai-tools", "how-ai-connects-software", "ai-delegators-optimism"]
-  },
-
-  /* ── 把照片放進 NotebookLM，生一份用真實照片的簡報（教學） ── */
-  {
-    id: "notebooklm-real-photo-slides",
-    url: "articles/notebooklm-real-photo-slides/",
-    date: "2026-08-12",
-    title: "把照片放進 NotebookLM，生一份用真實照片的簡報",
-    problem: "把文字丟給 AI、讓它連圖一起生最快，但成品都長得差不多。手上明明有活動現場、產品實拍、旅行紀錄的真實照片，卻用不進去。",
-    audience: "手上有活動現場、產品實拍、旅行紀錄、課程側拍照片，想做成簡報或短片的人；做過幾份 AI 生成的簡報，開始覺得畫面都長得差不多的人。",
-    summary: "整套方法只有一句：該做什麼寫在來源文案，不能做什麼寫在指令。腳本一份 Markdown 搞定，最前面放畫面規範，接著逐頁寫標題、內文、配圖編號；照片命名 01 02 03，沒照片的頁明寫要畫什麼。指令只剩三行紅線，影片摘要那邊更短，並用角色設定代替沒有的旁白性別參數。附完整腳本範例、兩段可直接複製的指令、NotebookLM 兩個自訂面板該填哪一格，以及交出去之前要看的三件事。成品實證：《百岳行旅 武陵三秀》故事簡報 15 頁。",
-    tags: {
-      topic: ["AI應用", "提示詞設計", "工具操作"],
-      level: ["基礎"],
-      content_type: ["教學文章"]
-    },
-    external: { threads: null, vocus: null },
-    related: ["character-costume-sheet-three-views", "questionnaire-to-slides-agent-workflow", "mika-to-laika-product-character-design"]
-  },
-
-  /* ── 把一本書變成問得下去的 AI 顧問（教學） ── */
-  {
-    id: "book-to-ai-consultant",
-    url: "articles/book-to-ai-consultant/",
-    date: "2026-08-15",
-    title: "叫 AI 扮演名人就好了，為什麼還要提煉？：四種快做法各自停在哪裡",
-    problem: "上網查、一句話叫 AI 模擬某人、丟 PDF、丟 NotebookLM 都能得到答案，但要拿它的判斷去做決定時，這四種做法各自會在不同的地方停下來。",
-    audience: "叫 AI 扮演過名人卻覺得內容很空、或已經在用 NotebookLM 但要做決定時還是得自己想的人。",
-    summary: "要一個 AI 顧問，有四種比提煉快得多的做法：上網查、一句話叫 AI 模擬、丟 PDF、丟 NotebookLM。這篇一關一關講它們到哪裡為止（含什麼時候用哪個就夠了的判準表），攤開十區塊人格設定檔的核心架構，再用六個設計選擇說明每一個「不這樣做會怎樣」。可追溯的來源、範本與提示詞都在 MIT 開源技能包裡。",
-    tags: {
-      topic: ["知識管理", "AIAgent", "技能包設計", "隱性知識"],
-      level: ["基礎"],
-      content_type: ["教學文章"]
-    },
-    external: { threads: null, vocus: null },
-    related: ["books-videos-pdf-ai-advisor", "elon-musk-live-skill", "liberal-arts-agent-framework"]
-  },
-
-  /* ── LLM、RAG、Agent、MCP 入門地圖（教學） ── */
-  {
-    id: "llm-rag-agent-mcp",
-    url: "articles/llm-rag-agent-mcp/",
-    date: "2026-08-16",
-    title: "LLM、RAG、Agent、MCP 哪個重要？用人體比喻看懂這四個怎麼疊起來",
-    problem: "這四個術語常被排成一張表平行列出，看起來像四個選項要你挑一個，於是最常見的問題變成「哪個比較厲害」「我該學哪一個」。",
-    audience: "聽過這些詞但每次都要重查一遍、或想導入 AI 卻被廠商的術語清單淹沒，不知道自己該補哪一層的人。",
-    summary: "LLM、RAG、AI Agent、MCP 常被平行列在一起，看起來像四個選項。它們其實是同一套系統的四個部位：大腦、大腦加一疊書、大腦加一雙手、神經系統。這篇用同一個問題「公司出差費怎麼報」貫穿四層，看同一句提問在每一層得到什麼答案，最後給一張自我檢查表判斷你手上的 AI 缺哪一塊，以及先補哪一塊。",
-    tags: {
-      topic: ["AI應用", "知識管理", "AIAgent", "差異比較"],
-      level: ["零基礎入門"],
-      content_type: ["教學文章"]
-    },
-    external: { threads: null, vocus: null },
-    related: ["tag-wiki-method", "how-ai-connects-software", "a2a-agent-protocol", "rag-three-retrieval-modes"]
-  },
-
-  /* ── AI 回答前怎麼查你的資料：RAG 三種查法（教學） ── */
-  {
-    id: "rag-three-retrieval-modes",
-    url: "articles/rag-three-retrieval-modes/",
-    date: "2026-08-16",
-    title: "把資料丟給 AI，它其實沒有全部看完：RAG 的三種查法與怎麼選",
-    problem: "同樣把資料交給 AI，有時候答得很準，有時候明明資料就在裡面卻說找不到。差別在中間那層「它怎麼去你的資料裡找答案」，而那一層有三種做法。",
-    audience: "已經把資料交給 AI 查、卻搞不懂它為什麼有時候找不到，或正在評估自己的知識庫該怎麼建的人。",
-    summary: "AI 回答之前會先去你的資料裡查一輪，這個動作叫 RAG。查法主流有三種：比相似度、走關係、讓 AI 自己決定要查幾輪。這篇講清楚三種各自在比什麼、事前要準備什麼、擅長與接不住哪種題目，附八列功能對照表與實務上三種混用的做法，給一組照著問就能選的判斷順序，並攤開我自己知識庫裡三種同時在跑的實際做法與兩個實測結論。",
-    tags: {
-      topic: ["知識管理", "知識庫", "AI應用", "差異比較"],
-      level: ["基礎"],
-      content_type: ["教學文章"]
-    },
-    external: { threads: null, vocus: null },
-    related: ["llm-rag-agent-mcp", "tag-wiki-method", "long-document-review-layers", "ai-said-it-watched-the-video"]
-  },
-
-  /* ── AI 說它看過那支影片，其實沒有（案例） ── */
-  {
-    id: "ai-said-it-watched-the-video",
-    url: "articles/ai-said-it-watched-the-video/",
-    date: "2026-08-18",
-    updated: "2026-08-18",
-    title: "AI 交出一份很專業的分析，但它根本沒看過那支影片",
-    problem: "AI 給的答案看起來完整又專業，卻沒辦法判斷它是真的做了那件事，還是拿查到的資料推論出來的。",
-    audience: "已經在用 ChatGPT 或 Gemini 做事、但不知道怎麼確認它有沒有真的執行的人，以及要教新手用 AI 的講師。",
-    summary: "課堂示範用 AI 拆解影片分鏡：ChatGPT 下載 YouTube 影片失敗後改爬 14 個網站，交出一份細到秒數的六段式分析，被追問後承認自己沒看過影片，並自己列出哪些話不該寫。同一支影片 Gemini 讀得到畫面、給得出字卡上的字，卻把片名認成續集。文章攤開兩邊實際跑過的步驟與落差，給四個檢查動作、三段可直接複製的提示詞，以及一張什麼時候可以放手不盯的判斷表。",
-    tags: {
-      topic: ["AI應用", "工具操作", "差異比較", "提示詞設計"],
-      level: ["零基礎入門"],
-      content_type: ["案例文章"]
-    },
-    external: { threads: null, vocus: null },
-    related: ["caught-ai-slacking-into-rules", "web-chat-ai-vs-desktop-agent", "three-levels-of-cross-review", "rag-three-retrieval-modes", "long-document-review-layers", "cognitive-debt"]
-  },
-
-  /* ── 2026 年知識工作者的八個 AI 系統概念（教學）── */
-  {
-    id: "eight-ai-system-concepts-2026",
-    url: "articles/eight-ai-system-concepts-2026/",
-    date: "2026-08-19",
-    updated: "2026-08-31",
-    title: "2026 年知識工作者的八個 AI 系統概念：從提示詞寫得好，到把系統搭起來",
-    problem: "昨天花半小時教會 AI 的規則，今天開新對話又要重講一次。問題不在提示詞寫得夠不夠好，在於那些規則沒有一個固定的地方住。",
-    audience: "已經天天在用 AI、指令也下得順，但總覺得每次都在重新開始的人；看到「上下文工程」「記憶工程」這些詞卻不確定跟自己有什麼關係的非工程師。",
-    summary: "迴圈工程、事前規劃、上下文工程、記憶工程、工作流圖、子代理、統一接頭、給 AI 獨立權限，八個概念各給一段白話定義，再攤開我自己知識庫裡的實際做法：驗收標準怎麼寫、會議記錄要補哪三層脈絡、3X4 資料整理法的三種日記乘四種時效怎麼同時當檢索路徑、搜尋為什麼要拆成官方與正面與負面三角度獨立派、以及把 AI 當成剛畢業的學霸來帶是什麼意思。每一項都附一格可以直接複製進自己規則檔的三到四行。2026-08-30 免費線上講座後補上現場實錄：提示詞工程與駕馭工程這兩層的白話說明、向量工程三年的變化、愛吃辣廚師為什麼要換一家 AI 來審、迴圈該跑幾圈、29 位學員一次開十個分身、用聊天上架一堂課的實測，都收在可展開的折疊裡。",
-    tags: {
-      topic: ["AI工作流", "知識管理", "AIAgent", "AI應用"],
-      level: ["基礎"],
-      content_type: ["教學文章"]
-    },
-    external: { threads: null, vocus: null },
-    related: ["after-ai-says-remembered", "meeting-record-agent-workflow", "how-to-train-your-ai-employee", "what-is-loop-engineering", "prompt-to-loop-map", "parallel-site-editing"]
-  },
 
-  /* ── 從駕馭工程到迴圈工程的那一步（教學）── */
   {
     id: "harness-to-loop",
     url: "articles/harness-to-loop/",
@@ -2177,153 +94,22 @@ window.ARTICLES = [
     related: ["what-is-loop-engineering", "loop-engineering-guardrails", "prompt-to-loop-map", "eight-ai-system-concepts-2026", "cross-ai-review-both-wrong", "how-to-train-your-ai-employee"]
   },
 
-  /* ── 同一個問題問兩次，AI 為什麼給出不同答案？（教學）── */
   {
-    id: "same-question-different-answers",
-    url: "articles/same-question-different-answers/",
-    date: "2026-08-19",
-    updated: "2026-08-19",
-    title: "同一個問題問兩次，AI 為什麼給出不同答案？：程式與 AI 的差異",
-    problem: "同一句話問 AI 兩次，答案卻不完全一樣，第一個反應常常是它不可靠。真正的差別在於傳統程式與生成式 AI 決定輸出的方式本來就不同，不先弄懂這件事，就不知道哪些步驟該追求穩定、哪些可以保留彈性。",
-    audience: "同一句話問 AI 兩次看到不同答案、開始懷疑它到底可不可靠的人；已經在用 AI 但不確定哪些工作能放心交出去的人；正準備把 AI 接進自己工作流程的非工程師。",
-    summary: "在試算表寫好公式重算很多次結果都一樣，把同一段會議筆記交給 AI 整理兩次卻不完全相同。這篇從輸出為什麼會變講起：傳統程式執行預先寫好的規則，生成式 AI 依當下脈絡即時生成，而你以為相同的輸入，系統看到的其實包含系統指令、前文、檢索到的文件與記憶。答不準的時候，用「關聯性錯位」比用「幻覺」更能幫你判斷該修哪裡。後半給可以直接用的兩套工具：把「完成」拆成機器驗收、資料複驗、人工判斷、跨模型審查四層，以及把工作流程分成規則層、生成層、驗收層，再附四個拆解問題，先問做錯能不能復原，再決定這一步交給程式還是 AI。",
+    id: "loop-round-limit",
+    url: "articles/loop-round-limit/",
+    date: "2026-09-01",
+    updated: "2026-09-01",
+    title: "AI 自己跑，會不會一直跑到額度燒完？｜迴圈的圈數上限，三行寫進規則檔",
+    problem: "讓 AI 自己跑迴圈，做完自己檢查、沒過自己修，聽起來很好用，而它一直沒過的時候不會停下來問你，一個晚上就能把額度燒完。",
+    audience: "已經在用迴圈或自動任務、發現額度掉很快的人，以及讓兩個 AI 互審結果它們沒完沒了聊下去的人。",
+    summary: "迴圈沒設圈數上限，AI 可以修一百遍。這篇給一張圈數表（一般任務兩輪、重要決策三輪、第三輪強制停下來回報）、三行可直接貼進規則檔的停止條件，以及最容易漏掉的第三行：停手的時候要交什麼。另外拆開四種卡住的原因怎麼分辨、「一輪」怎麼算、上限跟報酬遞減曲線的兩層分工，並用一篇實際跑了四輪的文章說明多出來的那一輪為什麼是人批准的。",
     tags: {
-      topic: ["AI應用", "AI工作流", "差異比較"],
-      level: ["零基礎入門"],
-      content_type: ["教學文章"]
-    },
-    external: { threads: null, vocus: null },
-    related: ["what-is-loop-engineering", "program-vs-ai-skill-library", "strong-ai-models-knowledge-workflow-road", "what-are-subagents"]
-  },
-
-  /* ── 官網搬家一個月零元：Webnode 搬到 Cloudflare Pages（教學）── */
-  {
-    id: "webnode-to-cloudflare-pages",
-    url: "articles/webnode-to-cloudflare-pages/",
-    date: "2026-08-23",
-    updated: "2026-08-23",
-    title: "官網搬家一個月零元：把攝影網站從 Webnode 整站搬到 Cloudflare Pages",
-    problem: "網站放在建站平台上，每年付幾千塊，方案到期還可能被綁住。想搬走又不確定抓不抓得完整，尤其是相簿裡那幾千張照片。",
-    audience: "還在付 Webnode、Wix、Strikingly 月費的小工作室、攝影師與個人品牌；不會寫網頁、以前靠平台拖拉模板但現在會用 AI 的人；已經試過把網站抓下來備份、但不確定抓完沒有的人。",
-    summary: "一個 161 頁、14,495 個檔案、2.5 GB 的攝影公司網站，2026 年 8 月從 Webnode 整站搬到 Cloudflare Pages，掛自己的網域，畫面一比一還原，每月零元。文章分三段：先是台幣價格對照，同樣三個條件（自己的網域、拿掉平台商標、頻寬不設限）在 Webnode 一年 8,744 元、Cloudflare Pages 0 元；再來是比錢更重要的網域歸屬，平台子網域設不了 301 轉址、搬家時搜尋訊號帶不走；最後是搬站五步驟與整篇最重要的第三步，相簿圖的網址寫在 HTML 內嵌的 JSON 裡、抓站工具不解析，同一個站被抓過三次前兩次都漏了 9,080 張（佔全站 65%），而且平台還活著時本地打開一切正常。附兩種假驗收的說明與六項真驗收清單，整套流程做成免費技能包。",
-    tags: {
-      topic: ["網頁設計", "差異比較", "工具操作", "風險或成本評估"],
+      topic: ["AI工作流", "AIAgent", "工作流程"],
       level: ["基礎"],
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["github-vercel-cloudflare-compare", "who-can-see-your-site", "parallel-site-editing"]
-  },
-
-  /* ── 網站放 GitHub、Vercel 還是 Cloudflare？（教學）── */
-  {
-    id: "github-vercel-cloudflare-compare",
-    url: "articles/github-vercel-cloudflare-compare/",
-    date: "2026-08-19",
-    updated: "2026-08-19",
-    title: "網站放 GitHub、Vercel 還是 Cloudflare？三家免費額度、商用限制與功能差異",
-    problem: "官網上已經寫了課程和價格，但不確定現在放的地方合不合平台條款。網路上的三家比較文都沒寫價格細節，也沒說「免費」到底免費到哪裡。",
-    audience: "有官網、頁面上有課程或價格的講師與顧問；要幫客戶決定網站放哪裡、但不想憑印象報數字的人；想知道免費方案什麼時候會開始收錢的人。",
-    summary: "三家的角色分工先講清楚：GitHub 管版本與備份、Vercel 管快速部署與預覽、Cloudflare 管商用正式站的免費起點。接著是 2026-08-19 逐條官方查證的價格與額度，包含 GitHub Pages 的 1 GB 與 100 GB 軟性上限、Vercel Hobby 與 Pro 的完整額度與超額單價、Cloudflare 六個獨立計費產品（應用服務方案、Pages、Workers、D1、R2、Access）各自的免費額度。兩條最容易踩雷的商用條款附了原文：GitHub Pages 不能當免費主機經營線上生意，Vercel Hobby 明文限非商業個人使用而「廣告販售產品或服務」就算商用。最後給一套只付網域費就能跑起來的架構、五個升級付費的判斷條件，以及備份與多人改同一個網站的衝突處理。",
-    tags: {
-      topic: ["差異比較", "工具操作", "AI工作流", "知識管理"],
-      level: ["基礎"],
-      content_type: ["教學文章"]
-    },
-    external: { threads: null, vocus: null },
-    related: ["webnode-to-cloudflare-pages", "who-can-see-your-site", "free-deploy-three-boundaries"]
-  },
-
-  /* ── 你的網頁其實沒鎖：網站內容防護六個等級（教學）── */
-  {
-    id: "who-can-see-your-site",
-    url: "articles/who-can-see-your-site/",
-    date: "2026-08-19",
-    updated: "2026-08-19",
-    title: "你的網頁其實沒鎖：公開資訊、付費內容、機密隱私該放哪一層",
-    problem: "有人說「加 noindex 就搜尋不到了，很安全」。但搜尋不到跟進不去是兩件事，網址拿到照樣打得開。付費講義用這種方式放，等於沒鎖。",
-    audience: "要幫學員開一區「登入才看得到講義」的講師；有工作人員要進後台、也有長期客戶要看專屬內容，但兩種人的解法分不清楚的人；發過「網址很長很難猜」的私密頁、想知道那樣夠不夠的人。",
-    summary: "用房屋安全的六個等級把網站內容防護排成一個順序：公開展示間、從地圖上抹除的房子、拉起紅線、有警衛的鐵門、大樓門禁加房間權限、房屋裡的保險箱。每一層都對照真實技術，並說清楚它擋得住什麼、擋不住什麼。noindex 與 robots.txt 只管曝光不管存取；robots.txt 是公開檔案，把敏感路徑寫進去等於公布清單；前端的顯示與隱藏是體驗設計，資料一旦送到瀏覽器就當它已經公開。工作人員與固定合作夥伴用 Cloudflare Access，付費學員要自建會員與授權，兩種人不能用同一招。附兩個不用懂程式就能做的驗收測試，以及一段誠實的邊界說明：已授權的人仍然可能截圖轉傳。",
-    tags: {
-      topic: ["工具操作", "差異比較", "知識管理", "AI工作流"],
-      level: ["基礎"],
-      content_type: ["教學文章"]
-    },
-    external: { threads: null, vocus: null },
-    related: ["webnode-to-cloudflare-pages", "github-vercel-cloudflare-compare", "free-deploy-three-boundaries"]
-  },
-  /* ── 兩個 AI 同時改一個網站，為什麼會打架？（教學）── */
-  {
-    id: "parallel-site-editing",
-    url: "articles/parallel-site-editing/",
-    date: "2026-08-19",
-    updated: "2026-08-19",
-    title: "兩個 AI 同時改一個網站，為什麼會打架？",
-    problem: "讓多個 AI 分頭維護同一個網站，結果這個做到一半、那個不敢動，還發生過正式版本被蓋回舊版。規則越立越多，排隊越排越長。",
-    audience: "已經讓兩個以上的 AI 幫忙顧網站的人、幫客戶做網站想把多人維護設計進交付規格的接案者、開始怕上錯版本的小團隊。",
-    summary: "用我官網當天的真實事故當教材：兩篇文章同時要上線卻互相排隊，挖出根因是所有 AI 共用同一個本機資料夾，排隊規則解的是症狀。解法三件套：git worktree 一篇文章一張桌子分軌施工、合併上線壓成單一 commit 並用 commit 編號驗收、全站檢查改成每日巡檢抓漏不擋人。中段攤開另一家 AI 互審抓出的三個洞（生成檔衝突提早引爆、中間狀態被部署、驗收驗到別人的建置），文末給六步落地清單與一段可直接貼給 AI 的委託指令。",
-    tags: {
-      topic: ["AI工作流", "AI應用", "工作流程"],
-      level: ["進階"],
-      content_type: ["教學文章"]
-    },
-    external: { threads: null, vocus: null },
-    related: ["what-is-graph-engineering", "webnode-to-cloudflare-pages", "copied-mechanism-is-no-mechanism", "what-are-subagents"]
-  },
-
-  /* ── 用手機做一張自己的電影海報和手機桌布（教學） ── */
-  {
-    id: "personal-poster-and-wallpaper",
-    url: "articles/personal-poster-and-wallpaper/",
-    date: "2026-08-23",
-    updated: "2026-08-23",
-    title: "用手機做一張自己的電影海報和手機桌布：先讓 AI 認識你，它才畫得出你",
-    problem: "同一份指令發給一整班，有人做出來一眼就認得出是他本人，有人做出來像個陌生人。",
-    audience: "想做一張自己的圖當自我介紹、當手機桌面或印出來送人，但沒學過任何工具的人；帶長輩、社區班與親子場用 AI 的講師與助教；以及生過幾次圖，覺得每次都很漂亮但就是不像自己的人。",
-    summary: "兩種成品是先後兩步不是二選一：先把個人設定做扎實，兩次來回生出一張淡雅插畫版直接當手機桌布，再在同一個對話往下貼一段指令，把同一個人轉成寫實電影海報，不用重傳照片也不用重講故事。整理自 8/20 樂齡 AI 故事工作坊與 8/21 淡海輕軌公共藝術走讀兩場實體課，內容包含六項回答單與設定卡這道確認關卡、把場景穿在身上的轉化手法、三份可直接複製的指令（插畫版、海報接續版、五個空格的簡單版）、免費額度的四個省法、一張合照讓全家都進同一張海報的做法、生出來不像自己時分辨「故事不像」與「臉不像」的兩種救法，以及把圖存回相簿這個最容易漏掉的最後一步。",
-    tags: {
-      topic: ["圖片生成", "提示詞設計"],
-      level: ["零基礎入門"],
-      content_type: ["教學文章"]
-    },
-    external: { threads: null, vocus: null },
-    related: ["meta-prompt-thirty-versions", "parenting-story-ai-family-dialogue", "mika-to-laika-product-character-design", "ai-that-knows-you"]
-  },
-
-  {
-    id: "cross-ai-review-both-wrong",
-    url: "articles/cross-ai-review-both-wrong/",
-    date: "2026-08-26",
-    updated: "2026-08-26",
-    title: "OpenAI 出了官方外掛，讓 Codex 能接到 Claude Code 一起工作｜codex-plugin-cc",
-    problem: "同一個 AI 檢查自己寫的東西，會帶著同一套偏見再讀一遍，錯的前提在它眼裡依然成立。",
-    audience: "每天用 AI 寫提案、文案或報告，交出去前總有點不放心卻不知道怎麼查的人；要把 AI 產出給主管或客戶看，怕裡面有錯被當場抓包的人；以及一個人工作，沒有同事會在交件前幫忙看一眼的人。",
-    summary: "用一次真實的互審過程說明為什麼重要決定要換一家 AI 來審：三輪退件九項，其中三項是真的寫錯了事實，但審查的那一家自己也錯了兩項。內容包含自我檢查為何容易漏掉同一個錯誤前提、一張列出「它的主張／怎麼驗／實際結果／採納與否」的案例表、零成本就能用的互審提示詞、四種意見情況的處理表、OpenAI 官方外掛 codex-plugin-cc 的安裝方式與兩支主要審查指令只能在 git 資料夾跑的限制，以及不熟該領域時的三步查證順序。核心判斷是互審產出的是一張待驗清單，驗證與決定都還是自己的事。",
-    tags: {
-      topic: ["AI工作流", "輔助決策"],
-      level: ["基礎"],
-      content_type: ["教學文章"]
-    },
-    external: { threads: null, vocus: null },
-    related: ["three-levels-of-cross-review", "caught-ai-slacking-into-rules", "long-document-review-layers", "webmcp-day-one"]
-  },
-
-  {
-    id: "webmcp-day-one",
-    url: "articles/webmcp-day-one/",
-    date: "2026-08-30",
-    updated: "2026-08-30",
-    title: "AI 開始會用網站了，我當天把官網接上｜WebMCP 唯讀工具層實作記錄",
-    problem: "訪客帶著 AI 來看你的網站，AI 只能把整頁讀完自己猜，找不找得到你的東西全看運氣；你也不知道它問了什麼、哪些問法查不到。",
-    audience: "有自己的網站或正想做一個、希望訪客的 AI 能好好認識自己的人；聽過 MCP 或 WebMCP 想看真實上線案例的人；不會寫程式但想知道怎麼把這件事交辦給 AI 的人。",
-    summary: "OpenAI 推出採用 WebMCP 的 Site tools 之後，當天把知識官網接上的完整記錄。先用白話三步講清楚機制（網頁放工具清單、訪客的 AI 看得到、要用就直接呼叫），說明它跟 MCP 的差別與可並存關係；接著是實際做的四個唯讀工具、四個設計決定（只做唯讀、漸進增強、不建第二份資料、價格不寫進工具），跨家審七輪抓到的三類問題（規格與行為不一致、檢查器有洞卻顯示全綠、對外宣告與實作對不上），要不要記錄 AI 查詢的取捨與揭露方式，以及對 SEO 的誠實期待管理。文末給四個判斷原則與一段可直接貼給自己 AI 的委託指令。",
-    tags: {
-      topic: ["AI趨勢", "系統設計", "AIAgent", "AI工作流"],
-      level: ["基礎"],
-      content_type: ["教學文章"]
-    },
-    external: { threads: null, vocus: null },
-    related: ["three-levels-of-cross-review", "agent-web-turning-point", "cross-ai-review-both-wrong", "ai-era-websites-for-agents"]
+    related: ["what-is-loop-engineering", "loop-engineering-guardrails", "after-ai-says-remembered", "dual-track-planning-loop", "what-is-graph-engineering", "ai-usage-audit"]
   },
 
   {
@@ -2345,39 +131,2320 @@ window.ARTICLES = [
   },
 
   {
-    id: "what-are-subagents",
-    url: "articles/what-are-subagents/",
-    date: "2026-09-01",
-    updated: "2026-09-02",
-    title: "什麼叫子代理？從分頭查資料到 30 人工作坊頁面",
-    problem: "問 AI 某個工具好不好用，拿回來的答案總是很像產品介紹；手上一批同版型、內容各自不同的重複工作，又不知道怎麼交給 AI 分批做完。",
-    audience: "想比較多個工具、又擔心 AI 太早選邊站的人；手上有一批同版型重複工作的人；已經會叫 AI 做事，接下來想學怎麼分批派工與整併的人。",
-    summary: "子代理就是讓 Agent 開分身，分頭工作後再一起整併。文章用兩個實際案例說明兩種並行方式：一是把同一個問題拆成官方說法、網路正面評價、網路負面評價三組獨立搜尋，附可直接複製的提示詞、三組回來後要先查的五件事，以及矛盾要保留不要磨平的處理原則；二是替 29 位工作坊學員製作同版型獨立頁面，用分批派工的五步流程與一段完整派工提示詞，成果頁附上線連結。最後講清楚子代理的限制：上下文不會自動跟著走，每隻子代理都要拿到五項脈絡封包，並附收工前的七題驗收清單。",
+    id: "what-is-graph-engineering",
+    url: "articles/what-is-graph-engineering/",
+    date: "2026-08-24",
+    updated: "2026-08-31",
+    title: "可以放著讓 AI 自己跑完嗎？｜迴圈工程與圖譜工程不用會寫程式也學得會",
+    problem: "很想用 AI 把工作自動化，但不會寫程式，看到「迴圈工程」「圖譜工程」這種名詞就先卡住。網路上的解釋彼此不一致，而且看完還是不知道跟自己有什麼關係、自己能不能用。",
+    audience: "不會寫程式、但想讓 AI 自己把工作跑完的人；已經會讓 AI 跑完一件事、想知道再上去那層是什麼的人；同時在做好幾種產出、覺得它們串不起來的人；用看板管專案、想知道這個新名詞跟自己有沒有關係的人。",
+    summary: "不會寫程式也能讓 AI 自己把一件事跑完，前提是把目標、規則、審核標準交代清楚。這篇用一間辦公室講清楚圖譜工程，全程不用程式例子：桌上的交接本是狀態、牆上的派工規則表是邊、上場的助理是節點，規則表不是主管，它只做條件對照。接著處理一件多數人會踩的事：「圖譜」這個字有兩個主人，一個管工作跟工作的順序，一個管概念跟概念的關聯，作者自己就遇過一次 AI 把兩者答混，靠知識庫裡寫下的定義才抓回來。再切開五個容易混淆的概念：迴圈工程、專案管理、互相監督、自動化、流程設計的老方法，其中專案管理那個的關鍵差別是助理從人變成 AI，人會自己補上沒寫出來的判斷，AI 不會。最後誠實盤點作者自己的機制，哪些真的算、哪些介於中間、哪些其實不算，並給一段可直接複製的跨家審查提示詞。",
     tags: {
-      topic: ["AIAgent", "AI工作流", "提示詞設計", "工作流程"],
-      level: ["基礎"],
-      content_type: ["教學文章"]
-    },
-    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["parallel-site-editing", "same-question-different-answers", "long-document-review-layers"]
-  },
-
-  {
-    id: "five-loops-content-line",
-    url: "articles/five-loops-content-line/",
-    date: "2026-09-01",
-    updated: "2026-09-01",
-    title: "哪些事可以交給 AI 自己跑完？｜我把內容產線拆成五個小迴圈",
-    problem: "同樣的流程重複做過幾百次，想交給 AI 又不知道哪些交得出去；交出去之後還要整個重看一遍，等於沒省到。",
-    audience: "有一套自己重複在做的流程、每次都要從頭盯到尾的人；試過把工作交給 AI 但沒省到力氣的人；想要一條判準來分辨哪些該交出去、哪些無論如何要自己來的人。",
-    summary: "把我實際在跑的內容產線整條攤開：一個連結進來，怎麼變成脆文、圖卡、官網文章，最後上線。核心是一條兩層判準，先問能不能用客觀標準驗出對錯，再問錯了可不可逆，兩層都過才交給 AI 自己跑完。五個小迴圈逐一拆解，每個都附回頭條件與實際踩過的坑，包含抓逐字稿的三條換路順序、圖卡生成的四項自我檢查、Threads 發布媒體參數只吃公開網址所以要架固定中繼站、文章審查三道關卡、部署的掛牌與同步順序。文末給四個步驟，讓你拿自己的流程對一次。",
-    tags: {
-      topic: ["AI工作流", "系統設計", "AI應用"],
+      topic: ["AI工作流", "系統設計", "知識管理", "AIAgent"],
       level: ["基礎"],
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["what-is-loop-engineering", "what-is-graph-engineering", "ai-era-websites-for-agents"]
+    related: ["what-is-loop-engineering", "parallel-site-editing", "webnode-to-cloudflare-pages", "five-loops-content-line"]
   },
 
+  {
+    id: "eight-ai-system-concepts-2026",
+    url: "articles/eight-ai-system-concepts-2026/",
+    date: "2026-08-19",
+    updated: "2026-08-31",
+    title: "2026 年知識工作者的八個 AI 系統概念：從提示詞寫得好，到把系統搭起來",
+    problem: "昨天花半小時教會 AI 的規則，今天開新對話又要重講一次。問題不在提示詞寫得夠不夠好，在於那些規則沒有一個固定的地方住。",
+    audience: "已經天天在用 AI、指令也下得順，但總覺得每次都在重新開始的人；看到「上下文工程」「記憶工程」這些詞卻不確定跟自己有什麼關係的非工程師。",
+    summary: "迴圈工程、事前規劃、上下文工程、記憶工程、工作流圖、子代理、統一接頭、給 AI 獨立權限，八個概念各給一段白話定義，再攤開我自己知識庫裡的實際做法：驗收標準怎麼寫、會議記錄要補哪三層脈絡、3X4 資料整理法的三種日記乘四種時效怎麼同時當檢索路徑、搜尋為什麼要拆成官方與正面與負面三角度獨立派、以及把 AI 當成剛畢業的學霸來帶是什麼意思。每一項都附一格可以直接複製進自己規則檔的三到四行。2026-08-30 免費線上講座後補上現場實錄：提示詞工程與駕馭工程這兩層的白話說明、向量工程三年的變化、愛吃辣廚師為什麼要換一家 AI 來審、迴圈該跑幾圈、29 位學員一次開十個分身、用聊天上架一堂課的實測，都收在可展開的折疊裡。",
+    tags: {
+      topic: ["AI工作流", "知識管理", "AIAgent", "AI應用"],
+      level: ["基礎"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["after-ai-says-remembered", "meeting-record-agent-workflow", "how-to-train-your-ai-employee", "what-is-loop-engineering", "prompt-to-loop-map", "parallel-site-editing"]
+  },
+
+  {
+    id: "webmcp-day-one",
+    url: "articles/webmcp-day-one/",
+    date: "2026-08-30",
+    updated: "2026-08-30",
+    title: "AI 開始會用網站了，我當天把官網接上｜WebMCP 唯讀工具層實作記錄",
+    problem: "訪客帶著 AI 來看你的網站，AI 只能把整頁讀完自己猜，找不找得到你的東西全看運氣；你也不知道它問了什麼、哪些問法查不到。",
+    audience: "有自己的網站或正想做一個、希望訪客的 AI 能好好認識自己的人；聽過 MCP 或 WebMCP 想看真實上線案例的人；不會寫程式但想知道怎麼把這件事交辦給 AI 的人。",
+    summary: "OpenAI 推出採用 WebMCP 的 Site tools 之後，當天把知識官網接上的完整記錄。先用白話三步講清楚機制（網頁放工具清單、訪客的 AI 看得到、要用就直接呼叫），說明它跟 MCP 的差別與可並存關係；接著是實際做的四個唯讀工具、四個設計決定（只做唯讀、漸進增強、不建第二份資料、價格不寫進工具），跨家審七輪抓到的三類問題（規格與行為不一致、檢查器有洞卻顯示全綠、對外宣告與實作對不上），要不要記錄 AI 查詢的取捨與揭露方式，以及對 SEO 的誠實期待管理。文末給四個判斷原則與一段可直接貼給自己 AI 的委託指令。",
+    tags: {
+      topic: ["AI趨勢", "系統設計", "AIAgent", "AI工作流"],
+      level: ["基礎"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["three-levels-of-cross-review", "agent-web-turning-point", "cross-ai-review-both-wrong", "ai-era-websites-for-agents"]
+  },
+
+  {
+    id: "ai-usage-audit",
+    url: "articles/ai-usage-audit/",
+    date: "2026-08-26",
+    updated: "2026-08-26",
+    title: "AI 越用越貴，我掃了自己一個月的用量",
+    problem: "沒有多接案子、也沒開發新東西，AI 額度卻用得越來越快；升到更高的方案之後，還是常常覺得不夠用，而且完全不知道錢花到哪去了。",
+    audience: "用 AI 工具做事、覺得額度越來越不夠用的人；幫自己建了一整套規則與技能包、開始懷疑是不是養太大的人；想知道自己的 AI 到底把錢花在哪，而不是只看到一個總額數字的人。",
+    summary: "掃完自己一個月 19,287 次 API 呼叫的實測紀錄，發現原本猜的原因（知識庫太肥）只佔 26%，另外四分之三是三個使用習慣：一個對話開一整天、同一件事開兩個視窗、什麼工作都用最貴的模型。先講清楚一個大部分人不知道的計費機制：AI 每問一句都在重讀整段對話，所以第 800 句時打二十個字，帳單算的是四十萬。接著給兩個開關（模型切換點、對話斷點）與實測的省下倍數，說明為什麼這件事沒辦法寫成自動化規則（AI 技術上切不了模型、攔截器不知道你跑到第幾步），以及自己原本就有的三條省錢規則為什麼兩個月來一條都沒被執行。最後附一支可直接跑的量測腳本，讓你量自己的實際用量。",
+    tags: {
+      topic: ["AI工作流", "知識管理", "工具操作"],
+      level: ["基礎"],
+      content_type: ["觀點文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["ai-cp-value-calculus", "copied-mechanism-is-no-mechanism", "program-vs-ai-skill-library", "cognitive-debt", "loop-round-limit"]
+  },
+
+  {
+    id: "cross-ai-review-both-wrong",
+    url: "articles/cross-ai-review-both-wrong/",
+    date: "2026-08-26",
+    updated: "2026-08-26",
+    title: "OpenAI 出了官方外掛，讓 Codex 能接到 Claude Code 一起工作｜codex-plugin-cc",
+    problem: "同一個 AI 檢查自己寫的東西，會帶著同一套偏見再讀一遍，錯的前提在它眼裡依然成立。",
+    audience: "每天用 AI 寫提案、文案或報告，交出去前總有點不放心卻不知道怎麼查的人；要把 AI 產出給主管或客戶看，怕裡面有錯被當場抓包的人；以及一個人工作，沒有同事會在交件前幫忙看一眼的人。",
+    summary: "用一次真實的互審過程說明為什麼重要決定要換一家 AI 來審：三輪退件九項，其中三項是真的寫錯了事實，但審查的那一家自己也錯了兩項。內容包含自我檢查為何容易漏掉同一個錯誤前提、一張列出「它的主張／怎麼驗／實際結果／採納與否」的案例表、零成本就能用的互審提示詞、四種意見情況的處理表、OpenAI 官方外掛 codex-plugin-cc 的安裝方式與兩支主要審查指令只能在 git 資料夾跑的限制，以及不熟該領域時的三步查證順序。核心判斷是互審產出的是一張待驗清單，驗證與決定都還是自己的事。",
+    tags: {
+      topic: ["AI工作流", "輔助決策"],
+      level: ["基礎"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["three-levels-of-cross-review", "caught-ai-slacking-into-rules", "long-document-review-layers", "webmcp-day-one"]
+  },
+
+  {
+    id: "personal-poster-and-wallpaper",
+    url: "articles/personal-poster-and-wallpaper/",
+    date: "2026-08-23",
+    updated: "2026-08-23",
+    title: "用手機做一張自己的電影海報和手機桌布：先讓 AI 認識你，它才畫得出你",
+    problem: "同一份指令發給一整班，有人做出來一眼就認得出是他本人，有人做出來像個陌生人。",
+    audience: "想做一張自己的圖當自我介紹、當手機桌面或印出來送人，但沒學過任何工具的人；帶長輩、社區班與親子場用 AI 的講師與助教；以及生過幾次圖，覺得每次都很漂亮但就是不像自己的人。",
+    summary: "兩種成品是先後兩步不是二選一：先把個人設定做扎實，兩次來回生出一張淡雅插畫版直接當手機桌布，再在同一個對話往下貼一段指令，把同一個人轉成寫實電影海報，不用重傳照片也不用重講故事。整理自 8/20 樂齡 AI 故事工作坊與 8/21 淡海輕軌公共藝術走讀兩場實體課，內容包含六項回答單與設定卡這道確認關卡、把場景穿在身上的轉化手法、三份可直接複製的指令（插畫版、海報接續版、五個空格的簡單版）、免費額度的四個省法、一張合照讓全家都進同一張海報的做法、生出來不像自己時分辨「故事不像」與「臉不像」的兩種救法，以及把圖存回相簿這個最容易漏掉的最後一步。",
+    tags: {
+      topic: ["圖片生成", "提示詞設計"],
+      level: ["零基礎入門"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["meta-prompt-thirty-versions", "parenting-story-ai-family-dialogue", "mika-to-laika-product-character-design", "ai-that-knows-you"]
+  },
+
+  {
+    id: "webnode-to-cloudflare-pages",
+    url: "articles/webnode-to-cloudflare-pages/",
+    date: "2026-08-23",
+    updated: "2026-08-23",
+    title: "官網搬家一個月零元：把攝影網站從 Webnode 整站搬到 Cloudflare Pages",
+    problem: "網站放在建站平台上，每年付幾千塊，方案到期還可能被綁住。想搬走又不確定抓不抓得完整，尤其是相簿裡那幾千張照片。",
+    audience: "還在付 Webnode、Wix、Strikingly 月費的小工作室、攝影師與個人品牌；不會寫網頁、以前靠平台拖拉模板但現在會用 AI 的人；已經試過把網站抓下來備份、但不確定抓完沒有的人。",
+    summary: "一個 161 頁、14,495 個檔案、2.5 GB 的攝影公司網站，2026 年 8 月從 Webnode 整站搬到 Cloudflare Pages，掛自己的網域，畫面一比一還原，每月零元。文章分三段：先是台幣價格對照，同樣三個條件（自己的網域、拿掉平台商標、頻寬不設限）在 Webnode 一年 8,744 元、Cloudflare Pages 0 元；再來是比錢更重要的網域歸屬，平台子網域設不了 301 轉址、搬家時搜尋訊號帶不走；最後是搬站五步驟與整篇最重要的第三步，相簿圖的網址寫在 HTML 內嵌的 JSON 裡、抓站工具不解析，同一個站被抓過三次前兩次都漏了 9,080 張（佔全站 65%），而且平台還活著時本地打開一切正常。附兩種假驗收的說明與六項真驗收清單，整套流程做成免費技能包。",
+    tags: {
+      topic: ["網頁設計", "差異比較", "工具操作", "風險或成本評估"],
+      level: ["基礎"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["github-vercel-cloudflare-compare", "who-can-see-your-site", "parallel-site-editing"]
+  },
+
+  {
+    id: "github-vercel-cloudflare-compare",
+    url: "articles/github-vercel-cloudflare-compare/",
+    date: "2026-08-19",
+    updated: "2026-08-19",
+    title: "網站放 GitHub、Vercel 還是 Cloudflare？三家免費額度、商用限制與功能差異",
+    problem: "官網上已經寫了課程和價格，但不確定現在放的地方合不合平台條款。網路上的三家比較文都沒寫價格細節，也沒說「免費」到底免費到哪裡。",
+    audience: "有官網、頁面上有課程或價格的講師與顧問；要幫客戶決定網站放哪裡、但不想憑印象報數字的人；想知道免費方案什麼時候會開始收錢的人。",
+    summary: "三家的角色分工先講清楚：GitHub 管版本與備份、Vercel 管快速部署與預覽、Cloudflare 管商用正式站的免費起點。接著是 2026-08-19 逐條官方查證的價格與額度，包含 GitHub Pages 的 1 GB 與 100 GB 軟性上限、Vercel Hobby 與 Pro 的完整額度與超額單價、Cloudflare 六個獨立計費產品（應用服務方案、Pages、Workers、D1、R2、Access）各自的免費額度。兩條最容易踩雷的商用條款附了原文：GitHub Pages 不能當免費主機經營線上生意，Vercel Hobby 明文限非商業個人使用而「廣告販售產品或服務」就算商用。最後給一套只付網域費就能跑起來的架構、五個升級付費的判斷條件，以及備份與多人改同一個網站的衝突處理。",
+    tags: {
+      topic: ["差異比較", "工具操作", "AI工作流", "知識管理"],
+      level: ["基礎"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["webnode-to-cloudflare-pages", "who-can-see-your-site", "free-deploy-three-boundaries"]
+  },
+
+  {
+    id: "parallel-site-editing",
+    url: "articles/parallel-site-editing/",
+    date: "2026-08-19",
+    updated: "2026-08-19",
+    title: "兩個 AI 同時改一個網站，為什麼會打架？",
+    problem: "讓多個 AI 分頭維護同一個網站，結果這個做到一半、那個不敢動，還發生過正式版本被蓋回舊版。規則越立越多，排隊越排越長。",
+    audience: "已經讓兩個以上的 AI 幫忙顧網站的人、幫客戶做網站想把多人維護設計進交付規格的接案者、開始怕上錯版本的小團隊。",
+    summary: "用我官網當天的真實事故當教材：兩篇文章同時要上線卻互相排隊，挖出根因是所有 AI 共用同一個本機資料夾，排隊規則解的是症狀。解法三件套：git worktree 一篇文章一張桌子分軌施工、合併上線壓成單一 commit 並用 commit 編號驗收、全站檢查改成每日巡檢抓漏不擋人。中段攤開另一家 AI 互審抓出的三個洞（生成檔衝突提早引爆、中間狀態被部署、驗收驗到別人的建置），文末給六步落地清單與一段可直接貼給 AI 的委託指令。",
+    tags: {
+      topic: ["AI工作流", "AI應用", "工作流程"],
+      level: ["進階"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["what-is-graph-engineering", "webnode-to-cloudflare-pages", "copied-mechanism-is-no-mechanism", "what-are-subagents"]
+  },
+
+  {
+    id: "same-question-different-answers",
+    url: "articles/same-question-different-answers/",
+    date: "2026-08-19",
+    updated: "2026-08-19",
+    title: "同一個問題問兩次，AI 為什麼給出不同答案？：程式與 AI 的差異",
+    problem: "同一句話問 AI 兩次，答案卻不完全一樣，第一個反應常常是它不可靠。真正的差別在於傳統程式與生成式 AI 決定輸出的方式本來就不同，不先弄懂這件事，就不知道哪些步驟該追求穩定、哪些可以保留彈性。",
+    audience: "同一句話問 AI 兩次看到不同答案、開始懷疑它到底可不可靠的人；已經在用 AI 但不確定哪些工作能放心交出去的人；正準備把 AI 接進自己工作流程的非工程師。",
+    summary: "在試算表寫好公式重算很多次結果都一樣，把同一段會議筆記交給 AI 整理兩次卻不完全相同。這篇從輸出為什麼會變講起：傳統程式執行預先寫好的規則，生成式 AI 依當下脈絡即時生成，而你以為相同的輸入，系統看到的其實包含系統指令、前文、檢索到的文件與記憶。答不準的時候，用「關聯性錯位」比用「幻覺」更能幫你判斷該修哪裡。後半給可以直接用的兩套工具：把「完成」拆成機器驗收、資料複驗、人工判斷、跨模型審查四層，以及把工作流程分成規則層、生成層、驗收層，再附四個拆解問題，先問做錯能不能復原，再決定這一步交給程式還是 AI。",
+    tags: {
+      topic: ["AI應用", "AI工作流", "差異比較"],
+      level: ["零基礎入門"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["what-is-loop-engineering", "program-vs-ai-skill-library", "strong-ai-models-knowledge-workflow-road", "what-are-subagents"]
+  },
+
+  {
+    id: "who-can-see-your-site",
+    url: "articles/who-can-see-your-site/",
+    date: "2026-08-19",
+    updated: "2026-08-19",
+    title: "你的網頁其實沒鎖：公開資訊、付費內容、機密隱私該放哪一層",
+    problem: "有人說「加 noindex 就搜尋不到了，很安全」。但搜尋不到跟進不去是兩件事，網址拿到照樣打得開。付費講義用這種方式放，等於沒鎖。",
+    audience: "要幫學員開一區「登入才看得到講義」的講師；有工作人員要進後台、也有長期客戶要看專屬內容，但兩種人的解法分不清楚的人；發過「網址很長很難猜」的私密頁、想知道那樣夠不夠的人。",
+    summary: "用房屋安全的六個等級把網站內容防護排成一個順序：公開展示間、從地圖上抹除的房子、拉起紅線、有警衛的鐵門、大樓門禁加房間權限、房屋裡的保險箱。每一層都對照真實技術，並說清楚它擋得住什麼、擋不住什麼。noindex 與 robots.txt 只管曝光不管存取；robots.txt 是公開檔案，把敏感路徑寫進去等於公布清單；前端的顯示與隱藏是體驗設計，資料一旦送到瀏覽器就當它已經公開。工作人員與固定合作夥伴用 Cloudflare Access，付費學員要自建會員與授權，兩種人不能用同一招。附兩個不用懂程式就能做的驗收測試，以及一段誠實的邊界說明：已授權的人仍然可能截圖轉傳。",
+    tags: {
+      topic: ["工具操作", "差異比較", "知識管理", "AI工作流"],
+      level: ["基礎"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["webnode-to-cloudflare-pages", "github-vercel-cloudflare-compare", "free-deploy-three-boundaries"]
+  },
+
+  {
+    id: "ai-said-it-watched-the-video",
+    url: "articles/ai-said-it-watched-the-video/",
+    date: "2026-08-18",
+    updated: "2026-08-18",
+    title: "AI 交出一份很專業的分析，但它根本沒看過那支影片",
+    problem: "AI 給的答案看起來完整又專業，卻沒辦法判斷它是真的做了那件事，還是拿查到的資料推論出來的。",
+    audience: "已經在用 ChatGPT 或 Gemini 做事、但不知道怎麼確認它有沒有真的執行的人，以及要教新手用 AI 的講師。",
+    summary: "課堂示範用 AI 拆解影片分鏡：ChatGPT 下載 YouTube 影片失敗後改爬 14 個網站，交出一份細到秒數的六段式分析，被追問後承認自己沒看過影片，並自己列出哪些話不該寫。同一支影片 Gemini 讀得到畫面、給得出字卡上的字，卻把片名認成續集。文章攤開兩邊實際跑過的步驟與落差，給四個檢查動作、三段可直接複製的提示詞，以及一張什麼時候可以放手不盯的判斷表。",
+    tags: {
+      topic: ["AI應用", "工具操作", "差異比較", "提示詞設計"],
+      level: ["零基礎入門"],
+      content_type: ["案例文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["caught-ai-slacking-into-rules", "web-chat-ai-vs-desktop-agent", "three-levels-of-cross-review", "rag-three-retrieval-modes", "long-document-review-layers", "cognitive-debt"]
+  },
+
+  {
+    id: "llm-rag-agent-mcp",
+    url: "articles/llm-rag-agent-mcp/",
+    date: "2026-08-16",
+    title: "LLM、RAG、Agent、MCP 哪個重要？用人體比喻看懂這四個怎麼疊起來",
+    problem: "這四個術語常被排成一張表平行列出，看起來像四個選項要你挑一個，於是最常見的問題變成「哪個比較厲害」「我該學哪一個」。",
+    audience: "聽過這些詞但每次都要重查一遍、或想導入 AI 卻被廠商的術語清單淹沒，不知道自己該補哪一層的人。",
+    summary: "LLM、RAG、AI Agent、MCP 常被平行列在一起，看起來像四個選項。它們其實是同一套系統的四個部位：大腦、大腦加一疊書、大腦加一雙手、神經系統。這篇用同一個問題「公司出差費怎麼報」貫穿四層，看同一句提問在每一層得到什麼答案，最後給一張自我檢查表判斷你手上的 AI 缺哪一塊，以及先補哪一塊。",
+    tags: {
+      topic: ["AI應用", "知識管理", "AIAgent", "差異比較"],
+      level: ["零基礎入門"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["tag-wiki-method", "how-ai-connects-software", "a2a-agent-protocol", "rag-three-retrieval-modes"]
+  },
+
+  {
+    id: "rag-three-retrieval-modes",
+    url: "articles/rag-three-retrieval-modes/",
+    date: "2026-08-16",
+    title: "把資料丟給 AI，它其實沒有全部看完：RAG 的三種查法與怎麼選",
+    problem: "同樣把資料交給 AI，有時候答得很準，有時候明明資料就在裡面卻說找不到。差別在中間那層「它怎麼去你的資料裡找答案」，而那一層有三種做法。",
+    audience: "已經把資料交給 AI 查、卻搞不懂它為什麼有時候找不到，或正在評估自己的知識庫該怎麼建的人。",
+    summary: "AI 回答之前會先去你的資料裡查一輪，這個動作叫 RAG。查法主流有三種：比相似度、走關係、讓 AI 自己決定要查幾輪。這篇講清楚三種各自在比什麼、事前要準備什麼、擅長與接不住哪種題目，附八列功能對照表與實務上三種混用的做法，給一組照著問就能選的判斷順序，並攤開我自己知識庫裡三種同時在跑的實際做法與兩個實測結論。",
+    tags: {
+      topic: ["知識管理", "知識庫", "AI應用", "差異比較"],
+      level: ["基礎"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["llm-rag-agent-mcp", "tag-wiki-method", "long-document-review-layers", "ai-said-it-watched-the-video"]
+  },
+
+  {
+    id: "elon-musk-live-skill",
+    url: "articles/elon-musk-live-skill/",
+    date: "2026-06-22",
+    updated: "2026-08-16",
+    title: "馬斯克技能包：給創業者與主管的第一性原理顧問",
+    problem: "創業者、主管和老闆需要有人協助拆問題、反問假設、看見盲點，同時又希望參考公開資料時能分清楚本人內容、公司一手資訊、新聞報導與新聞評論。",
+    audience: "想用第一性原理拆產品、團隊、資源配置與決策盲點的創業者、主管、老闆，以及想下載開源技能包實作的人。",
+    summary: "把馬斯克常見的第一性原理思考方式整理成 AI 顧問流程，陪創業者與主管練習拆產品、市場、團隊與資源配置問題。文章同時完整記錄了當初的每日自動更新機制，以及後來為什麼收掉、改成手動維護；判斷哪些自動化值得留、哪些的人工成本不划算，是這篇留下來的重點。",
+    tags: {
+      topic: ["技能包設計", "AIAgent", "輔助決策", "AI工作流"],
+      level: ["零基礎入門"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
+    related: ["spacex-ipo-musk-trillionaire-knowledge-work", "how-to-train-your-ai-employee", "own-ai-team-at-work", "ai-market-microcosm", "vibe-coding-ten-half-products"]
+  },
+
+  {
+    id: "book-to-ai-consultant",
+    url: "articles/book-to-ai-consultant/",
+    date: "2026-08-15",
+    title: "叫 AI 扮演名人就好了，為什麼還要提煉？：四種快做法各自停在哪裡",
+    problem: "上網查、一句話叫 AI 模擬某人、丟 PDF、丟 NotebookLM 都能得到答案，但要拿它的判斷去做決定時，這四種做法各自會在不同的地方停下來。",
+    audience: "叫 AI 扮演過名人卻覺得內容很空、或已經在用 NotebookLM 但要做決定時還是得自己想的人。",
+    summary: "要一個 AI 顧問，有四種比提煉快得多的做法：上網查、一句話叫 AI 模擬、丟 PDF、丟 NotebookLM。這篇一關一關講它們到哪裡為止（含什麼時候用哪個就夠了的判準表），攤開十區塊人格設定檔的核心架構，再用六個設計選擇說明每一個「不這樣做會怎樣」。可追溯的來源、範本與提示詞都在 MIT 開源技能包裡。",
+    tags: {
+      topic: ["知識管理", "AIAgent", "技能包設計", "隱性知識"],
+      level: ["基礎"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["books-videos-pdf-ai-advisor", "elon-musk-live-skill", "liberal-arts-agent-framework"]
+  },
+
+  {
+    id: "let-ai-do-the-setup",
+    url: "articles/let-ai-do-the-setup/",
+    date: "2026-08-12",
+    title: "換電腦，設定又要重來一次嗎？：我把 OBS 交給 AI，一個選項都沒點過",
+    problem: "出差帶了新筆電，要重新設定 OBS 錄螢幕，卻忘記把桌機的設定記下來。以前這種事只有兩條路：找教學影片跟著點，或是自己一個選項一個選項慢慢翻。",
+    audience: "換了新電腦或重灌系統、一堆軟體要重設的人；遇到不熟的軟體習慣先去搜教學影片的人；已經在用 AI 但用途還停在寫字、翻譯、整理資料，沒想過它能直接處理電腦上設定的人。",
+    summary: "這次出差重設 OBS，我沒有點過任何一個選項，全部交給 AI 改設定檔完成。文章攤開完整過程：它先查現況、先問用途、給出兩條施工路徑讓我選，再跑進 OBS 的程式檔案裡撈出正確參數才動手，最後建好三個錄課場景。也誠實寫出它做不到的四件事：不碰螢幕、不能替我授權系統權限、不能決定用途、第一次沒有全對（同一個欄位在兩個區段各出現一次，它只改到第一個，是自己驗收時抓出來的）。最後收成三個判斷問題：設定存在哪裡、有沒有非人不可的授權步驟、做錯了看不看得出來，三個都過就可以整包交出去，並附一句可直接複製的提問。",
+    tags: {
+      topic: ["AI應用", "工具操作", "AI工作流"],
+      level: ["基礎"],
+      content_type: ["案例文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["dont-learn-ai-tools", "how-ai-connects-software", "ai-delegators-optimism"]
+  },
+
+  {
+    id: "notebooklm-real-photo-slides",
+    url: "articles/notebooklm-real-photo-slides/",
+    date: "2026-08-12",
+    title: "把照片放進 NotebookLM，生一份用真實照片的簡報",
+    problem: "把文字丟給 AI、讓它連圖一起生最快，但成品都長得差不多。手上明明有活動現場、產品實拍、旅行紀錄的真實照片，卻用不進去。",
+    audience: "手上有活動現場、產品實拍、旅行紀錄、課程側拍照片，想做成簡報或短片的人；做過幾份 AI 生成的簡報，開始覺得畫面都長得差不多的人。",
+    summary: "整套方法只有一句：該做什麼寫在來源文案，不能做什麼寫在指令。腳本一份 Markdown 搞定，最前面放畫面規範，接著逐頁寫標題、內文、配圖編號；照片命名 01 02 03，沒照片的頁明寫要畫什麼。指令只剩三行紅線，影片摘要那邊更短，並用角色設定代替沒有的旁白性別參數。附完整腳本範例、兩段可直接複製的指令、NotebookLM 兩個自訂面板該填哪一格，以及交出去之前要看的三件事。成品實證：《百岳行旅 武陵三秀》故事簡報 15 頁。",
+    tags: {
+      topic: ["AI應用", "提示詞設計", "工具操作"],
+      level: ["基礎"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["character-costume-sheet-three-views", "questionnaire-to-slides-agent-workflow", "mika-to-laika-product-character-design"]
+  },
+
+  {
+    id: "long-answer-three-layers",
+    url: "articles/long-answer-three-layers/",
+    date: "2026-08-08",
+    updated: "2026-08-12",
+    title: "AI 回答太長看不下去？把內容變成白話、流程圖與說明網頁",
+    problem: "AI 的長回答把條件、例外、推論、風險都寫進去，重要內容常常藏在中後段。人一累就跳過，等於讓沒有被理解的前提直接進入下一步。",
+    audience: "每天收到 AI 長篇回答、常常看到一半就放棄的人，要把 AI 的分析拿去開會報價決策或交件的人，以及每一句都看得懂卻抓不到整體關係的人。",
+    summary: "AI 回答太長，看到一半就滑掉，最後回一句「好好，都可以」。這篇給三層做法：第一層請 AI 用白話重講並保留限制與例外，第二層有步驟分支角色時序就請它畫成流程圖（Codex 走 Mermaid、Claude 走 show_widget 的 inline SVG），第三層資訊量太大時做成可點開細節的說明網頁。2026-08-12 增補兩節：一節用 Cloudflare 官方、OpenAI 社群、W3C 簡報等公開實測回應「做成網頁不是很浪費 token 嗎」，指出倍數從 1.77 到 16.9 倍都有、「固定多 4 到 5 倍」沒有實測依據，而且多數測試測的是餵網頁進 AI 不是請 AI 產出網頁；一節寫第三層的特例「這份內容是要你做決定的」，含抽決策點的判準、代價的寫法、不預選不標建議、五條不能砍的紅線、決策網頁提示詞，以及開源的免費技能包與可以直接點的示範頁。四段提示詞可直接複製，文末附回頭核對的三個問題與一個五步工作流。",
+    tags: {
+      topic: ["AI工作流", "輔助決策", "提示詞設計", "工作流程"],
+      level: ["基礎"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["map-is-not-the-territory", "intent-first-prompting", "decision-ladder-non-programmer", "ai-data-organization-usable-system", "give-ai-choices-not-descriptions"]
+  },
+
+  {
+    id: "character-costume-sheet-three-views",
+    url: "articles/character-costume-sheet-three-views/",
+    date: "2026-07-23",
+    updated: "2026-08-11",
+    title: "AI 每次生的角色都不一樣，用定裝照解決｜角色三視圖",
+    problem: "今天生出來的角色很滿意，隔天再生一張，帽子變形狀、毛色變深、體型變胖，看起來像另一隻，每一張都得重抽重挑重改。",
+    audience: "用 AI 生圖做品牌角色、吉祥物或 AI 助理形象但每次都不一致的人；需要同一個角色反覆出現在社群圖卡與官網插圖的人；以及自己就是品牌主角、想讓 AI 生成的形象更像本人的講師與創作者。",
+    summary: "角色不穩定通常不是 AI 不聽話，是這個角色還沒有規格。三步驟把規格生出來：造型未定時用九宮格抽卡，角色、背景、角度固定，一次只改一個變因；抽到滿意的趁 AI 還記得偏好立刻做定裝照，固定毛色體型、配色、配件、神情與畫風；再展開成正面、側面、背面的三視圖，左右不對稱就做成四視圖。附角色本體、固定配件、畫風三組驗收清單，定裝照與四視圖可直接複製的提示詞，萊卡的三次修正實錄，真人品牌怎麼用四張照片與一組表情達成同一件事，以及規格存好之後 AI 還是不照做時的三層做法：生圖時直接再丟參考圖、把素材集中到同一個專案、把規格寫成技能包。",
+    tags: {
+      topic: ["江江精選", "圖片生成", "AI應用", "品牌資產"],
+      level: ["基礎"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["mika-to-laika-product-character-design", "map-is-not-the-territory", "semantic-rules-before-prompt-templates"]
+  },
+
+  {
+    id: "agi-work-and-discovery",
+    url: "articles/agi-work-and-discovery/",
+    date: "2026-08-10",
+    updated: "2026-08-10",
+    title: "AI 很會做事，距離 AGI 還差哪一步？從工作能力到創造新知的兩把尺",
+    problem: "AI 已經會聊天、會操作工具、會完成工作，但這些能力離通用智能、主動發現人的深層盲點與創造新知還有什麼差別。",
+    audience: "看見 AI 每週都有新能力、想知道離 AGI 到底多遠的人，以及在工作上導入 AI、需要判斷能力邊界與驗收方式的人。",
+    summary: "從詞語關聯計算機、會回話的聊天 AI、會做事的 Agent，一路談到江江對 AGI 的個人門檻：AI 能主動補上人的弱項，用更全面的視野提醒深層盲點。文章再對照 OpenAI、Google DeepMind、人機互補與 AI 意識研究，提出工作能力、創造新知兩把尺，以及判讀 AI 進展的五個問題。",
+    tags: {
+      topic: ["AI趨勢", "AIAgent", "輔助決策", "知識管理"],
+      level: ["基礎"],
+      content_type: ["觀點文章"]
+    },
+    external: { threads: "https://www.threads.com/@jiang_yude_coach/post/Db18DHlk1We", vocus: null },
+    related: ["demis-hassabis-agi-science-ai", "ai-capability-tiers", "ai-tools-professional-judgment"]
+  },
+
+  {
+    id: "dont-learn-ai-tools",
+    url: "articles/dont-learn-ai-tools/",
+    date: "2026-08-09",
+    updated: "2026-08-10",
+    title: "我上課不教 AI 工具，因為工具是 AI 該操作的",
+    problem: "AI 工具太多學不完，每出一個新的就焦慮一次；上了好幾堂工具課，工作卻沒有真的變輕鬆。",
+    audience: "被工具數量壓得喘不過氣的知識工作者、上過工具課卻沒感覺的人，以及在猶豫要教工具還是教觀念的講師與內訓負責人。",
+    summary: "學會操作工具，你就成為操作工具的那個人，產能上限等於自己能坐在電腦前的時數。學 AI 然後叫 AI 去操作工具，位置就換成交辦的那一方，可以同時派出好幾件事。本文從課堂上「想要用 Canva 的舉手」的現場開場，說明兩種位置的差別、以及為什麼真正的變化發生在數量上，給三個判斷自己正在學哪一種的問題、四步換位置的做法，並誠實劃出哪些工具還是得自己會：要驗收的東西得看得懂、要交辦的工具得知道它能幹嘛、價值在手感的不要外包。",
+    tags: {
+      topic: ["AIAgent", "工具操作"],
+      level: ["零基礎入門"],
+      content_type: ["觀點文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["harness-mindset-for-bosses", "ai-tools-professional-judgment", "start-with-a-wrong-draft", "let-ai-do-the-setup"]
+  },
+
+  {
+    id: "meta-prompt-thirty-versions",
+    url: "articles/meta-prompt-thirty-versions/",
+    date: "2026-08-09",
+    updated: "2026-08-10",
+    title: "同一份提示詞，三十個人做出三十種東西",
+    problem: "準備了一套很好的提示詞發給全班，交回來的作品卻高度雷同，除了名字之外幾乎都一樣。",
+    audience: "要帶一群人用 AI 的講師、帶課老師、社團幹部與企業內訓負責人，以及想讓 AI 產出帶著自己味道的一般使用者。",
+    summary: "元提示詞是一份會生出提示詞的提示詞：學員拿到手之後，AI 會先反過來認識他，再依照他這個人生成一份專屬的提示詞才開始做事，所以同一份東西發給三十個人會長出三十種結果。本文說明一般提示詞為什麼讓大家做出一樣的東西，拆開元提示詞裡實際寫了什麼（角色與品質底線、要向使用者拿什麼素材、素材不足時一層一層退的退路、給三個版本讓他選、定義版本差在哪些層面），並附一份做個人故事海報的完整可複製元提示詞、把現有提示詞改成元提示詞的三個步驟，以及這套方法的前提與不適用情境。",
+    tags: {
+      topic: ["提示詞設計", "技能包設計"],
+      level: ["零基礎入門"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["ai-that-knows-you", "start-with-a-wrong-draft", "ai-tools-professional-judgment", "personal-poster-and-wallpaper"]
+  },
+
+  {
+    id: "openrouter-deepseek-data-routing",
+    url: "articles/openrouter-deepseek-data-routing/",
+    date: "2026-08-09",
+    updated: "2026-08-10",
+    title: "OpenRouter 用 DeepSeek，資料就不會經過中國嗎？教你自己查實際路由供應商",
+    problem: "想用 OpenRouter 測試 DeepSeek 或接進正式應用，卻不知道統一 API 背後真正執行推理的是誰，也容易把 ZDR、供應商總部與資料處理地區混在一起。",
+    audience: "想用 OpenRouter 比較多個模型的人、準備把 DeepSeek 接進網站、聊天機器人或內部工具的人，以及需要查清楚資料路由與保留政策的評估者。",
+    summary: "透過 OpenRouter 使用 DeepSeek，不代表資料一定不會經過中國。本文用官方 endpoints 與 providers API 示範如何自行查詢實際供應商、總部與資料中心線索，再整理 allowlist、關閉 fallback、拒絕資料收集與 ZDR 四道路由護欄，並分開測試階段與正式應用的配置。",
+    tags: {
+      topic: ["工具操作", "差異比較", "AI趨勢"],
+      level: ["基礎"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["cli-api-mcp-computer-use", "ai-cp-value-calculus"]
+  },
+
+  {
+    id: "start-with-a-wrong-draft",
+    url: "articles/start-with-a-wrong-draft/",
+    date: "2026-08-09",
+    updated: "2026-08-10",
+    title: "不知道怎麼開始，就先讓 AI 給你一個錯的版本",
+    problem: "想用 AI 整理組織的資料，但問對方哪些資料重要，他答不出來；要他先講清楚規格，也講不出來。",
+    audience: "要幫公司或組織導入 AI 的顧問與內部推動者、面對一堆檔案不知道先整理哪一份的人，以及想把同事腦中講不出來的判斷標準寫成文字的主管。",
+    summary: "人從一片空白裡生出結構很難，但看到一份具體又不順眼的東西，意見馬上就冒出來。本文把這個落差變成方法：先讓 AI 生一個很可能是錯的版本，再讓真正懂的人去挑毛病，規則就在糾正的過程中長出來。內容含挑資料的四階遞降法（三到五份、最近三個月、一個月、最近一週）、讓 AI 生排序草稿的可複製提示詞、糾正時要問的三個問題，以及把糾正留下來變成技能包或 SOP 的做法，最後說明三種不該用這招的情況。",
+    tags: {
+      topic: ["AI工作流", "知識管理", "輔助決策"],
+      level: ["基礎"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["meta-prompt-thirty-versions", "rule-file-rebound", "caught-ai-slacking-into-rules", "dont-learn-ai-tools"]
+  },
+
+  {
+    id: "build-your-own-dictionary",
+    url: "articles/build-your-own-dictionary/",
+    date: "2026-08-08",
+    updated: "2026-08-10",
+    title: "我跟 AI 說「很煩」，它自己去加了一道機制",
+    problem: "「快一點」到底是多快、「詳細一點」到底是多詳細，同一個詞我每次的意思都一樣，AI 每次的理解卻不一樣，只好每次重講一遍。",
+    audience: "每天用 AI 工作、常覺得「我明明講了它就是沒做到」的人，已經在寫提示詞但每次都要重寫一長串覺得很累的人，以及想把自己的工作習慣變成 AI 能執行的規則的人。",
+    summary: "與其去摸熟每個模型的脾氣（模型三個月改版一次，摸熟了它就升級），不如把自己的模糊詞定義一次，讓 AI 來認識你。文章從一個真實案例展開：我對 AI 說「很煩耶，我教很多次」，它去查證規則、發現規則只是文字沒有東西盯著執行，於是幫自己裝了一個「沒寫日記就不准收工」的檢查。因為「很煩」在我的規則檔裡有明確定義。後半給三個今天就能做的步驟：字典就是一段純文字、一段可直接複製的撈詞提示詞（重點是問 AI「你當時不確定什麼」）、三行寫完的條目格式（詞、我的意思是、反例），以及三種放置位置的選法，文末六題常見問答涵蓋分類、衝突、字數上限、換模型。",
+    tags: {
+      topic: ["提示詞設計", "AI工作流", "知識管理", "知識庫"],
+      level: ["零基礎入門"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["semantic-rules-before-prompt-templates", "rule-file-rebound", "tag-wiki-method", "my-three-loops", "teach-ai-not-learn-ai"]
+  },
+
+  {
+    id: "answer-in-person-or-ai",
+    url: "articles/answer-in-person-or-ai/",
+    date: "2026-08-09",
+    updated: "2026-08-09",
+    title: "同一個問題被問一百次，該親自回答還是丟給 AI",
+    problem: "同一個問題每場演講都要重講一次，想交給 AI 又怕失去什麼，也不知道 AI 會不會取代講師。",
+    audience: "講師、顧問、老師，任何靠重複輸出專業的人，以及正在做 AI 分身的人。",
+    summary: "判斷標準只有一條：這件事的本質是傳遞知識，還是累積信任。傳遞知識的交給 AI 越快越好，累積信任的講一百次也親自來。內容包含芳療師水氧機問題的真實案例、同一份知識走現場與網路兩條路的分流做法、AI 會不會取代講師的兩半答案，以及 AI 分身命名要跟本人拉開距離的理由。",
+    tags: {
+      topic: ["教學", "AI應用", "價值主張"],
+      level: ["基礎"],
+      content_type: ["觀點文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["company-shape-is-the-moat", "teacher-prep-knowledge-workflow", "questionnaire-to-slides-agent-workflow", "agent-web-turning-point"]
+  },
+
+  {
+    id: "cognitive-debt",
+    url: "articles/cognitive-debt/",
+    date: "2026-08-09",
+    updated: "2026-08-09",
+    title: "AI 做的東西看不懂，可以先用再說嗎？：認知債可以欠，重點是懂得還",
+    problem: "AI 做出來的東西看不太懂，但看起來能用就先跳過了，不懂的東西越積越多，不知道哪天會出事。",
+    audience: "每天用 AI 產出東西、常常看起來沒問題就先用了的人，以及帶團隊用 AI 的主管。",
+    summary: "認知債是技術債的一般工作者版本：你借的是 AI 的產出，欠的是自己的理解。內容包含認知債的定義與出處（MIT 2025 預印本、軟體研究者的定義）、為什麼它是雪崩式而非線性累積、三個當場做得到的還債動作（解釋到懂為止的提示詞、對齊確認、看字數增減抓異常），以及哪些債可以欠的界線。",
+    tags: {
+      topic: ["AI駕馭思維", "知識管理", "對話管理", "AI應用"],
+      level: ["基礎"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["after-ai-says-remembered", "caught-ai-slacking-into-rules", "teach-ai-not-learn-ai", "program-vs-ai-skill-library", "ai-said-it-watched-the-video"]
+  },
+
+  {
+    id: "copied-mechanism-is-no-mechanism",
+    url: "articles/copied-mechanism-is-no-mechanism/",
+    date: "2026-08-09",
+    updated: "2026-08-09",
+    title: "直接抄別人的 Skills、工作流，其實沒什麼用",
+    problem: "收藏了一堆別人的提示詞、技能包、工作流模板，用起來卻總是卡卡的，不知道為什麼。",
+    audience: "到處找大神設定檔的人，以及想把高手用法複製給全團隊的主管。",
+    summary: "機制的本體是判斷，條文只是判斷的影子，抄影子抄不到判斷。內容包含為什麼抄來的機制是空的（每條規則背後都是一次踩雷）、通用機制與私人機制的分辨方法、下載任何技能包前的三問提示詞（風險、衝突、取捨），以及自己的機制從哪裡長出來。與「裝了別人的技能包」那篇分工：這篇講為什麼裝了也沒用，那篇講怎麼安全裝。",
+    tags: {
+      topic: ["技能包設計", "AI工作流", "隱性知識", "規則庫"],
+      level: ["基礎"],
+      content_type: ["觀點文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["ai-usage-audit", "before-installing-others-skill", "decision-ladder-non-programmer", "how-to-train-your-ai-employee", "caught-ai-slacking-into-rules", "parallel-site-editing"]
+  },
+
+  {
+    id: "session-messaging-reminder-layer",
+    url: "articles/session-messaging-reminder-layer/",
+    date: "2026-08-08",
+    updated: "2026-08-08",
+    title: "Claude Code 的對話視窗之間可以直接傳訊息了，但有些小限制還是要注意",
+    problem: "同一個專案開好幾個 AI 視窗，它們互相不知道對方在幹嘛，每次都要自己寫交接指令複製貼上；新功能出來又不知道該不該把既有流程整套改掉。",
+    audience: "同時開好幾個 AI 對話視窗、常常自己在中間當傳聲筒的人，每次工具出新功能就猶豫要不要打掉重練的人，以及想知道多視窗協作的進度真相該放哪一層的人。",
+    summary: "Claude Code 的對話視窗現在可以直接互傳訊息。實測一天後的收編方法：先試出它傳不到的四個地方（跨機器、跨品牌、無人值守、閒置視窗），把它定位成提醒層、真相仍只認檔案，再把兩個視窗同時改同一批檔案的防撞拆成人、AI、版本控制三層。文末附交接前的四分支判斷，可直接抄進自己的規則檔。",
+    tags: {
+      topic: ["AI工作流", "知識管理", "工作流程", "AIAgent"],
+      level: ["基礎"],
+      content_type: ["案例文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["ai-handoff-instructions", "laptop-desktop-webpage-sync-icloud-git", "caught-ai-slacking-into-rules", "dual-track-planning-loop", "knowledge-os-master-map"]
+  },
+
+  {
+    id: "after-ai-says-remembered",
+    url: "articles/after-ai-says-remembered/",
+    date: "2026-08-06",
+    updated: "2026-08-06",
+    title: "交代過的事 AI 為什麼老是忘記？：從『我記住了』到讓 AI 自己跑",
+    problem: "交代過的規則，AI 說記住了，下一次還是用回原本的做法，而你講不出是哪一步漏掉。",
+    audience: "只用 ChatGPT 或 Claude 網頁版、交代過的規則老是被忘記的人，以及寫過規則檔卻發現它沒被讀到、沒被觸發的人。",
+    summary: "「記住」在 AI 那裡有三種意思：記在對話視窗、記成檔案沒啟動、觸發詞沒設好。整理自 8/2 講座現場，給七個追問句、一份可直接複製的月結檢查清單範例、觸發得動與觸發不動的寫法對照，再往下是互審的三種難度、寫進迴圈的四條規則、跑幾輪要停，以及一個現場學員 150 頁教材的真實案例。這篇是總覽，四個段落各有一篇完整版。",
+    tags: {
+      topic: ["AI工作流", "AIAgent", "技能包設計", "跨家審稿"],
+      level: ["基礎"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["three-levels-of-cross-review", "long-document-review-layers", "before-installing-others-skill", "mobile-to-desktop-publish-loop", "cognitive-debt", "eight-ai-system-concepts-2026", "loop-round-limit"]
+  },
+
+  {
+    id: "three-levels-of-cross-review",
+    url: "articles/three-levels-of-cross-review/",
+    date: "2026-08-06",
+    updated: "2026-08-06",
+    title: "怎麼設計讓兩個 AI 互審？：三種不同程度的審查機制設計",
+    problem: "已經會叫另一個 AI 幫忙看，但不知道什麼時候該看得更深，也不想每件事都跑滿全套。",
+    audience: "想把「找第二顆腦」變成固定流程的知識工作者，以及重要文件送出前會緊張但時間有限的人。",
+    summary: "找第二個 AI 挑錯有三種深度：只審結果、雙軌後併回、完整雙軌互審。多數人只用第一種，而它剛好抓不到最貴的那種錯，也就是一開始就走錯路。這篇給三種難度各自的可複製指令、三個選擇判準與對照表、成本、停止條件兩層寫法、對家斷線的交接四欄，以及只能用一家模型時的替代做法。",
+    tags: {
+      topic: ["跨家審稿", "AI工作流", "輔助決策"],
+      level: ["基礎"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["after-ai-says-remembered", "long-document-review-layers", "mobile-to-desktop-publish-loop", "ai-said-it-watched-the-video", "cross-ai-review-both-wrong", "webmcp-day-one"]
+  },
+
+  {
+    id: "before-installing-others-skill",
+    url: "articles/before-installing-others-skill/",
+    date: "2026-08-05",
+    updated: "2026-08-05",
+    title: "裝了別人的技能包，AI 會不會被搞亂？：抄之前我會先做三件事",
+    problem: "想抓現成技能包來用，但不知道要看什麼；已經裝了幾個之後 AI 越來越不聽話，也講不出是哪裡出問題。",
+    audience: "想抓現成技能包來用的人，以及已經裝了五六個、最近覺得 AI 怪怪的人。",
+    summary: "這條路有兩個坑：安全問題多數人會想到但用錯方法檢查，流程衝突多數人不會想到而它發生得更頻繁。內容包含來源三層判斷、叫 AI 檢查為什麼只能當線索與兩個可行替代做法、權限初篩四項、流程衝突四選項、安裝三個決定、驗收三層，最後一節是已經裝了一堆該怎麼回頭盤點。附一份安裝前檢查清單。",
+    tags: {
+      topic: ["技能包設計", "AI工作流", "AIAgent"],
+      level: ["基礎"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["after-ai-says-remembered", "long-document-review-layers", "dual-track-planning-loop", "copied-mechanism-is-no-mechanism"]
+  },
+
+  {
+    id: "long-document-review-layers",
+    url: "articles/long-document-review-layers/",
+    date: "2026-08-05",
+    updated: "2026-08-05",
+    title: "AI 改了十幾次還是有錯，怎麼辦？：資料清理只是第一關，長文件審不出錯的三層設計",
+    problem: "一份長文件用同一家模型改了十幾次都說沒問題，換一家立刻審出規範錯誤，卻不知道該補哪一層。",
+    audience: "要用 AI 檢查教材、報告、規範、合約、標書的人，以及換過模型、開過深度思考結果還是不放心的人。",
+    summary: "長文件出錯通常是三層設計沒做：材料、切法、視角。這篇拆開三層怎麼做，含把出處變成規則、指定適用規範版本的寫法、兩種切法互相覆蓋的做法、只能用一家模型時的退路，再給一段比「再跑一次」更有效的提示詞，以及出錯三種來源怎麼分。",
+    tags: {
+      topic: ["AI工作流", "跨家審稿", "知識管理"],
+      level: ["基礎"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["after-ai-says-remembered", "three-levels-of-cross-review", "why-split-data-into-cards", "rag-three-retrieval-modes", "ai-said-it-watched-the-video", "cross-ai-review-both-wrong", "what-are-subagents"]
+  },
+
+  {
+    id: "mobile-to-desktop-publish-loop",
+    url: "articles/mobile-to-desktop-publish-loop/",
+    date: "2026-08-05",
+    updated: "2026-08-05",
+    title: "人在外面，可以叫家裡的電腦先做嗎？：手機掃一次 QR code，桌機就開始跑",
+    problem: "靈感常常發生在不能坐下來工作的時候，存起來回家再處理通常就沒有然後了。",
+    audience: "有固定要產出的內容、每次都要從頭做一遍的人，以及想知道自動化該自動到哪裡的人。",
+    summary: "手機傳連結加一句語音，桌機分析內容、寫成自己觀點的短文、做圖卡、發文。連線設定只有四步，全部在設定畫面裡點完：打開設定選連線、把允許連線打開、按新增跳出 QR code、手機掃一下，另外要記得打開讓電腦維持喚醒。這篇拆解這條迴圈的五個段落與每一段的完成條件、四項可直接抄的圖片檢查標準、判斷哪一關不能交出去的方法，以及這次跑完發現的兩個缺口怎麼修：漏檢的圖與安靜失敗的社群平台。",
+    tags: {
+      topic: ["AI工作流", "AIAgent", "工作流程"],
+      level: ["基礎"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["after-ai-says-remembered", "before-installing-others-skill", "three-levels-of-cross-review"]
+  },
+
+  {
+    id: "use-more-ai-not-enough",
+    url: "articles/use-more-ai-not-enough/",
+    date: "2026-07-30",
+    updated: "2026-07-30",
+    title: "多數人只是用更多 AI，工作的形狀沒有變",
+    problem: "AI 用了一段時間，工作只是變快，講不出跟半年前有什麼結構性差別；也不知道手上哪件事真的該交給 AI。",
+    audience: "已經天天在用 AI 但看不到結構性改變的個人工作者，想導入 AI 卻只想得到「把現有流程加速」的團隊，以及手上有很多經驗說不清楚、教不會別人的資深工作者。",
+    summary: "AI 時代沒有 AI 優化，只有 AI 原生：過去能被數位優化的事，軟體都已經做得差不多好了，該找的是過去的軟體系統做不到的事。判斷一件事該不該交給 AI，看倍數不看百分比，只提高 20% 到 50% 的大概不是 AI 的強項。後半整理 Sam Altman 69 分鐘訪談裡的三件事：為還不划算的事鋪路、把「學得會但教不會」的判斷外化、用持續性與倍數重篩工具，每件都附這週可以做的第一步，含一段可直接複製的追問提示詞。",
+    tags: {
+      topic: ["AI趨勢", "知識管理", "隱性知識", "數位轉型"],
+      level: ["基礎"],
+      content_type: ["觀點文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["ai-native-not-transformation", "knowledge-os-master-map", "strong-ai-models-knowledge-workflow-road", "claude-skills-knowledge-assets", "ai-tools-professional-judgment"]
+  },
+
+  {
+    id: "messaging-apps-ai-friendliness",
+    url: "articles/messaging-apps-ai-friendliness/",
+    date: "2026-07-29",
+    updated: "2026-07-29",
+    title: "通訊軟體 AI 友善度比較：LINE、Telegram、Discord、Slack，你的 AI 該住在哪？",
+    problem: "想讓 AI 幫忙顧群組、當助教、把對話收成知識庫，卻不知道該用哪個通訊軟體，也分不清「平台自己有 AI」「AI 能當成員」「外部 Agent 讀得到」是三件不同的事。",
+    audience: "想加 AI 助教的講師與社群經營者、想讓 AI 整理群組對話的知識工作者，以及要向主管解釋平台選擇的評估者。",
+    summary: "先把「AI 友善度」拆成 AI 功能整合度、AI 成員化能力、Agent 控制台支援三件事，再用六個指標加評分錨點比較四個平台，附互動長條圖、雷達圖與能力矩陣。第三節整理 2026 上半年的實際變動：Slack 官方託管 MCP Server 與三種官方 Agent 進駐方式（頻道成員型、標記執行型、側欄助理型），Telegram 三波 Bot API 更新，Discord 的開發文件 MCP 為何不能讀聊天，LINE 原生 AI 的地區與次數限制，全部附官方來源。最後給三個判斷問題，加一份可直接複製的測試提示詞與三分支判準，讓你不用先做 bot 就能確認自己需要哪一種 AI。",
+    tags: {
+      topic: ["差異比較", "工具操作", "AIAgent", "AI工作流"],
+      level: ["基礎"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["line-group-ai-workflow", "web-chat-ai-vs-desktop-agent", "free-deploy-three-boundaries", "ai-employee-four-levels"]
+  },
+
+  {
+    id: "ai-employee-four-levels",
+    url: "articles/ai-employee-four-levels/",
+    date: "2026-07-28",
+    updated: "2026-07-28",
+    title: "訓練 AI 員工的四個層次：從自己會用，到讓 AI 幫你訓練 AI",
+    problem: "會用 ChatGPT，但每次都要把背景重講一遍；想把重複的工作交出去，卻不知道第一個 AI 員工要從哪裡開始訓練、什麼時候可以放手。",
+    audience: "想把重複的行政、文書、整理工作交出去的老闆、創業者、一人公司與接案者，以及正在想「怎麼讓公司的人用 AI」的主管。",
+    summary: "整理自 6 月 7 日免費線上講座「怎麼訓練自己的 AI 員工」。從 2022 年跟 AI 吵架那次領悟講起，鋪出訓練 AI 員工的四個層次（自己訓練、教夥伴訓練、AI 員工教新員工、AI 員工幫夥伴訓練），再給訓練第一個員工的四個步驟、兩組可直接複製的提問（駕馭式提問十問、靈魂拷問十問），以及判斷什麼能交、什麼不能交的標準與難度分級放手法。文末附一段可貼給 Codex 的挑任務指令。",
+    tags: {
+      topic: ["AIAgent", "AI工作流", "技能包設計", "知識庫"],
+      level: ["零基礎入門"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["how-to-train-your-ai-employee", "harness-mindset-for-bosses", "train-your-ai-agent-editor", "ai-native-not-transformation", "web-chat-ai-vs-desktop-agent", "knowledge-as-employee", "claude-skills-knowledge-assets", "docs-as-system-design-agent", "ai-tools-professional-judgment", "meeting-record-agent-workflow", "program-vs-ai-skill-library", "intent-first-prompting", "messaging-apps-ai-friendliness"]
+  },
+
+  {
+    id: "free-deploy-three-boundaries",
+    url: "articles/free-deploy-three-boundaries/",
+    date: "2026-07-28",
+    updated: "2026-07-28",
+    title: "AI 幫你把網頁做好了，該放哪？GitHub Pages 與 Vercel 完整比較",
+    problem: "用 AI 幾分鐘做好網頁，卻不知道該放哪個平台，也分不清「不被搜到」跟「別人進不去」的差別，更沒查過真正的權限保護要多少錢。",
+    audience: "用 AI 做網頁的知識工作者、講師、接案者，以及有些內容只想給特定人看的一人公司。",
+    summary: "先給三個判斷問題（誰能看到、是否商用、未來要加什麼），再用四層配置示範怎麼依內容敏感度分類，接著比較兩平台的免費額度、原始碼公開規則與權限控制費用，全部附官方來源。最後拆解一個反直覺的情況：如果你的目標是被 AI 引用，選平台的邏輯會反過來，因為爬蟲流量在按請求計費的平台上是成本。",
+    tags: {
+      topic: ["差異比較", "工具操作", "AI工作流"],
+      level: ["零基礎入門"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["agent-web-turning-point", "docs-as-system-design-agent", "knowledge-base-three-vault-split", "recovery-over-perfection", "messaging-apps-ai-friendliness", "github-vercel-cloudflare-compare", "who-can-see-your-site"]
+  },
+
+  {
+    id: "ai-native-not-transformation",
+    url: "articles/ai-native-not-transformation/",
+    date: "2026-07-26",
+    updated: "2026-07-26",
+    title: "為什麼你的 AI 導入沒有效果：從三層論到組織那面牆",
+    problem: "工具都買了、課也上了，AI 導入的效果卻停在「快了一點」。",
+    audience: "在公司裡推 AI 推不動的人，以及工具買了卻沒看到效果的企業主。",
+    summary: "問題出在兩個地方。方向上，多數導入停在第一層節點加速（流程沒變，只是某個環節快了一點），真正的機會在第三層原生設計。阻力上，效率增十倍而薪水不變，聰明員工必然裝死；權限開不了是組織治理問題不是 AI 問題。附三句問出第三層的問題，與給老闆的價值換算方式。",
+    tags: {
+      topic: ["數位轉型", "AI工作流", "輔助決策"],
+      level: ["基礎"],
+      content_type: ["觀點文章"]
+    },
+    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
+    related: ["ten-year-anchor", "teach-ai-not-learn-ai", "timing-and-forecast", "one-on-one-questions", "ai-employee-four-levels", "use-more-ai-not-enough"]
+  },
+
+  {
+    id: "talent-vs-expertise",
+    url: "articles/talent-vs-expertise/",
+    date: "2026-07-26",
+    updated: "2026-07-26",
+    title: "我的強項到底是什麼？：努力學來的是專業，輕鬆就會的才是天賦",
+    problem: "要講「我的強項是什麼」就卡住，把辛苦學來的專業當成天賦，真正輕鬆就會的那件事反而被自己忽略。",
+    audience: "想找出自己定位的知識工作者，想把專業變成課程、產品或 AI 規則的人，以及需要挖出對方講不出來的判斷標準的教練與顧問。",
+    summary: "很多人把努力學來的專業當成天賦。天賦反而是你做起來非常簡單、簡單到以為每個人都會的那件事，正因為理所當然，你不會把它算進自己的本事裡。文章用雙足行走的對照說明為什麼天賦要靠比較才看得出來，接到隱性知識的三個代價（交接不了、教不了、交不給 AI），再給兩個自己就能做的提煉技巧：差異提煉法與隨機偶遇法，各附可直接複製的提問，另加兩個不用工具的日常訊號。",
+    tags: {
+      topic: ["隱性知識", "知識管理", "輔助決策"],
+      level: ["基礎"],
+      content_type: ["觀點文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["map-is-not-the-territory", "knowledge-as-employee", "knowledge-os-master-map", "how-to-train-your-ai-employee", "ten-year-anchor"]
+  },
+
+  {
+    id: "teach-ai-not-learn-ai",
+    url: "articles/teach-ai-not-learn-ai/",
+    date: "2026-07-26",
+    updated: "2026-07-26",
+    title: "為什麼你的 AI 每次都要重講一遍：教 AI 的四個步驟",
+    problem: "每次用 AI 都要從頭講一遍需求，文件很多但 AI 抓不到重點。",
+    audience: "覺得還沒學會 AI 所以不敢開始的人，以及本來就會帶團隊、卻覺得跟科技無緣的主管與老闆。",
+    summary: "問題不在 AI 笨，在沒有人教過它你的判斷。教 AI 的四個步驟：分清楚資料庫、知識庫、規則庫；用 3X4（三種日記 × 四種時效）擺放文件；寫出一條含情況、動作、理由的規則；把你原本帶人的方式搬過來。附可直接複製的新人上工說明與三週上手排程。",
+    tags: {
+      topic: ["知識管理", "隱性知識", "AI工作流", "知識庫"],
+      level: ["零基礎入門"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
+    related: ["ten-year-anchor", "ai-native-not-transformation", "timing-and-forecast", "one-on-one-questions", "how-to-train-your-ai-employee", "cognitive-debt", "build-your-own-dictionary"]
+  },
+
+  {
+    id: "ten-year-anchor",
+    url: "articles/ten-year-anchor/",
+    date: "2026-07-26",
+    updated: "2026-07-26",
+    title: "AI 知識焦慮的解法：在快速變動的時代，找到十年不變的錨點",
+    problem: "AI 每天都在更新，追不完，覺得自己一直在追、一直沒追上。",
+    audience: "被 AI 新聞洗版、學了很多工具卻講不出自己在累積什麼的人。",
+    summary: "該焦慮的是 AI，不是我們。解法不是追得更快，是先找到一個十年不會變的錨點：你的天賦，交集上趨勢裡不會變的部分。錨點鎖住目標、方法隨時代換。附三句錨點驗證自問，以及把資訊篩選外包給 AI 的提示詞。",
+    tags: {
+      topic: ["知識管理", "隱性知識"],
+      level: ["基礎"],
+      content_type: ["觀點文章"]
+    },
+    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
+    related: ["teach-ai-not-learn-ai", "timing-and-forecast", "ai-native-not-transformation", "one-on-one-questions", "talent-vs-expertise"]
+  },
+
+  {
+    id: "timing-and-forecast",
+    url: "articles/timing-and-forecast/",
+    date: "2026-07-26",
+    updated: "2026-07-26",
+    title: "資訊時差與市場預測：怎麼比市場早一步，又不會早太多",
+    problem: "抓不準題目的時機，不是講太早沒人聽得懂，就是等到市場已經很擠。",
+    audience: "做內容、做課程、做顧問，需要決定什麼時候押什麼題目的人。",
+    summary: "資訊擴散有固定節奏：從國外最尖端到台灣政府開課大約兩年。這篇把六格節奏表與市場預測三步法接在一起，往後看知道客戶在哪一格、該用什麼形式交付，往前看知道下一個痛點什麼時候會被解掉、現在該準備什麼。附痛點反推提示詞。",
+    tags: {
+      topic: ["AI趨勢", "知識管理"],
+      level: ["基礎"],
+      content_type: ["觀點文章"]
+    },
+    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
+    related: ["ten-year-anchor", "teach-ai-not-learn-ai", "ai-native-not-transformation"]
+  },
+
+  {
+    id: "agent-web-turning-point",
+    url: "articles/agent-web-turning-point/",
+    date: "2026-07-25",
+    updated: "2026-07-25",
+    title: "網路上一半以上的訪問已經不是人了，你的內容準備好被機器讀了嗎？",
+    problem: "機器人流量已超過真人，靠內容被看見的人不知道這件事會怎麼影響自己，也不知道現在該準備什麼。",
+    audience: "有在寫內容、經營網站或個人品牌，以及幫組織做官網與知識庫的個人工作者與小團隊。",
+    summary: "機器人流量首次超過人類，比原本預估提前。這篇把有一手出處的事實、他人的預測、我的判斷分三層講清楚，中間談為什麼不同來源的數字不能互換著用，最後拆成內容層、協議層、平台層、服務層四個機會，附準備節奏、七件可以先做的事，與一個十分鐘自測。",
+    tags: {
+      topic: ["AI趨勢", "AIAgent", "數位轉型"],
+      level: ["基礎"],
+      content_type: ["趨勢文章"]
+    },
+    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
+    related: ["market-to-ai", "a2a-agent-protocol", "agent-native-tools-software-interface", "free-deploy-three-boundaries", "answer-in-person-or-ai", "webmcp-day-one", "ai-era-websites-for-agents"]
+  },
+
+  {
+    id: "answer-to-action-enterprise-ai-agent",
+    url: "articles/answer-to-action-enterprise-ai-agent/",
+    date: "2026-07-25",
+    updated: "2026-07-25",
+    title: "從 Answer 到 Action：我從簡立峰老師的公開觀察，看企業如何導入 AI Agent",
+    problem: "企業已經開始使用生成式 AI，成果卻停在問答、摘要與個人效率，不知道第一個 Agent 流程該從哪裡開始。",
+    audience: "想導入 AI Agent、需要先選一個可控場景做試點，並同時處理資料、權限、人工檢核與責任分工的企業管理者、專案負責人與內部推動團隊。",
+    summary: "依簡立峰老師公開演講與媒體報導，整理 AI 從 Answer 走向 Action 的變化，再延伸成企業可執行的導入框架：四類起步場景、六題篩選表、六步小型試點、資料與系統準備、三層權限護欄，以及 90 天第一輪學習路線。文中清楚區分公開觀點與江江教練的實務整理。",
+    tags: {
+      topic: ["AIAgent", "AI工作流", "數位轉型", "工作流程"],
+      level: ["基礎"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["how-to-train-your-ai-employee", "train-your-ai-agent-editor"]
+  },
+
+  {
+    id: "long-task-completion-rate",
+    url: "articles/long-task-completion-rate/",
+    date: "2026-07-25",
+    updated: "2026-07-25",
+    title: "Opus 5 實測：10 個步驟的 Loop，你的 AI 跑到第幾步就停了",
+    problem: "把多步驟流程交給 AI 自己跑完，回來常發現它停在中間某一步，後面全部沒做，即便已經交代過「有問題就跳過」。",
+    audience: "已經在讓 AI 自己跑長流程、卻常常回來發現它停在半路的人，以及手上有多個模型、不知道複雜任務該派給誰的人。",
+    summary: "同一條十步驟長流程、同一種交代方式，交給 Opus 4.8、Fable、Opus 5 Max 自己跑完，觀察到三種卡關反應：停住等人、找 Codex CLI 討論到解掉、記錄後跳過繼續跑。文章定義「長流程完工率」（在安全紅線內走到明確結局的步驟數除以總步驟數，品質另計），拆解為什麼斷點多半出現在判斷標準不足而非技術難度，並給迴圈工程要補的三件事與一段可直接複製的長流程續跑指令。全篇為個人實測體感，並標明三個模型的流程配置不對等、不能當模型能力排名。",
+    tags: {
+      topic: ["AI工作流", "差異比較", "AIAgent", "輔助決策"],
+      level: ["進階"],
+      content_type: ["觀點文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["what-is-loop-engineering", "my-three-loops", "loop-engineering-guardrails", "ai-cp-value-calculus", "ai-handoff-instructions", "recovery-over-perfection", "dual-track-planning-loop"]
+  },
+
+  {
+    id: "cli-api-mcp-computer-use",
+    url: "articles/cli-api-mcp-computer-use/",
+    date: "2026-07-22",
+    updated: "2026-07-22",
+    title: "叫 AI 幫你點餐，就懂 CLI、API、MCP",
+    problem: "CLI、API、MCP、computer use 每次看到都有聽沒有懂，被硬排成一列比大小，越比越糊。",
+    audience: "常聽到這幾個詞卻分不清差別的人、想讓 AI 接某個服務卻不知道該用哪種方式的人、需要一個一講就懂的比喻去跟同事或學員解釋的人。",
+    summary: "用「叫 AI 幫你去餐廳點餐」一個比喻，把 GUI、computer use、CLI、API、MCP 五個詞各拆成名詞、原理、餐廳場景、實際行為四層講清楚。主軸是一個反直覺的規律：對人越好用的介面，對 AI 越難用，所以 AI 助手才幾乎都長成 CLI 的樣子。文末給一組可以直接用的判斷順序，先問有沒有 MCP，再問有沒有 API，都沒有才輪到最慢最燒 Token 的 computer use。",
+    tags: {
+      topic: ["AIAgent", "差異比較", "AI工作流"],
+      level: ["零基礎入門"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
+    related: ["how-ai-connects-software", "ai-capability-tiers", "how-to-train-your-ai-employee", "openrouter-deepseek-data-routing"]
+  },
+
+  {
+    id: "one-on-one-questions",
+    url: "articles/one-on-one-questions/",
+    date: "2026-07-22",
+    updated: "2026-07-22",
+    title: "AI 常見問題 37 問：知識庫怎麼建、技能包怎麼用、公司裡怎麼推",
+    problem: "已經在用 AI，卻說不出自己算不算會用；想建知識庫不知道資料怎麼放、判斷標準怎麼給；在公司想推又卡在制度。",
+    audience: "覺得自己 AI 沒用在對的地方的人、想建知識庫卻不知從哪開始的人、在公司或體制內想推 AI 卻卡住的人。",
+    summary: "一輪免費一對一線上聊收到的 37 個真實問題，分九個區塊：學習心態、知識庫、技能包、模型與工具選擇、自動化與驗證、職場組織現實、被 AI 搜尋找到、商業化、教學現場。每題都有完整回答，其中 26 題附上已寫好的深度文章連結，可以順著讀下去。整理後發現一件事：真正在問「工具怎麼操作」的很少，大家卡住的位置比想像中前面。",
+    tags: {
+      topic: ["知識管理", "AI工作流", "知識庫"],
+      level: ["零基礎入門"],
+      content_type: ["觀點文章"]
+    },
+    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
+    related: ["ai-capability-tiers", "ai-learning-map-reduce-anxiety", "ai-that-knows-you", "ai-course-map-from-entry-to-workflow", "prompt-to-loop-map", "ten-year-anchor", "teach-ai-not-learn-ai", "ai-native-not-transformation"]
+  },
+
+  {
+    id: "rule-file-rebound",
+    url: "articles/rule-file-rebound/",
+    date: "2026-07-22",
+    updated: "2026-07-22",
+    title: "規則檔越寫越長，AI 有照做嗎？：你寫的規則大部分沒在執行",
+    problem: "給 AI 看的規則檔越寫越長，精簡過一次，過幾週又長回原樣，不知道問題出在哪。",
+    audience: "有一份給 AI 讀的規則檔而且越寫越長的人、精簡過但發現會復胖的人、看到「模型越強指令要越少」想知道該不該照做的人。",
+    summary: "盤完自己寫給 AI 的約 220 條規則，真的有機制在執行的約 24 條；把代價最高的挑出來共 60 條，其中 48 條完全靠 AI 自己記得，包括「禁止自己審自己」這條品質基石。文章給一張四欄盤點表（觸發器、執行器、證據、跨家覆蓋）、三題准入閘（可直接複製），以及沒有 Hook 環境時用試算表做的手動版。另附一條真實曲線：規則主檔從 25,036 字砍到 15,822（砍掉三分之一），18 天後回到 24,219，離砍之前只剩 817 字；作者把復胖歸因於減法三零件缺了「舉證反轉」這個引擎，並說明這是自己的解釋而非實驗結論；最後一步是排一個每週複查的固定行程，因為複查如果只靠記得，它自己就會變成第 48 條沒人執行的規則。",
+    tags: {
+      topic: ["AI工作流", "知識庫", "工作流程"],
+      level: ["進階"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["ai-handoff-instructions", "what-is-loop-engineering", "why-split-data-into-cards", "build-your-own-dictionary", "start-with-a-wrong-draft"]
+  },
+
+  {
+    id: "ai-that-knows-you",
+    url: "articles/ai-that-knows-you/",
+    date: "2026-07-21",
+    updated: "2026-07-21",
+    title: "AI 回答總是不夠懂我，怎麼讓他更聰明？：從「懂我」到「能幫我做事」",
+    problem: "AI 有時候答得很好、有時候卻不是你要的，同樣的事還得一再交代，不知道問題出在哪。",
+    audience: "已經在用 ChatGPT 但覺得回答總是不夠貼的人、聽過數位分身卻只想到虛擬人像的經營者、手上只有手機也想開始用 AI 的人。",
+    summary: "多數人想到數位分身是一張像你的臉，但真正能幫你做事的那一個，重點不在長相，在它懂不懂你怎麼做事。這篇拆開「複製外型」與「複製做事方式」的差別，用培訓員工的比喻講清楚為什麼順序是先懂我、後幫我做事，並給三個手機十分鐘做得完的設定，含一段可直接唸給 AI 聽的自我描述提示詞與一個立刻驗收成效的方法。",
+    tags: {
+      topic: ["AIAgent", "提示詞設計", "工具操作"],
+      level: ["零基礎入門"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
+    related: ["how-to-train-your-ai-employee", "semantic-rules-before-prompt-templates", "intent-first-prompting", "strong-ai-models-knowledge-workflow-road", "ai-course-map-from-entry-to-workflow", "one-on-one-questions", "meta-prompt-thirty-versions", "personal-poster-and-wallpaper"]
+  },
+
+  {
+    id: "why-split-data-into-cards",
+    url: "articles/why-split-data-into-cards/",
+    date: "2026-07-20",
+    updated: "2026-07-20",
+    featured: true,
+    title: "檔案有圖有文，Markdown 放不了圖怎麼辦？：為什麼要把資料拆成卡片",
+    problem: "手上一堆 PPT 跟 PDF 想讓 AI 幫忙整理，結果 AI 讀不懂、答不準，不知道問題出在哪。",
+    audience: "教材塞滿 PPT 與 PDF 的講師、聽過卡片盒筆記法但不知道它跟 AI 有什麼關係的人、想把舊資料變成可重複使用素材庫的知識工作者。",
+    summary: "PDF 是印刷格式，AI 讀起來是座標跟亂碼；丟越多資料給 AI，準確度越是雪崩式下滑。這篇用投影頁互動動畫講整條邏輯：拉滑桿看資料量與準確度的關係、點標籤體驗檢索、看卡片怎麼拆解合併重組，文末附可直接複製的原子化拆解提示詞。",
+    tags: {
+      topic: ["江江精選", "知識管理", "知識庫", "AI工作流"],
+      level: ["零基礎入門"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
+    related: ["tag-wiki-method", "diary-driven-agent-3x4", "books-videos-pdf-ai-advisor", "ai-data-organization-usable-system", "rule-file-rebound", "long-document-review-layers"]
+  },
+
+  {
+    id: "ai-tools-professional-judgment",
+    url: "articles/ai-tools-professional-judgment/",
+    date: "2026-07-17",
+    updated: "2026-07-17",
+    title: "工具跟別人一樣，我的差異剩什麼？：拉開差距的是判斷力",
+    problem: "已經在用 ChatGPT、Claude 或 Codex 工作，工具跟別人一樣，開始擔心自己的差異到底剩下什麼。",
+    audience: "想讓 AI 幫忙加速、又不想把重要判斷全部交出去的人，以及正在累積顧問、教學、管理、內容或其他專業能力的人。",
+    summary: "三名資深工程師靠清理 AI 生成的冗長程式碼收費，一週完整達標一萬美元。他們自己也用 Claude Code，官網卻寫著 the agent doesn't get a vote。搭配 SlopCodeBench 對結構侵蝕的研究，說明工具普及後差異會回到看懂問題、知道哪裡不能碰、判斷結果能不能用。附把工作分成三層的方法、交付 AI 前的三問清單與可直接使用的提示詞。",
+    tags: {
+      topic: ["AI趨勢", "輔助決策", "AIAgent"],
+      level: ["基礎"],
+      content_type: ["觀點文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["ai-capability-tiers", "how-to-train-your-ai-employee", "vibe-coding-ten-half-products", "strong-ai-models-knowledge-workflow-road", "ai-cp-value-calculus", "ai-employee-four-levels", "use-more-ai-not-enough", "agi-work-and-discovery", "meta-prompt-thirty-versions", "dont-learn-ai-tools"]
+  },
+
+  {
+    id: "chatgpt-work-codex-choice",
+    url: "articles/chatgpt-work-codex-choice/",
+    date: "2026-07-16",
+    updated: "2026-07-16",
+    title: "ChatGPT Work、Codex、一般 ChatGPT 怎麼分工？先看電腦、資料與額度",
+    problem: "同時有 ChatGPT Work、Codex 和一般 ChatGPT，每次要做事都不知道該開哪一個，還常把個人用法當成所有帳號都適用的規則。",
+    audience: "已經在用 ChatGPT Plus 或 Pro，卻常搞不清該開 Work、Codex 還是一般 Chat 的使用者，含電腦裝得了與裝不了 Codex 兩種情況。",
+    summary: "ChatGPT Work、Codex 與一般 ChatGPT 都能幫忙做事，真正要分的是工作會不會碰本機資料、需不需要長期累積、以及該用哪一套限制。整理實際三路分工法，補上 OpenAI 官方文件能支持到哪裡，附一個圖文網頁的分工實例、一張能力邊界表與一份可直接照判斷的檢查清單。",
+    tags: {
+      topic: ["差異比較", "AI工作流", "工具操作"],
+      level: ["基礎"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["web-chat-ai-vs-desktop-agent", "mac-for-agent-beginners", "how-ai-connects-software", "ai-capability-tiers", "program-vs-ai-skill-library", "chatgpt-work-skills-web-version"]
+  },
+
+  {
+    id: "manage-ai-with-management-knowledge",
+    url: "articles/manage-ai-with-management-knowledge/",
+    date: "2026-07-16",
+    updated: "2026-07-16",
+    title: "用你已經有的管理知識來管理 AI，以豐田 TPS 為例",
+    problem: "公司想開始用 AI，第一個反應是覺得要從零學一套新技術、得先招工程師先買系統，於是一直停在之後再說。",
+    audience: "已經有一套管人、管流程、管品質經驗，卻覺得 AI 是工程師的事、不知道自己的管理經驗算不算數的經營者或主管。",
+    summary: "多數企業導入 AI 不缺底子：你管人、管流程、管品質的管理知識，本來就能翻譯成管理 AI 的方法。用豐田 TPS 當例子，把標準化、自働化停線、持續改善對應成 AI 可落地的規則主檔、自動攔截、回寫標準，附一張把既有管理知識翻成 AI 流程的檢查表與可先動的第一步。",
+    tags: {
+      topic: ["數位轉型", "知識管理", "AI工作流", "隱性知識"],
+      level: ["零基礎入門"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
+    related: ["how-to-train-your-ai-employee", "docs-as-system-design-agent", "what-is-loop-engineering", "claude-skills-knowledge-assets", "company-shape-is-the-moat", "decision-ladder-non-programmer"]
+  },
+
+  {
+    id: "old-prompts-intent-first-loop-engineering",
+    url: "articles/old-prompts-intent-first-loop-engineering/",
+    date: "2026-07-16",
+    updated: "2026-07-16",
+    title: "舊提示詞不必丟：用它提煉你的意圖，再走向迴圈工程",
+    problem: "現在隨手下一句提示詞，AI 有時做得很好；以前很認真寫的技能包和詳細提示詞，效果卻不一定理想，開始懷疑那些時間是不是白花了。",
+    audience: "寫過很長的提示詞或技能包、卻開始覺得它們把 AI 卡住的人，以及聽過迴圈工程但不知道它跟提示詞怎麼接起來的人。",
+    summary: "舊技能包不是包袱，是地基：它裝著你在意的成果標準、慣用的思考順序、角色語氣與不能碰的紅線。把「照著步驟做」升級成「先理解我想達成什麼、我怎麼判斷好不好」，讓 AI 有空間用更合適的方法。附一段可直接複製的意圖優先提示詞，以及從意圖優先走到迴圈工程的最小流程。",
+    tags: {
+      topic: ["提示詞設計", "AI工作流", "技能包設計"],
+      level: ["基礎"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["what-is-loop-engineering", "intent-first-prompting", "prompt-to-loop-map", "claude-skills-knowledge-assets"]
+  },
+
+  {
+    id: "personal-studio-vs-solo-company",
+    url: "articles/personal-studio-vs-solo-company/",
+    date: "2026-07-16",
+    updated: "2026-07-16",
+    title: "個人工作室與一人公司差在哪？我會看兩件事",
+    problem: "接案接到滿，收入卻永遠跟工時綁在一起，停下來就沒有進帳，也說不清楚自己到底算不算一人公司。",
+    audience: "已經在接案或開個人工作室，想把專業變成能重複賣的產品、不再用時間換錢的自由工作者與獨立顧問。",
+    summary: "個人工作室靠時間與專業完成單次交付，一人公司把專業產品化、建立能重複運作的商業系統。用收入怎麼產生、這套事業服務誰兩個對比切開兩種模式，帶到產品化自己的五個步驟與三套可直接開始的技能包入口，並以馬斯克當極端例子說明系統思維的上限。",
+    tags: {
+      topic: ["差異比較", "數位轉型", "隱性知識"],
+      level: ["基礎"],
+      content_type: ["觀點文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["company-shape-is-the-moat", "how-to-train-your-ai-employee", "ai-mvp-validation-before-product", "own-ai-team-at-work", "intangible-assets-grow-by-sharing"]
+  },
+
+  {
+    id: "train-your-ai-agent-editor",
+    url: "articles/train-your-ai-agent-editor/",
+    date: "2026-07-16",
+    updated: "2026-07-16",
+    title: "沒空寫，可以叫 AI 幫我寫嗎？：讓 AI 認識你，比學會用 AI 更重要",
+    problem: "學了很多 AI 工具，卻每次都要重講背景、自己複製貼上和操作，AI 還不像真的小編。",
+    audience: "想把 AI 從聊天工具訓練成能整理問卷、做簡報、寫社群、記住風格與流程的一人公司、內容創作者、小編、講師與小微企業主。",
+    summary: "從嘉我好漾課程整理出的 AI Agent 小編訓練法：分清聊天型 AI 和幹活型 Agent，先用安全資料夾練習，再把問卷變簡報、工作日誌、技能包、交接文件與靈感池串起來，讓 AI 認識你、記住你的判斷，成為真正能交辦的工作夥伴。內含九段可直接複製的提示詞，從禁止刪除的安全規矩到把零散筆記變成一週發文靈感。",
+    tags: {
+      topic: ["AIAgent", "AI工作流", "知識庫", "技能包設計"],
+      level: ["零基礎入門"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["how-to-train-your-ai-employee", "web-chat-ai-vs-desktop-agent", "docs-as-system-design-agent", "inspiration-production-system", "post-class-organizing-loop", "teacher-prep-knowledge-workflow", "answer-to-action-enterprise-ai-agent", "ai-employee-four-levels"]
+  },
+
+  {
+    id: "questionnaire-to-slides-agent-workflow",
+    url: "articles/questionnaire-to-slides-agent-workflow/",
+    date: "2026-07-06",
+    updated: "2026-07-16",
+    title: "把課前問卷變成簡報，再把流程存成技能包",
+    problem: "剛開始學 Agent，知道 AI 可以做簡報，卻不清楚怎麼從資料蒐集、整理、產出成品，一路沉澱成可重複的工作流，也不知道怎麼連到技能包與知識庫。",
+    audience: "AI 新手、講師、顧問、內容創作者，以及想把備課或簡報流程做成可複用系統的人。",
+    summary: "一篇新手必讀的 Agent 基礎教學示範與正式 SOP 入口：從課前問卷和課綱整理出教學簡報，再把做簡報的步驟沉澱成 Agent 工作流、lecture-prep 技能包與知識庫。",
+    tags: {
+      topic: ["AIAgent", "AI工作流", "技能包設計", "知識庫"],
+      level: ["零基礎入門"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["teacher-prep-knowledge-workflow", "codex-only-auto-worklog", "how-to-train-your-ai-employee", "how-ai-connects-software", "docs-as-system-design-agent", "diary-driven-agent-3x4", "what-is-loop-engineering", "tag-wiki-method", "answer-in-person-or-ai"]
+  },
+
+  {
+    id: "ai-handoff-instructions",
+    url: "articles/ai-handoff-instructions/",
+    date: "2026-07-15",
+    updated: "2026-07-15",
+    title: "換了另一家 AI，技能包要怎麼搬？：交接指令，難的是決定不寫什麼",
+    problem: "換模型、換一家 AI、換機器、換人操作，每次都要交代一句話，結果講太多，連自己回頭要做的事也塞了進去。",
+    audience: "需要在多個 AI、多台機器或多個人之間換手做事，卻常常交接完還要重講一次的一人公司、內容創作者與團隊主管。",
+    summary: "交接指令寫不好，通常不是寫太少而是寫太多。從一次真實的生圖事故拆出核心原則「只寫對方所需」，分成一次交辦、供應商模式、換人續跑三種場景各自的寫法，加上卡住才回吐的自動化分寸與三招防呆，附一張可直接複製的交接單。",
+    tags: {
+      topic: ["AI工作流", "AIAgent", "工作流程"],
+      level: ["基礎"],
+      content_type: ["案例文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["dual-track-planning-loop", "loop-engineering-guardrails", "how-to-train-your-ai-employee", "intent-first-prompting", "rule-file-rebound", "long-task-completion-rate", "session-messaging-reminder-layer"]
+  },
+
+  {
+    id: "post-class-organizing-loop",
+    url: "articles/post-class-organizing-loop/",
+    date: "2026-07-15",
+    updated: "2026-07-15",
+    title: "一堂課上完之後，我怎麼把它變成可以重複用的知識：課後整理 Loop 全流程拆解",
+    problem: "一堂課上完，留下逐字稿、課前簡報、學員提問，散著沒整理，三天後就散掉，簡報還是課前骨架版，學員問過的好問題下次備課想引用卻找不到。",
+    audience: "會上課、開講座、帶工作坊，每次結束都留下大量素材卻常放到爛掉，想用 AI 整理課程內容卻不知道怎麼設標準的講師與教學者。",
+    summary: "把課後整理拆成一條六步輸送帶：同一份材料生出教學手冊、課後實錄版簡報、官網課程頁三種成品，並用兩層審核確保 AI 整理出來的東西能用。附觸發分流、六步交付物、兩層審核分法與常見坑，可照著替自己的整理流程搭一條一樣的輸送帶。",
+    tags: {
+      topic: ["AI工作流", "知識管理", "工作流程"],
+      level: ["零基礎入門"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["how-to-train-your-ai-employee", "docs-as-system-design-agent", "inspiration-production-system", "train-your-ai-agent-editor", "meeting-into-verifiable-loop"]
+  },
+
+  {
+    id: "ai-cp-value-calculus",
+    url: "articles/ai-cp-value-calculus/",
+    date: "2026-07-14",
+    updated: "2026-07-14",
+    title: "模型不是越聰明越好：我開始學著算 AI 的 CP 值",
+    problem: "同時有好幾個模型可以用，每次都習慣直接開最強那個，帳單卻一路往上走。",
+    audience: "開始感覺到 API 帳單或訂閱費在增加，想知道什麼任務該用哪一級模型的 AI 重度使用者。",
+    summary: "用三個模型的成本對照說明一件反直覺的事：用最便宜的模型做到滿分，反而是最貴也最慢的。真正該問的是這次任務需要幾分，附三張對照表。最後把問題放大到人類層級：算力有限、要解的問題滿出來，會排序哪些問題值得解，才是真正的分水嶺。",
+    tags: {
+      topic: ["AI趨勢", "輔助決策", "差異比較"],
+      level: ["基礎"],
+      content_type: ["觀點文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["ai-usage-audit", "ai-tools-professional-judgment", "strong-ai-models-knowledge-workflow-road", "program-vs-ai-skill-library", "ai-capability-tiers", "long-task-completion-rate", "openrouter-deepseek-data-routing"]
+  },
+
+  {
+    id: "mika-to-laika-product-character-design",
+    url: "articles/mika-to-laika-product-character-design/",
+    date: "2026-07-14",
+    updated: "2026-07-14",
+    title: "AI 助理換個平台，能力就不一樣：我為什麼把它拆成兩個角色",
+    problem: "同一個 AI 助理放進不同入口，能力與權限其實不一樣，但使用者會沿用原本的理解，於是每次互動前都得先解釋一次。",
+    audience: "正在設計 AI 助理、聊天機器人或數位角色，卻發現不同入口能力不一致的人；以及同一個服務放進不同平台後，需要一直向使用者解釋差異的人。",
+    summary: "當同一張臉出現在不同入口，使用者就會期待相同能力，說明成本會從產品轉嫁到自己身上。記錄我把 LINE 群組助理從咪卡分出萊卡的判斷過程：用三個問題決定該沿用還是拆出新角色，先定義產品分工再決定視覺，最後讓角色名稱與造型自己傳達能力邊界。",
+    tags: {
+      topic: ["輔助決策", "差異比較", "AI應用"],
+      level: ["基礎"],
+      content_type: ["觀點文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["line-group-ai-workflow", "how-to-train-your-ai-employee", "docs-as-system-design-agent", "character-costume-sheet-three-views", "personal-poster-and-wallpaper"]
+  },
+
+  {
+    id: "chatgpt-work-skills-web-version",
+    url: "articles/chatgpt-work-skills-web-version/",
+    date: "2026-07-13",
+    updated: "2026-07-13",
+    title: "ChatGPT 網頁版終於能用技能包了：ChatGPT Work 從上手到兩個雷",
+    problem: "以前技能包只有 Claude、Grok 這種要付高費的網頁版才有，打開 ChatGPT 網頁版做重複性工作時，每次都要重貼一遍規則和格式。",
+    audience: "已經在用 ChatGPT 網頁版、想用「專案加技能包」做出穩定公版產出，卻還分不清技能包和提示詞差在哪的內容工作者與一人公司。",
+    summary: "ChatGPT Work 讓網頁版 AI 終於能用技能包。從 7/12 免費講座的實際示範整理成文字：技能包跟提示詞差在哪、怎麼用「專案存資料、技能包存判斷」做出穩定公版產出，以及用到深處一定會撞到的兩個雷點。",
+    tags: {
+      topic: ["技能包設計", "AI工作流", "工具操作"],
+      level: ["基礎"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["chatgpt-work-codex-choice", "claude-skills-knowledge-assets", "how-ai-connects-software", "semantic-rules-before-prompt-templates"]
+  },
+
+  {
+    id: "inspiration-production-system",
+    url: "articles/inspiration-production-system/",
+    date: "2026-07-13",
+    updated: "2026-07-13",
+    title: "工作很忙、時間很破碎，沒空經營內容？：靈感產出系統與靈感池",
+    problem: "每天硬想今天發什麼想到累；有一堆舊素材卻要用時找不到。",
+    audience: "一人公司、自媒體、想穩定經營社群卻卡在選題的知識工作者。",
+    summary: "把靈感當成可以系統性產出的東西：三個來源（過去累積的內容、AI 模擬受眾、熱門話題）加上標籤撈取系統，配一套從話題到貼文的實操流程，以及沒靈感時請 AI 搜話題並從大眾與專業兩個角度選題的流程，讓有個人特色的穩定發文變成一套會自己運轉的系統。",
+    tags: {
+      topic: ["AI工作流", "工作流程", "知識管理"],
+      level: ["基礎"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
+    related: ["tag-wiki-method", "diary-driven-agent-3x4", "train-your-ai-agent-editor"]
+  },
+
+  {
+    id: "agent-native-tools-software-interface",
+    url: "articles/agent-native-tools-software-interface/",
+    date: "2026-07-12",
+    updated: "2026-07-12",
+    title: "Agent 原生工具會讓軟體介面退到後台嗎？",
+    problem: "每接觸一個新軟體，就要先學會它的介面與一堆操作，才能完成其實很單純的一件任務。",
+    audience: "在學 AI 應用、想知道該怎麼開始把整段工作交辦出去的人，以及正在開發 AI 應用、思考功能與任務該怎麼切的人。",
+    summary: "看到能直接在時間線上剪片的 Agent 原生工具，第一眼想到的是介面可能會退到後台。這件事很像找外包團隊：你交代任務、驗收成果，不必自己學會每個操作。談我現在怎麼把工作交給 AI，以及為什麼覺得現在可以開始這樣想。",
+    tags: {
+      topic: ["AIAgent", "AI趨勢", "AI工作流"],
+      level: ["基礎"],
+      content_type: ["觀點文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["how-ai-connects-software", "a2a-agent-protocol", "agent-web-turning-point", "how-to-train-your-ai-employee", "ai-king-off-battlefield"]
+  },
+
+  {
+    id: "dual-track-planning-loop",
+    url: "articles/dual-track-planning-loop/",
+    date: "2026-07-12",
+    updated: "2026-07-12",
+    title: "如何讓兩個不同的 AI 互相挑錯、自己訂正？：我的企劃送出前先被模擬評審打了 2/5 分",
+    problem: "AI 寫企劃又快又順，但單一模型自己寫自己審，看不到自己的盲點，還會被你的想法錨定。",
+    audience: "用 AI 寫提案、企劃、報告，輸不起一次盲點的知識工作者與一人公司。",
+    summary: "企劃雙軌互審 loop：兩個不同家的 AI 同輸入各自獨立寫完、互相挑錯、整合留決策點、對家終審。以一場真實政府補助提案首跑為案例，附兩段可直接複製的提示詞。",
+    tags: {
+      topic: ["AI工作流", "跨家審稿", "輔助決策"],
+      level: ["基礎"],
+      content_type: ["案例文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["loop-engineering-guardrails", "a2a-agent-protocol", "docs-as-system-design-agent", "ai-handoff-instructions", "long-task-completion-rate", "session-messaging-reminder-layer", "before-installing-others-skill", "parallel-site-editing"]
+  },
+
+  {
+    id: "dual-centaur-meeting",
+    url: "articles/dual-centaur-meeting/",
+    date: "2026-07-11",
+    updated: "2026-07-12",
+    title: "開會兩三小時才對齊，有辦法快一點嗎？｜半人馬會議，我帶我的 Agent 你帶你的 Agent",
+    problem: "複雜專案的會議常開兩三個小時才對齊目標，全部交給 AI 代理去談，又會掉太多細節。",
+    audience: "跟客戶或合作夥伴談複雜專案、已經有自己常用 AI，想讓它從打草稿進到正式協作流程的知識工作者。",
+    summary: "半人馬會議是中間解：人加 Agent 對 人加 Agent，Agent 先把資料過濾完，人只聊決策、信任與承諾。附五步流程與 PAAP、AAP、AA 三階段演進判斷，以及納瓦爾對談的兩個可回看時間碼。",
+    tags: {
+      topic: ["AIAgent", "AI工作流", "AI趨勢"],
+      level: ["基礎"],
+      content_type: ["觀點文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["a2a-agent-protocol", "ai-delegators-optimism", "what-is-loop-engineering"]
+  },
+
+  {
+    id: "laptop-desktop-webpage-sync-icloud-git",
+    url: "articles/laptop-desktop-webpage-sync-icloud-git/",
+    date: "2026-07-11",
+    updated: "2026-07-12",
+    title: "在家裡桌機上用 Codex 做好網頁後，出門用筆電想要改，就找不到檔案了？問題出在你把專案放錯地方",
+    problem: "在桌機用 AI 做好網頁，換一台筆電想改，卻找不到檔案；把程式碼放進 iCloud 又常常撞同步衝突。",
+    audience: "用多台電腦、多個 AI 助手做網頁或程式專案，被檔案同步與版本混亂困擾、非工程背景的創作者。",
+    summary: "iCloud 適合放文件，程式碼要交給 git。一次真實搬家紀錄，附完整步驟與可複製提示詞，讓多台電腦、多個 AI 助手共用唯一真相。",
+    tags: {
+      topic: ["AI工作流", "知識管理", "工作流程"],
+      level: ["基礎"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["docs-as-system-design-agent", "ai-loop-safety-recovery", "session-messaging-reminder-layer", "github-vercel-cloudflare-compare", "who-can-see-your-site"]
+  },
+
+  {
+    id: "strong-ai-models-knowledge-workflow-road",
+    url: "articles/strong-ai-models-knowledge-workflow-road/",
+    date: "2026-07-10",
+    updated: "2026-07-11",
+    title: "先學工具還是先建知識庫？：模型像超跑，知識庫與工作流是你腳下的路",
+    problem: "模型一代比一代強，為什麼同樣的 AI，別人用起來像換了引擎，你用起來還是原地打滑。",
+    audience: "已經在用 AI、想知道下一步該投資什麼的知識工作者與一人公司。",
+    summary: "Claude Fable、GPT-5.6 Sol 這類強模型出現後，知識庫、工作流、規則與驗收方式造成的差距更明顯。用泥巴路、柏油路與高速公路三種道路環境，帶你完成六步 AI 鋪路流程。",
+    tags: {
+      topic: ["AI趨勢", "知識管理", "AI工作流", "駕馭工程 HarnessEngineering"],
+      level: ["基礎"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["docs-as-system-design-agent", "what-is-loop-engineering", "how-to-train-your-ai-employee", "ai-that-knows-you", "knowledge-as-employee", "ai-tools-professional-judgment", "ai-cp-value-calculus", "use-more-ai-not-enough", "same-question-different-answers"]
+  },
+
+  {
+    id: "knowledge-as-employee",
+    url: "articles/knowledge-as-employee/",
+    date: "2026-07-10",
+    updated: "2026-07-10",
+    title: "做過筆記也建過知識庫，還缺什麼？：把知識當員工的分水嶺",
+    problem: "已經在用 AI，卻覺得跟別人用起來沒差多少；做過筆記、建過知識庫，也說不出舊方法在 AI 時代還缺什麼。",
+    audience: "聽過 AI 員工、AI 辦公室，想知道那份能力究竟從哪裡來的人，以及做過知識管理、想知道舊方法還缺哪一塊的人。",
+    summary: "傳統知識管理把知識當工具，整理好之後人去用它；AI 時代的思維是把知識當員工，架構好之後知識搭配 AI 自己去工作。用七個面向與流程逐站對照兩種思路，說明知識變成員工之後制度要跟著長出什麼，答案落在隱性知識提煉。",
+    tags: {
+      topic: ["江江精選", "知識管理", "隱性知識", "AIAgent", "數位轉型"],
+      level: ["基礎"],
+      content_type: ["觀點文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["knowledge-os-master-map", "how-to-train-your-ai-employee", "docs-as-system-design-agent", "strong-ai-models-knowledge-workflow-road", "intangible-assets-grow-by-sharing", "talent-vs-expertise", "ai-employee-four-levels"]
+  },
+
+  {
+    id: "knowledge-os-master-map",
+    url: "articles/knowledge-os-master-map/",
+    date: "2026-07-10",
+    updated: "2026-07-10",
+    title: "學了一堆整理法跟 AI 工作流，為什麼兜不起來？｜知識作業系統母架構",
+    problem: "學了很多整理法、筆記法、AI 工作流，卻覺得它們彼此兜不起來，看不到整個系統長什麼樣子。",
+    audience: "想讓 AI 接手自己工作流程、並且想先看清整個系統全貌的知識工作者，以及正在把專業方法整理成體系、課程或產品的顧問與講師。",
+    summary: "提出「知識作業系統」母架構：存量三庫、八步精煉迴圈、護欄、治理四個構件，加一條三域分流部署軸，圓心是隱性知識提煉。含三重收斂的信度證據（雙 AI 獨立收斂、2023 至 2026 實踐先於命名、跨時內部收斂）、三條真實工作流的驗證設計，與一個立刻能做的對照練習。",
+    tags: {
+      topic: ["江江精選", "知識管理", "隱性知識", "AI工作流", "知識庫"],
+      level: ["進階"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["knowledge-as-employee", "docs-as-system-design-agent", "knowledge-base-three-vault-split", "tag-wiki-method", "what-is-loop-engineering", "talent-vs-expertise", "use-more-ai-not-enough", "session-messaging-reminder-layer"]
+  },
+
+  {
+    id: "meeting-record-agent-workflow",
+    url: "articles/meeting-record-agent-workflow/",
+    date: "2026-06-23",
+    updated: "2026-07-10",
+    title: "會議有錄音也有逐字稿，為什麼事後還是查不到重點？｜我的會議記錄 Agent 工作流",
+    problem: "會議有錄音、有逐字稿，卻缺少待辦、風險、決策脈絡與現場觀察，之後很難回查，也難以支持下一步判斷。",
+    audience: "常開會、做顧問或跑合作，需要把談話沉澱成知識資產，並希望用 AI 協助整理與分析的人。",
+    summary: "從現場錄音、OBS 線上錄影、MacWhisper 或 VibeVoice-ASR 轉錄開始，逐步補上現場觀察、保留原始資料、生成會議策略書與交付初稿，再用多種思維模型檢測盲點。",
+    tags: {
+      topic: ["AI工作流", "知識管理", "工作流程", "輔助決策", "工具操作"],
+      level: ["基礎"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: "https://vocus.cc/salon/Jiang_Coach" },
+    related: ["agent-workflow-builds-automation", "codex-only-auto-worklog", "how-to-train-your-ai-employee", "diary-driven-agent-3x4", "tidy-mess-before-consulting", "meeting-into-verifiable-loop", "ai-employee-four-levels", "eight-ai-system-concepts-2026"]
+  },
+
+  {
+    id: "meeting-into-verifiable-loop",
+    url: "articles/meeting-into-verifiable-loop/",
+    date: "2026-07-07",
+    updated: "2026-07-07",
+    title: "一場會議整理，我把它做成了一條可驗收的迴圈",
+    problem: "同一串會議整理流程每週都要手動一步步推，方法都會、筆記也做過，只是每次都得自己重新串起來。",
+    audience: "同一串流程每週都要手動重推一遍的知識工作者，以及想把散落各處的做法收成一條自己會跑的流程的人。",
+    summary: "每一步的規則與標準其實早就寫成技能包了，缺的是把它們串起來。講怎麼把這些現成的規則模組，串成一條喊一聲就自己跑完、還會驗收的迴圈，附可照做的起步順序，以及一份誠實的邊界說明：這條迴圈保證什麼、不保證什麼。",
+    tags: {
+      topic: ["AI工作流", "工作流程", "知識管理"],
+      level: ["進階"],
+      content_type: ["案例文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["what-is-loop-engineering", "meeting-record-agent-workflow", "my-three-loops", "loop-engineering-guardrails", "post-class-organizing-loop"]
+  },
+
+  {
+    id: "loop-engineering-guardrails",
+    url: "articles/loop-engineering-guardrails/",
+    date: "2026-07-06",
+    updated: "2026-07-06",
+    title: "AI 一直停下來要授權，怎麼讓它順順跑完？：迴圈護欄的五條規則",
+    problem: "AI 能連續自動工作之後，一個沒被挑戰過的錯誤判斷，會被後面每一圈放大。",
+    audience: "已經讓 AI 自動連跑任務、常把工作交接給第二個 AI 或子代理的人。",
+    summary: "把駕馭工程和迴圈工程接在一起的五條護欄：未抗辯假設、三視角抗辯、Non-goals 與允許路徑、換路煞車、驗收證據分級。讓 AI 連續自動工作時，錯誤不會一路滾大。",
+    tags: {
+      topic: ["AI工作流", "AIAgent", "跨家審稿"],
+      level: ["基礎"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["what-is-loop-engineering", "harness-mindset-for-bosses", "ai-loop-safety-recovery", "dual-track-planning-loop", "ai-handoff-instructions", "long-task-completion-rate", "meeting-into-verifiable-loop", "loop-round-limit"]
+  },
+
+  {
+    id: "publish-gate",
+    url: "articles/publish-gate/",
+    date: "2026-07-06",
+    updated: "2026-07-06",
+    title: "多個 AI 改同一個網站，怎麼不打架：發佈閘門",
+    problem: "用 AI 維護網站，多個任務改來改去開始版本錯亂，部署後才發現連結壞了、索引沒跟上。",
+    audience: "已經有網站、常請 AI 幫忙改版，或同時開多個 AI 任務的人。",
+    summary: "用我自己的翻車現場，講版本錯亂的三個來源，給一套三層防護：工作區隔離（git worktree）、發佈閘門（preflight＋一鍵發佈）、強制力（pre-push hook）。附公開技能包 publish-gate，交給你的 AI 五步裝完。",
+    tags: {
+      topic: ["AI工作流", "工作流程", "工具操作"],
+      level: ["基礎"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
+    related: ["docs-as-system-design-agent", "what-is-loop-engineering", "caught-ai-slacking-into-rules"]
+  },
+
+  {
+    id: "tag-wiki-method",
+    url: "articles/tag-wiki-method/",
+    date: "2026-07-01",
+    updated: "2026-07-06",
+    title: "資料越堆越多，AI 反而找不到怎麼辦？：標籤連結法 Tag Wiki",
+    problem: "資料越存越多卻越來越找不到，標籤亂增生，最後變成存了等於沒存。",
+    audience: "個人知識工作者、顧問、想讓 AI 讀懂自己知識庫的人。",
+    summary: "把標籤從貼上去的關鍵字，升級成一張能自己下定義、又能互連的卡片。用受控維度管理、幾乎不用 YAML，並講清楚這套方法跟密集互聯、RAG 之間是互補不是取代的關係，外加顧問跨客戶做知識整合的隔離原則，以及受控詞彙的版本控管機制（字典檔唯一真相、逐版變更紀錄、機器可讀衍生檔驗證）。",
+    tags: {
+      topic: ["知識管理", "知識庫", "工具操作"],
+      level: ["基礎"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
+    related: ["llm-rag-agent-mcp", "questionnaire-to-slides-agent-workflow", "teacher-prep-knowledge-workflow", "knowledge-base-three-vault-split", "docs-as-system-design-agent", "ai-loop-safety-recovery", "inspiration-production-system", "why-split-data-into-cards", "knowledge-os-master-map", "build-your-own-dictionary", "rag-three-retrieval-modes"]
+  },
+
+  {
+    id: "map-is-not-the-territory",
+    url: "articles/map-is-not-the-territory/",
+    date: "2026-07-05",
+    updated: "2026-07-05",
+    title: "為什麼 AI 一直猜錯、要我重講一遍？：地圖不等於實際地形",
+    problem: "跟 AI 工作常卡住，它一直猜錯、要你重講一遍，卻說不清楚問題到底出在哪。",
+    audience: "天天用 AI、想把專業判斷交給它，卻發現最難的是把判斷「講清楚」的顧問、教練、知識工作者。",
+    summary: "從 Anthropic 工程師 Thariq 的「地圖不等於實際地形」談起，把四種未知接到隱性知識提煉：先把地圖畫清楚，AI 跑真實任務的成功率就高很多。附動手前就能用的提問法。",
+    tags: {
+      topic: ["隱性知識", "提示詞設計", "知識管理"],
+      level: ["基礎"],
+      content_type: ["觀點文章"]
+    },
+    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
+    related: ["how-to-train-your-ai-employee", "intent-first-prompting", "talent-vs-expertise", "long-answer-three-layers", "character-costume-sheet-three-views"]
+  },
+
+  {
+    id: "ai-changed-behavior-into-workflow",
+    url: "articles/ai-changed-behavior-into-workflow/",
+    date: "2026-07-04",
+    updated: "2026-07-04",
+    title: "把不知不覺被 AI 改變的行為，抓成一套流程",
+    problem: "已經常常用 AI，卻沒發現自己的工作習慣早就被改變，也沒把它固定成流程。",
+    audience: "想把自己已經在做、卻還沒固定下來的 AI 用法，變成可重複流程的知識工作者。",
+    summary: "出差查行程時，我發現第一個動作已從打開地圖變成問 AI。用迴圈工程四步（找出行為、觀察變數、固定流程、變成提示詞）把不知不覺的 AI 習慣整理成可重複執行的流程，文末附可複製的提示詞。",
+    tags: {
+      topic: ["AI工作流", "工作流程", "提示詞設計", "隱性知識"],
+      level: ["基礎"],
+      content_type: ["觀點文章"]
+    },
+    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
+    related: ["what-is-loop-engineering", "agent-workflow-builds-automation"]
+  },
+
+  {
+    id: "harness-mindset-for-bosses",
+    url: "articles/harness-mindset-for-bosses/",
+    date: "2026-07-02",
+    updated: "2026-07-02",
+    title: "給老闆的駕馭思維：把不敢對員工說的，講給 AI 聽（系列 02）",
+    problem: "當了幾十年老闆、主管，帶人很有一套，但覺得學 AI 工具很痛苦，AI 產出也只是看起來還行。",
+    audience: "中小企業老闆、主管、一人公司：帶人有經驗、想把管理本事直接用到 AI 上的人。",
+    summary: "AI 已經能當員工，而且你可以對它比對員工狠十倍：它不會離職、不會抱怨。這篇講駕馭思維，附駕馭十問、向內反問、好老闆對照表，全部可直接複製，最後補 Anthropic 創業手冊的提醒：AI 讓你做得快，做對的判斷反而更值錢。",
+    tags: {
+      topic: ["提示詞設計", "輔助決策"],
+      level: ["零基礎入門"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
+    related: ["intent-first-prompting", "prompt-to-loop-map", "loop-engineering-guardrails", "ai-employee-four-levels", "dont-learn-ai-tools"]
+  },
+
+  {
+    id: "prompt-to-loop-map",
+    url: "articles/prompt-to-loop-map/",
+    date: "2026-07-02",
+    updated: "2026-07-02",
+    title: "跟 AI 合作該從哪裡學起？｜從提示詞工程到迴圈工程，一張圖看懂四階段",
+    problem: "文章一篇一篇散著讀，抓不到「怎麼跟 AI 合作」這件事的全貌跟先後順序。",
+    audience: "想有系統地把這個站的 AI 協作文章從頭讀到尾、需要一張總覽地圖的人。",
+    summary: "提示詞工程、上下文工程、駕馭工程、迴圈工程，四個階段一條主軸，把 20 篇文章全部掛上去：越往下，你越不用管 AI 怎麼做，越專心在你要什麼。從任一站進去，順著往下讀。",
+    tags: {
+      topic: ["AI工作流", "提示詞設計"],
+      level: ["零基礎入門"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
+    related: ["intent-first-prompting", "harness-mindset-for-bosses", "old-prompts-intent-first-loop-engineering", "one-on-one-questions", "eight-ai-system-concepts-2026"]
+  },
+
+  {
+    id: "recovery-over-perfection",
+    url: "articles/recovery-over-perfection/",
+    date: "2026-07-02",
+    updated: "2026-07-02",
+    title: "AI 自動跑出錯了怎麼收拾？：設計能容錯的 Loop",
+    problem: "讓 AI 自動跑比較大的任務時，最怕出錯又不知道從哪裡開始收拾。",
+    audience: "已經開始把整理檔案、批次修改、系統設定交給 AI 執行，想要一套具體步驟、不只是原則的知識工作者。",
+    summary: "AI 一定會出錯，人也會下錯指令，設計不會犯錯的系統不可能。這篇整理容錯 Loop 六步：分大小、留後路、先小試、分批留痕、換腦驗收、寫收工筆記，每步都有完成條件與常見的坑，附一個 300 份檔案改名的完整示範，以及出錯之後的五個標準動作。",
+    tags: {
+      topic: ["AI工作流", "工作流程", "AIAgent"],
+      level: ["基礎"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
+    related: ["ai-loop-safety-recovery", "my-three-loops", "what-is-loop-engineering", "long-task-completion-rate", "free-deploy-three-boundaries"]
+  },
+
+  {
+    id: "intent-first-prompting",
+    url: "articles/intent-first-prompting/",
+    date: "2026-06-27",
+    updated: "2026-07-02",
+    title: "指令越寫越長，AI 卻沒更好？：把你要什麼講清楚，剩下交給 AI（系列 01）",
+    problem: "學過提示詞、指令越寫越長，AI 卻還是只照你寫的做，沒有更好的表現。",
+    audience: "會下指令但覺得 AI 發揮不出來的知識工作者，以及想搞懂提示詞、上下文、駕馭、迴圈這幾個詞差在哪的人。",
+    summary: "2024 年 AI 只有 60 分，把流程寫死是在幫它；現在它能想到你想不到的做法，寫死反而綁住它。這篇講意圖優先：把為什麼做、做到什麼程度講清楚，方法留給 AI，附三組可複製提示詞與四個名詞的賽馬圖解。",
+    tags: {
+      topic: ["提示詞設計", "AI工作流"],
+      level: ["零基礎入門"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
+    related: ["harness-mindset-for-bosses", "prompt-to-loop-map", "map-is-not-the-territory", "ai-handoff-instructions", "ai-that-knows-you", "old-prompts-intent-first-loop-engineering", "ai-employee-four-levels", "long-answer-three-layers"]
+  },
+
+  {
+    id: "ai-delegators-optimism",
+    url: "articles/ai-delegators-optimism/",
+    date: "2026-07-01",
+    updated: "2026-07-01",
+    title: "AI 越來越強，會不會哪天就不需要我了？：越交給 AI 的人越不怕被取代",
+    problem: "每天用 AI，心裡卻偶爾冒出一句：它越來越強，會不會哪天就不需要我了。",
+    audience: "一人公司、接案者、組織裡以讀想寫判斷為主的知識工作者。",
+    summary: "從 Anthropic Cadences 報告的五張圖表拆起，看越會把工作交給 AI 的人為什麼越不怕被取代；附一套把任務分三層、把流程做成技能包的做法。分清報告事實、受訪者預期與我的判斷，並標明樣本限制。",
+    tags: {
+      topic: ["AI趨勢", "AI工作流", "輔助決策", "AIAgent"],
+      level: ["基礎"],
+      content_type: ["趨勢文章"]
+    },
+    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
+    related: ["what-is-loop-engineering", "my-three-loops", "agent-workflow-builds-automation", "docs-as-system-design-agent", "decision-ladder-non-programmer", "ai-capability-tiers", "dual-centaur-meeting", "let-ai-do-the-setup"]
+  },
+
+  {
+    id: "ai-loop-safety-recovery",
+    url: "articles/ai-loop-safety-recovery/",
+    date: "2026-07-01",
+    updated: "2026-07-01",
+    title: "AI 出錯不可怕，沒有備援才可怕：一次搞壞 170 檔案的教訓",
+    problem: "讓 AI 自動跑比較大的批次工作，最怕出錯又不知道怎麼收場。",
+    audience: "已經開始讓 AI 自動執行任務、擔心出錯沒辦法挽回的知識工作者與一人公司。",
+    summary: "一次全自動改名任務，子代理把 170 個檔案打壞還回報「完成」。這篇整理我怎麼靠獨立複驗、驗證過的備份、跨家驗證三道防線零遺失收場，以及看懂這件事之後，Loop 工程真正該設計的是什麼。",
+    tags: {
+      topic: ["AI工作流", "工作流程", "AIAgent"],
+      level: ["基礎"],
+      content_type: ["觀點文章"]
+    },
+    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
+    related: ["what-is-loop-engineering", "my-three-loops", "tag-wiki-method", "recovery-over-perfection", "loop-engineering-guardrails", "laptop-desktop-webpage-sync-icloud-git"]
+  },
+
+  {
+    id: "company-shape-is-the-moat",
+    url: "articles/company-shape-is-the-moat/",
+    date: "2026-06-30",
+    updated: "2026-06-30",
+    title: "AI 時代，公司還剩什麼別人拿不走？：真正的護城河是組織模式與信任",
+    problem: "模型、產品、技術都被快速複製，搞不清楚 AI 時代一家公司還剩下什麼別人拿不走。",
+    audience: "在建團隊或一人公司、或正在選擇加入哪家公司，想知道什麼值得長期投資的人。",
+    summary: "創投人 Jaya Gupta 主張護城河是公司長成的樣子，我整理她的論述，再補上更具體的看法：組織模式像骨架可以照畫，真正抄不走的是共識、影響力與使用者信任這些時間長出來的累積。",
+    tags: {
+      topic: ["AI趨勢", "知識管理"],
+      level: ["基礎"],
+      content_type: ["觀點文章"]
+    },
+    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
+    related: ["intangible-assets-grow-by-sharing", "ai-king-off-battlefield", "spacex-ipo-musk-trillionaire-knowledge-work", "ai-capability-tiers", "own-ai-team-at-work", "manage-ai-with-management-knowledge", "personal-studio-vs-solo-company", "answer-in-person-or-ai"]
+  },
+
+  {
+    id: "four-lens-rapid-review",
+    url: "articles/four-lens-rapid-review/",
+    date: "2026-06-30",
+    updated: "2026-06-30",
+    title: "忙到迷惘時，用四視角快速復盤找回方向",
+    problem: "手上同時開好幾條線，每條都在動，忙得很充實，卻說不出哪一條真正重要。",
+    audience: "同時推好幾個專案、抓不到重點的經營者、團隊主管，與得自己當軍師的一人公司。",
+    summary: "一套六步快速復盤法：攤平事實、回饋槓桿象限、四視角輪審、外化路徑篩子，最後收斂成本週一個動作。忙到發散時用來校準方向，一張紙就能跑。",
+    tags: {
+      topic: ["輔助決策", "一人公司"],
+      level: ["基礎"],
+      content_type: ["觀點文章"]
+    },
+    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
+    related: ["decision-ladder-non-programmer"]
+  },
+
+  {
+    id: "give-ai-choices-not-descriptions",
+    url: "articles/give-ai-choices-not-descriptions/",
+    date: "2026-06-30",
+    updated: "2026-06-30",
+    title: "跟 AI 調配色，別讓它一直猜：六組一次給你挑，挑了再微調",
+    problem: "跟 AI 調配色、調樣式，最耗時的就是它猜一個、你說不對、它再猜的來回，又慢又燒額度。",
+    audience: "會用 AI 做網頁、圖卡、簡報，卡在配色與樣式來回試的人。",
+    summary: "與其讓 AI 一次次猜，不如請它一次配六組並排你直接挑，挑中當場微調，定稿一鍵複製。文章內有可以直接玩的互動配色校稿器，並連到公開技能包 ai-web-tuner。",
+    tags: {
+      topic: ["AI工作流", "AIAgent"],
+      level: ["基礎"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
+    related: ["agent-workflow-builds-automation", "long-answer-three-layers"]
+  },
+
+  {
+    id: "my-three-loops",
+    url: "articles/my-three-loops/",
+    date: "2026-06-30",
+    updated: "2026-06-30",
+    title: "同樣的事，每次都要重新跟 AI 交代一遍？｜我把發文、提煉、復盤三件事設計成 Loop",
+    problem: "每天用 AI 做事，卻每次都要把同樣的事重新交代一遍，覺得不夠有系統、又怕這要會寫程式才做得到。",
+    audience: "不會寫程式、但想更有系統地讓 AI 幫自己做事的知識工作者、一人公司與小團隊。",
+    summary: "你不用會寫程式，只要會寫規則，就能讓 AI 有系統地照你的方法做事。提示詞是這次幫我做這個，規則是以後每次都照這樣做。用三條我自己在跑的 loop 當例子，加一個今天就能做的第一步。",
+    tags: {
+      topic: ["AI工作流", "AIAgent", "工作流程"],
+      level: ["基礎"],
+      content_type: ["觀點文章"]
+    },
+    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
+    related: ["what-is-loop-engineering", "ai-loop-safety-recovery", "recovery-over-perfection", "ai-delegators-optimism", "long-task-completion-rate", "meeting-into-verifiable-loop", "build-your-own-dictionary"]
+  },
+
+  {
+    id: "a2a-agent-protocol",
+    url: "articles/a2a-agent-protocol/",
+    date: "2026-06-28",
+    updated: "2026-06-30",
+    title: "AI 代理要接手工作了，你的流程和知識準備好了嗎？",
+    problem: "AI 代理開始能互相交辦工作，但企業的流程還沒被整理成機器讀得懂的結構。",
+    audience: "想在 AI 代理協作時代先把組織流程與知識準備好的個人工作者與小團隊。",
+    summary: "當 AI 代理開始能互相交辦工作，真正的瓶頸不在技術，在於企業的流程有沒有被整理成機器讀得懂的結構。從知識架構的角度，談組織該怎麼盤點流程、立唯一真相來源、拆解任務、劃清資料邊界與審核點，附名片示範與一個可立刻試的小實驗。",
+    tags: {
+      topic: ["AIAgent", "AI趨勢", "AI工作流"],
+      level: ["基礎"],
+      content_type: ["趨勢文章"]
+    },
+    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
+    related: ["llm-rag-agent-mcp", "market-to-ai", "agent-web-turning-point", "dual-track-planning-loop", "dual-centaur-meeting", "agent-native-tools-software-interface", "ai-era-websites-for-agents"]
+  },
+
+  {
+    id: "market-to-ai",
+    url: "articles/market-to-ai/",
+    date: "2026-06-29",
+    updated: "2026-06-29",
+    title: "大家都用 AI 搜尋了，SEO 還有用嗎？：學用 AI 行銷，也學對 AI 行銷",
+    problem: "現在才要開始學行銷，不知道時間該花在用 AI 做行銷，還是別的地方。",
+    audience: "現在才要開始學行銷，靠專業被看見的個人工作者、一人公司與中小團隊。",
+    summary: "當 AI 開始幫人做決定，行銷的對象就多出一個 AI。用 AI 行銷是把 AI 當工具，對 AI 行銷是把 AI 當受眾。兩件都值得學，但對 AI 行銷現在才剛打開、還沒擠。附四步開始與名片自測。",
+    tags: {
+      topic: ["AI趨勢", "AIAgent", "差異比較"],
+      level: ["基礎"],
+      content_type: ["觀點文章"]
+    },
+    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
+    related: ["a2a-agent-protocol", "agent-web-turning-point"]
+  },
+
+  {
+    id: "intangible-assets-grow-by-sharing",
+    url: "articles/intangible-assets-grow-by-sharing/",
+    date: "2026-06-28",
+    updated: "2026-06-28",
+    title: "把專業提煉給 AI，會不會被學走？：無形資產越分享越豐盛",
+    problem: "你天天在累積經驗、做判斷，但這些無形的東西好像留不下來，也換不成錢。",
+    audience: "想把自己的經驗、思維變成可以累積的資產，而不只是賣時間的知識工作者。",
+    summary: "從一顆蘋果跟一個微笑的故事講起，說明無形資產為什麼越分享越豐盛；在 AI 時代，經驗與判斷可以被放大成知識資本，並分享我從自媒體到數位商會、想成為無形資本家的前進階梯。",
+    tags: {
+      topic: ["知識管理", "AIAgent", "知識庫"],
+      level: ["基礎"],
+      content_type: ["觀點文章"]
+    },
+    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
+    related: ["how-to-train-your-ai-employee", "docs-as-system-design-agent", "company-shape-is-the-moat", "personal-studio-vs-solo-company", "knowledge-as-employee"]
+  },
+
+  {
+    id: "parenting-story-ai-family-dialogue",
+    url: "articles/parenting-story-ai-family-dialogue/",
+    date: "2026-06-27",
+    updated: "2026-06-27",
+    title: "用 AI 把親子日常變成故事、插畫與家庭對話素材",
+    problem: "親子日常容易消散，也不知道怎麼用 AI 變成有溫度的共同創作。",
+    audience: "想和孩子一起用 AI 創作的家長，以及設計親子 AI 課程的人。",
+    summary: "親子說故事 AI 工作坊完整記錄：紅番茄協議的引導方法、順稿與插畫提示詞、真人電影海報技巧，一份親子故事長出五種成品，最後回到家庭對話。",
+    tags: {
+      topic: ["AI工作流", "工具操作", "知識管理"],
+      level: ["零基礎入門"],
+      content_type: ["案例文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["relationship-boundary-ai-practice", "books-videos-pdf-ai-advisor", "personal-poster-and-wallpaper"]
+  },
+
+  {
+    id: "what-is-loop-engineering",
+    url: "articles/what-is-loop-engineering/",
+    date: "2026-06-27",
+    updated: "2026-06-27",
+    title: "每件事 AI 都要我確認，怎麼可以更自動？｜什麼是迴圈工程 Loop Engineering",
+    problem: "你已經會用 AI，但每次做事都要一步一步叫它，叫到很累；聽過「要設計 loop，不要只寫提示詞」卻不知道那是什麼意思。",
+    audience: "常做同一類工作（寫文章、整理會議、回客戶），想把重複流程變成會自己跑完的迴圈的非工程師。",
+    summary: "全程不用程式，用我寫一篇文章的工作流，把迴圈工程講清楚：它跟提示詞差在哪、一個迴圈的五個階段與最少零件、什麼時候才值得做成迴圈。",
+    tags: {
+      topic: ["AI工作流", "工作流程", "提示詞設計", "AIAgent"],
+      level: ["基礎"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
+    related: ["what-is-graph-engineering", "strong-ai-models-knowledge-workflow-road", "questionnaire-to-slides-agent-workflow", "loop-round-limit", "five-loops-content-line"]
+  },
+
+  {
+    id: "docs-as-system-design-agent",
+    url: "articles/docs-as-system-design-agent/",
+    date: "2026-06-25",
+    updated: "2026-06-27",
+    title: "文件就是系統：非工程師怎麼設計 Agent 框架",
+    problem: "不會寫程式，卡在「設計 Agent 好像是工程師的事」，不知道怎麼把一個角色做成會自己判斷的 AI。",
+    audience: "會帶人、會設計流程，卻被「Agent 很技術」擋住的創作者、老師與經營者。",
+    summary: "我帶你看「文件就是系統」這個觀念，從人格思維提煉把角色做到會自己判斷，一路長到單一 Agent 與多 Agent 系統，並附上可複用的提示詞。",
+    tags: {
+      topic: ["AIAgent", "技能包設計", "AI工作流", "隱性知識", "提示詞設計"],
+      level: ["基礎"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: "https://vocus.cc/salon/Jiang_Coach" },
+    related: ["strong-ai-models-knowledge-workflow-road", "questionnaire-to-slides-agent-workflow", "teacher-prep-knowledge-workflow", "diary-driven-agent-3x4", "how-ai-connects-software", "how-to-train-your-ai-employee", "decision-ladder-non-programmer", "tidy-mess-before-consulting", "what-is-loop-engineering", "tag-wiki-method", "ai-delegators-optimism", "intangible-assets-grow-by-sharing", "publish-gate", "laptop-desktop-webpage-sync-icloud-git", "manage-ai-with-management-knowledge", "train-your-ai-agent-editor", "knowledge-os-master-map", "knowledge-as-employee", "mika-to-laika-product-character-design", "ai-employee-four-levels", "free-deploy-three-boundaries", "copied-mechanism-is-no-mechanism"]
+  },
+
+  {
+    id: "ai-capability-tiers",
+    url: "articles/ai-capability-tiers/",
+    date: "2026-06-26",
+    updated: "2026-06-26",
+    title: "我到底算不算「會用 AI」的人？：AI 能力分級，用對產業的影響力排一張表",
+    problem: "不知道自己在 AI 浪潮裡站在什麼位置，也不知道下一步該往哪走。",
+    audience: "想對照自己在 AI 領域位置、或要判斷團隊裡誰適合做哪種 AI 工作的人。",
+    summary: "我用「對產業的影響力」當軸，把個人對 AI 的位置從 T0 到 T13 排成一張十四層的表，幫你對照自己、找到下一步方向。",
+    tags: {
+      topic: ["AI趨勢", "輔助決策", "差異比較", "AIAgent"],
+      level: ["基礎"],
+      content_type: ["觀點文章"]
+    },
+    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: "https://vocus.cc/salon/Jiang_Coach" },
+    related: ["ai-king-off-battlefield", "demis-hassabis-agi-science-ai", "spacex-ipo-musk-trillionaire-knowledge-work", "ai-market-microcosm", "vibe-coding-ten-half-products", "apple-wwdc26-siri-lobster-ai", "company-shape-is-the-moat", "ai-delegators-optimism", "chatgpt-work-codex-choice", "one-on-one-questions", "cli-api-mcp-computer-use", "ai-tools-professional-judgment", "ai-cp-value-calculus", "agi-work-and-discovery"]
+  },
+
+  {
+    id: "tidy-mess-before-consulting",
+    url: "articles/tidy-mess-before-consulting/",
+    date: "2026-06-26",
+    updated: "2026-06-26",
+    title: "找顧問前，先讓 AI 幫你把混亂整理成問題",
+    problem: "想找人討論，卻連自己卡在哪都講不清楚，被請「先整理好再來」卻整理不出來。",
+    audience: "想找顧問或團隊討論、卻講不清楚問題，或想用 AI 理思緒卻不知從何開始的人。",
+    summary: "我教你開一個 ChatGPT 專案資料夾把資料集中，讓 AI 先把一團亂拆成三層、整理成一個別人接得住的問題，附一段可直接貼的提示詞。",
+    tags: {
+      topic: ["知識管理", "AI工作流", "提示詞設計", "輔助決策", "工作流程"],
+      level: ["零基礎入門"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: "https://vocus.cc/salon/Jiang_Coach" },
+    related: ["how-to-train-your-ai-employee", "diary-driven-agent-3x4", "decision-ladder-non-programmer", "docs-as-system-design-agent", "meeting-record-agent-workflow"]
+  },
+
+  {
+    id: "vibe-coding-ten-half-products",
+    url: "articles/vibe-coding-ten-half-products/",
+    date: "2026-06-26",
+    updated: "2026-06-26",
+    title: "學了一堆 AI 工具，不知道要拿來幹嘛？：你以為在做成品，其實在養十個半成品",
+    problem: "什麼都想用 AI 做，結果手上一堆開到一半、收不了尾的專案，不知道怎麼停。",
+    audience: "還停在網頁版 AI 聊天、想試 vibe coding、或剛開始用 Agent 的人。",
+    summary: "我用一支從聊天到 Agent 的訪談短片，帶你看工具怎麼把慾望放大，再附上我自己用 AI 顧問做第一性原理收斂、把八個專案篩成三個的真實做法。",
+    tags: {
+      topic: ["AIAgent", "AI工作流", "輔助決策", "工具操作", "AI趨勢"],
+      level: ["基礎"],
+      content_type: ["觀點文章"]
+    },
+    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
+    related: ["elon-musk-live-skill", "codex-only-auto-worklog", "ai-capability-tiers", "how-ai-connects-software", "agent-workflow-builds-automation", "apple-wwdc26-siri-lobster-ai", "ai-tools-professional-judgment"]
+  },
+
+  {
+    id: "decision-ladder-non-programmer",
+    url: "articles/decision-ladder-non-programmer/",
+    date: "2026-06-24",
+    updated: "2026-06-24",
+    title: "叫 AI 講簡潔一點，它還是一堆廢話？｜Ponytail 決策階梯，不寫程式也能用",
+    problem: "AI 很愛講廢話，寫文章越寫越發散、整理資料囉嗦、請它規劃越講越大包，只說「簡潔一點」它根本照不了。",
+    audience: "每天用 AI 寫文章、整理資料、做決策但不寫程式，或正在訓練自己 AI 員工、想讓它先判斷再行動的人。",
+    summary: "我把工程師技能包 Ponytail 的「決策階梯」搬到不寫程式的場景，講清楚一條能一格一格打勾的階梯怎麼用，以及讓它真正生效的關鍵：舉證反轉。",
+    tags: {
+      topic: ["輔助決策", "技能包設計", "AI工作流", "知識管理", "提示詞設計"],
+      level: ["基礎"],
+      content_type: ["觀點文章"]
+    },
+    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: "https://vocus.cc/salon/Jiang_Coach" },
+    related: ["caught-ai-slacking-into-rules", "how-to-train-your-ai-employee", "docs-as-system-design-agent", "tidy-mess-before-consulting", "program-vs-ai-skill-library", "ai-delegators-optimism", "four-lens-rapid-review", "manage-ai-with-management-knowledge", "long-answer-three-layers", "copied-mechanism-is-no-mechanism"]
+  },
+
+  {
+    id: "how-ai-connects-software",
+    url: "articles/how-ai-connects-software/",
+    date: "2026-06-24",
+    updated: "2026-06-24",
+    title: "AI Agent 怎麼幫我們直接操作軟體？",
+    problem: "一聽到 API、CLI、MCP 就覺得很工程，搞不懂 AI Agent 到底怎麼幫你直接操作軟體、哪些事可以放心交辦。",
+    audience: "想用 AI 幫忙做事卻被名詞卡住的知識工作者，以及已經在用 Codex、Claude，想搞懂它怎麼接軟體的一人公司、主管與老闆。",
+    summary: "把 AI 接軟體的四種方式（協議直連、CLI、操作網頁、操作電腦）翻成白話，每種配上實際用 Codex 的例子，給一個判斷順序，再用 USB 比喻講清楚 MCP，最後談知識工作者可以怎麼開始用。",
+    tags: {
+      topic: ["AIAgent", "AI工作流", "工具操作", "差異比較"],
+      level: ["零基礎入門"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
+    related: ["llm-rag-agent-mcp", "questionnaire-to-slides-agent-workflow", "teacher-prep-knowledge-workflow", "how-to-train-your-ai-employee", "agent-workflow-builds-automation", "program-vs-ai-skill-library", "docs-as-system-design-agent", "vibe-coding-ten-half-products", "chatgpt-work-codex-choice", "chatgpt-work-skills-web-version", "cli-api-mcp-computer-use", "agent-native-tools-software-interface", "let-ai-do-the-setup"]
+  },
+
+  {
+    id: "codex-log-health-check",
+    url: "articles/codex-log-health-check/",
+    date: "2026-06-23",
+    updated: "2026-06-23",
+    title: "Codex 整個大當機？重安裝後第一步先檢查 logs_2.sqlite",
+    problem: "Codex Desktop 打不開、更新無效、最後只能重安裝，重裝後任務和本機工作現場也可能一起消失。",
+    audience: "每天使用 Codex Desktop 的知識工作者、講師、一人公司與 AI Agent 使用者，特別是已經把 Codex 當成日常工作台的人。",
+    summary: "用學員實際當機畫面當案例，整理 logs_2.sqlite 是什麼、出事時怎麼安全處理、怎麼設定每 3 到 5 天自動巡檢，以及如何靠工作日誌和技能包避免任務心血跟著工具故障一起不見。",
+    tags: {
+      topic: ["工具操作", "AI工作流", "AIAgent"],
+      level: ["零基礎入門"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
+    related: ["codex-only-auto-worklog", "agent-workflow-builds-automation", "how-to-train-your-ai-employee"]
+  },
+
+  {
+    id: "line-group-ai-workflow",
+    url: "articles/line-group-ai-workflow/",
+    date: "2026-06-22",
+    updated: "2026-06-22",
+    title: "散在 LINE 各群組的資料，怎麼每天自動下載歸檔",
+    problem: "團隊資料散在 LINE 群組裡，文字、圖片、PDF 和連結當下看得到，過幾天要整理時卻很難找回來。",
+    audience: "已經有 LINE 群組的課程、社群、小團隊與專案協作者，想把散在各群組的資料先收回來再交給 AI 整理的人。",
+    summary: "把散在 LINE 各群組的訊息、圖片、PDF 和檔案，用官方帳號每天自動收下來、分資料夾歸檔，再讓 Agent 整理。Mika 是示範角色。",
+    tags: {
+      topic: ["AI工作流", "AIAgent", "工具操作"],
+      level: ["零基礎入門"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
+    related: ["agent-workflow-builds-automation", "codex-only-auto-worklog", "how-to-train-your-ai-employee", "mika-to-laika-product-character-design", "messaging-apps-ai-friendliness"]
+  },
+
+  {
+    id: "how-to-train-your-ai-employee",
+    url: "articles/how-to-train-your-ai-employee/",
+    date: "2026-06-21",
+    updated: "2026-06-21",
+    title: "如何訓練自己的 AI 員工：員工＋顧問框架",
+    problem: "知道該用 AI，卻習慣自己動手操作工具；想把工作交出去，又不知道怎麼把第一個 AI 員工真的訓練出來。",
+    audience: "想把重複的行政、文書、查證交給 AI，並開始建立自己一套 AI 工作流的工作者、一人公司與創作者。",
+    summary: "一場實作工作坊的教學簡報。把 AI 當員工照你的方式幹活，再加一群顧問幫你挑盲點；從組織架構、隱性知識提煉七層，到把節點串成工作流，最後是真正最值錢的能力：判斷一個問題值多少。",
+    tags: {
+      topic: ["AIAgent", "AI工作流", "隱性知識"],
+      level: ["零基礎入門"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
+    related: ["strong-ai-models-knowledge-workflow-road", "questionnaire-to-slides-agent-workflow", "teacher-prep-knowledge-workflow", "own-ai-team-at-work", "agent-workflow-builds-automation", "line-group-ai-workflow", "elon-musk-live-skill", "codex-log-health-check", "how-ai-connects-software", "meeting-record-agent-workflow", "decision-ladder-non-programmer", "tidy-mess-before-consulting", "diary-driven-agent-3x4", "docs-as-system-design-agent", "what-is-loop-engineering", "map-is-not-the-territory", "intangible-assets-grow-by-sharing", "manage-ai-with-management-knowledge", "ai-handoff-instructions", "train-your-ai-agent-editor", "ai-that-knows-you", "personal-studio-vs-solo-company", "cli-api-mcp-computer-use", "knowledge-as-employee", "mika-to-laika-product-character-design", "agent-native-tools-software-interface", "ai-tools-professional-judgment", "answer-to-action-enterprise-ai-agent", "teach-ai-not-learn-ai", "talent-vs-expertise", "ai-employee-four-levels", "copied-mechanism-is-no-mechanism", "eight-ai-system-concepts-2026"]
+  },
+
+  {
+    id: "ai-market-microcosm",
+    url: "articles/ai-market-microcosm/",
+    date: "2026-06-20",
+    updated: "2026-06-20",
+    title: "AI 就是整個市場的縮影：在花錢做市調前，先用 AI 測反應",
+    problem: "想推新產品、新課程、新服務，又沒把握有沒有人買；做大規模市場調查又慢又貴，landing page 哪裡被誤解也看不出來。",
+    audience: "想推新產品、新課程、新服務但還沒把握有沒有人買的人；做一人公司或中小企業、沒預算大規模做市調的人；已有 landing page 想先檢查哪裡被誤解的人。",
+    summary: "AI 讀過海量真實的人寫的東西，本身就是市場的縮影。高露潔與 PyMC Labs 的研究證實，先讓 AI 寫反應再換算成分數，模擬購買意願能接近真人自我一致性的九成。附可複製提示詞與免費技能包。",
+    tags: {
+      topic: ["輔助決策", "AI工作流", "提示詞設計"],
+      level: ["零基礎入門"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
+    related: ["elon-musk-live-skill", "ai-capability-tiers"]
+  },
+
+  {
+    id: "own-ai-team-at-work",
+    url: "articles/own-ai-team-at-work/",
+    date: "2026-06-20",
+    updated: "2026-06-20",
+    title: "效率提升好幾倍，公司又不加薪，為什麼要做？：在公司上班也能有自己的 AI 團隊",
+    problem: "在公司上班，總覺得多做也沒用，想把工作變成自己的系統卻不知道從哪開始，也一直訓練不出自己的 AI。",
+    audience: "在公司上班、又想把工作做成一套系統的人，特別是有資源的中高階主管，以及想經營副業、未來自己接案的資深工作者。",
+    summary: "把自己從員工心態切換成一人公司老闆，公司是你目前唯一的長期固定客戶。同樣的事差別只在心態，而沒有這個轉換，是訓練不出自己的 AI 團隊的。",
+    tags: {
+      topic: ["AIAgent", "數位轉型"],
+      level: ["零基礎入門"],
+      content_type: ["觀點文章"]
+    },
+    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
+    related: ["codex-only-auto-worklog", "program-vs-ai-skill-library", "how-to-train-your-ai-employee", "elon-musk-live-skill", "personal-studio-vs-solo-company"]
+  },
+
+  {
+    id: "knowledge-base-three-vault-split",
+    url: "articles/knowledge-base-three-vault-split/",
+    date: "2026-06-19",
+    updated: "2026-06-19",
+    title: "知識庫太大，資料該怎麼分庫？：我改成三庫分流",
+    problem: "知識庫越長越大、全部混在一個庫，找文件要捲很久，AI 也常讀到用不到的東西、找不到該執行的程式。想拆開又不知道照什麼標準拆。",
+    audience: "知識庫越長越大、開始翻不動，想把它拆開又不知道該照什麼標準拆的人。",
+    summary: "一套可以照做的拆庫方法：別用檔案型別分，改問「這東西是誰要用的」，分成主庫（人用）、副庫（AI 執行）、對外庫（受眾），再立一條先讀檢索頁再存檔的流程，外加一個以能運作為準的例外處理。",
+    tags: {
+      topic: ["知識管理", "知識庫", "AIAgent"],
+      level: ["基礎"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: "https://vocus.cc/salon/Jiang_Coach" },
+    related: ["diary-driven-agent-3x4", "tag-wiki-method", "knowledge-os-master-map", "free-deploy-three-boundaries"]
+  },
+
+  {
+    id: "ai-king-off-battlefield",
+    url: "articles/ai-king-off-battlefield/",
+    date: "2026-06-17",
+    updated: "2026-06-17",
+    title: "AI 之王不上戰場：換個角度看蘋果、Google 與 AI 入口",
+    problem: "看 AI 發展很容易只盯著誰跑分高、誰的模型強，少了從產業結構與入口角度看趨勢的視角。",
+    audience: "常追 AI 新聞、習慣用跑分和排行榜看誰強，想拉遠一點理解 AI 趨勢的人。",
+    summary: "一個角度而非預言：把模型公司想成將軍、掌握入口的公司想成後台的王。當模型越來越商品化，真正稀缺的可能是入口。不是要你相信結論，是多一個觀察趨勢的視角。",
+    tags: {
+      topic: ["AI趨勢", "差異比較", "數位轉型"],
+      level: ["基礎"],
+      content_type: ["觀點文章"]
+    },
+    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: "https://vocus.cc/salon/Jiang_Coach" },
+    related: ["ai-capability-tiers", "company-shape-is-the-moat", "agent-native-tools-software-interface"]
+  },
+
+  {
+    id: "agent-workflow-builds-automation",
+    url: "articles/agent-workflow-builds-automation/",
+    date: "2026-06-16",
+    updated: "2026-06-16",
+    title: "所謂的 AI 自動化，到底是 AI 在跑還是程式在跑？｜我用 Agent 設一套程式自動化工作流",
+    problem: "搞不清楚「AI 自動化」到底是 AI 在跑、還是程式在跑，也不知道 AI 該插手在哪一段。",
+    audience: "想把重複工作變成會自己跑的流程、又分不清 AI 與程式分工的人。",
+    summary: "自動化要分成兩個概念看：Agent 工作流幫我把流程建起來，程式自動化工作流建好之後自己跑。用 Codex 設定 LINE 備份機器人的案例，拆解兩者的分工，並給一個判斷哪一段交給 AI、哪一段交給程式的實用框架。",
+    tags: {
+      topic: ["AI工作流", "AIAgent", "工作流程", "工具操作"],
+      level: ["基礎"],
+      content_type: ["案例文章"]
+    },
+    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
+    related: ["program-vs-ai-skill-library", "how-to-train-your-ai-employee", "line-group-ai-workflow", "codex-log-health-check", "how-ai-connects-software", "meeting-record-agent-workflow", "vibe-coding-ten-half-products", "ai-delegators-optimism", "ai-changed-behavior-into-workflow", "give-ai-choices-not-descriptions"]
+  },
+
+  {
+    id: "codex-only-auto-worklog",
+    url: "articles/codex-only-auto-worklog/",
+    date: "2026-06-16",
+    updated: "2026-06-16",
+    title: "工作日記老是忘記寫，能叫 AI 自動收集嗎？：只用 Codex 就能做到",
+    problem: "用 AI 做完一輪事，晚上卻說不清楚今天完成了什麼；工具一多，工作痕跡更散。",
+    audience: "剛開始用 Codex、想讓它幫你記錄每天工作的人，以及在猶豫要不要上跨 Agent 工作鏡子的人。",
+    summary: "只用 Codex 就用它的定時任務自動記錄；同時用多款 Agent，才需要跨 Agent 工作鏡子。附可直接複製的提示詞。",
+    tags: {
+      topic: ["AI工作流", "AIAgent", "工作流程", "知識管理"],
+      level: ["零基礎入門"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: "https://vocus.cc/salon/Jiang_Coach" },
+    related: ["questionnaire-to-slides-agent-workflow", "own-ai-team-at-work", "caught-ai-slacking-into-rules", "line-group-ai-workflow", "codex-log-health-check", "meeting-record-agent-workflow", "vibe-coding-ten-half-products"]
+  },
+
+  {
+    id: "program-vs-ai-skill-library",
+    url: "ai-trends/program-vs-ai-skill-library/",
+    date: "2026-06-15",
+    updated: "2026-06-15",
+    title: "有標準答案的交給程式，沒標準答案的才輪到 AI",
+    problem: "企業導入 AI 卡在不知道用在哪、也不知道怎麼讓 AI 真的會做公司的事。",
+    audience: "想導入 AI、又怕用錯地方的經營者與團隊負責人。",
+    summary: "用一個判斷框架把工作分成確定與不確定：確定交給程式和 ERP，不確定才輪到 AI，再把它整合成技能庫。",
+    tags: {
+      topic: ["ClaudeSkills", "技能包設計", "知識庫", "差異比較", "數位轉型"],
+      level: ["進階"],
+      content_type: ["觀點文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["own-ai-team-at-work", "agent-workflow-builds-automation", "how-ai-connects-software", "decision-ladder-non-programmer", "chatgpt-work-codex-choice", "ai-cp-value-calculus", "ai-employee-four-levels", "cognitive-debt", "same-question-different-answers"]
+  },
+
+  {
+    id: "youtube-to-opinion-report-workflow",
+    url: "articles/youtube-to-opinion-report-workflow/",
+    date: "2026-06-14",
+    updated: "2026-06-14",
+    title: "影片看完就忘了，怎麼變成用得上的東西？｜把一支 YouTube 變成觀點報告網頁",
+    problem: "影片看完後很難沉澱成報告、教案與可重複工作流。",
+    audience: "內容創作者、講師、知識工作者，以及想示範 Agent 工作流的新手。",
+    summary: "完整示範把 YouTube 影片變成觀點報告網頁：NotebookLM 轉逐字稿、桌面型 Agent 本機整理、設計技能包排版，加上交任務、驗收、沉澱技能包的思考方式。",
+    tags: {
+      topic: ["AI工作流", "工具操作", "技能包設計"],
+      level: ["基礎"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["notebooklm-knowledge-analysis-assistant", "web-chat-ai-vs-desktop-agent"]
+  },
+
+  {
+    id: "spacex-ipo-musk-trillionaire-knowledge-work",
+    url: "ai-trends/spacex-ipo-musk-trillionaire-knowledge-work/",
+    date: "2026-06-13",
+    updated: "2026-06-13",
+    title: "世界首富用一兆美金，替知識工作者指出的那條路",
+    problem: "執行被自動化後，知識工作者還剩下什麼價值、該守住什麼。",
+    audience: "擔心工作被 AI 取代、想找到不可替代位置的知識工作者。",
+    summary: "從 SpaceX 上市與招股書「自動化知識工作」，看執行被自動化後，該守住的判斷與該做的知識庫。",
+    tags: {
+      topic: ["AI趨勢", "知識管理"],
+      level: ["基礎"],
+      content_type: ["趨勢文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["elon-musk-live-skill", "ai-capability-tiers", "company-shape-is-the-moat"]
+  },
+
+  {
+    id: "apple-wwdc26-siri-lobster-ai",
+    url: "ai-trends/apple-wwdc26-siri-lobster-ai/",
+    date: "2026-06-09",
+    updated: "2026-06-09",
+    title: "蘋果的 Siri 終於要往「龍蝦 AI」進化了",
+    problem: "各家大廠都把助理推向能讀介面、叫工具、串 App 完成任務，這對個人工作流代表什麼。",
+    audience: "想跟上 AI 助理形態變化、調整自己工作流的人。",
+    summary: "從 WWDC26 看 Apple Intelligence、App Intents 到 Xcode agents，判讀助理正在變成會自己動手的形態。",
+    tags: {
+      topic: ["AI趨勢", "AIAgent"],
+      level: ["基礎"],
+      content_type: ["趨勢文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["ai-capability-tiers", "vibe-coding-ten-half-products"]
+  },
+
+  {
+    id: "demis-hassabis-agi-science-ai",
+    url: "ai-trends/demis-hassabis-agi-science-ai/",
+    date: "2026-06-09",
+    updated: "2026-06-09",
+    title: "AGI 山腳下，真正被改寫的是稀缺時代的規則",
+    problem: "AGI 與後稀缺時代，個人與組織的知識管理規則會怎麼變。",
+    audience: "想提前看懂 AI 長期趨勢、為知識資產佈局的人。",
+    summary: "從 Stanford GSB 對談出發，看 AGI、後稀缺、智能與意識分離，如何改寫 AI 知識管理與 AI 員工。",
+    tags: {
+      topic: ["AI趨勢", "知識管理"],
+      level: ["基礎"],
+      content_type: ["趨勢文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["ai-capability-tiers", "agi-work-and-discovery"]
+  },
+
+  {
+    id: "caught-ai-slacking-into-rules",
+    url: "articles/caught-ai-slacking-into-rules/",
+    date: "2026-06-08",
+    updated: "2026-06-08",
+    title: "AI 寫的東西我怎麼確認它是對的？：抓到 AI 偷懶之後，我把它寫進流程規則",
+    problem: "AI 可能沒有執行外部動作，卻用一個看起來完成任務的回答蓋過去，你不確定它有沒有真的照流程做事。",
+    audience: "已經開始用 ChatGPT、Codex、Claude、Gemini 分工，常叫 AI 去查、去叫另一個模型、幫我記住的人。",
+    summary: "我叫 Codex 請 Claude 修文，它沒真的叫卻回了一版像完成的答案。復盤怎麼追問 AI 有沒有真的執行外部動作，並把踩坑寫成規則。附可直接複製的檢查句。",
+    tags: {
+      topic: ["AIAgent", "AI工作流", "工作流程"],
+      level: ["基礎"],
+      content_type: ["案例文章"]
+    },
+    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: "https://vocus.cc/salon/Jiang_Coach" },
+    related: ["codex-only-auto-worklog", "decision-ladder-non-programmer", "publish-gate", "session-messaging-reminder-layer", "cognitive-debt", "start-with-a-wrong-draft", "ai-said-it-watched-the-video", "cross-ai-review-both-wrong"]
+  },
+
+  {
+    id: "yongli-ai-workshop-tools-to-workflow",
+    url: "articles/yongli-ai-workshop-tools-to-workflow/",
+    date: "2026-05-30",
+    updated: "2026-05-30",
+    title: "商會一日 AI 工作坊：從工具理解到工作流程與知識庫",
+    problem: "企業 AI 課程容易停在工具展示，學員不知道怎麼回到日常工作與知識庫。",
+    audience: "商會、中小企業主、內訓規劃者，以及想把 AI 導入工作流程的人。",
+    summary: "一場商會一日 AI 工作坊的完整記錄：從拆掉工具焦慮、認識 AI 邊界，到 ChatGPT 專案、NotebookLM、桌面型 Agent 與技能包，帶企業主把 AI 放進真實工作流程。",
+    tags: {
+      topic: ["AI工作流", "工具操作", "知識庫", "數位轉型"],
+      level: ["零基礎入門"],
+      content_type: ["案例文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["web-chat-ai-vs-desktop-agent", "claude-skills-knowledge-assets"]
+  },
+
+  {
+    id: "diary-driven-agent-3x4",
+    url: "articles/diary-driven-agent-3x4/",
+    date: "2026-05-28",
+    updated: "2026-05-28",
+    title: "寫日記，就讓 AI 乖乖幫你做事：3X4 資料整理法",
+    problem: "想建知識庫卻不知從哪開始，AI 老是抓不到自己的重點。",
+    audience: "已經在用 AI 卻覺得它抓不到重點、想建知識庫卻不知從何下手的一人公司、自由工作者、創業者。",
+    summary: "我用自己在用的 3X4 資料整理法，三種日記決定寫什麼、四種時效決定放哪裡，帶你把散亂資料整理成任何一家 AI 都讀得懂的知識庫，不用寫程式。",
+    tags: {
+      topic: ["知識管理", "知識庫", "AIAgent", "隱性知識", "AI工作流"],
+      level: ["零基礎入門"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: "https://vocus.cc/salon/Jiang_Coach" },
+    related: ["questionnaire-to-slides-agent-workflow", "teacher-prep-knowledge-workflow", "docs-as-system-design-agent", "how-to-train-your-ai-employee", "knowledge-base-three-vault-split", "tidy-mess-before-consulting", "meeting-record-agent-workflow", "inspiration-production-system", "why-split-data-into-cards"]
+  },
+
+  {
+    id: "teacher-prep-knowledge-workflow",
+    url: "articles/teacher-prep-knowledge-workflow/",
+    date: "2026-05-23",
+    updated: "2026-05-23",
+    title: "講師如何用知識管理流程，把備課變成可複用系統",
+    problem: "講師平常累積很多素材、靈感和學員問題，但真正要備課時仍然常從零開始，課後資料也沒有回到下一次流程。",
+    audience: "講師、顧問、老師、內容創作者，以及想把課程、簡報與課後整理變成可複用系統的知識工作者。",
+    summary: "從「講師的 Agent 工作流」整理出八階段知識管理流程：找資料、靈感池、課前問卷、開課前推廣、備課、交付品、課後再製、跨課程複用，讓每次上課都餵養下一次。",
+    tags: {
+      topic: ["知識管理", "AI工作流", "AIAgent", "知識庫"],
+      level: ["基礎"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["questionnaire-to-slides-agent-workflow", "how-to-train-your-ai-employee", "how-ai-connects-software", "docs-as-system-design-agent", "diary-driven-agent-3x4", "what-is-loop-engineering", "tag-wiki-method", "train-your-ai-agent-editor", "answer-in-person-or-ai"]
+  },
+
+  {
+    id: "relationship-boundary-ai-practice",
+    url: "articles/relationship-boundary-ai-practice/",
+    date: "2026-05-20",
+    updated: "2026-05-20",
+    title: "用 AI 練習課題分離、責任歸還與情緒回應",
+    problem: "關係溝通裡的情緒、責任與界線常混在一起，讓人不知道怎麼回應。",
+    audience: "想用 AI 做低風險溝通練習、理解課題分離與責任歸還的人。",
+    summary: "關係不內耗練習課完整整理：課題分離與責任歸還的引導方法、冷分析與熱陪伴兩種 AI 練習模式、視角翻譯與抗拒應對，以及最重要的紅線清單。AI 是練習場，不是心理治療。",
+    tags: {
+      topic: ["輔助決策", "提示詞設計", "AI工作流"],
+      level: ["零基礎入門"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["parenting-story-ai-family-dialogue", "semantic-rules-before-prompt-templates"]
+  },
+
+  {
+    id: "web-chat-ai-vs-desktop-agent",
+    url: "articles/web-chat-ai-vs-desktop-agent/",
+    date: "2026-05-11",
+    updated: "2026-05-11",
+    title: "桌面版和開發者版差在哪？：網頁聊天型 AI 與桌面幹活型 AI 的分界（Codex）",
+    problem: "新手常把所有 AI 都當聊天框，不知道桌面型 Agent 可以直接接工作流程。",
+    audience: "剛開始分辨 AI 工具的人，以及想教新手理解 Codex 的講師。",
+    summary: "用新手聽得懂的方式分清聊天型 AI、網頁工具與桌面型 Agent：專案模式的三個痛點、桌面版的範式轉變、Codex 與三層分工工作流，文科生不用寫程式也能上手。",
+    tags: {
+      topic: ["差異比較", "AIAgent", "工具操作", "AI工作流"],
+      level: ["零基礎入門"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["youtube-to-opinion-report-workflow", "liberal-arts-agent-framework", "train-your-ai-agent-editor", "chatgpt-work-codex-choice", "mac-for-agent-beginners", "ai-employee-four-levels", "messaging-apps-ai-friendliness", "ai-said-it-watched-the-video", "ai-era-websites-for-agents"]
+  },
+
+  {
+    id: "books-videos-pdf-ai-advisor",
+    url: "articles/books-videos-pdf-ai-advisor/",
+    date: "2026-05-03",
+    updated: "2026-05-03",
+    title: "把書、影片、PDF 轉成可對話的 AI 顧問",
+    problem: "書、影片與 PDF 常被摘要完就放著，沒有轉成能追問與協助判斷的顧問系統。",
+    audience: "想把外部資料變成可對話顧問、正在設計人格技能包的人。",
+    summary: "把外部材料變成能追問的 AI 顧問完整方法：整理來源、萃取思維框架、寫顧問設定、驗證契合度。以把 Naval 的書與訪談做成數位分身為真實案例。",
+    tags: {
+      topic: ["知識管理", "AIAgent", "技能包設計", "輔助決策"],
+      level: ["基礎"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["notebooklm-knowledge-analysis-assistant", "youtube-to-opinion-report-workflow", "why-split-data-into-cards", "book-to-ai-consultant"]
+  },
+
+  {
+    id: "liberal-arts-agent-framework",
+    url: "articles/liberal-arts-agent-framework/",
+    date: "2026-04-20",
+    updated: "2026-04-20",
+    title: "現在還需要學寫程式嗎？：文科生也能設計自己的 Agent 框架",
+    problem: "文科背景的人常以為 Agent 框架只能從工程語法開始學。",
+    audience: "文科背景知識工作者、講師，以及想把個人知識庫變成 AI 工作系統的人。",
+    summary: "給文科生的 Agent 框架設計通識課：駕馭工程三件事、迴圈工程與三種日記、LLM Wiki 知識圖譜與 Tag Wiki 標籤系統，不寫程式也能讓 AI 接手工作。",
+    tags: {
+      topic: ["AIAgent", "知識管理", "知識庫", "AI工作流"],
+      level: ["基礎"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["what-is-loop-engineering", "loop-engineering-guardrails", "web-chat-ai-vs-desktop-agent", "book-to-ai-consultant"]
+  },
+
+  {
+    id: "ai-learning-map-reduce-anxiety",
+    url: "articles/ai-learning-map-reduce-anxiety/",
+    date: "2026-03-29",
+    updated: "2026-03-29",
+    title: "AI 資訊太多，下一步怎麼辦？：一張可追蹤的學習地圖降低焦慮",
+    problem: "AI 資訊太多，學習者容易一直收藏資源，卻不知道下一步。",
+    audience: "正在學 AI 的新手、課程設計者，以及想建立技能樹的人。",
+    summary: "收藏夾存了一堆「以後再看」？用 Agent 把散落各處的學習資料整理成看得見的學習地圖：技能樹、學習履歷、個人設定檔，三層架構含老師教案與排班系統案例。",
+    tags: {
+      topic: ["知識管理", "AIAgent", "工作流程"],
+      level: ["零基礎入門"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["ai-course-map-from-entry-to-workflow", "ai-data-organization-usable-system", "one-on-one-questions"]
+  },
+
+  {
+    id: "ai-course-map-from-entry-to-workflow",
+    url: "articles/ai-course-map-from-entry-to-workflow/",
+    date: "2026-03-20",
+    updated: "2026-03-20",
+    title: "不知道該從哪一堂課開始上？｜江江教練 AI 課程地圖，從入門到工作流",
+    problem: "AI 課程如果只看單堂主題，學員很難知道每一堂課如何連成能力路線。",
+    audience: "想理解江江教練課程系統的新學員，以及規劃 AI 課程地圖的教學者。",
+    summary: "一張垂直結構的 AI 課程地圖：地基層 Agent 導入、往上套用現成工作流、往下深挖資料整理、隱性知識與語意工程三條線，終點是 Agent 一人公司營運團隊。",
+    tags: {
+      topic: ["AI工作流", "知識管理", "技能包設計"],
+      level: ["零基礎入門"],
+      content_type: ["觀點文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["ai-learning-map-reduce-anxiety", "claude-skills-knowledge-assets", "ai-that-knows-you", "one-on-one-questions"]
+  },
+
+  {
+    id: "ai-data-organization-usable-system",
+    url: "articles/ai-data-organization-usable-system/",
+    date: "2026-03-09",
+    updated: "2026-03-09",
+    title: "AI 時代怎麼整理資料，讓文件變成可用的系統",
+    problem: "文件很多但找不到、接不上工作流，AI 也無法穩定讀懂。",
+    audience: "剛開始整理知識庫、想讓 AI 能使用自己資料的人。",
+    summary: "整理 AI 時代資料整理基礎班的完整方法：用 Markdown 四個語法、卡片化、連結與受控詞彙，把文件變成人和 AI 都能用的系統，包含可直接複製的提示詞。",
+    tags: {
+      topic: ["知識管理", "知識庫", "AIAgent"],
+      level: ["零基礎入門"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["semantic-rules-before-prompt-templates", "notebooklm-knowledge-analysis-assistant", "claude-skills-knowledge-assets", "why-split-data-into-cards", "long-answer-three-layers"]
+  },
+
+  {
+    id: "claude-skills-knowledge-assets",
+    url: "articles/claude-skills-knowledge-assets/",
+    date: "2026-02-28",
+    updated: "2026-02-28",
+    title: "Claude Skills 是什麼？把你的專業流程，變成 AI 能重複執行的知識資產",
+    problem: "很多工作流程只留在一次對話裡，下一次 AI 仍然要重新學。",
+    audience: "第一次聽到 Claude Skills、想把固定流程沉澱成知識資產的人。",
+    summary: "用 Claude Skills 理解技能包：它是給 AI 看的操作手冊，把你的專業流程、格式標準、最佳狀態封裝成可重複執行的知識資產。含兩種製作方法與備份要點。",
+    tags: {
+      topic: ["ClaudeSkills", "技能包設計", "知識管理"],
+      level: ["零基礎入門"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["semantic-rules-before-prompt-templates", "ai-data-organization-usable-system", "manage-ai-with-management-knowledge", "chatgpt-work-skills-web-version", "old-prompts-intent-first-loop-engineering", "ai-employee-four-levels", "use-more-ai-not-enough"]
+  },
+
+  {
+    id: "semantic-rules-before-prompt-templates",
+    url: "articles/semantic-rules-before-prompt-templates/",
+    date: "2026-01-24",
+    updated: "2026-01-24",
+    title: "提示詞模板為什麼時好時壞？先懂 AI 是強一億倍的手機輸入法",
+    problem: "只背提示詞模板時，遇到任務變形就容易讓模型誤解。",
+    audience: "想理解提示詞底層邏輯、正在建立知識庫與工作規則的人。",
+    summary: "提示詞設計的底層原理：AI 是詞語關聯的計算機，像強一億倍的手機輸入法。從課題分離的三步修正、角色設定的限制到負向提示詞的陷阱，先懂語意再套模板。",
+    tags: {
+      topic: ["提示詞設計", "隱性知識", "知識管理"],
+      level: ["基礎"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["ai-data-organization-usable-system", "claude-skills-knowledge-assets", "ai-that-knows-you", "chatgpt-work-skills-web-version", "build-your-own-dictionary", "character-costume-sheet-three-views"]
+  },
+
+  {
+    id: "notebooklm-knowledge-analysis-assistant",
+    url: "articles/notebooklm-knowledge-analysis-assistant/",
+    date: "2026-01-04",
+    updated: "2026-01-04",
+    title: "NotebookLM 怎麼從資料整理工具變成知識分析助理",
+    problem: "NotebookLM 常被拿來摘要資料，卻沒有用來追問、比對與找盲點。",
+    audience: "剛開始使用 NotebookLM，想建立可追問知識庫的人。",
+    summary: "NotebookLM 應用大全：從讓 AI 摘要，進化到讓報告來讀你。個人檔案設定、多來源知識庫、跨領域課綱合作案例，加上 PDF 陷阱與 Markdown 內容邊界兩個整理技巧。",
+    tags: {
+      topic: ["知識管理", "工具操作", "輔助決策"],
+      level: ["零基礎入門"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["youtube-to-opinion-report-workflow", "books-videos-pdf-ai-advisor"]
+  },
+
+  {
+    id: "ai-mvp-validation-before-product",
+    url: "articles/ai-mvp-validation-before-product/",
+    date: "2025-09-10",
+    updated: "2025-09-10",
+    title: "花大錢做產品前，先用 AI 驗證創業點子",
+    problem: "很多創業點子還沒驗證真實需求，就先投入產品、課程或服務開發。",
+    audience: "有產品或課程點子、正在規劃 MVP 或前期市場驗證的人。",
+    summary: "客戶都說很棒但就是不買單？用真實需求調查法加 AI 顧問驗證創業點子：三大提問心法、VJPD 框架、承諾訊號評分，先驗證需求再投入產品開發。",
+    tags: {
+      topic: ["輔助決策", "AI工作流", "提示詞設計"],
+      level: ["零基礎入門"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["ai-market-microcosm", "personal-studio-vs-solo-company"]
+  }
 ];
