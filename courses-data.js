@@ -144,8 +144,10 @@ window.COURSES = [
     tags: ["公共藝術", "淡海輕軌", "敘事轉譯", "AI生圖", "在地故事", "零基礎"],
     summary: "《藝術流》2026 新北市公共藝術推廣計畫的藍海線場。9/12（六）09:30 淡水漁人碼頭站集合，上午跟著旅學堂走讀淡海輕軌沿線的公共藝術，下午用導覽、敘事、AI 生成三段接起來，把整天聽到的故事做成一張以自己為主角的電影海報。一支手機就可以參加，不用先會用 AI。",
     detail_url: "courses/2026-09-12-danhai-public-art/",
-    detail_label: "課程預告與上一場成果 ↗",
-    materials: [],
+    detail_label: "上課簡報與課程預告 ↗",
+    materials: [
+      { label: "三站場景照片複製區", url: "https://jiangyude.com/courses/2026-09-12-danhai-public-art/scenes/" }
+    ],
     registration: {
       status: "open",
       url: "https://www.accupass.com/go/artflow",
