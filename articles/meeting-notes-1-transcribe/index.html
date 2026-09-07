@@ -4,11 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="index,follow">
-<title>開會錄音要怎麼變成文字，一定要花錢或上傳嗎｜九種本機配置實測，內建的比付費的快 8 倍</title>
+<title>客戶的會議錄音，可以丟到網路上轉文字嗎？｜九種本機配置全離線實測，最快 4.6 秒跑完六分半</title>
 <meta name="description" content="同一段 6 分 46 秒的真實會議錄音，我在自己的 Mac 上跑了八種語音辨識配置，從免費開源的 Vibe、whisper.cpp，到我付費買的 MacWhisper，再到本機跑的 Qwen3-ASR。全部離線，沒有任何">
 <link rel="canonical" href="https://jiangyude.com/articles/meeting-notes-1-transcribe/">
 <meta property="og:type" content="article">
-<meta property="og:title" content="開會錄音要怎麼變成文字，一定要花錢或上傳嗎｜九種本機配置實測，內建的比付費的快 8 倍｜江江教練">
+<meta property="og:title" content="客戶的會議錄音，可以丟到網路上轉文字嗎？｜九種本機配置全離線實測，最快 4.6 秒跑完六分半｜江江教練">
 <!-- 分享封面：hero 文字填好後在 repo 根目錄跑 `node scripts/og-shot.mjs meeting-notes-1-transcribe` 自動截 1200×630 到 images/og/meeting-notes-1-transcribe.jpg（見 README「文章分享封面（OG 圖）機制」）。別退回 intro-jiang.png 直式人像，會被裁成只剩脖子。 -->
 <meta property="og:image" content="https://jiangyude.com/images/og/meeting-notes-1-transcribe.jpg">
 <meta property="og:description" content="同一段 6 分 46 秒的真實會議錄音，我在自己的 Mac 上跑了八種語音辨識配置，從免費開源的 Vibe、whisper.cpp，到我付費買的 MacWhisper，再到本機跑的 Qwen3-ASR。全部離線，沒有任何">
@@ -16,10 +16,10 @@
 <meta property="og:locale" content="zh_TW">
 <meta property="og:site_name" content="江江教練 · AI 知識管理">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="開會錄音要怎麼變成文字，一定要花錢或上傳嗎｜九種本機配置實測，內建的比付費的快 8 倍｜江江教練">
+<meta name="twitter:title" content="客戶的會議錄音，可以丟到網路上轉文字嗎？｜九種本機配置全離線實測，最快 4.6 秒跑完六分半｜江江教練">
 <meta name="twitter:image" content="https://jiangyude.com/images/og/meeting-notes-1-transcribe.jpg">
 <meta name="twitter:description" content="同一段 6 分 46 秒的真實會議錄音，我在自己的 Mac 上跑了八種語音辨識配置，從免費開源的 Vibe、whisper.cpp，到我付費買的 MacWhisper，再到本機跑的 Qwen3-ASR。全部離線，沒有任何">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"開會錄音要怎麼變成文字，一定要花錢或上傳嗎｜九種本機配置實測，內建的比付費的快 8 倍","description":"同一段 6 分 46 秒的真實會議錄音，我在自己的 Mac 上跑了八種語音辨識配置，從免費開源的 Vibe、whisper.cpp，到我付費買的 MacWhisper，再到本機跑的 Qwen3-ASR。全部離線，沒有任何","author":{"@type":"Person","name":"江昱德","alternateName":"江江教練","jobTitle":"隱性知識提煉師、AI 應用規劃師"},"isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://jiangyude.com/"},"inLanguage":"zh-Hant","url":"https://jiangyude.com/articles/meeting-notes-1-transcribe/"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"客戶的會議錄音，可以丟到網路上轉文字嗎？｜九種本機配置全離線實測，最快 4.6 秒跑完六分半","description":"同一段 6 分 46 秒的真實會議錄音，我在自己的 Mac 上跑了八種語音辨識配置，從免費開源的 Vibe、whisper.cpp，到我付費買的 MacWhisper，再到本機跑的 Qwen3-ASR。全部離線，沒有任何","author":{"@type":"Person","name":"江昱德","alternateName":"江江教練","jobTitle":"隱性知識提煉師、AI 應用規劃師"},"isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://jiangyude.com/"},"inLanguage":"zh-Hant","url":"https://jiangyude.com/articles/meeting-notes-1-transcribe/"}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
@@ -175,7 +175,7 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
   <div>
     <div class="kicker">會議記錄三部曲 · 第一篇</div>
     <p class="article-date" style="margin:0 0 6px;font-size:14px;line-height:1.6;color:#6a635a;">發佈 2026-09-05 ｜ 最後更新 2026-09-05</p>
-    <h1>開會錄音要怎麼變成文字，一定要花錢或上傳嗎｜九種本機配置實測，內建的比付費的快 8 倍</h1>
+    <h1>客戶的會議錄音，可以丟到網路上轉文字嗎？｜九種本機配置全離線實測，最快 4.6 秒跑完六分半</h1>
     <p>同一段 6 分 46 秒的真實會議錄音，我在自己的 Mac 上跑了九種語音辨識配置，從 macOS 內建、免費開源的 Vibe 與 whisper.cpp，到我付費買的 MacWhisper，再到本機跑的 Qwen3-ASR。全部離線，沒有任何一秒音訊離開電腦。這篇把速度、辨識品質、安裝過程、還有我自己的技能包怎麼派工這件事，全部攤開。</p>
     <p>先講結論：最快的那個你已經有了，不用裝、不用付錢。但它有一個缺點，而那個缺點正是我後面要花整條工作流去解的東西。</p>
   </div>
