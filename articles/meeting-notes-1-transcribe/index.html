@@ -4,11 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="index,follow">
-<title>開會錄音要怎麼變成文字，一定要花錢或上傳嗎｜八種本機配置實測，免費的比付費的快</title>
+<title>開會錄音要怎麼變成文字，一定要花錢或上傳嗎｜九種本機配置實測，內建的比付費的快 8 倍</title>
 <meta name="description" content="同一段 6 分 46 秒的真實會議錄音，我在自己的 Mac 上跑了八種語音辨識配置，從免費開源的 Vibe、whisper.cpp，到我付費買的 MacWhisper，再到本機跑的 Qwen3-ASR。全部離線，沒有任何">
 <link rel="canonical" href="https://jiangyude.com/articles/meeting-notes-1-transcribe/">
 <meta property="og:type" content="article">
-<meta property="og:title" content="開會錄音要怎麼變成文字，一定要花錢或上傳嗎｜八種本機配置實測，免費的比付費的快｜江江教練">
+<meta property="og:title" content="開會錄音要怎麼變成文字，一定要花錢或上傳嗎｜九種本機配置實測，內建的比付費的快 8 倍｜江江教練">
 <!-- 分享封面：hero 文字填好後在 repo 根目錄跑 `node scripts/og-shot.mjs meeting-notes-1-transcribe` 自動截 1200×630 到 images/og/meeting-notes-1-transcribe.jpg（見 README「文章分享封面（OG 圖）機制」）。別退回 intro-jiang.png 直式人像，會被裁成只剩脖子。 -->
 <meta property="og:image" content="https://jiangyude.com/images/og/meeting-notes-1-transcribe.jpg">
 <meta property="og:description" content="同一段 6 分 46 秒的真實會議錄音，我在自己的 Mac 上跑了八種語音辨識配置，從免費開源的 Vibe、whisper.cpp，到我付費買的 MacWhisper，再到本機跑的 Qwen3-ASR。全部離線，沒有任何">
@@ -16,10 +16,10 @@
 <meta property="og:locale" content="zh_TW">
 <meta property="og:site_name" content="江江教練 · AI 知識管理">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="開會錄音要怎麼變成文字，一定要花錢或上傳嗎｜八種本機配置實測，免費的比付費的快｜江江教練">
+<meta name="twitter:title" content="開會錄音要怎麼變成文字，一定要花錢或上傳嗎｜九種本機配置實測，內建的比付費的快 8 倍｜江江教練">
 <meta name="twitter:image" content="https://jiangyude.com/images/og/meeting-notes-1-transcribe.jpg">
 <meta name="twitter:description" content="同一段 6 分 46 秒的真實會議錄音，我在自己的 Mac 上跑了八種語音辨識配置，從免費開源的 Vibe、whisper.cpp，到我付費買的 MacWhisper，再到本機跑的 Qwen3-ASR。全部離線，沒有任何">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"開會錄音要怎麼變成文字，一定要花錢或上傳嗎｜八種本機配置實測，免費的比付費的快","description":"同一段 6 分 46 秒的真實會議錄音，我在自己的 Mac 上跑了八種語音辨識配置，從免費開源的 Vibe、whisper.cpp，到我付費買的 MacWhisper，再到本機跑的 Qwen3-ASR。全部離線，沒有任何","author":{"@type":"Person","name":"江昱德","alternateName":"江江教練","jobTitle":"隱性知識提煉師、AI 應用規劃師"},"isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://jiangyude.com/"},"inLanguage":"zh-Hant","url":"https://jiangyude.com/articles/meeting-notes-1-transcribe/"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"開會錄音要怎麼變成文字，一定要花錢或上傳嗎｜九種本機配置實測，內建的比付費的快 8 倍","description":"同一段 6 分 46 秒的真實會議錄音，我在自己的 Mac 上跑了八種語音辨識配置，從免費開源的 Vibe、whisper.cpp，到我付費買的 MacWhisper，再到本機跑的 Qwen3-ASR。全部離線，沒有任何","author":{"@type":"Person","name":"江昱德","alternateName":"江江教練","jobTitle":"隱性知識提煉師、AI 應用規劃師"},"isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://jiangyude.com/"},"inLanguage":"zh-Hant","url":"https://jiangyude.com/articles/meeting-notes-1-transcribe/"}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
@@ -175,8 +175,9 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
   <div>
     <div class="kicker">會議記錄三部曲 · 第一篇</div>
     <p class="article-date" style="margin:0 0 6px;font-size:14px;line-height:1.6;color:#6a635a;">發佈 2026-09-05 ｜ 最後更新 2026-09-05</p>
-    <h1>開會錄音要怎麼變成文字，一定要花錢或上傳嗎｜八種本機配置實測，免費的比付費的快</h1>
-    <p>同一段 6 分 46 秒的真實會議錄音，我在自己的 Mac 上跑了八種語音辨識配置，從免費開源的 Vibe、whisper.cpp，到我付費買的 MacWhisper，再到本機跑的 Qwen3-ASR。全部離線，沒有任何一秒音訊離開電腦。這篇把速度、辨識品質、安裝過程、還有我自己的技能包怎麼派工這件事，全部攤開。</p>
+    <h1>開會錄音要怎麼變成文字，一定要花錢或上傳嗎｜九種本機配置實測，內建的比付費的快 8 倍</h1>
+    <p>同一段 6 分 46 秒的真實會議錄音，我在自己的 Mac 上跑了九種語音辨識配置，從 macOS 內建、免費開源的 Vibe 與 whisper.cpp，到我付費買的 MacWhisper，再到本機跑的 Qwen3-ASR。全部離線，沒有任何一秒音訊離開電腦。這篇把速度、辨識品質、安裝過程、還有我自己的技能包怎麼派工這件事，全部攤開。</p>
+    <p>先講結論：最快的那個你已經有了，不用裝、不用付錢。但它有一個缺點，而那個缺點正是我後面要花整條工作流去解的東西。</p>
   </div>
 </section>
 
@@ -187,18 +188,33 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
     <p class="lead">同一段 6 分 46 秒的真實會議錄音，我在自己的 Mac 上跑了八種語音辨識配置，從免費開源的 Vibe、whisper.cpp，到我付費買的 MacWhisper，再到本機跑的 Qwen3-ASR。全部離線，沒有任何一秒音訊離開電腦。這篇把速度、辨識品質、安裝過程、還有我自己的技能包怎麼派工這件事，全部攤開。</p>
     <div class="duo stack">
       <div class="card a"><b>適合誰</b><ul><li>開完會手機裡一堆錄音，從來沒打開過，因為不知道怎麼變成文字</li><li>聽說轉文字要付費或要上傳雲端，客戶的會議錄音不敢傳出去</li><li>裝過某個免費工具，跳出「來自未識別的開發者」就放棄了</li><li>你們是平起平坐一起做事的關係，會議是討論不是交辦，錄音是為了事後對帳不是為了考核誰</li></ul></div>
-      <div class="card b"><b>你可以帶走什麼</b><ul><li>八種配置的速度與品質對照表，直接看哪個適合你</li><li>三個跟直覺相反的實測結論，其中一個會讓你少走網路教學的冤枉路</li><li>一套安裝步驟，四步，最後一步是學員最容易卡住的地方</li><li>我自己怎麼用技能包把「該用哪個工具」這個判斷寫死，以及這條路上踩過的三個雷</li></ul></div>
+      <div class="card b"><b>你可以帶走什麼</b><ul><li>一條你可能什麼都不用裝就能走的路，以及它的門檻在哪</li>
+<li>九種配置的速度與品質對照表，直接看哪個適合你</li><li>三個跟直覺相反的實測結論，其中一個會讓你少走網路教學的冤枉路</li><li>一套安裝步驟，四步，最後一步是學員最容易卡住的地方</li><li>我自己怎麼用技能包把「該用哪個工具」這個判斷寫死，以及這條路上踩過的三個雷</li>
+<li>為什麼我最後不用單一工具，改成讓三個引擎自己跑完</li></ul></div>
     </div>
   </div>
 </section>
 
 <section class="section">
   <div class="inner">
-    <h2>一段錄音，八種跑法</h2>
+    <h2>先講最簡單的：你可能什麼都不用裝</h2>
+    <p>這篇後面有九種配置的實測數字，但我要先講一件更前面的事，因為它是我最常推薦給人的做法。</p>
+    <p>如果你用的是 iPhone 12 以上，或是 M1 以上的 Mac，語音備忘錄本身就會轉逐字稿。不用裝東西、不用下載模型、不用付錢。開會錄完，點開那支錄音，文字就在那裡。</p>
+    <p>這裡有一個很多人搞混的地方：這個轉文字功能不需要 Apple Intelligence。Apple Intelligence 是拿來做摘要跟改寫的，那個才要 iPhone 15 Pro 以上。單純的轉文字從 iOS 18、macOS 15 就有了，iPhone 12 就能用。Mac 端要 Apple silicon，Intel 的 Mac 不支援。</p>
+    <p>如果你不是蘋果的裝置，第二簡單的是把音檔丟進 Google 的 NotebookLM，它接受 MP3 和 M4A，匯入的時候就轉好了。免費版每個來源上限 200MB 或 50 萬字。</p>
+    <p>這兩條路都有同一個缺點：沒有講者。它給你一整片文字，不告訴你哪句話是誰說的。而且你得自己開 App、自己複製、自己貼到要用的地方。</p>
+    <p>還有一個差別更重要。NotebookLM 消費者版，你一旦送出回饋，上傳的內容可能連同被人工審查；只有合資格的 Workspace 帳號才保證不審查、不拿去訓練。所以自己的會議可以丟，客戶的錄音我不會丟。這也是我後面花這麼多篇幅講本機方案的原因。</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>一段錄音，九種跑法</h2>
     <p>素材是 2026 年 9 月 3 日花東參訪第二天早上，車上的晨間會議。405 秒，兩到三個人講話，有專有名詞（合作對象的名字、地名），有口語重複。我選它是因為同一段錄音已經有一份人工校對過的清理稿，可以當正確答案來比。</p>
     <p>機器是 Apple M2 Pro、16GB 記憶體。每個配置單獨跑、單獨計時，跑的時候沒有其他運算任務搶資源。</p>
-    <div class="tablewrap"><table><thead><tr><th>配置</th><th>耗時</th><th>換算實時倍速</th><th>與清理稿相似度</th></tr></thead><tbody><tr><td>whisper.cpp small</td><td>17 秒</td><td>23.8 倍</td><td>83.8%</td></tr><tr><td>whisper.cpp large-v3-turbo</td><td>24 秒</td><td>16.9 倍</td><td>89.2%</td></tr><tr><td>whisper.cpp medium</td><td>36 秒</td><td>11.2 倍</td><td>91.5%</td></tr><tr><td>whisper.cpp medium 加繁體提示</td><td>37 秒</td><td>10.9 倍</td><td>87.9%</td></tr><tr><td>MacWhisper large-v3 含講者分離（付費）</td><td>38 秒</td><td>10.7 倍</td><td>85.5%</td></tr><tr><td>Vibe 原生 CLI 用 turbo</td><td>39 秒</td><td>10.4 倍</td><td>88.1%</td></tr><tr><td>whisper.cpp large-v1</td><td>60 秒</td><td>6.8 倍</td><td>94.9%</td></tr><tr><td>Qwen3-ASR 1.7B</td><td>138 秒</td><td>2.9 倍</td><td>84.7%</td></tr></tbody></table></div>
-    <p>換算成你會遇到的情境：一小時的會議錄音，用免費的 large-v3-turbo，三分半跑完。</p>
+    <div class="tablewrap"><table><thead><tr><th>配置</th><th>耗時</th><th>換算實時倍速</th><th>與清理稿相似度</th></tr></thead><tbody><tr><td><strong>macOS 內建 SpeechTranscriber</strong></td><td><strong>4.6 秒</strong></td><td><strong>88.0 倍</strong></td><td><strong>85.5%</strong></td></tr><tr><td>whisper.cpp small</td><td>17 秒</td><td>23.8 倍</td><td>83.8%</td></tr><tr><td>whisper.cpp large-v3-turbo</td><td>24 秒</td><td>16.9 倍</td><td>89.2%</td></tr><tr><td>whisper.cpp medium</td><td>36 秒</td><td>11.2 倍</td><td>91.5%</td></tr><tr><td>whisper.cpp medium 加繁體提示</td><td>37 秒</td><td>10.9 倍</td><td>87.9%</td></tr><tr><td>MacWhisper large-v3 含講者分離（付費）</td><td>38 秒</td><td>10.7 倍</td><td>85.5%</td></tr><tr><td>Vibe 原生 CLI 用 turbo</td><td>39 秒</td><td>10.4 倍</td><td>88.1%</td></tr><tr><td>whisper.cpp large-v1</td><td>60 秒</td><td>6.8 倍</td><td>94.9%</td></tr><tr><td>Qwen3-ASR 1.7B</td><td>138 秒</td><td>2.9 倍</td><td>84.7%</td></tr></tbody></table></div>
+    <p>換算成你會遇到的情境：一小時的會議錄音，用免費的 large-v3-turbo 三分半跑完；用 macOS 內建的那顆，41 秒。</p>
+    <p>內建那一列是我 2026 年 9 月 7 日補測的。macOS 26 開放了一組叫 SpeechAnalyzer 的 API，Apple 明講語音備忘錄這些系統 App 用的就是它。我寫了一支三十行的程式直接呼叫，跑出來的文字跟語音備忘錄畫面上顯示的一字不差。要注意這條需要 macOS 26，跟上面說的「語音備忘錄有逐字稿」是兩件事：後者 macOS 15 就有，但沒有可以讓程式呼叫的介面，你只能自己複製。</p>
   </div>
 </section>
 
@@ -206,7 +222,8 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
   <div class="inner">
     <h2>三個跟直覺相反的結論</h2>
     <h3>付費版沒有比較快</h3>
-    <p>我花一千六百多買的 MacWhisper，跑 10.7 倍實時。免費的 whisper.cpp 用 large-v3-turbo 模型，跑 16.9 倍，快了 58%。付費版買到的是講者分離和一個好用的介面，速度這件事免費的贏。</p>
+    <p>我花一千六百多買的 MacWhisper，跑 10.7 倍實時。免費的 whisper.cpp 用 large-v3-turbo 模型，跑 16.9 倍，快了 58%。而系統內建的那顆跑 88 倍，是付費版的 8 倍、免費版的 5 倍。</p>
+    <p>付費版買到的是講者分離和一個好用的介面，那兩件事後面會證明值這個錢。速度這件事，你已經有的那顆贏。</p>
     <h3>加繁體中文提示沒有用，還更差</h3>
     <p>網路上很多教學說，跑 Whisper 的時候加一句「以下是繁體中文的會議錄音」當提示，輸出就會是繁體。我實測：加了提示之後，相似度從 91.5% 掉到 87.9%，簡體字的數量一個都沒少。這招在這段素材上是無效的。你要是在課堂上教這招，學員回去試了沒效果，會回頭問你。</p>
     <h3>模型變大，專有名詞沒有變準</h3>
@@ -216,11 +233,12 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
 
 <section class="section">
   <div class="inner">
-    <h2>專有名詞這張表，八種配置全軍覆沒</h2>
+    <h2>專有名詞這張表，九種配置全軍覆沒</h2>
     <p>這是整份實測我最在意的一張表。</p>
     <div class="tablewrap"><table><thead><tr><th>正確詞</th><th>small</th><th>medium</th><th>large-v1</th><th>turbo</th><th>Vibe CLI</th><th>MacWhisper（付費）</th><th>Qwen3-ASR</th></tr></thead><tbody><tr><td>永力</td><td>勇力</td><td>永利</td><td>永利</td><td>永利</td><td>永利</td><td>永利</td><td>永利、永立</td></tr><tr><td>田祖</td><td>天主</td><td>田主</td><td>填組、田主</td><td>田主</td><td>田主</td><td>田主</td><td>填主、田主</td></tr><tr><td>陪跑（5 次）</td><td>3 次對</td><td>5 次對</td><td>2 次對</td><td>賠跑</td><td>PayPal</td><td>0 次對</td><td>6 次</td></tr></tbody></table></div>
     <p>「永力」是一個智庫的名字，八種配置沒有一個答對，全部聽成「永利」或「勇力」。「田祖」也是八種全錯。Vibe 把「陪跑」聽成 PayPal 三次，是所有配置裡最離譜的。</p>
-    <p>這件事的意思是：兩份稿拿來對照，會發現它們完全同意，然後一起錯下去。這叫「一致地錯」，交叉比對抓不到，只有你自己的詞彙表救得回來。第二篇會講怎麼建。</p>
+    <p>後來補測的 macOS 內建那顆也一樣：「永力」聽成「永利」，「田祖」聽成「田主」跟「田煮」兩種寫法。它唯一贏的是「陪跑」五次全對，跟 medium 並列最好。所以九種配置在專有名詞上是全軍覆沒，速度最快的那顆也沒有例外。</p>
+    <p>這件事的意思是：多份稿拿來對照，會發現它們完全同意，然後一起錯下去。這叫「一致地錯」，交叉比對抓不到，只有你自己的詞彙表救得回來。第二篇會講怎麼建。</p>
   </div>
 </section>
 
@@ -228,7 +246,8 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
   <div class="inner">
     <h2>免費方案的真正天花板</h2>
     <p>不是速度，也不是錯字。是講者分離。</p>
-    <p>Vibe 內建一個命令列工具叫 vibe-server，它的說明第一行就寫「Speech-to-text powered by whisper.cpp」。我把它的參數列表整個看過一遍，沒有任何跟講者分離有關的選項。whisper.cpp 本身有一個叫 diarize 的參數，但那是靠立體聲左右聲道猜，你手機錄的是單聲道，用不上。</p>
+    <p>Vibe 內建一個命令列工具叫 vibe-server，它的說明第一行就寫「Speech-to-text powered by whisper.cpp」。我把它的參數列表整個看過一遍，沒有任何跟講者分離有關的選項。whisper.cpp 本身有一個叫 diarize 的參數，但那是靠立體聲左右聲道猜，你手機錄的是單聲道，用不上。它還有另一個叫 tinydiarize 的參數，需要另外一種模型，而那個模型目前只有英文版。兩條都不通。</p>
+    <p>macOS 內建那顆也沒有講者分離。Apple 的 API 選項裡沒有這個能力，官方也沒有宣稱有。</p>
     <p>所以免費方案能給你的是：一份有時間碼、有文字、沒有「誰說的」的稿。要「誰說了什麼」，只有兩條路，一是付費工具（MacWhisper 的 SpeakerKit 可以分出四到七個人），二是人工標。第二篇會講清稿的時候怎麼補講者。</p>
   </div>
 </section>
@@ -236,6 +255,7 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
 <section class="section">
   <div class="inner">
     <h2>學員裝得起來嗎</h2>
+    <p>先講一句：如果你的學員都用 Apple silicon 的 Mac 或 iPhone 12 以上，這一段可以跳過，直接叫他們開語音備忘錄。以下是給非蘋果裝置、或需要更好辨識品質的情況。</p>
     <p>我實際裝了一次 Vibe，記錄每一步。</p>
     <div class="tablewrap"><table><thead><tr><th>步驟</th><th>實測</th></tr></thead><tbody><tr><td>下載</td><td>官方 GitHub 下載 dmg，37MB，33 秒。要選對晶片，Apple Silicon 選 aarch64</td></tr><tr><td>拖進 Applications</td><td>標準 macOS 安裝，沒有安裝精靈、不用註冊、不用帳號</td></tr><tr><td>開啟</td><td>已通過 Apple 公證，雙擊直接開，不會跳「來自未識別的開發者」</td></tr><tr><td>下載模型</td><td>App 本身不含模型，第一次用要另外抓，turbo 約 1.6GB</td></tr></tbody></table></div>
     <p>第三步值得多講一句。大部分 GitHub 上的免費工具沒付 Apple 的開發者費用，學員裝完會撞到系統警告，得教他們去「系統設定、隱私權與安全性」按允許，現場很容易亂。Vibe 的開發者做了公證，這一關直接消失。我查了簽章，Developer ID 是 Jacob Kolani，TeamIdentifier VSTAWC326G，Gatekeeper 回傳 accepted。</p>
@@ -266,15 +286,32 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
 <section class="section">
   <div class="inner">
     <h2>這份實測只證明什麼</h2>
-    <p>單一錄音、單一設備、當時的軟體版本。它證明的是「這段素材在這台機器上的結果」和「我用的測試方法」，不是普遍排名。換成吵雜環境、口音更重、術語更密的錄音，數字會不一樣。相似度那欄的基準偏誤上面說過了。GUI 我沒測到，全部數據來自命令列，Vibe 的圖形介面預設輸出可能跟命令列不同。</p>
+    <p>單一錄音、單一設備、當時的軟體版本。它證明的是「這段素材在這台機器上的結果」和「我用的測試方法」，不是普遍排名。內建那一列是兩天後補測的，跑的是同一支音檔、同一台機器、同一套比對腳本，但它跟另外八種不是同一批跑的。換成吵雜環境、口音更重、術語更密的錄音，數字會不一樣。相似度那欄的基準偏誤上面說過了。GUI 我沒測到，全部數據來自命令列，Vibe 的圖形介面預設輸出可能跟命令列不同。</p>
     <p>完整實測報告的網頁版在這裡，含長條圖與散佈圖：<a href="https://asr-bench-k7m3x9.pages.dev" target="_blank" rel="noopener">https://asr-bench-k7m3x9.pages.dev</a></p>
   </div>
 </section>
 
 <section class="section">
   <div class="inner">
+    <h2>但我自己不是這樣用的</h2>
+    <p>上面每一種做法，都是「你打開一個工具，做一件事」。我自己現在不這樣做。</p>
+    <p>我把三個引擎串成一條線，一個指令跑完。這裡說的「系統內建」指的是 macOS 26 那組可以讓程式呼叫的 API，不是語音備忘錄畫面上那份要你自己複製的逐字稿。系統內建那顆負責覆蓋，因為在我目前測過的樣本裡，它沒有出現整段漏字；Qwen3-ASR 負責專有名詞與術語；MacWhisper 負責講者分離跟標點。三份稿一起出來，我拿它們互相對照，不一致的地方標出來讓我判斷。</p>
+    <p>慢嗎？比單跑一顆慢很多。三分半的錄音要跑一分多鐘。</p>
+    <p>但我不用開三個 App，不用在網頁裡複製貼上，不用記得哪個工具做哪件事。開完會指令下去，我去做別的事，回來稿就在那裡。開完會的隔天要給對方看的會議記錄，來得及。</p>
+    <p>這就是「用工具」跟「用 agent」的差別。工具是你去操作它，你是流程的一部分；agent 是你把判斷寫成規則交出去，它跑完，你看的是結果跟它標出來的疑點。規則寫得不好，它就穩定地做錯事，這部分的責任還是在你身上。</p>
+    <p>三個引擎為什麼是這三個、誰的哪一欄不能信、對照的時候誰說了算，這些我沒有靠記憶。它們寫在我的技能包裡，是有觸發詞、有分工表、有裁決順序的規則。我喊一句「走語音備忘錄轉逐字稿 Loop」，它自己知道要跑哪三顆、怎麼比、哪裡要標「未查證」。</p>
+    <p>我要老實說一件事：這條線我今天才驗完。原本我以為 whisper 可以分講者，實測發現不行，那個能力在 MacWhisper 內建的另一個模組裡。規則因此改過一次。這也是這套做法的一部分：先做，做完派另一家模型審，審出問題就改規則，不是改記憶。</p>
+    <p>如果你關心的是「怎麼把錄音變成文字」，看到上一段就夠了。如果你關心的是「怎麼把自己的判斷變成 AI 能執行的規則」，那第二篇跟第三篇才是重點，這一篇只是入口。</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
     <h2>你可以怎麼開始</h2>
-    <p>拿一段你自己知道答案的錄音，三到十分鐘，裡面要有你的客戶名字或常用術語。裝 Vibe，選 large-v3-turbo，跑一次。看三件事：花了幾秒、你的專有名詞對了幾個、你能不能分辨誰在講話。三分鐘看出你的環境能到哪，比看任何評測都準。</p>
+    <p>拿一段你自己知道答案的錄音，三到十分鐘，裡面要有你的客戶名字或常用術語。</p>
+    <p>先用你手邊已經有的。iPhone 或 Mac 打開語音備忘錄，看那份逐字稿。看三件事：你的專有名詞對了幾個、能不能分辨誰在講話、你要花多少力氣把它搬到真正要用的地方。</p>
+    <p>如果專有名詞錯得你不能接受，再往下試 Vibe 加 large-v3-turbo。如果連「誰說的」都需要，那你要的是付費工具或多引擎，換更大的模型救不了。</p>
+    <p>三分鐘看出你的環境能到哪，比看任何評測都準。</p>
   </div>
 </section>
 
