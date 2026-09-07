@@ -23,6 +23,60 @@ window.ARTICLE_TAGS = {
 
 window.ARTICLES = [
   {
+    id: "meeting-notes-1-transcribe",
+    url: "articles/meeting-notes-1-transcribe/",
+    date: "2026-09-07",
+    updated: "2026-09-07",
+    title: "開會錄音要怎麼變成文字，一定要花錢或上傳嗎｜九種本機配置實測，內建的比付費的快 8 倍",
+    problem: "開完會手機裡一堆錄音從沒打開過，以為轉文字要付費或要把客戶的錄音上傳到雲端。",
+    audience: "開會有錄音、但不敢把客戶內容傳出去，也不想為了轉文字另外付錢的人。",
+    summary: "同一段 6 分 46 秒會議錄音跑九種本機配置的實測：系統內建那顆最快也不用裝，專有名詞九種全錯，免費方案的天花板是講者分離，最後說明為什麼作者自己改用三個引擎一起跑。",
+    tags: {
+      topic: ["AI工作流", "工具操作", "差異比較"],
+      level: ["零基礎入門"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["meeting-notes-2-clean", "meeting-notes-3-analyze", "youtube-to-opinion-report-workflow"]
+  },
+
+  {
+    id: "meeting-notes-2-clean",
+    url: "articles/meeting-notes-2-clean/",
+    date: "2026-09-07",
+    updated: "2026-09-07",
+    title: "逐字稿轉出來了，可以直接丟給 AI 摘要嗎｜先清稿再分析，錯字會被當成事實",
+    problem: "把滿是錯字的逐字稿直接丟給 AI 摘要，錯字會被寫得很通順、當成事實流傳下去。",
+    audience: "已經有逐字稿、準備交給 AI 整理，但發現摘要裡出現自己沒聽過的名詞的人。",
+    summary: "清稿與摘要是兩件事。三條鐵則（原始稿不刪、不直接餵摘要、字數用 Python 算）、三個方法（受控詞彙表、主動修正授權句、多份稿對照），以及講者要怎麼補回來。",
+    tags: {
+      topic: ["AI工作流", "知識管理", "提示詞設計"],
+      level: ["基礎"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["meeting-notes-1-transcribe", "meeting-notes-3-analyze", "youtube-to-opinion-report-workflow"]
+  },
+
+  {
+    id: "meeting-notes-3-analyze",
+    url: "articles/meeting-notes-3-analyze/",
+    date: "2026-09-07",
+    updated: "2026-09-07",
+    title: "會議記錄為什麼不能只有重點摘要｜千金難買早知道，詳細分析才看得到風險",
+    problem: "會議記錄整理完只剩一張待辦清單，一週後沒人記得當初為什麼那樣決定。",
+    audience: "會議是討論不是交辦、需要事後回頭找線索的合作關係參與者。",
+    summary: "三層次整理法：第一層摘要回答 Know What、第二層洞察與策略回答 Know Why、第三層脈絡備存給三個月後的你。含補充觀察欄位、風險隱憂分析與一張不越界的禁止句型對照表。",
+    tags: {
+      topic: ["AI工作流", "知識管理", "輔助決策", "隱性知識"],
+      level: ["進階"],
+      content_type: ["觀點文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["meeting-notes-1-transcribe", "meeting-notes-2-clean"]
+  },
+
+  {
     id: "what-are-subagents",
     url: "articles/what-are-subagents/",
     date: "2026-09-01",
