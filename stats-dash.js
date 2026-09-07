@@ -643,7 +643,7 @@
     rows.push(['🕐', '每頁每日趨勢', (S.pageDaily && S.pageDaily.length)
       ? '已開始記錄，本月有 ' + S.pageDaily.length + ' 天資料'
       : '2026-09-01 才開始記，在那之前只有累計總數，看不出單頁的時間趨勢', !!(S.pageDaily && S.pageDaily.length)]);
-    rows.push(['💬', '咪卡對話保存', '每月一份，各留最近 20000 筆；目前有 ' + (S.chatMonths || []).join('、'), true]);
+    rows.push(['💬', '咪卡對話保存', '每月一份，各留最近 20000 筆；原始對話保存一年，該月結束後 365 天自動刪除（2026-09-07 起）；目前有 ' + (S.chatMonths || []).join('、'), true]);
     rows.push(['🤖', 'AI 爬蟲這套量不到（4O 的重要邊界）',
       '埋點是 JavaScript，而 GPTBot、OAI-SearchBot、PerplexityBot、ClaudeBot 這些爬蟲**不執行 JavaScript**，'
       + '所以它們來讀過幾次，這頁完全看不到。robots.txt 放行 AI 爬蟲（AXO）的成效，要從伺服器端日誌才量得到。'
