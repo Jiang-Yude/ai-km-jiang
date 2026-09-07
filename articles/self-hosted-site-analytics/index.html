@@ -4,11 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="index,follow">
-<title>訪客在你的網站上問了什麼，Google Analytics 看不到｜自己做一套流量後台</title>
+<title>裝了 Google Analytics，為什麼還是不知道訪客卡在哪？｜流量看見哪頁被看，提問看見哪裡沒做好</title>
 <meta name="description" content="八月我的網站有 2,840 次瀏覽，也有 152 個訪客直接問 AI 助理的問題，其中 41 個集中在同一頁。這篇記錄怎麼做出一套自建流量後台，含五種做法對照表、六個踩過的坑，以及它做不到的事。">
 <link rel="canonical" href="https://jiangyude.com/articles/self-hosted-site-analytics/">
 <meta property="og:type" content="article">
-<meta property="og:title" content="訪客在你的網站上問了什麼，Google Analytics 看不到｜自己做一套流量後台｜江江教練">
+<meta property="og:title" content="裝了 Google Analytics，為什麼還是不知道訪客卡在哪？｜流量看見哪頁被看，提問看見哪裡沒做好｜江江教練">
 <!-- 分享封面：hero 文字填好後在 repo 根目錄跑 `node scripts/og-shot.mjs self-hosted-site-analytics` 自動截 1200×630 到 images/og/self-hosted-site-analytics.jpg（見 README「文章分享封面（OG 圖）機制」）。別退回 intro-jiang.png 直式人像，會被裁成只剩脖子。 -->
 <meta property="og:image" content="https://jiangyude.com/images/og/self-hosted-site-analytics.jpg">
 <meta property="og:description" content="八月我的網站有 2,840 次瀏覽，也有 152 個訪客直接問 AI 助理的問題，其中 41 個集中在同一頁。這篇記錄怎麼做出一套自建流量後台，含五種做法對照表、六個踩過的坑，以及它做不到的事。">
@@ -16,10 +16,10 @@
 <meta property="og:locale" content="zh_TW">
 <meta property="og:site_name" content="江江教練 · AI 知識管理">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="訪客在你的網站上問了什麼，Google Analytics 看不到｜自己做一套流量後台｜江江教練">
+<meta name="twitter:title" content="裝了 Google Analytics，為什麼還是不知道訪客卡在哪？｜流量看見哪頁被看，提問看見哪裡沒做好｜江江教練">
 <meta name="twitter:image" content="https://jiangyude.com/images/og/self-hosted-site-analytics.jpg">
 <meta name="twitter:description" content="八月我的網站有 2,840 次瀏覽，也有 152 個訪客直接問 AI 助理的問題，其中 41 個集中在同一頁。這篇記錄怎麼做出一套自建流量後台，含五種做法對照表、六個踩過的坑，以及它做不到的事。">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"訪客在你的網站上問了什麼，Google Analytics 看不到｜自己做一套流量後台","description":"八月我的網站有 2,840 次瀏覽，也有 152 個訪客直接問 AI 助理的問題，其中 41 個集中在同一頁。這篇記錄怎麼做出一套自建流量後台，含五種做法對照表、六個踩過的坑，以及它做不到的事。","author":{"@type":"Person","name":"江昱德","alternateName":"江江教練","jobTitle":"隱性知識提煉師、AI 應用規劃師"},"isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://jiangyude.com/"},"inLanguage":"zh-Hant","url":"https://jiangyude.com/articles/self-hosted-site-analytics/"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"裝了 Google Analytics，為什麼還是不知道訪客卡在哪？｜流量看見哪頁被看，提問看見哪裡沒做好","description":"八月我的網站有 2,840 次瀏覽，也有 152 個訪客直接問 AI 助理的問題，其中 41 個集中在同一頁。這篇記錄怎麼做出一套自建流量後台，含五種做法對照表、六個踩過的坑，以及它做不到的事。","author":{"@type":"Person","name":"江昱德","alternateName":"江江教練","jobTitle":"隱性知識提煉師、AI 應用規劃師"},"isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://jiangyude.com/"},"inLanguage":"zh-Hant","url":"https://jiangyude.com/articles/self-hosted-site-analytics/"}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
@@ -174,7 +174,7 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
   <div class="wc wc3"></div>
   <div>
     <div class="kicker">網站經營 / 資料判讀</div>
-    <h1>訪客在你的網站上問了什麼，Google Analytics 看不到｜自己做一套流量後台</h1>
+    <h1>裝了 Google Analytics，為什麼還是不知道訪客卡在哪？｜流量看見哪頁被看，提問看見哪裡沒做好</h1>
     <p>流量告訴你哪一頁被看，提問告訴你那一頁哪裡沒講清楚。第二件事比第一件難，但它才是真正能改進的那個。</p>
   </div>
   <!-- 封面圖（建議放）：橫式用預設 width:420px；4:5 直式改 .hero-figure{width:320px} 並加 .hero-figure img{aspect-ratio:4/5;object-fit:cover}。沒有封面圖就整個 <figure> 刪掉，hero 會自動置中只剩文字。封面同時設成上面 og:image / twitter:image。 -->
@@ -302,7 +302,7 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
     <h3>對話記錄要記什麼</h3>
     <p>時間、匿名的瀏覽器識別碼、單次瀏覽識別碼、角色（訪客或 AI）、內容、<b>所在頁面</b>。</p>
     <p>最後那一項是關鍵。沒有它，你只知道大家在問什麼；有了它，你才知道哪一頁的人特別會問哪一種問題。</p>
-    <p>不記 IP、不做會員、不追跨站行為。</p>
+    <p>不記 IP、不做會員、不追跨站行為。原始對話每月一份，該月結束後保留一年就自動刪除。這件事是 2026 年 9 月 7 日才補上的，之前只有筆數上限、沒有時間上限。</p>
 
     <h3>後台要有什麼</h3>
     <p>我做完之後的定案是九個區塊。先看實際長什麼樣：</p>
@@ -448,7 +448,7 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
 
     <h3>「那自動對帳做得起來嗎？」</h3>
     <p>在我這兩個站，<b>目前做不起來</b>，而且原因不是技術難，是拿不到資料：Vercel Analytics 沒有公開 API（我試過兩個端點都是 404），Cloudflare 有 GraphQL API 但要另外開權杖。</p>
-    <p>所以月度對帳我的做法是人工：每個月登入後台看一眼數字，跟自己的後台比。五分鐘的事，不值得為它多開權杖。</p>
+    <p>所以月度對帳我的做法是人工：每個月登入後台看一眼數字，跟自己的後台比。後來改成半自動：每月一號腳本先把自建的月總量填進一張對帳表，我只填另一邊的數字，由程式算差異。五分鐘的事，不值得為它多開權杖。</p>
     <div class="meaning">
       <p><b>這是我想強調的一種判斷方式</b>：不是所有事情都要自動化。自動化的成本包含「多一個會壞的東西」，一個月五分鐘的人工，常常比一個會靜默失效的排程可靠。</p>
     </div>
@@ -478,7 +478,7 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
     <div class="meaning">
       <p>我沒有為了消掉這個紅燈去改判斷條件。<b>它的邏輯是對的：有瀏覽卻沒有人，本來就該被問一句。</b>誤報的代價是我花三十秒確認，漏報的代價是資料錯了一個月沒人知道。這兩個不對等。</p>
     </div>
-    <p>同一支腳本順手做了備份，每天把彙總資料寫成一份 JSON 存進知識庫，只留最近 90 天。原始對話不進備份，那裡面有訪客的原話，不需要多一份散落在外。</p>
+    <p>這支腳本現在每天早上九點自動跑，正常就安靜，有紅燈才通知。同一支腳本順手做了備份，每天把彙總資料寫成一份 JSON 存進知識庫，只留最近 90 天。原始對話不進備份，那裡面有訪客的原話，不需要多一份散落在外。</p>
   </div>
 </section>
 
@@ -538,7 +538,7 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
       <p>所以回頭看開頭那 41 個問題，它們指出的其實不是「網站功能不好」，是<b>那一頁的資訊架構沒做對</b>：該被找到的東西沒有被放在會被找到的位置。這件事跟網站做得漂不漂亮無關，跟內容怎麼組織有關。</p>
     </div>
     <p>而這也是為什麼我會花力氣去記錄那些問題。流量告訴我哪一頁被看，提問告訴我那一頁哪裡沒做好。第二件事比第一件難，但它才是真正能改進的那個。</p>
-    <p style="color:#6a635a;font-size:17px;margin-top:32px">本文的實作過程與六個問題的修正，都發生在 2026 年 9 月 1 日到 2 日之間。方案設計經過跨家 AI 審查，弱點那節的分析來自那次審查。</p>
+    <p style="color:#6a635a;font-size:17px;margin-top:32px">本文的實作過程與六個問題的修正，都發生在 2026 年 9 月 1 日到 2 日之間；告警排程、保存期限與月度對帳在 9 月 7 日補上。方案設計經過跨家 AI 審查，弱點那節的分析來自那次審查。</p>
   </div>
 </section>
 
@@ -556,7 +556,7 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
       <a href="https://www.threads.com/@jiang_yude_coach" target="_blank" rel="noopener">Threads ↗</a>
       <a href="https://vocus.cc/salon/Jiang_Coach" target="_blank" rel="noopener">方格子 ↗</a>
     </div>
-    <div class="footer-note">這是一篇教學文章，整理我對「訪客在你的網站上問了什麼，Google Analytics 看不到｜自己做一套流量後台」的看法，供你參考。</div>
+    <div class="footer-note">這是一篇教學文章，整理我對「裝了 Google Analytics，為什麼還是不知道訪客卡在哪？｜流量看見哪頁被看，提問看見哪裡沒做好」的看法，供你參考。</div>
   </div>
 </footer>
 
