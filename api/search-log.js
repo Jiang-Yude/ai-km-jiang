@@ -25,6 +25,13 @@ function taipeiStamp(d = new Date()) {
   }).format(d); // "YYYY-MM-DD, HH:MM"
 }
 
+// 保存期限（2026-09-07 立，與 mika-chat-log.js 同規則）：每月的搜尋記錄在該月結束後保留 365 天自動刪除。
+const RETENTION_DAYS = 365;
+function expireAtFor(month /* 'YYYY-MM' */) {
+  const [y, m] = month.split('-').map(Number);
+  return Math.floor((Date.UTC(y, m, 1) - 8 * 3600 * 1000) / 1000) + RETENTION_DAYS * 86400;
+}
+
 module.exports = async (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
   if (req.method === 'OPTIONS') { res.status(204).end(); return; }
@@ -86,12 +93,16 @@ module.exports = async (req, res) => {
     const cmds = [
       ['LPUSH', `search:log:${month}`, entry],
       ['LTRIM', `search:log:${month}`, 0, 4999],
+      ['EXPIREAT', `search:log:${month}`, expireAtFor(month), 'NX'],
     ];
     // 零命中另掛計數，缺口排行一眼看：ZINCRBY 1 分給該查詢字串
     // webmcp 只讓 search_knowledge 進缺口排行（get_knowledge_item 的錯誤 ID、
     // taxonomy 維度名不是搜尋缺口，混進來會污染排行）
     const missEligible = surface !== 'webmcp' || body.tool === 'search_knowledge';
-    if (Number(body.n) === 0 && !body.click && missEligible) cmds.push(['ZINCRBY', `search:miss:${month}`, 1, q]);
+    if (Number(body.n) === 0 && !body.click && missEligible) {
+      cmds.push(['ZINCRBY', `search:miss:${month}`, 1, q]);
+      cmds.push(['EXPIREAT', `search:miss:${month}`, expireAtFor(month), 'NX']);
+    }
     await pipe(cmds);
     res.status(200).json({ ok: true });
   } catch (e) {
