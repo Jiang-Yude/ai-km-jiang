@@ -48,6 +48,14 @@ Phase 1 不新增文章頁。文章先保留在課後簡報頁的方格子與 Th
 4. `site-index.json` 是否補上新內容與四維標籤。
 5. 公開學習頁不要放 `noindex`；工具頁如 `tuner.html` 可以保留 noindex。
 
+## 深度文章資料源（一篇一檔，2026-09-06 起）
+
+- **來源（唯一真相）**：每篇文章自己資料夾裡的 `articles/<id>/article.json`（趨勢文在 `ai-trends/<id>/article.json`），加上受控標籤清單 `articles-tags.json`。範本：`_templates/article.example.json`。
+- **生成檔**：`articles-data.js`（瀏覽器與 `related-render.js`、`articles-render.js` 讀的那個）由 `node scripts/build-articles-data.mjs` 合併產生，**不要手改**。順序依（updated 或 date）新到舊，與總覽頁顯示一致。
+- **為什麼拆**：舊的單檔每篇上線都要 append 一筆，是多個 session 並行施工時唯一每次都撞的共享熱點（2026-09-05 圖譜工程 v2 分析）。拆開後各桌只動自己資料夾；`merge-publish.sh` 上線時統一重建，生成檔衝突自動收 main 版再重建。
+- **三種指令**：`--check` 只比對不寫（preflight 第 1 關會跑，不一致就擋）；不帶參數＝重建，偵測到有人直接手改 `articles-data.js` 會停下列出是哪幾筆；`--adopt` 把那些手改回寫成 `article.json` 再重建（遷移與救援用）；`--force` 丟掉手改。
+- **被 `.vercelignore` 整資料夾擋著的文章**（`articles/<id>/`）生成時自動略過並印出，索引不會宣告一個不會上線的頁面。
+
 ## 文章分享封面（OG 圖）機制
 
 文章分享到 Threads/FB 時，預覽圖（`og:image`）若沒設好，會退回直式人像 `images/intro-jiang.png`，被平台裁成「只剩脖子」的醜預覽。

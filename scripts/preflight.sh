@@ -14,6 +14,14 @@ echo "═══ 0/11 部署環境檢查 ═══"
 if bash scripts/check-deploy-env.sh; then ok "部署環境"; else bad "部署環境未通過"; fi
 
 echo "═══ 1/11 站點索引重建（含受控詞彙檢查）═══"
+# 文章資料源一致性（2026-09-06 立）：articles-data.js 是一篇一檔 article.json 合併出的生成檔。
+# 這一關擋兩件事：①有人照舊習慣直接手改 articles-data.js（漂移）②新文章放了 article.json 卻沒重建。
+# 兩種都印出該怎麼修（--adopt 回寫／重建），不靜默覆蓋任何一邊。
+if node scripts/build-articles-data.mjs --check 2>&1 | tail -1 | grep -q "✅"; then
+  ok "文章資料源（article.json ⇄ articles-data.js 一致）"
+else
+  bad "articles-data.js 與 article.json 來源不一致：node scripts/build-articles-data.mjs（手改要保留就加 --adopt）"
+fi
 if node scripts/build-site-index.mjs 2>&1 | tail -1 | grep -q "✅"; then ok "site-index + 詞彙"; else bad "build-site-index 未通過"; fi
 if node scripts/build-en-articles-data.mjs --check; then ok "英文文章索引"; else bad "英文文章索引過期"; fi
 # 咪卡檢索用的內文關鍵詞：每次發布重跑，新文章的專有名詞才會進索引。
@@ -105,8 +113,9 @@ BLOCKED=$(grep -E '^articles/[^/]+/$' .vercelignore 2>/dev/null | sed 's#^articl
 # 根因是寫死清單的設計本身會週期性失效：每新增一個公開資料檔就多一個洞，且無機制提醒補。
 # 改為自動列舉「進了版控、會被部署的資料檔」，日後新增自動涵蓋，不再依賴有人記得回來加。
 # 排除 scripts/ 與 _templates/（.vercelignore 擋著不上線）、articles/（文章自己的內容不算矛盾）。
+# 2026-09-06 補：ai-trends/<id>/article.json 是該篇自己的資料源，內容本來就含自己的 id，不算矛盾（articles/ 同理，原本就排除）。
 PUBLIC_DATA=$(git ls-files -- '*.js' '*.json' '*.txt' '*.xml' 2>/dev/null \
-  | grep -vE '^(scripts|_templates|node_modules)/' | grep -vE '^articles/')
+  | grep -vE '^(scripts|_templates|node_modules)/' | grep -vE '^articles/' | grep -vE '^ai-trends/[^/]+/article\.json$')
 if [ -z "$PUBLIC_DATA" ]; then
   # 前提不成立時硬報錯，不靜默跳過（跳過等於整關失效）
   bad "排隊一致性：無法列舉公開資料檔（git ls-files 無輸出），本關不能靜默跳過"; QBAD=1
