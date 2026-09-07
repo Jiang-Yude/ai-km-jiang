@@ -1,0 +1,590 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="index,follow">
+<title>裝了 Google Analytics，為什麼還是不知道訪客卡在哪？｜流量看見哪頁被看，提問看見哪裡沒做好</title>
+<meta name="description" content="八月我的網站有 2,840 次瀏覽，也有 152 個訪客直接問 AI 助理的問題，其中 41 個集中在同一頁。這篇記錄怎麼做出一套自建流量後台，含五種做法對照表、六個踩過的坑，以及它做不到的事。">
+<link rel="canonical" href="https://jiangyude.com/articles/self-hosted-site-analytics/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="裝了 Google Analytics，為什麼還是不知道訪客卡在哪？｜流量看見哪頁被看，提問看見哪裡沒做好｜江江教練">
+<!-- 分享封面：hero 文字填好後在 repo 根目錄跑 `node scripts/og-shot.mjs self-hosted-site-analytics` 自動截 1200×630 到 images/og/self-hosted-site-analytics.jpg（見 README「文章分享封面（OG 圖）機制」）。別退回 intro-jiang.png 直式人像，會被裁成只剩脖子。 -->
+<meta property="og:image" content="https://jiangyude.com/images/og/self-hosted-site-analytics.jpg">
+<meta property="og:description" content="八月我的網站有 2,840 次瀏覽，也有 152 個訪客直接問 AI 助理的問題，其中 41 個集中在同一頁。這篇記錄怎麼做出一套自建流量後台，含五種做法對照表、六個踩過的坑，以及它做不到的事。">
+<meta property="og:url" content="https://jiangyude.com/articles/self-hosted-site-analytics/">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:site_name" content="江江教練 · AI 知識管理">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="裝了 Google Analytics，為什麼還是不知道訪客卡在哪？｜流量看見哪頁被看，提問看見哪裡沒做好｜江江教練">
+<meta name="twitter:image" content="https://jiangyude.com/images/og/self-hosted-site-analytics.jpg">
+<meta name="twitter:description" content="八月我的網站有 2,840 次瀏覽，也有 152 個訪客直接問 AI 助理的問題，其中 41 個集中在同一頁。這篇記錄怎麼做出一套自建流量後台，含五種做法對照表、六個踩過的坑，以及它做不到的事。">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"裝了 Google Analytics，為什麼還是不知道訪客卡在哪？｜流量看見哪頁被看，提問看見哪裡沒做好","description":"八月我的網站有 2,840 次瀏覽，也有 152 個訪客直接問 AI 助理的問題，其中 41 個集中在同一頁。這篇記錄怎麼做出一套自建流量後台，含五種做法對照表、六個踩過的坑，以及它做不到的事。","author":{"@type":"Person","name":"江昱德","alternateName":"江江教練","jobTitle":"隱性知識提煉師、AI 應用規劃師"},"isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://jiangyude.com/"},"inLanguage":"zh-Hant","url":"https://jiangyude.com/articles/self-hosted-site-analytics/"}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{--ink:#1a1612;--paper:#fefcf8;--muted:#6a635a;--line:#d8cdb8;--green:#5f7553;--blue:#5689b8;--orange:#e85a4f;--soft:#faf5ec;--dark:#2a2018;--shadow:0 18px 45px rgba(107,74,42,.14);--sp-shadow:hsla(35,50%,60%,.15);--sp-shadow-edge:hsla(35,50%,68%,.03);--sp-radius:400px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC","Segoe UI",sans-serif}
+a{color:inherit}
+/* 官網共用導航列 nav.top（與首頁/文章總站同一條） */
+nav.top{position:sticky;top:0;background:rgba(254,252,248,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid #d8cdb8;z-index:100}
+nav.top .container{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:24px;padding:14px 32px}
+.nav-brand-img{justify-self:start;display:flex;align-items:center;text-decoration:none;flex-shrink:0;transition:opacity .2s}
+.nav-brand-img:hover{opacity:.8}.nav-brand-img img{height:40px;width:auto;display:block}
+nav.top ul.nav-menu{justify-self:end;display:flex;gap:22px;list-style:none;margin:0;padding:0;font-size:.95rem;white-space:nowrap}
+nav.top ul.nav-menu a{color:#3a342d;text-decoration:none;transition:color .2s;font-weight:500;white-space:nowrap}
+nav.top ul.nav-menu a:hover{color:#1a1612}nav.top ul.nav-menu a.active{color:#1a1612;font-weight:700}
+.nav-toggle{display:none;background:none;border:none;padding:6px;cursor:pointer;width:36px;height:36px;position:relative}
+.nav-toggle span{display:block;position:absolute;left:8px;right:8px;height:2px;background:#1a1612;border-radius:2px;transition:transform .25s,opacity .25s,top .25s}
+.nav-toggle span:nth-child(1){top:11px}.nav-toggle span:nth-child(2){top:17px}.nav-toggle span:nth-child(3){top:23px}
+.nav-toggle.open span:nth-child(1){top:17px;transform:rotate(45deg)}.nav-toggle.open span:nth-child(2){opacity:0}.nav-toggle.open span:nth-child(3){top:17px;transform:rotate(-45deg)}
+.tablewrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:22px 0;border:1px solid var(--line);border-radius:10px;background:#fff;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.tablewrap table{border-collapse:collapse;width:100%;min-width:600px;font-size:18px;line-height:1.65}
+.tablewrap .zh{display:block;margin-top:5px;font-size:16px;line-height:1.55;color:var(--muted);font-weight:400}
+.tablewrap th,.tablewrap td{padding:12px 14px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top;color:#3a342d}
+.tablewrap thead th{background:var(--soft);font-weight:900;font-size:18px;color:#1a1612;white-space:nowrap}
+.tablewrap tbody tr:last-child td{border-bottom:none}
+.tablewrap td code,.section code{background:var(--soft);border:1px solid var(--line);border-radius:5px;padding:1px 6px;font:500 15px/1.5 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace}
+.inline-figure.wide{max-width:1000px}
+.toc{margin:26px 0 0;padding:20px 22px;background:#fff;border:1px solid var(--line);border-radius:10px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.toc>b{display:block;font-size:15px;letter-spacing:.05em;color:var(--green);margin-bottom:10px}
+.toc ol{margin:0;padding-left:1.35em;font-size:18px;line-height:1.7}
+.toc li{margin-bottom:7px;color:#3a342d}
+.toc a{color:var(--blue);font-weight:700;text-decoration:none}.toc a:hover{text-decoration:underline}
+.toc-hint{margin:12px 0 0!important;font-size:18px!important;color:var(--muted)!important;border-top:1px solid var(--line);padding-top:12px}
+.readmore{margin-top:24px;padding:20px 22px;background:var(--soft);border:1px solid var(--line);border-radius:12px}
+.readmore.near{margin:26px 0 6px;background:rgba(86,137,184,.07);border-color:#bcd0e2}
+.readmore.near b{color:var(--blue);font-size:18px}
+.readmore.near li{font-size:17px;line-height:1.7;margin-bottom:10px}
+.readmore b{display:block;margin-bottom:10px;font-size:19px}
+.readmore ul{margin:0;padding-left:1.25em}
+.readmore a{color:var(--blue);font-weight:700;text-decoration:none}
+.readmore a:hover{text-decoration:underline}
+@media(max-width:820px){.tablewrap table{min-width:560px;font-size:18px}.tablewrap{position:relative}.tablewrap::after{content:"表格可左右滑動 →";position:sticky;left:0;display:block;font-size:15px;color:var(--muted);background:var(--soft);border-top:1px solid var(--line);padding:7px 12px;width:100%}}
+@media(max-width:860px){
+ nav.top .container{grid-template-columns:auto 1fr auto;padding:10px 16px;gap:12px}
+ .nav-brand-img img{height:32px}
+ .nav-toggle{display:block;justify-self:end}
+ nav.top ul.nav-menu{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(254,252,248,.98);backdrop-filter:blur(14px);border-bottom:1px solid #d8cdb8;flex-direction:column;gap:0;padding:8px 0;box-shadow:0 10px 24px rgba(107,74,42,.08)}
+ nav.top ul.nav-menu.open{display:flex}
+ nav.top ul.nav-menu li{border-bottom:1px solid #e8dfc9}
+ nav.top ul.nav-menu li:last-child{border-bottom:none}
+ nav.top ul.nav-menu a{display:block;padding:14px 20px;font-size:1.06rem}
+}
+/* 滑鼠暖光暈（與首頁同一支 spotlight.js） */
+body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradient(var(--sp-radius) circle at var(--mx,50%) var(--my,50%),var(--sp-shadow) 0%,var(--sp-shadow-edge) 45%,transparent 75%);pointer-events:none;z-index:9999;mix-blend-mode:multiply;transition:background .06s linear}
+.hero{position:relative;overflow:hidden;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:72px;padding:96px clamp(20px,6vw,88px) 80px;background:linear-gradient(180deg,#fffcf0 0%,#f9e9d2 100%);color:#1a1612;border-bottom:1px solid #d8cdb8}
+.hero .wc{position:absolute;border-radius:50%;filter:blur(60px);pointer-events:none;z-index:0}
+.hero .wc1{width:420px;height:360px;top:-120px;right:-80px;background:#e8884b;opacity:.15}
+.hero .wc2{width:360px;height:300px;bottom:-110px;left:-70px;background:#5f7553;opacity:.13}
+.hero .wc3{width:280px;height:260px;top:34%;left:14%;background:#a08144;opacity:.10}
+.hero>div{flex:none;width:860px;max-width:100%;position:relative;z-index:2}
+.hero-figure{margin:0;width:420px;flex:none;position:relative;z-index:2}
+.hero-figure img{display:block;width:100%;border-radius:16px;border:1px solid #d8cdb8;box-shadow:0 18px 45px rgba(107,74,42,.16);cursor:zoom-in}
+.hero-figure figcaption{margin-top:10px;font-size:14px;line-height:1.6;color:#6a635a}
+.inline-figure{margin:30px auto 8px;max-width:820px}
+.inline-figure img{display:block;width:100%;border-radius:14px;border:1px solid var(--line);box-shadow:var(--shadow);background:#fff;cursor:zoom-in}
+.inline-figure figcaption{font-size:14px;line-height:1.6;color:var(--muted);margin-top:10px}
+.lightbox{position:fixed;inset:0;z-index:10000;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(12,10,8,.92);cursor:zoom-out;backdrop-filter:blur(4px)}
+.lightbox.open{display:flex}.lightbox img{max-width:96vw;max-height:92vh;border-radius:10px;box-shadow:0 24px 60px rgba(0,0,0,.5)}
+.lightbox-close{position:fixed;top:18px;right:24px;color:#fff;font-size:34px;line-height:1;font-weight:700;cursor:pointer;opacity:.85}
+.kicker{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.55rem;color:#7a5c3a;font-weight:500}
+.hero h1{max-width:none;margin:16px 0 18px;font-size:clamp(36px,6vw,72px);line-height:1.08;overflow-wrap:anywhere}
+.hero p{max-width:none;font-size:clamp(18px,2vw,23px);line-height:1.62;color:#3a342d}
+.cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
+.cta a{display:inline-flex;align-items:center;text-decoration:none;border-radius:8px;padding:12px 16px;font-weight:900}
+.cta .primary{background:#fff;color:#1a1612}.cta .ghost{border:1px solid rgba(255,255,255,.32);color:#fff;background:rgba(255,255,255,.08)}
+.section{padding:54px clamp(20px,6vw,88px);border-top:1px solid var(--line)}
+.inner{width:min(1000px,100%);margin:0 auto}
+.section h2{font-size:clamp(26px,4.2vw,48px);line-height:1.12;margin:0 0 18px}
+.section h3{font-size:clamp(21px,3vw,30px);line-height:1.2;margin:30px 0 12px}
+.lead{font-size:clamp(18px,1.6vw,22px);line-height:1.7;color:#3a342d;max-width:900px}
+.section p{font-size:18px;line-height:1.74;color:#3a342d}.section p+p{margin-top:14px}
+.section ul,.section ol{padding-left:1.4em;font-size:18px;line-height:1.74;color:#3a342d}.section li{margin-bottom:8px}
+.meaning{margin:22px 0;padding:16px 18px;border-left:5px solid var(--blue);background:rgba(86,137,184,.12);border-radius:6px;line-height:1.7;font-size:19px}
+.meaning b{display:block;color:var(--blue);margin-bottom:4px}
+.caveat{margin:0 0 8px;padding:16px 18px;border-left:5px solid var(--orange);background:rgba(232,90,79,.1);border-radius:6px;line-height:1.7;font-size:18px;color:#3a342d}
+.caveat b{display:block;color:var(--orange);margin-bottom:4px}
+.infocard{background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px 24px 22px;box-shadow:0 8px 22px rgba(107,74,42,.08);margin-top:8px}
+.infocard-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.info-item{padding:18px 14px 0}
+.info-item b{display:block;font-size:14px;font-weight:900;letter-spacing:.04em;margin-bottom:7px;text-transform:uppercase}
+.info-item:nth-child(1) b{color:var(--green)}.info-item:nth-child(2) b{color:var(--orange)}.info-item:nth-child(3) b{color:var(--blue)}
+.info-item p{margin:0;font-size:17px;line-height:1.6;color:#3a342d}
+.tagrow{display:flex;flex-wrap:wrap;gap:7px;margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
+.tag{font-size:14px;color:var(--muted);background:var(--soft);border:1px solid var(--line);border-radius:999px;padding:4px 11px}
+.duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:24px}
+.duo.stack{grid-template-columns:1fr}
+.duo .card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:22px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.duo .card.a{border-color:var(--orange)}.duo .card.b{border-color:var(--green);box-shadow:0 8px 24px rgba(95,117,83,.16)}
+.duo .card small{display:block;font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.04em;margin-bottom:9px}
+.duo .card.a small{color:var(--orange)}.duo .card.b small{color:var(--green)}
+.duo .card b{display:block;font-size:22px;line-height:1.3;margin-bottom:12px}.duo .card.a b{color:#c0512f}.duo .card.b b{color:#4a7a59}
+.duo .card p{margin:0;color:#3a342d;line-height:1.75;font-size:18px}
+.workflow-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:24px}
+.workflow-step{background:#fff;border:1px solid var(--line);border-radius:8px;padding:18px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.workflow-step small{display:block;color:var(--orange);font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;margin-bottom:9px}
+.workflow-step b{display:block;font-size:18px;line-height:1.3;margin-bottom:9px}
+.workflow-step p{margin:0;color:#3a342d;line-height:1.6;font-size:16px}
+.codeblock{background:var(--dark);color:#f3ead9;border-radius:8px;padding:18px 20px;font:500 14px/1.65 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;overflow-x:auto;white-space:pre-wrap;margin:20px 0;box-shadow:0 8px 22px rgba(107,74,42,.12)}
+.codeblock .c{color:#f6d7a6;font-weight:600}
+.skillcard{background:#fff;border:1px solid var(--green);border-radius:12px;padding:24px;box-shadow:0 10px 26px rgba(95,117,83,.16);margin-top:8px}
+.skillcard b{display:block;font-size:21px;margin-bottom:8px}
+.skillcard p{margin:0 0 16px;font-size:17px;line-height:1.65;color:#3a342d}
+.cta-band{background:#e6f0e5;color:#3a342d}.cta-band .section{border-top:none}
+.cta-band .inner{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(260px,.85fr);gap:26px;align-items:start}
+.cta-band h2{font-size:clamp(26px,4vw,44px);margin:0 0 16px}.cta-band p,.cta-band .lead{color:rgba(58,52,45,.9);font-size:18px;line-height:1.72}
+.cta-card{border:1px solid #cfe0d2;background:#fbfdfa;border-radius:8px;padding:22px}
+.cta-card b{display:block;color:#48b178;margin-bottom:10px;font-size:18px}.cta-card p{margin:0 0 14px}
+.footer{padding:30px clamp(20px,6vw,88px);font-size:14px;color:var(--muted);background:#fff;border-top:1px solid var(--line)}
+.footer-inner{width:min(1000px,100%);margin:0 auto}
+.footer-links{display:flex;flex-wrap:wrap;gap:6px 12px;margin-bottom:14px}.footer-links a{color:var(--blue);font-weight:900;text-decoration:none;font-size:14px}
+.footer-brand{font-weight:900;font-size:15px;margin-bottom:10px}.footer-note{font-size:13px;line-height:1.6}
+@media(max-width:820px){.infocard-grid{grid-template-columns:1fr}.duo{grid-template-columns:1fr}.workflow-grid{grid-template-columns:1fr}.cta-band .inner{grid-template-columns:1fr}.section{padding:40px 20px}.hero{min-height:52vh;flex-direction:column;justify-content:flex-start;align-items:flex-start;gap:24px}.hero>div{width:100%}.hero-figure{width:100%;max-width:560px}}
+@media(max-width:820px){html,body{overflow-x:hidden}.hero h1{word-break:break-word}}
+</style>
+</head>
+<body class="spotlight">
+<!-- 官網共用導航列 nav.top：與首頁/總站同一條，文章不要自己另做極簡 topbar（江江 2026-06-25：要同一個框架、同一條導航列）。把對應頁面的 class="active" 標在自己那欄。
+     ⚠️ 下面 ul.nav-menu 整塊由 preflight 第 5 關 check-bilingual-nav.mjs 做「逐字比對」，
+        塞任何註解、多一個空白、換行位置不同都會被判導航不一致而擋下發布。要說明就寫在 <ul> 外面（像這裡）。
+        2026-08-16 修：原本的 EN 那行說明註解就夾在 <ul> 裡面，導致照範本起手的新文章一律卡第 5 關
+        （llm-rag-agent-mcp 與 rag-three-retrieval-modes 兩篇同時中招）。註解已移出來，<ul> 內保持乾淨。
+        萬一還是被擋，直接跑：node scripts/check-bilingual-nav.mjs --write --only=<你的檔案路徑> -->
+<nav class="top">
+  <div class="container">
+    <a class="nav-brand-img" href="../../index.html"><img src="../../images/footer-signature.png" alt="江江教練 | 江昱德"></a>
+    <button class="nav-toggle" aria-label="選單"><span></span><span></span><span></span></button>
+    <ul class="nav-menu">
+      <li><a href="../../index.html">首頁</a></li>
+      <li><a href="../../knowledge-architecture.html">知識架構</a></li>
+      <li><a href="../../courses.html">課程</a></li>
+      <li><a href="../../articles.html" class="active">深度文章</a></li>
+      <li><a href="../../skills.html">技能包下載</a></li>
+      <li><a href="../../offers.html">服務方案</a></li>
+      <li class="lang-switch"><a href="../../en/articles.html" hreflang="en">EN</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="wc wc1"></div>
+  <div class="wc wc2"></div>
+  <div class="wc wc3"></div>
+  <div>
+    <div class="kicker">網站經營 / 資料判讀</div>
+    <h1>裝了 Google Analytics，為什麼還是不知道訪客卡在哪？｜流量看見哪頁被看，提問看見哪裡沒做好</h1>
+    <p>流量告訴你哪一頁被看，提問告訴你那一頁哪裡沒講清楚。第二件事比第一件難，但它才是真正能改進的那個。</p>
+  </div>
+  <!-- 封面圖（建議放）：橫式用預設 width:420px；4:5 直式改 .hero-figure{width:320px} 並加 .hero-figure img{aspect-ratio:4/5;object-fit:cover}。沒有封面圖就整個 <figure> 刪掉，hero 會自動置中只剩文字。封面同時設成上面 og:image / twitter:image。 -->
+</section>
+
+<main>
+
+<section class="section" id="start">
+  <div class="inner">
+    <p class="lead">八月我的網站有 2,840 次瀏覽，這個數字 Google Analytics 也算得出來，而且算得比我準。但有一個數字它算不出來：那個月有 152 個問題，是訪客在我的頁面上直接問 AI 助理的。其中 41 個集中在同一頁課程頁，全都在問同一件事的變形。這篇是我怎麼做出那套後台的完整記錄，包含六個踩過的坑，和它做不到的事。</p>
+
+    <div class="duo stack">
+      <div>
+        <b style="font-size:22px;color:#c2703a">適合誰</b>
+        <ul>
+          <li><b>裝了 Google Analytics 但從來沒真的看懂過的人</b>：這篇會告訴你它答得了什麼、答不了什麼，以及你到底該看哪幾個數字</li>
+          <li><b>手上一堆內容想整理成網站、但不知道從哪開始的人</b>：開頭那 41 個問題指出的不是網站功能問題，是內容架構問題。這篇從頭到尾都在講這件事</li>
+          <li><b>想自己做一套的人</b>：三層結構、資料怎麼設計、六個踩過的坑，可以直接照做</li>
+        </ul>
+      </div>
+      <div>
+        <b style="font-size:22px;color:#5f7553">你可以帶走什麼</b>
+        <ul>
+          <li>一張五種做法的對照表，含每一格的實測依據，可以直接拿來決定自己該裝什麼</li>
+          <li>六個踩過的坑，每個都附「怎麼避開」。<b>如果你打算找人做，這六個是可以拿來問對方的問題</b></li>
+          <li>一套判斷方式：什麼時候該自己做、什麼時候不該做、以及為什麼「不是所有事情都要自動化」</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="41-questions">
+  <div class="inner">
+    <h2>那 41 個問題</h2>
+    <p>八月我的網站有 2,840 次瀏覽。這個數字 Google Analytics 也算得出來，而且算得比我準。</p>
+    <p>但有一個數字它算不出來：那個月有 <b>152 個問題</b>，是訪客在我的頁面上直接問 AI 助理的。</p>
+    <p>其中 41 個集中在同一頁課程頁。我點進去看那 41 句話，發現絕大多數都在問同一件事的變形：「個人風格指令」「封面的指令呢」「分鏡腳本呢」「直接給我指令」。甚至有一句是「我是桌長，那封面的指令呢」，那是課程現場的桌長在問。</p>
+    <p>那一頁我寫了完整的教學，指令也都在頁面上。但四十幾個人問同一件事，答案只有一個：<b>那些指令在那一頁不好找。</b></p>
+    <div class="meaning">
+      <p>這是流量數字永遠不會告訴我的事。那一頁的瀏覽數很漂亮，跳出率也正常，從任何分析工具看都是一頁表現不錯的內容。要不是有人在上面問問題，而我剛好把那些問題記了下來，我到現在還會以為那頁沒問題。</p>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="not-replacing-ga">
+  <div class="inner">
+    <h2>先講清楚：這不是要取代 Google Analytics</h2>
+    <p>很多講自建分析的文章會先說第三方工具的壞話。我不打算這樣寫，因為那不誠實。</p>
+    <p>Google Analytics 在「多少人來、看哪幾頁、從哪裡來、停留多久」這些問題上，答得比我自己做的好，而且免費。你如果只需要這些，裝它就好，這篇可以不用看完。</p>
+    <p>我做這套是因為有一件事它拿不到：<b>訪客在我的頁面上，跟站內的 AI 助理問了什麼。</b></p>
+    <p>這件事在 2026 年變得重要，因為愈來愈多網站掛了 AI 客服。訪客不再只是看完就走，他們會問。而他們問的內容，是這個網站最直接的缺口清單。</p>
+    <p><b>流量告訴你哪一頁被看。提問告訴你那一頁哪裡沒講清楚。</b></p>
+  </div>
+</section>
+
+<section class="section" id="compare">
+  <div class="inner">
+    <h2>五種做法的能與不能</h2>
+    <p>下面每一格都是我實際做過或實測過的，不是規格書上的說法。</p>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>能回答的問題</th><th>GA4</th><th>Cloudflare</th><th>Vercel</th><th>Meta 像素</th><th>自建</th></tr></thead>
+        <tbody>
+          <tr><td>多少人來、看哪幾頁</td><td>可以</td><td>可以</td><td>可以</td><td>可以</td><td>可以</td></tr>
+          <tr><td>從哪個網站來的</td><td>最完整</td><td>可以</td><td>可以</td><td>有限</td><td>只記主機名</td></tr>
+          <tr><td>停留多久、捲到哪</td><td>可以</td><td>沒有</td><td>沒有</td><td>沒有</td><td>沒有</td></tr>
+          <tr><td><b>訪客在這一頁問了 AI 什麼</b></td><td>拿不到</td><td>拿不到</td><td>拿不到</td><td>拿不到</td><td><b>只有這個做得到</b></td></tr>
+          <tr><td>資料能不能程式撈回來</td><td>有 API</td><td>要另開權杖</td><td>無公開 API</td><td>有 API</td><td>自己的</td></tr>
+          <tr><td>會不會被廣告封鎖器擋</td><td>會</td><td>會</td><td>會</td><td>最常被擋</td><td>不會</td></tr>
+          <tr><td>AI 爬蟲來讀幾次</td><td>量不到</td><td>量不到</td><td>量不到</td><td>量不到</td><td>量不到</td></tr>
+          <tr><td>要不要處理同意</td><td>要</td><td>較低</td><td>較低</td><td>要</td><td>較低（不等於不用）</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Meta 像素要另外講，它不是分析工具</h3>
+    <p>很多人把 Facebook 像素（Meta Pixel）當成分析工具，因為它確實會記 pageview。但它的資料是為了餵廣告系統，不是為了給你看。後台報表也是以廣告成效為中心設計的。</p>
+    <p>判準很簡單，只有一個問題：<b>你有在投 Facebook 或 Instagram 廣告嗎？</b></p>
+    <p>有，它是必要的，轉換追蹤與再行銷受眾都靠它。沒有，它對你沒有任何用途。裝了只有三個結果：訪客資料送給 Meta、你要處理 cookie 同意、而且它是最常被廣告封鎖器擋掉的一種腳本，數字反而最不準。</p>
+    <p>我沒有投廣告，所以沒有裝。它跟這篇講的流量後台不重疊，是兩件事。</p>
+
+    <h3>「要不要處理同意」那一列，我原本寫錯了</h3>
+    <p>初稿我寫成「自建不用 cookie 同意」，審稿的模型指出這個判斷太絕對，它是對的。</p>
+    <div class="caveat">
+      <p>自建這套確實沒有用 cookie，但它在瀏覽器的 localStorage 存了一個隨機識別碼，用來算「幾個人來過」。<b>在裝置上存識別碼這件事，在歐盟的 ePrivacy 規範下原則上是需要告知與同意的，跟你用的是 cookie 還是 localStorage 無關。</b>有些法域對「純統計、第一方、不跨站」的用途給條件式豁免，但那是條件式的，不是自動的。</p>
+      <p>所以正確的說法是：自建的做法（隨機碼、不記 IP、不跨站追蹤、資料不給第三方）讓你<b>比較容易主張豁免</b>，而不是免除。你的訪客如果有歐盟來源，還是要查清楚。</p>
+    </div>
+    <p>我把表格那一格從「不用」改成「較低（不等於不用）」。這種地方寫得太肯定，讀者信了照做，出事的是他。</p>
+
+    <h3>AI 爬蟲那一列，五種工具全部量不到</h3>
+    <p>這是我做這套的時候才發現的事，而且它推翻了我原本的一個假設。</p>
+    <p>GPTBot、OAI-SearchBot、PerplexityBot、ClaudeBot 這些 AI 爬蟲，<b>都不執行 JavaScript</b>。上面那五種全都靠前端埋點，所以通通看不到它們來過。</p>
+    <p>所以如果你在 robots.txt 特地放行 AI 爬蟲，希望自己的內容被 AI 引用，那個動作的成效，這些工具通通量不到。要量只能從伺服器端日誌。</p>
+    <p>能量到的是另外一半：<b>有人從 ChatGPT 或 Perplexity 點連結進來的時候</b>，來源網站會顯示那個平台。這一項我有做，而且獨立成一組，因為那是這件事目前唯一看得見的成效。</p>
+    <p>反過來也要講清楚：有些 AI 介面不送來源資訊。所以「沒有 AI 平台來源」不等於沒人從 AI 那邊過來。</p>
+  </div>
+</section>
+<section class="section" id="three-layers">
+  <div class="inner">
+    <h2>三層結構</h2>
+    <p>這套東西是三件事疊起來的，缺任何一層都只是空殼。</p>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>層</th><th>做什麼</th><th>技術</th></tr></thead>
+        <tbody>
+          <tr><td><b>埋點</b></td><td>每次有人開頁面就記一次，含每頁每日的時間趨勢</td><td>一支 Serverless Function 加一支前端 JS</td></tr>
+          <tr><td><b>對話記錄</b></td><td>站內 AI 助理的每一句問答落地，含在哪一頁問的</td><td>一支 Function 加改 AI 助理元件</td></tr>
+          <tr><td><b>後台</b></td><td>密碼門後面的儀表板</td><td>一支 Function 加一頁 HTML 加一支 JS</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>資料放在 Serverless Function 加一個 Redis。不用資料庫伺服器、不用後台管理系統、不用付月費。</p>
+    <p>我兩個站共用同一個 Redis，靠 key 前綴隔離。這一句有代價，後面「弱點」那節會講。</p>
+
+    <h3>埋點要記什麼</h3>
+    <p>最基本的是「這一頁被看了幾次」。但只有累計總數的話，你回答不了「這篇這週紅不紅」。</p>
+    <p>所以要多記一層：一天一個雜湊表，欄位是頁面路徑。這樣既有時間維度，資料的數量又不會爆。</p>
+    <p>再加上獨立訪客與來源網站，這套就補上了它原本唯一輸給 Google Analytics 的兩項。</p>
+    <div class="meaning">
+      <p>獨立訪客那一項我特別挑了一種資料結構（HyperLogLog），它的特性是<b>只記得「大概有幾個不同的人」，記不住他們分別是誰</b>。誤差大約 1%，但它連原始資料都存不下來。</p>
+      <p>換句話說，就算我哪天想反查「某個人看過哪些頁」，資料庫裡根本沒有那筆東西可查。<b>這比寫一條規則說「不要查」可靠得多</b>，因為規則會被繞過，資料結構不會。</p>
+    </div>
+
+    <h3>對話記錄要記什麼</h3>
+    <p>時間、匿名的瀏覽器識別碼、單次瀏覽識別碼、角色（訪客或 AI）、內容、<b>所在頁面</b>。</p>
+    <p>最後那一項是關鍵。沒有它，你只知道大家在問什麼；有了它，你才知道哪一頁的人特別會問哪一種問題。</p>
+    <p>不記 IP、不做會員、不追跨站行為。原始對話每月一份，該月結束後保留一年就自動刪除。這件事是 2026 年 9 月 7 日才補上的，之前只有筆數上限、沒有時間上限。</p>
+
+    <h3>後台要有什麼</h3>
+    <p>我做完之後的定案是九個區塊。先看實際長什麼樣：</p>
+    <figure class="inline-figure wide">
+      <img src="../../images/articles/analytics-2-trend.jpg" alt="後台的流量趨勢區塊：上方是每日瀏覽數的面積圖，下方是每日提問數，兩張分開畫" loading="lazy">
+      <figcaption>兩張趨勢圖<b>分開畫、不共用 Y 軸</b>。瀏覽數是幾百，提問數是個位數到二十幾，硬疊在一起小的那條會被壓成一條直線。</figcaption>
+    </figure>
+    <ul>
+      <li>日期範圍查詢：近 30 天、3 個月、半年、一年、全部，或自選起訖</li>
+      <li>指標卡：這段期間對比前一段等長期間、平均每天、幾個人來過、AI 答不出來的比例</li>
+      <li>兩張趨勢圖：每日瀏覽、每日提問，<b>分開畫不共用 Y 軸</b>，因為量級差十倍以上</li>
+      <li>頁面排行，以及期間動能榜：這段期間排前面但累計不高的，就是正在被看的新內容</li>
+    </ul>
+    <figure class="inline-figure wide">
+      <img src="../../images/articles/analytics-3-pages.jpg" alt="後台的頁面排行區塊：橫向長條圖，可依全部、深度文章、課程、其他頁篩選" loading="lazy">
+      <figcaption>頁面排行。點任何一列，下面的對話明細會只留那一頁的提問，直接看得到讀者在那一頁卡在哪。</figcaption>
+    </figure>
+    <ul>
+      <li>問題意圖排序：把 152 則提問自動分成「要指令」「找文章」「問課程」等類別，一眼看出大家主要在問什麼</li>
+      <li>意圖佔比隨時間變化：某一類的比例一直往上，代表那件事變成常態需求，值得直接做成頁面而不是每次讓 AI 回答</li>
+      <li><b>頁面乘以意圖的熱區矩陣</b>：橫軸是問題類別、直軸是頁面，格子越深代表那一頁的人特別會問那種問題。點格子直接跳到原句</li>
+      <li>訪客清單，點開才展開那個人的完整對話串，跨頁跨天串在一起</li>
+      <li>異常訊號：有人試探 AI 護欄、同一句話被重問、答不出來的比例偏高</li>
+      <li>統計機制自我檢查：這些數字本身可不可信，哪些頁漏埋點</li>
+    </ul>
+    <figure class="inline-figure wide">
+      <img src="../../images/articles/analytics-4-intent.jpg" alt="後台的問題意圖區塊：排序長條圖顯示各類問題的數量，下方是頁面乘以意圖的熱區矩陣" loading="lazy">
+      <figcaption>上半是問題類別排行，下半是頁面乘以意圖的熱區矩陣。<b>分類是關鍵詞規則做的，不是 AI 判讀</b>，所以每次結果一致、可複查，分不出來的一律歸「其他」。</figcaption>
+    </figure>
+    <p>最後那一項「統計機制自我檢查」是我覺得最容易被忽略、但最該做的。做完之後它第一次執行就抓出<b>六篇文章頁與兩個課程頁從來沒有引入埋點</b>，流量一直記為零。從後台看那幾頁像是沒人看，實際上是沒在數。</p>
+  </div>
+</section>
+
+<section class="section" id="pitfalls">
+  <div class="inner">
+    <h2>六個踩過的坑</h2>
+    <p>全部是實作那兩天踩到的，不是想像的風險。</p>
+    <div class="meaning">
+      <p><b>如果你不寫程式，這節可以跳著看。</b>但我建議至少看第二個和第六個，因為那兩個不是程式問題，是判斷問題：一個是「預設值該設成什麼」，一個是「錯誤怎麼會變成無聲」。這兩種錯誤在任何工作上都會發生，跟寫不寫程式沒關係。</p>
+      <p>而如果你打算找人幫你做這件事，<b>這六個是你可以拿來問對方的問題</b>。對方答得出來，代表他真的做過。</p>
+    </div>
+
+    <h3>一、Serverless 裡沒有 await 的操作會靜默消失</h3>
+    <p>設定資料過期時間那一行忘了加 await，本機測完全正常，上線後就是沒生效。</p>
+    <p>原因是 Serverless 函式在回應送出之後會被凍結，沒有 await 的操作不保證送得出去。本機測不出來，因為 Node 會等事件迴圈清空。</p>
+    <p><b>教訓</b>：上線後要回資料庫查一次實際狀態，不能只看 API 有沒有回 200。</p>
+
+    <h3>二、預設看「當月」會在月初整個垮掉</h3>
+    <p>八月測的時候完全正常，因為八月已經過完了。九月一號打開就變成：趨勢圖只有一個孤點、對話只剩一則、還顯示「比上月少 99%」這種假訊號，因為那是拿還沒過完的一天去比上個月一整個月。</p>
+    <p><b>教訓</b>：預設值是設計決策不是技術細節。改成「近 30 天」這種一定跨月的區間，比較基準用前一段等長期間。<b>測試資料的時間點會遮蔽預設值的問題</b>，跨月跨年這種邊界要主動想。</p>
+
+    <h3>三、後台自己也會污染數據</h3>
+    <p>後台頁如果跟著全站載入埋點，你每看一次自己的數據，就替自己的流量加一次。站內 AI 助理也一樣，在後台試問幾句就混進統計。</p>
+    <p><b>教訓</b>：埋點的前端遇到後台路徑直接跳過，統計的時候也把後台路徑的對話濾掉。兩道都要做。</p>
+
+    <h3>四、垂直文字不要再轉 180 度</h3>
+    <p>熱區矩陣的欄位標題用 <code>writing-mode: vertical-rl</code> 本身就是由上往下讀，我又多加了一個 <code>rotate(180deg)</code>，變成由下往上、字還是倒的。</p>
+    <p><b>教訓</b>：這種事自己看一眼截圖三秒就知道，但不看就會一路錯到使用者面前。</p>
+
+    <h3>五、時間戳只記到分鐘，問答會排反</h3>
+    <p>資料庫的清單是新的在前，而時間戳只記到分鐘，所以同一分鐘內的問與答只靠時間排序，會排成「AI 先回答、訪客後提問」。</p>
+    <p><b>教訓</b>：用原始清單位置當第二排序鍵。而這個問題在表格版看不出來，是改成聊天氣泡之後才浮現的，因為表格沒有「先後」的視覺語意。<b>呈現方式會決定你看不看得見某一類錯誤。</b></p>
+
+    <h3>六、try/catch 會把失敗吞成無聲</h3>
+    <p>這是六個裡面最值得記住的。</p>
+    <p>解析來源網站的時候我用了 <code>new URL()</code>，線上永遠寫不進去，但同一個程式區塊裡的另一個操作卻正常。查證過程：程式碼確實上線了、本機跑同一段邏輯正確、手動打資料庫指令也正常。唯一的差別就是那個建構子，而它被包在 <code>try { } catch { }</code> 裡面，拋錯之後變數保持空字串，<b>沒有留下任何痕跡</b>。</p>
+    <p>改成用正則取主機名，不依賴 runtime API，兩個站立刻都寫進去了。</p>
+    <div class="caveat">
+      <p><b>教訓，而且這條可以用在任何地方</b>：catch 裡什麼都不做的區塊，失敗了完全沒有痕跡，會變成「看起來有做、實際上沒做」。要嘛在 catch 裡記一筆，要嘛換成不會拋錯的寫法。</p>
+    </div>
+  </div>
+</section>
+<section class="section" id="weakness">
+  <div class="inner">
+    <h2>這套的弱點，我請另一家 AI 審過</h2>
+    <p>方案做完之後我把設計交給另一家的模型審查，它指出的第一件事，是我原本完全沒有處理的。</p>
+
+    <h3>最大的風險不是不準，是靜默漏數</h3>
+    <div class="caveat">
+      <p>自建的資料只有一份，放在免費方案的 Redis 上，沒有備份、沒有服務保證、沒有告警。</p>
+      <p>埋點壞掉的那一天，後台會顯示 0。而 <b>0 跟「那天真的沒人來」長得一模一樣</b>。</p>
+      <p>不準你知道要打折。靜默漏數你會以為那是事實，然後拿它做判斷。</p>
+    </div>
+    <p>上面第六個坑就是活生生的例子：那個問題沒有任何機制會通知我，是我回頭去查才發現的。如果我沒查，那個功能會一直是壞的，而後台會一直顯示「沒有任何外部來源」，看起來就像沒人從外面連進來。</p>
+    <p><b>該補的三件</b>：</p>
+    <ol>
+      <li>異常歸零告警：前七天有流量、昨天是 0，就是壞了，要有人知道</li>
+      <li>每日備份：把彙總資料匯出到 Redis 以外的地方</li>
+      <li>月度對帳：跟另一套追蹤工具比一次，差太多代表有一邊壞了</li>
+    </ol>
+    <p>第三件正好是「不要把既有的第三方追蹤拆掉」的理由。我原本打算把 Vercel Analytics 拆掉省事，審查的意見是先留著，因為<b>留著它就是對帳的基準</b>。這個判斷比我原本的好。</p>
+    <figure class="inline-figure wide">
+      <img src="../../images/articles/analytics-6-health.jpg" alt="後台的統計機制自我檢查區塊：列出資料來源分界、AI 爬蟲量不到、沒有記錄的東西等六條" loading="lazy">
+      <figcaption>後台有一區專門講「這些數字本身可不可信」：哪些頁漏埋點、資料來源的分界在哪、什麼東西根本沒在記。<b>把自己的限制寫在自己的儀表板上</b>，比寫在文件裡有用，因為看數字的時候會順便看到。</figcaption>
+    </figure>
+
+    <h3>多站共用一個資料庫的代價</h3>
+    <p>用 key 前綴隔離只防名稱撞在一起，<b>不是安全隔離</b>。兩個站共用同一組存取金鑰，任何一站的金鑰外洩或被濫用，另一站的資料與額度會一起受害。</p>
+    <p>判準：站的擁有者是同一個人、金鑰都在自己手上、規模都不大，共用可以接受。替客戶做、跨組織、或任何一站會交給別人維護，一律分開開資料庫。</p>
+  </div>
+</section>
+
+<section class="section" id="faq">
+  <div class="inner">
+    <h2>四個真的被問到的問題</h2>
+    <p>這幾題是我做完之後被實際問到的，答案我覺得比方案本身有用。</p>
+
+    <h3>「我到底裝了什麼？數據收得齊嗎？」</h3>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th></th><th>知識官網</th><th>永續報告書</th></tr></thead>
+        <tbody>
+          <tr><td>Google Analytics</td><td>沒裝</td><td>2026-05 起</td></tr>
+          <tr><td>Vercel Analytics</td><td>2026-06-27 起</td><td>有</td></tr>
+          <tr><td>Cloudflare Analytics</td><td>2026-08-23 起</td><td>沒有</td></tr>
+          <tr><td>自建</td><td>2026-07-02 起</td><td>2026-09-01 起</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>答案是：<b>流量數字不但收得齊，還是重複收</b>，三套並行。真正的缺口只有兩個，一個是 AI 對話只有自建在收、沒有備援，另一個是壞了沒人通知。</p>
+    <p>順帶一提，這張表是查 <code>git log -S</code> 一個一個追出來的，不是憑印象。哪一套追蹤是哪天裝的，程式碼的歷史記得比人清楚。我原本以為知識官網有裝 Google Analytics，查完才發現沒有。</p>
+
+    <h3>「所謂的對帳是什麼意思？」</h3>
+    <p>不是要補資料，是<b>確認資料沒壞</b>。</p>
+    <p>就像同一批人進場，兩個人各自數。兩邊數字差不多，代表都在正常運作；差很多，代表有一邊壞了。</p>
+    <p>為什麼需要這個：上面第六個坑那個 bug，功能壞掉之後後台顯示「沒有任何外部來源」，跟「真的沒人從外面連進來」長得一模一樣。沒有第二套數字可以比，你不會知道它壞了。</p>
+
+    <h3>「我已經有兩家了，就可以對了對嗎？」</h3>
+    <p>資料層面對了，但這裡有個區別很重要：<b>「有兩家在收」不等於「有人在比」。</b></p>
+    <p>我三套都在收，可是在做這件事之前，沒有任何人或程式會定期去看它們對不對得上。所以那個 bug 照樣壞了兩天沒人發現。</p>
+    <p>而且我後來想清楚一件更重要的事：<b>三件補強裡最關鍵的那件，根本不需要第二家。</b></p>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>補強項</th><th>需要第二家嗎</th><th>難度</th></tr></thead>
+        <tbody>
+          <tr><td>異常歸零告警</td><td><b>不用</b>，看自己的資料就夠</td><td>一支腳本</td></tr>
+          <tr><td>每日備份</td><td>不用</td><td>同一支腳本順手做</td></tr>
+          <tr><td>月度對帳</td><td>要</td><td>人工可以，自動要看第三方給不給 API</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>「前七天有流量、昨天突然是 0」這種事，自己的資料就看得出來，不必跟任何人比。</p>
+
+    <h3>「那自動對帳做得起來嗎？」</h3>
+    <p>在我這兩個站，<b>目前做不起來</b>，而且原因不是技術難，是拿不到資料：Vercel Analytics 沒有公開 API（我試過兩個端點都是 404），Cloudflare 有 GraphQL API 但要另外開權杖。</p>
+    <p>所以月度對帳我的做法是人工：每個月登入後台看一眼數字，跟自己的後台比。後來改成半自動：每月一號腳本先把自建的月總量填進一張對帳表，我只填另一邊的數字，由程式算差異。五分鐘的事，不值得為它多開權杖。</p>
+    <div class="meaning">
+      <p><b>這是我想強調的一種判斷方式</b>：不是所有事情都要自動化。自動化的成本包含「多一個會壞的東西」，一個月五分鐘的人工，常常比一個會靜默失效的排程可靠。</p>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="alert-built">
+  <div class="inner">
+    <h2>我把告警做出來了，第一次跑就抓到東西</h2>
+    <p>寫完這篇的當下我把前兩件做了，一支腳本，六項檢查：</p>
+    <ol>
+      <li>昨天完全沒流量但前七天有</li>
+      <li>掉到前七天平均的兩成以下</li>
+      <li>有瀏覽但獨立訪客是 0（前端沒送出識別碼）</li>
+      <li>本月流量夠多卻一個外部來源都沒有（就是那個 bug 的症狀）</li>
+      <li>對話記錄的筆數</li>
+      <li>有人在某頁問過問題、那頁卻沒有瀏覽記錄（漏埋點）</li>
+    </ol>
+    <p>第一次執行的結果：</p>
+    <div class="codeblock"><pre>【知識官網】
+  🟢 昨天(2026-09-01)瀏覽 147 次，前七天平均 166.1 次。
+
+【永續報告書】
+  🟢 昨天(2026-09-01)瀏覽 4 次，前七天平均 1.4 次。
+  🔴 昨天有 4 次瀏覽但獨立訪客是 0，前端可能沒把識別碼送出去。</pre></div>
+    <p>那個紅燈是<b>誤報</b>。原因是我前一天為了驗證功能灌了測試資料進去，事後把當天的獨立訪客整包刪掉，所以出現「有瀏覽卻沒有人」這種不一致。埋點本身是好的。</p>
+    <div class="meaning">
+      <p>我沒有為了消掉這個紅燈去改判斷條件。<b>它的邏輯是對的：有瀏覽卻沒有人，本來就該被問一句。</b>誤報的代價是我花三十秒確認，漏報的代價是資料錯了一個月沒人知道。這兩個不對等。</p>
+    </div>
+    <p>這支腳本現在每天早上九點自動跑，正常就安靜，有紅燈才通知。同一支腳本順手做了備份，每天把彙總資料寫成一份 JSON 存進知識庫，只留最近 90 天。原始對話不進備份，那裡面有訪客的原話，不需要多一份散落在外。</p>
+  </div>
+</section>
+
+<section class="section" id="when-not">
+  <div class="inner">
+    <h2>什麼時候不該做這套</h2>
+    <ul>
+      <li><b>只想要一個總瀏覽數</b>：放一個計數器就好，不用做後台</li>
+      <li><b>站上沒有 AI 助理</b>：這套最大的價值消失了，用現成的分析工具更省事</li>
+      <li><b>需要完整的行為分析</b>：停留時間、捲動深度、轉換漏斗，這套都沒有</li>
+      <li><b>沒有人能維護</b>：出問題沒有客服可以問，也沒有人會通知你</li>
+      <li><b>要做給客戶看的成效報告</b>：後台是自己看的，資料原貌都在。給別人看的成效頁是另一件事</li>
+    </ul>
+
+    <h3>成本</h3>
+    <p>以每次瀏覽用掉十個資料庫指令估，免費額度大約可以支撐每月五萬次瀏覽。我兩個站合計目前每月不到四千次，離上限還很遠。</p>
+    <p>真正的成本不是錢，是<b>維護責任</b>。出問題沒有人會通知你，這件事上面已經講過一次，這裡再講一次是因為它值得。</p>
+  </div>
+</section>
+
+<section class="section" id="august">
+  <div class="inner">
+    <h2>八月的實際數字</h2>
+    <figure class="inline-figure wide">
+      <img src="../../images/articles/analytics-1-tiles.jpg" alt="後台的指標卡：八月瀏覽 2840 次、平均每天 92 次、152 則提問、AI 答不出來 9%" loading="lazy">
+      <figcaption>八月的指標卡。比較基準是「前一段等長期間」而不是「上個月」，因為月初打開的時候，拿沒過完的幾天去比上個月一整個月是假訊號。</figcaption>
+    </figure>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th></th><th>數字</th></tr></thead>
+        <tbody>
+          <tr><td>瀏覽</td><td>2,840 次（七月是 3,070）</td></tr>
+          <tr><td>訪客提問</td><td>152 則</td></tr>
+          <tr><td>對話段數</td><td>65 段</td></tr>
+          <tr><td>提問過的瀏覽器</td><td>36 個</td></tr>
+          <tr><td>AI 答不出來的比例</td><td>9%（148 則回答裡有 14 則說「查不到」）</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>提問最多的三個頁面：課程頁 41 則、另一堂課程頁 14 則、首頁 14 則。</p>
+    <figure class="inline-figure wide">
+      <img src="../../images/articles/analytics-5-flags.jpg" alt="後台的異常訊號區塊：有人試探 AI 護欄 7 則、同一句話被問 9 次、AI 答不出來的比例 9%" loading="lazy">
+      <figcaption>異常訊號那一區。這三條都是<b>規則掃出來的訊號不是結論</b>，每條都附可以直接查的原句，看過才算數。</figcaption>
+    </figure>
+    <p>八月抓到一件事：<b>有人在系統性地試探 AI 助理的護欄</b>，七則命中「要求輸出系統設定」「忽略前面的指令」這類句型，集中在同一天。這件事沒有後台就完全不會知道。</p>
+    <p>而「同一個人把同一句話問了九次」那一條，指向的是另一個問題：那九次問的是同一個技術問題，代表 AI 當下沒回應或答案沒用。<b>連問通常不是熱情，是卡住。</b></p>
+  </div>
+</section>
+
+<section class="section" id="back-to-41">
+  <div class="inner">
+    <h2>回到開頭那 41 個問題</h2>
+    <p>我不是為了做網站才做這套後台的。</p>
+    <p>我平常在做的事是幫人整理內容，把散在各處的資料變成一個找得到東西的架構。做久了會發現一件事：<b>網站是知識架構的一種輸出形式</b>。</p>
+    <p>架構做對了，網站只是把它呈現出來。架構沒做對，網站做得再漂亮，也只是把混亂搬到線上。</p>
+    <div class="meaning">
+      <p>所以回頭看開頭那 41 個問題，它們指出的其實不是「網站功能不好」，是<b>那一頁的資訊架構沒做對</b>：該被找到的東西沒有被放在會被找到的位置。這件事跟網站做得漂不漂亮無關，跟內容怎麼組織有關。</p>
+    </div>
+    <p>而這也是為什麼我會花力氣去記錄那些問題。流量告訴我哪一頁被看，提問告訴我那一頁哪裡沒做好。第二件事比第一件難，但它才是真正能改進的那個。</p>
+    <p style="color:#6a635a;font-size:17px;margin-top:32px">本文的實作過程與六個問題的修正，都發生在 2026 年 9 月 1 日到 2 日之間；告警排程、保存期限與月度對帳在 9 月 7 日補上。方案設計經過跨家 AI 審查，弱點那節的分析來自那次審查。</p>
+  </div>
+</section>
+
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">江江教練 · AI 知識管理</div>
+    <div class="footer-links">
+      <a href="../../articles.html">← 回深度文章總站</a>
+      <a href="../../index.html">首頁</a>
+      <a href="../../learn.html">自學資源</a>
+      <a href="../../skills.html">技能包下載</a>
+      <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">LINE 社群 ↗</a>
+      <a href="https://www.threads.com/@jiang_yude_coach" target="_blank" rel="noopener">Threads ↗</a>
+      <a href="https://vocus.cc/salon/Jiang_Coach" target="_blank" rel="noopener">方格子 ↗</a>
+    </div>
+    <div class="footer-note">這是一篇教學文章，整理我對「裝了 Google Analytics，為什麼還是不知道訪客卡在哪？｜流量看見哪頁被看，提問看見哪裡沒做好」的看法，供你參考。</div>
+  </div>
+</footer>
+
+<!-- 點圖放大 lightbox（hero 與內文圖通用，已內建，不用每篇重加） -->
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <span class="lightbox-close" aria-label="關閉">×</span>
+  <img id="lightbox-img" src="" alt="放大檢視">
+</div>
+<script>
+(function(){
+  var box=document.getElementById('lightbox'),boxImg=document.getElementById('lightbox-img');
+  document.querySelectorAll('.hero-figure img,.inline-figure img').forEach(function(img){
+    img.addEventListener('click',function(){boxImg.src=img.currentSrc||img.src;boxImg.alt=img.alt||'放大檢視';box.classList.add('open');box.setAttribute('aria-hidden','false');});
+  });
+  function close(){box.classList.remove('open');box.setAttribute('aria-hidden','true');boxImg.src='';}
+  box.addEventListener('click',close);
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
+})();
+</script>
+
+<script src="../../image-interactions.js"></script>
+
+<!-- 官網共用：滑鼠暖光暈 + 導航列漢堡選單 -->
+<script src="../../spotlight.js"></script>
+
+<!-- 文章自動互聯（相關文章）：兩支已內建，順序不可顛倒，不用再另外加 -->
+<script src="../../articles-data.js"></script>
+<script src="../../related-render.js"></script>
+  <script src="/mika-chat-widget.js" defer></script>
+</body>
+</html>
