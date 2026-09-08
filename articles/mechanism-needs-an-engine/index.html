@@ -143,8 +143,20 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
 .footer-brand{font-weight:900;font-size:15px;margin-bottom:10px}.footer-note{font-size:13px;line-height:1.6}
 @media(max-width:820px){.infocard-grid{grid-template-columns:1fr}.duo{grid-template-columns:1fr}.workflow-grid{grid-template-columns:1fr}.cta-band .inner{grid-template-columns:1fr}.section{padding:40px 20px}.hero{min-height:52vh;flex-direction:column;justify-content:flex-start;align-items:flex-start;gap:24px}.hero>div{width:100%}.hero-figure{width:100%;max-width:560px}}
 @media(max-width:820px){html,body{overflow-x:hidden}.hero h1{word-break:break-word}}
-.hero h1{font-size:clamp(30px,3.6vw,54px);line-height:1.18}
-.hero .kicker{font-size:1.3rem}
+.hero{gap:48px}
+.hero>div{width:600px}
+.hero-figure{width:360px}
+.hero h1{font-size:clamp(30px,3.3vw,46px);line-height:1.18;margin:12px 0 16px}
+.hero p{font-size:clamp(16px,1.35vw,19px);line-height:1.65}
+.hero .kicker{font-size:1.28rem}
+/* 斷點 1180 不用 1200：og-shot 用 1200px 視窗截 hero，設 1200 會命中、封面圖被推到左下角（2026-09-08 實測）。
+   排版寬度 600+360+48＝1008，hero 左右內距合計 176，故 1184 以下才會 wrap，1180 斷點安全。 */
+@media(max-width:1180px){
+ .hero{gap:32px;flex-direction:column;align-items:flex-start}
+ .hero>div{width:100%}
+ .hero h1{font-size:clamp(28px,5vw,40px)}
+ .hero-figure{width:100%;max-width:560px}
+}
 .tablewrap td b{color:#1a1612}
 </style>
 </head>
@@ -180,6 +192,10 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
     <h1>我明明規則都寫好了，AI 為什麼沒照做？｜機制要掛引擎，才會確實執行</h1>
     <p>規則在檔案裡，AI 每次都讀得到，兩個月來 28 篇卻沒有一篇照做。答案很無聊：沒有任何東西在檢查。這篇講我怎麼從一張圖看出破洞，以及為什麼修法是補機制、不只是補資料。</p>
   </div>
+  <figure class="hero-figure">
+    <img src="../../images/articles/mechanism-needs-an-engine-cover.jpg" alt="圖卡：你交給 AI 的事，它真的有在做嗎。三格分別是我以為、實際上、為什麼" loading="lazy">
+    <figcaption>同一個問題的另一個版本。那次是自動排程連續五天沒跑成，這次是規則寫了沒被執行。</figcaption>
+  </figure>
 </section>
 
 <main>
@@ -307,6 +323,10 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
       <li><b>怎麼知道它跑過？</b>有沒有一個地方會留下「上次跑的結果」？沒有就是沒有證據，你只能靠感覺。</li>
     </ol>
     <p>三題都答得出來，才算一條會執行的規則。答不出來的，要嘛補引擎，要嘛老實把它降級成「參考規範」，不要再假裝它是機制。</p>
+    <figure class="inline-figure">
+      <img src="../../images/articles/mechanism-needs-an-engine-check.jpg" alt="圖卡：交給 AI 自動做的事這樣檢查。先問一句、通知加一條、這句直接貼給 AI" loading="lazy">
+      <figcaption>把同樣三個問題用在自動排程上會長這樣。第三問「怎麼知道它跑過」落到排程上，就是「不要問它有沒有設好，要問它上次成功是什麼時候」。</figcaption>
+    </figure>
     <p>下面這段提示詞可以直接貼給你的 AI，讓它幫你盤一次。如果你沒有正式的規則檔，把你平常反覆對 AI 交代的那些話列出來，也算：</p>
 <div class="codeblock">請讀我的規則檔（貼上路徑或內容），逐條做三件事：
 1. 這條規則要求 AI 持續做什麼？（如果只是說明、定義、背景，標成「參考規範」跳過）
