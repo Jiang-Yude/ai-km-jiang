@@ -11,6 +11,10 @@
 // 做四件事：①把網站收到的「待核對訂單」補進訂單表（status=pending，江江查完後台改 ok）②寫入四張表
 // ③訂單表標 ok 的，回頭把綁了該訂單的帳號 codes 狀態改 ok ④印出還在 pending 的清單。
 // 不刪帳號、不動用量；發碼表移除的碼會從 Upstash 刪掉（用索引集合比對）。
+// 帳號救援（2026-09-08 SSR 走查後補，江江人工用）：
+//   --reset-password <暱稱> <新密碼>   忘記密碼：重設，訂單與碼都保留
+//   --drop-code <暱稱> <碼或訂單編號>  打錯訂單編號：從帳號拿掉並釋放全域綁定，讓他重打
+// 帶這兩個參數時只做該件事，不跑四張表同步。
 
 import fs from 'node:fs';
 import path from 'node:path';
@@ -82,7 +86,42 @@ function readTable(name) {
 }
 const csvCell = (v) => (/[",\n]/.test(v) ? `"${String(v).replace(/"/g, '""')}"` : v);
 
+function hashPw(pw) {
+  const salt = crypto.randomBytes(16).toString('hex');
+  return { salt, hash: crypto.scryptSync(String(pw), salt, 32).toString('hex') }; // 與 api/skill-access.js hashPw 同式
+}
+const normNick = (n) => String(n || '').trim().toLowerCase();
+async function rescue() {
+  const argv = process.argv;
+  const ri = argv.indexOf('--reset-password'), di = argv.indexOf('--drop-code');
+  if (ri < 0 && di < 0) return false;
+  if (DRY) { console.log('[dry-run] 救援指令不支援 dry-run'); return true; }
+  if (ri >= 0) {
+    const nick = normNick(argv[ri + 1]), pw = argv[ri + 2] || '';
+    if (!nick || pw.length < 4 || pw.length > 20) { console.error('⛔ 用法：--reset-password <暱稱> <新密碼 4 到 20 字>'); process.exit(1); }
+    const raw = await one(['GET', `${PREFIX}account:${nick}`]);
+    if (!raw) { console.error(`⛔ 沒有這個暱稱：${nick}`); process.exit(1); }
+    const acc = JSON.parse(raw); acc.pw = hashPw(pw);
+    await one(['SET', `${PREFIX}account:${nick}`, JSON.stringify(acc)]);
+    console.log(`✅ ${acc.display || nick} 密碼已重設，碼與訂單都保留（${(acc.codes || []).length} 組）`);
+  }
+  if (di >= 0) {
+    const nick = normNick(argv[di + 1]), code = normCode(argv[di + 2]);
+    if (!nick || !code) { console.error('⛔ 用法：--drop-code <暱稱> <碼或訂單編號>'); process.exit(1); }
+    const raw = await one(['GET', `${PREFIX}account:${nick}`]);
+    if (!raw) { console.error(`⛔ 沒有這個暱稱：${nick}`); process.exit(1); }
+    const acc = JSON.parse(raw);
+    const before = (acc.codes || []).length;
+    acc.codes = (acc.codes || []).filter((c) => normCode(c.value) !== code);
+    if (acc.codes.length === before) { console.error(`⛔ ${nick} 底下沒有 ${code}`); process.exit(1); }
+    await pipe([['SET', `${PREFIX}account:${nick}`, JSON.stringify(acc)], ['DEL', `${PREFIX}orderclaim:${code}`]]);
+    console.log(`✅ 已從 ${acc.display || nick} 拿掉 ${code}，全域綁定已釋放，他可以重新輸入正確的編號`);
+  }
+  return true;
+}
+
 async function main() {
+  if (await rescue()) return;
   console.log(`同步開始 ${DRY ? '（dry-run，不寫入）' : ''}\n表格：${TABLES}`);
 
   // ① 待核對訂單 → 補進訂單表
