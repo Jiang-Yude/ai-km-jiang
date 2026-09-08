@@ -1,0 +1,396 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="index,follow">
+<title>我明明規則都寫好了，AI 為什麼沒照做？｜機制要掛引擎，才會確實執行</title>
+<meta name="description" content="規則寫得再清楚，AI 也不一定會照做，而且你通常不會發現。我靠很久沒開的 Obsidian 圖譜看出破洞，把修法從叫 AI 補資料換成給規則掛引擎：Hook、事件掛載、排程三種引擎的白話對照，加一組三問檢查法與可直接貼給 AI 的盤點提示詞。">
+<link rel="canonical" href="https://jiangyude.com/articles/mechanism-needs-an-engine/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="我明明規則都寫好了，AI 為什麼沒照做？｜機制要掛引擎，才會確實執行｜江江教練">
+<!-- 分享封面：hero 文字填好後在 repo 根目錄跑 `node scripts/og-shot.mjs mechanism-needs-an-engine` 自動截 1200×630 到 images/og/mechanism-needs-an-engine.jpg（見 README「文章分享封面（OG 圖）機制」）。別退回 intro-jiang.png 直式人像，會被裁成只剩脖子。 -->
+<meta property="og:image" content="https://jiangyude.com/images/og/mechanism-needs-an-engine.jpg">
+<meta property="og:description" content="規則寫得再清楚，AI 也不一定會照做，而且你通常不會發現。我靠很久沒開的 Obsidian 圖譜看出破洞，把修法從叫 AI 補資料換成給規則掛引擎：Hook、事件掛載、排程三種引擎的白話對照，加一組三問檢查法與可直接貼給 AI 的盤點提示詞。">
+<meta property="og:url" content="https://jiangyude.com/articles/mechanism-needs-an-engine/">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:site_name" content="江江教練 · AI 知識管理">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="我明明規則都寫好了，AI 為什麼沒照做？｜機制要掛引擎，才會確實執行｜江江教練">
+<meta name="twitter:image" content="https://jiangyude.com/images/og/mechanism-needs-an-engine.jpg">
+<meta name="twitter:description" content="規則寫得再清楚，AI 也不一定會照做，而且你通常不會發現。我靠很久沒開的 Obsidian 圖譜看出破洞，把修法從叫 AI 補資料換成給規則掛引擎：Hook、事件掛載、排程三種引擎的白話對照，加一組三問檢查法與可直接貼給 AI 的盤點提示詞。">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"我明明規則都寫好了，AI 為什麼沒照做？｜機制要掛引擎，才會確實執行","description":"規則寫得再清楚，AI 也不一定會照做，而且你通常不會發現。我靠很久沒開的 Obsidian 圖譜看出破洞，把修法從叫 AI 補資料換成給規則掛引擎：Hook、事件掛載、排程三種引擎的白話對照，加一組三問檢查法與可直接貼給 AI 的盤點提示詞。","author":{"@type":"Person","name":"江昱德","alternateName":"江江教練","jobTitle":"隱性知識提煉師、AI 應用規劃師"},"isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://jiangyude.com/"},"inLanguage":"zh-Hant","url":"https://jiangyude.com/articles/mechanism-needs-an-engine/"}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{--ink:#1a1612;--paper:#fefcf8;--muted:#6a635a;--line:#d8cdb8;--green:#5f7553;--blue:#5689b8;--orange:#e85a4f;--soft:#faf5ec;--dark:#2a2018;--shadow:0 18px 45px rgba(107,74,42,.14);--sp-shadow:hsla(35,50%,60%,.15);--sp-shadow-edge:hsla(35,50%,68%,.03);--sp-radius:400px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC","Segoe UI",sans-serif}
+a{color:inherit}
+/* 官網共用導航列 nav.top（與首頁/文章總站同一條） */
+nav.top{position:sticky;top:0;background:rgba(254,252,248,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid #d8cdb8;z-index:100}
+nav.top .container{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:24px;padding:14px 32px}
+.nav-brand-img{justify-self:start;display:flex;align-items:center;text-decoration:none;flex-shrink:0;transition:opacity .2s}
+.nav-brand-img:hover{opacity:.8}.nav-brand-img img{height:40px;width:auto;display:block}
+nav.top ul.nav-menu{justify-self:end;display:flex;gap:22px;list-style:none;margin:0;padding:0;font-size:.95rem;white-space:nowrap}
+nav.top ul.nav-menu a{color:#3a342d;text-decoration:none;transition:color .2s;font-weight:500;white-space:nowrap}
+nav.top ul.nav-menu a:hover{color:#1a1612}nav.top ul.nav-menu a.active{color:#1a1612;font-weight:700}
+.nav-toggle{display:none;background:none;border:none;padding:6px;cursor:pointer;width:36px;height:36px;position:relative}
+.nav-toggle span{display:block;position:absolute;left:8px;right:8px;height:2px;background:#1a1612;border-radius:2px;transition:transform .25s,opacity .25s,top .25s}
+.nav-toggle span:nth-child(1){top:11px}.nav-toggle span:nth-child(2){top:17px}.nav-toggle span:nth-child(3){top:23px}
+.nav-toggle.open span:nth-child(1){top:17px;transform:rotate(45deg)}.nav-toggle.open span:nth-child(2){opacity:0}.nav-toggle.open span:nth-child(3){top:17px;transform:rotate(-45deg)}
+.tablewrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:22px 0;border:1px solid var(--line);border-radius:10px;background:#fff;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.tablewrap table{border-collapse:collapse;width:100%;min-width:600px;font-size:18px;line-height:1.65}
+.tablewrap .zh{display:block;margin-top:5px;font-size:16px;line-height:1.55;color:var(--muted);font-weight:400}
+.tablewrap th,.tablewrap td{padding:12px 14px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top;color:#3a342d}
+.tablewrap thead th{background:var(--soft);font-weight:900;font-size:18px;color:#1a1612;white-space:nowrap}
+.tablewrap tbody tr:last-child td{border-bottom:none}
+.tablewrap td code,.section code{background:var(--soft);border:1px solid var(--line);border-radius:5px;padding:1px 6px;font:500 15px/1.5 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace}
+.inline-figure.wide{max-width:1000px}
+.toc{margin:26px 0 0;padding:20px 22px;background:#fff;border:1px solid var(--line);border-radius:10px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.toc>b{display:block;font-size:15px;letter-spacing:.05em;color:var(--green);margin-bottom:10px}
+.toc ol{margin:0;padding-left:1.35em;font-size:18px;line-height:1.7}
+.toc li{margin-bottom:7px;color:#3a342d}
+.toc a{color:var(--blue);font-weight:700;text-decoration:none}.toc a:hover{text-decoration:underline}
+.toc-hint{margin:12px 0 0!important;font-size:18px!important;color:var(--muted)!important;border-top:1px solid var(--line);padding-top:12px}
+.readmore{margin-top:24px;padding:20px 22px;background:var(--soft);border:1px solid var(--line);border-radius:12px}
+.readmore.near{margin:26px 0 6px;background:rgba(86,137,184,.07);border-color:#bcd0e2}
+.readmore.near b{color:var(--blue);font-size:18px}
+.readmore.near li{font-size:17px;line-height:1.7;margin-bottom:10px}
+.readmore b{display:block;margin-bottom:10px;font-size:19px}
+.readmore ul{margin:0;padding-left:1.25em}
+.readmore a{color:var(--blue);font-weight:700;text-decoration:none}
+.readmore a:hover{text-decoration:underline}
+@media(max-width:820px){.tablewrap table{min-width:560px;font-size:18px}.tablewrap{position:relative}.tablewrap::after{content:"表格可左右滑動 →";position:sticky;left:0;display:block;font-size:15px;color:var(--muted);background:var(--soft);border-top:1px solid var(--line);padding:7px 12px;width:100%}}
+@media(max-width:860px){
+ nav.top .container{grid-template-columns:auto 1fr auto;padding:10px 16px;gap:12px}
+ .nav-brand-img img{height:32px}
+ .nav-toggle{display:block;justify-self:end}
+ nav.top ul.nav-menu{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(254,252,248,.98);backdrop-filter:blur(14px);border-bottom:1px solid #d8cdb8;flex-direction:column;gap:0;padding:8px 0;box-shadow:0 10px 24px rgba(107,74,42,.08)}
+ nav.top ul.nav-menu.open{display:flex}
+ nav.top ul.nav-menu li{border-bottom:1px solid #e8dfc9}
+ nav.top ul.nav-menu li:last-child{border-bottom:none}
+ nav.top ul.nav-menu a{display:block;padding:14px 20px;font-size:1.06rem}
+}
+/* 滑鼠暖光暈（與首頁同一支 spotlight.js） */
+body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradient(var(--sp-radius) circle at var(--mx,50%) var(--my,50%),var(--sp-shadow) 0%,var(--sp-shadow-edge) 45%,transparent 75%);pointer-events:none;z-index:9999;mix-blend-mode:multiply;transition:background .06s linear}
+.hero{position:relative;overflow:hidden;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:72px;padding:96px clamp(20px,6vw,88px) 80px;background:linear-gradient(180deg,#fffcf0 0%,#f9e9d2 100%);color:#1a1612;border-bottom:1px solid #d8cdb8}
+.hero .wc{position:absolute;border-radius:50%;filter:blur(60px);pointer-events:none;z-index:0}
+.hero .wc1{width:420px;height:360px;top:-120px;right:-80px;background:#e8884b;opacity:.15}
+.hero .wc2{width:360px;height:300px;bottom:-110px;left:-70px;background:#5f7553;opacity:.13}
+.hero .wc3{width:280px;height:260px;top:34%;left:14%;background:#a08144;opacity:.10}
+.hero>div{flex:none;width:860px;max-width:100%;position:relative;z-index:2}
+.hero-figure{margin:0;width:420px;flex:none;position:relative;z-index:2}
+.hero-figure img{display:block;width:100%;border-radius:16px;border:1px solid #d8cdb8;box-shadow:0 18px 45px rgba(107,74,42,.16);cursor:zoom-in}
+.hero-figure figcaption{margin-top:10px;font-size:14px;line-height:1.6;color:#6a635a}
+.inline-figure{margin:30px auto 8px;max-width:820px}
+.inline-figure img{display:block;width:100%;border-radius:14px;border:1px solid var(--line);box-shadow:var(--shadow);background:#fff;cursor:zoom-in}
+.inline-figure figcaption{font-size:14px;line-height:1.6;color:var(--muted);margin-top:10px}
+.lightbox{position:fixed;inset:0;z-index:10000;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(12,10,8,.92);cursor:zoom-out;backdrop-filter:blur(4px)}
+.lightbox.open{display:flex}.lightbox img{max-width:96vw;max-height:92vh;border-radius:10px;box-shadow:0 24px 60px rgba(0,0,0,.5)}
+.lightbox-close{position:fixed;top:18px;right:24px;color:#fff;font-size:34px;line-height:1;font-weight:700;cursor:pointer;opacity:.85}
+.kicker{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.55rem;color:#7a5c3a;font-weight:500}
+.hero h1{max-width:none;margin:16px 0 18px;font-size:clamp(36px,6vw,72px);line-height:1.08;overflow-wrap:anywhere}
+.hero p{max-width:none;font-size:clamp(18px,2vw,23px);line-height:1.62;color:#3a342d}
+.cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
+.cta a{display:inline-flex;align-items:center;text-decoration:none;border-radius:8px;padding:12px 16px;font-weight:900}
+.cta .primary{background:#fff;color:#1a1612}.cta .ghost{border:1px solid rgba(255,255,255,.32);color:#fff;background:rgba(255,255,255,.08)}
+.section{padding:54px clamp(20px,6vw,88px);border-top:1px solid var(--line)}
+.inner{width:min(1000px,100%);margin:0 auto}
+.section h2{font-size:clamp(26px,4.2vw,48px);line-height:1.12;margin:0 0 18px}
+.section h3{font-size:clamp(21px,3vw,30px);line-height:1.2;margin:30px 0 12px}
+.lead{font-size:clamp(18px,1.6vw,22px);line-height:1.7;color:#3a342d;max-width:900px}
+.section p{font-size:18px;line-height:1.74;color:#3a342d}.section p+p{margin-top:14px}
+.section ul,.section ol{padding-left:1.4em;font-size:18px;line-height:1.74;color:#3a342d}.section li{margin-bottom:8px}
+.meaning{margin:22px 0;padding:16px 18px;border-left:5px solid var(--blue);background:rgba(86,137,184,.12);border-radius:6px;line-height:1.7;font-size:19px}
+.meaning b{display:block;color:var(--blue);margin-bottom:4px}
+.caveat{margin:0 0 8px;padding:16px 18px;border-left:5px solid var(--orange);background:rgba(232,90,79,.1);border-radius:6px;line-height:1.7;font-size:18px;color:#3a342d}
+.caveat b{display:block;color:var(--orange);margin-bottom:4px}
+.infocard{background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px 24px 22px;box-shadow:0 8px 22px rgba(107,74,42,.08);margin-top:8px}
+.infocard-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.info-item{padding:18px 14px 0}
+.info-item b{display:block;font-size:14px;font-weight:900;letter-spacing:.04em;margin-bottom:7px;text-transform:uppercase}
+.info-item:nth-child(1) b{color:var(--green)}.info-item:nth-child(2) b{color:var(--orange)}.info-item:nth-child(3) b{color:var(--blue)}
+.info-item p{margin:0;font-size:17px;line-height:1.6;color:#3a342d}
+.tagrow{display:flex;flex-wrap:wrap;gap:7px;margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
+.tag{font-size:14px;color:var(--muted);background:var(--soft);border:1px solid var(--line);border-radius:999px;padding:4px 11px}
+.duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:24px}
+.duo.stack{grid-template-columns:1fr}
+.duo .card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:22px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.duo .card.a{border-color:var(--orange)}.duo .card.b{border-color:var(--green);box-shadow:0 8px 24px rgba(95,117,83,.16)}
+.duo .card small{display:block;font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.04em;margin-bottom:9px}
+.duo .card.a small{color:var(--orange)}.duo .card.b small{color:var(--green)}
+.duo .card b{display:block;font-size:22px;line-height:1.3;margin-bottom:12px}.duo .card.a b{color:#c0512f}.duo .card.b b{color:#4a7a59}
+.duo .card p{margin:0;color:#3a342d;line-height:1.75;font-size:18px}
+.workflow-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:24px}
+.workflow-step{background:#fff;border:1px solid var(--line);border-radius:8px;padding:18px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.workflow-step small{display:block;color:var(--orange);font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;margin-bottom:9px}
+.workflow-step b{display:block;font-size:18px;line-height:1.3;margin-bottom:9px}
+.workflow-step p{margin:0;color:#3a342d;line-height:1.6;font-size:16px}
+.codeblock{background:var(--dark);color:#f3ead9;border-radius:8px;padding:18px 20px;font:500 14px/1.65 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;overflow-x:auto;white-space:pre-wrap;margin:20px 0;box-shadow:0 8px 22px rgba(107,74,42,.12)}
+.codeblock .c{color:#f6d7a6;font-weight:600}
+.skillcard{background:#fff;border:1px solid var(--green);border-radius:12px;padding:24px;box-shadow:0 10px 26px rgba(95,117,83,.16);margin-top:8px}
+.skillcard b{display:block;font-size:21px;margin-bottom:8px}
+.skillcard p{margin:0 0 16px;font-size:17px;line-height:1.65;color:#3a342d}
+.cta-band{background:#e6f0e5;color:#3a342d}.cta-band .section{border-top:none}
+.cta-band .inner{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(260px,.85fr);gap:26px;align-items:start}
+.cta-band h2{font-size:clamp(26px,4vw,44px);margin:0 0 16px}.cta-band p,.cta-band .lead{color:rgba(58,52,45,.9);font-size:18px;line-height:1.72}
+.cta-card{border:1px solid #cfe0d2;background:#fbfdfa;border-radius:8px;padding:22px}
+.cta-card b{display:block;color:#48b178;margin-bottom:10px;font-size:18px}.cta-card p{margin:0 0 14px}
+.footer{padding:30px clamp(20px,6vw,88px);font-size:14px;color:var(--muted);background:#fff;border-top:1px solid var(--line)}
+.footer-inner{width:min(1000px,100%);margin:0 auto}
+.footer-links{display:flex;flex-wrap:wrap;gap:6px 12px;margin-bottom:14px}.footer-links a{color:var(--blue);font-weight:900;text-decoration:none;font-size:14px}
+.footer-brand{font-weight:900;font-size:15px;margin-bottom:10px}.footer-note{font-size:13px;line-height:1.6}
+@media(max-width:820px){.infocard-grid{grid-template-columns:1fr}.duo{grid-template-columns:1fr}.workflow-grid{grid-template-columns:1fr}.cta-band .inner{grid-template-columns:1fr}.section{padding:40px 20px}.hero{min-height:52vh;flex-direction:column;justify-content:flex-start;align-items:flex-start;gap:24px}.hero>div{width:100%}.hero-figure{width:100%;max-width:560px}}
+@media(max-width:820px){html,body{overflow-x:hidden}.hero h1{word-break:break-word}}
+.hero h1{font-size:clamp(30px,3.6vw,54px);line-height:1.18}
+.hero .kicker{font-size:1.3rem}
+.tablewrap td b{color:#1a1612}
+</style>
+</head>
+<body class="spotlight">
+<!-- 官網共用導航列 nav.top：與首頁/總站同一條，文章不要自己另做極簡 topbar（江江 2026-06-25：要同一個框架、同一條導航列）。把對應頁面的 class="active" 標在自己那欄。
+     ⚠️ 下面 ul.nav-menu 整塊由 preflight 第 5 關 check-bilingual-nav.mjs 做「逐字比對」，
+        塞任何註解、多一個空白、換行位置不同都會被判導航不一致而擋下發布。要說明就寫在 <ul> 外面（像這裡）。
+        2026-08-16 修：原本的 EN 那行說明註解就夾在 <ul> 裡面，導致照範本起手的新文章一律卡第 5 關
+        （llm-rag-agent-mcp 與 rag-three-retrieval-modes 兩篇同時中招）。註解已移出來，<ul> 內保持乾淨。
+        萬一還是被擋，直接跑：node scripts/check-bilingual-nav.mjs --write --only=<你的檔案路徑> -->
+<nav class="top">
+  <div class="container">
+    <a class="nav-brand-img" href="../../index.html"><img src="../../images/footer-signature.png" alt="江江教練 | 江昱德"></a>
+    <button class="nav-toggle" aria-label="選單"><span></span><span></span><span></span></button>
+    <ul class="nav-menu">
+      <li><a href="../../index.html">首頁</a></li>
+      <li><a href="../../knowledge-architecture.html">知識架構</a></li>
+      <li><a href="../../courses.html">課程</a></li>
+      <li><a href="../../articles.html" class="active">深度文章</a></li>
+      <li><a href="../../skills.html">技能包下載</a></li>
+      <li><a href="../../offers.html">服務方案</a></li>
+      <li class="lang-switch"><a href="../../en/articles.html" hreflang="en">EN</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="wc wc1"></div>
+  <div class="wc wc2"></div>
+  <div class="wc wc3"></div>
+  <div>
+    <div class="kicker">AI 工作流 · 知識管理</div>
+    <h1>我明明規則都寫好了，AI 為什麼沒照做？｜機制要掛引擎，才會確實執行</h1>
+    <p>規則在檔案裡，AI 每次都讀得到，兩個月來 28 篇卻沒有一篇照做。答案很無聊：沒有任何東西在檢查。這篇講我怎麼從一張圖看出破洞，以及為什麼修法是補機制、不只是補資料。</p>
+  </div>
+</section>
+
+<main>
+<section class="section" id="start">
+  <div class="inner">
+    <p class="lead">我的知識庫有一套自己設計的規則，也叫 AI 照著做。這篇講一件我這次才真正看清楚的事：規則寫得再清楚，AI 也不一定會照做，而且你通常不會發現。我靠一個很久沒開的舊工具看出破洞，然後把修法從「叫 AI 補資料」換成「給規則掛一顆引擎」。文末有一組三個問題的檢查法和一段可以直接貼給 AI 的提示詞，你可以拿去盤自己的規則。</p>
+    <div class="duo stack">
+      <div class="card a">
+        <b>適合誰</b>
+        <ul>
+          <li>已經在用 AI 整理資料、寫了一些規則給它，但心裡隱約覺得它沒有每次都照做的人</li>
+          <li>用 Obsidian 或 Notion 建過知識庫，後來交給 AI 之後就很少打開的人</li>
+          <li>幫客戶或團隊設計 AI 流程，需要一個方法判斷「這條規則到底有沒有在執行」的專業工作者</li>
+        </ul>
+      </div>
+      <div class="card b">
+        <b>你可以帶走什麼</b>
+        <ul>
+          <li>一個判斷法：看到規則沒被執行，先問三個問題，再決定要補資料還是補機制</li>
+          <li>三種「引擎」的白話對照表，知道一條規則可以掛在哪裡才會自己跑</li>
+          <li>一段提示詞，貼給你的 AI，讓它幫你盤點規則檔裡有哪幾條只是寫開心的</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="obsidian">
+  <div class="inner">
+    <h2>我很久沒打開 Obsidian 了，但每一兩個月會打開一次</h2>
+    <p>以前 Obsidian 是我整理文件最重要的軟體。現在我幾乎不開它，因為文件整理都交給 AI 做了。</p>
+    <p>但我每一兩個月還是會打開來看一下。原因很簡單：AI 你指定得再清楚，不等於它會很認真的照著你說的做。</p>
+    <p>我的知識庫用的是一套叫「標籤連結法」的做法，每份檔案掛幾個受控的標籤，標籤本身也是一張卡片，所以檔案跟檔案之間會透過標籤連起來。Obsidian 有一張圖譜，會把所有檔案畫成點、把連結畫成線。只要規則有被照做，每個點都應該連在某個地方。</p>
+    <div class="meaning"><b>那張圖換了用途</b>它以前是整理工具，現在是檢查儀表板。一堆檔案孤零零散在外圈沒有連起來，就代表有東西漏掉了。那些沒連上的點，是在告訴我 AI 哪裡沒照做。</div>
+    <div class="readmore near">
+      <b>標籤連結法是什麼，我另外寫過一篇</b>
+      <ul>
+        <li><a href="../tag-wiki-method/">資料越堆越多，AI 反而找不到怎麼辦？：標籤連結法 Tag Wiki</a>　那篇講怎麼建這套標籤，這篇講建好之後怎麼用圖譜驗 AI 有沒有照做</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="islands">
+  <div class="inner">
+    <h2>這次打開，一大片孤島</h2>
+    <p>這次打開圖譜，外圈是一大圈沒有連線的點。我算了一下：圖譜畫了 15,555 個檔案，其中 6,189 個是孤島，四成。</p>
+    <p>我請 AI 去查原因，查出來四件事，性質完全不同。</p>
+    <p><b>第一，有些東西本來就不該畫進來。</b>備份資料夾、垃圾桶、客戶交付的原始檔、機器自己產的記錄，全部被畫進圖裡。這跟規則有沒有執行無關，是圖譜沒有設過濾。設了過濾之後，畫進圖的檔案從 15,555 降到 6,931。</p>
+    <p><b>第二，有一類檔案是我自己規定不要連的。</b>我之前有一條規則說技能包的操作檔不進標籤連結法，怕汙染圖譜。這次我改了主意：技能包首頁加一行標籤、檔尾自動生成本包的檔案清單，每一包自己連自己的就好，其他分頁不動。技能包區的孤島從 720 個降到 3 個。</p>
+    <p><b>第三，標籤掛了，但等於沒掛。</b>字典裡收了 24 個詞，AI 也乖乖拿去當標籤用了，可是這 24 個詞在受控詞彙表裡沒有對應的卡片。Obsidian 找不到目標檔，就把那條連結當成不存在，一條線都不畫。大約 500 條標籤就這樣掛了等於沒掛。你可以想成：名單上有這個詞，但那個詞自己的那一頁還沒建，所以怎麼連都連不過去。補了 24 張卡，線就回來了。</p>
+    <p><b>第四，這個是真正的病。</b>我的規則檔裡早就寫著：工作日記資料夾一定要掛「工作日記」標籤、觀點日記資料夾一定要掛「觀點日記」標籤，靈感筆記也算觀點日記。這條規則七月就寫好了。結果靈感筆記資料夾 28 篇，一篇都沒掛。</p>
+    <div class="meaning"><b>分兩種</b>前三件事補資料就好。第四件不是補資料的問題。</div>
+  </div>
+</section>
+
+<section class="section" id="why">
+  <div class="inner">
+    <h2>為什麼我明明規劃好了，它卻沒有照著執行</h2>
+    <p>第四件事讓我停下來想。規則在檔案裡，AI 每次開工都會讀到那份檔案，為什麼兩個月來 28 篇沒有一篇照做？</p>
+    <p>答案很無聊：因為沒有任何東西在檢查這件事。規則寫在那裡，AI 讀過，然後寫檔的時候忘了，沒有人擋、沒有人提醒、事後也沒有人對帳。規則跟執行之間是空的。</p>
+    <p>這不是第一次。八月底（2026-08-25）我做知識庫月度健檢的時候，抽查了 11 條登記在冊的機制，有 6 條的登記表上寫著「健檢的時候會檢查」，但健檢的執行手冊裡根本沒有那個步驟。兩本人工維護的帳，各寫各的，立規則的時候往登記表寫一句「健檢保底」，就以為保了。</p>
+    <p>所以我覺得比補那 28 篇更重要的，是找出為什麼我明明都規劃好了，它卻沒有照著執行，然後給它一個以後可以自動執行的模式。一次一次，把機制改得更完整。</p>
+    <div class="readmore near">
+      <b>規則沒在執行這件事，我之前踩過兩次</b>
+      <ul>
+        <li><a href="../rule-file-rebound/">規則檔越寫越長，AI 有照做嗎？：你寫的規則大部分沒在執行</a>　那篇講規則太多會復胖、怎麼精簡，這篇講精簡之後剩下的那些要怎麼保證會跑</li>
+        <li><a href="../caught-ai-slacking-into-rules/">AI 寫的東西我怎麼確認它是對的？：抓到 AI 偷懶之後，我把它寫進流程規則</a>　那篇是抓到之後寫成規則，這篇是規則寫了還是沒跑，要再往下掛一層</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="engine">
+  <div class="inner">
+    <h2>機制要掛引擎 才會執行</h2>
+    <p>我在自己的規則主檔裡有一條鐵則，七月中立的，叫「機制觸發器鐵則」。內容一句話：任何要持續執行的規則，必須掛在三種引擎之一，掛不上就不算常設機制，只能算一次性任務或參考規範。</p>
+    <p>三種引擎，用白話講：</p>
+    <div class="tablewrap"><table>
+      <thead><tr><th>引擎</th><th>白話</th><th>什麼時候用</th></tr></thead>
+      <tbody>
+        <tr><td><b>Hook（鉤子）</b></td><td>AI 寫檔的當下，有一支小程式擋一下或提醒一下</td><td>漏了代價高、會重複犯的規則</td></tr>
+        <tr><td><b>事件掛載</b></td><td>在既有流程的收尾多加一步，跟著原本的流程一起跑</td><td>規則跟某個固定流程綁在一起</td></tr>
+        <tr><td><b>排程</b></td><td>每個月固定跑一次體檢，把漏掉的列出來</td><td>即時擋不了、或其他 AI 不受 Hook 管的部分。不會寫程式、環境沒有 Hook 的人，先掛這個就好，它是門檻最低的引擎</td></tr>
+      </tbody>
+    </table></div>
+    <p>這條鐵則是我自己寫的。但這次一查，這輪整理出來的四個機制，只有一個真的掛了引擎，其他三個都停在「規則靠 AI 記得」，跟那 28 篇是同一種病。</p>
+    <div class="tablewrap"><table>
+      <thead><tr><th>這次立的機制</th><th>整理前</th><th>整理後</th></tr></thead>
+      <tbody>
+        <tr><td><b>特定資料夾必備標籤</b></td><td>只有規則檔一行字</td><td>Hook：寫檔當下缺標籤就提醒</td></tr>
+        <tr><td><b>技能包首頁的標籤行與檔案清單</b></td><td>規則檔寫「新增技能包後必須重跑生成器」</td><td>Hook 即時提醒＋技能包更新流程收尾多一步＋月度健檢</td></tr>
+        <tr><td><b>資料夾索引中樞</b></td><td>無</td><td>月度健檢重驗</td></tr>
+        <tr><td><b>字典詞必有卡片</b></td><td>無</td><td>改字典的既有 Hook 後面接一段檢查＋月度健檢</td></tr>
+      </tbody>
+    </table></div>
+    <p>補完引擎，我在機制登記表加了四行。那張表只有四個重要欄位：機制叫什麼、引擎是什麼、什麼時候該觸發、上次跑過的證據在哪。這樣下個月健檢的時候，AI 讀到這四行就知道要去驗，不必靠我記得。</p>
+    <p>有一件小事讓我確定這條路是對的。技能包那支檢查器寫好的當天第一次跑，就抓到一筆真的漂移：另一個 AI 工作視窗當天幫某個技能包新增了一個分頁，首頁的檔案清單沒更新。規則檔上明明寫著「新增分頁後必須重跑生成器」，它沒跑。檢查器寫好第一次跑，就抓到第一條。</p>
+    <p>順帶一提，這套想法不是我發明的。軟體工程界的 pre-commit hook、CI 檢查，做的就是同一件事：規則不靠人記得，靠寫進流程的機器去驗。看不懂這兩個詞沒關係，記住「機器去驗」四個字就夠。我只是把它搬到知識庫的規則上，而且是用不會寫程式的人也看得懂的形式在管。</p>
+    <div class="readmore near">
+      <b>「掛引擎」是圖譜工程的一部分，整套的講法在這兩篇</b>
+      <ul>
+        <li><a href="../what-is-graph-engineering/">可以放著讓 AI 自己跑完嗎？｜迴圈工程與圖譜工程不用會寫程式也學得會</a>　那篇講圖譜工程是什麼，這篇是它落到一條具體規則上的樣子</li>
+        <li><a href="../copied-mechanism-is-no-mechanism/">直接抄別人的 Skills、工作流，其實沒什麼用</a>　那篇講抄來的機制為什麼不會動，這篇講自己寫的機制沒掛引擎也一樣不會動</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="blindspots">
+  <div class="inner">
+    <h2>引擎也有盲區，要老實寫下來</h2>
+    <p>掛了引擎不代表萬無一失。我這次掛的三支 Hook 都是警告型，會提醒但不會擋住 AI 繼續做，因為擋住會讓 AI 在連續編輯同一份檔案時撞車。Hook 只管我主要用的那一家 AI（Claude）的寫檔動作，另一家 AI 寫的檔、或是用命令列直接寫進去的檔，Hook 看不到，只能靠每個月的體檢兜底。還有，如果 AI 真的想繞過，寫一份假的證據檔就能騙過只驗「檔案在不在」的機器。</p>
+    <div class="caveat"><b>寫下盲區本身就是機制的一部分</b>這些盲區我全部寫進登記表的備註欄。知道它擋不住什麼，下次出事的時候才知道要去哪裡看，而不是以為有引擎就放心了。</div>
+  </div>
+</section>
+
+<section class="section" id="takeaway">
+  <div class="inner">
+    <h2>帶走：三個問題，和一段提示詞</h2>
+    <p>下次你發現「我明明規則都寫好了，AI 卻沒照做」，先不要急著叫它補。先問這條規則三個問題：</p>
+    <ol>
+      <li><b>誰來執行？</b>如果答案是「AI 讀到就會記得」，那就是沒有引擎。</li>
+      <li><b>什麼時候觸發？</b>寫檔當下、某個流程收尾、還是每月一次？答不出來就是沒有掛點。</li>
+      <li><b>怎麼知道它跑過？</b>有沒有一個地方會留下「上次跑的結果」？沒有就是沒有證據，你只能靠感覺。</li>
+    </ol>
+    <p>三題都答得出來，才算一條會執行的規則。答不出來的，要嘛補引擎，要嘛老實把它降級成「參考規範」，不要再假裝它是機制。</p>
+    <p>下面這段提示詞可以直接貼給你的 AI，讓它幫你盤一次。如果你沒有正式的規則檔，把你平常反覆對 AI 交代的那些話列出來，也算：</p>
+<div class="codeblock">請讀我的規則檔（貼上路徑或內容），逐條做三件事：
+1. 這條規則要求 AI 持續做什麼？（如果只是說明、定義、背景，標成「參考規範」跳過）
+2. 現在有沒有任何機制在檢查它有沒有被執行？分三種：寫檔當下的檢查、某個流程收尾的檢查、定期的檢查。三種都沒有的，標成「無引擎」。
+3. 對每條「無引擎」的規則，建議一個最省力的掛法，並說明掛上去之後仍然擋不住什麼。
+只能依檔案、設定、執行紀錄判斷；沒有證據的就寫「無法確認」，不要猜。
+最後給我一張表：規則｜要求的動作｜現有引擎｜建議掛法｜盲區。只列事實，不要美化。</div>
+    <p>跑完你會拿到一張表。我自己跑完的結論是：寫開心的規則比想像中多，而且每一條看起來都很合理。合理不等於會執行。</p>
+  </div>
+</section>
+
+<section class="section" id="for-ai">
+  <div class="inner">
+    <h3>給 AI 讀的備忘</h3>
+    <p>這段是給接手這套系統的 AI 讀的，讀者可以跳過。</p>
+    <ul>
+      <li>規則正本：主知識庫 <code>AGENTS.md</code>「機制觸發器鐵則」段（2026-07-17 立）。三種引擎＝Hook／既有流程事件掛載／排程 AI；機制後設資料唯一落點＝<code>knowledge-base-health-check/references/機制清單.md</code>。</li>
+      <li>這次新增的引擎：<code>.claude/hooks/check-skill-index.py</code>（PostToolUse Edit|Write，警告型）；<code>check-tags.sh</code> v1.3 資料夾專屬標籤段；<code>check-vocab-mirror.py</code> 尾端接 <code>_agent/tools/tag-cards/check-missing-cards.py</code>；月度健檢第 5 路⑪四條 <code>--check</code> 指令；skill-master 更新模式收尾第 5 步。</li>
+      <li>兩支生成器都有 <code>--check</code> 模式：<code>gen-skill-index.py --check</code>、<code>gen-folder-index.py --check</code>，不寫檔，有過期 exit 1 並印重生指令。缺卡工具 exit 0 齊全、1 缺卡、2 工具本身跑掛，三種要分開處理。</li>
+      <li>跨家審：Codex 首輪判 NEEDS_REWORK（<code>--check</code> 沒比對 tags.json 期望值；缺卡工具異常會被誤報成缺卡），兩點都已修並用 fixture 驗證，複審 APPROVE。</li>
+      <li>圖譜數字：畫進圖 15,555→6,931；孤島 6,189（40%）→127（1.8%）；技能包區孤島 720→3。門牌卡補 24 張後 275 個 active 詞全有卡。</li>
+      <li>事實來源：「11 條機制 6 條沒步驟」＝健檢手冊第 5 路⑦-1（2026-08-25）；「28 篇零掛標」＝2026-09-07 補正前掃描（28 檔中 0 檔有觀點日記標籤）；「第一次跑就抓到漂移」＝<code>gen-skill-index.py --check</code> 首跑抓到 webpage-builder 新分頁未入清單。</li>
+    </ul>
+  </div>
+</section>
+
+<div class="cta-band">
+  <section class="section">
+    <div class="inner">
+      <div>
+        <h2>想把自己的規則盤一次？</h2>
+        <p class="lead">上面那段提示詞貼給你的 AI 就能跑。跑完覺得表上「無引擎」那欄太長、不知道從哪條開始掛，帶著那張表來講座聊。</p>
+      </div>
+      <div class="cta-card">
+        <b>免費線上講座</b>
+        <p>每個月兩場免費講座。</p>
+        <a class="primary" href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener" style="display:inline-block;background:#48b178;color:#fff;text-decoration:none;font-weight:900;padding:12px 16px;border-radius:8px">點我加入 Line 社群 ↗</a>
+      </div>
+    </div>
+  </section>
+</div>
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">江江教練 · AI 知識管理</div>
+    <div class="footer-links">
+      <a href="../../articles.html">← 回深度文章總站</a>
+      <a href="../../index.html">首頁</a>
+      <a href="../../learn.html">自學資源</a>
+      <a href="../../skills.html">技能包下載</a>
+      <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">LINE 社群 ↗</a>
+      <a href="https://www.threads.com/@jiang_yude_coach" target="_blank" rel="noopener">Threads ↗</a>
+      <a href="https://vocus.cc/salon/Jiang_Coach" target="_blank" rel="noopener">方格子 ↗</a>
+    </div>
+    <div class="footer-note">這是一篇教學文章，整理我對「我明明規則都寫好了，AI 為什麼沒照做？｜機制要掛引擎，才會確實執行」的看法，供你參考。</div>
+  </div>
+</footer>
+
+<!-- 點圖放大 lightbox（hero 與內文圖通用，已內建，不用每篇重加） -->
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <span class="lightbox-close" aria-label="關閉">×</span>
+  <img id="lightbox-img" src="" alt="放大檢視">
+</div>
+<script>
+(function(){
+  var box=document.getElementById('lightbox'),boxImg=document.getElementById('lightbox-img');
+  document.querySelectorAll('.hero-figure img,.inline-figure img').forEach(function(img){
+    img.addEventListener('click',function(){boxImg.src=img.currentSrc||img.src;boxImg.alt=img.alt||'放大檢視';box.classList.add('open');box.setAttribute('aria-hidden','false');});
+  });
+  function close(){box.classList.remove('open');box.setAttribute('aria-hidden','true');boxImg.src='';}
+  box.addEventListener('click',close);
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
+})();
+</script>
+
+<script src="../../image-interactions.js"></script>
+
+<!-- 官網共用：滑鼠暖光暈 + 導航列漢堡選單 -->
+<script src="../../spotlight.js"></script>
+
+<!-- 文章自動互聯（相關文章）：兩支已內建，順序不可顛倒，不用再另外加 -->
+<script src="../../articles-data.js"></script>
+<script src="../../related-render.js"></script>
+  <script src="/mika-chat-widget.js" defer></script>
+</body>
+</html>
