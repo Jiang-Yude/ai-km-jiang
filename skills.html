@@ -51,6 +51,29 @@
   .free-note{font-size:15px;color:#8a7d6d;margin:6px 0 18px}
   .free-cat{font-size:17px;font-weight:700;color:#6b5d4d;margin:26px 0 12px;padding-left:10px;border-left:4px solid #c9a97e}
   .free-cat small{font-weight:400;color:#988d7e;margin-left:8px;font-size:13.5px}
+  /* 技能包商店（2026-09-08） */
+  .ss-wrap{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:22px;align-items:start;margin-top:18px}
+  @media (max-width:900px){.ss-wrap{grid-template-columns:1fr}}
+  #ss-member{background:#fdf9f1;border:1px solid rgba(0,0,0,.07);border-radius:16px;padding:20px 20px 16px;position:sticky;top:84px}
+  @media (max-width:900px){#ss-member{position:static}}
+  .ss-title{font-size:19px;font-weight:700;color:#3b3128;margin-bottom:6px}
+  .ss-note{font-size:14px;color:#8a7d6d;line-height:1.7;margin:0 0 10px}
+  .ss-form{display:flex;flex-direction:column;gap:8px;margin:8px 0 12px}
+  .ss-form input{font:inherit;font-size:15px;padding:9px 12px;border:1.5px solid #e8dcc8;border-radius:10px;background:#fff}
+  .ss-form input:focus{outline:none;border-color:#b07d4f}
+  .ss-form .skill-btn-primary,.ss-form .skill-btn-copy{width:100%;text-align:center}
+  .ss-details{margin:6px 0}
+  .ss-details summary{cursor:pointer;font-size:14.5px;color:#8a5a2c;font-weight:600}
+  .ss-codes{list-style:none;padding:0;margin:0 0 10px;font-size:14px;color:#6b5d4d}
+  .ss-codes li{display:flex;justify-content:space-between;gap:8px;padding:5px 0;border-bottom:1px dashed #eadfcd}
+  .ss-tag{font-size:11.5px;border-radius:10px;padding:1px 9px;background:#f6ead9;color:#8a5a2c;white-space:nowrap}
+  .ss-tag.ok{background:#e3f1e8;color:#2e7d55}
+  .ss-msg{font-size:14px;line-height:1.7;min-height:1.2em;margin-top:4px;color:#6b5d4d}
+  .ss-msg.err{color:#b0413e}.ss-msg.ok{color:#2e7d55}
+  .ss-pre{white-space:pre-wrap;font:inherit;font-size:13.5px;background:#fff;border:1px dashed #e0d0b8;border-radius:10px;padding:10px 12px;margin-top:6px;color:#3b3128}
+  .ss-price{font-size:15px;font-weight:700;color:#8a5a2c;margin-bottom:10px}
+  .ss-why{font-size:12.5px;color:#a99a87;align-self:center;padding-left:6px}
+  .skill-btn-primary.is-disabled{opacity:.45;cursor:default;pointer-events:none}
 </style>
 <!-- tracking:vercel-analytics -->
 <script defer src="/_vercel/insights/script.js"></script>
@@ -294,6 +317,19 @@
       </div>
     </div>
 
+    <!-- ========== 技能包商店（2026-09-08） ========== -->
+    <div class="skill-section" id="skill-store">
+      <div class="skill-section-head">
+        <h2>技能包商店</h2>
+        <span class="count">18 包</span>
+      </div>
+      <p class="free-note">給客戶用的技能包，每包一份導讀、一份給 AI 讀的操作說明，加上範本與案例。一般購買走傳送門付款，付完在感謝頁拿到下載連結；上過課或有江江給的通關碼的人，右邊登入後直接下載。</p>
+      <div class="ss-wrap">
+        <div class="skills-grid" id="skill-store-grid"></div>
+        <aside id="ss-member" aria-label="會員登入"></aside>
+      </div>
+    </div>
+
     <!-- ========== 準備上架中 ========== -->
     <div class="skill-section">
       <div class="skill-section-head">
@@ -512,6 +548,8 @@ document.querySelector('.nav-toggle').addEventListener('click',function(){
   document.querySelector('.nav-menu').classList.toggle('open');
 });
 </script>
+  <script src="/skill-store-data.js"></script>
+  <script src="/skill-store.js" defer></script>
   <script src="/mika-chat-widget.js" defer></script>
 <!-- tracking:cloudflare -->
 <script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "c3e3c857121d416ab405270557d017d3"}'></script>
