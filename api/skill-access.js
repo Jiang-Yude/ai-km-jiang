@@ -331,6 +331,23 @@ module.exports = async (req, res) => {
       return res.status(200).json({ ok: true, bound, state: await stateFor(acc), note: bound.status === 'pending' ? '訂單編號已送出待核對，江江確認後權益才會生效' : '' });
     }
 
+    // 打錯訂單編號自己撤回（2026-09-08 第三輪 SSR：Codex 判「無法自行更正」只做到部分解，score 2/5）。
+    // 只准撤「待核對」的：已生效的碼撤掉會讓權益在暱稱之間搬家，那個要走江江。
+    if (action === 'remove-code') {
+      const target = normCode(body.code);
+      const hit = (acc.codes || []).find((c) => normCode(c.value) === target);
+      if (!hit) return res.status(404).json({ ok: false, error: '你的帳號裡沒有這組碼' });
+      if (hit.status === 'ok') return res.status(403).json({ ok: false, error: '已經生效的碼要找江江處理，不能自己拿掉' });
+      acc.codes = acc.codes.filter((c) => normCode(c.value) !== target);
+      await saveAccount(acc);
+      const cmds = [['DEL', `${PREFIX}orderclaim:${target}`]];
+      const pend = (await one(['LRANGE', `${PREFIX}pending:list`, 0, 4999])) || [];
+      for (const raw of pend) { try { const o = JSON.parse(raw); if (normCode(o.order_no) === target && o.nick === acc.nick) cmds.push(['LREM', `${PREFIX}pending:list`, 0, raw]); } catch {} }
+      await pipe(cmds);
+      await log(month, { t: stamp, act: 'remove-code', nick: acc.nick, code: target });
+      return res.status(200).json({ ok: true, state: await stateFor(acc), note: '已拿掉，可以重新輸入正確的編號' });
+    }
+
     if (action === 'download') {
       const pack = String(body.pack || '').padStart(2, '0');
       if (!packById(pack)) return res.status(400).json({ ok: false, error: '沒有這一包' });

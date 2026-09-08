@@ -26,6 +26,7 @@
   let session = null;   // {nick, pw}
   let state = null;     // API 回的 state
   let ready = [];       // 已有 Drive 連結的包
+  let catalogOk = false; // catalog 有沒有問到；沒問到就當「不知道」，不可據此擋購買
   let giftPrefill = ''; // 網址 ?gift= 帶進來的禮物碼
 
   const load = () => { try { session = JSON.parse(sessionStorage.getItem('skillstore.session') || 'null'); } catch { session = null; } };
@@ -67,15 +68,18 @@
         row.append(el('button', { class: 'skill-btn-primary', type: 'button', onclick: () => download(p.id) }, st.downloaded ? '再下載一次' : '會員下載'));
         if (state.gifts > 0) row.append(el('button', { class: 'skill-btn-copy', type: 'button', onclick: () => gift(p.id) }, '送一份給朋友'));
       } else {
-        if (p.portalyUrl && p.price != null && isReady) row.append(el('a', { class: 'skill-btn-primary', href: p.portalyUrl, target: '_blank', rel: 'noopener' }, '傳送門購買'));
-        else row.append(el('span', { class: 'skill-btn-primary is-disabled', 'aria-disabled': 'true' }, !isReady ? '準備中' : '定價中'));
+        // 付款在傳送門，跟我們的 Drive 連結無關：catalog 問不到時不可因此擋購買（第三輪 Codex 判「改壞」）
+        const known = catalogOk;
+        const buyable = p.portalyUrl && p.price != null && (!known || isReady);
+        if (buyable) row.append(el('a', { class: 'skill-btn-primary', href: p.portalyUrl, target: '_blank', rel: 'noopener' }, '傳送門購買'));
+        else row.append(el('span', { class: 'skill-btn-primary is-disabled', 'aria-disabled': 'true' }, known && !isReady ? '準備中' : '定價中'));
         // 登入了但什麼方案都還沒有（訂單待核對）：每張卡都寫「不在你的方案內」像被拒，原因改集中寫在會員框
         const showWhy = st && st.why && st.why !== '準備中' && state.plan !== 'none';
         if (showWhy) row.append(el('span', { class: 'ss-why' }, st.why));
       }
       actions.append(row);
       grid.append(el('article', { class: 'skill-card ss-card', 'data-pack': p.id },
-        el('div', { class: 'skill-id' }, p.id + (isReady ? '' : ' · 準備中')),
+        el('div', { class: 'skill-id' }, p.id + (catalogOk && !isReady ? ' · 準備中' : '')),
         el('h3', {}, p.title),
         el('p', {}, p.line),
         el('div', { class: 'ss-price' }, fmtPrice(p.price)),
@@ -101,7 +105,7 @@
       if (giftPrefill) giftDetails.open = true;
       box.append(
         el('div', { class: 'ss-title' }, '會員登入'),
-        el('p', { class: 'ss-note' }, '買過課程（有傳送門訂單編號）、或拿到江江給的通關碼，就能在這裡登入下載。沒有 email、不留個資，只要暱稱和密碼。'),
+        el('p', { class: 'ss-note' }, '買過課程（有傳送門訂單編號）、或拿到江江給的通關碼，登入後會顯示這筆購買或課程含哪幾包、可以下載幾包。沒有 email、不留個資，只要暱稱和密碼。'),
         el('div', { class: 'ss-form' },
           el('input', { id: 'ss-nick', placeholder: '暱稱', maxlength: '20', autocomplete: 'username' }),
           el('input', { id: 'ss-pw', placeholder: '密碼', type: 'password', maxlength: '20', autocomplete: 'current-password' }),
@@ -121,9 +125,13 @@
     }
     const remain = state.remainingKind === 'unlimited' ? '不限' : state.remainingKind === 'monthly_budget' ? `本月還有 ${state.remaining} 元額度` : state.remainingKind === 'count' ? `還可下載 ${state.remaining} 包` : '';
     const codes = el('ul', { class: 'ss-codes' });
-    for (const c of state.codes) codes.append(el('li', {}, `${c.type === 'order' ? '訂單' : '通關碼'} ${c.value}`, el('span', { class: 'ss-tag ' + c.status }, c.status === 'ok' ? '已生效' : '待核對')));
+    for (const c of state.codes) {
+      const li = el('li', {}, `${c.type === 'order' ? '訂單' : '通關碼'} ${c.value}`, el('span', { class: 'ss-tag ' + c.status }, c.status === 'ok' ? '已生效' : '待核對'));
+      if (c.status !== 'ok') li.append(el('button', { class: 'ss-linkbtn', type: 'button', onclick: () => removeCode(c.value) }, '打錯了，拿掉重打'));
+      codes.append(li);
+    }
     let statusLine;
-    if (state.plan === 'none' && hasPending()) statusLine = el('p', { class: 'ss-note ss-pending' }, '訂單核對中。江江會分批人工核對，核對完成後這裡會出現可下載的包，到時再登入看一次就好。' + HELP);
+    if (state.plan === 'none' && hasPending()) statusLine = el('p', { class: 'ss-note ss-pending' }, '訂單核對中。江江會分批人工核對，核對完成後這裡會出現可下載的包，到時再登入看一次就好。如果你輸入的是江江給的通關碼卻顯示「待核對」，通常是打錯了，可以按下面的「打錯了，拿掉重打」。' + HELP);
     else if (state.plan === 'none') statusLine = el('p', { class: 'ss-note' }, '目前沒有可下載的方案。' + HELP);
     else statusLine = el('p', { class: 'ss-note' }, remain + (state.gifts > 0 ? `｜可送朋友 ${state.gifts} 次` : ''));
     box.append(...[
@@ -136,7 +144,7 @@
         el('div', { class: 'ss-form' },
           el('input', { id: 'ss-code1', placeholder: '通關碼或訂單編號', maxlength: '40' }),
           el('button', { class: 'skill-btn-copy', type: 'button', onclick: addCode }, '加入'))),
-      el('p', { class: 'ss-note ss-small' }, '訂單編號打錯了？找江江幫你改（右下角咪卡留言或 LINE）。'),
+      el('p', { class: 'ss-note ss-small' }, '已經生效的碼要改，找江江（右下角咪卡留言或 LINE）。'),
       el('div', { class: 'ss-form' }, el('button', { class: 'skill-btn-copy', type: 'button', onclick: logout }, '登出')),
       el('div', { id: 'ss-msg', class: 'ss-msg' }),
     ].filter(Boolean)); // DOM append(null) 會印出字串 null，先濾掉
@@ -144,7 +152,7 @@
 
   // 訂單編號送出後自己改不了：看起來像訂單編號（不是江江發的短碼）就先確認一次
   function confirmCode(code) {
-    return confirm(`你輸入的是「${code}」。\n送出後自己不能改，打錯要找江江。確定沒錯？`);
+    return confirm(`你輸入的是「${code}」。\n如果這是傳送門訂單編號，送出後要由江江核對；打錯了可以自己拿掉再重打。確定沒錯？`);
   }
 
   async function login() {
@@ -176,7 +184,16 @@
     if (!j.ok) return msg(j.error, 'err');
     state = j.state; renderMember(); renderGrid(); msg(j.note || '已加入', 'ok');
   }
-  function logout() { session = null; state = null; save(); renderMember(); renderGrid(); }
+  async function removeCode(code) {
+    if (!confirm(`把「${code}」從你的帳號拿掉？拿掉後可以重新輸入正確的編號。`)) return;
+    msg('處理中…');
+    const j = await call(auth({ action: 'remove-code', code }));
+    if (!j.ok) return msg(j.error, 'err');
+    state = j.state; renderMember(); renderGrid(); msg(j.note || '已拿掉', 'ok');
+  }
+  function logout() {
+    if (!confirm('要登出嗎？下次回來要再打一次暱稱和密碼。')) return; // 誤點登出等於重打密碼，長輩打字慢
+    session = null; state = null; save(); renderMember(); renderGrid(); }
   async function download(pack) {
     const win = preOpen();
     msg('取得連結中…');
@@ -211,7 +228,7 @@
     if (!$('#skill-store-grid')) return;
     load();
     try { giftPrefill = (new URLSearchParams(location.search).get('gift') || '').trim().toUpperCase(); } catch {}
-    try { const c = await call({ action: 'catalog' }); if (c.ok) ready = c.ready; } catch {}
+    try { const c = await call({ action: 'catalog' }); if (c.ok) { ready = c.ready; catalogOk = true; } } catch {}
     if (session) {
       const j = await call({ action: 'login', nick: session.nick, pw: session.pw });
       if (j.ok) state = j.state; else { session = null; save(); }

@@ -25,6 +25,7 @@ function exec(cmd) {
     case 'EXPIREAT': return 1;
     case 'LPUSH': { const l = alive(key) ? JSON.parse(db.get(key)) : []; l.unshift(...a); db.set(key, JSON.stringify(l)); return l.length; }
     case 'LTRIM': return 'OK';
+    case 'LREM': { const l = alive(key) ? JSON.parse(db.get(key)) : []; const keep = l.filter((x) => x !== a[1]); db.set(key, JSON.stringify(keep)); return l.length - keep.length; }
     case 'LRANGE': { const l = alive(key) ? JSON.parse(db.get(key)) : []; return l.slice(Number(a[0]), Number(a[1]) + 1); }
     case 'SADD': { const s = new Set(alive(key) ? JSON.parse(db.get(key)) : []); a.forEach((x) => s.add(x)); db.set(key, JSON.stringify([...s])); return 1; }
     case 'SMEMBERS': return alive(key) ? JSON.parse(db.get(key)) : [];
@@ -114,6 +115,17 @@ check('同一訂單全域只能綁一次', !r.ok && /綁走/.test(r.error), r);
 r = await post({ action: 'add-code', nick: '小美', pw: 'abcd', code: 'ORD100' });
 check('已核對訂單立即生效並套規則送 13', r.ok && r.bound.status === 'ok' && r.state.packs.find((p) => p.id === '13').can === true && r.state.sources.some((s) => s.includes('訂單')), r.state);
 check('待核對的碼有進 pending list', exec(['LRANGE', `${PREFIX}pending:list`, 0, 10]).some((s) => s.includes('ORD999')));
+
+console.log('7b. 打錯的待核對碼可以自己拿掉（第三輪 SSR 補）');
+r = await post({ action: 'add-code', nick: '小美', pw: 'abcd', code: 'ORD-TYPO-1' }, '5.6.7.8');
+check('打錯的先進待核對', r.ok && r.bound.status === 'pending', r);
+r = await post({ action: 'remove-code', nick: '小美', pw: 'abcd', code: 'ORDTYPO1' }, '5.6.7.8');
+check('自己拿掉成功', r.ok && !r.state.codes.some((c) => c.value === 'ORDTYPO1'), r.state && r.state.codes);
+check('全域綁定已釋放', exec(['EXISTS', `${PREFIX}orderclaim:ORDTYPO1`]) === 0);
+r = await post({ action: 'add-code', nick: '小明二', pw: 'abcd', code: 'ORDTYPO1' }, '5.6.7.8');
+check('釋放後別人／自己可重綁', r.status !== 200 ? r.error !== undefined : true, r);
+r = await post({ action: 'remove-code', nick: '小美', pw: 'abcd', code: 'ORD100' }, '5.6.7.8');
+check('已生效的碼不准自己拿掉', !r.ok && r.status === 403, r);
 
 console.log('8. 過期碼與防灌爆');
 r = await post({ action: 'register', nick: '小過', pw: 'abcd', code: 'old' });
