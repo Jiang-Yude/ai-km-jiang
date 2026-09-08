@@ -23,6 +23,24 @@ window.ARTICLE_TAGS = {
 
 window.ARTICLES = [
   {
+    id: "mechanism-needs-an-engine",
+    url: "articles/mechanism-needs-an-engine/",
+    date: "2026-09-07",
+    updated: "2026-09-08",
+    title: "我明明規則都寫好了，AI 為什麼沒照做？｜機制要掛引擎，才會確實執行",
+    problem: "規則都寫好了、AI 也讀得到，但它到底有沒有照做，你其實不知道；等到發現時通常已經累積一堆沒被執行的紀錄。",
+    audience: "用 AI 整理資料、寫了規則給它，但懷疑它沒每次照做的人；以及幫團隊設計 AI 流程、需要判斷規則有沒有在執行的專業工作者。",
+    summary: "我很久沒開 Obsidian，但每一兩個月會打開圖譜看一次：孤島就是 AI 沒照做的訊號。這次查出四個原因，其中一條規則寫了兩個月、28 篇零執行，病因是沒有任何機制在檢查。文章講「機制觸發器鐵則」的三種引擎（Hook、事件掛載、排程）怎麼用白話理解、四個機制掛引擎前後的差別、引擎的盲區，最後給三問檢查法與一段可直接貼給 AI 的盤點提示詞。",
+    tags: {
+      topic: ["知識管理", "AI工作流", "知識庫"],
+      level: ["基礎"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["rule-file-rebound", "caught-ai-slacking-into-rules", "tag-wiki-method", "what-is-graph-engineering", "copied-mechanism-is-no-mechanism", "build-your-own-dictionary"]
+  },
+
+  {
     id: "self-hosted-site-analytics",
     url: "articles/self-hosted-site-analytics/",
     date: "2026-09-07",
@@ -163,7 +181,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["what-is-loop-engineering", "parallel-site-editing", "webnode-to-cloudflare-pages", "five-loops-content-line"]
+    related: ["what-is-loop-engineering", "parallel-site-editing", "webnode-to-cloudflare-pages", "five-loops-content-line", "mechanism-needs-an-engine"]
   },
 
   {
@@ -608,7 +626,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["semantic-rules-before-prompt-templates", "rule-file-rebound", "tag-wiki-method", "my-three-loops", "teach-ai-not-learn-ai"]
+    related: ["semantic-rules-before-prompt-templates", "rule-file-rebound", "tag-wiki-method", "my-three-loops", "teach-ai-not-learn-ai", "mechanism-needs-an-engine"]
   },
 
   {
@@ -662,7 +680,7 @@ window.ARTICLES = [
       content_type: ["觀點文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["ai-usage-audit", "before-installing-others-skill", "decision-ladder-non-programmer", "how-to-train-your-ai-employee", "caught-ai-slacking-into-rules", "parallel-site-editing"]
+    related: ["ai-usage-audit", "before-installing-others-skill", "decision-ladder-non-programmer", "how-to-train-your-ai-employee", "caught-ai-slacking-into-rules", "parallel-site-editing", "mechanism-needs-an-engine"]
   },
 
   {
@@ -1040,7 +1058,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["ai-handoff-instructions", "what-is-loop-engineering", "why-split-data-into-cards", "build-your-own-dictionary", "start-with-a-wrong-draft"]
+    related: ["ai-handoff-instructions", "what-is-loop-engineering", "why-split-data-into-cards", "build-your-own-dictionary", "start-with-a-wrong-draft", "mechanism-needs-an-engine"]
   },
 
   {
@@ -1527,7 +1545,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["llm-rag-agent-mcp", "questionnaire-to-slides-agent-workflow", "teacher-prep-knowledge-workflow", "knowledge-base-three-vault-split", "docs-as-system-design-agent", "ai-loop-safety-recovery", "inspiration-production-system", "why-split-data-into-cards", "knowledge-os-master-map", "build-your-own-dictionary", "rag-three-retrieval-modes"]
+    related: ["llm-rag-agent-mcp", "questionnaire-to-slides-agent-workflow", "teacher-prep-knowledge-workflow", "knowledge-base-three-vault-split", "docs-as-system-design-agent", "ai-loop-safety-recovery", "inspiration-production-system", "why-split-data-into-cards", "knowledge-os-master-map", "build-your-own-dictionary", "rag-three-retrieval-modes", "mechanism-needs-an-engine"]
   },
 
   {
@@ -2211,7 +2229,7 @@ window.ARTICLES = [
       content_type: ["案例文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: "https://vocus.cc/salon/Jiang_Coach" },
-    related: ["codex-only-auto-worklog", "decision-ladder-non-programmer", "publish-gate", "session-messaging-reminder-layer", "cognitive-debt", "start-with-a-wrong-draft", "ai-said-it-watched-the-video", "cross-ai-review-both-wrong"]
+    related: ["codex-only-auto-worklog", "decision-ladder-non-programmer", "publish-gate", "session-messaging-reminder-layer", "cognitive-debt", "start-with-a-wrong-draft", "ai-said-it-watched-the-video", "cross-ai-review-both-wrong", "mechanism-needs-an-engine"]
   },
 
   {
