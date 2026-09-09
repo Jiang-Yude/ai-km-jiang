@@ -1,0 +1,571 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="index,follow">
+<title>gpt-image-2.5 生一張圖多少錢？｜我實測十幾張，把 token 帳單攤開算工作坊材料費</title>
+<meta name="description" content="大家都在比 gpt-image-2.5 生得好不好看，我在算它便不便宜。免費補貼的時期差不多到頭了，成本跟產出都要認真算。實測十幾張的結果：flare 一般畫質一張 0.40 元、19 秒，帶一張參考圖多 0.38 元，比舊的 gpt-image-2 又便宜又快一倍，一個學員生五張只要 2 元。">
+<link rel="canonical" href="https://jiangyude.com/articles/ai-image-api-cost/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="gpt-image-2.5 生一張圖多少錢？｜我實測十幾張，把 token 帳單攤開算工作坊材料費｜江江教練">
+<!-- 分享封面：hero 文字填好後在 repo 根目錄跑 `node scripts/og-shot.mjs ai-image-api-cost` 自動截 1200×630 到 images/og/ai-image-api-cost.jpg（見 README「文章分享封面（OG 圖）機制」）。別退回 intro-jiang.png 直式人像，會被裁成只剩脖子。 -->
+<meta property="og:image" content="https://jiangyude.com/images/og/ai-image-api-cost.jpg">
+<meta property="og:description" content="大家都在比 gpt-image-2.5 生得好不好看，我在算它便不便宜。免費補貼的時期差不多到頭了，成本跟產出都要認真算。實測十幾張的結果：flare 一般畫質一張 0.40 元、19 秒，帶一張參考圖多 0.38 元，比舊的 gpt-image-2 又便宜又快一倍，一個學員生五張只要 2 元。">
+<meta property="og:url" content="https://jiangyude.com/articles/ai-image-api-cost/">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:site_name" content="江江教練 · AI 知識管理">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="gpt-image-2.5 生一張圖多少錢？｜我實測十幾張，把 token 帳單攤開算工作坊材料費｜江江教練">
+<meta name="twitter:image" content="https://jiangyude.com/images/og/ai-image-api-cost.jpg">
+<meta name="twitter:description" content="大家都在比 gpt-image-2.5 生得好不好看，我在算它便不便宜。免費補貼的時期差不多到頭了，成本跟產出都要認真算。實測十幾張的結果：flare 一般畫質一張 0.40 元、19 秒，帶一張參考圖多 0.38 元，比舊的 gpt-image-2 又便宜又快一倍，一個學員生五張只要 2 元。">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"gpt-image-2.5 生一張圖多少錢？｜我實測十幾張，把 token 帳單攤開算工作坊材料費","description":"大家都在比 gpt-image-2.5 生得好不好看，我在算它便不便宜。免費補貼的時期差不多到頭了，成本跟產出都要認真算。實測十幾張的結果：flare 一般畫質一張 0.40 元、19 秒，帶一張參考圖多 0.38 元，比舊的 gpt-image-2 又便宜又快一倍，一個學員生五張只要 2 元。","author":{"@type":"Person","name":"江昱德","alternateName":"江江教練","jobTitle":"隱性知識提煉師、AI 應用規劃師"},"isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://jiangyude.com/"},"inLanguage":"zh-Hant","url":"https://jiangyude.com/articles/ai-image-api-cost/"}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{--ink:#1a1612;--paper:#fefcf8;--muted:#6a635a;--line:#d8cdb8;--green:#5f7553;--blue:#5689b8;--orange:#e85a4f;--soft:#faf5ec;--dark:#2a2018;--shadow:0 18px 45px rgba(107,74,42,.14);--sp-shadow:hsla(35,50%,60%,.15);--sp-shadow-edge:hsla(35,50%,68%,.03);--sp-radius:400px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC","Segoe UI",sans-serif}
+a{color:inherit}
+/* 官網共用導航列 nav.top（與首頁/文章總站同一條） */
+nav.top{position:sticky;top:0;background:rgba(254,252,248,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid #d8cdb8;z-index:100}
+nav.top .container{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:24px;padding:14px 32px}
+.nav-brand-img{justify-self:start;display:flex;align-items:center;text-decoration:none;flex-shrink:0;transition:opacity .2s}
+.nav-brand-img:hover{opacity:.8}.nav-brand-img img{height:40px;width:auto;display:block}
+nav.top ul.nav-menu{justify-self:end;display:flex;gap:22px;list-style:none;margin:0;padding:0;font-size:.95rem;white-space:nowrap}
+nav.top ul.nav-menu a{color:#3a342d;text-decoration:none;transition:color .2s;font-weight:500;white-space:nowrap}
+nav.top ul.nav-menu a:hover{color:#1a1612}nav.top ul.nav-menu a.active{color:#1a1612;font-weight:700}
+.nav-toggle{display:none;background:none;border:none;padding:6px;cursor:pointer;width:36px;height:36px;position:relative}
+.nav-toggle span{display:block;position:absolute;left:8px;right:8px;height:2px;background:#1a1612;border-radius:2px;transition:transform .25s,opacity .25s,top .25s}
+.nav-toggle span:nth-child(1){top:11px}.nav-toggle span:nth-child(2){top:17px}.nav-toggle span:nth-child(3){top:23px}
+.nav-toggle.open span:nth-child(1){top:17px;transform:rotate(45deg)}.nav-toggle.open span:nth-child(2){opacity:0}.nav-toggle.open span:nth-child(3){top:17px;transform:rotate(-45deg)}
+.tablewrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:22px 0;border:1px solid var(--line);border-radius:10px;background:#fff;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.tablewrap table{border-collapse:collapse;width:100%;min-width:600px;font-size:18px;line-height:1.65}
+.tablewrap .zh{display:block;margin-top:5px;font-size:16px;line-height:1.55;color:var(--muted);font-weight:400}
+.tablewrap th,.tablewrap td{padding:12px 14px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top;color:#3a342d}
+.tablewrap thead th{background:var(--soft);font-weight:900;font-size:18px;color:#1a1612;white-space:nowrap}
+.tablewrap tbody tr:last-child td{border-bottom:none}
+.tablewrap td code,.section code{background:var(--soft);border:1px solid var(--line);border-radius:5px;padding:1px 6px;font:500 15px/1.5 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace}
+.inline-figure.wide{max-width:1000px}
+.toc{margin:26px 0 0;padding:20px 22px;background:#fff;border:1px solid var(--line);border-radius:10px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.toc>b{display:block;font-size:15px;letter-spacing:.05em;color:var(--green);margin-bottom:10px}
+.toc ol{margin:0;padding-left:1.35em;font-size:18px;line-height:1.7}
+.toc li{margin-bottom:7px;color:#3a342d}
+.toc a{color:var(--blue);font-weight:700;text-decoration:none}.toc a:hover{text-decoration:underline}
+.toc-hint{margin:12px 0 0!important;font-size:18px!important;color:var(--muted)!important;border-top:1px solid var(--line);padding-top:12px}
+.readmore{margin-top:24px;padding:20px 22px;background:var(--soft);border:1px solid var(--line);border-radius:12px}
+.readmore.near{margin:26px 0 6px;background:rgba(86,137,184,.07);border-color:#bcd0e2}
+.readmore.near b{color:var(--blue);font-size:18px}
+.readmore.near li{font-size:17px;line-height:1.7;margin-bottom:10px}
+.readmore b{display:block;margin-bottom:10px;font-size:19px}
+.readmore ul{margin:0;padding-left:1.25em}
+.readmore a{color:var(--blue);font-weight:700;text-decoration:none}
+.readmore a:hover{text-decoration:underline}
+@media(max-width:820px){.tablewrap table{min-width:560px;font-size:18px}.tablewrap{position:relative}.tablewrap::after{content:"表格可左右滑動 →";position:sticky;left:0;display:block;font-size:15px;color:var(--muted);background:var(--soft);border-top:1px solid var(--line);padding:7px 12px;width:100%}}
+@media(max-width:860px){
+ nav.top .container{grid-template-columns:auto 1fr auto;padding:10px 16px;gap:12px}
+ .nav-brand-img img{height:32px}
+ .nav-toggle{display:block;justify-self:end}
+ nav.top ul.nav-menu{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(254,252,248,.98);backdrop-filter:blur(14px);border-bottom:1px solid #d8cdb8;flex-direction:column;gap:0;padding:8px 0;box-shadow:0 10px 24px rgba(107,74,42,.08)}
+ nav.top ul.nav-menu.open{display:flex}
+ nav.top ul.nav-menu li{border-bottom:1px solid #e8dfc9}
+ nav.top ul.nav-menu li:last-child{border-bottom:none}
+ nav.top ul.nav-menu a{display:block;padding:14px 20px;font-size:1.06rem}
+}
+/* 滑鼠暖光暈（與首頁同一支 spotlight.js） */
+body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradient(var(--sp-radius) circle at var(--mx,50%) var(--my,50%),var(--sp-shadow) 0%,var(--sp-shadow-edge) 45%,transparent 75%);pointer-events:none;z-index:9999;mix-blend-mode:multiply;transition:background .06s linear}
+.hero{position:relative;overflow:hidden;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:72px;padding:96px clamp(20px,6vw,88px) 80px;background:linear-gradient(180deg,#fffcf0 0%,#f9e9d2 100%);color:#1a1612;border-bottom:1px solid #d8cdb8}
+.hero .wc{position:absolute;border-radius:50%;filter:blur(60px);pointer-events:none;z-index:0}
+.hero .wc1{width:420px;height:360px;top:-120px;right:-80px;background:#e8884b;opacity:.15}
+.hero .wc2{width:360px;height:300px;bottom:-110px;left:-70px;background:#5f7553;opacity:.13}
+.hero .wc3{width:280px;height:260px;top:34%;left:14%;background:#a08144;opacity:.10}
+.hero>div{flex:none;width:860px;max-width:100%;position:relative;z-index:2}
+.hero-figure{margin:0;width:420px;flex:none;position:relative;z-index:2}
+.hero-figure img{display:block;width:100%;border-radius:16px;border:1px solid #d8cdb8;box-shadow:0 18px 45px rgba(107,74,42,.16);cursor:zoom-in}
+.hero-figure figcaption{margin-top:10px;font-size:14px;line-height:1.6;color:#6a635a}
+.inline-figure{margin:30px auto 8px;max-width:820px}
+.inline-figure img{display:block;width:100%;border-radius:14px;border:1px solid var(--line);box-shadow:var(--shadow);background:#fff;cursor:zoom-in}
+.inline-figure figcaption{font-size:14px;line-height:1.6;color:var(--muted);margin-top:10px}
+.lightbox{position:fixed;inset:0;z-index:10000;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(12,10,8,.92);cursor:zoom-out;backdrop-filter:blur(4px)}
+.lightbox.open{display:flex}.lightbox img{max-width:96vw;max-height:92vh;border-radius:10px;box-shadow:0 24px 60px rgba(0,0,0,.5)}
+.lightbox-close{position:fixed;top:18px;right:24px;color:#fff;font-size:34px;line-height:1;font-weight:700;cursor:pointer;opacity:.85}
+.kicker{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.55rem;color:#7a5c3a;font-weight:500}
+.hero h1{max-width:none;margin:16px 0 18px;font-size:clamp(36px,6vw,72px);line-height:1.08;overflow-wrap:anywhere}
+.hero p{max-width:none;font-size:clamp(18px,2vw,23px);line-height:1.62;color:#3a342d}
+.cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
+.cta a{display:inline-flex;align-items:center;text-decoration:none;border-radius:8px;padding:12px 16px;font-weight:900}
+.cta .primary{background:#fff;color:#1a1612}.cta .ghost{border:1px solid rgba(255,255,255,.32);color:#fff;background:rgba(255,255,255,.08)}
+.section{padding:54px clamp(20px,6vw,88px);border-top:1px solid var(--line)}
+.inner{width:min(1000px,100%);margin:0 auto}
+.section h2{font-size:clamp(26px,4.2vw,48px);line-height:1.12;margin:0 0 18px}
+.section h3{font-size:clamp(21px,3vw,30px);line-height:1.2;margin:30px 0 12px}
+.lead{font-size:clamp(18px,1.6vw,22px);line-height:1.7;color:#3a342d;max-width:900px}
+.section p{font-size:18px;line-height:1.74;color:#3a342d}.section p+p{margin-top:14px}
+.section ul,.section ol{padding-left:1.4em;font-size:18px;line-height:1.74;color:#3a342d}.section li{margin-bottom:8px}
+.meaning{margin:22px 0;padding:16px 18px;border-left:5px solid var(--blue);background:rgba(86,137,184,.12);border-radius:6px;line-height:1.7;font-size:19px}
+.meaning b{display:block;color:var(--blue);margin-bottom:4px}
+.caveat{margin:0 0 8px;padding:16px 18px;border-left:5px solid var(--orange);background:rgba(232,90,79,.1);border-radius:6px;line-height:1.7;font-size:18px;color:#3a342d}
+.caveat b{display:block;color:var(--orange);margin-bottom:4px}
+.infocard{background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px 24px 22px;box-shadow:0 8px 22px rgba(107,74,42,.08);margin-top:8px}
+.infocard-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.info-item{padding:18px 14px 0}
+.info-item b{display:block;font-size:14px;font-weight:900;letter-spacing:.04em;margin-bottom:7px;text-transform:uppercase}
+.info-item:nth-child(1) b{color:var(--green)}.info-item:nth-child(2) b{color:var(--orange)}.info-item:nth-child(3) b{color:var(--blue)}
+.info-item p{margin:0;font-size:17px;line-height:1.6;color:#3a342d}
+.tagrow{display:flex;flex-wrap:wrap;gap:7px;margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
+.tag{font-size:14px;color:var(--muted);background:var(--soft);border:1px solid var(--line);border-radius:999px;padding:4px 11px}
+.duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:24px}
+.duo.stack{grid-template-columns:1fr}
+.duo .card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:22px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.duo .card.a{border-color:var(--orange)}.duo .card.b{border-color:var(--green);box-shadow:0 8px 24px rgba(95,117,83,.16)}
+.duo .card small{display:block;font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.04em;margin-bottom:9px}
+.duo .card.a small{color:var(--orange)}.duo .card.b small{color:var(--green)}
+.duo .card b{display:block;font-size:22px;line-height:1.3;margin-bottom:12px}.duo .card.a b{color:#c0512f}.duo .card.b b{color:#4a7a59}
+.duo .card p{margin:0;color:#3a342d;line-height:1.75;font-size:18px}
+.workflow-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:24px}
+.workflow-step{background:#fff;border:1px solid var(--line);border-radius:8px;padding:18px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.workflow-step small{display:block;color:var(--orange);font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;margin-bottom:9px}
+.workflow-step b{display:block;font-size:18px;line-height:1.3;margin-bottom:9px}
+.workflow-step p{margin:0;color:#3a342d;line-height:1.6;font-size:16px}
+.codeblock{background:var(--dark);color:#f3ead9;border-radius:8px;padding:18px 20px;font:500 14px/1.65 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;overflow-x:auto;white-space:pre-wrap;margin:20px 0;box-shadow:0 8px 22px rgba(107,74,42,.12)}
+.codeblock .c{color:#f6d7a6;font-weight:600}
+.skillcard{background:#fff;border:1px solid var(--green);border-radius:12px;padding:24px;box-shadow:0 10px 26px rgba(95,117,83,.16);margin-top:8px}
+.skillcard b{display:block;font-size:21px;margin-bottom:8px}
+.skillcard p{margin:0 0 16px;font-size:17px;line-height:1.65;color:#3a342d}
+.cta-band{background:#e6f0e5;color:#3a342d}.cta-band .section{border-top:none}
+.cta-band .inner{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(260px,.85fr);gap:26px;align-items:start}
+.cta-band h2{font-size:clamp(26px,4vw,44px);margin:0 0 16px}.cta-band p,.cta-band .lead{color:rgba(58,52,45,.9);font-size:18px;line-height:1.72}
+.cta-card{border:1px solid #cfe0d2;background:#fbfdfa;border-radius:8px;padding:22px}
+.cta-card b{display:block;color:#48b178;margin-bottom:10px;font-size:18px}.cta-card p{margin:0 0 14px}
+.footer{padding:30px clamp(20px,6vw,88px);font-size:14px;color:var(--muted);background:#fff;border-top:1px solid var(--line)}
+.footer-inner{width:min(1000px,100%);margin:0 auto}
+.footer-links{display:flex;flex-wrap:wrap;gap:6px 12px;margin-bottom:14px}.footer-links a{color:var(--blue);font-weight:900;text-decoration:none;font-size:14px}
+.footer-brand{font-weight:900;font-size:15px;margin-bottom:10px}.footer-note{font-size:13px;line-height:1.6}
+@media(max-width:820px){.infocard-grid{grid-template-columns:1fr}.duo{grid-template-columns:1fr}.workflow-grid{grid-template-columns:1fr}.cta-band .inner{grid-template-columns:1fr}.section{padding:40px 20px}.hero{min-height:52vh;flex-direction:column;justify-content:flex-start;align-items:flex-start;gap:24px}.hero>div{width:100%}.hero-figure{width:100%;max-width:560px}}
+@media(max-width:820px){html,body{overflow-x:hidden}.hero h1{word-break:break-word}}
+.hero-figure{width:320px}.hero-figure img{aspect-ratio:2/3;object-fit:cover}
+</style>
+</head>
+<body class="spotlight">
+<!-- 官網共用導航列 nav.top：與首頁/總站同一條，文章不要自己另做極簡 topbar（江江 2026-06-25：要同一個框架、同一條導航列）。把對應頁面的 class="active" 標在自己那欄。
+     ⚠️ 下面 ul.nav-menu 整塊由 preflight 第 5 關 check-bilingual-nav.mjs 做「逐字比對」，
+        塞任何註解、多一個空白、換行位置不同都會被判導航不一致而擋下發布。要說明就寫在 <ul> 外面（像這裡）。
+        2026-08-16 修：原本的 EN 那行說明註解就夾在 <ul> 裡面，導致照範本起手的新文章一律卡第 5 關
+        （llm-rag-agent-mcp 與 rag-three-retrieval-modes 兩篇同時中招）。註解已移出來，<ul> 內保持乾淨。
+        萬一還是被擋，直接跑：node scripts/check-bilingual-nav.mjs --write --only=<你的檔案路徑> -->
+<nav class="top">
+  <div class="container">
+    <a class="nav-brand-img" href="../../index.html"><img src="../../images/footer-signature.png" alt="江江教練 | 江昱德"></a>
+    <button class="nav-toggle" aria-label="選單"><span></span><span></span><span></span></button>
+    <ul class="nav-menu">
+      <li><a href="../../index.html">首頁</a></li>
+      <li><a href="../../knowledge-architecture.html">知識架構</a></li>
+      <li><a href="../../courses.html">課程</a></li>
+      <li><a href="../../articles.html" class="active">深度文章</a></li>
+      <li><a href="../../skills.html">技能包下載</a></li>
+      <li><a href="../../offers.html">服務方案</a></li>
+      <li class="lang-switch"><a href="../../en/articles.html" hreflang="en">EN</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="wc wc1"></div>
+  <div class="wc wc2"></div>
+  <div class="wc wc3"></div>
+  <div>
+    <div class="kicker">AI 應用 / 成本估算</div>
+    <h1>gpt-image-2.5 生一張圖多少錢？｜我實測十幾張，把 token 帳單攤開算工作坊材料費</h1>
+    <p>大家都在比 gpt-image-2.5 生得好不好看，我在算它便不便宜。免費補貼的時期差不多到頭了，成本跟產出都要認真算一下。</p>
+  </div>
+  <!-- 封面圖（建議放）：橫式用預設 width:420px；4:5 直式改 .hero-figure{width:320px} 並加 .hero-figure img{aspect-ratio:4/5;object-fit:cover}。沒有封面圖就整個 <figure> 刪掉，hero 會自動置中只剩文字。封面同時設成上面 og:image / twitter:image。 -->
+  <figure class="hero-figure">
+    <img src="../../images/articles/ai-image-api-cost-cover.jpg" alt="圖卡：gpt-image-2.5 帶參考圖一張多 0.38 元，不帶 0.40 元、帶一張 0.78 元、帶兩張 1.16 元" loading="lazy">
+    <figcaption>三個價格是同一份指令跑出來的，唯一的變數是帶幾張參考圖</figcaption>
+  </figure>
+</section>
+
+<main>
+<section class="section" id="start">
+  <div class="inner">
+    <p class="lead">好好笑喔。我看一堆人都在比 gpt-image-2.5 圖有沒有生得更好看，我在算有沒有更便宜 😭</p>
+    <p style="margin-top:16px">AI 的費用會越來越貴，免費補貼的時期已經差不多到頭了。所以不管是自學、創業，還是被老闆交辦工作，都要認真算一下成本跟產出。</p>
+    <p>我會開始算這筆帳，是因為我自己先被它卡到。免費版的生圖額度一路縮水，我的工作坊現場開始有人生不了圖。這篇把那筆帳算清楚：讓 AI 實測十幾張圖，量出每張的真實成本、參考圖要加多少錢、新舊模型差多少。結論是一張 0.40 元，一個學員生五張 2 元。</p>
+
+    <div class="duo stack">
+      <div class="card a">
+        <b>適合誰</b>
+        <p>· 帶生圖工作坊或課程，被學員的免費額度卡過的講師<br>
+        · 想自己接 OpenAI 生圖 API，但查不到一張到底多少錢的人<br>
+        · 有品牌角色或固定視覺風格，需要每張圖都長一樣的人</p>
+      </div>
+      <div class="card b">
+        <b>你可以帶走什麼</b>
+        <p>· 一張圖的成本怎麼算：token 怎麼計、參考圖加多少、可不可以事前預估<br>
+        · gpt-image-2.5 與 gpt-image-2 的實測對照，含耗時、token 與台幣單價<br>
+        · 訂閱和 API 兩條路的實測對照，包含速度、重生率、尺寸與角色一致性<br>
+        · 一段可以直接貼給 AI 的技術規格，省掉端點選錯與模型被擋的坑</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>工作坊現場會出事的那一刻</h2>
+    <p>我帶手機創作的工作坊，會讓大家玩 AI 生圖。</p>
+    <p>這件事以前不是問題。免費版的 ChatGPT 生圖額度，我印象中一開始有十張，後來變五張、三張。現在免費版可能只剩一張，有些學員光是在設計提示詞、來回調整的階段，額度就用完了。</p>
+    <p>如果是好玩性質的體驗工作坊，那還好。但如果一個班裡面三分之二的學員生不了圖，現場就很尷尬。如果是正式收費的工作坊，那就是麻煩了。</p>
+    <p>我也不可能為了讓大家生幾張圖，叫學員先去付 690 訂閱 ChatGPT。只為了上這一堂課付一個月的訂閱費，對他們不划算。</p>
+    <div class="meaning">
+      <b>我現在的做法</b>
+      我自己承擔 API 的費用，當作材料費，直接算進工作坊的報名費裡。要把材料費算進去，就得先知道一張圖到底多少錢。
+    </div>
+    <p>這個問題我以為查一下就有答案。結果讓 AI 查了兩個小時，發現官方沒有直接把價目表放出來，網路上的文章彼此打架，有的把轉售平台的價格當成官方價在寫。</p>
+    <p>查不到就自己測。我開了一把 API key 給它，讓它實際跑十幾張圖，把帳單攤開來看。這篇是那些圖跑出來的東西。有幾個發現跟我原本想的相反，其中一個還是 AI 自己出的錯，被我抓到之後才修回來。</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>先講清楚，其實有兩條路</h2>
+    <p>第一條路就是大家平常在用的那條：打開 ChatGPT，跟它說你要什麼圖，它就生給你。這條走的是訂閱額度，月費付了，生圖不另外收錢，額度用完就只能等隔天。</p>
+    <p>第二條路是去 OpenAI 開一把 API key，讓程式直接跟它要圖。這條沒有月費，改成按張計費，生一張扣一張的錢，不生就不扣。</p>
+    <p>兩條路的差別不只有錢。我平常派工的工具是 Codex，它有一個內建的生圖能力。我叫它把自己的工具規格報出來，整個能傳給它的參數只有三個：要生什麼的文字描述、參考圖的檔案路徑、要不要帶進前面幾張圖。</p>
+    <p>沒有模型選項，沒有畫質選項，沒有尺寸選項。</p>
+    <p>這代表我在指令裡明明白白寫「直式 4:5」，它給我的是 1122x1402，這個比例不是 4:5。比例只能用文字拜託，不能指定。反過來走 API，同樣一張圖我指定 1024x1536，跑五次，五張全部都是 1024x1536，一個像素不差。</p>
+    <div class="meaning">
+      <b>第一個差別</b>
+      訂閱是你講、它盡量；API 是你設定、它照做。
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>發現一：API 的成本是固定的</h2>
+    <p>直覺會以為，畫面越複雜的圖越貴。畢竟圖裡東西多，模型要做的事也多。實際上不是這樣，<strong>圖片內容複不複雜，完全不影響費用</strong>。</p>
+    <p>我用同一個模型、同一個畫質、同一個尺寸，跑了五張內容完全不同的圖卡。有一張塞了三行模型名稱加三個價格數字，有一張只有一個簡單的儀表。五張的輸出 token 全部都是 1372，一個不差。</p>
+    <p>Token 是 OpenAI 計費的單位。生一張圖，模型要吐出多少料，那個料的數量就是 token，帳單按這個數字收錢。所以「輸出 token 固定」的意思是，這張圖要花多少錢，在你按下去之前就已經定了。</p>
+
+    <figure class="inline-figure">
+      <img src="../../images/articles/ai-image-api-cost-token.jpg" alt="圖卡：不管畫面多複雜都燒 1372 個 token，五張內容完全不同的圖輸出 token 一模一樣" loading="lazy">
+      <figcaption>五張內容完全不同的圖，輸出 token 完全相同。這個數字固定，代表成本可以事前算死。</figcaption>
+    </figure>
+
+    <p>算法是這樣：輸出的 1372 個 token，用 gpt-image-2 的圖片輸出價每百萬 30 美元去算，是 0.041 美元。加上我寫的那段指令，大概 250 到 300 個文字 token，用每百萬 5 美元算，大約 0.0015 美元。</p>
+    <p>一張圖 0.0426 美元，換成台幣大約 1.34 元。</p>
+    <p>指令長短幾乎不影響結果。那 250 個文字 token 只佔總成本的 3%，就算我把指令寫成兩倍長，一張也只多幾毛錢的零頭。真正在燒錢的是輸出那張圖本身。一場課如果要生 60 張，大約 80 元。</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>發現二：角色走樣了，問題出在我這邊</h2>
+    <p>我有一個品牌角色叫咪卡，是一隻戴著扁帽的小黑貓。我的圖卡都有它。API 那五張生出來，數字全對、排版漂亮，但咪卡不是咪卡了。帽子從米褐色的扁帽變成格紋獵鹿帽，整體配色也從暖棕變成綠色。</p>
+
+    <div class="duo">
+      <div class="card b">
+        <small>訂閱路徑</small>
+        <b>帶了角色參考圖（三視圖）</b>
+        <p><img src="../../images/articles/ai-image-api-cost-mika-ok.jpg" alt="訂閱路徑生成的咪卡，戴米褐色低頂斜檐偵探扁帽" loading="lazy" style="width:100%;border-radius:8px;margin-bottom:12px">米褐色扁帽、金黃大圓眼、暖橘內耳，跟角色參考圖一致。</p>
+      </div>
+      <div class="card a">
+        <small>API 路徑</small>
+        <b>只有文字描述</b>
+        <p><img src="../../images/articles/ai-image-api-cost-mika-drift.jpg" alt="API 路徑生成的咪卡，帽子變成格紋獵鹿帽，配色也不同" loading="lazy" style="width:100%;border-radius:8px;margin-bottom:12px">帽子變成格紋獵鹿帽，配色從暖棕跑到綠色，不是同一隻貓。</p>
+      </div>
+    </div>
+
+    <p>我問 AI 為什麼。它給我的第一個答案是：API 的限制，讀不到本機技能包裡的角色設定。</p>
+    <p>這個答案我沒接受。技能包是我自己建的，裡面該有的東西我知道有，所以我叫它回去查，是 API 真的做不到，還是它沒做。查完，兩個地方都是它自己漏掉。</p>
+    <p>第一，技能包裡本來就有一份角色鎖定規則，白紙黑字禁止鴨舌帽，還附了一段現成的提示詞可以直接複製。它沒去讀那份檔，憑印象自己寫了「米色編織花紋的鴨舌帽」。獵鹿帽是這樣來的。</p>
+    <p>第二，端點選錯。OpenAI 的生圖有兩個端點，<code>/v1/images/generations</code> 是純文字生圖，不吃參考圖；<code>/v1/images/edits</code> 可以帶參考圖進去。它用了前面那個，然後把「不能帶圖」講成 API 的限制。</p>
+    <p>改用 edits 端點，把咪卡的角色參考圖帶進去，同一份指令重生一次，咪卡就回來了。同一隻貓，帽子、眼睛、內耳、身形全部對上。</p>
+    <div class="meaning">
+      <b>什麼是角色參考圖</b>
+      把角色的正面、側面、背面畫成一張規格圖，之後每次生圖都把它丟進去，模型才有東西可以照著畫。怎麼做我另外寫過一篇：<a href="../character-costume-sheet-three-views/" style="font-weight:900">AI 每次生的角色都不一樣，用定裝照解決｜角色參考圖</a>
+    </div>
+
+    <div class="caveat">
+      <b>規則寫好了，不代表 AI 會照著做</b>
+      我如果直接採信第一個答案，這篇文章的結論就會變成「API 守不住品牌角色」。那是錯的，而且會誤導看到的人。差別只在於我知道自己的技能包裡有什麼，所以聽到那個答案的時候覺得不對勁。
+    </div>
+
+    <p>建知識庫、寫規則的價值就在這裡。規則不是寫給 AI 看就沒事了，是寫給你自己當標準用的。AI 說做不到的時候，你要有東西可以對照，才知道該不該相信它。</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>發現三：參考圖是按張加錢的</h2>
+    <p>既然帶參考圖有效，那帶兩張會不會更穩？順手叫它再跑一張測。</p>
+
+    <div class="infocard">
+      <div class="infocard-grid">
+        <div class="info-item"><b>不帶</b><p>讀進去 0 個圖片 token<br>一張 <strong>1.34 元</strong></p></div>
+        <div class="info-item"><b>帶一張</b><p>讀進去 1505 個圖片 token<br>一張 <strong>1.75 元</strong></p></div>
+        <div class="info-item"><b>帶兩張</b><p>讀進去 3041 個圖片 token<br>一張 <strong>2.14 元</strong></p></div>
+      </div>
+    </div>
+
+    <div class="duo">
+      <div class="card a">
+        <small>gpt-image-2（舊）</small>
+        <b>1.34 → 1.75 → 2.14 元</b>
+        <p><img src="../../images/articles/ai-image-api-cost-refprice.jpg" alt="圖卡：gpt-image-2 帶參考圖一張多 0.38 元，不帶 1.34 元、帶一張 1.75 元、帶兩張 2.14 元" loading="lazy" style="width:100%;border-radius:6px;margin-bottom:10px">每張參考圖加 0.38 元。</p>
+      </div>
+      <div class="card b">
+        <small>gpt-image-2.5 flare（新）</small>
+        <b>0.40 → 0.78 → 1.16 元</b>
+        <p><img src="../../images/articles/ai-image-api-cost-refprice-25.jpg" alt="圖卡：gpt-image-2.5 帶參考圖一張多 0.38 元，不帶 0.40 元、帶一張 0.78 元、帶兩張 1.16 元" loading="lazy" style="width:100%;border-radius:6px;margin-bottom:10px">每張參考圖一樣加 0.38 元。</p>
+      </div>
+    </div>
+    <p style="margin-top:24px">兩張擺在一起就看得很清楚：新舊模型的<strong>起跳價差很多，但參考圖的加價一模一樣</strong>。變便宜的是輸出那一段，參考圖那一段沒動過。</p>
+
+    <p>兩張參考圖讀進去的 token 幾乎剛好是一張的兩倍，1505 變成 3041。所以參考圖是線性加價，沒有打包優惠。輸出那 1372 個 token 完全沒變，貴的部分全部在讀進去的圖。換算下來，每多帶一張參考圖，一張成本多 0.38 元。</p>
+    <p>後來 2.5 開通，我又補測了一次帶兩張的：讀進去 3010 個圖片 token，跟舊模型的 3041 幾乎一樣，剛好也是一張 1505 的兩倍。<strong>所以參考圖的加價規則是跨模型的</strong>，換哪一顆都是每張 0.38 元。會變的是輸出那一段，換模型換畫質才會動。</p>
+    <p>這個數字要放在一起看才有意義：不帶參考圖 1.34 元，但角色會走樣，走樣就要重生，重生一次就是再 1.34 元。帶一張參考圖 1.75 元，一次到位。多花的四毛錢，買的是不用重來。</p>
+
+    <div class="meaning">
+      <b>訂閱那條也要付參考圖的代價，只是它收時間，不收錢</b>
+      我讓 Codex 又生了一組五張圖卡，這次它吃了兩張角色參考圖。每張耗時從原本的 48 到 58 秒，變成 96 到 103 秒，整整慢一倍。
+    </div>
+
+    <p>所以參考圖的帳，兩條路都要付：API 收你錢，訂閱收你時間。差別是 API 那筆你事前算得出來，訂閱那筆你要等到圖生出來才知道今天比較慢。</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>發現四：最新的模型要實名驗證才能用</h2>
+    <p>我本來也想測 OpenAI 最新的 gpt-image-2.5，它有兩個型號，一個主打快、一個主打改圖精準。打過去直接被擋：</p>
+
+    <div class="codeblock">Your organization must be verified to use the model `gpt-image-2.5-flare`.</div>
+
+    <p>翻成白話就是，你的組織必須先通過驗證才能用這個模型。這跟付不付錢無關，卡的是准入。同一把 key，打 gpt-image-2 通行無阻，打 2.5 就被擋。</p>
+    <p>我實際去走了一遍。到 OpenAI 後台的組織設定頁，找到 Verifications 那一區點下去，它會把你轉到一個叫 Persona 的第三方驗證服務。要交政府核發的照片證件，然後還要開相機做臉部辨識。</p>
+
+    <figure class="inline-figure">
+      <img src="../../images/articles/ai-image-api-cost-verify.jpg" alt="OpenAI 組織驗證的臉部辨識畫面，要求把臉對準相機並左右轉動以顯示兩側" loading="lazy">
+      <figcaption>驗證流程會轉到 Persona，畫面上寫著「將您自己定位在相機的中央，然後左右移動您的臉部以顯示兩側」。</figcaption>
+    </figure>
+
+    <p>送出之後狀態會變成 Identity in review，也就是審核中。頁面上還註明一件事：這組身分是綁在帳號上的，通過之後每 90 天可以拿去驗證另一個組織。</p>
+    <p>OpenAI 這麼做的理由是防濫用。2025 年開始，前沿模型陸續加上這道門檻，他們公開講過的原因包括違規使用，以及有人透過 API 大量取用資料去訓練自己的模型。</p>
+
+    <div class="caveat">
+      <b>開了 key 不等於什麼模型都能用</b>
+      如果你打算自己接 API，這道門檻要先知道。我送出驗證的時候狀態顯示審核中，當天稍晚就通過了，所以 2.5 這一輪還是測到了。
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>發現五：新模型比舊模型便宜，而且快一倍</h2>
+    <p>驗證一過，我馬上叫它去測 gpt-image-2.5-flare，就是主打快的那顆。我讓它生一張一頁總結的圖卡，橫式，三種設定各跑一次。</p>
+
+    <div class="infocard">
+      <div class="infocard-grid">
+        <div class="info-item"><b>flare 一般畫質 · 不帶圖</b><p>19.2 秒 · 輸出 343 tokens<br>一張 <strong>0.40 元</strong></p></div>
+        <div class="info-item"><b>flare 一般畫質 · 帶一張</b><p>27.0 秒 · 輸出 343 tokens<br>一張 <strong>0.78 元</strong></p></div>
+        <div class="info-item"><b>flare 高畫質 · 帶一張</b><p>24.4 秒 · 輸出 1372 tokens<br>一張 <strong>1.76 元</strong></p></div>
+      </div>
+    </div>
+
+    <p style="margin-top:20px">拿前面測過的舊模型當對照：gpt-image-2 一般畫質帶一張參考圖，46 秒、1372 tokens、一張 1.75 元。</p>
+
+    <div class="meaning">
+      <b>價格幾乎一樣，速度差一倍</b>
+      flare 高畫質 1.76 元、24.4 秒；gpt-image-2 一般畫質 1.75 元、46 秒。同樣的錢，新的那顆快一倍。
+    </div>
+
+    <figure class="inline-figure">
+      <img src="../../images/articles/ai-image-api-cost-summary.jpg" alt="圖卡：一頁總結，gpt-image-2.5 flare 的耗時與單價" loading="lazy">
+      <figcaption>這張是 flare 高畫質、帶一張角色參考圖生出來的，24.4 秒、1.76 元。這篇文章裡的圖卡都是實測當下的產物，不是另外做的示意圖。</figcaption>
+    </figure>
+
+    <p>再看第一列：flare 一般畫質不帶參考圖，一張 0.40 元、19 秒。輸出 token 從 1372 掉到 343。畫質檔位換了，模型吐出來的圖片 token 數就跟著換，價格差在這裡，不在畫面複雜度。這跟發現一是同一回事：成本是設定決定的，不是內容決定的。</p>
+
+    <div class="caveat">
+      <b>「2.5 比 2 貴兩倍」是誤讀</b>
+      我看到有人這樣說，叫它回去查這說法哪來的。查完是拿 2.5 的標準價去比 2 的批次價，兩個不同的計價欄位放在一起比。同一欄比同一欄，2.5 沒有比較貴。
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>帶跟不帶，我拿同一份指令跑了一次乾淨對照</h2>
+    <p>前面那些數字是零散測出來的。最後我又跑了一次條件完全一致的對照：同一份 prompt、同一個模型、同一個畫質、同一個尺寸，唯一的變數只有帶不帶那張咪卡角色參考圖。</p>
+
+    <div class="duo">
+      <div class="card a">
+        <small>不帶參考圖</small>
+        <b>19.2 秒 · 0.40 元</b>
+        <p><img src="../../images/articles/ai-image-api-cost-noref.jpg" alt="不帶參考圖生成的圖卡，咪卡的帽子變成有圓鈕的圓頂偵探帽，還多了披風" loading="lazy" style="width:100%;border-radius:6px;margin-bottom:10px">標題、數字、排版全對。但咪卡變成別隻貓：帽子長出圓鈕、多一條披風、嘴巴張開。</p>
+      </div>
+      <div class="card b">
+        <small>帶一張角色參考圖</small>
+        <b>27.0 秒 · 0.78 元</b>
+        <p><img src="../../images/articles/ai-image-api-cost-withref.jpg" alt="帶一張角色參考圖生成的圖卡，咪卡維持米褐色低頂斜檐偵探扁帽" loading="lazy" style="width:100%;border-radius:6px;margin-bottom:10px">同一份指令，帽子、眼睛、內耳、身形全部對上。多花 0.38 元、多等 7.8 秒。</p>
+      </div>
+    </div>
+
+    <p style="margin-top:24px">我技能包裡的角色規則寫得很明白：不要圓頂帽、不要頂部鈕扣。但模型沒看過那份規則，它只看到我寫的那句「戴米褐色低頂斜檐偵探扁帽」，然後照自己的理解畫。</p>
+
+    <div class="meaning">
+      <b>參考圖影響的是角色，不是品質</b>
+      兩張的文字排版完全沒受影響。標題、左右兩欄各四行條列、底部三個數字，一個都沒錯。所以如果你生的圖裡沒有固定角色，這筆錢完全不用花。
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>速度跟重生率，反而是訂閱吃虧</h2>
+    <p>跑完之後我把兩條路的數字並排。</p>
+
+    <div class="duo">
+      <div class="card a">
+        <small>訂閱</small>
+        <b>不花錢，但控制權交出去</b>
+        <p>每張 48 到 58 秒，平均 54 秒<br>五張成品實際生了 7 次<br>尺寸跟著參考圖走，控不住<br>品牌角色守得住<br>每張成本 0 元</p>
+      </div>
+      <div class="card b">
+        <small>API（gpt-image-2）</small>
+        <b>要付錢，換到可預測</b>
+        <p>每張 44.8 到 51.3 秒，平均 48 秒<br>五張一次過<br>尺寸精準，五張完全一致<br>角色要自己帶參考圖<br>每張 1.34 到 1.75 元</p>
+      </div>
+    </div>
+
+    <p>速度上 API 快一點，但差距只有 11%，我認為在誤差範圍內，不會影響選擇。</p>
+    <p>不過這是舊模型的數字。換成 2.5 flare，一張 19 到 27 秒，訂閱那條是 48 到 58 秒，大約快一倍，這個差距就不在誤差範圍內了。</p>
+    <p>比較有感的是重生。訂閱那五張，有兩張要重來：一張多長了一條空白的價格條，一張角色的手腳畫錯還多冒出一個問號。五張成品實際生了七次。API 那五張一次過。這可能是運氣，也可能是因為我寫給 API 的指令更精確，樣本太少不能下定論。</p>
+    <p>但重生這件事值得放進成本考量：訂閱不用付錢，但要付時間，還要有人盯著看哪張要重來。</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>所以我會怎麼選</h2>
+    <div class="workflow-grid">
+      <div class="workflow-step"><small>開給別人用</small><b>flare 一般畫質</b><p>要進系統、尺寸要精準、成本要能預估。一張 0.40 元、19 秒。我的學員生圖工作站就是走這條。</p></div>
+      <div class="workflow-step"><small>要守住角色</small><b>再帶一張角色參考圖</b><p>一張 0.78 元、27 秒。多的 0.38 元買的是角色不會跑掉，比走樣之後重生便宜。</p></div>
+      <div class="workflow-step"><small>自己隨手做圖</small><b>走訂閱就好</b><p>額度本來就在付，多生一張也不心疼。只是要接受尺寸控不住，比例跑掉自己裁。</p></div>
+    </div>
+    <p style="margin-top:24px"><strong>已經不用特地選 gpt-image-2 了。</strong>同樣帶一張參考圖，它 1.75 元、46 秒，flare 高畫質 1.76 元、24 秒。價格一樣，速度差一倍。這種事情不測就不會知道。</p>
+    <div class="caveat">
+      <b>兩個前提要先講</b>
+      要用 2.5 得先通過組織實名驗證。而且 gpt-image-2 可以指定彈性尺寸，2.5 只吃三種固定尺寸加 auto，如果你要的比例不在那三種裡面，舊的那顆還是有它的位置。
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>給 AI 讀的備忘</h2>
+    <p>這段是給你貼給 AI 的。如果你要它幫你接 OpenAI 生圖 API，把這段一起貼過去，可以省掉我今天踩的坑。</p>
+    <div class="codeblock">OpenAI 生圖 API 實測筆記（2026-09-09）
+
+<span class="c">端點選擇</span>
+- /v1/images/generations 純文字生圖，不吃參考圖
+- /v1/images/edits 可以帶參考圖，欄位名 image[]，multipart/form-data
+- 要維持角色一致性一定要用 edits，generations 只能用文字描述外觀
+
+<span class="c">計價（gpt-image-2）</span>
+- 圖片輸出 $30 / 1M tokens
+- 圖片輸入 $8 / 1M tokens
+- 文字輸入 $5 / 1M tokens
+- medium 畫質 1024x1536 的輸出固定 1372 tokens，不隨內容複雜度變動
+- 每張參考圖約 1505 image input tokens，線性疊加
+
+<span class="c">計價（gpt-image-2.5-flare）</span>
+- 圖片輸出同樣 $30 / 1M tokens，與 gpt-image-2 同價
+- medium 畫質 1536x1024 輸出 343 tokens，一張約 NT$0.40
+- high 畫質 1536x1024 輸出 1372 tokens，一張約 NT$1.76
+- 同畫質下 flare 比 gpt-image-2 快約一倍
+- 「2.5 比 2 貴兩倍」是拿標準價比批次價的誤讀，同欄比同欄沒有比較貴
+
+<span class="c">模型准入</span>
+- gpt-image-1 / 1-mini / 1.5 / 2 開 key 即可用
+- gpt-image-2.5-flare / sunburst 需要組織通過實名驗證（Persona 證件加臉部辨識）
+- 2.5 的 quality 有六檔（low/medium/high/xhigh/max/auto），2 只有三檔
+
+<span class="c">尺寸限制</span>
+- gpt-image-2 支援彈性尺寸，最大邊 3840，寬高須為 16 的倍數，長短邊比不超過 3:1
+- 其他型號只吃 1024x1024、1536x1024、1024x1536、auto</div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>回到材料費怎麼算</h2>
+    <p>算完這一輪，我的材料費就有底了。</p>
+    <p>學員在工作坊裡生的是他們自己的圖，不用固定我的品牌角色，所以不用帶參考圖。走 gpt-image-2.5-flare 一般畫質，一張 0.40 元。</p>
+    <div class="infocard">
+      <div class="infocard-grid">
+        <div class="info-item"><b>一張圖</b><p>flare 一般畫質、不帶參考圖<br><strong>0.40 元</strong></p></div>
+        <div class="info-item"><b>一個學員</b><p>生 5 張<br><strong>2 元</strong></p></div>
+        <div class="info-item"><b>三十人的班</b><p>整場材料費<br><strong>60 元</strong></p></div>
+      </div>
+    </div>
+    <p style="margin-top:20px">我一開始是拿舊模型、又帶著參考圖算的，同樣的班要 260 元。就算舊模型也不帶參考圖，一張 1.34 元，三十人還是要 201 元。差別在選對模型。這也是我要自己測的理由：不測就只能拿最保守的數字去抓預算，抓出來的數字會讓人猶豫要不要做這件事。</p>
+    <p>這個數字放進報名費裡，學員不用另外辦帳號、不用付月費、不用在課堂上擔心額度什麼時候用完，來了就能生。</p>
+    <p>對我來說這是可以吸收的成本。對學員來說，這變成一件他們不用煩惱的事。</p>
+    <p>這些價格是 2026-09-09 實測的。模型會換代，價格也會跟著動，所以這篇的數字是給你一個算法，不是一張永久有效的價目表。</p>
+    <p>順帶一提，這篇的數字是我讓 AI 實測跑出來的，不是從別的文章抄的。中間那個「API 守不住品牌角色」的錯誤結論，如果我當場信了，這篇就會多一段錯的內容出去。抓到它的方法不是我比 AI 懂 API，是我知道自己的技能包裡寫了什麼。</p>
+    <div class="meaning">
+      <b>如果你也在考慮要不要自己接 API</b>
+      先問一個問題就好：你需要的是「生出來就好」，還是「每一張都要一樣」？前者留在訂閱，後者才值得走 API。
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">江江教練 · AI 知識管理</div>
+    <div class="footer-links">
+      <a href="../../articles.html">← 回深度文章總站</a>
+      <a href="../../index.html">首頁</a>
+      <a href="../../learn.html">自學資源</a>
+      <a href="../../skills.html">技能包下載</a>
+      <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">LINE 社群 ↗</a>
+      <a href="https://www.threads.com/@jiang_yude_coach" target="_blank" rel="noopener">Threads ↗</a>
+      <a href="https://vocus.cc/salon/Jiang_Coach" target="_blank" rel="noopener">方格子 ↗</a>
+    </div>
+    <div class="footer-note">這是一篇教學文章，整理我對「gpt-image-2.5 生一張圖多少錢？｜我實測十幾張，把 token 帳單攤開算工作坊材料費」的看法，供你參考。</div>
+  </div>
+</footer>
+
+<!-- 點圖放大 lightbox（hero 與內文圖通用，已內建，不用每篇重加） -->
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <span class="lightbox-close" aria-label="關閉">×</span>
+  <img id="lightbox-img" src="" alt="放大檢視">
+</div>
+<script>
+(function(){
+  var box=document.getElementById('lightbox'),boxImg=document.getElementById('lightbox-img');
+  document.querySelectorAll('.hero-figure img,.inline-figure img').forEach(function(img){
+    img.addEventListener('click',function(){boxImg.src=img.currentSrc||img.src;boxImg.alt=img.alt||'放大檢視';box.classList.add('open');box.setAttribute('aria-hidden','false');});
+  });
+  function close(){box.classList.remove('open');box.setAttribute('aria-hidden','true');boxImg.src='';}
+  box.addEventListener('click',close);
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
+})();
+</script>
+
+<script src="../../image-interactions.js"></script>
+
+<!-- 官網共用：滑鼠暖光暈 + 導航列漢堡選單 -->
+<script src="../../spotlight.js"></script>
+
+<!-- 文章自動互聯（相關文章）：兩支已內建，順序不可顛倒，不用再另外加 -->
+<script src="../../articles-data.js"></script>
+<script src="../../related-render.js"></script>
+  <script src="/mika-chat-widget.js" defer></script>
+</body>
+</html>
