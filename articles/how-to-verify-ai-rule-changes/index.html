@@ -1,0 +1,582 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="index,follow">
+<title>改完規則，怎麼知道 AI 到底有沒有變乖？｜改完當下看不出來的東西，要當病人觀察不能當程式碼驗</title>
+<meta name="description" content="改完 AI 的規則常常不知道有沒有效。這篇講為什麼會這樣，以及怎麼先用機械攔截切掉根本不用觀察的部分，再用一組回歸題組把一週的回饋壓成五分鐘。">
+<link rel="canonical" href="https://jiangyude.com/articles/how-to-verify-ai-rule-changes/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="改完規則，怎麼知道 AI 到底有沒有變乖？｜改完當下看不出來的東西，要當病人觀察不能當程式碼驗｜江江教練">
+<!-- 分享封面：hero 文字填好後在 repo 根目錄跑 `node scripts/og-shot.mjs how-to-verify-ai-rule-changes` 自動截 1200×630 到 images/og/how-to-verify-ai-rule-changes.jpg（見 README「文章分享封面（OG 圖）機制」）。別退回 intro-jiang.png 直式人像，會被裁成只剩脖子。 -->
+<meta property="og:image" content="https://jiangyude.com/images/og/how-to-verify-ai-rule-changes.jpg">
+<meta property="og:description" content="改完 AI 的規則常常不知道有沒有效。這篇講為什麼會這樣，以及怎麼先用機械攔截切掉根本不用觀察的部分，再用一組回歸題組把一週的回饋壓成五分鐘。">
+<meta property="og:url" content="https://jiangyude.com/articles/how-to-verify-ai-rule-changes/">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:site_name" content="江江教練 · AI 知識管理">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="改完規則，怎麼知道 AI 到底有沒有變乖？｜改完當下看不出來的東西，要當病人觀察不能當程式碼驗｜江江教練">
+<meta name="twitter:image" content="https://jiangyude.com/images/og/how-to-verify-ai-rule-changes.jpg">
+<meta name="twitter:description" content="改完 AI 的規則常常不知道有沒有效。這篇講為什麼會這樣，以及怎麼先用機械攔截切掉根本不用觀察的部分，再用一組回歸題組把一週的回饋壓成五分鐘。">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"改完規則，怎麼知道 AI 到底有沒有變乖？｜改完當下看不出來的東西，要當病人觀察不能當程式碼驗","description":"改完 AI 的規則常常不知道有沒有效。這篇講為什麼會這樣，以及怎麼先用機械攔截切掉根本不用觀察的部分，再用一組回歸題組把一週的回饋壓成五分鐘。","author":{"@type":"Person","name":"江昱德","alternateName":"江江教練","jobTitle":"隱性知識提煉師、AI 應用規劃師"},"isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://jiangyude.com/"},"inLanguage":"zh-Hant","url":"https://jiangyude.com/articles/how-to-verify-ai-rule-changes/"}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{--ink:#1a1612;--paper:#fefcf8;--muted:#6a635a;--line:#d8cdb8;--green:#5f7553;--blue:#5689b8;--orange:#e85a4f;--soft:#faf5ec;--dark:#2a2018;--shadow:0 18px 45px rgba(107,74,42,.14);--sp-shadow:hsla(35,50%,60%,.15);--sp-shadow-edge:hsla(35,50%,68%,.03);--sp-radius:400px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC","Segoe UI",sans-serif}
+a{color:inherit}
+/* 官網共用導航列 nav.top（與首頁/文章總站同一條） */
+nav.top{position:sticky;top:0;background:rgba(254,252,248,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid #d8cdb8;z-index:100}
+nav.top .container{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:24px;padding:14px 32px}
+.nav-brand-img{justify-self:start;display:flex;align-items:center;text-decoration:none;flex-shrink:0;transition:opacity .2s}
+.nav-brand-img:hover{opacity:.8}.nav-brand-img img{height:40px;width:auto;display:block}
+nav.top ul.nav-menu{justify-self:end;display:flex;gap:22px;list-style:none;margin:0;padding:0;font-size:.95rem;white-space:nowrap}
+nav.top ul.nav-menu a{color:#3a342d;text-decoration:none;transition:color .2s;font-weight:500;white-space:nowrap}
+nav.top ul.nav-menu a:hover{color:#1a1612}nav.top ul.nav-menu a.active{color:#1a1612;font-weight:700}
+.nav-toggle{display:none;background:none;border:none;padding:6px;cursor:pointer;width:36px;height:36px;position:relative}
+.nav-toggle span{display:block;position:absolute;left:8px;right:8px;height:2px;background:#1a1612;border-radius:2px;transition:transform .25s,opacity .25s,top .25s}
+.nav-toggle span:nth-child(1){top:11px}.nav-toggle span:nth-child(2){top:17px}.nav-toggle span:nth-child(3){top:23px}
+.nav-toggle.open span:nth-child(1){top:17px;transform:rotate(45deg)}.nav-toggle.open span:nth-child(2){opacity:0}.nav-toggle.open span:nth-child(3){top:17px;transform:rotate(-45deg)}
+.tablewrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:22px 0;border:1px solid var(--line);border-radius:10px;background:#fff;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.tablewrap table{border-collapse:collapse;width:100%;min-width:600px;font-size:18px;line-height:1.65}
+.tablewrap .zh{display:block;margin-top:5px;font-size:16px;line-height:1.55;color:var(--muted);font-weight:400}
+.tablewrap th,.tablewrap td{padding:12px 14px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top;color:#3a342d}
+.tablewrap thead th{background:var(--soft);font-weight:900;font-size:18px;color:#1a1612;white-space:nowrap}
+.tablewrap tbody tr:last-child td{border-bottom:none}
+.tablewrap td code,.section code{background:var(--soft);border:1px solid var(--line);border-radius:5px;padding:1px 6px;font:500 15px/1.5 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace}
+.inline-figure.wide{max-width:1000px}
+.toc{margin:26px 0 0;padding:20px 22px;background:#fff;border:1px solid var(--line);border-radius:10px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.toc>b{display:block;font-size:15px;letter-spacing:.05em;color:var(--green);margin-bottom:10px}
+.toc ol{margin:0;padding-left:1.35em;font-size:18px;line-height:1.7}
+.toc li{margin-bottom:7px;color:#3a342d}
+.toc a{color:var(--blue);font-weight:700;text-decoration:none}.toc a:hover{text-decoration:underline}
+.toc-hint{margin:12px 0 0!important;font-size:18px!important;color:var(--muted)!important;border-top:1px solid var(--line);padding-top:12px}
+.readmore{margin-top:24px;padding:20px 22px;background:var(--soft);border:1px solid var(--line);border-radius:12px}
+.readmore.near{margin:26px 0 6px;background:rgba(86,137,184,.07);border-color:#bcd0e2}
+.readmore.near b{color:var(--blue);font-size:18px}
+.readmore.near li{font-size:17px;line-height:1.7;margin-bottom:10px}
+.readmore b{display:block;margin-bottom:10px;font-size:19px}
+.readmore ul{margin:0;padding-left:1.25em}
+.readmore a{color:var(--blue);font-weight:700;text-decoration:none}
+.readmore a:hover{text-decoration:underline}
+@media(max-width:820px){.tablewrap table{min-width:560px;font-size:18px}.tablewrap{position:relative}.tablewrap::after{content:"表格可左右滑動 →";position:sticky;left:0;display:block;font-size:15px;color:var(--muted);background:var(--soft);border-top:1px solid var(--line);padding:7px 12px;width:100%}}
+@media(max-width:860px){
+ nav.top .container{grid-template-columns:auto 1fr auto;padding:10px 16px;gap:12px}
+ .nav-brand-img img{height:32px}
+ .nav-toggle{display:block;justify-self:end}
+ nav.top ul.nav-menu{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(254,252,248,.98);backdrop-filter:blur(14px);border-bottom:1px solid #d8cdb8;flex-direction:column;gap:0;padding:8px 0;box-shadow:0 10px 24px rgba(107,74,42,.08)}
+ nav.top ul.nav-menu.open{display:flex}
+ nav.top ul.nav-menu li{border-bottom:1px solid #e8dfc9}
+ nav.top ul.nav-menu li:last-child{border-bottom:none}
+ nav.top ul.nav-menu a{display:block;padding:14px 20px;font-size:1.06rem}
+}
+/* 滑鼠暖光暈（與首頁同一支 spotlight.js） */
+body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradient(var(--sp-radius) circle at var(--mx,50%) var(--my,50%),var(--sp-shadow) 0%,var(--sp-shadow-edge) 45%,transparent 75%);pointer-events:none;z-index:9999;mix-blend-mode:multiply;transition:background .06s linear}
+.hero{position:relative;overflow:hidden;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:72px;padding:96px clamp(20px,6vw,88px) 80px;background:linear-gradient(180deg,#fffcf0 0%,#f9e9d2 100%);color:#1a1612;border-bottom:1px solid #d8cdb8}
+.hero .wc{position:absolute;border-radius:50%;filter:blur(60px);pointer-events:none;z-index:0}
+.hero .wc1{width:420px;height:360px;top:-120px;right:-80px;background:#e8884b;opacity:.15}
+.hero .wc2{width:360px;height:300px;bottom:-110px;left:-70px;background:#5f7553;opacity:.13}
+.hero .wc3{width:280px;height:260px;top:34%;left:14%;background:#a08144;opacity:.10}
+.hero>div{flex:none;width:860px;max-width:100%;position:relative;z-index:2}
+.hero-figure{margin:0;width:420px;flex:none;position:relative;z-index:2}
+.hero-figure img{display:block;width:100%;border-radius:16px;border:1px solid #d8cdb8;box-shadow:0 18px 45px rgba(107,74,42,.16);cursor:zoom-in}
+.hero-figure figcaption{margin-top:10px;font-size:14px;line-height:1.6;color:#6a635a}
+.inline-figure{margin:30px auto 8px;max-width:820px}
+.inline-figure img{display:block;width:100%;border-radius:14px;border:1px solid var(--line);box-shadow:var(--shadow);background:#fff;cursor:zoom-in}
+.inline-figure figcaption{font-size:14px;line-height:1.6;color:var(--muted);margin-top:10px}
+.lightbox{position:fixed;inset:0;z-index:10000;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(12,10,8,.92);cursor:zoom-out;backdrop-filter:blur(4px)}
+.lightbox.open{display:flex}.lightbox img{max-width:96vw;max-height:92vh;border-radius:10px;box-shadow:0 24px 60px rgba(0,0,0,.5)}
+.lightbox-close{position:fixed;top:18px;right:24px;color:#fff;font-size:34px;line-height:1;font-weight:700;cursor:pointer;opacity:.85}
+.kicker{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.55rem;color:#7a5c3a;font-weight:500}
+.hero h1{max-width:none;margin:16px 0 18px;font-size:clamp(36px,6vw,72px);line-height:1.08;overflow-wrap:anywhere}
+.hero p{max-width:none;font-size:clamp(18px,2vw,23px);line-height:1.62;color:#3a342d}
+.cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
+.cta a{display:inline-flex;align-items:center;text-decoration:none;border-radius:8px;padding:12px 16px;font-weight:900}
+.cta .primary{background:#fff;color:#1a1612}.cta .ghost{border:1px solid rgba(255,255,255,.32);color:#fff;background:rgba(255,255,255,.08)}
+.section{padding:54px clamp(20px,6vw,88px);border-top:1px solid var(--line)}
+.inner{width:min(1000px,100%);margin:0 auto}
+.section h2{font-size:clamp(26px,4.2vw,48px);line-height:1.12;margin:0 0 18px}
+.section h3{font-size:clamp(21px,3vw,30px);line-height:1.2;margin:30px 0 12px}
+.lead{font-size:clamp(18px,1.6vw,22px);line-height:1.7;color:#3a342d;max-width:900px}
+.section p{font-size:18px;line-height:1.74;color:#3a342d}.section p+p{margin-top:14px}
+.section ul,.section ol{padding-left:1.4em;font-size:18px;line-height:1.74;color:#3a342d}.section li{margin-bottom:8px}
+.meaning{margin:22px 0;padding:16px 18px;border-left:5px solid var(--blue);background:rgba(86,137,184,.12);border-radius:6px;line-height:1.7;font-size:19px}
+.meaning b{display:block;color:var(--blue);margin-bottom:4px}
+.caveat{margin:0 0 8px;padding:16px 18px;border-left:5px solid var(--orange);background:rgba(232,90,79,.1);border-radius:6px;line-height:1.7;font-size:18px;color:#3a342d}
+.caveat b{display:block;color:var(--orange);margin-bottom:4px}
+.infocard{background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px 24px 22px;box-shadow:0 8px 22px rgba(107,74,42,.08);margin-top:8px}
+.infocard-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.info-item{padding:18px 14px 0}
+.info-item b{display:block;font-size:14px;font-weight:900;letter-spacing:.04em;margin-bottom:7px;text-transform:uppercase}
+.info-item:nth-child(1) b{color:var(--green)}.info-item:nth-child(2) b{color:var(--orange)}.info-item:nth-child(3) b{color:var(--blue)}
+.info-item p{margin:0;font-size:17px;line-height:1.6;color:#3a342d}
+.tagrow{display:flex;flex-wrap:wrap;gap:7px;margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
+.tag{font-size:14px;color:var(--muted);background:var(--soft);border:1px solid var(--line);border-radius:999px;padding:4px 11px}
+.duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:24px}
+.duo.stack{grid-template-columns:1fr}
+.duo .card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:22px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.duo .card.a{border-color:var(--orange)}.duo .card.b{border-color:var(--green);box-shadow:0 8px 24px rgba(95,117,83,.16)}
+.duo .card small{display:block;font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.04em;margin-bottom:9px}
+.duo .card.a small{color:var(--orange)}.duo .card.b small{color:var(--green)}
+.duo .card b{display:block;font-size:22px;line-height:1.3;margin-bottom:12px}.duo .card.a b{color:#c0512f}.duo .card.b b{color:#4a7a59}
+.duo .card p{margin:0;color:#3a342d;line-height:1.75;font-size:18px}
+.workflow-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:24px}
+.workflow-step{background:#fff;border:1px solid var(--line);border-radius:8px;padding:18px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.workflow-step small{display:block;color:var(--orange);font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;margin-bottom:9px}
+.workflow-step b{display:block;font-size:18px;line-height:1.3;margin-bottom:9px}
+.workflow-step p{margin:0;color:#3a342d;line-height:1.6;font-size:16px}
+.codeblock{background:var(--dark);color:#f3ead9;border-radius:8px;padding:18px 20px;font:500 14px/1.65 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;overflow-x:auto;white-space:pre-wrap;margin:20px 0;box-shadow:0 8px 22px rgba(107,74,42,.12)}
+.codeblock .c{color:#f6d7a6;font-weight:600}
+.skillcard{background:#fff;border:1px solid var(--green);border-radius:12px;padding:24px;box-shadow:0 10px 26px rgba(95,117,83,.16);margin-top:8px}
+.skillcard b{display:block;font-size:21px;margin-bottom:8px}
+.skillcard p{margin:0 0 16px;font-size:17px;line-height:1.65;color:#3a342d}
+.cta-band{background:#e6f0e5;color:#3a342d}.cta-band .section{border-top:none}
+.cta-band .inner{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(260px,.85fr);gap:26px;align-items:start}
+.cta-band h2{font-size:clamp(26px,4vw,44px);margin:0 0 16px}.cta-band p,.cta-band .lead{color:rgba(58,52,45,.9);font-size:18px;line-height:1.72}
+.cta-card{border:1px solid #cfe0d2;background:#fbfdfa;border-radius:8px;padding:22px}
+.cta-card b{display:block;color:#48b178;margin-bottom:10px;font-size:18px}.cta-card p{margin:0 0 14px}
+.footer{padding:30px clamp(20px,6vw,88px);font-size:14px;color:var(--muted);background:#fff;border-top:1px solid var(--line)}
+.footer-inner{width:min(1000px,100%);margin:0 auto}
+.footer-links{display:flex;flex-wrap:wrap;gap:6px 12px;margin-bottom:14px}.footer-links a{color:var(--blue);font-weight:900;text-decoration:none;font-size:14px}
+.footer-brand{font-weight:900;font-size:15px;margin-bottom:10px}.footer-note{font-size:13px;line-height:1.6}
+@media(max-width:820px){.infocard-grid{grid-template-columns:1fr}.duo{grid-template-columns:1fr}.workflow-grid{grid-template-columns:1fr}.cta-band .inner{grid-template-columns:1fr}.section{padding:40px 20px}.hero{min-height:52vh;flex-direction:column;justify-content:flex-start;align-items:flex-start;gap:24px}.hero>div{width:100%}.hero-figure{width:100%;max-width:560px}}
+@media(max-width:820px){html,body{overflow-x:hidden}.hero h1{word-break:break-word}}
+
+/* 本篇配圖為 4:5 直式輪播卡：收窄封面與內文圖，避免整頁被高圖撐開 */
+.hero-figure{width:320px}
+.hero-figure img{aspect-ratio:4/5;object-fit:cover}
+.inline-figure.card{max-width:430px}
+@media(max-width:820px){.inline-figure.card{max-width:340px}}
+/* 標題長＋直式封面：收窄文字容器並縮字級，避免封面圖被擠到下一行（02-design-system 實測數值） */
+.hero{gap:56px!important}
+.hero>div{width:660px!important}
+.hero h1{font-size:clamp(30px,3.3vw,46px)!important;line-height:1.16!important;margin:12px 0 16px!important}
+.hero p{font-size:clamp(16px,1.35vw,19px)!important;line-height:1.65!important}
+.hero .kicker{font-size:1.28rem!important}
+@media(max-width:1120px){
+  .hero{gap:32px!important;flex-direction:column;align-items:flex-start}
+  .hero>div{width:100%!important}
+  .hero h1{font-size:clamp(28px,5vw,40px)!important}
+}
+</style>
+</head>
+<body class="spotlight">
+<!-- 官網共用導航列 nav.top：與首頁/總站同一條，文章不要自己另做極簡 topbar（江江 2026-06-25：要同一個框架、同一條導航列）。把對應頁面的 class="active" 標在自己那欄。
+     ⚠️ 下面 ul.nav-menu 整塊由 preflight 第 5 關 check-bilingual-nav.mjs 做「逐字比對」，
+        塞任何註解、多一個空白、換行位置不同都會被判導航不一致而擋下發布。要說明就寫在 <ul> 外面（像這裡）。
+        2026-08-16 修：原本的 EN 那行說明註解就夾在 <ul> 裡面，導致照範本起手的新文章一律卡第 5 關
+        （llm-rag-agent-mcp 與 rag-three-retrieval-modes 兩篇同時中招）。註解已移出來，<ul> 內保持乾淨。
+        萬一還是被擋，直接跑：node scripts/check-bilingual-nav.mjs --write --only=<你的檔案路徑> -->
+<nav class="top">
+  <div class="container">
+    <a class="nav-brand-img" href="../../index.html"><img src="../../images/footer-signature.png" alt="江江教練 | 江昱德"></a>
+    <button class="nav-toggle" aria-label="選單"><span></span><span></span><span></span></button>
+    <ul class="nav-menu">
+      <li><a href="../../index.html">首頁</a></li>
+      <li><a href="../../knowledge-architecture.html">知識架構</a></li>
+      <li><a href="../../courses.html">課程</a></li>
+      <li><a href="../../articles.html" class="active">深度文章</a></li>
+      <li><a href="../../skills.html">技能包下載</a></li>
+      <li><a href="../../offers.html">服務方案</a></li>
+      <li class="lang-switch"><a href="../../en/articles.html" hreflang="en">EN</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="wc wc1"></div>
+  <div class="wc wc2"></div>
+  <div class="wc wc3"></div>
+  <div>
+    <div class="kicker">AI 工作流 / 規則驗收</div>
+    <h1>改完規則，怎麼知道 AI 到底有沒有變乖？｜改完當下看不出來的東西，要當病人觀察不能當程式碼驗</h1>
+    <p>我改程式碼調一個參數，下一輪就知道對不對。改 AI 的規則沒這回事，要等一個禮拜再回來看，而一個禮拜後回來看，剩下的通常只有印象。</p>
+  </div>
+  <!-- 封面圖（建議放）：橫式用預設 width:420px；4:5 直式改 .hero-figure{width:320px} 並加 .hero-figure img{aspect-ratio:4/5;object-fit:cover}。沒有封面圖就整個 <figure> 刪掉，hero 會自動置中只剩文字。封面同時設成上面 og:image / twitter:image。 -->
+  <figure class="hero-figure">
+    <img src="../../images/articles/how-to-verify-ai-rule-changes-cover.jpg" alt="咪卡拿著聽診器聽筆電，像醫生幫病人看診" loading="lazy">
+    <figcaption>調 AI 知識庫比較像醫生看病開藥：先開藥，回去吃一陣子，再回診。</figcaption>
+  </figure>
+</section>
+
+<main>
+
+<section class="section" id="start">
+  <div class="inner">
+    <h2>這篇在講什麼</h2>
+    <p class="lead">我改完 AI 的規則之後，常常不知道到底有沒有效。改程式碼可以立刻知道，改規則不行，要等一個禮拜再回來看，而一個禮拜後回來看，剩下的通常只有印象。這篇講為什麼會這樣，以及怎麼把「等一個禮拜」縮短成「改完當場就知道」。做法分兩步：先分清楚哪些機制根本不用觀察，剩下真的要觀察的，用一組固定題目去驗。</p>
+
+    <div class="duo stack">
+      <div class="card a">
+        <b>適合誰</b>
+        <ul>
+          <li>已經在寫自己的 AI 規則檔、提示詞或知識庫，改完卻不知道有沒有變好的人</li>
+          <li>每次調完就憑印象判斷「好像有比較好」，但說不出證據的人</li>
+          <li>想把交給 AI 的工作變成可驗收的，不用每次都自己重看一遍的人</li>
+        </ul>
+      </div>
+      <div class="card b">
+        <b>你可以帶走什麼</b>
+        <ul>
+          <li>一個判斷：這條規則該掛機械攔截，還是該當病人觀察</li>
+          <li>一組回歸題組的寫法，把一週級的回饋壓成分鐘級</li>
+          <li>觀察期驗收要事先寫死的三個欄位</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="problem">
+  <div class="inner">
+    <h2>改完一條規則，一個禮拜後我只記得印象</h2>
+    <p class="lead">先說一句，如果你沒有在寫什麼規則檔，把底下講的「規則」換成「你每次都要重複交代 AI 的那句話」，整篇一樣讀得通。差別只在你把它記在腦子裡，我把它寫成檔案。</p>
+    <p>我建完一個機制之後，會照常寫工作日記，然後一個禮拜之後再回來看：這個新機制有沒有降低錯誤率、有沒有提升準確性或效率。</p>
+    <p>問題是一個禮拜之後回來看，剩下的通常只有印象。我記得「好像比較少出錯了」，但我說不出少了幾次、哪一種錯變少、是這個機制的功勞還是那一週剛好比較順。</p>
+    <p>改程式碼不會這樣。我調一個參數，下一輪就有結果，我立刻知道這個參數調得對不對。改 AI 的規則沒這回事。一個知識或一個機制，有時候不是你改完它就會跳出來給你看，要看一陣子才知道。</p>
+
+    <figure class="inline-figure card">
+      <img src="../../images/articles/how-to-verify-ai-rule-changes-01.jpg" alt="左邊是改程式碼，改完下一輪就知道對錯；右邊是改 AI 規則，要等一個禮拜才看得出來" loading="lazy">
+      <figcaption>同樣是「改一個東西」，左邊那條路當下就有答案，右邊那條路要等。這篇處理的是右邊。</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section class="section" id="nondeterminism">
+  <div class="inner">
+    <h2>為什麼改 AI 的規則跟改程式不一樣</h2>
+    <p>後來我查才知道，這件事有名字，叫非確定性。</p>
+    <p>同一句話丟兩次，AI 給的答案可能不一樣。它生成的時候本來就帶著抽樣，就算你把抽樣關掉，也不保證每次拿到一模一樣的字。</p>
+    <p>已經被追出來的原因之一在服務端：<a href="https://thinkingmachines.ai/blog/defeating-nondeterminism-in-llm-inference/" target="_blank" rel="noopener">你的請求會跟其他人的請求被打包在一起算</a>，包的方式不同，數值就會出現極小的差異，兩個分數很接近的候選字可能因此翻面，後面整句話跟著岔開。這是部分部署環境已經確認的來源，不是唯一的解釋。</p>
+    <p>所以最容易騙到自己的情況是這樣：改完規則，看一個例子，覺得變好了，就當成改進成功。那個「變好」可能只是這次剛好。樣本數只有一個的時候，運氣跟效果長得一模一樣。</p>
+
+    <figure class="inline-figure card">
+      <img src="../../images/articles/how-to-verify-ai-rule-changes-02.jpg" alt="同一個問題問兩次，AI 給出兩個不同的答案" loading="lazy">
+      <figcaption>同一句話問兩次就有兩種答案。這是它的運作方式，不是壞掉。</figcaption>
+    </figure>
+
+    <div class="meaning">
+      <b>這修正了我原本的講法</b>
+      我本來以為是「機制不是立即生效」。比較像是機制可能已經生效了，只是單次觀察本身分不出「真的變好」跟「這次運氣好」。要分得出來就得看很多次，看很多次需要時間，於是就變成一個禮拜。
+    </div>
+
+    <div class="readmore near">
+      <b>延伸閱讀</b>
+      <ul>
+        <li><a href="../rule-file-rebound/">規則檔越寫越長，AI 有照做嗎？：你寫的規則大部分沒在執行</a><br>那篇講的是規則寫了不等於被執行，這篇接著講：那要怎麼知道到底執行了沒。</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="n-of-1">
+  <div class="inner">
+    <h2>醫生怎麼判斷一個藥有效，那套剛好借得過來</h2>
+    <p>我一直用醫生的比喻講這件事：我先開一個藥，你回去吃一兩個禮拜，我們再複診，再看看這個方向是不是對的。</p>
+    <p>後來我發現這個比喻背後有東西。醫學裡有一種正式的試驗設計叫 N-of-1 trial，中文叫單一受試者試驗。它問的是「這個治療對這一個病人有沒有效」，不問「這個治療對一群人平均有沒有效」。做法是同一個病人自己當自己的對照組，事先規劃好幾個治療期跟對照期反覆交叉，重複測量。如果前一次的藥效可能還沒退乾淨，中間就安排洗脫期，要不要留、留多久，看那個藥退得多快。</p>
+    <p>這不是偏方。<a href="https://www.cebm.ox.ac.uk/resources/levels-of-evidence/ocebm-levels-of-evidence" target="_blank" rel="noopener">牛津實證醫學中心 2011 年那套證據分級</a>裡，問「這個治療有沒有效」的時候，隨機化的 N-of-1 試驗跟隨機對照試驗的系統性回顧並列在第一級。</p>
+
+    <figure class="inline-figure card">
+      <img src="../../images/articles/how-to-verify-ai-rule-changes-03.jpg" alt="N-of-1 試驗：同一個病人反覆吃藥、停藥、重複測量" loading="lazy">
+      <figcaption>N-of-1 的做法：同一個人反覆吃、反覆停、重複量，自己當自己的對照組。</figcaption>
+    </figure>
+
+    <p>我的處境剛好就是 N=1。只有我一個使用者，只有我這一套知識庫。別人的規則寫得好不好，跟我的規則對我有沒有效，是兩件事。</p>
+    <div class="caveat">
+      <b>先講清楚我借了什麼、沒借什麼</b>
+      我沒有跑完整的 N-of-1。我沒有安排對照期，也沒有反覆交叉，更沒有洗脫期。我借的是它的核心邏輯：樣本數只有一個的時候，可信度要靠重複測量跟一次只改一個變因換來。這三個要求是我拿得走的部分。
+    </div>
+    <p>那三個要求是：</p>
+    <div class="workflow-grid">
+      <div class="workflow-step">
+        <small>要求 1</small>
+        <b>一次只改一個變因</b>
+        <p>這是我最常違反的。我常常一輪同時改規則、加 hook、改技能包，一個禮拜後就算錯誤率真的降了，我也歸不了因，不知道是哪一項在生效，下次也複製不了。</p>
+      </div>
+      <div class="workflow-step">
+        <small>要求 2</small>
+        <b>重複測量</b>
+        <p>看一次不算數。單次觀察分不出效果與運氣，這是上一段講的那件事在方法論上的對應解法。</p>
+      </div>
+      <div class="workflow-step">
+        <small>要求 3</small>
+        <b>留觀察期</b>
+        <p>改完不能當天就下結論。觀察期要多長，取決於這種行為多久會出現一次。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="first-cut">
+  <div class="inner">
+    <h2>有些規則根本不用觀察，先把它們挑出來</h2>
+    <p>知道要觀察之後，還有一件更重要的事：需要觀察的只有一部分規則。</p>
+
+    <h3>更前面還有一刀：這條規則需要存在嗎</h3>
+    <p>在分兩邊之前其實還有一刀。我另外做了一個技能包專門問這件事，叫它省話一哥。它只看一份規則或機制是不是話太多、太肥、過度設計，判斷方式是四個問題，一條規則要通過才留得下來。</p>
+    <ol>
+      <li>這段需要存在嗎？沒人會用到就刪。</li>
+      <li>上面已有的規則或工具能涵蓋嗎？重複就刪。</li>
+      <li>能不能一句講完？贅述就縮。</li>
+      <li>解釋有沒有比本體還長？為了替它辯護而寫的散文，刪。</li>
+    </ol>
+    <p>它也有絕不砍的紅線：安全規則、破壞性操作的保護、必要的脈絡與為什麼、能讓人或 AI 正確執行的關鍵步驟。這套方法論我叫它減法許可協議。</p>
+    <p>這一刀要放在最前面，因為規則會越寫越多，每一條都要驗，題組就會膨脹到你不想跑。刪掉一條不必存在的規則，等於同時省掉一條要觀察的、一題要跑的。第二問特別好用，它剛好回答了「同一個行為要不要驗兩次」。</p>
+    <div class="caveat">
+      <b>這一刀砍規則，不砍你的內容</b>
+      省話一哥自己的第一條紅線就是分流：它只審基礎設施（規則檔、技能包、機制、設定檔），不碰內容（文章、企劃、逐字稿、會議記錄）。內容的細節與脈絡本身就是價值。這條界線帶進來一樣成立。
+    </div>
+
+    <h3>接著才是分兩邊</h3>
+    <p>我的規則分四層：hook（機械攔截）、憲法（跨代理通用的硬規則）、技能包（特定情境的操作步驟）、記憶（各家 AI 自己的暫存）。這四層裡面只有第一層是確定性的。</p>
+    <p>hook 講白話就是門口的警衛。它是一段程式，在 AI 真的動手之前先看一眼：這個動作違反規定嗎？違反就擋下來，沒違反就放行。它不需要 AI 記得什麼，也不會心情不好就漏掉。擋到就是擋到，跟改程式碼一樣，改完當下就知道對錯，重跑一百次結果都一樣。</p>
+    <p>其他三層沒有警衛。它們是寫給 AI 看的字，AI 要自己讀到、自己記得、自己願意照做。</p>
+    <p>同一條規則這次遵守了，下次可能漏掉。那才是需要觀察的部分。</p>
+
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>這條規則</th><th>該掛哪裡</th><th>怎麼驗</th></tr></thead>
+        <tbody>
+          <tr><td>存檔的檔名一定要有時間戳</td><td>hook 機械攔截</td><td>改完當下丟一個沒時間戳的檔名，擋到就是對的</td></tr>
+          <tr><td>刪東西一律搬進回收資料夾，不准直接刪</td><td>hook 機械攔截</td><td>當下試一次危險指令，被擋就是對的</td></tr>
+          <tr><td>寫標籤之前要先讀字典逐個比對</td><td>規則層，靠 AI 自己遵守</td><td>要觀察，因為它可能憑記憶亂寫，而且亂寫不會報錯</td></tr>
+          <tr><td>給連結時要補上「如果點不開怎麼辦」</td><td>規則層，靠 AI 自己遵守</td><td>要觀察</td></tr>
+          <tr><td>語氣、判斷品質、有沒有腦補</td><td>規則層，靠 AI 自己遵守</td><td>要觀察，而且要人看</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <figure class="inline-figure card">
+      <img src="../../images/articles/how-to-verify-ai-rule-changes-04.jpg" alt="能寫成機械攔截的就不要用觀察的，只有靠 AI 自己記得遵守的才需要觀察一個禮拜" loading="lazy">
+      <figcaption>我現在分兩邊：擋得到的當下就有答案，擋不到的才留給觀察。</figcaption>
+    </figure>
+
+    <p>所以我現在改規則之前會先問一句：這件事能不能寫成程式判斷？能，就寫成 hook，當程式驗；不能，才進規則層，當病人觀察。</p>
+    <p>這一刀切下去，真正需要觀察的東西會少掉一大半。</p>
+
+    <div class="readmore near">
+      <b>延伸閱讀</b>
+      <ul>
+        <li><a href="../caught-ai-slacking-into-rules/">AI 寫的東西我怎麼確認它是對的？：抓到 AI 偷懶之後，我把它寫進流程規則</a><br>那篇講的是抓到問題怎麼變成規則，這篇是它的下一步：規則寫下去之後，怎麼確認它真的在生效。</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="regression">
+  <div class="inner">
+    <h2>怎麼把驗收從一個禮拜壓到五分鐘</h2>
+    <p>剩下真的要觀察的部分，還是可以縮短。</p>
+    <p>業界處理這件事的做法叫 eval。<a href="https://hamel.dev/blog/posts/evals-faq/" target="_blank" rel="noopener">Hamel Husain 跟 Shreya Shankar 那套講法</a>是：最重要的動作是錯誤分析，把實際跑過的紀錄一條條看過、標出問題、分類、計數，先搞清楚到底在錯什麼，指標才長得出來。只憑感覺看幾個例子就判斷好壞，能拿到的信息最少。</p>
+    <p>他們還記錄了一個現象：修好一種錯，另一種錯就冒出來，像打地鼠。這正是為什麼改完要跑全部題目，不能只驗剛改的那條。</p>
+    <p>我的錯誤分析素材是現成的。我踩過的坑就是題目。</p>
+    <div class="caveat">
+      <b>這一段是我要做的，還沒有跑滿一輪</b>
+      下面這組題目是我照上面的邏輯排出來的，題目本身來自我真的踩過的坑，但把它變成每次改規則都跑一遍的固定流程，我還在建。所以下面講的時間跟效果是設計上的預期，不是我已經量出來的數字。
+    </div>
+
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>題目</th><th>驗什麼</th><th>怎麼算過</th></tr></thead>
+        <tbody>
+          <tr><td>叫它建一個新檔案</td><td>檔名有沒有時間戳</td><td>有就過</td></tr>
+          <tr><td>叫它寫一段帶標籤的筆記</td><td>有沒有先讀字典再寫標籤</td><td>有讀就過</td></tr>
+          <tr><td>叫它交付一份文件</td><td>有沒有補「連結點不開怎麼辦」</td><td>有補就過</td></tr>
+          <tr><td>叫它部署一個網頁</td><td>有沒有先同步再部署</td><td>順序對就過</td></tr>
+          <tr><td>叫它同時改三個機制</td><td>有沒有提醒一次只改一個</td><td>有提醒就過</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>三個原則：</p>
+    <div class="workflow-grid">
+      <div class="workflow-step">
+        <small>原則 1</small>
+        <b>每題只驗一個行為</b>
+        <p>他們提的設計原則是每個 eval 只檢查一個行為。系統會用很多種方式壞掉，一題同時驗三件事，壞了你不知道是哪一件。</p>
+      </div>
+      <div class="workflow-step">
+        <small>原則 2</small>
+        <b>同一題跑三次</b>
+        <p>單次會說謊。三次都過才算過，三次過兩次就是還沒穩。</p>
+      </div>
+      <div class="workflow-step">
+        <small>原則 3</small>
+        <b>改完當場跑一遍全部</b>
+        <p>規則之間會互相打架。只驗你剛改的那條，看不到被你順手撞倒的那幾條。一種常見做法是把這件事掛進自動流程，叫 CI evals，用途是在上線前擋住已知的退步。</p>
+      </div>
+    </div>
+
+    <p>這樣做的話，改完規則就不用等一個禮拜。改完當場跑一遍題組，幾分鐘內可以看到兩件事：新規則有沒有生效、有沒有順手弄壞別的。</p>
+    <p>一個禮拜的觀察期還是要留。它的角色會變成確認長期效果，而回饋管道多了一條當下就能跑的。</p>
+
+    <div class="readmore near">
+      <b>延伸閱讀</b>
+      <ul>
+        <li><a href="../three-levels-of-cross-review/">怎麼設計讓兩個 AI 互審？：三種不同程度的審查機制設計</a><br>題組驗得出「有沒有照做」，驗不出「做得好不好」。品質那一層要另一套設計，那篇講的就是它。</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="observation">
+  <div class="inner">
+    <h2>觀察期開始那天，就要先寫好到期要看什麼</h2>
+    <p>我的規則裡本來就有觀察期的結構。凡是換儲存位置、換供料來源、換服務供應商這種切換，都要登記進一個切換登記簿，舊的留七天不刪，到期驗收過了才處置。</p>
+    <p>那個形狀本來就是臨床試驗：先留一段時間，到期再判斷。登記簿跟七天觀察期已經在跑，缺的是一格「驗收要拿什麼當證據」。</p>
+    <p>沒有那一格，七天後回來看就只剩印象。所以我要補的是這三件事，在建機制那天就寫好：</p>
+
+    <div class="infocard">
+      <div class="infocard-grid">
+        <div class="info-item">
+          <b>看哪一種錯誤</b>
+          <p>指定一種來看，例如標籤有沒有亂寫、檔名有沒有漏時間戳。一次一種，不要看「整體有沒有變好」。</p>
+        </div>
+        <div class="info-item">
+          <b>去哪裡看</b>
+          <p>工作日記的哪一段、hook 的攔截紀錄、哪個資料夾的檔名清單。要能翻得到，不是靠回憶。</p>
+        </div>
+        <div class="info-item">
+          <b>什麼算過</b>
+          <p>七天內這種錯誤出現幾次以下算過。數字寫死，不然到期那天會自己放水。</p>
+        </div>
+      </div>
+    </div>
+
+    <p>這三格要在建機制當天寫。七天後才想「我當初要看什麼」，就已經來不及了。</p>
+  </div>
+</section>
+
+<section class="section" id="limits">
+  <div class="inner">
+    <h2>這套方法哪一部分我已經在用，哪一部分還在建</h2>
+    <p><b>已經在跑、確定有效的</b>：機械攔截那一層。寫成 hook 的規則改完當下就有答案，這部分我天天在用。</p>
+    <p><b>設計上預期能做到的</b>：規則層的回饋從一週壓到分鐘級，七天後回來看的時候手上有數字。這是這套設計要換到的東西，我還在把它跑滿一輪。</p>
+    <p><b>就算跑滿了也不保證的</b>，有三件事要講清楚。</p>
+
+    <div class="caveat">
+      <b>這是 N=1 的結論，不能外推</b>
+      這套題組驗的是「這些規則對我這個知識庫有沒有效」。同一條規則搬到你的知識庫，你得自己重跑一次。這是 N-of-1 這種設計本來的邊界。團隊要用也可以，只是別把「人數變多」當成證據變強：三個人各用三次，跟一個人用九次，驗到的都是同一套規則的表現，多的是次數。次數多對重複測量是好事，它換不到「這套規則對每個人都有效」這個結論。
+    </div>
+    <div class="caveat">
+      <b>題組驗得出「有沒有照做」，驗不出「做得好不好」</b>
+      檔名有沒有時間戳，機器判得出來。語氣對不對、有沒有腦補、判斷合不合理，機器判不出來。那一層還是要人看，或是找另一家的模型來審。
+    </div>
+    <div class="caveat">
+      <b>同一題跑三次不是統計顯著</b>
+      它只能濾掉比較明顯的雜訊。真的要有把握，次數要多得多。我選三次是因為這是我做得下去的量，不是因為三次夠科學。做得下去的檢查才會一直做，這是我的取捨。
+    </div>
+  </div>
+</section>
+
+<section class="section" id="start-now">
+  <div class="inner">
+    <h2>今天就能開始：從你最近踩的三個坑各寫一題</h2>
+    <p>不用先建系統。從三題開始就好。</p>
+
+    <h3>第一步：翻你最近的三個坑</h3>
+    <p>上禮拜 AI 哪裡讓你重做了一次？哪句話你已經講過三遍它還是漏？那就是題目，不用另外想。</p>
+
+    <h3>第二步：每個坑寫成一題，格式三行</h3>
+    <div class="codeblock"><span class="c">題目：</span>叫它做什麼（一句話，要能直接貼給 AI）
+<span class="c">驗什麼：</span>只驗一個行為
+<span class="c">怎麼算過：</span>什麼情況算過，什麼情況算沒過</div>
+
+    <h3>第三步：先問這題能不能不用觀察</h3>
+    <p>如果這個行為寫得出程式判斷（檔名格式、指令關鍵字、有沒有某個欄位），去掛機械攔截，這題就從觀察名單上劃掉。剩下的才留在題組裡。</p>
+
+    <h3>第四步：改完規則當場跑一遍，每題三次</h3>
+    <p>記下來哪題過、哪題沒過。這份紀錄就是你七天後回來看的證據。</p>
+
+    <p>三題跑順了再加。題組的價值在於一直跑得下去，寫得完整是後面的事。</p>
+  </div>
+</section>
+
+<section class="section" id="readmore-all">
+  <div class="inner">
+    <h2>接著可以看這幾篇</h2>
+    <p>前三篇是本文中途提過的，後兩篇是同一條線再往前後延伸。</p>
+    <div class="readmore">
+      <b>這篇提到過的</b>
+      <ul>
+        <li><a href="../rule-file-rebound/">規則檔越寫越長，AI 有照做嗎？：你寫的規則大部分沒在執行</a><br>先看這篇會知道問題有多大：規則寫了不等於被執行。本文是它的下一步，講怎麼驗到底執行了沒。</li>
+        <li><a href="../caught-ai-slacking-into-rules/">AI 寫的東西我怎麼確認它是對的？：抓到 AI 偷懶之後，我把它寫進流程規則</a><br>那篇是「抓到問題怎麼變成規則」，本文是「規則寫下去之後怎麼確認它在生效」。兩篇接在一起就是一整圈。</li>
+        <li><a href="../three-levels-of-cross-review/">怎麼設計讓兩個 AI 互審？：三種不同程度的審查機制設計</a><br>本文的題組驗得出「有沒有照做」，驗不出「做得好不好」。品質那一層要另一套設計，就在那篇。</li>
+      </ul>
+    </div>
+    <div class="readmore">
+      <b>再往前後延伸</b>
+      <ul>
+        <li><a href="../how-to-train-your-ai-employee/">如何訓練自己的 AI 員工：員工＋顧問框架</a><br>往前一步：規則要拿來驗之前，得先有規則。這篇講規則從哪裡長出來。</li>
+        <li><a href="../loop-engineering-guardrails/">AI 一直停下來要授權，怎麼讓它順順跑完？：迴圈護欄的五條規則</a><br>往後一步：本文第一刀說「能寫成 hook 的就別靠觀察」，那篇講的就是護欄要怎麼設計才不會綁死自己。</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="cta-band">
+  <div class="section">
+    <div class="inner">
+      <div>
+        <h2>我是江江教練</h2>
+        <p class="lead">我是江昱德，江江教練。我在做的事情是幫人把散在各處的資料變成能被 AI 讀懂的知識庫，然後把重複的工作交給 AI 跑完。</p>
+        <p class="lead">流水的 AI 工具，鐵打的知識庫。</p>
+      </div>
+      <div class="cta-card">
+        <b>想繼續看下去</b>
+        <p>免費線上講座與 LINE 社群，我會把每次踩到的坑跟修法整理成可以直接用的做法。</p>
+        <p><a href="../../courses.html">看免費講座場次 →</a></p>
+        <p><a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">加入 LINE 社群 ↗</a></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">江江教練 · AI 知識管理</div>
+    <div class="footer-links">
+      <a href="../../articles.html">← 回深度文章總站</a>
+      <a href="../../index.html">首頁</a>
+      <a href="../../learn.html">自學資源</a>
+      <a href="../../skills.html">技能包下載</a>
+      <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">LINE 社群 ↗</a>
+      <a href="https://www.threads.com/@jiang_yude_coach" target="_blank" rel="noopener">Threads ↗</a>
+      <a href="https://vocus.cc/salon/Jiang_Coach" target="_blank" rel="noopener">方格子 ↗</a>
+    </div>
+    <div class="footer-note">這是一篇教學文章，整理我對「改完規則，怎麼知道 AI 到底有沒有變乖？｜改完當下看不出來的東西，要當病人觀察不能當程式碼驗」的看法，供你參考。</div>
+  </div>
+</footer>
+
+<!-- 點圖放大 lightbox（hero 與內文圖通用，已內建，不用每篇重加） -->
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <span class="lightbox-close" aria-label="關閉">×</span>
+  <img id="lightbox-img" src="" alt="放大檢視">
+</div>
+<script>
+(function(){
+  var box=document.getElementById('lightbox'),boxImg=document.getElementById('lightbox-img');
+  document.querySelectorAll('.hero-figure img,.inline-figure img').forEach(function(img){
+    img.addEventListener('click',function(){boxImg.src=img.currentSrc||img.src;boxImg.alt=img.alt||'放大檢視';box.classList.add('open');box.setAttribute('aria-hidden','false');});
+  });
+  function close(){box.classList.remove('open');box.setAttribute('aria-hidden','true');boxImg.src='';}
+  box.addEventListener('click',close);
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
+})();
+</script>
+
+<script src="../../image-interactions.js"></script>
+
+<!-- 官網共用：滑鼠暖光暈 + 導航列漢堡選單 -->
+<script src="../../spotlight.js"></script>
+
+<!-- 文章自動互聯（相關文章）：兩支已內建，順序不可顛倒，不用再另外加 -->
+<script src="../../articles-data.js"></script>
+<script src="../../related-render.js"></script>
+  <script src="/mika-chat-widget.js" defer></script>
+</body>
+</html>
