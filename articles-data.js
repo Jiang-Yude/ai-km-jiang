@@ -23,6 +23,24 @@ window.ARTICLE_TAGS = {
 
 window.ARTICLES = [
   {
+    id: "ai-user-testing",
+    url: "articles/ai-user-testing/",
+    date: "2026-09-10",
+    updated: "2026-09-10",
+    title: "做完的東西想找人幫忙看，卻找不到人？｜AI 使用者測試，先跑過一次再找真人",
+    problem: "做完招生頁、報價、網頁想找人看，卻找不到人；就算找到，對方的耐心也被基礎問題消耗光，回饋跟著失真。有些東西（客戶提案、未送出的報價）根本不能給別人看。",
+    audience: "做完對外的東西只能問同一批朋友、或手上東西不能給別人看的自由工作者、講師、顧問與一人公司。",
+    summary: "AUT（AI 使用者測試）讓 AI 先扮演你的使用者跑一遍，把明顯的問題掃掉，真人留給值得問的部分。四種模式怎麼選、三個讓模擬不失真的做法、三個實跑案例、四件它做不到的事，附一個十分鐘就能自己試的練習。",
+    tags: {
+      topic: ["輔助決策", "AI工作流", "技能包設計"],
+      level: ["基礎"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["ai-market-microcosm", "ai-mvp-validation-before-product", "before-installing-others-skill"]
+  },
+
+  {
     id: "how-to-verify-ai-rule-changes",
     url: "articles/how-to-verify-ai-rule-changes/",
     date: "2026-09-10",
@@ -770,7 +788,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["after-ai-says-remembered", "long-document-review-layers", "dual-track-planning-loop", "copied-mechanism-is-no-mechanism"]
+    related: ["after-ai-says-remembered", "long-document-review-layers", "dual-track-planning-loop", "copied-mechanism-is-no-mechanism", "ai-user-testing"]
   },
 
   {
@@ -2049,7 +2067,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["elon-musk-live-skill", "ai-capability-tiers"]
+    related: ["elon-musk-live-skill", "ai-capability-tiers", "ai-user-testing"]
   },
 
   {
@@ -2499,6 +2517,6 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["ai-market-microcosm", "personal-studio-vs-solo-company"]
+    related: ["ai-market-microcosm", "personal-studio-vs-solo-company", "ai-user-testing"]
   }
 ];
