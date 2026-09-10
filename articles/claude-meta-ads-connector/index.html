@@ -214,6 +214,10 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
     <p>今天晚上我想試一件事：Meta 在今年開了官方的 MCP 端點，可以直接接到 Claude。據我所知，以前要讓程式讀 Meta 的廣告資料，得先去開發者後台建一個應用程式、拿一組叫做 token 的通行碼。這段是我對舊做法的印象，我沒有實際走過，因為我從來沒打算走。</p>
     <p>我沒有去看文件。我打了一份交接單給 AI，把要做什麼、不准做什麼寫清楚，然後說：你自己去連。</p>
     <p>它自己開了瀏覽器，找到設定入口，填好欄位，建立連接器，啟動 Facebook 授權，然後停下來等我。我按完授權，它接手驗收，讀出我的兩個廣告帳號，讀出最近七天的成效，還多講了一件我沒問的事。</p>
+    <figure class="inline-figure">
+      <img src="../../images/articles/claude-meta-ads-connector-05-add-dialog.jpg" alt="Claude 的新增自訂連接器對話框，只有名稱與網址兩個欄位，填著 Meta Ads 與官方端點網址" loading="lazy">
+      <figcaption>所謂「設定」就只有這兩格：名稱跟網址。這兩格是 AI 自己填的，我沒有碰過。（這張是事後重開同一個對話框補拍的，所以後面清單裡已經有一筆建好的 Meta Ads；補拍這張沒有按送出。）</figcaption>
+    </figure>
     <p>整件事在同一次對話裡跑完。我碰到的只有 Facebook 那幾頁授權畫面。</p>
     <p>這篇要講的是：這一段實際怎麼跑的、AI 為什麼停在那裡、它接上之後能碰到什麼、我踩到什麼坑，以及人在這個分工裡剩下什麼。</p>
   </div>
@@ -323,7 +327,7 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
     <p>沒有建立 Meta 開發者應用程式。沒有輸入任何通行碼。沒有貼任何一組金鑰進對話。</p>
     <div class="caveat">
       <b>給比較懂的人的補充</b>
-      按繼續之後會出現一頁認證設定，裡面有個 OAuth client 欄位，三個選項：用 Anthropic 代管的用戶端資料、不填用戶端代號讓系統自動註冊、自己填一組。系統會偵測伺服器支援哪一種並標上 Detected。我保留了它偵測到的那個，直接就連上了。我沒有去研究那三個選項的差別。這裡要誠實一句：連得上只證明它能通，不證明那是最安全的選法，我沒有去驗證第二件事。我判斷可以先這樣，是因為選錯最常見的後果是連不上，畫面會直接告訴你失敗。等一下會講到另一種地方，錯了不會報錯，那種才要自己盯。
+      按繼續之後會出現一頁認證設定，裡面有個 OAuth client 欄位，三個選項：用 Anthropic 代管的用戶端資料、不填用戶端代號讓系統自動註冊、自己填一組。系統會偵測伺服器支援哪一種並標上 Detected。AI 保留了系統偵測到的那個，直接就連上了。我沒有去研究那三個選項的差別。這裡要誠實一句：連得上只證明它能通，不證明那是最安全的選法，我沒有去驗證第二件事。我判斷可以先這樣，是因為選錯最常見的後果是連不上，畫面會直接告訴你失敗。等一下會講到另一種地方，錯了不會報錯，那種才要自己盯。
     </div>
     <div class="readmore near">
       <b>延伸閱讀</b>
@@ -347,7 +351,7 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
     </table>
     <figure class="inline-figure">
       <img src="../../images/articles/claude-meta-ads-connector-01-connected.jpg" alt="Claude 連接器設定頁顯示 Meta Ads 已連線，唯讀工具 53 個設為一律允許" loading="lazy">
-      <figcaption>連上之後的設定頁。上方顯示連線狀態與端點網址，Read-only tools 那一組我整組設成 Always allow，右邊每一列的三顆圖示就是單一工具的三檔權限。</figcaption>
+      <figcaption>連上之後的設定頁。上方顯示連線狀態與端點網址。Read-only tools 那一組是我交代之後，AI 自己整組改成 Always allow 的，右邊每一列的三顆圖示就是單一工具的三檔權限。</figcaption>
     </figure>
     <div class="meaning">
       <b>這 97 個工具全部是廣告，沒有一個可以幫你發文</b>
@@ -377,9 +381,9 @@ instagram_basic、ads_mcp_management</div>
     </table>
     <figure class="inline-figure">
       <img src="../../images/articles/claude-meta-ads-connector-02-write-tools.jpg" alt="連接器設定頁的 Write/delete tools 分組，44 個工具整組設為每次詢問" loading="lazy">
-      <figcaption>Write/delete tools 這一組 44 個，我整組維持 Needs approval。上面唯讀那幾列亮著綠色勾勾的是一律允許，對照著看就知道兩組的差別。</figcaption>
+      <figcaption>Write/delete tools 這一組 44 個維持 Needs approval，這是我交代不准放行的那一組。上面唯讀那幾列亮著綠色勾勾的是一律允許，對照著看就知道兩組的差別。</figcaption>
     </figure>
-    <p>我這次的設法：53 個唯讀工具整組設 Always allow，因為這些只是讀，每次都跳出來問很煩，問到後來人會麻木，麻木了那道關卡就等於沒有；44 個寫入刪除工具整組維持 Needs approval，它要動我的廣告，我一定會看到那一頁。</p>
+    <p>我這次的設法是這樣，一樣沒有自己去點，是交代 AI 去改的：53 個唯讀工具整組設 Always allow，因為這些只是讀，每次都跳出來問很煩，問到後來人會麻木，麻木了那道關卡就等於沒有；44 個寫入刪除工具整組維持 Needs approval，它要動我的廣告，我一定會看到那一頁。</p>
     <p>如果你完全不打算讓 AI 動廣告，可以把整組設成 Blocked。設了之後 AI 連叫都叫不動，比放在那裡靠自制力可靠。</p>
     <div class="meaning">
       <b>搞清楚哪一層在誰手上，比糾結要不要授權有用</b>
@@ -405,7 +409,7 @@ instagram_basic、ads_mcp_management</div>
   <div class="inner">
     <h2>連接器列出的工具清單，我第一次讀到的是錯的</h2>
     <p>這段是我這次踩的坑，寫下來給你避開。</p>
-    <p>連上之後我第一次讀那個工具清單，讀到的是 56 個：5 個寫入、51 個唯讀。我還據此下了結論，說「唯一能寫的五個都是廣告」。</p>
+    <p>連上之後 AI 第一次讀那個工具清單，回報的是 56 個：5 個寫入、51 個唯讀。我接受了這個數字，還跟著下了結論，說「唯一能寫的五個都是廣告」。</p>
     <p>後來為了截圖再開一次那個頁面，數字變成 97 個：53 個唯讀、44 個寫入刪除。分組的名字也變了，第一次叫 Interactive tools，重新載入之後叫 Write/delete tools。</p>
     <p>差別在哪裡？第一次載入的時候，工具清單還沒抓完，頁面就先把當下有的東西畫出來了。我讀到的是一份還在載入中的清單。</p>
     <div class="meaning">
@@ -414,7 +418,7 @@ instagram_basic、ads_mcp_management</div>
     </div>
     <p>回到前面那個 OAuth 選項。那裡可以偷懶，因為選錯會當場報錯。這裡不行，因為讀到不完整的清單不會報錯，它會安安靜靜地給你一個看起來很正常的數字。</p>
     <p>所以這裡有一條可以帶走的做法：凡是要拿來下判斷的清單、報表、查詢結果，重新載入一次再核對一遍。特別是你打算把這個數字寫進文件、報價單，或給客戶的報告的時候。</p>
-    <p>我這次也是核對第二次才發現的。要不是為了截圖再開一次，這篇文章現在寫的就是錯的數字。</p>
+    <p>這次是核對第二次才發現的。要不是為了截圖再開一次，這篇文章現在寫的就是錯的數字。</p>
     <div class="readmore near">
       <b>延伸閱讀</b>
       <ul>
@@ -427,7 +431,7 @@ instagram_basic、ads_mcp_management</div>
 <section class="section" id="what-it-read">
   <div class="inner">
     <h2>AI 讀出兩個帳號、七天全零，還多講了一件我沒問的事</h2>
-    <p>連完之後我開了一個新對話，開啟 Meta Ads，問了一句話：</p>
+    <p>連完之後換一個新對話驗收，開啟 Meta Ads，丟一句話進去：</p>
     <div class="codeblock">列出我能存取的 Meta 廣告帳號，不要修改任何資料。只做唯讀查詢。</div>
     <figure class="inline-figure">
       <img src="../../images/articles/claude-meta-ads-connector-03-accounts.jpg" alt="Claude 讀出兩個 Meta 廣告帳號，整理成含狀態與付款方式的表格" loading="lazy">
