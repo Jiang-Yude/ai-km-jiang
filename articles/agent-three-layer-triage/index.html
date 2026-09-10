@@ -1,0 +1,411 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="index,follow">
+<title>「AI 說它做完了，可是東西是壞的」｜Agent 排障三層地圖，先修環境再修反饋，流程最後才畫</title>
+<meta name="description" content="AI Agent 測試時很聽話，正式做事就出包，最難的是不知道從哪裡查起。這篇整理一張排障地圖，把問題拆成環境、反饋、流程三層：跨會話忘記進度查環境層、說做完了但東西是壞的查反饋層，流程層預設先不要碰。附七種症狀對照表、七個工程紀律，以及可直接複製的三步排障清單。">
+<link rel="canonical" href="https://jiangyude.com/articles/agent-three-layer-triage/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="「AI 說它做完了，可是東西是壞的」｜Agent 排障三層地圖，先修環境再修反饋，流程最後才畫｜江江教練">
+<meta property="og:image" content="https://jiangyude.com/images/og/agent-three-layer-triage.jpg">
+<meta property="og:description" content="AI Agent 測試時很聽話，正式做事就出包，最難的是不知道從哪裡查起。這篇整理一張排障地圖，把問題拆成環境、反饋、流程三層：跨會話忘記進度查環境層、說做完了但東西是壞的查反饋層，流程層預設先不要碰。附七種症狀對照表、七個工程紀律，以及可直接複製的三步排障清單。">
+<meta property="og:url" content="https://jiangyude.com/articles/agent-three-layer-triage/">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:site_name" content="江江教練 · AI 知識管理">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="「AI 說它做完了，可是東西是壞的」｜Agent 排障三層地圖，先修環境再修反饋，流程最後才畫｜江江教練">
+<meta name="twitter:image" content="https://jiangyude.com/images/og/agent-three-layer-triage.jpg">
+<meta name="twitter:description" content="AI Agent 測試時很聽話，正式做事就出包，最難的是不知道從哪裡查起。這篇整理一張排障地圖，把問題拆成環境、反饋、流程三層：跨會話忘記進度查環境層、說做完了但東西是壞的查反饋層，流程層預設先不要碰。附七種症狀對照表、七個工程紀律，以及可直接複製的三步排障清單。">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"「AI 說它做完了，可是東西是壞的」｜Agent 排障三層地圖，先修環境再修反饋，流程最後才畫","description":"AI Agent 測試時很聽話，正式做事就出包，最難的是不知道從哪裡查起。這篇整理一張排障地圖，把問題拆成環境、反饋、流程三層：跨會話忘記進度查環境層、說做完了但東西是壞的查反饋層，流程層預設先不要碰。附七種症狀對照表、七個工程紀律，以及可直接複製的三步排障清單。","author":{"@type":"Person","name":"江昱德","alternateName":"江江教練","jobTitle":"隱性知識提煉師、AI 應用規劃師"},"isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://jiangyude.com/"},"inLanguage":"zh-Hant","url":"https://jiangyude.com/articles/agent-three-layer-triage/"}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{--ink:#1a1612;--paper:#fefcf8;--muted:#6a635a;--line:#d8cdb8;--green:#5f7553;--blue:#5689b8;--orange:#e85a4f;--soft:#faf5ec;--dark:#2a2018;--shadow:0 18px 45px rgba(107,74,42,.14);--sp-shadow:hsla(35,50%,60%,.15);--sp-shadow-edge:hsla(35,50%,68%,.03);--sp-radius:400px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC","Segoe UI",sans-serif}
+a{color:inherit}
+/* 官網共用導航列 nav.top（與首頁/文章總站同一條） */
+nav.top{position:sticky;top:0;background:rgba(254,252,248,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid #d8cdb8;z-index:100}
+nav.top .container{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:24px;padding:14px 32px}
+.nav-brand-img{justify-self:start;display:flex;align-items:center;text-decoration:none;flex-shrink:0;transition:opacity .2s}
+.nav-brand-img:hover{opacity:.8}.nav-brand-img img{height:40px;width:auto;display:block}
+nav.top ul.nav-menu{justify-self:end;display:flex;gap:22px;list-style:none;margin:0;padding:0;font-size:.95rem;white-space:nowrap}
+nav.top ul.nav-menu a{color:#3a342d;text-decoration:none;transition:color .2s;font-weight:500;white-space:nowrap}
+nav.top ul.nav-menu a:hover{color:#1a1612}nav.top ul.nav-menu a.active{color:#1a1612;font-weight:700}
+.nav-toggle{display:none;background:none;border:none;padding:6px;cursor:pointer;width:36px;height:36px;position:relative}
+.nav-toggle span{display:block;position:absolute;left:8px;right:8px;height:2px;background:#1a1612;border-radius:2px;transition:transform .25s,opacity .25s,top .25s}
+.nav-toggle span:nth-child(1){top:11px}.nav-toggle span:nth-child(2){top:17px}.nav-toggle span:nth-child(3){top:23px}
+.nav-toggle.open span:nth-child(1){top:17px;transform:rotate(45deg)}.nav-toggle.open span:nth-child(2){opacity:0}.nav-toggle.open span:nth-child(3){top:17px;transform:rotate(-45deg)}
+.tablewrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:22px 0;border:1px solid var(--line);border-radius:10px;background:#fff;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.tablewrap table{border-collapse:collapse;width:100%;min-width:600px;font-size:18px;line-height:1.65}
+.tablewrap .zh{display:block;margin-top:5px;font-size:16px;line-height:1.55;color:var(--muted);font-weight:400}
+.tablewrap th,.tablewrap td{padding:12px 14px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top;color:#3a342d}
+.tablewrap thead th{background:var(--soft);font-weight:900;font-size:18px;color:#1a1612;white-space:nowrap}
+.tablewrap tbody tr:last-child td{border-bottom:none}
+.tablewrap td code,.section code{background:var(--soft);border:1px solid var(--line);border-radius:5px;padding:1px 6px;font:500 15px/1.5 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace}
+.inline-figure.wide{max-width:1000px}
+.toc{margin:26px 0 0;padding:20px 22px;background:#fff;border:1px solid var(--line);border-radius:10px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.toc>b{display:block;font-size:15px;letter-spacing:.05em;color:var(--green);margin-bottom:10px}
+.toc ol{margin:0;padding-left:1.35em;font-size:18px;line-height:1.7}
+.toc li{margin-bottom:7px;color:#3a342d}
+.toc a{color:var(--blue);font-weight:700;text-decoration:none}.toc a:hover{text-decoration:underline}
+.toc-hint{margin:12px 0 0!important;font-size:18px!important;color:var(--muted)!important;border-top:1px solid var(--line);padding-top:12px}
+.readmore{margin-top:24px;padding:20px 22px;background:var(--soft);border:1px solid var(--line);border-radius:12px}
+.readmore.near{margin:26px 0 6px;background:rgba(86,137,184,.07);border-color:#bcd0e2}
+.readmore.near b{color:var(--blue);font-size:18px}
+.readmore.near li{font-size:17px;line-height:1.7;margin-bottom:10px}
+.readmore b{display:block;margin-bottom:10px;font-size:19px}
+.readmore ul{margin:0;padding-left:1.25em}
+.readmore a{color:var(--blue);font-weight:700;text-decoration:none}
+.readmore a:hover{text-decoration:underline}
+@media(max-width:820px){.tablewrap table{min-width:560px;font-size:18px}.tablewrap{position:relative}.tablewrap::after{content:"表格可左右滑動 →";position:sticky;left:0;display:block;font-size:15px;color:var(--muted);background:var(--soft);border-top:1px solid var(--line);padding:7px 12px;width:100%}}
+@media(max-width:860px){
+ nav.top .container{grid-template-columns:auto 1fr auto;padding:10px 16px;gap:12px}
+ .nav-brand-img img{height:32px}
+ .nav-toggle{display:block;justify-self:end}
+ nav.top ul.nav-menu{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(254,252,248,.98);backdrop-filter:blur(14px);border-bottom:1px solid #d8cdb8;flex-direction:column;gap:0;padding:8px 0;box-shadow:0 10px 24px rgba(107,74,42,.08)}
+ nav.top ul.nav-menu.open{display:flex}
+ nav.top ul.nav-menu li{border-bottom:1px solid #e8dfc9}
+ nav.top ul.nav-menu li:last-child{border-bottom:none}
+ nav.top ul.nav-menu a{display:block;padding:14px 20px;font-size:1.06rem}
+}
+/* 滑鼠暖光暈（與首頁同一支 spotlight.js） */
+body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradient(var(--sp-radius) circle at var(--mx,50%) var(--my,50%),var(--sp-shadow) 0%,var(--sp-shadow-edge) 45%,transparent 75%);pointer-events:none;z-index:9999;mix-blend-mode:multiply;transition:background .06s linear}
+.hero{position:relative;overflow:hidden;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:72px;padding:96px clamp(20px,6vw,88px) 80px;background:linear-gradient(180deg,#fffcf0 0%,#f9e9d2 100%);color:#1a1612;border-bottom:1px solid #d8cdb8}
+.hero .wc{position:absolute;border-radius:50%;filter:blur(60px);pointer-events:none;z-index:0}
+.hero .wc1{width:420px;height:360px;top:-120px;right:-80px;background:#e8884b;opacity:.15}
+.hero .wc2{width:360px;height:300px;bottom:-110px;left:-70px;background:#5f7553;opacity:.13}
+.hero .wc3{width:280px;height:260px;top:34%;left:14%;background:#a08144;opacity:.10}
+.hero>div{flex:none;width:860px;max-width:100%;position:relative;z-index:2}
+.hero-figure{margin:0;width:420px;flex:none;position:relative;z-index:2}
+.hero-figure img{display:block;width:100%;border-radius:16px;border:1px solid #d8cdb8;box-shadow:0 18px 45px rgba(107,74,42,.16);cursor:zoom-in}
+.hero-figure figcaption{margin-top:10px;font-size:14px;line-height:1.6;color:#6a635a}
+.inline-figure{margin:30px auto 8px;max-width:820px}
+.inline-figure img{display:block;width:100%;border-radius:14px;border:1px solid var(--line);box-shadow:var(--shadow);background:#fff;cursor:zoom-in}
+.inline-figure figcaption{font-size:14px;line-height:1.6;color:var(--muted);margin-top:10px}
+.lightbox{position:fixed;inset:0;z-index:10000;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(12,10,8,.92);cursor:zoom-out;backdrop-filter:blur(4px)}
+.lightbox.open{display:flex}.lightbox img{max-width:96vw;max-height:92vh;border-radius:10px;box-shadow:0 24px 60px rgba(0,0,0,.5)}
+.lightbox-close{position:fixed;top:18px;right:24px;color:#fff;font-size:34px;line-height:1;font-weight:700;cursor:pointer;opacity:.85}
+.kicker{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.55rem;color:#7a5c3a;font-weight:500}
+.hero h1{max-width:none;margin:16px 0 18px;font-size:clamp(36px,6vw,72px);line-height:1.08;overflow-wrap:anywhere}
+.hero p{max-width:none;font-size:clamp(18px,2vw,23px);line-height:1.62;color:#3a342d}
+.cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
+.cta a{display:inline-flex;align-items:center;text-decoration:none;border-radius:8px;padding:12px 16px;font-weight:900}
+.cta .primary{background:#fff;color:#1a1612}.cta .ghost{border:1px solid rgba(255,255,255,.32);color:#fff;background:rgba(255,255,255,.08)}
+.section{padding:54px clamp(20px,6vw,88px);border-top:1px solid var(--line)}
+.inner{width:min(1000px,100%);margin:0 auto}
+.section h2{font-size:clamp(26px,4.2vw,48px);line-height:1.12;margin:0 0 18px}
+.section h3{font-size:clamp(21px,3vw,30px);line-height:1.2;margin:30px 0 12px}
+.lead{font-size:clamp(18px,1.6vw,22px);line-height:1.7;color:#3a342d;max-width:900px}
+.section p{font-size:18px;line-height:1.74;color:#3a342d}.section p+p{margin-top:14px}
+.section ul,.section ol{padding-left:1.4em;font-size:18px;line-height:1.74;color:#3a342d}.section li{margin-bottom:8px}
+.meaning{margin:22px 0;padding:16px 18px;border-left:5px solid var(--blue);background:rgba(86,137,184,.12);border-radius:6px;line-height:1.7;font-size:19px}
+.meaning b{display:block;color:var(--blue);margin-bottom:4px}
+.caveat{margin:0 0 8px;padding:16px 18px;border-left:5px solid var(--orange);background:rgba(232,90,79,.1);border-radius:6px;line-height:1.7;font-size:18px;color:#3a342d}
+.caveat b{display:block;color:var(--orange);margin-bottom:4px}
+.infocard{background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px 24px 22px;box-shadow:0 8px 22px rgba(107,74,42,.08);margin-top:8px}
+.infocard-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.info-item{padding:18px 14px 0}
+.info-item b{display:block;font-size:14px;font-weight:900;letter-spacing:.04em;margin-bottom:7px;text-transform:uppercase}
+.info-item:nth-child(1) b{color:var(--green)}.info-item:nth-child(2) b{color:var(--orange)}.info-item:nth-child(3) b{color:var(--blue)}
+.info-item p{margin:0;font-size:17px;line-height:1.6;color:#3a342d}
+.tagrow{display:flex;flex-wrap:wrap;gap:7px;margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
+.tag{font-size:14px;color:var(--muted);background:var(--soft);border:1px solid var(--line);border-radius:999px;padding:4px 11px}
+.duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:24px}
+.duo.stack{grid-template-columns:1fr}
+.duo .card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:22px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.duo .card.a{border-color:var(--orange)}.duo .card.b{border-color:var(--green);box-shadow:0 8px 24px rgba(95,117,83,.16)}
+.duo .card small{display:block;font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.04em;margin-bottom:9px}
+.duo .card.a small{color:var(--orange)}.duo .card.b small{color:var(--green)}
+.duo .card b{display:block;font-size:22px;line-height:1.3;margin-bottom:12px}.duo .card.a b{color:#c0512f}.duo .card.b b{color:#4a7a59}
+.duo .card p{margin:0;color:#3a342d;line-height:1.75;font-size:18px}
+.workflow-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:24px}
+.workflow-step{background:#fff;border:1px solid var(--line);border-radius:8px;padding:18px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.workflow-step small{display:block;color:var(--orange);font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;margin-bottom:9px}
+.workflow-step b{display:block;font-size:18px;line-height:1.3;margin-bottom:9px}
+.workflow-step p{margin:0;color:#3a342d;line-height:1.6;font-size:16px}
+.codeblock{background:var(--dark);color:#f3ead9;border-radius:8px;padding:18px 20px;font:500 14px/1.65 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;overflow-x:auto;white-space:pre-wrap;margin:20px 0;box-shadow:0 8px 22px rgba(107,74,42,.12)}
+.codeblock .c{color:#f6d7a6;font-weight:600}
+.skillcard{background:#fff;border:1px solid var(--green);border-radius:12px;padding:24px;box-shadow:0 10px 26px rgba(95,117,83,.16);margin-top:8px}
+.skillcard b{display:block;font-size:21px;margin-bottom:8px}
+.skillcard p{margin:0 0 16px;font-size:17px;line-height:1.65;color:#3a342d}
+.cta-band{background:#e6f0e5;color:#3a342d}.cta-band .section{border-top:none}
+.cta-band .inner{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(260px,.85fr);gap:26px;align-items:start}
+.cta-band h2{font-size:clamp(26px,4vw,44px);margin:0 0 16px}.cta-band p,.cta-band .lead{color:rgba(58,52,45,.9);font-size:18px;line-height:1.72}
+.cta-card{border:1px solid #cfe0d2;background:#fbfdfa;border-radius:8px;padding:22px}
+.cta-card b{display:block;color:#48b178;margin-bottom:10px;font-size:18px}.cta-card p{margin:0 0 14px}
+.footer{padding:30px clamp(20px,6vw,88px);font-size:14px;color:var(--muted);background:#fff;border-top:1px solid var(--line)}
+.footer-inner{width:min(1000px,100%);margin:0 auto}
+.footer-links{display:flex;flex-wrap:wrap;gap:6px 12px;margin-bottom:14px}.footer-links a{color:var(--blue);font-weight:900;text-decoration:none;font-size:14px}
+.footer-brand{font-weight:900;font-size:15px;margin-bottom:10px}.footer-note{font-size:13px;line-height:1.6}
+@media(max-width:820px){.infocard-grid{grid-template-columns:1fr}.duo{grid-template-columns:1fr}.workflow-grid{grid-template-columns:1fr}.cta-band .inner{grid-template-columns:1fr}.section{padding:40px 20px}.hero{min-height:52vh;flex-direction:column;justify-content:flex-start;align-items:flex-start;gap:24px}.hero>div{width:100%}.hero-figure{width:100%;max-width:560px}}
+@media(max-width:820px){html,body{overflow-x:hidden}.hero h1{word-break:break-word}}
+.hero h1{font-size:clamp(27px,3.4vw,42px);line-height:1.24}
+.hero>div{width:780px}
+@media(max-width:820px){.hero h1{font-size:clamp(24px,5.6vw,30px);line-height:1.3}}
+</style>
+</head>
+<body class="spotlight">
+<!-- 官網共用導航列 nav.top：與首頁/總站同一條，文章不要自己另做極簡 topbar（江江 2026-06-25：要同一個框架、同一條導航列）。把對應頁面的 class="active" 標在自己那欄。
+     ⚠️ 下面 ul.nav-menu 整塊由 preflight 第 5 關 check-bilingual-nav.mjs 做「逐字比對」，
+        塞任何註解、多一個空白、換行位置不同都會被判導航不一致而擋下發布。要說明就寫在 <ul> 外面（像這裡）。
+        2026-08-16 修：原本的 EN 那行說明註解就夾在 <ul> 裡面，導致照範本起手的新文章一律卡第 5 關
+        （llm-rag-agent-mcp 與 rag-three-retrieval-modes 兩篇同時中招）。註解已移出來，<ul> 內保持乾淨。
+        萬一還是被擋，直接跑：node scripts/check-bilingual-nav.mjs --write --only=<你的檔案路徑> -->
+<nav class="top">
+  <div class="container">
+    <a class="nav-brand-img" href="../../index.html"><img src="../../images/footer-signature.png" alt="江江教練 | 江昱德"></a>
+    <button class="nav-toggle" aria-label="選單"><span></span><span></span><span></span></button>
+    <ul class="nav-menu">
+      <li><a href="../../index.html">首頁</a></li>
+      <li><a href="../../knowledge-architecture.html">知識架構</a></li>
+      <li><a href="../../courses.html">課程</a></li>
+      <li><a href="../../articles.html" class="active">深度文章</a></li>
+      <li><a href="../../skills.html">技能包下載</a></li>
+      <li><a href="../../offers.html">服務方案</a></li>
+      <li class="lang-switch"><a href="../../en/articles.html" hreflang="en">EN</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="wc wc1"></div>
+  <div class="wc wc2"></div>
+  <div class="wc wc3"></div>
+  <div>
+    <div class="kicker">深度文章 · 外部內容整理</div>
+    <h1>「AI 說它做完了，可是東西是壞的」｜Agent 排障三層地圖，先修環境再修反饋，流程最後才畫</h1>
+    <p>一支影片拆解了一篇 58 萬瀏覽的長文，講的是同一件事：Agent 不可靠，先別急著怪模型，要先問壞在哪一層。</p>
+  </div>
+</section>
+
+<main>
+<section class="section" id="start"><div class="inner">
+<h2>這篇在講什麼</h2>
+<p class="lead">AI Agent 在測試時很聽話，正式做事就開始出包。真正卡住人的往往不是故障本身，是不知道該從哪裡查起：改提示詞？換模型？加記憶？這篇整理一張排障地圖，把「Agent 不可靠」拆成三個可以分開檢查的層：環境、反饋、流程。看到症狀就知道該查哪一層，不用每次都從頭猜。</p>
+<div class="duo stack">
+  <div class="infocard"><b style="color:#e85a4f">適合誰</b>
+    <ul>
+      <li>已經在用 AI 幫忙做事的人，不需要會寫程式</li>
+      <li>有過「叫它做一件事，它中間自己跑了好幾步」經驗的人，不管那是整理一疊會議紀錄、跑一份報表，還是接了自動化工具</li>
+      <li>目前還是一問一答的人也可以先收藏，等開始讓它連續做事再回來看</li>
+    </ul>
+  </div>
+  <div class="infocard"><b style="color:#5f7553">你可以帶走什麼</b>
+    <ul>
+      <li>一張七種症狀的分層對照表，看到症狀直接查該修哪一層</li>
+      <li>七個可以直接照做的工程紀律，我重新分成五組，可以只挑自己中的那組</li>
+      <li>一份三步驟的排障清單，文末可直接複製去用</li>
+    </ul>
+  </div>
+</div>
+</div></section>
+<section class="section" id="source"><div class="inner">
+<h2>這篇整理自一支影片，出處我會逐句標出來</h2>
+<p>先把來源交代清楚，免得你讀到一半分不出哪句是誰說的。</p>
+<p>這篇整理自一支中文影片。影片作者是「為什麼叫QQ」，他在影片裡自述是從一線工程師的視角來講，內容是拆解 X 上作者 beamnxw 的一篇長文。那篇長文的主題是把 Agent 系統切成三層來排障，截至影片截圖時累積約 58 萬瀏覽、6.5 萬收藏。</p>
+<div class="tablewrap"><table><thead><tr><th>標示</th><th>意思</th></tr></thead><tbody><tr><td>［原文］</td><td>影片轉述的那篇長文內容</td></tr><tr><td>［影片作者］</td><td>影片作者自己的判斷、比喻、排序或預測</td></tr><tr><td>［我的整理］</td><td>我為了讓一般讀者看懂所做的翻譯、重新分組與推論</td></tr></tbody></table></div><div class="caveat"><b>這篇裡沒有我自己的實作案例。</b>所有故障場景、數字、清單都出自影片，我沒有另外查證原文，也沒有把影片的經驗寫成我的經驗。哪些是我加的，我都會標出來。</div>
+</div></section>
+<section class="section" id="symptoms"><div class="inner">
+<h2>Demo 很乖，一上線就失控的六種症狀</h2>
+<p>［影片作者］影片開頭列了一串狀況，做過 Agent 上線的人應該都眼熟：</p>
+<ul>
+<li>Agent 跑了一大圈，回報「我做完了」，結果產出物全是壞的。</li>
+<li>循環重試二十次，Token 帳單翻三倍，問題還在原地。</li>
+<li>換一個會話再打開，它把昨天的進度忘得乾乾淨淨。</li>
+<li>你多給它五個工具，它反而開始亂調用。</li>
+<li>出了問題去問模型，模型一臉無辜。</li>
+</ul>
+<p>［我的整理］如果你手上有在跑的 AI 流程，把上面五條對一遍，通常至少會中兩條。中了不代表你設定得爛，代表你缺一張地圖。</p>
+</div></section>
+<section class="section" id="stuck"><div class="inner">
+<h2>真正卡住人的，是不知道該從哪裡查起</h2>
+<p>［影片作者］影片作者說，最讓人絕望的不是故障本身，是「故障明明就在那裡，但你根本不知道該從哪兒查起」。要改提示詞？換模型？加記憶？加流程編排？每個方向都有人跳出來推薦框架，每個框架都拍胸脯說自己是終極答案。</p>
+<p>［影片作者］他對這篇長文的評價很直白：它沒有發明任何新東西，它給的是一張排障地圖。你的系統由哪幾層組成、每層負責什麼、出現某個具體症狀該去哪一層抓問題。</p>
+<p>［影片作者］至於為什麼收藏數這麼高，他的解讀是：大家把它當成一張工程速查表在存，怕以後找不到。</p>
+<div class="meaning"><b>［我的整理］這一點對非工程背景的人特別重要</b>你不需要先變成工程師才能用這張表。你需要的是一個習慣：遇到 AI 出包，先問「壞在哪一層」，再決定要不要動模型。把「模型不夠聰明」當成第一個結論，通常會讓你花錢換模型，然後發現沒有改善。</div>
+</div></section>
+<section class="section" id="three-layers"><div class="inner">
+<h2>把 Agent 拆成三層：環境、反饋、流程</h2>
+<p>［原文］那篇長文的「30 秒版本」核心是三句話。我把原文定義和白話翻譯並排放：</p>
+<div class="tablewrap"><table><thead><tr><th>層</th><th>［原文］定義</th><th>［我的整理］白話翻譯</th></tr></thead><tbody><tr><td>Harness Engineering</td><td>打造模型周圍的機器，負責管「環境」</td><td>它的工作環境：拿得到什麼工具、看得到什麼資料、有什麼權限、記不記得上一輪</td></tr><tr><td>Loop Engineering</td><td>設計重複的工作反饋循環，負責管「反饋」</td><td>它怎麼知道自己做對了、什麼時候該停、失敗了怎麼辦</td></tr><tr><td>Graph Engineering</td><td>把工作流的拓撲結構顯式化，包含節點、分支、匯合，負責管「流程」</td><td>誰先誰後、什麼情況走哪條路、幾條路最後在哪裡合起來</td></tr></tbody></table></div><p>［原文］三層的嵌套關係是：圖跑在 Harness 裡，循環活在圖裡，而 Harness 給循環提供狀態、工具和評估器。</p>
+<div class="meaning"><b>［我的整理］用日常一點的方式理解這個嵌套</b>環境是辦公室，流程是工作規範，反饋是驗收機制。辦公室要先能用，規範才有意義；規範定好了，還是要有人驗收才知道做對沒有。</div>
+</div></section>
+<section class="section" id="test"><div class="inner">
+<h2>一個判斷法：把模型拿掉，剩下的都是環境層</h2>
+<p>［原文］長文給了一個判斷法，影片作者形容它「非常粗暴但極其好用」：</p>
+<div class="meaning"><b>把你架構圖裡的基座模型拿掉，剩下的基本全是 Harness。</b>System Prompt、工具定義、記憶、沙箱、權限、日誌、上下文壓縮、路由，全部都算。</div>
+<p>［我的整理］換成你的日常：你在 ChatGPT 或 Claude 裡設定的自訂指令、你掛上去的連接器、你給它讀的資料夾、你允許它動的檔案範圍、你留給它的進度筆記，全部都是環境層。這一層通常是你自己搭的，也通常是最少人檢查的。</p>
+</div></section>
+<section class="section" id="two-teams"><div class="inner">
+<h2>同一個模型，兩個團隊做出天差地別的結果</h2>
+<p>［原文］長文有一個觀察：兩個團隊用同一個基座模型，產出可以天差地別。一邊提供了乾淨的工具、穩定的工作區、嚴格受限的權限和完全可觀測的狀態；另一邊只有模糊的提示詞和很不可靠的 API 封裝。</p>
+<p>［影片作者］影片作者把這件事翻成一句話：智能水準差不多，但「打工條件」完全不同。他接著補了一句判斷：硬換更強的大模型，也救不了爛透了的工程環境。</p>
+<div class="caveat"><b>［我的整理］這裡藏著一個容易忽略的錯配</b>市面上賣得最兇、講得最熱的是流程編排那一層（各種框架），但依照下面那張症狀表，一般人日常會踩到的問題，絕大多數落在環境層和反饋層。買一個流程編排框架來修環境層的病，錢花了病還在。</div>
+</div></section>
+<section class="section" id="symptom-table"><div class="inner">
+<h2>七種症狀各歸哪一層：可以截圖的對照表</h2>
+<p>［影片作者］這是影片作者認為「光衝這一條就值回票價」的部分，他在念到這裡時還提醒觀眾可以準備截圖。［原文］表格內容出自長文：</p>
+<div class="tablewrap"><table><thead><tr><th>症狀</th><th>歸哪一層</th><th>該去查什麼</th></tr></thead><tbody><tr><td>Agent 沒辦法安全存取資料或工具</td><td>環境（Harness）</td><td>工具契約、權限控制、沙箱隔離、上下文注入</td></tr><tr><td>跨會話就忘記進度</td><td>環境（Harness）</td><td>持久化狀態、檢查點、進度產物、壓縮策略</td></tr><tr><td>第一次跑得差不多，但結果極不穩定</td><td>反饋（Loop）</td><td>加外部評分器、確定性測試、有界重試</td></tr><tr><td>成功了也不停手，或毫無證據就宣布收工</td><td>反饋（Loop）</td><td>基於證據的終止狀態設計、對 Token 預算有感知的停止規則</td></tr><tr><td>多個專家 Agent 需要按嚴格順序協同</td><td>流程（Graph）</td><td>顯式定義節點、邊、路由和匯合邏輯</td></tr><tr><td>多步流程出錯，定位不到壞在哪一步</td><td>流程加環境一起上</td><td>上跟流程圖每一格對得起來的執行追蹤紀錄（Trace），而且要記得下當時的狀態</td></tr><tr><td>業務流還在快速迭代，需求三天兩頭改</td><td>往回退</td><td>用最簡單的環境層、保持純模型驅動，推遲流程的形式化</td></tr></tbody></table></div><p>［我的整理］表格右欄有幾個詞對非工程背景的人不好懂，先在這裡換成白話：</p>
+<div class="tablewrap"><table><thead><tr><th>表格裡的說法</th><th>白話一點</th></tr></thead><tbody><tr><td>工具契約</td><td>這個工具能做什麼、要餵它什麼、會回傳什麼，有沒有寫清楚</td></tr><tr><td>沙箱隔離</td><td>把它關在一個小房間裡做事，做壞了不會波及其他檔案</td></tr><tr><td>上下文注入</td><td>每次開工時餵給它的背景資料，餵了什麼、有沒有餵到</td></tr><tr><td>持久化狀態</td><td>關掉重開之後還留得住的紀錄</td></tr><tr><td>檢查點</td><td>做到一個段落就存一次的存檔點</td></tr><tr><td>壓縮策略</td><td>對話太長時，決定丟掉哪些、留下哪些的規則</td></tr><tr><td>外部評分器</td><td>一個不是它自己的東西，用來打分數判斷做得對不對</td></tr><tr><td>確定性測試</td><td>同樣的輸入一定得到同樣結果的檢查，跟 AI 的判斷無關</td></tr><tr><td>Schema 校驗</td><td>檢查產出的格式對不對，例如該有的欄位有沒有少</td></tr><tr><td>節點、邊、路由、匯合</td><td>流程圖上的每一格、每一條線、岔路怎麼選、幾條路在哪裡合起來</td></tr></tbody></table></div><p>［影片作者］最後一條他特別點名「反直覺」，後面會展開。他對整張表的評價是：它把老闆和業務方那句「你們的 Agent 怎麼又抽風了」的模糊抱怨，直接翻譯成了工程師可以執行的排查工單。</p>
+<div class="meaning"><b>［我的整理］給非工程背景的人的用法</b>你不需要記住 Harness 這個英文字。你只要在出包的當下問自己三題：<br>1. 它拿得到該拿的東西嗎（資料、工具、權限、上一輪的進度）。有缺，就是環境層。<br>2. 它怎麼知道自己做對了、該停了。答案是「它自己說做完了」，就是反饋層。<br>3. 這件事真的需要固定的先後順序跟分支嗎。多數情況答案是「還不需要」，那就先別碰流程層。</div>
+</div></section>
+<section class="section" id="practices"><div class="inner">
+<h2>七個可以直接抄的做法，我重新分成五組</h2>
+<p>［原文］以下七條的內容出自長文。［影片作者］排序是影片作者按他自己認為的落地優先級排的。</p>
+<p>［我的整理］我把它重新分成五組。原本的一維編號會讓人以為要從第一條做到第七條，實際上它們解決的是不同類型的問題，你可以只挑自己中的那組。原始優先順序我保留在括號裡。</p>
+<h3>第一組：先把「做完」定義清楚</h3>
+<p><b>證據驅動的停止規則（原文金句，影片作者列為第一優先）</b></p>
+<p>［原文］Agent 拍胸脯說它做完了，這話一文不值。只有測試通過、URL 連結可解析、Schema 校驗通過、或者有人工評審批准，這些硬性指標才叫真正的停止條件。</p>
+<p>［影片作者］影片提到，做了這件事之後，「假裝完成」的事故肉眼可見地變少了。</p>
+<div class="meaning"><b>［我的整理］白話版</b>派工的時候就寫死「什麼東西出現才算做完」，而且那個東西要是機器或人看得見的實體。「檔案存在而且不是 0 bytes」「連結點得開」「數字加總對得上」都算。「它回報完成」不算。</div>
+<div class="readmore near"><b>延伸閱讀：AI 回報完成，實際上沒做，我遇過一次</b><ul><li><a href="../caught-ai-slacking-into-rules/">AI 寫的東西我怎麼確認它是對的？抓到 AI 偷懶之後，我把它寫進流程規則</a>　這一段講的「證據驅動停止」是原則，那篇是實際踩到的紀錄：我叫一個模型去請另一個模型修文，它沒真的叫，卻回了一版看起來像完成的答案。那篇附了可以直接複製的追問句。</li></ul></div><p><b>有界重試（原文第二條）</b></p>
+<p>［原文］光寫一句「失敗了繼續試」，絕對不能當成循環的規格。每一個循環必須寫清楚四件事：可測量的目標、每輪必須拿到的新證據、最大重試次數、以及具名的兜底路徑。</p>
+<p>［原文］無界重試最大的惡果就一個：成本黑洞。［影片作者］影片作者補了一句：Token 帳單才是最誠實的報警器。</p>
+<p>［我的整理］四件事裡最容易漏的是「每輪必須拿到的新證據」。少了這條，Agent 會用同樣的方式重試二十次，每次都失敗在同一個地方。有了這條，第二輪拿不出新東西就該停。</p>
+<h3>第二組：別讓它自己當裁判</h3>
+<p><b>確定性檢查永遠優先於模型自評（原文第五條）</b></p>
+<p>［原文］讓同一個模型既當選手又當裁判、沒有任何外部防護，是長文列出的「五個最昂貴錯誤」之一。理由是自審存在嚴重的共同盲區：它寫程式時在哪裡瞎了，評審時往往還在同一個地方瞎。</p>
+<p>［原文］能用自動化測試、Schema 校驗、程式碼 Diff 解決的，就千萬別用另一個 LLM 去評審。實在必須用大模型做評審的，一定要做上下文分離；如果是高危動作，必須上人工審批。</p>
+<p>［影片作者］影片作者在這裡類比 TDD（測試驅動開發，一種先寫好檢查再寫東西的做法）：必須按照紅燈報錯、綠燈通過、最後再重構的單向閉環推進，不能本末倒置。</p>
+<p>［我的整理］上面出現了兩個詞先解釋：<b>上下文分離</b>是指審查的那一方不要看到寫的時候的過程與理由，只看成品，免得被說服；<b>高危動作</b>指刪除、覆寫、對外送出、花錢這類做錯了救不回來的事。</p>
+<p>［我的整理］日常版本：叫 AI 檢查自己剛寫完的東西，它很容易漏掉同一類問題，因為寫的時候沒想到的地方，檢查的時候通常也想不到。要嘛換一個沒看過前文的視角來查，要嘛用機器可以驗的方式查（跑一次、開一次、對一次數字）。</p>
+<div class="readmore near"><b>延伸閱讀：換一家模型來審，具體怎麼跑</b><ul><li><a href="../dual-track-planning-loop/">如何讓兩個不同的 AI 互相挑錯、自己訂正？我的企劃送出前先被模擬評審打了 2/5 分</a>　「別讓它自己當裁判」的具體做法：兩個不同家的 AI 同輸入各自獨立寫完、互相挑錯、整合留決策點。那篇附了兩段可直接複製的提示詞。</li></ul></div><h3>第三組：把工作環境收乾淨</h3>
+<p><b>最小權限（原文第三條）</b></p>
+<p>［原文］在環境層，權限、網路隔離、白名單、API 密鑰處理和人工授權，一樣都別省。權限給得太寬，被注入攻擊或者搞崩系統只是時間問題。</p>
+<p><b>工具給得寧窄勿寬（原文第七條）</b></p>
+<p>［原文］長文有一句話說得很重：別把 Harness 當垃圾場。塞進去的工具一多，選擇的錯誤率直線上升，上下文變得極其嘈雜，模型反而更困惑。更多的工具和記憶，絕不會自動等價於更好的結果。</p>
+<div class="caveat"><b>［我的整理］這兩條放在一起看更清楚</b>很多人排障的直覺是「再多給它一點東西」：多給工具、多給記憶、多給權限。長文的判斷剛好相反，給得越多，出錯機率越高。遇到 Agent 亂調用工具，先想的應該是拿掉幾個。</div>
+<h3>第四組：讓下一次接得上</h3>
+<p><b>用進度檔加上 Git 歷史做持久化（原文第四條）</b></p>
+<p>［原文］這條經驗主要來自 Anthropic 在多會話程式碼生成上的踩坑記錄。光靠上下文壓縮根本不夠，你還需要初始化器、結構化的進度檔、Git 提交歷史，以及嚴格的增量工作紀律。目標是讓每一個新啟動的上下文，都能一眼讀懂之前到底發生了什麼。</p>
+<p>［我的整理］不寫程式的版本：把「這件事做到哪裡」寫成一個檔案，不要只留在對話裡。對話換一個視窗就接不上，檔案比較容易交接。下一輪開場先讀那個檔案。</p>
+<p>［我的整理］最小可用的進度檔就五個欄位，用純文字就行：</p>
+<div class="codeblock">任務：（一句話講清楚要完成什麼）
+完成證據：（什麼東西出現才算做完）
+已完成：（條列，寫做了什麼、產出在哪）
+未完成：（條列，剩下什麼）
+下一步：（下一輪開工第一件事）</div>
+<p>「完成證據」那欄就是前面第一組講的停止規則，寫在這裡等於每次開工都重讀一次。</p>
+<h3>第五組：先看真實路徑，再固化</h3>
+<p><b>先跑 Trace，再去畫 Graph（原文第六條）</b></p>
+<p>［原文］業務都還沒跑通就急著去搞複雜的圖編排，高居長文「最昂貴錯誤清單」的榜首。正確的姿勢是：先用最簡單的環境層跑跑看，收集真實運行的執行追蹤紀錄，看看系統真正穩定的執行路徑到底長什麼樣，然後再去用圖把這套流程固化下來。</p>
+<p>［影片作者］他對這七條的總結：沒有任何一條需要你去買新框架，全是扎扎實實的工程紀律。</p>
+</div></section>
+<section class="section" id="pitfalls"><div class="inner">
+<h2>三個要繞開的坑，其中一個是別太早畫流程圖</h2>
+<p>［影片作者］這一段影片作者定位為「潑冷水時間」。三個坑是他提出的警戒，其中第一個有長文作者與 AutoGen 文件佐證。</p>
+<h3>坑一：流程層的過早儀式化</h3>
+<p>［原文］長文作者自己就提醒了：如果你的任務只是給一個 Agent 三個工具讓它幹活，那強行上圖只會過早地凍結假設，讓整個系統變得無比脆弱。</p>
+<p>［原文］圖架構真正發揮價值的場景非常明確：實質性的條件分支、並發執行、多級審批、錯誤恢復路徑，以及多專家 Agent 的協同。</p>
+<p>［影片作者］他自己另外引了 AutoGen 文件的說法佐證：只有在需要精確控制執行順序、不同結果需要走向不同分支、或者帶複雜循環的時候，才需要用圖。（這句是影片作者引的，不是那篇長文的內容。）</p>
+<p>［影片作者］在需求還處在「三天一改」的早期階段，過早畫圖等於作繭自縛。這也印證了對照表最後那句「往回退」。</p>
+<h3>坑二：術語包裝的嚴重通膨</h3>
+<p>［影片作者］Prompt、Context、Harness、Loop、Graph 這些詞近兩年接連走紅。影片作者的判斷是：它們確實指向不同的工程抽象層次，談不上誰搶誰的風頭，但這個圈子造新詞的速度越來越快。作為工程師要清醒，盲目追逐新名詞並不能讓系統變得更穩。</p>
+<h3>坑三：要當心「廠商敘事」</h3>
+<p>［影片作者］這篇長文大量引用了 LangChain、OpenAI Agents SDK、LangGraph、AutoGen 這些框架的說法。影片作者承認這些來源裡有乾貨，前面的判斷法和清單也確實好用，但這些資料多半出自框架或平台的維護方，難免夾帶推廣自己生態的私貨。</p>
+<p>［影片作者］他的底線原則是：他們總結的具體工程避坑指南可以抄，但他們推銷的「複雜架構結論」必須經過自己的驗證。拿你生產環境真實的執行紀錄去驗證，別拿他們發表會上的簡報去驗證。</p>
+<div class="meaning"><b>［我的整理］這條原則可以推廣到任何工具評估</b>看到「你需要上更複雜的 X」這種結論，先問這句話是誰說的、他賣不賣 X。</div>
+</div></section>
+<section class="section" id="old-rules"><div class="inner">
+<h2>證據停止、有界重試、最小權限，都是老規矩換了新名字</h2>
+<p>［影片作者］這是影片後段提到的一個「更隱蔽的收穫」。［我的整理］我認為對非工程背景的讀者價值最高，所以把它從結尾拉出來獨立講。</p>
+<p>［影片作者］影片作者要觀眾回味一下這幾個詞：證據驅動停止、有界重試、最小權限原則、確定性檢查優先。然後問：是不是覺得特別眼熟。</p>
+<p>［影片作者］他的判斷是：在傳統分散式系統、SRE 的運維手冊、網路安全規範裡，這些東西無處不在。Agent 工程發展到 2026 年，真正沉澱下來的好東西，一大半其實都是過去的老工程紀律換了一身時髦的衣服。他說這對開發者是天大的好消息，過去十年敲程式、排雷攢下的工程直覺一點都沒作廢，正在轉化成 AI 時代最堅固的護城河。</p>
+<div class="meaning"><b>［我的整理］先接住一件事</b>如果上面那幾個詞你一個都不熟，這段不是在說你落後。影片作者講的是他自己的工程師同溫層，那群人早就在別的地方用過同一套規矩。對其他人來說，這段的用處是反過來的，它告訴你這些東西沒有想像中新，你不必從零學起。</div>
+<p>［我的整理］再往外推一層。如果這些紀律的本質是「先定義驗收標準、限制權限範圍、留下可追查的紀錄、失敗要有上限」，那它就不只屬於工程師。做過專案管理、做過稽核、帶過團隊、管過流程的人，手上都有同一套直覺。差別只在你以前把它用在人身上，現在要把它用在一個跑得很快、又不會自己喊停的東西上。</p>
+</div></section>
+<section class="section" id="predictions"><div class="inner">
+<h2>影片作者的三個預測，這一段是預測不是事實</h2>
+<div class="caveat"><b>先標清楚</b>以下三條明確是影片作者對趨勢的判斷，不是長文內容，也不是已經發生的事實。他自己說「大家兩年後可以回來挖墳驗證」。</div>
+<ol>
+<li><b>環境層的標準化會繼續加速。</b>工具協議、權限模型、執行紀錄格式這些東西正在迅速變成公共基礎設施，自己造輪子的差異化空間會越來越小。</li>
+<li><b>反饋層的核心競爭點會集中在「證據系統」。</b>誰的自動化評分器做得更便宜、更準、更快，誰的循環就敢多跑幾輪。他附帶一個推論：測試工程的含金量會重新飆升。</li>
+<li><b>流程層必將經歷一輪去泡沫化。</b>現在那些跟風一股腦全上圖架構的專案，有一部分注定會退回到簡單的環境層。最終能留下來的，只有那些真正存在複雜分支、並行、審批和恢復剛需的重型系統。</li>
+</ol>
+<p>［影片作者］他也預期新名詞還會繼續換，包裝通膨一時半會兒停不下來，但「症狀到分層」的排障邏輯，絕對比那些轉瞬即逝的術語更長壽。</p>
+</div></section>
+<section class="section" id="principle"><div class="inner">
+<h2>一句收尾原則：迴圈只加在失敗成本高過驗證成本的地方</h2>
+<p>［影片作者］影片最後留的提醒：循環只應該加在「失敗成本遠高於驗證成本」的地方。而在其餘的任何位置，最簡單的架構就是最正確的架構。</p>
+<div class="meaning"><b>［我的整理］這句話可以當成門檻用</b>做一次驗證要花五分鐘，做錯一次要賠三天，那就值得加自動重試和評分器。反過來，驗證比失敗還貴的地方，加了只是多養一個會壞的東西。</div>
+<div class="readmore near"><b>延伸閱讀：真的要讓它連續跑，護欄長什麼樣</b><ul><li><a href="../loop-engineering-guardrails/">AI 一直停下來要授權，怎麼讓它順順跑完？迴圈護欄的五條規則</a>　這一段說的是「什麼時候值得加迴圈」，那篇說的是「決定要加之後，護欄怎麼設」：未抗辯假設、三視角抗辯、換路煞車、驗收證據分級。</li></ul></div>
+</div></section>
+<section class="section" id="checklist"><div class="inner">
+<h2>你今天就能用的排障清單：先問三題，再定位，再修</h2>
+<p>［我的整理］這份清單是我根據影片內容重組的，原始症狀對照關係出自長文。可以直接複製去用。</p>
+<h3>第 0 步：三題快篩</h3>
+<div class="tablewrap"><table><thead><tr><th>問題</th><th>答案指向</th></tr></thead><tbody><tr><td>它拿得到該拿的東西嗎（資料、工具、權限、上一輪進度）</td><td>有缺，看環境層</td></tr><tr><td>它怎麼知道自己做對了、該停了</td><td>只靠它自己說，看反饋層</td></tr><tr><td>這件事真的需要固定順序與分支嗎</td><td>答「還不確定」，先不要碰流程層</td></tr></tbody></table></div><h3>第 1 步：對症狀，定位到層</h3>
+<div class="tablewrap"><table><thead><tr><th>你看到的狀況</th><th>去哪一層</th></tr></thead><tbody><tr><td>拿不到資料、調不動工具、權限報錯</td><td>環境</td></tr><tr><td>換一輪對話就忘記做到哪</td><td>環境</td></tr><tr><td>同樣的指令跑兩次結果差很多</td><td>反饋</td></tr><tr><td>說做完了但東西是壞的</td><td>反饋</td></tr><tr><td>停不下來，一直重試燒錢</td><td>反饋</td></tr><tr><td>多個角色要按嚴格順序接力</td><td>流程</td></tr><tr><td>多步流程壞了但找不到壞在哪一步</td><td>流程加環境，而且要有可追蹤紀錄</td></tr><tr><td>需求還在三天兩頭改</td><td>往回退，先別畫流程圖</td></tr></tbody></table></div><h3>第 2 步：照層別修，順序固定</h3>
+<div class="workflow-grid">
+  <div class="infocard"><b>環境層，先修這裡</b><ul><li>工具清單砍到只剩這次真的會用到的</li><li>權限收到最小範圍，網路、金鑰、白名單一項都別省</li><li>開一個進度檔記錄「做到哪、下一步是什麼」，不要只留在對話裡</li><li>確認新的一輪開場讀得到那個進度檔</li></ul></div>
+  <div class="infocard"><b>反饋層，再修這裡</b><ul><li>寫下這次任務的完成證據：什麼檔案存在、什麼連結打得開、什麼數字對得上</li><li>設最大重試次數，並寫下超過次數要走哪條備援路徑</li><li>規定每一輪必須交出新證據，交不出就停</li><li>驗收改由機器或人來做，不採信它自己的完成回報</li><li>真要用 AI 評審時，換一個沒看過前文的視角；高風險動作改人工審批</li></ul></div>
+  <div class="infocard"><b>流程層，最後才碰</b><ul><li>預設先不做</li><li>先用最簡單的方式跑幾輪，把實際走過的路徑記下來</li><li>確認真的出現這四種需求才畫圖：實質分支、並行執行、多級審批、錯誤恢復</li><li>需求還在頻繁改動的階段，停在這裡</li></ul></div>
+</div>
+<h3>第 3 步：收工前自問</h3>
+<ul>
+<li>這一層我修好的證據是什麼（要說得出具體的東西，不是「感覺穩了」）</li>
+<li>這次的失敗成本，真的高於我加上去的驗證成本嗎</li>
+<li>我有沒有在用複雜架構去修一個環境層的小問題</li>
+</ul>
+</div></section>
+<section class="section" id="honesty"><div class="inner">
+<h2>這篇的誠實邊界</h2>
+<div class="caveat"><b>三件事要說清楚</b>
+<ol>
+<li><b>內容全部來自那支影片的字幕</b>，我沒有另外找原文查證。影片對長文的轉述是否完整精確，我無法確認。長文標題、作者名、瀏覽與收藏數，都是影片作者提供的資訊。</li>
+<li><b>這篇的內容裡沒有我自己的實作案例。</b>我在這篇做的是翻譯、重新分組跟推論，標成［我的整理］的地方都是我加的，其餘出自影片。下面延伸閱讀連到的幾篇才是我自己的做法紀錄，那是另外的文章，不要跟這篇的來源混在一起。</li>
+<li><b>三個預測是影片作者的判斷，不是事實。</b>我照原樣保留，包括他自己說的「兩年後回來驗證」。</li>
+</ol></div>
+<div class="readmore"><b>這篇提到過的</b><ul><li><a href="../caught-ai-slacking-into-rules/">AI 寫的東西我怎麼確認它是對的？</a>　對應「證據驅動的停止規則」</li><li><a href="../dual-track-planning-loop/">如何讓兩個不同的 AI 互相挑錯、自己訂正？</a>　對應「別讓它自己當裁判」</li><li><a href="../loop-engineering-guardrails/">AI 一直停下來要授權，怎麼讓它順順跑完？</a>　對應「迴圈只加在失敗成本高過驗證成本的地方」</li></ul></div>
+<div class="readmore"><b>再往前後延伸</b><ul><li><a href="../how-to-verify-ai-rule-changes/">改完規則，怎麼知道 AI 到底有沒有變乖？</a>　這篇講的是出事之後怎麼定位，那篇講的是改完設定之後怎麼確認真的變好，兩件事常常接在一起發生</li><li><a href="../what-are-subagents/">什麼叫子代理？從分頭查資料到 30 人工作坊頁面</a>　流程層真的需要多角色協同時，第一步通常是這個</li></ul></div>
+</div></section>
+
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">江江教練 · AI 知識管理</div>
+    <div class="footer-links">
+      <a href="../../articles.html">← 回深度文章總站</a>
+      <a href="../../index.html">首頁</a>
+      <a href="../../learn.html">自學資源</a>
+      <a href="../../skills.html">技能包下載</a>
+      <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">LINE 社群 ↗</a>
+      <a href="https://www.threads.com/@jiang_yude_coach" target="_blank" rel="noopener">Threads ↗</a>
+      <a href="https://vocus.cc/salon/Jiang_Coach" target="_blank" rel="noopener">方格子 ↗</a>
+    </div>
+    <div class="footer-note">這是一篇外部內容的整理筆記，整理我對「「AI 說它做完了，可是東西是壞的」｜Agent 排障三層地圖，先修環境再修反饋，流程最後才畫」的看法，供你參考。</div>
+  </div>
+</footer>
+
+<!-- 點圖放大 lightbox（hero 與內文圖通用，已內建，不用每篇重加） -->
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <span class="lightbox-close" aria-label="關閉">×</span>
+  <img id="lightbox-img" src="" alt="放大檢視">
+</div>
+<script>
+(function(){
+  var box=document.getElementById('lightbox'),boxImg=document.getElementById('lightbox-img');
+  document.querySelectorAll('.hero-figure img,.inline-figure img').forEach(function(img){
+    img.addEventListener('click',function(){boxImg.src=img.currentSrc||img.src;boxImg.alt=img.alt||'放大檢視';box.classList.add('open');box.setAttribute('aria-hidden','false');});
+  });
+  function close(){box.classList.remove('open');box.setAttribute('aria-hidden','true');boxImg.src='';}
+  box.addEventListener('click',close);
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
+})();
+</script>
+
+<script src="../../image-interactions.js"></script>
+
+<!-- 官網共用：滑鼠暖光暈 + 導航列漢堡選單 -->
+<script src="../../spotlight.js"></script>
+
+<!-- 文章自動互聯（相關文章）：兩支已內建，順序不可顛倒，不用再另外加 -->
+<script src="../../articles-data.js"></script>
+<script src="../../related-render.js"></script>
+  <script src="/mika-chat-widget.js" defer></script>
+</body>
+</html>
