@@ -144,12 +144,21 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
 @media(max-width:820px){.infocard-grid{grid-template-columns:1fr}.duo{grid-template-columns:1fr}.workflow-grid{grid-template-columns:1fr}.cta-band .inner{grid-template-columns:1fr}.section{padding:40px 20px}.hero{min-height:52vh;flex-direction:column;justify-content:flex-start;align-items:flex-start;gap:24px}.hero>div{width:100%}.hero-figure{width:100%;max-width:560px}}
 @media(max-width:820px){html,body{overflow-x:hidden}.hero h1{word-break:break-word}}
 
-/* 本篇：無封面圖 ＋ 主標 38 字，縮字級避免 hero 被標題塞滿（規則見 02-design-system「標題太長」段，該段數值是給有封面圖的版型，這裡是純文字 hero 的對應調整） */
-.hero>div{width:880px}
-.hero h1{font-size:clamp(28px,3.6vw,48px);line-height:1.22;margin:14px 0 18px}
-.hero p{font-size:clamp(17px,1.5vw,20px)}
-.hero .kicker{font-size:1.3rem}
-@media(max-width:820px){.hero h1{font-size:clamp(26px,5.4vw,34px)}}
+/* 本篇：4:5 直式封面 ＋ 主標 32 字，套 02-design-system「標題太長會把封面圖擠到下一行」那組數值。
+   斷點抓 1120（660+320+56=1036），不用 1200：og-shot 用 1200px 視窗截 hero，設 1200 會命中斷點把封面推到左下角 */
+.hero{gap:56px}
+.hero>div{width:660px}
+.hero h1{font-size:clamp(30px,3.3vw,46px);line-height:1.16;margin:12px 0 16px}
+.hero p{font-size:clamp(16px,1.35vw,19px);line-height:1.65}
+.hero .kicker{font-size:1.28rem}
+.hero-figure{width:320px}
+.hero-figure img{aspect-ratio:4/5;object-fit:cover}
+@media(max-width:1120px){
+  .hero{gap:32px;flex-direction:column;align-items:flex-start}
+  .hero>div{width:100%}
+  .hero h1{font-size:clamp(28px,5vw,40px)}
+  .hero-figure{width:100%;max-width:420px}
+}
 
 /* 本篇內文配圖全是 4:5 直式輪播卡，預設 820px 會太高，收窄置中。不自創 class，直接覆寫 .inline-figure */
 .inline-figure{max-width:460px}
@@ -187,6 +196,9 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
     <h1>做完的東西想找人幫忙看，卻找不到人？｜AI 使用者測試，先跑過一次再找真人</h1>
     <p>做完一份對外的東西，想找人幫忙看一下，卻找不到人。就算找到了，他的耐心也常常被基礎問題消耗光。所以我改成兩段：先用 AI 把明顯的問題掃掉，真人只負責測 AI 測不出來的細節。這篇講這套方法在做什麼、我拿它解決過什麼，以及它做不到什麼。</p>
   </div>
+  <figure class="hero-figure">
+    <img src="../../images/articles/ai-user-testing-cover.jpg" alt="咪卡雙手舉著剛做好的文件，右側是一排空的觀眾椅，左前方浮著幾個半透明的讀者剪影正在看那份文件" loading="lazy">
+  </figure>
 </section>
 
 <main>
