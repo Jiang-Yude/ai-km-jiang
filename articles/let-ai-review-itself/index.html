@@ -1,0 +1,530 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="index,follow">
+<title>我明明都講過了，AI 為什麼還要再問我？｜把重複的判斷寫成標準，讓它自己檢查自己</title>
+<meta name="description" content="AI 產出的東西都要人審，但每次的回答其實都一樣，因為用的是同一套標準。這篇講怎麼把重複的判斷寫成 AI 讀得懂的標準，讓它自己檢查自己：標準要具備的三件事、單軌自審的四段格式、雙軌互審 Loop 五步、兩家意見打架時的三種收斂邏輯，以及刻意留給人的那一成閘門。">
+<link rel="canonical" href="https://jiangyude.com/articles/let-ai-review-itself/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="我明明都講過了，AI 為什麼還要再問我？｜把重複的判斷寫成標準，讓它自己檢查自己｜江江教練">
+<!-- 分享封面：hero 文字填好後在 repo 根目錄跑 `node scripts/og-shot.mjs let-ai-review-itself` 自動截 1200×630 到 images/og/let-ai-review-itself.jpg（見 README「文章分享封面（OG 圖）機制」）。別退回 intro-jiang.png 直式人像，會被裁成只剩脖子。 -->
+<meta property="og:image" content="https://jiangyude.com/images/og/let-ai-review-itself.jpg">
+<meta property="og:description" content="AI 產出的東西都要人審，但每次的回答其實都一樣，因為用的是同一套標準。這篇講怎麼把重複的判斷寫成 AI 讀得懂的標準，讓它自己檢查自己：標準要具備的三件事、單軌自審的四段格式、雙軌互審 Loop 五步、兩家意見打架時的三種收斂邏輯，以及刻意留給人的那一成閘門。">
+<meta property="og:url" content="https://jiangyude.com/articles/let-ai-review-itself/">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:site_name" content="江江教練 · AI 知識管理">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="我明明都講過了，AI 為什麼還要再問我？｜把重複的判斷寫成標準，讓它自己檢查自己｜江江教練">
+<meta name="twitter:image" content="https://jiangyude.com/images/og/let-ai-review-itself.jpg">
+<meta name="twitter:description" content="AI 產出的東西都要人審，但每次的回答其實都一樣，因為用的是同一套標準。這篇講怎麼把重複的判斷寫成 AI 讀得懂的標準，讓它自己檢查自己：標準要具備的三件事、單軌自審的四段格式、雙軌互審 Loop 五步、兩家意見打架時的三種收斂邏輯，以及刻意留給人的那一成閘門。">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"我明明都講過了，AI 為什麼還要再問我？｜把重複的判斷寫成標準，讓它自己檢查自己","description":"AI 產出的東西都要人審，但每次的回答其實都一樣，因為用的是同一套標準。這篇講怎麼把重複的判斷寫成 AI 讀得懂的標準，讓它自己檢查自己：標準要具備的三件事、單軌自審的四段格式、雙軌互審 Loop 五步、兩家意見打架時的三種收斂邏輯，以及刻意留給人的那一成閘門。","author":{"@type":"Person","name":"江昱德","alternateName":"江江教練","jobTitle":"隱性知識提煉師、AI 應用規劃師"},"isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://jiangyude.com/"},"inLanguage":"zh-Hant","url":"https://jiangyude.com/articles/let-ai-review-itself/"}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{--ink:#1a1612;--paper:#fefcf8;--muted:#6a635a;--line:#d8cdb8;--green:#5f7553;--blue:#5689b8;--orange:#e85a4f;--soft:#faf5ec;--dark:#2a2018;--shadow:0 18px 45px rgba(107,74,42,.14);--sp-shadow:hsla(35,50%,60%,.15);--sp-shadow-edge:hsla(35,50%,68%,.03);--sp-radius:400px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC","Segoe UI",sans-serif}
+a{color:inherit}
+/* 官網共用導航列 nav.top（與首頁/文章總站同一條） */
+nav.top{position:sticky;top:0;background:rgba(254,252,248,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid #d8cdb8;z-index:100}
+nav.top .container{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:24px;padding:14px 32px}
+.nav-brand-img{justify-self:start;display:flex;align-items:center;text-decoration:none;flex-shrink:0;transition:opacity .2s}
+.nav-brand-img:hover{opacity:.8}.nav-brand-img img{height:40px;width:auto;display:block}
+nav.top ul.nav-menu{justify-self:end;display:flex;gap:22px;list-style:none;margin:0;padding:0;font-size:.95rem;white-space:nowrap}
+nav.top ul.nav-menu a{color:#3a342d;text-decoration:none;transition:color .2s;font-weight:500;white-space:nowrap}
+nav.top ul.nav-menu a:hover{color:#1a1612}nav.top ul.nav-menu a.active{color:#1a1612;font-weight:700}
+.nav-toggle{display:none;background:none;border:none;padding:6px;cursor:pointer;width:36px;height:36px;position:relative}
+.nav-toggle span{display:block;position:absolute;left:8px;right:8px;height:2px;background:#1a1612;border-radius:2px;transition:transform .25s,opacity .25s,top .25s}
+.nav-toggle span:nth-child(1){top:11px}.nav-toggle span:nth-child(2){top:17px}.nav-toggle span:nth-child(3){top:23px}
+.nav-toggle.open span:nth-child(1){top:17px;transform:rotate(45deg)}.nav-toggle.open span:nth-child(2){opacity:0}.nav-toggle.open span:nth-child(3){top:17px;transform:rotate(-45deg)}
+.tablewrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:22px 0;border:1px solid var(--line);border-radius:10px;background:#fff;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.tablewrap table{border-collapse:collapse;width:100%;min-width:600px;font-size:18px;line-height:1.65}
+.tablewrap .zh{display:block;margin-top:5px;font-size:16px;line-height:1.55;color:var(--muted);font-weight:400}
+.tablewrap th,.tablewrap td{padding:12px 14px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top;color:#3a342d}
+.tablewrap thead th{background:var(--soft);font-weight:900;font-size:18px;color:#1a1612;white-space:nowrap}
+.tablewrap tbody tr:last-child td{border-bottom:none}
+.tablewrap td code,.section code{background:var(--soft);border:1px solid var(--line);border-radius:5px;padding:1px 6px;font:500 15px/1.5 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace}
+.inline-figure.wide{max-width:1000px}
+.toc{margin:26px 0 0;padding:20px 22px;background:#fff;border:1px solid var(--line);border-radius:10px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.toc>b{display:block;font-size:15px;letter-spacing:.05em;color:var(--green);margin-bottom:10px}
+.toc ol{margin:0;padding-left:1.35em;font-size:18px;line-height:1.7}
+.toc li{margin-bottom:7px;color:#3a342d}
+.toc a{color:var(--blue);font-weight:700;text-decoration:none}.toc a:hover{text-decoration:underline}
+.toc-hint{margin:12px 0 0!important;font-size:18px!important;color:var(--muted)!important;border-top:1px solid var(--line);padding-top:12px}
+.readmore{margin-top:24px;padding:20px 22px;background:var(--soft);border:1px solid var(--line);border-radius:12px}
+.readmore.near{margin:26px 0 6px;background:rgba(86,137,184,.07);border-color:#bcd0e2}
+.readmore.near b{color:var(--blue);font-size:18px}
+.readmore.near li{font-size:17px;line-height:1.7;margin-bottom:10px}
+.readmore b{display:block;margin-bottom:10px;font-size:19px}
+.readmore ul{margin:0;padding-left:1.25em}
+.readmore a{color:var(--blue);font-weight:700;text-decoration:none}
+.readmore a:hover{text-decoration:underline}
+@media(max-width:820px){.tablewrap table{min-width:560px;font-size:18px}.tablewrap{position:relative}.tablewrap::after{content:"表格可左右滑動 →";position:sticky;left:0;display:block;font-size:15px;color:var(--muted);background:var(--soft);border-top:1px solid var(--line);padding:7px 12px;width:100%}}
+@media(max-width:860px){
+ nav.top .container{grid-template-columns:auto 1fr auto;padding:10px 16px;gap:12px}
+ .nav-brand-img img{height:32px}
+ .nav-toggle{display:block;justify-self:end}
+ nav.top ul.nav-menu{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(254,252,248,.98);backdrop-filter:blur(14px);border-bottom:1px solid #d8cdb8;flex-direction:column;gap:0;padding:8px 0;box-shadow:0 10px 24px rgba(107,74,42,.08)}
+ nav.top ul.nav-menu.open{display:flex}
+ nav.top ul.nav-menu li{border-bottom:1px solid #e8dfc9}
+ nav.top ul.nav-menu li:last-child{border-bottom:none}
+ nav.top ul.nav-menu a{display:block;padding:14px 20px;font-size:1.06rem}
+}
+/* 滑鼠暖光暈（與首頁同一支 spotlight.js） */
+body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradient(var(--sp-radius) circle at var(--mx,50%) var(--my,50%),var(--sp-shadow) 0%,var(--sp-shadow-edge) 45%,transparent 75%);pointer-events:none;z-index:9999;mix-blend-mode:multiply;transition:background .06s linear}
+.hero{position:relative;overflow:hidden;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:72px;padding:96px clamp(20px,6vw,88px) 80px;background:linear-gradient(180deg,#fffcf0 0%,#f9e9d2 100%);color:#1a1612;border-bottom:1px solid #d8cdb8}
+.hero .wc{position:absolute;border-radius:50%;filter:blur(60px);pointer-events:none;z-index:0}
+.hero .wc1{width:420px;height:360px;top:-120px;right:-80px;background:#e8884b;opacity:.15}
+.hero .wc2{width:360px;height:300px;bottom:-110px;left:-70px;background:#5f7553;opacity:.13}
+.hero .wc3{width:280px;height:260px;top:34%;left:14%;background:#a08144;opacity:.10}
+.hero>div{flex:none;width:860px;max-width:100%;position:relative;z-index:2}
+.hero-figure{margin:0;width:420px;flex:none;position:relative;z-index:2}
+.hero-figure img{display:block;width:100%;border-radius:16px;border:1px solid #d8cdb8;box-shadow:0 18px 45px rgba(107,74,42,.16);cursor:zoom-in}
+.hero-figure figcaption{margin-top:10px;font-size:14px;line-height:1.6;color:#6a635a}
+.inline-figure{margin:30px auto 8px;max-width:820px}
+.inline-figure img{display:block;width:100%;border-radius:14px;border:1px solid var(--line);box-shadow:var(--shadow);background:#fff;cursor:zoom-in}
+.inline-figure figcaption{font-size:14px;line-height:1.6;color:var(--muted);margin-top:10px}
+.lightbox{position:fixed;inset:0;z-index:10000;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(12,10,8,.92);cursor:zoom-out;backdrop-filter:blur(4px)}
+.lightbox.open{display:flex}.lightbox img{max-width:96vw;max-height:92vh;border-radius:10px;box-shadow:0 24px 60px rgba(0,0,0,.5)}
+.lightbox-close{position:fixed;top:18px;right:24px;color:#fff;font-size:34px;line-height:1;font-weight:700;cursor:pointer;opacity:.85}
+.kicker{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.55rem;color:#7a5c3a;font-weight:500}
+.hero h1{max-width:none;margin:16px 0 18px;font-size:clamp(36px,6vw,72px);line-height:1.08;overflow-wrap:anywhere}
+.hero p{max-width:none;font-size:clamp(18px,2vw,23px);line-height:1.62;color:#3a342d}
+.cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
+.cta a{display:inline-flex;align-items:center;text-decoration:none;border-radius:8px;padding:12px 16px;font-weight:900}
+.cta .primary{background:#fff;color:#1a1612}.cta .ghost{border:1px solid rgba(255,255,255,.32);color:#fff;background:rgba(255,255,255,.08)}
+.section{padding:54px clamp(20px,6vw,88px);border-top:1px solid var(--line)}
+.inner{width:min(1000px,100%);margin:0 auto}
+.section h2{font-size:clamp(26px,4.2vw,48px);line-height:1.12;margin:0 0 18px}
+.section h3{font-size:clamp(21px,3vw,30px);line-height:1.2;margin:30px 0 12px}
+.lead{font-size:clamp(18px,1.6vw,22px);line-height:1.7;color:#3a342d;max-width:900px}
+.section p{font-size:18px;line-height:1.74;color:#3a342d}.section p+p{margin-top:14px}
+.section ul,.section ol{padding-left:1.4em;font-size:18px;line-height:1.74;color:#3a342d}.section li{margin-bottom:8px}
+.meaning{margin:22px 0;padding:16px 18px;border-left:5px solid var(--blue);background:rgba(86,137,184,.12);border-radius:6px;line-height:1.7;font-size:19px}
+.meaning b{display:block;color:var(--blue);margin-bottom:4px}
+.caveat{margin:0 0 8px;padding:16px 18px;border-left:5px solid var(--orange);background:rgba(232,90,79,.1);border-radius:6px;line-height:1.7;font-size:18px;color:#3a342d}
+.caveat b{display:block;color:var(--orange);margin-bottom:4px}
+.infocard{background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px 24px 22px;box-shadow:0 8px 22px rgba(107,74,42,.08);margin-top:8px}
+.infocard-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.info-item{padding:18px 14px 0}
+.info-item b{display:block;font-size:14px;font-weight:900;letter-spacing:.04em;margin-bottom:7px;text-transform:uppercase}
+.info-item:nth-child(1) b{color:var(--green)}.info-item:nth-child(2) b{color:var(--orange)}.info-item:nth-child(3) b{color:var(--blue)}
+.info-item p{margin:0;font-size:17px;line-height:1.6;color:#3a342d}
+.tagrow{display:flex;flex-wrap:wrap;gap:7px;margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
+.tag{font-size:14px;color:var(--muted);background:var(--soft);border:1px solid var(--line);border-radius:999px;padding:4px 11px}
+.duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:24px}
+.duo.stack{grid-template-columns:1fr}
+.duo .card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:22px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.duo .card.a{border-color:var(--orange)}.duo .card.b{border-color:var(--green);box-shadow:0 8px 24px rgba(95,117,83,.16)}
+.duo .card small{display:block;font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.04em;margin-bottom:9px}
+.duo .card.a small{color:var(--orange)}.duo .card.b small{color:var(--green)}
+.duo .card b{display:block;font-size:22px;line-height:1.3;margin-bottom:12px}.duo .card.a b{color:#c0512f}.duo .card.b b{color:#4a7a59}
+.duo .card p{margin:0;color:#3a342d;line-height:1.75;font-size:18px}
+.workflow-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:24px}
+.workflow-step{background:#fff;border:1px solid var(--line);border-radius:8px;padding:18px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.workflow-step small{display:block;color:var(--orange);font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;margin-bottom:9px}
+.workflow-step b{display:block;font-size:18px;line-height:1.3;margin-bottom:9px}
+.workflow-step p{margin:0;color:#3a342d;line-height:1.6;font-size:16px}
+.codeblock{background:var(--dark);color:#f3ead9;border-radius:8px;padding:18px 20px;font:500 14px/1.65 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;overflow-x:auto;white-space:pre-wrap;margin:20px 0;box-shadow:0 8px 22px rgba(107,74,42,.12)}
+.codeblock .c{color:#f6d7a6;font-weight:600}
+.skillcard{background:#fff;border:1px solid var(--green);border-radius:12px;padding:24px;box-shadow:0 10px 26px rgba(95,117,83,.16);margin-top:8px}
+.skillcard b{display:block;font-size:21px;margin-bottom:8px}
+.skillcard p{margin:0 0 16px;font-size:17px;line-height:1.65;color:#3a342d}
+.cta-band{background:#e6f0e5;color:#3a342d}.cta-band .section{border-top:none}
+.cta-band .inner{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(260px,.85fr);gap:26px;align-items:start}
+.cta-band h2{font-size:clamp(26px,4vw,44px);margin:0 0 16px}.cta-band p,.cta-band .lead{color:rgba(58,52,45,.9);font-size:18px;line-height:1.72}
+.cta-card{border:1px solid #cfe0d2;background:#fbfdfa;border-radius:8px;padding:22px}
+.cta-card b{display:block;color:#48b178;margin-bottom:10px;font-size:18px}.cta-card p{margin:0 0 14px}
+.footer{padding:30px clamp(20px,6vw,88px);font-size:14px;color:var(--muted);background:#fff;border-top:1px solid var(--line)}
+.footer-inner{width:min(1000px,100%);margin:0 auto}
+.footer-links{display:flex;flex-wrap:wrap;gap:6px 12px;margin-bottom:14px}.footer-links a{color:var(--blue);font-weight:900;text-decoration:none;font-size:14px}
+.footer-brand{font-weight:900;font-size:15px;margin-bottom:10px}.footer-note{font-size:13px;line-height:1.6}
+@media(max-width:820px){.infocard-grid{grid-template-columns:1fr}.duo{grid-template-columns:1fr}.workflow-grid{grid-template-columns:1fr}.cta-band .inner{grid-template-columns:1fr}.section{padding:40px 20px}.hero{min-height:52vh;flex-direction:column;justify-content:flex-start;align-items:flex-start;gap:24px}.hero>div{width:100%}.hero-figure{width:100%;max-width:560px}}
+@media(max-width:820px){html,body{overflow-x:hidden}.hero h1{word-break:break-word}}
+.hero{gap:56px!important}
+.hero>div{width:660px!important}
+.hero h1{font-size:clamp(30px,3.3vw,46px)!important;line-height:1.16!important;margin:12px 0 16px!important}
+.hero p{font-size:clamp(16px,1.35vw,19px)!important;line-height:1.65!important}
+.hero .kicker{font-size:1.28rem!important}
+.hero-figure{width:360px}
+.hero-figure img{aspect-ratio:4/5;object-fit:cover}
+@media(max-width:1120px){
+  .hero{gap:32px!important;flex-direction:column;align-items:flex-start}
+  .hero>div{width:100%!important}
+  .hero h1{font-size:clamp(28px,5vw,40px)!important}
+}
+</style>
+</head>
+<body class="spotlight">
+<!-- 官網共用導航列 nav.top：與首頁/總站同一條，文章不要自己另做極簡 topbar（江江 2026-06-25：要同一個框架、同一條導航列）。把對應頁面的 class="active" 標在自己那欄。
+     ⚠️ 下面 ul.nav-menu 整塊由 preflight 第 5 關 check-bilingual-nav.mjs 做「逐字比對」，
+        塞任何註解、多一個空白、換行位置不同都會被判導航不一致而擋下發布。要說明就寫在 <ul> 外面（像這裡）。
+        2026-08-16 修：原本的 EN 那行說明註解就夾在 <ul> 裡面，導致照範本起手的新文章一律卡第 5 關
+        （llm-rag-agent-mcp 與 rag-three-retrieval-modes 兩篇同時中招）。註解已移出來，<ul> 內保持乾淨。
+        萬一還是被擋，直接跑：node scripts/check-bilingual-nav.mjs --write --only=<你的檔案路徑> -->
+<nav class="top">
+  <div class="container">
+    <a class="nav-brand-img" href="../../index.html"><img src="../../images/footer-signature.png" alt="江江教練 | 江昱德"></a>
+    <button class="nav-toggle" aria-label="選單"><span></span><span></span><span></span></button>
+    <ul class="nav-menu">
+      <li><a href="../../index.html">首頁</a></li>
+      <li><a href="../../knowledge-architecture.html">知識架構</a></li>
+      <li><a href="../../courses.html">課程</a></li>
+      <li><a href="../../articles.html" class="active">深度文章</a></li>
+      <li><a href="../../skills.html">技能包下載</a></li>
+      <li><a href="../../offers.html">服務方案</a></li>
+      <li class="lang-switch"><a href="../../en/articles.html" hreflang="en">EN</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="wc wc1"></div>
+  <div class="wc wc2"></div>
+  <div class="wc wc3"></div>
+  <div>
+    <div class="kicker">AI 工作流 / 審查方法論</div>
+    <h1>我明明都講過了，AI 為什麼還要再問我？｜把重複的判斷寫成標準，讓它自己檢查自己</h1>
+    <p>我每次的回答其實都一樣，因為用的是同一套標準。既然是同一套，就把它寫清楚交給 AI，讓它自己檢查自己。從單軌自審到兩家模型的雙軌互審。</p>
+  </div>
+  <figure class="hero-figure">
+    <img src="../../images/articles/let-ai-review-itself-cover.jpg" alt="封面圖卡：三組一模一樣的 AI 提問與回覆，咪卡在右下角抱頭" loading="lazy">
+    <figcaption>同一個問題問三次，我的回答也一樣了三次。</figcaption>
+  </figure>
+</section>
+
+<main>
+
+<section class="section" id="start">
+  <div class="inner">
+    <p class="lead">AI 產出的東西，人都要審。但我審著審著發現，我每一次的回答其實都一樣，因為我用的是同一套標準。既然是同一套，那就把標準寫清楚交給它，讓它自己檢查自己。這篇講我怎麼把這件事做成一套跑得完的流程，從一家 AI 的單軌自審，到 Claude 與 Codex 兩家的雙軌互審。</p>
+
+    <div class="duo stack">
+      <div class="card a">
+        <b>適合誰</b>
+        <p>AI 每做一件事就停下來問你，而你發現自己一直在重複回答同樣判斷的人。已經會找第二個 AI 幫忙看，但兩家各說各話、不知道怎麼收斂的人。想把自己的專業判斷標準交給 AI 執行的顧問、講師、一人公司。</p>
+      </div>
+      <div class="card b">
+        <b>你可以帶走什麼</b>
+        <p>一份「標準要寫成什麼樣 AI 才審得動」的三件清單、單軌自審的完整格式、雙軌互審 Loop 的五個步驟、兩家意見打架時的三種收斂邏輯，還有剩下那一點為什麼還是要人看。文末有可以直接複製的提示詞。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="same-answer">
+  <div class="inner">
+    <h2>AI 每問我一次，我的回答其實都一樣</h2>
+    <p>我用 AI 做事的時候，它很習慣做完一段就停下來問我：這樣可以嗎、要不要改、要不要往下走。</p>
+    <p>一開始我覺得這樣很好，很負責。後來累積了幾十次之後，我把自己的回答攤開來看，發現一件事：<b>我的回答幾乎都一樣</b>。</p>
+    <p>因為我用的是同一套標準。這段話該不該留，我看的永遠是那幾件事：它有沒有講到為什麼、它會不會跟前面那條規則打架、拿掉之後會不會出事而且出事時看不出原因。我不是每次都在重新想，我是每次都在重播同一個判斷。</p>
+  </div>
+</section>
+
+<section class="section" id="replay">
+  <div class="inner">
+    <h2>重複回答同一個判斷，是可以交出去的勞動</h2>
+    <p>判斷只發生一次，就是我第一次想清楚那套標準的時候。後面每一次回答，都是把它拿出來再放一遍。</p>
+    <div class="meaning"><b>這是重複性的知識勞動</b>它跟體力上的重複差在，它看起來很像在動腦，所以你不會覺得它該被交出去。稀缺的是第一次形成標準的那個過程。之後的每一次套用，都可以交出去。</div>
+    <figure class="inline-figure">
+      <img src="../../images/articles/let-ai-review-itself-01.jpg" alt="圖卡：發亮的燈泡接上重播符號，往外複製出多個灰色方塊" loading="lazy">
+      <figcaption>亮的那顆只有一次，灰的那些是後來每一次的重播。</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section class="section" id="hand-it-over">
+  <div class="inner">
+    <h2>把標準交給它，讓它自己檢查自己</h2>
+    <p>我後來對 AI 講的那句話大概是這樣：這些我之前都講過了，你應該自己檢查自己，不要每一步都來問我。</p>
+    <p>聽起來像抱怨，但它其實是一個可執行的要求。要讓它成立，我得先把「我之前都講過」的那些東西，從我腦袋裡搬出來，變成一份它讀得懂的東西。</p>
+    <p>這就是整套方法的起點。這一步做的事情，是把我原本口頭在做的判斷，寫成它可以照著跑的標準。</p>
+  </div>
+</section>
+
+<section class="section" id="three-things">
+  <div class="inner">
+    <h2>標準要寫成什麼樣，AI 才審得動</h2>
+    <p>我試過只丟一句「幫我檢查一下」，結果它回我一堆客套話。也試過丟一份很長的規範，結果它挑最好挑的講。</p>
+    <p>實際跑下來，缺一不可的是三件：</p>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>要給它什麼</th><th>沒有的話會怎樣</th></tr></thead>
+        <tbody>
+          <tr><td><b>目標</b>：這次審查是為了什麼、什麼算過關</td><td>它會自己發明標準，通常是「看起來比較整齊」</td></tr>
+          <tr><td><b>審核標準</b>：具體到可以照著判的條件，包含絕對不能動的紅線</td><td>它會挑安全的講，避開真正該判的地方</td></tr>
+          <tr><td><b>過去的案例</b>：以前判過什麼、為什麼那樣判</td><td>同一個情況它每次判得不一樣</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>第三件最容易被忽略，但它是讓 AI 判得穩的關鍵。案例的用途是對齊尺度，讓它知道以前遇到類似情況我怎麼判。給法很簡單：挑三到五則你以前判過的，每則寫兩行，「當時的情況」加「我怎麼判、為什麼」。不用寫成漂亮的文件，寫成它讀得懂的紀錄就好。</p>
+    <p>「具體到可以照著判」是什麼意思，看我自己那套就知道。</p>
+    <p>它的第一條是一個分類動作：先判斷這份東西屬於哪一類。<b>內容</b>（文章、逐字稿、會議記錄）絕對不動，<b>基礎設施</b>（規則檔、技能包、流程、腳本、設定檔）才進審查，判不準的時候一律當內容處理。這一條寫下來之後，AI 就不會再問我「這個要不要幫你順一下」。</p>
+    <p>接著是產出格式，四段，少一段就不算審完：</p>
+    <ol>
+      <li><b>分流判定</b>：這份東西屬於哪一類，一句話。</li>
+      <li><b>問題與處置清單</b>：每項寫「問題 → 為什麼 → 具體處置」。只寫問題不寫處置的，不算一項。</li>
+      <li><b>絕不動清單</b>：逐條寫，每一條後面加括號註明理由。</li>
+      <li><b>結論</b>：判定加上前後對比，再加覆蓋證據，也就是它到底讀了哪幾節、抽了哪幾段、跟哪份正本比對過。</li>
+    </ol>
+    <p>第三段是這份格式的重點。多數人叫 AI 檢查，只會拿到「我建議改這些」。你真正需要知道的是<b>它決定不動的那些，它知不知道為什麼不能動</b>。沒有這一段，你無法分辨它是判斷過才留，還是根本沒看到。</p>
+    <div class="caveat"><b>最後補一句硬規則</b>挑出幾項不是產出，漏判才是失敗。少了這句，AI 會為了看起來有做事而開始亂挑，那又變成另一種要你收拾的工作。</div>
+    <figure class="inline-figure">
+      <img src="../../images/articles/let-ai-review-itself-02.jpg" alt="圖卡：目標、審核標準、過去案例三格並列，底部寫三件缺一不可" loading="lazy">
+      <figcaption>三格是並列的必備條件，缺一件 AI 就會自己補一個它以為的標準。</figcaption>
+    </figure>
+
+    <div class="readmore near">
+      <b>就近延伸閱讀</b>
+      <ul>
+        <li><a href="../rule-file-rebound/">規則檔越寫越長，AI 有照做嗎？</a>　把標準寫下來只是第一步。那篇盤了我自己 220 條規則，真正有機制在執行的只有 24 條，講的是寫下來之後怎麼讓它真的生效。</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="self-review">
+  <div class="inner">
+    <h2>單軌自審：一家 AI 拿著標準自己審自己</h2>
+    <p>標準寫好之後，最輕的一種跑法就是讓同一個 AI 做完自己審一遍，交出那張四段的單子。</p>
+    <p>這一檔零額外成本，而且對一般任務就是完整結論，可以直接放行。這點我特別修正過，因為我一開始把自審寫成「只算前半段」，結果是每件小事都要找第二家，於是大家都不跑了。流程太重的機制會被繞過，包括被我自己繞過。</p>
+    <p>我自己的紀錄裡有兩次「一項都沒挑出來」的自審，結論都算合格。因為單子上寫得出它讀了哪些、比對了什麼、每一條為什麼留。<b>判斷有沒有認真審，看的是覆蓋證據。</b></p>
+  </div>
+</section>
+
+<section class="section" id="three-ways">
+  <div class="inner">
+    <h2>三種審法，差在對方看到多少</h2>
+    <p>三種都靠同一份標準，也就是你寫出來的那份技能包。差別在有幾份稿，以及另一家看得到哪些東西。</p>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>審法</th><th>怎麼跑</th><th>另一家看得到什麼</th><th>用在哪</th></tr></thead>
+        <tbody>
+          <tr><td><b>單軌自審</b></td><td>一份稿。AI 拿著你那份標準自己審自己</td><td>沒有另一家</td><td>一般任務</td></tr>
+          <tr><td><b>單軌互審</b></td><td>一份稿。寫完才交出去</td><td><b>只看最終結果</b>，你的產出過程它看不到</td><td>別人會照著做的東西、改不回來的改動</td></tr>
+          <tr><td><b>雙軌互審</b></td><td>兩份稿。兩家從頭各自獨立跑完，過程互相看不到</td><td><b>整個過程都比對</b>，不只比對最後交出什麼</td><td>你明說要雙軌時、改最上層的規則主檔、跨系統的機制</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <figure class="inline-figure">
+      <img src="../../images/articles/let-ai-review-itself-03.jpg" alt="圖卡：單軌自審、單軌互審、雙軌互審三種的資料流對照，標出另一家看得到多少" loading="lazy">
+      <figcaption>三種都從同一本技能包出發。第二種的產出過程被遮住，第三種兩條完整的線都拿來比對。</figcaption>
+    </figure>
+    <div class="meaning"><b>第二種與第三種的差別在這裡最關鍵</b>只看結果，抓得到寫錯的地方，比較不容易抓到一開始就走錯路。因為走錯路的痕跡多半留在中間那幾步，而那幾步它預設看不到（你當然可以主動附上，那就是往第三種靠）。雙軌貴在這裡，值不值得也在這裡。</div>
+    <p>如果你沒有像我這樣的任務分級制度，有三個問題可以自己判，任何一個答「是」就往上加一級：</p>
+    <ol>
+      <li>做錯了改得回來嗎？改不回來，至少要單軌互審。</li>
+      <li>別人會照著這份做事嗎？會，至少要單軌互審。</li>
+      <li>這件事有兩種以上都說得通的做法嗎？有，跑雙軌互審。</li>
+    </ol>
+    <p>輪數我設預設 2 輪、上限 3 輪。有個反直覺但很實在的觀察：<b>第二輪的問題數比第一輪多，是正常的</b>。我跑過最長的一次是五輪，問題數是五條、六條、四條、兩條、通過。第二輪比第一輪多，因為改完會生出新的問題。第三輪還在上升才是壞消息。</p>
+    <p>上限那條是一道人工閘門，<b>第四輪起要人親自授權才准續跑</b>，不是 AI 自己覺得還沒收斂就一直跑下去。</p>
+  </div>
+</section>
+
+<section class="section" id="why-two-tracks">
+  <div class="inner">
+    <h2>自己審自己會漏掉什麼，所以才有雙軌</h2>
+    <p>先講清楚這一節的適用範圍：<b>單軌自審在一般任務就是完整結論，可以放行</b>，下面講的不是要推翻它。只有當這件事重要到你想宣稱「這份東西經過另一家檢查」的時候，資格問題才會出現。</p>
+    <p>**單軌互審就能補掉自審的盲點**，多數需要第二雙眼睛的任務停在那裡就夠。這一節講的是再往上那一階：什麼情況值得升到雙軌。
+
+先說自審有兩個它自己看不見的地方。</p>
+    <p>第一個是盲點。它剛剛寫的東西，它會用寫的時候那套邏輯去看，而錯的地方通常就是那套邏輯造成的。</p>
+    <p>第二個是資格問題。我給自己的紅線是：<b>要算跨家，出品的那一家跟審查的那一家就不能是同一家</b>。這裡最容易搞混的是「家族」到底看誰，答案是<b>看成品的作者，不看誰在執行這次審查</b>。同一個模型審別人寫的東西，是合法主審；審自己寫的東西，不算。開幾個對話視窗、派幾個子代理，都不會讓它變成兩家。</p>
+    <p>這條我自己踩過。第一版的規格我把判定寫反了，寫成「執行審查的模型就是產出家族」，結果是 Codex 審 Claude 寫的東西時，會被判成不能當主審。這個錯是跨家審的時候被對方抓到的，不是我自己發現的。</p>
+
+    <div class="readmore near">
+      <b>就近延伸閱讀</b>
+      <ul>
+        <li><a href="../three-levels-of-cross-review/">怎麼設計讓兩個 AI 互審？</a>　那篇比較的是互審這件事可以做到多深，附三種深度各自的可複製指令。這篇談的是同一套標準要用多大力氣審、誰有資格審。</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="loop">
+  <div class="inner">
+    <h2>雙軌互審 Loop 怎麼跑</h2>
+    <p>當這件事重要到自審不夠，我會開雙軌。我最常用的組合是 Claude 一軌、Codex 一軌，但這不是門檻：<b>你手上只有一個 AI 也跑得起來</b>，開兩個全新的對話，一個負責寫、一個負責審，貼同一份輸入包就是兩軌。差別只在下面會講的那條資格線。</p>
+    <ol>
+      <li><b>同一份輸入包</b>，寫上版本與凍結時間，兩軌拿到的東西完全一樣。</li>
+      <li><b>兩軌各自獨立跑完</b>，寫完之前互相不准看對方的稿。這一步是整個機制成立的前提，看了就變成附和。</li>
+      <li><b>互審</b>：兩份成品交換，各自對著標準挑對方的問題。</li>
+      <li><b>整合</b>：由發起的那一方把兩軌併成一份。<b>只能整合，不能裁決。</b></li>
+      <li><b>對家終審</b>：整合完的終稿交給另一家看過，它判過才算完成。</li>
+    </ol>
+    <p>第四步那句限制很重要。兩軌意見不同的時候，發起方最容易做的事就是自己選一個，然後說「我整合好了」。那等於用一句話蓋掉一個真正的分歧。</p>
+    <p>兩軌意見分歧的時候，發起的那一方只能整合，不能裁決，分歧一律列成決策點交人拍板。這個地方我刻意不讓 AI 自己決定，因為那正是它最容易替你決定的地方。</p>
+  </div>
+</section>
+
+<section class="section" id="conflict">
+  <div class="inner">
+    <h2>兩家意見打架的時候怎麼收斂</h2>
+    <p>這是雙軌最實際的問題。兩個 AI 給了相反的建議，你要聽誰的。</p>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>型態</th><th>長什麼樣</th><th>怎麼收</th></tr></thead>
+        <tbody>
+          <tr><td><b>直接對撞</b></td><td>同一項，一方說動一方說留</td><td><b>拆維度</b>。對撞通常是兩邊在講同一件事的不同層次，拆開後兩邊都成立</td></tr>
+          <tr><td><b>方案傾向不同</b></td><td>各自主張不同做法，沒有直接衝突</td><td><b>先找共識句</b>。兩個方案背後通常有同一個目的，把那句寫出來，再看哪個方案更接近它</td></tr>
+          <tr><td><b>拍板與審查相反</b></td><td>人已經決定的事，審查方不同意</td><td><b>不收斂，登記已知張力</b>。記下兩方立場、誰在哪天拍板、什麼條件下要再議</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>最後一型有個條件：<b>沒有再議條件不准登記</b>。否則張力就變成永久豁免區，這裡開一個洞，以後什麼都能往裡面塞。</p>
+    <p>第一型我有個現成的例子。同一份東西，Codex 說「缺一份依新流程重排的執行表」，我這邊說「執行表該拿掉」。拆開之後發現那是「階段分配」與「逐分鐘排程」兩個層次，比例式的階段分配留在正文、分鐘級的排程移回各自的執行檔，兩邊都對。判這個折衷的是 Codex 自己，它在互審回合說兩邊各對一半。</p>
+  </div>
+</section>
+
+<section class="section" id="ninety-percent">
+  <div class="inner">
+    <h2>九成它自己跑完，剩下要人看的是哪幾種情況</h2>
+    <p>只要標準寫得夠清楚、目標明確、而且有過去案例可以參考，我自己算一算，<b>一般的審查工作跑雙軌互審，大概九成它可以自己跑完，不用每一步都問我</b>，而且跑得很順。</p>
+    <div class="caveat"><b>先講清楚</b>這個九成是我自己的估算，沒有做過實驗。</div>
+    <p>比起這個數字，更值得講的是剩下那一點。它不是隨機發生的，通常就是這三種情況：</p>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>什麼時候還是要人看</th><th>為什麼 AI 判不了</th></tr></thead>
+        <tbody>
+          <tr><td><b>兩軌矛盾，收斂不出共識</b></td><td>兩邊都說得通，這是取捨不是對錯</td></tr>
+          <tr><td><b>這件事我還沒寫出明確的標準</b></td><td>它手上沒有可以照著判的依據</td></tr>
+          <tr><td><b>過去沒有可以對照的案例</b></td><td>沒有尺度可以對齊，它只能猜</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>遇到第一種，我的規則是不讓 AI 自己選邊：兩軌分歧一律列成決策點交人拍板，發起的那一方只能整合，不能裁決。</p>
+    <p>後面兩種其實是同一件事的兩面：<b>標準還沒補完</b>。所以這一點會隨著標準與案例累積得越完整而變少。九成不是天花板，是我現在的位置。</p>
+    <figure class="inline-figure">
+      <img src="../../images/articles/let-ai-review-itself-04.jpg" alt="圖卡：九成填滿的長條與剩下一小段，標出三種還要人看的情況" loading="lazy">
+      <figcaption>剩下那一段會隨著標準與案例補得越完整而變短。</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section class="section" id="no-flattery">
+  <div class="inner">
+    <h2>怎麼避免兩個 AI 互相說好話</h2>
+    <p>雙軌最怕的是兩邊都很客氣。</p>
+    <p>我回頭盤點過去的紀錄，發現審查意見的採納率幾乎是 100%。那個數字看起來像品質很好，實際上它代表沒有人在判斷。A 提了意見，B 就照做，因為照做最省事。</p>
+    <p>所以我加了一張處置表，被審的那一方要逐條回話。表就三欄：建議原文、三選一、理由。每條建議三選一：<b>採納／部分採納／不採納</b>。不採納的必須附理由，而且理由只能是四類裡的一類：撞到紅線、決策者已經拍板過、改了會退回原本的問題狀態、成本不划算。</p>
+    <div class="meaning"><b>還有一條配套</b>全數採納的時候，表尾強制寫一句「零不採納，因為＿」。這一欄逼出真正的判斷，你得說得出來為什麼這次真的每條都對。</div>
+    <p>引用意見的時候要貼原文，不要改寫成自己的話再回應。改寫的過程，就是偷偷軟化的過程。</p>
+
+    <div class="readmore near">
+      <b>就近延伸閱讀</b>
+      <ul>
+        <li><a href="../dual-track-planning-loop/">如何讓兩個不同的 AI 互相挑錯、自己訂正？</a>　同一套雙軌用在企劃與提案上的實例，我的政府補助提案在送出前被模擬評審打了 2/5 分。</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="honest">
+  <div class="inner">
+    <h2>這套方法哪一部分我有把握，哪一部分還沒有</h2>
+    <p>有把握的部分：三種強度都不需要安裝任何工具。用兩個網頁版 AI 複製貼上就跑得完，命令列工具只是把搬運自動化，不是入場門檻。</p>
+    <p>沒把握的部分要講清楚。<b>用網頁版跑雙軌，證明不了兩軌真的沒看過對方</b>。命令列工具可以用執行順序保證互盲，網頁版只能靠人守紀律，事後拿不出證據。同樣的，也證明不了兩軌拿到的輸入完全一樣。</p>
+    <p>能做的是留痕：兩軌各開全新對話、輸入包第一行標上版本與凍結時間、先寫完的那一軌在檔案裡註明「本檔在讀對方之前完成」、兩邊的回覆整段原文存檔不要改寫。做得到這四項就標「留痕完整」，做不到就誠實標「未驗證互盲」，不要寫成跑過雙軌。</p>
+    <p>命令列工具的價值就在這裡。</p>
+  </div>
+</section>
+
+<section class="section" id="start-today">
+  <div class="inner">
+    <h2>今天就能開始：把你重複回答過三次的那個判斷寫下來</h2>
+    <p>不用等工具，也不用先有一套完整的方法論。</p>
+    <p>回想一下最近 AI 問過你、而你的回答其實都差不多的那件事。把它寫成三行：這次要達成什麼、什麼情況算過關、絕對不能動的是哪些。然後把這三行連同要審的東西一起貼給 AI，加上這段：</p>
+    <div class="codeblock">用下面這份標準自己檢查你剛才的產出，不要問我，直接交一張審查單，四段：
+一、這份東西屬於哪一類，一句話。
+二、問題與處置清單，每項寫「問題 → 為什麼 → 具體處置」。
+三、絕不能動的清單，逐條說明為什麼不能動。
+四、結論，包含你讀了哪幾節、抽查了哪幾段。
+提醒你：挑出幾項不是成績，漏判才是失敗。一項都沒挑出來也是合格結論。</div>
+    <p>跑完之後，你自己填一次處置表：每條採納、部分採納或不採納，不採納要寫理由。如果你發現自己每條都採納，就在最後寫一句「零不採納，因為＿」，把那個「因為」填出來。</p>
+    <p>多數人第一次跑到這裡會卡住。那個卡住的地方，就是你原本沒寫下來、只存在你腦袋裡的標準。把它補進去，下一次它就不用再問你了。</p>
+  </div>
+</section>
+
+<section class="section" id="skill">
+  <div class="inner">
+    <h2>這套審查標準我整理成技能包了</h2>
+    <p>上面講的是完整的做法，你照著做就能跑起來。我另外把它包成一個技能包，裡面多的是那些「我已經替你踩過」的部分：</p>
+    <div class="skillcard">
+      <b>審話一哥（審查方法論技能包）</b>
+      <p>它就是我自己每天在用的那一份，包含我踩過的坑跟修正過的判斷。自己用跟交給別人用是同一份規格，不是另外寫一套簡化版。</p>
+      <ul>
+        <li>四段審查單、處置表、已知張力登記的<b>可直接複製範本</b></li>
+        <li>從三個多月實際審查提煉的<b>七種該挑的模式與四種絕不能動的</b>，每一種附一個真實案例當佐證</li>
+        <li>十一條<b>審查者自己會犯的坑</b>，分五類，包含審完沒接下去、版號沒回寫這種很難自己發現的</li>
+        <li>三種意見衝突的<b>收斂邏輯</b>與九次跨家審的輪數統計</li>
+        <li>只有網頁版 AI 的人怎麼跑雙軌的<b>入場對照表</b>，含可複製的派工提示詞</li>
+      </ul>
+      <p>上架資訊我會在官方 LINE 社群公告。</p>
+    </div>
+
+    <div class="readmore">
+      <b>延伸閱讀</b>
+      <ul>
+        <li><b>這篇提到過的</b></li>
+        <li><a href="../rule-file-rebound/">規則檔越寫越長，AI 有照做嗎？</a>　標準寫下來之後，怎麼讓它真的被執行。</li>
+        <li><a href="../three-levels-of-cross-review/">怎麼設計讓兩個 AI 互審？</a>　互審可以做到多深，附可複製指令。</li>
+        <li><a href="../dual-track-planning-loop/">如何讓兩個不同的 AI 互相挑錯、自己訂正？</a>　同一套雙軌用在企劃提案上的實例。</li>
+        <li><b>再往前後延伸</b></li>
+        <li><a href="../how-to-verify-ai-rule-changes/">改完規則，怎麼知道 AI 到底有沒有變乖？</a>　標準改完之後的下一題：怎麼驗收它真的變了。</li>
+        <li><a href="../decision-ladder-non-programmer/">叫 AI 講簡潔一點，它還是一堆廢話？</a>　讓 AI 自己判斷該不該寫這一段的決策階梯，是這套標準的其中一塊零件。</li>
+      </ul>
+    </div>
+
+    <p>我是江江教練。我做的事情是幫人把腦袋裡的判斷標準，變成 AI 可以照著執行的東西。這篇講的審查方法，就是我拿自己的知識庫當實驗場跑出來的。</p>
+  </div>
+</section>
+
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">江江教練 · AI 知識管理</div>
+    <div class="footer-links">
+      <a href="../../articles.html">← 回深度文章總站</a>
+      <a href="../../index.html">首頁</a>
+      <a href="../../learn.html">自學資源</a>
+      <a href="../../skills.html">技能包下載</a>
+      <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">LINE 社群 ↗</a>
+      <a href="https://www.threads.com/@jiang_yude_coach" target="_blank" rel="noopener">Threads ↗</a>
+      <a href="https://vocus.cc/salon/Jiang_Coach" target="_blank" rel="noopener">方格子 ↗</a>
+    </div>
+    <div class="footer-note">這是一篇教學文章，整理我對「我明明都講過了，AI 為什麼還要再問我？｜把重複的判斷寫成標準，讓它自己檢查自己」的看法，供你參考。</div>
+  </div>
+</footer>
+
+<!-- 點圖放大 lightbox（hero 與內文圖通用，已內建，不用每篇重加） -->
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <span class="lightbox-close" aria-label="關閉">×</span>
+  <img id="lightbox-img" src="" alt="放大檢視">
+</div>
+<script>
+(function(){
+  var box=document.getElementById('lightbox'),boxImg=document.getElementById('lightbox-img');
+  document.querySelectorAll('.hero-figure img,.inline-figure img').forEach(function(img){
+    img.addEventListener('click',function(){boxImg.src=img.currentSrc||img.src;boxImg.alt=img.alt||'放大檢視';box.classList.add('open');box.setAttribute('aria-hidden','false');});
+  });
+  function close(){box.classList.remove('open');box.setAttribute('aria-hidden','true');boxImg.src='';}
+  box.addEventListener('click',close);
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
+})();
+</script>
+
+<script src="../../image-interactions.js"></script>
+
+<!-- 官網共用：滑鼠暖光暈 + 導航列漢堡選單 -->
+<script src="../../spotlight.js"></script>
+
+<!-- 文章自動互聯（相關文章）：兩支已內建，順序不可顛倒，不用再另外加 -->
+<script src="../../articles-data.js"></script>
+<script src="../../related-render.js"></script>
+  <script src="/mika-chat-widget.js" defer></script>
+</body>
+</html>

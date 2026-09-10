@@ -55,7 +55,25 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["rule-file-rebound", "caught-ai-slacking-into-rules", "three-levels-of-cross-review", "how-to-train-your-ai-employee", "loop-engineering-guardrails", "semantic-rules-before-prompt-templates"]
+    related: ["rule-file-rebound", "caught-ai-slacking-into-rules", "three-levels-of-cross-review", "how-to-train-your-ai-employee", "loop-engineering-guardrails", "semantic-rules-before-prompt-templates", "let-ai-review-itself"]
+  },
+
+  {
+    id: "let-ai-review-itself",
+    url: "articles/let-ai-review-itself/",
+    date: "2026-09-10",
+    updated: "2026-09-10",
+    title: "我明明都講過了，AI 為什麼還要再問我？｜把重複的判斷寫成標準，讓它自己檢查自己",
+    problem: "AI 每做一件事就停下來問，而你發現自己每次的回答其實都一樣，因為用的是同一套標準，等於一直在重播同一個判斷。",
+    audience: "AI 一直停下來問你、你卻在重複回答同樣判斷的人；已經會找第二個 AI 幫忙看但兩家各說各話的人；想把自己的專業判斷標準交給 AI 執行的顧問、講師與一人公司。",
+    summary: "審查 AI 產出這件事，多數時候是在重播同一套標準，那是可以交出去的重複性知識勞動。這篇講怎麼把標準寫成 AI 審得動的樣子（目標、審核標準、過去案例，三件缺一不可），單軌自審要交的四段審查單（含絕不動清單與覆蓋證據），為什麼自己審自己不算跨家，雙軌互審 Loop 的五個步驟與互盲要求，兩家意見打架時的三種收斂邏輯（拆維度、找共識句、登記已知張力），被審方逐條回話的處置表與不採納四類理由，以及作者估算九成可自動跑完時刻意留給人的那四道閘門。文末有可直接複製的自審提示詞。",
+    tags: {
+      topic: ["AI工作流", "技能包設計", "輔助決策"],
+      level: ["進階"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["rule-file-rebound", "three-levels-of-cross-review", "dual-track-planning-loop", "how-to-verify-ai-rule-changes", "decision-ladder-non-programmer"]
   },
 
   {
@@ -770,7 +788,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["after-ai-says-remembered", "long-document-review-layers", "mobile-to-desktop-publish-loop", "ai-said-it-watched-the-video", "cross-ai-review-both-wrong", "webmcp-day-one", "how-to-verify-ai-rule-changes"]
+    related: ["after-ai-says-remembered", "long-document-review-layers", "mobile-to-desktop-publish-loop", "ai-said-it-watched-the-video", "cross-ai-review-both-wrong", "webmcp-day-one", "how-to-verify-ai-rule-changes", "let-ai-review-itself"]
   },
 
   {
@@ -1094,7 +1112,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["ai-handoff-instructions", "what-is-loop-engineering", "why-split-data-into-cards", "build-your-own-dictionary", "start-with-a-wrong-draft", "how-to-verify-ai-rule-changes"]
+    related: ["ai-handoff-instructions", "what-is-loop-engineering", "why-split-data-into-cards", "build-your-own-dictionary", "start-with-a-wrong-draft", "how-to-verify-ai-rule-changes", "let-ai-review-itself"]
   },
 
   {
@@ -1401,7 +1419,7 @@ window.ARTICLES = [
       content_type: ["案例文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["loop-engineering-guardrails", "a2a-agent-protocol", "docs-as-system-design-agent", "ai-handoff-instructions", "long-task-completion-rate", "session-messaging-reminder-layer", "before-installing-others-skill", "parallel-site-editing"]
+    related: ["loop-engineering-guardrails", "a2a-agent-protocol", "docs-as-system-design-agent", "ai-handoff-instructions", "long-task-completion-rate", "session-messaging-reminder-layer", "before-installing-others-skill", "parallel-site-editing", "let-ai-review-itself"]
   },
 
   {
@@ -1977,7 +1995,7 @@ window.ARTICLES = [
       content_type: ["觀點文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: "https://vocus.cc/salon/Jiang_Coach" },
-    related: ["caught-ai-slacking-into-rules", "how-to-train-your-ai-employee", "docs-as-system-design-agent", "tidy-mess-before-consulting", "program-vs-ai-skill-library", "ai-delegators-optimism", "four-lens-rapid-review", "manage-ai-with-management-knowledge", "long-answer-three-layers", "copied-mechanism-is-no-mechanism"]
+    related: ["caught-ai-slacking-into-rules", "how-to-train-your-ai-employee", "docs-as-system-design-agent", "tidy-mess-before-consulting", "program-vs-ai-skill-library", "ai-delegators-optimism", "four-lens-rapid-review", "manage-ai-with-management-knowledge", "long-answer-three-layers", "copied-mechanism-is-no-mechanism", "let-ai-review-itself"]
   },
 
   {
