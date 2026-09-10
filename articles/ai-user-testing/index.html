@@ -1,0 +1,461 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="index,follow">
+<title>做完的東西想找人幫忙看，卻找不到人？｜AI 使用者測試，真人測試前面那道篩子</title>
+<meta name="description" content="找不到人幫你看，或找到了卻把耐心浪費在基礎問題上。AUT 用 AI 模擬使用者，在交給真人之前先跑一遍：四種模式、三個實戰案例、做不到的四件事，以及一個十分鐘就能試的練習。">
+<link rel="canonical" href="https://jiangyude.com/articles/ai-user-testing/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="做完的東西想找人幫忙看，卻找不到人？｜AI 使用者測試，真人測試前面那道篩子｜江江教練">
+<!-- 分享封面：hero 文字填好後在 repo 根目錄跑 `node scripts/og-shot.mjs ai-user-testing` 自動截 1200×630 到 images/og/ai-user-testing.jpg（見 README「文章分享封面（OG 圖）機制」）。別退回 intro-jiang.png 直式人像，會被裁成只剩脖子。 -->
+<meta property="og:image" content="https://jiangyude.com/images/og/ai-user-testing.jpg">
+<meta property="og:description" content="找不到人幫你看，或找到了卻把耐心浪費在基礎問題上。AUT 用 AI 模擬使用者，在交給真人之前先跑一遍：四種模式、三個實戰案例、做不到的四件事，以及一個十分鐘就能試的練習。">
+<meta property="og:url" content="https://jiangyude.com/articles/ai-user-testing/">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:site_name" content="江江教練 · AI 知識管理">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="做完的東西想找人幫忙看，卻找不到人？｜AI 使用者測試，真人測試前面那道篩子｜江江教練">
+<meta name="twitter:image" content="https://jiangyude.com/images/og/ai-user-testing.jpg">
+<meta name="twitter:description" content="找不到人幫你看，或找到了卻把耐心浪費在基礎問題上。AUT 用 AI 模擬使用者，在交給真人之前先跑一遍：四種模式、三個實戰案例、做不到的四件事，以及一個十分鐘就能試的練習。">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"做完的東西想找人幫忙看，卻找不到人？｜AI 使用者測試，真人測試前面那道篩子","description":"找不到人幫你看，或找到了卻把耐心浪費在基礎問題上。AUT 用 AI 模擬使用者，在交給真人之前先跑一遍：四種模式、三個實戰案例、做不到的四件事，以及一個十分鐘就能試的練習。","author":{"@type":"Person","name":"江昱德","alternateName":"江江教練","jobTitle":"隱性知識提煉師、AI 應用規劃師"},"isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://jiangyude.com/"},"inLanguage":"zh-Hant","url":"https://jiangyude.com/articles/ai-user-testing/"}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{--ink:#1a1612;--paper:#fefcf8;--muted:#6a635a;--line:#d8cdb8;--green:#5f7553;--blue:#5689b8;--orange:#e85a4f;--soft:#faf5ec;--dark:#2a2018;--shadow:0 18px 45px rgba(107,74,42,.14);--sp-shadow:hsla(35,50%,60%,.15);--sp-shadow-edge:hsla(35,50%,68%,.03);--sp-radius:400px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC","Segoe UI",sans-serif}
+a{color:inherit}
+/* 官網共用導航列 nav.top（與首頁/文章總站同一條） */
+nav.top{position:sticky;top:0;background:rgba(254,252,248,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid #d8cdb8;z-index:100}
+nav.top .container{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:24px;padding:14px 32px}
+.nav-brand-img{justify-self:start;display:flex;align-items:center;text-decoration:none;flex-shrink:0;transition:opacity .2s}
+.nav-brand-img:hover{opacity:.8}.nav-brand-img img{height:40px;width:auto;display:block}
+nav.top ul.nav-menu{justify-self:end;display:flex;gap:22px;list-style:none;margin:0;padding:0;font-size:.95rem;white-space:nowrap}
+nav.top ul.nav-menu a{color:#3a342d;text-decoration:none;transition:color .2s;font-weight:500;white-space:nowrap}
+nav.top ul.nav-menu a:hover{color:#1a1612}nav.top ul.nav-menu a.active{color:#1a1612;font-weight:700}
+.nav-toggle{display:none;background:none;border:none;padding:6px;cursor:pointer;width:36px;height:36px;position:relative}
+.nav-toggle span{display:block;position:absolute;left:8px;right:8px;height:2px;background:#1a1612;border-radius:2px;transition:transform .25s,opacity .25s,top .25s}
+.nav-toggle span:nth-child(1){top:11px}.nav-toggle span:nth-child(2){top:17px}.nav-toggle span:nth-child(3){top:23px}
+.nav-toggle.open span:nth-child(1){top:17px;transform:rotate(45deg)}.nav-toggle.open span:nth-child(2){opacity:0}.nav-toggle.open span:nth-child(3){top:17px;transform:rotate(-45deg)}
+.tablewrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:22px 0;border:1px solid var(--line);border-radius:10px;background:#fff;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.tablewrap table{border-collapse:collapse;width:100%;min-width:600px;font-size:18px;line-height:1.65}
+.tablewrap .zh{display:block;margin-top:5px;font-size:16px;line-height:1.55;color:var(--muted);font-weight:400}
+.tablewrap th,.tablewrap td{padding:12px 14px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top;color:#3a342d}
+.tablewrap thead th{background:var(--soft);font-weight:900;font-size:18px;color:#1a1612;white-space:nowrap}
+.tablewrap tbody tr:last-child td{border-bottom:none}
+.tablewrap td code,.section code{background:var(--soft);border:1px solid var(--line);border-radius:5px;padding:1px 6px;font:500 15px/1.5 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace}
+.inline-figure.wide{max-width:1000px}
+.toc{margin:26px 0 0;padding:20px 22px;background:#fff;border:1px solid var(--line);border-radius:10px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.toc>b{display:block;font-size:15px;letter-spacing:.05em;color:var(--green);margin-bottom:10px}
+.toc ol{margin:0;padding-left:1.35em;font-size:18px;line-height:1.7}
+.toc li{margin-bottom:7px;color:#3a342d}
+.toc a{color:var(--blue);font-weight:700;text-decoration:none}.toc a:hover{text-decoration:underline}
+.toc-hint{margin:12px 0 0!important;font-size:18px!important;color:var(--muted)!important;border-top:1px solid var(--line);padding-top:12px}
+.readmore{margin-top:24px;padding:20px 22px;background:var(--soft);border:1px solid var(--line);border-radius:12px}
+.readmore.near{margin:26px 0 6px;background:rgba(86,137,184,.07);border-color:#bcd0e2}
+.readmore.near b{color:var(--blue);font-size:18px}
+.readmore.near li{font-size:17px;line-height:1.7;margin-bottom:10px}
+.readmore b{display:block;margin-bottom:10px;font-size:19px}
+.readmore ul{margin:0;padding-left:1.25em}
+.readmore a{color:var(--blue);font-weight:700;text-decoration:none}
+.readmore a:hover{text-decoration:underline}
+@media(max-width:820px){.tablewrap table{min-width:560px;font-size:18px}.tablewrap{position:relative}.tablewrap::after{content:"表格可左右滑動 →";position:sticky;left:0;display:block;font-size:15px;color:var(--muted);background:var(--soft);border-top:1px solid var(--line);padding:7px 12px;width:100%}}
+@media(max-width:860px){
+ nav.top .container{grid-template-columns:auto 1fr auto;padding:10px 16px;gap:12px}
+ .nav-brand-img img{height:32px}
+ .nav-toggle{display:block;justify-self:end}
+ nav.top ul.nav-menu{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(254,252,248,.98);backdrop-filter:blur(14px);border-bottom:1px solid #d8cdb8;flex-direction:column;gap:0;padding:8px 0;box-shadow:0 10px 24px rgba(107,74,42,.08)}
+ nav.top ul.nav-menu.open{display:flex}
+ nav.top ul.nav-menu li{border-bottom:1px solid #e8dfc9}
+ nav.top ul.nav-menu li:last-child{border-bottom:none}
+ nav.top ul.nav-menu a{display:block;padding:14px 20px;font-size:1.06rem}
+}
+/* 滑鼠暖光暈（與首頁同一支 spotlight.js） */
+body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradient(var(--sp-radius) circle at var(--mx,50%) var(--my,50%),var(--sp-shadow) 0%,var(--sp-shadow-edge) 45%,transparent 75%);pointer-events:none;z-index:9999;mix-blend-mode:multiply;transition:background .06s linear}
+.hero{position:relative;overflow:hidden;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:72px;padding:96px clamp(20px,6vw,88px) 80px;background:linear-gradient(180deg,#fffcf0 0%,#f9e9d2 100%);color:#1a1612;border-bottom:1px solid #d8cdb8}
+.hero .wc{position:absolute;border-radius:50%;filter:blur(60px);pointer-events:none;z-index:0}
+.hero .wc1{width:420px;height:360px;top:-120px;right:-80px;background:#e8884b;opacity:.15}
+.hero .wc2{width:360px;height:300px;bottom:-110px;left:-70px;background:#5f7553;opacity:.13}
+.hero .wc3{width:280px;height:260px;top:34%;left:14%;background:#a08144;opacity:.10}
+.hero>div{flex:none;width:860px;max-width:100%;position:relative;z-index:2}
+.hero-figure{margin:0;width:420px;flex:none;position:relative;z-index:2}
+.hero-figure img{display:block;width:100%;border-radius:16px;border:1px solid #d8cdb8;box-shadow:0 18px 45px rgba(107,74,42,.16);cursor:zoom-in}
+.hero-figure figcaption{margin-top:10px;font-size:14px;line-height:1.6;color:#6a635a}
+.inline-figure{margin:30px auto 8px;max-width:820px}
+.inline-figure img{display:block;width:100%;border-radius:14px;border:1px solid var(--line);box-shadow:var(--shadow);background:#fff;cursor:zoom-in}
+.inline-figure figcaption{font-size:14px;line-height:1.6;color:var(--muted);margin-top:10px}
+.lightbox{position:fixed;inset:0;z-index:10000;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(12,10,8,.92);cursor:zoom-out;backdrop-filter:blur(4px)}
+.lightbox.open{display:flex}.lightbox img{max-width:96vw;max-height:92vh;border-radius:10px;box-shadow:0 24px 60px rgba(0,0,0,.5)}
+.lightbox-close{position:fixed;top:18px;right:24px;color:#fff;font-size:34px;line-height:1;font-weight:700;cursor:pointer;opacity:.85}
+.kicker{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.55rem;color:#7a5c3a;font-weight:500}
+.hero h1{max-width:none;margin:16px 0 18px;font-size:clamp(36px,6vw,72px);line-height:1.08;overflow-wrap:anywhere}
+.hero p{max-width:none;font-size:clamp(18px,2vw,23px);line-height:1.62;color:#3a342d}
+.cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
+.cta a{display:inline-flex;align-items:center;text-decoration:none;border-radius:8px;padding:12px 16px;font-weight:900}
+.cta .primary{background:#fff;color:#1a1612}.cta .ghost{border:1px solid rgba(255,255,255,.32);color:#fff;background:rgba(255,255,255,.08)}
+.section{padding:54px clamp(20px,6vw,88px);border-top:1px solid var(--line)}
+.inner{width:min(1000px,100%);margin:0 auto}
+.section h2{font-size:clamp(26px,4.2vw,48px);line-height:1.12;margin:0 0 18px}
+.section h3{font-size:clamp(21px,3vw,30px);line-height:1.2;margin:30px 0 12px}
+.lead{font-size:clamp(18px,1.6vw,22px);line-height:1.7;color:#3a342d;max-width:900px}
+.section p{font-size:18px;line-height:1.74;color:#3a342d}.section p+p{margin-top:14px}
+.section ul,.section ol{padding-left:1.4em;font-size:18px;line-height:1.74;color:#3a342d}.section li{margin-bottom:8px}
+.meaning{margin:22px 0;padding:16px 18px;border-left:5px solid var(--blue);background:rgba(86,137,184,.12);border-radius:6px;line-height:1.7;font-size:19px}
+.meaning b{display:block;color:var(--blue);margin-bottom:4px}
+.caveat{margin:0 0 8px;padding:16px 18px;border-left:5px solid var(--orange);background:rgba(232,90,79,.1);border-radius:6px;line-height:1.7;font-size:18px;color:#3a342d}
+.caveat b{display:block;color:var(--orange);margin-bottom:4px}
+.infocard{background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px 24px 22px;box-shadow:0 8px 22px rgba(107,74,42,.08);margin-top:8px}
+.infocard-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.info-item{padding:18px 14px 0}
+.info-item b{display:block;font-size:14px;font-weight:900;letter-spacing:.04em;margin-bottom:7px;text-transform:uppercase}
+.info-item:nth-child(1) b{color:var(--green)}.info-item:nth-child(2) b{color:var(--orange)}.info-item:nth-child(3) b{color:var(--blue)}
+.info-item p{margin:0;font-size:17px;line-height:1.6;color:#3a342d}
+.tagrow{display:flex;flex-wrap:wrap;gap:7px;margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
+.tag{font-size:14px;color:var(--muted);background:var(--soft);border:1px solid var(--line);border-radius:999px;padding:4px 11px}
+.duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:24px}
+.duo.stack{grid-template-columns:1fr}
+.duo .card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:22px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.duo .card.a{border-color:var(--orange)}.duo .card.b{border-color:var(--green);box-shadow:0 8px 24px rgba(95,117,83,.16)}
+.duo .card small{display:block;font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.04em;margin-bottom:9px}
+.duo .card.a small{color:var(--orange)}.duo .card.b small{color:var(--green)}
+.duo .card b{display:block;font-size:22px;line-height:1.3;margin-bottom:12px}.duo .card.a b{color:#c0512f}.duo .card.b b{color:#4a7a59}
+.duo .card p{margin:0;color:#3a342d;line-height:1.75;font-size:18px}
+.workflow-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:24px}
+.workflow-step{background:#fff;border:1px solid var(--line);border-radius:8px;padding:18px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.workflow-step small{display:block;color:var(--orange);font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;margin-bottom:9px}
+.workflow-step b{display:block;font-size:18px;line-height:1.3;margin-bottom:9px}
+.workflow-step p{margin:0;color:#3a342d;line-height:1.6;font-size:16px}
+.codeblock{background:var(--dark);color:#f3ead9;border-radius:8px;padding:18px 20px;font:500 14px/1.65 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;overflow-x:auto;white-space:pre-wrap;margin:20px 0;box-shadow:0 8px 22px rgba(107,74,42,.12)}
+.codeblock .c{color:#f6d7a6;font-weight:600}
+.skillcard{background:#fff;border:1px solid var(--green);border-radius:12px;padding:24px;box-shadow:0 10px 26px rgba(95,117,83,.16);margin-top:8px}
+.skillcard b{display:block;font-size:21px;margin-bottom:8px}
+.skillcard p{margin:0 0 16px;font-size:17px;line-height:1.65;color:#3a342d}
+.cta-band{background:#e6f0e5;color:#3a342d}.cta-band .section{border-top:none}
+.cta-band .inner{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(260px,.85fr);gap:26px;align-items:start}
+.cta-band h2{font-size:clamp(26px,4vw,44px);margin:0 0 16px}.cta-band p,.cta-band .lead{color:rgba(58,52,45,.9);font-size:18px;line-height:1.72}
+.cta-card{border:1px solid #cfe0d2;background:#fbfdfa;border-radius:8px;padding:22px}
+.cta-card b{display:block;color:#48b178;margin-bottom:10px;font-size:18px}.cta-card p{margin:0 0 14px}
+.footer{padding:30px clamp(20px,6vw,88px);font-size:14px;color:var(--muted);background:#fff;border-top:1px solid var(--line)}
+.footer-inner{width:min(1000px,100%);margin:0 auto}
+.footer-links{display:flex;flex-wrap:wrap;gap:6px 12px;margin-bottom:14px}.footer-links a{color:var(--blue);font-weight:900;text-decoration:none;font-size:14px}
+.footer-brand{font-weight:900;font-size:15px;margin-bottom:10px}.footer-note{font-size:13px;line-height:1.6}
+@media(max-width:820px){.infocard-grid{grid-template-columns:1fr}.duo{grid-template-columns:1fr}.workflow-grid{grid-template-columns:1fr}.cta-band .inner{grid-template-columns:1fr}.section{padding:40px 20px}.hero{min-height:52vh;flex-direction:column;justify-content:flex-start;align-items:flex-start;gap:24px}.hero>div{width:100%}.hero-figure{width:100%;max-width:560px}}
+@media(max-width:820px){html,body{overflow-x:hidden}.hero h1{word-break:break-word}}
+
+/* 本篇：無封面圖 ＋ 主標 38 字，縮字級避免 hero 被標題塞滿（規則見 02-design-system「標題太長」段，該段數值是給有封面圖的版型，這裡是純文字 hero 的對應調整） */
+.hero>div{width:880px}
+.hero h1{font-size:clamp(28px,3.6vw,48px);line-height:1.22;margin:14px 0 18px}
+.hero p{font-size:clamp(17px,1.5vw,20px)}
+.hero .kicker{font-size:1.3rem}
+@media(max-width:820px){.hero h1{font-size:clamp(26px,5.4vw,34px)}}
+</style>
+</head>
+<body class="spotlight">
+<!-- 官網共用導航列 nav.top：與首頁/總站同一條，文章不要自己另做極簡 topbar（江江 2026-06-25：要同一個框架、同一條導航列）。把對應頁面的 class="active" 標在自己那欄。
+     ⚠️ 下面 ul.nav-menu 整塊由 preflight 第 5 關 check-bilingual-nav.mjs 做「逐字比對」，
+        塞任何註解、多一個空白、換行位置不同都會被判導航不一致而擋下發布。要說明就寫在 <ul> 外面（像這裡）。
+        2026-08-16 修：原本的 EN 那行說明註解就夾在 <ul> 裡面，導致照範本起手的新文章一律卡第 5 關
+        （llm-rag-agent-mcp 與 rag-three-retrieval-modes 兩篇同時中招）。註解已移出來，<ul> 內保持乾淨。
+        萬一還是被擋，直接跑：node scripts/check-bilingual-nav.mjs --write --only=<你的檔案路徑> -->
+<nav class="top">
+  <div class="container">
+    <a class="nav-brand-img" href="../../index.html"><img src="../../images/footer-signature.png" alt="江江教練 | 江昱德"></a>
+    <button class="nav-toggle" aria-label="選單"><span></span><span></span><span></span></button>
+    <ul class="nav-menu">
+      <li><a href="../../index.html">首頁</a></li>
+      <li><a href="../../knowledge-architecture.html">知識架構</a></li>
+      <li><a href="../../courses.html">課程</a></li>
+      <li><a href="../../articles.html" class="active">深度文章</a></li>
+      <li><a href="../../skills.html">技能包下載</a></li>
+      <li><a href="../../offers.html">服務方案</a></li>
+      <li class="lang-switch"><a href="../../en/articles.html" hreflang="en">EN</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="wc wc1"></div>
+  <div class="wc wc2"></div>
+  <div class="wc wc3"></div>
+  <div>
+    <div class="kicker">AI 應用 / 使用者測試</div>
+    <h1>做完的東西想找人幫忙看，卻找不到人？｜AI 使用者測試，真人測試前面那道篩子</h1>
+    <p>做完一份對外的東西，想找人幫忙看一下，卻找不到人。就算找到了，他的耐心也常常被基礎問題消耗光。所以我改成兩段：先用 AI 把明顯的問題掃掉，真人只負責測 AI 測不出來的細節。這篇講這套方法在做什麼、我拿它解決過什麼，以及它做不到什麼。</p>
+  </div>
+</section>
+
+<main>
+
+<section class="section" id="start">
+  <div class="inner">
+    <p class="lead">你做完一份課程招生頁、一份報價、一個網頁，想知道別人看了會怎麼想，但是找不到人幫你看。就算找得到，對方的耐心也常常花在很基礎的問題上，還沒走到你真正想問的地方就沒興趣了。AUT（AI User Testing，AI 使用者測試）做的事是讓 AI 先扮演你的使用者跑一遍，把明顯的問題掃掉，真人留給真正值得問的部分。這篇拆開它的四個模式、三個我實際跑過的案例，以及四件它做不到的事。</p>
+
+    <div class="duo stack">
+      <div class="card a">
+        <b>適合誰</b>
+        <ul>
+          <li>做完招生頁、方案、報價，只能拿去問同一批朋友，而他們每次都說「很好啊」的人。</li>
+          <li>手上的東西根本不能給別人看（客戶提案、未送出的報價、含對方內部資訊的彙報），可測試人數實際上是零的人。</li>
+          <li>已經會叫 AI 扮演客戶給意見，但每次都拿到好聽話，想知道差在哪一步的人。</li>
+        </ul>
+      </div>
+      <div class="card b">
+        <b>你可以帶走什麼</b>
+        <ul>
+          <li>一張四個模式的對照表：這次的對象是一群人、一個人、一個介面，還是一個系統，看表就知道走哪條。</li>
+          <li>三個讓模擬結果不失真的做法：先自然反應再問分數、每輪至少兩個人帶摩擦、模擬的人要用真人講過的話。</li>
+          <li>一個十分鐘就能自己試的練習，不用買任何東西。</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>每次按下送出之前，我都想先問一個人</h2>
+    <p>課程招生頁寫完，我想知道陌生人看了會不會懂我在賣什麼。</p>
+    <p>報價單做好，我想知道對方看到那個數字，第一個念頭是什麼。</p>
+    <p>網頁做完，我想知道不熟操作的人會不會卡在某一步就放棄。</p>
+    <p>這三件事有個共同點：我自己判斷不了。我太清楚自己想講什麼，所以看不出別人會誤解的地方。</p>
+    <p>於是我需要找人幫我看一下。而這件事的真實狀況是：找不到人。</p>
+    <p>不是完全沒有人。是能問的那幾個朋友已經被我問過太多次，而且他們對我的東西太熟了，熟到看不出陌生人第一眼會卡在哪。</p>
+    <div class="caveat"><b>還有一種更硬的限制</b>有些東西根本不能拿給別人看。客戶的提案、還沒送出的報價、含對方內部資訊的彙報，這些我不可能貼到群組裡問「你們覺得呢」。這一類東西的可測試人數，實際上是零。</div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>就算找到人，回饋也常常是浪費的</h2>
+    <p>還有另一種更可惜的情況。</p>
+    <p>我請人幫我看一份東西，他看沒幾眼就卡在很基礎的地方。這個詞是什麼意思、這個按鈕要按哪裡、這頁到底在賣什麼。等他把這些搞清楚，耐心已經用掉大半。</p>
+    <p>我真正想問的那件事，他還沒走到就已經失去興致了。我拿到的回饋跟著失真。</p>
+    <p>真人的耐心是稀缺資源。把它花在基礎問題上，是很虧的事。</p>
+    <div class="meaning"><b>所以我後來改成兩段</b>先用 AI 掃掉明顯的問題，真人只負責測 AI 測不出來的細節。</div>
+    <p>這套做法我後來整理成一個技能包，叫 AI 使用者測試（AI User Testing，簡稱 AUT）。這篇講它在做什麼、我拿它解決過什麼，以及它做不到什麼。</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>一句話：找不到人幫你測的時候用它</h2>
+    <p>AUT 做的事很單純：讓 AI 扮演你的使用者，在你把東西交給真人之前先跑一遍。</p>
+    <p>它的定位我一開始就想清楚了，而且寫死在規則裡：</p>
+    <div class="meaning"><b>它不取代真人測試</b>它是真人前面那道篩子。</div>
+    <p>找得到人、而且對方有時間，就直接找真人。這包是給你找不到人、或找人之前想先把明顯的問題掃掉的時候用的。</p>
+    <p>先跑過一輪之後會發生三件事：</p>
+    <ul>
+      <li>明顯的問題大部分處理掉了，真人抓的是 AI 測不到的小毛病。</li>
+      <li>整個過程順很多，他有力氣講深一點的東西。</li>
+      <li>他會覺得你的東西本來就蠻順的。這個第一印象會影響他後面願意講多真的話。</li>
+    </ul>
+    <p>方法的起點是一篇論文。PyMC Labs 與高露潔合作的研究（arXiv 2510.08338）發現，用 SSR 這個方法讓 AI 模擬購買意願，相關性可以達到真人自己重測一次的九成（ρ 約 0.90）。</p>
+    <div class="caveat"><b>這句話要看清楚</b>它說的是「接近真人重測自己的一致性」，不是「跟真人的答案九成相同」。而且那篇測的是一群匿名消費者對個人護理產品概念的購買意願，範圍就那麼大。</div>
+    <p>我從那裡長出來，但現在做的事已經比論文寬很多。寬出去的部分是我自己跑出來的經驗，不算在論文頭上，效果也不能拿那個九成來背書。</p>
+
+    <div class="readmore near">
+      <b>就近延伸閱讀</b>
+      <ul>
+        <li><a href="../ai-market-microcosm/">AI 就是整個市場的縮影：在花錢做市調前，先用 AI 測反應</a>　那篇是這套方法最早的版本，把論文的做法跟提示詞完整寫出來，這裡就不重複了。</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>架構：四種模式，先問對象是誰</h2>
+    <p>我把它拆成四個模式。分不清該用哪個的時候，問一句就好：<b>這次的對象是一群人、一個人、一個介面，還是一個系統？</b></p>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>模式</th><th>一句話</th><th>什麼時候用</th></tr></thead>
+        <tbody>
+          <tr><td>一、群體驗證</td><td>一群陌生受眾看這份東西，會怎麼誤解、為什麼不買</td><td>產品頁、課程招生、方案定價、A/B/C 選哪個</td></tr>
+          <tr><td>二、具名對象多狀態預測</td><td>同一個具體的人，在不同心情與情境下會怎麼看</td><td>提案、報價、簡報，要交給某一個特定的人</td></tr>
+          <tr><td>三、任務式操作走查</td><td>使用者用這個介面做事，會卡在哪、會不會放棄</td><td>網頁、表單、工具，想知道長輩會不會用</td></tr>
+          <tr><td>四、功能與防呆走查</td><td>使用者亂用這個系統，會不會壞、有沒有破口</td><td>有登入、有權限、有驗證碼的功能。手上沒有這類東西就跳過這個模式</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>前三個問的是「人會怎麼想、會不會用」，第四個問的是「東西會不會壞」，出發點不同，不要混著跑。</p>
+    <p>四種共用同一套底層：先讓模擬受眾用第一人稱自然講話，再標記手上的材料有多硬，再給行動傾向，最後一定落到一個真人動作。</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>讓它有效的三件事</h2>
+    <p>同樣是叫 AI 模擬使用者，做法差一點，結果差很多。這三件是我實測下來最關鍵的。</p>
+
+    <h3>一、不要一開始就問分數</h3>
+    <p>直接問 AI「你覺得這個好不好」「幾分」，你會得到討好你的答案。這是我最早踩的坑。</p>
+    <p>順序要倒過來：先讓每個模擬受眾用第一人稱回答「我以為這在解決什麼」「哪裡讓我懷疑」「我現在為什麼不買」，講完之後才標行動傾向。</p>
+    <p>先自然反應，後標分數。反過來就沒用了。</p>
+
+    <h3>二、至少兩個受眾要帶摩擦</h3>
+    <p>如果每個模擬出來的人都很理性、很有禮貌、都認真讀完，那不是使用者，那是你的粉絲。</p>
+    <p>所以我固定要求：每輪至少兩個人帶摩擦。摩擦有七種可以挑，跳讀、誤解、沒耐心、預算敏感、信任不足、組織阻力、已經有替代做法。</p>
+
+    <h3>三、模擬的人要用真人講過的話</h3>
+    <p>這條是被實測打出來的。</p>
+    <p>我做過一次咪卡客服壓測，同一套檢索、同一批文章，只換題目來源：用 AI 想像出來的三十題，命中率九成；換成十一場一對一約談逐字稿裡的三十七題真人提問，只剩兩成八。</p>
+    <p>差距不在模型，在語彙。訪客問的是「我到底算不算會用 AI 的人」，我的文章叫「AI 能力分級」，一個字都對不上。AI 生成的題目會不自覺沿用我自己文案裡的詞，等於考題洩漏。</p>
+    <div class="caveat"><b>這是一次實測，不是通則</b>但它讓我改了做法，因為推論的方向很清楚：用想像出來的受眾去驗證自己，很可能會高估。我沒有第二組數據可以證明這件事在所有情境都成立，所以這條在我這裡的地位是「值得防的風險」，不是「已證實的定律」。</div>
+    <p>所以現在跑我自己的受眾時，至少兩個人物的台詞要用真人原話，不夠才補推測人物，而且推測的要標明是推測。</p>
+
+    <div class="readmore near">
+      <b>就近延伸閱讀</b>
+      <ul>
+        <li><a href="../ai-mvp-validation-before-product/">花大錢做產品前，先用 AI 驗證創業點子</a>　真人那一條線長什麼樣：訪談怎麼問、承諾訊號怎麼看。AUT 掃完之後接的就是它。</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>我實際拿它解決過什麼</h2>
+    <p>從六月到九月，我跑了十七次完整的實測。挑三個講。</p>
+
+    <h3>一份要送出去的簡報，被抓到用詞踩線</h3>
+    <p>一位講師的課程簡報，要給合作方看。我用模式二模擬本人看到這份簡報的反應，抓到一個我自己完全沒注意的問題：簡報裡把一段內容寫成「專業判斷與帶領」，而那個講法碰到了對方專業領域的執業界線。</p>
+    <p>給特定對象看的東西，用詞踩線是致命傷。這輪抓到六處措辭要改。我不放心，又找了另一家 AI 從頭複查兩輪，六處都指到同樣的地方。</p>
+
+    <h3>一個生圖網站，長輩對著灰色按鈕發呆</h3>
+    <p>我幫一個工作坊做了讓學員填表生圖的頁面。跑模式三的時候，我用「不熟操作的長輩」這個人設，實際把流程走一遍。</p>
+    <p>抓到的問題是：生成按鈕在條件不足的時候是灰的，點下去毫無反應，也不告訴你缺什麼。學員只會對著它發呆，然後放棄。</p>
+    <div class="meaning"><b>後來變成我一條通則</b>這類表單的主按鈕不要設成不能按。永遠可按，按了就列出還缺什麼，並且自動捲到第一個沒填的欄位。</div>
+    <p>這個案例的價值在於它測的不是一張靜態頁面，是一條會產出東西的流程。填表到生圖到拿到成品，端到端走一次才看得到卡在哪一段。</p>
+
+    <h3>一篇官網文章，改完之後分數真的動了</h3>
+    <p>我拿自己的一篇官網文章草稿跑模式一，五個受眾，找出前三大不想讀下去的理由。照著改完之後，我用同樣五個受眾重跑一次。</p>
+    <p>三個人的行動傾向從二到三，升到四。另外兩個沒動。</p>
+    <p>這是我唯一一次留下改動前後對照的紀錄，也是我最確定「改對了」的一次。</p>
+    <p>只有一次，所以我不敢說「分數不動就一定是沒改到痛點」。我把它當成一個訊號：複測分數沒動的時候，先回頭確認自己改的是不是同一個問題，而不是急著往下走。</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>它做不到什麼</h2>
+    <p>這段我一定要寫清楚，不寫就是騙人。</p>
+    <div class="caveat"><b>合成受眾會低估真人的溝通摩擦</b>研究已經指出這件事，所以它跑出來的結果偏樂觀。跑出高分不代表真人會買單，分數要往下打折看。</div>
+    <div class="caveat"><b>模型自己模擬自己，通過不算驗證</b>我做過一次反確認偏誤壓力測試，六項門檻逐條全過。但那是我自己設計的規則、我自己派 AI 去測，測過只證明規則寫得出來，不證明真人會照著走。</div>
+    <div class="caveat"><b>論文的效果不能外推</b>那個九成只在個人護理品類的購買意願上驗證過。拿它來證明這套方法對提案、課程、網頁操作同樣準確，是我自己不該做的事。其餘部分可信到什麼程度，靠實測紀錄自己累積。</div>
+    <div class="caveat"><b>它給的建議不一定要採納</b>有一次 AUT 跟另一個模型都建議我在提案裡補一張三階段路徑圖，我反向拍板全刪，理由是防止對方產生加價疑慮。AUT 產出的是「有人可能會這樣想」，不是「所以你必須改」。跨狀態都卡住的地方值得認真看，最終決定權在做東西的人手上。</div>
+    <p>還有一個最有意思的發現。那次壓力測試裡，系統六項規格全過，但模擬使用者的第一人稱反應是：「我都告訴你它很爛了，你還要我找反證？這工具在質疑我。」結果是棄用。</p>
+    <div class="meaning"><b>系統做對事，跟使用者滿意度會直接衝突</b>這種衝突 AUT 抓得出來，但要不要為了滿意度改掉正確行為，是人的決定。</div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>你現在就可以試的十分鐘練習</h2>
+    <p>不用等，也不用買任何東西。拿你手上任何一份對外的文字，服務介紹、報名頁、自我介紹都可以，做三件事：</p>
+    <ol>
+      <li>貼給你的 AI，說「請你扮演三個看到這份東西的陌生人」。</li>
+      <li>要求它只做一件事：<b>列出三個會讓人不行動的真問題，不要給建議、不要安慰我。</b></li>
+      <li>看那三個問題裡，有沒有一個是你自己早就知道、但一直沒處理的。</li>
+    </ol>
+    <p>十分鐘。如果第三步的答案是「有」，這個方向對你就有用。</p>
+    <p>我大部分的文章都是這樣寫的：看得懂、自己做得起來的人，本來就不需要跟我買什麼。</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>如果你想要完整的那個技能包</h2>
+    <p>先講清楚一件事：三個月前我在官網寫過一篇〈<a href="../ai-market-microcosm/">AI 就是整個市場的縮影</a>〉，那篇附了一個免費技能包，做的是這裡的模式一。這三個月它長大了，從一個模式變成四個，多了十七次實跑累積下來的受眾組合、規模建議與判準。</p>
+    <p>上面那個練習跑得動，但它只有一層。我自己土法煉鋼跑了幾個月，最常漏掉的是這三件：</p>
+    <div class="workflow-grid">
+      <div class="workflow-step"><small>漏掉 01</small><b>每次都找同一批人</b><p>我以為我換了人設，其實我每次想到的都是同一種讀者。所以那包裡有固定的受眾組合表，規定每輪至少兩個人要帶摩擦，摩擦有七種可以挑，不准全部都是好好先生。</p></div>
+      <div class="workflow-step"><small>漏掉 02</small><b>忘記標材料有多硬</b><p>拿逐字稿跑出來的結論，跟憑空想像跑出來的結論，可信度差很遠，但看起來一模一樣。所以那包把材料分成四級，每份報告開頭就要標，避免自己過幾天回頭看，把假設當成結論用。</p></div>
+      <div class="workflow-step"><small>漏掉 03</small><b>測完不知道要幹嘛</b><p>這是最常見的。看完一堆模擬反應，覺得很有收穫，然後就沒有然後了。所以那包規定每一輪最後一定要落到一個真人動作，不落就是沒跑完。</p></div>
+    </div>
+    <p>除了這三件，還有四個模式各自的完整流程與固定輸出格式、行動傾向怎麼標才不會每次刻度都不一樣、幾個人夠用（測文章四到五人，測要掏錢的決定要十人），以及我踩過的三個坑。</p>
+    <div class="skillcard">
+      <b>AI 使用者測試 AUT</b>
+      <p>一個技能包，整份貼給你的 AI 就能用，Claude、ChatGPT、Gemini 都吃得下。定價 1200 元。</p>
+      <p>商店還在做最後的準備，開賣的時候我會在官網和 LINE 社群公告。如果你想在開賣的時候知道，現在到 LINE 社群留一句「AUT」就可以，我會記下來。</p>
+    </div>
+
+    <div class="readmore near">
+      <b>就近延伸閱讀</b>
+      <ul>
+        <li><a href="../before-installing-others-skill/">裝了別人的技能包，AI 會不會被搞亂？</a>　拿到任何一包（包括這一包）之前，我自己會先做的三件事。</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>說到底就是兩段</h2>
+    <p>我不會說跑過 AUT 就等於驗證過。它產出的是假設，不是證據，最後一定要有一個真人動作。</p>
+    <div class="meaning"><b>但這幾個月下來我確定一件事</b>先把對方一眼就會看到的問題處理掉，那場對話能問到的東西完全不一樣。</div>
+    <p>先掃再問，兩段而已。</p>
+
+    <div class="readmore">
+      <b>這篇提到過的</b>
+      <ul>
+        <li><a href="../ai-market-microcosm/">AI 就是整個市場的縮影：在花錢做市調前，先用 AI 測反應</a>　這套方法最早的版本，論文做法與提示詞都在那篇。</li>
+        <li><a href="../ai-mvp-validation-before-product/">花大錢做產品前，先用 AI 驗證創業點子</a>　AUT 掃完之後要接的真人那條線。</li>
+        <li><a href="../before-installing-others-skill/">裝了別人的技能包，AI 會不會被搞亂？</a>　拿到任何一包之前先做的三件事。</li>
+      </ul>
+      <b style="margin-top:18px">再往前後延伸</b>
+      <ul>
+        <li><a href="../how-to-train-your-ai-employee/">最好的技能包是怎麼來的</a>　這一包就是這樣長出來的：先在真實工作裡跑，跑出判準才寫成規則。</li>
+        <li><a href="../one-on-one-questions/">AI 常見問題 37 問</a>　文中那三十七題真人提問就是從這裡來的，也是我現在跑 AUT 時人物台詞的來源。</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">江江教練 · AI 知識管理</div>
+    <div class="footer-links">
+      <a href="../../articles.html">← 回深度文章總站</a>
+      <a href="../../index.html">首頁</a>
+      <a href="../../learn.html">自學資源</a>
+      <a href="../../skills.html">技能包下載</a>
+      <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">LINE 社群 ↗</a>
+      <a href="https://www.threads.com/@jiang_yude_coach" target="_blank" rel="noopener">Threads ↗</a>
+      <a href="https://vocus.cc/salon/Jiang_Coach" target="_blank" rel="noopener">方格子 ↗</a>
+    </div>
+    <div class="footer-note">這是一篇教學文章，整理我對「做完的東西想找人幫忙看，卻找不到人？｜AI 使用者測試，真人測試前面那道篩子」的看法，供你參考。</div>
+  </div>
+</footer>
+
+<!-- 點圖放大 lightbox（hero 與內文圖通用，已內建，不用每篇重加） -->
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <span class="lightbox-close" aria-label="關閉">×</span>
+  <img id="lightbox-img" src="" alt="放大檢視">
+</div>
+<script>
+(function(){
+  var box=document.getElementById('lightbox'),boxImg=document.getElementById('lightbox-img');
+  document.querySelectorAll('.hero-figure img,.inline-figure img').forEach(function(img){
+    img.addEventListener('click',function(){boxImg.src=img.currentSrc||img.src;boxImg.alt=img.alt||'放大檢視';box.classList.add('open');box.setAttribute('aria-hidden','false');});
+  });
+  function close(){box.classList.remove('open');box.setAttribute('aria-hidden','true');boxImg.src='';}
+  box.addEventListener('click',close);
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
+})();
+</script>
+
+<script src="../../image-interactions.js"></script>
+
+<!-- 官網共用：滑鼠暖光暈 + 導航列漢堡選單 -->
+<script src="../../spotlight.js"></script>
+
+<!-- 文章自動互聯（相關文章）：兩支已內建，順序不可顛倒，不用再另外加 -->
+<script src="../../articles-data.js"></script>
+<script src="../../related-render.js"></script>
+  <script src="/mika-chat-widget.js" defer></script>
+</body>
+</html>
