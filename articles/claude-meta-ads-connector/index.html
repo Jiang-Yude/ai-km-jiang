@@ -1,0 +1,589 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="index,follow">
+<title>Meta 廣告後台可以整段交給 AI 嗎？｜把設定交出去，把判斷留下來</title>
+<meta name="description" content="Meta 今年開了官方 MCP 端點，可以直接接上 Claude。我不會操作後台設定，寫了一份交接單就把瀏覽器交給 AI，它自己建好連接器、停在授權頁等我按。這篇記錄整段怎麼跑、接上後 97 個工具能碰到什麼、權限要在哪一端擋。">
+<link rel="canonical" href="https://jiangyude.com/articles/claude-meta-ads-connector/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Meta 廣告後台可以整段交給 AI 嗎？｜把設定交出去，把判斷留下來｜江江教練">
+<!-- 分享封面：hero 文字填好後在 repo 根目錄跑 `node scripts/og-shot.mjs claude-meta-ads-connector` 自動截 1200×630 到 images/og/claude-meta-ads-connector.jpg（見 README「文章分享封面（OG 圖）機制」）。別退回 intro-jiang.png 直式人像，會被裁成只剩脖子。 -->
+<meta property="og:image" content="https://jiangyude.com/images/og/claude-meta-ads-connector.jpg">
+<meta property="og:description" content="Meta 今年開了官方 MCP 端點，可以直接接上 Claude。我不會操作後台設定，寫了一份交接單就把瀏覽器交給 AI，它自己建好連接器、停在授權頁等我按。這篇記錄整段怎麼跑、接上後 97 個工具能碰到什麼、權限要在哪一端擋。">
+<meta property="og:url" content="https://jiangyude.com/articles/claude-meta-ads-connector/">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:site_name" content="江江教練 · AI 知識管理">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Meta 廣告後台可以整段交給 AI 嗎？｜把設定交出去，把判斷留下來｜江江教練">
+<meta name="twitter:image" content="https://jiangyude.com/images/og/claude-meta-ads-connector.jpg">
+<meta name="twitter:description" content="Meta 今年開了官方 MCP 端點，可以直接接上 Claude。我不會操作後台設定，寫了一份交接單就把瀏覽器交給 AI，它自己建好連接器、停在授權頁等我按。這篇記錄整段怎麼跑、接上後 97 個工具能碰到什麼、權限要在哪一端擋。">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Meta 廣告後台可以整段交給 AI 嗎？｜把設定交出去，把判斷留下來","description":"Meta 今年開了官方 MCP 端點，可以直接接上 Claude。我不會操作後台設定，寫了一份交接單就把瀏覽器交給 AI，它自己建好連接器、停在授權頁等我按。這篇記錄整段怎麼跑、接上後 97 個工具能碰到什麼、權限要在哪一端擋。","author":{"@type":"Person","name":"江昱德","alternateName":"江江教練","jobTitle":"隱性知識提煉師、AI 應用規劃師"},"isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://jiangyude.com/"},"inLanguage":"zh-Hant","url":"https://jiangyude.com/articles/claude-meta-ads-connector/"}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{--ink:#1a1612;--paper:#fefcf8;--muted:#6a635a;--line:#d8cdb8;--green:#5f7553;--blue:#5689b8;--orange:#e85a4f;--soft:#faf5ec;--dark:#2a2018;--shadow:0 18px 45px rgba(107,74,42,.14);--sp-shadow:hsla(35,50%,60%,.15);--sp-shadow-edge:hsla(35,50%,68%,.03);--sp-radius:400px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC","Segoe UI",sans-serif}
+a{color:inherit}
+/* 官網共用導航列 nav.top（與首頁/文章總站同一條） */
+nav.top{position:sticky;top:0;background:rgba(254,252,248,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid #d8cdb8;z-index:100}
+nav.top .container{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:24px;padding:14px 32px}
+.nav-brand-img{justify-self:start;display:flex;align-items:center;text-decoration:none;flex-shrink:0;transition:opacity .2s}
+.nav-brand-img:hover{opacity:.8}.nav-brand-img img{height:40px;width:auto;display:block}
+nav.top ul.nav-menu{justify-self:end;display:flex;gap:22px;list-style:none;margin:0;padding:0;font-size:.95rem;white-space:nowrap}
+nav.top ul.nav-menu a{color:#3a342d;text-decoration:none;transition:color .2s;font-weight:500;white-space:nowrap}
+nav.top ul.nav-menu a:hover{color:#1a1612}nav.top ul.nav-menu a.active{color:#1a1612;font-weight:700}
+.nav-toggle{display:none;background:none;border:none;padding:6px;cursor:pointer;width:36px;height:36px;position:relative}
+.nav-toggle span{display:block;position:absolute;left:8px;right:8px;height:2px;background:#1a1612;border-radius:2px;transition:transform .25s,opacity .25s,top .25s}
+.nav-toggle span:nth-child(1){top:11px}.nav-toggle span:nth-child(2){top:17px}.nav-toggle span:nth-child(3){top:23px}
+.nav-toggle.open span:nth-child(1){top:17px;transform:rotate(45deg)}.nav-toggle.open span:nth-child(2){opacity:0}.nav-toggle.open span:nth-child(3){top:17px;transform:rotate(-45deg)}
+.tablewrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:22px 0;border:1px solid var(--line);border-radius:10px;background:#fff;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.tablewrap table{border-collapse:collapse;width:100%;min-width:600px;font-size:18px;line-height:1.65}
+.tablewrap .zh{display:block;margin-top:5px;font-size:16px;line-height:1.55;color:var(--muted);font-weight:400}
+.tablewrap th,.tablewrap td{padding:12px 14px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top;color:#3a342d}
+.tablewrap thead th{background:var(--soft);font-weight:900;font-size:18px;color:#1a1612;white-space:nowrap}
+.tablewrap tbody tr:last-child td{border-bottom:none}
+.tablewrap td code,.section code{background:var(--soft);border:1px solid var(--line);border-radius:5px;padding:1px 6px;font:500 15px/1.5 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace}
+.inline-figure.wide{max-width:1000px}
+.toc{margin:26px 0 0;padding:20px 22px;background:#fff;border:1px solid var(--line);border-radius:10px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.toc>b{display:block;font-size:15px;letter-spacing:.05em;color:var(--green);margin-bottom:10px}
+.toc ol{margin:0;padding-left:1.35em;font-size:18px;line-height:1.7}
+.toc li{margin-bottom:7px;color:#3a342d}
+.toc a{color:var(--blue);font-weight:700;text-decoration:none}.toc a:hover{text-decoration:underline}
+.toc-hint{margin:12px 0 0!important;font-size:18px!important;color:var(--muted)!important;border-top:1px solid var(--line);padding-top:12px}
+.readmore{margin-top:24px;padding:20px 22px;background:var(--soft);border:1px solid var(--line);border-radius:12px}
+.readmore.near{margin:26px 0 6px;background:rgba(86,137,184,.07);border-color:#bcd0e2}
+.readmore.near b{color:var(--blue);font-size:18px}
+.readmore.near li{font-size:17px;line-height:1.7;margin-bottom:10px}
+.readmore b{display:block;margin-bottom:10px;font-size:19px}
+.readmore ul{margin:0;padding-left:1.25em}
+.readmore a{color:var(--blue);font-weight:700;text-decoration:none}
+.readmore a:hover{text-decoration:underline}
+@media(max-width:820px){.tablewrap table{min-width:560px;font-size:18px}.tablewrap{position:relative}.tablewrap::after{content:"表格可左右滑動 →";position:sticky;left:0;display:block;font-size:15px;color:var(--muted);background:var(--soft);border-top:1px solid var(--line);padding:7px 12px;width:100%}}
+@media(max-width:860px){
+ nav.top .container{grid-template-columns:auto 1fr auto;padding:10px 16px;gap:12px}
+ .nav-brand-img img{height:32px}
+ .nav-toggle{display:block;justify-self:end}
+ nav.top ul.nav-menu{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(254,252,248,.98);backdrop-filter:blur(14px);border-bottom:1px solid #d8cdb8;flex-direction:column;gap:0;padding:8px 0;box-shadow:0 10px 24px rgba(107,74,42,.08)}
+ nav.top ul.nav-menu.open{display:flex}
+ nav.top ul.nav-menu li{border-bottom:1px solid #e8dfc9}
+ nav.top ul.nav-menu li:last-child{border-bottom:none}
+ nav.top ul.nav-menu a{display:block;padding:14px 20px;font-size:1.06rem}
+}
+/* 滑鼠暖光暈（與首頁同一支 spotlight.js） */
+body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradient(var(--sp-radius) circle at var(--mx,50%) var(--my,50%),var(--sp-shadow) 0%,var(--sp-shadow-edge) 45%,transparent 75%);pointer-events:none;z-index:9999;mix-blend-mode:multiply;transition:background .06s linear}
+.hero{position:relative;overflow:hidden;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:72px;padding:96px clamp(20px,6vw,88px) 80px;background:linear-gradient(180deg,#fffcf0 0%,#f9e9d2 100%);color:#1a1612;border-bottom:1px solid #d8cdb8}
+.hero .wc{position:absolute;border-radius:50%;filter:blur(60px);pointer-events:none;z-index:0}
+.hero .wc1{width:420px;height:360px;top:-120px;right:-80px;background:#e8884b;opacity:.15}
+.hero .wc2{width:360px;height:300px;bottom:-110px;left:-70px;background:#5f7553;opacity:.13}
+.hero .wc3{width:280px;height:260px;top:34%;left:14%;background:#a08144;opacity:.10}
+.hero>div{flex:none;width:860px;max-width:100%;position:relative;z-index:2}
+.hero-figure{margin:0;width:420px;flex:none;position:relative;z-index:2}
+.hero-figure img{display:block;width:100%;border-radius:16px;border:1px solid #d8cdb8;box-shadow:0 18px 45px rgba(107,74,42,.16);cursor:zoom-in}
+.hero-figure figcaption{margin-top:10px;font-size:14px;line-height:1.6;color:#6a635a}
+.inline-figure{margin:30px auto 8px;max-width:820px}
+.inline-figure img{display:block;width:100%;border-radius:14px;border:1px solid var(--line);box-shadow:var(--shadow);background:#fff;cursor:zoom-in}
+.inline-figure figcaption{font-size:14px;line-height:1.6;color:var(--muted);margin-top:10px}
+.lightbox{position:fixed;inset:0;z-index:10000;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(12,10,8,.92);cursor:zoom-out;backdrop-filter:blur(4px)}
+.lightbox.open{display:flex}.lightbox img{max-width:96vw;max-height:92vh;border-radius:10px;box-shadow:0 24px 60px rgba(0,0,0,.5)}
+.lightbox-close{position:fixed;top:18px;right:24px;color:#fff;font-size:34px;line-height:1;font-weight:700;cursor:pointer;opacity:.85}
+.kicker{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.55rem;color:#7a5c3a;font-weight:500}
+.hero h1{max-width:none;margin:16px 0 18px;font-size:clamp(36px,6vw,72px);line-height:1.08;overflow-wrap:anywhere}
+.hero p{max-width:none;font-size:clamp(18px,2vw,23px);line-height:1.62;color:#3a342d}
+.cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
+.cta a{display:inline-flex;align-items:center;text-decoration:none;border-radius:8px;padding:12px 16px;font-weight:900}
+.cta .primary{background:#fff;color:#1a1612}.cta .ghost{border:1px solid rgba(255,255,255,.32);color:#fff;background:rgba(255,255,255,.08)}
+.section{padding:54px clamp(20px,6vw,88px);border-top:1px solid var(--line)}
+.inner{width:min(1000px,100%);margin:0 auto}
+.section h2{font-size:clamp(26px,4.2vw,48px);line-height:1.12;margin:0 0 18px}
+.section h3{font-size:clamp(21px,3vw,30px);line-height:1.2;margin:30px 0 12px}
+.lead{font-size:clamp(18px,1.6vw,22px);line-height:1.7;color:#3a342d;max-width:900px}
+.section p{font-size:18px;line-height:1.74;color:#3a342d}.section p+p{margin-top:14px}
+.section ul,.section ol{padding-left:1.4em;font-size:18px;line-height:1.74;color:#3a342d}.section li{margin-bottom:8px}
+.meaning{margin:22px 0;padding:16px 18px;border-left:5px solid var(--blue);background:rgba(86,137,184,.12);border-radius:6px;line-height:1.7;font-size:19px}
+.meaning b{display:block;color:var(--blue);margin-bottom:4px}
+.caveat{margin:0 0 8px;padding:16px 18px;border-left:5px solid var(--orange);background:rgba(232,90,79,.1);border-radius:6px;line-height:1.7;font-size:18px;color:#3a342d}
+.caveat b{display:block;color:var(--orange);margin-bottom:4px}
+.infocard{background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px 24px 22px;box-shadow:0 8px 22px rgba(107,74,42,.08);margin-top:8px}
+.infocard-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.info-item{padding:18px 14px 0}
+.info-item b{display:block;font-size:14px;font-weight:900;letter-spacing:.04em;margin-bottom:7px;text-transform:uppercase}
+.info-item:nth-child(1) b{color:var(--green)}.info-item:nth-child(2) b{color:var(--orange)}.info-item:nth-child(3) b{color:var(--blue)}
+.info-item p{margin:0;font-size:17px;line-height:1.6;color:#3a342d}
+.tagrow{display:flex;flex-wrap:wrap;gap:7px;margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
+.tag{font-size:14px;color:var(--muted);background:var(--soft);border:1px solid var(--line);border-radius:999px;padding:4px 11px}
+.duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:24px}
+.duo.stack{grid-template-columns:1fr}
+.duo .card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:22px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.duo .card.a{border-color:var(--orange)}.duo .card.b{border-color:var(--green);box-shadow:0 8px 24px rgba(95,117,83,.16)}
+.duo .card small{display:block;font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.04em;margin-bottom:9px}
+.duo .card.a small{color:var(--orange)}.duo .card.b small{color:var(--green)}
+.duo .card b{display:block;font-size:22px;line-height:1.3;margin-bottom:12px}.duo .card.a b{color:#c0512f}.duo .card.b b{color:#4a7a59}
+.duo .card p{margin:0;color:#3a342d;line-height:1.75;font-size:18px}
+.workflow-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:24px}
+.workflow-step{background:#fff;border:1px solid var(--line);border-radius:8px;padding:18px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.workflow-step small{display:block;color:var(--orange);font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;margin-bottom:9px}
+.workflow-step b{display:block;font-size:18px;line-height:1.3;margin-bottom:9px}
+.workflow-step p{margin:0;color:#3a342d;line-height:1.6;font-size:16px}
+.codeblock{background:var(--dark);color:#f3ead9;border-radius:8px;padding:18px 20px;font:500 14px/1.65 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;overflow-x:auto;white-space:pre-wrap;margin:20px 0;box-shadow:0 8px 22px rgba(107,74,42,.12)}
+.codeblock .c{color:#f6d7a6;font-weight:600}
+.skillcard{background:#fff;border:1px solid var(--green);border-radius:12px;padding:24px;box-shadow:0 10px 26px rgba(95,117,83,.16);margin-top:8px}
+.skillcard b{display:block;font-size:21px;margin-bottom:8px}
+.skillcard p{margin:0 0 16px;font-size:17px;line-height:1.65;color:#3a342d}
+.cta-band{background:#e6f0e5;color:#3a342d}.cta-band .section{border-top:none}
+.cta-band .inner{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(260px,.85fr);gap:26px;align-items:start}
+.cta-band h2{font-size:clamp(26px,4vw,44px);margin:0 0 16px}.cta-band p,.cta-band .lead{color:rgba(58,52,45,.9);font-size:18px;line-height:1.72}
+.cta-card{border:1px solid #cfe0d2;background:#fbfdfa;border-radius:8px;padding:22px}
+.cta-card b{display:block;color:#48b178;margin-bottom:10px;font-size:18px}.cta-card p{margin:0 0 14px}
+.footer{padding:30px clamp(20px,6vw,88px);font-size:14px;color:var(--muted);background:#fff;border-top:1px solid var(--line)}
+.footer-inner{width:min(1000px,100%);margin:0 auto}
+.footer-links{display:flex;flex-wrap:wrap;gap:6px 12px;margin-bottom:14px}.footer-links a{color:var(--blue);font-weight:900;text-decoration:none;font-size:14px}
+.footer-brand{font-weight:900;font-size:15px;margin-bottom:10px}.footer-note{font-size:13px;line-height:1.6}
+@media(max-width:820px){.infocard-grid{grid-template-columns:1fr}.duo{grid-template-columns:1fr}.workflow-grid{grid-template-columns:1fr}.cta-band .inner{grid-template-columns:1fr}.section{padding:40px 20px}.hero{min-height:52vh;flex-direction:column;justify-content:flex-start;align-items:flex-start;gap:24px}.hero>div{width:100%}.hero-figure{width:100%;max-width:560px}}
+@media(max-width:820px){html,body{overflow-x:hidden}.hero h1{word-break:break-word}}
+</style>
+</head>
+<body class="spotlight">
+<!-- 官網共用導航列 nav.top：與首頁/總站同一條，文章不要自己另做極簡 topbar（江江 2026-06-25：要同一個框架、同一條導航列）。把對應頁面的 class="active" 標在自己那欄。
+     ⚠️ 下面 ul.nav-menu 整塊由 preflight 第 5 關 check-bilingual-nav.mjs 做「逐字比對」，
+        塞任何註解、多一個空白、換行位置不同都會被判導航不一致而擋下發布。要說明就寫在 <ul> 外面（像這裡）。
+        2026-08-16 修：原本的 EN 那行說明註解就夾在 <ul> 裡面，導致照範本起手的新文章一律卡第 5 關
+        （llm-rag-agent-mcp 與 rag-three-retrieval-modes 兩篇同時中招）。註解已移出來，<ul> 內保持乾淨。
+        萬一還是被擋，直接跑：node scripts/check-bilingual-nav.mjs --write --only=<你的檔案路徑> -->
+<nav class="top">
+  <div class="container">
+    <a class="nav-brand-img" href="../../index.html"><img src="../../images/footer-signature.png" alt="江江教練 | 江昱德"></a>
+    <button class="nav-toggle" aria-label="選單"><span></span><span></span><span></span></button>
+    <ul class="nav-menu">
+      <li><a href="../../index.html">首頁</a></li>
+      <li><a href="../../knowledge-architecture.html">知識架構</a></li>
+      <li><a href="../../courses.html">課程</a></li>
+      <li><a href="../../articles.html" class="active">深度文章</a></li>
+      <li><a href="../../skills.html">技能包下載</a></li>
+      <li><a href="../../offers.html">服務方案</a></li>
+      <li class="lang-switch"><a href="../../en/articles.html" hreflang="en">EN</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="wc wc1"></div>
+  <div class="wc wc2"></div>
+  <div class="wc wc3"></div>
+  <div>
+    <div class="kicker">AI 應用 / 行銷</div>
+    <h1>Meta 廣告後台可以整段交給 AI 嗎？｜把設定交出去，把判斷留下來</h1>
+    <p>我不會操作 Meta 廣告後台的設定，這次也沒去學。我寫了一份交接單，把瀏覽器交給 AI。</p>
+  </div>
+</section>
+
+<main>
+
+<section class="section" id="start">
+  <div class="inner">
+    <h2>這篇在講什麼</h2>
+    <p class="lead">Meta 今年開了官方端點，可以直接接上 Claude。我不會操作那些設定，這次也沒去學。我做的是寫一份交接單，把能動什麼、不能動什麼、誰來按授權寫清楚，然後把瀏覽器交給 AI。它自己開網頁、找入口、建連接器、啟動授權，停在需要我本人按的那一頁，我按完它接手驗收，讀出我的廣告帳號跟最近七天的成效。這篇記錄整段怎麼跑、它能碰到帳號的哪些東西、權限要在哪一端擋、我踩到什麼坑，以及交出去之後人手上還剩下什麼。</p>
+
+    <div class="duo stack">
+      <div class="card a">
+        <b>適合誰</b>
+        <ul>
+          <li>自己在投 Meta 廣告，一進後台就被那堆設定卡住的人</li>
+          <li>想讓 AI 幫忙看廣告數據，又怕它亂動帳號、亂花錢的人</li>
+          <li>幫客戶投廣告，想先搞清楚 AI 能碰到哪些東西再決定用不用的人</li>
+        </ul>
+      </div>
+      <div class="card b">
+        <b>你可以帶走什麼</b>
+        <ul>
+          <li>一份可以直接複製的交接單，把 AI 不准做的事寫死</li>
+          <li>接上之後的權限設法：哪些工具開一律允許、哪些維持每次詢問</li>
+          <li>一條分界線，判斷哪些事可以交給 AI、哪些必須自己盯</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="intro">
+  <div class="inner">
+    <h2>我不會設定 Meta 後台，這次也沒去學</h2>
+    <p>我不會操作 Meta 廣告後台的設定。那些欄位我沒去研究過。</p>
+    <p>今天晚上我想試一件事：Meta 在今年開了官方的 MCP 端點，可以直接接到 Claude。據我所知，以前要讓程式讀 Meta 的廣告資料，得先去開發者後台建一個應用程式、拿一組叫做 token 的通行碼。這段是我對舊做法的印象，我沒有實際走過，因為我從來沒打算走。</p>
+    <p>我沒有去看文件。我打了一份交接單給 AI，把要做什麼、不准做什麼寫清楚，然後說：你自己去連。</p>
+    <p>它自己開了瀏覽器，找到設定入口，填好欄位，建立連接器，啟動 Facebook 授權，然後停下來等我。我按完授權，它接手驗收，讀出我的兩個廣告帳號，讀出最近七天的成效，還多講了一件我沒問的事。</p>
+    <p>整件事在同一次對話裡跑完。我碰到的只有 Facebook 那幾頁授權畫面。</p>
+    <p>這篇要講的是：這一段實際怎麼跑的、AI 為什麼停在那裡、它接上之後能碰到什麼、我踩到什麼坑，以及人在這個分工裡剩下什麼。</p>
+  </div>
+</section>
+
+<section class="section" id="prerequisites">
+  <div class="inner">
+    <h2>開始之前，你手上要有三樣東西</h2>
+    <p>先把前提講清楚，免得你看到一半才發現做不了。</p>
+    <div class="workflow-grid">
+      <div class="workflow-step">
+        <small>需要 1</small>
+        <b>能加連接器的 Claude 帳號</b>
+        <p>我用的是付費方案。如果你在設定裡找不到 Add custom connector 這顆按鈕，先確認你的方案有沒有這個功能。</p>
+      </div>
+      <div class="workflow-step">
+        <small>需要 2</small>
+        <b>你有權限的 Meta 廣告帳號</b>
+        <p>個人的、企業的都可以。沒有廣告帳號就沒東西可讀。</p>
+      </div>
+      <div class="workflow-step">
+        <small>需要 3</small>
+        <b>一段完整的空檔</b>
+        <p>我這次在同一次對話裡跑完。大部分時間是等 AI 操作跟等頁面載入，真正要你動手的只有授權那幾頁。</p>
+      </div>
+    </div>
+    <p>不需要的東西也講清楚：不需要 Meta 開發者帳號、不需要寫程式、不需要準備任何金鑰或密碼。</p>
+  </div>
+</section>
+
+<section class="section" id="handoff">
+  <div class="inner">
+    <h2>我給 AI 的是一份交接單</h2>
+    <p>如果只看結果，這件事聽起來像「跟 AI 說一句話它就做完了」。實際上我給的是一份交接單，裡面寫了七件事：</p>
+    <table>
+      <thead><tr><th>欄位</th><th>我寫了什麼</th></tr></thead>
+      <tbody>
+        <tr><td>目標</td><td>連上 Meta Ads 官方連接器，並完成唯讀驗證</td></tr>
+        <tr><td>可動範圍</td><td>Claude 的連接器設定、Meta 官方授權頁</td></tr>
+        <tr><td>不可動邊界</td><td>不得建立、修改、暫停、啟用或刪除任何廣告；不得調整預算、受眾、素材或付款設定</td></tr>
+        <tr><td>不做的事</td><td>這輪只完成連接跟唯讀測試，不做廣告優化</td></tr>
+        <tr><td>允許路徑</td><td>只使用 Meta 官方端點，不裝任何第三方套件</td></tr>
+        <tr><td>誰來按</td><td>OAuth 登入、選擇商業資產、最後授權確認，由我本人按</td></tr>
+        <tr><td>停損</td><td>同一條路失敗兩次就停，回報錯誤原文，不要換路硬闖</td></tr>
+      </tbody>
+    </table>
+    <div class="meaning">
+      <b>這份交接單是整件事能放手的原因</b>
+      我不會操作後台，這件事沒有變。改變的是我不用會操作，也能把「不准做什麼」寫得比我自己去點還清楚。
+    </div>
+    <p>這份東西你可以直接拿去改。用法很簡單：把下面這段複製起來，改成你要接的服務，貼進 Claude 的對話框，按送出。</p>
+    <div class="codeblock"><span class="c"># 交接：連接 XXX 並完成唯讀驗證</span>
+
+- 可動範圍：Claude 的 Connectors 設定、XXX 官方授權頁
+- 不可動邊界：不得建立、修改、刪除任何資料；不得調整任何設定或付款資訊
+- 這輪只完成連接與唯讀測試，不執行任何優化或寫入
+- 只使用官方端點，不安裝來源不明的套件
+- OAuth 登入與最後授權確認，由我本人操作，你停在那一頁請我接手
+- 停損：同一條路失敗兩次就停止重試，回報完整錯誤文字與發生步驟
+- 回報格式：做了什麼／驗收結果與證據／哪一步要我本人操作／沒做什麼
+- 不得把 token、cookie、密碼或授權碼貼進對話、終端機或檔案</div>
+    <p>最後那條「回報格式」很重要。少了它，AI 很容易回你一句「完成」，你完全不知道它做到哪裡。</p>
+  </div>
+</section>
+
+<section class="section" id="six-steps">
+  <div class="inner">
+    <h2>AI 自己走完的六個步驟</h2>
+    <p>它實際做的事情，照順序是這樣：</p>
+    <ol>
+      <li>先查 Claude 內建的連接器清單，確認裡面沒有 Meta Ads，所以只能走自訂連接器</li>
+      <li>想去操作 Claude 桌面版的設定，發現桌面版不在它能控制的應用清單裡，改走網頁版</li>
+      <li>開 claude.ai 的設定頁，看到頁面上寫 Connectors 已經從 Settings 搬到 Customize 底下，就轉過去</li>
+      <li>開自訂連接器對話框，填名稱 Meta Ads、填官方網址</li>
+      <li>第二頁的認證設定保留系統自動偵測的值，按新增</li>
+      <li>按下 Connect，Facebook 的商家登入頁跳出來，它停下來叫我</li>
+    </ol>
+    <p>第二步跟第三步是我覺得最有意思的地方。</p>
+    <p>我原本以為它會直接去操作桌面版，結果它試了發現不行，自己換到網頁版。第三步也是，我如果自己去點，會照舊記憶去 Settings 找 Connectors，找不到，然後開始懷疑是不是版本不對。它是直接看到頁面上那行「Connectors have moved to Customize」，就轉過去了。</p>
+    <p>它沒有我的舊記憶，所以不會被舊記憶帶到錯的地方。</p>
+  </div>
+</section>
+
+<section class="section" id="pause-at-auth">
+  <div class="inner">
+    <h2>AI 停在 Facebook 授權頁，因為我事先寫了不准它按</h2>
+    <p>Facebook 的授權頁跳出來的時候，畫面上寫著「連結 Claude 至 ads MCP server？」，下面兩個按鈕：取消、繼續。</p>
+    <p>它沒有按。它停在那裡，跟我說：這一步要你本人按，接下來還會有選擇商業資產跟最後確認，選的時候只勾這次要測試的那個帳號，其他客戶的資產不要勾。</p>
+    <p>滑鼠在它手上，那顆按鈕它點得到。它停下來，是因為交接單裡那行「OAuth 登入、選擇商業資產及最後授權確認，由使用者本人確認」。</p>
+    <p>這件事值得多講一句。我們在談要不要放手給 AI 的時候，常常在談「它會不會做錯」。更該談的是另一個問題：哪些事就算它做得對，也該由人來按？</p>
+    <p>授權就是這一類。授權出去的是我的帳號、我的預算、我的客戶資產。就算 AI 每次都按對，這個動作也該留在我手上，因為出事的時候要負責的人是我。</p>
+    <div class="readmore near">
+      <b>延伸閱讀</b>
+      <ul>
+        <li><a href="../harness-to-loop/">AI 每一步都要我按確認，我可以放手到哪裡？｜從駕馭工程到迴圈工程的那一步</a><br>那篇把「哪些步驟可以讓 AI 自己跑完、哪些一定要停下來等人」整理成一套判斷方式，這裡是它在一個真實授權情境裡長出來的樣子。</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="official-endpoint">
+  <div class="inner">
+    <h2>Meta 官方連接器不用開發者帳號，也不用金鑰</h2>
+    <p>這次接的是 Meta 官方在今年開的端點：</p>
+    <div class="codeblock">https://mcp.facebook.com/ads</div>
+    <p>接法是在 Claude 裡面走 Customize、Connectors、Add custom connector，填名稱跟這個網址，按繼續，再按 Connect，然後走 Facebook 官方的授權流程。</p>
+    <p>沒有建立 Meta 開發者應用程式。沒有輸入任何通行碼。沒有貼任何一組金鑰進對話。</p>
+    <div class="caveat">
+      <b>給比較懂的人的補充</b>
+      按繼續之後會出現一頁認證設定，裡面有個 OAuth client 欄位，三個選項：用 Anthropic 代管的用戶端資料、不填用戶端代號讓系統自動註冊、自己填一組。系統會偵測伺服器支援哪一種並標上 Detected。我保留了它偵測到的那個，直接就連上了。我沒有去研究那三個選項的差別。這裡要誠實一句：連得上只證明它能通，不證明那是最安全的選法，我沒有去驗證第二件事。我判斷可以先這樣，是因為選錯最常見的後果是連不上，畫面會直接告訴你失敗。等一下會講到另一種地方，錯了不會報錯，那種才要自己盯。
+    </div>
+    <div class="readmore near">
+      <b>延伸閱讀</b>
+      <ul>
+        <li><a href="../cli-api-mcp-computer-use/">叫 AI 幫你點餐，就懂 CLI、API、MCP</a><br>如果你還不太確定 MCP 是什麼、跟 API 差在哪，那篇用點餐的比喻把這幾個東西的差別講完了，看完再回來看這一段會更有感覺。</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="ninety-seven-tools">
+  <div class="inner">
+    <h2>接上之後總共 97 個工具，其中 44 個能寫</h2>
+    <p>連上之後，Claude 的連接器設定頁會把這個服務提供的工具全部列出來，分成兩組：</p>
+    <table>
+      <thead><tr><th>分組</th><th>數量</th><th>這組能做什麼</th></tr></thead>
+      <tbody>
+        <tr><td>Read-only tools</td><td>53</td><td>讀廣告帳號、讀成效、讀受眾、讀商品目錄、讀像素事件、查廣告檔案庫</td></tr>
+        <tr><td>Write/delete tools</td><td>44</td><td>建立廣告活動、建廣告組、建廣告、上傳素材、建立與更新自訂受眾、建立與刪除商品目錄項目、把既有 IG 貼文加推廣</td></tr>
+      </tbody>
+    </table>
+    <figure class="inline-figure">
+      <img src="../../images/articles/claude-meta-ads-connector-01-connected.jpg" alt="Claude 連接器設定頁顯示 Meta Ads 已連線，唯讀工具 53 個設為一律允許" loading="lazy">
+      <figcaption>連上之後的設定頁。上方顯示連線狀態與端點網址，Read-only tools 那一組我整組設成 Always allow，右邊每一列的三顆圖示就是單一工具的三檔權限。</figcaption>
+    </figure>
+    <div class="meaning">
+      <b>這 97 個工具全部是廣告，沒有一個可以幫你發文</b>
+      跟粉專、Instagram 有關的工具總共只有幾個，而且全部是讀取：列出你有哪些粉專（三個工具，分別從使用者、企業、廣告帳號三個角度列），以及讀 Instagram 帳號與既有貼文。它們的用途是決定這支廣告掛誰的名義，或把既有的貼文拿去加推廣。
+    </div>
+    <p>要發一篇粉專貼文、要排程 Instagram、要回私訊或留言，這支連接器都做不到。那些要走 Meta 另外兩套不同的介面。</p>
+    <p>如果你想找的是「AI 幫我發社群」，這條路現在還接不上。</p>
+  </div>
+</section>
+
+<section class="section" id="permissions">
+  <div class="inner">
+    <h2>Meta 那端擋不掉寫入權限，能擋的地方在 Claude 這一端</h2>
+    <p>授權的時候，Meta 要的權限是一整包，不能勾選：</p>
+    <div class="codeblock">ads_management、ads_read、catalog_management、
+business_management、pages_show_list、
+instagram_basic、ads_mcp_management</div>
+    <p>裡面的 <code>ads_management</code> 跟 <code>catalog_management</code> 都是可以寫入的權限。你只想給唯讀？Meta 沒有這個選項。這點要先知道，不要以為按下去只是給它看看。</p>
+    <p>真正能擋的地方在 Claude 這一端。連接器設定頁裡，每一個工具都可以獨立設成三種狀態：</p>
+    <table>
+      <thead><tr><th>狀態</th><th>意思</th></tr></thead>
+      <tbody>
+        <tr><td>Always allow</td><td>一律允許，用的時候不會問你</td></tr>
+        <tr><td>Needs approval</td><td>每次用之前跳出來問你，你可以允許一次或拒絕</td></tr>
+        <tr><td>Blocked</td><td>封鎖，AI 完全叫不動</td></tr>
+      </tbody>
+    </table>
+    <figure class="inline-figure">
+      <img src="../../images/articles/claude-meta-ads-connector-02-write-tools.jpg" alt="連接器設定頁的 Write/delete tools 分組，44 個工具整組設為每次詢問" loading="lazy">
+      <figcaption>Write/delete tools 這一組 44 個，我整組維持 Needs approval。上面唯讀那幾列亮著綠色勾勾的是一律允許，對照著看就知道兩組的差別。</figcaption>
+    </figure>
+    <p>我這次的設法：53 個唯讀工具整組設 Always allow，因為這些只是讀，每次都跳出來問很煩，問到後來人會麻木，麻木了那道關卡就等於沒有；44 個寫入刪除工具整組維持 Needs approval，它要動我的廣告，我一定會看到那一頁。</p>
+    <p>如果你完全不打算讓 AI 動廣告，可以把整組設成 Blocked。設了之後 AI 連叫都叫不動，比放在那裡靠自制力可靠。</p>
+    <div class="meaning">
+      <b>搞清楚哪一層在誰手上，比糾結要不要授權有用</b>
+      授權範圍是平台給的，你改不了。工具權限是你自己家的設定，你完全控制得了。這一格是這整件事裡我覺得最值得學起來的地方。
+    </div>
+  </div>
+</section>
+
+<section class="section" id="multi-client">
+  <div class="inner">
+    <h2>如果你手上有好幾個客戶的廣告帳號</h2>
+    <p>這段是為了代操的人寫的，也是我這次沒有測到的地方，講清楚免得你誤會。</p>
+    <p>授權是綁在你個人的 Facebook 身分上。授權流程中間有一頁可以選擇商業資產，那一頁看起來可以只勾其中一個 Business Portfolio 跟一個廣告帳號。我這次就是只勾了自己要測的那個。</p>
+    <div class="caveat">
+      <b>我沒有實測的部分</b>
+      手上同時有多個客戶時，能不能真的把它們互相隔開，我沒有測。我自己只有兩個帳號、都是我自己的，所以不知道多客戶情境下勾選的顆粒度夠不夠細，也不知道之後要換帳號時要不要整個重新授權。
+    </div>
+    <p>如果你是代操，我的建議是先拿自己的帳號或一個授權過的測試帳號跑一次，把授權那一頁的勾選畫面看清楚再決定。不要第一次就拿客戶的帳號試。</p>
+  </div>
+</section>
+
+<section class="section" id="wrong-number">
+  <div class="inner">
+    <h2>連接器列出的工具清單，我第一次讀到的是錯的</h2>
+    <p>這段是我這次踩的坑，寫下來給你避開。</p>
+    <p>連上之後我第一次讀那個工具清單，讀到的是 56 個：5 個寫入、51 個唯讀。我還據此下了結論，說「唯一能寫的五個都是廣告」。</p>
+    <p>後來為了截圖再開一次那個頁面，數字變成 97 個：53 個唯讀、44 個寫入刪除。分組的名字也變了，第一次叫 Interactive tools，重新載入之後叫 Write/delete tools。</p>
+    <p>差別在哪裡？第一次載入的時候，工具清單還沒抓完，頁面就先把當下有的東西畫出來了。我讀到的是一份還在載入中的清單。</p>
+    <div class="meaning">
+      <b>要記住的不是數字，是當下的感覺</b>
+      畫面上有一份完整長相的清單，數字看起來合理，分組看起來合理，沒有任何地方告訴我它還沒載完。
+    </div>
+    <p>回到前面那個 OAuth 選項。那裡可以偷懶，因為選錯會當場報錯。這裡不行，因為讀到不完整的清單不會報錯，它會安安靜靜地給你一個看起來很正常的數字。</p>
+    <p>所以這裡有一條可以帶走的做法：凡是要拿來下判斷的清單、報表、查詢結果，重新載入一次再核對一遍。特別是你打算把這個數字寫進文件、報價單，或給客戶的報告的時候。</p>
+    <p>我這次也是核對第二次才發現的。要不是為了截圖再開一次，這篇文章現在寫的就是錯的數字。</p>
+    <div class="readmore near">
+      <b>延伸閱讀</b>
+      <ul>
+        <li><a href="../ai-said-it-watched-the-video/">AI 交出一份很專業的分析，但它根本沒看過那支影片</a><br>AI 交出來的東西看起來完整、講得頭頭是道，底下卻是空的，這種狀況不限於載入中的清單，那篇講的是同一類問題的另一種樣子。</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="what-it-read">
+  <div class="inner">
+    <h2>AI 讀出兩個帳號、七天全零，還多講了一件我沒問的事</h2>
+    <p>連完之後我開了一個新對話，開啟 Meta Ads，問了一句話：</p>
+    <div class="codeblock">列出我能存取的 Meta 廣告帳號，不要修改任何資料。只做唯讀查詢。</div>
+    <figure class="inline-figure">
+      <img src="../../images/articles/claude-meta-ads-connector-03-accounts.jpg" alt="Claude 讀出兩個 Meta 廣告帳號，整理成含狀態與付款方式的表格" loading="lazy">
+      <figcaption>它讀出兩個帳號，自己整理成表格，並在最後補一句「第二個帳號還沒綁付款方式，要投放得先補上」。帳號 ID 我遮掉了。</figcaption>
+    </figure>
+    <p>它讀出兩個廣告帳號，都是啟用中、幣別台幣，一個是個人帳號、付款方式已經設定好，一個掛在企業底下、付款方式還沒設。它還多講一句：第二個帳號沒綁付款方式，如果要投放得先補上。</p>
+    <p>接著我問最近七天的成效。答案是：花費、觸及、點擊全部是 0。</p>
+    <figure class="inline-figure">
+      <img src="../../images/articles/claude-meta-ads-connector-04-insights.jpg" alt="Claude 讀出最近七天成效全為零，並說明兩檔活動早已跑完，附歷史累計數據表" loading="lazy">
+      <figcaption>它沒有停在那個 0，接著說明原因，並把兩檔活動的歷史累計數字整理成表格。</figcaption>
+    </figure>
+    <p>它沒有停在這個 0。它接著說明原因：這個帳號裡只有兩檔廣告活動，狀態雖然標示啟用中，但投遞狀態是已完成，排程在 2025 年 2 到 3 月就結束了。然後把那兩檔的歷史累計數字整理成一張表給我。</p>
+    <p>最後它加了一段我沒有問的話：</p>
+    <div class="meaning">
+      <b>它自己補上的觀察</b>
+      兩檔預算幾乎相同，但 LINK_CLICKS 那檔的觸及是另一檔的四倍多、CPC 只有四分之一。這通常是目標設定造成的差異，MESSAGES 的競價成本本來就比較高，不見得代表素材有問題，要看你當初想換的是對話量還是曝光量。
+    </div>
+    <p>先翻譯一下這段話裡的詞。LINK_CLICKS 跟 MESSAGES 是投廣告時要選的「目標」，前者告訴 Meta「幫我帶人去點連結」，後者是「幫我帶人來私訊」。CPC 是平均每一次點擊你付了多少錢。同樣的預算，選不同的目標，Meta 會去找不同的人、用不同的方式競價，結果就會差很多。</p>
+    <p>這一段是整晚我覺得最有價值的三十秒。它比對了兩檔的差異，提出一個可能的解釋，而且自己標出了這個解釋的邊界：這可能是目標設定造成的，不見得是素材問題。</p>
+  </div>
+</section>
+
+<section class="section" id="what-stays">
+  <div class="inner">
+    <h2>設定可以交出去，判斷要留下來</h2>
+    <p>前面那段其實推翻了一個很常見的說法：「AI 只會做事，不會判斷。」</p>
+    <p>它剛剛做的就是判斷。它從兩行數字裡看出差異、提出解釋，還標出這個解釋的不確定性。</p>
+    <p>所以「把判斷留下來」要講精確一點。AI 會判斷，只是有三件事沒辦法交出去：</p>
+    <div class="workflow-grid">
+      <div class="workflow-step">
+        <small>留下來 1</small>
+        <b>決定要問什麼</b>
+        <p>我如果沒問「最近七天成效」，它不會自己跑來跟我講這件事。問題是我出的。</p>
+      </div>
+      <div class="workflow-step">
+        <small>留下來 2</small>
+        <b>判斷它給的解釋對不對</b>
+        <p>它說 MESSAGES 的競價成本本來就比較高。這句話合不合理，我得懂目標設定跟競價機制才知道。我如果不懂，我拿到的就只是一段聽起來很專業的話，然後照著做。</p>
+      </div>
+      <div class="workflow-step">
+        <small>留下來 3</small>
+        <b>拍板</b>
+        <p>看完這個比較之後，下一檔要投 LINK_CLICKS 還是 MESSAGES，這是我的生意，錢是我出的，帳也算在我頭上。</p>
+      </div>
+    </div>
+    <div class="meaning">
+      <b>分界線可以更簡單地畫</b>
+      錯了會當場報錯的事，交出去；錯了不會報錯、只會安靜地流進你的決策的事，自己盯著。
+    </div>
+    <p>OAuth 那三個選項錯了會連不上，所以我讓 AI 選。工具清單少了 41 個不會報錯，所以我核對第二次。廣告目標選錯不會報錯，要等成效表出來才看得出來，所以那個必須我自己來。</p>
+    <div class="caveat">
+      <b>這條分界不是萬用的</b>
+      有些設定錯了照樣連得上，只是留下你當下看不到的風險。所以它是起手判準，不是免死金牌。真的要緊的東西，該核對還是要核對第二次。
+    </div>
+    <p>我這次省下來的，是設定、串接、找入口、填欄位這一層。這一層的累積性很低，你今天研究完 Meta 的授權流程，明天換一家多半又是另一套。這一層可以整段交出去。</p>
+    <p>留下來的那一層，是懂你的市場、懂你的受眾、看得懂數字代表什麼、決定哪些動作 AI 不准自己做、以及有辦法驗證它給你的解讀。這一層學了大部分帶得走，換工具的時候不用整個重來。</p>
+    <p>我自己也不是每一格都很強。上面第二點我算勉強及格，那兩檔廣告是我兩年前投的，當時我沒想清楚目標要選什麼。AI 今天講的那件事，我兩年前如果就知道，那筆錢會花得比較有價值。</p>
+  </div>
+</section>
+
+<section class="section" id="three-steps">
+  <div class="inner">
+    <h2>你可以照著做的三步</h2>
+    <p>如果你想自己試一次：</p>
+    <div class="workflow-grid">
+      <div class="workflow-step">
+        <small>第一步</small>
+        <b>先寫交接單再開始</b>
+        <p>不要打「幫我接 Meta 廣告」就按送出。把上面那份範本改成你的版本，重點是「不可動邊界」跟「誰來按授權」這兩行。花三分鐘寫，比事後補救划算。</p>
+      </div>
+      <div class="workflow-step">
+        <small>第二步</small>
+        <b>接上之後先去看工具權限頁</b>
+        <p>路徑是 claude.ai、Customize、Connectors、點你剛接上的那個連接器。把 Write/delete 那組設成 Needs approval 或 Blocked，再開始用。先設好再用，不要想說「我等下記得看」。</p>
+      </div>
+      <div class="workflow-step">
+        <small>第三步</small>
+        <b>第一次只查唯讀的東西，並核對一次</b>
+        <p>讓它列帳號、讀成效，重新載入再核對一遍，看它撈出來的跟你在後台看到的對不對得起來。對得起來再往下走。</p>
+      </div>
+    </div>
+    <div class="caveat">
+      <b>還有一件事先別做</b>
+      不要因為它連上了、看起來很順，就順手把寫入工具也開成 Always allow。那個「每次問你」的視窗跳出來很煩，它是你跟「AI 自己建了一檔廣告開始花錢」之間唯一那道門。
+    </div>
+  </div>
+</section>
+
+<section class="section" id="closing">
+  <div class="inner">
+    <h2>跳過的是操作，剩下的還是老問題</h2>
+    <p>這次我從頭到尾沒有點過連接器的任何一個設定。我碰到的只有 Facebook 那幾頁授權，那幾頁我堅持自己按。</p>
+    <p>這件事沒有很厲害。它代表的是一件比較平淡的事：那些我們一直以為要先學會才能開始做的東西，有一部分現在可以先跳過了。</p>
+    <p>跳過的是操作。留下來的還是老問題：市場懂不懂、自己要什麼知不知道。</p>
+    <p>這兩題我自己也還在補。那兩檔 2025 年的廣告就是證據，當時我沒想清楚目標要選什麼，AI 今天講的那件事我兩年前如果就知道，那筆錢會花得比較有價值。</p>
+
+    <div class="readmore">
+      <b>這篇提到過的</b>
+      <ul>
+        <li><a href="../harness-to-loop/">AI 每一步都要我按確認，我可以放手到哪裡？｜從駕馭工程到迴圈工程的那一步</a><br>把「哪些步驟該讓 AI 自己跑、哪些一定要停下來等人」整理成一套判斷方式。</li>
+        <li><a href="../cli-api-mcp-computer-use/">叫 AI 幫你點餐，就懂 CLI、API、MCP</a><br>用點餐的比喻講清楚 MCP 跟 API 差在哪。</li>
+        <li><a href="../ai-said-it-watched-the-video/">AI 交出一份很專業的分析，但它根本沒看過那支影片</a><br>AI 產出看起來完整、底下卻是空的那類問題。</li>
+      </ul>
+      <b style="margin-top:18px">再往前後延伸</b>
+      <ul>
+        <li><a href="../let-ai-do-the-setup/">換電腦，設定又要重來一次嗎？：我把 OBS 交給 AI，一個選項都沒點過</a><br>同樣是「不會設定就交出去」，那篇是本機軟體，這篇是雲端服務的授權，兩篇的邊界畫法可以對照著看。</li>
+        <li><a href="../ai-tools-professional-judgment/">工具跟別人一樣，我的差異剩什麼？：拉開差距的是判斷力</a><br>操作能交出去之後，剩下的那一層是什麼，那篇講得比這裡完整。</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">江江教練 · AI 知識管理</div>
+    <div class="footer-links">
+      <a href="../../articles.html">← 回深度文章總站</a>
+      <a href="../../index.html">首頁</a>
+      <a href="../../learn.html">自學資源</a>
+      <a href="../../skills.html">技能包下載</a>
+      <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">LINE 社群 ↗</a>
+      <a href="https://www.threads.com/@jiang_yude_coach" target="_blank" rel="noopener">Threads ↗</a>
+      <a href="https://vocus.cc/salon/Jiang_Coach" target="_blank" rel="noopener">方格子 ↗</a>
+    </div>
+    <div class="footer-note">這是一篇教學文章，整理我對「Meta 廣告後台可以整段交給 AI 嗎？｜把設定交出去，把判斷留下來」的看法，供你參考。</div>
+  </div>
+</footer>
+
+<!-- 點圖放大 lightbox（hero 與內文圖通用，已內建，不用每篇重加） -->
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <span class="lightbox-close" aria-label="關閉">×</span>
+  <img id="lightbox-img" src="" alt="放大檢視">
+</div>
+<script>
+(function(){
+  var box=document.getElementById('lightbox'),boxImg=document.getElementById('lightbox-img');
+  document.querySelectorAll('.hero-figure img,.inline-figure img').forEach(function(img){
+    img.addEventListener('click',function(){boxImg.src=img.currentSrc||img.src;boxImg.alt=img.alt||'放大檢視';box.classList.add('open');box.setAttribute('aria-hidden','false');});
+  });
+  function close(){box.classList.remove('open');box.setAttribute('aria-hidden','true');boxImg.src='';}
+  box.addEventListener('click',close);
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
+})();
+</script>
+
+<script src="../../image-interactions.js"></script>
+
+<!-- 官網共用：滑鼠暖光暈 + 導航列漢堡選單 -->
+<script src="../../spotlight.js"></script>
+
+<!-- 文章自動互聯（相關文章）：兩支已內建，順序不可顛倒，不用再另外加 -->
+<script src="../../articles-data.js"></script>
+<script src="../../related-render.js"></script>
+  <script src="/mika-chat-widget.js" defer></script>
+</body>
+</html>
