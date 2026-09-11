@@ -41,6 +41,24 @@ window.ARTICLES = [
   },
 
   {
+    id: "claude-meta-ads-connector",
+    url: "articles/claude-meta-ads-connector/",
+    date: "2026-09-10",
+    updated: "2026-09-10",
+    title: "Meta 廣告後台可以整段交給 AI 嗎？｜把設定交出去，把判斷留下來",
+    problem: "自己在投 Meta 廣告，但一進後台就被設定卡住；想讓 AI 幫忙看數據，又怕它亂動帳號亂花錢。",
+    audience: "自己投 Meta 廣告的一人公司與小型經營者，以及想先搞清楚 AI 能碰到什麼再決定用不用的行銷工作者。",
+    summary: "Meta 今年開了官方 MCP 端點，可以用 Claude 的自訂連接器直接接，不用開發者帳號、不用金鑰。我不會操作那些設定，寫了一份交接單就把瀏覽器交給 AI，它自己建好連接器、停在 Facebook 授權頁等我本人按。這篇記錄整段怎麼跑、接上之後 97 個工具（唯讀 53、寫入刪除 44）能碰到帳號的哪些東西、為什麼權限只能在 Claude 這一端擋、我怎麼讀錯工具數字，以及操作交出去之後人手上還剩下什麼。",
+    tags: {
+      topic: ["AI應用", "工具操作", "AI工作流"],
+      level: ["基礎"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["harness-to-loop", "cli-api-mcp-computer-use", "ai-said-it-watched-the-video", "let-ai-do-the-setup", "ai-tools-professional-judgment"]
+  },
+
+  {
     id: "how-to-verify-ai-rule-changes",
     url: "articles/how-to-verify-ai-rule-changes/",
     date: "2026-09-10",
