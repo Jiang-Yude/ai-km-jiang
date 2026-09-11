@@ -1,0 +1,764 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="index,follow">
+<title>要讓 AI 自己跑，我到底該怎麼說？｜四種說法其實是同一套，差別只在三個開關</title>
+<meta name="description" content="我對 AI 說「跑 loop」有四種講法，今天才把它們整併成同一套機制。四個入口只差三件事：開跑前問不問、要不要加抗辯層、卡住時停不停。判級與審查強度四種都一樣，由任務決定。附三個實跑案例與一段可直接複製的最小指令。">
+<link rel="canonical" href="https://jiangyude.com/articles/loop-four-entries/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="要讓 AI 自己跑，我到底該怎麼說？｜四種說法其實是同一套，差別只在三個開關｜江江教練">
+<!-- 分享封面：hero 文字填好後在 repo 根目錄跑 `node scripts/og-shot.mjs loop-four-entries` 自動截 1200×630 到 images/og/loop-four-entries.jpg（見 README「文章分享封面（OG 圖）機制」）。別退回 intro-jiang.png 直式人像，會被裁成只剩脖子。 -->
+<meta property="og:image" content="https://jiangyude.com/images/og/loop-four-entries.jpg">
+<meta property="og:description" content="我對 AI 說「跑 loop」有四種講法，今天才把它們整併成同一套機制。四個入口只差三件事：開跑前問不問、要不要加抗辯層、卡住時停不停。判級與審查強度四種都一樣，由任務決定。附三個實跑案例與一段可直接複製的最小指令。">
+<meta property="og:url" content="https://jiangyude.com/articles/loop-four-entries/">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:site_name" content="江江教練 · AI 知識管理">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="要讓 AI 自己跑，我到底該怎麼說？｜四種說法其實是同一套，差別只在三個開關｜江江教練">
+<meta name="twitter:image" content="https://jiangyude.com/images/og/loop-four-entries.jpg">
+<meta name="twitter:description" content="我對 AI 說「跑 loop」有四種講法，今天才把它們整併成同一套機制。四個入口只差三件事：開跑前問不問、要不要加抗辯層、卡住時停不停。判級與審查強度四種都一樣，由任務決定。附三個實跑案例與一段可直接複製的最小指令。">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"要讓 AI 自己跑，我到底該怎麼說？｜四種說法其實是同一套，差別只在三個開關","description":"我對 AI 說「跑 loop」有四種講法，今天才把它們整併成同一套機制。四個入口只差三件事：開跑前問不問、要不要加抗辯層、卡住時停不停。判級與審查強度四種都一樣，由任務決定。附三個實跑案例與一段可直接複製的最小指令。","author":{"@type":"Person","name":"江昱德","alternateName":"江江教練","jobTitle":"隱性知識提煉師、AI 應用規劃師"},"isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://jiangyude.com/"},"inLanguage":"zh-Hant","url":"https://jiangyude.com/articles/loop-four-entries/"}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{--ink:#1a1612;--paper:#fefcf8;--muted:#6a635a;--line:#d8cdb8;--green:#5f7553;--blue:#5689b8;--orange:#e85a4f;--soft:#faf5ec;--dark:#2a2018;--shadow:0 18px 45px rgba(107,74,42,.14);--sp-shadow:hsla(35,50%,60%,.15);--sp-shadow-edge:hsla(35,50%,68%,.03);--sp-radius:400px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC","Segoe UI",sans-serif}
+a{color:inherit}
+/* 官網共用導航列 nav.top（與首頁/文章總站同一條） */
+nav.top{position:sticky;top:0;background:rgba(254,252,248,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid #d8cdb8;z-index:100}
+nav.top .container{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:24px;padding:14px 32px}
+.nav-brand-img{justify-self:start;display:flex;align-items:center;text-decoration:none;flex-shrink:0;transition:opacity .2s}
+.nav-brand-img:hover{opacity:.8}.nav-brand-img img{height:40px;width:auto;display:block}
+nav.top ul.nav-menu{justify-self:end;display:flex;gap:22px;list-style:none;margin:0;padding:0;font-size:.95rem;white-space:nowrap}
+nav.top ul.nav-menu a{color:#3a342d;text-decoration:none;transition:color .2s;font-weight:500;white-space:nowrap}
+nav.top ul.nav-menu a:hover{color:#1a1612}nav.top ul.nav-menu a.active{color:#1a1612;font-weight:700}
+.nav-toggle{display:none;background:none;border:none;padding:6px;cursor:pointer;width:36px;height:36px;position:relative}
+.nav-toggle span{display:block;position:absolute;left:8px;right:8px;height:2px;background:#1a1612;border-radius:2px;transition:transform .25s,opacity .25s,top .25s}
+.nav-toggle span:nth-child(1){top:11px}.nav-toggle span:nth-child(2){top:17px}.nav-toggle span:nth-child(3){top:23px}
+.nav-toggle.open span:nth-child(1){top:17px;transform:rotate(45deg)}.nav-toggle.open span:nth-child(2){opacity:0}.nav-toggle.open span:nth-child(3){top:17px;transform:rotate(-45deg)}
+.tablewrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:22px 0;border:1px solid var(--line);border-radius:10px;background:#fff;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.tablewrap table{border-collapse:collapse;width:100%;min-width:600px;font-size:18px;line-height:1.65}
+.tablewrap .zh{display:block;margin-top:5px;font-size:16px;line-height:1.55;color:var(--muted);font-weight:400}
+.tablewrap th,.tablewrap td{padding:12px 14px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top;color:#3a342d}
+.tablewrap thead th{background:var(--soft);font-weight:900;font-size:18px;color:#1a1612;white-space:nowrap}
+.tablewrap tbody tr:last-child td{border-bottom:none}
+.tablewrap td code,.section code{background:var(--soft);border:1px solid var(--line);border-radius:5px;padding:1px 6px;font:500 15px/1.5 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace}
+.inline-figure.wide{max-width:1000px}
+.toc{margin:26px 0 0;padding:20px 22px;background:#fff;border:1px solid var(--line);border-radius:10px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.toc>b{display:block;font-size:15px;letter-spacing:.05em;color:var(--green);margin-bottom:10px}
+.toc ol{margin:0;padding-left:1.35em;font-size:18px;line-height:1.7}
+.toc li{margin-bottom:7px;color:#3a342d}
+.toc a{color:var(--blue);font-weight:700;text-decoration:none}.toc a:hover{text-decoration:underline}
+.toc-hint{margin:12px 0 0!important;font-size:18px!important;color:var(--muted)!important;border-top:1px solid var(--line);padding-top:12px}
+.readmore{margin-top:24px;padding:20px 22px;background:var(--soft);border:1px solid var(--line);border-radius:12px}
+.readmore.near{margin:26px 0 6px;background:rgba(86,137,184,.07);border-color:#bcd0e2}
+.readmore.near b{color:var(--blue);font-size:18px}
+.readmore.near li{font-size:17px;line-height:1.7;margin-bottom:10px}
+.readmore b{display:block;margin-bottom:10px;font-size:19px}
+.readmore ul{margin:0;padding-left:1.25em}
+.readmore a{color:var(--blue);font-weight:700;text-decoration:none}
+.readmore a:hover{text-decoration:underline}
+@media(max-width:820px){.tablewrap table{min-width:560px;font-size:18px}.tablewrap{position:relative}.tablewrap::after{content:"表格可左右滑動 →";position:sticky;left:0;display:block;font-size:15px;color:var(--muted);background:var(--soft);border-top:1px solid var(--line);padding:7px 12px;width:100%}}
+@media(max-width:860px){
+ nav.top .container{grid-template-columns:auto 1fr auto;padding:10px 16px;gap:12px}
+ .nav-brand-img img{height:32px}
+ .nav-toggle{display:block;justify-self:end}
+ nav.top ul.nav-menu{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(254,252,248,.98);backdrop-filter:blur(14px);border-bottom:1px solid #d8cdb8;flex-direction:column;gap:0;padding:8px 0;box-shadow:0 10px 24px rgba(107,74,42,.08)}
+ nav.top ul.nav-menu.open{display:flex}
+ nav.top ul.nav-menu li{border-bottom:1px solid #e8dfc9}
+ nav.top ul.nav-menu li:last-child{border-bottom:none}
+ nav.top ul.nav-menu a{display:block;padding:14px 20px;font-size:1.06rem}
+}
+/* 滑鼠暖光暈（與首頁同一支 spotlight.js） */
+body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradient(var(--sp-radius) circle at var(--mx,50%) var(--my,50%),var(--sp-shadow) 0%,var(--sp-shadow-edge) 45%,transparent 75%);pointer-events:none;z-index:9999;mix-blend-mode:multiply;transition:background .06s linear}
+.hero{position:relative;overflow:hidden;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:72px;padding:96px clamp(20px,6vw,88px) 80px;background:linear-gradient(180deg,#fffcf0 0%,#f9e9d2 100%);color:#1a1612;border-bottom:1px solid #d8cdb8}
+.hero .wc{position:absolute;border-radius:50%;filter:blur(60px);pointer-events:none;z-index:0}
+.hero .wc1{width:420px;height:360px;top:-120px;right:-80px;background:#e8884b;opacity:.15}
+.hero .wc2{width:360px;height:300px;bottom:-110px;left:-70px;background:#5f7553;opacity:.13}
+.hero .wc3{width:280px;height:260px;top:34%;left:14%;background:#a08144;opacity:.10}
+.hero>div{flex:none;width:860px;max-width:100%;position:relative;z-index:2}
+.hero-figure{margin:0;width:320px;flex:none;position:relative;z-index:2}
+.hero-figure img{display:block;width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:16px;border:1px solid #d8cdb8;box-shadow:0 18px 45px rgba(107,74,42,.16);cursor:zoom-in}
+.hero-figure figcaption{margin-top:10px;font-size:14px;line-height:1.6;color:#6a635a}
+.inline-figure{margin:26px auto 8px;max-width:820px}
+.inline-figure.portrait{max-width:400px}
+.inline-figure img{display:block;width:100%;border-radius:14px;border:1px solid var(--line);box-shadow:var(--shadow);background:#fff;cursor:zoom-in}
+.inline-figure figcaption{font-size:14px;line-height:1.6;color:var(--muted);margin-top:10px;text-align:center}
+.inline-figure{margin:30px auto 8px;max-width:820px}
+.inline-figure img{display:block;width:100%;border-radius:14px;border:1px solid var(--line);box-shadow:var(--shadow);background:#fff;cursor:zoom-in}
+.inline-figure figcaption{font-size:14px;line-height:1.6;color:var(--muted);margin-top:10px}
+.lightbox{position:fixed;inset:0;z-index:10000;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(12,10,8,.92);cursor:zoom-out;backdrop-filter:blur(4px)}
+.lightbox.open{display:flex}.lightbox img{max-width:96vw;max-height:92vh;border-radius:10px;box-shadow:0 24px 60px rgba(0,0,0,.5)}
+.lightbox-close{position:fixed;top:18px;right:24px;color:#fff;font-size:34px;line-height:1;font-weight:700;cursor:pointer;opacity:.85}
+.kicker{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.55rem;color:#7a5c3a;font-weight:500}
+.hero h1{max-width:none;margin:16px 0 18px;font-size:clamp(36px,6vw,72px);line-height:1.08;overflow-wrap:anywhere}
+.hero p{max-width:none;font-size:clamp(18px,2vw,23px);line-height:1.62;color:#3a342d}
+.cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
+.cta a{display:inline-flex;align-items:center;text-decoration:none;border-radius:8px;padding:12px 16px;font-weight:900}
+.cta .primary{background:#fff;color:#1a1612}.cta .ghost{border:1px solid rgba(255,255,255,.32);color:#fff;background:rgba(255,255,255,.08)}
+.section{padding:54px clamp(20px,6vw,88px);border-top:1px solid var(--line)}
+.inner{width:min(1000px,100%);margin:0 auto}
+.section h2{font-size:clamp(26px,4.2vw,48px);line-height:1.12;margin:0 0 18px}
+.section h3{font-size:clamp(21px,3vw,30px);line-height:1.2;margin:30px 0 12px}
+.lead{font-size:clamp(18px,1.6vw,22px);line-height:1.7;color:#3a342d;max-width:900px}
+.section p{font-size:18px;line-height:1.74;color:#3a342d}.section p+p{margin-top:14px}
+.section ul,.section ol{padding-left:1.4em;font-size:18px;line-height:1.74;color:#3a342d}.section li{margin-bottom:8px}
+.meaning{margin:22px 0;padding:16px 18px;border-left:5px solid var(--blue);background:rgba(86,137,184,.12);border-radius:6px;line-height:1.7;font-size:19px}
+.meaning b{display:block;color:var(--blue);margin-bottom:4px}
+.caveat{margin:0 0 8px;padding:16px 18px;border-left:5px solid var(--orange);background:rgba(232,90,79,.1);border-radius:6px;line-height:1.7;font-size:18px;color:#3a342d}
+.caveat b{display:block;color:var(--orange);margin-bottom:4px}
+.infocard{background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px 24px 22px;box-shadow:0 8px 22px rgba(107,74,42,.08);margin-top:8px}
+.infocard-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.info-item{padding:18px 14px 0}
+.info-item b{display:block;font-size:14px;font-weight:900;letter-spacing:.04em;margin-bottom:7px;text-transform:uppercase}
+.info-item:nth-child(1) b{color:var(--green)}.info-item:nth-child(2) b{color:var(--orange)}.info-item:nth-child(3) b{color:var(--blue)}
+.info-item p{margin:0;font-size:17px;line-height:1.6;color:#3a342d}
+.tagrow{display:flex;flex-wrap:wrap;gap:7px;margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
+.tag{font-size:14px;color:var(--muted);background:var(--soft);border:1px solid var(--line);border-radius:999px;padding:4px 11px}
+.duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:24px}
+.duo.stack{grid-template-columns:1fr}
+.duo .card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:22px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.duo .card.a{border-color:var(--orange)}.duo .card.b{border-color:var(--green);box-shadow:0 8px 24px rgba(95,117,83,.16)}
+.duo .card small{display:block;font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.04em;margin-bottom:9px}
+.duo .card.a small{color:var(--orange)}.duo .card.b small{color:var(--green)}
+.duo .card b{display:block;font-size:22px;line-height:1.3;margin-bottom:12px}.duo .card.a b{color:#c0512f}.duo .card.b b{color:#4a7a59}
+.duo .card p{margin:0;color:#3a342d;line-height:1.75;font-size:18px}
+.workflow-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:24px}
+.workflow-step{background:#fff;border:1px solid var(--line);border-radius:8px;padding:18px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.workflow-step small{display:block;color:var(--orange);font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;margin-bottom:9px}
+.workflow-step b{display:block;font-size:18px;line-height:1.3;margin-bottom:9px}
+.workflow-step p{margin:0;color:#3a342d;line-height:1.6;font-size:16px}
+.codeblock{background:var(--dark);color:#f3ead9;border-radius:8px;padding:18px 20px;font:500 14px/1.65 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;overflow-x:auto;white-space:pre-wrap;margin:20px 0;box-shadow:0 8px 22px rgba(107,74,42,.12)}
+.codeblock .c{color:#f6d7a6;font-weight:600}
+.skillcard{background:#fff;border:1px solid var(--green);border-radius:12px;padding:24px;box-shadow:0 10px 26px rgba(95,117,83,.16);margin-top:8px}
+.skillcard b{display:block;font-size:21px;margin-bottom:8px}
+.skillcard p{margin:0 0 16px;font-size:17px;line-height:1.65;color:#3a342d}
+.cta-band{background:#e6f0e5;color:#3a342d}.cta-band .section{border-top:none}
+.cta-band .inner{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(260px,.85fr);gap:26px;align-items:start}
+.cta-band h2{font-size:clamp(26px,4vw,44px);margin:0 0 16px}.cta-band p,.cta-band .lead{color:rgba(58,52,45,.9);font-size:18px;line-height:1.72}
+.cta-card{border:1px solid #cfe0d2;background:#fbfdfa;border-radius:8px;padding:22px}
+.cta-card b{display:block;color:#48b178;margin-bottom:10px;font-size:18px}.cta-card p{margin:0 0 14px}
+.footer{padding:30px clamp(20px,6vw,88px);font-size:14px;color:var(--muted);background:#fff;border-top:1px solid var(--line)}
+.footer-inner{width:min(1000px,100%);margin:0 auto}
+.footer-links{display:flex;flex-wrap:wrap;gap:6px 12px;margin-bottom:14px}.footer-links a{color:var(--blue);font-weight:900;text-decoration:none;font-size:14px}
+.footer-brand{font-weight:900;font-size:15px;margin-bottom:10px}.footer-note{font-size:13px;line-height:1.6}
+@media(max-width:820px){.infocard-grid{grid-template-columns:1fr}.duo{grid-template-columns:1fr}.workflow-grid{grid-template-columns:1fr}.cta-band .inner{grid-template-columns:1fr}.section{padding:40px 20px}.hero{min-height:52vh;flex-direction:column;justify-content:flex-start;align-items:flex-start;gap:24px}.hero>div{width:100%}.hero-figure{width:100%;max-width:560px}}
+@media(max-width:820px){html,body{overflow-x:hidden}.hero h1{word-break:break-word}}
+</style>
+</head>
+<body class="spotlight">
+<!-- 官網共用導航列 nav.top：與首頁/總站同一條，文章不要自己另做極簡 topbar（江江 2026-06-25：要同一個框架、同一條導航列）。把對應頁面的 class="active" 標在自己那欄。
+     ⚠️ 下面 ul.nav-menu 整塊由 preflight 第 5 關 check-bilingual-nav.mjs 做「逐字比對」，
+        塞任何註解、多一個空白、換行位置不同都會被判導航不一致而擋下發布。要說明就寫在 <ul> 外面（像這裡）。
+        2026-08-16 修：原本的 EN 那行說明註解就夾在 <ul> 裡面，導致照範本起手的新文章一律卡第 5 關
+        （llm-rag-agent-mcp 與 rag-three-retrieval-modes 兩篇同時中招）。註解已移出來，<ul> 內保持乾淨。
+        萬一還是被擋，直接跑：node scripts/check-bilingual-nav.mjs --write --only=<你的檔案路徑> -->
+<nav class="top">
+  <div class="container">
+    <a class="nav-brand-img" href="../../index.html"><img src="../../images/footer-signature.png" alt="江江教練 | 江昱德"></a>
+    <button class="nav-toggle" aria-label="選單"><span></span><span></span><span></span></button>
+    <ul class="nav-menu">
+      <li><a href="../../index.html">首頁</a></li>
+      <li><a href="../../knowledge-architecture.html">知識架構</a></li>
+      <li><a href="../../courses.html">課程</a></li>
+      <li><a href="../../articles.html" class="active">深度文章</a></li>
+      <li><a href="../../skills.html">技能包下載</a></li>
+      <li><a href="../../offers.html">服務方案</a></li>
+      <li class="lang-switch"><a href="../../en/articles.html" hreflang="en">EN</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="wc wc1"></div>
+  <div class="wc wc2"></div>
+  <div class="wc wc3"></div>
+  <div>
+    <div class="kicker">AI 工作流 / 迴圈工程</div>
+    <h1>要讓 AI 自己跑，我到底該怎麼說？｜四種說法其實是同一套，差別只在三個開關</h1>
+    <p>四種講法各自長了幾個月，今天早上一頁比較表把我逼到牆角：我從來沒寫下它們是什麼關係。</p>
+  </div>
+  <figure class="hero-figure">
+    <img src="../../images/articles/loop-four-entries-01.jpg" alt="咪卡探頭看著四張便條，上面各寫一句 loop 講法：只說 loop、把這件事跑 loop、Loop 護欄、全自動 loop" loading="lazy">
+    <figcaption>這就是那四句。貼得歪歪斜斜、彼此沒有連線，是它們在我規則庫裡原本的樣子。</figcaption>
+  </figure>
+</section>
+
+<main>
+
+<section class="section" id="start">
+  <div class="inner">
+    <p class="lead">我對 AI 說「跑 loop」，有四種講法：只說 loop、把這件事跑 loop、Loop 護欄、全自動 loop。它們在不同時間、為了不同問題長出來，各自都有規則條文，但從來沒有一句話說它們是什麼關係。今天我把它們整併成同一套機制的四種入口，這篇寫的是整併之後的樣子：四個入口只差三件事，而決定「要被檢查多嚴格」的那一格，四種說法完全一樣。</p>
+
+    <div class="duo stack">
+      <div class="card">
+        <b style="font-size:22px;color:#c2703d">適合誰</b>
+        <ul>
+          <li>試過叫 AI 自己跑，結果它跑到一半停下來問你一個你看不懂的問題，你就放棄了。</li>
+          <li>已經在用 AI 做事，也寫過自訂指令，但每次都要盯著，不確定什麼時候可以放手。</li>
+          <li>要把一套 AI 做事的方法交給團隊或客戶，需要一份講得清楚、出事有交代的結構。</li>
+        </ul>
+      </div>
+      <div class="card">
+        <b style="font-size:22px;color:#4a7c59">你可以帶走什麼</b>
+        <ul>
+          <li>一段可以直接複製貼上的指令，貼下去 AI 就會自己填完成證據、停止條件與換路條件，不必先有任何規則檔。</li>
+          <li>一張授權詞對照表：你說「可以建議」「你決定」「做吧」各自代表什麼權限，可以直接貼進團隊的教育訓練。</li>
+          <li>一個判斷方式：把「AI 要不要問我」跟「這件事要被檢查多嚴格」拆開，前者你可以調，後者交給任務本身決定。</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="section" id="why">
+  <div class="inner">
+    <h2>一頁比較表，逼我承認一件事</h2>
+
+    <p>我對 AI 說「跑 loop」，有四種講法：只說 loop、把這件事跑 loop、Loop 護欄、全自動 loop。這四句我都在用，用了好幾個月，但今天早上一頁比較表逼我承認：我從來沒寫下它們是什麼關係，各自散在規則庫不同地方。</p>
+
+    <div class="caveat">
+      <p><b>先講清楚，這句話今天才成立，不是我發現了一個一直存在的事實。</b>四個講法過去各自運作、各自有條文，我沒辦法宣稱它們過去就是同一套。今天做的事是整併：把它們收進同一組底層條文，只留幾個明確的差別。</p>
+    </div>
+
+    <p>這篇文章寫的是整併之後的樣子：它們差在哪、怎麼選、以及三個實跑案例。</p>
+  </div>
+</section>
+
+<section class="section" id="structure">
+  <div class="inner">
+    <h2>四種說法整併之後：一組不動的核心，三個開關</h2>
+
+    <p>整併的第一句話是這樣寫的：</p>
+
+    <blockquote>這不是四套 Loop，是同一套 Loop 的四種入口與執行強度。</blockquote>
+
+    <p>底層共用一整組條文，包括任務分級、驗收契約、停止條件、換路煞車、授權紅線、收尾欄位。四個入口只改三件事：</p>
+
+    <div class="meaning">
+      <b>開跑前問不問。要不要加抗辯層。卡住的時候停不停。</b>
+    </div>
+
+    <div class="tablewrap">
+    <table>
+      <thead><tr><th>說法</th><th>開跑前問不問</th><th>要不要加抗辯層</th><th>卡住時</th><th>判級與審查強度</th></tr></thead>
+      <tbody>
+        <tr><td>只說 loop</td><td>前文能辨識任務就不問，三種例外先確認一次</td><td>依級數自動決定</td><td>依停止條件與換路煞車</td><td><b>由任務決定</b></td></tr>
+        <tr><td>把這件事跑 loop</td><td>通常不問</td><td>依級數自動決定</td><td>同上</td><td><b>由任務決定</b></td></tr>
+        <tr><td>Loop 護欄</td><td>缺授權才問</td><td>明確加上</td><td>同上，另加「無法收斂的分歧交我拍板」</td><td><b>由任務決定</b></td></tr>
+        <tr><td>全自動 loop</td><td>開跑前一次問完，開跑後零提問</td><td>依級數自動決定，不因全自動減少</td><td>換工具、換方法，或記錄跳過續跑</td><td><b>由任務決定</b></td></tr>
+      </tbody>
+    </table>
+    </div>
+
+    <div class="meaning">
+      <p>看最後那一欄。四列寫的都一樣：<b>我用哪一句話啟動它，不會改變它要接受多嚴格的檢查。</b>檢查強度只跟這件事本身有多大風險有關。</p>
+    </div>
+
+    <figure class="inline-figure portrait">
+      <img src="../../images/articles/loop-four-entries-02.jpg" alt="咪卡踩在中間開關上，三個開關裝在同一塊面板，共用一條線接到核心方塊" loading="lazy">
+      <figcaption>三個開關裝在同一塊面板上，共用同一條線。表格那四列之所以中間三欄有差、最後一欄全同，原因就在這個結構。</figcaption>
+    </figure>
+
+    <h3>怎麼選</h3>
+
+    <p>一般任務直接說「把這件事跑 loop」。想找碴、要它先被挑戰過再給結論，說「Loop 護欄」。不想中途被問、要它一口氣做完，說「全自動 loop」。三句話對應三種節奏，底層的判級、驗收、停止條件完全一樣。換句話說，<b>你選錯了也不會出事，頂多是問得比較多次或比較少次。</b></p>
+
+    <p>（規則檔還加了一句禁令：不准把任一入口另立規則或另建檔案，防的是四份數字以後互相打架。）</p>
+
+    <figure class="inline-figure portrait">
+      <img src="../../images/articles/loop-four-entries-04.jpg" alt="三張卡分別是一般任務對應把這件事跑 loop、想找碴先挑戰對應 Loop 護欄、不想被打斷對應全自動 loop" loading="lazy">
+      <figcaption>三張卡的視覺重量刻意做成一樣，沒有哪一張比較「正確」。要選的是場景，不是答案。</figcaption>
+    </figure>
+  </div>
+</section>
+<section class="section" id="switch1">
+  <div class="inner">
+    <h2>開關一：開跑前問不問</h2>
+
+    <p>自主度有三級，我一句話切換。</p>
+
+    <p>預設不喊，就是 Loop 模式，按任務級數自動判。說「自動一點」，就是更主動、更少回頭問。說「全自動」或「自己跑」，是最高的一級。</p>
+
+    <p>最高那一級的行為細則寫得很硬：</p>
+
+    <p>立刻開始，不用問題開場。要釐清的在開跑前一次問完，開跑後不再因為決策停。一個階段做完直接接下一個階段，跑到完成為止，完成以客觀條件為準，不是做完一個階段就收工。所有被跳過的項目和待我決策的清單，最後一次彙整回報。</p>
+
+    <p>規則檔還直接列了三個反例：沒開始就停問、為小問題停、做完一階段就收工。</p>
+
+    <p>這一級唯一多帶的東西：我說「全自動」等於當次授權螢幕與網頁操作（嚴格算是第四項差異，不屬於三個開關，但只有這一項例外）。搭配一個硬上限，同一個問題卡超過五次或超過三分鐘沒頭緒，就跳過、寫日誌、繼續跑，不在原地耗。</p>
+
+    <p>這個開關調的只有「問不問」，不會讓 AI 可以動它本來不能動的東西。那是另一條紅線，跟自主度無關，見下面「延伸」區。</p>
+  </div>
+</section>
+<section class="section" id="switch2">
+  <div class="inner">
+    <h2>開關二：要不要加抗辯層</h2>
+
+    <p>「Loop 護欄」多做的五件事：未抗辯假設盤點、三視角抗辯、證據等級區分、換路煞車、無法收斂的分歧交我拍板。</p>
+
+    <p>三視角是三組問題，不是三個代理：</p>
+
+    <ul>
+      <li><b>邏輯</b>：這個結論是不是只靠單一證據？有沒有把相關當成因果？有沒有忽略相反的證據？驗收條件真的能證明結論嗎？</li>
+      <li><b>失效與安全</b>：最壞情況是什麼？會不會碰到金鑰、權限、資料遺失、公開發布、金錢或不可逆的操作？失敗的時候怎麼還原？有沒有看似可行但會放大風險的捷徑？</li>
+      <li><b>過度工程</b>：有沒有更小的第一步？是不是把一次性任務做成了永久系統？能不能先用現有的看板、腳本或手動驗收完成？</li>
+    </ul>
+
+    <p>「未抗辯假設」是一個標籤，用途是把還沒被挑戰過的重大結論標出來，不准寫成已確認的事實。可用的寫法是「未抗辯假設：目前看起來根因是⋯」「單腦初判：尚未跨家審查」「僅自攻：同家模型自我挑戰過，但不等於跨家審稿」。</p>
+
+    <p>這個開關有一個容易誤解的地方：比較大的任務就算我只說 loop，也會自動套用護欄。喊出「Loop 護欄」的作用，是在小任務上、或者我想額外加重的時候，把它明確叫起來。兩者不互相取消，也不會重複跑兩遍。</p>
+
+    <div class="readmore near">
+      <b>這一段只講了護欄的骨架</b>
+      <ul>
+        <li><a href="../loop-engineering-guardrails/">AI 一直停下來要授權，怎麼讓它順順跑完？：迴圈護欄的五條規則</a>　那篇是這五件事的完整版，一條一條講怎麼用、遇到什麼狀況該套哪一條。這篇只講它在四個入口裡的位置。</li>
+      </ul>
+    </div>
+  </div>
+</section>
+<section class="section" id="switch3">
+  <div class="inner">
+    <h2>開關三：卡住的時候停不停</h2>
+
+    <p>同一個方法連續失敗兩次就換路，不做第三次同路盲試。出現「應該可以」「看起來沒問題」但拿不出證據的，一律視為未驗證。</p>
+
+    <p>卡住先分辨卡在哪一層：<b>環境層</b>（工具、權限、資料夠不夠。缺工具重想十次也不會成功）、<b>驗證層</b>（是不是假成功）、<b>流程層</b>（該不該換路）。多數卡住是第一層，不是模型不夠聰明。</p>
+
+    <p>四個入口在這裡的差別：前三種卡住就停下處理，全自動那一種會把卡住的項目記下來、跳過、繼續跑其他階段，最後一次彙整。</p>
+
+    <p>這也是為什麼我的規則庫裡，防止跑太多的條文跟鼓勵多跑的條文一樣多：反思兩到三輪報酬遞減就停、任務狀態分成「完成／部分完成／卡住／失敗」四種、預設一輪主跑不無限補救，這幾條合起來，就是我不讓它自己一直跑下去的方法。</p>
+  </div>
+</section>
+
+<section class="section" id="minimal">
+  <div class="inner">
+    <h2>你現在就可以用的最小版本</h2>
+
+    <p>下面這段可以直接貼進對話，貼下去就能用。你不必記上面那四種說法，也不必先有一套規則檔，這段本身就是完整的。它涵蓋了核心裡最關鍵的四件事：完成證據、審查強度、停止條件、換路條件。</p>
+
+    <figure class="inline-figure portrait">
+      <img src="../../images/articles/loop-four-entries-05.jpg" alt="咪卡坐在聊天輸入框旁邊，框裡浮著預期改變、最小完成證據、停止條件、換路條件四行字" loading="lazy">
+      <figcaption>完整指令在下面，這裡先看四個關鍵詞：改變、證據、停止、換路，貼上去之前腦子裡先記這四個。</figcaption>
+    </figure>
+
+    <div class="codeblock"><pre>接下來這件事用 loop 跑。
+
+開跑前先做兩件事，做完直接開始，不要拿來一項一項問我：
+先用一句話重述你理解的任務範圍，並說明你手上有哪些工具跟權限可以用。
+然後在心裡填完下面四格。
+
+1. 預期改變：這輪結束後，哪一個我看得到的狀態應該不同
+2. 最小完成證據：你要拿出哪一項證據，我才能確認那個改變真的發生
+3. 停止條件：反思最多兩到三輪，沒有新證據就停，用「完成／部分完成／卡住／失敗」四選一收尾
+4. 換路條件：同一個方法連續失敗兩次就換方法或回報，不做第三次同樣的嘗試
+
+四格裡任何一格填不出來，或任務範圍你不確定：把任務縮小到你填得出來的範圍，
+寫下你採用的假設，然後開始跑。不要自己擴大範圍，也不要停在那裡等我補說明。
+
+三件事你必須停下來問我，其餘自己判斷直接做：
+- 不可逆的動作（刪除、覆寫、送出、發布、付款）
+- 需要我的帳號、密碼或個人資料
+- 商業或策略決策出現兩個以上實質不同的選項
+
+收尾固定回報這四行：
+做到什麼｜驗收方式（命令輸出／逐項比對／第二個模型的意見／只是目測）｜沒做完的風險｜下一步
+
+如果你沒有工具可以實際執行、也沒有第二個模型可以問：
+就只做計畫、自我檢查，並且把不能驗證的項目一條一條列出來。
+不要把「我認為應該可以」或「看起來沒問題」寫成完成。</pre></div>
+
+    <p>要加審查層的時候，在上面那段後面追加：</p>
+
+    <div class="codeblock"><pre>另外加一層：在你給我結論之前，先用三個角度自己挑戰一遍，並把挑戰結果寫給我看。
+
+- 邏輯：這個結論是不是只靠單一證據？有沒有把相關當成因果？有沒有忽略相反的證據？
+- 失效：最壞情況是什麼？會不會碰到不可逆、金錢、隱私或公開發布？出事怎麼還原？
+- 過度工程：有沒有更小的第一步？是不是把一次性的事做成了永久系統？
+
+沒被挑戰過的重大結論，一律標成「未抗辯假設」，不要寫成已確認的事實。
+你自己挑戰自己只能算「僅自攻」，跟換一家模型來審是兩件事，不要混寫。</pre></div>
+
+    <p>要放到最高自主度的時候，追加：</p>
+
+    <div class="codeblock"><pre>這件事全自動跑，開跑前要問的一次問完，開跑後不要再回頭問我。
+
+- 一個階段做完直接接下一個階段，跑到完成條件全部有證據為止
+- 普通的卡點自己換方法解決，同一個問題卡超過三分鐘或五次就跳過、記錄、繼續跑其他部分
+- 碰到上面那三件要問我的事：停在那個動作之前，跳過、記下來、繼續跑別的，最後一次列給我
+
+跳過不算違反全自動，動手才算違反授權。</pre></div>
+
+    <p>我自己用了幾個月之後最有感的一句，是護欄檔案裡的那句：預期改變跟最小完成證據如果寫不出來，先縮小任務，不要靠增加回合、模型或檢查清單來補模糊的需求。</p>
+
+    <div class="meaning">
+      <p>Loop 不會讓模糊的問題變清楚。它只會讓模糊的問題跑很多圈。</p>
+    </div>
+
+    <div class="readmore">
+      <b>這篇提到過的</b>
+      <ul>
+        <li><a href="../what-is-loop-engineering/">每件事 AI 都要我確認，怎麼可以更自動？｜什麼是迴圈工程</a>　一個迴圈的五個階段與最少零件，全程沒有程式碼。</li>
+        <li><a href="../loop-engineering-guardrails/">AI 一直停下來要授權，怎麼讓它順順跑完？：迴圈護欄的五條規則</a>　開關二那一層的完整版。</li>
+        <li><a href="../loop-round-limit/">AI 自己跑，會不會一直跑到額度燒完？｜迴圈的圈數上限，三行寫進規則檔</a>　可直接貼進規則檔的三行停止條件。</li>
+      </ul>
+      <b>再往前後延伸</b>
+      <ul>
+        <li><a href="../harness-to-loop/">AI 每一步都要我按確認，我可以放手到哪裡？｜從駕馭工程到迴圈工程的那一步</a>　這篇的前一站：那些重複到你已經不看的確認，就是你還沒寫出來的規則。</li>
+        <li><a href="../my-three-loops/">同樣的事，每次都要重新跟 AI 交代一遍？｜我把發文、提煉、復盤三件事設計成 Loop</a>　三條我自己在跑的 loop，加一個今天就能做的第一步。</li>
+      </ul>
+    </div>
+  </div>
+</section>
+<section class="section" id="extended-divider">
+  <div class="inner">
+    <h2>延伸：如果你想知道完整脈絡</h2>
+    <p>到這裡，四個入口怎麼選、卡住怎麼辦、能直接用的指令都給完了。下面是背景與細節：整併之前每個入口的來歷、判級與證據制度怎麼運作、規則住在哪四層、三個真的跑過的案例，以及目前還沒補上的機械保底。想直接拿去用的人可以在這裡停下。</p>
+  </div>
+</section>
+<section class="section" id="four">
+  <div class="inner">
+    <h2>四種說法從哪來</h2>
+
+    <p>先講它們各自為什麼存在，因為這決定了後面該怎麼整併。</p>
+
+    <p><b>只說 loop</b>，是最常見的用法。前文剛講完一件事，我丟一句「loop」，意思是「把剛剛那件事跑完，該驗的驗，該停的停」。這種用法的風險是指涉不清，所以規則裡留了三種要先確認一次的情況：不知道我要 loop 哪一件事、可能是在要求執行也可能是在檢查機制本身、不同解讀會導致明顯不同的結果。三種都不命中就直接跑，不逐項問。</p>
+
+    <p><b>「把這件事跑 loop」</b>，跟上面唯一的差別是任務指向已經被我鎖定了，那三種確認情形不再適用。</p>
+
+    <p><b>「Loop 護欄」</b>，是 2026 年 7 月 6 日從一次外部專案審查收斂出來的。當時的結論寫得很明確：不安裝原專案、不 fork、不改全域設定，只萃取可以跨代理使用的護欄。它多做的是抗辯，不是多跑幾輪。</p>
+
+    <p><b>「全自動」</b>，是最早立的，2026 年 6 月 27 日。立因是我自己的痛點：AI 做完一個階段就收工，或者為了一個小問題停下來問我，一整條流程要我推十幾次才跑得完。</p>
+
+    <p>四個東西在四個時間、為了四個不同的問題長出來。各自都對，合在一起就模糊了。</p>
+
+    <div class="readmore near">
+      <b>還不知道「迴圈」在講什麼？</b>
+      <ul>
+        <li><a href="../what-is-loop-engineering/">每件事 AI 都要我確認，怎麼可以更自動？｜什麼是迴圈工程</a>　那篇用寫一篇文章當例子，講一個迴圈的五個階段跟最少要哪幾個零件，全程沒有程式碼。先看那篇再回來，這篇會好懂很多。</li>
+      </ul>
+    </div>
+  </div>
+</section>
+<section class="section" id="core-level">
+  <div class="inner">
+    <h2>不變的核心之一：審查強度由任務決定</h2>
+
+    <p>這是最常被搞混的一格。判級決定要被多嚴格地挑戰，跟我當下多想放手，完全是兩件事。</p>
+
+    <div class="tablewrap">
+    <table>
+      <thead><tr><th>級</th><th>什麼樣的事</th><th>做法</th></tr></thead>
+      <tbody>
+        <tr><td>L0 機械</td><td>查時間、改一句、開一張卡、單一明確命令</td><td>直接做，只自查</td></tr>
+        <tr><td>L1 小型</td><td>單檔、低風險、可逆、目標清楚</td><td>簡短自查，不寫日誌</td></tr>
+        <tr><td>L2 複雜</td><td>多步、多檔、多工具、需判斷、影響後續</td><td>可拉一次第二顆腦，收尾簡短復盤</td></tr>
+        <tr><td>L3 高風險</td><td>改規則主檔、改技能包、改攔截器、部署、公開的程式庫、金鑰、社群發布、批次搬移、商業決策、對外承諾</td><td>先計劃加備份、跨家審查、明確驗收，才准回寫規則</td></tr>
+      </tbody>
+    </table>
+    </div>
+
+    <p>判級規則很簡單：命中任何一個 L3 條件就是 L3，命中兩個以上 L2 條件就是 L2，其餘往低。</p>
+
+    <figure class="inline-figure portrait">
+      <img src="../../images/articles/loop-four-entries-03.jpg" alt="四個指令入口的線全部匯進同一道寫著風險決定的閘門，咪卡站在閘門旁邊" loading="lazy">
+      <figcaption>四個入口，一道閘門。這張圖是全篇最容易被跳過、但最省事的一句：你換講法不會換掉這道關卡。</figcaption>
+    </figure>
+
+    <p>「跨家」的定義有一條硬門檻：審稿的模型要跟產出的模型不同家。Claude 寫的東西由 Claude 的子代理審，那不算跨家，只能標「僅自攻」。</p>
+
+    <div class="caveat">
+      <p>這條的理由，是我這套規則庫採取的一個風險假設：同一家模型的盲點可能高度重疊，自己審自己不夠保險。我沒有做過模型間盲點重疊度的實測，這是設計時選擇的保守立場，不是已經被證實的通則。用不同家來審，成本只多一點，但可以避開這個假設萬一成立的後果。</p>
+    </div>
+
+    <p>收尾欄位有一格專門防這件事，寫法固定成「producer 是誰、reviewer 是誰、結果是已回收並讀取還是只準備了交接」。派工出去但沒真的收回來讀過，只能標「交接已準備」，不准寫成已跨家。</p>
+
+    <p>這一格今天就派上用場了。這篇文章的跨家審，我前兩次都拿到假的成功訊號，第三次才真的收回意見，細節在下面第三個案例後面。</p>
+  </div>
+</section>
+<section class="section" id="core-two">
+  <div class="inner">
+    <h2>不變的核心之二：開跑前只鎖兩件事</h2>
+
+    <p>四個入口共用的核心，最小的寫法只有兩格：</p>
+
+    <div class="meaning">
+      <p><b>預期改變</b>：這輪結束後，哪一個可觀察的狀態應該不同。</p>
+      <p><b>最小完成證據</b>：用哪一項最小的證據，能確認那個改變真的發生。</p>
+    </div>
+
+    <p>接著那句才是重點：</p>
+
+    <blockquote>若兩項寫不出來，先縮小任務，不靠增加回合、模型或檢查清單補模糊需求。</blockquote>
+
+    <p>模糊的需求丟進迴圈，只會得到跑很多圈的模糊結果。</p>
+
+    <p>證據本身也分等級，由強到弱四級：機器驗收（測試、腳本、命令輸出、檔案存在、計數）、資料複驗（逐段讀檔、來源對照、看板比對）、跨家審查意見、人工目視或推論。最後一級只能標低強度，不能單獨支撐高風險的完成。</p>
+
+    <p>禁用的證據列了四項：「看起來沒問題」、「應該可以」、「我已經檢查過」但不列檢查方式，以及子代理的回報本身。最後一項的理由是，子代理回報只是線索，主控要自己獨立複驗。</p>
+
+    <p>還有一條專門防假成功的：系統層的 completed、exit code 0、子代理回覆或檔案存在，只能證明流程結束，不能證明任務做到。</p>
+
+    <p>這條的立因是 2026 年 8 月 8 日的一次事故。背景指令傳了一個它不支援的參數，直接退出什麼都沒做，但 shell 仍然回 0、背景任務仍然標 completed，只有 log 大小露餡，178 bytes。差一點就把根本沒改到的錯圖當成改好了發出去。</p>
+  </div>
+</section>
+<section class="section" id="core-redline">
+  <div class="inner">
+    <h2>不變的核心之三：說了全自動，也有一組動作它不做</h2>
+
+    <p>全自動最高，但有一組窄紅線不隨自主度放寬：不可逆的操作、對外送出、金錢行為、把金鑰送到外部、破壞性的刪除或覆寫。</p>
+
+    <p>處理方式很關鍵。它停在那個實際動作之前，跳過、記錄、繼續跑其他階段，最後把待授權清單一次彙整，整條流程不會停下來等。規則檔用一句話把它講死：</p>
+
+    <blockquote>跳過不算違反全自動，動手才算違反授權。</blockquote>
+
+    <p>這條後面掛著一張「授權詞分級表」。它的立因是 2026 年 8 月 24 日，一天之內發生三次同型錯誤，AI 把我的傾向當成施工授權。第三次是另一個 session 主動標記「我把這個記成你的轉述，不是我收到的直接指令」才攔住的，不是出錯那一端自己把關攔住。</p>
+
+    <p>同一天出現三次，我當時的判斷是這已經不像偶發，比較像預設行為，所以直接立成規則。這是我看到三次之後做的處置決定，不是統計上的結論。</p>
+
+    <div class="tablewrap">
+    <table>
+      <thead><tr><th>我說的話</th><th>意思</th><th>可以做什麼</th></tr></thead>
+      <tbody>
+        <tr><td>「可以建議」「你覺得呢」「你怎麼看」</td><td>要提案</td><td>只能寫方案、給選項、列成本與風險。不碰任何實體檔</td></tr>
+        <tr><td>「我覺得 X 比較好，還是 Y？」</td><td>要判斷</td><td>回答並說明依據。沒得到後續確認前不動手</td></tr>
+        <tr><td>「好」「可以」「OK」單獨出現</td><td>看前文有幾個待辦</td><td>只有一個明確待辦才算授權那一件。有多個選項一律視為未授權</td></tr>
+        <tr><td>「你自己斟酌」「你決定」</td><td>授權判斷細節</td><td>可以動，範圍限在當次討論那件事，不擴散</td></tr>
+        <tr><td>「做吧」「開始」「改」「修」</td><td>授權施工</td><td>可以動，仍受任務分級與窄紅線約束</td></tr>
+        <tr><td>沉默、沒有反對</td><td>不是授權</td><td>等於還沒回答</td></tr>
+      </tbody>
+    </table>
+    </div>
+
+    <p>另外還有一條硬規則：改任何「會被自動流程呼叫」的東西，一律要明確的施工授權，不吃軟性同意。判準是性質不是路徑，只要它會被排程、攔截器、其他腳本或別的 session 自動觸發就適用。</p>
+
+    <p>理由寫得很直接：自動流程的錯誤不會當場報錯，它會在下一次觸發的時候才爆，或者靜默失效沒人發現。</p>
+  </div>
+</section>
+<section class="section" id="layers">
+  <div class="inner">
+    <h2>規則住在四個地方，各管一件事</h2>
+
+    <p>先講為什麼不寫在同一個檔案：<b>每次對話都要載入的東西，塞越多越沒人看；只在需要時才讀的東西，可以寫得很細。</b>這兩件事沒辦法在同一份檔案裡同時做到，所以拆開。</p>
+
+    <p>四層實際上是這些東西：</p>
+
+    <div class="tablewrap">
+    <table>
+      <thead><tr><th>層</th><th>實際上是哪些檔</th><th>多大</th><th>什麼時候被讀到</th></tr></thead>
+      <tbody>
+        <tr><td>憲法層</td><td>知識庫根目錄的 <code>AGENTS.md</code>，一份</td><td>約 36,000 字，但涵蓋全部主題</td><td>每次對話開場自動載入，所有 AI 代理都吃</td></tr>
+        <tr><td>細則層</td><td>技能包底下的 <code>references/*.md</code>，幾百份</td><td>單一主題約 5,000 到 15,000 字</td><td>憲法層的路由指到才讀</td></tr>
+        <tr><td>操作層</td><td>114 個技能包各自的 <code>SKILL.md</code></td><td>一份約 3,000 到 10,000 字</td><td>觸發詞命中才載入</td></tr>
+        <tr><td>狀態層</td><td>看板卡與交接檔</td><td>一張卡幾十字</td><td>換機、換模型、隔天接手時看</td></tr>
+      </tbody>
+    </table>
+    </div>
+
+    <p>注意憲法層那 36,000 字。它不小，但那是<b>全部主題加起來</b>的量。單看任何一個主題，在那一層通常只佔一兩行，剩下的都在下面三層。</p>
+
+    <h3>同一條規則，在四個地方各長什麼樣</h3>
+
+    <p>拿這篇前面講過的「換路煞車」當例子，它在四層的實際長相：</p>
+
+    <div class="tablewrap">
+    <table>
+      <thead><tr><th>層</th><th>換路煞車在這一層長什麼樣</th></tr></thead>
+      <tbody>
+        <tr><td>憲法層</td><td><b>完全沒有規則內容。</b>它只在一行路由裡被順帶提到：「Loop 護欄為正式觸發詞 → 先讀〔某個檔案〕；用於重大結論、交接、未抗辯假設、三視角抗辯、換路煞車、驗收證據分級」</td></tr>
+        <tr><td>細則層</td><td>完整條文加數字：「非機械任務遇到同一路徑連續失敗 2 次，即換路、升級或回報，不做第 3 次同路盲試」</td></tr>
+        <tr><td>操作層</td><td>把數字翻成這個情境的動作。圖卡技能包寫的是：「同一張連續兩輪還是不合格就停下來回報，不硬幹」</td></tr>
+        <tr><td>狀態層</td><td>這一次任務的實況：停在哪、已經驗過什麼、還沒驗什麼、要怎樣才能續跑</td></tr>
+      </tbody>
+    </table>
+    </div>
+
+    <p>四層講的是同一件事，但沒有一層在重複另一層。憲法層只負責讓 AI 想起來「有這條」，細則層才有數字，操作層把數字翻成這個情境做得出來的動作，狀態層記的是這一次跑到哪裡。</p>
+
+    <h3>一條新規則該放哪一層</h3>
+
+    <div class="tablewrap">
+    <table>
+      <thead><tr><th>這條規則的性質</th><th>放哪</th></tr></thead>
+      <tbody>
+        <tr><td>每次對話都要它在場，漏了代價很高</td><td>憲法層，而且只能寫一行，寫長了會稀釋掉旁邊的紅線</td></tr>
+        <tr><td>要寫數字、寫為什麼、寫例外</td><td>細則層</td></tr>
+        <tr><td>只有做某一類事才用得到</td><td>操作層，綁在那個觸發詞底下</td></tr>
+        <tr><td>只跟這一次任務有關，任務結束就沒用了</td><td>狀態層，不要寫進規則檔</td></tr>
+      </tbody>
+    </table>
+    </div>
+
+    <p>判錯的代價是實的：放太高，每次對話都在讀用不到的細節；放太低，需要的時候不會被載入，等於沒寫。</p>
+
+    <p>還有一條規則叫「真相分身禁令」：同一個事實禁止在多個地方各寫一份、各自人工維護。要嘛那份副本改成自動生成，要嘛就只留一句「詳見某某檔」把人指過去。所以你會看到細則檔裡大量出現「引用，不重抄」「數字以那條為準」這種句子。</p>
+
+    <p>開頭提到的那份整合計畫，現狀快照表十列裡有八列寫著「引用，不新增數字」，就是這條在起作用。</p>
+
+    <p>跨 session 的續跑點，規則規定只能留在該任務原本所在的看板卡或交接檔，二選一，五個欄位：狀態、停在哪、已驗證、未驗證、續跑條件。而且明講：沒有跨 session 需求就留在當前任務裡，不另建檔案、不另建狀態檔。</p>
+  </div>
+</section>
+<section class="section" id="cases">
+  <div class="inner">
+    <h2>三次真的跑過的紀錄</h2>
+
+    <div class="caveat">
+      <b>先講清楚這三個案例能證明什麼、不能證明什麼</b>
+      <p>它們證明的是<b>核心那幾條真的在運作</b>：換路煞車會被觸發、證據分級會被執行、停止條件會讓人停手、判級會決定審查強度。</p>
+      <p>它們<b>不能證明</b>四個入口彼此等價。我的知識庫裡沒有「同一件事分別用四種入口各跑一次」的對照紀錄，那種實驗我沒做過，所以不寫。</p>
+    </div>
+
+    <h3>一、跨家審跑兩輪就停，因為文章自己寫的上限就是兩輪</h3>
+
+    <p>2026 年 9 月 1 日，我把一篇脆文寫成官網深度文章上線。那篇的主題剛好就是「迴圈要跑幾圈」。</p>
+
+    <p>跨家審跑了兩輪。第一輪退三點，全部採納：「跑不出來多半是人講不清楚」過度歸因，補了四種卡住原因的對照表；文中寫「最多三輪」但舉例實際跑了四輪，自己打架，改成「第三輪等於強制檢查點，加一輪由人批准」；缺「一輪怎麼算」的定義，補上。</p>
+
+    <p>第二輪判定第二、三點已修，第一點仍要改，要把「通常代表」降成「可能代表」。處理方式是把那個核心句改寫成第一人稱經驗陳述，保留判斷的力道又不宣稱普遍性，然後由人收斂定稿。</p>
+
+    <p>沒有加第三輪。因為文章自己寫的上限就是兩輪，加第三輪等於自己打自己臉。</p>
+
+    <p>同一天還有兩件事值得記。</p>
+
+    <p>部署腳本的第一關索引覆蓋率把我擋下來了，新文章沒補搜尋別名。這是機械閘門真的攔到東西，不是裝飾。回去補完別名重跑，第二次全綠。</p>
+
+    <p>最後那一關的版本驗收又回報「沒回傳」，這是連續第五次。照慣例不採信，自己抓線上頁面驗：本次版本的特徵字串六項全中、舊版句型三項零殘留、封面圖、社群縮圖、別名庫、資料檔、索引全部正常。日記裡把它列進「待追的事」：這個關卡本身應該已經失效，值得單獨查。</p>
+
+    <p>這一段對應的是換路煞車跟證據分級。腳本說「沒回傳」不是成功也不是失敗，屬於狀態無法確認，所以換路，用最強那一級的證據自己驗，同時把失效的關卡記下來待查，不假裝它還有效。</p>
+
+    <h3>二、第一輪不合格，我退稿，它自己認賬重跑</h3>
+
+    <p>2026 年 9 月 10 日，也就是今天，另一篇官網文章。我問了一句：</p>
+
+    <blockquote>你自己有用 AUT 讀一次嗎？</blockquote>
+
+    <p>（AUT 是 AI 使用者測試，讓 AI 先扮演幾種讀者把稿子讀一遍。那套方法本身另外有一篇：<a href="../ai-user-testing/">做完的東西想找人幫忙看，卻找不到人？｜AI 使用者測試，先跑過一次再找真人</a>。）</p>
+
+    <p>它認了，而且把兩個瑕疵寫進證據檔。</p>
+
+    <p>第一，走查的標的錯了。跑的是文字稿內文，而速讀區那兩張卡是排版時才補的，補完沒有再走查一次。我退稿退的正是那兩張卡。</p>
+
+    <p>第二，違反了那個方法自己的硬規則第三條。技能包白紙黑字寫著「至少兩種受眾或狀態要帶摩擦，不能讓每個人都過度理性、過度有禮貌」，它三個模擬人設全部太客氣，沒有一個帶摩擦。</p>
+
+    <p>第二輪三個人設全部帶摩擦，三個人踩到同一顆地雷：「你可以帶走什麼」那三條寫成了文章目錄，不是讀者拿得走的成果。</p>
+
+    <p>複測只重跑了兩題，兩個阻塞點解除，判定影響輕微，停手。然後加了一句誠實邊界：</p>
+
+    <blockquote>這是我寫的文章、我派的人設，屬 D 級證據（模型自己模擬自己）。通過只證明規格上有考慮到，不證明真人會照著走。</blockquote>
+
+    <p>這一段對應三件事：停止條件（判定影響輕微就停手，不無限修）、證據分級（D 級就標 D 級）、獨立性要拿得出時間戳而不是自己說有。</p>
+
+    <p>還有一個處置我覺得比機制本身更重要。三個人設裡有一個的反應是「看完覺得照著三件事做就好，不用買」。這條不改。理由是我自己拍的板：</p>
+
+    <blockquote>看文章就自己看得懂會做的，也不是我客人。</blockquote>
+
+    <p>模擬受眾的意見不必照單全收。Loop 給的是輸入，拍板還是人。</p>
+
+    <h3>三、同一輪工作裡，兩件事走了兩種審查強度</h3>
+
+    <p>2026 年 8 月 31 日的一場例會整理。日記開頭的收尾欄位寫著：</p>
+
+    <blockquote>分級：L2（動檢索頁資料層與部署，未動規則主檔與 Hook）<br>是否跨家：否，全程單腦初判，第二層策略結論已在母稿與網頁標註「未抗辯假設」</blockquote>
+
+    <p>主線任務是 L2，沒有跨家，策略結論標成未抗辯假設。這是合規的，L2 本來就只要求「可拉一次第二顆腦」，不是必須跨家。</p>
+
+    <p>但同一輪裡有一件事被抽出來另外處理。跨家抽查抓到一個真缺口：卡片有兩條資料來源，前端是合併制而且其中一條優先，而檢查腳本只驗其中一條，擋不到另一條。查了現況，目前的資料剛好都在限制內所以還沒出事，但缺口成立。補救是在前端加統一截斷，並且在技能包裡誠實標註「往那條來源補登的時候要自己守字數，不要靠機械擋」。</p>
+
+    <p>日記在這一段的結尾寫：</p>
+
+    <blockquote>這條規則本身是 L3（改技能包），已跨家審，審出的兩點都採納並修掉。</blockquote>
+
+    <p>同一輪工作，主任務 L2 單腦，衍生出來的規則變更 L3 跨家。</p>
+
+    <p>判級是對「這件事」判，不是對「這一輪」判。</p>
+
+    <h3>附帶一個當場發生的：我把一次成功的審查判成失敗</h3>
+
+    <p>寫這篇的時候，我讓它跑跨家審，過程比預期難看。</p>
+
+    <p>第一次把文章全文塞進命令列參數，結果檔停在 24576 bytes，剛好卡在整數邊界，內容還停在我送進去的提示中間，沒有任何回覆標記。這次是真的失敗。</p>
+
+    <p>第二次改傳檔案路徑，我去看結果檔，0 bytes。我判定它又失敗了，於是換路，第三次改成前景執行，順利拿回結論。</p>
+
+    <div class="caveat">
+      <p><b>但第二次其實成功了。</b>我後來回頭看，那個檔案在 22:19:36 寫完，內容完整，判定跟五點意見都在。我讀它的時間比它寫完早了幾十秒，看到當下的 0 bytes 就宣布它失敗。</p>
+      <p>我犯的正是這篇文章在講的那個錯，只是方向相反。規則裡寫的是「系統說成功不等於做到」，我做的是「系統還沒說完，我就說它沒做到」。兩種都是拿當下的狀態當結論，都少了同一件事：等到一個真正能代表結束的訊號再判斷。那個訊號一直都在，是結尾那行 token 用量，我沒等它出現就下判斷了。</p>
+    </div>
+
+    <p>意外的收穫是，兩次獨立跑出來的審查結論高度一致，都判需要大修，五點裡有四點實質相同。這變成一次計畫外的交叉驗證。</p>
+
+    <p>而那五點裡最重的一點，是它指出我原本的骨架自相矛盾：我一邊說「四個入口只改三件事」，一邊又在表格裡多列了「判級」跟「審查強度」兩欄當差別，而下一節又寫「審查強度由任務決定，不由說法切換」。三句話沒辦法同時成立。</p>
+
+    <p>你現在看到的骨架是改過的版本，判級被移進不變的核心。而這一段，是我把自己的誤判也留在文章裡的紀錄。</p>
+  </div>
+</section>
+<section class="section" id="gaps">
+  <div class="inner">
+    <h2>目前還沒補上的機械保底</h2>
+
+    <p>這一節是誠實聲明，因為一個沒有引擎的機制等於沒有機制。</p>
+
+    <p><b>最小驗收契約沒有機械保底。</b>它掛在既有的收尾欄位上，三家模型都只受文字約束，沒有任何攔截器會擋。要不要補機械閘門是另一個待決的事。</p>
+
+    <p><b>急件通道的留痕靠自律。</b>急件的規則是砍排隊跟審查、保留三道安全閘門，代價是上線後同一輪必須在日記裡逐條列出跳過了哪些審查。目前的檢查腳本只驗「有沒有寫日記」，不驗「跳過項有沒有列出來」。這一條已經登記在待補清單裡，補上之前不能宣稱有機械保證。</p>
+
+    <p><b>深度文章的檢查腳本只驗檔案在不在。</b>它會攔「網頁有沒有產出」跟「證據檔有沒有產出」兩道，但驗不了走查跑得好不好、標題互審是不是真的獨立。第二個案例裡第一輪那個不合格的走查，就是機械檢查完全攔不到、只有人退稿才會被抓出來的類型。</p>
+
+    <p><b>模擬受眾的走查是 D 級證據。</b>模型自己模擬自己，通過只證明規格上考慮到了，不證明真人會照著走。它的位置是真人測試前面的一道篩，不能取代真人。</p>
+
+    <p><b>失效的關卡還沒查。</b>第一個案例那個版本驗收連續五次回報無法確認，目前的處理方式是不採信、自己驗，但那個關卡本身應該已經壞了，還躺在待追清單裡。</p>
+
+    <p><b>四個入口的等價性沒有實測。</b>上面已經講過，我沒有做過「同一件事用四種入口各跑一次」的對照。整併是設計決定，不是實驗結論。</p>
+
+    <p><b>這篇只涵蓋一個人對 AI 說話的情境。</b>如果是一個團隊共用同一個 AI，好幾個人同時下不同的指令，那是另一組問題（誰的指令算數、同時動同一份檔案怎麼辦），我另外有一套機制在管，不在這篇的範圍內。</p>
+  </div>
+</section>
+
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">江江教練 · AI 知識管理</div>
+    <div class="footer-links">
+      <a href="../../articles.html">← 回深度文章總站</a>
+      <a href="../../index.html">首頁</a>
+      <a href="../../learn.html">自學資源</a>
+      <a href="../../skills.html">技能包下載</a>
+      <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">LINE 社群 ↗</a>
+      <a href="https://www.threads.com/@jiang_yude_coach" target="_blank" rel="noopener">Threads ↗</a>
+      <a href="https://vocus.cc/salon/Jiang_Coach" target="_blank" rel="noopener">方格子 ↗</a>
+    </div>
+    <div class="footer-note">這是一篇教學文章，整理我對「要讓 AI 自己跑，我到底該怎麼說？｜四種說法其實是同一套，差別只在三個開關」的看法，供你參考。</div>
+  </div>
+</footer>
+
+<!-- 點圖放大 lightbox（hero 與內文圖通用，已內建，不用每篇重加） -->
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <span class="lightbox-close" aria-label="關閉">×</span>
+  <img id="lightbox-img" src="" alt="放大檢視">
+</div>
+<script>
+(function(){
+  var box=document.getElementById('lightbox'),boxImg=document.getElementById('lightbox-img');
+  document.querySelectorAll('.hero-figure img,.inline-figure img').forEach(function(img){
+    img.addEventListener('click',function(){boxImg.src=img.currentSrc||img.src;boxImg.alt=img.alt||'放大檢視';box.classList.add('open');box.setAttribute('aria-hidden','false');});
+  });
+  function close(){box.classList.remove('open');box.setAttribute('aria-hidden','true');boxImg.src='';}
+  box.addEventListener('click',close);
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
+})();
+</script>
+
+<script src="../../image-interactions.js"></script>
+
+<!-- 官網共用：滑鼠暖光暈 + 導航列漢堡選單 -->
+<script src="../../spotlight.js"></script>
+
+<!-- 文章自動互聯（相關文章）：兩支已內建，順序不可顛倒，不用再另外加 -->
+<script src="../../articles-data.js"></script>
+<script src="../../related-render.js"></script>
+  <script src="/mika-chat-widget.js" defer></script>
+</body>
+</html>

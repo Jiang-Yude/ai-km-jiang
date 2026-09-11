@@ -37,7 +37,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["ai-market-microcosm", "ai-mvp-validation-before-product", "before-installing-others-skill"]
+    related: ["ai-market-microcosm", "ai-mvp-validation-before-product", "before-installing-others-skill", "loop-four-entries"]
   },
 
   {
@@ -92,6 +92,24 @@ window.ARTICLES = [
     },
     external: { threads: null, vocus: null },
     related: ["rule-file-rebound", "three-levels-of-cross-review", "dual-track-planning-loop", "how-to-verify-ai-rule-changes", "decision-ladder-non-programmer"]
+  },
+
+  {
+    id: "loop-four-entries",
+    url: "articles/loop-four-entries/",
+    date: "2026-09-10",
+    updated: "2026-09-10",
+    title: "要讓 AI 自己跑，我到底該怎麼說？｜四種說法其實是同一套，差別只在三個開關",
+    problem: "叫 AI 自己跑，有人說要下全自動、有人說要加護欄，講法一堆，不知道差在哪，也不知道自己該說哪一句。",
+    audience: "試過讓 AI 自己跑卻被半路打斷的人、已經在寫自訂指令想確認背後有沒有一套系統的人，以及要把這套做法交給團隊或客戶的專業工作者。",
+    summary: "我對 AI 說「跑 loop」有四種講法，今天才把它們整併成同一套機制的四種入口。四個入口只差三件事：開跑前問不問、要不要加抗辯層、卡住時停不停；而判級與審查強度四種完全一樣，由任務本身決定，跟你用哪一句話啟動無關。文章拆解 L0 到 L3 怎麼判、最高自主度為什麼仍有一組不能碰的授權紅線、開跑前只需要鎖哪兩件事，並用三個實際跑過的紀錄對照，最後附一段不必先有規則檔就能直接複製使用的最小指令。",
+    tags: {
+      topic: ["AI工作流", "AIAgent", "工作流程"],
+      level: ["基礎"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["what-is-loop-engineering", "loop-engineering-guardrails", "loop-round-limit", "harness-to-loop", "my-three-loops", "ai-user-testing"]
   },
 
   {
@@ -217,7 +235,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["what-is-loop-engineering", "loop-engineering-guardrails", "prompt-to-loop-map", "eight-ai-system-concepts-2026", "cross-ai-review-both-wrong", "how-to-train-your-ai-employee"]
+    related: ["what-is-loop-engineering", "loop-engineering-guardrails", "prompt-to-loop-map", "eight-ai-system-concepts-2026", "cross-ai-review-both-wrong", "how-to-train-your-ai-employee", "loop-four-entries"]
   },
 
   {
@@ -235,7 +253,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["what-is-loop-engineering", "loop-engineering-guardrails", "after-ai-says-remembered", "dual-track-planning-loop", "what-is-graph-engineering", "ai-usage-audit"]
+    related: ["what-is-loop-engineering", "loop-engineering-guardrails", "after-ai-says-remembered", "dual-track-planning-loop", "what-is-graph-engineering", "ai-usage-audit", "loop-four-entries"]
   },
 
   {
@@ -1599,7 +1617,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["what-is-loop-engineering", "harness-mindset-for-bosses", "ai-loop-safety-recovery", "dual-track-planning-loop", "ai-handoff-instructions", "long-task-completion-rate", "meeting-into-verifiable-loop", "loop-round-limit", "how-to-verify-ai-rule-changes"]
+    related: ["what-is-loop-engineering", "harness-mindset-for-bosses", "ai-loop-safety-recovery", "dual-track-planning-loop", "ai-handoff-instructions", "long-task-completion-rate", "meeting-into-verifiable-loop", "loop-round-limit", "how-to-verify-ai-rule-changes", "loop-four-entries"]
   },
 
   {
@@ -1851,7 +1869,7 @@ window.ARTICLES = [
       content_type: ["觀點文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["what-is-loop-engineering", "ai-loop-safety-recovery", "recovery-over-perfection", "ai-delegators-optimism", "long-task-completion-rate", "meeting-into-verifiable-loop", "build-your-own-dictionary"]
+    related: ["what-is-loop-engineering", "ai-loop-safety-recovery", "recovery-over-perfection", "ai-delegators-optimism", "long-task-completion-rate", "meeting-into-verifiable-loop", "build-your-own-dictionary", "loop-four-entries"]
   },
 
   {
@@ -1941,7 +1959,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["what-is-graph-engineering", "strong-ai-models-knowledge-workflow-road", "questionnaire-to-slides-agent-workflow", "loop-round-limit", "five-loops-content-line"]
+    related: ["what-is-graph-engineering", "strong-ai-models-knowledge-workflow-road", "questionnaire-to-slides-agent-workflow", "loop-round-limit", "five-loops-content-line", "loop-four-entries"]
   },
 
   {
