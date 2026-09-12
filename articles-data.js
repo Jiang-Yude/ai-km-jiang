@@ -41,6 +41,24 @@ window.ARTICLES = [
   },
 
   {
+    id: "website-as-workstation",
+    url: "articles/website-as-workstation/",
+    date: "2026-09-12",
+    updated: "2026-09-12",
+    title: "網站做完之後就沒人再打開了｜對外溝通與內部工作站，可以是同一個網站的兩面",
+    problem: "網站上線那天大家都點開看過一次，之後就沒有人有理由再打開它，三個月後連網址都要找五分鐘。",
+    audience: "管著組織、課程或團隊，網站做好卻沒在用，或每個月都要重新整理一次資料的人。",
+    summary: "用兩個我九月實際做的網站（調香工作坊的香氛卡站、學員生圖工作站），說明工作站型網站為什麼不會變成蚊子館：資料不是被搬進去的，是在做事的當下自己長進去的。對外的成果展示與對內的工作紀錄因此變成同一個網站的兩面。附一張對照表分辨兩種網站，以及三題可以直接拿去問自己或問客戶的判準。也誠實交代門檻：這兩個站是自己寫的，現成架站平台通常做不到。",
+    tags: {
+      topic: ["AI應用", "AI工作流", "知識管理"],
+      level: ["基礎"],
+      content_type: ["觀點文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["who-can-see-your-site", "ai-data-organization-usable-system", "yongli-ai-workshop-tools-to-workflow", "docs-as-system-design-agent", "post-class-organizing-loop"]
+  },
+
+  {
     id: "loop-four-entries",
     url: "articles/loop-four-entries/",
     date: "2026-09-10",
@@ -487,7 +505,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["webnode-to-cloudflare-pages", "github-vercel-cloudflare-compare", "free-deploy-three-boundaries"]
+    related: ["webnode-to-cloudflare-pages", "github-vercel-cloudflare-compare", "free-deploy-three-boundaries", "website-as-workstation"]
   },
 
   {
@@ -1383,7 +1401,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["how-to-train-your-ai-employee", "docs-as-system-design-agent", "inspiration-production-system", "train-your-ai-agent-editor", "meeting-into-verifiable-loop"]
+    related: ["how-to-train-your-ai-employee", "docs-as-system-design-agent", "inspiration-production-system", "train-your-ai-agent-editor", "meeting-into-verifiable-loop", "website-as-workstation"]
   },
 
   {
@@ -1995,7 +2013,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: "https://vocus.cc/salon/Jiang_Coach" },
-    related: ["strong-ai-models-knowledge-workflow-road", "questionnaire-to-slides-agent-workflow", "teacher-prep-knowledge-workflow", "diary-driven-agent-3x4", "how-ai-connects-software", "how-to-train-your-ai-employee", "decision-ladder-non-programmer", "tidy-mess-before-consulting", "what-is-loop-engineering", "tag-wiki-method", "ai-delegators-optimism", "intangible-assets-grow-by-sharing", "publish-gate", "laptop-desktop-webpage-sync-icloud-git", "manage-ai-with-management-knowledge", "train-your-ai-agent-editor", "knowledge-os-master-map", "knowledge-as-employee", "mika-to-laika-product-character-design", "ai-employee-four-levels", "free-deploy-three-boundaries", "copied-mechanism-is-no-mechanism"]
+    related: ["strong-ai-models-knowledge-workflow-road", "questionnaire-to-slides-agent-workflow", "teacher-prep-knowledge-workflow", "diary-driven-agent-3x4", "how-ai-connects-software", "how-to-train-your-ai-employee", "decision-ladder-non-programmer", "tidy-mess-before-consulting", "what-is-loop-engineering", "tag-wiki-method", "ai-delegators-optimism", "intangible-assets-grow-by-sharing", "publish-gate", "laptop-desktop-webpage-sync-icloud-git", "manage-ai-with-management-knowledge", "train-your-ai-agent-editor", "knowledge-os-master-map", "knowledge-as-employee", "mika-to-laika-product-character-design", "ai-employee-four-levels", "free-deploy-three-boundaries", "copied-mechanism-is-no-mechanism", "website-as-workstation"]
   },
 
   {
@@ -2373,7 +2391,7 @@ window.ARTICLES = [
       content_type: ["案例文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["web-chat-ai-vs-desktop-agent", "claude-skills-knowledge-assets"]
+    related: ["web-chat-ai-vs-desktop-agent", "claude-skills-knowledge-assets", "website-as-workstation"]
   },
 
   {
@@ -2535,7 +2553,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["semantic-rules-before-prompt-templates", "notebooklm-knowledge-analysis-assistant", "claude-skills-knowledge-assets", "why-split-data-into-cards", "long-answer-three-layers"]
+    related: ["semantic-rules-before-prompt-templates", "notebooklm-knowledge-analysis-assistant", "claude-skills-knowledge-assets", "why-split-data-into-cards", "long-answer-three-layers", "website-as-workstation"]
   },
 
   {
