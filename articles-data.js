@@ -23,6 +23,24 @@ window.ARTICLE_TAGS = {
 
 window.ARTICLES = [
   {
+    id: "design-for-ai-errors",
+    url: "articles/design-for-ai-errors/",
+    date: "2026-09-12",
+    updated: "2026-09-12",
+    title: "AI 說「我確定」，它的回答我可以直接照做嗎？｜AI 追問技巧，一定要相信，AI 值得被懷疑",
+    problem: "客戶說「我的 AI 說這樣沒問題」就準備照做，而問 AI「你確定嗎」它永遠回答確定。",
+    audience: "每天在用 AI 做事，而且會把它的產出拿去做決定的人。",
+    summary: "大語言模型是機率模型，它就是會出錯、會有幻覺，那是運作方式不是故障。所以力氣不要全花在把提示詞調到 AI 永遠不出錯，那條路沒有終點。這篇講我改成做的另一件事：兩道防線，第一道是它越來越懂你的界限，第二道是就算它搞錯也有機制攔截。再附上我平常在用的層層追問，查結果、查審法、查執行、查問題，往下查答案往上查問題，以及為什麼「你確定嗎」只能踩煞車不能當驗收。",
+    tags: {
+      topic: ["AI工作流", "AI應用"],
+      level: ["基礎"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: "https://www.threads.com/@jiang_yude_coach/post/Dc2DOcOki6E", vocus: null },
+    related: ["ai-loop-safety-recovery", "recovery-over-perfection", "three-levels-of-cross-review", "caught-ai-slacking-into-rules"]
+  },
+
+  {
     id: "loop-four-entries",
     url: "articles/loop-four-entries/",
     date: "2026-09-10",

@@ -1,0 +1,425 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="index,follow">
+<title>AI 說「我確定」，它的回答我可以直接照做嗎？｜AI 追問技巧，一定要相信，AI 值得被懷疑</title>
+<meta name="description" content="大語言模型是機率模型，它就是會出錯、會有幻覺。這篇講為什麼不要把力氣花在把提示詞調到 AI 永遠不出錯，改成設計一套出錯也攔得下來的機制，並附上我平常在用的層層追問：查結果、查審法、查執行、查問題，以及為什麼問「你確定嗎」完全沒用。">
+<link rel="canonical" href="https://jiangyude.com/articles/design-for-ai-errors/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AI 說「我確定」，它的回答我可以直接照做嗎？｜AI 追問技巧，一定要相信，AI 值得被懷疑｜江江教練">
+<!-- 分享封面：hero 文字填好後在 repo 根目錄跑 `node scripts/og-shot.mjs design-for-ai-errors` 自動截 1200×630 到 images/og/design-for-ai-errors.jpg（見 README「文章分享封面（OG 圖）機制」）。別退回 intro-jiang.png 直式人像，會被裁成只剩脖子。 -->
+<meta property="og:image" content="https://jiangyude.com/images/og/design-for-ai-errors.jpg">
+<meta property="og:description" content="大語言模型是機率模型，它就是會出錯、會有幻覺。這篇講為什麼不要把力氣花在把提示詞調到 AI 永遠不出錯，改成設計一套出錯也攔得下來的機制，並附上我平常在用的層層追問：查結果、查審法、查執行、查問題，以及為什麼問「你確定嗎」完全沒用。">
+<meta property="og:url" content="https://jiangyude.com/articles/design-for-ai-errors/">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:site_name" content="江江教練 · AI 知識管理">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="AI 說「我確定」，它的回答我可以直接照做嗎？｜AI 追問技巧，一定要相信，AI 值得被懷疑｜江江教練">
+<meta name="twitter:image" content="https://jiangyude.com/images/og/design-for-ai-errors.jpg">
+<meta name="twitter:description" content="大語言模型是機率模型，它就是會出錯、會有幻覺。這篇講為什麼不要把力氣花在把提示詞調到 AI 永遠不出錯，改成設計一套出錯也攔得下來的機制，並附上我平常在用的層層追問：查結果、查審法、查執行、查問題，以及為什麼問「你確定嗎」完全沒用。">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"AI 說「我確定」，它的回答我可以直接照做嗎？｜AI 追問技巧，一定要相信，AI 值得被懷疑","description":"大語言模型是機率模型，它就是會出錯、會有幻覺。這篇講為什麼不要把力氣花在把提示詞調到 AI 永遠不出錯，改成設計一套出錯也攔得下來的機制，並附上我平常在用的層層追問：查結果、查審法、查執行、查問題，以及為什麼問「你確定嗎」完全沒用。","author":{"@type":"Person","name":"江昱德","alternateName":"江江教練","jobTitle":"隱性知識提煉師、AI 應用規劃師"},"isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://jiangyude.com/"},"inLanguage":"zh-Hant","url":"https://jiangyude.com/articles/design-for-ai-errors/"}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{--ink:#1a1612;--paper:#fefcf8;--muted:#6a635a;--line:#d8cdb8;--green:#5f7553;--blue:#5689b8;--orange:#e85a4f;--soft:#faf5ec;--dark:#2a2018;--shadow:0 18px 45px rgba(107,74,42,.14);--sp-shadow:hsla(35,50%,60%,.15);--sp-shadow-edge:hsla(35,50%,68%,.03);--sp-radius:400px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC","Segoe UI",sans-serif}
+a{color:inherit}
+/* 官網共用導航列 nav.top（與首頁/文章總站同一條） */
+nav.top{position:sticky;top:0;background:rgba(254,252,248,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid #d8cdb8;z-index:100}
+nav.top .container{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:24px;padding:14px 32px}
+.nav-brand-img{justify-self:start;display:flex;align-items:center;text-decoration:none;flex-shrink:0;transition:opacity .2s}
+.nav-brand-img:hover{opacity:.8}.nav-brand-img img{height:40px;width:auto;display:block}
+nav.top ul.nav-menu{justify-self:end;display:flex;gap:22px;list-style:none;margin:0;padding:0;font-size:.95rem;white-space:nowrap}
+nav.top ul.nav-menu a{color:#3a342d;text-decoration:none;transition:color .2s;font-weight:500;white-space:nowrap}
+nav.top ul.nav-menu a:hover{color:#1a1612}nav.top ul.nav-menu a.active{color:#1a1612;font-weight:700}
+.nav-toggle{display:none;background:none;border:none;padding:6px;cursor:pointer;width:36px;height:36px;position:relative}
+.nav-toggle span{display:block;position:absolute;left:8px;right:8px;height:2px;background:#1a1612;border-radius:2px;transition:transform .25s,opacity .25s,top .25s}
+.nav-toggle span:nth-child(1){top:11px}.nav-toggle span:nth-child(2){top:17px}.nav-toggle span:nth-child(3){top:23px}
+.nav-toggle.open span:nth-child(1){top:17px;transform:rotate(45deg)}.nav-toggle.open span:nth-child(2){opacity:0}.nav-toggle.open span:nth-child(3){top:17px;transform:rotate(-45deg)}
+.tablewrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:22px 0;border:1px solid var(--line);border-radius:10px;background:#fff;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.tablewrap table{border-collapse:collapse;width:100%;min-width:600px;font-size:18px;line-height:1.65}
+.tablewrap .zh{display:block;margin-top:5px;font-size:16px;line-height:1.55;color:var(--muted);font-weight:400}
+.tablewrap th,.tablewrap td{padding:12px 14px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top;color:#3a342d}
+.tablewrap thead th{background:var(--soft);font-weight:900;font-size:18px;color:#1a1612;white-space:nowrap}
+.tablewrap tbody tr:last-child td{border-bottom:none}
+.tablewrap td code,.section code{background:var(--soft);border:1px solid var(--line);border-radius:5px;padding:1px 6px;font:500 15px/1.5 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace}
+.inline-figure.wide{max-width:1000px}
+.toc{margin:26px 0 0;padding:20px 22px;background:#fff;border:1px solid var(--line);border-radius:10px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.toc>b{display:block;font-size:15px;letter-spacing:.05em;color:var(--green);margin-bottom:10px}
+.toc ol{margin:0;padding-left:1.35em;font-size:18px;line-height:1.7}
+.toc li{margin-bottom:7px;color:#3a342d}
+.toc a{color:var(--blue);font-weight:700;text-decoration:none}.toc a:hover{text-decoration:underline}
+.toc-hint{margin:12px 0 0!important;font-size:18px!important;color:var(--muted)!important;border-top:1px solid var(--line);padding-top:12px}
+.readmore{margin-top:24px;padding:20px 22px;background:var(--soft);border:1px solid var(--line);border-radius:12px}
+.readmore.near{margin:26px 0 6px;background:rgba(86,137,184,.07);border-color:#bcd0e2}
+.readmore.near b{color:var(--blue);font-size:18px}
+.readmore.near li{font-size:17px;line-height:1.7;margin-bottom:10px}
+.readmore b{display:block;margin-bottom:10px;font-size:19px}
+.readmore ul{margin:0;padding-left:1.25em}
+.readmore a{color:var(--blue);font-weight:700;text-decoration:none}
+.readmore a:hover{text-decoration:underline}
+@media(max-width:820px){.tablewrap table{min-width:560px;font-size:18px}.tablewrap{position:relative}.tablewrap::after{content:"表格可左右滑動 →";position:sticky;left:0;display:block;font-size:15px;color:var(--muted);background:var(--soft);border-top:1px solid var(--line);padding:7px 12px;width:100%}}
+@media(max-width:860px){
+ nav.top .container{grid-template-columns:auto 1fr auto;padding:10px 16px;gap:12px}
+ .nav-brand-img img{height:32px}
+ .nav-toggle{display:block;justify-self:end}
+ nav.top ul.nav-menu{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(254,252,248,.98);backdrop-filter:blur(14px);border-bottom:1px solid #d8cdb8;flex-direction:column;gap:0;padding:8px 0;box-shadow:0 10px 24px rgba(107,74,42,.08)}
+ nav.top ul.nav-menu.open{display:flex}
+ nav.top ul.nav-menu li{border-bottom:1px solid #e8dfc9}
+ nav.top ul.nav-menu li:last-child{border-bottom:none}
+ nav.top ul.nav-menu a{display:block;padding:14px 20px;font-size:1.06rem}
+}
+/* 滑鼠暖光暈（與首頁同一支 spotlight.js） */
+body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradient(var(--sp-radius) circle at var(--mx,50%) var(--my,50%),var(--sp-shadow) 0%,var(--sp-shadow-edge) 45%,transparent 75%);pointer-events:none;z-index:9999;mix-blend-mode:multiply;transition:background .06s linear}
+.hero{position:relative;overflow:hidden;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:72px;padding:96px clamp(20px,6vw,88px) 80px;background:linear-gradient(180deg,#fffcf0 0%,#f9e9d2 100%);color:#1a1612;border-bottom:1px solid #d8cdb8}
+.hero .wc{position:absolute;border-radius:50%;filter:blur(60px);pointer-events:none;z-index:0}
+.hero .wc1{width:420px;height:360px;top:-120px;right:-80px;background:#e8884b;opacity:.15}
+.hero .wc2{width:360px;height:300px;bottom:-110px;left:-70px;background:#5f7553;opacity:.13}
+.hero .wc3{width:280px;height:260px;top:34%;left:14%;background:#a08144;opacity:.10}
+.hero>div{flex:none;width:860px;max-width:100%;position:relative;z-index:2}
+.hero-figure{margin:0;width:420px;flex:none;position:relative;z-index:2}
+.hero-figure img{display:block;width:100%;border-radius:16px;border:1px solid #d8cdb8;box-shadow:0 18px 45px rgba(107,74,42,.16);cursor:zoom-in}
+.hero-figure figcaption{margin-top:10px;font-size:14px;line-height:1.6;color:#6a635a}
+.inline-figure{margin:30px auto 8px;max-width:820px}
+.inline-figure img{display:block;width:100%;border-radius:14px;border:1px solid var(--line);box-shadow:var(--shadow);background:#fff;cursor:zoom-in}
+.inline-figure figcaption{font-size:14px;line-height:1.6;color:var(--muted);margin-top:10px}
+.lightbox{position:fixed;inset:0;z-index:10000;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(12,10,8,.92);cursor:zoom-out;backdrop-filter:blur(4px)}
+.lightbox.open{display:flex}.lightbox img{max-width:96vw;max-height:92vh;border-radius:10px;box-shadow:0 24px 60px rgba(0,0,0,.5)}
+.lightbox-close{position:fixed;top:18px;right:24px;color:#fff;font-size:34px;line-height:1;font-weight:700;cursor:pointer;opacity:.85}
+.kicker{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.55rem;color:#7a5c3a;font-weight:500}
+.hero h1{max-width:none;margin:16px 0 18px;font-size:clamp(36px,6vw,72px);line-height:1.08;overflow-wrap:anywhere}
+.hero p{max-width:none;font-size:clamp(18px,2vw,23px);line-height:1.62;color:#3a342d}
+.cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
+.cta a{display:inline-flex;align-items:center;text-decoration:none;border-radius:8px;padding:12px 16px;font-weight:900}
+.cta .primary{background:#fff;color:#1a1612}.cta .ghost{border:1px solid rgba(255,255,255,.32);color:#fff;background:rgba(255,255,255,.08)}
+.section{padding:54px clamp(20px,6vw,88px);border-top:1px solid var(--line)}
+.inner{width:min(1000px,100%);margin:0 auto}
+.section h2{font-size:clamp(26px,4.2vw,48px);line-height:1.12;margin:0 0 18px}
+.section h3{font-size:clamp(21px,3vw,30px);line-height:1.2;margin:30px 0 12px}
+.lead{font-size:clamp(18px,1.6vw,22px);line-height:1.7;color:#3a342d;max-width:900px}
+.section p{font-size:18px;line-height:1.74;color:#3a342d}.section p+p{margin-top:14px}
+.section ul,.section ol{padding-left:1.4em;font-size:18px;line-height:1.74;color:#3a342d}.section li{margin-bottom:8px}
+.meaning{margin:22px 0;padding:16px 18px;border-left:5px solid var(--blue);background:rgba(86,137,184,.12);border-radius:6px;line-height:1.7;font-size:19px}
+.meaning b{display:block;color:var(--blue);margin-bottom:4px}
+.caveat{margin:0 0 8px;padding:16px 18px;border-left:5px solid var(--orange);background:rgba(232,90,79,.1);border-radius:6px;line-height:1.7;font-size:18px;color:#3a342d}
+.caveat b{display:block;color:var(--orange);margin-bottom:4px}
+.infocard{background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px 24px 22px;box-shadow:0 8px 22px rgba(107,74,42,.08);margin-top:8px}
+.infocard-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.info-item{padding:18px 14px 0}
+.info-item b{display:block;font-size:14px;font-weight:900;letter-spacing:.04em;margin-bottom:7px;text-transform:uppercase}
+.info-item:nth-child(1) b{color:var(--green)}.info-item:nth-child(2) b{color:var(--orange)}.info-item:nth-child(3) b{color:var(--blue)}
+.info-item p{margin:0;font-size:17px;line-height:1.6;color:#3a342d}
+.tagrow{display:flex;flex-wrap:wrap;gap:7px;margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
+.tag{font-size:14px;color:var(--muted);background:var(--soft);border:1px solid var(--line);border-radius:999px;padding:4px 11px}
+.duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:24px}
+.duo.stack{grid-template-columns:1fr}
+.duo .card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:22px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.duo .card.a{border-color:var(--orange)}.duo .card.b{border-color:var(--green);box-shadow:0 8px 24px rgba(95,117,83,.16)}
+.duo .card small{display:block;font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.04em;margin-bottom:9px}
+.duo .card.a small{color:var(--orange)}.duo .card.b small{color:var(--green)}
+.duo .card b{display:block;font-size:22px;line-height:1.3;margin-bottom:12px}.duo .card.a b{color:#c0512f}.duo .card.b b{color:#4a7a59}
+.duo .card p{margin:0;color:#3a342d;line-height:1.75;font-size:18px}
+.workflow-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:24px}
+.workflow-step{background:#fff;border:1px solid var(--line);border-radius:8px;padding:18px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.workflow-step small{display:block;color:var(--orange);font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;margin-bottom:9px}
+.workflow-step b{display:block;font-size:18px;line-height:1.3;margin-bottom:9px}
+.workflow-step p{margin:0;color:#3a342d;line-height:1.6;font-size:16px}
+.codeblock{background:var(--dark);color:#f3ead9;border-radius:8px;padding:18px 20px;font:500 14px/1.65 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;overflow-x:auto;white-space:pre-wrap;margin:20px 0;box-shadow:0 8px 22px rgba(107,74,42,.12)}
+.codeblock .c{color:#f6d7a6;font-weight:600}
+.skillcard{background:#fff;border:1px solid var(--green);border-radius:12px;padding:24px;box-shadow:0 10px 26px rgba(95,117,83,.16);margin-top:8px}
+.skillcard b{display:block;font-size:21px;margin-bottom:8px}
+.skillcard p{margin:0 0 16px;font-size:17px;line-height:1.65;color:#3a342d}
+.cta-band{background:#e6f0e5;color:#3a342d}.cta-band .section{border-top:none}
+.cta-band .inner{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(260px,.85fr);gap:26px;align-items:start}
+.cta-band h2{font-size:clamp(26px,4vw,44px);margin:0 0 16px}.cta-band p,.cta-band .lead{color:rgba(58,52,45,.9);font-size:18px;line-height:1.72}
+.cta-card{border:1px solid #cfe0d2;background:#fbfdfa;border-radius:8px;padding:22px}
+.cta-card b{display:block;color:#48b178;margin-bottom:10px;font-size:18px}.cta-card p{margin:0 0 14px}
+.footer{padding:30px clamp(20px,6vw,88px);font-size:14px;color:var(--muted);background:#fff;border-top:1px solid var(--line)}
+.footer-inner{width:min(1000px,100%);margin:0 auto}
+.footer-links{display:flex;flex-wrap:wrap;gap:6px 12px;margin-bottom:14px}.footer-links a{color:var(--blue);font-weight:900;text-decoration:none;font-size:14px}
+.footer-brand{font-weight:900;font-size:15px;margin-bottom:10px}.footer-note{font-size:13px;line-height:1.6}
+@media(max-width:820px){.infocard-grid{grid-template-columns:1fr}.duo{grid-template-columns:1fr}.workflow-grid{grid-template-columns:1fr}.cta-band .inner{grid-template-columns:1fr}.section{padding:40px 20px}.hero{min-height:52vh;flex-direction:column;justify-content:flex-start;align-items:flex-start;gap:24px}.hero>div{width:100%}.hero-figure{width:100%;max-width:560px}}
+@media(max-width:820px){html,body{overflow-x:hidden}.hero h1{word-break:break-word}}
+.hero-figure{width:320px}
+.hero-figure img{aspect-ratio:4/5;object-fit:cover}
+</style>
+</head>
+<body class="spotlight">
+<!-- 官網共用導航列 nav.top：與首頁/總站同一條，文章不要自己另做極簡 topbar（江江 2026-06-25：要同一個框架、同一條導航列）。把對應頁面的 class="active" 標在自己那欄。
+     ⚠️ 下面 ul.nav-menu 整塊由 preflight 第 5 關 check-bilingual-nav.mjs 做「逐字比對」，
+        塞任何註解、多一個空白、換行位置不同都會被判導航不一致而擋下發布。要說明就寫在 <ul> 外面（像這裡）。
+        2026-08-16 修：原本的 EN 那行說明註解就夾在 <ul> 裡面，導致照範本起手的新文章一律卡第 5 關
+        （llm-rag-agent-mcp 與 rag-three-retrieval-modes 兩篇同時中招）。註解已移出來，<ul> 內保持乾淨。
+        萬一還是被擋，直接跑：node scripts/check-bilingual-nav.mjs --write --only=<你的檔案路徑> -->
+<nav class="top">
+  <div class="container">
+    <a class="nav-brand-img" href="../../index.html"><img src="../../images/footer-signature.png" alt="江江教練 | 江昱德"></a>
+    <button class="nav-toggle" aria-label="選單"><span></span><span></span><span></span></button>
+    <ul class="nav-menu">
+      <li><a href="../../index.html">首頁</a></li>
+      <li><a href="../../knowledge-architecture.html">知識架構</a></li>
+      <li><a href="../../courses.html">課程</a></li>
+      <li><a href="../../articles.html" class="active">深度文章</a></li>
+      <li><a href="../../skills.html">技能包下載</a></li>
+      <li><a href="../../offers.html">服務方案</a></li>
+      <li class="lang-switch"><a href="../../en/articles.html" hreflang="en">EN</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="wc wc1"></div>
+  <div class="wc wc2"></div>
+  <div class="wc wc3"></div>
+  <div>
+    <div class="kicker">AI 應用 / 使用原則</div>
+    <h1>AI 說「我確定」，它的回答我可以直接照做嗎？｜AI 追問技巧，一定要相信，AI 值得被懷疑</h1>
+    <p>客戶跟我說「我的 AI 說這樣沒問題」。我的提醒是，AI 講的每一句話都值得懷疑。但下一步不是把提示詞調到它不會出錯，那條路沒有終點。</p>
+  </div>
+  <figure class="hero-figure">
+    <img src="../../images/articles/design-for-ai-errors-cover.jpg" alt="咪卡在桌上按著一份蓋了「我確定」印章的文件，皺著眉看它" loading="lazy">
+    <figcaption>它蓋章說確定，那句話本身不是證據。</figcaption>
+  </figure>
+</section>
+
+<main>
+
+<section class="section" id="start">
+  <div class="inner">
+    <h2>這篇在講什麼</h2>
+    <p class="lead">有客戶跟我說「我的 AI 說這樣沒問題」，然後就準備照做了。我給他的提醒是，AI 講的每一句話都值得懷疑。聽到這句，大部分人的下一個問題是「那我要怎麼讓它不要出錯」。這個方向走不到終點，因為大語言模型就是機率模型，會出錯、會有幻覺，這是它運作的方式。這篇講我改成做的另一件事：設計一套機制，讓它出錯的時候攔得下來，再附上我平常怎麼懷疑它的層層追問。</p>
+
+    <div class="duo stack">
+      <div class="card a">
+        <b>適合誰</b>
+        <ul>
+          <li>已經每天在用 AI 做事，而且會把它的產出拿去做決定的人</li>
+          <li>還在想「提示詞是不是再調一下，它就不會亂講了」的人</li>
+          <li>問過 AI「你確定嗎」，它回你「我確定」，然後你也不知道還能問什麼的人</li>
+        </ul>
+      </div>
+      <div class="card b">
+        <b>你可以帶走什麼</b>
+        <ul>
+          <li>一個換方向的判準：力氣要花在讓它不出錯，還是花在出錯也沒事</li>
+          <li>層層追問的完整問句，可以直接複製去問你的 AI</li>
+          <li>一句話看懂「你確定嗎」為什麼沒用，以及該用什麼問句取代它</li>
+        </ul>
+      </div>
+    </div>
+
+    <figure class="inline-figure wide">
+      <img src="../../images/articles/design-for-ai-errors-summary.jpg" alt="一頁總結：左半兩個方向對照，把提示詞調到不出錯等於沒有終點、讓它出錯也攔得下來等於做得完；右半層層追問四層，一查結果、二查審法、三查執行、四查問題" loading="lazy">
+      <figcaption>整篇的一頁總結。左邊是換方向，右邊是換問法，兩件事要一起做才完整。</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section class="section" id="the-line">
+  <div class="inner">
+    <h2>客戶說：我的 AI 說這樣沒問題</h2>
+    <p>這句話我最近聽到很多次。有人拿 AI 給的做法來問我可不可行，我說這裡有風險，他的回應是「可是我的 AI 說這樣沒問題」。</p>
+    <p>我給的提醒只有一句：AI 講的每一句話都值得懷疑。</p>
+    <p>這句話不是要你不用它。我自己一天到晚在用，這個網站、我的知識庫、我的自動化流程，大部分都是 AI 幫我做的。會懷疑，跟敢交給它做，這兩件事我同時在做。</p>
+  </div>
+</section>
+
+<section class="section" id="wrong-direction">
+  <div class="inner">
+    <h2>大部分人聽完，會往錯的方向用力</h2>
+    <p>聽到「AI 會出錯」，多數人的下一個動作是去研究怎麼讓它不要出錯。提示詞再寫長一點、規則再補一條、範例再給多一點，想把它調到永遠不會犯錯。</p>
+    <div class="caveat">
+      <p>這個方向沒有終點。你可以一直調下去，它還是會在你沒預期的地方給你一個看起來很合理的錯答案。</p>
+    </div>
+    <p>力氣花錯地方的代價不只是白費。你會因為「我提示詞寫得很完整」而更相信它，然後在它真的出錯的那一次，完全沒有攔截。</p>
+
+    <figure class="inline-figure">
+      <img src="../../images/articles/design-for-ai-errors-two-directions.jpg" alt="左邊一條步道往遠方延伸看不到盡頭，右邊咪卡按住一道閘門，擋下一顆打叉的方塊" loading="lazy">
+      <figcaption>兩邊都要花力氣，差別是右邊那條你知道什麼時候算做完。</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section class="section" id="probability">
+  <div class="inner">
+    <h2>前提：它就是會出錯，那是它的運作方式</h2>
+    <p>現在的大語言模型是機率模型。它是依機率預測下一個字接什麼，同一個問題問兩次，答案也可能不一樣。所以它產生錯誤內容這件事，本來就在它的能力範圍之內。</p>
+    <div class="meaning">
+      <p>它出錯不是壞掉，那就是它運作的方式。你買到的不是一台故障的機器，你買到的是一台本來就有機率答錯的機器。</p>
+    </div>
+    <p>把這件事當成前提之後，該問的問題就換了。原本的問題是「怎麼讓它不要出錯」，換成「它出錯的時候，我這裡會發生什麼事」。</p>
+  </div>
+</section>
+
+<section class="section" id="the-core-idea">
+  <div class="inner">
+    <h2>所以真正要設計的，是「攔得下來」</h2>
+    <p class="lead">這句是整篇的核心，值得單獨講一段：你要設計的不是一個不會出錯的 AI，是一套讓它出錯也沒事的機制。方向換了，力氣花的地方就完全不同。</p>
+
+    <div class="infocard">
+      <div class="infocard-grid">
+        <div class="info-item">
+          <b>前提</b>
+          <p>它是機率模型。它就是會出錯，就是會有幻覺。這就是它的運作方式。</p>
+        </div>
+        <div class="info-item">
+          <b>所以</b>
+          <p>不要幻想讓它一定不會出錯。那個方向沒有終點，你永遠不知道還要再補幾句提示詞。</p>
+        </div>
+        <div class="info-item">
+          <b>改成</b>
+          <p>設計一套機制，讓它出現幻覺的時候也沒關係。攔得下來，有些甚至自動處理轉化掉。</p>
+        </div>
+      </div>
+    </div>
+
+    <figure class="inline-figure">
+      <img src="../../images/articles/design-for-ai-errors-catch-it.jpg" alt="輸送帶上排著一樣的方塊，歪掉的那一顆掉下來被咪卡用網子接住" loading="lazy">
+      <figcaption>歪的那一顆一定會出現。你要準備的是那張網，不是要求輸送帶永遠不歪。</figcaption>
+    </figure>
+
+    <div class="meaning">
+      <p>差別在哪：前者是把希望押在它不犯錯，後者是把成本押在你這邊的攔截。只有後者你算得出來要付多少，也知道什麼時候算做完了。</p>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="two-lines">
+  <div class="inner">
+    <h2>我為什麼敢讓它做事：兩道，不是一道</h2>
+    <p>前陣子有一個三天的馬拉松直播活動，我讓 AI 幫我報名，讓它自己螢幕錄影。有人看到就說他也想學。我說學怎麼叫 AI 做事很簡單，難的是怎麼確保它不會亂搞。</p>
+    <p>讓它幫我報名，等於它拿到我的 Google 帳號權限，要登入我的帳號去填表。讓它螢幕錄影，等於我給它整台電腦的操作權，它可以動我電腦裡任何東西。我敢，是因為我平常有兩道。</p>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>哪一道</th><th>在做什麼</th><th>單獨用會怎樣</th></tr></thead>
+        <tbody>
+          <tr><td>第一道<br><span class="zh">它越來越懂你的界限</span></td><td>累積到一定程度之後，它知道你的標準、你的禁區、你的習慣。正常運作的時候它不會搞錯。怎麼累積，我寫在 <a href="../ai-that-knows-you/">我把資料全部丟給 AI 了，為什麼它還是不夠懂我</a>。</td><td>只有這一道的人，等於把全部希望押在它不犯錯。那一天總會來。</td></tr>
+          <tr><td>第二道<br><span class="zh">就算它搞錯，有機制攔截</span></td><td>它突然中風的時候，要有相對的容錯機制去處理，攔得下來，有些甚至能自動轉化掉。</td><td>只有這一道會很累，因為每件事都要人重驗。兩道一起才省力。</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>很多人把力氣全花在第一道。第二道才是我覺得真正該講的部分：不要設法讓它永遠不出錯，改成設計一套機制，讓它出錯的時候也沒關係。</p>
+    <p>第二道不一定要很技術。最小的版本可以很土：要它改的東西先留一份原檔，要寄出去的東西自己看過一遍再送。這兩件事就已經是攔截了。差別只在你是不是刻意留的。</p>
+    <p>我自己踩過一次很貴的：一個全自動改名任務，子代理把 170 個檔案打壞，還回報「完成」。那次零遺失收場，靠的就是第二道。過程我寫在 <a href="../ai-loop-safety-recovery/">AI 出錯不可怕，沒有備援才可怕</a>。</p>
+    <p>第二道要怎麼做成固定流程，我另外寫過六個步驟：<a href="../recovery-over-perfection/">AI 自動跑出錯了怎麼收拾</a>。那篇管的是讓 AI 自動跑任務的時候怎麼留後路，這篇管的是它把答案交到你面前、你要不要信的那一刻。</p>
+  </div>
+</section>
+
+<section class="section" id="four-layers">
+  <div class="inner">
+    <h2>那平常怎麼懷疑它？層層追問</h2>
+    <p>機制要設計，日常也要有問法。我用四層，往下是查答案，往上是查問題。</p>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>層</th><th>問什麼</th></tr></thead>
+        <tbody>
+          <tr><td><b>一 · 查結果</b></td><td>你要怎麼證明這是正確的？證據在哪裡？我怎麼重現？什麼情況會推翻你的結論？</td></tr>
+          <tr><td><b>二 · 查審法</b></td><td>你用什麼標準判斷它是對的？第二家是獨立作答，還是看過你的答案才回？分歧的地方最後誰裁決？</td></tr>
+          <tr><td><b>三 · 查執行</b></td><td>開跑前：範圍、驗收、停止條件是什麼？<br>跑完後：拿什麼證明做完、做對，而且沒有多做也沒有少做？<br>出錯時：怎麼停、怎麼還原、怎麼修正，再用同一套標準重驗？</td></tr>
+          <tr><td><b>四 · 查問題</b></td><td>這真的是核心問題嗎？會不會一開始就搞錯問題、搞錯解方？我有沒有把需求描述好？有沒有更深層的癥結？</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <figure class="inline-figure">
+      <img src="../../images/articles/design-for-ai-errors-layers.jpg" alt="四階階梯由下往上是查結果、查審法、查執行、查問題，最下面箭頭標答案、最上面箭頭標問題，咪卡拿教學棒指著第四階" loading="lazy">
+      <figcaption>四層是同一個方向上的深淺，不是四種選項。越往上越接近你自己給的題目。</figcaption>
+    </figure>
+
+    <p>如果你現在只是拿 AI 查資料、寫文案、順稿，還沒有讓它自己去跑一整件任務，第三層可以先跳過，用一、二、四層就夠了。等到你開始讓它動你的檔案或帳號，第三層再補上來。</p>
+    <p>前三層在查它給的答案，第四層在查我給的題目。最貴的錯通常出在第四層，因為前三層做得再好，題目本身錯了，你只是很嚴謹地做完一件不該做的事。</p>
+    <p>第四層我會交給推理比較強的模型跑，最後仍然由人決定。這是工具選擇，不是規則，你手上有什麼就用什麼。</p>
+  </div>
+</section>
+
+<section class="section" id="are-you-sure">
+  <div class="inner">
+    <h2>「你確定嗎」只能踩煞車，不能當驗收</h2>
+    <p>我自己也常先問一句「你確定嗎」。但停在這裡完全沒用，它一定回答確定。</p>
+    <div class="meaning">
+      <p>「你確定嗎」問的是信心，層層追問問的是證據。信心題它永遠答得出來，證據題答不出來就會露餡。</p>
+    </div>
+    <figure class="inline-figure">
+      <img src="../../images/articles/design-for-ai-errors-are-you-sure.jpg" alt="咪卡坐著，旁邊一個對話泡泡寫「我確定」，咪卡自己舉著一塊寫著「證據呢」的牌子" loading="lazy">
+      <figcaption>它答「我確定」不花成本，答「證據在這」才要真的去查。</figcaption>
+    </figure>
+
+    <p>所以那句話當開場可以，接下來要問的是證據在哪、我怎麼重現、什麼情況會推翻你。把問句從信心題換成證據題，這是四層裡最便宜、今天就能用的一招。</p>
+  </div>
+</section>
+
+<section class="section" id="cross-review">
+  <div class="inner">
+    <h2>順便回一個留言：兩家互審不是免費的保險</h2>
+    <p>我在脆上寫這個主題的時候，有人留言說「兩間 AI 互審就商業吹捧」。這句沒錯，隨便叫兩家互看，很容易變成互相稱讚。</p>
+    <p>我的回答是：要給審核標準就會好很多。同一份材料、先各自獨立做完、按明確標準審、分歧交回人決定，這樣才有用。第二層「查審法」問的就是這件事，第二家是獨立作答還是看過你的答案，差別非常大。</p>
+    <p>互審要做到什麼深度，我另外寫過一篇：<a href="../three-levels-of-cross-review/">怎麼設計讓兩個 AI 互審</a>。</p>
+  </div>
+</section>
+
+<section class="section" id="today">
+  <div class="inner">
+    <h2>今天可以先做的一件事</h2>
+    <p>不用先建制度。下次 AI 給你一個你打算照做的答案時，把「你確定嗎」換成第一層那四句，問完再決定要不要動手。</p>
+    <p>它答不出證據，你就知道這段還沒驗過，先別照做。它答得出來，你也順手拿到了可以自己重現的東西。兩種結果都比你直接照做好。</p>
+    <p>如果你是帶團隊或做客戶專案的，第一層那四句可以直接貼進你們的驗收清單，變成交件前一定要問過的一關。</p>
+  </div>
+</section>
+
+<section class="section" id="next">
+  <div class="inner">
+    <h2>想再往下走</h2>
+    <p>這些東西我都寫成文章了，官網免費看。你看完就懂、自己拿去用的，不用花錢。</p>
+    <p>看不懂，或是沒時間自己摸的，我開了六堂系列課，從 9 月 20 日開始，把「怎麼從沒有到有」一堂一堂拆給你看：技能包、迴圈工程、API 與 MCP 這些概念、怎麼確定 AI 找得到資料、怎麼確定它找到的是對的，最後把前面接起來做一條你自己的工作流。這篇講的容錯機制怎麼實作，就在裡面。</p>
+    <p><a href="https://jiangyude.com/courses/2026-09-ai-series/">六堂系列課的完整說明在這裡</a>。如果你要的是做出你自己的那一套，不只是聽懂概念，那可以找我一對一或陪跑，<a href="../../offers.html">服務方案在這裡</a>。</p>
+  </div>
+</section>
+
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">江江教練 · AI 知識管理</div>
+    <div class="footer-links">
+      <a href="../../articles.html">← 回深度文章總站</a>
+      <a href="../../index.html">首頁</a>
+      <a href="../../learn.html">自學資源</a>
+      <a href="../../skills.html">技能包下載</a>
+      <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">LINE 社群 ↗</a>
+      <a href="https://www.threads.com/@jiang_yude_coach" target="_blank" rel="noopener">Threads ↗</a>
+      <a href="https://vocus.cc/salon/Jiang_Coach" target="_blank" rel="noopener">方格子 ↗</a>
+    </div>
+    <div class="footer-note">這是一篇教學文章，整理我對「AI 說「我確定」，它的回答我可以直接照做嗎？｜AI 追問技巧，一定要相信，AI 值得被懷疑」的看法，供你參考。</div>
+  </div>
+</footer>
+
+<!-- 點圖放大 lightbox（hero 與內文圖通用，已內建，不用每篇重加） -->
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <span class="lightbox-close" aria-label="關閉">×</span>
+  <img id="lightbox-img" src="" alt="放大檢視">
+</div>
+<script>
+(function(){
+  var box=document.getElementById('lightbox'),boxImg=document.getElementById('lightbox-img');
+  document.querySelectorAll('.hero-figure img,.inline-figure img').forEach(function(img){
+    img.addEventListener('click',function(){boxImg.src=img.currentSrc||img.src;boxImg.alt=img.alt||'放大檢視';box.classList.add('open');box.setAttribute('aria-hidden','false');});
+  });
+  function close(){box.classList.remove('open');box.setAttribute('aria-hidden','true');boxImg.src='';}
+  box.addEventListener('click',close);
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
+})();
+</script>
+
+<script src="../../image-interactions.js"></script>
+
+<!-- 官網共用：滑鼠暖光暈 + 導航列漢堡選單 -->
+<script src="../../spotlight.js"></script>
+
+<!-- 文章自動互聯（相關文章）：兩支已內建，順序不可顛倒，不用再另外加 -->
+<script src="../../articles-data.js"></script>
+<script src="../../related-render.js"></script>
+  <script src="/mika-chat-widget.js" defer></script>
+</body>
+</html>
