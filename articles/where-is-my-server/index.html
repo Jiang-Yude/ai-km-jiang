@@ -1,0 +1,543 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>你的 Server 架在哪裡？｜混合式與全雲端兩套架構，一台 Mac mini 當本機工作中樞</title>
+<meta name="description" content="有人問我 Server 架在哪裡，我發現自己答得不夠好。這篇把主機、伺服器、Server 拆清楚，再把 Mac mini、知識庫、手機、雲端四個角色擺回定位，對照我做給客戶的全雲端專案，最後附上可以直接照著講的四個回答版本。">
+<link rel="canonical" href="https://jiangyude.com/articles/where-is-my-server/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="你的 Server 架在哪裡？｜混合式與全雲端兩套架構，一台 Mac mini 當本機工作中樞｜江江教練">
+<!-- 分享封面：hero 文字填好後在 repo 根目錄跑 `node scripts/og-shot.mjs where-is-my-server` 自動截 1200×630 到 images/og/where-is-my-server.jpg（見 README「文章分享封面（OG 圖）機制」）。別退回 intro-jiang.png 直式人像，會被裁成只剩脖子。 -->
+<meta property="og:image" content="https://jiangyude.com/images/og/where-is-my-server.jpg">
+<meta property="og:description" content="有人問我 Server 架在哪裡，我發現自己答得不夠好。這篇把主機、伺服器、Server 拆清楚，再把 Mac mini、知識庫、手機、雲端四個角色擺回定位，對照我做給客戶的全雲端專案，最後附上可以直接照著講的四個回答版本。">
+<meta property="og:url" content="https://jiangyude.com/articles/where-is-my-server/">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:site_name" content="江江教練 · AI 知識管理">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="你的 Server 架在哪裡？｜混合式與全雲端兩套架構，一台 Mac mini 當本機工作中樞｜江江教練">
+<meta name="twitter:image" content="https://jiangyude.com/images/og/where-is-my-server.jpg">
+<meta name="twitter:description" content="有人問我 Server 架在哪裡，我發現自己答得不夠好。這篇把主機、伺服器、Server 拆清楚，再把 Mac mini、知識庫、手機、雲端四個角色擺回定位，對照我做給客戶的全雲端專案，最後附上可以直接照著講的四個回答版本。">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"你的 Server 架在哪裡？｜混合式與全雲端兩套架構，一台 Mac mini 當本機工作中樞","description":"有人問我 Server 架在哪裡，我發現自己答得不夠好。這篇把主機、伺服器、Server 拆清楚，再把 Mac mini、知識庫、手機、雲端四個角色擺回定位，對照我做給客戶的全雲端專案，最後附上可以直接照著講的四個回答版本。","author":{"@type":"Person","name":"江昱德","alternateName":"江江教練","jobTitle":"隱性知識提煉師、AI 應用規劃師"},"isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://jiangyude.com/"},"inLanguage":"zh-Hant","url":"https://jiangyude.com/articles/where-is-my-server/"}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{--ink:#1a1612;--paper:#fefcf8;--muted:#6a635a;--line:#d8cdb8;--green:#5f7553;--blue:#5689b8;--orange:#e85a4f;--soft:#faf5ec;--dark:#2a2018;--shadow:0 18px 45px rgba(107,74,42,.14);--sp-shadow:hsla(35,50%,60%,.15);--sp-shadow-edge:hsla(35,50%,68%,.03);--sp-radius:400px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC","Segoe UI",sans-serif}
+a{color:inherit}
+/* 官網共用導航列 nav.top（與首頁/文章總站同一條） */
+nav.top{position:sticky;top:0;background:rgba(254,252,248,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid #d8cdb8;z-index:100}
+nav.top .container{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:24px;padding:14px 32px}
+.nav-brand-img{justify-self:start;display:flex;align-items:center;text-decoration:none;flex-shrink:0;transition:opacity .2s}
+.nav-brand-img:hover{opacity:.8}.nav-brand-img img{height:40px;width:auto;display:block}
+nav.top ul.nav-menu{justify-self:end;display:flex;gap:22px;list-style:none;margin:0;padding:0;font-size:.95rem;white-space:nowrap}
+nav.top ul.nav-menu a{color:#3a342d;text-decoration:none;transition:color .2s;font-weight:500;white-space:nowrap}
+nav.top ul.nav-menu a:hover{color:#1a1612}nav.top ul.nav-menu a.active{color:#1a1612;font-weight:700}
+.nav-toggle{display:none;background:none;border:none;padding:6px;cursor:pointer;width:36px;height:36px;position:relative}
+.nav-toggle span{display:block;position:absolute;left:8px;right:8px;height:2px;background:#1a1612;border-radius:2px;transition:transform .25s,opacity .25s,top .25s}
+.nav-toggle span:nth-child(1){top:11px}.nav-toggle span:nth-child(2){top:17px}.nav-toggle span:nth-child(3){top:23px}
+.nav-toggle.open span:nth-child(1){top:17px;transform:rotate(45deg)}.nav-toggle.open span:nth-child(2){opacity:0}.nav-toggle.open span:nth-child(3){top:17px;transform:rotate(-45deg)}
+.tablewrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:22px 0;border:1px solid var(--line);border-radius:10px;background:#fff;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.tablewrap table{border-collapse:collapse;width:100%;min-width:600px;font-size:18px;line-height:1.65}
+.tablewrap .zh{display:block;margin-top:5px;font-size:16px;line-height:1.55;color:var(--muted);font-weight:400}
+.tablewrap th,.tablewrap td{padding:12px 14px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top;color:#3a342d}
+.tablewrap thead th{background:var(--soft);font-weight:900;font-size:18px;color:#1a1612;white-space:nowrap}
+.tablewrap tbody tr:last-child td{border-bottom:none}
+.tablewrap td code,.section code{background:var(--soft);border:1px solid var(--line);border-radius:5px;padding:1px 6px;font:500 15px/1.5 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace}
+.inline-figure.wide{max-width:1000px}
+.toc{margin:26px 0 0;padding:20px 22px;background:#fff;border:1px solid var(--line);border-radius:10px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.toc>b{display:block;font-size:15px;letter-spacing:.05em;color:var(--green);margin-bottom:10px}
+.toc ol{margin:0;padding-left:1.35em;font-size:18px;line-height:1.7}
+.toc li{margin-bottom:7px;color:#3a342d}
+.toc a{color:var(--blue);font-weight:700;text-decoration:none}.toc a:hover{text-decoration:underline}
+.toc-hint{margin:12px 0 0!important;font-size:18px!important;color:var(--muted)!important;border-top:1px solid var(--line);padding-top:12px}
+.readmore{margin-top:24px;padding:20px 22px;background:var(--soft);border:1px solid var(--line);border-radius:12px}
+.readmore.near{margin:26px 0 6px;background:rgba(86,137,184,.07);border-color:#bcd0e2}
+.readmore.near b{color:var(--blue);font-size:18px}
+.readmore.near li{font-size:17px;line-height:1.7;margin-bottom:10px}
+.readmore b{display:block;margin-bottom:10px;font-size:19px}
+.readmore ul{margin:0;padding-left:1.25em}
+.readmore a{color:var(--blue);font-weight:700;text-decoration:none}
+.readmore a:hover{text-decoration:underline}
+@media(max-width:820px){.tablewrap table{min-width:560px;font-size:18px}.tablewrap{position:relative}.tablewrap::after{content:"表格可左右滑動 →";position:sticky;left:0;display:block;font-size:15px;color:var(--muted);background:var(--soft);border-top:1px solid var(--line);padding:7px 12px;width:100%}}
+@media(max-width:860px){
+ nav.top .container{grid-template-columns:auto 1fr auto;padding:10px 16px;gap:12px}
+ .nav-brand-img img{height:32px}
+ .nav-toggle{display:block;justify-self:end}
+ nav.top ul.nav-menu{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(254,252,248,.98);backdrop-filter:blur(14px);border-bottom:1px solid #d8cdb8;flex-direction:column;gap:0;padding:8px 0;box-shadow:0 10px 24px rgba(107,74,42,.08)}
+ nav.top ul.nav-menu.open{display:flex}
+ nav.top ul.nav-menu li{border-bottom:1px solid #e8dfc9}
+ nav.top ul.nav-menu li:last-child{border-bottom:none}
+ nav.top ul.nav-menu a{display:block;padding:14px 20px;font-size:1.06rem}
+}
+/* 滑鼠暖光暈（與首頁同一支 spotlight.js） */
+body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradient(var(--sp-radius) circle at var(--mx,50%) var(--my,50%),var(--sp-shadow) 0%,var(--sp-shadow-edge) 45%,transparent 75%);pointer-events:none;z-index:9999;mix-blend-mode:multiply;transition:background .06s linear}
+.hero{position:relative;overflow:hidden;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:72px;padding:96px clamp(20px,6vw,88px) 80px;background:linear-gradient(180deg,#fffcf0 0%,#f9e9d2 100%);color:#1a1612;border-bottom:1px solid #d8cdb8}
+.hero .wc{position:absolute;border-radius:50%;filter:blur(60px);pointer-events:none;z-index:0}
+.hero .wc1{width:420px;height:360px;top:-120px;right:-80px;background:#e8884b;opacity:.15}
+.hero .wc2{width:360px;height:300px;bottom:-110px;left:-70px;background:#5f7553;opacity:.13}
+.hero .wc3{width:280px;height:260px;top:34%;left:14%;background:#a08144;opacity:.10}
+.hero>div{flex:none;width:860px;max-width:100%;position:relative;z-index:2}
+.hero-figure{margin:0;width:420px;flex:none;position:relative;z-index:2}
+.hero-figure img{display:block;width:100%;border-radius:16px;border:1px solid #d8cdb8;box-shadow:0 18px 45px rgba(107,74,42,.16);cursor:zoom-in}
+.hero-figure figcaption{margin-top:10px;font-size:14px;line-height:1.6;color:#6a635a}
+.inline-figure{margin:30px auto 8px;max-width:820px}
+.inline-figure img{display:block;width:100%;border-radius:14px;border:1px solid var(--line);box-shadow:var(--shadow);background:#fff;cursor:zoom-in}
+.inline-figure figcaption{font-size:14px;line-height:1.6;color:var(--muted);margin-top:10px}
+.lightbox{position:fixed;inset:0;z-index:10000;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(12,10,8,.92);cursor:zoom-out;backdrop-filter:blur(4px)}
+.lightbox.open{display:flex}.lightbox img{max-width:96vw;max-height:92vh;border-radius:10px;box-shadow:0 24px 60px rgba(0,0,0,.5)}
+.lightbox-close{position:fixed;top:18px;right:24px;color:#fff;font-size:34px;line-height:1;font-weight:700;cursor:pointer;opacity:.85}
+.kicker{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.55rem;color:#7a5c3a;font-weight:500}
+.hero h1{max-width:none;margin:16px 0 18px;font-size:clamp(36px,6vw,72px);line-height:1.08;overflow-wrap:anywhere}
+.hero p{max-width:none;font-size:clamp(18px,2vw,23px);line-height:1.62;color:#3a342d}
+.cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
+.cta a{display:inline-flex;align-items:center;text-decoration:none;border-radius:8px;padding:12px 16px;font-weight:900}
+.cta .primary{background:#fff;color:#1a1612}.cta .ghost{border:1px solid rgba(255,255,255,.32);color:#fff;background:rgba(255,255,255,.08)}
+.section{padding:54px clamp(20px,6vw,88px);border-top:1px solid var(--line)}
+.inner{width:min(1000px,100%);margin:0 auto}
+.section h2{font-size:clamp(26px,4.2vw,48px);line-height:1.12;margin:0 0 18px}
+.section h3{font-size:clamp(21px,3vw,30px);line-height:1.2;margin:30px 0 12px}
+.lead{font-size:clamp(18px,1.6vw,22px);line-height:1.7;color:#3a342d;max-width:900px}
+.section p{font-size:18px;line-height:1.74;color:#3a342d}.section p+p{margin-top:14px}
+.section ul,.section ol{padding-left:1.4em;font-size:18px;line-height:1.74;color:#3a342d}.section li{margin-bottom:8px}
+.meaning{margin:22px 0;padding:16px 18px;border-left:5px solid var(--blue);background:rgba(86,137,184,.12);border-radius:6px;line-height:1.7;font-size:19px}
+.meaning b{display:block;color:var(--blue);margin-bottom:4px}
+.caveat{margin:0 0 8px;padding:16px 18px;border-left:5px solid var(--orange);background:rgba(232,90,79,.1);border-radius:6px;line-height:1.7;font-size:18px;color:#3a342d}
+.caveat b{display:block;color:var(--orange);margin-bottom:4px}
+.infocard{background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px 24px 22px;box-shadow:0 8px 22px rgba(107,74,42,.08);margin-top:8px}
+.infocard-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.info-item{padding:18px 14px 0}
+.info-item b{display:block;font-size:14px;font-weight:900;letter-spacing:.04em;margin-bottom:7px;text-transform:uppercase}
+.info-item:nth-child(1) b{color:var(--green)}.info-item:nth-child(2) b{color:var(--orange)}.info-item:nth-child(3) b{color:var(--blue)}
+.info-item p{margin:0;font-size:17px;line-height:1.6;color:#3a342d}
+.tagrow{display:flex;flex-wrap:wrap;gap:7px;margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
+.tag{font-size:14px;color:var(--muted);background:var(--soft);border:1px solid var(--line);border-radius:999px;padding:4px 11px}
+.duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:24px}
+.duo.stack{grid-template-columns:1fr}
+.duo .card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:22px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.duo .card.a{border-color:var(--orange)}.duo .card.b{border-color:var(--green);box-shadow:0 8px 24px rgba(95,117,83,.16)}
+.duo .card small{display:block;font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.04em;margin-bottom:9px}
+.duo .card.a small{color:var(--orange)}.duo .card.b small{color:var(--green)}
+.duo .card b{display:block;font-size:22px;line-height:1.3;margin-bottom:12px}.duo .card.a b{color:#c0512f}.duo .card.b b{color:#4a7a59}
+.duo .card p{margin:0;color:#3a342d;line-height:1.75;font-size:18px}
+.workflow-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:24px}
+.workflow-step{background:#fff;border:1px solid var(--line);border-radius:8px;padding:18px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.workflow-step small{display:block;color:var(--orange);font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;margin-bottom:9px}
+.workflow-step b{display:block;font-size:18px;line-height:1.3;margin-bottom:9px}
+.workflow-step p{margin:0;color:#3a342d;line-height:1.6;font-size:16px}
+.codeblock{background:var(--dark);color:#f3ead9;border-radius:8px;padding:18px 20px;font:500 14px/1.65 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;overflow-x:auto;white-space:pre-wrap;margin:20px 0;box-shadow:0 8px 22px rgba(107,74,42,.12)}
+.codeblock .c{color:#f6d7a6;font-weight:600}
+.skillcard{background:#fff;border:1px solid var(--green);border-radius:12px;padding:24px;box-shadow:0 10px 26px rgba(95,117,83,.16);margin-top:8px}
+.skillcard b{display:block;font-size:21px;margin-bottom:8px}
+.skillcard p{margin:0 0 16px;font-size:17px;line-height:1.65;color:#3a342d}
+.cta-band{background:#e6f0e5;color:#3a342d}.cta-band .section{border-top:none}
+.cta-band .inner{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(260px,.85fr);gap:26px;align-items:start}
+.cta-band h2{font-size:clamp(26px,4vw,44px);margin:0 0 16px}.cta-band p,.cta-band .lead{color:rgba(58,52,45,.9);font-size:18px;line-height:1.72}
+.cta-card{border:1px solid #cfe0d2;background:#fbfdfa;border-radius:8px;padding:22px}
+.cta-card b{display:block;color:#48b178;margin-bottom:10px;font-size:18px}.cta-card p{margin:0 0 14px}
+.footer{padding:30px clamp(20px,6vw,88px);font-size:14px;color:var(--muted);background:#fff;border-top:1px solid var(--line)}
+.footer-inner{width:min(1000px,100%);margin:0 auto}
+.footer-links{display:flex;flex-wrap:wrap;gap:6px 12px;margin-bottom:14px}.footer-links a{color:var(--blue);font-weight:900;text-decoration:none;font-size:14px}
+.footer-brand{font-weight:900;font-size:15px;margin-bottom:10px}.footer-note{font-size:13px;line-height:1.6}
+@media(max-width:820px){.infocard-grid{grid-template-columns:1fr}.duo{grid-template-columns:1fr}.workflow-grid{grid-template-columns:1fr}.cta-band .inner{grid-template-columns:1fr}.section{padding:40px 20px}.hero{min-height:52vh;flex-direction:column;justify-content:flex-start;align-items:flex-start;gap:24px}.hero>div{width:100%}.hero-figure{width:100%;max-width:560px}}
+@media(max-width:820px){html,body{overflow-x:hidden}.hero h1{word-break:break-word}}
+</style>
+</head>
+<body class="spotlight">
+<!-- 官網共用導航列 nav.top：與首頁/總站同一條，文章不要自己另做極簡 topbar（江江 2026-06-25：要同一個框架、同一條導航列）。把對應頁面的 class="active" 標在自己那欄。
+     ⚠️ 下面 ul.nav-menu 整塊由 preflight 第 5 關 check-bilingual-nav.mjs 做「逐字比對」，
+        塞任何註解、多一個空白、換行位置不同都會被判導航不一致而擋下發布。要說明就寫在 <ul> 外面（像這裡）。
+        2026-08-16 修：原本的 EN 那行說明註解就夾在 <ul> 裡面，導致照範本起手的新文章一律卡第 5 關
+        （llm-rag-agent-mcp 與 rag-three-retrieval-modes 兩篇同時中招）。註解已移出來，<ul> 內保持乾淨。
+        萬一還是被擋，直接跑：node scripts/check-bilingual-nav.mjs --write --only=<你的檔案路徑> -->
+<nav class="top">
+  <div class="container">
+    <a class="nav-brand-img" href="../../index.html"><img src="../../images/footer-signature.png" alt="江江教練 | 江昱德"></a>
+    <button class="nav-toggle" aria-label="選單"><span></span><span></span><span></span></button>
+    <ul class="nav-menu">
+      <li><a href="../../index.html">首頁</a></li>
+      <li><a href="../../knowledge-architecture.html">知識架構</a></li>
+      <li><a href="../../courses.html">課程</a></li>
+      <li><a href="../../articles.html" class="active">深度文章</a></li>
+      <li><a href="../../skills.html">技能包下載</a></li>
+      <li><a href="../../offers.html">服務方案</a></li>
+      <li class="lang-switch"><a href="../../en/articles.html" hreflang="en">EN</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="wc wc1"></div>
+  <div class="wc wc2"></div>
+  <div class="wc wc3"></div>
+  <div>
+    <div class="kicker">AI 工作流 / 系統設計</div>
+    <h1>你的 Server 架在哪裡？｜混合式與全雲端兩套架構，一台 Mac mini 當本機工作中樞</h1>
+    <p>主機、伺服器、Server 講的是同一件事，但每個人腦中的畫面不一樣。我把四個角色各自擺回定位，也附上可以直接照著回答的版本。</p>
+  </div>
+</section>
+
+<main>
+
+<section class="section" id="start">
+  <div class="inner">
+    <p class="lead">有人問我：「你的 Server 架在哪裡？」我當下愣了一下。不是不知道答案，是發現我講不清楚。這篇把「主機、伺服器、Server」這三個詞先拆開，再把我工作流裡的四個角色（家裡的 Mac mini、知識庫、手機、雲端模型）各自擺回該站的位置，最後對照我做給客戶的全雲端專案，說明為什麼那一套的設計邏輯正好相反。文末有四個可以直接照著講的回答版本，被問到的時候可以直接用。</p>
+
+    <div class="duo stack">
+      <div class="card">
+        <b>適合誰</b>
+        <ul>
+          <li>被人問過「你的 Server／主機架在哪」，當下答得零零落落的人。</li>
+          <li>常聽到主機、伺服器、雲端、本機這些詞，但從來沒搞清楚它們的關係。</li>
+          <li>想知道「手機連回家裡那台電腦」到底有什麼好處的人。</li>
+        </ul>
+      </div>
+      <div class="card">
+        <b>你可以帶走什麼</b>
+        <ul>
+          <li>一組三句話的判準，任何一台機器丟進去就知道它算不算 Server。</li>
+          <li>一張四層地圖，看得出指令、檔案、模型、執行各自站在哪一層。</li>
+          <li>四個可以直接複製的回答版本：完整版、電梯版、對客戶版、對不懂技術的朋友版。</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="why-hard">
+  <div class="inner">
+    <h2>為什麼「你的 Server 在哪」這個問題這麼容易答錯</h2>
+    <p>當有人問「你有沒有自己的 AI Server」，腦中浮現的畫面通常是機房裡那種黑色鐵櫃，幾十顆風扇一起吹，燈號閃個不停。</p>
+    <p>然後你看看客廳桌上那台安安靜靜、跟便當盒差不多大的 Mac mini，直覺反應會是：「應該沒有吧。」</p>
+    <p>但如果換一個問法：「你有沒有一台機器，長時間開著、隨時待命，幫你跑自動化、幫你存取檔案、幫你執行 AI 代理人的工作？」</p>
+    <p>答案會突然變成：「有啊，就在我家。」</p>
+    <p>同一件事，兩種答案。問題出在我們對「Server」這個詞的想像被機房綁架了。</p>
+    <div class="meaning">
+      <b>先把三個詞對齊</b>
+      <p>主機、伺服器、Server 講的是同一件事。中文的「主機」通常指那台實體機器，「伺服器」講的是它扮演的角色，英文都叫 Server。搞混的人多，是因為大家腦中的畫面不一樣，不是因為它們真的是三種東西。</p>
+    </div>
+    <p>而且這個問題還有第二層麻煩。<b>我手上其實有兩套架構，不是一套。</b></p>
+    <p>一套是我自己每天在用的完整 AI 工作流。它必須連到我家的機器、碰得到我的檔案，所以是本機加雲端的混合式架構。</p>
+    <p>另一套是我做給客戶的小型獨立專案。它交付出去就要自己活，所以盡量做成全雲端架構。</p>
+    <p>這兩套的設計邏輯正好相反。混在一起講，就是各種誤會的來源。</p>
+  </div>
+</section>
+
+<section class="section" id="three-tests">
+  <div class="inner">
+    <h2>判斷一台機器是不是 Server，只要看三件事</h2>
+    <p>「Server」翻成中文是「伺服器」，但這個詞真正的意思接近「服務生」。重點在於它在整個系統裡扮演什麼角色，跟它長什麼樣子、多大台、多貴都沒有關係。</p>
+    <div class="workflow-grid">
+      <div class="step">
+        <b>一、它是不是長時間待命？</b>
+        <p>Server 的核心特徵是「你沒在用它的時候，它也醒著」。筆電合蓋就睡、關機就斷，那是終端。持續開著等指令進來，那是伺服器。</p>
+      </div>
+      <div class="step">
+        <b>二、它會不會接受請求？</b>
+        <p>有人（或有程式、有排程）向它提出要求，它接得到。請求可能來自手機、來自定時任務、來自另一個程式。</p>
+      </div>
+      <div class="step">
+        <b>三、它會不會代為執行並回傳結果？</b>
+        <p>收到請求之後，它自己動手做，然後把結果交出去。它不只是被動地把檔案攤在那裡讓別人自己拿。</p>
+      </div>
+    </div>
+    <p>三點都符合，它就是 Server。鐵櫃、Mac mini、還是一台老筆電，完全不影響這個判定。</p>
+    <p>這裡順便講一個更違反直覺的事實：<b>一台機器可以同時是 Server，也同時是別的東西。</b>「Server」比較像一頂帽子，不是身分證上的職業欄。同一台機器早上戴這頂、下午戴那頂，甚至同時戴兩頂，都很正常。</p>
+  </div>
+</section>
+
+<section class="section" id="mac-mini">
+  <div class="inner">
+    <h2>我家那台 Mac mini，是整套工作流的本機工作中樞</h2>
+    <p>把上面三個判準，套到我家那台 Mac mini 上。</p>
+    <p>它長時間運行，負責讓 AI 代理人執行本機工具、讀取檔案、執行自動化，以及存取我的知識庫。</p>
+    <ul>
+      <li>長時間運行，符合「待命」。</li>
+      <li>讓代理人執行本機工具、跑自動化，這就是「接受請求、代為執行」。任務被觸發、代理人被叫起來動手，這是標準的伺服器行為。</li>
+      <li>讀取檔案、存取知識庫，這是最經典的伺服器職務之一，檔案服務。</li>
+    </ul>
+    <p>三條全中。所以答案很清楚：<b>我家的 Mac mini 就是一台家用伺服器。</b></p>
+    <p>而且它還戴了第二頂帽子。當它跑代理人、跑自動化流程時，它在實際執行工作，開檔案、跑指令、動手改東西。這個角色更接近「工作站」。</p>
+    <div class="meaning">
+      <b>兩頂帽子疊起來，最準確的說法是四個字：本機工作中樞</b>
+      <p>「中樞」點出了它在我這套工作流裡的位置：要動到我本機檔案的事情，都得從它身上經過。我下的指令從它進來，我的檔案由它讀取，雲端的模型由它去呼叫，做完的結果由它寫回去。</p>
+    </div>
+    <p>它不一定是最聰明的那個環節，但它是<b>唯一同時碰得到我的檔案、我的工具、和外部服務的那個環節</b>。抽掉它，整套個人工作流就斷了。</p>
+  </div>
+</section>
+
+<section class="section" id="knowledge-base">
+  <div class="inner">
+    <h2>知識庫是正本，但它不是 Server</h2>
+    <p>這是最容易混淆、也最需要講清楚的一點。Mac mini 和知識庫常常被當成同一個東西，它們是兩回事。</p>
+    <p>先給知識庫一個正確的定位。它不只是一堆檔案，它是我所有內容的<b>唯一真相來源</b>（single source of truth）。意思是：當任何地方對同一件事有不同版本，以知識庫裡的為準。它是基準，是原本，是最後拍板的那一份。</p>
+    <p>這個地位很高。但地位高跟「它是不是 Server」是兩個問題。</p>
+    <div class="meaning">
+      <b>知識庫是圖書館裡那些書，Mac mini 是館員</b>
+      <p>書架上的書再多、整理得再漂亮、分類再精準，它們也不會在你喊一聲「幫我把去年那份提案找出來」的時候自己飛過來。是館員走過去、翻索引、抽出那一本、交到你手上。書是唯一的正本，館員是唯一動手的人。兩個都不可或缺，兩個是不同的東西。</p>
+    </div>
+    <table>
+      <thead><tr><th></th><th>知識庫</th><th>Mac mini</th></tr></thead>
+      <tbody>
+        <tr><td>是什麼</td><td>資料層／內容來源</td><td>執行層／工作中樞</td></tr>
+        <tr><td>地位</td><td>所有內容的唯一真相來源</td><td>唯一碰得到本機檔案與工具的節點</td></tr>
+        <tr><td>會不會待命</td><td>不會，它是靜態的</td><td>會，它長時間運行</td></tr>
+        <tr><td>會不會執行</td><td>不會</td><td>會</td></tr>
+        <tr><td>可以搬走嗎</td><td>可以，它是資料</td><td>換一台機器就得重建環境</td></tr>
+      </tbody>
+    </table>
+    <p>之所以容易搞混，是因為<b>我從來沒有直接接觸過知識庫</b>。我都是透過對話拿到裡面的內容，中間那一層（在 Mac mini 上跑的代理人）太順了，順到我感覺不到它的存在，於是就把兩者當成同一件事。</p>
+    <p>一句話記住：<b>知識庫是正本，Mac mini 是動手的人。倉庫跟店員是兩回事。</b></p>
+    <div class="caveat">
+      <b>順帶一提：真相來源只有一份的時候，那一份就不能掉</b>
+      <p>一旦確認知識庫是唯一真相來源，它的備份重要性就跟著跳了一級。這件事本篇不展開，但值得你自己盤一次。</p>
+    </div>
+    <div class="readmore near"><b>知識庫大到自己都找不到東西時，分法是另一個題目</b><ul><li><a href="../knowledge-base-three-vault-split/">知識庫太大，資料該怎麼分庫？：我改成三庫分流</a>　這篇談知識庫在架構裡站哪個位置，那篇談當它大到一個程度，內部該怎麼切。</li></ul></div>
+  </div>
+</section>
+
+<section class="section" id="phone">
+  <div class="inner">
+    <h2>手機是遙控器，這正是它最大的價值</h2>
+    <p>第三個容易混淆的角色是手機。很多人問我的其實是這一題：「你用手機就能叫 AI 做事，那 AI 是不是跑在手機裡？」</p>
+    <p>不是。我的手機在這套系統裡扮演的是<b>遠端操作端</b>，白話講就是遙控器。我在手機上打字、下指令、看結果，但這些事情實際上都不是在手機裡發生的。</p>
+    <p>遙控器的比喻很貼切：你按下遙控器上的「音量＋」，聲音變大的是電視。沒有人會因為自己手上拿著遙控器，就說「電視在我手上」。</p>
+    <div class="caveat">
+      <b>所以這句話要改掉</b>
+      <p>✗「我在手機上叫 AI 幫我整理檔案。」容易被理解成「AI 跑在手機裡」。</p>
+      <p>✓「我用手機下指令，讓家裡的 Mac mini 幫我整理檔案。」</p>
+    </div>
+    <h3>那手機連回家裡那台機器，好處到底是什麼？</h3>
+    <p>好處來自這個分工本身。</p>
+    <p><b>第一，手機不需要很強。</b>運算在雲端、檔案在家裡，手機只負責把我的意思送出去、把結果顯示出來，它不必扛任何重活。</p>
+    <p><b>第二，我的工作檔案不必為了「在外面能用」而複製一份到手機。</b>知識庫留在家裡那台，我是去指揮那台機器讀它，不是把它搬過來。少一份副本，就少一次「哪一份才是最新的」的麻煩。</p>
+    <p><b>第三，我人不在電腦前，那台機器照樣在動。</b>這是最實際的一點。指令送出去之後，執行的是家裡那台。</p>
+    <p>至於「手機用什麼方式連回家裡那台機器」，那是另一個題目，牽涉到各人的網路環境與資安設定，做法不只一種。這篇只談角色分工：<b>不管用哪種方式連，手機的位置都一樣，它是入口。</b></p>
+    <p>一句話記住：<b>手機是入口，不是引擎。</b></p>
+    <div class="readmore near"><b>想看這件事實際跑起來長什麼樣，我寫過一次完整的</b><ul><li><a href="../mobile-to-desktop-publish-loop/">人在外面，可以叫家裡的電腦先做嗎？：手機掃一次 QR code，桌機就開始跑</a>　這篇講手機在架構裡是什麼角色，那篇是同一件事的實際操作版本。</li></ul></div>
+  </div>
+</section>
+
+<section class="section" id="brain-cloud-hands-home">
+  <div class="inner">
+    <h2>腦在雲端，手在我家</h2>
+    <p>這是整篇最關鍵的一段，因為它解釋了為什麼一定要混合。</p>
+    <p>Codex、Claude Code 這類工具，本身是跑在我電腦上的程式，但它們真正的「腦」（大模型）在雲端。它們會透過在我家 Mac mini 上執行的代理人，去存取本機資料、完成工作。</p>
+    <div class="meaning">
+      <b>腦在雲端，手在我家</b>
+      <p>「腦」負責理解我的指令、判斷該做什麼、寫出內容與程式碼。這需要巨大的算力，所以在雲端。「手」負責真的去開那個檔案、真的去跑那個指令、真的把結果寫回知識庫。這需要碰得到我的東西，所以必須在 Mac mini 上。</p>
+    </div>
+    <p>再換一個比喻：<b>這像是一位遠端的專業顧問，搭配一位在你家現場的助理。</b></p>
+    <p>顧問經驗豐富、腦子很好，但他人在國外，摸不到你家的檔案櫃。助理不負責出主意，但他站在你家客廳，開得了櫃子、拿得到資料、動得了手。顧問說「幫我把第三層那份合約拿出來、改這幾段、存回原位」，助理照做。</p>
+    <p>這個分工帶出一個很重要的結論：<b>「用雲端模型」和「工作在本機發生」是同一件事的兩半，它們沒有衝突。</b></p>
+    <p>所以那些常見的說法，都只講對一半：</p>
+    <ul>
+      <li>✗「我的 AI 都在雲端跑。」那我家 Mac mini 上實際執行的檔案操作、自動化、本機工具呼叫，全都被抹掉了。</li>
+      <li>✗「我的 AI 都在本機跑。」那大模型的運算能力是哪裡來的？</li>
+      <li>✓「模型能力來自雲端，實際動手的代理人跑在我家的 Mac mini 上，資料存在我的知識庫裡。」</li>
+    </ul>
+    <p>這就是混合式架構的完整意思。它不是「一半在這、一半在那」的隨便分配，是<b>照能力分工</b>：算力大的放雲端，碰得到資料的放本機。</p>
+  </div>
+</section>
+
+<section class="section" id="four-layers">
+  <div class="inner">
+    <h2>四層地圖：把個人工作流合起來看</h2>
+    <p>四個角色排好，整張圖就出來了。</p>
+    <table>
+      <thead><tr><th>層級</th><th>誰在做</th><th>做什麼</th></tr></thead>
+      <tbody>
+        <tr><td><b>操作層</b></td><td>手機（遠端）／Mac mini 本機</td><td>我下指令、看結果的地方</td></tr>
+        <tr><td><b>執行與調度層</b></td><td><b>Mac mini</b></td><td>讓代理人執行本機工具、跑自動化、讀寫檔案、串接雲端</td></tr>
+        <tr><td><b>資料層</b></td><td><b>知識庫</b></td><td>所有內容的唯一真相來源</td></tr>
+        <tr><td><b>模型能力層</b></td><td>雲端（Codex、Claude Code 等）</td><td>提供大模型的理解、判斷與生成能力</td></tr>
+      </tbody>
+    </table>
+    <div class="meaning">
+      <b>一句話串起來</b>
+      <p>我在手機上說一句話 → Mac mini 上的代理人收到 → 它呼叫雲端的模型想清楚要做什麼 → 它在本機動手做 → 結果寫回知識庫。</p>
+    </div>
+    <p>Mac mini 站在正中間，是唯一同時連得到上下左右的節點。這就是「本機工作中樞」的意思。</p>
+    <h3>那為什麼這套不能全部搬上雲端？</h3>
+    <p>因為它的目的就是要碰我的檔案。一個碰不到我知識庫的 AI 工作流，對我來說沒有價值。所以本機那一塊是必要的，不是因為懶得搬。</p>
+  </div>
+</section>
+
+<section class="section" id="client-projects">
+  <div class="inner">
+    <h2>做給客戶的東西，不能綁在我家</h2>
+    <p>前面講的是我自己用的系統。但我還做另一種東西：替客戶製作的小型獨立專案。</p>
+    <p>這類專案的設計原則跟上面正好相反：能不碰本機就不碰本機，盡量做成<b>全雲端架構</b>。</p>
+    <div class="meaning">
+      <b>理由一句話就講完了</b>
+      <p>自己用的工具可以綁在自己家，交給別人用的服務不行。</p>
+    </div>
+    <p>我自己的工作流斷了，我知道發生什麼事，重開就好。但客戶的服務斷了，是客戶的使用者在現場一臉問號，而且他們不會知道原因是「台北某個人家裡跳電」。</p>
+    <p>所以標準很簡單：<b>交付出去的東西，必須在我完全不在場的情況下正常運作。</b></p>
+  </div>
+</section>
+
+<section class="section" id="real-case">
+  <div class="inner">
+    <h2>一個交付給客戶的案子，架構長什麼樣</h2>
+    <p>我幫一位講師做過一個香氛卡生成網站，給她工作坊的學員現場用。這個案子的架構是這樣：</p>
+    <ul>
+      <li>網站、後端功能、資料儲存，全部放在 <b>Cloudflare</b>（一家雲端服務商，網站與程式可以直接託管在它的機器上）。</li>
+      <li>需要生圖的時候，由 <b>Cloudflare 的後端去呼叫 OpenAI 的圖片生成 API</b>。</li>
+      <li>圖生出來之後，<b>結果存回 Cloudflare</b>。</li>
+    </ul>
+    <div class="meaning">
+      <b>整條流程走一遍</b>
+      <p>學員打開網站（Cloudflare）→ 送出需求，後端接手（後端就是使用者看不到、負責實際處理的那一段程式）→ 後端呼叫 OpenAI 圖片生成 API（外部服務）→ 圖回到 Cloudflare → 存回 Cloudflare → 回傳給學員。</p>
+    </div>
+    <p>看出來了嗎？<b>整條線裡面，沒有任何一個環節經過我家的 Mac mini。</b></p>
+    <p>這帶來一個很具體、也很好講的結果：<b>我家跳電，學員端的服務不會停。</b></p>
+    <p>這是設計出來的。這個案子從一開始就沒有把任何環節放在家用機器上，所以家裡發生什麼事，跳電、網路斷線、Mac mini 重開機、我出國兩週，學員那端都感覺不到。</p>
+    <p>這就是全雲端的價值：<b>服務的可用性，跟我本人的狀態脫鉤。</b></p>
+  </div>
+</section>
+
+<section class="section" id="api-wording">
+  <div class="inner">
+    <h2>一個必須講對的用詞：是 API，不是「ChatGPT 伺服器」</h2>
+    <p>這一段專門處理一個很常見、但會造成誤解的說法。</p>
+    <p>正確的講法是：「Cloudflare 的後端呼叫 OpenAI 的圖片生成 API。」不要講成：「我們連到 ChatGPT 的伺服器。」</p>
+    <p>為什麼要這麼計較？三個理由。</p>
+    <p><b>一、ChatGPT 是產品，API 是服務端點。</b>ChatGPT 是給人用的聊天介面，你打開網頁、輸入文字、看回應。這個案子裡沒有任何人在跟 ChatGPT 聊天，是程式對程式，後端送出一個請求，拿回一張圖。那條管道叫 API。</p>
+    <p><b>二、「伺服器」這個詞會讓人以為有一台機器是我的。</b>說「連到某某伺服器」，聽起來像是那頭有一台我租的、我管的機器。實際上我只是呼叫一個公開的服務端點，那頭的機器長什麼樣、在哪個機房、有幾台，我完全不需要知道，也管不到。這正是 API 的意義：買的是「能力」，不是「機器」。</p>
+    <p><b>三、講錯詞會讓整段架構描述失去可信度。</b>如果我跟客戶說「我們串了 ChatGPT 的伺服器」，稍微懂的人會立刻知道我在用外行話。但我說「後端呼叫 OpenAI 的圖片生成 API，結果存回 Cloudflare」，這句話一聽就知道我清楚自己在做什麼。</p>
+    <p>用詞精準的目的，是<b>讓對方相信我講的其他部分也是準的</b>。</p>
+    <div class="readmore near"><b>API 到底是什麼，我用點餐比喻過一次</b><ul><li><a href="../cli-api-mcp-computer-use/">叫 AI 幫你點餐，就懂 CLI、API、MCP</a>　那篇把 API、CLI、MCP 三個詞一次講清楚，這篇只用到其中的 API，想補基礎可以先看那篇。</li></ul></div>
+  </div>
+</section>
+
+<section class="section" id="compare">
+  <div class="inner">
+    <h2>兩套架構的對照表</h2>
+    <p>這是整篇文章最值得記住的一張表。</p>
+    <table>
+      <thead><tr><th></th><th>個人完整工作流</th><th>客戶小型獨立專案</th></tr></thead>
+      <tbody>
+        <tr><td>架構類型</td><td><b>混合式</b>（本機 ＋ 雲端）</td><td><b>全雲端</b></td></tr>
+        <tr><td>代表案例</td><td>我的日常 AI 工作流</td><td>學員用的香氛卡生成網站</td></tr>
+        <tr><td>執行中樞在哪</td><td>家裡的 Mac mini</td><td>Cloudflare 上的後端</td></tr>
+        <tr><td>資料存在哪</td><td>知識庫（本機，唯一真相來源）</td><td>Cloudflare</td></tr>
+        <tr><td>模型能力來自</td><td>雲端（Codex、Claude Code 等）</td><td>雲端（OpenAI 圖片生成 API）</td></tr>
+        <tr><td>誰在用</td><td>我自己</td><td>學員、客戶的使用者</td></tr>
+        <tr><td>我家跳電會怎樣</td><td><b>我的工作流會中斷</b></td><td><b>服務照常運作，不受影響</b></td></tr>
+        <tr><td>為什麼這樣設計</td><td>因為它<b>必須碰得到我的檔案</b></td><td>因為它<b>必須在我不在場時也能活</b></td></tr>
+      </tbody>
+    </table>
+    <p><b>第一，這兩套架構沒有好壞之分，是目標不同。</b>個人工作流的目標是「能動我的東西」，所以本機那一塊是必需品。客戶專案的目標是「不需要我也能跑」，所以本機那一塊會變成負債。同一個設計決策，在兩個情境下的評價正好相反。</p>
+    <p><b>第二，混為一談會造成很具體的誤會。</b>只講個人工作流，客戶可能誤以為「他的網站跑在你家電腦上」，開始擔心你家停電、擔心你哪天不做了。只講客戶專案，對方會以為你「全部都在雲端」，那你 Mac mini 上實際跑的那一半就整個被抹掉了。</p>
+    <p>所以講的時候，要先分清楚在講哪一套。</p>
+  </div>
+</section>
+
+<section class="section" id="answers">
+  <div class="inner">
+    <h2>所以，「AI Server」到底有沒有？</h2>
+    <p>回到最初那個問題。答案取決於對方問的是哪一種。</p>
+    <p><b>如果問的是：「你有沒有自建的 GPU 機房、企業級專用 AI 伺服器？」</b></p>
+    <p>沒有。這一點我講得很乾脆。我沒有專門為了跑 AI 而蓋的機房，沒有一整排 GPU，沒有企業級的伺服器硬體。這個規模的東西我沒有。承認這件事不吃虧，含糊其辭才吃虧，因為一旦對方追問細節，前面所有的話都會一起失去可信度。</p>
+    <p><b>如果問的是：「你有沒有一台自己的機器，長時間跑著，負責 AI 相關的工作？」</b></p>
+    <p>有。就是家裡那台 Mac mini。它是我個人工作流的本機工作中樞。</p>
+    <p><b>如果問的是：「你做給客戶的東西，跑在哪裡？」</b></p>
+    <p>跑在雲端，跟我家那台機器無關。</p>
+
+    <h3>可以直接照著講的四個版本</h3>
+    <div class="meaning">
+      <b>完整版</b>
+      <p>我自己的 AI 工作流是混合式架構。家裡有一台 Mac mini 長時間開著，當本機工作中樞，讓 AI 代理人執行本機工具、跑自動化、讀寫我的知識庫，知識庫是我所有內容的唯一真相來源。大模型的能力，像 Codex、Claude Code，來自雲端，但它們是透過跑在 Mac mini 上的代理人來存取我的本機資料、完成工作。</p>
+      <p>至於我做給客戶的小型專案，會盡量做成全雲端。像我做過的一個香氛卡生成網站，網站、後端跟資料儲存都在 Cloudflare，生圖是由 Cloudflare 後端去呼叫 OpenAI 的圖片生成 API，結果再存回 Cloudflare。這套完全不依賴我家的機器，我家跳電，學員端照樣能用。</p>
+      <p>所以我沒有自建 GPU 機房，也沒有企業級的專用 AI 伺服器。</p>
+    </div>
+    <div class="meaning">
+      <b>電梯版（十五秒）</b>
+      <p>我自己用的是混合架構，家裡一台 Mac mini 當本機中樞，模型能力走雲端。客戶的案子則盡量全雲端，不綁我家的機器。</p>
+    </div>
+    <div class="meaning">
+      <b>對客戶講的版本</b>
+      <p>您的服務完全跑在 Cloudflare 上，生圖是呼叫 OpenAI 的 API，跟我個人的設備沒有關係，我這邊斷網斷電都不影響您。</p>
+    </div>
+    <div class="meaning">
+      <b>給完全不懂技術的朋友</b>
+      <p>我家那台小電腦一直開著幫我做事，比較重的運算丟給外面。但我幫別人做的網站是放在網路上的，不放我家。</p>
+    </div>
+    <p>「對客戶講的版本」特別重要，因為它正面回答了客戶心裡那個沒問出口的問題：「這東西會不會哪天因為你而掛掉？」</p>
+  </div>
+</section>
+
+<section class="section" id="takeaway">
+  <div class="inner">
+    <h2>一句話帶走</h2>
+    <div class="meaning">
+      <p><b>Server 講的是角色，跟機器的外型沒有關係。我自己的工作流，腦在雲端、手在家裡那台 Mac mini、正本在知識庫、遙控器在手上。我交出去的客戶專案，則整套住在雲端，跟我家的電源開關無關。</b></p>
+    </div>
+    <p>一套為了「碰得到我的東西」，所以必須有本機。一套為了「不需要我也能活」，所以不能有本機。</p>
+    <p>你不需要一個機房，才能說自己有一套系統。你需要的是說得出每個零件站在哪裡、做什麼事、為什麼放在那裡。那才是真正把架構握在手上的意思。</p>
+
+    <div class="readmore">
+      <b>這篇提到過的</b>
+      <ul>
+        <li><a href="../knowledge-base-three-vault-split/">知識庫太大，資料該怎麼分庫？：我改成三庫分流</a>　看完這篇知道知識庫是正本之後，下一個問題通常是它該怎麼切。</li>
+        <li><a href="../mobile-to-desktop-publish-loop/">人在外面，可以叫家裡的電腦先做嗎？：手機掃一次 QR code，桌機就開始跑</a>　把「手機是遙控器」這件事，變成一次可以照做的實際流程。</li>
+        <li><a href="../cli-api-mcp-computer-use/">叫 AI 幫你點餐，就懂 CLI、API、MCP</a>　這篇只用到 API 一個詞，那篇把三個常混用的詞一次分清楚。</li>
+      </ul>
+      <b>再往前後延伸</b>
+      <ul>
+        <li><a href="../chatgpt-work-codex-choice/">ChatGPT Work、Codex、一般 ChatGPT 怎麼分工？先看電腦、資料與額度</a>　往下一步：知道架構怎麼分層之後，接著要選的是哪個工具放在哪一層。</li>
+        <li><a href="../ai-loop-safety-recovery/">AI 出錯不可怕，沒有備援才可怕：一次搞壞 170 檔案的教訓</a>　往回補一課：本篇說知識庫是唯一真相來源，那篇講唯一真相來源沒有備份時會發生什麼事。</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">江江教練 · AI 知識管理</div>
+    <div class="footer-links">
+      <a href="../../articles.html">← 回深度文章總站</a>
+      <a href="../../index.html">首頁</a>
+      <a href="../../learn.html">自學資源</a>
+      <a href="../../skills.html">技能包下載</a>
+      <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">LINE 社群 ↗</a>
+      <a href="https://www.threads.com/@jiang_yude_coach" target="_blank" rel="noopener">Threads ↗</a>
+      <a href="https://vocus.cc/salon/Jiang_Coach" target="_blank" rel="noopener">方格子 ↗</a>
+    </div>
+    <div class="footer-note">這是一篇教學文章，整理我對「你的 Server 架在哪裡？｜混合式與全雲端兩套架構，一台 Mac mini 當本機工作中樞」的看法，供你參考。</div>
+  </div>
+</footer>
+
+<!-- 點圖放大 lightbox（hero 與內文圖通用，已內建，不用每篇重加） -->
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <span class="lightbox-close" aria-label="關閉">×</span>
+  <img id="lightbox-img" src="" alt="放大檢視">
+</div>
+<script>
+(function(){
+  var box=document.getElementById('lightbox'),boxImg=document.getElementById('lightbox-img');
+  document.querySelectorAll('.hero-figure img,.inline-figure img').forEach(function(img){
+    img.addEventListener('click',function(){boxImg.src=img.currentSrc||img.src;boxImg.alt=img.alt||'放大檢視';box.classList.add('open');box.setAttribute('aria-hidden','false');});
+  });
+  function close(){box.classList.remove('open');box.setAttribute('aria-hidden','true');boxImg.src='';}
+  box.addEventListener('click',close);
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
+})();
+</script>
+
+<script src="../../image-interactions.js"></script>
+
+<!-- 官網共用：滑鼠暖光暈 + 導航列漢堡選單 -->
+<script src="../../spotlight.js"></script>
+
+<!-- 文章自動互聯（相關文章）：兩支已內建，順序不可顛倒，不用再另外加 -->
+<script src="../../articles-data.js"></script>
+<script src="../../related-render.js"></script>
+  <script src="/mika-chat-widget.js" defer></script>
+</body>
+</html>
