@@ -1,0 +1,400 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="index,follow">
+<title>AI 規則檔裝了攔截器，52 天一條都沒擋下來｜執行引擎與字數預算，36,000 字的主檔瘦回 26,000</title>
+<meta name="description" content="2026-07-22 裝的提示型准入閘，52 天後規則主檔漲了 47%，一次都沒擋下來。這篇拆開真正的原因（同一份路由資訊維護兩次），給出四件修法：條文併回正本、手寫表格換成機讀索引、情境路由 hook 只注入路標、准入閘升級成字數預算硬攔。">
+<link rel="canonical" href="https://jiangyude.com/articles/ai-rule-file-slimming/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AI 規則檔裝了攔截器，52 天一條都沒擋下來｜執行引擎與字數預算，36,000 字的主檔瘦回 26,000｜江江教練">
+<!-- 分享封面：hero 文字填好後在 repo 根目錄跑 `node scripts/og-shot.mjs ai-rule-file-slimming` 自動截 1200×630 到 images/og/ai-rule-file-slimming.jpg（見 README「文章分享封面（OG 圖）機制」）。別退回 intro-jiang.png 直式人像，會被裁成只剩脖子。 -->
+<meta property="og:image" content="https://jiangyude.com/images/og/ai-rule-file-slimming.jpg">
+<meta property="og:description" content="2026-07-22 裝的提示型准入閘，52 天後規則主檔漲了 47%，一次都沒擋下來。這篇拆開真正的原因（同一份路由資訊維護兩次），給出四件修法：條文併回正本、手寫表格換成機讀索引、情境路由 hook 只注入路標、准入閘升級成字數預算硬攔。">
+<meta property="og:url" content="https://jiangyude.com/articles/ai-rule-file-slimming/">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:site_name" content="江江教練 · AI 知識管理">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="AI 規則檔裝了攔截器，52 天一條都沒擋下來｜執行引擎與字數預算，36,000 字的主檔瘦回 26,000｜江江教練">
+<meta name="twitter:image" content="https://jiangyude.com/images/og/ai-rule-file-slimming.jpg">
+<meta name="twitter:description" content="2026-07-22 裝的提示型准入閘，52 天後規則主檔漲了 47%，一次都沒擋下來。這篇拆開真正的原因（同一份路由資訊維護兩次），給出四件修法：條文併回正本、手寫表格換成機讀索引、情境路由 hook 只注入路標、准入閘升級成字數預算硬攔。">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"AI 規則檔裝了攔截器，52 天一條都沒擋下來｜執行引擎與字數預算，36,000 字的主檔瘦回 26,000","description":"2026-07-22 裝的提示型准入閘，52 天後規則主檔漲了 47%，一次都沒擋下來。這篇拆開真正的原因（同一份路由資訊維護兩次），給出四件修法：條文併回正本、手寫表格換成機讀索引、情境路由 hook 只注入路標、准入閘升級成字數預算硬攔。","author":{"@type":"Person","name":"江昱德","alternateName":"江江教練","jobTitle":"隱性知識提煉師、AI 應用規劃師"},"isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://jiangyude.com/"},"inLanguage":"zh-Hant","url":"https://jiangyude.com/articles/ai-rule-file-slimming/"}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{--ink:#1a1612;--paper:#fefcf8;--muted:#6a635a;--line:#d8cdb8;--green:#5f7553;--blue:#5689b8;--orange:#e85a4f;--soft:#faf5ec;--dark:#2a2018;--shadow:0 18px 45px rgba(107,74,42,.14);--sp-shadow:hsla(35,50%,60%,.15);--sp-shadow-edge:hsla(35,50%,68%,.03);--sp-radius:400px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC","Segoe UI",sans-serif}
+a{color:inherit}
+/* 官網共用導航列 nav.top（與首頁/文章總站同一條） */
+nav.top{position:sticky;top:0;background:rgba(254,252,248,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid #d8cdb8;z-index:100}
+nav.top .container{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:24px;padding:14px 32px}
+.nav-brand-img{justify-self:start;display:flex;align-items:center;text-decoration:none;flex-shrink:0;transition:opacity .2s}
+.nav-brand-img:hover{opacity:.8}.nav-brand-img img{height:40px;width:auto;display:block}
+nav.top ul.nav-menu{justify-self:end;display:flex;gap:22px;list-style:none;margin:0;padding:0;font-size:.95rem;white-space:nowrap}
+nav.top ul.nav-menu a{color:#3a342d;text-decoration:none;transition:color .2s;font-weight:500;white-space:nowrap}
+nav.top ul.nav-menu a:hover{color:#1a1612}nav.top ul.nav-menu a.active{color:#1a1612;font-weight:700}
+.nav-toggle{display:none;background:none;border:none;padding:6px;cursor:pointer;width:36px;height:36px;position:relative}
+.nav-toggle span{display:block;position:absolute;left:8px;right:8px;height:2px;background:#1a1612;border-radius:2px;transition:transform .25s,opacity .25s,top .25s}
+.nav-toggle span:nth-child(1){top:11px}.nav-toggle span:nth-child(2){top:17px}.nav-toggle span:nth-child(3){top:23px}
+.nav-toggle.open span:nth-child(1){top:17px;transform:rotate(45deg)}.nav-toggle.open span:nth-child(2){opacity:0}.nav-toggle.open span:nth-child(3){top:17px;transform:rotate(-45deg)}
+.tablewrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:22px 0;border:1px solid var(--line);border-radius:10px;background:#fff;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.tablewrap table{border-collapse:collapse;width:100%;min-width:600px;font-size:18px;line-height:1.65}
+.tablewrap .zh{display:block;margin-top:5px;font-size:16px;line-height:1.55;color:var(--muted);font-weight:400}
+.tablewrap th,.tablewrap td{padding:12px 14px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top;color:#3a342d}
+.tablewrap thead th{background:var(--soft);font-weight:900;font-size:18px;color:#1a1612;white-space:nowrap}
+.tablewrap tbody tr:last-child td{border-bottom:none}
+.tablewrap td code,.section code{background:var(--soft);border:1px solid var(--line);border-radius:5px;padding:1px 6px;font:500 15px/1.5 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace}
+.inline-figure.wide{max-width:1000px}
+.toc{margin:26px 0 0;padding:20px 22px;background:#fff;border:1px solid var(--line);border-radius:10px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.toc>b{display:block;font-size:15px;letter-spacing:.05em;color:var(--green);margin-bottom:10px}
+.toc ol{margin:0;padding-left:1.35em;font-size:18px;line-height:1.7}
+.toc li{margin-bottom:7px;color:#3a342d}
+.toc a{color:var(--blue);font-weight:700;text-decoration:none}.toc a:hover{text-decoration:underline}
+.toc-hint{margin:12px 0 0!important;font-size:18px!important;color:var(--muted)!important;border-top:1px solid var(--line);padding-top:12px}
+.readmore{margin-top:24px;padding:20px 22px;background:var(--soft);border:1px solid var(--line);border-radius:12px}
+.readmore.near{margin:26px 0 6px;background:rgba(86,137,184,.07);border-color:#bcd0e2}
+.readmore.near b{color:var(--blue);font-size:18px}
+.readmore.near li{font-size:17px;line-height:1.7;margin-bottom:10px}
+.readmore b{display:block;margin-bottom:10px;font-size:19px}
+.readmore ul{margin:0;padding-left:1.25em}
+.readmore a{color:var(--blue);font-weight:700;text-decoration:none}
+.readmore a:hover{text-decoration:underline}
+@media(max-width:820px){.tablewrap table{min-width:560px;font-size:18px}.tablewrap{position:relative}.tablewrap::after{content:"表格可左右滑動 →";position:sticky;left:0;display:block;font-size:15px;color:var(--muted);background:var(--soft);border-top:1px solid var(--line);padding:7px 12px;width:100%}}
+@media(max-width:860px){
+ nav.top .container{grid-template-columns:auto 1fr auto;padding:10px 16px;gap:12px}
+ .nav-brand-img img{height:32px}
+ .nav-toggle{display:block;justify-self:end}
+ nav.top ul.nav-menu{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(254,252,248,.98);backdrop-filter:blur(14px);border-bottom:1px solid #d8cdb8;flex-direction:column;gap:0;padding:8px 0;box-shadow:0 10px 24px rgba(107,74,42,.08)}
+ nav.top ul.nav-menu.open{display:flex}
+ nav.top ul.nav-menu li{border-bottom:1px solid #e8dfc9}
+ nav.top ul.nav-menu li:last-child{border-bottom:none}
+ nav.top ul.nav-menu a{display:block;padding:14px 20px;font-size:1.06rem}
+}
+/* 滑鼠暖光暈（與首頁同一支 spotlight.js） */
+body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradient(var(--sp-radius) circle at var(--mx,50%) var(--my,50%),var(--sp-shadow) 0%,var(--sp-shadow-edge) 45%,transparent 75%);pointer-events:none;z-index:9999;mix-blend-mode:multiply;transition:background .06s linear}
+.hero{position:relative;overflow:hidden;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:72px;padding:96px clamp(20px,6vw,88px) 80px;background:linear-gradient(180deg,#fffcf0 0%,#f9e9d2 100%);color:#1a1612;border-bottom:1px solid #d8cdb8}
+.hero .wc{position:absolute;border-radius:50%;filter:blur(60px);pointer-events:none;z-index:0}
+.hero .wc1{width:420px;height:360px;top:-120px;right:-80px;background:#e8884b;opacity:.15}
+.hero .wc2{width:360px;height:300px;bottom:-110px;left:-70px;background:#5f7553;opacity:.13}
+.hero .wc3{width:280px;height:260px;top:34%;left:14%;background:#a08144;opacity:.10}
+.hero>div{flex:none;width:860px;max-width:100%;position:relative;z-index:2}
+.hero-figure{margin:0;width:420px;flex:none;position:relative;z-index:2}
+.hero-figure img{display:block;width:100%;border-radius:16px;border:1px solid #d8cdb8;box-shadow:0 18px 45px rgba(107,74,42,.16);cursor:zoom-in}
+.hero-figure figcaption{margin-top:10px;font-size:14px;line-height:1.6;color:#6a635a}
+.inline-figure{margin:30px auto 8px;max-width:820px}
+.inline-figure img{display:block;width:100%;border-radius:14px;border:1px solid var(--line);box-shadow:var(--shadow);background:#fff;cursor:zoom-in}
+.inline-figure figcaption{font-size:14px;line-height:1.6;color:var(--muted);margin-top:10px}
+.lightbox{position:fixed;inset:0;z-index:10000;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(12,10,8,.92);cursor:zoom-out;backdrop-filter:blur(4px)}
+.lightbox.open{display:flex}.lightbox img{max-width:96vw;max-height:92vh;border-radius:10px;box-shadow:0 24px 60px rgba(0,0,0,.5)}
+.lightbox-close{position:fixed;top:18px;right:24px;color:#fff;font-size:34px;line-height:1;font-weight:700;cursor:pointer;opacity:.85}
+.kicker{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.55rem;color:#7a5c3a;font-weight:500}
+.hero h1{max-width:none;margin:16px 0 18px;font-size:clamp(36px,6vw,72px);line-height:1.08;overflow-wrap:anywhere}
+.hero p{max-width:none;font-size:clamp(18px,2vw,23px);line-height:1.62;color:#3a342d}
+.cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
+.cta a{display:inline-flex;align-items:center;text-decoration:none;border-radius:8px;padding:12px 16px;font-weight:900}
+.cta .primary{background:#fff;color:#1a1612}.cta .ghost{border:1px solid rgba(255,255,255,.32);color:#fff;background:rgba(255,255,255,.08)}
+.section{padding:54px clamp(20px,6vw,88px);border-top:1px solid var(--line)}
+.inner{width:min(1000px,100%);margin:0 auto}
+.section h2{font-size:clamp(26px,4.2vw,48px);line-height:1.12;margin:0 0 18px}
+.section h3{font-size:clamp(21px,3vw,30px);line-height:1.2;margin:30px 0 12px}
+.lead{font-size:clamp(18px,1.6vw,22px);line-height:1.7;color:#3a342d;max-width:900px}
+.section p{font-size:18px;line-height:1.74;color:#3a342d}.section p+p{margin-top:14px}
+.section ul,.section ol{padding-left:1.4em;font-size:18px;line-height:1.74;color:#3a342d}.section li{margin-bottom:8px}
+.meaning{margin:22px 0;padding:16px 18px;border-left:5px solid var(--blue);background:rgba(86,137,184,.12);border-radius:6px;line-height:1.7;font-size:19px}
+.meaning b{display:block;color:var(--blue);margin-bottom:4px}
+.caveat{margin:0 0 8px;padding:16px 18px;border-left:5px solid var(--orange);background:rgba(232,90,79,.1);border-radius:6px;line-height:1.7;font-size:18px;color:#3a342d}
+.caveat b{display:block;color:var(--orange);margin-bottom:4px}
+.infocard{background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px 24px 22px;box-shadow:0 8px 22px rgba(107,74,42,.08);margin-top:8px}
+.infocard-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.info-item{padding:18px 14px 0}
+.info-item b{display:block;font-size:14px;font-weight:900;letter-spacing:.04em;margin-bottom:7px;text-transform:uppercase}
+.info-item:nth-child(1) b{color:var(--green)}.info-item:nth-child(2) b{color:var(--orange)}.info-item:nth-child(3) b{color:var(--blue)}
+.info-item p{margin:0;font-size:17px;line-height:1.6;color:#3a342d}
+.tagrow{display:flex;flex-wrap:wrap;gap:7px;margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
+.tag{font-size:14px;color:var(--muted);background:var(--soft);border:1px solid var(--line);border-radius:999px;padding:4px 11px}
+.duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:24px}
+.duo.stack{grid-template-columns:1fr}
+.duo .card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:22px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.duo .card.a{border-color:var(--orange)}.duo .card.b{border-color:var(--green);box-shadow:0 8px 24px rgba(95,117,83,.16)}
+.duo .card small{display:block;font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.04em;margin-bottom:9px}
+.duo .card.a small{color:var(--orange)}.duo .card.b small{color:var(--green)}
+.duo .card b{display:block;font-size:22px;line-height:1.3;margin-bottom:12px}.duo .card.a b{color:#c0512f}.duo .card.b b{color:#4a7a59}
+.duo .card p{margin:0;color:#3a342d;line-height:1.75;font-size:18px}
+.workflow-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:24px}
+.workflow-step{background:#fff;border:1px solid var(--line);border-radius:8px;padding:18px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.workflow-step small{display:block;color:var(--orange);font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;margin-bottom:9px}
+.workflow-step b{display:block;font-size:18px;line-height:1.3;margin-bottom:9px}
+.workflow-step p{margin:0;color:#3a342d;line-height:1.6;font-size:16px}
+.codeblock{background:var(--dark);color:#f3ead9;border-radius:8px;padding:18px 20px;font:500 14px/1.65 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;overflow-x:auto;white-space:pre-wrap;margin:20px 0;box-shadow:0 8px 22px rgba(107,74,42,.12)}
+.codeblock .c{color:#f6d7a6;font-weight:600}
+.skillcard{background:#fff;border:1px solid var(--green);border-radius:12px;padding:24px;box-shadow:0 10px 26px rgba(95,117,83,.16);margin-top:8px}
+.skillcard b{display:block;font-size:21px;margin-bottom:8px}
+.skillcard p{margin:0 0 16px;font-size:17px;line-height:1.65;color:#3a342d}
+.cta-band{background:#e6f0e5;color:#3a342d}.cta-band .section{border-top:none}
+.cta-band .inner{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(260px,.85fr);gap:26px;align-items:start}
+.cta-band h2{font-size:clamp(26px,4vw,44px);margin:0 0 16px}.cta-band p,.cta-band .lead{color:rgba(58,52,45,.9);font-size:18px;line-height:1.72}
+.cta-card{border:1px solid #cfe0d2;background:#fbfdfa;border-radius:8px;padding:22px}
+.cta-card b{display:block;color:#48b178;margin-bottom:10px;font-size:18px}.cta-card p{margin:0 0 14px}
+.footer{padding:30px clamp(20px,6vw,88px);font-size:14px;color:var(--muted);background:#fff;border-top:1px solid var(--line)}
+.footer-inner{width:min(1000px,100%);margin:0 auto}
+.footer-links{display:flex;flex-wrap:wrap;gap:6px 12px;margin-bottom:14px}.footer-links a{color:var(--blue);font-weight:900;text-decoration:none;font-size:14px}
+.footer-brand{font-weight:900;font-size:15px;margin-bottom:10px}.footer-note{font-size:13px;line-height:1.6}
+@media(max-width:820px){.infocard-grid{grid-template-columns:1fr}.duo{grid-template-columns:1fr}.workflow-grid{grid-template-columns:1fr}.cta-band .inner{grid-template-columns:1fr}.section{padding:40px 20px}.hero{min-height:52vh;flex-direction:column;justify-content:flex-start;align-items:flex-start;gap:24px}.hero>div{width:100%}.hero-figure{width:100%;max-width:560px}}
+@media(max-width:820px){html,body{overflow-x:hidden}.hero h1{word-break:break-word}}
+</style>
+</head>
+<body class="spotlight">
+<!-- 官網共用導航列 nav.top：與首頁/總站同一條，文章不要自己另做極簡 topbar（江江 2026-06-25：要同一個框架、同一條導航列）。把對應頁面的 class="active" 標在自己那欄。
+     ⚠️ 下面 ul.nav-menu 整塊由 preflight 第 5 關 check-bilingual-nav.mjs 做「逐字比對」，
+        塞任何註解、多一個空白、換行位置不同都會被判導航不一致而擋下發布。要說明就寫在 <ul> 外面（像這裡）。
+        2026-08-16 修：原本的 EN 那行說明註解就夾在 <ul> 裡面，導致照範本起手的新文章一律卡第 5 關
+        （llm-rag-agent-mcp 與 rag-three-retrieval-modes 兩篇同時中招）。註解已移出來，<ul> 內保持乾淨。
+        萬一還是被擋，直接跑：node scripts/check-bilingual-nav.mjs --write --only=<你的檔案路徑> -->
+<nav class="top">
+  <div class="container">
+    <a class="nav-brand-img" href="../../index.html"><img src="../../images/footer-signature.png" alt="江江教練 | 江昱德"></a>
+    <button class="nav-toggle" aria-label="選單"><span></span><span></span><span></span></button>
+    <ul class="nav-menu">
+      <li><a href="../../index.html">首頁</a></li>
+      <li><a href="../../knowledge-architecture.html">知識架構</a></li>
+      <li><a href="../../courses.html">課程</a></li>
+      <li><a href="../../articles.html" class="active">深度文章</a></li>
+      <li><a href="../../skills.html">技能包下載</a></li>
+      <li><a href="../../offers.html">服務方案</a></li>
+      <li class="lang-switch"><a href="../../en/articles.html" hreflang="en">EN</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="wc wc1"></div>
+  <div class="wc wc2"></div>
+  <div class="wc wc3"></div>
+  <div>
+    <div class="kicker">AI 工作流 / 規則治理</div>
+    <h1>AI 規則檔裝了攔截器，52 天一條都沒擋下來｜執行引擎與字數預算，36,000 字的主檔瘦回 26,000</h1>
+    <p>提示型的攔截裝了 52 天，一次都沒擋下來。我把 36,000 字的規則主檔瘦回 26,000，並且讓它這次真的胖不回去。</p>
+  </div>
+</section>
+
+<main>
+
+<section class="section" id="start"><div class="inner">
+<p class="lead">如果你跟 AI 講過的規矩，它下次就忘記，你大概會想再多寫一點、講得更清楚一點。我也是這樣，寫到 36,000 字。 我有一份寫給 AI 看的規則檔，它是我所有 AI 助手每次對話都會先讀一遍的東西。兩個月前我把它從 25,036 字砍到 15,822 字，還裝了一個防止它再變胖的攔截器。9 月 12 日我去量，它 35,960 字。攔截器裝了 52 天，檔案漲了 47%，一次都沒擋下來。 這篇記錄我怎麼找出真正的原因，以及最後怎麼把它瘦回 25,969 字，還讓它這次真的胖不回去。中間被另一家 AI 退回兩次，兩次都退在我以為已經做完的地方。</p>
+<div class="duo stack">
+<div class="infocard"><b style="font-size:22px;color:#d98b46">適合誰</b><ul><li>你寫了一大份規則給 AI，每次它出錯你就再補一條，但同樣的錯還是一直發生。</li><li>你有一份文件越長越長，你知道該精簡，但每一條看起來都很重要，不知道砍哪裡。</li><li>你幫團隊或客戶整理過工作規範，寫的時候大家都說好，三個月後沒人照做。</li><li>你聽過「給 AI 寫規則」，但沒想過規則本身也會出問題。</li></ul></div>
+<div class="infocard"><b style="font-size:22px;color:#48b178">你可以帶走什麼</b><ul><li>一個判斷方法：怎麼看出你寫的規則到底有沒有在生效。</li><li>一個反直覺的結論：提醒式的攔截，效果跟沒有攔截一樣，我有 52 天的數據。</li><li>一組可以直接套用的做法：把預設值從「想加就加」翻成「想加就先搬走等量」。</li><li>一個檢查題：你手上有哪份資料正在被維護兩次。這通常才是文件失控的真正原因。</li></ul></div>
+</div></div></section>
+<section class="section" id="s"><div class="inner"><h2>一份沒人讀完的規則檔，每次對話都要重讀一遍</h2>
+<p>先說清楚這份檔案是什麼，因為它跟一般的文件不一樣。</p>
+<p>我用 AI 工作的方式，是把我所有的規矩寫成一份檔案，放在知識庫最上層。它的檔名叫 <code>AGENTS.md</code>，如果你用的是 Claude Code，同一個角色的檔案叫 <code>CLAUDE.md</code>，兩者作用一樣。每次我開一個新對話，不管是 Claude、Codex 還是 Gemini，它都會先把整份讀進去，然後才看我要它做什麼。裡面有安全規則（哪些指令絕對不准跑）、有工作習慣（檔名怎麼取、標籤怎麼掛）、有路由（遇到什麼情況該去讀哪個技能包）。</p>
+<p>這份檔案有個特性：它不是給人讀的。沒有人會從頭讀完它。它的唯一讀者是 AI，而 AI 每一輪對話都要重讀一次。</p>
+<p>所以它每長一個字，我每次對話都要多付一次。36,000 字的中文，大概是三萬個 token（AI 計費與計算長度的單位，一個中文字差不多一個 token）。我問一句「今天天氣如何」，也要先付這三萬。</p>
+<p>但真正的代價不是錢。是<strong>注意力被稀釋</strong>。</p>
+<p>一條寫在第 200 字的規則和一條寫在第 22,000 字的規則，AI 遵守的程度不一樣。這件事我沒有嚴謹的實驗數據，但我有一個很說明問題的現象：我的規則檔裡有整整 600 字在講「急件流程要留下紀錄」，那段的最後一句是我自己寫的誠實標註，寫著「這條目前靠自律生效，沒有機械保證」。</p>
+<p>600 個字，講一條靠自律的規則。而那 600 字擺在第 22,000 字的位置。</p></div></section>
+<section class="section" id="s"><div class="inner"><h2>我兩個月前就裝了防復胖的攔截器，它一次都沒擋下來</h2>
+<p>7 月 4 日我做過一次瘦身，25,036 砍到 15,822，砍掉 37%。</p>
+<p>砍完我就知道會復胖，因為之前發生過。所以 7 月 22 日我加了一道攔截：每次有人要改這份規則檔，就跳出三個問題問他。</p>
+<div class="meaning">1. 這條「每輪對話」都需要載入嗎？（不是「重不重要」，是「每輪都要嗎」）<br>2. 既有規則或工具已經涵蓋了嗎？<br>3. 掛在哪個執行器上？純靠自覺的話，違反的代價是什麼？</div>
+<p>這三題我現在看還是覺得問得很好。問題在於它只是<strong>跳出來問</strong>，問完就放行。</p>
+<p>我同時裝了第二個東西：一支自動記錄字數的程式，每次檔案被改就記一筆。當時我在程式的註解裡寫給未來的自己：「2026-08-22 評估要不要把提示升成硬攔時，讀這條曲線判斷有沒有止漲。」</p>
+<p>8 月 22 日那天過了。沒有人去評估。</p>
+<p>9 月 12 日我把那條曲線叫出來：</p>
+<div class="tablewrap"><table><thead><tr><th>日期</th><th>字數</th><th>發生什麼</th></tr></thead><tbody><tr><td>7 月 4 日</td><td>25,036 → 15,822</td><td>人工瘦身，砍掉 37%</td></tr><tr><td>7 月 22 日</td><td>24,451</td><td>裝攔截器。18 天就胖回來了</td></tr><tr><td>8 月 24 日</td><td>33,039</td><td>單日 +2,221</td></tr><tr><td>9 月 12 日</td><td>35,960</td><td>比裝攔截器那天多了 47%</td></tr></tbody></table></div>
+<p>攔截器裝了 52 天，檔案從 24,451 長到 35,960。</p>
+<p>它每次都有跳出來。三個問題每次都有問。然後每次都被放行。</p>
+<p><strong>因為那三個問題，是問給一個已經決定要加的人聽的。</strong></p>
+<p>人（或 AI）在那個當下的心理狀態是「我剛踩到一個坑，我要補一條規則不要再踩」。這時候跳出三個問題，答案早就準備好了：重要、還沒涵蓋、靠自覺但代價很高。三題全過，加。</p></div></section>
+<section class="section" id="s"><div class="inner"><h2>規則長太長只是症狀，真正的病是同一份資料維護兩次</h2>
+<p>我本來以為問題是「條文寫得太囉嗦」，準備逐條精簡。量完各段字數之後，發現不是。</p>
+<div class="tablewrap"><table><thead><tr><th>段落</th><th>字數</th><th>該不該常駐</th></tr></thead><tbody><tr><td>憲法（硬規則、安全紅線）</td><td>7,346</td><td>該。每輪都要</td></tr><tr><td>路由（遇到什麼情況去讀哪個技能包）</td><td>22,638</td><td><strong>問題在這</strong></td></tr><tr><td>其他</td><td>5,976</td><td>該</td></tr></tbody></table></div>
+<p>路由段佔了六成。而我自己在這份檔案的開頭就寫著一句話：</p>
+<div class="meaning">操作細節一律放技能包，這裡只放路由。</div>
+<p>結果路由段裡面，「網頁部署」那一塊 4,856 字，完整寫著 C 網怎麼部署、指令要帶什麼參數、驗收要看什麼、哪些能力還沒補上。那些內容在技能包裡<strong>本來就有一份</strong>。</p>
+<p>再往下挖，挖到真正的問題。</p>
+<p>我有 114 個技能包，每一個都有一份 SKILL.md。我去數了一下：其中 108 個，檔案最上方都寫了一段 <code>description</code>，內容是「什麼情況該用我、什麼情況不該用我」。</p>
+<p>那就是路由資訊。我早就寫好了，108 份。</p>
+<p>而我在規則檔裡，另外<strong>手寫了一張 6,506 字的表格</strong>，內容也是「什麼情況該用哪個技能包」。</p>
+<p>同一件事，維護了兩次。一次是自動可讀的（每個技能包自己帶著），一次是手寫的（塞在常駐檔案裡，每次新增技能包都要記得回來改）。</p>
+<p>我自己的規則裡有一條叫「真相分身禁令」，寫的就是禁止同一份事實在多處人工重複維護。我違反了自己寫的規則，而且違反的地點就在那條規則的下面兩千字。</p>
+<p>這件事還有一個外部證據。我派 Codex 幫我做跨家審查的時候，它的執行紀錄裡跳出一行警告：</p>
+<div class="meaning">Skill descriptions were shortened to fit the 2% skills context budget.</div>
+<p>翻成白話：Codex 這套系統本來就有「技能包描述最多佔 2% 上下文」的預算限制，而我那 108 份描述已經肥到被它自動截短了。</p>
+<p>我那 108 份描述加起來 39,736 字。<strong>比整份規則檔還大。</strong></p>
+<p>所以這件事有兩層：我維護了兩份路由，而且那份自動的，本身也太肥。</p>
+<div class="readmore near"><b>延伸閱讀</b><ul><li><a href="../rule-file-rebound/">規則檔越寫越長，AI 有照做嗎？：你寫的規則大部分沒在執行</a><br>這篇是它的續集。那篇盤點出 220 條規則只有 24 條真的有機械在執行，並且裝上了本文說的那個攔截器；你正在讀的這篇，寫的是那個攔截器 52 天後失敗了怎麼修。</li></ul></div></div></section>
+<section class="section" id="s"><div class="inner"><h2>提醒型的攔截等於沒有攔截</h2>
+<p>把三個現象放在一起看，問題就清楚了。</p>
+<p><strong>第一，規則沒有執行引擎。</strong></p>
+<p>我在 7 月做過一次盤點：規則檔裡大約 220 條規則，只有 24 條有機械執行器（也就是真的有程式會擋）。剩下的靠自覺。而那些「違反了代價很高」的規則裡，有 48 條是純靠自覺。</p>
+<p>我筆記裡有一條自己寫給自己的話：<strong>規則有寫卻沒擋住，缺的是引擎不是文字。</strong> 我知道這件事，還是又犯了一次。</p>
+<p><strong>第二，提醒沒有改變預設值。</strong></p>
+<p>提醒型的攔截，預設值還是「可以加」。它只是在加之前多問一句。而人在要加東西的當下，對「多問一句」是免疫的。</p>
+<p>要改變行為，預設值本身必須翻轉：<strong>從「想加就加」變成「想加就先搬走等量」。</strong></p>
+<p><strong>第三，同一件事維護兩次，遲早有一份過期。</strong></p>
+<p>而且過期的那份不會報錯。手寫的路由表和 108 份描述，哪一份是對的？沒人知道，因為兩份都沒有標記自己是不是最新。</p>
+<p>這三點我認為可以離開我的例子，套用到任何「寫了規範但沒人照做」的場合。團隊的工作守則、客戶的 SOP、你給 AI 的提示詞，都一樣。</p></div></section>
+<section class="section" id="s"><div class="inner"><h2>把「想加就加」翻成「想加就先搬走等量」</h2>
+<p>先講最有效的那一刀，因為它最簡單。</p>
+<p>我把原本那個「跳出三個問題」的攔截器，改成<strong>字數預算</strong>：</p>
+<ul><li>設一個上限，就設成瘦身後的實際字數，不留餘裕。</li><li>每次要改這份檔案時，算「改完之後會是幾個字」。</li><li>超過上限，而且這次改動不會讓它變短，就<strong>直接擋下來，不讓改</strong>。</li><li>被擋的時候給三個出路：這條規則放去技能包、先搬走等量的文字再回來加、或是當次明確授權（授權要在工作日記留一筆為什麼）。</li></ul>
+<p>關鍵在「不留餘裕」這四個字。上限就等於現況，意思是<strong>這份檔案從今天起是零和的</strong>：你想加一條新規則，就得先找出一條舊的搬走。</p>
+<p>這一刀之所以有效，是因為它不需要判斷「這條規則重不重要」。重要性是主觀的，每個人在當下都覺得自己要加的那條很重要。字數是客觀的，機器數得出來。</p>
+<p>實作上有兩個細節是被 Codex 抓出來才補的，我原本都寫錯：</p>
+<p>第一，要算<strong>改完之後</strong>的字數，不是改之前。我原本寫的是「現在已經超過上限就擋」，Codex 指出：那樣的話，檔案在 25,999 字的時候，可以一次寫進 5,000 字，因為寫之前還沒超過。</p>
+<p>第二，要涵蓋所有的修改方式。我原本只擋了兩種寫入方式，Codex 指出還有第三種可以整批修改的方式沒擋，從那邊進去就繞過去了。</p></div></section>
+<section class="section" id="s"><div class="inner"><h2>讓路由自己長出來，不要手寫第二份</h2>
+<p>第二刀處理「維護兩次」。</p>
+<p>做法是寫一支小程式，去讀那 108 個技能包各自的描述，加上我從舊表格轉出來的關鍵詞，自動產生一份機器可讀的索引檔（一份 JSON）。</p>
+<p>重點在三件事：</p>
+<ol><li><strong>不改任何一個技能包。</strong> 那 108 份描述保持原樣，程式只是去讀它。</li><li><strong>索引是生成物，不是手寫物。</strong> 任何人改了技能包的描述，索引自動重生，不需要記得回來改規則檔。</li><li><strong>所有 AI 都讀得到。</strong> 它是純 JSON，Claude 有專屬的程式去讀它，Codex 和 Gemini 用一行搜尋指令也能查。</li></ol>
+<p>然後規則檔裡那張 6,506 字的表格就退場了，換成一段大約 500 字的協議：說明索引在哪裡、怎麼查、查不到的時候去哪裡找備援。</p>
+<p>我另外保留了一份<strong>領域地圖</strong>，只有二十行，寫「寫作類找哪個包、部署類找哪個包」。這是 Codex 堅持要留的，理由我後面會講。</p></div></section>
+<section class="section" id="s"><div class="inner"><h2>每輪對話只注入路標，不注入內容</h2>
+<p>第三刀回答的是我自己最初的問題：能不能不要全部常駐（常駐＝不管你問什麼，它每次都先整份載入），改成遇到情境才把對應的技能包找出來。</p>
+<p>可以，但有一個前提要先講清楚，否則會出事。</p>
+<p>我做的版本是這樣：每次你送出一句話，一支小程式會先攔下來，拿你的話去比對那份索引。命中了就在你的訊息上方插一行提示，長這樣：</p>
+<div class="meaning">🧭 情境路由（關鍵字命中，會漏；動手前先讀 SKILL.md，判斷不合就不用）：<br>- spring-editor ← 命中「深度文章」「文章」 → \_agent/skills/spring-editor/SKILL.md</div>
+<p>它只給路標，不把技能包內容塞進來。要不要真的去讀，AI 自己判斷。</p>
+<p>另外兩個設計：</p>
+<ul><li><strong>碰到高風險的字（部署、刪除、金鑰、發文、改規則）就多插一行安全提示</strong>，這一行不靠猜，只要字出現就一定插。因為這幾件事猜錯的代價太高。</li><li><strong>沒有命中也要印一行</strong>，告訴 AI 「沒找到，需要的話自己去查索引」。這一行是 Codex 要求加的，原因下一段講。</li></ul></div></section>
+<section class="section" id="s"><div class="inner"><h2>換掉手寫表格最危險的地方，是沒命中就安靜</h2>
+<p>這是整篇最重要的一段，也是我原本想錯的地方。</p>
+<p>我一開始的設計是：命中就提示，沒命中就安靜。聽起來很合理，不要吵。</p>
+<p>Codex 第一輪審查把它退回來，理由是：</p>
+<div class="meaning">刪掉手寫的語意表之後，hook 漏詞就靜默，Codex、Gemini 更沒有 hook，「與現況等價」不成立。</div>
+<p>它說的是這件事：關鍵字比對<strong>一定會漏</strong>。讀者問「幫我把這段錄音轉成文字」，我的索引裡寫的是「轉錄」「逐字稿」，字面上沒有一個對得上，就漏了。這不是假設，是我自己寫的測試第一次跑就踩到的，補了別名才過。</p>
+<p>而原本那張手寫的表格，雖然肥，但它<strong>一直在那裡</strong>。AI 讀得到全文，就算沒有任何提示，它掃過去也可能想起來「喔這件事有個技能包」。</p>
+<p>把表格拿掉又讓提示靜默，等於從「看得到但被稀釋」變成「完全看不到」。那是退步，不是進步。</p>
+<p>所以最後的版本有三層保底：</p>
+<div class="tablewrap"><table><thead><tr><th>層</th><th>做什麼</th><th>蓋到誰</th></tr></thead><tbody><tr><td>路由提示</td><td>命中就給路標</td><td>只有 Claude</td></tr><tr><td>無命中提示</td><td>印一行「自己去查索引」</td><td>只有 Claude</td></tr><tr><td>領域地圖</td><td>規則檔裡留二十行的領域對照</td><td>所有 AI，包含沒有 hook 的</td></tr></tbody></table></div>
+<p><strong>動態載入不能取代常駐，只能當加速器。</strong> 這句話是這次最大的收穫。</p></div></section>
+<section class="section" id="s"><div class="inner"><h2>跨家審三輪退回，兩輪都退在我以為做完的地方</h2>
+<p>我的規則裡有一條：改規則主檔、改攔截程式，屬於最高風險等級，必須找<strong>另一家公司的 AI</strong> 來審。同一家的模型審自己，等於沒審。</p>
+<p>這次的分工是 Claude 提案與施工，Codex 審查。三輪。</p>
+<p><strong>第一輪，退回。</strong></p>
+<p>最重要的一項是這個：我原本打算把搬出來的條文，放進一個新建的檔案裡。Codex 指出那會製造<strong>第三份</strong>真相：新檔案一份、原本的技能包一份、規則檔指向新檔案又是一份。我在解決真相分身的過程中，正在製造一個新的真相分身。</p>
+<p>改法是把那 24 段條文<strong>逐字併回它們原本該在的 14 個檔案</strong>，每一段標記「這是從規則檔搬進來的，跟本檔既有內容重複的地方待去重」。</p>
+<p><strong>第二輪，還是退回。</strong></p>
+<p>這輪三項全部是同一種錯：我寫好了程式，但<strong>沒有真的掛上去</strong>。</p>
+<ul><li>攔截程式的提示訊息裡，還留著第一輪已經被否決的檔案名字。</li><li>新的路由程式寫好了，但沒有註冊進設定檔，所以它根本不會被執行。</li><li>攔截範圍漏了一種修改方式，從那邊進去可以繞過。</li></ul>
+<p>我在第一輪之後跟江江回報「已經改好了」。那個「改好了」是真的改了程式碼，但沒有接上電源。</p>
+<p><strong>第三輪，通過。</strong></p>
+<p>我另外做了一件規則要求但很容易跳過的事：<strong>真的演練一次退回</strong>。把三個檔案還原回瘦身前，量字數確認回到 35,960，再復原回 25,969。不是登記一條「出事可以還原」就算，是真的跑一遍。</p>
+<p>我的規則裡寫著一句話：<strong>沒跑過演練，不准說退得回去。</strong></p>
+<div class="readmore near"><b>延伸閱讀</b><ul><li><a href="../three-levels-of-cross-review/">怎麼設計讓兩個 AI 互審？：三種不同程度的審查機制設計</a><br>本文的三輪退回用的就是那篇的第二種深度（只審結果）。如果你想知道為什麼審查要分深度、哪一種抓得到「一開始就走錯路」，看那篇。</li></ul></div></div></section>
+<section class="section" id="s"><div class="inner"><h2>字數預算擋得住總量，擋不住品質</h2>
+<p>這套做完之後，我要誠實講它保證什麼、不保證什麼。</p>
+<p><strong>保證得了的：</strong></p>
+<ul><li>這份檔案不會再默默變胖。想加就得先搬走等量，機器擋著。</li><li>路由資訊不會再有兩份。表格退場了，索引是生成的。</li><li>高風險的字一定會觸發安全提示，不靠猜。</li></ul>
+<p><strong>保證不了的：</strong></p>
+<ul><li><strong>字數預算擋的是總量，不是品質。</strong> 我可以在預算內寫一堆廢話。品質那層還是靠自問三題跟跨家審查。</li><li><strong>關鍵字路由會漏。</strong> 漏了就退回領域地圖跟 AI 自己找，跟瘦身前一樣，不會更差，但也沒有更好。</li><li><strong>只有 Claude 有這支程式。</strong> Codex 跟 Gemini 靠的是規則檔裡那段文字約定，它們可以選擇不照做。這是我整套系統的共同限制，不是這次才有的。</li><li><strong>有一段路是我還沒走完的。</strong> 那 24 段搬進去的條文，跟原檔案既有的內容有重複，我這次刻意沒改寫（怕改出失真），排在兩個星期後處理。</li></ul>
+<p>還有一件事我想特別標出來，因為它跟這篇的主題直接有關。</p>
+<p>這套機制是 9 月 12 日晚上做完的。我是 9 月 13 日凌晨，自己再去驗一次的時候，才發現用量紀錄裡混進了五筆測試資料。我每跑一次測試，就會灌進十筆「必然命中」的假紀錄，兩個星期後我要拿那份數據算「漏掉多少」的時候，數字會是假的。</p>
+<p><strong>做完不等於做對。</strong> 這是第四次驗收才抓到的東西。</p>
+<div class="readmore near"><b>延伸閱讀</b><ul><li><a href="../how-to-verify-ai-rule-changes/">改完規則，怎麼知道 AI 到底有沒有變乖？｜改完當下看不出來的東西，要當病人觀察不能當程式碼驗</a><br>這一段說機器驗得了總量、驗不了品質。那篇處理的正是剩下那半：規則改完之後，靠自覺的那部分要怎麼驗。</li></ul></div></div></section>
+<section class="section" id="s"><div class="inner"><h2>今天就能開始：找出你手上維護兩次的那份資料</h2>
+<p>如果你手邊有一份越長越長的文件（給 AI 的規則、團隊的守則、客戶的 SOP），三個步驟：</p>
+<p><strong>第一步，量一下各段字數，不要憑印象。</strong></p>
+<p>我本來以為要逐條精簡，量完才發現六成集中在一段，而那一段的內容技能包裡本來就有。憑印象你會砍錯地方。</p>
+<p><strong>第二步，問這一題：這份文件裡，有哪一段的內容在別的地方也有一份？</strong></p>
+<p>這題比「這條重不重要」好用太多。重要性人人都覺得自己那條重要，重複是客觀事實。找到重複的，決定哪一份是正本，另一份改成指向它。</p>
+<p><strong>第三步，給它一個零和的上限。</strong></p>
+<p>上限就設成你整理完之後的實際字數，不留餘裕。從今天起要加新的，就得先搬走舊的。</p>
+<p>這三步不用自己動手，可以直接複製下面這段，貼給你平常在用的那個 AI（ChatGPT、Claude 都可以），把你的文件一起丟給它：</p>
+<div class="meaning">幫我做三件事。第一，把這份文件每一個大段落的字數列出來，由多到少排。第二，逐段告訴我，這一段的內容有沒有在我其他的檔案裡也存在一份，有的話指出是哪一份。第三，假設這份文件從今天起不准再變長，只能等量替換，你會建議我先把哪一段搬走，搬去哪裡。</div>
+<p>最後一句話，是我這次真正學到的：</p>
+<p><strong>你寫了規則卻沒人照做，通常不是規則寫得不好，是那條規則沒有掛在任何一個會動的東西上面。</strong></p>
+<p>先去找出你那條「寫了但沒有引擎」的規則。比再多寫一條有用。</p></div></section>
+<section class="section" id="ai"><div class="inner"><h2>給 AI 讀的備忘（不懂技術的讀者可以跳過這段）</h2>
+<p>這段是寫給你的 AI 看的。如果你想做同一套，把這段連同你的檔案一起貼給它。</p>
+<p><strong>字數預算閘門的判斷式</strong></p>
+<div class="codeblock"><pre>攔截條件 = (現有字數 + 這次的增量 &gt; 預算上限) AND (這次增量 &gt;= 0)</pre></div>
+<p>三個實作要點：</p>
+<ol><li>算的是<strong>寫入後</strong>的字數，不是寫入前。判寫入前的話，檔案在上限邊緣時可以一次寫進大量內容，因為寫之前還沒超過。</li><li>要涵蓋<strong>所有寫入路徑</strong>。以 Claude Code 為例，至少要蓋到 Edit、Write、MultiEdit 三種，只擋前兩種會從第三種繞過去。用指令列寫檔的路徑量不到增量，只能提示不能硬擋，而且<strong>不應該硬擋</strong>，因為還原用的指令本身也會經過那裡，擋了會把自己的退路堵死。</li><li>上限設成整理完的實際字數，不留餘裕。留了餘裕，餘裕就會被填滿。</li></ol>
+<p><strong>路由索引的生成邏輯</strong></p>
+<div class="codeblock"><pre>對每個技能包資料夾：
+  讀 SKILL.md 最上方的 frontmatter
+  取 description 欄位
+  觸發詞 = description 裡「」引號內的詞
+         + 「當使用者說 A、B、C」這類頓號串拆出來的詞
+         + 別名檔裡手動補的詞
+         + 技能包自己的名字
+  短描述 = description 截前 120 字
+輸出成一份 JSON</pre></div>
+<p>兩個設計決定：</p>
+<ul><li><strong>不改任何一個 SKILL.md</strong>。描述保持原樣，生成器只讀不寫。改了就會變成「為了做索引而動到 108 個檔案」，風險與工作量都不值得。</li><li><strong>別名檔是手動的，而且必須手動</strong>。從描述自動抽出來的詞覆蓋不了口語講法（「轉錄」抽得到，「錄音轉成文字」抽不到），別名檔就是補這一塊的。它會過期，所以要靠用量紀錄定期回頭補。</li></ul>
+<p><strong>路由提示的注入原則</strong></p>
+<ul><li>只注入「技能包名稱 + 檔案路徑」，不注入技能包內容。注入內容等於把肥的東西換個地方塞回來。</li><li>分數排序用「命中詞的總長度 + 命中數量」，長詞比短詞可信。名稱完全命中給額外加權。</li><li><strong>沒命中也要輸出一行</strong>。靜默是這套機制最大的風險：關鍵字一定會漏，漏了又不出聲，AI 就完全不知道有這個東西存在。</li><li>高風險詞（部署、刪除、金鑰、發文、改規則）獨立一條規則，只要字出現就注入安全提示，不參與分數排序。</li></ul>
+<p><strong>測試怎麼寫才有意義</strong></p>
+<p>測試句一定要包含這三類，只測命中的等於沒測：</p>
+<div class="tablewrap"><table><thead><tr><th>類型</th><th>例子</th><th>要驗什麼</th></tr></thead><tbody><tr><td>同義改寫</td><td>「幫我把這段錄音轉成文字」</td><td>索引裡寫的是「轉錄」，這句字面上一個都對不上</td></tr><tr><td>無命中</td><td>「今天天氣如何」</td><td>要靜默還是要印提示，這是設計決定不是 bug</td></tr><tr><td>多包衝突</td><td>「把逐字稿整理成會議記錄」</td><td>同時命中五個包，排序對不對</td></tr></tbody></table></div>
+<p>還有一個很容易忽略的：<strong>測試腳本本身不要污染用量統計</strong>。我第一版沒處理，每跑一次測試就灌進十筆必然命中的假紀錄，兩週後要算漏失率的時候，那份數據是廢的。做法是讓測試帶一個固定的識別碼，記錄那一段看到就跳過。</p></div></section>
+<section class="section" id="more"><div class="inner">
+<div class="readmore"><b>這篇提到過的</b><ul>
+<li><a href="../rule-file-rebound/">規則檔越寫越長，AI 有照做嗎？：你寫的規則大部分沒在執行</a>（本文的前作，那個失敗的攔截器就是在那篇裝上的）</li>
+<li><a href="../three-levels-of-cross-review/">怎麼設計讓兩個 AI 互審？：三種不同程度的審查機制設計</a>（本文三輪退回用的審查方式）</li>
+<li><a href="../how-to-verify-ai-rule-changes/">改完規則，怎麼知道 AI 到底有沒有變乖？</a>（機器驗不了的那半怎麼辦）</li>
+</ul></div>
+<div class="readmore"><b>再往前後延伸</b><ul>
+<li><a href="../let-ai-review-itself/">我明明都講過了，AI 為什麼還要再問我？｜把重複的判斷寫成標準，讓它自己檢查自己</a>（把審查標準寫成 AI 審得動的樣子，本文的三題自問屬於這一類）</li>
+<li><a href="../tag-wiki-method/">資料越堆越多，AI 反而找不到怎麼辦？：標籤連結法 Tag Wiki</a>（本文的路由索引是這套方法在規則層的延伸）</li>
+</ul></div>
+</div></section>
+<section class="cta-band"><div class="section"><div class="inner">
+<h2>我是江江教練</h2>
+<p class="lead">我幫一人公司與中小團隊，把散在腦袋、對話與檔案裡的東西，變成 AI 真的用得動的知識系統。這篇寫的就是我自己每天在跑的那一套。</p>
+<div class="cta-card"><b>想從哪裡開始都可以</b>
+<p>官網有一百多篇拆解，從第一次跟 AI 講話到整套工作流都寫在裡面。想聊聊你手上那份越長越長的文件，LINE 社群裡直接問我。</p>
+<p><a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">加入 LINE 社群 ↗</a></p></div>
+</div></div></section>
+
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">江江教練 · AI 知識管理</div>
+    <div class="footer-links">
+      <a href="../../articles.html">← 回深度文章總站</a>
+      <a href="../../index.html">首頁</a>
+      <a href="../../learn.html">自學資源</a>
+      <a href="../../skills.html">技能包下載</a>
+      <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">LINE 社群 ↗</a>
+      <a href="https://www.threads.com/@jiang_yude_coach" target="_blank" rel="noopener">Threads ↗</a>
+      <a href="https://vocus.cc/salon/Jiang_Coach" target="_blank" rel="noopener">方格子 ↗</a>
+    </div>
+    <div class="footer-note">這是一篇教學文章，整理我對「AI 規則檔裝了攔截器，52 天一條都沒擋下來｜執行引擎與字數預算，36,000 字的主檔瘦回 26,000」的看法，供你參考。</div>
+  </div>
+</footer>
+
+<!-- 點圖放大 lightbox（hero 與內文圖通用，已內建，不用每篇重加） -->
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <span class="lightbox-close" aria-label="關閉">×</span>
+  <img id="lightbox-img" src="" alt="放大檢視">
+</div>
+<script>
+(function(){
+  var box=document.getElementById('lightbox'),boxImg=document.getElementById('lightbox-img');
+  document.querySelectorAll('.hero-figure img,.inline-figure img').forEach(function(img){
+    img.addEventListener('click',function(){boxImg.src=img.currentSrc||img.src;boxImg.alt=img.alt||'放大檢視';box.classList.add('open');box.setAttribute('aria-hidden','false');});
+  });
+  function close(){box.classList.remove('open');box.setAttribute('aria-hidden','true');boxImg.src='';}
+  box.addEventListener('click',close);
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
+})();
+</script>
+
+<script src="../../image-interactions.js"></script>
+
+<!-- 官網共用：滑鼠暖光暈 + 導航列漢堡選單 -->
+<script src="../../spotlight.js"></script>
+
+<!-- 文章自動互聯（相關文章）：兩支已內建，順序不可顛倒，不用再另外加 -->
+<script src="../../articles-data.js"></script>
+<script src="../../related-render.js"></script>
+  <script src="/mika-chat-widget.js" defer></script>
+</body>
+</html>
