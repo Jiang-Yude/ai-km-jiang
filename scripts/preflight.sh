@@ -43,6 +43,18 @@ else
   bad "索引覆蓋率未過：見上方清單。補 search-aliases.js，或在 index-coverage-ignore.json 寫明不補的理由"
 fi
 
+# 標題公式（2026-09-12 立）：上一關擋「改標題把詞洗掉」，擋不住「副標一開始就寫錯」。
+# 9/12 江江看 loop-four-entries 說「標題這麼長都沒講到重點」，長出的規則是
+# 副標＝第二搜尋入口（不是金句、不是功能描述）。這支補那條規則的引擎。
+# 只驗本次變更的文章；舊標題沒有「｜」與副標長度只提醒不擋（8/24 明訂舊文不回頭批改）。
+# 誠實邊界：機器驗不了「主標是不是讀者真的會打的話」，那層靠 AUT 第五題與跨家審。
+# 全站盤查用 node scripts/check-title-formula.mjs --all（只列清單不擋）。
+if node scripts/check-title-formula.mjs; then
+  ok "標題公式（副標是可搜尋的概念名，不是功能描述）"
+else
+  bad "標題公式未過：見上方清單。改副標，或在 title-formula-ignore.json 寫明這篇為什麼不套公式"
+fi
+
 echo "═══ 2/11 文章互聯腳本齊全 ═══"
 if node scripts/verify-interlink.js 2>&1 | grep -q "結果：PASS"; then ok "interlink"; else bad "verify-interlink FAIL（有文章缺互聯腳本）"; fi
 
