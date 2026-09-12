@@ -5,21 +5,21 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="index,follow">
 <title>要讓 AI 自己工作，該怎麼下指令？｜三種迴圈工程，讓 AI 根據不同任務調整自動化程度</title>
-<meta name="description" content="我對 AI 說「跑 loop」有四種講法，今天才把它們整併成同一套機制。四個入口只差三件事：開跑前問不問、要不要加抗辯層、卡住時停不停。判級與審查強度四種都一樣，由任務決定。附三個實跑案例與一段可直接複製的最小指令。">
+<meta name="description" content="我對 AI 說「跑 loop」有四種講法，整併之後其實是三種等級：一般、保守一點、自動一點。四個入口只差三件事：開跑前問不問、要不要加抗辯層、卡住時停不停。判級與審查強度四種都一樣，由任務決定。附三個實跑案例與一段可直接複製的最小指令。">
 <link rel="canonical" href="https://jiangyude.com/articles/loop-four-entries/">
 <meta property="og:type" content="article">
 <meta property="og:title" content="要讓 AI 自己工作，該怎麼下指令？｜三種迴圈工程，讓 AI 根據不同任務調整自動化程度｜江江教練">
 <!-- 分享封面：hero 文字填好後在 repo 根目錄跑 `node scripts/og-shot.mjs loop-four-entries` 自動截 1200×630 到 images/og/loop-four-entries.jpg（見 README「文章分享封面（OG 圖）機制」）。別退回 intro-jiang.png 直式人像，會被裁成只剩脖子。 -->
 <meta property="og:image" content="https://jiangyude.com/images/og/loop-four-entries.jpg">
-<meta property="og:description" content="我對 AI 說「跑 loop」有四種講法，今天才把它們整併成同一套機制。四個入口只差三件事：開跑前問不問、要不要加抗辯層、卡住時停不停。判級與審查強度四種都一樣，由任務決定。附三個實跑案例與一段可直接複製的最小指令。">
+<meta property="og:description" content="我對 AI 說「跑 loop」有四種講法，整併之後其實是三種等級：一般、保守一點、自動一點。四個入口只差三件事：開跑前問不問、要不要加抗辯層、卡住時停不停。判級與審查強度四種都一樣，由任務決定。附三個實跑案例與一段可直接複製的最小指令。">
 <meta property="og:url" content="https://jiangyude.com/articles/loop-four-entries/">
 <meta property="og:locale" content="zh_TW">
 <meta property="og:site_name" content="江江教練 · AI 知識管理">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="要讓 AI 自己工作，該怎麼下指令？｜三種迴圈工程，讓 AI 根據不同任務調整自動化程度｜江江教練">
 <meta name="twitter:image" content="https://jiangyude.com/images/og/loop-four-entries.jpg">
-<meta name="twitter:description" content="我對 AI 說「跑 loop」有四種講法，今天才把它們整併成同一套機制。四個入口只差三件事：開跑前問不問、要不要加抗辯層、卡住時停不停。判級與審查強度四種都一樣，由任務決定。附三個實跑案例與一段可直接複製的最小指令。">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"要讓 AI 自己工作，該怎麼下指令？｜三種迴圈工程，讓 AI 根據不同任務調整自動化程度","description":"我對 AI 說「跑 loop」有四種講法，今天才把它們整併成同一套機制。四個入口只差三件事：開跑前問不問、要不要加抗辯層、卡住時停不停。判級與審查強度四種都一樣，由任務決定。附三個實跑案例與一段可直接複製的最小指令。","author":{"@type":"Person","name":"江昱德","alternateName":"江江教練","jobTitle":"隱性知識提煉師、AI 應用規劃師"},"isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://jiangyude.com/"},"inLanguage":"zh-Hant","url":"https://jiangyude.com/articles/loop-four-entries/"}</script>
+<meta name="twitter:description" content="我對 AI 說「跑 loop」有四種講法，整併之後其實是三種等級：一般、保守一點、自動一點。四個入口只差三件事：開跑前問不問、要不要加抗辯層、卡住時停不停。判級與審查強度四種都一樣，由任務決定。附三個實跑案例與一段可直接複製的最小指令。">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"要讓 AI 自己工作，該怎麼下指令？｜三種迴圈工程，讓 AI 根據不同任務調整自動化程度","description":"我對 AI 說「跑 loop」有四種講法，整併之後其實是三種等級：一般、保守一點、自動一點。四個入口只差三件事：開跑前問不問、要不要加抗辯層、卡住時停不停。判級與審查強度四種都一樣，由任務決定。附三個實跑案例與一段可直接複製的最小指令。","author":{"@type":"Person","name":"江昱德","alternateName":"江江教練","jobTitle":"隱性知識提煉師、AI 應用規劃師"},"isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://jiangyude.com/"},"inLanguage":"zh-Hant","url":"https://jiangyude.com/articles/loop-four-entries/"}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
@@ -191,7 +191,7 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
 
 <section class="section" id="start">
   <div class="inner">
-    <p class="lead">我對 AI 說「跑 loop」，有四種講法：只說 loop、把這件事跑 loop、Loop 護欄、全自動 loop。它們在不同時間、為了不同問題長出來，各自都有規則條文，但從來沒有一句話說它們是什麼關係。今天我把它們整併成同一套機制的四種入口，這篇寫的是整併之後的樣子：四個入口只差三件事，而決定「要被檢查多嚴格」的那一格，四種說法完全一樣。這四句其實是三種等級：只說 loop 和把這件事跑 loop 都算基本版，Loop 護欄是任務比較敏感或複雜時保守的一級，全自動 loop 是追求效率、自動一點的一級。</p>
+    <p class="lead">我對 AI 說「跑 loop」，有四種講法：只說 loop、把這件事跑 loop、Loop 護欄、全自動 loop。它們在不同時間、為了不同問題長出來，各自都有規則條文，但從來沒有一句話說它們是什麼關係。今天我把它們整併成同一套機制的四種入口，這篇寫的是整併之後的樣子：四個入口只差三件事，而決定「要被檢查多嚴格」的那一格，四種說法完全一樣。這四句其實是三種等級：一般、保守一點、自動一點。</p>
 
     <div class="duo stack">
       <div class="card">
@@ -223,13 +223,15 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
       <p><b>先講清楚，這句話今天才成立，不是我發現了一個一直存在的事實。</b>四個講法過去各自運作、各自有條文，我沒辦法宣稱它們過去就是同一套。今天做的事是整併：把它們收進同一組底層條文，只留幾個明確的差別。</p>
     </div>
 
+    <p>整併之後看清楚一件事：四句話其實是三種等級。只說 loop 和把這件事跑 loop 都算基本版，Loop 護欄是任務比較敏感、複雜或有風險時保守的一級，全自動 loop 是追求效率、自動一點的一級。</p>
+
     <p>這篇文章寫的是整併之後的樣子：它們差在哪、怎麼選、以及三個實跑案例。</p>
   </div>
 </section>
 
 <section class="section" id="structure">
   <div class="inner">
-    <h2>四種說法整併之後：一組不動的核心，三個開關</h2>
+    <h2>四種講法整併之後：三種等級，一組不動的核心</h2>
 
     <p>整併的第一句話是這樣寫的：</p>
 
@@ -262,9 +264,20 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
       <figcaption>三個開關裝在同一塊面板上，共用同一條線。表格那四列之所以中間三欄有差、最後一欄全同，原因就在這個結構。</figcaption>
     </figure>
 
-    <h3>怎麼選</h3>
+    <h3>怎麼選：三種等級</h3>
 
-    <p>一般任務直接說「把這件事跑 loop」。想找碴、要它先被挑戰過再給結論，說「Loop 護欄」。不想中途被問、要它一口氣做完，說「全自動 loop」。三句話對應三種節奏，底層的判級、驗收、停止條件完全一樣。換句話說，<b>你選錯了也不會出事，頂多是問得比較多次或比較少次。</b></p>
+    <div class="tablewrap">
+    <table>
+      <thead><tr><th>等級</th><th>你說哪一句</th><th>什麼時候用</th></tr></thead>
+      <tbody>
+        <tr><td>一般</td><td>只說 loop，或「把這件事跑 loop」</td><td>一般任務，預設就走這一級</td></tr>
+        <tr><td>保守一點</td><td>Loop 護欄</td><td>任務比較敏感、複雜或有風險，要它先被挑戰過再給結論</td></tr>
+        <tr><td>自動一點</td><td>全自動 loop</td><td>追求效率，不想中途被問，要它一口氣做完</td></tr>
+      </tbody>
+    </table>
+    </div>
+
+    <p>三種等級底層的判級、驗收、停止條件完全一樣。換句話說，<b>你選錯了也不會出事，頂多是問得比較多次或比較少次。</b></p>
 
     <p>（規則檔還加了一句禁令：不准把任一入口另立規則或另建檔案，防的是四份數字以後互相打架。）</p>
 
