@@ -4,11 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="index,follow">
-<title>AI 規則檔裝了攔截器，52 天一條都沒擋下來｜執行引擎與字數預算，36,000 字的主檔瘦回 26,000</title>
+<title>AI 規則檔裝了攔截器，52 天一條都沒擋下來｜AGENTS.md 優化，36,000 字的主檔瘦回 26,000</title>
 <meta name="description" content="2026-07-22 裝的提示型准入閘，52 天後規則主檔漲了 47%，一次都沒擋下來。這篇拆開真正的原因（同一份路由資訊維護兩次），給出四件修法：條文併回正本、手寫表格換成機讀索引、情境路由 hook 只注入路標、准入閘升級成字數預算硬攔。">
 <link rel="canonical" href="https://jiangyude.com/articles/ai-rule-file-slimming/">
 <meta property="og:type" content="article">
-<meta property="og:title" content="AI 規則檔裝了攔截器，52 天一條都沒擋下來｜執行引擎與字數預算，36,000 字的主檔瘦回 26,000｜江江教練">
+<meta property="og:title" content="AI 規則檔裝了攔截器，52 天一條都沒擋下來｜AGENTS.md 優化，36,000 字的主檔瘦回 26,000｜江江教練">
 <!-- 分享封面：hero 文字填好後在 repo 根目錄跑 `node scripts/og-shot.mjs ai-rule-file-slimming` 自動截 1200×630 到 images/og/ai-rule-file-slimming.jpg（見 README「文章分享封面（OG 圖）機制」）。別退回 intro-jiang.png 直式人像，會被裁成只剩脖子。 -->
 <meta property="og:image" content="https://jiangyude.com/images/og/ai-rule-file-slimming.jpg">
 <meta property="og:description" content="2026-07-22 裝的提示型准入閘，52 天後規則主檔漲了 47%，一次都沒擋下來。這篇拆開真正的原因（同一份路由資訊維護兩次），給出四件修法：條文併回正本、手寫表格換成機讀索引、情境路由 hook 只注入路標、准入閘升級成字數預算硬攔。">
@@ -16,10 +16,10 @@
 <meta property="og:locale" content="zh_TW">
 <meta property="og:site_name" content="江江教練 · AI 知識管理">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="AI 規則檔裝了攔截器，52 天一條都沒擋下來｜執行引擎與字數預算，36,000 字的主檔瘦回 26,000｜江江教練">
+<meta name="twitter:title" content="AI 規則檔裝了攔截器，52 天一條都沒擋下來｜AGENTS.md 優化，36,000 字的主檔瘦回 26,000｜江江教練">
 <meta name="twitter:image" content="https://jiangyude.com/images/og/ai-rule-file-slimming.jpg">
 <meta name="twitter:description" content="2026-07-22 裝的提示型准入閘，52 天後規則主檔漲了 47%，一次都沒擋下來。這篇拆開真正的原因（同一份路由資訊維護兩次），給出四件修法：條文併回正本、手寫表格換成機讀索引、情境路由 hook 只注入路標、准入閘升級成字數預算硬攔。">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"AI 規則檔裝了攔截器，52 天一條都沒擋下來｜執行引擎與字數預算，36,000 字的主檔瘦回 26,000","description":"2026-07-22 裝的提示型准入閘，52 天後規則主檔漲了 47%，一次都沒擋下來。這篇拆開真正的原因（同一份路由資訊維護兩次），給出四件修法：條文併回正本、手寫表格換成機讀索引、情境路由 hook 只注入路標、准入閘升級成字數預算硬攔。","author":{"@type":"Person","name":"江昱德","alternateName":"江江教練","jobTitle":"隱性知識提煉師、AI 應用規劃師"},"isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://jiangyude.com/"},"inLanguage":"zh-Hant","url":"https://jiangyude.com/articles/ai-rule-file-slimming/"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"AI 規則檔裝了攔截器，52 天一條都沒擋下來｜AGENTS.md 優化，36,000 字的主檔瘦回 26,000","description":"2026-07-22 裝的提示型准入閘，52 天後規則主檔漲了 47%，一次都沒擋下來。這篇拆開真正的原因（同一份路由資訊維護兩次），給出四件修法：條文併回正本、手寫表格換成機讀索引、情境路由 hook 只注入路標、准入閘升級成字數預算硬攔。","author":{"@type":"Person","name":"江昱德","alternateName":"江江教練","jobTitle":"隱性知識提煉師、AI 應用規劃師"},"isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://jiangyude.com/"},"inLanguage":"zh-Hant","url":"https://jiangyude.com/articles/ai-rule-file-slimming/"}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
@@ -174,7 +174,7 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
   <div class="wc wc3"></div>
   <div>
     <div class="kicker">AI 工作流 / 規則治理</div>
-    <h1>AI 規則檔裝了攔截器，52 天一條都沒擋下來｜執行引擎與字數預算，36,000 字的主檔瘦回 26,000</h1>
+    <h1>AI 規則檔裝了攔截器，52 天一條都沒擋下來｜AGENTS.md 優化，36,000 字的主檔瘦回 26,000</h1>
     <p>提示型的攔截裝了 52 天，一次都沒擋下來。我把 36,000 字的規則主檔瘦回 26,000，並且讓它這次真的胖不回去。</p>
   </div>
 </section>
@@ -366,7 +366,7 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
       <a href="https://www.threads.com/@jiang_yude_coach" target="_blank" rel="noopener">Threads ↗</a>
       <a href="https://vocus.cc/salon/Jiang_Coach" target="_blank" rel="noopener">方格子 ↗</a>
     </div>
-    <div class="footer-note">這是一篇教學文章，整理我對「AI 規則檔裝了攔截器，52 天一條都沒擋下來｜執行引擎與字數預算，36,000 字的主檔瘦回 26,000」的看法，供你參考。</div>
+    <div class="footer-note">這是一篇教學文章，整理我對「AI 規則檔裝了攔截器，52 天一條都沒擋下來｜AGENTS.md 優化，36,000 字的主檔瘦回 26,000」的看法，供你參考。</div>
   </div>
 </footer>
 
