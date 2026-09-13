@@ -34,7 +34,7 @@ const {clientNetwork}=require('../lib/2026-09-13-0910-client-network.js');
 
 const fs = require('fs');
 const path = require('path');
-const { isIP, BlockList } = require('net');
+const { isIP } = require('net');
 
 const API_KEY = () => process.env.MIKA_LLM_API_KEY || '';
 const BASE_URL = () => process.env.MIKA_LLM_BASE_URL || 'https://api.openai.com/v1';
@@ -496,8 +496,6 @@ function retrieveAdaptive(query) {
 /* ── 用量上限（2026-08-07 江江拍板的數字；都可用環境變數調）──
    MIKA_RATE_PER_MIN    同 IP 每分鐘   預設 20（防灌爆）
    MIKA_RATE_PER_DAY    同 IP 每天     預設 100（單一訪客上限）
-   MIKA_RATE_PER_MIN_COURSE  課程頁每 IP 每分鐘  預設 300（整班同一個 WiFi＝同一個 IP）
-   MIKA_RATE_PER_DAY_COURSE  課程頁每 IP 每天    預設 3000（現場碰不到，這是被薅時的停損）
    MIKA_DAILY_LIMIT     全站每天       預設 5000
    MIKA_MONTHLY_LIMIT   全站每月       預設 10000（總開銷天花板）
    計次規則（2026-08-07 江江拍板）：以輸入字數計，每 100 字算 1 次、無條件進位
@@ -507,22 +505,21 @@ function retrieveAdaptive(query) {
    現場學員本來就會整段貼、會一次講很多，按字數算等於罰認真描述的人，
    而那正是這堂課要教的事（講得細的人圖明顯比較好）。
    回傳 'ok'｜'minute'｜'ip-day'｜'site-day'｜'site-month' */
-/* 課堂額度（2026-08-20 加，江江問「不同學員會不會撞到一分鐘 20 次」查出來的）：
-   節流綁 IP，但**教室整班連同一個 WiFi，對外就是同一個 IP**。
-   舊值套到現場＝老師喊「大家打開咪卡」時 20 人同時按就吃掉整分鐘的額度，第 21 個當場被擋；
-   每 IP 每天 100 次更是 20 人各走一輪（約 3 次）就用掉六成，有人多問幾句後面的人整天不能用。
-   被擋時咪卡只會說「訊息有點太快了」，學員會以為是自己手機的問題，現場很難救。
-   做法＝只有課程頁的請求走寬額度，其他頁維持原本的嚴格值（那才是防薅的主要戰場）。
-   全站每天與每月的天花板照舊擋在最外層，最壞情況的總開銷仍然有上限。 */
-async function ratelimit(ip, units, onCourse) {
+/* 課堂寬額度已移除（2026-09-14 江江拍板）：
+   8/20 為「整班連同一個 WiFi＝同一個 IP」加了課程頁每 IP 每分鐘 300、每天 3000 的寬額度。
+   江江 9/14 說明實際上課學員都用自己的手機、也常是線上課，沒有共用教室網路這回事；
+   而寬額度只看訪客自己送上來的頁面路徑，任何人假裝在課程頁就能拿到 30 倍額度，是最大的薅用缺口。
+   現在所有頁面同一套每 IP 額度；課程頁只保留「一則算一次」的計次例外（見 handler）。
+   上課若真有人被擋（例如同電信共用 IPv4），臨時調高 MIKA_RATE_PER_DAY 即可，全站每日／每月天花板照舊。 */
+async function ratelimit(ip, units) {
   if (!KV_URL() || !KV_TOKEN()) return 'unavailable';
   function limit(value, fallback) {
     if (value === undefined || value === '') return fallback;
     const n = Number(value);
     return Number.isSafeInteger(n) && n >= 0 && n <= 1000000000 ? n : null;
   }
-  const perMin = limit(onCourse ? process.env.MIKA_RATE_PER_MIN_COURSE : process.env.MIKA_RATE_PER_MIN, onCourse ? 300 : 20);
-  const perDay = limit(onCourse ? process.env.MIKA_RATE_PER_DAY_COURSE : process.env.MIKA_RATE_PER_DAY, onCourse ? 3000 : 100);
+  const perMin = limit(process.env.MIKA_RATE_PER_MIN, 20);
+  const perDay = limit(process.env.MIKA_RATE_PER_DAY, 100);
   const siteDay = limit(process.env.MIKA_DAILY_LIMIT, 5000);
   const siteMonth = limit(process.env.MIKA_MONTHLY_LIMIT, 10000);
   if ([perMin, perDay, siteDay, siteMonth].includes(null) || !Number.isSafeInteger(units) || units < 1 || units > 1000000000) return 'unavailable';
@@ -700,10 +697,10 @@ module.exports = async (req, res) => {
   if (!lastUser) { res.status(200).json({ reply: '想聊什麼呢？' }); return; }
 
   /* 以字計次：每 100 字算 1 次，無條件進位。
-     課程頁且伺服器允許的教室 IP 才例外，一則就是一次（江江 2026-08-20）：現場鼓勵學員講得細，
-     按字數計等於罰認真描述的人。 */
-  // Only the Vercel-controlled header may grant classroom quota. Do not trust a
-  // client-supplied page path or fall back to arbitrary forwarding headers.
+     課程頁例外，一則就是一次（江江 2026-08-20）：現場鼓勵學員講得細，按字數計等於罰認真描述的人。
+     頁面路徑是訪客送上來的、可以假冒，所以這個例外只改計次，不放寬任何額度；
+     假冒最多把一則 500 字從 5 次變 1 次，仍受每 IP 每分鐘／每天與全站上限管住。 */
+  // Only the Vercel-controlled header identifies the client for rate limiting.
   // https://vercel.com/docs/headers/request-headers#x-vercel-forwarded-for
   const rawIP = String(req.headers['x-vercel-forwarded-for'] || '').split(',')[0].trim();
   if (!isIP(rawIP)) {
@@ -712,19 +709,9 @@ module.exports = async (req, res) => {
     return;
   }
   const ip = rawIP;
-  const classroom = new BlockList();
-  for (const entry of String(process.env.MIKA_COURSE_IPS || '').split(',')) {
-    const [address, prefix] = entry.trim().split('/');
-    const version = isIP(address); if (!version) continue;
-    const family = version === 4 ? 'ipv4' : 'ipv6';
-    if (prefix === undefined) classroom.addAddress(address, family);
-    else if (/^\d+$/.test(prefix) && Number(prefix) >= (version === 4 ? 24 : 64) && Number(prefix) <= (version === 4 ? 32 : 128)) classroom.addSubnet(address, Number(prefix), family);
-  }
-  const coursePath = /^\/(en\/)?courses\//.test(String(body.page || ''));
-  const onCoursePage = coursePath && classroom.check(ip, isIP(ip) === 4 ? 'ipv4' : 'ipv6');
-  if (coursePath && !onCoursePage) console.error('mika_classroom_quota_not_granted');
+  const onCoursePage = /^\/(en\/)?courses\//.test(String(body.page || ''));
   const units = onCoursePage ? 1 : Math.max(1, Math.ceil(lastUser.content.length / 100));
-  const limited = await ratelimit(ip, units, onCoursePage);
+  const limited = await ratelimit(ip, units);
   if (limited !== 'ok') {
     if (limited === 'unavailable') console.error('mika_quota_unavailable');
     res.status(limited === 'unavailable' ? 503 : 429).json({ reply: LIMIT_REPLY[limited] });
