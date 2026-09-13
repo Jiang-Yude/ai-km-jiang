@@ -1,3 +1,4 @@
+const {clientNetwork}=require('../lib/2026-09-13-0910-client-network.js');
 // 咪卡官網客服的大腦：人設＋站內檢索＋LLM 回覆。
 // 進 repo 時改名放 api/mika-chat.js。
 //
@@ -33,6 +34,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { isIP, BlockList } = require('net');
 
 const API_KEY = () => process.env.MIKA_LLM_API_KEY || '';
 const BASE_URL = () => process.env.MIKA_LLM_BASE_URL || 'https://api.openai.com/v1';
@@ -513,37 +515,38 @@ function retrieveAdaptive(query) {
    做法＝只有課程頁的請求走寬額度，其他頁維持原本的嚴格值（那才是防薅的主要戰場）。
    全站每天與每月的天花板照舊擋在最外層，最壞情況的總開銷仍然有上限。 */
 async function ratelimit(ip, units, onCourse) {
-  if (!KV_URL() || !KV_TOKEN()) return 'ok';
-  const perMin = Number(onCourse ? process.env.MIKA_RATE_PER_MIN_COURSE : process.env.MIKA_RATE_PER_MIN)
-    || (onCourse ? 300 : 20);
-  const perDay = Number(onCourse ? process.env.MIKA_RATE_PER_DAY_COURSE : process.env.MIKA_RATE_PER_DAY)
-    || (onCourse ? 3000 : 100);
-  const siteDay = Number(process.env.MIKA_DAILY_LIMIT) || 5000;
-  const siteMonth = Number(process.env.MIKA_MONTHLY_LIMIT) || 10000;
+  if (!KV_URL() || !KV_TOKEN()) return 'unavailable';
+  function limit(value, fallback) {
+    if (value === undefined || value === '') return fallback;
+    const n = Number(value);
+    return Number.isSafeInteger(n) && n >= 0 && n <= 1000000000 ? n : null;
+  }
+  const perMin = limit(onCourse ? process.env.MIKA_RATE_PER_MIN_COURSE : process.env.MIKA_RATE_PER_MIN, onCourse ? 300 : 20);
+  const perDay = limit(onCourse ? process.env.MIKA_RATE_PER_DAY_COURSE : process.env.MIKA_RATE_PER_DAY, onCourse ? 3000 : 100);
+  const siteDay = limit(process.env.MIKA_DAILY_LIMIT, 5000);
+  const siteMonth = limit(process.env.MIKA_MONTHLY_LIMIT, 10000);
+  if ([perMin, perDay, siteDay, siteMonth].includes(null) || !Number.isSafeInteger(units) || units < 1 || units > 1000000000) return 'unavailable';
   const day = new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Taipei' }).format(new Date());
   const month = day.slice(0, 7);
   try {
-    const minKey = `mika:chatrate:${ip}:${Math.floor(Date.now() / 60000)}`;
-    const ipDayKey = `mika:chatday:${ip}:${day}`;
+    const network = clientNetwork(ip);
+    if (!network) return 'unavailable';
+    const minKey = `mika:chatrate:${network}:${Math.floor(Date.now() / 60000)}`;
+    const ipDayKey = `mika:chatday:${network}:${day}`;
     const siteKey = `mika:chatsite:${day}`;
     const monthKey = `mika:chatmonth:${month}`;
     const r = await fetch(`${KV_URL()}/pipeline`, {
       method: 'POST',
+      signal: AbortSignal.timeout(3000),
       headers: { Authorization: `Bearer ${KV_TOKEN()}`, 'Content-Type': 'application/json' },
-      body: JSON.stringify([
-        ['INCRBY', minKey, units], ['EXPIRE', minKey, 90],
-        ['INCRBY', ipDayKey, units], ['EXPIRE', ipDayKey, 172800],
-        ['INCRBY', siteKey, units], ['EXPIRE', siteKey, 172800],
-        ['INCRBY', monthKey, units], ['EXPIRE', monthKey, 3456000],
-      ]),
+      body: JSON.stringify([['EVAL', "local units = tonumber(ARGV[1])\nlocal current = {}\nfor i=1,4 do\n  local raw = redis.call('GET', KEYS[i])\n  local n = tonumber(raw or '0')\n  if not n or n < 0 or n ~= math.floor(n) or n > 9007199254740991 then return redis.error_reply('invalid quota counter') end\n  current[i] = n\nend\nfor i=4,1,-1 do if current[i] + units > tonumber(ARGV[i+1]) then return i end end\nfor i=1,4 do\n  redis.call('INCRBY', KEYS[i], units)\n  redis.call('EXPIRE', KEYS[i], tonumber(ARGV[i+5]))\nend\nreturn 0", '4', minKey, ipDayKey, siteKey, monthKey, units, perMin, perDay, siteDay, siteMonth, 90, 172800, 172800, 3456000]]),
     });
+    if (!r.ok) return 'unavailable';
     const out = await r.json();
-    if (Number(out[6] && out[6].result) > siteMonth) return 'site-month';
-    if (Number(out[4] && out[4].result) > siteDay) return 'site-day';
-    if (Number(out[2] && out[2].result) > perDay) return 'ip-day';
-    if (Number(out[0] && out[0].result) > perMin) return 'minute';
-    return 'ok';
-  } catch (e) { return 'ok'; }
+    if (!Array.isArray(out) || out.length !== 1 || !out[0] || Object.hasOwn(out[0], 'error')
+      || !Number.isSafeInteger(out[0].result) || out[0].result < 0 || out[0].result > 4) return 'unavailable';
+    return ['ok', 'minute', 'ip-day', 'site-day', 'site-month'][out[0].result];
+  } catch (e) { return 'unavailable'; }
 }
 
 /* ── 訪客正在看的那一頁（2026-08-17 江江拍板）──
@@ -666,6 +669,7 @@ ChatGPT 會在沒有照片的情況下先生一張陌生人的圖，白花一次
 一旦進了簡單模式就一直維持，不要聊兩句又跳回長篇說明。`;
 
 const LIMIT_REPLY = {
+  unavailable: '聊天服務暫時無法確認額度，請稍後再試。網站文章仍可正常閱讀。',
   minute: '（咪卡喘口氣）訊息有點太快了，休息一分鐘再聊好嗎？',
   'ip-day': '（咪卡揉揉眼睛）我們今天聊得好多，我的今日額度到了。文章都在架上隨你看，明天再來找我聊！',
   'site-day': '（咪卡掛出小牌子：今日客滿）今天來聊天的朋友太多，我的總額度用完了。先自己逛逛文章，明天再來找我！',
@@ -696,14 +700,34 @@ module.exports = async (req, res) => {
   if (!lastUser) { res.status(200).json({ reply: '想聊什麼呢？' }); return; }
 
   /* 以字計次：每 100 字算 1 次，無條件進位。
-     課程頁例外，一則就是一次（江江 2026-08-20）：現場鼓勵學員講得細，
+     課程頁且伺服器允許的教室 IP 才例外，一則就是一次（江江 2026-08-20）：現場鼓勵學員講得細，
      按字數計等於罰認真描述的人。 */
-  const onCoursePage = /^\/(en\/)?courses\//.test(String(body.page || ''));
+  // Only the Vercel-controlled header may grant classroom quota. Do not trust a
+  // client-supplied page path or fall back to arbitrary forwarding headers.
+  // https://vercel.com/docs/headers/request-headers#x-vercel-forwarded-for
+  const rawIP = String(req.headers['x-vercel-forwarded-for'] || '').split(',')[0].trim();
+  if (!isIP(rawIP)) {
+    console.error('mika_client_ip_unavailable');
+    res.status(503).json({ reply: LIMIT_REPLY.unavailable });
+    return;
+  }
+  const ip = rawIP;
+  const classroom = new BlockList();
+  for (const entry of String(process.env.MIKA_COURSE_IPS || '').split(',')) {
+    const [address, prefix] = entry.trim().split('/');
+    const version = isIP(address); if (!version) continue;
+    const family = version === 4 ? 'ipv4' : 'ipv6';
+    if (prefix === undefined) classroom.addAddress(address, family);
+    else if (/^\d+$/.test(prefix) && Number(prefix) >= (version === 4 ? 24 : 64) && Number(prefix) <= (version === 4 ? 32 : 128)) classroom.addSubnet(address, Number(prefix), family);
+  }
+  const coursePath = /^\/(en\/)?courses\//.test(String(body.page || ''));
+  const onCoursePage = coursePath && classroom.check(ip, isIP(ip) === 4 ? 'ipv4' : 'ipv6');
+  if (coursePath && !onCoursePage) console.error('mika_classroom_quota_not_granted');
   const units = onCoursePage ? 1 : Math.max(1, Math.ceil(lastUser.content.length / 100));
-  const ip = String(req.headers['x-forwarded-for'] || '').split(',')[0].trim() || 'na';
   const limited = await ratelimit(ip, units, onCoursePage);
   if (limited !== 'ok') {
-    res.status(429).json({ reply: LIMIT_REPLY[limited] });
+    if (limited === 'unavailable') console.error('mika_quota_unavailable');
+    res.status(limited === 'unavailable' ? 503 : 429).json({ reply: LIMIT_REPLY[limited] });
     return;
   }
 

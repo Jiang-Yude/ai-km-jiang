@@ -1,3 +1,4 @@
+const {clientNetwork}=require('../lib/2026-09-13-0910-client-network.js');
 // 站長儀表板資料源：/stats.html 密碼門後面那一整頁的資料，一次回傳。
 // 只讀不寫（除了驗證失敗的限流計數）。資料來源同 view.js 的 Upstash Redis。
 //
@@ -17,12 +18,18 @@
 // 回傳的 chat 逐筆內容含訪客的原始提問，屬敏感資料：
 //   本端點一律 Cache-Control: no-store，且不設 CORS 白名單以外的來源。
 
+const { isIP } = require('node:net');
+
 const URL = () => process.env.UPSTASH_REDIS_REST_URL || process.env.KV_REST_API_URL;
 const TOKEN = () => process.env.UPSTASH_REDIS_REST_TOKEN || process.env.KV_REST_API_TOKEN;
 
 function expectedPassword() {
   const b64 = process.env.STATS_PASSWORD_B64;
-  if (b64) { try { return Buffer.from(b64, 'base64').toString('utf8'); } catch { /* 壞掉就當沒設 */ } }
+  if (b64) { try {
+    const bytes = Buffer.from(b64, 'base64');
+    const decoded = bytes.toString('utf8');
+    return Buffer.from(decoded, 'utf8').equals(bytes) ? decoded : '';
+  } catch { return ''; } }
   return process.env.STATS_PASSWORD || '';
 }
 
@@ -41,10 +48,12 @@ async function pipe(commands) {
     method: 'POST',
     headers: { Authorization: `Bearer ${TOKEN()}`, 'Content-Type': 'application/json' },
     body: JSON.stringify(commands),
+    signal: AbortSignal.timeout(3000),
   });
   if (!r.ok) throw new Error(`upstash ${r.status}`);
   const j = await r.json();
-  return j.map((o) => (o && o.result != null ? o.result : null));
+  if (!Array.isArray(j) || j.length !== commands.length || j.some(o => !o || typeof o !== 'object' || Object.hasOwn(o, 'error') || !Object.hasOwn(o, 'result'))) throw new Error('invalid storage response');
+  return j.map(o => o.result);
 }
 
 function taipeiDay(d = new Date()) {
@@ -91,23 +100,24 @@ module.exports = async (req, res) => {
   body = body || {};
 
   const want = expectedPassword();
-  if (!want) { res.status(503).json({ error: 'password not configured' }); return; }
+  if (want.length < 16) { res.status(503).json({ error: 'strong admin password not configured' }); return; }
 
-  /* 限流：同一 IP 每 15 分鐘最多錯 5 次（Codex 跨家審查建議的強度）。
-     只算「錯的次數」，密碼對了不佔額度，所以自己重新整理不會被鎖在外面。
-     密碼只有四個字元，這道限流是它唯一的暴力破解防線，不要放寬。 */
-  const ip = String(req.headers['x-forwarded-for'] || '').split(',')[0].trim() || 'na';
-  const failKey = `stats:auth:${ip}:${Math.floor(Date.now() / 900000)}`;
+  // Atomic wrong-password budget: storage failure must never bypass authentication throttling.
+  // Vercel-controlled client IP; malformed/missing identity is unavailable, not a shared bucket.
+  const ip = String(req.headers['x-vercel-forwarded-for'] || '').split(',')[0].trim();
+  if (!isIP(ip)) { res.status(503).json({ error: 'authentication temporarily unavailable' }); return; }
+  const failKey = `stats:auth:${clientNetwork(ip)}:${Math.floor(Date.now() / 900000)}`;
+  const correct = safeEqual(body.pw, want);
+  const script = "local n = tonumber(redis.call('GET', KEYS[1]) or '0'); if n >= 5 then return 6 end; if ARGV[1] == '1' then return 0 end; n = redis.call('INCR', KEYS[1]); redis.call('EXPIRE', KEYS[1], 1800); return n";
   try {
-    const [n] = await pipe([['GET', failKey]]);
-    if (Number(n || 0) >= 5) { res.status(429).json({ error: 'too many attempts' }); return; }
-  } catch { /* 限流壞掉不擋正常使用 */ }
-
-  if (!safeEqual(body.pw, want)) {
-    try { await pipe([['INCR', failKey], ['EXPIRE', failKey, 1800]]); } catch { /* 忽略 */ }
-    res.status(403).json({ error: 'wrong password' });
-    return;
+    const [n] = await pipe([['EVAL', script, '1', failKey, correct ? '1' : '0']]);
+    if (!Number.isSafeInteger(n) || n < 0 || n > 6 || (correct ? (n !== 0 && n !== 6) : n === 0)) throw new Error('invalid auth counter');
+    if (n === 6) { res.status(429).json({ error: 'too many attempts' }); return; }
+  } catch {
+    console.error('stats_auth_limiter_unavailable');
+    res.status(503).json({ error: 'authentication temporarily unavailable' }); return;
   }
+  if (!correct) { console.error('stats_auth_wrong_password'); res.status(403).json({ error: 'wrong password' }); return; }
 
   const today = taipeiDay();
 
