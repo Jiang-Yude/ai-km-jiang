@@ -132,6 +132,7 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
 /* 開場連環追問（2026-09-13 江江：一開頭就要是脆文那種連環炮追問） */
 .barrage{background:var(--dark);color:#f3ead9;padding:72px clamp(20px,6vw,88px) 64px}
 .barrage .inner{max-width:900px;margin:0 auto}
+.barrage h2{color:#fff}.barrage p{color:#e8dcc6}
 .barrage .setup{font-size:clamp(18px,1.8vw,22px);line-height:1.6;color:#d9c9ae;margin:0 0 30px}
 .barrage ol{list-style:none;margin:0;padding:0}
 .barrage li{font-size:clamp(22px,3vw,34px);line-height:1.4;font-weight:700;padding:12px 0;border-bottom:1px solid rgba(243,234,217,.12)}
@@ -156,9 +157,6 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
 @media(max-width:820px){.infocard-grid{grid-template-columns:1fr}.duo{grid-template-columns:1fr}.workflow-grid{grid-template-columns:1fr}.cta-band .inner{grid-template-columns:1fr}.section{padding:40px 20px}.hero{min-height:52vh;flex-direction:column;justify-content:flex-start;align-items:flex-start;gap:24px}.hero>div{width:100%}.hero-figure{width:100%;max-width:560px}}
 @media(max-width:820px){html,body{overflow-x:hidden}.hero h1{word-break:break-word}}
 .hero-figure{width:320px}
-/* 本篇開場要讓連環追問第一屏就看得到：封面縮小、電腦版並排、手機版縮到 180px（2026-09-13） */
-@media(min-width:821px){.hero{flex-wrap:nowrap;gap:48px;padding-top:56px;padding-bottom:48px}.hero>div{flex:1 1 auto;width:auto}.hero-figure{width:260px}}
-@media(max-width:820px){.hero{min-height:0;padding-top:32px;padding-bottom:28px;gap:16px}.hero-figure{width:150px}.hero-figure figcaption{display:none}.barrage{padding-top:36px}}
 .hero-figure img{aspect-ratio:4/5;object-fit:cover}
 </style>
 </head>
@@ -192,6 +190,7 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
   <div>
     <div class="kicker">AI 應用 / 使用原則</div>
     <h1>AI 說「我確定」，它的回答我可以直接照做嗎？｜AI 追問技巧，一定要相信，AI 值得被懷疑</h1>
+    <p>客戶跟我說「我的 AI 說這樣沒問題」。我的提醒是，AI 講的每一句話都值得懷疑。但下一步不是把提示詞調到它不會出錯，那條路沒有終點。</p>
   </div>
   <figure class="hero-figure">
     <img src="../../images/articles/design-for-ai-errors-cover.jpg" alt="咪卡在桌上按著一份蓋了「我確定」印章的文件，皺著眉看它" loading="lazy">
@@ -201,54 +200,10 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
 
 <main>
 
-<section class="barrage" id="barrage">
-  <div class="inner">
-    <p class="setup">客戶說，他的 AI 說這樣沒問題。然後我這樣提醒他：</p>
-    <ol>
-      <li>你確定 AI 是正確的？</li>
-      <li>AI 要怎麼證明 AI 是正確的</li>
-      <li>AI 要怎麼證明 AI 的證明邏輯是正確的</li>
-      <li class="soft">建議讓兩間 AI 互審</li>
-      <li class="soft">若沒問題 就可以請 AI 執行了</li>
-      <li>你要怎麼確定你會按照計劃做？</li>
-      <li>如果做錯怎麼辦</li>
-      <li>怎麼修正？</li>
-      <li>怎麼確認修正就真的是修正</li>
-      <li>如果沒做錯，你怎麼確保自己是真的沒做錯，而不是沒發現做錯？</li>
-      <li>你怎麼確保你不會多做 或者少做</li>
-      <li>你怎麼確定 這真的是核心問題</li>
-      <li>會不會一開始我就搞錯問題 搞錯解方？</li>
-      <li>或者我沒有把我真正的需求描述好？</li>
-      <li>有沒有更深層的癥結我必須處理？</li>
-      <li class="soft">能不能用更高視野幫我觀察 幫我用第一性原理找出真正的問題 跟真正能從根本上解決問題的方法</li>
-      <li class="soft">可以突破我最初描述的情境與框架</li>
-      <li class="soft">可以點出我可能沒想到的盲點</li>
-    </ol>
-    <p class="punch">友善提醒：請務必相信，AI 每一句話都值得懷疑。</p>
-    <p class="next">這串是我那天真的傳給客戶的訊息，一字沒改。看起來是一口氣追問下去，其實有順序。往下一層一層拆。</p>
-  </div>
-</section>
-<script>
-(function(){
-  var box=document.getElementById('barrage');
-  if(!box||!('IntersectionObserver' in window))return;
-  var items=box.querySelectorAll('li,.punch');
-  box.classList.add('armed');
-  var io=new IntersectionObserver(function(es){
-    es.forEach(function(e){
-      if(!e.isIntersecting)return;
-      io.disconnect();
-      items.forEach(function(el,i){setTimeout(function(){el.classList.add('in');},i*110);});
-    });
-  },{threshold:.15});
-  io.observe(box);
-  setTimeout(function(){items.forEach(function(el){el.classList.add('in');});},6000);
-})();
-</script>
 <section class="section" id="start">
   <div class="inner">
     <h2>這篇在講什麼</h2>
-    <p class="lead">上面那串，是有客戶跟我說「我的 AI 說這樣沒問題」、準備照做的時候，我傳給他的。聽到這句，大部分人的下一個問題是「那我要怎麼讓它不要出錯」。這個方向走不到終點，因為大語言模型就是機率模型，會出錯、會有幻覺，這是它運作的方式。這篇講我改成做的另一件事：設計一套機制，讓它出錯的時候攔得下來，再附上我平常怎麼懷疑它的層層追問。</p>
+    <p class="lead">有客戶跟我說「我的 AI 說這樣沒問題」，然後就準備照做了。我給他的提醒是，AI 講的每一句話都值得懷疑。聽到這句，大部分人的下一個問題是「那我要怎麼讓它不要出錯」。這個方向走不到終點，因為大語言模型就是機率模型，會出錯、會有幻覺，這是它運作的方式。這篇講我改成做的另一件事：設計一套機制，讓它出錯的時候攔得下來，再附上我平常怎麼懷疑它的層層追問。</p>
 
     <div class="duo stack">
       <div class="card a">
@@ -270,20 +225,60 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
     </div>
 
     <figure class="inline-figure wide">
-      <img src="../../images/articles/design-for-ai-errors-summary.jpg" alt="一頁總結：層層追問四層的實際問句，一查結果問它要怎麼證明證明邏輯是正確的、二查審法建議讓兩間 AI 互審、三查執行問怎麼確保是真的沒做錯而不是沒發現做錯、四查問題問會不會一開始就搞錯問題搞錯解方" loading="lazy">
+      <img src="../../images/articles/design-for-ai-errors-summary.jpg" alt="一頁總結：層層追問四層的實際問句，一查結果問 AI 要怎麼證明 AI 的證明邏輯是正確的、二查審法建議讓兩間 AI 互審、三查執行問怎麼確保是真的沒做錯而不是沒發現做錯、四查問題問會不會一開始就搞錯問題搞錯解方" loading="lazy">
       <figcaption>整篇的一頁總結，四層各挑一句我真的問過的話。往下是查答案，往上是查問題。</figcaption>
     </figure>
   </div>
 </section>
-
-<section class="section" id="the-line">
+<section class="section barrage" id="the-line">
   <div class="inner">
     <h2>客戶說：我的 AI 說這樣沒問題</h2>
     <p>這句話我最近聽到很多次。有人拿 AI 給的做法來問我可不可行，我說這裡有風險，他的回應是「可是我的 AI 說這樣沒問題」。</p>
-    <p>我給的提醒只有一句：AI 講的每一句話都值得懷疑。</p>
-    <p>這句話不是要你不用它。我自己一天到晚在用，這個網站、我的知識庫、我的自動化流程，大部分都是 AI 幫我做的。會懷疑，跟敢交給它做，這兩件事我同時在做。</p>
+    <p class="setup">然後我這樣提醒他：</p>
+    <ol>
+      <li>你確定 AI 是正確的？</li>
+      <li>AI 要怎麼證明 AI 是正確的</li>
+      <li>AI 要怎麼證明 AI 的證明邏輯是正確的</li>
+      <li class="soft">建議讓兩間 AI 互審</li>
+      <li class="soft">若沒問題 就可以請 AI 執行了</li>
+      <li>你要怎麼確定你會按照計劃做？</li>
+      <li>如果做錯怎麼辦</li>
+      <li>怎麼修正？</li>
+      <li>怎麼確認修正就真的是修正</li>
+      <li>如果沒做錯，你怎麼確保自己是真的沒做錯，而不是沒發現做錯？</li>
+      <li>你怎麼確保你不會多做 或者少做</li>
+      <li>你怎麼確定 這真的是核心問題</li>
+      <li>會不會一開始我就搞錯問題 搞錯解方？</li>
+      <li>或者我沒有把我真正的需求描述好？</li>
+      <li>有沒有更深層的癥結我必須處理？</li>
+      <li class="soft">能不能用更高視野幫我觀察 幫我用第一性原理找出真正的問題 跟真正能從根本上解決問題的方法</li>
+      <li class="soft">可以突破我最初描述的情境與框架</li>
+      <li class="soft">可以點出我可能沒想到的盲點</li>
+    </ol>
+    <p class="punch">友善提醒：請務必相信，AI 每一句話都值得懷疑。</p>
+    <p class="next">這句話不是要你不用它。我自己一天到晚在用，這個網站、我的知識庫、我的自動化流程，大部分都是 AI 幫我做的。會懷疑，跟敢交給它做，這兩件事我同時在做。</p>
+    <p class="next">這串是我那天真的傳給客戶的訊息。看起來是一口氣追問下去，其實有順序，往下一層一層拆。</p>
   </div>
 </section>
+<script>
+(function(){
+  var box=document.getElementById('the-line');
+  if(!box||!('IntersectionObserver' in window))return;
+  var items=box.querySelectorAll('li,.punch');
+  box.classList.add('armed');
+  var io=new IntersectionObserver(function(es){
+    es.forEach(function(e){
+      if(!e.isIntersecting)return;
+      io.disconnect();
+      items.forEach(function(el,i){setTimeout(function(){el.classList.add('in');},i*110);});
+    });
+  },{threshold:.15});
+  io.observe(box);
+  setTimeout(function(){items.forEach(function(el){el.classList.add('in');});},6000);
+})();
+</script>
+
+
 
 <section class="section" id="wrong-direction">
   <div class="inner">
