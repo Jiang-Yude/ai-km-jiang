@@ -296,6 +296,13 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
 <p>這套機制是 9 月 12 日晚上做完的。我是 9 月 13 日凌晨，自己再去驗一次的時候，才發現用量紀錄裡混進了五筆測試資料。我每跑一次測試，就會灌進十筆「必然命中」的假紀錄，兩個星期後我要拿那份數據算「漏掉多少」的時候，數字會是假的。</p>
 <p><strong>做完不等於做對。</strong> 這是第四次驗收才抓到的東西。</p>
 <div class="readmore near"><b>延伸閱讀</b><ul><li><a href="../how-to-verify-ai-rule-changes/">改完規則，怎麼知道 AI 到底有沒有變乖？｜改完當下看不出來的東西，要當病人觀察不能當程式碼驗</a><br>這一段說機器驗得了總量、驗不了品質。那篇處理的正是剩下那半：規則改完之後，靠自覺的那部分要怎麼驗。</li></ul></div></div></section>
+<section class="section" id="openai"><div class="inner"><h2>OpenAI 說規則檔可以為新模型升級，改之前先看你主力跑哪個模型</h2>
+<p>就在我做完這次瘦身的同一週，OpenAI 發了一篇文章：<a href="https://developers.openai.com/blog/rethinking-skills-and-prompts-for-gpt-6-astra" target="_blank" rel="noopener">Rethinking skills and prompts for GPT-6 Astra ↗</a>，提醒大家很多人的 <code>AGENTS.md</code> 跟技能包都可以升級了。GPT-6 Astra 是 OpenAI 這次推出的新模型。</p>
+<p>它提的幾個重點，跟這篇前面講的事情對得上：</p>
+<ul><li>技能包的描述太長、裝太多，Codex 會自動把描述縮短，模型看到的變少，反而更難選對。我在前面貼的那行 Codex 警告，就是這件事。</li><li>技能包的主檔寫成路標就好，細節放在分頁，用到才讀。</li><li>不要寫「每次動手前都先讀這幾份文件」，改成「做哪件事的時候讀哪一份」。</li><li>以前因為舊模型沒經過同意就代你做事，而寫得很硬的邊界，換成 Astra 之後可能要放軟，不然它會停在你其實希望它繼續做的地方。</li></ul>
+<p>我覺得概念很好。但務實來看，我是 100 的訂閱額度，其實不太可能全部都用 Astra 去跑，我的主力還是 Sol（GPT-5.6 Sol）。這篇文章裡的三輪跨家審，也都是用 Sol 跑的。</p>
+<p>所以這件事要斟酌。那篇是在提醒大家可以針對 Astra 優化，其實每個模型都可以優化，但不是每個人都可以一直跑。<strong>大家不要無腦去改，還是要先評估自己實際的工作環境跟狀況。</strong></p>
+<p>OpenAI 那篇自己也提到一點：放在專案裡的規則，也會被其他人的 AI 讀到，那些 AI 用的不一定是同一個模型，對 Sol 有幫助的寫法，可能會把 Astra 綁得太緊。而我的規則檔，本來就同時給 Claude、Codex、Gemini 三家讀。</p></div></section>
 <section class="section" id="s"><div class="inner"><h2>今天就能開始：找出你手上維護兩次的那份資料</h2>
 <p>如果你手邊有一份越長越長的文件（給 AI 的規則、團隊的守則、客戶的 SOP），三個步驟：</p>
 <p><strong>第一步，量一下各段字數，不要憑印象。</strong></p>
