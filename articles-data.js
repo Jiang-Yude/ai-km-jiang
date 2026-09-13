@@ -41,6 +41,24 @@ window.ARTICLES = [
   },
 
   {
+    id: "ai-rule-file-slimming",
+    url: "articles/ai-rule-file-slimming/",
+    date: "2026-09-13",
+    updated: "2026-09-13",
+    title: "AI 規則檔裝了攔截器，52 天一條都沒擋下來｜AGENTS.md 優化，36,000 字的主檔瘦回 26,000",
+    problem: "給 AI 的規則檔精簡過又復胖，而且已經裝了提醒型的攔截還是沒擋住，不知道問題出在哪。",
+    audience: "寫了一大份規則給 AI 卻一直重複同樣錯誤的人、規則檔越來越長知道該砍但不知砍哪裡的人、幫團隊或客戶寫過工作規範但沒人照做的人。",
+    summary: "2026-07-22 裝的提示型准入閘，52 天後規則主檔從 24,451 字漲到 35,960，增加 47%，一次都沒擋下來。追下去發現字多只是症狀：路由段佔六成，而 108 個技能包的 description 早就寫好了同一份路由資訊，作者又另外手寫一張 6,506 字的表格塞在常駐檔裡，同一件事維護兩次。修法四件：展開條文逐字併回 14 個既有正本、手寫表格換成自動生成的機讀索引、加一支只注入路標不注入內容的情境路由 hook、准入閘從提醒升級成字數預算硬攔（上限設成現況零餘裕，想加就得先搬走等量）。結果 35,960 瘦回 25,969。跨家審三輪，前兩輪都退回：第一輪指出新建檔案會製造第三份真相，第二輪指出程式寫好了卻沒註冊進設定檔。文章另附字數閘門判斷式、路由索引生成邏輯與測試設計，並誠實標出關鍵字路由一定會漏、沒命中就靜默是最危險的設計。",
+    tags: {
+      topic: ["AI工作流", "知識庫", "工作流程"],
+      level: ["進階"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["rule-file-rebound", "how-to-verify-ai-rule-changes", "three-levels-of-cross-review", "let-ai-review-itself", "tag-wiki-method"]
+  },
+
+  {
     id: "design-for-ai-errors",
     url: "articles/design-for-ai-errors/",
     date: "2026-09-12",
@@ -163,7 +181,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["rule-file-rebound", "caught-ai-slacking-into-rules", "three-levels-of-cross-review", "how-to-train-your-ai-employee", "loop-engineering-guardrails", "semantic-rules-before-prompt-templates", "let-ai-review-itself"]
+    related: ["rule-file-rebound", "caught-ai-slacking-into-rules", "three-levels-of-cross-review", "how-to-train-your-ai-employee", "loop-engineering-guardrails", "semantic-rules-before-prompt-templates", "let-ai-review-itself", "ai-rule-file-slimming"]
   },
 
   {
@@ -181,7 +199,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["rule-file-rebound", "three-levels-of-cross-review", "dual-track-planning-loop", "how-to-verify-ai-rule-changes", "decision-ladder-non-programmer"]
+    related: ["rule-file-rebound", "three-levels-of-cross-review", "dual-track-planning-loop", "how-to-verify-ai-rule-changes", "decision-ladder-non-programmer", "ai-rule-file-slimming"]
   },
 
   {
@@ -914,7 +932,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["after-ai-says-remembered", "long-document-review-layers", "mobile-to-desktop-publish-loop", "ai-said-it-watched-the-video", "cross-ai-review-both-wrong", "webmcp-day-one", "how-to-verify-ai-rule-changes", "let-ai-review-itself"]
+    related: ["after-ai-says-remembered", "long-document-review-layers", "mobile-to-desktop-publish-loop", "ai-said-it-watched-the-video", "cross-ai-review-both-wrong", "webmcp-day-one", "how-to-verify-ai-rule-changes", "let-ai-review-itself", "ai-rule-file-slimming"]
   },
 
   {
@@ -1238,7 +1256,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["ai-handoff-instructions", "what-is-loop-engineering", "why-split-data-into-cards", "build-your-own-dictionary", "start-with-a-wrong-draft", "how-to-verify-ai-rule-changes", "let-ai-review-itself"]
+    related: ["ai-handoff-instructions", "what-is-loop-engineering", "why-split-data-into-cards", "build-your-own-dictionary", "start-with-a-wrong-draft", "how-to-verify-ai-rule-changes", "let-ai-review-itself", "ai-rule-file-slimming"]
   },
 
   {
@@ -1725,7 +1743,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["llm-rag-agent-mcp", "questionnaire-to-slides-agent-workflow", "teacher-prep-knowledge-workflow", "knowledge-base-three-vault-split", "docs-as-system-design-agent", "ai-loop-safety-recovery", "inspiration-production-system", "why-split-data-into-cards", "knowledge-os-master-map", "build-your-own-dictionary", "rag-three-retrieval-modes"]
+    related: ["llm-rag-agent-mcp", "questionnaire-to-slides-agent-workflow", "teacher-prep-knowledge-workflow", "knowledge-base-three-vault-split", "docs-as-system-design-agent", "ai-loop-safety-recovery", "inspiration-production-system", "why-split-data-into-cards", "knowledge-os-master-map", "build-your-own-dictionary", "rag-three-retrieval-modes", "ai-rule-file-slimming"]
   },
 
   {
