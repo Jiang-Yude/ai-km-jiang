@@ -77,7 +77,9 @@ window.COURSES = [
     summary: "六堂線上系列課，9/20 起每週日 19:30 開課，每堂兩小時，11/1 結業（10/11 國慶連假休息一週）。從技能包、迴圈工程，到 API／MCP／CLI 的差別，再到 Agent 找得到資料、找得到對的資料，最後用一個真實的產品開發過程走完一圈。每堂重點放在判斷不是操作，示範佔一半以上時間。報名含專屬 LINE 群組，課前課後有思維顧問協助引導。六堂 3,000 元，報名皆有回放。9/13（日）另有免費第零堂。",
     detail_url: "courses/2026-09-ai-series/",
     detail_label: "完整課程內容與報名 ↗",
-    materials: [],
+    materials: [
+      { label: "第零堂上課簡報（9/13）", url: "https://jiangyude.com/courses/2026-09-ai-series/lesson-0/" }
+    ],
     registration: {
       status: "open",
       url: "https://portaly.cc/Jiang_Yude/product/cX2tx7cTT9ODxU7x8jPl",

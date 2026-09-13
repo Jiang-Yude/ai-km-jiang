@@ -1,0 +1,643 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>第零堂上課簡報：網頁版 AI 跟 Agent，同一件事差在哪｜AI 到底能用到什麼程度｜江江教練</title>
+<meta name="description" content="六堂系列課第零堂（2026-09-13 免費場）上課簡報：用生輪播卡、發脆文、讓三十個人同時生圖三個示範，看網頁版 AI 跟 Agent 差在哪，外加一句話的判準。">
+<link rel="canonical" href="https://jiangyude.com/courses/2026-09-ai-series/lesson-0/">
+<style>
+  :root {
+    --bg-1: #F5EDE7; --bg-2: #EFEBE9; --bg-3: #E8DED9; --bg-4: #D7CCC8;
+    --bg-5: #C9BAB1; --bg-6: #B5A199; --bg-7: #8B6F5C; --bg-8: #5D4037; --bg-9: #3E2723;
+    --text-on-light:#4E342E; --text-on-mid:#F5EDE0; --text-on-dark:#F5EDE0;
+    --text-soft-light:#5D4037; --text-soft-dark: rgba(245,237,224,0.80);
+    --accent:#D88C3A; --accent-light:#D4A574; --accent-on-dark:#E6B87D;
+    --subtle-light:#BCAAA4; --subtle-dark: rgba(245,237,224,0.18);
+    --font-display: "PingFang TC","Noto Sans TC","Inter","Helvetica Neue",system-ui,sans-serif;
+    --font-body:    "PingFang TC","Noto Sans TC","Inter",system-ui,sans-serif;
+    --font-mono:    "JetBrains Mono","SF Mono",ui-monospace,monospace;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin:0; font-family:var(--font-body); background:var(--bg-1); -webkit-font-smoothing:antialiased; }
+
+  section {
+    position: relative; min-height: 100vh;
+    display: flex; flex-direction: column;
+    padding: 96px 56px; isolation: isolate;
+    border-radius: 32px 32px 0 0; box-shadow: 0 -24px 60px -20px rgba(40, 24, 16, 0.18);
+  }
+  section:first-of-type { border-radius: 0; box-shadow: none; }
+  section[data-bg="1"] { background: var(--bg-1); z-index: 1; color: var(--text-on-light); }
+  section[data-bg="2"] { background: var(--bg-2); z-index: 2; color: var(--text-on-light); }
+  section[data-bg="3"] { background: var(--bg-3); z-index: 3; color: var(--text-on-light); }
+  section[data-bg="4"] { background: var(--bg-4); z-index: 4; color: var(--text-on-light); }
+  section[data-bg="5"] { background: var(--bg-5); z-index: 5; color: var(--text-on-light); }section[data-bg="6"] { background: var(--bg-6); z-index: 6; color: var(--text-on-light); }
+  section[data-bg="7"] { background: var(--bg-7); z-index: 7; color: var(--text-on-dark); }
+  section[data-bg="8"] { background: var(--bg-8); z-index: 8; color: var(--text-on-dark); }
+  section[data-bg="9"] { background: var(--bg-9); z-index: 9; color: var(--text-on-dark); }
+  section[data-bg="6L"] { background: var(--bg-6); z-index: 6; color: var(--text-on-light); }
+
+  .act-cap { font-family:var(--font-mono); font-size:13px; letter-spacing:0.22em; text-transform:uppercase;
+    font-weight:700; color:var(--accent); margin-bottom:28px; display:inline-flex; align-items:center; gap:12px; }
+  .act-cap::before { content:""; width:28px; height:1px; background:var(--accent); }section[data-bg="7"] .act-cap, section[data-bg="8"] .act-cap, section[data-bg="9"] .act-cap { color: var(--accent-on-dark); }section[data-bg="7"] .act-cap::before, section[data-bg="8"] .act-cap::before, section[data-bg="9"] .act-cap::before { background: var(--accent-on-dark); }
+
+  .display { font-family:var(--font-display); font-size:clamp(48px,8vw,112px); line-height:1.0; font-weight:800; letter-spacing:-0.03em; margin:0 0 24px; }
+  .display.sm { font-size:clamp(34px,5vw,68px); }
+  .h1 { font-family:var(--font-display); font-size:clamp(26px,3.4vw,40px); line-height:1.25; font-weight:700; margin:0 0 20px; }
+  .h2 { font-size:21px; line-height:1.3; font-weight:600; margin:0 0 8px; }
+  .lead { font-size:clamp(19px,1.7vw,23px); line-height:1.7; color:var(--text-soft-light); max-width:800px; margin:0 auto; }section[data-bg="7"] .lead, section[data-bg="8"] .lead, section[data-bg="9"] .lead { color: var(--text-soft-dark); }
+  .body { font-size:18px; line-height:1.7; color:var(--text-soft-light); }section[data-bg="7"] .body, section[data-bg="8"] .body, section[data-bg="9"] .body { color: var(--text-soft-dark); }
+  .mono-note { font-family:var(--font-mono); font-size:14px; letter-spacing:0.12em; color:var(--accent); margin-top:40px; }section[data-bg="7"] .mono-note, section[data-bg="8"] .mono-note, section[data-bg="9"] .mono-note { color: var(--accent-on-dark); }
+
+  .wrap { width:100%; max-width:1080px; text-align:center; margin:auto; }
+  .wrap.left { text-align:left; }
+
+  .dot-indicator { position:fixed; right:28px; top:50%; transform:translateY(-50%); display:flex; flex-direction:column; gap:14px; z-index:100; }
+  .dot-indicator a { width:10px; height:10px; border-radius:50%; background:rgba(78,52,46,0.22); transition:all .35s cubic-bezier(.22,1,.36,1); position:relative; }
+  .dot-indicator a:hover { background:rgba(78,52,46,0.5); }
+  .dot-indicator a.active { background:var(--accent); transform:scale(1.5); box-shadow:0 0 0 4px rgba(216,140,58,0.18); }
+  .dot-indicator a .lbl { position:absolute; right:22px; top:50%; transform:translateY(-50%); font-family:var(--font-mono); font-size:11px; letter-spacing:.15em; color:var(--text-soft-light); white-space:nowrap; opacity:0; transition:opacity .25s; pointer-events:none; }
+  .dot-indicator a:hover .lbl { opacity:1; }
+  .dot-indicator.scrolling a.active .lbl { opacity:1; }
+  body.on-dark .dot-indicator a { background:rgba(245,237,224,0.25); }
+  body.on-dark .dot-indicator a.active { background:var(--accent-on-dark); box-shadow:0 0 0 4px rgba(230,184,125,0.22); }
+  body.on-dark .dot-indicator a .lbl { color:var(--text-soft-dark); }
+
+  .progress { position:fixed; top:0; left:0; height:3px; width:0%; background:linear-gradient(90deg,var(--accent),var(--accent-light)); z-index:200; transition:width .15s linear; }
+
+  .font-ctl { position:fixed; left:20px; bottom:20px; z-index:150; display:flex; gap:6px; }
+  .font-ctl button { font-family:var(--font-mono); font-size:13px; font-weight:700; width:40px; height:34px;
+    border:1px solid var(--subtle-light); background:rgba(255,248,240,0.85); color:var(--text-on-light);
+    border-radius:8px; cursor:pointer; }
+  .font-ctl button:hover { border-color:var(--accent); color:var(--accent); }
+
+  .grid-3 { display:grid; grid-template-columns:repeat(3,1fr); gap:24px; margin-top:44px; }
+  .grid-2 { display:grid; grid-template-columns:repeat(2,1fr); gap:24px; margin-top:36px; }
+  .card { background:rgba(255,248,240,0.5); border:1px solid var(--subtle-light); border-radius:16px; padding:28px 26px; text-align:left; transition:transform .3s,box-shadow .3s; backdrop-filter:blur(8px); }
+  .card:hover { transform:translateY(-4px); box-shadow:0 12px 32px rgba(78,52,46,0.1); }
+  .card .num { font-family:var(--font-mono); font-size:14px; letter-spacing:0.18em; color:var(--accent); font-weight:700; margin-bottom:12px; }section[data-bg="7"] .card, section[data-bg="8"] .card, section[data-bg="9"] .card { background:rgba(255,248,240,0.06); border-color:var(--subtle-dark); }section[data-bg="7"] .card .num, section[data-bg="8"] .card .num, section[data-bg="9"] .card .num { color:var(--accent-on-dark); }
+
+  .quote { font-family:var(--font-display); font-size:clamp(26px,3.4vw,42px); line-height:1.5; font-weight:600; max-width:880px; margin:0 auto; letter-spacing:-0.01em; }
+  .quote::before { content:"「"; color:var(--accent); margin-right:4px; }
+  .quote::after { content:"」"; color:var(--accent); margin-left:4px; }section[data-bg="7"] .quote::before, section[data-bg="7"] .quote::after, section[data-bg="8"] .quote::before, section[data-bg="8"] .quote::after, section[data-bg="9"] .quote::before, section[data-bg="9"] .quote::after { color:var(--accent-on-dark); }
+
+  .timeline { display:grid; grid-template-columns:repeat(4,1fr); gap:0; margin-top:52px; position:relative; }
+  .timeline.cols-5 { grid-template-columns:repeat(5,1fr); }
+  .timeline::before { content:""; position:absolute; top:18px; left:8%; right:8%; height:1px; background:repeating-linear-gradient(90deg,var(--subtle-light) 0,var(--subtle-light) 6px,transparent 6px,transparent 12px); }section[data-bg="7"] .timeline::before, section[data-bg="8"] .timeline::before, section[data-bg="9"] .timeline::before { background:repeating-linear-gradient(90deg,var(--subtle-dark) 0,var(--subtle-dark) 6px,transparent 6px,transparent 12px); }
+  .step { text-align:center; position:relative; padding:56px 12px 0; }
+  .step .dot { position:absolute; top:0; left:50%; transform:translateX(-50%); width:36px; height:36px; background:var(--accent); color:#fff; border-radius:50%; font-family:var(--font-mono); font-weight:700; font-size:14px; display:grid; place-items:center; box-shadow:0 0 0 6px rgba(216,140,58,0.18); }section[data-bg="7"] .step .dot, section[data-bg="8"] .step .dot, section[data-bg="9"] .step .dot { background:var(--accent-on-dark); color:var(--bg-9); box-shadow:0 0 0 6px rgba(230,184,125,0.22); }
+
+  .trybox { margin-top:18px; border-left:4px solid var(--accent); border-radius:0 12px 12px 0; padding:14px 20px; text-align:left; background:rgba(216,140,58,0.08); font-size:18px; line-height:1.7; color:var(--text-soft-light); }
+  .trybox b { color:var(--text-on-light); }
+  .trybox a { color:var(--accent); font-weight:700; }section[data-bg="7"] .trybox, section[data-bg="8"] .trybox, section[data-bg="9"] .trybox { background:rgba(230,184,125,0.10); border-left-color:var(--accent-on-dark); color:var(--text-soft-dark); }section[data-bg="7"] .trybox b, section[data-bg="8"] .trybox b, section[data-bg="9"] .trybox b { color:var(--text-on-dark); }section[data-bg="7"] .trybox a, section[data-bg="8"] .trybox a, section[data-bg="9"] .trybox a { color:var(--accent-on-dark); }
+
+  .demo { margin-top:40px; border:2px dashed var(--accent); border-radius:16px; padding:24px 28px; text-align:left; background:rgba(216,140,58,0.06); }
+  .demo .dm-label { font-family:var(--font-mono); font-size:13px; letter-spacing:0.2em; font-weight:700; color:var(--accent); margin-bottom:10px; }
+  .demo p { margin:6px 0; font-size:18px; line-height:1.7; }section[data-bg="7"] .demo, section[data-bg="8"] .demo, section[data-bg="9"] .demo { background:rgba(230,184,125,0.08); border-color:var(--accent-on-dark); }section[data-bg="7"] .demo .dm-label, section[data-bg="8"] .demo .dm-label, section[data-bg="9"] .demo .dm-label { color:var(--accent-on-dark); }
+
+  details { margin-top:20px; text-align:left; background:rgba(255,248,240,0.45); border:1px solid var(--subtle-light); border-radius:12px; padding:14px 20px; }
+  details summary { cursor:pointer; font-weight:700; font-size:18px; color:var(--text-on-light); }
+  details p, details li { font-size:18px; line-height:1.75; color:var(--text-soft-light); }section[data-bg="7"] details, section[data-bg="8"] details, section[data-bg="9"] details { background:rgba(255,248,240,0.06); border-color:var(--subtle-dark); }section[data-bg="7"] details summary, section[data-bg="8"] details summary, section[data-bg="9"] details summary { color:var(--text-on-dark); }section[data-bg="7"] details p, section[data-bg="7"] details li, section[data-bg="8"] details p, section[data-bg="8"] details li, section[data-bg="9"] details p, section[data-bg="9"] details li { color:var(--text-soft-dark); }
+
+  .footer-grid { display:grid; grid-template-columns:2fr 1fr 1fr; gap:56px; text-align:left; margin-top:56px; max-width:1080px; width:100%; }
+  .footer-grid h3 { font-size:13px; letter-spacing:0.2em; text-transform:uppercase; color:var(--accent-on-dark); margin:0 0 16px; font-family:var(--font-mono); }
+  .footer-grid ul { list-style:none; padding:0; margin:0; }
+  .footer-grid li { padding:6px 0; font-size:16px; color:var(--text-soft-dark); }
+  .footer-bottom { margin-top:64px; padding-top:24px; border-top:1px solid var(--subtle-dark); width:100%; max-width:1080px; font-family:var(--font-mono); font-size:13px; letter-spacing:0.15em; color:rgba(245,237,224,0.6); text-align:center; }
+
+  .reveal { opacity:1; transform:translateY(0) scale(1); }
+  .js-on .reveal:not(.in) { opacity:0; transform:translateY(36px) scale(0.96); }
+  .reveal { transition:opacity .8s cubic-bezier(.22,1,.36,1),transform .8s cubic-bezier(.22,1,.36,1); }
+  .reveal.d1 { transition-delay:.08s; } .reveal.d2 { transition-delay:.16s; } .reveal.d3 { transition-delay:.24s; } .reveal.d4 { transition-delay:.32s; }
+
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior:auto; } .reveal { opacity:1 !important; transform:none !important; } }
+  @media (max-width: 720px) {
+    section { padding:80px 24px; border-radius:24px 24px 0 0; }
+    .grid-3,.grid-2,.timeline,.timeline.cols-5 { grid-template-columns:1fr; gap:18px; }
+    .timeline::before { display:none; }
+    .footer-grid { grid-template-columns:1fr; gap:32px; }
+    .dot-indicator { display:none; }
+  }
+
+  .tbl { width:100%; border-collapse:collapse; margin-top:32px; text-align:left; font-size:18px; }
+  .tbl th, .tbl td { padding:14px 16px; border-bottom:1px solid var(--subtle-light); vertical-align:top; line-height:1.65; }
+  .tbl th { font-size:14px; letter-spacing:.12em; text-transform:uppercase; font-family:var(--font-mono); color:var(--accent); font-weight:700; }
+  .tbl td b { color:var(--text-on-light); }
+  section[data-bg="7"] .tbl th, section[data-bg="8"] .tbl th, section[data-bg="9"] .tbl th { color:var(--accent-on-dark); }
+  section[data-bg="7"] .tbl td, section[data-bg="8"] .tbl td, section[data-bg="9"] .tbl td { color:var(--text-soft-dark); border-bottom-color:var(--subtle-dark); }
+  section[data-bg="7"] .tbl td b, section[data-bg="8"] .tbl td b, section[data-bg="9"] .tbl td b { color:var(--text-on-dark); }
+  .tbl td { color:var(--text-soft-light); }
+  .kbd { font-family:var(--font-mono); font-size:12px; letter-spacing:.08em; border:1px solid var(--subtle-light); border-radius:6px; padding:2px 7px; }
+  .note { font-size:18px; line-height:1.7; color:var(--text-soft-light); margin-top:14px; }
+  section[data-bg="7"] .note, section[data-bg="8"] .note, section[data-bg="9"] .note { color:var(--text-soft-dark); }
+  .tag { display:inline-block; font-family:var(--font-mono); font-size:12px; letter-spacing:.14em; padding:4px 10px; border-radius:999px; border:1px solid var(--accent); color:var(--accent); margin:0 6px 6px 0; }
+  section[data-bg="7"] .tag, section[data-bg="8"] .tag, section[data-bg="9"] .tag { border-color:var(--accent-on-dark); color:var(--accent-on-dark); }
+  .time-badge { font-family:var(--font-mono); font-size:13px; letter-spacing:.12em; color:var(--accent); font-weight:700; margin-left:12px; }
+  section[data-bg="7"] .time-badge, section[data-bg="8"] .time-badge, section[data-bg="9"] .time-badge { color:var(--accent-on-dark); }
+  @media (max-width: 720px) { .tbl, .tbl tbody, .tbl tr, .tbl td, .tbl th { display:block; width:100%; } .tbl th { border:0; padding-bottom:4px; } }
+
+  .ui-ctl { position:fixed; left:20px; bottom:62px; z-index:150; display:flex; gap:6px; }
+  .ui-ctl button { font-family:var(--font-mono); font-size:12px; font-weight:700; height:34px; padding:0 12px;
+    border:1px solid var(--subtle-light); background:rgba(255,248,240,0.85); color:var(--text-on-light);
+    border-radius:8px; cursor:pointer; letter-spacing:.08em; }
+  .ui-ctl button:hover { border-color:var(--accent); color:var(--accent); }
+  body.deck details { display:none; }
+  body.deck section { justify-content:center; }
+  .hint { position:fixed; right:28px; bottom:20px; z-index:150; font-family:var(--font-mono); font-size:11px;
+    letter-spacing:.1em; color:var(--text-soft-light); opacity:.55; }
+  body.on-dark .hint { color:var(--text-soft-dark); }
+  @media (max-width: 720px) { .ui-ctl, .hint { display:none; } }
+
+  nav.top{position:sticky;top:0;background:rgba(254,252,248,.94);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid #e8dfc9;z-index:180}
+  nav.top .container{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:24px;padding:12px 32px}
+  .nav-brand-img{justify-self:start;display:flex;align-items:center;text-decoration:none}
+  .nav-brand-img img{height:38px;width:auto;display:block}
+  nav.top ul.nav-menu{justify-self:end;display:flex;gap:22px;list-style:none;margin:0;padding:0;font-size:17px;white-space:nowrap}
+  nav.top ul.nav-menu a{color:#3a342d;text-decoration:none;font-weight:500}
+  nav.top ul.nav-menu a:hover{color:#1a1612} nav.top ul.nav-menu a.active{color:#1a1612;font-weight:700}
+  .nav-toggle{display:none;background:none;border:none;padding:6px;cursor:pointer;width:36px;height:36px;position:relative}
+  .nav-toggle span{display:block;position:absolute;left:8px;right:8px;height:2px;background:#1a1612;border-radius:2px}
+  .nav-toggle span:nth-child(1){top:11px}.nav-toggle span:nth-child(2){top:17px}.nav-toggle span:nth-child(3){top:23px}
+  body.deck nav.top{display:none}
+  body.deck #mkw-root{display:none!important}
+  .wrap a{color:var(--accent);font-weight:700}
+  section[data-bg="7"] .wrap a, section[data-bg="8"] .wrap a, section[data-bg="9"] .wrap a{color:var(--accent-on-dark)}
+  .back-link{display:inline-block;margin-top:28px;font-size:18px}
+  @media (max-width:860px){
+    nav.top .container{grid-template-columns:auto 1fr auto;padding:10px 16px;gap:12px}
+    .nav-brand-img img{height:30px}
+    .nav-toggle{display:block;justify-self:end}
+    nav.top ul.nav-menu{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(254,252,248,.98);flex-direction:column;gap:0;padding:8px 0}
+    nav.top ul.nav-menu.open{display:flex}
+    nav.top ul.nav-menu li a{display:block;padding:12px 20px}
+  }
+</style>
+</head>
+<body>
+<nav class="top">
+  <div class="container">
+    <a class="nav-brand-img" href="https://jiangyude.com/"><img src="https://jiangyude.com/images/footer-signature.png" alt="江江教練 | 江昱德"></a>
+    <button class="nav-toggle" aria-label="選單"><span></span><span></span><span></span></button>
+    <ul class="nav-menu">
+      <li><a href="../../../index.html">首頁</a></li>
+      <li><a href="../../../knowledge-architecture.html">知識架構</a></li>
+      <li><a href="../../../courses.html" class="active">課程</a></li>
+      <li><a href="../../../articles.html">深度文章</a></li>
+      <li><a href="../../../skills.html">技能包下載</a></li>
+      <li><a href="../../../offers.html">服務方案</a></li>
+      <li class="lang-switch"><a href="../../../en/courses.html" hreflang="en">EN</a></li>
+    </ul>
+  </div>
+</nav>
+<div class="progress" id="progress"></div>
+<nav class="dot-indicator" aria-label="章節導覽">
+    <a href="#s1" aria-label="封面"><span class="lbl">01 · 封面</span></a>
+    <a href="#s2" aria-label="誰在這裡"><span class="lbl">02 · 誰在這裡</span></a>
+    <a href="#s3" aria-label="今晚三件事"><span class="lbl">03 · 今晚三件事</span></a>
+    <a href="#s4" aria-label="示範一 輪播卡"><span class="lbl">04 · 示範一 輪播卡</span></a>
+    <a href="#s5" aria-label="畫完之後"><span class="lbl">05 · 畫完之後</span></a>
+    <a href="#s6" aria-label="示範二 誰發出去"><span class="lbl">06 · 示範二 誰發出去</span></a>
+    <a href="#s7" aria-label="API 的限制"><span class="lbl">07 · API 的限制</span></a>
+    <a href="#s8" aria-label="自己蓋一條路"><span class="lbl">08 · 自己蓋一條路</span></a>
+    <a href="#s9" aria-label="發文五階段"><span class="lbl">09 · 發文五階段</span></a>
+    <a href="#s10" aria-label="發完之後"><span class="lbl">10 · 發完之後</span></a>
+    <a href="#s11" aria-label="示範三 沒差"><span class="lbl">11 · 示範三 沒差</span></a>
+    <a href="#s12" aria-label="三十個人"><span class="lbl">12 · 三十個人</span></a>
+    <a href="#s13" aria-label="做一個生圖頁"><span class="lbl">13 · 做一個生圖頁</span></a>
+    <a href="#s14" aria-label="收集作品"><span class="lbl">14 · 收集作品</span></a>
+    <a href="#s15" aria-label="我全部都不會"><span class="lbl">15 · 我全部都不會</span></a>
+    <a href="#s16" aria-label="判準"><span class="lbl">16 · 判準</span></a>
+    <a href="#s17" aria-label="它說完成"><span class="lbl">17 · 它說完成</span></a>
+    <a href="#s17b" aria-label="延伸閱讀"><span class="lbl">18 · 延伸閱讀</span></a>
+    <a href="#s18" aria-label="六堂與報名"><span class="lbl">19 · 六堂與報名</span></a>
+    <a href="#s19" aria-label="問答"><span class="lbl">20 · 問答</span></a>
+</nav>
+<div class="ui-ctl">
+  <button id="deckBtn" type="button">投影模式</button>
+  <button id="openAllBtn" type="button">展開補充</button>
+</div>
+<div class="font-ctl">
+  <button data-f="-" type="button" aria-label="縮小字級">A−</button>
+  <button data-f="0" type="button" aria-label="預設字級">A</button>
+  <button data-f="+" type="button" aria-label="放大字級">A＋</button>
+</div>
+<div class="hint">↑ ↓ 翻頁</div>
+
+  <section id="s1" data-block data-bg="1">
+    <div class="wrap">
+      <div class="act-cap reveal">ACT 01 · OPENING</div>
+      <h1 class="display reveal d1">網頁版 AI 跟 Agent<br>同一件事差在哪</h1>
+      <p class="lead reveal d2">系列課第零堂。今晚不講定義，做三件事給你看：生一組輪播卡、把脆文發出去、讓三十個人同時生自己的圖。</p>
+      <p class="mono-note reveal d3">2026 / 09 / 13（日）19:30 - 21:30 · 線上 · 江昱德｜江江教練</p>
+      <a class="back-link reveal d4" href="../">← 回六堂系列課課程頁</a>
+    </div>
+  </section>
+
+  <section id="s2" data-block data-bg="2">
+    <div class="wrap">
+      <div class="act-cap reveal">ACT 02 · WHO IS HERE</div>
+      <h2 class="h1 reveal d1">你在對的房間裡</h2>
+      <div class="grid-2 reveal d2">
+        <div class="card"><div class="num">01</div><div class="h2">60 個人裡，41 個已經在付費用 AI</div><div class="body">課前問卷 60 份，來的人都已經在用 AI 了。</div></div>
+        <div class="card"><div class="num">02</div><div class="h2">最想學的是迴圈工程，41 票</div><div class="body">但真的用過的只有 5 個。這就是今晚要補的那一段。</div></div>
+      </div>
+      <details class="reveal d3">
+        <summary>問卷裡另外兩個數字</summary>
+        <p>提示詞 53 個人用過，最想學的只剩 4 票。這個房間已經過了提示詞的階段。</p>
+        <p>要操作示範的人是要概念講解的十倍。所以這門課的形式就是：先做給你看。</p>
+      </details>
+    </div>
+  </section>
+
+  <section id="s3" data-block data-bg="3">
+    <div class="wrap">
+      <div class="act-cap reveal">ACT 03 · TONIGHT</div>
+      <h2 class="h1 reveal d1">今晚做三件事，三件事差在不同的地方</h2>
+      <table class="tbl reveal d2">
+        <thead><tr><th>做什麼</th><th>網頁版</th><th>Agent 版</th><th>差在哪一層</th></tr></thead>
+        <tbody>
+          <tr><td><b>1 生一組輪播卡</b></td><td>生得出來，一次一張</td><td>整組自己長出來，生完自己存檔開卡</td><td>連續動作與檔案落地</td></tr>
+          <tr><td><b>2 把脆文發出去</b></td><td>接不上你的帳號</td><td>接 API 發文，撞到限制自己繞過去</td><td>能不能碰外面的世界</td></tr>
+          <tr><td><b>3 生一張圖</b></td><td colspan="2"><b>一樣。這裡真的沒差。</b></td><td>沒差</td></tr>
+          <tr><td><b>3-2 三十個人同時生圖</b></td><td>無解</td><td>自己做一個網頁給大家用</td><td>從自己用變成別人也能用</td></tr>
+        </tbody>
+      </table>
+      <div class="trybox reveal d3"><b>今晚的問題：</b>什麼時候該用網頁版就好，什麼時候才需要換工具。最後一段我會給你一句話的判準。</div>
+    </div>
+  </section>
+
+  <section id="s4" data-block data-bg="2">
+    <div class="wrap">
+      <div class="act-cap reveal">ACT 04 · DEMO 01</div>
+      <h2 class="h1 reveal d1">示範一：生一組輪播卡</h2>
+      <p class="lead reveal d2">先用網頁版做一張。它畫得出來，風格也固定得住。這裡先講清楚：網頁版不差。</p>
+      <div class="demo reveal d3">
+        <div class="dm-label">現場操作</div>
+        <p>1. 網頁版生第一張。給參考圖、給人設，風格會穩。</p>
+        <p>2. 然後看第二張。要再講一次風格，再等一次，再下載一次。</p>
+        <p>3. 開 Agent 版，一句話啟動，整組五張自己跑。</p>
+      </div>
+      <details class="reveal d4">
+        <summary>網頁版做五張，實際要做哪些事</summary>
+        <p>把工作量攤開講：五張要五輪對話，每輪都要再講一次風格；生完要一張一張下載，一張一張命名，自己丟資料夾，自己開發文卡。網頁版能給你的，就到「一張圖」為止。</p>
+        <p class="note">現場用的是一組五張咪卡輪播卡，主題是「調 AI 知識庫像醫生看病開藥」。</p>
+      </details>
+    </div>
+  </section>
+
+  <section id="s5" data-block data-bg="4">
+    <div class="wrap">
+      <div class="act-cap reveal">ACT 05 · POINT 01</div>
+      <p class="quote reveal d1">差別在畫完之後，那些事誰做</p>
+      <p class="lead reveal d2" style="margin-top:36px">網頁版給你一張圖。Agent 給你的是一組圖，加上命名、存檔、開卡，跟你下次還找得到它。</p>
+      <details class="reveal d3">
+        <summary>這一段對應到六堂的哪裡</summary>
+        <p>第一堂技能包：把「風格怎麼定、卡怎麼開」那套判斷寫下來，它下次自己拿去用，不用你每次重講。</p>
+      </details>
+    </div>
+  </section>
+
+  <section id="s6" data-block data-bg="2">
+    <div class="wrap">
+      <div class="act-cap reveal">ACT 06 · DEMO 02</div>
+      <h2 class="h1 reveal d1">示範二：這五張卡做好了，誰把它發出去？</h2>
+      <p class="lead reveal d2">網頁版的 AI 沒有你的 Threads 帳號。它接不上去。它只能把字給你，剩下都你自己做。</p>
+      <div class="trybox reveal d3"><b>從這裡開始不一樣：</b>前面比的是快跟慢，接下來比的是做得到跟做不到。</div>
+    </div>
+  </section>
+
+  <section id="s7" data-block data-bg="4">
+    <div class="wrap">
+      <div class="act-cap reveal">ACT 07 · THE LIMIT</div>
+      <h2 class="h1 reveal d1">桌面版可以接 API。但它撞到一個限制。</h2>
+      <p class="quote reveal d2">Threads API 只吃網路上已經公開的圖片網址，它不能從我的電腦直接傳一張圖上去</p>
+      <p class="lead reveal d3" style="margin-top:32px">所以會卡住：圖在我電腦裡，API 只認網址。純文字發得出去，圖片發不出去。</p>
+      <details class="reveal d4">
+        <summary>技術上到底是怎麼回事</summary>
+        <p>發文帶圖時，API 的 image_url 欄位必須是一個公開的 HTTPS 網址。本機圖片還是發得出去，只是沒辦法直接走 API。</p>
+        <p class="note">出處：threads-api 技能包 SKILL.md。這條限制在官方文件也查得到，是平台本身的設計。</p>
+      </details>
+    </div>
+  </section>
+
+  <section id="s8" data-block data-bg="5">
+    <div class="wrap">
+      <div class="act-cap reveal">ACT 08 · THE WORKAROUND</div>
+      <h2 class="h1 reveal d1">那就叫 AI 先做一個網頁，把圖放上去</h2>
+      <div class="timeline reveal d2">
+        <div class="step"><div class="dot">1</div><div class="h2">圖在我電腦裡</div><div class="body">五張剛生好的卡</div></div>
+        <div class="step"><div class="dot">2</div><div class="h2">丟上媒體站</div><div class="body">AI 自己做的一個小網站，圖丟上去就有公開網址</div></div>
+        <div class="step"><div class="dot">3</div><div class="h2">拿網址去發文</div><div class="body">API 這下認了</div></div>
+        <div class="step"><div class="dot">4</div><div class="h2">送出前停一下</div><div class="body">按送出這一步留給人</div></div>
+      </div>
+      <p class="quote reveal d3" style="margin-top:44px">網頁版遇到限制就是死路。Agent 遇到限制會自己蓋一條路過去</p>
+      <details class="reveal d4">
+        <summary>這個網頁不是我寫的</summary>
+        <p>這件事 2026-07-11 就做好了，指令是 post.js 帶 --local-image，中繼站是一個獨立的媒體網站。我沒有寫那個網站，是 AI 做的。</p>
+        <p>現在再往前一步：一個發文包資料夾、一個指令，圖只上傳一次，同時發 Threads、Instagram、X、LinkedIn、YouTube。沒帶 --yes 的時候只印計畫不送出，那是送出前的確認閘。</p>
+      </details>
+    </div>
+  </section>
+
+  <section id="s9" data-block data-bg="3">
+    <div class="wrap">
+      <div class="act-cap reveal">ACT 09 · THE FIVE LOOPS</div>
+      <h2 class="h1 reveal d1">剛剛那兩件事，其實是同一條產線上的第二圈跟第三圈</h2>
+      <p class="lead reveal d2">我把自己的內容產線拆成五個小迴圈。切法看的是<b>哪些事會自己回頭重試</b>。</p>
+      <div class="timeline cols-5 reveal d3">
+        <div class="step"><div class="dot">1</div><div class="h2">逐字稿擷取</div><div class="body">三條路依序試，這條抓不到換下一條</div></div>
+        <div class="step"><div class="dot">2</div><div class="h2">咪卡輪播卡</div><div class="body">四項自我檢查，沒過只重生那一張，不整組重來</div></div>
+        <div class="step"><div class="dot">3</div><div class="h2">脆文發佈</div><div class="body">本機圖先上媒體站，查得到 permalink 才算成功</div></div>
+        <div class="step"><div class="dot">4</div><div class="h2">深度文章</div><div class="body">四問過了才升級，審沒過回去修</div></div>
+        <div class="step"><div class="dot">5</div><div class="h2">網頁部署</div><div class="body">線上驗收沒過就回退重來</div></div>
+      </div>
+      <div class="trybox reveal d4"><b>示範一就是迴圈 2，示範二就是迴圈 3。</b>兩個示範在同一條產線上，前後相接。</div>
+      <details class="reveal d4">
+        <summary>什麼算迴圈，什麼不算（這是整條線的判準）</summary>
+        <p><b>能自己驗出對錯的才算迴圈。</b>整理逐字稿算，抓到就是抓到，沒抓到就換路，機器自己知道。生圖算，造型一致、比例對、字一次生好、檔案小於 200KB，四項都驗得出來。</p>
+        <p><b>脆文的觀點不算。</b>那是我自己想的，每篇感想都不一樣，沒有標準可以驗。所以它本來就該由人給。</p>
+        <p class="note">整篇寫在官網：〈哪些事可以交給 AI 自己跑完？｜我把內容產線拆成五個小迴圈〉jiangyude.com/articles/five-loops-content-line/</p>
+      </details>
+    </div>
+  </section>
+
+  <section id="s10" data-block data-bg="4">
+    <div class="wrap">
+      <div class="act-cap reveal">ACT 10 · RECOVERY</div>
+      <h2 class="h1 reveal d1">發完之後，它每週把東西抓回來</h2>
+      <p class="lead reveal d2">上週每一篇的主題、我自己的接續回覆、外面的留言，加上每篇的觀看、按讚、回覆、轉發、引用、分享。</p>
+      <div class="grid-2 reveal d3">
+        <div class="card"><div class="num">存回來</div><div class="h2">週報躺在知識庫裡</div><div class="body">最近一份 9/7，統計 24 篇主貼文。所以我可以直接問「我最近都發了什麼」「哪一篇觀看最高」。</div></div>
+        <div class="card"><div class="num">誠實說</div><div class="h2">目前是每週一次</div><div class="body">每天抓的排程目前沒有。要每天就得再設一個，那也是可以做的事，只是現在沒做。</div></div>
+      </div>
+      <details class="reveal d4">
+        <summary>為什麼這件事重要</summary>
+        <p>發文最麻煩的地方在發完之後，沒有人記得自己發過什麼。資料抓回來躺在自己的知識庫裡，才問得出下一篇要寫什麼。</p>
+      </details>
+    </div>
+  </section>
+
+  <section id="s11" data-block data-bg="2">
+    <div class="wrap">
+      <div class="act-cap reveal">ACT 11 · DEMO 03</div>
+      <h2 class="h1 reveal d1">示範三：生一張圖</h2>
+      <p class="quote reveal d2">我用網頁版跟用 Agent，沒有差別。真的沒差。</p>
+      <p class="lead reveal d3" style="margin-top:32px">不要為了生一張圖去學 Agent。聽了一小時的差別，這裡我要誠實講：這件事沒有差。</p>
+    </div>
+  </section>
+
+  <section id="s12" data-block data-bg="4">
+    <div class="wrap">
+      <div class="act-cap reveal">ACT 12 · CHANGE THE QUESTION</div>
+      <h2 class="h1 reveal d1">換一個題目：一場活動，三十個人都要生自己的圖</h2>
+      <div class="grid-3 reveal d2">
+        <div class="card"><div class="num">01</div><div class="h2">額度是你的</div><div class="body">你不可能讓三十個人排隊借你的帳號。</div></div>
+        <div class="card"><div class="num">02</div><div class="h2">現場不會每個人都會用</div><div class="body">要求每個人現場辦一個帳號，活動就毀了。</div></div>
+        <div class="card"><div class="num">03</div><div class="h2">時間根本不夠</div><div class="body">訂閱那條路只能一張一張跑，平均 54 秒。30 人乘 5 張要兩個多小時。</div></div>
+      </div>
+      <p class="quote reveal d3" style="margin-top:44px">錢是小事，差別在這件事能不能同時發生三十次</p>
+      <details class="reveal d4">
+        <summary>成本我自己測過</summary>
+        <p>gpt-image-2、1024×1536、medium：一張 US$0.0426，約 NT$1.34，平均 48 秒。</p>
+        <p>帶一張參考圖 NT$1.75，帶兩張 NT$2.14，每多一張固定加 NT$0.38。</p>
+        <p class="note">這是我自己開 API key 實測十張的數字，是這個模型、這個尺寸的價錢。</p>
+      </details>
+    </div>
+  </section>
+
+  <section id="s13" data-block data-bg="5">
+    <div class="wrap">
+      <div class="act-cap reveal">ACT 13 · BUILD IT</div>
+      <h2 class="h1 reveal d1">所以我自己做了一個生圖頁面</h2>
+      <p class="lead reveal d2">讓大家自己在手機上按。不用帳號，不用教學，打開網頁就會用。</p>
+      <div class="grid-2 reveal d3">
+        <div class="card"><div class="num">9/12 工作坊</div><div class="h2">香氛工作坊的製作站</div><div class="body">學員填表單，抽卡，生成自己的香氛卡。一場活動一個站。</div></div>
+        <div class="card"><div class="num">另一個</div><div class="h2">學員生圖工作站</div><div class="body">密碼進場，同一個站學習、生圖、發表，講師看得到過程。</div></div>
+      </div>
+      <details class="reveal d4">
+        <summary>為什麼訂閱那條路接不進網頁</summary>
+        <p>訂閱版的生圖是本機的工具，網站叫不到它。要用訂閱只能走「雲端排隊、我的電腦輪流跑」，但訂閱一次只能跑一張，現場來不及。API 可以同時跑很多張。這才是兩者真正的差別，不只是錢。</p>
+      </details>
+    </div>
+  </section>
+
+  <section id="s14" data-block data-bg="6L">
+    <div class="wrap">
+      <div class="act-cap reveal">ACT 14 · COLLECT</div>
+      <h2 class="h1 reveal d1">另一半的問題：作品收不回來</h2>
+      <p class="quote reveal d2">這個活動我要收集大家的照片，大家全部丟在群組裡，很亂</p>
+      <p class="lead reveal d3" style="margin-top:32px">所以再做一個網頁，讓作品自動收集、自動排版。</p>
+      <div class="demo reveal d4">
+        <div class="dm-label">9/12 工作坊的現場</div>
+        <p>旅學堂淡海輕軌藍海線走讀工作坊的成果發表頁：學員交作品，桌長現場就可以編輯。</p>
+        <p>這頁在 9/12 工作坊實際用過。</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="s15" data-block data-bg="7">
+    <div class="wrap">
+      <div class="act-cap reveal">ACT 15 · THE POINT</div>
+      <p class="quote reveal d1">自動排版我不會，自動收集我不會，寫網頁我更不會。我全部都不會。</p>
+      <p class="lead reveal d2" style="margin-top:40px">我會的是把要做的事講清楚，然後叫 AI Agent 做好。</p>
+      <p class="mono-note reveal d3">這句話就是這門課的全部</p>
+    </div>
+  </section>
+
+  <section id="s16" data-block data-bg="7">
+    <div class="wrap">
+      <div class="act-cap reveal">ACT 16 · THE RULE</div>
+      <h2 class="h1 reveal d1">一句話的判準，你今天就可以帶回去用</h2>
+      <p class="quote reveal d2">這件事需不需要碰到你電腦裡的檔案、外面的帳號、或別人的手機</p>
+      <table class="tbl reveal d3">
+        <thead><tr><th>今晚的示範</th><th>它碰到的是</th><th>所以</th></tr></thead>
+        <tbody>
+          <tr><td><b>輪播卡</b></td><td>你電腦裡的檔案</td><td>Agent 的事</td></tr>
+          <tr><td><b>發脆文</b></td><td>外面的帳號</td><td>Agent 的事</td></tr>
+          <tr><td><b>生一張圖自己看</b></td><td>都沒有</td><td><b>網頁版就夠了，不用換工具</b></td></tr>
+          <tr><td><b>三十個人生圖、交作品</b></td><td>別人的手機</td><td>Agent 的事</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="s17" data-block data-bg="8">
+    <div class="wrap">
+      <div class="act-cap reveal">ACT 17 · ONE MORE THING</div>
+      <h2 class="h1 reveal d1">它會自己跑，所以你會看到很多「完成」</h2>
+      <p class="quote reveal d2">它說完成，不等於它做完</p>
+      <p class="lead reveal d3" style="margin-top:36px">這門課後面會一直回來講這件事：你怎麼知道它是真的做完，還是只是說它做完。敢放手，是因為會驗收。</p>
+      <details class="reveal d4">
+        <summary>先給你一條驗收的方法</summary>
+        <p>不要問「你確定嗎」，它一定說確定。要問只有做過才答得出的細節，例如「第 34 秒畫面上的字卡寫什麼字」。</p>
+      </details>
+    </div>
+  </section>
+
+  <section id="s17b" data-block data-bg="8">
+    <div class="wrap">
+      <div class="act-cap reveal">ACT 18 · READ MORE</div>
+      <h2 class="h1 reveal d1">今晚講的，我都寫成文章了，官網免費看</h2>
+      <table class="tbl reveal d2">
+        <thead><tr><th>對應</th><th>文章</th><th>網址</th></tr></thead>
+        <tbody>
+          <tr><td><b>今晚主題</b></td><td>桌面版和開發者版差在哪？網頁聊天型 AI 與桌面幹活型 AI 的分界</td><td><a href="../../../articles/web-chat-ai-vs-desktop-agent/" target="_blank" rel="noopener">打開</a></td></tr>
+          <tr><td><b>示範一二三</b></td><td>哪些事可以交給 AI 自己跑完？我把內容產線拆成五個小迴圈</td><td><a href="../../../articles/five-loops-content-line/" target="_blank" rel="noopener">打開</a></td></tr>
+          <tr><td><b>示範二</b></td><td>同樣的事每次都要重新交代一遍？我把發文、提煉、復盤設計成 Loop</td><td><a href="../../../articles/my-three-loops/" target="_blank" rel="noopener">打開</a></td></tr>
+          <tr><td><b>示範三</b></td><td>生一張圖多少錢？我實測十幾張，把 token 帳單攤開算工作坊材料費</td><td><a href="../../../articles/ai-image-api-cost/" target="_blank" rel="noopener">打開</a></td></tr>
+          <tr><td><b>驗收那一段</b></td><td>AI 交出一份很專業的分析，但它根本沒看過那支影片</td><td><a href="../../../articles/ai-said-it-watched-the-video/" target="_blank" rel="noopener">打開</a></td></tr>
+          <tr><td><b>第三堂預習</b></td><td>叫 AI 幫你點餐，就懂 CLI、API、MCP</td><td><a href="../../../articles/cli-api-mcp-computer-use/" target="_blank" rel="noopener">打開</a></td></tr>
+          <tr><td><b>想再往前</b></td><td>每件事 AI 都要我確認，怎麼可以更自動？什麼是迴圈工程</td><td><a href="../../../articles/what-is-loop-engineering/" target="_blank" rel="noopener">打開</a></td></tr>
+          <tr><td><b>放心用</b></td><td>AI 自己跑，會不會一直跑到額度燒完？迴圈的圈數上限</td><td><a href="../../../articles/loop-round-limit/" target="_blank" rel="noopener">打開</a></td></tr>
+          <tr><td><b>網頁放哪</b></td><td>你的網頁其實沒鎖：公開資訊、付費內容、機密隱私該放哪一層</td><td><a href="../../../articles/who-can-see-your-site/" target="_blank" rel="noopener">打開</a></td></tr>
+        </tbody>
+      </table>
+      <p class="mono-note reveal d3">全部在 <a href="../../../articles.html">官網深度文章</a>，不用報名也看得到</p>
+    </div>
+  </section>
+
+  <section id="s18" data-block data-bg="9">
+    <div class="wrap">
+      <div class="act-cap reveal">ACT 19 · THE SERIES</div>
+      <h2 class="h1 reveal d1">六堂在講什麼</h2>
+      <p class="lead reveal d2">今天你看到的是三個做完的成品。六堂課做的事情，是把「怎麼從沒有到有」一堂一堂拆給你看。</p>
+      <table class="tbl reveal d3">
+        <tbody>
+          <tr><td><b>第一堂 9/20</b></td><td>教一次之後它都記得：技能包</td></tr>
+          <tr><td><b>第二堂 9/27</b></td><td>標準講好之後 AI 自己執行：迴圈工程</td></tr>
+          <tr><td><b>第三堂 10/4</b></td><td>各種概念解析：API、MCP、CLI</td></tr>
+          <tr><td><b>第四堂 10/18</b></td><td>Agent 前導 01：如何確定 AI 找得到資料</td></tr>
+          <tr><td><b>第五堂 10/25</b></td><td>Agent 前導 02：如何確定 AI 找到的是對的</td></tr>
+          <tr><td><b>第六堂 11/1</b></td><td>產品開發實戰：期末作業發表與解析</td></tr>
+        </tbody>
+      </table>
+      <div class="trybox reveal d4"><b>報名資訊：</b>六堂 3000 元一次收，每堂兩小時（概念 20 分、示範 40 到 50 分、問答 30 分），全員有回放。Google Meet 限額 100，限的是現場開口的名額，上課人數沒有限制。退費受理到 9/17（三）23:59。</div>
+    </div>
+  </section>
+
+  <section id="s19" data-block data-bg="9">
+    <div class="wrap">
+      <div class="act-cap reveal">ACT 20 · Q &amp; A</div>
+      <h2 class="display sm reveal d1">你現在卡在哪裡</h2>
+      <p class="lead reveal d2">剩下的時間直接問。沒問到的，報名的人進群組再問。</p>
+      <p class="note reveal d2">從第一堂開始，課程頁會開一個「問老師」的地方，你的問題預設只有老師看得到。</p>
+      <div class="footer-grid reveal d3">
+        <div>
+          <h3>今晚示範用到的東西</h3>
+          <ul>
+            <li>咪卡輪播卡：分鏡到生圖到開卡</li>
+            <li>Threads API 與圖片中繼站</li>
+            <li>香氛卡製作站、學員生圖工作站</li>
+            <li>旅學堂藍海線成果發表頁</li>
+          </ul>
+        </div>
+        <div>
+          <h3>課程</h3>
+          <ul>
+            <li><a href="../">六堂系列課課程頁</a></li>
+            <li>第一堂 9/20（日）19:30</li>
+          </ul>
+        </div>
+        <div>
+          <h3>文章</h3>
+          <ul>
+            <li>官網深度文章免費看</li>
+            <li>jiangyude.com</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom reveal d4">AI 到底能用到什麼程度 · 系列課第零堂 · 2026-09-13 · 江昱德｜江江教練</div>
+    </div>
+  </section>
+
+
+<script>
+(function () {
+  document.documentElement.classList.add('js-on');
+  document.body.classList.add('js-on');
+  const sections = [...document.querySelectorAll('section[data-block]')];
+  const dots = [...document.querySelectorAll('.dot-indicator a')];
+  const progress = document.getElementById('progress');
+  const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!reducedMotion) {
+    const io = new IntersectionObserver((entries) => entries.forEach((e) => {
+      if (e.isIntersecting) { e.target.querySelectorAll('.reveal').forEach((el) => el.classList.add('in')); }
+    }), { threshold: 0.25 });
+    sections.forEach((s) => io.observe(s));
+  } else { document.querySelectorAll('.reveal').forEach((el) => el.classList.add('in')); }
+  // bg-6 屬淺底陣營，深字群組只有 7/8/9（webpage-builder 15-mode-slide-deck 2026-07-14 硬規則）
+  const darkBgs = new Set(['7','8','9']);
+  let current = 0;
+  const navIo = new IntersectionObserver((entries) => entries.forEach((e) => {
+    if (e.isIntersecting) {
+      const i = sections.indexOf(e.target);
+      current = i;
+      dots.forEach((d, idx) => d.classList.toggle('active', idx === i));
+      document.body.classList.toggle('on-dark', darkBgs.has(e.target.getAttribute('data-bg')));
+    }
+  }), { threshold: 0.55 });
+  sections.forEach((s) => navIo.observe(s));
+  const scroller = document.scrollingElement || document.documentElement;
+  let ticking = false;
+  function updateProgress() {
+    const max = scroller.scrollHeight - scroller.clientHeight;
+    const pct = max > 0 ? (scroller.scrollTop / max) * 100 : 0;
+    progress.style.width = pct + '%'; ticking = false;
+  }
+  const dotNav = document.querySelector('.dot-indicator');
+  let hideTimer = null;
+  window.addEventListener('scroll', () => {
+    if (!ticking) { requestAnimationFrame(updateProgress); ticking = true; }
+    if (dotNav) {
+      dotNav.classList.add('scrolling');
+      clearTimeout(hideTimer);
+      hideTimer = setTimeout(() => dotNav.classList.remove('scrolling'), 1100);
+    }
+  }, { passive: true });
+  updateProgress();
+  // 字級 A- / A / A+（現場提詞用）
+  let zoom = 1;
+  document.querySelectorAll('.font-ctl button').forEach((b) => b.addEventListener('click', () => {
+    const f = b.dataset.f;
+    zoom = f === '+' ? Math.min(1.4, zoom + 0.1) : f === '-' ? Math.max(0.8, zoom - 0.1) : 1;
+    document.body.style.zoom = zoom;
+  }));
+  // 投影模式：收掉所有補充折疊卡，一頁只留台上要看的東西
+  const deckBtn = document.getElementById('deckBtn');
+  deckBtn.addEventListener('click', () => {
+    const on = document.body.classList.toggle('deck');
+    deckBtn.textContent = on ? '閱讀模式' : '投影模式';
+    if (on) document.querySelectorAll('details[open]').forEach((d) => d.open = false);
+  });
+  // 展開全部補充（備課、逐段讀時用）
+  const openBtn = document.getElementById('openAllBtn');
+  openBtn.addEventListener('click', () => {
+    const list = [...document.querySelectorAll('details')];
+    const anyClosed = list.some((d) => !d.open);
+    list.forEach((d) => d.open = anyClosed);
+    openBtn.textContent = anyClosed ? '收合補充' : '展開補充';
+  });
+  // 鍵盤翻頁（投影用）：↓ → space PageDown 下一頁；↑ ← PageUp 上一頁
+  function go(i) {
+    const t = Math.max(0, Math.min(sections.length - 1, i));
+    sections[t].scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+  document.addEventListener('keydown', (e) => {
+    const t = e.target;
+    if (t && typeof t.matches === 'function' && t.matches('input, textarea, select')) return;
+    if (['ArrowDown', 'ArrowRight', 'PageDown', ' '].includes(e.key)) { e.preventDefault(); go(current + 1); }
+    if (['ArrowUp', 'ArrowLeft', 'PageUp'].includes(e.key)) { e.preventDefault(); go(current - 1); }
+    if (e.key === 'Home') { e.preventDefault(); go(0); }
+    if (e.key === 'End') { e.preventDefault(); go(sections.length - 1); }
+  });
+  const nt=document.querySelector('.nav-toggle'), nm=document.querySelector('.nav-menu');
+  if(nt&&nm){ nt.addEventListener('click',()=>{nt.classList.toggle('open');nm.classList.toggle('open');}); }
+})();
+</script>
+<script src="/views.js"></script>
+<script src="/mika-chat-widget.js" defer></script>
+
+</body>
+</html>
