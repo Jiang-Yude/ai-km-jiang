@@ -100,7 +100,9 @@ module.exports = async (req, res) => {
   body = body || {};
 
   const want = expectedPassword();
-  if (want.length < 16) { res.status(503).json({ error: 'strong admin password not configured' }); return; }
+  // 2026-09-14 江江拍板：不強制 16 字，用站主自己設的密碼（「後台統計又不是什麼極機密的，我甚至都會公開分享」）。
+  // 已告知：這支也回傳訪客問咪卡的原話。暴力猜測靠下面每網路 15 分鐘錯 5 次的原子限流擋。
+  if (!want) { res.status(503).json({ error: 'password not configured' }); return; }
 
   // Atomic wrong-password budget: storage failure must never bypass authentication throttling.
   // Vercel-controlled client IP; malformed/missing identity is unavailable, not a shared bucket.
