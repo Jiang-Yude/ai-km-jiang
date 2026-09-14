@@ -1,3 +1,4 @@
+const {clientNetwork}=require('../lib/2026-09-13-0910-client-network.js');
 // 咪卡官網客服的大腦：人設＋站內檢索＋LLM 回覆。
 // 進 repo 時改名放 api/mika-chat.js。
 //
@@ -33,6 +34,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { isIP } = require('net');
 
 const API_KEY = () => process.env.MIKA_LLM_API_KEY || '';
 const BASE_URL = () => process.env.MIKA_LLM_BASE_URL || 'https://api.openai.com/v1';
@@ -494,8 +496,6 @@ function retrieveAdaptive(query) {
 /* ── 用量上限（2026-08-07 江江拍板的數字；都可用環境變數調）──
    MIKA_RATE_PER_MIN    同 IP 每分鐘   預設 20（防灌爆）
    MIKA_RATE_PER_DAY    同 IP 每天     預設 100（單一訪客上限）
-   MIKA_RATE_PER_MIN_COURSE  課程頁每 IP 每分鐘  預設 300（整班同一個 WiFi＝同一個 IP）
-   MIKA_RATE_PER_DAY_COURSE  課程頁每 IP 每天    預設 3000（現場碰不到，這是被薅時的停損）
    MIKA_DAILY_LIMIT     全站每天       預設 5000
    MIKA_MONTHLY_LIMIT   全站每月       預設 10000（總開銷天花板）
    計次規則（2026-08-07 江江拍板）：以輸入字數計，每 100 字算 1 次、無條件進位
@@ -505,45 +505,45 @@ function retrieveAdaptive(query) {
    現場學員本來就會整段貼、會一次講很多，按字數算等於罰認真描述的人，
    而那正是這堂課要教的事（講得細的人圖明顯比較好）。
    回傳 'ok'｜'minute'｜'ip-day'｜'site-day'｜'site-month' */
-/* 課堂額度（2026-08-20 加，江江問「不同學員會不會撞到一分鐘 20 次」查出來的）：
-   節流綁 IP，但**教室整班連同一個 WiFi，對外就是同一個 IP**。
-   舊值套到現場＝老師喊「大家打開咪卡」時 20 人同時按就吃掉整分鐘的額度，第 21 個當場被擋；
-   每 IP 每天 100 次更是 20 人各走一輪（約 3 次）就用掉六成，有人多問幾句後面的人整天不能用。
-   被擋時咪卡只會說「訊息有點太快了」，學員會以為是自己手機的問題，現場很難救。
-   做法＝只有課程頁的請求走寬額度，其他頁維持原本的嚴格值（那才是防薅的主要戰場）。
-   全站每天與每月的天花板照舊擋在最外層，最壞情況的總開銷仍然有上限。 */
-async function ratelimit(ip, units, onCourse) {
-  if (!KV_URL() || !KV_TOKEN()) return 'ok';
-  const perMin = Number(onCourse ? process.env.MIKA_RATE_PER_MIN_COURSE : process.env.MIKA_RATE_PER_MIN)
-    || (onCourse ? 300 : 20);
-  const perDay = Number(onCourse ? process.env.MIKA_RATE_PER_DAY_COURSE : process.env.MIKA_RATE_PER_DAY)
-    || (onCourse ? 3000 : 100);
-  const siteDay = Number(process.env.MIKA_DAILY_LIMIT) || 5000;
-  const siteMonth = Number(process.env.MIKA_MONTHLY_LIMIT) || 10000;
+/* 課堂寬額度已移除（2026-09-14 江江拍板）：
+   8/20 為「整班連同一個 WiFi＝同一個 IP」加了課程頁每 IP 每分鐘 300、每天 3000 的寬額度。
+   江江 9/14 說明實際上課學員都用自己的手機、也常是線上課，沒有共用教室網路這回事；
+   而寬額度只看訪客自己送上來的頁面路徑，任何人假裝在課程頁就能拿到 30 倍額度，是最大的薅用缺口。
+   現在所有頁面同一套每 IP 額度；課程頁只保留「一則算一次」的計次例外（見 handler）。
+   上課若真有人被擋（例如同電信共用 IPv4），臨時調高 MIKA_RATE_PER_DAY 即可，全站每日／每月天花板照舊。 */
+async function ratelimit(ip, units) {
+  if (!KV_URL() || !KV_TOKEN()) return 'unavailable';
+  function limit(value, fallback) {
+    if (value === undefined || value === '') return fallback;
+    const n = Number(value);
+    return Number.isSafeInteger(n) && n >= 0 && n <= 1000000000 ? n : null;
+  }
+  const perMin = limit(process.env.MIKA_RATE_PER_MIN, 20);
+  const perDay = limit(process.env.MIKA_RATE_PER_DAY, 100);
+  const siteDay = limit(process.env.MIKA_DAILY_LIMIT, 5000);
+  const siteMonth = limit(process.env.MIKA_MONTHLY_LIMIT, 10000);
+  if ([perMin, perDay, siteDay, siteMonth].includes(null) || !Number.isSafeInteger(units) || units < 1 || units > 1000000000) return 'unavailable';
   const day = new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Taipei' }).format(new Date());
   const month = day.slice(0, 7);
   try {
-    const minKey = `mika:chatrate:${ip}:${Math.floor(Date.now() / 60000)}`;
-    const ipDayKey = `mika:chatday:${ip}:${day}`;
+    const network = clientNetwork(ip);
+    if (!network) return 'unavailable';
+    const minKey = `mika:chatrate:${network}:${Math.floor(Date.now() / 60000)}`;
+    const ipDayKey = `mika:chatday:${network}:${day}`;
     const siteKey = `mika:chatsite:${day}`;
     const monthKey = `mika:chatmonth:${month}`;
     const r = await fetch(`${KV_URL()}/pipeline`, {
       method: 'POST',
+      signal: AbortSignal.timeout(3000),
       headers: { Authorization: `Bearer ${KV_TOKEN()}`, 'Content-Type': 'application/json' },
-      body: JSON.stringify([
-        ['INCRBY', minKey, units], ['EXPIRE', minKey, 90],
-        ['INCRBY', ipDayKey, units], ['EXPIRE', ipDayKey, 172800],
-        ['INCRBY', siteKey, units], ['EXPIRE', siteKey, 172800],
-        ['INCRBY', monthKey, units], ['EXPIRE', monthKey, 3456000],
-      ]),
+      body: JSON.stringify([['EVAL', "local units = tonumber(ARGV[1])\nlocal current = {}\nfor i=1,4 do\n  local raw = redis.call('GET', KEYS[i])\n  local n = tonumber(raw or '0')\n  if not n or n < 0 or n ~= math.floor(n) or n > 9007199254740991 then return redis.error_reply('invalid quota counter') end\n  current[i] = n\nend\nfor i=4,1,-1 do if current[i] + units > tonumber(ARGV[i+1]) then return i end end\nfor i=1,4 do\n  redis.call('INCRBY', KEYS[i], units)\n  redis.call('EXPIRE', KEYS[i], tonumber(ARGV[i+5]))\nend\nreturn 0", '4', minKey, ipDayKey, siteKey, monthKey, units, perMin, perDay, siteDay, siteMonth, 90, 172800, 172800, 3456000]]),
     });
+    if (!r.ok) return 'unavailable';
     const out = await r.json();
-    if (Number(out[6] && out[6].result) > siteMonth) return 'site-month';
-    if (Number(out[4] && out[4].result) > siteDay) return 'site-day';
-    if (Number(out[2] && out[2].result) > perDay) return 'ip-day';
-    if (Number(out[0] && out[0].result) > perMin) return 'minute';
-    return 'ok';
-  } catch (e) { return 'ok'; }
+    if (!Array.isArray(out) || out.length !== 1 || !out[0] || Object.hasOwn(out[0], 'error')
+      || !Number.isSafeInteger(out[0].result) || out[0].result < 0 || out[0].result > 4) return 'unavailable';
+    return ['ok', 'minute', 'ip-day', 'site-day', 'site-month'][out[0].result];
+  } catch (e) { return 'unavailable'; }
 }
 
 /* ── 訪客正在看的那一頁（2026-08-17 江江拍板）──
@@ -666,6 +666,7 @@ ChatGPT 會在沒有照片的情況下先生一張陌生人的圖，白花一次
 一旦進了簡單模式就一直維持，不要聊兩句又跳回長篇說明。`;
 
 const LIMIT_REPLY = {
+  unavailable: '聊天服務暫時無法確認額度，請稍後再試。網站文章仍可正常閱讀。',
   minute: '（咪卡喘口氣）訊息有點太快了，休息一分鐘再聊好嗎？',
   'ip-day': '（咪卡揉揉眼睛）我們今天聊得好多，我的今日額度到了。文章都在架上隨你看，明天再來找我聊！',
   'site-day': '（咪卡掛出小牌子：今日客滿）今天來聊天的朋友太多，我的總額度用完了。先自己逛逛文章，明天再來找我！',
@@ -696,14 +697,24 @@ module.exports = async (req, res) => {
   if (!lastUser) { res.status(200).json({ reply: '想聊什麼呢？' }); return; }
 
   /* 以字計次：每 100 字算 1 次，無條件進位。
-     課程頁例外，一則就是一次（江江 2026-08-20）：現場鼓勵學員講得細，
-     按字數計等於罰認真描述的人。 */
+     課程頁例外，一則就是一次（江江 2026-08-20）：現場鼓勵學員講得細，按字數計等於罰認真描述的人。
+     頁面路徑是訪客送上來的、可以假冒，所以這個例外只改計次，不放寬任何額度；
+     假冒最多把一則 500 字從 5 次變 1 次，仍受每 IP 每分鐘／每天與全站上限管住。 */
+  // Only the Vercel-controlled header identifies the client for rate limiting.
+  // https://vercel.com/docs/headers/request-headers#x-vercel-forwarded-for
+  const rawIP = String(req.headers['x-vercel-forwarded-for'] || '').split(',')[0].trim();
+  if (!isIP(rawIP)) {
+    console.error('mika_client_ip_unavailable');
+    res.status(503).json({ reply: LIMIT_REPLY.unavailable });
+    return;
+  }
+  const ip = rawIP;
   const onCoursePage = /^\/(en\/)?courses\//.test(String(body.page || ''));
   const units = onCoursePage ? 1 : Math.max(1, Math.ceil(lastUser.content.length / 100));
-  const ip = String(req.headers['x-forwarded-for'] || '').split(',')[0].trim() || 'na';
-  const limited = await ratelimit(ip, units, onCoursePage);
+  const limited = await ratelimit(ip, units);
   if (limited !== 'ok') {
-    res.status(429).json({ reply: LIMIT_REPLY[limited] });
+    if (limited === 'unavailable') console.error('mika_quota_unavailable');
+    res.status(limited === 'unavailable' ? 503 : 429).json({ reply: LIMIT_REPLY[limited] });
     return;
   }
 
