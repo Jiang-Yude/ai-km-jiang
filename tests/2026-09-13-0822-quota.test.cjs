@@ -65,7 +65,8 @@ test('admin authentication never bypasses broken storage or an exhausted atomic 
     await sandbox.module.exports({method:'POST',headers:{'x-vercel-forwarded-for':ip},body:{pw}},res);return res;
   }
   for(const fetcher of [async()=>{throw Error('offline');},async()=>Response.json([{error:'denied'}]),async()=>Response.json([{result:null}]),async()=>Response.json([{result:'0'}]),async()=>Response.json([{result:0}])])assert.equal((await run(fetcher)).statusCode,503);
-  assert.equal((await run(async()=>{throw Error('must not fetch');},'192.0.2.1','short','short')).statusCode,503);
+  assert.equal((await run(async()=>{throw Error('must not fetch');},'192.0.2.1','x','')).statusCode,503);
+  const shortOk=await run(async()=>Response.json([{result:0}]),'192.0.2.1','ab12','ab12');assert.notEqual(shortOk.statusCode,503);assert.notEqual(shortOk.statusCode,403);
   const wrong=await run(async(url,options)=>{const cmds=JSON.parse(options.body);assert.equal(cmds.length,1);assert.equal(cmds[0][0],'EVAL');assert.equal(cmds[0][4],'0');assert.ok(options.signal);return Response.json([{result:1}]);});assert.equal(wrong.statusCode,403);
   assert.equal((await run(async()=>Response.json([{result:6}]))).statusCode,429);
   assert.equal((await run(async()=>{throw Error('must not fetch');},'')).statusCode,503);
