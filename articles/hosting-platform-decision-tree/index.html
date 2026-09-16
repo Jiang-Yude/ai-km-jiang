@@ -1,0 +1,685 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="index,follow">
+<title>我的網頁是哪一種，該放哪個託管平台？｜託管平台決策樹，四個問題分出六種網頁與對應平台</title>
+<meta name="description" content="網頁做好要放 Cloudflare、Vercel、GitHub Pages 還是 Railway？我把 37 個網站的放法整理成一棵可點選的決策樹：需不需要後端、要不要公開、後端多久做完、是不是 Next.js、要不要定時跑，走到六個終點，每個終點附上我真的放在那個平台的網站，另附判斷用提示詞。">
+<link rel="canonical" href="https://jiangyude.com/articles/hosting-platform-decision-tree/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="我的網頁是哪一種，該放哪個託管平台？｜託管平台決策樹，四個問題分出六種網頁與對應平台｜江江教練">
+<!-- 分享封面：hero 文字填好後在 repo 根目錄跑 `node scripts/og-shot.mjs hosting-platform-decision-tree` 自動截 1200×630 到 images/og/hosting-platform-decision-tree.jpg（見 README「文章分享封面（OG 圖）機制」）。別退回 intro-jiang.png 直式人像，會被裁成只剩脖子。 -->
+<meta property="og:image" content="https://jiangyude.com/images/og/hosting-platform-decision-tree.jpg">
+<meta property="og:description" content="網頁做好要放 Cloudflare、Vercel、GitHub Pages 還是 Railway？我把 37 個網站的放法整理成一棵可點選的決策樹：需不需要後端、要不要公開、後端多久做完、是不是 Next.js、要不要定時跑，走到六個終點，每個終點附上我真的放在那個平台的網站，另附判斷用提示詞。">
+<meta property="og:url" content="https://jiangyude.com/articles/hosting-platform-decision-tree/">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:site_name" content="江江教練 · AI 知識管理">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="我的網頁是哪一種，該放哪個託管平台？｜託管平台決策樹，四個問題分出六種網頁與對應平台｜江江教練">
+<meta name="twitter:image" content="https://jiangyude.com/images/og/hosting-platform-decision-tree.jpg">
+<meta name="twitter:description" content="網頁做好要放 Cloudflare、Vercel、GitHub Pages 還是 Railway？我把 37 個網站的放法整理成一棵可點選的決策樹：需不需要後端、要不要公開、後端多久做完、是不是 Next.js、要不要定時跑，走到六個終點，每個終點附上我真的放在那個平台的網站，另附判斷用提示詞。">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"我的網頁是哪一種，該放哪個託管平台？｜託管平台決策樹，四個問題分出六種網頁與對應平台","description":"網頁做好要放 Cloudflare、Vercel、GitHub Pages 還是 Railway？我把 37 個網站的放法整理成一棵可點選的決策樹：需不需要後端、要不要公開、後端多久做完、是不是 Next.js、要不要定時跑，走到六個終點，每個終點附上我真的放在那個平台的網站，另附判斷用提示詞。","author":{"@type":"Person","name":"江昱德","alternateName":"江江教練","jobTitle":"隱性知識提煉師、AI 應用規劃師"},"isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://jiangyude.com/"},"inLanguage":"zh-Hant","url":"https://jiangyude.com/articles/hosting-platform-decision-tree/"}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{--ink:#1a1612;--paper:#fefcf8;--muted:#6a635a;--line:#d8cdb8;--green:#5f7553;--blue:#5689b8;--orange:#e85a4f;--soft:#faf5ec;--dark:#2a2018;--shadow:0 18px 45px rgba(107,74,42,.14);--sp-shadow:hsla(35,50%,60%,.15);--sp-shadow-edge:hsla(35,50%,68%,.03);--sp-radius:400px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC","Segoe UI",sans-serif}
+a{color:inherit}
+/* 官網共用導航列 nav.top（與首頁/文章總站同一條） */
+nav.top{position:sticky;top:0;background:rgba(254,252,248,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid #d8cdb8;z-index:100}
+nav.top .container{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:24px;padding:14px 32px}
+.nav-brand-img{justify-self:start;display:flex;align-items:center;text-decoration:none;flex-shrink:0;transition:opacity .2s}
+.nav-brand-img:hover{opacity:.8}.nav-brand-img img{height:40px;width:auto;display:block}
+nav.top ul.nav-menu{justify-self:end;display:flex;gap:22px;list-style:none;margin:0;padding:0;font-size:.95rem;white-space:nowrap}
+nav.top ul.nav-menu a{color:#3a342d;text-decoration:none;transition:color .2s;font-weight:500;white-space:nowrap}
+nav.top ul.nav-menu a:hover{color:#1a1612}nav.top ul.nav-menu a.active{color:#1a1612;font-weight:700}
+.nav-toggle{display:none;background:none;border:none;padding:6px;cursor:pointer;width:36px;height:36px;position:relative}
+.nav-toggle span{display:block;position:absolute;left:8px;right:8px;height:2px;background:#1a1612;border-radius:2px;transition:transform .25s,opacity .25s,top .25s}
+.nav-toggle span:nth-child(1){top:11px}.nav-toggle span:nth-child(2){top:17px}.nav-toggle span:nth-child(3){top:23px}
+.nav-toggle.open span:nth-child(1){top:17px;transform:rotate(45deg)}.nav-toggle.open span:nth-child(2){opacity:0}.nav-toggle.open span:nth-child(3){top:17px;transform:rotate(-45deg)}
+.tablewrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:22px 0;border:1px solid var(--line);border-radius:10px;background:#fff;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.tablewrap table{border-collapse:collapse;width:100%;min-width:600px;font-size:18px;line-height:1.65}
+.tablewrap .zh{display:block;margin-top:5px;font-size:16px;line-height:1.55;color:var(--muted);font-weight:400}
+.tablewrap th,.tablewrap td{padding:12px 14px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top;color:#3a342d}
+.tablewrap thead th{background:var(--soft);font-weight:900;font-size:18px;color:#1a1612;white-space:nowrap}
+.tablewrap tbody tr:last-child td{border-bottom:none}
+.tablewrap td code,.section code{background:var(--soft);border:1px solid var(--line);border-radius:5px;padding:1px 6px;font:500 15px/1.5 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace}
+.inline-figure.wide{max-width:1000px}
+.toc{margin:26px 0 0;padding:20px 22px;background:#fff;border:1px solid var(--line);border-radius:10px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.toc>b{display:block;font-size:15px;letter-spacing:.05em;color:var(--green);margin-bottom:10px}
+.toc ol{margin:0;padding-left:1.35em;font-size:18px;line-height:1.7}
+.toc li{margin-bottom:7px;color:#3a342d}
+.toc a{color:var(--blue);font-weight:700;text-decoration:none}.toc a:hover{text-decoration:underline}
+.toc-hint{margin:12px 0 0!important;font-size:18px!important;color:var(--muted)!important;border-top:1px solid var(--line);padding-top:12px}
+.readmore{margin-top:24px;padding:20px 22px;background:var(--soft);border:1px solid var(--line);border-radius:12px}
+.readmore.near{margin:26px 0 6px;background:rgba(86,137,184,.07);border-color:#bcd0e2}
+.readmore.near b{color:var(--blue);font-size:18px}
+.readmore.near li{font-size:17px;line-height:1.7;margin-bottom:10px}
+.readmore b{display:block;margin-bottom:10px;font-size:19px}
+.readmore ul{margin:0;padding-left:1.25em}
+.readmore a{color:var(--blue);font-weight:700;text-decoration:none}
+.readmore a:hover{text-decoration:underline}
+@media(max-width:820px){.tablewrap table{min-width:560px;font-size:18px}.tablewrap{position:relative}.tablewrap::after{content:"表格可左右滑動 →";position:sticky;left:0;display:block;font-size:15px;color:var(--muted);background:var(--soft);border-top:1px solid var(--line);padding:7px 12px;width:100%}}
+@media(max-width:860px){
+ nav.top .container{grid-template-columns:auto 1fr auto;padding:10px 16px;gap:12px}
+ .nav-brand-img img{height:32px}
+ .nav-toggle{display:block;justify-self:end}
+ nav.top ul.nav-menu{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(254,252,248,.98);backdrop-filter:blur(14px);border-bottom:1px solid #d8cdb8;flex-direction:column;gap:0;padding:8px 0;box-shadow:0 10px 24px rgba(107,74,42,.08)}
+ nav.top ul.nav-menu.open{display:flex}
+ nav.top ul.nav-menu li{border-bottom:1px solid #e8dfc9}
+ nav.top ul.nav-menu li:last-child{border-bottom:none}
+ nav.top ul.nav-menu a{display:block;padding:14px 20px;font-size:1.06rem}
+}
+/* 滑鼠暖光暈（與首頁同一支 spotlight.js） */
+body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradient(var(--sp-radius) circle at var(--mx,50%) var(--my,50%),var(--sp-shadow) 0%,var(--sp-shadow-edge) 45%,transparent 75%);pointer-events:none;z-index:9999;mix-blend-mode:multiply;transition:background .06s linear}
+.hero{position:relative;overflow:hidden;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:72px;padding:96px clamp(20px,6vw,88px) 80px;background:linear-gradient(180deg,#fffcf0 0%,#f9e9d2 100%);color:#1a1612;border-bottom:1px solid #d8cdb8}
+.hero .wc{position:absolute;border-radius:50%;filter:blur(60px);pointer-events:none;z-index:0}
+.hero .wc1{width:420px;height:360px;top:-120px;right:-80px;background:#e8884b;opacity:.15}
+.hero .wc2{width:360px;height:300px;bottom:-110px;left:-70px;background:#5f7553;opacity:.13}
+.hero .wc3{width:280px;height:260px;top:34%;left:14%;background:#a08144;opacity:.10}
+.hero>div{flex:none;width:860px;max-width:100%;position:relative;z-index:2}
+.hero-figure{margin:0;width:420px;flex:none;position:relative;z-index:2}
+.hero-figure img{display:block;width:100%;border-radius:16px;border:1px solid #d8cdb8;box-shadow:0 18px 45px rgba(107,74,42,.16);cursor:zoom-in}
+.hero-figure figcaption{margin-top:10px;font-size:14px;line-height:1.6;color:#6a635a}
+.inline-figure{margin:30px auto 8px;max-width:820px}
+.inline-figure img{display:block;width:100%;border-radius:14px;border:1px solid var(--line);box-shadow:var(--shadow);background:#fff;cursor:zoom-in}
+.inline-figure figcaption{font-size:14px;line-height:1.6;color:var(--muted);margin-top:10px}
+.lightbox{position:fixed;inset:0;z-index:10000;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(12,10,8,.92);cursor:zoom-out;backdrop-filter:blur(4px)}
+.lightbox.open{display:flex}.lightbox img{max-width:96vw;max-height:92vh;border-radius:10px;box-shadow:0 24px 60px rgba(0,0,0,.5)}
+.lightbox-close{position:fixed;top:18px;right:24px;color:#fff;font-size:34px;line-height:1;font-weight:700;cursor:pointer;opacity:.85}
+.kicker{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.55rem;color:#7a5c3a;font-weight:500}
+.hero h1{max-width:none;margin:16px 0 18px;font-size:clamp(36px,6vw,72px);line-height:1.08;overflow-wrap:anywhere}
+.hero p{max-width:none;font-size:clamp(18px,2vw,23px);line-height:1.62;color:#3a342d}
+.cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
+.cta a{display:inline-flex;align-items:center;text-decoration:none;border-radius:8px;padding:12px 16px;font-weight:900}
+.cta .primary{background:#fff;color:#1a1612}.cta .ghost{border:1px solid rgba(255,255,255,.32);color:#fff;background:rgba(255,255,255,.08)}
+.section{padding:54px clamp(20px,6vw,88px);border-top:1px solid var(--line)}
+.inner{width:min(1000px,100%);margin:0 auto}
+.section h2{font-size:clamp(26px,4.2vw,48px);line-height:1.12;margin:0 0 18px}
+.section h3{font-size:clamp(21px,3vw,30px);line-height:1.2;margin:30px 0 12px}
+.lead{font-size:clamp(18px,1.6vw,22px);line-height:1.7;color:#3a342d;max-width:900px}
+.section p{font-size:18px;line-height:1.74;color:#3a342d}.section p+p{margin-top:14px}
+.section ul,.section ol{padding-left:1.4em;font-size:18px;line-height:1.74;color:#3a342d}.section li{margin-bottom:8px}
+.meaning{margin:22px 0;padding:16px 18px;border-left:5px solid var(--blue);background:rgba(86,137,184,.12);border-radius:6px;line-height:1.7;font-size:19px}
+.meaning b{display:block;color:var(--blue);margin-bottom:4px}
+.caveat{margin:0 0 8px;padding:16px 18px;border-left:5px solid var(--orange);background:rgba(232,90,79,.1);border-radius:6px;line-height:1.7;font-size:18px;color:#3a342d}
+.caveat b{display:block;color:var(--orange);margin-bottom:4px}
+.infocard{background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px 24px 22px;box-shadow:0 8px 22px rgba(107,74,42,.08);margin-top:8px}
+.infocard-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.info-item{padding:18px 14px 0}
+.info-item b{display:block;font-size:14px;font-weight:900;letter-spacing:.04em;margin-bottom:7px;text-transform:uppercase}
+.info-item:nth-child(1) b{color:var(--green)}.info-item:nth-child(2) b{color:var(--orange)}.info-item:nth-child(3) b{color:var(--blue)}
+.info-item p{margin:0;font-size:17px;line-height:1.6;color:#3a342d}
+.tagrow{display:flex;flex-wrap:wrap;gap:7px;margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
+.tag{font-size:14px;color:var(--muted);background:var(--soft);border:1px solid var(--line);border-radius:999px;padding:4px 11px}
+.duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:24px}
+.duo.stack{grid-template-columns:1fr}
+.duo .card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:22px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.duo .card.a{border-color:var(--orange)}.duo .card.b{border-color:var(--green);box-shadow:0 8px 24px rgba(95,117,83,.16)}
+.duo .card small{display:block;font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.04em;margin-bottom:9px}
+.duo .card.a small{color:var(--orange)}.duo .card.b small{color:var(--green)}
+.duo .card b{display:block;font-size:22px;line-height:1.3;margin-bottom:12px}.duo .card.a b{color:#c0512f}.duo .card.b b{color:#4a7a59}
+.duo .card p{margin:0;color:#3a342d;line-height:1.75;font-size:18px}
+.workflow-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:24px}
+.workflow-step{background:#fff;border:1px solid var(--line);border-radius:8px;padding:18px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.workflow-step small{display:block;color:var(--orange);font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;margin-bottom:9px}
+.workflow-step b{display:block;font-size:18px;line-height:1.3;margin-bottom:9px}
+.workflow-step p{margin:0;color:#3a342d;line-height:1.6;font-size:16px}
+.codeblock{background:var(--dark);color:#f3ead9;border-radius:8px;padding:18px 20px;font:500 14px/1.65 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;overflow-x:auto;white-space:pre-wrap;margin:20px 0;box-shadow:0 8px 22px rgba(107,74,42,.12)}
+.codeblock .c{color:#f6d7a6;font-weight:600}
+.skillcard{background:#fff;border:1px solid var(--green);border-radius:12px;padding:24px;box-shadow:0 10px 26px rgba(95,117,83,.16);margin-top:8px}
+.skillcard b{display:block;font-size:21px;margin-bottom:8px}
+.skillcard p{margin:0 0 16px;font-size:17px;line-height:1.65;color:#3a342d}
+.cta-band{background:#e6f0e5;color:#3a342d}.cta-band .section{border-top:none}
+.cta-band .inner{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(260px,.85fr);gap:26px;align-items:start}
+.cta-band h2{font-size:clamp(26px,4vw,44px);margin:0 0 16px}.cta-band p,.cta-band .lead{color:rgba(58,52,45,.9);font-size:18px;line-height:1.72}
+.cta-card{border:1px solid #cfe0d2;background:#fbfdfa;border-radius:8px;padding:22px}
+.cta-card b{display:block;color:#48b178;margin-bottom:10px;font-size:18px}.cta-card p{margin:0 0 14px}
+.footer{padding:30px clamp(20px,6vw,88px);font-size:14px;color:var(--muted);background:#fff;border-top:1px solid var(--line)}
+.footer-inner{width:min(1000px,100%);margin:0 auto}
+.footer-links{display:flex;flex-wrap:wrap;gap:6px 12px;margin-bottom:14px}.footer-links a{color:var(--blue);font-weight:900;text-decoration:none;font-size:14px}
+.footer-brand{font-weight:900;font-size:15px;margin-bottom:10px}.footer-note{font-size:13px;line-height:1.6}
+@media(max-width:820px){.infocard-grid{grid-template-columns:1fr}.duo{grid-template-columns:1fr}.workflow-grid{grid-template-columns:1fr}.cta-band .inner{grid-template-columns:1fr}.section{padding:40px 20px}.hero{min-height:52vh;flex-direction:column;justify-content:flex-start;align-items:flex-start;gap:24px}.hero>div{width:100%}.hero-figure{width:100%;max-width:560px}}
+@media(max-width:820px){html,body{overflow-x:hidden}.hero h1{word-break:break-word}}
+/* 託管平台決策樹（點選式＋全圖總覽） */
+.dtree{margin:28px 0 8px;background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);padding:22px clamp(16px,3vw,28px) 24px}
+.dt-head b{display:block;font-size:21px;line-height:1.35;color:#1a1612}
+.dt-head span{display:block;margin-top:6px;font-size:18px;line-height:1.6;color:var(--muted)}
+.dt-crumbs{list-style:none;margin:16px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:8px}
+.dt-crumbs:empty{display:none}
+.dt-crumbs li{font-size:18px;line-height:1.4;background:var(--soft);border:1px solid var(--line);border-radius:999px;padding:5px 12px;color:#3a342d}
+.dt-crumbs li b{color:var(--green);font-weight:700}
+.dt-card{margin-top:16px;border:2px solid var(--blue);border-radius:12px;padding:18px 20px;background:rgba(86,137,184,.06);animation:dtIn .35s ease}
+.dt-card.is-end{border-color:var(--green);background:rgba(95,117,83,.08)}
+.dt-step{display:block;font:700 18px/1.3 -apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC",sans-serif;color:var(--blue);margin-bottom:6px}
+.dt-card.is-end .dt-step{color:var(--green)}
+.dtree .dt-q{font-size:clamp(22px,3vw,28px);line-height:1.3;font-weight:800;margin:0 0 8px;color:#1a1612}
+.dtree .dt-hint{font-size:18px!important;line-height:1.65!important;color:#3a342d!important;margin:0 0 14px!important}
+.dt-opts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.dt-opt{font:inherit;font-size:18px;line-height:1.5;text-align:left;background:#fff;border:1px solid var(--line);border-radius:10px;padding:14px 16px;cursor:pointer;color:#1a1612;transition:border-color .2s,box-shadow .2s,transform .2s}
+.dt-opt b{display:block;font-size:19px;margin-bottom:3px}
+.dt-opt span{display:block;color:var(--muted);font-size:18px}
+.dt-opt:hover,.dt-opt:focus-visible{border-color:var(--blue);box-shadow:0 6px 18px rgba(86,137,184,.2);transform:translateY(-1px);outline:none}
+.dtree .dt-platform{font-size:clamp(24px,3.4vw,32px);line-height:1.25;font-weight:900;color:#3f6b4a;margin:0 0 10px}
+.dt-card dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:6px 14px;font-size:18px;line-height:1.65}
+.dt-card dt{font-weight:800;color:#3a342d;white-space:nowrap}
+.dt-card dd{margin:0;color:#3a342d}
+.dt-card dd ul{margin:0;padding-left:1.2em}
+.dt-card dd li{margin-bottom:4px}
+.dt-more{display:inline-block;margin-top:12px;font-size:18px;font-weight:700;color:var(--blue);text-decoration:none}
+.dt-more:hover{text-decoration:underline}
+.dt-controls{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap}
+.dt-btn{font:inherit;font-size:18px;border-radius:8px;padding:9px 16px;cursor:pointer;border:1px solid var(--line);background:var(--soft);color:#3a342d}
+.dt-btn:hover,.dt-btn:focus-visible{border-color:var(--blue);outline:none}
+.dt-btn[disabled]{opacity:.45;cursor:default}
+.dt-overview{margin-top:22px;border-top:1px solid var(--line);padding-top:16px}
+.dt-ovtitle{display:block;font-size:18px;color:var(--green);letter-spacing:.04em;margin-bottom:8px}
+.dt-swipe{display:none;font-size:18px;color:var(--muted);margin-bottom:6px}
+.dt-svgwrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+#dt-svg{display:block;width:100%;min-width:760px;height:auto}
+#dt-svg .edge{fill:none;stroke:#d8cdb8;stroke-width:2.5}
+#dt-svg .edge-on{fill:none;stroke:var(--blue);stroke-width:5;stroke-linecap:round;transition:stroke-dashoffset .6s ease}
+#dt-svg .elabel{font-size:18px;fill:#6a635a;font-family:"Noto Sans TC",system-ui,sans-serif}
+#dt-svg .elabel.on{fill:var(--blue);font-weight:700}
+#dt-svg .node rect{fill:#fff;stroke:#d8cdb8;stroke-width:2;transition:fill .3s,stroke .3s}
+#dt-svg .node text{font-size:18px;fill:#3a342d;font-family:"Noto Sans TC",system-ui,sans-serif;pointer-events:none}
+#dt-svg .node .t1{font-weight:800;fill:#1a1612}
+#dt-svg .node.end rect{fill:#f4f8f1;stroke:#c9dbc4}
+#dt-svg .node.end .t1{fill:#3f6b4a}
+#dt-svg .node{cursor:pointer}
+#dt-svg .node:focus{outline:none}
+#dt-svg .node:focus-visible rect,#dt-svg .node:hover rect{stroke:var(--blue);stroke-width:3}
+#dt-svg .node.on rect{stroke:var(--blue);stroke-width:3;fill:rgba(86,137,184,.1)}
+#dt-svg .node.cur rect{stroke:var(--orange);stroke-width:4}
+#dt-svg .node.end.on rect{stroke:var(--green);fill:rgba(95,117,83,.18)}
+.dt-fallback{margin-top:18px;font-size:18px;line-height:1.7}
+.dt-fallback b{font-weight:800}
+.dtree.js .dt-fallback{display:none}
+.dtree:not(.js) .dt-controls,.dtree:not(.js) .dt-overview,.dtree:not(.js) .dt-card{display:none}
+.copywrap{position:relative}
+.copybtn{position:absolute;top:10px;right:10px;z-index:2;background:#fff}
+.copywrap .codeblock{padding-top:56px;font-size:16px}
+@keyframes dtIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@media(max-width:820px){.dt-swipe{display:block}.dt-opts{grid-template-columns:1fr}.dt-card dl{grid-template-columns:1fr}.dt-card dt{margin-top:6px}}
+@media(prefers-reduced-motion:reduce){.dt-card{animation:none}#dt-svg .edge-on{transition:none}.dt-opt{transition:none}}
+</style>
+</head>
+<body class="spotlight">
+<!-- 官網共用導航列 nav.top：與首頁/總站同一條，文章不要自己另做極簡 topbar（江江 2026-06-25：要同一個框架、同一條導航列）。把對應頁面的 class="active" 標在自己那欄。
+     ⚠️ 下面 ul.nav-menu 整塊由 preflight 第 5 關 check-bilingual-nav.mjs 做「逐字比對」，
+        塞任何註解、多一個空白、換行位置不同都會被判導航不一致而擋下發布。要說明就寫在 <ul> 外面（像這裡）。
+        2026-08-16 修：原本的 EN 那行說明註解就夾在 <ul> 裡面，導致照範本起手的新文章一律卡第 5 關
+        （llm-rag-agent-mcp 與 rag-three-retrieval-modes 兩篇同時中招）。註解已移出來，<ul> 內保持乾淨。
+        萬一還是被擋，直接跑：node scripts/check-bilingual-nav.mjs --write --only=<你的檔案路徑> -->
+<nav class="top">
+  <div class="container">
+    <a class="nav-brand-img" href="../../index.html"><img src="../../images/footer-signature.png" alt="江江教練 | 江昱德"></a>
+    <button class="nav-toggle" aria-label="選單"><span></span><span></span><span></span></button>
+    <ul class="nav-menu">
+      <li><a href="../../index.html">首頁</a></li>
+      <li><a href="../../knowledge-architecture.html">知識架構</a></li>
+      <li><a href="../../courses.html">課程</a></li>
+      <li><a href="../../articles.html" class="active">深度文章</a></li>
+      <li><a href="../../skills.html">技能包下載</a></li>
+      <li><a href="../../offers.html">服務方案</a></li>
+      <li class="lang-switch"><a href="../../en/articles.html" hreflang="en">EN</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="wc wc1"></div>
+  <div class="wc wc2"></div>
+  <div class="wc wc3"></div>
+  <div>
+    <div class="kicker">決策樹 / 網站上線</div>
+    <h1>我的網頁是哪一種，該放哪個託管平台？｜託管平台決策樹，四個問題分出六種網頁與對應平台</h1>
+    <p>照「網頁需要什麼」回答四個問題，走到六個終點之一。每個終點附上我真的放在那個平台上的網站。</p>
+  </div>
+</section>
+
+<main>
+
+<section class="section" id="start">
+  <div class="inner">
+    <p class="lead">用 AI 做好一頁網頁之後，下一個問題是放哪裡。Vercel、Netlify、Cloudflare、GitHub Pages、Railway、Render，每一家都說自己一鍵部署。我手上有 37 個網站分散在三個平台上，這篇把我怎麼決定放哪裡整理成一棵決策樹：回答四個問題，就會走到一個平台，每個終點附上我真的放在那裡的網站。</p>
+
+    <div class="duo stack">
+      <div class="card a">
+        <b>適合誰</b>
+        <ul>
+          <li>用 AI 做好網頁或小工具，把 <code>localhost</code> 網址傳給朋友，對方打不開</li>
+          <li>聽過 Vercel、Cloudflare、GitHub Pages，不知道差在哪</li>
+          <li>手上的網頁有密碼、有會員、要存資料，不確定免費平台放不放得下</li>
+          <li>要幫客戶架站，想先搞清楚哪些平台的免費方案可以拿來做生意</li>
+        </ul>
+      </div>
+      <div class="card b">
+        <b>你可以帶走什麼</b>
+        <ul>
+          <li>一棵可以點選的決策樹：四個問題，走到六個終點之一</li>
+          <li>每個終點對應的平台、適合的網頁類型、我放在那裡的案例</li>
+          <li>判斷不出來時，直接貼給 AI 的一段提示詞</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="localhost">
+  <div class="inner">
+    <h2>先分清楚：localhost 是你自己的電腦，託管平台是一台幫你開著的電腦</h2>
+    <p>AI 幫你寫完程式，瀏覽器打開的網址常常是 <code>localhost:3000</code>。localhost 的意思是「這台電腦自己」，朋友點開這個網址，他的手機會去找他自己的手機，當然找不到你的網頁。</p>
+    <p>要讓別人打得開，就要把網頁放到一台一直開著、有公開網址的電腦上。有三條路：</p>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>路線</th><th>是什麼</th><th>代價</th></tr></thead>
+        <tbody>
+          <tr><td><b>自己家裡的電腦</b></td><td>筆電或小主機一直不關機</td><td>停電、斷網、電腦睡著網站就掛，還要自己處理資安</td></tr>
+          <tr><td><b>租雲端主機（VPS）</b></td><td>雲端公司切一台空的虛擬電腦給你</td><td>從作業系統到防火牆都要自己設定</td></tr>
+          <tr><td><b>託管平台</b></td><td>平台把主機、環境、網址都包好，你只交檔案或程式碼</td><td>要照平台的規則與額度走</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>對用 AI 做網頁的人，第三條路最省事。這篇只講第三條路裡怎麼選。</p>
+  </div>
+</section>
+
+<section class="section" id="tree">
+  <div class="inner">
+    <h2>平台先別比規格，先回答你的網頁是哪一種</h2>
+    <p>選平台最常見的卡法，是先去比各家規格，越比越亂。平台只是工具，先搞清楚自己的網頁需要什麼，答案會自己縮到一兩家。</p>
+    <p>下面四個問題照順序問。Gary Chen 在他的<a href="https://www.youtube.com/watch?v=6bvEcpm72W0" target="_blank" rel="noopener">部署教學影片</a>裡用了三個判斷問題：要不要後端、全端還是前後端分離、要不要 24 小時開著。我照自己 37 個站的實際情況改成四題，多加了一題「要公開還是只給特定人看」，因為我的網站有一大半是給客戶或學員看的。</p>
+
+    <div class="dtree" id="dtree">
+      <div class="dt-head">
+        <b>點選看看：你的網頁會走到哪個平台</b>
+        <span>一題一題點答案，路線會在下方總覽圖亮起來。也可以直接點總覽圖上的終點。</span>
+      </div>
+      <ol class="dt-crumbs" id="dt-crumbs" aria-label="已回答的問題"></ol>
+      <div class="dt-card" id="dt-card" aria-live="polite"></div>
+      <div class="dt-controls">
+        <button type="button" class="dt-btn ghost" id="dt-back">← 上一步</button>
+        <button type="button" class="dt-btn ghost" id="dt-reset">重來</button>
+      </div>
+      <div class="dt-overview">
+        <b class="dt-ovtitle">全圖總覽</b><span class="dt-swipe">圖比螢幕寬，可以左右滑動看完整棵樹 →</span>
+        <div class="dt-svgwrap">
+          <svg id="dt-svg" viewBox="0 0 760 620" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="託管平台決策樹全圖：四個問題分出六個終點"></svg>
+        </div>
+      </div>
+      <div class="dt-fallback">
+        <b>決策樹文字版</b>
+        <ol>
+          <li>需要後端嗎？不需要 → 要公開嗎？公開 → <b>終點一 Cloudflare Pages</b>；只給特定人看 → <b>終點二 Cloudflare Pages 加不收錄設定</b></li>
+          <li>需要後端 → 後端的工作多久做完？要長時間跑或一直開著 → <b>終點六 常駐主機平台</b></li>
+          <li>幾秒內做完 → 用 Next.js 這類全端框架寫的？是 → <b>終點五 Vercel</b></li>
+          <li>不是，是一般網頁加一小段伺服器程式 → 要被外部服務叫醒或定時跑嗎？等訪客來按 → <b>終點三 Cloudflare Pages 加 Pages Functions</b>；要 → <b>終點四 Cloudflare Workers 加排程</b></li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="q1">
+  <div class="inner">
+    <h2>第一題：你的網頁需要後端嗎？</h2>
+    <p>後端是網頁背後看不見的那一段程式。判斷方法很簡單，下面任何一項答「要」，就是需要後端：</p>
+    <ul>
+      <li>要登入、要輸入密碼才看得到</li>
+      <li>要把使用者填的資料、上傳的照片存起來</li>
+      <li>要呼叫 AI，而 API 金鑰不能讓瀏覽器看到</li>
+      <li>要接 LINE 這類外部服務的通知，或要定時自己跑</li>
+    </ul>
+    <p>全部都不要，就是純靜態網頁：作品集、活動介紹、課程簡介、簡報、一頁式名片。</p>
+    <p>不確定的話，直接問幫你寫程式的 AI：「這個專案是純靜態網站，還是有包含後端運算？」</p>
+  </div>
+</section>
+
+<section class="section" id="no-backend">
+  <div class="inner">
+    <h2>不需要後端的網頁：再問要公開，還是只給特定人看</h2>
+
+    <h3 id="end1">終點一：公開的靜態網頁，放 Cloudflare Pages</h3>
+    <p>純靜態網頁要的只有兩件事：開得快、不會因為流量被收錢。Cloudflare Pages 的靜態檔案流量不計量（2026-09-15 查官方文件），把網頁資料夾拖上去就有網址。</p>
+    <p><b>我的案例：攝影網站搬家。</b>161 頁、一萬四千多個檔案、2.5 GB 的網站，從 Webnode 整站搬到 Cloudflare Pages。它單一檔案上限 25 MiB、每站 20,000 個檔案，這個網站都在範圍內。</p>
+    <p>GitHub Pages 與 Vercel 也都能放靜態網頁。GitHub Pages 要注意，免費帳號只能從公開的 repo 發布，發布出去的網站也是公開的（2026-09-16 查官方文件）；它的使用條款也不允許拿它當免費主機經營線上生意（2026-08-19 查證），幫客戶做商業網站不要選它。我的 AI 名片和幾個早期 demo 在 GitHub Pages 上，還在正常運作。2026 年 8 月起，我新做的網頁預設放 Cloudflare，GitHub Pages 上的舊站只維護不新增。</p>
+    <div class="readmore near">
+      <b>整站搬家的完整過程，我另外寫過</b>
+      <ul>
+        <li><a href="../webnode-to-cloudflare-pages/">官網搬家一個月零元：把攝影網站從 Webnode 整站搬到 Cloudflare Pages</a>　這一段只講它為什麼放 Cloudflare Pages，那篇講搬家五步驟，以及抓站工具漏掉 65% 圖片的坑。</li>
+      </ul>
+    </div>
+
+    <h3 id="end2">終點二：只給特定人看的靜態網頁，放 Cloudflare Pages 加上不被搜尋收錄的設定</h3>
+    <p>有些頁面不想被搜尋引擎找到，但要讓收到網址的人手機點開就能看：文章草稿、會議整理、給客戶的提案頁。</p>
+    <p>我的做法是放 Cloudflare Pages，網址取一個隨機的名字，加上「不要收錄」的設定（<code>noindex</code> 與 robots 全擋），不設登入。</p>
+    <p><b>我的案例：</b></p>
+    <ul>
+      <li><b>文章草稿預覽站</b>：文章上線前先推到這裡，傳網址給要看稿的人。之前用別家平台的預覽網址，對方手機一點就跳登入頁，打不開。</li>
+      <li><b>網站放哪裡的決策頁</b>：2026 年 9 月我自己要決定 37 個站怎麼分配，做了一頁四個問題的決策頁，也是用這個方式放上去。</li>
+    </ul>
+    <div class="caveat"><b>不收錄不等於上鎖</b>拿到網址的人都看得到。內容真的不能外流，就要回到第一題，答「需要後端」，加一道密碼。</div>
+    <div class="readmore near">
+      <b>網頁要鎖到什麼程度，我另外排過一個順序</b>
+      <ul>
+        <li><a href="../who-can-see-your-site/">你的網頁其實沒鎖：公開資訊、付費內容、機密隱私該放哪一層</a>　這一段只講「不收錄」這一層，那篇把六層防護排開，說清楚每一層擋得住什麼、擋不住什麼。</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="backend">
+  <div class="inner">
+    <h2>需要後端的網頁：再問後端的工作多久做完</h2>
+    <p>後端有兩種運作方式。</p>
+    <div class="duo">
+      <div class="card b">
+        <b>按一下才醒來（Serverless）</b>
+        <p>訪客按按鈕的那一刻，雲端才啟動一小段程式，幾秒內做完就關掉。登入驗證、記一筆資料、呼叫一次 AI 都屬於這種。沒人用時不花錢，所以免費額度通常給得大方。</p>
+      </div>
+      <div class="card a">
+        <b>要長時間跑或一直開著（常駐伺服器）</b>
+        <p>一次要跑好幾分鐘以上的任務（例如影片轉檔），或雲端要有一台電腦 24 小時不關（例如一直在抓資料的爬蟲、多人即時聊天室），需要這種。</p>
+      </div>
+    </div>
+
+    <h3 id="end6">終點六：要長時間跑或一直開著的，放常駐主機平台</h3>
+    <p>Gary Chen 在影片裡推薦 Railway 或 Render。這兩家都有免費方案，但免費方案會休眠或有限制，例如 Render 的免費網頁服務閒置 15 分鐘就休眠（2026-09-16 查官方文件）。要穩定常駐、不休眠，通常就要付月費，買的是「不用自己維護伺服器」。</p>
+    <p>這一類我沒有放在雲端的案例。我需要長時間跑的東西，例如 2026 年 9 月初花東參訪期間每小時自動整理語音筆記，是在家裡的 Mac 上跑排程，也就是前面表格的第一條路。它的代價我實際遇過：第一版用系統排程啟動，排程程式沒有讀取語音備忘錄的權限，連續十輪失敗，當下沒有人發現。</p>
+  </div>
+</section>
+
+<section class="section" id="short-backend">
+  <div class="inner">
+    <h2>後端幾秒內做完的網頁：再問是用什麼寫的</h2>
+
+    <h3 id="end5">終點五：用 Next.js 這類全端框架寫的，放 Vercel</h3>
+    <p>全端框架是把畫面和後端寫在同一個專案裡，最常見的是 Next.js。判斷方法：你在電腦上只要開一個終端機視窗、打一行指令，整個網站就能動，通常就是全端專案。</p>
+    <p>Next.js 是 Vercel 這家公司開發的，放 Vercel 支援度最好，這也是 Gary Chen 影片給的建議。如果你用的是 Next.js 以外的全端框架，先請 AI 查這個框架官方支援部署到哪些平台，再回來選。</p>
+    <p><b>我的案例：知識官網。</b>它放在 Vercel，但不是用 Next.js 寫的，是靜態頁面加上幾支伺服器端小程式（站內 AI 客服、瀏覽次數統計）。</p>
+    <p>Next.js 專案如果有要跑很久的任務，走回上一題，選「要長時間跑或一直開著」。</p>
+    <div class="caveat"><b>Vercel 免費方案限非商業用途</b>Vercel 免費方案（Hobby）的條款寫明只限非商業的個人用途（2026-09-08 查官方頁）。官網、付費客戶的交付頁、課程報名頁都算商業用途，要用 Vercel 就要考慮付費的 Pro 方案，或改放其他平台。我盤點 37 個站的時候才把這件事攤開來看，官網該不該搬、要不要升級付費方案，到現在還是待決定的事。</div>
+    <div class="readmore near">
+      <b>三家的額度與商用條款原文，我另外整理過</b>
+      <ul>
+        <li><a href="../github-vercel-cloudflare-compare/">網站放 GitHub、Vercel 還是 Cloudflare？三家免費額度、商用限制與功能差異</a>　這一段只提 Vercel 的商用限制，那篇逐條列三家的額度、超額單價與條款原文。</li>
+      </ul>
+    </div>
+
+    <h3 id="cf-backend">一般網頁加一小段伺服器程式：最後問要不要被外部服務叫醒或定時跑</h3>
+    <p>大部分用 AI 做出來的網頁，是 HTML 加上一小段處理密碼、存資料的程式。這一類我全部放在 Cloudflare，最後只差一題：它是等訪客來按，還是要被 LINE 這類外部服務叫醒、或定時自己跑。</p>
+
+    <h3 id="end3">終點三：等訪客來按的，放 Cloudflare Pages 加 Pages Functions</h3>
+    <p>Pages Functions 是掛在 Pages 網站上的一小段伺服器端程式。要存資料就再接 D1（表格資料庫）、R2（放大檔案）或 KV（放小段設定）。</p>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>我的網站</th><th>後端在做什麼</th><th>另外接了</th></tr></thead>
+        <tbody>
+          <tr><td><b>個人工作台</b></td><td>加一道密碼，筆電手機都能看</td><td>無</td></tr>
+          <tr><td><b>合作單位的課程站</b></td><td>站長、主講師、助教、學員四層會員</td><td>KV</td></tr>
+          <tr><td><b>調香工作坊的香氛卡站</b></td><td>學員填配方生成香氛卡，老師後台匯出</td><td>KV</td></tr>
+          <tr><td><b>參訪行程頁</b></td><td>成員用手機傳照片</td><td>D1、R2</td></tr>
+          <tr><td><b>學員生圖工作站</b></td><td>密碼進場、生圖、發表到成果牆</td><td>D1、R2</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Pages Functions 的呼叫次數跟靜態檔案分開算，它吃的是 Workers 的免費額度。另外，Cloudflare 官方文件現在建議新專案從 Workers 開始，Workers 也能放靜態網站，Pages 沒有停用（2026-09-15 查證）。我上面這幾個都還在 Pages 上正常運作；你要開新專案，可以直接照官方建議用 Workers。</p>
+
+    <h3 id="end4">終點四：要被外部服務叫醒、或定時自己跑的，放 Cloudflare Workers 加排程</h3>
+    <p><b>我的案例：萊卡 LINE 群助理。</b>LINE 群有新訊息，LINE 會主動通知一個網址，接這通通知的是 Workers 上的一小段程式，它把訊息記進 D1 資料庫。身上還掛著排程，每五分鐘醒來一次，把群裡的照片備份到 Google 雲端硬碟。家裡不用有任何一台電腦開著。</p>
+  </div>
+</section>
+
+<section class="section" id="summary">
+  <div class="inner">
+    <h2>六種網頁對應的平台與我的案例一覽</h2>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>終點</th><th>你的網頁</th><th>平台</th><th>我的案例</th></tr></thead>
+        <tbody>
+          <tr><td>一</td><td>公開的純靜態網頁</td><td>Cloudflare Pages（GitHub Pages、Vercel 也可）</td><td>攝影網站搬家、AI 名片（GitHub Pages）</td></tr>
+          <tr><td>二</td><td>只給特定人看的純靜態網頁</td><td>Cloudflare Pages 加不收錄設定</td><td>文章草稿預覽站、網站分配決策頁</td></tr>
+          <tr><td>三</td><td>有密碼、會員、存資料，等訪客來按</td><td>Cloudflare Pages 加 Pages Functions</td><td>工作台、課程站、香氛卡站、行程頁、生圖工作站</td></tr>
+          <tr><td>四</td><td>要被外部服務叫醒或定時跑</td><td>Cloudflare Workers 加排程</td><td>萊卡 LINE 群助理</td></tr>
+          <tr><td>五</td><td>Next.js 這類全端框架</td><td>Vercel</td><td>知識官網（不是 Next.js，但放在 Vercel）</td></tr>
+          <tr><td>六</td><td>要長時間跑或 24 小時一直開著</td><td>Railway、Render 這類常駐主機</td><td>雲端沒有案例，我放在家裡的 Mac</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="pitfalls">
+  <div class="inner">
+    <h2>網頁放上平台之後，我踩過的兩個坑</h2>
+    <h3>部署顯示成功，網站按了卻沒反應</h3>
+    <p>密碼、API 金鑰不能跟著程式碼一起上傳，要另外在平台後台設定。我在 Cloudflare Pages Functions 上遇過：金鑰分成正式網站和預覽網站兩套，只設了一套，預覽網站就一直顯示「密碼不對」；設完還要重新部署一次才生效。部署紀錄是綠燈，不代表網站會動，要自己點一遍。</p>
+    <h3>免費額度是整個帳號共用一份</h3>
+    <p>兩家的免費方案，額度都是整個帳號加總計算，不是一個網站一份。2026 年 9 月 6、7 日，我同一個 Cloudflare 帳號裡一支每幾分鐘就跑一次的檢查程式，把資料庫的每日讀取額度吃完，同帳號其他網站的寫入也一起被擋。後來補上索引解決。所以規劃的時候，實驗性質、會頻繁自動執行的東西，要想清楚跟正式網站放不放在同一個帳號。</p>
+  </div>
+</section>
+
+<section class="section" id="prompt">
+  <div class="inner">
+    <h2>判斷不出網頁是哪一種，把這段提示詞交給 AI</h2>
+    <p>把下面這段貼給幫你寫程式的 AI，它會看你的專案回答四個問題：</p>
+    <div class="copywrap">
+      <button type="button" class="dt-btn copybtn" data-copy-target="hosting-prompt">複製提示詞</button>
+      <pre class="codeblock" id="hosting-prompt">請看這個專案，依序回答四個問題，每題附上你從哪個檔案判斷的：
+1. 需不需要後端？（登入、存資料、藏 API 金鑰、接外部通知或排程，任一項就算需要）
+2. 如果不需要後端：這個網頁要公開，還是只給拿到網址的人看？
+3. 如果需要後端：後端的每個動作是幾秒內做完，還是要長時間一直開著？
+4. 如果幾秒內做完：這是 Next.js 這類全端框架，還是一般網頁加一小段伺服器程式？如果是後者，需不需要被外部服務呼叫或定時執行？
+最後告訴我，依照這四個答案應該放 Cloudflare Pages、Cloudflare Workers、Vercel，還是常駐主機平台。不確定的地方直接說不確定，不要猜。</pre>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="how-verified">
+  <div class="inner">
+    <h2>這篇的數字與判斷問題從哪來</h2>
+    <p>Cloudflare 靜態流量不計量、單檔 25 MiB、每站 20,000 檔、官方建議新專案從 Workers 開始，查證日期 2026-09-15；Vercel 免費方案限非商業用途，查證日期 2026-09-08。三個判斷問題的骨架參考自 Gary Chen〈<a href="https://www.youtube.com/watch?v=6bvEcpm72W0" target="_blank" rel="noopener">給非技術人員的部署教學，Vibe Coding 上線前必看</a>〉。案例來自我 2026 年 8 月到 9 月的工作紀錄。平台方案隨時可能調整，開通之前點進官方定價頁看當天的值。</p>
+
+    <div class="readmore">
+      <b>這篇提到過的</b>
+      <ul>
+        <li><a href="../webnode-to-cloudflare-pages/">官網搬家一個月零元：把攝影網站從 Webnode 整站搬到 Cloudflare Pages</a></li>
+        <li><a href="../who-can-see-your-site/">你的網頁其實沒鎖：公開資訊、付費內容、機密隱私該放哪一層</a></li>
+        <li><a href="../github-vercel-cloudflare-compare/">網站放 GitHub、Vercel 還是 Cloudflare？三家免費額度、商用限制與功能差異</a></li>
+      </ul>
+      <b style="margin-top:16px">再往前後延伸</b>
+      <ul>
+        <li><a href="../free-deploy-three-boundaries/">AI 幫你把網頁做好了，該放哪？GitHub Pages 與 Vercel 完整比較</a>　那篇從「誰能看到、是否商用、未來要加什麼」比兩個平台，這篇從「網頁需要什麼」切入。</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<div class="cta-band">
+<section class="section">
+  <div class="inner">
+    <div>
+      <h2>先讓手上那一頁有網址，其他之後再說</h2>
+      <p class="lead">你的網頁如果走到終點一或終點二，今天就放得上去。等網頁真的需要密碼、存資料，再往下走。我每個月固定辦兩場免費線上講座，分享 AI 應用與知識管理的實戰做法。</p>
+      <p>本篇平台條件為 2026 年 9 月查證結果，來源為各平台官方文件與定價頁；案例來自我 2026 年 8 月到 9 月的工作紀錄。平台方案隨時可能調整，重要決策前請重新核對官方頁面。</p>
+    </div>
+    <div class="cta-card">
+      <b>免費線上講座</b>
+      <p>每個月兩場免費講座。</p>
+      <p><a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">點我加入 Line 社群 ↗</a></p>
+      <p><a href="../../offers.html">看服務方案 →</a></p>
+    </div>
+  </div>
+</section>
+</div>
+
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">江江教練 · AI 知識管理</div>
+    <div class="footer-links">
+      <a href="../../articles.html">← 回深度文章總站</a>
+      <a href="../../index.html">首頁</a>
+      <a href="../../learn.html">自學資源</a>
+      <a href="../../skills.html">技能包下載</a>
+      <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">LINE 社群 ↗</a>
+      <a href="https://www.threads.com/@jiang_yude_coach" target="_blank" rel="noopener">Threads ↗</a>
+      <a href="https://vocus.cc/salon/Jiang_Coach" target="_blank" rel="noopener">方格子 ↗</a>
+    </div>
+    <div class="footer-note">這是一篇教學文章，整理我對「我的網頁是哪一種，該放哪個託管平台？｜託管平台決策樹，四個問題分出六種網頁與對應平台」的看法，供你參考。</div>
+  </div>
+</footer>
+
+<!-- 點圖放大 lightbox（hero 與內文圖通用，已內建，不用每篇重加） -->
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <span class="lightbox-close" aria-label="關閉">×</span>
+  <img id="lightbox-img" src="" alt="放大檢視">
+</div>
+<script>
+(function(){
+  var box=document.getElementById('lightbox'),boxImg=document.getElementById('lightbox-img');
+  document.querySelectorAll('.hero-figure img,.inline-figure img').forEach(function(img){
+    img.addEventListener('click',function(){boxImg.src=img.currentSrc||img.src;boxImg.alt=img.alt||'放大檢視';box.classList.add('open');box.setAttribute('aria-hidden','false');});
+  });
+  function close(){box.classList.remove('open');box.setAttribute('aria-hidden','true');boxImg.src='';}
+  box.addEventListener('click',close);
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
+})();
+</script>
+
+<script>
+/* 託管平台決策樹：單一狀態 path（從 q1 起的節點序列），所有畫面都由 render(path) 派生 */
+(function(){
+  var root=document.getElementById('dtree');
+  if(!root)return;
+  try{
+  var NS='http://www.w3.org/2000/svg';
+  var N={
+    q1:{type:'q',step:'第一題',q:'你的網頁需要後端嗎？',short:'需要後端嗎？',hint:'要登入或密碼、要存使用者的資料或照片、要呼叫 AI 而金鑰不能給瀏覽器看到、要接 LINE 通知或定時跑，任何一項答「要」就是需要。',x:380,y:50,
+      opts:[{label:'不需要',sub:'作品集、活動介紹、課程簡介、簡報',to:'q2',e:'不需要'},{label:'需要',sub:'有登入、存資料、藏金鑰或排程',to:'q3',e:'需要'}]},
+    q2:{type:'q',step:'第二題',q:'這個網頁要公開，還是只給特定人看？',short:'要公開嗎？',hint:'只給特定人看，指的是不想被搜尋引擎找到，但拿到網址的人手機點開就能看。',x:190,y:170,
+      opts:[{label:'公開',sub:'希望被搜尋到、誰都能看',to:'e1',e:'公開'},{label:'只給特定人看',sub:'草稿、會議整理、客戶提案頁',to:'e2',e:'特定人'}]},
+    q3:{type:'q',step:'第二題',q:'後端的每個動作，多久做完？',short:'多久做完？',hint:'登入驗證、記一筆資料、呼叫一次 AI，都是幾秒內做完。一次要跑好幾分鐘以上的影片轉檔，或一直在抓資料的爬蟲、多人即時聊天室，算長時間或常駐。',x:570,y:170,
+      opts:[{label:'幾秒內做完',sub:'按一下才醒來，做完就關',to:'q4',e:'幾秒內'},{label:'要長時間跑或一直開著',sub:'好幾分鐘以上的任務或 24 小時連線',to:'e6',e:'長時間'}]},
+    q4:{type:'q',step:'第三題',q:'你的專案是用 Next.js 這類全端框架寫的嗎？',short:'Next.js 寫的？',hint:'判斷方法：在電腦上只開一個終端機視窗、打一行指令整個網站就能動，通常就是全端專案。用的是 Next.js 以外的全端框架，先請 AI 查它支援哪些平台。不確定就問幫你寫程式的 AI。',x:475,y:310,
+      opts:[{label:'是',sub:'Next.js 這類全端框架',to:'e5',e:'是'},{label:'不是',sub:'一般網頁加一小段伺服器程式',to:'q5',e:'不是'}]},
+    q5:{type:'q',step:'第四題',q:'它要被外部服務叫醒，或定時自己跑嗎？',short:'定時或被叫醒？',hint:'例如 LINE 群有新訊息時主動通知你的網址，或每五分鐘自己醒來備份一次。只等訪客來按按鈕的，選「不用」。',x:570,y:440,
+      opts:[{label:'不用，等訪客來按',sub:'密碼、會員、填表、上傳',to:'e3',e:'等人來按'},{label:'要',sub:'接 LINE 通知、定時備份',to:'e4',e:'要'}]},
+    e1:{type:'e',step:'終點一',short:'Cloudflare Pages',platform:'Cloudflare Pages',fit:'公開的純靜態網頁：作品集、活動介紹、課程簡介、一頁式名片',cases:['攝影網站搬家：161 頁、一萬四千多個檔案、2.5 GB，從 Webnode 整站搬過來','AI 名片：早期放在 GitHub Pages，還在正常運作，舊站只維護不新增'],note:'GitHub Pages、Vercel 也能放靜態網頁。GitHub Pages 免費帳號只能從公開 repo 發布。',anchor:'#end1',x:95,y:310},
+    e2:{type:'e',step:'終點二',short:'Pages 加不收錄',platform:'Cloudflare Pages 加不收錄設定',fit:'只給拿到網址的人看的靜態頁：文章草稿、會議整理、客戶提案頁',cases:['文章草稿預覽站：傳網址給要看稿的人，手機點開就能看，不用登入','網站放哪裡的決策頁：我分配 37 個站時做的四題決策頁'],note:'不收錄不等於上鎖，拿到網址的人都看得到。',anchor:'#end2',x:285,y:310},
+    e3:{type:'e',step:'終點三',short:'Pages 加 Functions',platform:'Cloudflare Pages 加 Pages Functions',fit:'有密碼、會員、要存資料，等訪客來按',cases:['個人工作台：加一道密碼','合作單位的課程站：四層會員，另接 KV','調香工作坊的香氛卡站：另接 KV','參訪行程頁：手機傳照片，另接 D1、R2','學員生圖工作站：密碼進場、生圖，另接 D1、R2'],note:'要存資料再接 D1、R2 或 KV。Functions 的呼叫次數吃 Workers 額度。官方文件現在建議新專案從 Workers 開始。',anchor:'#end3',x:475,y:570},
+    e4:{type:'e',step:'終點四',short:'Workers 加排程',platform:'Cloudflare Workers 加排程',fit:'要接 LINE 這類外部服務的通知，或要定時自己跑',cases:['萊卡 LINE 群助理：接 LINE 通知記進 D1，每五分鐘醒來備份照片到 Google 雲端硬碟'],note:'家裡不用有任何一台電腦開著。',anchor:'#end4',x:665,y:570},
+    e5:{type:'e',step:'終點五',short:'Vercel',platform:'Vercel',fit:'Next.js 這類全端框架寫的網站',cases:['知識官網：放在 Vercel，但不是 Next.js，是靜態頁面加幾支伺服器端小程式'],note:'免費方案（Hobby）條款限非商業的個人用途，商業用途要考慮 Pro 或改放其他平台。有長時間任務要走回上一題。',anchor:'#end5',x:380,y:440},
+    e6:{type:'e',step:'終點六',short:'常駐主機',platform:'Railway、Render 這類常駐主機',fit:'要長時間跑或 24 小時一直開著：好幾分鐘的轉檔、爬蟲、多人即時聊天室',cases:['雲端沒有案例。花東參訪的語音筆記整理，我放在家裡的 Mac 跑排程'],note:'有免費方案，但會休眠或有限制；要穩定常駐通常要付月費。',anchor:'#end6',x:665,y:310}
+  };
+  var parent={};
+  Object.keys(N).forEach(function(id){(N[id].opts||[]).forEach(function(o){parent[o.to]={from:id,label:o.label,e:o.e};});});
+  function pathTo(id){var p=[id];while(parent[p[0]])p.unshift(parent[p[0]].from);return p;}
+
+  var svg=document.getElementById('dt-svg'),card=document.getElementById('dt-card'),crumbs=document.getElementById('dt-crumbs');
+  var btnBack=document.getElementById('dt-back'),btnReset=document.getElementById('dt-reset');
+  var W=176,HQ=52,HE=64;
+  function el(tag,attrs,text){var n=document.createElementNS(NS,tag);for(var k in attrs)n.setAttribute(k,attrs[k]);if(text!=null)n.textContent=text;return n;}
+  function h(id){return N[id].type==='e'?HE:HQ;}
+
+  var edges={};
+  var gEdges=el('g',{}),gOn=el('g',{}),gLabels=el('g',{}),gNodes=el('g',{});
+  svg.appendChild(gEdges);svg.appendChild(gOn);svg.appendChild(gLabels);svg.appendChild(gNodes);
+  Object.keys(parent).forEach(function(to){
+    var from=parent[to].from,a=N[from],b=N[to];
+    var x1=a.x,y1=a.y+h(from)/2,x2=b.x,y2=b.y-h(to)/2,my=(y1+y2)/2;
+    var d='M'+x1+' '+y1+' C'+x1+' '+my+' '+x2+' '+my+' '+x2+' '+y2;
+    gEdges.appendChild(el('path',{d:d,'class':'edge'}));
+    var on=el('path',{d:d,'class':'edge-on'});gOn.appendChild(on);
+    var lx=(x1+x2)/2+(x2>=x1?10:-10),ly=my-4;
+    var lab=el('text',{x:lx,y:ly,'text-anchor':x2>=x1?'start':'end','class':'elabel'},parent[to].e);
+    gLabels.appendChild(lab);
+    edges[to]={on:on,lab:lab};
+  });
+  var nodeEls={};
+  Object.keys(N).forEach(function(id){
+    var n=N[id],hh=h(id);
+    var g=el('g',{'class':'node'+(n.type==='e'?' end':''),tabindex:'0',role:'button','aria-label':(n.type==='e'?n.step+'：'+n.platform:n.step+'：'+n.q)});
+    g.appendChild(el('rect',{x:n.x-W/2,y:n.y-hh/2,width:W,height:hh,rx:12}));
+    if(n.type==='e'){
+      g.appendChild(el('text',{x:n.x,y:n.y-6,'text-anchor':'middle','class':'t1'},n.step));
+      g.appendChild(el('text',{x:n.x,y:n.y+19,'text-anchor':'middle'},n.short));
+    }else{
+      g.appendChild(el('text',{x:n.x,y:n.y+6,'text-anchor':'middle','class':'t1'},n.short));
+    }
+    function go(){setPath(pathTo(id));}
+    g.addEventListener('click',go);
+    g.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();go();}});
+    gNodes.appendChild(g);nodeEls[id]=g;
+  });
+  Object.keys(edges).forEach(function(to){var p=edges[to].on,L=p.getTotalLength();p.style.strokeDasharray=L;p.style.strokeDashoffset=L;});
+
+  var path=['q1'];
+  function setPath(p){path=p;render();}
+  function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+
+  function render(){
+    var cur=path[path.length-1],n=N[cur],onSet={};
+    path.forEach(function(id){onSet[id]=1;});
+    Object.keys(nodeEls).forEach(function(id){
+      nodeEls[id].classList.toggle('on',!!onSet[id]);
+      nodeEls[id].classList.toggle('cur',id===cur&&n.type==='q');
+    });
+    Object.keys(edges).forEach(function(to){
+      var active=!!onSet[to]&&!!onSet[parent[to].from];
+      var p=edges[to].on;p.style.strokeDashoffset=active?0:p.getTotalLength();
+      edges[to].lab.classList.toggle('on',active);
+    });
+    crumbs.innerHTML='';
+    for(var i=1;i<path.length;i++){
+      var pr=parent[path[i]],li=document.createElement('li');
+      li.innerHTML=esc(N[pr.from].short)+' <b>'+esc(pr.label)+'</b>';
+      crumbs.appendChild(li);
+    }
+    card.classList.toggle('is-end',n.type==='e');
+    if(n.type==='q'){
+      card.innerHTML='<span class="dt-step">'+esc(n.step)+'</span><p class="dt-q">'+esc(n.q)+'</p><p class="dt-hint">'+esc(n.hint)+'</p><div class="dt-opts"></div>';
+      var box=card.querySelector('.dt-opts');
+      n.opts.forEach(function(o){
+        var b=document.createElement('button');b.type='button';b.className='dt-opt';
+        b.innerHTML='<b>'+esc(o.label)+'</b><span>'+esc(o.sub)+'</span>';
+        b.addEventListener('click',function(){setPath(path.concat(o.to));});
+        box.appendChild(b);
+      });
+    }else{
+      card.innerHTML='<span class="dt-step">'+esc(n.step)+'｜建議平台</span><p class="dt-platform">'+esc(n.platform)+'</p><dl><dt>適合</dt><dd>'+esc(n.fit)+'</dd><dt>我的案例</dt><dd><ul>'+n.cases.map(function(c){return '<li>'+esc(c)+'</li>';}).join('')+'</ul></dd><dt>要注意</dt><dd>'+esc(n.note)+'</dd></dl><a class="dt-more" href="'+n.anchor+'">看這個終點的完整說明 →</a>';
+    }
+    btnBack.disabled=path.length<=1;btnReset.disabled=path.length<=1;
+  }
+  btnBack.addEventListener('click',function(){if(path.length>1)setPath(path.slice(0,-1));});
+  btnReset.addEventListener('click',function(){setPath(['q1']);});
+  root.classList.add('js');
+  render();
+  }catch(err){root.classList.remove('js');if(window.console)console.error('dtree init failed',err);}
+})();
+(function(){
+  document.querySelectorAll('[data-copy-target]').forEach(function(btn){
+    btn.addEventListener('click',function(){
+      var t=document.getElementById(btn.getAttribute('data-copy-target'));if(!t)return;
+      var done=function(){var o=btn.textContent;btn.textContent='已複製';setTimeout(function(){btn.textContent=o;},1600);};
+      if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t.textContent).then(done,function(){});}
+    });
+  });
+})();
+</script>
+
+<script src="../../image-interactions.js"></script>
+
+<!-- 官網共用：滑鼠暖光暈 + 導航列漢堡選單 -->
+<script src="../../spotlight.js"></script>
+
+<!-- 文章自動互聯（相關文章）：兩支已內建，順序不可顛倒，不用再另外加 -->
+<script src="../../articles-data.js"></script>
+<script src="../../related-render.js"></script>
+  <script src="/mika-chat-widget.js" defer></script>
+</body>
+</html>
