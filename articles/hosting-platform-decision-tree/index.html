@@ -4,22 +4,22 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="index,follow">
-<title>我的網頁是哪一種，該放哪個託管平台？｜託管平台決策樹，四個問題分出六種網頁與對應平台</title>
-<meta name="description" content="網頁做好要放 Cloudflare、Vercel、GitHub Pages 還是 Railway？我把 37 個網站的放法整理成一棵可點選的決策樹：需不需要後端、要不要公開、後端多久做完、是不是 Next.js、要不要定時跑，走到六個終點，每個終點附上我真的放在那個平台的網站，另附判斷用提示詞。">
+<title>我做的網頁，要放在哪裡別人才打得開？｜託管平台決策樹，自己用還是做生意、只給人看還是要做事</title>
+<meta name="description" content="用 AI 做好網頁，要放 Cloudflare、Vercel、GitHub Pages 還是 Railway？先懂前端和後端，再問自己用還是做生意（GitHub Pages 與 Vercel 免費版不能商用）、只給人看還是要替人做事。一棵可點選的決策樹，五種網頁各附我自己放在那裡的網站，另附一段貼給 AI 的判斷用話。">
 <link rel="canonical" href="https://jiangyude.com/articles/hosting-platform-decision-tree/">
 <meta property="og:type" content="article">
-<meta property="og:title" content="我的網頁是哪一種，該放哪個託管平台？｜託管平台決策樹，四個問題分出六種網頁與對應平台｜江江教練">
+<meta property="og:title" content="我做的網頁，要放在哪裡別人才打得開？｜託管平台決策樹，自己用還是做生意、只給人看還是要做事｜江江教練">
 <!-- 分享封面：hero 文字填好後在 repo 根目錄跑 `node scripts/og-shot.mjs hosting-platform-decision-tree` 自動截 1200×630 到 images/og/hosting-platform-decision-tree.jpg（見 README「文章分享封面（OG 圖）機制」）。別退回 intro-jiang.png 直式人像，會被裁成只剩脖子。 -->
 <meta property="og:image" content="https://jiangyude.com/images/og/hosting-platform-decision-tree.jpg">
-<meta property="og:description" content="網頁做好要放 Cloudflare、Vercel、GitHub Pages 還是 Railway？我把 37 個網站的放法整理成一棵可點選的決策樹：需不需要後端、要不要公開、後端多久做完、是不是 Next.js、要不要定時跑，走到六個終點，每個終點附上我真的放在那個平台的網站，另附判斷用提示詞。">
+<meta property="og:description" content="用 AI 做好網頁，要放 Cloudflare、Vercel、GitHub Pages 還是 Railway？先懂前端和後端，再問自己用還是做生意（GitHub Pages 與 Vercel 免費版不能商用）、只給人看還是要替人做事。一棵可點選的決策樹，五種網頁各附我自己放在那裡的網站，另附一段貼給 AI 的判斷用話。">
 <meta property="og:url" content="https://jiangyude.com/articles/hosting-platform-decision-tree/">
 <meta property="og:locale" content="zh_TW">
 <meta property="og:site_name" content="江江教練 · AI 知識管理">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="我的網頁是哪一種，該放哪個託管平台？｜託管平台決策樹，四個問題分出六種網頁與對應平台｜江江教練">
+<meta name="twitter:title" content="我做的網頁，要放在哪裡別人才打得開？｜託管平台決策樹，自己用還是做生意、只給人看還是要做事｜江江教練">
 <meta name="twitter:image" content="https://jiangyude.com/images/og/hosting-platform-decision-tree.jpg">
-<meta name="twitter:description" content="網頁做好要放 Cloudflare、Vercel、GitHub Pages 還是 Railway？我把 37 個網站的放法整理成一棵可點選的決策樹：需不需要後端、要不要公開、後端多久做完、是不是 Next.js、要不要定時跑，走到六個終點，每個終點附上我真的放在那個平台的網站，另附判斷用提示詞。">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"我的網頁是哪一種，該放哪個託管平台？｜託管平台決策樹，四個問題分出六種網頁與對應平台","description":"網頁做好要放 Cloudflare、Vercel、GitHub Pages 還是 Railway？我把 37 個網站的放法整理成一棵可點選的決策樹：需不需要後端、要不要公開、後端多久做完、是不是 Next.js、要不要定時跑，走到六個終點，每個終點附上我真的放在那個平台的網站，另附判斷用提示詞。","author":{"@type":"Person","name":"江昱德","alternateName":"江江教練","jobTitle":"隱性知識提煉師、AI 應用規劃師"},"isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://jiangyude.com/"},"inLanguage":"zh-Hant","url":"https://jiangyude.com/articles/hosting-platform-decision-tree/"}</script>
+<meta name="twitter:description" content="用 AI 做好網頁，要放 Cloudflare、Vercel、GitHub Pages 還是 Railway？先懂前端和後端，再問自己用還是做生意（GitHub Pages 與 Vercel 免費版不能商用）、只給人看還是要替人做事。一棵可點選的決策樹，五種網頁各附我自己放在那裡的網站，另附一段貼給 AI 的判斷用話。">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"我做的網頁，要放在哪裡別人才打得開？｜託管平台決策樹，自己用還是做生意、只給人看還是要做事","description":"用 AI 做好網頁，要放 Cloudflare、Vercel、GitHub Pages 還是 Railway？先懂前端和後端，再問自己用還是做生意（GitHub Pages 與 Vercel 免費版不能商用）、只給人看還是要替人做事。一棵可點選的決策樹，五種網頁各附我自己放在那裡的網站，另附一段貼給 AI 的判斷用話。","author":{"@type":"Person","name":"江昱德","alternateName":"江江教練","jobTitle":"隱性知識提煉師、AI 應用規劃師"},"isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://jiangyude.com/"},"inLanguage":"zh-Hant","url":"https://jiangyude.com/articles/hosting-platform-decision-tree/"}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
@@ -202,8 +202,16 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
 .copybtn{position:absolute;top:10px;right:10px;z-index:2;background:#fff}
 .copywrap .codeblock{padding-top:56px;font-size:16px}
 @keyframes dtIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
-@media(max-width:820px){.dt-swipe{display:block}.dt-opts{grid-template-columns:1fr}.dt-card dl{grid-template-columns:1fr}.dt-card dt{margin-top:6px}}
+@media(max-width:820px){.dt-swipe{display:block}.dt-modes{grid-template-columns:1fr!important}.dt-opts{grid-template-columns:1fr}.dt-card dl{grid-template-columns:1fr}.dt-card dt{margin-top:6px}}
 @media(prefers-reduced-motion:reduce){.dt-card{animation:none}#dt-svg .edge-on{transition:none}.dt-opt{transition:none}}
+
+.dt-modes{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:6px}
+.dt-modes.one{grid-template-columns:1fr}
+.dt-mode{background:#fff;border:1px solid var(--line);border-radius:10px;padding:14px 16px}
+.dt-mode-t{display:inline-block;font-size:18px;font-weight:800;color:#fff;background:var(--green);border-radius:999px;padding:3px 12px;margin-bottom:8px}
+.dtree .dt-where{font-size:clamp(20px,2.6vw,24px);line-height:1.4;font-weight:900;color:#1a1612;margin:0 0 6px}
+.dtree .dt-why{font-size:18px;line-height:1.65;color:#3a342d;margin:0 0 6px}
+.dtree .dt-ex{font-size:18px;line-height:1.65;color:#3a342d;margin:0}
 </style>
 </head>
 <body class="spotlight">
@@ -235,8 +243,8 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
   <div class="wc wc3"></div>
   <div>
     <div class="kicker">決策樹 / 網站上線</div>
-    <h1>我的網頁是哪一種，該放哪個託管平台？｜託管平台決策樹，四個問題分出六種網頁與對應平台</h1>
-    <p>照「網頁需要什麼」回答四個問題，走到六個終點之一。每個終點附上我真的放在那個平台上的網站。</p>
+    <h1>我做的網頁，要放在哪裡別人才打得開？｜託管平台決策樹，自己用還是做生意、只給人看還是要做事</h1>
+    <p>我有 37 個網站，分別放在三個地方。這篇把我怎麼選整理成一棵樹，你照自己的網頁會做什麼點下去，就知道該放哪。</p>
   </div>
 </section>
 
@@ -244,24 +252,24 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
 
 <section class="section" id="start">
   <div class="inner">
-    <p class="lead">用 AI 做好一頁網頁之後，下一個問題是放哪裡。Vercel、Netlify、Cloudflare、GitHub Pages、Railway、Render，每一家都說自己一鍵部署。我手上有 37 個網站分散在三個平台上，這篇把我怎麼決定放哪裡整理成一棵決策樹：回答四個問題，就會走到一個平台，每個終點附上我真的放在那裡的網站。</p>
+    <p class="lead">用 AI 做好一個網頁，接下來要把它放到網路上，別人才打得開。可以放的地方很多：Cloudflare、Vercel、GitHub Pages、Railway、Render，每一家都說很簡單。這篇不比規格，只問你幾件事：自己用還是做生意、只給人看還是要替人做事。照答案走，最後會落在一個地方，每個地方都附上我自己真的放在那裡的網站。</p>
 
     <div class="duo stack">
       <div class="card a">
         <b>適合誰</b>
         <ul>
-          <li>用 AI 做好網頁或小工具，把 <code>localhost</code> 網址傳給朋友，對方打不開</li>
-          <li>聽過 Vercel、Cloudflare、GitHub Pages，不知道差在哪</li>
-          <li>手上的網頁有密碼、有會員、要存資料，不確定免費平台放不放得下</li>
-          <li>要幫客戶架站，想先搞清楚哪些平台的免費方案可以拿來做生意</li>
+          <li>用 AI 做好網頁，把網址傳給朋友，朋友說打不開</li>
+          <li>聽過 Vercel、Cloudflare 這些名字，不知道差在哪</li>
+          <li>網頁要輸入密碼、要讓人上傳照片，不知道免費的地方放不放得下</li>
+          <li>要幫客戶做網站，怕選錯地方，之後被收錢或被停用</li>
         </ul>
       </div>
       <div class="card b">
         <b>你可以帶走什麼</b>
         <ul>
-          <li>一棵可以點選的決策樹：四個問題，走到六個終點之一</li>
-          <li>每個終點對應的平台、適合的網頁類型、我放在那裡的案例</li>
-          <li>判斷不出來時，直接貼給 AI 的一段提示詞</li>
+          <li>一棵點一點就有答案的樹</li>
+          <li>五種網頁，自己用和做生意各放哪裡，附我自己的例子</li>
+          <li>一段直接貼給 AI、請它幫你判斷的話</li>
         </ul>
       </div>
     </div>
@@ -270,33 +278,77 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
 
 <section class="section" id="localhost">
   <div class="inner">
-    <h2>先分清楚：localhost 是你自己的電腦，託管平台是一台幫你開著的電腦</h2>
-    <p>AI 幫你寫完程式，瀏覽器打開的網址常常是 <code>localhost:3000</code>。localhost 的意思是「這台電腦自己」，朋友點開這個網址，他的手機會去找他自己的手機，當然找不到你的網頁。</p>
-    <p>要讓別人打得開，就要把網頁放到一台一直開著、有公開網址的電腦上。有三條路：</p>
+    <h2>朋友打不開你傳的網址，是因為網頁還在你自己的電腦裡</h2>
+    <p>AI 幫你做好網頁時，打開的網址常常長得像 <code>localhost:3000</code>。localhost 的意思是「這台電腦自己」。朋友在他的手機點這個網址，手機只會找它自己，當然找不到你的網頁。</p>
+    <p>要讓別人打得開，網頁要放到一台一直開著、有正式網址的電腦上。有三條路：</p>
     <div class="tablewrap">
       <table>
-        <thead><tr><th>路線</th><th>是什麼</th><th>代價</th></tr></thead>
+        <thead><tr><th>方法</th><th>像什麼</th><th>麻煩在哪</th></tr></thead>
         <tbody>
-          <tr><td><b>自己家裡的電腦</b></td><td>筆電或小主機一直不關機</td><td>停電、斷網、電腦睡著網站就掛，還要自己處理資安</td></tr>
-          <tr><td><b>租雲端主機（VPS）</b></td><td>雲端公司切一台空的虛擬電腦給你</td><td>從作業系統到防火牆都要自己設定</td></tr>
-          <tr><td><b>託管平台</b></td><td>平台把主機、環境、網址都包好，你只交檔案或程式碼</td><td>要照平台的規則與額度走</td></tr>
+          <tr><td><b>家裡的電腦一直開著</b></td><td>在自己家開店</td><td>停電、斷網、電腦睡著，網站就打不開</td></tr>
+          <tr><td><b>租一台空的雲端電腦</b></td><td>租一間毛胚屋</td><td>裝潢、水電、門鎖全部要自己弄</td></tr>
+          <tr><td><b>找專門代管網頁的平台</b></td><td>進駐百貨公司專櫃</td><td>要照平台的規矩和免費額度走</td></tr>
         </tbody>
       </table>
     </div>
-    <p>對用 AI 做網頁的人，第三條路最省事。這篇只講第三條路裡怎麼選。</p>
+    <p>第三種平台叫「託管平台」。用 AI 做網頁的人，選這條最省事，這篇講的就是它們怎麼選。</p>
+  </div>
+</section>
+
+<section class="section" id="front-back">
+  <div class="inner">
+    <h2>前端和後端：網頁的外場和廚房</h2>
+    <p>選平台之前，要先懂兩個詞。Gary Chen 在影片裡用餐廳來比喻，我覺得最好懂。</p>
+    <div class="duo">
+      <div class="card b">
+        <b>前端＝餐廳的外場</b>
+        <p>客人看得到、摸得到的東西：畫面、文字、圖片、按鈕。訪客打開你的網頁，眼睛看到的全部都是前端。</p>
+      </div>
+      <div class="card a">
+        <b>後端＝餐廳的廚房</b>
+        <p>客人看不到、但要有人做的事：檢查密碼對不對、把填的資料記下來、收好上傳的照片、拿鑰匙去叫 AI 回答。這些事不能擺在外場給客人看。</p>
+      </div>
+    </div>
+    <p>很多店只要外場就夠了，像作品集、活動介紹、名片，訪客打開只是看。只有網頁要「替人做事」的時候，才需要廚房。有沒有廚房，會決定你能放在哪裡。</p>
+  </div>
+</section>
+
+<section class="section" id="business">
+  <div class="inner">
+    <h2>自己用還是做生意，能放的地方不一樣</h2>
+    <p>這是最容易被忽略、也最要先問的一題。三家平台都有免費方案，但「免費能不能拿來做生意」，規定差很多（2026-08-19 我查過三家的條款）：</p>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>平台</th><th>自己用、練習、實驗</th><th>拿來做生意</th></tr></thead>
+        <tbody>
+          <tr><td><b>GitHub Pages</b></td><td>可以，但網站和檔案都是公開的</td><td>規定不能拿免費的來經營線上生意</td></tr>
+          <tr><td><b>Vercel</b></td><td>免費版可以</td><td>免費版只限個人、非商業；做生意要付費版，每月 20 美元起</td></tr>
+          <tr><td><b>Cloudflare</b></td><td>可以</td><td>沒有看到「免費版不能商用」的規定，是我做生意網站的免費起點</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>怎樣算做生意？有收費、接案做給客戶的網站、課程報名頁都算。<b>只是介紹自己付費服務的官網，也算。</b>很多人以為沒有購物車就不算，這是最常選錯的地方。</p>
+    <p>自己用、實驗性質的東西還有一個要注意：免費額度是整個帳號共用的。實驗做壞了、一直自動跑，會把同一個帳號裡做生意的網站一起拖垮，我遇過（後面「坑」那段會講）。所以實驗和正式網站，最好分開帳號放。</p>
+    <div class="readmore near">
+      <b>三家平台的規定和價格，我之前逐條查過</b>
+      <ul>
+        <li><a href="../github-vercel-cloudflare-compare/">網站放 GitHub、Vercel 還是 Cloudflare？三家免費額度、商用限制與功能差異</a>　這一段只講能不能做生意，那篇有三家規定的原文與完整價格。</li>
+        <li><a href="../free-deploy-three-boundaries/">AI 幫你把網頁做好了，該放哪？GitHub Pages 與 Vercel 完整比較</a>　那篇另外講了網站要鎖到什麼程度、各要花多少錢。</li>
+      </ul>
+    </div>
   </div>
 </section>
 
 <section class="section" id="tree">
   <div class="inner">
-    <h2>平台先別比規格，先回答你的網頁是哪一種</h2>
-    <p>選平台最常見的卡法，是先去比各家規格，越比越亂。平台只是工具，先搞清楚自己的網頁需要什麼，答案會自己縮到一兩家。</p>
-    <p>下面四個問題照順序問。Gary Chen 在他的<a href="https://www.youtube.com/watch?v=6bvEcpm72W0" target="_blank" rel="noopener">部署教學影片</a>裡用了三個判斷問題：要不要後端、全端還是前後端分離、要不要 24 小時開著。我照自己 37 個站的實際情況改成四題，多加了一題「要公開還是只給特定人看」，因為我的網站有一大半是給客戶或學員看的。</p>
+    <h2>三個問題點下去，看你的網頁該放哪裡</h2>
+    <p>很多人會先去比各家的規格，結果越比越亂。先回答自己的網頁是拿來做什麼的，答案通常只剩一兩家。</p>
+    <p>Gary Chen 在他的<a href="https://www.youtube.com/watch?v=6bvEcpm72W0" target="_blank" rel="noopener">部署教學影片</a>裡，用三個問題幫人選平台。我照自己 37 個網站的經驗改寫成下面這棵樹，加上「做不做生意」和「網址被轉傳沒關係嗎」兩題，因為我的網站有一大半是客戶的、或只給學員看的。這棵樹的題目順序，我和另一個 AI（Codex）各自設計一版再合併。</p>
 
     <div class="dtree" id="dtree">
       <div class="dt-head">
-        <b>點選看看：你的網頁會走到哪個平台</b>
-        <span>一題一題點答案，路線會在下方總覽圖亮起來。也可以直接點總覽圖上的終點。</span>
+        <b>點點看：你的網頁該放哪裡</b>
+        <span>一題一題點答案，下面的總覽圖會把你走的路亮起來。也可以直接點總覽圖上的終點，會同時看到「自己用」和「做生意」兩種建議。</span>
       </div>
       <ol class="dt-crumbs" id="dt-crumbs" aria-label="已回答的問題"></ol>
       <div class="dt-card" id="dt-card" aria-live="polite"></div>
@@ -307,145 +359,114 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
       <div class="dt-overview">
         <b class="dt-ovtitle">全圖總覽</b><span class="dt-swipe">圖比螢幕寬，可以左右滑動看完整棵樹 →</span>
         <div class="dt-svgwrap">
-          <svg id="dt-svg" viewBox="0 0 760 620" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="託管平台決策樹全圖：四個問題分出六個終點"></svg>
+          <svg id="dt-svg" viewBox="0 0 760 600" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="網頁放哪裡決策樹全圖：四個問題分出五個終點"></svg>
         </div>
       </div>
       <div class="dt-fallback">
         <b>決策樹文字版</b>
         <ol>
-          <li>需要後端嗎？不需要 → 要公開嗎？公開 → <b>終點一 Cloudflare Pages</b>；只給特定人看 → <b>終點二 Cloudflare Pages 加不收錄設定</b></li>
-          <li>需要後端 → 後端的工作多久做完？要長時間跑或一直開著 → <b>終點六 常駐主機平台</b></li>
-          <li>幾秒內做完 → 用 Next.js 這類全端框架寫的？是 → <b>終點五 Vercel</b></li>
-          <li>不是，是一般網頁加一小段伺服器程式 → 要被外部服務叫醒或定時跑嗎？等訪客來按 → <b>終點三 Cloudflare Pages 加 Pages Functions</b>；要 → <b>終點四 Cloudflare Workers 加排程</b></li>
+          <li>第一題：自己用、實驗，還是做生意（收費、接案、客戶網站、介紹付費服務的官網都算）？</li>
+          <li>第二題：網頁只是給人看，還是要替人做事（登入、存資料、上傳、問 AI、自動做事）？</li>
+          <li>只是給人看 → 網址被轉傳出去，別人看到沒關係嗎？沒關係：<b>公開展示頁</b>（做生意放 Cloudflare Pages；自己用 GitHub Pages、Vercel 也可）；沒關係但不想被搜到：<b>Cloudflare Pages 設定不讓搜尋引擎收錄</b>；不行：要密碼，算替人做事</li>
+          <li>替人做事 → 事情怎麼進行？有人按才做、幾秒就好：<b>做生意放 Cloudflare，自己用 Vercel 免費版或 Cloudflare</b>；時間到自己做或接 LINE 訊息：<b>Cloudflare Workers</b>；要一直開著或跑很久：<b>Railway、Render</b></li>
         </ol>
       </div>
     </div>
   </div>
 </section>
 
-<section class="section" id="q1">
+<section class="section" id="view-only">
   <div class="inner">
-    <h2>第一題：你的網頁需要後端嗎？</h2>
-    <p>後端是網頁背後看不見的那一段程式。判斷方法很簡單，下面任何一項答「要」，就是需要後端：</p>
-    <ul>
-      <li>要登入、要輸入密碼才看得到</li>
-      <li>要把使用者填的資料、上傳的照片存起來</li>
-      <li>要呼叫 AI，而 API 金鑰不能讓瀏覽器看到</li>
-      <li>要接 LINE 這類外部服務的通知，或要定時自己跑</li>
-    </ul>
-    <p>全部都不要，就是純靜態網頁：作品集、活動介紹、課程簡介、簡報、一頁式名片。</p>
-    <p>不確定的話，直接問幫你寫程式的 AI：「這個專案是純靜態網站，還是有包含後端運算？」</p>
-  </div>
-</section>
+    <h2>只是給人看的網頁：先問網址被轉傳出去，別人看到沒關係嗎</h2>
+    <p>名片、作品集、活動介紹、課程簡介、簡報，只要外場、不用廚房。這種網頁放哪裡都很便宜，差別在「做不做生意」和「給誰看」。</p>
 
-<section class="section" id="no-backend">
-  <div class="inner">
-    <h2>不需要後端的網頁：再問要公開，還是只給特定人看</h2>
-
-    <h3 id="end1">終點一：公開的靜態網頁，放 Cloudflare Pages</h3>
-    <p>純靜態網頁要的只有兩件事：開得快、不會因為流量被收錢。Cloudflare Pages 的靜態檔案流量不計量（2026-09-15 查官方文件），把網頁資料夾拖上去就有網址。</p>
-    <p><b>我的案例：攝影網站搬家。</b>161 頁、一萬四千多個檔案、2.5 GB 的網站，從 Webnode 整站搬到 Cloudflare Pages。它單一檔案上限 25 MiB、每站 20,000 個檔案，這個網站都在範圍內。</p>
-    <p>GitHub Pages 與 Vercel 也都能放靜態網頁。GitHub Pages 要注意，免費帳號只能從公開的 repo 發布，發布出去的網站也是公開的（2026-09-16 查官方文件）；它的使用條款也不允許拿它當免費主機經營線上生意（2026-08-19 查證），幫客戶做商業網站不要選它。我的 AI 名片和幾個早期 demo 在 GitHub Pages 上，還在正常運作。2026 年 8 月起，我新做的網頁預設放 Cloudflare，GitHub Pages 上的舊站只維護不新增。</p>
-    <div class="readmore near">
-      <b>整站搬家的完整過程，我另外寫過</b>
-      <ul>
-        <li><a href="../webnode-to-cloudflare-pages/">官網搬家一個月零元：把攝影網站從 Webnode 整站搬到 Cloudflare Pages</a>　這一段只講它為什麼放 Cloudflare Pages，那篇講搬家五步驟，以及抓站工具漏掉 65% 圖片的坑。</li>
-      </ul>
-    </div>
-
-    <h3 id="end2">終點二：只給特定人看的靜態網頁，放 Cloudflare Pages 加上不被搜尋收錄的設定</h3>
-    <p>有些頁面不想被搜尋引擎找到，但要讓收到網址的人手機點開就能看：文章草稿、會議整理、給客戶的提案頁。</p>
-    <p>我的做法是放 Cloudflare Pages，網址取一個隨機的名字，加上「不要收錄」的設定（<code>noindex</code> 與 robots 全擋），不設登入。</p>
-    <p><b>我的案例：</b></p>
-    <ul>
-      <li><b>文章草稿預覽站</b>：文章上線前先推到這裡，傳網址給要看稿的人。之前用別家平台的預覽網址，對方手機一點就跳登入頁，打不開。</li>
-      <li><b>網站放哪裡的決策頁</b>：2026 年 9 月我自己要決定 37 個站怎麼分配，做了一頁四個問題的決策頁，也是用這個方式放上去。</li>
-    </ul>
-    <div class="caveat"><b>不收錄不等於上鎖</b>拿到網址的人都看得到。內容真的不能外流，就要回到第一題，答「需要後端」，加一道密碼。</div>
-    <div class="readmore near">
-      <b>網頁要鎖到什麼程度，我另外排過一個順序</b>
-      <ul>
-        <li><a href="../who-can-see-your-site/">你的網頁其實沒鎖：公開資訊、付費內容、機密隱私該放哪一層</a>　這一段只講「不收錄」這一層，那篇把六層防護排開，說清楚每一層擋得住什麼、擋不住什麼。</li>
-      </ul>
-    </div>
-  </div>
-</section>
-
-<section class="section" id="backend">
-  <div class="inner">
-    <h2>需要後端的網頁：再問後端的工作多久做完</h2>
-    <p>後端有兩種運作方式。</p>
-    <div class="duo">
-      <div class="card b">
-        <b>按一下才醒來（Serverless）</b>
-        <p>訪客按按鈕的那一刻，雲端才啟動一小段程式，幾秒內做完就關掉。登入驗證、記一筆資料、呼叫一次 AI 都屬於這種。沒人用時不花錢，所以免費額度通常給得大方。</p>
-      </div>
-      <div class="card a">
-        <b>要長時間跑或一直開著（常駐伺服器）</b>
-        <p>一次要跑好幾分鐘以上的任務（例如影片轉檔），或雲端要有一台電腦 24 小時不關（例如一直在抓資料的爬蟲、多人即時聊天室），需要這種。</p>
-      </div>
-    </div>
-
-    <h3 id="end6">終點六：要長時間跑或一直開著的，放常駐主機平台</h3>
-    <p>Gary Chen 在影片裡推薦 Railway 或 Render。這兩家都有免費方案，但免費方案會休眠或有限制，例如 Render 的免費網頁服務閒置 15 分鐘就休眠（2026-09-16 查官方文件）。要穩定常駐、不休眠，通常就要付月費，買的是「不用自己維護伺服器」。</p>
-    <p>這一類我沒有放在雲端的案例。我需要長時間跑的東西，例如 2026 年 9 月初花東參訪期間每小時自動整理語音筆記，是在家裡的 Mac 上跑排程，也就是前面表格的第一條路。它的代價我實際遇過：第一版用系統排程啟動，排程程式沒有讀取語音備忘錄的權限，連續十輪失敗，當下沒有人發現。</p>
-  </div>
-</section>
-
-<section class="section" id="short-backend">
-  <div class="inner">
-    <h2>後端幾秒內做完的網頁：再問是用什麼寫的</h2>
-
-    <h3 id="end5">終點五：用 Next.js 這類全端框架寫的，放 Vercel</h3>
-    <p>全端框架是把畫面和後端寫在同一個專案裡，最常見的是 Next.js。判斷方法：你在電腦上只要開一個終端機視窗、打一行指令，整個網站就能動，通常就是全端專案。</p>
-    <p>Next.js 是 Vercel 這家公司開發的，放 Vercel 支援度最好，這也是 Gary Chen 影片給的建議。如果你用的是 Next.js 以外的全端框架，先請 AI 查這個框架官方支援部署到哪些平台，再回來選。</p>
-    <p><b>我的案例：知識官網。</b>它放在 Vercel，但不是用 Next.js 寫的，是靜態頁面加上幾支伺服器端小程式（站內 AI 客服、瀏覽次數統計）。</p>
-    <p>Next.js 專案如果有要跑很久的任務，走回上一題，選「要長時間跑或一直開著」。</p>
-    <div class="caveat"><b>Vercel 免費方案限非商業用途</b>Vercel 免費方案（Hobby）的條款寫明只限非商業的個人用途（2026-09-08 查官方頁）。官網、付費客戶的交付頁、課程報名頁都算商業用途，要用 Vercel 就要考慮付費的 Pro 方案，或改放其他平台。我盤點 37 個站的時候才把這件事攤開來看，官網該不該搬、要不要升級付費方案，到現在還是待決定的事。</div>
-    <div class="readmore near">
-      <b>三家的額度與商用條款原文，我另外整理過</b>
-      <ul>
-        <li><a href="../github-vercel-cloudflare-compare/">網站放 GitHub、Vercel 還是 Cloudflare？三家免費額度、商用限制與功能差異</a>　這一段只提 Vercel 的商用限制，那篇逐條列三家的額度、超額單價與條款原文。</li>
-      </ul>
-    </div>
-
-    <h3 id="cf-backend">一般網頁加一小段伺服器程式：最後問要不要被外部服務叫醒或定時跑</h3>
-    <p>大部分用 AI 做出來的網頁，是 HTML 加上一小段處理密碼、存資料的程式。這一類我全部放在 Cloudflare，最後只差一題：它是等訪客來按，還是要被 LINE 這類外部服務叫醒、或定時自己跑。</p>
-
-    <h3 id="end3">終點三：等訪客來按的，放 Cloudflare Pages 加 Pages Functions</h3>
-    <p>Pages Functions 是掛在 Pages 網站上的一小段伺服器端程式。要存資料就再接 D1（表格資料庫）、R2（放大檔案）或 KV（放小段設定）。</p>
+    <h3 id="end1">轉傳沒關係，希望越多人看到：公開展示頁</h3>
     <div class="tablewrap">
       <table>
-        <thead><tr><th>我的網站</th><th>後端在做什麼</th><th>另外接了</th></tr></thead>
+        <thead><tr><th></th><th>放哪裡</th><th>我的例子</th></tr></thead>
         <tbody>
-          <tr><td><b>個人工作台</b></td><td>加一道密碼，筆電手機都能看</td><td>無</td></tr>
-          <tr><td><b>合作單位的課程站</b></td><td>站長、主講師、助教、學員四層會員</td><td>KV</td></tr>
-          <tr><td><b>調香工作坊的香氛卡站</b></td><td>學員填配方生成香氛卡，老師後台匯出</td><td>KV</td></tr>
-          <tr><td><b>參訪行程頁</b></td><td>成員用手機傳照片</td><td>D1、R2</td></tr>
-          <tr><td><b>學員生圖工作站</b></td><td>密碼進場、生圖、發表到成果牆</td><td>D1、R2</td></tr>
+          <tr><td><b>做生意</b></td><td>Cloudflare Pages，免費</td><td>攝影公司的網站：161 頁、2.5 GB，從 Webnode 整站搬過來，現在每個月零元</td></tr>
+          <tr><td><b>自己用、實驗</b></td><td>GitHub Pages、Cloudflare Pages、Vercel 免費版都可以</td><td>我的 AI 名片，早期放在 GitHub Pages</td></tr>
         </tbody>
       </table>
     </div>
-    <p>Pages Functions 的呼叫次數跟靜態檔案分開算，它吃的是 Workers 的免費額度。另外，Cloudflare 官方文件現在建議新專案從 Workers 開始，Workers 也能放靜態網站，Pages 沒有停用（2026-09-15 查證）。我上面這幾個都還在 Pages 上正常運作；你要開新專案，可以直接照官方建議用 Workers。</p>
+    <p>2026 年 8 月起，我新做的網頁都放 Cloudflare，GitHub Pages 上的舊站只維護不新增。</p>
+    <div class="readmore near">
+      <b>整站搬家的過程，我另外寫過</b>
+      <ul>
+        <li><a href="../webnode-to-cloudflare-pages/">官網搬家一個月零元：把攝影網站從 Webnode 整站搬到 Cloudflare Pages</a>　這一段只講它放哪裡，那篇講怎麼搬，以及搬家時差點漏掉六成圖片的坑。</li>
+      </ul>
+    </div>
 
-    <h3 id="end4">終點四：要被外部服務叫醒、或定時自己跑的，放 Cloudflare Workers 加排程</h3>
-    <p><b>我的案例：萊卡 LINE 群助理。</b>LINE 群有新訊息，LINE 會主動通知一個網址，接這通通知的是 Workers 上的一小段程式，它把訊息記進 D1 資料庫。身上還掛著排程，每五分鐘醒來一次，把群裡的照片備份到 Google 雲端硬碟。家裡不用有任何一台電腦開著。</p>
+    <h3 id="end2">轉傳沒關係，但不想被 Google 搜到：私下分享頁</h3>
+    <p>文章草稿、會議整理、給客戶的提案。我放 Cloudflare Pages，網址取一串別人猜不到的名字，再設定「不讓搜尋引擎收錄」，收到網址的人手機一點就能看，不用登入。做生意和自己用都這樣放。</p>
+    <p><b>我的例子：</b>文章上線前的草稿預覽站。以前用別家的預覽網址，對方手機一點就跳出登入畫面，打不開。</p>
+    <div class="caveat"><b>不讓搜尋引擎找到，不等於上鎖</b>拿到網址的人都看得到，對方轉傳出去，別人也看得到。如果轉傳出去不行，就要加密碼，那就是「替人做事」的網頁了。</div>
+    <div class="readmore near">
+      <b>網頁要鎖到什麼程度，我另外排過一個順序</b>
+      <ul>
+        <li><a href="../who-can-see-your-site/">你的網頁其實沒鎖：公開資訊、付費內容、機密隱私該放哪一層</a>　這一段只講「不讓搜尋引擎找到」，那篇把六種鎖法排開，說清楚每一種擋得住什麼。</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="do-work">
+  <div class="inner">
+    <h2>要替人做事的網頁：再問事情怎麼進行</h2>
+    <p>要輸入密碼、存資料、上傳照片、問 AI，就需要廚房。廚房的工作分三種跑法，放的地方不一樣。</p>
+
+    <h3 id="end3">有人按才做，幾秒就好</h3>
+    <p>登入、送出表單、上傳一張照片、問一次 AI，都屬於這種。沒人按的時候廚房不開火，所以免費額度通常很夠用。廚房裡那一小段程式你不用自己寫，跟 AI 說你要什麼功能就好。</p>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th></th><th>放哪裡</th><th>我的例子</th></tr></thead>
+        <tbody>
+          <tr><td><b>做生意</b></td><td>Cloudflare（Pages 加一小段雲端程式），免費起步。要用 Vercel 就要付費版</td><td>合作單位的課程站（講師、助教、學員看到不同內容）、學員生圖工作站、調香工作坊的香氛卡站</td></tr>
+          <tr><td><b>自己用、實驗</b></td><td>Vercel 免費版或 Cloudflare 都可以。AI 用 Next.js 做的網站，放 Vercel 最順</td><td>我的個人工作台，放 Cloudflare，加一道密碼</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="caveat"><b>我自己也有一個還沒處理的</b>我的知識官網放在 Vercel 免費版，它介紹付費服務，照規定算做生意。我是整理 37 個網站時才注意到，要搬家還是付費，到現在還沒決定。如果你的 AI 工具已經幫你放上 Vercel：自己用可以沿用，做生意要付費或搬家。</div>
+    <div class="readmore near">
+      <b>三家的免費範圍和做生意的規定，我另外整理過</b>
+      <ul>
+        <li><a href="../github-vercel-cloudflare-compare/">網站放 GitHub、Vercel 還是 Cloudflare？三家免費額度、商用限制與功能差異</a>　那篇把三家的規定原文都列出來。</li>
+      </ul>
+    </div>
+
+    <h3 id="end4">時間到了自己做，或 LINE 來訊息就處理</h3>
+    <p>有些程式不是等人來按，而是自己會動。這種我放 Cloudflare Workers，做生意和自己用都一樣。</p>
+    <p><b>我的例子：萊卡 LINE 群助理。</b>LINE 群裡一有新訊息，它就自動記下來；每五分鐘它還會自己醒來一次，把群裡的照片備份到 Google 雲端硬碟。這些事都在雲端發生，我家裡不用有任何一台電腦開著。</p>
+    <p>要注意的是，會一直自動跑的實驗，最好不要跟做生意的網站放在同一個帳號。</p>
+
+    <h3 id="end5">要一直開著，或一跑就好幾分鐘</h3>
+    <p>一直在網路上抓資料、把影片轉檔、多人同時在線上聊天，這種事沒辦法幾秒結束，廚房要一直開著。Gary Chen 影片推薦 Railway 或 Render。</p>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th></th><th>放哪裡</th></tr></thead>
+        <tbody>
+          <tr><td><b>做生意</b></td><td>Railway、Render 的付費方案，才能穩定一直開著</td></tr>
+          <tr><td><b>自己用、實驗</b></td><td>Railway、Render 的免費方案可以試，但會自己休眠；或放自己家裡的電腦</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p><b>我的例子：這一類我沒有放在雲端。</b>我需要長時間跑的工作，例如 9 月初參訪時每小時自動整理我的錄音，是放在家裡的 Mac 上跑。代價我遇過：第一版設定錯了權限，連續失敗十次，當時沒有人發現。</p>
   </div>
 </section>
 
 <section class="section" id="summary">
   <div class="inner">
-    <h2>六種網頁對應的平台與我的案例一覽</h2>
+    <h2>五種網頁、自己用和做生意各放哪裡，一張表看完</h2>
     <div class="tablewrap">
       <table>
-        <thead><tr><th>終點</th><th>你的網頁</th><th>平台</th><th>我的案例</th></tr></thead>
+        <thead><tr><th>你的網頁</th><th>自己用、實驗</th><th>做生意</th></tr></thead>
         <tbody>
-          <tr><td>一</td><td>公開的純靜態網頁</td><td>Cloudflare Pages（GitHub Pages、Vercel 也可）</td><td>攝影網站搬家、AI 名片（GitHub Pages）</td></tr>
-          <tr><td>二</td><td>只給特定人看的純靜態網頁</td><td>Cloudflare Pages 加不收錄設定</td><td>文章草稿預覽站、網站分配決策頁</td></tr>
-          <tr><td>三</td><td>有密碼、會員、存資料，等訪客來按</td><td>Cloudflare Pages 加 Pages Functions</td><td>工作台、課程站、香氛卡站、行程頁、生圖工作站</td></tr>
-          <tr><td>四</td><td>要被外部服務叫醒或定時跑</td><td>Cloudflare Workers 加排程</td><td>萊卡 LINE 群助理</td></tr>
-          <tr><td>五</td><td>Next.js 這類全端框架</td><td>Vercel</td><td>知識官網（不是 Next.js，但放在 Vercel）</td></tr>
-          <tr><td>六</td><td>要長時間跑或 24 小時一直開著</td><td>Railway、Render 這類常駐主機</td><td>雲端沒有案例，我放在家裡的 Mac</td></tr>
+          <tr><td>只給人看，希望越多人看到</td><td>GitHub Pages、Cloudflare Pages、Vercel 免費版</td><td>Cloudflare Pages</td></tr>
+          <tr><td>只給人看，不想被搜到</td><td>Cloudflare Pages，不讓搜尋引擎收錄</td><td>同左</td></tr>
+          <tr><td>要密碼、存資料，有人按才做</td><td>Vercel 免費版或 Cloudflare</td><td>Cloudflare，或 Vercel 付費版</td></tr>
+          <tr><td>自己會動：定時、接 LINE 訊息</td><td>Cloudflare Workers，跟正式網站分開帳號</td><td>Cloudflare Workers</td></tr>
+          <tr><td>要一直開著或跑很久</td><td>Railway、Render 免費方案（會休眠），或自己的電腦</td><td>Railway、Render 付費方案</td></tr>
         </tbody>
       </table>
     </div>
@@ -454,34 +475,51 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
 
 <section class="section" id="pitfalls">
   <div class="inner">
-    <h2>網頁放上平台之後，我踩過的兩個坑</h2>
-    <h3>部署顯示成功，網站按了卻沒反應</h3>
-    <p>密碼、API 金鑰不能跟著程式碼一起上傳，要另外在平台後台設定。我在 Cloudflare Pages Functions 上遇過：金鑰分成正式網站和預覽網站兩套，只設了一套，預覽網站就一直顯示「密碼不對」；設完還要重新部署一次才生效。部署紀錄是綠燈，不代表網站會動，要自己點一遍。</p>
-    <h3>免費額度是整個帳號共用一份</h3>
-    <p>兩家的免費方案，額度都是整個帳號加總計算，不是一個網站一份。2026 年 9 月 6、7 日，我同一個 Cloudflare 帳號裡一支每幾分鐘就跑一次的檢查程式，把資料庫的每日讀取額度吃完，同帳號其他網站的寫入也一起被擋。後來補上索引解決。所以規劃的時候，實驗性質、會頻繁自動執行的東西，要想清楚跟正式網站放不放在同一個帳號。</p>
+    <h2>網頁放上去之後，我踩過的兩個坑</h2>
+    <h3>平台說上線成功，網站的按鈕卻沒反應</h3>
+    <p>密碼和 AI 的鑰匙不能跟網頁檔案一起上傳，要另外到平台後台設定。我有一次只設了正式網站那一份，測試用的網站一直說「密碼不對」；設好之後，還要再上傳一次才生效。平台顯示成功，只代表檔案傳上去了，網站會不會動，要自己點一遍才知道。</p>
+    <h3>一個小實驗，拖垮同一個帳號裡的正式網站</h3>
+    <p>免費額度是整個帳號共用一份，不是一個網站一份。9 月初，我帳號裡一支每幾分鐘就跑一次的檢查程式，把當天的免費額度用完了，同一個帳號裡客戶的網站也跟著存不進資料。這就是為什麼前面一直提醒：實驗和做生意的網站，最好分開帳號。</p>
   </div>
 </section>
 
 <section class="section" id="prompt">
   <div class="inner">
-    <h2>判斷不出網頁是哪一種，把這段提示詞交給 AI</h2>
-    <p>把下面這段貼給幫你寫程式的 AI，它會看你的專案回答四個問題：</p>
+    <h2>判斷不出來，把這段話貼給你的 AI</h2>
+    <p>把下面這段貼給幫你做網頁的 AI，它會看你的網頁，照這棵樹幫你回答：</p>
     <div class="copywrap">
-      <button type="button" class="dt-btn copybtn" data-copy-target="hosting-prompt">複製提示詞</button>
-      <pre class="codeblock" id="hosting-prompt">請看這個專案，依序回答四個問題，每題附上你從哪個檔案判斷的：
-1. 需不需要後端？（登入、存資料、藏 API 金鑰、接外部通知或排程，任一項就算需要）
-2. 如果不需要後端：這個網頁要公開，還是只給拿到網址的人看？
-3. 如果需要後端：後端的每個動作是幾秒內做完，還是要長時間一直開著？
-4. 如果幾秒內做完：這是 Next.js 這類全端框架，還是一般網頁加一小段伺服器程式？如果是後者，需不需要被外部服務呼叫或定時執行？
-最後告訴我，依照這四個答案應該放 Cloudflare Pages、Cloudflare Workers、Vercel，還是常駐主機平台。不確定的地方直接說不確定，不要猜。</pre>
+      <button type="button" class="dt-btn copybtn" data-copy-target="hosting-prompt">複製這段話</button>
+      <pre class="codeblock" id="hosting-prompt">請看這個網頁專案，用我聽得懂的話，依序回答，每題說明你是看到哪裡判斷的：
+1. 我先說明用途：這個網頁是【自己用／練習／實驗】還是【做生意：有收費、接案、客戶網站、課程報名、介紹付費服務的官網】。（請你把這格換成我的答案再回答）
+2. 訪客打開這個網頁，只是看，還是要替人做事？（要登入、填資料、上傳照片、呼叫 AI、或定時自己跑，都算替人做事）
+3. 如果只是看：網址被轉傳出去，別人看到沒關係嗎？要不要被 Google 搜到？
+4. 如果要替人做事：事情是有人按才做、幾秒就好，還是時間到了自己做（或接 LINE 這類訊息），還是要一直開著、一跑好幾分鐘？
+最後依照「做不做生意」告訴我應該放 GitHub Pages、Cloudflare Pages、Cloudflare Workers、Vercel（免費版或付費版），還是 Railway、Render 這類平台，並提醒我那個平台的免費方案能不能拿來做生意。不確定的地方直接說不確定，不要猜。</pre>
     </div>
+  </div>
+</section>
+
+<section class="section" id="for-ai">
+  <div class="inner">
+    <h2>給你的 AI 讀的技術備忘（人可以跳過）</h2>
+    <p>下面是上面每個判斷背後的技術名詞與查證來源，給 AI 判斷時用。</p>
+    <ul>
+      <li><b>判斷架構</b>：Q1 商用與否（決定 GitHub Pages 與 Vercel Hobby 是否可用）。Q2 是否需要後端（登入、儲存資料、隱藏 API 金鑰、webhook、排程任一項即需要）。Q3 靜態頁的存取範圍：公開、公開但 noindex、需驗證身分（需驗證即屬後端）。Q4 後端執行模式：事件觸發秒級完成（Serverless）、排程或 webhook、長時間任務或 24 小時常駐。</li>
+      <li><b>商用條款</b>：GitHub Pages 條款不允許作為免費主機經營線上生意、電商或商用 SaaS；Vercel Hobby 限個人非商業用途，廣告販售產品或服務即屬商用，商用需 Pro（每月 20 美元起）；Cloudflare 未見同等非商用限制（2026-08-19 查證）。Vercel Hobby 超額時會暫停帳號部署。</li>
+      <li><b>靜態頁</b>：Cloudflare Pages 靜態資產請求免費且不計量，免費方案每站 20,000 檔、單檔 25 MiB（2026-09-15 查證）。不收錄＝隨機子網域＋<code>noindex</code> 標頭＋robots.txt 全擋，只管曝光不管存取。GitHub Pages 免費帳號只能從公開 repo 發布（2026-09-16 查證）。</li>
+      <li><b>有人按才做</b>：Cloudflare Pages＋Pages Functions；課程站、香氛卡站用 KV，學員生圖工作站用 D1＋R2。Pages Functions 呼叫次數計入 Workers 免費額度。Cloudflare 官方文件建議新專案從 Workers 開始，Pages 仍可用（2026-09-15 查證）。Next.js 專案在 Vercel 支援度最佳；其他全端框架先查官方支援的部署平台。</li>
+      <li><b>自己會動</b>：Cloudflare Workers＋Cron Triggers＋D1。萊卡接 LINE webhook 寫入 D1，排程每五分鐘備份照片到 Google Drive。</li>
+      <li><b>一直開著</b>：Railway 有免費方案、Hobby 有每月最低費用；Render 免費 Web Service 閒置 15 分鐘休眠（2026-09-16 查證）。</li>
+      <li><b>坑一</b>：Cloudflare Pages secrets 分 production 與 preview，設定後需重新部署才生效。</li>
+      <li><b>坑二</b>：Workers、D1 免費額度以帳號加總。2026-09-06、07 同帳號高頻檢查程式對無索引資料表全表掃描，用完 D1 每日讀取列數，同帳號其他站寫入失敗；補索引後解決。建議實驗與商用分帳號。</li>
+    </ul>
   </div>
 </section>
 
 <section class="section" id="how-verified">
   <div class="inner">
-    <h2>這篇的數字與判斷問題從哪來</h2>
-    <p>Cloudflare 靜態流量不計量、單檔 25 MiB、每站 20,000 檔、官方建議新專案從 Workers 開始，查證日期 2026-09-15；Vercel 免費方案限非商業用途，查證日期 2026-09-08。三個判斷問題的骨架參考自 Gary Chen〈<a href="https://www.youtube.com/watch?v=6bvEcpm72W0" target="_blank" rel="noopener">給非技術人員的部署教學，Vibe Coding 上線前必看</a>〉。案例來自我 2026 年 8 月到 9 月的工作紀錄。平台方案隨時可能調整，開通之前點進官方定價頁看當天的值。</p>
+    <h2>這篇的資料從哪來</h2>
+    <p>判斷問題的骨架參考自 Gary Chen〈<a href="https://www.youtube.com/watch?v=6bvEcpm72W0" target="_blank" rel="noopener">給非技術人員的部署教學，Vibe Coding 上線前必看</a>〉。平台的免費範圍與規定，查證日期寫在上面的備忘裡。例子來自我 2026 年 8 月到 9 月的工作紀錄。平台的方案隨時會改，真的要開通之前，點進官方頁面看當天的規定。</p>
 
     <div class="readmore">
       <b>這篇提到過的</b>
@@ -492,7 +530,7 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
       </ul>
       <b style="margin-top:16px">再往前後延伸</b>
       <ul>
-        <li><a href="../free-deploy-three-boundaries/">AI 幫你把網頁做好了，該放哪？GitHub Pages 與 Vercel 完整比較</a>　那篇從「誰能看到、是否商用、未來要加什麼」比兩個平台，這篇從「網頁需要什麼」切入。</li>
+        <li><a href="../free-deploy-three-boundaries/">AI 幫你把網頁做好了，該放哪？GitHub Pages 與 Vercel 完整比較</a>　那篇比 GitHub Pages 與 Vercel 兩家的細節，這篇把三家放進一棵決策樹。</li>
       </ul>
     </div>
   </div>
@@ -503,8 +541,8 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
   <div class="inner">
     <div>
       <h2>先讓手上那一頁有網址，其他之後再說</h2>
-      <p class="lead">你的網頁如果走到終點一或終點二，今天就放得上去。等網頁真的需要密碼、存資料，再往下走。我每個月固定辦兩場免費線上講座，分享 AI 應用與知識管理的實戰做法。</p>
-      <p>本篇平台條件為 2026 年 9 月查證結果，來源為各平台官方文件與定價頁；案例來自我 2026 年 8 月到 9 月的工作紀錄。平台方案隨時可能調整，重要決策前請重新核對官方頁面。</p>
+      <p class="lead">只給人看的網頁，今天就放得上去。等網頁真的需要密碼、要存資料，再往下走。我每個月固定辦兩場免費線上講座，分享 AI 應用與知識管理的實戰做法。</p>
+      <p>本篇平台條件為 2026 年 9 月查證結果，來源為各平台官方文件與定價頁；例子來自我 2026 年 8 月到 9 月的工作紀錄。平台方案隨時可能調整，重要決策前請重新核對官方頁面。</p>
     </div>
     <div class="cta-card">
       <b>免費線上講座</b>
@@ -530,7 +568,7 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
       <a href="https://www.threads.com/@jiang_yude_coach" target="_blank" rel="noopener">Threads ↗</a>
       <a href="https://vocus.cc/salon/Jiang_Coach" target="_blank" rel="noopener">方格子 ↗</a>
     </div>
-    <div class="footer-note">這是一篇教學文章，整理我對「我的網頁是哪一種，該放哪個託管平台？｜託管平台決策樹，四個問題分出六種網頁與對應平台」的看法，供你參考。</div>
+    <div class="footer-note">這是一篇教學文章，整理我對「我做的網頁，要放在哪裡別人才打得開？｜託管平台決策樹，自己用還是做生意、只給人看還是要做事」的看法，供你參考。</div>
   </div>
 </footer>
 
@@ -552,111 +590,159 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
 </script>
 
 <script>
-/* 託管平台決策樹：單一狀態 path（從 q1 起的節點序列），所有畫面都由 render(path) 派生 */
+/* 網頁放哪裡決策樹：狀態＝走過的連線序列 steps，所有畫面由 render() 派生 */
 (function(){
   var root=document.getElementById('dtree');
   if(!root)return;
   try{
   var NS='http://www.w3.org/2000/svg';
   var N={
-    q1:{type:'q',step:'第一題',q:'你的網頁需要後端嗎？',short:'需要後端嗎？',hint:'要登入或密碼、要存使用者的資料或照片、要呼叫 AI 而金鑰不能給瀏覽器看到、要接 LINE 通知或定時跑，任何一項答「要」就是需要。',x:380,y:50,
-      opts:[{label:'不需要',sub:'作品集、活動介紹、課程簡介、簡報',to:'q2',e:'不需要'},{label:'需要',sub:'有登入、存資料、藏金鑰或排程',to:'q3',e:'需要'}]},
-    q2:{type:'q',step:'第二題',q:'這個網頁要公開，還是只給特定人看？',short:'要公開嗎？',hint:'只給特定人看，指的是不想被搜尋引擎找到，但拿到網址的人手機點開就能看。',x:190,y:170,
-      opts:[{label:'公開',sub:'希望被搜尋到、誰都能看',to:'e1',e:'公開'},{label:'只給特定人看',sub:'草稿、會議整理、客戶提案頁',to:'e2',e:'特定人'}]},
-    q3:{type:'q',step:'第二題',q:'後端的每個動作，多久做完？',short:'多久做完？',hint:'登入驗證、記一筆資料、呼叫一次 AI，都是幾秒內做完。一次要跑好幾分鐘以上的影片轉檔，或一直在抓資料的爬蟲、多人即時聊天室，算長時間或常駐。',x:570,y:170,
-      opts:[{label:'幾秒內做完',sub:'按一下才醒來，做完就關',to:'q4',e:'幾秒內'},{label:'要長時間跑或一直開著',sub:'好幾分鐘以上的任務或 24 小時連線',to:'e6',e:'長時間'}]},
-    q4:{type:'q',step:'第三題',q:'你的專案是用 Next.js 這類全端框架寫的嗎？',short:'Next.js 寫的？',hint:'判斷方法：在電腦上只開一個終端機視窗、打一行指令整個網站就能動，通常就是全端專案。用的是 Next.js 以外的全端框架，先請 AI 查它支援哪些平台。不確定就問幫你寫程式的 AI。',x:475,y:310,
-      opts:[{label:'是',sub:'Next.js 這類全端框架',to:'e5',e:'是'},{label:'不是',sub:'一般網頁加一小段伺服器程式',to:'q5',e:'不是'}]},
-    q5:{type:'q',step:'第四題',q:'它要被外部服務叫醒，或定時自己跑嗎？',short:'定時或被叫醒？',hint:'例如 LINE 群有新訊息時主動通知你的網址，或每五分鐘自己醒來備份一次。只等訪客來按按鈕的，選「不用」。',x:570,y:440,
-      opts:[{label:'不用，等訪客來按',sub:'密碼、會員、填表、上傳',to:'e3',e:'等人來按'},{label:'要',sub:'接 LINE 通知、定時備份',to:'e4',e:'要'}]},
-    e1:{type:'e',step:'終點一',short:'Cloudflare Pages',platform:'Cloudflare Pages',fit:'公開的純靜態網頁：作品集、活動介紹、課程簡介、一頁式名片',cases:['攝影網站搬家：161 頁、一萬四千多個檔案、2.5 GB，從 Webnode 整站搬過來','AI 名片：早期放在 GitHub Pages，還在正常運作，舊站只維護不新增'],note:'GitHub Pages、Vercel 也能放靜態網頁。GitHub Pages 免費帳號只能從公開 repo 發布。',anchor:'#end1',x:95,y:310},
-    e2:{type:'e',step:'終點二',short:'Pages 加不收錄',platform:'Cloudflare Pages 加不收錄設定',fit:'只給拿到網址的人看的靜態頁：文章草稿、會議整理、客戶提案頁',cases:['文章草稿預覽站：傳網址給要看稿的人，手機點開就能看，不用登入','網站放哪裡的決策頁：我分配 37 個站時做的四題決策頁'],note:'不收錄不等於上鎖，拿到網址的人都看得到。',anchor:'#end2',x:285,y:310},
-    e3:{type:'e',step:'終點三',short:'Pages 加 Functions',platform:'Cloudflare Pages 加 Pages Functions',fit:'有密碼、會員、要存資料，等訪客來按',cases:['個人工作台：加一道密碼','合作單位的課程站：四層會員，另接 KV','調香工作坊的香氛卡站：另接 KV','參訪行程頁：手機傳照片，另接 D1、R2','學員生圖工作站：密碼進場、生圖，另接 D1、R2'],note:'要存資料再接 D1、R2 或 KV。Functions 的呼叫次數吃 Workers 額度。官方文件現在建議新專案從 Workers 開始。',anchor:'#end3',x:475,y:570},
-    e4:{type:'e',step:'終點四',short:'Workers 加排程',platform:'Cloudflare Workers 加排程',fit:'要接 LINE 這類外部服務的通知，或要定時自己跑',cases:['萊卡 LINE 群助理：接 LINE 通知記進 D1，每五分鐘醒來備份照片到 Google 雲端硬碟'],note:'家裡不用有任何一台電腦開著。',anchor:'#end4',x:665,y:570},
-    e5:{type:'e',step:'終點五',short:'Vercel',platform:'Vercel',fit:'Next.js 這類全端框架寫的網站',cases:['知識官網：放在 Vercel，但不是 Next.js，是靜態頁面加幾支伺服器端小程式'],note:'免費方案（Hobby）條款限非商業的個人用途，商業用途要考慮 Pro 或改放其他平台。有長時間任務要走回上一題。',anchor:'#end5',x:380,y:440},
-    e6:{type:'e',step:'終點六',short:'常駐主機',platform:'Railway、Render 這類常駐主機',fit:'要長時間跑或 24 小時一直開著：好幾分鐘的轉檔、爬蟲、多人即時聊天室',cases:['雲端沒有案例。花東參訪的語音筆記整理，我放在家裡的 Mac 跑排程'],note:'有免費方案，但會休眠或有限制；要穩定常駐通常要付月費。',anchor:'#end6',x:665,y:310}
+    q1:{type:'q',step:'第一題',q:'這個網頁是自己用，還是拿來做生意？',short:'自己用或做生意？',x:380,y:45,
+      hint:'做生意：有收費、接案做給客戶、課程報名，或介紹你付費服務的官網，都算。沒有購物車也算。'},
+    q2:{type:'q',step:'第二題',q:'訪客打開網頁，只是看，還是要它替人做事？',short:'只看或做事？',x:380,y:165,
+      hint:'只是看＝只有外場（畫面、文字、圖片）。替人做事＝還要廚房：要輸入密碼、存下填的資料、收上傳的照片、叫 AI 回答，或時間到了自己做事。'},
+    q3:{type:'q',step:'第三題',q:'網址被轉傳出去，別人看到也沒關係嗎？',short:'被轉傳沒關係？',x:200,y:290,
+      hint:'想清楚最壞的情況：你傳給一個人，他又傳給別人。'},
+    q4:{type:'q',step:'第三題',q:'它要做的事，怎麼進行？',short:'事情怎麼進行？',x:560,y:290,
+      hint:'大多數登入、填表、上傳、問 AI，都是有人按才做、幾秒就好。'},
+    e1:{type:'e',name:'公開展示頁',short:'Cloudflare 或 GitHub',x:90,y:430,anchor:'#end1',
+      biz:{where:'Cloudflare Pages，免費',why:'GitHub Pages 規定不能拿免費的做生意，Vercel 免費版只限個人非商業。',ex:'攝影公司的網站：161 頁、2.5 GB，每個月零元'},
+      self:{where:'GitHub Pages、Cloudflare Pages、Vercel 免費版都可以',why:'GitHub Pages 的網站和檔案都是公開的。',ex:'我的 AI 名片，早期放在 GitHub Pages'}},
+    e2:{type:'e',name:'私下分享頁',short:'Cloudflare Pages',x:275,y:430,anchor:'#end2',
+      both:{where:'Cloudflare Pages，網址取難猜的名字，設定不讓搜尋引擎收錄',why:'不讓搜尋引擎找到不等於上鎖，被轉傳出去別人一樣看得到。',ex:'文章上線前的草稿預覽站，手機一點就能看，不用登入'}},
+    e3:{type:'e',name:'有人按才做',short:'Cloudflare 或 Vercel',x:460,y:430,anchor:'#end3',
+      biz:{where:'Cloudflare（Pages 加一小段雲端程式），免費起步；要用 Vercel 就要付費版',why:'Vercel 免費版不能做生意。我的知識官網就放在 Vercel 免費版，要搬家還是付費還沒決定。',ex:'合作單位的課程站、學員生圖工作站、香氛卡站'},
+      self:{where:'Vercel 免費版或 Cloudflare 都可以',why:'AI 用 Next.js 做的網站，放 Vercel 最順。',ex:'我的個人工作台，放 Cloudflare，加一道密碼'}},
+    e4:{type:'e',name:'自己會動',short:'Cloudflare Workers',x:670,y:430,anchor:'#end4',
+      biz:{where:'Cloudflare Workers',why:'跟會一直自動跑的實驗分開帳號放，免費額度是整個帳號共用的。',ex:'萊卡 LINE 群助理：有新訊息就記下來，每五分鐘自己備份照片'},
+      self:{where:'Cloudflare Workers',why:'實驗不要跟做生意的網站放同一個帳號，我遇過實驗把客戶網站拖垮。',ex:'萊卡 LINE 群助理'}},
+    e5:{type:'e',name:'一直開著',short:'Railway、Render',x:560,y:555,anchor:'#end5',
+      biz:{where:'Railway、Render 的付費方案',why:'免費方案會自己休眠，做生意要穩定一直開著。',ex:'這一類我沒有放在雲端'},
+      self:{where:'Railway、Render 的免費方案（會休眠），或自己家裡的電腦',why:'家裡的電腦停電、斷網、睡著就停。',ex:'我參訪時每小時整理錄音，放在家裡的 Mac 跑'}}
   };
-  var parent={};
-  Object.keys(N).forEach(function(id){(N[id].opts||[]).forEach(function(o){parent[o.to]={from:id,label:o.label,e:o.e};});});
-  function pathTo(id){var p=[id];while(parent[p[0]])p.unshift(parent[p[0]].from);return p;}
-
+  var E=[
+    {from:'q1',to:'q2',label:'自己用、練習、實驗',sub:'做好玩、學做網頁、給自己看',e:'自己用',side:-1,mode:'self'},
+    {from:'q1',to:'q2',label:'做生意',sub:'收費、接案、客戶網站、介紹付費服務的官網',e:'做生意',side:1,mode:'biz'},
+    {from:'q2',to:'q3',label:'只是看',sub:'名片、作品集、活動介紹、簡報',e:'只是看'},
+    {from:'q2',to:'q4',label:'要替人做事',sub:'密碼、存資料、上傳照片、問 AI、自動做事',e:'要做事'},
+    {from:'q3',to:'e1',label:'沒關係，越多人看到越好',sub:'希望 Google 搜得到',e:'越多人越好'},
+    {from:'q3',to:'e2',label:'沒關係，但不想被 Google 搜到',sub:'草稿、會議整理、提案',e:'不想被搜到'},
+    {from:'q3',to:'q4',label:'不行，要輸入密碼才能看',sub:'這樣就需要廚房了',e:'要密碼'},
+    {from:'q4',to:'e3',label:'有人按才做，幾秒就好',sub:'登入、送出表單、上傳、問一次 AI',e:'有人按'},
+    {from:'q4',to:'e4',label:'時間到了自己做，或 LINE 來訊息就處理',sub:'定時備份、自動記錄訊息',e:'自己動'},
+    {from:'q4',to:'e5',label:'要一直開著，或一跑好幾分鐘',sub:'一直抓資料、轉影片、多人聊天室',e:'一直開著'}
+  ];
   var svg=document.getElementById('dt-svg'),card=document.getElementById('dt-card'),crumbs=document.getElementById('dt-crumbs');
   var btnBack=document.getElementById('dt-back'),btnReset=document.getElementById('dt-reset');
   var W=176,HQ=52,HE=64;
   function el(tag,attrs,text){var n=document.createElementNS(NS,tag);for(var k in attrs)n.setAttribute(k,attrs[k]);if(text!=null)n.textContent=text;return n;}
   function h(id){return N[id].type==='e'?HE:HQ;}
+  function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
 
-  var edges={};
   var gEdges=el('g',{}),gOn=el('g',{}),gLabels=el('g',{}),gNodes=el('g',{});
   svg.appendChild(gEdges);svg.appendChild(gOn);svg.appendChild(gLabels);svg.appendChild(gNodes);
-  Object.keys(parent).forEach(function(to){
-    var from=parent[to].from,a=N[from],b=N[to];
-    var x1=a.x,y1=a.y+h(from)/2,x2=b.x,y2=b.y-h(to)/2,my=(y1+y2)/2;
-    var d='M'+x1+' '+y1+' C'+x1+' '+my+' '+x2+' '+my+' '+x2+' '+y2;
+  E.forEach(function(ed,i){
+    var a=N[ed.from],b=N[ed.to],d,lx,ly,anchor;
+    if(ed.from==='q1'){
+      var bx=a.x+ed.side*70,y1=a.y+HQ/2,y2=b.y-HQ/2;
+      d='M'+a.x+' '+y1+' C'+bx+' '+(y1+25)+' '+bx+' '+(y2-25)+' '+b.x+' '+y2;
+      lx=a.x+ed.side*82;ly=(y1+y2)/2+6;anchor=ed.side<0?'end':'start';
+    }else if(ed.from==='q3'&&ed.to==='q4'){
+      var x1=a.x+W/2,x2=b.x-W/2;
+      d='M'+x1+' '+a.y+' L'+x2+' '+b.y;
+      lx=(x1+x2)/2;ly=a.y-10;anchor='middle';
+    }else{
+      var x1=a.x,y1=a.y+h(ed.from)/2,x2=b.x,y2=b.y-h(ed.to)/2,my=(y1+y2)/2;
+      d='M'+x1+' '+y1+' C'+x1+' '+my+' '+x2+' '+my+' '+x2+' '+y2;
+      lx=(x1+x2)/2+(x2>=x1?8:-8);ly=my-6;anchor=x2>=x1?'start':'end';
+      if(ed.to==='e5'){lx=x1+8;ly=488;anchor='start';}
+    }
     gEdges.appendChild(el('path',{d:d,'class':'edge'}));
-    var on=el('path',{d:d,'class':'edge-on'});gOn.appendChild(on);
-    var lx=(x1+x2)/2+(x2>=x1?10:-10),ly=my-4;
-    var lab=el('text',{x:lx,y:ly,'text-anchor':x2>=x1?'start':'end','class':'elabel'},parent[to].e);
-    gLabels.appendChild(lab);
-    edges[to]={on:on,lab:lab};
+    ed.on=el('path',{d:d,'class':'edge-on'});gOn.appendChild(ed.on);
+    ed.lab=el('text',{x:lx,y:ly,'text-anchor':anchor,'class':'elabel'},ed.e);gLabels.appendChild(ed.lab);
+    ed.i=i;
   });
   var nodeEls={};
   Object.keys(N).forEach(function(id){
     var n=N[id],hh=h(id);
-    var g=el('g',{'class':'node'+(n.type==='e'?' end':''),tabindex:'0',role:'button','aria-label':(n.type==='e'?n.step+'：'+n.platform:n.step+'：'+n.q)});
+    var g=el('g',{'class':'node'+(n.type==='e'?' end':''),tabindex:'0',role:'button','aria-label':(n.type==='e'?'終點：'+n.name:n.q)});
     g.appendChild(el('rect',{x:n.x-W/2,y:n.y-hh/2,width:W,height:hh,rx:12}));
     if(n.type==='e'){
-      g.appendChild(el('text',{x:n.x,y:n.y-6,'text-anchor':'middle','class':'t1'},n.step));
+      g.appendChild(el('text',{x:n.x,y:n.y-6,'text-anchor':'middle','class':'t1'},n.name));
       g.appendChild(el('text',{x:n.x,y:n.y+19,'text-anchor':'middle'},n.short));
     }else{
       g.appendChild(el('text',{x:n.x,y:n.y+6,'text-anchor':'middle','class':'t1'},n.short));
     }
-    function go(){setPath(pathTo(id));}
+    function go(){jumpTo(id);}
     g.addEventListener('click',go);
     g.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();go();}});
     gNodes.appendChild(g);nodeEls[id]=g;
   });
-  Object.keys(edges).forEach(function(to){var p=edges[to].on,L=p.getTotalLength();p.style.strokeDasharray=L;p.style.strokeDashoffset=L;});
+  E.forEach(function(ed){var L=ed.on.getTotalLength();ed.on.style.strokeDasharray=L;ed.on.style.strokeDashoffset=L;});
 
-  var path=['q1'];
-  function setPath(p){path=p;render();}
-  function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
-
+  var steps=[];/* 走過的連線 index */
+  function cur(){return steps.length?E[steps[steps.length-1]].to:'q1';}
+  function mode(){for(var i=0;i<steps.length;i++){if(E[steps[i]].from==='q1')return E[steps[i]].mode;}return null;}
+  function jumpTo(id){
+    /* 從總覽圖點節點：保留已選的第一題答案，其餘沿預設路徑走到該節點 */
+    if(id==='q1'){steps=[];render();return;}
+    var keep=null;steps.forEach(function(s){if(E[s].from==='q1')keep=s;});
+    var chain=[];var target=id;
+    while(target!=='q2'){
+      var ed=null;for(var i=0;i<E.length;i++){if(E[i].to===target&&!(E[i].from==='q3'&&E[i].to==='q4')){ed=i;break;}}
+      chain.unshift(ed);target=E[ed].from;
+    }
+    steps=(keep!==null?[keep]:[]).concat(chain);
+    render();
+  }
+  function onSetFromSteps(){
+    var s={q1:1};steps.forEach(function(i){s[E[i].from]=1;s[E[i].to]=1;});
+    if(!steps.length||E[steps[0]].from!=='q1'){/* 未答第一題 */ if(steps.length)s.q2=1;}
+    return s;
+  }
+  function row(title,d){return '<div class="dt-mode"><span class="dt-mode-t">'+esc(title)+'</span><p class="dt-where">'+esc(d.where)+'</p><p class="dt-why">'+esc(d.why)+'</p><p class="dt-ex"><b>我的例子：</b>'+esc(d.ex)+'</p></div>';}
   function render(){
-    var cur=path[path.length-1],n=N[cur],onSet={};
-    path.forEach(function(id){onSet[id]=1;});
+    var c=cur(),n=N[c],m=mode(),onSet=onSetFromSteps(),stepSet={};
+    steps.forEach(function(i){stepSet[i]=1;});
     Object.keys(nodeEls).forEach(function(id){
       nodeEls[id].classList.toggle('on',!!onSet[id]);
-      nodeEls[id].classList.toggle('cur',id===cur&&n.type==='q');
+      nodeEls[id].classList.toggle('cur',id===c&&n.type==='q');
     });
-    Object.keys(edges).forEach(function(to){
-      var active=!!onSet[to]&&!!onSet[parent[to].from];
-      var p=edges[to].on;p.style.strokeDashoffset=active?0:p.getTotalLength();
-      edges[to].lab.classList.toggle('on',active);
+    E.forEach(function(ed,i){
+      var active=!!stepSet[i];
+      ed.on.style.strokeDashoffset=active?0:ed.on.getTotalLength();
+      ed.lab.classList.toggle('on',active);
     });
     crumbs.innerHTML='';
-    for(var i=1;i<path.length;i++){
-      var pr=parent[path[i]],li=document.createElement('li');
-      li.innerHTML=esc(N[pr.from].short)+' <b>'+esc(pr.label)+'</b>';
+    steps.forEach(function(i){
+      var li=document.createElement('li');
+      li.innerHTML=esc(N[E[i].from].short)+' <b>'+esc(E[i].label)+'</b>';
       crumbs.appendChild(li);
-    }
+    });
     card.classList.toggle('is-end',n.type==='e');
     if(n.type==='q'){
       card.innerHTML='<span class="dt-step">'+esc(n.step)+'</span><p class="dt-q">'+esc(n.q)+'</p><p class="dt-hint">'+esc(n.hint)+'</p><div class="dt-opts"></div>';
       var box=card.querySelector('.dt-opts');
-      n.opts.forEach(function(o){
+      E.forEach(function(ed,i){
+        if(ed.from!==c)return;
         var b=document.createElement('button');b.type='button';b.className='dt-opt';
-        b.innerHTML='<b>'+esc(o.label)+'</b><span>'+esc(o.sub)+'</span>';
-        b.addEventListener('click',function(){setPath(path.concat(o.to));});
+        b.innerHTML='<b>'+esc(ed.label)+'</b><span>'+esc(ed.sub)+'</span>';
+        b.addEventListener('click',function(){steps=steps.concat(i);render();});
         box.appendChild(b);
       });
     }else{
-      card.innerHTML='<span class="dt-step">'+esc(n.step)+'｜建議平台</span><p class="dt-platform">'+esc(n.platform)+'</p><dl><dt>適合</dt><dd>'+esc(n.fit)+'</dd><dt>我的案例</dt><dd><ul>'+n.cases.map(function(c){return '<li>'+esc(c)+'</li>';}).join('')+'</ul></dd><dt>要注意</dt><dd>'+esc(n.note)+'</dd></dl><a class="dt-more" href="'+n.anchor+'">看這個終點的完整說明 →</a>';
+      var html='<span class="dt-step">終點｜'+esc(n.name)+'</span>';
+      if(n.both){html+='<div class="dt-modes one">'+row('自己用和做生意都一樣',n.both)+'</div>';}
+      else if(m==='biz'){html+='<div class="dt-modes one">'+row('你選了：做生意',n.biz)+'</div>';}
+      else if(m==='self'){html+='<div class="dt-modes one">'+row('你選了：自己用、實驗',n.self)+'</div>';}
+      else{html+='<div class="dt-modes">'+row('做生意',n.biz)+row('自己用、實驗',n.self)+'</div>';}
+      html+='<a class="dt-more" href="'+n.anchor+'">看這一段的完整說明 →</a>';
+      card.innerHTML=html;
     }
-    btnBack.disabled=path.length<=1;btnReset.disabled=path.length<=1;
+    btnBack.disabled=steps.length===0;btnReset.disabled=steps.length===0;
   }
-  btnBack.addEventListener('click',function(){if(path.length>1)setPath(path.slice(0,-1));});
-  btnReset.addEventListener('click',function(){setPath(['q1']);});
+  btnBack.addEventListener('click',function(){if(steps.length){steps=steps.slice(0,-1);render();}});
+  btnReset.addEventListener('click',function(){steps=[];render();});
   root.classList.add('js');
   render();
   }catch(err){root.classList.remove('js');if(window.console)console.error('dtree init failed',err);}
