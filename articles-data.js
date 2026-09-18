@@ -23,6 +23,24 @@ window.ARTICLE_TAGS = {
 
 window.ARTICLES = [
   {
+    id: "hosting-platform-decision-tree",
+    url: "articles/hosting-platform-decision-tree/",
+    date: "2026-09-16",
+    updated: "2026-09-17",
+    title: "我做的網頁，要放在哪裡別人才打得開？｜託管平台決策樹，自己用還是做生意、只給人看還是要做事",
+    problem: "用 AI 做好網頁，把網址傳給朋友卻打不開；想放上網，Cloudflare、Vercel、GitHub Pages、Railway 每家都說簡單，不知道自己的網頁該放哪，也不知道免費方案能不能拿來做生意。",
+    audience: "用 AI 做好網頁、把 localhost 網址傳出去別人打不開的人；網頁有密碼、會員或要存資料，不確定免費平台放不放得下的人；要幫客戶架站、需要先分清楚哪些免費方案能拿來做生意的專業工作者。",
+    summary: "給不懂技術的人的託管平台決策樹。先用餐廳外場與廚房解釋前端與後端，再問三件事：自己用還是做生意（GitHub Pages 條款不允許免費經營線上生意、Vercel 免費版限個人非商業、Cloudflare 是江江做生意網站的免費起點，介紹付費服務的官網也算做生意）、只給人看還是要替人做事、網址被轉傳沒關係嗎或事情怎麼進行。走到五個終點：公開展示頁、私下分享頁、有人按才做、自己會動、一直開著，每個終點分別給自己用與做生意的建議，附江江的網站實例（攝影公司網站、AI 名片、草稿預覽站、課程站、生圖工作站、個人工作台、萊卡 LINE 群助理），以及實驗把同帳號客戶網站拖垮、上線成功按鈕卻沒反應兩個坑。樹的題目順序由 Claude 與 Codex 各自設計後合併。附一段貼給 AI 判斷用的話，技術細節收在文末給 AI 讀的備忘。",
+    tags: {
+      topic: ["差異比較", "工具操作", "AI工作流"],
+      level: ["零基礎入門"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["free-deploy-three-boundaries", "github-vercel-cloudflare-compare", "who-can-see-your-site", "webnode-to-cloudflare-pages"]
+  },
+
+  {
     id: "ai-custom-work-compound",
     url: "articles/ai-custom-work-compound/",
     date: "2026-09-13",
@@ -487,7 +505,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["github-vercel-cloudflare-compare", "who-can-see-your-site", "parallel-site-editing"]
+    related: ["github-vercel-cloudflare-compare", "who-can-see-your-site", "parallel-site-editing", "hosting-platform-decision-tree"]
   },
 
   {
@@ -505,7 +523,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["webnode-to-cloudflare-pages", "who-can-see-your-site", "free-deploy-three-boundaries"]
+    related: ["webnode-to-cloudflare-pages", "who-can-see-your-site", "free-deploy-three-boundaries", "hosting-platform-decision-tree"]
   },
 
   {
@@ -559,7 +577,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["webnode-to-cloudflare-pages", "github-vercel-cloudflare-compare", "free-deploy-three-boundaries", "website-as-workstation"]
+    related: ["webnode-to-cloudflare-pages", "github-vercel-cloudflare-compare", "free-deploy-three-boundaries", "website-as-workstation", "hosting-platform-decision-tree"]
   },
 
   {
@@ -1058,7 +1076,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["agent-web-turning-point", "docs-as-system-design-agent", "knowledge-base-three-vault-split", "recovery-over-perfection", "messaging-apps-ai-friendliness", "github-vercel-cloudflare-compare", "who-can-see-your-site"]
+    related: ["agent-web-turning-point", "docs-as-system-design-agent", "knowledge-base-three-vault-split", "recovery-over-perfection", "messaging-apps-ai-friendliness", "github-vercel-cloudflare-compare", "who-can-see-your-site", "hosting-platform-decision-tree"]
   },
 
   {

@@ -33,6 +33,7 @@ window.SEARCH_ALIASES = {
   "session-messaging-reminder-layer": ["對話之間傳訊息","Claude Code多視窗","開好幾個AI視窗","AI視窗互相不知道","交接指令複製貼上","session傳訊息","兩個AI改同一個檔案","桌機筆電AI不通","Claude跟Codex不通","多視窗協作怎麼防撞","喊聲不是門鎖","在廚房裡喊我要用這個爐子","我自己當傳聲筒","大總控台","走了也不傷筋骨"],
   "messaging-apps-ai-friendliness": ["通訊軟體選哪個","LINE跟Discord比較","AI放哪個群組","聊天軟體AI整合","Slack Agent","Telegram bot","群組軟體AI友善","哪個通訊軟體適合AI助教","市場收件口","Agent工作流中樞","Agent辦公室控制台","把工作流想成一間辦公室"],
   "openrouter-deepseek-data-routing": ["OpenRouter用DeepSeek會經過中國嗎","DeepSeek資料送去哪裡","OpenRouter安全嗎","OpenRouter provider怎麼查","DeepSeek API路由","模型資料路由","ZDR是什麼","OpenRouter怎麼避開中國供應商","四道鎖"],
+  "hosting-platform-decision-tree": ["網頁做好要放哪","網站要放哪個平台","託管平台怎麼選","部署平台怎麼選","localhost傳給朋友打不開","Vercel還是Cloudflare","Cloudflare Pages還是Workers","有登入的網頁放哪","有資料庫的網站放哪","Next.js放哪裡","Railway還是Render","網頁要不要後端","Serverless是什麼","常駐伺服器","部署決策樹","選平台決策樹","vibe coding部署","客戶網站放哪個平台","免費方案可以商用嗎","朋友打不開我的網頁","前端後端是什麼","實驗網站放哪裡","GitHub Pages可以商用嗎","Vercel免費版可以商用嗎"],
   "free-deploy-three-boundaries": ["免費網頁部署","網站放哪裡","GitHub Pages還是Vercel","網頁權限保護","架站要花錢嗎","私密網頁怎麼做","免費架站平台","網站被爬蟲讀","noindex是障礙不是門鎖"],
   "ten-year-anchor": ["AI焦慮怎麼辦","學不完AI怎麼辦","追不上AI新聞","找自己的天賦","定位迷茫","資訊焦慮解法","一直在追新工具","AI學了很多卻講不出重點"],
   "teach-ai-not-learn-ai": ["AI老是重講一遍","AI記不住我的需求","怎麼教AI","AI學不會我的習慣","新人上工說明","帶人心法用在AI","資料庫知識庫規則庫差別","覺得還沒學會AI不敢開始","AI是剛畢業的學霸新人","永遠的客服"],
