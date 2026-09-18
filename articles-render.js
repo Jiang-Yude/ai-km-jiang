@@ -190,21 +190,40 @@
     refresh();
   }
 
+  // 卡片上那一行文字要放「解決」還是「適合誰」（2026-09-18 江江：文字太多，只留標題加一句）
+  // 改這個常數就換，兩種都留著是因為還在比哪一種對讀者有用。
+  var CARD_LINE = "audience"; // "problem" = 解決什麼｜"audience" = 適合誰
+
+  // 封面：橫式（wide）用 16:9，直式（tall，多半是輪播卡）維持 4:5，不裁切。
+  function coverHTML(a) {
+    var c = a.cover;
+    if (!c) return "";
+    var src = c.wide || c.tall;
+    if (!src) return "";
+    var shape = c.wide ? "wide" : "tall";
+    return '<a class="card-cover ' + shape + '" href="' + esc(a.url) + '" tabindex="-1" aria-hidden="true">' +
+      '<img src="' + esc(src) + '" alt="" loading="lazy">' +
+      "</a>";
+  }
+
   function cardHTML(a, idx) {
     var type = (a.tags && a.tags.content_type && a.tags.content_type[0]) || "";
     var badge = TYPE_BADGE[type] || "planning";
     var topics = ((a.tags && a.tags.topic) || []).map(function (t) {
       return '<span class="atag">' + esc(t) + "</span>";
     }).join("");
+    var line = CARD_LINE === "problem"
+      ? '<p class="card-problem"><b>解決：</b>' + esc(a.problem) + "</p>"
+      : '<p class="card-audience"><b>適合：</b>' + esc(a.audience) + "</p>";
     return '' +
-      '<article class="list-card article-card" data-idx="' + idx + '">' +
+      '<article class="list-card article-card' + (a.cover ? " has-cover" : "") + '" data-idx="' + idx + '">' +
+        coverHTML(a) +
         '<div class="card-meta">' +
           '<span class="card-date">' + (a.updated && a.updated !== a.date ? '更新 ' + esc(a.updated) : esc(a.date)) + '</span>' +
           '<span class="badge ' + badge + '">' + esc(type) + '</span>' +
         '</div>' +
         '<h3><a href="' + esc(a.url) + '">' + esc(a.title) + '</a></h3>' +
-        '<p class="card-problem"><b>解決：</b>' + esc(a.problem) + '</p>' +
-        '<p class="card-audience"><b>適合：</b>' + esc(a.audience) + '</p>' +
+        line +
         (topics ? '<div class="atag-row">' + topics + '</div>' : '') +
         '<div class="card-links">' +
           '<a href="' + esc(a.url) + '">閱讀全文 →</a>' +
