@@ -1,0 +1,508 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>客服、業務、開發客戶，AI 員工實際做到哪一步？｜Grok Bot Galaxy 直播 Day 2 四場工作坊整理</title>
+<meta name="description" content="整理 Grok Bot Galaxy 直播 Day 2 的四場工作坊：業務工程師、業務、開發客戶（SDR）、客服各自公開自己每天在用的 bot 分工表，含投影片 bot、秘書 bot、通話整理 bot、告警 bot，客服導入的三個階段、兩組公開的成本數字（一整套案例投影片 20 到 30 美元、一張工單 1 到 2 美元），以及講者自己講出來的限制與失敗經驗。">
+<link rel="canonical" href="https://jiangyude.com/articles/grok-bot-galaxy-day2-workshops/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="客服、業務、開發客戶，AI 員工實際做到哪一步？｜Grok Bot Galaxy 直播 Day 2 四場工作坊整理｜江江教練">
+<!-- 分享封面：hero 文字填好後在 repo 根目錄跑 `node scripts/og-shot.mjs grok-bot-galaxy-day2-workshops` 自動截 1200×630 到 images/og/grok-bot-galaxy-day2-workshops.jpg（見 README「文章分享封面（OG 圖）機制」）。別退回 intro-jiang.png 直式人像，會被裁成只剩脖子。 -->
+<meta property="og:image" content="https://jiangyude.com/images/og/grok-bot-galaxy-day2-workshops.jpg">
+<meta property="og:description" content="整理 Grok Bot Galaxy 直播 Day 2 的四場工作坊：業務工程師、業務、開發客戶（SDR）、客服各自公開自己每天在用的 bot 分工表，含投影片 bot、秘書 bot、通話整理 bot、告警 bot，客服導入的三個階段、兩組公開的成本數字（一整套案例投影片 20 到 30 美元、一張工單 1 到 2 美元），以及講者自己講出來的限制與失敗經驗。">
+<meta property="og:url" content="https://jiangyude.com/articles/grok-bot-galaxy-day2-workshops/">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:site_name" content="江江教練 · AI 知識管理">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="客服、業務、開發客戶，AI 員工實際做到哪一步？｜Grok Bot Galaxy 直播 Day 2 四場工作坊整理｜江江教練">
+<meta name="twitter:image" content="https://jiangyude.com/images/og/grok-bot-galaxy-day2-workshops.jpg">
+<meta name="twitter:description" content="整理 Grok Bot Galaxy 直播 Day 2 的四場工作坊：業務工程師、業務、開發客戶（SDR）、客服各自公開自己每天在用的 bot 分工表，含投影片 bot、秘書 bot、通話整理 bot、告警 bot，客服導入的三個階段、兩組公開的成本數字（一整套案例投影片 20 到 30 美元、一張工單 1 到 2 美元），以及講者自己講出來的限制與失敗經驗。">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"客服、業務、開發客戶，AI 員工實際做到哪一步？｜Grok Bot Galaxy 直播 Day 2 四場工作坊整理","description":"整理 Grok Bot Galaxy 直播 Day 2 的四場工作坊：業務工程師、業務、開發客戶（SDR）、客服各自公開自己每天在用的 bot 分工表，含投影片 bot、秘書 bot、通話整理 bot、告警 bot，客服導入的三個階段、兩組公開的成本數字（一整套案例投影片 20 到 30 美元、一張工單 1 到 2 美元），以及講者自己講出來的限制與失敗經驗。","author":{"@type":"Person","name":"江昱德","alternateName":"江江教練","jobTitle":"隱性知識提煉師、AI 應用規劃師"},"isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://jiangyude.com/"},"inLanguage":"zh-Hant","url":"https://jiangyude.com/articles/grok-bot-galaxy-day2-workshops/","datePublished":"2026-09-18","dateModified":"2026-09-18","image":"https://jiangyude.com/images/og/grok-bot-galaxy-day2-workshops.jpg"}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{--ink:#1a1612;--paper:#fefcf8;--muted:#6a635a;--line:#d8cdb8;--green:#5f7553;--blue:#5689b8;--orange:#e85a4f;--soft:#faf5ec;--dark:#2a2018;--shadow:0 18px 45px rgba(107,74,42,.14);--sp-shadow:hsla(35,50%,60%,.15);--sp-shadow-edge:hsla(35,50%,68%,.03);--sp-radius:400px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC","Segoe UI",sans-serif}
+a{color:inherit}
+/* 官網共用導航列 nav.top（與首頁/文章總站同一條） */
+nav.top{position:sticky;top:0;background:rgba(254,252,248,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid #d8cdb8;z-index:100}
+nav.top .container{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:24px;padding:14px 32px}
+.nav-brand-img{justify-self:start;display:flex;align-items:center;text-decoration:none;flex-shrink:0;transition:opacity .2s}
+.nav-brand-img:hover{opacity:.8}.nav-brand-img img{height:40px;width:auto;display:block}
+nav.top ul.nav-menu{justify-self:end;display:flex;gap:22px;list-style:none;margin:0;padding:0;font-size:.95rem;white-space:nowrap}
+nav.top ul.nav-menu a{color:#3a342d;text-decoration:none;transition:color .2s;font-weight:500;white-space:nowrap}
+nav.top ul.nav-menu a:hover{color:#1a1612}nav.top ul.nav-menu a.active{color:#1a1612;font-weight:700}
+.nav-toggle{display:none;background:none;border:none;padding:6px;cursor:pointer;width:36px;height:36px;position:relative}
+.nav-toggle span{display:block;position:absolute;left:8px;right:8px;height:2px;background:#1a1612;border-radius:2px;transition:transform .25s,opacity .25s,top .25s}
+.nav-toggle span:nth-child(1){top:11px}.nav-toggle span:nth-child(2){top:17px}.nav-toggle span:nth-child(3){top:23px}
+.nav-toggle.open span:nth-child(1){top:17px;transform:rotate(45deg)}.nav-toggle.open span:nth-child(2){opacity:0}.nav-toggle.open span:nth-child(3){top:17px;transform:rotate(-45deg)}
+.tablewrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:22px 0;border:1px solid var(--line);border-radius:10px;background:#fff;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.tablewrap table{border-collapse:collapse;width:100%;min-width:600px;font-size:18px;line-height:1.65}
+.tablewrap .zh{display:block;margin-top:5px;font-size:16px;line-height:1.55;color:var(--muted);font-weight:400}
+.tablewrap th,.tablewrap td{padding:12px 14px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top;color:#3a342d}
+.tablewrap thead th{background:var(--soft);font-weight:900;font-size:18px;color:#1a1612;white-space:nowrap}
+.tablewrap tbody tr:last-child td{border-bottom:none}
+.tablewrap td code,.section code{background:var(--soft);border:1px solid var(--line);border-radius:5px;padding:1px 6px;font:500 15px/1.5 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace}
+.inline-figure.wide{max-width:1000px}
+.toc{margin:26px 0 0;padding:20px 22px;background:#fff;border:1px solid var(--line);border-radius:10px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.toc>b{display:block;font-size:15px;letter-spacing:.05em;color:var(--green);margin-bottom:10px}
+.toc ol{margin:0;padding-left:1.35em;font-size:18px;line-height:1.7}
+.toc li{margin-bottom:7px;color:#3a342d}
+.toc a{color:var(--blue);font-weight:700;text-decoration:none}.toc a:hover{text-decoration:underline}
+.toc-hint{margin:12px 0 0!important;font-size:18px!important;color:var(--muted)!important;border-top:1px solid var(--line);padding-top:12px}
+.readmore{margin-top:24px;padding:20px 22px;background:var(--soft);border:1px solid var(--line);border-radius:12px}
+.readmore.near{margin:26px 0 6px;background:rgba(86,137,184,.07);border-color:#bcd0e2}
+.readmore.near b{color:var(--blue);font-size:18px}
+.readmore.near li{font-size:17px;line-height:1.7;margin-bottom:10px}
+.readmore b{display:block;margin-bottom:10px;font-size:19px}
+.readmore ul{margin:0;padding-left:1.25em}
+.readmore a{color:var(--blue);font-weight:700;text-decoration:none}
+.readmore a:hover{text-decoration:underline}
+@media(max-width:820px){.tablewrap table{min-width:560px;font-size:18px}.tablewrap{position:relative}.tablewrap::after{content:"表格可左右滑動 →";position:sticky;left:0;display:block;font-size:15px;color:var(--muted);background:var(--soft);border-top:1px solid var(--line);padding:7px 12px;width:100%}}
+@media(max-width:860px){
+ nav.top .container{grid-template-columns:auto 1fr auto;padding:10px 16px;gap:12px}
+ .nav-brand-img img{height:32px}
+ .nav-toggle{display:block;justify-self:end}
+ nav.top ul.nav-menu{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(254,252,248,.98);backdrop-filter:blur(14px);border-bottom:1px solid #d8cdb8;flex-direction:column;gap:0;padding:8px 0;box-shadow:0 10px 24px rgba(107,74,42,.08)}
+ nav.top ul.nav-menu.open{display:flex}
+ nav.top ul.nav-menu li{border-bottom:1px solid #e8dfc9}
+ nav.top ul.nav-menu li:last-child{border-bottom:none}
+ nav.top ul.nav-menu a{display:block;padding:14px 20px;font-size:1.06rem}
+}
+/* 滑鼠暖光暈（與首頁同一支 spotlight.js） */
+body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradient(var(--sp-radius) circle at var(--mx,50%) var(--my,50%),var(--sp-shadow) 0%,var(--sp-shadow-edge) 45%,transparent 75%);pointer-events:none;z-index:9999;mix-blend-mode:multiply;transition:background .06s linear}
+.hero{position:relative;overflow:hidden;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:72px;padding:96px clamp(20px,6vw,88px) 80px;background:linear-gradient(180deg,#fffcf0 0%,#f9e9d2 100%);color:#1a1612;border-bottom:1px solid #d8cdb8}
+.hero .wc{position:absolute;border-radius:50%;filter:blur(60px);pointer-events:none;z-index:0}
+.hero .wc1{width:420px;height:360px;top:-120px;right:-80px;background:#e8884b;opacity:.15}
+.hero .wc2{width:360px;height:300px;bottom:-110px;left:-70px;background:#5f7553;opacity:.13}
+.hero .wc3{width:280px;height:260px;top:34%;left:14%;background:#a08144;opacity:.10}
+.hero>div{flex:none;width:860px;max-width:100%;position:relative;z-index:2}
+.hero-figure{margin:0;width:420px;flex:none;position:relative;z-index:2}
+.hero-figure img{display:block;width:100%;border-radius:16px;border:1px solid #d8cdb8;box-shadow:0 18px 45px rgba(107,74,42,.16);cursor:zoom-in}
+.hero-figure figcaption{margin-top:10px;font-size:14px;line-height:1.6;color:#6a635a}
+.inline-figure{margin:30px auto 8px;max-width:820px}
+.inline-figure img{display:block;width:100%;border-radius:14px;border:1px solid var(--line);box-shadow:var(--shadow);background:#fff;cursor:zoom-in}
+.inline-figure figcaption{font-size:14px;line-height:1.6;color:var(--muted);margin-top:10px}
+.lightbox{position:fixed;inset:0;z-index:10000;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(12,10,8,.92);cursor:zoom-out;backdrop-filter:blur(4px)}
+.lightbox.open{display:flex}.lightbox img{max-width:96vw;max-height:92vh;border-radius:10px;box-shadow:0 24px 60px rgba(0,0,0,.5)}
+.lightbox-close{position:fixed;top:18px;right:24px;color:#fff;font-size:34px;line-height:1;font-weight:700;cursor:pointer;opacity:.85}
+.kicker{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.55rem;color:#7a5c3a;font-weight:500}
+.hero h1{max-width:none;margin:16px 0 18px;font-size:clamp(36px,6vw,72px);line-height:1.08;overflow-wrap:anywhere}
+.hero p{max-width:none;font-size:clamp(18px,2vw,23px);line-height:1.62;color:#3a342d}
+.cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
+.cta a{display:inline-flex;align-items:center;text-decoration:none;border-radius:8px;padding:12px 16px;font-weight:900}
+.cta .primary{background:#fff;color:#1a1612}.cta .ghost{border:1px solid rgba(255,255,255,.32);color:#fff;background:rgba(255,255,255,.08)}
+.section{padding:54px clamp(20px,6vw,88px);border-top:1px solid var(--line)}
+.inner{width:min(1000px,100%);margin:0 auto}
+.section h2{font-size:clamp(26px,4.2vw,48px);line-height:1.12;margin:0 0 18px}
+.section h3{font-size:clamp(21px,3vw,30px);line-height:1.2;margin:30px 0 12px}
+.lead{font-size:clamp(18px,1.6vw,22px);line-height:1.7;color:#3a342d;max-width:900px}
+.section p{font-size:18px;line-height:1.74;color:#3a342d}.section p+p{margin-top:14px}
+.section ul,.section ol{padding-left:1.4em;font-size:18px;line-height:1.74;color:#3a342d}.section li{margin-bottom:8px}
+.meaning{margin:22px 0;padding:16px 18px;border-left:5px solid var(--blue);background:rgba(86,137,184,.12);border-radius:6px;line-height:1.7;font-size:19px}
+.meaning b{display:block;color:var(--blue);margin-bottom:4px}
+.caveat{margin:0 0 8px;padding:16px 18px;border-left:5px solid var(--orange);background:rgba(232,90,79,.1);border-radius:6px;line-height:1.7;font-size:18px;color:#3a342d}
+.caveat b{display:block;color:var(--orange);margin-bottom:4px}
+.infocard{background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px 24px 22px;box-shadow:0 8px 22px rgba(107,74,42,.08);margin-top:8px}
+.infocard-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.info-item{padding:18px 14px 0}
+.info-item b{display:block;font-size:14px;font-weight:900;letter-spacing:.04em;margin-bottom:7px;text-transform:uppercase}
+.info-item:nth-child(1) b{color:var(--green)}.info-item:nth-child(2) b{color:var(--orange)}.info-item:nth-child(3) b{color:var(--blue)}
+.info-item p{margin:0;font-size:17px;line-height:1.6;color:#3a342d}
+.tagrow{display:flex;flex-wrap:wrap;gap:7px;margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
+.tag{font-size:14px;color:var(--muted);background:var(--soft);border:1px solid var(--line);border-radius:999px;padding:4px 11px}
+.duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:24px}
+.duo.stack{grid-template-columns:1fr}
+.duo .card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:22px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.duo .card.a{border-color:var(--orange)}.duo .card.b{border-color:var(--green);box-shadow:0 8px 24px rgba(95,117,83,.16)}
+.duo .card small{display:block;font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.04em;margin-bottom:9px}
+.duo .card.a small{color:var(--orange)}.duo .card.b small{color:var(--green)}
+.duo .card b{display:block;font-size:22px;line-height:1.3;margin-bottom:12px}.duo .card.a b{color:#c0512f}.duo .card.b b{color:#4a7a59}
+.duo .card p{margin:0;color:#3a342d;line-height:1.75;font-size:18px}
+.workflow-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:24px}
+.workflow-step{background:#fff;border:1px solid var(--line);border-radius:8px;padding:18px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.workflow-step small{display:block;color:var(--orange);font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;margin-bottom:9px}
+.workflow-step b{display:block;font-size:18px;line-height:1.3;margin-bottom:9px}
+.workflow-step p{margin:0;color:#3a342d;line-height:1.6;font-size:16px}
+.codeblock{background:var(--dark);color:#f3ead9;border-radius:8px;padding:18px 20px;font:500 14px/1.65 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;overflow-x:auto;white-space:pre-wrap;margin:20px 0;box-shadow:0 8px 22px rgba(107,74,42,.12)}
+.codeblock .c{color:#f6d7a6;font-weight:600}
+.skillcard{background:#fff;border:1px solid var(--green);border-radius:12px;padding:24px;box-shadow:0 10px 26px rgba(95,117,83,.16);margin-top:8px}
+.skillcard b{display:block;font-size:21px;margin-bottom:8px}
+.skillcard p{margin:0 0 16px;font-size:17px;line-height:1.65;color:#3a342d}
+.cta-band{background:#e6f0e5;color:#3a342d}.cta-band .section{border-top:none}
+.cta-band .inner{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(260px,.85fr);gap:26px;align-items:start}
+.cta-band h2{font-size:clamp(26px,4vw,44px);margin:0 0 16px}.cta-band p,.cta-band .lead{color:rgba(58,52,45,.9);font-size:18px;line-height:1.72}
+.cta-card{border:1px solid #cfe0d2;background:#fbfdfa;border-radius:8px;padding:22px}
+.cta-card b{display:block;color:#48b178;margin-bottom:10px;font-size:18px}.cta-card p{margin:0 0 14px}
+.footer{padding:30px clamp(20px,6vw,88px);font-size:14px;color:var(--muted);background:#fff;border-top:1px solid var(--line)}
+.footer-inner{width:min(1000px,100%);margin:0 auto}
+.footer-links{display:flex;flex-wrap:wrap;gap:6px 12px;margin-bottom:14px}.footer-links a{color:var(--blue);font-weight:900;text-decoration:none;font-size:14px}
+.footer-brand{font-weight:900;font-size:15px;margin-bottom:10px}.footer-note{font-size:13px;line-height:1.6}
+@media(max-width:820px){.infocard-grid{grid-template-columns:1fr}.duo{grid-template-columns:1fr}.workflow-grid{grid-template-columns:1fr}.cta-band .inner{grid-template-columns:1fr}.section{padding:40px 20px}.hero{min-height:52vh;flex-direction:column;justify-content:flex-start;align-items:flex-start;gap:24px}.hero>div{width:100%}.hero-figure{width:100%;max-width:560px}}
+@media(max-width:820px){html,body{overflow-x:hidden}.hero h1{word-break:break-word}}
+.article-date{margin-top:18px;font-size:15px;color:var(--muted)}
+/* 標題 42 字，範本預設 clamp(36px,6vw,72px) 在寬螢幕會撐成整片巨字；本篇無封面圖不會 wrap，只縮字級 */
+.hero h1{font-size:clamp(28px,3.6vw,48px)!important;line-height:1.16!important;margin:12px 0 16px!important}
+.hero p{font-size:clamp(16px,1.5vw,20px)!important;line-height:1.66!important}
+.hero .kicker{font-size:1.3rem!important}
+</style>
+</head>
+<body class="spotlight">
+<!-- 官網共用導航列 nav.top：與首頁/總站同一條，文章不要自己另做極簡 topbar（江江 2026-06-25：要同一個框架、同一條導航列）。把對應頁面的 class="active" 標在自己那欄。
+     ⚠️ 下面 ul.nav-menu 整塊由 preflight 第 5 關 check-bilingual-nav.mjs 做「逐字比對」，
+        塞任何註解、多一個空白、換行位置不同都會被判導航不一致而擋下發布。要說明就寫在 <ul> 外面（像這裡）。
+        2026-08-16 修：原本的 EN 那行說明註解就夾在 <ul> 裡面，導致照範本起手的新文章一律卡第 5 關
+        （llm-rag-agent-mcp 與 rag-three-retrieval-modes 兩篇同時中招）。註解已移出來，<ul> 內保持乾淨。
+        萬一還是被擋，直接跑：node scripts/check-bilingual-nav.mjs --write --only=<你的檔案路徑> -->
+<nav class="top">
+  <div class="container">
+    <a class="nav-brand-img" href="../../index.html"><img src="../../images/footer-signature.png" alt="江江教練 | 江昱德"></a>
+    <button class="nav-toggle" aria-label="選單"><span></span><span></span><span></span></button>
+    <ul class="nav-menu">
+      <li><a href="../../index.html">首頁</a></li>
+      <li><a href="../../knowledge-architecture.html">知識架構</a></li>
+      <li><a href="../../courses.html">課程</a></li>
+      <li><a href="../../articles.html" class="active">深度文章</a></li>
+      <li><a href="../../skills.html">技能包下載</a></li>
+      <li><a href="../../offers.html">服務方案</a></li>
+      <li class="lang-switch"><a href="../../en/articles.html" hreflang="en">EN</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="wc wc1"></div>
+  <div class="wc wc2"></div>
+  <div class="wc wc3"></div>
+  <!-- 本篇目前沒有圖卡，hero 不放封面圖（範本的 .hero-figure 整塊已移除，hero 自動置中只剩文字）。之後補圖時把範本那塊 <figure class="hero-figure"> 貼回來即可，lightbox 已內建。 -->
+  <div>
+    <div class="kicker">AI 應用 · Multi-Agent</div>
+    <h1>客服、業務、開發客戶，AI 員工實際做到哪一步？｜Grok Bot Galaxy 直播 Day 2 四場工作坊整理</h1>
+    <p>四場工作坊，四個職務把自己每天在用的 bot 攤開來講：每個 bot 負責什麼、花多少錢、哪些事情故意不讓 bot 自己做。</p>
+    <div class="article-date">發佈 2026-09-18 ｜ 最後更新 2026-09-18</div>
+  </div>
+</section>
+
+<main>
+
+<section class="section" id="start"><div class="inner">
+  <h2>這篇在講什麼</h2>
+  <p class="lead">Grok Bot Galaxy 直播第二天，官方團隊開了四場工作坊，讓自己公司的業務工程師、業務、開發客戶（SDR）、客服上台講他們每天怎麼用 AI 員工工作。這篇整理他們實際做的事：每個職務養了哪些 bot、怎麼分工、花多少錢、哪些事情故意不讓 bot 自己做。</p>
+  <div class="duo stack">
+    <div class="card a"><b>適合誰</b><ul>
+      <li>已經在用 AI 助理，想知道別人真正把工作交出去到哪一步的人</li>
+      <li>想把 AI 帶進業務或客服團隊，需要一套導入順序的主管</li>
+      <li>想知道這樣做一個月大概要花多少錢的人</li>
+    </ul></div>
+    <div class="card b"><b>你可以帶走什麼</b><ul>
+      <li>四個職務的 bot 分工表，含每個 bot 負責什麼</li>
+      <li>客服導入的三步驟，以及每一步的停損點</li>
+      <li>兩組公開的成本數字</li>
+      <li>講者自己講出來的限制與失敗經驗</li>
+    </ul></div>
+  </div>
+  <nav class="toc" aria-label="文章目錄"><b>快速前往</b><ol>
+    <li><a href="#sales-engineer">業務工程師的三個 bot：做投影片、查程式庫、去用競品</a></li>
+    <li><a href="#deck-cost">一整套案例投影片，token 費用 20 到 30 美元</a></li>
+    <li><a href="#group-chat">把兩個 bot 拉進同一個群組，讓它們互相問答</a></li>
+    <li><a href="#record-skill">錄一段自己的操作，讓 bot 學會這個技能</a></li>
+    <li><a href="#sales-day">業務的一天：早上掃信箱，通話紀錄自動進 CRM</a></li>
+    <li><a href="#do-it-for-me">從「幫我找資料」改成「幫我看完、幫我寫信」</a></li>
+    <li><a href="#learn-my-voice">讓 bot 先讀你的信件和貼文，再幫你寫信</a></li>
+    <li><a href="#sdr-fifty">開發客戶的每日 50 家：訊號、排程、觸發器</a></li>
+    <li><a href="#no-new-bots">不要一直開新 bot：先問能不能用例行任務解決</a></li>
+    <li><a href="#support-three-steps">客服導入分三步：先摘要，再草稿，最後才讓它回信</a></li>
+    <li><a href="#ask-first">客服 bot 遇到不會的問題，先問你，不自作主張</a></li>
+    <li><a href="#ticket-cost">客服成本：一張工單 1 到 2 美元，先篩選可以壓到 0.2 美元</a></li>
+    <li><a href="#kb-review">非技術同事要改知識庫，讓他走審核流程</a></li>
+    <li><a href="#token-two-ways">省 token 的兩種相反做法</a></li>
+    <li><a href="#limits">講者自己講出來的限制</a></li>
+    <li><a href="#pivot">主直播現場：生意方向換了，從快閃活動變成做遊戲</a></li>
+    <li><a href="#point-and-say">他們怎麼指揮 bot 改畫面：圈起來，說「這個怪怪的」</a></li>
+    <li><a href="#team-roles">一個團隊的 bot 分工：總協調、3D、評論、監聽、音效、後端</a></li>
+    <li><a href="#skill-overfit">觀察到的 AI 通病：技能寫得太貼某一次情境</a></li>
+    <li><a href="#delete-tests">早期階段的取捨：叫 bot 把測試全部刪掉，先出貨</a></li>
+    <li><a href="#cheating">自己講出來的隱憂：玩家可以開主控台作弊</a></li>
+    <li><a href="#ad-video">5 分鐘做出一支廣告影片，但講者說不會真的拿去投</a></li>
+    <li><a href="#scope">這篇整理的範圍</a></li>
+  </ol></nav>
+</div></section>
+
+<section class="section" id="sales-engineer"><div class="inner">
+  <h2>業務工程師的三個 bot：做投影片、查程式庫、去用競品</h2>
+  <p>第一場工作坊的講者把自己每天在用的三個 bot 攤開來講。</p>
+  <div class="tablewrap"><table>
+    <thead><tr><th>bot</th><th>負責什麼</th></tr></thead>
+    <tbody>
+      <tr><td>投影片 bot</td><td>給它一篇公開部落格文章連結，它照固定模板做出客戶案例投影片，自動抓對方公司 logo，插進主投影片庫</td></tr>
+      <tr><td>技術專家 bot</td><td>接上程式庫，客戶問技術細節時去翻原始碼，回覆改寫成客戶看得懂的白話</td></tr>
+      <tr><td>競品情報 bot</td><td>用自己的電腦實際跑競爭對手的訂票流程，回報體驗差在哪</td></tr>
+    </tbody>
+  </table></div>
+  <p>投影片的模板欄位是固定的四格：問題、解法、成效、客戶引言。現場示範從一篇文章做出一張案例投影片，大約 10 到 15 分鐘。</p>
+  <p>技術專家 bot 的設定寫法，講者當場念出來的大意是「你是某某產品的技術專家，你有這幾個程式庫的權限」。它背後會呼叫寫程式的雲端代理去翻程式碼。</p>
+</div></section>
+
+<section class="section" id="deck-cost"><div class="inner">
+  <h2>一整套案例投影片，token 費用 20 到 30 美元</h2>
+  <p>講者公開了自己的花費：整套案例研究投影片庫做下來，token 費用大約 20 到 30 美元，而同樣的東西她自己做要花 4 到 5 個小時。</p>
+  <p>這是她個人的經驗數字，不是官方報價。</p>
+</div></section>
+
+<section class="section" id="group-chat"><div class="inner">
+  <h2>把兩個 bot 拉進同一個群組，讓它們互相問答</h2>
+  <p>競品情報 bot 跑完競爭對手的流程後，會直接和技術專家 bot 在同一個群組對話裡互相問答，比對技術基準。講者說這樣比自己在兩邊轉傳訊息省事，而且她可以在旁邊看、隨時插話導正方向。</p>
+  <p>Day 1 創辦人場的講者則建議少用群組，因為 bot 會搶著講話、費用變高。兩場的說法不同，差別在於群組裡放幾個 bot、要不要一直跑。</p>
+  <div class="readmore near">
+    <b>Day 1 創辦人場怎麼說群組，我另外寫過一篇</b>
+    <ul>
+      <li><a href="../grok-bot-galaxy-day1-founders/">一個人怎麼帶 22 個 AI 員工？｜Grok Bot Galaxy 直播 Day 1 創辦人場整理</a>　同一場直播的前一天，這篇是四場工作坊的實作現場，那篇是創辦人回答現場提問，群組搶話與花費那段就在那裡</li>
+    </ul>
+  </div>
+</div></section>
+
+<section class="section" id="record-skill"><div class="inner">
+  <h2>錄一段自己的操作，讓 bot 學會這個技能</h2>
+  <p>講者示範了一個做法：她把自己「到競爭對手的技術部落格找 AI 相關文章」的操作過程錄下來，讓 bot 從錄影學會這個流程，之後套用到其他四、五家競爭對手。</p>
+</div></section>
+
+<section class="section" id="sales-day"><div class="inner">
+  <h2>業務的一天：早上掃信箱，通話紀錄自動進 CRM</h2>
+  <p>第二場是業務。講者的 bot 分工是這樣：</p>
+  <div class="tablewrap"><table>
+    <thead><tr><th>bot</th><th>負責什麼</th></tr></thead>
+    <tbody>
+      <tr><td>秘書 bot（用她的狗命名）</td><td>每天早上準備當天會議，把要回的信做成卡片，她只要選編輯、送出或丟掉</td></tr>
+      <tr><td>開發客戶 bot</td><td>從 CRM 挑目標公司，每家挑 5 個聯絡人，抓個人化的切入點</td></tr>
+      <tr><td>通話整理 bot</td><td>聽通話錄音，照指定格式整理成 CRM 的後續步驟</td></tr>
+      <tr><td>客戶追蹤 bot</td><td>每次通話後更新客戶方案頁，續約前主動列出前 20 名活躍用戶</td></tr>
+      <tr><td>技術 bot</td><td>接程式庫，讓她在通話現場直接回答技術問題</td></tr>
+    </tbody>
+  </table></div>
+  <p>開發客戶 bot 抓的切入點是個人層級，例如對方技術長在社群上發的貼文，不是只抓公司新聞。講者建議把社群平台的 API 接上去抓個人動態。</p>
+  <p>通話整理的順序是：bot 整理好、她確認、才推進 CRM。她沒有讓它直接寫進去。</p>
+  <p>技術 bot 讓她不用臨時拉工程師進會議。另一位講者補充，這讓他的成交速度變快。</p>
+</div></section>
+
+<section class="section" id="do-it-for-me"><div class="inner">
+  <h2>從「幫我找資料」改成「幫我看完、幫我寫信」</h2>
+  <p>講者講了自己的轉折：一開始她把 bot 當聊天工具，叫它找連結給自己看，後來改成硬性要求「幫我看完、幫我寫信」，它才從研究夥伴變成執行夥伴。</p>
+  <p>同一場還提到，bot 可以幫忙聽完 45 分鐘的播客或研討會影片，抓出可以寫進開發信的引言。她原本想利用通勤時間聽，但一直聽不完。</p>
+</div></section>
+
+<section class="section" id="learn-my-voice"><div class="inner">
+  <h2>讓 bot 先讀你的信件和貼文，再幫你寫信</h2>
+  <p>為了避免寫出 AI 腔，她讓 bot 先讀過自己的信箱、通訊軟體訊息與社群貼文，學她的語氣，再開始草擬信件。</p>
+  <p>開發客戶那場的講者做得更細：訓練樣本只挑同一個帳號寄出、對方有正面回覆、而且是自己負責的客戶的信，並且對「最近才收到正面回覆」的信加重比例。理由是產品定位變化快，三個月前有效的寫法現在可能已經沒用。</p>
+  <p>他也講了實話：一開始同步信箱訓練出來的草稿很像模板，只是換名字換公司。他得一封一封批評、來回給範例，才調得出不像模板的信。</p>
+</div></section>
+
+<section class="section" id="sdr-fifty"><div class="inner">
+  <h2>開發客戶的每日 50 家：訊號、排程、觸發器</h2>
+  <p>第三場是開發客戶（SDR）。講者的日常設定：</p>
+  <ul>
+    <li>每天要 50 個新名單，其中 5 個是當天最優先。</li>
+    <li>系統照他的行事曆自動排時間：早上 9 點花 15 分鐘處理最優先的 5 個，下午 1 點處理其餘 45 個。</li>
+    <li>每個工作日早上 8 點自動掃描所有客戶，找新訊號，例如新註冊、下載內容。他強調越快跟進效果越好。</li>
+    <li>CRM 設了觸發器：客戶狀態往前推進時，自動把這個聯絡人從開發序列移除，避免重複打擾。</li>
+  </ul>
+  <p>他自己只跟一個總管 bot 講話，其他 bot 由總管調度。他建議先建總管 bot，再透過總管去建立其他 bot，這樣總管才知道每個 bot 的用途與該什麼時候找誰。</p>
+</div></section>
+
+<section class="section" id="no-new-bots"><div class="inner">
+  <h2>不要一直開新 bot：先問能不能用例行任務解決</h2>
+  <p>同一場講者的原話大意是：一直建新 bot 反而更亂，壞處多過好處。他建議在開新 bot 前先自問：為什麼需要它，能不能改成既有 bot 的一個例行任務。</p>
+  <p>被問到成本時，他沒有給數字，只說因人而異，建議自己實測；如果每天 50 家太貴，可以改成每週一次寄 250 家。</p>
+</div></section>
+
+<section class="section" id="support-three-steps"><div class="inner">
+  <h2>客服導入分三步：先摘要，再草稿，最後才讓它回信</h2>
+  <p>第四場是客服。講者建議照三個階段慢慢放手：</p>
+  <ol>
+    <li><strong>只讀不寫</strong>：bot 讀工單、摘要問題根因，不回覆。</li>
+    <li><strong>寫草稿不送出</strong>：bot 草擬回覆，存成內部註記，等人確認。</li>
+    <li><strong>才讓它直接回覆客戶</strong>。</li>
+  </ol>
+  <p>他示範的四個 bot 分工是：建連接器的、回覆的、發告警的、自我優化的。但他明講不建議一開始就這樣拆，先用一個通用 bot 把一條流程練熟，規模大了再拆。</p>
+  <p>告警 bot 的設定範例：每小時掃一次工單，挑出「已經是半年以上的客戶，而且出現想終止合作的訊號」，自動發訊息通知團隊。</p>
+  <div class="readmore near">
+    <b>一步一步放手這件事，我另外寫過一篇</b>
+    <ul>
+      <li><a href="../ai-employee-four-levels/">訓練 AI 員工的四個層次：從自己會用，到讓 AI 幫你訓練 AI</a>　這段是客服團隊怎麼分三階段把權限交出去，那篇是把放手的程度拆成四層，並給每一層的判斷標準</li>
+    </ul>
+  </div>
+</div></section>
+
+<section class="section" id="ask-first"><div class="inner">
+  <h2>客服 bot 遇到不會的問題，先問你，不自作主張</h2>
+  <p>示範中最值得看的是一個界線設計。</p>
+  <p>公司的內規是訂閱 14 天內可以退款，超過就拒絕。示範裡一位客戶在期限內，bot 直接在金流系統執行退款與取消；另一位超過 20 天，bot 拒絕，而且回覆時刻意含糊，不把內規細節講出去，改提供「到期後不再續扣」的替代方案。</p>
+  <p>遇到知識庫裡沒有的問題（能不能分享 WiFi 通行證），bot 判斷自己把握不夠，沒有直接回答，而是建議把答案補進常見問題。人按了確認之後才寫進知識庫，新增的內容用綠色標示方便追蹤，然後才回覆客戶。</p>
+</div></section>
+
+<section class="section" id="ticket-cost"><div class="inner">
+  <h2>客服成本：一張工單 1 到 2 美元，先篩選可以壓到 0.2 美元</h2>
+  <p>講者給的數字：中高複雜度的工單，回覆一張大約 1 到 2 美元。如果先用程式把單純的工單（例如純退款、問某個信箱）篩出來批次處理，可以壓到一張約 0.2 美元。</p>
+  <p>他強調這是他自己花半天優化後的結果，不是官方保證。他也比較了行情：市面上客服代理平台常見的收費是每解決一件 1 到 10 美元，真人處理更貴。</p>
+</div></section>
+
+<section class="section" id="kb-review"><div class="inner">
+  <h2>非技術同事要改知識庫，讓他走審核流程</h2>
+  <p>有人問怎麼防止不懂技術的同事改壞資料。講者的建議是把知識庫和自我改進流程放到版本控制系統，用「提出修改、指定的人審核、通過測試才合併」的方式，讓非技術同事的修改要經過審核與驗證，不會直接動到正式資料。</p>
+  <p>他也建議客服團隊先找出「占八成工單量的那兩成問題類型」，優先把這些放進知識庫、跑過測試，確認沒問題才讓 bot 站到第一線。</p>
+</div></section>
+
+<section class="section" id="token-two-ways"><div class="inner">
+  <h2>省 token 的兩種相反做法</h2>
+  <p>同一場的兩位講者給了相反的答案，可以照自己的狀況選：</p>
+  <div class="tablewrap"><table>
+    <thead><tr><th></th><th>做法</th><th>理由</th></tr></thead>
+    <tbody>
+      <tr><td>節省派</td><td>例行任務一天只跑一到兩次；多用單一功能的專職 bot，不要事事透過總管；有現成接口就不要用電腦操作</td><td>跑太頻繁很吵，花費也高</td></tr>
+      <tr><td>放量派</td><td>多開例行任務、多配置 bot，花費比較高</td><td>直接問 bot 自己要怎麼優化省錢</td></tr>
+    </tbody>
+  </table></div>
+  <p>節省派另外提醒：有人不小心把例行任務設成每 15 分鐘跑一次。</p>
+  <div class="readmore near">
+    <b>接口跟電腦操作差在哪，我另外寫過一篇</b>
+    <ul>
+      <li><a href="../cli-api-mcp-computer-use/">叫 AI 幫你點餐，就懂 CLI、API、MCP</a>　節省派說「有現成接口就不要用電腦操作」，那篇把幾種接法拆成白話，並給一組先問哪一種的判斷順序</li>
+    </ul>
+  </div>
+</div></section>
+
+<section class="section" id="limits"><div class="inner">
+  <h2>講者自己講出來的限制</h2>
+  <div class="tablewrap"><table>
+    <thead><tr><th>限制</th><th>直播中的說法</th></tr></thead>
+    <tbody>
+      <tr><td>工具沒有接口又不支援 Linux</td><td>現在完全沒辦法用，因為 bot 的電腦是 Linux</td></tr>
+      <tr><td>用電腦操作網頁</td><td>可能被網站的機器人偵測擋下，例如跳出「我不是機器人」驗證</td></tr>
+      <tr><td>安全防護</td><td>可以設定讓 bot 在部署或動用內部系統前先問過人，但講者說這套還在加強中</td></tr>
+      <tr><td>客服電話語音</td><td>講者說自己還沒深入試過</td></tr>
+      <tr><td>總管要建幾個下屬 bot</td><td>被問到怎麼自動判斷，講者只說跟 bot 講清楚你的流程、讓它判斷，沒有給具體方法</td></tr>
+    </tbody>
+  </table></div>
+</div></section>
+
+<section class="section" id="pivot"><div class="inner">
+  <h2>主直播現場：生意方向換了，從快閃活動變成做遊戲</h2>
+  <p>Day 1 他們還在談在舊金山辦快閃活動，找場地、算預算、查許可。Day 2 的主直播時段，方向整個換掉：他們決定做一間遊戲工作室，第一款遊戲是玩家用自己訓練的 bot 組隊對戰、比排行榜，用社群帳號登入。主持人自己在直播中把這個轉彎稱為 pivot。</p>
+  <p>當天的實際進度：先用純 HTML 和 CSS 拼出幾千行的可玩原型，推上程式碼倉庫讓三個人一起玩，接著改寫成正式的前端框架，後端另外一個人負責。</p>
+</div></section>
+
+<section class="section" id="point-and-say"><div class="inner">
+  <h2>他們怎麼指揮 bot 改畫面：圈起來，說「這個怪怪的」</h2>
+  <p>比較具體的操作有三種：</p>
+  <ul>
+    <li><strong>圈選元件下指令</strong>：在設計模式裡直接圈出畫面上有問題的元素，跟 bot 說「這個輸入框怪怪的」，讓它精準對到要改的地方。</li>
+    <li><strong>一次標記多處</strong>：把畫面上好幾個要改的地方一起標起來，按下開始，系統自動拆成多個子代理平行處理。</li>
+    <li><strong>叫總管去指揮別的 bot</strong>：講者要自己的總管 bot 去指揮生圖 bot，做出技能圖示、去背、套品牌風格。</li>
+  </ul>
+  <p>也有失敗的例子。要求 bot 幫卡片加上彩虹閃光效果，結果做過頭。講者自己承認是指令不夠精確，判斷問題出在漸層沒有跟著卡片尺寸縮放，改口令之後才對。</p>
+</div></section>
+
+<section class="section" id="team-roles"><div class="inner">
+  <h2>一個團隊的 bot 分工：總協調、3D、評論、監聽、音效、後端</h2>
+  <p>他們當天在用的 bot 大致是這些角色：總協調、3D 原型、遊戲設計評論、監聽通訊軟體訊息、操控專案的協調、音效、後端工程。</p>
+  <p>有一個叫「註解殺手」的代理，工作是專門刪掉多餘的註解。原因是他們觀察到 AI 常常用註解掩蓋暫時性的處理方式，而不去修根本問題。</p>
+</div></section>
+
+<section class="section" id="skill-overfit"><div class="inner">
+  <h2>觀察到的 AI 通病：技能寫得太貼某一次情境</h2>
+  <p>講者講了一個很具體的觀察：讓 AI 自己寫下來的技能，如果來源只有單一情境，它常常把那一次的細節寫死，之後就失去通用性。他當場要求 bot 重讀一次，把內容改寫成原則。</p>
+  <p>另一個判準也很實用：當他發現自己在對好幾個 bot 一條一條微管理指令時，就是該退一步、去想「整個 bot 團隊要怎麼編排」的訊號。</p>
+</div></section>
+
+<section class="section" id="delete-tests"><div class="inner">
+  <h2>早期階段的取捨：叫 bot 把測試全部刪掉，先出貨</h2>
+  <p>這是直播中很直接的一個決定。專案還在早期、功能還會一直變，他們下指令要 bot 刪掉所有測試、直接推上主分支，等功能定下來再補測試。</p>
+  <p>同一段裡他們也把專案管理工具訂為唯一真相來源，要求所有 bot 保持更新。現場可以看到 bot 自動把任務從待辦搬到進行中、再搬到完成。</p>
+</div></section>
+
+<section class="section" id="cheating"><div class="inner">
+  <h2>自己講出來的隱憂：玩家可以開主控台作弊</h2>
+  <p>配對和戰鬥的邏輯目前跑在前端，主持人當場示範：打開瀏覽器主控台就可以把自己的數值改成一百萬，直接獲勝。他們知道上線前要改成由伺服器決定，當天還沒做。</p>
+</div></section>
+
+<section class="section" id="ad-video"><div class="inner">
+  <h2>5 分鐘做出一支廣告影片，但講者說不會真的拿去投</h2>
+  <p>他們讓 bot 用動畫框架做出一支 1:1 比例的廣告素材，約 5 分鐘完成，過程中 AI 寫了大約 6,000 行動畫程式碼、改了 12 個檔案。</p>
+  <p>講者同時說了實話：這支素材不會真的拿去投放廣告。</p>
+  <p>他給的理由值得記下來：AI 最擅長處理文字和程式碼，把創意動畫包裝成程式碼介面，等於用 AI 聽得懂的語言溝通，效率比較好，也比較省 token。</p>
+</div></section>
+
+<section class="section" id="scope"><div class="inner">
+  <h2>這篇整理的範圍</h2>
+  <ul>
+    <li>只整理 Grok Bot Galaxy 直播 Day 2（2026-09-16 台灣時間）。Day 1 與 Day 3 另外整理。</li>
+    <li>內容來自直播回放的英文逐字稿，翻譯與歸納由我整理。</li>
+    <li>講者提到的功能狀態與價格是直播當天的說法，之後可能改變。</li>
+    <li>語音辨識稿的人名與公司名互相矛盾，正文一律不寫人名。</li>
+  </ul>
+  <div class="readmore">
+    <b>這篇提到過的</b>
+    <ul>
+      <li><a href="../grok-bot-galaxy-day1-founders/">一個人怎麼帶 22 個 AI 員工？｜Grok Bot Galaxy 直播 Day 1 創辦人場整理</a>　同一場直播的前一天，看完四個職務的實作，回頭看創辦人怎麼回答分工與花費的問題</li>
+      <li><a href="../ai-employee-four-levels/">訓練 AI 員工的四個層次：從自己會用，到讓 AI 幫你訓練 AI</a>　客服三階段只講到一條流程，這篇把放手的程度整理成四層</li>
+      <li><a href="../cli-api-mcp-computer-use/">叫 AI 幫你點餐，就懂 CLI、API、MCP</a>　要判斷哪些工作該走接口、哪些只能用電腦操作時看這篇</li>
+    </ul>
+    <b style="margin-top:16px">再往前後延伸</b>
+    <ul>
+      <li><a href="../make-your-ai-secretary/">怎麼做一個 AI 小秘書｜Gmail、行事曆、LINE 群的進度都幫你盯著</a>　往後：業務那場的秘書 bot 換成自己的信箱與行事曆，這篇是可以照著做的版本</li>
+      <li><a href="../what-are-subagents/">什麼叫子代理？從分頭查資料到 30 人工作坊頁面</a>　往後：直播現場「一次標記多處、自動拆成多個子代理」那段的完整說明</li>
+    </ul>
+  </div>
+</div></section>
+
+<section class="cta-band"><div class="section"><div class="inner"><div><h2>把 AI 變成能分工的工作夥伴</h2><p class="lead">我會持續分享 AI × 知識管理、提示詞設計與實際工作流程。</p></div><div class="cta-card"><b>免費線上講座</b><p>每個月兩場免費講座。</p><a class="button" href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener" style="display:inline-flex;background:#48b178;color:#fff;text-decoration:none;border-radius:999px;padding:12px 18px;font-weight:800">點我加入 LINE 社群 ↗</a></div></div></div></section>
+
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">江江教練 · AI 知識管理</div>
+    <div class="footer-links">
+      <a href="../../articles.html">← 回深度文章總站</a>
+      <a href="../../index.html">首頁</a>
+      <a href="../../learn.html">自學資源</a>
+      <a href="../../skills.html">技能包下載</a>
+      <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">LINE 社群 ↗</a>
+      <a href="https://www.threads.com/@jiang_yude_coach" target="_blank" rel="noopener">Threads ↗</a>
+      <a href="https://vocus.cc/salon/Jiang_Coach" target="_blank" rel="noopener">方格子 ↗</a>
+    </div>
+    <div class="footer-note">這是一篇教學文章，整理 Grok Bot Galaxy 直播 Day 2 四場工作坊的內容，供你參考。</div>
+  </div>
+</footer>
+
+<!-- 點圖放大 lightbox（hero 與內文圖通用，已內建，不用每篇重加） -->
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <span class="lightbox-close" aria-label="關閉">×</span>
+  <img id="lightbox-img" src="" alt="放大檢視">
+</div>
+<script>
+(function(){
+  var box=document.getElementById('lightbox'),boxImg=document.getElementById('lightbox-img');
+  document.querySelectorAll('.hero-figure img,.inline-figure img').forEach(function(img){
+    img.addEventListener('click',function(){boxImg.src=img.currentSrc||img.src;boxImg.alt=img.alt||'放大檢視';box.classList.add('open');box.setAttribute('aria-hidden','false');});
+  });
+  function close(){box.classList.remove('open');box.setAttribute('aria-hidden','true');boxImg.src='';}
+  box.addEventListener('click',close);
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
+})();
+</script>
+
+<script src="../../image-interactions.js"></script>
+
+<!-- 官網共用：滑鼠暖光暈 + 導航列漢堡選單 -->
+<script src="../../spotlight.js"></script>
+
+<!-- 文章自動互聯（相關文章）：兩支已內建，順序不可顛倒，不用再另外加 -->
+<script src="../../articles-data.js"></script>
+<script src="../../related-render.js"></script>
+  <script src="/mika-chat-widget.js" defer></script>
+</body>
+</html>
