@@ -1,0 +1,482 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="index,follow">
+<title>公司資料可以貼給 AI 嗎？｜先搞清楚這兩條紅線</title>
+<meta name="description" content="把客戶名單貼進 AI 之前，你要防的其實是兩件事：資料送出去會怎樣，以及這個 AI 碰得到你電腦裡的什麼。這篇把一個給臨床醫師的資安系列轉譯成公司版本，包含四條路徑的紅線判斷、辦公室版五題自測、檔案裡看不到的那一半，以及讀服務條款只要找的四個答案。">
+<link rel="canonical" href="https://jiangyude.com/articles/ai-data-red-lines/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="公司資料可以貼給 AI 嗎？｜先搞清楚這兩條紅線｜江江教練">
+<!-- 分享封面：hero 文字填好後在 repo 根目錄跑 `node scripts/og-shot.mjs ai-data-red-lines` 自動截 1200×630 到 images/og/ai-data-red-lines.jpg（見 README「文章分享封面（OG 圖）機制」）。別退回 intro-jiang.png 直式人像，會被裁成只剩脖子。 -->
+<meta property="og:image" content="https://jiangyude.com/images/og/ai-data-red-lines.jpg">
+<meta property="og:description" content="把客戶名單貼進 AI 之前，你要防的其實是兩件事：資料送出去會怎樣，以及這個 AI 碰得到你電腦裡的什麼。這篇把一個給臨床醫師的資安系列轉譯成公司版本，包含四條路徑的紅線判斷、辦公室版五題自測、檔案裡看不到的那一半，以及讀服務條款只要找的四個答案。">
+<meta property="og:url" content="https://jiangyude.com/articles/ai-data-red-lines/">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:site_name" content="江江教練 · AI 知識管理">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="公司資料可以貼給 AI 嗎？｜先搞清楚這兩條紅線｜江江教練">
+<meta name="twitter:image" content="https://jiangyude.com/images/og/ai-data-red-lines.jpg">
+<meta name="twitter:description" content="把客戶名單貼進 AI 之前，你要防的其實是兩件事：資料送出去會怎樣，以及這個 AI 碰得到你電腦裡的什麼。這篇把一個給臨床醫師的資安系列轉譯成公司版本，包含四條路徑的紅線判斷、辦公室版五題自測、檔案裡看不到的那一半，以及讀服務條款只要找的四個答案。">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"公司資料可以貼給 AI 嗎？｜先搞清楚這兩條紅線","description":"把客戶名單貼進 AI 之前，你要防的其實是兩件事：資料送出去會怎樣，以及這個 AI 碰得到你電腦裡的什麼。這篇把一個給臨床醫師的資安系列轉譯成公司版本，包含四條路徑的紅線判斷、辦公室版五題自測、檔案裡看不到的那一半，以及讀服務條款只要找的四個答案。","author":{"@type":"Person","name":"江昱德","alternateName":"江江教練","jobTitle":"隱性知識提煉師、AI 應用規劃師"},"isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://jiangyude.com/"},"inLanguage":"zh-Hant","url":"https://jiangyude.com/articles/ai-data-red-lines/"}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{--ink:#1a1612;--paper:#fefcf8;--muted:#6a635a;--line:#d8cdb8;--green:#5f7553;--blue:#5689b8;--orange:#e85a4f;--soft:#faf5ec;--dark:#2a2018;--shadow:0 18px 45px rgba(107,74,42,.14);--sp-shadow:hsla(35,50%,60%,.15);--sp-shadow-edge:hsla(35,50%,68%,.03);--sp-radius:400px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC","Segoe UI",sans-serif}
+a{color:inherit}
+/* 官網共用導航列 nav.top（與首頁/文章總站同一條） */
+nav.top{position:sticky;top:0;background:rgba(254,252,248,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid #d8cdb8;z-index:100}
+nav.top .container{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:24px;padding:14px 32px}
+.nav-brand-img{justify-self:start;display:flex;align-items:center;text-decoration:none;flex-shrink:0;transition:opacity .2s}
+.nav-brand-img:hover{opacity:.8}.nav-brand-img img{height:40px;width:auto;display:block}
+nav.top ul.nav-menu{justify-self:end;display:flex;gap:22px;list-style:none;margin:0;padding:0;font-size:.95rem;white-space:nowrap}
+nav.top ul.nav-menu a{color:#3a342d;text-decoration:none;transition:color .2s;font-weight:500;white-space:nowrap}
+nav.top ul.nav-menu a:hover{color:#1a1612}nav.top ul.nav-menu a.active{color:#1a1612;font-weight:700}
+.nav-toggle{display:none;background:none;border:none;padding:6px;cursor:pointer;width:36px;height:36px;position:relative}
+.nav-toggle span{display:block;position:absolute;left:8px;right:8px;height:2px;background:#1a1612;border-radius:2px;transition:transform .25s,opacity .25s,top .25s}
+.nav-toggle span:nth-child(1){top:11px}.nav-toggle span:nth-child(2){top:17px}.nav-toggle span:nth-child(3){top:23px}
+.nav-toggle.open span:nth-child(1){top:17px;transform:rotate(45deg)}.nav-toggle.open span:nth-child(2){opacity:0}.nav-toggle.open span:nth-child(3){top:17px;transform:rotate(-45deg)}
+.tablewrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:22px 0;border:1px solid var(--line);border-radius:10px;background:#fff;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.tablewrap table{border-collapse:collapse;width:100%;min-width:600px;font-size:18px;line-height:1.65}
+.tablewrap .zh{display:block;margin-top:5px;font-size:16px;line-height:1.55;color:var(--muted);font-weight:400}
+.tablewrap th,.tablewrap td{padding:12px 14px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top;color:#3a342d}
+.tablewrap thead th{background:var(--soft);font-weight:900;font-size:18px;color:#1a1612;white-space:nowrap}
+.tablewrap tbody tr:last-child td{border-bottom:none}
+.tablewrap td code,.section code{background:var(--soft);border:1px solid var(--line);border-radius:5px;padding:1px 6px;font:500 15px/1.5 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace}
+.inline-figure.wide{max-width:1000px}
+.toc{margin:26px 0 0;padding:20px 22px;background:#fff;border:1px solid var(--line);border-radius:10px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.toc>b{display:block;font-size:15px;letter-spacing:.05em;color:var(--green);margin-bottom:10px}
+.toc ol{margin:0;padding-left:1.35em;font-size:18px;line-height:1.7}
+.toc li{margin-bottom:7px;color:#3a342d}
+.toc a{color:var(--blue);font-weight:700;text-decoration:none}.toc a:hover{text-decoration:underline}
+.toc-hint{margin:12px 0 0!important;font-size:18px!important;color:var(--muted)!important;border-top:1px solid var(--line);padding-top:12px}
+.readmore{margin-top:24px;padding:20px 22px;background:var(--soft);border:1px solid var(--line);border-radius:12px}
+.readmore.near{margin:26px 0 6px;background:rgba(86,137,184,.07);border-color:#bcd0e2}
+.readmore.near b{color:var(--blue);font-size:18px}
+.readmore.near li{font-size:17px;line-height:1.7;margin-bottom:10px}
+.readmore b{display:block;margin-bottom:10px;font-size:19px}
+.readmore ul{margin:0;padding-left:1.25em}
+.readmore a{color:var(--blue);font-weight:700;text-decoration:none}
+.readmore a:hover{text-decoration:underline}
+@media(max-width:820px){.tablewrap table{min-width:560px;font-size:18px}.tablewrap{position:relative}.tablewrap::after{content:"表格可左右滑動 →";position:sticky;left:0;display:block;font-size:15px;color:var(--muted);background:var(--soft);border-top:1px solid var(--line);padding:7px 12px;width:100%}}
+@media(max-width:860px){
+ nav.top .container{grid-template-columns:auto 1fr auto;padding:10px 16px;gap:12px}
+ .nav-brand-img img{height:32px}
+ .nav-toggle{display:block;justify-self:end}
+ nav.top ul.nav-menu{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(254,252,248,.98);backdrop-filter:blur(14px);border-bottom:1px solid #d8cdb8;flex-direction:column;gap:0;padding:8px 0;box-shadow:0 10px 24px rgba(107,74,42,.08)}
+ nav.top ul.nav-menu.open{display:flex}
+ nav.top ul.nav-menu li{border-bottom:1px solid #e8dfc9}
+ nav.top ul.nav-menu li:last-child{border-bottom:none}
+ nav.top ul.nav-menu a{display:block;padding:14px 20px;font-size:1.06rem}
+}
+/* 滑鼠暖光暈（與首頁同一支 spotlight.js） */
+body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradient(var(--sp-radius) circle at var(--mx,50%) var(--my,50%),var(--sp-shadow) 0%,var(--sp-shadow-edge) 45%,transparent 75%);pointer-events:none;z-index:9999;mix-blend-mode:multiply;transition:background .06s linear}
+.hero{position:relative;overflow:hidden;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:72px;padding:96px clamp(20px,6vw,88px) 80px;background:linear-gradient(180deg,#fffcf0 0%,#f9e9d2 100%);color:#1a1612;border-bottom:1px solid #d8cdb8}
+.hero .wc{position:absolute;border-radius:50%;filter:blur(60px);pointer-events:none;z-index:0}
+.hero .wc1{width:420px;height:360px;top:-120px;right:-80px;background:#e8884b;opacity:.15}
+.hero .wc2{width:360px;height:300px;bottom:-110px;left:-70px;background:#5f7553;opacity:.13}
+.hero .wc3{width:280px;height:260px;top:34%;left:14%;background:#a08144;opacity:.10}
+.hero>div{flex:none;width:860px;max-width:100%;position:relative;z-index:2}
+.hero-figure{margin:0;width:420px;flex:none;position:relative;z-index:2}
+.hero-figure img{display:block;width:100%;border-radius:16px;border:1px solid #d8cdb8;box-shadow:0 18px 45px rgba(107,74,42,.16);cursor:zoom-in}
+.hero-figure figcaption{margin-top:10px;font-size:14px;line-height:1.6;color:#6a635a}
+.inline-figure{margin:30px auto 8px;max-width:820px}
+.inline-figure img{display:block;width:100%;border-radius:14px;border:1px solid var(--line);box-shadow:var(--shadow);background:#fff;cursor:zoom-in}
+.inline-figure figcaption{font-size:14px;line-height:1.6;color:var(--muted);margin-top:10px}
+.lightbox{position:fixed;inset:0;z-index:10000;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(12,10,8,.92);cursor:zoom-out;backdrop-filter:blur(4px)}
+.lightbox.open{display:flex}.lightbox img{max-width:96vw;max-height:92vh;border-radius:10px;box-shadow:0 24px 60px rgba(0,0,0,.5)}
+.lightbox-close{position:fixed;top:18px;right:24px;color:#fff;font-size:34px;line-height:1;font-weight:700;cursor:pointer;opacity:.85}
+.kicker{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.55rem;color:#7a5c3a;font-weight:500}
+.hero h1{max-width:none;margin:16px 0 18px;font-size:clamp(36px,6vw,72px);line-height:1.08;overflow-wrap:anywhere}
+.hero p{max-width:none;font-size:clamp(18px,2vw,23px);line-height:1.62;color:#3a342d}
+.cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
+.cta a{display:inline-flex;align-items:center;text-decoration:none;border-radius:8px;padding:12px 16px;font-weight:900}
+.cta .primary{background:#fff;color:#1a1612}.cta .ghost{border:1px solid rgba(255,255,255,.32);color:#fff;background:rgba(255,255,255,.08)}
+.section{padding:54px clamp(20px,6vw,88px);border-top:1px solid var(--line)}
+.inner{width:min(1000px,100%);margin:0 auto}
+.section h2{font-size:clamp(26px,4.2vw,48px);line-height:1.12;margin:0 0 18px}
+.section h3{font-size:clamp(21px,3vw,30px);line-height:1.2;margin:30px 0 12px}
+.lead{font-size:clamp(18px,1.6vw,22px);line-height:1.7;color:#3a342d;max-width:900px}
+.section p{font-size:18px;line-height:1.74;color:#3a342d}.section p+p{margin-top:14px}
+.section ul,.section ol{padding-left:1.4em;font-size:18px;line-height:1.74;color:#3a342d}.section li{margin-bottom:8px}
+.meaning{margin:22px 0;padding:16px 18px;border-left:5px solid var(--blue);background:rgba(86,137,184,.12);border-radius:6px;line-height:1.7;font-size:19px}
+.meaning b{display:block;color:var(--blue);margin-bottom:4px}
+.caveat{margin:0 0 8px;padding:16px 18px;border-left:5px solid var(--orange);background:rgba(232,90,79,.1);border-radius:6px;line-height:1.7;font-size:18px;color:#3a342d}
+.caveat b{display:block;color:var(--orange);margin-bottom:4px}
+.infocard{background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px 24px 22px;box-shadow:0 8px 22px rgba(107,74,42,.08);margin-top:8px}
+.infocard-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.info-item{padding:18px 14px 0}
+.info-item b{display:block;font-size:14px;font-weight:900;letter-spacing:.04em;margin-bottom:7px;text-transform:uppercase}
+.info-item:nth-child(1) b{color:var(--green)}.info-item:nth-child(2) b{color:var(--orange)}.info-item:nth-child(3) b{color:var(--blue)}
+.info-item p{margin:0;font-size:17px;line-height:1.6;color:#3a342d}
+.tagrow{display:flex;flex-wrap:wrap;gap:7px;margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
+.tag{font-size:14px;color:var(--muted);background:var(--soft);border:1px solid var(--line);border-radius:999px;padding:4px 11px}
+.duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:24px}
+.duo.stack{grid-template-columns:1fr}
+.duo .card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:22px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.duo .card.a{border-color:var(--orange)}.duo .card.b{border-color:var(--green);box-shadow:0 8px 24px rgba(95,117,83,.16)}
+.duo .card small{display:block;font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.04em;margin-bottom:9px}
+.duo .card.a small{color:var(--orange)}.duo .card.b small{color:var(--green)}
+.duo .card b{display:block;font-size:22px;line-height:1.3;margin-bottom:12px}.duo .card.a b{color:#c0512f}.duo .card.b b{color:#4a7a59}
+.duo .card p{margin:0;color:#3a342d;line-height:1.75;font-size:18px}
+.workflow-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:24px}
+.workflow-step{background:#fff;border:1px solid var(--line);border-radius:8px;padding:18px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.workflow-step small{display:block;color:var(--orange);font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;margin-bottom:9px}
+.workflow-step b{display:block;font-size:18px;line-height:1.3;margin-bottom:9px}
+.workflow-step p{margin:0;color:#3a342d;line-height:1.6;font-size:16px}
+.codeblock{background:var(--dark);color:#f3ead9;border-radius:8px;padding:18px 20px;font:500 14px/1.65 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;overflow-x:auto;white-space:pre-wrap;margin:20px 0;box-shadow:0 8px 22px rgba(107,74,42,.12)}
+.codeblock .c{color:#f6d7a6;font-weight:600}
+.skillcard{background:#fff;border:1px solid var(--green);border-radius:12px;padding:24px;box-shadow:0 10px 26px rgba(95,117,83,.16);margin-top:8px}
+.skillcard b{display:block;font-size:21px;margin-bottom:8px}
+.skillcard p{margin:0 0 16px;font-size:17px;line-height:1.65;color:#3a342d}
+.cta-band{background:#e6f0e5;color:#3a342d}.cta-band .section{border-top:none}
+.cta-band .inner{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(260px,.85fr);gap:26px;align-items:start}
+.cta-band h2{font-size:clamp(26px,4vw,44px);margin:0 0 16px}.cta-band p,.cta-band .lead{color:rgba(58,52,45,.9);font-size:18px;line-height:1.72}
+.cta-card{border:1px solid #cfe0d2;background:#fbfdfa;border-radius:8px;padding:22px}
+.cta-card b{display:block;color:#48b178;margin-bottom:10px;font-size:18px}.cta-card p{margin:0 0 14px}
+.footer{padding:30px clamp(20px,6vw,88px);font-size:14px;color:var(--muted);background:#fff;border-top:1px solid var(--line)}
+.footer-inner{width:min(1000px,100%);margin:0 auto}
+.footer-links{display:flex;flex-wrap:wrap;gap:6px 12px;margin-bottom:14px}.footer-links a{color:var(--blue);font-weight:900;text-decoration:none;font-size:14px}
+.footer-brand{font-weight:900;font-size:15px;margin-bottom:10px}.footer-note{font-size:13px;line-height:1.6}
+@media(max-width:820px){.infocard-grid{grid-template-columns:1fr}.duo{grid-template-columns:1fr}.workflow-grid{grid-template-columns:1fr}.cta-band .inner{grid-template-columns:1fr}.section{padding:40px 20px}.hero{min-height:52vh;flex-direction:column;justify-content:flex-start;align-items:flex-start;gap:24px}.hero>div{width:100%}.hero-figure{width:100%;max-width:560px}}
+@media(max-width:820px){html,body{overflow-x:hidden}.hero h1{word-break:break-word}}
+</style>
+</head>
+<body class="spotlight">
+<!-- 官網共用導航列 nav.top：與首頁/總站同一條，文章不要自己另做極簡 topbar（江江 2026-06-25：要同一個框架、同一條導航列）。把對應頁面的 class="active" 標在自己那欄。
+     ⚠️ 下面 ul.nav-menu 整塊由 preflight 第 5 關 check-bilingual-nav.mjs 做「逐字比對」，
+        塞任何註解、多一個空白、換行位置不同都會被判導航不一致而擋下發布。要說明就寫在 <ul> 外面（像這裡）。
+        2026-08-16 修：原本的 EN 那行說明註解就夾在 <ul> 裡面，導致照範本起手的新文章一律卡第 5 關
+        （llm-rag-agent-mcp 與 rag-three-retrieval-modes 兩篇同時中招）。註解已移出來，<ul> 內保持乾淨。
+        萬一還是被擋，直接跑：node scripts/check-bilingual-nav.mjs --write --only=<你的檔案路徑> -->
+<nav class="top">
+  <div class="container">
+    <a class="nav-brand-img" href="../../index.html"><img src="../../images/footer-signature.png" alt="江江教練 | 江昱德"></a>
+    <button class="nav-toggle" aria-label="選單"><span></span><span></span><span></span></button>
+    <ul class="nav-menu">
+      <li><a href="../../index.html">首頁</a></li>
+      <li><a href="../../knowledge-architecture.html">知識架構</a></li>
+      <li><a href="../../courses.html">課程</a></li>
+      <li><a href="../../articles.html" class="active">深度文章</a></li>
+      <li><a href="../../skills.html">技能包下載</a></li>
+      <li><a href="../../offers.html">服務方案</a></li>
+      <li class="lang-switch"><a href="../../en/articles.html" hreflang="en">EN</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="wc wc1"></div>
+  <div class="wc wc2"></div>
+  <div class="wc wc3"></div>
+  <div>
+    <div class="kicker">資訊安全 / AI 使用原則</div>
+    <h1>公司資料可以貼給 AI 嗎？｜先搞清楚這兩條紅線</h1>
+    <p>大部分人只防了一半：資料送出去會怎樣，跟這個 AI 碰得到你什麼，是兩條不同的風險軸。</p>
+  </div>
+</section>
+
+<main>
+
+<section class="section" id="start">
+  <div class="inner">
+    <p class="lead">把客戶名單貼進 AI 問問題之前，你其實要防兩件事，而大部分人只防了一件。一件是資料送出去之後會怎樣，另一件是這個 AI 現在碰得到你電腦裡的什麼。這篇把一個給臨床醫師的資安系列，轉譯成一般公司的版本：哪條線是紅線、五個檔案裡哪些不能出門、看不到的那一半資料藏在哪裡、以及服務條款只要找哪四個答案。</p>
+
+    <div class="duo stack">
+      <div class="card">
+        <b style="font-size:22px;color:#d98032">適合誰</b>
+        <ul>
+          <li>每天用 AI 處理工作，但不確定哪些東西能貼、哪些不能貼的上班族。</li>
+          <li>公司正在導入 AI，要訂使用規範，但不知道該從哪裡畫線的人。</li>
+          <li>已經開始用會動檔案的 AI 工具，心裡隱約覺得該注意什麼，但說不出是什麼的人。</li>
+        </ul>
+      </div>
+      <div class="card">
+        <b style="font-size:22px;color:#4a9d7f">你可以帶走什麼</b>
+        <ul>
+          <li>一條可以自己判斷的紅線：四條路徑，每條只問「有沒有越線」。</li>
+          <li>一份辦公室版的五題自測，測完會知道自己平常哪個動作最危險。</li>
+          <li>讀任何 AI 服務條款只要找的四個答案，找不到就預設最壞的那個。</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="why-translate">
+  <div class="inner">
+    <h2>為什麼我要轉譯一個給醫師看的系列</h2>
+    <p>這篇的骨架不是我原創的。</p>
+    <p>我最近看了一個系列，叫「給臨床工作者的 AI Agent」，作者是黃士峯醫師。他是臨床醫師，不是工程師，內容是講給醫院裡完全不寫程式的同事聽的。我一開始只是想知道醫療界怎麼處理病人資料跟 AI 的問題，看完卻發現，他把資安講得比我看過的多數企業教材都清楚。</p>
+    <p>原因大概是這樣：醫院的資料錯不起，所以他必須把「到底什麼時候會出事」講到一個非專業的人也能自己判斷的程度。而那套判斷方式，換掉名詞就是一般公司的狀況。</p>
+    <p>所以這篇是轉譯。影片講的是病歷、健保資料、醫療影像，我換成報價單、客戶名單、HR 的健檢報告。凡是他的說法，我會寫明是他的；凡是我延伸到企業場景的部分，我會標出來，因為那部分是我的推論，不是他的原話。</p>
+    <p>兩支影片的連結放在文章最後面。真的關心這個題目的話，建議直接看原片。</p>
+  </div>
+</section>
+
+<section class="section" id="two-axes">
+  <div class="inner">
+    <h2>大部分人只防了一半</h2>
+    <p>先講這篇最重要的一件事。</p>
+    <p>當我們問「資料能不能給 AI」，腦中想的幾乎都是同一件事：我送出去的東西會被拿去做什麼。會不會拿去訓練？會留多久？誰看得到？</p>
+    <p>這是一條軸，而且是重要的一條。但 AI Agent 普及之後出現了第二條，多數人完全沒想到。</p>
+    <div class="meaning"><b>這個 AI 有手，它碰得到你的電腦。</b><br>你在自己的筆電上開一個 Agent，叫它幫你整理資料夾，它可以讀檔、改檔、刪檔、執行指令。黃士峯在 EP1 講得很直接：只要你是在自己的電腦裡開啟它，它就有機會碰到你的資料，<b>不管那些資料是不是放在同一個資料夾</b>。所謂碰到，包括刪掉。</div>
+    <p>這兩條軸互相不能取代。</p>
+    <table>
+      <thead><tr><th></th><th>第一條：資料流去哪</th><th>第二條：它能動什麼</th></tr></thead>
+      <tbody>
+        <tr><td>你在問的</td><td>我送出去的東西會怎樣？</td><td>它碰得到我哪些東西？做錯了會炸多大？</td></tr>
+        <tr><td>出事的樣子</td><td>客戶名單進了別人的訓練資料</td><td>一句指令刪掉整個專案資料夾</td></tr>
+        <tr><td>防的方法</td><td>看條款、選版本、判斷哪些資料能出門</td><td>限制權限、隔離環境、備份</td></tr>
+      </tbody>
+    </table>
+    <p>權限鎖得很緊，但把整份報價單貼進免費版的網頁聊天，一樣出事。反過來，用完全跑在自己電腦上的模型，卻給了 Agent 整台機器的權限，也一樣出事。</p>
+    <p><b>一次只防一條，等於沒防。</b></p>
+  </div>
+</section>
+
+<section class="section" id="red-line">
+  <div class="inner">
+    <h2>第一條軸：資料流出去就收不回來</h2>
+    <p>EP4 用一張同心圓把這件事講清楚了。我照他的結構，把名詞換成公司場景。由內而外是這樣：</p>
+    <ul>
+      <li><b>你的電腦</b>：資料現在在這裡。</li>
+      <li><b>公司內部</b>：公司的伺服器、公司的內網、公司自己管理的雲端租戶。</li>
+      <li><b>——— 受控範圍紅線 ———</b></li>
+      <li><b>有簽約的外部服務</b>：簽過資料處理協議的廠商。</li>
+      <li><b>完全沒有合約的地方</b>：你個人的免費帳號、隨手用的線上工具。</li>
+    </ul>
+    <p>然後看四條路徑，每一條只問一個問題：<b>有沒有越過那條紅線？</b></p>
+    <table>
+      <thead><tr><th>路徑</th><th>越線？</th><th>說明</th></tr></thead>
+      <tbody>
+        <tr><td>模型跑在你自己的電腦上</td><td>沒有</td><td>資料沒出去，而且送出去還能收回來</td></tr>
+        <tr><td>模型部署在公司內部伺服器</td><td>沒有</td><td>離開了你的電腦，但還在公司管得到的地方</td></tr>
+        <tr><td>打雲端 API、貼進網頁版 AI</td><td><b>越線</b></td><td>資料已經出去了</td></tr>
+        <tr><td>通訊軟體、私人雲端硬碟</td><td><b>越線</b></td><td>而且這條最常發生</td></tr>
+      </tbody>
+    </table>
+    <div class="meaning"><b>如果你只會開網頁用 AI，那前兩條跟你無關</b><br>前兩條路徑講的是「模型跑在你自己的電腦裡」或「跑在公司自己的伺服器上」，那通常是公司 IT 或工程團隊才會做的事。一般人打開網頁、打開 App、用手機問 AI，<b>幾乎都落在第三條跟第四條</b>，也就是已經越線的那兩條。所以下面的重點看第三、第四條就好。</div>
+    <p>黃士峯講第四條的時候舉的例子是 LINE：用 LINE 傳病人的病歷號跟姓名，因為 LINE 的伺服器在韓國，等於主動把資料送到境外。資料不只離開了你的電腦，還離開了台灣。</p>
+    <p>換成公司場景，同一件事天天在發生：用通訊軟體傳報價單、把客戶資料丟自己的雲端硬碟再從家裡打開、把合約內容貼進免費版 AI 問「這條對我們有沒有風險」。</p>
+    <div class="caveat"><b>越線之後，資料就要不回來了。</b><br>這是作者的原話。精確一點說是：你失去了確認與控制的能力。對方可能依照條款刪除，也可能已經備份、複製、轉交給下游廠商，而你沒有辦法自己驗證哪一種才是事實。前兩條路徑的資料你隨時能確認它在哪裡，後兩條不能。</div>
+    <p>黃士峯有一句話我覺得應該貼在每間公司的牆上：這跟那間雲端服務商是不是一間好公司、正派公司，完全沒有關係。差別在於過了紅線之後，你無法把資料拿回來，因為它已經進入別人的管轄範圍。</p>
+    <p><b>這是控制權的問題，不是信任問題。</b></p>
+    <div class="readmore near"><b>如果你想更具體地查「我的資料實際上流去哪一家」</b><ul><li><a href="../openrouter-deepseek-data-routing/">OpenRouter 用 DeepSeek，資料就不會經過中國嗎？教你自己查實際路由供應商</a>　這篇畫的是紅線在哪，那篇是站在紅線外面往下追：同一個 API 請求，實際上是哪一家公司、在哪個地方執行的。</li></ul></div>
+  </div>
+</section>
+
+<section class="section" id="five-files">
+  <div class="inner">
+    <h2>五個檔案，哪些能離開你的電腦</h2>
+    <p>EP4 中間有一段五題小考，作者說第四題跟第五題是設計來讓人答錯的。我把它改成辦公室版本，題目的性質對著原題設計，但情境換了，答案不會完全一樣。</p>
+    <p>規則一樣：每個檔案只回答一個問題，<b>它能不能離開你的電腦？</b></p>
+
+    <h3>① 從公開網站抓下來的產業報告 PDF</h3>
+    <p>可以。公開資料本來就誰都能看。這題是暖身。</p>
+
+    <h3>② 刪掉姓名跟手機號的客戶名單</h3>
+    <p><b>不一定。</b>這題開始不直覺了。</p>
+    <p>影片講的原理是：判斷標準不是「上面有沒有名字」，而是「這些資訊合起來，能不能連回某一個特定的人」。他舉的例子是一份只有三個欄位的資料：一個罕見的診斷、一個人口非常少的鄉鎮、一個就診日期。全台灣符合這三個條件的可能只有一個人。沒有名字，但認識他的人看一眼就知道是誰。</p>
+    <p>換成公司：刪掉姓名的客戶名單，如果還留著「公司名＋職稱＋成交金額」，而那間公司的採購經理只有一個人，那就是同一回事。</p>
+    <div class="meaning"><b>刪掉姓名欄位，不等於去識別化。</b>這是整段最重要的一句話。</div>
+
+    <h3>③ 從系統匯出的原始名單</h3>
+    <p>姓名、電話、地址、消費紀錄全在。這份在公司內部流通是正常業務，問題只在於它<b>能不能離開受控範圍</b>。</p>
+    <p>影片裡對應的題目是醫院系統匯出的原始檔，作者的答案是絕對不行、沒有灰色地帶，因為那是特種個資。換成一般客戶名單，法律門檻沒那麼高，但結論在實務上很接近：這種東西貼進沒有簽約的外部服務，就是你自己承擔後果，而且救不回來。</p>
+
+    <h3>④ 你電腦螢幕的截圖</h3>
+    <p>這題要小心。</p>
+    <p>現在的 AI 都能讀圖，很多人想問一個小問題就直接截圖丟上去。問題在於，截圖的角落常常有你自己早就看到麻痺的東西：登入的帳號、客戶全名、內部系統的編號、右下角另一個視窗露出來的半行訊息。</p>
+    <p>你每天看，所以不會注意。但它就在那裡，而且貼出去那一瞬間就上雲端了。</p>
+
+    <h3>⑤ 檔案裡你看不到的那一半</h3>
+    <p>這題是我覺得最值得講給一般人聽的。</p>
+    <p>影片舉的是醫療影像檔：你用看圖軟體打開，就是一張片子，沒有任何文字。但那個檔案裡影像只佔一半，另一半是一段你看不到的文字，存著病人姓名、病歷號、儀器型號、檢查日期。平常不會顯示，用特定程式一開全都在。</p>
+    <p>這種「跟著檔案走、但不顯示在畫面上」的資訊，一般叫做檔案的描述資料。你平常不會遇到這個詞，但它天天跟著你的檔案跑。</p>
+    <p>辦公室裡的同一件事：</p>
+    <ul class="checklist">
+      <li>Word、Excel、PDF 的文件內容裡，作者、公司名、編輯紀錄、修訂歷程都可能留著。</li>
+      <li>你以為刪掉的內容，在「追蹤修訂」或前一版的歷程裡還在。</li>
+      <li>手機拍的照片，拍攝地點的 GPS 座標就寫在照片檔裡，照片本身看不出來。</li>
+      <li>簡報裡蓋掉的黑色方塊，只是蓋在上面，底下的文字還在。</li>
+    </ul>
+    <div class="caveat"><b>你看不到，不代表它不在。</b><br>檔案送出去的時候，送走的是整個檔案，不是你螢幕上看到的那個畫面。</div>
+  </div>
+</section>
+
+<section class="section" id="blast-radius">
+  <div class="inner">
+    <h2>第二條軸：AI 能動你多少東西</h2>
+    <p>這是 EP1 的部分，也是前面說多數人沒防的那一條。</p>
+    <p>聊天機器人講錯話，最糟就是給你一個錯誤答案。Agent 不一樣，因為我們給了它工具、給了它手，它可以改檔案、執行指令、操作你的電腦。</p>
+    <p>黃士峯用的詞是<b>爆炸半徑</b>：如果它今天真的誤刪了，最糟能搞壞多少東西？</p>
+    <table>
+      <thead><tr><th>它能碰到的範圍</th><th>最糟的後果</th></tr></thead>
+      <tbody>
+        <tr><td>只有一個測試資料夾</td><td>整個資料夾刪掉重來</td></tr>
+        <tr><td>整台電腦</td><td>你的檔案、桌面、所有存在本機的東西</td></tr>
+        <tr><td>透過內網碰到公司檔案伺服器</td><td>不是你一個人的事了</td></tr>
+        <tr><td>你的信箱與雲端硬碟</td><td>再上一級，而且會外擴到別人身上</td></tr>
+      </tbody>
+    </table>
+    <p>他給的原則是：<b>權限要慢慢給，需要什麼就開什麼，而不是一開始全部開滿然後放給他。</b></p>
+    <p>還有一個很具體的建議，我覺得每個剛開始用 Agent 的人都該聽進去：不熟悉它的行為之前，不要把權限設成自動核准。</p>
+    <p>他自己承認每次按核准很煩，但講了一句很有畫面的話：這就像外科的併發症，發生機率低，但一旦發生就非常麻煩。現在的模型都有很好的安全設計，但誤刪的機率不是零。</p>
+    <p>比較講究的做法是用虛擬機或容器，簡單說就是在電腦裡另外開一個跟本機隔開的空間，它在裡面怎麼搞都影響不到外面。如果不會用，至少做到兩件事：<b>重要資料先備份，而且別在放著重要檔案的那台電腦上放手讓它跑。</b>最理想是找一台根本沒在用、裡面是空的電腦。</p>
+    <div class="readmore near"><b>如果你想知道「真的炸了」是什麼樣子</b><ul><li><a href="../ai-loop-safety-recovery/">AI 出錯不可怕，沒有備援才可怕：一次搞壞 170 檔案的教訓</a>　這段講的是事前怎麼把爆炸半徑縮小，那篇是我自己真的炸過一次之後，整理出來的三道防線。</li></ul></div>
+  </div>
+</section>
+
+<section class="section" id="four-questions">
+  <div class="inner">
+    <h2>讀服務條款，只要找四個答案</h2>
+    <p>回到第一條軸。假設資料確實要出門，那就要看對方承諾了什麼。</p>
+    <p>EP4 帶讀了一份真實的 AI 服務條款，翻成白話大概是這四句：</p>
+    <ul>
+      <li>你輸入的東西，我們預設不拿來訓練模型。</li>
+      <li>你的資料留 30 天，用來檢查有沒有人濫用，之後會刪除。</li>
+      <li>受法規保護的資料你要自己負責，不要上傳。</li>
+      <li>我們可能跟合作夥伴分享。</li>
+    </ul>
+    <p>第三句是把責任放回使用者身上。第四句最多人忽略：你按下同意的時候，同意的不只是這間公司，還有它背後一整串你不知道是誰的夥伴公司。</p>
+    <div class="meaning"><b>同一家服務商的免費版跟企業版，條款是不一樣的。</b><br>免費版常寫「你的內容可能會被用來改善服務」，而改善服務有可能包括訓練；企業版才是「預設不訓練，留 30 天」。同一段文字，貼在兩邊受完全不同的規範。</div>
+    <p>所以讀條款不用整份看完，找四個答案就好：</p>
+    <ol>
+      <li>資料留多久？</li>
+      <li>會不會被拿去訓練？</li>
+      <li>有誰看得到？</li>
+      <li>出事了誰負責？</li>
+    </ol>
+    <p><b>找不到答案的，就預設是最壞的那個答案。</b>因為對方沒有答應你的，就是沒有。</p>
+  </div>
+</section>
+
+<section class="section" id="enterprise-extra">
+  <div class="inner">
+    <h2>企業端多出來的兩件事</h2>
+    <p>以下這段是我的延伸，不是影片內容。影片是給醫療人員看的，這兩件事在那個場景裡不存在，但在公司裡每天發生。</p>
+
+    <h3>營業秘密可能比個資更致命</h3>
+    <p>個資外洩的後果是罰款與賠償，營業秘密出事的後果不一樣：可能影響它還算不算營業秘密。</p>
+    <p>台灣的營業秘密法要成立保護，其中一個要件是所有人已經採取合理的保密措施。把報價結構、配方、原始碼、客戶名單貼進免費版 AI，可能影響「我有好好保密」這個主張的舉證。真的走到訴訟的那一天，你做過什麼、沒做過什麼，都會被拿出來檢視。</p>
+    <div class="caveat">這一段的法律認定要問律師，我沒有查判決，也沒有看過類似案件的實際見解。我能講的只有方向：<b>保密措施是你主張出來的，不是別人幫你認定的。</b></div>
+
+    <h3>HR 手上有一整批高敏感個資</h3>
+    <p>很多公司以為自己沒有敏感資料，其實 HR 抽屜裡就有一批：員工健檢報告、病假證明、身心障礙證明、職災紀錄。</p>
+    <p>這些東西跟醫院手上那些落在同一個範疇：跟健康有關、而且連得回特定的人。蒐集目的、法定義務、契約關係都不一樣，但「這是高敏感資料」這件事是一樣的。</p>
+    <p>所以 HR 把診斷證明丟給 AI 讀摘要，跟醫護人員把病歷貼進聊天視窗，要問的問題是同一組。差別只在於，醫院裡的人多少知道這件事很嚴重，HR 常常沒有這個意識。</p>
+
+    <h3>而且沒有人會幫你踩煞車</h3>
+    <p>醫療端做研究要送倫理審查委員會，先審查再執行，有一道外部的閘門會攔你。</p>
+    <p>多數公司沒有這個東西。沒有人會在你把客戶名單貼上去之前跳出來問你「這個經過誰同意了」。</p>
+    <p>受監管的產業是例外：金融、醫療、上市公司、有做資安驗證的公司，法務、資安或個資流程本身就是閘門。但如果你的公司沒有這些，那就真的沒有人會攔你，而多數公司的 AI 使用規範，比醫院的資料治理還不成熟。</p>
+    <p>所以對很多人來說，企業端的風險結構是：<b>門檻比較低，但也沒有人幫你踩煞車。</b></p>
+  </div>
+</section>
+
+<section class="section" id="enterprise-advantage">
+  <div class="inner">
+    <h2>企業端也有一個醫療端沒有的優勢</h2>
+    <p>講完壞消息講好消息。</p>
+    <p>醫院要把紅線往外推很困難，決策鏈太長。一般公司可以直接買企業版，或者用公司自己開的雲端帳號（不是員工個人帳號），把「有簽約的外部服務」那一圈往受控範圍裡拉。</p>
+    <p>拉進來的前提是條款真的寫了、合約真的簽了、設定真的開了。買了企業版但沒人確認條款內容，那一圈還是在紅線外面。</p>
+    <p>前面說的免費版與企業版的差別，在企業端是一個當天就能解決的採購決定。</p>
+    <div class="caveat"><b>但這裡有個常見的破口：公司買了企業版，員工還是習慣用自己的免費帳號，因為登入比較快。</b><br>紅線畫好了，沒人走。</div>
+    <p>所以買了企業版之後真正要做的事，是讓合規的那條路比不合規的那條路更好走，而不是發一封信說禁止使用個人帳號。</p>
+    <div class="meaning"><b>如果你不是做決定的那個人</b><br>上面這些是公司層級的事，但你現在手上就有一份不確定能不能貼的東西。那就先不要貼，去問主管或公司的資訊窗口：我們用的是不是公司帳號？這類資料可不可以送出去？問一句的成本，遠低於貼出去之後才發現不行。</div>
+  </div>
+</section>
+
+<section class="section" id="before-you-send">
+  <div class="inner">
+    <h2>送出去之前，先問自己四個問題</h2>
+    <p>影片的結論是：這個問題沒有標準答案，不是可以或不可以的二分法，要看資料條件跟使用情況。</p>
+    <p>作者給了三個檢查點，我照抄，因為我想不出更好的版本，第四個是我依第二條軸補的：</p>
+    <ol>
+      <li><b>手上是什麼資料？</b>裡面有哪些欄位？哪些是可識別的？哪些留著也沒關係？</li>
+      <li><b>那條紅線畫在哪裡？</b>什麼動作會把資料送到紅線的另外一端？</li>
+      <li><b>送出去之前先想一遍資料的流向。</b>有沒有離開你的電腦？有沒有離開公司內網？有沒有上到雲端？</li>
+      <li><b>這個 AI 現在能動我哪些東西？</b>如果它出錯，最糟會炸到哪裡？</li>
+    </ol>
+    <p>灰色地帶就以公司規定為準。如果公司還沒有規定，那你現在就是在替公司定義先例。</p>
+    <p>黃士峯在 EP1 講了一句話，是我看完整個系列印象最深的：方便的工具本身就會帶來一定程度的風險，我們要先知道這個風險，才可以知道怎麼樣去避免它。</p>
+    <p>他把資安放在所有安裝教學之前講，理由是要先講清楚這東西有哪些危險、哪些邊界一開始就不可以跨過去。這個順序我很認同。多數 AI 教學都是先教你怎麼裝、怎麼用，資安放在最後一段，或者根本沒有。</p>
+    <p>這篇不是要嚇人。整個系列的態度是：不是要你怕 AI，是要你守住別人託付給你的東西。換成公司場景，那些東西就是客戶的資料、同事的資料，以及公司花很多年累積起來、貼一次就可能守不住的那些。</p>
+  </div>
+</section>
+
+<section class="section" id="source">
+  <div class="inner">
+    <h2>原始影片與說明</h2>
+    <p>這篇的骨架來自以下兩支影片，都是免費公開的，強烈建議直接看原片：</p>
+    <ul>
+      <li><a href="https://www.youtube.com/watch?v=KVI0tAeNsxQ" target="_blank" rel="noopener">EP1 觀念篇：醫師也能懂的 AI Agent，LLM、幻覺、Harness 到資安 ↗</a></li>
+      <li><a href="https://www.youtube.com/watch?v=zA3YQmJOYA8" target="_blank" rel="noopener">EP4 資料篇：病人資料可以餵給 AI 嗎，個資法、HIPAA、雲端紅線 ↗</a></li>
+    </ul>
+    <p>頻道：Colon &amp; Code｜黃士峯 Fredric Huang</p>
+    <p>作者自己的聲明：內容只做事實陳述與白話翻譯，不構成法律意見；影片中的條款畫面以擷取時間為準，條款會改版；實務上以所屬機構的規定為準。這篇轉譯同樣適用這個邊界。</p>
+    <div class="readmore">
+      <b>這篇提到過的</b>
+      <ul>
+        <li><a href="../openrouter-deepseek-data-routing/">OpenRouter 用 DeepSeek，資料就不會經過中國嗎？</a>　紅線外面那一段的實際查法。</li>
+        <li><a href="../ai-loop-safety-recovery/">AI 出錯不可怕，沒有備援才可怕</a>　爆炸半徑真的炸開之後怎麼收。</li>
+      </ul>
+      <b>再往前後延伸</b>
+      <ul>
+        <li><a href="../ai-usage-audit/">AI 越用越貴，我掃了自己一個月的用量</a>　同樣是「把自己的使用行為攤開來看」，那篇看的是成本，這篇看的是風險。</li>
+        <li><a href="../ai-data-organization-usable-system/">把資料整理成可以用的系統</a>　知道哪些資料不能出門之後，下一題是留在裡面的那些要怎麼整理。</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">江江教練 · AI 知識管理</div>
+    <div class="footer-links">
+      <a href="../../articles.html">← 回深度文章總站</a>
+      <a href="../../index.html">首頁</a>
+      <a href="../../learn.html">自學資源</a>
+      <a href="../../skills.html">技能包下載</a>
+      <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">LINE 社群 ↗</a>
+      <a href="https://www.threads.com/@jiang_yude_coach" target="_blank" rel="noopener">Threads ↗</a>
+      <a href="https://vocus.cc/salon/Jiang_Coach" target="_blank" rel="noopener">方格子 ↗</a>
+    </div>
+    <div class="footer-note">這是一篇教學文章，整理我對「公司資料可以貼給 AI 嗎？｜先搞清楚這兩條紅線」的看法，供你參考。</div>
+  </div>
+</footer>
+
+<!-- 點圖放大 lightbox（hero 與內文圖通用，已內建，不用每篇重加） -->
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <span class="lightbox-close" aria-label="關閉">×</span>
+  <img id="lightbox-img" src="" alt="放大檢視">
+</div>
+<script>
+(function(){
+  var box=document.getElementById('lightbox'),boxImg=document.getElementById('lightbox-img');
+  document.querySelectorAll('.hero-figure img,.inline-figure img').forEach(function(img){
+    img.addEventListener('click',function(){boxImg.src=img.currentSrc||img.src;boxImg.alt=img.alt||'放大檢視';box.classList.add('open');box.setAttribute('aria-hidden','false');});
+  });
+  function close(){box.classList.remove('open');box.setAttribute('aria-hidden','true');boxImg.src='';}
+  box.addEventListener('click',close);
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
+})();
+</script>
+
+<script src="../../image-interactions.js"></script>
+
+<!-- 官網共用：滑鼠暖光暈 + 導航列漢堡選單 -->
+<script src="../../spotlight.js"></script>
+
+<!-- 文章自動互聯（相關文章）：兩支已內建，順序不可顛倒，不用再另外加 -->
+<script src="../../articles-data.js"></script>
+<script src="../../related-render.js"></script>
+  <script src="/mika-chat-widget.js" defer></script>
+</body>
+</html>
