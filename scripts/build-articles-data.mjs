@@ -51,7 +51,10 @@ const TAGS_FILE = path.join(ROOT, "articles-tags.json");
 const SOURCE_ROOTS = ["articles", "ai-trends"];
 const SOURCE_NAME = "article.json";
 const TAG_DIMS = ["topic", "level", "content_type"];
-const KEY_ORDER = ["id", "url", "date", "updated", "featured", "title", "problem", "audience", "summary", "tags", "external", "related"];
+const KEY_ORDER = ["id", "url", "date", "updated", "featured", "title", "problem", "audience", "summary", "tags", "external", "related", "cover"];
+// cover（2026-09-15 江江拍板）：文章封面，wide＝橫式、tall＝直式（常是輪播卡），有幾個存幾個，至少一個。
+// 列表怎麼排版之後再決定，這裡只負責把封面存進資料源。路徑相對 repo 根目錄，檔案必須存在。
+const COVER_KEYS = ["wide", "tall"];
 const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
 const WARNINGS = [];
 
@@ -201,6 +204,19 @@ function validateEntry(o, root, dirName, tags) {
     }
   }
   if (!Array.isArray(o.related) || o.related.some((x) => typeof x !== "string")) errs.push(`related 必須是字串陣列（可為空）`);
+  if ("cover" in o) {
+    const c = o.cover;
+    if (!c || typeof c !== "object" || Array.isArray(c)) errs.push(`cover 必須是物件（例：{"wide": "images/articles/x-cover.jpg"}）`);
+    else {
+      const ks = Object.keys(c);
+      if (!ks.length) errs.push(`cover 至少要有 wide 或 tall 其中一個`);
+      for (const k of ks) {
+        if (!COVER_KEYS.includes(k)) errs.push(`cover 有未知欄位「${k}」（允許：${COVER_KEYS.join("、")}）`);
+        else if (typeof c[k] !== "string" || !c[k].trim()) errs.push(`cover.${k} 必須是非空字串`);
+        else if (!fs.existsSync(path.join(ROOT, c[k]))) errs.push(`cover.${k} 指向不存在的檔案「${c[k]}」`);
+      }
+    }
+  }
   return errs;
 }
 
@@ -357,6 +373,9 @@ function serializeEntry(o) {
       lines.push(`    external: { ${parts.join(", ")} },`);
     } else if (k === "related") {
       lines.push(`    related: ${arr(v)},`);
+    } else if (k === "cover") {
+      const parts = COVER_KEYS.filter((kk) => kk in v).map((kk) => `${kk}: ${js(v[kk])}`);
+      lines.push(`    cover: { ${parts.join(", ")} },`);
     } else {
       lines.push(`    ${k}: ${js(v)},`);
     }
