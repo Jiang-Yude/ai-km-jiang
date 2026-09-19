@@ -50,6 +50,31 @@
 
 window.COURSES = [
   {
+    id: "2026-09-26-where-to-put-your-ai-site",
+    date: "2026-09-26",
+    time: "20:00",
+    duration_min: null,
+    title: "AI 做好的網站放哪裡？從給人看，到人跟 AI 都好找好用",
+    type_label: "免費線上講座",
+    image: "images/courses/2026-09-26-where-to-put-your-ai-site.jpg",
+    venue_mode: "online",
+    venue_label: "線上",
+    host: "江江教練",
+    tags: ["4O", "SEO", "AIO", "GEO", "AXO", "WebMCP", "部署平台"],
+    summary: "網站用 AI 做出來只是開始。這場講三件事：GitHub Pages、Vercel、Cloudflare 三家部署平台各自適合什麼情況、雷點在哪；SEO 之後還有 AIO（讓 AI 把你當答案）、GEO（讓 AI 引用你的觀點）、AXO（讓 AI 能代表你接待訪客）；以及 WebMCP 怎麼讓 AI 直接操作你的網站。從一個給人看的網站，升級成人跟 AI 都好看、好找、好用的資訊工作站。不會寫程式也可以聽。",
+    detail_url: null,
+    materials: [
+      { label: "文章｜GitHub Pages、Vercel、Cloudflare 三家比較 ↗", url: "https://jiangyude.com/articles/github-vercel-cloudflare-compare/" },
+      { label: "文章｜網站內容防護的六個等級 ↗", url: "https://jiangyude.com/articles/who-can-see-your-site/" }
+    ],
+    registration: {
+      status: "open",
+      url: "https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ",
+      label: "加入 LINE 社群 ↗",
+      note: "免費參加，上課連結會在開課前半小時公布在 LINE 社群"
+    }
+  },
+  {
     id: "2026-09-20-ai-series-six-lessons",
     date: "2026-09-20",
     date_label: "9/20 起，每週日",
