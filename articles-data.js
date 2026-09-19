@@ -37,7 +37,8 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["agent-workflow-builds-automation", "claude-skills-knowledge-assets", "loop-engineering-guardrails", "my-three-loops", "liberal-arts-agent-framework"]
+    related: ["agent-workflow-builds-automation", "claude-skills-knowledge-assets", "loop-engineering-guardrails", "my-three-loops", "liberal-arts-agent-framework"],
+    cover: { tall: "images/articles/ai-vs-script-four-situations-cover.jpg" }
   },
 
   {
