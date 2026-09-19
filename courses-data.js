@@ -50,6 +50,56 @@
 
 window.COURSES = [
   {
+    id: "2026-09-21-more-bots-than-people",
+    date: "2026-09-21",
+    time: "20:00",
+    duration_min: 60,
+    title: "網路上的機器人已經比人多了，你的內容現在是寫給誰看？",
+    type_label: "外部授課",
+    image: "images/courses/2026-09-21-more-bots-than-people.jpg",
+    venue_mode: "online",
+    venue_label: "線上",
+    host: "江江教練",
+    tags: ["AI趨勢", "SEO", "AIO", "GEO", "AXO", "WebMCP", "知識管理"],
+    summary: "網站不只給人看了。江江把自己的做法攤開：他的網站就是本地知識庫的線上版，升級之後多了三種使用者，AI 讀得到、合作夥伴查得到、訪客用得到。從這個角度講清楚 SEO（讓人在搜尋引擎找到你）、AIO（讓 AI 把你當答案）、GEO（讓 AI 在回答裡引用你的觀點）、AXO（讓 AI 能代表你接待訪客）、WebMCP（讓 AI 直接操作你的網站）各自在解決誰的問題，並用實際案例示範。",
+    detail_url: null,
+    materials: [
+      { label: "文章｜網路上一半以上的訪問已經不是人了 ↗", url: "https://jiangyude.com/articles/agent-web-turning-point/" },
+      { label: "文章｜AI 開始會用網站了，我當天把官網接上（WebMCP） ↗", url: "https://jiangyude.com/articles/webmcp-day-one/" }
+    ],
+    registration: {
+      status: "private",
+      host_org: "永力社",
+      note: "社內線上場（ZOOM），由社秘書處發起，非對外公開報名。"
+    }
+  },
+  {
+    id: "2026-09-26-ai-site-and-deploy",
+    date: "2026-09-26",
+    time: "20:00",
+    duration_min: null,
+    title: "怎麼用 AI 做網站＋部署平台選哪個？",
+    type_label: "免費線上講座",
+    image: "images/courses/2026-09-26-ai-site-and-deploy.jpg",
+    venue_mode: "online",
+    venue_label: "線上",
+    host: "江江教練",
+    tags: ["4O", "SEO", "AIO", "GEO", "AXO", "WebMCP", "部署平台"],
+    summary: "網站用 AI 做出來只是開始。這場講三件事：GitHub Pages、Vercel、Cloudflare 三家部署平台各自適合什麼情況、雷點在哪；SEO 之後還有 AIO（讓 AI 把你當答案）、GEO（讓 AI 引用你的觀點）、AXO（讓 AI 能代表你接待訪客）；以及 WebMCP 怎麼讓 AI 直接操作你的網站。從一個給人看的網站，升級成人跟 AI 都好看、好找、好用的資訊工作站。不會寫程式也可以聽。",
+    detail_url: null,
+    materials: [
+      { label: "文章｜GitHub Pages、Vercel、Cloudflare 三家比較 ↗", url: "https://jiangyude.com/articles/github-vercel-cloudflare-compare/" },
+      { label: "文章｜網站內容防護的六個等級 ↗", url: "https://jiangyude.com/articles/who-can-see-your-site/" },
+      { label: "文章｜AI 開始會用網站了，我當天把官網接上（WebMCP） ↗", url: "https://jiangyude.com/articles/webmcp-day-one/" }
+    ],
+    registration: {
+      status: "open",
+      url: "https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ",
+      label: "加入 LINE 社群 ↗",
+      note: "免費參加，上課連結會在開課前半小時公布在 LINE 社群"
+    }
+  },
+  {
     id: "2026-09-20-ai-series-six-lessons",
     date: "2026-09-20",
     date_label: "9/20 起，每週日",
