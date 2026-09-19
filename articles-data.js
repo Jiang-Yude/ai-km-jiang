@@ -38,7 +38,7 @@ window.ARTICLES = [
     },
     external: { threads: null, vocus: null },
     related: ["agent-workflow-builds-automation", "claude-skills-knowledge-assets", "loop-engineering-guardrails", "my-three-loops", "liberal-arts-agent-framework"],
-    cover: { tall: "images/articles/ai-vs-script-four-situations-cover.jpg" }
+    cover: { wide: "images/articles/ai-vs-script-four-situations-summary.jpg" }
   },
 
   {
