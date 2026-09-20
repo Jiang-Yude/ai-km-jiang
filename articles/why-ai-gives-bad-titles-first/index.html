@@ -1,0 +1,561 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="index,follow">
+<title>AI 明明寫得出好標題，為什麼每次都先給我爛的？</title>
+<meta name="description" content="AI 寫完文章才回頭取標題，撈出來的必然是作者視角的工作總結。我從一次被打回的標題追出五層根因，把標題從「事後萃取」改成「寫正文之前先寫三個搜尋句」，其中至少一句必須是真人原話。附可直接複製給你的 AI 的操作備忘。">
+<link rel="canonical" href="https://jiangyude.com/articles/why-ai-gives-bad-titles-first/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AI 明明寫得出好標題，為什麼每次都先給我爛的？｜江江教練">
+<!-- 分享封面：hero 文字填好後在 repo 根目錄跑 `node scripts/og-shot.mjs why-ai-gives-bad-titles-first` 自動截 1200×630 到 images/og/why-ai-gives-bad-titles-first.jpg（見 README「文章分享封面（OG 圖）機制」）。別退回 intro-jiang.png 直式人像，會被裁成只剩脖子。 -->
+<meta property="og:image" content="https://jiangyude.com/images/og/why-ai-gives-bad-titles-first.jpg">
+<meta property="og:description" content="AI 寫完文章才回頭取標題，撈出來的必然是作者視角的工作總結。我從一次被打回的標題追出五層根因，把標題從「事後萃取」改成「寫正文之前先寫三個搜尋句」，其中至少一句必須是真人原話。附可直接複製給你的 AI 的操作備忘。">
+<meta property="og:url" content="https://jiangyude.com/articles/why-ai-gives-bad-titles-first/">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:site_name" content="江江教練 · AI 知識管理">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="AI 明明寫得出好標題，為什麼每次都先給我爛的？｜江江教練">
+<meta name="twitter:image" content="https://jiangyude.com/images/og/why-ai-gives-bad-titles-first.jpg">
+<meta name="twitter:description" content="AI 寫完文章才回頭取標題，撈出來的必然是作者視角的工作總結。我從一次被打回的標題追出五層根因，把標題從「事後萃取」改成「寫正文之前先寫三個搜尋句」，其中至少一句必須是真人原話。附可直接複製給你的 AI 的操作備忘。">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"AI 明明寫得出好標題，為什麼每次都先給我爛的？","description":"AI 寫完文章才回頭取標題，撈出來的必然是作者視角的工作總結。我從一次被打回的標題追出五層根因，把標題從「事後萃取」改成「寫正文之前先寫三個搜尋句」，其中至少一句必須是真人原話。附可直接複製給你的 AI 的操作備忘。","author":{"@type":"Person","name":"江昱德","alternateName":"江江教練","jobTitle":"隱性知識提煉師、AI 應用規劃師"},"isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://jiangyude.com/"},"inLanguage":"zh-Hant","url":"https://jiangyude.com/articles/why-ai-gives-bad-titles-first/"}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{--ink:#1a1612;--paper:#fefcf8;--muted:#6a635a;--line:#d8cdb8;--green:#5f7553;--blue:#5689b8;--orange:#e85a4f;--soft:#faf5ec;--dark:#2a2018;--shadow:0 18px 45px rgba(107,74,42,.14);--sp-shadow:hsla(35,50%,60%,.15);--sp-shadow-edge:hsla(35,50%,68%,.03);--sp-radius:400px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC","Segoe UI",sans-serif}
+a{color:inherit}
+/* 官網共用導航列 nav.top（與首頁/文章總站同一條） */
+nav.top{position:sticky;top:0;background:rgba(254,252,248,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid #d8cdb8;z-index:100}
+nav.top .container{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:24px;padding:14px 32px}
+.nav-brand-img{justify-self:start;display:flex;align-items:center;text-decoration:none;flex-shrink:0;transition:opacity .2s}
+.nav-brand-img:hover{opacity:.8}.nav-brand-img img{height:40px;width:auto;display:block}
+nav.top ul.nav-menu{justify-self:end;display:flex;gap:22px;list-style:none;margin:0;padding:0;font-size:.95rem;white-space:nowrap}
+nav.top ul.nav-menu a{color:#3a342d;text-decoration:none;transition:color .2s;font-weight:500;white-space:nowrap}
+nav.top ul.nav-menu a:hover{color:#1a1612}nav.top ul.nav-menu a.active{color:#1a1612;font-weight:700}
+.nav-toggle{display:none;background:none;border:none;padding:6px;cursor:pointer;width:36px;height:36px;position:relative}
+.nav-toggle span{display:block;position:absolute;left:8px;right:8px;height:2px;background:#1a1612;border-radius:2px;transition:transform .25s,opacity .25s,top .25s}
+.nav-toggle span:nth-child(1){top:11px}.nav-toggle span:nth-child(2){top:17px}.nav-toggle span:nth-child(3){top:23px}
+.nav-toggle.open span:nth-child(1){top:17px;transform:rotate(45deg)}.nav-toggle.open span:nth-child(2){opacity:0}.nav-toggle.open span:nth-child(3){top:17px;transform:rotate(-45deg)}
+.tablewrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:22px 0;border:1px solid var(--line);border-radius:10px;background:#fff;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.tablewrap table{border-collapse:collapse;width:100%;min-width:600px;font-size:18px;line-height:1.65}
+.tablewrap .zh{display:block;margin-top:5px;font-size:16px;line-height:1.55;color:var(--muted);font-weight:400}
+.tablewrap th,.tablewrap td{padding:12px 14px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top;color:#3a342d}
+.tablewrap thead th{background:var(--soft);font-weight:900;font-size:18px;color:#1a1612;white-space:nowrap}
+.tablewrap tbody tr:last-child td{border-bottom:none}
+.tablewrap td code,.section code{background:var(--soft);border:1px solid var(--line);border-radius:5px;padding:1px 6px;font:500 15px/1.5 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace}
+.inline-figure.wide{max-width:1000px}
+.toc{margin:26px 0 0;padding:20px 22px;background:#fff;border:1px solid var(--line);border-radius:10px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.toc>b{display:block;font-size:15px;letter-spacing:.05em;color:var(--green);margin-bottom:10px}
+.toc ol{margin:0;padding-left:1.35em;font-size:18px;line-height:1.7}
+.toc li{margin-bottom:7px;color:#3a342d}
+.toc a{color:var(--blue);font-weight:700;text-decoration:none}.toc a:hover{text-decoration:underline}
+.toc-hint{margin:12px 0 0!important;font-size:18px!important;color:var(--muted)!important;border-top:1px solid var(--line);padding-top:12px}
+.readmore{margin-top:24px;padding:20px 22px;background:var(--soft);border:1px solid var(--line);border-radius:12px}
+.readmore.near{margin:26px 0 6px;background:rgba(86,137,184,.07);border-color:#bcd0e2}
+.readmore.near b{color:var(--blue);font-size:18px}
+.readmore.near li{font-size:17px;line-height:1.7;margin-bottom:10px}
+.readmore b{display:block;margin-bottom:10px;font-size:19px}
+.readmore ul{margin:0;padding-left:1.25em}
+.readmore a{color:var(--blue);font-weight:700;text-decoration:none}
+.readmore a:hover{text-decoration:underline}
+@media(max-width:820px){.tablewrap table{min-width:560px;font-size:18px}.tablewrap{position:relative}.tablewrap::after{content:"表格可左右滑動 →";position:sticky;left:0;display:block;font-size:15px;color:var(--muted);background:var(--soft);border-top:1px solid var(--line);padding:7px 12px;width:100%}}
+@media(max-width:860px){
+ nav.top .container{grid-template-columns:auto 1fr auto;padding:10px 16px;gap:12px}
+ .nav-brand-img img{height:32px}
+ .nav-toggle{display:block;justify-self:end}
+ nav.top ul.nav-menu{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(254,252,248,.98);backdrop-filter:blur(14px);border-bottom:1px solid #d8cdb8;flex-direction:column;gap:0;padding:8px 0;box-shadow:0 10px 24px rgba(107,74,42,.08)}
+ nav.top ul.nav-menu.open{display:flex}
+ nav.top ul.nav-menu li{border-bottom:1px solid #e8dfc9}
+ nav.top ul.nav-menu li:last-child{border-bottom:none}
+ nav.top ul.nav-menu a{display:block;padding:14px 20px;font-size:1.06rem}
+}
+/* 滑鼠暖光暈（與首頁同一支 spotlight.js） */
+body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradient(var(--sp-radius) circle at var(--mx,50%) var(--my,50%),var(--sp-shadow) 0%,var(--sp-shadow-edge) 45%,transparent 75%);pointer-events:none;z-index:9999;mix-blend-mode:multiply;transition:background .06s linear}
+.hero{position:relative;overflow:hidden;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:72px;padding:96px clamp(20px,6vw,88px) 80px;background:linear-gradient(180deg,#fffcf0 0%,#f9e9d2 100%);color:#1a1612;border-bottom:1px solid #d8cdb8}
+.hero .wc{position:absolute;border-radius:50%;filter:blur(60px);pointer-events:none;z-index:0}
+.hero .wc1{width:420px;height:360px;top:-120px;right:-80px;background:#e8884b;opacity:.15}
+.hero .wc2{width:360px;height:300px;bottom:-110px;left:-70px;background:#5f7553;opacity:.13}
+.hero .wc3{width:280px;height:260px;top:34%;left:14%;background:#a08144;opacity:.10}
+.hero>div{flex:none;width:860px;max-width:100%;position:relative;z-index:2}
+.hero-figure{margin:0;width:420px;flex:none;position:relative;z-index:2}
+.hero-figure img{display:block;width:100%;border-radius:16px;border:1px solid #d8cdb8;box-shadow:0 18px 45px rgba(107,74,42,.16);cursor:zoom-in}
+.hero-figure figcaption{margin-top:10px;font-size:14px;line-height:1.6;color:#6a635a}
+.inline-figure{margin:30px auto 8px;max-width:820px}
+.inline-figure img{display:block;width:100%;border-radius:14px;border:1px solid var(--line);box-shadow:var(--shadow);background:#fff;cursor:zoom-in}
+.inline-figure figcaption{font-size:14px;line-height:1.6;color:var(--muted);margin-top:10px}
+.lightbox{position:fixed;inset:0;z-index:10000;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(12,10,8,.92);cursor:zoom-out;backdrop-filter:blur(4px)}
+.lightbox.open{display:flex}.lightbox img{max-width:96vw;max-height:92vh;border-radius:10px;box-shadow:0 24px 60px rgba(0,0,0,.5)}
+.lightbox-close{position:fixed;top:18px;right:24px;color:#fff;font-size:34px;line-height:1;font-weight:700;cursor:pointer;opacity:.85}
+.kicker{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.55rem;color:#7a5c3a;font-weight:500}
+.hero h1{max-width:none;margin:16px 0 18px;font-size:clamp(36px,6vw,72px);line-height:1.08;overflow-wrap:anywhere}
+.hero p{max-width:none;font-size:clamp(18px,2vw,23px);line-height:1.62;color:#3a342d}
+.cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
+.cta a{display:inline-flex;align-items:center;text-decoration:none;border-radius:8px;padding:12px 16px;font-weight:900}
+.cta .primary{background:#fff;color:#1a1612}.cta .ghost{border:1px solid rgba(255,255,255,.32);color:#fff;background:rgba(255,255,255,.08)}
+.section{padding:54px clamp(20px,6vw,88px);border-top:1px solid var(--line)}
+.inner{width:min(1000px,100%);margin:0 auto}
+.section h2{font-size:clamp(26px,4.2vw,48px);line-height:1.12;margin:0 0 18px}
+.section h3{font-size:clamp(21px,3vw,30px);line-height:1.2;margin:30px 0 12px}
+.lead{font-size:clamp(18px,1.6vw,22px);line-height:1.7;color:#3a342d;max-width:900px}
+.section p{font-size:18px;line-height:1.74;color:#3a342d}.section p+p{margin-top:14px}
+.section ul,.section ol{padding-left:1.4em;font-size:18px;line-height:1.74;color:#3a342d}.section li{margin-bottom:8px}
+.meaning{margin:22px 0;padding:16px 18px;border-left:5px solid var(--blue);background:rgba(86,137,184,.12);border-radius:6px;line-height:1.7;font-size:19px}
+.meaning b{display:block;color:var(--blue);margin-bottom:4px}
+.caveat{margin:0 0 8px;padding:16px 18px;border-left:5px solid var(--orange);background:rgba(232,90,79,.1);border-radius:6px;line-height:1.7;font-size:18px;color:#3a342d}
+.caveat b{display:block;color:var(--orange);margin-bottom:4px}
+.infocard{background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px 24px 22px;box-shadow:0 8px 22px rgba(107,74,42,.08);margin-top:8px}
+.infocard-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.info-item{padding:18px 14px 0}
+.info-item b{display:block;font-size:14px;font-weight:900;letter-spacing:.04em;margin-bottom:7px;text-transform:uppercase}
+.info-item:nth-child(1) b{color:var(--green)}.info-item:nth-child(2) b{color:var(--orange)}.info-item:nth-child(3) b{color:var(--blue)}
+.info-item p{margin:0;font-size:17px;line-height:1.6;color:#3a342d}
+.tagrow{display:flex;flex-wrap:wrap;gap:7px;margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
+.tag{font-size:14px;color:var(--muted);background:var(--soft);border:1px solid var(--line);border-radius:999px;padding:4px 11px}
+.duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:24px}
+.duo.stack{grid-template-columns:1fr}
+.duo .card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:22px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.duo .card.a{border-color:var(--orange)}.duo .card.b{border-color:var(--green);box-shadow:0 8px 24px rgba(95,117,83,.16)}
+.duo .card small{display:block;font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.04em;margin-bottom:9px}
+.duo .card.a small{color:var(--orange)}.duo .card.b small{color:var(--green)}
+.duo .card b{display:block;font-size:22px;line-height:1.3;margin-bottom:12px}.duo .card.a b{color:#c0512f}.duo .card.b b{color:#4a7a59}
+.duo .card p{margin:0;color:#3a342d;line-height:1.75;font-size:18px}
+.workflow-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:24px}
+.workflow-step{background:#fff;border:1px solid var(--line);border-radius:8px;padding:18px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.workflow-step small{display:block;color:var(--orange);font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;margin-bottom:9px}
+.workflow-step b{display:block;font-size:18px;line-height:1.3;margin-bottom:9px}
+.workflow-step p{margin:0;color:#3a342d;line-height:1.6;font-size:16px}
+.codeblock{background:var(--dark);color:#f3ead9;border-radius:8px;padding:18px 20px;font:500 14px/1.65 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;overflow-x:auto;white-space:pre-wrap;margin:20px 0;box-shadow:0 8px 22px rgba(107,74,42,.12)}
+.codeblock .c{color:#f6d7a6;font-weight:600}
+.skillcard{background:#fff;border:1px solid var(--green);border-radius:12px;padding:24px;box-shadow:0 10px 26px rgba(95,117,83,.16);margin-top:8px}
+.skillcard b{display:block;font-size:21px;margin-bottom:8px}
+.skillcard p{margin:0 0 16px;font-size:17px;line-height:1.65;color:#3a342d}
+.cta-band{background:#e6f0e5;color:#3a342d}.cta-band .section{border-top:none}
+.cta-band .inner{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(260px,.85fr);gap:26px;align-items:start}
+.cta-band h2{font-size:clamp(26px,4vw,44px);margin:0 0 16px}.cta-band p,.cta-band .lead{color:rgba(58,52,45,.9);font-size:18px;line-height:1.72}
+.cta-card{border:1px solid #cfe0d2;background:#fbfdfa;border-radius:8px;padding:22px}
+.cta-card b{display:block;color:#48b178;margin-bottom:10px;font-size:18px}.cta-card p{margin:0 0 14px}
+.footer{padding:30px clamp(20px,6vw,88px);font-size:14px;color:var(--muted);background:#fff;border-top:1px solid var(--line)}
+.footer-inner{width:min(1000px,100%);margin:0 auto}
+.footer-links{display:flex;flex-wrap:wrap;gap:6px 12px;margin-bottom:14px}.footer-links a{color:var(--blue);font-weight:900;text-decoration:none;font-size:14px}
+.footer-brand{font-weight:900;font-size:15px;margin-bottom:10px}.footer-note{font-size:13px;line-height:1.6}
+@media(max-width:820px){.infocard-grid{grid-template-columns:1fr}.duo{grid-template-columns:1fr}.workflow-grid{grid-template-columns:1fr}.cta-band .inner{grid-template-columns:1fr}.section{padding:40px 20px}.hero{min-height:52vh;flex-direction:column;justify-content:flex-start;align-items:flex-start;gap:24px}.hero>div{width:100%}.hero-figure{width:100%;max-width:560px}}
+@media(max-width:820px){html,body{overflow-x:hidden}.hero h1{word-break:break-word}}
+</style>
+</head>
+<body class="spotlight">
+<!-- 官網共用導航列 nav.top：與首頁/總站同一條，文章不要自己另做極簡 topbar（江江 2026-06-25：要同一個框架、同一條導航列）。把對應頁面的 class="active" 標在自己那欄。
+     ⚠️ 下面 ul.nav-menu 整塊由 preflight 第 5 關 check-bilingual-nav.mjs 做「逐字比對」，
+        塞任何註解、多一個空白、換行位置不同都會被判導航不一致而擋下發布。要說明就寫在 <ul> 外面（像這裡）。
+        2026-08-16 修：原本的 EN 那行說明註解就夾在 <ul> 裡面，導致照範本起手的新文章一律卡第 5 關
+        （llm-rag-agent-mcp 與 rag-three-retrieval-modes 兩篇同時中招）。註解已移出來，<ul> 內保持乾淨。
+        萬一還是被擋，直接跑：node scripts/check-bilingual-nav.mjs --write --only=<你的檔案路徑> -->
+<nav class="top">
+  <div class="container">
+    <a class="nav-brand-img" href="../../index.html"><img src="../../images/footer-signature.png" alt="江江教練 | 江昱德"></a>
+    <button class="nav-toggle" aria-label="選單"><span></span><span></span><span></span></button>
+    <ul class="nav-menu">
+      <li><a href="../../index.html">首頁</a></li>
+      <li><a href="../../knowledge-architecture.html">知識架構</a></li>
+      <li><a href="../../courses.html">課程</a></li>
+      <li><a href="../../articles.html" class="active">深度文章</a></li>
+      <li><a href="../../skills.html">技能包下載</a></li>
+      <li><a href="../../offers.html">服務方案</a></li>
+      <li class="lang-switch"><a href="../../en/articles.html" hreflang="en">EN</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="wc wc1"></div>
+  <div class="wc wc2"></div>
+  <div class="wc wc3"></div>
+  <div>
+    <div class="kicker">AI 工作流 · 內容製作</div>
+    <h1>AI 明明寫得出好標題，為什麼每次都先給我爛的？</h1>
+    <p>它交上來的標題我看不下去，說了句「又是爛標題」。三十秒後，它給出一個我當場就收的版本。我要追問的是這件事：既然三十秒寫得出來，為什麼第一次不給我。</p>
+  </div>
+</section>
+
+<main>
+
+<section class="section" id="start">
+  <div class="inner">
+    <p class="lead">AI 幫你寫完一篇長文，最後那個標題你多半不滿意。這篇把原因追到底：問題不在它的能力，在於「寫完正文才回頭取標題」這個順序，讓它只能從「我做了什麼」的腦袋裡撈標題。我從一次被打回的標題拆出五層根因，其中一層是我八天前才修過、卻修錯地方的規則。修法很簡單：在它動筆之前，先寫下三個搜尋句，而且至少一句必須是真人講過的原話。</p>
+
+    <div class="duo stack">
+      <div class="infocard">
+        <b style="font-size:22px;color:#e85a4f">適合誰</b>
+        <ul>
+          <li>常叫 AI 幫忙寫文章、貼文、報告，但每次標題都要自己重寫的人</li>
+          <li>已經給 AI 寫過規則，卻發現它「讀過了還是照樣犯」的人</li>
+          <li>幫客戶做內容或做流程設計，需要判斷一條規則該掛在哪個時點的人</li>
+        </ul>
+      </div>
+      <div class="infocard">
+        <b style="font-size:22px;color:#5f7553">你可以帶走什麼</b>
+        <ul>
+          <li>一個兩分鐘的前置動作：三個搜尋句，改變 AI 後面三小時的寫作視角</li>
+          <li>三條標題自檢判準，任何人都能當場套用在自己的標題上</li>
+          <li>一段可以直接複製貼給你的 AI 的操作備忘</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="gap">
+  <div class="inner">
+    <h2>被罵完三十秒，它就寫出好標題了</h2>
+    <p>今天我讓 AI 寫一篇官網深度文章。文章寫完，它交上來的標題是這句：</p>
+    <blockquote>改了規則分數沒動，改了答案漲七分</blockquote>
+    <p>我跟它說：又是爛標題。</p>
+    <p>「又」這個字不是隨口說的。八天前我才為了同一類問題罵過一次，當時還立了規則。後面會講那次修的是什麼、為什麼沒擋住這次。</p>
+    <p>被我打回之後，三十秒內，它交出第二個版本：</p>
+    <blockquote>新模型出來，我怎麼知道它對我的工作真的比較好？</blockquote>
+    <p>這一句我當場就收了。</p>
+    <p><b>第一句為什麼爛，其實不難解釋。真正該追問的是第二句：既然三十秒就寫得出來，為什麼第一次不給我。</b></p>
+    <p>這篇文章講的是我追下去找到的東西。結論跟提示詞沒有關係，跟模型好不好也沒有關係。問題在流程把它放在錯的位置上。</p>
+  </div>
+</section>
+
+<section class="section" id="compare">
+  <div class="inner">
+    <h2>它給的跟我要的，差在哪</h2>
+    <table>
+      <thead><tr><th></th><th>它第一次給的</th><th>我要的</th></tr></thead>
+      <tbody>
+        <tr><td>句子</td><td>改了規則分數沒動，改了答案漲七分</td><td>新模型出來，我怎麼知道它對我的工作真的比較好？</td></tr>
+        <tr><td>誰在說話</td><td>做這件事的人，在總結自己做了什麼</td><td>遇到這個問題的人，在問一個他答不出來的問題</td></tr>
+        <tr><td>單獨拿給沒讀過文章的人看</td><td>哪個規則？誰的分數？漲七分是什麼分</td><td>看得懂，而且知道跟 AI 有關</td></tr>
+        <tr><td>三個月後會有人打這些字去搜嗎</td><td>不會</td><td>會</td></tr>
+      </tbody>
+    </table>
+    <p>第一句其實<b>完全準確</b>。文章裡真的做了那個實驗，分數真的是那樣動的。</p>
+    <p>準確，然後沒有人找得到。</p>
+  </div>
+</section>
+
+<section class="section" id="cause1">
+  <div class="inner">
+    <h2>根因一：標題是在最糟的時間點取的</h2>
+    <p>我的寫作規則裡有一條，白紙黑字寫著「正文先寫完，再回頭萃取出標題、摘要、適合誰」。</p>
+    <p>聽起來很合理。實際上這條規則決定了標題一定是作者視角。</p>
+    <p>因為寫完一篇長文的那一刻，腦子裡裝的全部都是「我做了什麼、我發現什麼、我證明了什麼」。從那個狀態撈標題，撈出來的必然是一句工作總結。</p>
+    <p>這不是 AI 不小心。是規則把它放在錯的位置上，然後要求它做一件那個位置做不到的事。</p>
+  </div>
+</section>
+
+<section class="section" id="cause2">
+  <div class="inner">
+    <h2>根因二：它拿「準確」當評分軸</h2>
+    <p>它自己寫的三案評估表，我把原文抄出來：</p>
+    <table>
+      <thead><tr><th>案</th><th>它寫的評估</th></tr></thead>
+      <tbody>
+        <tr><td>A</td><td>「但『題目被改過』不精確，實際改的是標準答案不是題目」</td></tr>
+        <tr><td>C（它選的）</td><td>「數字具體，且完全對應文章真實紀錄」</td></tr>
+      </tbody>
+    </table>
+    <p>三條評語有兩條在比同一件事：哪個最忠於我實際做的事。</p>
+    <div class="meaning">
+      <b>準確是及格線，不是評分軸。</b>
+      <p>兩個標題都準確的時候，要選讀者找得到的那一個。它把及格線當成了滿分線，所以每次都選最像工作紀錄的那一個。</p>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="cause3">
+  <div class="inner">
+    <h2>根因三：三個選項是假的</h2>
+    <p>我的流程要求它提三個標題方案讓我選。聽起來已經很民主了。</p>
+    <p>但那三個方案，是同一個腦袋、在同一個時點、從同一份記憶裡撈出來的。差別只在句式：一個陳述句、一個問句、一個自白句。</p>
+    <p><b>讀者會打進搜尋框的那句話，從頭到尾沒有進入候選名單。</b></p>
+    <p>選項再多，只要都長在同一個視角上，選出來的還是同一個視角。這是我這次最大的收穫：如果三個選項都來自同一個來源，那不是在做選擇，是在挑句型。</p>
+  </div>
+</section>
+
+<section class="section" id="cause4">
+  <div class="inner">
+    <h2>根因四：它自己審自己，然後自己駁回了自己</h2>
+    <p>我的流程裡有一關我叫它 AUT（AI 使用者測試），做法很土：讓同一個 AI 分別扮演三種不同的讀者，各自把文章讀一遍，回答固定幾題。其中一題就是問標題。這不是什麼業界標準，是我自己為了「找不到真人幫我看稿」想出來的替代方案。</p>
+    <p>這次 AUT 抓到了。第一個人設的原話，是 AI 自己寫進紀錄檔的：</p>
+    <blockquote>「改了規則、改了答案，是在講什麼領域？我要看到副標才知道跟 AI 有關。」</blockquote>
+    <p>它抓到了，而且抓得很準。</p>
+    <p>然後它的處置，也是它自己寫的：</p>
+    <blockquote>「標題不為這個人設改。他不是這篇的主要受眾，讓不相關的人早點離開是對的。」</blockquote>
+    <p>沒有人擋它。因為機制當時只要求「沒改也要寫為什麼不改」，寫了理由就算過關。</p>
+    <p>這裡有兩層問題。第一層是 AUT 對標題只有建議權，沒有否決權。第二層更根本：<b>三個人設是同一個 AI 扮的，負評是它寫的，駁回也是它寫的。</b></p>
+    <p>自己審自己，有太多方法說服自己。</p>
+
+    <div class="readmore near">
+      <b>讓 AI 扮讀者幫你先測一遍，我專門寫過一篇</b>
+      <ul>
+        <li><a href="../ai-user-testing/">做完的東西想找人幫忙看，卻找不到人？｜AI 使用者測試，先跑過一次再找真人</a><br>這一段只講 AUT 在標題這關失守，那篇講整套怎麼跑：四種模式怎麼選、三個讓模擬不失真的做法，還有它做不到的四件事。</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="cause5">
+  <div class="inner">
+    <h2>根因五：規則存在，但沒掛在會被想起來的時點上</h2>
+    <p>最刺的是這一層。</p>
+    <p>我的寫作規則裡有一份標竿範例文章的配方，第一條第一句就寫著「主標用讀者原話」。那天開工，AI 確實讀過那份檔案。</p>
+    <p>讀的時候，它在看版面怎麼排。三小時後要取標題，那條規則沒有被想起來。</p>
+    <p>我後來把整包寫作規則掃了一遍，數字是這樣：</p>
+    <table>
+      <thead><tr><th></th><th>數量</th></tr></thead>
+      <tbody>
+        <tr><td>規則檔案總數</td><td>35 個</td></tr>
+        <tr><td>裡面有提到「標題」的檔案</td><td>25 個</td></tr>
+        <tr><td>標題規則的正本檔（提到 133 次）</td><td>1 個</td></tr>
+      </tbody>
+    </table>
+    <p>規則不是沒有，是散成二十五份，而且沒有任何一份規定「取標題的那一刻要回來看我」。</p>
+    <p>規則存在，不等於規則會在需要的那一刻生效。</p>
+  </div>
+</section>
+
+<section class="section" id="eight-days">
+  <div class="inner">
+    <h2>八天前我才修過一次，修在看得見的那一層</h2>
+    <p>寫這篇之前我去翻紀錄，翻出一件我自己都忘了的事。</p>
+    <p><b>2026 年 9 月 12 日</b>，我看另一篇文章的標題，跟 AI 說了一句：「這麼長都沒講到重點。」</p>
+    <p>那次也追查了，也立了規則，而且做得比這次還硬：直接寫了一支機械檢查腳本掛進發布前的自動檢查，會擋下不合格的標題。那支腳本現在還在跑。</p>
+    <p>但它檢查的是這三件事：</p>
+    <ol>
+      <li>主標跟副標有沒有重複用詞</li>
+      <li>標題改了之後，搜尋別名有沒有跟著同步更新</li>
+      <li>副標長度與分隔符號</li>
+    </ol>
+    <p><b>全部都是格式。沒有一條管「這個標題是從哪裡長出來的」。</b></p>
+    <p>八天後，一個格式完全合規的標題交到我面前，我說：又是爛標題。</p>
+    <div class="meaning">
+      <b>修規則的時候，最容易修到看得見的那一層。</b>
+      <p>格式看得見、字數看得見、有沒有重複用詞看得見，所以修起來有成就感，還可以寫成腳本自動擋。而真正出問題的那一層，是標題在什麼時點、從誰的視角產生的，它看不見，也很難寫成程式檢查。</p>
+      <p>看得見的那層修完，問題還在原地。</p>
+    </div>
+
+    <div class="readmore near">
+      <b>改完規則到底有沒有生效，我另外排過一套判斷方法</b>
+      <ul>
+        <li><a href="../how-to-verify-ai-rule-changes/">改完規則，怎麼知道 AI 到底有沒有變乖？｜改完當下看不出來的東西，要當病人觀察不能當程式碼驗</a><br>這一段只講「修錯了一層」，那篇講修對了之後怎麼驗：哪些規則寫得成機械攔截、哪些只能靠觀察，以及為什麼看一個例子分不出「真的變好」跟「這次剛好」。</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="fix">
+  <div class="inner">
+    <h2>修法：把標題從「事後萃取」搬到「事前承諾」</h2>
+    <p>改法的核心只有一句：<b>在動筆寫正文之前，先寫下三個搜尋句。</b></p>
+    <p>先定的不是標題，是「三個月後要找這篇的人會打哪幾個字」。</p>
+
+    <h3>為什麼要分成兩個階段</h3>
+    <p>我第一版的設計是「標題完全寫在正文之前」。這版被另一家 AI 的審稿直接駁回，理由我覺得對：標題先定死，正文會變成替標題找證據，寫到一半發現更重要的東西也不敢換題。</p>
+    <p>所以改成兩階段：</p>
+    <table>
+      <thead><tr><th>階段</th><th>什麼時候</th><th>產出什麼</th><th>能不能改</th></tr></thead>
+      <tbody>
+        <tr><td>一、搜尋意圖</td><td><b>寫正文之前</b></td><td>三個搜尋句＋一個工作標題</td><td>工作標題隨時可改。搜尋意圖要改，要明寫「文章方向轉變」並重做，不可以默默改</td></tr>
+        <tr><td>二、正式標題</td><td>正文完成後</td><td>定案的主標與副標</td><td>跟搜尋意圖對不上時，<b>優先改標題</b>。只有正文真的偏離原本任務，才回頭改正文</td></tr>
+      </tbody>
+    </table>
+    <p>階段一的目的不是綁死標題，是讓寫正文的那個腦袋<b>從第一個字開始就裝著讀者的問題</b>。</p>
+
+    <div class="readmore near">
+      <b>把一件反覆在做的事變成會自己跑完的流程，這是我一直在做的</b>
+      <ul>
+        <li><a href="../what-is-loop-engineering/">每件事 AI 都要我確認，怎麼可以更自動？｜什麼是迴圈工程 Loop Engineering</a><br>這一段只講標題這一個環節怎麼改，那篇講整個觀念：一個迴圈的五個階段、最少需要哪些零件，以及什麼時候才值得做成迴圈。</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="real-source">
+  <div class="inner">
+    <h2>最硬的一條：三個搜尋句裡，至少一句要有真實來源</h2>
+    <p>這條是整套修法裡最不能妥協的：三個搜尋句，<b>不可以三句都是 AI 自己想的</b>。至少一句要指得出真實出處。</p>
+    <table>
+      <thead><tr><th>來源</th><th>能不能當那「至少一句」</th></tr></thead>
+      <tbody>
+        <tr><td>真人一對一逐字稿裡的原話</td><td>✅ 首選</td></tr>
+        <tr><td>我自己講過的話、學員課後問的、客戶問的</td><td>✅</td></tr>
+        <tr><td>網站站內搜尋紀錄、AI 客服被問過的題</td><td>✅</td></tr>
+        <tr><td>AI 自己扮演讀者想出來的</td><td>❌ 三句可以有兩句，但不能三句都是</td></tr>
+      </tbody>
+    </table>
+
+    <h3>為什麼這條最硬，我有一組實測數字</h3>
+    <p>八月我做過一次測試：同一套搜尋系統、同一批文章，只換題目的來源。</p>
+    <table>
+      <thead><tr><th>題目從哪來</th><th>找得到對的文章的比例</th></tr></thead>
+      <tbody>
+        <tr><td>AI 讀完文章摘要自己生成的 30 題</td><td>90%</td></tr>
+        <tr><td>真人實際問過的問題</td><td><b>28%</b></td></tr>
+      </tbody>
+    </table>
+    <p>差距在語彙。真人問的是「我到底算不算會用 AI 的人」，我的文章標題叫「AI 能力分級 T0 到 T13」。一個字都對不上。</p>
+    <p>AI 生成的題目會不自覺沿用文章裡的詞，等於考題先洩漏給考生。所以它考出來的分數永遠漂亮。</p>
+    <div class="caveat">
+      <b>標題是一模一樣的事</b>
+      <p>AI 扮演的讀者會用 AI 腦中的詞，於是 AI 的標題永遠通過 AI 自己的檢查。</p>
+      <p>這句話可以推廣到更遠的地方：用想像出來的受眾做任何驗證，都會系統性地高估自己。不管是測標題、測文章、測產品文案、測客服問答，都一樣。</p>
+    </div>
+
+    <h3>三條硬判準</h3>
+    <p>搜尋句寫完之後，標題還要過三關，不過就退回去重來：</p>
+    <ol>
+      <li><b>主標裡不准出現只有作者知道指涉對象的詞。</b>檢查法：把主標單獨拿給沒讀過文章的人，他要能說出這在講哪個領域的什麼問題。「改了規則分數沒動」死在這裡。</li>
+      <li><b>主標要是讀者會打進搜尋框的話</b>，不是作者對這件事的總結。</li>
+      <li><b>準確是及格線不是評分軸。</b>兩個都準確，選讀者找得到的那個。</li>
+    </ol>
+
+    <h3>AUT 的否決權：看退件理由，不看人設身分</h3>
+    <p>回到那個被駁回的負評。修法是：<b>有幾種退件理由，任何人設提出都算數，不能用「他不是主要受眾」擋掉。</b></p>
+    <p>那幾種理由是：領域無法辨認、指涉不明、標題承諾了正文沒有的東西。</p>
+    <p>這裡我也被審稿改過一次。我原本想做「三個人設任一票否決」，被指出這樣太嚴：三個人設是同一個模型的三次角色提示，不是三個獨立評審，等權否決會把標題推向誰都看得懂但誰都不想點的泛標題。</p>
+    <p>所以改成兩層：上面那三種硬退件，任何人設都能退；其他偏好類的意見，還是建議權。</p>
+  </div>
+</section>
+
+<section class="section" id="limits">
+  <div class="inner">
+    <h2>三個我還沒解決的問題</h2>
+    <div class="caveat">
+      <b>破口一：我可以寫一份假的紀錄檔騙過機器檢查</b>
+      <p>我掛了一個自動檢查，它會驗「證據檔在不在、三個搜尋句有沒有標來源」。它驗得了格式，驗不了那三句是不是為了配合已經想好的標題倒推出來的。</p>
+      <p>倒推是做得到的，而且做的人有動機。這套機制能做的是<b>提高倒推成本</b>（搜尋句要在正文之前落檔、至少一句要指得出真實出處），不是杜絕。</p>
+    </div>
+    <div class="caveat">
+      <b>破口二：這套規則今天才立，只有一個案例</b>
+      <p>寫這篇的時候，新規則跑過的文章數量是一篇，就是你正在讀的這一篇。我還沒有第二篇、第三篇的資料說它真的有效。</p>
+      <p>所以我不會說「我驗證出一套方法」。我只能說：我從一次被打回裡拆出了根因，改了流程，還沒複驗。</p>
+    </div>
+    <div class="caveat">
+      <b>破口三：這裡面沒有一個新發明</b>
+      <p>用 AI 扮讀者去檢查標題，我以前就做過。翻紀錄的時候我找到 9 月 19 日那一篇，AUT 的三個人設都對標題講了話，第一個人設說：「普通。我不會主動找這種文章，是別人傳給我才會看。」</p>
+      <p>那次的處置是<b>補副標的搜尋詞，主標一個字沒動</b>。做了，但停在能改的地方，沒有動到真正被質疑的地方。</p>
+      <p>所以這篇講的不是一個新方法，是一件更平凡的事：方法做過一次不算有，掛在流程的特定時點上、而且擋得住自己想繞過去的時候，才算有。</p>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="takeaway">
+  <div class="inner">
+    <h2>你可以直接拿走的四件事</h2>
+    <p>不用管我的規則檔長什麼樣，這四件事任何人下次叫 AI 寫東西時都能用：</p>
+    <ol>
+      <li><b>在它動筆之前，先問它「三個月後要找這篇的人會打哪幾個字」，要三句。</b>這一步花不到兩分鐘，但它會改變後面三小時的寫作視角。</li>
+      <li><b>三句裡至少要有一句是你聽過的真人原話。</b>你的客戶問過的、學員課後問的、LINE 群組裡有人打過的。AI 自己想的最多兩句。<br><span style="color:#6a635a">還沒有自己的讀者、手上一句語料都沒有的話，退而求其次有三個地方可以撈：你自己當初卡住時是怎麼問的（打開你跟 AI 的對話紀錄，你問的第一句常常就是最好的搜尋句）、同主題文章底下的留言、以及搜尋引擎在你打字時跳出來的自動補完。這三種都比 AI 憑空想像的近。</span></li>
+      <li><b>標題定案時，把它單獨拿給一個沒讀過內容的人看</b>，問他這在講哪個領域的什麼問題。答不出來就重寫。</li>
+      <li><b>當 AI 給你三個選項時，問它一句：這三個是從哪裡來的。</b>如果三個都來自它剛寫完的那份稿子，那不是三個選項，是三個句型。</li>
+    </ol>
+  </div>
+</section>
+
+<section class="section" id="for-your-ai">
+  <div class="inner">
+    <h2>給你的 AI 讀的操作備忘（人可以跳過）</h2>
+    <p>如果你想把這套裝進自己的 AI 工作流程，把下面這段貼給它：</p>
+    <div class="codeblock"><pre>寫任何要給別人看的長文前，先做這一步，不要跳過：
+
+1. 在動筆寫正文之前，寫下三個搜尋句：「三個月後要找這篇的人，
+   會打哪幾個字」。
+2. 三句之中至少一句必須有真實來源（使用者講過的原話、客戶問過的
+   問題、站內搜尋紀錄）。標註每一句的來源。三句都是你自己想的，
+   就退回重做。
+3. 同時寫一個工作標題。工作標題隨時可以改，搜尋句要改必須明寫理由。
+4. 正文寫完後才定正式標題。標題與搜尋句對不上時，優先改標題。
+5. 標題定案前自檢三條：
+   a. 主標裡有沒有只有作者知道指涉對象的詞
+   b. 主標是不是讀者會打進搜尋框的話
+   c. 兩個都準確的候選，選讀者找得到的那個
+      （準確是及格線不是評分軸）
+6. 如果你有模擬讀者的檢查流程，「領域無法辨認、指涉不明、標題承諾
+   了正文沒有的東西」這三種退件，任何人設提出都必須改，不可以用
+   「他不是主要受眾」駁回。</pre></div>
+  </div>
+</section>
+
+<section class="section" id="meta">
+  <div class="inner">
+    <h2>這篇文章自己就是第一次實測</h2>
+    <p>寫這篇的時候，我讓 AI 照新規則走了一遍。它在寫下正文第一個字之前，先交了這三句：</p>
+    <table>
+      <thead><tr><th>#</th><th>搜尋句</th><th>來源</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>AI 寫的標題很爛</td><td>我 2026-09-20 的原話：「又是爛標題」</td></tr>
+        <tr><td>2</td><td>怎麼讓 AI 寫出可以用的標題</td><td>AI 推測，但貼著問題庫裡的真人題「我沒空寫，可以叫 AI 幫我寫嗎」</td></tr>
+        <tr><td>3</td><td>AI 做過一次的好方法怎麼固定下來</td><td>我 2026-09-20 的原話：「以前用 AUT 想標題都做過，只是沒做成迴圈」</td></tr>
+      </tbody>
+    </table>
+    <p>三句裡有兩句是我自己講過的話，不是它想像出來的。</p>
+    <p>你現在看到的標題，是從這三句長出來的，不是從它寫完文章後的總結裡撈出來的。</p>
+    <p>至於這套規則能不能撐到第十篇，我還不知道。到時候有結果我會再寫一篇。</p>
+
+    <div class="readmore">
+      <b>這篇提到過的</b>
+      <ul>
+        <li><a href="../ai-user-testing/">做完的東西想找人幫忙看，卻找不到人？｜AI 使用者測試，先跑過一次再找真人</a><br>本篇失守的那一關，完整怎麼跑。</li>
+        <li><a href="../how-to-verify-ai-rule-changes/">改完規則，怎麼知道 AI 到底有沒有變乖？</a><br>規則改完之後，怎麼判斷它真的生效。</li>
+        <li><a href="../what-is-loop-engineering/">每件事 AI 都要我確認，怎麼可以更自動？｜什麼是迴圈工程</a><br>把一件反覆在做的事做成會自己跑完的流程。</li>
+      </ul>
+      <b>再往前後延伸</b>
+      <ul>
+        <li><a href="../train-your-ai-agent-editor/">沒空寫，可以叫 AI 幫我寫嗎？：讓 AI 認識你，比學會用 AI 更重要</a><br>在講標題之前的一步：怎麼讓 AI 先認識你的語氣與素材。</li>
+        <li><a href="../caught-ai-slacking-into-rules/">AI 寫的東西我怎麼確認它是對的？：抓到 AI 偷懶之後，我把它寫進流程規則</a><br>同一個動作的另一個案例：發現問題之後，怎麼把它變成下次擋得住的規則。</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">江江教練 · AI 知識管理</div>
+    <div class="footer-links">
+      <a href="../../articles.html">← 回深度文章總站</a>
+      <a href="../../index.html">首頁</a>
+      <a href="../../learn.html">自學資源</a>
+      <a href="../../skills.html">技能包下載</a>
+      <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">LINE 社群 ↗</a>
+      <a href="https://www.threads.com/@jiang_yude_coach" target="_blank" rel="noopener">Threads ↗</a>
+      <a href="https://vocus.cc/salon/Jiang_Coach" target="_blank" rel="noopener">方格子 ↗</a>
+    </div>
+    <div class="footer-note">這是一篇教學文章，整理我對「AI 明明寫得出好標題，為什麼每次都先給我爛的？」的看法，供你參考。</div>
+  </div>
+</footer>
+
+<!-- 點圖放大 lightbox（hero 與內文圖通用，已內建，不用每篇重加） -->
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <span class="lightbox-close" aria-label="關閉">×</span>
+  <img id="lightbox-img" src="" alt="放大檢視">
+</div>
+<script>
+(function(){
+  var box=document.getElementById('lightbox'),boxImg=document.getElementById('lightbox-img');
+  document.querySelectorAll('.hero-figure img,.inline-figure img').forEach(function(img){
+    img.addEventListener('click',function(){boxImg.src=img.currentSrc||img.src;boxImg.alt=img.alt||'放大檢視';box.classList.add('open');box.setAttribute('aria-hidden','false');});
+  });
+  function close(){box.classList.remove('open');box.setAttribute('aria-hidden','true');boxImg.src='';}
+  box.addEventListener('click',close);
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
+})();
+</script>
+
+<script src="../../image-interactions.js"></script>
+
+<!-- 官網共用：滑鼠暖光暈 + 導航列漢堡選單 -->
+<script src="../../spotlight.js"></script>
+
+<!-- 文章自動互聯（相關文章）：兩支已內建，順序不可顛倒，不用再另外加 -->
+<script src="../../articles-data.js"></script>
+<script src="../../related-render.js"></script>
+  <script src="/mika-chat-widget.js" defer></script>
+</body>
+</html>
