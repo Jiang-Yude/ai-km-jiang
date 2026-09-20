@@ -23,6 +23,24 @@ window.ARTICLE_TAGS = {
 
 window.ARTICLES = [
   {
+    id: "fixed-test-set-for-ai",
+    url: "articles/fixed-test-set-for-ai/",
+    date: "2026-09-20",
+    updated: "2026-09-20",
+    title: "新模型出來，我怎麼知道它對我的工作真的比較好？｜一組不會變的考題，換模型、換規則、換平台都用它來比",
+    problem: "新模型出來想試一下，試完只留下「感覺比較聰明」，講不出證據。想認真比又會發現上次測完之後規則改過、標準答案也改過，兩次的分數根本不能放在一起。",
+    audience: "在用 AI 做長期任務（整理訊息、分類資料、客服回覆、報告生成），每隔一陣子想知道到底有沒有比上個月好的人；以及要幫客戶評估換模型、換平台，需要拿得出數字的專業工作者。",
+    summary: "新模型出來要不要換，答這題需要一組不會變的考題。我用八天、138 則 LINE 群訊息當考卷測 AI 整理活動的準確度，改了兩版規則分數一分沒動，後來改掉自己標的一題答案，拿同一份舊輸出重算就從 29 變 36，系統實際進步是零分。這篇把測試拆成三層：題目層去識別後凍結不動、判準層可以改但要升版本並同時保留舊分與重算分、跑分層只新增不修改且一定要存原始輸出。再把題組分成核心、擴充、保留三種，其中保留題組不准拿來改規則，才擋得住把答案背起來的過擬合。文末給換平台前要凍結的七樣東西、一張可直接照抄的六欄成績表，以及不用寫程式、今天就能做完的五步起步法。",
+    tags: {
+      topic: ["AI工作流", "工作流程", "輔助決策"],
+      level: ["進階"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["how-to-verify-ai-rule-changes", "three-levels-of-cross-review", "dual-track-planning-loop", "ai-cp-value-calculus", "ai-schedule-wake-interval", "rule-file-rebound", "caught-ai-slacking-into-rules", "ai-user-testing", "long-document-review-layers"]
+  },
+
+  {
     id: "ai-schedule-wake-interval",
     url: "articles/ai-schedule-wake-interval/",
     date: "2026-09-19",
@@ -245,7 +263,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["rule-file-rebound", "caught-ai-slacking-into-rules", "three-levels-of-cross-review", "how-to-train-your-ai-employee", "loop-engineering-guardrails", "semantic-rules-before-prompt-templates", "let-ai-review-itself", "ai-rule-file-slimming", "ai-schedule-wake-interval"],
+    related: ["rule-file-rebound", "caught-ai-slacking-into-rules", "three-levels-of-cross-review", "how-to-train-your-ai-employee", "loop-engineering-guardrails", "semantic-rules-before-prompt-templates", "let-ai-review-itself", "ai-rule-file-slimming", "ai-schedule-wake-interval", "fixed-test-set-for-ai"],
     cover: { tall: "images/articles/how-to-verify-ai-rule-changes-cover.jpg" }
   },
 
@@ -1007,7 +1025,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["after-ai-says-remembered", "long-document-review-layers", "mobile-to-desktop-publish-loop", "ai-said-it-watched-the-video", "cross-ai-review-both-wrong", "webmcp-day-one", "how-to-verify-ai-rule-changes", "let-ai-review-itself", "ai-rule-file-slimming"]
+    related: ["after-ai-says-remembered", "long-document-review-layers", "mobile-to-desktop-publish-loop", "ai-said-it-watched-the-video", "cross-ai-review-both-wrong", "webmcp-day-one", "how-to-verify-ai-rule-changes", "let-ai-review-itself", "ai-rule-file-slimming", "fixed-test-set-for-ai"]
   },
 
   {
@@ -1548,7 +1566,7 @@ window.ARTICLES = [
       content_type: ["觀點文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["ai-usage-audit", "ai-tools-professional-judgment", "strong-ai-models-knowledge-workflow-road", "program-vs-ai-skill-library", "ai-capability-tiers", "long-task-completion-rate", "openrouter-deepseek-data-routing"]
+    related: ["ai-usage-audit", "ai-tools-professional-judgment", "strong-ai-models-knowledge-workflow-road", "program-vs-ai-skill-library", "ai-capability-tiers", "long-task-completion-rate", "openrouter-deepseek-data-routing", "fixed-test-set-for-ai"]
   },
 
   {
