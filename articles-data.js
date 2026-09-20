@@ -41,6 +41,24 @@ window.ARTICLES = [
   },
 
   {
+    id: "line-backup-who-can-see-it",
+    url: "articles/line-backup-who-can-see-it/",
+    date: "2026-09-20",
+    updated: "2026-09-20",
+    title: "那個 LINE 備份工具，怎麼讀到你的訊息？｜在比功能之前，先打開群組成員名單看一眼",
+    problem: "想把 LINE 群組的討論留下來，搜到的工具功能寫得都差不多，價差卻很大，不知道差在哪、也不知道該怎麼判斷。",
+    audience: "想把社區、協會、課程或客戶群組的討論留下來，正在比較工具的人。",
+    summary: "比功能之前先比身分：一個工具要讀到 LINE 群組的訊息，得用某種身分進到群裡，而身分只有看得見與看不見兩種。這一眼不需要懂技術，打開群組成員名單就看得到。文章也把我自己選的那條路換來的三個限制一起講：加入前的訊息收不到、它不是隱形的、LINE 官方帳號本身要錢。",
+    tags: {
+      topic: ["AI工作流", "差異比較"],
+      level: ["基礎"],
+      content_type: ["觀點文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["messaging-apps-ai-friendliness", "openrouter-deepseek-data-routing", "line-group-ai-workflow", "ai-data-organization-usable-system"]
+  },
+
+  {
     id: "ai-schedule-wake-interval",
     url: "articles/ai-schedule-wake-interval/",
     date: "2026-09-19",
@@ -881,7 +899,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["cli-api-mcp-computer-use", "ai-cp-value-calculus"]
+    related: ["cli-api-mcp-computer-use", "ai-cp-value-calculus", "line-backup-who-can-see-it"]
   },
 
   {
@@ -1115,7 +1133,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["line-group-ai-workflow", "web-chat-ai-vs-desktop-agent", "free-deploy-three-boundaries", "ai-employee-four-levels"]
+    related: ["line-group-ai-workflow", "web-chat-ai-vs-desktop-agent", "free-deploy-three-boundaries", "ai-employee-four-levels", "line-backup-who-can-see-it"]
   },
 
   {
@@ -2286,7 +2304,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["agent-workflow-builds-automation", "codex-only-auto-worklog", "how-to-train-your-ai-employee", "mika-to-laika-product-character-design", "messaging-apps-ai-friendliness", "ai-schedule-wake-interval"]
+    related: ["agent-workflow-builds-automation", "codex-only-auto-worklog", "how-to-train-your-ai-employee", "mika-to-laika-product-character-design", "messaging-apps-ai-friendliness", "ai-schedule-wake-interval", "line-backup-who-can-see-it"]
   },
 
   {
@@ -2700,7 +2718,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["semantic-rules-before-prompt-templates", "notebooklm-knowledge-analysis-assistant", "claude-skills-knowledge-assets", "why-split-data-into-cards", "long-answer-three-layers", "website-as-workstation"]
+    related: ["semantic-rules-before-prompt-templates", "notebooklm-knowledge-analysis-assistant", "claude-skills-knowledge-assets", "why-split-data-into-cards", "long-answer-three-layers", "website-as-workstation", "line-backup-who-can-see-it"]
   },
 
   {
