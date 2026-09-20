@@ -86,6 +86,8 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
 .inline-figure{margin:30px auto 8px;max-width:820px}
 .inline-figure img{display:block;width:100%;border-radius:14px;border:1px solid var(--line);box-shadow:var(--shadow);background:#fff;cursor:zoom-in}
 .inline-figure figcaption{font-size:14px;line-height:1.6;color:var(--muted);margin-top:10px}
+.inline-figure.card{max-width:430px}
+@media(max-width:820px){.inline-figure.card{max-width:340px}}
 .lightbox{position:fixed;inset:0;z-index:10000;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(12,10,8,.92);cursor:zoom-out;backdrop-filter:blur(4px)}
 .lightbox.open{display:flex}.lightbox img{max-width:96vw;max-height:92vh;border-radius:10px;box-shadow:0 24px 60px rgba(0,0,0,.5)}
 .lightbox-close{position:fixed;top:18px;right:24px;color:#fff;font-size:34px;line-height:1;font-weight:700;cursor:pointer;opacity:.85}
@@ -191,6 +193,7 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
 <section class="section" id="start"><div class="inner">
   <h2>這篇在講什麼</h2>
   <p class="lead">Grok Bot Galaxy 直播第二天，官方團隊開了四場工作坊，讓自己公司的業務工程師、業務、開發客戶（SDR）、客服上台講他們每天怎麼用 AI 員工工作。這篇整理他們實際做的事：每個職務養了哪些 bot、怎麼分工、花多少錢、哪些事情故意不讓 bot 自己做。</p>
+  <p>後半另外整理當天主直播時段的施工現場，他們自己在鏡頭前把生意方向整個換掉，那段可以當成前面四場的實作對照。</p>
   <div class="duo stack">
     <div class="card a"><b>適合誰</b><ul>
       <li>已經在用 AI 助理，想知道別人真正把工作交出去到哪一步的人</li>
@@ -213,7 +216,7 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
     <li><a href="#do-it-for-me">從「幫我找資料」改成「幫我看完、幫我寫信」</a></li>
     <li><a href="#learn-my-voice">讓 bot 先讀你的信件和貼文，再幫你寫信</a></li>
     <li><a href="#sdr-fifty">開發客戶的每日 50 家：訊號、排程、觸發器</a></li>
-    <li><a href="#no-new-bots">不要一直開新 bot：先問能不能用例行任務解決</a></li>
+    <li><a href="#no-new-bots">開新 bot 之前，先問能不能用例行任務解決</a></li>
     <li><a href="#support-three-steps">客服導入分三步：先摘要，再草稿，最後才讓它回信</a></li>
     <li><a href="#ask-first">客服 bot 遇到不會的問題，先問你，不自作主張</a></li>
     <li><a href="#ticket-cost">客服成本：一張工單 1 到 2 美元，先篩選可以壓到 0.2 美元</a></li>
@@ -223,12 +226,13 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
     <li><a href="#pivot">主直播現場：生意方向換了，從快閃活動變成做遊戲</a></li>
     <li><a href="#point-and-say">他們怎麼指揮 bot 改畫面：圈起來，說「這個怪怪的」</a></li>
     <li><a href="#team-roles">一個團隊的 bot 分工：總協調、3D、評論、監聽、音效、後端</a></li>
-    <li><a href="#skill-overfit">觀察到的 AI 通病：技能寫得太貼某一次情境</a></li>
+    <li><a href="#skill-overfit">講者觀察到的問題：技能寫得太貼某一次情境</a></li>
     <li><a href="#delete-tests">早期階段的取捨：叫 bot 把測試全部刪掉，先出貨</a></li>
     <li><a href="#cheating">自己講出來的隱憂：玩家可以開主控台作弊</a></li>
     <li><a href="#ad-video">5 分鐘做出一支廣告影片，但講者說不會真的拿去投</a></li>
     <li><a href="#scope">這篇整理的範圍</a></li>
   </ol></nav>
+  <figure class="inline-figure card"><img src="/images/articles/grok-bot-galaxy-day2-workshops/card01.jpg" alt="Grok Bot Galaxy Day 2 懶人包封面" loading="lazy"><figcaption>輪播卡第 1 張：整組卡的封面。</figcaption></figure>
 </div></section>
 
 <section class="section" id="sales-engineer"><div class="inner">
@@ -244,11 +248,12 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
   </table></div>
   <p>投影片的模板欄位是固定的四格：問題、解法、成效、客戶引言。現場示範從一篇文章做出一張案例投影片，大約 10 到 15 分鐘。</p>
   <p>技術專家 bot 的設定寫法，講者當場念出來的大意是「你是某某產品的技術專家，你有這幾個程式庫的權限」。它背後會呼叫寫程式的雲端代理去翻程式碼。</p>
+  <figure class="inline-figure card"><img src="/images/articles/grok-bot-galaxy-day2-workshops/card02.jpg" alt="業務工程師的三個 bot" loading="lazy"><figcaption>輪播卡第 2 張：業務工程師的三個 bot 分工。</figcaption></figure>
 </div></section>
 
 <section class="section" id="deck-cost"><div class="inner">
   <h2>一整套案例投影片，token 費用 20 到 30 美元</h2>
-  <p>講者公開了自己的花費：整套案例研究投影片庫做下來，token 費用大約 20 到 30 美元，而同樣的東西她自己做要花 4 到 5 個小時。</p>
+  <p>講者公開了自己的花費：完成整套客戶案例投影片庫，token 費用大約 20 到 30 美元，而同樣的東西她自己做要花 4 到 5 個小時。</p>
   <p>這是她個人的經驗數字，不是官方報價。</p>
 </div></section>
 
@@ -285,6 +290,7 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
   <p>開發客戶 bot 抓的切入點是個人層級，例如對方技術長在社群上發的貼文，不是只抓公司新聞。講者建議把社群平台的 API 接上去抓個人動態。</p>
   <p>通話整理的順序是：bot 整理好、她確認、才推進 CRM。她沒有讓它直接寫進去。</p>
   <p>技術 bot 讓她不用臨時拉工程師進會議。另一位講者補充，這讓他的成交速度變快。</p>
+  <figure class="inline-figure card"><img src="/images/articles/grok-bot-galaxy-day2-workshops/card04.jpg" alt="一位業務養的五個 bot" loading="lazy"><figcaption>輪播卡第 4 張：一位業務養的五個 bot。</figcaption></figure>
 </div></section>
 
 <section class="section" id="do-it-for-me"><div class="inner">
@@ -306,14 +312,14 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
   <ul>
     <li>每天要 50 個新名單，其中 5 個是當天最優先。</li>
     <li>系統照他的行事曆自動排時間：早上 9 點花 15 分鐘處理最優先的 5 個，下午 1 點處理其餘 45 個。</li>
-    <li>每個工作日早上 8 點自動掃描所有客戶，找新訊號，例如新註冊、下載內容。他強調越快跟進效果越好。</li>
+    <li>每個工作日早上 8 點自動掃描所有客戶，找新訊號，例如新註冊、下載內容。他認為要盡快跟進，直播中沒有給成效數據。</li>
     <li>CRM 設了觸發器：客戶狀態往前推進時，自動把這個聯絡人從開發序列移除，避免重複打擾。</li>
   </ul>
   <p>他自己只跟一個總管 bot 講話，其他 bot 由總管調度。他建議先建總管 bot，再透過總管去建立其他 bot，這樣總管才知道每個 bot 的用途與該什麼時候找誰。</p>
 </div></section>
 
 <section class="section" id="no-new-bots"><div class="inner">
-  <h2>不要一直開新 bot：先問能不能用例行任務解決</h2>
+  <h2>開新 bot 之前，先問能不能用例行任務解決</h2>
   <p>同一場講者的原話大意是：一直建新 bot 反而更亂，壞處多過好處。他建議在開新 bot 前先自問：為什麼需要它，能不能改成既有 bot 的一個例行任務。</p>
   <p>被問到成本時，他沒有給數字，只說因人而異，建議自己實測；如果每天 50 家太貴，可以改成每週一次寄 250 家。</p>
 </div></section>
@@ -334,30 +340,32 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
       <li><a href="../ai-employee-four-levels/">訓練 AI 員工的四個層次：從自己會用，到讓 AI 幫你訓練 AI</a>　這段是客服團隊怎麼分三階段把權限交出去，那篇是把放手的程度拆成四層，並給每一層的判斷標準</li>
     </ul>
   </div>
+  <figure class="inline-figure card"><img src="/images/articles/grok-bot-galaxy-day2-workshops/card08.jpg" alt="客服導入三步驟" loading="lazy"><figcaption>輪播卡第 8 張：客服導入的三個階段。</figcaption></figure>
 </div></section>
 
 <section class="section" id="ask-first"><div class="inner">
   <h2>客服 bot 遇到不會的問題，先問你，不自作主張</h2>
-  <p>示範中最值得看的是一個界線設計。</p>
+  <p>這場示範裡有一段界線設計值得單獨看。</p>
   <p>公司的內規是訂閱 14 天內可以退款，超過就拒絕。示範裡一位客戶在期限內，bot 直接在金流系統執行退款與取消；另一位超過 20 天，bot 拒絕，而且回覆時刻意含糊，不把內規細節講出去，改提供「到期後不再續扣」的替代方案。</p>
   <p>遇到知識庫裡沒有的問題（能不能分享 WiFi 通行證），bot 判斷自己把握不夠，沒有直接回答，而是建議把答案補進常見問題。人按了確認之後才寫進知識庫，新增的內容用綠色標示方便追蹤，然後才回覆客戶。</p>
+  <figure class="inline-figure card"><img src="/images/articles/grok-bot-galaxy-day2-workshops/card09.jpg" alt="客服 bot 的界線設計" loading="lazy"><figcaption>輪播卡第 9 張：客服 bot 的界線設計。</figcaption></figure>
 </div></section>
 
 <section class="section" id="ticket-cost"><div class="inner">
   <h2>客服成本：一張工單 1 到 2 美元，先篩選可以壓到 0.2 美元</h2>
   <p>講者給的數字：中高複雜度的工單，回覆一張大約 1 到 2 美元。如果先用程式把單純的工單（例如純退款、問某個信箱）篩出來批次處理，可以壓到一張約 0.2 美元。</p>
-  <p>他強調這是他自己花半天優化後的結果，不是官方保證。他也比較了行情：市面上客服代理平台常見的收費是每解決一件 1 到 10 美元，真人處理更貴。</p>
+  <p>他強調這是他自己花半天優化後的結果，不是官方保證。他也講了他看到的行情：客服代理平台常見的收費是每解決一件 1 到 10 美元，真人處理更貴。這是他在直播當天的說法。</p>
 </div></section>
 
 <section class="section" id="kb-review"><div class="inner">
   <h2>非技術同事要改知識庫，讓他走審核流程</h2>
-  <p>有人問怎麼防止不懂技術的同事改壞資料。講者的建議是把知識庫和自我改進流程放到版本控制系統，用「提出修改、指定的人審核、通過測試才合併」的方式，讓非技術同事的修改要經過審核與驗證，不會直接動到正式資料。</p>
+  <p>有人問怎麼防止不懂技術的同事改壞資料。講者的建議是把知識庫和自我改進流程放到版本控制系統，用「提出修改、指定的人審核、通過測試才合併」的方式，讓非技術同事提出的修改先經過審核與驗證，不會直接動到正式資料。</p>
   <p>他也建議客服團隊先找出「占八成工單量的那兩成問題類型」，優先把這些放進知識庫、跑過測試，確認沒問題才讓 bot 站到第一線。</p>
 </div></section>
 
 <section class="section" id="token-two-ways"><div class="inner">
   <h2>省 token 的兩種相反做法</h2>
-  <p>同一場的兩位講者給了相反的答案，可以照自己的狀況選：</p>
+  <p>同一場的兩位講者給了相反的答案，兩種做法各有適用的情境：</p>
   <div class="tablewrap"><table>
     <thead><tr><th></th><th>做法</th><th>理由</th></tr></thead>
     <tbody>
@@ -372,6 +380,7 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
       <li><a href="../cli-api-mcp-computer-use/">叫 AI 幫你點餐，就懂 CLI、API、MCP</a>　節省派說「有現成接口就不要用電腦操作」，那篇把幾種接法拆成白話，並給一組先問哪一種的判斷順序</li>
     </ul>
   </div>
+  <figure class="inline-figure card"><img src="/images/articles/grok-bot-galaxy-day2-workshops/card11.jpg" alt="省 token 的兩種相反做法" loading="lazy"><figcaption>輪播卡第 11 張：兩位講者相反的省 token 做法。</figcaption></figure>
 </div></section>
 
 <section class="section" id="limits"><div class="inner">
@@ -412,7 +421,7 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
 </div></section>
 
 <section class="section" id="skill-overfit"><div class="inner">
-  <h2>觀察到的 AI 通病：技能寫得太貼某一次情境</h2>
+  <h2>講者觀察到的問題：技能寫得太貼某一次情境</h2>
   <p>講者講了一個很具體的觀察：讓 AI 自己寫下來的技能，如果來源只有單一情境，它常常把那一次的細節寫死，之後就失去通用性。他當場要求 bot 重讀一次，把內容改寫成原則。</p>
   <p>另一個判準也很實用：當他發現自己在對好幾個 bot 一條一條微管理指令時，就是該退一步、去想「整個 bot 團隊要怎麼編排」的訊號。</p>
 </div></section>
@@ -438,7 +447,7 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
 <section class="section" id="scope"><div class="inner">
   <h2>這篇整理的範圍</h2>
   <ul>
-    <li>只整理 Grok Bot Galaxy 直播 Day 2（2026-09-16 台灣時間）。Day 1 與 Day 3 另外整理。</li>
+    <li>整理 Grok Bot Galaxy 直播 Day 2（2026-09-16 台灣時間）的四場工作坊與主直播建置時段。Day 1 與 Day 3 各自另外整理，本文有兩處引用 Day 1 的說法做對照。</li>
     <li>內容來自直播回放的英文逐字稿，翻譯與歸納由我整理。</li>
     <li>講者提到的功能狀態與價格是直播當天的說法，之後可能改變。</li>
     <li>語音辨識稿的人名與公司名互相矛盾，正文一律不寫人名。</li>
