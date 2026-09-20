@@ -79,7 +79,8 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
 .hero .wc2{width:360px;height:300px;bottom:-110px;left:-70px;background:#5f7553;opacity:.13}
 .hero .wc3{width:280px;height:260px;top:34%;left:14%;background:#a08144;opacity:.10}
 .hero>div{flex:none;width:860px;max-width:100%;position:relative;z-index:2}
-.hero-figure{margin:0;width:420px;flex:none;position:relative;z-index:2}
+.hero-figure{margin:0;width:320px;flex:none;position:relative;z-index:2}
+.hero-figure img{aspect-ratio:4/5;object-fit:cover}
 .hero-figure img{display:block;width:100%;border-radius:16px;border:1px solid #d8cdb8;box-shadow:0 18px 45px rgba(107,74,42,.16);cursor:zoom-in}
 .hero-figure figcaption{margin-top:10px;font-size:14px;line-height:1.6;color:#6a635a}
 .inline-figure{margin:30px auto 8px;max-width:820px}
@@ -172,6 +173,10 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
     <p class="sub">一組不會變的考題，換模型、換規則、換平台都用它來比</p>
     <p>我在自己的專案上遇到更慘的狀況：同一份 AI 輸出，我一個字都沒改，分數從 29 變成 36，變的是我自己的標準答案。連在同一個模型上都比不出高下，換模型當然更比不出來。這篇講怎麼把題目、答案、成績分成三層凍結起來，讓每一次的分數都真的可以放在一起比。</p>
   </div>
+  <figure class="hero-figure">
+    <img src="../../images/articles/fixed-test-set-for-ai-cover.jpg" alt="兩台不同的 AI 機器在作答同一份考卷，各自旁邊放著分數牌" loading="lazy">
+    <figcaption>重點不是誰考幾分，是兩邊考的必須是同一份卷子。</figcaption>
+  </figure>
 </section>
 
 <main>
@@ -210,7 +215,7 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
       <ol>
         <li><a href="#scene">一個群八天的訊息，我拿它當考卷</a></li>
         <li><a href="#no-change">規則改了兩版，分數一分沒動</a></li>
-        <li><a href="#moved-target">同一份輸出，我改了標準答案就漲七分</a></li>
+        <li><a href="#moved-target">我沒動系統，只改一題答案，分數就從 29 變 36</a></li>
         <li><a href="#why-fool">為什麼 AI 的測試特別容易自己騙自己</a></li>
         <li><a href="#three-layers">把考題、答案、成績分成三層</a></li>
         <li><a href="#three-sets">核心、擴充與保留，三種題組要分開計分</a></li>
@@ -260,13 +265,14 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
 
 <section class="section" id="moved-target">
   <div class="inner">
-    <h2>同一份輸出，我改了標準答案就漲七分</h2>
+    <h2>我沒動系統，只改一題答案，分數就從 29 變 36</h2>
     <p>第二個教訓比較難堪。</p>
-    <p>考卷裡有一題，是某天上午的例會之後，下午還有一場香氛工作坊。我原本標的答案是：這兩件事算同一場，AI 如果拆成兩張卡就是多抓，扣五分。</p>
-    <p>AI 把它拆成了兩張，所以被我扣了五分。</p>
+    <p>考卷裡有一題：某天上午開例會，下午還有一場香氛工作坊。這兩件事，算一場活動還是兩場？</p>
+    <p>標準答案是我自己一個人標的，我當時標的是「算一場」，而且把它設成陷阱題，AI 如果拆成兩張卡就是多抓，扣五分。AI 跑出來真的拆成了兩張，所以被扣了五分。</p>
     <p>後來我把這題拿去問業主本人。他看完說：這是兩場，要兩張卡。理由很具體：群裡有人直接問過「可以邀朋友只參加下午那場嗎」，得到的回答是可以；下午那場另外收三百元材料費，跟例會分開；它有自己的報名表單。</p>
     <p><b>AI 是對的，錯的是我的答案。</b></p>
-    <p>我把這題從「陷阱題，踩到扣五分」改成「必抓題，抓到加兩分」。分數的差額是七分。然後拿同一份舊輸出重算：</p>
+    <p>這題本身其實是好題目，該留在考卷裡。<b>「這到底算一場還是兩場」正是 AI 最容易搞混的判斷</b>，同一份考卷上的 11/28 那場，舊版規則當成一場、新版規則拆成兩場，AI 自己前後都不一致。問題不在題目，在我把它的正確方向標反了。</p>
+    <p>我把這題從「陷阱題，踩到扣五分」改成「必抓題，抓到加兩分」，一減一加，差額是七分。然後拿同一份舊輸出重算：</p>
     <div class="tablewrap">
       <table>
         <thead><tr><th>跑第幾次</th><th>用哪版規則</th><th>用哪版答案</th><th>分數</th></tr></thead>
@@ -283,6 +289,8 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
       <b>審稿模型講的那句話</b>
       規則一改就改答案，等於同時移動射手和靶。你永遠會射中，因為靶跟著箭在走。
     </div>
+
+    <figure class="inline-figure"><img src="../../images/articles/fixed-test-set-for-ai-moving-target.jpg" alt="箭射出去之後，靶長腳跑過來迎上箭，原本的位置只留下虛影" loading="lazy"><figcaption>左邊那圈淡淡的虛影才是原本的靶位。分數會告訴你射中了，不會告訴你靶移動過。</figcaption></figure>
 
     <div class="readmore near">
       <b>改規則之後怎麼驗收，我另外寫過一篇</b>
@@ -323,6 +331,13 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
     <h3>生成式模型本來就有波動，單次分數不能當定論</h3>
     <p>同一份題目、同一個模型、同樣的設定，跑兩次也可能得到不一樣的輸出。</p>
     <p>所以 36 分對 35 分，很可能不是退步，只是這次剛好。單次分數只能當一個樣本，要判斷真的有差，同一個設定至少要重跑幾次，看中位數跟最低分，不是看最好的那一次。</p>
+
+    <div class="readmore near">
+      <b>自己審自己看不到盲點，我用的是雙軌互審</b>
+      <ul>
+        <li><a href="../dual-track-planning-loop/">如何讓兩個不同的 AI 互相挑錯、自己訂正？</a><br>這一段只講<b>為什麼一個人、一個模型測自己會失真</b>，那篇是我目前的解法：兩個不同家的 AI 各自互盲跑完再交換挑錯，不讓後跑的那個被前一個的想法帶著走。前面那題「我的答案標反了」，就是這樣被翻出來的。</li>
+      </ul>
+    </div>
   </div>
 </section>
 
@@ -340,6 +355,7 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
         </tbody>
       </table>
     </div>
+    <figure class="inline-figure"><img src="../../images/articles/fixed-test-set-for-ai-three-layers.jpg" alt="三層抽屜櫃：題目層上鎖、判準層貼著 v1 v2 v3 版本標籤、跑分層一張一張往後疊" loading="lazy"><figcaption>三層的差別看鎖頭、版本標籤、疊紙就知道：一層不能碰，一層改了要留版本，一層只能往後加。</figcaption></figure>
     <p>這樣拆開之後，前面那件事會被誠實地記成三行，而不是一句「29 → 36」。</p>
     <p>要特別強調跑分層的「輸出全文」。<b>只存分數不存原文，等於把重算的能力丟掉。</b> 我能發現那七分是假的，就是因為第一次的原始輸出還在，可以拿新答案重算一次。</p>
   </div>
@@ -361,6 +377,7 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
         </tbody>
       </table>
     </div>
+    <figure class="inline-figure"><img src="../../images/articles/fixed-test-set-for-ai-three-sets.jpg" alt="桌上三疊題卡：核心題組攤開、擴充題組疊著、保留題組鎖在透明保險箱裡" loading="lazy"><figcaption>保留題組是鎖起來捨不得用，不是淘汰不要。箱子做成透明的，是因為你知道它在那裡卻不能拿來改規則。</figcaption></figure>
     <p>第三種是整套裡最重要、也最容易被省掉的。</p>
     <p>因為你一直針對同一份考卷補規則，遲早會補出一套「只對這 138 則訊息特別好」的規則。那不叫變聰明，那叫把答案背起來。核心題組每天被你拿來找錯，它早就不是「沒看過的題目」了，用它來宣稱系統變強是不成立的。</p>
     <div class="caveat">
@@ -546,6 +563,7 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
         <li><b>這篇提到過的</b></li>
         <li><a href="../how-to-verify-ai-rule-changes/">改完規則，怎麼知道 AI 到底有沒有變乖？</a>：回歸題組怎麼設計，把一個禮拜的觀察壓成五分鐘。</li>
         <li><a href="../three-levels-of-cross-review/">怎麼設計讓兩個 AI 互審？</a>：三種程度的互審機制，這篇的盲點就是這樣被抓出來的。</li>
+        <li><a href="../dual-track-planning-loop/">如何讓兩個不同的 AI 互相挑錯、自己訂正？</a>：兩家 AI 互盲跑完再互審，避免自己審自己。</li>
         <li><a href="../ai-cp-value-calculus/">模型不是越聰明越好：我開始學著算 AI 的 CP 值</a>：分數量出來之後，怎麼跟價差一起算。</li>
         <li style="margin-top:12px"><b>再往前後延伸</b></li>
         <li><a href="../ai-schedule-wake-interval/">讓 AI 定時整理資料前，先決定它多久醒一次</a>：同一個扶輪社專案的另一面，把每月 400 美金的成本壓到台幣 76 元。</li>
