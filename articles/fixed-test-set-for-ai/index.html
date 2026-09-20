@@ -5,20 +5,20 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="index,follow">
 <title>新模型出來，我怎麼知道它對我的工作真的比較好？｜一組不會變的考題，換模型、換規則、換平台都用它來比</title>
-<meta name="description" content="新模型出來想試，試完只留下「感覺比較聰明」，講不出證據。我在自己的專案上遇到更慘的：改了兩版規則分數一分沒動，後來改掉自己標的一題答案，同一份舊輸出重算就漲七分。這篇講怎麼把題目、標準答案、每次成績分成三層凍結，讓換模型、換規則、換平台的每一次分數，真的可以放在一起比。">
+<meta name="description" content="新模型出來想試，試完只留下「感覺比較聰明」，講不出證據。我在自己的專案上遇到更慘的：改了兩版規則分數一分沒動，後來改掉自己標的一題答案，同一份舊輸出重算就漲七分。這篇講怎麼把題目、標準答案、每次成績分成三層凍結，讓每一次分數都能放在一起比；還有為什麼題目全部寫死標準答案，換再強的模型分數也不會動，考卷裡必須留一批不打分的延伸題。">
 <link rel="canonical" href="https://jiangyude.com/articles/fixed-test-set-for-ai/">
 <meta property="og:type" content="article">
 <meta property="og:title" content="新模型出來，我怎麼知道它對我的工作真的比較好？｜一組不會變的考題，換模型、換規則、換平台都用它來比｜江江教練">
 <meta property="og:image" content="https://jiangyude.com/images/og/fixed-test-set-for-ai.jpg">
-<meta property="og:description" content="新模型出來想試，試完只留下「感覺比較聰明」，講不出證據。我在自己的專案上遇到更慘的：改了兩版規則分數一分沒動，後來改掉自己標的一題答案，同一份舊輸出重算就漲七分。這篇講怎麼把題目、標準答案、每次成績分成三層凍結，讓換模型、換規則、換平台的每一次分數，真的可以放在一起比。">
+<meta property="og:description" content="新模型出來想試，試完只留下「感覺比較聰明」，講不出證據。我在自己的專案上遇到更慘的：改了兩版規則分數一分沒動，後來改掉自己標的一題答案，同一份舊輸出重算就漲七分。這篇講怎麼把題目、標準答案、每次成績分成三層凍結，讓每一次分數都能放在一起比；還有為什麼題目全部寫死標準答案，換再強的模型分數也不會動，考卷裡必須留一批不打分的延伸題。">
 <meta property="og:url" content="https://jiangyude.com/articles/fixed-test-set-for-ai/">
 <meta property="og:locale" content="zh_TW">
 <meta property="og:site_name" content="江江教練 · AI 知識管理">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="新模型出來，我怎麼知道它對我的工作真的比較好？｜一組不會變的考題，換模型、換規則、換平台都用它來比｜江江教練">
 <meta name="twitter:image" content="https://jiangyude.com/images/og/fixed-test-set-for-ai.jpg">
-<meta name="twitter:description" content="新模型出來想試，試完只留下「感覺比較聰明」，講不出證據。我在自己的專案上遇到更慘的：改了兩版規則分數一分沒動，後來改掉自己標的一題答案，同一份舊輸出重算就漲七分。這篇講怎麼把題目、標準答案、每次成績分成三層凍結，讓換模型、換規則、換平台的每一次分數，真的可以放在一起比。">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"新模型出來，我怎麼知道它對我的工作真的比較好？｜一組不會變的考題，換模型、換規則、換平台都用它來比","description":"新模型出來想試，試完只留下「感覺比較聰明」，講不出證據。我在自己的專案上遇到更慘的：改了兩版規則分數一分沒動，後來改掉自己標的一題答案，同一份舊輸出重算就漲七分。這篇講怎麼把題目、標準答案、每次成績分成三層凍結，讓換模型、換規則、換平台的每一次分數，真的可以放在一起比。","author":{"@type":"Person","name":"江昱德","alternateName":"江江教練","jobTitle":"隱性知識提煉師、AI 應用規劃師"},"isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://jiangyude.com/"},"inLanguage":"zh-Hant","url":"https://jiangyude.com/articles/fixed-test-set-for-ai/"}</script>
+<meta name="twitter:description" content="新模型出來想試，試完只留下「感覺比較聰明」，講不出證據。我在自己的專案上遇到更慘的：改了兩版規則分數一分沒動，後來改掉自己標的一題答案，同一份舊輸出重算就漲七分。這篇講怎麼把題目、標準答案、每次成績分成三層凍結，讓每一次分數都能放在一起比；還有為什麼題目全部寫死標準答案，換再強的模型分數也不會動，考卷裡必須留一批不打分的延伸題。">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"新模型出來，我怎麼知道它對我的工作真的比較好？｜一組不會變的考題，換模型、換規則、換平台都用它來比","description":"新模型出來想試，試完只留下「感覺比較聰明」，講不出證據。我在自己的專案上遇到更慘的：改了兩版規則分數一分沒動，後來改掉自己標的一題答案，同一份舊輸出重算就漲七分。這篇講怎麼把題目、標準答案、每次成績分成三層凍結，讓每一次分數都能放在一起比；還有為什麼題目全部寫死標準答案，換再強的模型分數也不會動，考卷裡必須留一批不打分的延伸題。","author":{"@type":"Person","name":"江昱德","alternateName":"江江教練","jobTitle":"隱性知識提煉師、AI 應用規劃師"},"isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://jiangyude.com/"},"inLanguage":"zh-Hant","url":"https://jiangyude.com/articles/fixed-test-set-for-ai/"}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
@@ -47,6 +47,7 @@ nav.top ul.nav-menu a:hover{color:#1a1612}nav.top ul.nav-menu a.active{color:#1a
 .tablewrap td code,.section code{background:var(--soft);border:1px solid var(--line);border-radius:5px;padding:1px 6px;font:500 15px/1.5 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace}
 .inline-figure.wide{max-width:1000px}
 .inline-figure.portrait{max-width:430px}
+.axis-note{background:rgba(86,137,184,.07);border-left:3px solid var(--blue);padding:12px 16px;border-radius:0 8px 8px 0;margin:0 0 18px;font-size:17px;line-height:1.7}
 @media(max-width:820px){.inline-figure.portrait{max-width:340px}}
 .toc{margin:26px 0 0;padding:20px 22px;background:#fff;border:1px solid var(--line);border-radius:10px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
 .toc>b{display:block;font-size:15px;letter-spacing:.05em;color:var(--green);margin-bottom:10px}
@@ -189,6 +190,7 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
     <p class="lead">我幫一個扶輪社做了「LINE 群訊息自動整理成活動看板」的系統。為了知道它準不準，我取了八天、138 則群訊息當考卷，人工標好答案，請 AI 整理，再對分數。</p>
     <p class="lead">我改了兩版規則，分數一分沒動，兩次都是 29 分。後來我把其中一題的標準答案改掉，拿<b>同一份舊輸出</b>重算，分數變成 36。系統一個字都沒改，漲了七分。</p>
     <p class="lead">這篇講我怎麼把考題凍結起來，讓「換模型、換規則、換平台」之後跑出來的分數，真的可以放在一起比。</p>
+    <p class="lead">還有一件我更晚才想清楚的事：<b>分數可比只是前提。</b> 如果你的題目全部都有標準答案，換上更強的模型，分數多半不會動，因為那些題強弱模型都答得出來。真正的差別出現在沒有標準答案的地方，所以考卷裡要刻意留一塊不打分的空間。</p>
 
     <div class="duo stack">
       <div class="card a">
@@ -205,6 +207,7 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
         <p>
           ・一個判斷：新模型出來要不要換，什麼情況下你的分數答得了這題，什麼情況下它只是自我感覺<br>
           ・一套三層結構，把「題目」「標準答案」「每次成績」分開放，改一層不會污染另外兩層<br>
+          ・三種題型的配法：必抓題與陷阱題讓機器算分，再留一批不打分的延伸題，那批才看得出新模型強在哪<br>
           ・一份凍結清單，列出換平台時必須一起帶走的東西，少帶一項分數就不能比<br>
           ・一個五步起步法加一張可以照抄的成績表，不用寫程式，今天就能做完第一版
         </p>
@@ -219,13 +222,14 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
         <li><a href="#moved-target">我沒動系統，只改一題答案，分數就從 29 變 36</a></li>
         <li><a href="#why-fool">為什麼 AI 的測試特別容易自己騙自己</a></li>
         <li><a href="#three-layers">把考題、答案、成績分成三層</a></li>
+        <li><a href="#question-types">出題的時候，就決定了你能測到什麼</a></li>
         <li><a href="#three-sets">核心、擴充與保留，三種題組要分開計分</a></li>
         <li><a href="#freeze">換平台之前要先凍結的七樣東西</a></li>
         <li><a href="#my-paper">我的考卷長什麼樣子</a></li>
         <li><a href="#honest">固定考題這套做法，我做到哪、還沒做到哪</a></li>
         <li><a href="#start-today">今天就能開始：從你最近踩的坑各寫一題</a></li>
       </ol>
-      <p class="toc-hint">只想直接動手的，從第 10 段開始看就好，那一段不用寫程式。</p>
+      <p class="toc-hint">只想直接動手的，從第 11 段開始看就好，那一段不用寫程式。</p>
     </div>
   </div>
 </section>
@@ -328,6 +332,7 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
     <p>一般人講「固定考題」，想的是「題目不要換」。但在 AI 這種判斷型任務裡，<b>題目固定不等於答案固定</b>。同一份訊息、同一個問題，隨著你對業務的理解變深、隨著業主拍板某個判準，正確答案是會改的。</p>
     <p>前面那個香氛工作坊就是。訊息一個字沒變，正確答案翻了一面。</p>
     <p>答案會變不是問題，那代表你越來越懂這件事。<b>問題是答案變了以後，前後兩次的分數就不能直接比，而系統不會主動提醒你這件事。</b></p>
+    <p>還有更往前一步的：有些題目，你根本不該替它定答案。這件事我想清楚得比較晚，單獨放在<a href="#question-types">出題的時候，就決定了你能測到什麼</a>那一段講。</p>
 
     <h3>生成式模型本來就有波動，單次分數不能當定論</h3>
     <p>同一份題目、同一個模型、同樣的設定，跑兩次也可能得到不一樣的輸出。</p>
@@ -362,10 +367,66 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
   </div>
 </section>
 
+<section class="section" id="question-types">
+  <div class="inner">
+    <h2>出題的時候，就決定了你能測到什麼</h2>
+    <p>三層解決的是「分數可不可比」。可比是前提，但光有它，還答不了這篇標題那個問題。</p>
+    <p>因為分數可比之後，你會撞到下一件事：<b>換了更強的模型，分數常常不動。</b></p>
+    <p>原因不在模型，在題目。</p>
+
+    <h3>有標準答案的那兩種題，強模型弱模型都答得出來</h3>
+    <p>我那份考卷目前只有兩種題，兩種都有標準答案：</p>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>題型</th><th>在測什麼</th><th>怎麼算分</th></tr></thead>
+        <tbody>
+          <tr><td><b>必抓題</b></td><td>這幾件事一定要抓出來</td><td>抓到加分</td></tr>
+          <tr><td><b>陷阱題</b></td><td>看起來很像該處理，正確做法是不要動它</td><td>忍住得分，動了倒扣</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>這兩種的好處是機器就能算分，不需要人來判斷。這也是為什麼大部分人的考題只有這兩種。</p>
+    <p>問題是<b>必抓題太好答了</b>。我那份考卷 19 個評分項，目前拿滿 18 項，唯一沒拿到的兩分還是一題「沒抓到也不扣分」的加分題（完整的配分表在<a href="#my-paper">我的考卷長什麼樣子</a>那段）。這種考卷換上更強的模型，分數最多從 36 變成 38。</p>
+    <p>模型可能真的變強了。是這份考卷測不出它強在哪。</p>
+
+    <h3>把答案寫死，比你聰明的回答會被判成錯</h3>
+    <p>這是更麻煩的一層。</p>
+    <p>以後會出現比你聰明的模型，它會給出你當初沒想到的答案。而你的標準答案是照你當初的理解寫的，<b>那種答案只會被判成錯，而且是機器自動算出來的，不會有任何人覺得奇怪。</b></p>
+    <p>前面那題香氛工作坊就是這樣。AI 拆成兩場，我的答案寫「算一場」，它被扣了五分。後來業主拍板說它是對的。</p>
+    <p>那一次我還有機會發現，因為我剛好把那題拿去問了人。<b>如果我沒問，那個判斷就永遠停在「AI 答錯了」。</b></p>
+    <p>這代表固定考題有一個內建的天花板：<b>一份題目全部寫死答案的考卷，它的滿分就是「跟我當初想的一樣」。</b> 而那正好是你不需要換模型的理由。</p>
+
+    <h3>第三種題：沒有標準答案，也不打分</h3>
+    <p>解法是留一塊空間出來，專門放那種你答不出標準答案的題。</p>
+    <p>這種題我不寫答案，也不計分。我只做兩件事：問，然後把回答原封不動存下來。問法像這樣：</p>
+    <div class="codeblock">看完這批資料，你覺得哪一件事最需要提醒我？
+這裡面有沒有你看不懂、但直覺覺得重要的東西？
+如果你是這個群的秘書，你會先處理哪一則訊息？</div>
+    <p>怎麼用它：<b>換模型的時候，把新舊兩邊的回答並排讀一次。</b> 不需要評分規則，你讀完就知道哪一個比較像你想要的那個同事。</p>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th></th><th>必抓題與陷阱題</th><th>沒有標準答案的延伸題</th></tr></thead>
+        <tbody>
+          <tr><td>有沒有標準答案</td><td>有</td><td>沒有</td></tr>
+          <tr><td>誰來評</td><td>機器算分</td><td>你自己讀</td></tr>
+          <tr><td>測的是</td><td>它有沒有照你的意思做</td><td>它有沒有做得比你想的更好</td></tr>
+          <tr><td>換模型的時候</td><td>分數常常不動</td><td>差別通常出現在這裡</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p><b>前兩種題防止它退步，第三種題留空間給它超過你。</b> 兩邊都要有，這份考卷才答得了「新模型對我的工作是不是真的比較好」。</p>
+    <div class="caveat">
+      <b>這一條我自己也還沒做</b>
+      延伸題是我把上面整件事想清楚之後才長出來的，138 則那份考卷裡目前沒有。我打算先補三題，跟核心題組放同一個資料夾但不計分，每次跑分順便問一次。這篇其他部分都是我做過才寫的，這一條還不是，先講清楚。
+    </div>
+  </div>
+</section>
+
 <section class="section" id="three-sets">
   <div class="inner">
     <h2>核心、擴充與保留，三種題組要分開計分</h2>
-    <p>這是跨家審稿的時候，另一個模型幫我補上的一層，我原本沒想到。</p>
+    <p class="axis-note">先把兩個「三」分清楚：<b>上一段分的是「這題有沒有標準答案」，這一段分的是「這題能不能拿來改規則」。</b> 兩個是不同的軸，同一題會同時有兩個身分，例如一題必抓題，同時屬於核心題組。</p>
+    <p>這一層是跨家審稿的時候，另一個模型幫我補上的，我原本沒想到。</p>
     <p>如果你每次踩到新的坑就往同一份考卷加題目，那份考卷會越長越大，而<b>新題目不能接到舊曲線上</b>。上個月 36/38 跟這個月 36/45，中間那七分是新加的題，兩個數字放在一起比毫無意義。</p>
     <p>所以題組要分三種，各自獨立計分：</p>
     <div class="tablewrap">
@@ -445,6 +506,7 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
     <p><b>目前成績</b>：用 GPT-5.6 Sol、推理強度 low，兩個規則版本都是 36 分。</p>
     <p>那沒拿到的兩分，全部是加分題那一題：一場外縣市參訪，AI 沒抓到。它的規則是「抓到加兩分，沒抓到不扣分」，所以不是被扣分，是那兩分沒拿到。其餘 18 項全部拿滿。</p>
     <p>這裡面我覺得最有價值的是陷阱題跟歸屬題。必抓題其實不難，模型多半抓得到。真正分得出高下的是「不該抓的有沒有忍住」跟「模稜兩可的有沒有歸對」。</p>
+    <p><b>這張表也讓那個天花板很具體</b>：19 項裡 18 項已經拿滿，就算換上更強的模型，這份考卷最多只能從 36 變成 38。<a href="#question-types">前面講的延伸題</a>這份考卷還沒有，所以它目前量得出「有沒有退步」，量不出「有沒有比我想的更好」。</p>
 
     <h3>十二種混亂目前只有標籤，還沒變成考題</h3>
     <p>我現在在做的下一步，是把「群組訊息會出現的混亂」整理成一份清單，每一種各自準備一組題。目前列出來的有十二種：</p>
@@ -480,7 +542,7 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
         </div>
         <div class="info-item">
           <b>還沒做</b>
-          <p>保留題組、十二種混亂的擴充題組、分數對應到「幾分可以上線、幾分要回滾」的門檻</p>
+          <p>沒有標準答案的延伸題、保留題組、十二種混亂的擴充題組、分數對應到「幾分可以上線、幾分要回滾」的門檻</p>
         </div>
       </div>
     </div>
@@ -508,11 +570,12 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
           <tr><td>做錯過的（2 到 3 題）</td><td>這是你最在意的行為，改完要能驗證</td></tr>
           <tr><td>本來就做對的（至少 1 題）</td><td>防止你改規則把原本好的弄壞</td></tr>
           <tr><td>不該做任何事的（至少 1 題）</td><td>測「該忍住的有沒有忍住」，這題通常最能分出高下</td></tr>
+          <tr><td><b>沒有標準答案的（至少 2 題）</b></td><td>你自己也答不出標準答案的那種問題。不打分，只存回答。<a href="#question-types">換模型的差別會出現在這裡</a></td></tr>
         </tbody>
       </table>
     </div>
 
-    <p><b>第三步，每題寫三件事</b>：正確答案是什麼、什麼樣的輸出絕對不可接受、這題幾分。</p>
+    <p><b>第三步，前三種題各寫三件事</b>：正確答案是什麼、什麼樣的輸出絕對不可接受、這題幾分。<b>第四種不寫答案也不配分</b>，只要把問題寫死，之後每次都問同一句。</p>
     <p>第二項比第一項重要。正確答案可能有好幾種寫法，但「絕對不行的」通常很明確，比較好判斷。配分怎麼給沒有標準，我的做法是一般題 2 分、真的很在意的題 3 分、踩到紅線倒扣。<b>重點不是配分合不合理，是配分一旦定了就不要動。</b></p>
 
     <p><b>第四步，把「指令」也凍結。</b> 開一個資料夾，裡面放三樣東西：題目檔、你每次要貼給 AI 的那段固定指令、你要求的輸出格式。每次測試就是把同一段指令配同一份題目貼進去，不要每次憑手感重打一次，那樣你測的是你的手感，不是模型。</p>
@@ -530,6 +593,7 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
     </div>
     <p>最後一欄如果你是在 ChatGPT 或 Claude 的對話框裡測，就把 AI 那次的回答整段複製，貼進一個文字檔，檔名寫上日期跟版本（例如 <code>0918-v6.txt</code>），跟題目放同一個資料夾。<b>這一欄最常被省掉，也是最不能省的</b>，沒有它你就永遠沒辦法拿新答案重算。</p>
     <p>第三列就是我那次的紀錄。<b>重算要單獨記一列，而且標明沒有重跑</b>，不然它會偽裝成一次進步。</p>
+    <p>延伸題不進這張表，因為它沒有分數。它跟原始輸出放一起就好，檔名同樣帶日期跟版本（例如 <code>0918-v6-延伸.txt</code>）。<b>換模型那次，把新舊兩個延伸檔並排打開讀一遍，那是這整套裡唯一回答得了「新的比較好嗎」的動作。</b></p>
     <p><b>最後一條規則：一次只改一個東西。</b> 要換模型就不要同時改規則，要改規則就不要同時換平台。同一個設定最好跑兩三次看看波動多大，再決定分數差多少才算真的有差。</p>
     <p>做完這五步，你有的是一個基準點，還不是曲線。要等下一次用同一份考卷再跑一次，才有第二個點可以連起來。</p>
 
