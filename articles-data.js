@@ -23,6 +23,24 @@ window.ARTICLE_TAGS = {
 
 window.ARTICLES = [
   {
+    id: "ai-schedule-wake-interval",
+    url: "articles/ai-schedule-wake-interval/",
+    date: "2026-09-19",
+    updated: "2026-09-19",
+    title: "讓 AI 定時整理資料前，先決定它多久醒一次｜網頁機械性收集加 API 定時統整",
+    problem: "想讓 AI 定時整理 LINE 群訊息或表單資料，但不知道會花多少錢，第一版算出來每個月 400 美金。",
+    audience: "手上有一堆訊息想自動整理、在意帳單、或要幫客戶估價的人。",
+    summary: "把 LINE 群訊息自動整理成活動看板，第一版全部丟給 AI 讀，每月 400 美金。改成兩層之後同樣每小時跑只要 3.69 美金：程式先查有沒有新東西，有才叫 AI，而且只送新的。這篇給四種排程頻率的月費與延遲對照、程式與 AI 的分工判準（答案唯一嗎），以及一個不用接 API 就能算出月費的方法。另外實測發現：規則寫清楚的效果遠大於換更貴的模型，四個模型曾經全錯在同一個地方。",
+    tags: {
+      topic: ["AI工作流", "輔助決策", "工作流程"],
+      level: ["基礎"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["ai-vs-script-four-situations", "ai-image-api-cost", "line-group-ai-workflow", "how-to-verify-ai-rule-changes", "loop-round-limit"]
+  },
+
+  {
     id: "ai-vs-script-four-situations",
     url: "articles/ai-vs-script-four-situations/",
     date: "2026-09-18",
@@ -37,7 +55,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["agent-workflow-builds-automation", "claude-skills-knowledge-assets", "loop-engineering-guardrails", "my-three-loops", "liberal-arts-agent-framework"],
+    related: ["agent-workflow-builds-automation", "claude-skills-knowledge-assets", "loop-engineering-guardrails", "my-three-loops", "liberal-arts-agent-framework", "ai-schedule-wake-interval"],
     cover: { wide: "images/articles/ai-vs-script-four-situations-summary.jpg" }
   },
 
@@ -227,7 +245,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["rule-file-rebound", "caught-ai-slacking-into-rules", "three-levels-of-cross-review", "how-to-train-your-ai-employee", "loop-engineering-guardrails", "semantic-rules-before-prompt-templates", "let-ai-review-itself", "ai-rule-file-slimming"],
+    related: ["rule-file-rebound", "caught-ai-slacking-into-rules", "three-levels-of-cross-review", "how-to-train-your-ai-employee", "loop-engineering-guardrails", "semantic-rules-before-prompt-templates", "let-ai-review-itself", "ai-rule-file-slimming", "ai-schedule-wake-interval"],
     cover: { tall: "images/articles/how-to-verify-ai-rule-changes-cover.jpg" }
   },
 
@@ -284,7 +302,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: [],
+    related: ["ai-schedule-wake-interval"],
     cover: { tall: "images/articles/ai-image-api-cost-cover.jpg" }
   },
 
@@ -398,7 +416,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["what-is-loop-engineering", "loop-engineering-guardrails", "after-ai-says-remembered", "dual-track-planning-loop", "what-is-graph-engineering", "ai-usage-audit", "loop-four-entries"],
+    related: ["what-is-loop-engineering", "loop-engineering-guardrails", "after-ai-says-remembered", "dual-track-planning-loop", "what-is-graph-engineering", "ai-usage-audit", "loop-four-entries", "ai-schedule-wake-interval"],
     cover: { wide: "images/articles/loop-round-limit-cover.jpg" }
   },
 
@@ -2250,7 +2268,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["agent-workflow-builds-automation", "codex-only-auto-worklog", "how-to-train-your-ai-employee", "mika-to-laika-product-character-design", "messaging-apps-ai-friendliness"]
+    related: ["agent-workflow-builds-automation", "codex-only-auto-worklog", "how-to-train-your-ai-employee", "mika-to-laika-product-character-design", "messaging-apps-ai-friendliness", "ai-schedule-wake-interval"]
   },
 
   {
