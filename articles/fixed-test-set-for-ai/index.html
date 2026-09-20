@@ -4,21 +4,21 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
-<title>改了規則分數沒動，改了答案漲七分｜AI 專案要有一組凍結的固定考題</title>
-<meta name="description" content="我改了兩版規則，AI 的分數一分沒動；後來我改掉自己的標準答案，同一份舊輸出重算就漲了七分。這篇講怎麼把考題、標準答案、每次成績分成三層凍結起來，讓換模型、換規則、換平台之後跑出來的分數真的可以放在一起比。">
+<title>新模型出來，我怎麼知道它對我的工作真的比較好？｜一組不會變的考題，換模型、換規則、換平台都用它來比</title>
+<meta name="description" content="新模型出來想試，試完只留下「感覺比較聰明」，講不出證據。我在自己的專案上遇到更慘的：改了兩版規則分數一分沒動，後來改掉自己標的一題答案，同一份舊輸出重算就漲七分。這篇講怎麼把題目、標準答案、每次成績分成三層凍結，讓換模型、換規則、換平台的每一次分數，真的可以放在一起比。">
 <link rel="canonical" href="https://jiangyude.com/articles/fixed-test-set-for-ai/">
 <meta property="og:type" content="article">
-<meta property="og:title" content="改了規則分數沒動，改了答案漲七分｜AI 專案要有一組凍結的固定考題｜江江教練">
+<meta property="og:title" content="新模型出來，我怎麼知道它對我的工作真的比較好？｜一組不會變的考題，換模型、換規則、換平台都用它來比｜江江教練">
 <meta property="og:image" content="https://jiangyude.com/images/og/fixed-test-set-for-ai.jpg">
-<meta property="og:description" content="我改了兩版規則，AI 的分數一分沒動；後來我改掉自己的標準答案，同一份舊輸出重算就漲了七分。這篇講怎麼把考題、標準答案、每次成績分成三層凍結起來，讓換模型、換規則、換平台之後跑出來的分數真的可以放在一起比。">
+<meta property="og:description" content="新模型出來想試，試完只留下「感覺比較聰明」，講不出證據。我在自己的專案上遇到更慘的：改了兩版規則分數一分沒動，後來改掉自己標的一題答案，同一份舊輸出重算就漲七分。這篇講怎麼把題目、標準答案、每次成績分成三層凍結，讓換模型、換規則、換平台的每一次分數，真的可以放在一起比。">
 <meta property="og:url" content="https://jiangyude.com/articles/fixed-test-set-for-ai/">
 <meta property="og:locale" content="zh_TW">
 <meta property="og:site_name" content="江江教練 · AI 知識管理">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="改了規則分數沒動，改了答案漲七分｜AI 專案要有一組凍結的固定考題｜江江教練">
+<meta name="twitter:title" content="新模型出來，我怎麼知道它對我的工作真的比較好？｜一組不會變的考題，換模型、換規則、換平台都用它來比｜江江教練">
 <meta name="twitter:image" content="https://jiangyude.com/images/og/fixed-test-set-for-ai.jpg">
-<meta name="twitter:description" content="我改了兩版規則，AI 的分數一分沒動；後來我改掉自己的標準答案，同一份舊輸出重算就漲了七分。這篇講怎麼把考題、標準答案、每次成績分成三層凍結起來，讓換模型、換規則、換平台之後跑出來的分數真的可以放在一起比。">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"改了規則分數沒動，改了答案漲七分｜AI 專案要有一組凍結的固定考題","description":"我改了兩版規則，AI 的分數一分沒動；後來我改掉自己的標準答案，同一份舊輸出重算就漲了七分。這篇講怎麼把考題、標準答案、每次成績分成三層凍結起來，讓換模型、換規則、換平台之後跑出來的分數真的可以放在一起比。","author":{"@type":"Person","name":"江昱德","alternateName":"江江教練","jobTitle":"隱性知識提煉師、AI 應用規劃師"},"isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://jiangyude.com/"},"inLanguage":"zh-Hant","url":"https://jiangyude.com/articles/fixed-test-set-for-ai/"}</script>
+<meta name="twitter:description" content="新模型出來想試，試完只留下「感覺比較聰明」，講不出證據。我在自己的專案上遇到更慘的：改了兩版規則分數一分沒動，後來改掉自己標的一題答案，同一份舊輸出重算就漲七分。這篇講怎麼把題目、標準答案、每次成績分成三層凍結，讓換模型、換規則、換平台的每一次分數，真的可以放在一起比。">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"新模型出來，我怎麼知道它對我的工作真的比較好？｜一組不會變的考題，換模型、換規則、換平台都用它來比","description":"新模型出來想試，試完只留下「感覺比較聰明」，講不出證據。我在自己的專案上遇到更慘的：改了兩版規則分數一分沒動，後來改掉自己標的一題答案，同一份舊輸出重算就漲七分。這篇講怎麼把題目、標準答案、每次成績分成三層凍結，讓換模型、換規則、換平台的每一次分數，真的可以放在一起比。","author":{"@type":"Person","name":"江昱德","alternateName":"江江教練","jobTitle":"隱性知識提煉師、AI 應用規劃師"},"isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://jiangyude.com/"},"inLanguage":"zh-Hant","url":"https://jiangyude.com/articles/fixed-test-set-for-ai/"}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
@@ -168,9 +168,9 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
   <div class="wc wc3"></div>
   <div>
     <div class="kicker">AI 工作流 / 測試設計</div>
-    <h1>改了規則分數沒動，改了答案漲七分</h1>
-    <p class="sub">AI 專案要有一組凍結的固定考題，換模型換平台才比得出高下</p>
-    <p>同一份 AI 輸出，我一個字都沒改，分數從 29 變成 36。變的是我自己的標準答案。這篇講怎麼把題目、答案、成績分成三層凍結起來，讓長期跑下去的 AI 專案，每一次的分數都真的可以放在一起比。</p>
+    <h1>新模型出來，我怎麼知道它對我的工作真的比較好？</h1>
+    <p class="sub">一組不會變的考題，換模型、換規則、換平台都用它來比</p>
+    <p>我在自己的專案上遇到更慘的狀況：同一份 AI 輸出，我一個字都沒改，分數從 29 變成 36，變的是我自己的標準答案。連在同一個模型上都比不出高下，換模型當然更比不出來。這篇講怎麼把題目、答案、成績分成三層凍結起來，讓每一次的分數都真的可以放在一起比。</p>
   </div>
 </section>
 
@@ -179,6 +179,7 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
 <section class="section" id="start">
   <div class="inner">
     <h2>這篇在講什麼</h2>
+    <p class="lead">新模型出來我也會想試一下。問題是試完之後，我通常只能說「感覺比較聰明」，講不出證據。想認真比一下，又會發現上次測完之後規則改過、標準答案也改過，兩次的分數根本不能放在一起。</p>
     <p class="lead">我幫一個扶輪社做了「LINE 群訊息自動整理成活動看板」的系統。為了知道它準不準，我取了八天、138 則群訊息當考卷，人工標好答案，請 AI 整理，再對分數。</p>
     <p class="lead">我改了兩版規則，分數一分沒動，兩次都是 29 分。後來我把其中一題的標準答案改掉，拿<b>同一份舊輸出</b>重算，分數變成 36。系統一個字都沒改，漲了七分。</p>
     <p class="lead">這篇講我怎麼把考題凍結起來，讓「換模型、換規則、換平台」之後跑出來的分數，真的可以放在一起比。</p>
@@ -196,7 +197,7 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
       <div class="card b">
         <b>你可以帶走什麼</b>
         <p>
-          ・一個判斷：什麼情況下你的測試分數是有意義的，什麼情況下它只是自我感覺<br>
+          ・一個判斷：新模型出來要不要換，什麼情況下你的分數答得了這題，什麼情況下它只是自我感覺<br>
           ・一套三層結構，把「題目」「標準答案」「每次成績」分開放，改一層不會污染另外兩層<br>
           ・一份凍結清單，列出換平台時必須一起帶走的東西，少帶一項分數就不能比<br>
           ・一個五步起步法加一張可以照抄的成績表，不用寫程式，今天就能做完第一版
@@ -311,6 +312,7 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
       </table>
     </div>
     <p>三樣一起動，分數升了你也不知道該謝誰。更糟的是分數掉了，你不知道要退哪一步。</p>
+    <div class="caveat"><b>這篇的例子是三種裡面最單純的那一種</b>我前面那個案例只動了一樣東西：規則版本。模型沒換、平台沒換。<b style="display:inline;color:inherit">連只動一樣都被我搞到分不清楚進步是真是假</b>，換模型的時候三樣一起動，只會更難分辨。所以這篇給的方法不是「怎麼比模型」，是「怎麼讓任何一次比較都成立」，換模型只是其中一種用法。</div>
 
     <h3>標準答案本身也是會變的東西</h3>
     <p>這是最容易漏掉的一層。</p>
