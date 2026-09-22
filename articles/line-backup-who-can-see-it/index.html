@@ -1,69 +1,25 @@
-<!--
-============================================================
-  article-template.html  ·  深度文章新頁模板（暖色拿鐵版型）
-------------------------------------------------------------
-  新增一篇文章的步驟：
-    1. 複製本檔到 articles/<slug>/index.html
-       （趨勢文章放 ai-trends/<slug>/index.html）。
-    2. 全檔填掉所有 {{...}} placeholder：
-         {{TITLE}}        文章標題（純文字）
-         {{DESCRIPTION}}  meta description / og:description
-         {{SLUG}}         網址 slug，對應資料夾名
-         {{SECTION}}      所屬區段：articles 或 ai-trends
-         {{KICKER}}       hero 上方小標（例：AI 應用 / 需求驗證）
-         {{HERO_LEAD}}    hero 大標下的一段引言
-         {{BODY}}         正文（用下方 .section 區塊堆疊；可參考
-                          現有文章如 articles/ai-market-microcosm/）
-         {{CONTENT_TYPE}} 文章類型（教學文章／觀點文章／趨勢文章／案例文章）
-       canonical / og / twitter / JSON-LD 的網址也都用
-       https://jiangyude.com/{{SECTION}}/{{SLUG}}/ 帶入。
-    3. 在文章資料夾放 {{SECTION}}/{{SLUG}}/article.json（一篇一檔，2026-09-06 起）：
-       複製 _templates/article.example.json 改內容（id＝資料夾名、url「{{SECTION}}/{{SLUG}}/」、
-       date、title、summary、tags.topic / level / content_type，related 可為空陣列）。
-       標籤一律從 articles-tags.json 受控清單挑，不要自創字串。
-       articles-data.js 是生成檔不要手改；本機要看相關文章區塊就跑
-       node scripts/build-articles-data.mjs，上線時 merge-publish 會統一重建。
-    4. 兩支互聯 script 已內建在本檔   <script src="/views.js"></script>
-</body> 前，不用再另外加。
-    5. 到 sitemap.xml 與 llms.txt 各補一筆，讓搜尋與 AI 索引得到。
-    6. 到 search-aliases.js 補一條別名（2026-08-12 起 preflight 硬性檢查）。
-       key 用 slug，內容寫「訪客會怎麼問」：上課的說法、比喻、金句、同義詞。
-       至少兩個，不能只是照抄標題，否則 check-index-coverage.mjs 會擋下發布。
-       拼寫變體不用補（模型自己橋得起來），要補的是語意距離遠的詞。
-       立因：8/12 江江實測問「角色定妝照」查不到，追出來是文章上線當輪沒補別名。
-    7. 發布範圍要一起帶上 article-keywords.js 與 site-index.json。
-       preflight 會重跑產生器，這兩個檔有更新未提交就擋。
-
-  部署前跑：node scripts/verify-interlink.js 確認互聯腳本齊全。
-
-  ⚠️ 改舊文章的 title / problem / summary 時：被拿掉的詞若該篇內文還在用，
-     check-index-coverage.mjs 會擋。三種處理都算過關：補進 search-aliases.js、
-     寫進 index-coverage-ignore.json 並附理由、或在該檔標記敏感與過期。
-     不強迫補回，因為被移除的可能是錯字、過時名稱或隱私詞。
-============================================================
--->
 <!doctype html>
 <html lang="zh-Hant">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="index,follow">
-<title>{{TITLE}}</title>
-<meta name="description" content="{{DESCRIPTION}}">
-<link rel="canonical" href="https://jiangyude.com/{{SECTION}}/{{SLUG}}/">
+<title>那個 LINE 備份工具，怎麼讀到你的訊息？｜在比功能之前，先打開群組成員名單看一眼</title>
+<meta name="description" content="想把 LINE 群組的討論留下來，搜到一堆工具都說做得到，價差卻很大。在比功能之前，有一件事更該先看：那個工具用什麼身分待在你的群組裡，群組成員看不看得見它。這篇講這個判斷原則，以及我自己選的那條路換來哪些限制。">
+<link rel="canonical" href="https://jiangyude.com/articles/line-backup-who-can-see-it/">
 <meta property="og:type" content="article">
-<meta property="og:title" content="{{TITLE}}｜江江教練">
-<!-- 分享封面：hero 文字填好後在 repo 根目錄跑 `node scripts/og-shot.mjs {{SLUG}}` 自動截 1200×630 到 images/og/{{SLUG}}.jpg（見 README「文章分享封面（OG 圖）機制」）。別退回 intro-jiang.png 直式人像，會被裁成只剩脖子。 -->
-<meta property="og:image" content="https://jiangyude.com/images/og/{{SLUG}}.jpg">
-<meta property="og:description" content="{{DESCRIPTION}}">
-<meta property="og:url" content="https://jiangyude.com/{{SECTION}}/{{SLUG}}/">
+<meta property="og:title" content="那個 LINE 備份工具，怎麼讀到你的訊息？｜在比功能之前，先打開群組成員名單看一眼｜江江教練">
+<!-- 分享封面：hero 文字填好後在 repo 根目錄跑 `node scripts/og-shot.mjs line-backup-who-can-see-it` 自動截 1200×630 到 images/og/line-backup-who-can-see-it.jpg（見 README「文章分享封面（OG 圖）機制」）。別退回 intro-jiang.png 直式人像，會被裁成只剩脖子。 -->
+<meta property="og:image" content="https://jiangyude.com/images/og/line-backup-who-can-see-it.jpg">
+<meta property="og:description" content="想把 LINE 群組的討論留下來，搜到一堆工具都說做得到，價差卻很大。在比功能之前，有一件事更該先看：那個工具用什麼身分待在你的群組裡，群組成員看不看得見它。這篇講這個判斷原則，以及我自己選的那條路換來哪些限制。">
+<meta property="og:url" content="https://jiangyude.com/articles/line-backup-who-can-see-it/">
 <meta property="og:locale" content="zh_TW">
 <meta property="og:site_name" content="江江教練 · AI 知識管理">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="{{TITLE}}｜江江教練">
-<meta name="twitter:image" content="https://jiangyude.com/images/og/{{SLUG}}.jpg">
-<meta name="twitter:description" content="{{DESCRIPTION}}">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"{{TITLE}}","description":"{{DESCRIPTION}}","author":{"@type":"Person","name":"江昱德","alternateName":"江江教練","jobTitle":"隱性知識提煉師、AI 應用規劃師"},"isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://jiangyude.com/"},"inLanguage":"zh-Hant","url":"https://jiangyude.com/{{SECTION}}/{{SLUG}}/"}</script>
+<meta name="twitter:title" content="那個 LINE 備份工具，怎麼讀到你的訊息？｜在比功能之前，先打開群組成員名單看一眼｜江江教練">
+<meta name="twitter:image" content="https://jiangyude.com/images/og/line-backup-who-can-see-it.jpg">
+<meta name="twitter:description" content="想把 LINE 群組的討論留下來，搜到一堆工具都說做得到，價差卻很大。在比功能之前，有一件事更該先看：那個工具用什麼身分待在你的群組裡，群組成員看不看得見它。這篇講這個判斷原則，以及我自己選的那條路換來哪些限制。">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"那個 LINE 備份工具，怎麼讀到你的訊息？｜在比功能之前，先打開群組成員名單看一眼","description":"想把 LINE 群組的討論留下來，搜到一堆工具都說做得到，價差卻很大。在比功能之前，有一件事更該先看：那個工具用什麼身分待在你的群組裡，群組成員看不看得見它。這篇講這個判斷原則，以及我自己選的那條路換來哪些限制。","author":{"@type":"Person","name":"江昱德","alternateName":"江江教練","jobTitle":"隱性知識提煉師、AI 應用規劃師"},"isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://jiangyude.com/"},"inLanguage":"zh-Hant","url":"https://jiangyude.com/articles/line-backup-who-can-see-it/"}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
@@ -91,7 +47,6 @@ nav.top ul.nav-menu a:hover{color:#1a1612}nav.top ul.nav-menu a.active{color:#1a
 .tablewrap tbody tr:last-child td{border-bottom:none}
 .tablewrap td code,.section code{background:var(--soft);border:1px solid var(--line);border-radius:5px;padding:1px 6px;font:500 15px/1.5 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace}
 .inline-figure.wide{max-width:1000px}
-.inline-figure.portrait{max-width:430px}
 .toc{margin:26px 0 0;padding:20px 22px;background:#fff;border:1px solid var(--line);border-radius:10px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
 .toc>b{display:block;font-size:15px;letter-spacing:.05em;color:var(--green);margin-bottom:10px}
 .toc ol{margin:0;padding-left:1.35em;font-size:18px;line-height:1.7}
@@ -125,7 +80,7 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
 .hero .wc2{width:360px;height:300px;bottom:-110px;left:-70px;background:#5f7553;opacity:.13}
 .hero .wc3{width:280px;height:260px;top:34%;left:14%;background:#a08144;opacity:.10}
 .hero>div{flex:none;width:860px;max-width:100%;position:relative;z-index:2}
-.hero-figure{margin:0;width:620px;flex:none;position:relative;z-index:2}
+.hero-figure{margin:0;width:420px;flex:none;position:relative;z-index:2}
 .hero-figure img{display:block;width:100%;border-radius:16px;border:1px solid #d8cdb8;box-shadow:0 18px 45px rgba(107,74,42,.16);cursor:zoom-in}
 .hero-figure figcaption{margin-top:10px;font-size:14px;line-height:1.6;color:#6a635a}
 .inline-figure{margin:30px auto 8px;max-width:820px}
@@ -186,8 +141,17 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
 .footer-inner{width:min(1000px,100%);margin:0 auto}
 .footer-links{display:flex;flex-wrap:wrap;gap:6px 12px;margin-bottom:14px}.footer-links a{color:var(--blue);font-weight:900;text-decoration:none;font-size:14px}
 .footer-brand{font-weight:900;font-size:15px;margin-bottom:10px}.footer-note{font-size:13px;line-height:1.6}
-@media(max-width:820px){.inline-figure.portrait{max-width:340px}.infocard-grid{grid-template-columns:1fr}.duo{grid-template-columns:1fr}.workflow-grid{grid-template-columns:1fr}.cta-band .inner{grid-template-columns:1fr}.section{padding:40px 20px}.hero{min-height:52vh;flex-direction:column;justify-content:flex-start;align-items:flex-start;gap:24px}.hero>div{width:100%}.hero-figure{width:100%;max-width:560px}}
+@media(max-width:820px){.infocard-grid{grid-template-columns:1fr}.duo{grid-template-columns:1fr}.workflow-grid{grid-template-columns:1fr}.cta-band .inner{grid-template-columns:1fr}.section{padding:40px 20px}.hero{min-height:52vh;flex-direction:column;justify-content:flex-start;align-items:flex-start;gap:24px}.hero>div{width:100%}.hero-figure{width:100%;max-width:560px}}
 @media(max-width:820px){html,body{overflow-x:hidden}.hero h1{word-break:break-word}}
+/* 長標題 hero 覆寫（checklist 2026-08-23：標題超過 20 字要縮字級並收窄 .hero>div，
+   否則封面圖會被擠到下一行）。數值沿用 hosting-platform-decision-tree 那篇實測過的。 */
+.hero{gap:48px!important}
+.hero>div:not(.wc){width:560px!important}
+.hero .hero-figure{width:460px}
+.hero .hero-figure img{height:auto;aspect-ratio:16/9}
+.hero h1{font-size:clamp(28px,2.7vw,40px)!important;line-height:1.2!important;margin:12px 0 16px!important}
+.hero p{font-size:clamp(17px,1.35vw,19px)!important;line-height:1.65!important}
+@media(max-width:1250px){.hero{gap:28px!important;flex-direction:column;align-items:flex-start}.hero>div:not(.wc){width:100%!important}.hero .hero-figure{width:100%;max-width:640px}.hero h1{font-size:clamp(28px,5vw,40px)!important}}
 </style>
 </head>
 <body class="spotlight">
@@ -218,59 +182,155 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
   <div class="wc wc2"></div>
   <div class="wc wc3"></div>
   <div>
-    <div class="kicker">{{KICKER}}</div>
-    <h1>{{TITLE}}</h1>
-    <p>{{HERO_LEAD}}</p>
+    <div class="kicker">資料界線 / LINE 應用</div>
+    <h1>那個 LINE 備份工具，怎麼讀到你的訊息？｜在比功能之前，先打開群組成員名單看一眼</h1>
+    <p>功能表上寫的東西都差不多，價格卻差很多。差別常常不在功能，在那個工具用什麼身分待在你的群組裡。</p>
   </div>
-  <!-- 封面圖（建議放）：⚠️ 比例是硬規則，不是美感選擇。
-       封面一律【橫式 16:9】，生成 1600x900、落檔 1400 寬，用預設 .hero-figure{width:620px}，不要加 aspect-ratio。
-       理由：封面真正的工作是分享縮圖（OG 1200x630、Threads 與 FB 連結預覽都是橫的），直式封面塞進去只剩中間一小塊。
-       只有「直接沿用既有 4:5 咪卡輪播卡」這個例外才走直式，那時改 .hero-figure{width:320px} 並加
-       .hero-figure img{aspect-ratio:4/5;object-fit:cover}，而且要在 image-ratio-ignore.json 寫明理由，否則 preflight 會擋。
-       沒有封面圖就整個 <figure> 刪掉，hero 會自動置中只剩文字。封面同時設成上面 og:image / twitter:image。
-       比例表正本與立因 → knowledge-site-manager/references/08-article-visuals-from-source.md 第零節之前。 -->
+  <!-- 封面圖（建議放）：橫式用預設 width:420px；4:5 直式改 .hero-figure{width:320px} 並加 .hero-figure img{aspect-ratio:4/5;object-fit:cover}。沒有封面圖就整個 <figure> 刪掉，hero 會自動置中只剩文字。封面同時設成上面 og:image / twitter:image。 -->
   <figure class="hero-figure">
-    <img src="../../images/articles/{{SLUG}}-cover.jpg" alt="{{COVER_ALT}}" loading="lazy">
-    <figcaption>{{COVER_CAPTION}}</figcaption>
+    <img src="../../images/ai-office/lyca/lyca-cover-hd.webp" alt="一隻戴紅色貝雷帽的白貓，手捧紅色封蠟信封" loading="lazy">
+    <figcaption>把群組訊息收起來這件事，做法不只一種。</figcaption>
   </figure>
 </section>
 
 <main>
 
-<!--
-  {{BODY}}
-  正文放這裡。用 <section class="section" id="..."><div class="inner">…</div></section>
-  一段一段堆疊。可用的元件：.lead 引言、.meaning 藍色重點框、
-  .caveat 橙色提醒框、.infocard 三欄資訊卡、.duo 雙欄對照、
-  .workflow-grid 流程三步、.codeblock 程式碼框、.skillcard 技能包卡。
-  可參考現有文章 articles/ai-market-microcosm/index.html。
+<section class="section" id="start">
+  <div class="inner">
+    <p class="lead">有人想把 LINE 群組裡的討論留下來，搜了一輪，找到好幾個工具，看起來都做得到，價格卻差很多。他問我該選哪一個。我說在比功能之前，先看一件事：<b>那個工具用什麼身分待在你的群組裡，群組成員看不看得見它。</b>這一篇講的就是這個判斷，還有我自己選的那條路換來哪些限制。</p>
 
-  ★ 開頭速讀區（必放，對齊江江方格子寫作原則：簡介先、正文後）：
-    正文第一個 section（id="start"）一律先放速讀簡介，再進正文。內容三塊：
-      1.「這篇在講什麼」：.lead 一段，2-4 句講清楚問題、為什麼重要、會給什麼解法（也是 SEO/GEO 核心素材）。
-      2.「適合誰」：3 個具體讀者（用受眾真實情境口吻，不是術語）。
-      3. 第二張卡依文章屬性二選一（2026-07-13 立，禁用舊標「你會得到什麼」，姿態太高）：
-         方法／教學文用「你可以帶走什麼」：3 個讀完可帶走的成果（能怎麼做、可拿走的框架／提示詞／SOP）。
-         觀點文用「這篇想說什麼」：3 句陳述文章立場與論點，不承諾收穫。
-         判斷法：卡片條列若是具體流程、提示詞、表格、判準 → 方法文；若是「一套論述、理解、看懂」→ 觀點文。
-    用 <div class="duo stack"> 兩張卡放「適合誰／你可以帶走什麼（或 這篇想說什麼）」，**預設上下兩列**（.duo.stack＝單欄堆疊，不要左右兩框）。把這兩個詞**直接當卡片標題**放在 <b>（22px、加色：適合誰偏橘、第二張卡偏綠），底下接條列；不要再加一層 12px 小標籤或第二層標題（會重複、字也太小）。（一般「兩種思路對照」才用不加 stack 的 .duo 兩欄）
-    速讀三塊之後，若整篇有「一頁總結圖」（把全文精華濃縮成一張），放在這裡（&lt;figure class="inline-figure wide"&gt;），讓讀者三秒看完全貌再決定要不要往下讀，再進正文第一段；沒有總結圖就跳過這格。
-    範例見 articles/how-ai-connects-software/index.html 的第一個 section（速讀區順序）、articles/what-is-loop-engineering/index.html（速讀三塊＋一頁總結圖）。
+    <div class="duo stack">
+      <div class="card">
+        <b style="color:#c2703c">適合誰</b>
+        <ul>
+          <li>想把社區、協會、課程或客戶群組的討論留下來，正在比較工具的人</li>
+          <li>被問過「這樣收大家的訊息會不會有問題」，但答不太出來的人</li>
+          <li>自己要做這類服務，想先把界線想清楚的人</li>
+        </ul>
+      </div>
+      <div class="card">
+        <b style="color:#4a7c59">這篇想說什麼</b>
+        <ul>
+          <li>比功能之前先比身分：群組成員看不看得見那個在收訊息的東西</li>
+          <li>這一眼不需要懂技術，打開成員名單就看得到</li>
+          <li>我選的是限制最多的那條路，這篇把代價一起講</li>
+        </ul>
+      </div>
+    </div>
 
-  ★ 配圖原則（對齊 knowledge-site-manager 設計系統 02-design-system）：
-    - 封面：放上面 hero 的 .hero-figure（橫式預設，或 4:5 直式）。沒封面圖就把 hero 裡的 <figure> 刪掉。
-    - 分享封面（og:image / twitter:image）：不論有沒有插圖，都跑 `node scripts/og-shot.mjs {{SLUG}}` 自動截 hero 標題卡成 1200×630（見 README）。og:image 已預設指向 images/og/{{SLUG}}.jpg，截好即生效，不要退回 intro-jiang.png。
-    - 內文圖：⚠️ 一律【直式 4:5】（1080x1350），用 &lt;figure class="inline-figure portrait"&gt;。
-      理由是一圖兩用：同一張直接拿去當社群輪播卡，不必為同一個主題生兩次圖。
-      真的需要橫式（操作截圖、寬表格、一頁總結）才用 &lt;figure class="inline-figure wide"&gt;，那是明確 opt-in。
-      沒標 wide 又放橫圖，preflight 的 check-image-ratio.mjs 會擋下。
-      圖要緊跟相關段落、跟內容互相搭配，不要全堆在一起、也不要放跟文意無關的圖。
-    - 所有圖（hero＋內文）都會自動有「點圖放大」lightbox。
-    - 圖片預設「不可拖移、不可縮放」（2026-08-31 江江拍板）：image-interactions.js 只認明寫 data-interactive-image 的圖，且全站關掉瀏覽器原生的圖片拖曳。
-      真的要讓某張圖能被讀者拖曳縮放，在那張 <img> 上加 data-interactive-image；不要為了這個去放寬 image-interactions.js 的 selector（preflight 會擋）。
-    - 不要把這個互動套到 logo、導覽小圖或卡片縮圖；若某張內容圖不想互動，在 figure 或 img 加 data-no-image-interaction。
-    - 圖先 sips 縮圖（JPG、寬 1400、<400K）放 images/articles/，原圖留主庫 11圖片待整。
--->
+    <figure class="inline-figure wide">
+      <img src="../../images/ai-office/lyca/lyca-one-page-overview.png" alt="一張總表：LINE 群組的訊息經過定期備存後進入自己的知識庫，再分別提供給 AI 讀取與人類檢索" loading="lazy">
+      <figcaption>一句話的全貌：訊息留在自己掌握的地方，人跟 AI 才有得用。但在這之前，要先決定它是怎麼被收走的。</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section class="section" id="question">
+  <div class="inner">
+    <h2>他問的是「哪個好用」，但那不是第一個問題</h2>
+    <p>他列給我看的那幾個工具，功能頁寫的東西其實差不多：自動備份、關鍵字搜尋、附件整理、匯出報表。有的還多一項「連你加入之前的訊息都拿得到」。</p>
+    <p>光看功能表，那個「連加入之前都拿得到」的看起來最划算。同樣的錢多一個功能，為什麼不選它。</p>
+    <p>但這一項做得到，代表它不是用一般的方式進到你的群組。而這件事，比多一個功能重要得多。</p>
+
+    <figure class="inline-figure">
+      <img src="../../images/ai-office/lyca/lyca-scene-capture-hd.webp" alt="一隻戴紅色貝雷帽的白貓，把 LINE 群組裡散落的訊息收進信封" loading="lazy">
+      <figcaption>「把訊息收起來」這五個字，背後可以是很不一樣的做法。</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section class="section" id="member-list">
+  <div class="inner">
+    <h2>先打開群組成員名單看一眼</h2>
+    <p>一個工具要能讀到 LINE 群組的訊息，它得先用某種身分進到群裡。身分只有兩種可能：<b>看得見的</b>，跟<b>看不見的</b>。</p>
+
+    <div class="meaning">
+      <p><b>看得見</b>：它是一個帳號，出現在群組成員名單裡。誰都能點開名單看到它。你加它進來的那一刻，群裡每個人都知道多了一個東西。</p>
+      <p><b>看不見</b>：它不在名單裡。可能是裝在某個人的手機或電腦上、跟著那個人的身分在讀；也可能是用程式扮演一個使用者。群裡其他人不會知道。</p>
+    </div>
+
+    <p>這兩種的差別不在技術高低，在<b>知不知情</b>。</p>
+    <p>台灣的 LINE 群組在談什麼？社區據點的長輩名單、課程學員的聯絡方式、客戶的報價往來、協會的內部爭議。這些東西被收走本身不是問題，問題是收的時候在場的人知不知道。</p>
+    <p>看得見的那種，你不用另外跟誰解釋。看不見的那種，等到有人發現，要解釋的是你。</p>
+
+    <div class="readmore near">
+      <b>這一段只講「怎麼分辨」，不比軟體</b>
+      <ul>
+        <li><a href="../messaging-apps-ai-friendliness/">通訊軟體 AI 友善度比較：LINE、Telegram、Discord、Slack，你的 AI 該住在哪？</a><br>那篇把「平台自己有 AI」「AI 能當成員」「外部程式讀得到」拆成三件不同的事。這一段問的成員名單，對應的就是那篇的第二層。</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="my-choice">
+  <div class="inner">
+    <h2>我選的是成員看得見的那種，代價寫在這裡</h2>
+    <p>萊卡是用 LINE 官方帳號加進群組的。群組成員名單裡看得到它。這個選擇換來三個限制，我先自己講：</p>
+
+    <div class="infocard">
+      <div>
+        <b>加入之前的訊息收不到</b>
+        <p>它只收得到自己在場之後發生的事。要保留舊紀錄，只能請群主用 LINE 自己的匯出功能另外處理。</p>
+      </div>
+      <div>
+        <b>它不是隱形的</b>
+        <p>群組成員隨時看得到多了一個帳號。這是刻意的，不是還沒做到。</p>
+      </div>
+      <div>
+        <b>LINE 官方帳號本身要錢</b>
+        <p>依訊息量分級，那是 LINE 收的，跟你付給我的建置費是兩回事。</p>
+      </div>
+    </div>
+
+    <p>這三條換到的是另外三件事：群組成員知情、LINE 改版不會讓整套失效、真的出狀況時有官方規則可以對照。</p>
+
+    <div class="caveat">
+      <p><b>誠實講：繞過這三條限制的做法是存在的，能收到的東西也更多。</b>我沒有走那條，理由很實際：這套系統要放進別人的組織裡長期跑，我要它三年後還在，出事的時候有規則可以對照。</p>
+      <p>這是取捨，不是誰對誰錯。你的情況如果真的非要加入前的歷史訊息不可，而且量大到匯出不可行，那你的答案可能跟我不一樣。</p>
+    </div>
+
+    <figure class="inline-figure">
+      <img src="../../images/ai-office/lyca/lyca-scene-sort-hd.webp" alt="白貓坐在桌前，把收到的群組訊息分門別類" loading="lazy">
+      <figcaption>收進來之後才是分類、歸檔、接上後面的工作。但那都是第二步。</figcaption>
+    </figure>
+
+    <div class="readmore near">
+      <b>這一段只講 LINE，同一個思路在別的地方也用得上</b>
+      <ul>
+        <li><a href="../openrouter-deepseek-data-routing/">OpenRouter 用 DeepSeek，資料就不會經過中國嗎？教你自己查實際路由供應商</a><br>那篇講的也是同一件事：服務頁上寫的名字，不等於實際在處理你資料的人。差別只在那篇教你怎麼查，這篇的答案打開成員名單就看得到。</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="not-the-end">
+  <div class="inner">
+    <h2>留下來只是第一步</h2>
+    <p>把訊息完整留在自己掌握的地方，聽起來像終點，其實是地基。訊息在自己手上之後，後面才有得做。</p>
+    <p>同一批群組訊息，可以長成出差參訪的每日工作紀錄、每天的報帳表、客戶群組的排程發布後台、課程的成果發表頁與結案報告，或是社交群的活動行事曆。都是同一份資料，差別只在主軸怎麼排。</p>
+    <p>這也是為什麼「它怎麼讀到你的訊息」值得在一開始就問清楚。地基選錯了，上面蓋得越多越麻煩。</p>
+
+    <figure class="inline-figure">
+      <img src="../../images/ai-office/lyca/lyca-agent-handoff-hd.webp" alt="白貓把封好的信件交給 AI Agent" loading="lazy">
+      <figcaption>資料在自己手上，才輪得到「要不要給 AI 用、給到什麼程度」這個問題。</figcaption>
+    </figure>
+
+    <p>萊卡實際會把群組訊息整理成什麼樣子，五種用法與費用區間都放在產品網站上：<a href="https://lyca.work" target="_blank" rel="noopener">lyca.work</a>。想看它的運作機制，在<a href="../../ai-office/lyca/">萊卡的機制說明頁</a>。</p>
+
+    <div class="readmore">
+      <b>這篇提到過的</b>
+      <ul>
+        <li><a href="../messaging-apps-ai-friendliness/">通訊軟體 AI 友善度比較：LINE、Telegram、Discord、Slack，你的 AI 該住在哪？</a></li>
+        <li><a href="../openrouter-deepseek-data-routing/">OpenRouter 用 DeepSeek，資料就不會經過中國嗎？教你自己查實際路由供應商</a></li>
+      </ul>
+      <b style="margin-top:14px">再往前後延伸</b>
+      <ul>
+        <li><a href="../line-group-ai-workflow/">散在 LINE 各群組的資料，怎麼每天自動下載歸檔</a>　留下來之後，實際的歸檔流程長什麼樣</li>
+        <li><a href="../ai-data-organization-usable-system/">AI 時代怎麼整理資料，讓文件變成可用的系統</a>　資料收齊了，下一個問題是怎麼讓它真的被用到</li>
+      </ul>
+    </div>
+  </div>
+</section>
 
 </main>
 
@@ -286,7 +346,7 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
       <a href="https://www.threads.com/@jiang_yude_coach" target="_blank" rel="noopener">Threads ↗</a>
       <a href="https://vocus.cc/salon/Jiang_Coach" target="_blank" rel="noopener">方格子 ↗</a>
     </div>
-    <div class="footer-note">這是一篇{{CONTENT_TYPE}}，整理我對「{{TITLE}}」的看法，供你參考。</div>
+    <div class="footer-note">這是一篇觀點文章，整理我對「那個 LINE 備份工具，怎麼讀到你的訊息？｜在比功能之前，先打開群組成員名單看一眼」的看法，供你參考。</div>
   </div>
 </footer>
 

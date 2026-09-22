@@ -66,13 +66,23 @@ for (const slug of slugs) {
   // 沒有封面圖的文章維持原本的純文字卡。2026-08-11 前這裡一律 display:none，
   // 導致「已經做了封面圖」的文章 og 圖仍然只有文字。
   const hasFigure = await page.$('.hero-figure img');
+  // 封面是直式還是橫式，決定它在 1200x630 卡上該佔多寬。
+  // 2026-09-20 補：原本一律 300px，那是為 4:5 直式封面訂的（300x375）。
+  // 橫式封面套同一個寬度只有 300x169，在縮圖裡小到看不出內容。
+  const figRatio = hasFigure
+    ? await page.$eval('.hero-figure img', el => (el.naturalWidth || 1) / (el.naturalHeight || 1))
+    : 0;
+  const isLandscape = figRatio > 1.2;
+  const figW = isLandscape ? 520 : 300;   // 橫式 520x293，直式 300x375，兩者在卡上視覺重量接近
+  const textW = isLandscape ? 560 : 640;
   await page.addStyleTag({ content: hasFigure ? `
-    .hero{flex-wrap:nowrap!important;justify-content:center!important;gap:56px!important}
-    .hero>div{width:640px!important;flex:none!important}
-    .hero h1{font-size:48px!important;line-height:1.12!important;margin:12px 0 14px!important}
+    .hero{flex-wrap:nowrap!important;justify-content:center!important;gap:${isLandscape ? 40 : 56}px!important}
+    .hero>div{width:${textW}px!important;flex:none!important}
+    .hero h1{font-size:${isLandscape ? 44 : 48}px!important;line-height:1.12!important;margin:12px 0 14px!important}
     .hero p{font-size:19px!important;line-height:1.6!important}
     .hero .kicker{font-size:1.3rem!important}
-    .hero-figure{display:block!important;width:300px!important;flex:none!important;margin:0!important}
+    .hero-figure{display:block!important;width:${figW}px!important;flex:none!important;margin:0!important}
+    .hero-figure img{aspect-ratio:auto!important;object-fit:contain!important}
     .hero-figure figcaption{display:none!important}
   ` : `
     .hero-figure{display:none!important}

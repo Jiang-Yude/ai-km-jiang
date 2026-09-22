@@ -29,7 +29,9 @@ const LAYOUT = {
   'skillcard':     '.skillcard',
 };
 
-const files = globSync('articles/*/index.html').sort();
+// 2026-09-22 加：可傳檔案路徑只查那幾篇（pre-commit 只查這次 staged 的文章，不被別篇舊帳擋住）。
+const argFiles = process.argv.slice(2).filter(f => /(^|\/)(articles|ai-trends)\/[^/]+\/index\.html$/.test(f));
+const files = argFiles.length ? argFiles.sort() : globSync('articles/*/index.html').sort();
 let fail = 0, checked = 0;
 
 for (const f of files) {
