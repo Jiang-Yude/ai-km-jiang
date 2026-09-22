@@ -41,6 +41,24 @@ window.ARTICLES = [
   },
 
   {
+    id: "grok-bot-galaxy-day1-founders",
+    url: "articles/grok-bot-galaxy-day1-founders/",
+    date: "2026-09-17",
+    updated: "2026-09-22",
+    title: "一個人怎麼帶 22 個 AI 員工？｜Grok Bot Galaxy 直播 Day 1 完整整理",
+    problem: "開始用 AI 助理之後想多開幾隻分工，卻不知道怎麼分；開了好幾隻之後發現它們互相搶話、費用變高、有時候不照規矩做事。",
+    audience: "開始想讓多個 AI 助理分工的人；bot 開多了遇到搶話、花費、不照規矩問題的人；想把 AI 員工帶進自己或客戶公司的顧問與經營者。",
+    summary: "整理 Grok Bot Galaxy 直播 Day 1 的全部場次。官方入門場講 Grok Bot 想解決什麼問題、第一隻 bot 怎麼建、錄一段操作就變成技能，以及官方自己給的四條使用建議。工程場與產品經理場是官方員工把每天在用的五到六隻 bot 攤開講，含凌晨 3 點自動健檢、CI 紅燈十分鐘內自動修、一條從發現問題到寫出程式的完整工作鏈。主直播是三人團隊從零挑生意、第五個小時把整個概念換掉的現場，含兩位來賓的商業判斷框架。最後是創辦人場：一位用 22 隻 bot 經營 7 個事業的來賓，講她怎麼先想人類團隊怎麼分工、再反推成 bot。文末附兩段可直接複製的提示詞。",
+    tags: {
+      topic: ["AIAgent", "AI工作流", "工作流程"],
+      level: ["基礎"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["ai-employee-four-levels", "agent-workflow-builds-automation", "cli-api-mcp-computer-use", "make-your-ai-secretary", "what-are-subagents"]
+  },
+
+  {
     id: "fixed-test-set-for-ai",
     url: "articles/fixed-test-set-for-ai/",
     date: "2026-09-20",
