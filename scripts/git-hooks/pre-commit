@@ -11,12 +11,27 @@
 set -euo pipefail
 ROOT="$(git rev-parse --show-toplevel)"
 cd "$ROOT"
-# 不用 mapfile：macOS 內建 bash 3.2 沒有這個指令（2026-09-22 首測就踩到，擋下的原因是指令不存在而不是檢查器）。
-FILES="$(git diff --cached --name-only --diff-filter=ACM | grep -E '^(articles|ai-trends)/[^/]+/index\.html$' || true)"
-[ -z "$FILES" ] && exit 0
-# 檔名只含英數與連字號（slug 規則），可以安全用空白分隔展開
-# shellcheck disable=SC2086
-if ! node scripts/check-article-css.mjs $FILES; then
+# 2026-09-22 Codex 跨家審後改：
+#  1. 檢查 staged 內容本身（寫到暫存夾），不讀工作樹，避免「工作樹修好但 staged 是舊版」漏擋
+#  2. --diff-filter 加 R，改名進來的文章也要查
+#  3. 逐行讀檔名，檔名含空白也不會被拆開
+#  不用 mapfile：macOS 內建 bash 3.2 沒有這個指令（首測就踩到，擋下的原因是指令不存在而不是檢查器）。
+#  暫存夾建在系統 TMPDIR，由系統定期清理，本 hook 不做刪除動作。
+TMP="$(mktemp -d "${TMPDIR:-/tmp}/article-css-gate.XXXXXX")"
+COUNT=0
+while IFS= read -r f; do
+  case "$f" in
+    articles/*/index.html|ai-trends/*/index.html) ;;
+    *) continue ;;
+  esac
+  mkdir -p "$TMP/$(dirname "$f")"
+  git show ":$f" > "$TMP/$f"
+  COUNT=$((COUNT+1))
+done < <(git diff --cached --name-only --diff-filter=ACMR)
+[ "$COUNT" -eq 0 ] && exit 0
+ARGS=()
+while IFS= read -r f; do ARGS+=("$TMP/$f"); done < <(cd "$TMP" && find articles ai-trends -name index.html 2>/dev/null)
+if ! node scripts/check-article-css.mjs "${ARGS[@]}"; then
   echo ""
   echo "⛔ commit 被擋：上面這幾篇有版面元件吃不到樣式（最常見是表格沒包 <div class=\"tablewrap\">）。"
   echo "   修法：每張 <table> 外面包 <div class=\"tablewrap\">…</div>，CSS 模板已內建。"
