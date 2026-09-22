@@ -102,20 +102,27 @@ function articleSlugs() {
    先 commit 再跑 preflight，那時 git diff HEAD 會是空的。*/
 function changedSlugs() {
   const out = [];
+  // 2026-09-22 改用 --numstat，只認「有新增行」的 index.html：
+  // 撤英文版那輪全站 150 篇 index.html 只刪了 hreflang／EN 切換鈕（純刪除、沒動任何圖），
+  // 用 --name-only 會把 150 篇舊文全拖進來、擋下整次發布，違背「舊文不回頭批改」。
+  // 純刪除不可能新增或換掉圖片，所以不算「本輪改過」。有任何新增行（含換圖）照舊檢查。
   const cmds = [
-    'git diff HEAD --name-only',
-    'git diff --cached --name-only',
-    'git diff --name-only',
-    'git diff --name-only origin/main...HEAD',
-    'git diff --name-only main...HEAD',
+    'git diff HEAD --numstat',
+    'git diff --cached --numstat',
+    'git diff --numstat',
+    'git diff --numstat origin/main...HEAD',
+    'git diff --numstat main...HEAD',
   ];
   for (const cmd of cmds) {
     try { out.push(...execSync(cmd, { cwd: ROOT, stdio: ['ignore', 'pipe', 'ignore'] }).toString().split('\n')); } catch { /* ignore */ }
   }
   const slugs = new Set();
   for (const line of out) {
+    // numstat 格式：新增行數<TAB>刪除行數<TAB>路徑；新增為 0 的純刪除略過。
+    const [added, , file = ''] = line.trim().split('\t');
+    if (added === '0') continue;
     // 只認 index.html 有變更。改 article.json 補雙向回連不該把那篇拖進比例檢查。
-    const m = line.trim().match(/^articles\/([^/]+)\/index\.html$/);
+    const m = file.match(/^articles\/([^/]+)\/index\.html$/);
     if (m) slugs.add(m[1]);
   }
   return [...slugs].sort();
