@@ -87,12 +87,12 @@
   /* 首頁不算，其餘頁面都可以解鎖 */
   function isHomePage() {
     var p = location.pathname.replace(/index\.html$/, '');
-    return p === '/' || p === '' || p === '/en/';
+    return p === '/' || p === '';
   }
 
   /* 課程頁＝現場學員拿手機掃 QR 進來的那些頁，快捷鈕要換成他們用得到的 */
   function isCoursePage() {
-    return /^\/(en\/)?courses\//.test(location.pathname);
+    return /^\/courses\//.test(location.pathname);
   }
 
   /* 抽這一頁的文字。走原始 DOM 不動它（不 clone、不暫時隱藏），
