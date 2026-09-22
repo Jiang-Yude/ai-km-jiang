@@ -163,4 +163,5 @@ window.SEARCH_ALIASES = {
   "grok-bot-galaxy-day1-founders": ["Grok Bot","Grok Bot Galaxy","Grok機器人","多代理","Multi-Agent","AI員工","AI員工團隊","一個人帶很多AI","22個AI員工","AI員工怎麼分工","總管制","專家制","bot搶話","bot放群組很花錢","凌晨自動健檢程式碼"],
   "grok-bot-galaxy-day2-workshops": ["Grok Bot","Grok Bot Galaxy","多代理","Multi-Agent","AI員工","AI客服","AI業務","AI開發客戶","SDR","業務工程師用AI","客服導入AI","AI客服要花多少錢","一張工單多少錢","省token","AI寫開發信","AI做客戶案例投影片"],
   "grok-bot-galaxy-day3-shipping": ["Grok Bot","Grok Bot Galaxy","多代理","Multi-Agent","AI員工","AI開公司","用AI創業","AI員工最後做出什麼","一個晚上合併168個修改","Thursday Arena","行銷維運","RevOps","MarOps","AI自動合併程式","送出前要回到人","讓人在乎比做出來難"],
+  "delete-before-automate": ["一直在追效率 結果都在瞎忙","想用 AI 提升效率","每天很忙卻沒進展","這件事能不能用 AI","什麼事該交給 AI 自動化","先自動化只是讓瞎忙變快","馬斯克五步工作法","馬斯克 五步","the algorithm 馬斯克","Tesla 工作方法","SpaceX 工作方法","讓需求沒那麼蠢","需求要掛一個人的名字","需求掛名字不能掛部門","刪到要有東西加回來","刪掉一成要加回來","先刪掉再自動化","自動化是最後一步","過度自動化是錯誤","第一性原理","第一性原理怎麼用","把問題拆回事實限制假設","八個專案篩成三個","馬斯克第一性原理技能包","musk-first-principles"],
 };
