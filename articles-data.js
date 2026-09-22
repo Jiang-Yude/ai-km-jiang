@@ -23,6 +23,24 @@ window.ARTICLE_TAGS = {
 
 window.ARTICLES = [
   {
+    id: "ai-data-red-lines",
+    url: "articles/ai-data-red-lines/",
+    date: "2026-09-22",
+    updated: "2026-09-22",
+    title: "公司資料可以貼給 AI 嗎？｜先搞清楚這兩條紅線",
+    problem: "想用 AI 處理工作，但不確定哪些資料能貼、哪些不能貼，也沒意識到會動檔案的 AI 本身就是另一種風險。",
+    audience: "每天用 AI 工作的上班族，以及正在替公司訂 AI 使用規範的人。",
+    summary: "把客戶名單貼進 AI 之前，要防的是兩件事：資料送出去會怎樣，以及這個 AI 碰得到你電腦裡的什麼。這篇把一個給臨床醫師的 AI 資安系列轉譯成公司版本，包含四條路徑的紅線判斷、辦公室版的五題自測、檔案裡你看不到的那一半，以及讀服務條款只要找的四個答案。內容骨架來自黃士峯醫師的公開影片，企業端的延伸標明為推論。",
+    tags: {
+      topic: ["資訊安全", "使用原則"],
+      level: ["零基礎入門"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["openrouter-deepseek-data-routing", "ai-loop-safety-recovery", "ai-usage-audit"]
+  },
+
+  {
     id: "fixed-test-set-for-ai",
     url: "articles/fixed-test-set-for-ai/",
     date: "2026-09-20",
@@ -544,7 +562,7 @@ window.ARTICLES = [
       content_type: ["觀點文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["ai-cp-value-calculus", "copied-mechanism-is-no-mechanism", "program-vs-ai-skill-library", "cognitive-debt", "loop-round-limit"]
+    related: ["ai-cp-value-calculus", "copied-mechanism-is-no-mechanism", "program-vs-ai-skill-library", "cognitive-debt", "loop-round-limit", "ai-data-red-lines"]
   },
 
   {
@@ -899,7 +917,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["cli-api-mcp-computer-use", "ai-cp-value-calculus", "line-backup-who-can-see-it"]
+    related: ["cli-api-mcp-computer-use", "ai-cp-value-calculus", "line-backup-who-can-see-it", "ai-data-red-lines"]
   },
 
   {
@@ -1998,7 +2016,7 @@ window.ARTICLES = [
       content_type: ["觀點文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["what-is-loop-engineering", "my-three-loops", "tag-wiki-method", "recovery-over-perfection", "loop-engineering-guardrails", "laptop-desktop-webpage-sync-icloud-git"]
+    related: ["what-is-loop-engineering", "my-three-loops", "tag-wiki-method", "recovery-over-perfection", "loop-engineering-guardrails", "laptop-desktop-webpage-sync-icloud-git", "ai-data-red-lines"]
   },
 
   {
