@@ -23,7 +23,8 @@ else
   bad "articles-data.js 與 article.json 來源不一致：node scripts/build-articles-data.mjs（手改要保留就加 --adopt）"
 fi
 if node scripts/build-site-index.mjs 2>&1 | tail -1 | grep -q "✅"; then ok "site-index + 詞彙"; else bad "build-site-index 未通過"; fi
-if node scripts/build-en-articles-data.mjs --check; then ok "英文文章索引"; else bad "英文文章索引過期"; fi
+# 英文文章索引檢查已於 2026-09-22 拿掉：江江決定撤英文版（en/ 整個移除，301 轉回中文頁），
+# build-en-articles-data.mjs 只剩空殼。英文內容備存在 git tag archive/en-final-2026-09-22。
 # 咪卡檢索用的內文關鍵詞：每次發布重跑，新文章的專有名詞才會進索引。
 # 立因（2026-08-11）：「半人馬」「A2A」都是只寫在內文、沒進索引，咪卡因此說站上沒有。
 # 這一關重跑後若有變更就擋下，逼發布者把 article-keywords.js 一起帶進本次範圍。
@@ -83,10 +84,17 @@ for f in *.html; do
   grep -q "$loc" sitemap.xml || { bad "sitemap 缺 $f"; MISS=1; }
 done
 [ $MISS -eq 0 ] && ok "sitemap 覆蓋"
+# 已上線文章 sitemap 覆蓋（2026-09-22 立，4O 健檢抓到缺口）：上面那段只驗根目錄 *.html，
+# 深度文章與 AI 趨勢有好幾篇上線了卻沒進 sitemap。這一關比對 articles-data.js 宣告的上線文章
+# （排除 .vercelignore 擋板與 noindex）與 sitemap.xml，缺一篇就擋。
+if node scripts/check-sitemap-coverage.mjs; then ok "已上線文章都在 sitemap"; else bad "有已上線文章不在 sitemap.xml（見上方清單）"; fi
 grep -q "knowledge-architecture" llms.txt && ok "llms.txt 有知識架構" || bad "llms.txt 缺知識架構"
 
-echo "═══ 5/11 雙語主導航 ═══"
-if node scripts/check-bilingual-nav.mjs; then ok "雙語主導航"; else bad "雙語主導航不一致"; fi
+echo "═══ 5/11 雙語主導航（2026-09-22 停用）═══"
+# 2026-09-22 江江決定撤英文版，en/ 已整個移除，中英主導航對照已無對象，本關停用不再檢查。
+# check-bilingual-nav.mjs 檔案保留不刪（日後恢復英文版可從 tag archive/en-final-2026-09-22 取回整組）。
+# 保留本段標題是為了不改動 0-10 的關卡編號，publish／巡檢的回報格式不受影響。
+ok "雙語主導航（英文版已撤除，本關停用）"
 
 echo "═══ 6/11 內部連結掃描 ═══"
 python3 scripts/check-links.py && ok "內部連結" || bad "有內部斷鏈（見上）"
