@@ -143,6 +143,19 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
 .footer-brand{font-weight:900;font-size:15px;margin-bottom:10px}.footer-note{font-size:13px;line-height:1.6}
 @media(max-width:820px){.infocard-grid{grid-template-columns:1fr}.duo{grid-template-columns:1fr}.workflow-grid{grid-template-columns:1fr}.cta-band .inner{grid-template-columns:1fr}.section{padding:40px 20px}.hero{min-height:52vh;flex-direction:column;justify-content:flex-start;align-items:flex-start;gap:24px}.hero>div{width:100%}.hero-figure{width:100%;max-width:560px}}
 @media(max-width:820px){html,body{overflow-x:hidden}.hero h1{word-break:break-word}}
+
+/* 標題 24 字＋橫式封面：依 02-design-system「標題太長會把封面圖擠到下一行」收窄。620＋400＋48＝1068；1280 寬扣內距剩 1126 排得下，斷點抓 1220（0.88×視窗寬 < 1068 時轉直排） */
+.hero{gap:48px!important}
+.hero>div{width:620px!important}
+.hero-figure{width:400px!important}
+.hero h1{font-size:clamp(30px,3.3vw,46px)!important;line-height:1.16!important;margin:12px 0 16px!important}
+.hero p{font-size:clamp(16px,1.35vw,19px)!important;line-height:1.65!important}
+@media(max-width:1220px){
+  .hero-figure{width:100%!important;max-width:560px}
+  .hero{gap:32px!important;flex-direction:column;align-items:flex-start}
+  .hero>div{width:100%!important}
+  .hero h1{font-size:clamp(28px,5vw,40px)!important}
+}
 </style>
 </head>
 <body class="spotlight">
@@ -174,9 +187,13 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
   <div class="wc wc3"></div>
   <div>
     <div class="kicker">資訊安全 / AI 使用原則</div>
-    <h1>公司資料可以貼給 AI 嗎？｜先搞清楚這兩條紅線</h1>
+    <h1>公司資料可以貼給 AI 嗎？<span style="display:inline-block">｜先搞清楚這兩條紅線</span></h1>
     <p>大部分人只防了一半：資料送出去會怎樣，跟這個 AI 碰得到你什麼，是兩條不同的風險軸。</p>
   </div>
+  <figure class="hero-figure">
+    <img src="../../images/articles/ai-data-red-lines-cover.jpg" alt="咪卡蹲在紅色虛線旁，一張文件正越過紅線飄向雲端，同時筆電裡伸出機械手臂翻檔案夾，下方三張小圖是截圖放大鏡、被掀起一角的文件、保險箱與備份" loading="lazy">
+    <figcaption>兩件事同時發生：資料往外流、AI 往裡伸。</figcaption>
+  </figure>
 </section>
 
 <main>
@@ -225,14 +242,14 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
     <p>這是一條軸，而且是重要的一條。但 AI Agent 普及之後出現了第二條，多數人完全沒想到。</p>
     <div class="meaning"><b>這個 AI 有手，它碰得到你的電腦。</b><br>你在自己的筆電上開一個 Agent，叫它幫你整理資料夾，它可以讀檔、改檔、刪檔、執行指令。黃士峯在 EP1 講得很直接：只要你是在自己的電腦裡開啟它，它就有機會碰到你的資料，<b>不管那些資料是不是放在同一個資料夾</b>。所謂碰到，包括刪掉。</div>
     <p>這兩條軸互相不能取代。</p>
-    <table>
+    <div class="tablewrap"><table>
       <thead><tr><th></th><th>第一條：資料流去哪</th><th>第二條：它能動什麼</th></tr></thead>
       <tbody>
         <tr><td>你在問的</td><td>我送出去的東西會怎樣？</td><td>它碰得到我哪些東西？做錯了會炸多大？</td></tr>
         <tr><td>出事的樣子</td><td>客戶名單進了別人的訓練資料</td><td>一句指令刪掉整個專案資料夾</td></tr>
         <tr><td>防的方法</td><td>看條款、選版本、判斷哪些資料能出門</td><td>限制權限、隔離環境、備份</td></tr>
       </tbody>
-    </table>
+    </table></div>
     <p>權限鎖得很緊，但把整份報價單貼進免費版的網頁聊天，一樣出事。反過來，用完全跑在自己電腦上的模型，卻給了 Agent 整台機器的權限，也一樣出事。</p>
     <p><b>一次只防一條，等於沒防。</b></p>
   </div>
@@ -250,7 +267,7 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
       <li><b>完全沒有合約的地方</b>：你個人的免費帳號、隨手用的線上工具。</li>
     </ul>
     <p>然後看四條路徑，每一條只問一個問題：<b>有沒有越過那條紅線？</b></p>
-    <table>
+    <div class="tablewrap"><table>
       <thead><tr><th>路徑</th><th>越線？</th><th>說明</th></tr></thead>
       <tbody>
         <tr><td>模型跑在你自己的電腦上</td><td>沒有</td><td>資料沒出去，而且送出去還能收回來</td></tr>
@@ -258,7 +275,7 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
         <tr><td>打雲端 API、貼進網頁版 AI</td><td><b>越線</b></td><td>資料已經出去了</td></tr>
         <tr><td>通訊軟體、私人雲端硬碟</td><td><b>越線</b></td><td>而且這條最常發生</td></tr>
       </tbody>
-    </table>
+    </table></div>
     <div class="meaning"><b>如果你只會開網頁用 AI，那前兩條跟你無關</b><br>前兩條路徑講的是「模型跑在你自己的電腦裡」或「跑在公司自己的伺服器上」，那通常是公司 IT 或工程團隊才會做的事。一般人打開網頁、打開 App、用手機問 AI，<b>幾乎都落在第三條跟第四條</b>，也就是已經越線的那兩條。所以下面的重點看第三、第四條就好。</div>
     <p>黃士峯講第四條的時候舉的例子是 LINE：用 LINE 傳病人的病歷號跟姓名，因為 LINE 的伺服器在韓國，等於主動把資料送到境外。資料不只離開了你的電腦，還離開了台灣。</p>
     <p>換成公司場景，同一件事天天在發生：用通訊軟體傳報價單、把客戶資料丟自己的雲端硬碟再從家裡打開、把合約內容貼進免費版 AI 問「這條對我們有沒有風險」。</p>
@@ -314,7 +331,7 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
     <p>這是 EP1 的部分，也是前面說多數人沒防的那一條。</p>
     <p>聊天機器人講錯話，最糟就是給你一個錯誤答案。Agent 不一樣，因為我們給了它工具、給了它手，它可以改檔案、執行指令、操作你的電腦。</p>
     <p>黃士峯用的詞是<b>爆炸半徑</b>：如果它今天真的誤刪了，最糟能搞壞多少東西？</p>
-    <table>
+    <div class="tablewrap"><table>
       <thead><tr><th>它能碰到的範圍</th><th>最糟的後果</th></tr></thead>
       <tbody>
         <tr><td>只有一個測試資料夾</td><td>整個資料夾刪掉重來</td></tr>
@@ -322,7 +339,7 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
         <tr><td>透過內網碰到公司檔案伺服器</td><td>不是你一個人的事了</td></tr>
         <tr><td>你的信箱與雲端硬碟</td><td>再上一級，而且會外擴到別人身上</td></tr>
       </tbody>
-    </table>
+    </table></div>
     <p>他給的原則是：<b>權限要慢慢給，需要什麼就開什麼，而不是一開始全部開滿然後放給他。</b></p>
     <p>還有一個很具體的建議，我覺得每個剛開始用 Agent 的人都該聽進去：不熟悉它的行為之前，不要把權限設成自動核准。</p>
     <p>他自己承認每次按核准很煩，但講了一句很有畫面的話：這就像外科的併發症，發生機率低，但一旦發生就非常麻煩。現在的模型都有很好的安全設計，但誤刪的機率不是零。</p>
