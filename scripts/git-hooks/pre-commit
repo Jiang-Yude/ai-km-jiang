@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+# 文章版面樣式閘（2026-09-22 立，事故驅動）
+#
+# 為什麼掛在 commit：check-article-css.mjs 原本只在部署前的 preflight 跑，
+# 草稿階段沒人跑，裸 <table> 沒包 .tablewrap 的表格（退回瀏覽器預設樣式：沒框沒底沒對齊）
+# 一路走到江江打開預覽才被看到。江江回報「表格醜」已經超多次。
+# 官網 repo 有「草稿當輪 commit」鐵律，所以 commit 是每篇草稿必經、而且早於交審的那一刻。
+#
+# 只查這次 staged 的 articles/*/index.html 與 ai-trends/*/index.html，不查別篇。
+# 緊急情況要略過：git commit --no-verify（會留下紀錄，事後要補修）。
+set -euo pipefail
+ROOT="$(git rev-parse --show-toplevel)"
+cd "$ROOT"
+# 不用 mapfile：macOS 內建 bash 3.2 沒有這個指令（2026-09-22 首測就踩到，擋下的原因是指令不存在而不是檢查器）。
+FILES="$(git diff --cached --name-only --diff-filter=ACM | grep -E '^(articles|ai-trends)/[^/]+/index\.html$' || true)"
+[ -z "$FILES" ] && exit 0
+# 檔名只含英數與連字號（slug 規則），可以安全用空白分隔展開
+# shellcheck disable=SC2086
+if ! node scripts/check-article-css.mjs $FILES; then
+  echo ""
+  echo "⛔ commit 被擋：上面這幾篇有版面元件吃不到樣式（最常見是表格沒包 <div class=\"tablewrap\">）。"
+  echo "   修法：每張 <table> 外面包 <div class=\"tablewrap\">…</div>，CSS 模板已內建。"
+  exit 1
+fi
