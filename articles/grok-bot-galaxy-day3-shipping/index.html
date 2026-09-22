@@ -1,0 +1,412 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="index,follow">
+<title>三天用 AI 員工開一間公司，最後出貨了什麼？｜Grok Bot Galaxy 直播 Day 3 整理</title>
+<meta name="description" content="整理 Grok Bot Galaxy 直播 Day 3：行銷維運職務的四個 bot 怎麼自動互相交接、內部工具兩週上線實際建置 10 小時、送出前一定回到人的三類界線，以及最後的成果檢討。他們一個晚上讓 bot 合併了上百個修改，也自己列出哪些功能是壞的、主持人怎麼把正式站弄掛。">
+<link rel="canonical" href="https://jiangyude.com/articles/grok-bot-galaxy-day3-shipping/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="三天用 AI 員工開一間公司，最後出貨了什麼？｜Grok Bot Galaxy 直播 Day 3 整理｜江江教練">
+<!-- 分享封面：hero 文字填好後在 repo 根目錄跑 `node scripts/og-shot.mjs grok-bot-galaxy-day3-shipping` 自動截 1200×630 到 images/og/grok-bot-galaxy-day3-shipping.jpg（見 README「文章分享封面（OG 圖）機制」）。別退回 intro-jiang.png 直式人像，會被裁成只剩脖子。 -->
+<meta property="og:image" content="https://jiangyude.com/images/og/grok-bot-galaxy-day3-shipping.jpg">
+<meta property="og:description" content="整理 Grok Bot Galaxy 直播 Day 3：行銷維運職務的四個 bot 怎麼自動互相交接、內部工具兩週上線實際建置 10 小時、送出前一定回到人的三類界線，以及最後的成果檢討。他們一個晚上讓 bot 合併了上百個修改，也自己列出哪些功能是壞的、主持人怎麼把正式站弄掛。">
+<meta property="og:url" content="https://jiangyude.com/articles/grok-bot-galaxy-day3-shipping/">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:site_name" content="江江教練 · AI 知識管理">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="三天用 AI 員工開一間公司，最後出貨了什麼？｜Grok Bot Galaxy 直播 Day 3 整理｜江江教練">
+<meta name="twitter:image" content="https://jiangyude.com/images/og/grok-bot-galaxy-day3-shipping.jpg">
+<meta name="twitter:description" content="整理 Grok Bot Galaxy 直播 Day 3：行銷維運職務的四個 bot 怎麼自動互相交接、內部工具兩週上線實際建置 10 小時、送出前一定回到人的三類界線，以及最後的成果檢討。他們一個晚上讓 bot 合併了上百個修改，也自己列出哪些功能是壞的、主持人怎麼把正式站弄掛。">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"三天用 AI 員工開一間公司，最後出貨了什麼？｜Grok Bot Galaxy 直播 Day 3 整理","description":"整理 Grok Bot Galaxy 直播 Day 3：行銷維運職務的四個 bot 怎麼自動互相交接、內部工具兩週上線實際建置 10 小時、送出前一定回到人的三類界線，以及最後的成果檢討。他們一個晚上讓 bot 合併了上百個修改，也自己列出哪些功能是壞的、主持人怎麼把正式站弄掛。","author":{"@type":"Person","name":"江昱德","alternateName":"江江教練","jobTitle":"隱性知識提煉師、AI 應用規劃師"},"isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://jiangyude.com/"},"inLanguage":"zh-Hant","url":"https://jiangyude.com/articles/grok-bot-galaxy-day3-shipping/","datePublished":"2026-09-20","dateModified":"2026-09-22","image":"https://jiangyude.com/images/og/grok-bot-galaxy-day3-shipping.jpg"}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{--ink:#1a1612;--paper:#fefcf8;--muted:#6a635a;--line:#d8cdb8;--green:#5f7553;--blue:#5689b8;--orange:#e85a4f;--soft:#faf5ec;--dark:#2a2018;--shadow:0 18px 45px rgba(107,74,42,.14);--sp-shadow:hsla(35,50%,60%,.15);--sp-shadow-edge:hsla(35,50%,68%,.03);--sp-radius:400px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC","Segoe UI",sans-serif}
+a{color:inherit}
+/* 官網共用導航列 nav.top（與首頁/文章總站同一條） */
+nav.top{position:sticky;top:0;background:rgba(254,252,248,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid #d8cdb8;z-index:100}
+nav.top .container{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:24px;padding:14px 32px}
+.nav-brand-img{justify-self:start;display:flex;align-items:center;text-decoration:none;flex-shrink:0;transition:opacity .2s}
+.nav-brand-img:hover{opacity:.8}.nav-brand-img img{height:40px;width:auto;display:block}
+nav.top ul.nav-menu{justify-self:end;display:flex;gap:22px;list-style:none;margin:0;padding:0;font-size:.95rem;white-space:nowrap}
+nav.top ul.nav-menu a{color:#3a342d;text-decoration:none;transition:color .2s;font-weight:500;white-space:nowrap}
+nav.top ul.nav-menu a:hover{color:#1a1612}nav.top ul.nav-menu a.active{color:#1a1612;font-weight:700}
+.nav-toggle{display:none;background:none;border:none;padding:6px;cursor:pointer;width:36px;height:36px;position:relative}
+.nav-toggle span{display:block;position:absolute;left:8px;right:8px;height:2px;background:#1a1612;border-radius:2px;transition:transform .25s,opacity .25s,top .25s}
+.nav-toggle span:nth-child(1){top:11px}.nav-toggle span:nth-child(2){top:17px}.nav-toggle span:nth-child(3){top:23px}
+.nav-toggle.open span:nth-child(1){top:17px;transform:rotate(45deg)}.nav-toggle.open span:nth-child(2){opacity:0}.nav-toggle.open span:nth-child(3){top:17px;transform:rotate(-45deg)}
+.tablewrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:22px 0;border:1px solid var(--line);border-radius:10px;background:#fff;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.tablewrap table{border-collapse:collapse;width:100%;min-width:600px;font-size:18px;line-height:1.65}
+.tablewrap .zh{display:block;margin-top:5px;font-size:16px;line-height:1.55;color:var(--muted);font-weight:400}
+.tablewrap th,.tablewrap td{padding:12px 14px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top;color:#3a342d}
+.tablewrap thead th{background:var(--soft);font-weight:900;font-size:18px;color:#1a1612;white-space:nowrap}
+.tablewrap tbody tr:last-child td{border-bottom:none}
+.tablewrap td code,.section code{background:var(--soft);border:1px solid var(--line);border-radius:5px;padding:1px 6px;font:500 15px/1.5 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace}
+.inline-figure.wide{max-width:1000px}
+.toc{margin:26px 0 0;padding:20px 22px;background:#fff;border:1px solid var(--line);border-radius:10px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.toc>b{display:block;font-size:15px;letter-spacing:.05em;color:var(--green);margin-bottom:10px}
+.toc ol{margin:0;padding-left:1.35em;font-size:18px;line-height:1.7}
+.toc li{margin-bottom:7px;color:#3a342d}
+.toc a{color:var(--blue);font-weight:700;text-decoration:none}.toc a:hover{text-decoration:underline}
+.toc-hint{margin:12px 0 0!important;font-size:18px!important;color:var(--muted)!important;border-top:1px solid var(--line);padding-top:12px}
+.readmore{margin-top:24px;padding:20px 22px;background:var(--soft);border:1px solid var(--line);border-radius:12px}
+.readmore.near{margin:26px 0 6px;background:rgba(86,137,184,.07);border-color:#bcd0e2}
+.readmore.near b{color:var(--blue);font-size:18px}
+.readmore.near li{font-size:17px;line-height:1.7;margin-bottom:10px}
+.readmore b{display:block;margin-bottom:10px;font-size:19px}
+.readmore ul{margin:0;padding-left:1.25em}
+.readmore a{color:var(--blue);font-weight:700;text-decoration:none}
+.readmore a:hover{text-decoration:underline}
+@media(max-width:820px){.tablewrap table{min-width:560px;font-size:18px}.tablewrap{position:relative}.tablewrap::after{content:"表格可左右滑動 →";position:sticky;left:0;display:block;font-size:15px;color:var(--muted);background:var(--soft);border-top:1px solid var(--line);padding:7px 12px;width:100%}}
+@media(max-width:860px){
+ nav.top .container{grid-template-columns:auto 1fr auto;padding:10px 16px;gap:12px}
+ .nav-brand-img img{height:32px}
+ .nav-toggle{display:block;justify-self:end}
+ nav.top ul.nav-menu{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(254,252,248,.98);backdrop-filter:blur(14px);border-bottom:1px solid #d8cdb8;flex-direction:column;gap:0;padding:8px 0;box-shadow:0 10px 24px rgba(107,74,42,.08)}
+ nav.top ul.nav-menu.open{display:flex}
+ nav.top ul.nav-menu li{border-bottom:1px solid #e8dfc9}
+ nav.top ul.nav-menu li:last-child{border-bottom:none}
+ nav.top ul.nav-menu a{display:block;padding:14px 20px;font-size:1.06rem}
+}
+/* 滑鼠暖光暈（與首頁同一支 spotlight.js） */
+body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradient(var(--sp-radius) circle at var(--mx,50%) var(--my,50%),var(--sp-shadow) 0%,var(--sp-shadow-edge) 45%,transparent 75%);pointer-events:none;z-index:9999;mix-blend-mode:multiply;transition:background .06s linear}
+.hero{position:relative;overflow:hidden;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:72px;padding:96px clamp(20px,6vw,88px) 80px;background:linear-gradient(180deg,#fffcf0 0%,#f9e9d2 100%);color:#1a1612;border-bottom:1px solid #d8cdb8}
+.hero .wc{position:absolute;border-radius:50%;filter:blur(60px);pointer-events:none;z-index:0}
+.hero .wc1{width:420px;height:360px;top:-120px;right:-80px;background:#e8884b;opacity:.15}
+.hero .wc2{width:360px;height:300px;bottom:-110px;left:-70px;background:#5f7553;opacity:.13}
+.hero .wc3{width:280px;height:260px;top:34%;left:14%;background:#a08144;opacity:.10}
+.hero>div{flex:none;width:860px;max-width:100%;position:relative;z-index:2}
+.hero-figure{margin:0;width:420px;flex:none;position:relative;z-index:2}
+.hero-figure img{display:block;width:100%;border-radius:16px;border:1px solid #d8cdb8;box-shadow:0 18px 45px rgba(107,74,42,.16);cursor:zoom-in}
+.hero-figure figcaption{margin-top:10px;font-size:14px;line-height:1.6;color:#6a635a}
+.inline-figure{margin:30px auto 8px;max-width:820px}
+.inline-figure img{display:block;width:100%;border-radius:14px;border:1px solid var(--line);box-shadow:var(--shadow);background:#fff;cursor:zoom-in}
+.warnbox{margin:22px 0;padding:16px 20px;background:rgba(232,90,79,.06);border:1px solid rgba(232,90,79,.28);border-left:4px solid var(--orange);border-radius:10px}
+.warnbox p{margin:0!important;font-size:18px;line-height:1.75;color:#3a342d}
+.inline-figure.card{max-width:430px}
+@media(max-width:820px){.inline-figure.card{max-width:340px}}
+.inline-figure figcaption{font-size:14px;line-height:1.6;color:var(--muted);margin-top:10px}
+.inline-figure.card{max-width:430px}
+@media(max-width:820px){.inline-figure.card{max-width:340px}}
+.lightbox{position:fixed;inset:0;z-index:10000;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(12,10,8,.92);cursor:zoom-out;backdrop-filter:blur(4px)}
+.lightbox.open{display:flex}.lightbox img{max-width:96vw;max-height:92vh;border-radius:10px;box-shadow:0 24px 60px rgba(0,0,0,.5)}
+.lightbox-close{position:fixed;top:18px;right:24px;color:#fff;font-size:34px;line-height:1;font-weight:700;cursor:pointer;opacity:.85}
+.kicker{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.55rem;color:#7a5c3a;font-weight:500}
+.hero h1{max-width:none;margin:16px 0 18px;font-size:clamp(36px,6vw,72px);line-height:1.08;overflow-wrap:anywhere}
+.hero p{max-width:none;font-size:clamp(18px,2vw,23px);line-height:1.62;color:#3a342d}
+.cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
+.cta a{display:inline-flex;align-items:center;text-decoration:none;border-radius:8px;padding:12px 16px;font-weight:900}
+.cta .primary{background:#fff;color:#1a1612}.cta .ghost{border:1px solid rgba(255,255,255,.32);color:#fff;background:rgba(255,255,255,.08)}
+.section{padding:54px clamp(20px,6vw,88px);border-top:1px solid var(--line)}
+.inner{width:min(1000px,100%);margin:0 auto}
+.section h2{font-size:clamp(26px,4.2vw,48px);line-height:1.12;margin:0 0 18px}
+.section h3{font-size:clamp(21px,3vw,30px);line-height:1.2;margin:30px 0 12px}
+.lead{font-size:clamp(18px,1.6vw,22px);line-height:1.7;color:#3a342d;max-width:900px}
+.section p{font-size:18px;line-height:1.74;color:#3a342d}.section p+p{margin-top:14px}
+.section ul,.section ol{padding-left:1.4em;font-size:18px;line-height:1.74;color:#3a342d}.section li{margin-bottom:8px}
+.meaning{margin:22px 0;padding:16px 18px;border-left:5px solid var(--blue);background:rgba(86,137,184,.12);border-radius:6px;line-height:1.7;font-size:19px}
+.meaning b{display:block;color:var(--blue);margin-bottom:4px}
+.caveat{margin:0 0 8px;padding:16px 18px;border-left:5px solid var(--orange);background:rgba(232,90,79,.1);border-radius:6px;line-height:1.7;font-size:18px;color:#3a342d}
+.caveat b{display:block;color:var(--orange);margin-bottom:4px}
+.infocard{background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px 24px 22px;box-shadow:0 8px 22px rgba(107,74,42,.08);margin-top:8px}
+.infocard-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.info-item{padding:18px 14px 0}
+.info-item b{display:block;font-size:14px;font-weight:900;letter-spacing:.04em;margin-bottom:7px;text-transform:uppercase}
+.info-item:nth-child(1) b{color:var(--green)}.info-item:nth-child(2) b{color:var(--orange)}.info-item:nth-child(3) b{color:var(--blue)}
+.info-item p{margin:0;font-size:17px;line-height:1.6;color:#3a342d}
+.tagrow{display:flex;flex-wrap:wrap;gap:7px;margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
+.tag{font-size:14px;color:var(--muted);background:var(--soft);border:1px solid var(--line);border-radius:999px;padding:4px 11px}
+.duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:24px}
+.duo.stack{grid-template-columns:1fr}
+.duo .card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:22px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.duo .card.a{border-color:var(--orange)}.duo .card.b{border-color:var(--green);box-shadow:0 8px 24px rgba(95,117,83,.16)}
+.duo .card small{display:block;font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.04em;margin-bottom:9px}
+.duo .card.a small{color:var(--orange)}.duo .card.b small{color:var(--green)}
+.duo .card b{display:block;font-size:22px;line-height:1.3;margin-bottom:12px}.duo .card.a b{color:#c0512f}.duo .card.b b{color:#4a7a59}
+.duo .card p{margin:0;color:#3a342d;line-height:1.75;font-size:18px}
+.workflow-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:24px}
+.workflow-step{background:#fff;border:1px solid var(--line);border-radius:8px;padding:18px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.workflow-step small{display:block;color:var(--orange);font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;margin-bottom:9px}
+.workflow-step b{display:block;font-size:18px;line-height:1.3;margin-bottom:9px}
+.workflow-step p{margin:0;color:#3a342d;line-height:1.6;font-size:16px}
+.codeblock{background:var(--dark);color:#f3ead9;border-radius:8px;padding:18px 20px;font:500 14px/1.65 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;overflow-x:auto;white-space:pre-wrap;margin:20px 0;box-shadow:0 8px 22px rgba(107,74,42,.12)}
+.codeblock .c{color:#f6d7a6;font-weight:600}
+.skillcard{background:#fff;border:1px solid var(--green);border-radius:12px;padding:24px;box-shadow:0 10px 26px rgba(95,117,83,.16);margin-top:8px}
+.skillcard b{display:block;font-size:21px;margin-bottom:8px}
+.skillcard p{margin:0 0 16px;font-size:17px;line-height:1.65;color:#3a342d}
+.cta-band{background:#e6f0e5;color:#3a342d}.cta-band .section{border-top:none}
+.cta-band .inner{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(260px,.85fr);gap:26px;align-items:start}
+.cta-band h2{font-size:clamp(26px,4vw,44px);margin:0 0 16px}.cta-band p,.cta-band .lead{color:rgba(58,52,45,.9);font-size:18px;line-height:1.72}
+.cta-card{border:1px solid #cfe0d2;background:#fbfdfa;border-radius:8px;padding:22px}
+.cta-card b{display:block;color:#48b178;margin-bottom:10px;font-size:18px}.cta-card p{margin:0 0 14px}
+.footer{padding:30px clamp(20px,6vw,88px);font-size:14px;color:var(--muted);background:#fff;border-top:1px solid var(--line)}
+.footer-inner{width:min(1000px,100%);margin:0 auto}
+.footer-links{display:flex;flex-wrap:wrap;gap:6px 12px;margin-bottom:14px}.footer-links a{color:var(--blue);font-weight:900;text-decoration:none;font-size:14px}
+.footer-brand{font-weight:900;font-size:15px;margin-bottom:10px}.footer-note{font-size:13px;line-height:1.6}
+@media(max-width:820px){.infocard-grid{grid-template-columns:1fr}.duo{grid-template-columns:1fr}.workflow-grid{grid-template-columns:1fr}.cta-band .inner{grid-template-columns:1fr}.section{padding:40px 20px}.hero{min-height:52vh;flex-direction:column;justify-content:flex-start;align-items:flex-start;gap:24px}.hero>div{width:100%}.hero-figure{width:100%;max-width:560px}}
+@media(max-width:820px){html,body{overflow-x:hidden}.hero h1{word-break:break-word}}
+.article-date{margin-top:18px;font-size:15px;color:var(--muted)}
+/* 標題 42 字，範本預設 clamp(36px,6vw,72px) 在寬螢幕會撐成整片巨字；本篇無封面圖不會 wrap，只縮字級 */
+.hero h1{font-size:clamp(28px,3.6vw,48px)!important;line-height:1.16!important;margin:12px 0 16px!important}
+.hero p{font-size:clamp(16px,1.5vw,20px)!important;line-height:1.66!important}
+.hero .kicker{font-size:1.3rem!important}
+</style>
+</head>
+<body class="spotlight">
+<!-- 官網共用導航列 nav.top：與首頁/總站同一條，文章不要自己另做極簡 topbar（江江 2026-06-25：要同一個框架、同一條導航列）。把對應頁面的 class="active" 標在自己那欄。
+     ⚠️ 下面 ul.nav-menu 整塊由 preflight 第 5 關 check-bilingual-nav.mjs 做「逐字比對」，
+        塞任何註解、多一個空白、換行位置不同都會被判導航不一致而擋下發布。要說明就寫在 <ul> 外面（像這裡）。
+        2026-08-16 修：原本的 EN 那行說明註解就夾在 <ul> 裡面，導致照範本起手的新文章一律卡第 5 關
+        （llm-rag-agent-mcp 與 rag-three-retrieval-modes 兩篇同時中招）。註解已移出來，<ul> 內保持乾淨。
+        萬一還是被擋，直接跑：node scripts/check-bilingual-nav.mjs --write --only=<你的檔案路徑> -->
+<nav class="top">
+  <div class="container">
+    <a class="nav-brand-img" href="../../index.html"><img src="../../images/footer-signature.png" alt="江江教練 | 江昱德"></a>
+    <button class="nav-toggle" aria-label="選單"><span></span><span></span><span></span></button>
+    <ul class="nav-menu">
+      <li><a href="../../index.html">首頁</a></li>
+      <li><a href="../../knowledge-architecture.html">知識架構</a></li>
+      <li><a href="../../courses.html">課程</a></li>
+      <li><a href="../../articles.html" class="active">深度文章</a></li>
+      <li><a href="../../skills.html">技能包下載</a></li>
+      <li><a href="../../offers.html">服務方案</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="wc wc1"></div>
+  <div class="wc wc2"></div>
+  <div class="wc wc3"></div>
+  <!-- 本篇目前沒有圖卡，hero 不放封面圖（範本的 .hero-figure 整塊已移除，hero 自動置中只剩文字）。之後補圖時把範本那塊 <figure class="hero-figure"> 貼回來即可，lightbox 已內建。 -->
+  <div>
+    <div class="kicker">AI 應用 · Multi-Agent</div>
+    <h1>三天用 AI 員工開一間公司，最後出貨了什麼？｜Grok Bot Galaxy 直播 Day 3 整理</h1>
+    <p>最後一天他們把東西上線了。這篇整理行銷維運職務的 bot 分工，以及收尾時他們自己講出來的成果、限制與做錯的事。</p>
+    <div class="article-date">發佈 2026-09-20 ｜ 最後更新 2026-09-22</div>
+  </div>
+</section>
+
+
+<section class="section" id="start"><div class="inner">
+  <h2>這篇在講什麼</h2>
+  <p>Grok Bot Galaxy 是 xAI 在舊金山連播三天的直播活動，他們給自己訂的目標是現場用自己的 AI bot 從零做出一門生意。第三天是最後一天，他們把做出來的東西上線了，也在收尾時講了三天下來學到什麼。</p>
+  <p>先講清楚實際做到哪：他們上線的是一款遊戲與它的網站，直播中提到的收入只有一筆一美元的競標與一筆他們自己稱為理論上的贊助，沒有真實入帳。所以這三天的成果是一個上線的產品，不是一間開始賺錢的公司。</p>
+  <p>這篇整理兩塊：一場行銷維運職務的工作坊（這個職務怎麼用四個 bot 把重複工作接走），以及最後的成果展示與檢討（他們做出什麼、哪些是壞的、哪些話他們自己說得很坦白）。</p>
+  <h3>適合誰</h3>
+  <ul><li>想知道「AI 員工」放到真實團隊裡，一天實際怎麼運作的人</li><li>手上有重複性高的流程，想知道從哪一段開始交出去的人</li><li>不想只看漂亮成果，也想看失敗與限制的人</li></ul>
+  <h3>你可以帶走什麼</h3>
+  <ul><li>一個職務四個 bot 的分工，以及它們怎麼自動互相交接</li><li>一套把複雜工作拆給 bot 的方法</li><li>他們讓 bot 自己開工廠寫程式的實際做法與數字</li><li>三天下來講者自己承認的限制與做錯的事</li></ul>
+  <div class="toc"><b>這篇會講到</b><ol><li><a href="#marops-bots">行銷維運的四個 bot</a></li><li><a href="#self-completing">會自己完成的任務清單</a></li><li><a href="#ask-back">讓 bot 先反問你</a></li><li><a href="#two-weeks">兩週上線，建置只花 10 小時</a></li><li><a href="#human-gate">送出之前一定回到人</a></li><li><a href="#no-connector">沒有現成接口的工具怎麼辦</a></li><li><a href="#decompose">把工作拆開是前置作業</a></li><li><a href="#final-product">三天的最終成果</a></li><li><a href="#overnight-prs">一個晚上合併上百個修改</a></li><li><a href="#bot-roster">他們養的 bot 名單</a></li><li><a href="#getting-people-to-care">最難的是讓人在乎</a></li><li><a href="#what-to-unship">這次要下架什麼</a></li><li><a href="#whats-broken">他們自己承認壞掉的東西</a></li><li><a href="#two-people">團隊還是需要這兩種人</a></li></ol></div>
+</div></section>
+
+<section class="section" id="marops-bots"><div class="inner">
+  <h2>行銷維運：四個 bot，各有名字各有職責</h2>
+  <p>這場的講者把自己團隊在用的 bot 攤開講。</p>
+  <div class="tablewrap"><table>
+    <thead><tr><th>bot</th><th>負責什麼</th></tr></thead>
+    <tbody>
+      <tr><td>OP1</td><td>總管 bot，負責統整、驅動講者大部分的工作、維護任務清單</td></tr>
+      <tr><td>Fisher</td><td>負責接收信箱、日曆、簡訊與通訊軟體的訊息，所有進來的東西先過它</td></tr>
+      <tr><td>Juno</td><td>產品經理 bot，幫忙想清楚邊界情況、寫出需求規格</td></tr>
+      <tr><td>Ondes</td><td>工程師 bot，清楚公司系統怎麼接，包含客戶管理系統、資料倉儲與既有程式庫</td></tr>
+    </tbody>
+  </table></div>
+  <p>另外還有一支專門處理業務轄區爭議的 bot，手上握有公司的協作規則與客戶管理系統的完整脈絡。</p>
+  <figure class="inline-figure card"><img src="/images/articles/grok-bot-galaxy-day3-shipping/card02.jpg" alt="Day 3 三天的最終成果輪播卡" loading="lazy"><figcaption>輪播卡第 2 張：三天做出來的東西。</figcaption></figure>
+  <figure class="inline-figure"><img src="/images/articles/grok-bot-galaxy-day3-shipping/live01.jpg" alt="行銷維運場介紹四個 bot" loading="lazy"><figcaption>直播畫面：行銷維運場介紹四個 bot，總管 OP-1、收訊息的 Fisher、產品經理 Juno、工程師 Ondes。</figcaption></figure>
+</div></section>
+
+<section class="section" id="self-completing"><div class="inner">
+  <h2>會自己完成的任務清單</h2>
+  <p>這場真正的重點在於它們之間怎麼接手，而不只是 bot 的數量。</p>
+  <p>早上 9 點 04 分，Fisher 跑完它排定的例行巡邏，把信箱、日曆、工作聊天室裡的新訊息全掃一遍。它不只列出有哪些新訊息，還會讀完整段對話，判斷對方到底在要什麼。</p>
+  <p>掃完之後，Fisher 主動把結果傳給總管 bot OP1。OP1 從裡面挑出一項任務，看出那是一件轄區歸屬的爭議，直接轉給專責的轄區 bot。那支 bot 憑既有規則與客戶管理系統的資料，把交付內容的初稿寫出來。</p>
+  <p>整段過程講者沒有下第二道指令。他的角色是最後進來驗收，確認這份東西講得通。</p>
+</div></section>
+
+<section class="section" id="ask-back"><div class="inner">
+  <h2>給 bot 下指令，讓它先反問你</h2>
+  <p>講者示範怎麼跟產品經理 bot Juno 一起把一個內部工具的規格想清楚。他的做法不是把需求一次講完，而是先給粗略構想，讓 bot 反問。</p>
+  <p>現場來回的問答大概是這樣：</p>
+  <ul><li>只顯示新名單，不要其他篩選條件</li><li>名單被接受的當下不要動客戶管理系統裡的任何欄位，因為真正的狀態變化是業務實際聯絡對方的那一刻，而那件事已經有別的自動化在追蹤</li><li>加上原因欄位，備註設成選填</li><li>完成前先排隊等確認</li><li>這一段只在本地處理</li></ul>
+  <p>他拿這個跟比較舊的 AI 工具對照：舊工具很想討好使用者，收到一句粗略的指令就直接開始動工，容易錨定在第一句話上，方向就跑掉了，用的人反而變得不敢放手、什麼都要想很久。</p>
+</div></section>
+
+<section class="section" id="handoff"><div class="inner">
+  <h2>規格寫完，它自己交棒給工程 bot</h2>
+  <p>Juno 寫完規格之後，主動把工作交給工程 bot Ondes，開始實際開發。講者特別說了一句：這一步他沒有另外下指令。</p>
+</div></section>
+
+<section class="section" id="two-weeks"><div class="inner">
+  <h2>兩週從想法到上線，實際建置只花 10 小時</h2>
+  <p>這個內部工具從想法到上線是兩週，但真正的建置時間只有 10 小時。其餘時間花在帶人熟悉這個工具、收集回饋與新需求。</p>
+  <p>導入兩週後，團隊的名單檢視率創下新高。講者沒有給精確數字。</p>
+  <figure class="inline-figure"><img src="/images/articles/grok-bot-galaxy-day3-shipping/live02.jpg" alt="那個內部名單工具的預覽" loading="lazy"><figcaption>直播畫面：那個內部名單工具的預覽，每筆名單由人按接受、略過或拒絕（畫面上是假資料）。</figcaption></figure>
+</div></section>
+
+<section class="section" id="human-gate"><div class="inner">
+  <h2>送出之前一定回到人</h2>
+  <p>這場講的界線很清楚：可以給 bot 相當大的自主權，但在送出任何東西之前，它一定要先回到人手上。講者點名三類：對外發訊息、寫回客戶管理系統、送出程式修改。</p>
+  <div class="warnbox"><p>⚠️ 這是行銷維運這個團隊的規則。同一天主直播的遊戲團隊反過來走，讓通過驗證的程式修改自動合併、不經過人。兩邊的差別在於後果可不可逆：一封寄出去的信收不回來，一個還沒上線的遊戲改壞了可以再改。</p></div>
+  <p>被問到什麼工作永遠應該是人做的，講者的回答是建立關係、建立信任，還有不計代價把問題解決掉。</p>
+  <figure class="inline-figure"><img src="/images/articles/grok-bot-galaxy-day3-shipping/live03.jpg" alt="行銷維運場的心得投影片" loading="lazy"><figcaption>直播畫面：行銷維運場的心得投影片，第二條「給 bot 自主權，也給護欄」。</figcaption></figure>
+</div></section>
+
+<section class="section" id="no-connector"><div class="inner">
+  <h2>沒有現成接口的工具怎麼辦</h2>
+  <p>有人問通訊軟體一直掉線的問題，講者確認目前沒有原生的接口。</p>
+  <p>他給的變通做法是：直接到 bot 的電腦裡把那個 App 裝起來，讓它像人一樣操作。也可以裝整合多個聊天平台的那種整合型 App。</p>
+  <p>他同時提到前一天剛公布的密碼管理工具整合：可以把密碼庫分享給 bot，設一個例行任務定期檢查登入還有沒有效，失效就讓它自己用密碼庫裡的資料重新登入。</p>
+  <div class="warnbox"><p>⚠️ 這件事要自己衡量。把密碼庫分享給 bot，等於讓它拿著你的登入身分去操作。建議只開放真的用得到的項目，公司或客戶的帳號先確認對方同意、講好範圍。</p></div>
+</div></section>
+
+<section class="section" id="decompose"><div class="inner">
+  <h2>把工作拆開，是用 bot 的前置作業</h2>
+  <p>講者講了一段方法論，這段可以直接搬走。</p>
+  <p>他說依他的經驗，就算在沒有 AI 的年代，越擅長把事情拆解、把做法寫成清楚的步驟，做事就越順。用 bot 只是把這個能力放大。</p>
+  <p>他的拆法是先把一條複雜流程切成最小的步驟區塊，例如登入平台看數據、下載報表、跟其他資料對照分析。每個區塊配一支專門的 bot，再讓它們協同運作。</p>
+</div></section>
+
+<section class="section" id="final-product"><div class="inner">
+  <h2>主直播收尾：三天的最終成果</h2>
+  <p>最後一天他們把東西出貨了。</p>
+  <p>做出來的是一款卡片對戰遊戲。遊戲角色直接取自 Grok Bot 市集上約 70 個真實存在的 bot，每一隻都生了專屬頭像。功能包含社群帳號登入、全球排行榜，最後一晚才補上免登入試玩。網站上還開了兩個廣告版位：看板廣告與排行榜置頂競標。</p>
+  <p>第一天他們原本想做的是真人實體生意，訪談過幾位來賓之後覺得太難，第二天才轉向做遊戲工作室，第三天出貨。</p>
+  <p>網站另外做了給 AI 讀的優化，放上給代理看的規則檔與說明檔。講者說當時搜尋自家名稱已經排到第一，直播中沒有講是哪些關鍵字與哪個地區，這點無法獨立確認。</p>
+  <figure class="inline-figure"><img src="/images/articles/grok-bot-galaxy-day3-shipping/live04.jpg" alt="最後出貨的卡片對戰遊戲 Thursday Arena" loading="lazy"><figcaption>直播畫面：最後出貨的卡片對戰遊戲 Thursday Arena，第一回合的對戰畫面。</figcaption></figure>
+</div></section>
+
+<section class="section" id="overnight-prs"><div class="inner">
+  <h2>一個晚上合併了上百個修改，最後報的數字是 168</h2>
+  <p>這是他們讓 bot 自己開工廠的成果。</p>
+  <p>做法是下一句指令讓它把整份計畫自動跑完。bot 自己把計畫拆成很多小階段，一批負責寫程式並提交修改，另一批負責實際跑起應用程式、亂點測試找出錯誤。通過驗證的修改自動合併，人不用一個一個按。</p>
+  <p>現場核對數字時說法不一，從一百多到一百七十都有人講，最後口頭定在 168。</p>
+  <p>收工前資料 bot 拉出來的數字：公開對戰超過 6,000 場、網站約 30,000 次瀏覽。累計使用者接近 2,000 但沒確定破關，因為主持人自己用一句壞掉的查詢把正式站弄掛了。</p>
+  <figure class="inline-figure card"><img src="/images/articles/grok-bot-galaxy-day3-shipping/card03.jpg" alt="一個晚上合併 168 個修改" loading="lazy"><figcaption>輪播卡第 3 張：一夜之間的三個數字。</figcaption></figure>
+  <figure class="inline-figure"><img src="/images/articles/grok-bot-galaxy-day3-shipping/live05.jpg" alt="收工前資料 bot 拉出來的累計使用者曲線" loading="lazy"><figcaption>直播畫面：收工前資料 bot 拉出來的累計使用者曲線，畫面上寫的是 1,902。</figcaption></figure>
+</div></section>
+
+<section class="section" id="bot-roster"><div class="inner">
+  <h2>他們養的 bot，各自有名字</h2>
+  <p>當天在跑的 bot 大致是這些：</p>
+  <ul><li>試玩 bot：看到通過檢查的修改，就自己把遊戲從頭玩一遍並回報意見</li><li>總管 bot：負責跑整場活動的流程安排</li><li>資料 bot：收工前負責把各項數字拉出來</li><li>專門建 bot 的 bot：需要新角色時由它生出來</li><li>音效 bot：晚上用音樂生成工具做配樂</li><li>3D 原型 bot：探索把動畫系統做成 3D</li><li>監看回饋 bot：看使用者回饋頻道</li></ul>
+  <figure class="inline-figure card"><img src="/images/articles/grok-bot-galaxy-day3-shipping/card05.jpg" alt="他們養的 bot 名單" loading="lazy"><figcaption>輪播卡第 5 張：這些 bot 各自負責什麼。</figcaption></figure>
+</div></section>
+
+<section class="section" id="feedback-loop"><div class="inner">
+  <h2>回饋進來，自動變成修好的版本</h2>
+  <p>監看回饋的那支 bot 做的事是一整串：先把重複的意見合併掉，判斷是錯誤就直接叫雲端的寫程式代理去修，修好自動合併。講者說他把這條設成全自動，東西就一直被合併進去。</p>
+</div></section>
+
+<section class="section" id="getting-people-to-care"><div class="inner">
+  <h2>最難的不是做出來，是讓人在乎</h2>
+  <p>這是收尾時的一句結論。</p>
+  <p>他們的說法是：一旦對齊一個大家都興奮的點子、開始出貨最小的可用版本，速度就快起來。但最難的部分通常是讓別人在乎這個東西。</p>
+  <p>接著講者自己承認：如果不是這場直播自帶觀眾，這款遊戲不會有人玩。</p>
+</div></section>
+
+<section class="section" id="what-to-unship"><div class="inner">
+  <h2>這次要下架什麼</h2>
+  <p>另一個他們自己在用的內部提問。</p>
+  <p>講者的說法是，AI 讓你想做什麼幾乎都做得出來，所以很容易做出一堆功能但不好用的產品。他們團隊常問的問題是這次要拿掉什麼，而不是要再加什麼。</p>
+  <p>實際砍掉的東西：複雜的角色屬性設計、多戰場的計畫。只留核心的戰鬥循環，才趕得上當天出貨。</p>
+  <figure class="inline-figure card"><img src="/images/articles/grok-bot-galaxy-day3-shipping/card08.jpg" alt="這次要下架什麼" loading="lazy"><figcaption>輪播卡第 8 張：做減法比加功能難。</figcaption></figure>
+  <figure class="inline-figure"><img src="/images/articles/grok-bot-galaxy-day3-shipping/live06.jpg" alt="他們的收尾白板" loading="lazy"><figcaption>直播畫面：他們的收尾白板，「核心循環（已鎖定）」只留選角、排陣、自動對戰、結果分享四步。</figcaption></figure>
+</div></section>
+
+<section class="section" id="know-your-domain"><div class="inner">
+  <h2>講者的建議：從你已經很懂的領域開始</h2>
+  <p>他們原本想辦快閃活動，訪談業內的人之後，對方一口氣講出十件他們從沒想過的事，例如場地許可、餐飲、冷熱食規範。</p>
+  <p>講者給的建議是，用 bot 創業的話，繞著自己本來就做得很好的領域做。</p>
+  <p>同一段還有一句實話：不是跟模型許願就會有錢。他說自己從開播就開著一個 agent，到收工還是零收入。</p>
+</div></section>
+
+<section class="section" id="whats-broken"><div class="inner">
+  <h2>他們自己承認壞掉的東西</h2>
+  <p>這份清單值得單獨看。</p>
+  <div class="tablewrap"><table>
+    <thead><tr><th>壞在哪</th><th>直播中的說法</th></tr></thead>
+    <tbody>
+      <tr><td>廣告競標</td><td>整個功能是壞的</td></tr>
+      <tr><td>內容審核</td><td>使用者投稿內容的審核機制是壞的</td></tr>
+      <tr><td>社群帳號登入</td><td>現場展示時出錯</td></tr>
+      <tr><td>排行榜分數</td><td>收到回饋說分數計算怪怪的，還在查</td></tr>
+      <tr><td>正式站</td><td>直播尾聲主持人自己用一句壞掉的查詢把正式站弄掛</td></tr>
+      <tr><td>遊戲本身</td><td>講者自己說第一款遊戲並不是真的很好玩</td></tr>
+    </tbody>
+  </table></div>
+  <p>還有一個小插曲：他們讓一支 bot 去看直播剪輯、做一張三天回顧海報，做出來的東西講者自己評為不怎麼樣，當場說不覺得該給大家看。那張海報上的數字是 bot 自己上網查來的，沒有人餵給它。</p>
+  <figure class="inline-figure card"><img src="/images/articles/grok-bot-galaxy-day3-shipping/card10.jpg" alt="他們自己承認壞掉的東西" loading="lazy"><figcaption>輪播卡第 10 張：他們列出來的待修清單。</figcaption></figure>
+</div></section>
+
+<section class="section" id="varied-team"><div class="inner">
+  <h2>把 bot 當成一支要湊齊的團隊</h2>
+  <p>講者建議的心態是不懂的領域就開一個對應的 bot 去補。有人的做法是叫 bot 上網修習一批課程，學會一個新領域。他認為組合可以很多元，用請一群員工的方式去想就好。</p>
+  <p>他們自己就有一支遊戲設計 bot，做法是讓它去學最好的那些遊戲。</p>
+  <figure class="inline-figure"><img src="/images/articles/grok-bot-galaxy-day3-shipping/live07.jpg" alt="上線檢查清單" loading="lazy"><figcaption>直播畫面：上線檢查清單，右下角是當下的 bot 活動統計（43 個 bot）。</figcaption></figure>
+</div></section>
+
+<section class="section" id="two-people"><div class="inner">
+  <h2>進到 agent 時代，團隊還是需要這兩種人</h2>
+  <p>收尾的最後一段，講者講了他認為更重要的事。</p>
+  <p>他說在 agent 的時代，你身邊合作的人反而更有價值。一個團隊需要兩種人：一種心裡有清晰的願景、判斷得出來要往哪走；另一種不放棄，一定要把事情做成。他說這是很人類的角色，模型再強都還是需要。</p>
+  <p>還有一句補充：上線那一下漂亮只是開始，後面怎麼一直改下去才是重點。</p>
+  <figure class="inline-figure card"><img src="/images/articles/grok-bot-galaxy-day3-shipping/card12.jpg" alt="團隊還是需要這兩種人" loading="lazy"><figcaption>輪播卡第 12 張：收尾的結論。</figcaption></figure>
+</div></section>
+
+<section class="section" id="scope"><div class="inner">
+  <h2>這篇整理的範圍</h2>
+  <ul><li>只整理 Grok Bot Galaxy 直播 Day 3（2026-09-17 台灣時間），且只涵蓋已轉錄完成的三段：開場、Marketing Operations 工作坊、最終展示與收尾。Post-Sales 與 Marketing 兩場工作坊、中段主直播尚未轉錄完成，不在本篇。</li><li>內容來自直播回放的英文逐字稿，翻譯與歸納由我整理。</li><li>講者提到的功能狀態與數字是直播當天的說法，之後可能改變。</li><li>逐字稿沒有說話者標籤，無法把發言對應到個別講者，正文一律寫「講者」。公司名不寫。</li><li>一支 bot 自己上網查來的「4.5K 場」與團隊資料 bot 報的「6,000 場」對不起來，逐字稿沒說是不是同一個指標，本篇只採用資料 bot 的數字。</li></ul>
+</div></section>
+
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">江江教練 · AI 知識管理</div>
+    <div class="footer-links">
+      <a href="../../articles.html">← 回深度文章總站</a>
+      <a href="../../index.html">首頁</a>
+      <a href="../../learn.html">自學資源</a>
+      <a href="../../skills.html">技能包下載</a>
+      <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">LINE 社群 ↗</a>
+      <a href="https://www.threads.com/@jiang_yude_coach" target="_blank" rel="noopener">Threads ↗</a>
+      <a href="https://vocus.cc/salon/Jiang_Coach" target="_blank" rel="noopener">方格子 ↗</a>
+    </div>
+    <div class="footer-note">這是一篇教學文章，整理 Grok Bot Galaxy 直播 Day 3 的內容，供你參考。</div>
+  </div>
+</footer>
+
+<!-- 點圖放大 lightbox（hero 與內文圖通用，已內建，不用每篇重加） -->
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <span class="lightbox-close" aria-label="關閉">×</span>
+  <img id="lightbox-img" src="" alt="放大檢視">
+</div>
+<script>
+(function(){
+  var box=document.getElementById('lightbox'),boxImg=document.getElementById('lightbox-img');
+  document.querySelectorAll('.hero-figure img,.inline-figure img').forEach(function(img){
+    img.addEventListener('click',function(){boxImg.src=img.currentSrc||img.src;boxImg.alt=img.alt||'放大檢視';box.classList.add('open');box.setAttribute('aria-hidden','false');});
+  });
+  function close(){box.classList.remove('open');box.setAttribute('aria-hidden','true');boxImg.src='';}
+  box.addEventListener('click',close);
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
+})();
+</script>
+
+<script src="../../image-interactions.js"></script>
+
+<!-- 官網共用：滑鼠暖光暈 + 導航列漢堡選單 -->
+<script src="../../spotlight.js"></script>
+
+<!-- 文章自動互聯（相關文章）：兩支已內建，順序不可顛倒，不用再另外加 -->
+<script src="../../articles-data.js"></script>
+<script src="../../related-render.js"></script>
+  <script src="/mika-chat-widget.js" defer></script>
+</body>
+</html>

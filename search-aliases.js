@@ -162,4 +162,5 @@ window.SEARCH_ALIASES = {
   "ai-data-red-lines": ["公司資料可以給AI嗎","客戶名單可以貼進ChatGPT嗎","病歷可以給AI嗎","資料貼給AI會怎樣","AI會不會偷看我的檔案","AI會不會刪掉我的檔案","截圖丟給AI安全嗎","把報價單貼給AI","公司機密貼給AI","AI資安紅線","受控範圍","爆炸半徑","權限最小化","不要按自動同意","免費版跟企業版差在哪","AI服務條款要看什麼","資料會不會被拿去訓練","AI導入資安邊界","公司AI使用規範怎麼訂","員工把資料貼給AI","營業秘密貼給AI","員工健檢報告可以給AI嗎","HR個資AI","去識別化","刪掉姓名就安全了嗎","檔案裡看不到的資料","照片有GPS","PHI","個資法第六條"],
   "grok-bot-galaxy-day1-founders": ["Grok Bot","Grok Bot Galaxy","Grok機器人","多代理","Multi-Agent","AI員工","AI員工團隊","一個人帶很多AI","22個AI員工","AI員工怎麼分工","總管制","專家制","bot搶話","bot放群組很花錢","凌晨自動健檢程式碼"],
   "grok-bot-galaxy-day2-workshops": ["Grok Bot","Grok Bot Galaxy","多代理","Multi-Agent","AI員工","AI客服","AI業務","AI開發客戶","SDR","業務工程師用AI","客服導入AI","AI客服要花多少錢","一張工單多少錢","省token","AI寫開發信","AI做客戶案例投影片"],
+  "grok-bot-galaxy-day3-shipping": ["Grok Bot","Grok Bot Galaxy","多代理","Multi-Agent","AI員工","AI開公司","用AI創業","AI員工最後做出什麼","一個晚上合併168個修改","Thursday Arena","行銷維運","RevOps","MarOps","AI自動合併程式","送出前要回到人","讓人在乎比做出來難"],
 };
