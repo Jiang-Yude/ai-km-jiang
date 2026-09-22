@@ -23,21 +23,94 @@ window.ARTICLE_TAGS = {
 
 window.ARTICLES = [
   {
-    id: "grok-bot-galaxy-day1-founders",
-    url: "articles/grok-bot-galaxy-day1-founders/",
-    date: "2026-09-17",
-    updated: "2026-09-17",
-    title: "一個人怎麼帶 22 個 AI 員工？｜Grok Bot Galaxy 直播 Day 1 創辦人場整理",
-    problem: "已經在用一兩個 AI 助理，想多開幾個分工卻不知道怎麼分；開了好幾個 bot 之後，發現它們互相搶話、費用變高、有時候不照規矩做事。",
-    audience: "開始想讓多個 AI 助理分工的人；bot 開多了遇到搶話、花費、不照規矩問題的人；想把 AI 員工帶進自己或客戶公司的顧問與經營者。",
-    summary: "整理 Grok Bot Galaxy 直播 Day 1 最後一場創辦人場：台上講者回答現場提問，加上一位用 22 個 bot 經營 7 個事業的來賓分享。內容包含設定 AI 員工的順序（先盤點、再分組、再選專家制或總管制）、來賓的 bot 分工表、群組對話會搶話與推高花費、讓 AI 把規則寫成程式、法規合約交給 AI 做第一輪的邊界、睡前交給 bot 早上人審過再送出，以及官方坦承還在改善的地方。文末附盤點分組與活動預算兩段可複製的提示詞。",
+    id: "ai-data-red-lines",
+    url: "articles/ai-data-red-lines/",
+    date: "2026-09-22",
+    updated: "2026-09-22",
+    title: "公司資料可以貼給 AI 嗎？｜先搞清楚這兩條紅線",
+    problem: "想用 AI 處理工作，但不確定哪些資料能貼、哪些不能貼，也沒意識到會動檔案的 AI 本身就是另一種風險。",
+    audience: "每天用 AI 工作的上班族，以及正在替公司訂 AI 使用規範的人。",
+    summary: "把客戶名單貼進 AI 之前，要防的是兩件事：資料送出去會怎樣，以及這個 AI 碰得到你電腦裡的什麼。這篇把一個給臨床醫師的 AI 資安系列轉譯成公司版本，包含四條路徑的紅線判斷、辦公室版的五題自測、檔案裡你看不到的那一半，以及讀服務條款只要找的四個答案。內容骨架來自黃士峯醫師的公開影片，企業端的延伸標明為推論。",
     tags: {
-      topic: ["AIAgent", "AI工作流", "工作流程"],
+      topic: ["資訊安全", "使用原則"],
+      level: ["零基礎入門"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["openrouter-deepseek-data-routing", "ai-loop-safety-recovery", "ai-usage-audit"]
+  },
+
+  {
+    id: "fixed-test-set-for-ai",
+    url: "articles/fixed-test-set-for-ai/",
+    date: "2026-09-20",
+    updated: "2026-09-20",
+    title: "新模型出來，我怎麼知道它對我的工作真的比較好？｜一組不會變的考題，換模型、換規則、換平台都用它來比",
+    problem: "新模型出來想試一下，試完只留下「感覺比較聰明」，講不出證據。想認真比又會發現上次測完之後規則改過、標準答案也改過，兩次的分數根本不能放在一起。",
+    audience: "在用 AI 做長期任務（整理訊息、分類資料、客服回覆、報告生成），每隔一陣子想知道到底有沒有比上個月好的人；以及要幫客戶評估換模型、換平台，需要拿得出數字的專業工作者。",
+    summary: "新模型出來要不要換，答這題需要一組不會變的考題。我用八天、138 則 LINE 群訊息當考卷測 AI 整理活動的準確度，改了兩版規則分數一分沒動，後來改掉自己標的一題答案，拿同一份舊輸出重算就從 29 變 36，系統實際進步是零分。這篇把測試拆成三層：題目層去識別後凍結不動、判準層可以改但要升版本並同時保留舊分與重算分、跑分層只新增不修改且一定要存原始輸出。再把題組分成核心、擴充、保留三種，其中保留題組不准拿來改規則，才擋得住把答案背起來的過擬合。文末給換平台前要凍結的七樣東西、一張可直接照抄的六欄成績表，以及不用寫程式、今天就能做完的五步起步法。",
+    tags: {
+      topic: ["AI工作流", "工作流程", "輔助決策"],
+      level: ["進階"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["how-to-verify-ai-rule-changes", "three-levels-of-cross-review", "dual-track-planning-loop", "ai-cp-value-calculus", "ai-schedule-wake-interval", "rule-file-rebound", "caught-ai-slacking-into-rules", "ai-user-testing", "long-document-review-layers"]
+  },
+
+  {
+    id: "line-backup-who-can-see-it",
+    url: "articles/line-backup-who-can-see-it/",
+    date: "2026-09-20",
+    updated: "2026-09-20",
+    title: "那個 LINE 備份工具，怎麼讀到你的訊息？｜在比功能之前，先打開群組成員名單看一眼",
+    problem: "想把 LINE 群組的討論留下來，搜到的工具功能寫得都差不多，價差卻很大，不知道差在哪、也不知道該怎麼判斷。",
+    audience: "想把社區、協會、課程或客戶群組的討論留下來，正在比較工具的人。",
+    summary: "比功能之前先比身分：一個工具要讀到 LINE 群組的訊息，得用某種身分進到群裡，而身分只有看得見與看不見兩種。這一眼不需要懂技術，打開群組成員名單就看得到。文章也把我自己選的那條路換來的三個限制一起講：加入前的訊息收不到、它不是隱形的、LINE 官方帳號本身要錢。",
+    tags: {
+      topic: ["AI工作流", "差異比較"],
+      level: ["基礎"],
+      content_type: ["觀點文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["messaging-apps-ai-friendliness", "openrouter-deepseek-data-routing", "line-group-ai-workflow", "ai-data-organization-usable-system"]
+  },
+
+  {
+    id: "ai-schedule-wake-interval",
+    url: "articles/ai-schedule-wake-interval/",
+    date: "2026-09-19",
+    updated: "2026-09-19",
+    title: "讓 AI 定時整理資料前，先決定它多久醒一次｜網頁機械性收集加 API 定時統整",
+    problem: "想讓 AI 定時整理 LINE 群訊息或表單資料，但不知道會花多少錢，第一版算出來每個月 400 美金。",
+    audience: "手上有一堆訊息想自動整理、在意帳單、或要幫客戶估價的人。",
+    summary: "把 LINE 群訊息自動整理成活動看板，第一版全部丟給 AI 讀，每月 400 美金。改成兩層之後同樣每小時跑只要 3.69 美金：程式先查有沒有新東西，有才叫 AI，而且只送新的。這篇給四種排程頻率的月費與延遲對照、程式與 AI 的分工判準（答案唯一嗎），以及一個不用接 API 就能算出月費的方法。另外實測發現：規則寫清楚的效果遠大於換更貴的模型，四個模型曾經全錯在同一個地方。",
+    tags: {
+      topic: ["AI工作流", "輔助決策", "工作流程"],
       level: ["基礎"],
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["ai-employee-four-levels", "agent-workflow-builds-automation", "cli-api-mcp-computer-use", "how-to-train-your-ai-employee", "what-are-subagents"]
+    related: ["ai-vs-script-four-situations", "ai-image-api-cost", "line-group-ai-workflow", "how-to-verify-ai-rule-changes", "loop-round-limit"]
+  },
+
+  {
+    id: "ai-vs-script-four-situations",
+    url: "articles/ai-vs-script-four-situations/",
+    date: "2026-09-18",
+    updated: "2026-09-18",
+    title: "讓 AI 只做需要判斷的事，其他交給程式｜四情境分工法，從完全沒套路到完全不變",
+    problem: "同一段流程，什麼時候該繼續交給 AI，什麼時候該把它寫成一支小程式？每次都叫 AI 重做一遍，慢又貴；太早寫成程式，又會把還在變的做法鎖死。",
+    audience: "已經在用 AI 做重複工作，想知道哪一段該寫成程式、哪一段不該的人。",
+    summary: "用創作圖文的四個步驟當例子，把一條工作流拆成四種情境：完全沒套路、有基本套路但每次還要設計、成品每次都要長一樣、完全不變。四種情境分別對應現想、寫技能包、給參考檔、寫成小程式。判準是變動程度不是難度。附一個可點選的決策樹、兩種錯配的後果，以及三個先別寫程式的邊界。",
+    tags: {
+      topic: ["AI工作流", "工作流程", "輔助決策", "技能包設計"],
+      level: ["基礎"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["agent-workflow-builds-automation", "claude-skills-knowledge-assets", "loop-engineering-guardrails", "my-three-loops", "liberal-arts-agent-framework", "ai-schedule-wake-interval"],
+    cover: { wide: "images/articles/ai-vs-script-four-situations-summary.jpg" }
   },
 
   {
@@ -55,7 +128,8 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["free-deploy-three-boundaries", "github-vercel-cloudflare-compare", "who-can-see-your-site", "webnode-to-cloudflare-pages"]
+    related: ["free-deploy-three-boundaries", "github-vercel-cloudflare-compare", "who-can-see-your-site", "webnode-to-cloudflare-pages"],
+    cover: { wide: "images/articles/hosting-platform-decision-tree-cover.jpg" }
   },
 
   {
@@ -73,7 +147,8 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["use-more-ai-not-enough", "personal-studio-vs-solo-company", "claude-skills-knowledge-assets", "ai-employee-four-levels"]
+    related: ["use-more-ai-not-enough", "personal-studio-vs-solo-company", "claude-skills-knowledge-assets", "ai-employee-four-levels"],
+    cover: { wide: "images/articles/ai-custom-work-compound-cover.jpg" }
   },
 
   {
@@ -91,7 +166,8 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["rule-file-rebound", "how-to-verify-ai-rule-changes", "three-levels-of-cross-review", "let-ai-review-itself", "tag-wiki-method"]
+    related: ["rule-file-rebound", "how-to-verify-ai-rule-changes", "three-levels-of-cross-review", "let-ai-review-itself", "tag-wiki-method"],
+    cover: { wide: "images/articles/ai-rule-file-slimming-cover.jpg" }
   },
 
   {
@@ -109,7 +185,8 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach/post/Dc2DOcOki6E", vocus: null },
-    related: ["ai-loop-safety-recovery", "recovery-over-perfection", "three-levels-of-cross-review", "caught-ai-slacking-into-rules"]
+    related: ["ai-loop-safety-recovery", "recovery-over-perfection", "three-levels-of-cross-review", "caught-ai-slacking-into-rules"],
+    cover: { tall: "images/articles/design-for-ai-errors-cover.jpg" }
   },
 
   {
@@ -127,7 +204,8 @@ window.ARTICLES = [
       content_type: ["觀點文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["who-can-see-your-site", "ai-data-organization-usable-system", "yongli-ai-workshop-tools-to-workflow", "docs-as-system-design-agent", "post-class-organizing-loop"]
+    related: ["who-can-see-your-site", "ai-data-organization-usable-system", "yongli-ai-workshop-tools-to-workflow", "docs-as-system-design-agent", "post-class-organizing-loop"],
+    cover: { wide: "images/articles/website-as-workstation-cover.jpg" }
   },
 
   {
@@ -145,7 +223,8 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["knowledge-base-three-vault-split", "chatgpt-work-codex-choice", "mobile-to-desktop-publish-loop", "cli-api-mcp-computer-use", "ai-loop-safety-recovery", "ai-data-organization-usable-system"]
+    related: ["knowledge-base-three-vault-split", "chatgpt-work-codex-choice", "mobile-to-desktop-publish-loop", "cli-api-mcp-computer-use", "ai-loop-safety-recovery", "ai-data-organization-usable-system"],
+    cover: { tall: "images/articles/where-is-my-server-01.jpg" }
   },
 
   {
@@ -163,7 +242,8 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["what-is-loop-engineering", "loop-engineering-guardrails", "loop-round-limit", "harness-to-loop", "my-three-loops", "ai-user-testing"]
+    related: ["what-is-loop-engineering", "loop-engineering-guardrails", "loop-round-limit", "harness-to-loop", "my-three-loops", "ai-user-testing"],
+    cover: { tall: "images/articles/loop-four-entries-01.jpg" }
   },
 
   {
@@ -181,7 +261,8 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["ai-market-microcosm", "ai-mvp-validation-before-product", "before-installing-others-skill", "loop-four-entries"]
+    related: ["ai-market-microcosm", "ai-mvp-validation-before-product", "before-installing-others-skill", "loop-four-entries"],
+    cover: { tall: "images/articles/ai-user-testing-cover.jpg" }
   },
 
   {
@@ -199,7 +280,8 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["harness-to-loop", "cli-api-mcp-computer-use", "ai-said-it-watched-the-video", "let-ai-do-the-setup", "ai-tools-professional-judgment"]
+    related: ["harness-to-loop", "cli-api-mcp-computer-use", "ai-said-it-watched-the-video", "let-ai-do-the-setup", "ai-tools-professional-judgment"],
+    cover: { wide: "images/articles/claude-meta-ads-connector-cover.jpg" }
   },
 
   {
@@ -217,7 +299,8 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["rule-file-rebound", "caught-ai-slacking-into-rules", "three-levels-of-cross-review", "how-to-train-your-ai-employee", "loop-engineering-guardrails", "semantic-rules-before-prompt-templates", "let-ai-review-itself", "ai-rule-file-slimming"]
+    related: ["rule-file-rebound", "caught-ai-slacking-into-rules", "three-levels-of-cross-review", "how-to-train-your-ai-employee", "loop-engineering-guardrails", "semantic-rules-before-prompt-templates", "let-ai-review-itself", "ai-rule-file-slimming", "ai-schedule-wake-interval", "fixed-test-set-for-ai"],
+    cover: { tall: "images/articles/how-to-verify-ai-rule-changes-cover.jpg" }
   },
 
   {
@@ -235,7 +318,8 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["rule-file-rebound", "three-levels-of-cross-review", "dual-track-planning-loop", "how-to-verify-ai-rule-changes", "decision-ladder-non-programmer", "ai-rule-file-slimming"]
+    related: ["rule-file-rebound", "three-levels-of-cross-review", "dual-track-planning-loop", "how-to-verify-ai-rule-changes", "decision-ladder-non-programmer", "ai-rule-file-slimming"],
+    cover: { tall: "images/articles/let-ai-review-itself-cover.jpg" }
   },
 
   {
@@ -253,7 +337,8 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: []
+    related: [],
+    cover: { tall: "images/articles/make-your-ai-secretary-cover.jpg" }
   },
 
   {
@@ -271,7 +356,8 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: []
+    related: ["ai-schedule-wake-interval"],
+    cover: { tall: "images/articles/ai-image-api-cost-cover.jpg" }
   },
 
   {
@@ -289,7 +375,8 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: []
+    related: [],
+    cover: { tall: "images/articles/analytics-7-ga4-gate.jpg" }
   },
 
   {
@@ -307,7 +394,8 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["parallel-site-editing", "same-question-different-answers", "long-document-review-layers"]
+    related: ["parallel-site-editing", "same-question-different-answers", "long-document-review-layers"],
+    cover: { wide: "images/articles/what-are-subagents-cover.jpg" }
   },
 
   {
@@ -325,7 +413,8 @@ window.ARTICLES = [
       content_type: ["趨勢文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["webmcp-day-one", "agent-web-turning-point", "web-chat-ai-vs-desktop-agent", "a2a-agent-protocol", "five-loops-content-line"]
+    related: ["webmcp-day-one", "agent-web-turning-point", "web-chat-ai-vs-desktop-agent", "a2a-agent-protocol", "five-loops-content-line"],
+    cover: { wide: "images/articles/ai-era-websites-for-agents-cover.jpg" }
   },
 
   {
@@ -343,7 +432,8 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["what-is-loop-engineering", "what-is-graph-engineering", "ai-era-websites-for-agents"]
+    related: ["what-is-loop-engineering", "what-is-graph-engineering", "ai-era-websites-for-agents"],
+    cover: { tall: "images/articles/five-loops-content-line-card-01.jpg" }
   },
 
   {
@@ -361,7 +451,8 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["what-is-loop-engineering", "loop-engineering-guardrails", "prompt-to-loop-map", "eight-ai-system-concepts-2026", "cross-ai-review-both-wrong", "how-to-train-your-ai-employee", "loop-four-entries"]
+    related: ["what-is-loop-engineering", "loop-engineering-guardrails", "prompt-to-loop-map", "eight-ai-system-concepts-2026", "cross-ai-review-both-wrong", "how-to-train-your-ai-employee", "loop-four-entries"],
+    cover: { wide: "images/articles/harness-to-loop-01.jpg" }
   },
 
   {
@@ -379,7 +470,8 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["what-is-loop-engineering", "loop-engineering-guardrails", "after-ai-says-remembered", "dual-track-planning-loop", "what-is-graph-engineering", "ai-usage-audit", "loop-four-entries"]
+    related: ["what-is-loop-engineering", "loop-engineering-guardrails", "after-ai-says-remembered", "dual-track-planning-loop", "what-is-graph-engineering", "ai-usage-audit", "loop-four-entries", "ai-schedule-wake-interval"],
+    cover: { wide: "images/articles/loop-round-limit-cover.jpg" }
   },
 
   {
@@ -397,7 +489,8 @@ window.ARTICLES = [
       content_type: ["觀點文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["web-chat-ai-vs-desktop-agent", "chatgpt-work-codex-choice"]
+    related: ["web-chat-ai-vs-desktop-agent", "chatgpt-work-codex-choice"],
+    cover: { tall: "images/articles/mac-for-agent-beginners-01.jpg" }
   },
 
   {
@@ -469,7 +562,7 @@ window.ARTICLES = [
       content_type: ["觀點文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["ai-cp-value-calculus", "copied-mechanism-is-no-mechanism", "program-vs-ai-skill-library", "cognitive-debt", "loop-round-limit"]
+    related: ["ai-cp-value-calculus", "copied-mechanism-is-no-mechanism", "program-vs-ai-skill-library", "cognitive-debt", "loop-round-limit", "ai-data-red-lines"]
   },
 
   {
@@ -824,7 +917,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["cli-api-mcp-computer-use", "ai-cp-value-calculus"]
+    related: ["cli-api-mcp-computer-use", "ai-cp-value-calculus", "line-backup-who-can-see-it", "ai-data-red-lines"]
   },
 
   {
@@ -968,7 +1061,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["after-ai-says-remembered", "long-document-review-layers", "mobile-to-desktop-publish-loop", "ai-said-it-watched-the-video", "cross-ai-review-both-wrong", "webmcp-day-one", "how-to-verify-ai-rule-changes", "let-ai-review-itself", "ai-rule-file-slimming"]
+    related: ["after-ai-says-remembered", "long-document-review-layers", "mobile-to-desktop-publish-loop", "ai-said-it-watched-the-video", "cross-ai-review-both-wrong", "webmcp-day-one", "how-to-verify-ai-rule-changes", "let-ai-review-itself", "ai-rule-file-slimming", "fixed-test-set-for-ai"]
   },
 
   {
@@ -1058,7 +1151,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["line-group-ai-workflow", "web-chat-ai-vs-desktop-agent", "free-deploy-three-boundaries", "ai-employee-four-levels"]
+    related: ["line-group-ai-workflow", "web-chat-ai-vs-desktop-agent", "free-deploy-three-boundaries", "ai-employee-four-levels", "line-backup-who-can-see-it"]
   },
 
   {
@@ -1509,7 +1602,7 @@ window.ARTICLES = [
       content_type: ["觀點文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["ai-usage-audit", "ai-tools-professional-judgment", "strong-ai-models-knowledge-workflow-road", "program-vs-ai-skill-library", "ai-capability-tiers", "long-task-completion-rate", "openrouter-deepseek-data-routing"]
+    related: ["ai-usage-audit", "ai-tools-professional-judgment", "strong-ai-models-knowledge-workflow-road", "program-vs-ai-skill-library", "ai-capability-tiers", "long-task-completion-rate", "openrouter-deepseek-data-routing", "fixed-test-set-for-ai"]
   },
 
   {
@@ -1923,7 +2016,7 @@ window.ARTICLES = [
       content_type: ["觀點文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["what-is-loop-engineering", "my-three-loops", "tag-wiki-method", "recovery-over-perfection", "loop-engineering-guardrails", "laptop-desktop-webpage-sync-icloud-git"]
+    related: ["what-is-loop-engineering", "my-three-loops", "tag-wiki-method", "recovery-over-perfection", "loop-engineering-guardrails", "laptop-desktop-webpage-sync-icloud-git", "ai-data-red-lines"]
   },
 
   {
@@ -2229,7 +2322,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["agent-workflow-builds-automation", "codex-only-auto-worklog", "how-to-train-your-ai-employee", "mika-to-laika-product-character-design", "messaging-apps-ai-friendliness"]
+    related: ["agent-workflow-builds-automation", "codex-only-auto-worklog", "how-to-train-your-ai-employee", "mika-to-laika-product-character-design", "messaging-apps-ai-friendliness", "ai-schedule-wake-interval", "line-backup-who-can-see-it"]
   },
 
   {
@@ -2643,7 +2736,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["semantic-rules-before-prompt-templates", "notebooklm-knowledge-analysis-assistant", "claude-skills-knowledge-assets", "why-split-data-into-cards", "long-answer-three-layers", "website-as-workstation"]
+    related: ["semantic-rules-before-prompt-templates", "notebooklm-knowledge-analysis-assistant", "claude-skills-knowledge-assets", "why-split-data-into-cards", "long-answer-three-layers", "website-as-workstation", "line-backup-who-can-see-it"]
   },
 
   {

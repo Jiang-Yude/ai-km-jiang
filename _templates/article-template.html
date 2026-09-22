@@ -91,6 +91,7 @@ nav.top ul.nav-menu a:hover{color:#1a1612}nav.top ul.nav-menu a.active{color:#1a
 .tablewrap tbody tr:last-child td{border-bottom:none}
 .tablewrap td code,.section code{background:var(--soft);border:1px solid var(--line);border-radius:5px;padding:1px 6px;font:500 15px/1.5 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace}
 .inline-figure.wide{max-width:1000px}
+.inline-figure.portrait{max-width:430px}
 .toc{margin:26px 0 0;padding:20px 22px;background:#fff;border:1px solid var(--line);border-radius:10px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
 .toc>b{display:block;font-size:15px;letter-spacing:.05em;color:var(--green);margin-bottom:10px}
 .toc ol{margin:0;padding-left:1.35em;font-size:18px;line-height:1.7}
@@ -124,7 +125,7 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
 .hero .wc2{width:360px;height:300px;bottom:-110px;left:-70px;background:#5f7553;opacity:.13}
 .hero .wc3{width:280px;height:260px;top:34%;left:14%;background:#a08144;opacity:.10}
 .hero>div{flex:none;width:860px;max-width:100%;position:relative;z-index:2}
-.hero-figure{margin:0;width:420px;flex:none;position:relative;z-index:2}
+.hero-figure{margin:0;width:620px;flex:none;position:relative;z-index:2}
 .hero-figure img{display:block;width:100%;border-radius:16px;border:1px solid #d8cdb8;box-shadow:0 18px 45px rgba(107,74,42,.16);cursor:zoom-in}
 .hero-figure figcaption{margin-top:10px;font-size:14px;line-height:1.6;color:#6a635a}
 .inline-figure{margin:30px auto 8px;max-width:820px}
@@ -185,7 +186,7 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
 .footer-inner{width:min(1000px,100%);margin:0 auto}
 .footer-links{display:flex;flex-wrap:wrap;gap:6px 12px;margin-bottom:14px}.footer-links a{color:var(--blue);font-weight:900;text-decoration:none;font-size:14px}
 .footer-brand{font-weight:900;font-size:15px;margin-bottom:10px}.footer-note{font-size:13px;line-height:1.6}
-@media(max-width:820px){.infocard-grid{grid-template-columns:1fr}.duo{grid-template-columns:1fr}.workflow-grid{grid-template-columns:1fr}.cta-band .inner{grid-template-columns:1fr}.section{padding:40px 20px}.hero{min-height:52vh;flex-direction:column;justify-content:flex-start;align-items:flex-start;gap:24px}.hero>div{width:100%}.hero-figure{width:100%;max-width:560px}}
+@media(max-width:820px){.inline-figure.portrait{max-width:340px}.infocard-grid{grid-template-columns:1fr}.duo{grid-template-columns:1fr}.workflow-grid{grid-template-columns:1fr}.cta-band .inner{grid-template-columns:1fr}.section{padding:40px 20px}.hero{min-height:52vh;flex-direction:column;justify-content:flex-start;align-items:flex-start;gap:24px}.hero>div{width:100%}.hero-figure{width:100%;max-width:560px}}
 @media(max-width:820px){html,body{overflow-x:hidden}.hero h1{word-break:break-word}}
 </style>
 </head>
@@ -221,7 +222,13 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
     <h1>{{TITLE}}</h1>
     <p>{{HERO_LEAD}}</p>
   </div>
-  <!-- 封面圖（建議放）：橫式用預設 width:420px；4:5 直式改 .hero-figure{width:320px} 並加 .hero-figure img{aspect-ratio:4/5;object-fit:cover}。沒有封面圖就整個 <figure> 刪掉，hero 會自動置中只剩文字。封面同時設成上面 og:image / twitter:image。 -->
+  <!-- 封面圖（建議放）：⚠️ 比例是硬規則，不是美感選擇。
+       封面一律【橫式 16:9】，生成 1600x900、落檔 1400 寬，用預設 .hero-figure{width:620px}，不要加 aspect-ratio。
+       理由：封面真正的工作是分享縮圖（OG 1200x630、Threads 與 FB 連結預覽都是橫的），直式封面塞進去只剩中間一小塊。
+       只有「直接沿用既有 4:5 咪卡輪播卡」這個例外才走直式，那時改 .hero-figure{width:320px} 並加
+       .hero-figure img{aspect-ratio:4/5;object-fit:cover}，而且要在 image-ratio-ignore.json 寫明理由，否則 preflight 會擋。
+       沒有封面圖就整個 <figure> 刪掉，hero 會自動置中只剩文字。封面同時設成上面 og:image / twitter:image。
+       比例表正本與立因 → knowledge-site-manager/references/08-article-visuals-from-source.md 第零節之前。 -->
   <figure class="hero-figure">
     <img src="../../images/articles/{{SLUG}}-cover.jpg" alt="{{COVER_ALT}}" loading="lazy">
     <figcaption>{{COVER_CAPTION}}</figcaption>
@@ -253,7 +260,11 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
   ★ 配圖原則（對齊 knowledge-site-manager 設計系統 02-design-system）：
     - 封面：放上面 hero 的 .hero-figure（橫式預設，或 4:5 直式）。沒封面圖就把 hero 裡的 <figure> 刪掉。
     - 分享封面（og:image / twitter:image）：不論有沒有插圖，都跑 `node scripts/og-shot.mjs {{SLUG}}` 自動截 hero 標題卡成 1200×630（見 README）。og:image 已預設指向 images/og/{{SLUG}}.jpg，截好即生效，不要退回 intro-jiang.png。
-    - 內文圖：用 <figure class="inline-figure"><img loading="lazy" alt><figcaption>。圖要緊跟相關段落、跟內容互相搭配，不要全堆在一起、也不要放跟文意無關的圖。
+    - 內文圖：⚠️ 一律【直式 4:5】（1080x1350），用 &lt;figure class="inline-figure portrait"&gt;。
+      理由是一圖兩用：同一張直接拿去當社群輪播卡，不必為同一個主題生兩次圖。
+      真的需要橫式（操作截圖、寬表格、一頁總結）才用 &lt;figure class="inline-figure wide"&gt;，那是明確 opt-in。
+      沒標 wide 又放橫圖，preflight 的 check-image-ratio.mjs 會擋下。
+      圖要緊跟相關段落、跟內容互相搭配，不要全堆在一起、也不要放跟文意無關的圖。
     - 所有圖（hero＋內文）都會自動有「點圖放大」lightbox。
     - 圖片預設「不可拖移、不可縮放」（2026-08-31 江江拍板）：image-interactions.js 只認明寫 data-interactive-image 的圖，且全站關掉瀏覽器原生的圖片拖曳。
       真的要讓某張圖能被讀者拖曳縮放，在那張 <img> 上加 data-interactive-image；不要為了這個去放寬 image-interactions.js 的 selector（preflight 會擋）。

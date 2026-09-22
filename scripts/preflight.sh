@@ -55,6 +55,16 @@ else
   bad "標題公式未過：見上方清單。改副標，或在 title-formula-ignore.json 寫明這篇為什麼不套公式"
 fi
 
+# 圖片比例（2026-09-20 立，事故驅動）：封面做成直式、內文圖做成橫式，剛好相反。
+# 封面服務分享縮圖（OG 1200x630 是橫的），內文圖服務一圖兩用（能直接當 4:5 輪播卡）。
+# 只驗本輪改過 index.html 的文章；舊文不回頭批改。
+# 誠實邊界：機器只驗比例與 class 對不對，驗不了圖畫得好不好、該不該有圖。
+if node scripts/check-image-ratio.mjs; then
+  ok "圖片比例（封面橫式、內文直式）"
+else
+  bad "圖片比例未過：見上方清單。重生該張圖，或在 image-ratio-ignore.json 寫明這篇為什麼不套"
+fi
+
 echo "═══ 2/11 文章互聯腳本齊全 ═══"
 if node scripts/verify-interlink.js 2>&1 | grep -q "結果：PASS"; then ok "interlink"; else bad "verify-interlink FAIL（有文章缺互聯腳本）"; fi
 
