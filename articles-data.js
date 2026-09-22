@@ -41,6 +41,42 @@ window.ARTICLES = [
   },
 
   {
+    id: "grok-bot-galaxy-day2-workshops",
+    url: "articles/grok-bot-galaxy-day2-workshops/",
+    date: "2026-09-18",
+    updated: "2026-09-22",
+    title: "客服、業務、開發客戶，AI 員工實際做到哪一步？｜Grok Bot Galaxy 直播 Day 2 四場工作坊整理",
+    problem: "已經在用 AI 助理，卻不知道別人真正把工作交出去到哪一步；想把 AI 帶進業務或客服團隊，不知道導入順序，也不知道一個月大概要花多少錢。",
+    audience: "已經在用 AI 助理、想知道別人交出去到哪一步的人；想把 AI 帶進業務或客服團隊的主管；想先抓成本數字的人。",
+    summary: "整理 Grok Bot Galaxy 直播 Day 2 的四場工作坊：業務工程師、業務、開發客戶（SDR）、客服各自把每天在用的 bot 攤開來講。內容包含四個職務的 bot 分工表、客服導入的三個階段（只讀不寫、寫草稿不送出、才讓它直接回覆）、客服 bot 遇到不會的問題先問人的界線設計、兩組公開的成本數字（一整套案例投影片 20 到 30 美元、一張工單 1 到 2 美元，先篩選可壓到 0.2 美元）、省 token 的兩種相反做法，以及講者自己講出來的限制與失敗經驗。文末另附主直播現場從快閃活動轉向做遊戲的實作紀錄。",
+    tags: {
+      topic: ["AIAgent", "AI工作流", "工作流程"],
+      level: ["基礎"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["grok-bot-galaxy-day1-founders", "ai-employee-four-levels", "cli-api-mcp-computer-use", "make-your-ai-secretary", "what-are-subagents"]
+  },
+
+  {
+    id: "grok-bot-galaxy-day1-founders",
+    url: "articles/grok-bot-galaxy-day1-founders/",
+    date: "2026-09-17",
+    updated: "2026-09-22",
+    title: "一個人怎麼帶 22 個 AI 員工？｜Grok Bot Galaxy 直播 Day 1 完整整理",
+    problem: "開始用 AI 助理之後想多開幾隻分工，卻不知道怎麼分；開了好幾隻之後發現它們互相搶話、費用變高、有時候不照規矩做事。",
+    audience: "開始想讓多個 AI 助理分工的人；bot 開多了遇到搶話、花費、不照規矩問題的人；想把 AI 員工帶進自己或客戶公司的顧問與經營者。",
+    summary: "整理 Grok Bot Galaxy 直播 Day 1 的全部場次。官方入門場講 Grok Bot 想解決什麼問題、第一隻 bot 怎麼建、錄一段操作就變成技能，以及官方自己給的四條使用建議。工程場與產品經理場是官方員工把每天在用的五到六隻 bot 攤開講，含凌晨 3 點自動健檢、CI 紅燈十分鐘內自動修、一條從發現問題到寫出程式的完整工作鏈。主直播是三人團隊從零挑生意、第五個小時把整個概念換掉的現場，含兩位來賓的商業判斷框架。最後是創辦人場：一位用 22 隻 bot 經營 7 個事業的來賓，講她怎麼先想人類團隊怎麼分工、再反推成 bot。文末附兩段可直接複製的提示詞。",
+    tags: {
+      topic: ["AIAgent", "AI工作流", "工作流程"],
+      level: ["基礎"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["ai-employee-four-levels", "agent-workflow-builds-automation", "cli-api-mcp-computer-use", "make-your-ai-secretary", "what-are-subagents"]
+  },
+
+  {
     id: "fixed-test-set-for-ai",
     url: "articles/fixed-test-set-for-ai/",
     date: "2026-09-20",
@@ -337,7 +373,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: [],
+    related: ["grok-bot-galaxy-day2-workshops"],
     cover: { tall: "images/articles/make-your-ai-secretary-cover.jpg" }
   },
 
@@ -394,7 +430,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["parallel-site-editing", "same-question-different-answers", "long-document-review-layers"],
+    related: ["parallel-site-editing", "same-question-different-answers", "long-document-review-layers", "grok-bot-galaxy-day2-workshops"],
     cover: { wide: "images/articles/what-are-subagents-cover.jpg" }
   },
 
@@ -1169,7 +1205,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["how-to-train-your-ai-employee", "harness-mindset-for-bosses", "train-your-ai-agent-editor", "ai-native-not-transformation", "web-chat-ai-vs-desktop-agent", "knowledge-as-employee", "claude-skills-knowledge-assets", "docs-as-system-design-agent", "ai-tools-professional-judgment", "meeting-record-agent-workflow", "program-vs-ai-skill-library", "intent-first-prompting", "messaging-apps-ai-friendliness"]
+    related: ["how-to-train-your-ai-employee", "harness-mindset-for-bosses", "train-your-ai-agent-editor", "ai-native-not-transformation", "web-chat-ai-vs-desktop-agent", "knowledge-as-employee", "claude-skills-knowledge-assets", "docs-as-system-design-agent", "ai-tools-professional-judgment", "meeting-record-agent-workflow", "program-vs-ai-skill-library", "intent-first-prompting", "messaging-apps-ai-friendliness", "grok-bot-galaxy-day2-workshops"]
   },
 
   {
@@ -1349,7 +1385,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["how-ai-connects-software", "ai-capability-tiers", "how-to-train-your-ai-employee", "openrouter-deepseek-data-routing"]
+    related: ["how-ai-connects-software", "ai-capability-tiers", "how-to-train-your-ai-employee", "openrouter-deepseek-data-routing", "grok-bot-galaxy-day2-workshops"]
   },
 
   {
