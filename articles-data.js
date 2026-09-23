@@ -41,6 +41,24 @@ window.ARTICLES = [
   },
 
   {
+    id: "delete-before-automate",
+    url: "articles/delete-before-automate/",
+    date: "2026-09-22",
+    updated: "2026-09-22",
+    title: "想用 AI 提升效率，結果都在瞎忙？｜馬斯克五步工作法與第一性原理，先刪掉再自動化",
+    problem: "一上來就問這件事能不能用 AI，結果把一個本來不用做的流程做得又快又漂亮，越忙越沒進展。",
+    audience: "學了一堆 AI 工具不知道要做什麼的人、工具越裝越多卻說不出進展的人，以及要幫客戶或團隊導入 AI 的顧問與主管。",
+    summary: "整理馬斯克公開講過的五步工作法：讓需求沒那麼蠢、用力刪掉、刪不掉才簡化、簡化完才加速、最後才自動化，附英文步驟名稱與出處。兩條最實用的判準是需求要掛一個人的名字、刪到要有東西需要加回來。回答第一步時用第一性原理拆回事實、限制與假設，文末附可直接貼給 AI 的四題提示詞與免費的馬斯克第一性原理技能包。",
+    tags: {
+      topic: ["輔助決策", "工作流程", "AI應用"],
+      level: ["零基礎入門"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["vibe-coding-ten-half-products", "elon-musk-live-skill", "ai-vs-script-four-situations", "dont-learn-ai-tools"]
+  },
+
+  {
     id: "grok-bot-galaxy-day3-shipping",
     url: "articles/grok-bot-galaxy-day3-shipping/",
     date: "2026-09-20",
@@ -163,7 +181,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["agent-workflow-builds-automation", "claude-skills-knowledge-assets", "loop-engineering-guardrails", "my-three-loops", "liberal-arts-agent-framework", "ai-schedule-wake-interval"],
+    related: ["agent-workflow-builds-automation", "claude-skills-knowledge-assets", "loop-engineering-guardrails", "my-three-loops", "liberal-arts-agent-framework", "ai-schedule-wake-interval", "delete-before-automate"],
     cover: { wide: "images/articles/ai-vs-script-four-situations-summary.jpg" }
   },
 
@@ -812,7 +830,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["spacex-ipo-musk-trillionaire-knowledge-work", "how-to-train-your-ai-employee", "own-ai-team-at-work", "ai-market-microcosm", "vibe-coding-ten-half-products"]
+    related: ["spacex-ipo-musk-trillionaire-knowledge-work", "how-to-train-your-ai-employee", "own-ai-team-at-work", "ai-market-microcosm", "vibe-coding-ten-half-products", "delete-before-automate"]
   },
 
   {
