@@ -1,0 +1,578 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="index,follow">
+<title>Cloudflare 免費版到底能做什麼？｜二十二個服務分五類，附白話用途與哪些要先綁付款方式</title>
+<meta name="description" content="2026 年 8 月起我新做的網頁預設放 Cloudflare。這篇把它的二十二個服務按放上網、存東西、加 AI、網域與信箱、保護網站分成五類講白話，每類配上我實際做過的案子：LINE 群助理、課程會員站、工作坊生圖站，再講哪些要先綁付款方式，以及我踩過的兩個免費額度坑。">
+<link rel="canonical" href="https://jiangyude.com/articles/cloudflare-service-map/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Cloudflare 免費版到底能做什麼？｜二十二個服務分五類，附白話用途與哪些要先綁付款方式｜江江教練">
+<!-- 分享封面：hero 文字填好後在 repo 根目錄跑 `node scripts/og-shot.mjs cloudflare-service-map` 自動截 1200×630 到 images/og/cloudflare-service-map.jpg（見 README「文章分享封面（OG 圖）機制」）。別退回 intro-jiang.png 直式人像，會被裁成只剩脖子。 -->
+<meta property="og:image" content="https://jiangyude.com/images/og/cloudflare-service-map.jpg">
+<meta property="og:description" content="2026 年 8 月起我新做的網頁預設放 Cloudflare。這篇把它的二十二個服務按放上網、存東西、加 AI、網域與信箱、保護網站分成五類講白話，每類配上我實際做過的案子：LINE 群助理、課程會員站、工作坊生圖站，再講哪些要先綁付款方式，以及我踩過的兩個免費額度坑。">
+<meta property="og:url" content="https://jiangyude.com/articles/cloudflare-service-map/">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:site_name" content="江江教練 · AI 知識管理">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Cloudflare 免費版到底能做什麼？｜二十二個服務分五類，附白話用途與哪些要先綁付款方式｜江江教練">
+<meta name="twitter:image" content="https://jiangyude.com/images/og/cloudflare-service-map.jpg">
+<meta name="twitter:description" content="2026 年 8 月起我新做的網頁預設放 Cloudflare。這篇把它的二十二個服務按放上網、存東西、加 AI、網域與信箱、保護網站分成五類講白話，每類配上我實際做過的案子：LINE 群助理、課程會員站、工作坊生圖站，再講哪些要先綁付款方式，以及我踩過的兩個免費額度坑。">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Cloudflare 免費版到底能做什麼？｜二十二個服務分五類，附白話用途與哪些要先綁付款方式","description":"2026 年 8 月起我新做的網頁預設放 Cloudflare。這篇把它的二十二個服務按放上網、存東西、加 AI、網域與信箱、保護網站分成五類講白話，每類配上我實際做過的案子：LINE 群助理、課程會員站、工作坊生圖站，再講哪些要先綁付款方式，以及我踩過的兩個免費額度坑。","author":{"@type":"Person","name":"江昱德","alternateName":"江江教練","jobTitle":"隱性知識提煉師、AI 應用規劃師"},"isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://jiangyude.com/"},"inLanguage":"zh-Hant","url":"https://jiangyude.com/articles/cloudflare-service-map/"}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{--ink:#1a1612;--paper:#fefcf8;--muted:#6a635a;--line:#d8cdb8;--green:#5f7553;--blue:#5689b8;--orange:#e85a4f;--soft:#faf5ec;--dark:#2a2018;--shadow:0 18px 45px rgba(107,74,42,.14);--sp-shadow:hsla(35,50%,60%,.15);--sp-shadow-edge:hsla(35,50%,68%,.03);--sp-radius:400px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC","Segoe UI",sans-serif}
+a{color:inherit}
+/* 官網共用導航列 nav.top（與首頁/文章總站同一條） */
+nav.top{position:sticky;top:0;background:rgba(254,252,248,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid #d8cdb8;z-index:100}
+nav.top .container{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:24px;padding:14px 32px}
+.nav-brand-img{justify-self:start;display:flex;align-items:center;text-decoration:none;flex-shrink:0;transition:opacity .2s}
+.nav-brand-img:hover{opacity:.8}.nav-brand-img img{height:40px;width:auto;display:block}
+nav.top ul.nav-menu{justify-self:end;display:flex;gap:22px;list-style:none;margin:0;padding:0;font-size:.95rem;white-space:nowrap}
+nav.top ul.nav-menu a{color:#3a342d;text-decoration:none;transition:color .2s;font-weight:500;white-space:nowrap}
+nav.top ul.nav-menu a:hover{color:#1a1612}nav.top ul.nav-menu a.active{color:#1a1612;font-weight:700}
+.nav-toggle{display:none;background:none;border:none;padding:6px;cursor:pointer;width:36px;height:36px;position:relative}
+.nav-toggle span{display:block;position:absolute;left:8px;right:8px;height:2px;background:#1a1612;border-radius:2px;transition:transform .25s,opacity .25s,top .25s}
+.nav-toggle span:nth-child(1){top:11px}.nav-toggle span:nth-child(2){top:17px}.nav-toggle span:nth-child(3){top:23px}
+.nav-toggle.open span:nth-child(1){top:17px;transform:rotate(45deg)}.nav-toggle.open span:nth-child(2){opacity:0}.nav-toggle.open span:nth-child(3){top:17px;transform:rotate(-45deg)}
+.tablewrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:22px 0;border:1px solid var(--line);border-radius:10px;background:#fff;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.tablewrap table{border-collapse:collapse;width:100%;min-width:600px;font-size:18px;line-height:1.65}
+.tablewrap .zh{display:block;margin-top:5px;font-size:16px;line-height:1.55;color:var(--muted);font-weight:400}
+.tablewrap th,.tablewrap td{padding:12px 14px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top;color:#3a342d}
+.tablewrap thead th{background:var(--soft);font-weight:900;font-size:18px;color:#1a1612;white-space:nowrap}
+.tablewrap tbody tr:last-child td{border-bottom:none}
+.tablewrap td code,.section code{background:var(--soft);border:1px solid var(--line);border-radius:5px;padding:1px 6px;font:500 15px/1.5 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace}
+.inline-figure.wide{max-width:1000px}
+.toc{margin:26px 0 0;padding:20px 22px;background:#fff;border:1px solid var(--line);border-radius:10px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.toc>b{display:block;font-size:15px;letter-spacing:.05em;color:var(--green);margin-bottom:10px}
+.toc ol{margin:0;padding-left:1.35em;font-size:18px;line-height:1.7}
+.toc li{margin-bottom:7px;color:#3a342d}
+.toc a{color:var(--blue);font-weight:700;text-decoration:none}.toc a:hover{text-decoration:underline}
+.toc-hint{margin:12px 0 0!important;font-size:18px!important;color:var(--muted)!important;border-top:1px solid var(--line);padding-top:12px}
+.readmore{margin-top:24px;padding:20px 22px;background:var(--soft);border:1px solid var(--line);border-radius:12px}
+.readmore.near{margin:26px 0 6px;background:rgba(86,137,184,.07);border-color:#bcd0e2}
+.readmore.near b{color:var(--blue);font-size:18px}
+.readmore.near li{font-size:17px;line-height:1.7;margin-bottom:10px}
+.readmore b{display:block;margin-bottom:10px;font-size:19px}
+.readmore ul{margin:0;padding-left:1.25em}
+.readmore a{color:var(--blue);font-weight:700;text-decoration:none}
+.readmore a:hover{text-decoration:underline}
+@media(max-width:820px){.tablewrap table{min-width:560px;font-size:18px}.tablewrap{position:relative}.tablewrap::after{content:"表格可左右滑動 →";position:sticky;left:0;display:block;font-size:15px;color:var(--muted);background:var(--soft);border-top:1px solid var(--line);padding:7px 12px;width:100%}}
+@media(max-width:860px){
+ nav.top .container{grid-template-columns:auto 1fr auto;padding:10px 16px;gap:12px}
+ .nav-brand-img img{height:32px}
+ .nav-toggle{display:block;justify-self:end}
+ nav.top ul.nav-menu{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(254,252,248,.98);backdrop-filter:blur(14px);border-bottom:1px solid #d8cdb8;flex-direction:column;gap:0;padding:8px 0;box-shadow:0 10px 24px rgba(107,74,42,.08)}
+ nav.top ul.nav-menu.open{display:flex}
+ nav.top ul.nav-menu li{border-bottom:1px solid #e8dfc9}
+ nav.top ul.nav-menu li:last-child{border-bottom:none}
+ nav.top ul.nav-menu a{display:block;padding:14px 20px;font-size:1.06rem}
+}
+/* 滑鼠暖光暈（與首頁同一支 spotlight.js） */
+body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradient(var(--sp-radius) circle at var(--mx,50%) var(--my,50%),var(--sp-shadow) 0%,var(--sp-shadow-edge) 45%,transparent 75%);pointer-events:none;z-index:9999;mix-blend-mode:multiply;transition:background .06s linear}
+.hero{position:relative;overflow:hidden;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:72px;padding:96px clamp(20px,6vw,88px) 80px;background:linear-gradient(180deg,#fffcf0 0%,#f9e9d2 100%);color:#1a1612;border-bottom:1px solid #d8cdb8}
+.hero .wc{position:absolute;border-radius:50%;filter:blur(60px);pointer-events:none;z-index:0}
+.hero .wc1{width:420px;height:360px;top:-120px;right:-80px;background:#e8884b;opacity:.15}
+.hero .wc2{width:360px;height:300px;bottom:-110px;left:-70px;background:#5f7553;opacity:.13}
+.hero .wc3{width:280px;height:260px;top:34%;left:14%;background:#a08144;opacity:.10}
+.hero>div{flex:none;width:860px;max-width:100%;position:relative;z-index:2}
+.hero-figure{margin:0;width:420px;flex:none;position:relative;z-index:2}
+.hero-figure img{display:block;width:100%;border-radius:16px;border:1px solid #d8cdb8;box-shadow:0 18px 45px rgba(107,74,42,.16);cursor:zoom-in}
+.hero-figure figcaption{margin-top:10px;font-size:14px;line-height:1.6;color:#6a635a}
+.inline-figure{margin:30px auto 8px;max-width:820px}
+.inline-figure img{display:block;width:100%;border-radius:14px;border:1px solid var(--line);box-shadow:var(--shadow);background:#fff;cursor:zoom-in}
+.inline-figure figcaption{font-size:14px;line-height:1.6;color:var(--muted);margin-top:10px}
+.lightbox{position:fixed;inset:0;z-index:10000;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(12,10,8,.92);cursor:zoom-out;backdrop-filter:blur(4px)}
+.lightbox.open{display:flex}.lightbox img{max-width:96vw;max-height:92vh;border-radius:10px;box-shadow:0 24px 60px rgba(0,0,0,.5)}
+.lightbox-close{position:fixed;top:18px;right:24px;color:#fff;font-size:34px;line-height:1;font-weight:700;cursor:pointer;opacity:.85}
+.kicker{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.55rem;color:#7a5c3a;font-weight:500}
+.hero h1{max-width:none;margin:16px 0 18px;font-size:clamp(36px,6vw,72px);line-height:1.08;overflow-wrap:anywhere}
+.hero p{max-width:none;font-size:clamp(18px,2vw,23px);line-height:1.62;color:#3a342d}
+.cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
+.cta a{display:inline-flex;align-items:center;text-decoration:none;border-radius:8px;padding:12px 16px;font-weight:900}
+.cta .primary{background:#fff;color:#1a1612}.cta .ghost{border:1px solid rgba(255,255,255,.32);color:#fff;background:rgba(255,255,255,.08)}
+.section{padding:54px clamp(20px,6vw,88px);border-top:1px solid var(--line)}
+.inner{width:min(1000px,100%);margin:0 auto}
+.section h2{font-size:clamp(26px,4.2vw,48px);line-height:1.12;margin:0 0 18px}
+.section h3{font-size:clamp(21px,3vw,30px);line-height:1.2;margin:30px 0 12px}
+.lead{font-size:clamp(18px,1.6vw,22px);line-height:1.7;color:#3a342d;max-width:900px}
+.section p{font-size:18px;line-height:1.74;color:#3a342d}.section p+p{margin-top:14px}
+.section ul,.section ol{padding-left:1.4em;font-size:18px;line-height:1.74;color:#3a342d}.section li{margin-bottom:8px}
+.meaning{margin:22px 0;padding:16px 18px;border-left:5px solid var(--blue);background:rgba(86,137,184,.12);border-radius:6px;line-height:1.7;font-size:19px}
+.meaning b{display:block;color:var(--blue);margin-bottom:4px}
+.caveat{margin:0 0 8px;padding:16px 18px;border-left:5px solid var(--orange);background:rgba(232,90,79,.1);border-radius:6px;line-height:1.7;font-size:18px;color:#3a342d}
+.caveat b{display:block;color:var(--orange);margin-bottom:4px}
+.infocard{background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px 24px 22px;box-shadow:0 8px 22px rgba(107,74,42,.08);margin-top:8px}
+.infocard-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.info-item{padding:18px 14px 0}
+.info-item b{display:block;font-size:14px;font-weight:900;letter-spacing:.04em;margin-bottom:7px;text-transform:uppercase}
+.info-item:nth-child(1) b{color:var(--green)}.info-item:nth-child(2) b{color:var(--orange)}.info-item:nth-child(3) b{color:var(--blue)}
+.info-item p{margin:0;font-size:17px;line-height:1.6;color:#3a342d}
+.tagrow{display:flex;flex-wrap:wrap;gap:7px;margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
+.tag{font-size:14px;color:var(--muted);background:var(--soft);border:1px solid var(--line);border-radius:999px;padding:4px 11px}
+.duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:24px}
+.duo.stack{grid-template-columns:1fr}
+.duo .card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:22px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.duo .card.a{border-color:var(--orange)}.duo .card.b{border-color:var(--green);box-shadow:0 8px 24px rgba(95,117,83,.16)}
+.duo .card small{display:block;font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.04em;margin-bottom:9px}
+.duo .card.a small{color:var(--orange)}.duo .card.b small{color:var(--green)}
+.duo .card b{display:block;font-size:22px;line-height:1.3;margin-bottom:12px}.duo .card.a b{color:#c0512f}.duo .card.b b{color:#4a7a59}
+.duo .card p{margin:0;color:#3a342d;line-height:1.75;font-size:18px}
+.workflow-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:24px}
+.workflow-step{background:#fff;border:1px solid var(--line);border-radius:8px;padding:18px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.workflow-step small{display:block;color:var(--orange);font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;margin-bottom:9px}
+.workflow-step b{display:block;font-size:18px;line-height:1.3;margin-bottom:9px}
+.workflow-step p{margin:0;color:#3a342d;line-height:1.6;font-size:16px}
+.codeblock{background:var(--dark);color:#f3ead9;border-radius:8px;padding:18px 20px;font:500 14px/1.65 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;overflow-x:auto;white-space:pre-wrap;margin:20px 0;box-shadow:0 8px 22px rgba(107,74,42,.12)}
+.codeblock .c{color:#f6d7a6;font-weight:600}
+.skillcard{background:#fff;border:1px solid var(--green);border-radius:12px;padding:24px;box-shadow:0 10px 26px rgba(95,117,83,.16);margin-top:8px}
+.skillcard b{display:block;font-size:21px;margin-bottom:8px}
+.skillcard p{margin:0 0 16px;font-size:17px;line-height:1.65;color:#3a342d}
+.cta-band{background:#e6f0e5;color:#3a342d}.cta-band .section{border-top:none}
+.cta-band .inner{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(260px,.85fr);gap:26px;align-items:start}
+.cta-band h2{font-size:clamp(26px,4vw,44px);margin:0 0 16px}.cta-band p,.cta-band .lead{color:rgba(58,52,45,.9);font-size:18px;line-height:1.72}
+.cta-card{border:1px solid #cfe0d2;background:#fbfdfa;border-radius:8px;padding:22px}
+.cta-card b{display:block;color:#48b178;margin-bottom:10px;font-size:18px}.cta-card p{margin:0 0 14px}
+.footer{padding:30px clamp(20px,6vw,88px);font-size:14px;color:var(--muted);background:#fff;border-top:1px solid var(--line)}
+.footer-inner{width:min(1000px,100%);margin:0 auto}
+.footer-links{display:flex;flex-wrap:wrap;gap:6px 12px;margin-bottom:14px}.footer-links a{color:var(--blue);font-weight:900;text-decoration:none;font-size:14px}
+.footer-brand{font-weight:900;font-size:15px;margin-bottom:10px}.footer-note{font-size:13px;line-height:1.6}
+@media(max-width:820px){.infocard-grid{grid-template-columns:1fr}.duo{grid-template-columns:1fr}.workflow-grid{grid-template-columns:1fr}.cta-band .inner{grid-template-columns:1fr}.section{padding:40px 20px}.hero{min-height:52vh;flex-direction:column;justify-content:flex-start;align-items:flex-start;gap:24px}.hero>div{width:100%}.hero-figure{width:100%;max-width:560px}}
+@media(max-width:820px){html,body{overflow-x:hidden}.hero h1{word-break:break-word}}
+.hero{gap:48px!important}
+.hero>div:not(.wc){width:560px!important}
+.hero .hero-figure{width:460px}
+.hero .hero-figure img{height:auto;aspect-ratio:16/9}
+.hero h1{font-size:clamp(28px,2.7vw,40px)!important;line-height:1.2!important;margin:12px 0 16px!important}
+.hero p{font-size:clamp(17px,1.35vw,19px)!important;line-height:1.65!important}
+@media(max-width:1250px){.hero{gap:28px!important;flex-direction:column;align-items:flex-start}.hero>div:not(.wc){width:100%!important}.hero .hero-figure{width:100%;max-width:640px}.hero h1{font-size:clamp(28px,5vw,40px)!important}}
+</style>
+</head>
+<body class="spotlight">
+<!-- 官網共用導航列 nav.top：與首頁/總站同一條，文章不要自己另做極簡 topbar（江江 2026-06-25：要同一個框架、同一條導航列）。把對應頁面的 class="active" 標在自己那欄。
+     ⚠️ 下面 ul.nav-menu 整塊由 preflight 第 5 關 check-bilingual-nav.mjs 做「逐字比對」，
+        塞任何註解、多一個空白、換行位置不同都會被判導航不一致而擋下發布。要說明就寫在 <ul> 外面（像這裡）。
+        2026-08-16 修：原本的 EN 那行說明註解就夾在 <ul> 裡面，導致照範本起手的新文章一律卡第 5 關
+        （llm-rag-agent-mcp 與 rag-three-retrieval-modes 兩篇同時中招）。註解已移出來，<ul> 內保持乾淨。
+        萬一還是被擋，直接跑：node scripts/check-bilingual-nav.mjs --write --only=<你的檔案路徑> -->
+<nav class="top">
+  <div class="container">
+    <a class="nav-brand-img" href="../../index.html"><img src="../../images/footer-signature.png" alt="江江教練 | 江昱德"></a>
+    <button class="nav-toggle" aria-label="選單"><span></span><span></span><span></span></button>
+    <ul class="nav-menu">
+      <li><a href="../../index.html">首頁</a></li>
+      <li><a href="../../knowledge-architecture.html">知識架構</a></li>
+      <li><a href="../../courses.html">課程</a></li>
+      <li><a href="../../articles.html" class="active">深度文章</a></li>
+      <li><a href="../../skills.html">技能包下載</a></li>
+      <li><a href="../../offers.html">服務方案</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="wc wc1"></div>
+  <div class="wc wc2"></div>
+  <div class="wc wc3"></div>
+  <div>
+    <div class="kicker">工具地圖 / 網站上線</div>
+    <h1>Cloudflare 免費版到底能做什麼？｜二十二個服務分五類，附白話用途與哪些要先綁付款方式</h1>
+    <p>課程會員站、工作坊生圖站、LINE 群助理的後端，我都放在 Cloudflare。這篇把它的服務分成五類講白話，每一類配上我實際拿它做了什麼。</p>
+  </div>
+  <figure class="hero-figure">
+    <img src="../../images/articles/cloudflare-service-map-cover.jpg" alt="封面：Cloudflare 免費版到底能做什麼？二十二個服務分五類，附白話用途與哪些要先綁付款方式。咪卡扒著五格抽屜櫃，最上層飛出一張網頁，其他抽屜裝著照片檔案、對話泡泡、信封門牌、掛鎖盾牌" width="1280" height="720" loading="eager">
+  </figure>
+</section>
+
+<main>
+
+<section class="section" id="start">
+  <div class="inner">
+    <p class="lead">2026 年 8 月起，我新做的網頁預設都放在 Cloudflare：課程會員站、工作坊現場用的生圖網站、LINE 群助理的後端、自己用的工作台，都在上面。這篇照「你想做什麼」把它的服務分成五類、二十二個，每一類先講白話，再講我拿它做了什麼。有些類別我還沒用到，會直接說。</p>
+
+    <div class="duo stack">
+      <div class="card a">
+        <b>適合誰</b>
+        <ul>
+          <li>用 AI 做好了一頁網頁，卡在不知道怎麼讓別人看得到</li>
+          <li>聽過 Cloudflare 這個名字，只知道它跟「擋攻擊」有關</li>
+          <li>想找一整套能接起來的東西，不想這裡一個工具、那裡一個工具</li>
+          <li>要拿這些去幫客戶做事，需要先知道哪些是真的免費</li>
+        </ul>
+      </div>
+      <div class="card b">
+        <b>你可以帶走什麼</b>
+        <ul>
+          <li>二十二個服務的白話對照表，按「你想做什麼」分成五類</li>
+          <li>我用 Cloudflare 做過的八個案子，各用了哪幾個服務</li>
+          <li>三種免費的分法：不用綁卡、要先綁付款方式、一定要付錢</li>
+          <li>我踩過的兩個免費額度坑，以及後來怎麼改</li>
+        </ul>
+      </div>
+    </div>
+
+    <figure class="inline-figure wide">
+      <svg viewBox="0 0 980 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Cloudflare 免費服務五類全景圖：放上網、存東西、加 AI、網域與信箱、保護網站" style="display:block;width:100%;height:auto;background:#fffdf7;border-radius:14px;border:1px solid #e6dcc8">
+        <g font-family="'Noto Sans TC',system-ui,sans-serif">
+          <text x="490" y="44" text-anchor="middle" font-size="25" font-weight="800" fill="#1a1612">Cloudflare 免費服務五類全景</text>
+          <text x="490" y="72" text-anchor="middle" font-size="16" fill="#6a635a">按「你現在想做什麼」分類，不是按官方產品目錄</text>
+
+          <g>
+            <rect x="30" y="100" width="175" height="280" rx="14" fill="#fdf3e6" stroke="#e0c9a6"/>
+            <text x="117" y="132" text-anchor="middle" font-size="18" font-weight="800" fill="#a8541f">一、放上網</text>
+            <text x="117" y="156" text-anchor="middle" font-size="14" fill="#6a635a">讓別人打得開</text>
+            <text x="117" y="192" text-anchor="middle" font-size="16" fill="#3a342d">Pages</text>
+            <text x="117" y="222" text-anchor="middle" font-size="16" fill="#3a342d">Workers</text>
+            <text x="117" y="252" text-anchor="middle" font-size="16" fill="#3a342d">CDN 與憑證</text>
+            <text x="117" y="282" text-anchor="middle" font-size="16" fill="#3a342d">Web Analytics</text>
+            <text x="117" y="340" text-anchor="middle" font-size="14" fill="#4a7a59">四個都免費</text>
+          </g>
+
+          <g>
+            <rect x="215" y="100" width="175" height="280" rx="14" fill="#f4f1e4" stroke="#d8cdb8"/>
+            <text x="302" y="132" text-anchor="middle" font-size="18" font-weight="800" fill="#7a5c3a">二、存東西</text>
+            <text x="302" y="156" text-anchor="middle" font-size="14" fill="#6a635a">檔案與名單放哪</text>
+            <text x="302" y="192" text-anchor="middle" font-size="16" fill="#3a342d">R2 檔案倉庫</text>
+            <text x="302" y="222" text-anchor="middle" font-size="16" fill="#3a342d">D1 表格資料庫</text>
+            <text x="302" y="252" text-anchor="middle" font-size="16" fill="#3a342d">KV 小抽屜</text>
+            <text x="302" y="282" text-anchor="middle" font-size="16" fill="#3a342d">Images 自動修圖</text>
+            <text x="302" y="340" text-anchor="middle" font-size="14" fill="#c0512f">R2 要先綁付款方式</text>
+          </g>
+
+          <g>
+            <rect x="400" y="100" width="180" height="280" rx="14" fill="#eef3ea" stroke="#c9dbc4"/>
+            <text x="490" y="132" text-anchor="middle" font-size="18" font-weight="800" fill="#3f6b4a">三、加 AI</text>
+            <text x="490" y="156" text-anchor="middle" font-size="14" fill="#6a635a">讓網站會回答</text>
+            <text x="490" y="192" text-anchor="middle" font-size="16" fill="#3a342d">AI Search</text>
+            <text x="490" y="222" text-anchor="middle" font-size="16" fill="#3a342d">Workers AI</text>
+            <text x="490" y="252" text-anchor="middle" font-size="16" fill="#3a342d">Vectorize</text>
+            <text x="490" y="282" text-anchor="middle" font-size="16" fill="#3a342d">AI Gateway</text>
+            <text x="490" y="310" text-anchor="middle" font-size="16" fill="#3a342d">Browser Run</text>
+            <text x="490" y="352" text-anchor="middle" font-size="14" fill="#6a635a">額度小，夠試不夠跑量</text>
+          </g>
+
+          <g>
+            <rect x="590" y="100" width="175" height="280" rx="14" fill="#f2eff6" stroke="#d5cbe2"/>
+            <text x="677" y="132" text-anchor="middle" font-size="18" font-weight="800" fill="#5b4a7a">四、網域與信箱</text>
+            <text x="677" y="156" text-anchor="middle" font-size="14" fill="#6a635a">自己的網址與信箱</text>
+            <text x="677" y="192" text-anchor="middle" font-size="16" fill="#3a342d">Registrar 買網域</text>
+            <text x="677" y="222" text-anchor="middle" font-size="16" fill="#3a342d">DNS 電話簿</text>
+            <text x="677" y="252" text-anchor="middle" font-size="16" fill="#3a342d">Email Routing</text>
+            <text x="677" y="282" text-anchor="middle" font-size="16" fill="#3a342d">Email Sending</text>
+            <text x="677" y="340" text-anchor="middle" font-size="14" fill="#c0512f">網域一定要付費</text>
+          </g>
+
+          <g>
+            <rect x="775" y="100" width="175" height="280" rx="14" fill="#eaf0f6" stroke="#bcd0e2"/>
+            <text x="862" y="132" text-anchor="middle" font-size="18" font-weight="800" fill="#3f5f85">五、保護網站</text>
+            <text x="862" y="156" text-anchor="middle" font-size="14" fill="#6a635a">擋機器人與攻擊</text>
+            <text x="862" y="192" text-anchor="middle" font-size="16" fill="#3a342d">Turnstile 真人驗證</text>
+            <text x="862" y="222" text-anchor="middle" font-size="16" fill="#3a342d">Zero Trust 警衛</text>
+            <text x="862" y="252" text-anchor="middle" font-size="16" fill="#3a342d">Tunnel 安全通道</text>
+            <text x="862" y="282" text-anchor="middle" font-size="16" fill="#3a342d">DDoS 防洪堤</text>
+            <text x="862" y="310" text-anchor="middle" font-size="16" fill="#3a342d">WAF 安檢員</text>
+            <text x="862" y="352" text-anchor="middle" font-size="14" fill="#4a7a59">基本版都免費</text>
+          </g>
+        </g>
+      </svg>
+      <figcaption>五類的排序就是建議的使用順序：先讓網頁有網址，再處理檔案與名單，最後才碰 AI。圖中標紅的兩處是最容易誤會的付費邊界。</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section class="section" id="my-cases">
+  <div class="inner">
+    <h2>我用 Cloudflare 做過的八個案子</h2>
+    <p>先看全貌。下面每一列都是真的在線上跑過的東西，右邊那欄是它用到哪幾個服務，後面五類會一個一個講到。</p>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>案子</th><th>它在做什麼</th><th>用到的服務</th></tr></thead>
+        <tbody>
+          <tr><td><b>萊卡 LINE 群助理</b></td><td>LINE 群有新訊息，雲端程式接下來記進資料庫，定時把群裡的照片備份到 Google 雲端硬碟。家裡不用有任何一台電腦開著</td><td>Workers、排程、D1</td></tr>
+          <tr><td><b>個人工作台</b></td><td>原本只有桌機打得開，放上網加一道密碼，筆電和手機都能看</td><td>Pages、Pages Functions</td></tr>
+          <tr><td><b>合作單位的課程站</b></td><td>從 GitHub Pages 搬過來，加上站長、主講師、助教、學員四層會員，付費講義只給該課學員看</td><td>Pages、Pages Functions、KV</td></tr>
+          <tr><td><b>參訪行程頁的傳照片</b></td><td>參訪成員用手機把照片傳到行程頁，照片檔存雲端，紀錄存資料庫</td><td>Pages、Pages Functions、D1、R2</td></tr>
+          <tr><td><b>學員生圖工作站</b></td><td>工作坊學員拿紙條上的密碼進場，在網站上生圖，再把成果發表到全班的成果牆</td><td>Pages、D1、R2</td></tr>
+          <tr><td><b>調香工作坊的香氛卡站</b></td><td>學員現場填配方、生成自己的香氛卡，老師在後台看全班作品並匯出表格</td><td>Pages、Pages Functions、KV</td></tr>
+          <tr><td><b>攝影網站搬家</b></td><td>161 頁、一萬四千多個檔案、2.5 GB 的網站，從 Webnode 整站搬過來</td><td>Pages</td></tr>
+          <tr><td><b>文章草稿預覽站</b></td><td>文章正式上線前，先放到一個不被搜尋引擎收錄的網址，讓人用手機直接點開看稿</td><td>Pages</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>表格裡的 Pages Functions，是掛在 Pages 網站上的一小段伺服器端程式。密碼、會員、生圖這些不能交給瀏覽器處理的事，都靠它。</p>
+  </div>
+</section>
+
+<section class="section" id="what-is-cloudflare">
+  <div class="inner">
+    <h2>Cloudflare 從擋攻擊起家，現在做網站的零件幾乎全有</h2>
+    <p>Cloudflare 原本的角色，是站在你的網站前面幫你擋。有人攻擊它擋掉，圖片太大它幫你快取，網址要加鎖頭它送你憑證。</p>
+    <p>這幾年它把做一個網站會用到的零件，幾乎全部自己做了一套，而且都開了免費額度。我照「你想做什麼」把它們分成五類。</p>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>類別</th><th>你想做的事</th><th>有幾個服務</th><th>我用過沒</th></tr></thead>
+        <tbody>
+          <tr><td>一、放上網</td><td>讓別人打得開我的網頁</td><td>4</td><td>八個案子都在這一類</td></tr>
+          <tr><td>二、存東西</td><td>圖片、影片、報名名單要放哪</td><td>4</td><td>D1、R2、KV 都用過</td></tr>
+          <tr><td>三、加 AI</td><td>讓網站會回答問題、會找資料</td><td>5</td><td>還沒用</td></tr>
+          <tr><td>四、網域與信箱</td><td>我要自己的網址和聯絡信箱</td><td>4</td><td>還沒用</td></tr>
+          <tr><td>五、保護網站</td><td>擋機器人、擋攻擊、管誰能進後台</td><td>5</td><td>試過 Zero Trust，最後改用別的做法</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>下面五段照這個順序展開。你可以只看你現在卡住的那一格。</p>
+  </div>
+</section>
+
+<section class="section" id="cat1">
+  <div class="inner">
+    <h2>第一類，放上網：把網頁資料夾拖上去就有網址</h2>
+    <p>這一類解決的是「我的網頁做好了，然後呢」。</p>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>服務</th><th>白話說它是什麼</th><th>能拿來做什麼</th><th>免費嗎</th></tr></thead>
+        <tbody>
+          <tr><td><b>Pages</b></td><td>網站上架台，把網頁資料夾拖上去就變成網址</td><td>作品集、活動報名頁、課程介紹、線上履歷</td><td>免費，純網頁的瀏覽次數不計量</td></tr>
+          <tr><td><b>Workers</b></td><td>雲端小幫手，不用租主機就能跑程式</td><td>網頁加表單、加登入、定時抓資料、接 AI。現在也能直接放網站</td><td>免費，每天十萬次</td></tr>
+          <tr><td><b>CDN 與 HTTPS 憑證</b></td><td>讓網站在各地都開得快，網址自動有鎖頭</td><td>所有網站都用得到，內建不用另外開</td><td>免費</td></tr>
+          <tr><td><b>Web Analytics</b></td><td>不追蹤個人的人氣計數器</td><td>看多少人來、看了哪幾頁、從哪裡連過來</td><td>免費</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Pages 的用法大概是這樣：登入後台，建立專案，把整個網頁資料夾拖進去，按部署。幾十秒後你會拿到一個網址，打開就是你的網站。要更新就再拖一次新的。</p>
+    <h3>我怎麼用</h3>
+    <p>八個案子裡有七個用 Pages，剩下的萊卡用 Workers。用得最頻繁的是文章草稿預覽站：文章還沒正式上線，我先推到一個隨機名稱的網址，設定成不讓搜尋引擎收錄，把網址傳給要看稿的人。之前用別家平台的預覽網址，對方手機一點就跳登入頁，打不開，換到這裡之後有網址就能看。</p>
+    <p>Workers 我用在萊卡。LINE 群有新訊息時，LINE 會主動通知一個網址，接這通電話的就是 Workers 上的一小段程式，它驗過身分後把訊息記進資料庫。它身上還掛了排程，每隔幾分鐘自己醒來一次去備份照片。沒有任何一台電腦需要開著。</p>
+    <p>Workers 那格寫的「每天十萬次」，算的是程式被呼叫的次數。單純的網頁、圖片、樣式檔這些不會動的檔案，官方文件在我查證當天（2026-09-15）寫明不計次也不收費。所以一個沒有互動功能的個人網站，以現行方案來說幾乎不會因為流量而被收錢。</p>
+    <div class="caveat">
+      <b>Pages 跟 Workers 怎麼選</b>
+      <p>Cloudflare 的 Pages 官方文件，現在第一段就提醒新專案從 Workers 開始，Pages 沒有停用，現有網站照常運作（2026-09-15 查證）。我自己的課程站、工作台、香氛卡站，都還是在 Pages 上掛 Pages Functions 處理密碼和會員。我的判斷：只是要把一包網頁放上網，Pages 的拖拉上傳還是最短的路；等到要接 LINE、要跑排程，再用 Workers。</p>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="cat2">
+  <div class="inner">
+    <h2>第二類，存東西：能排成表格的放 D1，大檔案放 R2</h2>
+    <p>很多人會把這一類跟上一類搞混。網頁本身放 Pages，但網頁裡的大圖、影片、使用者上傳的檔案、報名名單，要另外找地方。</p>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>服務</th><th>白話說它是什麼</th><th>能拿來做什麼</th><th>免費嗎</th></tr></thead>
+        <tbody>
+          <tr><td><b>R2</b></td><td>雲端檔案倉庫，別人下載不收流量費</td><td>放圖片、Podcast 音檔、客戶交付檔、備份</td><td>每月 10 GB 免費，但開通要先綁付款方式</td></tr>
+          <tr><td><b>D1</b></td><td>雲端表格資料庫，像一疊能互相對照的試算表</td><td>報名名單、會員資料、訂單、文章列表</td><td>免費</td></tr>
+          <tr><td><b>KV</b></td><td>貼標籤的小抽屜，拿東西特別快</td><td>網站設定、使用者偏好、很常讀取的小段資料</td><td>免費</td></tr>
+          <tr><td><b>Images</b></td><td>自動修圖站，一張原圖自動變出各種尺寸</td><td>縮圖、文章封面、手機版小圖</td><td>每月五千種轉換免費</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>D1 跟 R2 的分工很好記：能排成表格的放 D1，一個一個的大檔案放 R2。報名表填了什麼放 D1，報名者上傳的作品照片放 R2。</p>
+    <p>R2 那個「下載不收流量費」是它最大的賣點。傳統雲端倉庫的玩法是檔案放著要錢，被人下載也要錢。R2 現行定價頁把傳出網際網路的流量列為不收費，收的是儲存量與操作次數。</p>
+    <h3>我怎麼用</h3>
+    <p><b>D1</b>：萊卡把 LINE 群裡的每一則事件都記進 D1，2026 年 9 月 1 日那天累積了 3,847 筆。參訪行程頁和學員生圖工作站也各有一個 D1 資料庫。</p>
+    <p><b>R2</b>：用在兩個要讓人傳照片、存圖片的網站，參訪行程頁和學員生圖工作站。開通 R2 那次，我人在參訪途中，用手機操作後台。流程中要填帳單資料，完成頁寫著每月 0 美元。所以它是「免費，但要先過付款資料那一關」。</p>
+    <p><b>KV</b>：用在要「線上隨時改名單」的地方。課程站的會員名單放 KV，工作人員在後台加一個學員，當下就生效，不用找我重新部署；停用一個人也是即時生效。香氛卡站的每一張卡也存在 KV。</p>
+  </div>
+</section>
+
+<section class="section" id="cat3">
+  <div class="inner">
+    <h2>第三類，加 AI：想讓網站會回答問題，先看 AI Search</h2>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>服務</th><th>白話說它是什麼</th><th>能拿來做什麼</th><th>免費嗎</th></tr></thead>
+        <tbody>
+          <tr><td><b>AI Search</b></td><td>把你的文件交給一位 AI 圖書館員，之後直接用問的</td><td>網站問答、客服、內部知識庫查詢</td><td>測試期間免費，每月兩萬次搜尋</td></tr>
+          <tr><td><b>Workers AI</b></td><td>Cloudflare 自己的 AI 工作室，要用時才呼叫</td><td>聊天、摘要、翻譯、生圖、語音轉文字</td><td>每天有免費額度</td></tr>
+          <tr><td><b>Vectorize</b></td><td>專門找「意思相近」內容的資料庫</td><td>用意思搜文章、推薦相似內容</td><td>免費</td></tr>
+          <tr><td><b>AI Gateway</b></td><td>所有 AI 呼叫的總機</td><td>同時用好幾家 AI 時，統一看用量、擋濫用、壞掉自動換一家</td><td>管理功能免費，模型費照付給各家</td></tr>
+          <tr><td><b>Browser Run</b></td><td>看不見的雲端瀏覽器</td><td>自動截圖、網頁轉 PDF、讓 AI 代你操作網站</td><td>每天十分鐘，只夠少量使用</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>如果你只想讓網站多一個會回答問題的小助理，要找的是 AI Search。它會自己把你的文件建成索引，讀者打一句話進去，它從你的文件裡找答案。「索引」是指先把文件整理成一份方便查的目錄，之後問問題才不用每次從頭讀一遍。</p>
+    <p>Vectorize 跟 AI Search 的關係像廚房跟餐廳。Vectorize 是後面那套設備，AI Search 是已經裝潢好、可以直接開門做生意的那一間。</p>
+    <p>有兩個服務改過名字：Browser Run 以前叫 Browser Rendering，AI Search 以前叫 AutoRAG。看到舊教學用舊名字，指的就是同一個東西；拿舊名字去搜官方文件，可能會找到過期的頁面。</p>
+    <h3>我怎麼用</h3>
+    <p>這一類我目前沒有用。學員生圖工作站和香氛卡站都會用 AI 生圖，但生圖是直接接 OpenAI。Cloudflare 在裡面負責的是把金鑰藏好：以學員生圖工作站為例，金鑰存成 Cloudflare 上的 secret，只有伺服器端的程式讀得到，學員的瀏覽器拿不到。</p>
+  </div>
+</section>
+
+<section class="section" id="cat4">
+  <div class="inner">
+    <h2>第四類，網域與信箱：買網址不加價，信箱免費轉寄</h2>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>服務</th><th>白話說它是什麼</th><th>能拿來做什麼</th><th>免費嗎</th></tr></thead>
+        <tbody>
+          <tr><td><b>Registrar</b></td><td>網域代辦處，照成本價賣</td><td>買 <code>.com</code>，或把別家買的網址轉進來</td><td>要付費，照成本價，價格依網域後綴而不同</td></tr>
+          <tr><td><b>DNS</b></td><td>網域電話簿，決定網址指到哪裡</td><td>讓網址連到你的網站、設定信箱收發</td><td>免費，查詢次數不限</td></tr>
+          <tr><td><b>Email Routing</b></td><td>信件轉寄站</td><td>寄到 <code>hello@你的網域</code> 的信自動轉進你的 Gmail</td><td>免費，不限封數</td></tr>
+          <tr><td><b>Email Sending</b></td><td>網站的自動寄信員</td><td>報名確認信、重設密碼信</td><td>寄給自己驗證過的信箱免費，寄給任何人要付費方案</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Registrar 值得單獨講一句。多數網域商的玩法是首年很便宜，第二年跳好幾倍。Cloudflare 官方文件寫明它只收註冊局跟 ICANN 的原始價格、不另外加價，所以沒有首年折扣再跳價的設計。實際年費依網域後綴而不同，買之前看當下的報價。</p>
+    <p>Email Routing 省掉的是企業信箱的月費。買了網域之後不必另外開付費信箱，就能有一個看起來正式的聯絡地址，信會自動掉進你本來就在用的 Gmail。它只管收信轉寄，用那個地址主動寄信是另一個服務。</p>
+    <h3>我怎麼用</h3>
+    <p>這一類我還沒用。我的主網域是在別家註冊的，DNS 也不在 Cloudflare。要不要搬過來我盤點過一次，目前還沒動。</p>
+  </div>
+</section>
+
+<section class="section" id="cat5">
+  <div class="inner">
+    <h2>第五類，保護網站：擋垃圾表單跟擋攻擊是兩件事</h2>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>服務</th><th>白話說它是什麼</th><th>能拿來做什麼</th><th>免費嗎</th></tr></thead>
+        <tbody>
+          <tr><td><b>Turnstile</b></td><td>不用點紅綠燈的真人驗證</td><td>報名表、聯絡表單擋垃圾訊息</td><td>免費，驗證次數不限</td></tr>
+          <tr><td><b>Zero Trust</b></td><td>內部系統的數位警衛</td><td>後台、內部資料只讓指定的人進得去</td><td>五十人以下免費</td></tr>
+          <tr><td><b>Tunnel</b></td><td>從自己電腦挖到外面的安全通道</td><td>把家裡或工作室電腦上的服務安全開給別人用</td><td>免費</td></tr>
+          <tr><td><b>DDoS 防護</b></td><td>網站的防洪堤</td><td>被大量假流量灌爆時自動擋掉</td><td>免費，不限量</td></tr>
+          <tr><td><b>WAF</b></td><td>網站入口的安檢員</td><td>擋常見攻擊、限制登入頁被猛試密碼</td><td>基本版免費</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Turnstile 是這一類裡最多人用得到的。活動報名表如果開始收到一堆亂填的垃圾資料，加上它通常就乾淨了。大部分真人不會看到任何題目，背景判斷完就放行。</p>
+    <p>Zero Trust 的五十人免費額度，算的是你授權的人數，不是網站訪客數。一個工作室拿它來守後台，通常不用花錢。</p>
+    <h3>我怎麼用</h3>
+    <p><b>Zero Trust 我試過，最後沒用。</b>個人工作台一開始想用它上鎖，查官方文件確認免費版可以保護 Pages 給的網址，不需要自己的網域。實際要設定時，我部署用的登入權限沒有 Zero Trust 的權限，得先去後台手動建權杖、開帳戶，步驟有十幾步。</p>
+    <p>最後改成在 Pages Functions 寫一小段密碼關卡。沒通過密碼的人，連網頁檔案都不會被送出去。課程站的四層會員，也是同樣的做法再往上加。</p>
+    <p><b>Turnstile 我還沒正式用上</b>，有一個公開入口正在評估要不要加。</p>
+  </div>
+</section>
+
+<section class="section" id="three-kinds-of-free">
+  <div class="inner">
+    <h2>Cloudflare 的免費分三種，開通前先分清楚</h2>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>種類</th><th>代表服務</th><th>你要注意什麼</th></tr></thead>
+        <tbody>
+          <tr><td>不用綁卡就能開始</td><td>Pages、Workers、D1、KV、Turnstile、DNS、Email Routing、Web Analytics</td><td>開帳號就能用，官方明寫不需要信用卡</td></tr>
+          <tr><td>有免費額度，但要先綁付款方式</td><td>R2</td><td>帳單可能顯示零元，開通流程還是會要你先留付款資料</td></tr>
+          <tr><td>一定要付費</td><td>網域、Stream 影片平台、Containers</td><td>免費方案沒有這幾樣</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>中間那一種最容易誤會，我開 R2 時就是這樣：完成頁寫每月 0 美元，但前面要先填完帳單資料。事先知道就不會卡在那一頁猶豫。</p>
+    <p>要幫客戶做案子、或網站上要放課程與價格的人，除了看額度夠不夠，還要看平台允不允許拿免費方案做生意。開案前去讀一次服務條款。</p>
+  </div>
+</section>
+
+<section class="section" id="quota-traps">
+  <div class="inner">
+    <h2>免費額度我踩過兩個坑，都是看錯了「算什麼」</h2>
+    <p>兩個坑都發生在萊卡，2026 年 9 月初。</p>
+    <h3>坑一：每天十萬次很寬，每一輪五十件事很緊</h3>
+    <p>萊卡要把 LINE 群的照片備份到 Google 雲端硬碟。有一天群裡的人在外面參訪，一天幾十張照片，我發現它每一輪只存得下兩到三張。去查用量，每天的總量連上限的百分之一都不到。</p>
+    <p>卡住它的是另一種規則。Workers 每被叫醒一次算一輪，當時（2026-09-02 查證）官方寫免費方案每一輪對外呼叫最多 50 個、資料庫查詢最多 50 個。一張照片要跟 LINE 拿檔案、跟 Google 上傳，對外呼叫三到四個，資料庫查詢五六個，一輪自然只塞得下兩三張。</p>
+    <p>9 月 24 日我再查一次，官方兩頁的寫法已經對不上：Workers 的限制頁把「打 Cloudflare 自家服務（含資料庫）」另列一個每輪 1,000 次的上限，D1 自己的限制頁仍寫免費方案每輪 50 個查詢。對外呼叫的 50 個沒有變。用之前以當下的官方頁為準。</p>
+    <p>後來程式裡放了一本帳，每個動作發出前先看這一輪還有沒有額度，不夠就留到下一輪；排程也從每小時一輪改成每五分鐘一輪，用輪數換量。</p>
+    <h3>坑二：算的是資料庫翻過多少列，不是你看到幾筆</h3>
+    <p>D1 的免費額度寫「每天讀取五百萬列」，看起來非常寬。但它算的是資料庫翻過的列數，不是回傳給你的列數。</p>
+    <p>萊卡有一支檢查程式，每三分鐘問一次「今天備份跑過了沒」。那張表大約九千七百列，沒有建索引，所以每問一次，資料庫就從第一列數到最後一列。回傳給我的只有一個數字，帳卻是按它數過的每一列記。一天問四百多次，翻了四百五十萬列，佔當天讀取量的 86%，整天加起來超過五百萬列的上限，網站畫面上完全看不出來。</p>
+    <p>我一開始還推論錯方向，以為是另一支每秒都在問的程式在吃。後來用官方的用量分析工具，把每一句查詢按翻過的列數排序，才抓到真正在翻的是哪一句。補上索引之後，每小時翻的列數從六十萬左右降到四百多。索引就像書後面的索引頁，有了它資料庫不用從第一頁翻起。</p>
+    <div class="meaning">
+      <p>看免費額度的時候，除了看數字大小，還要看它算的是什麼單位、以什麼為一次。「每天」和「每一輪」是兩本帳；「拿到幾筆」和「翻過幾列」也是兩本帳。</p>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="first-step">
+  <div class="inner">
+    <h2>從零開始的第一步：先讓那一頁網頁有網址，其他之後再說</h2>
+    <p>看完二十二個服務，最常見的反應是不知道從哪裡下手。我的建議是這樣。</p>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>順序</th><th>做什麼</th><th>什麼時候做</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>把手上那一頁網頁放上 Pages，拿到能傳給別人的網址</td><td>現在，用後台拖拉，不用寫任何指令</td></tr>
+          <tr><td>2</td><td>加一道密碼或會員</td><td>網頁裡有不想公開的東西</td></tr>
+          <tr><td>3</td><td>看 D1、R2、KV</td><td>需要存名單，或讓人上傳檔案</td></tr>
+          <tr><td>4</td><td>看 Workers 與排程</td><td>要接 LINE 這類外部服務，或要定時自動跑</td></tr>
+          <tr><td>5</td><td>買網域、看 AI 類服務</td><td>網址需要正式、想讓網站會回答問題</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>這個順序的用意，是每一步都由真實的需求推著走。倒過來做的人很常見，一開始就研究整套架構，研究完網頁還躺在自己的電腦裡。</p>
+  </div>
+</section>
+
+<section class="section" id="how-verified">
+  <div class="inner">
+    <h2>這篇的數字從哪來，保鮮期到哪天</h2>
+    <p>服務的額度、免費條件、改名資訊，來自 Cloudflare 官方文件與定價頁，查證日期 2026-09-15，2026-09-24 上線前再查一次，更新了網域價格與每一輪上限兩處。案例裡的數字來自我自己的工作紀錄，時間在 2026 年 8 月到 9 月之間。</p>
+    <p>雲端服務的額度變動很快。你真的要開通之前，點進官方定價頁看一眼當天的值，那一頁永遠比任何整理文章新。</p>
+  </div>
+</section>
+
+<div class="cta-band">
+<section class="section">
+  <div class="inner">
+    <div>
+      <h2>自己動手放一次，比看十篇整理有用</h2>
+      <p class="lead">這些服務的免費額度，對一個人的網站來說幾乎都用不完。真正的門檻不在費用，在於有沒有把第一頁真的放上去。我每個月固定辦兩場免費線上講座，分享 AI 應用與知識管理的實戰做法。</p>
+      <p>本篇額度與免費條件為 2026 年 9 月 15 日查證、9 月 24 日複查結果，來源為 Cloudflare 官方文件與定價頁；案例數字來自我 2026 年 8 月到 9 月的工作紀錄。平台方案隨時可能調整，重要決策前請重新核對官方頁面。</p>
+    </div>
+    <div class="cta-card">
+      <b>免費線上講座</b>
+      <p>每個月兩場免費講座。</p>
+      <p><a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">點我加入 Line 社群 ↗</a></p>
+      <p><a href="../../offers.html">看服務方案 →</a></p>
+    </div>
+  </div>
+</section>
+</div>
+
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">江江教練 · AI 知識管理</div>
+    <div class="footer-links">
+      <a href="../../articles.html">← 回深度文章總站</a>
+      <a href="../../index.html">首頁</a>
+      <a href="../../learn.html">自學資源</a>
+      <a href="../../skills.html">技能包下載</a>
+      <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">LINE 社群 ↗</a>
+      <a href="https://www.threads.com/@jiang_yude_coach" target="_blank" rel="noopener">Threads ↗</a>
+      <a href="https://vocus.cc/salon/Jiang_Coach" target="_blank" rel="noopener">方格子 ↗</a>
+    </div>
+    <div class="footer-note">這是一篇教學文章，整理我對「Cloudflare 免費版到底能做什麼？｜二十二個服務分五類，附白話用途與哪些要先綁付款方式」的看法，供你參考。</div>
+  </div>
+</footer>
+
+<!-- 點圖放大 lightbox（hero 與內文圖通用，已內建，不用每篇重加） -->
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <span class="lightbox-close" aria-label="關閉">×</span>
+  <img id="lightbox-img" src="" alt="放大檢視">
+</div>
+<script>
+(function(){
+  var box=document.getElementById('lightbox'),boxImg=document.getElementById('lightbox-img');
+  document.querySelectorAll('.hero-figure img,.inline-figure img').forEach(function(img){
+    img.addEventListener('click',function(){boxImg.src=img.currentSrc||img.src;boxImg.alt=img.alt||'放大檢視';box.classList.add('open');box.setAttribute('aria-hidden','false');});
+  });
+  function close(){box.classList.remove('open');box.setAttribute('aria-hidden','true');boxImg.src='';}
+  box.addEventListener('click',close);
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
+})();
+</script>
+
+<script src="../../image-interactions.js"></script>
+
+<!-- 官網共用：滑鼠暖光暈 + 導航列漢堡選單 -->
+<script src="../../spotlight.js"></script>
+
+<!-- 文章自動互聯（相關文章）：兩支已內建，順序不可顛倒，不用再另外加 -->
+<script src="../../articles-data.js"></script>
+<script src="../../related-render.js"></script>
+  <script src="/mika-chat-widget.js" defer></script>
+</body>
+</html>
