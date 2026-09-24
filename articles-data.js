@@ -73,7 +73,8 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["grok-bot-galaxy-day2-workshops", "grok-bot-galaxy-day1-founders", "ai-employee-four-levels", "what-are-subagents", "make-your-ai-secretary"]
+    related: ["grok-bot-galaxy-day2-workshops", "grok-bot-galaxy-day1-founders", "ai-employee-four-levels", "what-are-subagents", "make-your-ai-secretary"],
+    cover: { tall: "images/articles/grok-bot-galaxy-day3-shipping/card01.jpg" }
   },
 
   {
@@ -91,7 +92,8 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["grok-bot-galaxy-day3-shipping", "grok-bot-galaxy-day1-founders", "ai-employee-four-levels", "cli-api-mcp-computer-use", "make-your-ai-secretary", "what-are-subagents"]
+    related: ["grok-bot-galaxy-day3-shipping", "grok-bot-galaxy-day1-founders", "ai-employee-four-levels", "cli-api-mcp-computer-use", "make-your-ai-secretary", "what-are-subagents"],
+    cover: { tall: "images/articles/grok-bot-galaxy-day2-workshops/card01.jpg" }
   },
 
   {
@@ -109,7 +111,8 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["grok-bot-galaxy-day2-workshops", "grok-bot-galaxy-day3-shipping", "ai-employee-four-levels", "agent-workflow-builds-automation", "cli-api-mcp-computer-use", "make-your-ai-secretary", "what-are-subagents"]
+    related: ["grok-bot-galaxy-day2-workshops", "grok-bot-galaxy-day3-shipping", "ai-employee-four-levels", "agent-workflow-builds-automation", "cli-api-mcp-computer-use", "make-your-ai-secretary", "what-are-subagents"],
+    cover: { tall: "images/articles/grok-bot-galaxy-day1-founders/card01.jpg" }
   },
 
   {
