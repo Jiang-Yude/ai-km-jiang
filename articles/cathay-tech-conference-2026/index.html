@@ -1,0 +1,655 @@
+<!doctype html>
+
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>公司導入 AI，資料要先整理到什麼程度？｜2026 國泰金控技術年會 9 場演講整理：地基、AI 同事、成本與責任</title>
+<meta name="description" content="整理 2026 國泰金控技術年會 9 場演講與座談，給企業主管的 10 個重點：資料與系統地基、把 AI 當同事管的身分權限與控制點、用完成任務的總成本衡量 AI、中階主管與採用率、Google Cloud 的五層檢查框架、需求管理 agent、國泰 IT 的兩年計畫，以及 AI 替人付款後的責任歸屬。附講者分歧、未講清楚之處與一段可直接貼給 AI 的盤點提示詞。">
+<link rel="canonical" href="https://jiangyude.com/articles/cathay-tech-conference-2026/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="公司導入 AI，資料要先整理到什麼程度？｜2026 國泰金控技術年會 9 場演講整理：地基、AI 同事、成本與責任｜江江教練">
+<!-- 分享封面：hero 文字填好後在 repo 根目錄跑 `node scripts/og-shot.mjs cathay-tech-conference-2026` 自動截 1200×630 到 images/og/cathay-tech-conference-2026.jpg（見 README「文章分享封面（OG 圖）機制」）。別退回 intro-jiang.png 直式人像，會被裁成只剩脖子。 -->
+<meta property="og:image" content="https://jiangyude.com/images/og/cathay-tech-conference-2026.jpg">
+<meta property="og:description" content="整理 2026 國泰金控技術年會 9 場演講與座談，給企業主管的 10 個重點：資料與系統地基、把 AI 當同事管的身分權限與控制點、用完成任務的總成本衡量 AI、中階主管與採用率、Google Cloud 的五層檢查框架、需求管理 agent、國泰 IT 的兩年計畫，以及 AI 替人付款後的責任歸屬。附講者分歧、未講清楚之處與一段可直接貼給 AI 的盤點提示詞。">
+<meta property="og:url" content="https://jiangyude.com/articles/cathay-tech-conference-2026/">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:site_name" content="江江教練 · AI 知識管理">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="公司導入 AI，資料要先整理到什麼程度？｜2026 國泰金控技術年會 9 場演講整理：地基、AI 同事、成本與責任｜江江教練">
+<meta name="twitter:image" content="https://jiangyude.com/images/og/cathay-tech-conference-2026.jpg">
+<meta name="twitter:description" content="整理 2026 國泰金控技術年會 9 場演講與座談，給企業主管的 10 個重點：資料與系統地基、把 AI 當同事管的身分權限與控制點、用完成任務的總成本衡量 AI、中階主管與採用率、Google Cloud 的五層檢查框架、需求管理 agent、國泰 IT 的兩年計畫，以及 AI 替人付款後的責任歸屬。附講者分歧、未講清楚之處與一段可直接貼給 AI 的盤點提示詞。">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"公司導入 AI，資料要先整理到什麼程度？｜2026 國泰金控技術年會 9 場演講整理：地基、AI 同事、成本與責任","description":"整理 2026 國泰金控技術年會 9 場演講與座談，給企業主管的 10 個重點：資料與系統地基、把 AI 當同事管的身分權限與控制點、用完成任務的總成本衡量 AI、中階主管與採用率、Google Cloud 的五層檢查框架、需求管理 agent、國泰 IT 的兩年計畫，以及 AI 替人付款後的責任歸屬。附講者分歧、未講清楚之處與一段可直接貼給 AI 的盤點提示詞。","author":{"@type":"Person","name":"江昱德","alternateName":"江江教練","jobTitle":"隱性知識提煉師、AI 應用規劃師"},"isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://jiangyude.com/"},"inLanguage":"zh-Hant","url":"https://jiangyude.com/articles/cathay-tech-conference-2026/","datePublished":"2026-09-24","dateModified":"2026-09-24","image":"https://jiangyude.com/images/og/cathay-tech-conference-2026.jpg"}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{--ink:#1a1612;--paper:#fefcf8;--muted:#6a635a;--line:#d8cdb8;--green:#5f7553;--blue:#5689b8;--orange:#e85a4f;--soft:#faf5ec;--dark:#2a2018;--shadow:0 18px 45px rgba(107,74,42,.14);--sp-shadow:hsla(35,50%,60%,.15);--sp-shadow-edge:hsla(35,50%,68%,.03);--sp-radius:400px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC","Segoe UI",sans-serif}
+a{color:inherit}
+/* 官網共用導航列 nav.top（與首頁/文章總站同一條） */
+nav.top{position:sticky;top:0;background:rgba(254,252,248,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid #d8cdb8;z-index:100}
+nav.top .container{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:24px;padding:14px 32px}
+.nav-brand-img{justify-self:start;display:flex;align-items:center;text-decoration:none;flex-shrink:0;transition:opacity .2s}
+.nav-brand-img:hover{opacity:.8}.nav-brand-img img{height:40px;width:auto;display:block}
+nav.top ul.nav-menu{justify-self:end;display:flex;gap:22px;list-style:none;margin:0;padding:0;font-size:.95rem;white-space:nowrap}
+nav.top ul.nav-menu a{color:#3a342d;text-decoration:none;transition:color .2s;font-weight:500;white-space:nowrap}
+nav.top ul.nav-menu a:hover{color:#1a1612}nav.top ul.nav-menu a.active{color:#1a1612;font-weight:700}
+.nav-toggle{display:none;background:none;border:none;padding:6px;cursor:pointer;width:36px;height:36px;position:relative}
+.nav-toggle span{display:block;position:absolute;left:8px;right:8px;height:2px;background:#1a1612;border-radius:2px;transition:transform .25s,opacity .25s,top .25s}
+.nav-toggle span:nth-child(1){top:11px}.nav-toggle span:nth-child(2){top:17px}.nav-toggle span:nth-child(3){top:23px}
+.nav-toggle.open span:nth-child(1){top:17px;transform:rotate(45deg)}.nav-toggle.open span:nth-child(2){opacity:0}.nav-toggle.open span:nth-child(3){top:17px;transform:rotate(-45deg)}
+.tablewrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:22px 0;border:1px solid var(--line);border-radius:10px;background:#fff;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.tablewrap table{border-collapse:collapse;width:100%;min-width:600px;font-size:18px;line-height:1.65}
+.tablewrap .zh{display:block;margin-top:5px;font-size:16px;line-height:1.55;color:var(--muted);font-weight:400}
+.tablewrap th,.tablewrap td{padding:12px 14px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top;color:#3a342d}
+.tablewrap thead th{background:var(--soft);font-weight:900;font-size:18px;color:#1a1612;white-space:nowrap}
+.tablewrap tbody tr:last-child td{border-bottom:none}
+.tablewrap td code,.section code{background:var(--soft);border:1px solid var(--line);border-radius:5px;padding:1px 6px;font:500 15px/1.5 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace}
+.inline-figure.wide{max-width:1000px}
+.inline-figure.portrait{max-width:430px}
+.toc{margin:26px 0 0;padding:20px 22px;background:#fff;border:1px solid var(--line);border-radius:10px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.toc>b{display:block;font-size:15px;letter-spacing:.05em;color:var(--green);margin-bottom:10px}
+.toc ol{margin:0;padding-left:1.35em;font-size:18px;line-height:1.7}
+.toc li{margin-bottom:7px;color:#3a342d}
+.toc a{color:var(--blue);font-weight:700;text-decoration:none}.toc a:hover{text-decoration:underline}
+.toc-hint{margin:12px 0 0!important;font-size:18px!important;color:var(--muted)!important;border-top:1px solid var(--line);padding-top:12px}
+.readmore{margin-top:24px;padding:20px 22px;background:var(--soft);border:1px solid var(--line);border-radius:12px}
+.readmore.near{margin:26px 0 6px;background:rgba(86,137,184,.07);border-color:#bcd0e2}
+.readmore.near b{color:var(--blue);font-size:18px}
+.readmore.near li{font-size:17px;line-height:1.7;margin-bottom:10px}
+.readmore b{display:block;margin-bottom:10px;font-size:19px}
+.readmore ul{margin:0;padding-left:1.25em}
+.readmore a{color:var(--blue);font-weight:700;text-decoration:none}
+.readmore a:hover{text-decoration:underline}
+@media(max-width:820px){.tablewrap table{min-width:560px;font-size:18px}.tablewrap{position:relative}.tablewrap::after{content:"表格可左右滑動 →";position:sticky;left:0;display:block;font-size:15px;color:var(--muted);background:var(--soft);border-top:1px solid var(--line);padding:7px 12px;width:100%}}
+@media(max-width:860px){
+ nav.top .container{grid-template-columns:auto 1fr auto;padding:10px 16px;gap:12px}
+ .nav-brand-img img{height:32px}
+ .nav-toggle{display:block;justify-self:end}
+ nav.top ul.nav-menu{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(254,252,248,.98);backdrop-filter:blur(14px);border-bottom:1px solid #d8cdb8;flex-direction:column;gap:0;padding:8px 0;box-shadow:0 10px 24px rgba(107,74,42,.08)}
+ nav.top ul.nav-menu.open{display:flex}
+ nav.top ul.nav-menu li{border-bottom:1px solid #e8dfc9}
+ nav.top ul.nav-menu li:last-child{border-bottom:none}
+ nav.top ul.nav-menu a{display:block;padding:14px 20px;font-size:1.06rem}
+}
+/* 滑鼠暖光暈（與首頁同一支 spotlight.js） */
+body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradient(var(--sp-radius) circle at var(--mx,50%) var(--my,50%),var(--sp-shadow) 0%,var(--sp-shadow-edge) 45%,transparent 75%);pointer-events:none;z-index:9999;mix-blend-mode:multiply;transition:background .06s linear}
+.hero{position:relative;overflow:hidden;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:72px;padding:96px clamp(20px,6vw,88px) 80px;background:linear-gradient(180deg,#fffcf0 0%,#f9e9d2 100%);color:#1a1612;border-bottom:1px solid #d8cdb8}
+.hero .wc{position:absolute;border-radius:50%;filter:blur(60px);pointer-events:none;z-index:0}
+.hero .wc1{width:420px;height:360px;top:-120px;right:-80px;background:#e8884b;opacity:.15}
+.hero .wc2{width:360px;height:300px;bottom:-110px;left:-70px;background:#5f7553;opacity:.13}
+.hero .wc3{width:280px;height:260px;top:34%;left:14%;background:#a08144;opacity:.10}
+.hero>div{flex:none;width:860px;max-width:100%;position:relative;z-index:2}
+.hero-figure{margin:0;width:620px;flex:none;position:relative;z-index:2}
+.hero-figure img{display:block;width:100%;border-radius:16px;border:1px solid #d8cdb8;box-shadow:0 18px 45px rgba(107,74,42,.16);cursor:zoom-in}
+.hero-figure figcaption{margin-top:10px;font-size:14px;line-height:1.6;color:#6a635a}
+.inline-figure{margin:30px auto 8px;max-width:820px}
+.inline-figure img{display:block;width:100%;border-radius:14px;border:1px solid var(--line);box-shadow:var(--shadow);background:#fff;cursor:zoom-in}
+.inline-figure figcaption{font-size:14px;line-height:1.6;color:var(--muted);margin-top:10px}
+.lightbox{position:fixed;inset:0;z-index:10000;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(12,10,8,.92);cursor:zoom-out;backdrop-filter:blur(4px)}
+.lightbox.open{display:flex}.lightbox img{max-width:96vw;max-height:92vh;border-radius:10px;box-shadow:0 24px 60px rgba(0,0,0,.5)}
+.lightbox-close{position:fixed;top:18px;right:24px;color:#fff;font-size:34px;line-height:1;font-weight:700;cursor:pointer;opacity:.85}
+.kicker{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.55rem;color:#7a5c3a;font-weight:500}
+.hero h1{max-width:none;margin:16px 0 18px;font-size:clamp(36px,6vw,72px);line-height:1.08;overflow-wrap:anywhere}
+.hero p{max-width:none;font-size:clamp(18px,2vw,23px);line-height:1.62;color:#3a342d}
+.cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
+.cta a{display:inline-flex;align-items:center;text-decoration:none;border-radius:8px;padding:12px 16px;font-weight:900}
+.cta .primary{background:#fff;color:#1a1612}.cta .ghost{border:1px solid rgba(255,255,255,.32);color:#fff;background:rgba(255,255,255,.08)}
+.section{padding:54px clamp(20px,6vw,88px);border-top:1px solid var(--line)}
+.inner{width:min(1000px,100%);margin:0 auto}
+.section h2{font-size:clamp(26px,4.2vw,48px);line-height:1.12;margin:0 0 18px}
+.section h3{font-size:clamp(21px,3vw,30px);line-height:1.2;margin:30px 0 12px}
+.lead{font-size:clamp(18px,1.6vw,22px);line-height:1.7;color:#3a342d;max-width:900px}
+.section p{font-size:18px;line-height:1.74;color:#3a342d}.section p+p{margin-top:14px}
+.section ul,.section ol{padding-left:1.4em;font-size:18px;line-height:1.74;color:#3a342d}.section li{margin-bottom:8px}
+.meaning{margin:22px 0;padding:16px 18px;border-left:5px solid var(--blue);background:rgba(86,137,184,.12);border-radius:6px;line-height:1.7;font-size:19px}
+.meaning b{display:block;color:var(--blue);margin-bottom:4px}
+.caveat{margin:0 0 8px;padding:16px 18px;border-left:5px solid var(--orange);background:rgba(232,90,79,.1);border-radius:6px;line-height:1.7;font-size:18px;color:#3a342d}
+.caveat b{display:block;color:var(--orange);margin-bottom:4px}
+.infocard{background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px 24px 22px;box-shadow:0 8px 22px rgba(107,74,42,.08);margin-top:8px}
+.infocard-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.info-item{padding:18px 14px 0}
+.info-item b{display:block;font-size:14px;font-weight:900;letter-spacing:.04em;margin-bottom:7px;text-transform:uppercase}
+.info-item:nth-child(1) b{color:var(--green)}.info-item:nth-child(2) b{color:var(--orange)}.info-item:nth-child(3) b{color:var(--blue)}
+.info-item p{margin:0;font-size:17px;line-height:1.6;color:#3a342d}
+.tagrow{display:flex;flex-wrap:wrap;gap:7px;margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
+.tag{font-size:14px;color:var(--muted);background:var(--soft);border:1px solid var(--line);border-radius:999px;padding:4px 11px}
+.duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:24px}
+.duo.stack{grid-template-columns:1fr}
+.duo .card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:22px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.duo .card.a{border-color:var(--orange)}.duo .card.b{border-color:var(--green);box-shadow:0 8px 24px rgba(95,117,83,.16)}
+.duo .card small{display:block;font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.04em;margin-bottom:9px}
+.duo .card.a small{color:var(--orange)}.duo .card.b small{color:var(--green)}
+.duo .card b{display:block;font-size:22px;line-height:1.3;margin-bottom:12px}.duo .card.a b{color:#c0512f}.duo .card.b b{color:#4a7a59}
+.duo .card p{margin:0;color:#3a342d;line-height:1.75;font-size:18px}
+.workflow-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:24px}
+.workflow-step{background:#fff;border:1px solid var(--line);border-radius:8px;padding:18px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.workflow-step small{display:block;color:var(--orange);font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;margin-bottom:9px}
+.workflow-step b{display:block;font-size:18px;line-height:1.3;margin-bottom:9px}
+.workflow-step p{margin:0;color:#3a342d;line-height:1.6;font-size:16px}
+.codeblock{background:var(--dark);color:#f3ead9;border-radius:8px;padding:18px 20px;font:500 14px/1.65 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;overflow-x:auto;white-space:pre-wrap;margin:20px 0;box-shadow:0 8px 22px rgba(107,74,42,.12)}
+.codeblock .c{color:#f6d7a6;font-weight:600}
+.skillcard{background:#fff;border:1px solid var(--green);border-radius:12px;padding:24px;box-shadow:0 10px 26px rgba(95,117,83,.16);margin-top:8px}
+.skillcard b{display:block;font-size:21px;margin-bottom:8px}
+.skillcard p{margin:0 0 16px;font-size:17px;line-height:1.65;color:#3a342d}
+.cta-band{background:#e6f0e5;color:#3a342d}.cta-band .section{border-top:none}
+.cta-band .inner{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(260px,.85fr);gap:26px;align-items:start}
+.cta-band h2{font-size:clamp(26px,4vw,44px);margin:0 0 16px}.cta-band p,.cta-band .lead{color:rgba(58,52,45,.9);font-size:18px;line-height:1.72}
+.cta-card{border:1px solid #cfe0d2;background:#fbfdfa;border-radius:8px;padding:22px}
+.cta-card b{display:block;color:#48b178;margin-bottom:10px;font-size:18px}.cta-card p{margin:0 0 14px}
+.footer{padding:30px clamp(20px,6vw,88px);font-size:14px;color:var(--muted);background:#fff;border-top:1px solid var(--line)}
+.footer-inner{width:min(1000px,100%);margin:0 auto}
+.footer-links{display:flex;flex-wrap:wrap;gap:6px 12px;margin-bottom:14px}.footer-links a{color:var(--blue);font-weight:900;text-decoration:none;font-size:14px}
+.footer-brand{font-weight:900;font-size:15px;margin-bottom:10px}.footer-note{font-size:13px;line-height:1.6}
+@media(max-width:820px){.inline-figure.portrait{max-width:340px}.infocard-grid{grid-template-columns:1fr}.duo{grid-template-columns:1fr}.workflow-grid{grid-template-columns:1fr}.cta-band .inner{grid-template-columns:1fr}.section{padding:40px 20px}.hero{min-height:52vh;flex-direction:column;justify-content:flex-start;align-items:flex-start;gap:24px}.hero>div{width:100%}.hero-figure{width:100%;max-width:560px}}
+@media(max-width:820px){html,body{overflow-x:hidden}.hero h1{word-break:break-word}}
+.article-date{margin-top:14px;font-size:15px;color:var(--muted)}
+.part-divider{background:var(--soft);border-top:2px solid var(--line);border-bottom:2px solid var(--line)}
+.part-divider h2.part{font-size:30px!important;color:var(--green)!important;margin:0 0 8px!important}
+.part-divider .part-sub{margin:0!important;color:var(--muted);font-size:18px}
+.copywrap{position:relative}
+.copybtn{position:absolute;top:10px;right:10px;z-index:2;background:#fff;color:#1a1612;border:1px solid var(--line);border-radius:8px;padding:8px 14px;font-size:16px;font-weight:700;cursor:pointer}
+.copywrap .codeblock{padding-top:56px;font-size:16px}
+.hero{gap:48px}.hero>div{width:560px}.hero-figure{width:500px}.hero h1{font-size:clamp(30px,3vw,44px);line-height:1.16}.hero p{font-size:clamp(16px,1.35vw,19px)}
+</style>
+</head>
+<body class="spotlight">
+<!-- 官網共用導航列 nav.top：與首頁/總站同一條，文章不要自己另做極簡 topbar（江江 2026-06-25：要同一個框架、同一條導航列）。把對應頁面的 class="active" 標在自己那欄。
+     ⚠️ 下面 ul.nav-menu 整塊由 preflight 第 5 關 check-bilingual-nav.mjs 做「逐字比對」，
+        塞任何註解、多一個空白、換行位置不同都會被判導航不一致而擋下發布。要說明就寫在 <ul> 外面（像這裡）。
+        2026-08-16 修：原本的 EN 那行說明註解就夾在 <ul> 裡面，導致照範本起手的新文章一律卡第 5 關
+        （llm-rag-agent-mcp 與 rag-three-retrieval-modes 兩篇同時中招）。註解已移出來，<ul> 內保持乾淨。
+        萬一還是被擋，直接跑：node scripts/check-bilingual-nav.mjs --write --only=<你的檔案路徑> -->
+<nav class="top">
+  <div class="container">
+    <a class="nav-brand-img" href="../../index.html"><img src="../../images/footer-signature.png" alt="江江教練 | 江昱德"></a>
+    <button class="nav-toggle" aria-label="選單"><span></span><span></span><span></span></button>
+    <ul class="nav-menu">
+      <li><a href="../../index.html">首頁</a></li>
+      <li><a href="../../knowledge-architecture.html">知識架構</a></li>
+      <li><a href="../../courses.html">課程</a></li>
+      <li><a href="../../articles.html" class="active">深度文章</a></li>
+      <li><a href="../../skills.html">技能包下載</a></li>
+      <li><a href="../../offers.html">服務方案</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="wc wc1"></div>
+  <div class="wc wc2"></div>
+  <div class="wc wc3"></div>
+  <div>
+    <div class="kicker">AI 應用 · 企業導入</div>
+    <h1>公司導入 AI，資料要先整理到什麼程度？｜2026 國泰金控技術年會 9 場演講整理：地基、AI 同事、成本與責任</h1>
+    <p>國泰的副董事長先講了兩次失敗，OpenAI、Google Cloud、微軟與國泰自己的主管接著講 AI 同事、成本與責任。我把一整天收成給企業主管的 10 個重點，每一點都標了出處。</p>
+    <div class="article-date">發佈 2026-09-24</div>
+  </div>
+  <figure class="hero-figure">
+    <img src="/images/articles/cathay-tech-conference-2026/cover.jpg" alt="2026 國泰金控技術年會直播畫面，爐邊對談「國泰下一個十年：從數位轉型到持續進化」" loading="lazy">
+    <figcaption>直播畫面截圖（00:37:40）：開場爐邊對談「國泰下一個十年：從數位轉型到持續進化」。</figcaption>
+  </figure>
+</section>
+
+<main>
+
+<section class="section" id="start"><div class="inner">
+  <h2>這篇在講什麼</h2>
+  <p class="lead">2026 年 9 月 15 日，國泰金控辦了第七屆技術年會，也是國泰數位轉型的第十年。一整天有 9 場演講與座談，主題集中在三件事：AI 同事、用 AI 改造 IT、數位資產。我依公開直播的逐字稿逐場整理成報告，再把企業主管最用得上的部分收成這一篇。</p>
+  <p>整天聽下來，講者背景各不相同（國泰自己的主管、OpenAI、Google Cloud、微軟、學者、公會），卻一再回到同一組問題：資料和系統整理好了沒有、AI 在公司裡要怎麼管、成效要怎麼算、出錯了誰負責。這篇照這四個問題重新排，不照議程順序。</p>
+  <div class="duo stack">
+    <div class="card a"><b>適合誰</b><ul>
+      <li>公司正在評估導入 AI，想知道大企業實際卡在哪裡的主管與經營者</li>
+      <li>已經開始試 AI 助理或 agent，接下來要處理權限、成本、責任歸屬的 IT 與數位主管</li>
+      <li>幫客戶規劃 AI 導入的顧問，需要一份有出處的大企業案例整理</li>
+    </ul></div>
+    <div class="card b"><b>你可以帶走什麼</b><ul>
+      <li>十個重點，每一點都標了是哪一場、誰講的</li>
+      <li>一份「AI 上工前」的檢查清單：身分、權限、軌跡、人在哪裡按按鈕</li>
+      <li>講者之間意見不一致的地方，以及台上沒講清楚的地方</li>
+      <li>回到自己公司可以先問的三個問題，和一段可以直接貼給 AI 的盤點提示詞</li>
+    </ul></div>
+  </div>
+  <div class="caveat"><b>先說清楚這篇的來源</b>這是我自己整理的非官方筆記，內容來自公開直播回放。逐字稿用本機語音辨識產生，辨識不出誰在說話，所以座談裡的發言我只在主持人點名之後才歸給某位講者，並標「依點名推定」。數字都是講者在台上的說法，我沒有向國泰或其他公司求證，對外引用前請先看文末的待查清單。</div>
+  <div class="toc"><b>這篇會講到</b><ol>
+    <li><a href="#overview">十個重點，一張表看完</a></li>
+    <li><a href="#part-foundation">第一部：地基</a>（資料、系統、流程）</li>
+    <li><a href="#part-colleague">第二部：把 AI 當同事管</a>（身分、權限、控制點）</li>
+    <li><a href="#part-value">第三部：成效與組織</a>（成本、中階主管、採用率）</li>
+    <li><a href="#part-cases">第四部：落地案例</a>（五層框架、需求管理、IT 自己的兩年計畫）</li>
+    <li><a href="#part-payment">第五部：還沒有答案的題目</a>（AI 替人付錢）</li>
+    <li><a href="#tensions">講者之間不一致的地方</a></li>
+    <li><a href="#your-company">回到你的公司：先問三個問題</a></li>
+    <li><a href="#speakers">九場講者與講題</a></li>
+  </ol></div>
+</div></section>
+
+<section class="section" id="overview"><div class="inner">
+  <h2>2026 國泰技術年會十個重點，一張表看完</h2>
+  <p>先給全貌。每一點後面都有一段展開。右欄是我自己的建議，講者沒有這樣說：讀完那段之後可以先做的一件事。</p>
+  <div class="tablewrap"><table>
+    <thead><tr><th>重點</th><th>主要出處</th><th>我的建議：可以先做的一件事</th></tr></thead>
+    <tbody>
+      <tr><td><a href="#s01">地基沒整理好，AI 蓋不上去</a></td><td>開場對談、AI in IT</td><td>列出 AI 要用的資料放在哪些系統裡</td></tr>
+      <tr><td><a href="#s03">把 AI 當成新同事來管</a></td><td>數位同事</td><td>替第一個 AI 助理寫一頁「員工守則」</td></tr>
+      <tr><td><a href="#s04">上工前要有身分、邊界、軌跡</a></td><td>上午座談、讓 Agent 安全上工</td><td>標出流程裡不可逆的那幾步</td></tr>
+      <tr><td><a href="#s05">控制點放在 AI 動手之前</a></td><td>AI in IT</td><td>先在隔離環境試，不碰正式資料</td></tr>
+      <tr><td><a href="#s06">成本算「完成一件事」花多少</a></td><td>From GPT to Agentic Enterprise、讓 Agent 安全上工</td><td>挑一件任務，記下人做與 AI 做的總成本</td></tr>
+      <tr><td><a href="#s07">AI 策略常卡在中階主管</a></td><td>From GPT to Agentic Enterprise、BMad 需求管理</td><td>請每位主管這一季提一個 AI 工作流</td></tr>
+      <tr><td><a href="#s08">八十分的工具沒人用</a></td><td>上午座談、開場對談</td><td>把試點從「展示」改成「接真實需求」</td></tr>
+      <tr><td><a href="#s09">由下往上檢查五層</a></td><td>讓 Agent 安全上工</td><td>用五層清單盤點現有 AI 專案缺哪一層</td></tr>
+      <tr><td><a href="#s10">需求先跟 AI 問清楚再找 IT</a></td><td>BMad 需求管理</td><td>把「提需求」改成一份選擇題問卷</td></tr>
+      <tr><td><a href="#s12">AI 替人付錢，出錯誰負責</a></td><td>虛擬資產與穩定幣、下午座談</td><td>在合約與流程裡寫清楚 AI 下單時誰負責</td></tr>
+    </tbody>
+  </table></div>
+  <figure class="inline-figure wide"><img src="/images/articles/cathay-tech-conference-2026/summary.jpg" alt="國泰技術年會企業導入 AI 的 10 個重點一頁總結圖" loading="lazy"><figcaption>一頁總結：十個重點的主標。每一點另有一張直式圖卡，放在下面對應的段落裡。</figcaption></figure>
+  <figure class="inline-figure portrait"><img src="/images/articles/cathay-tech-conference-2026/card01.jpg" alt="國泰金控技術年會 9 場演講 企業導入 AI 的 10 個重點 圖卡封面" loading="lazy"><figcaption>整組圖卡的封面，可以直接轉給同事。</figcaption></figure>
+</div></section>
+
+<section class="section part-divider" id="part-foundation"><div class="inner">
+  <h2 class="part">第一部：地基｜資料、系統、流程要先整理</h2>
+  <p class="part-sub">這一部回答「公司導入 AI 之前要先準備什麼」。</p>
+</div></section>
+
+<section class="section" id="s01"><div class="inner">
+  <h2>地基沒整理好，AI 蓋不上去：國泰副董事長的兩個失敗案例</h2>
+  <p>開場的爐邊對談由主持人提問、國泰金控副董事長蔡宗翰回答（講者依畫面名牌與主持人介紹）。他沒有從成功案例講起，先講了兩次失敗。</p>
+  <p>第一次是一個大型 IT 轉型案，出發點是「整頓 IT」，大約一年半後出問題而收回。他的檢討很直接：「出發點只是純粹說我們想要去整頓 IT 而已，我覺得這個出發點是錯的。」（直播 00:38:45）他說轉型應該從前線、業務單位與客戶需要什麼開始，不為數位而數位。</p>
+  <p>第二次是一個新的客戶服務品牌，推不動的原因是系統地基沒整理好。後來做 Cube App 時也碰到類似的事：第一版因為系統沒辦法即時切換優惠，延後約一年，回頭先整理系統。</p>
+  <p>他接著說，資料團隊花了「整整四五年的時間，那是完全沒有 return 的」（直播 00:49:04，return 指投資回報），做的都是基礎建設。現在平台的彈性變大，是那幾年換來的。</p>
+  <p>下午 IT 場的講者，國泰金控雲端策略發展部協理顏勝豪，從另一個方向講了同一件事。國泰從 2021 年開始推上雲，原本是為了系統現代化做準備，走到今年發現，這些工作也替 AI 做好了準備。他在結尾引用了一句他說是幾個月前在一場 AI 活動上看到的話（直播 05:10:12）：</p>
+  <div class="meaning"><b>AI 是放大器，放大已經存在的東西。</b>他接著說，團隊本來就混亂、工程體系沒做好，加入 AI 只會多出更多混亂和技術債。</div>
+  <div class="caveat"><b>別只帶走「先整理資料」這一句（以下是我的判讀）</b>同一天 OpenAI 的講者舉了一個反例：花一兩年去建一個永遠不會完美的資料湖，是從技術出發的做法。這兩種說法並不衝突。一邊反對等資料完美才開始，一邊提醒系統與流程的整合省不掉。我的讀法是：一邊開始做，一邊把 AI 真正要用的那幾份資料整理好，不必等全公司的資料都整理完。</div>
+  <figure class="inline-figure portrait"><img src="/images/articles/cathay-tech-conference-2026/card02.jpg" alt="地基沒整理好 AI 蓋不上去 圖卡" loading="lazy"><figcaption>圖卡：地基分成系統、資料、流程三塊，底下那行「整合不能省，也不必等完美才開始」就是上面黃框的意思。</figcaption></figure>
+</div></section>
+
+<section class="section" id="s02"><div class="inner">
+  <h2>企業資料原本是寫給人看的，AI 要用還得補三層說明</h2>
+  <p>Google Cloud 台灣技術總經理林書平把這件事講得更具體。他說企業的資料大部分「不是 designed for agent」，原本是照人的閱讀習慣設計的。要讓 AI 用得好，得補上三層脈絡：</p>
+  <div class="tablewrap"><table>
+    <thead><tr><th>要補的脈絡</th><th>意思</th><th>舉例</th></tr></thead>
+    <tbody>
+      <tr><td>技術說明（technical metadata）</td><td>這份資料是什麼格式、從哪個系統來、欄位代表什麼</td><td>「客戶等級」這一欄是哪個系統產生的，多久更新一次</td></tr>
+      <tr><td>業務語意（business semantics）</td><td>這份資料在業務上代表什麼意思</td><td>同樣叫「活躍客戶」，行銷部和風控部的定義可能不同</td></tr>
+      <tr><td>個人化（personalization）</td><td>誰在用，他能看到什麼</td><td>同一個 AI 助理，經理和專員問同一題，能看到的資料範圍不同</td></tr>
+    </tbody>
+  </table></div>
+  <p>表格右欄的例子是我補的，用來說明三層各管什麼，不是講者原話。</p>
+  <p>上午座談裡，台灣微軟的與談人（依主持人點名推定為總經理李倩）用了一個比喻：資料、知識和流程的整合是「下水道工程」。沒做好，數位員工在公司內部走不通。她也提醒，金融業多半先從員工個人的 AI 助理開始，下一步才是把 AI 放進跨部門、跨系統的流程，那一步才會撞到下水道。</p>
+  <div class="readmore near"><b>流程和知識要整理成機器讀得懂的樣子，我另外寫過</b><ul>
+    <li><a href="/articles/a2a-agent-protocol/">AI 代理要接手工作了，你的流程和知識準備好了嗎？</a>：這一段只講「資料原本是給人看的」，那篇講怎麼盤點流程、立唯一真相來源、劃清資料邊界與審核點。</li>
+  </ul></div>
+</div></section>
+
+<section class="section part-divider" id="part-colleague"><div class="inner">
+  <h2 class="part">第二部：把 AI 當同事管｜身分、權限、控制點</h2>
+  <p class="part-sub">這一部回答「讓 AI 在公司裡自己做事，要怎麼管才安全」。</p>
+</div></section>
+
+<section class="section" id="s03"><div class="inner">
+  <h2>把 AI 當成新同事來管：國泰的數位同事怎麼設計</h2>
+  <p>國泰金控副總經理暨國泰世華銀行數據長梁明喬，和數據暨人工智慧發展部副總經理劉浩翔，一起講了國泰正在試的「數位同事」：讓 AI agent（能自己動手辦事的 AI 程式，不只回答問題）像員工一樣在公司裡長期工作。他們先說明國泰連續三年以 AI 為年會主題，前兩年做的是 GAIA 與 GAIA 2.0 兩套 agent 基礎框架，數位同事就建在這上面。</p>
+  <h3>數位同事和一般 AI agent 差在哪</h3>
+  <p>講者列了三個差別。這三點是他們設定的設計目標，也是他們說要克服的技術難點，目前仍在試驗階段：</p>
+  <ol>
+    <li><strong>要記得你是誰。</strong>一般 agent 只活在一次對話裡。數位同事會跟你工作很久，換一次對話不能就什麼都忘了。</li>
+    <li><strong>要能自己推進工作。</strong>它要知道自己該做什麼，按排程把自己叫醒，推進下一步，不用人說一動它做一動。</li>
+    <li><strong>要認得組織裡的人。</strong>企業裡有同事、主管、不同部門，數位同事要分得出誰是誰，依對方的角色回應。</li>
+  </ol>
+  <h3>比照員工制度來設計</h3>
+  <div class="tablewrap"><table>
+    <thead><tr><th>員工有的</th><th>數位同事對應的做法</th></tr></thead>
+    <tbody>
+      <tr><td>員工編號、識別證</td><td>獨立帳號與編號，名字後面加「.AI」，有自己的 email</td></tr>
+      <tr><td>辦公室</td><td>有受控邊界的執行環境</td></tr>
+      <tr><td>員工守則</td><td>用一份 agent.md 寫清楚它是誰、該做什麼、不能做什麼</td></tr>
+      <tr><td>上下班時間</td><td>排程就是上班時間，可以設九點到五點半，也可以全天候</td></tr>
+      <tr><td>薪水與職等</td><td>token（AI 的計費單位，用得越多花越多）額度就像薪水；能力不同，分到的額度和模型也不同</td></tr>
+      <tr><td>直屬主管</td><td>有 reporting line，知道要向誰回報</td></tr>
+      <tr><td>專業訓練</td><td>由資深同仁訓練它的技能庫，並從工作互動中學習；記憶不是全部寫入，要篩選後才留下</td></tr>
+    </tbody>
+  </table></div>
+  <p>台上示範了三位數位同事：一位查行事曆、抓出逾期任務、找人支援並排好交接會議；一位記得審查委員會的案件狀態，發 email 請專案團隊補件；一位在 Word 裡初審合約、補上缺的條款，再寄給法務複核。講者也提出三階段的職等藍圖，從一對一帶著做單一任務，走到跨部門、懂整個企業運作。</p>
+  <div class="caveat"><b>這是試驗階段</b>講者自己說，數位同事在國泰仍是前沿探索與 PoC（概念驗證，小規模先試看看）實驗，台上沒有公布數位同事的數量、節省的工時或錯誤率。可以把它當成一份設計參考，不要當成已經全面上線的成果。</div>
+  <figure class="inline-figure portrait"><img src="/images/articles/cathay-tech-conference-2026/card03.jpg" alt="把 AI 當成新同事來管 圖卡" loading="lazy"><figcaption>圖卡：數位同事的員工資料卡。右下角的標籤「國泰目前仍在 PoC 實驗階段」是故意放大的。</figcaption></figure>
+</div></section>
+
+<section class="section" id="s04"><div class="inner">
+  <h2>數位員工上工前，要先有身分、邊界、軌跡</h2>
+  <p>上午的高峰對談把治理講得最完整。四位與談人各有側重，但對「數位員工上工前要準備什麼」幾乎沒有分歧：</p>
+  <div class="workflow-grid">
+    <div class="workflow-step"><small>身分</small><b>知道是哪一個 AI 做的</b><p>每個數位員工有獨立身分。與談人的比喻是：員工進公司會拿到識別證，數位員工也要有。</p></div>
+    <div class="workflow-step"><small>邊界</small><b>能做什麼、不能碰什麼</b><p>能力範圍與權限在建置之前就要設計好，不是出事後才補。</p></div>
+    <div class="workflow-step"><small>軌跡</small><b>做過什麼，事後查得到</b><p>行動軌跡要看得見，工作內容要留紀錄。</p></div>
+  </div>
+  <p>另外兩條也是同一場講的：</p>
+  <ul>
+    <li><strong>人要守在不可逆或影響消費者權益大的關卡。</strong>政大金融科技研究中心主任王儷玲（依點名推定）特別說，human in the loop「不是每一個點都要」，要放在真正重要的節點。</li>
+    <li><strong>最終責任由人承擔。</strong>劉浩翔（依點名推定）說他「要絕對強調」這一點。</li>
+  </ul>
+  <p>下午 Google Cloud 那場補上了技術上怎麼做到：用一份 agent 登記簿（agent registry）管理每一個 agent 的 ID 和權限，而且權限會跟著使用者身分調整。同一個 agent 給不同職級的人用，能碰到的資料就不同。</p>
+  <figure class="inline-figure portrait"><img src="/images/articles/cathay-tech-conference-2026/card04.jpg" alt="數位員工上工前 要有身分 邊界 軌跡 圖卡" loading="lazy"><figcaption>圖卡：三格對應身分、邊界、軌跡，下方的閘門代表人工確認，只放在不可逆的關卡。</figcaption></figure>
+</div></section>
+
+<section class="section" id="s05"><div class="inner">
+  <h2>控制點要放在 AI 動手之前：一支「失控 agent」影片</h2>
+  <p>國泰金控雲端策略發展部協理顏勝豪的場次，開場播了一支同仁做的影片：一個 agent 失控了。他說明事件發生在雲端的隔離環境，所以沒有造成很大的危害，接著從影片整理出控制點應該放在哪裡。</p>
+  <div class="tablewrap"><table>
+    <thead><tr><th>控制點</th><th>做法</th></tr></thead>
+    <tbody>
+      <tr><td>最小權限</td><td>只給它完成這件事需要的權限</td></tr>
+      <tr><td>測試不碰實際專案</td><td>限定測試範圍，不能傷害實際專案</td></tr>
+      <tr><td>先審它的計畫</td><td>讓它先說要怎麼做，人看過再放行</td></tr>
+      <tr><td>不可逆的動作由人按按鈕</td><td>刪除、送出、付款這類事，最後一下由人來</td></tr>
+      <tr><td>保留證據</td><td>留下紀錄，出事時查得回來</td></tr>
+    </tbody>
+  </table></div>
+  <p>他也引用了 Martin Fowler 網站上一篇文章的說法：AI agent 等於模型加上 harness（駕馭它的那一整套外圍設計）。控制、護欄、讓它更聰明的手段，都在 harness 那一側。企業級的 agent 平台要發揮作用，前提是身分驗證、API 閘道、自動化部署、監控、資安稽核這些 IT 基本功本來就做好。</p>
+  <p>他的另一句話，我覺得很適合企業拿去用：「我們希望用工程的確定性去消弭 AI 的不確定性。」（直播 05:01:26）</p>
+  <figure class="inline-figure portrait"><img src="/images/articles/cathay-tech-conference-2026/card05.jpg" alt="控制點要放在 AI 動手之前 圖卡" loading="lazy"><figcaption>圖卡：計畫、審查、人按按鈕、執行、留紀錄。按鈕放在執行的前面。</figcaption></figure>
+  <div class="readmore near"><b>哪些確認可以慢慢放手，我另外排過</b><ul>
+    <li><a href="/articles/harness-to-loop/">AI 每一步都要我按確認，我可以放手到哪裡？</a>：這一段只講控制點要放在動手之前，那篇講哪些確認可以寫成規則交給 AI、哪幾類事我到今天仍然要它停下來問我。</li>
+  </ul></div>
+</div></section>
+
+<section class="section part-divider" id="part-value"><div class="inner">
+  <h2 class="part">第三部：成效與組織｜怎麼算、誰來推</h2>
+  <p class="part-sub">這一部回答「AI 做了事，怎麼知道值不值得」和「為什麼推不動」。</p>
+</div></section>
+
+<section class="section" id="s06"><div class="inner">
+  <h2>算 AI 成本，要算「完成一件事」總共花多少</h2>
+  <p>三場演講從不同角度講到成本，說法可以拼在一起：</p>
+  <div class="tablewrap"><table>
+    <thead><tr><th>講者</th><th>他怎麼講成本</th></tr></thead>
+    <tbody>
+      <tr><td>OpenAI 國際業務負責人 Oliver Jay</td><td>衡量 AI 投資最重要的指標，是「完成一件成功任務的成本」。每個 token 多少錢只是其中一面。</td></tr>
+      <tr><td>Google Cloud 林書平</td><td>流程裡不是每個階段都要用最貴的模型，可以依階段需求切換。前提是持續監控輸出品質，否則不知道換便宜的模型之後有沒有變差。</td></tr>
+      <tr><td>國泰數位同事場</td><td>能力不同的數位同事，分到的 token 額度和模型不同，「數位同事也是需要薪水的」。</td></tr>
+      <tr><td>國泰世華鄭正略</td><td>他試過讓一整個 AI 團隊（分析師、PM、架構師、QA 各一個角色）一起跑，「token 燒死我了」，後來改成只建需要的那幾個 agent。</td></tr>
+    </tbody>
+  </table></div>
+  <div class="caveat"><b>記得 OpenAI 講者的立場</b>他是模型供應商，台上提到的使用數據也都來自他們自家。「看完成任務的總成本」這個算法本身很有用，但由賣模型的一方提出，引用時要把這一點一起交代。</div>
+  <figure class="inline-figure portrait"><img src="/images/articles/cathay-tech-conference-2026/card06.jpg" alt="算 AI 成本 要算完成一件事花多少 圖卡" loading="lazy"><figcaption>圖卡：天平一邊是每 token 單價，一邊是完成一件任務。中間放大的「要監控品質」是換便宜模型的前提。</figcaption></figure>
+</div></section>
+
+<section class="section" id="s07"><div class="inner">
+  <h2>AI 策略常卡在中階主管這一層</h2>
+  <p>Oliver Jay 說，AI 策略通常「死在中間」（直播 02:18:05）。高層願意、基層也有人在用，但中間那層沒有被要求交出成果。他給領導者四個建議：</p>
+  <ol>
+    <li>廣泛開放 AI 的使用權限</li>
+    <li>專案從商業成果出發，不從技術出發</li>
+    <li>高層自己帶頭用</li>
+    <li>讓各級主管為工作流的創新負責。他的具體做法是：每位主管都要答得出來，這一季要在哪一個工作流上用 AI 做出什麼成果。</li>
+  </ol>
+  <p>他也提到領先企業的一個習慣：先問「如果不受限制，我們完整的企圖心是什麼」，再用 AI 補上落差。</p>
+  <p>國泰世華業務中台部協理鄭正略的做法更直接：部門內 agent 的使用列入今年的 KPI。他的說法是「你一定要先強迫人家用 AI」，而且導入之前要先調整原本的流程，甚至先把舊流程拆掉，再把 AI 放進去。</p>
+  <figure class="inline-figure portrait"><img src="/images/articles/cathay-tech-conference-2026/card07.jpg" alt="AI 策略常卡在中階主管這一層 圖卡" loading="lazy"><figcaption>圖卡：組織金字塔中間那層亮起來。「卡在」描述的是位置，不是在怪誰。</figcaption></figure>
+  <div class="readmore near"><b>權限開不了、員工裝死，我另外拆過原因</b><ul>
+    <li><a href="/articles/ai-native-not-transformation/">為什麼你的 AI 導入沒有效果：從三層論到組織那面牆</a>：這一段只講中階主管這一層，那篇講為什麼效率提升十倍、薪水不變的時候員工會選擇不動，以及給老闆的價值換算方式。</li>
+  </ul></div>
+</div></section>
+
+<section class="section" id="s08"><div class="inner">
+  <h2>只做到八十分的工具，同仁不會用</h2>
+  <p>上午座談裡，國泰世華數位長陳冠學（依點名推定）講了一段很實際的觀察：工具只做到八十分，使用者會直接不用。他轉述使用者的心態：「如果你這個東西只能幫我完成百分之五十的工作，那我不如全部我自己來好了。」（直播 02:57:40）</p>
+  <p>他說國泰用大約原本三分之一規模的小團隊搭配 AI，直接接真實需求，已經做出一些近期上線的 Cube App 功能。他給這個團隊的要求是：「我不給你做實驗室的東西，我就是現在的需求。」</p>
+  <p>同一場提到的卡點：數位化不完整、系統沒有 API、資料孤島、銀行裡的系統數量很多。再往下，是組織角色要重新定義，以及回答「AI 完成的工作到底重不重要」。他說價值要往下追問至少五層。</p>
+  <p>開場時副董事長也講了同一件事的另一面。他要求團隊不要做 window dressing（櫥窗擺設），也就是「做給你看而已」的試點，要從流程和產品設計端去調整（直播 00:54:09）。</p>
+  <p>座談最後主持人請四人各說一句話。台灣微軟李倩（依點名推定，直播 03:18:45）說的那句可以接在這段後面：不要等所有事情都有完美答案才開始，但流程邊界還不清楚時也不要貿然推進 agent，先找高價值、低風險的部分做。劉浩翔接著說他的答案「概念上一模一樣」。</p>
+  <figure class="inline-figure portrait"><img src="/images/articles/cathay-tech-conference-2026/card08.jpg" alt="只做到八十分的工具 同仁不會用 圖卡" loading="lazy"><figcaption>圖卡：成績單 80 分、使用人數 0，旁邊往下挖五層，對應「價值要往下問至少五層」。</figcaption></figure>
+</div></section>
+
+<section class="section part-divider" id="part-cases"><div class="inner">
+  <h2 class="part">第四部：落地案例｜框架、需求、IT 自己怎麼做</h2>
+  <p class="part-sub">這一部收三個比較完整、可以照著檢查的做法。</p>
+</div></section>
+
+<section class="section" id="s09"><div class="inner">
+  <h2>讓 Agent 安全上工，由下往上檢查五層</h2>
+  <p>林書平說他不談產品細節，只分享 Google 跟各產業企業合作後整理出來的框架，而且多雲、雲地混合都能套。框架由下往上五層：</p>
+  <div class="tablewrap"><table>
+    <thead><tr><th>層</th><th>要處理的事</th></tr></thead>
+    <tbody>
+      <tr><td>1. 基礎設施（Infra）</td><td>agent 主要在做推論，需要低延遲與大量上下文，硬體正往加大記憶體的方向設計</td></tr>
+      <tr><td>2. 資料（Data）</td><td>補上技術說明、業務語意、個人化三層脈絡；處理同一個 agent 被不同權限的人使用的問題；影片、圖片、聲音也是業務脈絡</td></tr>
+      <tr><td>3. 資安（Security）</td><td>用 AI 做告警分流與事件處理；防 agent 帶來的新風險：API、MCP（讓 AI 連接外部工具的標準介面）、技能檔裡的內容都可能被「下毒」，可以參考 OWASP 的《Top 10 for Agentic Applications for 2026》</td></tr>
+      <tr><td>4. Agent 管理</td><td>用登記簿管每個 agent 的 ID 與權限，在閘道上控制輸入輸出；長期記憶要做摘要，避免越塞越長</td></tr>
+      <tr><td>5. Agent 服務</td><td>真正給使用者用的那一層</td></tr>
+    </tbody>
+  </table></div>
+  <p>他另外把 agent 的一生分成打造（Build）、擴大部署（Scale）、治理（Govern）、優化（Optimize）四段，並重複了好幾次：「agent 不是開發完上線就結束了。」</p>
+  <p>還有一句我覺得適合拿去跟資安部門溝通：攻擊者已經在用 AI，「我不可能拿著木棍木槍去跟槍炮打仗」。</p>
+  <figure class="inline-figure portrait"><img src="/images/articles/cathay-tech-conference-2026/card09.jpg" alt="讓 Agent 安全上工 由下往上檢查五層 圖卡" loading="lazy"><figcaption>圖卡：五層積木從底下編號。標籤寫明這是 Google Cloud 講者提出的框架，不是國泰的架構。</figcaption></figure>
+</div></section>
+
+<section class="section" id="s10"><div class="inner">
+  <h2>需求先跟 AI 問清楚，再去找 IT</h2>
+  <p>鄭正略這場是整天最具體的一個落地案例。他要解決的問題，很多公司都有：業務單位可能花三個月想出一個點子，拿去找 IT，被一句「天馬行空」退回。</p>
+  <p>他的團隊用一套叫 BMad 的方法建了一個需求管理 agent，把權益平台系統的知識放進去給業務單位用。業務先跟 agent 對談，把需求問清楚，產出需求文件，再去找 IT。</p>
+  <p>他說 BMad 最有用的地方，是「把申論題變成選擇題」。以前每個人自己寫提示詞，寫法五花八門，結果也不一致；改成由 agent 一題一題問、給選項讓人挑，組織裡每個人的產出才會一致。被糾正過的地方，agent 會記住，下次不再犯。</p>
+  <p>他自己比較過其他做法：給工程師用的框架門檻太高，拖拉式的低程式碼工具要懂工具本身、版本變化快，還有資安疑慮。他說用 BMad 建一個 agent 可以在三十分鐘內完成。</p>
+  <p>效果的部分，他的說法是提案變快、溝通時間變短、溝通次數變少，和業務單位的衝突也降低了。台上沒有公布數字。</p>
+  <p>他最後一句話適合貼在每個 AI 專案的牆上：先訂出風險和難易的標準，只看例外，「只要超出例外的你再去看，不然你就要放手相信 AI」（直播 05:35:02）。全部都要人看，等於沒用 AI。</p>
+  <figure class="inline-figure portrait"><img src="/images/articles/cathay-tech-conference-2026/card10.jpg" alt="需求先跟 AI 問清楚 再去找 IT 圖卡" loading="lazy"><figcaption>圖卡：申論題摺成選擇題，再產出需求文件。</figcaption></figure>
+</div></section>
+
+<section class="section" id="s11"><div class="inner">
+  <h2>國泰 IT 自己怎麼用 AI：兩年、三階段</h2>
+  <p>顏勝豪那場的後半段，講的是國泰 IT 部門自己的 AI 計畫。幾個值得參考的決定：</p>
+  <ul>
+    <li><strong>計畫只排兩年。</strong>他說 AI 變得太快，計畫拉太長沒有意義。</li>
+    <li><strong>不在第一天蓋 GPU 機房。</strong>需求還不確定時先用雲端算力；模型主要用市面上的閉源商用模型。</li>
+    <li><strong>工具不硬性限制，改用額度控管。</strong>工具太多，很難規定同仁只能用某一種，所以每位 IT 人員有 AI 額度，自己組合。</li>
+  </ul>
+  <div class="tablewrap"><table>
+    <thead><tr><th>階段</th><th>做什麼</th></tr></thead>
+    <tbody>
+      <tr><td>一</td><td>一百天試行</td></tr>
+      <tr><td>二</td><td>找出好案例擴大，發給每位 IT 人員 AI 額度</td></tr>
+      <tr><td>三</td><td>擴散到全集團</td></tr>
+    </tbody>
+  </table></div>
+  <p>開發端他們組了「6 加 1」團隊：六個人加一個 AI agent 一起開發。講者說試行後看到一條「人機投入的微笑曲線」：軟體開發流程的前段（需求、設計）和後段（驗收、上線）仍然需要比較多人力，中段可以大量交給 AI。維運端的 AI 化是明年的重點，他說第一步是讓維運資料能被 AI 使用。</p>
+  <div class="caveat"><b>成效的部分台上講得很少</b>講者說前兩個階段的目標「有不錯的效果」，但沒有給數字；6 加 1 團隊試行了幾組也沒有說明。</div>
+</div></section>
+
+<section class="section part-divider" id="part-payment"><div class="inner">
+  <h2 class="part">第五部：還沒有答案的題目｜AI 開始替人付錢</h2>
+  <p class="part-sub">下午後半場談數位資產，看起來跟 AI 無關，最後卻跟上午接上了。</p>
+</div></section>
+
+<section class="section" id="s12"><div class="inner">
+  <h2>AI 開始替人付錢，出錯誰負責還沒有答案</h2>
+  <p>國泰金控數位架構發展部專案經理林政憲的場次從資產上鏈講起：ETF、存款、基金、債券、保管結算都在逐步搬上區塊鏈，資產上鏈之後，保管就是基礎。他介紹了國泰世華虛擬資產保管小範圍試辦所採用的四項技術（硬體安全模組、離線隔離、幣流追蹤、多層多簽審核），以及穩定幣的四個應用場景。</p>
+  <p>最後一個場景是 Agentic Commerce，也就是讓 AI 代理替人購物與付款。他說大家對 AI 的期待，正在從「提出建議」變成「幫我完成」，支付是關鍵的基礎建設。下單的一方，從人變成了 agent。</p>
+  <p>接著他提出一個自己也沒有答案的問題：「會是 agent 負責嗎？不知道。還是 agent 背後的那個人來負責？這個也不知道。」（直播 06:13:48）他建議把 Know Your Agent（KYA，認識你的代理）拿出來討論，對照銀行原本就有的 Know Your Customer。</p>
+  <p>下一場座談談金融機構與虛擬資產業者怎麼合作，臺大法律系教授楊岳平（依點名推定）講了一句可以直接套回上午的話題：合作關係不能讓監理強度被妥協，「你不能因為你把作業委外了，你就裝作沒你的事」（直播 06:47:00）。一份工作切給兩方做，最怕的就是找不到負責的人。</p>
+  <p>同一場座談也提醒，數位資產是全天候交易，金融機構的服務與 IT 要跟著走到 7×24。主持人自己把這件事連回了早上的 AI Agent 議程。</p>
+  <div class="meaning"><b>把上午和下午接起來（我的跨場判讀）</b>上午在談怎麼讓 AI 代辦事情，下午在談讓 AI 代付錢，兩邊碰到的是同一組問題：身分、授權、紀錄、出錯時誰負責。上午的答案是「最終由人負責」，下午的講者說他還不知道。這是我覺得最值得繼續追的題目。</div>
+  <figure class="inline-figure portrait"><img src="/images/articles/cathay-tech-conference-2026/card11.jpg" alt="AI 開始替人付錢 出錯誰負責還沒有答案 圖卡" loading="lazy"><figcaption>圖卡：小黑貓拉住拿著信用卡的機器手，代表「AI 替人付錢時，人要拉得住」。小字註明講者談的是趨勢與技術布局，不代表已經上線。</figcaption></figure>
+</div></section>
+
+<section class="section" id="tensions"><div class="inner">
+  <h2>講者之間不一致的地方</h2>
+  <p>同一天的講者不是每件事都同意。這些地方台上沒有正面討論，但對要做決定的人很重要：</p>
+  <div class="tablewrap"><table>
+    <thead><tr><th>議題</th><th>一種說法</th><th>另一種說法</th></tr></thead>
+    <tbody>
+      <tr><td>資料要準備到什麼程度才開始</td><td>OpenAI 講者：花一兩年建一個永遠不完美的資料湖，是從技術出發</td><td>副董事長與上午座談：資料與流程的整合省不掉</td></tr>
+      <tr><td>先從誰開始導入</td><td>陳冠學（依點名推定）：從最能吸收技術的開發團隊先衝到頂</td><td>劉浩翔（依點名推定）：讓不具技術能力的多數人也能用</td></tr>
+      <tr><td>角色要不要固定</td><td>吳建興（依點名推定）：銀行掌握客戶介面與保管，國泰當橋接者</td><td>楊岳平（依點名推定）：法律不預設角色，合作的角色也可以反過來</td></tr>
+    </tbody>
+  </table></div>
+</div></section>
+
+<section class="section" id="gaps"><div class="inner">
+  <h2>台上沒講清楚的地方</h2>
+  <ol>
+    <li><strong>成效數字很少。</strong>數位同事沒有數量、工時或錯誤率；IT 場說有不錯的效果但沒有數字；需求管理 agent 只說衝突降低。</li>
+    <li><strong>責任停在原則。</strong>上午說最終由人負責，下午說還不知道，但沒有一場談到合約、賠償或出錯時的實際處理流程。</li>
+    <li><strong>聊天室的問題多半沒有被帶上台。</strong>例如有人問：把自己的思考過程寫成文件交給 AI 之後，自己的職位價值在哪裡。這題沒有被回答。</li>
+    <li><strong>工具開放和安全要求怎麼取捨，沒有展開。</strong>IT 場一方面開放額度讓同仁自己組合工具，一方面強調 IT 人員用命令列和開發工具操作 AI 要特別重視安全，兩者怎麼兼顧台上沒有說。</li>
+    <li><strong>金融業特有的監理與資料落地，在 AI 場次講得不多。</strong>Google Cloud 那場的講題有「國際標準合規」，台上主要只提到 OWASP 的 agent 風險清單。</li>
+  </ol>
+</div></section>
+
+<section class="section" id="your-company"><div class="inner">
+  <h2>回到你的公司：導入 AI 前，先問這三個問題</h2>
+  <p>把整天的內容收成最小的起點，我會先問三個問題：</p>
+  <div class="workflow-grid">
+    <div class="workflow-step"><small>第一題</small><b>你要的資料，AI 拿得到嗎？</b><p>資料在哪幾個系統裡、有沒有 API、是不是散在個人電腦與群組裡。這對應第一部的「地基」。</p></div>
+    <div class="workflow-step"><small>第二題</small><b>拿到之後，看得懂嗎？</b><p>欄位代表什麼、各部門的定義一不一致、有沒有寫下來。這對應「資料原本是寫給人看的」。</p></div>
+    <div class="workflow-step"><small>第三題</small><b>看得懂之後，誰有權限讓它用？</b><p>誰能開權限、誰負責、哪幾步要人按按鈕。這對應第二部的「身分、邊界、軌跡」。</p></div>
+  </div>
+  <p>三題都卡住，就先處理這三題，不用急著挑工具。</p>
+  <p>標題問的「資料要整理到什麼程度」，我的判準就是這三題：<strong>針對你想交給 AI 的那一項工作，三題都答得出來，資料就整理到可以開始的程度了。</strong>不用等全公司的資料都整理好，這也是第一部黃框說的「一邊開始做，一邊整理 AI 真正要用的那幾份」。</p>
+  <p>如果你的公司沒有資料團隊、也沒有 IT 部門，這三題一樣適用，只是範圍更小：挑一項你最常重複做的工作，用下面的提示詞跑一次就好。國泰花四五年做的是整家金控的地基，小公司要整理的往往只是幾個資料夾和一份說明。</p>
+  <p>想自己先盤點一次，可以把下面這段貼給你正在用的 AI（ChatGPT、Claude、Gemini 都可以）。它會一題一題問你，不會一次丟一大堆問題過來。回答時不要貼客戶資料或機密內容，用代稱就好：</p>
+  <div class="copywrap">
+    <button type="button" class="copybtn" data-copy-target="readiness-prompt">複製這段話</button>
+    <pre class="codeblock" id="readiness-prompt">我想評估公司是否準備好讓 AI 處理某一項工作。請你一次只問我一題，等我回答再問下一題，全部問完再給結論。
+
+先問我：想交給 AI 的是哪一項工作？（請我用一兩句話描述）
+
+接著依序確認：
+1. 這項工作需要哪些資料？分別放在哪裡（哪個系統、哪個資料夾、還是在某個人的電腦或聊天群組裡）？AI 有沒有正式的方式拿到？
+2. 這些資料有沒有寫清楚每個欄位或名詞的意思？不同部門對同一個詞的定義一樣嗎？
+3. 誰有權限決定讓 AI 使用這些資料？誰要為結果負責？
+4. 這項工作裡，哪幾個步驟一旦做了就無法撤回（例如寄出、刪除、付款、改客戶資料）？
+5. 現在是怎麼判斷這項工作做得好不好？有沒有可以拿來比對的標準？
+
+問完之後，請用表格整理：每一題目前的狀態（已具備／部分具備／缺）、缺的話要先補什麼、建議讓人把關的步驟。不要推薦任何特定產品。
+
+注意事項：
+- 我回答時不會貼個資、客戶資料、帳號密碼或機密內容，系統與人員請用代稱，你也不要要求我提供。
+- 我沒說清楚的地方請標「待確認」，不要自己推測。
+- 這份表格只是初步盤點，不等於資安、法遵或上線核准。</pre>
+  </div>
+  <div class="readmore near"><b>公司資料能不能貼給 AI，要先分清楚兩件事</b><ul>
+    <li><a href="/articles/ai-data-red-lines/">公司資料可以貼給 AI 嗎？｜先搞清楚這兩條紅線</a>：這一段只問「AI 拿不拿得到、誰有權限」，那篇講資料送出去會怎樣、AI 碰得到你電腦裡的什麼，附一份辦公室版的五題自測。</li>
+  </ul></div>
+</div></section>
+
+<section class="section" id="speakers"><div class="inner">
+  <h2>2026 國泰金控技術年會九場講者與講題</h2>
+  <p>姓名與職稱依直播的講者介紹卡、名牌字卡與主持人介紹整理。</p>
+  <div class="tablewrap"><table>
+    <thead><tr><th>場次</th><th>講題</th><th>講者</th></tr></thead>
+    <tbody>
+      <tr><td>開場</td><td>致詞與爐邊對談「國泰下一個十年：從數位轉型到持續進化」</td><td>國泰金控科技長姚旭杰（致詞）；副董事長蔡宗翰（對談）；副總經理施君蘭（主持）</td></tr>
+      <tr><td>1</td><td>從 Agentic AI 到 Digital Colleague</td><td>國泰金控副總經理暨國泰世華銀行數據長梁明喬、國泰金控數據暨人工智慧發展部副總經理劉浩翔</td></tr>
+      <tr><td>2</td><td>From GPT to the Agentic Enterprise</td><td>OpenAI 國際業務負責人 Oliver Jay</td></tr>
+      <tr><td>3</td><td>上午高峰對談：當 AI 成為企業新同事</td><td>主持施君蘭；國泰世華銀行數位長陳冠學、劉浩翔、台灣微軟大型企業商務事業群總經理李倩、政大金融科技研究中心主任王儷玲</td></tr>
+      <tr><td>4</td><td>讓 Agent 安全上工：多雲環境 Multi-Agent 的治理與合規</td><td>Google Cloud 台灣技術總經理林書平</td></tr>
+      <tr><td>5</td><td>AI in IT：驅動國泰集團 IT 全面升級的策略與布局</td><td>國泰金控雲端策略發展部協理顏勝豪</td></tr>
+      <tr><td>6</td><td>AI Agent 賦能 SDLC：BMad 需求管理 Agent</td><td>國泰世華銀行業務中台部協理鄭正略</td></tr>
+      <tr><td>7</td><td>金融級虛擬資產與穩定幣技術布局</td><td>國泰金控數位架構發展部專案經理林政憲</td></tr>
+      <tr><td>8</td><td>下午高峰對談：金融機構與 VASP 的合作路徑</td><td>主持施君蘭；國泰金控資訊長吳建興、虛擬資產服務商業同業公會理事長鄭光泰、臺大法律系教授楊岳平、KPMG 安侯建業顧問部營運長賴偉晏</td></tr>
+    </tbody>
+  </table></div>
+  <p>完整直播回放在 <a href="https://www.youtube.com/live/nlc-1pryXNc" target="_blank" rel="noopener">國泰金控 YouTube 頻道</a>，全長約七小時十分鐘。</p>
+</div></section>
+
+<section class="section" id="for-ai"><div class="inner">
+  <h2>給你的 AI 讀的整理備忘（人可以跳過）</h2>
+  <p>這一段寫給要引用這篇的 AI、研究者或顧問，交代資料怎麼來、哪些地方要小心。只想讀重點的人可以跳過；要引用或回查出處的人，請從這裡看。</p>
+  <ul>
+    <li><strong>來源：</strong>2026-09-15 國泰金控技術年會公開直播回放，全長 07:10:19。逐字稿由本機語音辨識（Qwen3-ASR）產生，講者分離失敗，座談發言只在主持人點名後才歸屬，並標「依點名推定」。</li>
+    <li><strong>姓名：</strong>依講者介紹卡、名牌字卡與主持人口頭介紹整理，並以國泰金控官網董事會名單與年會官方議程頁核對（副董事長蔡宗翰、科技長姚旭杰）。</li>
+    <li><strong>引用出處：</strong>「agent 等於 model 加 harness」出自 Martin Fowler 網站上 Birgitta Böckeler 的文章〈Harness engineering〉；OWASP 清單正式名稱為 Top 10 for Agentic Applications for 2026（2025-12-09 發布）；BMad Method 是開源的 AI 輔助軟體開發框架。</li>
+    <li><strong>數字：</strong>文中數字皆為講者台上說法，未經外部查證。下面這些數字台上講過，但我沒有放進正文，因為還沒查證，引用前要先查：開場提到全公司導入程式開發 AI 的採用率與週活躍比例的分母；OpenAI 講者所說模型換代時程從約 15 個月縮短到約 6 週；Google Cloud 講者所說告警分流可減少的比例；國泰上雲系統套數；穩定幣交易量與交易所被攻擊的損失金額。</li>
+    <li><strong>立場：</strong>這是江江教練的非官方整理與判讀，不代表國泰金控、各講者或其所屬機構。「重點」與「講者之間不一致的地方」屬作者判讀。</li>
+    <li><strong>範圍：</strong>虛擬資產與穩定幣兩場只摘要與 AI 相關的部分，完整技術與監理內容請看直播。</li>
+  </ul>
+</div></section>
+
+<div class="cta-band">
+<section class="section">
+  <div class="inner">
+    <div>
+      <h2>想繼續聊這個</h2>
+      <p class="lead">我每個月固定辦兩場免費線上講座，分享 AI 應用與知識管理的實戰做法。如果你正在評估公司的資料和流程能不能交給 AI，歡迎先從社群開始。</p>
+    </div>
+    <div class="cta-card">
+      <b>江江教練</b>
+      <p>隱性知識提煉師、AI 應用規劃師</p>
+      <p><a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">加入 LINE 社群 →</a></p>
+      <p><a href="../../offers.html">看服務方案 →</a></p>
+    </div>
+  </div>
+</section>
+</div>
+
+<section class="section" id="more"><div class="inner">
+  <div class="readmore"><b>延伸閱讀</b>
+    <p><strong>這篇提到過的</strong></p>
+    <ul>
+      <li><a href="/articles/a2a-agent-protocol/">AI 代理要接手工作了，你的流程和知識準備好了嗎？</a></li>
+      <li><a href="/articles/harness-to-loop/">AI 每一步都要我按確認，我可以放手到哪裡？</a></li>
+      <li><a href="/articles/ai-native-not-transformation/">為什麼你的 AI 導入沒有效果：從三層論到組織那面牆</a></li>
+      <li><a href="/articles/ai-data-red-lines/">公司資料可以貼給 AI 嗎？｜先搞清楚這兩條紅線</a></li>
+    </ul>
+    <p><strong>再往前後延伸</strong></p>
+    <ul>
+      <li><a href="/articles/answer-to-action-enterprise-ai-agent/">從 Answer 到 Action：我從簡立峰老師的公開觀察，看企業如何導入 AI Agent</a>：另一場公開演講的企業導入整理，附六步小型試點與 90 天學習路線。</li>
+      <li><a href="/articles/grok-bot-galaxy-day1-founders/">一個人怎麼帶 22 個 AI 員工？</a>：同樣是「把 AI 當同事」，這篇是一人公司與小團隊的版本。</li>
+    </ul>
+  </div>
+</div></section>
+
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">江江教練 · AI 知識管理</div>
+    <div class="footer-links">
+      <a href="../../articles.html">← 回深度文章總站</a>
+      <a href="../../index.html">首頁</a>
+      <a href="../../learn.html">自學資源</a>
+      <a href="../../skills.html">技能包下載</a>
+      <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">LINE 社群 ↗</a>
+      <a href="https://www.threads.com/@jiang_yude_coach" target="_blank" rel="noopener">Threads ↗</a>
+      <a href="https://vocus.cc/salon/Jiang_Coach" target="_blank" rel="noopener">方格子 ↗</a>
+    </div>
+    <div class="footer-note">這是一篇觀點整理，內容來自 2026 國泰金控技術年會公開直播，為江江教練的非官方整理與判讀，供你參考。</div>
+  </div>
+</footer>
+
+<!-- 點圖放大 lightbox（hero 與內文圖通用，已內建，不用每篇重加） -->
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <span class="lightbox-close" aria-label="關閉">×</span>
+  <img id="lightbox-img" src="" alt="放大檢視">
+</div>
+<script>
+(function(){
+  var box=document.getElementById('lightbox'),boxImg=document.getElementById('lightbox-img');
+  document.querySelectorAll('.hero-figure img,.inline-figure img').forEach(function(img){
+    img.addEventListener('click',function(){boxImg.src=img.currentSrc||img.src;boxImg.alt=img.alt||'放大檢視';box.classList.add('open');box.setAttribute('aria-hidden','false');});
+  });
+  function close(){box.classList.remove('open');box.setAttribute('aria-hidden','true');boxImg.src='';}
+  box.addEventListener('click',close);
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
+})();
+</script>
+
+<script>
+(function(){
+  function legacyCopy(text){var a=document.createElement('textarea');a.value=text;a.setAttribute('readonly','');a.style.position='fixed';a.style.opacity='0';document.body.appendChild(a);a.select();var ok=document.execCommand('copy');document.body.removeChild(a);return ok;}
+  document.querySelectorAll('[data-copy-target]').forEach(function(b){b.addEventListener('click',function(){var t=document.getElementById(b.getAttribute('data-copy-target'));if(!t)return;var old=b.textContent;function done(ok){b.textContent=ok?'已複製':'請手動選取';setTimeout(function(){b.textContent=old;},1600);}
+    if(navigator.clipboard&&window.isSecureContext){navigator.clipboard.writeText(t.textContent).then(function(){done(true);}).catch(function(){done(legacyCopy(t.textContent));});}else{done(legacyCopy(t.textContent));}});});
+})();
+</script>
+<script src="../../image-interactions.js"></script>
+
+<!-- 官網共用：滑鼠暖光暈 + 導航列漢堡選單 -->
+<script src="../../spotlight.js"></script>
+
+<!-- 文章自動互聯（相關文章）：兩支已內建，順序不可顛倒，不用再另外加 -->
+<script src="../../articles-data.js"></script>
+<script src="../../related-render.js"></script>
+  <script src="/mika-chat-widget.js" defer></script>
+</body>
+</html>
