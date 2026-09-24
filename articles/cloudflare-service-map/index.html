@@ -143,6 +143,13 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
 .footer-brand{font-weight:900;font-size:15px;margin-bottom:10px}.footer-note{font-size:13px;line-height:1.6}
 @media(max-width:820px){.infocard-grid{grid-template-columns:1fr}.duo{grid-template-columns:1fr}.workflow-grid{grid-template-columns:1fr}.cta-band .inner{grid-template-columns:1fr}.section{padding:40px 20px}.hero{min-height:52vh;flex-direction:column;justify-content:flex-start;align-items:flex-start;gap:24px}.hero>div{width:100%}.hero-figure{width:100%;max-width:560px}}
 @media(max-width:820px){html,body{overflow-x:hidden}.hero h1{word-break:break-word}}
+.hero{gap:48px!important}
+.hero>div:not(.wc){width:560px!important}
+.hero .hero-figure{width:460px}
+.hero .hero-figure img{height:auto;aspect-ratio:16/9}
+.hero h1{font-size:clamp(28px,2.7vw,40px)!important;line-height:1.2!important;margin:12px 0 16px!important}
+.hero p{font-size:clamp(17px,1.35vw,19px)!important;line-height:1.65!important}
+@media(max-width:1250px){.hero{gap:28px!important;flex-direction:column;align-items:flex-start}.hero>div:not(.wc){width:100%!important}.hero .hero-figure{width:100%;max-width:640px}.hero h1{font-size:clamp(28px,5vw,40px)!important}}
 </style>
 </head>
 <body class="spotlight">
@@ -163,7 +170,6 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
       <li><a href="../../articles.html" class="active">深度文章</a></li>
       <li><a href="../../skills.html">技能包下載</a></li>
       <li><a href="../../offers.html">服務方案</a></li>
-      <li class="lang-switch"><a href="../../en/articles.html" hreflang="en">EN</a></li>
     </ul>
   </div>
 </nav>
@@ -177,6 +183,9 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
     <h1>Cloudflare 免費版到底能做什麼？｜二十二個服務分五類，附白話用途與哪些要先綁付款方式</h1>
     <p>課程會員站、工作坊生圖站、LINE 群助理的後端，我都放在 Cloudflare。這篇把它的服務分成五類講白話，每一類配上我實際拿它做了什麼。</p>
   </div>
+  <figure class="hero-figure">
+    <img src="../../images/articles/cloudflare-service-map-cover.jpg" alt="封面：Cloudflare 免費版到底能做什麼？二十二個服務分五類，附白話用途與哪些要先綁付款方式。咪卡扒著五格抽屜櫃，最上層飛出一張網頁，其他抽屜裝著照片檔案、對話泡泡、信封門牌、掛鎖盾牌" width="1280" height="720" loading="eager">
+  </figure>
 </section>
 
 <main>
@@ -400,7 +409,7 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
       <table>
         <thead><tr><th>服務</th><th>白話說它是什麼</th><th>能拿來做什麼</th><th>免費嗎</th></tr></thead>
         <tbody>
-          <tr><td><b>Registrar</b></td><td>網域代辦處，照成本價賣</td><td>買 <code>.com</code>，或把別家買的網址轉進來</td><td>要付費，官方標示 7.85 美元起</td></tr>
+          <tr><td><b>Registrar</b></td><td>網域代辦處，照成本價賣</td><td>買 <code>.com</code>，或把別家買的網址轉進來</td><td>要付費，照成本價，價格依網域後綴而不同</td></tr>
           <tr><td><b>DNS</b></td><td>網域電話簿，決定網址指到哪裡</td><td>讓網址連到你的網站、設定信箱收發</td><td>免費，查詢次數不限</td></tr>
           <tr><td><b>Email Routing</b></td><td>信件轉寄站</td><td>寄到 <code>hello@你的網域</code> 的信自動轉進你的 Gmail</td><td>免費，不限封數</td></tr>
           <tr><td><b>Email Sending</b></td><td>網站的自動寄信員</td><td>報名確認信、重設密碼信</td><td>寄給自己驗證過的信箱免費，寄給任何人要付費方案</td></tr>
@@ -462,7 +471,8 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
     <p>兩個坑都發生在萊卡，2026 年 9 月初。</p>
     <h3>坑一：每天十萬次很寬，每一輪五十件事很緊</h3>
     <p>萊卡要把 LINE 群的照片備份到 Google 雲端硬碟。有一天群裡的人在外面參訪，一天幾十張照片，我發現它每一輪只存得下兩到三張。去查用量，每天的總量連上限的百分之一都不到。</p>
-    <p>卡住它的是另一種規則。Workers 每被叫醒一次算一輪，免費方案每一輪對外呼叫最多 50 個、資料庫查詢最多 50 個（2026-09-02 查證）。一張照片要跟 LINE 拿檔案、跟 Google 上傳，對外呼叫三到四個，資料庫查詢五六個，一輪自然只塞得下兩三張。</p>
+    <p>卡住它的是另一種規則。Workers 每被叫醒一次算一輪，當時（2026-09-02 查證）官方寫免費方案每一輪對外呼叫最多 50 個、資料庫查詢最多 50 個。一張照片要跟 LINE 拿檔案、跟 Google 上傳，對外呼叫三到四個，資料庫查詢五六個，一輪自然只塞得下兩三張。</p>
+    <p>9 月 24 日我再查一次，官方兩頁的寫法已經對不上：Workers 的限制頁把「打 Cloudflare 自家服務（含資料庫）」另列一個每輪 1,000 次的上限，D1 自己的限制頁仍寫免費方案每輪 50 個查詢。對外呼叫的 50 個沒有變。用之前以當下的官方頁為準。</p>
     <p>後來程式裡放了一本帳，每個動作發出前先看這一輪還有沒有額度，不夠就留到下一輪；排程也從每小時一輪改成每五分鐘一輪，用輪數換量。</p>
     <h3>坑二：算的是資料庫翻過多少列，不是你看到幾筆</h3>
     <p>D1 的免費額度寫「每天讀取五百萬列」，看起來非常寬。但它算的是資料庫翻過的列數，不是回傳給你的列數。</p>
@@ -497,7 +507,7 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
 <section class="section" id="how-verified">
   <div class="inner">
     <h2>這篇的數字從哪來，保鮮期到哪天</h2>
-    <p>服務的額度、免費條件、改名資訊，來自 Cloudflare 官方文件與定價頁，查證日期 2026-09-15；每一輪 50 個呼叫的限制是 2026-09-02 查證。案例裡的數字來自我自己的工作紀錄，時間在 2026 年 8 月到 9 月之間。</p>
+    <p>服務的額度、免費條件、改名資訊，來自 Cloudflare 官方文件與定價頁，查證日期 2026-09-15，2026-09-24 上線前再查一次，更新了網域價格與每一輪上限兩處。案例裡的數字來自我自己的工作紀錄，時間在 2026 年 8 月到 9 月之間。</p>
     <p>雲端服務的額度變動很快。你真的要開通之前，點進官方定價頁看一眼當天的值，那一頁永遠比任何整理文章新。</p>
   </div>
 </section>
@@ -508,7 +518,7 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
     <div>
       <h2>自己動手放一次，比看十篇整理有用</h2>
       <p class="lead">這些服務的免費額度，對一個人的網站來說幾乎都用不完。真正的門檻不在費用，在於有沒有把第一頁真的放上去。我每個月固定辦兩場免費線上講座，分享 AI 應用與知識管理的實戰做法。</p>
-      <p>本篇額度與免費條件為 2026 年 9 月 15 日查證結果（每一輪上限為 9 月 2 日查證），來源為 Cloudflare 官方文件與定價頁；案例數字來自我 2026 年 8 月到 9 月的工作紀錄。平台方案隨時可能調整，重要決策前請重新核對官方頁面。</p>
+      <p>本篇額度與免費條件為 2026 年 9 月 15 日查證、9 月 24 日複查結果，來源為 Cloudflare 官方文件與定價頁；案例數字來自我 2026 年 8 月到 9 月的工作紀錄。平台方案隨時可能調整，重要決策前請重新核對官方頁面。</p>
     </div>
     <div class="cta-card">
       <b>免費線上講座</b>
