@@ -146,10 +146,32 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
 @media(max-width:820px){.infocard-grid{grid-template-columns:1fr}.duo{grid-template-columns:1fr}.workflow-grid{grid-template-columns:1fr}.cta-band .inner{grid-template-columns:1fr}.section{padding:40px 20px}.hero{min-height:52vh;flex-direction:column;justify-content:flex-start;align-items:flex-start;gap:24px}.hero>div{width:100%}.hero-figure{width:100%;max-width:560px}}
 @media(max-width:820px){html,body{overflow-x:hidden}.hero h1{word-break:break-word}}
 .article-date{margin-top:18px;font-size:15px;color:var(--muted)}
-/* 標題 42 字，範本預設 clamp(36px,6vw,72px) 在寬螢幕會撐成整片巨字；本篇無封面圖不會 wrap，只縮字級 */
-.hero h1{font-size:clamp(28px,3.6vw,48px)!important;line-height:1.16!important;margin:12px 0 16px!important}
-.hero p{font-size:clamp(16px,1.5vw,20px)!important;line-height:1.66!important}
-.hero .kicker{font-size:1.3rem!important}
+/* 封面為 4:5 直式輪播卡：收窄封面，標題長所以收窄文字容器並縮字級，避免封面被擠到下一行（同 Day 1 數值） */
+.hero-figure{width:320px}
+.hero-figure img{aspect-ratio:4/5;object-fit:cover}
+.hero{gap:56px!important}
+.hero>div{width:660px!important}
+.hero h1{font-size:clamp(30px,3.3vw,46px)!important;line-height:1.16!important;margin:12px 0 16px!important}
+.hero p{font-size:clamp(16px,1.35vw,19px)!important;line-height:1.65!important}
+.hero .kicker{font-size:1.28rem!important}
+@media(max-width:1120px){
+  .hero{gap:32px!important;flex-direction:column;align-items:flex-start}
+  .hero>div{width:100%!important}
+  .hero h1{font-size:clamp(28px,5vw,40px)!important}
+}
+/* Grok Bot Galaxy 三篇系列導覽（放在開場簡介下面，三篇互連） */
+.series-nav{margin:0 0 36px;padding:18px 20px;border:1px solid #d8cdb8;border-radius:14px;background:#fffaf0}
+.series-nav .series-label{margin:0 0 10px;font-size:15px;font-weight:700;letter-spacing:.04em;color:#8a5a2b}
+.series-nav ol{list-style:none;margin:0!important;padding:0!important;display:grid;gap:6px}
+.series-nav li{margin:0!important;padding:0!important}
+.series-nav li::before{content:none!important}
+.series-nav a,.series-nav .cur{display:flex;gap:12px;align-items:baseline;padding:10px 12px;border-radius:10px;text-decoration:none!important;color:#1a1612;font-size:18px;line-height:1.5}
+.series-nav a:hover,.series-nav a:focus-visible{background:#f6ead6}
+.series-nav a .t{text-decoration:underline;text-decoration-color:#d8b98f;text-underline-offset:4px}
+.series-nav .cur{background:#f3e3c8}
+.series-nav .day{flex:none;min-width:4.2em;font-weight:700;color:#b5652a}
+.series-nav .here{flex:none;margin-left:auto;font-size:14px;color:#6a635a}
+@media(max-width:820px){.series-nav a,.series-nav .cur{flex-wrap:wrap;gap:2px 12px}.series-nav .here{margin-left:0}}
 </style>
 </head>
 <body class="spotlight">
@@ -178,18 +200,29 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
   <div class="wc wc1"></div>
   <div class="wc wc2"></div>
   <div class="wc wc3"></div>
-  <!-- 本篇目前沒有圖卡，hero 不放封面圖（範本的 .hero-figure 整塊已移除，hero 自動置中只剩文字）。之後補圖時把範本那塊 <figure class="hero-figure"> 貼回來即可，lightbox 已內建。 -->
   <div>
     <div class="kicker">AI 應用 · Multi-Agent</div>
     <h1>客服、業務、開發客戶，AI 員工實際做到哪一步？｜Grok Bot Galaxy 直播 Day 2 四場工作坊整理</h1>
     <p>四場工作坊，四個職務把自己每天在用的 bot 攤開來講：每個 bot 負責什麼、花多少錢、哪些事情故意不讓 bot 自己做。</p>
     <div class="article-date">發佈 2026-09-18 ｜ 最後更新 2026-09-22</div>
   </div>
+  <figure class="hero-figure">
+    <img src="/images/articles/grok-bot-galaxy-day2-workshops/card01.jpg" alt="Grok Bot Galaxy 直播 Day 2 懶人包輪播卡封面" loading="lazy">
+    <figcaption>輪播卡封面：這組卡整理直播 Day 2。</figcaption>
+  </figure>
 </section>
 
 <main>
 
 <section class="section" id="start"><div class="inner">
+  <nav class="series-nav" aria-label="Grok Bot Galaxy 直播整理系列">
+    <p class="series-label">Grok Bot Galaxy 直播整理・共三篇</p>
+    <ol>
+      <li><a href="/articles/grok-bot-galaxy-day1-founders/"><span class="day">Day 1</span><span class="t">一個人怎麼帶 22 個 AI 員工？</span></a></li>
+      <li><span class="cur" aria-current="page"><span class="day">Day 2</span><span class="t">客服、業務、開發客戶，AI 員工實際做到哪一步？</span><span class="here">你正在看</span></span></li>
+      <li><a href="/articles/grok-bot-galaxy-day3-shipping/"><span class="day">Day 3</span><span class="t">三天用 AI 員工開一間公司，最後出貨了什麼？</span></a></li>
+    </ol>
+  </nav>
   <h2>這篇在講什麼</h2>
   <p class="lead">Grok Bot Galaxy 直播第二天，官方團隊開了四場工作坊，讓自己公司的業務工程師、業務、開發客戶（SDR）、客服上台講他們每天怎麼用 AI 員工工作。這篇整理他們實際做的事：每個職務養了哪些 bot、怎麼分工、花多少錢、哪些事情故意不讓 bot 自己做。</p>
   <p>後半另外整理當天主直播時段的施工現場，他們自己在鏡頭前把生意方向整個換掉，那段可以當成前面四場的實作對照。</p>
