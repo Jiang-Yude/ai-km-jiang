@@ -23,6 +23,25 @@ window.ARTICLE_TAGS = {
 
 window.ARTICLES = [
   {
+    id: "ai-adoption-start-with-one-workflow",
+    url: "articles/ai-adoption-start-with-one-workflow/",
+    date: "2026-09-25",
+    updated: "2026-09-25",
+    title: "公司導入 AI，要先找年輕人還是叫大家都來學？｜先找關鍵主管把一條流程做好，再複製給其他人",
+    problem: "公司想導入 AI，第一步就去找人：找一個年輕人來負責，或叫一群同仁和主管來上課，結果大家都沒在用。",
+    audience: "想導入 AI 卻不知道第一步該找誰的老闆、辦過 AI 課程同仁卻沒在用的主管，以及幫客戶導入 AI 的顧問。",
+    summary: "先找年輕人來用 AI，新人要扛公司流程加 AI 系統的雙層壓力；叫一群人來學，大家自己的事都做不完。這篇整理五步導入順序：老闆加上最需要優化的主管，先把一條工作流程做好，確定之後其他人直接來學、直接用，再複製到其他部門。也講新人進來就是訓練 AI 最好的時候：帶新人時錄音交給 AI，讓它像見習生一樣旁聽，整理成工作手冊。一位主管教員工做簡報講了快一個小時、跟 AI 只下幾個提示詞，錄下來就能整理成操作手冊；同一份手冊給新人看，也是給 AI 用的技能包。附挑第一條流程的盤點表、流程盤點提示詞、錄音整理成操作手冊的提示詞，和把手冊做成技能包的做法。",
+    tags: {
+      topic: ["AI應用", "工作流程", "數位轉型"],
+      level: ["零基礎入門"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["delete-before-automate", "ai-vs-script-four-situations", "manage-ai-with-management-knowledge", "ai-employee-four-levels", "claude-skills-knowledge-assets", "harness-mindset-for-bosses"],
+    cover: { wide: "images/articles/ai-adoption-start-with-one-workflow-cover.jpg" }
+  },
+
+  {
     id: "cloudflare-service-map",
     url: "articles/cloudflare-service-map/",
     date: "2026-09-16",
@@ -74,7 +93,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["vibe-coding-ten-half-products", "elon-musk-live-skill", "ai-vs-script-four-situations", "dont-learn-ai-tools"]
+    related: ["vibe-coding-ten-half-products", "elon-musk-live-skill", "ai-vs-script-four-situations", "dont-learn-ai-tools", "ai-adoption-start-with-one-workflow"]
   },
 
   {
@@ -203,7 +222,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["agent-workflow-builds-automation", "claude-skills-knowledge-assets", "loop-engineering-guardrails", "my-three-loops", "liberal-arts-agent-framework", "ai-schedule-wake-interval", "delete-before-automate"],
+    related: ["agent-workflow-builds-automation", "claude-skills-knowledge-assets", "loop-engineering-guardrails", "my-three-loops", "liberal-arts-agent-framework", "ai-schedule-wake-interval", "delete-before-automate", "ai-adoption-start-with-one-workflow"],
     cover: { wide: "images/articles/ai-vs-script-four-situations-summary.jpg" }
   },
 
@@ -1263,7 +1282,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["how-to-train-your-ai-employee", "harness-mindset-for-bosses", "train-your-ai-agent-editor", "ai-native-not-transformation", "web-chat-ai-vs-desktop-agent", "knowledge-as-employee", "claude-skills-knowledge-assets", "docs-as-system-design-agent", "ai-tools-professional-judgment", "meeting-record-agent-workflow", "program-vs-ai-skill-library", "intent-first-prompting", "messaging-apps-ai-friendliness", "grok-bot-galaxy-day2-workshops"]
+    related: ["how-to-train-your-ai-employee", "harness-mindset-for-bosses", "train-your-ai-agent-editor", "ai-native-not-transformation", "web-chat-ai-vs-desktop-agent", "knowledge-as-employee", "claude-skills-knowledge-assets", "docs-as-system-design-agent", "ai-tools-professional-judgment", "meeting-record-agent-workflow", "program-vs-ai-skill-library", "intent-first-prompting", "messaging-apps-ai-friendliness", "grok-bot-galaxy-day2-workshops", "ai-adoption-start-with-one-workflow"]
   },
 
   {
@@ -1570,7 +1589,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["how-to-train-your-ai-employee", "docs-as-system-design-agent", "what-is-loop-engineering", "claude-skills-knowledge-assets", "company-shape-is-the-moat", "decision-ladder-non-programmer"]
+    related: ["how-to-train-your-ai-employee", "docs-as-system-design-agent", "what-is-loop-engineering", "claude-skills-knowledge-assets", "company-shape-is-the-moat", "decision-ladder-non-programmer", "ai-adoption-start-with-one-workflow"]
   },
 
   {
@@ -2020,7 +2039,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["intent-first-prompting", "prompt-to-loop-map", "loop-engineering-guardrails", "ai-employee-four-levels", "dont-learn-ai-tools"]
+    related: ["intent-first-prompting", "prompt-to-loop-map", "loop-engineering-guardrails", "ai-employee-four-levels", "dont-learn-ai-tools", "ai-adoption-start-with-one-workflow"]
   },
 
   {
@@ -2848,7 +2867,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["semantic-rules-before-prompt-templates", "ai-data-organization-usable-system", "manage-ai-with-management-knowledge", "chatgpt-work-skills-web-version", "old-prompts-intent-first-loop-engineering", "ai-employee-four-levels", "use-more-ai-not-enough"]
+    related: ["semantic-rules-before-prompt-templates", "ai-data-organization-usable-system", "manage-ai-with-management-knowledge", "chatgpt-work-skills-web-version", "old-prompts-intent-first-loop-engineering", "ai-employee-four-levels", "use-more-ai-not-enough", "ai-adoption-start-with-one-workflow"]
   },
 
   {
