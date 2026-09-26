@@ -103,6 +103,17 @@ table.cmp .new td{background:rgba(95,117,83,.08)}
 .compare tr:nth-child(even) td{background:rgba(250,245,236,.5)}
 @media(max-width:700px){.compare{font-size:15px}.compare th,.compare td{padding:8px 9px}}
 .article-meta{margin-top:18px;font-size:14px;line-height:1.6;color:#6a635a}
+.hero-figure{margin:0;width:320px;flex:none;position:relative;z-index:2}
+.hero-figure img{display:block;width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:16px;border:1px solid #d8cdb8;box-shadow:0 18px 45px rgba(107,74,42,.16);cursor:zoom-in}
+.hero-figure figcaption{margin-top:10px;font-size:14px;line-height:1.6;color:#6a635a}
+.inline-figure{margin:30px auto 8px;max-width:820px}
+.inline-figure.portrait{max-width:430px}
+.inline-figure img{display:block;width:100%;border-radius:14px;border:1px solid var(--line);box-shadow:var(--shadow);background:#fff;cursor:zoom-in}
+.inline-figure figcaption{font-size:14px;line-height:1.6;color:var(--muted);margin-top:10px;text-align:center}
+.lightbox{position:fixed;inset:0;z-index:10000;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(12,10,8,.92);cursor:zoom-out;backdrop-filter:blur(4px)}
+.lightbox.open{display:flex}.lightbox img{max-width:96vw;max-height:92vh;border-radius:10px;box-shadow:0 24px 60px rgba(0,0,0,.5)}
+.lightbox-close{position:fixed;top:18px;right:24px;color:#fff;font-size:34px;line-height:1;font-weight:700;cursor:pointer;opacity:.85}
+@media(max-width:820px){.hero-figure{width:100%;max-width:320px}.inline-figure.portrait{max-width:340px}}
 </style>
 <!-- tracking:vercel-analytics -->
 <script defer src="/_vercel/insights/script.js"></script>
@@ -134,6 +145,10 @@ table.cmp .new td{background:rgba(95,117,83,.08)}
     <p>過去大家比誰的模型最聰明。我最近越用越清楚，現在真正在比的是完成一個任務的 CP 值：時間、算力、金錢加起來，誰最划算。</p>
     <div class="article-meta">發佈 2026-07-14｜最後更新 2026-07-14</div>
   </div>
+  <figure class="hero-figure">
+    <img src="../../images/articles/ai-cp-value-calculus-01.jpg" alt="AI 的 CP 值封面：品質、成本、時間三個圓圈連成三角形，咪卡戴著報童帽、拿著計算機站在一旁" loading="lazy">
+    <figcaption>AI 的 CP 值，是品質、成本、時間三者一起算。</figcaption>
+  </figure>
 </section>
 
 <main>
@@ -166,6 +181,10 @@ table.cmp .new td{background:rgba(95,117,83,.08)}
   <p><b>第二個是中階模型，一次只有 80 分。</b>但它便宜，一次才 10 塊。你可以讓它自己反覆迭代：問第二次變 90 分，第三次 95 分，問到第五次就補到 100 分了。五次加起來 50 塊，同樣是滿分，只花了旗艦一半的錢。代價是一次要跑 10 分鐘，五次就是 50 分鐘，比較耗時間。</p>
   <p><b>第三個是最便宜的模型，一次 5 塊，很快，但一次只有 60 分。</b>聽起來 CP 值最高對吧？問題是它上限很低，而且反覆迭代容易失真，越問越走鐘。你要把它逼到 100 分，可能得問 30 次，算下來 150 塊，還要跑兩個半小時。</p>
   <div class="meaning"><b>看出來了嗎</b>用最便宜的模型做到滿分，反而是最貴、也最慢的。</div>
+  <figure class="inline-figure portrait">
+    <img src="../../images/articles/ai-cp-value-calculus-02.jpg" alt="同一個任務做到 100 分的三種路徑對照表：旗艦 100 塊 10 分鐘，中階 50 塊 50 分鐘，最便宜 150 塊兩個半小時，咪卡拿著指揮棒講解" loading="lazy">
+    <figcaption>旗艦、中階、平價，三個模型各有各的品質與代價。</figcaption>
+  </figure>
 </div></section>
 
 <section class="section"><div class="inner">
@@ -184,6 +203,10 @@ table.cmp .new td{background:rgba(95,117,83,.08)}
     <tr><td>中階</td><td>5 次（80→90→95→100）</td><td>50 元</td><td>50 分鐘</td></tr>
     <tr><td>平價</td><td>30 次（60→80→90→100）</td><td>150 元</td><td>2.5 小時</td></tr>
   </table>
+  <figure class="inline-figure portrait">
+    <img src="../../images/articles/ai-cp-value-calculus-03.jpg" alt="最便宜，不一定最省：一次 5 塊只有 60 分，得問 30 次，最後花 150 塊、兩個半小時，咪卡拿著放大鏡盯著沙漏" loading="lazy">
+    <figcaption>最便宜的模型逼到滿分，反而是最貴的那個。</figcaption>
+  </figure>
   <h3>看你要幾分，選不同的模型</h3>
   <table class="compare">
     <tr><th>你的需求</th><th>最佳選擇</th></tr>
@@ -195,6 +218,10 @@ table.cmp .new td{background:rgba(95,117,83,.08)}
   <div class="caveat"><b>這些數字是比喻</b>分數、價格與時間都是為了說明取捨而設的示例，不是任何一家模型的實際報價。你自己的任務要換成自己的數字再算一次。</div>
   <p>所以真正該問的從來就是「你這次的任務，到底需要幾分」，「哪個模型最強」反而排在後面。</p>
   <p>要最快拿到 100 分，用旗艦，10 分鐘搞定。要最省錢拿到 100 分，用中階，讓它慢慢磨。如果這件事其實只需要 60 分，那最便宜的模型問一次就夠了，何必動用旗艦。</p>
+  <figure class="inline-figure portrait">
+    <img src="../../images/articles/ai-cp-value-calculus-04.jpg" alt="先問這次任務需要幾分：最快到 100 分用旗艦，想省錢到 100 分用中階，只要 60 分最便宜的一次就夠，咪卡指著三張選項卡" loading="lazy">
+    <figcaption>先問這次要幾分，再決定用哪個模型。</figcaption>
+  </figure>
 </div></section>
 
 <section class="section"><div class="inner">
@@ -213,6 +240,10 @@ table.cmp .new td{background:rgba(95,117,83,.08)}
   <p>算力是有限的。要解的問題卻多到滿出來。當你手上的資源不再是無限的聰明，而是一格一格要精算的成本，你就被迫排序。</p>
   <p>這其實跟前面那張 CP 值表是同一件事，只是放大到了人類的層級：先想清楚「這件事，值不值得做到滿分」，再決定要不要把力氣花在「能不能做到滿分」。</p>
   <p>會算 CP 值，是這個時代的基本功。會排序哪些問題值得解，才是真正的分水嶺。</p>
+  <figure class="inline-figure portrait">
+    <img src="../../images/articles/ai-cp-value-calculus-05.jpg" alt="模型能力很重要，任務定義更前面：先挑問題、再定分數、最後選模型三個步驟，咪卡托著下巴思考" loading="lazy">
+    <figcaption>算力有限，真正要排序的是：哪些問題值得先被解決。</figcaption>
+  </figure>
   <div class="tagrow">
     <span class="tag">AI 趨勢</span>
     <span class="tag">模型選擇</span>
@@ -255,10 +286,26 @@ table.cmp .new td{background:rgba(95,117,83,.08)}
   </div>
 </footer>
 
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <span class="lightbox-close" aria-label="關閉">×</span>
+  <img id="lightbox-img" src="" alt="放大檢視">
+</div>
+<script>
+(function(){
+  var box=document.getElementById('lightbox'),boxImg=document.getElementById('lightbox-img');
+  document.querySelectorAll('.hero-figure img,.inline-figure img').forEach(function(img){
+    img.addEventListener('click',function(){boxImg.src=img.currentSrc||img.src;boxImg.alt=img.alt||'放大檢視';box.classList.add('open');box.setAttribute('aria-hidden','false');});
+  });
+  function close(){box.classList.remove('open');box.setAttribute('aria-hidden','true');boxImg.src='';}
+  box.addEventListener('click',close);
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
+})();
+</script>
 
 <script src="../../spotlight.js"></script>
 <script src="../../articles-data.js"></script>
 <script src="../../related-render.js"></script>
+<script src="../../image-interactions.js"></script>
 <script src="/views.js"></script>
   <script src="/mika-chat-widget.js" defer></script>
 <!-- tracking:cloudflare -->
