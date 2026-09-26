@@ -23,6 +23,24 @@ window.ARTICLE_TAGS = {
 
 window.ARTICLES = [
   {
+    id: "one-sentence-ai-website-workflow",
+    url: "articles/one-sentence-ai-website-workflow/",
+    date: "2026-09-26",
+    updated: "2026-09-26",
+    title: "我只用一句話，AI 怎麼把網站做完？｜從口述需求、技能包、4O 到正式部署",
+    problem: "大家很容易以為 AI 做網站就是打一行字、幾秒後畫面出現，卻說不清楚一個能正式上線的網站，中間到底經過哪些步驟、誰在把關。",
+    audience: "想示範 AI 做網站卻不知道怎麼解釋背後流程的人；已經會跟 AI 對話、想把成果做成可重複工作流的人；希望網站能接回正式官網的人。",
+    summary: "用一張可播放、暫停、拖曳進度、可用鍵盤操作的六步動態工作流，示範一句口述需求（用知識官網的風格配色、版型做成動態流程圖）怎麼變成正式上線的深度文章：口述整理成施工條件、技能包路由（spring-editor、webpage-builder、knowledge-site-manager）、在獨立工作桌套官方版型施工、4O（SEO、AIO、GEO、AXO）同輪檢查與技術驗收、交給另一家模型 Claude Code 跨家檢查，最後由 merge-publish.sh 合併、scripts/publish.sh 發布並驗正式網址。附部署四階段對照表與停止條件：跨家審查抓到重大矛盾、秘密掃描命中、工作區有別人的未提交內容、preflight 失敗，任何一項出現就停。",
+    tags: {
+      topic: ["AI工作流", "技能包設計", "AI應用"],
+      level: ["基礎"],
+      content_type: ["案例文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["claude-skills-knowledge-assets", "ai-era-websites-for-agents", "parallel-site-editing", "publish-gate", "three-levels-of-cross-review", "hosting-platform-decision-tree"]
+  },
+
+  {
     id: "reevaluate-models-same-test",
     url: "articles/reevaluate-models-same-test/",
     date: "2026-09-26",
@@ -259,7 +277,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["free-deploy-three-boundaries", "github-vercel-cloudflare-compare", "who-can-see-your-site", "webnode-to-cloudflare-pages", "cloudflare-service-map"],
+    related: ["free-deploy-three-boundaries", "github-vercel-cloudflare-compare", "who-can-see-your-site", "webnode-to-cloudflare-pages", "cloudflare-service-map", "one-sentence-ai-website-workflow"],
     cover: { wide: "images/articles/hosting-platform-decision-tree-cover.jpg" }
   },
 
@@ -544,7 +562,7 @@ window.ARTICLES = [
       content_type: ["趨勢文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["webmcp-day-one", "agent-web-turning-point", "web-chat-ai-vs-desktop-agent", "a2a-agent-protocol", "five-loops-content-line"],
+    related: ["webmcp-day-one", "agent-web-turning-point", "web-chat-ai-vs-desktop-agent", "a2a-agent-protocol", "five-loops-content-line", "one-sentence-ai-website-workflow"],
     cover: { wide: "images/articles/ai-era-websites-for-agents-cover.jpg" }
   },
 
@@ -783,7 +801,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["what-is-graph-engineering", "webnode-to-cloudflare-pages", "copied-mechanism-is-no-mechanism", "what-are-subagents"]
+    related: ["what-is-graph-engineering", "webnode-to-cloudflare-pages", "copied-mechanism-is-no-mechanism", "what-are-subagents", "one-sentence-ai-website-workflow"]
   },
 
   {
@@ -1192,7 +1210,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["after-ai-says-remembered", "long-document-review-layers", "mobile-to-desktop-publish-loop", "ai-said-it-watched-the-video", "cross-ai-review-both-wrong", "webmcp-day-one", "how-to-verify-ai-rule-changes", "let-ai-review-itself", "ai-rule-file-slimming", "fixed-test-set-for-ai", "reevaluate-models-same-test"]
+    related: ["after-ai-says-remembered", "long-document-review-layers", "mobile-to-desktop-publish-loop", "ai-said-it-watched-the-video", "cross-ai-review-both-wrong", "webmcp-day-one", "how-to-verify-ai-rule-changes", "let-ai-review-itself", "ai-rule-file-slimming", "fixed-test-set-for-ai", "reevaluate-models-same-test", "one-sentence-ai-website-workflow"]
   },
 
   {
@@ -1985,7 +2003,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["docs-as-system-design-agent", "what-is-loop-engineering", "caught-ai-slacking-into-rules"]
+    related: ["docs-as-system-design-agent", "what-is-loop-engineering", "caught-ai-slacking-into-rules", "one-sentence-ai-website-workflow"]
   },
 
   {
@@ -2885,7 +2903,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["semantic-rules-before-prompt-templates", "ai-data-organization-usable-system", "manage-ai-with-management-knowledge", "chatgpt-work-skills-web-version", "old-prompts-intent-first-loop-engineering", "ai-employee-four-levels", "use-more-ai-not-enough", "ai-adoption-start-with-one-workflow"]
+    related: ["semantic-rules-before-prompt-templates", "ai-data-organization-usable-system", "manage-ai-with-management-knowledge", "chatgpt-work-skills-web-version", "old-prompts-intent-first-loop-engineering", "ai-employee-four-levels", "use-more-ai-not-enough", "ai-adoption-start-with-one-workflow", "one-sentence-ai-website-workflow"]
   },
 
   {
