@@ -109,15 +109,10 @@ window.COURSES = [
     venue_label: "線上",
     host: "江江教練",
     tags: ["4O", "SEO", "AIO", "GEO", "AXO", "WebMCP", "部署平台"],
-    summary: "網站用 AI 做出來只是開始。這場講三件事：GitHub Pages、Vercel、Cloudflare 三家部署平台各自適合什麼情況、雷點在哪；SEO 之後還有 AIO（讓 AI 把你當答案）、GEO（讓 AI 引用你的觀點）、AXO（讓 AI 能代表你接待訪客）；以及 WebMCP 怎麼讓 AI 直接操作你的網站。從一個給人看的網站，升級成人跟 AI 都好看、好找、好用的資訊工作站。不會寫程式也可以聽。",
-    detail_url: null,
+    summary: "網站用 AI 做出來只是開始。這場先比較 GitHub Pages、Vercel、Cloudflare Pages 的適用情境，再說明 SEO、AIO、GEO、AXO 與 WebMCP。包含旅行規劃時 AI 怎麼從官網找房型、價格與活動，AI 怎麼引用江江教練的網站觀點，以及 Skill、Agent、MCP、Google Slides API 如何一起完成簡報。",
+    detail_url: "courses/2026-09-26-ai-site-and-deploy/",
     materials: [
-      { label: "完整講座簡報｜怎麼用 AI 做網站＋部署平台選哪個？ ↗", url: "https://jiangyude.com/courses/2026-09-26-ai-site-and-deploy/" },
-      { label: "文章｜GitHub Pages、Vercel、Cloudflare 三家比較 ↗", url: "https://jiangyude.com/articles/github-vercel-cloudflare-compare/" },
-      { label: "文章｜網頁做好要放哪個託管平台？決策樹 ↗", url: "https://jiangyude.com/articles/hosting-platform-decision-tree/" },
-      { label: "文章｜Cloudflare 免費版到底能做什麼？ ↗", url: "https://jiangyude.com/articles/cloudflare-service-map/" },
-      { label: "文章｜網站內容防護的六個等級 ↗", url: "https://jiangyude.com/articles/who-can-see-your-site/" },
-      { label: "文章｜AI 開始會用網站了，我當天把官網接上（WebMCP） ↗", url: "https://jiangyude.com/articles/webmcp-day-one/" }
+      { label: "完整講座簡報｜怎麼用 AI 做網站＋部署平台選哪個？ ↗", url: "https://jiangyude.com/courses/2026-09-26-ai-site-and-deploy/" }
     ],
     registration: {
       status: "open",
