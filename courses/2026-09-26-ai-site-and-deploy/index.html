@@ -18,13 +18,13 @@
     body { margin: 0; color: #18232b; background: #f5efe6; font-family: -apple-system, BlinkMacSystemFont, "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif; }
     a { color: inherit; }
     .slide { min-height: 100vh; padding: clamp(44px, 6vw, 88px) clamp(28px, 7vw, 110px); display: flex; align-items: center; justify-content: center; scroll-snap-align: start; position: relative; overflow: hidden; }
-    .slide:nth-child(4n+1) { background: #f7f1e8; }
-    .slide:nth-child(4n+2) { background: #dfe7e8; }
-    .slide:nth-child(4n+3) { background: #ead8c8; }
-    .slide:nth-child(4n) { background: #405766; color: #fffaf2; }
+    .slide:nth-of-type(4n) { background: #f7f1e8; }
+    .slide:nth-of-type(4n+1) { background: #dfe7e8; }
+    .slide:nth-of-type(4n+2) { background: #ead8c8; }
+    .slide:nth-of-type(4n+3) { background: #405766; color: #fffaf2; }
     .wrap { width: min(1220px, 100%); position: relative; z-index: 2; padding-bottom: 54px; }
     .eyebrow { font-size: clamp(1.1rem, 1.8vw, 1.55rem); letter-spacing: .11em; font-weight: 800; color: #8b5e3c; margin-bottom: 18px; }
-    .slide:nth-child(4n) .eyebrow { color: #f2c89e; }
+    .slide:nth-of-type(4n+3) .eyebrow { color: #f2c89e; }
     h1, h2, h3, p { margin-top: 0; }
     h1 { font-size: clamp(3.2rem, 7.7vw, 7.2rem); line-height: .99; letter-spacing: -.045em; margin-bottom: 34px; }
     h2 { font-size: clamp(2.6rem, 5.5vw, 5.2rem); line-height: 1.05; letter-spacing: -.04em; margin-bottom: 34px; }
@@ -33,16 +33,16 @@
     .body { font-size: clamp(1.2rem, 1.75vw, 1.6rem); line-height: 1.62; }
     .small { font-size: clamp(1.05rem, 1.35vw, 1.25rem); line-height: 1.55; opacity: .86; }
     .accent { color: #8b5e3c; }
-    .slide:nth-child(4n) .accent { color: #ffd4a7; }
+    .slide:nth-of-type(4n+3) .accent { color: #ffd4a7; }
     mark { background: #f1c596; color: #2b211a; padding: .05em .18em; border-radius: .15em; }
     .grid2, .grid3, .grid4 { display: grid; gap: 22px; }
     .grid2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .grid3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
     .grid4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
     .card { background: rgba(255,255,255,.72); border: 1px solid rgba(64,87,102,.18); padding: clamp(22px, 3vw, 38px); border-radius: 24px; box-shadow: 0 16px 46px rgba(38,52,60,.09); }
-    .slide:nth-child(4n) .card { background: rgba(255,255,255,.10); border-color: rgba(255,255,255,.18); box-shadow: none; }
+    .slide:nth-of-type(4n+3) .card { background: rgba(255,255,255,.10); border-color: rgba(255,255,255,.18); box-shadow: none; }
     .num { font-size: clamp(2.6rem, 5vw, 5rem); font-weight: 900; line-height: 1; color: #8b5e3c; margin-bottom: 14px; }
-    .slide:nth-child(4n) .num { color: #ffd4a7; }
+    .slide:nth-of-type(4n+3) .num { color: #ffd4a7; }
     .tag { display: inline-flex; align-items: center; gap: 8px; border: 1px solid currentColor; border-radius: 999px; padding: 8px 15px; margin: 0 7px 8px 0; font-size: 1.05rem; font-weight: 750; }
     .flow { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; align-items: stretch; margin-top: 36px; }
     .flow > div { border-radius: 22px; padding: 25px 20px; background: rgba(255,255,255,.72); border: 1px solid rgba(64,87,102,.18); min-height: 150px; }
@@ -58,12 +58,14 @@
     .bigword { font-size: clamp(4rem, 10vw, 9rem); font-weight: 950; line-height: .88; letter-spacing: -.06em; }
     .source { display: inline-block; text-decoration: none; background: #fffaf2; color: #405766; border: 2px solid #7f94a3; border-radius: 16px; padding: 14px 18px; margin: 7px 8px 0 0; font-size: clamp(1rem, 1.25vw, 1.18rem); font-weight: 750; }
     .source:hover { background: #e8eef0; }
-    .slide:nth-child(4n) .source { background: rgba(255,255,255,.09); color: #fffaf2; border-color: rgba(255,255,255,.35); }
+    .slide:nth-of-type(4n+3) .source { background: rgba(255,255,255,.09); color: #fffaf2; border-color: rgba(255,255,255,.35); }
+    .tablewrap { overflow-x: auto; -webkit-overflow-scrolling: touch; max-width: 100%; }
+    .tablewrap table { min-width: 520px; }
     .case { border-left: 7px solid #8b5e3c; padding-left: 22px; }
     .prompt { position: absolute; left: clamp(28px,7vw,110px); bottom: 22px; z-index: 6; max-width: min(820px, calc(100% - 150px)); border: 1px solid rgba(64,87,102,.30); border-radius: 14px; background: rgba(255,250,242,.94); color: #18232b; box-shadow: 0 10px 30px rgba(38,52,60,.12); }
     .prompt summary { cursor: pointer; padding: 10px 16px; font-size: 1rem; font-weight: 800; color: #405766; }
     .prompt p { margin: 0; padding: 0 16px 14px; font-size: 1.05rem; line-height: 1.5; }
-    .slide:nth-child(4n) .prompt { background: rgba(255,250,242,.96); color: #18232b; }
+    .slide:nth-of-type(4n+3) .prompt { background: rgba(255,250,242,.96); color: #18232b; }
     .page { position: absolute; right: 30px; bottom: 22px; font-size: 1rem; opacity: .6; font-weight: 700; }
     .progress { position: fixed; top: 0; left: 0; height: 6px; width: 0; background: #b67442; z-index: 30; transition: width .15s ease; }
     .case-fold { margin-top: 24px; border: 2px solid rgba(64,87,102,.28); border-radius: 18px; background: rgba(255,255,255,.72); padding: 0 20px; }
@@ -81,16 +83,58 @@
       .grid3, .grid4, .flow { grid-template-columns: 1fr; }
       .slide { min-height: auto; padding-top: 78px; padding-bottom: 78px; }
       html { scroll-snap-type: none; }
+      .slide { flex-direction: column; align-items: stretch; }
+      .wrap { width: 100%; }
       .prompt { position: static; max-width: 100%; margin-top: 24px; }
+      .class-notes table { font-size: .92rem; } .class-notes th, .class-notes td { padding: 8px 6px; }
       .wrap { padding-bottom: 0; }
     }
     @media print {
       .slide { min-height: 100vh; page-break-after: always; }
       .progress, .prompt { display: none !important; }
     }
+    /* 官網共用導航列（課後版補，webpage-builder 15-mode-slide-deck 第 6 條） */
+    html { scroll-padding-top: 64px; }
+    nav.top{position:sticky;top:0;background:rgba(254,252,248,.94);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid #e6dccb;z-index:100}
+    nav.top .container{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:24px;padding:12px 32px}
+    .nav-brand-img{justify-self:start;display:flex;align-items:center;text-decoration:none}
+    .nav-brand-img img{height:38px;width:auto;display:block}
+    nav.top ul.nav-menu{justify-self:end;display:flex;gap:22px;list-style:none;margin:0;padding:0;font-size:.95rem;white-space:nowrap}
+    nav.top ul.nav-menu a{color:#3a342d;text-decoration:none;font-weight:500}
+    nav.top ul.nav-menu a:hover,nav.top ul.nav-menu a.active{color:#1a1612;font-weight:700}
+    .nav-toggle{display:none;background:none;border:none;padding:6px;cursor:pointer;width:36px;height:36px;position:relative}
+    .nav-toggle span{display:block;position:absolute;left:8px;right:8px;height:2px;background:#1a1612;border-radius:2px;transition:transform .25s,opacity .25s,top .25s}
+    .nav-toggle span:nth-child(1){top:11px}.nav-toggle span:nth-child(2){top:17px}.nav-toggle span:nth-child(3){top:23px}
+    .nav-toggle.open span:nth-child(1){top:17px;transform:rotate(45deg)}.nav-toggle.open span:nth-child(2){opacity:0}.nav-toggle.open span:nth-child(3){top:17px;transform:rotate(-45deg)}
+    @media(max-width:860px){nav.top .container{grid-template-columns:auto 1fr auto;padding:10px 16px;gap:12px}.nav-brand-img img{height:30px}.nav-toggle{display:block;justify-self:end}nav.top ul.nav-menu{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(254,252,248,.98);border-bottom:1px solid #e6dccb;flex-direction:column;gap:0;padding:8px 0}nav.top ul.nav-menu.open{display:flex}nav.top ul.nav-menu a{display:block;padding:12px 20px}}
+    /* 課後版：課堂細節折疊 */
+    .class-notes { margin-top: 26px; border: 2px dashed rgba(139,94,60,.45); border-radius: 18px; background: rgba(255,250,242,.9); color: #18232b; padding: 0 22px; }
+    .class-notes summary { cursor: pointer; padding: 15px 0; font-size: clamp(1.02rem,1.45vw,1.3rem); font-weight: 850; color: #8b5e3c; }
+    .class-notes > div { padding-bottom: 18px; font-size: clamp(1rem,1.3vw,1.2rem); line-height: 1.7; }
+    .class-notes p { margin: 0 0 12px; }
+    .class-notes ul, .class-notes ol { font-size: inherit; line-height: 1.65; margin: 0 0 12px; }
+    .class-notes blockquote { margin: 0 0 12px; padding: 10px 16px; border-left: 5px solid #8b5e3c; background: rgba(139,94,60,.08); border-radius: 8px; }
+    .slide:nth-of-type(4n+3) .class-notes summary { color: #8b5e3c; }
+    .prompt-box { white-space: pre-wrap; overflow-wrap: anywhere; font-size: clamp(1rem,1.3vw,1.18rem); line-height: 1.75; background: #fffaf2; color: #18232b; border: 1px solid rgba(64,87,102,.25); border-radius: 16px; padding: 18px 20px; margin: 0; font-family: inherit; }
+    .badge-raw { display:inline-block; background:#8b5e3c; color:#fffaf2; font-weight:850; border-radius:999px; padding:8px 16px; font-size:clamp(1rem,1.4vw,1.25rem); margin-bottom:16px; }
+    @media print { nav.top, .class-notes { display: none !important; } }
   </style>
 </head>
 <body>
+  <nav class="top">
+    <div class="container">
+      <a class="nav-brand-img" href="https://jiangyude.com/"><img src="https://jiangyude.com/images/footer-signature.png" alt="江江教練 | 江昱德"></a>
+      <button class="nav-toggle" aria-label="選單"><span></span><span></span><span></span></button>
+      <ul class="nav-menu">
+        <li><a href="../../index.html">首頁</a></li>
+        <li><a href="../../knowledge-architecture.html">知識架構</a></li>
+        <li><a href="../../courses.html" class="active">課程</a></li>
+        <li><a href="../../articles.html">深度文章</a></li>
+        <li><a href="../../skills.html">技能包下載</a></li>
+        <li><a href="../../offers.html">服務方案</a></li>
+      </ul>
+    </div>
+  </nav>
   <div class="progress" id="progress"></div>
 
   <section class="slide" id="s1">
@@ -99,6 +143,11 @@
       <h1>怎麼用 AI 做網站<br><span class="accent">＋部署平台選哪個？</span></h1>
       <p class="lead">從做出一個網頁，到讓人跟 AI 都好找、好讀、好用。</p>
       <p class="small footerline">江江教練｜江昱德 Knowledge</p>
+      <details class="class-notes"><summary>課堂細節：開場調查與這堂課真正的重點</summary><div>
+        <p>開場先做兩個調查：有沒有做過網頁（1 沒做過、2 做過、3 做過且成功部署），以及第幾次來上課。多數是 1 和 2，少數有 3；大部分是老朋友，也有新朋友。</p>
+        <blockquote>「我的副標是怎麼做網站、怎麼部署平台，但這些都不是重點。我心中的重點是，怎樣做到讓人跟 AI 都好找、好用、好讀。」</blockquote>
+        <p>如果上過江江的知識庫課，會發現這是同一個概念：知識庫也是要把資料整理到人跟 AI 都好找、好讀、好應用。</p>
+      </div></details>
     </div>
     <details class="prompt"><summary>課堂提問</summary><p>有沒有人已經叫 AI 做過網頁，但最後只在自己的電腦上看得到？</p></details>
     <div class="page">01</div>
@@ -115,6 +164,11 @@
         <div class="card"><h3>一起工作</h3><p class="body">人、工作夥伴、自己的 AI 與別人的 AI，共用資訊與工作狀態。</p></div>
       </div>
       <p class="lead footerline"><mark>網站也可以是操作站、工作站，是人與 AI 共同理解資訊、交換資訊、完成工作的介面。</mark></p>
+      <details class="class-notes"><summary>課堂細節：我最早做網站，是要給對方的 AI 讀</summary><div>
+        <blockquote>「其實我最開始做網站、做網頁，不是要給別人看的。我做網站是要把我的本地知識庫線上化，然後給對方的 AI 讀的。這聽起來有點奇怪，但這真的是我最一開始的真實需求。」</blockquote>
+        <blockquote>「我以前是攝影師，開過影像公司。有一段時間發現有些資訊只用影片沒辦法呈現，要寫程式的時候是去拜託工程師，那時候是換工：我幫他拍產品宣傳片，他幫我把想法寫成 APP。拍片很貴，寫 APP 也很貴。但是現在有 AI，製作網站是非常快的事情。」</blockquote>
+        <p>這堂課先講定義，不講操作細節。江江的看法是：AI 工具由 AI 去操作，人負責把需求與概念講清楚。</p>
+      </div></details>
     </div>
     <details class="prompt"><summary>課堂提問</summary><p>如果網站同時要給人看、給 AI 看，甚至給 AI 使用，它還需要多準備哪些資訊、工具與權限？</p></details>
     <div class="page">01B</div>
@@ -128,6 +182,13 @@
       <p class="body footerline">Cloudflare 2026 官方報告依其網路觀測資料指出，超過 50% 的網路流量為非人類流量。這裡包含一般機器人、搜尋爬蟲與 AI 爬蟲，不能全部算成 AI Agent。</p>
       <a class="source" href="https://jiangyude.com/articles/agent-web-turning-point/" target="_blank" rel="noopener">深度文章：網路上一半以上的訪問已經不是人了 ↗</a>
       <a class="source" href="https://blog.cloudflare.com/agentic-internet-bot-report/" target="_blank" rel="noopener">官方來源：Cloudflare 2026 Agentic Internet Report ↗</a>
+      <details class="class-notes"><summary>課堂細節：江江課堂上的說法與預測</summary><div>
+        <blockquote>「前陣子，2026 年 7 月份，Cloudflare 正式公告了一件事情。他說根據他們的觀測，2026 年 4 月 27 號是黃金交叉點，網路上的機器人，包含爬蟲、自動化程式、AI，總之非人類的訪問者，正式超越人類。」</blockquote>
+        <p>江江說自己原本預計這件事會在 2027 年發生，並預測之後兩年內機器人會比人類多 100 倍；他轉述發言人的預言是再過兩三年、多一千倍。（日期與倍數為課堂口述，官方數據請以上方報告連結為準。）</p>
+        <blockquote>「我們現在用的網路基本上是免費的。以前大的網路公司免費讓使用者用，買的是使用者的專注力，吸引使用者看廣告。這套模式運作了二三十年。但是 AI 機器人不會看廣告。」</blockquote>
+        <p>商業模式會怎麼變，江江說今天不談，因為他也不知道；但大家的共識是一定會有影響。這件事也是江江開始認真研究「網站怎麼給 AI 用」的起點。</p>
+        <p>課堂調查：有沒有聽過這個消息？江江說這是「很冷門，但是很重要的消息」。</p>
+      </div></details>
     </div>
     <details class="prompt"><summary>課堂提問</summary><p>非人類流量、搜尋爬蟲、AI 爬蟲與 AI Agent 是同一件事嗎？它們的範圍差在哪裡？</p></details>
     <div class="page">12</div>
@@ -163,6 +224,13 @@
         <div class="card"><h3>AXO</h3><p class="body">AI 怎麼理解網站的身份、內容、關係與邊界？</p></div>
       </div>
       <p class="small footerline">它們可以同時存在，也可以分別改善；沒有固定的第一步、第二步或成熟度順序。</p>
+      <details class="class-notes"><summary>課堂細節：四個 O 要不要全開，看網站給誰用</summary><div>
+        <div class="tablewrap"><table><thead><tr><th>網站類型</th><th>SEO</th><th>AIO</th><th>GEO</th><th>AXO</th></tr></thead><tbody>
+          <tr><td>給大眾看的網站</td><td>要</td><td>要</td><td>要</td><td>要</td></tr>
+          <tr><td>自己與團隊內部用的網站</td><td>不要</td><td>不要</td><td>不要</td><td>要（甚至加密碼保護）</td></tr>
+        </tbody></table></div>
+        <blockquote>「像我有些網站是我自己跟團隊內部使用的，所以我反而會跟 AI 說不要給別人用，不要有 SEO、AIO 跟 GEO，甚至要密碼保護，但是要開放 AXO，讓我跟我的 AI、我的夥伴們、跟他們的 AI 們，都可以快速使用。」</blockquote>
+      </div></details>
     </div>
     <details class="prompt"><summary>課堂提問</summary><p>同一個網站可以同時改善 SEO、AIO、GEO 與 AXO 嗎？其中一定要先完成哪一個嗎？</p></details>
     <div class="page">13</div>
@@ -178,6 +246,10 @@
         <div class="card"><h3>基本工作</h3><p class="body">robots.txt、sitemap、清楚標題與描述、穩定網址、Search Console、原創內容。</p></div>
       </div>
       <p class="small footerline">SEO 處理搜尋引擎入口。頁面抓不到，AI 也可能少一條找到你的路。</p>
+      <details class="class-notes"><summary>課堂細節：連 Google 大家也不去點了</summary><div>
+        <blockquote>「以前要找 AI 老師，我會向 Google 搜尋，所以我必須讓網站被 Google 找得到。但是現在更多人是直接問 ChatGPT：幫我找 AI 老師；我要出去玩，你幫我規劃。不要說廣告了，連 Google 大家也不去點了。」</blockquote>
+        <p>這不代表 AI 取代 Google。Google 還是要做；在這之上，讓 AI 也找得到同樣重要。世界上最大的搜尋引擎是 Google，所以 Google 找得到，基本上就找得到了。</p>
+      </div></details>
     </div>
     <details class="prompt"><summary>課堂提問</summary><p>有人搜尋「AI 做網站課程」時，你的課程頁有沒有機會出現在搜尋結果？</p></details>
     <div class="page">14</div>
@@ -193,6 +265,10 @@
         <div class="card"><h3>例如：請 AI 規劃旅行</h3><p class="body">AI 從店家與旅宿官網找到正確房型、價格、活動內容與適用日期，再整理成回答。</p></div>
       </div>
       <p class="small footerline">官網資料寫得越明確、完整、可核對，AI 越有機會回答正確。價格與活動會變動，也要標示更新日期。</p>
+      <details class="class-notes"><summary>課堂細節：去北海道吃素，AI 要找得到那間餐廳</summary><div>
+        <blockquote>「比如說我下個月想去北海道，我說我吃素，AI 是不是就要從餐廳網站裡面，正確找到這間餐廳有蔬食，而且在我的路線上，地點要對、內容要對，它才會推薦我。」</blockquote>
+        <p>AIO 就是官網結構清楚，AI 查得到、讀得懂，並能快速回答。江江自己的例子：有人問「江江教練什麼時候有免費課程？陪跑多少錢？」AI 找得到，就是 AIO。</p>
+      </div></details>
     </div>
     <details class="prompt"><summary>課堂提問</summary><p>如果有人請 AI 規劃到你的城市旅行，AI 能不能從店家官網找到正確房型、價格、活動與日期？</p></details>
     <div class="page">15</div>
@@ -208,6 +284,11 @@
         <div class="card"><h3>例如：AI 時代的網站長什麼樣？</h3><p class="body">AI 回答時明確說「參考江江教練的觀點」，整理江江對網站的主張，並附上原文連結。</p></div>
       </div>
       <p class="small footerline">GEO 增加被採用的機會，不保證被引用。各家 AI 的搜尋來源與選擇方式也不完全相同。</p>
+      <details class="class-notes"><summary>課堂細節：真的有人是 AI 推薦來的</summary><div>
+        <blockquote>「我們知識管理的社群，入會都會問是怎麼來的。曾經有幾個人說，他們問 ChatGPT 怎麼學 AI，ChatGPT 推薦江江教練的 YouTube 影片跟社群，所以他們就點進來了。」</blockquote>
+        <p>江江說 GEO 比較有難度：內容要寫得夠好、夠清楚，AI 找得到，有自己獨特的觀點，還要在社群有曝光與引用，才會增加被採用的機會，但不保證被引用。</p>
+        <p>AIO 和 GEO 的差別：問「江江的陪跑多少錢」AI 找得到，是 AIO；問「誰在教 AI 知識架構、做企業陪跑」AI 引用江江，是 GEO。</p>
+      </div></details>
     </div>
     <details class="prompt"><summary>課堂提問</summary><p>有人問 AI「怎麼做網站」或「AI 時代的網站長什麼樣」時，它會不會引用你的名字、觀點與原文連結？</p></details>
     <div class="page">16</div>
@@ -224,27 +305,77 @@
         <div class="card"><h3>網站自己的 AI</h3><p class="body">Mika 這類站內 AI，也能受益於清楚的內容結構、知識來源與回答邊界。</p></div>
       </div>
       <p class="small footerline">AXO 解決「看得懂」；能不能操作，要看 API、MCP、WebMCP 或 Computer Use。</p>
+      <details class="class-notes"><summary>課堂細節：Mika 在不同頁面有不同角色</summary><div>
+        <blockquote>「AXO 目前是比較新的概念，還沒有定論，大家去查可能會聽到不一樣的版本。總之就是讓 AI 可以更好地使用。」</blockquote>
+        <p>現場示範：在官網首頁與一般頁面，Mika 是官方客服；打開工作坊的課程簡報頁再開 AI 助理，Mika 會變成這堂課的 AI 助教，可以直接問「老師剛剛說的個人風格提示詞是什麼」，懶得複製的人也能直接要簡化版提示詞。</p>
+      </div></details>
     </div>
     <details class="prompt"><summary>課堂提問</summary><p>AI 能不能辨認江江、課程、文章與 Mika，並說清楚它們彼此的關係與回答邊界？</p></details>
     <div class="page">17</div>
+  </section>
+
+  <section class="slide" id="s17b">
+    <div class="wrap">
+      <div class="eyebrow">AXO · 課堂現場示範</div>
+      <h2>網址丟給別人的 AI，<br>也會出現 Mika</h2>
+      <div class="grid3">
+        <div class="card"><h3>官網首頁、一般頁面</h3><p class="body">Mika 是官方客服，可以問課程時間、活動資訊。</p></div>
+        <div class="card"><h3>課程簡報頁</h3><p class="body">Mika 變成這堂課的 AI 助教，幫你找老師剛剛說的提示詞。</p></div>
+        <div class="card"><h3>網址丟給別人的 AI</h3><p class="body">網頁指令裡寫了 Mika 新手引導，喊 Mika 就進入引導模式。</p></div>
+      </div>
+      <p class="lead footerline">Mika 可以理解成一個提示詞，或一種情境的觸發詞。</p>
+      <details class="class-notes"><summary>課堂細節：為什麼要把 Mika 寫進網頁</summary><div>
+        <blockquote>「我現在文章已經寫太多了，大概 160、161 篇，我自己都忘記寫在哪一篇。所以我會教大家把我網站的文章或首頁內容直接複製給你家的 AI 去查。但我發現即便這樣，還是有人不會去查、不曉得怎麼問問題，所以我直接把 Mika 助教寫到網頁的指令裡面。」</blockquote>
+        <p>現場示範把江江的網址丟給 Gemini，Gemini 回覆裡出現了 Mika。為什麼選 Gemini？江江說自己的 ChatGPT 已經太了解他，丟進去會失真，Gemini 比較沒在用。</p>
+        <p>不想要新手引導也可以：直接請 AI 分析「江江教練這個網站到底是怎麼寫的」。不管是自己的 AI 客服、AI 助教，還是別人的 AI 來讀網站，都知道這個網站怎麼用，這就是 AXO。</p>
+      </div></details>
+    </div>
+    <details class="prompt"><summary>課堂提問</summary><p>如果別人把你的網址丟給他的 AI，你希望那個 AI 第一句話先幫他做什麼？</p></details>
+    <div class="page">17B</div>
   </section>
 
   <section class="slide" id="s18">
     <div class="wrap">
       <div class="eyebrow">四個概念放在同一個頁面檢查</div>
       <h2>同一個課程頁，4O 各做一件事</h2>
-      <table>
+      <div class="tablewrap"><table>
         <tbody>
           <tr><td><b>SEO</b></td><td>搜尋「AI 做網站課程」時，有機會看到這一頁。</td></tr>
           <tr><td><b>AIO</b></td><td>AI 能從正式課程頁正確回答日期、對象、費用與限制。</td></tr>
           <tr><td><b>GEO</b></td><td>AI 討論怎麼學做網站時，引用江江的教學觀點。</td></tr>
           <tr><td><b>AXO</b></td><td>AI 能理解這是江江的正式課程頁、內容與其他文章的關係，以及哪些資訊不能自行推論。</td></tr>
         </tbody>
-      </table>
+      </table></div>
       <p class="lead footerline">同一頁可以同時從四個角度檢查，但四個概念沒有固定先後。</p>
+      <details class="class-notes"><summary>課堂細節：我把 4O 寫成技能包</summary><div>
+        <blockquote>「我自己就直接把這四個 O 寫成技能包。我每次網站做完，或做新的網站，或幫客戶做網站的時候，我就會說：你要幫我跑 4O 健檢，讓這個網站同時符合這四個條件。」</blockquote>
+        <p>江江自己為什麼四個都要：希望網站被 AI 推薦，所以 GEO、AIO 一定要，基本的 Google SEO 也要；又有工作坊與企業陪跑，希望把網站 160 幾篇文章丟給 AI 也能幫忙處理複雜問題，所以 AXO 也很重要。</p>
+        <p>課堂調查：講完四個 O 懂了嗎？（3 懂、2 不太確定、1 完全不懂）結果多數是 2 到 3。江江說細節不用擔心，操作交給 AI，簡報課後會整理給大家。</p>
+      </div></details>
     </div>
     <details class="prompt"><summary>課堂提問</summary><p>把表格裡的「課程頁」換成你的網站後，SEO、AIO、GEO、AXO 分別會檢查什麼？</p></details>
     <div class="page">18</div>
+  </section>
+
+  <section class="slide" id="s18b">
+    <div class="wrap">
+      <div class="eyebrow">讀網站之外 · 課堂現場示範</div>
+      <h2>讓 AI 操作網頁，<br>有兩種方式</h2>
+      <div class="compare">
+        <div class="card"><h3>Agent 接管螢幕</h3><p class="body">截一張圖、看畫面、移動自己的滑鼠去點。現在就能用，但比較慢。</p></div>
+        <div class="card"><h3>WebMCP</h3><p class="body">網站在底層直接把工具開給 AI，AI 不用看畫面就能操作，更高效。</p></div>
+      </div>
+      <p class="lead footerline"><mark>讓 AI 操作電腦，就像把你的筆電借給一個 AI 員工：先講清楚什麼可以動、什麼不能動。</mark></p>
+      <details class="class-notes"><summary>課堂細節：現場示範與江江的實際用法</summary><div>
+        <p>SEO、AIO、GEO、AXO 基本上都是讓 AI「讀」網站；要讓 AI 改寫或操作網站，是另一件事。</p>
+        <p>現場示範：江江自己做了一個簡易圖片編輯網站（他說是半成品，因為偶爾改個圖不想開 Photoshop）。在 ChatGPT 設定裡，從頭像進設定、往下滑找到 computer use（操作電腦）並開啟相關權限與瀏覽器，再請 AI 把一張圖加上標註、傳到這個網站操作。畫面上可以看到 AI 自己的滑鼠在點。</p>
+        <blockquote>「因為他真的可以操作你的電腦，他可以刪你的檔案。現在 AI 基本上帳號授權跟信用卡都是紅線，一定要真人授權才會操作，但你還是要稍微注意一下它的權限。」</blockquote>
+        <blockquote>「大家可以看到這個速度是有點慢的，他截一張圖，要偵測現在做什麼、加什麼，這是很低效的方法。WebMCP 是網站底層直接相通，不用監看你的螢幕拍一張截一張，直接從底層工具去操作。如果功能跟服務原本就願意讓 AI 直接接入，就會更快更方便。」</blockquote>
+        <blockquote>「我現在 99% 的網頁版 AI 工具，都是叫 Claude Code 去操作。比如最近在試語音合成，介面好複雜，我就叫它全部試完、給我分析報表，我覺得夠成熟了，才真的自己去試。網頁後台的設定，我也直接叫 AI 處理。」</blockquote>
+      </div></details>
+    </div>
+    <details class="prompt"><summary>課堂提問</summary><p>你會願意把哪些網頁後台交給 AI 操作？哪些一定要自己按最後一下？</p></details>
+    <div class="page">18B</div>
   </section>
 
   <section class="slide" id="s3">
@@ -300,6 +431,11 @@
         <div class="card"><div class="num">代管</div><h3>託管平台</h3><p class="body">照平台規則，把網站放上去就有網址。</p></div>
       </div>
       <p class="small footerline">把網站放到能公開連線的主機，就是部署。今天比較 GitHub Pages、Vercel、Cloudflare Pages 三種託管方案。</p>
+      <details class="class-notes"><summary>課堂細節：手機拍的影片，可以放哪三個地方</summary><div>
+        <blockquote>「我用手機拍了一部影片，要怎麼給別人看？第一個，放我的手機裡，拿手機給別人看，但手機睡眠、關機、斷網，人家就看不到了。第二種，有點像放到 Google 雲端硬碟，權限很多，但要自己設計。第三個，放到 YouTube、FB 這種專門託管影片的平台，一傳上去立刻就有網址。」</blockquote>
+        <p>網站也一樣：自己家裡的電腦（特殊用途才用）、自己租雲端主機（自由度高，適合工程師）、網頁託管平台（像 YouTube 一樣，不用寫程式，傳上去就能跑）。</p>
+        <blockquote>「技術上都不用煩惱。你把我講的話、甚至我的簡報丟給你的 AI，它就可以照這個教學幫你部署。技術不是問題，問題是到底怎麼抉擇，因為選錯會有點麻煩，我現在就有點深受這個問題。」</blockquote>
+      </div></details>
     </div>
     <details class="prompt"><summary>課堂提問</summary><p>網站只存在自己的電腦裡，和放進一間全天營業、任何人都能抵達的百貨公司，有什麼差別？</p></details>
     <div class="page">04</div>
@@ -314,6 +450,16 @@
         <div class="card"><h3>後端像廚房</h3><p class="body">檢查密碼、記錄表單、存照片、呼叫 AI。訪客看不到，但網站要執行。</p></div>
       </div>
       <p class="lead" style="margin-top:32px;"><mark>只有展示，選擇很多；需要登入、資料與程式，平台能力就會拉開。</mark></p>
+      <details class="class-notes"><summary>課堂細節：動態網站：把 LINE 群做成專案網站</summary><div>
+        <p>江江現場展示正在開發的 LINE 群專案網站：</p>
+        <ul>
+          <li>公司報帳群：大家把發票丟上去，自動抓到網站、分析內容、做圖表，讓會計好報帳。</li>
+          <li>農友：手機拍一拍，自動商品攝影、打卡，生產履歷自動做好（正在做）。</li>
+          <li>一兩百人的大群組：大家在 LINE 丟活動資訊，自動做出活動看板；照片自動存檔、備份到 Google 雲端硬碟。</li>
+        </ul>
+        <blockquote>「甚至設計好之後可以免費喔。我請 AI 把機制設定好之後，它持續跑是不用 AI 費用的，是跑程式自動化的，在 Cloudflare 上面免費版就可以跑了。」</blockquote>
+        <blockquote>「以上都是講美好的部分，實際上操作的時候還是會有非常多的坑：管理、頻率、容量、順不順、會不會認錯人、會不會存錯檔。我最近最認真研究的就是怎樣去省錢，因為有些機制沒有設定好，給大家用很容易就額度爆炸了。」</blockquote>
+      </div></details>
     </div>
     <details class="prompt"><summary>課堂提問</summary><p>你的網站只需要展示內容，還是也需要登入、存資料、上傳檔案或處理付款？</p></details>
     <div class="page">05</div>
@@ -323,15 +469,18 @@
     <div class="wrap">
       <div class="eyebrow">三種常見網站託管平台</div>
       <h2>GitHub Pages、Vercel、Cloudflare Pages</h2>
-      <table>
+      <div class="tablewrap"><table>
         <thead><tr><th>正式名稱</th><th>平台類型</th><th>最適合扮演的角色</th></tr></thead>
         <tbody>
           <tr><td><b>GitHub Pages</b></td><td>GitHub 的靜態網站託管服務</td><td>公開作品、文件、Demo 與教材</td></tr>
           <tr><td><b>Vercel</b></td><td>前端應用部署與託管平台</td><td>現代前端、快速部署與版本預覽</td></tr>
           <tr><td><b>Cloudflare Pages</b></td><td>Cloudflare 的前端網站部署服務</td><td>公開正式站，再逐步接運算、資料與安全功能</td></tr>
         </tbody>
-      </table>
+      </table></div>
       <p class="small footerline">課堂與對外文件都直接使用產品正式名稱，不另外創造平台簡稱。</p>
+      <details class="class-notes"><summary>課堂細節：江江怎麼介紹這三家</summary><div>
+        <p>GitHub 簡單說是給工程師存程式碼的地方，GitHub Pages 也能放網頁，但網頁能力比較少，強項在程式碼管理。以前沒有 AI 的時代，大家都推薦 Vercel，因為它對新手比較友善，江江一開始也用它。Cloudflare 就是一開始講的那個很大的網路服務商。</p>
+      </div></details>
     </div>
     <details class="prompt"><summary>課堂提問</summary><p>GitHub 與 GitHub Pages 有什麼不同？哪一個負責保存版本，哪一個負責發布網站？</p></details>
     <div class="page">06</div>
@@ -362,6 +511,11 @@
       </div>
       <p class="small footerline">一句話：Vercel 強在部署、預覽與現代前端開發流程。</p>
       <a class="source" href="https://vercel.com/docs/plans/hobby" target="_blank" rel="noopener">官方文件：Vercel Hobby Plan ↗</a>
+      <details class="class-notes"><summary>課堂細節：為什麼後來不推薦從 Vercel 開始</summary><div>
+        <blockquote>「網站做都做了，為什麼不多加一點功能？反正多加一點功能也是 AI 去寫。所以忍不住想加很多功能的時候，這一款就沒有到很好用了。它主要是靜態為主，一些動態機制它也可以跑，但是它就要錢。」</blockquote>
+        <blockquote>「它的合約上是說，免費版禁止商用，包含營業、包含接案。我用自己的個人網站，上面寫我有講師、一小時講師費多少，這個就算商用了。」</blockquote>
+        <p>江江說功能越用越多要加錢時，往上一級是每月 20 美金，而且他覺得也沒有到很好用。</p>
+      </div></details>
     </div>
     <details class="prompt"><summary>課堂提問</summary><p>如果每次修改都能先得到一個獨立預覽網址，對團隊審稿與確認版本有什麼幫助？</p></details>
     <div class="page">08</div>
@@ -378,6 +532,11 @@
       <p class="small footerline">Pages 放網站；Workers 跑程式；D1 存表格資料；R2 存大檔案。Cloudflare 現行文件建議新專案也從 Workers 開始，既有 Pages 仍可繼續使用。</p>
       <a class="source" href="https://jiangyude.com/articles/cloudflare-service-map/" target="_blank" rel="noopener">江江深度文章：Cloudflare 免費版到底能做什麼？ ↗</a>
       <a class="source" href="https://developers.cloudflare.com/pages/get-started/" target="_blank" rel="noopener">官方文件：Cloudflare Pages getting started ↗</a>
+      <details class="class-notes"><summary>課堂細節：每月 5 美金，多非常多功能</summary><div>
+        <blockquote>「如果要加錢的話，不如一開始就上 Cloudflare。它免費版往上一級是月付 5 塊美金，但是 5 塊美金就多非常多的功能。」</blockquote>
+        <blockquote>「一開始我沒有選它，是因為它功能比較多，偏商業正式企業用，我看到後台覺得好複雜好恐怖，就不敢用。但到最近我發現，管它的操作介面是難還是簡單，我根本就沒在操作了，我全部都叫 AI 操作。」</blockquote>
+        <blockquote>「我最一開始是因為網頁版 ChatGPT 只支援 GitHub 跟 Vercel，所以用這兩款。但我現在舊的網站已經在上面了，要搬到 Cloudflare，我就有點難過。如果你有桌面版 ChatGPT 這類 Agent，就直接叫它連接 Cloudflare 就好了，就不用像我現在還要煩惱把舊的版本慢慢搬過來。」</blockquote>
+      </div></details>
     </div>
     <details class="prompt"><summary>課堂提問</summary><p>新的 Cloudflare 專案應該從 Pages 還是 Workers 開始？既有 Pages 專案又該怎麼處理？</p></details>
     <div class="page">09</div>
@@ -387,7 +546,7 @@
     <div class="wrap">
       <div class="eyebrow">三家放在一起</div>
       <h2>先看用途，再看規格</h2>
-      <table>
+      <div class="tablewrap"><table>
         <thead><tr><th>問題</th><th>GitHub Pages</th><th>Vercel</th><th>Cloudflare Pages</th></tr></thead>
         <tbody>
           <tr><td>公開靜態展示</td><td>適合</td><td>適合</td><td>適合</td></tr>
@@ -395,9 +554,13 @@
           <tr><td>商業正式站的免費起點</td><td>用途受條款限制</td><td>Hobby 限非商業</td><td>免費方案未見同類非商用限制</td></tr>
           <tr><td>運算、資料與檔案整合</td><td>外接</td><td>可接服務</td><td><b>Workers、D1、R2</b></td></tr>
         </tbody>
-      </table>
+      </table></div>
       <p class="small footerline">平台政策會變。幫客戶報價或正式上線前，要重新讀官方方案與條款。</p>
       <a class="source" href="https://jiangyude.com/articles/github-vercel-cloudflare-compare/" target="_blank" rel="noopener">江江深度文章：三家免費額度、商用限制與功能差異 ↗</a>
+      <details class="class-notes"><summary>課堂細節：額度會不會碰到上限？把網址丟給 AI 查</summary><div>
+        <p>江江整理了一份三家平台逐條查證的額度表（他說是 8 月 19 日寫的；他自己付了 Cloudflare 每月 5 美金方案，直接從付費方案把內容抓出來）。不確定自己的網站會不會碰到上限，可以把那篇文章的網址丟給自己的 AI 讀，請它對照你的用途判斷。</p>
+        <p>現場示範：請網頁版 ChatGPT 用 API 連接平台、幫忙部署，它回覆這個對話沒有對應的連接器。江江說明：ChatGPT 有外掛程式（連接器），例如可以接 email、Google 雲端硬碟、GitHub；有接上，AI 就能直接處理。「所以怎麼部署？直接叫 AI 部署就好了。」</p>
+      </div></details>
     </div>
     <details class="prompt"><summary>課堂提問</summary><p>公開文件、團隊預覽、商業公開站三種需求，分別會讓你優先評估哪一個平台？</p></details>
     <div class="page">10</div>
@@ -419,6 +582,50 @@
     <div class="page">11</div>
   </section>
 
+  <section class="slide" id="demo">
+    <div class="wrap">
+      <div class="eyebrow">課堂現場示範 · 講一段話就出的網頁</div>
+      <span class="badge-raw">一口氣完成，我沒有修改</span>
+      <h2>我只講了這段話，<br>AI 就做出一個網頁</h2>
+      <pre class="prompt-box">幫我生成一個網頁好不好？就是我現在在講怎麼樣用 AI 做網站，但是大家對於用 AI 做網站這件事情，似乎有點難想像，所以我要示範一次給大家看。所以我希望你做一個網站，這個網站上面……我記得之前我有跟你講過，用工作流的方式，你用動態的工作流程圖表，讓這個網站上面可以去跑。然後至於我網站生成的流程跟部署的流程，你直接去爬我的工作日誌，這個我都寫過了。
+
+所以我希望你生成一個網站，這個網站是要走我深度文章的風格，跟著我官網深度文章的版型。然後這個文章要呈現的就是：我們可以一句話講清楚我們的需求，然後 AI 就會去生成；至於風格跟版型，只要我們之前指定好、技能包寫好，AI 都可以直接套用。就比如我現在跟你說，我要的是我的知識官網的風格配色，但我裡面的版型要用動態流程圖的版型。
+
+然後第一步，就是像我這樣口述跟你講需求；第二步，就是我動用技能包把版型確定；第三步，就是這個網站的 4O 健檢要搭配；然後接下來就是部署。然後這個部署你直接幫我部署，先不要部署好了，先排隊，因為這是示範用的，但是預計就是要直接可以部署到我的知識官網的文章裡面。這樣子可以嗎？</pre>
+      <div class="grid2" style="margin-top:22px;">
+        <div class="card"><h3>成果：已經上線的網頁</h3><p class="body">AI 照知識官網深度文章的版型與配色，做出一張可以播放、暫停、拖曳的六步動態流程圖。</p><a class="source" href="https://jiangyude.com/articles/one-sentence-ai-website-workflow/" target="_blank" rel="noopener">打開成果：我只用一句話，AI 怎麼把網站做完？ ↗</a></div>
+        <div class="card"><h3>為什麼一段話就夠</h3><p class="body">風格、版型、4O 健檢與部署流程，之前都已經教過 AI、寫成技能包。這段話只要指出這次要做什麼。</p></div>
+      </div>
+      <details class="class-notes"><summary>課堂細節：這段示範是怎麼來的</summary><div>
+        <p>江江問大家需不需要示範 AI 生成網站，有人說需要，就現場用 ChatGPT 講了上面這段話。提示詞由課堂錄音轉寫，只修錯字與口語贅字，保留當下「先不要部署好了，先排隊」的改口。</p>
+        <blockquote>「我最近有去 OpenAI 的官方部落格，它的流程圖是動態的，大家超級清楚哪一步變到哪一步。我就把這個頁面直接給它看，說：記住，以後跟你說動態流程圖就是要長這樣。所以我剛剛就是希望它走這樣子的排版，但是要是我官網的配色。」</blockquote>
+        <p>成果網頁江江沒有動手修改。流程中依下一頁的第二句話，交給另一家 AI（Claude Code）檢查，它修掉一個鍵盤操作的小問題後直接部署；這一步也包含在指令的流程裡。</p>
+      </div></details>
+    </div>
+    <details class="prompt"><summary>課堂提問</summary><p>如果換成你的網站，你會怎麼用一段話講清楚：要做什麼、給誰看、用什麼風格、能不能公開？</p></details>
+    <div class="page">11B</div>
+  </section>
+
+  <section class="slide" id="demo-loop">
+    <div class="wrap">
+      <div class="eyebrow">課堂現場示範 · 再補一句話</div>
+      <h2>做完自己檢查，<br>再叫另一家 AI 審</h2>
+      <pre class="prompt-box">你這個走迴圈好了，你做完之後，你直接叫 Claude Code 去檢查。那檢查如果沒有問題、沒有什麼大的矛盾，你就直接部署好了，讓 Claude Code 去部署。</pre>
+      <div class="grid3" style="margin-top:22px;">
+        <div class="card"><h3>愛吃辣的店長</h3><p class="body">做的一定是辣的，自己評審也一定覺得辣的好吃。</p></div>
+        <div class="card"><h3>同一家 AI 自己審</h3><p class="body">它做出它認為最好的網頁，審的時候當然還是覺得最好。</p></div>
+        <div class="card"><h3>不愛吃辣的廚師也說好吃</h3><p class="body">換另一家 AI 來審也沒問題，才比較可信。</p></div>
+      </div>
+      <details class="class-notes"><summary>課堂細節：什麼是 Loop（迴圈工程）</summary><div>
+        <blockquote>「如果我們一般用 AI 去跑，是不是文章寫好說要再問我一下，風格寫好再給我確認一下。可是這些東西我明明都做過了，為什麼你還要再叫我這個人類檢查？你自己去做，做完之後自己去比對、自己去檢查，不用再問我了。這就是 loop。」</blockquote>
+        <blockquote>「如果今天是一個很重要的文章，我還會叫另外一家 AI 去檢查。因為模型檢查自己的東西會有偏誤。他並沒有偏袒自己，就是因為他愛吃辣，所以他做一定是做辣的，他評一定是辣的好吃。」</blockquote>
+        <p>第二句提示詞開頭「你這個走迴圈好了」依課堂錄音整理。如果 AI 是安裝在電腦裡的版本，叫另一家 AI 檢查這件事可以直接交給它做。</p>
+      </div></details>
+    </div>
+    <details class="prompt"><summary>課堂提問</summary><p>你現在請 AI 做事時，哪些檢查其實可以讓它自己做，不用每次回來問你？</p></details>
+    <div class="page">11C</div>
+  </section>
+
   <section class="slide" id="s19">
     <div class="wrap">
       <div class="eyebrow">實際案例 · 第二頁放講師介紹</div>
@@ -429,6 +636,9 @@
         <div class="card"><h3>Skill 記得我的工作方法</h3><p class="body">江江的課程型簡報，第二頁固定放講師介紹。這是我的經驗與 SOP。</p></div>
       </div>
       <p class="lead footerline"><mark>Skill 管我的做事方法，也說明為什麼第二頁要放講師介紹。</mark></p>
+      <details class="class-notes"><summary>課堂細節：這段課堂上時間不夠</summary><div>
+        <p>江江在課堂上說：API、MCP 這些更細的工具怎麼用，下次有緣分再講，這次會講不完。這幾頁（Skill、Agent、MCP、API 的翻譯鏈）先留給大家課後自己看，也可以整段丟給自己的 AI 請它解釋。</p>
+      </div></details>
     </div>
     <details class="prompt"><summary>課堂提問</summary><p>「第二頁固定放講師介紹」是 Google 的規則，還是江江自己的工作方法？</p></details>
     <div class="page">19</div>
@@ -541,7 +751,7 @@
     <div class="wrap">
       <div class="eyebrow">五個名詞 · 差異看這張</div>
       <h2>它們各自在解決什麼問題？</h2>
-      <table>
+      <div class="tablewrap"><table>
         <thead><tr><th>概念</th><th>主要對象</th><th>核心問題</th><th>網站要準備什麼</th></tr></thead>
         <tbody>
           <tr><td><b>SEO</b></td><td>搜尋引擎</td><td>搜尋時找不找得到？</td><td>清楚標題、頁面結構、內部連結、技術可讀性</td></tr>
@@ -550,7 +760,7 @@
           <tr><td><b>AXO</b></td><td>會規劃與執行的 AI Agent</td><td>Agent 看不看得懂網站與操作邊界？</td><td>結構化資料、狀態、規則、權限與回傳結果</td></tr>
           <tr><td><b>WebMCP</b></td><td>瀏覽器裡的 AI Agent</td><td>AI 要怎麼確定地呼叫網頁功能？</td><td>工具名稱、自然語言用途說明、結構化參數與執行函式</td></tr>
         </tbody>
-      </table>
+      </table></div>
       <p class="lead footerline"><mark>簡單操作可以直接串 API；當網頁要把多個功能交給瀏覽器裡的 AI 使用時，WebMCP 才更有價值。</mark></p>
       <p class="small">WebMCP 目前是 Web Machine Learning Community Group 的草案，尚未成為 W3C 標準。</p>
     </div>
@@ -613,6 +823,14 @@
         <div class="card"><div class="num">04</div><h3>操作有不同介面</h3><p class="body">API、MCP、WebMCP 與 Computer Use 各有用途。</p></div>
       </div>
       <a class="source" href="https://jiangyude.com/courses.html" target="_blank" rel="noopener" style="margin-top:28px;">回到江江教練的課程與教材 ↗</a>
+      <details class="class-notes"><summary>課堂細節：前面講的其實都是實作</summary><div>
+        <blockquote>「前面聽我講，好像都在講概念，其實這些都是實作，我是在示範實作。我怎麼跟 AI 講的，我就是怎麼跟大家講的。大家把我跟你們講的東西講給 AI 聽，AI 就會去做了。」</blockquote>
+        <p>有同學說自己的 AI 不知道 4O 怎麼辦？江江示範可以這樣講：</p>
+        <pre class="prompt-box">我剛剛上了江江老師的課，江江老師把網站怎麼做講得很好聽，我希望你可以參考他的做法。甚至你可以不只參考江江老師的做法，我相信這個世界上還有很多大神，比江江老師更厲害，或者是不一樣的厲害，請你也順便去查一查其他大神建議現在網站怎麼做比較好，然後根據我的需求，給我一個真正適合我的做法。</pre>
+        <blockquote>「我的簡報其實是滿滿的技能包。今天講完，網站從零到有的整套健檢技能包，基本上就差不多做出來了。今天給的是大框架，不同的人、環境、需求、受眾都會有不同的細節，這個就是大家自己去摸索。」</blockquote>
+        <p>課堂調查：前面講的是概念、一半一半還是實作；以及今天內容跟標題符不符合（1 到 5 分），江江說三四五都有，平均大約四分，標題還可以再優化。</p>
+        <p>工作坊資訊：江江跟台中的顧問公司星睦合開兩天工作坊，對象是中小企業、一人公司、品牌老闆，或五到十人的小團隊，教大家理解 AI Agent 的工作方式、打造 AI 助手；有統編且符合資格可以由星睦協助申請學費。簡報會放在知識管理 LINE 群，希望大家試用後給江江一點回饋。</p>
+      </div></details>
     </div>
     <details class="prompt"><summary>課堂提問</summary><p>遇到一個新需求時，你會先問它解決什麼問題、是否需要 AI 判斷，以及系統有沒有正式工具介面嗎？</p></details>
     <div class="page">26</div>
@@ -646,6 +864,7 @@
       if (['ArrowLeft','ArrowUp','PageUp'].includes(event.key)) { event.preventDefault(); go(-1); }
     });
     updateProgress();
+    (function(){var t=document.querySelector('.nav-toggle'),m=document.querySelector('.nav-menu');if(t&&m){t.addEventListener('click',function(){t.classList.toggle('open');m.classList.toggle('open');});m.addEventListener('click',function(e){if(e.target.tagName==='A'){t.classList.remove('open');m.classList.remove('open');}});}})();
   </script>
 </body>
 </html>
