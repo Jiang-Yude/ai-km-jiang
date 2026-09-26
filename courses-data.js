@@ -50,6 +50,30 @@
 
 window.COURSES = [
   {
+    id: "2026-10-15-xingmu-ai-agent-workshop",
+    date: "2026-10-15",
+    date_label: "兩梯：10/15–16、10/22–23（週四五）",
+    time: "10:00",
+    duration_min: null,
+    title: "中小企業 AI Agent 2 天實作工作坊（星睦管理顧問 × 江江教練）",
+    type_label: "付費實體工作坊",
+    image: "images/courses/2026-10-15-xingmu-ai-agent-workshop.jpg",
+    venue_mode: "physical",
+    venue_label: "台中實體",
+    host: "江昱德（江江教練）· 許家瑜（星睦管理顧問執行長）",
+    tags: ["AIAgent", "知識庫", "技能包", "中小企業", "SBIR", "工作坊"],
+    summary: "跟星睦管理顧問合開的兩天實體工作坊，台中市西區，每梯 20 席，上午 10:00 到下午 17:00。第一天用企業自己的真實資料建企業知識庫，做出 5 位 AI 員工技能包（資料整理員、知識庫管家、文稿助理、輔助決策顧問、AI 使用者測試員），課後技能包帶回公司繼續用；第二天上午排出公司下一批可以交給 AI 的工作，下午由星睦許家瑜執行長帶商業可行性、財務營運盤點、補助與 SBIR 方向。主要實作工具是 ChatGPT 桌面版（Codex）。以企業為單位報名，每家企業 2 個名額。政府補助：完訓者可申請，等於免學費；補助資格、適用方案與核定內容，以主管機關審查及實際條件為準。",
+    detail_url: "https://xingmu-ai-agent-workshop.shing-mu.chatgpt.site",
+    detail_label: "課程內容、方案與補助說明（星睦）↗",
+    materials: [],
+    registration: {
+      status: "open",
+      url: "https://tally.so/r/gD2aZM",
+      label: "立即報名 ↗",
+      note: "政府補助：完訓者可申請，等於免學費。方案以企業 2 人一組計價，NT$58,000 起（含稅）。補助資格、適用方案與核定內容，以主管機關審查及實際條件為準。由星睦管理顧問受理報名。"
+    }
+  },
+  {
     id: "2026-09-21-more-bots-than-people",
     date: "2026-09-21",
     time: "20:00",
