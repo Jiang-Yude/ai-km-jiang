@@ -1,0 +1,663 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="江江教練的免費講座簡報：怎麼用 AI 做網站、SEO／AIO／GEO／AXO 四種視角、WebMCP，以及 GitHub Pages、Vercel、Cloudflare Pages 的選擇方式。">
+  <meta name="robots" content="index,follow">
+  <link rel="canonical" href="https://jiangyude.com/courses/2026-09-26-ai-site-and-deploy/">
+  <title>怎麼用 AI 做網站＋部署平台選哪個？</title>
+  <style>
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-snap-type: y mandatory; }
+    body { margin: 0; color: #18232b; background: #f5efe6; font-family: -apple-system, BlinkMacSystemFont, "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif; }
+    a { color: inherit; }
+    .slide { min-height: 100vh; padding: clamp(44px, 6vw, 88px) clamp(28px, 7vw, 110px); display: flex; align-items: center; justify-content: center; scroll-snap-align: start; position: relative; overflow: hidden; }
+    .slide:nth-child(4n+1) { background: #f7f1e8; }
+    .slide:nth-child(4n+2) { background: #dfe7e8; }
+    .slide:nth-child(4n+3) { background: #ead8c8; }
+    .slide:nth-child(4n) { background: #405766; color: #fffaf2; }
+    .wrap { width: min(1220px, 100%); position: relative; z-index: 2; padding-bottom: 54px; }
+    .eyebrow { font-size: clamp(1.1rem, 1.8vw, 1.55rem); letter-spacing: .11em; font-weight: 800; color: #8b5e3c; margin-bottom: 18px; }
+    .slide:nth-child(4n) .eyebrow { color: #f2c89e; }
+    h1, h2, h3, p { margin-top: 0; }
+    h1 { font-size: clamp(3.2rem, 7.7vw, 7.2rem); line-height: .99; letter-spacing: -.045em; margin-bottom: 34px; }
+    h2 { font-size: clamp(2.6rem, 5.5vw, 5.2rem); line-height: 1.05; letter-spacing: -.04em; margin-bottom: 34px; }
+    h3 { font-size: clamp(1.45rem, 2.3vw, 2.15rem); line-height: 1.2; margin-bottom: 12px; }
+    .lead { font-size: clamp(1.45rem, 2.35vw, 2.25rem); line-height: 1.55; max-width: 1050px; }
+    .body { font-size: clamp(1.2rem, 1.75vw, 1.6rem); line-height: 1.62; }
+    .small { font-size: clamp(1.05rem, 1.35vw, 1.25rem); line-height: 1.55; opacity: .86; }
+    .accent { color: #8b5e3c; }
+    .slide:nth-child(4n) .accent { color: #ffd4a7; }
+    mark { background: #f1c596; color: #2b211a; padding: .05em .18em; border-radius: .15em; }
+    .grid2, .grid3, .grid4 { display: grid; gap: 22px; }
+    .grid2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .grid3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .grid4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .card { background: rgba(255,255,255,.72); border: 1px solid rgba(64,87,102,.18); padding: clamp(22px, 3vw, 38px); border-radius: 24px; box-shadow: 0 16px 46px rgba(38,52,60,.09); }
+    .slide:nth-child(4n) .card { background: rgba(255,255,255,.10); border-color: rgba(255,255,255,.18); box-shadow: none; }
+    .num { font-size: clamp(2.6rem, 5vw, 5rem); font-weight: 900; line-height: 1; color: #8b5e3c; margin-bottom: 14px; }
+    .slide:nth-child(4n) .num { color: #ffd4a7; }
+    .tag { display: inline-flex; align-items: center; gap: 8px; border: 1px solid currentColor; border-radius: 999px; padding: 8px 15px; margin: 0 7px 8px 0; font-size: 1.05rem; font-weight: 750; }
+    .flow { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; align-items: stretch; margin-top: 36px; }
+    .flow > div { border-radius: 22px; padding: 25px 20px; background: rgba(255,255,255,.72); border: 1px solid rgba(64,87,102,.18); min-height: 150px; }
+    .flow b { font-size: clamp(1.35rem, 2vw, 1.9rem); display: block; margin-bottom: 10px; }
+    table { width: 100%; border-collapse: collapse; font-size: clamp(1.08rem, 1.55vw, 1.45rem); line-height: 1.45; background: rgba(255,255,255,.60); border-radius: 20px; overflow: hidden; }
+    th, td { padding: 17px 18px; border-bottom: 1px solid rgba(64,87,102,.16); text-align: left; vertical-align: top; }
+    th { background: rgba(64,87,102,.13); font-size: 1.05em; }
+    tr:last-child td { border-bottom: 0; }
+    ul, ol { font-size: clamp(1.24rem, 1.9vw, 1.72rem); line-height: 1.6; padding-left: 1.35em; }
+    li { margin: .42em 0; }
+    .quote { font-size: clamp(2rem, 4vw, 4.1rem); line-height: 1.25; font-weight: 850; letter-spacing: -.025em; }
+    .compare { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+    .bigword { font-size: clamp(4rem, 10vw, 9rem); font-weight: 950; line-height: .88; letter-spacing: -.06em; }
+    .source { display: inline-block; text-decoration: none; background: #fffaf2; color: #405766; border: 2px solid #7f94a3; border-radius: 16px; padding: 14px 18px; margin: 7px 8px 0 0; font-size: clamp(1rem, 1.25vw, 1.18rem); font-weight: 750; }
+    .source:hover { background: #e8eef0; }
+    .slide:nth-child(4n) .source { background: rgba(255,255,255,.09); color: #fffaf2; border-color: rgba(255,255,255,.35); }
+    .case { border-left: 7px solid #8b5e3c; padding-left: 22px; }
+    .prompt { position: absolute; left: clamp(28px,7vw,110px); bottom: 22px; z-index: 6; max-width: min(820px, calc(100% - 150px)); border: 1px solid rgba(64,87,102,.30); border-radius: 14px; background: rgba(255,250,242,.94); color: #18232b; box-shadow: 0 10px 30px rgba(38,52,60,.12); }
+    .prompt summary { cursor: pointer; padding: 10px 16px; font-size: 1rem; font-weight: 800; color: #405766; }
+    .prompt p { margin: 0; padding: 0 16px 14px; font-size: 1.05rem; line-height: 1.5; }
+    .slide:nth-child(4n) .prompt { background: rgba(255,250,242,.96); color: #18232b; }
+    .page { position: absolute; right: 30px; bottom: 22px; font-size: 1rem; opacity: .6; font-weight: 700; }
+    .progress { position: fixed; top: 0; left: 0; height: 6px; width: 0; background: #b67442; z-index: 30; transition: width .15s ease; }
+    .footerline { margin-top: 32px; padding-top: 22px; border-top: 1px solid rgba(64,87,102,.25); }
+    @media (max-width: 900px) {
+      .grid3, .grid4, .flow { grid-template-columns: 1fr 1fr; }
+      .grid2, .compare { grid-template-columns: 1fr; }
+      .slide { align-items: flex-start; }
+      .wrap { margin: auto 0; }
+    }
+    @media (max-width: 620px) {
+      .grid3, .grid4, .flow { grid-template-columns: 1fr; }
+      .slide { min-height: auto; padding-top: 78px; padding-bottom: 78px; }
+      html { scroll-snap-type: none; }
+      .prompt { position: static; max-width: 100%; margin-top: 24px; }
+      .wrap { padding-bottom: 0; }
+    }
+    @media print {
+      .slide { min-height: 100vh; page-break-after: always; }
+      .progress, .prompt { display: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="progress" id="progress"></div>
+
+  <section class="slide" id="s1">
+    <div class="wrap">
+      <div class="eyebrow">免費線上講座 · 2026.09.26</div>
+      <h1>怎麼用 AI 做網站<br><span class="accent">＋部署平台選哪個？</span></h1>
+      <p class="lead">從做出一個網頁，到讓人跟 AI 都好找、好讀、好用。</p>
+      <p class="small footerline">江江教練｜江昱德 Knowledge</p>
+    </div>
+    <details class="prompt"><summary>課堂提問</summary><p>有沒有人已經叫 AI 做過網頁，但最後只在自己的電腦上看得到？</p></details>
+    <div class="page">01</div>
+  </section>
+
+  <section class="slide" id="s1b">
+    <div class="wrap">
+      <div class="eyebrow">先重新定義：現在的網站是什麼？</div>
+      <h2>網站正在成為<br>人與 AI 的資訊交流站</h2>
+      <div class="grid4">
+        <div class="card"><h3>給人看</h3><p class="body">人閱讀文章、課程、服務與作品。</p></div>
+        <div class="card"><h3>給 AI 看</h3><p class="body">AI 理解網站是誰、有哪些內容、資料彼此什麼關係。</p></div>
+        <div class="card"><h3>給 AI 用</h3><p class="body">在清楚的工具與授權範圍內，AI 可以查詢或執行操作。</p></div>
+        <div class="card"><h3>一起工作</h3><p class="body">人、工作夥伴、自己的 AI 與別人的 AI，共用資訊與工作狀態。</p></div>
+      </div>
+      <p class="lead footerline"><mark>網站也可以是操作站、工作站，是人與 AI 共同理解資訊、交換資訊、完成工作的介面。</mark></p>
+    </div>
+    <details class="prompt"><summary>課堂提問</summary><p>如果網站同時要給人看、給 AI 看，甚至給 AI 使用，它還需要多準備哪些資訊、工具與權限？</p></details>
+    <div class="page">01B</div>
+  </section>
+
+  <section class="slide" id="s1c">
+    <div class="wrap">
+      <div class="eyebrow">現場體驗 · 我的五位 AI 員工</div>
+      <h2>網站也可以是一間<br>AI 辦公室</h2>
+      <div class="grid2">
+        <div class="card">
+          <h3>五個角色，各自負責一種工作</h3>
+          <p>
+            <span class="tag">社群小編</span>
+            <span class="tag">資料清理員</span>
+            <span class="tag">找資料研究員</span>
+            <span class="tag">簡報企劃員</span>
+            <span class="tag">客服回覆員</span>
+          </p>
+          <p class="body">可以單獨找一位員工，也可以在團隊群組用 @ 指派工作，體驗不同角色怎麼接任務。</p>
+          <p class="small">公開體驗版使用虛構示範資料與固定回應，不會真的對外發文。</p>
+        </div>
+        <div class="card" style="text-align:center;">
+          <h3>掃描 QR Code 現場試用</h3>
+          <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGAQMAAACzVW0eAAAABlBMVEUAAAD///+l2Z/dAAAAAnRSTlP//8i138cAAAAJcEhZcwAACxIAAAsSAdLdfvwAAAFWSURBVFiF7ZdLjgMhDEQtcQCOxNU5Ug6AxFSVDdFMJtnaiyAUBV4v3P5W23637Es+kodhtT15wv++ebZRgwxctYctG7jGsfGRKgQ2wmq/BsdTrRSB1X2Cr77LETqVrv3nfVKJok0o81/yIJOoSh7j7j/1k0nuuva+9J00QquHDJe5HcnIfCxClIPTY77cnRHtfIJrdT4uNph+PZpO6E54EZ1v0V53ag2CbqdQ4wQug2fbRchzUHg132jnE2Ui3MmBZixfvsTeNciQLylPaKxEysmDbKJouxetK86/8iCVaP7fxrzO9KhBNGMpNkdUsERBEeLhNe3QKb0KWa7Q1V088ketZ5OIs7XY4dQSJNQTywVV4ur4VEk6YXj5BaahoQZzunIBYkehW2ioZ5UUIdFdKE/mydEihL/SKdMrpgjZ/lWt1uISb1UhXiXHlz2+xkqQd+tLPpEfWiht7pJpQegAAAAASUVORK5CYII=" alt="五位 AI 員工體驗站 QR Code" style="width:min(245px,75%);height:auto;image-rendering:pixelated;background:#fff;padding:12px;border-radius:18px;">
+          <p class="body" style="margin:14px 0 4px;"><strong>體驗密碼：demo</strong></p>
+          <a class="source" href="https://ai-office-demo-q7m4k2.pages.dev" target="_blank" rel="noopener">開啟 AI 員工體驗站 ↗</a>
+        </div>
+      </div>
+    </div>
+    <details class="prompt"><summary>課堂提問</summary><p>這五位 AI 員工只是五個聊天視窗，還是一組各自有職務、規則與交付邊界的工作角色？</p></details>
+    <div class="page">01C</div>
+  </section>
+
+  <section class="slide" id="s2">
+    <div class="wrap">
+      <div class="eyebrow">五個名詞 · 本課使用的清楚定義</div>
+      <h2>SEO、AIO、GEO、AXO、WebMCP</h2>
+      <div class="grid3">
+        <div class="card"><h3>SEO</h3><p class="small">Search Engine Optimization<br>搜尋引擎最佳化</p><p class="body">整理網頁內容、結構與技術訊號，幫助搜尋引擎收錄、理解，並在相關搜尋中呈現。</p></div>
+        <div class="card"><h3>AIO</h3><p class="small">AI Optimization<br>AI 最佳化</p><p class="body">把資料寫得清楚、完整、可驗證，讓 AI 容易辨識重點，並把內容組成可靠的回答。</p></div>
+        <div class="card"><h3>GEO</h3><p class="small">Generative Engine Optimization<br>生成式引擎最佳化</p><p class="body">強化內容的可信度、可引用性與來源訊號，增加內容被生成式搜尋採用或引用的機會。</p></div>
+      </div>
+      <div class="grid2" style="margin-top:22px;">
+        <div class="card"><h3>AXO</h3><p class="small">Agent Experience Optimization<br>AI Agent 體驗最佳化</p><p class="body">讓 AI Agent 容易辨識網站身份、資料關係、可用功能、操作規則與權限邊界。</p></div>
+        <div class="card"><h3>WebMCP</h3><p class="small">WebMCP API<br>網頁提供 AI 工具的草案介面</p><p class="body">網站把功能註冊成帶有用途說明與結構化參數的工具，讓瀏覽器裡的 AI Agent 可以呼叫。</p></div>
+      </div>
+      <p class="small footerline">SEO、AIO、GEO、AXO 是看網站的四種角度；WebMCP 處理網站怎麼把功能提供給 AI 使用。它們可以同時存在，沒有固定先後。</p>
+    </div>
+    <details class="prompt"><summary>課堂提問</summary><p>同一個網站，為什麼可能同時需要被搜尋引擎找到、被 AI 理解、被生成式答案引用，也被 AI Agent 操作？</p></details>
+    <div class="page">02</div>
+  </section>
+
+  <section class="slide" id="s2b">
+    <div class="wrap">
+      <div class="eyebrow">五個名詞 · 差異看這張</div>
+      <h2>它們各自在解決什麼問題？</h2>
+      <table>
+        <thead><tr><th>概念</th><th>主要對象</th><th>核心問題</th><th>網站要準備什麼</th></tr></thead>
+        <tbody>
+          <tr><td><b>SEO</b></td><td>搜尋引擎</td><td>搜尋時找不找得到？</td><td>清楚標題、頁面結構、內部連結、技術可讀性</td></tr>
+          <tr><td><b>AIO</b></td><td>回答問題的 AI</td><td>AI 能不能讀懂並正確作答？</td><td>明確定義、完整上下文、可核對的事實與更新日期</td></tr>
+          <tr><td><b>GEO</b></td><td>生成式搜尋與答案引擎</td><td>AI 會不會採用或引用？</td><td>原始資料、作者與品牌身份、證據、引用來源</td></tr>
+          <tr><td><b>AXO</b></td><td>會規劃與執行的 AI Agent</td><td>Agent 看不看得懂網站與操作邊界？</td><td>結構化資料、狀態、規則、權限與回傳結果</td></tr>
+          <tr><td><b>WebMCP</b></td><td>瀏覽器裡的 AI Agent</td><td>AI 要怎麼確定地呼叫網頁功能？</td><td>工具名稱、自然語言用途說明、結構化參數與執行函式</td></tr>
+        </tbody>
+      </table>
+      <p class="lead footerline"><mark>簡單操作可以直接串 API；當網頁要把多個功能交給瀏覽器裡的 AI 使用時，WebMCP 才更有價值。</mark></p>
+      <p class="small">WebMCP 目前是 Web Machine Learning Community Group 的草案，尚未成為 W3C 標準。</p>
+    </div>
+    <details class="prompt"><summary>課堂提問</summary><p>如果網站只有一個很單純的查詢功能，直接串 API 是否已經足夠？什麼情況才需要 WebMCP 來說明工具規格？</p></details>
+    <div class="page">02B</div>
+  </section>
+
+  <section class="slide" id="s3">
+    <div class="wrap">
+      <div class="eyebrow">怎麼用 AI 做網站</div>
+      <h2>先告訴 AI：你到底要做什麼網站</h2>
+      <div class="grid4">
+        <div class="card"><div class="num">類型</div><p class="body">課程介紹、個人品牌、活動頁，還是作品集？</p></div>
+        <div class="card"><div class="num">對象</div><p class="body">這個網站主要要給誰看？</p></div>
+        <div class="card"><div class="num">內容</div><p class="body">你有哪些真實文字、圖片與連結要放？</p></div>
+        <div class="card"><div class="num">行動</div><p class="body">希望對方看完之後做什麼？</p></div>
+      </div>
+      <p class="lead footerline"><mark>請幫我做一個＿＿網站，主要給＿＿看，要放＿＿，看完希望他＿＿。只使用我提供的資料。</mark></p>
+    </div>
+    <details class="prompt"><summary>課堂提問</summary><p>如果現在要請 AI 幫你做網站，你要做哪一種網站、給誰看、放什麼內容，又希望對方看完做什麼？</p></details>
+    <div class="page">03</div>
+  </section>
+
+  <section class="slide" id="s3b">
+    <div class="wrap">
+      <div class="eyebrow">現場試用 · 分講者逐字稿體驗站</div>
+      <h2>上傳一段錄音，看看 AI 怎麼把會議變成逐字稿</h2>
+      <div class="grid2">
+        <div class="card">
+          <h3>可以試什麼？</h3>
+          <ul>
+            <li>上傳一段短錄音</li>
+            <li>辨識不同講者的發言</li>
+            <li>把 Speaker 改成真實姓名</li>
+            <li>邊聽邊校正，再匯出文字或字幕</li>
+          </ul>
+          <p class="small footerline">使用前請向江江取得體驗碼。請用一般練習音檔，不要上傳機密錄音。</p>
+          <a class="source" href="https://speaker-transcript-oeesmz.pages.dev/" target="_blank" rel="noopener">開啟分講者逐字稿體驗站 ↗</a>
+        </div>
+        <div class="card" style="text-align:center;">
+          <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGAQMAAACzVW0eAAAABlBMVEUAAAD///+l2Z/dAAAAAnRSTlP//8i138cAAAAJcEhZcwAACxIAAAsSAdLdfvwAAAFXSURBVFiF7ZfNrQMxCISRXIBLonWX5AIszWMAR1HykiscYu1Ga397IPwMrODTkh/5SrbYGsDYiq1HlHvRHkThxwOLr/ABPOxBzMbYyYRdY5M3ItyJzOX/oBkBzzzy2oqEpczBiX/yoJJIJuC9XuqnkuRakYZnvulOIfEI230mK9i29kDegQAWZ1x3nnDn1ibkoXxmrOufPvm6lES97jQ8Kvj6upqwXq2bLTuAG26/Az0IxZg7v/Ac7QYkvcg14YOApNXlxG42sfClZSKL5ka7noTAmKiwj+ElD0rJjiJeXiuhgpqdtp5oFLFZ6rqyEM22B7HYHm+2J/2a0e5AOKojQr0eTm1BYuXQFNIiXUhOTxLfNyemTqAHURcVTk/jTgQ32vUkStZ7hdyBXTuROxRTntfN0SaEuhLanG2tB0F85UzvY/zWWacLeVTJndPf66eKfFo/8o38AXv0ao624cSiAAAAAElFTkSuQmCC" alt="分講者逐字稿體驗站 QR Code" style="width:min(300px,80%);height:auto;image-rendering:pixelated;background:#fff;padding:14px;border-radius:18px;">
+          <p class="body" style="margin-top:20px;font-weight:800;">掃描 QR Code 開啟體驗站</p>
+          <p class="small" style="word-break:break-all;">speaker-transcript-oeesmz.pages.dev</p>
+        </div>
+      </div>
+    </div>
+    <details class="prompt"><summary>課堂提問</summary><p>這個網站同時需要給人操作，也需要讓 Mac 上的轉錄程式取件、處理並送回結果。哪些部分是人看的介面，哪些部分是系統之間的溝通？</p></details>
+    <div class="page">03B</div>
+  </section>
+
+  <section class="slide" id="s4">
+    <div class="wrap">
+      <div class="eyebrow">網站做好之後</div>
+      <h2>網站要放在哪裡，<br>別人才打得開？</h2>
+      <div class="grid3">
+        <div class="card"><div class="num">家裡</div><h3>自己的電腦</h3><p class="body">睡眠、斷網或關機，網站就消失。</p></div>
+        <div class="card"><div class="num">雲端</div><h3>自己租主機</h3><p class="body">自由度高，維護、更新、安全都要處理。</p></div>
+        <div class="card"><div class="num">代管</div><h3>託管平台</h3><p class="body">照平台規則，把網站放上去就有網址。</p></div>
+      </div>
+      <p class="small footerline">把網站放到能公開連線的主機，就是部署。今天比較 GitHub Pages、Vercel、Cloudflare Pages 三種託管方案。</p>
+    </div>
+    <details class="prompt"><summary>課堂提問</summary><p>網站只存在自己的電腦裡，和放進一間全天營業、任何人都能抵達的百貨公司，有什麼差別？</p></details>
+    <div class="page">04</div>
+  </section>
+
+  <section class="slide" id="s5">
+    <div class="wrap">
+      <div class="eyebrow">選平台前先問</div>
+      <h2>你的網站只給人看，<br>還是要替人做事？</h2>
+      <div class="compare">
+        <div class="card"><h3>前端像外場</h3><p class="body">文字、圖片、按鈕、作品集、活動介紹。訪客打開就看得到。</p></div>
+        <div class="card"><h3>後端像廚房</h3><p class="body">檢查密碼、記錄表單、存照片、呼叫 AI。訪客看不到，但網站要執行。</p></div>
+      </div>
+      <p class="lead" style="margin-top:32px;"><mark>只有展示，選擇很多；需要登入、資料與程式，平台能力就會拉開。</mark></p>
+    </div>
+    <details class="prompt"><summary>課堂提問</summary><p>你的網站只需要展示內容，還是也需要登入、存資料、上傳檔案或處理付款？</p></details>
+    <div class="page">05</div>
+  </section>
+
+  <section class="slide" id="s6">
+    <div class="wrap">
+      <div class="eyebrow">三種常見網站託管平台</div>
+      <h2>GitHub Pages、Vercel、Cloudflare Pages</h2>
+      <table>
+        <thead><tr><th>正式名稱</th><th>平台類型</th><th>最適合扮演的角色</th></tr></thead>
+        <tbody>
+          <tr><td><b>GitHub Pages</b></td><td>GitHub 的靜態網站託管服務</td><td>公開作品、文件、Demo 與教材</td></tr>
+          <tr><td><b>Vercel</b></td><td>前端應用部署與託管平台</td><td>現代前端、快速部署與版本預覽</td></tr>
+          <tr><td><b>Cloudflare Pages</b></td><td>Cloudflare 的前端網站部署服務</td><td>公開正式站，再逐步接運算、資料與安全功能</td></tr>
+        </tbody>
+      </table>
+      <p class="small footerline">課堂與對外文件都直接使用產品正式名稱，不另外創造平台簡稱。</p>
+    </div>
+    <details class="prompt"><summary>課堂提問</summary><p>GitHub 與 GitHub Pages 有什麼不同？哪一個負責保存版本，哪一個負責發布網站？</p></details>
+    <div class="page">06</div>
+  </section>
+
+  <section class="slide" id="s7">
+    <div class="wrap">
+      <div class="eyebrow">GitHub Pages</div>
+      <div class="bigword">公開展示</div>
+      <div class="grid2" style="margin-top:44px;">
+        <div><h3>適合</h3><ul><li>作品集、公開文件、Demo</li><li>課程教材與簡單靜態頁</li><li>想保留完整修改歷史</li></ul></div>
+        <div><h3>要注意</h3><ul><li>網站以靜態內容為主</li><li>交易、電商與商用 SaaS 不適合拿 Pages 當免費主機</li><li>會員、登入、付款要接其他服務</li></ul></div>
+      </div>
+      <p class="small footerline">一句話：GitHub 管版本與備份，GitHub Pages 把公開內容展示出來。</p>
+      <a class="source" href="https://docs.github.com/pages/getting-started-with-github-pages/github-pages-limits" target="_blank" rel="noopener">官方文件：GitHub Pages limits ↗</a>
+    </div>
+    <details class="prompt"><summary>課堂提問</summary><p>公開商業介紹頁、線上交易網站與商用 SaaS，在 GitHub Pages 的使用限制上有什麼差別？</p></details>
+    <div class="page">07</div>
+  </section>
+
+  <section class="slide" id="s8">
+    <div class="wrap">
+      <div class="eyebrow">Vercel</div>
+      <div class="bigword">快速預覽</div>
+      <div class="grid2" style="margin-top:44px;">
+        <div><h3>適合</h3><ul><li>React、Next.js 等現代前端</li><li>每次修改都需要預覽網址</li><li>團隊先確認，再上正式版</li></ul></div>
+        <div><h3>要注意</h3><ul><li>Hobby 限個人、非商業使用</li><li>商業專案要評估 Pro</li><li>流量、運算與部分功能有方案額度</li></ul></div>
+      </div>
+      <p class="small footerline">一句話：Vercel 強在部署、預覽與現代前端開發流程。</p>
+      <a class="source" href="https://vercel.com/docs/plans/hobby" target="_blank" rel="noopener">官方文件：Vercel Hobby Plan ↗</a>
+    </div>
+    <details class="prompt"><summary>課堂提問</summary><p>如果每次修改都能先得到一個獨立預覽網址，對團隊審稿與確認版本有什麼幫助？</p></details>
+    <div class="page">08</div>
+  </section>
+
+  <section class="slide" id="s9">
+    <div class="wrap">
+      <div class="eyebrow">Cloudflare Pages</div>
+      <div class="bigword">起步＋擴充</div>
+      <div class="grid2" style="margin-top:44px;">
+        <div><h3>適合</h3><ul><li>公開官網與商業內容站</li><li>靜態網站低成本起步</li><li>之後接程式、資料庫、檔案與安全功能</li></ul></div>
+        <div><h3>要注意</h3><ul><li>Cloudflare 服務很多，概念較多</li><li>會員與權限仍要設計</li><li>免費代表起步成本低，服務保障另看方案</li></ul></div>
+      </div>
+      <p class="small footerline">Pages 放網站；Workers 跑程式；D1 存表格資料；R2 存大檔案。Cloudflare 現行文件建議新專案也從 Workers 開始，既有 Pages 仍可繼續使用。</p>
+      <a class="source" href="https://jiangyude.com/articles/cloudflare-service-map/" target="_blank" rel="noopener">江江深度文章：Cloudflare 免費版到底能做什麼？ ↗</a>
+      <a class="source" href="https://developers.cloudflare.com/pages/get-started/" target="_blank" rel="noopener">官方文件：Cloudflare Pages getting started ↗</a>
+    </div>
+    <details class="prompt"><summary>課堂提問</summary><p>新的 Cloudflare 專案應該從 Pages 還是 Workers 開始？既有 Pages 專案又該怎麼處理？</p></details>
+    <div class="page">09</div>
+  </section>
+
+  <section class="slide" id="s10">
+    <div class="wrap">
+      <div class="eyebrow">三家放在一起</div>
+      <h2>先看用途，再看規格</h2>
+      <table>
+        <thead><tr><th>問題</th><th>GitHub Pages</th><th>Vercel</th><th>Cloudflare Pages</th></tr></thead>
+        <tbody>
+          <tr><td>公開靜態展示</td><td>適合</td><td>適合</td><td>適合</td></tr>
+          <tr><td>版本預覽與前端框架</td><td>基礎</td><td><b>主場</b></td><td>可做</td></tr>
+          <tr><td>商業正式站的免費起點</td><td>用途受條款限制</td><td>Hobby 限非商業</td><td>免費方案未見同類非商用限制</td></tr>
+          <tr><td>運算、資料與檔案整合</td><td>外接</td><td>可接服務</td><td><b>Workers、D1、R2</b></td></tr>
+        </tbody>
+      </table>
+      <p class="small footerline">平台政策會變。幫客戶報價或正式上線前，要重新讀官方方案與條款。</p>
+      <a class="source" href="https://jiangyude.com/articles/github-vercel-cloudflare-compare/" target="_blank" rel="noopener">江江深度文章：三家免費額度、商用限制與功能差異 ↗</a>
+    </div>
+    <details class="prompt"><summary>課堂提問</summary><p>公開文件、團隊預覽、商業公開站三種需求，分別會讓你優先評估哪一個平台？</p></details>
+    <div class="page">10</div>
+  </section>
+
+  <section class="slide" id="s11">
+    <div class="wrap">
+      <div class="eyebrow">一分鐘決策樹</div>
+      <h2>先回答三題</h2>
+      <div class="grid3">
+        <div class="card"><div class="num">01</div><h3>自己用，還是做生意？</h3><p class="body">先排除不符合商用條款的免費方案。</p></div>
+        <div class="card"><div class="num">02</div><h3>只給人看，還是要做事？</h3><p class="body">要登入、存資料、上傳檔案，就需要後端。</p></div>
+        <div class="card"><div class="num">03</div><h3>公開，還是限制對象？</h3><p class="body">知道網址不等於有鎖；敏感內容要真的做權限。</p></div>
+      </div>
+      <p class="lead" style="margin-top:32px;">回答完，通常只剩一到兩個合理選項。</p>
+      <a class="source" href="https://jiangyude.com/articles/hosting-platform-decision-tree/" target="_blank" rel="noopener">江江深度文章：託管平台決策樹 ↗</a>
+    </div>
+    <details class="prompt"><summary>課堂提問</summary><p>你的網站是自己使用還是商業用途？只展示還是需要執行功能？公開還是限制特定對象？</p></details>
+    <div class="page">11</div>
+  </section>
+
+  <section class="slide" id="s12">
+    <div class="wrap">
+      <div class="eyebrow">從託管平台，走進 AI 網站</div>
+      <h2 style="font-size:clamp(2.35rem,4.7vw,4.7rem);">網路上的機器人已經比人多了，<br>你的內容現在是寫給誰看？</h2>
+      <p class="quote">網站同時服務三種訪客：<br><span class="accent">人、搜尋引擎、AI。</span></p>
+      <p class="body footerline">Cloudflare 2026 官方報告依其網路觀測資料指出，超過 50% 的網路流量為非人類流量。這裡包含一般機器人、搜尋爬蟲與 AI 爬蟲，不能全部算成 AI Agent。</p>
+      <a class="source" href="https://jiangyude.com/articles/agent-web-turning-point/" target="_blank" rel="noopener">深度文章：網路上一半以上的訪問已經不是人了 ↗</a>
+      <a class="source" href="https://blog.cloudflare.com/agentic-internet-bot-report/" target="_blank" rel="noopener">官方來源：Cloudflare 2026 Agentic Internet Report ↗</a>
+    </div>
+    <details class="prompt"><summary>課堂提問</summary><p>非人類流量、搜尋爬蟲、AI 爬蟲與 AI Agent 是同一件事嗎？它們的範圍差在哪裡？</p></details>
+    <div class="page">12</div>
+  </section>
+
+  <section class="slide" id="s13">
+    <div class="wrap">
+      <div class="eyebrow">四個概念，回答四個不同問題</div>
+      <h2>4O 是四種並列視角</h2>
+      <div class="grid2">
+        <div class="card"><h3>SEO</h3><p class="body">搜尋引擎怎麼找到並理解這個網站？</p></div>
+        <div class="card"><h3>AIO</h3><p class="body">AI 怎麼從正式內容形成正確答案？</p></div>
+        <div class="card"><h3>GEO</h3><p class="body">生成式 AI 為什麼採用或引用這份內容？</p></div>
+        <div class="card"><h3>AXO</h3><p class="body">AI 怎麼理解網站的身份、內容、關係與邊界？</p></div>
+      </div>
+      <p class="small footerline">它們可以同時存在，也可以分別改善；沒有固定的第一步、第二步或成熟度順序。</p>
+    </div>
+    <details class="prompt"><summary>課堂提問</summary><p>同一個網站可以同時改善 SEO、AIO、GEO 與 AXO 嗎？其中一定要先完成哪一個嗎？</p></details>
+    <div class="page">13</div>
+  </section>
+
+  <section class="slide" id="s14">
+    <div class="wrap">
+      <div class="eyebrow">Search Engine Optimization</div>
+      <div class="bigword">SEO</div>
+      <h2 style="margin-top:30px;">讓人搜尋時找得到你的頁面</h2>
+      <div class="grid2">
+        <div class="card"><h3>它處理入口</h3><p class="body">搜尋引擎能不能抓到、索引、理解，再把頁面放進適合的搜尋結果。</p></div>
+        <div class="card"><h3>基本工作</h3><p class="body">robots.txt、sitemap、清楚標題與描述、穩定網址、Search Console、原創內容。</p></div>
+      </div>
+      <p class="small footerline">SEO 處理搜尋引擎入口。頁面抓不到，AI 也可能少一條找到你的路。</p>
+    </div>
+    <details class="prompt"><summary>課堂提問</summary><p>有人搜尋「AI 做網站課程」時，你的課程頁有沒有機會出現在搜尋結果？</p></details>
+    <div class="page">14</div>
+  </section>
+
+  <section class="slide" id="s15">
+    <div class="wrap">
+      <div class="eyebrow">AI Optimization</div>
+      <div class="bigword">AIO</div>
+      <h2 style="margin-top:30px;">讓 AI 從官網找到正確資訊</h2>
+      <div class="grid2">
+        <div class="card"><h3>它處理可查證的資訊</h3><p class="body">把名稱、價格、日期、條件、限制與更新時間寫清楚，讓 AI 能找到並核對。</p></div>
+        <div class="card"><h3>例如：請 AI 規劃旅行</h3><p class="body">AI 從店家與旅宿官網找到正確房型、價格、活動內容與適用日期，再整理成回答。</p></div>
+      </div>
+      <p class="small footerline">官網資料寫得越明確、完整、可核對，AI 越有機會回答正確。價格與活動會變動，也要標示更新日期。</p>
+    </div>
+    <details class="prompt"><summary>課堂提問</summary><p>如果有人請 AI 規劃到你的城市旅行，AI 能不能從店家官網找到正確房型、價格、活動與日期？</p></details>
+    <div class="page">15</div>
+  </section>
+
+  <section class="slide" id="s16">
+    <div class="wrap">
+      <div class="eyebrow">Generative Engine Optimization</div>
+      <div class="bigword">GEO</div>
+      <h2 style="margin-top:30px;">讓生成式 AI 引用你的觀點</h2>
+      <div class="grid2">
+        <div class="card"><h3>它處理來源與觀點</h3><p class="body">清楚寫出作者、日期、原始主張、實際案例與引用來源，讓 AI 知道這個觀點來自誰。</p></div>
+        <div class="card"><h3>例如：AI 時代的網站長什麼樣？</h3><p class="body">AI 回答時明確說「參考江江教練的觀點」，整理江江對網站的主張，並附上原文連結。</p></div>
+      </div>
+      <p class="small footerline">GEO 增加被採用的機會，不保證被引用。各家 AI 的搜尋來源與選擇方式也不完全相同。</p>
+    </div>
+    <details class="prompt"><summary>課堂提問</summary><p>有人問 AI「怎麼做網站」或「AI 時代的網站長什麼樣」時，它會不會引用你的名字、觀點與原文連結？</p></details>
+    <div class="page">16</div>
+  </section>
+
+  <section class="slide" id="s17">
+    <div class="wrap">
+      <div class="eyebrow">Agent Experience Optimization</div>
+      <div class="bigword">AXO</div>
+      <h2 style="margin-top:30px;">讓 AI 看懂這是什麼網站</h2>
+      <p class="lead">它處理的是理解，不等於取得修改或操作網站的權限。</p>
+      <div class="grid2">
+        <div class="card"><h3>外部 AI</h3><p class="body">比較容易理解這是誰的網站、有哪些服務、文章與課程，以及內容彼此的關係。</p></div>
+        <div class="card"><h3>網站自己的 AI</h3><p class="body">Mika 這類站內 AI，也能受益於清楚的內容結構、知識來源與回答邊界。</p></div>
+      </div>
+      <p class="small footerline">AXO 解決「看得懂」；能不能操作，要看 API、MCP、WebMCP 或 Computer Use。</p>
+    </div>
+    <details class="prompt"><summary>課堂提問</summary><p>AI 能不能辨認江江、課程、文章與 Mika，並說清楚它們彼此的關係與回答邊界？</p></details>
+    <div class="page">17</div>
+  </section>
+
+  <section class="slide" id="s18">
+    <div class="wrap">
+      <div class="eyebrow">四個概念放在同一個頁面檢查</div>
+      <h2>同一個課程頁，4O 各做一件事</h2>
+      <table>
+        <tbody>
+          <tr><td><b>SEO</b></td><td>搜尋「AI 做網站課程」時，有機會看到這一頁。</td></tr>
+          <tr><td><b>AIO</b></td><td>AI 能從正式課程頁正確回答日期、對象、費用與限制。</td></tr>
+          <tr><td><b>GEO</b></td><td>AI 討論怎麼學做網站時，引用江江的教學觀點。</td></tr>
+          <tr><td><b>AXO</b></td><td>AI 能理解這是江江的正式課程頁、內容與其他文章的關係，以及哪些資訊不能自行推論。</td></tr>
+        </tbody>
+      </table>
+      <p class="lead footerline">同一頁可以同時從四個角度檢查，但四個概念沒有固定先後。</p>
+    </div>
+    <details class="prompt"><summary>課堂提問</summary><p>把表格裡的「課程頁」換成你的網站後，SEO、AIO、GEO、AXO 分別會檢查什麼？</p></details>
+    <div class="page">18</div>
+  </section>
+
+  <section class="slide" id="s19">
+    <div class="wrap">
+      <div class="eyebrow">另一張地圖 · AI 怎麼操作系統</div>
+      <h2>AI 跟數位系統之間，<br>到底隔了幾層翻譯？</h2>
+      <div class="grid2">
+        <div class="card"><h3>Computer Use</h3><p class="body">AI 看畫面，再模擬人的眼睛、鍵盤與滑鼠。軟體不用先替 AI 準備介面。</p></div>
+        <div class="card"><h3>API</h3><p class="body">系統提供正式管道，讓另一個程式直接呼叫功能，不必真的操作畫面。</p></div>
+      </div>
+      <p class="small footerline">固定、明確的流程可以直接用 API；沒有介面可串時，Computer Use 仍可能派上用場。這是兩種操作方式，不是高低等級。</p>
+    </div>
+    <details class="prompt"><summary>課堂提問</summary><p>同樣要在 Google 簡報插入圖片，讓 AI 操作畫面與直接呼叫 API，各自會怎麼完成？</p></details>
+    <div class="page">19</div>
+  </section>
+
+  <section class="slide" id="s20">
+    <div class="wrap">
+      <div class="eyebrow">Model Context Protocol</div>
+      <h2>MCP 像懂客戶，<br>也懂工程師的業務</h2>
+      <div class="grid2">
+        <div class="card"><h3>你說的需求</h3><p class="body">「第二頁放我的講師介紹。」</p></div>
+        <div class="card"><h3>底層真正需要的資料</h3><p class="body">簡報 ID、投影片 ID、圖片網址、位置、寬度與高度。</p></div>
+      </div>
+      <p class="lead footerline">MCP 把系統能力整理成 Agent 可以發現、理解、呼叫的標準化工具。</p>
+      <p class="small">API 是真正能辦事的能力；MCP 幫 Agent 認識有哪些工具，以及工具怎麼叫。</p>
+    </div>
+    <details class="prompt"><summary>課堂提問</summary><p>什麼情況直接呼叫 API 就夠了？什麼情況需要 Agent 判斷下一步該選哪個工具，才會用到 MCP？</p></details>
+    <div class="page">20</div>
+  </section>
+
+  <section class="slide" id="s21">
+    <div class="wrap">
+      <div class="eyebrow">實際案例 · 叫 AI 幫我做一份 Google 簡報</div>
+      <h2>先判斷：這件事需要 AI 做決定嗎？</h2>
+      <div class="grid2">
+        <div class="card">
+          <h3>固定工作，直接 API</h3>
+          <p class="body">「把這張圖片插入第二頁的指定位置。」投影片、圖片、座標與尺寸都已確定，不需要 Agent 再判斷，也不一定要經過 MCP。</p>
+          <p class="small"><b>固定指令 → Google Slides API → 完成插圖</b></p>
+        </div>
+        <div class="card">
+          <h3>需要判斷，才讓 Agent 選工具</h3>
+          <p class="body">「把這份課程內容整理成一份簡報。」AI 要判斷頁數、結構、圖片、版面，以及下一步該使用哪個工具。</p>
+          <p class="small"><b>需求 → Skill → Agent 判斷 → MCP 工具規格 → API 執行</b></p>
+        </div>
+      </div>
+      <p class="lead footerline"><mark>MCP 不是比較高級的 API，也不是每個任務都必經的一層。</mark></p>
+    </div>
+    <details class="prompt"><summary>課堂提問</summary><p>當你說「把這份課程內容整理成簡報」時，Skill、Agent、MCP 與 API 分別負責哪一段？如果頁面、圖片與座標都已確定，還需要走完整流程嗎？</p></details>
+    <div class="page">21</div>
+  </section>
+
+  <section class="slide" id="s22">
+    <div class="wrap">
+      <div class="eyebrow">WebMCP API</div>
+      <h2>網站直接給 AI 一支<br>有標示的專用遙控器</h2>
+      <div class="grid3">
+        <div class="card"><h3>Computer Use</h3><p class="body">AI 看畫面、找按鈕、模擬滑鼠與鍵盤。</p></div>
+        <div class="card"><h3>WebMCP</h3><p class="body">網站主動公開工具名稱、參數與說明，讓支援的 Agent 呼叫。</p></div>
+        <div class="card"><h3>安全邊界</h3><p class="body">網站仍要決定哪些工具唯讀、哪些操作需要授權與人工確認。</p></div>
+      </div>
+      <p class="small footerline">WebMCP 目前仍是草案，支援環境有限。江江官網第一版只開唯讀工具，不開報名、修改與付款。</p>
+      <a class="source" href="https://jiangyude.com/articles/webmcp-day-one/" target="_blank" rel="noopener">深度文章：WebMCP 唯讀工具層實作記錄 ↗</a>
+    </div>
+    <details class="prompt"><summary>課堂提問</summary><p>要把 Mika 縮小並往左移，Computer Use 會操作哪些畫面？WebMCP 又可以直接提供哪些工具？</p></details>
+    <div class="page">22</div>
+  </section>
+
+  <section class="slide" id="s23">
+    <div class="wrap">
+      <div class="eyebrow">最容易混淆的兩個概念</div>
+      <h2>AXO 管理解，WebMCP 管工具</h2>
+      <div class="grid2">
+        <div class="card"><div class="num">AXO</div><h3>AI 看不看得懂？</h3><p class="body">網站是誰、有哪些內容與服務、資料彼此什麼關係、哪些地方不能自行推論。</p></div>
+        <div class="card"><div class="num">WebMCP</div><h3>AI 能呼叫什麼？</h3><p class="body">網站明確公開哪些工具、需要哪些參數，以及何時需要使用者確認。</p></div>
+      </div>
+      <p class="lead footerline"><mark>看得懂，不等於有權操作；能呼叫工具，也不代表可以無限制執行。</mark></p>
+      <a class="source" href="https://jiangyude.com/articles/market-to-ai/" target="_blank" rel="noopener">深度文章：可以學用 AI 行銷，也可以學對 AI 行銷 ↗</a>
+    </div>
+    <details class="prompt"><summary>課堂提問</summary><p>一個網站的 AXO 做得很好，但完全沒有 WebMCP，可以嗎？AI 看得懂網站，是否等於有權操作網站？</p></details>
+    <div class="page">23</div>
+  </section>
+
+  <section class="slide" id="s24">
+    <div class="wrap">
+      <div class="eyebrow">全部放進同一張地圖</div>
+      <h2>六個概念，回答六種問題</h2>
+      <table>
+        <tbody>
+          <tr><td><b>AXO</b></td><td>AI 怎麼理解這個網站？</td><td>把招牌、樓層、資料與邊界整理清楚</td></tr>
+          <tr><td><b>Skill</b></td><td>這件工作應該怎麼做？</td><td>工作方法與 SOP</td></tr>
+          <tr><td><b>MCP</b></td><td>Agent 有哪些工具、怎麼呼叫？</td><td>懂客戶也懂工程師的業務</td></tr>
+          <tr><td><b>API</b></td><td>系統怎麼直接執行功能？</td><td>真正能施工的工程能力</td></tr>
+          <tr><td><b>WebMCP</b></td><td>網站怎麼把工具提供給 Agent？</td><td>網站替 AI 準備的專用遙控器</td></tr>
+          <tr><td><b>Computer Use</b></td><td>沒有工具介面時怎麼操作？</td><td>AI 用眼睛、鍵盤與滑鼠</td></tr>
+        </tbody>
+      </table>
+      <p class="small footerline">這不是六選一，也沒有固定先後；一個成熟系統可能同時使用好幾種方法。</p>
+    </div>
+    <details class="prompt"><summary>課堂提問</summary><p>AXO、Skill、MCP、API、WebMCP、Computer Use 各自解決哪一個問題？哪一些可以同時出現在同一套系統？</p></details>
+    <div class="page">24</div>
+  </section>
+
+  <section class="slide" id="s25">
+    <div class="wrap">
+      <div class="eyebrow">回到動畫台</div>
+      <h2>真正的本體，是同一份<br>結構化、可編輯、可同步的 Project State</h2>
+      <div class="grid3">
+        <div class="card"><h3>人可以改</h3><p class="body">拖 Mika、改時間軸、換表情、調鏡頭。</p></div>
+        <div class="card"><h3>Agent 可以改</h3><p class="body">理解「延後半秒」，再透過工具修改動畫資料。</p></div>
+        <div class="card"><h3>彼此看見同一狀態</h3><p class="body">人改成 X＝420，Agent 看得到；Agent 改成 X＝380，畫面也立即更新。</p></div>
+      </div>
+      <p class="quote" style="margin-top:38px;">以前教人怎麼操作軟體。<br><span class="accent">現在也要教軟體怎麼讓 AI 操作自己。</span></p>
+    </div>
+    <details class="prompt"><summary>課堂提問</summary><p>如果人與 Agent 都能修改動畫，兩邊怎麼知道 Mika 現在的位置？真正需要共同維護的本體是什麼？</p></details>
+    <div class="page">25</div>
+  </section>
+
+  <section class="slide" id="reading">
+    <div class="wrap">
+      <div class="eyebrow">延伸閱讀 · 江江的深度文章</div>
+      <h2>平台怎麼選、免費額度怎麼看，<br>完整查證都在這裡</h2>
+      <div class="grid3">
+        <div class="card" style="text-align:center;">
+          <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALkAAAC5AQMAAABOYwwfAAAABlBMVEUAAAD///+l2Z/dAAAAAnRSTlP//8i138cAAAAJcEhZcwAACxIAAAsSAdLdfvwAAAG7SURBVFiF3ZexrcMwDEQZuFDpEbRJvFiAGMhi1iYewaUKw/x3lBLkf/yUviIuHEsvBaEjj5T5h8e+Hyxmlo7RPeEr12nD+qICxbk3zrlefLfk2925JwKb5XTY4PWy3SxeSQuW8bGC3j0VPfDtlkMZ6CEF1KNAhX+FOhlEJuIg8vP1K0VPBv3ZsecQpfwtzlMBKw+B3FohmiEt6qQCvg1rtTFEwR8m6NGPRAAKAGKZrRrKwJfRe1QKwCPBa6AI0IM/yVUAZb+GAdh13LMf424uAy2gbgA0/ahGFWD+9RTYaYLuXQ8BoPXBbvZs9HumRW56SAAMD0uoEA2XVtCjEoADFcC9FWkRpn9fmx4SgMqLGrRwgQM+1KMSgNADZcBkmC16z5tQJwP0t9Umf3hlDbZhZ1KB8DqaPtJizm96KADPgFIwtDCe+aWHAHBZ2h4K4srG5zLAqLDMbLOIz8IPRCCeElMVGl+iD+lAzFd9oIco8L/86rWng5gsMWrQ+Yc1lHkKJQCcqUurwX6ZcjGIMR5flR1HDBaMGpwymunbJAPu7fYU97c28bgKtNsEBwyMVpyuB39L0ZPBh+frwQ8vKs3nFyraKgAAAABJRU5ErkJggg==" alt="三家平台比較文章 QR Code" style="width:min(175px,65%);height:auto;background:#fff;padding:9px;border-radius:14px;">
+          <h3 style="margin-top:14px;">三家平台完整比較</h3>
+          <p class="small">GitHub Pages、Vercel、Cloudflare 的免費額度、商用限制與功能差異。</p>
+          <a class="source" href="https://jiangyude.com/articles/github-vercel-cloudflare-compare/" target="_blank" rel="noopener">閱讀文章 ↗</a>
+        </div>
+        <div class="card" style="text-align:center;">
+          <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALkAAAC5AQMAAABOYwwfAAAABlBMVEUAAAD///+l2Z/dAAAAAnRSTlP//8i138cAAAAJcEhZcwAACxIAAAsSAdLdfvwAAAG3SURBVFiF3ZYxroQwDESNKCg5Qm6yXGylReJicJMcgZIC4T/jwP+flbbMFEuBSB6FFc9MbP7hse8Hs5l1R4/vZbW0DSvWjQos2Ormfkz26D13vr6ceyKAWrrDWsfe07YGr04L5n7KZv2eukUPUFCKzqAfUsB+LOgC+rHbe6Mqg1AiDiJdr5tEK4Pz2ROXmadxN2dVgKoSCoEIDUaEIqa8DSpA72+0H7owmg3sTKMCzoNAAKAygw5m/FKqUoCDp/FAAFh4nz92rgPhgMlxOPHazYXASuDxi6H/8q1RgRlHAv15tqHEP7QxyABvOlJmDsN3TKUfCrCsbWbq8dp5cm9PpSoFwFdRREQB+5G3RgWYtrA99pryC1wx6ACkh8DDtUPA5dUPAfCJg01bPBjDzlmVArCquGYhC7/1QwE4VmCJqN+pxPGvUQLwirvWykT7sBK+IuCcaGm/I+5aeOGafeqDeGK24HRDOQpBzFfhfUjAGf/pd/yoDmKyDAdQB2HEf2NtbcCZGkY8U+CqTwmKFygFBoAWcKqK8ZLDXb78IQBxvZ9Rn3n3CMGpxPDgRA+2fpNoVfDh+XrwAxgyxYZQkEbJAAAAAElFTkSuQmCC" alt="託管平台決策樹文章 QR Code" style="width:min(175px,65%);height:auto;background:#fff;padding:9px;border-radius:14px;">
+          <h3 style="margin-top:14px;">託管平台決策樹</h3>
+          <p class="small">從自己用或做生意、只展示或要做事，判斷網站適合放哪裡。</p>
+          <a class="source" href="https://jiangyude.com/articles/hosting-platform-decision-tree/" target="_blank" rel="noopener">閱讀文章 ↗</a>
+        </div>
+        <div class="card" style="text-align:center;">
+          <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALkAAAC5AQMAAABOYwwfAAAABlBMVEUAAAD///+l2Z/dAAAAAnRSTlP//8i138cAAAAJcEhZcwAACxIAAAsSAdLdfvwAAAG+SURBVFiF3ZcxrsIwEEQnonCZI/gm5GJIIHGx5CY5QsoUVvbPbGz+R1+U3gIXEPKa1c7OeIF9OPh+MANIx2i2DxvyPm38PUSBhSWkeXxkfhck2+6md0GAtaQDF0uLPVeWdkOKBfP4NJvHktMSD4w/MdkD1CMUSI9lu68cgts/oToDn0Q2IrePtxHtDOopv914N2dXwKqyupFx5UQAI8dxigLqwQ4PANoAE/WoARAB7EEPKgAO2oBesFZVCGBB8ACQHtIiWRQ4KIBUUADwBUuDxQEW5EOIKzz071ImCCxWFH22YuA7PVnToz8wBp4ilx40bw5nw6KAbrrmwaJ3JVdzBgC/408V5EY+rVWoAGDyoK4djsXNP/DSozuYNYlKPUXuqrunejACHBSDDriYN8eXnapHAFBVPomM3NODVY8I4IE3gxf9oJaYrxphoK10igLsV5zhGwS4W3C1Kud6KXFyW2v7Az9siWkssidhHKj7FXz+eMezyNf60R0s5+XK7UZrbZIof9ba3qAt9L7npBloVcWBIi/oKACGWNA8qOVubTYIAGbnasVGsLQDkeD1b4J3rcmDF3sb0a7gw/l68AP1Ha6xicMbMQAAAABJRU5ErkJggg==" alt="Cloudflare 免費服務文章 QR Code" style="width:min(175px,65%);height:auto;background:#fff;padding:9px;border-radius:14px;">
+          <h3 style="margin-top:14px;">Cloudflare 免費版地圖</h3>
+          <p class="small">二十二個服務分成五類，附白話用途、免費起點與常見額度陷阱。</p>
+          <a class="source" href="https://jiangyude.com/articles/cloudflare-service-map/" target="_blank" rel="noopener">閱讀文章 ↗</a>
+        </div>
+      </div>
+      <p class="small footerline">另一篇〈Cloudflare 免費方案夠用嗎？每天十萬次很寬，每一輪五十件事很緊〉仍在官網看板排隊，尚未公開上線。</p>
+    </div>
+    <details class="prompt"><summary>課堂提問</summary><p>你現在最需要查的是平台選擇、三家免費額度與商用限制，還是 Cloudflare 各項服務的用途？</p></details>
+    <div class="page">延伸閱讀</div>
+  </section>
+
+  <section class="slide" id="s26">
+    <div class="wrap">
+      <div class="eyebrow">今晚最後帶走</div>
+      <div class="grid4">
+        <div class="card"><div class="num">01</div><h3>平台使用正式名稱</h3><p class="body">GitHub Pages、Vercel、Cloudflare Pages。</p></div>
+        <div class="card"><div class="num">02</div><h3>4O 是不同視角</h3><p class="body">沒有固定先後，也不是成熟度階梯。</p></div>
+        <div class="card"><div class="num">03</div><h3>AXO 管理解</h3><p class="body">看得懂不等於能操作。</p></div>
+        <div class="card"><div class="num">04</div><h3>操作有不同介面</h3><p class="body">API、MCP、WebMCP 與 Computer Use 各有用途。</p></div>
+      </div>
+      <a class="source" href="https://jiangyude.com/courses.html" target="_blank" rel="noopener" style="margin-top:28px;">回到江江教練的課程與教材 ↗</a>
+    </div>
+    <details class="prompt"><summary>課堂提問</summary><p>遇到一個新需求時，你會先問它解決什麼問題、是否需要 AI 判斷，以及系統有沒有正式工具介面嗎？</p></details>
+    <div class="page">26</div>
+  </section>
+
+  <script src="/mika-chat-widget.js" defer></script>
+  <script>
+    document.getElementById('s1c').after(document.getElementById('s12'));
+    let fourOAnchor = document.getElementById('s2');
+    ['s13','s14','s15','s16','s17','s18'].forEach((id) => {
+      const slide = document.getElementById(id);
+      fourOAnchor.after(slide);
+      fourOAnchor = slide;
+    });
+    document.getElementById('s22').after(document.getElementById('s2b'));
+    document.querySelectorAll('.slide .page').forEach((page, index) => {
+      page.textContent = String(index + 1).padStart(2, '0');
+    });
+    const slides = [...document.querySelectorAll('.slide')];
+    const progress = document.getElementById('progress');
+    function currentIndex() {
+      const y = window.scrollY + window.innerHeight * 0.45;
+      let index = 0;
+      slides.forEach((slide, i) => { if (slide.offsetTop <= y) index = i; });
+      return index;
+    }
+    function updateProgress() {
+      progress.style.width = ((currentIndex() + 1) / slides.length * 100) + '%';
+    }
+    function go(delta) {
+      const target = Math.max(0, Math.min(slides.length - 1, currentIndex() + delta));
+      slides[target].scrollIntoView({ behavior: 'smooth' });
+    }
+    window.addEventListener('scroll', updateProgress, { passive: true });
+    window.addEventListener('resize', updateProgress);
+    document.addEventListener('keydown', (event) => {
+      if (event.target.closest?.('summary, a, button, input, textarea, select')) return;
+      if (['ArrowRight','ArrowDown','PageDown',' '].includes(event.key)) { event.preventDefault(); go(1); }
+      if (['ArrowLeft','ArrowUp','PageUp'].includes(event.key)) { event.preventDefault(); go(-1); }
+    });
+    updateProgress();
+  </script>
+</body>
+</html>
