@@ -23,6 +23,24 @@ window.ARTICLE_TAGS = {
 
 window.ARTICLES = [
   {
+    id: "reevaluate-models-same-test",
+    url: "articles/reevaluate-models-same-test/",
+    date: "2026-09-26",
+    updated: "2026-09-26",
+    title: "AI 小工具該用便宜模型還是貴的？｜同一份考卷考三輪，新模型出來就重新評估",
+    problem: "AI 小工具每天自動跑，用哪個模型會直接變成月費。便宜的怕不準，貴的怕太貴，新模型又一直出來，不知道該不該換、怎麼判斷。",
+    audience: "用 AI 做了每天或每週自動跑的小工具、開始在意月費的人；想知道頂規模型與便宜模型怎麼分工的人；要幫客戶選模型、估月費的專業工作者。",
+    summary: "我做了一個每天自動整理 LINE 群訊息的 AI 小工具，用同一份 138 則訊息的考卷評估了三輪。第一輪以為很機械用 Luna，低推理直接交白卷，改用 Sol；第二輪六個組合同場比分數速度費用，選 Sol low；第三輪 GPT-6 出來重考，讓 Luna 考好幾次看穩不穩，也看出錯時程式抓不抓得到，最後定案讓 6 Luna medium 跑兩次互相比對，一致就用、不一致才叫 6 Sol low，預估月費從約 83 元降到約 6 至 13 元。文中攤開四個坑（規則沒寫換模型救不回、價格表寫錯、答案版本不同不能比、只考一次會看錯），附評估記錄表與月費試算提示詞。",
+    tags: {
+      topic: ["AI工作流", "輔助決策", "差異比較"],
+      level: ["基礎"],
+      content_type: ["案例文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["fixed-test-set-for-ai", "ai-cp-value-calculus", "three-levels-of-cross-review", "dual-track-planning-loop", "how-to-verify-ai-rule-changes"]
+  },
+
+  {
     id: "ai-adoption-start-with-one-workflow",
     url: "articles/ai-adoption-start-with-one-workflow/",
     date: "2026-09-25",
@@ -168,7 +186,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["how-to-verify-ai-rule-changes", "three-levels-of-cross-review", "dual-track-planning-loop", "ai-cp-value-calculus", "ai-schedule-wake-interval", "rule-file-rebound", "caught-ai-slacking-into-rules", "ai-user-testing", "long-document-review-layers"]
+    related: ["how-to-verify-ai-rule-changes", "three-levels-of-cross-review", "dual-track-planning-loop", "ai-cp-value-calculus", "ai-schedule-wake-interval", "rule-file-rebound", "caught-ai-slacking-into-rules", "ai-user-testing", "long-document-review-layers", "reevaluate-models-same-test"]
   },
 
   {
@@ -412,7 +430,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["rule-file-rebound", "caught-ai-slacking-into-rules", "three-levels-of-cross-review", "how-to-train-your-ai-employee", "loop-engineering-guardrails", "semantic-rules-before-prompt-templates", "let-ai-review-itself", "ai-rule-file-slimming", "ai-schedule-wake-interval", "fixed-test-set-for-ai"],
+    related: ["rule-file-rebound", "caught-ai-slacking-into-rules", "three-levels-of-cross-review", "how-to-train-your-ai-employee", "loop-engineering-guardrails", "semantic-rules-before-prompt-templates", "let-ai-review-itself", "ai-rule-file-slimming", "ai-schedule-wake-interval", "fixed-test-set-for-ai", "reevaluate-models-same-test"],
     cover: { tall: "images/articles/how-to-verify-ai-rule-changes-cover.jpg" }
   },
 
@@ -1174,7 +1192,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["after-ai-says-remembered", "long-document-review-layers", "mobile-to-desktop-publish-loop", "ai-said-it-watched-the-video", "cross-ai-review-both-wrong", "webmcp-day-one", "how-to-verify-ai-rule-changes", "let-ai-review-itself", "ai-rule-file-slimming", "fixed-test-set-for-ai"]
+    related: ["after-ai-says-remembered", "long-document-review-layers", "mobile-to-desktop-publish-loop", "ai-said-it-watched-the-video", "cross-ai-review-both-wrong", "webmcp-day-one", "how-to-verify-ai-rule-changes", "let-ai-review-itself", "ai-rule-file-slimming", "fixed-test-set-for-ai", "reevaluate-models-same-test"]
   },
 
   {
@@ -1715,7 +1733,7 @@ window.ARTICLES = [
       content_type: ["觀點文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["ai-usage-audit", "ai-tools-professional-judgment", "strong-ai-models-knowledge-workflow-road", "program-vs-ai-skill-library", "ai-capability-tiers", "long-task-completion-rate", "openrouter-deepseek-data-routing", "fixed-test-set-for-ai"]
+    related: ["ai-usage-audit", "ai-tools-professional-judgment", "strong-ai-models-knowledge-workflow-road", "program-vs-ai-skill-library", "ai-capability-tiers", "long-task-completion-rate", "openrouter-deepseek-data-routing", "fixed-test-set-for-ai", "reevaluate-models-same-test"]
   },
 
   {
@@ -1805,7 +1823,7 @@ window.ARTICLES = [
       content_type: ["案例文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["loop-engineering-guardrails", "a2a-agent-protocol", "docs-as-system-design-agent", "ai-handoff-instructions", "long-task-completion-rate", "session-messaging-reminder-layer", "before-installing-others-skill", "parallel-site-editing", "let-ai-review-itself"]
+    related: ["loop-engineering-guardrails", "a2a-agent-protocol", "docs-as-system-design-agent", "ai-handoff-instructions", "long-task-completion-rate", "session-messaging-reminder-layer", "before-installing-others-skill", "parallel-site-editing", "let-ai-review-itself", "reevaluate-models-same-test"]
   },
 
   {
