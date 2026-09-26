@@ -5,21 +5,21 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="index,follow">
 <title>讓 AI 定時整理資料前，先決定它多久醒一次</title>
-<meta name="description" content="把 LINE 群訊息自動整理成看板，第一版算出來每月 400 美金。省錢的關鍵是呼叫 AI 之前先用程式問「有沒有新東西」，挑模型反而是其次。含四種排程頻率的實測月費與延遲對照。">
+<meta name="description" content="把 LINE 群訊息自動整理成看板，第一版算出來每月四百多美金。省錢的關鍵是呼叫 AI 之前先用程式問「有沒有新東西」，挑模型反而是其次。含四種排程頻率的月費與延遲對照（2026-09-26 依官方價勘誤）。">
 <link rel="canonical" href="https://jiangyude.com/articles/ai-schedule-wake-interval/">
 <meta property="og:type" content="article">
 <meta property="og:title" content="讓 AI 定時整理資料前，先決定它多久醒一次｜江江教練">
 <!-- 分享封面：hero 文字填好後在 repo 根目錄跑 `node scripts/og-shot.mjs ai-schedule-wake-interval` 自動截 1200×630 到 images/og/ai-schedule-wake-interval.jpg（見 README「文章分享封面（OG 圖）機制」）。別退回 intro-jiang.png 直式人像，會被裁成只剩脖子。 -->
 <meta property="og:image" content="https://jiangyude.com/images/og/ai-schedule-wake-interval.jpg">
-<meta property="og:description" content="把 LINE 群訊息自動整理成看板，第一版算出來每月 400 美金。省錢的關鍵是呼叫 AI 之前先用程式問「有沒有新東西」，挑模型反而是其次。含四種排程頻率的實測月費與延遲對照。">
+<meta property="og:description" content="把 LINE 群訊息自動整理成看板，第一版算出來每月四百多美金。省錢的關鍵是呼叫 AI 之前先用程式問「有沒有新東西」，挑模型反而是其次。含四種排程頻率的月費與延遲對照（2026-09-26 依官方價勘誤）。">
 <meta property="og:url" content="https://jiangyude.com/articles/ai-schedule-wake-interval/">
 <meta property="og:locale" content="zh_TW">
 <meta property="og:site_name" content="江江教練 · AI 知識管理">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="讓 AI 定時整理資料前，先決定它多久醒一次｜江江教練">
 <meta name="twitter:image" content="https://jiangyude.com/images/og/ai-schedule-wake-interval.jpg">
-<meta name="twitter:description" content="把 LINE 群訊息自動整理成看板，第一版算出來每月 400 美金。省錢的關鍵是呼叫 AI 之前先用程式問「有沒有新東西」，挑模型反而是其次。含四種排程頻率的實測月費與延遲對照。">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"讓 AI 定時整理資料前，先決定它多久醒一次","description":"把 LINE 群訊息自動整理成看板，第一版算出來每月 400 美金。省錢的關鍵是呼叫 AI 之前先用程式問「有沒有新東西」，挑模型反而是其次。含四種排程頻率的實測月費與延遲對照。","author":{"@type":"Person","name":"江昱德","alternateName":"江江教練","jobTitle":"隱性知識提煉師、AI 應用規劃師"},"isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://jiangyude.com/"},"inLanguage":"zh-Hant","url":"https://jiangyude.com/articles/ai-schedule-wake-interval/"}</script>
+<meta name="twitter:description" content="把 LINE 群訊息自動整理成看板，第一版算出來每月四百多美金。省錢的關鍵是呼叫 AI 之前先用程式問「有沒有新東西」，挑模型反而是其次。含四種排程頻率的月費與延遲對照（2026-09-26 依官方價勘誤）。">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"讓 AI 定時整理資料前，先決定它多久醒一次","description":"把 LINE 群訊息自動整理成看板，第一版算出來每月四百多美金。省錢的關鍵是呼叫 AI 之前先用程式問「有沒有新東西」，挑模型反而是其次。含四種排程頻率的月費與延遲對照（2026-09-26 依官方價勘誤）。","author":{"@type":"Person","name":"江昱德","alternateName":"江江教練","jobTitle":"隱性知識提煉師、AI 應用規劃師"},"isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://jiangyude.com/"},"inLanguage":"zh-Hant","url":"https://jiangyude.com/articles/ai-schedule-wake-interval/"}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
@@ -174,16 +174,20 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
   <div>
     <div class="kicker">AI 工作流 / 成本控制</div>
     <h1>讓 AI 定時整理資料前，先決定它多久醒一次</h1>
-    <p>網頁負責機械性收集，AI 負責定時統整。同樣每小時跑，從每月 400 美金降到 3.69 美金，差別只在呼叫 AI 之前先問一句。</p>
+    <p>網頁負責機械性收集，AI 負責定時統整。同樣每小時跑，從每月約 430 美金降到約 24 美金，差別只在呼叫 AI 之前先問一句。</p>
   </div>
 </section>
 
 <main>
 <section class="section" id="start">
   <div class="inner">
-    <p class="lead">第一版的想法很直覺：把 588 則訊息全部丟給 AI 讀。算完成本，每個月 400 美金。</p>
+    <p class="lead">第一版的想法很直覺：把 588 則訊息全部丟給 AI 讀。算完成本，每個月四百多美金。</p>
     <p style="margin-top:16px">我幫一個社團做了「LINE 群訊息自動整理成活動看板」。訊息堆在群裡沒人整理，想知道下週例會幾點，得一直往上滑。</p>
-    <p>這篇講我怎麼把每月 400 美金壓到 76 元台幣，以及過程中發現的一件事：省錢的關鍵不在挑哪個模型，是<strong>決定 AI 多久醒一次</strong>，挑模型反而是其次。文章裡的耗時與準確度是實測，用 138 則真實訊息、八天、一個 LINE 群跑出來的；月費是拿那八天的量推估的，不是真的跑滿一個月的帳單。</p>
+    <p>這篇講我怎麼把每月四百多美金壓下來，以及過程中發現的一件事：省錢的關鍵不在挑哪個模型，是<strong>決定 AI 多久醒一次</strong>，挑模型反而是其次。文章裡的耗時與準確度是實測，用 138 則真實訊息、八天、一個 LINE 群跑出來的；月費是拿那八天的量推估的，不是真的跑滿一個月的帳單。</p>
+    <div class="caveat">
+      <b>2026-09-26 勘誤</b>
+      原文的月費用了程式裡寫錯的價格表（GPT-5.6 Sol 少算約三倍、Luna 多算約五倍），也假設規則可以走提示詞快取、只算十分之一的價錢；GPT-5.6 以後提示詞快取只保留 30 分鐘，一天整理一兩次一定過期，這個假設不成立。以下月費已依 2026-09-26 官方價重算，算法寫在「上面哪些數字是實測，哪些是估的」那一段。連帶改掉的有三處：原本標成「便宜模型、貴模型」的兩組其實剛好相反，改成模型名稱；「規則寫長幾乎不影響成本」與「換模型省的錢遠不如調推理強度」兩句建立在錯誤數字上，已改寫。耗時、準確度、平均等多久這些實測數字沒有動。後來我拿同一份考卷重新評估模型的經過，寫在<a href="../reevaluate-models-same-test/">AI 小工具該用便宜模型還是貴的？</a>。
+    </div>
 
     <div class="duo stack">
       <div class="card a">
@@ -222,12 +226,12 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
 
 <section class="section">
   <div class="inner">
-    <h2>全部丟給 AI 讀，一個月要 400 美金</h2>
+    <h2>全部丟給 AI 讀，一個月要四百多美金</h2>
     <p>先把三個數字分清楚，後面都會用到：<strong>九百多則</strong>是這個群的全部歷史訊息，<strong>588 則</strong>是目前累積還沒整理的，<strong>138 則</strong>是我拿來做測試的樣本（連續八天）。</p>
     <p>全量重讀的意思是每次都把九百多則送進去，大約 145,000 個 token。</p>
     <p>Token 是計費的單位，中文一個字大約算 1.3 個 token。如果每小時整理一次，一天 24 次，一個月 720 次：</p>
     <div class="codeblock">145,000 token × 720 次 = 1.04 億 token</div>
-    <p>用當時的單價算，一個月 400 美金。<strong>台幣一萬兩千塊，整理一個社團的群組。</strong></p>
+    <p>照官方價算（GPT-5.6 Sol 輸入每百萬 token 4 美元），一個月約 430 美金。<strong>台幣一萬三千多塊，整理一個社團的群組。</strong></p>
     <div class="caveat">
       <b>荒謬的地方在於</b>
       那 900 則訊息裡，899 則上一次已經讀過了。每小時重讀一次全部，只為了看有沒有多出一則新的。
@@ -237,7 +241,7 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
 
 <section class="section">
   <div class="inner">
-    <h2>把「有沒有新東西」這一步交給程式，同樣每小時跑，成本差一百倍</h2>
+    <h2>把「有沒有新東西」這一步交給程式，同樣每小時跑，成本差將近二十倍</h2>
     <p>改法是把整件事拆成兩層。</p>
     <p><strong>機械層</strong>：查資料庫有沒有比上次更新的訊息。這是一句資料庫查詢，問的是「有沒有比上次新的」，不用 AI，不花錢。</p>
     <p><strong>AI 層</strong>：有新訊息才啟動，而且只送新的那幾則，不重讀全部。</p>
@@ -248,12 +252,12 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
       <div class="card a">
         <small>第一版</small>
         <b>全部給 AI</b>
-        <p>每次重讀全部 900 則，沒有新訊息也照跑。<br><strong>每月 400 美金</strong></p>
+        <p>每次重讀全部 900 則，沒有新訊息也照跑。<br><strong>每月約 430 美金</strong></p>
       </div>
       <div class="card b">
         <small>改完</small>
         <b>分成兩層</b>
-        <p>機械層先查有沒有新的，有才叫 AI，而且只送新的。<br><strong>每月 3.69 美金</strong></p>
+        <p>機械層先查有沒有新的，有才叫 AI，而且只送新的。<br><strong>每月約 24 美金</strong></p>
       </div>
     </div>
 
@@ -267,7 +271,7 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
     </div>
     <div class="caveat">
       <b>這兩個數字要用同一個頻率比才公平</b>
-      上面兩欄都是「每小時跑一次」，400 美金對 3.69 美金，差 108 倍。後面我實際採用的是每三小時，那個數字是每月 2.38 美金，但頻率不一樣，不能跟 400 放在同一句話裡比。
+      上面兩欄都是「每小時跑一次」，約 430 美金對約 24 美金，差將近 18 倍。後面我實際採用的是每三小時，那個數字是每月約 14 美金，但頻率不一樣，不能跟 430 放在同一句話裡比。
     </div>
 
     <div class="meaning">
@@ -291,17 +295,17 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
 
     <div class="infocard">
       <div class="infocard-grid">
-        <div class="info-item"><b>一天兩次</b><p>早上九點、下午五點<br>平均等 <strong>6.7 小時</strong><br>一個月 <strong>NT$48</strong></p></div>
-        <div class="info-item"><b>每三小時</b><p>早上七點到晚上十點<br>平均等 <strong>1.9 小時</strong><br>一個月 <strong>NT$76</strong></p></div>
-        <div class="info-item"><b>每小時</b><p>早上七點到晚上十點<br>平均等 <strong>48 分鐘</strong><br>一個月 <strong>NT$118</strong></p></div>
-        <div class="info-item"><b>每十分鐘</b><p>早上七點到晚上十點<br>平均等 <strong>5 分鐘</strong><br>一個月 <strong>NT$253</strong></p></div>
+        <div class="info-item"><b>一天兩次</b><p>早上九點、下午五點<br>平均等 <strong>6.7 小時</strong><br>一個月約 <strong>NT$204</strong></p></div>
+        <div class="info-item"><b>每三小時</b><p>早上七點到晚上十點<br>平均等 <strong>1.9 小時</strong><br>一個月約 <strong>NT$458</strong></p></div>
+        <div class="info-item"><b>每小時</b><p>早上七點到晚上十點<br>平均等 <strong>48 分鐘</strong><br>一個月約 <strong>NT$763</strong></p></div>
+        <div class="info-item"><b>每十分鐘</b><p>早上七點到晚上十點<br>平均等 <strong>5 分鐘</strong><br>一個月約 <strong>NT$1,234</strong></p></div>
       </div>
     </div>
-    <p>最慢跟最快差五倍價錢，體感差八十倍。</p>
+    <p>最慢跟最快差六倍價錢，體感差八十倍。</p>
 
     <h3>為什麼選每三小時</h3>
-    <p>看起來每五小時更省（一個月省 16 元），但有個數字讓我放棄它：每三小時的話，只有 <strong>4%</strong> 的訊息要等超過三小時才進看板；改成每五小時，這個數字跳到 <strong>36%</strong>。</p>
-    <p>省下 16 元，換來三分之一的訊息要等三小時以上。這不划算。</p>
+    <p>看起來每五小時更省（當時用錯的價格表算出一個月省 16 元，照官方價重算約省 140 元），但有個數字讓我放棄它：每三小時的話，只有 <strong>4%</strong> 的訊息要等超過三小時才進看板；改成每五小時，這個數字跳到 <strong>36%</strong>。</p>
+    <p>當時的判斷是：省下 16 元，換來三分之一的訊息要等三小時以上，不划算。照官方價重算，省下的錢比當時以為的多，這筆取捨要重新算。</p>
     <p>而且那個群的貼文集中在早上十點到晚上十點，深夜八天下來一則都沒有。每三小時剛好接得住整個活躍時段。</p>
   </div>
 </section>
@@ -336,27 +340,27 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
     <p>重跑，四個模型全部答對。</p>
     <div class="meaning">
       <b>規則寫清楚的效果，遠大於換一個更貴的模型</b>
-      我後來把這份規則從 6,900 字補到 14,500 字，每個月的費用只多了 4 元台幣。規則寫長幾乎不影響成本，因為同一段規則重複送可以走快取，只算十分之一的價錢。
+      我後來把這份規則從 6,900 字補到 14,500 字。照官方價重算，每三小時整理一次，每個月多了約 170 元台幣：規則每次都要整份重送，一天整理幾次，提示詞快取早就過期，所以規則越長越貴。多花的這筆錢，換來的是四個模型都答對同一題。
     </div>
   </div>
 </section>
 
 <section class="section">
   <div class="inner">
-    <h2>最貴最慢的模型沒有比較準</h2>
-    <p>同一批 138 則訊息，我跑了六個組合（三個模型 × 兩種推理強度）。這是其中三組：</p>
+    <h2>最慢的組合沒有比較準</h2>
+    <p>同一批 138 則訊息，我跑了六個組合（三個模型 × 兩種推理強度）。這是其中三組。GPT-5.6 這一代，Sol 是最貴的一級，Luna 是最便宜的一級，輸入價差二十倍：</p>
     <div class="infocard">
       <div class="infocard-grid">
-        <div class="info-item"><b>便宜模型、低推理</b><p><strong>滿分</strong><br>289 秒<br>每月 NT$76</p></div>
-        <div class="info-item"><b>貴模型、高推理</b><p><strong>滿分</strong><br>694 秒<br>每月 NT$196</p></div>
-        <div class="info-item"><b>貴模型、低推理</b><p><strong>輸出空的</strong><br>完全失敗<br>沒有成績可以算</p></div>
+        <div class="info-item"><b>Sol（貴）、低推理</b><p><strong>滿分</strong><br>289 秒<br>每月約 NT$458</p></div>
+        <div class="info-item"><b>Luna（便宜）、高推理</b><p><strong>滿分</strong><br>694 秒<br>每月約 NT$53</p></div>
+        <div class="info-item"><b>Luna（便宜）、低推理</b><p><strong>輸出空的</strong><br>完全失敗<br>沒有成績可以算</p></div>
       </div>
     </div>
-    <p>慢 2.4 倍、貴 2.6 倍，準確度一樣。還有一個意外：貴模型配低推理反而整個失敗，讀完六萬個 token 之後輸出一個空的結果。<strong>貴不等於穩。</strong></p>
+    <p>Luna 開高推理慢 2.4 倍，月費約九分之一，準確度一樣。還有一個意外：Luna 配低推理整個失敗，讀完六萬個 token 之後輸出一個空的結果。<strong>便宜的模型要開夠推理強度才做得出來。</strong>（月費為每三小時整理一次、官方價推算）</p>
 
-    <h3>真正影響帳單的是推理強度</h3>
+    <h3>推理強度也會影響帳單</h3>
     <p>推理強度（reasoning effort）是可以調的參數，決定 AI 在回答前「想多久」。想得越久越貴，因為那段思考本身就是要付錢的 token。</p>
-    <p>實測同一個模型：低推理每次用掉約 500 個推理 token，高推理用掉約 6,100 個。<strong>差 12 倍，而且這部分算貴的輸出價。</strong> 換模型省的錢，遠不如把推理強度調對。</p>
+    <p>實測同一個模型：低推理每次用掉約 500 個推理 token，高推理用掉約 6,100 個。<strong>差 12 倍，而且這部分算貴的輸出價。</strong> 照官方價看，換模型等級（Sol 換 Luna 輸入價差二十倍）和調推理強度都會大幅改變帳單，兩個要一起算。</p>
   </div>
 </section>
 
@@ -392,17 +396,18 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
         <b>實測</b>
         <p>· 訊息量、耗時、準確度：138 則、八天、一個群<br>
         · 推理 token：直接從 API 回傳量到的<br>
-        · 模型單價：官方價目表</p>
+        · 模型單價：2026-09-26 依官方價目表重新核對（初版用錯價格表，見開頭勘誤）</p>
       </div>
       <div class="card a">
         <small>要打折的</small>
         <b>估的或沒測過</b>
         <p>· 中文一個字算幾個 token：用 1.3 倍<br>
         · 換一個群會不會一樣：沒測過，要重測<br>
-        · 標準答案：我一個人判的，已經自己錯過兩次</p>
+        · 標準答案：我一個人判的，已經自己錯過兩次<br>
+        · 月費：推算值，不是帳單。算法＝每次整理輸入約 22,000 token（2026-09-23 至 09-25 線上實測，用的是現在的規則長度）、輸出約 400 token 加推理 token（low 約 500、high 約 6,100），乘 2026-09-26 官方價（GPT-5.6 Sol 每百萬 token 輸入 4、輸出 20 美元；Luna 0.2、1.2），1 美元約 32 台幣。每天真的叫 AI 幾次，是用同一份 138 則訊息的時間戳照各頻率重算：一天兩次 2 次、每三小時 4.5 次、每小時 7.5 次、每十分鐘約 12 次</p>
       </div>
     </div>
-    <p><strong>省下來的錢有限。</strong> 一個群一個月從 400 美金壓到 76 元台幣，聽起來很多，但絕對值本來就不大。這套方法真正的價值是讓成本可預測。案子放大十倍時，可預測比省錢重要。</p>
+    <p><strong>省下來的錢有限。</strong> 一個群一個月從四百多美金壓到約 460 元台幣（每三小時，官方價重算），聽起來很多，但絕對值本來就不大。這套方法真正的價值是讓成本可預測。案子放大十倍時，可預測比省錢重要。</p>
     <p><strong>判斷錯了還是要人工修。</strong> 機制能把錯誤壓到少數，壓不到零。所以看板上每一則訊息都留了「為什麼這樣判斷」的紀錄，讓人能回頭查。</p>
   </div>
 </section>
@@ -439,7 +444,7 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
     <h2>自動化、效率、成本：真正要取捨的只有一組</h2>
     <p>回到最開始的問題：自動化、效率、成本，怎麼取捨。我的答案是它們不是三選二。</p>
     <p>真正的取捨只有一組：<strong>延遲對成本</strong>。等得久一點就便宜，要快就貴。這條線畫在哪裡，看你的人多久會回頭看一次。</p>
-    <p>自動化程度不在這條線上。把「查有沒有新東西」交給程式，自動化程度提高了，同樣每小時跑的成本卻降到百分之一。因為那一步本來就不該給 AI 做。</p>
+    <p>自動化程度不在這條線上。把「查有沒有新東西」交給程式，自動化程度提高了，同樣每小時跑的成本卻降到約十八分之一。因為那一步本來就不該給 AI 做。</p>
     <div class="meaning">
       <b>所以順序是這樣</b>
       一、先把不該給 AI 的工作拿回來給程式。這一步同時提高自動化與降低成本，沒有取捨。<br>
