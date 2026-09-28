@@ -23,6 +23,24 @@ window.ARTICLE_TAGS = {
 
 window.ARTICLES = [
   {
+    id: "ai-batch-work-without-seeing-data",
+    url: "articles/ai-batch-work-without-seeing-data/",
+    date: "2026-09-28",
+    updated: "2026-09-28",
+    title: "可以讓 AI 大量處理個資，又不讓它讀到內容嗎？｜批次做領據時，AI 只看欄位名稱，資料交給程式搬",
+    problem: "辦活動要付講師費、勞務費，每張領據都要填身分證字號、地址、帳號。想讓 AI 一次處理整份名單，又不想把個資交給 AI。",
+    audience: "要批次處理名單、領據或行政資料，又要對別人個資負責的人。",
+    summary: "原則是 AI 處理欄位名稱、程式處理內容，做法跟保管 API key 一樣。比較 Word 合併列印、自己執行的小工具、讓 AI 下指令的命令列工具三種做法，逐層列出提示詞、資料夾、工具輸出、AI 工具設定、沙盒、寄送確認各靠什麼，並說明讓 AI 啟動工具時工具本身就是缺口。附一段可直接貼給 AI 的提示詞與七項驗收清單。目前是設計，工具尚未實作。",
+    tags: {
+      topic: ["AI工作流", "AI應用", "工作流程"],
+      level: ["基礎"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["ai-data-red-lines", "ai-vs-script-four-situations", "agent-workflow-builds-automation", "openrouter-deepseek-data-routing"]
+  },
+
+  {
     id: "one-sentence-ai-website-workflow",
     url: "articles/one-sentence-ai-website-workflow/",
     date: "2026-09-26",
@@ -148,7 +166,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["openrouter-deepseek-data-routing", "ai-loop-safety-recovery", "ai-usage-audit"]
+    related: ["openrouter-deepseek-data-routing", "ai-loop-safety-recovery", "ai-usage-audit", "ai-batch-work-without-seeing-data"]
   },
 
   {
@@ -277,7 +295,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["agent-workflow-builds-automation", "claude-skills-knowledge-assets", "loop-engineering-guardrails", "my-three-loops", "liberal-arts-agent-framework", "ai-schedule-wake-interval", "delete-before-automate", "ai-adoption-start-with-one-workflow"],
+    related: ["agent-workflow-builds-automation", "claude-skills-knowledge-assets", "loop-engineering-guardrails", "my-three-loops", "liberal-arts-agent-framework", "ai-schedule-wake-interval", "delete-before-automate", "ai-adoption-start-with-one-workflow", "ai-batch-work-without-seeing-data"],
     cover: { wide: "images/articles/ai-vs-script-four-situations-summary.jpg" }
   },
 
@@ -1085,7 +1103,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["cli-api-mcp-computer-use", "ai-cp-value-calculus", "line-backup-who-can-see-it", "ai-data-red-lines"]
+    related: ["cli-api-mcp-computer-use", "ai-cp-value-calculus", "line-backup-who-can-see-it", "ai-data-red-lines", "ai-batch-work-without-seeing-data"]
   },
 
   {
@@ -2598,7 +2616,7 @@ window.ARTICLES = [
       content_type: ["案例文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["program-vs-ai-skill-library", "how-to-train-your-ai-employee", "line-group-ai-workflow", "codex-log-health-check", "how-ai-connects-software", "meeting-record-agent-workflow", "vibe-coding-ten-half-products", "ai-delegators-optimism", "ai-changed-behavior-into-workflow", "give-ai-choices-not-descriptions"]
+    related: ["program-vs-ai-skill-library", "how-to-train-your-ai-employee", "line-group-ai-workflow", "codex-log-health-check", "how-ai-connects-software", "meeting-record-agent-workflow", "vibe-coding-ten-half-products", "ai-delegators-optimism", "ai-changed-behavior-into-workflow", "give-ai-choices-not-descriptions", "ai-batch-work-without-seeing-data"]
   },
 
   {
