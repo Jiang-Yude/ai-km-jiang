@@ -263,6 +263,24 @@ window.ARTICLES = [
   },
 
   {
+    id: "start-from-one-persons-problem",
+    url: "articles/start-from-one-persons-problem/",
+    date: "2026-09-21",
+    updated: "2026-09-21",
+    title: "Tesla 內部的一套工作方法，把自動化排在最後一步｜客戶說想用 AI 卻講不清楚要做什麼，從一個人的需求開始",
+    problem: "客戶說想導入 AI，卻講不清楚要 AI 做什麼；自己學了一堆工具，也不知道要拿來解決誰的問題。",
+    audience: "接案者、一人公司、自己開課的老師，以及要替客戶規劃 AI 導入的顧問。",
+    summary: "用旅學堂公共藝術工作坊與 Dr. Ivy 香氛卡兩個真實案子，講怎麼從一個叫得出名字的人身上找出需求；客戶講不出來時，怎麼進現場做一次事自己撞到問題；再用三個條件判斷一次性交付什麼時候值得變成產品。文末附四個可以直接拿去問的問題。",
+    tags: {
+      topic: ["AI應用", "價值主張", "隱性知識", "輔助決策"],
+      level: ["基礎"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["vibe-coding-ten-half-products", "ai-mvp-validation-before-product", "how-to-train-your-ai-employee", "dont-learn-ai-tools", "company-shape-is-the-moat"]
+  },
+
+  {
     id: "fixed-test-set-for-ai",
     url: "articles/fixed-test-set-for-ai/",
     date: "2026-09-20",
@@ -1085,7 +1103,7 @@ window.ARTICLES = [
       content_type: ["觀點文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["harness-mindset-for-bosses", "ai-tools-professional-judgment", "start-with-a-wrong-draft", "let-ai-do-the-setup"]
+    related: ["harness-mindset-for-bosses", "ai-tools-professional-judgment", "start-with-a-wrong-draft", "let-ai-do-the-setup", "start-from-one-persons-problem"]
   },
 
   {
@@ -2238,7 +2256,7 @@ window.ARTICLES = [
       content_type: ["觀點文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["intangible-assets-grow-by-sharing", "ai-king-off-battlefield", "spacex-ipo-musk-trillionaire-knowledge-work", "ai-capability-tiers", "own-ai-team-at-work", "manage-ai-with-management-knowledge", "personal-studio-vs-solo-company", "answer-in-person-or-ai"]
+    related: ["intangible-assets-grow-by-sharing", "ai-king-off-battlefield", "spacex-ipo-musk-trillionaire-knowledge-work", "ai-capability-tiers", "own-ai-team-at-work", "manage-ai-with-management-knowledge", "personal-studio-vs-solo-company", "answer-in-person-or-ai", "start-from-one-persons-problem"]
   },
 
   {
@@ -2454,7 +2472,7 @@ window.ARTICLES = [
       content_type: ["觀點文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["elon-musk-live-skill", "codex-only-auto-worklog", "ai-capability-tiers", "how-ai-connects-software", "agent-workflow-builds-automation", "apple-wwdc26-siri-lobster-ai", "ai-tools-professional-judgment"]
+    related: ["elon-musk-live-skill", "codex-only-auto-worklog", "ai-capability-tiers", "how-ai-connects-software", "agent-workflow-builds-automation", "apple-wwdc26-siri-lobster-ai", "ai-tools-professional-judgment", "start-from-one-persons-problem"]
   },
 
   {
@@ -2544,7 +2562,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["strong-ai-models-knowledge-workflow-road", "questionnaire-to-slides-agent-workflow", "teacher-prep-knowledge-workflow", "own-ai-team-at-work", "agent-workflow-builds-automation", "line-group-ai-workflow", "elon-musk-live-skill", "codex-log-health-check", "how-ai-connects-software", "meeting-record-agent-workflow", "decision-ladder-non-programmer", "tidy-mess-before-consulting", "diary-driven-agent-3x4", "docs-as-system-design-agent", "what-is-loop-engineering", "map-is-not-the-territory", "intangible-assets-grow-by-sharing", "manage-ai-with-management-knowledge", "ai-handoff-instructions", "train-your-ai-agent-editor", "ai-that-knows-you", "personal-studio-vs-solo-company", "cli-api-mcp-computer-use", "knowledge-as-employee", "mika-to-laika-product-character-design", "agent-native-tools-software-interface", "ai-tools-professional-judgment", "answer-to-action-enterprise-ai-agent", "teach-ai-not-learn-ai", "talent-vs-expertise", "ai-employee-four-levels", "copied-mechanism-is-no-mechanism", "eight-ai-system-concepts-2026", "how-to-verify-ai-rule-changes"]
+    related: ["strong-ai-models-knowledge-workflow-road", "questionnaire-to-slides-agent-workflow", "teacher-prep-knowledge-workflow", "own-ai-team-at-work", "agent-workflow-builds-automation", "line-group-ai-workflow", "elon-musk-live-skill", "codex-log-health-check", "how-ai-connects-software", "meeting-record-agent-workflow", "decision-ladder-non-programmer", "tidy-mess-before-consulting", "diary-driven-agent-3x4", "docs-as-system-design-agent", "what-is-loop-engineering", "map-is-not-the-territory", "intangible-assets-grow-by-sharing", "manage-ai-with-management-knowledge", "ai-handoff-instructions", "train-your-ai-agent-editor", "ai-that-knows-you", "personal-studio-vs-solo-company", "cli-api-mcp-computer-use", "knowledge-as-employee", "mika-to-laika-product-character-design", "agent-native-tools-software-interface", "ai-tools-professional-judgment", "answer-to-action-enterprise-ai-agent", "teach-ai-not-learn-ai", "talent-vs-expertise", "ai-employee-four-levels", "copied-mechanism-is-no-mechanism", "eight-ai-system-concepts-2026", "how-to-verify-ai-rule-changes", "start-from-one-persons-problem"]
   },
 
   {
@@ -3012,6 +3030,6 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["ai-market-microcosm", "personal-studio-vs-solo-company", "ai-user-testing"]
+    related: ["ai-market-microcosm", "personal-studio-vs-solo-company", "ai-user-testing", "start-from-one-persons-problem"]
   }
 ];

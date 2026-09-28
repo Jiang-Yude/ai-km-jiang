@@ -1,0 +1,494 @@
+<!--
+============================================================
+  article-template.html  ·  深度文章新頁模板（暖色拿鐵版型）
+------------------------------------------------------------
+  新增一篇文章的步驟：
+    1. 複製本檔到 articles/<slug>/index.html
+       （趨勢文章放 ai-trends/<slug>/index.html）。
+    2. 全檔填掉所有 {{...}} placeholder：
+         Tesla 內部的一套工作方法，把自動化排在最後一步｜客戶說想用 AI 卻講不清楚要做什麼，從一個人的需求開始        文章標題（純文字）
+         客戶說想用 AI 卻講不清楚要什麼，怎麼把它問成具體的問題。用旅學堂公共藝術工作坊與 Dr. Ivy 香氛卡兩個真實案子，講怎麼找出一個人的卡點、客戶講不出來時怎麼進現場自己撞，以及什麼時候該把一次性交付變成可以重複用的產品。  meta description / og:description
+         start-from-one-persons-problem         網址 slug，對應資料夾名
+         articles      所屬區段：articles 或 ai-trends
+         需求驗證 / 產品化       hero 上方小標（例：AI 應用 / 需求驗證）
+         我今年做的東西，沒有一個是先想「來做個產品」開始的。這篇用兩個真實客戶的案子，講我怎麼找到那個問題、客戶講不出來的時候怎麼辦，以及什麼時候才把一次性的東西變成可以重複用的。    hero 大標下的一段引言
+         {{BODY}}         正文（用下方 .section 區塊堆疊；可參考
+                          現有文章如 articles/ai-market-microcosm/）
+         教學文章 文章類型（教學文章／觀點文章／趨勢文章／案例文章）
+       canonical / og / twitter / JSON-LD 的網址也都用
+       https://jiangyude.com/articles/start-from-one-persons-problem/ 帶入。
+    3. 在文章資料夾放 articles/start-from-one-persons-problem/article.json（一篇一檔，2026-09-06 起）：
+       複製 _templates/article.example.json 改內容（id＝資料夾名、url「articles/start-from-one-persons-problem/」、
+       date、title、summary、tags.topic / level / content_type，related 可為空陣列）。
+       標籤一律從 articles-tags.json 受控清單挑，不要自創字串。
+       articles-data.js 是生成檔不要手改；本機要看相關文章區塊就跑
+       node scripts/build-articles-data.mjs，上線時 merge-publish 會統一重建。
+    4. 兩支互聯 script 已內建在本檔   <script src="/views.js"></script>
+</body> 前，不用再另外加。
+    5. 到 sitemap.xml 與 llms.txt 各補一筆，讓搜尋與 AI 索引得到。
+    6. 到 search-aliases.js 補一條別名（2026-08-12 起 preflight 硬性檢查）。
+       key 用 slug，內容寫「訪客會怎麼問」：上課的說法、比喻、金句、同義詞。
+       至少兩個，不能只是照抄標題，否則 check-index-coverage.mjs 會擋下發布。
+       拼寫變體不用補（模型自己橋得起來），要補的是語意距離遠的詞。
+       立因：8/12 江江實測問「角色定妝照」查不到，追出來是文章上線當輪沒補別名。
+    7. 發布範圍要一起帶上 article-keywords.js 與 site-index.json。
+       preflight 會重跑產生器，這兩個檔有更新未提交就擋。
+
+  部署前跑：node scripts/verify-interlink.js 確認互聯腳本齊全。
+
+  ⚠️ 改舊文章的 title / problem / summary 時：被拿掉的詞若該篇內文還在用，
+     check-index-coverage.mjs 會擋。三種處理都算過關：補進 search-aliases.js、
+     寫進 index-coverage-ignore.json 並附理由、或在該檔標記敏感與過期。
+     不強迫補回，因為被移除的可能是錯字、過時名稱或隱私詞。
+============================================================
+-->
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="index,follow">
+<title>Tesla 內部的一套工作方法，把自動化排在最後一步｜客戶說想用 AI 卻講不清楚要做什麼，從一個人的需求開始</title>
+<meta name="description" content="客戶說想用 AI 卻講不清楚要什麼，怎麼把它問成具體的問題。用旅學堂公共藝術工作坊與 Dr. Ivy 香氛卡兩個真實案子，講怎麼找出一個人的卡點、客戶講不出來時怎麼進現場自己撞，以及什麼時候該把一次性交付變成可以重複用的產品。">
+<link rel="canonical" href="https://jiangyude.com/articles/start-from-one-persons-problem/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Tesla 內部的一套工作方法，把自動化排在最後一步｜客戶說想用 AI 卻講不清楚要做什麼，從一個人的需求開始｜江江教練">
+<!-- 分享封面：hero 文字填好後在 repo 根目錄跑 `node scripts/og-shot.mjs start-from-one-persons-problem` 自動截 1200×630 到 images/og/start-from-one-persons-problem.jpg（見 README「文章分享封面（OG 圖）機制」）。別退回 intro-jiang.png 直式人像，會被裁成只剩脖子。 -->
+<meta property="og:image" content="https://jiangyude.com/images/og/start-from-one-persons-problem.jpg">
+<meta property="og:description" content="客戶說想用 AI 卻講不清楚要什麼，怎麼把它問成具體的問題。用旅學堂公共藝術工作坊與 Dr. Ivy 香氛卡兩個真實案子，講怎麼找出一個人的卡點、客戶講不出來時怎麼進現場自己撞，以及什麼時候該把一次性交付變成可以重複用的產品。">
+<meta property="og:url" content="https://jiangyude.com/articles/start-from-one-persons-problem/">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:site_name" content="江江教練 · AI 知識管理">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Tesla 內部的一套工作方法，把自動化排在最後一步｜客戶說想用 AI 卻講不清楚要做什麼，從一個人的需求開始｜江江教練">
+<meta name="twitter:image" content="https://jiangyude.com/images/og/start-from-one-persons-problem.jpg">
+<meta name="twitter:description" content="客戶說想用 AI 卻講不清楚要什麼，怎麼把它問成具體的問題。用旅學堂公共藝術工作坊與 Dr. Ivy 香氛卡兩個真實案子，講怎麼找出一個人的卡點、客戶講不出來時怎麼進現場自己撞，以及什麼時候該把一次性交付變成可以重複用的產品。">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Tesla 內部的一套工作方法，把自動化排在最後一步｜客戶說想用 AI 卻講不清楚要做什麼，從一個人的需求開始","description":"客戶說想用 AI 卻講不清楚要什麼，怎麼把它問成具體的問題。用旅學堂公共藝術工作坊與 Dr. Ivy 香氛卡兩個真實案子，講怎麼找出一個人的卡點、客戶講不出來時怎麼進現場自己撞，以及什麼時候該把一次性交付變成可以重複用的產品。","author":{"@type":"Person","name":"江昱德","alternateName":"江江教練","jobTitle":"隱性知識提煉師、AI 應用規劃師"},"isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://jiangyude.com/"},"inLanguage":"zh-Hant","url":"https://jiangyude.com/articles/start-from-one-persons-problem/"}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{--ink:#1a1612;--paper:#fefcf8;--muted:#6a635a;--line:#d8cdb8;--green:#5f7553;--blue:#5689b8;--orange:#e85a4f;--soft:#faf5ec;--dark:#2a2018;--shadow:0 18px 45px rgba(107,74,42,.14);--sp-shadow:hsla(35,50%,60%,.15);--sp-shadow-edge:hsla(35,50%,68%,.03);--sp-radius:400px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC","Segoe UI",sans-serif}
+a{color:inherit}
+/* 官網共用導航列 nav.top（與首頁/文章總站同一條） */
+nav.top{position:sticky;top:0;background:rgba(254,252,248,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid #d8cdb8;z-index:100}
+nav.top .container{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:24px;padding:14px 32px}
+.nav-brand-img{justify-self:start;display:flex;align-items:center;text-decoration:none;flex-shrink:0;transition:opacity .2s}
+.nav-brand-img:hover{opacity:.8}.nav-brand-img img{height:40px;width:auto;display:block}
+nav.top ul.nav-menu{justify-self:end;display:flex;gap:22px;list-style:none;margin:0;padding:0;font-size:.95rem;white-space:nowrap}
+nav.top ul.nav-menu a{color:#3a342d;text-decoration:none;transition:color .2s;font-weight:500;white-space:nowrap}
+nav.top ul.nav-menu a:hover{color:#1a1612}nav.top ul.nav-menu a.active{color:#1a1612;font-weight:700}
+.nav-toggle{display:none;background:none;border:none;padding:6px;cursor:pointer;width:36px;height:36px;position:relative}
+.nav-toggle span{display:block;position:absolute;left:8px;right:8px;height:2px;background:#1a1612;border-radius:2px;transition:transform .25s,opacity .25s,top .25s}
+.nav-toggle span:nth-child(1){top:11px}.nav-toggle span:nth-child(2){top:17px}.nav-toggle span:nth-child(3){top:23px}
+.nav-toggle.open span:nth-child(1){top:17px;transform:rotate(45deg)}.nav-toggle.open span:nth-child(2){opacity:0}.nav-toggle.open span:nth-child(3){top:17px;transform:rotate(-45deg)}
+.tablewrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:22px 0;border:1px solid var(--line);border-radius:10px;background:#fff;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.tablewrap table{border-collapse:collapse;width:100%;min-width:600px;font-size:18px;line-height:1.65}
+.tablewrap .zh{display:block;margin-top:5px;font-size:16px;line-height:1.55;color:var(--muted);font-weight:400}
+.tablewrap th,.tablewrap td{padding:12px 14px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top;color:#3a342d}
+.tablewrap thead th{background:var(--soft);font-weight:900;font-size:18px;color:#1a1612;white-space:nowrap}
+.tablewrap tbody tr:last-child td{border-bottom:none}
+.tablewrap td code,.section code{background:var(--soft);border:1px solid var(--line);border-radius:5px;padding:1px 6px;font:500 15px/1.5 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace}
+.inline-figure.wide{max-width:1000px}
+.inline-figure.portrait{max-width:430px}
+.toc{margin:26px 0 0;padding:20px 22px;background:#fff;border:1px solid var(--line);border-radius:10px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.toc>b{display:block;font-size:15px;letter-spacing:.05em;color:var(--green);margin-bottom:10px}
+.toc ol{margin:0;padding-left:1.35em;font-size:18px;line-height:1.7}
+.toc li{margin-bottom:7px;color:#3a342d}
+.toc a{color:var(--blue);font-weight:700;text-decoration:none}.toc a:hover{text-decoration:underline}
+.toc-hint{margin:12px 0 0!important;font-size:18px!important;color:var(--muted)!important;border-top:1px solid var(--line);padding-top:12px}
+.readmore{margin-top:24px;padding:20px 22px;background:var(--soft);border:1px solid var(--line);border-radius:12px}
+.readmore.near{margin:26px 0 6px;background:rgba(86,137,184,.07);border-color:#bcd0e2}
+.readmore.near b{color:var(--blue);font-size:18px}
+.readmore.near li{font-size:17px;line-height:1.7;margin-bottom:10px}
+.readmore b{display:block;margin-bottom:10px;font-size:19px}
+.readmore ul{margin:0;padding-left:1.25em}
+.readmore a{color:var(--blue);font-weight:700;text-decoration:none}
+.readmore a:hover{text-decoration:underline}
+@media(max-width:820px){.tablewrap table{min-width:560px;font-size:18px}.tablewrap{position:relative}.tablewrap::after{content:"表格可左右滑動 →";position:sticky;left:0;display:block;font-size:15px;color:var(--muted);background:var(--soft);border-top:1px solid var(--line);padding:7px 12px;width:100%}}
+@media(max-width:860px){
+ nav.top .container{grid-template-columns:auto 1fr auto;padding:10px 16px;gap:12px}
+ .nav-brand-img img{height:32px}
+ .nav-toggle{display:block;justify-self:end}
+ nav.top ul.nav-menu{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(254,252,248,.98);backdrop-filter:blur(14px);border-bottom:1px solid #d8cdb8;flex-direction:column;gap:0;padding:8px 0;box-shadow:0 10px 24px rgba(107,74,42,.08)}
+ nav.top ul.nav-menu.open{display:flex}
+ nav.top ul.nav-menu li{border-bottom:1px solid #e8dfc9}
+ nav.top ul.nav-menu li:last-child{border-bottom:none}
+ nav.top ul.nav-menu a{display:block;padding:14px 20px;font-size:1.06rem}
+}
+/* 滑鼠暖光暈（與首頁同一支 spotlight.js） */
+body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradient(var(--sp-radius) circle at var(--mx,50%) var(--my,50%),var(--sp-shadow) 0%,var(--sp-shadow-edge) 45%,transparent 75%);pointer-events:none;z-index:9999;mix-blend-mode:multiply;transition:background .06s linear}
+.hero{position:relative;overflow:hidden;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:72px;padding:96px clamp(20px,6vw,88px) 80px;background:linear-gradient(180deg,#fffcf0 0%,#f9e9d2 100%);color:#1a1612;border-bottom:1px solid #d8cdb8}
+.hero .wc{position:absolute;border-radius:50%;filter:blur(60px);pointer-events:none;z-index:0}
+.hero .wc1{width:420px;height:360px;top:-120px;right:-80px;background:#e8884b;opacity:.15}
+.hero .wc2{width:360px;height:300px;bottom:-110px;left:-70px;background:#5f7553;opacity:.13}
+.hero .wc3{width:280px;height:260px;top:34%;left:14%;background:#a08144;opacity:.10}
+.hero>div{flex:none;width:860px;max-width:100%;position:relative;z-index:2}
+.hero-figure{margin:0;width:620px;flex:none;position:relative;z-index:2}
+.hero-figure img{display:block;width:100%;border-radius:16px;border:1px solid #d8cdb8;box-shadow:0 18px 45px rgba(107,74,42,.16);cursor:zoom-in}
+.hero-figure figcaption{margin-top:10px;font-size:14px;line-height:1.6;color:#6a635a}
+.inline-figure{margin:30px auto 8px;max-width:820px}
+.inline-figure img{display:block;width:100%;border-radius:14px;border:1px solid var(--line);box-shadow:var(--shadow);background:#fff;cursor:zoom-in}
+.inline-figure figcaption{font-size:14px;line-height:1.6;color:var(--muted);margin-top:10px}
+.lightbox{position:fixed;inset:0;z-index:10000;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(12,10,8,.92);cursor:zoom-out;backdrop-filter:blur(4px)}
+.lightbox.open{display:flex}.lightbox img{max-width:96vw;max-height:92vh;border-radius:10px;box-shadow:0 24px 60px rgba(0,0,0,.5)}
+.lightbox-close{position:fixed;top:18px;right:24px;color:#fff;font-size:34px;line-height:1;font-weight:700;cursor:pointer;opacity:.85}
+.kicker{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.55rem;color:#7a5c3a;font-weight:500}
+.hero h1{max-width:none;margin:16px 0 18px;font-size:clamp(36px,6vw,72px);line-height:1.08;overflow-wrap:anywhere}
+.hero p{max-width:none;font-size:clamp(18px,2vw,23px);line-height:1.62;color:#3a342d}
+.cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
+.cta a{display:inline-flex;align-items:center;text-decoration:none;border-radius:8px;padding:12px 16px;font-weight:900}
+.cta .primary{background:#fff;color:#1a1612}.cta .ghost{border:1px solid rgba(255,255,255,.32);color:#fff;background:rgba(255,255,255,.08)}
+.section{padding:54px clamp(20px,6vw,88px);border-top:1px solid var(--line)}
+.inner{width:min(1000px,100%);margin:0 auto}
+.section h2{font-size:clamp(26px,4.2vw,48px);line-height:1.12;margin:0 0 18px}
+.section h3{font-size:clamp(21px,3vw,30px);line-height:1.2;margin:30px 0 12px}
+.lead{font-size:clamp(18px,1.6vw,22px);line-height:1.7;color:#3a342d;max-width:900px}
+.section p{font-size:18px;line-height:1.74;color:#3a342d}.section p+p{margin-top:14px}
+.section ul,.section ol{padding-left:1.4em;font-size:18px;line-height:1.74;color:#3a342d}.section li{margin-bottom:8px}
+.meaning{margin:22px 0;padding:16px 18px;border-left:5px solid var(--blue);background:rgba(86,137,184,.12);border-radius:6px;line-height:1.7;font-size:19px}
+.meaning b{display:block;color:var(--blue);margin-bottom:4px}
+.caveat{margin:0 0 8px;padding:16px 18px;border-left:5px solid var(--orange);background:rgba(232,90,79,.1);border-radius:6px;line-height:1.7;font-size:18px;color:#3a342d}
+.caveat b{display:block;color:var(--orange);margin-bottom:4px}
+.infocard{background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px 24px 22px;box-shadow:0 8px 22px rgba(107,74,42,.08);margin-top:8px}
+.infocard-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.info-item{padding:18px 14px 0}
+.info-item b{display:block;font-size:14px;font-weight:900;letter-spacing:.04em;margin-bottom:7px;text-transform:uppercase}
+.info-item:nth-child(1) b{color:var(--green)}.info-item:nth-child(2) b{color:var(--orange)}.info-item:nth-child(3) b{color:var(--blue)}
+.info-item p{margin:0;font-size:17px;line-height:1.6;color:#3a342d}
+.tagrow{display:flex;flex-wrap:wrap;gap:7px;margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
+.tag{font-size:14px;color:var(--muted);background:var(--soft);border:1px solid var(--line);border-radius:999px;padding:4px 11px}
+.duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:24px}
+.duo.stack{grid-template-columns:1fr}
+.duo .card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:22px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.duo .card.a{border-color:var(--orange)}.duo .card.b{border-color:var(--green);box-shadow:0 8px 24px rgba(95,117,83,.16)}
+.duo .card small{display:block;font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.04em;margin-bottom:9px}
+.duo .card.a small{color:var(--orange)}.duo .card.b small{color:var(--green)}
+.duo .card b{display:block;font-size:22px;line-height:1.3;margin-bottom:12px}.duo .card.a b{color:#c0512f}.duo .card.b b{color:#4a7a59}
+.duo .card p{margin:0;color:#3a342d;line-height:1.75;font-size:18px}
+.workflow-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:24px}
+.workflow-step{background:#fff;border:1px solid var(--line);border-radius:8px;padding:18px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.workflow-step small{display:block;color:var(--orange);font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;margin-bottom:9px}
+.workflow-step b{display:block;font-size:18px;line-height:1.3;margin-bottom:9px}
+.workflow-step p{margin:0;color:#3a342d;line-height:1.6;font-size:16px}
+.codeblock{background:var(--dark);color:#f3ead9;border-radius:8px;padding:18px 20px;font:500 14px/1.65 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;overflow-x:auto;white-space:pre-wrap;margin:20px 0;box-shadow:0 8px 22px rgba(107,74,42,.12)}
+.codeblock .c{color:#f6d7a6;font-weight:600}
+.skillcard{background:#fff;border:1px solid var(--green);border-radius:12px;padding:24px;box-shadow:0 10px 26px rgba(95,117,83,.16);margin-top:8px}
+.skillcard b{display:block;font-size:21px;margin-bottom:8px}
+.skillcard p{margin:0 0 16px;font-size:17px;line-height:1.65;color:#3a342d}
+.cta-band{background:#e6f0e5;color:#3a342d}.cta-band .section{border-top:none}
+.cta-band .inner{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(260px,.85fr);gap:26px;align-items:start}
+.cta-band h2{font-size:clamp(26px,4vw,44px);margin:0 0 16px}.cta-band p,.cta-band .lead{color:rgba(58,52,45,.9);font-size:18px;line-height:1.72}
+.cta-card{border:1px solid #cfe0d2;background:#fbfdfa;border-radius:8px;padding:22px}
+.cta-card b{display:block;color:#48b178;margin-bottom:10px;font-size:18px}.cta-card p{margin:0 0 14px}
+.footer{padding:30px clamp(20px,6vw,88px);font-size:14px;color:var(--muted);background:#fff;border-top:1px solid var(--line)}
+.footer-inner{width:min(1000px,100%);margin:0 auto}
+.footer-links{display:flex;flex-wrap:wrap;gap:6px 12px;margin-bottom:14px}.footer-links a{color:var(--blue);font-weight:900;text-decoration:none;font-size:14px}
+.footer-brand{font-weight:900;font-size:15px;margin-bottom:10px}.footer-note{font-size:13px;line-height:1.6}
+@media(max-width:820px){.inline-figure.portrait{max-width:340px}.infocard-grid{grid-template-columns:1fr}.duo{grid-template-columns:1fr}.workflow-grid{grid-template-columns:1fr}.cta-band .inner{grid-template-columns:1fr}.section{padding:40px 20px}.hero{min-height:52vh;flex-direction:column;justify-content:flex-start;align-items:flex-start;gap:24px}.hero>div{width:100%}.hero-figure{width:100%;max-width:560px}}
+@media(max-width:820px){html,body{overflow-x:hidden}.hero h1{word-break:break-word}}
+blockquote{margin:20px 0;padding:14px 18px;border-left:5px solid var(--orange);background:rgba(194,112,61,.08);border-radius:6px;font-size:19px;line-height:1.7;color:#3a342d}.note{font-size:15px;color:var(--muted);line-height:1.6}
+</style>
+</head>
+<body class="spotlight">
+<!-- 官網共用導航列 nav.top：與首頁/總站同一條，文章不要自己另做極簡 topbar（江江 2026-06-25：要同一個框架、同一條導航列）。把對應頁面的 class="active" 標在自己那欄。
+     ⚠️ 下面 ul.nav-menu 整塊由 preflight 第 5 關 check-bilingual-nav.mjs 做「逐字比對」，
+        塞任何註解、多一個空白、換行位置不同都會被判導航不一致而擋下發布。要說明就寫在 <ul> 外面（像這裡）。
+        2026-08-16 修：原本的 EN 那行說明註解就夾在 <ul> 裡面，導致照範本起手的新文章一律卡第 5 關
+        （llm-rag-agent-mcp 與 rag-three-retrieval-modes 兩篇同時中招）。註解已移出來，<ul> 內保持乾淨。
+        萬一還是被擋，直接跑：node scripts/check-bilingual-nav.mjs --write --only=<你的檔案路徑> -->
+<nav class="top">
+  <div class="container">
+    <a class="nav-brand-img" href="../../index.html"><img src="../../images/footer-signature.png" alt="江江教練 | 江昱德"></a>
+    <button class="nav-toggle" aria-label="選單"><span></span><span></span><span></span></button>
+    <ul class="nav-menu">
+      <li><a href="../../index.html">首頁</a></li>
+      <li><a href="../../knowledge-architecture.html">知識架構</a></li>
+      <li><a href="../../courses.html">課程</a></li>
+      <li><a href="../../articles.html" class="active">深度文章</a></li>
+      <li><a href="../../skills.html">技能包下載</a></li>
+      <li><a href="../../offers.html">服務方案</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="wc wc1"></div>
+  <div class="wc wc2"></div>
+  <div class="wc wc3"></div>
+  <div>
+    <div class="kicker">需求驗證 / 產品化</div>
+    <h1>Tesla 內部的一套工作方法，把自動化排在最後一步｜客戶說想用 AI 卻講不清楚要做什麼，從一個人的需求開始</h1>
+    <p>最近看到一則貼文在整理 Tesla 內部的一套工作方法，五個步驟，最後才輪到自動化。這篇用兩個真實客戶的案子，講我怎麼找到那個問題、客戶講不出來的時候怎麼辦，以及什麼時候才把一次性的東西變成可以重複用的。</p>
+  </div>
+  <!-- 封面圖（建議放）：⚠️ 比例是硬規則，不是美感選擇。
+       封面一律【橫式 16:9】，生成 1600x900、落檔 1400 寬，用預設 .hero-figure{width:620px}，不要加 aspect-ratio。
+       理由：封面真正的工作是分享縮圖（OG 1200x630、Threads 與 FB 連結預覽都是橫的），直式封面塞進去只剩中間一小塊。
+       只有「直接沿用既有 4:5 咪卡輪播卡」這個例外才走直式，那時改 .hero-figure{width:320px} 並加
+       .hero-figure img{aspect-ratio:4/5;object-fit:cover}，而且要在 image-ratio-ignore.json 寫明理由，否則 preflight 會擋。
+       沒有封面圖就整個 <figure> 刪掉，hero 會自動置中只剩文字。封面同時設成上面 og:image / twitter:image。
+       比例表正本與立因 → knowledge-site-manager/references/08-article-visuals-from-source.md 第零節之前。 -->
+</section>
+
+<main>
+
+
+<section class="section" id="start">
+  <div class="inner">
+    <h2>Tesla 那套方法把自動化排在最後一步</h2>
+    <p>最近看到一則貼文在整理 Tesla 內部的一套工作方法，五個步驟，順序不能換：先問這件事為什麼要做，再看能不能直接刪掉，刪不掉才簡化，簡化完才加速，最後才輪到自動化。</p>
+    <p>裡面有兩條可以直接拿來用。</p>
+    <div class="meaning">
+      <p><b>每個需求都要掛一個人的名字</b>，不能是「某某部門說的」。掛不上名字的需求，通常就是最該被拿掉的那一個。</p>
+      <p><b>刪除要刪到有東西需要加回來。</b>如果刪完完全沒有東西補回去，代表刪得太客氣。</p>
+    </div>
+    <p>我們大部分時候是倒過來走的。一上來就問「這件事能不能用 AI」，然後把一個本來就不用做的流程，做得又快又漂亮。</p>
+    <p class="note">這套方法的出處被歸給一本書與一位前 Tesla 高階主管，我還沒查證那個歸屬，所以這裡只寫方法本身。</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <p class="lead">我今年做的東西，沒有一個是先想「來做個產品」開始的。每一個都是從某一個人的一句話、或是我在他的現場親手做過一次事之後撞到的卡點開始。這篇用兩個真實客戶的案子，講我怎麼找到那個問題、客戶講不出來的時候我怎麼辦、以及什麼時候才把一次性的東西變成可以重複用的。</p>
+
+    <div class="duo stack">
+      <div class="card">
+        <b style="color:#c2703d">適合誰</b>
+        <ul>
+          <li>你學了一堆 AI 工具，操作都會，但不知道要拿來做什麼</li>
+          <li>你想做個產品，可是不確定除了你自己以外還有誰要</li>
+          <li>你接了案子，客戶說「我想要用 AI」，但講不清楚要 AI 做什麼</li>
+          <li>你做出過一個東西，客戶很滿意，然後就沒有然後了</li>
+        </ul>
+      </div>
+      <div class="card">
+        <b style="color:#3d8c68">你可以帶走什麼</b>
+        <ul>
+          <li>一組問題，用來把「我想用 AI」問成「誰的什麼事卡住了」</li>
+          <li>我判斷要不要把一次性交付變成產品的三個條件</li>
+          <li>兩個真實案子，包含我做錯順序的那一個</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>學了一堆 AI 工具，卻不知道要拿來做什麼</h2>
+    <p>這是我在一對一約談裡最常聽到的一句話，一字不改。2026 年 7 月那一輪約談我談了 11 場，37 個問題裡幾乎沒有人問「這個工具怎麼操作」。大家卡住的地方都不在操作。</p>
+    <p>卡住的原因通常是順序。先學工具，再回頭找地方用它，等於拿著一把很好的鎚子到處找釘子。找不到釘子不是因為你鎚子拿得不好。</p>
+
+    <div class="readmore near">
+      <b>同一件事我在別的地方處理過</b>
+      <ul>
+        <li><a href="../vibe-coding-ten-half-products/">學了一堆 AI 工具，不知道要拿來幹嘛？：你以為在做成品，其實在養十個半成品</a>　這一段只講為什麼會卡住，那篇講我怎麼用第一性原理把八個專案篩成三個。</li>
+        <li><a href="../dont-learn-ai-tools/">我上課不教 AI 工具，因為工具是 AI 該操作的</a>　那篇講的是另一層：學會操作工具，你的產能上限就等於自己能坐在電腦前的時數。</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>找需求之前，先找到一個叫得出名字的人</h2>
+    <p>「需求要掛名字」這條講得很對，可是它預設了一件事：你手上已經有一堆需求，只是需要篩。</p>
+    <p>一人公司、接案的人、自己開課的老師面對的是另一種狀況。他們手上沒有一堆需求可以篩，常常連誰有需求都不知道。</p>
+    <p>所以我把那條往前推了一格：<b>先找到一個具體的人，再從他身上長出需求</b>。</p>
+    <p>一個你叫得出名字、約得到時間、可以坐在他旁邊看他工作的人。族群跟目標客戶輪廓都太大，你坐不到它旁邊。</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>客戶講得出來的問題：去年大家的東西拿不出手</h2>
+    <p>第一個案子是旅學堂。創辦人 Vicky 每年都有一個公共藝術走讀的案子，業主是新北市文化局的標案廠商。</p>
+    <p>她 2026 年 6 月找我開會，第一次講需求的時候是這樣說的：</p>
+    <blockquote>去年做過短影音，但很吃腳本，老師教手機攝影，最後大家的東西都拿不出手、沒美感。今年想用 AI。</blockquote>
+    <p>這句話裡有三個東西是我後來整場設計的地基：<b>已經做過一次</b>、<b>知道哪裡不行</b>、<b>說得出不行在哪</b>（拿不出手、沒美感）。</p>
+    <p>有這三樣，需求就不用猜了。她要的是一個學員做得出來、而且做完敢拿給別人看的成品，AI 只是今年換上的工具。</p>
+    <p>我們後來做的是一場三小時的公共藝術 AI 共創網頁工作坊。每場約 30 人、分五組、一組一台電腦，走淡海輕軌的站點，每一站讓學員寫一句話，做成一頁作品。8 月 21 日那場綠山線，四組交件，共 27 件作品。</p>
+    <p>這類需求的起點比較清楚。她自己已經把問題想清楚了，我的工作是把解法做出來。</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>客戶講不出來的時候，我進去幫他做一次事</h2>
+    <p>第二個案子不是這樣。</p>
+    <p>Dr. Ivy 是芳香心理療癒的專業講師。我從 2026 年 7 月開始陪跑她的 AI 導入，7 月 14 日、8 月 6 日、8 月 14 日各一次，都是實體三小時。</p>
+    <p>陪跑的意思是我固定到她的工作現場，用她真正在處理的檔案跟她一起做。上課教工具的話，我碰不到她真正的檔案，這個差別待會會變成整件事的關鍵。</p>
+    <p>她從來沒有跟我說「我的問卷回收有問題」。她要的是把個人授課升級成一套教育體系，她自己寫的是「我現階段需要創造模組化，產生被動式收入」。</p>
+    <p>那個問題是我自己撞到的。</p>
+    <p>第一次陪跑，我處理了她的 173 份教學素材，包含 104 份 Office 檔、63 份 PDF、1107 張圖片，還有 39 份簡報共 4076 頁。第二次陪跑，我分析了她兩百多份學員的香氛覺察表單，用兩個 AI 交叉檢查。</p>
+    <p>做過一次你就知道了。那些表單是怎麼來的，現場的工作人員要花多少力氣才收得到，收回來的東西有多少是認真寫的。</p>
+    <p>我 9 月在一場商會活動上講過這段，原話是：</p>
+    <blockquote>你們原本過去都是我們工作人員要去辛苦地請他們填問卷等等之類的，不管是問卷表單還是現場的，這都是很麻煩的事情。我如何用 AI 讓這些學員他們覺得填問卷是件好玩的事情。</blockquote>
+    <p>後來做出來的是香氛卡製作站。學員在調香實作的現場，把自己這次的配方跟當下的感受填進去，站台直接生成一張屬於他的香氛卡，可以帶走、可以發社群。填問卷從一件要被拜託的事，變成一件他自己想做的事。</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>香氛卡這個案子，我其實是先有機制才對應回問題</h2>
+    <p>有一件事我要誠實講，因為它剛好戳到這篇文章自己的論點。</p>
+    <p>香氛卡這個機制，最早是我自己 8 月 26 日口述的構想。那份構想記錄的第一行我自己標了：「尚未與 Ivy 討論，也還沒定案。」</p>
+    <p>所以嚴格講，這個案子的順序是反的：我先有了機制的想法，再對應回一個我確實在她現場撞到過的問題。</p>
+    <p>這兩件事的差別在哪裡？差在<b>驗證的時間點</b>。客戶講出來的需求，開工前就驗證過了。我自己想出來的機制，要等到真的上線那天才知道對不對。香氛卡站 9 月 11 日台南場跟 9 月 12 日各用了一次，要到那兩天才知道學員願不願意填。</p>
+    <p>我把它寫出來，是因為如果只放 Vicky 那個案例，這篇文章會讀起來像「只要去問客戶就會有答案」。實際上不會。很多時候客戶講不出來，你得自己進去做事、自己撞、然後自己承擔猜錯的風險。</p>
+
+    <div class="readmore near">
+      <b>驗證這件事我另外整理過</b>
+      <ul>
+        <li><a href="../ai-mvp-validation-before-product/">花大錢做產品前，先用 AI 驗證創業點子</a>　這一段只講我為什麼把順序做反了，那篇講怎麼在投錢之前用真實需求調查法驗證一個點子。</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>旅學堂工作坊辦完之後，才看到桌長卡在排簡報</h2>
+    <p>回到旅學堂。</p>
+    <p>8 月 21 日那場工作坊，Vicky 的問題解掉了，學員的成品拿得出手了。但那天現場冒出另一件事。</p>
+    <p>成果發表的流程是這樣跑的：學員把圖傳 LINE 給桌長，桌長貼進 Google 簡報，活動結束之後講師再整理成官網的成果頁。三段人工搬運。桌長是現場帶一組學員的人，那天他們要在現場把學員的圖一張張貼進簡報。</p>
+    <p>9 月 8 日下一場的桌長行前會議，我提起上次桌長要排簡報這件事，一位桌長回了一句：</p>
+    <blockquote>排那個簡報蠻花時間的。</blockquote>
+    <p>這種話很容易滑過去，因為它聽起來不像在抱怨。但它指的是一個具體的人，在活動現場，做一件其實可以交給系統的事。</p>
+    <p>那時候學員自己上傳的成果發表頁我已經在做了，這句話等於幫我確認方向沒錯。下一場開始，桌長不用再當中間的搬運工。</p>
+    <div class="meaning">
+      <p><b>第一個問題解掉，第二個問題才看得見。</b>這是為什麼我不太相信一次性的需求訪談。六月的規劃會議上問不出桌長排簡報的負擔，因為那時候工作坊還沒辦過。</p>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>什麼時候把一次性的東西變成可以重複用的</h2>
+    <p>做完一個案子，東西就擺在那裡了。要不要把它變成產品，我看三件事。</p>
+    <p>先講清楚這三件事的來歷：它們是我從今年的幾個案子裡歸納出來的，樣本很小，不是市場研究的結論。你可以拿去當檢查清單，但不要當成通則。</p>
+
+    <div class="workflow-grid">
+      <div class="workflow-step">
+        <b>一、同樣的問題有沒有在第二個不相干的地方出現</b>
+        <p>成果發表頁做完，我把整套流程寫成了技能包（一份寫給 AI 看的說明書，下次要用直接叫出來，不用從頭交代），後來陽光婦女的 8 月數位創作課直接沿用，8 組 28 人，88 件作品。那是另一個單位、另一個主題、另一批人，卡的是同一件事。這時候我才確定它不是旅學堂專屬的。</p>
+      </div>
+      <div class="workflow-step">
+        <b>二、換掉專有名詞之後還成不成立</b>
+        <p>8 月我把工作坊頁改成通用版，把日期拿掉、報名連結拿掉，原本的「場次」全部改成「案例」。改完之後只有一場還掛著旅學堂的名字，其他三場（樂齡、親子、數位起步走）都不掛。能這樣改，代表它不綁在旅學堂身上，換一個單位也能跑。</p>
+      </div>
+      <div class="workflow-step">
+        <b>三、不同產業的案子能不能用同一句話講完</b>
+        <p>我的三個客戶案例上官網的時候，標題最後全部收斂成同一個句式：<b>把一次體驗活動的學員，轉換成長期經營的會員</b>。一個是芳療講師的香氛卡、一個是旅學堂的公共藝術工作坊、一個是永力社的永續報告書。三個產業完全不同，做的是同一件事：讓學員在活動當下留下資料，活動結束後還能繼續經營。</p>
+      </div>
+    </div>
+
+    <p>到這裡才是產品化的時候。三個條件都不成立就繼續當交付，那沒什麼不好。</p>
+
+    <div class="readmore near">
+      <b>產品化之後怎麼封裝，我另外寫過</b>
+      <ul>
+        <li><a href="../how-to-train-your-ai-employee/">如何訓練自己的 AI 員工：員工＋顧問框架</a>　這一段只講什麼時候該產品化，那篇講產品化之後怎麼把專業封裝成可以重複執行的東西。</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>從一個人的現場找需求：成本高、要進得去，也常常長不成產品</h2>
+    <p><b>它很慢，而且前期不賺錢。</b>我在 Ivy 那邊做了三次實體陪跑、處理了四千多頁簡報跟一百多份教學素材，才看到問卷那件事。這個成本是真的。如果你的商業模式需要快速複製，這條路不適合。</p>
+    <p><b>它需要對方願意讓你進去。</b>不是每個客戶都肯讓你看他的檔案、坐在他的現場。進不去就看不到真問題，只能照著需求單做。</p>
+    <p><b>不是每個問題解完都會發現很多人有。</b>三個條件我列出來，就是因為常常不成立。大部分的案子做完就是做完了，這很正常。</p>
+    <div class="caveat">
+      <p><b>我自己也有還沒做完的。</b>講師線上教學 Agent 平台那個企劃，是從香氛卡延伸出來的，現在還停在企劃階段沒有動工。Ivy 那邊提過的標籤印表機、客製化香氛的延伸做法，也都還沒定案。我把這些寫出來，是因為只放做成的案例會讓這套方法看起來比實際上順。</p>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <h2>今天就能開始：問下週要見的那個人四個問題</h2>
+    <p>不要從「我想做什麼產品」開始。從你的行事曆開始。</p>
+    <p><b>找出下週你會見到的那個人。</b>客戶、學員、同事都可以，條件只有一個：你能跟他講到話。</p>
+    <p><b>問這四個問題，不要問他想不想用 AI。</b>這四題是入門版，目的是把話題從工具拉回到他真正在做的事，不是完整的需求訪談。</p>
+
+    <div class="codeblock">
+<pre>1. 這件事你去年（或上次）是怎麼做的？
+2. 那次哪裡不滿意？具體是哪一個環節？
+3. 那個環節是誰在做？他花了多久？
+4. 如果那一段改善了，你會從哪個結果看出它有價值？</pre>
+    </div>
+
+    <p>第一題問已經發生的事，因為已經發生的事不會騙人。第二題逼出具體位置，「效果不好」不算答案，「大家的東西拿不出手」才算。第三題把問題掛到一個人身上，這就是 Tesla 那套方法講的掛名字。第四題確認改善看得見，這個結果可能是省時間，也可能是品質、風險或營收。答不出來就先別動手，回到第二題再挖。</p>
+    <p><b>問完不要急著做東西。</b>先去現場幫他做一次那件事。你會看到他講不出來的部分。進不了現場的話，請他開螢幕分享走一遍流程，或給你一份去掉個資的樣本。</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="inner">
+    <div class="readmore">
+      <b>延伸閱讀</b>
+      <p style="margin:0 0 8px;font-weight:700;color:#5689b8">這篇提到過的</p>
+      <ul>
+        <li><a href="../vibe-coding-ten-half-products/">學了一堆 AI 工具，不知道要拿來幹嘛？：你以為在做成品，其實在養十個半成品</a></li>
+        <li><a href="../ai-mvp-validation-before-product/">花大錢做產品前，先用 AI 驗證創業點子</a></li>
+        <li><a href="../how-to-train-your-ai-employee/">如何訓練自己的 AI 員工：員工＋顧問框架</a></li>
+      </ul>
+      <p style="margin:14px 0 8px;font-weight:700;color:#5689b8">再往前後延伸</p>
+      <ul>
+        <li><a href="../dont-learn-ai-tools/">我上課不教 AI 工具，因為工具是 AI 該操作的</a>　工具跟判斷的分工，是這篇的前一步。</li>
+        <li><a href="../company-shape-is-the-moat/">AI 時代，公司還剩什麼別人拿不走？：真正的護城河是組織模式與信任</a>　產品化之後的下一個問題：這些東西別人抄不抄得走。</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">江江教練 · AI 知識管理</div>
+    <div class="footer-links">
+      <a href="../../articles.html">← 回深度文章總站</a>
+      <a href="../../index.html">首頁</a>
+      <a href="../../learn.html">自學資源</a>
+      <a href="../../skills.html">技能包下載</a>
+      <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">LINE 社群 ↗</a>
+      <a href="https://www.threads.com/@jiang_yude_coach" target="_blank" rel="noopener">Threads ↗</a>
+      <a href="https://vocus.cc/salon/Jiang_Coach" target="_blank" rel="noopener">方格子 ↗</a>
+    </div>
+    <div class="footer-note">這是一篇教學文章，整理我對「Tesla 內部的一套工作方法，把自動化排在最後一步｜客戶說想用 AI 卻講不清楚要做什麼，從一個人的需求開始」的看法，供你參考。</div>
+  </div>
+</footer>
+
+<!-- 點圖放大 lightbox（hero 與內文圖通用，已內建，不用每篇重加） -->
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <span class="lightbox-close" aria-label="關閉">×</span>
+  <img id="lightbox-img" src="" alt="放大檢視">
+</div>
+<script>
+(function(){
+  var box=document.getElementById('lightbox'),boxImg=document.getElementById('lightbox-img');
+  document.querySelectorAll('.hero-figure img,.inline-figure img').forEach(function(img){
+    img.addEventListener('click',function(){boxImg.src=img.currentSrc||img.src;boxImg.alt=img.alt||'放大檢視';box.classList.add('open');box.setAttribute('aria-hidden','false');});
+  });
+  function close(){box.classList.remove('open');box.setAttribute('aria-hidden','true');boxImg.src='';}
+  box.addEventListener('click',close);
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
+})();
+</script>
+
+<script src="../../image-interactions.js"></script>
+
+<!-- 官網共用：滑鼠暖光暈 + 導航列漢堡選單 -->
+<script src="../../spotlight.js"></script>
+
+<!-- 文章自動互聯（相關文章）：兩支已內建，順序不可顛倒，不用再另外加 -->
+<script src="../../articles-data.js"></script>
+<script src="../../related-render.js"></script>
+  <script src="/mika-chat-widget.js" defer></script>
+</body>
+</html>
