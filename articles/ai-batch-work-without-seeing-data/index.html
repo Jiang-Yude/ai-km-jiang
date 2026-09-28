@@ -278,6 +278,11 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
     <p>我陪跑的一家企業，有位行政助理負責活動的講師費和勞務費。每個人都要簽一張領據，領據上要填身分證字號、地址、帳號這些資料，一張一張打很花時間，也很容易打錯。</p>
     <p>這位助理想用 AI 加快速度。好在這件事是在陪跑時提出來的，我們才有機會在動手之前先抓到隱憂：名單一交給 AI，這些個資就離開了公司的電腦。</p>
     <p>所以我把問題換個方式拿去問 AI：有沒有可能讓 AI 大量處理這件事，但是又不要讓 AI 讀到這些資料？它只負責搬運，不負責讀。</p>
+    <p>「它只負責搬運，不負責讀」實際長這樣：</p>
+    <figure class="inline-figure portrait">
+      <img src="../../images/articles/ai-batch-work-without-seeing-data-02.jpg" alt="插圖：AI 幫你做領據，但看不到名單。左邊 AI 看到的視窗只有姓名、身分證字號、銀行帳號三個空白欄位和一句完成 37 張；右邊你看到的視窗有名單和一疊領據，中間隔著磨砂玻璃" loading="lazy" width="1080" height="1350">
+      <figcaption>咪卡代表 AI：它看得到欄位名稱，也收得到「完成幾張」，名單在隔板另一邊。</figcaption>
+    </figure>
     <p>問的當下，我腦中想到的是 API key，也就是串接 AI 服務用的那串密碼。它的保管方式後面會講，先講為什麼名單不能直接丟給 AI。</p>
   </div>
 </section>
@@ -301,6 +306,10 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
   <div class="inner">
     <h2>API key 的保管方式，可以直接套用在名單上</h2>
     <p>我自己管 API key 的規矩是：key 不貼進對話、不寫進筆記，存在電腦的鑰匙圈（macOS 的 Keychain）裡。AI 寫程式時只寫「這裡要用某一把鑰匙」，程式執行時自己去鑰匙圈拿，而且設計上不把那串密碼顯示在畫面上（程式顯示在畫面上的文字，AI 讀得到）。AI 知道那把鑰匙叫什麼名字，設計上看不到那串密碼本身；鑰匙圈那邊也要設定好哪些程式可以取用。</p>
+    <figure class="inline-figure portrait">
+      <img src="../../images/articles/ai-batch-work-without-seeing-data-03.jpg" alt="插圖：AI 知道鑰匙的名字，碰不到鑰匙本身。上排咪卡舉著寫 API key 的牌子，鑰匙鎖在保險箱裡；下排咪卡舉著寫姓名、身分證字號、帳號的卡片，名單鎖在同款保險箱裡" loading="lazy" width="1080" height="1350">
+      <figcaption>上排是 API key 的保管方式，下排是同一個道理套在名單上。</figcaption>
+    </figure>
     <p>名單不用放進鑰匙圈，但可以借同一個道理：AI 只知道名字，不碰內容。AI 需要知道的是：B 欄叫「身分證字號」，要填到領據的哪一格。B 欄裡寫的是誰的號碼，它用不到。</p>
     <div class="meaning"><b>這套做法的原則只有一句</b>AI 處理名稱，程式處理內容。</div>
     <figure class="inline-figure portrait">
