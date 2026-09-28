@@ -41,6 +41,24 @@ window.ARTICLES = [
   },
 
   {
+    id: "meeting-mic-rescue-on-mac",
+    url: "articles/meeting-mic-rescue-on-mac/",
+    date: "2026-09-28",
+    updated: "2026-09-28",
+    title: "原廠軟體只有 Windows 版，我請 AI 在 Mac 上寫一個自己用的｜把降噪太強的會議麥克風，調到人聲聽得清楚",
+    problem: "會議麥克風降噪太強，原廠更新只有 Windows 版；AI 一直叫我去借 Windows 電腦，用 Mac 的人還能怎麼辦。",
+    audience: "設備的原廠工具只支援 Windows、自己用 Mac 的人；想知道遇到「只能照原廠做」時，還能怎麼跟 AI 談的人。",
+    summary: "同一支降噪太強的會議麥克風，我找了兩個 AI。9/21 用 Codex（gpt-5.6-sol），它堅持先借 Windows 照原廠更新，大約 4 小時沒解決；9/24 換 Claude Code 的 Opus 5.5 在 Mac 上自己來，更新韌體失敗、一度開不了機，靠麥克風裡的出廠版本救回，但大約 1 小時就幫我寫出 Mac 的控制軟體，可以自己調降噪。文章用真實時間軸和我當時講的原話，記錄兩條路、各適合什麼情況，以及我怎麼看這件事；附一段可以直接貼給 AI 的提示詞。",
+    tags: {
+      topic: ["工具操作", "AI工作流"],
+      level: ["基礎"],
+      content_type: ["案例文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["recovery-over-perfection", "cross-ai-review-both-wrong", "let-ai-do-the-setup", "meeting-record-agent-workflow"]
+  },
+
+  {
     id: "one-sentence-ai-website-workflow",
     url: "articles/one-sentence-ai-website-workflow/",
     date: "2026-09-26",
@@ -766,7 +784,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["three-levels-of-cross-review", "caught-ai-slacking-into-rules", "long-document-review-layers", "webmcp-day-one"]
+    related: ["three-levels-of-cross-review", "caught-ai-slacking-into-rules", "long-document-review-layers", "webmcp-day-one", "meeting-mic-rescue-on-mac"]
   },
 
   {
@@ -978,7 +996,7 @@ window.ARTICLES = [
       content_type: ["案例文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["dont-learn-ai-tools", "how-ai-connects-software", "ai-delegators-optimism"]
+    related: ["dont-learn-ai-tools", "how-ai-connects-software", "ai-delegators-optimism", "meeting-mic-rescue-on-mac"]
   },
 
   {
@@ -1986,7 +2004,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: "https://vocus.cc/salon/Jiang_Coach" },
-    related: ["agent-workflow-builds-automation", "codex-only-auto-worklog", "how-to-train-your-ai-employee", "diary-driven-agent-3x4", "tidy-mess-before-consulting", "meeting-into-verifiable-loop", "ai-employee-four-levels", "eight-ai-system-concepts-2026"]
+    related: ["agent-workflow-builds-automation", "codex-only-auto-worklog", "how-to-train-your-ai-employee", "diary-driven-agent-3x4", "tidy-mess-before-consulting", "meeting-into-verifiable-loop", "ai-employee-four-levels", "eight-ai-system-concepts-2026", "meeting-mic-rescue-on-mac"]
   },
 
   {
@@ -2148,7 +2166,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["ai-loop-safety-recovery", "my-three-loops", "what-is-loop-engineering", "long-task-completion-rate", "free-deploy-three-boundaries"]
+    related: ["ai-loop-safety-recovery", "my-three-loops", "what-is-loop-engineering", "long-task-completion-rate", "free-deploy-three-boundaries", "meeting-mic-rescue-on-mac"]
   },
 
   {
