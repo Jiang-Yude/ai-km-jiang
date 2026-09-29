@@ -41,6 +41,25 @@ window.ARTICLES = [
   },
 
   {
+    id: "one-sentence-video-to-deep-article",
+    url: "articles/one-sentence-video-to-deep-article/",
+    date: "2026-09-29",
+    updated: "2026-09-29",
+    title: "我怎麼一句話，就讓我的 AI 把一支專題影片變成一篇深度文章？｜一句起手、途中補兩句：一支兩小時的演講影片，不到 40 分鐘跑完逐段報告、深度文章與兩家 AI 互相審稿",
+    problem: "想讓 AI 把一支演講或對談影片整理成文章，但每次都要從頭交代規格，也不確定 AI 寫出來的東西對不對。",
+    audience: "想用 AI 整理影片、講座、會議內容的知識工作者，以及想設計 AI 審稿流程的顧問與講師。",
+    summary: "拆開一次真實流程：貼一個 YouTube 網址，說一句「像之前國泰那樣拆解」，AI 先翻出上一次的成品與紀錄照著做，不到 40 分鐘產出逐段報告與審過三輪的深度文章，途中多補兩句，順便把做法寫成技能包。附一張可以拖曳時間、點開看細節的四泳道動畫流程圖，一張 Claude 與 Codex 雙軌互審的九步動態圖（派工、各自跑、比對、整合、來回審），讀者走查與三輪審稿各抓到什麼、AI 自己出錯被抓到的三件事、部署之後為什麼是另一個迴圈、單軌與雙軌互審現在怎麼選，以及兩段沒有這套系統也能用的提示詞。",
+    tags: {
+      topic: ["AI工作流", "跨家審稿", "技能包設計"],
+      level: ["基礎"],
+      content_type: ["案例文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["audrey-tang-reverse-alignment", "claude-skills-knowledge-assets", "three-levels-of-cross-review", "ai-user-testing", "ai-said-it-watched-the-video", "what-is-loop-engineering", "cathay-tech-conference-2026", "dual-track-planning-loop"],
+    cover: { wide: "images/articles/one-sentence-video-to-deep-article/cover.jpg" }
+  },
+
+  {
     id: "audrey-tang-reverse-alignment",
     url: "articles/audrey-tang-reverse-alignment/",
     date: "2026-09-28",
@@ -55,7 +74,7 @@ window.ARTICLES = [
       content_type: ["觀點文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["design-for-ai-errors", "ai-custom-work-compound", "intangible-assets-grow-by-sharing", "ai-handoff-instructions", "ai-data-red-lines", "ai-delegators-optimism", "cathay-tech-conference-2026", "answer-to-action-enterprise-ai-agent", "elon-musk-live-skill"],
+    related: ["one-sentence-video-to-deep-article", "design-for-ai-errors", "ai-custom-work-compound", "intangible-assets-grow-by-sharing", "ai-handoff-instructions", "ai-data-red-lines", "ai-delegators-optimism", "cathay-tech-conference-2026", "answer-to-action-enterprise-ai-agent", "elon-musk-live-skill"],
     cover: { wide: "images/articles/audrey-tang-reverse-alignment/cover.jpg" }
   },
 
@@ -183,7 +202,7 @@ window.ARTICLES = [
       content_type: ["觀點文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["a2a-agent-protocol", "harness-to-loop", "ai-native-not-transformation", "ai-data-red-lines", "answer-to-action-enterprise-ai-agent", "grok-bot-galaxy-day1-founders", "audrey-tang-reverse-alignment"],
+    related: ["a2a-agent-protocol", "harness-to-loop", "ai-native-not-transformation", "ai-data-red-lines", "answer-to-action-enterprise-ai-agent", "grok-bot-galaxy-day1-founders", "audrey-tang-reverse-alignment", "one-sentence-video-to-deep-article"],
     cover: { wide: "images/articles/cathay-tech-conference-2026/cover.jpg" }
   },
 
@@ -520,7 +539,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["ai-market-microcosm", "ai-mvp-validation-before-product", "before-installing-others-skill", "loop-four-entries"],
+    related: ["ai-market-microcosm", "ai-mvp-validation-before-product", "before-installing-others-skill", "loop-four-entries", "one-sentence-video-to-deep-article"],
     cover: { tall: "images/articles/ai-user-testing-cover.jpg" }
   },
 
@@ -965,7 +984,7 @@ window.ARTICLES = [
       content_type: ["案例文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["caught-ai-slacking-into-rules", "web-chat-ai-vs-desktop-agent", "three-levels-of-cross-review", "rag-three-retrieval-modes", "long-document-review-layers", "cognitive-debt"]
+    related: ["caught-ai-slacking-into-rules", "web-chat-ai-vs-desktop-agent", "three-levels-of-cross-review", "rag-three-retrieval-modes", "long-document-review-layers", "cognitive-debt", "one-sentence-video-to-deep-article"]
   },
 
   {
@@ -1320,7 +1339,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["after-ai-says-remembered", "long-document-review-layers", "mobile-to-desktop-publish-loop", "ai-said-it-watched-the-video", "cross-ai-review-both-wrong", "webmcp-day-one", "how-to-verify-ai-rule-changes", "let-ai-review-itself", "ai-rule-file-slimming", "fixed-test-set-for-ai", "reevaluate-models-same-test", "one-sentence-ai-website-workflow"]
+    related: ["after-ai-says-remembered", "long-document-review-layers", "mobile-to-desktop-publish-loop", "ai-said-it-watched-the-video", "cross-ai-review-both-wrong", "webmcp-day-one", "how-to-verify-ai-rule-changes", "let-ai-review-itself", "ai-rule-file-slimming", "fixed-test-set-for-ai", "reevaluate-models-same-test", "one-sentence-ai-website-workflow", "one-sentence-video-to-deep-article"]
   },
 
   {
@@ -1951,7 +1970,7 @@ window.ARTICLES = [
       content_type: ["案例文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["loop-engineering-guardrails", "a2a-agent-protocol", "docs-as-system-design-agent", "ai-handoff-instructions", "long-task-completion-rate", "session-messaging-reminder-layer", "before-installing-others-skill", "parallel-site-editing", "let-ai-review-itself", "reevaluate-models-same-test"]
+    related: ["loop-engineering-guardrails", "a2a-agent-protocol", "docs-as-system-design-agent", "ai-handoff-instructions", "long-task-completion-rate", "session-messaging-reminder-layer", "before-installing-others-skill", "parallel-site-editing", "let-ai-review-itself", "reevaluate-models-same-test", "one-sentence-video-to-deep-article"]
   },
 
   {
@@ -2437,7 +2456,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["what-is-graph-engineering", "strong-ai-models-knowledge-workflow-road", "questionnaire-to-slides-agent-workflow", "loop-round-limit", "five-loops-content-line", "loop-four-entries"]
+    related: ["what-is-graph-engineering", "strong-ai-models-knowledge-workflow-road", "questionnaire-to-slides-agent-workflow", "loop-round-limit", "five-loops-content-line", "loop-four-entries", "one-sentence-video-to-deep-article"]
   },
 
   {
@@ -3013,7 +3032,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["semantic-rules-before-prompt-templates", "ai-data-organization-usable-system", "manage-ai-with-management-knowledge", "chatgpt-work-skills-web-version", "old-prompts-intent-first-loop-engineering", "ai-employee-four-levels", "use-more-ai-not-enough", "ai-adoption-start-with-one-workflow", "one-sentence-ai-website-workflow"]
+    related: ["semantic-rules-before-prompt-templates", "ai-data-organization-usable-system", "manage-ai-with-management-knowledge", "chatgpt-work-skills-web-version", "old-prompts-intent-first-loop-engineering", "ai-employee-four-levels", "use-more-ai-not-enough", "ai-adoption-start-with-one-workflow", "one-sentence-ai-website-workflow", "one-sentence-video-to-deep-article"]
   },
 
   {

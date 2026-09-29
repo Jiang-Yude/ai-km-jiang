@@ -1,0 +1,920 @@
+<!doctype html>
+
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="index,follow">
+<title>我怎麼一句話，就讓我的 AI 把一支專題影片變成一篇深度文章？｜一句起手、途中補兩句：一支兩小時的演講影片，不到 40 分鐘跑完逐段報告、深度文章與兩家 AI 互相審稿</title>
+<meta name="description" content="拆開一次真實流程：貼一個 YouTube 網址，說一句「像之前國泰那樣拆解」，AI 先翻出上一次的成品照著做，不到 40 分鐘產出逐段報告與審過三輪的官網深度文章，途中多補一句，順便把做法寫成技能包。附會動的流程圖、Claude 與 Codex 的雙軌互審流程、三輪審稿各抓到什麼、AI 自己出錯被抓到的地方，以及兩段沒有系統也能用的提示詞。">
+<link rel="canonical" href="https://jiangyude.com/articles/one-sentence-video-to-deep-article/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="我怎麼一句話，就讓我的 AI 把一支專題影片變成一篇深度文章？｜一句起手、途中補兩句：一支兩小時的演講影片，不到 40 分鐘跑完逐段報告、深度文章與兩家 AI 互相審稿｜江江教練">
+<!-- 分享封面：hero 文字填好後在 repo 根目錄跑 `node scripts/og-shot.mjs one-sentence-video-to-deep-article` 自動截 1200×630 到 images/og/one-sentence-video-to-deep-article.jpg（見 README「文章分享封面（OG 圖）機制」）。別退回 intro-jiang.png 直式人像，會被裁成只剩脖子。 -->
+<meta property="og:image" content="https://jiangyude.com/images/og/one-sentence-video-to-deep-article.jpg">
+<meta property="og:description" content="拆開一次真實流程：貼一個 YouTube 網址，說一句「像之前國泰那樣拆解」，AI 先翻出上一次的成品照著做，不到 40 分鐘產出逐段報告與審過三輪的官網深度文章，途中多補一句，順便把做法寫成技能包。附會動的流程圖、Claude 與 Codex 的雙軌互審流程、三輪審稿各抓到什麼、AI 自己出錯被抓到的地方，以及兩段沒有系統也能用的提示詞。">
+<meta property="og:url" content="https://jiangyude.com/articles/one-sentence-video-to-deep-article/">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:site_name" content="江江教練 · AI 知識管理">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="我怎麼一句話，就讓我的 AI 把一支專題影片變成一篇深度文章？｜一句起手、途中補兩句：一支兩小時的演講影片，不到 40 分鐘跑完逐段報告、深度文章與兩家 AI 互相審稿｜江江教練">
+<meta name="twitter:image" content="https://jiangyude.com/images/og/one-sentence-video-to-deep-article.jpg">
+<meta name="twitter:description" content="拆開一次真實流程：貼一個 YouTube 網址，說一句「像之前國泰那樣拆解」，AI 先翻出上一次的成品照著做，不到 40 分鐘產出逐段報告與審過三輪的官網深度文章，途中多補一句，順便把做法寫成技能包。附會動的流程圖、Claude 與 Codex 的雙軌互審流程、三輪審稿各抓到什麼、AI 自己出錯被抓到的地方，以及兩段沒有系統也能用的提示詞。">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"我怎麼一句話，就讓我的 AI 把一支專題影片變成一篇深度文章？｜一句起手、途中補兩句：一支兩小時的演講影片，不到 40 分鐘跑完逐段報告、深度文章與兩家 AI 互相審稿","description":"拆開一次真實流程：貼一個 YouTube 網址，說一句「像之前國泰那樣拆解」，AI 先翻出上一次的成品照著做，不到 40 分鐘產出逐段報告與審過三輪的官網深度文章，途中多補一句，順便把做法寫成技能包。附會動的流程圖、Claude 與 Codex 的雙軌互審流程、三輪審稿各抓到什麼、AI 自己出錯被抓到的地方，以及兩段沒有系統也能用的提示詞。","author":{"@type":"Person","name":"江昱德","alternateName":"江江教練","jobTitle":"隱性知識提煉師、AI 應用規劃師"},"isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://jiangyude.com/"},"inLanguage":"zh-Hant","url":"https://jiangyude.com/articles/one-sentence-video-to-deep-article/","datePublished":"2026-09-29","dateModified":"2026-09-29","image":"https://jiangyude.com/images/og/one-sentence-video-to-deep-article.jpg"}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{--ink:#1a1612;--paper:#fefcf8;--muted:#6a635a;--line:#d8cdb8;--green:#5f7553;--blue:#5689b8;--orange:#e85a4f;--soft:#faf5ec;--dark:#2a2018;--shadow:0 18px 45px rgba(107,74,42,.14);--sp-shadow:hsla(35,50%,60%,.15);--sp-shadow-edge:hsla(35,50%,68%,.03);--sp-radius:400px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC","Segoe UI",sans-serif}
+a{color:inherit}
+/* 官網共用導航列 nav.top（與首頁/文章總站同一條） */
+nav.top{position:sticky;top:0;background:rgba(254,252,248,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid #d8cdb8;z-index:100}
+nav.top .container{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:24px;padding:14px 32px}
+.nav-brand-img{justify-self:start;display:flex;align-items:center;text-decoration:none;flex-shrink:0;transition:opacity .2s}
+.nav-brand-img:hover{opacity:.8}.nav-brand-img img{height:40px;width:auto;display:block}
+nav.top ul.nav-menu{justify-self:end;display:flex;gap:22px;list-style:none;margin:0;padding:0;font-size:.95rem;white-space:nowrap}
+nav.top ul.nav-menu a{color:#3a342d;text-decoration:none;transition:color .2s;font-weight:500;white-space:nowrap}
+nav.top ul.nav-menu a:hover{color:#1a1612}nav.top ul.nav-menu a.active{color:#1a1612;font-weight:700}
+.nav-toggle{display:none;background:none;border:none;padding:6px;cursor:pointer;width:36px;height:36px;position:relative}
+.nav-toggle span{display:block;position:absolute;left:8px;right:8px;height:2px;background:#1a1612;border-radius:2px;transition:transform .25s,opacity .25s,top .25s}
+.nav-toggle span:nth-child(1){top:11px}.nav-toggle span:nth-child(2){top:17px}.nav-toggle span:nth-child(3){top:23px}
+.nav-toggle.open span:nth-child(1){top:17px;transform:rotate(45deg)}.nav-toggle.open span:nth-child(2){opacity:0}.nav-toggle.open span:nth-child(3){top:17px;transform:rotate(-45deg)}
+.tablewrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:22px 0;border:1px solid var(--line);border-radius:10px;background:#fff;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.tablewrap table{border-collapse:collapse;width:100%;min-width:600px;font-size:18px;line-height:1.65}
+.tablewrap .zh{display:block;margin-top:5px;font-size:16px;line-height:1.55;color:var(--muted);font-weight:400}
+.tablewrap th,.tablewrap td{padding:12px 14px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top;color:#3a342d}
+.tablewrap thead th{background:var(--soft);font-weight:900;font-size:18px;color:#1a1612;white-space:nowrap}
+.tablewrap tbody tr:last-child td{border-bottom:none}
+.tablewrap td code,.section code{background:var(--soft);border:1px solid var(--line);border-radius:5px;padding:1px 6px;font:500 15px/1.5 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace}
+.inline-figure.wide{max-width:1000px}
+.inline-figure.portrait{max-width:430px}
+.toc{margin:26px 0 0;padding:20px 22px;background:#fff;border:1px solid var(--line);border-radius:10px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.toc>b{display:block;font-size:15px;letter-spacing:.05em;color:var(--green);margin-bottom:10px}
+.toc ol{margin:0;padding-left:1.35em;font-size:18px;line-height:1.7}
+.toc li{margin-bottom:7px;color:#3a342d}
+.toc a{color:var(--blue);font-weight:700;text-decoration:none}.toc a:hover{text-decoration:underline}
+.toc-hint{margin:12px 0 0!important;font-size:18px!important;color:var(--muted)!important;border-top:1px solid var(--line);padding-top:12px}
+.readmore{margin-top:24px;padding:20px 22px;background:var(--soft);border:1px solid var(--line);border-radius:12px}
+.readmore.near{margin:26px 0 6px;background:rgba(86,137,184,.07);border-color:#bcd0e2}
+.readmore.near b{color:var(--blue);font-size:18px}
+.readmore.near li{font-size:17px;line-height:1.7;margin-bottom:10px}
+.readmore b{display:block;margin-bottom:10px;font-size:19px}
+.readmore ul{margin:0;padding-left:1.25em}
+.readmore a{color:var(--blue);font-weight:700;text-decoration:none}
+.readmore a:hover{text-decoration:underline}
+@media(max-width:820px){.tablewrap table{min-width:560px;font-size:18px}.tablewrap{position:relative}.tablewrap::after{content:"表格可左右滑動 →";position:sticky;left:0;display:block;font-size:15px;color:var(--muted);background:var(--soft);border-top:1px solid var(--line);padding:7px 12px;width:100%}}
+@media(max-width:860px){
+ nav.top .container{grid-template-columns:auto 1fr auto;padding:10px 16px;gap:12px}
+ .nav-brand-img img{height:32px}
+ .nav-toggle{display:block;justify-self:end}
+ nav.top ul.nav-menu{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(254,252,248,.98);backdrop-filter:blur(14px);border-bottom:1px solid #d8cdb8;flex-direction:column;gap:0;padding:8px 0;box-shadow:0 10px 24px rgba(107,74,42,.08)}
+ nav.top ul.nav-menu.open{display:flex}
+ nav.top ul.nav-menu li{border-bottom:1px solid #e8dfc9}
+ nav.top ul.nav-menu li:last-child{border-bottom:none}
+ nav.top ul.nav-menu a{display:block;padding:14px 20px;font-size:1.06rem}
+}
+/* 滑鼠暖光暈（與首頁同一支 spotlight.js） */
+body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradient(var(--sp-radius) circle at var(--mx,50%) var(--my,50%),var(--sp-shadow) 0%,var(--sp-shadow-edge) 45%,transparent 75%);pointer-events:none;z-index:9999;mix-blend-mode:multiply;transition:background .06s linear}
+.hero{position:relative;overflow:hidden;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:72px;padding:96px clamp(20px,6vw,88px) 80px;background:linear-gradient(180deg,#fffcf0 0%,#f9e9d2 100%);color:#1a1612;border-bottom:1px solid #d8cdb8}
+.hero .wc{position:absolute;border-radius:50%;filter:blur(60px);pointer-events:none;z-index:0}
+.hero .wc1{width:420px;height:360px;top:-120px;right:-80px;background:#e8884b;opacity:.15}
+.hero .wc2{width:360px;height:300px;bottom:-110px;left:-70px;background:#5f7553;opacity:.13}
+.hero .wc3{width:280px;height:260px;top:34%;left:14%;background:#a08144;opacity:.10}
+.hero>div{flex:none;width:860px;max-width:100%;position:relative;z-index:2}
+.hero-figure{margin:0;width:620px;flex:none;position:relative;z-index:2}
+.hero-figure img{display:block;width:100%;border-radius:16px;border:1px solid #d8cdb8;box-shadow:0 18px 45px rgba(107,74,42,.16);cursor:zoom-in}
+.hero-figure figcaption{margin-top:10px;font-size:14px;line-height:1.6;color:#6a635a}
+.inline-figure{margin:30px auto 8px;max-width:820px}
+.inline-figure img{display:block;width:100%;border-radius:14px;border:1px solid var(--line);box-shadow:var(--shadow);background:#fff;cursor:zoom-in}
+.inline-figure figcaption{font-size:14px;line-height:1.6;color:var(--muted);margin-top:10px}
+.lightbox{position:fixed;inset:0;z-index:10000;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(12,10,8,.92);cursor:zoom-out;backdrop-filter:blur(4px)}
+.lightbox.open{display:flex}.lightbox img{max-width:96vw;max-height:92vh;border-radius:10px;box-shadow:0 24px 60px rgba(0,0,0,.5)}
+.lightbox-close{position:fixed;top:18px;right:24px;color:#fff;font-size:34px;line-height:1;font-weight:700;cursor:pointer;opacity:.85}
+.kicker{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.55rem;color:#7a5c3a;font-weight:500}
+.hero h1{max-width:none;margin:16px 0 18px;font-size:clamp(36px,6vw,72px);line-height:1.08;overflow-wrap:anywhere}
+.hero p{max-width:none;font-size:clamp(18px,2vw,23px);line-height:1.62;color:#3a342d}
+.cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
+.cta a{display:inline-flex;align-items:center;text-decoration:none;border-radius:8px;padding:12px 16px;font-weight:900}
+.cta .primary{background:#fff;color:#1a1612}.cta .ghost{border:1px solid rgba(255,255,255,.32);color:#fff;background:rgba(255,255,255,.08)}
+.section{padding:54px clamp(20px,6vw,88px);border-top:1px solid var(--line)}
+.inner{width:min(1000px,100%);margin:0 auto}
+.section h2{font-size:clamp(26px,4.2vw,48px);line-height:1.12;margin:0 0 18px}
+.section h3{font-size:clamp(21px,3vw,30px);line-height:1.2;margin:30px 0 12px}
+.lead{font-size:clamp(18px,1.6vw,22px);line-height:1.7;color:#3a342d;max-width:900px}
+.section p{font-size:18px;line-height:1.74;color:#3a342d}.section p+p{margin-top:14px}
+.section ul,.section ol{padding-left:1.4em;font-size:18px;line-height:1.74;color:#3a342d}.section li{margin-bottom:8px}
+.meaning{margin:22px 0;padding:16px 18px;border-left:5px solid var(--blue);background:rgba(86,137,184,.12);border-radius:6px;line-height:1.7;font-size:19px}
+.meaning b{display:block;color:var(--blue);margin-bottom:4px}
+.caveat{margin:0 0 8px;padding:16px 18px;border-left:5px solid var(--orange);background:rgba(232,90,79,.1);border-radius:6px;line-height:1.7;font-size:18px;color:#3a342d}
+.caveat b{display:block;color:var(--orange);margin-bottom:4px}
+.infocard{background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px 24px 22px;box-shadow:0 8px 22px rgba(107,74,42,.08);margin-top:8px}
+.infocard-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.info-item{padding:18px 14px 0}
+.info-item b{display:block;font-size:14px;font-weight:900;letter-spacing:.04em;margin-bottom:7px;text-transform:uppercase}
+.info-item:nth-child(1) b{color:var(--green)}.info-item:nth-child(2) b{color:var(--orange)}.info-item:nth-child(3) b{color:var(--blue)}
+.info-item p{margin:0;font-size:17px;line-height:1.6;color:#3a342d}
+.tagrow{display:flex;flex-wrap:wrap;gap:7px;margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
+.tag{font-size:14px;color:var(--muted);background:var(--soft);border:1px solid var(--line);border-radius:999px;padding:4px 11px}
+.duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:24px}
+.duo.stack{grid-template-columns:1fr}
+.duo .card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:22px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.duo .card.a{border-color:var(--orange)}.duo .card.b{border-color:var(--green);box-shadow:0 8px 24px rgba(95,117,83,.16)}
+.duo .card small{display:block;font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.04em;margin-bottom:9px}
+.duo .card.a small{color:var(--orange)}.duo .card.b small{color:var(--green)}
+.duo .card b{display:block;font-size:22px;line-height:1.3;margin-bottom:12px}.duo .card.a b{color:#c0512f}.duo .card.b b{color:#4a7a59}
+.duo .card p{margin:0;color:#3a342d;line-height:1.75;font-size:18px}
+.workflow-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:24px}
+.workflow-step{background:#fff;border:1px solid var(--line);border-radius:8px;padding:18px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.workflow-step small{display:block;color:var(--orange);font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;margin-bottom:9px}
+.workflow-step b{display:block;font-size:18px;line-height:1.3;margin-bottom:9px}
+.workflow-step p{margin:0;color:#3a342d;line-height:1.6;font-size:16px}
+.codeblock{background:var(--dark);color:#f3ead9;border-radius:8px;padding:18px 20px;font:500 14px/1.65 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;overflow-x:auto;white-space:pre-wrap;margin:20px 0;box-shadow:0 8px 22px rgba(107,74,42,.12)}
+.codeblock .c{color:#f6d7a6;font-weight:600}
+.skillcard{background:#fff;border:1px solid var(--green);border-radius:12px;padding:24px;box-shadow:0 10px 26px rgba(95,117,83,.16);margin-top:8px}
+.skillcard b{display:block;font-size:21px;margin-bottom:8px}
+.skillcard p{margin:0 0 16px;font-size:17px;line-height:1.65;color:#3a342d}
+.cta-band{background:#e6f0e5;color:#3a342d}.cta-band .section{border-top:none}
+.cta-band .inner{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(260px,.85fr);gap:26px;align-items:start}
+.cta-band h2{font-size:clamp(26px,4vw,44px);margin:0 0 16px}.cta-band p,.cta-band .lead{color:rgba(58,52,45,.9);font-size:18px;line-height:1.72}
+.cta-card{border:1px solid #cfe0d2;background:#fbfdfa;border-radius:8px;padding:22px}
+.cta-card b{display:block;color:#48b178;margin-bottom:10px;font-size:18px}.cta-card p{margin:0 0 14px}
+.footer{padding:30px clamp(20px,6vw,88px);font-size:14px;color:var(--muted);background:#fff;border-top:1px solid var(--line)}
+.footer-inner{width:min(1000px,100%);margin:0 auto}
+.footer-links{display:flex;flex-wrap:wrap;gap:6px 12px;margin-bottom:14px}.footer-links a{color:var(--blue);font-weight:900;text-decoration:none;font-size:14px}
+.footer-brand{font-weight:900;font-size:15px;margin-bottom:10px}.footer-note{font-size:13px;line-height:1.6}
+@media(max-width:820px){.inline-figure.portrait{max-width:340px}.infocard-grid{grid-template-columns:1fr}.duo{grid-template-columns:1fr}.workflow-grid{grid-template-columns:1fr}.cta-band .inner{grid-template-columns:1fr}.section{padding:40px 20px}.hero{min-height:52vh;flex-direction:column;justify-content:flex-start;align-items:flex-start;gap:24px}.hero>div{width:100%}.hero-figure{width:100%;max-width:560px}}
+@media(max-width:820px){html,body{overflow-x:hidden}.hero h1{word-break:break-word}}
+.article-date{margin-top:14px;font-size:15px;color:var(--muted)}
+.part-divider{background:var(--soft);border-top:2px solid var(--line);border-bottom:2px solid var(--line)}
+.part-divider h2.part{font-size:30px!important;color:var(--green)!important;margin:0 0 8px!important}
+.part-divider .part-sub{margin:0!important;color:var(--muted);font-size:18px}
+.copywrap{position:relative}
+.copybtn{position:absolute;top:10px;right:10px;z-index:2;background:#fff;color:#1a1612;border:1px solid var(--line);border-radius:8px;padding:8px 14px;font-size:16px;font-weight:700;cursor:pointer}
+.copywrap .codeblock{padding-top:56px;font-size:16px}
+.hero{gap:48px}.hero>div{width:560px}.hero-figure{width:500px}.hero h1{font-size:clamp(30px,3vw,44px);line-height:1.16}.hero p{font-size:clamp(16px,1.35vw,19px)}
+.video-embed{position:relative;width:100%;aspect-ratio:16/9;margin:22px 0 8px;border-radius:14px;overflow:hidden;border:1px solid var(--line);box-shadow:var(--shadow);background:#000}
+.video-embed iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+@media(max-width:820px){.hero>div{width:100%}.hero-figure{width:100%;max-width:560px}}
+.hero.nofig>div{width:860px}
+.sim{--name-w:64px;margin:22px 0 10px;padding:18px;background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.sim{position:relative}
+button.sim-bar{border:0;padding:0;cursor:pointer;min-width:12px;font:inherit}
+button.sim-bar:hover{opacity:.9}
+button.sim-bar:focus-visible{outline:3px solid var(--blue);outline-offset:2px;opacity:1}
+.sim-bar.sel{opacity:1!important;box-shadow:0 0 0 3px #1a1612!important}
+.sim-pop{position:absolute;z-index:20;width:min(380px,calc(100% - 16px));background:#fff;border:2px solid var(--line);border-radius:12px;padding:14px 16px 12px;box-shadow:0 18px 40px rgba(26,22,18,.18)}
+.sim-pop small{display:block;font-size:14px;font-weight:700;color:var(--muted);margin-bottom:4px}
+.sim-pop b{display:block;font-size:18px;line-height:1.4;margin-bottom:6px;padding-right:28px}
+.sim-pop p{margin:0!important;font-size:16px!important;line-height:1.65!important;color:#3a342d}
+.sim-pop.lane-me{border-color:#e85a4f}.sim-pop.lane-cl{border-color:#5f7553}.sim-pop.lane-sub{border-color:#a08144}.sim-pop.lane-cx{border-color:#5689b8}
+.sim-pop-x{position:absolute;top:6px;right:8px;width:32px;height:32px;border:0;background:transparent;font-size:22px;line-height:1;cursor:pointer;color:#6a635a}
+.sim-controls{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:10px}
+.sim-controls button{font:700 16px/1 inherit;padding:10px 14px;border-radius:8px;border:1px solid var(--line);background:var(--soft);color:#1a1612;cursor:pointer;min-height:44px}
+.sim-controls button:focus-visible,#sim-range:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+.sim-clock{margin-left:auto;font:700 22px/1 "JetBrains Mono",ui-monospace,monospace;color:#1a1612}
+#sim-range{width:100%;margin:6px 0 14px;accent-color:#5f7553;min-height:32px}
+.sim-lanes{position:relative}
+.sim-lane{display:grid;grid-template-columns:var(--name-w) 1fr;align-items:center;min-height:40px;border-bottom:1px dashed var(--line)}
+.sim-name{font-size:15px;font-weight:700;color:#3a342d}
+.sim-track{position:relative;height:28px}
+.sim-bar{position:absolute;top:4px;height:20px;border-radius:5px;opacity:.28;transition:opacity .15s}
+.sim-bar.past{opacity:.55}.sim-bar.on{opacity:1;box-shadow:0 0 0 2px #1a1612}
+.lane-me .sim-bar{background:#e85a4f}.lane-cl .sim-bar{background:#5f7553}.lane-sub .sim-bar{background:#a08144}.lane-cx .sim-bar{background:#5689b8}
+.sim-bar.k-wait{background-image:repeating-linear-gradient(45deg,rgba(255,255,255,.75) 0 4px,transparent 4px 8px)}
+.sim-bar.k-point{border-radius:50%;height:16px;top:6px}
+.sim-cursor{position:absolute;top:0;bottom:22px;width:2px;background:#1a1612;z-index:3;pointer-events:none}
+.sim-axis{display:flex;justify-content:space-between;margin-left:var(--name-w);font-size:13px;color:var(--muted);padding-top:4px}
+.sim-now{margin-top:14px;display:grid;gap:8px}
+.sim-row{display:grid;grid-template-columns:var(--name-w) 1fr;gap:2px 10px;padding:10px 12px;border-radius:8px;background:var(--soft);font-size:17px;line-height:1.55}
+.sim-row b{grid-row:span 2}.sim-row small{grid-column:2;color:var(--muted);font-size:15px}
+.sim-row.lane-me b{color:#c0473d}.sim-row.lane-cl b{color:#4a5e40}.sim-row.lane-sub b{color:#7d6534}.sim-row.lane-cx b{color:#3f6f9a}
+.sim-legend{font-size:16px!important;color:var(--muted)!important}
+.lg{display:inline-block;margin:0 10px 0 4px;padding:0 8px;border-radius:4px;color:#fff;font-size:14px}
+.lg-me{background:#e85a4f}.lg-cl{background:#5f7553}.lg-sub{background:#a08144}.lg-cx{background:#5689b8}
+.dual>.flow-box.end,.dual>.flow-arrow{align-self:center}
+.dsim{position:relative;margin:22px 0 10px;padding:18px;background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.ds-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.ds-svg{display:block;width:100%;min-width:760px;height:auto}
+.ds-svg text{font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC",sans-serif;text-anchor:middle}
+.ds-t{font-size:17px;font-weight:800;fill:#1a1612}.ds-t.w{fill:#fff}
+.ds-s{font-size:15px;fill:#3a342d}
+.ds-a{font-size:14px;font-weight:700}.ds-a.g{fill:#4a5e40}.ds-a.b{fill:#3f6f9a}
+.ds-lane{font-size:16px;font-weight:800}.ds-lane.g{fill:#4a5e40}.ds-lane.b{fill:#3f6f9a}
+.ds-c.g{fill:#5f7553}.ds-c.b{fill:#5689b8}.ds-c.k{fill:#1a1612}.ds-c.pass{stroke:#1a1612;stroke-width:3}
+.ds-box{fill:#fff;stroke-width:2}.ds-box.g{stroke:#5f7553}.ds-box.b{stroke:#5689b8}.ds-box.k{stroke:#1a1612}.ds-box.soft{fill:#faf5ec}
+.ds-path{fill:none;stroke-width:3}.ds-path.g{stroke:#5f7553}.ds-path.b{stroke:#5689b8}.ds-path.k{stroke:#1a1612}
+.ds-path.thin{stroke-width:2;stroke-dasharray:6 5}
+.ds-svg g[data-s]{transition:opacity .35s}
+.ds-svg g[data-s].fut{opacity:.07}
+.ds-svg g[data-s].past{opacity:.45}
+.ds-svg g[data-s].cur{opacity:1}
+.ds-svg.full g[data-s]{opacity:1!important}
+.ds-pop{max-height:none}.ds-pop.c-g{border-color:#5f7553}.ds-pop.c-b{border-color:#5689b8}.ds-pop.c-k{border-color:#1a1612}
+.sim-pop ul{margin:6px 0 0!important;padding-left:1.2em!important}.sim-pop li{font-size:16px!important;line-height:1.6!important;color:#3a342d;margin:2px 0}
+.sim-pop p+p,.sim-pop p+ul,.sim-pop ul+p{margin-top:8px!important}
+.ds-now ol{margin:8px 0 0;padding-left:1.4em}.ds-now li{font-size:16px;line-height:1.6}
+.ds-node{cursor:pointer}.ds-node:focus{outline:none}.ds-node:focus-visible rect,.ds-node:focus-visible circle{stroke:#5689b8;stroke-width:4}
+.ds-node.sel rect,.ds-node.sel circle{stroke:#e85a4f;stroke-width:4}
+.ds-hint{font-size:15px!important;color:var(--muted)!important;margin:6px 0 0!important}
+.ds-now{margin-top:12px;padding:12px 14px;border-radius:10px;background:var(--soft);font-size:17px;line-height:1.6}
+.ds-now small{display:block;font-size:14px;font-weight:700;color:var(--muted)}
+.ds-now b{display:block;font-size:19px;margin:2px 0}
+@media(prefers-reduced-motion:reduce){.ds-svg g[data-s]{transition:none}}
+.ds-text{margin:16px 0}.ds-text summary{cursor:pointer;font-weight:700;font-size:18px;padding:8px 0}
+.dual{margin:24px 0;display:flex;flex-direction:column;gap:10px}
+.stage{display:flex;gap:12px;align-items:flex-start;margin-top:8px}
+.stage-n{flex:none;width:34px;height:34px;border-radius:50%;background:#1a1612;color:#fff;font-weight:900;font-size:17px;display:flex;align-items:center;justify-content:center}
+.stage b{display:block;font-size:20px;line-height:1.4;padding-top:4px}
+.stage p{margin:4px 0 0!important}
+.track{background:#fff;border:2px solid var(--line);border-left-width:8px;border-radius:12px;padding:14px 16px}
+.track small{display:block;font-size:14px;font-weight:700;margin-bottom:4px}
+.track b{display:block;font-size:18px;line-height:1.4;margin-bottom:4px}
+.track ul,.cmp-col ul{margin:6px 0 0;padding-left:1.2em;font-size:16px!important;line-height:1.6!important}
+.track li,.cmp-col li{margin-bottom:4px}
+.track.cl{border-color:#5f7553}.track.cl small{color:#4a5e40}
+.track.cx{border-color:#5689b8}.track.cx small{color:#3f6f9a}
+.cmp{display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:10px}
+.cmp-col{background:#fff;border:2px dashed #1a1612;border-radius:12px;padding:12px 14px}
+.cmp-col small{display:block;font-size:14px;font-weight:900;margin-bottom:2px}
+.cmp-col.both{background:#f4f1ea}
+.cmp-col.cx{border-color:#5689b8}.cmp-col.cx small{color:#3f6f9a}
+.cmp-col.cl{border-color:#5f7553}.cmp-col.cl small{color:#4a5e40}
+.cmp-note{background:var(--soft);border-radius:10px;padding:10px 14px;font-size:16px;line-height:1.6;color:#3a342d}
+.cmp-note.sub{border-left:6px solid #a08144}
+@media(max-width:820px){.cmp{grid-template-columns:1fr}.stage b{font-size:18px}}
+.flow{margin:24px 0;display:flex;flex-direction:column;align-items:center;gap:6px}
+.flow-row.two{display:grid;grid-template-columns:1fr 1fr;gap:14px;width:100%}
+.flow-box{width:100%;max-width:560px;background:#fff;border:2px solid var(--line);border-radius:12px;padding:14px 16px;text-align:center;box-shadow:0 6px 16px rgba(107,74,42,.07)}
+.flow-box small{display:block;font-size:14px;font-weight:700;letter-spacing:.03em;margin-bottom:4px}
+.flow-box b{display:block;font-size:19px;line-height:1.35}
+.flow-box span{display:block;font-size:16px;color:var(--muted);margin-top:4px;line-height:1.5}
+.flow-box.cl{border-color:#5f7553}.flow-box.cl small{color:#4a5e40}
+.flow-box.cx{border-color:#5689b8}.flow-box.cx small{color:#3f6f9a}
+.flow-box.sub{border-color:#a08144}.flow-box.sub small{color:#7d6534}
+.flow-box.join{border-style:dashed;border-color:#1a1612}
+.flow-box.pass{background:#eef4ea}
+.flow-box.end{background:var(--soft)}
+.flow-note{font-size:15px;color:var(--orange);font-weight:700}
+.flow-arrow{font-size:17px;color:var(--muted);font-weight:700}
+.flow-loop{display:flex;align-items:center;gap:8px;width:100%}
+.flow-loop .flow-box{flex:1}
+.flow-arrow.side{white-space:nowrap;font-size:15px}
+@media(max-width:820px){.flow-loop{flex-direction:column}.flow-arrow.side{transform:none}.flow-row.two{grid-template-columns:1fr}.sim{padding:12px;--name-w:54px}.sim-clock{font-size:18px}}
+@media(prefers-reduced-motion:reduce){.sim-bar{transition:none}}
+</style>
+</head>
+<body class="spotlight">
+<!-- 官網共用導航列 nav.top：與首頁/總站同一條，文章不要自己另做極簡 topbar（江江 2026-06-25：要同一個框架、同一條導航列）。把對應頁面的 class="active" 標在自己那欄。
+     ⚠️ 下面 ul.nav-menu 整塊由 preflight 第 5 關 check-bilingual-nav.mjs 做「逐字比對」，
+        塞任何註解、多一個空白、換行位置不同都會被判導航不一致而擋下發布。要說明就寫在 <ul> 外面（像這裡）。
+        2026-08-16 修：原本的 EN 那行說明註解就夾在 <ul> 裡面，導致照範本起手的新文章一律卡第 5 關
+        （llm-rag-agent-mcp 與 rag-three-retrieval-modes 兩篇同時中招）。註解已移出來，<ul> 內保持乾淨。
+        萬一還是被擋，直接跑：node scripts/check-bilingual-nav.mjs --write --only=<你的檔案路徑> -->
+<nav class="top">
+  <div class="container">
+    <a class="nav-brand-img" href="../../index.html"><img src="../../images/footer-signature.png" alt="江江教練 | 江昱德"></a>
+    <button class="nav-toggle" aria-label="選單"><span></span><span></span><span></span></button>
+    <ul class="nav-menu">
+      <li><a href="../../index.html">首頁</a></li>
+      <li><a href="../../knowledge-architecture.html">知識架構</a></li>
+      <li><a href="../../courses.html">課程</a></li>
+      <li><a href="../../articles.html" class="active">深度文章</a></li>
+      <li><a href="../../skills.html">技能包下載</a></li>
+      <li><a href="../../offers.html">服務方案</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="hero nofig">
+  <div class="wc wc1"></div>
+  <div class="wc wc2"></div>
+  <div class="wc wc3"></div>
+  <div>
+    <div class="kicker">AI 工作流 · 迴圈工程</div>
+    <h1>我怎麼一句話，就讓我的 AI 把一支專題影片變成一篇深度文章？｜一句起手、途中補兩句：一支兩小時的演講影片，不到 40 分鐘跑完逐段報告、深度文章與兩家 AI 互相審稿</h1>
+    <p>我丟了一個 YouTube 網址，說「能不能詳細拆解，像之前國泰直播的影片那種」。一句話能起手，是因為之前做過一次。不到 40 分鐘，我拿到一份逐段報告和一篇審過三輪的深度文章；途中我又補了兩句，其中一句讓它順便把整套做法寫成技能包，目標是下次一句話就夠。這篇把那一晚拆開給你看。</p>
+    <div class="article-date">發佈 2026-09-29</div>
+  </div>
+</section>
+
+<main>
+
+<section class="section" id="start"><div class="inner">
+  <h2>那一句話，和最後拿到的三樣東西</h2>
+  <p class="lead">2026 年 9 月 28 日晚上，我在 Claude 的對話框貼了一支 YouTube 影片：唐鳳和丹增央措在 Platform 月台的公開對談，長 2 小時 17 分。我打的是：</p>
+  <div class="meaning"><b>起手那一句</b>「能不能詳細拆解，像之前國泰直播的影片那種。」</div>
+  <p>照實說，它在跑的途中我又補了兩句：一句是「國泰直播我轉深度文章那樣」，把目標從報告拉到文章；另一句是「以後要有專題演講轉文章的模式，你順便寫技能包好嗎」。之後我就沒再下指令，等它交件。</p>
+  <p>最後拿到三樣東西：</p>
+  <div class="tablewrap"><table>
+    <thead><tr><th>產出</th><th>是什麼</th><th>放在哪</th></tr></thead>
+    <tbody>
+      <tr><td>逐段觀點報告</td><td>43 段逐段重點，每段有時間碼、講者、原話，加上待查證清單</td><td>我的知識庫（自己回查用，不公開）</td></tr>
+      <tr><td>官網深度文章</td><td>給讀者看的整理，十個重點、查證框、可複製的提示詞。當晚只做到本機預覽，隔天補上十張圖卡後才上線</td><td><a href="/articles/audrey-tang-reverse-alignment/">每天用 AI，怎麼知道自己沒有被它牽著走？</a></td></tr>
+      <tr><td>新技能包模式</td><td>「專題演講轉文章」，設計成下次一句話就觸發，還要等下一支影片實際驗證</td><td>我的技能包資料夾</td></tr>
+    </tbody>
+  </table></div>
+  <div class="caveat"><b>先說清楚：這篇講的是那一次</b>下面的時間點，有檔案時間戳的精確到分鐘（例如字幕 22:12 下載、報告 22:18 存檔、網頁 22:26 建立、三輪審稿的開始與結束）；沒有時間戳的（第一個動作、我那兩句補充訊息、讀者走查回來的時間），是依執行順序推估，文中標「推估」。流程本身之後還會再調，這篇只描述 9 月 28 日那一次實際怎麼跑。</div>
+  <div class="toc"><b>這篇會講到</b><ol>
+    <li><a href="#timeline">一張會動的圖，看完那 39 分鐘</a></li>
+    <li><a href="#why-one">一句話為什麼夠：AI 先去翻上一次怎麼做</a></li>
+    <li><a href="#steps">八個步驟，一張表</a></li>
+    <li><a href="#dual">雙軌互審：我的 Claude 和 Codex 怎麼分工</a></li>
+    <li><a href="#single-dual">單軌還是雙軌：現在看問題大小決定</a></li>
+    <li><a href="#mistakes">AI 自己出錯、被抓到的地方</a></li>
+    <li><a href="#next-loop">部署之後，是另一個迴圈</a></li>
+    <li><a href="#your-turn">沒有這套系統，可以從哪裡開始</a></li>
+  </ol></div>
+</div></section>
+
+<section class="section" id="timeline"><div class="inner">
+  <h2>一張會動的圖，看完那 39 分鐘裡誰在做什麼</h2>
+  <p>四條線由上到下是：我、Claude（Anthropic 公司的 AI，這次主要在做事的那個）、Claude 另外開的小幫手（叫「子代理」，是另開的一個對話，專門假扮讀者試讀、在不知道我偏好的情況下比較標題）、Codex（另一家公司 OpenAI 的 AI，我平常簡稱它 CX）。</p>
+  <p><strong>先試一件事：</strong>拖到 22:15 左右，看看 Claude 和 Codex 是不是同時在跑、我在做什麼。每一個色塊都可以點，點開會浮出那一步的細節和時間紀錄。</p>
+  <div class="sim" id="sim" aria-label="39 分鐘流程動畫">
+    <div class="sim-controls">
+      <button type="button" id="sim-play" aria-label="播放">▶ 播放</button>
+      <button type="button" id="sim-prev" aria-label="上一個事件">◀ 上一步</button>
+      <button type="button" id="sim-next" aria-label="下一個事件">下一步 ▶</button>
+      <button type="button" id="sim-reset" aria-label="重播">↺ 重播</button>
+      <span class="sim-clock" id="sim-clock">22:11</span>
+    </div>
+    <input type="range" id="sim-range" min="0" max="1000" value="0" step="1" aria-label="時間進度，可用方向鍵移動">
+    <div class="sim-lanes" id="sim-lanes"></div>
+    <div class="sim-now" id="sim-now" aria-live="polite"></div>
+  </div>
+  <noscript><p>（這張圖需要 JavaScript。下一段的八步驟表是同一份內容的文字版。）</p></noscript>
+  <p class="sim-legend">圖例：實心色塊＝正在做；斜線＝在等別人；空白＝沒事；點色塊看細節。線條顏色：<span class="lg lg-me">我</span><span class="lg lg-cl">Claude</span><span class="lg lg-sub">子代理</span><span class="lg lg-cx">Codex</span></p>
+  <p>你剛才應該看到兩件事。第一，22:12 到 22:18 之間，Claude 自己在讀那 4.5 萬字的字幕、寫逐段報告，同一時間 Codex 在另一邊獨立挑重點、上網查證，兩邊互相看不到對方寫了什麼。第二，我那條線幾乎都是空的。起手一句、途中補兩句，其他時間都沒有再下指令。</p>
+</div></section>
+
+<section class="section" id="why-one"><div class="inner">
+  <h2>一句話為什麼夠：AI 第一個動作是去翻上一次怎麼做</h2>
+  <p>「像之前國泰直播的影片那種」這幾個字，才是那句話真正的份量。</p>
+  <p>9 月 15 日，我請 AI 把國泰金控技術年會一整天的直播整理成九份逐場報告；9 月 24 日，又把它做成一篇官網深度文章。那兩次都留下了檔案：報告放在知識庫的固定資料夾，做文章的過程另外寫成一份「證據檔」，記下標題怎麼定、讀者走查說了什麼、審稿改了哪幾條。</p>
+  <p>這次 Claude 收到那句話，第一個動作就是去找這些檔案：國泰的報告長什麼樣、分幾節，國泰那篇文章的網頁怎麼組、證據檔記了哪些項目。找到之後照著做。我不用再解釋一次「詳細拆解」是什麼意思。</p>
+  <div class="meaning"><b>所以一句話夠，是因為前面已經做過一次</b>我給的是一個指向上一次成品的指令。上一次做得越完整、紀錄留得越清楚，下一次要講的話就越少。</div>
+  <p>除了前例，它還會讀我知識庫裡的規則檔：做深度文章要走哪些關卡、標題要先寫三個讀者會搜尋的句子、要找另一家 AI 審稿、審不過不能交件。這些規則是之前一次次踩坑後寫下來的，這次它照著跑。</p>
+  <div class="readmore near"><b>把做法寫成 AI 能重複執行的檔案，我另外寫過</b><ul>
+    <li><a href="/articles/claude-skills-knowledge-assets/">Claude Skills 是什麼？把你的專業流程，變成 AI 能重複執行的知識資產</a>：這一段只講「有前例就能一句話」，那篇講技能包本身是什麼、怎麼寫。</li>
+  </ul></div>
+</div></section>
+
+<section class="section" id="steps"><div class="inner">
+  <h2>從貼網址到交件的八個步驟，一張表</h2>
+  <p>有檔案時間戳的精確到分鐘；標「推估」的是依執行順序估的。</p>
+  <div class="tablewrap"><table>
+    <thead><tr><th>時間</th><th>步驟</th><th>誰做</th><th>產出</th></tr></thead>
+    <tbody>
+      <tr><td>22:11（推估）</td><td>找前例：翻出國泰那次的報告和證據檔</td><td>Claude</td><td>知道要做成什麼樣子</td></tr>
+      <tr><td>22:12</td><td>抓字幕：確認影片有頻道自己上傳的中文字幕，下載下來</td><td>Claude</td><td>3985 行、約 4.5 萬字的字幕</td></tr>
+      <tr><td>22:12–22:18</td><td>兩軌同時跑：Claude 讀全文寫報告，Codex 獨立挑重點、上網查證</td><td>Claude＋Codex</td><td>逐段報告；Codex 的十個重點與十項查證</td></tr>
+      <tr><td>22:13</td><td>寫正文之前，先寫下三個讀者會搜尋的句子</td><td>Claude</td><td>工作標題</td></tr>
+      <tr><td>22:18–22:26</td><td>重排成讀者看得懂的文章，組成官網網頁，截桌機與手機畫面</td><td>Claude</td><td>文章網頁初版</td></tr>
+      <tr><td>22:27–22:31（讀者走查結束時間推估）</td><td>讀者走查（子代理假扮三種讀者試讀）、標題盲審（只給候選標題，不說我偏好哪個）；同時送 Codex 第一輪審稿</td><td>子代理＋Codex</td><td>一個硬退件、八個事實疑點、一份審稿意見</td></tr>
+      <tr><td>22:30–22:45</td><td>逐條修改；寫新技能包模式；送 Codex 第二輪、第三輪</td><td>Claude＋Codex</td><td>文章與技能包都修到通過</td></tr>
+      <tr><td>22:47–22:50</td><td>第三輪通過，放上官網看板（我管理網站文章進度的清單）等我看，寫工作日記</td><td>Claude</td><td>交件</td></tr>
+    </tbody>
+  </table></div>
+  <p>從 22:12 字幕下載，到 22:47 第三輪審稿回來，是 35 分鐘；從第一個動作（22:11，推估）到工作日記存檔（22:50），約 39 分鐘。</p>
+</div></section>
+
+<section class="section part-divider" id="dual"><div class="inner">
+  <h2 class="part">雙軌互審：我的 Claude 和 Codex 怎麼分工</h2>
+  <p class="part-sub">這一部回答「AI 寫的東西，我怎麼確認它是對的」。</p>
+</div></section>
+
+<section class="section" id="dual-flow"><div class="inner">
+  <h2>雙軌互審實際怎麼走：派工、各自跑、比對、整合、交叉審</h2>
+  <p>先分清楚兩個詞。<strong>單軌互審</strong>是一家 AI 做、另一家看過再出結果；<strong>雙軌互審</strong>是兩家各自做一份，互相看不到對方的，做完再比對、整合，最後還要交叉審。那晚文章內容走的是雙軌，下面照實際順序拆開。按「播放」或「下一步」一步步看；上面綠色是 Claude，下面藍色是 Codex。</p>
+  <div class="dsim" id="dsim" aria-label="雙軌互審動態流程圖">
+    <div class="sim-controls">
+      <button type="button" id="ds-play">▶ 播放</button>
+      <button type="button" id="ds-prev">◀ 上一步</button>
+      <button type="button" id="ds-next">下一步 ▶</button>
+      <button type="button" id="ds-full">▣ 完整圖</button>
+      <button type="button" id="ds-reset">↺ 重播</button>
+      <span class="sim-clock" id="ds-count">1 / 9</span>
+    </div>
+    <div class="ds-scroll"><svg viewBox="0 0 1000 540" class="ds-svg" role="img" aria-labelledby="ds-title">
+      <title id="ds-title">雙軌互審：同一份字幕派給 Claude 與 Codex，各自跑、比對、整合，再由 Codex 審三輪、Claude 核對 Codex 的查證</title>
+      <defs>
+        <marker id="ah-g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#5f7553"/></marker>
+        <marker id="ah-b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#5689b8"/></marker>
+        <marker id="ah-k" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#1a1612"/></marker>
+        <pattern id="fogp" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="8" height="8" fill="#f1ede5"/><line x1="0" y1="0" x2="0" y2="8" stroke="#ddd5c6" stroke-width="3"/></pattern>
+      </defs>
+      <!-- 步驟 1 派工 -->
+      <g data-s="1">
+        <text class="ds-lane g" x="150" y="112">A 軌｜Claude</text>
+        <text class="ds-lane b" x="150" y="440">B 軌｜Codex</text>
+        <g class="ds-node" data-n="src"><rect x="16" y="238" width="118" height="64" rx="10" class="ds-box k"/><text x="75" y="266" class="ds-t">同一份字幕</text><text x="75" y="288" class="ds-s">4.5 萬字</text></g>
+        <path class="ds-path g" d="M134,262 C165,262 165,140 188,140" marker-end="url(#ah-g)"/>
+        <path class="ds-path b" d="M134,278 C165,278 165,400 188,400" marker-end="url(#ah-b)"/>
+        <g class="ds-node" data-n="a0"><circle cx="210" cy="140" r="20" class="ds-c g"/><text x="210" y="146" class="ds-t w">A</text></g>
+        <g class="ds-node" data-n="b0"><circle cx="210" cy="400" r="20" class="ds-c b"/><text x="210" y="406" class="ds-t w">B</text></g>
+      </g>
+      <!-- 步驟 2 各自跑 -->
+      <g data-s="2">
+        <path class="ds-path g" d="M230,140 L378,140" marker-end="url(#ah-g)"/>
+        <path class="ds-path b" d="M230,400 L378,400" marker-end="url(#ah-b)"/>
+        <g class="ds-node" data-n="fog"><rect x="236" y="196" width="140" height="148" rx="10" fill="url(#fogp)" stroke="#cfc4b0"/><text x="306" y="264" class="ds-s">互相看不到</text><text x="306" y="284" class="ds-s">對方的稿</text></g>
+        <g class="ds-node" data-n="boxa"><rect x="236" y="20" width="140" height="92" rx="10" class="ds-box g"/><text x="306" y="46" class="ds-s">43 段逐段報告</text><text x="306" y="70" class="ds-s">12 個重點</text><text x="306" y="94" class="ds-s">23 項待查證</text></g>
+        <g class="ds-node" data-n="boxb"><rect x="236" y="428" width="140" height="92" rx="10" class="ds-box b"/><text x="306" y="454" class="ds-s">10 個重點</text><text x="306" y="478" class="ds-s">查證 10 項</text><text x="306" y="502" class="ds-s">8 處易寫錯</text></g>
+      </g>
+      <!-- 步驟 3 比對 -->
+      <g data-s="3">
+        <path class="ds-path g" d="M380,140 C430,140 430,262 462,262" marker-end="url(#ah-g)"/>
+        <path class="ds-path b" d="M380,400 C430,400 430,278 462,278" marker-end="url(#ah-b)"/>
+        <g class="ds-node" data-n="cmp"><circle cx="500" cy="270" r="36" class="ds-c k"/><text x="500" y="277" class="ds-t w">比對</text>
+          <rect x="436" y="318" width="128" height="76" rx="8" class="ds-box k"/><text x="500" y="342" class="ds-s">兩家都有 9</text><text x="500" y="364" class="ds-s">只有 Codex 1</text><text x="500" y="386" class="ds-s">只有 Claude 4</text></g>
+      </g>
+      <!-- 步驟 4 整合 -->
+      <g data-s="4">
+        <path class="ds-path g" d="M536,262 C566,262 566,140 590,140" marker-end="url(#ah-g)"/>
+        <g class="ds-node" data-n="int"><circle cx="614" cy="140" r="26" class="ds-c g"/><text x="614" y="146" class="ds-t w">整合</text><text x="614" y="190" class="ds-s">一篇文章</text></g>
+      </g>
+      <!-- 步驟 5 第 1 輪 -->
+      <g data-s="5">
+        <path class="ds-path g" d="M634,158 L688,378" marker-end="url(#ah-g)"/><text x="640" y="280" class="ds-a g">送審</text>
+        <g class="ds-node" data-n="r1"><circle cx="700" cy="400" r="24" class="ds-c b"/><text x="700" y="406" class="ds-t w">大修</text><text x="700" y="448" class="ds-s">第 1 輪</text></g>
+        <path class="ds-path b" d="M708,378 L752,160" marker-end="url(#ah-b)"/><text x="744" y="280" class="ds-a b">意見</text>
+        <g class="ds-node" data-n="a1"><circle cx="760" cy="140" r="20" class="ds-c g"/><text x="760" y="146" class="ds-t w">修</text></g>
+      </g>
+      <!-- 步驟 6 Claude 核對 Codex 的查證 -->
+      <g data-s="6">
+        <path class="ds-path g thin" d="M762,162 L762,470" marker-end="url(#ah-g)"/><text x="788" y="330" class="ds-a g" style="text-anchor:start">核對</text>
+        <g class="ds-node" data-n="chk"><rect x="690" y="474" width="144" height="54" rx="8" class="ds-box b"/><text x="762" y="496" class="ds-s">Codex 的查證</text><text x="762" y="516" class="ds-s">Claude 回頭核對</text></g>
+      </g>
+      <!-- 步驟 7 第 2 輪 -->
+      <g data-s="7">
+        <path class="ds-path g" d="M770,158 L808,378" marker-end="url(#ah-g)"/>
+        <g class="ds-node" data-n="r2"><circle cx="820" cy="400" r="24" class="ds-c b"/><text x="820" y="406" class="ds-t w">小修</text><text x="820" y="448" class="ds-s">第 2 輪</text></g>
+        <path class="ds-path b" d="M828,378 L866,160" marker-end="url(#ah-b)"/>
+        <g class="ds-node" data-n="a2"><circle cx="874" cy="140" r="20" class="ds-c g"/><text x="874" y="146" class="ds-t w">修</text></g>
+      </g>
+      <!-- 步驟 8 第 3 輪 -->
+      <g data-s="8">
+        <path class="ds-path g" d="M884,158 L918,378" marker-end="url(#ah-g)"/>
+        <g class="ds-node" data-n="r3"><circle cx="930" cy="400" r="26" class="ds-c b pass"/><text x="930" y="406" class="ds-t w">通過</text><text x="930" y="448" class="ds-s">第 3 輪</text></g>
+      </g>
+      <!-- 步驟 9 放上看板 -->
+      <g data-s="9">
+        <path class="ds-path k" d="M930,374 L930,312" marker-end="url(#ah-k)"/>
+        <g class="ds-node" data-n="end"><rect x="872" y="244" width="116" height="64" rx="10" class="ds-box k soft"/><text x="930" y="270" class="ds-s">放上看板</text><text x="930" y="292" class="ds-s">等我看</text></g>
+      </g>
+    </svg></div>
+    <p class="ds-hint">手機上圖比螢幕寬，可以左右滑動；每個圓圈和方框都可以點開看細節；播到第 9 步或按「完整圖」，整張流程會全部亮起來。</p>
+    <div class="ds-now" id="ds-now" aria-live="polite"></div>
+  </div>
+
+  <details class="ds-text"><summary>逐步文字版：五個階段與比對清單</summary>
+<div class="dual">
+    <div class="stage"><span class="stage-n">1</span><div><b>派工｜22:12</b><p>同一份字幕，同時交給兩家。Claude 自己讀；給 Codex 的指令只附字幕檔，不給 Claude 寫到一半的東西，並寫明不要把工作轉交給 Claude。</p></div></div>
+    <div class="stage"><span class="stage-n">2</span><div><b>兩家各自跑｜22:12–22:18，互相看不到對方</b></div></div>
+    <div class="flow-row two">
+      <div class="track cl"><small>A 軌｜Claude</small><b>讀完 4.5 萬字，寫逐段報告</b>
+        <ul><li>43 段逐段重點，每段有時間碼、講者、原話</li><li>12 個核心重點</li><li>23 項待查證（只列出來，沒有查）</li></ul></div>
+      <div class="track cx"><small>B 軌｜Codex</small><b>讀同一份字幕，挑重點、上網查</b>
+        <ul><li>10 個重點，每點附時間碼與講者判斷依據</li><li>上網查證 10 項台上說法，附來源網址</li><li>8 處容易寫錯的名稱與數字</li></ul></div>
+    </div>
+    <div class="stage"><span class="stage-n">3</span><div><b>比對結果</b><p>把兩邊的重點一條一條對起來。計算方式：同一件事，一家拆成兩點、另一家併成一點，算兩家都有。</p></div></div>
+    <div class="cmp">
+      <div class="cmp-col both"><small>兩家都有（9）</small><ul><li>AI 讓下游也能改上游（反向對齊）</li><li>不能等市場自己解決，以及等待的成本由誰承擔（Codex 拆成兩點，Claude 併成一點）</li><li>台灣經驗：共識三週、制度三年</li><li>AI 會向上管理，人只剩蓋章</li><li>新人還學得到：中間的紀錄看得懂</li><li>撞牆經驗寫成技能分享</li><li>「AI 生成」標籤不夠</li><li>先接住被遺漏的人</li></ul></div>
+      <div class="cmp-col cx"><small>只有 Codex 列為重點（1）</small><ul><li>安燈繩（Claude 只寫在逐段內容，沒列成重點）</li></ul></div>
+      <div class="cmp-col cl"><small>只有 Claude 列為重點（4）</small><ul><li>模型也要有版本號</li><li>馬和馬鞍交給不同家</li><li>不要跟馬賽跑（職場）</li><li>個人要有驗證和退出的權利</li></ul></div>
+    </div>
+    <div class="cmp-note"><b>查證這一欄也對起來：</b>Claude 列了 23 項待查證但沒查；Codex 獨立查了 10 項台上說法，2 項一致、8 項部分一致，多半是台上講得比實際更強。</div>
+    <div class="stage"><span class="stage-n">4</span><div><b>整合成一篇文章｜Claude</b><p>兩家都有的 9 點當主幹；Codex 多的 1 點、Claude 多的 4 點各自寫成一段；Codex 的查證寫成 7 個查證框，放在文章對應的段落；來源連結是第 1 輪審稿指出後才補上。</p></div></div>
+    <div class="stage"><span class="stage-n">5</span><div><b>交叉審：兩個方向都要審</b></div></div>
+    <div class="flow-row two">
+      <div class="track cx"><small>Codex 審 Claude</small><b>文章審三輪</b><ul><li>第 1 輪：大修</li><li>第 2 輪：小修</li><li>第 3 輪：通過</li></ul></div>
+      <div class="track cl"><small>Claude 審 Codex</small><b>查證不照抄</b><ul><li>一個服務的價格與隱私說明兩點，自己打開官方網頁再核對一次</li><li>8 個來源網址逐一確認打得開</li></ul></div>
+    </div>
+    <div class="cmp-note sub"><b>另外一道同家自查：</b>Claude 的子代理假扮三種讀者試讀、盲審三個候選標題，抓到「標題承諾的東西正文沒給」。</div>
+    <div class="flow-arrow">↓</div>
+    <div class="flow-box end"><b>放上官網看板，等我看</b></div>
+  </div>
+  </details>
+  <p>幾個設計上的重點：</p>
+  <ul>
+    <li><strong>B 軌拿不到 A 軌的草稿。</strong>兩個 AI 如果先看到對方的答案，很容易順著對方寫，比對就沒有意義了。</li>
+    <li><strong>比對時看重疊，也看各自多出來的。</strong>兩家都列到的 9 點，比較有把握是整場的主幹；各自多出來的 5 點，是單靠一家容易漏掉的東西。</li>
+    <li><strong>查證交給不寫稿的那一家，寫稿的那一家再回頭核對。</strong>這就是「交叉」：Codex 審 Claude 的文章，Claude 也審 Codex 的查證。</li>
+    <li><strong>審稿找另一家公司的 AI。</strong>寫稿的是 Anthropic 的 Claude，審稿的是 OpenAI 的 Codex，希望降低兩邊有同樣盲點的機會。</li>
+    <li><strong>同一位審稿者審到底。</strong>第二輪、第三輪都把上一輪的意見一起附上，請它逐條確認改了沒。</li>
+  </ul>
+</div></section>
+
+<section class="section" id="rounds"><div class="inner">
+  <h2>三輪審稿和讀者走查，各抓到了什麼</h2>
+  <div class="tablewrap"><table>
+    <thead><tr><th>關卡</th><th>判定</th><th>抓到的問題（節錄）</th></tr></thead>
+    <tbody>
+      <tr><td>讀者走查（三個人設）</td><td>一個硬退件（標題承諾的東西正文沒給，一定要改）</td><td>標題問「怎麼知道自己被牽著走」，正文只講「怎麼防」，沒有給判斷的方法。後來補了一段「四個訊號」</td></tr>
+      <tr><td>標題盲審</td><td>三個候選各有強弱</td><td>原本副標的「退出權」讀者看不懂；「資料留在自己手上」才接得住「機密資料能不能給 AI」這種搜尋</td></tr>
+      <tr><td>Codex 第 1 輪</td><td>大修</td><td>重點表的時間碼用了段落起點，跟正文引用對不上；查證框只寫「另一家 AI 查過」，沒附來源；幾處整理者的語氣用了最高級</td></tr>
+      <tr><td>Codex 第 2 輪</td><td>文章小修；技能包第一次送審，要改</td><td>「四個訊號」有幾句超出字幕內容；技能包缺「審完要修改、重跑、再送審」的閉環等，共 8 類修改</td></tr>
+      <tr><td>Codex 第 3 輪</td><td>文章與技能包都通過</td><td>逐條確認上一輪的意見都處理了</td></tr>
+    </tbody>
+  </table></div>
+  <p>第 1 輪審的其實是讀者走查之前的版本，所以時間碼那條在它回來之前已經改掉了。第 1 輪它抽查了 14 處引文與講者歸屬，全部和字幕一致。被抓到的問題包括：寫稿時加上去、字幕裡沒有的描述，查證沒附來源，時間碼對不準。</p>
+  <div class="readmore near"><b>兩個 AI 互審的三種強度，我另外排過</b><ul>
+    <li><a href="/articles/three-levels-of-cross-review/">怎麼設計讓兩個 AI 互審？：三種不同程度的審查機制設計</a>：這一段只講這一次實際怎麼審，那篇講審查的強度要怎麼依任務挑。</li>
+    <li><a href="/articles/ai-user-testing/">做完的東西想找人幫忙看，卻找不到人？｜AI 使用者測試</a>：這一段只講人設走查抓到什麼，那篇講人設怎麼設、問哪幾題。</li>
+  </ul></div>
+</div></section>
+
+<section class="section" id="single-dual"><div class="inner">
+  <h2>單軌還是雙軌：現在看問題大小決定</h2>
+  <p>以前我有兩種做法：單軌互審和雙軌互審。單軌是一個 AI 做完、另一個 AI 看過就出結果；雙軌是兩邊各自做、再互相審，就是上面那張圖的前半段。</p>
+  <p>說真的，我最近發現我很少用單軌互審。為什麼？因為現在模型夠聰明了，像 Opus 5.5 真是夠聰明的。比較簡單的，或者是不重要的問題，就直接 Opus 5.5 自己跑就好了，沒什麼大問題。比較複雜的或比較重要的，那就是直接雙軌互審。</p>
+  <div class="tablewrap"><table>
+    <thead><tr><th>情況</th><th>我現在的做法</th></tr></thead>
+    <tbody>
+      <tr><td>比較簡單的，或不重要的問題</td><td>Opus 5.5（Claude 目前的高階模型）自己跑就好</td></tr>
+      <tr><td>比較複雜的，或比較重要的問題</td><td>直接雙軌互審</td></tr>
+      <tr><td>單軌互審（一個做、一個審）</td><td>最近很少用</td></tr>
+    </tbody>
+  </table></div>
+  <div class="meaning"><b>流程不是一定的</b>會隨著環境、需求、模型能力成長而變動。這篇畫出來的是 9 月 28 日那一次的樣子：文章用了雙軌，技能包其實用了單軌。換一個題目、換一代模型，我可能又會調。</div>
+</div></section>
+
+<section class="section" id="mistakes"><div class="inner">
+  <h2>AI 自己出錯、被抓到的地方</h2>
+  <p>不到 40 分鐘跑完，不代表中間都沒出錯。這幾個是那晚實際發生、後來被抓出來的：</p>
+  <ul>
+    <li><strong>把審稿意見存成空檔案。</strong>（記在那晚的工作日記裡）第二輪意見回來後，Claude 用搜尋關鍵字的方式把意見擷取成檔案，關鍵字沒對到，存下來的是空的。它在送第三輪之前發現，停掉重送。如果沒發現，第三輪審稿者會讀到一份空的意見。</li>
+    <li><strong>手機版的封面圖超出畫面。</strong>官網文章的範本裡有一行桌機的寬度設定，把手機的設定蓋掉了。截手機畫面才看出來；國泰那篇已經上線的文章也有同樣的問題，另外開了一張待辦處理。</li>
+    <li><strong>新規則當下自己沒做到。</strong>審稿後技能包新增了一條「影片自己上傳的字幕也要抽查，對照影片聽一遍」，但那篇文章當晚沒做。隔天早上補做：抽三段各兩分鐘，用本機語音辨識轉一次，和字幕對照，內容一致。</li>
+  </ul>
+  <div class="caveat"><b>這些錯誤是怎麼被發現的</b>前兩個是當晚發現的：截手機畫面時看到版面問題，送第三輪前檢查意見檔時看到空檔案。字幕抽查是審稿後新增的規則，當晚沒做，隔天才補。</div>
+  <div class="readmore near"><b>AI 說它看過影片，其實沒看，我另外寫過</b><ul>
+    <li><a href="/articles/ai-said-it-watched-the-video/">AI 交出一份很專業的分析，但它根本沒看過那支影片</a>：這一段講的是流程抓到的小錯，那篇講為什麼一定要讓 AI 拿到真正的字幕或原文。</li>
+  </ul></div>
+</div></section>
+
+<section class="section" id="skill"><div class="inner">
+  <h2>目標是下次一句話就夠：把這次的做法寫成技能包</h2>
+  <p>我途中補的第三句「以後要有專題演講轉文章的模式」，讓 Claude 在交件前把整套做法寫成一個新的技能包模式（技能包就是寫給 AI 看的一份做事說明，下次它照著做）。技能包在文章第 2 輪時第一次送 Codex 審，被要求做 8 類修改，文章第 3 輪時技能包複審通過。</p>
+  <p>照實說，技能包這部分是單軌：Claude 寫、Codex 審，沒有兩邊各寫一版再比。雙軌只用在文章內容上。</p>
+  <p>寫進去的包括：</p>
+  <ul>
+    <li><strong>兩條路徑：</strong>只說「詳細拆解」就只做報告，做完問要不要轉文章；說「轉文章」就兩樣都做。</li>
+    <li><strong>跟別的流程怎麼分：</strong>產品發布會、新聞事件走另一套趨勢文章流程；我自己的講座轉文章也另外有一套，因為要換成讀者不在現場的寫法。</li>
+    <li><strong>紅線：</strong>引號內只放字幕原文；講者的推測不寫成事實；對特定公司的指控沒有來源就不放正文；整理者自己的判讀要標出來。</li>
+    <li><strong>審稿閉環：</strong>審完要修改、重跑檢查、送回同一位審稿者；大修或讀者走查有硬退件，就不能交件；最多三輪，過不了就列選項給我決定。</li>
+  </ul>
+  <p>技能包已經設計成：貼一個演講網址，說「專題演講轉文章」或「像國泰那樣拆解」就會觸發這一套。它還沒在下一支影片上實際跑過，要等下一次才算驗證。</p>
+  <div class="readmore near"><b>讓 AI 自己跑完一整圈，我另外寫過</b><ul>
+    <li><a href="/articles/what-is-loop-engineering/">每件事 AI 都要我確認，怎麼可以更自動？｜什麼是迴圈工程</a>：這一段是一個具體例子，那篇講迴圈工程本身：AI 做完自己檢查、發現問題自己修。</li>
+  </ul></div>
+</div></section>
+
+<section class="section" id="next-loop"><div class="inner">
+  <h2>部署之後，是另一個迴圈：熟練的任務可以把好幾個迴圈接起來</h2>
+  <p>上面那張動畫圖，我那條線最後一格紅色，就是準備部署。</p>
+  <div class="meaning"><b>我的習慣</b>部署之後又是另外一個新的迴圈，整個部署又是一個迴圈。其實也可以全部跑完，但是因為我的習慣是我還是會稍微看過一下，沒問題再部署。但如果有些是比較熟練的任務，其實是可以把好幾個迴圈接在一起的，比如說這個我就說部署，然後另外生圖卡、生脆文等等之類的。</div>
+  <p>唐鳳那篇就是這樣接下去的。隔天早上我說了一句「給我短版脆文＋咪卡輪播卡，輪播卡做好後補回深度文章，然後部署」，一句話裡接了幾個迴圈：</p>
+  <div class="tablewrap"><table>
+    <thead><tr><th>時間</th><th>迴圈</th><th>做了什麼</th></tr></thead>
+    <tbody>
+      <tr><td>09:56</td><td>脆文</td><td>寫 245 字的短版脆文，重點交給圖卡</td></tr>
+      <tr><td>09:56–10:17</td><td>輪播卡</td><td>Claude 寫十張分鏡，Codex 生圖，Claude 逐張檢查角色、文字、版面，十張一次通過</td></tr>
+      <tr><td>09:58 起</td><td>上線前檢查</td><td>生圖的空檔，抽三段各兩分鐘的影片聲音，和字幕對照，內容一致（音訊 09:58–09:59 下載，抽查完成時間沒有留檔）</td></tr>
+      <tr><td>10:17–10:20</td><td>補回文章、部署</td><td>十張卡放進文章對應的段落，10:20 上線，再自己打開正式網址檢查</td></tr>
+    </tbody>
+  </table></div>
+  <p>時間取自檔案與發布紀錄。脆文和輪播卡目前是草稿，發到 Threads 還是我自己決定。</p>
+</div></section>
+
+<section class="section" id="your-turn"><div class="inner">
+  <h2>沒有這套系統，可以從哪裡開始</h2>
+  <p>我那晚用的是 Claude 的桌面版加 Codex 的命令列工具，背後還有一個累積了很久的知識庫。你不用先有這些，下面三件事用網頁版的 ChatGPT、Claude 或 Gemini 就做得到：</p>
+  <div class="workflow-grid">
+    <div class="workflow-step"><small>第一件</small><b>讓 AI 拿到真正的字幕</b><p>電腦版 YouTube 的影片說明欄最下面，有些影片有「顯示轉錄稿」，打開後可以整段複製。也可以把網址丟進 Google 的 NotebookLM 讀影片。只給網址，AI 可能根本沒看到內容。</p></div>
+    <div class="workflow-step"><small>第二件</small><b>第一次做好之後，把成品存成檔案</b><p>存成一份文件，下次附上它，說「照這份的格式做」。有 ChatGPT 或 Claude 的「專案」功能，就把它放進專案的檔案裡，每次對話都讀得到。</p></div>
+    <div class="workflow-step"><small>第三件</small><b>請另一家 AI 看一遍</b><p>用 ChatGPT 寫的，就請 Claude 或 Gemini 審；反過來也行。把字幕一起給它，請它對照。公開影片沒問題；公司內部會議的逐字稿，先確認公司允不允許送到外部的 AI。</p></div>
+  </div>
+  <p>第一件可以用下面這段提示詞。字幕如果是 YouTube 自動產生的，人名、公司名和數字常常聽錯，先對照影片看個兩三段。字幕貼在後面，貼給你正在用的 AI：</p>
+  <div class="copywrap">
+    <button type="button" class="copybtn" data-copy-target="report-prompt">複製這段話</button>
+    <pre class="codeblock" id="report-prompt">下面是一支演講影片的字幕（每行開頭是時間碼）。請整理成一份逐段報告，規則如下：
+
+1. 先寫一句話主旨，並標明這是你的判讀。
+2. 依內容切成段落，每段寫：時間碼、說話的人、這段講了什麼。字幕沒寫是誰在說話的，依上下文判斷，判斷不了就寫「講者待確認」。
+3. 加引號的句子只能用字幕原文，改寫過的不要加引號。一段內容橫跨好幾個時間點，就列出多個時間碼。
+4. 講者提到的數字、產品、政策、事件，另外列一張「待查證」清單，不要當成已確認的事實。字幕如果是自動產生的，人名、公司名、數字全部列進這張清單。
+5. 字幕缺漏、聽不清楚或看起來像打錯字的地方，標「字幕可疑」，不要自己補寫。
+6. 最後分開寫：講者的主張、你自己的判讀。兩者不要混在一起。
+
+字幕：
+（貼在這裡）</pre>
+  </div>
+  <p>第三件可以用這段，請另一家 AI 審：</p>
+  <div class="copywrap">
+    <button type="button" class="copybtn" data-copy-target="review-prompt">複製這段話</button>
+    <pre class="codeblock" id="review-prompt">我附上兩樣東西：一份演講字幕，和另一個 AI 根據字幕寫的整理稿。請你當審稿人：
+
+1. 抽查加引號的句子和時間碼（至少 10 處，稿子短就全部），對照字幕，看有沒有寫錯或講者歸錯。
+2. 找出整理稿裡「字幕沒有、是 AI 自己加上去的」內容。
+3. 找出把講者的推測寫成事實的地方。
+4. 稿子裡提到的外部事實（數字、產品、政策、事件），能上網查的，優先查官方或原始來源，附連結與查閱日期；查不到就標「待查證」，不要猜。
+5. 最後給一個判定：通過、小修、大修，並逐條列出位置和建議改法。
+
+字幕：
+（貼在這裡）
+
+整理稿：
+（貼在這裡）</pre>
+  </div>
+  <p>審完照意見改，改完把新版和上一輪的意見一起給同一個 AI，請它逐條確認。這是單軌互審的簡化版本；要做到雙軌，就先讓兩家 AI 各自整理一份，再互相比對。</p>
+</div></section>
+
+<section class="section" id="for-ai"><div class="inner">
+  <h2>給你的 AI 讀的整理備忘（人可以跳過）</h2>
+  <p>這一段寫給要引用這篇的 AI、研究者或顧問，交代資料怎麼來、哪些地方要小心。只想讀重點的人可以跳過；要引用或回查出處的人，請從這裡看。</p>
+  <ul>
+    <li><strong>這是一個歷史案例：</strong>描述 2026-09-28 晚上一次實際執行的流程，不是固定規格。流程依據江江教練知識庫中的技能包 quick-data-capture v0.4「專題演講轉文章 Loop」（該晚 22:47 跨家審通過的版本），之後可能再調整。</li>
+    <li><strong>時間：</strong>取自檔案建立時間戳，精確到分鐘。字幕檔 22:12:21 下載，第三輪審稿紀錄 22:47:21 產生，兩者相減 35 分鐘。江江途中兩則補充訊息沒有時間戳，圖上位置依對話順序推估。</li>
+    <li><strong>角色：</strong>主要執行者 Claude（Anthropic，Claude Opus 5.5）；子代理為同一家模型另開的獨立對話，負責讀者人設走查與標題盲審；審稿者 Codex（OpenAI，gpt-5.6-sol），唯讀模式，指令中禁止把工作轉回 Claude。</li>
+    <li><strong>數字：</strong>字幕 3985 行、45151 字（重算一致）；報告逐段重點 43 段（影片說明欄官方章節 37 個）；Codex 十個重點有 9 個對得上 Claude 的核心重點（其中「等待成本」Claude 併在「不能等市場」一點裡）；引文與講者歸屬抽查 14 處一致；技能包第一次審稿 8 類修改。</li>
+    <li><strong>單軌與雙軌那段：</strong>引自江江 2026-09-29 口述的觀點，不是通則。</li>
+  </ul>
+</div></section>
+
+<div class="cta-band">
+<section class="section">
+  <div class="inner">
+    <div>
+      <h2>想繼續聊這個</h2>
+      <p class="lead">我每個月固定辦兩場免費線上講座，分享 AI 應用與知識管理的實戰做法。如果你也想讓 AI 一句話就接得住你的工作，歡迎先從社群開始。</p>
+    </div>
+    <div class="cta-card">
+      <b>江江教練</b>
+      <p>隱性知識提煉師、AI 應用規劃師</p>
+      <p><a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">加入 LINE 社群 →</a></p>
+      <p><a href="../../offers.html">看服務方案 →</a></p>
+    </div>
+  </div>
+</section>
+</div>
+
+<section class="section" id="more"><div class="inner">
+  <div class="readmore"><b>延伸閱讀</b>
+    <p><strong>這篇提到過的</strong></p>
+    <ul>
+      <li><a href="/articles/audrey-tang-reverse-alignment/">每天用 AI，怎麼知道自己沒有被它牽著走？｜唐鳳 × 丹增央措「對齊的另一面」對談重點整理</a></li>
+      <li><a href="/articles/claude-skills-knowledge-assets/">Claude Skills 是什麼？把你的專業流程，變成 AI 能重複執行的知識資產</a></li>
+      <li><a href="/articles/three-levels-of-cross-review/">怎麼設計讓兩個 AI 互審？：三種不同程度的審查機制設計</a></li>
+      <li><a href="/articles/ai-user-testing/">做完的東西想找人幫忙看，卻找不到人？｜AI 使用者測試</a></li>
+      <li><a href="/articles/ai-said-it-watched-the-video/">AI 交出一份很專業的分析，但它根本沒看過那支影片</a></li>
+      <li><a href="/articles/what-is-loop-engineering/">每件事 AI 都要我確認，怎麼可以更自動？｜什麼是迴圈工程</a></li>
+    </ul>
+    <p><strong>再往前後延伸</strong></p>
+    <ul>
+      <li><a href="/articles/cathay-tech-conference-2026/">公司導入 AI，資料要先整理到什麼程度？｜2026 國泰金控技術年會 9 場演講整理</a>：這篇一直提到的「上一次」，就是這篇。</li>
+      <li><a href="/articles/dual-track-planning-loop/">如何讓兩個不同的 AI 互相挑錯、自己訂正？</a>：同樣是雙軌互審，那篇用在企劃書上。</li>
+    </ul>
+  </div>
+</div></section>
+
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">江江教練 · AI 知識管理</div>
+    <div class="footer-links">
+      <a href="../../articles.html">← 回深度文章總站</a>
+      <a href="../../index.html">首頁</a>
+      <a href="../../learn.html">自學資源</a>
+      <a href="../../skills.html">技能包下載</a>
+      <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">LINE 社群 ↗</a>
+      <a href="https://www.threads.com/@jiang_yude_coach" target="_blank" rel="noopener">Threads ↗</a>
+      <a href="https://vocus.cc/salon/Jiang_Coach" target="_blank" rel="noopener">方格子 ↗</a>
+    </div>
+    <div class="footer-note">這是一篇工作流程的案例整理，內容來自 2026 年 9 月 28 日一次實際執行留下的紀錄，供你參考。</div>
+  </div>
+</footer>
+
+<!-- 點圖放大 lightbox（hero 與內文圖通用，已內建，不用每篇重加） -->
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <span class="lightbox-close" aria-label="關閉">×</span>
+  <img id="lightbox-img" src="" alt="放大檢視">
+</div>
+<script>
+(function(){
+  var box=document.getElementById('lightbox'),boxImg=document.getElementById('lightbox-img');
+  document.querySelectorAll('.hero-figure img,.inline-figure img').forEach(function(img){
+    img.addEventListener('click',function(){boxImg.src=img.currentSrc||img.src;boxImg.alt=img.alt||'放大檢視';box.classList.add('open');box.setAttribute('aria-hidden','false');});
+  });
+  function close(){box.classList.remove('open');box.setAttribute('aria-hidden','true');boxImg.src='';}
+  box.addEventListener('click',close);
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
+})();
+</script>
+
+<script>
+(function(){
+  function legacyCopy(text){var a=document.createElement('textarea');a.value=text;a.setAttribute('readonly','');a.style.position='fixed';a.style.opacity='0';document.body.appendChild(a);a.select();var ok=document.execCommand('copy');document.body.removeChild(a);return ok;}
+  document.querySelectorAll('[data-copy-target]').forEach(function(b){b.addEventListener('click',function(){var t=document.getElementById(b.getAttribute('data-copy-target'));if(!t)return;var old=b.textContent;function done(ok){b.textContent=ok?'已複製':'請手動選取';setTimeout(function(){b.textContent=old;},1600);}
+    if(navigator.clipboard&&window.isSecureContext){navigator.clipboard.writeText(t.textContent).then(function(){done(true);}).catch(function(){done(legacyCopy(t.textContent));});}else{done(legacyCopy(t.textContent));}});});
+})();
+</script>
+<script>
+(function(){
+  var root=document.getElementById('sim'); if(!root) return;
+  var T0=11, TOTAL=39; // 22:11 起，共 39 分鐘
+  var LANES=[
+    {id:'me',name:'我',idle:'沒有下指令'},
+    {id:'cl',name:'Claude',idle:'待命'},
+    {id:'sub',name:'子代理',idle:'還沒被叫出來'},
+    {id:'cx',name:'Codex',idle:'待命'}
+  ];
+  // s、e＝距 22:11 的分鐘數；k＝work 正在做／wait 在等／point 一句話
+  var EV=[
+    {l:'me',s:0,e:0.8,k:'point',t:'起手一句：像國泰那樣拆解（時間推估）',d:'原話「能不能詳細拆解 像之前 國泰 直播的影片那種」。沒有交代格式，也沒說要寫文章；能這樣講，是因為國泰那次已經做過一次。'},
+    {l:'me',s:2,e:2.8,k:'point',t:'補一句：像國泰那樣轉深度文章（時間推估）',d:'原話「國泰 直播 我轉 深度文章 那樣」。目標從逐段報告，拉到深度文章。'},
+    {l:'me',s:4,e:4.8,k:'point',t:'補一句：以後要有這個模式，寫成技能包（時間推估）',d:'原話「以後要有 專題演講 轉文章 的模式 你順便寫技能包好嗎」。這一句讓 Claude 在交件前，把整套做法寫成技能包。'},
+    {l:'me',s:37.5,e:39,k:'work',t:'放進待確認，準備部署（時間推估）',d:'這一格是我自己的關卡：AI 跑完放進待確認清單，等我看過沒問題再部署。部署本身又是下一個迴圈，這次是隔天早上一句話接著跑（見文章下方「部署之後，是另一個迴圈」）。'},
+    {l:'cl',s:0,e:1,k:'work',t:'翻出國泰那次的報告與證據檔',d:'在知識庫裡搜「國泰」，找到九場逐場報告、國泰深度文章的證據檔與工作日記，照它們的章節與關卡做。'},
+    {l:'cl',s:1,e:1.6,k:'work',t:'下載字幕：3985 行、約 4.5 萬字',d:'先確認影片有頻道自己上傳的中文字幕，再下載轉成每行帶時間碼的純文字，共 3985 行、45151 字。檔案時間 22:12:21。'},
+    {l:'cl',s:1.6,e:2.2,k:'work',t:'雙軌派工：同一份字幕交給 Codex',d:'交給 Codex 三件事：挑十個重點、上網查證十項台上說法、列出容易寫錯的地方。刻意不給 Claude 的草稿，避免它順著寫。檔案時間 22:12:42。'},
+    {l:'cl',s:2.2,e:2.8,k:'work',t:'寫下三個讀者會搜尋的句子',d:'寫正文之前，先寫下讀者會打進搜尋框的三句話，其中兩句取自真人問題庫。這是標題迴圈的第一階段。檔案時間 22:13:51。'},
+    {l:'cl',s:2.8,e:7.6,k:'work',t:'A 軌：讀完全文，寫 43 段逐段報告',d:'雙軌的 A 軌。讀完 4.5 萬字，依說明欄章節切成 43 段，每段標時間碼、講者、原話，另列 23 項待查證，存進知識庫。存檔時間 22:18:33。'},
+    {l:'cl',s:7.6,e:15,k:'work',t:'比對兩軌、整合成文章、組網頁',d:'先把兩軌的重點一條條對起來：9 點兩家都有，Codex 多 1 點、Claude 多 4 點，Codex 的查證寫成 7 個查證框。再依讀者的問題重排成五部、十個重點，組成官網網頁；截桌機與手機兩種寬度的畫面，發現手機版封面超出畫面並修正。網頁建立時間 22:25:57。'},
+    {l:'cl',s:15,e:16,k:'work',t:'送讀者走查、標題盲審、Codex 第 1 輪',d:'同一時間送出三件事：子代理假扮三種讀者試讀、子代理盲審三個候選標題、Codex 第 1 輪審稿。約 22:27。'},
+    {l:'cl',s:16,e:19,k:'work',t:'依讀者走查與盲審修改文章',d:'讀者走查抓到硬退件：標題問「怎麼知道」，正文只講「怎麼防」。補上「四個訊號」那段，另修八個事實疑點與幾個術語。'},
+    {l:'cl',s:19,e:22.5,k:'work',t:'寫技能包新模式：備份、改檔、重建索引',d:'先把技能包備份到副知識庫（22:28），再寫「專題演講轉文章」模式檔、改技能包說明、重建索引。'},
+    {l:'cl',s:22.5,e:24.8,k:'wait',t:'等 Codex 第 2 輪（同時整理看板格式）',d:'文章與技能包一起送 Codex 第 2 輪。等的時候先讀官網看板的格式，準備上看板。22:33:31 送出，22:35:47 回來。'},
+    {l:'cl',s:24.8,e:34.8,k:'work',t:'逐條修改文章與技能包',d:'文章小修五處；技能包 8 類修改（分兩條路徑、字幕抽查、查證不硬湊、審稿閉環等）。擷取意見時存成空檔案，送第 3 輪前發現並重送。'},
+    {l:'cl',s:34.8,e:36.4,k:'wait',t:'等 Codex 第 3 輪',d:'附上上一輪的意見，請同一位審稿者逐條確認。22:45:46 送出，22:47:21 回來。'},
+    {l:'cl',s:36.4,e:39,k:'work',t:'放上官網看板、寫工作日記（22:50 存檔）',d:'放進官網看板的待確認欄、更新技能包地圖並跑檢查、備份技能包、寫工作日記。工作日記存檔 22:50:18。'},
+    {l:'sub',s:16,e:18,k:'work',t:'三個讀者人設走查＋標題盲審（兩個同時跑，結束時間推估）',d:'兩個子代理同時跑。一個假扮 52 歲老闆、35 歲上班族、AI 導入顧問，各答五題；另一個只看三個搜尋句和三個候選標題，不知道我偏好哪個。'},
+    {l:'cx',s:1.7,e:7.7,k:'work',t:'B 軌：獨立挑十個重點、上網查證十項說法',d:'雙軌的 B 軌。不看 Claude 的草稿，自己讀字幕。十個重點對上 Claude 的核心重點 9 個（其中兩點 Claude 併成一點）；查證十項，2 項一致、8 項部分一致。22:12:42 到 22:17:21。'},
+    {l:'cx',s:16.9,e:20.2,k:'work',t:'第 1 輪審稿：大修',d:'抽查 14 處引文與講者歸屬，全部正確；問題在時間碼用了段落起點、查證框沒附來源、幾處用了最高級。22:27:53 到 22:31:10。'},
+    {l:'cx',s:22.5,e:24.8,k:'work',t:'第 2 輪：文章小修、技能包要改 8 條',d:'文章：「四個訊號」有幾句超出字幕、歐盟 AI 法的例外太簡略。技能包第一次審，要做 8 類修改。22:33:31 到 22:35:47。'},
+    {l:'cx',s:34.8,e:36.4,k:'work',t:'第 3 輪：通過',d:'逐條確認上一輪的意見都處理了，文章與技能包都通過。22:45:46 到 22:47:21。'}
+  ];
+  var STOPS=[0].concat(EV.map(function(e){return e.s;})).concat([TOTAL]).filter(function(v,i,a){return a.indexOf(v)===i;}).sort(function(a,b){return a-b;});
+  var lanesEl=document.getElementById('sim-lanes'), nowEl=document.getElementById('sim-now'),
+      clock=document.getElementById('sim-clock'), range=document.getElementById('sim-range'),
+      play=document.getElementById('sim-play'), prev=document.getElementById('sim-prev'),
+      next=document.getElementById('sim-next'), reset=document.getElementById('sim-reset');
+  var html='<div class="sim-cursor" id="sim-cursor"></div>';
+  LANES.forEach(function(L){
+    html+='<div class="sim-lane lane-'+L.id+'"><div class="sim-name">'+L.name+'</div><div class="sim-track">';
+    EV.forEach(function(e,i){ if(e.l!==L.id) return;
+      html+='<button type="button" class="sim-bar k-'+e.k+'" data-i="'+i+'" style="left:'+(e.s/TOTAL*100)+'%;width:'+Math.max((e.e-e.s)/TOTAL*100,1.6)+'%" aria-label="'+L.name+'，'+fmt(e.s)+'：'+e.t+'，點開看細節"></button>'; });
+    html+='</div></div>';
+  });
+  html+='<div class="sim-axis"><span>22:11</span><span>22:20</span><span>22:30</span><span>22:40</span><span>22:50</span></div>';
+  lanesEl.innerHTML=html;
+  var cursor=document.getElementById('sim-cursor'), bars=lanesEl.querySelectorAll('.sim-bar');
+  var t=0, timer=null;
+  function fmt(m){var mm=Math.floor(T0+m); return '22:'+(mm<10?'0':'')+mm;}
+  function stateAt(m){
+    return LANES.map(function(L){
+      var cur=null,nx=null;
+      EV.forEach(function(e){ if(e.l!==L.id) return;
+        if(m>=e.s && m<e.e) cur=e;
+        if(e.s>m && (!nx||e.s<nx.s)) nx=e; });
+      return {L:L,cur:cur,next:nx};
+    });
+  }
+  function render(){
+    var p=t/TOTAL;
+    clock.textContent=fmt(t);
+    range.value=Math.round(p*1000);
+    cursor.style.left='calc(var(--name-w) + (100% - var(--name-w)) * '+p+')';
+    bars.forEach(function(b){ var e=EV[+b.dataset.i];
+      b.classList.toggle('on', t>=e.s && t<e.e);
+      b.classList.toggle('past', t>=e.e); });
+    nowEl.innerHTML=stateAt(t).map(function(s){
+      var st=s.cur?(s.cur.k==='wait'?'在等：':'正在：')+s.cur.t:s.L.idle;
+      var nx=s.next?'<small>下一件（'+fmt(s.next.s)+'）：'+s.next.t+'</small>':'<small>之後沒有新的事</small>';
+      return '<div class="sim-row lane-'+s.L.id+'"><b>'+s.L.name+'</b><span>'+st+'</span>'+nx+'</div>';
+    }).join('');
+  }
+  function setProgress(m){ t=Math.min(Math.max(m,0),TOTAL); render(); }
+  function stop(){ if(timer){clearInterval(timer);timer=null;} play.textContent='▶ 播放'; play.setAttribute('aria-label','播放'); }
+  function start(){ if(t>=TOTAL) t=0; play.textContent='❚❚ 暫停'; play.setAttribute('aria-label','暫停');
+    timer=setInterval(function(){ setProgress(t+0.1); if(t>=TOTAL) stop(); },60); }
+  play.addEventListener('click',function(){ timer?stop():start(); });
+  reset.addEventListener('click',function(){ stop(); setProgress(0); });
+  next.addEventListener('click',function(){ stop(); for(var i=0;i<STOPS.length;i++){ if(STOPS[i]>t+0.01){ setProgress(STOPS[i]); return; } } });
+  prev.addEventListener('click',function(){ stop(); for(var i=STOPS.length-1;i>=0;i--){ if(STOPS[i]<t-0.01){ setProgress(STOPS[i]); return; } } setProgress(0); });
+  range.addEventListener('input',function(){ stop(); setProgress(range.value/1000*TOTAL); closePop(); });
+  var pop=document.createElement('div'); pop.className='sim-pop'; pop.setAttribute('role','dialog'); pop.hidden=true; root.appendChild(pop);
+  var openBar=null;
+  function closePop(){ pop.hidden=true; if(openBar){openBar.classList.remove('sel'); openBar.setAttribute('aria-expanded','false');} openBar=null; }
+  function openPop(b){
+    var e=EV[+b.dataset.i], L=LANES.filter(function(x){return x.id===e.l;})[0];
+    stop(); setProgress(e.s+0.001); closePop(); openBar=b; b.classList.add('sel'); b.setAttribute('aria-expanded','true');
+    pop.className='sim-pop lane-'+e.l;
+    pop.innerHTML='<button type="button" class="sim-pop-x" aria-label="關閉">×</button><small>'+L.name+'｜'+fmt(e.s)+'–'+fmt(e.e)+(e.k==='wait'?'｜在等':'')+'</small><b>'+e.t+'</b><p>'+e.d+'</p>';
+    pop.hidden=false;
+    var r=root.getBoundingClientRect(), br=b.getBoundingClientRect(), w=pop.offsetWidth;
+    var left=Math.min(Math.max(br.left-r.left+br.width/2-w/2,8),r.width-w-8);
+    pop.style.left=left+'px'; pop.style.top=(br.bottom-r.top+10)+'px';
+    pop.querySelector('.sim-pop-x').addEventListener('click',function(){ var ob=openBar; closePop(); if(ob) ob.focus(); });
+  }
+  bars.forEach(function(b){ b.setAttribute('aria-expanded','false'); b.addEventListener('click',function(ev){ ev.stopPropagation(); if(openBar===b){closePop();return;} openPop(b); }); });
+  document.addEventListener('click',function(ev){ if(!pop.hidden && !pop.contains(ev.target)) closePop(); });
+  document.addEventListener('keydown',function(ev){ if(ev.key==='Escape' && !pop.hidden){ var ob=openBar; closePop(); if(ob) ob.focus(); } });
+  [play,prev,next,reset].forEach(function(x){ x.addEventListener('click',closePop); });
+  setProgress(0);
+})();
+</script>
+
+<script>
+(function(){
+  var root=document.getElementById('dsim'); if(!root) return;
+  var STEPS=[
+    {t:'22:12',h:'派工：同一份字幕交給兩家',d:'Claude 自己讀；給 Codex 的指令只附字幕檔，不給 Claude 寫到一半的東西，並寫明不要把工作轉交給 Claude。'},
+    {t:'22:12–22:18',h:'兩家各自跑，互相看不到對方',d:'A 軌 Claude 寫 43 段逐段報告、12 個核心重點、23 項待查證。B 軌 Codex 挑 10 個重點、上網查證 10 項台上說法、列 8 處容易寫錯的地方。'},
+    {t:'22:18',h:'比對：兩家都有 9，只有 Codex 1，只有 Claude 4',d:'一條條對起來。同一件事一家拆成兩點、另一家併成一點，算兩家都有。只有 Codex 列的是安燈繩；只有 Claude 列的是模型版本號、馬和馬鞍分家、不要跟馬賽跑、驗證和退出的權利。'},
+    {t:'22:18–22:26',h:'整合：Claude 把兩軌合成一篇文章',d:'兩家都有的 9 點當主幹，各自多出的 5 點各寫一段，Codex 的查證先寫成 7 個查證框（來源連結在第 1 輪之後補上）。'},
+    {t:'22:27–22:31',h:'送審第 1 輪：Codex 判大修',d:'抽查 14 處引文與講者歸屬全部正確；問題在時間碼用了段落起點、查證框沒附來源、幾處用了最高級。Claude 依意見修改。'},
+    {t:'整合後到第 2 輪送審前（確切時間沒有留檔）',h:'反方向：Claude 核對 Codex 的查證',d:'Codex 的查證結果不照抄。其中一個服務的價格與隱私說明兩點，Claude 自己打開官方網頁再核對一次；8 個來源網址逐一確認打得開。'},
+    {t:'22:33–22:35',h:'送審第 2 輪：文章小修',d:'附上第 1 輪意見請同一位審稿者確認。文章剩幾句超出字幕、歐盟 AI 法例外太簡略；同一輪技能包第一次送審，要做 8 類修改。'},
+    {t:'22:45–22:47',h:'送審第 3 輪：通過',d:'逐條確認上一輪意見都處理了，文章與技能包都通過。'},
+    {t:'22:47–22:50',h:'放上看板，等我看',d:'放進官網看板的待確認欄。等我看過沒問題再部署；部署本身是下一個迴圈。'}
+  ];
+  // c＝框線顏色（g Claude／b Codex／k 共用），tag＝小標，h＝標題，p＝內文 HTML
+  var NODE={
+    src:{c:'k',tag:'派工的材料｜22:12',h:'同一份字幕',p:'<p>影片頻道自己上傳的中文字幕，下載後轉成每行帶時間碼的純文字：3985 行、45151 字（約 4.5 萬字）。檔案時間 22:12:21。</p><p>兩軌拿的是同一份，後面比對才有同一個基準。</p>'},
+    a0:{c:'g',tag:'A 軌',h:'Claude（Anthropic）',p:'<ul><li>讀完全文，寫逐段報告</li><li>比對兩軌、整合成文章</li><li>依審稿意見修改</li><li>回頭核對 Codex 的查證</li></ul>'},
+    b0:{c:'b',tag:'B 軌｜派工 22:12:42',h:'Codex（OpenAI）',p:'<p>交給它三件事：</p><ul><li>挑十個重點</li><li>上網查證十項台上說法</li><li>列出容易寫錯的地方</li></ul><p>指令只附字幕檔，不給 Claude 寫到一半的東西，並寫明不要把工作轉交給 Claude。</p>'},
+    fog:{c:'k',tag:'22:12–22:18',h:'互相看不到對方的稿',p:'<p>兩個 AI 如果先看到對方的答案，很容易順著對方寫，比對就沒有意義了。所以 B 軌的指令只給字幕，不給 A 軌的草稿。</p>'},
+    boxa:{c:'g',tag:'A 軌產出｜22:12–22:18',h:'Claude：讀完 4.5 萬字，寫逐段報告',p:'<ul><li>43 段逐段重點，依說明欄章節切段，每段有時間碼、講者、原話</li><li>12 個核心重點</li><li>23 項待查證（只列出來，沒有查）</li></ul><p>存進知識庫，存檔時間 22:18:33。</p>'},
+    boxb:{c:'b',tag:'B 軌產出｜22:12:42–22:17:21',h:'Codex：讀同一份字幕，挑重點、上網查',p:'<ul><li>10 個重點，每點附時間碼與講者判斷依據</li><li>上網查證 10 項台上說法，附來源網址：2 項一致、8 項部分一致，多半是台上講得比實際更強</li><li>8 處容易寫錯的名稱與數字</li></ul>'},
+    cmp:{c:'k',tag:'比對｜22:18',h:'兩家都有 9，只有 Codex 1，只有 Claude 4',p:'<p>計算方式：同一件事，一家拆成兩點、另一家併成一點，算兩家都有。</p><p><strong>兩家都有（9）</strong></p><ul><li>AI 讓下游也能改上游（反向對齊）</li><li>不能等市場自己解決，以及等待的成本由誰承擔（Codex 拆成兩點，Claude 併成一點）</li><li>台灣經驗：共識三週、制度三年</li><li>AI 會向上管理，人只剩蓋章</li><li>新人還學得到：中間的紀錄看得懂</li><li>撞牆經驗寫成技能分享</li><li>「AI 生成」標籤不夠</li><li>先接住被遺漏的人</li></ul><p><strong>只有 Codex 列為重點（1）</strong>：安燈繩（Claude 只寫在逐段內容，沒列成重點）</p><p><strong>只有 Claude 列為重點（4）</strong>：模型也要有版本號、馬和馬鞍交給不同家、不要跟馬賽跑、個人要有驗證和退出的權利</p><p><strong>查證這一欄</strong>：Claude 列了 23 項待查證但沒查；Codex 獨立查了 10 項。</p>'},
+    int:{c:'g',tag:'整合｜22:18–22:26',h:'Claude 把兩軌合成一篇文章',p:'<ul><li>兩家都有的 9 點當主幹</li><li>Codex 多的 1 點、Claude 多的 4 點各自寫成一段</li><li>Codex 的查證先寫成 7 個查證框，放在對應段落；來源連結第 1 輪審稿指出後才補上</li><li>依讀者的問題重排成五部、十個重點，組成官網網頁</li></ul><p>網頁建立時間 22:25:57。</p>'},
+    r1:{c:'b',tag:'Codex 審 Claude｜第 1 輪 22:27:53–22:31:10',h:'判定：大修',p:'<p>抽查 14 處引文與講者歸屬，全部和字幕一致。被抓到的問題：</p><ul><li>重點表的時間碼用了段落起點，跟正文引用對不上</li><li>查證框只寫「另一家 AI 查過」，沒附來源</li><li>幾處整理者的語氣用了最高級</li></ul><p>第 1 輪審的是讀者走查之前的版本，時間碼那條在它回來之前已經改掉。</p>'},
+    a1:{c:'g',tag:'Claude 修改｜第 1 輪之後',h:'逐條處理第 1 輪意見',p:'<p>第 1 輪意見 22:31 回來後逐條處理，22:33 連同意見一起送第 2 輪。</p><p>讀者走查的意見比第 1 輪早回來，那時已先改：標題問「怎麼知道」、正文只講「怎麼防」，補上「四個訊號」那段，另修八個事實疑點與幾個術語。</p>'},
+    chk:{c:'g',tag:'Claude 審 Codex｜整合後到第 2 輪送審前，確切時間沒有留檔',h:'反方向：Claude 核對 Codex 的查證',p:'<ul><li>Codex 的查證結果不照抄</li><li>其中一個服務的價格與隱私說明兩點，Claude 自己打開官方網頁再核對一次</li><li>8 個來源網址逐一確認打得開</li></ul><p>查證交給不寫稿的那一家，寫稿的那一家再回頭核對，這就是「交叉」。</p>'},
+    r2:{c:'b',tag:'Codex 審 Claude｜第 2 輪 22:33:31–22:35:47',h:'判定：文章小修',p:'<p>附上第 1 輪的意見，請同一位審稿者確認改了沒。</p><ul><li>文章：「四個訊號」有幾句超出字幕內容、歐盟 AI 法的例外寫得太簡略</li><li>技能包第一次送審：要做 8 類修改</li></ul>'},
+    a2:{c:'g',tag:'Claude 修改｜第 2 輪之後',h:'逐條修改文章與技能包',p:'<ul><li>文章小修五處</li><li>技能包 8 類修改（分兩條路徑、字幕抽查、查證不硬湊、審稿閉環等）</li></ul><p>擷取意見時存成空檔案，送第 3 輪前發現並重送。</p>'},
+    r3:{c:'b',tag:'Codex 審 Claude｜第 3 輪 22:45:46–22:47:21',h:'判定：通過',p:'<p>附上上一輪的意見，逐條確認都處理了，文章與技能包都通過。</p>'},
+    end:{c:'k',tag:'22:47–22:50',h:'放上看板，等我看',p:'<ul><li>放進官網看板的待確認欄</li><li>更新技能包地圖並跑檢查、備份技能包</li><li>寫工作日記（22:50:18 存檔）</li></ul><p>等我看過沒問題再部署；部署本身是下一個迴圈。</p>'}
+  };
+  var svg=root.querySelector('.ds-svg'), groups=root.querySelectorAll('g[data-s]'), now=document.getElementById('ds-now'), cnt=document.getElementById('ds-count'),
+      play=document.getElementById('ds-play'), prev=document.getElementById('ds-prev'), next=document.getElementById('ds-next'), reset=document.getElementById('ds-reset'), full=document.getElementById('ds-full');
+  var step=1, timer=null, sel=null, N=STEPS.length;
+  var pop=document.createElement('div'); pop.className='sim-pop ds-pop'; pop.setAttribute('role','dialog'); pop.hidden=true; root.appendChild(pop);
+  function closePop(){ pop.hidden=true; if(sel){sel.classList.remove('sel');sel=null;} }
+  function render(){
+    var last=step===N;
+    svg.classList.toggle('full',last);
+    groups.forEach(function(g){ var s=+g.getAttribute('data-s'); g.classList.toggle('cur',s===step); g.classList.toggle('past',s<step); g.classList.toggle('fut',s>step); });
+    cnt.textContent=step+' / '+N+(last?'｜完整圖':'');
+    var S=STEPS[step-1];
+    var html='<small>第 '+step+' 步｜'+S.t+'</small><b>'+S.h+'</b>'+S.d;
+    if(last) html+='<br><br><strong>整張流程（九步全部亮起）：</strong><ol>'+STEPS.map(function(x){return '<li>'+x.h+'（'+x.t+'）</li>';}).join('')+'</ol>';
+    now.innerHTML=html;
+  }
+  function setStep(n){ step=Math.min(Math.max(n,1),N); closePop(); render(); }
+  function stop(){ if(timer){clearInterval(timer);timer=null;} play.textContent='▶ 播放'; }
+  play.addEventListener('click',function(){ if(timer){stop();return;} if(step>=N) setStep(1); play.textContent='❚❚ 暫停'; timer=setInterval(function(){ if(step>=N){stop();return;} setStep(step+1); },2200); });
+  next.addEventListener('click',function(){ stop(); setStep(step+1); });
+  prev.addEventListener('click',function(){ stop(); setStep(step-1); });
+  reset.addEventListener('click',function(){ stop(); setStep(1); });
+  full.addEventListener('click',function(){ stop(); setStep(N); });
+  function openPop(n){
+    var D=NODE[n.dataset.n]; if(!D) return;
+    stop(); var g=n.closest('g[data-s]'); var s0=+g.getAttribute('data-s');
+    setStep(step===N?N:s0); // 看完整圖時點節點，保持整張亮著
+    sel=n; n.classList.add('sel');
+    pop.className='sim-pop ds-pop c-'+D.c;
+    pop.innerHTML='<button type="button" class="sim-pop-x" aria-label="關閉">×</button><small>'+D.tag+'</small><b>'+D.h+'</b>'+D.p;
+    pop.hidden=false;
+    var r=root.getBoundingClientRect(), br=n.getBoundingClientRect(), w=pop.offsetWidth;
+    var left=Math.min(Math.max(br.left-r.left+br.width/2-w/2,8),r.width-w-8);
+    pop.style.left=left+'px'; pop.style.top=(br.bottom-r.top+10)+'px';
+    pop.querySelector('.sim-pop-x').addEventListener('click',function(ev){ ev.stopPropagation(); var o=sel; closePop(); if(o) o.focus(); });
+  }
+  root.querySelectorAll('.ds-node').forEach(function(n){
+    var D=NODE[n.dataset.n];
+    n.setAttribute('tabindex','0'); n.setAttribute('role','button'); n.setAttribute('aria-label',(D?D.h:'')+'，點開看細節');
+    n.addEventListener('click',function(ev){ ev.stopPropagation(); if(sel===n){closePop();return;} openPop(n); });
+    n.addEventListener('keydown',function(e){ if(e.key==='Enter'||e.key===' '){e.preventDefault(); if(sel===n){closePop();return;} openPop(n);} });
+  });
+  pop.addEventListener('click',function(ev){ ev.stopPropagation(); });
+  document.addEventListener('click',function(){ if(!pop.hidden) closePop(); });
+  document.addEventListener('keydown',function(ev){ if(ev.key==='Escape' && !pop.hidden){ var o=sel; closePop(); if(o) o.focus(); } });
+  setStep(1);
+})();
+</script>
+
+<script src="../../image-interactions.js"></script>
+
+<!-- 官網共用：滑鼠暖光暈 + 導航列漢堡選單 -->
+<script src="../../spotlight.js"></script>
+
+<!-- 文章自動互聯（相關文章）：兩支已內建，順序不可顛倒，不用再另外加 -->
+<script src="../../articles-data.js"></script>
+<script src="../../related-render.js"></script>
+  <script src="/mika-chat-widget.js" defer></script>
+</body>
+</html>
