@@ -195,13 +195,14 @@ button.sim-bar:focus-visible{outline:3px solid var(--blue);outline-offset:2px;op
 .dual>.flow-box.end,.dual>.flow-arrow{align-self:center}
 .dsim{position:relative;margin:22px 0 10px;padding:18px;background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
 .ds-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
-.ds-svg{display:block;width:100%;min-width:760px;height:auto}
+.ds-svg{display:block;width:100%;min-width:820px;height:auto}
+.ov-svg{min-width:760px}
 .ds-svg text{font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC",sans-serif;text-anchor:middle}
 .ds-t{font-size:17px;font-weight:800;fill:#1a1612}.ds-t.w{fill:#fff}
-.ds-s{font-size:15px;fill:#3a342d}
+.ds-s{font-size:15px;fill:#3a342d}.ds-s.m{fill:#6a635a}
 .ds-a{font-size:14px;font-weight:700}.ds-a.g{fill:#4a5e40}.ds-a.b{fill:#3f6f9a}
 .ds-lane{font-size:16px;font-weight:800}.ds-lane.g{fill:#4a5e40}.ds-lane.b{fill:#3f6f9a}
-.ds-c.g{fill:#5f7553}.ds-c.b{fill:#5689b8}.ds-c.k{fill:#1a1612}.ds-c.pass{stroke:#1a1612;stroke-width:3}
+.ds-c.r{fill:#e85a4f}.ds-c.g{fill:#5f7553}.ds-c.b{fill:#5689b8}.ds-c.k{fill:#1a1612}.ds-c.pass{stroke:#1a1612;stroke-width:3}
 .ds-box{fill:#fff;stroke-width:2}.ds-box.g{stroke:#5f7553}.ds-box.b{stroke:#5689b8}.ds-box.k{stroke:#1a1612}.ds-box.soft{fill:#faf5ec}
 .ds-path{fill:none;stroke-width:3}.ds-path.g{stroke:#5f7553}.ds-path.b{stroke:#5689b8}.ds-path.k{stroke:#1a1612}
 .ds-path.thin{stroke-width:2;stroke-dasharray:6 5}
@@ -210,7 +211,7 @@ button.sim-bar:focus-visible{outline:3px solid var(--blue);outline-offset:2px;op
 .ds-svg g[data-s].past{opacity:.45}
 .ds-svg g[data-s].cur{opacity:1}
 .ds-svg.full g[data-s]{opacity:1!important}
-.ds-pop{max-height:none}.ds-pop.c-g{border-color:#5f7553}.ds-pop.c-b{border-color:#5689b8}.ds-pop.c-k{border-color:#1a1612}
+.ds-pop{max-height:none}.ds-pop.c-g{border-color:#5f7553}.ds-pop.c-b{border-color:#5689b8}.ds-pop.c-k{border-color:#1a1612}.ds-pop.c-r{border-color:#e85a4f}
 .sim-pop ul{margin:6px 0 0!important;padding-left:1.2em!important}.sim-pop li{font-size:16px!important;line-height:1.6!important;color:#3a342d;margin:2px 0}
 .sim-pop p+p,.sim-pop p+ul,.sim-pop ul+p{margin-top:8px!important}
 .ds-now ol{margin:8px 0 0;padding-left:1.4em}.ds-now li{font-size:16px;line-height:1.6}
@@ -221,6 +222,7 @@ button.sim-bar:focus-visible{outline:3px solid var(--blue);outline-offset:2px;op
 .ds-now small{display:block;font-size:14px;font-weight:700;color:var(--muted)}
 .ds-now b{display:block;font-size:19px;margin:2px 0}
 @media(prefers-reduced-motion:reduce){.ds-svg g[data-s]{transition:none}}
+.ov-fig{margin:18px 0 8px;padding:14px;background:#fff;border:1px solid var(--line);border-radius:14px}
 .ds-text{margin:16px 0}.ds-text summary{cursor:pointer;font-weight:700;font-size:18px;padding:8px 0}
 .dual{margin:24px 0;display:flex;flex-direction:column;gap:10px}
 .stage{display:flex;gap:12px;align-items:flex-start;margin-top:8px}
@@ -386,7 +388,7 @@ button.sim-bar:focus-visible{outline:3px solid var(--blue);outline-offset:2px;op
 
 <section class="section" id="dual-flow"><div class="inner">
   <h2>雙軌互審實際怎麼走：派工、各自跑、比對、整合、交叉審</h2>
-  <p>先分清楚兩個詞。<strong>單軌互審</strong>是一家 AI 做、另一家看過再出結果；<strong>雙軌互審</strong>是兩家各自做一份，互相看不到對方的，做完再比對、整合，最後還要交叉審。那晚文章內容走的是雙軌，下面照實際順序拆開。按「播放」或「下一步」一步步看；上面綠色是 Claude，下面藍色是 Codex。</p>
+  <p>先分清楚兩個詞。<strong>單軌互審</strong>是一家 AI 做、另一家看過再出結果；<strong>雙軌互審</strong>是兩家各自做一份，互相看不到對方的，做完再比對、整合，最後還要交叉審。那晚文章內容走的是雙軌，而且整個雙軌是 Claude 自己跑完的：我丟給它一個網址和一句話（途中另補兩句需求），派工給 Codex、比對、整合、送審都是它自己做，我沒有在兩家之間複製貼上。下面照實際順序拆開。按「播放」或「下一步」一步步看；上面綠色是 Claude，下面藍色是 Codex。</p>
   <div class="dsim" id="dsim" aria-label="雙軌互審動態流程圖">
     <div class="sim-controls">
       <button type="button" id="ds-play">▶ 播放</button>
@@ -394,18 +396,25 @@ button.sim-bar:focus-visible{outline:3px solid var(--blue);outline-offset:2px;op
       <button type="button" id="ds-next">下一步 ▶</button>
       <button type="button" id="ds-full">▣ 完整圖</button>
       <button type="button" id="ds-reset">↺ 重播</button>
-      <span class="sim-clock" id="ds-count">1 / 9</span>
+      <span class="sim-clock" id="ds-count">1 / 10</span>
     </div>
-    <div class="ds-scroll"><svg viewBox="0 0 1000 540" class="ds-svg" role="img" aria-labelledby="ds-title">
-      <title id="ds-title">雙軌互審：同一份字幕派給 Claude 與 Codex，各自跑、比對、整合，再由 Codex 審三輪、Claude 核對 Codex 的查證</title>
+    <div class="ds-scroll"><svg viewBox="0 0 1120 540" class="ds-svg" role="img" aria-labelledby="ds-title">
+      <title id="ds-title">雙軌互審：我丟一個網址給 Claude，由 Claude 自己啟動雙軌，同一份字幕派給 Claude 與 Codex，各自跑、比對、整合，再由 Codex 審三輪、Claude 核對 Codex 的查證</title>
       <defs>
         <marker id="ah-g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#5f7553"/></marker>
         <marker id="ah-b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#5689b8"/></marker>
         <marker id="ah-k" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#1a1612"/></marker>
         <pattern id="fogp" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="8" height="8" fill="#f1ede5"/><line x1="0" y1="0" x2="0" y2="8" stroke="#ddd5c6" stroke-width="3"/></pattern>
       </defs>
-      <!-- 步驟 1 派工 -->
+      <!-- 步驟 1 我丟網址，Claude 自己啟動雙軌 -->
       <g data-s="1">
+        <g class="ds-node" data-n="me"><circle cx="46" cy="270" r="24" class="ds-c r"/><text x="46" y="276" class="ds-t w">我</text><text x="50" y="324" class="ds-s">一個網址</text><text x="50" y="344" class="ds-s">交給 Claude</text></g>
+        <text x="103" y="258" class="ds-a" style="fill:#b3473e">一句話</text>
+        <path class="ds-path k" d="M72,270 L130,270" marker-end="url(#ah-k)"/>
+      </g>
+      <g transform="translate(120,0)">
+      <!-- 步驟 2 派工 -->
+      <g data-s="2">
         <text class="ds-lane g" x="150" y="112">A 軌｜Claude</text>
         <text class="ds-lane b" x="150" y="440">B 軌｜Codex</text>
         <g class="ds-node" data-n="src"><rect x="16" y="238" width="118" height="64" rx="10" class="ds-box k"/><text x="75" y="266" class="ds-t">同一份字幕</text><text x="75" y="288" class="ds-s">4.5 萬字</text></g>
@@ -414,57 +423,58 @@ button.sim-bar:focus-visible{outline:3px solid var(--blue);outline-offset:2px;op
         <g class="ds-node" data-n="a0"><circle cx="210" cy="140" r="20" class="ds-c g"/><text x="210" y="146" class="ds-t w">A</text></g>
         <g class="ds-node" data-n="b0"><circle cx="210" cy="400" r="20" class="ds-c b"/><text x="210" y="406" class="ds-t w">B</text></g>
       </g>
-      <!-- 步驟 2 各自跑 -->
-      <g data-s="2">
+      <!-- 步驟 3 各自跑 -->
+      <g data-s="3">
         <path class="ds-path g" d="M230,140 L378,140" marker-end="url(#ah-g)"/>
         <path class="ds-path b" d="M230,400 L378,400" marker-end="url(#ah-b)"/>
         <g class="ds-node" data-n="fog"><rect x="236" y="196" width="140" height="148" rx="10" fill="url(#fogp)" stroke="#cfc4b0"/><text x="306" y="264" class="ds-s">互相看不到</text><text x="306" y="284" class="ds-s">對方的稿</text></g>
         <g class="ds-node" data-n="boxa"><rect x="236" y="20" width="140" height="92" rx="10" class="ds-box g"/><text x="306" y="46" class="ds-s">43 段逐段報告</text><text x="306" y="70" class="ds-s">12 個重點</text><text x="306" y="94" class="ds-s">23 項待查證</text></g>
         <g class="ds-node" data-n="boxb"><rect x="236" y="428" width="140" height="92" rx="10" class="ds-box b"/><text x="306" y="454" class="ds-s">10 個重點</text><text x="306" y="478" class="ds-s">查證 10 項</text><text x="306" y="502" class="ds-s">8 處易寫錯</text></g>
       </g>
-      <!-- 步驟 3 比對 -->
-      <g data-s="3">
+      <!-- 步驟 4 比對 -->
+      <g data-s="4">
         <path class="ds-path g" d="M380,140 C430,140 430,262 462,262" marker-end="url(#ah-g)"/>
         <path class="ds-path b" d="M380,400 C430,400 430,278 462,278" marker-end="url(#ah-b)"/>
         <g class="ds-node" data-n="cmp"><circle cx="500" cy="270" r="36" class="ds-c k"/><text x="500" y="277" class="ds-t w">比對</text>
           <rect x="436" y="318" width="128" height="76" rx="8" class="ds-box k"/><text x="500" y="342" class="ds-s">兩家都有 9</text><text x="500" y="364" class="ds-s">只有 Codex 1</text><text x="500" y="386" class="ds-s">只有 Claude 4</text></g>
       </g>
-      <!-- 步驟 4 整合 -->
-      <g data-s="4">
+      <!-- 步驟 5 整合 -->
+      <g data-s="5">
         <path class="ds-path g" d="M536,262 C566,262 566,140 590,140" marker-end="url(#ah-g)"/>
         <g class="ds-node" data-n="int"><circle cx="614" cy="140" r="26" class="ds-c g"/><text x="614" y="146" class="ds-t w">整合</text><text x="614" y="190" class="ds-s">一篇文章</text></g>
       </g>
-      <!-- 步驟 5 第 1 輪 -->
-      <g data-s="5">
+      <!-- 步驟 6 第 1 輪 -->
+      <g data-s="6">
         <path class="ds-path g" d="M634,158 L688,378" marker-end="url(#ah-g)"/><text x="640" y="280" class="ds-a g">送審</text>
         <g class="ds-node" data-n="r1"><circle cx="700" cy="400" r="24" class="ds-c b"/><text x="700" y="406" class="ds-t w">大修</text><text x="700" y="448" class="ds-s">第 1 輪</text></g>
         <path class="ds-path b" d="M708,378 L752,160" marker-end="url(#ah-b)"/><text x="744" y="280" class="ds-a b">意見</text>
         <g class="ds-node" data-n="a1"><circle cx="760" cy="140" r="20" class="ds-c g"/><text x="760" y="146" class="ds-t w">修</text></g>
       </g>
-      <!-- 步驟 6 Claude 核對 Codex 的查證 -->
-      <g data-s="6">
+      <!-- 步驟 7 Claude 核對 Codex 的查證 -->
+      <g data-s="7">
         <path class="ds-path g thin" d="M762,162 L762,470" marker-end="url(#ah-g)"/><text x="788" y="330" class="ds-a g" style="text-anchor:start">核對</text>
         <g class="ds-node" data-n="chk"><rect x="690" y="474" width="144" height="54" rx="8" class="ds-box b"/><text x="762" y="496" class="ds-s">Codex 的查證</text><text x="762" y="516" class="ds-s">Claude 回頭核對</text></g>
       </g>
-      <!-- 步驟 7 第 2 輪 -->
-      <g data-s="7">
+      <!-- 步驟 8 第 2 輪 -->
+      <g data-s="8">
         <path class="ds-path g" d="M770,158 L808,378" marker-end="url(#ah-g)"/>
         <g class="ds-node" data-n="r2"><circle cx="820" cy="400" r="24" class="ds-c b"/><text x="820" y="406" class="ds-t w">小修</text><text x="820" y="448" class="ds-s">第 2 輪</text></g>
         <path class="ds-path b" d="M828,378 L866,160" marker-end="url(#ah-b)"/>
         <g class="ds-node" data-n="a2"><circle cx="874" cy="140" r="20" class="ds-c g"/><text x="874" y="146" class="ds-t w">修</text></g>
       </g>
-      <!-- 步驟 8 第 3 輪 -->
-      <g data-s="8">
+      <!-- 步驟 9 第 3 輪 -->
+      <g data-s="9">
         <path class="ds-path g" d="M884,158 L918,378" marker-end="url(#ah-g)"/>
         <g class="ds-node" data-n="r3"><circle cx="930" cy="400" r="26" class="ds-c b pass"/><text x="930" y="406" class="ds-t w">通過</text><text x="930" y="448" class="ds-s">第 3 輪</text></g>
       </g>
-      <!-- 步驟 9 放上看板 -->
-      <g data-s="9">
+      <!-- 步驟 10 放上看板 -->
+      <g data-s="10">
         <path class="ds-path k" d="M930,374 L930,312" marker-end="url(#ah-k)"/>
         <g class="ds-node" data-n="end"><rect x="872" y="244" width="116" height="64" rx="10" class="ds-box k soft"/><text x="930" y="270" class="ds-s">放上看板</text><text x="930" y="292" class="ds-s">等我看</text></g>
       </g>
+      </g>
     </svg></div>
-    <p class="ds-hint">手機上圖比螢幕寬，可以左右滑動；每個圓圈和方框都可以點開看細節；播到第 9 步或按「完整圖」，整張流程會全部亮起來。</p>
+    <p class="ds-hint">手機上圖比螢幕寬，可以左右滑動；每個圓圈和方框都可以點開看細節；播到第 10 步或按「完整圖」，整張流程會全部亮起來。</p>
     <div class="ds-now" id="ds-now" aria-live="polite"></div>
   </div>
 
@@ -504,6 +514,13 @@ button.sim-bar:focus-visible{outline:3px solid var(--blue);outline-offset:2px;op
     <li><strong>審稿找另一家公司的 AI。</strong>寫稿的是 Anthropic 的 Claude，審稿的是 OpenAI 的 Codex，希望降低兩邊有同樣盲點的機會。</li>
     <li><strong>同一位審稿者審到底。</strong>第二輪、第三輪都把上一輪的意見一起附上，請它逐條確認改了沒。</li>
   </ul>
+  <div class="readmore near"><b>想知道 Claude 怎麼自己叫 Codex，不用我來回貼</b>
+    <p>這次是 Claude 在我的電腦上直接用命令列叫 Codex，派工、收結果、再送審都由它自己來。OpenAI 在 2026 年 3 月也推出了官方外掛 codex-plugin-cc，裝在 Claude Code 裡，一個指令就能叫 Codex 來審。兩種做法的前提一樣：電腦上要先裝好 Claude Code 與 Codex，兩邊都登入各自的帳號。反方向由 Codex 叫 Claude，目前我查到的是自己接，還沒有看到 Anthropic 推出對應的官方外掛。</p>
+    <ul>
+      <li><a href="/articles/cross-ai-review-both-wrong/">OpenAI 出了官方外掛，讓 Codex 能接到 Claude Code 一起工作｜codex-plugin-cc</a>：怎麼裝、哪個指令用在哪，以及兩家都會錯的一次實例。</li>
+      <li><a href="/articles/three-levels-of-cross-review/">怎麼設計讓兩個 AI 互審？：三種不同程度的審查機制設計</a>：從只審結果到完整雙軌，三種強度怎麼挑。</li>
+    </ul>
+  </div>
 </div></section>
 
 <section class="section" id="rounds"><div class="inner">
@@ -537,6 +554,45 @@ button.sim-bar:focus-visible{outline:3px solid var(--blue);outline-offset:2px;op
       <tr><td>單軌互審（一個做、一個審）</td><td>最近很少用</td></tr>
     </tbody>
   </table></div>
+  <figure class="ov-fig">
+  <div class="ds-scroll"><svg viewBox="0 0 960 290" class="ds-svg ov-svg" role="img" aria-labelledby="ov-title">
+    <title id="ov-title">三種做法概略圖：單軌自審、單軌互審、雙軌互審</title>
+    <defs>
+      <marker id="ov-g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#5f7553"/></marker>
+      <marker id="ov-b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#5689b8"/></marker>
+      <marker id="ov-k" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#1a1612"/></marker>
+    </defs>
+    <line x1="320" y1="20" x2="320" y2="270" stroke="#e6dccb" stroke-width="2"/>
+    <line x1="640" y1="20" x2="640" y2="270" stroke="#e6dccb" stroke-width="2"/>
+    <!-- 單軌自審 -->
+    <text x="160" y="36" class="ds-t">單軌自審</text><text x="160" y="60" class="ds-s">一個模型自己跑完</text>
+    <path class="ds-path g" d="M98,128 C72,84 148,84 122,128" marker-end="url(#ov-g)"/><text x="146" y="100" class="ds-a g" style="text-anchor:start">自己跑</text>
+    <circle cx="110" cy="150" r="26" class="ds-c g"/><text x="110" y="156" class="ds-t w">做</text>
+    <path class="ds-path k" d="M136,150 L200,150" marker-end="url(#ov-k)"/>
+    <rect x="204" y="126" width="84" height="48" rx="10" class="ds-box k"/><text x="246" y="156" class="ds-s">結果</text>
+    <text x="160" y="232" class="ds-s">簡單、不重要的問題</text><text x="160" y="256" class="ds-s m">Opus 5.5 自己跑就好</text>
+    <!-- 單軌互審 -->
+    <text x="480" y="36" class="ds-t">單軌互審</text><text x="480" y="60" class="ds-s">一家做，另一家審</text>
+    <circle cx="380" cy="150" r="26" class="ds-c g"/><text x="380" y="156" class="ds-t w">做</text>
+    <circle cx="490" cy="150" r="26" class="ds-c b"/><text x="490" y="156" class="ds-t w">審</text>
+    <path class="ds-path g" d="M406,140 L460,140" marker-end="url(#ov-g)"/><text x="435" y="126" class="ds-a g">送審</text>
+    <path class="ds-path b" d="M464,162 L410,162" marker-end="url(#ov-b)"/><text x="435" y="190" class="ds-a b">意見</text>
+    <path class="ds-path k" d="M516,150 L540,150" marker-end="url(#ov-k)"/>
+    <rect x="544" y="126" width="80" height="48" rx="10" class="ds-box k"/><text x="584" y="156" class="ds-s">結果</text>
+    <text x="480" y="232" class="ds-s">一個做、一個審</text><text x="480" y="256" class="ds-s m">最近很少用</text>
+    <!-- 雙軌互審 -->
+    <text x="800" y="36" class="ds-t">雙軌互審</text><text x="800" y="60" class="ds-s">兩家各做一份，再比對、互審</text>
+    <circle cx="684" cy="106" r="22" class="ds-c g"/><text x="684" y="112" class="ds-t w">做</text>
+    <circle cx="684" cy="194" r="22" class="ds-c b"/><text x="684" y="200" class="ds-t w">做</text>
+    <path class="ds-path g" d="M706,112 C730,118 736,136 744,142" marker-end="url(#ov-g)"/>
+    <path class="ds-path b" d="M706,188 C730,182 736,164 744,158" marker-end="url(#ov-b)"/>
+    <circle cx="772" cy="150" r="28" class="ds-c k"/><text x="772" y="156" class="ds-t w">比對</text>
+    <path class="ds-path k" d="M800,150 L826,150" marker-end="url(#ov-k)"/>
+    <rect x="830" y="120" width="112" height="60" rx="10" class="ds-box k"/><text x="886" y="146" class="ds-s">整合、交叉審</text><text x="886" y="168" class="ds-s">再出結果</text>
+    <text x="800" y="232" class="ds-s">複雜、重要的問題</text><text x="800" y="256" class="ds-s m">直接雙軌互審</text>
+  </svg></div>
+  <figcaption class="ds-hint">三種做法概略圖。綠色、藍色只用來分兩家不同的 AI，誰做誰審看任務而定（這篇的案例是 Claude 做、Codex 審）；手機上可以左右滑動。</figcaption>
+  </figure>
   <div class="meaning"><b>流程不是一定的</b>會隨著環境、需求、模型能力成長而變動。這篇畫出來的是 9 月 28 日那一次的樣子：文章用了雙軌，技能包其實用了單軌。換一個題目、換一代模型，我可能又會調。</div>
 </div></section>
 
@@ -831,6 +887,7 @@ button.sim-bar:focus-visible{outline:3px solid var(--blue);outline-offset:2px;op
 (function(){
   var root=document.getElementById('dsim'); if(!root) return;
   var STEPS=[
+    {t:'22:11（時間推估）',h:'我丟一個網址給 Claude，雙軌由它自己啟動',d:'最一開始，我把 YouTube 網址和一句「像之前國泰那樣拆解」丟給 Claude；途中另外補了兩句需求。下載字幕、派工給 Codex、比對、整合、送審，都是 Claude 自己跑的；我沒有分別派工給兩家，也沒有在兩家之間複製貼上。'},
     {t:'22:12',h:'派工：同一份字幕交給兩家',d:'Claude 自己讀；給 Codex 的指令只附字幕檔，不給 Claude 寫到一半的東西，並寫明不要把工作轉交給 Claude。'},
     {t:'22:12–22:18',h:'兩家各自跑，互相看不到對方',d:'A 軌 Claude 寫 43 段逐段報告、12 個核心重點、23 項待查證。B 軌 Codex 挑 10 個重點、上網查證 10 項台上說法、列 8 處容易寫錯的地方。'},
     {t:'22:18',h:'比對：兩家都有 9，只有 Codex 1，只有 Claude 4',d:'一條條對起來。同一件事一家拆成兩點、另一家併成一點，算兩家都有。只有 Codex 列的是安燈繩；只有 Claude 列的是模型版本號、馬和馬鞍分家、不要跟馬賽跑、驗證和退出的權利。'},
@@ -843,6 +900,7 @@ button.sim-bar:focus-visible{outline:3px solid var(--blue);outline-offset:2px;op
   ];
   // c＝框線顏色（g Claude／b Codex／k 共用），tag＝小標，h＝標題，p＝內文 HTML
   var NODE={
+    me:{c:'r',tag:'第 1 步｜22:11（時間推估）',h:'我：一個網址、一句話',p:'<p>原話「能不能詳細拆解 像之前 國泰 直播的影片那種」，附上 YouTube 網址。途中我另外補了兩句需求。</p><p>接下來兩軌怎麼分、Codex 要做什麼、什麼時候送審，都是 Claude 自己決定並執行：它在我的電腦上直接用命令列叫 Codex（codex exec），結果寫回檔案再讀回來。我沒有在兩家之間複製貼上。</p>'},
     src:{c:'k',tag:'派工的材料｜22:12',h:'同一份字幕',p:'<p>影片頻道自己上傳的中文字幕，下載後轉成每行帶時間碼的純文字：3985 行、45151 字（約 4.5 萬字）。檔案時間 22:12:21。</p><p>兩軌拿的是同一份，後面比對才有同一個基準。</p>'},
     a0:{c:'g',tag:'A 軌',h:'Claude（Anthropic）',p:'<ul><li>讀完全文，寫逐段報告</li><li>比對兩軌、整合成文章</li><li>依審稿意見修改</li><li>回頭核對 Codex 的查證</li></ul>'},
     b0:{c:'b',tag:'B 軌｜派工 22:12:42',h:'Codex（OpenAI）',p:'<p>交給它三件事：</p><ul><li>挑十個重點</li><li>上網查證十項台上說法</li><li>列出容易寫錯的地方</li></ul><p>指令只附字幕檔，不給 Claude 寫到一半的東西，並寫明不要把工作轉交給 Claude。</p>'},
@@ -871,7 +929,7 @@ button.sim-bar:focus-visible{outline:3px solid var(--blue);outline-offset:2px;op
     cnt.textContent=step+' / '+N+(last?'｜完整圖':'');
     var S=STEPS[step-1];
     var html='<small>第 '+step+' 步｜'+S.t+'</small><b>'+S.h+'</b>'+S.d;
-    if(last) html+='<br><br><strong>整張流程（九步全部亮起）：</strong><ol>'+STEPS.map(function(x){return '<li>'+x.h+'（'+x.t+'）</li>';}).join('')+'</ol>';
+    if(last) html+='<br><br><strong>整張流程（'+N+' 步全部亮起）：</strong><ol>'+STEPS.map(function(x){return '<li>'+x.h+'（'+x.t+'）</li>';}).join('')+'</ol>';
     now.innerHTML=html;
   }
   function setStep(n){ step=Math.min(Math.max(n,1),N); closePop(); render(); }
