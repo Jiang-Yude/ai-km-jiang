@@ -41,6 +41,25 @@ window.ARTICLES = [
   },
 
   {
+    id: "audrey-tang-reverse-alignment",
+    url: "articles/audrey-tang-reverse-alignment/",
+    date: "2026-09-28",
+    updated: "2026-09-29",
+    title: "每天用 AI，怎麼知道自己沒有被它牽著走？｜唐鳳 × 丹增央措「對齊的另一面」對談重點整理：摩擦力、地端模型、資料留在自己手上",
+    problem: "每天都在用 AI，隱約覺得越來越依賴它的建議；公司資料、工作經驗交給 AI 之後，不確定還是不是自己的。",
+    audience: "每天使用 ChatGPT、Claude、Gemini 的上班族，要決定 AI 怎麼用的主管，以及幫客戶規劃 AI 導入的顧問與講師。",
+    summary: "整理唐鳳與丹增央措在 Platform 月台的兩小時公開對談，收成 10 個重點並標時間碼：AI 會向上管理讓人變成滾輪裡的倉鼠、唐鳳替自己和 AI 加摩擦力的五種做法（不准用我、一頁整理、酸民模式、電子紙、延遲送信）、新人還學不學得到、把撞牆經驗寫成技能分享給同事、模型與駕馭工具交給不同家、地端模型與共享算力、反向對齊與不可逆傷害、沒有簽章的內容預設為假、安燈繩與被遺漏的人、不要跟馬賽跑。附台上說法的查證結果、兩位講者的差異，以及一段可直接貼給 AI 的提示詞。文末另附作者自己用 AI 靈魂拷問自己的做法：讓 ChatGPT 變嚴厲顧問，以及用馬斯克第一性原理與納瓦爾技能包審視想法。",
+    tags: {
+      topic: ["AI駕馭思維", "AI趨勢", "資訊安全"],
+      level: ["基礎"],
+      content_type: ["觀點文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["design-for-ai-errors", "ai-custom-work-compound", "intangible-assets-grow-by-sharing", "ai-handoff-instructions", "ai-data-red-lines", "ai-delegators-optimism", "cathay-tech-conference-2026", "answer-to-action-enterprise-ai-agent", "elon-musk-live-skill"],
+    cover: { wide: "images/articles/audrey-tang-reverse-alignment/cover.jpg" }
+  },
+
+  {
     id: "ai-batch-work-without-seeing-data",
     url: "articles/ai-batch-work-without-seeing-data/",
     date: "2026-09-28",
@@ -56,25 +75,6 @@ window.ARTICLES = [
     },
     external: { threads: null, vocus: null },
     related: ["ai-data-red-lines", "ai-vs-script-four-situations", "agent-workflow-builds-automation", "openrouter-deepseek-data-routing"]
-  },
-
-  {
-    id: "audrey-tang-reverse-alignment",
-    url: "articles/audrey-tang-reverse-alignment/",
-    date: "2026-09-28",
-    updated: "2026-09-28",
-    title: "每天用 AI，怎麼知道自己沒有被它牽著走？｜唐鳳 × 丹增央措「對齊的另一面」對談重點整理：摩擦力、地端模型、資料留在自己手上",
-    problem: "每天都在用 AI，隱約覺得越來越依賴它的建議；公司資料、工作經驗交給 AI 之後，不確定還是不是自己的。",
-    audience: "每天使用 ChatGPT、Claude、Gemini 的上班族，要決定 AI 怎麼用的主管，以及幫客戶規劃 AI 導入的顧問與講師。",
-    summary: "整理唐鳳與丹增央措在 Platform 月台的兩小時公開對談，收成 10 個重點並標時間碼：AI 會向上管理讓人變成滾輪裡的倉鼠、唐鳳替自己和 AI 加摩擦力的五種做法（不准用我、一頁整理、酸民模式、電子紙、延遲送信）、新人還學不學得到、把撞牆經驗寫成技能分享給同事、模型與駕馭工具交給不同家、地端模型與共享算力、反向對齊與不可逆傷害、沒有簽章的內容預設為假、安燈繩與被遺漏的人、不要跟馬賽跑。附台上說法的查證結果、兩位講者的差異，以及一段可直接貼給 AI 的提示詞。",
-    tags: {
-      topic: ["AI駕馭思維", "AI趨勢", "資訊安全"],
-      level: ["基礎"],
-      content_type: ["觀點文章"]
-    },
-    external: { threads: null, vocus: null },
-    related: ["design-for-ai-errors", "ai-custom-work-compound", "intangible-assets-grow-by-sharing", "ai-handoff-instructions", "ai-data-red-lines", "ai-delegators-optimism", "cathay-tech-conference-2026", "answer-to-action-enterprise-ai-agent"],
-    cover: { wide: "images/articles/audrey-tang-reverse-alignment/cover.jpg" }
   },
 
   {
@@ -1017,7 +1017,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["spacex-ipo-musk-trillionaire-knowledge-work", "how-to-train-your-ai-employee", "own-ai-team-at-work", "ai-market-microcosm", "vibe-coding-ten-half-products", "delete-before-automate", "first-principles-money-soup"]
+    related: ["spacex-ipo-musk-trillionaire-knowledge-work", "how-to-train-your-ai-employee", "own-ai-team-at-work", "ai-market-microcosm", "vibe-coding-ten-half-products", "delete-before-automate", "first-principles-money-soup", "audrey-tang-reverse-alignment"]
   },
 
   {
