@@ -41,6 +41,25 @@ window.ARTICLES = [
   },
 
   {
+    id: "audrey-tang-reverse-alignment",
+    url: "articles/audrey-tang-reverse-alignment/",
+    date: "2026-09-28",
+    updated: "2026-09-28",
+    title: "每天用 AI，怎麼知道自己沒有被它牽著走？｜唐鳳 × 丹增央措「對齊的另一面」對談重點整理：摩擦力、地端模型、資料留在自己手上",
+    problem: "每天都在用 AI，隱約覺得越來越依賴它的建議；公司資料、工作經驗交給 AI 之後，不確定還是不是自己的。",
+    audience: "每天使用 ChatGPT、Claude、Gemini 的上班族，要決定 AI 怎麼用的主管，以及幫客戶規劃 AI 導入的顧問與講師。",
+    summary: "整理唐鳳與丹增央措在 Platform 月台的兩小時公開對談，收成 10 個重點並標時間碼：AI 會向上管理讓人變成滾輪裡的倉鼠、唐鳳替自己和 AI 加摩擦力的五種做法（不准用我、一頁整理、酸民模式、電子紙、延遲送信）、新人還學不學得到、把撞牆經驗寫成技能分享給同事、模型與駕馭工具交給不同家、地端模型與共享算力、反向對齊與不可逆傷害、沒有簽章的內容預設為假、安燈繩與被遺漏的人、不要跟馬賽跑。附台上說法的查證結果、兩位講者的差異，以及一段可直接貼給 AI 的提示詞。",
+    tags: {
+      topic: ["AI駕馭思維", "AI趨勢", "資訊安全"],
+      level: ["基礎"],
+      content_type: ["觀點文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["design-for-ai-errors", "ai-custom-work-compound", "intangible-assets-grow-by-sharing", "ai-handoff-instructions", "ai-data-red-lines", "ai-delegators-optimism", "cathay-tech-conference-2026", "answer-to-action-enterprise-ai-agent"],
+    cover: { wide: "images/articles/audrey-tang-reverse-alignment/cover.jpg" }
+  },
+
+  {
     id: "meeting-mic-rescue-on-mac",
     url: "articles/meeting-mic-rescue-on-mac/",
     date: "2026-09-28",
@@ -146,7 +165,7 @@ window.ARTICLES = [
       content_type: ["觀點文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["a2a-agent-protocol", "harness-to-loop", "ai-native-not-transformation", "ai-data-red-lines", "answer-to-action-enterprise-ai-agent", "grok-bot-galaxy-day1-founders"],
+    related: ["a2a-agent-protocol", "harness-to-loop", "ai-native-not-transformation", "ai-data-red-lines", "answer-to-action-enterprise-ai-agent", "grok-bot-galaxy-day1-founders", "audrey-tang-reverse-alignment"],
     cover: { wide: "images/articles/cathay-tech-conference-2026/cover.jpg" }
   },
 
@@ -184,7 +203,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["openrouter-deepseek-data-routing", "ai-loop-safety-recovery", "ai-usage-audit", "ai-batch-work-without-seeing-data"]
+    related: ["openrouter-deepseek-data-routing", "ai-loop-safety-recovery", "ai-usage-audit", "ai-batch-work-without-seeing-data", "audrey-tang-reverse-alignment"]
   },
 
   {
@@ -369,7 +388,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["use-more-ai-not-enough", "personal-studio-vs-solo-company", "claude-skills-knowledge-assets", "ai-employee-four-levels"],
+    related: ["use-more-ai-not-enough", "personal-studio-vs-solo-company", "claude-skills-knowledge-assets", "ai-employee-four-levels", "audrey-tang-reverse-alignment"],
     cover: { wide: "images/articles/ai-custom-work-compound-cover.jpg" }
   },
 
@@ -407,7 +426,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach/post/Dc2DOcOki6E", vocus: null },
-    related: ["ai-loop-safety-recovery", "recovery-over-perfection", "three-levels-of-cross-review", "caught-ai-slacking-into-rules"],
+    related: ["ai-loop-safety-recovery", "recovery-over-perfection", "three-levels-of-cross-review", "caught-ai-slacking-into-rules", "audrey-tang-reverse-alignment"],
     cover: { tall: "images/articles/design-for-ai-errors-cover.jpg" }
   },
 
@@ -1788,7 +1807,7 @@ window.ARTICLES = [
       content_type: ["案例文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["dual-track-planning-loop", "loop-engineering-guardrails", "how-to-train-your-ai-employee", "intent-first-prompting", "rule-file-rebound", "long-task-completion-rate", "session-messaging-reminder-layer"]
+    related: ["dual-track-planning-loop", "loop-engineering-guardrails", "how-to-train-your-ai-employee", "intent-first-prompting", "rule-file-rebound", "long-task-completion-rate", "session-messaging-reminder-layer", "audrey-tang-reverse-alignment"]
   },
 
   {
@@ -2220,7 +2239,7 @@ window.ARTICLES = [
       content_type: ["趨勢文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["what-is-loop-engineering", "my-three-loops", "agent-workflow-builds-automation", "docs-as-system-design-agent", "decision-ladder-non-programmer", "ai-capability-tiers", "dual-centaur-meeting", "let-ai-do-the-setup"]
+    related: ["what-is-loop-engineering", "my-three-loops", "agent-workflow-builds-automation", "docs-as-system-design-agent", "decision-ladder-non-programmer", "ai-capability-tiers", "dual-centaur-meeting", "let-ai-do-the-setup", "audrey-tang-reverse-alignment"]
   },
 
   {
@@ -2364,7 +2383,7 @@ window.ARTICLES = [
       content_type: ["觀點文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["how-to-train-your-ai-employee", "docs-as-system-design-agent", "company-shape-is-the-moat", "personal-studio-vs-solo-company", "knowledge-as-employee"]
+    related: ["how-to-train-your-ai-employee", "docs-as-system-design-agent", "company-shape-is-the-moat", "personal-studio-vs-solo-company", "knowledge-as-employee", "audrey-tang-reverse-alignment"]
   },
 
   {
