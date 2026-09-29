@@ -72,7 +72,7 @@
     if (IDX[n]) return IDX[n].title;
     if (n === '/' || n === '/index.html') return '首頁';
     var named = {
-      '/articles.html': '深度文章總覽', '/courses.html': '課程總覽', '/skills.html': '技能包下載',
+      '/articles.html': '深度文章總覽', '/courses.html': '課程總覽', '/skills.html': '小工具',
       '/offers.html': '服務方案', '/knowledge-architecture.html': '知識架構', '/cases.html': '案例',
       '/learn.html': '學習地圖', '/search.html': '站內搜尋', '/stats.html': '站長儀表板',
       '/ai-trends.html': 'AI 趨勢', '/agent.html': 'Agent', '/invited-talks.html': '受邀演講',
