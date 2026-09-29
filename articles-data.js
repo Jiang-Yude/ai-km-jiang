@@ -23,6 +23,24 @@ window.ARTICLE_TAGS = {
 
 window.ARTICLES = [
   {
+    id: "first-principles-money-soup",
+    url: "articles/first-principles-money-soup/",
+    date: "2026-09-29",
+    updated: "2026-09-29",
+    title: "從一篇賺錢雞湯文，看馬斯克第一性原理",
+    problem: "很努力經營事業，收入卻一直跟工時綁在一起；常聽到第一性原理，卻說不出它怎麼用在自己的生意上。",
+    audience: "經營一人公司或小生意、想檢查自己的點子站不站得住，或想學會用第一性原理拆問題的人。",
+    summary: "從一篇賺錢雞湯脆文出發，把經營事業拆成 8 層追問：創造價值、解決問題、識別真需求、實踐回饋、快速迭代、驗證模型、系統複製、槓桿思維。白話說明第一性原理與馬斯克式六步拆解，每層都寫出要檢查什麼、看什麼證據、下一步做什麼，附八層事業檢查表、可複製提示詞與馬斯克第一性原理技能包下載。",
+    tags: {
+      topic: ["輔助決策", "提示詞設計"],
+      level: ["零基礎入門"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: "https://www.threads.com/@jiang_yude_coach/post/Dd2wPxziZdq", vocus: null },
+    related: ["elon-musk-live-skill", "delete-before-automate", "start-from-one-persons-problem", "ai-mvp-validation-before-product", "personal-studio-vs-solo-company"]
+  },
+
+  {
     id: "ai-batch-work-without-seeing-data",
     url: "articles/ai-batch-work-without-seeing-data/",
     date: "2026-09-28",
@@ -221,7 +239,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["vibe-coding-ten-half-products", "elon-musk-live-skill", "ai-vs-script-four-situations", "dont-learn-ai-tools", "ai-adoption-start-with-one-workflow"]
+    related: ["vibe-coding-ten-half-products", "elon-musk-live-skill", "ai-vs-script-four-situations", "dont-learn-ai-tools", "ai-adoption-start-with-one-workflow", "first-principles-money-soup"]
   },
 
   {
@@ -296,7 +314,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["vibe-coding-ten-half-products", "ai-mvp-validation-before-product", "how-to-train-your-ai-employee", "dont-learn-ai-tools", "company-shape-is-the-moat"]
+    related: ["vibe-coding-ten-half-products", "ai-mvp-validation-before-product", "how-to-train-your-ai-employee", "dont-learn-ai-tools", "company-shape-is-the-moat", "first-principles-money-soup"]
   },
 
   {
@@ -999,7 +1017,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["spacex-ipo-musk-trillionaire-knowledge-work", "how-to-train-your-ai-employee", "own-ai-team-at-work", "ai-market-microcosm", "vibe-coding-ten-half-products", "delete-before-automate"]
+    related: ["spacex-ipo-musk-trillionaire-knowledge-work", "how-to-train-your-ai-employee", "own-ai-team-at-work", "ai-market-microcosm", "vibe-coding-ten-half-products", "delete-before-automate", "first-principles-money-soup"]
   },
 
   {
@@ -1753,7 +1771,7 @@ window.ARTICLES = [
       content_type: ["觀點文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["company-shape-is-the-moat", "how-to-train-your-ai-employee", "ai-mvp-validation-before-product", "own-ai-team-at-work", "intangible-assets-grow-by-sharing"]
+    related: ["company-shape-is-the-moat", "how-to-train-your-ai-employee", "ai-mvp-validation-before-product", "own-ai-team-at-work", "intangible-assets-grow-by-sharing", "first-principles-money-soup"]
   },
 
   {
@@ -3049,6 +3067,6 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["ai-market-microcosm", "personal-studio-vs-solo-company", "ai-user-testing", "start-from-one-persons-problem"]
+    related: ["ai-market-microcosm", "personal-studio-vs-solo-company", "ai-user-testing", "start-from-one-persons-problem", "first-principles-money-soup"]
   }
 ];
