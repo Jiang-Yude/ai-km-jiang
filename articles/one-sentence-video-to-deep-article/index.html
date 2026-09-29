@@ -196,7 +196,6 @@ button.sim-bar:focus-visible{outline:3px solid var(--blue);outline-offset:2px;op
 .dsim{position:relative;margin:22px 0 10px;padding:18px;background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
 .ds-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
 .ds-svg{display:block;width:100%;min-width:820px;height:auto}
-.ov-svg{min-width:760px}
 .ds-svg text{font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC",sans-serif;text-anchor:middle}
 .ds-t{font-size:17px;font-weight:800;fill:#1a1612}.ds-t.w{fill:#fff}
 .ds-s{font-size:15px;fill:#3a342d}.ds-s.m{fill:#6a635a}
@@ -222,7 +221,11 @@ button.sim-bar:focus-visible{outline:3px solid var(--blue);outline-offset:2px;op
 .ds-now small{display:block;font-size:14px;font-weight:700;color:var(--muted)}
 .ds-now b{display:block;font-size:19px;margin:2px 0}
 @media(prefers-reduced-motion:reduce){.ds-svg g[data-s]{transition:none}}
-.ov-fig{margin:18px 0 8px;padding:14px;background:#fff;border:1px solid var(--line);border-radius:14px}
+.split{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:36px;align-items:start}
+.split-figs{position:sticky;top:90px}
+.split-figs .inline-figure.portrait{margin:0;max-width:340px}
+.split-text>:first-child{margin-top:0}
+@media(max-width:900px){.split{grid-template-columns:1fr;gap:0}.split-figs{position:static}.split-figs .inline-figure.portrait{margin:24px auto 8px;max-width:360px}}
 .ds-text{margin:16px 0}.ds-text summary{cursor:pointer;font-weight:700;font-size:18px;padding:8px 0}
 .dual{margin:24px 0;display:flex;flex-direction:column;gap:10px}
 .stage{display:flex;gap:12px;align-items:flex-start;margin-top:8px}
@@ -544,6 +547,7 @@ button.sim-bar:focus-visible{outline:3px solid var(--blue);outline-offset:2px;op
 
 <section class="section" id="single-dual"><div class="inner">
   <h2>單軌還是雙軌：現在看問題大小決定</h2>
+  <div class="split"><div class="split-text">
   <p>以前我有兩種做法：單軌互審和雙軌互審。單軌是一個 AI 做完、另一個 AI 看過就出結果；雙軌是兩邊各自做、再互相審，就是上面那張圖的前半段。</p>
   <p>說真的，我最近發現我很少用單軌互審。為什麼？因為現在模型夠聰明了，像 Opus 5.5 真是夠聰明的。比較簡單的，或者是不重要的問題，就直接 Opus 5.5 自己跑就好了，沒什麼大問題。比較複雜的或比較重要的，那就是直接雙軌互審。</p>
   <div class="tablewrap"><table>
@@ -554,46 +558,13 @@ button.sim-bar:focus-visible{outline:3px solid var(--blue);outline-offset:2px;op
       <tr><td>單軌互審（一個做、一個審）</td><td>最近很少用</td></tr>
     </tbody>
   </table></div>
-  <figure class="ov-fig">
-  <div class="ds-scroll"><svg viewBox="0 0 960 290" class="ds-svg ov-svg" role="img" aria-labelledby="ov-title">
-    <title id="ov-title">三種做法概略圖：單軌自審、單軌互審、雙軌互審</title>
-    <defs>
-      <marker id="ov-g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#5f7553"/></marker>
-      <marker id="ov-b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#5689b8"/></marker>
-      <marker id="ov-k" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#1a1612"/></marker>
-    </defs>
-    <line x1="320" y1="20" x2="320" y2="270" stroke="#e6dccb" stroke-width="2"/>
-    <line x1="640" y1="20" x2="640" y2="270" stroke="#e6dccb" stroke-width="2"/>
-    <!-- 單軌自審 -->
-    <text x="160" y="36" class="ds-t">單軌自審</text><text x="160" y="60" class="ds-s">一個模型自己跑完</text>
-    <path class="ds-path g" d="M98,128 C72,84 148,84 122,128" marker-end="url(#ov-g)"/><text x="146" y="100" class="ds-a g" style="text-anchor:start">自己跑</text>
-    <circle cx="110" cy="150" r="26" class="ds-c g"/><text x="110" y="156" class="ds-t w">做</text>
-    <path class="ds-path k" d="M136,150 L200,150" marker-end="url(#ov-k)"/>
-    <rect x="204" y="126" width="84" height="48" rx="10" class="ds-box k"/><text x="246" y="156" class="ds-s">結果</text>
-    <text x="160" y="232" class="ds-s">簡單、不重要的問題</text><text x="160" y="256" class="ds-s m">Opus 5.5 自己跑就好</text>
-    <!-- 單軌互審 -->
-    <text x="480" y="36" class="ds-t">單軌互審</text><text x="480" y="60" class="ds-s">一家做，另一家審</text>
-    <circle cx="380" cy="150" r="26" class="ds-c g"/><text x="380" y="156" class="ds-t w">做</text>
-    <circle cx="490" cy="150" r="26" class="ds-c b"/><text x="490" y="156" class="ds-t w">審</text>
-    <path class="ds-path g" d="M406,140 L460,140" marker-end="url(#ov-g)"/><text x="435" y="126" class="ds-a g">送審</text>
-    <path class="ds-path b" d="M464,162 L410,162" marker-end="url(#ov-b)"/><text x="435" y="190" class="ds-a b">意見</text>
-    <path class="ds-path k" d="M516,150 L540,150" marker-end="url(#ov-k)"/>
-    <rect x="544" y="126" width="80" height="48" rx="10" class="ds-box k"/><text x="584" y="156" class="ds-s">結果</text>
-    <text x="480" y="232" class="ds-s">一個做、一個審</text><text x="480" y="256" class="ds-s m">最近很少用</text>
-    <!-- 雙軌互審 -->
-    <text x="800" y="36" class="ds-t">雙軌互審</text><text x="800" y="60" class="ds-s">兩家各做一份，再比對、互審</text>
-    <circle cx="684" cy="106" r="22" class="ds-c g"/><text x="684" y="112" class="ds-t w">做</text>
-    <circle cx="684" cy="194" r="22" class="ds-c b"/><text x="684" y="200" class="ds-t w">做</text>
-    <path class="ds-path g" d="M706,112 C730,118 736,136 744,142" marker-end="url(#ov-g)"/>
-    <path class="ds-path b" d="M706,188 C730,182 736,164 744,158" marker-end="url(#ov-b)"/>
-    <circle cx="772" cy="150" r="28" class="ds-c k"/><text x="772" y="156" class="ds-t w">比對</text>
-    <path class="ds-path k" d="M800,150 L826,150" marker-end="url(#ov-k)"/>
-    <rect x="830" y="120" width="112" height="60" rx="10" class="ds-box k"/><text x="886" y="146" class="ds-s">整合、交叉審</text><text x="886" y="168" class="ds-s">再出結果</text>
-    <text x="800" y="232" class="ds-s">複雜、重要的問題</text><text x="800" y="256" class="ds-s m">直接雙軌互審</text>
-  </svg></div>
-  <figcaption class="ds-hint">三種做法概略圖。綠色、藍色只用來分兩家不同的 AI，誰做誰審看任務而定（這篇的案例是 Claude 做、Codex 審）；手機上可以左右滑動。</figcaption>
-  </figure>
   <div class="meaning"><b>流程不是一定的</b>會隨著環境、需求、模型能力成長而變動。這篇畫出來的是 9 月 28 日那一次的樣子：文章用了雙軌，技能包其實用了單軌。換一個題目、換一代模型，我可能又會調。</div>
+  </div><aside class="split-figs">
+    <figure class="inline-figure portrait">
+      <img src="../../images/articles/let-ai-review-itself-03.jpg" alt="圖卡：單軌自審、單軌互審、雙軌互審三種的資料流對照，標出另一家看得到多少" loading="lazy">
+      <figcaption>三種審法，差在對方看到多少。單軌自審是一家自己審；單軌互審的另一家只看最後結果；雙軌互審是兩家各寫一份、寫完前互相看不到，再比對整個過程。圖出自<a href="/articles/let-ai-review-itself/">〈我明明都講過了，AI 為什麼還要再問我？〉</a>。</figcaption>
+    </figure>
+  </aside></div>
 </div></section>
 
 <section class="section" id="mistakes"><div class="inner">
