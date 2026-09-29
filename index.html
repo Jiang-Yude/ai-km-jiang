@@ -791,6 +791,7 @@
 <script defer src="/_vercel/speed-insights/script.js"></script>
 </head>
 <body class="spotlight" data-motion-type="pointer">
+<div class="mk-guide" aria-hidden="true" title="點我跟咪卡聊聊"><div class="mk-guide-bubble"></div><div class="mk-guide-body"><div class="mk-guide-sprite"></div></div></div>
 
 <nav class="top">
   <div class="container">
@@ -1421,11 +1422,14 @@ https://jiangyude.com/</code>
     var cur = -1, typing = null;
     function size(){
       var gutter = (innerWidth - Math.min(innerWidth, 1180)) / 2;
-      var w = gutter >= 170 ? Math.min(160, gutter - 14) : (innerWidth < 900 ? 78 : 110);
-      g.style.setProperty('--gw', w + 'px'); g.style.setProperty('--gx', Math.max(6, gutter >= 170 ? (gutter - w) / 2 : 6) + 'px');
+      var side = gutter >= 170, w = side ? Math.min(160, gutter - 14) : (innerWidth < 900 ? 70 : 90);
+      g.classList.toggle('dock', !side);   // 兩側沒空白：縮小靠左下，泡泡講完就收
+      g.style.setProperty('--gw', w + 'px'); g.style.setProperty('--gx', Math.max(6, side ? (gutter - w) / 2 : 6) + 'px');
     }
+    var hideT = 0;
     function say(t){
-      clearInterval(typing); bub.classList.add('on'); var i = 0, chars = [].slice.call(t);
+      clearInterval(typing); clearTimeout(hideT); bub.classList.add('on'); var i = 0, chars = [].slice.call(t);
+      if (g.classList.contains('dock')) hideT = setTimeout(function(){ bub.classList.remove('on'); }, 4500 + chars.length * 45);
       if (reduce) { bub.textContent = t; return; }
       bub.textContent = ''; typing = setInterval(function(){ bub.textContent = chars.slice(0, ++i).join(''); if (i >= chars.length) clearInterval(typing); }, 45);
     }
@@ -1468,7 +1472,6 @@ https://jiangyude.com/</code>
   if (document.readyState === 'complete') idle(later); else addEventListener('load', function(){ idle(later); });
 })();
 </script>
-<div class="mk-guide" aria-hidden="true" title="點我跟咪卡聊聊"><div class="mk-guide-bubble"></div><div class="mk-guide-body"><div class="mk-guide-sprite"></div></div></div>
 <!-- tracking:cloudflare -->
 <script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "c3e3c857121d416ab405270557d017d3"}'></script>
 </body>
