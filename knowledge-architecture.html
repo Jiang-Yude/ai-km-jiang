@@ -127,6 +127,8 @@
 .ds-cond{transition:border-color .3s,box-shadow .3s;position:relative}
 .ds-cond.on{border-color:var(--c-sand)!important;box-shadow:0 8px 20px rgba(160,129,68,.14)}
 .ds-cond.on::after{content:"✓";position:absolute;right:14px;top:50%;transform:translateY(-50%);color:var(--c-sand);font-weight:800}
+@media (prefers-reduced-motion:reduce){.ds-demo *,.ds-cond{transition:none!important}}
+@media (max-width:420px){.ds-demo{padding:14px 12px 12px}.ds-steps li{font-size:11.5px;padding:5px 2px}.ds-doc-head{font-size:15.5px}.ds-line{font-size:12.5px}}
 </style>
 <!-- 核心觀念：我的文件就是我的系統（自首頁整併） -->
 <section class="docsys-section" style="padding:72px 0; background:var(--bg-soft);">
@@ -155,7 +157,9 @@
         </div>
         <a href="articles/docs-as-system-design-agent/" style="display:inline-block; margin-top:18px; color:var(--c-sand); font-weight:700; font-size:16px; text-decoration:none;">讀完整篇：非工程師怎麼設計 Agent →</a>
       </div>
-      <figure class="ds-demo" aria-label="示意動畫：沒有文件時 AI 每次都要你重講；有文件時 AI 讀完就照你的方式做；換工具，文件不用改">
+      <figure class="ds-demo">
+        <p class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap">示意動畫：沒有文件時，AI 每次都要你重講；有文件時，AI 讀完就照你的方式做；換工具，文件不用改，結果一樣。</p>
+        <div aria-hidden="true">
         <ol class="ds-steps" aria-hidden="true"><li data-s="1">沒有文件</li><li data-s="2">有文件</li><li data-s="3">換工具</li></ol>
         <div class="ds-stage">
           <div class="ds-ai"><span class="ds-ai-name">Codex</span><span class="ds-ai-sub">來幫你做事</span></div>
@@ -169,7 +173,8 @@
           <div class="ds-empty">（還沒有文件）</div>
           <div class="ds-result"></div>
         </div>
-        <figcaption class="ds-cap">不管換哪一個 AI 工具，核心都是同一份文件。</figcaption>
+        <div class="ds-cap">不管換哪一個 AI 工具，核心都是同一份文件。</div>
+        </div>
       </figure>
     </div>
   </div>
@@ -406,7 +411,8 @@
   function hasDoc(on){ doc.classList.toggle('away', !on); empty.classList.toggle('away', on); }
   function say(t, ask){ bubble.textContent = t; bubble.classList.toggle('ask', !!ask); }
   function out(t, good){ result.textContent = t; result.className = 'ds-result ' + (good ? 'good' : 'bad'); }
-  function tool(n){ ai.classList.add('swap'); setTimeout(function(){ aiName.textContent = n; ai.classList.remove('swap'); }, 300); }
+  var timers = [], running = false, still = false;
+  function tool(n){ if (still) { aiName.textContent = n; return; } ai.classList.add('swap'); timers.push(setTimeout(function(){ aiName.textContent = n; ai.classList.remove('swap'); }, 300)); }
   // 每一格：[秒數, 要做的事]
   var S = [
     [0,   function(){ act(1); hasDoc(false); mark(0); tag.classList.remove('on'); tool('Codex'); say('你是誰？這次要做什麼？有什麼規則？', 1); out('你得從頭交代一遍', 0); cap.textContent = '沒有文件：每開一次新對話、每換一個工具，都要重講一遍。'; }],
@@ -420,14 +426,18 @@
     [10.4, function(){ tool('Obsidian'); }],
     [12.4, null]
   ];
-  if (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) { S[2][1](); mark(3); say('讀完了，照你的規則來。', 0); out('✓ 照你的方式做完', 1); return; }
-  var timers = [], running = false;
+  function showStill(){ still = true; S[2][1](); mark(3); say('讀完了，照你的規則來。', 0); out('✓ 照你的方式做完', 1); }
   function run(){
     running = true; timers = [];
     S.forEach(function(x){ timers.push(setTimeout(function(){ if (x[1]) x[1](); else run(); }, x[0] * 1000)); });
   }
-  function stop(){ timers.forEach(clearTimeout); running = false; }
-  if ('IntersectionObserver' in window) new IntersectionObserver(function(es){ if (es[0].isIntersecting) { if (!running) run(); } else stop(); }, { threshold: .35 }).observe(demo); else run();
+  function stop(){ timers.forEach(clearTimeout); timers = []; running = false; ai.classList.remove('swap'); }
+  // 系統設定「減少動態」：停在第 ② 幕不動；使用中途切換設定也會跟著變
+  var mq = window.matchMedia ? matchMedia('(prefers-reduced-motion: reduce)') : null;
+  var visible = !('IntersectionObserver' in window);
+  function sync(){ stop(); if (mq && mq.matches) { showStill(); return; } still = false; if (visible) run(); }
+  if (mq && mq.addEventListener) mq.addEventListener('change', sync);
+  if ('IntersectionObserver' in window) new IntersectionObserver(function(es){ visible = es[es.length - 1].isIntersecting; /* 快速捲動時一次會來好幾筆，看最新那筆 */ if (mq && mq.matches) { if (!still) showStill(); return; } if (visible) { if (!running) run(); } else stop(); }, { threshold: .35 }).observe(demo); else sync();
 })();
 </script>
 </body>
