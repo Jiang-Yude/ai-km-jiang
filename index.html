@@ -741,7 +741,7 @@
 .mkqr-lightbox .h{margin:6px 0 0;font-size:14px;color:var(--ink-faint,#6a635a)}
 
 /* ── 首頁動態（2026-09-30 江江：「希望首頁可以一點動態」，參考永力 AI 員工頁）──
-   每個動作都對應一句話：工具流過去、知識庫不動＝「流水的 AI 工具，鐵打的知識庫」；咪卡狀態輪流亮＝接待台四張卡。
+   每個動作都對應一句話：工具流過去、知識庫不動＝「流水的 AI 工具，鐵打的知識庫」；咪卡圖本身做成 2 到 3 格小動畫（江江：「每一個小格的動畫有兩三幀」）。
    只用 transform／opacity，不影響版面；系統設定「減少動態」時全部停。 */
 .hero-copy{min-width:0}
 .tool-stream{display:flex;align-items:center;margin:-6px 0 22px;max-width:620px;width:100%;min-width:0}
@@ -755,17 +755,11 @@
 .mk-reception-fig{position:relative;flex:0 0 33%;width:33%;max-width:340px}
 .mk-reception-fig .mk-reception-img{width:100%;max-width:none;animation:mkBob 5s ease-in-out infinite}
 @keyframes mkBob{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
-.mk-status{position:absolute;left:50%;bottom:10px;transform:translateX(-50%);display:flex;align-items:center;gap:8px;padding:8px 14px;border-radius:999px;background:rgba(254,252,248,.96);border:1px solid rgba(160,129,68,.3);box-shadow:0 8px 22px rgba(107,74,42,.14);font-size:.9rem;font-weight:700;color:var(--ink,#1a1612);white-space:nowrap}
-.mk-status .dot{width:8px;height:8px;border-radius:50%;background:#5f7553;animation:mkPing 1.6s ease-out infinite}
-@keyframes mkPing{0%{box-shadow:0 0 0 0 rgba(95,117,83,.55)}100%{box-shadow:0 0 0 9px rgba(95,117,83,0)}}
-.mk-status-text{transition:opacity .3s}
 .mk-card{position:relative}
-.mk-card.is-working{border-color:rgba(232,90,79,.55);box-shadow:0 12px 26px rgba(232,90,79,.12)}
-.mk-card.is-working::after{content:"咪卡在這";position:absolute;top:10px;right:12px;font-size:.78rem;font-weight:700;color:var(--c-coral,#e85a4f)}
-@media (max-width:760px){.mk-reception-fig{width:min(260px,80%);flex:none;margin:0 auto}.mk-card.is-working::after{content:none}}
+@media (max-width:760px){.mk-reception-fig{width:min(260px,80%);flex:none;margin:0 auto}}
 .rv{opacity:0;transform:translateY(18px);transition:opacity .6s ease,transform .6s ease}
 .rv.in{opacity:1;transform:none}
-@media (prefers-reduced-motion:reduce){.ts-track,.mk-reception-fig .mk-reception-img,.mk-status .dot{animation:none}.rv{opacity:1;transform:none;transition:none}}
+@media (prefers-reduced-motion:reduce){.ts-track,.mk-reception-fig .mk-reception-img{animation:none}.rv{opacity:1;transform:none;transition:none}}
 </style>
 <!-- tracking:vercel-analytics -->
 <script defer src="/_vercel/insights/script.js"></script>
@@ -829,7 +823,7 @@
 <section class="mika-desk" style="padding:54px 0 8px;">
   <div class="container">
     <div class="mk-reception">
-      <div class="mk-reception-fig"><img class="mk-reception-img" src="images/mika-hero.webp" alt="咪卡，江江教練的 AI 助理" loading="lazy" decoding="async" width="640" height="800" /><div class="mk-status" aria-hidden="true"><span class="dot"></span><span class="mk-status-text">咪卡上班中</span></div></div>
+      <div class="mk-reception-fig"><img class="mk-reception-img" src="images/mika-hero.webp" alt="咪卡，江江教練的 AI 助理" loading="lazy" decoding="async" width="640" height="800" /></div>
       <div class="mk-reception-body">
         <div class="eyebrow" style="margin-bottom:8px;">咪卡接待台 · 網站快速導覽</div>
         <p style="font-size:25px; font-weight:800; color:var(--ink,#2d241a); line-height:1.5; margin:0 0 8px;">把這個官網網址丟給你常用的 AI，它就能直接幫你做事。</p>
@@ -1361,16 +1355,6 @@ https://jiangyude.com/</code>
 /* 首頁動態＋延後載入（2026-09-30 江江：「首頁先載入，其他分頁可以慢慢的載入」） */
 (function(){
   var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
-  // 咪卡接待台：狀態泡泡跟四張卡輪流亮
-  var cards = [].slice.call(document.querySelectorAll('.mk-nav .mk-card'));
-  var txt = document.querySelector('.mk-status-text');
-  var lines = ['咪卡在排這個月的免費講座', '咪卡在幫你翻深度文章', '咪卡在裝技能包', '咪卡在 AI 戰力大樓等你'];
-  var i = 0;
-  function step(){
-    cards.forEach(function(c, k){ c.classList.toggle('is-working', k === i); });
-    if (txt) { txt.style.opacity = 0; setTimeout(function(){ txt.textContent = lines[i] || '咪卡上班中'; txt.style.opacity = 1; }, 250); }
-  }
-  if (cards.length && !reduce) { step(); setInterval(function(){ i = (i + 1) % cards.length; step(); }, 3200); }
   // 滑到才浮現
   if ('IntersectionObserver' in window && !reduce) {
     var els = document.querySelectorAll('.pillar-card, .mika-moment, .entry-card, .intro-section .container > *');
