@@ -60,6 +60,24 @@ window.ARTICLES = [
   },
 
   {
+    id: "opus-luna-model-division",
+    url: "articles/opus-luna-model-division/",
+    date: "2026-09-29",
+    updated: "2026-09-29",
+    title: "頂規 AI 模型很貴，哪些事交給它、哪些交給便宜的？｜Opus 5.5 動腦、Luna 搬磚的實際分工",
+    problem: "頂規模型很貴，便宜模型又怕出錯，不知道哪些工作該交給哪一邊。",
+    audience: "同時在用好幾個 AI、做了每天要跑的小工具，或要幫客戶規劃模型分工的人。",
+    summary: "我把 Claude Opus 5.5 用在整理逐字稿、做說明動畫和流程圖，把 OpenAI 最便宜的 Luna 用在官網客服、LINE 群助理、每天自動整理訊息這些小工具。這篇列出實際分工、兩筆算過的月費帳、Luna 交白卷後重新考試的結果，整理成三個判斷問題，附一段可以直接貼給 AI 的分工提示詞。",
+    tags: {
+      topic: ["AI工作流", "差異比較", "輔助決策"],
+      level: ["基礎"],
+      content_type: ["案例文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["reevaluate-models-same-test", "ai-cp-value-calculus", "what-are-subagents", "long-answer-three-layers", "meeting-record-agent-workflow", "dual-track-planning-loop", "fixed-test-set-for-ai", "ai-schedule-wake-interval"]
+  },
+
+  {
     id: "audrey-tang-reverse-alignment",
     url: "articles/audrey-tang-reverse-alignment/",
     date: "2026-09-28",
@@ -147,7 +165,7 @@ window.ARTICLES = [
       content_type: ["案例文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["fixed-test-set-for-ai", "ai-cp-value-calculus", "three-levels-of-cross-review", "dual-track-planning-loop", "how-to-verify-ai-rule-changes", "ai-schedule-wake-interval"]
+    related: ["fixed-test-set-for-ai", "ai-cp-value-calculus", "three-levels-of-cross-review", "dual-track-planning-loop", "how-to-verify-ai-rule-changes", "ai-schedule-wake-interval", "opus-luna-model-division"]
   },
 
   {
@@ -165,7 +183,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["ai-vs-script-four-situations", "ai-image-api-cost", "line-group-ai-workflow", "how-to-verify-ai-rule-changes", "loop-round-limit", "reevaluate-models-same-test"]
+    related: ["ai-vs-script-four-situations", "ai-image-api-cost", "line-group-ai-workflow", "how-to-verify-ai-rule-changes", "loop-round-limit", "reevaluate-models-same-test", "opus-luna-model-division"]
   },
 
   {
@@ -351,7 +369,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["how-to-verify-ai-rule-changes", "three-levels-of-cross-review", "dual-track-planning-loop", "ai-cp-value-calculus", "ai-schedule-wake-interval", "rule-file-rebound", "caught-ai-slacking-into-rules", "ai-user-testing", "long-document-review-layers", "reevaluate-models-same-test"]
+    related: ["how-to-verify-ai-rule-changes", "three-levels-of-cross-review", "dual-track-planning-loop", "ai-cp-value-calculus", "ai-schedule-wake-interval", "rule-file-rebound", "caught-ai-slacking-into-rules", "ai-user-testing", "long-document-review-layers", "reevaluate-models-same-test", "opus-luna-model-division"]
   },
 
   {
@@ -672,7 +690,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["parallel-site-editing", "same-question-different-answers", "long-document-review-layers", "grok-bot-galaxy-day2-workshops"],
+    related: ["parallel-site-editing", "same-question-different-answers", "long-document-review-layers", "grok-bot-galaxy-day2-workshops", "opus-luna-model-division"],
     cover: { wide: "images/articles/what-are-subagents-cover.jpg" }
   },
 
@@ -1105,7 +1123,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["map-is-not-the-territory", "intent-first-prompting", "decision-ladder-non-programmer", "ai-data-organization-usable-system", "give-ai-choices-not-descriptions"]
+    related: ["map-is-not-the-territory", "intent-first-prompting", "decision-ladder-non-programmer", "ai-data-organization-usable-system", "give-ai-choices-not-descriptions", "opus-luna-model-division"]
   },
 
   {
@@ -1880,7 +1898,7 @@ window.ARTICLES = [
       content_type: ["觀點文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["ai-usage-audit", "ai-tools-professional-judgment", "strong-ai-models-knowledge-workflow-road", "program-vs-ai-skill-library", "ai-capability-tiers", "long-task-completion-rate", "openrouter-deepseek-data-routing", "fixed-test-set-for-ai", "reevaluate-models-same-test"]
+    related: ["ai-usage-audit", "ai-tools-professional-judgment", "strong-ai-models-knowledge-workflow-road", "program-vs-ai-skill-library", "ai-capability-tiers", "long-task-completion-rate", "openrouter-deepseek-data-routing", "fixed-test-set-for-ai", "reevaluate-models-same-test", "opus-luna-model-division"]
   },
 
   {
@@ -1970,7 +1988,7 @@ window.ARTICLES = [
       content_type: ["案例文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["loop-engineering-guardrails", "a2a-agent-protocol", "docs-as-system-design-agent", "ai-handoff-instructions", "long-task-completion-rate", "session-messaging-reminder-layer", "before-installing-others-skill", "parallel-site-editing", "let-ai-review-itself", "reevaluate-models-same-test", "one-sentence-video-to-deep-article"]
+    related: ["loop-engineering-guardrails", "a2a-agent-protocol", "docs-as-system-design-agent", "ai-handoff-instructions", "long-task-completion-rate", "session-messaging-reminder-layer", "before-installing-others-skill", "parallel-site-editing", "let-ai-review-itself", "reevaluate-models-same-test", "one-sentence-video-to-deep-article", "opus-luna-model-division"]
   },
 
   {
@@ -2078,7 +2096,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: "https://vocus.cc/salon/Jiang_Coach" },
-    related: ["agent-workflow-builds-automation", "codex-only-auto-worklog", "how-to-train-your-ai-employee", "diary-driven-agent-3x4", "tidy-mess-before-consulting", "meeting-into-verifiable-loop", "ai-employee-four-levels", "eight-ai-system-concepts-2026", "meeting-mic-rescue-on-mac"]
+    related: ["agent-workflow-builds-automation", "codex-only-auto-worklog", "how-to-train-your-ai-employee", "diary-driven-agent-3x4", "tidy-mess-before-consulting", "meeting-into-verifiable-loop", "ai-employee-four-levels", "eight-ai-system-concepts-2026", "meeting-mic-rescue-on-mac", "opus-luna-model-division"]
   },
 
   {
