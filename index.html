@@ -762,7 +762,7 @@
 .mk-card{position:relative}
 .mk-card.is-working{border-color:rgba(232,90,79,.55);box-shadow:0 12px 26px rgba(232,90,79,.12)}
 .mk-card.is-working::after{content:"咪卡在這";position:absolute;top:10px;right:12px;font-size:.78rem;font-weight:700;color:var(--c-coral,#e85a4f)}
-@media (max-width:760px){.mk-reception-fig{width:min(260px,80%);flex:none;margin:0 auto}}
+@media (max-width:760px){.mk-reception-fig{width:min(260px,80%);flex:none;margin:0 auto}.mk-card.is-working::after{content:none}}
 .rv{opacity:0;transform:translateY(18px);transition:opacity .6s ease,transform .6s ease}
 .rv.in{opacity:1;transform:none}
 @media (prefers-reduced-motion:reduce){.ts-track,.mk-reception-fig .mk-reception-img,.mk-status .dot{animation:none}.rv{opacity:1;transform:none;transition:none}}
@@ -1376,6 +1376,7 @@ https://jiangyude.com/</code>
     var els = document.querySelectorAll('.pillar-card, .mika-moment, .entry-card, .intro-section .container > *');
     var io = new IntersectionObserver(function(es){ es.forEach(function(e){ if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }); }, { rootMargin: '0px 0px -8% 0px' });
     [].forEach.call(els, function(el, k){ el.classList.add('rv'); el.style.transitionDelay = (k % 4) * 90 + 'ms'; io.observe(el); });
+    addEventListener('beforeprint', function(){ [].forEach.call(els, function(el){ el.classList.add('in'); }); });   // 列印時還沒滑到的區塊也要看得到
   }
   // 首頁載完、瀏覽器空下來：才載咪卡客服、給 AI 用的工具層；網路允許時預先抓常用分頁，點過去就快
   function idle(fn){ 'requestIdleCallback' in window ? requestIdleCallback(fn, { timeout: 3000 }) : setTimeout(fn, 1500); }
