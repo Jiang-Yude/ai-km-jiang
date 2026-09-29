@@ -94,41 +94,34 @@
 </section>
 
 <style>
-/* 核心觀念示意動畫（2026-09-30 江江：「這也要改 更動態 更好懂一點」「這好難懂 你幫我想怎麼做解釋動畫」）
-   三幕循環：①沒有文件：AI 來了只能問你是誰、要做什麼 ②有文件：放上去，AI 讀完照你的方式做，左邊三個條件依序打勾
-   ③換工具：Codex、Claude Cowork、龍蝦 AI、Obsidian 輪流讀同一份文件，文件沒改，結果一樣。系統設定減少動態時停在第 ② 幕。 */
-.ds-demo{margin:0;background:var(--bg-soft);border:1px solid var(--line);border-radius:18px;padding:18px 20px 16px;box-shadow:var(--shadow)}
-.ds-steps{display:flex;gap:6px;list-style:none;margin:0 0 14px;padding:0;counter-reset:ds}
-.ds-steps li{flex:1;text-align:center;font-size:12.5px;font-weight:700;color:var(--ink-faint);padding:6px 4px;border-radius:999px;background:var(--paper);border:1px solid var(--line-soft);transition:all .3s;counter-increment:ds}
-.ds-steps li::before{content:counter(ds) " ";}
-.ds-steps li.on{background:var(--c-sand);border-color:var(--c-sand);color:#fff}
-.ds-stage{position:relative;min-height:300px}
-.ds-ai{display:inline-flex;align-items:baseline;gap:8px;background:var(--paper);border:1px solid var(--c-sand);border-radius:10px;padding:9px 14px;box-shadow:0 8px 18px rgba(160,129,68,.16);transition:transform .35s,opacity .35s}
-.ds-ai.swap{transform:translateY(-8px);opacity:0}
-.ds-ai-name{font-weight:800;font-size:16px;color:var(--ink)}
-.ds-ai-sub{font-size:12px;color:var(--ink-faint)}
-.ds-bubble{position:relative;display:inline-block;margin:10px 0 12px 4px;padding:9px 14px;border-radius:14px;background:#fff;border:1px solid var(--line);font-size:14.5px;font-weight:600;color:var(--ink);transition:opacity .3s}
-.ds-bubble::before{content:"";position:absolute;left:18px;top:-7px;width:12px;height:12px;background:#fff;border-left:1px solid var(--line);border-top:1px solid var(--line);transform:rotate(45deg)}
-.ds-bubble.ask{border-color:rgba(232,90,79,.5);color:var(--c-coral)}
-.ds-doc{background:var(--paper);border:1px solid rgba(160,129,68,.45);border-radius:12px;padding:12px 14px 10px;box-shadow:inset 0 3px 0 #b58a63;transition:transform .45s cubic-bezier(.2,1.4,.4,1),opacity .35s}
-.ds-doc.away{transform:translateY(18px) scale(.96);opacity:0;position:absolute;left:0;right:0;pointer-events:none}
-.ds-doc-head{font-size:17px;font-weight:800;color:#3a2a18;letter-spacing:.04em;margin-bottom:6px;display:flex;align-items:baseline;justify-content:space-between;gap:8px}
-.ds-doc-tag{font-size:12px;font-weight:700;color:var(--c-sand);letter-spacing:0;opacity:0;transition:opacity .3s}
-.ds-doc-tag.on{opacity:1}
-.ds-line{font-size:13.5px;color:var(--ink-soft);padding:5px 8px;border-radius:8px;transition:background .3s,color .3s}
-.ds-line b{color:var(--c-sand);margin-right:8px}
-.ds-line.on{background:rgba(160,129,68,.13);color:var(--ink)}
-.ds-empty{border:1.5px dashed var(--line);border-radius:12px;padding:30px 10px;text-align:center;color:var(--ink-faint);font-size:14px;transition:opacity .3s}
-.ds-empty.away{display:none}
-.ds-result{margin-top:12px;padding:10px 14px;border-radius:10px;font-size:14.5px;font-weight:700;min-height:1.5em;transition:background .3s,color .3s}
-.ds-result.bad{background:rgba(232,90,79,.1);color:var(--c-coral)}
-.ds-result.good{background:rgba(95,117,83,.12);color:#4d6343}
-.ds-cap{text-align:center;font-size:13.5px;color:var(--ink-soft);margin-top:12px;line-height:1.65;min-height:3.3em}
-.ds-cond{transition:border-color .3s,box-shadow .3s;position:relative}
-.ds-cond.on{border-color:var(--c-sand)!important;box-shadow:0 8px 20px rgba(160,129,68,.14)}
-.ds-cond.on::after{content:"✓";position:absolute;right:14px;top:50%;transform:translateY(-50%);color:var(--c-sand);font-weight:800}
-@media (prefers-reduced-motion:reduce){.ds-demo *,.ds-cond{transition:none!important}}
-@media (max-width:420px){.ds-demo{padding:14px 12px 12px}.ds-steps li{font-size:11.5px;padding:5px 2px}.ds-doc-head{font-size:15.5px}.ds-line{font-size:12.5px}}
+/* 核心觀念示意動畫：中控台版（2026-09-30 江江：「要是有一個中控台 然後所有的AI都來跑來我這邊來工作」「各家 AI都跑到我的文件 我的資料夾來挖資料 去做事情 然后再把东西再喂回来 我的文件是不停的在长大的」「好像是之前那樣子的版型」）
+   上排五隻不同形狀的 AI 機器人，輪流跑下來拿資料、回位子做事、帶成果跑下來放回「我的文件」，份數一直長。系統設定減少動態時靜止。 */
+.hb{margin:0;background:var(--bg-soft);border:1px solid var(--line);border-radius:18px;padding:18px 16px 14px;box-shadow:var(--shadow);position:relative}
+.hb-row{display:flex;justify-content:space-between;gap:4px;position:relative;z-index:2}
+.hb-bot{flex:1;display:flex;flex-direction:column;align-items:center;min-width:0}
+.hb-body{position:relative;transition:transform .7s cubic-bezier(.4,1.3,.5,1)}
+.hb-body svg{display:block;filter:drop-shadow(0 6px 8px rgba(26,22,18,.15))}
+.hb-bot.work svg{animation:hbWork .5s ease-in-out infinite alternate}
+@keyframes hbWork{from{transform:rotate(-6deg)}to{transform:rotate(6deg)}}
+.hb-name{font-size:12px;font-weight:700;color:var(--ink);margin-top:4px;white-space:nowrap}
+.hb-say{position:absolute;left:50%;bottom:100%;transform:translateX(-50%);margin-bottom:2px;background:#fff;border:1px solid var(--line);border-radius:10px;padding:2px 7px;font-size:11px;font-weight:700;color:var(--ink-soft);white-space:nowrap;opacity:0;transition:opacity .25s}
+.hb-say.on{opacity:1}
+.hb-chip{position:absolute;left:50%;top:40px;transform:translateX(-50%);padding:2px 7px;border-radius:6px;font-size:10.5px;font-weight:700;white-space:nowrap;opacity:0;transition:opacity .25s}
+.hb-chip.data{opacity:1;background:#fff;border:1px solid var(--c-sand);color:var(--c-sand)}
+.hb-chip.done{opacity:1;background:#5f7553;color:#fff}
+.hb-hub{margin-top:96px;background:var(--paper);border:1.5px solid rgba(160,129,68,.5);border-radius:14px;padding:12px 14px;box-shadow:inset 0 4px 0 #b58a63,0 10px 24px rgba(107,74,42,.1);transition:transform .25s}
+.hb-hub.bump{transform:scale(1.03)}
+.hb-hub-head{display:flex;justify-content:space-between;align-items:baseline;font-size:19px;font-weight:800;color:#3a2a18;letter-spacing:.04em}
+.hb-count{font-size:13px;font-weight:600;color:var(--ink-faint);letter-spacing:0}
+.hb-count b{font-size:18px;color:var(--c-sand)}
+.hb-sheets{display:flex;flex-wrap:wrap;gap:4px;margin:8px 0 6px;min-height:44px;align-content:flex-start}
+.hb-sheets i{width:14px;height:18px;border-radius:2px;background:#efe3cf;border:1px solid #d8c5a3;animation:hbIn .4s ease}
+.hb-sheets i.new{background:#5f7553;border-color:#5f7553}
+@keyframes hbIn{from{transform:translateY(-10px) scale(.6);opacity:0}}
+.hb-log{font-size:12.5px;color:var(--ink-soft);min-height:1.4em}
+.hb .ds-cap{text-align:center;font-size:13.5px;color:var(--ink-soft);margin-top:12px;line-height:1.65}
+@media (max-width:420px){.hb{padding:14px 10px 12px}.hb-body svg{width:44px;height:44px}.hb-name{font-size:11px}.hb-chip{top:34px}}
+@media (prefers-reduced-motion:reduce){.hb *{transition:none!important;animation:none!important}}
 </style>
 <!-- 核心觀念：我的文件就是我的系統（自首頁整併） -->
 <section class="docsys-section" id="docsys" style="padding:72px 0; background:var(--bg-soft);">
@@ -157,23 +150,16 @@
         </div>
         <a href="articles/docs-as-system-design-agent/" style="display:inline-block; margin-top:18px; color:var(--c-sand); font-weight:700; font-size:16px; text-decoration:none;">讀完整篇：非工程師怎麼設計 Agent →</a>
       </div>
-      <figure class="ds-demo">
-        <p class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap">示意動畫：沒有文件時，AI 每次都要你重講；有文件時，AI 讀完就照你的方式做；換工具，文件不用改，結果一樣。</p>
+      <figure class="ds-demo hb">
+        <p style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap">示意動畫：Claude、小龍、Codex、Grok、Gemini 等 AI 輪流到「我的文件」資料夾拿資料、回去做事，再把成果放回資料夾，文件越長越多。</p>
         <div aria-hidden="true">
-        <ol class="ds-steps" aria-hidden="true"><li data-s="1">沒有文件</li><li data-s="2">有文件</li><li data-s="3">換工具</li></ol>
-        <div class="ds-stage">
-          <div class="ds-ai"><span class="ds-ai-name">Codex</span><span class="ds-ai-sub">來幫你做事</span></div>
-          <div class="ds-bubble">你是誰？這次要做什麼？</div>
-          <div class="ds-doc">
-            <div class="ds-doc-head">我的文件<small class="ds-doc-tag">一個字都沒改</small></div>
-            <div class="ds-line" data-step="1"><b>01</b>這份資料是什麼、寫給誰看</div>
-            <div class="ds-line" data-step="2"><b>02</b>任務與規則：要做什麼、不能做什麼</div>
-            <div class="ds-line" data-step="3"><b>03</b>放在 AI 讀得到的資料夾</div>
+          <div class="hb-row"><div class="hb-bot" data-k="claude"><div class="hb-body"><svg viewBox="0 0 60 60" width="52" height="52" aria-hidden="true"><rect x="10" y="14" width="40" height="30" rx="14" fill="#d97a4a"/><circle cx="30" cy="8" r="4" fill="#d97a4a"/><line x1="30" y1="10" x2="30" y2="14" stroke="#d97a4a" stroke-width="3"/><circle cx="23" cy="28" r="3.2" fill="#fefcf8"/><circle cx="37" cy="28" r="3.2" fill="#fefcf8"/><rect x="18" y="46" width="24" height="12" rx="5" fill="#d97a4a" opacity=".85"/></svg><span class="hb-say"></span><span class="hb-chip"></span></div><span class="hb-name">Claude</span></div><div class="hb-bot" data-k="claw"><div class="hb-body"><svg viewBox="0 0 60 60" width="52" height="52" aria-hidden="true"><rect x="14" y="16" width="32" height="28" rx="9" fill="#e85a4f"/><path d="M8 20 q-6 -10 4 -14 q-2 6 4 8z" fill="#e85a4f"/><path d="M52 20 q6 -10 -4 -14 q2 6 -4 8z" fill="#e85a4f"/><circle cx="23" cy="28" r="3.2" fill="#fefcf8"/><circle cx="37" cy="28" r="3.2" fill="#fefcf8"/><rect x="18" y="46" width="24" height="12" rx="5" fill="#e85a4f" opacity=".85"/></svg><span class="hb-say"></span><span class="hb-chip"></span></div><span class="hb-name">小龍</span></div><div class="hb-bot" data-k="codex"><div class="hb-body"><svg viewBox="0 0 60 60" width="52" height="52" aria-hidden="true"><rect x="10" y="12" width="40" height="32" rx="4" fill="#3a342d"/><text x="16" y="34" font-family="monospace" font-size="13" fill="#e8c28a">&gt;_</text><rect x="18" y="46" width="24" height="12" rx="5" fill="#3a342d" opacity=".85"/></svg><span class="hb-say"></span><span class="hb-chip"></span></div><span class="hb-name">Codex</span></div><div class="hb-bot" data-k="grok"><div class="hb-body"><svg viewBox="0 0 60 60" width="52" height="52" aria-hidden="true"><circle cx="30" cy="28" r="18" fill="#6b6f76"/><rect x="24" y="4" width="12" height="7" rx="3" fill="#6b6f76"/><circle cx="23" cy="28" r="3.2" fill="#fefcf8"/><circle cx="37" cy="28" r="3.2" fill="#fefcf8"/><rect x="18" y="46" width="24" height="12" rx="5" fill="#6b6f76" opacity=".85"/></svg><span class="hb-say"></span><span class="hb-chip"></span></div><span class="hb-name">Grok</span></div><div class="hb-bot" data-k="gemini"><div class="hb-body"><svg viewBox="0 0 60 60" width="52" height="52" aria-hidden="true"><path d="M30 8 L48 28 L30 46 L12 28Z" fill="#5f7553"/><circle cx="23" cy="28" r="3.2" fill="#fefcf8"/><circle cx="37" cy="28" r="3.2" fill="#fefcf8"/><rect x="18" y="46" width="24" height="12" rx="5" fill="#5f7553" opacity=".85"/></svg><span class="hb-say"></span><span class="hb-chip"></span></div><span class="hb-name">Gemini</span></div></div>
+          <div class="hb-hub">
+            <div class="hb-hub-head"><span>我的文件</span><span class="hb-count"><b>128</b> 份</span></div>
+            <div class="hb-sheets"></div>
+            <div class="hb-log">AI 來上班了…</div>
           </div>
-          <div class="ds-empty">（還沒有文件）</div>
-          <div class="ds-result"></div>
-        </div>
-        <div class="ds-cap">不管換哪一個 AI 工具，核心都是同一份文件。</div>
+          <div class="ds-cap">工具來來去去，都到你的資料夾來工作；做完的成果放回來，你的文件越長越大。</div>
         </div>
       </figure>
     </div>
@@ -400,44 +386,50 @@
 <!-- tracking:cloudflare -->
 <script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "c3e3c857121d416ab405270557d017d3"}'></script>
 <script>
-/* 核心觀念示意動畫：三幕循環（沒有文件 → 有文件 → 換工具） */
+/* 核心觀念示意動畫：中控台版。每隻 AI 一個循環：下來拿資料 → 回位子做事 → 帶成果下來放回 → 回位子 */
 (function(){
-  var demo = document.querySelector('.ds-demo'); if (!demo) return;
-  var $ = function(q){ return demo.querySelector(q); };
-  var steps = demo.querySelectorAll('.ds-steps li'), lines = demo.querySelectorAll('.ds-line'), conds = document.querySelectorAll('.ds-cond');
-  var ai = $('.ds-ai'), aiName = $('.ds-ai-name'), bubble = $('.ds-bubble'), doc = $('.ds-doc'), empty = $('.ds-empty'), result = $('.ds-result'), cap = $('.ds-cap'), tag = $('.ds-doc-tag');
-  function act(n){ [].forEach.call(steps, function(li){ li.classList.toggle('on', +li.dataset.s === n); }); }
-  function mark(k){ [].forEach.call(lines, function(l){ l.classList.toggle('on', +l.dataset.step <= k); }); [].forEach.call(conds, function(c){ c.classList.toggle('on', +c.dataset.step <= k); }); }
-  function hasDoc(on){ doc.classList.toggle('away', !on); empty.classList.toggle('away', on); }
-  function say(t, ask){ bubble.textContent = t; bubble.classList.toggle('ask', !!ask); }
-  function out(t, good){ result.textContent = t; result.className = 'ds-result ' + (good ? 'good' : 'bad'); }
-  var timers = [], running = false, still = false;
-  function tool(n){ if (still) { aiName.textContent = n; return; } ai.classList.add('swap'); timers.push(setTimeout(function(){ aiName.textContent = n; ai.classList.remove('swap'); }, 300)); }
-  // 每一格：[秒數, 要做的事]
-  var S = [
-    [0,   function(){ act(1); hasDoc(false); mark(0); tag.classList.remove('on'); tool('Codex'); say('你是誰？這次要做什麼？有什麼規則？', 1); out('你得從頭交代一遍', 0); cap.textContent = '沒有文件：每開一次新對話、每換一個工具，都要重講一遍。'; }],
-    [1.8, function(){ tool('Claude Cowork'); say('你是誰？這次要做什麼？有什麼規則？', 1); out('又要從頭交代一遍', 0); }],
-    [3.6, function(){ act(2); tool('Codex'); hasDoc(true); say('我先讀你的文件…', 0); result.textContent = ''; result.className = 'ds-result'; cap.textContent = '有文件：把這三件事寫好放著，AI 讀了就知道。'; }],
-    [4.3, function(){ mark(1); }],
-    [5.0, function(){ mark(2); }],
-    [5.7, function(){ mark(3); say('讀完了，照你的規則來。', 0); out('✓ 照你的方式做完', 1); }],
-    [7.4, function(){ act(3); tag.classList.add('on'); tool('Claude Cowork'); say('讀同一份文件。', 0); cap.textContent = '換工具：文件不用改，一樣照你的方式做完。工具來來去去，文件才是你的系統。'; }],
-    [8.9, function(){ tool('龍蝦 AI'); }],
-    [10.4, function(){ tool('Obsidian'); }],
-    [12.4, null]
-  ];
-  function showStill(){ still = true; S[2][1](); mark(3); say('讀完了，照你的規則來。', 0); out('✓ 照你的方式做完', 1); }
-  function run(){
-    running = true; timers = [];
-    S.forEach(function(x){ timers.push(setTimeout(function(){ if (x[1]) x[1](); else run(); }, x[0] * 1000)); });
+  var fig = document.querySelector('.hb'); if (!fig) return;
+  var bots = [].slice.call(fig.querySelectorAll('.hb-bot')), hub = fig.querySelector('.hb-hub'), sheets = fig.querySelector('.hb-sheets');
+  var countEl = fig.querySelector('.hb-count b'), log = fig.querySelector('.hb-log'), count = 128;
+  var jobs = { claude: ['會議紀錄', '週報草稿'], claw: ['客戶問答', '客服回覆'], codex: ['規格文件', '網頁程式'], grok: ['新聞剪報', '趨勢整理'], gemini: ['課程講義', '簡報大綱'] };
+  var names = { claude: 'Claude', claw: '小龍', codex: 'Codex', grok: 'Grok', gemini: 'Gemini' };
+  for (var i = 0; i < 18; i++) sheets.appendChild(document.createElement('i'));
+  function drop(){ var h = hub.getBoundingClientRect(); return h.top - 30; }
+  function deposit(k){
+    count++; countEl.textContent = count;
+    var e = document.createElement('i'); e.className = 'new'; sheets.appendChild(e);
+    setTimeout(function(){ e.className = ''; }, 1600);
+    if (sheets.children.length > 36) sheets.removeChild(sheets.firstChild);
+    hub.classList.add('bump'); setTimeout(function(){ hub.classList.remove('bump'); }, 250);
+    log.textContent = names[k] + ' 放回：' + jobs[k][1] + '，我的文件 +1';
   }
-  function stop(){ timers.forEach(clearTimeout); timers = []; running = false; ai.classList.remove('swap'); }
-  // 系統設定「減少動態」：停在第 ② 幕不動；使用中途切換設定也會跟著變
+  var timers = [], running = false;
+  function at(ms, fn){ timers.push(setTimeout(fn, ms)); }
+  function cycle(bot, delay){
+    var k = bot.dataset.k, body = bot.querySelector('.hb-body'), say = bot.querySelector('.hb-say'), chip = bot.querySelector('.hb-chip');
+    function dy(){ return Math.max(40, drop() - body.getBoundingClientRect().top + 0); }
+    at(delay, function(){ body.style.transform = 'translateY(' + dy() + 'px)'; say.textContent = '挖資料'; say.classList.add('on'); log.textContent = names[k] + ' 來拿：' + jobs[k][0]; });
+    at(delay + 1100, function(){ body.style.transform = ''; say.classList.remove('on'); chip.textContent = jobs[k][0]; chip.className = 'hb-chip data'; });
+    at(delay + 1900, function(){ bot.classList.add('work'); say.textContent = '做事中'; say.classList.add('on'); });
+    at(delay + 3400, function(){ bot.classList.remove('work'); say.classList.remove('on'); chip.textContent = jobs[k][1]; chip.className = 'hb-chip done'; body.style.transform = 'translateY(' + dy() + 'px)'; });
+    at(delay + 4200, function(){ chip.className = 'hb-chip'; deposit(k); });
+    at(delay + 4600, function(){ body.style.transform = ''; });
+  }
+  var LOOP = 7000, order = [0, 2, 4, 1, 3];
+  function run(){
+    running = true;
+    order.forEach(function(b, n){ cycle(bots[b], n * 1300); });
+    at(LOOP + 1300 * 2, function(){ timers = []; run(); });
+  }
+  function stop(){
+    timers.forEach(clearTimeout); timers = []; running = false;
+    bots.forEach(function(b){ b.classList.remove('work'); b.querySelector('.hb-body').style.transform = ''; b.querySelector('.hb-say').classList.remove('on'); b.querySelector('.hb-chip').className = 'hb-chip'; });
+  }
   var mq = window.matchMedia ? matchMedia('(prefers-reduced-motion: reduce)') : null;
   var visible = !('IntersectionObserver' in window);
-  function sync(){ stop(); if (mq && mq.matches) { showStill(); return; } still = false; if (visible) run(); }
+  function sync(){ stop(); if (mq && mq.matches) { log.textContent = 'Claude、小龍、Codex、Grok、Gemini 都到這裡拿資料、放回成果'; return; } if (visible) run(); }
   if (mq && mq.addEventListener) mq.addEventListener('change', sync);
-  if ('IntersectionObserver' in window) new IntersectionObserver(function(es){ visible = es[es.length - 1].isIntersecting; /* 快速捲動時一次會來好幾筆，看最新那筆 */ if (mq && mq.matches) { if (!still) showStill(); return; } if (visible) { if (!running) run(); } else stop(); }, { threshold: .35 }).observe(demo); else sync();
+  if ('IntersectionObserver' in window) new IntersectionObserver(function(es){ visible = es[es.length - 1].isIntersecting; if (visible && !running) sync(); else if (!visible) stop(); }, { threshold: .3 }).observe(fig); else sync();
 })();
 </script>
 </body>
