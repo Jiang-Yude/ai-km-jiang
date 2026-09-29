@@ -753,13 +753,17 @@
 @keyframes tsFlow{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 @media (max-width:900px){.tool-stream{margin:-4px auto 20px}}
 .mk-reception-fig{position:relative;flex:0 0 33%;width:33%;max-width:340px}
-.mk-reception-fig .mk-reception-img{width:100%;max-width:none;animation:mkBob 5s ease-in-out infinite}
-@keyframes mkBob{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+.mk-reception-fig .mk-reception-img{width:100%;max-width:none;aspect-ratio:4/5;height:auto}
+/* 咪卡小動畫：每張 3 格排成一條長圖，滑到附近才載，用 steps 換格（江江：「每一個小格的動畫有兩三幀」） */
+.mk-sprite{display:block;background-repeat:no-repeat;background-size:300% 100%;background-position:0 0}
+.mk-sprite.go{animation:mkFrames var(--mk-dur,1.4s) steps(3) infinite}
+@keyframes mkFrames{from{background-position:0 0}to{background-position:150% 0}}
+.mk-card-thumb.mk-sprite{flex:0 0 120px;width:120px;height:150px}
 .mk-card{position:relative}
 @media (max-width:760px){.mk-reception-fig{width:min(260px,80%);flex:none;margin:0 auto}}
 .rv{opacity:0;transform:translateY(18px);transition:opacity .6s ease,transform .6s ease}
 .rv.in{opacity:1;transform:none}
-@media (prefers-reduced-motion:reduce){.ts-track,.mk-reception-fig .mk-reception-img{animation:none}.rv{opacity:1;transform:none;transition:none}}
+@media (prefers-reduced-motion:reduce){.ts-track,.mk-sprite.go{animation:none}.rv{opacity:1;transform:none;transition:none}}
 </style>
 <!-- tracking:vercel-analytics -->
 <script defer src="/_vercel/insights/script.js"></script>
@@ -823,7 +827,7 @@
 <section class="mika-desk" style="padding:54px 0 8px;">
   <div class="container">
     <div class="mk-reception">
-      <div class="mk-reception-fig"><img class="mk-reception-img" src="images/mika-hero.webp" alt="咪卡，江江教練的 AI 助理" loading="lazy" decoding="async" width="640" height="800" /></div>
+      <div class="mk-reception-fig"><span class="mk-reception-img mk-sprite" role="img" aria-label="咪卡，江江教練的 AI 助理，正在筆電前打字" data-anim="images/mika-hero-anim.webp"></span></div>
       <div class="mk-reception-body">
         <div class="eyebrow" style="margin-bottom:8px;">咪卡接待台 · 網站快速導覽</div>
         <p style="font-size:25px; font-weight:800; color:var(--ink,#2d241a); line-height:1.5; margin:0 0 8px;">把這個官網網址丟給你常用的 AI，它就能直接幫你做事。</p>
@@ -847,7 +851,7 @@ https://jiangyude.com/</code>
     </div>
     <div class="mk-nav">
       <a class="mk-card" href="courses.html">
-        <img class="mk-card-thumb" src="images/mika-lecture.webp" decoding="async" alt="咪卡當講師介紹每月免費線上講座" loading="lazy" />
+        <span class="mk-card-thumb mk-sprite" role="img" aria-label="咪卡當講師介紹每月免費線上講座" data-anim="images/mika-lecture-anim.webp"></span>
         <span class="mk-card-body">
           <span class="eyebrow" style="display:block; margin-bottom:4px;">① 免費課程 · 講座</span>
           <strong style="display:block; font-size:1.18rem; color:var(--ink); margin-bottom:6px;">每月免費線上講座</strong>
@@ -856,7 +860,7 @@ https://jiangyude.com/</code>
         </span>
       </a>
       <a class="mk-card" href="learn.html">
-        <img class="mk-card-thumb" src="images/mika-reading.webp" decoding="async" alt="咪卡窩著閱讀深度文章與自學資源" loading="lazy" />
+        <span class="mk-card-thumb mk-sprite" role="img" aria-label="咪卡窩著閱讀深度文章與自學資源" data-anim="images/mika-reading-anim.webp"></span>
         <span class="mk-card-body">
           <span class="eyebrow" style="display:block; margin-bottom:4px;">② 自學資源</span>
           <strong style="display:block; font-size:1.18rem; color:var(--ink); margin-bottom:6px;">深度文章跟教學都在這</strong>
@@ -865,7 +869,7 @@ https://jiangyude.com/</code>
         </span>
       </a>
       <a class="mk-card" href="ai-office/">
-        <img class="mk-card-thumb" src="images/mika-office.webp" decoding="async" alt="咪卡和小機器人安裝技能包模組" loading="lazy" />
+        <span class="mk-card-thumb mk-sprite" role="img" aria-label="咪卡和小機器人安裝技能包模組" data-anim="images/mika-office-anim.webp"></span>
         <span class="mk-card-body">
           <span class="eyebrow" style="display:block; margin-bottom:4px;">③ AI 辦公室 · 技能包</span>
           <strong style="display:block; font-size:1.18rem; color:var(--ink); margin-bottom:6px;">讓咪卡幫你做文書</strong>
@@ -874,7 +878,7 @@ https://jiangyude.com/</code>
         </span>
       </a>
       <a class="mk-card" href="ai-power-tower/" target="_blank" rel="noopener">
-        <img class="mk-card-thumb" src="images/mika-quiz.webp" decoding="async" alt="咪卡站在 AI 戰力大樓前準備往上爬" loading="lazy" />
+        <span class="mk-card-thumb mk-sprite" role="img" aria-label="咪卡站在 AI 戰力大樓前準備往上爬" data-anim="images/mika-quiz-anim.webp"></span>
         <span class="mk-card-body">
           <span class="eyebrow" style="display:block; margin-bottom:4px;">④ 小測驗 · 一起玩玩看</span>
           <strong style="display:block; font-size:1.18rem; color:var(--ink); margin-bottom:6px;">測你的 AI 戰力有幾分？</strong>
@@ -1355,6 +1359,17 @@ https://jiangyude.com/</code>
 /* 首頁動態＋延後載入（2026-09-30 江江：「首頁先載入，其他分頁可以慢慢的載入」） */
 (function(){
   var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // 咪卡小動畫：滑到附近才載長圖，載好才開始換格；系統設定減少動態時只顯示第一格
+  if ('IntersectionObserver' in window) {
+    var durs = [1.35, 1.6, 1.8, 1.5, 1.7];
+    var sio = new IntersectionObserver(function(es){ es.forEach(function(e){
+      if (!e.isIntersecting) return; var el = e.target; sio.unobserve(el);
+      var im = new Image(); im.onload = function(){ el.style.backgroundImage = 'url(' + el.dataset.anim + ')'; if (!reduce) el.classList.add('go'); }; im.src = el.dataset.anim;
+    }); }, { rootMargin: '300px 0px' });
+    [].forEach.call(document.querySelectorAll('.mk-sprite'), function(el, k){ el.style.setProperty('--mk-dur', durs[k % durs.length] + 's'); sio.observe(el); });
+  } else {
+    [].forEach.call(document.querySelectorAll('.mk-sprite'), function(el){ el.style.backgroundImage = 'url(' + el.dataset.anim + ')'; });
+  }
   // 滑到才浮現
   if ('IntersectionObserver' in window && !reduce) {
     var els = document.querySelectorAll('.pillar-card, .mika-moment, .entry-card, .intro-section .container > *');
