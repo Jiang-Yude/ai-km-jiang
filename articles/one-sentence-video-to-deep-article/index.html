@@ -5,11 +5,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="index,follow">
-<title>我怎麼一句話，就讓我的 AI 把一支專題影片變成一篇深度文章？｜一句起手、途中補兩句：一支兩小時的演講影片，不到 40 分鐘跑完逐段報告、深度文章與兩家 AI 互相審稿</title>
+<title>我怎麼一句話，就讓我的 AI 把一支專題影片變成一篇深度文章？｜迴圈工程與雙軌互審流程拆解</title>
 <meta name="description" content="拆開一次真實流程：貼一個 YouTube 網址，說一句「像之前國泰那樣拆解」，AI 先翻出上一次的成品照著做，不到 40 分鐘產出逐段報告與審過三輪的官網深度文章，途中多補一句，順便把做法寫成技能包。附會動的流程圖、Claude 與 Codex 的雙軌互審流程、三輪審稿各抓到什麼、AI 自己出錯被抓到的地方，以及兩段沒有系統也能用的提示詞。">
 <link rel="canonical" href="https://jiangyude.com/articles/one-sentence-video-to-deep-article/">
 <meta property="og:type" content="article">
-<meta property="og:title" content="我怎麼一句話，就讓我的 AI 把一支專題影片變成一篇深度文章？｜一句起手、途中補兩句：一支兩小時的演講影片，不到 40 分鐘跑完逐段報告、深度文章與兩家 AI 互相審稿｜江江教練">
+<meta property="og:title" content="我怎麼一句話，就讓我的 AI 把一支專題影片變成一篇深度文章？｜迴圈工程與雙軌互審流程拆解｜江江教練">
 <!-- 分享封面：hero 文字填好後在 repo 根目錄跑 `node scripts/og-shot.mjs one-sentence-video-to-deep-article` 自動截 1200×630 到 images/og/one-sentence-video-to-deep-article.jpg（見 README「文章分享封面（OG 圖）機制」）。別退回 intro-jiang.png 直式人像，會被裁成只剩脖子。 -->
 <meta property="og:image" content="https://jiangyude.com/images/og/one-sentence-video-to-deep-article.jpg">
 <meta property="og:description" content="拆開一次真實流程：貼一個 YouTube 網址，說一句「像之前國泰那樣拆解」，AI 先翻出上一次的成品照著做，不到 40 分鐘產出逐段報告與審過三輪的官網深度文章，途中多補一句，順便把做法寫成技能包。附會動的流程圖、Claude 與 Codex 的雙軌互審流程、三輪審稿各抓到什麼、AI 自己出錯被抓到的地方，以及兩段沒有系統也能用的提示詞。">
@@ -17,10 +17,10 @@
 <meta property="og:locale" content="zh_TW">
 <meta property="og:site_name" content="江江教練 · AI 知識管理">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="我怎麼一句話，就讓我的 AI 把一支專題影片變成一篇深度文章？｜一句起手、途中補兩句：一支兩小時的演講影片，不到 40 分鐘跑完逐段報告、深度文章與兩家 AI 互相審稿｜江江教練">
+<meta name="twitter:title" content="我怎麼一句話，就讓我的 AI 把一支專題影片變成一篇深度文章？｜迴圈工程與雙軌互審流程拆解｜江江教練">
 <meta name="twitter:image" content="https://jiangyude.com/images/og/one-sentence-video-to-deep-article.jpg">
 <meta name="twitter:description" content="拆開一次真實流程：貼一個 YouTube 網址，說一句「像之前國泰那樣拆解」，AI 先翻出上一次的成品照著做，不到 40 分鐘產出逐段報告與審過三輪的官網深度文章，途中多補一句，順便把做法寫成技能包。附會動的流程圖、Claude 與 Codex 的雙軌互審流程、三輪審稿各抓到什麼、AI 自己出錯被抓到的地方，以及兩段沒有系統也能用的提示詞。">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"我怎麼一句話，就讓我的 AI 把一支專題影片變成一篇深度文章？｜一句起手、途中補兩句：一支兩小時的演講影片，不到 40 分鐘跑完逐段報告、深度文章與兩家 AI 互相審稿","description":"拆開一次真實流程：貼一個 YouTube 網址，說一句「像之前國泰那樣拆解」，AI 先翻出上一次的成品照著做，不到 40 分鐘產出逐段報告與審過三輪的官網深度文章，途中多補一句，順便把做法寫成技能包。附會動的流程圖、Claude 與 Codex 的雙軌互審流程、三輪審稿各抓到什麼、AI 自己出錯被抓到的地方，以及兩段沒有系統也能用的提示詞。","author":{"@type":"Person","name":"江昱德","alternateName":"江江教練","jobTitle":"隱性知識提煉師、AI 應用規劃師"},"isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://jiangyude.com/"},"inLanguage":"zh-Hant","url":"https://jiangyude.com/articles/one-sentence-video-to-deep-article/","datePublished":"2026-09-29","dateModified":"2026-09-29","image":"https://jiangyude.com/images/og/one-sentence-video-to-deep-article.jpg"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"我怎麼一句話，就讓我的 AI 把一支專題影片變成一篇深度文章？｜迴圈工程與雙軌互審流程拆解","description":"拆開一次真實流程：貼一個 YouTube 網址，說一句「像之前國泰那樣拆解」，AI 先翻出上一次的成品照著做，不到 40 分鐘產出逐段報告與審過三輪的官網深度文章，途中多補一句，順便把做法寫成技能包。附會動的流程圖、Claude 與 Codex 的雙軌互審流程、三輪審稿各抓到什麼、AI 自己出錯被抓到的地方，以及兩段沒有系統也能用的提示詞。","author":{"@type":"Person","name":"江昱德","alternateName":"江江教練","jobTitle":"隱性知識提煉師、AI 應用規劃師"},"isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://jiangyude.com/"},"inLanguage":"zh-Hant","url":"https://jiangyude.com/articles/one-sentence-video-to-deep-article/","datePublished":"2026-09-29","dateModified":"2026-09-29","image":"https://jiangyude.com/images/og/one-sentence-video-to-deep-article.jpg"}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
@@ -297,7 +297,7 @@ button.sim-bar:focus-visible{outline:3px solid var(--blue);outline-offset:2px;op
   <div class="wc wc3"></div>
   <div>
     <div class="kicker">AI 工作流 · 迴圈工程</div>
-    <h1>我怎麼一句話，就讓我的 AI 把一支專題影片變成一篇深度文章？｜一句起手、途中補兩句：一支兩小時的演講影片，不到 40 分鐘跑完逐段報告、深度文章與兩家 AI 互相審稿</h1>
+    <h1>我怎麼一句話，就讓我的 AI 把一支專題影片變成一篇深度文章？｜迴圈工程與雙軌互審流程拆解</h1>
     <p>我丟了一個 YouTube 網址，說「能不能詳細拆解，像之前國泰直播的影片那種」。一句話能起手，是因為之前做過一次。不到 40 分鐘，我拿到一份逐段報告和一篇審過三輪的深度文章；途中我又補了兩句，其中一句讓它順便把整套做法寫成技能包，目標是下次一句話就夠。這篇把那一晚拆開給你看。</p>
     <div class="article-date">發佈 2026-09-29</div>
   </div>
