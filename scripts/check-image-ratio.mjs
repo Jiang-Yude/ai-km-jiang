@@ -101,29 +101,44 @@ function articleSlugs() {
    都空的話再退到「這條分支相對 main 改過的檔」，因為文章分支的慣例是
    先 commit 再跑 preflight，那時 git diff HEAD 會是空的。*/
 function changedSlugs() {
-  const out = [];
-  // 2026-09-22 改用 --numstat，只認「有新增行」的 index.html：
-  // 撤英文版那輪全站 150 篇 index.html 只刪了 hreflang／EN 切換鈕（純刪除、沒動任何圖），
-  // 用 --name-only 會把 150 篇舊文全拖進來、擋下整次發布，違背「舊文不回頭批改」。
-  // 純刪除不可能新增或換掉圖片，所以不算「本輪改過」。有任何新增行（含換圖）照舊檢查。
+  // 2026-09-22 改用 --numstat，只認「有新增行」的 index.html：撤英文版那輪全站 150 篇只刪了 hreflang／EN 切換鈕，
+  // 純刪除不可能新增或換掉圖片，所以不算「本輪改過」。
+  // 2026-09-30 再收窄（同一個原則）：全站導覽文字改名（「深度文章」→「文章」）那輪，170 多篇舊文各有 1 行新增，
+  // 但新增的是文字連結，不可能新增或換掉圖片，卻把所有舊文積欠的比例問題一次拖進來、擋下整次發布。
+  // 現在「有新增行」還要新增行本身碰到圖片（img／figure／圖檔副檔名／portrait／landscape／wide 等）才算。
+  // 新增文章、換圖、改 figure class 都仍照舊檢查；本檔仍只驗比例與 class，不驗圖好不好。
+  const IMG_LINE = /<img\b|<picture\b|<source\b|<figure\b|hero-figure|inline-figure|srcset|background(?:-image)?\s*:|url\(|\.(?:jpe?g|png|webp|gif|avif|svg)\b|\bportrait\b|\blandscape\b|\bwide\b/i;
+  // 只看文章 index.html（pathspec 讓輸出量很小），並關掉路徑引號轉義。
+  const SPEC = "-- 'articles/*/index.html'";
   const cmds = [
-    'git diff HEAD --numstat',
-    'git diff --cached --numstat',
-    'git diff --numstat',
-    'git diff --numstat origin/main...HEAD',
-    'git diff --numstat main...HEAD',
+    `git -c core.quotepath=false diff HEAD -U0 ${SPEC}`,
+    `git -c core.quotepath=false diff --cached -U0 ${SPEC}`,
+    `git -c core.quotepath=false diff -U0 ${SPEC}`,
+    `git -c core.quotepath=false diff -U0 origin/main...HEAD ${SPEC}`,
+    `git -c core.quotepath=false diff -U0 main...HEAD ${SPEC}`,
   ];
-  for (const cmd of cmds) {
-    try { out.push(...execSync(cmd, { cwd: ROOT, stdio: ['ignore', 'pipe', 'ignore'] }).toString().split('\n')); } catch { /* ignore */ }
-  }
   const slugs = new Set();
-  for (const line of out) {
-    // numstat 格式：新增行數<TAB>刪除行數<TAB>路徑；新增為 0 的純刪除略過。
-    const [added, , file = ''] = line.trim().split('\t');
-    if (added === '0') continue;
-    // 只認 index.html 有變更。改 article.json 補雙向回連不該把那篇拖進比例檢查。
-    const m = file.match(/^articles\/([^/]+)\/index\.html$/);
-    if (m) slugs.add(m[1]);
+  for (const cmd of cmds) {
+    let text = '';
+    try { text = execSync(cmd, { cwd: ROOT, stdio: ['ignore', 'pipe', 'ignore'], maxBuffer: 64 * 1024 * 1024 }).toString(); }
+    catch (e) {
+      // 出錯要擋（fail closed）：緩衝區爆掉若當成「沒有變更」，會零目標假通過。
+      // 其他失敗（例如沒有 origin/main 這個參照）是正常情況，略過該指令即可。
+      if (e && (e.code === 'ENOBUFS' || /maxBuffer/i.test(String(e.message)))) {
+        console.error('❌ 圖片比例檢查：git diff 輸出超過緩衝區，無法判定本次變更。請縮小發布範圍或改跑 --all 盤查。');
+        process.exit(1);
+      }
+      continue;
+    }
+    let file = '';
+    for (const line of text.split('\n')) {
+      const h = line.match(/^diff --git a\/.+ b\/(.+)$/);
+      if (h) { file = h[1]; continue; }
+      if (!file || line.startsWith('+++') || !line.startsWith('+')) continue;
+      // 只認 index.html 有變更。改 article.json 補雙向回連不該把那篇拖進比例檢查。
+      const m = file.match(/^articles\/([^/]+)\/index\.html$/);
+      if (m && IMG_LINE.test(line)) slugs.add(m[1]);
+    }
   }
   return [...slugs].sort();
 }
