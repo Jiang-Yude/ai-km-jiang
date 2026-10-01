@@ -144,6 +144,22 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
 .footer-brand{font-weight:900;font-size:15px;margin-bottom:10px}.footer-note{font-size:13px;line-height:1.6}
 @media(max-width:820px){.inline-figure.portrait{max-width:340px}.infocard-grid{grid-template-columns:1fr}.duo{grid-template-columns:1fr}.workflow-grid{grid-template-columns:1fr}.cta-band .inner{grid-template-columns:1fr}.section{padding:40px 20px}.hero{min-height:52vh;flex-direction:column;justify-content:flex-start;align-items:flex-start;gap:24px}.hero>div{width:100%}.hero-figure{width:100%;max-width:560px}}
 @media(max-width:820px){html,body{overflow-x:hidden}.hero h1{word-break:break-word}}
+/* 長標題：縮字級、收窄文字欄，避免把封面擠到下一行（02-design-system，照 opus-luna 篇數值） */
+.hero{gap:40px!important}
+.hero>div:not(.wc){width:540px!important}
+.hero h1{font-size:clamp(28px,2.7vw,40px)!important;line-height:1.2!important;margin:12px 0 16px!important}
+.hero p{font-size:clamp(17px,1.35vw,19px)!important;line-height:1.65!important}
+@media(max-width:1300px){.hero{gap:28px!important;flex-direction:column;align-items:flex-start}.hero>div:not(.wc){width:100%!important}.hero .hero-figure{width:100%;max-width:640px}.hero h1{font-size:clamp(28px,5vw,40px)!important}}
+.pricechart{margin:24px 0;padding:20px 22px 14px;background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.pc-title{font-size:19px;font-weight:900;color:#1a1612;margin-bottom:14px}.pc-title span{font-size:15px;font-weight:500;color:var(--muted);margin-left:4px}
+.pc-row{display:grid;grid-template-columns:minmax(0,15em) 1fr 5.5em;gap:12px;align-items:center;padding:7px 6px;border-radius:6px}
+.pc-row:hover,.pc-row:focus{background:var(--soft);outline:none}
+.pc-label{font-size:17px;line-height:1.45;color:#3a342d}
+.pc-track{display:block;height:18px;background:#f3ede2;border-radius:0 4px 4px 0}
+.pc-bar{display:block;height:100%;background:var(--blue);border-radius:0 4px 4px 0;min-width:2px}
+.pc-val{font:700 16px/1.2 "JetBrains Mono",ui-monospace,Menlo,monospace;color:#1a1612;text-align:right;white-space:nowrap}
+.pc-note{margin:10px 0 0!important;font-size:15px!important;color:var(--muted)!important}
+@media(max-width:820px){.pc-row{grid-template-columns:1fr 4.8em;row-gap:4px}.pc-label{grid-column:1/-1}}
 .todo{background:#fde7c4;color:#8a4b12;border-radius:4px;padding:1px 6px;font-size:.8em;font-weight:700;margin-right:6px}
 </style>
 </head>
@@ -176,8 +192,12 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
   <div>
     <div class="kicker">AI 應用 / 官網客服</div>
     <h1>我想在官網放 AI 客服，API 是什麼、會不會很貴？｜儲值、金鑰、模型怎麼選，四步上線順序</h1>
-    <p>API 是你的網站去借一條通道。這篇把錢怎麼算、金鑰放哪、模型怎麼選、上線先做哪一步一次講完，附 GPT-6 Luna、Opus 5.5 與語音客服的月費試算。</p>
+    <p>API 是你的網站去借一條通道。這篇把錢怎麼算、金鑰放哪、模型怎麼選、上線先做哪一步一次講完，附模型月費圖表與我自己的咪卡一萬題實算。</p>
   </div>
+  <figure class="hero-figure">
+    <img src="../../images/articles/ai-customer-service-api-cost-cover.jpg" alt="咪卡坐在網頁客服視窗旁，旁邊是錢幣罐與一把鑰匙" loading="lazy">
+    <figcaption>封面：官網放 AI 客服，會不會很貴？</figcaption>
+  </figure>
 </section>
 
 <main>
@@ -187,7 +207,7 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
 <p class="lead">有官網、有課程、有產品，想放一個 AI 客服先接住重複的小問題，卻卡在 API 聽不懂、怕錢失控、怕金鑰外洩。這篇照我陪跑時講的順序，把錢怎麼算、金鑰放哪、模型怎麼選、先做哪一步講清楚，並用官方單價算出文字客服與語音客服一個月大概多少錢。</p>
 <div class="duo stack">
 <div class="card a"><b>適合誰</b><ul><li>有官網、每天被問同樣小問題，想放 AI 客服的講師或小店家</li><li>聽過 API 但不知道會不會很貴、怕金鑰外洩的人</li><li>要跟客戶說明「官網加客服一個月多少錢」的顧問與接案者</li></ul></div>
-<div class="card b"><b>你可以帶走什麼</b><ul><li>一張 ChatGPT 月費與 API 的差別對照，加上一個能自己填數字的月費算式</li><li>GPT-6 Luna、GPT-5.6 Luna、Opus 5.5，以及語音客服的月費試算表</li><li>四步上線順序，和一段可以直接貼給 AI 的建置指令</li></ul></div>
+<div class="card b"><b>你可以帶走什麼</b><ul><li>一張 ChatGPT 月費與 API 的差別對照，加上一個能自己填數字的月費算式</li><li>GPT-6 Luna、Opus 5.5、語音客服的月費圖表，以及我的咪卡一萬題實算</li><li>四步上線順序，和一段可以直接貼給 AI 的建置指令</li></ul></div>
 </div>
 </div></section>
 <section class="section" id="s1"><div class="inner">
@@ -236,12 +256,25 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
 <div class="tablewrap"><table><thead><tr><th>階段</th><th>交給誰</th><th>做什麼</th></tr></thead><tbody><tr><td>上線前，一次性</td><td>Opus 5.5 這類頂規模型</td><td>把你的課程、產品、常見問題整理成問答集與檢索頁。這是真正要動腦的部分</td></tr><tr><td>上線後，每天每則</td><td>GPT-6 Luna 這類便宜模型</td><td>客人問一題，它去問答集裡找答案、照規則回。次數多，單次要便宜</td></tr></tbody></table></div>
 <p>用官方單價算一次，差距就很清楚。假設每月 3000 則客服訊息，每則大約讀進 2000 token、回出 300 token（token 可以想成模型計費用的字數單位）：</p>
 <div class="tablewrap"><table><thead><tr><th>模型</th><th>官方單價（每百萬 token，輸入／輸出）</th><th>每月 3000 則試算</th></tr></thead><tbody><tr><td>GPT-6 Luna</td><td>0.10 ／ 0.50 美金</td><td>約 1.05 美金（約台幣 35 元）</td></tr><tr><td>GPT-5.6 Luna（上一代）</td><td>0.20 ／ 1.20 美金</td><td>約 2.28 美金</td></tr><tr><td>Claude Opus 5.5</td><td>4 ／ 20 美金</td><td>約 42 美金（約台幣 1,300 元）</td></tr></tbody></table></div>
+<figure class="pricechart" aria-label="每月 3000 則文字客服，各模型月費"><figcaption class="pc-title">每月 3000 則文字客服，各模型月費<span>（單位：美金）</span></figcaption><div class="pc-row" title="GPT-6 Luna：約 1.05 美金" tabindex="0"><span class="pc-label">GPT-6 Luna</span><span class="pc-track"><span class="pc-bar" style="width:2.5%"></span></span><span class="pc-val">約 1.05</span></div><div class="pc-row" title="GPT-5.6 Luna（上一代）：約 2.28 美金" tabindex="0"><span class="pc-label">GPT-5.6 Luna（上一代）</span><span class="pc-track"><span class="pc-bar" style="width:5.4%"></span></span><span class="pc-val">約 2.28</span></div><div class="pc-row" title="Claude Opus 5.5：約 42 美金" tabindex="0"><span class="pc-label">Claude Opus 5.5</span><span class="pc-track"><span class="pc-bar" style="width:100.0%"></span></span><span class="pc-val">約 42</span></div><p class="pc-note">每則約 2000 token 進、300 token 出，官方單價試算（2026-10-01 查）</p></figure>
 <p>同樣的客服量，拿頂規模型來接，大約是 GPT-6 Luna 的 40 倍。客服每天都在跑，選錯這一格，錢是每個月一直流出去的。</p>
 <p>算式是這樣來的：3000 則 × 2000 token ＝ 600 萬 token 輸入，3000 則 × 300 token ＝ 90 萬 token 輸出，再乘上單價。你自己的客服每則讀多少，要看問答集多長、有沒有做檢索頁，所以這組數字是量級參考，真正的數字還是看後台。</p>
 <p><mark class="todo">待確認</mark>我自己官網的咪卡客服目前用的還是 GPT-5.6 Luna，要不要換成 GPT-6 Luna，換之前我會先出一份固定考卷考過一次再換。便宜模型也會交白卷，這件事在上面那篇有寫。</p>
+<h3>我自己的咪卡：一萬題實際算過一次</h3>
+<p>上面每則 2000 token 是精簡問答集的假設。我自己官網的咪卡客服，因為把整站文章目錄、課程清單和人設都放進每一次的系統指令裡，<b>每回答一題要讀約三萬多 token</b>。這是 2026 年 8 月 8 日、用當時的 GPT-5.6 Luna 實際算過的帳：</p>
+<figure class="pricechart" aria-label="咪卡回答一萬題：推理強度怎麼設，API 費差一倍"><figcaption class="pc-title">咪卡回答一萬題：推理強度怎麼設，API 費差一倍<span>（單位：美金）</span></figcaption><div class="pc-row" title="全部不推理：8.9 美金" tabindex="0"><span class="pc-label">全部不推理</span><span class="pc-track"><span class="pc-bar" style="width:48.1%"></span></span><span class="pc-val">8.9</span></div><div class="pc-row" title="自適應（清楚的題不推理，抽象的才開低推理）：9.2 美金" tabindex="0"><span class="pc-label">自適應（清楚的題不推理，抽象的才開低推理）</span><span class="pc-track"><span class="pc-bar" style="width:49.7%"></span></span><span class="pc-val">9.2</span></div><div class="pc-row" title="全部開中等推理（預設值）：18.5 美金" tabindex="0"><span class="pc-label">全部開中等推理（預設值）</span><span class="pc-track"><span class="pc-bar" style="width:100.0%"></span></span><span class="pc-val">18.5</span></div><p class="pc-note">GPT-5.6 Luna，含快取，2026-08-08 試算</p></figure>
+<p>這張圖要看的是最右邊那一條。<b>推理產生的 token 是算在輸出計費裡的</b>，而 GPT-5.6 系列預設就是中等推理。沒去調，同樣的量費用直接翻倍。所以我用「自適應」：問得清楚的題不推理，問得抽象的才開低推理，多花 3% 換抽象問題的品質。</p>
+<p>同一天也比了三家便宜模型，同樣一萬題：</p>
+<figure class="pricechart" aria-label="同樣一萬題，三家便宜模型的 API 費"><figcaption class="pc-title">同樣一萬題，三家便宜模型的 API 費<span>（單位：美金）</span></figcaption><div class="pc-row" title="GPT-5.6 Luna：9.2 美金" tabindex="0"><span class="pc-label">GPT-5.6 Luna</span><span class="pc-track"><span class="pc-bar" style="width:100.0%"></span></span><span class="pc-val">9.2</span></div><div class="pc-row" title="Grok 4.1 Fast：6.4 美金" tabindex="0"><span class="pc-label">Grok 4.1 Fast</span><span class="pc-track"><span class="pc-bar" style="width:69.6%"></span></span><span class="pc-val">6.4</span></div><div class="pc-row" title="DeepSeek V4-Flash：3.6 美金" tabindex="0"><span class="pc-label">DeepSeek V4-Flash</span><span class="pc-track"><span class="pc-bar" style="width:39.1%"></span></span><span class="pc-val">3.6</span></div><p class="pc-note">2026-08-08 價格，含推理自適應</p></figure>
+<p>最後我還是選了 Luna，原因有三個：</p>
+<ol><li>只有 Luna 在咪卡的真實流程裡跑過，繁體中文的導讀語氣是通過的；另外兩家的評價都來自別的任務</li><li>三家每月相差台幣一百多塊，在這個量級，差價不足以讓我換掉唯一驗證過的模型</li><li>DeepSeek 的伺服器在中國，訪客的訊息會出境；而且官方當時已經預告要漲價</li></ol>
+<p>這次算帳學到的兩件事，比選哪個模型更重要：</p>
+<ul><li><b>系統指令每長 10%，成本就多 10%，而且是乘上題數的。</b> 你塞進客服的資料越多，每一題都要多付一次</li><li><b>快取命中率是看不見的成本開關。</b> 不變的東西（人設、目錄）放前面、會變的（訪客名字、這一題）放後面，才吃得到快取的折扣。順序打亂了，成本會默默往上漲</li></ul>
+<p>GPT-6 Luna 出來之後，輸入單價是 GPT-5.6 Luna 的一半，輸出也不到一半。同樣的一萬題換成 GPT-6 Luna 會更便宜，但實際多少，要換過之後重跑一次才算得準。</p>
 <h3>要做語音客服的話，帳完全不一樣</h3>
 <p>上面算的都是文字客服。9 月 21 日我聽說 Gemini 的方案很便宜，請 Codex 去查官方價格頁，結論是：<b>Gemini 便宜的是即時語音；文字客服反而是 OpenAI 的 Luna 比較便宜。</b></p>
 <div class="tablewrap"><table><thead><tr><th>情境</th><th>Google Gemini</th><th>OpenAI</th></tr></thead><tbody><tr><td>文字客服：每月 3000 則（每則約 2000 token 進、300 token 出）</td><td>Gemini 3.5 Flash-Lite：約 4.05 美金</td><td>GPT-6 Luna：約 1.05 美金</td></tr><tr><td>語音客服：每月 1000 通，每通 3 分鐘（客人與 AI 各講一半）</td><td>Gemini 3.8 Live：約 34.5 美金</td><td>gpt-live-1：150 美金起，後端模型另計</td></tr></tbody></table></div>
+<figure class="pricechart" aria-label="同樣是客服，文字和語音差多少（每月）"><figcaption class="pc-title">同樣是客服，文字和語音差多少（每月）<span>（單位：美金）</span></figcaption><div class="pc-row" title="文字｜GPT-6 Luna（3000 則）：約 1.05 美金" tabindex="0"><span class="pc-label">文字｜GPT-6 Luna（3000 則）</span><span class="pc-track"><span class="pc-bar" style="width:0.8%"></span></span><span class="pc-val">約 1.05</span></div><div class="pc-row" title="文字｜Gemini 3.5 Flash-Lite（3000 則）：約 4.05 美金" tabindex="0"><span class="pc-label">文字｜Gemini 3.5 Flash-Lite（3000 則）</span><span class="pc-track"><span class="pc-bar" style="width:2.7%"></span></span><span class="pc-val">約 4.05</span></div><div class="pc-row" title="語音｜Gemini 3.8 Live（1000 通 × 3 分鐘）：約 34.5 美金" tabindex="0"><span class="pc-label">語音｜Gemini 3.8 Live（1000 通 × 3 分鐘）</span><span class="pc-track"><span class="pc-bar" style="width:23.0%"></span></span><span class="pc-val">約 34.5</span></div><div class="pc-row" title="語音｜OpenAI gpt-live-1（1000 通 × 3 分鐘）：150 起 美金" tabindex="0"><span class="pc-label">語音｜OpenAI gpt-live-1（1000 通 × 3 分鐘）</span><span class="pc-track"><span class="pc-bar" style="width:100.0%"></span></span><span class="pc-val">150 起</span></div><p class="pc-note">官方單價試算，gpt-live-1 另計後端模型費</p></figure>
 <p>語音客服貴很多，而且 Gemini 的語音實際可能比試算高：對話越長，每一輪都會把前面累積的內容重新計費。</p>
 <p>語音客服要接到哪裡，也有限制：</p>
 <div class="tablewrap"><table><thead><tr><th>管道</th><th>能不能接</th></tr></thead><tbody><tr><td>官網網頁</td><td>可以，最簡單</td></tr><tr><td>電話</td><td>要多一層 Twilio 這類電話轉接服務（把電話線路轉成網路連線）</td></tr><tr><td>LINE 官方帳號</td><td>只能收語音訊息，LINE 通話接不了即時語音</td></tr></tbody></table></div>
