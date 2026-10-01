@@ -1,0 +1,808 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>RAG 架構怎麼選？把它當成雇研究員｜經典 RAG、GraphRAG、Agentic RAG 的差別</title>
+<meta name="description" content="把經典 RAG、GraphRAG、Agentic RAG 當成三種研究員來比較：一個抓最相似的幾頁，一個沿著關係找答案，一個自己決定怎麼查。附繁體中文重畫的三種流程圖與對照表，整理自 codewithbrij 的貼文。">
+<link rel="canonical" href="https://jiangyude.com/articles/rag-hire-not-pick/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="RAG 架構怎麼選？把它當成雇研究員｜經典 RAG、GraphRAG、Agentic RAG 的差別｜江江教練">
+<!-- 分享封面：hero 文字填好後在 repo 根目錄跑 `node scripts/og-shot.mjs rag-hire-not-pick` 自動截 1200×630 到 images/og/rag-hire-not-pick.jpg（見 README「文章分享封面（OG 圖）機制」）。別退回 intro-jiang.png 直式人像，會被裁成只剩脖子。 -->
+<meta property="og:image" content="https://jiangyude.com/images/og/rag-hire-not-pick.jpg">
+<meta property="og:description" content="把經典 RAG、GraphRAG、Agentic RAG 當成三種研究員來比較：一個抓最相似的幾頁，一個沿著關係找答案，一個自己決定怎麼查。附繁體中文重畫的三種流程圖與對照表，整理自 codewithbrij 的貼文。">
+<meta property="og:url" content="https://jiangyude.com/articles/rag-hire-not-pick/">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:site_name" content="江江教練 · AI 知識管理">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="RAG 架構怎麼選？把它當成雇研究員｜經典 RAG、GraphRAG、Agentic RAG 的差別｜江江教練">
+<meta name="twitter:image" content="https://jiangyude.com/images/og/rag-hire-not-pick.jpg">
+<meta name="twitter:description" content="把經典 RAG、GraphRAG、Agentic RAG 當成三種研究員來比較：一個抓最相似的幾頁，一個沿著關係找答案，一個自己決定怎麼查。附繁體中文重畫的三種流程圖與對照表，整理自 codewithbrij 的貼文。">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"RAG 架構怎麼選？把它當成雇研究員｜經典 RAG、GraphRAG、Agentic RAG 的差別","description":"把經典 RAG、GraphRAG、Agentic RAG 當成三種研究員來比較：一個抓最相似的幾頁，一個沿著關係找答案，一個自己決定怎麼查。附繁體中文重畫的三種流程圖與對照表，整理自 codewithbrij 的貼文。","author":{"@type":"Person","name":"江昱德","alternateName":"江江教練","jobTitle":"隱性知識提煉師、AI 應用規劃師"},"isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://jiangyude.com/"},"inLanguage":"zh-Hant","url":"https://jiangyude.com/articles/rag-hire-not-pick/"}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{--ink:#1a1612;--paper:#fefcf8;--muted:#6a635a;--line:#d8cdb8;--green:#5f7553;--blue:#5689b8;--orange:#e85a4f;--soft:#faf5ec;--dark:#2a2018;--shadow:0 18px 45px rgba(107,74,42,.14);--sp-shadow:hsla(35,50%,60%,.15);--sp-shadow-edge:hsla(35,50%,68%,.03);--sp-radius:400px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC","Segoe UI",sans-serif}
+a{color:inherit}
+/* 官網共用導航列 nav.top（與首頁/文章總站同一條） */
+nav.top{position:sticky;top:0;background:rgba(254,252,248,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid #d8cdb8;z-index:100}
+nav.top .container{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:24px;padding:14px 32px}
+.nav-brand-img{justify-self:start;display:flex;align-items:center;text-decoration:none;flex-shrink:0;transition:opacity .2s}
+.nav-brand-img:hover{opacity:.8}.nav-brand-img img{height:40px;width:auto;display:block}
+nav.top ul.nav-menu{justify-self:end;display:flex;gap:22px;list-style:none;margin:0;padding:0;font-size:.95rem;white-space:nowrap}
+nav.top ul.nav-menu a{color:#3a342d;text-decoration:none;transition:color .2s;font-weight:500;white-space:nowrap}
+nav.top ul.nav-menu a:hover{color:#1a1612}nav.top ul.nav-menu a.active{color:#1a1612;font-weight:700}
+.nav-toggle{display:none;background:none;border:none;padding:6px;cursor:pointer;width:36px;height:36px;position:relative}
+.nav-toggle span{display:block;position:absolute;left:8px;right:8px;height:2px;background:#1a1612;border-radius:2px;transition:transform .25s,opacity .25s,top .25s}
+.nav-toggle span:nth-child(1){top:11px}.nav-toggle span:nth-child(2){top:17px}.nav-toggle span:nth-child(3){top:23px}
+.nav-toggle.open span:nth-child(1){top:17px;transform:rotate(45deg)}.nav-toggle.open span:nth-child(2){opacity:0}.nav-toggle.open span:nth-child(3){top:17px;transform:rotate(-45deg)}
+.tablewrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:22px 0;border:1px solid var(--line);border-radius:10px;background:#fff;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.tablewrap table{border-collapse:collapse;width:100%;min-width:600px;font-size:18px;line-height:1.65}
+.tablewrap .zh{display:block;margin-top:5px;font-size:16px;line-height:1.55;color:var(--muted);font-weight:400}
+.tablewrap th,.tablewrap td{padding:12px 14px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top;color:#3a342d}
+.tablewrap thead th{background:var(--soft);font-weight:900;font-size:18px;color:#1a1612;white-space:nowrap}
+.tablewrap tbody tr:last-child td{border-bottom:none}
+.tablewrap td code,.section code{background:var(--soft);border:1px solid var(--line);border-radius:5px;padding:1px 6px;font:500 15px/1.5 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace}
+.inline-figure.wide{max-width:1000px}
+.inline-figure.portrait{max-width:430px}
+.toc{margin:26px 0 0;padding:20px 22px;background:#fff;border:1px solid var(--line);border-radius:10px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.toc>b{display:block;font-size:15px;letter-spacing:.05em;color:var(--green);margin-bottom:10px}
+.toc ol{margin:0;padding-left:1.35em;font-size:18px;line-height:1.7}
+.toc li{margin-bottom:7px;color:#3a342d}
+.toc a{color:var(--blue);font-weight:700;text-decoration:none}.toc a:hover{text-decoration:underline}
+.toc-hint{margin:12px 0 0!important;font-size:18px!important;color:var(--muted)!important;border-top:1px solid var(--line);padding-top:12px}
+.readmore{margin-top:24px;padding:20px 22px;background:var(--soft);border:1px solid var(--line);border-radius:12px}
+.readmore.near{margin:26px 0 6px;background:rgba(86,137,184,.07);border-color:#bcd0e2}
+.readmore.near b{color:var(--blue);font-size:18px}
+.readmore.near li{font-size:17px;line-height:1.7;margin-bottom:10px}
+.readmore b{display:block;margin-bottom:10px;font-size:19px}
+.readmore ul{margin:0;padding-left:1.25em}
+.readmore a{color:var(--blue);font-weight:700;text-decoration:none}
+.readmore a:hover{text-decoration:underline}
+@media(max-width:820px){.tablewrap table{min-width:560px;font-size:18px}.tablewrap{position:relative}.tablewrap::after{content:"表格可左右滑動 →";position:sticky;left:0;display:block;font-size:15px;color:var(--muted);background:var(--soft);border-top:1px solid var(--line);padding:7px 12px;width:100%}}
+@media(max-width:860px){
+ nav.top .container{grid-template-columns:auto 1fr auto;padding:10px 16px;gap:12px}
+ .nav-brand-img img{height:32px}
+ .nav-toggle{display:block;justify-self:end}
+ nav.top ul.nav-menu{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(254,252,248,.98);backdrop-filter:blur(14px);border-bottom:1px solid #d8cdb8;flex-direction:column;gap:0;padding:8px 0;box-shadow:0 10px 24px rgba(107,74,42,.08)}
+ nav.top ul.nav-menu.open{display:flex}
+ nav.top ul.nav-menu li{border-bottom:1px solid #e8dfc9}
+ nav.top ul.nav-menu li:last-child{border-bottom:none}
+ nav.top ul.nav-menu a{display:block;padding:14px 20px;font-size:1.06rem}
+}
+/* 滑鼠暖光暈（與首頁同一支 spotlight.js） */
+body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradient(var(--sp-radius) circle at var(--mx,50%) var(--my,50%),var(--sp-shadow) 0%,var(--sp-shadow-edge) 45%,transparent 75%);pointer-events:none;z-index:9999;mix-blend-mode:multiply;transition:background .06s linear}
+.hero{position:relative;overflow:hidden;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:72px;padding:96px clamp(20px,6vw,88px) 80px;background:linear-gradient(180deg,#fffcf0 0%,#f9e9d2 100%);color:#1a1612;border-bottom:1px solid #d8cdb8}
+.hero .wc{position:absolute;border-radius:50%;filter:blur(60px);pointer-events:none;z-index:0}
+.hero .wc1{width:420px;height:360px;top:-120px;right:-80px;background:#e8884b;opacity:.15}
+.hero .wc2{width:360px;height:300px;bottom:-110px;left:-70px;background:#5f7553;opacity:.13}
+.hero .wc3{width:280px;height:260px;top:34%;left:14%;background:#a08144;opacity:.10}
+.hero>div{flex:none;width:860px;max-width:100%;position:relative;z-index:2}
+.hero-figure{margin:0;width:620px;flex:none;position:relative;z-index:2}
+.hero-figure img{display:block;width:100%;border-radius:16px;border:1px solid #d8cdb8;box-shadow:0 18px 45px rgba(107,74,42,.16);cursor:zoom-in}
+.hero-figure figcaption{margin-top:10px;font-size:14px;line-height:1.6;color:#6a635a}
+.inline-figure{margin:30px auto 8px;max-width:820px}
+.inline-figure img{display:block;width:100%;border-radius:14px;border:1px solid var(--line);box-shadow:var(--shadow);background:#fff;cursor:zoom-in}
+.inline-figure figcaption{font-size:14px;line-height:1.6;color:var(--muted);margin-top:10px}
+.lightbox{position:fixed;inset:0;z-index:10000;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(12,10,8,.92);cursor:zoom-out;backdrop-filter:blur(4px)}
+.lightbox.open{display:flex}.lightbox img{max-width:96vw;max-height:92vh;border-radius:10px;box-shadow:0 24px 60px rgba(0,0,0,.5)}
+.lightbox-close{position:fixed;top:18px;right:24px;color:#fff;font-size:34px;line-height:1;font-weight:700;cursor:pointer;opacity:.85}
+.kicker{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.55rem;color:#7a5c3a;font-weight:500}
+.hero h1{max-width:none;margin:16px 0 18px;font-size:clamp(36px,6vw,72px);line-height:1.08;overflow-wrap:anywhere}
+.hero p{max-width:none;font-size:clamp(18px,2vw,23px);line-height:1.62;color:#3a342d}
+.cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
+.cta a{display:inline-flex;align-items:center;text-decoration:none;border-radius:8px;padding:12px 16px;font-weight:900}
+.cta .primary{background:#fff;color:#1a1612}.cta .ghost{border:1px solid rgba(255,255,255,.32);color:#fff;background:rgba(255,255,255,.08)}
+.section{padding:54px clamp(20px,6vw,88px);border-top:1px solid var(--line)}
+.inner{width:min(1000px,100%);margin:0 auto}
+.section h2{font-size:clamp(26px,4.2vw,48px);line-height:1.12;margin:0 0 18px}
+.section h3{font-size:clamp(21px,3vw,30px);line-height:1.2;margin:30px 0 12px}
+.lead{font-size:clamp(18px,1.6vw,22px);line-height:1.7;color:#3a342d;max-width:900px}
+.section p{font-size:18px;line-height:1.74;color:#3a342d}.section p+p{margin-top:14px}
+.section ul,.section ol{padding-left:1.4em;font-size:18px;line-height:1.74;color:#3a342d}.section li{margin-bottom:8px}
+.meaning{margin:22px 0;padding:16px 18px;border-left:5px solid var(--blue);background:rgba(86,137,184,.12);border-radius:6px;line-height:1.7;font-size:19px}
+.meaning b{display:block;color:var(--blue);margin-bottom:4px}
+.caveat{margin:0 0 8px;padding:16px 18px;border-left:5px solid var(--orange);background:rgba(232,90,79,.1);border-radius:6px;line-height:1.7;font-size:18px;color:#3a342d}
+.caveat b{display:block;color:var(--orange);margin-bottom:4px}
+.infocard{background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px 24px 22px;box-shadow:0 8px 22px rgba(107,74,42,.08);margin-top:8px}
+.infocard-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.info-item{padding:18px 14px 0}
+.info-item b{display:block;font-size:14px;font-weight:900;letter-spacing:.04em;margin-bottom:7px;text-transform:uppercase}
+.info-item:nth-child(1) b{color:var(--green)}.info-item:nth-child(2) b{color:var(--orange)}.info-item:nth-child(3) b{color:var(--blue)}
+.info-item p{margin:0;font-size:17px;line-height:1.6;color:#3a342d}
+.tagrow{display:flex;flex-wrap:wrap;gap:7px;margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
+.tag{font-size:14px;color:var(--muted);background:var(--soft);border:1px solid var(--line);border-radius:999px;padding:4px 11px}
+.duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:24px}
+.duo.stack{grid-template-columns:1fr}
+.duo .card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:22px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.duo .card.a{border-color:var(--orange)}.duo .card.b{border-color:var(--green);box-shadow:0 8px 24px rgba(95,117,83,.16)}
+.duo .card small{display:block;font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.04em;margin-bottom:9px}
+.duo .card.a small{color:var(--orange)}.duo .card.b small{color:var(--green)}
+.duo .card b{display:block;font-size:22px;line-height:1.3;margin-bottom:12px}.duo .card.a b{color:#c0512f}.duo .card.b b{color:#4a7a59}
+.duo .card p{margin:0;color:#3a342d;line-height:1.75;font-size:18px}
+.workflow-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:24px}
+.workflow-step{background:#fff;border:1px solid var(--line);border-radius:8px;padding:18px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.workflow-step small{display:block;color:var(--orange);font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;margin-bottom:9px}
+.workflow-step b{display:block;font-size:18px;line-height:1.3;margin-bottom:9px}
+.workflow-step p{margin:0;color:#3a342d;line-height:1.6;font-size:16px}
+.codeblock{background:var(--dark);color:#f3ead9;border-radius:8px;padding:18px 20px;font:500 14px/1.65 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;overflow-x:auto;white-space:pre-wrap;margin:20px 0;box-shadow:0 8px 22px rgba(107,74,42,.12)}
+.codeblock .c{color:#f6d7a6;font-weight:600}
+.skillcard{background:#fff;border:1px solid var(--green);border-radius:12px;padding:24px;box-shadow:0 10px 26px rgba(95,117,83,.16);margin-top:8px}
+.skillcard b{display:block;font-size:21px;margin-bottom:8px}
+.skillcard p{margin:0 0 16px;font-size:17px;line-height:1.65;color:#3a342d}
+.cta-band{background:#e6f0e5;color:#3a342d}.cta-band .section{border-top:none}
+.cta-band .inner{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(260px,.85fr);gap:26px;align-items:start}
+.cta-band h2{font-size:clamp(26px,4vw,44px);margin:0 0 16px}.cta-band p,.cta-band .lead{color:rgba(58,52,45,.9);font-size:18px;line-height:1.72}
+.cta-card{border:1px solid #cfe0d2;background:#fbfdfa;border-radius:8px;padding:22px}
+.cta-card b{display:block;color:#48b178;margin-bottom:10px;font-size:18px}.cta-card p{margin:0 0 14px}
+.footer{padding:30px clamp(20px,6vw,88px);font-size:14px;color:var(--muted);background:#fff;border-top:1px solid var(--line)}
+.footer-inner{width:min(1000px,100%);margin:0 auto}
+.footer-links{display:flex;flex-wrap:wrap;gap:6px 12px;margin-bottom:14px}.footer-links a{color:var(--blue);font-weight:900;text-decoration:none;font-size:14px}
+.footer-brand{font-weight:900;font-size:15px;margin-bottom:10px}.footer-note{font-size:13px;line-height:1.6}
+@media(max-width:820px){.inline-figure.portrait{max-width:340px}.infocard-grid{grid-template-columns:1fr}.duo{grid-template-columns:1fr}.workflow-grid{grid-template-columns:1fr}.cta-band .inner{grid-template-columns:1fr}.section{padding:40px 20px}.hero{min-height:52vh;flex-direction:column;justify-content:flex-start;align-items:flex-start;gap:24px}.hero>div{width:100%}.hero-figure{width:100%;max-width:560px}}
+@media(max-width:820px){html,body{overflow-x:hidden}.hero h1{word-break:break-word}}
+
+.tablewrap tbody th{padding:12px 14px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top;white-space:nowrap;font-weight:900;color:#1a1612}
+.tablewrap tbody tr:last-child th{border-bottom:none}
+.srcnote{margin:0 0 6px;font-size:16px!important;color:var(--muted)!important}
+/* 三種 RAG 機制動畫圖（#flows）。狀態全由 mx.js 依時間換 class，這裡不寫任何 transition 或 animation。 */
+#flows .mx-scene{margin:22px 0;padding:16px 18px;border:1px dashed #c9b99c;background:var(--soft);border-radius:10px}
+#flows .mx-scene b{display:block;color:#8a5a2b;font-size:18px;margin-bottom:6px}
+#flows .mx-scene p{margin:6px 0 0}
+#flows .mx-task{margin:18px 0 0;padding:14px 16px;border-left:5px solid var(--green);background:rgba(95,117,83,.09);border-radius:6px}
+#flows .mx-legend{display:flex;flex-wrap:wrap;gap:8px 18px;list-style:none;padding:0;margin:20px 0 6px;font-size:17px;line-height:1.4;color:#3a342d}
+#flows .mx-legend li{display:flex;align-items:center;gap:7px;margin:0}
+#flows .mx-legend svg{flex:none}
+#flows .mx-nojs{margin:10px 0 0;padding:10px 14px;border-radius:8px;background:rgba(232,90,79,.08);font-size:18px}
+#flows .mx.mx-on .mx-nojs{display:none}
+
+/* 控制列：sticky，避開官網導覽列 */
+#flows .mx-ctrl{display:none}
+#flows .mx.mx-on .mx-ctrl{display:block;position:sticky;top:72px;z-index:50;margin:12px 0 18px;padding:10px 14px;background:rgba(254,252,248,.97);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid var(--line);border-radius:12px;box-shadow:0 10px 24px rgba(107,74,42,.12)}
+#flows .mx-row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+#flows .mx-btn{display:inline-flex;align-items:center;gap:7px;min-height:44px;min-width:44px;justify-content:center;padding:8px 15px;border:1px solid var(--line);border-radius:999px;background:#fff;color:var(--ink);font:700 16px/1 -apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC",sans-serif;cursor:pointer}
+#flows .mx-btn:hover{border-color:#b9a684;background:#fffaf1}
+#flows .mx-btn.mx-play{background:var(--ink);border-color:var(--ink);color:#fff;min-width:104px}
+#flows .mx-btn .ic{width:15px;height:15px;fill:currentColor;flex:none}
+#flows .mx-speed{margin-left:auto;display:inline-flex;align-items:center;gap:6px;font-size:16px;color:var(--muted)}
+#flows .mx-speed select{min-height:40px;padding:4px 8px;font-size:16px;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--ink)}
+#flows .mx-range{display:block;width:100%;margin:10px 0 4px;height:28px;accent-color:#c8641d;cursor:pointer}
+#flows .mx-read{margin:0;font-size:16px;line-height:1.5;display:flex;flex-wrap:wrap;gap:2px 14px}
+#flows .mx-time{color:var(--ink);font-variant-numeric:tabular-nums}
+#flows .mx-evs{color:var(--muted)}
+#flows .mx-btn:focus-visible,#flows .mx-range:focus-visible,#flows .mx-speed select:focus-visible,#flows .mx-scroll:focus-visible,#flows .mx-text summary:focus-visible{outline:3px solid #e8884b;outline-offset:2px}
+
+/* 三個 panel */
+#flows .mx-panel{margin:22px 0;border:1px solid var(--line);border-radius:12px;background:#fff;box-shadow:0 8px 22px rgba(107,74,42,.08);overflow:hidden}
+#flows .mx-p1{--tint:#e6eef6}
+#flows .mx-p2{--tint:#e3efe8}
+#flows .mx-p3{--tint:#ece8f4}
+#flows .mx-ph{border-left:6px solid var(--c);padding:14px 18px 12px;background:var(--soft)}
+#flows .mx-ph h3{margin:0;font-size:20px;line-height:1.5;font-weight:400;color:#3a342d}
+#flows .mx-ph h3 b{color:var(--c);font-weight:800}
+#flows .mx-form{margin:2px 0 0;font-size:15px;line-height:1.5;color:var(--muted)}
+#flows .mx-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:#fff}
+#flows .mx-svg{display:block;width:100%;min-width:860px;height:auto}
+#flows .mx-hint{display:none;margin:8px 18px 0;font-size:15px;line-height:1.5;color:var(--muted)}
+#flows .mx-status{padding:12px 18px 14px;display:grid;gap:6px}
+#flows .mx-status p{margin:0;font-size:18px;line-height:1.6;display:grid;grid-template-columns:4.4em minmax(0,1fr);gap:8px;color:#3a342d}
+#flows .mx-status b{color:var(--c)}
+#flows .mx-text{margin:26px 0 0;padding:4px 18px 10px;border:1px solid var(--line);border-radius:10px;background:#fff}
+#flows .mx-text summary{cursor:pointer;padding:12px 0;font-size:18px;font-weight:800;color:#3a342d}
+#flows .mx-text h4{margin:16px 0 6px;font-size:18px}
+#flows .mx-text li{font-size:18px}
+
+/* SVG 共用 */
+.mx-svg text{fill:#1a1612}
+.mx-svg .en{fill:#6a635a}
+.mx-svg .w,.mx-svg .w2{fill:var(--c)}
+.mx-svg .kw,.mx-svg .cap{fill:#6a635a}
+/* 狀態四態：虛線框＝還沒開始；實心＝正在做；斜線＝在等；淡色＋✓＝做完 */
+.mx-svg .box{fill:#fff;stroke:var(--c);stroke-width:2}
+.mx-svg .is-idle>.box{fill:#fffdf8;stroke:#bdb2a0;stroke-width:1.6;stroke-dasharray:6 5}
+.mx-svg .is-idle .zh,.mx-svg .is-idle .lb,.mx-svg .is-idle .ct{fill:#8f8577}
+.mx-svg .is-idle .en,.mx-svg .is-idle .w,.mx-svg .is-idle .w2,.mx-svg .is-idle .ben{fill:#a39a8c}
+.mx-svg .is-run>.box{fill:var(--c);stroke:var(--c)}
+.mx-svg .st.is-run text,.mx-svg .blk.is-run .lb{fill:#fff}
+.mx-svg .st.is-run .w2{fill:var(--c)}
+.mx-svg .is-wait>.box{stroke:var(--c);stroke-width:2}
+.mx-p1 .is-wait>.box{fill:url(#mx1-hatch)}
+.mx-p2 .is-wait>.box{fill:url(#mx2-hatch)}
+.mx-p3 .is-wait>.box{fill:url(#mx3-hatch)}
+.mx-svg .is-wait .w,.mx-svg .is-wait .w2{fill:#8a6d3b}
+.mx-svg .is-done>.box{fill:var(--tint);stroke:var(--c);stroke-opacity:.55}
+.mx-svg .is-done .zh,.mx-svg .is-done .lb{fill:#5d554b}
+.mx-svg .card.is-run>.box{fill:#fff;stroke-width:3.5}
+.mx-svg .card.is-done>.box{fill:#fff;stroke-opacity:.7}
+.mx-svg .ar{fill:#d4c9b6}
+.mx-svg .ar.fin{fill:var(--c)}
+
+/* Panel 1 經典 */
+.mx-svg .track{stroke:#d8cdb8;stroke-width:4;stroke-dasharray:2 6;stroke-linecap:round}
+.mx-svg .tick{fill:#fff;stroke:#bdb2a0;stroke-width:2}
+.mx-svg .tick.on{fill:var(--c);stroke:var(--c)}
+.mx-svg .qd{fill:#d2473b;stroke:#fff;stroke-width:2.5}
+.mx-svg .ql{fill:#b23a2f}
+.mx-svg .cap2{fill:#8a6a00}
+.mx-svg .pg{fill:#fff;stroke:#d8cdb8;stroke-width:1.5}
+.mx-svg .pt{fill:#3a342d}
+.mx-svg .bar{fill:#ece4d6}
+.mx-svg .pn{fill:#8f8577}
+.mx-svg .hl{stroke:#c9a227;stroke-width:2}
+.mx-svg .tag.ok{fill:#7a5c00}
+.mx-svg .tag.no,.mx-svg .tag.no2{fill:#b23a2f}
+.mx-svg .miss{fill:none;stroke:#b23a2f;stroke-width:2.5;stroke-dasharray:5 4}
+.mx-svg .scan line{stroke:#5689b8;stroke-width:3;opacity:.75}
+.mx-svg .scan text{fill:#3d6d99}
+.mx-svg .ans .ph{fill:#a39a8c}
+.mx-svg .cap2:not(.on),.mx-svg .hl:not(.on),.mx-svg .tag:not(.on),.mx-svg .miss:not(.on),.mx-svg .scan:not(.show),.mx-svg .at:not(.on){display:none}
+.mx-svg .gone{display:none}
+
+/* Panel 2 圖譜 */
+.mx-svg .board{fill:#fbf5ea;stroke:#e6dac4;stroke-width:1.5}
+.mx-svg .edge-sk{stroke:#cdbfa8;stroke-width:1.6;stroke-dasharray:5 4}
+.mx-svg .edge{stroke:#b5523b;stroke-width:2.4}
+.mx-svg .edge.fin{marker-end:url(#mx2-ah)}
+.mx-svg .elab{fill:#b9ad98}
+.mx-svg .elab.on{fill:#8a3b2a}
+.mx-svg .walk{stroke:#e08a2e;stroke-width:10;opacity:.85}
+.mx-svg .nd .nb{fill:#fffdf8;stroke:#bdb2a0;stroke-width:1.6;stroke-dasharray:6 5}
+.mx-svg .nd .nt{fill:#a39a8c}
+.mx-svg .nd.on .nb{fill:#fff;stroke:#3f8268;stroke-width:2;stroke-dasharray:none}
+.mx-svg .nd.on .nt{fill:#1a1612}
+.mx-svg .nd.hot .nb{fill:#fde3c4;stroke:#c8641d;stroke-width:3}
+.mx-svg .nd.hot .nt{fill:#7a3a0e}
+.mx-svg .skip{fill:#8f8577;font-style:italic}
+.mx-svg .wd{fill:#c8641d;stroke:#fff;stroke-width:3}
+.mx-svg .ansl rect{fill:#c8641d}
+.mx-svg .ansl text{fill:#fff}
+.mx-svg .lph{fill:#ece4d6}
+.mx-svg .cl2{fill:#3f8268}
+.mx-svg .skip:not(.on),.mx-svg .walker:not(.show),.mx-svg .ansl:not(.on),.mx-svg .cl:not(.on),.mx-svg .cl2:not(.on){display:none}
+
+/* Panel 3 泳道 */
+.mx-svg .round path{fill:none;stroke:#cfc4b2;stroke-width:1.6}
+.mx-svg .round text{fill:#a39a8c}
+.mx-svg .round.on path{stroke:var(--c)}
+.mx-svg .round.on text{fill:var(--c)}
+.mx-svg .grid{stroke:#efe7da;stroke-width:1}
+.mx-svg .tk{fill:#8f8577}
+.mx-svg .lane{fill:#fffdf9}
+.mx-svg .lane.alt{fill:#faf5ec}
+.mx-svg .ln .le{fill:#6a635a}
+.mx-svg .ln.is-run .w{fill:var(--c)}
+.mx-svg .ln.is-done .w{fill:#6a635a}
+.mx-svg .ln.unused .lz,.mx-svg .ln.unused .le,.mx-svg .ln.unused .w,.mx-svg .nouse{fill:#b5ab9b}
+.mx-svg .nouse{font-style:italic}
+.mx-svg .blk .ck{display:none}
+.mx-svg .blk.is-done .ck{display:inline}
+.mx-svg .blk .ck circle{fill:var(--c);stroke:#fff;stroke-width:2}
+.mx-svg .blk .ck text{fill:#fff}
+.mx-svg .ben{fill:#6a635a;paint-order:stroke;stroke:#fffdf9;stroke-width:5px;stroke-linejoin:round}
+.mx-svg .ben.is-idle{fill:#a39a8c}
+.mx-svg .arr-sk{fill:none;stroke:#d4c9b6;stroke-width:1.5;stroke-dasharray:4 3}
+.mx-svg .arr{fill:none;stroke:var(--c);stroke-width:2.2}
+.mx-svg .arr.fin{marker-end:url(#mx3-ah)}
+.mx-svg .note{fill:var(--c)}
+.mx-svg .note:not(.on){display:none}
+.mx-svg .phd line{stroke:#d2473b;stroke-width:2.5}
+.mx-svg .phd rect{fill:#d2473b}
+.mx-svg .phd text{fill:#fff}
+
+@media(max-width:860px){
+  #flows .mx.mx-on .mx-ctrl{top:58px;padding:8px 10px}
+  #flows .mx-btn{padding:8px 11px;font-size:15px}
+  #flows .mx-btn[data-act="prev"] span,#flows .mx-btn[data-act="next"] span,#flows .mx-btn[data-act="replay"] span,#flows .mx-speed .lbl{display:none}
+  #flows .mx-btn.mx-play{min-width:92px}
+  #flows .mx-evs{display:none}
+}
+@media(max-width:820px){
+  #flows .mx-hint{display:block}
+  #flows .mx-ph{padding:12px 14px 10px}
+  #flows .mx-status{padding:10px 14px 12px}
+  #flows .mx-status p{grid-template-columns:1fr;gap:0}
+}
+
+</style>
+</head>
+<body class="spotlight">
+<!-- 官網共用導航列 nav.top：與首頁/總站同一條，文章不要自己另做極簡 topbar（江江 2026-06-25：要同一個框架、同一條導航列）。把對應頁面的 class="active" 標在自己那欄。
+     ⚠️ 下面 ul.nav-menu 整塊由 preflight 第 5 關 check-bilingual-nav.mjs 做「逐字比對」，
+        塞任何註解、多一個空白、換行位置不同都會被判導航不一致而擋下發布。要說明就寫在 <ul> 外面（像這裡）。
+        2026-08-16 修：原本的 EN 那行說明註解就夾在 <ul> 裡面，導致照範本起手的新文章一律卡第 5 關
+        （llm-rag-agent-mcp 與 rag-three-retrieval-modes 兩篇同時中招）。註解已移出來，<ul> 內保持乾淨。
+        萬一還是被擋，直接跑：node scripts/check-bilingual-nav.mjs --write --only=<你的檔案路徑> -->
+<nav class="top">
+  <div class="container">
+    <a class="nav-brand-img" href="../../index.html"><img src="../../images/footer-signature.png" alt="江江教練 | 江昱德"></a>
+    <button class="nav-toggle" aria-label="選單"><span></span><span></span><span></span></button>
+    <ul class="nav-menu">
+      <li><a href="../../index.html">首頁</a></li>
+      <li><a href="../../knowledge-architecture.html">知識架構</a></li>
+      <li><a href="../../courses.html">課程</a></li>
+      <li><a href="../../articles.html" class="active">文章</a></li>
+      <li><a href="../../skills.html">小工具</a></li>
+      <li><a href="../../offers.html">服務方案</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="wc wc1"></div>
+  <div class="wc wc2"></div>
+  <div class="wc wc3"></div>
+  <div>
+    <div class="kicker">AI 應用 · RAG 架構</div>
+    <h1>RAG 架構怎麼選？把它當成雇研究員｜經典 RAG、GraphRAG、Agentic RAG 的差別</h1>
+    <p>同樣叫 RAG，有的只會抓最相似的幾頁，有的會沿著關係找，有的由 AI 自己決定去哪找。國外作者 codewithbrij 用「雇人」的比喻把三種架構講成三種研究員。這篇是他貼文的繁體中文翻譯整理，流程圖與對照表由我重畫。</p>
+  </div>
+
+</section>
+
+<main>
+
+<section class="section" id="start">
+  <div class="inner">
+    <h2>這篇在講什麼</h2>
+    <p class="lead">RAG 是 AI 在回答之前，先去你的資料裡查一輪，再根據查到的內容作答的做法。國外作者 codewithbrij 發了一則貼文，把三種 RAG 架構比成三種研究員：經典 RAG 是拿螢光筆的實習生，GraphRAG 是有軟木板和紅線的分析師，Agentic RAG 的流程圖則標示它會推理、調整步驟、自我修正。這篇把他的貼文與流程圖翻成繁體中文，圖表由我重畫，並加上一張對照表。</p>
+
+    <div class="duo stack">
+      <div class="card a">
+        <b>適合誰</b>
+        <ul>
+          <li>聽過經典 RAG、GraphRAG、Agentic RAG 這幾個詞，但分不清楚它們差在哪的人。</li>
+          <li>要跟工程師或廠商討論「我們該用哪一種」，想先有一個比喻可以拿來對話的人。</li>
+          <li>正在評估把公司文件交給 AI 查詢，想知道不同做法各自要付出什麼維護成本的人。</li>
+        </ul>
+      </div>
+      <div class="card b">
+        <b>這篇想說什麼</b>
+        <ul>
+          <li>選 RAG 架構，可以想成在決定要雇哪一種研究員。</li>
+          <li>經典 RAG 又快又便宜但不做判斷，答案橫跨多份文件時就接不住。</li>
+          <li>GraphRAG 能沿著關係找答案，代價是那張關係圖要有人一直建立、維護。</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="meaning">
+      <b>出處與翻譯說明</b>
+      貼文與流程圖的作者是 codewithbrij，貼文日期為 8 月 13 日。內文由我從英文翻成繁體中文，流程圖與對照表是我依原圖的內容重畫，沒有使用原圖檔。我手上的貼文截圖只到 GraphRAG 的段落，Agentic RAG 的文字說明沒有收進來，所以那一部分只能依流程圖上的標示整理。
+    </div>
+  </div>
+</section>
+
+<section class="section" id="flows">
+  <div class="inner">
+    <h2>三種 RAG 的流程，用同一題動起來看</h2>
+    <p class="lead">三種做法的第一步都是收到問題，最後一步都是交出答案，差別在中間怎麼找資料。下面三張圖用三種畫法各自表現它的機制，由同一條時間軸一起推進：經典 RAG 是一條直線的輸送帶，GraphRAG 是一張關係網，Agentic RAG 是一張分工的泳道圖。</p>
+    <p>圖裡會用到幾個詞，先用白話講：<b>向量</b>是把一段文字轉成的一串數字，電腦靠它算兩段文字有多像；<b>實體</b>是文字裡的「東西」，像公司、零件、人、地點；<b>知識圖譜</b>是把實體和它們的關係存成一張網，像軟木板上用紅線連起來的卡片；<b>多跳</b>是要沿著關係連續走好幾步才拿得到答案；<b>自我評估</b>是查完之後回頭檢查資料夠不夠、答案對不對。</p>
+    <div class="mx-scene">
+      <b>示意情境，本站自擬，非貼文內容；時間為示意，沒有實測</b>
+      <p>問題：「供應 A 公司零件的廠商，後來被誰收購？」</p>
+      <p>資料庫有 10 頁文件，其中 5 頁都在講 A 公司；有一頁寫著「B 公司被 C 集團收購」，但這頁字面上跟問題不像。實際的關係是：A 公司採購零件 X，零件 X 的供應者是 B 公司，B 公司被 C 集團收購。另外還有兩個跟這題無關的點：王經理（任職於 A 公司）、台北廠（屬於 A 公司）。正確答案是 C 集團。</p>
+    </div>
+    <p class="mx-task"><b>看圖任務：</b>先按播放，或把進度拖到第 4 秒，看經典 RAG 挑了哪 5 頁、哪一頁沒被挑中；再拖到第 7 秒，看 GraphRAG 一步一步走到 C 集團；最後拖到第 5 秒，看推理代理自我評估後為什麼決定再查一輪。</p>
+    <div class="mx" data-mx>
+      <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><pattern id="mxl-h" patternUnits="userSpaceOnUse" width="7" height="7" patternTransform="rotate(45)"><rect width="7" height="7" fill="#ece8f4"/><rect width="3" height="7" fill="#7160a0" opacity=".5"/></pattern><pattern id="mxl-y" patternUnits="userSpaceOnUse" width="10" height="6"><rect width="10" height="6" fill="#fbe58a"/><rect y="4" width="10" height="2" fill="#e7bf3a" opacity=".75"/></pattern></defs></svg><ul class="mx-legend" aria-label="圖例"><li><svg width="34" height="20" viewBox="0 0 34 20" aria-hidden="true"><rect x="1" y="2" width="32" height="16" rx="4" fill="#7160a0"/></svg><span>實心＝正在做</span></li><li><svg width="34" height="20" viewBox="0 0 34 20" aria-hidden="true"><rect x="1" y="2" width="32" height="16" rx="4" fill="url(#mxl-h)" stroke="#7160a0"/></svg><span>斜線＝在等別人</span></li><li><svg width="34" height="20" viewBox="0 0 34 20" aria-hidden="true"><rect x="1" y="2" width="32" height="16" rx="4" fill="#ece8f4" stroke="#7160a0"/><text x="17" y="15" text-anchor="middle" font-size="12" font-weight="700" fill="#7160a0">✓</text></svg><span>淡色＋✓＝做完了</span></li><li><svg width="34" height="20" viewBox="0 0 34 20" aria-hidden="true"><rect x="1.5" y="2.5" width="31" height="15" rx="4" fill="#fff" stroke="#b9ad98" stroke-dasharray="4 3"/></svg><span>虛線框＝還沒開始</span></li><li><svg width="34" height="20" viewBox="0 0 34 20" aria-hidden="true"><rect x="1" y="2" width="32" height="16" rx="3" fill="url(#mxl-y)" stroke="#c9a227"/></svg><span>黃底橫紋＝螢光筆挑中的頁</span></li><li><svg width="34" height="20" viewBox="0 0 34 20" aria-hidden="true"><line x1="2" y1="10" x2="30" y2="10" stroke="#d9822b" stroke-width="6" stroke-linecap="round"/><circle cx="24" cy="10" r="5" fill="#c8641d"/></svg><span>橘色粗線＝走過的關係</span></li><li><svg width="34" height="20" viewBox="0 0 34 20" aria-hidden="true"><circle cx="17" cy="10" r="8" fill="#d2473b"/><text x="17" y="14" text-anchor="middle" font-size="11" font-weight="700" fill="#fff">?</text></svg><span>紅色圓點＝問題走到哪一站</span></li><li><svg width="34" height="20" viewBox="0 0 34 20" aria-hidden="true"><line x1="17" y1="1" x2="17" y2="19" stroke="#d2473b" stroke-width="3"/></svg><span>紅色直線＝目前時間</span></li></ul>
+      <p class="mx-nojs">這組圖要開啟 JavaScript 才能播放。下面三張是第 0 秒的畫面，每一步在做什麼寫在圖後的「文字版」。</p>
+      <div class="mx-ctrl" role="group" aria-label="動畫控制"><div class="mx-row"><button type="button" class="mx-btn mx-play" data-act="play" aria-label="播放"><svg class="ic" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 2.5 L13 8 L4 13.5 z"/></svg><span>播放</span></button><button type="button" class="mx-btn" data-act="replay" aria-label="從頭重播"><svg class="ic" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2.5a5.5 5.5 0 1 1 -5.2 3.7" fill="none" stroke="currentColor" stroke-width="2"/><path d="M1.5 2.2 L6.2 3.4 L3 7 z"/></svg><span>重播</span></button><button type="button" class="mx-btn" data-act="prev" aria-label="上一步"><svg class="ic" viewBox="0 0 16 16" aria-hidden="true"><path d="M11 3 L5 8 L11 13 z"/><rect x="3" y="3" width="2" height="10"/></svg><span>上一步</span></button><button type="button" class="mx-btn" data-act="next" aria-label="下一步"><span>下一步</span><svg class="ic" viewBox="0 0 16 16" aria-hidden="true"><path d="M5 3 L11 8 L5 13 z"/><rect x="11" y="3" width="2" height="10"/></svg></button><label class="mx-speed"><span class="lbl">速度</span><select data-act="speed" aria-label="播放速度"><option value="0.5">0.5×</option><option value="1" selected>1×</option><option value="2">2×</option></select></label></div><input class="mx-range" type="range" min="0" max="10" step="0.01" value="0" aria-label="進度（示意時間，方向鍵跳上一步或下一步）" aria-valuetext="第 0.0 秒"><p class="mx-read"><b class="mx-time">第 0.0 秒／共 10 秒（示意時間）</b><span class="mx-evs" aria-live="polite">經典：問題｜圖譜：問題｜代理：收到問題</span></p></div>
+      <article class="mx-panel mx-p1" style="--c:#5689b8" aria-label="經典 RAG"><header class="mx-ph"><h3><b>經典 RAG</b>｜拿螢光筆的實習生，問題走一條直線，查一次就答</h3><p class="mx-form">Classic RAG　圖形：橫向輸送帶＋文件牆</p></header><div class="mx-scroll" tabindex="0" role="group" aria-label="經典 RAG動畫圖"><svg class="mx-svg" viewBox="0 0 940 482" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="mx1-t mx1-d" font-family="-apple-system,BlinkMacSystemFont,&#x27;PingFang TC&#x27;,&#x27;Noto Sans TC&#x27;,sans-serif"><title id="mx1-t">經典 RAG：輸送帶與文件牆</title><desc id="mx1-d">問題沿一條直線經過六站：問題、轉成向量、向量資料庫、最相似的 K 段文字、大型語言模型、答案。下方文件牆有 10 頁，第 3 到 4 秒其中 5 頁講 A 公司的頁面被螢光筆畫起來，寫著 B 公司被 C 集團收購的那頁沒被挑中。</desc><defs><pattern id="mx1-hatch" patternUnits="userSpaceOnUse" width="9" height="9" patternTransform="rotate(45)"><rect width="9" height="9" fill="#e6eef6"/><rect width="3.5" height="9" fill="#5689b8" opacity=".5"/></pattern><pattern id="mx1-hl" patternUnits="userSpaceOnUse" width="12" height="8"><rect width="12" height="8" fill="#fbe58a"/><rect y="5.5" width="12" height="2.5" fill="#e7bf3a" opacity=".75"/></pattern><marker id="mx1-ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#5689b8"/></marker><marker id="mx1-ahs" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#bdb2a0"/></marker><marker id="mx1-ahw" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#c8641d"/></marker></defs><g class="st is-run" data-ev="c1"><rect class="box" x="15" y="14" width="140" height="96" rx="12"/><text class="zh" x="85" y="48" text-anchor="middle" font-size="16" font-weight="700">問題</text><text class="en" x="85" y="69" text-anchor="middle" font-size="13">Query</text><text class="w" x="85" y="96" text-anchor="middle" font-size="14" font-weight="700">進行中</text></g><path class="ar" data-cls="fin@1" d="M158,56.0 L166,62.0 L158,68.0 z"/><g class="st is-idle" data-ev="c2"><rect class="box" x="169" y="14" width="140" height="96" rx="12"/><text class="zh" x="239" y="48" text-anchor="middle" font-size="16" font-weight="700">轉成向量</text><text class="en" x="239" y="69" text-anchor="middle" font-size="13">Embed</text><text class="w" x="239" y="96" text-anchor="middle" font-size="14" font-weight="700">還沒開始</text></g><path class="ar" data-cls="fin@2" d="M312,56.0 L320,62.0 L312,68.0 z"/><g class="st is-idle" data-ev="c3"><rect class="box" x="323" y="14" width="140" height="96" rx="12"/><text class="zh" x="393" y="48" text-anchor="middle" font-size="16" font-weight="700">向量資料庫</text><text class="en" x="393" y="69" text-anchor="middle" font-size="13">Vector DB</text><text class="w" x="393" y="96" text-anchor="middle" font-size="14" font-weight="700">還沒開始</text></g><path class="ar" data-cls="fin@3" d="M466,56.0 L474,62.0 L466,68.0 z"/><g class="st is-idle" data-ev="c4"><rect class="box" x="477" y="14" width="140" height="96" rx="12"/><text class="zh" x="547" y="48" text-anchor="middle" font-size="15" font-weight="700">最相似的 K 段文字</text><text class="en" x="547" y="69" text-anchor="middle" font-size="13">Top-K Chunks</text><text class="w" x="547" y="96" text-anchor="middle" font-size="14" font-weight="700">還沒開始</text></g><path class="ar" data-cls="fin@4" d="M620,56.0 L628,62.0 L620,68.0 z"/><g class="st is-idle" data-ev="c5"><rect class="box" x="631" y="14" width="140" height="96" rx="12"/><text class="zh" x="701" y="48" text-anchor="middle" font-size="16" font-weight="700">大型語言模型</text><text class="en" x="701" y="69" text-anchor="middle" font-size="13">LLM</text><text class="w" x="701" y="96" text-anchor="middle" font-size="14" font-weight="700">還沒開始</text></g><path class="ar" data-cls="fin@5.5" d="M774,56.0 L782,62.0 L774,68.0 z"/><g class="st is-idle" data-ev="c6"><rect class="box" x="785" y="14" width="140" height="96" rx="12"/><text class="zh" x="855" y="48" text-anchor="middle" font-size="16" font-weight="700">答案</text><text class="en" x="855" y="69" text-anchor="middle" font-size="13">Answer</text><text class="w" x="855" y="96" text-anchor="middle" font-size="14" font-weight="700">還沒開始</text></g><line class="track" x1="85" y1="134" x2="855" y2="134"/><circle class="tick on" data-cls="on@0" cx="85" cy="134" r="5"/><circle class="tick" data-cls="on@1" cx="239" cy="134" r="5"/><circle class="tick" data-cls="on@2" cx="393" cy="134" r="5"/><circle class="tick" data-cls="on@3" cx="547" cy="134" r="5"/><circle class="tick" data-cls="on@4" cx="701" cy="134" r="5"/><circle class="tick" data-cls="on@5.5" cx="855" cy="134" r="5"/><g class="qdot" data-pts="0:85,134 0.7:85,134 1:239,134 1.7:239,134 2:393,134 2.7:393,134 3:547,134 3.7:547,134 4:701,134 5.2:701,134 5.5:855,134" transform="translate(85.0 134.0)"><circle r="12" class="qd"/><text y="5" text-anchor="middle" font-size="15" font-weight="700" fill="#fff">?</text></g><text class="cap" x="24" y="180" font-size="15" font-weight="700">文件牆：資料庫裡的 10 頁（示意）</text><text class="cap2" data-cls="on@3" x="916" y="180" text-anchor="end" font-size="15" font-weight="700">螢光筆＝被挑中的 5 頁，只有這 5 頁交給 LLM</text><g class="pg-g"><rect class="pg" x="24" y="192" width="172" height="92" rx="6"/><rect class="hl" data-cls="on@3" x="24" y="192" width="172" height="92" rx="6" fill="url(#mx1-hl)"/><text class="pt" x="34" y="218" font-size="15" font-weight="700">A 公司簡介</text><rect class="bar" x="34" y="230" width="132" height="6" rx="3"/><rect class="bar" x="34" y="242" width="102" height="6" rx="3"/><text class="pn" x="34" y="272" font-size="13">第 1 頁</text><text class="tag ok" data-cls="on@3" x="186" y="272" text-anchor="end" font-size="14" font-weight="700">✓ 被挑中</text></g><g class="pg-g"><rect class="pg" x="204" y="192" width="172" height="92" rx="6"/><text class="pt" x="214" y="218" font-size="15" font-weight="700">會議紀錄</text><rect class="bar" x="214" y="230" width="132" height="6" rx="3"/><rect class="bar" x="214" y="242" width="102" height="6" rx="3"/><text class="pn" x="214" y="272" font-size="13">第 2 頁</text></g><g class="pg-g"><rect class="pg" x="384" y="192" width="172" height="92" rx="6"/><rect class="hl" data-cls="on@3.15" x="384" y="192" width="172" height="92" rx="6" fill="url(#mx1-hl)"/><text class="pt" x="394" y="218" font-size="15" font-weight="700">A 公司年度報告</text><rect class="bar" x="394" y="230" width="132" height="6" rx="3"/><rect class="bar" x="394" y="242" width="102" height="6" rx="3"/><text class="pn" x="394" y="272" font-size="13">第 3 頁</text><text class="tag ok" data-cls="on@3.15" x="546" y="272" text-anchor="end" font-size="14" font-weight="700">✓ 被挑中</text></g><g class="pg-g"><rect class="pg" x="564" y="192" width="172" height="92" rx="6"/><text class="pt" x="574" y="218" font-size="15" font-weight="700">B 公司被 C 集團收購</text><rect class="bar" x="574" y="230" width="132" height="6" rx="3"/><text class="pn" x="574" y="272" font-size="13">第 4 頁</text><rect class="miss" data-cls="on@3.8" x="564" y="192" width="172" height="92" rx="6"/><text class="tag no" data-cls="on@3.8" x="726" y="272" text-anchor="end" font-size="14" font-weight="700">✗ 沒被挑中</text><text class="tag no2" data-cls="on@3.8" x="574" y="256" font-size="13">字面跟問題不像</text></g><g class="pg-g"><rect class="pg" x="744" y="192" width="172" height="92" rx="6"/><rect class="hl" data-cls="on@3.3" x="744" y="192" width="172" height="92" rx="6" fill="url(#mx1-hl)"/><text class="pt" x="754" y="218" font-size="15" font-weight="700">A 公司採購零件 X</text><rect class="bar" x="754" y="230" width="132" height="6" rx="3"/><rect class="bar" x="754" y="242" width="102" height="6" rx="3"/><text class="pn" x="754" y="272" font-size="13">第 5 頁</text><text class="tag ok" data-cls="on@3.3" x="906" y="272" text-anchor="end" font-size="14" font-weight="700">✓ 被挑中</text></g><g class="pg-g"><rect class="pg" x="24" y="296" width="172" height="92" rx="6"/><text class="pt" x="34" y="322" font-size="15" font-weight="700">員工手冊</text><rect class="bar" x="34" y="334" width="132" height="6" rx="3"/><rect class="bar" x="34" y="346" width="102" height="6" rx="3"/><text class="pn" x="34" y="376" font-size="13">第 6 頁</text></g><g class="pg-g"><rect class="pg" x="204" y="296" width="172" height="92" rx="6"/><rect class="hl" data-cls="on@3.45" x="204" y="296" width="172" height="92" rx="6" fill="url(#mx1-hl)"/><text class="pt" x="214" y="322" font-size="15" font-weight="700">A 公司台北廠</text><rect class="bar" x="214" y="334" width="132" height="6" rx="3"/><rect class="bar" x="214" y="346" width="102" height="6" rx="3"/><text class="pn" x="214" y="376" font-size="13">第 7 頁</text><text class="tag ok" data-cls="on@3.45" x="366" y="376" text-anchor="end" font-size="14" font-weight="700">✓ 被挑中</text></g><g class="pg-g"><rect class="pg" x="384" y="296" width="172" height="92" rx="6"/><text class="pt" x="394" y="322" font-size="15" font-weight="700">零件 X 的供應商</text><rect class="bar" x="394" y="334" width="132" height="6" rx="3"/><rect class="bar" x="394" y="346" width="102" height="6" rx="3"/><text class="pn" x="394" y="376" font-size="13">第 8 頁</text></g><g class="pg-g"><rect class="pg" x="564" y="296" width="172" height="92" rx="6"/><rect class="hl" data-cls="on@3.6" x="564" y="296" width="172" height="92" rx="6" fill="url(#mx1-hl)"/><text class="pt" x="574" y="322" font-size="15" font-weight="700">A 公司人事：王經理</text><rect class="bar" x="574" y="334" width="132" height="6" rx="3"/><rect class="bar" x="574" y="346" width="102" height="6" rx="3"/><text class="pn" x="574" y="376" font-size="13">第 9 頁</text><text class="tag ok" data-cls="on@3.6" x="726" y="376" text-anchor="end" font-size="14" font-weight="700">✓ 被挑中</text></g><g class="pg-g"><rect class="pg" x="744" y="296" width="172" height="92" rx="6"/><text class="pt" x="754" y="322" font-size="15" font-weight="700">產業新聞摘要</text><rect class="bar" x="754" y="334" width="132" height="6" rx="3"/><rect class="bar" x="754" y="346" width="102" height="6" rx="3"/><text class="pn" x="754" y="376" font-size="13">第 10 頁</text></g><g class="scan" data-cls="show@2-3" data-pts="2:0,0 3:892,0" transform="translate(0.0 0.0)"><line x1="24" y1="188" x2="24" y2="392"/><text x="30" y="384" font-size="13" font-weight="700">比對中</text></g><g class="card ans is-idle" data-ev="c6"><rect class="box" x="24" y="402" width="892" height="44" rx="10"/><text class="ph" data-cls="gone@5.5" x="40" y="430" font-size="15">答案會出現在這裡</text><text class="at" data-cls="on@5.5" x="40" y="430" font-size="16" font-weight="700">答案（示意）：A 公司有採購零件 X；被挑中的 5 頁沒寫到後來被誰收購，答不出來。</text><text class="w" x="900" y="430" text-anchor="end" font-size="14" font-weight="700">還沒開始</text></g><text class="kw" x="24" y="474" font-size="14">流程圖上的關鍵字：「檢索」；特性：快速、簡單、單跳</text></svg></div><p class="mx-hint">圖比螢幕寬，可以左右滑動 →</p><div class="mx-status" data-p="1" aria-live="off"><p><b>現在</b><span data-role="now">問題進到流程裡：「供應 A 公司零件的廠商，後來被誰收購？」</span></p><p><b>在等</b><span data-role="wait">沒有人在等，每一站做完就直接交給下一站</span></p><p><b>下一步</b><span data-role="next">轉成向量（第 1 秒；觸發：上一站做完，自動往下走）</span></p></div></article>
+      <article class="mx-panel mx-p2" style="--c:#3f8268" aria-label="GraphRAG"><header class="mx-ph"><h3><b>GraphRAG</b>｜有軟木板和紅線的分析師，先把東西連成網，再沿著關係走</h3><p class="mx-form">GraphRAG　圖形：知識圖譜網路＋沿路徑走</p></header><div class="mx-scroll" tabindex="0" role="group" aria-label="GraphRAG動畫圖"><svg class="mx-svg" viewBox="0 0 940 492" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="mx2-t mx2-d" font-family="-apple-system,BlinkMacSystemFont,&#x27;PingFang TC&#x27;,&#x27;Noto Sans TC&#x27;,sans-serif"><title id="mx2-t">GraphRAG：知識圖譜與沿路徑走</title><desc id="mx2-d">上方六個階段：問題、抽出實體、知識圖譜、串連起來的脈絡、大型語言模型、答案。下方軟木板上有六個實體：A 公司、零件 X、B 公司、C 集團、王經理、台北廠。第 4 到 7 秒從 A 公司沿採購、供應者、被收購三段關係走到 C 集團。</desc><defs><pattern id="mx2-hatch" patternUnits="userSpaceOnUse" width="9" height="9" patternTransform="rotate(45)"><rect width="9" height="9" fill="#e3efe8"/><rect width="3.5" height="9" fill="#3f8268" opacity=".5"/></pattern><pattern id="mx2-hl" patternUnits="userSpaceOnUse" width="12" height="8"><rect width="12" height="8" fill="#fbe58a"/><rect y="5.5" width="12" height="2.5" fill="#e7bf3a" opacity=".75"/></pattern><marker id="mx2-ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#3f8268"/></marker><marker id="mx2-ahs" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#bdb2a0"/></marker><marker id="mx2-ahw" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#c8641d"/></marker></defs><g class="st pill is-run" data-ev="g1"><rect class="box" x="15" y="12" width="140" height="50" rx="25"/><text class="zh" x="85" y="34" text-anchor="middle" font-size="15" font-weight="700">問題</text><text class="en" x="85" y="52" text-anchor="middle" font-size="12">Query</text><text class="w2" x="85" y="82" text-anchor="middle" font-size="14" font-weight="700">進行中</text></g><path class="ar" data-cls="fin@1" d="M158,31.0 L166,37.0 L158,43.0 z"/><g class="st pill is-idle" data-ev="g2"><rect class="box" x="169" y="12" width="140" height="50" rx="25"/><text class="zh" x="239" y="34" text-anchor="middle" font-size="15" font-weight="700">抽出實體</text><text class="en" x="239" y="52" text-anchor="middle" font-size="12">Entity Extraction</text><text class="w2" x="239" y="82" text-anchor="middle" font-size="14" font-weight="700">還沒開始</text></g><path class="ar" data-cls="fin@3" d="M312,31.0 L320,37.0 L312,43.0 z"/><g class="st pill is-idle" data-ev="g3 g4 g5 g6"><rect class="box" x="323" y="12" width="140" height="50" rx="25"/><text class="zh" x="393" y="34" text-anchor="middle" font-size="15" font-weight="700">知識圖譜</text><text class="en" x="393" y="52" text-anchor="middle" font-size="12">Knowledge Graph</text><text class="w2" x="393" y="82" text-anchor="middle" font-size="14" font-weight="700">還沒開始</text></g><path class="ar" data-cls="fin@7" d="M466,31.0 L474,37.0 L466,43.0 z"/><g class="st pill is-idle" data-ev="g7"><rect class="box" x="477" y="12" width="140" height="50" rx="25"/><text class="zh" x="547" y="34" text-anchor="middle" font-size="15" font-weight="700">串連起來的脈絡</text><text class="en" x="547" y="52" text-anchor="middle" font-size="12">Connected Context</text><text class="w2" x="547" y="82" text-anchor="middle" font-size="14" font-weight="700">還沒開始</text></g><path class="ar" data-cls="fin@8" d="M620,31.0 L628,37.0 L620,43.0 z"/><g class="st pill is-idle" data-ev="g8"><rect class="box" x="631" y="12" width="140" height="50" rx="25"/><text class="zh" x="701" y="34" text-anchor="middle" font-size="15" font-weight="700">大型語言模型</text><text class="en" x="701" y="52" text-anchor="middle" font-size="12">LLM</text><text class="w2" x="701" y="82" text-anchor="middle" font-size="14" font-weight="700">還沒開始</text></g><path class="ar" data-cls="fin@9.5" d="M774,31.0 L782,37.0 L774,43.0 z"/><g class="st pill is-idle" data-ev="g9"><rect class="box" x="785" y="12" width="140" height="50" rx="25"/><text class="zh" x="855" y="34" text-anchor="middle" font-size="15" font-weight="700">答案</text><text class="en" x="855" y="52" text-anchor="middle" font-size="12">Answer</text><text class="w2" x="855" y="82" text-anchor="middle" font-size="14" font-weight="700">還沒開始</text></g><rect class="board" x="10" y="104" width="920" height="352" rx="14"/><text class="cap" x="26" y="130" font-size="15" font-weight="700">知識圖譜（像軟木板：卡片是實體，紅線是關係）</text><line class="edge-sk" x1="217.0" y1="198.3" x2="323.0" y2="179.7" marker-end="url(#mx2-ahs)"/><line class="edge" data-cls="fin@3.3" x1="217.0" y1="198.3" x2="323.0" y2="179.7" pathLength="1" data-draw="3 3.3" style="stroke-dasharray:1 1;stroke-dashoffset:1.000"/><text class="elab" data-cls="on@3.3" x="270.0" y="175.0" text-anchor="middle" font-size="15" font-weight="700">採購</text><line class="edge-sk" x1="457.0" y1="179.7" x2="563.0" y2="198.3" marker-end="url(#mx2-ahs)"/><line class="edge" data-cls="fin@3.45" x1="457.0" y1="179.7" x2="563.0" y2="198.3" pathLength="1" data-draw="3.15 3.45" style="stroke-dasharray:1 1;stroke-dashoffset:1.000"/><text class="elab" data-cls="on@3.45" x="510.0" y="175.0" text-anchor="middle" font-size="15" font-weight="700">供應者</text><line class="edge-sk" x1="697.0" y1="196.6" x2="773.0" y2="181.4" marker-end="url(#mx2-ahs)"/><line class="edge" data-cls="fin@3.6" x1="697.0" y1="196.6" x2="773.0" y2="181.4" pathLength="1" data-draw="3.3 3.6" style="stroke-dasharray:1 1;stroke-dashoffset:1.000"/><text class="elab" data-cls="on@3.6" x="735.0" y="175.0" text-anchor="middle" font-size="15" font-weight="700">被收購</text><line class="edge-sk" x1="150.0" y1="355.0" x2="150.0" y2="239.0" marker-end="url(#mx2-ahs)"/><line class="edge" data-cls="fin@3.75" x1="150.0" y1="355.0" x2="150.0" y2="239.0" pathLength="1" data-draw="3.45 3.75" style="stroke-dasharray:1 1;stroke-dashoffset:1.000"/><text class="elab" data-cls="on@3.75" x="184.0" y="301.0" text-anchor="middle" font-size="15" font-weight="700">任職於</text><line class="edge-sk" x1="332.0" y1="301.0" x2="208.0" y2="239.0" marker-end="url(#mx2-ahs)"/><line class="edge" data-cls="fin@3.9" x1="332.0" y1="301.0" x2="208.0" y2="239.0" pathLength="1" data-draw="3.6 3.9" style="stroke-dasharray:1 1;stroke-dashoffset:1.000"/><text class="elab" data-cls="on@3.9" x="254.0" y="298.0" text-anchor="middle" font-size="15" font-weight="700">屬於</text><line class="walk" x1="150" y1="210" x2="390" y2="168" pathLength="1" data-draw="4 5" style="stroke-dasharray:1 1;stroke-dashoffset:1.000"/><line class="walk" x1="390" y1="168" x2="630" y2="210" pathLength="1" data-draw="5 6" style="stroke-dasharray:1 1;stroke-dashoffset:1.000"/><line class="walk" x1="630" y1="210" x2="840" y2="168" pathLength="1" data-draw="6 7" style="stroke-dasharray:1 1;stroke-dashoffset:1.000"/><g class="walker" data-cls="show@4" data-pts="4:150,210 5:390,168 6:630,210 7:840,168" transform="translate(150.0 210.0)"><circle r="9" class="wd"/></g><g class="nd" data-cls="on@1.2 hot@4"><rect class="nb" x="88" y="186" width="124" height="48" rx="10"/><text class="nt" x="150" y="216" text-anchor="middle" font-size="17" font-weight="700">A 公司</text></g><g class="nd" data-cls="on@1.5 hot@5"><rect class="nb" x="328" y="144" width="124" height="48" rx="10"/><text class="nt" x="390" y="174" text-anchor="middle" font-size="17" font-weight="700">零件 X</text></g><g class="nd" data-cls="on@1.8 hot@6"><rect class="nb" x="568" y="186" width="124" height="48" rx="10"/><text class="nt" x="630" y="216" text-anchor="middle" font-size="17" font-weight="700">B 公司</text></g><g class="nd" data-cls="on@2.1 hot@7"><rect class="nb" x="778" y="144" width="124" height="48" rx="10"/><text class="nt" x="840" y="174" text-anchor="middle" font-size="17" font-weight="700">C 集團</text></g><g class="nd" data-cls="on@2.4"><rect class="nb" x="88" y="360" width="124" height="48" rx="10"/><text class="nt" x="150" y="390" text-anchor="middle" font-size="17" font-weight="700">王經理</text></g><g class="nd" data-cls="on@2.7"><rect class="nb" x="328" y="306" width="124" height="48" rx="10"/><text class="nt" x="390" y="336" text-anchor="middle" font-size="17" font-weight="700">台北廠</text></g><text class="skip" data-cls="on@7" x="150" y="428.0" text-anchor="middle" font-size="14">這題沒走到</text><text class="skip" data-cls="on@7" x="390" y="374.0" text-anchor="middle" font-size="14">這題沒走到</text><g class="ansl" data-cls="on@9.5"><rect x="774" y="198" width="132" height="32" rx="16"/><text x="840" y="220" text-anchor="middle" font-size="16" font-weight="700">答案：C 集團</text></g><g class="card ctx is-idle" data-ev="g7"><rect class="box" x="520" y="292" width="396" height="152" rx="12"/><text class="ct" x="536" y="318" font-size="15" font-weight="700">串連起來的脈絡 <tspan font-size="12" font-weight="400">Connected Context</tspan></text><text class="w" x="902" y="318" text-anchor="end" font-size="14" font-weight="700">還沒開始</text></g><rect class="lph" data-cls="gone@7" x="536" y="336" width="220" height="8" rx="4"/><text class="cl" data-cls="on@7" x="536" y="348" font-size="16" font-weight="700">1. A 公司 採購 零件 X</text><rect class="lph" data-cls="gone@7.33" x="536" y="364" width="200" height="8" rx="4"/><text class="cl" data-cls="on@7.33" x="536" y="376" font-size="16" font-weight="700">2. 零件 X 的供應者是 B 公司</text><rect class="lph" data-cls="gone@7.66" x="536" y="392" width="180" height="8" rx="4"/><text class="cl" data-cls="on@7.66" x="536" y="404" font-size="16" font-weight="700">3. B 公司 被 C 集團收購</text><text class="cl2" data-cls="on@8" x="536" y="432" font-size="14">這三句交給大型語言模型寫答案</text><text class="kw" x="24" y="480" font-size="14">流程圖上的關鍵字：「串連」；特性：關係式、富含實體、多來源</text></svg></div><p class="mx-hint">圖比螢幕寬，可以左右滑動 →</p><div class="mx-status" data-p="2" aria-live="off"><p><b>現在</b><span data-role="now">問題進到流程裡：「供應 A 公司零件的廠商，後來被誰收購？」</span></p><p><b>在等</b><span data-role="wait">沒有人在等，每一步做完就接著下一步</span></p><p><b>下一步</b><span data-role="next">抽出實體（第 1 秒；觸發：問題收到後開始）</span></p></div></article>
+      <article class="mx-panel mx-p3" style="--c:#7160a0" aria-label="Agentic RAG"><header class="mx-ph"><h3><b>Agentic RAG</b>｜推理代理指揮多個來源，查完自我評估，不夠就再查</h3><p class="mx-form">Agentic RAG　圖形：泳道圖</p></header><div class="mx-scroll" tabindex="0" role="group" aria-label="Agentic RAG動畫圖"><svg class="mx-svg" viewBox="0 0 940 478" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="mx3-t mx3-d" font-family="-apple-system,BlinkMacSystemFont,&#x27;PingFang TC&#x27;,&#x27;Noto Sans TC&#x27;,sans-serif"><title id="mx3-t">Agentic RAG：泳道圖</title><desc id="mx3-d">橫軸是 0 到 10 秒，五條泳道：推理代理、向量資料庫、知識圖譜、網路搜尋、工具。推理代理先規劃，派工給向量資料庫和網路搜尋並等待回覆；第 4.5 秒自我評估發現資料不夠，補派知識圖譜查第二輪；第 7.5 秒再評估，資料夠了，第 8.5 秒寫最終答案。工具這題沒用到。</desc><defs><pattern id="mx3-hatch" patternUnits="userSpaceOnUse" width="9" height="9" patternTransform="rotate(45)"><rect width="9" height="9" fill="#ece8f4"/><rect width="3.5" height="9" fill="#7160a0" opacity=".5"/></pattern><pattern id="mx3-hl" patternUnits="userSpaceOnUse" width="12" height="8"><rect width="12" height="8" fill="#fbe58a"/><rect y="5.5" width="12" height="2.5" fill="#e7bf3a" opacity=".75"/></pattern><marker id="mx3-ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#7160a0"/></marker><marker id="mx3-ahs" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#bdb2a0"/></marker><marker id="mx3-ahw" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#c8641d"/></marker></defs><g class="round" data-cls="on@2.5"><path d="M365,30 V24 H513 V30"/><text x="439" y="17" text-anchor="middle" font-size="14" font-weight="700">第一輪查詢</text></g><g class="round" data-cls="on@5.5"><path d="M587,30 V24 H735 V30"/><text x="661" y="17" text-anchor="middle" font-size="14" font-weight="700">第二輪查詢（補查）</text></g><line class="grid" x1="180" y1="52" x2="180" y2="422"/><text class="tk" x="180" y="48" text-anchor="middle" font-size="13">0</text><line class="grid" x1="254" y1="52" x2="254" y2="422"/><text class="tk" x="254" y="48" text-anchor="middle" font-size="13">1</text><line class="grid" x1="328" y1="52" x2="328" y2="422"/><text class="tk" x="328" y="48" text-anchor="middle" font-size="13">2</text><line class="grid" x1="402" y1="52" x2="402" y2="422"/><text class="tk" x="402" y="48" text-anchor="middle" font-size="13">3</text><line class="grid" x1="476" y1="52" x2="476" y2="422"/><text class="tk" x="476" y="48" text-anchor="middle" font-size="13">4</text><line class="grid" x1="550" y1="52" x2="550" y2="422"/><text class="tk" x="550" y="48" text-anchor="middle" font-size="13">5</text><line class="grid" x1="624" y1="52" x2="624" y2="422"/><text class="tk" x="624" y="48" text-anchor="middle" font-size="13">6</text><line class="grid" x1="698" y1="52" x2="698" y2="422"/><text class="tk" x="698" y="48" text-anchor="middle" font-size="13">7</text><line class="grid" x1="772" y1="52" x2="772" y2="422"/><text class="tk" x="772" y="48" text-anchor="middle" font-size="13">8</text><line class="grid" x1="846" y1="52" x2="846" y2="422"/><text class="tk" x="846" y="48" text-anchor="middle" font-size="13">9</text><line class="grid" x1="920" y1="52" x2="920" y2="422"/><text class="tk" x="920" y="48" text-anchor="middle" font-size="13">10 秒</text><rect class="lane" x="0" y="62" width="940" height="72"/><g class="ln is-run" data-ev="a1 a2 a3 a4 a5 a6 a7"><text class="lz" x="14" y="88" font-size="16" font-weight="700">推理代理</text><text class="le" x="14" y="106" font-size="13">Reasoning Agent</text><text class="w" x="14" y="125" font-size="14" font-weight="700">進行中</text></g><g class="blk is-run" data-ev="a1"><rect class="box" x="181" y="70" width="72" height="40" rx="7"/><text class="lb" x="217" y="95" text-anchor="middle" font-size="15" font-weight="700">收到問題</text><g class="ck"><circle cx="250" cy="71" r="8"/><text x="250" y="75" text-anchor="middle" font-size="11" font-weight="700">✓</text></g></g><g class="blk is-idle" data-ev="a2"><rect class="box" x="255" y="70" width="109" height="40" rx="7"/><text class="lb" x="309.5" y="95" text-anchor="middle" font-size="15" font-weight="700">規劃查哪裡</text><g class="ck"><circle cx="361" cy="71" r="8"/><text x="361" y="75" text-anchor="middle" font-size="11" font-weight="700">✓</text></g></g><g class="blk is-idle" data-ev="a3"><rect class="box" x="366" y="70" width="146" height="40" rx="7"/><text class="lb" x="439" y="95" text-anchor="middle" font-size="15" font-weight="700">等待回覆</text><g class="ck"><circle cx="509" cy="71" r="8"/><text x="509" y="75" text-anchor="middle" font-size="11" font-weight="700">✓</text></g></g><g class="blk is-idle" data-ev="a4"><rect class="box" x="514" y="70" width="72" height="40" rx="7"/><text class="lb" x="550" y="95" text-anchor="middle" font-size="15" font-weight="700">自我評估</text><g class="ck"><circle cx="583" cy="71" r="8"/><text x="583" y="75" text-anchor="middle" font-size="11" font-weight="700">✓</text></g></g><g class="blk is-idle" data-ev="a5"><rect class="box" x="588" y="70" width="146" height="40" rx="7"/><text class="lb" x="661" y="95" text-anchor="middle" font-size="15" font-weight="700">等待回覆</text><g class="ck"><circle cx="731" cy="71" r="8"/><text x="731" y="75" text-anchor="middle" font-size="11" font-weight="700">✓</text></g></g><g class="blk is-idle" data-ev="a6"><rect class="box" x="736" y="70" width="72" height="40" rx="7"/><text class="lb" x="772" y="95" text-anchor="middle" font-size="15" font-weight="700">自我評估</text><g class="ck"><circle cx="805" cy="71" r="8"/><text x="805" y="75" text-anchor="middle" font-size="11" font-weight="700">✓</text></g></g><g class="blk is-idle" data-ev="a7"><rect class="box" x="810" y="70" width="109" height="40" rx="7"/><text class="lb" x="864.5" y="95" text-anchor="middle" font-size="15" font-weight="700">最終答案</text><g class="ck"><circle cx="916" cy="71" r="8"/><text x="916" y="75" text-anchor="middle" font-size="11" font-weight="700">✓</text></g></g><rect class="lane alt" x="0" y="134" width="940" height="72"/><g class="ln is-idle" data-ev="v1"><text class="lz" x="14" y="160" font-size="16" font-weight="700">向量資料庫</text><text class="le" x="14" y="178" font-size="13">Vector DB</text><text class="w" x="14" y="197" font-size="14" font-weight="700">還沒開始</text></g><g class="blk is-idle" data-ev="v1"><rect class="box" x="366" y="142" width="109" height="40" rx="7"/><text class="lb" x="420.5" y="167" text-anchor="middle" font-size="15" font-weight="700">找相似段落</text><g class="ck"><circle cx="472" cy="143" r="8"/><text x="472" y="147" text-anchor="middle" font-size="11" font-weight="700">✓</text></g></g><rect class="lane" x="0" y="206" width="940" height="72"/><g class="ln is-idle" data-ev="k1"><text class="lz" x="14" y="232" font-size="16" font-weight="700">知識圖譜</text><text class="le" x="14" y="250" font-size="13">Knowledge Graph</text><text class="w" x="14" y="269" font-size="14" font-weight="700">還沒開始</text></g><g class="blk is-idle" data-ev="k1"><rect class="box" x="588" y="214" width="146" height="40" rx="7"/><text class="lb" x="661" y="239" text-anchor="middle" font-size="15" font-weight="700">沿關係找</text><g class="ck"><circle cx="731" cy="215" r="8"/><text x="731" y="219" text-anchor="middle" font-size="11" font-weight="700">✓</text></g></g><rect class="lane alt" x="0" y="278" width="940" height="72"/><g class="ln is-idle" data-ev="w1"><text class="lz" x="14" y="304" font-size="16" font-weight="700">網路搜尋</text><text class="le" x="14" y="322" font-size="13">Web Search</text><text class="w" x="14" y="341" font-size="14" font-weight="700">還沒開始</text></g><g class="blk is-idle" data-ev="w1"><rect class="box" x="366" y="286" width="146" height="40" rx="7"/><text class="lb" x="439" y="311" text-anchor="middle" font-size="15" font-weight="700">查網路</text><g class="ck"><circle cx="509" cy="287" r="8"/><text x="509" y="291" text-anchor="middle" font-size="11" font-weight="700">✓</text></g></g><rect class="lane" x="0" y="350" width="940" height="72"/><g class="ln unused"><text class="lz" x="14" y="376" font-size="16" font-weight="700">工具</text><text class="le" x="14" y="394" font-size="13">Tools</text><text class="w" x="14" y="413" font-size="14" font-weight="700">這題沒用到</text></g><text class="nouse" x="192" y="392" font-size="14">這題沒用到</text><path class="arr-sk" d="M359,110 L359,162 L365,162" marker-end="url(#mx3-ahs)"/><path class="arr" data-cls="fin@2.5" d="M359,110 L359,162 L365,162" pathLength="1" data-draw="2.3 2.5" style="stroke-dasharray:1 1;stroke-dashoffset:1.000"/><path class="arr-sk" d="M359,110 L359,306 L365,306" marker-end="url(#mx3-ahs)"/><path class="arr" data-cls="fin@2.5" d="M359,110 L359,306 L365,306" pathLength="1" data-draw="2.3 2.5" style="stroke-dasharray:1 1;stroke-dashoffset:1.000"/><path class="arr-sk" d="M477,162 L483,162 L483,112" marker-end="url(#mx3-ahs)"/><path class="arr" data-cls="fin@4.2" d="M477,162 L483,162 L483,112" pathLength="1" data-draw="4 4.2" style="stroke-dasharray:1 1;stroke-dashoffset:1.000"/><path class="arr-sk" d="M514,306 L520,306 L520,112" marker-end="url(#mx3-ahs)"/><path class="arr" data-cls="fin@4.7" d="M514,306 L520,306 L520,112" pathLength="1" data-draw="4.5 4.7" style="stroke-dasharray:1 1;stroke-dashoffset:1.000"/><path class="arr-sk" d="M581,110 L581,234 L587,234" marker-end="url(#mx3-ahs)"/><path class="arr" data-cls="fin@5.5" d="M581,110 L581,234 L587,234" pathLength="1" data-draw="5.3 5.5" style="stroke-dasharray:1 1;stroke-dashoffset:1.000"/><path class="arr-sk" d="M736,234 L742,234 L742,112" marker-end="url(#mx3-ahs)"/><path class="arr" data-cls="fin@7.7" d="M736,234 L742,234 L742,112" pathLength="1" data-draw="7.5 7.7" style="stroke-dasharray:1 1;stroke-dashoffset:1.000"/><text class="ben is-run" data-ev="a1" x="217" y="126" text-anchor="middle" font-size="12">Query</text><text class="ben is-idle" data-ev="a4" x="550" y="126" text-anchor="middle" font-size="12">Self-Evaluation</text><text class="ben is-idle" data-ev="a6" x="772" y="126" text-anchor="middle" font-size="12">Self-Evaluation</text><text class="ben is-idle" data-ev="a7" x="864.5" y="126" text-anchor="middle" font-size="12">Final Answer</text><text class="note" data-cls="on@5.3" x="591" y="167" font-size="14" font-weight="700">資料不夠，補查一輪</text><g class="phd" data-pts="0:180,0 10:920,0" transform="translate(180.0 0.0)"><line x1="0" y1="54" x2="0" y2="426"/><rect x="-64" y="426" width="62" height="22" rx="11"/><text data-clock="1" x="-33" y="442" text-anchor="middle" font-size="13" font-weight="700" fill="#fff">0.0 秒</text></g><text class="kw" x="14" y="470" font-size="14">流程圖上的關鍵字：「推理」Reasons；特性：依步驟調整 Adaptive step｜自我修正 Self-correcting</text></svg></div><p class="mx-hint">圖比螢幕寬，可以左右滑動 →</p><div class="mx-status" data-p="3" aria-live="off"><p><b>現在</b><span data-role="now">推理代理收到問題</span></p><p><b>在等</b><span data-role="wait">推理代理沒有在等別人，正在自己做事</span></p><p><b>下一步</b><span data-role="next">規劃查哪裡（第 1 秒；觸發：讀完問題就開始規劃）</span></p></div></article>
+      <script type="application/json" id="mx-data">{"T":10,"events":[{"id":"c1","p":1,"s":0,"e":1,"k":"work","zh":"問題","en":"Query","who":"問題","now":"問題進到流程裡：「供應 A 公司零件的廠商，後來被誰收購？」","by":"按下播放就開始"},{"id":"c2","p":1,"s":1,"e":2,"k":"work","zh":"轉成向量","en":"Embed","who":"轉成向量","now":"把問題轉成一串數字（向量），之後才能比對哪些文字跟它像","by":"上一站做完，自動往下走"},{"id":"c3","p":1,"s":2,"e":3,"k":"work","zh":"向量資料庫比對","en":"Vector DB","who":"向量資料庫","now":"拿這串數字到向量資料庫，跟 10 頁文件逐一比相似程度","by":"向量算好，自動往下走"},{"id":"c4","p":1,"s":3,"e":4,"k":"work","zh":"挑出最相似的 5 頁","en":"Top-K Chunks","who":"最相似的 K 段文字","now":"照相似程度挑出前 5 頁（K＝5 為示意）。寫著「B 公司被 C 集團收購」的那頁字面上跟問題不像，沒被挑中","by":"比對結束，自動往下走，只挑這一次"},{"id":"c5","p":1,"s":4,"e":5.5,"k":"work","zh":"大型語言模型寫答案","en":"LLM","who":"大型語言模型","now":"大型語言模型只讀被挑中的這 5 頁來寫答案","by":"5 頁交出去就開始寫"},{"id":"c6","p":1,"s":5.5,"e":6,"k":"work","zh":"交出答案","en":"Answer","who":"答案","now":"交出答案：知道 A 公司採購零件 X，答不出後來被誰收購","by":"答案寫完就直接交出，中間沒有檢查這一步"},{"id":"g1","p":2,"s":0,"e":1,"k":"work","zh":"問題","en":"Query","who":"問題","now":"問題進到流程裡：「供應 A 公司零件的廠商，後來被誰收購？」","by":"按下播放就開始"},{"id":"g2","p":2,"s":1,"e":3,"k":"work","zh":"抽出實體","en":"Entity Extraction","who":"抽出實體","now":"從文件裡挑出公司、零件、人、地點這些「東西」（實體），一個一個放上軟木板","by":"問題收到後開始"},{"id":"g3","p":2,"s":3,"e":4,"k":"work","zh":"知識圖譜連線","en":"Knowledge Graph","who":"知識圖譜","now":"把東西之間的關係用線連起來：採購、供應者、被收購、任職於、屬於","by":"實體都放上板子後開始"},{"id":"g4","p":2,"s":4,"e":5,"k":"work","zh":"沿關係走第 1 步","en":"Knowledge Graph","who":"知識圖譜","now":"從 A 公司出發，沿「採購」這條線走到零件 X（多跳的第 1 步）","by":"關係連好後，從問題裡的 A 公司出發"},{"id":"g5","p":2,"s":5,"e":6,"k":"work","zh":"沿關係走第 2 步","en":"Knowledge Graph","who":"知識圖譜","now":"從零件 X 沿「供應者」這條線走到 B 公司（第 2 步）","by":"走到零件 X 後，接著找它的供應者"},{"id":"g6","p":2,"s":6,"e":7,"k":"work","zh":"沿關係走第 3 步","en":"Knowledge Graph","who":"知識圖譜","now":"從 B 公司沿「被收購」這條線走到 C 集團（第 3 步）","by":"找到供應者 B 公司後，接著找它被誰收購"},{"id":"g7","p":2,"s":7,"e":8,"k":"work","zh":"串連起來的脈絡","en":"Connected Context","who":"串連起來的脈絡","now":"把走過的三段關係寫成三句，串成一段脈絡","by":"走到 C 集團、路徑完整後開始"},{"id":"g8","p":2,"s":8,"e":9.5,"k":"work","zh":"大型語言模型寫答案","en":"LLM","who":"大型語言模型","now":"大型語言模型讀這段三句的脈絡來寫答案","by":"脈絡整理好就開始寫"},{"id":"g9","p":2,"s":9.5,"e":10,"k":"work","zh":"交出答案","en":"Answer","who":"答案","now":"交出答案：C 集團","by":"答案寫完就交出"},{"id":"a1","p":3,"s":0,"e":1,"k":"work","zh":"收到問題","en":"Query","who":"推理代理","now":"推理代理收到問題","by":"按下播放就開始"},{"id":"a2","p":3,"s":1,"e":2.5,"k":"work","zh":"規劃查哪裡","en":"Reasoning Agent","who":"推理代理","now":"推理代理規劃要去哪裡查，決定先查向量資料庫和網路搜尋","by":"讀完問題就開始規劃"},{"id":"a3","p":3,"s":2.5,"e":4.5,"k":"wait","zh":"等待回覆","en":"Reasoning Agent","who":"推理代理","wait":"推理代理在等{on}回覆","on":["v1","w1"],"by":"規劃完，把工作派出去"},{"id":"v1","p":3,"s":2.5,"e":4,"k":"work","zh":"找相似段落","en":"Vector DB","who":"向量資料庫","now":"向量資料庫在找跟問題相似的段落，找到「A 公司採購零件 X」","by":"推理代理派工"},{"id":"w1","p":3,"s":2.5,"e":4.5,"k":"work","zh":"查網路","en":"Web Search","who":"網路搜尋","now":"網路搜尋在查零件 X 的供應商，查到「供應者是 B 公司」","by":"推理代理派工"},{"id":"a4","p":3,"s":4.5,"e":5.5,"k":"work","zh":"自我評估","en":"Self-Evaluation","who":"推理代理","now":"推理代理檢查手上的資料：知道供應者是 B 公司，還缺「B 公司被誰收購」，決定補查一輪","by":"兩個來源都回覆後開始"},{"id":"a5","p":3,"s":5.5,"e":7.5,"k":"wait","zh":"等待回覆","en":"Reasoning Agent","who":"推理代理","wait":"推理代理在等{on}回覆","on":["k1"],"by":"自我評估判定資料不夠，補派工"},{"id":"k1","p":3,"s":5.5,"e":7.5,"k":"work","zh":"沿關係找","en":"Knowledge Graph","who":"知識圖譜","now":"知識圖譜從 B 公司沿著關係找，找到「B 公司被 C 集團收購」","by":"推理代理補派工"},{"id":"a6","p":3,"s":7.5,"e":8.5,"k":"work","zh":"自我評估","en":"Self-Evaluation","who":"推理代理","now":"推理代理再檢查一次：三段關係都齊了，資料夠了","by":"知識圖譜回覆後開始"},{"id":"a7","p":3,"s":8.5,"e":10,"k":"work","zh":"最終答案","en":"Final Answer","who":"推理代理","now":"推理代理寫出最終答案：C 集團","by":"自我評估判定資料足夠"}],"panels":{"1":{"name":"經典 RAG","done":"全部完成。只查了一次就交出答案；寫著收購消息的那頁沒被挑中，所以答不出收購方。","noWait":"沒有人在等，每一站做完就直接交給下一站","lastNext":"這一站做完，整條流程就結束"},"2":{"name":"GraphRAG","done":"全部完成。沿著三段關係從 A 公司走到 C 集團，答案來自這段串起來的脈絡。","noWait":"沒有人在等，每一步做完就接著下一步","lastNext":"這一步做完，整條流程就結束"},"3":{"name":"Agentic RAG","done":"全部完成。查了兩輪：第一輪之後自我評估發現還缺一塊，補查一輪才交出最終答案。","noWait":"推理代理沒有在等別人，正在自己做事","lastNext":"這一步做完，整條流程就結束"}}}</script>
+    </div>
+    <h3>你剛才應該看到的</h3>
+    <p><b>經典 RAG 走一條直線，只查一次。</b>問題經過六站往右走，沒有回頭。第 3 到 4 秒它照字面相似程度挑出 5 頁，挑中的都在講 A 公司；寫著「B 公司被 C 集團收購」的那頁字面上跟問題不像，沒被挑中。第 6 秒交出的答案只說得出 A 公司採購零件 X，答不出收購方。流程裡沒有一站在檢查資料夠不夠，這就是貼文說的「完全不做判斷」，答案一旦散在好幾份文件裡就接不住。</p>
+    <p><b>GraphRAG 先把東西連成網，再沿著關係走。</b>前 4 秒都在準備：把實體放上板子、把關係連起來。第 4 到 7 秒從 A 公司出發，經過零件 X、B 公司，走到 C 集團，一秒走一段。這三段就是「多跳」：答案要連續經過三段關係才拿得到。王經理和台北廠也在板子上，但路徑沒經過它們。貼文提到的代價也在這裡：這張網要有人事先建好，而且要一直維護。</p>
+    <p><b>Agentic RAG 由推理代理指揮，查完會自我評估。</b>推理代理先規劃，把工作派給向量資料庫和網路搜尋，自己進入等待（斜線色塊）。第 4.5 秒兩邊都回覆後，它自我評估，發現還缺「B 公司被誰收購」，於是補派知識圖譜查第二輪；第 7.5 秒再評估一次，資料夠了，才寫最終答案。工具那條泳道一直空著，表示這題代理沒有動用它。流程圖上給它的標示是推理、依步驟調整、自我修正，對應的就是這段「查完先檢查，不夠就再查」。</p>
+    <p>三張圖共用同一條時間軸，比較的是做事方式；秒數是為了排出先後順序的示意，不代表實際速度或成本。</p>
+    <details class="mx-text"><summary>文字版：三張圖每一步在做什麼（不看動畫也能讀）</summary><h4>經典 RAG（輸送帶＋文件牆）</h4><ol><li><b>第 0～1 秒　問題</b>（Query）：問題進到流程裡：「供應 A 公司零件的廠商，後來被誰收購？」</li><li><b>第 1～2 秒　轉成向量</b>（Embed）：把問題轉成一串數字（向量），之後才能比對哪些文字跟它像</li><li><b>第 2～3 秒　向量資料庫比對</b>（Vector DB）：拿這串數字到向量資料庫，跟 10 頁文件逐一比相似程度</li><li><b>第 3～4 秒　挑出最相似的 5 頁</b>（Top-K Chunks）：照相似程度挑出前 5 頁（K＝5 為示意）。寫著「B 公司被 C 集團收購」的那頁字面上跟問題不像，沒被挑中</li><li><b>第 4～5.5 秒　大型語言模型寫答案</b>（LLM）：大型語言模型只讀被挑中的這 5 頁來寫答案</li><li><b>第 5.5～6 秒　交出答案</b>（Answer）：交出答案：知道 A 公司採購零件 X，答不出後來被誰收購</li></ol><p>文件牆上被螢光筆畫起來的是第 1、3、5、7、9 頁（都在講 A 公司）；第 4 頁「B 公司被 C 集團收購」沒被挑中，第 8 頁「零件 X 的供應商」也沒被挑中。</p><h4>GraphRAG（知識圖譜＋沿路徑走）</h4><ol><li><b>第 0～1 秒　問題</b>（Query）：問題進到流程裡：「供應 A 公司零件的廠商，後來被誰收購？」</li><li><b>第 1～3 秒　抽出實體</b>（Entity Extraction）：從文件裡挑出公司、零件、人、地點這些「東西」（實體），一個一個放上軟木板</li><li><b>第 3～4 秒　知識圖譜連線</b>（Knowledge Graph）：把東西之間的關係用線連起來：採購、供應者、被收購、任職於、屬於</li><li><b>第 4～5 秒　沿關係走第 1 步</b>（Knowledge Graph）：從 A 公司出發，沿「採購」這條線走到零件 X（多跳的第 1 步）</li><li><b>第 5～6 秒　沿關係走第 2 步</b>（Knowledge Graph）：從零件 X 沿「供應者」這條線走到 B 公司（第 2 步）</li><li><b>第 6～7 秒　沿關係走第 3 步</b>（Knowledge Graph）：從 B 公司沿「被收購」這條線走到 C 集團（第 3 步）</li><li><b>第 7～8 秒　串連起來的脈絡</b>（Connected Context）：把走過的三段關係寫成三句，串成一段脈絡</li><li><b>第 8～9.5 秒　大型語言模型寫答案</b>（LLM）：大型語言模型讀這段三句的脈絡來寫答案</li><li><b>第 9.5～10 秒　交出答案</b>（Answer）：交出答案：C 集團</li></ol><p>圖上的關係：A 公司 採購 零件 X；零件 X 的供應者是 B 公司；B 公司 被 C 集團收購；王經理 任職於 A 公司；台北廠 屬於 A 公司。走過的路徑只有前三段，王經理與台北廠這題沒走到。</p><h4>Agentic RAG（泳道圖）</h4><ol><li><b>第 0～1 秒　收到問題</b>（Query）：推理代理收到問題</li><li><b>第 1～2.5 秒　規劃查哪裡</b>（Reasoning Agent）：推理代理規劃要去哪裡查，決定先查向量資料庫和網路搜尋</li><li><b>第 2.5～4.5 秒　等待回覆</b>（Reasoning Agent）：推理代理在等向量資料庫、網路搜尋回覆</li><li><b>第 2.5～4 秒　找相似段落</b>（Vector DB）：向量資料庫在找跟問題相似的段落，找到「A 公司採購零件 X」</li><li><b>第 2.5～4.5 秒　查網路</b>（Web Search）：網路搜尋在查零件 X 的供應商，查到「供應者是 B 公司」</li><li><b>第 4.5～5.5 秒　自我評估</b>（Self-Evaluation）：推理代理檢查手上的資料：知道供應者是 B 公司，還缺「B 公司被誰收購」，決定補查一輪</li><li><b>第 5.5～7.5 秒　等待回覆</b>（Reasoning Agent）：推理代理在等知識圖譜回覆</li><li><b>第 5.5～7.5 秒　沿關係找</b>（Knowledge Graph）：知識圖譜從 B 公司沿著關係找，找到「B 公司被 C 集團收購」</li><li><b>第 7.5～8.5 秒　自我評估</b>（Self-Evaluation）：推理代理再檢查一次：三段關係都齊了，資料夠了</li><li><b>第 8.5～10 秒　最終答案</b>（Final Answer）：推理代理寫出最終答案：C 集團</li></ol><p>工具（Tools）這條泳道這題沒用到。</p><h4>圖例</h4><ul><li>實心色塊＝正在做（進行中）</li><li>斜線色塊＝在等別人（在等待）</li><li>淡色加 ✓＝做完了（已完成）</li><li>虛線框＝還沒開始</li><li>黃底橫紋＝螢光筆畫起來、被挑中的頁面</li><li>橘色粗線與圓點＝GraphRAG 走過的關係路徑</li><li>經典 RAG 的紅色圓點＝問題目前走到哪一站</li><li>紅色直線＝播放頭，代表目前時間</li></ul></details>
+  </div>
+</section>
+
+
+<section class="section" id="staff">
+  <div class="inner">
+    <h2>三種研究員：貼文翻譯</h2>
+    <p>貼文開頭的第一句是：<b>RAG 架構不用挑，用雇的。</b>接著他說，可以想成在為一個研究職位找人。</p>
+
+
+    <h3>經典 RAG ＝ 拿螢光筆的實習生</h3>
+    <p>抓出 5 頁看起來最像的內容，交回來。又快又便宜，完全不做判斷。簡單問答再適合不過，一旦答案要跨好幾份文件就不行了。</p>
+
+    <h3>GraphRAG ＝ 有軟木板和紅線的分析師</h3>
+    <p>不搜尋相似的文字，改成沿著關係走。多跳問題（要連續經過好幾層關係才答得出來的問題）就變成沿著路徑追蹤。要付的代價是：得有人一直建立並維護那張圖。</p>
+
+    <div class="readmore near">
+      <b>這一段只講三種研究員像誰，查法的細節我另外寫過</b>
+      <ul>
+        <li><a href="../rag-three-retrieval-modes/">把資料丟給 AI，它其實沒有全部看完：RAG 的三種查法與怎麼選</a>　這一段只講三種 RAG 各像哪種人，那篇講三種各自在比什麼、事前要準備什麼、擅長與接不住哪種題目，附八列功能對照表與一組照著問就能選的判斷順序</li>
+        <li><a href="../llm-rag-agent-mcp/">LLM、RAG、Agent、MCP 哪個重要？用人體比喻看懂這四個怎麼疊起來</a>　這一段只講 RAG 內部三種做法的差別，那篇講 LLM、RAG、Agent、MCP 四個部位怎麼疊成一套系統</li>
+      </ul>
+    </div>
+
+    <h3>Agentic RAG：依流程圖整理</h3>
+    <p>我手上的貼文截圖在 GraphRAG 之後就沒有了，所以這一段沒有作者的比喻，只能照流程圖說：問題先交給推理代理（Reasoning Agent），代理可以同時動用向量資料庫、知識圖譜、網路搜尋和其他工具，查完之後做自我評估，最後才交出最終答案。圖下方對照表給它的關鍵字是「推理」，特性是「依步驟調整、自我修正」。</p>
+    <div class="caveat">
+      <b>要引用作者對 Agentic RAG 的說法，請看原貼文</b>
+      這一段由我依圖上的標示整理，作者怎麼比喻這種架構，這篇沒有轉述。
+    </div>
+  </div>
+</section>
+
+<section class="section" id="compare">
+  <div class="inner">
+    <h2>一張表對照三種做法</h2>
+    <p>下表的「關鍵字」與「特性」兩列，取自貼文流程圖下方的對照欄；比喻、優點與限制取自貼文文字。貼文截圖沒有涵蓋的格子，我標成「貼文截圖未收入」，沒有自己補。</p>
+
+    <div class="tablewrap">
+      <table>
+        <thead>
+          <tr><th scope="col">項目</th><th scope="col">經典 RAG</th><th scope="col">GraphRAG</th><th scope="col">Agentic RAG</th></tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row">貼文的比喻</th><td>拿螢光筆的實習生</td><td>有軟木板和紅線的分析師</td><td>貼文截圖未收入</td></tr>
+          <tr><th scope="row">流程圖的關鍵字</th><td>「檢索」</td><td>「串連」</td><td>「推理」</td></tr>
+          <tr><th scope="row">流程圖的特性</th><td>快速、簡單、單跳</td><td>關係式、富含實體、多來源</td><td>依步驟調整、自我修正</td></tr>
+          <tr><th scope="row">資料從哪裡找</th><td>向量資料庫</td><td>知識圖譜</td><td>向量資料庫、知識圖譜、網路搜尋、工具</td></tr>
+          <tr><th scope="row">貼文提到的優點</th><td>快、便宜</td><td>多跳問題變成沿著路徑追蹤</td><td>貼文截圖未收入</td></tr>
+          <tr><th scope="row">貼文提到的限制</th><td>不做判斷；答案橫跨多份文件就失靈</td><td>要有人一直建立並維護那張圖</td><td>貼文截圖未收入</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>名詞補充：<b>單跳</b>指一次查詢就找得到答案，<b>多跳</b>指要沿著關係連續走好幾步才拿得到答案。</p>
+  </div>
+</section>
+
+<section class="section" id="more">
+  <div class="inner">
+    <div class="readmore">
+      <b>這篇提到過的</b>
+      <ul>
+        <li><a href="../rag-three-retrieval-modes/">把資料丟給 AI，它其實沒有全部看完：RAG 的三種查法與怎麼選</a>　看完三種研究員之後，想知道自己的題目該用哪一種，接著讀這篇的判斷順序</li>
+        <li><a href="../llm-rag-agent-mcp/">LLM、RAG、Agent、MCP 哪個重要？用人體比喻看懂這四個怎麼疊起來</a>　想把 RAG 放回整套 AI 系統裡看它的位置，接著讀這篇</li>
+      </ul>
+      <b style="margin-top:18px">再往前後延伸</b>
+      <ul>
+        <li><a href="../tag-wiki-method/">資料越堆越多，AI 反而找不到怎麼辦？：標籤連結法 Tag Wiki</a>　往前一步：選架構之前，先把自己的資料整理好。那篇講標籤連結法，以及它跟 RAG 彼此互補的關係</li>
+        <li><a href="../a2a-agent-protocol/">AI 代理要接手工作了，你的流程和知識準備好了嗎？</a>　往後一步：Agentic RAG 讓 AI 自己決定怎麼查，下一個問題是企業的流程與知識有沒有整理成機器讀得懂的結構</li>
+      </ul>
+    </div>
+    <p class="srcnote">資料來源：codewithbrij 的社群貼文與附圖（貼文日期 8 月 13 日）。中文翻譯、流程圖與對照表為本站整理。</p>
+  </div>
+</section>
+
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">江江教練 · AI 知識管理</div>
+    <div class="footer-links">
+      <a href="../../articles.html">← 回深度文章總站</a>
+      <a href="../../index.html">首頁</a>
+      <a href="../../learn.html">自學資源</a>
+      <a href="../../skills.html">小工具</a>
+      <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">LINE 社群 ↗</a>
+      <a href="https://www.threads.com/@jiang_yude_coach" target="_blank" rel="noopener">Threads ↗</a>
+      <a href="https://vocus.cc/salon/Jiang_Coach" target="_blank" rel="noopener">方格子 ↗</a>
+    </div>
+    <div class="footer-note">這是一篇觀點文章，整理我對「RAG 架構怎麼選？把它當成雇研究員｜經典 RAG、GraphRAG、Agentic RAG 的差別」的看法，供你參考。</div>
+  </div>
+</footer>
+
+<!-- 點圖放大 lightbox（hero 與內文圖通用，已內建，不用每篇重加） -->
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <span class="lightbox-close" aria-label="關閉">×</span>
+  <img id="lightbox-img" src="" alt="放大檢視">
+</div>
+<script>
+(function(){
+  var box=document.getElementById('lightbox'),boxImg=document.getElementById('lightbox-img');
+  document.querySelectorAll('.hero-figure img,.inline-figure img').forEach(function(img){
+    img.addEventListener('click',function(){boxImg.src=img.currentSrc||img.src;boxImg.alt=img.alt||'放大檢視';box.classList.add('open');box.setAttribute('aria-hidden','false');});
+  });
+  function close(){box.classList.remove('open');box.setAttribute('aria-hidden','true');boxImg.src='';}
+  box.addEventListener('click',close);
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
+})();
+</script>
+
+<script src="../../image-interactions.js"></script>
+
+<!-- 官網共用：滑鼠暖光暈 + 導航列漢堡選單 -->
+<script src="../../spotlight.js"></script>
+
+<!-- 文章自動互聯（相關文章）：兩支已內建，順序不可顛倒，不用再另外加 -->
+<script src="../../articles-data.js"></script>
+<script src="../../related-render.js"></script>
+  <script src="/mika-chat-widget.js" defer></script>
+<script>
+/* 三種 RAG 機制動畫圖：單一狀態模型。
+   所有畫面都由 stateAt(t) 派生；播放、暫停、重播、拖曳、上一步、下一步、網址 #t= 全部經過 setProgress。
+   靜態 SVG 已是 t=0 的畫面，這支只改 DOM 屬性（class、style、transform、文字），不用 CSS animation 計時。 */
+(function () {
+  'use strict';
+  var root = document.querySelector('#flows [data-mx]');
+  var dataEl = document.getElementById('mx-data');
+  if (!root || !dataEl) return;
+  var D;
+  try { D = JSON.parse(dataEl.textContent); } catch (err) { return; }
+
+  var T = D.T, EV = D.events, PANELS = D.panels, byId = {};
+  EV.forEach(function (e) { byId[e.id] = e; });
+  var WORD = { idle: '還沒開始', run: '進行中', wait: '在等待', done: '✓ 已完成' };
+  var REAL_PER_SEC = 0.8; // 1× 時，每真實 1 秒推進 0.8 示意秒
+
+  // 【狀態模型】
+  function stOf(ev, t) {
+    if (t < ev.s) return 'idle';
+    if (t >= ev.e) return 'done';
+    return ev.k === 'wait' ? 'wait' : 'run';
+  }
+  function stateAt(t) {
+    var o = {};
+    EV.forEach(function (e) { o[e.id] = stOf(e, t); });
+    return o;
+  }
+  // 多事件共用一個元素的合併規則：任一進行中＝進行中；否則任一在等＝在等；全部完成＝完成；
+  // 全部還沒開始＝還沒開始；其餘（有的做完、有的還沒開始，夾在兩步之間）＝在等待。
+  function merge(ids, S) {
+    var run = false, wait = false, done = 0, idle = 0;
+    ids.forEach(function (id) {
+      var s = S[id];
+      if (s === 'run') run = true; else if (s === 'wait') wait = true;
+      else if (s === 'done') done++; else idle++;
+    });
+    if (run) return 'run';
+    if (wait) return 'wait';
+    if (done === ids.length) return 'done';
+    if (idle === ids.length) return 'idle';
+    return 'wait';
+  }
+
+  // 事件邊界（上一步／下一步跳點）＝所有事件起訖時間的聯集
+  var bset = { 0: 1 }; bset[T] = 1;
+  EV.forEach(function (e) { bset[e.s] = 1; bset[e.e] = 1; });
+  var BOUNDS = Object.keys(bset).map(Number).sort(function (a, b) { return a - b; });
+
+  // 【收集要更新的元素】
+  var items = [];
+  Array.prototype.forEach.call(root.querySelectorAll('[data-ev],[data-cls]'), function (el) {
+    var it = { el: el, ev: null, rules: [], w: null };
+    var names = {};
+    if (el.hasAttribute('data-ev')) it.ev = el.getAttribute('data-ev').split(/\s+/);
+    if (el.hasAttribute('data-cls')) {
+      el.getAttribute('data-cls').split(/\s+/).forEach(function (tok) {
+        var p = tok.split('@'), tm = p[1].split('-');
+        it.rules.push({ n: p[0], s: parseFloat(tm[0]), e: tm.length > 1 ? parseFloat(tm[1]) : null });
+        names[p[0]] = 1;
+      });
+    }
+    it.base = (el.getAttribute('class') || '').split(/\s+/).filter(function (c) {
+      return c && c.indexOf('is-') !== 0 && !names[c];
+    }).join(' ');
+    if (it.ev) {
+      for (var i = 0; i < el.children.length; i++) {
+        var c = el.children[i].getAttribute('class') || '';
+        if (/(^|\s)w2?(\s|$)/.test(c)) { it.w = el.children[i]; break; }
+      }
+    }
+    items.push(it);
+  });
+  var draws = Array.prototype.map.call(root.querySelectorAll('[data-draw]'), function (el) {
+    var p = el.getAttribute('data-draw').split(/\s+/).map(Number);
+    return { el: el, s: p[0], e: p[1] };
+  });
+  var movers = Array.prototype.map.call(root.querySelectorAll('[data-pts]'), function (el) {
+    var keys = el.getAttribute('data-pts').split(/\s+/).map(function (k) {
+      var a = k.split(':'), xy = a[1].split(',');
+      return [parseFloat(a[0]), parseFloat(xy[0]), parseFloat(xy[1])];
+    });
+    return { el: el, keys: keys };
+  });
+  var clocks = root.querySelectorAll('[data-clock]');
+  var statusEls = {};
+  Array.prototype.forEach.call(root.querySelectorAll('.mx-status'), function (box) {
+    statusEls[box.getAttribute('data-p')] = {
+      now: box.querySelector('[data-role="now"]'),
+      wait: box.querySelector('[data-role="wait"]'),
+      next: box.querySelector('[data-role="next"]')
+    };
+  });
+
+  var ctrl = root.querySelector('.mx-ctrl');
+  var btnPlay = ctrl.querySelector('[data-act="play"]');
+  var btnReplay = ctrl.querySelector('[data-act="replay"]');
+  var btnPrev = ctrl.querySelector('[data-act="prev"]');
+  var btnNext = ctrl.querySelector('[data-act="next"]');
+  var selSpeed = ctrl.querySelector('[data-act="speed"]');
+  var range = ctrl.querySelector('.mx-range');
+  var timeEl = ctrl.querySelector('.mx-time');
+  var evsEl = ctrl.querySelector('.mx-evs');
+
+  // 【由狀態產生文字】
+  function fmt(n) { return (Math.round(n * 10) / 10).toFixed(1); }
+  function g(n) { return String(Math.round(n * 100) / 100); }
+
+  function statusFor(p, t, S) {
+    var evs = EV.filter(function (e) { return e.p === p; });
+    var P = PANELS[String(p)];
+    var pend = Math.max.apply(null, evs.map(function (e) { return e.e; }));
+    if (t >= pend) return [P.done, '沒有，這條流程已經結束', '沒有下一步，答案已經交出'];
+    var run = evs.filter(function (e) { return S[e.id] === 'run'; });
+    var wt = evs.filter(function (e) { return S[e.id] === 'wait'; });
+    var now = run.length ? run.map(function (e) { return e.now; }).join('；') : '沒有人在做事';
+    var wait = wt.length ? wt.map(function (e) {
+      var names = e.on.filter(function (id) { return S[id] !== 'done'; }).map(function (id) { return byId[id].who; });
+      return e.wait.replace('{on}', names.join('、'));
+    }).join('；') : P.noWait;
+    var later = evs.filter(function (e) { return e.s > t; });
+    var next;
+    if (later.length) {
+      var s0 = Math.min.apply(null, later.map(function (e) { return e.s; }));
+      var nx = later.filter(function (e) { return e.s === s0; });
+      next = nx.map(function (e) { return e.zh; }).join('、') + '（第 ' + g(s0) + ' 秒；觸發：' + nx[0].by + '）';
+    } else {
+      next = P.lastNext;
+    }
+    return [now, wait, next];
+  }
+  function readout(S) {
+    return [[1, '經典'], [2, '圖譜'], [3, '代理']].map(function (pp) {
+      var act = EV.filter(function (e) { return e.p === pp[0] && (S[e.id] === 'run' || S[e.id] === 'wait'); })
+        .map(function (e) { return e.zh; });
+      return pp[1] + '：' + (act.length ? act.join('、') : '已完成');
+    }).join('｜');
+  }
+  function setText(el, txt) { if (el && el.textContent !== txt) el.textContent = txt; }
+  function setAttr(el, name, v) { if (el.getAttribute(name) !== v) el.setAttribute(name, v); }
+
+  // 【render：只更新 DOM 屬性】
+  function render(t) {
+    var S = stateAt(t);
+    items.forEach(function (it) {
+      var cls = it.base ? [it.base] : [];
+      if (it.ev) {
+        var st = merge(it.ev, S);
+        cls.push('is-' + st);
+        if (it.w) setText(it.w, WORD[st]);
+      }
+      it.rules.forEach(function (r) {
+        var on = r.e === null ? t >= r.s : (t >= r.s && t < r.e);
+        if (on) cls.push(r.n);
+      });
+      setAttr(it.el, 'class', cls.join(' '));
+    });
+    draws.forEach(function (d) {
+      var p = Math.max(0, Math.min(1, (t - d.s) / (d.e - d.s)));
+      var v = 1 - p, curV = parseFloat(d.el.style.strokeDashoffset);
+      if (!(Math.abs(curV - v) < 1e-4)) d.el.style.strokeDashoffset = v.toFixed(3);
+    });
+    movers.forEach(function (m) {
+      var k = m.keys, x = k[0][1], y = k[0][2];
+      if (t >= k[k.length - 1][0]) { x = k[k.length - 1][1]; y = k[k.length - 1][2]; }
+      else {
+        for (var i = 0; i < k.length - 1; i++) {
+          if (t >= k[i][0] && t < k[i + 1][0]) {
+            var f = (t - k[i][0]) / (k[i + 1][0] - k[i][0]);
+            x = k[i][1] + (k[i + 1][1] - k[i][1]) * f;
+            y = k[i][2] + (k[i + 1][2] - k[i][2]) * f;
+            break;
+          }
+        }
+      }
+      setAttr(m.el, 'transform', 'translate(' + x.toFixed(1) + ' ' + y.toFixed(1) + ')');
+    });
+    Array.prototype.forEach.call(clocks, function (c) { setText(c, fmt(t) + ' 秒'); });
+    [1, 2, 3].forEach(function (p) {
+      var se = statusEls[String(p)];
+      if (!se) return;
+      var r = statusFor(p, t, S);
+      setText(se.now, r[0]); setText(se.wait, r[1]); setText(se.next, r[2]);
+    });
+    setText(timeEl, '第 ' + fmt(t) + ' 秒／共 ' + T + ' 秒（示意時間）');
+    setText(evsEl, readout(S));
+  }
+
+  // 【控制】
+  var cur = 0, playing = false, raf = 0, last = null, rate = REAL_PER_SEC;
+
+  function syncControls() {
+    var v = cur.toFixed(2);
+    if (range.value !== v) range.value = v;
+    range.setAttribute('aria-valuetext', '第 ' + fmt(cur) + ' 秒');
+    var label = playing ? '暫停' : (cur >= T ? '重播' : '播放');
+    var icon = playing
+      ? '<svg class="ic" viewBox="0 0 16 16" aria-hidden="true"><rect x="3" y="2.5" width="3.6" height="11"/><rect x="9.4" y="2.5" width="3.6" height="11"/></svg>'
+      : (cur >= T
+        ? '<svg class="ic" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2.5a5.5 5.5 0 1 1 -5.2 3.7" fill="none" stroke="currentColor" stroke-width="2"/><path d="M1.5 2.2 L6.2 3.4 L3 7 z"/></svg>'
+        : '<svg class="ic" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 2.5 L13 8 L4 13.5 z"/></svg>');
+    if (btnPlay.getAttribute('data-state') !== label) {
+      btnPlay.setAttribute('data-state', label);
+      btnPlay.setAttribute('aria-label', label);
+      btnPlay.innerHTML = icon + '<span>' + label + '</span>';
+    }
+    btnPrev.disabled = cur <= 0;
+    btnNext.disabled = cur >= T;
+    evsEl.setAttribute('aria-live', playing ? 'off' : 'polite');
+  }
+  function setProgress(t) {
+    if (!(t >= 0)) t = 0;
+    cur = Math.max(0, Math.min(T, t));
+    render(cur);
+    syncControls();
+  }
+  function frame(ts) {
+    if (!playing) return;
+    if (last === null) last = ts;
+    var dt = Math.min(0.1, Math.max(0, (ts - last) / 1000));
+    last = ts;
+    var nt = cur + dt * rate;
+    if (nt >= T) { playing = false; setProgress(T); return; }
+    setProgress(nt);
+    raf = requestAnimationFrame(frame);
+  }
+  function play() {
+    if (playing) return;
+    if (cur >= T) setProgress(0);
+    playing = true; last = null;
+    syncControls();
+    raf = requestAnimationFrame(frame);
+  }
+  function pause() {
+    playing = false;
+    if (raf) cancelAnimationFrame(raf);
+    raf = 0; last = null;
+    syncControls();
+  }
+  function nextBound(t) {
+    for (var i = 0; i < BOUNDS.length; i++) if (BOUNDS[i] > t + 1e-6) return BOUNDS[i];
+    return T;
+  }
+  function prevBound(t) {
+    for (var i = BOUNDS.length - 1; i >= 0; i -= 1) if (BOUNDS[i] < t - 1e-6) return BOUNDS[i];
+    return 0;
+  }
+
+  btnPlay.addEventListener('click', function () { if (playing) pause(); else play(); });
+  btnReplay.addEventListener('click', function () { pause(); setProgress(0); play(); });
+  btnPrev.addEventListener('click', function () { pause(); setProgress(prevBound(cur)); });
+  btnNext.addEventListener('click', function () { pause(); setProgress(nextBound(cur)); });
+  selSpeed.addEventListener('change', function () { rate = REAL_PER_SEC * (parseFloat(selSpeed.value) || 1); });
+  range.addEventListener('input', function () { var v = parseFloat(range.value); pause(); setProgress(v); });
+  range.addEventListener('keydown', function (e) {
+    var k = e.key, to = null;
+    if (k === 'ArrowRight' || k === 'ArrowUp' || k === 'PageUp') to = nextBound(cur);
+    else if (k === 'ArrowLeft' || k === 'ArrowDown' || k === 'PageDown') to = prevBound(cur);
+    else if (k === 'Home') to = 0;
+    else if (k === 'End') to = T;
+    if (to === null) return;
+    e.preventDefault();
+    pause();
+    setProgress(to);
+  });
+
+  function fromHash() {
+    var m = /(?:^#|[#&])t=([0-9.]+)/.exec(location.hash || '');
+    if (m) { pause(); setProgress(parseFloat(m[1])); return true; }
+    return false;
+  }
+  window.addEventListener('hashchange', fromHash);
+
+  root.classList.add('mx-on');
+  if (!fromHash()) setProgress(0);
+
+  // 給驗收用的唯讀介面（不影響畫面）
+  window.__mx = {
+    stateAt: stateAt, setProgress: setProgress, play: play, pause: pause,
+    bounds: BOUNDS.slice(), get t() { return cur; }, get playing() { return playing; }
+  };
+})();
+
+</script>
+</body>
+</html>
