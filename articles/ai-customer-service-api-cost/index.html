@@ -231,7 +231,7 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
 <p>以一位講師官網的學員提問量來估，一個月大約台幣兩三百塊，儲值 10 美金很夠用。</p>
 <p>後台可以設兩件事，建議都設：</p>
 <ol><li><b>每月上限</b>：超過就停，不會一覺醒來帳單爆掉</li><li><b>自動儲值</b>：額度快用完時自動補，客服不會突然斷線</li></ol>
-<p><mark class="todo">待確認</mark><b>如果要跟客戶估一個月多少錢</b>，可以用這個算式，數字自己填：</p>
+<p><b>如果要跟客戶估一個月多少錢</b>，可以用這個算式，數字自己填：</p>
 <div class="codeblock">每月費用 ≈ 每月來問的人數 × 平均每人問幾題 × 每題成本</div>
 <p>「每題成本」最準的取法，是先儲值一小筆，實際跑一到兩週，再從後台的用量紀錄反推。模型和計價方式都會變，別人給的單價只能當起點。</p>
 <p>下面第四節有一組用官方單價算的試算，可以先拿來當量級參考。</p>
@@ -259,7 +259,7 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
 <figure class="pricechart" aria-label="每月 3000 則文字客服，各模型月費"><figcaption class="pc-title">每月 3000 則文字客服，各模型月費<span>（單位：美金）</span></figcaption><div class="pc-row" title="GPT-6 Luna：約 1.05 美金" tabindex="0"><span class="pc-label">GPT-6 Luna</span><span class="pc-track"><span class="pc-bar" style="width:2.5%"></span></span><span class="pc-val">約 1.05</span></div><div class="pc-row" title="GPT-5.6 Luna（上一代）：約 2.28 美金" tabindex="0"><span class="pc-label">GPT-5.6 Luna（上一代）</span><span class="pc-track"><span class="pc-bar" style="width:5.4%"></span></span><span class="pc-val">約 2.28</span></div><div class="pc-row" title="Claude Opus 5.5：約 42 美金" tabindex="0"><span class="pc-label">Claude Opus 5.5</span><span class="pc-track"><span class="pc-bar" style="width:100.0%"></span></span><span class="pc-val">約 42</span></div><p class="pc-note">每則約 2000 token 進、300 token 出，官方單價試算（2026-10-01 查）</p></figure>
 <p>同樣的客服量，拿頂規模型來接，大約是 GPT-6 Luna 的 40 倍。客服每天都在跑，選錯這一格，錢是每個月一直流出去的。</p>
 <p>算式是這樣來的：3000 則 × 2000 token ＝ 600 萬 token 輸入，3000 則 × 300 token ＝ 90 萬 token 輸出，再乘上單價。你自己的客服每則讀多少，要看問答集多長、有沒有做檢索頁，所以這組數字是量級參考，真正的數字還是看後台。</p>
-<p><mark class="todo">待確認</mark>我自己官網的咪卡客服目前用的還是 GPT-5.6 Luna，要不要換成 GPT-6 Luna，換之前我會先出一份固定考卷考過一次再換。便宜模型也會交白卷，這件事在上面那篇有寫。</p>
+<p>我自己官網的咪卡客服目前用的還是 GPT-5.6 Luna，要不要換成 GPT-6 Luna，換之前我會先出一份固定考卷考過一次再換。便宜模型也會交白卷，這件事在上面那篇有寫。</p>
 <h3>我自己的咪卡：一萬題實際算過一次</h3>
 <p>上面每則 2000 token 是精簡問答集的假設。我自己官網的咪卡客服，因為把整站文章目錄、課程清單和人設都放進每一次的系統指令裡，<b>每回答一題要讀約三萬多 token</b>。這是 2026 年 8 月 8 日、用當時的 GPT-5.6 Luna 實際算過的帳：</p>
 <figure class="pricechart" aria-label="咪卡回答一萬題：推理強度怎麼設，API 費差一倍"><figcaption class="pc-title">咪卡回答一萬題：推理強度怎麼設，API 費差一倍<span>（單位：美金）</span></figcaption><div class="pc-row" title="全部不推理：8.9 美金" tabindex="0"><span class="pc-label">全部不推理</span><span class="pc-track"><span class="pc-bar" style="width:48.1%"></span></span><span class="pc-val">8.9</span></div><div class="pc-row" title="自適應（清楚的題不推理，抽象的才開低推理）：9.2 美金" tabindex="0"><span class="pc-label">自適應（清楚的題不推理，抽象的才開低推理）</span><span class="pc-track"><span class="pc-bar" style="width:49.7%"></span></span><span class="pc-val">9.2</span></div><div class="pc-row" title="全部開中等推理（預設值）：18.5 美金" tabindex="0"><span class="pc-label">全部開中等推理（預設值）</span><span class="pc-track"><span class="pc-bar" style="width:100.0%"></span></span><span class="pc-val">18.5</span></div><p class="pc-note">GPT-5.6 Luna，含快取，2026-08-08 試算</p></figure>
@@ -286,7 +286,7 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
 <h2>五、最重要的一條規則：問不到就說不知道</h2>
 <p>這條我在給 AI 的指令裡寫得最重：</p>
 <div class="meaning">問不到答案的時候，就說不知道，請學員直接聯繫老師本人。不要自己推理，不要亂回答。</div>
-<p><mark class="todo">待確認</mark>客服是代表你在說話。它答錯一題，客人不會覺得是 AI 錯，會覺得是你說的。寧可少答，也不要答錯。</p>
+<p>客服是代表你在說話。它答錯一題，客人不會覺得是 AI 錯，會覺得是你說的。寧可少答，也不要答錯。</p>
 </div></section>
 <section class="section" id="s7"><div class="inner">
 <h2>六、客服除了回答，還要做到的三件事</h2>
