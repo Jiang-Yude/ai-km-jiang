@@ -23,6 +23,25 @@ window.ARTICLE_TAGS = {
 
 window.ARTICLES = [
   {
+    id: "cli-api-mcp-computer-use",
+    url: "articles/cli-api-mcp-computer-use/",
+    date: "2026-07-22",
+    updated: "2026-10-01",
+    title: "叫 AI 幫你點餐，就懂 CLI、API、MCP",
+    problem: "CLI、API、MCP、computer use 每次看到都有聽沒有懂，被硬排成一列比大小，越比越糊。",
+    audience: "常聽到這幾個詞，卻分不清差別的人。",
+    summary: "用「叫 AI 幫你去餐廳點餐」一個比喻，把 GUI、computer use、CLI、API、MCP 五個詞各拆成名詞、原理、餐廳場景、實際行為四層講清楚。主軸是一個反直覺的規律：對人越好用的介面，對 AI 越難用，所以 AI 助手才幾乎都長成 CLI 的樣子。文末給一組可以直接用的判斷順序，先問有沒有 MCP，再問有沒有 API，都沒有才輪到最慢最燒 Token 的 computer use。2026-10-01 補上 MCP 讓 AI 當得了翻譯的角色：用花生過敏與蛋奶素說明，客人的一句話要怎麼翻成廚房的單，以及什麼時候不需要 MCP。",
+    tags: {
+      topic: ["AIAgent", "差異比較", "AI工作流"],
+      level: ["零基礎入門"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
+    related: ["how-ai-connects-software", "ai-capability-tiers", "how-to-train-your-ai-employee", "openrouter-deepseek-data-routing", "grok-bot-galaxy-day2-workshops"],
+    cover: { tall: "images/articles/cli-api-mcp-computer-use-cover.jpg" }
+  },
+
+  {
     id: "first-principles-money-soup",
     url: "articles/first-principles-money-soup/",
     date: "2026-09-29",
@@ -1658,25 +1677,6 @@ window.ARTICLES = [
     external: { threads: null, vocus: null },
     related: ["what-is-loop-engineering", "my-three-loops", "loop-engineering-guardrails", "ai-cp-value-calculus", "ai-handoff-instructions", "recovery-over-perfection", "dual-track-planning-loop"],
     cover: { wide: "images/articles/long-task-completion-rate-compare.jpg" }
-  },
-
-  {
-    id: "cli-api-mcp-computer-use",
-    url: "articles/cli-api-mcp-computer-use/",
-    date: "2026-07-22",
-    updated: "2026-07-22",
-    title: "叫 AI 幫你點餐，就懂 CLI、API、MCP",
-    problem: "CLI、API、MCP、computer use 每次看到都有聽沒有懂，被硬排成一列比大小，越比越糊。",
-    audience: "常聽到這幾個詞，卻分不清差別的人。",
-    summary: "用「叫 AI 幫你去餐廳點餐」一個比喻，把 GUI、computer use、CLI、API、MCP 五個詞各拆成名詞、原理、餐廳場景、實際行為四層講清楚。主軸是一個反直覺的規律：對人越好用的介面，對 AI 越難用，所以 AI 助手才幾乎都長成 CLI 的樣子。文末給一組可以直接用的判斷順序，先問有沒有 MCP，再問有沒有 API，都沒有才輪到最慢最燒 Token 的 computer use。",
-    tags: {
-      topic: ["AIAgent", "差異比較", "AI工作流"],
-      level: ["零基礎入門"],
-      content_type: ["教學文章"]
-    },
-    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["how-ai-connects-software", "ai-capability-tiers", "how-to-train-your-ai-employee", "openrouter-deepseek-data-routing", "grok-bot-galaxy-day2-workshops"],
-    cover: { tall: "images/articles/cli-api-mcp-computer-use-cover.jpg" }
   },
 
   {
