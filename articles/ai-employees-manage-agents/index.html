@@ -4,11 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="index,follow">
-<title>AI Agent 任務多到管不過來，下一步怎麼辦？｜找一位 AI 總管來管 Agent，我改做權責設計</title>
+<title>AI 任務多到管不過來，下一步怎麼辦？｜找一位 AI 總管來管 Agent，我改做權責設計</title>
 <meta name="description" content="我同時有十幾二十個 AI 任務在跑，Claude Code 十個、Codex 五個，開始管不過來。這篇寫我用 AI 的三個階段：學 AI 工具、設定 Agent 機制、設計 AI 員工的權責；我開始規劃讓 AI 總管來管 Agent，把 AI 員工分成對外的朵拉部門與對內的咪卡部門，附七格權責表與提示詞。">
 <link rel="canonical" href="https://jiangyude.com/articles/ai-employees-manage-agents/">
 <meta property="og:type" content="article">
-<meta property="og:title" content="AI Agent 任務多到管不過來，下一步怎麼辦？｜找一位 AI 總管來管 Agent，我改做權責設計｜江江教練">
+<meta property="og:title" content="AI 任務多到管不過來，下一步怎麼辦？｜找一位 AI 總管來管 Agent，我改做權責設計｜江江教練">
 <!-- 分享封面：hero 文字填好後在 repo 根目錄跑 `node scripts/og-shot.mjs ai-employees-manage-agents` 自動截 1200×630 到 images/og/ai-employees-manage-agents.jpg（見 README「文章分享封面（OG 圖）機制」）。別退回 intro-jiang.png 直式人像，會被裁成只剩脖子。 -->
 <meta property="og:image" content="https://jiangyude.com/images/og/ai-employees-manage-agents.jpg">
 <meta property="og:description" content="我同時有十幾二十個 AI 任務在跑，Claude Code 十個、Codex 五個，開始管不過來。這篇寫我用 AI 的三個階段：學 AI 工具、設定 Agent 機制、設計 AI 員工的權責；我開始規劃讓 AI 總管來管 Agent，把 AI 員工分成對外的朵拉部門與對內的咪卡部門，附七格權責表與提示詞。">
@@ -16,10 +16,10 @@
 <meta property="og:locale" content="zh_TW">
 <meta property="og:site_name" content="江江教練 · AI 知識管理">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="AI Agent 任務多到管不過來，下一步怎麼辦？｜找一位 AI 總管來管 Agent，我改做權責設計｜江江教練">
+<meta name="twitter:title" content="AI 任務多到管不過來，下一步怎麼辦？｜找一位 AI 總管來管 Agent，我改做權責設計｜江江教練">
 <meta name="twitter:image" content="https://jiangyude.com/images/og/ai-employees-manage-agents.jpg">
 <meta name="twitter:description" content="我同時有十幾二十個 AI 任務在跑，Claude Code 十個、Codex 五個，開始管不過來。這篇寫我用 AI 的三個階段：學 AI 工具、設定 Agent 機制、設計 AI 員工的權責；我開始規劃讓 AI 總管來管 Agent，把 AI 員工分成對外的朵拉部門與對內的咪卡部門，附七格權責表與提示詞。">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"AI Agent 任務多到管不過來，下一步怎麼辦？｜找一位 AI 總管來管 Agent，我改做權責設計","description":"我同時有十幾二十個 AI 任務在跑，Claude Code 十個、Codex 五個，開始管不過來。這篇寫我用 AI 的三個階段：學 AI 工具、設定 Agent 機制、設計 AI 員工的權責；我開始規劃讓 AI 總管來管 Agent，把 AI 員工分成對外的朵拉部門與對內的咪卡部門，附七格權責表與提示詞。","author":{"@type":"Person","name":"江昱德","alternateName":"江江教練","jobTitle":"隱性知識提煉師、AI 應用規劃師"},"isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://jiangyude.com/"},"inLanguage":"zh-Hant","url":"https://jiangyude.com/articles/ai-employees-manage-agents/"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"AI 任務多到管不過來，下一步怎麼辦？｜找一位 AI 總管來管 Agent，我改做權責設計","description":"我同時有十幾二十個 AI 任務在跑，Claude Code 十個、Codex 五個，開始管不過來。這篇寫我用 AI 的三個階段：學 AI 工具、設定 Agent 機制、設計 AI 員工的權責；我開始規劃讓 AI 總管來管 Agent，把 AI 員工分成對外的朵拉部門與對內的咪卡部門，附七格權責表與提示詞。","author":{"@type":"Person","name":"江昱德","alternateName":"江江教練","jobTitle":"隱性知識提煉師、AI 應用規劃師"},"isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://jiangyude.com/"},"inLanguage":"zh-Hant","url":"https://jiangyude.com/articles/ai-employees-manage-agents/"}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
@@ -190,7 +190,7 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
   <div class="wc wc3"></div>
   <div>
     <div class="kicker">AI 應用 / AI 員工</div>
-    <h1>AI Agent 任務多到管不過來，下一步怎麼辦？｜找一位 AI 總管來管 Agent，我改做權責設計</h1>
+    <h1>AI 任務多到管不過來，下一步怎麼辦？｜找一位 AI 總管來管 Agent，我改做權責設計</h1>
     <p>Agent 機制設定好之後，卡住的變成我自己。我開始設計一位 AI 員工去管那些 Agent，我的工作轉成設計權責：誰負責什麼、能碰哪些資料、用誰的帳號做事。這套還在架構階段。</p>
   </div>
   <!-- 封面圖（建議放）：⚠️ 比例是硬規則，不是美感選擇。
@@ -455,7 +455,7 @@ C. 列出哪些動作一定要我本人確認（不可逆、對外送出、金�
       <a href="https://www.threads.com/@jiang_yude_coach" target="_blank" rel="noopener">Threads ↗</a>
       <a href="https://vocus.cc/salon/Jiang_Coach" target="_blank" rel="noopener">方格子 ↗</a>
     </div>
-    <div class="footer-note">這是一篇教學文章，整理我對「AI Agent 任務多到管不過來，下一步怎麼辦？｜找一位 AI 總管來管 Agent，我改做權責設計」的看法，供你參考。</div>
+    <div class="footer-note">這是一篇教學文章，整理我對「AI 任務多到管不過來，下一步怎麼辦？｜找一位 AI 總管來管 Agent，我改做權責設計」的看法，供你參考。</div>
   </div>
 </footer>
 
