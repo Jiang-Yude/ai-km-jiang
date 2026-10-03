@@ -1,0 +1,414 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="index,follow">
+<title>叫 AI 做的簡報，為什麼看起來都差不多？｜讓它學你給誰看、怎麼判斷，整理成一份簡報 SOP</title>
+<meta name="description" content="用 AI 預設的東西做簡報，看起來都太像了。先把你過去十幾二十份核心簡報交給 AI，讓它學你的配色、用語、視覺，也學你的思考之路：這份簡報給誰看、你怎麼抉擇、怎麼判斷，整理成一份簡報 SOP。附一段可直接貼的指令，以及網頁走 Cloudflare、PDF 走 Google 雲端硬碟兩種傳簡報的方法。">
+<link rel="canonical" href="https://jiangyude.com/articles/slides-by-audience-sop/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="叫 AI 做的簡報，為什麼看起來都差不多？｜讓它學你給誰看、怎麼判斷，整理成一份簡報 SOP｜江江教練">
+<!-- 分享封面：hero 文字填好後在 repo 根目錄跑 `node scripts/og-shot.mjs slides-by-audience-sop` 自動截 1200×630 到 images/og/slides-by-audience-sop.jpg（見 README「文章分享封面（OG 圖）機制」）。別退回 intro-jiang.png 直式人像，會被裁成只剩脖子。 -->
+<meta property="og:image" content="https://jiangyude.com/images/og/slides-by-audience-sop.jpg">
+<meta property="og:description" content="用 AI 預設的東西做簡報，看起來都太像了。先把你過去十幾二十份核心簡報交給 AI，讓它學你的配色、用語、視覺，也學你的思考之路：這份簡報給誰看、你怎麼抉擇、怎麼判斷，整理成一份簡報 SOP。附一段可直接貼的指令，以及網頁走 Cloudflare、PDF 走 Google 雲端硬碟兩種傳簡報的方法。">
+<meta property="og:url" content="https://jiangyude.com/articles/slides-by-audience-sop/">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:site_name" content="江江教練 · AI 知識管理">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="叫 AI 做的簡報，為什麼看起來都差不多？｜讓它學你給誰看、怎麼判斷，整理成一份簡報 SOP｜江江教練">
+<meta name="twitter:image" content="https://jiangyude.com/images/og/slides-by-audience-sop.jpg">
+<meta name="twitter:description" content="用 AI 預設的東西做簡報，看起來都太像了。先把你過去十幾二十份核心簡報交給 AI，讓它學你的配色、用語、視覺，也學你的思考之路：這份簡報給誰看、你怎麼抉擇、怎麼判斷，整理成一份簡報 SOP。附一段可直接貼的指令，以及網頁走 Cloudflare、PDF 走 Google 雲端硬碟兩種傳簡報的方法。">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"叫 AI 做的簡報，為什麼看起來都差不多？｜讓它學你給誰看、怎麼判斷，整理成一份簡報 SOP","description":"用 AI 預設的東西做簡報，看起來都太像了。先把你過去十幾二十份核心簡報交給 AI，讓它學你的配色、用語、視覺，也學你的思考之路：這份簡報給誰看、你怎麼抉擇、怎麼判斷，整理成一份簡報 SOP。附一段可直接貼的指令，以及網頁走 Cloudflare、PDF 走 Google 雲端硬碟兩種傳簡報的方法。","author":{"@type":"Person","name":"江昱德","alternateName":"江江教練","jobTitle":"隱性知識提煉師、AI 應用規劃師"},"isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://jiangyude.com/"},"inLanguage":"zh-Hant","url":"https://jiangyude.com/articles/slides-by-audience-sop/"}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{--ink:#1a1612;--paper:#fefcf8;--muted:#6a635a;--line:#d8cdb8;--green:#5f7553;--blue:#5689b8;--orange:#e85a4f;--soft:#faf5ec;--dark:#2a2018;--shadow:0 18px 45px rgba(107,74,42,.14);--sp-shadow:hsla(35,50%,60%,.15);--sp-shadow-edge:hsla(35,50%,68%,.03);--sp-radius:400px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC","Segoe UI",sans-serif}
+a{color:inherit}
+/* 官網共用導航列 nav.top（與首頁/文章總站同一條） */
+nav.top{position:sticky;top:0;background:rgba(254,252,248,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid #d8cdb8;z-index:100}
+nav.top .container{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:24px;padding:14px 32px}
+.nav-brand-img{justify-self:start;display:flex;align-items:center;text-decoration:none;flex-shrink:0;transition:opacity .2s}
+.nav-brand-img:hover{opacity:.8}.nav-brand-img img{height:40px;width:auto;display:block}
+nav.top ul.nav-menu{justify-self:end;display:flex;gap:22px;list-style:none;margin:0;padding:0;font-size:.95rem;white-space:nowrap}
+nav.top ul.nav-menu a{color:#3a342d;text-decoration:none;transition:color .2s;font-weight:500;white-space:nowrap}
+nav.top ul.nav-menu a:hover{color:#1a1612}nav.top ul.nav-menu a.active{color:#1a1612;font-weight:700}
+.nav-toggle{display:none;background:none;border:none;padding:6px;cursor:pointer;width:36px;height:36px;position:relative}
+.nav-toggle span{display:block;position:absolute;left:8px;right:8px;height:2px;background:#1a1612;border-radius:2px;transition:transform .25s,opacity .25s,top .25s}
+.nav-toggle span:nth-child(1){top:11px}.nav-toggle span:nth-child(2){top:17px}.nav-toggle span:nth-child(3){top:23px}
+.nav-toggle.open span:nth-child(1){top:17px;transform:rotate(45deg)}.nav-toggle.open span:nth-child(2){opacity:0}.nav-toggle.open span:nth-child(3){top:17px;transform:rotate(-45deg)}
+.tablewrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:22px 0;border:1px solid var(--line);border-radius:10px;background:#fff;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.tablewrap table{border-collapse:collapse;width:100%;min-width:600px;font-size:18px;line-height:1.65}
+.tablewrap .zh{display:block;margin-top:5px;font-size:16px;line-height:1.55;color:var(--muted);font-weight:400}
+.tablewrap th,.tablewrap td{padding:12px 14px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top;color:#3a342d}
+.tablewrap thead th{background:var(--soft);font-weight:900;font-size:18px;color:#1a1612;white-space:nowrap}
+.tablewrap tbody tr:last-child td{border-bottom:none}
+.tablewrap td code,.section code{background:var(--soft);border:1px solid var(--line);border-radius:5px;padding:1px 6px;font:500 15px/1.5 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace}
+.inline-figure.wide{max-width:1000px}
+.inline-figure.portrait{max-width:430px}
+.toc{margin:26px 0 0;padding:20px 22px;background:#fff;border:1px solid var(--line);border-radius:10px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.toc>b{display:block;font-size:15px;letter-spacing:.05em;color:var(--green);margin-bottom:10px}
+.toc ol{margin:0;padding-left:1.35em;font-size:18px;line-height:1.7}
+.toc li{margin-bottom:7px;color:#3a342d}
+.toc a{color:var(--blue);font-weight:700;text-decoration:none}.toc a:hover{text-decoration:underline}
+.toc-hint{margin:12px 0 0!important;font-size:18px!important;color:var(--muted)!important;border-top:1px solid var(--line);padding-top:12px}
+.readmore{margin-top:24px;padding:20px 22px;background:var(--soft);border:1px solid var(--line);border-radius:12px}
+.readmore.near{margin:26px 0 6px;background:rgba(86,137,184,.07);border-color:#bcd0e2}
+.readmore.near b{color:var(--blue);font-size:18px}
+.readmore.near li{font-size:17px;line-height:1.7;margin-bottom:10px}
+.readmore b{display:block;margin-bottom:10px;font-size:19px}
+.readmore ul{margin:0;padding-left:1.25em}
+.readmore a{color:var(--blue);font-weight:700;text-decoration:none}
+.readmore a:hover{text-decoration:underline}
+@media(max-width:820px){.tablewrap table{min-width:560px;font-size:18px}.tablewrap{position:relative}.tablewrap::after{content:"表格可左右滑動 →";position:sticky;left:0;display:block;font-size:15px;color:var(--muted);background:var(--soft);border-top:1px solid var(--line);padding:7px 12px;width:100%}}
+@media(max-width:860px){
+ nav.top .container{grid-template-columns:auto 1fr auto;padding:10px 16px;gap:12px}
+ .nav-brand-img img{height:32px}
+ .nav-toggle{display:block;justify-self:end}
+ nav.top ul.nav-menu{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(254,252,248,.98);backdrop-filter:blur(14px);border-bottom:1px solid #d8cdb8;flex-direction:column;gap:0;padding:8px 0;box-shadow:0 10px 24px rgba(107,74,42,.08)}
+ nav.top ul.nav-menu.open{display:flex}
+ nav.top ul.nav-menu li{border-bottom:1px solid #e8dfc9}
+ nav.top ul.nav-menu li:last-child{border-bottom:none}
+ nav.top ul.nav-menu a{display:block;padding:14px 20px;font-size:1.06rem}
+}
+/* 滑鼠暖光暈（與首頁同一支 spotlight.js） */
+body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradient(var(--sp-radius) circle at var(--mx,50%) var(--my,50%),var(--sp-shadow) 0%,var(--sp-shadow-edge) 45%,transparent 75%);pointer-events:none;z-index:9999;mix-blend-mode:multiply;transition:background .06s linear}
+.hero{position:relative;overflow:hidden;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:72px;padding:96px clamp(20px,6vw,88px) 80px;background:linear-gradient(180deg,#fffcf0 0%,#f9e9d2 100%);color:#1a1612;border-bottom:1px solid #d8cdb8}
+.hero .wc{position:absolute;border-radius:50%;filter:blur(60px);pointer-events:none;z-index:0}
+.hero .wc1{width:420px;height:360px;top:-120px;right:-80px;background:#e8884b;opacity:.15}
+.hero .wc2{width:360px;height:300px;bottom:-110px;left:-70px;background:#5f7553;opacity:.13}
+.hero .wc3{width:280px;height:260px;top:34%;left:14%;background:#a08144;opacity:.10}
+.hero>div{flex:none;width:860px;max-width:100%;position:relative;z-index:2}
+.hero-figure{margin:0;width:620px;flex:none;position:relative;z-index:2}
+.hero-figure img{display:block;width:100%;border-radius:16px;border:1px solid #d8cdb8;box-shadow:0 18px 45px rgba(107,74,42,.16);cursor:zoom-in}
+.hero-figure figcaption{margin-top:10px;font-size:14px;line-height:1.6;color:#6a635a}
+.inline-figure{margin:30px auto 8px;max-width:820px}
+.inline-figure img{display:block;width:100%;border-radius:14px;border:1px solid var(--line);box-shadow:var(--shadow);background:#fff;cursor:zoom-in}
+.inline-figure figcaption{font-size:14px;line-height:1.6;color:var(--muted);margin-top:10px}
+.lightbox{position:fixed;inset:0;z-index:10000;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(12,10,8,.92);cursor:zoom-out;backdrop-filter:blur(4px)}
+.lightbox.open{display:flex}.lightbox img{max-width:96vw;max-height:92vh;border-radius:10px;box-shadow:0 24px 60px rgba(0,0,0,.5)}
+.lightbox-close{position:fixed;top:18px;right:24px;color:#fff;font-size:34px;line-height:1;font-weight:700;cursor:pointer;opacity:.85}
+.kicker{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.55rem;color:#7a5c3a;font-weight:500}
+.hero h1{max-width:none;margin:16px 0 18px;font-size:clamp(36px,6vw,72px);line-height:1.08;overflow-wrap:anywhere}
+.hero p{max-width:none;font-size:clamp(18px,2vw,23px);line-height:1.62;color:#3a342d}
+.cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
+.cta a{display:inline-flex;align-items:center;text-decoration:none;border-radius:8px;padding:12px 16px;font-weight:900}
+.cta .primary{background:#fff;color:#1a1612}.cta .ghost{border:1px solid rgba(255,255,255,.32);color:#fff;background:rgba(255,255,255,.08)}
+.section{padding:54px clamp(20px,6vw,88px);border-top:1px solid var(--line)}
+.inner{width:min(1000px,100%);margin:0 auto}
+.section h2{font-size:clamp(26px,4.2vw,48px);line-height:1.12;margin:0 0 18px}
+.section h3{font-size:clamp(21px,3vw,30px);line-height:1.2;margin:30px 0 12px}
+.lead{font-size:clamp(18px,1.6vw,22px);line-height:1.7;color:#3a342d;max-width:900px}
+.section p{font-size:18px;line-height:1.74;color:#3a342d}.section p+p{margin-top:14px}
+.section ul,.section ol{padding-left:1.4em;font-size:18px;line-height:1.74;color:#3a342d}.section li{margin-bottom:8px}
+.meaning{margin:22px 0;padding:16px 18px;border-left:5px solid var(--blue);background:rgba(86,137,184,.12);border-radius:6px;line-height:1.7;font-size:19px}
+.meaning b{display:block;color:var(--blue);margin-bottom:4px}
+.caveat{margin:0 0 8px;padding:16px 18px;border-left:5px solid var(--orange);background:rgba(232,90,79,.1);border-radius:6px;line-height:1.7;font-size:18px;color:#3a342d}
+.caveat b{display:block;color:var(--orange);margin-bottom:4px}
+.infocard{background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px 24px 22px;box-shadow:0 8px 22px rgba(107,74,42,.08);margin-top:8px}
+.infocard-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.info-item{padding:18px 14px 0}
+.info-item b{display:block;font-size:14px;font-weight:900;letter-spacing:.04em;margin-bottom:7px;text-transform:uppercase}
+.info-item:nth-child(1) b{color:var(--green)}.info-item:nth-child(2) b{color:var(--orange)}.info-item:nth-child(3) b{color:var(--blue)}
+.info-item p{margin:0;font-size:17px;line-height:1.6;color:#3a342d}
+.tagrow{display:flex;flex-wrap:wrap;gap:7px;margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
+.tag{font-size:14px;color:var(--muted);background:var(--soft);border:1px solid var(--line);border-radius:999px;padding:4px 11px}
+.duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:24px}
+.duo.stack{grid-template-columns:1fr}
+.duo .card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:22px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.duo .card.a{border-color:var(--orange)}.duo .card.b{border-color:var(--green);box-shadow:0 8px 24px rgba(95,117,83,.16)}
+.duo .card small{display:block;font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.04em;margin-bottom:9px}
+.duo .card.a small{color:var(--orange)}.duo .card.b small{color:var(--green)}
+.duo .card b{display:block;font-size:22px;line-height:1.3;margin-bottom:12px}.duo .card.a b{color:#c0512f}.duo .card.b b{color:#4a7a59}
+.duo .card p{margin:0;color:#3a342d;line-height:1.75;font-size:18px}
+.workflow-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:24px}
+.workflow-step{background:#fff;border:1px solid var(--line);border-radius:8px;padding:18px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.workflow-step small{display:block;color:var(--orange);font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;margin-bottom:9px}
+.workflow-step b{display:block;font-size:18px;line-height:1.3;margin-bottom:9px}
+.workflow-step p{margin:0;color:#3a342d;line-height:1.6;font-size:16px}
+.codeblock{background:var(--dark);color:#f3ead9;border-radius:8px;padding:18px 20px;font:500 14px/1.65 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;overflow-x:auto;white-space:pre-wrap;margin:20px 0;box-shadow:0 8px 22px rgba(107,74,42,.12)}
+.codeblock .c{color:#f6d7a6;font-weight:600}
+.skillcard{background:#fff;border:1px solid var(--green);border-radius:12px;padding:24px;box-shadow:0 10px 26px rgba(95,117,83,.16);margin-top:8px}
+.skillcard b{display:block;font-size:21px;margin-bottom:8px}
+.skillcard p{margin:0 0 16px;font-size:17px;line-height:1.65;color:#3a342d}
+.cta-band{background:#e6f0e5;color:#3a342d}.cta-band .section{border-top:none}
+.cta-band .inner{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(260px,.85fr);gap:26px;align-items:start}
+.cta-band h2{font-size:clamp(26px,4vw,44px);margin:0 0 16px}.cta-band p,.cta-band .lead{color:rgba(58,52,45,.9);font-size:18px;line-height:1.72}
+.cta-card{border:1px solid #cfe0d2;background:#fbfdfa;border-radius:8px;padding:22px}
+.cta-card b{display:block;color:#48b178;margin-bottom:10px;font-size:18px}.cta-card p{margin:0 0 14px}
+.footer{padding:30px clamp(20px,6vw,88px);font-size:14px;color:var(--muted);background:#fff;border-top:1px solid var(--line)}
+.footer-inner{width:min(1000px,100%);margin:0 auto}
+.footer-links{display:flex;flex-wrap:wrap;gap:6px 12px;margin-bottom:14px}.footer-links a{color:var(--blue);font-weight:900;text-decoration:none;font-size:14px}
+.footer-brand{font-weight:900;font-size:15px;margin-bottom:10px}.footer-note{font-size:13px;line-height:1.6}
+@media(max-width:820px){.inline-figure.portrait{max-width:340px}.infocard-grid{grid-template-columns:1fr}.duo{grid-template-columns:1fr}.workflow-grid{grid-template-columns:1fr}.cta-band .inner{grid-template-columns:1fr}.section{padding:40px 20px}.hero{min-height:52vh;flex-direction:column;justify-content:flex-start;align-items:flex-start;gap:24px}.hero>div{width:100%}.hero-figure{width:100%;max-width:560px}}
+@media(max-width:820px){html,body{overflow-x:hidden}.hero h1{word-break:break-word}}
+.hero{gap:48px!important}
+.hero>div:not(.wc){width:560px!important}
+.hero .hero-figure{width:460px}
+.hero .hero-figure img{height:auto;aspect-ratio:16/9}
+.hero h1{font-size:clamp(28px,2.7vw,40px)!important;line-height:1.2!important;margin:12px 0 16px!important}
+.hero p{font-size:clamp(17px,1.35vw,19px)!important;line-height:1.65!important}
+@media(max-width:1250px){.hero{gap:28px!important;flex-direction:column;align-items:flex-start}.hero>div:not(.wc){width:100%!important}.hero .hero-figure{width:100%;max-width:640px}.hero h1{font-size:clamp(28px,5vw,40px)!important}}
+</style>
+</head>
+<body class="spotlight">
+<!-- 官網共用導航列 nav.top：與首頁/總站同一條，文章不要自己另做極簡 topbar（江江 2026-06-25：要同一個框架、同一條導航列）。把對應頁面的 class="active" 標在自己那欄。
+     ⚠️ 下面 ul.nav-menu 整塊由 preflight 第 5 關 check-bilingual-nav.mjs 做「逐字比對」，
+        塞任何註解、多一個空白、換行位置不同都會被判導航不一致而擋下發布。要說明就寫在 <ul> 外面（像這裡）。
+        2026-08-16 修：原本的 EN 那行說明註解就夾在 <ul> 裡面，導致照範本起手的新文章一律卡第 5 關
+        （llm-rag-agent-mcp 與 rag-three-retrieval-modes 兩篇同時中招）。註解已移出來，<ul> 內保持乾淨。
+        萬一還是被擋，直接跑：node scripts/check-bilingual-nav.mjs --write --only=<你的檔案路徑> -->
+<nav class="top">
+  <div class="container">
+    <a class="nav-brand-img" href="../../index.html"><img src="../../images/footer-signature.png" alt="江江教練 | 江昱德"></a>
+    <button class="nav-toggle" aria-label="選單"><span></span><span></span><span></span></button>
+    <ul class="nav-menu">
+      <li><a href="../../index.html">首頁</a></li>
+      <li><a href="../../knowledge-architecture.html">知識架構</a></li>
+      <li><a href="../../courses.html">課程</a></li>
+      <li><a href="../../articles.html" class="active">文章</a></li>
+      <li><a href="../../skills.html">小工具</a></li>
+      <li><a href="../../offers.html">服務方案</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="wc wc1"></div>
+  <div class="wc wc2"></div>
+  <div class="wc wc3"></div>
+  <div>
+    <div class="kicker">AI 應用 / 簡報</div>
+    <h1>叫 AI 做的簡報，為什麼看起來都差不多？｜讓它學你給誰看、怎麼判斷，整理成一份簡報 SOP</h1>
+    <p>用 AI 預設的東西做簡報，看起來都太像了。這篇是我教陪跑學員的做法：先把你過去的簡報交給 AI，讓它學你的配色、用語，也學你「這份是給誰看」的判斷，整理成一份 SOP。以後只要說主題跟受眾，它就做得又快又準。最後附兩種把簡報傳給別人的方法。</p>
+  </div>
+  <!-- 封面圖（建議放）：⚠️ 比例是硬規則，不是美感選擇。
+       封面一律【橫式 16:9】，生成 1600x900、落檔 1400 寬，用預設 .hero-figure{width:620px}，不要加 aspect-ratio。
+       理由：封面真正的工作是分享縮圖（OG 1200x630、Threads 與 FB 連結預覽都是橫的），直式封面塞進去只剩中間一小塊。
+       只有「直接沿用既有 4:5 咪卡輪播卡」這個例外才走直式，那時改 .hero-figure{width:320px} 並加
+       .hero-figure img{aspect-ratio:4/5;object-fit:cover}，而且要在 image-ratio-ignore.json 寫明理由，否則 preflight 會擋。
+       沒有封面圖就整個 <figure> 刪掉，hero 會自動置中只剩文字。封面同時設成上面 og:image / twitter:image。
+       比例表正本與立因 → knowledge-site-manager/references/08-article-visuals-from-source.md 第零節之前。 -->
+  <figure class="hero-figure">
+    <img src="../../images/articles/slides-by-audience-sop-cover.jpg" alt="封面：叫 AI 做的簡報，為什麼看起來都差不多？讓它學你給誰看、怎麼判斷，整理成一份簡報 SOP" loading="lazy">
+    <figcaption>同一疊舊簡報，學會給誰看之後，長成三種簡報。</figcaption>
+  </figure>
+</section>
+
+<main>
+
+
+<section class="section" id="start">
+  <div class="inner">
+    <p class="lead">用 AI 預設的東西做簡報，看起來都太像了。我教陪跑學員的做法是：先把你過去比較核心、重要的十幾二十份簡報交給 AI，讓它學你的配色、用語、視覺，也學你的思考之路，這份簡報是給誰看、你怎麼抉擇、怎麼判斷。請它一口氣整理成一份簡報 SOP，以後只要說主題跟受眾，它就做得又快又準。最後附兩種把簡報傳給別人看的方法：網頁走 Cloudflare，PDF 走 Google 雲端硬碟。</p>
+
+    <div class="duo stack">
+      <div class="card a">
+        <b>適合誰</b>
+        <ul>
+          <li>常做簡報，同一個主題要講給不同對象聽的講師、顧問</li>
+          <li>叫 AI 做過簡報，但覺得成品跟別人長得差不多的人</li>
+          <li>簡報做好要傳給客戶，手機不方便看、PDF 在 LINE 裡過期的人</li>
+        </ul>
+      </div>
+      <div class="card b">
+        <b>你可以帶走什麼</b>
+        <ul>
+          <li>一段請 AI 整理「簡報 SOP」的指令，複製就能用</li>
+          <li>要讓 AI 學的四件事：風格、受眾判斷、配圖邏輯、敘事方式</li>
+          <li>兩種傳簡報的方法：網頁走 Cloudflare，PDF 走 Google 雲端硬碟</li>
+        </ul>
+      </div>
+    </div>
+
+    <figure class="inline-figure wide">
+      <img src="../../images/articles/slides-by-audience-sop-summary.jpg" alt="一頁總結：準備十幾二十份舊簡報、學你的思考之路、整理成一份簡報 SOP、網頁走 Cloudflare 與 PDF 走 Google 雲端硬碟" loading="lazy">
+      <figcaption>一頁看完：四個步驟。</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section class="section" id="why-same">
+  <div class="inner">
+    <h2>AI 做的簡報，為什麼看起來都太像</h2>
+    <p>我給陪跑學員的第一個建議是：建立自己個人的風格、配色，甚至是形象。</p>
+    <p>如果你用 AI 預設的東西，看起來都太像了。所以還是要有自己的品牌形象概念，自己的配色、自己的形象。想生自己的真人圖像也好，Q 版代言也好，反正就是讓大家看得出來，這是你的。</p>
+    <p>但不只是配色跟風格，連你的思維邏輯都可以讓 AI 整理出來。下面三步就是這件事。</p>
+    <figure class="inline-figure portrait">
+      <img src="../../images/articles/slides-by-audience-sop-card-1.jpg" alt="輪播卡一：AI 做的簡報為什麼都差不多，先準備十幾二十份你過去最核心的簡報" loading="lazy">
+      <figcaption>三份長得一樣的投影片，旁邊是一疊各有樣子的舊簡報。</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section class="section" id="prepare">
+  <div class="inner">
+    <h2>第一步：準備十幾二十份你最核心的簡報</h2>
+    <p>我建議先請 AI 讀你過去的簡報、PPT。挑比較核心、比較重要的，大概十幾二十份就好。</p>
+    <p>然後叫它自己去讀內容。</p>
+
+    <div class="readmore near">
+      <b>資料要怎麼先整理乾淨，我另外寫過</b>
+      <ul>
+        <li><a href="../ai-slides-half-auto-google-slides/">叫 AI 做簡報，為什麼最後還是自己一個字一個字改？｜從轉 PPT 自己改，到連動 Google 簡報的半自動流程</a>　這一段只講要準備哪些簡報，那篇有把 PDF、Word 轉成純文字、關鍵字寫進檔名、判斷新舊版本的做法，以及接 Google 簡報的半自動流程。</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="thinking">
+  <div class="inner">
+    <h2>第二步：讓 AI 學你的思考之路，連判斷一起學</h2>
+    <p>不只是我的配色、我的風格，還有我的用語、文章風格、視覺配色，連我的思維邏輯都要整理出來。</p>
+    <p>最重要的是思考之路。同一個主題，這份簡報是給大學講座的時候用，還是給主辦單位看的，還是給小班陪伴的客戶看的？不同年齡層、不同阻力、不同受眾，我的思維套路是什麼、我怎麼抉擇、怎麼判斷，都請 AI 弄出來。</p>
+    <p>圖片也一樣。哪一張放封面、怎麼配圖，這些邏輯跟原則都要教它。</p>
+
+    <div class="tablewrap"><table>
+      <thead><tr><th>要讓 AI 整理的</th><th>它要學什麼</th></tr></thead>
+      <tbody>
+        <tr><td>風格</td><td>配色、視覺、用語、文章風格</td></tr>
+        <tr><td>受眾判斷</td><td>給誰看（大學講座、主辦單位、小班陪伴的客戶）、年齡層、阻力</td></tr>
+        <tr><td>配圖邏輯</td><td>哪一張放封面、怎麼配圖</td></tr>
+        <tr><td>敘事方式</td><td>不同主題、不同受眾，怎麼組織、怎麼講</td></tr>
+      </tbody>
+    </table></div>
+    <figure class="inline-figure portrait">
+      <img src="../../images/articles/slides-by-audience-sop-card-2.jpg" alt="輪播卡二：讓 AI 學你的思考之路，給大學講座、給主辦單位看、給小班陪伴的客戶" loading="lazy">
+      <figcaption>同一個主題，分岔成三種受眾。</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section class="section" id="sop">
+  <div class="inner">
+    <h2>第三步：請 AI 一口氣統整成一份簡報 SOP</h2>
+    <p>請它整理一次：把你的思考邏輯、架構、策略，依不同主題、不同受眾的風格和敘事方式，一口氣統整出來，變成一份 SOP。</p>
+    <p>整理出來之後，叫它先列給你看。錯的直接教它，修好再寫成技能包。</p>
+    <p>可以直接貼給 AI 的指令：</p>
+    <div class="codeblock">這裡是我過去比較核心、重要的十幾二十份簡報。請你自己去讀，不只學我的配色、用語、文章風格和視覺，也要學我的思考之路：這份簡報是給大學講座、給主辦單位看，還是給小班陪伴的客戶；不同年齡層、不同阻力、不同受眾，我的思維套路、抉擇跟判斷是什麼；圖片怎麼選封面、怎麼配圖。請一口氣統整成一份 SOP，依不同主題、不同受眾整理風格和敘事方式，先列出來給我看。以後我說主題跟受眾，你就照這份 SOP 做簡報。</div>
+    <p>這樣以後叫 AI 做簡報，我只要講這次是什麼主題、受眾是誰，它自然就知道怎麼幫我組織，做得又快又準。</p>
+    <p>我陪跑的一位學員，後來請 Codex 幫他完成了簡報。他還蠻開心的，覺得當 AI 主人的感覺還很好。</p>
+    <figure class="inline-figure portrait">
+      <img src="../../images/articles/slides-by-audience-sop-card-3.jpg" alt="輪播卡三：整理成一份簡報 SOP，配色、用語、視覺、封面與配圖、敘事方式" loading="lazy">
+      <figcaption>SOP 裡要有的五樣東西。</figcaption>
+    </figure>
+
+    <div class="readmore near">
+      <b>把你的判斷整套交給 AI，我另外整理過四個步驟</b>
+      <ul>
+        <li><a href="../teach-ai-not-learn-ai/">為什麼你的 AI 每次都要重講一遍：教 AI 的四個步驟</a>　這一段只講簡報的 SOP，那篇講怎麼把你帶人的方式整套搬給 AI。</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="share">
+  <div class="inner">
+    <h2>簡報做好，怎麼傳給別人看</h2>
+    <p>做出來之後，我覺得傳給大家看有兩種方法。</p>
+    <div class="tablewrap"><table>
+      <thead><tr><th>簡報的樣子</th><th>放哪裡</th><th>為什麼</th></tr></thead>
+      <tbody>
+        <tr><td>網頁版，而且可以公開</td><td>叫 AI 直接部署到 Cloudflare</td><td>先用免費版就行，免費額度就超好用</td></tr>
+        <tr><td>PDF</td><td>叫 AI 存到 Google 雲端硬碟，回傳連結</td><td>有些人手機不方便，PDF 丟在 LINE 裡很容易過期</td></tr>
+      </tbody>
+    </table></div>
+
+    <h3>網頁版：可以公開的，放 Cloudflare</h3>
+    <p>可以公開給人看的資料，直接做成網頁，叫 AI 幫你部署到 Cloudflare 上面。部署就是把網頁放上網路，別人打開網址就看得到；這些步驟交給 AI 做。</p>
+    <div class="caveat"><b>客戶的客製化方案先別這樣放</b>客戶的客製化專案服務方案，不適合這樣直接公開，那個要另外再想怎麼做。</div>
+
+    <h3>PDF：放 Google 雲端硬碟，給連結</h3>
+    <p>請 AI 在你的 Google 雲端上做一個「客戶方案」資料夾。以後 PDF 做好，就直接叫 AI 把 PDF 傳到雲端硬碟，回傳連結給你。權限設成「知道連結的人可以打開」，這樣也很快。</p>
+    <div class="caveat"><b>知道連結的人都打得開</b>這個權限的意思是：連結被轉傳出去，拿到的人也打得開。放進這個資料夾之前，先想一下這份 PDF 被轉傳出去可不可以。</div>
+    <div class="codeblock">請在我的 Google 雲端硬碟建一個「客戶方案」資料夾。以後我說要把某份 PDF 給客戶，你就把 PDF 傳進這個資料夾，權限設成「知道連結的人可以檢視」，再把連結回傳給我。</div>
+    <figure class="inline-figure portrait">
+      <img src="../../images/articles/slides-by-audience-sop-card-4.jpg" alt="輪播卡四：簡報做好怎麼給人看，能公開的網頁部署到 Cloudflare，PDF 存到 Google 雲端硬碟給連結" loading="lazy">
+      <figcaption>兩種傳法：網頁與 PDF。</figcaption>
+    </figure>
+
+    <div class="readmore near">
+      <b>網頁要放哪裡，我另外排過一棵決策樹</b>
+      <ul>
+        <li><a href="../hosting-platform-decision-tree/">我做的網頁，要放在哪裡別人才打得開？｜託管平台決策樹，自己用還是做生意、只給人看還是要做事</a>　這一段只講可以公開的簡報放 Cloudflare，那篇用決策樹分清楚自己用還是做生意、只給人看還是要做事，各放哪裡。</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="ai-memo">
+  <div class="inner">
+    <h2>給你的 AI 讀的備忘（人可以跳過）</h2>
+    <ul>
+      <li>讀使用者提供的十幾二十份核心簡報，整理一份簡報 SOP，至少含：風格（配色、視覺、用語、文章風格）、受眾判斷（給誰看、年齡層、阻力）、配圖邏輯（封面、配圖）、敘事方式（依主題與受眾怎麼組織）。</li>
+      <li>SOP 先列給使用者看，依他的修正改完才寫成技能包。</li>
+      <li>之後收到「主題＋受眾」就照 SOP 做簡報。</li>
+      <li>傳遞：可公開的網頁部署到 Cloudflare；客戶客製化方案不直接公開；PDF 傳到 Google 雲端硬碟「客戶方案」資料夾，權限設「知道連結的人可以檢視」，回傳連結。</li>
+    </ul>
+
+    <div class="readmore">
+      <b>這篇提到過的</b>
+      <ul>
+        <li><a href="../ai-slides-half-auto-google-slides/">叫 AI 做簡報，為什麼最後還是自己一個字一個字改？</a></li>
+        <li><a href="../teach-ai-not-learn-ai/">為什麼你的 AI 每次都要重講一遍：教 AI 的四個步驟</a></li>
+        <li><a href="../hosting-platform-decision-tree/">我做的網頁，要放在哪裡別人才打得開？</a></li>
+        <li><a href="../cloudflare-service-map/">Cloudflare 免費版到底能做什麼？</a></li>
+      </ul>
+      <b style="margin-top:16px">再往前後延伸</b>
+      <ul>
+        <li><a href="../questionnaire-to-slides-agent-workflow/">把課前問卷變成簡報，再把流程存成技能包</a>　那篇從課前問卷做出教學簡報，再把步驟存成技能包。</li>
+        <li><a href="../notebooklm-real-photo-slides/">把照片放進 NotebookLM，生一份用真實照片的簡報</a>　想讓簡報用自己的真實照片，看那篇。</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">江江教練 · AI 知識管理</div>
+    <div class="footer-links">
+      <a href="../../articles.html">← 回深度文章總站</a>
+      <a href="../../index.html">首頁</a>
+      <a href="../../learn.html">自學資源</a>
+      <a href="../../skills.html">小工具</a>
+      <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">LINE 社群 ↗</a>
+      <a href="https://www.threads.com/@jiang_yude_coach" target="_blank" rel="noopener">Threads ↗</a>
+      <a href="https://vocus.cc/salon/Jiang_Coach" target="_blank" rel="noopener">方格子 ↗</a>
+    </div>
+    <div class="footer-note">這是一篇教學文章，整理我對「叫 AI 做的簡報，為什麼看起來都差不多？｜讓它學你給誰看、怎麼判斷，整理成一份簡報 SOP」的看法，供你參考。</div>
+  </div>
+</footer>
+
+<!-- 點圖放大 lightbox（hero 與內文圖通用，已內建，不用每篇重加） -->
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <span class="lightbox-close" aria-label="關閉">×</span>
+  <img id="lightbox-img" src="" alt="放大檢視">
+</div>
+<script>
+(function(){
+  var box=document.getElementById('lightbox'),boxImg=document.getElementById('lightbox-img');
+  document.querySelectorAll('.hero-figure img,.inline-figure img').forEach(function(img){
+    img.addEventListener('click',function(){boxImg.src=img.currentSrc||img.src;boxImg.alt=img.alt||'放大檢視';box.classList.add('open');box.setAttribute('aria-hidden','false');});
+  });
+  function close(){box.classList.remove('open');box.setAttribute('aria-hidden','true');boxImg.src='';}
+  box.addEventListener('click',close);
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
+})();
+</script>
+
+<script src="../../image-interactions.js"></script>
+
+<!-- 官網共用：滑鼠暖光暈 + 導航列漢堡選單 -->
+<script src="../../spotlight.js"></script>
+
+<!-- 文章自動互聯（相關文章）：兩支已內建，順序不可顛倒，不用再另外加 -->
+<script src="../../articles-data.js"></script>
+<script src="../../related-render.js"></script>
+  <script src="/mika-chat-widget.js" defer></script>
+</body>
+</html>
