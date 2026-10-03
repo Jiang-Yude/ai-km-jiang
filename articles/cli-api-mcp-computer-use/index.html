@@ -294,6 +294,8 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
 
     <p>缺點在於，每家餐廳的專線規則都不一樣。這家要先報會員編號，那家格式不同，另一家只收特定寫法。所以 AI 每接一家新餐廳，都要先學會這家的專線怎麼打。接十家，就要學十次。</p>
 
+    <p>還有一點：API 講的是廚房的語言。專線只收照規定格式寫好的單，餐點編號、數量、地址，少一欄就不收。這就是工程師的語言，精準，照格式送進去廚房就能直接做，但客人平常不會這樣講話。</p>
+
     <figure class="inline-figure portrait">
       <img src="../../images/articles/cli-api-mcp-computer-use-05.jpg" alt="咪卡拿著話筒，身上牽出五條電話線各自連到不同符號的餐廳" loading="lazy">
       <figcaption>照格式送單快又穩，但每家規則不同，要一家家接</figcaption>
@@ -324,6 +326,20 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
       <b>澄清二：MCP 不等於遠端</b>
       那個通用 App，常常就裝在你自己的電腦上。很多人以為 MCP 一定是連雲端，其實最常見的反而跑在本機。
     </div>
+
+    <h3>有了 MCP，AI 才當得了翻譯</h3>
+    <p>客人的需求跟廚房的語言不一定相同。</p>
+    <p>客人說「我對花生過敏」。這句話廚房沒辦法直接照做，外場要先在單上醒目標註「花生過敏」，再把這一句展開成一串要查的事：這道菜有沒有用花生油、醬料有沒有含花生（有些沙茶醬就有）、炸鍋的油有沒有炸過花生、砧板和夾子有沒有共用。只把花生挑掉還不夠。</p>
+    <p>MCP 就像那份寫著每道菜用了什麼、怎麼做的菜單說明，它是讓大語言模型看的操作頁面。AI 像外場，讀得懂這份說明，才知道「花生過敏」要展開成哪些檢查、單上要填什麼。單子再透過 API 這條專線送進廚房，最後由廚房開火。</p>
+    <p>再舉一個在台灣很常見的。客人說「我吃蛋奶素」。蛋奶素除了不吃肉，還有一條常被忽略：不吃五辛，也就是蔥、蒜、韭、薤、洋蔥。所以單上要寫明蛋奶素、不加蔥蒜洋蔥，廚房要用素食專用鍋，還要避開蠔油、魚露、豬油這些看不出來的葷料。看起來最安全的焗烤蔬菜，只要放了洋蔥就不能點。</p>
+    <div class="meaning">
+      <b>所以有了 API，還需要 MCP</b>
+      API 是把正式訂單送進廚房的窗口；MCP 讓 AI 看得懂菜單，才能先聽懂客人要什麼，再翻成廚房的單。
+    </div>
+
+    <h3>什麼時候不需要 MCP</h3>
+    <p>如果是每週一中午固定訂同一份便當送到公司，品項、數量、地址都不變，就不需要誰來聽懂你的話，照規格直接打專線送單就好。換成電腦上的工作，就是表格搬運、自動存檔這種超簡單的判斷，直接寫 API 就好。</p>
+    <p style="font-size:.9em;opacity:.8">參考資料：<a href="https://www.fda.gov.tw/upload/133/2017010310125229076.pdf" target="_blank" rel="noopener">食藥署素食問答集</a>（奶蛋素是全素加奶蛋製品，且不含植物五辛）、<a href="https://www.foodallergy.org/media/592/download" target="_blank" rel="noopener">FARE 餐廳過敏原訓練教材</a>（客單要醒目註記過敏，只把食材拿掉不夠）。</p>
   </div>
 </section>
 
@@ -350,7 +366,7 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
       <figcaption>同一台點餐機，人用得開心，AI 卻卡住</figcaption>
     </figure>
 
-    <p>至於 API 和 MCP，是後來專門為程式和 AI 開的管道，一個各家各接，一個學一次全通。</p>
+    <p>至於 API 和 MCP，是後來專門為程式和 AI 開的管道，一個各家各接、負責收正式訂單，一個學一次全通、讓 AI 聽得懂。</p>
 
     <div class="meaning">
       <b>Agent 時代真正的變化</b>
@@ -381,6 +397,8 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
         <p>那才輪到 computer use。萬能，但最慢、最燒 Token、最容易出錯，是沒有更好管道時的最後手段。</p>
       </div>
     </div>
+
+    <p>實際做的時候，我會直接叫 AI 先查這個服務有沒有 MCP、API 或 CLI，這些是軟體跟 AI 之間直接溝通的協議。要特別交代它，因為 AI 上網找答案常常找到舊的做法，舊資料比較多，比較新的 MCP、API 它不一定先看到。</p>
 
     <div class="meaning">
       <b>一句話記住</b>

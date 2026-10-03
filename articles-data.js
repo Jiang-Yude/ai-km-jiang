@@ -23,6 +23,116 @@ window.ARTICLE_TAGS = {
 
 window.ARTICLES = [
   {
+    id: "ai-adoption-raise-not-install",
+    url: "articles/ai-adoption-raise-not-install/",
+    date: "2026-10-03",
+    updated: "2026-10-03",
+    title: "企業導入 AI 為什麼這麼難？｜買了工具同事都沒在用，AI 要從一件每天做的事開始養",
+    problem: "公司買好 AI 工具、開好帳號、也上完課，過幾個月同事卻都沒在用，AI 答得怪怪的就被判定沒用。",
+    audience: "已經導入 AI 工具卻沒人用的老闆、主管，和幫客戶導入 AI 的顧問。",
+    summary: "AI 比較像要養成的東西，工具買完那天才開始養。這篇整理養 AI 的四件事：整理資料、講清楚工作標準、做錯就修正、把修正後的規則留下來，每一件都附陪跑現場：圖片辨識一次把用途寫進檔名、先寫標準再談第二家 AI 審查、改完回頭問 AI 改了哪裡為什麼改、紅線請 AI 記死。再講有人用、有人回饋、有人維護三個角色，從一件每天都會遇到的工作開始的三步做法，和一段 AI 做錯時把修正變成規則的回饋提示詞。",
+    tags: {
+      topic: ["AI應用", "工作流程", "數位轉型"],
+      level: ["零基礎入門"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["ai-adoption-start-with-one-workflow", "caught-ai-slacking-into-rules", "let-ai-review-itself", "delete-before-automate"],
+    cover: { wide: "images/articles/ai-adoption-raise-not-install-cover.jpg" }
+  },
+
+  {
+    id: "ai-employees-manage-agents",
+    url: "articles/ai-employees-manage-agents/",
+    date: "2026-10-03",
+    updated: "2026-10-03",
+    title: "AI 任務多到管不過來，下一步怎麼辦？｜找一位 AI 總管來管 Agent，我改做權責設計",
+    problem: "同時開了十幾二十個 AI Agent 任務，每個都在等我確認，人反而變成最忙、最容易忘事的那一個。",
+    audience: "已經開了好幾個 AI 任務同時跑、開始管不過來，或想替客戶規劃 AI 員工分工的人。",
+    summary: "我用 AI 走過三個階段：學 AI 工具、設定 Agent 機制、設計 AI 員工的權責。Agent 任務多到管不過來之後，我開始設計讓一位 AI 總管來管 Agent，權責第一件事是 AI 用誰的帳號做事。我把 AI 員工分成對外的朵拉部門與對內的咪卡部門，比較兩邊在形象、人格、深淺、工作流程、資料上的差別，附七格 AI 員工權責表與可直接貼給 AI 的提示詞。這套還在架構階段，沒解決的地方也一起寫出來。",
+    tags: {
+      topic: ["AIAgent", "AI工作流", "AI應用"],
+      level: ["基礎"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["dont-learn-ai-tools", "harness-to-loop", "parallel-site-editing", "what-is-loop-engineering", "cathay-tech-conference-2026"]
+  },
+
+  {
+    id: "ai-understands-ei-ha",
+    url: "articles/ai-understands-ei-ha/",
+    date: "2026-10-03",
+    updated: "2026-10-03",
+    title: "AI 怎麼理解「欸」和「蛤」？｜口語字典檔加一行 AGENTS.md，讓會讀規則檔的 AI 先懂你",
+    problem: "跟 AI 只打一個「欸」或「蛤」，不確定它有沒有懂；AI 腦補太多，或自己的口頭禪用法跟一般人不一樣，每換一家 AI 就要重新解釋。",
+    audience: "跟 AI 講話很愛打欸、蛤，或常用語音輸入、同時用好幾家 AI 的人。",
+    summary: "AI 判斷「欸」「蛤」看的是位置、問號和前後接什麼。文章整理欸 10 種、蛤 8 種情況的對照表，說明 AI 怎麼理解、會怎麼做。AI 腦補太多或你的用法眉角多時，開一份口語字典檔（左邊寫你會打的字，右邊寫希望 AI 怎麼做），再到 AGENTS.md 加一句「讀我的話之前，先讀字典檔」。附 Codex、Claude Code、Gemini CLI、ChatGPT 網頁版各讀哪個檔的對照。語氣只是示範，你的規矩、自我介紹、專業領域都能寫進同一份檔，換到新的 Agent（Codex、Claude Code、Claude Cowork，或 dots、Grok Bot、Muse、Manus 這類雲端 Agent）就套上去。",
+    tags: {
+      topic: ["提示詞設計", "AI應用"],
+      level: ["零基礎入門"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["build-your-own-dictionary", "semantic-rules-before-prompt-templates", "ai-handoff-instructions", "ai-rule-file-slimming"]
+  },
+
+  {
+    id: "pii-shield",
+    url: "articles/pii-shield/",
+    date: "2026-10-03",
+    updated: "2026-10-03",
+    title: "用 AI 整理個案紀錄，個資會直接送出去嗎？｜個資防護盾，免費 Claude Code Mod 在 AI 讀取前把人名與聯絡資料換成代號",
+    problem: "NPO 與社福單位想用 AI 整理個案紀錄，卻沒有 ERP 也沒有預算買地端電腦，服務對象的名字、電話、身分證號一貼給 AI 就送上雲端。",
+    audience: "在 NPO、社福單位寫個案與輔導紀錄的人，以及幫這類單位導入 AI 的顧問。",
+    summary: "個資防護盾是一個免費的 Claude Code Mod，在 AI 讀到資料之前，先在你自己的電腦上把名單上的人名，以及身分證號、手機、Email 換成代號。文章附三筆假資料的前後對照，說明它遮得到與擋不住的地方、家暴與兒少個案相關法條、上線前五項檢查，以及終端機與桌面 App 的安裝方式。",
+    tags: {
+      topic: ["資訊安全", "AI應用", "工具操作"],
+      level: ["基礎"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["ai-data-red-lines", "ai-batch-work-without-seeing-data"]
+  },
+
+  {
+    id: "slides-by-audience-sop",
+    url: "articles/slides-by-audience-sop/",
+    date: "2026-10-03",
+    updated: "2026-10-03",
+    title: "怎麼把 AI 訓練成懂你的簡報助理？｜用訓練員工的方法，學你的用詞、思維跟策略，一個眼神它就懂",
+    problem: "叫 AI 做簡報，它還不懂你的意思，每次都要重講受眾與要求；做好的 PDF 傳給客戶又在 LINE 裡過期。",
+    audience: "常做簡報、同一個主題要講給不同對象聽的講師、顧問。",
+    summary: "怎麼把 AI 訓練成真正理解你的風格，甚至是你思維方式的 AI 員工？最核心的是用訓練員工的方法帶它，不只給它一個風格技能包，學到你一個眼神、一個語氣它就懂，幫你把簡報做完，甚至做好。四步：先給 AI 讀十幾二十份你最核心的簡報；讓它學你的風格、用詞，連思考之路一起學，這份簡報給大學講座、給主辦單位看還是給小班陪伴的客戶，不同年齡層、不同阻力、不同受眾怎麼抉擇與判斷，封面與配圖怎麼選；請它一口氣統整成一份簡報 SOP，先列給你看、錯的教它、修好寫成技能包；之後你改了哪裡、為什麼改都讓它記住。附可直接貼的指令，以及兩種傳簡報的方法：可以公開的網頁部署到 Cloudflare 免費版，PDF 叫 AI 存到 Google 雲端硬碟「客戶方案」資料夾再給連結。",
+    tags: {
+      topic: ["AI工作流", "AI應用", "提示詞設計", "品牌資產"],
+      level: ["基礎"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["teach-ai-not-learn-ai", "how-to-train-your-ai-employee", "hosting-platform-decision-tree", "cloudflare-service-map", "questionnaire-to-slides-agent-workflow", "notebooklm-real-photo-slides"]
+  },
+
+  {
+    id: "cli-api-mcp-computer-use",
+    url: "articles/cli-api-mcp-computer-use/",
+    date: "2026-07-22",
+    updated: "2026-10-01",
+    title: "叫 AI 幫你點餐，就懂 CLI、API、MCP",
+    problem: "CLI、API、MCP、computer use 每次看到都有聽沒有懂，被硬排成一列比大小，越比越糊。",
+    audience: "常聽到這幾個詞，卻分不清差別的人。",
+    summary: "用「叫 AI 幫你去餐廳點餐」一個比喻，把 GUI、computer use、CLI、API、MCP 五個詞各拆成名詞、原理、餐廳場景、實際行為四層講清楚。主軸是一個反直覺的規律：對人越好用的介面，對 AI 越難用，所以 AI 助手才幾乎都長成 CLI 的樣子。文末給一組可以直接用的判斷順序，先問有沒有 MCP，再問有沒有 API，都沒有才輪到最慢最燒 Token 的 computer use。2026-10-01 補上 MCP 讓 AI 當得了翻譯的角色：用花生過敏與蛋奶素說明，客人的一句話要怎麼翻成廚房的單，以及什麼時候不需要 MCP。",
+    tags: {
+      topic: ["AIAgent", "差異比較", "AI工作流"],
+      level: ["零基礎入門"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
+    related: ["how-ai-connects-software", "ai-capability-tiers", "how-to-train-your-ai-employee", "openrouter-deepseek-data-routing", "grok-bot-galaxy-day2-workshops"],
+    cover: { tall: "images/articles/cli-api-mcp-computer-use-cover.jpg" }
+  },
+
+  {
     id: "first-principles-money-soup",
     url: "articles/first-principles-money-soup/",
     date: "2026-09-29",
@@ -113,7 +223,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["ai-data-red-lines", "ai-vs-script-four-situations", "agent-workflow-builds-automation", "openrouter-deepseek-data-routing"],
+    related: ["ai-data-red-lines", "ai-vs-script-four-situations", "agent-workflow-builds-automation", "openrouter-deepseek-data-routing", "pii-shield"],
     cover: { wide: "images/articles/ai-batch-work-without-seeing-data-cover.jpg" }
   },
 
@@ -208,7 +318,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["delete-before-automate", "ai-vs-script-four-situations", "manage-ai-with-management-knowledge", "ai-employee-four-levels", "claude-skills-knowledge-assets", "harness-mindset-for-bosses"],
+    related: ["delete-before-automate", "ai-vs-script-four-situations", "manage-ai-with-management-knowledge", "ai-employee-four-levels", "claude-skills-knowledge-assets", "harness-mindset-for-bosses", "ai-adoption-raise-not-install"],
     cover: { wide: "images/articles/ai-adoption-start-with-one-workflow-cover.jpg" }
   },
 
@@ -227,7 +337,7 @@ window.ARTICLES = [
       content_type: ["觀點文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["a2a-agent-protocol", "harness-to-loop", "ai-native-not-transformation", "ai-data-red-lines", "answer-to-action-enterprise-ai-agent", "grok-bot-galaxy-day1-founders", "audrey-tang-reverse-alignment", "one-sentence-video-to-deep-article"],
+    related: ["a2a-agent-protocol", "harness-to-loop", "ai-native-not-transformation", "ai-data-red-lines", "answer-to-action-enterprise-ai-agent", "grok-bot-galaxy-day1-founders", "audrey-tang-reverse-alignment", "one-sentence-video-to-deep-article", "ai-employees-manage-agents"],
     cover: { wide: "images/articles/cathay-tech-conference-2026/cover.jpg" }
   },
 
@@ -246,7 +356,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["hosting-platform-decision-tree", "github-vercel-cloudflare-compare", "who-can-see-your-site", "webnode-to-cloudflare-pages", "free-deploy-three-boundaries", "laptop-desktop-webpage-sync-icloud-git"],
+    related: ["hosting-platform-decision-tree", "github-vercel-cloudflare-compare", "who-can-see-your-site", "webnode-to-cloudflare-pages", "free-deploy-three-boundaries", "laptop-desktop-webpage-sync-icloud-git", "slides-by-audience-sop"],
     cover: { wide: "images/articles/cloudflare-service-map-cover.jpg" }
   },
 
@@ -265,7 +375,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["openrouter-deepseek-data-routing", "ai-loop-safety-recovery", "ai-usage-audit", "ai-batch-work-without-seeing-data", "audrey-tang-reverse-alignment"],
+    related: ["openrouter-deepseek-data-routing", "ai-loop-safety-recovery", "ai-usage-audit", "ai-batch-work-without-seeing-data", "audrey-tang-reverse-alignment", "pii-shield"],
     cover: { wide: "images/articles/ai-data-red-lines-cover.jpg" }
   },
 
@@ -284,7 +394,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["vibe-coding-ten-half-products", "elon-musk-live-skill", "ai-vs-script-four-situations", "dont-learn-ai-tools", "ai-adoption-start-with-one-workflow", "first-principles-money-soup"],
+    related: ["vibe-coding-ten-half-products", "elon-musk-live-skill", "ai-vs-script-four-situations", "dont-learn-ai-tools", "ai-adoption-start-with-one-workflow", "first-principles-money-soup", "ai-adoption-raise-not-install"],
     cover: { tall: "images/articles/delete-before-automate-cover.jpg" }
   },
 
@@ -436,7 +546,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["free-deploy-three-boundaries", "github-vercel-cloudflare-compare", "who-can-see-your-site", "webnode-to-cloudflare-pages", "cloudflare-service-map", "one-sentence-ai-website-workflow"],
+    related: ["free-deploy-three-boundaries", "github-vercel-cloudflare-compare", "who-can-see-your-site", "webnode-to-cloudflare-pages", "cloudflare-service-map", "one-sentence-ai-website-workflow", "slides-by-audience-sop"],
     cover: { wide: "images/articles/hosting-platform-decision-tree-cover.jpg" }
   },
 
@@ -474,7 +584,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["rule-file-rebound", "how-to-verify-ai-rule-changes", "three-levels-of-cross-review", "let-ai-review-itself", "tag-wiki-method"],
+    related: ["rule-file-rebound", "how-to-verify-ai-rule-changes", "three-levels-of-cross-review", "let-ai-review-itself", "tag-wiki-method", "ai-understands-ei-ha"],
     cover: { wide: "images/articles/ai-rule-file-slimming-cover.jpg" }
   },
 
@@ -626,7 +736,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["rule-file-rebound", "three-levels-of-cross-review", "dual-track-planning-loop", "how-to-verify-ai-rule-changes", "decision-ladder-non-programmer", "ai-rule-file-slimming"],
+    related: ["rule-file-rebound", "three-levels-of-cross-review", "dual-track-planning-loop", "how-to-verify-ai-rule-changes", "decision-ladder-non-programmer", "ai-rule-file-slimming", "ai-adoption-raise-not-install"],
     cover: { tall: "images/articles/let-ai-review-itself-cover.jpg" }
   },
 
@@ -759,7 +869,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["what-is-loop-engineering", "loop-engineering-guardrails", "prompt-to-loop-map", "eight-ai-system-concepts-2026", "cross-ai-review-both-wrong", "how-to-train-your-ai-employee", "loop-four-entries"],
+    related: ["what-is-loop-engineering", "loop-engineering-guardrails", "prompt-to-loop-map", "eight-ai-system-concepts-2026", "cross-ai-review-both-wrong", "how-to-train-your-ai-employee", "loop-four-entries", "ai-employees-manage-agents"],
     cover: { wide: "images/articles/harness-to-loop-01.jpg" }
   },
 
@@ -967,7 +1077,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["what-is-graph-engineering", "webnode-to-cloudflare-pages", "copied-mechanism-is-no-mechanism", "what-are-subagents", "one-sentence-ai-website-workflow"],
+    related: ["what-is-graph-engineering", "webnode-to-cloudflare-pages", "copied-mechanism-is-no-mechanism", "what-are-subagents", "one-sentence-ai-website-workflow", "ai-employees-manage-agents"],
     cover: { wide: "images/articles/parallel-site-editing-cover.jpg" }
   },
 
@@ -1127,7 +1237,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["character-costume-sheet-three-views", "questionnaire-to-slides-agent-workflow", "mika-to-laika-product-character-design"],
+    related: ["character-costume-sheet-three-views", "questionnaire-to-slides-agent-workflow", "mika-to-laika-product-character-design", "slides-by-audience-sop"],
     cover: { wide: "images/articles/notebooklm-real-photo-slides-01.jpg" }
   },
 
@@ -1203,7 +1313,7 @@ window.ARTICLES = [
       content_type: ["觀點文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["harness-mindset-for-bosses", "ai-tools-professional-judgment", "start-with-a-wrong-draft", "let-ai-do-the-setup", "start-from-one-persons-problem"]
+    related: ["harness-mindset-for-bosses", "ai-tools-professional-judgment", "start-with-a-wrong-draft", "let-ai-do-the-setup", "start-from-one-persons-problem", "ai-employees-manage-agents"]
   },
 
   {
@@ -1275,7 +1385,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["semantic-rules-before-prompt-templates", "rule-file-rebound", "tag-wiki-method", "my-three-loops", "teach-ai-not-learn-ai"]
+    related: ["semantic-rules-before-prompt-templates", "rule-file-rebound", "tag-wiki-method", "my-three-loops", "teach-ai-not-learn-ai", "ai-understands-ei-ha"]
   },
 
   {
@@ -1566,7 +1676,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["ten-year-anchor", "ai-native-not-transformation", "timing-and-forecast", "one-on-one-questions", "how-to-train-your-ai-employee", "cognitive-debt", "build-your-own-dictionary"]
+    related: ["ten-year-anchor", "ai-native-not-transformation", "timing-and-forecast", "one-on-one-questions", "how-to-train-your-ai-employee", "cognitive-debt", "build-your-own-dictionary", "slides-by-audience-sop"]
   },
 
   {
@@ -1658,25 +1768,6 @@ window.ARTICLES = [
     external: { threads: null, vocus: null },
     related: ["what-is-loop-engineering", "my-three-loops", "loop-engineering-guardrails", "ai-cp-value-calculus", "ai-handoff-instructions", "recovery-over-perfection", "dual-track-planning-loop"],
     cover: { wide: "images/articles/long-task-completion-rate-compare.jpg" }
-  },
-
-  {
-    id: "cli-api-mcp-computer-use",
-    url: "articles/cli-api-mcp-computer-use/",
-    date: "2026-07-22",
-    updated: "2026-07-22",
-    title: "叫 AI 幫你點餐，就懂 CLI、API、MCP",
-    problem: "CLI、API、MCP、computer use 每次看到都有聽沒有懂，被硬排成一列比大小，越比越糊。",
-    audience: "常聽到這幾個詞，卻分不清差別的人。",
-    summary: "用「叫 AI 幫你去餐廳點餐」一個比喻，把 GUI、computer use、CLI、API、MCP 五個詞各拆成名詞、原理、餐廳場景、實際行為四層講清楚。主軸是一個反直覺的規律：對人越好用的介面，對 AI 越難用，所以 AI 助手才幾乎都長成 CLI 的樣子。文末給一組可以直接用的判斷順序，先問有沒有 MCP，再問有沒有 API，都沒有才輪到最慢最燒 Token 的 computer use。",
-    tags: {
-      topic: ["AIAgent", "差異比較", "AI工作流"],
-      level: ["零基礎入門"],
-      content_type: ["教學文章"]
-    },
-    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["how-ai-connects-software", "ai-capability-tiers", "how-to-train-your-ai-employee", "openrouter-deepseek-data-routing", "grok-bot-galaxy-day2-workshops"],
-    cover: { tall: "images/articles/cli-api-mcp-computer-use-cover.jpg" }
   },
 
   {
@@ -1878,7 +1969,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["teacher-prep-knowledge-workflow", "codex-only-auto-worklog", "how-to-train-your-ai-employee", "how-ai-connects-software", "docs-as-system-design-agent", "diary-driven-agent-3x4", "what-is-loop-engineering", "tag-wiki-method", "answer-in-person-or-ai"]
+    related: ["teacher-prep-knowledge-workflow", "codex-only-auto-worklog", "how-to-train-your-ai-employee", "how-ai-connects-software", "docs-as-system-design-agent", "diary-driven-agent-3x4", "what-is-loop-engineering", "tag-wiki-method", "answer-in-person-or-ai", "slides-by-audience-sop"]
   },
 
   {
@@ -1896,7 +1987,7 @@ window.ARTICLES = [
       content_type: ["案例文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["dual-track-planning-loop", "loop-engineering-guardrails", "how-to-train-your-ai-employee", "intent-first-prompting", "rule-file-rebound", "long-task-completion-rate", "session-messaging-reminder-layer", "audrey-tang-reverse-alignment"]
+    related: ["dual-track-planning-loop", "loop-engineering-guardrails", "how-to-train-your-ai-employee", "intent-first-prompting", "rule-file-rebound", "long-task-completion-rate", "session-messaging-reminder-layer", "audrey-tang-reverse-alignment", "ai-understands-ei-ha"]
   },
 
   {
@@ -2518,7 +2609,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["what-is-graph-engineering", "strong-ai-models-knowledge-workflow-road", "questionnaire-to-slides-agent-workflow", "loop-round-limit", "five-loops-content-line", "loop-four-entries", "one-sentence-video-to-deep-article"],
+    related: ["what-is-graph-engineering", "strong-ai-models-knowledge-workflow-road", "questionnaire-to-slides-agent-workflow", "loop-round-limit", "five-loops-content-line", "loop-four-entries", "one-sentence-video-to-deep-article", "ai-employees-manage-agents"],
     cover: { tall: "images/articles/what-is-loop-engineering-01.jpg" }
   },
 
@@ -2686,7 +2777,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["strong-ai-models-knowledge-workflow-road", "questionnaire-to-slides-agent-workflow", "teacher-prep-knowledge-workflow", "own-ai-team-at-work", "agent-workflow-builds-automation", "line-group-ai-workflow", "elon-musk-live-skill", "codex-log-health-check", "how-ai-connects-software", "meeting-record-agent-workflow", "decision-ladder-non-programmer", "tidy-mess-before-consulting", "diary-driven-agent-3x4", "docs-as-system-design-agent", "what-is-loop-engineering", "map-is-not-the-territory", "intangible-assets-grow-by-sharing", "manage-ai-with-management-knowledge", "ai-handoff-instructions", "train-your-ai-agent-editor", "ai-that-knows-you", "personal-studio-vs-solo-company", "cli-api-mcp-computer-use", "knowledge-as-employee", "mika-to-laika-product-character-design", "agent-native-tools-software-interface", "ai-tools-professional-judgment", "answer-to-action-enterprise-ai-agent", "teach-ai-not-learn-ai", "talent-vs-expertise", "ai-employee-four-levels", "copied-mechanism-is-no-mechanism", "eight-ai-system-concepts-2026", "how-to-verify-ai-rule-changes", "start-from-one-persons-problem"]
+    related: ["strong-ai-models-knowledge-workflow-road", "questionnaire-to-slides-agent-workflow", "teacher-prep-knowledge-workflow", "own-ai-team-at-work", "agent-workflow-builds-automation", "line-group-ai-workflow", "elon-musk-live-skill", "codex-log-health-check", "how-ai-connects-software", "meeting-record-agent-workflow", "decision-ladder-non-programmer", "tidy-mess-before-consulting", "diary-driven-agent-3x4", "docs-as-system-design-agent", "what-is-loop-engineering", "map-is-not-the-territory", "intangible-assets-grow-by-sharing", "manage-ai-with-management-knowledge", "ai-handoff-instructions", "train-your-ai-agent-editor", "ai-that-knows-you", "personal-studio-vs-solo-company", "cli-api-mcp-computer-use", "knowledge-as-employee", "mika-to-laika-product-character-design", "agent-native-tools-software-interface", "ai-tools-professional-judgment", "answer-to-action-enterprise-ai-agent", "teach-ai-not-learn-ai", "talent-vs-expertise", "ai-employee-four-levels", "copied-mechanism-is-no-mechanism", "eight-ai-system-concepts-2026", "how-to-verify-ai-rule-changes", "start-from-one-persons-problem", "slides-by-audience-sop"]
   },
 
   {
@@ -2907,7 +2998,7 @@ window.ARTICLES = [
       content_type: ["案例文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: "https://vocus.cc/salon/Jiang_Coach" },
-    related: ["codex-only-auto-worklog", "decision-ladder-non-programmer", "publish-gate", "session-messaging-reminder-layer", "cognitive-debt", "start-with-a-wrong-draft", "ai-said-it-watched-the-video", "cross-ai-review-both-wrong", "how-to-verify-ai-rule-changes"]
+    related: ["codex-only-auto-worklog", "decision-ladder-non-programmer", "publish-gate", "session-messaging-reminder-layer", "cognitive-debt", "start-with-a-wrong-draft", "ai-said-it-watched-the-video", "cross-ai-review-both-wrong", "how-to-verify-ai-rule-changes", "ai-adoption-raise-not-install"]
   },
 
   {
@@ -3124,7 +3215,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["ai-data-organization-usable-system", "claude-skills-knowledge-assets", "ai-that-knows-you", "chatgpt-work-skills-web-version", "build-your-own-dictionary", "character-costume-sheet-three-views", "how-to-verify-ai-rule-changes"]
+    related: ["ai-data-organization-usable-system", "claude-skills-knowledge-assets", "ai-that-knows-you", "chatgpt-work-skills-web-version", "build-your-own-dictionary", "character-costume-sheet-three-views", "how-to-verify-ai-rule-changes", "ai-understands-ei-ha"]
   },
 
   {
