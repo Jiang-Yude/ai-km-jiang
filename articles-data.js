@@ -42,6 +42,24 @@ window.ARTICLES = [
   },
 
   {
+    id: "ai-employees-manage-agents",
+    url: "articles/ai-employees-manage-agents/",
+    date: "2026-10-03",
+    updated: "2026-10-03",
+    title: "AI 任務多到管不過來，下一步怎麼辦？｜找一位 AI 總管來管 Agent，我改做權責設計",
+    problem: "同時開了十幾二十個 AI Agent 任務，每個都在等我確認，人反而變成最忙、最容易忘事的那一個。",
+    audience: "已經開了好幾個 AI 任務同時跑、開始管不過來，或想替客戶規劃 AI 員工分工的人。",
+    summary: "我用 AI 走過三個階段：學 AI 工具、設定 Agent 機制、設計 AI 員工的權責。Agent 任務多到管不過來之後，我開始設計讓一位 AI 總管來管 Agent，權責第一件事是 AI 用誰的帳號做事。我把 AI 員工分成對外的朵拉部門與對內的咪卡部門，比較兩邊在形象、人格、深淺、工作流程、資料上的差別，附七格 AI 員工權責表與可直接貼給 AI 的提示詞。這套還在架構階段，沒解決的地方也一起寫出來。",
+    tags: {
+      topic: ["AIAgent", "AI工作流", "AI應用"],
+      level: ["基礎"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["dont-learn-ai-tools", "harness-to-loop", "parallel-site-editing", "what-is-loop-engineering", "cathay-tech-conference-2026"]
+  },
+
+  {
     id: "ai-understands-ei-ha",
     url: "articles/ai-understands-ei-ha/",
     date: "2026-10-03",
@@ -301,7 +319,7 @@ window.ARTICLES = [
       content_type: ["觀點文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["a2a-agent-protocol", "harness-to-loop", "ai-native-not-transformation", "ai-data-red-lines", "answer-to-action-enterprise-ai-agent", "grok-bot-galaxy-day1-founders", "audrey-tang-reverse-alignment", "one-sentence-video-to-deep-article"],
+    related: ["a2a-agent-protocol", "harness-to-loop", "ai-native-not-transformation", "ai-data-red-lines", "answer-to-action-enterprise-ai-agent", "grok-bot-galaxy-day1-founders", "audrey-tang-reverse-alignment", "one-sentence-video-to-deep-article", "ai-employees-manage-agents"],
     cover: { wide: "images/articles/cathay-tech-conference-2026/cover.jpg" }
   },
 
@@ -833,7 +851,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["what-is-loop-engineering", "loop-engineering-guardrails", "prompt-to-loop-map", "eight-ai-system-concepts-2026", "cross-ai-review-both-wrong", "how-to-train-your-ai-employee", "loop-four-entries"],
+    related: ["what-is-loop-engineering", "loop-engineering-guardrails", "prompt-to-loop-map", "eight-ai-system-concepts-2026", "cross-ai-review-both-wrong", "how-to-train-your-ai-employee", "loop-four-entries", "ai-employees-manage-agents"],
     cover: { wide: "images/articles/harness-to-loop-01.jpg" }
   },
 
@@ -1041,7 +1059,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["what-is-graph-engineering", "webnode-to-cloudflare-pages", "copied-mechanism-is-no-mechanism", "what-are-subagents", "one-sentence-ai-website-workflow"],
+    related: ["what-is-graph-engineering", "webnode-to-cloudflare-pages", "copied-mechanism-is-no-mechanism", "what-are-subagents", "one-sentence-ai-website-workflow", "ai-employees-manage-agents"],
     cover: { wide: "images/articles/parallel-site-editing-cover.jpg" }
   },
 
@@ -1277,7 +1295,7 @@ window.ARTICLES = [
       content_type: ["觀點文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["harness-mindset-for-bosses", "ai-tools-professional-judgment", "start-with-a-wrong-draft", "let-ai-do-the-setup", "start-from-one-persons-problem"]
+    related: ["harness-mindset-for-bosses", "ai-tools-professional-judgment", "start-with-a-wrong-draft", "let-ai-do-the-setup", "start-from-one-persons-problem", "ai-employees-manage-agents"]
   },
 
   {
@@ -2573,7 +2591,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["what-is-graph-engineering", "strong-ai-models-knowledge-workflow-road", "questionnaire-to-slides-agent-workflow", "loop-round-limit", "five-loops-content-line", "loop-four-entries", "one-sentence-video-to-deep-article"],
+    related: ["what-is-graph-engineering", "strong-ai-models-knowledge-workflow-road", "questionnaire-to-slides-agent-workflow", "loop-round-limit", "five-loops-content-line", "loop-four-entries", "one-sentence-video-to-deep-article", "ai-employees-manage-agents"],
     cover: { tall: "images/articles/what-is-loop-engineering-01.jpg" }
   },
 
