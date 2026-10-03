@@ -23,6 +23,24 @@ window.ARTICLE_TAGS = {
 
 window.ARTICLES = [
   {
+    id: "ai-understands-ei-ha",
+    url: "articles/ai-understands-ei-ha/",
+    date: "2026-10-03",
+    updated: "2026-10-03",
+    title: "AI 怎麼理解「欸」和「蛤」？｜口語字典檔加一行 AGENTS.md，讓會讀規則檔的 AI 先懂你",
+    problem: "跟 AI 只打一個「欸」或「蛤」，不確定它有沒有懂；AI 腦補太多，或自己的口頭禪用法跟一般人不一樣，每換一家 AI 就要重新解釋。",
+    audience: "跟 AI 講話很愛打欸、蛤，或常用語音輸入、同時用好幾家 AI 的人。",
+    summary: "AI 判斷「欸」「蛤」看的是位置、問號和前後接什麼。文章整理欸 10 種、蛤 8 種情況的對照表，說明 AI 怎麼理解、會怎麼做。AI 腦補太多或你的用法眉角多時，開一份口語字典檔（左邊寫你會打的字，右邊寫希望 AI 怎麼做），再到 AGENTS.md 加一句「讀我的話之前，先讀字典檔」。附 Codex、Claude Code、Gemini CLI、ChatGPT 網頁版各讀哪個檔的對照。語氣只是示範，你的規矩、自我介紹、專業領域都能寫進同一份檔，換到新的 Agent（Codex、Claude Code、Claude Cowork，或 dots、Grok Bot、Muse、Manus 這類雲端 Agent）就套上去。",
+    tags: {
+      topic: ["提示詞設計", "AI應用"],
+      level: ["零基礎入門"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["build-your-own-dictionary", "semantic-rules-before-prompt-templates", "ai-handoff-instructions", "ai-rule-file-slimming"]
+  },
+
+  {
     id: "cli-api-mcp-computer-use",
     url: "articles/cli-api-mcp-computer-use/",
     date: "2026-07-22",
@@ -493,7 +511,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["rule-file-rebound", "how-to-verify-ai-rule-changes", "three-levels-of-cross-review", "let-ai-review-itself", "tag-wiki-method"],
+    related: ["rule-file-rebound", "how-to-verify-ai-rule-changes", "three-levels-of-cross-review", "let-ai-review-itself", "tag-wiki-method", "ai-understands-ei-ha"],
     cover: { wide: "images/articles/ai-rule-file-slimming-cover.jpg" }
   },
 
@@ -1294,7 +1312,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["semantic-rules-before-prompt-templates", "rule-file-rebound", "tag-wiki-method", "my-three-loops", "teach-ai-not-learn-ai"]
+    related: ["semantic-rules-before-prompt-templates", "rule-file-rebound", "tag-wiki-method", "my-three-loops", "teach-ai-not-learn-ai", "ai-understands-ei-ha"]
   },
 
   {
@@ -1896,7 +1914,7 @@ window.ARTICLES = [
       content_type: ["案例文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["dual-track-planning-loop", "loop-engineering-guardrails", "how-to-train-your-ai-employee", "intent-first-prompting", "rule-file-rebound", "long-task-completion-rate", "session-messaging-reminder-layer", "audrey-tang-reverse-alignment"]
+    related: ["dual-track-planning-loop", "loop-engineering-guardrails", "how-to-train-your-ai-employee", "intent-first-prompting", "rule-file-rebound", "long-task-completion-rate", "session-messaging-reminder-layer", "audrey-tang-reverse-alignment", "ai-understands-ei-ha"]
   },
 
   {
@@ -3124,7 +3142,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["ai-data-organization-usable-system", "claude-skills-knowledge-assets", "ai-that-knows-you", "chatgpt-work-skills-web-version", "build-your-own-dictionary", "character-costume-sheet-three-views", "how-to-verify-ai-rule-changes"]
+    related: ["ai-data-organization-usable-system", "claude-skills-knowledge-assets", "ai-that-knows-you", "chatgpt-work-skills-web-version", "build-your-own-dictionary", "character-costume-sheet-three-views", "how-to-verify-ai-rule-changes", "ai-understands-ei-ha"]
   },
 
   {
