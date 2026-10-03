@@ -23,6 +23,25 @@ window.ARTICLE_TAGS = {
 
 window.ARTICLES = [
   {
+    id: "ai-adoption-raise-not-install",
+    url: "articles/ai-adoption-raise-not-install/",
+    date: "2026-10-03",
+    updated: "2026-10-03",
+    title: "企業導入 AI 為什麼這麼難？｜買了工具同事都沒在用，AI 要從一件每天做的事開始養",
+    problem: "公司買好 AI 工具、開好帳號、也上完課，過幾個月同事卻都沒在用，AI 答得怪怪的就被判定沒用。",
+    audience: "已經導入 AI 工具卻沒人用的老闆、主管，和幫客戶導入 AI 的顧問。",
+    summary: "AI 比較像要養成的東西，工具買完那天才開始養。這篇整理養 AI 的四件事：整理資料、講清楚工作標準、做錯就修正、把修正後的規則留下來，每一件都附陪跑現場：圖片辨識一次把用途寫進檔名、先寫標準再談第二家 AI 審查、改完回頭問 AI 改了哪裡為什麼改、紅線請 AI 記死。再講有人用、有人回饋、有人維護三個角色，從一件每天都會遇到的工作開始的三步做法，和一段 AI 做錯時把修正變成規則的回饋提示詞。",
+    tags: {
+      topic: ["AI應用", "工作流程", "數位轉型"],
+      level: ["零基礎入門"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["ai-adoption-start-with-one-workflow", "caught-ai-slacking-into-rules", "let-ai-review-itself", "delete-before-automate"],
+    cover: { wide: "images/articles/ai-adoption-raise-not-install-cover.jpg" }
+  },
+
+  {
     id: "ai-understands-ei-ha",
     url: "articles/ai-understands-ei-ha/",
     date: "2026-10-03",
@@ -245,7 +264,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["delete-before-automate", "ai-vs-script-four-situations", "manage-ai-with-management-knowledge", "ai-employee-four-levels", "claude-skills-knowledge-assets", "harness-mindset-for-bosses"],
+    related: ["delete-before-automate", "ai-vs-script-four-situations", "manage-ai-with-management-knowledge", "ai-employee-four-levels", "claude-skills-knowledge-assets", "harness-mindset-for-bosses", "ai-adoption-raise-not-install"],
     cover: { wide: "images/articles/ai-adoption-start-with-one-workflow-cover.jpg" }
   },
 
@@ -321,7 +340,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["vibe-coding-ten-half-products", "elon-musk-live-skill", "ai-vs-script-four-situations", "dont-learn-ai-tools", "ai-adoption-start-with-one-workflow", "first-principles-money-soup"],
+    related: ["vibe-coding-ten-half-products", "elon-musk-live-skill", "ai-vs-script-four-situations", "dont-learn-ai-tools", "ai-adoption-start-with-one-workflow", "first-principles-money-soup", "ai-adoption-raise-not-install"],
     cover: { tall: "images/articles/delete-before-automate-cover.jpg" }
   },
 
@@ -663,7 +682,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["rule-file-rebound", "three-levels-of-cross-review", "dual-track-planning-loop", "how-to-verify-ai-rule-changes", "decision-ladder-non-programmer", "ai-rule-file-slimming"],
+    related: ["rule-file-rebound", "three-levels-of-cross-review", "dual-track-planning-loop", "how-to-verify-ai-rule-changes", "decision-ladder-non-programmer", "ai-rule-file-slimming", "ai-adoption-raise-not-install"],
     cover: { tall: "images/articles/let-ai-review-itself-cover.jpg" }
   },
 
@@ -2925,7 +2944,7 @@ window.ARTICLES = [
       content_type: ["案例文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: "https://vocus.cc/salon/Jiang_Coach" },
-    related: ["codex-only-auto-worklog", "decision-ladder-non-programmer", "publish-gate", "session-messaging-reminder-layer", "cognitive-debt", "start-with-a-wrong-draft", "ai-said-it-watched-the-video", "cross-ai-review-both-wrong", "how-to-verify-ai-rule-changes"]
+    related: ["codex-only-auto-worklog", "decision-ladder-non-programmer", "publish-gate", "session-messaging-reminder-layer", "cognitive-debt", "start-with-a-wrong-draft", "ai-said-it-watched-the-video", "cross-ai-review-both-wrong", "how-to-verify-ai-rule-changes", "ai-adoption-raise-not-install"]
   },
 
   {
