@@ -1,0 +1,378 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="index,follow">
+<title>我想在官網放 AI 客服，API 是什麼、會不會很貴？｜儲值、金鑰、模型怎麼選，四步上線順序</title>
+<meta name="description" content="官網想加 AI 客服：API 是什麼、照用量儲值怎麼算、金鑰只顯示一次要存進鑰匙圈、客服模型為什麼選便宜的 Luna、文字與語音客服的月費差多少，以及四步上線順序與一段可直接貼給 AI 的指令。">
+<link rel="canonical" href="https://jiangyude.com/articles/ai-customer-service-api-cost/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="我想在官網放 AI 客服，API 是什麼、會不會很貴？｜儲值、金鑰、模型怎麼選，四步上線順序｜江江教練">
+<!-- 分享封面：hero 文字填好後在 repo 根目錄跑 `node scripts/og-shot.mjs ai-customer-service-api-cost` 自動截 1200×630 到 images/og/ai-customer-service-api-cost.jpg（見 README「文章分享封面（OG 圖）機制」）。別退回 intro-jiang.png 直式人像，會被裁成只剩脖子。 -->
+<meta property="og:image" content="https://jiangyude.com/images/og/ai-customer-service-api-cost.jpg">
+<meta property="og:description" content="官網想加 AI 客服：API 是什麼、照用量儲值怎麼算、金鑰只顯示一次要存進鑰匙圈、客服模型為什麼選便宜的 Luna、文字與語音客服的月費差多少，以及四步上線順序與一段可直接貼給 AI 的指令。">
+<meta property="og:url" content="https://jiangyude.com/articles/ai-customer-service-api-cost/">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:site_name" content="江江教練 · AI 知識管理">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="我想在官網放 AI 客服，API 是什麼、會不會很貴？｜儲值、金鑰、模型怎麼選，四步上線順序｜江江教練">
+<meta name="twitter:image" content="https://jiangyude.com/images/og/ai-customer-service-api-cost.jpg">
+<meta name="twitter:description" content="官網想加 AI 客服：API 是什麼、照用量儲值怎麼算、金鑰只顯示一次要存進鑰匙圈、客服模型為什麼選便宜的 Luna、文字與語音客服的月費差多少，以及四步上線順序與一段可直接貼給 AI 的指令。">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"我想在官網放 AI 客服，API 是什麼、會不會很貴？｜儲值、金鑰、模型怎麼選，四步上線順序","description":"官網想加 AI 客服：API 是什麼、照用量儲值怎麼算、金鑰只顯示一次要存進鑰匙圈、客服模型為什麼選便宜的 Luna、文字與語音客服的月費差多少，以及四步上線順序與一段可直接貼給 AI 的指令。","author":{"@type":"Person","name":"江昱德","alternateName":"江江教練","jobTitle":"隱性知識提煉師、AI 應用規劃師"},"isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://jiangyude.com/"},"inLanguage":"zh-Hant","url":"https://jiangyude.com/articles/ai-customer-service-api-cost/"}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{--ink:#1a1612;--paper:#fefcf8;--muted:#6a635a;--line:#d8cdb8;--green:#5f7553;--blue:#5689b8;--orange:#e85a4f;--soft:#faf5ec;--dark:#2a2018;--shadow:0 18px 45px rgba(107,74,42,.14);--sp-shadow:hsla(35,50%,60%,.15);--sp-shadow-edge:hsla(35,50%,68%,.03);--sp-radius:400px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC","Segoe UI",sans-serif}
+a{color:inherit}
+/* 官網共用導航列 nav.top（與首頁/文章總站同一條） */
+nav.top{position:sticky;top:0;background:rgba(254,252,248,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid #d8cdb8;z-index:100}
+nav.top .container{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:24px;padding:14px 32px}
+.nav-brand-img{justify-self:start;display:flex;align-items:center;text-decoration:none;flex-shrink:0;transition:opacity .2s}
+.nav-brand-img:hover{opacity:.8}.nav-brand-img img{height:40px;width:auto;display:block}
+nav.top ul.nav-menu{justify-self:end;display:flex;gap:22px;list-style:none;margin:0;padding:0;font-size:.95rem;white-space:nowrap}
+nav.top ul.nav-menu a{color:#3a342d;text-decoration:none;transition:color .2s;font-weight:500;white-space:nowrap}
+nav.top ul.nav-menu a:hover{color:#1a1612}nav.top ul.nav-menu a.active{color:#1a1612;font-weight:700}
+.nav-toggle{display:none;background:none;border:none;padding:6px;cursor:pointer;width:36px;height:36px;position:relative}
+.nav-toggle span{display:block;position:absolute;left:8px;right:8px;height:2px;background:#1a1612;border-radius:2px;transition:transform .25s,opacity .25s,top .25s}
+.nav-toggle span:nth-child(1){top:11px}.nav-toggle span:nth-child(2){top:17px}.nav-toggle span:nth-child(3){top:23px}
+.nav-toggle.open span:nth-child(1){top:17px;transform:rotate(45deg)}.nav-toggle.open span:nth-child(2){opacity:0}.nav-toggle.open span:nth-child(3){top:17px;transform:rotate(-45deg)}
+.tablewrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:22px 0;border:1px solid var(--line);border-radius:10px;background:#fff;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.tablewrap table{border-collapse:collapse;width:100%;min-width:600px;font-size:18px;line-height:1.65}
+.tablewrap .zh{display:block;margin-top:5px;font-size:16px;line-height:1.55;color:var(--muted);font-weight:400}
+.tablewrap th,.tablewrap td{padding:12px 14px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top;color:#3a342d}
+.tablewrap thead th{background:var(--soft);font-weight:900;font-size:18px;color:#1a1612;white-space:nowrap}
+.tablewrap tbody tr:last-child td{border-bottom:none}
+.tablewrap td code,.section code{background:var(--soft);border:1px solid var(--line);border-radius:5px;padding:1px 6px;font:500 15px/1.5 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace}
+.inline-figure.wide{max-width:1000px}
+.inline-figure.portrait{max-width:430px}
+.toc{margin:26px 0 0;padding:20px 22px;background:#fff;border:1px solid var(--line);border-radius:10px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.toc>b{display:block;font-size:15px;letter-spacing:.05em;color:var(--green);margin-bottom:10px}
+.toc ol{margin:0;padding-left:1.35em;font-size:18px;line-height:1.7}
+.toc li{margin-bottom:7px;color:#3a342d}
+.toc a{color:var(--blue);font-weight:700;text-decoration:none}.toc a:hover{text-decoration:underline}
+.toc-hint{margin:12px 0 0!important;font-size:18px!important;color:var(--muted)!important;border-top:1px solid var(--line);padding-top:12px}
+.readmore{margin-top:24px;padding:20px 22px;background:var(--soft);border:1px solid var(--line);border-radius:12px}
+.readmore.near{margin:26px 0 6px;background:rgba(86,137,184,.07);border-color:#bcd0e2}
+.readmore.near b{color:var(--blue);font-size:18px}
+.readmore.near li{font-size:17px;line-height:1.7;margin-bottom:10px}
+.readmore b{display:block;margin-bottom:10px;font-size:19px}
+.readmore ul{margin:0;padding-left:1.25em}
+.readmore a{color:var(--blue);font-weight:700;text-decoration:none}
+.readmore a:hover{text-decoration:underline}
+@media(max-width:820px){.tablewrap table{min-width:560px;font-size:18px}.tablewrap{position:relative}.tablewrap::after{content:"表格可左右滑動 →";position:sticky;left:0;display:block;font-size:15px;color:var(--muted);background:var(--soft);border-top:1px solid var(--line);padding:7px 12px;width:100%}}
+@media(max-width:860px){
+ nav.top .container{grid-template-columns:auto 1fr auto;padding:10px 16px;gap:12px}
+ .nav-brand-img img{height:32px}
+ .nav-toggle{display:block;justify-self:end}
+ nav.top ul.nav-menu{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(254,252,248,.98);backdrop-filter:blur(14px);border-bottom:1px solid #d8cdb8;flex-direction:column;gap:0;padding:8px 0;box-shadow:0 10px 24px rgba(107,74,42,.08)}
+ nav.top ul.nav-menu.open{display:flex}
+ nav.top ul.nav-menu li{border-bottom:1px solid #e8dfc9}
+ nav.top ul.nav-menu li:last-child{border-bottom:none}
+ nav.top ul.nav-menu a{display:block;padding:14px 20px;font-size:1.06rem}
+}
+/* 滑鼠暖光暈（與首頁同一支 spotlight.js） */
+body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradient(var(--sp-radius) circle at var(--mx,50%) var(--my,50%),var(--sp-shadow) 0%,var(--sp-shadow-edge) 45%,transparent 75%);pointer-events:none;z-index:9999;mix-blend-mode:multiply;transition:background .06s linear}
+.hero{position:relative;overflow:hidden;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:72px;padding:96px clamp(20px,6vw,88px) 80px;background:linear-gradient(180deg,#fffcf0 0%,#f9e9d2 100%);color:#1a1612;border-bottom:1px solid #d8cdb8}
+.hero .wc{position:absolute;border-radius:50%;filter:blur(60px);pointer-events:none;z-index:0}
+.hero .wc1{width:420px;height:360px;top:-120px;right:-80px;background:#e8884b;opacity:.15}
+.hero .wc2{width:360px;height:300px;bottom:-110px;left:-70px;background:#5f7553;opacity:.13}
+.hero .wc3{width:280px;height:260px;top:34%;left:14%;background:#a08144;opacity:.10}
+.hero>div{flex:none;width:860px;max-width:100%;position:relative;z-index:2}
+.hero-figure{margin:0;width:620px;flex:none;position:relative;z-index:2}
+.hero-figure img{display:block;width:100%;border-radius:16px;border:1px solid #d8cdb8;box-shadow:0 18px 45px rgba(107,74,42,.16);cursor:zoom-in}
+.hero-figure figcaption{margin-top:10px;font-size:14px;line-height:1.6;color:#6a635a}
+.inline-figure{margin:30px auto 8px;max-width:820px}
+.inline-figure img{display:block;width:100%;border-radius:14px;border:1px solid var(--line);box-shadow:var(--shadow);background:#fff;cursor:zoom-in}
+.inline-figure figcaption{font-size:14px;line-height:1.6;color:var(--muted);margin-top:10px}
+.lightbox{position:fixed;inset:0;z-index:10000;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(12,10,8,.92);cursor:zoom-out;backdrop-filter:blur(4px)}
+.lightbox.open{display:flex}.lightbox img{max-width:96vw;max-height:92vh;border-radius:10px;box-shadow:0 24px 60px rgba(0,0,0,.5)}
+.lightbox-close{position:fixed;top:18px;right:24px;color:#fff;font-size:34px;line-height:1;font-weight:700;cursor:pointer;opacity:.85}
+.kicker{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.55rem;color:#7a5c3a;font-weight:500}
+.hero h1{max-width:none;margin:16px 0 18px;font-size:clamp(36px,6vw,72px);line-height:1.08;overflow-wrap:anywhere}
+.hero p{max-width:none;font-size:clamp(18px,2vw,23px);line-height:1.62;color:#3a342d}
+.cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
+.cta a{display:inline-flex;align-items:center;text-decoration:none;border-radius:8px;padding:12px 16px;font-weight:900}
+.cta .primary{background:#fff;color:#1a1612}.cta .ghost{border:1px solid rgba(255,255,255,.32);color:#fff;background:rgba(255,255,255,.08)}
+.section{padding:54px clamp(20px,6vw,88px);border-top:1px solid var(--line)}
+.inner{width:min(1000px,100%);margin:0 auto}
+.section h2{font-size:clamp(26px,4.2vw,48px);line-height:1.12;margin:0 0 18px}
+.section h3{font-size:clamp(21px,3vw,30px);line-height:1.2;margin:30px 0 12px}
+.lead{font-size:clamp(18px,1.6vw,22px);line-height:1.7;color:#3a342d;max-width:900px}
+.section p{font-size:18px;line-height:1.74;color:#3a342d}.section p+p{margin-top:14px}
+.section ul,.section ol{padding-left:1.4em;font-size:18px;line-height:1.74;color:#3a342d}.section li{margin-bottom:8px}
+.meaning{margin:22px 0;padding:16px 18px;border-left:5px solid var(--blue);background:rgba(86,137,184,.12);border-radius:6px;line-height:1.7;font-size:19px}
+.meaning b{display:block;color:var(--blue);margin-bottom:4px}
+.caveat{margin:0 0 8px;padding:16px 18px;border-left:5px solid var(--orange);background:rgba(232,90,79,.1);border-radius:6px;line-height:1.7;font-size:18px;color:#3a342d}
+.caveat b{display:block;color:var(--orange);margin-bottom:4px}
+.infocard{background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px 24px 22px;box-shadow:0 8px 22px rgba(107,74,42,.08);margin-top:8px}
+.infocard-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.info-item{padding:18px 14px 0}
+.info-item b{display:block;font-size:14px;font-weight:900;letter-spacing:.04em;margin-bottom:7px;text-transform:uppercase}
+.info-item:nth-child(1) b{color:var(--green)}.info-item:nth-child(2) b{color:var(--orange)}.info-item:nth-child(3) b{color:var(--blue)}
+.info-item p{margin:0;font-size:17px;line-height:1.6;color:#3a342d}
+.tagrow{display:flex;flex-wrap:wrap;gap:7px;margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
+.tag{font-size:14px;color:var(--muted);background:var(--soft);border:1px solid var(--line);border-radius:999px;padding:4px 11px}
+.duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:24px}
+.duo.stack{grid-template-columns:1fr}
+.duo .card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:22px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.duo .card.a{border-color:var(--orange)}.duo .card.b{border-color:var(--green);box-shadow:0 8px 24px rgba(95,117,83,.16)}
+.duo .card small{display:block;font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.04em;margin-bottom:9px}
+.duo .card.a small{color:var(--orange)}.duo .card.b small{color:var(--green)}
+.duo .card b{display:block;font-size:22px;line-height:1.3;margin-bottom:12px}.duo .card.a b{color:#c0512f}.duo .card.b b{color:#4a7a59}
+.duo .card p{margin:0;color:#3a342d;line-height:1.75;font-size:18px}
+.workflow-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:24px}
+.workflow-step{background:#fff;border:1px solid var(--line);border-radius:8px;padding:18px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.workflow-step small{display:block;color:var(--orange);font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;margin-bottom:9px}
+.workflow-step b{display:block;font-size:18px;line-height:1.3;margin-bottom:9px}
+.workflow-step p{margin:0;color:#3a342d;line-height:1.6;font-size:16px}
+.codeblock{background:var(--dark);color:#f3ead9;border-radius:8px;padding:18px 20px;font:500 14px/1.65 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;overflow-x:auto;white-space:pre-wrap;margin:20px 0;box-shadow:0 8px 22px rgba(107,74,42,.12)}
+.codeblock .c{color:#f6d7a6;font-weight:600}
+.skillcard{background:#fff;border:1px solid var(--green);border-radius:12px;padding:24px;box-shadow:0 10px 26px rgba(95,117,83,.16);margin-top:8px}
+.skillcard b{display:block;font-size:21px;margin-bottom:8px}
+.skillcard p{margin:0 0 16px;font-size:17px;line-height:1.65;color:#3a342d}
+.cta-band{background:#e6f0e5;color:#3a342d}.cta-band .section{border-top:none}
+.cta-band .inner{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(260px,.85fr);gap:26px;align-items:start}
+.cta-band h2{font-size:clamp(26px,4vw,44px);margin:0 0 16px}.cta-band p,.cta-band .lead{color:rgba(58,52,45,.9);font-size:18px;line-height:1.72}
+.cta-card{border:1px solid #cfe0d2;background:#fbfdfa;border-radius:8px;padding:22px}
+.cta-card b{display:block;color:#48b178;margin-bottom:10px;font-size:18px}.cta-card p{margin:0 0 14px}
+.footer{padding:30px clamp(20px,6vw,88px);font-size:14px;color:var(--muted);background:#fff;border-top:1px solid var(--line)}
+.footer-inner{width:min(1000px,100%);margin:0 auto}
+.footer-links{display:flex;flex-wrap:wrap;gap:6px 12px;margin-bottom:14px}.footer-links a{color:var(--blue);font-weight:900;text-decoration:none;font-size:14px}
+.footer-brand{font-weight:900;font-size:15px;margin-bottom:10px}.footer-note{font-size:13px;line-height:1.6}
+@media(max-width:820px){.inline-figure.portrait{max-width:340px}.infocard-grid{grid-template-columns:1fr}.duo{grid-template-columns:1fr}.workflow-grid{grid-template-columns:1fr}.cta-band .inner{grid-template-columns:1fr}.section{padding:40px 20px}.hero{min-height:52vh;flex-direction:column;justify-content:flex-start;align-items:flex-start;gap:24px}.hero>div{width:100%}.hero-figure{width:100%;max-width:560px}}
+@media(max-width:820px){html,body{overflow-x:hidden}.hero h1{word-break:break-word}}
+/* 長標題：縮字級、收窄文字欄，避免把封面擠到下一行（02-design-system，照 opus-luna 篇數值） */
+.hero{gap:40px!important}
+.hero>div:not(.wc){width:540px!important}
+.hero h1{font-size:clamp(28px,2.7vw,40px)!important;line-height:1.2!important;margin:12px 0 16px!important}
+.hero p{font-size:clamp(17px,1.35vw,19px)!important;line-height:1.65!important}
+@media(max-width:1300px){.hero{gap:28px!important;flex-direction:column;align-items:flex-start}.hero>div:not(.wc){width:100%!important}.hero .hero-figure{width:100%;max-width:640px}.hero h1{font-size:clamp(28px,5vw,40px)!important}}
+.pricechart{margin:24px 0;padding:20px 22px 14px;background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.pc-title{font-size:19px;font-weight:900;color:#1a1612;margin-bottom:14px}.pc-title span{font-size:15px;font-weight:500;color:var(--muted);margin-left:4px}
+.pc-row{display:grid;grid-template-columns:minmax(0,15em) 1fr 5.5em;gap:12px;align-items:center;padding:7px 6px;border-radius:6px}
+.pc-row:hover,.pc-row:focus{background:var(--soft);outline:none}
+.pc-label{font-size:17px;line-height:1.45;color:#3a342d}
+.pc-track{display:block;height:18px;background:#f3ede2;border-radius:0 4px 4px 0}
+.pc-bar{display:block;height:100%;background:var(--blue);border-radius:0 4px 4px 0;min-width:2px}
+.pc-val{font:700 16px/1.2 "JetBrains Mono",ui-monospace,Menlo,monospace;color:#1a1612;text-align:right;white-space:nowrap}
+.pc-note{margin:10px 0 0!important;font-size:15px!important;color:var(--muted)!important}
+@media(max-width:820px){.pc-row{grid-template-columns:1fr 4.8em;row-gap:4px}.pc-label{grid-column:1/-1}}
+.todo{background:#fde7c4;color:#8a4b12;border-radius:4px;padding:1px 6px;font-size:.8em;font-weight:700;margin-right:6px}
+</style>
+</head>
+<body class="spotlight">
+<!-- 官網共用導航列 nav.top：與首頁/總站同一條，文章不要自己另做極簡 topbar（江江 2026-06-25：要同一個框架、同一條導航列）。把對應頁面的 class="active" 標在自己那欄。
+     ⚠️ 下面 ul.nav-menu 整塊由 preflight 第 5 關 check-bilingual-nav.mjs 做「逐字比對」，
+        塞任何註解、多一個空白、換行位置不同都會被判導航不一致而擋下發布。要說明就寫在 <ul> 外面（像這裡）。
+        2026-08-16 修：原本的 EN 那行說明註解就夾在 <ul> 裡面，導致照範本起手的新文章一律卡第 5 關
+        （llm-rag-agent-mcp 與 rag-three-retrieval-modes 兩篇同時中招）。註解已移出來，<ul> 內保持乾淨。
+        萬一還是被擋，直接跑：node scripts/check-bilingual-nav.mjs --write --only=<你的檔案路徑> -->
+<nav class="top">
+  <div class="container">
+    <a class="nav-brand-img" href="../../index.html"><img src="../../images/footer-signature.png" alt="江江教練 | 江昱德"></a>
+    <button class="nav-toggle" aria-label="選單"><span></span><span></span><span></span></button>
+    <ul class="nav-menu">
+      <li><a href="../../index.html">首頁</a></li>
+      <li><a href="../../knowledge-architecture.html">知識架構</a></li>
+      <li><a href="../../courses.html">課程</a></li>
+      <li><a href="../../articles.html" class="active">文章</a></li>
+      <li><a href="../../skills.html">小工具</a></li>
+      <li><a href="../../offers.html">服務方案</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="wc wc1"></div>
+  <div class="wc wc2"></div>
+  <div class="wc wc3"></div>
+  <div>
+    <div class="kicker">AI 應用 / 官網客服</div>
+    <h1>我想在官網放 AI 客服，API 是什麼、會不會很貴？｜儲值、金鑰、模型怎麼選，四步上線順序</h1>
+    <p>API 是你的網站去借一條通道。這篇把錢怎麼算、金鑰放哪、模型怎麼選、上線先做哪一步一次講完，附模型月費圖表與我自己的咪卡一萬題實算。</p>
+  </div>
+  <figure class="hero-figure">
+    <img src="../../images/articles/ai-customer-service-api-cost-cover.jpg" alt="咪卡坐在網頁客服視窗旁，旁邊是錢幣罐與一把鑰匙" loading="lazy">
+    <figcaption>封面：官網放 AI 客服，會不會很貴？</figcaption>
+  </figure>
+</section>
+
+<main>
+
+<section class="section" id="start"><div class="inner">
+<h2>這篇在講什麼</h2>
+<p class="lead">有官網、有課程、有產品，想放一個 AI 客服先接住重複的小問題，卻卡在 API 聽不懂、怕錢失控、怕金鑰外洩。這篇照我陪跑時講的順序，把錢怎麼算、金鑰放哪、模型怎麼選、先做哪一步講清楚，並用官方單價算出文字客服與語音客服一個月大概多少錢。</p>
+<div class="duo stack">
+<div class="card a"><b>適合誰</b><ul><li>有官網、每天被問同樣小問題，想放 AI 客服的講師或小店家</li><li>聽過 API 但不知道會不會很貴、怕金鑰外洩的人</li><li>要跟客戶說明「官網加客服一個月多少錢」的顧問與接案者</li></ul></div>
+<div class="card b"><b>你可以帶走什麼</b><ul><li>一張 ChatGPT 月費與 API 的差別對照，加上一個能自己填數字的月費算式</li><li>GPT-6 Luna、Opus 5.5、語音客服的月費圖表，以及我的咪卡一萬題實算</li><li>四步上線順序，和一段可以直接貼給 AI 的建置指令</li></ul></div>
+</div>
+</div></section>
+<section class="section" id="s1"><div class="inner">
+<p>陪跑的時候常被問：「我想在官網放一個 AI 客服，API 到底是什麼？會不會很貴？」</p>
+<p>這題我被問過很多次。會問的人通常已經有官網、有課程、有產品，每天被問同樣的小問題，想找個幫手先接住。卡住的地方都差不多：API 聽不懂、怕錢失控、怕金鑰外洩。他們不想變成工程師，只想知道這件事能不能做、要花多少、先做哪一步。</p>
+<p>這篇就照那天我在線上講的順序，一次講完。</p>
+</div></section>
+<section class="section" id="s2"><div class="inner">
+<h2>一、API 是什麼：你的網站去借一條通道</h2>
+<p>先把畫面講清楚。</p>
+<p>客人在你的網站上打字問問題，你的網站把這個問題送去給 OpenAI，OpenAI 算出答案，再送回來，顯示在你網站的客服視窗裡。</p>
+<p>API 就是這條通道。你的網站本身不用變聰明，它只是借用別人的大腦。</p>
+<p>所以接 AI 客服，你要準備的東西只有兩樣：一個能放客服視窗的網站，一把能打開這條通道的鑰匙。那把鑰匙就叫 API Key。</p>
+<div class="readmore near"><b>這段延伸閱讀</b><ul><li><a href="../cli-api-mcp-computer-use/">叫 AI 幫你點餐，就懂 CLI、API、MCP</a>：API 這個詞第一次看到的話，那篇用點餐比喻把它跟 CLI、MCP 分清楚</li></ul></div>
+</div></section>
+<section class="section" id="s3"><div class="inner">
+<h2>二、錢怎麼算：照用量，先儲值</h2>
+<p>API 的收費方式跟 ChatGPT 月費不一樣，這是最多人搞混的地方。</p>
+<div class="tablewrap"><table><thead><tr><th>項目</th><th>ChatGPT 月費</th><th>API</th></tr></thead><tbody><tr><td>收費方式</td><td>每月固定金額</td><td>照實際用量算</td></tr><tr><td>付款方式</td><td>月扣</td><td>先儲值，用多少扣多少</td></tr><tr><td>沒用完</td><td>不累計</td><td>會累計，留著下次用</td></tr><tr><td>兩者關係</td><td>分開的兩筆帳</td><td>訂了月費，API 一樣要另外儲值</td></tr></tbody></table></div>
+<p>我自己的設定是這樣：第一次儲值 10 美金，每個月上限設 6 美金。每次儲值都有手續費，所以不要一次只充一點點，也不用一次充很多。</p>
+<p>以一位講師官網的學員提問量來估，一個月大約台幣兩三百塊，儲值 10 美金很夠用。</p>
+<p>後台可以設兩件事，建議都設：</p>
+<ol><li><b>每月上限</b>：超過就停，不會一覺醒來帳單爆掉</li><li><b>自動儲值</b>：額度快用完時自動補，客服不會突然斷線</li></ol>
+<p><b>如果要跟客戶估一個月多少錢</b>，可以用這個算式，數字自己填：</p>
+<div class="codeblock">每月費用 ≈ 每月來問的人數 × 平均每人問幾題 × 每題成本</div>
+<p>「每題成本」最準的取法，是先儲值一小筆，實際跑一到兩週，再從後台的用量紀錄反推。模型和計價方式都會變，別人給的單價只能當起點。</p>
+<p>下面第四節有一組用官方單價算的試算，可以先拿來當量級參考。</p>
+</div></section>
+<section class="section" id="s4"><div class="inner">
+<h2>三、金鑰只會出現一次，要放進鑰匙圈</h2>
+<p>API Key 像是這項服務的專屬帳號密碼。它要放在網站後台，不能公開。外洩的意思，等於別人可以拿你的信用卡去用這條通道。</p>
+<p>申請時有三件事要記住：</p>
+<ol><li><b>金鑰只會顯示一次</b>（OpenAI 是這樣，其他家請以申請畫面為準）。申請完那個畫面關掉，就再也看不到了。</li><li><b>複製之後，直接存進 Mac 的鑰匙圈</b>（macOS 內建、專門存密碼的地方）。</li><li><b>不要貼在跟 AI 的對話裡</b>。你貼了，AI 會告訴你這把鑰匙已經外洩，請你刪掉重新申請。</li></ol>
+<p>如果當下忘了複製，只能刪掉重來。刪掉那一把，所有用到它的服務都會一起失效，所以第一次就存好。</p>
+</div></section>
+<section class="section" id="s5"><div class="inner">
+<h2>四、客服的模型不用選最貴的</h2>
+<p>很多人以為客服要聰明，就要選最高級的模型。我的建議剛好相反：選最基礎的那一級，推理強度開中等就好。</p>
+<p>理由是：<b>推理我們已經先做完了。</b></p>
+<p>內容整理好、檢索頁設好、問答集寫清楚，客服要做的事只剩「找到對的答案」。它不需要自己推一套理論出來。中等推理會多檢查一次，速度也快，對客服來說剛好。</p>
+<p>你自己平常工作用的，可能是比較聰明的模型加高推理。那是另一回事，因為你交給它的是判斷，不是查答案。</p>
+<h3>2026 年 10 月更新：GPT-6 Luna 出來之後</h3>
+<p>陪跑那天是 9 月 8 日。兩週後，OpenAI 在 9 月 22 日推出 GPT-6 這一代，最便宜的那一級叫 Luna，ChatGPT 裡和 API 都能用。同一天前後，Anthropic 也推出了 Claude Opus 5.5。</p>
+<p>我自己現在的分工是：<b>Opus 5.5 動腦，Luna 搬磚。</b>（完整分法寫在官網<a href="../opus-luna-model-division/">〈頂規 AI 模型很貴，哪些事交給它、哪些交給便宜的？〉</a>）</p>
+<p>放到 AI 客服這件事上，剛好對應前面那句「推理我們已經先做完了」：</p>
+<div class="tablewrap"><table><thead><tr><th>階段</th><th>交給誰</th><th>做什麼</th></tr></thead><tbody><tr><td>上線前，一次性</td><td>Opus 5.5 這類頂規模型</td><td>把你的課程、產品、常見問題整理成問答集與檢索頁。這是真正要動腦的部分</td></tr><tr><td>上線後，每天每則</td><td>GPT-6 Luna 這類便宜模型</td><td>客人問一題，它去問答集裡找答案、照規則回。次數多，單次要便宜</td></tr></tbody></table></div>
+<p>用官方單價算一次，差距就很清楚。假設每月 3000 則客服訊息，每則大約讀進 2000 token、回出 300 token（token 可以想成模型計費用的字數單位）：</p>
+<div class="tablewrap"><table><thead><tr><th>模型</th><th>官方單價（每百萬 token，輸入／輸出）</th><th>每月 3000 則試算</th></tr></thead><tbody><tr><td>GPT-6 Luna</td><td>0.10 ／ 0.50 美金</td><td>約 1.05 美金（約台幣 35 元）</td></tr><tr><td>GPT-5.6 Luna（上一代）</td><td>0.20 ／ 1.20 美金</td><td>約 2.28 美金</td></tr><tr><td>Claude Opus 5.5</td><td>4 ／ 20 美金</td><td>約 42 美金（約台幣 1,300 元）</td></tr></tbody></table></div>
+<figure class="pricechart" aria-label="每月 3000 則文字客服，各模型月費"><figcaption class="pc-title">每月 3000 則文字客服，各模型月費<span>（單位：美金）</span></figcaption><div class="pc-row" title="GPT-6 Luna：約 1.05 美金" tabindex="0"><span class="pc-label">GPT-6 Luna</span><span class="pc-track"><span class="pc-bar" style="width:2.5%"></span></span><span class="pc-val">約 1.05</span></div><div class="pc-row" title="GPT-5.6 Luna（上一代）：約 2.28 美金" tabindex="0"><span class="pc-label">GPT-5.6 Luna（上一代）</span><span class="pc-track"><span class="pc-bar" style="width:5.4%"></span></span><span class="pc-val">約 2.28</span></div><div class="pc-row" title="Claude Opus 5.5：約 42 美金" tabindex="0"><span class="pc-label">Claude Opus 5.5</span><span class="pc-track"><span class="pc-bar" style="width:100.0%"></span></span><span class="pc-val">約 42</span></div><p class="pc-note">每則約 2000 token 進、300 token 出，官方單價試算（2026-10-01 查）</p></figure>
+<p>同樣的客服量，拿頂規模型來接，大約是 GPT-6 Luna 的 40 倍。客服每天都在跑，選錯這一格，錢是每個月一直流出去的。</p>
+<p>算式是這樣來的：3000 則 × 2000 token ＝ 600 萬 token 輸入，3000 則 × 300 token ＝ 90 萬 token 輸出，再乘上單價。你自己的客服每則讀多少，要看問答集多長、有沒有做檢索頁，所以這組數字是量級參考，真正的數字還是看後台。</p>
+<p>我自己官網的咪卡客服目前用的還是 GPT-5.6 Luna，要不要換成 GPT-6 Luna，換之前我會先出一份固定考卷考過一次再換。便宜模型也會交白卷，這件事在上面那篇有寫。</p>
+<h3>我自己的咪卡：一萬題實際算過一次</h3>
+<p>上面每則 2000 token 是精簡問答集的假設。我自己官網的咪卡客服，因為把整站文章目錄、課程清單和人設都放進每一次的系統指令裡，<b>每回答一題要讀約三萬多 token</b>。這是 2026 年 8 月 8 日、用當時的 GPT-5.6 Luna 實際算過的帳：</p>
+<figure class="pricechart" aria-label="咪卡回答一萬題：推理強度怎麼設，API 費差一倍"><figcaption class="pc-title">咪卡回答一萬題：推理強度怎麼設，API 費差一倍<span>（單位：美金）</span></figcaption><div class="pc-row" title="全部不推理：8.9 美金" tabindex="0"><span class="pc-label">全部不推理</span><span class="pc-track"><span class="pc-bar" style="width:48.1%"></span></span><span class="pc-val">8.9</span></div><div class="pc-row" title="自適應（清楚的題不推理，抽象的才開低推理）：9.2 美金" tabindex="0"><span class="pc-label">自適應（清楚的題不推理，抽象的才開低推理）</span><span class="pc-track"><span class="pc-bar" style="width:49.7%"></span></span><span class="pc-val">9.2</span></div><div class="pc-row" title="全部開中等推理（預設值）：18.5 美金" tabindex="0"><span class="pc-label">全部開中等推理（預設值）</span><span class="pc-track"><span class="pc-bar" style="width:100.0%"></span></span><span class="pc-val">18.5</span></div><p class="pc-note">GPT-5.6 Luna，含快取，2026-08-08 試算</p></figure>
+<p>這張圖要看的是最右邊那一條。<b>推理產生的 token 是算在輸出計費裡的</b>，而 GPT-5.6 系列預設就是中等推理。沒去調，同樣的量費用直接翻倍。所以我用「自適應」：問得清楚的題不推理，問得抽象的才開低推理，多花 3% 換抽象問題的品質。</p>
+<p>同一天也比了三家便宜模型，同樣一萬題：</p>
+<figure class="pricechart" aria-label="同樣一萬題，三家便宜模型的 API 費"><figcaption class="pc-title">同樣一萬題，三家便宜模型的 API 費<span>（單位：美金）</span></figcaption><div class="pc-row" title="GPT-5.6 Luna：9.2 美金" tabindex="0"><span class="pc-label">GPT-5.6 Luna</span><span class="pc-track"><span class="pc-bar" style="width:100.0%"></span></span><span class="pc-val">9.2</span></div><div class="pc-row" title="Grok 4.1 Fast：6.4 美金" tabindex="0"><span class="pc-label">Grok 4.1 Fast</span><span class="pc-track"><span class="pc-bar" style="width:69.6%"></span></span><span class="pc-val">6.4</span></div><div class="pc-row" title="DeepSeek V4-Flash：3.6 美金" tabindex="0"><span class="pc-label">DeepSeek V4-Flash</span><span class="pc-track"><span class="pc-bar" style="width:39.1%"></span></span><span class="pc-val">3.6</span></div><p class="pc-note">2026-08-08 價格，含推理自適應</p></figure>
+<p>最後我還是選了 Luna，原因有三個：</p>
+<ol><li>只有 Luna 在咪卡的真實流程裡跑過，繁體中文的導讀語氣是通過的；另外兩家的評價都來自別的任務</li><li>三家每月相差台幣一百多塊，在這個量級，差價不足以讓我換掉唯一驗證過的模型</li><li>DeepSeek 的伺服器在中國，訪客的訊息會出境；而且官方當時已經預告要漲價</li></ol>
+<p>這次算帳學到的兩件事，比選哪個模型更重要：</p>
+<ul><li><b>系統指令每長 10%，成本就多 10%，而且是乘上題數的。</b> 你塞進客服的資料越多，每一題都要多付一次</li><li><b>快取命中率是看不見的成本開關。</b> 不變的東西（人設、目錄）放前面、會變的（訪客名字、這一題）放後面，才吃得到快取的折扣。順序打亂了，成本會默默往上漲</li></ul>
+<p>GPT-6 Luna 出來之後，輸入單價是 GPT-5.6 Luna 的一半，輸出也不到一半。同樣的一萬題換成 GPT-6 Luna 會更便宜，但實際多少，要換過之後重跑一次才算得準。</p>
+<h3>要做語音客服的話，帳完全不一樣</h3>
+<p>上面算的都是文字客服。9 月 21 日我聽說 Gemini 的方案很便宜，請 Codex 去查官方價格頁，結論是：<b>Gemini 便宜的是即時語音；文字客服反而是 OpenAI 的 Luna 比較便宜。</b></p>
+<div class="tablewrap"><table><thead><tr><th>情境</th><th>Google Gemini</th><th>OpenAI</th></tr></thead><tbody><tr><td>文字客服：每月 3000 則（每則約 2000 token 進、300 token 出）</td><td>Gemini 3.5 Flash-Lite：約 4.05 美金</td><td>GPT-6 Luna：約 1.05 美金</td></tr><tr><td>語音客服：每月 1000 通，每通 3 分鐘（客人與 AI 各講一半）</td><td>Gemini 3.8 Live：約 34.5 美金</td><td>gpt-live-1：150 美金起，後端模型另計</td></tr></tbody></table></div>
+<figure class="pricechart" aria-label="同樣是客服，文字和語音差多少（每月）"><figcaption class="pc-title">同樣是客服，文字和語音差多少（每月）<span>（單位：美金）</span></figcaption><div class="pc-row" title="文字｜GPT-6 Luna（3000 則）：約 1.05 美金" tabindex="0"><span class="pc-label">文字｜GPT-6 Luna（3000 則）</span><span class="pc-track"><span class="pc-bar" style="width:0.8%"></span></span><span class="pc-val">約 1.05</span></div><div class="pc-row" title="文字｜Gemini 3.5 Flash-Lite（3000 則）：約 4.05 美金" tabindex="0"><span class="pc-label">文字｜Gemini 3.5 Flash-Lite（3000 則）</span><span class="pc-track"><span class="pc-bar" style="width:2.7%"></span></span><span class="pc-val">約 4.05</span></div><div class="pc-row" title="語音｜Gemini 3.8 Live（1000 通 × 3 分鐘）：約 34.5 美金" tabindex="0"><span class="pc-label">語音｜Gemini 3.8 Live（1000 通 × 3 分鐘）</span><span class="pc-track"><span class="pc-bar" style="width:23.0%"></span></span><span class="pc-val">約 34.5</span></div><div class="pc-row" title="語音｜OpenAI gpt-live-1（1000 通 × 3 分鐘）：150 起 美金" tabindex="0"><span class="pc-label">語音｜OpenAI gpt-live-1（1000 通 × 3 分鐘）</span><span class="pc-track"><span class="pc-bar" style="width:100.0%"></span></span><span class="pc-val">150 起</span></div><p class="pc-note">官方單價試算，gpt-live-1 另計後端模型費</p></figure>
+<p>語音客服貴很多，而且 Gemini 的語音實際可能比試算高：對話越長，每一輪都會把前面累積的內容重新計費。</p>
+<p>語音客服要接到哪裡，也有限制：</p>
+<div class="tablewrap"><table><thead><tr><th>管道</th><th>能不能接</th></tr></thead><tbody><tr><td>官網網頁</td><td>可以，最簡單</td></tr><tr><td>電話</td><td>要多一層 Twilio 這類電話轉接服務（把電話線路轉成網路連線）</td></tr><tr><td>LINE 官方帳號</td><td>只能收語音訊息，LINE 通話接不了即時語音</td></tr></tbody></table></div>
+<p>還有一件跟錢無關、但比錢重要的事：<b>客服對話裡有客人的個資，要走付費方案。</b> 依 Gemini API 條款（2026-09-21 查），免費層的對話會拿去改善產品，也可能有人工審閱；付費層不拿去改善產品。</p>
+<p>我自己的判斷是：文字客服先留在 Luna；真的要做語音，第一步只接官網網頁，電話和 LINE 等網頁版跑順再說。</p>
+<div class="readmore near"><b>這段延伸閱讀</b><ul><li><a href="../opus-luna-model-division/">頂規 AI 模型很貴，哪些事交給它、哪些交給便宜的？</a>：這段的「Opus 動腦、Luna 搬磚」完整分法，以及 Luna 交白卷後重新考試的經過</li></ul></div>
+</div></section>
+<section class="section" id="s6"><div class="inner">
+<h2>五、最重要的一條規則：問不到就說不知道</h2>
+<p>這條我在給 AI 的指令裡寫得最重：</p>
+<div class="meaning">問不到答案的時候，就說不知道，請學員直接聯繫老師本人。不要自己推理，不要亂回答。</div>
+<p>客服是代表你在說話。它答錯一題，客人不會覺得是 AI 錯，會覺得是你說的。寧可少答，也不要答錯。</p>
+</div></section>
+<section class="section" id="s7"><div class="inner">
+<h2>六、客服除了回答，還要做到的三件事</h2>
+<p>那天我給 AI 的指令，除了上面那條，還有三個重點：</p>
+<div class="tablewrap"><table><thead><tr><th>要做到的事</th><th>為什麼</th></tr></thead><tbody><tr><td>回答完小問題之後，接一個行動呼籲，導向課程或產品</td><td>客服不只是解答，也是入口</td></tr><tr><td>做 4O（讓網站好被搜尋引擎與 AI 找到、讀懂的四種優化）與檢索頁（一張整理好全站重點的目錄頁）</td><td>讓 AI 不用每次都爬整個網站，找得快也省錢</td></tr><tr><td>做流量後台，統計誰問了什麼、在哪一篇停留比較久</td><td>你會知道大家真正卡在哪，下一堂課要講什麼</td></tr></tbody></table></div>
+<p>我自己官網上的咪卡助理就是照這個架構跑的。</p>
+</div></section>
+<section class="section" id="s8"><div class="inner">
+<h2>七、上線順序：四步，不能顛倒</h2>
+<p>這是整篇最重要的一張表。那天我特別強調順序不能換：</p>
+<div class="tablewrap"><table><thead><tr><th>步驟</th><th>做什麼</th><th>為什麼排在這裡</th></tr></thead><tbody><tr><td>1</td><td>把網站搬到能承載 AI 功能的平台</td><td>原本放的平台偏個人與實驗性質，功能一多會處理不了。搬家的操作複雜不是問題，反正是 AI 在操作</td></tr><tr><td>2</td><td>在新平台上設計客服機制</td><td>網站資料要重新整理成 AI 好找的結構。版面不動，改的是人看不到、AI 讀得到的那一層</td></tr><tr><td>3</td><td>申請 API、把金鑰存進鑰匙圈</td><td>介面做好了，才需要接大腦</td></tr><tr><td>4</td><td>最後才買網域</td><td>網域買了要遷移非常麻煩，先確定一切能跑再買</td></tr></tbody></table></div>
+<p>再往前退一步，其實還有一個更大的順序：<b>先把靜態的東西做好，再做動態的。</b> 先確認官網、簡報做得漂亮，AI 找得到資料夾、部署不會出錯，然後才上客服、預約這些會動的功能。一次全部上，早上做好的頁面下午可能就被改亂了。</p>
+<div class="readmore near"><b>這段延伸閱讀</b><ul><li><a href="../github-vercel-cloudflare-compare/">網站放 GitHub、Vercel 還是 Cloudflare？</a>：第一步「搬到能承載 AI 功能的平台」要選哪一家，那篇比了三家的免費額度與限制</li><li><a href="../domain-and-account-ownership/">網域要去哪裡買？小編要給帳號密碼嗎？</a>：第四步「最後才買網域」為什麼放最後、要買在哪</li></ul></div>
+</div></section>
+<section class="section" id="s9"><div class="inner">
+<h2>八、可以直接貼給 AI 的指令</h2>
+<p>照上面整理，你可以把這段貼給你正在用的 AI（Codex、Claude Code 這類能動手的工具），再依自己的狀況改：</p>
+<div class="codeblock">我要在官網加一個 AI 客服。請照以下順序做，每一步做完先回報，等我確認再做下一步：
+
+1. 先幫我評估目前網站放的平台，能不能承載 AI 客服；不行的話，給我搬家方案，搬之前先完整備份。
+2. 設計客服機制：把網站資料整理成 AI 好找的結構，版面不要動。
+3. 客服的規則：
+   - 回答完小問題後，接一個行動呼籲，導向相關課程或產品
+   - 問不到答案就說不知道，請對方直接聯繫我本人，不要自己推理
+4. 做檢索頁與流量後台，記錄大家問了什麼、在哪一頁停留久。
+5. 這些都做好之後，才告訴我怎麼申請 API 金鑰。金鑰我會自己存進 Mac 鑰匙圈，不會貼給你。
+6. 網域最後再處理。</div>
+</div></section>
+<section class="section" id="s10"><div class="inner">
+<h2>寫在最後</h2>
+<p>這整件事聽起來很技術，但真正要你親自動手的只有兩件：刷卡儲值，還有把金鑰存進鑰匙圈。其他步驟都可以交給 AI。</p>
+<p>你要守住的是順序，還有那一條「問不到就說不知道」。</p>
+</div></section>
+<section class="section" id="s11"><div class="inner">
+<h2>技術補充（給想知道細節的人）</h2>
+<ul><li>陪跑當天的費用與模型建議以 2026-09-08 為準；第四節更新段的單價於 2026-10-01 由 Codex 查官方頁面：<a href="https://developers.openai.com/api/docs/models/gpt-6-luna" target="_blank" rel="noopener">GPT-6 Luna</a>、<a href="https://developers.openai.com/api/docs/models/gpt-5.6-luna" target="_blank" rel="noopener">GPT-5.6 Luna</a>、<a href="https://www.anthropic.com/claude-opus-5-5" target="_blank" rel="noopener">Claude Opus 5.5</a>、<a href="https://openai.com/index/introducing-gpt-6-sol-and-luna/" target="_blank" rel="noopener">GPT-6 發布公告</a>。台幣以 1 美金約 32 元粗估</li><li>語音與 Gemini 單價：2026-09-21 與 2026-10-01 由 Codex 兩次查官方頁，數字一致：<a href="https://ai.google.dev/gemini-api/docs/pricing" target="_blank" rel="noopener">Gemini API 定價</a>（3.8 Live 音訊輸入 3、輸出 12 美金／百萬 token；3.5 Flash-Lite 0.30／2.50）、<a href="https://platform.openai.com/pricing" target="_blank" rel="noopener">OpenAI 定價</a>（gpt-live-1 每連線分鐘 0.05 美金）。電話整合見 <a href="https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/live-api" target="_blank" rel="noopener">Google Cloud Live API</a>，LINE 能力見 <a href="https://developers.line.biz/en/docs/messaging-api/receiving-messages" target="_blank" rel="noopener">LINE 接收訊息</a>，資料使用見 <a href="https://ai.google.dev/gemini-api/terms" target="_blank" rel="noopener">Gemini API 條款</a></li><li>「LINE 通話接不了」是 Codex 依官方 API 能力推論，官方沒有一句話直接這樣寫</li><li>原始研究筆記：主庫 <code>2026-09-21-2111 筆記：AI客服怎麼接 Gemini即時語音與OpenAI成本對照</code></li><li>GPT-6 Luna 快取輸入（同一段內容重複讀時的折扣價）每百萬 token 0.01 美金；客服的系統指令與問答集每則都重複讀，實際有吃到快取的話會比試算更便宜</li><li>延伸閱讀候選：<a href="../opus-luna-model-division/">〈頂規 AI 模型很貴，哪些事交給它、哪些交給便宜的？〉</a>（Opus 動腦 Luna 搬磚，互連）、<a href="../cli-api-mcp-computer-use/">〈叫 AI 幫你點餐，就懂 CLI、API、MCP〉</a>（API 概念）、<a href="../webnode-to-cloudflare-pages/">〈官網搬家一個月零元〉</a>（搬站）</li></ul>
+</div></section>
+<section class="section" id="readmore"><div class="inner">
+<h2>延伸閱讀</h2>
+<div class="readmore"><b>這篇提到過的</b><ul><li><a href="../opus-luna-model-division/">頂規 AI 模型很貴，哪些事交給它、哪些交給便宜的？</a>：模型分工與月費帳</li><li><a href="../cli-api-mcp-computer-use/">叫 AI 幫你點餐，就懂 CLI、API、MCP</a>：API 是什麼</li><li><a href="../github-vercel-cloudflare-compare/">網站放 GitHub、Vercel 還是 Cloudflare？</a>：上線第一步選平台</li></ul></div>
+<div class="readmore"><b>再往前後延伸</b><ul><li><a href="../webnode-to-cloudflare-pages/">官網搬家一個月零元</a>：真的要搬站時，一個整站搬到 Cloudflare 的實際案例</li><li><a href="../grok-bot-galaxy-day2-workshops/">客服、業務、開發客戶，AI 員工實際做到哪一步？</a>：別人的 AI 客服做到哪裡，可以拿來對照</li></ul></div>
+</div></section>
+
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">江江教練 · AI 知識管理</div>
+    <div class="footer-links">
+      <a href="../../articles.html">← 回深度文章總站</a>
+      <a href="../../index.html">首頁</a>
+      <a href="../../learn.html">自學資源</a>
+      <a href="../../skills.html">小工具</a>
+      <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">LINE 社群 ↗</a>
+      <a href="https://www.threads.com/@jiang_yude_coach" target="_blank" rel="noopener">Threads ↗</a>
+      <a href="https://vocus.cc/salon/Jiang_Coach" target="_blank" rel="noopener">方格子 ↗</a>
+    </div>
+    <div class="footer-note">這是一篇教學文章，整理我對「我想在官網放 AI 客服，API 是什麼、會不會很貴？｜儲值、金鑰、模型怎麼選，四步上線順序」的看法，供你參考。</div>
+  </div>
+</footer>
+
+<!-- 點圖放大 lightbox（hero 與內文圖通用，已內建，不用每篇重加） -->
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <span class="lightbox-close" aria-label="關閉">×</span>
+  <img id="lightbox-img" src="" alt="放大檢視">
+</div>
+<script>
+(function(){
+  var box=document.getElementById('lightbox'),boxImg=document.getElementById('lightbox-img');
+  document.querySelectorAll('.hero-figure img,.inline-figure img').forEach(function(img){
+    img.addEventListener('click',function(){boxImg.src=img.currentSrc||img.src;boxImg.alt=img.alt||'放大檢視';box.classList.add('open');box.setAttribute('aria-hidden','false');});
+  });
+  function close(){box.classList.remove('open');box.setAttribute('aria-hidden','true');boxImg.src='';}
+  box.addEventListener('click',close);
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
+})();
+</script>
+
+<script src="../../image-interactions.js"></script>
+
+<!-- 官網共用：滑鼠暖光暈 + 導航列漢堡選單 -->
+<script src="../../spotlight.js"></script>
+
+<!-- 文章自動互聯（相關文章）：兩支已內建，順序不可顛倒，不用再另外加 -->
+<script src="../../articles-data.js"></script>
+<script src="../../related-render.js"></script>
+  <script src="/mika-chat-widget.js" defer></script>
+</body>
+</html>

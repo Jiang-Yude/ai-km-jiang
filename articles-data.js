@@ -114,6 +114,63 @@ window.ARTICLES = [
   },
 
   {
+    id: "ai-customer-service-api-cost",
+    url: "articles/ai-customer-service-api-cost/",
+    date: "2026-10-01",
+    updated: "2026-10-01",
+    title: "我想在官網放 AI 客服，API 是什麼、會不會很貴？｜儲值、金鑰、模型怎麼選，四步上線順序",
+    problem: "想在官網放 AI 客服，但 API 聽不懂、怕費用失控、怕金鑰外洩，不知道先做哪一步。",
+    audience: "有官網、想加 AI 客服但不是工程師的講師、店家與接案者。",
+    summary: "API 是網站去借 OpenAI 的通道；API 照用量先儲值、跟 ChatGPT 月費是兩筆帳，可設每月上限與自動儲值。金鑰只顯示一次，存進 Mac 鑰匙圈、不要貼給 AI。客服的推理先做在問答集與檢索頁裡，所以模型選最便宜的 Luna 加中等推理；用官方單價試算每月 3000 則，GPT-6 Luna 約 1.05 美金、Opus 5.5 約 42 美金。另攤開我自己的咪卡客服回答一萬題的實算（推理強度沒調費用翻倍、三家便宜模型比價、系統指令長度與快取才是最敏感的成本變數），附文字與語音客服的價格差、問不到就說不知道的鐵則、四步上線順序與一段可直接貼給 AI 的指令。",
+    tags: {
+      topic: ["AI應用", "差異比較", "工具操作"],
+      level: ["零基礎入門"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["opus-luna-model-division", "cli-api-mcp-computer-use", "github-vercel-cloudflare-compare", "webnode-to-cloudflare-pages", "domain-and-account-ownership", "grok-bot-galaxy-day2-workshops"],
+    cover: { wide: "images/articles/ai-customer-service-api-cost-cover.jpg" }
+  },
+
+  {
+    id: "ai-slides-half-auto-google-slides",
+    url: "articles/ai-slides-half-auto-google-slides/",
+    date: "2026-10-01",
+    updated: "2026-10-01",
+    title: "叫 AI 做簡報，為什麼最後還是自己一個字一個字改？｜從轉 PPT 自己改，到連動 Google 簡報的半自動流程",
+    problem: "叫 AI 做簡報，最後還是自己一個字一個字改，Token 用很兇也不知道怎麼下指令。",
+    audience: "常做簡報、想讓 AI 一次比一次做得更對的講師、NPO 夥伴與業務。",
+    summary: "做簡報用 AI 有三條路：轉成 PPT 自己改、連動 Google 簡報半自動、做成網頁全自動。還看不出 AI 會在哪裡偷懶時先走半自動：AI 先出大綱與配圖規劃、做成 Google 簡報、人微調、再轉網頁。第一次設定時先挑十幾到二十份簡報、複製資料夾練習，把 PDF 與 Word 轉成純文字、關鍵字寫進檔名、判斷新舊並提煉判斷原則，交代目標不寫細步驟，開分支同時接 Google 簡報與整理資料，最後把思維與視覺風格收成技能包。改不動時換五句問法，先確保正確再談效率；自己改完要回頭問 AI 知不知道改了哪裡、為什麼改。附先給標準才能自我檢查、圖片辨識一次就把用途寫進檔名、先給方案再執行兩個省用量做法，以及一段可直接貼的指令。",
+    tags: {
+      topic: ["AI工作流", "提示詞設計", "工具操作"],
+      level: ["基礎"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["harness-to-loop", "let-ai-review-itself", "questionnaire-to-slides-agent-workflow", "dual-track-planning-loop", "notebooklm-real-photo-slides", "how-to-train-your-ai-employee"],
+    cover: { wide: "images/articles/ai-slides-half-auto-google-slides-cover.jpg" }
+  },
+
+  {
+    id: "domain-and-account-ownership",
+    url: "articles/domain-and-account-ownership/",
+    date: "2026-10-01",
+    updated: "2026-10-01",
+    title: "網域要去哪裡買？小編要給帳號密碼嗎？｜金流與帳號權限握在自己手上，其他都能交出去",
+    problem: "要請小編或找人做網站，不確定帳號密碼要不要給、網域該在哪裡買、哪些東西一定要握在自己手上。",
+    audience: "請小編、找人做網站、或要幫客戶規劃權限的經營者與接案者。",
+    summary: "真正要握在手上的只有兩件：金流與帳號權限，其他都能交給小編或 AI。小編用後台編輯權限就能工作，不需要帳號密碼；刪除、刷卡儲值、保管金鑰留給本人，這也是平台的保護機制。網域買在源頭比代理商便宜，轉移有 60 天限制，網站託管與網域同一家最好接，小心第一年便宜之後很貴；網域用個人帳號還是公司帳號買，目前還沒有結論。會員系統與金流現階段先不要自己做。文末附權限盤點表與指令。",
+    tags: {
+      topic: ["AI應用", "輔助決策", "品牌資產"],
+      level: ["零基礎入門"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["ai-customer-service-api-cost", "github-vercel-cloudflare-compare", "webnode-to-cloudflare-pages", "opus-luna-model-division"],
+    cover: { wide: "images/articles/domain-and-account-ownership-cover.jpg" }
+  },
+
+  {
     id: "cli-api-mcp-computer-use",
     url: "articles/cli-api-mcp-computer-use/",
     date: "2026-07-22",
@@ -128,7 +185,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["how-ai-connects-software", "ai-capability-tiers", "how-to-train-your-ai-employee", "openrouter-deepseek-data-routing", "grok-bot-galaxy-day2-workshops"],
+    related: ["how-ai-connects-software", "ai-capability-tiers", "how-to-train-your-ai-employee", "openrouter-deepseek-data-routing", "grok-bot-galaxy-day2-workshops", "ai-customer-service-api-cost"],
     cover: { tall: "images/articles/cli-api-mcp-computer-use-cover.jpg" }
   },
 
@@ -185,7 +242,7 @@ window.ARTICLES = [
       content_type: ["案例文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["reevaluate-models-same-test", "ai-cp-value-calculus", "what-are-subagents", "long-answer-three-layers", "meeting-record-agent-workflow", "dual-track-planning-loop", "fixed-test-set-for-ai", "ai-schedule-wake-interval"],
+    related: ["reevaluate-models-same-test", "ai-cp-value-calculus", "what-are-subagents", "long-answer-three-layers", "meeting-record-agent-workflow", "dual-track-planning-loop", "fixed-test-set-for-ai", "ai-schedule-wake-interval", "ai-customer-service-api-cost", "domain-and-account-ownership"],
     cover: { wide: "images/articles/opus-luna-model-division-cover.jpg" }
   },
 
@@ -432,7 +489,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["grok-bot-galaxy-day3-shipping", "grok-bot-galaxy-day1-founders", "ai-employee-four-levels", "cli-api-mcp-computer-use", "make-your-ai-secretary", "what-are-subagents"],
+    related: ["grok-bot-galaxy-day3-shipping", "grok-bot-galaxy-day1-founders", "ai-employee-four-levels", "cli-api-mcp-computer-use", "make-your-ai-secretary", "what-are-subagents", "ai-customer-service-api-cost"],
     cover: { tall: "images/articles/grok-bot-galaxy-day2-workshops/card01.jpg" }
   },
 
@@ -736,7 +793,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["rule-file-rebound", "three-levels-of-cross-review", "dual-track-planning-loop", "how-to-verify-ai-rule-changes", "decision-ladder-non-programmer", "ai-rule-file-slimming", "ai-adoption-raise-not-install"],
+    related: ["rule-file-rebound", "three-levels-of-cross-review", "dual-track-planning-loop", "how-to-verify-ai-rule-changes", "decision-ladder-non-programmer", "ai-rule-file-slimming", "ai-slides-half-auto-google-slides", "ai-adoption-raise-not-install"],
     cover: { tall: "images/articles/let-ai-review-itself-cover.jpg" }
   },
 
@@ -869,7 +926,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["what-is-loop-engineering", "loop-engineering-guardrails", "prompt-to-loop-map", "eight-ai-system-concepts-2026", "cross-ai-review-both-wrong", "how-to-train-your-ai-employee", "loop-four-entries", "ai-employees-manage-agents"],
+    related: ["what-is-loop-engineering", "loop-engineering-guardrails", "prompt-to-loop-map", "eight-ai-system-concepts-2026", "cross-ai-review-both-wrong", "how-to-train-your-ai-employee", "loop-four-entries", "ai-slides-half-auto-google-slides", "ai-employees-manage-agents"],
     cover: { wide: "images/articles/harness-to-loop-01.jpg" }
   },
 
@@ -1040,7 +1097,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["github-vercel-cloudflare-compare", "who-can-see-your-site", "parallel-site-editing", "hosting-platform-decision-tree", "cloudflare-service-map"],
+    related: ["github-vercel-cloudflare-compare", "who-can-see-your-site", "parallel-site-editing", "hosting-platform-decision-tree", "cloudflare-service-map", "ai-customer-service-api-cost", "domain-and-account-ownership"],
     cover: { wide: "images/articles/webnode-to-cloudflare-pages-cover.jpg" }
   },
 
@@ -1059,7 +1116,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["webnode-to-cloudflare-pages", "who-can-see-your-site", "free-deploy-three-boundaries", "hosting-platform-decision-tree", "cloudflare-service-map"]
+    related: ["webnode-to-cloudflare-pages", "who-can-see-your-site", "free-deploy-three-boundaries", "hosting-platform-decision-tree", "cloudflare-service-map", "ai-customer-service-api-cost", "domain-and-account-ownership"]
   },
 
   {
@@ -1237,7 +1294,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["character-costume-sheet-three-views", "questionnaire-to-slides-agent-workflow", "mika-to-laika-product-character-design", "slides-by-audience-sop"],
+    related: ["character-costume-sheet-three-views", "questionnaire-to-slides-agent-workflow", "mika-to-laika-product-character-design", "ai-slides-half-auto-google-slides", "slides-by-audience-sop"],
     cover: { wide: "images/articles/notebooklm-real-photo-slides-01.jpg" }
   },
 
@@ -1969,7 +2026,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["teacher-prep-knowledge-workflow", "codex-only-auto-worklog", "how-to-train-your-ai-employee", "how-ai-connects-software", "docs-as-system-design-agent", "diary-driven-agent-3x4", "what-is-loop-engineering", "tag-wiki-method", "answer-in-person-or-ai", "slides-by-audience-sop"]
+    related: ["teacher-prep-knowledge-workflow", "codex-only-auto-worklog", "how-to-train-your-ai-employee", "how-ai-connects-software", "docs-as-system-design-agent", "diary-driven-agent-3x4", "what-is-loop-engineering", "tag-wiki-method", "answer-in-person-or-ai", "ai-slides-half-auto-google-slides", "slides-by-audience-sop"]
   },
 
   {
@@ -2116,7 +2173,7 @@ window.ARTICLES = [
       content_type: ["案例文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["loop-engineering-guardrails", "a2a-agent-protocol", "docs-as-system-design-agent", "ai-handoff-instructions", "long-task-completion-rate", "session-messaging-reminder-layer", "before-installing-others-skill", "parallel-site-editing", "let-ai-review-itself", "reevaluate-models-same-test", "one-sentence-video-to-deep-article", "opus-luna-model-division"],
+    related: ["loop-engineering-guardrails", "a2a-agent-protocol", "docs-as-system-design-agent", "ai-handoff-instructions", "long-task-completion-rate", "session-messaging-reminder-layer", "before-installing-others-skill", "parallel-site-editing", "let-ai-review-itself", "reevaluate-models-same-test", "one-sentence-video-to-deep-article", "opus-luna-model-division", "ai-slides-half-auto-google-slides"],
     cover: { tall: "images/articles/dual-track-planning-loop-cover.jpg" }
   },
 
@@ -2777,7 +2834,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["strong-ai-models-knowledge-workflow-road", "questionnaire-to-slides-agent-workflow", "teacher-prep-knowledge-workflow", "own-ai-team-at-work", "agent-workflow-builds-automation", "line-group-ai-workflow", "elon-musk-live-skill", "codex-log-health-check", "how-ai-connects-software", "meeting-record-agent-workflow", "decision-ladder-non-programmer", "tidy-mess-before-consulting", "diary-driven-agent-3x4", "docs-as-system-design-agent", "what-is-loop-engineering", "map-is-not-the-territory", "intangible-assets-grow-by-sharing", "manage-ai-with-management-knowledge", "ai-handoff-instructions", "train-your-ai-agent-editor", "ai-that-knows-you", "personal-studio-vs-solo-company", "cli-api-mcp-computer-use", "knowledge-as-employee", "mika-to-laika-product-character-design", "agent-native-tools-software-interface", "ai-tools-professional-judgment", "answer-to-action-enterprise-ai-agent", "teach-ai-not-learn-ai", "talent-vs-expertise", "ai-employee-four-levels", "copied-mechanism-is-no-mechanism", "eight-ai-system-concepts-2026", "how-to-verify-ai-rule-changes", "start-from-one-persons-problem", "slides-by-audience-sop"]
+    related: ["strong-ai-models-knowledge-workflow-road", "questionnaire-to-slides-agent-workflow", "teacher-prep-knowledge-workflow", "own-ai-team-at-work", "agent-workflow-builds-automation", "line-group-ai-workflow", "elon-musk-live-skill", "codex-log-health-check", "how-ai-connects-software", "meeting-record-agent-workflow", "decision-ladder-non-programmer", "tidy-mess-before-consulting", "diary-driven-agent-3x4", "docs-as-system-design-agent", "what-is-loop-engineering", "map-is-not-the-territory", "intangible-assets-grow-by-sharing", "manage-ai-with-management-knowledge", "ai-handoff-instructions", "train-your-ai-agent-editor", "ai-that-knows-you", "personal-studio-vs-solo-company", "cli-api-mcp-computer-use", "knowledge-as-employee", "mika-to-laika-product-character-design", "agent-native-tools-software-interface", "ai-tools-professional-judgment", "answer-to-action-enterprise-ai-agent", "teach-ai-not-learn-ai", "talent-vs-expertise", "ai-employee-four-levels", "copied-mechanism-is-no-mechanism", "eight-ai-system-concepts-2026", "how-to-verify-ai-rule-changes", "start-from-one-persons-problem", "ai-slides-half-auto-google-slides", "slides-by-audience-sop"]
   },
 
   {
