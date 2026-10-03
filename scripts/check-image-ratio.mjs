@@ -169,6 +169,22 @@ for (const slug of targets) {
   const html = readIf(file);
   if (!html) continue;
 
+  // 拉長檢查（2026-10-03 立，江江：「長寬比這種低級錯誤不要再犯了」）：
+  // <img> 帶 width/height 屬性、CSS 又只寫 width:100% 沒寫 height:auto，瀏覽器會照 height 屬性撐高，圖被拉長變形。
+  {
+    const css = [...html.matchAll(/<style[^>]*>([\s\S]*?)<\/style>/g)].map((m) => m[1]).join('\n');
+    const hasAuto = (sel) => new RegExp(sel.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '\\s*\\{[^}]*height\\s*:\\s*auto', 'i').test(css)
+      || new RegExp(sel.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '\\s*\\{[^}]*aspect-ratio', 'i').test(css);
+    const sized = (cls) => new RegExp('class="' + cls + '[^"]*">\\s*<img[^>]*\\bheight="\\d+"', 'i').test(html);
+    for (const [cls, sel] of [['hero-figure', '.hero-figure img'], ['inline-figure', '.inline-figure img']]) {
+      if (sized(cls) && !hasAuto(sel)) {
+        console.log(`  ❌ ${slug}：${sel} 有 width/height 屬性但 CSS 沒有 height:auto，圖會被拉長變形`);
+        console.log(`       在該篇 <style> 的 ${sel}{…} 補上 height:auto（範本已內建，舊文要自己補）`);
+        fail = 1;
+      }
+    }
+  }
+
   for (const fig of figuresOf(html)) {
     // src 是相對文章頁的路徑（../../images/...），換算回 repo 內的實體檔
     const abs = path.resolve(path.join(ROOT, 'articles', slug), fig.src.split('?')[0]);
