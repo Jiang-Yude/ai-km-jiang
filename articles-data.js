@@ -78,6 +78,24 @@ window.ARTICLES = [
   },
 
   {
+    id: "pii-shield",
+    url: "articles/pii-shield/",
+    date: "2026-10-03",
+    updated: "2026-10-03",
+    title: "用 AI 整理個案紀錄，個資會直接送出去嗎？｜個資防護盾，免費 Claude Code Mod 在 AI 讀取前把人名與聯絡資料換成代號",
+    problem: "NPO 與社福單位想用 AI 整理個案紀錄，卻沒有 ERP 也沒有預算買地端電腦，服務對象的名字、電話、身分證號一貼給 AI 就送上雲端。",
+    audience: "在 NPO、社福單位寫個案與輔導紀錄的人，以及幫這類單位導入 AI 的顧問。",
+    summary: "個資防護盾是一個免費的 Claude Code Mod，在 AI 讀到資料之前，先在你自己的電腦上把名單上的人名，以及身分證號、手機、Email 換成代號。文章附三筆假資料的前後對照，說明它遮得到與擋不住的地方、家暴與兒少個案相關法條、上線前五項檢查，以及終端機與桌面 App 的安裝方式。",
+    tags: {
+      topic: ["資訊安全", "AI應用", "工具操作"],
+      level: ["基礎"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["ai-data-red-lines", "ai-batch-work-without-seeing-data"]
+  },
+
+  {
     id: "slides-by-audience-sop",
     url: "articles/slides-by-audience-sop/",
     date: "2026-10-03",
@@ -205,7 +223,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["ai-data-red-lines", "ai-vs-script-four-situations", "agent-workflow-builds-automation", "openrouter-deepseek-data-routing"],
+    related: ["ai-data-red-lines", "ai-vs-script-four-situations", "agent-workflow-builds-automation", "openrouter-deepseek-data-routing", "pii-shield"],
     cover: { wide: "images/articles/ai-batch-work-without-seeing-data-cover.jpg" }
   },
 
@@ -357,7 +375,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["openrouter-deepseek-data-routing", "ai-loop-safety-recovery", "ai-usage-audit", "ai-batch-work-without-seeing-data", "audrey-tang-reverse-alignment"],
+    related: ["openrouter-deepseek-data-routing", "ai-loop-safety-recovery", "ai-usage-audit", "ai-batch-work-without-seeing-data", "audrey-tang-reverse-alignment", "pii-shield"],
     cover: { wide: "images/articles/ai-data-red-lines-cover.jpg" }
   },
 
