@@ -110,7 +110,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["teach-ai-not-learn-ai", "how-to-train-your-ai-employee", "hosting-platform-decision-tree", "cloudflare-service-map", "questionnaire-to-slides-agent-workflow", "notebooklm-real-photo-slides"]
+    related: ["teach-ai-not-learn-ai", "how-to-train-your-ai-employee", "hosting-platform-decision-tree", "cloudflare-service-map", "questionnaire-to-slides-agent-workflow", "notebooklm-real-photo-slides", "ai-slides-half-auto-google-slides"]
   },
 
   {
@@ -147,7 +147,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["harness-to-loop", "let-ai-review-itself", "questionnaire-to-slides-agent-workflow", "dual-track-planning-loop", "notebooklm-real-photo-slides", "how-to-train-your-ai-employee"],
+    related: ["harness-to-loop", "let-ai-review-itself", "questionnaire-to-slides-agent-workflow", "dual-track-planning-loop", "notebooklm-real-photo-slides", "how-to-train-your-ai-employee", "slides-by-audience-sop"],
     cover: { wide: "images/articles/ai-slides-half-auto-google-slides-cover.jpg" }
   },
 
