@@ -28,7 +28,9 @@ for key in keys:
     if key == 'STATS_PASSWORD_B64':
         # V 網的環境變數存的是已編碼值；若貼進來的已是 base64，再編一次會讓後台登入失敗。
         try:
-            looks_encoded = base64.b64encode(base64.b64decode(input_value, validate=True)).decode() == input_value and len(input_value) % 4 == 0
+            raw = base64.b64decode(input_value, validate=True)
+            raw.decode('utf-8')  # 兩支 API 都把它解成 UTF-8 文字；解不出來就只能當原密碼。
+            looks_encoded = base64.b64encode(raw).decode() == input_value and len(input_value) % 4 == 0
         except Exception:
             looks_encoded = False
         if looks_encoded:
