@@ -7,6 +7,7 @@ import {execFileSync} from 'node:child_process';
 import {fileURLToPath} from 'node:url';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)),'../..');
+const legacyDecks = JSON.parse(fs.readFileSync(path.join(root,'cloudflare/legacy-decks.json'),'utf8'));
 const target = process.argv.find(a=>a.startsWith('--target='))?.split('=')[1] || 'candidate';
 if(!['candidate','production'].includes(target))throw new Error('unknown build target');
 const buildRoot = process.env.CF_BUILD_ROOT || path.join(os.tmpdir(),'ai-km-jiang-cf-build');
@@ -33,6 +34,13 @@ for (const p of files) {
   manifest.push(entry);if(kind!=='static')continue;
   const dst=path.join(out,p);fs.mkdirSync(path.dirname(dst),{recursive:true});
   if(p.endsWith('.html')) {
+    if (Object.hasOwn(legacyDecks,p)) {
+      if(target!=='candidate')throw new Error('legacy deck exemption is candidate-only: '+p);
+      if(entry.sha256!==legacyDecks[p])throw new Error('legacy deck changed; new review required: '+p);
+      fs.copyFileSync(src,dst);
+      entry.outputSha256=hashes(dst);entry.legacyUnchanged=true;
+      continue;
+    }
     let html=fs.readFileSync(src,'utf8');
     // Platform-specific beacons cannot collect on Pages. Preserve the source and the independent Upstash views.js.
     html=html.replace(/<script\b[^>]*\bsrc=["']\/_vercel\/(?:insights|speed-insights)\/script\.js["'][^>]*>[\s\S]*?<\/script>/gi,'');
