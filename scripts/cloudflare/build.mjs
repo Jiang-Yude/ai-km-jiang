@@ -23,7 +23,7 @@ const classification = p => {
     if (glob(pat).test(p) || (!pat.includes('/') && glob(pat).test(path.basename(p)))) return 'vercelignore:'+pat;
   }
   if (/^(api|lib)\//.test(p)) return 'runtime';
-  if (p.startsWith('.') || /^(functions|cloudflare|docs)\//.test(p) || ['vercel.json','wrangler.toml','README.md'].includes(p)) return 'deployment-internal';
+  if (p.startsWith('.') || /^(functions|cloudflare|docs)\//.test(p) || ['vercel.json','wrangler.toml','README.md','DEPLOYMENT.md'].includes(p)) return 'deployment-internal';
   return 'static';
 };
 const files = execFileSync('git',['-C',root,'ls-files','-z'],{maxBuffer:10*1024*1024}).toString().split('\0').filter(Boolean);

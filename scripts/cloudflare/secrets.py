@@ -26,7 +26,20 @@ for key in keys:
     if not input_value:
         raise SystemExit('空值，停止。')
     if key == 'STATS_PASSWORD_B64':
-        input_value = base64.b64encode(input_value.encode()).decode()
+        # V 網的環境變數存的是已編碼值；若貼進來的已是 base64，再編一次會讓後台登入失敗。
+        try:
+            looks_encoded = base64.b64encode(base64.b64decode(input_value, validate=True)).decode() == input_value and len(input_value) % 4 == 0
+        except Exception:
+            looks_encoded = False
+        if looks_encoded:
+            confirm = 'on run argv\nset r to display dialog (item 1 of argv) buttons {"取消", "這是原密碼，請編碼", "已是 base64，直接用"} default button 1 cancel button 1\nreturn button returned of r\nend run'
+            choice = subprocess.run(['osascript', '-e', confirm, '輸入的值看起來已經是 base64。V 網後台存的是編碼後的值，請確認你貼的是哪一種。'], capture_output=True, text=True)
+            if choice.returncode:
+                raise SystemExit('已取消，停止輸入；先前已成功設定的變數保留。')
+            if choice.stdout.strip() != '已是 base64，直接用':
+                input_value = base64.b64encode(input_value.encode()).decode()
+        else:
+            input_value = base64.b64encode(input_value.encode()).decode()
     uploaded = subprocess.run(['wrangler', 'pages', 'secret', 'put', key, '--project-name', a.project, '--env', a.environment], input=input_value+'\n', capture_output=True, text=True)
     input_value = None
     if uploaded.returncode:
