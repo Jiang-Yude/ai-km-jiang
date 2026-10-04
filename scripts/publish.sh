@@ -17,6 +17,10 @@ set -eo pipefail
 
 REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 SAFE_DEPLOY_TOOL="${SAFE_DEPLOY_TOOL:-$HOME/Library/Mobile Documents/iCloud~md~obsidian/Documents/江昱德 主知識庫/_agent/tools/safe-deploy/safe-deploy.sh}"
+if [[ "${1:-}" == "--cloudflare-candidate" ]]; then
+  [[ "$#" == "1" ]] || { echo "Cloudflare candidate takes no extra arguments"; exit 2; }
+  exec bash "$REPO_ROOT/scripts/cloudflare/deploy-candidate.sh"
+fi
 EXPECTED_BRANCH="main"
 MSG="${1:?用法：bash scripts/publish.sh \"commit 訊息\"}"
 shift
