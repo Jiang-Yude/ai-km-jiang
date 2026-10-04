@@ -233,12 +233,12 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
 
 <section class="section" id="guide"><div class="inner">
   <h2>官方這份 Opus 5.5 指南在講什麼</h2>
-  <p>每次 Claude 出新模型，Anthropic 都會出一份對應的提示詞指南，說明這一代模型跟上一代有什麼不同、指令要怎麼調。這次這份叫 <a href="https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-opus-5-5" target="_blank" rel="noopener">Prompting Claude Opus 5.5</a>。</p>
-  <p>它的讀者設定是串接 API 的開發者，所以裡面有很多參數名稱。但把參數拿掉，剩下的內容大致分成三類：</p>
+  <p>Anthropic 這次為 Claude Opus 5.5 出了一份提示詞指南，說明這一代模型跟上一代有什麼不同、指令要怎麼調，叫 <a href="https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-opus-5-5" target="_blank" rel="noopener">Prompting Claude Opus 5.5</a>。</p>
+  <p>內容大多寫給串接 API 的開發者，也有段落講 Claude Code 和聊天產品，所以裡面有很多參數名稱。把參數拿掉，剩下的內容大致分成三類：</p>
   <div class="tablewrap"><table>
     <thead><tr><th>類別</th><th>官方在講什麼</th><th>不寫程式的人用不用得到</th></tr></thead>
     <tbody>
-      <tr><td>設定怎麼調</td><td>推理程度（effort）預設改成中等、中途切換不會清掉暫存</td><td>用 Claude Code 的人用得到，一般聊天介面看不到這個設定</td></tr>
+      <tr><td>設定怎麼調</td><td>推理程度（effort）預設改成中等；在 Claude Code 裡中途切換不會清掉暫存</td><td>用 Claude Code 的人用得到，一般聊天介面看不到這個設定</td></tr>
       <tr><td>舊習慣要刪</td><td>不用再叫它「仔細思考」、不要叫它把腦中過程寫出來</td><td>用得到，改的是你寫的字</td></tr>
       <tr><td>工作怎麼交代</td><td>講清楚做完的樣子、規定什麼時候才停、留清單、分給子代理、給時間預算</td><td>最用得到，這就是交代工作的方法</td></tr>
     </tbody>
@@ -248,7 +248,7 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
 
 <section class="section" id="view"><div class="inner">
   <h2>我怎麼看：不只工程師，知識工作者也可以參考</h2>
-  <p>這份指南不只是工程師可以用，知識工作者也可以參考。對照一下，官方這次寫的幾個重點，我這半年在官網都寫過：</p>
+  <p>這份指南不只是工程師可以用，知識工作者也可以參考。對照一下，官方這次寫的幾個重點，剛好可以對上我在官網寫過的幾篇文章：</p>
   <div class="tablewrap"><table>
     <thead><tr><th>官方指南怎麼說</th><th>我之前在哪裡寫過</th></tr></thead>
     <tbody>
@@ -289,7 +289,7 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
   <div class="media-row img-right">
     <div class="media-text">
       <p>新模型有個新習慣：邊做邊跟你報告進度。報告本身是好事，問題是有時候報告完，那一輪就停了，等你說「繼續」。</p>
-      <p>官方列出它常見的四種停法：</p>
+      <p>官方給的範例指令裡，點名了四種它會停下來的方式：</p>
       <ul>
         <li>寫一大段總結，說下一步要做什麼，然後沒做</li>
         <li>客氣地問你要不要繼續</li>
@@ -314,7 +314,7 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
     <div class="media-fig"><figure class="inline-figure portrait"><img src="../../images/articles/knowledge-workers-new-model-guide-07.jpg" alt="咪卡在登山營地寫日誌，背包上掛著打勾的待辦清單：長任務留工作日誌加待辦清單" loading="lazy"><figcaption>第 6 招輪播卡：長任務留工作日誌＋待辦清單</figcaption></figure></div>
     <div class="media-text">
       <p>官方提醒：它停下來講的那段話，只是在回報，不代表工作做完了。</p>
-      <p>對話一長，AI 能記住的量有上限，前面的內容會被濃縮成摘要。待辦清單如果只留在聊天紀錄裡，很容易在濃縮時不見。寫在一個獨立的檔案裡，就不受影響。</p>
+      <p>對話一長，AI 能記住的量有上限，Claude Code 會把前面的內容濃縮成摘要。待辦清單如果只留在聊天紀錄裡，細節可能在濃縮時被省略。寫在一個獨立的檔案裡，檔案本身不會被改寫，之後隨時可以叫它重新讀。</p>
       <p>它停下來的時候，你打開那個檔案看一眼，還有幾項沒打勾，直接點名叫它繼續就好。</p>
     </div>
   </div>
@@ -333,6 +333,7 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
     <div class="media-text">
       <p>工作量很大的時候，可以叫 AI 開分身，也就是子代理（subagent），每個分身負責一小塊，做完回來報告。官方舉的例子是大型專案的稽核、搬遷、大範圍檢查。</p>
       <p>知識工作者也有這種工作：同時查三個方向的資料、替三十位學員各做一頁成果、把一百份文件逐份摘要。</p>
+      <p>這招需要能開子代理的工具，例如 Claude Code；一般的聊天視窗通常做不到。</p>
       <p>重點在驗收。分身說做完了，不代表真的做完。主 AI 如果分身回報什麼就信什麼，分身犯的錯就會一路帶進最後的成果。</p>
     </div>
     <div class="media-fig"><figure class="inline-figure portrait"><img src="../../images/articles/knowledge-workers-new-model-guide-08.jpg" alt="咪卡在倉庫用放大鏡核對三隻小分身送來的箱子：分工也要驗收，每一項都要附證據" loading="lazy"><figcaption>第 7 招輪播卡：分工也要驗收</figcaption></figure></div>
@@ -354,7 +355,7 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
     <thead><tr><th>招式</th><th>白話說明</th><th>怎麼做</th></tr></thead>
     <tbody>
       <tr><td>推理程度不用開最高</td><td>新版預設就是中等。官方測試，開中等已經跟舊版開高一樣好；同一個等級，新版想得比舊版多</td><td>在 Claude Code 輸入 <code>/effort</code> 選 medium，再拿常做的工作試低、中、高，選夠用的最低檔</td></tr>
-      <tr><td>別再叫它「仔細想」</td><td>新版每次都會自己先想。官方實測，拿掉這句回覆變快，品質沒有明顯下降</td><td>刪掉「請仔細思考」「一步一步想」。想知道理由，就請它用三句話說明</td></tr>
+      <tr><td>別再叫它「仔細想」</td><td>新版的思考功能一直開著，想多久它自己判斷。官方在聊天產品裡測過，拿掉這句回覆開始得比較快，品質沒有明顯下降</td><td>刪掉「請仔細思考」「一步一步想」。想知道理由，就請它用三句話說明</td></tr>
       <tr><td>設計要說「不要什麼」</td><td>只說「不要有 AI 味」太模糊，它只會從一種老套換成另一種</td><td>直接點名：不要米白底、斜體標題、01 02 03 編號、膠囊按鈕。做完看它換成什麼，不喜歡就再加進清單</td></tr>
     </tbody>
   </table></div>
@@ -375,7 +376,7 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
       <p>做法很簡單：挑幾件固定的工作，每次換模型就重跑一次，比對結果。有走樣的地方，就調整那份指令。</p>
     </div>
   </div>
-  <p>我自己做過一次完整的：一個每天整理 LINE 群訊息的小工具，用同一份 138 則訊息的考卷評估了三輪，新模型出來就重考一次，最後月費從大約 83 元降到大約 6 到 13 元。過程和踩過的坑都寫在下面那篇。</p>
+  <p>我在<a href="../reevaluate-models-same-test/">同一份考卷考三輪</a>那篇寫過一次完整的過程：一個每天整理 LINE 群訊息的小工具，用同一份 138 則訊息的考卷評估了三輪，新模型出來就重考一次，最後預估月費從大約 83 元降到大約 6 到 13 元。</p>
   <aside class="readmore near"><b>同一份考卷考三輪，我另外寫成一篇</b>
     <ul><li><a href="../reevaluate-models-same-test/">AI 小工具該用便宜模型還是貴的？｜同一份考卷考三輪，新模型出來就重新評估</a>　這一段只講換模型要重測，那篇有考卷怎麼出、三輪怎麼比、評估記錄表和月費試算提示詞。</li></ul>
   </aside>
