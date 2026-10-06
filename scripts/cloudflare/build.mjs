@@ -28,6 +28,7 @@ const classification = p => {
 };
 const files = execFileSync('git',['-C',root,'ls-files','-z'],{maxBuffer:10*1024*1024}).toString().split('\0').filter(Boolean);
 const manifest = [];
+const legacyIncluded = [];
 for (const p of files) {
   const src=path.join(root,p);if(!fs.statSync(src).isFile())continue;
   const kind=classification(p); const entry={path:p,bytes:fs.statSync(src).size,sha256:hashes(src),classification:kind};
@@ -35,7 +36,7 @@ for (const p of files) {
   const dst=path.join(out,p);fs.mkdirSync(path.dirname(dst),{recursive:true});
   if(p.endsWith('.html')) {
     if (Object.hasOwn(legacyDecks,p)) {
-      if(target!=='candidate')throw new Error('legacy deck exemption is candidate-only: '+p);
+      legacyIncluded.push(p);
       if(entry.sha256!==legacyDecks[p])throw new Error('legacy deck changed; new review required: '+p);
       fs.copyFileSync(src,dst);
       entry.outputSha256=hashes(dst);entry.legacyUnchanged=true;
@@ -92,6 +93,20 @@ fs.writeFileSync(path.join(out,'_routes.json'),JSON.stringify({version:1,include
 execFileSync('wrangler',['pages','functions','build',path.join(root,'functions'),'--outdir='+path.join(out,'_worker.js'),'--compatibility-date=2026-09-04','--compatibility-flags=nodejs_compat','--minify'],{cwd:root,stdio:'inherit'});
 const statics=manifest.filter(x=>x.classification==='static');
 if(statics.length>20000||statics.some(x=>x.bytes>25*1024*1024))throw new Error('Pages asset limit exceeded');
+// 正式建置含歷史課後頁時，必須用課後關卡同一支檢查器驗過豁免（短期未過期，或原始逐字稿不存在的雜湊綁定放行）。
+// 驗不過就停止，不寫 latest.json，避免拿到未驗證的產物。
+if(legacyIncluded.length){
+  try {
+    const evidence=process.env.SAFE_DEPLOY_POSTCLASS_EVIDENCE_DIR;
+    if(!evidence||!fs.existsSync(evidence))throw new Error('build with legacy decks requires SAFE_DEPLOY_POSTCLASS_EVIDENCE_DIR');
+    const checker=process.env.POSTCLASS_CHECKER||path.join(os.homedir(),'Library/Mobile Documents/iCloud~md~obsidian/Documents/江昱德 主知識庫/_agent/tools/postclass-loop/2026-09-28-1010 check-postclass-loop.py');
+    if(!fs.existsSync(checker))throw new Error('postclass checker not found: '+checker);
+    execFileSync('python3',[checker,'--deploy-dir',out,'--evidence-dir',evidence],{stdio:'inherit'});
+  } catch (error) {
+    fs.rmSync(out,{recursive:true,force:true});
+    throw error;
+  }
+}
 fs.writeFileSync(path.join(buildRoot,'manifest.json'),JSON.stringify({target,commit:execFileSync('git',['-C',root,'rev-parse','HEAD']).toString().trim(),staticCount:statics.length,htmlCount:statics.filter(x=>x.path.endsWith('.html')).length,files:manifest,redirects},null,2));
 fs.writeFileSync(path.join(buildRoot,'latest.json'),JSON.stringify({target,directory:out}));
 console.log('BUILD_DIRECTORY='+out);
