@@ -772,7 +772,9 @@ module.exports = async (req, res) => {
       ? (Number(process.env.MIKA_MAX_TOKENS_PAGE) || 1800)
       : (Number(process.env.MIKA_MAX_TOKENS) || 600);
     const routed = await routeChat({
-      env: { ...process.env, CLAUDE_BUDGET_MS: process.env.CLAUDE_BUDGET_MS || '10000' },
+      env: process.env,
+      // Claude 段最多 15 秒（預設 10 秒），OpenAI 至少還有 12 秒，整體守住 30 秒上限
+      deadlineAt: t0 + Math.min(Number(process.env.CLAUDE_BUDGET_MS) || 10000, 15000),
       system: 'mika-chat',
       messages: [{ role: 'system', content: system }, ...msgs],
       maxTokens: Number(process.env.MIKA_CLAUDE_MAX_TOKENS) || Math.max(2000, oaiMax * 2),
