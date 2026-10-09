@@ -209,6 +209,8 @@ git tag "$TAG"
 git push --atomic origin \
   "HEAD:refs/heads/$EXPECTED_BRANCH" \
   "refs/tags/$TAG:refs/tags/$TAG"
+# 機器可讀收據（2026-10-09，Codex R2 第 1 條）：只有 push 真的成功才印；publish-queue.py 用它判「已 push 但部署或驗收未完成」。
+echo "PUBLISH_PUSHED $(git rev-parse HEAD) ${TAG}"
 
 # ─── 動態驗收路徑（2026-07-29 立，事故驅動）───
 # 固定五站不含新文章路徑，所以「索引宣告存在、檔案被 .vercelignore 擋著沒上傳」的 404

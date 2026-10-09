@@ -132,7 +132,8 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["dont-learn-ai-tools", "harness-to-loop", "parallel-site-editing", "what-is-loop-engineering", "cathay-tech-conference-2026"]
+    related: ["dont-learn-ai-tools", "harness-to-loop", "parallel-site-editing", "what-is-loop-engineering", "cathay-tech-conference-2026"],
+    cover: { wide: "images/articles/ai-employees-manage-agents-cover.jpg" }
   },
 
   {
@@ -150,7 +151,8 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["build-your-own-dictionary", "semantic-rules-before-prompt-templates", "ai-handoff-instructions", "ai-rule-file-slimming"]
+    related: ["build-your-own-dictionary", "semantic-rules-before-prompt-templates", "ai-handoff-instructions", "ai-rule-file-slimming"],
+    cover: { wide: "images/articles/ai-understands-ei-ha-cover.jpg" }
   },
 
   {
@@ -168,7 +170,8 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["ai-data-red-lines", "ai-batch-work-without-seeing-data", "token-money-worth-doing", "auto-compact-mod"]
+    related: ["ai-data-red-lines", "ai-batch-work-without-seeing-data", "token-money-worth-doing", "auto-compact-mod"],
+    cover: { wide: "images/articles/pii-shield-cover.jpg" }
   },
 
   {
@@ -186,7 +189,8 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["teach-ai-not-learn-ai", "how-to-train-your-ai-employee", "hosting-platform-decision-tree", "cloudflare-service-map", "questionnaire-to-slides-agent-workflow", "notebooklm-real-photo-slides", "ai-slides-half-auto-google-slides"]
+    related: ["teach-ai-not-learn-ai", "how-to-train-your-ai-employee", "hosting-platform-decision-tree", "cloudflare-service-map", "questionnaire-to-slides-agent-workflow", "notebooklm-real-photo-slides", "ai-slides-half-auto-google-slides"],
+    cover: { wide: "images/articles/slides-by-audience-sop-cover.jpg" }
   },
 
   {

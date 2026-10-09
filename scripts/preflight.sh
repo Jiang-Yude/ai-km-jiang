@@ -65,6 +65,13 @@ if node scripts/check-image-ratio.mjs; then
 else
   bad "圖片比例未過：見上方清單。重生該張圖，或在 image-ratio-ignore.json 寫明這篇為什麼不套"
 fi
+# 列表封面欄位（2026-10-09 立，事故驅動）：文章頁有 hero 封面、article.json 卻沒 cover，文章列表卡片就沒封面，
+# 之前沒有任何檢查擋。只驗本次變更的文章；舊文用 --all 列清單不擋。
+if node scripts/check-article-cover.mjs; then
+  ok "列表封面欄位（有 hero 封面的文章 article.json 都有 cover）"
+else
+  bad "列表封面欄位未過：見上方清單。article.json 補 cover，或在 article-cover-ignore.json 寫明理由"
+fi
 
 echo "═══ 2/11 文章互聯腳本齊全 ═══"
 if node scripts/verify-interlink.js 2>&1 | grep -q "結果：PASS"; then ok "interlink"; else bad "verify-interlink FAIL（有文章缺互聯腳本）"; fi
@@ -87,7 +94,9 @@ done
 # 已上線文章 sitemap 覆蓋（2026-09-22 立，4O 健檢抓到缺口）：上面那段只驗根目錄 *.html，
 # 深度文章與 AI 趨勢有好幾篇上線了卻沒進 sitemap。這一關比對 articles-data.js 宣告的上線文章
 # （排除 .vercelignore 擋板與 noindex）與 sitemap.xml，缺一篇就擋。
-if node scripts/check-sitemap-coverage.mjs; then ok "已上線文章都在 sitemap"; else bad "有已上線文章不在 sitemap.xml（見上方清單）"; fi
+# 2026-10-09 起 sitemap 文章段是生成的（scripts/build-sitemap.mjs，merge-publish 重建步會跑）；
+# 這一關還留著當保底：分支不必再手補 sitemap，但若有人繞過 merge-publish 直接 publish，這裡仍擋。
+if node scripts/check-sitemap-coverage.mjs; then ok "已上線文章都在 sitemap"; else bad "有已上線文章不在 sitemap.xml（見上方清單）：跑 node scripts/build-sitemap.mjs 重建文章段，不用手補"; fi
 grep -q "knowledge-architecture" llms.txt && ok "llms.txt 有知識架構" || bad "llms.txt 缺知識架構"
 
 echo "═══ 5/11 雙語主導航（2026-09-22 停用）═══"
