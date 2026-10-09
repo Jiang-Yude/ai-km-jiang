@@ -23,6 +23,25 @@ window.ARTICLE_TAGS = {
 
 window.ARTICLES = [
   {
+    id: "auto-compact-mod",
+    url: "articles/auto-compact-mod/",
+    date: "2026-10-09",
+    updated: "2026-10-09",
+    title: "離開超過一小時回來，AI 對話為什麼變貴？｜我用 Claude Code Mod 做了閒置 55 分鐘先寫日誌再自動壓縮",
+    problem: "AI 對話開很久、中途離開超過一小時回來，第一句話特別貴；直接壓縮上下文又怕 AI 忘記做到哪。",
+    audience: "常常一個 AI 對話開很久、中途離開又回來的人；用 Claude Code、想知道 Mod 能做什麼的人。",
+    summary: "Claude Code 的快取存 1 小時，離開超過一小時回來，前面的對話要用一般價格重新計算。我先用 Hook 做續接卡，但 Hook 叫不醒閒置的對話；後來用 Claude Code Mod 做了 auto-compact-55：說「壓縮上下文」就先寫工作日誌再壓縮，閒置 55 分鐘也會自動先寫日誌再壓縮。文章講兩套機制、說了卻沒壓縮的坑怎麼修、安全邊界，最後附不寫程式也能照做的手動流程。",
+    tags: {
+      topic: ["AI工作流", "工具操作"],
+      level: ["進階"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["token-money-worth-doing", "pii-shield", "codex-log-health-check"],
+    cover: { wide: "images/articles/auto-compact-mod-cover.jpg" }
+  },
+
+  {
     id: "token-money-worth-doing",
     url: "articles/token-money-worth-doing/",
     date: "2026-10-09",
@@ -37,7 +56,8 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["delete-before-automate", "reevaluate-models-same-test", "ai-image-api-cost", "ai-customer-service-api-cost", "pii-shield", "codex-log-health-check"]
+    related: ["auto-compact-mod", "delete-before-automate", "reevaluate-models-same-test", "ai-image-api-cost", "ai-customer-service-api-cost", "pii-shield", "codex-log-health-check"],
+    cover: { wide: "images/articles/token-money-worth-doing-cover.jpg" }
   },
 
   {
@@ -110,7 +130,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["ai-data-red-lines", "ai-batch-work-without-seeing-data", "token-money-worth-doing"]
+    related: ["ai-data-red-lines", "ai-batch-work-without-seeing-data", "token-money-worth-doing", "auto-compact-mod"]
   },
 
   {
@@ -2814,7 +2834,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["codex-only-auto-worklog", "agent-workflow-builds-automation", "how-to-train-your-ai-employee", "token-money-worth-doing"],
+    related: ["codex-only-auto-worklog", "agent-workflow-builds-automation", "how-to-train-your-ai-employee", "token-money-worth-doing", "auto-compact-mod"],
     cover: { tall: "images/articles/codex-log-health-check-cover-image2.jpg" }
   },
 
