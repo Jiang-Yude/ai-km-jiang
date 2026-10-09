@@ -7,7 +7,7 @@ def run(op, host, fail_verify=False, api_fail_on=None, pre=None):
                                         {'id': '2', 'type': 'A', 'content': '216.198.79.1', 'proxied': False, 'ttl': 1, 'name': host}]
     domains = []; n = [10]; calls = []
     def api(tok, m, path, body=None):
-        calls.append((m, path.split('?')[0][-40:]))
+        calls.append((m, path.split('?')[0][-40:])); g['mark_change'](m)
         if api_fail_on and api_fail_on(m, path, calls): raise SystemExit('STOP: Cloudflare API mock fail')
         if path.startswith('/zones?'): return [zone]
         if '/dns_records' in path:
@@ -23,7 +23,7 @@ def run(op, host, fail_verify=False, api_fail_on=None, pre=None):
     g = {'__name__': 'mock', '__file__': sys.argv[1]}
     code = src.split("\np = argparse.ArgumentParser()")[0]
     exec(code, g)
-    g['api'] = api; g['HOST'] = host; g['ROLLING'] = False
+    g['api'] = api; g['HOST'] = host; g['ROLLING'] = False; g['CHANGED'] = False
     g['SNAP_DIR'] = pathlib.Path(tempfile.mkdtemp())
     g['verify'] = lambda expect: not (fail_verify and expect == 'cloudflare')
     g['production_ready'] = lambda tok: None
@@ -34,7 +34,7 @@ def run(op, host, fail_verify=False, api_fail_on=None, pre=None):
         if op == 'cutover' and not fail_verify: g['rollback']('t')
     except SystemExit as e:
         print('  exit:', e)
-    return sorted((r['type'], r['content'], r['proxied']) for r in recs), domains
+    return sorted((r['type'], r['content'], r['proxied']) for r in recs), domains, 'CHANGED=' + str(g['CHANGED'])
 print('A 正常切＋退回 →', run('cutover', 'jiangyude.com'))
 print('B 切後驗證失敗自動退回 →', run('cutover', 'jiangyude.com', fail_verify=True))
 print('C 演練主機非空（TXT）→', run('cutover', 'drill.jiangyude.com', pre=[{'id': '9', 'type': 'TXT', 'content': 'x', 'proxied': False, 'ttl': 1}]))
@@ -63,14 +63,6 @@ try:
 except SystemExit as e:
     print('G KeyError 中途失敗 → rollback 呼叫次數', state['rb'], '（期望 2）exit:', e)
 
-# H: preflight failure before any change must NOT roll back.
-g2 = {'__name__': 'mock', '__file__': g['__file__']}
-exec(main_code, g2)
-st2 = {'rb': 0}
-def pre_fail(t): raise KeyError('preflight')
-g2.update(token=lambda: 't', cutover=pre_fail, rollback=lambda t: st2.__setitem__('rb', st2['rb'] + 1), plan=lambda op: None)
-g2['time'].sleep = lambda s: None
-try:
-    exec(tail, g2)
-except SystemExit as e:
-    print('H 異動前失敗 → rollback 呼叫次數', st2['rb'], '（期望 0）exit:', e)
+# H: real cutover(); a GET after the snapshot fails before any mutation -> CHANGED stays False (main will not roll back).
+print('H 快照後、首次異動前 GET 失敗 →', run('cutover', 'jiangyude.com', api_fail_on=lambda m, p, c: m == 'GET' and p.endswith('/domains')), '（期望 CHANGED=False）')
+print('I 首次異動 POST 失敗 →', run('cutover', 'jiangyude.com', api_fail_on=lambda m, p, c: m == 'POST'), '（期望 CHANGED=True）')

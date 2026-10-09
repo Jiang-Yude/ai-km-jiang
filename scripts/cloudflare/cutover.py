@@ -47,7 +47,15 @@ def token():
     return t
 
 
+def mark_change(method):
+    # The first non-GET call is the first possible mutation; only after it may a failure trigger auto rollback.
+    global CHANGED
+    if method != 'GET':
+        CHANGED = True
+
+
 def api(tok, method, path, body=None):
+    mark_change(method)
     last = None
     for attempt in range(4):
         req = urllib.request.Request('https://api.cloudflare.com/client/v4' + path, method=method,
@@ -197,8 +205,6 @@ def cutover(tok):
     snap = SNAP_DIR / (datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%SZ') + f'-{HOST}.json')
     snap.write_text(json.dumps(recs, indent=2, ensure_ascii=False))
     print('已存快照：', snap)
-    global CHANGED
-    CHANGED = True  # from here on DNS / Pages may be modified; failures trigger auto rollback
     if not any(x['name'] == HOST for x in api(tok, 'GET', f'/accounts/{ACCOUNT}/pages/projects/{PROJECT}/domains')):
         api(tok, 'POST', f'/accounts/{ACCOUNT}/pages/projects/{PROJECT}/domains', {'name': HOST})
         print('Pages 自訂網域已新增')
