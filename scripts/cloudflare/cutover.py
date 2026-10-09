@@ -33,8 +33,15 @@ def sh(*cmd):
     return subprocess.run(cmd, capture_output=True, text=True).stdout.strip()
 
 
+def pin(url):
+    """Resolve the host at Cloudflare's authoritative NS so local/ISP DNS caches cannot fake a failed or passed check."""
+    host = url.split('/')[2]
+    ip = next((l for l in sh('dig', '+short', host, 'A', '@howard.ns.cloudflare.com').splitlines() if l and l[0].isdigit()), '')
+    return ['--resolve', f'{host}:443:{ip}'] if ip else []
+
+
 def http_probe(url):
-    r = subprocess.run(['curl', '-s', '-o', '/dev/null', '-D', '-', '-m', '20', url], capture_output=True, text=True).stdout
+    r = subprocess.run(['curl', '-s', '-o', '/dev/null', '-D', '-', '-m', '20', *pin(url), url], capture_output=True, text=True).stdout
     status = r.split('\n', 1)[0].strip()
     server = next((l.split(':', 1)[1].strip() for l in r.splitlines() if l.lower().startswith('server:')), '?')
     return status, server
@@ -127,7 +134,7 @@ def verify(expect):
             break
     if HOST == DOMAIN:
         for _ in range(8):
-            r = subprocess.run(['curl', '-s', '-o', '/dev/null', '-w', '%{http_code} %{redirect_url}', '-m', '20', f'https://www.{DOMAIN}/'], capture_output=True, text=True).stdout.split()
+            r = subprocess.run(['curl', '-s', '-o', '/dev/null', '-w', '%{http_code} %{redirect_url}', '-m', '20', *pin(f'https://www.{DOMAIN}/'), f'https://www.{DOMAIN}/'], capture_output=True, text=True).stdout.split()
             code, loc = (int(r[0]) if r and r[0].isdigit() else 0), (r[1] if len(r) > 1 else '')
             good = code in (301, 308) and loc.rstrip('/') == f'https://{DOMAIN}'
             if good:
