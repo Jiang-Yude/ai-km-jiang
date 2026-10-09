@@ -62,16 +62,68 @@ def apex_records(tok, zone):
     return [r for r in api(tok, 'GET', f'/zones/{zone}/dns_records?name={HOST}&per_page=100') if r['type'] in ('A', 'AAAA', 'CNAME')]
 
 
+def status_code(line):
+    parts = line.split()
+    return int(parts[1]) if len(parts) > 1 and parts[1].isdigit() else 0
+
+
 def check():
     ns = {l.split(':', 1)[1].strip().lower() for l in sh('whois', DOMAIN).splitlines() if 'name server:' in l.lower()}
     print('NS（註冊局）:', ', '.join(sorted(ns)) or '?', '✅' if ns == CF_NS else '❌ 不是 Cloudflare')
     print('DS（DNSSEC）:', sh('dig', '+short', 'DS', DOMAIN) or '無')
-    print('apex 解析:', sh('dig', '+short', DOMAIN, '@howard.ns.cloudflare.com').replace('\n', ' '))
-    for h in (DOMAIN, 'www.' + DOMAIN, 'lightstory.' + DOMAIN):
+    print(f'{HOST} 解析:', sh('dig', '+short', HOST, '@howard.ns.cloudflare.com').replace('\n', ' '))
+    for h in dict.fromkeys((HOST, DOMAIN, 'www.' + DOMAIN, 'lightstory.' + DOMAIN)):
         s, srv = http_probe('https://' + h + '/')
         print(f'https://{h}/ → {s}  server={srv}')
-    s, srv = http_probe(f'https://{DOMAIN}/api/stats')
-    print(f'/api/stats → {s}  server={srv}（cloudflare＝已切 C 網；Vercel＝舊站）')
+
+
+def verify(expect):
+    """expect='cloudflare' after cutover, 'vercel' after rollback. Returns True only if HOST serves as expected."""
+    ok = True
+    for path in ('/', '/api/stats'):
+        good = False
+        for _ in range(8):
+            s, srv = http_probe(f'https://{HOST}{path}')
+            code, srv_l = status_code(s), srv.lower()
+            if expect == 'cloudflare':
+                good = code == 200 and srv_l == 'cloudflare'
+            else:  # Vercel answers the apex with 200; a spare drill host falls to the wildcard (Vercel, any status)
+                good = srv_l == 'vercel' and (code == 200 or HOST != DOMAIN)
+            if good:
+                break
+            time.sleep(15)
+        print(f'  驗證 https://{HOST}{path} → {s} server={srv}', '✅' if good else '❌')
+        ok &= good
+        if HOST != DOMAIN and expect == 'vercel':
+            break
+    if HOST == DOMAIN:
+        s, srv = http_probe(f'https://www.{DOMAIN}/')
+        good = status_code(s) == 301 and srv.lower() == 'vercel'
+        print(f'  驗證 https://www.{DOMAIN}/ → {s} server={srv}', '✅' if good else '❌')
+        ok &= good
+    return ok
+
+
+def production_ready(tok):
+    head = sh('git', '-C', str(Path(__file__).resolve().parents[2]), 'rev-parse', 'HEAD')
+    receipt = SNAP_DIR / 'production-receipt.json'
+    if not receipt.exists():
+        sys.exit('STOP: 沒有 production-receipt.json，先跑 deploy-production.sh。')
+    rec = json.loads(receipt.read_text())
+    deps = api(tok, 'GET', f'/accounts/{ACCOUNT}/pages/projects/{PROJECT}/deployments?env=production&per_page=1')
+    if not deps:
+        sys.exit('STOP: Pages 沒有 production 部署。')
+    d = deps[0]
+    commit = (d.get('deployment_trigger') or {}).get('metadata', {}).get('commit_hash', '')
+    stage = (d.get('latest_stage') or {}).get('status')
+    print(f'最新 production：{d["id"]} commit={commit[:7]} stage={stage}；receipt commit={rec.get("commit","")[:7]}；HEAD={head[:7]}')
+    if stage != 'success' or not commit or not (commit == rec.get('commit') == head):
+        sys.exit('STOP: 最新 production 部署不是本次已驗收的版本（commit／狀態不符），不切。')
+    for path in ('/', '/api/stats'):
+        s, srv = http_probe(d['url'] + path)
+        print(f'  production 網址 {d["url"]}{path} → {s}')
+        if status_code(s) != 200:
+            sys.exit('STOP: production 部署網址驗收失敗，不切。')
 
 
 def plan(op, tok=None):
@@ -80,13 +132,13 @@ def plan(op, tok=None):
         print(f'  1. Pages 專案 {PROJECT} 新增自訂網域 {HOST}')
         print(f'  2. 刪除 apex 的 Vercel A 紀錄（先存快照到 cutover-snapshots/）')
         print(f'  3. 新增 apex CNAME → {PAGES_TARGET}（Proxied）')
-        print('  4. 等 Pages 網域 active，驗首頁、/api/stats、歷史總數')
+        print('  4. 等 Pages 網域 active，驗首頁與 /api/stats 由 cloudflare 回 200、www 仍 301；失敗自動退回')
         print('  不動：www（照舊 Vercel 轉址到 apex）、*、lightstory、CAA')
         print('  前提：Pages production 已用 deploy-production.sh 部署（CF_SITE_MODE=production、CF_PROD_KEYS=original）')
     else:
         print('退回內容：')
         print(f'  1. 刪除 apex CNAME → {PAGES_TARGET}')
-        print('  2. 依最新快照（沒有就用內建值 64.29.17.1、216.198.79.1）重建 apex A 紀錄，僅 DNS')
+        print('  2. 依最新快照完整還原原本的紀錄（apex 沒快照時用內建 Vercel A 64.29.17.1、216.198.79.1，僅 DNS）')
         print(f'  3. Pages 專案移除自訂網域 {HOST}')
         print('  4. 驗首頁 server 回 Vercel、/api/stats 正常')
         print('  NS 留在 Cloudflare；要完全退出 Cloudflare 才在 Vercel 把 NS 改回 ns1/ns2.vercel-dns.com（無 DS，不需先處理 DNSSEC）')
@@ -108,10 +160,11 @@ def cutover(tok):
     zone = api(tok, 'GET', f'/zones?name={DOMAIN}')[0]
     if zone['status'] != 'active':
         sys.exit(f'STOP: zone 狀態 {zone["status"]}，還沒 active。')
-    deps = api(tok, 'GET', f'/accounts/{ACCOUNT}/pages/projects/{PROJECT}/deployments?env=production&per_page=1')
-    if not deps:
-        sys.exit('STOP: Pages 沒有 production 部署，先跑 deploy-production.sh。')
+    if HOST == DOMAIN:
+        production_ready(tok)
     recs = apex_records(tok, zone['id'])
+    if HOST != DOMAIN and recs:
+        sys.exit(f'STOP: 演練用的 {HOST} 已經有 DNS 紀錄，只能用全新的備用子網域。')
     SNAP_DIR.mkdir(exist_ok=True)
     snap = SNAP_DIR / (datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%SZ') + f'-{HOST}.json')
     snap.write_text(json.dumps(recs, indent=2, ensure_ascii=False))
@@ -128,16 +181,22 @@ def cutover(tok):
         api(tok, 'POST', f'/zones/{zone["id"]}/dns_records', {'type': 'CNAME', 'name': HOST, 'content': PAGES_TARGET, 'proxied': True, 'ttl': 1, 'comment': 'cutover ' + snap.name})
         print('新增 CNAME', HOST, '→', PAGES_TARGET)
     print('CUTOVER_UTC', datetime.now(timezone.utc).isoformat())
-    if not wait_active(tok):
-        print('⚠️ 15 分鐘內 Pages 網域未 active。網站可能暫時錯誤；若要退回：rollback.sh --execute --approval 退回')
-    check()
+    if not (wait_active(tok) and verify('cloudflare')):
+        print('❌ 切換後驗證失敗，自動退回 Vercel。')
+        rollback(tok)
+        sys.exit('CUTOVER_FAILED_ROLLED_BACK')
+    print('✅ CUTOVER_VERIFIED')
 
 
 def rollback(tok):
+    global ROLLING
+    ROLLING = True
     zone = api(tok, 'GET', f'/zones?name={DOMAIN}')[0]
     snaps = sorted(SNAP_DIR.glob(f'*-{HOST}.json')) if SNAP_DIR.exists() else []
-    want = [{'type': r['type'], 'content': r['content']} for r in json.loads(snaps[-1].read_text()) if r['type'] in ('A', 'AAAA')] if snaps else []
-    want = want or (VERCEL_APEX if HOST == DOMAIN else [])
+    want = [{'type': r['type'], 'content': r['content'], 'proxied': r.get('proxied', False), 'ttl': r.get('ttl', 1)}
+            for r in json.loads(snaps[-1].read_text()) if not (r['type'] == 'CNAME' and r['content'] == PAGES_TARGET)] if snaps else []
+    if not snaps and HOST == DOMAIN:
+        want = [{**w, 'proxied': False, 'ttl': 1} for w in VERCEL_APEX]
     print('還原依據：', snaps[-1].name if snaps else '內建值', want)
     for r in apex_records(tok, zone['id']):
         if r['type'] == 'CNAME' and r['content'] == PAGES_TARGET:
@@ -146,14 +205,15 @@ def rollback(tok):
     have = {(r['type'], r['content']) for r in apex_records(tok, zone['id'])}
     for w in want:
         if (w['type'], w['content']) not in have:
-            api(tok, 'POST', f'/zones/{zone["id"]}/dns_records', {**w, 'name': HOST, 'proxied': False, 'ttl': 1, 'comment': 'rollback to Vercel'})
-            print('新增', w['type'], w['content'], '僅 DNS')
+            api(tok, 'POST', f'/zones/{zone["id"]}/dns_records', {**w, 'name': HOST, 'comment': 'rollback to Vercel'})
+            print('還原', w['type'], w['content'], 'proxied=' + str(w['proxied']))
     if any(x['name'] == HOST for x in api(tok, 'GET', f'/accounts/{ACCOUNT}/pages/projects/{PROJECT}/domains')):
         api(tok, 'DELETE', f'/accounts/{ACCOUNT}/pages/projects/{PROJECT}/domains/{HOST}')
         print('Pages 自訂網域已移除')
     print('ROLLBACK_UTC', datetime.now(timezone.utc).isoformat())
-    time.sleep(20)
-    check()
+    if not verify('vercel'):
+        sys.exit('ROLLBACK_VERIFY_FAILED：DNS 已還原但驗證未過，可能是快取，幾分鐘後跑 check 再看。')
+    print('✅ ROLLBACK_VERIFIED')
 
 
 p = argparse.ArgumentParser()
@@ -173,10 +233,12 @@ if not a.execute:
 want = '切' if a.operation == 'cutover' else '退回'
 if a.approval != want:
     sys.exit(f'STOP: 要帶 --approval {want}')
+ROLLING = False
 t = token()
 try:
     cutover(t) if a.operation == 'cutover' else rollback(t)
 except SystemExit as e:
-    if a.operation == 'cutover' and str(e).startswith('STOP: Cloudflare API'):
-        print('⚠️ 切換中途失敗，狀態可能只做一半。立刻退回：bash scripts/cloudflare/rollback.sh --execute --approval 退回')
+    if a.operation == 'cutover' and not ROLLING and str(e).startswith('STOP: Cloudflare API'):
+        print('⚠️ 切換中途失敗，自動退回。')
+        rollback(t)
     raise

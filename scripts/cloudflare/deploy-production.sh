@@ -15,3 +15,6 @@ SAFE_DEPLOY_CALLER=scripts/publish.sh \
   SAFE_DEPLOY_CF_PROD_BRANCH=main SAFE_DEPLOY_CF_CANDIDATE_BRANCH=safe-candidate \
   SAFE_DEPLOY_WRANGLER_BIN="$task_root/scripts/cloudflare/wrangler-production.sh" \
   bash "$task_safe" --cf ai-km-jiang-cf-20261004 "$task_dir" / /articles /courses /skills /site-index.json /llms.txt
+mkdir -p "$task_root/scripts/cloudflare/cutover-snapshots"
+printf '{"commit":"%s","deployed_at":"%s"}\n' "$(git -C "$task_root" rev-parse HEAD)" "$(date -u +%Y-%m-%dT%H:%M:%SZ)" > "$task_root/scripts/cloudflare/cutover-snapshots/production-receipt.json"
+echo "PRODUCTION_DEPLOYED $(git -C "$task_root" rev-parse --short HEAD); jiangyude.com not moved (run cutover.py)"
