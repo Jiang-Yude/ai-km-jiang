@@ -3,6 +3,7 @@
    維護：新文章上稿時補一條；訪客搜尋 log 發現沒接住的問法，第一線修法＝來這裡補別名。
    key＝articles-data.js 的文章 id。 */
 window.SEARCH_ALIASES = {
+  "knowledge-workers-new-model-guide": ["Opus 5.5 怎麼下指令","Opus 5.5 官方指南","Claude 新版怎麼用","AI 換新版指令要改嗎","新模型提示詞要改嗎","不寫程式的人怎麼用 Claude Code","知識工作者用 AI","AI 做到一半停下來","AI 報告完就不做了","怎麼讓 AI 自己做下去","AI 長任務待辦清單","工作日誌給 AI","子代理驗收","effort 要開多少","推理程度要開最高嗎","請仔細思考要不要寫","AI 設計不要有 AI 味","換模型要重測嗎","怎麼交代 AI 工作","交代工作給 AI","迴圈工程入門"],
   "ai-customer-service-api-cost": ["官網 AI 客服要多少錢","API 是什麼 會不會很貴","API key 放哪裡","金鑰外洩怎麼辦","ChatGPT 月費跟 API 差在哪","客服用哪個模型","GPT-6 Luna 費用","語音客服多少錢","Gemini 語音客服","網站加聊天機器人"],
   "ai-slides-half-auto-google-slides": ["AI 簡報助理","PDF 轉 MD 給 AI 讀","簡報收成技能包","AI 做簡報還要自己改","AI 做簡報 Token 用很兇","做簡報不知道下什麼指令","AI 連動 Google 簡報","半自動做簡報","AI 改不動簡報","簡報字太小","怎麼教 AI 我改了哪裡","圖片檔名省 token"],
   "domain-and-account-ownership": ["網域在哪裡買","網域用個人還是公司帳號","小編要給帳號密碼嗎","給小編編輯權限","網域轉移要等多久","網站換人拿不回來","哪些權限要握在自己手上","會員系統要不要自己做"],
