@@ -783,10 +783,12 @@ module.exports = async (req, res) => {
       refusalText: '這個問題咪卡沒辦法回答，換個方式問問看，或直接聯絡江江。',
       callOpenAI: async ({ signal } = {}) => {
         /* 計時器涵蓋到讀完回應內容（原本在 r.json() 前就清掉，body 卡住時沒有保護；2026-10-09 跨家審第四輪）。
-           開關 openai 時也一樣：只有超過 25 秒才中斷，Vercel 本來就會在 30 秒砍掉函式。
-           開關 claude 換到備援時，路由器另外傳 signal（整則 27 秒截止），兩個任一到期都中斷。 */
+           上限＝min(25 秒, 整則 27 秒截止扣掉已用時間)；開關 openai 時已用時間幾乎是 0，等於整段 25 秒（Vercel 本來就在 30 秒砍掉函式）。
+           開關 claude 換到備援時，路由器另外傳 signal（整則 27 秒截止），兩個任一到期都中斷；已經沒有剩餘時間就不送出。 */
+        const left = Math.min(25000, 27000 - (Date.now() - t0));
+        if (left <= 0 || (signal && signal.aborted)) throw new Error('message_deadline');
         const ctrl = new AbortController();
-        const timer = setTimeout(() => ctrl.abort(), Math.max(1000, Math.min(25000, 27000 - (Date.now() - t0))));
+        const timer = setTimeout(() => ctrl.abort(), left);
         if (signal) signal.addEventListener('abort', () => ctrl.abort(), { once: true });
         try {
           const r = await fetch(`${BASE_URL()}/chat/completions`, {
