@@ -8,11 +8,18 @@ r = subprocess.run(['osascript', '-e', DLG], capture_output=True, text=True)
 token = r.stdout.strip()
 if r.returncode or not token:
     raise SystemExit('已取消，沒有儲存。')
-req = urllib.request.Request('https://api.cloudflare.com/client/v4/user/tokens/verify', headers={'Authorization': 'Bearer ' + token})
-try:
-    ok = json.load(urllib.request.urlopen(req, timeout=20)).get('success')
-except Exception as e:
-    raise SystemExit('Token 驗證失敗，沒有儲存：' + type(e).__name__)
+ACCOUNT = '83b6a5f53818ce6c45a780af6fb7a601'
+ok, err = False, ''
+for path in ('user/tokens/verify', f'accounts/{ACCOUNT}/tokens/verify'):  # 個人 token 或帳戶 token
+    req = urllib.request.Request('https://api.cloudflare.com/client/v4/' + path, headers={'Authorization': 'Bearer ' + token})
+    try:
+        ok = bool(json.load(urllib.request.urlopen(req, timeout=20)).get('success'))
+    except Exception as e:
+        err = type(e).__name__
+    if ok:
+        break
+if not ok and err:
+    raise SystemExit('Token 驗證失敗，沒有儲存：' + err)
 if not ok:
     raise SystemExit('Token 無效，沒有儲存。')
 subprocess.run(['security', 'add-generic-password', '-U', '-a', 'cloudflare', '-s', SERVICE, '-w', token], check=True)
