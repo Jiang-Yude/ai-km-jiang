@@ -44,13 +44,15 @@ print('F 退回時 proxied 錯誤被修正 →', run('rollback', 'jiangyude.com'
 
 # G: main-level handler — cutover raises KeyError mid-way; rollback fails once with OSError then succeeds.
 src_main = src.split("\np = argparse.ArgumentParser()")[1]
-main_code = src.split("\np = argparse.ArgumentParser()")[0] + "\np = argparse.ArgumentParser()" + src_main.split("ROLLING = False\nt = token()")[0]
-tail = "ROLLING = False\nt = token()" + src_main.split("ROLLING = False\nt = token()")[1]
+main_code = src.split("\np = argparse.ArgumentParser()")[0] + "\np = argparse.ArgumentParser()" + src_main.split("ROLLING = False\nCHANGED = False\nt = token()")[0]
+tail = "ROLLING = False\nCHANGED = False\nt = token()" + src_main.split("ROLLING = False\nCHANGED = False\nt = token()")[1]
 g = {'__name__': 'mock', '__file__': sys.argv[1]}
 sys.argv = [sys.argv[1], 'cutover', '--execute', '--approval', '切']
 exec(main_code, g)
 state = {'rb': 0}
-def bad_cutover(t): raise KeyError('id')
+def bad_cutover(t):
+    g['CHANGED'] = True
+    raise KeyError('id')
 def flaky_rollback(t):
     state['rb'] += 1
     if state['rb'] == 1: raise OSError('net down')
@@ -60,3 +62,15 @@ try:
     exec(tail, g)
 except SystemExit as e:
     print('G KeyError 中途失敗 → rollback 呼叫次數', state['rb'], '（期望 2）exit:', e)
+
+# H: preflight failure before any change must NOT roll back.
+g2 = {'__name__': 'mock', '__file__': g['__file__']}
+exec(main_code, g2)
+st2 = {'rb': 0}
+def pre_fail(t): raise KeyError('preflight')
+g2.update(token=lambda: 't', cutover=pre_fail, rollback=lambda t: st2.__setitem__('rb', st2['rb'] + 1), plan=lambda op: None)
+g2['time'].sleep = lambda s: None
+try:
+    exec(tail, g2)
+except SystemExit as e:
+    print('H 異動前失敗 → rollback 呼叫次數', st2['rb'], '（期望 0）exit:', e)

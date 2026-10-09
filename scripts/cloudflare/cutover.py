@@ -197,6 +197,8 @@ def cutover(tok):
     snap = SNAP_DIR / (datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%SZ') + f'-{HOST}.json')
     snap.write_text(json.dumps(recs, indent=2, ensure_ascii=False))
     print('已存快照：', snap)
+    global CHANGED
+    CHANGED = True  # from here on DNS / Pages may be modified; failures trigger auto rollback
     if not any(x['name'] == HOST for x in api(tok, 'GET', f'/accounts/{ACCOUNT}/pages/projects/{PROJECT}/domains')):
         api(tok, 'POST', f'/accounts/{ACCOUNT}/pages/projects/{PROJECT}/domains', {'name': HOST})
         print('Pages 自訂網域已新增')
@@ -266,6 +268,7 @@ want = '切' if a.operation == 'cutover' else '退回'
 if a.approval != want:
     sys.exit(f'STOP: 要帶 --approval {want}')
 ROLLING = False
+CHANGED = False
 t = token()
 
 
@@ -287,7 +290,7 @@ except (SystemExit, Exception) as e:
     msg = str(e)
     if msg.startswith(('✅', 'CUTOVER_FAILED_ROLLED_BACK')) or (isinstance(e, SystemExit) and e.code in (0, None)):
         raise
-    if a.operation == 'cutover' and not ROLLING and not msg.startswith(('STOP: 最新', 'STOP: 沒有', 'STOP: Pages 沒有', 'STOP: production', 'STOP: zone', 'STOP: 演練', f'STOP: {HOST} 已經')):
+    if a.operation == 'cutover' and CHANGED and not ROLLING:
         print(f'⚠️ 切換中途失敗（{type(e).__name__}: {msg}），自動退回。')
         safe_rollback()
     elif a.operation == 'cutover' and ROLLING:
