@@ -267,22 +267,32 @@ if a.approval != want:
     sys.exit(f'STOP: 要帶 --approval {want}')
 ROLLING = False
 t = token()
+
+
+def safe_rollback():
+    for i in range(3):
+        try:
+            rollback(t)
+            return True
+        except (SystemExit, Exception) as e2:
+            print(f'退回第 {i+1} 次失敗：{type(e2).__name__}: {e2}')
+            time.sleep(10)
+    print(MANUAL)
+    return False
+
+
 try:
     cutover(t) if a.operation == 'cutover' else rollback(t)
-except SystemExit as e:
-    if a.operation == 'cutover' and not ROLLING and str(e).startswith('STOP: Cloudflare API'):
-        print('⚠️ 切換中途失敗，自動退回。')
-        for i in range(3):
-            try:
-                rollback(t); break
-            except SystemExit as e2:
-                print(f'退回第 {i+1} 次失敗：{e2}')
-                time.sleep(10)
-        else:
-            print(MANUAL)
-    elif ROLLING:
+except (SystemExit, Exception) as e:
+    msg = str(e)
+    if msg.startswith(('✅', 'CUTOVER_FAILED_ROLLED_BACK')) or (isinstance(e, SystemExit) and e.code in (0, None)):
+        raise
+    if a.operation == 'cutover' and not ROLLING and not msg.startswith(('STOP: 最新', 'STOP: 沒有', 'STOP: Pages 沒有', 'STOP: production', 'STOP: zone', 'STOP: 演練', f'STOP: {HOST} 已經')):
+        print(f'⚠️ 切換中途失敗（{type(e).__name__}: {msg}），自動退回。')
+        safe_rollback()
+    elif a.operation == 'cutover' and ROLLING:
+        print(f'⚠️ 自動退回時出錯（{type(e).__name__}: {msg}），重試退回。')
+        safe_rollback()
+    elif a.operation == 'rollback':
         print(MANUAL)
-    raise
-except Exception:
-    print(MANUAL)
-    raise
+    raise SystemExit(msg or type(e).__name__)
