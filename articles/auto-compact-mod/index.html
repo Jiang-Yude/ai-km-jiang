@@ -214,6 +214,10 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
   <p>快取（prompt caching，提示詞快取）的作用，是把已經讀過的那一段先存起來。下一輪再讀到同一段，就用很便宜的價格計算，Claude 讀快取的價格大約是原價的十分之一。</p>
   <p>快取有時效。Claude Code 用的快取存 1 小時，而且每用一次就重新計時。任務在跑的時候，快取一直被續命。</p>
   <div class="meaning"><b>真正會過期的時候</b>是你停下來、離開超過一小時。回來講第一句話，前面的對話沒有快取可用，要用一般價格重新計算。對話越長，這一下越貴。</div>
+  <figure class="inline-figure wide">
+    <img src="../../images/articles/auto-compact-mod-timeline.svg" alt="時間軸比較：沒有 Mod 時閒置超過 60 分鐘快取過期，回來第一句整段用一般價重算；有 Mod 時第 55 分鐘先寫工作日誌再壓縮，回來是短對話加一份工作日誌" loading="lazy">
+    <figcaption>快取是從最後一輪結束才開始倒數。Mod 搶在第 55 分鐘先整理，第 60 分鐘過期之後，回來要重算的只剩一段短對話。</figcaption>
+  </figure>
   <p>我那時候的想法很直接：</p>
   <div class="meaning"><b>我當時的原話</b>在快取消失前的 10 分鐘，直接幫我把工作日誌寫好存檔，然後自動清上下文，我回來的時候就是一個新的段落，不用再全部讀整份的。</div>
   <div class="readmore near"><b>延伸閱讀</b>
@@ -275,14 +279,10 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
   <p>10 月 6 日我把它做成 Mod，叫 auto-compact-55。</p>
   <p>我要的是算時間，不看上下文用了幾 %。我當時說的是：「不要算%數，算時間」。快取會過期，是因為離開太久，所以照離開多久來算。</p>
   <p>時間一開始設 50 分鐘，我覺得比較安全；10 月 6 日實際跑過之後，我改成 55 分鐘。</p>
-  <div class="tablewrap"><table>
-    <thead><tr><th></th><th>階段性壓縮</th><th>閒置壓縮</th></tr></thead>
-    <tbody>
-      <tr><td>什麼時候發生</td><td>我說「壓縮上下文」</td><td>最後一輪結束後 55 分鐘沒有新訊息</td></tr>
-      <tr><td>先做什麼</td><td>這一輪要求 AI 先把工作日誌和續接卡寫好存檔</td><td>Mod 自己送一句話，叫 AI 寫工作日誌和續接卡</td></tr>
-      <tr><td>再做什麼</td><td>這一輪答完，自動壓縮</td><td>寫完那一輪答完，自動壓縮</td></tr>
-    </tbody>
-  </table></div>
+  <figure class="inline-figure wide">
+    <img src="../../images/articles/auto-compact-mod-flow.svg" alt="流程圖：左邊階段性壓縮，我說壓縮上下文、AI 先寫日誌和續接卡、這輪正常答完；右邊閒置壓縮，最後一輪結束數 55 分鐘、時間到 Mod 自己送話叫 AI 寫日誌；兩條都送出 /compact 排隊，壓縮完成後摘要另存；下方虛線框是兩種例外" loading="lazy">
+    <figcaption>兩條路的差別只在「誰開口」：一條是我說，一條是 Mod 數到 55 分鐘自己開口。後半段都一樣，先寫日誌、答完才壓縮。虛線框是沒壓成功時的處理，不會一直重送。</figcaption>
+  </figure>
   <p>幾個細節：</p>
   <ul>
     <li><b>語音輸入會聽錯</b>：我用講的，「上下文」常被聽成「上下紋」「上下輪」「上校文」。這些都算數。我說「清上下文」也是指壓縮，不是清空。</li>
