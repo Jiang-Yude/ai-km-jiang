@@ -4,7 +4,7 @@
 #   git add -- 明確檔案 && bash scripts/publish.sh "commit 訊息"
 #   bash scripts/publish.sh "commit 訊息" -- 明確檔案 [明確資料夾...]
 # 流程：取發布鎖（搶不到就排隊）→ preflight → 明確範圍 → 秘密掃描 → commit → pull rebase → 再掃描
-#      → atomic push →（Vercel Git 整合自動建置）→ 等本次 commit SHA 的 production READY
+#      → atomic push →（2026-10-09 起預設推 C 網 production；PUBLISH_TARGET=vercel 才走 Vercel Git 整合）→ 等本次 commit SHA 的 production READY
 #      → 三網域促轉到 main 最新（main 已被別人推進就促轉那一版，永不切回舊版）→ 核對三網域實際指向
 #      → 固定五站＋動態文章路徑驗收 → 擋板草稿 404 抽驗
 # 2026-09-27 並行發布改版（江江：「CC 跟 CX 都可以各自部署，沒有衝突」；Codex 跨家審）：
@@ -238,6 +238,31 @@ if [[ ${#EXTRA_VERIFY[@]} -gt 0 ]]; then
   echo "▶ 本次含新文章，驗收清單加入：${EXTRA_VERIFY[*]}"
 fi
 
+# ─── 部署目標切換點（2026-10-09 jiangyude.com 已切到 Cloudflare Pages）───
+# 預設 PUBLISH_TARGET=cloudflare：push 後從本機乾淨工作樹建置並推 C 網 production。
+# 退回 Vercel（cutover.py rollback 之後）才用 PUBLISH_TARGET=vercel，走下面原本的 Git 整合促轉段。
+# 切換登記：cutover-registry site-cf-cutover-20261009。
+PUBLISH_TARGET="${PUBLISH_TARGET:-cloudflare}"
+PUBLISHED_SHA=$(git rev-parse HEAD)
+TIP="$PUBLISHED_SHA"
+CF_IP=""
+if [[ "$PUBLISH_TARGET" == "cloudflare" ]]; then
+  # 並行：別台在本次 push 之後又推了 main，就快轉到最新再建置，避免把正式站推回舊版。
+  # 誠實邊界：兩台在同一分鐘各自建置時，後完成的那台決定正式站內容；後到者一定包含先到者（都是 main 的快轉）。
+  git fetch --quiet origin main || { echo "⛔ 讀不到 origin/main"; exit 1; }
+  if [[ "$(git rev-parse origin/main)" != "$PUBLISHED_SHA" ]]; then
+    echo "▶ main 已前進，快轉到最新再部署"
+    git merge --ff-only origin/main || { echo "⛔ 無法快轉到 origin/main，正式站未動"; exit 1; }
+    TIP=$(git rev-parse HEAD)
+  fi
+  export SAFE_DEPLOY_POSTCLASS_EVIDENCE_DIR="${SAFE_DEPLOY_POSTCLASS_EVIDENCE_DIR:-$HOME/Library/Mobile Documents/iCloud~md~obsidian/Documents/江昱德 主知識庫/_agent/tmp/2026-10-04 官網搬C網/legacy-evidence}"
+  echo "▶ 部署 C 網 production（${TIP:0:7}）…"
+  # 執行 publish.sh 本身就是正式發布授權（與原本 Vercel 自動促轉同義）
+  SAFE_DEPLOY_CF_PROMOTE=ai-km-jiang-cf-20261004 bash "$REPO_ROOT/scripts/cloudflare/deploy-production.sh" \
+    || { echo "⛔ C 網 production 部署失敗；git 已 push，正式站維持上一版。修好後重跑：bash scripts/publish.sh 會從頭再來"; exit 1; }
+  # 驗收用 Cloudflare 權威 NS 解析，避開本機 DNS 快取
+  CF_IP=$(dig +short jiangyude.com A @howard.ns.cloudflare.com | grep -E '^[0-9.]+$' | head -1)
+elif [[ "$PUBLISH_TARGET" == "vercel" ]]; then
 # ─── Git 整合自動部署＋別名促轉（2026-08-08 起；2026-09-27 並行發布改版）───
 # push 已觸發 Vercel 從 GitHub 遠端建置（部署單位＝commit，不再從本機推快照）。
 # 驗收三件套（Codex 跨家審查要求）：
@@ -391,10 +416,14 @@ while true; do
   echo "  ↻ 促轉後 main 又前進或網域指向不符（${MISMATCH:- main 已更新}），再對一次"
 done
 
+else
+  echo "⛔ PUBLISH_TARGET 只能是 cloudflare 或 vercel"; exit 2
+fi
+
 echo "▶ 正式站路徑驗收…"
 VERIFY_FAIL=0
 for _p in "/" "/offers.html" "/cases.html" "/skills.html" "/site-index.json" ${EXTRA_VERIFY[@]+"${EXTRA_VERIFY[@]}"}; do
-  _code=$(curl -s -o /dev/null -w '%{http_code}' --max-time 20 "https://jiangyude.com${_p}")
+  _code=$(curl -s -o /dev/null -w '%{http_code}' --max-time 20 ${CF_IP:+--resolve "jiangyude.com:443:$CF_IP"} "https://jiangyude.com${_p}")
   if [[ "$_code" == "200" ]]; then
     echo "  ✅ ${_p} 200"
   else
@@ -405,7 +434,7 @@ done
 
 DRAFT_PATH=$(grep -E '^articles/.+/$' .vercelignore 2>/dev/null | head -1)
 if [[ -n "$DRAFT_PATH" ]]; then
-  _code=$(curl -s -o /dev/null -w '%{http_code}' --max-time 20 "https://jiangyude.com/${DRAFT_PATH}")
+  _code=$(curl -s -o /dev/null -w '%{http_code}' --max-time 20 ${CF_IP:+--resolve "jiangyude.com:443:$CF_IP"} "https://jiangyude.com/${DRAFT_PATH}")
   if [[ "$_code" == "404" ]]; then
     echo "  ✅ 擋板草稿仍 404（/${DRAFT_PATH}）"
   else
@@ -415,12 +444,12 @@ if [[ -n "$DRAFT_PATH" ]]; then
 fi
 
 if [[ $VERIFY_FAIL -ne 0 ]]; then
-  echo "⛔ 正式站驗收未全綠。回退：Vercel 後台 instant rollback 切回前一個 deployment，或 git revert 後再 push。"
+  echo "⛔ 正式站驗收未全綠。回退：git revert 後重跑 publish.sh（C 網）；整站退回 Vercel 用 scripts/cloudflare/cutover.py rollback。"
   exit 1
 fi
 
 if [[ "$TIP" == "$PUBLISHED_SHA" ]]; then
-  echo "🟢 發布完成：${TAG}，正式站就是本次 commit ${PUBLISHED_SHA:0:7}（回退用 Vercel instant rollback 或 git revert 再 push）"
+  echo "🟢 發布完成：${TAG}，正式站就是本次 commit ${PUBLISHED_SHA:0:7}（回退：git revert 後重跑 publish.sh）"
 else
   echo "🟢 發布完成：${TAG}，本次 commit ${PUBLISHED_SHA:0:7} 已包含在正式站的 ${TIP:0:7}（期間有較新的發布，一起上線）"
 fi

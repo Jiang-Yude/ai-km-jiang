@@ -27,6 +27,13 @@
 .gate h2{font-size:24px;margin-bottom:8px}
 .gate p{color:var(--ink-faint);font-size:16px;margin-bottom:20px;line-height:1.7}
 .gate input{width:100%;font-family:inherit;font-size:19px;padding:13px 16px;border:1px solid var(--line);border-radius:var(--radius-pill);background:#fff;color:var(--ink);text-align:center;letter-spacing:.12em}
+.gate .pwbox{position:relative}
+.gate .pwbox input{padding-right:52px;padding-left:52px}
+/* 密碼不顯示圓點，避免看出長度；只留游標 */
+.gate input.masked{color:transparent;caret-color:var(--ink);-webkit-text-fill-color:transparent}
+.gate .eye{position:absolute;right:8px;top:50%;transform:translateY(-50%);margin:0;width:40px;height:40px;padding:0;display:flex;align-items:center;justify-content:center;background:transparent;color:var(--ink-faint);border:none;border-radius:50%;cursor:pointer}
+.gate .eye:hover{background:rgba(0,0,0,.05)}
+.gate .eye[aria-pressed="true"] .slash{display:none}
 .gate input:focus{outline:none;border-color:var(--k2);box-shadow:0 0 0 3px rgba(47,127,181,.16)}
 .gate button{margin-top:14px;width:100%;font-family:inherit;font-size:18px;font-weight:700;padding:13px;border:none;border-radius:var(--radius-pill);background:var(--ink);color:#fff;cursor:pointer}
 .gate button:hover{background:#000}
@@ -201,7 +208,12 @@ details.raw>summary{cursor:pointer;font-size:16px;color:var(--ink-faint);padding
 <section class="gate" id="gate">
   <h2>站長儀表板</h2>
   <p>這頁要密碼。</p>
-  <input type="password" id="pw" autocomplete="current-password" placeholder="密碼" />
+  <div class="pwbox">
+    <input type="password" id="pw" class="masked" autocomplete="current-password" placeholder="密碼" />
+    <button type="button" class="eye" id="eye" aria-label="顯示密碼" aria-pressed="false">
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/><line class="slash" x1="3" y1="3" x2="21" y2="21"/></svg>
+    </button>
+  </div>
   <button id="go">進入</button>
   <div class="err" id="err"></div>
 </section>

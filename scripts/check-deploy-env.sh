@@ -21,7 +21,9 @@ echo "═══ 部署環境檢查：ai-km-jiang ═══"
 need_cmd git
 need_cmd node
 need_cmd npm
-need_cmd vercel
+need_cmd wrangler
+need_cmd dig
+if [[ "${PUBLISH_TARGET:-cloudflare}" == "vercel" ]]; then need_cmd vercel; fi
 need_cmd python3
 
 if command -v node >/dev/null 2>&1; then
