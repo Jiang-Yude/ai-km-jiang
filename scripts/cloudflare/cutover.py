@@ -25,6 +25,8 @@ CF_NS = {'howard.ns.cloudflare.com', 'zariyah.ns.cloudflare.com'}
 VERCEL_APEX = [{'type': 'A', 'content': '64.29.17.1'}, {'type': 'A', 'content': '216.198.79.1'}]
 SNAP_DIR = Path(__file__).resolve().parent / 'cutover-snapshots'
 KEYCHAIN = 'ai-km-jiang-cf-dns-token'
+MANUAL = ('‼️ 自動退回沒完成，手動退回：Cloudflare 後台 → jiangyude.com → DNS → 記錄：刪掉 jiangyude.com 的 CNAME（指 pages.dev），'
+          '新增 A 64.29.17.1 與 A 216.198.79.1（名稱 @，Proxy 關、僅 DNS）；或跑 bash scripts/cloudflare/rollback.sh --execute --approval 退回')
 
 
 def sh(*cmd):
@@ -46,16 +48,35 @@ def token():
 
 
 def api(tok, method, path, body=None):
-    req = urllib.request.Request('https://api.cloudflare.com/client/v4' + path, method=method,
-                                 data=json.dumps(body).encode() if body is not None else None,
-                                 headers={'Authorization': 'Bearer ' + tok, 'Content-Type': 'application/json'})
-    try:
-        d = json.load(urllib.request.urlopen(req, timeout=30))
-    except urllib.error.HTTPError as e:
-        d = json.loads(e.read() or b'{}')
-    if not d.get('success'):
-        sys.exit(f'STOP: Cloudflare API {method} {path} 失敗：{d.get("errors")}')
-    return d['result']
+    last = None
+    for attempt in range(4):
+        req = urllib.request.Request('https://api.cloudflare.com/client/v4' + path, method=method,
+                                     data=json.dumps(body).encode() if body is not None else None,
+                                     headers={'Authorization': 'Bearer ' + tok, 'Content-Type': 'application/json'})
+        try:
+            d = json.load(urllib.request.urlopen(req, timeout=30))
+        except urllib.error.HTTPError as e:
+            try:
+                d = json.loads(e.read() or b'{}')
+            except ValueError:
+                d = {'errors': [f'HTTP {e.code}']}
+            if e.code < 500 and e.code != 429:
+                break
+        except (urllib.error.URLError, TimeoutError, ValueError, OSError) as e:
+            d = {'errors': [type(e).__name__]}
+        if d.get('success'):
+            return d['result']
+        last = d.get('errors')
+        time.sleep(3 * (attempt + 1))
+    else:
+        d = {'errors': last}
+    if d.get('success'):
+        return d['result']
+    sys.exit(f'STOP: Cloudflare API {method} {path} 失敗：{d.get("errors")}')
+
+
+def all_records(tok, zone):
+    return api(tok, 'GET', f'/zones/{zone}/dns_records?name={HOST}&per_page=100')
 
 
 def apex_records(tok, zone):
@@ -97,9 +118,14 @@ def verify(expect):
         if HOST != DOMAIN and expect == 'vercel':
             break
     if HOST == DOMAIN:
-        s, srv = http_probe(f'https://www.{DOMAIN}/')
-        good = status_code(s) == 301 and srv.lower() == 'vercel'
-        print(f'  驗證 https://www.{DOMAIN}/ → {s} server={srv}', '✅' if good else '❌')
+        for _ in range(8):
+            r = subprocess.run(['curl', '-s', '-o', '/dev/null', '-w', '%{http_code} %{redirect_url}', '-m', '20', f'https://www.{DOMAIN}/'], capture_output=True, text=True).stdout.split()
+            code, loc = (int(r[0]) if r and r[0].isdigit() else 0), (r[1] if len(r) > 1 else '')
+            good = code in (301, 308) and loc.rstrip('/') == f'https://{DOMAIN}'
+            if good:
+                break
+            time.sleep(15)
+        print(f'  驗證 https://www.{DOMAIN}/ → {code} {loc}', '✅' if good else '❌')
         ok &= good
     return ok
 
@@ -162,8 +188,10 @@ def cutover(tok):
         sys.exit(f'STOP: zone 狀態 {zone["status"]}，還沒 active。')
     if HOST == DOMAIN:
         production_ready(tok)
+    if any(r['type'] == 'CNAME' and r['content'] == PAGES_TARGET for r in apex_records(tok, zone['id'])):
+        sys.exit(f'STOP: {HOST} 已經指向 Pages（已切過），不重複切換。')
     recs = apex_records(tok, zone['id'])
-    if HOST != DOMAIN and recs:
+    if HOST != DOMAIN and all_records(tok, zone['id']):
         sys.exit(f'STOP: 演練用的 {HOST} 已經有 DNS 紀錄，只能用全新的備用子網域。')
     SNAP_DIR.mkdir(exist_ok=True)
     snap = SNAP_DIR / (datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%SZ') + f'-{HOST}.json')
@@ -195,16 +223,20 @@ def rollback(tok):
     snaps = sorted(SNAP_DIR.glob(f'*-{HOST}.json')) if SNAP_DIR.exists() else []
     want = [{'type': r['type'], 'content': r['content'], 'proxied': r.get('proxied', False), 'ttl': r.get('ttl', 1)}
             for r in json.loads(snaps[-1].read_text()) if not (r['type'] == 'CNAME' and r['content'] == PAGES_TARGET)] if snaps else []
-    if not snaps and HOST == DOMAIN:
+    if not want and HOST == DOMAIN:
         want = [{**w, 'proxied': False, 'ttl': 1} for w in VERCEL_APEX]
     print('還原依據：', snaps[-1].name if snaps else '內建值', want)
     for r in apex_records(tok, zone['id']):
         if r['type'] == 'CNAME' and r['content'] == PAGES_TARGET:
             api(tok, 'DELETE', f'/zones/{zone["id"]}/dns_records/{r["id"]}')
             print('刪除 CNAME →', PAGES_TARGET)
-    have = {(r['type'], r['content']) for r in apex_records(tok, zone['id'])}
+    have = {(r['type'], r['content']): r for r in apex_records(tok, zone['id'])}
     for w in want:
-        if (w['type'], w['content']) not in have:
+        cur = have.get((w['type'], w['content']))
+        if cur and (cur.get('proxied') != w['proxied'] or cur.get('ttl') != w['ttl']):
+            api(tok, 'PATCH', f'/zones/{zone["id"]}/dns_records/{cur["id"]}', {'proxied': w['proxied'], 'ttl': w['ttl']})
+            print('修正', w['type'], w['content'], 'proxied=' + str(w['proxied']), 'ttl=' + str(w['ttl']))
+        elif not cur:
             api(tok, 'POST', f'/zones/{zone["id"]}/dns_records', {**w, 'name': HOST, 'comment': 'rollback to Vercel'})
             print('還原', w['type'], w['content'], 'proxied=' + str(w['proxied']))
     if any(x['name'] == HOST for x in api(tok, 'GET', f'/accounts/{ACCOUNT}/pages/projects/{PROJECT}/domains')):
@@ -240,5 +272,17 @@ try:
 except SystemExit as e:
     if a.operation == 'cutover' and not ROLLING and str(e).startswith('STOP: Cloudflare API'):
         print('⚠️ 切換中途失敗，自動退回。')
-        rollback(t)
+        for i in range(3):
+            try:
+                rollback(t); break
+            except SystemExit as e2:
+                print(f'退回第 {i+1} 次失敗：{e2}')
+                time.sleep(10)
+        else:
+            print(MANUAL)
+    elif ROLLING:
+        print(MANUAL)
+    raise
+except Exception:
+    print(MANUAL)
     raise
