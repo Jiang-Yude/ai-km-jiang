@@ -23,6 +23,24 @@ window.ARTICLE_TAGS = {
 
 window.ARTICLES = [
   {
+    id: "token-money-worth-doing",
+    url: "articles/token-money-worth-doing/",
+    date: "2026-10-09",
+    updated: "2026-10-09",
+    title: "用 AI 解決一件事，花的錢值不值得？｜我做了一個 Token 精算師，把每月用量換成台幣",
+    problem: "AI 什麼都做得出來，但不知道一件事值不值得交給 AI，也不知道自己每個月用 AI 換算成 API 要多少錢。",
+    audience: "付 AI 訂閱費想知道用了多少的人、想判斷哪些事值得交給 AI 的人、要幫客戶估算 AI 成本的顧問。",
+    summary: "先用商業角度判斷：花 100 塊能賺 200 塊就做，花 50 塊卻沒有人受益就是浪費。我自己做了 Mac 選單列小工具 TokenMoney，看三家 AI 額度，把 Claude、Codex 每月用量換算成 API 台幣。文章用白話講 token 的四種價格、快取（prompt caching）為什麼能省下九成、上下文越長為什麼越貴，最後附一段可直接複製的 AI 成本估算提示詞。",
+    tags: {
+      topic: ["AI工作流", "輔助決策", "工具操作"],
+      level: ["基礎"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["delete-before-automate", "reevaluate-models-same-test", "ai-image-api-cost", "ai-customer-service-api-cost", "pii-shield", "codex-log-health-check"]
+  },
+
+  {
     id: "ai-adoption-raise-not-install",
     url: "articles/ai-adoption-raise-not-install/",
     date: "2026-10-03",
@@ -92,7 +110,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["ai-data-red-lines", "ai-batch-work-without-seeing-data"]
+    related: ["ai-data-red-lines", "ai-batch-work-without-seeing-data", "token-money-worth-doing"]
   },
 
   {
@@ -128,7 +146,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["opus-luna-model-division", "cli-api-mcp-computer-use", "github-vercel-cloudflare-compare", "webnode-to-cloudflare-pages", "domain-and-account-ownership", "grok-bot-galaxy-day2-workshops"],
+    related: ["opus-luna-model-division", "cli-api-mcp-computer-use", "github-vercel-cloudflare-compare", "webnode-to-cloudflare-pages", "domain-and-account-ownership", "grok-bot-galaxy-day2-workshops", "token-money-worth-doing"],
     cover: { wide: "images/articles/ai-customer-service-api-cost-cover.jpg" }
   },
 
@@ -337,7 +355,7 @@ window.ARTICLES = [
       content_type: ["案例文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["fixed-test-set-for-ai", "ai-cp-value-calculus", "three-levels-of-cross-review", "dual-track-planning-loop", "how-to-verify-ai-rule-changes", "ai-schedule-wake-interval", "opus-luna-model-division"],
+    related: ["fixed-test-set-for-ai", "ai-cp-value-calculus", "three-levels-of-cross-review", "dual-track-planning-loop", "how-to-verify-ai-rule-changes", "ai-schedule-wake-interval", "opus-luna-model-division", "token-money-worth-doing"],
     cover: { wide: "images/articles/reevaluate-models-same-test-cover.jpg" }
   },
 
@@ -451,7 +469,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["vibe-coding-ten-half-products", "elon-musk-live-skill", "ai-vs-script-four-situations", "dont-learn-ai-tools", "ai-adoption-start-with-one-workflow", "first-principles-money-soup", "ai-adoption-raise-not-install"],
+    related: ["vibe-coding-ten-half-products", "elon-musk-live-skill", "ai-vs-script-four-situations", "dont-learn-ai-tools", "ai-adoption-start-with-one-workflow", "first-principles-money-soup", "ai-adoption-raise-not-install", "token-money-worth-doing"],
     cover: { tall: "images/articles/delete-before-automate-cover.jpg" }
   },
 
@@ -831,7 +849,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["ai-schedule-wake-interval"],
+    related: ["ai-schedule-wake-interval", "token-money-worth-doing"],
     cover: { tall: "images/articles/ai-image-api-cost-cover.jpg" }
   },
 
@@ -2796,7 +2814,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["codex-only-auto-worklog", "agent-workflow-builds-automation", "how-to-train-your-ai-employee"],
+    related: ["codex-only-auto-worklog", "agent-workflow-builds-automation", "how-to-train-your-ai-employee", "token-money-worth-doing"],
     cover: { tall: "images/articles/codex-log-health-check-cover-image2.jpg" }
   },
 

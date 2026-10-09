@@ -1,0 +1,474 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="index,follow">
+<title>用 AI 解決一件事，花的錢值不值得？｜我做了一個 Token 精算師，把每月用量換成台幣</title>
+<meta name="description" content="AI 很多事情都做得出來，先問值不值得做。我自己做了 Mac 選單列小工具 TokenMoney，看三家 AI 額度，把 Claude、Codex 每月用量換算成 API 台幣，順便講清楚 token 計價、快取為什麼省錢、上下文越長為什麼越貴。">
+<link rel="canonical" href="https://jiangyude.com/articles/token-money-worth-doing/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="用 AI 解決一件事，花的錢值不值得？｜我做了一個 Token 精算師，把每月用量換成台幣｜江江教練">
+<!-- 分享封面：hero 文字填好後在 repo 根目錄跑 `node scripts/og-shot.mjs token-money-worth-doing` 自動截 1200×630 到 images/og/token-money-worth-doing.jpg（見 README「文章分享封面（OG 圖）機制」）。別退回 intro-jiang.png 直式人像，會被裁成只剩脖子。 -->
+<meta property="og:image" content="https://jiangyude.com/images/og/token-money-worth-doing.jpg">
+<meta property="og:description" content="AI 很多事情都做得出來，先問值不值得做。我自己做了 Mac 選單列小工具 TokenMoney，看三家 AI 額度，把 Claude、Codex 每月用量換算成 API 台幣，順便講清楚 token 計價、快取為什麼省錢、上下文越長為什麼越貴。">
+<meta property="og:url" content="https://jiangyude.com/articles/token-money-worth-doing/">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:site_name" content="江江教練 · AI 知識管理">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="用 AI 解決一件事，花的錢值不值得？｜我做了一個 Token 精算師，把每月用量換成台幣｜江江教練">
+<meta name="twitter:image" content="https://jiangyude.com/images/og/token-money-worth-doing.jpg">
+<meta name="twitter:description" content="AI 很多事情都做得出來，先問值不值得做。我自己做了 Mac 選單列小工具 TokenMoney，看三家 AI 額度，把 Claude、Codex 每月用量換算成 API 台幣，順便講清楚 token 計價、快取為什麼省錢、上下文越長為什麼越貴。">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"用 AI 解決一件事，花的錢值不值得？｜我做了一個 Token 精算師，把每月用量換成台幣","description":"AI 很多事情都做得出來，先問值不值得做。我自己做了 Mac 選單列小工具 TokenMoney，看三家 AI 額度，把 Claude、Codex 每月用量換算成 API 台幣，順便講清楚 token 計價、快取為什麼省錢、上下文越長為什麼越貴。","author":{"@type":"Person","name":"江昱德","alternateName":"江江教練","jobTitle":"隱性知識提煉師、AI 應用規劃師"},"isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://jiangyude.com/"},"inLanguage":"zh-Hant","url":"https://jiangyude.com/articles/token-money-worth-doing/"}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{--ink:#1a1612;--paper:#fefcf8;--muted:#6a635a;--line:#d8cdb8;--green:#5f7553;--blue:#5689b8;--orange:#e85a4f;--soft:#faf5ec;--dark:#2a2018;--shadow:0 18px 45px rgba(107,74,42,.14);--sp-shadow:hsla(35,50%,60%,.15);--sp-shadow-edge:hsla(35,50%,68%,.03);--sp-radius:400px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC","Segoe UI",sans-serif}
+a{color:inherit}
+/* 官網共用導航列 nav.top（與首頁/文章總站同一條） */
+nav.top{position:sticky;top:0;background:rgba(254,252,248,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid #d8cdb8;z-index:100}
+nav.top .container{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:24px;padding:14px 32px}
+.nav-brand-img{justify-self:start;display:flex;align-items:center;text-decoration:none;flex-shrink:0;transition:opacity .2s}
+.nav-brand-img:hover{opacity:.8}.nav-brand-img img{height:40px;width:auto;display:block}
+nav.top ul.nav-menu{justify-self:end;display:flex;gap:22px;list-style:none;margin:0;padding:0;font-size:.95rem;white-space:nowrap}
+nav.top ul.nav-menu a{color:#3a342d;text-decoration:none;transition:color .2s;font-weight:500;white-space:nowrap}
+nav.top ul.nav-menu a:hover{color:#1a1612}nav.top ul.nav-menu a.active{color:#1a1612;font-weight:700}
+.nav-toggle{display:none;background:none;border:none;padding:6px;cursor:pointer;width:36px;height:36px;position:relative}
+.nav-toggle span{display:block;position:absolute;left:8px;right:8px;height:2px;background:#1a1612;border-radius:2px;transition:transform .25s,opacity .25s,top .25s}
+.nav-toggle span:nth-child(1){top:11px}.nav-toggle span:nth-child(2){top:17px}.nav-toggle span:nth-child(3){top:23px}
+.nav-toggle.open span:nth-child(1){top:17px;transform:rotate(45deg)}.nav-toggle.open span:nth-child(2){opacity:0}.nav-toggle.open span:nth-child(3){top:17px;transform:rotate(-45deg)}
+.tablewrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:22px 0;border:1px solid var(--line);border-radius:10px;background:#fff;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.tablewrap table{border-collapse:collapse;width:100%;min-width:600px;font-size:18px;line-height:1.65}
+.tablewrap .zh{display:block;margin-top:5px;font-size:16px;line-height:1.55;color:var(--muted);font-weight:400}
+.tablewrap th,.tablewrap td{padding:12px 14px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top;color:#3a342d}
+.tablewrap thead th{background:var(--soft);font-weight:900;font-size:18px;color:#1a1612;white-space:nowrap}
+.tablewrap tbody tr:last-child td{border-bottom:none}
+.tablewrap td code,.section code{background:var(--soft);border:1px solid var(--line);border-radius:5px;padding:1px 6px;font:500 15px/1.5 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace}
+.inline-figure.wide{max-width:1000px}
+.inline-figure.portrait{max-width:430px}
+.toc{margin:26px 0 0;padding:20px 22px;background:#fff;border:1px solid var(--line);border-radius:10px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.toc>b{display:block;font-size:15px;letter-spacing:.05em;color:var(--green);margin-bottom:10px}
+.toc ol{margin:0;padding-left:1.35em;font-size:18px;line-height:1.7}
+.toc li{margin-bottom:7px;color:#3a342d}
+.toc a{color:var(--blue);font-weight:700;text-decoration:none}.toc a:hover{text-decoration:underline}
+.toc-hint{margin:12px 0 0!important;font-size:18px!important;color:var(--muted)!important;border-top:1px solid var(--line);padding-top:12px}
+.readmore{margin-top:24px;padding:20px 22px;background:var(--soft);border:1px solid var(--line);border-radius:12px}
+.readmore.near{margin:26px 0 6px;background:rgba(86,137,184,.07);border-color:#bcd0e2}
+.readmore.near b{color:var(--blue);font-size:18px}
+.readmore.near li{font-size:17px;line-height:1.7;margin-bottom:10px}
+.readmore b{display:block;margin-bottom:10px;font-size:19px}
+.readmore ul{margin:0;padding-left:1.25em}
+.readmore a{color:var(--blue);font-weight:700;text-decoration:none}
+.readmore a:hover{text-decoration:underline}
+@media(max-width:820px){.tablewrap table{min-width:560px;font-size:18px}.tablewrap{position:relative}.tablewrap::after{content:"表格可左右滑動 →";position:sticky;left:0;display:block;font-size:15px;color:var(--muted);background:var(--soft);border-top:1px solid var(--line);padding:7px 12px;width:100%}}
+@media(max-width:860px){
+ nav.top .container{grid-template-columns:auto 1fr auto;padding:10px 16px;gap:12px}
+ .nav-brand-img img{height:32px}
+ .nav-toggle{display:block;justify-self:end}
+ nav.top ul.nav-menu{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(254,252,248,.98);backdrop-filter:blur(14px);border-bottom:1px solid #d8cdb8;flex-direction:column;gap:0;padding:8px 0;box-shadow:0 10px 24px rgba(107,74,42,.08)}
+ nav.top ul.nav-menu.open{display:flex}
+ nav.top ul.nav-menu li{border-bottom:1px solid #e8dfc9}
+ nav.top ul.nav-menu li:last-child{border-bottom:none}
+ nav.top ul.nav-menu a{display:block;padding:14px 20px;font-size:1.06rem}
+}
+/* 滑鼠暖光暈（與首頁同一支 spotlight.js） */
+body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradient(var(--sp-radius) circle at var(--mx,50%) var(--my,50%),var(--sp-shadow) 0%,var(--sp-shadow-edge) 45%,transparent 75%);pointer-events:none;z-index:9999;mix-blend-mode:multiply;transition:background .06s linear}
+.hero{position:relative;overflow:hidden;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:72px;padding:96px clamp(20px,6vw,88px) 80px;background:linear-gradient(180deg,#fffcf0 0%,#f9e9d2 100%);color:#1a1612;border-bottom:1px solid #d8cdb8}
+.hero .wc{position:absolute;border-radius:50%;filter:blur(60px);pointer-events:none;z-index:0}
+.hero .wc1{width:420px;height:360px;top:-120px;right:-80px;background:#e8884b;opacity:.15}
+.hero .wc2{width:360px;height:300px;bottom:-110px;left:-70px;background:#5f7553;opacity:.13}
+.hero .wc3{width:280px;height:260px;top:34%;left:14%;background:#a08144;opacity:.10}
+.hero>div{flex:none;width:860px;max-width:100%;position:relative;z-index:2}
+.hero-figure{margin:0;width:620px;flex:none;position:relative;z-index:2}
+.hero-figure img{display:block;width:100%;height:auto;border-radius:16px;border:1px solid #d8cdb8;box-shadow:0 18px 45px rgba(107,74,42,.16);cursor:zoom-in}
+.hero-figure figcaption{margin-top:10px;font-size:14px;line-height:1.6;color:#6a635a}
+.inline-figure{margin:30px auto 8px;max-width:820px}
+.inline-figure img{display:block;width:100%;height:auto;border-radius:14px;border:1px solid var(--line);box-shadow:var(--shadow);background:#fff;cursor:zoom-in}
+.inline-figure figcaption{font-size:14px;line-height:1.6;color:var(--muted);margin-top:10px}
+.lightbox{position:fixed;inset:0;z-index:10000;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(12,10,8,.92);cursor:zoom-out;backdrop-filter:blur(4px)}
+.lightbox.open{display:flex}.lightbox img{max-width:96vw;max-height:92vh;border-radius:10px;box-shadow:0 24px 60px rgba(0,0,0,.5)}
+.lightbox-close{position:fixed;top:18px;right:24px;color:#fff;font-size:34px;line-height:1;font-weight:700;cursor:pointer;opacity:.85}
+.kicker{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.55rem;color:#7a5c3a;font-weight:500}
+.hero h1{max-width:none;margin:16px 0 18px;font-size:clamp(36px,6vw,72px);line-height:1.08;overflow-wrap:anywhere}
+.hero p{max-width:none;font-size:clamp(18px,2vw,23px);line-height:1.62;color:#3a342d}
+.cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
+.cta a{display:inline-flex;align-items:center;text-decoration:none;border-radius:8px;padding:12px 16px;font-weight:900}
+.cta .primary{background:#fff;color:#1a1612}.cta .ghost{border:1px solid rgba(255,255,255,.32);color:#fff;background:rgba(255,255,255,.08)}
+.section{padding:54px clamp(20px,6vw,88px);border-top:1px solid var(--line)}
+.inner{width:min(1000px,100%);margin:0 auto}
+.section h2{font-size:clamp(26px,4.2vw,48px);line-height:1.12;margin:0 0 18px}
+.section h3{font-size:clamp(21px,3vw,30px);line-height:1.2;margin:30px 0 12px}
+.lead{font-size:clamp(18px,1.6vw,22px);line-height:1.7;color:#3a342d;max-width:900px}
+.section p{font-size:18px;line-height:1.74;color:#3a342d}.section p+p{margin-top:14px}
+.section ul,.section ol{padding-left:1.4em;font-size:18px;line-height:1.74;color:#3a342d}.section li{margin-bottom:8px}
+.meaning{margin:22px 0;padding:16px 18px;border-left:5px solid var(--blue);background:rgba(86,137,184,.12);border-radius:6px;line-height:1.7;font-size:19px}
+.meaning b{display:block;color:var(--blue);margin-bottom:4px}
+.caveat{margin:0 0 8px;padding:16px 18px;border-left:5px solid var(--orange);background:rgba(232,90,79,.1);border-radius:6px;line-height:1.7;font-size:18px;color:#3a342d}
+.caveat b{display:block;color:var(--orange);margin-bottom:4px}
+.infocard{background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px 24px 22px;box-shadow:0 8px 22px rgba(107,74,42,.08);margin-top:8px}
+.infocard-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.info-item{padding:18px 14px 0}
+.info-item b{display:block;font-size:14px;font-weight:900;letter-spacing:.04em;margin-bottom:7px;text-transform:uppercase}
+.info-item:nth-child(1) b{color:var(--green)}.info-item:nth-child(2) b{color:var(--orange)}.info-item:nth-child(3) b{color:var(--blue)}
+.info-item p{margin:0;font-size:17px;line-height:1.6;color:#3a342d}
+.tagrow{display:flex;flex-wrap:wrap;gap:7px;margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
+.tag{font-size:14px;color:var(--muted);background:var(--soft);border:1px solid var(--line);border-radius:999px;padding:4px 11px}
+.duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:24px}
+.duo.stack{grid-template-columns:1fr}
+.duo .card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:22px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.duo .card.a{border-color:var(--orange)}.duo .card.b{border-color:var(--green);box-shadow:0 8px 24px rgba(95,117,83,.16)}
+.duo .card small{display:block;font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.04em;margin-bottom:9px}
+.duo .card.a small{color:var(--orange)}.duo .card.b small{color:var(--green)}
+.duo .card b{display:block;font-size:22px;line-height:1.3;margin-bottom:12px}.duo .card.a b{color:#c0512f}.duo .card.b b{color:#4a7a59}
+.duo .card p{margin:0;color:#3a342d;line-height:1.75;font-size:18px}
+.workflow-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:24px}
+.workflow-step{background:#fff;border:1px solid var(--line);border-radius:8px;padding:18px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.workflow-step small{display:block;color:var(--orange);font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;margin-bottom:9px}
+.workflow-step b{display:block;font-size:18px;line-height:1.3;margin-bottom:9px}
+.workflow-step p{margin:0;color:#3a342d;line-height:1.6;font-size:16px}
+.codeblock{background:var(--dark);color:#f3ead9;border-radius:8px;padding:18px 20px;font:500 14px/1.65 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;overflow-x:auto;white-space:pre-wrap;margin:20px 0;box-shadow:0 8px 22px rgba(107,74,42,.12)}
+.codeblock .c{color:#f6d7a6;font-weight:600}
+.skillcard{background:#fff;border:1px solid var(--green);border-radius:12px;padding:24px;box-shadow:0 10px 26px rgba(95,117,83,.16);margin-top:8px}
+.skillcard b{display:block;font-size:21px;margin-bottom:8px}
+.skillcard p{margin:0 0 16px;font-size:17px;line-height:1.65;color:#3a342d}
+.cta-band{background:#e6f0e5;color:#3a342d}.cta-band .section{border-top:none}
+.cta-band .inner{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(260px,.85fr);gap:26px;align-items:start}
+.cta-band h2{font-size:clamp(26px,4vw,44px);margin:0 0 16px}.cta-band p,.cta-band .lead{color:rgba(58,52,45,.9);font-size:18px;line-height:1.72}
+.cta-card{border:1px solid #cfe0d2;background:#fbfdfa;border-radius:8px;padding:22px}
+.cta-card b{display:block;color:#48b178;margin-bottom:10px;font-size:18px}.cta-card p{margin:0 0 14px}
+.footer{padding:30px clamp(20px,6vw,88px);font-size:14px;color:var(--muted);background:#fff;border-top:1px solid var(--line)}
+.footer-inner{width:min(1000px,100%);margin:0 auto}
+.footer-links{display:flex;flex-wrap:wrap;gap:6px 12px;margin-bottom:14px}.footer-links a{color:var(--blue);font-weight:900;text-decoration:none;font-size:14px}
+.footer-brand{font-weight:900;font-size:15px;margin-bottom:10px}.footer-note{font-size:13px;line-height:1.6}
+@media(max-width:820px){.inline-figure.portrait{max-width:340px}.infocard-grid{grid-template-columns:1fr}.duo{grid-template-columns:1fr}.workflow-grid{grid-template-columns:1fr}.cta-band .inner{grid-template-columns:1fr}.section{padding:40px 20px}.hero{min-height:52vh;flex-direction:column;justify-content:flex-start;align-items:flex-start;gap:24px}.hero>div{width:100%}.hero-figure{width:100%;max-width:560px}}
+@media(max-width:820px){html,body{overflow-x:hidden}.hero h1{word-break:break-word}}
+/* 直式圖左右排（02-design-system「直式圖在桌機的左右排版」）：輪播卡上官網預設用 .media-row，圖左圖右看段落交替；連續兩張用 .figure-pair */
+.figure-pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;margin:30px auto 8px;max-width:820px}.figure-pair .inline-figure{margin:0;max-width:none}@media(max-width:640px){.figure-pair{grid-template-columns:1fr}.figure-pair .inline-figure{max-width:340px;margin:0 auto}}
+.media-row{display:grid;grid-template-columns:minmax(0,340px) minmax(0,1fr);gap:36px;align-items:center;margin:28px 0}.media-row.img-right{grid-template-columns:minmax(0,1fr) minmax(0,340px)}.media-row .inline-figure{margin:0;max-width:none}.media-row .media-text>*:first-child{margin-top:0}.media-row .media-text>*:last-child{margin-bottom:0}@media(max-width:820px){.media-row,.media-row.img-right{grid-template-columns:1fr;gap:18px}.media-row.img-right .media-fig{order:-1}.media-row .inline-figure{max-width:340px;margin:0 auto}}
+</style>
+</head>
+<body class="spotlight">
+<!-- 官網共用導航列 nav.top：與首頁/總站同一條，文章不要自己另做極簡 topbar（江江 2026-06-25：要同一個框架、同一條導航列）。把對應頁面的 class="active" 標在自己那欄。
+     ⚠️ 下面 ul.nav-menu 整塊由 preflight 第 5 關 check-bilingual-nav.mjs 做「逐字比對」，
+        塞任何註解、多一個空白、換行位置不同都會被判導航不一致而擋下發布。要說明就寫在 <ul> 外面（像這裡）。
+        2026-08-16 修：原本的 EN 那行說明註解就夾在 <ul> 裡面，導致照範本起手的新文章一律卡第 5 關
+        （llm-rag-agent-mcp 與 rag-three-retrieval-modes 兩篇同時中招）。註解已移出來，<ul> 內保持乾淨。
+        萬一還是被擋，直接跑：node scripts/check-bilingual-nav.mjs --write --only=<你的檔案路徑> -->
+<nav class="top">
+  <div class="container">
+    <a class="nav-brand-img" href="../../index.html"><img src="../../images/footer-signature.png" alt="江江教練 | 江昱德"></a>
+    <button class="nav-toggle" aria-label="選單"><span></span><span></span><span></span></button>
+    <ul class="nav-menu">
+      <li><a href="../../index.html">首頁</a></li>
+      <li><a href="../../knowledge-architecture.html">知識架構</a></li>
+      <li><a href="../../courses.html">課程</a></li>
+      <li><a href="../../articles.html" class="active">文章</a></li>
+      <li><a href="../../skills.html">小工具</a></li>
+      <li><a href="../../offers.html">服務方案</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="wc wc1"></div>
+  <div class="wc wc2"></div>
+  <div class="wc wc3"></div>
+  <div>
+    <div class="kicker">AI 成本 · 自己做的小工具</div>
+    <h1>用 AI 解決一件事，花的錢值不值得？｜我做了一個 Token 精算師，把每月用量換成台幣</h1>
+    <p>AI 很多事情都做得出來，所以我更想先問：這件事值不值得做，要花多少成本。我做了一個放在 Mac 選單列的 Token 精算師，把每月用量換成台幣，也把快取和上下文長度怎麼影響帳單講清楚。</p>
+  </div>
+  <figure class="hero-figure">
+    <img src="../../images/articles/token-money-worth-doing-cover.jpg" alt="咪卡當精算師，把印著 T 的硬幣放上天平，左邊吊牌寫花 100、右邊寫賺 200，天平往賺 200 傾斜；標題：用 AI 解決一件事，花的錢值不值得？" loading="lazy">
+    <figcaption>花 100 塊能賺 200 塊就做；很便宜但沒有人受益，就是浪費。</figcaption>
+  </figure>
+</section>
+
+<main>
+<section class="section" id="start"><div class="inner">
+  <h2>這篇在講什麼</h2>
+  <p class="lead">AI 現在很多事情都做得出來，所以真正要先想的是：這件事值不值得做，要花多少成本。我自己做了一個放在 Mac 選單列的小工具 TokenMoney，一眼看到 Claude、Codex、Antigravity 三家的額度，也把 Claude 和 Codex 的每月用量換算成 API 價格的台幣。這篇講我怎麼看「值不值得做」，也把 token 怎麼計價、快取為什麼能省錢、上下文越長為什麼越貴，用白話講一次。</p>
+  <div class="duo stack">
+    <div class="card a"><b>適合誰</b>
+      <ul>
+        <li>每個月付 AI 訂閱費，想知道自己到底用了多少的人</li>
+        <li>想把 AI 用在工作上，但不確定哪些事情值得交給 AI 的人</li>
+        <li>要幫客戶或公司估算 AI 成本的顧問、主管、工程師</li>
+      </ul>
+    </div>
+    <div class="card b"><b>你可以帶走什麼</b>
+      <ul>
+        <li>一個判斷「這件事值不值得交給 AI」的商業角度</li>
+        <li>token 計價的四種價格：一般輸入、寫快取、讀快取、輸出</li>
+        <li>快取和上下文長度怎麼影響帳單，我自己用的「先寫工作日誌再壓縮」做法，以及一段可以直接複製的成本估算提示詞</li>
+      </ul>
+    </div>
+  </div>
+</div></section>
+
+<section class="section" id="why-build"><div class="inner">
+  <h2>用量工具一直斷線，我乾脆自己做一個 Token 精算師</h2>
+  <p>我同時用三家 AI：Claude、Codex、Antigravity。每一家都有自己的額度，例如 Claude 有 5 小時額度、每週額度、還有每週 Fable 額度。</p>
+  <p>之前我用別人做的選單列工具看額度，但它一直更新、一直斷線，常常點開就是連不到。</p>
+  <p>所以我自己做了一個，叫 TokenMoney。它放在 Mac 最上面那一排選單列，我把它當成我的 Token 精算師：隨時告訴我，我現在用了多少、換算成錢是多少。</p>
+  <p>這個工具目前放在我自己的私人 GitHub，只給我自己用。</p>
+</div></section>
+
+<section class="section" id="worth-it"><div class="inner">
+  <h2>AI 什麼都做得出來，先問這件事值不值得做</h2>
+  <p>我覺得 AI 現在進步很快、很厲害，很多事情都做得出來。</p>
+  <p>但正因為什麼都做得出來，我們更要思考的是：這件事情值不值得做，以及做下去的成本。</p>
+  <p>用商業的角度來看其實更簡單：</p>
+  <div class="duo">
+    <div class="card b"><small>值得做</small><b>花 100 塊，能賺 200 塊</b><p>這件事情值得做，AI 花 100 塊解決它，能賺 200 塊，那就做啊。</p></div>
+    <div class="card a"><small>浪費</small><b>只花 50 塊，但沒有人受益</b><p>這件事情很便宜，AI 花 50 塊就解決了，但我懷疑解決完之後也沒有人會受益，那其實就是浪費。</p></div>
+  </div>
+  <div class="meaning"><b>判斷順序</b>便宜不代表值得。先看解決完有沒有人受益，再來才看花多少錢。</div>
+  <p>這也是我在意 Token 效率的原因。token 是 AI 計價的單位，可以想成 AI 讀和寫的字數單位，讀得越多、寫得越多就越貴。Token 效率講的是：同一件事，能不能用比較少的 token、或比較划算的模型做完。要談效率，前提是先看得到自己花了多少。</p>
+  <div class="readmore near"><b>延伸閱讀</b>
+    <ul>
+      <li><a href="../delete-before-automate/">想用 AI 提升效率，結果都在瞎忙？</a>：這段講「值不值得做」，那篇講更前面一步，先把不該做的刪掉再自動化。</li>
+      <li><a href="../reevaluate-models-same-test/">AI 小工具該用便宜模型還是貴的？</a>：Token 效率的另一半，同一份考卷怎麼比出哪個模型最划算。</li>
+    </ul>
+  </div>
+</div></section>
+
+<section class="section" id="what-it-shows"><div class="inner">
+  <h2>我的 Token 精算師 TokenMoney，在選單列上顯示哪些數字</h2>
+  <h3>選單列：三家額度一眼看完</h3>
+  <figure class="inline-figure wide">
+    <img src="../../images/articles/token-money-worth-doing-menubar.jpg" alt="TokenMoney 選單列：Claude 5 小時 27%、每週 56%，Codex 29%，Antigravity Gemini 2%、Claude 10%，錢幣 T 圖示後面是本月合計 4.5 萬" loading="lazy">
+    <figcaption>選單列長這樣：每家一個圖示加額度 %，最右邊錢幣 T 是本月 API 等值合計（2026-10-09 早上的畫面）。</figcaption>
+  </figure>
+  <ul>
+    <li>每家一個小圖示，旁邊是額度用了幾 %</li>
+    <li>Claude：5 小時、每週、每週 Fable</li>
+    <li>Codex：每週</li>
+    <li>Antigravity：Gemini 5 小時、Claude 5 小時</li>
+    <li>未滿 75% 是綠色，到 75% 變黃色，到 90% 變紅色</li>
+    <li>最右邊是一個錢幣加 T 的圖示，後面是 Claude 和 Codex 這個月換算成 API 的台幣合計（Antigravity 只看額度，不算金額）</li>
+    <li>要出現哪些項目可以自己勾選</li>
+  </ul>
+  <h3>點開面板：配速箭頭和台幣金額</h3>
+  <figure class="inline-figure wide">
+    <img src="../../images/articles/token-money-worth-doing-panel.jpg" alt="TokenMoney 面板：Claude、Codex、Antigravity 三張卡並排，顯示本月 API 等值、快取省下金額、按模型拆分、額度進度條與小箭頭" loading="lazy">
+    <figcaption>點開後的面板，三家卡片水平並排。進度條下面的小三角形就是配速箭頭（2026-10-09 早上 6 點多的畫面，金額跟正文的 8 點數字略有差距）。</figcaption>
+  </figure>
+  <ul>
+    <li>三家卡片可以切換水平並排、垂直排列、分頁切換，也可以用 －／＋ 放大縮小</li>
+    <li>每個額度是一條進度條，上面有一個小箭頭。箭頭標的是「照時間平均，現在應該用到哪裡」。進度條比箭頭短，代表我用少了；比箭頭長，代表我用多了</li>
+    <li>Claude 和 Codex 的卡片寫本月 API 等值、今天、照目前速度到月底大約多少、按模型拆分的金額、快取省了多少</li>
+    <li>每張卡可以各自更新；斷線時每小時自動重新連線一次，也可以按按鈕手動重連</li>
+  </ul>
+</div></section>
+
+<section class="section" id="four-prices"><div class="inner">
+  <h2>Token 換成台幣，要拆成四種價格來算</h2>
+  <div class="caveat"><b>先講清楚</b>我付的是訂閱方案，不是按 API 用量付費。TokenMoney 算的「API 等值」，意思是「同樣的用量，如果改用 API 按量付費，大概要多少錢」。這個數字讓我知道訂閱方案幫我扛了多少。</div>
+  <p>每一次 AI 回覆，帳單上其實有四種 token，各有各的價格：</p>
+  <ol>
+    <li><b>一般輸入</b>：這一輪送給 AI、沒有用到快取的內容</li>
+    <li><b>寫快取</b>：第一次把內容存進快取，比一般輸入貴一點</li>
+    <li><b>讀快取</b>：之後重複用到同一段內容，從快取讀，便宜很多</li>
+    <li><b>輸出</b>：AI 寫出來的內容，通常是最貴的</li>
+  </ol>
+  <p>TokenMoney 讀的是我電腦裡 Claude Code 和 Codex 自己留下的對話紀錄，紀錄裡分開記著這幾種 token 的數量，再乘上那個型號的單價。紀錄缺欄位就當 0；官方查不到價格的型號（例如 Codex 的 codex-auto-review），先借相近型號的價格推算，並在卡片上標出「推算」。</p>
+  <p>還有兩個細節：</p>
+  <ul>
+    <li><b>每一段用量，用當時的價格算。</b>模型會降價、會改價，過去的用量照我記下的過去價格算，不會因為今天改價就回頭改掉。</li>
+    <li><b>匯率先固定用 1 美元換 32 台幣。</b></li>
+  </ul>
+  <p>10 月 1 日到 9 日早上 8 點，我的 API 等值是：Claude 約 NT$34,337，Codex 約 NT$11,623。Claude 那邊，Opus 5.5 就佔了約 NT$29,018。這些數字一直在累積，幾分鐘後再看就會多一點。</p>
+  <div class="readmore near"><b>延伸閱讀</b>
+    <ul>
+      <li><a href="../ai-image-api-cost/">gpt-image-2.5 生一張圖多少錢？</a>：同樣是把 token 帳單攤開算，那篇算的是生圖。</li>
+      <li><a href="../ai-customer-service-api-cost/">我想在官網放 AI 客服，API 是什麼、會不會很貴？</a>：如果你是真的要改用 API 按量付費，先看這篇的儲值、金鑰與模型怎麼選。</li>
+    </ul>
+  </div>
+</div></section>
+
+<section class="section" id="cache"><div class="inner">
+  <h2>快取是什麼，為什麼九天就省了約 30 萬台幣</h2>
+  <p>這是做這個工具時，我覺得最值得講清楚的一段。</p>
+  <p>AI 本身不會記得前面的對話。你每傳一句話，Claude Code、Codex 這類工具通常會把<b>前面的對話、系統說明、讀進來的檔案內容</b>一起再送給 AI 一次。對話越長，每一輪重送的東西就越多。</p>
+  <p>快取（英文叫 prompt caching，提示詞快取）就是把這一大包重複的前段先存起來。下一輪只要前段一樣，就直接從快取讀，價格只算原本的一小部分。</p>
+  <p>Claude 這邊的倍率，以一般輸入的價格為 1 倍來算：</p>
+  <div class="tablewrap"><table>
+    <thead><tr><th>動作</th><th>價格倍率</th></tr></thead>
+    <tbody>
+      <tr><td>寫進快取，存 5 分鐘</td><td>1.25 倍</td></tr>
+      <tr><td>寫進快取，存 1 小時</td><td>2 倍</td></tr>
+      <tr><td>從快取讀（多數型號）</td><td>0.1 倍，也就是一成價錢</td></tr>
+      <tr><td>從快取讀（Opus 5.5、Sonnet 5.5）</td><td>0.05 倍</td></tr>
+      <tr><td>從快取讀（Fable 5.1）</td><td>0.025 倍</td></tr>
+    </tbody>
+  </table></div>
+  <p>所以快取是先多付一點存起來，之後每次讀都大幅便宜。</p>
+  <p>TokenMoney 會另外算一個數字：假設完全沒有快取，所有內容都用一般輸入的價格，API 等值會是多少。兩個數字相減，就是快取幫我省下的錢。這兩個都是 API 等值，我實際付的還是訂閱費。</p>
+  <p>10 月 1 日到 9 日：</p>
+  <ul>
+    <li><b>Claude</b>：假設沒有快取約 NT$34 萬，有快取約 NT$3.4 萬，省了約 NT$30.6 萬（90%）</li>
+    <li><b>Codex</b>：省了約 NT$8.4 萬（88%）</li>
+  </ul>
+  <p>看到這個數字我才真的有感：如果沒有快取，我平常這種長對話、讀一大堆檔案的工作方式，API 等值會是現在的十倍左右。</p>
+</div></section>
+
+<section class="section" id="context-length"><div class="inner">
+  <h2>對話塞得越長，每一輪就越貴</h2>
+  <p>上下文長度，就是每一輪送給 AI 的那一整包內容有多長。</p>
+  <p>前面說過，每一輪通常都要重送前面的內容。所以就算有快取，對話越長，每一輪要處理的 token 還是越多，這一輪的費用就越高。</p>
+  <p>有些模型還會在上下文超過一定長度後，整個換一個比較貴的價格：</p>
+  <ul>
+    <li>Codex：單次輸入超過 27.2 萬 token，輸入變 2 倍、輸出變 1.5 倍</li>
+    <li>Haiku 5.5：超過 10 萬 token，改用比較高的那一段價格</li>
+  </ul>
+  <p>另外還有一個常被忽略的開關：Claude 的 fast 模式（快速模式）是 2 倍價格。</p>
+  <div class="meaning"><b>記住一句就好</b>對話塞得越長，每一輪越貴；超過門檻的型號連單價都會變高；快速模式也要多付錢。</div>
+</div></section>
+
+<section class="section" id="my-solution"><div class="inner">
+  <h2>我的解法：告一段落先寫工作日誌，再壓縮上下文</h2>
+  <p>知道了快取和上下文長度怎麼算錢，我自己的做法有兩個。</p>
+  <h3>每告一個段落，先寫工作日誌，再壓縮上下文</h3>
+  <p>壓縮上下文，是讓 AI 把前面整段對話濃縮成一份摘要，之後的對話只帶著這份摘要往下走。對話變短，每一輪要重送的 token 就變少。</p>
+  <p>那為什麼不直接壓縮，還要先寫工作日誌？</p>
+  <div class="duo">
+    <div class="card a"><small>只壓縮</small><b>AI 自己決定留什麼</b><p>檔案放在哪、為什麼這樣決定、還有什麼沒做完，這些細節可能在濃縮時被省略掉。摘要也只活在這一個對話裡。</p></div>
+    <div class="card b"><small>先寫工作日誌</small><b>存成檔案，誰都讀得到</b><p>換一個新對話、換一台電腦、交給另一家 AI，都讀得到做到哪、卡在哪、下一步是什麼。</p></div>
+  </div>
+  <p>所以順序是固定的：先把做到哪、卡在哪、下一步寫進工作日誌存檔，再壓縮。</p>
+  <h3>閒置 55 分鐘，自動寫工作日誌再壓縮</h3>
+  <p>快取存 1 小時。對話閒置超過 1 小時，快取就過期，回來講第一句話時，前面整段對話要用原價重新送一次。</p>
+  <p>所以我用 Claude Code Mod 寫了一個自動機制：每一輪對話結束後，如果閒置到第 55 分鐘還沒有新訊息，它就自動叫 AI 先把工作日誌和續接卡寫好存檔，寫完再壓縮上下文。這時候快取還在，壓縮時讀前面的對話還是用快取價。</p>
+  <div class="meaning"><b>結果</b>我回來的時候，面對的是一段新的、短的對話，加上一份寫好的工作日誌。</div>
+  <p>這兩個做法怎麼用 Claude Code Mod 做出來，我之後會另外寫一篇。</p>
+  <div class="readmore near"><b>延伸閱讀</b>
+    <ul>
+      <li><a href="../pii-shield/">用 AI 整理個案紀錄，個資會直接送出去嗎？</a>：介紹的個資防護盾也是一個 Claude Code Mod，可以看看 Mod 還能做哪些事。</li>
+      <li><a href="../codex-log-health-check/">Codex 整個大當機？重安裝後第一步先檢查 logs_2.sqlite</a>：那篇也講到，靠工作日誌讓任務心血不會跟著工具故障一起不見。</li>
+    </ul>
+  </div>
+</div></section>
+
+<section class="section" id="daily-price-check"><div class="inner">
+  <h2>價格會變，所以每天讓 AI 去查官方價目表</h2>
+  <p>AI 模型更新很快，價格也會變，新模型一直出來。手動維護價目表一定會漏。</p>
+  <p>所以 TokenMoney 每天自動查一次價：</p>
+  <div class="workflow-grid">
+    <div class="workflow-step"><small>STEP 1</small><b>抓官方頁面</b><p>程式抓 Anthropic 和 OpenAI 兩個官方定價頁面的文字。</p></div>
+    <div class="workflow-step"><small>STEP 2</small><b>AI 抄成數字</b><p>交給 Codex 的 gpt-6-luna 模型，把頁面上的價格抄成數字，約 15 秒。</p></div>
+    <div class="workflow-step"><small>STEP 3</small><b>程式檢查再寫入</b><p>每個欄位都是合理數字才收；跟目前價目表比對，有新模型就跳 Mac 通知。</p></div>
+  </div>
+  <p>這一步交給 AI 時，網頁是我的程式先抓好的。我在提示詞裡要它不要使用任何工具，只照我給它的頁面文字抄，執行時也只開唯讀權限。</p>
+  <div class="caveat"><b>這裡踩過一次坑</b>第一次自動查價時，AI 回報 Sonnet 5.5 的讀快取價格「改了」。我去查官方頁面，發現價格其實沒變，是我原本的價目表抄錯。如果照 AI 的說法記成「某天改價」，過去的用量就會被算錯。</div>
+  <p>修正後加了兩道防護：</p>
+  <ul>
+    <li>已經在價目表裡的型號，價格一次變動超過 3 倍，先擋下不寫入，跳通知讓我自己看</li>
+    <li>自動記下來的改價，一律標「未確認」，寫入前也會自動備份</li>
+  </ul>
+</div></section>
+
+<section class="section" id="limits"><div class="inner">
+  <h2>TokenMoney 哪些數字穩，哪些可能會斷</h2>
+  <div class="tablewrap"><table>
+    <thead><tr><th>資料</th><th>從哪裡來</th><th>穩定度</th></tr></thead>
+    <tbody>
+      <tr><td>API 等值金額</td><td>我電腦裡的紀錄檔</td><td>穩</td></tr>
+      <tr><td>Codex 額度</td><td>Codex 自己寫在紀錄檔裡的數字</td><td>穩</td></tr>
+      <tr><td>Claude 額度</td><td>Claude Code 登入後去問 Anthropic 的非公開網址</td><td>官方一改就可能斷</td></tr>
+      <tr><td>Antigravity 額度</td><td>Antigravity 在我電腦上開的內部介面</td><td>改版就可能斷</td></tr>
+    </tbody>
+  </table></div>
+  <p>斷線時會保留上一次的數字，並標出是幾分鐘前的資料。</p>
+  <p>所以這是我自己用的工具，目前不公開、也沒有對外提供下載。</p>
+</div></section>
+
+<section class="section" id="start-now"><div class="inner">
+  <h2>不用裝工具，也能先估算一件事的 AI 成本值不值得</h2>
+  <p>你不需要 TokenMoney，也可以用同樣的想法先估一次。把下面這段貼給你常用的 AI，換掉括號裡的內容：</p>
+  <div class="codeblock">我想用 AI 做這件事：（描述任務）
+大概一次要讀（多少字或幾份檔案），產出（多少字），一個月做（幾次）。
+我打算用的模型是（模型名稱）。
+
+請幫我：
+1. 估算一個月大約要多少 token，分成輸入和輸出
+2. 用這個模型的官方價格換算成台幣（1 美元以 32 台幣計），並附上價格來源網址
+3. 如果同一段內容會重複送，說明用快取大約可以省多少
+4. 列出這件事做完之後，誰會受益、受益的是什麼
+
+最後幫我把「成本」和「受益」放在一起，讓我自己判斷值不值得做。</div>
+  <p>最後一題最重要。算出來 50 塊，如果做完沒有人受益，那 50 塊也是浪費；算出來 100 塊，能幫你賺回 200 塊，那就做。</p>
+  <div class="readmore"><b>這篇提到過的</b>
+    <ul>
+      <li><a href="../delete-before-automate/">想用 AI 提升效率，結果都在瞎忙？｜先刪掉再自動化</a></li>
+      <li><a href="../reevaluate-models-same-test/">AI 小工具該用便宜模型還是貴的？｜同一份考卷考三輪</a></li>
+      <li><a href="../ai-image-api-cost/">gpt-image-2.5 生一張圖多少錢？｜把 token 帳單攤開算</a></li>
+      <li><a href="../ai-customer-service-api-cost/">我想在官網放 AI 客服，API 是什麼、會不會很貴？</a></li>
+    </ul>
+    <b style="margin-top:14px">再往前後延伸</b>
+    <ul>
+      <li><a href="../pii-shield/">個資防護盾：免費 Claude Code Mod</a></li>
+      <li><a href="../codex-log-health-check/">Codex 整個大當機？靠工作日誌保住任務心血</a></li>
+    </ul>
+  </div>
+</div></section>
+
+<div class="cta-band"><section class="section"><div class="inner">
+  <div>
+    <h2>這個小工具是我自己研發、自己用的</h2>
+    <p class="lead">如果你也有興趣，或是想一起聊聊怎麼估算 AI 成本、判斷一件事值不值得交給 AI，歡迎到 LINE 社群跟我說。</p>
+  </div>
+  <div class="cta-card"><b>加入 LINE 社群</b>
+    <p>我每月固定舉辦兩場免費線上講座，分享 AI × 知識管理的實戰經驗。</p>
+    <p><a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">加入社群 ↗</a></p>
+  </div>
+</div></section></div>
+
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">江江教練 · AI 知識管理</div>
+    <div class="footer-links">
+      <a href="../../articles.html">← 回深度文章總站</a>
+      <a href="../../index.html">首頁</a>
+      <a href="../../learn.html">自學資源</a>
+      <a href="../../skills.html">小工具</a>
+      <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">LINE 社群 ↗</a>
+      <a href="https://www.threads.com/@jiang_yude_coach" target="_blank" rel="noopener">Threads ↗</a>
+      <a href="https://vocus.cc/salon/Jiang_Coach" target="_blank" rel="noopener">方格子 ↗</a>
+    </div>
+    <div class="footer-note">這是一篇教學文章，整理我對「用 AI 解決一件事，花的錢值不值得？｜我做了一個 Token 精算師，把每月用量換成台幣」的看法，供你參考。</div>
+  </div>
+</footer>
+
+<!-- 點圖放大 lightbox（hero 與內文圖通用，已內建，不用每篇重加） -->
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <span class="lightbox-close" aria-label="關閉">×</span>
+  <img id="lightbox-img" src="" alt="放大檢視">
+</div>
+<script>
+(function(){
+  var box=document.getElementById('lightbox'),boxImg=document.getElementById('lightbox-img');
+  document.querySelectorAll('.hero-figure img,.inline-figure img').forEach(function(img){
+    img.addEventListener('click',function(){boxImg.src=img.currentSrc||img.src;boxImg.alt=img.alt||'放大檢視';box.classList.add('open');box.setAttribute('aria-hidden','false');});
+  });
+  function close(){box.classList.remove('open');box.setAttribute('aria-hidden','true');boxImg.src='';}
+  box.addEventListener('click',close);
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
+})();
+</script>
+
+<script src="../../image-interactions.js"></script>
+
+<!-- 官網共用：滑鼠暖光暈 + 導航列漢堡選單 -->
+<script src="../../spotlight.js"></script>
+
+<!-- 文章自動互聯（相關文章）：兩支已內建，順序不可顛倒，不用再另外加 -->
+<script src="../../articles-data.js"></script>
+<script src="../../related-render.js"></script>
+  <script src="/mika-chat-widget.js" defer></script>
+</body>
+</html>
