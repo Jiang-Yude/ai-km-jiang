@@ -56,8 +56,27 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["auto-compact-mod", "delete-before-automate", "reevaluate-models-same-test", "ai-image-api-cost", "ai-customer-service-api-cost", "pii-shield", "codex-log-health-check"],
+    related: ["auto-compact-mod", "ai-model-token-efficiency", "delete-before-automate", "reevaluate-models-same-test", "ai-image-api-cost", "ai-customer-service-api-cost", "pii-shield", "codex-log-health-check"],
     cover: { wide: "images/articles/token-money-worth-doing-cover.jpg" }
+  },
+
+  {
+    id: "ai-model-token-efficiency",
+    url: "articles/ai-model-token-efficiency/",
+    date: "2026-10-08",
+    updated: "2026-10-09",
+    title: "新的 AI 模型 Token 效率要怎麼比較？｜效率評量表與綜合排名，聰明、省錢、速度三個權重自己調",
+    problem: "新模型一出來，只看每百萬 Token 單價就以為比完價格，結果單價一樣的模型，每題實際成本可以差 3 倍。",
+    audience: "想換新模型、要幫團隊或客戶挑模型，需要比較聰明、省錢、速度的人。",
+    summary: "Claude Haiku 5.5 和 GPT-6 Luna 單價一樣，跑同一份評測，Haiku 輸出的 Token 總量是 3.1 倍，每題成本 $0.21 對 $0.07。這篇把 Artificial Analysis 公開的評測中文化，用 Token 效率整理七個模型的速度、價格、準確度評量表與效率排名，附可自己調聰明、省錢、速度三個權重的綜合排名、依情境分配任務表，和新模型出來照著算的四個步驟與提示詞。七個模型的評量表不是作者自己實測；另附作者自己的使用案例：用上網查資料這個實際任務實測 Haiku 5.5、GPT-6 Luna、Gemini 3.8 Flash，附評分機制。",
+    tags: {
+      topic: ["AI工作流", "差異比較", "輔助決策"],
+      level: ["基礎"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["reevaluate-models-same-test", "opus-luna-model-division", "fixed-test-set-for-ai", "ai-customer-service-api-cost", "strong-ai-models-knowledge-workflow-road", "token-money-worth-doing"],
+    cover: { wide: "images/articles/ai-model-token-efficiency-01.jpg" }
   },
 
   {
@@ -280,7 +299,7 @@ window.ARTICLES = [
       content_type: ["案例文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["reevaluate-models-same-test", "ai-cp-value-calculus", "what-are-subagents", "long-answer-three-layers", "meeting-record-agent-workflow", "dual-track-planning-loop", "fixed-test-set-for-ai", "ai-schedule-wake-interval", "ai-customer-service-api-cost", "domain-and-account-ownership"],
+    related: ["reevaluate-models-same-test", "ai-cp-value-calculus", "what-are-subagents", "long-answer-three-layers", "meeting-record-agent-workflow", "dual-track-planning-loop", "fixed-test-set-for-ai", "ai-schedule-wake-interval", "ai-customer-service-api-cost", "domain-and-account-ownership", "ai-model-token-efficiency"],
     cover: { wide: "images/articles/opus-luna-model-division-cover.jpg" }
   },
 
@@ -413,7 +432,7 @@ window.ARTICLES = [
       content_type: ["案例文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["fixed-test-set-for-ai", "ai-cp-value-calculus", "three-levels-of-cross-review", "dual-track-planning-loop", "how-to-verify-ai-rule-changes", "ai-schedule-wake-interval", "opus-luna-model-division", "token-money-worth-doing"],
+    related: ["fixed-test-set-for-ai", "ai-cp-value-calculus", "three-levels-of-cross-review", "dual-track-planning-loop", "how-to-verify-ai-rule-changes", "ai-schedule-wake-interval", "opus-luna-model-division", "ai-model-token-efficiency", "token-money-worth-doing"],
     cover: { wide: "images/articles/reevaluate-models-same-test-cover.jpg" }
   },
 
@@ -584,7 +603,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["how-to-verify-ai-rule-changes", "three-levels-of-cross-review", "dual-track-planning-loop", "ai-cp-value-calculus", "ai-schedule-wake-interval", "rule-file-rebound", "caught-ai-slacking-into-rules", "ai-user-testing", "long-document-review-layers", "reevaluate-models-same-test", "opus-luna-model-division"],
+    related: ["how-to-verify-ai-rule-changes", "three-levels-of-cross-review", "dual-track-planning-loop", "ai-cp-value-calculus", "ai-schedule-wake-interval", "rule-file-rebound", "caught-ai-slacking-into-rules", "ai-user-testing", "long-document-review-layers", "reevaluate-models-same-test", "opus-luna-model-division", "ai-model-token-efficiency"],
     cover: { wide: "images/articles/fixed-test-set-for-ai-cover.jpg" }
   },
 
