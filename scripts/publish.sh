@@ -439,7 +439,7 @@ if [[ "$PUBLISH_TARGET" == "cloudflare" && -z "$CF_IP" ]]; then
   VERIFY_FAIL=1
 fi
 for _p in "/" "/offers.html" "/cases.html" "/skills.html" "/site-index.json" ${EXTRA_VERIFY[@]+"${EXTRA_VERIFY[@]}"}; do
-  _code=$(curl -s -o /dev/null -w '%{http_code}' --max-time 20 ${CF_IP:+--resolve "jiangyude.com:443:$CF_IP"} "https://jiangyude.com${_p}" || true)
+  _code=$(curl -sL -o /dev/null -w '%{http_code}' --max-time 20 ${CF_IP:+--resolve "jiangyude.com:443:$CF_IP"} "https://jiangyude.com${_p}" || true)  # -L：Pages 會把 .html 308 轉到無副檔名網址
   if [[ "$_code" == "200" ]]; then
     echo "  ✅ ${_p} 200"
   else

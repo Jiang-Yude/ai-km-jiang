@@ -17,4 +17,4 @@ SAFE_DEPLOY_CALLER=scripts/publish.sh \
   bash "$task_safe" --cf ai-km-jiang-cf-20261004 "$task_dir" / /articles /courses /skills /site-index.json /llms.txt
 mkdir -p "$task_root/scripts/cloudflare/cutover-snapshots"
 printf '{"commit":"%s","deployed_at":"%s"}\n' "$(git -C "$task_root" rev-parse HEAD)" "$(date -u +%Y-%m-%dT%H:%M:%SZ)" > "$task_root/scripts/cloudflare/cutover-snapshots/production-receipt.json"
-echo "PRODUCTION_DEPLOYED $(git -C "$task_root" rev-parse --short HEAD); jiangyude.com not moved (run cutover.py)"
+echo "PRODUCTION_DEPLOYED $(git -C "$task_root" rev-parse --short HEAD); （jiangyude.com 已指向 C 網，2026-10-09 切換；本步只換 production 內容）"
