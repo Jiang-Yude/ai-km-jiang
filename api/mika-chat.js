@@ -773,51 +773,59 @@ module.exports = async (req, res) => {
       : (Number(process.env.MIKA_MAX_TOKENS) || 600);
     const routed = await routeChat({
       env: process.env,
-      // Claude 段最多 15 秒（預設 10 秒），OpenAI 至少還有 12 秒，整體守住 30 秒上限
+      // Claude 段最多 15 秒（預設 10 秒）；整則（含 OpenAI 讀完回應）27 秒截止，守住 Vercel 30 秒上限
       deadlineAt: t0 + Math.min(Number(process.env.CLAUDE_BUDGET_MS) || 10000, 15000),
+      messageDeadlineAt: t0 + 27000,
       system: 'mika-chat',
       messages: [{ role: 'system', content: system }, ...msgs],
       maxTokens: Number(process.env.MIKA_CLAUDE_MAX_TOKENS) || Math.max(2000, oaiMax * 2),
       reasoning: (vague || offTopic) ? (process.env.MIKA_REASONING_VAGUE || 'low') : (process.env.MIKA_REASONING || 'none'),
       refusalText: '這個問題咪卡沒辦法回答，換個方式問問看，或直接聯絡江江。',
-      callOpenAI: async () => {
+      callOpenAI: async ({ signal } = {}) => {
+        /* 計時器涵蓋到讀完回應內容（原本在 r.json() 前就清掉，body 卡住時沒有保護；2026-10-09 跨家審第四輪）。
+           開關 openai 時也一樣：只有超過 25 秒才中斷，Vercel 本來就會在 30 秒砍掉函式。
+           開關 claude 換到備援時，路由器另外傳 signal（整則 27 秒截止），兩個任一到期都中斷。 */
         const ctrl = new AbortController();
-        const timer = setTimeout(() => ctrl.abort(), Math.max(5000, Math.min(25000, 27000 - (Date.now() - t0))));
-        const r = await fetch(`${BASE_URL()}/chat/completions`, {
-          method: 'POST',
-          headers: { Authorization: `Bearer ${API_KEY()}`, 'Content-Type': 'application/json' },
-          signal: ctrl.signal,
-          body: JSON.stringify({
-            model: MODEL(),
-            // GPT-5.6 系列不吃 max_tokens，要用 max_completion_tokens（2026-08-10 上線實測抓到）
-            // 回覆長度上限。平常 600 約中文三四百字夠用；但訪客解鎖了這一頁在問「老師那段提示詞」時，
-            // 咪卡要把提示詞整段照貼（8/15 課程頁實測單段 204～259 字，加上前後說明會超過 600），
-            // 600 會把提示詞從中間切斷，學員複製走的是半段，等於整個功能白做。（2026-08-17 加）
-            max_completion_tokens: (pageBlock || simple)
-              ? (Number(process.env.MIKA_MAX_TOKENS_PAGE) || 1800)
-              : (Number(process.env.MIKA_MAX_TOKENS) || 600),
-            // 推理按需開：問題清楚（別名命中）＝none，成本與速度最佳；
-            // 問得抽象（分數低於門檻）＝low，讓咪卡想清楚哪篇文章真的對得上訪客的處境。
-            // 推理 token 算 output 計費且 GPT-5.6 預設 medium，全開等於帳單翻倍，故不用預設值。
-            // 抽象題與疑似站外題都要判斷（站外題要判「這些文章到底相不相關」），開 low
-            reasoning_effort: (vague || offTopic)
-              ? (process.env.MIKA_REASONING_VAGUE || 'low')
-              : (process.env.MIKA_REASONING || 'none'),
-            messages: [{ role: 'system', content: system }, ...msgs],
-          }),
-        });
-        clearTimeout(timer);
-        const data = await r.json();
-        // 上游錯誤要原樣帶出來（只放進 error 欄，widget 不顯示給訪客），
-        // 否則失敗時只看得到「empty reply」，查不出是模型名稱錯、金鑰無效還是參數不支援。
-        if (!r.ok || (data && data.error)) {
-          const up = (data && data.error && (data.error.message || data.error.code)) || ('HTTP ' + r.status);
-          throw new Error('upstream: ' + up);
+        const timer = setTimeout(() => ctrl.abort(), Math.max(1000, Math.min(25000, 27000 - (Date.now() - t0))));
+        if (signal) signal.addEventListener('abort', () => ctrl.abort(), { once: true });
+        try {
+          const r = await fetch(`${BASE_URL()}/chat/completions`, {
+            method: 'POST',
+            headers: { Authorization: `Bearer ${API_KEY()}`, 'Content-Type': 'application/json' },
+            signal: ctrl.signal,
+            body: JSON.stringify({
+              model: MODEL(),
+              // GPT-5.6 系列不吃 max_tokens，要用 max_completion_tokens（2026-08-10 上線實測抓到）
+              // 回覆長度上限。平常 600 約中文三四百字夠用；但訪客解鎖了這一頁在問「老師那段提示詞」時，
+              // 咪卡要把提示詞整段照貼（8/15 課程頁實測單段 204～259 字，加上前後說明會超過 600），
+              // 600 會把提示詞從中間切斷，學員複製走的是半段，等於整個功能白做。（2026-08-17 加）
+              max_completion_tokens: (pageBlock || simple)
+                ? (Number(process.env.MIKA_MAX_TOKENS_PAGE) || 1800)
+                : (Number(process.env.MIKA_MAX_TOKENS) || 600),
+              // 推理按需開：問題清楚（別名命中）＝none，成本與速度最佳；
+              // 問得抽象（分數低於門檻）＝low，讓咪卡想清楚哪篇文章真的對得上訪客的處境。
+              // 推理 token 算 output 計費且 GPT-5.6 預設 medium，全開等於帳單翻倍，故不用預設值。
+              // 抽象題與疑似站外題都要判斷（站外題要判「這些文章到底相不相關」），開 low
+              reasoning_effort: (vague || offTopic)
+                ? (process.env.MIKA_REASONING_VAGUE || 'low')
+                : (process.env.MIKA_REASONING || 'none'),
+              messages: [{ role: 'system', content: system }, ...msgs],
+            }),
+          });
+          const data = await r.json();
+          // 上游錯誤要原樣帶出來（只放進 error 欄，widget 不顯示給訪客），
+          // 否則失敗時只看得到「empty reply」，查不出是模型名稱錯、金鑰無效還是參數不支援。
+          if (!r.ok || (data && data.error)) {
+            const up = (data && data.error && (data.error.message || data.error.code)) || ('HTTP ' + r.status);
+            throw new Error('upstream: ' + up);
+          }
+          const raw = data && data.choices && data.choices[0] && data.choices[0].message
+            ? String(data.choices[0].message.content || '').trim() : '';
+          if (!raw) throw new Error('empty reply｜finish_reason=' + (data?.choices?.[0]?.finish_reason || 'na'));
+          return { text: raw, finishReason: data?.choices?.[0]?.finish_reason || '', model: MODEL() };
+        } finally {
+          clearTimeout(timer);
         }
-        const raw = data && data.choices && data.choices[0] && data.choices[0].message
-          ? String(data.choices[0].message.content || '').trim() : '';
-        if (!raw) throw new Error('empty reply｜finish_reason=' + (data?.choices?.[0]?.finish_reason || 'na'));
-        return { text: raw, finishReason: data?.choices?.[0]?.finish_reason || '', model: MODEL() };
       },
     });
     const raw = String(routed.text || '').trim();
