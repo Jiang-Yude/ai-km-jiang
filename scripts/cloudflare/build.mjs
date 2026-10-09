@@ -66,6 +66,13 @@ for(const name of ['view','stats','stats-admin','search-log','mika-chat-log','mi
   code=code.replace("const fs = require('fs');",'').replace("const path = require('path');",'');
   code=code.replaceAll('process.env','env');
   if(name==='mika-chat') {
+    // 2026-10-09 咪卡雙軌：把 lib/llm-router.js 內嵌進來（Pages 打包不吃 require）
+    const reqLine="const { routeChat } = require('../lib/llm-router.js');";
+    if(!code.includes(reqLine))throw new Error('llm-router require mismatch');
+    let router=fs.readFileSync(path.join(root,'lib/llm-router.js'),'utf8').replaceAll('process.env','env');
+    if(!router.includes('module.exports = {'))throw new Error('llm-router export mismatch');
+    router=router.replace(/module\.exports = \{/,'return {');
+    code=code.replace(reqLine,'const { routeChat } = (() => {\n'+router+'\n})();');
     const start=code.indexOf('  const root = process.cwd();'),end=code.indexOf('  const ranked = items',start);
     if(start<0||end<0)throw new Error('catalog transform mismatch');
     code=code.slice(0,start)+`  const win = siteWindow;\n  const aliases = win.SEARCH_ALIASES || {};\n  const keywords = win.ARTICLE_KEYWORDS || {};\n  const slugOf = (u) => String(u || '').replace(/^\\/+|\\/+$/g, '').replace(/^articles\\//, '');\n  const items = siteItems;\n\n`+code.slice(end);

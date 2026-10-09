@@ -252,7 +252,7 @@ if [[ "$PUBLISH_TARGET" == "cloudflare" ]]; then
   # 並行：部署前後都讀 origin/main。部署期間 main 又前進（別台發布），就快轉到最新、重部署，最多 4 輪，
   # 確保最後留在正式站的一定是 main 最新版，不會被本機較舊的建置蓋回去。
   # 誠實邊界：兩台在同一分鐘各自部署時仍有短暫空窗；後完成的那台若看到 main 前進會再部署最新版收斂。
-  export SAFE_DEPLOY_POSTCLASS_EVIDENCE_DIR="${SAFE_DEPLOY_POSTCLASS_EVIDENCE_DIR:-$HOME/Library/Mobile Documents/iCloud~md~obsidian/Documents/江昱德 主知識庫/_agent/tmp/2026-10-04 官網搬C網/legacy-evidence}"
+  export SAFE_DEPLOY_POSTCLASS_EVIDENCE_DIR="${SAFE_DEPLOY_POSTCLASS_EVIDENCE_DIR:-$HOME/Library/Mobile Documents/iCloud~md~obsidian/Documents/江昱德 主知識庫/_agent/tmp/2026-10-06 歷史課後頁放行}"
   RECEIPT="$REPO_ROOT/scripts/cloudflare/cutover-snapshots/production-receipt.json"
   CF_ROUND=0
   while true; do

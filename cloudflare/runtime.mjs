@@ -30,6 +30,7 @@ export function storageFetch(env, prefix, transport = fetch) {
     if (!redis || (String(url) !== redis && String(url) !== redis + '/pipeline')) {
       const llm = (env.MIKA_LLM_BASE_URL || 'https://api.openai.com/v1') + '/chat/completions';
       if (String(url) === llm) return transport(url, options);
+      if (String(url) === 'https://api.anthropic.com/v1/messages') return transport(url, options);
       throw new Error('unsupported upstream endpoint');
     }
     const pipeline = String(url).endsWith('/pipeline');
