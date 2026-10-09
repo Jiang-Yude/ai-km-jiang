@@ -3,7 +3,7 @@
 # Production deploy alone does not move jiangyude.com; DNS cutover is cutover.py.
 set -euo pipefail
 task_root=$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd -P)
-case "$(git -C "$task_root" branch --show-current)" in main|migration/cloudflare-20261004) ;; *) echo "production deploy only from main"; exit 2 ;; esac
+[[ "$(git -C "$task_root" branch --show-current)" == "main" ]] || { echo "production deploy only from main"; exit 2; }
 [[ "${SAFE_DEPLOY_CF_PROMOTE:-}" == "ai-km-jiang-cf-20261004" ]] || { echo "STOP: production deploy needs SAFE_DEPLOY_CF_PROMOTE=ai-km-jiang-cf-20261004"; exit 2; }
 task_safe="$HOME/Library/Mobile Documents/iCloud~md~obsidian/Documents/江昱德 主知識庫/_agent/tools/safe-deploy/safe-deploy.sh"
 [[ -f "$task_safe" ]] || { echo "safe-deploy missing"; exit 2; }

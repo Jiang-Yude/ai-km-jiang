@@ -434,6 +434,10 @@ fi
 
 echo "▶ 正式站路徑驗收…"
 VERIFY_FAIL=0
+if [[ "$PUBLISH_TARGET" == "cloudflare" && -z "$CF_IP" ]]; then
+  echo "  ❌ 權威 NS 查不到 jiangyude.com 的 IP，無法避開本機 DNS 快取驗收"
+  VERIFY_FAIL=1
+fi
 for _p in "/" "/offers.html" "/cases.html" "/skills.html" "/site-index.json" ${EXTRA_VERIFY[@]+"${EXTRA_VERIFY[@]}"}; do
   _code=$(curl -s -o /dev/null -w '%{http_code}' --max-time 20 ${CF_IP:+--resolve "jiangyude.com:443:$CF_IP"} "https://jiangyude.com${_p}" || true)
   if [[ "$_code" == "200" ]]; then
