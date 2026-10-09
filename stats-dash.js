@@ -725,6 +725,18 @@
   }
 
   document.addEventListener('DOMContentLoaded', function () {
+    var eye = $('eye'), pwIn = $('pw');
+    if (eye && pwIn) eye.addEventListener('click', function () {
+      var show = eye.getAttribute('aria-pressed') !== 'true';
+      eye.setAttribute('aria-pressed', show ? 'true' : 'false');
+      eye.setAttribute('aria-label', show ? '隱藏密碼' : '顯示密碼');
+      pwIn.type = show ? 'text' : 'password';
+      pwIn.classList.toggle('masked', !show);
+      pwIn.focus();
+    });
+  });
+
+  document.addEventListener('DOMContentLoaded', function () {
     fetch('/site-index.json').then(function (r) { return r.json(); }).then(function (d) {
       (d.items || []).forEach(function (it) { IDX[norm(it.url)] = { title: it.title, type: it.type }; });
     }).catch(function () { /* 拿不到就退回顯示路徑 */ });

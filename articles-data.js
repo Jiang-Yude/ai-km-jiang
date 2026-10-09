@@ -23,6 +23,63 @@ window.ARTICLE_TAGS = {
 
 window.ARTICLES = [
   {
+    id: "auto-compact-mod",
+    url: "articles/auto-compact-mod/",
+    date: "2026-10-09",
+    updated: "2026-10-09",
+    title: "離開超過一小時回來，AI 對話為什麼變貴？｜我用 Claude Code Mod 做了閒置 55 分鐘先寫日誌再自動壓縮",
+    problem: "AI 對話開很久、中途離開超過一小時回來，第一句話特別貴；直接壓縮上下文又怕 AI 忘記做到哪。",
+    audience: "常常一個 AI 對話開很久、中途離開又回來的人；用 Claude Code、想知道 Mod 能做什麼的人。",
+    summary: "Claude Code 的快取存 1 小時，離開超過一小時回來，前面的對話要用一般價格重新計算。我先用 Hook 做續接卡，但 Hook 叫不醒閒置的對話；後來用 Claude Code Mod 做了 auto-compact-55：說「壓縮上下文」就先寫工作日誌再壓縮，閒置 55 分鐘也會自動先寫日誌再壓縮。文章講兩套機制、說了卻沒壓縮的坑怎麼修、安全邊界，最後附不寫程式也能照做的手動流程。",
+    tags: {
+      topic: ["AI工作流", "工具操作"],
+      level: ["進階"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["token-money-worth-doing", "pii-shield", "codex-log-health-check"],
+    cover: { wide: "images/articles/auto-compact-mod-cover.jpg" }
+  },
+
+  {
+    id: "token-money-worth-doing",
+    url: "articles/token-money-worth-doing/",
+    date: "2026-10-09",
+    updated: "2026-10-09",
+    title: "用 AI 解決一件事，花的錢值不值得？｜我做了一個 Token 精算師，把每月用量換成台幣",
+    problem: "AI 什麼都做得出來，但不知道一件事值不值得交給 AI，也不知道自己每個月用 AI 換算成 API 要多少錢。",
+    audience: "付 AI 訂閱費想知道用了多少的人、想判斷哪些事值得交給 AI 的人、要幫客戶估算 AI 成本的顧問。",
+    summary: "先用商業角度判斷：花 100 塊能賺 200 塊就做，花 50 塊卻沒有人受益就是浪費。我自己做了 Mac 選單列小工具 TokenMoney，看三家 AI 額度，把 Claude、Codex 每月用量換算成 API 台幣。文章用白話講 token 的四種價格、快取（prompt caching）為什麼能省下九成、上下文越長為什麼越貴，最後附一段可直接複製的 AI 成本估算提示詞。",
+    tags: {
+      topic: ["AI工作流", "輔助決策", "工具操作"],
+      level: ["基礎"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["auto-compact-mod", "ai-model-token-efficiency", "delete-before-automate", "reevaluate-models-same-test", "ai-image-api-cost", "ai-customer-service-api-cost", "pii-shield", "codex-log-health-check"],
+    cover: { wide: "images/articles/token-money-worth-doing-cover.jpg" }
+  },
+
+  {
+    id: "ai-model-token-efficiency",
+    url: "articles/ai-model-token-efficiency/",
+    date: "2026-10-08",
+    updated: "2026-10-09",
+    title: "新的 AI 模型 Token 效率要怎麼比較？｜效率評量表與綜合排名，聰明、省錢、速度三個權重自己調",
+    problem: "新模型一出來，只看每百萬 Token 單價就以為比完價格，結果單價一樣的模型，每題實際成本可以差 3 倍。",
+    audience: "想換新模型、要幫團隊或客戶挑模型，需要比較聰明、省錢、速度的人。",
+    summary: "Claude Haiku 5.5 和 GPT-6 Luna 單價一樣，跑同一份評測，Haiku 輸出的 Token 總量是 3.1 倍，每題成本 $0.21 對 $0.07。這篇把 Artificial Analysis 公開的評測中文化，用 Token 效率整理七個模型的速度、價格、準確度評量表與效率排名，附可自己調聰明、省錢、速度三個權重的綜合排名、依情境分配任務表，和新模型出來照著算的四個步驟與提示詞。七個模型的評量表不是作者自己實測；另附作者自己的使用案例：用上網查資料這個實際任務實測 Haiku 5.5、GPT-6 Luna、Gemini 3.8 Flash，附評分機制。",
+    tags: {
+      topic: ["AI工作流", "差異比較", "輔助決策"],
+      level: ["基礎"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["reevaluate-models-same-test", "opus-luna-model-division", "fixed-test-set-for-ai", "ai-customer-service-api-cost", "strong-ai-models-knowledge-workflow-road", "token-money-worth-doing"],
+    cover: { wide: "images/articles/ai-model-token-efficiency-01.jpg" }
+  },
+
+  {
     id: "ai-adoption-raise-not-install",
     url: "articles/ai-adoption-raise-not-install/",
     date: "2026-10-03",
@@ -92,7 +149,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["ai-data-red-lines", "ai-batch-work-without-seeing-data"]
+    related: ["ai-data-red-lines", "ai-batch-work-without-seeing-data", "token-money-worth-doing", "auto-compact-mod"]
   },
 
   {
@@ -117,7 +174,7 @@ window.ARTICLES = [
     id: "ai-customer-service-api-cost",
     url: "articles/ai-customer-service-api-cost/",
     date: "2026-10-01",
-    updated: "2026-10-01",
+    updated: "2026-10-03",
     title: "我想在官網放 AI 客服，API 是什麼、會不會很貴？｜儲值、金鑰、模型怎麼選，四步上線順序",
     problem: "想在官網放 AI 客服，但 API 聽不懂、怕費用失控、怕金鑰外洩，不知道先做哪一步。",
     audience: "有官網、想加 AI 客服但不是工程師的講師、店家與接案者。",
@@ -128,7 +185,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["opus-luna-model-division", "cli-api-mcp-computer-use", "github-vercel-cloudflare-compare", "webnode-to-cloudflare-pages", "domain-and-account-ownership", "grok-bot-galaxy-day2-workshops"],
+    related: ["opus-luna-model-division", "cli-api-mcp-computer-use", "github-vercel-cloudflare-compare", "webnode-to-cloudflare-pages", "domain-and-account-ownership", "grok-bot-galaxy-day2-workshops", "token-money-worth-doing"],
     cover: { wide: "images/articles/ai-customer-service-api-cost-cover.jpg" }
   },
 
@@ -136,7 +193,7 @@ window.ARTICLES = [
     id: "ai-slides-half-auto-google-slides",
     url: "articles/ai-slides-half-auto-google-slides/",
     date: "2026-10-01",
-    updated: "2026-10-01",
+    updated: "2026-10-03",
     title: "叫 AI 做簡報，為什麼最後還是自己一個字一個字改？｜從轉 PPT 自己改，到連動 Google 簡報的半自動流程",
     problem: "叫 AI 做簡報，最後還是自己一個字一個字改，Token 用很兇也不知道怎麼下指令。",
     audience: "常做簡報、想讓 AI 一次比一次做得更對的講師、NPO 夥伴與業務。",
@@ -155,7 +212,7 @@ window.ARTICLES = [
     id: "domain-and-account-ownership",
     url: "articles/domain-and-account-ownership/",
     date: "2026-10-01",
-    updated: "2026-10-01",
+    updated: "2026-10-03",
     title: "網域要去哪裡買？小編要給帳號密碼嗎？｜金流與帳號權限握在自己手上，其他都能交出去",
     problem: "要請小編或找人做網站，不確定帳號密碼要不要給、網域該在哪裡買、哪些東西一定要握在自己手上。",
     audience: "請小編、找人做網站、或要幫客戶規劃權限的經營者與接案者。",
@@ -242,7 +299,7 @@ window.ARTICLES = [
       content_type: ["案例文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["reevaluate-models-same-test", "ai-cp-value-calculus", "what-are-subagents", "long-answer-three-layers", "meeting-record-agent-workflow", "dual-track-planning-loop", "fixed-test-set-for-ai", "ai-schedule-wake-interval", "ai-customer-service-api-cost", "domain-and-account-ownership"],
+    related: ["reevaluate-models-same-test", "ai-cp-value-calculus", "what-are-subagents", "long-answer-three-layers", "meeting-record-agent-workflow", "dual-track-planning-loop", "fixed-test-set-for-ai", "ai-schedule-wake-interval", "ai-customer-service-api-cost", "domain-and-account-ownership", "ai-model-token-efficiency"],
     cover: { wide: "images/articles/opus-luna-model-division-cover.jpg" }
   },
 
@@ -304,6 +361,44 @@ window.ARTICLES = [
   },
 
   {
+    id: "start-from-one-persons-problem",
+    url: "articles/start-from-one-persons-problem/",
+    date: "2026-09-21",
+    updated: "2026-09-28",
+    title: "Tesla 內部的一套工作方法，把自動化排在最後一步｜客戶說想用 AI 卻講不清楚要做什麼，從一個人的需求開始",
+    problem: "客戶說想導入 AI，卻講不清楚要 AI 做什麼；自己學了一堆工具，也不知道要拿來解決誰的問題。",
+    audience: "接案者、一人公司、開課老師，與替客戶規劃 AI 導入的顧問。",
+    summary: "用旅學堂公共藝術工作坊與 Dr. Ivy 香氛卡兩個真實案子，講怎麼從一個叫得出名字的人身上找出需求；客戶講不出來時，怎麼進現場做一次事自己撞到問題；再用三個條件判斷一次性交付什麼時候值得變成產品。文末附四個可以直接拿去問的問題。",
+    tags: {
+      topic: ["AI應用", "價值主張", "隱性知識", "輔助決策"],
+      level: ["基礎"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["vibe-coding-ten-half-products", "ai-mvp-validation-before-product", "how-to-train-your-ai-employee", "dont-learn-ai-tools", "company-shape-is-the-moat", "first-principles-money-soup"],
+    cover: { wide: "images/articles/start-from-one-persons-problem-cover.jpg" }
+  },
+
+  {
+    id: "cathay-tech-conference-2026",
+    url: "articles/cathay-tech-conference-2026/",
+    date: "2026-09-24",
+    updated: "2026-09-27",
+    title: "公司導入 AI，資料要先整理到什麼程度？｜2026 國泰金控技術年會 9 場演講整理：地基、AI 同事、成本與責任",
+    problem: "公司想導入 AI 或 AI agent，不知道資料要先整理到什麼程度、AI 在公司裡要怎麼管才安全、成效怎麼算、出錯誰負責。",
+    audience: "正在評估或推動 AI 導入的企業主管與顧問。",
+    summary: "整理 2026 國泰金控技術年會 9 場演講與座談，收成給企業主管的 10 個重點：國泰副董事長的兩個失敗案例與資料地基、企業資料要替 AI 補上三層說明、比照員工制度設計數位同事、上工前的身分邊界軌跡、控制點放在 AI 動手之前、用完成任務的總成本衡量、AI 策略常卡在中階主管、八十分工具沒人用、Google Cloud 的五層檢查框架、需求管理 agent，以及 AI 替人付款後的責任歸屬。附講者之間的分歧、台上沒講清楚的地方、三個起步問題與一段可直接貼給 AI 的盤點提示詞。",
+    tags: {
+      topic: ["AIAgent", "數位轉型", "AI應用"],
+      level: ["基礎"],
+      content_type: ["觀點文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["a2a-agent-protocol", "harness-to-loop", "ai-native-not-transformation", "ai-data-red-lines", "answer-to-action-enterprise-ai-agent", "grok-bot-galaxy-day1-founders", "audrey-tang-reverse-alignment", "one-sentence-video-to-deep-article", "ai-employees-manage-agents"],
+    cover: { wide: "images/articles/cathay-tech-conference-2026/cover.jpg" }
+  },
+
+  {
     id: "one-sentence-ai-website-workflow",
     url: "articles/one-sentence-ai-website-workflow/",
     date: "2026-09-26",
@@ -337,8 +432,27 @@ window.ARTICLES = [
       content_type: ["案例文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["fixed-test-set-for-ai", "ai-cp-value-calculus", "three-levels-of-cross-review", "dual-track-planning-loop", "how-to-verify-ai-rule-changes", "ai-schedule-wake-interval", "opus-luna-model-division"],
+    related: ["fixed-test-set-for-ai", "ai-cp-value-calculus", "three-levels-of-cross-review", "dual-track-planning-loop", "how-to-verify-ai-rule-changes", "ai-schedule-wake-interval", "opus-luna-model-division", "ai-model-token-efficiency", "token-money-worth-doing"],
     cover: { wide: "images/articles/reevaluate-models-same-test-cover.jpg" }
+  },
+
+  {
+    id: "ai-adoption-start-with-one-workflow",
+    url: "articles/ai-adoption-start-with-one-workflow/",
+    date: "2026-09-25",
+    updated: "2026-09-26",
+    title: "公司請 AI 顧問來陪跑，要叫全部人一起來學嗎？｜先找關鍵主管把一條流程做好，再複製給其他人",
+    problem: "公司想導入 AI，第一步就去找人：找一個年輕人來負責，或叫一群同仁和主管來上課，結果大家都沒在用。",
+    audience: "想導入 AI 的老闆、主管，與幫客戶導入 AI 的顧問。",
+    summary: "先找年輕人來用 AI，新人要扛公司流程加 AI 系統的雙層壓力；叫一群人來學，大家自己的事都做不完。這篇整理五步導入順序：老闆加上最需要優化的主管，先把一條工作流程做好，確定之後其他人直接來學、直接用，再複製到其他部門。也講新人進來就是訓練 AI 最好的時候：帶新人時錄音交給 AI，讓它像見習生一樣旁聽，整理成工作手冊。一位主管教員工做簡報講了快一個小時、跟 AI 只下幾個提示詞，錄下來就能整理成操作手冊；同一份手冊給新人看，也是給 AI 用的技能包。附挑第一條流程的盤點表、流程盤點提示詞、錄音整理成操作手冊的提示詞，和把手冊做成技能包的做法。",
+    tags: {
+      topic: ["AI應用", "工作流程", "數位轉型"],
+      level: ["零基礎入門"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["delete-before-automate", "ai-vs-script-four-situations", "manage-ai-with-management-knowledge", "ai-employee-four-levels", "claude-skills-knowledge-assets", "harness-mindset-for-bosses", "ai-adoption-raise-not-install"],
+    cover: { wide: "images/articles/ai-adoption-start-with-one-workflow-cover.jpg" }
   },
 
   {
@@ -361,44 +475,6 @@ window.ARTICLES = [
   },
 
   {
-    id: "ai-adoption-start-with-one-workflow",
-    url: "articles/ai-adoption-start-with-one-workflow/",
-    date: "2026-09-25",
-    updated: "2026-09-25",
-    title: "公司請 AI 顧問來陪跑，要叫全部人一起來學嗎？｜先找關鍵主管把一條流程做好，再複製給其他人",
-    problem: "公司想導入 AI，第一步就去找人：找一個年輕人來負責，或叫一群同仁和主管來上課，結果大家都沒在用。",
-    audience: "想導入 AI 的老闆、主管，與幫客戶導入 AI 的顧問。",
-    summary: "先找年輕人來用 AI，新人要扛公司流程加 AI 系統的雙層壓力；叫一群人來學，大家自己的事都做不完。這篇整理五步導入順序：老闆加上最需要優化的主管，先把一條工作流程做好，確定之後其他人直接來學、直接用，再複製到其他部門。也講新人進來就是訓練 AI 最好的時候：帶新人時錄音交給 AI，讓它像見習生一樣旁聽，整理成工作手冊。一位主管教員工做簡報講了快一個小時、跟 AI 只下幾個提示詞，錄下來就能整理成操作手冊；同一份手冊給新人看，也是給 AI 用的技能包。附挑第一條流程的盤點表、流程盤點提示詞、錄音整理成操作手冊的提示詞，和把手冊做成技能包的做法。",
-    tags: {
-      topic: ["AI應用", "工作流程", "數位轉型"],
-      level: ["零基礎入門"],
-      content_type: ["教學文章"]
-    },
-    external: { threads: null, vocus: null },
-    related: ["delete-before-automate", "ai-vs-script-four-situations", "manage-ai-with-management-knowledge", "ai-employee-four-levels", "claude-skills-knowledge-assets", "harness-mindset-for-bosses", "ai-adoption-raise-not-install"],
-    cover: { wide: "images/articles/ai-adoption-start-with-one-workflow-cover.jpg" }
-  },
-
-  {
-    id: "cathay-tech-conference-2026",
-    url: "articles/cathay-tech-conference-2026/",
-    date: "2026-09-24",
-    updated: "2026-09-24",
-    title: "公司導入 AI，資料要先整理到什麼程度？｜2026 國泰金控技術年會 9 場演講整理：地基、AI 同事、成本與責任",
-    problem: "公司想導入 AI 或 AI agent，不知道資料要先整理到什麼程度、AI 在公司裡要怎麼管才安全、成效怎麼算、出錯誰負責。",
-    audience: "正在評估或推動 AI 導入的企業主管與顧問。",
-    summary: "整理 2026 國泰金控技術年會 9 場演講與座談，收成給企業主管的 10 個重點：國泰副董事長的兩個失敗案例與資料地基、企業資料要替 AI 補上三層說明、比照員工制度設計數位同事、上工前的身分邊界軌跡、控制點放在 AI 動手之前、用完成任務的總成本衡量、AI 策略常卡在中階主管、八十分工具沒人用、Google Cloud 的五層檢查框架、需求管理 agent，以及 AI 替人付款後的責任歸屬。附講者之間的分歧、台上沒講清楚的地方、三個起步問題與一段可直接貼給 AI 的盤點提示詞。",
-    tags: {
-      topic: ["AIAgent", "數位轉型", "AI應用"],
-      level: ["基礎"],
-      content_type: ["觀點文章"]
-    },
-    external: { threads: null, vocus: null },
-    related: ["a2a-agent-protocol", "harness-to-loop", "ai-native-not-transformation", "ai-data-red-lines", "answer-to-action-enterprise-ai-agent", "grok-bot-galaxy-day1-founders", "audrey-tang-reverse-alignment", "one-sentence-video-to-deep-article", "ai-employees-manage-agents"],
-    cover: { wide: "images/articles/cathay-tech-conference-2026/cover.jpg" }
-  },
-
-  {
     id: "cloudflare-service-map",
     url: "articles/cloudflare-service-map/",
     date: "2026-09-16",
@@ -418,6 +494,25 @@ window.ARTICLES = [
   },
 
   {
+    id: "delete-before-automate",
+    url: "articles/delete-before-automate/",
+    date: "2026-09-22",
+    updated: "2026-09-23",
+    title: "想用 AI 提升效率，結果都在瞎忙？｜馬斯克五步工作法與第一性原理，先刪掉再自動化",
+    problem: "一上來就問這件事能不能用 AI，結果把一個本來不用做的流程做得又快又漂亮，越忙越沒進展。",
+    audience: "工具越裝越多卻說不出進展的人，與要導入 AI 的顧問、主管。",
+    summary: "整理馬斯克公開講過的五步工作法：讓需求沒那麼蠢、用力刪掉、刪不掉才簡化、簡化完才加速、最後才自動化，附英文步驟名稱與出處。兩條最實用的判準是需求要掛一個人的名字、刪到要有東西需要加回來。回答第一步時用第一性原理拆回事實、限制與假設，文末附可直接貼給 AI 的四題提示詞與免費的馬斯克第一性原理技能包。",
+    tags: {
+      topic: ["輔助決策", "工作流程", "AI應用"],
+      level: ["零基礎入門"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["vibe-coding-ten-half-products", "elon-musk-live-skill", "ai-vs-script-four-situations", "dont-learn-ai-tools", "ai-adoption-start-with-one-workflow", "first-principles-money-soup", "ai-adoption-raise-not-install", "token-money-worth-doing"],
+    cover: { tall: "images/articles/delete-before-automate-cover.jpg" }
+  },
+
+  {
     id: "ai-data-red-lines",
     url: "articles/ai-data-red-lines/",
     date: "2026-09-22",
@@ -434,25 +529,6 @@ window.ARTICLES = [
     external: { threads: null, vocus: null },
     related: ["openrouter-deepseek-data-routing", "ai-loop-safety-recovery", "ai-usage-audit", "ai-batch-work-without-seeing-data", "audrey-tang-reverse-alignment", "pii-shield"],
     cover: { wide: "images/articles/ai-data-red-lines-cover.jpg" }
-  },
-
-  {
-    id: "delete-before-automate",
-    url: "articles/delete-before-automate/",
-    date: "2026-09-22",
-    updated: "2026-09-22",
-    title: "想用 AI 提升效率，結果都在瞎忙？｜馬斯克五步工作法與第一性原理，先刪掉再自動化",
-    problem: "一上來就問這件事能不能用 AI，結果把一個本來不用做的流程做得又快又漂亮，越忙越沒進展。",
-    audience: "工具越裝越多卻說不出進展的人，與要導入 AI 的顧問、主管。",
-    summary: "整理馬斯克公開講過的五步工作法：讓需求沒那麼蠢、用力刪掉、刪不掉才簡化、簡化完才加速、最後才自動化，附英文步驟名稱與出處。兩條最實用的判準是需求要掛一個人的名字、刪到要有東西需要加回來。回答第一步時用第一性原理拆回事實、限制與假設，文末附可直接貼給 AI 的四題提示詞與免費的馬斯克第一性原理技能包。",
-    tags: {
-      topic: ["輔助決策", "工作流程", "AI應用"],
-      level: ["零基礎入門"],
-      content_type: ["教學文章"]
-    },
-    external: { threads: null, vocus: null },
-    related: ["vibe-coding-ten-half-products", "elon-musk-live-skill", "ai-vs-script-four-situations", "dont-learn-ai-tools", "ai-adoption-start-with-one-workflow", "first-principles-money-soup", "ai-adoption-raise-not-install"],
-    cover: { tall: "images/articles/delete-before-automate-cover.jpg" }
   },
 
   {
@@ -513,25 +589,6 @@ window.ARTICLES = [
   },
 
   {
-    id: "start-from-one-persons-problem",
-    url: "articles/start-from-one-persons-problem/",
-    date: "2026-09-21",
-    updated: "2026-09-21",
-    title: "Tesla 內部的一套工作方法，把自動化排在最後一步｜客戶說想用 AI 卻講不清楚要做什麼，從一個人的需求開始",
-    problem: "客戶說想導入 AI，卻講不清楚要 AI 做什麼；自己學了一堆工具，也不知道要拿來解決誰的問題。",
-    audience: "接案者、一人公司、開課老師，與替客戶規劃 AI 導入的顧問。",
-    summary: "用旅學堂公共藝術工作坊與 Dr. Ivy 香氛卡兩個真實案子，講怎麼從一個叫得出名字的人身上找出需求；客戶講不出來時，怎麼進現場做一次事自己撞到問題；再用三個條件判斷一次性交付什麼時候值得變成產品。文末附四個可以直接拿去問的問題。",
-    tags: {
-      topic: ["AI應用", "價值主張", "隱性知識", "輔助決策"],
-      level: ["基礎"],
-      content_type: ["教學文章"]
-    },
-    external: { threads: null, vocus: null },
-    related: ["vibe-coding-ten-half-products", "ai-mvp-validation-before-product", "how-to-train-your-ai-employee", "dont-learn-ai-tools", "company-shape-is-the-moat", "first-principles-money-soup"],
-    cover: { wide: "images/articles/start-from-one-persons-problem-cover.jpg" }
-  },
-
-  {
     id: "fixed-test-set-for-ai",
     url: "articles/fixed-test-set-for-ai/",
     date: "2026-09-20",
@@ -546,7 +603,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["how-to-verify-ai-rule-changes", "three-levels-of-cross-review", "dual-track-planning-loop", "ai-cp-value-calculus", "ai-schedule-wake-interval", "rule-file-rebound", "caught-ai-slacking-into-rules", "ai-user-testing", "long-document-review-layers", "reevaluate-models-same-test", "opus-luna-model-division"],
+    related: ["how-to-verify-ai-rule-changes", "three-levels-of-cross-review", "dual-track-planning-loop", "ai-cp-value-calculus", "ai-schedule-wake-interval", "rule-file-rebound", "caught-ai-slacking-into-rules", "ai-user-testing", "long-document-review-layers", "reevaluate-models-same-test", "opus-luna-model-division", "ai-model-token-efficiency"],
     cover: { wide: "images/articles/fixed-test-set-for-ai-cover.jpg" }
   },
 
@@ -831,7 +888,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["ai-schedule-wake-interval"],
+    related: ["ai-schedule-wake-interval", "token-money-worth-doing"],
     cover: { tall: "images/articles/ai-image-api-cost-cover.jpg" }
   },
 
@@ -2796,7 +2853,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["codex-only-auto-worklog", "agent-workflow-builds-automation", "how-to-train-your-ai-employee"],
+    related: ["codex-only-auto-worklog", "agent-workflow-builds-automation", "how-to-train-your-ai-employee", "token-money-worth-doing", "auto-compact-mod"],
     cover: { tall: "images/articles/codex-log-health-check-cover-image2.jpg" }
   },
 
