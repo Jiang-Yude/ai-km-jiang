@@ -21,6 +21,9 @@ if [[ "${1:-}" == "--cloudflare-candidate" ]]; then
   [[ "$#" == "1" ]] || { echo "Cloudflare candidate takes no extra arguments"; exit 2; }
   exec bash "$REPO_ROOT/scripts/cloudflare/deploy-candidate.sh"
 fi
+PUBLISH_TARGET="${PUBLISH_TARGET:-cloudflare}"
+case "$PUBLISH_TARGET" in cloudflare|vercel) ;; *) echo "⛔ PUBLISH_TARGET 只能是 cloudflare 或 vercel（目前：$PUBLISH_TARGET）"; exit 2 ;; esac
+export PUBLISH_TARGET
 EXPECTED_BRANCH="main"
 MSG="${1:?用法：bash scripts/publish.sh \"commit 訊息\"}"
 shift
@@ -242,26 +245,37 @@ fi
 # 預設 PUBLISH_TARGET=cloudflare：push 後從本機乾淨工作樹建置並推 C 網 production。
 # 退回 Vercel（cutover.py rollback 之後）才用 PUBLISH_TARGET=vercel，走下面原本的 Git 整合促轉段。
 # 切換登記：cutover-registry site-cf-cutover-20261009。
-PUBLISH_TARGET="${PUBLISH_TARGET:-cloudflare}"
 PUBLISHED_SHA=$(git rev-parse HEAD)
 TIP="$PUBLISHED_SHA"
 CF_IP=""
 if [[ "$PUBLISH_TARGET" == "cloudflare" ]]; then
-  # 並行：別台在本次 push 之後又推了 main，就快轉到最新再建置，避免把正式站推回舊版。
-  # 誠實邊界：兩台在同一分鐘各自建置時，後完成的那台決定正式站內容；後到者一定包含先到者（都是 main 的快轉）。
-  git fetch --quiet origin main || { echo "⛔ 讀不到 origin/main"; exit 1; }
-  if [[ "$(git rev-parse origin/main)" != "$PUBLISHED_SHA" ]]; then
-    echo "▶ main 已前進，快轉到最新再部署"
-    git merge --ff-only origin/main || { echo "⛔ 無法快轉到 origin/main，正式站未動"; exit 1; }
-    TIP=$(git rev-parse HEAD)
-  fi
+  # 並行：部署前後都讀 origin/main。部署期間 main 又前進（別台發布），就快轉到最新、重部署，最多 4 輪，
+  # 確保最後留在正式站的一定是 main 最新版，不會被本機較舊的建置蓋回去。
+  # 誠實邊界：兩台在同一分鐘各自部署時仍有短暫空窗；後完成的那台若看到 main 前進會再部署最新版收斂。
   export SAFE_DEPLOY_POSTCLASS_EVIDENCE_DIR="${SAFE_DEPLOY_POSTCLASS_EVIDENCE_DIR:-$HOME/Library/Mobile Documents/iCloud~md~obsidian/Documents/江昱德 主知識庫/_agent/tmp/2026-10-04 官網搬C網/legacy-evidence}"
-  echo "▶ 部署 C 網 production（${TIP:0:7}）…"
-  # 執行 publish.sh 本身就是正式發布授權（與原本 Vercel 自動促轉同義）
-  SAFE_DEPLOY_CF_PROMOTE=ai-km-jiang-cf-20261004 bash "$REPO_ROOT/scripts/cloudflare/deploy-production.sh" \
-    || { echo "⛔ C 網 production 部署失敗；git 已 push，正式站維持上一版。修好後重跑：bash scripts/publish.sh 會從頭再來"; exit 1; }
+  RECEIPT="$REPO_ROOT/scripts/cloudflare/cutover-snapshots/production-receipt.json"
+  CF_ROUND=0
+  while true; do
+    CF_ROUND=$((CF_ROUND + 1))
+    (( CF_ROUND <= 4 )) || { echo "⛔ 部署 4 輪 main 仍在前進，先停下；等其他發布結束後重跑 publish.sh"; exit 1; }
+    git fetch --quiet origin main || { echo "⛔ 讀不到 origin/main"; exit 1; }
+    if [[ "$(git rev-parse origin/main)" != "$(git rev-parse HEAD)" ]]; then
+      echo "▶ main 已前進，快轉到最新再部署"
+      git merge --ff-only origin/main || { echo "⛔ 無法快轉到 origin/main，正式站未動"; exit 1; }
+    fi
+    TIP=$(git rev-parse HEAD)
+    echo "▶ 部署 C 網 production（${TIP:0:7}）…"
+    # 執行 publish.sh 本身就是正式發布授權（與原本 Vercel 自動促轉同義）
+    SAFE_DEPLOY_CF_PROMOTE=ai-km-jiang-cf-20261004 bash "$REPO_ROOT/scripts/cloudflare/deploy-production.sh" \
+      || { echo "⛔ C 網 production 部署失敗；git 已 push，正式站維持上一版。修好後重跑 bash scripts/publish.sh"; exit 1; }
+    grep -q "\"commit\":\"$TIP\"" "$RECEIPT" 2>/dev/null || { echo "⛔ 部署收據不是 ${TIP:0:7}，停下"; exit 1; }
+    git fetch --quiet origin main || { echo "⛔ 讀不到 origin/main，無法確認正式站是最新版"; exit 1; }
+    [[ "$(git rev-parse origin/main)" == "$TIP" ]] && break
+    echo "  ↻ 部署期間 main 又前進，重部署最新版"
+  done
+  echo "  ✅ C 網 production＝origin/main 最新 ${TIP:0:7}"
   # 驗收用 Cloudflare 權威 NS 解析，避開本機 DNS 快取
-  CF_IP=$(dig +short jiangyude.com A @howard.ns.cloudflare.com | grep -E '^[0-9.]+$' | head -1)
+  CF_IP=$(dig +short jiangyude.com A @howard.ns.cloudflare.com 2>/dev/null | grep -E '^[0-9.]+$' | head -1 || true)
 elif [[ "$PUBLISH_TARGET" == "vercel" ]]; then
 # ─── Git 整合自動部署＋別名促轉（2026-08-08 起；2026-09-27 並行發布改版）───
 # push 已觸發 Vercel 從 GitHub 遠端建置（部署單位＝commit，不再從本機推快照）。
@@ -416,14 +430,12 @@ while true; do
   echo "  ↻ 促轉後 main 又前進或網域指向不符（${MISMATCH:- main 已更新}），再對一次"
 done
 
-else
-  echo "⛔ PUBLISH_TARGET 只能是 cloudflare 或 vercel"; exit 2
 fi
 
 echo "▶ 正式站路徑驗收…"
 VERIFY_FAIL=0
 for _p in "/" "/offers.html" "/cases.html" "/skills.html" "/site-index.json" ${EXTRA_VERIFY[@]+"${EXTRA_VERIFY[@]}"}; do
-  _code=$(curl -s -o /dev/null -w '%{http_code}' --max-time 20 ${CF_IP:+--resolve "jiangyude.com:443:$CF_IP"} "https://jiangyude.com${_p}")
+  _code=$(curl -s -o /dev/null -w '%{http_code}' --max-time 20 ${CF_IP:+--resolve "jiangyude.com:443:$CF_IP"} "https://jiangyude.com${_p}" || true)
   if [[ "$_code" == "200" ]]; then
     echo "  ✅ ${_p} 200"
   else
@@ -434,7 +446,7 @@ done
 
 DRAFT_PATH=$(grep -E '^articles/.+/$' .vercelignore 2>/dev/null | head -1)
 if [[ -n "$DRAFT_PATH" ]]; then
-  _code=$(curl -s -o /dev/null -w '%{http_code}' --max-time 20 ${CF_IP:+--resolve "jiangyude.com:443:$CF_IP"} "https://jiangyude.com/${DRAFT_PATH}")
+  _code=$(curl -s -o /dev/null -w '%{http_code}' --max-time 20 ${CF_IP:+--resolve "jiangyude.com:443:$CF_IP"} "https://jiangyude.com/${DRAFT_PATH}" || true)
   if [[ "$_code" == "404" ]]; then
     echo "  ✅ 擋板草稿仍 404（/${DRAFT_PATH}）"
   else

@@ -21,9 +21,8 @@ echo "═══ 部署環境檢查：ai-km-jiang ═══"
 need_cmd git
 need_cmd node
 need_cmd npm
-need_cmd wrangler
-need_cmd dig
-if [[ "${PUBLISH_TARGET:-cloudflare}" == "vercel" ]]; then need_cmd vercel; fi
+PUBLISH_TARGET="${PUBLISH_TARGET:-cloudflare}"
+if [[ "$PUBLISH_TARGET" == "vercel" ]]; then need_cmd vercel; else need_cmd wrangler; need_cmd dig; fi
 need_cmd python3
 
 if command -v node >/dev/null 2>&1; then
@@ -90,6 +89,7 @@ else
   bad "找不到 SAFE_DEPLOY_TOOL：$SAFE_DEPLOY_TOOL；新機需複製安全部署工具或 export SAFE_DEPLOY_TOOL=/path/to/safe-deploy.sh"
 fi
 
+if [[ "$PUBLISH_TARGET" == "vercel" ]]; then
 if command -v vercel >/dev/null 2>&1; then
   VERCEL_VERSION=$(vercel --version 2>/dev/null | head -1 || true)
   ok "Vercel CLI ${VERCEL_VERSION:-可執行}"
@@ -104,6 +104,10 @@ if [[ -d .vercel && -f .vercel/project.json ]]; then
   ok ".vercel/project.json 存在（已 link 專案）"
 else
   bad "缺少 .vercel/project.json；新機請在 repo 根目錄跑 vercel link，選 Jiang_coach / ai-km-jiang"
+fi
+
+else
+  if wrangler whoami 2>/dev/null | grep -q "You are logged in"; then ok "wrangler 已登入（C 網 production）"; else bad "wrangler 未登入；先 wrangler login"; fi
 fi
 
 echo ""
