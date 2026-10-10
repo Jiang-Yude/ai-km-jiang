@@ -30,7 +30,19 @@
 .gate .pwbox{position:relative}
 .gate .pwbox input{padding-right:52px;padding-left:52px}
 /* 密碼不顯示圓點，避免看出長度；只留游標 */
-.gate input.masked{color:transparent;caret-color:var(--ink);-webkit-text-fill-color:transparent}
+.gate input.masked{color:transparent;caret-color:transparent;-webkit-text-fill-color:transparent;text-shadow:none}
+/* 隱藏密碼字數（2026-10-10 江江）：游標也藏起來，置中排版下游標位置會洩漏幾個字；反白與瀏覽器自動填入也不能露出圓點 */
+.gate .pwbox input{height:52px;box-sizing:border-box}
+/* 零寬字型 PwBlank（1360 bytes，自製：format 13 掛 platform 0／encoding 6 把整個 Unicode 對到同一個寬度 0 的空字形，另附 format 4 備用表涵蓋英數、拉丁字母與圓點類）。iOS Safari 不支援 ::selection，
+   透明字仍佔寬，反白與選取把手會露長度（跨家審 P2）；字寬歸零才根治。不用 font-size:0（Chrome 會打不進字），
+   也不用小字（iOS 輸入框小於 16px 會自動放大畫面）。 */
+@font-face{font-family:PwBlank;src:url(data:font/ttf;base64,AAEAAAAKAIAAAwAgT1MvMmUXwZ8AAAEoAAAAYGNtYXDP+6/oAAABkAAAAyZnbHlmAAAAAAAABMAAAAABaGVhZCz2KC4AAACsAAAANmhoZWEDIf86AAAA5AAAACRobXR4AAAAAAAAAYgAAAAGbG9jYQAAAAAAAAS4AAAABm1heHAAAwACAAABCAAAACBuYW1lJjOD7gAABMQAAABgcG9zdG1nc80AAAUkAAAALAABAAAAAQAAtAVtAl8PPPUAAwPoAAAAAObv86cAAAAA5u/zpwAAAAAAAAAAAAAAAwACAAAAAAAAAAEAAAMg/zgAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAABAAEAAAACAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAwAAAZAABQAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAHAAQgAAAAABAAAAAAPz8/PwAAACD//wMg/zgAAAMgAMgAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAMAAAADAAAAHAAAAAYAAALyAAMAAQAAABwABALWAAAAEgAQAAMAAgB+AX8gIiAnJc8l5jD7/2X//wAAACAAoCAiICclzyXmMPv/Zf//AAAAAN/f39raMtobzwYAnAABABIAzgAAAAAAAAAAAAAAAAAAAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEADQAAAAAANAAAAAAAAAADAAAAIAAA1/8AAAABAADgAAAA//0AAAABAAEAAAAC//8AAAABAAAAAAAAAAAAAAAAAAAAAAAEADYAAQAAAAAAAQAHAAAAAQAAAAAAAgAHAAcAAwABBAkAAQAOAA4AAwABBAkAAgAOABxQd0JsYW5rUmVndWxhcgBQAHcAQgBsAGEAbgBrAFIAZQBnAHUAbABhAHIAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAABAgVibGFuaw==) format("truetype");font-display:block}
+.gate input.masked{font-family:PwBlank;letter-spacing:0}
+.gate input.masked::placeholder{font-family:-apple-system,"PingFang TC","Noto Sans TC","Inter",sans-serif;letter-spacing:.12em;color:var(--ink-faint);-webkit-text-fill-color:var(--ink-faint)}
+.gate input::-ms-reveal,.gate input::-ms-clear{display:none}  /* Edge 自帶的顯示鈕，與自訂眼睛重疊 */
+.gate .pwbox:has(input.masked:not(:placeholder-shown))::after{content:"已輸入";position:absolute;left:0;right:0;top:50%;transform:translateY(-50%);text-align:center;font-size:16px;color:var(--ink-faint);pointer-events:none}  /* 固定字樣，不隨字數變 */
+.gate input.masked::selection{background:transparent;color:transparent;-webkit-text-fill-color:transparent}
+.gate input.masked:-webkit-autofill,.gate input.masked:-webkit-autofill:hover,.gate input.masked:-webkit-autofill:focus{-webkit-text-fill-color:transparent!important;caret-color:transparent;-webkit-box-shadow:0 0 0 1000px #fff inset}
 .gate .eye{position:absolute;right:8px;top:50%;transform:translateY(-50%);margin:0;width:40px;height:40px;padding:0;display:flex;align-items:center;justify-content:center;background:transparent;color:var(--ink-faint);border:none;border-radius:50%;cursor:pointer}
 .gate .eye:hover{background:rgba(0,0,0,.05)}
 .gate .eye[aria-pressed="true"] .slash{display:none}
