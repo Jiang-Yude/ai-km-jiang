@@ -1,0 +1,342 @@
+<!doctype html>
+<html lang="zh-Hant" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>官網 AI 客服 14 組模型評量表</title>
+<style>
+
+:root{
+  --bg:#f9f9f7; --card:#fcfcfb; --ink:#0b0b0b; --sub:#52514e; --muted:#6f6e69;
+  --line:#e1e0d9; --axis:#c3c2b7; --soft:#f0efec;
+  --pass:#0ca30c; --unst:#fab219; --below:#ec835a; --fail:#b4b2a9;
+  --pass-ink:#006300; --unst-ink:#7a5200;
+  --gold:#b8860b; --hi:#eaf4e8; --hi-line:#0ca30c;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){--bg:#0d0d0d; --card:#1a1a19; --ink:#ffffff; --sub:#c3c2b7; --muted:#a3a29b;
+    --line:#2c2c2a; --axis:#383835; --soft:#232321;
+    --pass:#0ca30c; --unst:#fab219; --below:#ec835a; --fail:#5f5e5a;
+    --pass-ink:#5fd35f; --unst-ink:#fab219;
+    --gold:#e8b830; --hi:#15271a; --hi-line:#0ca30c;}
+}
+:root[data-theme="dark"]{--bg:#0d0d0d; --card:#1a1a19; --ink:#ffffff; --sub:#c3c2b7; --muted:#a3a29b;
+  --line:#2c2c2a; --axis:#383835; --soft:#232321;
+  --pass:#0ca30c; --unst:#fab219; --below:#ec835a; --fail:#5f5e5a;
+  --pass-ink:#5fd35f; --unst-ink:#fab219;
+  --gold:#e8b830; --hi:#15271a; --hi-line:#0ca30c;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--ink);font-size:18px;line-height:1.65;
+  font-family:system-ui,-apple-system,"PingFang TC","Noto Sans TC","Microsoft JhengHei",sans-serif;
+  padding:26px 14px 60px;}
+.wrap{max-width:1100px;margin:0 auto;}
+code{font-size:18px;}
+.tpl-note{background:var(--card);border:1px solid var(--line);border-left:5px solid var(--gold);border-radius:10px;padding:14px 18px;margin:18px 0;font-size:18px;}
+.zone{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px 22px;margin:18px 0;}
+.zone>h2{font-size:24px;margin-bottom:2px;}
+.zdesc{color:var(--sub);font-size:18px;margin-bottom:12px;}
+.verdict{font-size:19px;line-height:1.7;background:var(--soft);border-left:4px solid var(--gold);
+  border-radius:0 10px 10px 0;padding:12px 16px;margin-bottom:16px;}
+
+/* 編碼圖例 */
+.keys{display:flex;flex-wrap:wrap;gap:8px 18px;font-size:18px;color:var(--sub);margin-bottom:14px;}
+.key{display:inline-flex;align-items:center;gap:7px;}
+.sw{display:inline-block;width:26px;height:12px;border-radius:0 4px 4px 0;}
+.sw.old{background:transparent;outline:2px dashed var(--sub);outline-offset:0;height:10px;}
+.sw.rng{background:color-mix(in srgb,var(--unst) 35%,transparent);}
+.sw.hi{background:var(--hi);border-left:4px solid var(--hi-line);border-radius:3px;height:20px;}
+.gd{display:inline-block;width:14px;height:14px;border-radius:50%;background:var(--gold);
+  box-shadow:0 0 0 2px var(--card),0 0 0 3px var(--sub);}
+
+/* 表格格線：名稱｜跑道｜分數｜1000 題費用｜狀態 */
+.hd,.r,.scl{display:grid;grid-template-columns:200px minmax(0,1fr) 96px 136px;
+  column-gap:12px;align-items:center;}
+.hd{font-size:18px;color:var(--sub);padding:0 8px 6px;border-bottom:1px solid var(--axis);}
+.hd .num{text-align:right;} .hd .ctr{text-align:center;}
+.scl{padding:4px 8px 0;}
+.scl .cap{font-size:18px;color:var(--muted);text-align:right;}
+.ticks{position:relative;height:26px;border-top:1px solid var(--line);}
+.ticks span{position:absolute;top:0;font-size:18px;color:var(--muted);transform:translateX(-50%);
+  font-variant-numeric:tabular-nums;line-height:26px;white-space:nowrap;}
+.ticks span.first{transform:none;} .ticks span.last{transform:translateX(-100%);}
+.gp{font-size:18px;color:var(--sub);padding:14px 8px 4px;margin-top:6px;border-top:1px solid var(--line);}
+.gp b{color:var(--ink);font-weight:700;margin-right:10px;}
+
+.r{padding:4px 8px;border-radius:10px;cursor:pointer;min-height:68px;}
+.r:hover{background:var(--soft);}
+.r:focus-visible{outline:2px solid var(--gold);outline-offset:2px;}
+.r.hi{background:var(--hi);box-shadow:inset 4px 0 0 var(--hi-line);}
+.r.dim .nm,.r.dim .sc,.r.dim .cv{opacity:.7;}
+.nm{font-size:18px;line-height:1.35;font-weight:600;}
+.nm small{display:block;font-size:18px;font-weight:400;color:var(--sub);}
+.nm .car{display:inline-block;width:18px;color:var(--muted);font-weight:400;transition:transform .15s;}
+.r[aria-expanded="true"] .nm .car{transform:rotate(90deg);}
+.tk{position:relative;height:66px;}
+.bar,.band{position:absolute;left:0;top:44px;transform:translateY(-50%);border-radius:0 4px 4px 0;}
+.bar.old{outline:2px dashed var(--c);outline-offset:2px;}
+.band{border-radius:0 4px 4px 0;}
+.dot{position:absolute;top:44px;width:14px;height:14px;border-radius:50%;background:var(--gold);
+  transform:translate(-50%,-50%);box-shadow:0 0 0 2px var(--card),0 0 0 3px var(--sub);}
+.dl{position:absolute;top:0;font-size:18px;line-height:24px;color:var(--sub);white-space:nowrap;
+  font-variant-numeric:tabular-nums;}
+.sc,.cv{font-size:18px;text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums;}
+.sc{font-weight:700;}
+.sc i{font-style:normal;font-weight:700;margin-right:4px;}
+.tg{font-size:18px;padding:2px 6px;border-radius:8px;text-align:center;white-space:nowrap;}
+.tg.no{background:var(--soft);color:var(--sub);border:1px solid var(--line);}
+.tg.was{background:color-mix(in srgb,var(--unst) 22%,transparent);color:var(--unst-ink);}
+.tg.backup{background:var(--card);color:var(--sub);border:1px solid var(--axis);}
+.tg.yes{background:color-mix(in srgb,var(--pass) 20%,transparent);color:var(--pass-ink);font-weight:700;}
+
+/* 展開明細 */
+.det{display:none;margin:2px 8px 10px;padding:12px 16px;background:var(--soft);border-radius:10px;font-size:18px;}
+.det.open{display:block;}
+.det dl{display:grid;grid-template-columns:max-content minmax(0,1fr);gap:4px 14px;}
+.det dt{color:var(--sub);}
+.det dd{overflow-wrap:anywhere;}
+
+/* 粗細圖例與註腳 */
+.thick{display:flex;flex-wrap:wrap;gap:10px 20px;align-items:center;margin-top:16px;font-size:18px;color:var(--sub);}
+.thick .t{display:inline-flex;align-items:center;gap:8px;}
+.thick .t span.b{display:inline-block;width:32px;background:var(--sub);border-radius:0 4px 4px 0;}
+.foot{font-size:18px;color:var(--sub);margin-top:12px;padding-top:12px;border-top:1px solid var(--line);line-height:1.75;}
+.foot p+p{margin-top:4px;}
+
+@media(max-width:720px){
+  body{padding:18px 10px 50px;}
+  .zone{padding:16px 12px;}
+  .hd{display:none;}
+  .r{grid-template-columns:minmax(0,1fr) auto auto;
+    grid-template-areas:"nm nm nm" "tk tk tk" "sc cv cv";row-gap:2px;}
+  .r .nm{grid-area:nm;} .r .tk{grid-area:tk;} .r .sc{grid-area:sc;text-align:left;}
+  .r .cv{grid-area:cv;} .r .tg{grid-area:tg;}
+  .r .sc::before{content:"分數 ";font-weight:400;color:var(--sub);}
+  .r .cv::before{content:"1000 題費用 ";color:var(--sub);}
+  .scl{grid-template-columns:minmax(0,1fr);row-gap:0;}
+  .scl .cap{text-align:left;}
+  .scl .pad{display:none;}
+  .det dl{grid-template-columns:minmax(0,1fr);}
+  .det dt{margin-top:6px;}
+}
+
+
+/* 總表 */
+.one{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px 22px;margin:8px 0 18px;}
+.one h1{font-size:26px;line-height:1.35;}
+.one .meta{color:var(--sub);font-size:17px;margin:2px 0 14px;}
+.concl{font-size:21px;line-height:1.6;background:var(--hi);border-left:5px solid var(--hi-line);border-radius:0 10px 10px 0;padding:12px 16px;}
+.now{display:flex;flex-wrap:wrap;gap:8px 22px;font-size:18px;margin:12px 0 16px;}
+.now span b{margin-left:4px;}
+.tw{overflow-x:auto;}
+table.mx{width:100%;border-collapse:collapse;min-width:820px;font-size:18px;}
+.mx th{font-size:16px;font-weight:600;color:var(--sub);text-align:left;padding:6px 8px;border-bottom:1px solid var(--axis);white-space:nowrap;}
+.mx td{padding:9px 8px;border-bottom:1px solid var(--line);vertical-align:middle;}
+.mx tr.sep td{padding:14px 8px 4px;font-size:16px;color:var(--sub);border-bottom:1px solid var(--axis);}
+.mx .md{white-space:nowrap;font-weight:600;}
+.mx .md i{display:inline-block;width:11px;height:11px;border-radius:50%;margin-right:8px;vertical-align:1px;}
+.mx .md small{display:block;font-weight:400;font-size:15px;color:var(--sub);margin-left:19px;}
+.bd{display:inline-block;font-size:16px;font-weight:700;padding:2px 10px;border-radius:999px;white-space:nowrap;}
+.bd.good{background:color-mix(in srgb,var(--pass) 20%,transparent);color:var(--pass-ink);}
+.bd.top{background:color-mix(in srgb,var(--gold) 22%,transparent);color:var(--ink);}
+.bd.fast{background:color-mix(in srgb,#2a78d6 18%,transparent);color:var(--ink);}
+.bd.bad{background:color-mix(in srgb,#e34948 18%,transparent);color:#b3261e;}
+.bd.plain{color:var(--sub);font-weight:400;padding-left:0;}
+.cell{display:flex;align-items:center;gap:8px;}
+.cell .tr{flex:1;min-width:70px;height:10px;background:var(--soft);border-radius:0 5px 5px 0;position:relative;}
+.cell .tr b{position:absolute;left:0;top:0;bottom:0;border-radius:0 5px 5px 0;}
+.cell .v{min-width:66px;text-align:right;font-variant-numeric:tabular-nums;font-weight:600;white-space:nowrap;}
+.mx tr.live td{background:color-mix(in srgb,#2a78d6 9%,transparent);}
+.mx tr.live td:first-child{box-shadow:inset 4px 0 0 #2a78d6;}
+.mx tr.dimr td{opacity:.6;}
+.legend2{font-size:16px;color:var(--sub);margin-top:12px;line-height:1.8;}
+details.old{margin-top:10px;}
+details.old>summary{cursor:pointer;color:var(--sub);font-size:17px;padding:8px 0;}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .bd.bad{color:#ff8a80;}}
+:root[data-theme="dark"] .bd.bad{color:#ff8a80;}
+
+/* 分頁選單 */
+.tabs{display:flex;flex-wrap:wrap;gap:8px;margin:4px 0 16px;}
+.tabs button{font:inherit;font-size:18px;padding:8px 16px;border-radius:999px;border:1px solid var(--axis);background:var(--card);color:var(--ink);cursor:pointer;}
+.tabs button[aria-selected="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink);font-weight:700;}
+.pane[hidden]{display:none;}
+.mrow{display:grid;grid-template-columns:270px minmax(0,1fr) 230px;gap:10px;align-items:center;padding:6px 0;border-bottom:1px solid var(--line);}
+.mrow .mn{font-weight:600;white-space:nowrap;font-size:17px;}
+.mrow .mn i{display:inline-block;width:11px;height:11px;border-radius:50%;margin-right:8px;}
+.mrow .mn small{font-weight:400;color:var(--sub);font-size:14px;margin-left:4px;}
+.mrow .tr2{height:18px;position:relative;}
+.mrow .tr2 b{position:absolute;left:0;top:0;bottom:0;border-radius:0 5px 5px 0;}
+.mrow .tr2 b.est{background:repeating-linear-gradient(45deg,var(--c) 0 6px,transparent 6px 10px)!important;outline:1.5px dashed var(--c);}
+.mrow .mv{text-align:right;font-variant-numeric:tabular-nums;font-size:17px;white-space:nowrap;}
+.mrow .mv b{font-size:18px;}
+.mrow .mv span{color:var(--sub);font-size:15px;margin-left:8px;}
+.mrow.base{background:color-mix(in srgb,#2a78d6 9%,transparent);}
+.opt{font-size:17px;color:var(--sub);margin-bottom:8px;display:flex;gap:18px;flex-wrap:wrap;}
+.opt label{cursor:pointer;}
+.big2{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px;margin-top:6px;}
+.mcard{border:1px solid var(--line);border-radius:12px;padding:14px 16px;background:var(--soft);}
+.mcard h3{font-size:20px;margin-bottom:6px;}
+.mcard table{width:100%;border-collapse:collapse;font-size:17px;}
+.mcard td,.mcard th{padding:6px 4px;border-bottom:1px solid var(--line);text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap;}
+.mcard th{font-weight:600;color:var(--sub);font-size:15px;}
+.mcard td:first-child,.mcard th:first-child{text-align:left;}
+.mcard tr.mid td{font-weight:700;}
+@media(max-width:720px){.mrow{grid-template-columns:minmax(0,1fr) auto;}.mrow .tr2{grid-column:1/-1;order:3;}}
+
+/* ④ 紅綠燈 */
+table.tl{width:100%;border-collapse:separate;border-spacing:0 6px;min-width:680px;font-size:18px;}
+.tl th{font-size:16px;color:var(--sub);font-weight:600;text-align:left;padding:2px 10px;}
+.tl td{padding:10px 12px;font-variant-numeric:tabular-nums;white-space:nowrap;}
+.tl td.nm{font-weight:600;}
+.tl td.nm small{display:block;font-weight:400;font-size:15px;color:var(--sub);}
+.tl td.c{border-radius:8px;font-weight:700;}
+.tl td.c::before{content:attr(data-i);display:inline-block;width:22px;font-weight:700;}
+.tl td.tok{background:color-mix(in srgb,#0ca30c 22%,transparent);color:var(--pass-ink);}
+.tl td.tmid{background:color-mix(in srgb,#fab219 26%,transparent);color:var(--unst-ink);}
+.tl td.tbad{background:color-mix(in srgb,#e34948 20%,transparent);color:#b3261e;}
+.tl td.n{font-size:20px;letter-spacing:2px;}
+.tl tr.live td.nm{box-shadow:inset 4px 0 0 #2a78d6;}
+.tl tr.sep td{padding:12px 10px 0;font-size:16px;color:var(--sub);font-weight:400;}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .tl td.tbad{color:#ff8a80;}}
+:root[data-theme="dark"] .tl td.tbad{color:#ff8a80;}
+
+/* ④ 驗證頁 */
+.vt{width:100%;border-collapse:collapse;font-size:17px;margin:6px 0 4px;}
+.vt th{font-size:15px;color:var(--sub);text-align:left;padding:6px 8px;border-bottom:1px solid var(--axis);font-weight:600;}
+.vt td{padding:7px 8px;border-bottom:1px solid var(--line);font-variant-numeric:tabular-nums;}
+.vt td.up{color:var(--pass-ink);font-weight:700;} .vt td.dn{color:#b3261e;font-weight:700;}
+.vsec{margin:18px 0 6px;font-size:20px;font-weight:700;}
+.vnote{font-size:16px;color:var(--sub);line-height:1.7;}
+body{background:transparent;padding:14px 16px 10px;}
+.zone h2{font-size:22px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="zone" style="margin:0;border:none;padding:0;background:transparent">
+  <h2 id="ttl" hidden></h2>
+  <div class="zdesc" id="sub"></div>
+  <div class="verdict" id="read"></div>
+  <div class="keys" id="keys"></div>
+
+  <div class="hd"><span>候選</span><span id="encHd">長度＝回答品質　顏色＝成本　圓點＝耗時</span><span class="num">分數</span><span class="num">1000 題費用</span></div>
+  <div class="scl"><span class="cap" id="capS">長條刻度（分）</span><div class="ticks" id="tkS"></div><span class="pad"></span><span class="pad"></span></div>
+  <div class="scl"><span class="cap">圓點刻度（秒）</span><div class="ticks" id="tkT"></div><span class="pad"></span><span class="pad"></span></div>
+  <div id="rows"></div>
+
+  <div class="thick" id="thick"></div>
+  <div class="foot" id="foot"></div>
+</div>
+<script>
+/* ▼▼▼ 改這裡 ▼▼▼ */
+const TITLE='一張圖看品質、成本、速度';
+const SUBTITLE='同 5 題、Opus 5.5 盲評、滿分 15；費用＝假設一個月問 1000 題、只算模型費。點任一列看明細。';
+const READ='怎麼讀：長條越長，代表這次 5 題的評分越高（滿分 15）；顏色看成本，綠＝一個月 300 元內、黃＝300 到 600 元、紅＝超過 600 元；金色圓點越左回得越快。找「長、綠、圓點靠左」的那條。';
+const SCORE_MAX=15;
+const SCORE_TICK=3;
+const TIME_MAX=30;
+const TIME_TICK=10;
+const COST_MAX=5198;
+const THICK_MAX=32, THICK_MIN=3;
+const LEGEND_MID=1500;
+const COST_UNIT='元';
+const GROUPS=[{"round": "Anthropic Claude", "idea": "Haiku 與 Sonnet，各三種推理等級", "items": [{"name": "Sonnet 5.5 低", "score": 13.8, "scoreText": "13.8", "result": "pass", "time": 8.5, "timeRaw": 11.8, "cost": 5062, "costText": "約 5,062 元", "status": "no", "detail": [["每題花費", "約 5.06 元（0.1582 美元）"], ["1000 題費用", "約 5,062 元"], ["平均每題 token", "輸入 74,883，輸出（含思考）839"], ["等待時間（原始量測）", "中位數 11.8 秒"]]}, {"name": "Sonnet 5.5 中", "score": 14.0, "scoreText": "14.0", "result": "pass", "time": 10.4, "timeRaw": 13.8, "cost": 5098, "costText": "約 5,098 元", "status": "no", "detail": [["每題花費", "約 5.10 元（0.1593 美元）"], ["1000 題費用", "約 5,098 元"], ["平均每題 token", "輸入 74,884，輸出（含思考）952"], ["等待時間（原始量測）", "中位數 13.8 秒"]]}, {"name": "Sonnet 5.5 高", "score": 13.6, "scoreText": "13.6", "result": "pass", "time": 12.6, "timeRaw": 16.8, "cost": 5197, "costText": "約 5,197 元", "status": "no", "detail": [["每題花費", "約 5.20 元（0.1624 美元）"], ["1000 題費用", "約 5,197 元"], ["平均每題 token", "輸入 74,883，輸出（含思考）1,264"], ["等待時間（原始量測）", "中位數 16.8 秒"]]}, {"name": "Haiku 5.5 低", "score": 13.0, "scoreText": "13.0", "result": "pass", "time": 8.2, "timeRaw": 12.5, "cost": 259, "costText": "約 259 元", "status": "no", "detail": [["每題花費", "約 0.26 元（0.0081 美元）"], ["1000 題費用", "約 259 元"], ["平均每題 token", "輸入 74,846，輸出（含思考）1,301"], ["等待時間（原始量測）", "中位數 12.5 秒"]]}, {"name": "Haiku 5.5 中", "score": 11.6, "scoreText": "11.6", "result": "below", "time": 10.0, "timeRaw": 12.9, "cost": 269, "costText": "約 269 元", "status": "no", "detail": [["每題花費", "約 0.27 元（0.0084 美元）"], ["1000 題費用", "約 269 元"], ["平均每題 token", "輸入 74,846，輸出（含思考）1,874"], ["等待時間（原始量測）", "中位數 12.9 秒"], ["備註", "本次測試時 Claude 在官網上被香港節點擋住，咪卡還沒真的用上"]]}, {"name": "Haiku 5.5 高", "score": 11.6, "scoreText": "11.6", "result": "below", "time": 13.0, "timeRaw": 17.1, "cost": 278, "costText": "約 278 元", "status": "no", "detail": [["每題花費", "約 0.28 元（0.0087 美元）"], ["1000 題費用", "約 278 元"], ["平均每題 token", "輸入 74,847，輸出（含思考）2,456"], ["等待時間（原始量測）", "中位數 17.1 秒"]]}]}, {"round": "OpenAI", "idea": "GPT-5.6 Luna 與 GPT-6 Luna", "items": [{"name": "GPT-5.6 Luna 不思考", "sub": "之前咪卡在用", "score": 12.0, "scoreText": "12.0", "result": "pass", "time": 4.7, "cost": 374, "costText": "約 374 元", "status": "no", "detail": [["每題花費", "約 0.37 元（0.0117 美元）"], ["1000 題費用", "約 374 元"], ["平均每題 token", "輸入 56,821，輸出（含思考）266"], ["等待時間（原始量測）", "中位數 4.7 秒"], ["備註", "咪卡之前用的 OpenAI 模型"]]}, {"name": "GPT-6 Luna 不思考", "sub": "10/10 補測", "score": 12.6, "scoreText": "12.6", "result": "pass", "time": 4.0, "cost": 186, "costText": "約 186 元", "status": "no", "detail": [["每題花費", "約 0.19 元（0.0058 美元）"], ["1000 題費用", "約 186 元"], ["平均每題 token", "輸入 57,214，輸出 200"], ["等待時間", "中位數 4.0 秒（直接打 API）"], ["怎麼評的", "10/10 補測，跟 GPT-5.6 Luna 不思考、GPT-6 Luna 低放一起由 Opus 5.5 重新盲評：本組 12.6、GPT-5.6 Luna 不思考 12.0（與 10/9 原分相同）、GPT-6 Luna 低 12.4（10/9 原分 11.4）"]]}, {"name": "GPT-6 Luna 低", "score": 11.4, "scoreText": "11.4", "result": "below", "time": 5.2, "cost": 186, "costText": "約 186 元", "status": "no", "detail": [["每題花費", "約 0.19 元（0.0058 美元）"], ["1000 題費用", "約 186 元"], ["平均每題 token", "輸入 56,821，輸出（含思考）308"], ["等待時間（原始量測）", "中位數 5.2 秒"]]}, {"name": "GPT-6 Luna 中", "score": 7.0, "scoreText": "7.0", "sub": "2 題沒回出來", "result": "unstable", "time": 7.1, "cost": 189, "costText": "約 189 元", "status": "no", "detail": [["每題花費", "約 0.19 元（0.0059 美元）"], ["1000 題費用", "約 189 元"], ["平均每題 token", "輸入 56,821，輸出（含思考）512"], ["等待時間（原始量測）", "中位數 7.1 秒"], ["備註", "回答上限 600 token 被思考用光，有題目回不出來"]]}, {"name": "GPT-6 Luna 高", "score": 2.4, "scoreText": "2.4", "sub": "4 題沒回出來", "result": "fail", "time": 8.4, "cost": 192, "costText": "約 192 元", "status": "no", "detail": [["每題花費", "約 0.19 元（0.0060 美元）"], ["1000 題費用", "約 192 元"], ["平均每題 token", "輸入 56,821，輸出（含思考）582"], ["等待時間（原始量測）", "中位數 8.4 秒"], ["備註", "回答上限 600 token 被思考用光，5 題有 4 題回不出來"]]}]}, {"round": "Google Gemini", "idea": "Gemini 3.8 Flash，三種推理等級", "items": [{"name": "Gemini 3.8 Flash 低", "score": 10.0, "scoreText": "10.0", "result": "below", "time": 8.3, "timeRaw": 10.9, "timeEst": true, "cost": 1235, "costText": "約 1,235 元", "status": "no", "detail": [["每題花費", "約 1.24 元（0.0386 美元）"], ["1000 題費用", "約 1,235 元"], ["平均每題 token", "輸入 49,986，輸出（含思考）288"], ["等待時間（原始量測）", "中位數 10.9 秒"]]}, {"name": "Gemini 3.8 Flash 中", "score": 10.8, "scoreText": "10.8", "result": "below", "time": 15.5, "timeRaw": 18.1, "timeEst": true, "cost": 1462, "costText": "約 1,462 元", "status": "no", "detail": [["每題花費", "約 1.46 元（0.0457 美元）"], ["1000 題費用", "約 1,462 元"], ["平均每題 token", "輸入 49,985，輸出（含思考）2,188"], ["等待時間（原始量測）", "中位數 18.1 秒"]]}, {"name": "Gemini 3.8 Flash 高", "score": 10.8, "scoreText": "10.8", "result": "below", "time": 25.0, "timeRaw": 27.6, "timeEst": true, "cost": 1757, "costText": "約 1,757 元", "status": "no", "detail": [["每題花費", "約 1.76 元（0.0549 美元）"], ["1000 題費用", "約 1,757 元"], ["平均每題 token", "輸入 49,987，輸出（含思考）4,653"], ["等待時間（原始量測）", "中位數 27.6 秒"]]}]}];
+const FOOTNOTES=['月費＝每題花費 × 1000 題，台幣，1 美元約 32 元，官方標準價（2026-10-09 Codex 上網查證）。題數是假設，實際題數還沒查。',
+'分數＝Opus 5.5 盲評（回答打亂、拿掉模型名稱），每題準確、有用、守規各 5 分，回不出來算 0 分。評審和 Sonnet、Haiku 同一家，不算跨家審。',
+'等待時間：Luna 直接打 API；Claude 用扣掉本機啟動的模型回答時間（claude 指令回報，中位數）；Gemini 是預估：反重力 agy 自己啟動約 2.6 秒（10/10 空題實測 3 次取中位數），從原本秒數扣掉。',
+'Gemini 3.8 Flash 單價為 2026 年底前優惠價，2027-01-01 起翻倍。Gemini 輸入 token 已扣掉 agy 自己的系統提示。'];
+/* ▲▲▲ 改到這裡結束。下方不用動 ▲▲▲ */
+
+const RES={pass:['達標','✓','--pass'],unstable:['不穩','!','--unst'],below:['未達標','▼','--below'],fail:['失敗','×','--fail']};
+const TAG={no:'不採用',was:'當時採用',backup:'備援',yes:'採用'};
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const th=c=>c==null?THICK_MIN:Math.max(THICK_MIN,Math.round(c/COST_MAX*THICK_MAX));
+const pct=(v,m)=>Math.max(0,Math.min(100,v/m*100));
+const minCostAtFloor=Math.round(COST_MAX*THICK_MIN/THICK_MAX);
+
+document.getElementById('ttl').textContent=TITLE;
+document.getElementById('sub').textContent=SUBTITLE;
+document.getElementById('read').innerHTML=READ;
+
+/* 編碼圖例：只列資料裡真的出現的 */
+const all=GROUPS.flatMap(g=>g.items);
+const used=new Set(all.map(i=>i.result));
+let keys=Object.entries(RES).filter(([k])=>used.has(k)).map(([k,[lb,gl,v]])=>
+  `<span class="key"><span class="sw" style="background:var(${v})"></span>${gl} ${lb}</span>`).join('');
+if(all.some(i=>i.oldExam))keys+='<span class="key"><span class="sw old"></span>虛線框＝舊版考卷</span>';
+if(all.some(i=>i.scoreHi!=null))keys+='<span class="key"><span class="sw rng"></span>淡色延伸＝跑分區間</span>';
+keys+='<span class="key"><span class="gd"></span>金點＝耗時（越左越快）</span>';
+if(all.some(i=>i.status==='yes'))keys+='<span class="key"><span class="sw hi"></span>最終採用</span>';
+keys='<span class="key"><span class="sw" style="background:#0ca30c"></span>成本：一個月 300 元內</span><span class="key"><span class="sw" style="background:#eda100"></span>300 到 600 元</span><span class="key"><span class="sw" style="background:#e34948"></span>超過 600 元</span><span class="key"><span class="gd"></span>金點＝耗時（越左越快）</span><span class="key"></span>';
+document.getElementById('keys').innerHTML=keys;
+
+/* 刻度 */
+function ticks(id,max,step,unit){
+  const el=document.getElementById(id);let h='';
+  for(let v=0;v<=max;v+=step){
+    const cls=v===0?'first':(v+step>max?'last':'');
+    h+=`<span class="${cls}" style="left:${pct(v,max)}%">${v}${v+step>max?unit:''}</span>`;
+  }
+  el.innerHTML=h;
+}
+/* 江江 10/10 想比較兩種編碼：長度＝品質／粗細＝成本（原版），或長度＝成本／粗細＝品質。切換存在本機。 */
+/* 江江 10/10：不要粗細（容易搞混），長條只看長度＝回答品質，顏色＝成本（便宜綠）。 */
+const BAR_H=18;
+const costCol=c=>c<=300?'#0ca30c':c<=600?'#eda100':'#e34948';
+ticks('tkS',SCORE_MAX,SCORE_TICK,' 分');
+ticks('tkT',TIME_MAX,TIME_TICK,' 秒');
+
+/* 列 */
+const rows=document.getElementById('rows');let n=0;
+GROUPS.forEach(g=>{
+  const gp=document.createElement('div');gp.className='gp';
+  gp.innerHTML=`<b>${esc(g.round)}</b>${esc(g.idea)}`;rows.appendChild(gp);
+  g.items.forEach(it=>{
+    const id='d'+(n++);const [rl,gl,cv]=RES[it.result]||RES.pass;
+    const h=BAR_H;const w=pct(it.score,SCORE_MAX);const cc=costCol(it.cost);
+    let track=`<div class="bar" style="width:${w}%;height:${h}px;background:${cc};border-radius:0 6px 6px 0"></div>`;
+    if(it.scoreHi!=null){
+      const w2=pct(it.scoreHi,SCORE_MAX);
+      track=`<div class="band" style="left:${w}%;width:${w2-w}%;height:${h}px;background:color-mix(in srgb,var(${cv}) 35%,transparent)"></div>`+track;
+    }
+    if(it.time!=null){
+      const tp=pct(it.time,TIME_MAX);
+      const pos=tp>70?`right:calc(${100-tp}% + 10px)`:`left:calc(${tp}% + 10px)`;
+      track+=`<div class="dot" style="left:${tp}%"></div><div class="dl" style="${pos}">${it.time} 秒</div>`;
+    }
+    const costLbl=(it.costText||(it.cost!=null?it.cost+' '+COST_UNIT:'未估'))+(it.est?'*':'');
+    const tip=`${it.name}：${rl}，分數 ${it.scoreText}，${it.time!=null?it.time+' 秒':'耗時未測'}，1000 題費用 ${costLbl}`;
+    const r=document.createElement('div');
+    r.className='r'+(it.status==='yes'?' hi':'');
+    r.setAttribute('role','button');r.tabIndex=0;r.setAttribute('aria-expanded','false');
+    r.setAttribute('aria-controls',id);r.title=tip;
+    r.innerHTML=`<div class="nm"><span class="car">›</span>${esc(it.name)}${it.sub?`<small>${esc(it.sub)}</small>`:''}</div>
+      <div class="tk" aria-hidden="true">${track}</div>
+      <div class="sc"><i aria-hidden="true">${gl}</i>${esc(it.scoreText)}</div>
+      <div class="cv">${esc(costLbl)}</div>`;
+    const d=document.createElement('div');d.className='det';d.id=id;
+    const rowsD=[
+      ['分數',it.scoreHi!=null?`${it.score} 至 ${it.scoreHi} 分（跑分區間）`:`${it.score} 分，滿分 ${SCORE_MAX}`],
+      ['回應秒數',it.time!=null?`${it.time} 秒`+(it.timeRaw!=null?`（扣掉本機啟動；含啟動 ${it.timeRaw} 秒）`:''):'未測'],
+      ...(it.detail||[])
+    ];
+    d.innerHTML='<dl>'+rowsD.map(([a,b])=>`<dt>${esc(a)}</dt><dd>${esc(b)}</dd>`).join('')+'</dl>';
+    const tog=()=>{const o=d.classList.toggle('open');r.setAttribute('aria-expanded',o);};
+    r.addEventListener('click',tog);
+    r.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();tog();}});
+    rows.appendChild(r);rows.appendChild(d);
+  });
+});
+
+/* 粗細圖例：由刻度常數算出，跟長條同一套換算 */
+const tk=[[COST_MAX,`${COST_MAX} ${COST_UNIT}`],[LEGEND_MID,`${LEGEND_MID} ${COST_UNIT}`],[0,`約 ${minCostAtFloor} ${COST_UNIT}以下與未估`]];
+document.getElementById('thick').innerHTML='';
+document.getElementById('foot').innerHTML=FOOTNOTES.map(f=>`<p>${esc(f)}</p>`).join('');
+</script>
+<script>
+/* 給外層文章算高度用：內容變動（展開明細）時通知外層 */
+(function(){function post(){try{parent.postMessage({mkScoreHeight:document.documentElement.scrollHeight},'*');}catch(e){}}
+window.addEventListener('load',post);new ResizeObserver(post).observe(document.body);document.addEventListener('click',function(){setTimeout(post,50);});})();
+</script>
+</body>
+</html>

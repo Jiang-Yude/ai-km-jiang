@@ -23,6 +23,25 @@ window.ARTICLE_TAGS = {
 
 window.ARTICLES = [
   {
+    id: "ai-customer-service-model-retest",
+    url: "articles/ai-customer-service-model-retest/",
+    date: "2026-10-10",
+    updated: "2026-10-10",
+    title: "官網 AI 客服要用哪個模型？｜14 組重測的分數與費用，回答不好時先查規則和檢索",
+    problem: "想放 AI 客服或覺得客服回答不夠好，不知道該選哪個模型、一個月要花多少，換更強的模型有沒有用。",
+    audience: "想在網站放 AI 客服、或已經放了想改善回答的講師、小店家與顧問。",
+    summary: "Haiku 5.5 跟 GPT-6 Luna 出來後，我把官網客服咪卡重測 14 組模型：分數、1000 題費用、回應秒數一張表看完。推理開高開低月費只差幾塊錢，扣分多半是自己的規則在打架；我的判斷是把檢索與別名庫做好，效果遠大於換模型（尚未做對照實驗）。另附 Claude 訂閱每月 API 額度的申請步驟與一段客服盲評提示詞。",
+    tags: {
+      topic: ["AI應用", "差異比較", "輔助決策"],
+      level: ["基礎"],
+      content_type: ["案例文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["ai-customer-service-api-cost", "opus-luna-model-division", "fixed-test-set-for-ai", "ai-cp-value-calculus"],
+    cover: { wide: "images/articles/ai-customer-service-model-retest-cover.jpg" }
+  },
+
+  {
     id: "chatgpt-web-codex-console",
     url: "articles/chatgpt-web-codex-console/",
     date: "2026-10-10",
@@ -284,7 +303,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["opus-luna-model-division", "cli-api-mcp-computer-use", "github-vercel-cloudflare-compare", "webnode-to-cloudflare-pages", "domain-and-account-ownership", "grok-bot-galaxy-day2-workshops", "token-money-worth-doing"],
+    related: ["opus-luna-model-division", "cli-api-mcp-computer-use", "github-vercel-cloudflare-compare", "webnode-to-cloudflare-pages", "domain-and-account-ownership", "grok-bot-galaxy-day2-workshops", "token-money-worth-doing", "ai-customer-service-model-retest"],
     cover: { wide: "images/articles/ai-customer-service-api-cost-cover.jpg" }
   },
 
@@ -398,7 +417,7 @@ window.ARTICLES = [
       content_type: ["案例文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["reevaluate-models-same-test", "ai-cp-value-calculus", "what-are-subagents", "long-answer-three-layers", "meeting-record-agent-workflow", "dual-track-planning-loop", "fixed-test-set-for-ai", "ai-schedule-wake-interval", "ai-customer-service-api-cost", "domain-and-account-ownership", "ai-model-token-efficiency"],
+    related: ["reevaluate-models-same-test", "ai-cp-value-calculus", "what-are-subagents", "long-answer-three-layers", "meeting-record-agent-workflow", "dual-track-planning-loop", "fixed-test-set-for-ai", "ai-schedule-wake-interval", "ai-customer-service-api-cost", "domain-and-account-ownership", "ai-model-token-efficiency", "ai-customer-service-model-retest"],
     cover: { wide: "images/articles/opus-luna-model-division-cover.jpg" }
   },
 
@@ -702,7 +721,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["how-to-verify-ai-rule-changes", "three-levels-of-cross-review", "dual-track-planning-loop", "ai-cp-value-calculus", "ai-schedule-wake-interval", "rule-file-rebound", "caught-ai-slacking-into-rules", "ai-user-testing", "long-document-review-layers", "reevaluate-models-same-test", "opus-luna-model-division", "ai-model-token-efficiency"],
+    related: ["how-to-verify-ai-rule-changes", "three-levels-of-cross-review", "dual-track-planning-loop", "ai-cp-value-calculus", "ai-schedule-wake-interval", "rule-file-rebound", "caught-ai-slacking-into-rules", "ai-user-testing", "long-document-review-layers", "reevaluate-models-same-test", "opus-luna-model-division", "ai-model-token-efficiency", "ai-customer-service-model-retest"],
     cover: { wide: "images/articles/fixed-test-set-for-ai-cover.jpg" }
   },
 
@@ -2236,7 +2255,7 @@ window.ARTICLES = [
       content_type: ["觀點文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["ai-usage-audit", "ai-tools-professional-judgment", "strong-ai-models-knowledge-workflow-road", "program-vs-ai-skill-library", "ai-capability-tiers", "long-task-completion-rate", "openrouter-deepseek-data-routing", "fixed-test-set-for-ai", "reevaluate-models-same-test", "opus-luna-model-division"],
+    related: ["ai-usage-audit", "ai-tools-professional-judgment", "strong-ai-models-knowledge-workflow-road", "program-vs-ai-skill-library", "ai-capability-tiers", "long-task-completion-rate", "openrouter-deepseek-data-routing", "fixed-test-set-for-ai", "reevaluate-models-same-test", "opus-luna-model-division", "ai-customer-service-model-retest"],
     cover: { tall: "images/articles/ai-cp-value-calculus-01.jpg" }
   },
 
