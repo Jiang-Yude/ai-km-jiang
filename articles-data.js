@@ -23,6 +23,25 @@ window.ARTICLE_TAGS = {
 
 window.ARTICLES = [
   {
+    id: "chatgpt-web-codex-console",
+    url: "articles/chatgpt-web-codex-console/",
+    date: "2026-10-10",
+    updated: "2026-10-10",
+    title: "讓網頁版 ChatGPT 當 Codex 總控台｜有官方 MCP，但限制還很多",
+    problem: "想用語音在 ChatGPT 網頁交代工作、讓家裡電腦的 Codex 去做，或反過來讓 Codex 叫網頁 Chat 生圖，卻搞不清楚哪些走得通、哪些要操作網頁、額度怎麼扣。",
+    audience: "已經在好幾個 AI 之間交辦工作、想少切視窗的人；想用手機叫家裡電腦做事的人；常要生圖、希望角色每張都長一樣的人。",
+    summary: "我想讓網頁版 ChatGPT 當 Codex 總控台，試了兩個方向。方向一：在網頁用語音派工回家裡電腦的 Codex，派得出去，成果還沒回到網頁。方向二：Codex 透過 MCP 叫網頁版普通 Chat 生圖，傳文字走 MCP，但要傳咪卡角色設定圖、拿回原圖都得網頁操作。文章附實測截圖、咪卡跑掉的錯誤示範、事後從紀錄撈出的用量（約 5.25 美元換三張原圖），以及先跑一件小工作的三點檢查和提示詞。",
+    tags: {
+      topic: ["AIAgent", "AI工作流", "工具操作"],
+      level: ["進階"],
+      content_type: ["案例文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["ai-employees-manage-agents", "cli-api-mcp-computer-use", "character-costume-sheet-three-views", "chatgpt-work-codex-choice", "ai-image-api-cost"],
+    cover: { wide: "images/articles/chatgpt-web-codex-console/2026-10-09-2325-cover.jpg" }
+  },
+
+  {
     id: "cloudflare-free-plan-limits",
     url: "articles/cloudflare-free-plan-limits/",
     date: "2026-09-02",
@@ -170,7 +189,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["dont-learn-ai-tools", "harness-to-loop", "parallel-site-editing", "what-is-loop-engineering", "cathay-tech-conference-2026"],
+    related: ["dont-learn-ai-tools", "harness-to-loop", "parallel-site-editing", "what-is-loop-engineering", "cathay-tech-conference-2026", "chatgpt-web-codex-console"],
     cover: { wide: "images/articles/ai-employees-manage-agents-cover.jpg" }
   },
 
@@ -303,7 +322,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["how-ai-connects-software", "ai-capability-tiers", "how-to-train-your-ai-employee", "openrouter-deepseek-data-routing", "grok-bot-galaxy-day2-workshops", "ai-customer-service-api-cost"],
+    related: ["how-ai-connects-software", "ai-capability-tiers", "how-to-train-your-ai-employee", "openrouter-deepseek-data-routing", "grok-bot-galaxy-day2-workshops", "ai-customer-service-api-cost", "chatgpt-web-codex-console"],
     cover: { tall: "images/articles/cli-api-mcp-computer-use-cover.jpg" }
   },
 
@@ -949,7 +968,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["ai-schedule-wake-interval", "token-money-worth-doing"],
+    related: ["ai-schedule-wake-interval", "token-money-worth-doing", "chatgpt-web-codex-console"],
     cover: { tall: "images/articles/ai-image-api-cost-cover.jpg" }
   },
 
@@ -1450,7 +1469,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["mika-to-laika-product-character-design", "map-is-not-the-territory", "semantic-rules-before-prompt-templates"],
+    related: ["mika-to-laika-product-character-design", "map-is-not-the-territory", "semantic-rules-before-prompt-templates", "chatgpt-web-codex-console"],
     cover: { tall: "images/articles/character-costume-sheet-three-views/mika-costume-sheet-four-views.jpg" }
   },
 
@@ -2051,7 +2070,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["web-chat-ai-vs-desktop-agent", "mac-for-agent-beginners", "how-ai-connects-software", "ai-capability-tiers", "program-vs-ai-skill-library", "chatgpt-work-skills-web-version"],
+    related: ["web-chat-ai-vs-desktop-agent", "mac-for-agent-beginners", "how-ai-connects-software", "ai-capability-tiers", "program-vs-ai-skill-library", "chatgpt-work-skills-web-version", "chatgpt-web-codex-console"],
     cover: { tall: "images/articles/chatgpt-work-codex-choice/01.jpg" }
   },
 
