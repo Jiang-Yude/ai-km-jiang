@@ -42,6 +42,25 @@ window.ARTICLES = [
   },
 
   {
+    id: "handoff-continue-or-replace",
+    url: "articles/handoff-continue-or-replace/",
+    date: "2026-10-10",
+    updated: "2026-10-10",
+    title: "AI 交接任務的心得分享｜做得好繼續，跟做不好改做的兩種情況",
+    problem: "一家 AI 做不好，想換另一家來做，結果請前一家寫交接指令時，它還在教下一家照它的做法做。",
+    audience: "同時用兩家以上 AI，常常一家做不好就想換另一家，或對話太長要開新對話接著跑的人。",
+    summary: "交接指令分兩種：前一家做得好、只是要開新階段的續跑交接，要把規則和步驟寫完整；前一家做不好、要換一家的換手交接，做不好的那一方不准再下指導棋，只交實際進度、踩過的坑、我哪裡不滿、我要什麼四件事，做法讓新的 AI 自己判斷。安全邊界與停損兩種都要留。附兩張可以直接複製的交接單。",
+    tags: {
+      topic: ["AI工作流", "AIAgent", "提示詞設計"],
+      level: ["基礎"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["ai-handoff-instructions", "intent-first-prompting", "three-levels-of-cross-review", "dual-track-planning-loop"],
+    cover: { wide: "images/articles/handoff-continue-or-replace-cover.jpg" }
+  },
+
+  {
     id: "cloudflare-free-plan-limits",
     url: "articles/cloudflare-free-plan-limits/",
     date: "2026-09-02",
@@ -2181,7 +2200,7 @@ window.ARTICLES = [
       content_type: ["案例文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["dual-track-planning-loop", "loop-engineering-guardrails", "how-to-train-your-ai-employee", "intent-first-prompting", "rule-file-rebound", "long-task-completion-rate", "session-messaging-reminder-layer", "audrey-tang-reverse-alignment", "ai-understands-ei-ha"]
+    related: ["handoff-continue-or-replace", "dual-track-planning-loop", "loop-engineering-guardrails", "how-to-train-your-ai-employee", "intent-first-prompting", "rule-file-rebound", "long-task-completion-rate", "session-messaging-reminder-layer", "audrey-tang-reverse-alignment", "ai-understands-ei-ha"]
   },
 
   {
@@ -2602,7 +2621,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["harness-mindset-for-bosses", "prompt-to-loop-map", "map-is-not-the-territory", "ai-handoff-instructions", "ai-that-knows-you", "old-prompts-intent-first-loop-engineering", "ai-employee-four-levels", "long-answer-three-layers"]
+    related: ["handoff-continue-or-replace", "harness-mindset-for-bosses", "prompt-to-loop-map", "map-is-not-the-territory", "ai-handoff-instructions", "ai-that-knows-you", "old-prompts-intent-first-loop-engineering", "ai-employee-four-levels", "long-answer-three-layers"]
   },
 
   {
