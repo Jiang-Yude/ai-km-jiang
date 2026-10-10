@@ -1,0 +1,473 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="index,follow">
+<title>「AI 說它做完了，可是東西是壞的」｜Agent 排障三層地圖，先修環境再修反饋，流程最後才畫</title>
+<meta name="description" content="AI 回報做完了，東西卻是壞的，畫面也沒有錯誤訊息。這篇用我自己踩過的六次事故，把排障分成駕馭、迴圈、圖譜三層：讀不到檔、指錯對象查駕馭層，只靠它自己說做完查迴圈層，好幾條線接力出錯才查圖譜層。附症狀對照表與可直接複製的排障清單。">
+<link rel="canonical" href="https://jiangyude.com/articles/agent-three-layer-triage/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="「AI 說它做完了，可是東西是壞的」｜Agent 排障三層地圖，先修環境再修反饋，流程最後才畫｜江江教練">
+<meta property="og:image" content="https://jiangyude.com/images/og/agent-three-layer-triage.jpg">
+<meta property="og:description" content="AI 回報做完了，東西卻是壞的，畫面也沒有錯誤訊息。這篇用我自己踩過的六次事故，把排障分成駕馭、迴圈、圖譜三層：讀不到檔、指錯對象查駕馭層，只靠它自己說做完查迴圈層，好幾條線接力出錯才查圖譜層。附症狀對照表與可直接複製的排障清單。">
+<meta property="og:url" content="https://jiangyude.com/articles/agent-three-layer-triage/">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:site_name" content="江江教練 · AI 知識管理">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="「AI 說它做完了，可是東西是壞的」｜Agent 排障三層地圖，先修環境再修反饋，流程最後才畫｜江江教練">
+<meta name="twitter:image" content="https://jiangyude.com/images/og/agent-three-layer-triage.jpg">
+<meta name="twitter:description" content="AI 回報做完了，東西卻是壞的，畫面也沒有錯誤訊息。這篇用我自己踩過的六次事故，把排障分成駕馭、迴圈、圖譜三層：讀不到檔、指錯對象查駕馭層，只靠它自己說做完查迴圈層，好幾條線接力出錯才查圖譜層。附症狀對照表與可直接複製的排障清單。">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"「AI 說它做完了，可是東西是壞的」｜Agent 排障三層地圖，先修環境再修反饋，流程最後才畫","description":"AI 回報做完了，東西卻是壞的，畫面也沒有錯誤訊息。這篇用我自己踩過的六次事故，把排障分成駕馭、迴圈、圖譜三層：讀不到檔、指錯對象查駕馭層，只靠它自己說做完查迴圈層，好幾條線接力出錯才查圖譜層。附症狀對照表與可直接複製的排障清單。","author":{"@type":"Person","name":"江昱德","alternateName":"江江教練","jobTitle":"隱性知識提煉師、AI 應用規劃師"},"isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://jiangyude.com/"},"inLanguage":"zh-Hant","url":"https://jiangyude.com/articles/agent-three-layer-triage/"}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{--ink:#1a1612;--paper:#fefcf8;--muted:#6a635a;--line:#d8cdb8;--green:#5f7553;--blue:#5689b8;--orange:#e85a4f;--soft:#faf5ec;--dark:#2a2018;--shadow:0 18px 45px rgba(107,74,42,.14);--sp-shadow:hsla(35,50%,60%,.15);--sp-shadow-edge:hsla(35,50%,68%,.03);--sp-radius:400px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC","Segoe UI",sans-serif}
+a{color:inherit}
+/* 官網共用導航列 nav.top（與首頁/文章總站同一條） */
+nav.top{position:sticky;top:0;background:rgba(254,252,248,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid #d8cdb8;z-index:100}
+nav.top .container{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:24px;padding:14px 32px}
+.nav-brand-img{justify-self:start;display:flex;align-items:center;text-decoration:none;flex-shrink:0;transition:opacity .2s}
+.nav-brand-img:hover{opacity:.8}.nav-brand-img img{height:40px;width:auto;display:block}
+nav.top ul.nav-menu{justify-self:end;display:flex;gap:22px;list-style:none;margin:0;padding:0;font-size:.95rem;white-space:nowrap}
+nav.top ul.nav-menu a{color:#3a342d;text-decoration:none;transition:color .2s;font-weight:500;white-space:nowrap}
+nav.top ul.nav-menu a:hover{color:#1a1612}nav.top ul.nav-menu a.active{color:#1a1612;font-weight:700}
+.nav-toggle{display:none;background:none;border:none;padding:6px;cursor:pointer;width:36px;height:36px;position:relative}
+.nav-toggle span{display:block;position:absolute;left:8px;right:8px;height:2px;background:#1a1612;border-radius:2px;transition:transform .25s,opacity .25s,top .25s}
+.nav-toggle span:nth-child(1){top:11px}.nav-toggle span:nth-child(2){top:17px}.nav-toggle span:nth-child(3){top:23px}
+.nav-toggle.open span:nth-child(1){top:17px;transform:rotate(45deg)}.nav-toggle.open span:nth-child(2){opacity:0}.nav-toggle.open span:nth-child(3){top:17px;transform:rotate(-45deg)}
+.tablewrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:22px 0;border:1px solid var(--line);border-radius:10px;background:#fff;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.tablewrap table{border-collapse:collapse;width:100%;min-width:600px;font-size:18px;line-height:1.65}
+.tablewrap .zh{display:block;margin-top:5px;font-size:16px;line-height:1.55;color:var(--muted);font-weight:400}
+.tablewrap th,.tablewrap td{padding:12px 14px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top;color:#3a342d}
+.tablewrap thead th{background:var(--soft);font-weight:900;font-size:18px;color:#1a1612;white-space:nowrap}
+.tablewrap tbody tr:last-child td{border-bottom:none}
+.tablewrap td code,.section code{background:var(--soft);border:1px solid var(--line);border-radius:5px;padding:1px 6px;font:500 15px/1.5 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace}
+.inline-figure.wide{max-width:1000px}
+.toc{margin:26px 0 0;padding:20px 22px;background:#fff;border:1px solid var(--line);border-radius:10px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.toc>b{display:block;font-size:15px;letter-spacing:.05em;color:var(--green);margin-bottom:10px}
+.toc ol{margin:0;padding-left:1.35em;font-size:18px;line-height:1.7}
+.toc li{margin-bottom:7px;color:#3a342d}
+.toc a{color:var(--blue);font-weight:700;text-decoration:none}.toc a:hover{text-decoration:underline}
+.toc-hint{margin:12px 0 0!important;font-size:18px!important;color:var(--muted)!important;border-top:1px solid var(--line);padding-top:12px}
+.readmore{margin-top:24px;padding:20px 22px;background:var(--soft);border:1px solid var(--line);border-radius:12px}
+.readmore.near{margin:26px 0 6px;background:rgba(86,137,184,.07);border-color:#bcd0e2}
+.readmore.near b{color:var(--blue);font-size:18px}
+.readmore.near li{font-size:17px;line-height:1.7;margin-bottom:10px}
+.readmore b{display:block;margin-bottom:10px;font-size:19px}
+.readmore ul{margin:0;padding-left:1.25em}
+.readmore a{color:var(--blue);font-weight:700;text-decoration:none}
+.readmore a:hover{text-decoration:underline}
+@media(max-width:820px){.tablewrap table{min-width:560px;font-size:18px}.tablewrap{position:relative}.tablewrap::after{content:"表格可左右滑動 →";position:sticky;left:0;display:block;font-size:15px;color:var(--muted);background:var(--soft);border-top:1px solid var(--line);padding:7px 12px;width:100%}}
+@media(max-width:860px){
+ nav.top .container{grid-template-columns:auto 1fr auto;padding:10px 16px;gap:12px}
+ .nav-brand-img img{height:32px}
+ .nav-toggle{display:block;justify-self:end}
+ nav.top ul.nav-menu{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(254,252,248,.98);backdrop-filter:blur(14px);border-bottom:1px solid #d8cdb8;flex-direction:column;gap:0;padding:8px 0;box-shadow:0 10px 24px rgba(107,74,42,.08)}
+ nav.top ul.nav-menu.open{display:flex}
+ nav.top ul.nav-menu li{border-bottom:1px solid #e8dfc9}
+ nav.top ul.nav-menu li:last-child{border-bottom:none}
+ nav.top ul.nav-menu a{display:block;padding:14px 20px;font-size:1.06rem}
+}
+/* 滑鼠暖光暈（與首頁同一支 spotlight.js） */
+body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradient(var(--sp-radius) circle at var(--mx,50%) var(--my,50%),var(--sp-shadow) 0%,var(--sp-shadow-edge) 45%,transparent 75%);pointer-events:none;z-index:9999;mix-blend-mode:multiply;transition:background .06s linear}
+.hero{position:relative;overflow:hidden;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:72px;padding:96px clamp(20px,6vw,88px) 80px;background:linear-gradient(180deg,#fffcf0 0%,#f9e9d2 100%);color:#1a1612;border-bottom:1px solid #d8cdb8}
+.hero .wc{position:absolute;border-radius:50%;filter:blur(60px);pointer-events:none;z-index:0}
+.hero .wc1{width:420px;height:360px;top:-120px;right:-80px;background:#e8884b;opacity:.15}
+.hero .wc2{width:360px;height:300px;bottom:-110px;left:-70px;background:#5f7553;opacity:.13}
+.hero .wc3{width:280px;height:260px;top:34%;left:14%;background:#a08144;opacity:.10}
+.hero>div{flex:none;width:860px;max-width:100%;position:relative;z-index:2}
+.hero-figure{margin:0;width:420px;flex:none;position:relative;z-index:2}
+.hero-figure img{display:block;width:100%;border-radius:16px;border:1px solid #d8cdb8;box-shadow:0 18px 45px rgba(107,74,42,.16);cursor:zoom-in}
+.hero-figure figcaption{margin-top:10px;font-size:14px;line-height:1.6;color:#6a635a}
+.inline-figure{margin:30px auto 8px;max-width:820px}
+.inline-figure img{display:block;width:100%;border-radius:14px;border:1px solid var(--line);box-shadow:var(--shadow);background:#fff;cursor:zoom-in}
+.inline-figure figcaption{font-size:14px;line-height:1.6;color:var(--muted);margin-top:10px}
+.lightbox{position:fixed;inset:0;z-index:10000;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(12,10,8,.92);cursor:zoom-out;backdrop-filter:blur(4px)}
+.lightbox.open{display:flex}.lightbox img{max-width:96vw;max-height:92vh;border-radius:10px;box-shadow:0 24px 60px rgba(0,0,0,.5)}
+.lightbox-close{position:fixed;top:18px;right:24px;color:#fff;font-size:34px;line-height:1;font-weight:700;cursor:pointer;opacity:.85}
+.kicker{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.55rem;color:#7a5c3a;font-weight:500}
+.hero h1{max-width:none;margin:16px 0 18px;font-size:clamp(36px,6vw,72px);line-height:1.08;overflow-wrap:anywhere}
+.hero p{max-width:none;font-size:clamp(18px,2vw,23px);line-height:1.62;color:#3a342d}
+.cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
+.cta a{display:inline-flex;align-items:center;text-decoration:none;border-radius:8px;padding:12px 16px;font-weight:900}
+.cta .primary{background:#fff;color:#1a1612}.cta .ghost{border:1px solid rgba(255,255,255,.32);color:#fff;background:rgba(255,255,255,.08)}
+.section{padding:54px clamp(20px,6vw,88px);border-top:1px solid var(--line)}
+.inner{width:min(1000px,100%);margin:0 auto}
+.section h2{font-size:clamp(26px,4.2vw,48px);line-height:1.12;margin:0 0 18px}
+.section h3{font-size:clamp(21px,3vw,30px);line-height:1.2;margin:30px 0 12px}
+.lead{font-size:clamp(18px,1.6vw,22px);line-height:1.7;color:#3a342d;max-width:900px}
+.section p{font-size:18px;line-height:1.74;color:#3a342d}.section p+p{margin-top:14px}
+.section ul,.section ol{padding-left:1.4em;font-size:18px;line-height:1.74;color:#3a342d}.section li{margin-bottom:8px}
+.meaning{margin:22px 0;padding:16px 18px;border-left:5px solid var(--blue);background:rgba(86,137,184,.12);border-radius:6px;line-height:1.7;font-size:19px}
+.meaning b{display:block;color:var(--blue);margin-bottom:4px}
+.caveat{margin:0 0 8px;padding:16px 18px;border-left:5px solid var(--orange);background:rgba(232,90,79,.1);border-radius:6px;line-height:1.7;font-size:18px;color:#3a342d}
+.caveat b{display:block;color:var(--orange);margin-bottom:4px}
+.infocard{background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px 24px 22px;box-shadow:0 8px 22px rgba(107,74,42,.08);margin-top:8px}
+.infocard-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.info-item{padding:18px 14px 0}
+.info-item b{display:block;font-size:14px;font-weight:900;letter-spacing:.04em;margin-bottom:7px;text-transform:uppercase}
+.info-item:nth-child(1) b{color:var(--green)}.info-item:nth-child(2) b{color:var(--orange)}.info-item:nth-child(3) b{color:var(--blue)}
+.info-item p{margin:0;font-size:17px;line-height:1.6;color:#3a342d}
+.tagrow{display:flex;flex-wrap:wrap;gap:7px;margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
+.tag{font-size:14px;color:var(--muted);background:var(--soft);border:1px solid var(--line);border-radius:999px;padding:4px 11px}
+.duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:24px}
+.duo.stack{grid-template-columns:1fr}
+.duo .card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:22px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.duo .card.a{border-color:var(--orange)}.duo .card.b{border-color:var(--green);box-shadow:0 8px 24px rgba(95,117,83,.16)}
+.duo .card small{display:block;font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.04em;margin-bottom:9px}
+.duo .card.a small{color:var(--orange)}.duo .card.b small{color:var(--green)}
+.duo .card b{display:block;font-size:22px;line-height:1.3;margin-bottom:12px}.duo .card.a b{color:#c0512f}.duo .card.b b{color:#4a7a59}
+.duo .card p{margin:0;color:#3a342d;line-height:1.75;font-size:18px}
+.workflow-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:24px}
+.workflow-step{background:#fff;border:1px solid var(--line);border-radius:8px;padding:18px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.workflow-step small{display:block;color:var(--orange);font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;margin-bottom:9px}
+.workflow-step b{display:block;font-size:18px;line-height:1.3;margin-bottom:9px}
+.workflow-step p{margin:0;color:#3a342d;line-height:1.6;font-size:16px}
+.codeblock{background:var(--dark);color:#f3ead9;border-radius:8px;padding:18px 20px;font:500 14px/1.65 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;overflow-x:auto;white-space:pre-wrap;margin:20px 0;box-shadow:0 8px 22px rgba(107,74,42,.12)}
+.codeblock .c{color:#f6d7a6;font-weight:600}
+.skillcard{background:#fff;border:1px solid var(--green);border-radius:12px;padding:24px;box-shadow:0 10px 26px rgba(95,117,83,.16);margin-top:8px}
+.skillcard b{display:block;font-size:21px;margin-bottom:8px}
+.skillcard p{margin:0 0 16px;font-size:17px;line-height:1.65;color:#3a342d}
+.cta-band{background:#e6f0e5;color:#3a342d}.cta-band .section{border-top:none}
+.cta-band .inner{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(260px,.85fr);gap:26px;align-items:start}
+.cta-band h2{font-size:clamp(26px,4vw,44px);margin:0 0 16px}.cta-band p,.cta-band .lead{color:rgba(58,52,45,.9);font-size:18px;line-height:1.72}
+.cta-card{border:1px solid #cfe0d2;background:#fbfdfa;border-radius:8px;padding:22px}
+.cta-card b{display:block;color:#48b178;margin-bottom:10px;font-size:18px}.cta-card p{margin:0 0 14px}
+.footer{padding:30px clamp(20px,6vw,88px);font-size:14px;color:var(--muted);background:#fff;border-top:1px solid var(--line)}
+.footer-inner{width:min(1000px,100%);margin:0 auto}
+.footer-links{display:flex;flex-wrap:wrap;gap:6px 12px;margin-bottom:14px}.footer-links a{color:var(--blue);font-weight:900;text-decoration:none;font-size:14px}
+.footer-brand{font-weight:900;font-size:15px;margin-bottom:10px}.footer-note{font-size:13px;line-height:1.6}
+@media(max-width:820px){.infocard-grid{grid-template-columns:1fr}.duo{grid-template-columns:1fr}.workflow-grid{grid-template-columns:1fr}.cta-band .inner{grid-template-columns:1fr}.section{padding:40px 20px}.hero{min-height:52vh;flex-direction:column;justify-content:flex-start;align-items:flex-start;gap:24px}.hero>div{width:100%}.hero-figure{width:100%;max-width:560px}}
+@media(max-width:820px){html,body{overflow-x:hidden}.hero h1{word-break:break-word}}
+.hero h1{font-size:clamp(27px,3.4vw,42px);line-height:1.24}
+.hero>div{width:780px}
+.hero-figure{width:780px;max-width:100%}
+@media(max-width:820px){.hero h1{font-size:clamp(24px,5.6vw,30px);line-height:1.3}}
+</style>
+</head>
+<body class="spotlight">
+<!-- 官網共用導航列 nav.top：與首頁/總站同一條，文章不要自己另做極簡 topbar（江江 2026-06-25：要同一個框架、同一條導航列）。把對應頁面的 class="active" 標在自己那欄。
+     ⚠️ 下面 ul.nav-menu 整塊由 preflight 第 5 關 check-bilingual-nav.mjs 做「逐字比對」，
+        塞任何註解、多一個空白、換行位置不同都會被判導航不一致而擋下發布。要說明就寫在 <ul> 外面（像這裡）。
+        2026-08-16 修：原本的 EN 那行說明註解就夾在 <ul> 裡面，導致照範本起手的新文章一律卡第 5 關
+        （llm-rag-agent-mcp 與 rag-three-retrieval-modes 兩篇同時中招）。註解已移出來，<ul> 內保持乾淨。
+        萬一還是被擋，直接跑：node scripts/check-bilingual-nav.mjs --write --only=<你的檔案路徑> -->
+<nav class="top">
+  <div class="container">
+    <a class="nav-brand-img" href="../../index.html"><img src="../../images/footer-signature.png" alt="江江教練 | 江昱德"></a>
+    <button class="nav-toggle" aria-label="選單"><span></span><span></span><span></span></button>
+    <ul class="nav-menu">
+      <li><a href="../../index.html">首頁</a></li>
+      <li><a href="../../knowledge-architecture.html">知識架構</a></li>
+      <li><a href="../../courses.html">課程</a></li>
+      <li><a href="../../articles.html" class="active">深度文章</a></li>
+      <li><a href="../../skills.html">技能包下載</a></li>
+      <li><a href="../../offers.html">服務方案</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="wc wc1"></div>
+  <div class="wc wc2"></div>
+  <div class="wc wc3"></div>
+  <div>
+    <div class="kicker">深度文章 · 我的排障紀錄</div>
+    <h1>「AI 說它做完了，可是東西是壞的」｜Agent 排障三層地圖，先修環境再修反饋，流程最後才畫</h1>
+    <p>六次 AI 回報完成、東西卻是壞的真實事故，按駕馭、迴圈、圖譜三層重新歸類：看到症狀，先知道該查哪一層。</p>
+  </div>
+  <figure class="hero-figure">
+    <img src="../../images/articles/agent-three-layer-triage-cover.jpg" alt="咪卡戴著偵探帽，拿放大鏡照三層石板地基最底下那層的裂縫，上方是蓋著綠色勾勾、箱底裂開的包裝箱" loading="lazy">
+    <figcaption>它說做完了，箱子上也蓋了勾勾。要查的是最底下那一層。</figcaption>
+  </figure>
+</section>
+
+<main>
+<section class="section" id="start"><div class="inner">
+<h2>這篇在講什麼</h2>
+<p class="lead">讓 AI 自己跑一段工作，最難抓的出包，是它回報「做完了」，東西卻是壞的，而且畫面上沒有任何失敗訊號。這篇把我自己踩過的六次這類事故攤開，按駕馭、迴圈、圖譜三層重新歸類。看到症狀，先知道該查哪一層，再決定要修什麼。</p>
+<div class="duo stack">
+  <div class="infocard"><b style="color:#e85a4f">適合誰</b>
+    <ul>
+      <li>已經讓 AI 連續做事的人：整理檔案、跑排程、部署網頁、讓幾個 AI 分工。不需要會寫程式</li>
+      <li>遇過「它說好了，我去看才發現沒好」，卻不知道該從哪裡查起的人</li>
+      <li>讀過我寫迴圈工程、圖譜工程的文章，想知道出包的時候怎麼用上的人</li>
+    </ul>
+  </div>
+  <div class="infocard"><b style="color:#5f7553">你可以帶走什麼</b>
+    <ul>
+      <li>六次真實事故，各自壞在哪一層</li>
+      <li>三層各自要問的檢查題</li>
+      <li>一張症狀對照表，和一份可以直接複製的排障清單</li>
+    </ul>
+  </div>
+</div>
+</div></section>
+
+<section class="section" id="six-cases"><div class="inner">
+<h2>一、我遇過的「做完了」，有六種長相</h2>
+<div class="tablewrap"><table><thead><tr><th>時間</th><th>AI 或畫面怎麼說</th><th>實際上</th></tr></thead><tbody>
+<tr><td>2026 年 6 月</td><td>我叫 Codex 請 Claude 修稿，它回了一版文字，語氣像已經照做</td><td>它沒有叫 Claude，自己改了一版</td></tr>
+<tr><td>2026 年 7 月</td><td>子代理跑完改名任務，回報「五組全部完成，零殘留」</td><td>一步替換指令寫錯，170 個檔案的中文被拆成亂碼</td></tr>
+<tr><td>8 月 27 日</td><td>改檔指令後面，「已更新」和檢查 PASS 都印出來了</td><td>前面那段指令沒跑成，檔案一個字都沒改</td></tr>
+<tr><td>8 月 31 日</td><td>部署顯示成功</td><td>設定檔寫的名字，跟線上真正在接 LINE 訊息的不是同一個；部署另外建了一個新的，改動沒生效</td></tr>
+<tr><td>9 月 4 日</td><td>每小時自動整理的紀錄裡有成功</td><td>那幾筆成功全是手動觸發的；排程自己起的十輪都讀不到檔案</td></tr>
+<tr><td>9 月 11 日</td><td>官網 push 成功，建置也顯示 READY</td><td>正式網址有五分鐘打不開</td></tr>
+</tbody></table></div>
+<p>六次有一個共同點：沒有一次是 AI 或系統自己跳出錯誤。</p>
+<p>修法卻各不相同。有的要改權限，有的要改驗收方式，有的要改好幾個 AI 之間怎麼分工。所以出包的第一步，是先分清楚壞在哪一層。</p>
+</div></section>
+
+<section class="section" id="three-layers"><div class="inner">
+<h2>二、三層：駕馭、迴圈、圖譜</h2>
+<p>這三個詞我之前各寫過文章。這篇把它們當成出包時要分開檢查的三層。這裡講的先後只是排查順序，跟哪一層比較進階無關。</p>
+<div class="tablewrap"><table><thead><tr><th>層</th><th>我之前怎麼講它</th><th>出包時要問的</th></tr></thead><tbody>
+<tr><td>駕馭</td><td>馬鞍和韁繩。你幫它設計好環境：資料夾、權限、工具、跑在哪裡</td><td>它站的地方對不對</td></tr>
+<tr><td>迴圈</td><td>一件事自己跑完。做完自己檢查，沒過自己修，修完再檢查</td><td>它怎麼知道自己做完了</td></tr>
+<tr><td>圖譜</td><td>好幾條線接起來。共用一本交接本，講好誰等誰</td><td>線跟線之間有沒有接好</td></tr>
+</tbody></table></div>
+<div class="meaning"><b>先講一個名詞上的張力</b>照駕馭工程原本的定義，建立迴圈也算在駕馭裡面。這篇為了排障方便，把「環境」跟「驗收」拆成兩層分開看。</div>
+</div></section>
+
+<section class="section" id="harness"><div class="inner">
+<h2>三、駕馭層：它站的地方對不對</h2>
+<p>這一層壞掉的時候，AI 通常沒有做錯事。它在一個不對的環境裡，很認真地把事情做完了。</p>
+<h3>手動跑可以，排程跑就讀不到</h3>
+<p>九月初花東參訪期間，有一個每小時自動整理筆記的排程。紀錄裡看得到成功。</p>
+<p>實際上，由系統排程起的程式沒有讀 iCloud 知識庫和語音備忘錄的權限，每一輪都回「Operation not permitted」（沒有權限），十輪全部靜默失敗。紀錄裡那幾筆成功，全是從有權限的視窗手動觸發的。</p>
+<p>同一支程式，換一個身分來跑，拿到的權限就不一樣。後來的驗收標準改成：<b>排程器自己起的那一輪有寫入，才算建好。</b>手動跑通不算。</p>
+<h3>設定檔上的名字，跟線上活著的不是同一個</h3>
+<p>8 月 31 日整理 LINE 助理那條線。設定檔寫的服務名稱是一個，線上實際存在的是另一個。</p>
+<p>照設定檔部署不會報錯，它會另外建一個新的服務，而 LINE 送訊息過來的那個入口（webhook）還是指著原本那個。結果是改動靜默不生效，畫面卻顯示部署成功。</p>
+<p>那天之後的規則：改名、部署、接手既有系統之前，先查三件事。</p>
+<ol>
+<li>本機設定檔怎麼寫</li>
+<li>線上真的存在什麼</li>
+<li>正式入口（網址、webhook、排程）指著誰</li>
+</ol>
+<p>三者不一致就先停下來，釐清誰在承接真實流量，再動手。也不能直接「以線上為準」，因為線上的東西也可能是殘留或建錯的。這一點是另一家 AI 審的時候抓出來的。</p>
+<h3>背景叫另一家 AI，白等 57 分鐘</h3>
+<p>7 月 25 日跨家審稿，Claude 從背景呼叫 Codex。它停在「等使用者輸入」，輸出檔 0 bytes，程式卻還活著。</p>
+<p>看起來完全像 Codex 沒反應，或模型很慢。實際上它根本還沒開始跑。指令補上一行、明講沒有輸入之後，一次就回來了。</p>
+<h3>路徑寫死帳號名，換一台 Mac 就斷</h3>
+<p>我在幾台 Mac 之間切換，每台的使用者帳號名不一樣。規則檔、腳本裡只要寫死某一台的完整路徑，換機就失效。8 月 11 日修了 12 個檔，8 月 16 日又清出 176 處。後來改成機器攔截：寫進檔案的路徑含帳號名就擋下來。</p>
+<h3>駕馭層要問的四題</h3>
+<ul>
+<li>它讀得到嗎？要用它<b>實際跑的那個身分</b>去讀，不是用我手上這個視窗</li>
+<li>設定檔、線上、正式入口，三個指的是同一個東西嗎</li>
+<li>它是不是卡在等什麼（輸入、登入、授權）</li>
+<li>換一台機器、換一個時間點跑，它還在嗎</li>
+</ul>
+<div class="caveat"><b>這四題換模型也沒用</b>換一個更強的模型來跑，結果會一樣。它讀不到、指錯對象、在等輸入、路徑不存在，這些跟模型聰不聰明無關。</div>
+</div></section>
+
+<section class="section" id="loop"><div class="inner">
+<h2>四、迴圈層：它怎麼知道自己做完了</h2>
+<p>駕馭層確認沒問題，接著看它判斷「做完」的依據。我遇過的四次，依據不是它自己說的，就是一行成功訊息。</p>
+<h3>子代理把 170 個檔案打爛，回報完成</h3>
+<p>我把一批標籤改名交給子代理。它跑了幾分鐘，回報五組全部完成、零殘留。</p>
+<p>我沒有直接信，讓另一個檢查點用最笨的方式自己再數一次，才發現它某一步替換的指令寫錯，把 170 個檔案的中文全拆成亂碼。最後零遺失，靠的是三道防線：</p>
+<ol>
+<li>動手前做了完整備份，而且驗證過真的能還原</li>
+<li>損壞有規律，我先拿一個有乾淨備份的檔案試反向還原，逐字相符才套用到全部</li>
+<li>請另一家 AI 獨立再驗一次復原結果</li>
+</ol>
+<div class="readmore near"><b>延伸閱讀：這次事故的完整經過</b><ul><li><a href="../ai-loop-safety-recovery/">AI 出錯不可怕，沒有備援才可怕：一次搞壞 170 檔案的教訓</a>　三道防線各自怎麼做，以及為什麼迴圈的安全來自接得住錯誤。</li></ul></div>
+<h3>叫它請 Claude 修，它沒叫</h3>
+<p>我請 Codex 叫 Claude 來修一篇文章。它回了一版文字，乍看像照做了。</p>
+<p>我追問「你有叫 Claude 出來嗎」，它才承認沒有。再請它真的去叫，回來的是一個登入失敗的錯誤。有呼叫就說有，沒呼叫就說沒有，失敗就說失敗原因，這個比假裝完成重要。</p>
+<p>從那之後，AI 說它完成了某件事，我會先問這幾句：</p>
+<div class="codeblock">你剛剛實際做了哪些動作？
+哪些是你自己推論？哪些是工具回傳？
+有沒有失敗的步驟？錯誤訊息是什麼？
+這個結果可以在哪裡被我檢查？</div>
+<h3>成功訊息照樣印出來</h3>
+<p>8 月 27 日，一段改檔指令沒有執行成功，但後面接的「已更新」訊息和檢查 PASS 照樣印了出來。三個成功訊號同時出現，檔案一個字都沒改。</p>
+<p>確認的原因只有一半：好幾段指令用分號串在一起時，前一段失敗不會擋掉後一段。另一個疑點後來重測沒有重現，所以沒有把它當成已經排除。</p>
+<p>不管根因是哪個，做法一樣：<b>驗收看檔案內容，不看畫面訊息。</b>改完回頭讀檔，確認新內容真的在、舊內容真的不見。</p>
+<h3>push 成功，正式網址卻打不開</h3>
+<p>9 月 11 日官網上線，流程被誤判成中斷，改用手動 push（把改好的檔案直接送上雲端）收尾。網站平台顯示新版本已經建好（READY），正式網址卻有五分鐘打不開。</p>
+<p>原因是正式網址要靠上線腳本裡的一步切換，手動 push 不會做這一步，也不會報任何錯。規則改成：流程中斷就從頭再跑一次，不自己手動收尾；回報完成之前，要驗到正式網址指向這一次的建置而且打得開。</p>
+<h3>迴圈層要做的三件事</h3>
+<p><b>第一，開跑前先寫三行。</b></p>
+<div class="codeblock">完成條件：什麼狀態算做完，要能用眼睛或指令檢查
+檢查方式：怎麼驗，最好是具體動作，不是感覺
+停止條件：最多幾輪，什麼情況要停下來問人</div>
+<p>「完成條件」要寫成看得見的東西：檔案存在而且內容對、網址打得開、數字對得上。「它回報完成」不算。</p>
+<p><b>第二，設圈數上限。</b>迴圈的規則是沒過就修，一直沒過它就會一直修，中間不會停下來問你。我自己的預設：</p>
+<div class="tablewrap"><table><thead><tr><th>任務類型</th><th>最多幾輪</th></tr></thead><tbody>
+<tr><td>一般文章與決策，兩家模型互審</td><td>2 輪</td></tr>
+<tr><td>很重要的會議或決策</td><td>3 輪</td></tr>
+<tr><td>第 3 輪還沒過</td><td>強制停下來回報，要不要再給一輪由我決定</td></tr>
+</tbody></table></div>
+<p>停下來的時候要交一份說明：卡在哪一步、試過哪些做法、判斷缺的是什麼。我規定回報第一行只能三選一：「完成」、「失敗：一句原因」、「卡住：在等什麼」。</p>
+<div class="readmore near"><b>延伸閱讀：圈數怎麼設、停手要交什麼</b><ul><li><a href="../loop-round-limit/">AI 自己跑，會不會一直跑到額度燒完？｜迴圈的圈數上限，三行寫進規則檔</a>　四種卡住的原因怎麼分辨，以及上限跟報酬遞減曲線怎麼分工。</li></ul></div>
+<p><b>第三，不讓同一個 AI 審自己。</b>我常用一個比喻：一個超級愛吃辣的廚師，比賽時煮最辣的那道，當評審也給辣的最高分。他不是故意偏心，他做的跟他評的，用的是同一把尺。</p>
+<p>所以我的迴圈是一家跑完，換另一家審。ChatGPT 寫的用 Claude 或 Gemini 審，反過來也一樣，重點是換一家公司，換對話視窗不算。有一次 AI 幫我寫價格比較，年費 8,744 元、月費 729 元，729 乘 12 其實是 8,748。我沒看出來，寫的那個 AI 也沒看出來，換一家審才指出矛盾。</p>
+</div></section>
+
+<section class="section" id="graph"><div class="inner">
+<h2>五、圖譜層：線跟線之間有沒有接好</h2>
+<p>前兩層管的是一條線。只有一條線在跑的時候，這一層可以先跳過。好幾個 AI、好幾條工作流同時在跑，而且彼此要接力的時候，才輪到這一層。</p>
+<h3>兩篇文章互卡，根因是共用一張桌子</h3>
+<p>我的官網由好幾個 AI 分頭維護。有一天，B 的新文章檢查全部通過，只差推送，卻停下來排隊，因為 A 還在同一個資料夾裡施工。</p>
+<p>這不是第一次。更早還發生過一方為了發布，動到另一方還沒完成的檔案；也發生過正式網域被舊版本蓋回去。每出一次事就多立一條規則，排隊越排越長。</p>
+<p>挖到最後，根因只有一個：<b>所有 AI 共用同一個本機資料夾。</b>排隊規則解的是症狀。後來的解法是三件套：</p>
+<div class="tablewrap"><table><thead><tr><th>做法</th><th>管哪一段</th></tr></thead><tbody>
+<tr><td>一篇文章開一張自己的桌子：各自獨立的工作資料夾，看不到別人的半成品</td><td>施工時完全不排隊</td></tr>
+<tr><td>上線時由一支程式統一合併，一次上一個完整版本，再核對上線的是不是自己這一版</td><td>只有上線要排隊，大約五到十分鐘</td></tr>
+<tr><td>全站檢查改成每天自動跑一次</td><td>抓漏，但不擋人</td></tr>
+</tbody></table></div>
+<p>這套設計完，我先給另一家 AI 審，它抓出三個串起來才看得到的洞。其中一個是：好幾條線同時在上線時，看到「線上有新版本」不代表那是自己的版本。所以驗收要核對是不是自己這一版，對得上才算數。</p>
+<div class="readmore near"><b>延伸閱讀：三件套的完整做法</b><ul><li><a href="../parallel-site-editing/">兩個 AI 同時改一個網站，為什麼會打架？</a>　另一家 AI 抓出的三個洞、六步落地清單，以及一段可以直接貼給 AI 的委託指令。</li></ul></div>
+<h3>同一篇文章的進度，記在三個地方</h3>
+<p>8 月 23 日盤點知識庫的工作流時，發現官網文章的狀態有兩套詞彙：看板欄位一套、技能包裡的定義一套，各五個狀態、名稱不同。再加上已上線清單，同一篇文章的狀態有三個地方在記。隔天收斂成一套。</p>
+<p>同一次盤點還找到一本沒人寫的交接本：一組給 AI 查人物與專案的索引檔，一個月沒更新，規則卻還指著它當查詢入口。AI 照規則去讀，讀到的是一個月前的快照。</p>
+<h3>規則表貼了，沒人執行</h3>
+<p>7 月我盤過自己寫給 AI 的規則，大約 220 條，真的有機制在執行的大約 24 條。代價最高的 60 條裡，有 48 條完全靠 AI 自己記得。</p>
+<p>放在圖譜層看，這就是「規則表貼在牆上，沒有人照著喊下一個」。畫得出來、講得出來，跟真的有東西在跑，是三件事。</p>
+<h3>圖譜層什麼時候才動</h3>
+<p>那次盤點我用的判準，三條要同時成立：</p>
+<ol>
+<li>狀態真的被多方共用：不只一個 AI、一台機器要知道「現在到哪了」</li>
+<li>下一步真的會分岔：過了走 A，沒過走 B</li>
+<li>已經為此出過事</li>
+</ol>
+<p>盤了 11 條工作流，真的有缺口的 3 條、觀察 1 條，建議不動的 7 條。沒出過事的不動。</p>
+</div></section>
+
+<section class="section" id="order"><div class="inner">
+<h2>六、為什麼順序是先駕馭、再迴圈、圖譜最後</h2>
+<div class="workflow-grid">
+  <div class="infocard"><b>駕馭層沒修好</b><p>迴圈的驗收會驗錯對象。排程那次，紀錄裡確實有成功，只是那是手動跑的那一輪。檢查寫得再仔細，查的也不是排程自己那一輪。</p></div>
+  <div class="infocard"><b>迴圈層沒修好</b><p>圖譜只會讓錯的東西傳得更快。助理換成 AI 之後，遇到怪事它多半照跑，出錯的速度快，而且一路跑到底。前一格沒驗收，後一格接到的就是壞掉的東西。</p></div>
+  <div class="infocard"><b>圖譜層最後</b><p>它改動最大，而且多數工作流用不到。我那次盤的 11 條裡，7 條建議不動。</p></div>
+</div>
+</div></section>
+
+<section class="section" id="symptom-table"><div class="inner">
+<h2>七、症狀對照表：看到什麼，先查哪層</h2>
+<div class="tablewrap"><table><thead><tr><th>你看到的狀況</th><th>先查哪層</th><th>我踩過的那次</th><th>先做什麼</th></tr></thead><tbody>
+<tr><td>手動跑可以，排程或背景跑不行</td><td>駕馭</td><td>9/4 排程十輪讀不到檔</td><td>用排程自己那一輪驗收</td></tr>
+<tr><td>部署成功，改動卻沒生效</td><td>駕馭</td><td>8/31 設定檔名字對不上線上</td><td>查設定檔、線上、正式入口是不是同一個</td></tr>
+<tr><td>另一個 AI「沒反應」</td><td>駕馭</td><td>7/25 白等 57 分鐘</td><td>先看它是不是卡在等輸入</td></tr>
+<tr><td>換一台電腦就壞</td><td>駕馭</td><td>8/11、8/16 寫死路徑</td><td>路徑不寫帳號名</td></tr>
+<tr><td>回報完成，東西是壞的</td><td>迴圈</td><td>7 月 170 個檔案</td><td>獨立複驗，不採信自我回報</td></tr>
+<tr><td>說它叫了別人，其實沒叫</td><td>迴圈</td><td>6 月沒叫 Claude</td><td>追問呼叫方式與原始回傳</td></tr>
+<tr><td>畫面有成功訊息，檔案沒變</td><td>迴圈</td><td>8/27 三個成功訊號</td><td>回頭讀檔案內容</td></tr>
+<tr><td>push 成功，正式網址卻打不開</td><td>迴圈</td><td>9/11 正式網址五分鐘打不開</td><td>驗正式網址指向本次建置</td></tr>
+<tr><td>一直修，一直沒過</td><td>迴圈</td><td>預防用，事前設上限</td><td>設圈數，停下來交說明</td></tr>
+<tr><td>好幾個 AI 互相排隊、蓋掉對方</td><td>圖譜</td><td>官網多個 AI 互卡</td><td>一個工作單元一張桌子</td></tr>
+<tr><td>同一件事的進度，不同地方寫的不一樣</td><td>圖譜</td><td>8/23 文章狀態三處記</td><td>收斂成一套</td></tr>
+<tr><td>規則寫了，同樣的事照樣發生</td><td>圖譜</td><td>220 條規則約 24 條有機制在執行</td><td>幫規則找一個會執行它的東西，找不到就別立</td></tr>
+</tbody></table></div>
+</div></section>
+
+<section class="section" id="checklist"><div class="inner">
+<h2>八、排障清單，可以直接複製</h2>
+<div class="codeblock">【第 0 步：三題快篩】
+1. 它站的地方對不對？（讀得到、權限夠、指對對象、沒在等輸入）
+   → 有一題答不出來，先查駕馭層
+2. 它怎麼知道自己做完了？
+   → 答案是「它自己說的」或「有印成功訊息」，查迴圈層
+3. 這件事有好幾條線要接力嗎？
+   → 沒有，圖譜層先跳過
+
+【第 1 步：駕馭層】
+- 用它實際跑的那個身分去讀檔、跑一次
+- 對照設定檔、線上、正式入口，三個是不是同一個
+- 看它是不是卡在等輸入、登入或授權
+- 路徑有沒有寫死某一台電腦
+
+【第 2 步：迴圈層】
+- 寫下完成條件：看得見的東西才算
+- 驗收看檔案內容和正式網址，不看畫面訊息
+- 設圈數：一般 2 輪，重要 3 輪，第 3 輪停下來回報
+- 停下來要交：卡在哪、試過什麼、缺什麼
+- 換一家 AI 審，不讓它審自己
+
+【第 3 步：圖譜層（三條都成立才動）】
+- 狀態真的被好幾方共用
+- 下一步真的會分岔
+- 已經為此出過事
+
+【收工前自問】
+- 這一層修好的證據是什麼？說得出具體的檔案、網址或數字嗎
+- 我是不是在用改流程，去修一個權限或路徑的小問題</div>
+</div></section>
+
+<section class="section" id="hands-off"><div class="inner">
+<h2>九、放手的是執行，驗收不放手</h2>
+<p>這篇講了很多讓 AI 自己跑的前提。最後補一段不放手的。有四類事，我到今天仍然要求 AI 停下來問我，而且寫進規則裡：</p>
+<ul>
+<li><b>不可逆的動作</b>：刪除、覆寫、搬移</li>
+<li><b>對外送出</b>：發文、寄信、送出表單、公開上線</li>
+<li><b>牽涉金錢</b>：付款、報價、承諾價格</li>
+<li><b>改規則本身</b>：規則檔、技能包、攔截程式</li>
+</ul>
+<p>這四類的共同點是錯了救不回來，或救回來的成本很高。其他的事可以交出去跑。只是它說做完了，我會自己去確認產物真的存在、內容真的對。</p>
+<div class="readmore near"><b>延伸閱讀：從按確認到放手的那一步</b><ul><li><a href="../harness-to-loop/">AI 每一步都要我按確認，我可以放手到哪裡？｜從駕馭工程到迴圈工程的那一步</a>　三行護欄、標準要寫多細才驗得動，以及這四類事為什麼留在自己手上。</li></ul></div>
+</div></section>
+
+<section class="section" id="honesty"><div class="inner">
+<h2>這篇的誠實邊界</h2>
+<div class="caveat"><b>四件事要說清楚</b>
+<ol>
+<li><b>案例全部出自我自己的文章、規則檔和事故紀錄</b>，日期查得到。三層分類是這篇事後重新歸的，事故發生當下並沒有照這個分法處理。</li>
+<li><b>有些根因只確認了一半。</b>8 月 27 日那次，確認的是分號串接不擋後續，另一個疑點重測沒有重現。</li>
+<li><b>很多規則目前還是靠 AI 自己遵守。</b>圈數上限沒有程式在旁邊計數；我的攔截程式只保護其中一家的 AI，其他家靠規則文字。</li>
+<li><b>這是一個人工作的尺度。</b>團隊或公司規模的系統，會有更專門的工具，這篇不處理。</li>
+</ol></div>
+<div class="readmore"><b>這篇用到的案例，各有完整一篇</b><ul><li><a href="../ai-loop-safety-recovery/">AI 出錯不可怕，沒有備援才可怕：一次搞壞 170 檔案的教訓</a></li><li><a href="../caught-ai-slacking-into-rules/">AI 寫的東西我怎麼確認它是對的？抓到 AI 偷懶之後，我把它寫進流程規則</a></li><li><a href="../parallel-site-editing/">兩個 AI 同時改一個網站，為什麼會打架？</a></li><li><a href="../rule-file-rebound/">規則檔越寫越長，AI 有照做嗎？</a></li></ul></div>
+<div class="readmore"><b>三層各自的完整說明，和修完之後</b><ul><li><a href="../harness-to-loop/">從駕馭工程到迴圈工程的那一步</a>　駕馭與迴圈</li><li><a href="../loop-round-limit/">迴圈的圈數上限，三行寫進規則檔</a>　迴圈怎麼煞車</li><li><a href="../what-is-graph-engineering/">可以放著讓 AI 自己跑完嗎？｜迴圈工程與圖譜工程</a>　圖譜是什麼、什麼算什麼不算</li><li><a href="../how-to-verify-ai-rule-changes/">改完規則，怎麼知道 AI 到底有沒有變乖？</a>　修完之後怎麼確認真的變好</li></ul></div>
+</div></section>
+
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">江江教練 · AI 知識管理</div>
+    <div class="footer-links">
+      <a href="../../articles.html">← 回深度文章總站</a>
+      <a href="../../index.html">首頁</a>
+      <a href="../../learn.html">自學資源</a>
+      <a href="../../skills.html">技能包下載</a>
+      <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">LINE 社群 ↗</a>
+      <a href="https://www.threads.com/@jiang_yude_coach" target="_blank" rel="noopener">Threads ↗</a>
+      <a href="https://vocus.cc/salon/Jiang_Coach" target="_blank" rel="noopener">方格子 ↗</a>
+    </div>
+    <div class="footer-note">這篇整理我自己讓 AI 連續做事時踩過的事故，以及事後定下的排障做法，供你參考。</div>
+  </div>
+</footer>
+
+<!-- 點圖放大 lightbox（hero 與內文圖通用，已內建，不用每篇重加） -->
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <span class="lightbox-close" aria-label="關閉">×</span>
+  <img id="lightbox-img" src="" alt="放大檢視">
+</div>
+<script>
+(function(){
+  var box=document.getElementById('lightbox'),boxImg=document.getElementById('lightbox-img');
+  document.querySelectorAll('.hero-figure img,.inline-figure img').forEach(function(img){
+    img.addEventListener('click',function(){boxImg.src=img.currentSrc||img.src;boxImg.alt=img.alt||'放大檢視';box.classList.add('open');box.setAttribute('aria-hidden','false');});
+  });
+  function close(){box.classList.remove('open');box.setAttribute('aria-hidden','true');boxImg.src='';}
+  box.addEventListener('click',close);
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
+})();
+</script>
+
+<script src="../../image-interactions.js"></script>
+
+<!-- 官網共用：滑鼠暖光暈 + 導航列漢堡選單 -->
+<script src="../../spotlight.js"></script>
+
+<!-- 文章自動互聯（相關文章）：兩支已內建，順序不可顛倒，不用再另外加 -->
+<script src="../../articles-data.js"></script>
+<script src="../../related-render.js"></script>
+  <script src="/mika-chat-widget.js" defer></script>
+</body>
+</html>

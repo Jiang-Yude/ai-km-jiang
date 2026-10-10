@@ -80,6 +80,25 @@ window.ARTICLES = [
   },
 
   {
+    id: "agent-three-layer-triage",
+    url: "articles/agent-three-layer-triage/",
+    date: "2026-09-10",
+    updated: "2026-10-07",
+    title: "「AI 說它做完了，可是東西是壞的」｜Agent 排障三層地圖，先修環境再修反饋，流程最後才畫",
+    problem: "讓 AI 自己跑一段工作，它回報做完了，東西卻是壞的，畫面上也沒有任何失敗訊號，不知道該從哪裡查起。",
+    audience: "已經讓 AI 連續做事（整理檔案、跑排程、部署網頁、讓幾個 AI 分工）的人，不需要會寫程式。",
+    summary: "用我自己踩過的六次事故講排障：子代理把 170 個檔案打爛還回報完成、叫 Codex 請 Claude 修稿它沒叫、成功訊息照印檔案沒改、設定檔名字對不上線上、排程十輪讀不到檔、push 成功正式站沒更新。按駕馭、迴圈、圖譜三層重新歸類：駕馭層問它站的地方對不對，迴圈層問它怎麼知道自己做完了，圖譜層問好幾條線有沒有接好，而且三條判準同時成立才動。附順序理由、症狀對照表、可直接複製的排障清單，以及我到今天仍然不放手的四類事。",
+    tags: {
+      topic: ["AIAgent", "AI工作流", "工作流程"],
+      level: ["基礎"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["ai-loop-safety-recovery", "caught-ai-slacking-into-rules", "parallel-site-editing", "loop-round-limit", "what-is-graph-engineering"],
+    cover: { wide: "images/articles/agent-three-layer-triage-cover.jpg" }
+  },
+
+  {
     id: "knowledge-workers-new-model-guide",
     url: "articles/knowledge-workers-new-model-guide/",
     date: "2026-10-05",
