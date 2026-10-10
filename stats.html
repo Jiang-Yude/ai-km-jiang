@@ -30,7 +30,10 @@
 .gate .pwbox{position:relative}
 .gate .pwbox input{padding-right:52px;padding-left:52px}
 /* 密碼不顯示圓點，避免看出長度；只留游標 */
-.gate input.masked{color:transparent;caret-color:var(--ink);-webkit-text-fill-color:transparent}
+.gate input.masked{color:transparent;caret-color:transparent;-webkit-text-fill-color:transparent;text-shadow:none}
+/* 隱藏密碼字數（2026-10-10 江江）：游標也藏起來，置中排版下游標位置會洩漏幾個字；反白與瀏覽器自動填入也不能露出圓點 */
+.gate input.masked::selection{background:transparent;color:transparent;-webkit-text-fill-color:transparent}
+.gate input.masked:-webkit-autofill,.gate input.masked:-webkit-autofill:hover,.gate input.masked:-webkit-autofill:focus{-webkit-text-fill-color:transparent!important;caret-color:transparent;-webkit-box-shadow:0 0 0 1000px #fff inset}
 .gate .eye{position:absolute;right:8px;top:50%;transform:translateY(-50%);margin:0;width:40px;height:40px;padding:0;display:flex;align-items:center;justify-content:center;background:transparent;color:var(--ink-faint);border:none;border-radius:50%;cursor:pointer}
 .gate .eye:hover{background:rgba(0,0,0,.05)}
 .gate .eye[aria-pressed="true"] .slash{display:none}
