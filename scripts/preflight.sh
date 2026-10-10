@@ -97,6 +97,8 @@ done
 # 2026-10-09 起 sitemap 文章段是生成的（scripts/build-sitemap.mjs，merge-publish 重建步會跑）；
 # 這一關還留著當保底：分支不必再手補 sitemap，但若有人繞過 merge-publish 直接 publish，這裡仍擋。
 if node scripts/check-sitemap-coverage.mjs; then ok "已上線文章都在 sitemap"; else bad "有已上線文章不在 sitemap.xml（見上方清單）：跑 node scripts/build-sitemap.mjs 重建文章段，不用手補"; fi
+# 已上線文章 llms.txt 覆蓋（2026-10-10 立）：原本只驗知識架構一頁，10-03 後 10 篇文章沒進 llms.txt 也沒人擋。
+if node scripts/check-llms-coverage.mjs; then ok "已上線文章都在 llms.txt"; else bad "有已上線文章不在 llms.txt（見上方清單）：照清單補進 Deep Articles 段"; fi
 grep -q "knowledge-architecture" llms.txt && ok "llms.txt 有知識架構" || bad "llms.txt 缺知識架構"
 
 echo "═══ 5/11 雙語主導航（2026-09-22 停用）═══"
