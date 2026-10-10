@@ -21,6 +21,10 @@ const TAG_RE = /<script src="\/mika-chat-widget\.js" defer><\/script>/g;
 const EXEMPT = [
   // class-countdown 是投影用全螢幕互動工具，掛聊天 widget 會干擾倒數畫面與拖拉/全螢幕操作。
   'class-countdown.html',
+  // 首頁 index.html 是刻意「載完才載入」：index.html 內 later() 在瀏覽器空下來後才動態載入 /mika-chat-widget.js
+  // （2026-09-30 江江：「首頁先載入，其他分頁可以慢慢的載入」，手機首屏約 1MB 降到約 290KB）。
+  // widget 有掛，只是不是靜態 script 標籤，所以本關的字串比對抓不到。
+  /^index\.html$/,
 ];
 
 // 非「對外頁面」的 HTML：不是給訪客看的，不在本關範圍。

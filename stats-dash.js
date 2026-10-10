@@ -72,7 +72,7 @@
     if (IDX[n]) return IDX[n].title;
     if (n === '/' || n === '/index.html') return '首頁';
     var named = {
-      '/articles.html': '深度文章總覽', '/courses.html': '課程總覽', '/skills.html': '技能包下載',
+      '/articles.html': '深度文章總覽', '/courses.html': '課程總覽', '/skills.html': '小工具',
       '/offers.html': '服務方案', '/knowledge-architecture.html': '知識架構', '/cases.html': '案例',
       '/learn.html': '學習地圖', '/search.html': '站內搜尋', '/stats.html': '站長儀表板',
       '/ai-trends.html': 'AI 趨勢', '/agent.html': 'Agent', '/invited-talks.html': '受邀演講',
@@ -723,6 +723,18 @@
       boot(d);
     }).catch(function (e) { fail(e.message || '讀取失敗'); });
   }
+
+  document.addEventListener('DOMContentLoaded', function () {
+    var eye = $('eye'), pwIn = $('pw');
+    if (eye && pwIn) eye.addEventListener('click', function () {
+      var show = eye.getAttribute('aria-pressed') !== 'true';
+      eye.setAttribute('aria-pressed', show ? 'true' : 'false');
+      eye.setAttribute('aria-label', show ? '隱藏密碼' : '顯示密碼');
+      pwIn.type = show ? 'text' : 'password';
+      pwIn.classList.toggle('masked', !show);
+      pwIn.focus();
+    });
+  });
 
   document.addEventListener('DOMContentLoaded', function () {
     fetch('/site-index.json').then(function (r) { return r.json(); }).then(function (d) {

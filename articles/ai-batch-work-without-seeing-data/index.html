@@ -1,0 +1,623 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="index,follow">
+<title>可以讓 AI 大量處理個資，又不讓它讀到內容嗎？｜批次做領據時，AI 只看欄位名稱，資料交給程式搬</title>
+<meta name="description" content="辦活動要付講師費、每張領據都有身分證字號，想讓 AI 批次處理又不讓它讀到個資？原則是 AI 處理欄位名稱、程式處理內容。比較 Word 合併列印、自己執行的小工具、讓 AI 下指令的命令列工具三種做法，誠實列出每層防護靠什麼，附提示詞與驗收清單。">
+<link rel="canonical" href="https://jiangyude.com/articles/ai-batch-work-without-seeing-data/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="可以讓 AI 大量處理個資，又不讓它讀到內容嗎？｜批次做領據時，AI 只看欄位名稱，資料交給程式搬｜江江教練">
+<!-- 分享封面：hero 文字填好後在 repo 根目錄跑 `node scripts/og-shot.mjs ai-batch-work-without-seeing-data` 自動截 1200×630 到 images/og/ai-batch-work-without-seeing-data.jpg（見 README「文章分享封面（OG 圖）機制」）。別退回 intro-jiang.png 直式人像，會被裁成只剩脖子。 -->
+<meta property="og:image" content="https://jiangyude.com/images/og/ai-batch-work-without-seeing-data.jpg">
+<meta property="og:description" content="辦活動要付講師費、每張領據都有身分證字號，想讓 AI 批次處理又不讓它讀到個資？原則是 AI 處理欄位名稱、程式處理內容。比較 Word 合併列印、自己執行的小工具、讓 AI 下指令的命令列工具三種做法，誠實列出每層防護靠什麼，附提示詞與驗收清單。">
+<meta property="og:url" content="https://jiangyude.com/articles/ai-batch-work-without-seeing-data/">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:site_name" content="江江教練 · AI 知識管理">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="可以讓 AI 大量處理個資，又不讓它讀到內容嗎？｜批次做領據時，AI 只看欄位名稱，資料交給程式搬｜江江教練">
+<meta name="twitter:image" content="https://jiangyude.com/images/og/ai-batch-work-without-seeing-data.jpg">
+<meta name="twitter:description" content="辦活動要付講師費、每張領據都有身分證字號，想讓 AI 批次處理又不讓它讀到個資？原則是 AI 處理欄位名稱、程式處理內容。比較 Word 合併列印、自己執行的小工具、讓 AI 下指令的命令列工具三種做法，誠實列出每層防護靠什麼，附提示詞與驗收清單。">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"可以讓 AI 大量處理個資，又不讓它讀到內容嗎？｜批次做領據時，AI 只看欄位名稱，資料交給程式搬","description":"辦活動要付講師費、每張領據都有身分證字號，想讓 AI 批次處理又不讓它讀到個資？原則是 AI 處理欄位名稱、程式處理內容。比較 Word 合併列印、自己執行的小工具、讓 AI 下指令的命令列工具三種做法，誠實列出每層防護靠什麼，附提示詞與驗收清單。","author":{"@type":"Person","name":"江昱德","alternateName":"江江教練","jobTitle":"隱性知識提煉師、AI 應用規劃師"},"isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://jiangyude.com/"},"inLanguage":"zh-Hant","url":"https://jiangyude.com/articles/ai-batch-work-without-seeing-data/","dateModified":"2026-09-28"}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{--ink:#1a1612;--paper:#fefcf8;--muted:#6a635a;--line:#d8cdb8;--green:#5f7553;--blue:#5689b8;--orange:#e85a4f;--soft:#faf5ec;--dark:#2a2018;--shadow:0 18px 45px rgba(107,74,42,.14);--sp-shadow:hsla(35,50%,60%,.15);--sp-shadow-edge:hsla(35,50%,68%,.03);--sp-radius:400px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC","Segoe UI",sans-serif}
+a{color:inherit}
+/* 官網共用導航列 nav.top（與首頁/文章總站同一條） */
+nav.top{position:sticky;top:0;background:rgba(254,252,248,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid #d8cdb8;z-index:100}
+nav.top .container{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:24px;padding:14px 32px}
+.nav-brand-img{justify-self:start;display:flex;align-items:center;text-decoration:none;flex-shrink:0;transition:opacity .2s}
+.nav-brand-img:hover{opacity:.8}.nav-brand-img img{height:40px;width:auto;display:block}
+nav.top ul.nav-menu{justify-self:end;display:flex;gap:22px;list-style:none;margin:0;padding:0;font-size:.95rem;white-space:nowrap}
+nav.top ul.nav-menu a{color:#3a342d;text-decoration:none;transition:color .2s;font-weight:500;white-space:nowrap}
+nav.top ul.nav-menu a:hover{color:#1a1612}nav.top ul.nav-menu a.active{color:#1a1612;font-weight:700}
+.nav-toggle{display:none;background:none;border:none;padding:6px;cursor:pointer;width:36px;height:36px;position:relative}
+.nav-toggle span{display:block;position:absolute;left:8px;right:8px;height:2px;background:#1a1612;border-radius:2px;transition:transform .25s,opacity .25s,top .25s}
+.nav-toggle span:nth-child(1){top:11px}.nav-toggle span:nth-child(2){top:17px}.nav-toggle span:nth-child(3){top:23px}
+.nav-toggle.open span:nth-child(1){top:17px;transform:rotate(45deg)}.nav-toggle.open span:nth-child(2){opacity:0}.nav-toggle.open span:nth-child(3){top:17px;transform:rotate(-45deg)}
+.tablewrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:22px 0;border:1px solid var(--line);border-radius:10px;background:#fff;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.tablewrap table{border-collapse:collapse;width:100%;min-width:600px;font-size:18px;line-height:1.65}
+.tablewrap .zh{display:block;margin-top:5px;font-size:16px;line-height:1.55;color:var(--muted);font-weight:400}
+.tablewrap th,.tablewrap td{padding:12px 14px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top;color:#3a342d}
+.tablewrap thead th{background:var(--soft);font-weight:900;font-size:18px;color:#1a1612;white-space:nowrap}
+.tablewrap tbody tr:last-child td{border-bottom:none}
+.tablewrap td code,.section code{background:var(--soft);border:1px solid var(--line);border-radius:5px;padding:1px 6px;font:500 15px/1.5 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace}
+.inline-figure.wide{max-width:1000px}
+.inline-figure.portrait{max-width:430px}
+.toc{margin:26px 0 0;padding:20px 22px;background:#fff;border:1px solid var(--line);border-radius:10px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.toc>b{display:block;font-size:15px;letter-spacing:.05em;color:var(--green);margin-bottom:10px}
+.toc ol{margin:0;padding-left:1.35em;font-size:18px;line-height:1.7}
+.toc li{margin-bottom:7px;color:#3a342d}
+.toc a{color:var(--blue);font-weight:700;text-decoration:none}.toc a:hover{text-decoration:underline}
+.toc-hint{margin:12px 0 0!important;font-size:18px!important;color:var(--muted)!important;border-top:1px solid var(--line);padding-top:12px}
+.readmore{margin-top:24px;padding:20px 22px;background:var(--soft);border:1px solid var(--line);border-radius:12px}
+.readmore.near{margin:26px 0 6px;background:rgba(86,137,184,.07);border-color:#bcd0e2}
+.readmore.near b{color:var(--blue);font-size:18px}
+.readmore.near li{font-size:17px;line-height:1.7;margin-bottom:10px}
+.readmore b{display:block;margin-bottom:10px;font-size:19px}
+.readmore ul{margin:0;padding-left:1.25em}
+.readmore a{color:var(--blue);font-weight:700;text-decoration:none}
+.readmore a:hover{text-decoration:underline}
+@media(max-width:820px){.tablewrap table{min-width:560px;font-size:18px}.tablewrap{position:relative}.tablewrap::after{content:"表格可左右滑動 →";position:sticky;left:0;display:block;font-size:15px;color:var(--muted);background:var(--soft);border-top:1px solid var(--line);padding:7px 12px;width:100%}}
+@media(max-width:860px){
+ nav.top .container{grid-template-columns:auto 1fr auto;padding:10px 16px;gap:12px}
+ .nav-brand-img img{height:32px}
+ .nav-toggle{display:block;justify-self:end}
+ nav.top ul.nav-menu{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(254,252,248,.98);backdrop-filter:blur(14px);border-bottom:1px solid #d8cdb8;flex-direction:column;gap:0;padding:8px 0;box-shadow:0 10px 24px rgba(107,74,42,.08)}
+ nav.top ul.nav-menu.open{display:flex}
+ nav.top ul.nav-menu li{border-bottom:1px solid #e8dfc9}
+ nav.top ul.nav-menu li:last-child{border-bottom:none}
+ nav.top ul.nav-menu a{display:block;padding:14px 20px;font-size:1.06rem}
+}
+/* 滑鼠暖光暈（與首頁同一支 spotlight.js） */
+body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradient(var(--sp-radius) circle at var(--mx,50%) var(--my,50%),var(--sp-shadow) 0%,var(--sp-shadow-edge) 45%,transparent 75%);pointer-events:none;z-index:9999;mix-blend-mode:multiply;transition:background .06s linear}
+.hero{position:relative;overflow:hidden;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:72px;padding:96px clamp(20px,6vw,88px) 80px;background:linear-gradient(180deg,#fffcf0 0%,#f9e9d2 100%);color:#1a1612;border-bottom:1px solid #d8cdb8}
+.hero .wc{position:absolute;border-radius:50%;filter:blur(60px);pointer-events:none;z-index:0}
+.hero .wc1{width:420px;height:360px;top:-120px;right:-80px;background:#e8884b;opacity:.15}
+.hero .wc2{width:360px;height:300px;bottom:-110px;left:-70px;background:#5f7553;opacity:.13}
+.hero .wc3{width:280px;height:260px;top:34%;left:14%;background:#a08144;opacity:.10}
+.hero>div{flex:none;width:860px;max-width:100%;position:relative;z-index:2}
+.hero-figure{margin:0;width:620px;flex:none;position:relative;z-index:2}
+.hero-figure img{display:block;width:100%;border-radius:16px;border:1px solid #d8cdb8;box-shadow:0 18px 45px rgba(107,74,42,.16);cursor:zoom-in}
+.hero-figure figcaption{margin-top:10px;font-size:14px;line-height:1.6;color:#6a635a}
+.inline-figure{margin:30px auto 8px;max-width:820px}
+.inline-figure img{display:block;width:100%;border-radius:14px;border:1px solid var(--line);box-shadow:var(--shadow);background:#fff;cursor:zoom-in}
+.inline-figure figcaption{font-size:14px;line-height:1.6;color:var(--muted);margin-top:10px}
+.lightbox{position:fixed;inset:0;z-index:10000;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(12,10,8,.92);cursor:zoom-out;backdrop-filter:blur(4px)}
+.lightbox.open{display:flex}.lightbox img{max-width:96vw;max-height:92vh;border-radius:10px;box-shadow:0 24px 60px rgba(0,0,0,.5)}
+.lightbox-close{position:fixed;top:18px;right:24px;color:#fff;font-size:34px;line-height:1;font-weight:700;cursor:pointer;opacity:.85}
+.kicker{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.55rem;color:#7a5c3a;font-weight:500}
+.hero h1{max-width:none;margin:16px 0 18px;font-size:clamp(36px,6vw,72px);line-height:1.08;overflow-wrap:anywhere}
+.hero p{max-width:none;font-size:clamp(18px,2vw,23px);line-height:1.62;color:#3a342d}
+.cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
+.cta a{display:inline-flex;align-items:center;text-decoration:none;border-radius:8px;padding:12px 16px;font-weight:900}
+.cta .primary{background:#fff;color:#1a1612}.cta .ghost{border:1px solid rgba(255,255,255,.32);color:#fff;background:rgba(255,255,255,.08)}
+.section{padding:54px clamp(20px,6vw,88px);border-top:1px solid var(--line)}
+.inner{width:min(1000px,100%);margin:0 auto}
+.section h2{font-size:clamp(26px,4.2vw,48px);line-height:1.12;margin:0 0 18px}
+.section h3{font-size:clamp(21px,3vw,30px);line-height:1.2;margin:30px 0 12px}
+.lead{font-size:clamp(18px,1.6vw,22px);line-height:1.7;color:#3a342d;max-width:900px}
+.section p{font-size:18px;line-height:1.74;color:#3a342d}.section p+p{margin-top:14px}
+.section ul,.section ol{padding-left:1.4em;font-size:18px;line-height:1.74;color:#3a342d}.section li{margin-bottom:8px}
+.meaning{margin:22px 0;padding:16px 18px;border-left:5px solid var(--blue);background:rgba(86,137,184,.12);border-radius:6px;line-height:1.7;font-size:19px}
+.meaning b{display:block;color:var(--blue);margin-bottom:4px}
+.caveat{margin:0 0 8px;padding:16px 18px;border-left:5px solid var(--orange);background:rgba(232,90,79,.1);border-radius:6px;line-height:1.7;font-size:18px;color:#3a342d}
+.caveat b{display:block;color:var(--orange);margin-bottom:4px}
+.infocard{background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px 24px 22px;box-shadow:0 8px 22px rgba(107,74,42,.08);margin-top:8px}
+.infocard-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.info-item{padding:18px 14px 0}
+.info-item b{display:block;font-size:14px;font-weight:900;letter-spacing:.04em;margin-bottom:7px;text-transform:uppercase}
+.info-item:nth-child(1) b{color:var(--green)}.info-item:nth-child(2) b{color:var(--orange)}.info-item:nth-child(3) b{color:var(--blue)}
+.info-item p{margin:0;font-size:17px;line-height:1.6;color:#3a342d}
+.tagrow{display:flex;flex-wrap:wrap;gap:7px;margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
+.tag{font-size:14px;color:var(--muted);background:var(--soft);border:1px solid var(--line);border-radius:999px;padding:4px 11px}
+.duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:24px}
+.duo.stack{grid-template-columns:1fr}
+.duo .card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:22px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.duo .card.a{border-color:var(--orange)}.duo .card.b{border-color:var(--green);box-shadow:0 8px 24px rgba(95,117,83,.16)}
+.duo .card small{display:block;font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.04em;margin-bottom:9px}
+.duo .card.a small{color:var(--orange)}.duo .card.b small{color:var(--green)}
+.duo .card b{display:block;font-size:22px;line-height:1.3;margin-bottom:12px}.duo .card.a b{color:#c0512f}.duo .card.b b{color:#4a7a59}
+.duo .card p{margin:0;color:#3a342d;line-height:1.75;font-size:18px}
+.workflow-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:24px}
+.workflow-step{background:#fff;border:1px solid var(--line);border-radius:8px;padding:18px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.workflow-step small{display:block;color:var(--orange);font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;margin-bottom:9px}
+.workflow-step b{display:block;font-size:18px;line-height:1.3;margin-bottom:9px}
+.workflow-step p{margin:0;color:#3a342d;line-height:1.6;font-size:16px}
+.codeblock{background:var(--dark);color:#f3ead9;border-radius:8px;padding:18px 20px;font:500 14px/1.65 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;overflow-x:auto;white-space:pre-wrap;margin:20px 0;box-shadow:0 8px 22px rgba(107,74,42,.12)}
+.codeblock .c{color:#f6d7a6;font-weight:600}
+.skillcard{background:#fff;border:1px solid var(--green);border-radius:12px;padding:24px;box-shadow:0 10px 26px rgba(95,117,83,.16);margin-top:8px}
+.skillcard b{display:block;font-size:21px;margin-bottom:8px}
+.skillcard p{margin:0 0 16px;font-size:17px;line-height:1.65;color:#3a342d}
+.cta-band{background:#e6f0e5;color:#3a342d}.cta-band .section{border-top:none}
+.cta-band .inner{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(260px,.85fr);gap:26px;align-items:start}
+.cta-band h2{font-size:clamp(26px,4vw,44px);margin:0 0 16px}.cta-band p,.cta-band .lead{color:rgba(58,52,45,.9);font-size:18px;line-height:1.72}
+.cta-card{border:1px solid #cfe0d2;background:#fbfdfa;border-radius:8px;padding:22px}
+.cta-card b{display:block;color:#48b178;margin-bottom:10px;font-size:18px}.cta-card p{margin:0 0 14px}
+.footer{padding:30px clamp(20px,6vw,88px);font-size:14px;color:var(--muted);background:#fff;border-top:1px solid var(--line)}
+.footer-inner{width:min(1000px,100%);margin:0 auto}
+.footer-links{display:flex;flex-wrap:wrap;gap:6px 12px;margin-bottom:14px}.footer-links a{color:var(--blue);font-weight:900;text-decoration:none;font-size:14px}
+.footer-brand{font-weight:900;font-size:15px;margin-bottom:10px}.footer-note{font-size:13px;line-height:1.6}
+@media(max-width:820px){.inline-figure.portrait{max-width:340px}.infocard-grid{grid-template-columns:1fr}.duo{grid-template-columns:1fr}.workflow-grid{grid-template-columns:1fr}.cta-band .inner{grid-template-columns:1fr}.section{padding:40px 20px}.hero{min-height:52vh;flex-direction:column;justify-content:flex-start;align-items:flex-start;gap:24px}.hero>div{width:100%}.hero-figure{width:100%;max-width:560px}}
+@media(max-width:820px){html,body{overflow-x:hidden}.hero h1{word-break:break-word}}
+/* 本篇：長標題不擠掉封面（02-design-system「標題太長會把封面圖擠到下一行」） */
+.hero{gap:40px!important}
+.hero>div:not(.wc){width:540px!important}
+.hero h1{font-size:clamp(30px,3.1vw,44px)!important;line-height:1.18!important;margin:12px 0 16px!important}
+.hero p{font-size:clamp(16px,1.35vw,19px)!important;line-height:1.65!important}
+.hero .kicker{font-size:1.28rem!important}
+.hero-figure{width:460px!important}
+@media(max-width:1180px){.hero{gap:32px!important;flex-direction:column;align-items:flex-start}.hero>div:not(.wc){width:100%!important}.hero-figure{width:100%!important;max-width:620px}.hero h1{font-size:clamp(28px,5vw,40px)!important}}
+.hero-figure img,.inline-figure img{height:auto}
+.duo .card ul{margin:0;padding-left:1.25em}.duo .card li{font-size:18px;line-height:1.7}
+.caveat{margin:22px 0 8px}
+.checklist{list-style:none;padding-left:0!important}
+.checklist li{position:relative;padding-left:1.9em}
+.checklist li::before{content:"☐";position:absolute;left:0;top:0;color:var(--green);font-size:20px;line-height:1.6}
+/* 本篇流程圖元件（fx- 前綴，只作用於本篇） */
+.fx{margin:28px 0 8px;padding:22px 22px 18px;background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.fx-title{font-weight:900;font-size:18px;color:#1a1612;margin-bottom:16px}
+.fx-row{display:flex;align-items:stretch;gap:8px}
+.fx-row+.fx-row{margin-top:10px}
+.fx-box{flex:1 1 0;min-width:0;display:flex;flex-direction:column;justify-content:center;padding:11px 12px;border-radius:10px;border:1px solid var(--line);background:var(--soft);font-size:17px;font-weight:700;line-height:1.4;text-align:center;color:#1a1612}
+.fx-box small{display:block;margin-top:3px;font-weight:400;font-size:14.5px;line-height:1.45;color:var(--muted)}
+.fx-box.ai{background:rgba(86,137,184,.12);border-color:#9fbbd6}
+.fx-box.data{background:rgba(95,117,83,.12);border-color:#a9bd9c}
+.fx-box.warn{background:rgba(232,136,75,.14);border-color:#e3b08a}
+.fx-arrow{flex:none;align-self:center;color:#8a8175;font-weight:900;font-size:22px;line-height:1}
+.fx-zone{position:relative;margin:0 0 14px;padding:26px 12px 12px;border-radius:12px;border:2px dashed var(--line)}
+.fx-zone.ai{border-color:#9fbbd6}.fx-zone.data{border-color:#a9bd9c;background:rgba(95,117,83,.04)}
+.fx-zone-label{position:absolute;top:-12px;left:14px;padding:1px 10px;background:#fff;font-size:15px;font-weight:900}
+.fx-zone.ai .fx-zone-label{color:var(--blue)}.fx-zone.data .fx-zone-label{color:var(--green)}
+.fx-back{padding-top:12px;border-top:1px dashed var(--line);margin-top:4px}
+.fx-lane{padding:12px 0;border-bottom:1px solid var(--line-soft,#e8dfc9)}
+.fx-lane:last-of-type{border-bottom:none}
+.fx-lane-head{display:flex;align-items:center;gap:10px;font-weight:900;font-size:16px;margin-bottom:9px;color:#3a342d}
+.fx-tag{font-size:13.5px;font-weight:900;padding:2px 10px;border-radius:999px}
+.fx-tag.ok{background:rgba(95,117,83,.16);color:#4a6340}.fx-tag.warn{background:rgba(232,136,75,.18);color:#b3561f}
+.fx-scale{margin-top:12px;font-size:15px;color:var(--muted);text-align:right}
+.fx-outside{display:inline-block;margin-bottom:10px;padding:6px 14px;border-radius:10px;background:rgba(86,137,184,.12);border:1px solid #9fbbd6;font-weight:900;font-size:16px}
+.fx-layer{position:relative;padding:28px 14px 14px;border-radius:14px;border:2px solid var(--line)}
+.fx-layer.l1{border-style:dashed;border-color:#c9bfae}
+.fx-layer.l2{border-color:#9fbbd6;background:rgba(86,137,184,.04)}
+.fx-layer.l3{border-color:#a9bd9c;background:rgba(95,117,83,.05)}
+.fx-layer-label{position:absolute;top:6px;left:14px;font-size:14.5px;font-weight:900;color:#3a342d}
+.fx-core{padding:14px;border-radius:10px;background:rgba(95,117,83,.16);border:1px solid #a9bd9c;text-align:center;font-weight:900;font-size:17px}
+.fx-core small{display:block;font-weight:400;font-size:14.5px;color:var(--muted);margin-top:3px}
+.fx-leak{margin-top:14px}
+.fx-split{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0}
+.fx-cap{margin:8px 0 18px!important;font-size:16px!important;color:var(--muted)!important;line-height:1.65!important}
+@media(max-width:820px){
+ .fx{padding:18px 14px 14px}
+ .fx-row{flex-direction:column;align-items:stretch;gap:4px}
+ .fx-arrow{transform:rotate(90deg);font-size:20px;margin:0 auto}
+ .fx-split{grid-template-columns:1fr}
+ .fx-scale{text-align:left}
+}
+</style>
+</head>
+<body class="spotlight">
+<!-- 官網共用導航列 nav.top：與首頁/總站同一條，文章不要自己另做極簡 topbar（江江 2026-06-25：要同一個框架、同一條導航列）。把對應頁面的 class="active" 標在自己那欄。
+     ⚠️ 下面 ul.nav-menu 整塊由 preflight 第 5 關 check-bilingual-nav.mjs 做「逐字比對」，
+        塞任何註解、多一個空白、換行位置不同都會被判導航不一致而擋下發布。要說明就寫在 <ul> 外面（像這裡）。
+        2026-08-16 修：原本的 EN 那行說明註解就夾在 <ul> 裡面，導致照範本起手的新文章一律卡第 5 關
+        （llm-rag-agent-mcp 與 rag-three-retrieval-modes 兩篇同時中招）。註解已移出來，<ul> 內保持乾淨。
+        萬一還是被擋，直接跑：node scripts/check-bilingual-nav.mjs --write --only=<你的檔案路徑> -->
+<nav class="top">
+  <div class="container">
+    <a class="nav-brand-img" href="../../index.html"><img src="../../images/footer-signature.png" alt="江江教練 | 江昱德"></a>
+    <button class="nav-toggle" aria-label="選單"><span></span><span></span><span></span></button>
+    <ul class="nav-menu">
+      <li><a href="../../index.html">首頁</a></li>
+      <li><a href="../../knowledge-architecture.html">知識架構</a></li>
+      <li><a href="../../courses.html">課程</a></li>
+      <li><a href="../../articles.html" class="active">文章</a></li>
+      <li><a href="../../skills.html">小工具</a></li>
+      <li><a href="../../offers.html">服務方案</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="wc wc1"></div>
+  <div class="wc wc2"></div>
+  <div class="wc wc3"></div>
+  <div>
+    <div class="kicker">AI 工作流 · 個資</div>
+    <h1>可以讓 AI 大量處理個資，又不讓它讀到內容嗎？｜批次做領據時，AI 只看欄位名稱，資料交給程式搬</h1>
+    <p>我陪跑的一家企業，行政助理要付講師費給一堆人，每張領據都要填身分證字號和帳號。能不能讓 AI 大量處理，但不讓它讀到這些資料？這篇是討論出來的設計、三種做法，以及每一層防護到底靠什麼。</p>
+  </div>
+  <!-- 封面圖（建議放）：⚠️ 比例是硬規則，不是美感選擇。
+       封面一律【橫式 16:9】，生成 1600x900、落檔 1400 寬，用預設 .hero-figure{width:620px}，不要加 aspect-ratio。
+       理由：封面真正的工作是分享縮圖（OG 1200x630、Threads 與 FB 連結預覽都是橫的），直式封面塞進去只剩中間一小塊。
+       只有「直接沿用既有 4:5 咪卡輪播卡」這個例外才走直式，那時改 .hero-figure{width:320px} 並加
+       .hero-figure img{aspect-ratio:4/5;object-fit:cover}，而且要在 image-ratio-ignore.json 寫明理由，否則 preflight 會擋。
+       沒有封面圖就整個 <figure> 刪掉，hero 會自動置中只剩文字。封面同時設成上面 og:image / twitter:image。
+       比例表正本與立因 → knowledge-site-manager/references/08-article-visuals-from-source.md 第零節之前。 -->
+  <figure class="hero-figure">
+    <img src="../../images/articles/ai-batch-work-without-seeing-data-cover.jpg" alt="文章封面：可以讓 AI 大量處理個資，又不讓它讀到內容嗎？咪卡拿著只有空白欄位的卡片，旁邊磨砂玻璃罩裡的機器正在把表單裝進信封" loading="lazy">
+    <figcaption>AI 手上只有欄位名稱，真正的表單關在你電腦裡，由程式裝進信封。</figcaption>
+  </figure>
+</section>
+
+<main>
+
+<section class="section" id="start">
+  <div class="inner">
+    <h2>這篇在講什麼</h2>
+    <p class="lead">辦活動要付講師費、勞務費，每個人都要簽領據，領據上有身分證字號、地址、銀行帳號。想讓 AI 一次處理整份名單，又不想讓 AI 讀到任何一個人的個資。這篇整理我跟 AI 來回討論出來的做法：讓 AI 寫一支在自己電腦上跑的小程式，AI 只拿到欄位名稱，真正的資料由程式搬。</p>
+    <div class="caveat"><b>先說清楚目前的狀態</b>這是一份設計，工具還沒做出來，也還沒拿真的名單跑過。所以下面每一層防護有多可靠、要怎麼自己驗收，我都一條一條列出來，表格裡寫的都是「設計上應該做到的事」。</div>
+    <div class="duo stack">
+      <div class="card a">
+        <b>適合誰</b>
+        <ul>
+          <li>辦活動、上課、發講師費或勞務費，每次都要一張張打領據的人</li>
+          <li>手上有一份名單 Excel，想讓 AI 幫忙，又擔心把身分證字號交給 AI 的人</li>
+          <li>替客戶或單位處理行政流程，要對別人的個資負責的人</li>
+        </ul>
+      </div>
+      <div class="card b">
+        <b>你可以帶走什麼</b>
+        <ul>
+          <li>一個判斷原則：AI 處理「名稱」，程式處理「內容」</li>
+          <li>三種做法的比較，以及各自的防護靠什麼：Word 合併列印、自己執行的小工具、讓 AI 幫忙下指令的命令列工具</li>
+          <li>一段可以直接貼給 AI 的提示詞，和一張不懂程式也能照著勾的驗收清單</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="scene">
+  <div class="inner">
+    <h2>陪跑企業的行政助理要批次做領據，每張都要填身分證字號</h2>
+    <p>我陪跑的一家企業，有位行政助理負責活動的講師費和勞務費。每個人都要簽一張領據，領據上要填身分證字號、地址、帳號這些資料，一張一張打很花時間，也很容易打錯。</p>
+    <p>這位助理想用 AI 加快速度。好在這件事是在陪跑時提出來的，我們才有機會在動手之前先抓到隱憂：名單一交給 AI，這些個資就離開了公司的電腦。</p>
+    <p>所以我把問題換個方式拿去問 AI：有沒有可能讓 AI 大量處理這件事，但是又不要讓 AI 讀到這些資料？它只負責搬運，不負責讀。</p>
+    <p>「它只負責搬運，不負責讀」實際長這樣：</p>
+    <figure class="inline-figure portrait">
+      <img src="../../images/articles/ai-batch-work-without-seeing-data-02.jpg" alt="插圖：AI 幫你做領據，但看不到名單。左邊 AI 看到的視窗只有姓名、身分證字號、銀行帳號三個空白欄位和一句完成 37 張；右邊你看到的視窗有名單和一疊領據，中間隔著磨砂玻璃" loading="lazy" width="1080" height="1350">
+      <figcaption>咪卡代表 AI：它看得到欄位名稱，也收得到「完成幾張」，名單在隔板另一邊。</figcaption>
+    </figure>
+    <p>問的當下，我腦中想到的是 API key，也就是串接 AI 服務用的那串密碼。它的保管方式後面會講，先講為什麼名單不能直接丟給 AI。</p>
+  </div>
+</section>
+
+<section class="section" id="why">
+  <div class="inner">
+    <h2>把名單交給 AI，名單就離開了你的電腦</h2>
+    <p>我們平常用的 ChatGPT、Claude 這類 AI，都在 AI 公司的伺服器上運算。AI 讀到的每一個字都會送到那邊處理，包括你貼上的內容、它打開的檔案。有些 AI 工具（例如 Claude Code、Codex）還能直接在你電腦上開檔案、跑程式，程式跑完顯示在畫面上的文字，AI 都讀得到，一樣會送過去。</p>
+    <p>會不會被拿去訓練、保存多久，要看你用的方案和隱私設定；名單已經離開你的電腦，這件事不會因為設定而改變。</p>
+    <p>蒐集這些資料的是企業，出事時要負責的是企業和經手的人。所以這題的目標很明確：AI 可以幫忙，但名單內容盡量一個字都不要經過 AI。</p>
+    <div class="readmore near">
+      <b>哪些資料可以交給 AI，我另外整理過一套判斷</b>
+      <ul>
+        <li><a href="../ai-data-red-lines/">公司資料可以貼給 AI 嗎？｜先搞清楚這兩條紅線</a>　這一段只講名單交給 AI 會發生什麼事，那篇把五種常見檔案排開，逐一判斷哪些能離開你的電腦</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="principle">
+  <div class="inner">
+    <h2>API key 的保管方式，可以直接套用在名單上</h2>
+    <p>我自己管 API key 的規矩是：key 不貼進對話、不寫進筆記，存在電腦的鑰匙圈（macOS 的 Keychain）裡。AI 寫程式時只寫「這裡要用某一把鑰匙」，程式執行時自己去鑰匙圈拿，而且設計上不把那串密碼顯示在畫面上（程式顯示在畫面上的文字，AI 讀得到）。AI 知道那把鑰匙叫什麼名字，設計上看不到那串密碼本身；鑰匙圈那邊也要設定好哪些程式可以取用。</p>
+    <figure class="inline-figure portrait">
+      <img src="../../images/articles/ai-batch-work-without-seeing-data-03.jpg" alt="插圖：AI 知道鑰匙的名字，碰不到鑰匙本身。上排咪卡舉著寫 API key 的牌子，鑰匙鎖在保險箱裡；下排咪卡舉著寫姓名、身分證字號、帳號的卡片，名單鎖在同款保險箱裡" loading="lazy" width="1080" height="1350">
+      <figcaption>上排是 API key 的保管方式，下排是同一個道理套在名單上。</figcaption>
+    </figure>
+    <p>名單不用放進鑰匙圈，但可以借同一個道理：AI 只知道名字，不碰內容。AI 需要知道的是：B 欄叫「身分證字號」，要填到領據的哪一格。B 欄裡寫的是誰的號碼，它用不到。</p>
+    <div class="meaning"><b>這套做法的原則只有一句</b>AI 處理名稱，程式處理內容。</div>
+    <figure class="inline-figure portrait">
+      <img src="../../images/articles/ai-batch-work-without-seeing-data-01.jpg" alt="資訊圖：AI 處理名稱，程式處理內容。AI 拿到的只有姓名、身分證字號、銀行帳號三個欄位名稱；程式在你電腦裡搬的表單內容是模糊的，旁邊有鎖頭。AI 只收到「產出 37 張，第 12 列格式不對」" loading="lazy" width="1080" height="1350">
+      <figcaption>AI 手上只有表頭，表單內容留在你的電腦裡；回到 AI 那邊的只有數字和列號。</figcaption>
+    </figure>
+
+  </div>
+</section>
+
+<section class="section" id="how">
+  <div class="inner">
+    <h2>讓 AI 寫一支搬資料的小程式，設計成只給它欄位名稱</h2>
+    <p>具體的分工是這樣：</p>
+    <div class="tablewrap"><table>
+      <thead><tr><th>步驟</th><th>誰做</th><th>設計上 AI 看得到什麼</th></tr></thead>
+      <tbody>
+        <tr><td>1. 告訴 AI 表格有哪些欄位，給它一張空白領據樣板</td><td>你</td><td>欄位名稱、空白樣板</td></tr>
+        <tr><td>2. AI 寫程式：哪一欄填到領據的哪一格</td><td>AI</td><td>對應規則</td></tr>
+        <tr><td>3. AI 自己編一份明顯是假的測試資料，測試排版</td><td>AI</td><td>測試資料，看了也沒關係</td></tr>
+        <tr><td>4. 程式讀你真正的名單，一人產出一張領據</td><td>程式</td><td>看不到</td></tr>
+        <tr><td>5. 程式回報「產出 37 張，第 12 列身分證格式不對」</td><td>程式</td><td>筆數和列號，沒有內容</td></tr>
+      </tbody>
+    </table></div>
+    <div class="fx" role="img" aria-label="流程圖：AI 只拿到欄位名稱和回報的筆數，真的名單只在你電腦裡的小程式中走">
+      <div class="fx-title">圖一　名單從頭到尾沒有經過 AI</div>
+      <div class="fx-zone ai"><span class="fx-zone-label">AI 這邊：只碰名稱</span>
+        <div class="fx-row"><div class="fx-box">你<small>給欄位名稱與空白樣板</small></div><div class="fx-arrow">→</div><div class="fx-box ai">AI<small>用假資料寫出小程式</small></div><div class="fx-arrow">→</div><div class="fx-box">小程式<small>交給你</small></div></div>
+      </div>
+      <div class="fx-zone data"><span class="fx-zone-label">你的電腦裡：AI 碰不到</span>
+        <div class="fx-row"><div class="fx-box data">真的名單</div><div class="fx-arrow">→</div><div class="fx-box data">小程式</div><div class="fx-arrow">→</div><div class="fx-box data">一人一張領據</div></div>
+      </div>
+      <div class="fx-row fx-back"><div class="fx-box">小程式回報</div><div class="fx-arrow">→</div><div class="fx-box ai">AI 只收到<small>「產出 37 張，第 12 列格式不對」</small></div></div>
+    </div>
+    <p class="fx-cap">開發時 AI 只用自己編的假資料；真名單只交給程式，程式回報給 AI 的只有張數和出錯的列號。</p>
+    <p>有三個地方是這套能成立的關鍵：</p>
+    <ul>
+      <li><b>開發只用測試資料。</b>AI 在寫程式、測試排版的整個過程，碰到的都是它自己編的、一看就知道是假的資料。</li>
+      <li><b>程式的所有輸出都不含內容。</b>畫面上的訊息、錯誤訊息、紀錄檔都只准有數量和列號；產出的 PDF 檔名用流水號，不用人名。不然 AI 只要看一眼資料夾，就等於看到整份名單。</li>
+      <li><b>檢查不需要看內容。</b>台灣身分證字號第十碼是檢查碼，有公開的驗算方法；Email 可以做基本的格式檢查；帳號欄至少可以檢查是不是空的、有沒有奇怪的字元。程式只告訴你「第幾列有問題」，你再自己打開 Excel 去改。</li>
+    </ul>
+    <p>這些檢查只能抓到明顯的打錯。身分證字號通過驗算，只表示結構與檢查碼吻合，號碼是不是本人的、有沒有冒用，還是要靠人。銀行帳號的長度各家銀行不同，沒辦法用單一位數驗證。</p>
+    <div class="readmore near">
+      <b>什麼樣的工作該交給程式，我另外排過四種情境</b>
+      <ul>
+        <li><a href="../ai-vs-script-four-situations/">讓 AI 只做需要判斷的事，其他交給程式｜四情境分工法，從完全沒套路到完全不變</a>　這一段只講個資這個情境，那篇從「每次都要重新判斷」到「完全不變」分成四層，說明哪一段該交給 AI、哪一段該寫成程式</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="three-ways">
+  <div class="inner">
+    <h2>做領據的三種做法，從完全不用 AI 到用講的就能跑</h2>
+    <p>跟 AI 來回討論的過程中，做法一路在變。</p>
+    <p>一開始想的是讓 AI 寫程式，每次處理名單都由 AI 去執行。後來我想到更單純的方式：做成一個工具，把 Excel 放進去，領據就跑出來。跑的時候完全沒有 AI，也不用花 AI 的額度。</p>
+    <p>再往下想，工具可以做成命令列工具（CLI）：沒有按鈕和視窗，要在 Mac 的「終端機」裡打一行字叫它做事。平常這行字讓 AI 幫你打，你用說的就好。這樣不用另外做一個有按鈕的軟體，結果在螢幕上看得到，還能順便用軟體把領據寄出去。</p>
+    <p>討論的時候 AI 也提醒我一件事：Word 本來就有「合併列印」，可以拿 Excel 當資料來源，依每一筆資料印出一張領據。這已經是一個現成的工具。它的限制是合併完通常是一整份文件，官方說明裡也沒有「一人存成一個 PDF」的標準做法，要一人一檔寄出去就得另外處理。</p>
+    <div class="tablewrap"><table>
+      <thead><tr><th></th><th>Word 合併列印</th><th>自己執行的小工具</th><th>讓 AI 下指令的命令列工具</th></tr></thead>
+      <tbody>
+        <tr><td>要準備什麼</td><td>Word 和 Excel</td><td>請 AI 做一次工具</td><td>請 AI 做一次工具，電腦裝好 Claude Code 或 Codex</td></tr>
+        <tr><td>平常怎麼用</td><td>自己在 Word 裡操作</td><td>關掉 AI，點兩下啟動檔執行工具</td><td>跟 AI 說「幫我產這批領據」</td></tr>
+        <tr><td>AI 額度</td><td>不用</td><td>不用</td><td>每次會用到一些</td></tr>
+        <tr><td>自動抓格式錯誤</td><td>沒有</td><td>可以設計進去</td><td>可以設計進去</td></tr>
+        <tr><td>一人一個 PDF、寄送</td><td>要另外處理</td><td>可以設計進去</td><td>可以設計進去，用講的</td></tr>
+        <tr><td>名單的防護靠什麼</td><td>過程沒有 AI 參與</td><td>執行時 AI 不在場，另外要確認程式本身不會連網</td><td>工具的輸出設計加上 AI 工具的設定，只能降低風險</td></tr>
+      </tbody>
+    </table></div>
+    <p>我的判斷：</p>
+    <ul>
+      <li><b>只要印出來給大家簽</b>，用 Word 合併列印就好，不用做任何工具。</li>
+      <li><b>要一人一個 PDF、要寄出去、常有人填錯</b>，才值得做工具。最穩的用法是真的名單由你自己執行。</li>
+      <li><b>讓 AI 下指令最省事</b>，代價是防護從「AI 不在場」降成「靠設計和設定擋」。</li>
+    </ul>
+    <p>後兩種是同一支工具，做好之後兩種用法都能用。</p>
+    <div class="fx" role="img" aria-label="對照圖：三種做法的差別在跑真名單的那一刻 AI 在不在旁邊">
+      <div class="fx-title">圖二　三種做法，差在跑真名單時 AI 在不在旁邊</div>
+      <div class="fx-lane"><div class="fx-lane-head">Word 合併列印<span class="fx-tag ok">沒有 AI</span></div>
+        <div class="fx-row"><div class="fx-box data">名單</div><div class="fx-arrow">→</div><div class="fx-box">Word</div><div class="fx-arrow">→</div><div class="fx-box">領據</div></div></div>
+      <div class="fx-lane"><div class="fx-lane-head">自己執行的小工具<span class="fx-tag ok">AI 已關掉</span></div>
+        <div class="fx-row"><div class="fx-box data">名單</div><div class="fx-arrow">→</div><div class="fx-box">你點兩下執行工具</div><div class="fx-arrow">→</div><div class="fx-box">領據 PDF</div></div></div>
+      <div class="fx-lane"><div class="fx-lane-head">讓 AI 下指令<span class="fx-tag warn">AI 在場</span></div>
+        <div class="fx-row"><div class="fx-box">你說「產領據」</div><div class="fx-arrow">→</div><div class="fx-box ai">AI 下指令</div><div class="fx-arrow">→</div><div class="fx-box data">工具讀名單</div><div class="fx-arrow">→</div><div class="fx-box">領據 PDF</div></div>
+        <div class="fx-row fx-back"><div class="fx-box warn">工具畫面上的回報</div><div class="fx-arrow">→</div><div class="fx-box ai">AI 讀得到</div></div></div>
+      <div class="fx-scale">越往下越省事，防護也越靠設計擋</div>
+    </div>
+    <p class="fx-cap">後兩種是同一支工具的兩種用法。AI 在場的那一種，防護改靠「工具只回報數字」加上 AI 工具的設定。</p>
+  </div>
+</section>
+
+<section class="section" id="preview">
+  <div class="inner">
+    <h2>讓 AI 下指令時，完整內容只打開給人看</h2>
+    <p>讓 AI 幫忙下指令的版本，工具預計分成四個指令：</p>
+    <div class="tablewrap"><table>
+      <thead><tr><th>指令</th><th>做什麼</th><th>設計上 AI 看到什麼</th></tr></thead>
+      <tbody>
+        <tr><td>檢查</td><td>驗算身分證檢查碼、檢查 Email 與帳號欄</td><td>筆數、出錯的列號</td></tr>
+        <tr><td>產出</td><td>一人一張 PDF 領據，檔名用流水號</td><td>產出幾張</td></tr>
+        <tr><td>預覽</td><td>在螢幕上打開一份清單：誰、寄到哪、附哪張領據</td><td>只知道「已打開預覽」</td></tr>
+        <tr><td>寄送</td><td>真的寄出</td><td>成功幾封、失敗幾封</td></tr>
+      </tbody>
+    </table></div>
+    <p>關鍵在「預覽」這一步。完整內容做成一份放在電腦裡的檔案，由工具直接在螢幕上打開給本人看；AI 那邊只收到一句「已打開」。人要核對的東西都在螢幕上，AI 要知道的只有做到哪一步。</p>
+    <div class="fx" role="img" aria-label="流程圖：預覽那一步分成兩個出口，完整內容在螢幕上給人看，AI 只收到已打開">
+      <div class="fx-title">圖四　預覽有兩個出口</div>
+      <div class="fx-row"><div class="fx-box">你說「產領據」</div><div class="fx-arrow">→</div><div class="fx-box">檢查<small>回報錯誤列號</small></div><div class="fx-arrow">→</div><div class="fx-box">你改 Excel</div><div class="fx-arrow">→</div><div class="fx-box">產出 PDF</div><div class="fx-arrow">→</div><div class="fx-box">打開預覽</div></div>
+      <div class="fx-split"><div class="fx-box data">螢幕上：完整清單給你核對</div><div class="fx-box ai">AI：只收到「已打開」</div></div>
+      <div class="fx-row"><div class="fx-box">你說「寄」</div><div class="fx-arrow">→</div><div class="fx-box warn">測試模式<small>先全部寄給自己</small></div><div class="fx-arrow">→</div><div class="fx-box">正式寄送</div><div class="fx-arrow">→</div><div class="fx-box ai">AI 收到<small>成功幾封</small></div></div>
+    </div>
+    <p class="fx-cap">AI 讀到的是工具回給它的文字；預覽檔直接在螢幕上打開，內容不經過那段文字，前提是 AI 沒有另外去打開那份預覽檔。</p>
+  </div>
+</section>
+
+<section class="section" id="layers">
+  <div class="inner">
+    <h2>每一層防護各靠什麼，沒有一層萬無一失</h2>
+    <p>同一套做法，防護強度差很多，要分清楚：</p>
+    <div class="tablewrap"><table>
+      <thead><tr><th>防線</th><th>做法</th><th>靠什麼</th></tr></thead>
+      <tbody>
+        <tr><td>提示詞</td><td>叫 AI 不要讀名單</td><td>靠 AI 照做，最弱</td></tr>
+        <tr><td>名單放哪裡</td><td>名單、產出的 PDF、預覽檔都放在同一個不會同步的資料夾</td><td>要先確認那個資料夾不在 iCloud、OneDrive、Google 雲端硬碟的同步範圍</td></tr>
+        <tr><td>工具的輸出</td><td>畫面、錯誤訊息、紀錄檔、檔名都不含內容</td><td>靠程式寫對，要實際測過</td></tr>
+        <tr><td>AI 工具的設定</td><td>禁止讀取名單資料夾；AI 每次動手前先自動檢查，碰到那個資料夾的指令就攔下</td><td>擋得住不小心，擋不住換一種寫法</td></tr>
+        <tr><td>作業系統沙盒</td><td>由 Mac 系統直接拒絕 AI 跑的指令和程式打開那個資料夾</td><td>比 AI 工具的設定更難繞過，但工具自己要讀名單，就得替工具開一道例外</td></tr>
+        <tr><td>寄送前確認</td><td>本人看過預覽、親口說「寄」</td><td>靠人</td></tr>
+      </tbody>
+    </table></div>
+    <p>有兩件事要特別講清楚。</p>
+    <p><b>AI 工具的設定，擋不住換一種寫法。</b>例如禁止讀取的規則，能擋住它認得出來的讀檔指令；AI 如果被擋下來，可能自己改用另一種寫法重試，例如自己寫一小段程式去開檔案，那一種規則就不一定認得，結果一樣是讀到了。</p>
+    <p><b>讓 AI 啟動工具，工具本身就是那個缺口。</b>沙盒可以讓 AI 執行的其他指令都讀不到名單，但工具要讀名單，就得替它開例外。開了例外之後，工具在畫面上回報什麼文字，AI 就看到什麼。所以這個版本真正的防線是工具的輸出設計，沙盒和設定只能降低風險。</p>
+    <div class="fx" role="img" aria-label="分層圖：幾道牆可以擋 AI 自己去讀名單，但工具被開了例外，工具回報什麼 AI 就看到什麼">
+      <div class="fx-title">圖三　牆擋得住 AI 自己去讀，擋不住工具的回報</div>
+      <div class="fx-outside">AI 在外面</div>
+      <div class="fx-layer l1"><span class="fx-layer-label">提示詞：請別讀（靠 AI 照做）</span>
+        <div class="fx-layer l2"><span class="fx-layer-label">AI 工具的設定：擋不小心</span>
+          <div class="fx-layer l3"><span class="fx-layer-label">作業系統沙盒：擋其他指令</span>
+            <div class="fx-core">名單資料夾<small>放在不會同步上雲端的地方</small></div>
+          </div>
+        </div>
+      </div>
+      <div class="fx-row fx-back fx-leak"><div class="fx-box warn">工具<small>沙盒替它開了例外</small></div><div class="fx-arrow">→</div><div class="fx-box data">讀名單</div><div class="fx-arrow">→</div><div class="fx-box warn">畫面上的回報文字</div><div class="fx-arrow">→</div><div class="fx-box ai">AI 讀得到</div></div>
+    </div>
+    <p class="fx-cap">所以 AI 下指令的版本，真正的防線是工具只回報數量和列號；要最穩，就由你自己關掉 AI 再執行。</p>
+    <div class="meaning"><b>我的建議</b>真的名單，由你自己關掉 AI 之後執行。</div>
+    <p>就算這樣，程式本身也是 AI 寫的，可能有你看不出來的連網動作。兩個不用懂程式的做法：第一次跑真名單時先把 Wi-Fi 關掉（有插網路線也拔掉），工具照樣能跑完，代表這一次執行不需要網路；程式碼寫的是做法，通常不含名單內容。先確認程式碼裡沒有直接寫進去的帳號或密碼，再把程式碼交給另一個 AI，請它檢查有沒有連網功能、有沒有把內容寫進紀錄檔。</p>
+    <div class="caveat"><b>寄送是整套流程裡最危險的一步</b>寄錯一封，等於把一個人的身分證字號寄給另一個人，寄出去就收不回來。工具要內建「測試模式」，開著的時候所有信一律改寄到你自己的信箱，由程式強制改寫，不靠你手動換地址。第一次正式寄之前，先用測試模式跑一遍，確認每個附件都對得上人。</div>
+    <p>還有一個 AI 看不到真資料帶來的限制：萬一對應規則寫錯，例如把地址填進帳號那一格，AI 自己發現不了。所以測試資料要故意做得刁鑽：每一欄放一眼就認得出來的代號、很長的地址、空白欄、開頭是 0 的帳號、最後一筆，印出來一格一格對過，真的跑完之後再親手抽查幾張。</p>
+  </div>
+</section>
+
+<section class="section" id="start-now">
+  <div class="inner">
+    <h2>今天就能開始：只要列印用 Word，要寄送才做工具</h2>
+    <h3>只要印出來簽：用 Word 合併列印</h3>
+    <ol>
+      <li>用 Word 做一張領據樣板，要填資料的地方先空著。</li>
+      <li>在 Word 的「郵件」功能裡選「合併列印」，資料來源選你的名單 Excel。</li>
+      <li>把「姓名」「身分證字號」這些欄位，一個一個插進樣板對應的位置。</li>
+      <li>預覽幾筆確認沒錯位，再合併、列印。</li>
+    </ol>
+    <p>整個過程在你自己的電腦上完成，不用 AI。網路上搜尋「Word 合併列印 Excel」就有很多圖文教學。</p>
+
+    <h3>要一人一檔、要寄送：先用測試資料讓 AI 做出第一版</h3>
+    <ol>
+      <li>準備一張<b>空白</b>的領據樣板，最好是 Word 檔（PDF 樣板比較難填，要另外處理），不要有任何人的資料。</li>
+      <li>把 Excel 的標題列抄下來，只要欄位名稱，不要內容。</li>
+      <li>找一個能在你電腦上建立檔案的 AI 工具，例如 Claude Code 或 Codex。網頁版 ChatGPT 只會給你一段程式碼，你還得自己想辦法執行。</li>
+      <li>把下面這段提示詞貼給它，附上樣板和欄位名稱。</li>
+      <li>做好之後照下面的驗收清單走一遍，再用真名單跑。</li>
+    </ol>
+    <p>下面這段可以整段複製貼給你的 AI：</p>
+    <div class="codeblock">我要做一個在自己電腦上執行的小工具，把名單 Excel 批次轉成一人一張的領據 PDF。
+名單裡有身分證字號、地址、銀行帳號這些個資，請照下面的規則做：
+
+<span class="c">【你可以碰的範圍】</span>
+1. 不要尋找、列出或打開我的真實名單資料夾。我只會給你欄位名稱和一張空白領據樣板。
+2. 開發和測試一律用你自己編的測試資料：姓名用「測試一號」這種一看就是假的名字，身分證欄位用明顯是假的代碼，不要用任何可能對應到真人的號碼。
+3. 做完之後停下來，不要替我用真名單跑。真名單由我關掉你之後自己執行。
+
+<span class="c">【工具的輸出規則】</span>
+4. 畫面訊息、錯誤訊息、紀錄檔，都只能有筆數、列號、錯誤類型，不能出現任何一格的內容。
+5. 產出的 PDF 檔名用流水號（例如 0001.pdf），不能含姓名或任何個資。
+6. 名單、產出的 PDF、預覽檔、暫存檔都放在同一個資料夾，不要寫到其他地方。
+7. 身分證、帳號、郵遞區號、電話一律當文字讀，保留開頭的 0。
+
+<span class="c">【功能】</span>
+8. 檢查：驗算身分證字號檢查碼、Email 基本格式、帳號欄是否空白或有奇怪字元，有錯只回報列號。
+9. 預覽：把完整內容做成一份本機檔案，直接在螢幕上打開給我看，你不要讀這份檔案。
+10. 全程在本機處理，不要加入任何連網功能、線上轉檔、雲端字型或使用統計。
+
+<span class="c">【交付】</span>
+11. 做一個點兩下就能執行的啟動檔（Mac 用 .command 檔），讓我不用打指令；並告訴我怎麼執行、每一步會動到哪些檔案。
+12. 附一份刁鑽的測試資料：每欄放一眼認得出來的代號、很長的地址、空白欄、開頭是 0 的帳號，讓我印出來核對有沒有錯位。
+
+欄位名稱：姓名、身分證字號、戶籍地址、銀行帳號、金額、Email
+我的電腦：Mac
+樣板：（附上空白領據）</div>
+    <p>欄位名稱和電腦系統改成你自己的就好。要寄送的話，再加一段：</p>
+    <div class="codeblock">做一個寄送功能，要有測試模式，開著時所有信一律改寄到我的信箱；正式寄出前先跑預覽並列出寄送摘要，我確認後才寄，而且同一批不能重複寄。寄信帳號的密碼存在鑰匙圈，不要寫進程式或設定檔。</div>
+
+    <h3>用真名單之前的驗收清單</h3>
+    <ul class="checklist">
+      <li>名單資料夾不在 iCloud、OneDrive、Google 雲端硬碟的同步範圍裡（Mac 的「文件」「桌面」如果開了 iCloud 同步，放進去的東西都會上雲端）</li>
+      <li>用測試資料跑一次，畫面上只看到數字和列號</li>
+      <li>產出的 PDF 檔名都是流水號</li>
+      <li>刁鑽測試資料印出來，每一格都在對的位置</li>
+      <li>把 Wi-Fi 關掉、網路線拔掉再跑一次，工具照樣能跑完</li>
+      <li>確認程式碼裡沒有寫死的帳號密碼後，交給另一個 AI，問它「這支程式有沒有連網功能、有沒有把內容寫進紀錄或印出來」</li>
+      <li>要寄送的話，測試模式跑過一次，信都寄到自己信箱，附件對得上人</li>
+    </ul>
+    <p>有一項沒過，就先停下來，把那一項丟回給 AI 修。</p>
+
+    <h3>法規面，請找承辦人確認</h3>
+    <p>蒐集身分證字號時要告知對方哪些事、名單和領據要保存多久、什麼時候刪，還有扣繳憑單的所得人資料怎麼填（外籍人士用的識別資料也不一樣），請單位的個資、法務或會計承辦人確認。這一段我沒辦法替你判斷。</p>
+  </div>
+</section>
+
+<section class="section" id="memo-for-ai">
+  <div class="inner">
+    <h2>給你的 AI 讀的技術備忘（人可以跳過）</h2>
+    <p>這一段給 AI 看，以 Claude Code 為例。設定項目名稱依 2026 年 9 月的官方文件，版本更新可能改名，請你的 AI 套用前先對照官方文件。以下都只能降低風險，最穩的仍是真名單由人在 AI 工作階段之外執行。</p>
+    <p><b>權限規則。</b>在 <code>settings.json</code> 的 <code>permissions.deny</code> 加上名單資料夾，例如 <code>Read(~/活動名單/**)</code>。官方文件說明這條規則會套用到內建的 Read、Grep、Glob，以及它認得出來的 Bash 讀檔指令（<code>cat</code>、<code>head</code>、<code>tail</code>、<code>sed</code>、<code>tee</code>）。屬於盡力辨識，用 Python 或 Node 寫一段程式去讀就可能繞過，主要功能是防誤觸，不能單獨當安全邊界。</p>
+    <p><b>PreToolUse hook。</b>在工具執行前檢查指令內容，碰到名單資料夾就用 exit code 2 或回傳 <code>permissionDecision: "deny"</code> 擋下（exit code 1 不會擋）。只比對指令文字會漏掉相對路徑、變數、切換工作目錄、子程序；hook 本身逾時或出錯時會放行，屬於 fail-open。</p>
+    <p><b>沙盒。</b>macOS 版用系統內建的 Seatbelt，可以用 <code>sandbox.filesystem.denyRead</code> 禁止沙盒內的指令與子程序讀取名單資料夾，並把 <code>allowUnsandboxedCommands</code> 設成 <code>false</code>，避免被擋時改在沙盒外重跑。沙盒不管內建讀檔工具，那一層仍靠權限規則。工具若要由 AI 啟動，就得用 <code>excludedCommands</code> 讓它在沙盒外執行，這時工具的一切輸出都會回到 AI，工具就是資料跨出沙盒的通道。</p>
+    <p><b>工具的輸出規格。</b>stdout、stderr、例外訊息、紀錄檔都去識別，只含筆數、列號、錯誤類型；輸出檔名用流水號；預覽檔、暫存檔、產出檔都放在名單資料夾內，完成後依使用者設定清除；要測試中途出錯、中途中斷時會輸出什麼。鎖定套件版本，不引入用途不明的套件。</p>
+    <p><b>格式檢查。</b>台灣身分證字號第十碼是檢查碼，驗算方法公開（字母轉數字、乘權重、加總為 10 的倍數），通過只表示通過邏輯檢查。銀行帳號長度依銀行與帳戶類型而異，只做非空、字元與合理長度檢查，欄位一律以文字讀取保留前導零。Email 只做基本語法檢查。</p>
+    <p><b>寄送。</b>測試模式由程式在底層強制覆寫所有收件人；正式寄送前產生收件人與附件一對一的摘要供人確認；記錄批次編號防止重複寄送；部分失敗時只重寄失敗的那幾封。寄信帳號密碼放 Keychain，程式取用時不輸出。對方同意的話，可考慮附件加密或改用下載連結。</p>
+    <p>官方文件：<a href="https://code.claude.com/docs/en/permissions" target="_blank" rel="noopener">Permissions</a>、<a href="https://code.claude.com/docs/en/sandboxing" target="_blank" rel="noopener">Sandboxing</a>、<a href="https://code.claude.com/docs/en/hooks" target="_blank" rel="noopener">Hooks</a>。</p>
+
+    <div class="readmore">
+      <b>接下來可以看什麼</b>
+      <p><b>這篇提到過的</b></p>
+      <ul>
+        <li><a href="../ai-data-red-lines/">公司資料可以貼給 AI 嗎？｜先搞清楚這兩條紅線</a>：這篇處理的是「非交給 AI 不可時怎麼讓它碰不到」，那篇是更前面一步，先判斷哪些資料根本不該離開你的電腦。</li>
+        <li><a href="../ai-vs-script-four-situations/">讓 AI 只做需要判斷的事，其他交給程式｜四情境分工法，從完全沒套路到完全不變</a>：做領據屬於「完全不變」那一層，那篇講其他三層的工作怎麼分。</li>
+      </ul>
+      <p><b>再往前後延伸</b></p>
+      <ul>
+        <li><a href="../agent-workflow-builds-automation/">所謂的 AI 自動化，到底是 AI 在跑還是程式在跑？｜我用 Agent 設一套程式自動化工作流</a>：往前一步，這篇的「AI 寫程式、程式去跑」就是那篇講的分法，那篇有完整的例子。</li>
+        <li><a href="../openrouter-deepseek-data-routing/">OpenRouter 用 DeepSeek，資料就不會經過中國嗎？教你自己查實際路由供應商</a>：往後一步，真的要把資料交給 AI 服務時，怎麼自己查它實際送去哪裡。</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<div class="cta-band">
+  <section class="section">
+    <div class="inner">
+      <div>
+        <h2>想把自己的行政流程交給 AI，又擔心個資</h2>
+        <p class="lead">我每個月開兩場免費線上講座，講的就是怎麼把重複的工作整理成 AI 接得住、又守得住界線的流程。有想問的流程可以直接帶來問。</p>
+      </div>
+      <div class="cta-card">
+        <b>免費線上講座</b>
+        <p>每個月兩場，線上進行。</p>
+        <p><a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">點我加入 LINE 社群 ↗</a></p>
+      </div>
+    </div>
+  </section>
+</div>
+
+
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">江江教練 · AI 知識管理</div>
+    <div class="footer-links">
+      <a href="../../articles.html">← 回深度文章總站</a>
+      <a href="../../index.html">首頁</a>
+      <a href="../../learn.html">自學資源</a>
+      <a href="../../skills.html">小工具</a>
+      <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">LINE 社群 ↗</a>
+      <a href="https://www.threads.com/@jiang_yude_coach" target="_blank" rel="noopener">Threads ↗</a>
+      <a href="https://vocus.cc/salon/Jiang_Coach" target="_blank" rel="noopener">方格子 ↗</a>
+    </div>
+    <div class="footer-note">這是一篇教學文章，整理我對「可以讓 AI 大量處理個資，又不讓它讀到內容嗎？｜批次做領據時，AI 只看欄位名稱，資料交給程式搬」的看法，供你參考。</div>
+  </div>
+</footer>
+
+<!-- 點圖放大 lightbox（hero 與內文圖通用，已內建，不用每篇重加） -->
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <span class="lightbox-close" aria-label="關閉">×</span>
+  <img id="lightbox-img" src="" alt="放大檢視">
+</div>
+<script>
+(function(){
+  var box=document.getElementById('lightbox'),boxImg=document.getElementById('lightbox-img');
+  document.querySelectorAll('.hero-figure img,.inline-figure img').forEach(function(img){
+    img.addEventListener('click',function(){boxImg.src=img.currentSrc||img.src;boxImg.alt=img.alt||'放大檢視';box.classList.add('open');box.setAttribute('aria-hidden','false');});
+  });
+  function close(){box.classList.remove('open');box.setAttribute('aria-hidden','true');boxImg.src='';}
+  box.addEventListener('click',close);
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
+})();
+</script>
+
+<script src="../../image-interactions.js"></script>
+
+<!-- 官網共用：滑鼠暖光暈 + 導航列漢堡選單 -->
+<script src="../../spotlight.js"></script>
+
+<!-- 文章自動互聯（相關文章）：兩支已內建，順序不可顛倒，不用再另外加 -->
+<script src="../../articles-data.js"></script>
+<script src="../../related-render.js"></script>
+  <script src="/mika-chat-widget.js" defer></script>
+</body>
+</html>

@@ -23,7 +23,8 @@ else
   bad "articles-data.js 與 article.json 來源不一致：node scripts/build-articles-data.mjs（手改要保留就加 --adopt）"
 fi
 if node scripts/build-site-index.mjs 2>&1 | tail -1 | grep -q "✅"; then ok "site-index + 詞彙"; else bad "build-site-index 未通過"; fi
-if node scripts/build-en-articles-data.mjs --check; then ok "英文文章索引"; else bad "英文文章索引過期"; fi
+# 英文文章索引檢查已於 2026-09-22 拿掉：江江決定撤英文版（en/ 整個移除，301 轉回中文頁），
+# build-en-articles-data.mjs 只剩空殼。英文內容備存在 git tag archive/en-final-2026-09-22。
 # 咪卡檢索用的內文關鍵詞：每次發布重跑，新文章的專有名詞才會進索引。
 # 立因（2026-08-11）：「半人馬」「A2A」都是只寫在內文、沒進索引，咪卡因此說站上沒有。
 # 這一關重跑後若有變更就擋下，逼發布者把 article-keywords.js 一起帶進本次範圍。
@@ -41,6 +42,35 @@ if node scripts/check-index-coverage.mjs; then
   ok "索引覆蓋率（新文章有別名、改標題沒洗掉詞）"
 else
   bad "索引覆蓋率未過：見上方清單。補 search-aliases.js，或在 index-coverage-ignore.json 寫明不補的理由"
+fi
+
+# 標題公式（2026-09-12 立）：上一關擋「改標題把詞洗掉」，擋不住「副標一開始就寫錯」。
+# 9/12 江江看 loop-four-entries 說「標題這麼長都沒講到重點」，長出的規則是
+# 副標＝第二搜尋入口（不是金句、不是功能描述）。這支補那條規則的引擎。
+# 只驗本次變更的文章；舊標題沒有「｜」與副標長度只提醒不擋（8/24 明訂舊文不回頭批改）。
+# 誠實邊界：機器驗不了「主標是不是讀者真的會打的話」，那層靠 AUT 第五題與跨家審。
+# 全站盤查用 node scripts/check-title-formula.mjs --all（只列清單不擋）。
+if node scripts/check-title-formula.mjs; then
+  ok "標題公式（副標是可搜尋的概念名，不是功能描述）"
+else
+  bad "標題公式未過：見上方清單。改副標，或在 title-formula-ignore.json 寫明這篇為什麼不套公式"
+fi
+
+# 圖片比例（2026-09-20 立，事故驅動）：封面做成直式、內文圖做成橫式，剛好相反。
+# 封面服務分享縮圖（OG 1200x630 是橫的），內文圖服務一圖兩用（能直接當 4:5 輪播卡）。
+# 只驗本輪改過 index.html 的文章；舊文不回頭批改。
+# 誠實邊界：機器只驗比例與 class 對不對，驗不了圖畫得好不好、該不該有圖。
+if node scripts/check-image-ratio.mjs; then
+  ok "圖片比例（封面橫式、內文直式）"
+else
+  bad "圖片比例未過：見上方清單。重生該張圖，或在 image-ratio-ignore.json 寫明這篇為什麼不套"
+fi
+# 列表封面欄位（2026-10-09 立，事故驅動）：文章頁有 hero 封面、article.json 卻沒 cover，文章列表卡片就沒封面，
+# 之前沒有任何檢查擋。只驗本次變更的文章；舊文用 --all 列清單不擋。
+if node scripts/check-article-cover.mjs; then
+  ok "列表封面欄位（有 hero 封面的文章 article.json 都有 cover）"
+else
+  bad "列表封面欄位未過：見上方清單。article.json 補 cover，或在 article-cover-ignore.json 寫明理由"
 fi
 
 echo "═══ 2/11 文章互聯腳本齊全 ═══"
@@ -61,10 +91,19 @@ for f in *.html; do
   grep -q "$loc" sitemap.xml || { bad "sitemap 缺 $f"; MISS=1; }
 done
 [ $MISS -eq 0 ] && ok "sitemap 覆蓋"
+# 已上線文章 sitemap 覆蓋（2026-09-22 立，4O 健檢抓到缺口）：上面那段只驗根目錄 *.html，
+# 深度文章與 AI 趨勢有好幾篇上線了卻沒進 sitemap。這一關比對 articles-data.js 宣告的上線文章
+# （排除 .vercelignore 擋板與 noindex）與 sitemap.xml，缺一篇就擋。
+# 2026-10-09 起 sitemap 文章段是生成的（scripts/build-sitemap.mjs，merge-publish 重建步會跑）；
+# 這一關還留著當保底：分支不必再手補 sitemap，但若有人繞過 merge-publish 直接 publish，這裡仍擋。
+if node scripts/check-sitemap-coverage.mjs; then ok "已上線文章都在 sitemap"; else bad "有已上線文章不在 sitemap.xml（見上方清單）：跑 node scripts/build-sitemap.mjs 重建文章段，不用手補"; fi
 grep -q "knowledge-architecture" llms.txt && ok "llms.txt 有知識架構" || bad "llms.txt 缺知識架構"
 
-echo "═══ 5/11 雙語主導航 ═══"
-if node scripts/check-bilingual-nav.mjs; then ok "雙語主導航"; else bad "雙語主導航不一致"; fi
+echo "═══ 5/11 雙語主導航（2026-09-22 停用）═══"
+# 2026-09-22 江江決定撤英文版，en/ 已整個移除，中英主導航對照已無對象，本關停用不再檢查。
+# check-bilingual-nav.mjs 檔案保留不刪（日後恢復英文版可從 tag archive/en-final-2026-09-22 取回整組）。
+# 保留本段標題是為了不改動 0-10 的關卡編號，publish／巡檢的回報格式不受影響。
+ok "雙語主導航（英文版已撤除，本關停用）"
 
 echo "═══ 6/11 內部連結掃描 ═══"
 python3 scripts/check-links.py && ok "內部連結" || bad "有內部斷鏈（見上）"

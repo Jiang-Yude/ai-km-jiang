@@ -39,6 +39,14 @@
   css.rel = 'stylesheet';
   css.href = base + 'mika-chat-widget.css';
   document.head.appendChild(css);
+  /* 換頁不閃（2026-09-30 江江：每次切換頁面咪卡客服都閃一下）：
+     HTML 先插進頁面、CSS 還在路上時，會先露出沒套樣式的樣子。先藏起來，CSS 到了才現身；
+     CSS 載入失敗或太慢（1.5 秒）也照樣現身，不讓咪卡整個不見。 */
+  var cssReady = false, pendingShow = null;
+  function markCss() { cssReady = true; if (pendingShow) pendingShow(); }
+  css.addEventListener('load', markCss);
+  css.addEventListener('error', markCss);
+  setTimeout(markCss, 1500);
 
   /* 開場白（2026-08-26 江江拍板，同步上游 v1.6.0）──
      三處都改了：①自介從「江江教練官網的 AI 小幫手」改成核可寫法「江江教練的 AI 助理」
@@ -87,12 +95,12 @@
   /* 首頁不算，其餘頁面都可以解鎖 */
   function isHomePage() {
     var p = location.pathname.replace(/index\.html$/, '');
-    return p === '/' || p === '' || p === '/en/';
+    return p === '/' || p === '';
   }
 
   /* 課程頁＝現場學員拿手機掃 QR 進來的那些頁，快捷鈕要換成他們用得到的 */
   function isCoursePage() {
-    return /^\/(en\/)?courses\//.test(location.pathname);
+    return /^\/courses\//.test(location.pathname);
   }
 
   /* 抽這一頁的文字。走原始 DOM 不動它（不 clone、不暫時隱藏），
@@ -252,7 +260,11 @@
         '<div class="mkw-limit" aria-live="polite"></div>' +
       '</div>' +
     '</div>';
+  root.style.visibility = 'hidden';
+  root.classList.add('mkw-restore');   // 換頁還原的舊訊息不重播進場動畫
   document.body.appendChild(root);
+  pendingShow = function () { root.style.visibility = ''; setTimeout(function () { root.classList.remove('mkw-restore'); }, 120); };
+  if (cssReady) pendingShow();
 
   var launcher = root.querySelector('.mkw-launcher');
   var body = root.querySelector('.mkw-body');

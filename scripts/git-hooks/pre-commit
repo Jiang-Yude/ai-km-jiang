@@ -1,0 +1,76 @@
+#!/usr/bin/env bash
+# 文章版面樣式閘（2026-09-22 立，事故驅動）
+#
+# 為什麼掛在 commit：check-article-css.mjs 原本只在部署前的 preflight 跑，
+# 草稿階段沒人跑，裸 <table> 沒包 .tablewrap 的表格（退回瀏覽器預設樣式：沒框沒底沒對齊）
+# 一路走到江江打開預覽才被看到。江江回報「表格醜」已經超多次。
+# 官網 repo 有「草稿當輪 commit」鐵律，所以 commit 是每篇草稿必經、而且早於交審的那一刻。
+#
+# 只查這次 staged 的 articles/*/index.html 與 ai-trends/*/index.html，不查別篇。
+# 緊急情況要略過：git commit --no-verify（會留下紀錄，事後要補修）。
+set -euo pipefail
+ROOT="$(git rev-parse --show-toplevel)"
+cd "$ROOT"
+
+# ─── 分支禁 commit 生成檔（2026-10-09 立，事故驅動）───
+# 規則 2026-08-19 就有（並行施工機制：分支只 commit 來源檔），但一直沒有機械擋。
+# 10/09 晚上有分支把 articles-data.js 一起 commit → squash merge 衝突 → 生成器把「桌上重建後又過期」
+# 的那一版誤判成手改停下。這裡在 commit 當下擋掉，問題不再流到 merge-publish。
+# 只擋非 main 分支；main 上的生成檔由 merge-publish／publish.sh 自己重建後 commit，不受影響。
+# 清單要跟 merge-publish.sh 的 REGENERATED 一致（sitemap.xml 自 2026-10-09 起文章段改生成）。
+# 緊急略過：ALLOW_GENERATED_COMMIT=1 git commit …（會留下紀錄；merge 時 check-branch-generated.mjs 仍會再判一次）。
+_cur_branch="$(git symbolic-ref --quiet --short HEAD 2>/dev/null || true)"
+if [[ "${_cur_branch}" != "main" && "${ALLOW_GENERATED_COMMIT:-0}" != "1" ]]; then
+  _gen_hit=""
+  while IFS= read -r -d '' _f; do
+    case "${_f}" in
+      articles-data.js|site-index.json|article-keywords.js|en/articles-data.js) _gen_hit="${_gen_hit}   - ${_f}"$'\n' ;;
+      sitemap.xml)
+        # sitemap 只有文章段是生成的；分支改課程頁、根目錄頁的站圖仍合法。只擋「加了 articles/ 或 ai-trends/ 的 <loc>」。
+        if git diff --cached -U0 -- sitemap.xml | grep -E '^\+.*<loc>[^<]*/(articles|ai-trends)/' >/dev/null; then
+          _gen_hit="${_gen_hit}   - sitemap.xml（新增了文章 <loc>；文章段由 build-sitemap.mjs 生成，分支不用補）"$'\n'
+        fi ;;
+    esac
+  done < <(git diff --cached --name-only -z --diff-filter=ACMRD)
+  if [[ -n "${_gen_hit}" ]]; then
+    echo "⛔ commit 被擋：分支「${_cur_branch:-detached}」staged 了生成檔，分支只能 commit 來源檔："
+    printf '%s' "${_gen_hit}"
+    echo "   這些檔 merge-publish 上線時會從來源整個重建，分支 commit 它們只會製造衝突。"
+    echo "   修法：git restore --staged <檔>（本機要看效果可以留在工作區不 commit）"
+    echo "   文章資料改 articles/<slug>/article.json；sitemap 文章段由 build-sitemap.mjs 生成，不用手補。"
+    echo "   真的要 commit（例：維運分支改生成器本身要一起帶產物）：ALLOW_GENERATED_COMMIT=1 git commit …"
+    exit 1
+  fi
+fi
+# 2026-09-22 Codex 跨家審後改：
+#  1. 檢查 staged 內容本身（寫到暫存夾），不讀工作樹，避免「工作樹修好但 staged 是舊版」漏擋
+#  2. --diff-filter 加 R、C，改名與複製進來的文章也要查
+#  3. 檔名用 NUL 分隔讀取，含空白、換行、非 ASCII 都不會被拆開或加引號
+#  4. git diff／git show 失敗一律擋下，不靜默放行
+#  不用 mapfile：macOS 內建 bash 3.2 沒有這個指令（首測就踩到，擋下的原因是指令不存在而不是檢查器）。
+#  暫存夾建在系統 TMPDIR，由系統定期清理，本 hook 不做刪除動作。
+TMP="$(mktemp -d "${TMPDIR:-/tmp}/article-css-gate.XXXXXX")"
+# NUL 分隔（-z）：非 ASCII 或含換行的檔名不會被 git 加引號或拆行；git diff 失敗就擋下，不靜默放行。
+if ! git diff --cached --name-only -z --diff-filter=ACMRC > "$TMP/.staged-list"; then
+  echo "⛔ pre-commit：讀不到 staged 清單（git diff 失敗），為避免漏擋先停下。"
+  exit 1
+fi
+COUNT=0
+while IFS= read -r -d '' f; do
+  case "$f" in
+    articles/*/index.html|ai-trends/*/index.html) ;;
+    *) continue ;;
+  esac
+  mkdir -p "$TMP/$(dirname "$f")"
+  git show ":$f" > "$TMP/$f" || { echo "⛔ pre-commit：讀不到 staged 內容 $f"; exit 1; }
+  COUNT=$((COUNT+1))
+done < "$TMP/.staged-list"
+[ "$COUNT" -eq 0 ] && exit 0
+ARGS=()
+while IFS= read -r f; do ARGS+=("$TMP/$f"); done < <(cd "$TMP" && find articles ai-trends -name index.html 2>/dev/null)
+if ! node scripts/check-article-css.mjs "${ARGS[@]}"; then
+  echo ""
+  echo "⛔ commit 被擋：上面這幾篇有版面元件吃不到樣式（最常見是表格沒包 <div class=\"tablewrap\">）。"
+  echo "   修法：每張 <table> 外面包 <div class=\"tablewrap\">…</div>，CSS 模板已內建。"
+  exit 1
+fi
