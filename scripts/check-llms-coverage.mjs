@@ -9,8 +9,9 @@
 // 「已上線文章」的判定跟 check-sitemap-coverage.mjs 同一套：
 //   articles/<id>/ 與 ai-trends/<id>/ 底下同時有 index.html 與 article.json，
 //   且不被 .vercelignore 整資料夾擋板（^articles/<id>/$）擋著、index.html 沒有 noindex。
-// 放 article.unlisted（刻意不進索引）的頁面不在本檢查範圍（有 article.json 才算，unlisted 本來就沒有）。
-// 誠實邊界：只驗「網址有沒有出現在 llms.txt」（絕對或相對路徑都算），不驗摘要寫得對不對；
+// 放 article.unlisted（刻意不進索引）的頁面跳過，與 build-sitemap.mjs 一致。
+// 誠實邊界：只驗「本站文章網址有沒有出現在 llms.txt」（絕對、相對、index.html 都算，別的網域不算），不驗摘要寫得對不對；
+// .vercelignore 只認 articles/<id>/ 整資料夾擋板（與 check-sitemap-coverage.mjs 同一套），glob 寫法不認；
 // llms-full.txt 是精選補充，不要求逐篇收錄，本檢查不管它。
 import fs from "node:fs";
 import path from "node:path";
@@ -20,8 +21,21 @@ const SITE = "https://jiangyude.com";
 const read = (p) => fs.readFileSync(path.join(ROOT, p), "utf8");
 
 const llms = read("llms.txt");
-if (!llms.includes("/articles/")) {
-  console.error("  llms.txt 讀不到任何 /articles/ 連結，本檢查不能靜默通過");
+// 收錄的網址：Markdown 連結目的地＋內文裸露的本站網址，一律正規化成本站 pathname。
+// 跨家審（2026-10-10 OpenAI）抓到只用子字串比對會把錯網域、多一層路徑當成已收錄，相對路徑 articles/x/ 反而不算。
+const listed = new Set();
+const hrefs = [
+  ...[...llms.matchAll(/\]\(\s*<?([^)\s>]+)>?\s*\)/g)].map((m) => m[1]),
+  ...[...llms.matchAll(/https?:\/\/[^\s)<>\]]+/g)].map((m) => m[0]),
+];
+for (const h of hrefs) {
+  let u;
+  try { u = new URL(h, SITE + "/"); } catch { continue; }
+  if (u.origin !== SITE) continue;
+  listed.add(decodeURIComponent(u.pathname).replace(/\/index\.html$/, "/").replace(/\/?$/, "/"));
+}
+if (![...listed].some((p) => p.startsWith("/articles/"))) {
+  console.error("  llms.txt 讀不到任何本站 /articles/ 連結，本檢查不能靜默通過");
   process.exit(1);
 }
 
@@ -33,6 +47,15 @@ const blocked = new Set(
     .map((l) => l.replace(/\/$/, ""))
 );
 
+// robots meta 不限屬性順序（name 在前或 content 在前都認）
+function isNoindex(html) {
+  for (const m of html.matchAll(/<meta\b[^>]*>/gi)) {
+    const tag = m[0];
+    if (/\bname\s*=\s*["']robots["']/i.test(tag) && /\bcontent\s*=\s*["'][^"']*noindex/i.test(tag)) return true;
+  }
+  return false;
+}
+
 const missing = [];
 let checked = 0;
 for (const root of ["articles", "ai-trends"]) {
@@ -43,12 +66,11 @@ for (const root of ["articles", "ai-trends"]) {
     const rel = `${root}/${ent.name}`;
     const idx = path.join(ROOT, rel, "index.html");
     if (!fs.existsSync(idx) || !fs.existsSync(path.join(ROOT, rel, "article.json"))) continue;
+    if (fs.existsSync(path.join(ROOT, rel, "article.unlisted"))) continue; // 與 build-sitemap.mjs 一致
     if (blocked.has(rel)) continue;
-    if (/<meta\s+name=["']robots["']\s+content=["'][^"']*noindex/i.test(fs.readFileSync(idx, "utf8"))) continue;
+    if (isNoindex(fs.readFileSync(idx, "utf8"))) continue;
     checked++;
-    // 結尾斜線或右括號為界，避免 slug 是另一篇的前綴時誤判（如 ai-trends 與 ai-trends-2026）
-    const re = new RegExp(`/${rel.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}(/|\\))`);
-    if (!re.test(llms)) missing.push(rel);
+    if (!listed.has(`/${rel}/`)) missing.push(rel);
   }
 }
 
