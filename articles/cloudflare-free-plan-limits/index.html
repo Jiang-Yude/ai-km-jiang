@@ -5,21 +5,21 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="index,follow">
 <title>Cloudflare 免費方案夠用嗎？｜每天十萬次用不完，真正卡住的是每次只能做 50 件事</title>
-<meta name="description" content="LINE 群助理萊卡在 Cloudflare 免費方案上自動備份群組照片，每輪只存得下兩三張。把免費額度拆成「每天總量」與「每一輪上限」兩種規則，附五個實際踩到的雷與上線前三題自檢。">
+<meta name="description" content="LINE 群助理萊卡在 Cloudflare 免費方案上自動備份群組照片，每輪只存得下兩三張。把免費額度拆成「每天總量」與「每一輪上限」兩種規則，附四個實際踩到的雷與上線前三題自檢。">
 <link rel="canonical" href="https://jiangyude.com/articles/cloudflare-free-plan-limits/">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Cloudflare 免費方案夠用嗎？｜每天十萬次用不完，真正卡住的是每次只能做 50 件事｜江江教練">
 <!-- 分享封面：hero 文字填好後在 repo 根目錄跑 `node scripts/og-shot.mjs cloudflare-free-plan-limits` 自動截 1200×630 到 images/og/cloudflare-free-plan-limits.jpg（見 README「文章分享封面（OG 圖）機制」）。別退回 intro-jiang.png 直式人像，會被裁成只剩脖子。 -->
 <meta property="og:image" content="https://jiangyude.com/images/og/cloudflare-free-plan-limits.jpg">
-<meta property="og:description" content="LINE 群助理萊卡在 Cloudflare 免費方案上自動備份群組照片，每輪只存得下兩三張。把免費額度拆成「每天總量」與「每一輪上限」兩種規則，附五個實際踩到的雷與上線前三題自檢。">
+<meta property="og:description" content="LINE 群助理萊卡在 Cloudflare 免費方案上自動備份群組照片，每輪只存得下兩三張。把免費額度拆成「每天總量」與「每一輪上限」兩種規則，附四個實際踩到的雷與上線前三題自檢。">
 <meta property="og:url" content="https://jiangyude.com/articles/cloudflare-free-plan-limits/">
 <meta property="og:locale" content="zh_TW">
 <meta property="og:site_name" content="江江教練 · AI 知識管理">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Cloudflare 免費方案夠用嗎？｜每天十萬次用不完，真正卡住的是每次只能做 50 件事｜江江教練">
 <meta name="twitter:image" content="https://jiangyude.com/images/og/cloudflare-free-plan-limits.jpg">
-<meta name="twitter:description" content="LINE 群助理萊卡在 Cloudflare 免費方案上自動備份群組照片，每輪只存得下兩三張。把免費額度拆成「每天總量」與「每一輪上限」兩種規則，附五個實際踩到的雷與上線前三題自檢。">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Cloudflare 免費方案夠用嗎？｜每天十萬次用不完，真正卡住的是每次只能做 50 件事","description":"LINE 群助理萊卡在 Cloudflare 免費方案上自動備份群組照片，每輪只存得下兩三張。把免費額度拆成「每天總量」與「每一輪上限」兩種規則，附五個實際踩到的雷與上線前三題自檢。","author":{"@type":"Person","name":"江昱德","alternateName":"江江教練","jobTitle":"隱性知識提煉師、AI 應用規劃師"},"isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://jiangyude.com/"},"inLanguage":"zh-Hant","url":"https://jiangyude.com/articles/cloudflare-free-plan-limits/"}</script>
+<meta name="twitter:description" content="LINE 群助理萊卡在 Cloudflare 免費方案上自動備份群組照片，每輪只存得下兩三張。把免費額度拆成「每天總量」與「每一輪上限」兩種規則，附四個實際踩到的雷與上線前三題自檢。">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Cloudflare 免費方案夠用嗎？｜每天十萬次用不完，真正卡住的是每次只能做 50 件事","description":"LINE 群助理萊卡在 Cloudflare 免費方案上自動備份群組照片，每輪只存得下兩三張。把免費額度拆成「每天總量」與「每一輪上限」兩種規則，附四個實際踩到的雷與上線前三題自檢。","author":{"@type":"Person","name":"江昱德","alternateName":"江江教練","jobTitle":"隱性知識提煉師、AI 應用規劃師"},"isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://jiangyude.com/"},"inLanguage":"zh-Hant","url":"https://jiangyude.com/articles/cloudflare-free-plan-limits/"}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
@@ -181,7 +181,7 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
 <main>
 <section class="section" id="start">
   <div class="inner">
-    <p class="lead">今天下午，永力智庫的 LINE 群裡有人問萊卡：「照片都有存了嗎？」萊卡是我放在 LINE 群裡的專案助理，其中一條工作是把群裡的照片、影片、檔案自動備份到 Google 雲端硬碟。我去後台查，發現它每一輪只存得下兩到三張。整條線跑在 Cloudflare 的免費方案上，我第一個念頭是「免費額度太少」，查完才發現每天的總用量連上限的百分之一都不到。卡住它的是另一種規則：每一輪對外呼叫最多五十個，資料庫查詢也最多五十個，兩本帳分開算，哪一本先用完就停。這篇把免費方案的規則分成兩種額度攤開，再配上我這幾天踩過的五個雷。</p>
+    <p class="lead">今天下午，永力智庫的 LINE 群裡有人問萊卡：「照片都有存了嗎？」萊卡是我放在 LINE 群裡的專案助理，其中一條工作是把群裡的照片、影片、檔案自動備份到 Google 雲端硬碟。我去後台查，發現它每一輪只存得下兩到三張。整條線跑在 Cloudflare 的免費方案上，我第一個念頭是「免費額度太少」，查完才發現每天的總用量連上限的百分之一都不到。卡住它的是另一種規則：每一輪對外呼叫最多五十個，資料庫查詢也最多五十個，兩本帳分開算，哪一本先用完就停。這篇把免費方案的規則分成兩種額度攤開，再配上我這幾天踩過的四個雷。</p>
 
     <div class="duo stack">
       <div class="card a">
@@ -196,7 +196,7 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
         <b>你可以帶走什麼</b>
         <ul>
           <li>一張免費額度對照表，分成「每天總量」與「每一輪上限」兩種。這兩種卡人的方式完全不同</li>
-          <li>我實際踩到的五個雷，每個都附我後來怎麼改</li>
+          <li>我實際踩到的四個雷，每個都附我後來怎麼改</li>
           <li>一份上線前的三題自檢，算過再決定要不要升級</li>
         </ul>
       </div>
@@ -298,18 +298,7 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
 
 <section class="section" id="trap-4">
   <div class="inner">
-    <h2>雷四：換版本把整條線丟掉，設定檔看不出來</h2>
-    <p>同一次改名，切換時推上去的程式線比較舊，8 月 28 日之後的八個 commit 都沒帶進去。結果雲端媒體備份從 8 月 31 日晚上十點起就停了，舊 Worker 的 cron 也一起拆掉。兩天後群裡有人問「照片有存嗎」，我才發現。</p>
-    <p>這條跟免費額度無關，但它是我今天去查額度的起點。教訓是：wrangler.toml 裡寫的名字、cron、資料庫綁定，都只是「我想部署成什麼」。線上真的存在什麼，要用指令去問：</p>
-    <div class="codeblock"><span class="c"># 問 Cloudflare 這個名字的 Worker 真的存在嗎、最近部署了什麼</span>
-npx wrangler deployments list --name lyca-line-relay</div>
-    <p>設定檔不是現況證據。</p>
-  </div>
-</section>
-
-<section class="section" id="trap-5">
-  <div class="inner">
-    <h2>雷五：2026 年 9 月 1 日起，D1 超額直接失敗</h2>
+    <h2>雷四：2026 年 9 月 1 日起，D1 超額直接失敗</h2>
     <p>Cloudflare 公告免費方案的 D1 超過當日讀寫上限時，查詢會直接失敗，不再只是警告。萊卡每天寫入離十萬列還很遠，但如果一個帳號接了很多群，或一次補抓大量歷史訊息，會從「慢」變成「當天寫不進去」。上線前值得算一次：一天寫幾列。</p>
     <p>順便一條跟額度無關的小規則。Worker 的 secret 存進去之後，後台和 wrangler 都看不到值（只有程式執行時讀得到），自己沒另存就等於沒有備份，另建 Worker 時要全部重設。我把群白名單、成員對照表從 secret 搬進 D1，secret 只留真正的鑰匙。</p>
   </div>
@@ -357,7 +346,7 @@ npx wrangler deployments list --name lyca-line-relay</div>
       <div class="workflow-step"><small>03</small><b>帳號的五個 cron 剩幾個？</b><p>要掛新排程前先數。換 Worker 時先刪舊的再掛新的。</p></div>
     </div>
     <p style="margin-top:24px">這篇的數字是 2026 年 9 月 2 日查 Cloudflare 官方文件的結果，10 月 10 日再對過一次。他們每年都在調，用之前再看一次：<a href="https://developers.cloudflare.com/workers/platform/pricing/" target="_blank" rel="noopener">Workers 定價</a>、<a href="https://developers.cloudflare.com/d1/platform/pricing/" target="_blank" rel="noopener">D1 定價</a>、<a href="https://developers.cloudflare.com/workers/platform/limits/" target="_blank" rel="noopener">Workers 限制</a>。</p>
-    <p>本文的五個雷都發生在 2026 年 8 月 24 日到 9 月 2 日之間。萊卡的程式碼在 GitHub 的 lyca-line-agent，帳本那段在 worker/src/budget.js。</p>
+    <p>本文的四個雷都發生在 2026 年 8 月 24 日到 9 月 2 日之間。萊卡的程式碼在 GitHub 的 lyca-line-agent，帳本那段在 worker/src/budget.js。</p>
     <div class="tagrow">
       <span class="tag">萊卡</span><span class="tag">系統設計</span><span class="tag">AI 工作流</span><span class="tag">Cloudflare</span><span class="tag">雲端硬碟</span>
     </div>
