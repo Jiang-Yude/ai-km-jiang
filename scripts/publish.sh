@@ -3,9 +3,12 @@
 # 用法：
 #   git add -- 明確檔案 && bash scripts/publish.sh "commit 訊息"
 #   bash scripts/publish.sh "commit 訊息" -- 明確檔案 [明確資料夾...]
-# 流程：preflight → 明確範圍 → 秘密掃描 → commit → pull rebase → 再掃描
-#      → atomic push →（Vercel Git 整合自動建置）→ 等本次 commit 的 production READY
+# 流程：取發布鎖（搶不到就排隊）→ preflight → 明確範圍 → 秘密掃描 → commit → pull rebase → 再掃描
+#      → atomic push →（2026-10-09 起預設推 C 網 production；PUBLISH_TARGET=vercel 才走 Vercel Git 整合）→ 等本次 commit SHA 的 production READY
+#      → 三網域促轉到 main 最新（main 已被別人推進就促轉那一版，永不切回舊版）→ 核對三網域實際指向
 #      → 固定五站＋動態文章路徑驗收 → 擋板草稿 404 抽驗
+# 2026-09-27 並行發布改版（江江：「CC 跟 CX 都可以各自部署，沒有衝突」；Codex 跨家審）：
+#   同機靠 scripts/publish-lock.sh 排隊；跨機靠「永遠促轉 main 最新、促轉後再核對一次」收斂。
 # 2026-07-06 立；2026-07-26 接入共用 safe-deploy；2026-08-08 改接 Git 整合自動部署
 # （江江拍板＋Codex 跨家審查，計畫見主庫 _agent/tmp/2026-08-07 官網部署改造/）。
 # 部署觸發＝push 到 main，不再從本機 CLI 推快照；回退用 Vercel instant rollback。
@@ -14,6 +17,13 @@ set -eo pipefail
 
 REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 SAFE_DEPLOY_TOOL="${SAFE_DEPLOY_TOOL:-$HOME/Library/Mobile Documents/iCloud~md~obsidian/Documents/江昱德 主知識庫/_agent/tools/safe-deploy/safe-deploy.sh}"
+if [[ "${1:-}" == "--cloudflare-candidate" ]]; then
+  [[ "$#" == "1" ]] || { echo "Cloudflare candidate takes no extra arguments"; exit 2; }
+  exec bash "$REPO_ROOT/scripts/cloudflare/deploy-candidate.sh"
+fi
+PUBLISH_TARGET="${PUBLISH_TARGET:-cloudflare}"
+case "$PUBLISH_TARGET" in cloudflare|vercel) ;; *) echo "⛔ PUBLISH_TARGET 只能是 cloudflare 或 vercel（目前：$PUBLISH_TARGET）"; exit 2 ;; esac
+export PUBLISH_TARGET
 EXPECTED_BRANCH="main"
 MSG="${1:?用法：bash scripts/publish.sh \"commit 訊息\"}"
 shift
@@ -34,6 +44,12 @@ if [[ ! -f "$SAFE_DEPLOY_TOOL" ]]; then
 fi
 
 cd "$REPO_ROOT"
+
+# 發布鎖：同一台機器同時只有一個發布在動工作區；由 merge-publish 呼叫時沿用它的鎖。
+# shellcheck source=publish-lock.sh
+source "$REPO_ROOT/scripts/publish-lock.sh"
+publish_lock_acquire "publish.sh ${MSG}" || exit 1
+trap publish_lock_release EXIT
 
 echo "▶ 部署環境檢查…"
 bash scripts/check-deploy-env.sh \
@@ -187,18 +203,14 @@ git pull --rebase
 echo "▶ Rebase 後、push 前再掃描…"
 bash "$SAFE_DEPLOY_TOOL" --scan-only "$REPO_ROOT"
 
-# push 前先記下 main 最新建置的位置，push 後用「換了沒」判斷新建置完成
-GIT_MAIN_URL="https://ai-km-jiang-git-main-jiang-coach.vercel.app"
-PREV_TARGET=$(vercel inspect "$GIT_MAIN_URL" --format=json 2>/dev/null \
-  | grep -Eo '"url"[[:space:]]*:[[:space:]]*"[^"]*"' | head -1 \
-  | grep -Eo '[a-z0-9-]+\.vercel\.app' || true)
-
 TAG="publish/$(TZ=Asia/Taipei date +%Y-%m-%d-%H%M%S)"
 echo "▶ Tag ${TAG} + atomic push…"
 git tag "$TAG"
 git push --atomic origin \
   "HEAD:refs/heads/$EXPECTED_BRANCH" \
   "refs/tags/$TAG:refs/tags/$TAG"
+# 機器可讀收據（2026-10-09，Codex R2 第 1 條）：只有 push 真的成功才印；publish-queue.py 用它判「已 push 但部署或驗收未完成」。
+echo "PUBLISH_PUSHED $(git rev-parse HEAD) ${TAG}"
 
 # ─── 動態驗收路徑（2026-07-29 立，事故驅動）───
 # 固定五站不含新文章路徑，所以「索引宣告存在、檔案被 .vercelignore 擋著沒上傳」的 404
@@ -231,50 +243,205 @@ if [[ ${#EXTRA_VERIFY[@]} -gt 0 ]]; then
   echo "▶ 本次含新文章，驗收清單加入：${EXTRA_VERIFY[*]}"
 fi
 
-# ─── Git 整合自動部署＋別名促轉（2026-08-08 起）───
+# ─── 部署目標切換點（2026-10-09 jiangyude.com 已切到 Cloudflare Pages）───
+# 預設 PUBLISH_TARGET=cloudflare：push 後從本機乾淨工作樹建置並推 C 網 production。
+# 退回 Vercel（cutover.py rollback 之後）才用 PUBLISH_TARGET=vercel，走下面原本的 Git 整合促轉段。
+# 切換登記：cutover-registry site-cf-cutover-20261009。
+PUBLISHED_SHA=$(git rev-parse HEAD)
+TIP="$PUBLISHED_SHA"
+CF_IP=""
+if [[ "$PUBLISH_TARGET" == "cloudflare" ]]; then
+  # 並行：部署前後都讀 origin/main。部署期間 main 又前進（別台發布），就快轉到最新、重部署，最多 4 輪，
+  # 確保最後留在正式站的一定是 main 最新版，不會被本機較舊的建置蓋回去。
+  # 誠實邊界：兩台在同一分鐘各自部署時仍有短暫空窗；後完成的那台若看到 main 前進會再部署最新版收斂。
+  export SAFE_DEPLOY_POSTCLASS_EVIDENCE_DIR="${SAFE_DEPLOY_POSTCLASS_EVIDENCE_DIR:-$HOME/Library/Mobile Documents/iCloud~md~obsidian/Documents/江昱德 主知識庫/_agent/tmp/2026-10-06 歷史課後頁放行}"
+  RECEIPT="$REPO_ROOT/scripts/cloudflare/cutover-snapshots/production-receipt.json"
+  CF_ROUND=0
+  while true; do
+    CF_ROUND=$((CF_ROUND + 1))
+    (( CF_ROUND <= 4 )) || { echo "⛔ 部署 4 輪 main 仍在前進，先停下；等其他發布結束後重跑 publish.sh"; exit 1; }
+    git fetch --quiet origin main || { echo "⛔ 讀不到 origin/main"; exit 1; }
+    if [[ "$(git rev-parse origin/main)" != "$(git rev-parse HEAD)" ]]; then
+      echo "▶ main 已前進，快轉到最新再部署"
+      git merge --ff-only origin/main || { echo "⛔ 無法快轉到 origin/main，正式站未動"; exit 1; }
+    fi
+    TIP=$(git rev-parse HEAD)
+    echo "▶ 部署 C 網 production（${TIP:0:7}）…"
+    # 執行 publish.sh 本身就是正式發布授權（與原本 Vercel 自動促轉同義）
+    SAFE_DEPLOY_CF_PROMOTE=ai-km-jiang-cf-20261004 bash "$REPO_ROOT/scripts/cloudflare/deploy-production.sh" \
+      || { echo "⛔ C 網 production 部署失敗；git 已 push，正式站維持上一版。修好後重跑 bash scripts/publish.sh"; exit 1; }
+    grep -q "\"commit\":\"$TIP\"" "$RECEIPT" 2>/dev/null || { echo "⛔ 部署收據不是 ${TIP:0:7}，停下"; exit 1; }
+    git fetch --quiet origin main || { echo "⛔ 讀不到 origin/main，無法確認正式站是最新版"; exit 1; }
+    [[ "$(git rev-parse origin/main)" == "$TIP" ]] && break
+    echo "  ↻ 部署期間 main 又前進，重部署最新版"
+  done
+  echo "  ✅ C 網 production＝origin/main 最新 ${TIP:0:7}"
+  # 驗收用 Cloudflare 權威 NS 解析，避開本機 DNS 快取
+  CF_IP=$(dig +short jiangyude.com A @howard.ns.cloudflare.com 2>/dev/null | grep -E '^[0-9.]+$' | head -1 || true)
+elif [[ "$PUBLISH_TARGET" == "vercel" ]]; then
+# ─── Git 整合自動部署＋別名促轉（2026-08-08 起；2026-09-27 並行發布改版）───
 # push 已觸發 Vercel 從 GitHub 遠端建置（部署單位＝commit，不再從本機推快照）。
-# 這裡等 main 最新建置 READY，把三個網域促轉過去，再驗收。
 # 驗收三件套（Codex 跨家審查要求）：
-#   ① main 最新建置換新且 READY、三網域促轉成功
+#   ① 本次 commit SHA 的 production 建置 READY；三網域實際指向 main 最新 commit 的建置
 #   ② 固定五站＋動態文章路徑 curl 200
 #   ③ 抽驗一篇 .vercelignore 擋板草稿仍 404（防擋板在 git 部署下失效）
+# 並行規則（2026-09-27）：
+#   - 找建置用 vercel ls --meta githubCommitSha=<SHA> 精確查，不再猜「main 最新建置換新了沒」
+#     （舊寫法兩台接連 push 時會等到別人的建置；而 vercel inspect 的 JSON 不含 SHA，無法核對）
+#   - 永遠促轉 origin/main 最新那一版（一定包含本次）；促轉後再讀一次 main 並核對三網域，
+#     main 在這段時間又前進，就再促轉新的那版，最多 8 輪；促轉前若網域已指向更新的建置就不覆寫。
 # 註：網域專案層歸屬目前在「website」專案（2026-07-28 買網域時掛上的舊帳，
 #     待江江在 Vercel 後台 Settings→Domains 搬到 ai-km-jiang；搬完後
 #     production 建置會自動接管網域，本促轉段自動降級為保險絲，不衝突）。
-echo "▶ 等待 Vercel Git 自動建置 main 最新 commit（原建置：${PREV_TARGET:-無}）…"
-DEADLINE=$((SECONDS + 600))
-TARGET=""
+PROJECT_NAME="ai-km-jiang"
+DOMAINS=(jiangyude.com www.jiangyude.com ai-km-jiang.vercel.app)
+PUBLISHED_SHA=$(git rev-parse HEAD)
+
+# 印出某個 commit 的 production 建置「狀態 網址」；查不到印空字串
+deploy_of_sha() {
+  vercel ls "$PROJECT_NAME" --meta "githubCommitSha=$1" --format=json 2>/dev/null | python3 -c '
+import json, sys
+try:
+    data = json.load(sys.stdin)
+except Exception:
+    sys.exit(0)
+for d in data.get("deployments", []):
+    if d.get("target") == "production" and (d.get("meta") or {}).get("githubCommitSha") == sys.argv[1]:
+        print((d.get("state") or d.get("readyState") or "").upper(), d.get("url", ""))
+        break
+' "$1"
+}
+
+# 等某個 commit 的 production 建置 READY，成功印出建置網址
+wait_ready() {
+  local sha="$1" deadline=$((SECONDS + 600)) info state url
+  while true; do
+    info=$(deploy_of_sha "$sha" || true)   # 網路抖一下當成還沒好，繼續等
+    state="${info%% *}"
+    url="${info#* }"
+    case "$state" in
+      READY) echo "$url"; return 0 ;;
+      ERROR|CANCELED)
+        echo "⛔ ${sha:0:7} 的建置失敗（${state}）：https://${url}；正式網域未動。" >&2
+        return 1 ;;
+    esac
+    if (( SECONDS > deadline )); then
+      echo "⛔ 等 10 分鐘沒看到 ${sha:0:7} 的 production 建置 READY。內容以 git 為準（push 已完成）；" >&2
+      echo "   部署層請開 Vercel 後台查；正式網域沒有被本次改動。" >&2
+      return 1
+    fi
+    sleep 5
+  done
+}
+
+remote_main() { git ls-remote origin refs/heads/main 2>/dev/null | cut -f1 || true; }
+
+# 某個網域目前指向的建置網址
+alias_target() {
+  vercel inspect "https://$1" --format=json 2>/dev/null \
+    | grep -Eo '"url"[[:space:]]*:[[:space:]]*"[^"]*"' | head -1 | grep -Eo '[a-z0-9-]+\.vercel\.app' || true
+}
+
+# 某個建置的「建立時間（毫秒） 目標環境」；讀不到印空字串
+deploy_info() {
+  vercel inspect "https://$1" --format=json 2>/dev/null | python3 -c '
+import json, sys
+try:
+    d = json.load(sys.stdin)
+except Exception:
+    sys.exit(0)
+print(d.get("createdAt") or "", d.get("target") or "")
+' || true
+}
+
+echo "▶ 等本次 commit ${PUBLISHED_SHA:0:7} 的 production 建置…"
+OWN_URL=$(wait_ready "$PUBLISHED_SHA") || exit 1
+echo "  ✅ 本次建置 READY：${OWN_URL}"
+
+ROUND=0
 while true; do
-  _J=$(vercel inspect "$GIT_MAIN_URL" --format=json 2>/dev/null || true)
-  _STATE=$(printf '%s' "$_J" | grep -Eo '"readyState"[[:space:]]*:[[:space:]]*"[A-Z]+"' | grep -Eo '[A-Z]+' | tail -1)
-  TARGET=$(printf '%s' "$_J" | grep -Eo '"url"[[:space:]]*:[[:space:]]*"[^"]*"' | head -1 \
-    | grep -Eo '[a-z0-9-]+\.vercel\.app' || true)
-  if [[ -n "$TARGET" && "$TARGET" != "$PREV_TARGET" && "$_STATE" == "READY" ]]; then
-    echo "  ✅ 新建置 READY：$TARGET"
+  ROUND=$((ROUND + 1))
+  if (( ROUND > 8 )); then
+    echo "⛔ 促轉 8 輪 main 仍在前進或網域一直被改動，先停下。"
+    echo "   目前正式站指向：$(alias_target jiangyude.com)；origin/main：$(remote_main)"
+    echo "   等其他發布結束後，把三網域手動對到 origin/main 那一版的建置（vercel ls ai-km-jiang --meta githubCommitSha=<SHA> 查網址）。"
+    exit 1
+  fi
+  git fetch --quiet origin main || { echo "⛔ 讀不到 origin/main，無法決定促轉哪一版"; exit 1; }
+  TIP=$(git rev-parse origin/main)
+  if ! git merge-base --is-ancestor "$PUBLISHED_SHA" "$TIP"; then
+    echo "⛔ 本次 commit ${PUBLISHED_SHA:0:7} 不在 origin/main 的歷史裡（遠端被改寫？），停止促轉，正式網域未動。"
+    exit 1
+  fi
+  if [[ "$TIP" == "$PUBLISHED_SHA" ]]; then
+    TIP_URL="$OWN_URL"
+  else
+    echo "▶ main 已前進到 ${TIP:0:7}（包含本次），改促轉最新那一版，避免把正式站切回舊版"
+    TIP_URL=$(wait_ready "$TIP") || exit 1
+  fi
+  # 不蓋掉更新的版本（Codex 第二輪必改）：網域若已指向比 TIP 更晚建立的 production 建置，
+  # 代表別台剛促轉了更新的 commit，本輪不覆寫，回頭重讀 main。
+  # 誠實邊界：Vercel 促轉沒有「目前是某版才切」的原子操作、兩台機器之間也沒有共用鎖，
+  # 檢查到切換之間仍有一兩秒空窗；兩台剛好同一秒切換時可能短暫切回，下一輪核對會再切回最新版。
+  # 讀不到任何一項（網域指向、建立時間、目標環境）就不促轉，重試；不可在不知道現況時直接覆寫（Codex 第三輪必改）
+  TIP_CREATED=$(deploy_info "$TIP_URL"); TIP_CREATED="${TIP_CREATED%% *}"
+  NEWER_LIVE=""
+  UNKNOWN=""
+  [[ "$TIP_CREATED" =~ ^[0-9]+$ ]] || UNKNOWN="${TIP:0:7} 建置的建立時間"
+  for _domain in "${DOMAINS[@]}"; do
+    [[ -z "$UNKNOWN" ]] || break
+    _cur=$(alias_target "$_domain")
+    if [[ -z "$_cur" ]]; then UNKNOWN="${_domain} 目前指向"; break; fi
+    [[ "$_cur" != "$TIP_URL" ]] || continue
+    _info=$(deploy_info "$_cur")
+    _cur_created="${_info%% *}"; _cur_target="${_info#* }"
+    if [[ ! "$_cur_created" =~ ^[0-9]+$ || -z "$_cur_target" ]]; then UNKNOWN="${_domain} 目前建置（${_cur}）的資料"; break; fi
+    if [[ "$_cur_target" == "production" && "$_cur_created" -gt "$TIP_CREATED" ]]; then
+      NEWER_LIVE="${_domain}→${_cur}"
+      break
+    fi
+  done
+  if [[ -n "$UNKNOWN" ]]; then
+    echo "  ↻ 讀不到${UNKNOWN}，先不促轉，5 秒後重試"
+    sleep 5
+    continue
+  fi
+  if [[ -n "$NEWER_LIVE" ]]; then
+    echo "  ↻ ${NEWER_LIVE} 已是比 ${TIP:0:7} 更新的建置，不覆寫，重讀 main"
+    sleep 5
+    continue
+  fi
+  echo "▶ 三網域促轉到 ${TIP:0:7}：${TIP_URL}"
+  for _domain in "${DOMAINS[@]}"; do
+    if vercel alias set "https://$TIP_URL" "$_domain" >/dev/null 2>&1; then
+      echo "  ✅ $_domain"
+    else
+      echo "⛔ $_domain 促轉失敗；正式站可能停在舊建置，手動：vercel alias set https://$TIP_URL $_domain"
+      exit 1
+    fi
+  done
+  MISMATCH=""
+  for _domain in "${DOMAINS[@]}"; do
+    _now=$(alias_target "$_domain")
+    [[ "$_now" == "$TIP_URL" ]] || MISMATCH="${MISMATCH} ${_domain}→${_now:-讀不到}"
+  done
+  if [[ -z "$MISMATCH" && "$(remote_main)" == "$TIP" ]]; then
+    echo "  ✅ 三網域都指向 ${TIP:0:7} 的建置"
     break
   fi
-  if (( SECONDS > DEADLINE )); then
-    echo "⛔ 等 10 分鐘沒看到 main 的新建置 READY。內容以 git 為準（push 已完成）；"
-    echo "   部署層請開 Vercel 後台查建置狀態；正式網域仍指舊建置，未受影響。"
-    exit 1
-  fi
-  sleep 10
+  echo "  ↻ 促轉後 main 又前進或網域指向不符（${MISMATCH:- main 已更新}），再對一次"
 done
 
-echo "▶ 三網域促轉到新建置…"
-for _domain in jiangyude.com www.jiangyude.com ai-km-jiang.vercel.app; do
-  if vercel alias set "https://$TARGET" "$_domain" >/dev/null 2>&1; then
-    echo "  ✅ $_domain"
-  else
-    echo "⛔ $_domain 促轉失敗；正式站可能停在舊建置，手動：vercel alias set https://$TARGET $_domain"
-    exit 1
-  fi
-done
+fi
 
 echo "▶ 正式站路徑驗收…"
 VERIFY_FAIL=0
+if [[ "$PUBLISH_TARGET" == "cloudflare" && -z "$CF_IP" ]]; then
+  echo "  ❌ 權威 NS 查不到 jiangyude.com 的 IP，無法避開本機 DNS 快取驗收"
+  VERIFY_FAIL=1
+fi
 for _p in "/" "/offers.html" "/cases.html" "/skills.html" "/site-index.json" ${EXTRA_VERIFY[@]+"${EXTRA_VERIFY[@]}"}; do
-  _code=$(curl -s -o /dev/null -w '%{http_code}' --max-time 20 "https://jiangyude.com${_p}")
+  _code=$(curl -sL -o /dev/null -w '%{http_code}' --max-time 20 ${CF_IP:+--resolve "jiangyude.com:443:$CF_IP"} "https://jiangyude.com${_p}" || true)  # -L：Pages 會把 .html 308 轉到無副檔名網址
   if [[ "$_code" == "200" ]]; then
     echo "  ✅ ${_p} 200"
   else
@@ -285,7 +452,7 @@ done
 
 DRAFT_PATH=$(grep -E '^articles/.+/$' .vercelignore 2>/dev/null | head -1)
 if [[ -n "$DRAFT_PATH" ]]; then
-  _code=$(curl -s -o /dev/null -w '%{http_code}' --max-time 20 "https://jiangyude.com/${DRAFT_PATH}")
+  _code=$(curl -s -o /dev/null -w '%{http_code}' --max-time 20 ${CF_IP:+--resolve "jiangyude.com:443:$CF_IP"} "https://jiangyude.com/${DRAFT_PATH}" || true)
   if [[ "$_code" == "404" ]]; then
     echo "  ✅ 擋板草稿仍 404（/${DRAFT_PATH}）"
   else
@@ -295,8 +462,12 @@ if [[ -n "$DRAFT_PATH" ]]; then
 fi
 
 if [[ $VERIFY_FAIL -ne 0 ]]; then
-  echo "⛔ 正式站驗收未全綠。回退：Vercel 後台 instant rollback 切回前一個 deployment，或 git revert 後再 push。"
+  echo "⛔ 正式站驗收未全綠。回退：git revert 後重跑 publish.sh（C 網）；整站退回 Vercel 用 scripts/cloudflare/cutover.py rollback。"
   exit 1
 fi
 
-echo "🟢 發布完成：${TAG}（部署由 GitHub push 自動觸發；回退用 Vercel instant rollback 或 git revert 再 push）"
+if [[ "$TIP" == "$PUBLISHED_SHA" ]]; then
+  echo "🟢 發布完成：${TAG}，正式站就是本次 commit ${PUBLISHED_SHA:0:7}（回退：git revert 後重跑 publish.sh）"
+else
+  echo "🟢 發布完成：${TAG}，本次 commit ${PUBLISHED_SHA:0:7} 已包含在正式站的 ${TIP:0:7}（期間有較新的發布，一起上線）"
+fi

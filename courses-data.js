@@ -50,6 +50,78 @@
 
 window.COURSES = [
   {
+    id: "2026-10-15-xingmu-ai-agent-workshop",
+    date: "2026-10-15",
+    date_label: "兩梯：10/15–16、10/22–23（週四五）",
+    time: "10:00",
+    duration_min: null,
+    title: "中小企業 AI Agent 2 天實作工作坊（星睦管理顧問 × 江江教練）",
+    type_label: "付費實體工作坊",
+    image: "images/courses/2026-10-15-xingmu-ai-agent-workshop.jpg",
+    venue_mode: "physical",
+    venue_label: "台中實體",
+    host: "江昱德（江江教練）· 許家瑜（星睦管理顧問執行長）",
+    tags: ["AIAgent", "知識庫", "技能包", "中小企業", "SBIR", "工作坊"],
+    summary: "跟星睦管理顧問合開的兩天實體工作坊，台中市西區，每梯 20 席，上午 10:00 到下午 17:00。第一天用企業自己的真實資料建企業知識庫，做出 5 位 AI 員工技能包（資料整理員、知識庫管家、文稿助理、輔助決策顧問、AI 使用者測試員），課後技能包帶回公司繼續用；第二天上午排出公司下一批可以交給 AI 的工作，下午由星睦許家瑜執行長帶商業可行性、財務營運盤點、補助與 SBIR 方向。主要實作工具是 ChatGPT 桌面版（Codex）。以企業為單位報名，每家企業 2 個名額。政府補助：完訓者可申請，等於免學費；補助資格、適用方案與核定內容，以主管機關審查及實際條件為準。",
+    detail_url: "https://xingmu-ai-agent-workshop.shing-mu.chatgpt.site",
+    detail_label: "課程內容、方案與補助說明（星睦）↗",
+    materials: [],
+    registration: {
+      status: "open",
+      url: "https://tally.so/r/gD2aZM",
+      label: "立即報名 ↗",
+      note: "政府補助：完訓者可申請，等於免學費。方案以企業 2 人一組計價，NT$58,000 起（含稅）。補助資格、適用方案與核定內容，以主管機關審查及實際條件為準。由星睦管理顧問受理報名。"
+    }
+  },
+  {
+    id: "2026-09-21-more-bots-than-people",
+    date: "2026-09-21",
+    time: "20:00",
+    duration_min: 60,
+    title: "網路上的機器人已經比人多了，你的內容現在是寫給誰看？",
+    type_label: "外部授課",
+    image: "images/courses/2026-09-21-more-bots-than-people.jpg",
+    venue_mode: "online",
+    venue_label: "線上",
+    host: "江江教練",
+    tags: ["AI趨勢", "SEO", "AIO", "GEO", "AXO", "WebMCP", "知識管理"],
+    summary: "網站不只給人看了。江江把自己的做法攤開：他的網站就是本地知識庫的線上版，升級之後多了三種使用者，AI 讀得到、合作夥伴查得到、訪客用得到。從這個角度講清楚 SEO（讓人在搜尋引擎找到你）、AIO（讓 AI 把你當答案）、GEO（讓 AI 在回答裡引用你的觀點）、AXO（讓 AI 能代表你接待訪客）、WebMCP（讓 AI 直接操作你的網站）各自在解決誰的問題，並用實際案例示範。",
+    detail_url: null,
+    materials: [
+      { label: "文章｜網路上一半以上的訪問已經不是人了 ↗", url: "https://jiangyude.com/articles/agent-web-turning-point/" },
+      { label: "文章｜AI 開始會用網站了，我當天把官網接上（WebMCP） ↗", url: "https://jiangyude.com/articles/webmcp-day-one/" }
+    ],
+    registration: {
+      status: "private",
+      host_org: "永力社",
+      note: "社內線上場（ZOOM），由社秘書處發起，非對外公開報名。"
+    }
+  },
+  {
+    id: "2026-09-26-ai-site-and-deploy",
+    date: "2026-09-26",
+    time: "20:00",
+    duration_min: null,
+    title: "怎麼用 AI 做網站＋部署平台選哪個？",
+    type_label: "免費線上講座",
+    image: "images/courses/2026-09-26-ai-site-and-deploy.jpg",
+    venue_mode: "online",
+    venue_label: "線上",
+    host: "江江教練",
+    tags: ["4O", "SEO", "AIO", "GEO", "AXO", "WebMCP", "部署平台"],
+    summary: "網站用 AI 做出來只是開始。這場先比較 GitHub Pages、Vercel、Cloudflare Pages 的適用情境，再說明 SEO、AIO、GEO、AXO 與 WebMCP。包含旅行規劃時 AI 怎麼從官網找房型、價格與活動，AI 怎麼引用江江教練的網站觀點，以及 Skill、Agent、MCP、Google Slides API 如何一起完成簡報。",
+    detail_url: "courses/2026-09-26-ai-site-and-deploy/",
+    materials: [
+      { label: "完整講座簡報｜怎麼用 AI 做網站＋部署平台選哪個？ ↗", url: "https://jiangyude.com/courses/2026-09-26-ai-site-and-deploy/" }
+    ],
+    registration: {
+      status: "open",
+      url: "https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ",
+      label: "加入 LINE 社群 ↗",
+      note: "免費參加，上課連結會在開課前半小時公布在 LINE 社群"
+    }
+  },
+  {
     id: "2026-09-20-ai-series-six-lessons",
     date: "2026-09-20",
     date_label: "9/20 起，每週日",
