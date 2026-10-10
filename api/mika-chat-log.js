@@ -1,6 +1,7 @@
 // 咪卡聊天記錄：訪客跟咪卡聊了什麼，江江後台可查。
 // 進 repo 時改名放 api/mika-chat-log.js（與 search-log.js 同層）。
-// 資料存 Upstash Redis，跟 search-log.js／view.js 同一套環境變數；每月一個 list，各留最近 20000 筆。
+// 資料存 Upstash Redis，跟 search-log.js／view.js 同一套環境變數；每月一個 list，各留最近 20000 筆，
+// 該月結束後保留 365 天自動刪除（EXPIREAT NX，見下方 expireAtFor）。
 //
 // POST {vid, sid, role, text, page, name}
 //   vid=瀏覽器識別  sid=單次瀏覽識別  role=user|bot  text=訊息  page=所在頁面路徑
@@ -30,6 +31,16 @@ function taipeiStamp(d = new Date()) {
     timeZone: 'Asia/Taipei', year: 'numeric', month: '2-digit', day: '2-digit',
     hour: '2-digit', minute: '2-digit', hour12: false,
   }).format(d); // "YYYY-MM-DD, HH:MM"
+}
+
+// 保存期限（2026-09-07 立，規則 webpage-builder Mode 27）：每月一個 list，該月結束後再保留 RETENTION_DAYS 天
+// （以台北 00:00 起算），到期整個月自動刪除。用 EXPIREAT ... NX：只在還沒設過時設，
+// 重複寫入不會把期限往後推。彙總統計（瀏覽數等）不受影響，只有原始對話有期限。
+const RETENTION_DAYS = 365;
+function expireAtFor(month /* 'YYYY-MM' */) {
+  const [y, m] = month.split('-').map(Number);
+  const nextMonthStartTaipei = Date.UTC(y, m, 1) - 8 * 3600 * 1000; // m 是 1-based，等於下個月的 0-based 索引
+  return Math.floor(nextMonthStartTaipei / 1000) + RETENTION_DAYS * 86400;
 }
 
 module.exports = async (req, res) => {
@@ -95,10 +106,13 @@ module.exports = async (req, res) => {
   });
 
   try {
-    await pipe([
+    const out = await pipe([
       ['LPUSH', `mika:chat:${month}`, entry],
       ['LTRIM', `mika:chat:${month}`, 0, 19999],
+      ['EXPIREAT', `mika:chat:${month}`, expireAtFor(month), 'NX'],
     ]);
+    const bad = (Array.isArray(out) ? out : []).find((o) => o && o.error);
+    if (bad) { res.status(200).json({ ok: false, error: String(bad.error) }); return; }
     res.status(200).json({ ok: true });
   } catch (e) {
     res.status(200).json({ ok: false, error: String(e.message || e) });

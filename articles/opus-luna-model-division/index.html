@@ -1,0 +1,455 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="index,follow">
+<title>頂規 AI 模型很貴，哪些事交給它、哪些交給便宜的？｜Opus 5.5 動腦、Luna 搬磚的實際分工</title>
+<meta name="description" content="我把 Claude Opus 5.5 用在整理逐字稿、做說明動畫和流程圖，把 OpenAI 最便宜的 Luna 用在每天跑的小工具與自動化。這篇列出實際分工、Luna 交白卷的那次考試，以及判斷一件工作該交給哪個模型的三個問題與提示詞。">
+<link rel="canonical" href="https://jiangyude.com/articles/opus-luna-model-division/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="頂規 AI 模型很貴，哪些事交給它、哪些交給便宜的？｜Opus 5.5 動腦、Luna 搬磚的實際分工｜江江教練">
+<!-- 分享封面：hero 文字填好後在 repo 根目錄跑 `node scripts/og-shot.mjs opus-luna-model-division` 自動截 1200×630 到 images/og/opus-luna-model-division.jpg（見 README「文章分享封面（OG 圖）機制」）。別退回 intro-jiang.png 直式人像，會被裁成只剩脖子。 -->
+<meta property="og:image" content="https://jiangyude.com/images/og/opus-luna-model-division.jpg">
+<meta property="og:description" content="我把 Claude Opus 5.5 用在整理逐字稿、做說明動畫和流程圖，把 OpenAI 最便宜的 Luna 用在每天跑的小工具與自動化。這篇列出實際分工、Luna 交白卷的那次考試，以及判斷一件工作該交給哪個模型的三個問題與提示詞。">
+<meta property="og:url" content="https://jiangyude.com/articles/opus-luna-model-division/">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:site_name" content="江江教練 · AI 知識管理">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="頂規 AI 模型很貴，哪些事交給它、哪些交給便宜的？｜Opus 5.5 動腦、Luna 搬磚的實際分工｜江江教練">
+<meta name="twitter:image" content="https://jiangyude.com/images/og/opus-luna-model-division.jpg">
+<meta name="twitter:description" content="我把 Claude Opus 5.5 用在整理逐字稿、做說明動畫和流程圖，把 OpenAI 最便宜的 Luna 用在每天跑的小工具與自動化。這篇列出實際分工、Luna 交白卷的那次考試，以及判斷一件工作該交給哪個模型的三個問題與提示詞。">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"頂規 AI 模型很貴，哪些事交給它、哪些交給便宜的？｜Opus 5.5 動腦、Luna 搬磚的實際分工","description":"我把 Claude Opus 5.5 用在整理逐字稿、做說明動畫和流程圖，把 OpenAI 最便宜的 Luna 用在每天跑的小工具與自動化。這篇列出實際分工、Luna 交白卷的那次考試，以及判斷一件工作該交給哪個模型的三個問題與提示詞。","author":{"@type":"Person","name":"江昱德","alternateName":"江江教練","jobTitle":"隱性知識提煉師、AI 應用規劃師"},"isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://jiangyude.com/"},"inLanguage":"zh-Hant","url":"https://jiangyude.com/articles/opus-luna-model-division/","dateModified":"2026-09-29"}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{--ink:#1a1612;--paper:#fefcf8;--muted:#6a635a;--line:#d8cdb8;--green:#5f7553;--blue:#5689b8;--orange:#e85a4f;--soft:#faf5ec;--dark:#2a2018;--shadow:0 18px 45px rgba(107,74,42,.14);--sp-shadow:hsla(35,50%,60%,.15);--sp-shadow-edge:hsla(35,50%,68%,.03);--sp-radius:400px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC","Segoe UI",sans-serif}
+a{color:inherit}
+/* 官網共用導航列 nav.top（與首頁/文章總站同一條） */
+nav.top{position:sticky;top:0;background:rgba(254,252,248,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid #d8cdb8;z-index:100}
+nav.top .container{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:24px;padding:14px 32px}
+.nav-brand-img{justify-self:start;display:flex;align-items:center;text-decoration:none;flex-shrink:0;transition:opacity .2s}
+.nav-brand-img:hover{opacity:.8}.nav-brand-img img{height:40px;width:auto;display:block}
+nav.top ul.nav-menu{justify-self:end;display:flex;gap:22px;list-style:none;margin:0;padding:0;font-size:.95rem;white-space:nowrap}
+nav.top ul.nav-menu a{color:#3a342d;text-decoration:none;transition:color .2s;font-weight:500;white-space:nowrap}
+nav.top ul.nav-menu a:hover{color:#1a1612}nav.top ul.nav-menu a.active{color:#1a1612;font-weight:700}
+.nav-toggle{display:none;background:none;border:none;padding:6px;cursor:pointer;width:36px;height:36px;position:relative}
+.nav-toggle span{display:block;position:absolute;left:8px;right:8px;height:2px;background:#1a1612;border-radius:2px;transition:transform .25s,opacity .25s,top .25s}
+.nav-toggle span:nth-child(1){top:11px}.nav-toggle span:nth-child(2){top:17px}.nav-toggle span:nth-child(3){top:23px}
+.nav-toggle.open span:nth-child(1){top:17px;transform:rotate(45deg)}.nav-toggle.open span:nth-child(2){opacity:0}.nav-toggle.open span:nth-child(3){top:17px;transform:rotate(-45deg)}
+.tablewrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:22px 0;border:1px solid var(--line);border-radius:10px;background:#fff;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.tablewrap table{border-collapse:collapse;width:100%;min-width:600px;font-size:18px;line-height:1.65}
+.tablewrap .zh{display:block;margin-top:5px;font-size:16px;line-height:1.55;color:var(--muted);font-weight:400}
+.tablewrap th,.tablewrap td{padding:12px 14px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top;color:#3a342d}
+.tablewrap thead th{background:var(--soft);font-weight:900;font-size:18px;color:#1a1612;white-space:nowrap}
+.tablewrap tbody tr:last-child td{border-bottom:none}
+.tablewrap td code,.section code{background:var(--soft);border:1px solid var(--line);border-radius:5px;padding:1px 6px;font:500 15px/1.5 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace}
+.inline-figure.wide{max-width:1000px}
+.inline-figure.portrait{max-width:430px}
+.toc{margin:26px 0 0;padding:20px 22px;background:#fff;border:1px solid var(--line);border-radius:10px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.toc>b{display:block;font-size:15px;letter-spacing:.05em;color:var(--green);margin-bottom:10px}
+.toc ol{margin:0;padding-left:1.35em;font-size:18px;line-height:1.7}
+.toc li{margin-bottom:7px;color:#3a342d}
+.toc a{color:var(--blue);font-weight:700;text-decoration:none}.toc a:hover{text-decoration:underline}
+.toc-hint{margin:12px 0 0!important;font-size:18px!important;color:var(--muted)!important;border-top:1px solid var(--line);padding-top:12px}
+.readmore{margin-top:24px;padding:20px 22px;background:var(--soft);border:1px solid var(--line);border-radius:12px}
+.readmore.near{margin:26px 0 6px;background:rgba(86,137,184,.07);border-color:#bcd0e2}
+.readmore.near b{color:var(--blue);font-size:18px}
+.readmore.near li{font-size:17px;line-height:1.7;margin-bottom:10px}
+.readmore b{display:block;margin-bottom:10px;font-size:19px}
+.readmore ul{margin:0;padding-left:1.25em}
+.readmore a{color:var(--blue);font-weight:700;text-decoration:none}
+.readmore a:hover{text-decoration:underline}
+@media(max-width:820px){.tablewrap table{min-width:560px;font-size:18px}.tablewrap{position:relative}.tablewrap::after{content:"表格可左右滑動 →";position:sticky;left:0;display:block;font-size:15px;color:var(--muted);background:var(--soft);border-top:1px solid var(--line);padding:7px 12px;width:100%}}
+@media(max-width:860px){
+ nav.top .container{grid-template-columns:auto 1fr auto;padding:10px 16px;gap:12px}
+ .nav-brand-img img{height:32px}
+ .nav-toggle{display:block;justify-self:end}
+ nav.top ul.nav-menu{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(254,252,248,.98);backdrop-filter:blur(14px);border-bottom:1px solid #d8cdb8;flex-direction:column;gap:0;padding:8px 0;box-shadow:0 10px 24px rgba(107,74,42,.08)}
+ nav.top ul.nav-menu.open{display:flex}
+ nav.top ul.nav-menu li{border-bottom:1px solid #e8dfc9}
+ nav.top ul.nav-menu li:last-child{border-bottom:none}
+ nav.top ul.nav-menu a{display:block;padding:14px 20px;font-size:1.06rem}
+}
+/* 滑鼠暖光暈（與首頁同一支 spotlight.js） */
+body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradient(var(--sp-radius) circle at var(--mx,50%) var(--my,50%),var(--sp-shadow) 0%,var(--sp-shadow-edge) 45%,transparent 75%);pointer-events:none;z-index:9999;mix-blend-mode:multiply;transition:background .06s linear}
+.hero{position:relative;overflow:hidden;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:72px;padding:96px clamp(20px,6vw,88px) 80px;background:linear-gradient(180deg,#fffcf0 0%,#f9e9d2 100%);color:#1a1612;border-bottom:1px solid #d8cdb8}
+.hero .wc{position:absolute;border-radius:50%;filter:blur(60px);pointer-events:none;z-index:0}
+.hero .wc1{width:420px;height:360px;top:-120px;right:-80px;background:#e8884b;opacity:.15}
+.hero .wc2{width:360px;height:300px;bottom:-110px;left:-70px;background:#5f7553;opacity:.13}
+.hero .wc3{width:280px;height:260px;top:34%;left:14%;background:#a08144;opacity:.10}
+.hero>div{flex:none;width:860px;max-width:100%;position:relative;z-index:2}
+.hero-figure{margin:0;width:620px;flex:none;position:relative;z-index:2}
+.hero-figure img{display:block;width:100%;border-radius:16px;border:1px solid #d8cdb8;box-shadow:0 18px 45px rgba(107,74,42,.16);cursor:zoom-in}
+.hero-figure figcaption{margin-top:10px;font-size:14px;line-height:1.6;color:#6a635a}
+.inline-figure{margin:30px auto 8px;max-width:820px}
+.inline-figure img{display:block;width:100%;border-radius:14px;border:1px solid var(--line);box-shadow:var(--shadow);background:#fff;cursor:zoom-in}
+.inline-figure figcaption{font-size:14px;line-height:1.6;color:var(--muted);margin-top:10px}
+.lightbox{position:fixed;inset:0;z-index:10000;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(12,10,8,.92);cursor:zoom-out;backdrop-filter:blur(4px)}
+.lightbox.open{display:flex}.lightbox img{max-width:96vw;max-height:92vh;border-radius:10px;box-shadow:0 24px 60px rgba(0,0,0,.5)}
+.lightbox-close{position:fixed;top:18px;right:24px;color:#fff;font-size:34px;line-height:1;font-weight:700;cursor:pointer;opacity:.85}
+.kicker{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.55rem;color:#7a5c3a;font-weight:500}
+.hero h1{max-width:none;margin:16px 0 18px;font-size:clamp(36px,6vw,72px);line-height:1.08;overflow-wrap:anywhere}
+.hero p{max-width:none;font-size:clamp(18px,2vw,23px);line-height:1.62;color:#3a342d}
+.cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
+.cta a{display:inline-flex;align-items:center;text-decoration:none;border-radius:8px;padding:12px 16px;font-weight:900}
+.cta .primary{background:#fff;color:#1a1612}.cta .ghost{border:1px solid rgba(255,255,255,.32);color:#fff;background:rgba(255,255,255,.08)}
+.section{padding:54px clamp(20px,6vw,88px);border-top:1px solid var(--line)}
+.inner{width:min(1000px,100%);margin:0 auto}
+.section h2{font-size:clamp(26px,4.2vw,48px);line-height:1.12;margin:0 0 18px}
+.section h3{font-size:clamp(21px,3vw,30px);line-height:1.2;margin:30px 0 12px}
+.lead{font-size:clamp(18px,1.6vw,22px);line-height:1.7;color:#3a342d;max-width:900px}
+.section p{font-size:18px;line-height:1.74;color:#3a342d}.section p+p{margin-top:14px}
+.section ul,.section ol{padding-left:1.4em;font-size:18px;line-height:1.74;color:#3a342d}.section li{margin-bottom:8px}
+.meaning{margin:22px 0;padding:16px 18px;border-left:5px solid var(--blue);background:rgba(86,137,184,.12);border-radius:6px;line-height:1.7;font-size:19px}
+.meaning b{display:block;color:var(--blue);margin-bottom:4px}
+.caveat{margin:0 0 8px;padding:16px 18px;border-left:5px solid var(--orange);background:rgba(232,90,79,.1);border-radius:6px;line-height:1.7;font-size:18px;color:#3a342d}
+.caveat b{display:block;color:var(--orange);margin-bottom:4px}
+.infocard{background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px 24px 22px;box-shadow:0 8px 22px rgba(107,74,42,.08);margin-top:8px}
+.infocard-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.info-item{padding:18px 14px 0}
+.info-item b{display:block;font-size:14px;font-weight:900;letter-spacing:.04em;margin-bottom:7px;text-transform:uppercase}
+.info-item:nth-child(1) b{color:var(--green)}.info-item:nth-child(2) b{color:var(--orange)}.info-item:nth-child(3) b{color:var(--blue)}
+.info-item p{margin:0;font-size:17px;line-height:1.6;color:#3a342d}
+.tagrow{display:flex;flex-wrap:wrap;gap:7px;margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
+.tag{font-size:14px;color:var(--muted);background:var(--soft);border:1px solid var(--line);border-radius:999px;padding:4px 11px}
+.duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:24px}
+.duo.stack{grid-template-columns:1fr}
+.duo .card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:22px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.duo .card.a{border-color:var(--orange)}.duo .card.b{border-color:var(--green);box-shadow:0 8px 24px rgba(95,117,83,.16)}
+.duo .card small{display:block;font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.04em;margin-bottom:9px}
+.duo .card.a small{color:var(--orange)}.duo .card.b small{color:var(--green)}
+.duo .card b{display:block;font-size:22px;line-height:1.3;margin-bottom:12px}.duo .card.a b{color:#c0512f}.duo .card.b b{color:#4a7a59}
+.duo .card p{margin:0;color:#3a342d;line-height:1.75;font-size:18px}
+.workflow-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:24px}
+.workflow-step{background:#fff;border:1px solid var(--line);border-radius:8px;padding:18px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.workflow-step small{display:block;color:var(--orange);font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;margin-bottom:9px}
+.workflow-step b{display:block;font-size:18px;line-height:1.3;margin-bottom:9px}
+.workflow-step p{margin:0;color:#3a342d;line-height:1.6;font-size:16px}
+.codeblock{background:var(--dark);color:#f3ead9;border-radius:8px;padding:18px 20px;font:500 14px/1.65 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;overflow-x:auto;white-space:pre-wrap;margin:20px 0;box-shadow:0 8px 22px rgba(107,74,42,.12)}
+.codeblock .c{color:#f6d7a6;font-weight:600}
+.skillcard{background:#fff;border:1px solid var(--green);border-radius:12px;padding:24px;box-shadow:0 10px 26px rgba(95,117,83,.16);margin-top:8px}
+.skillcard b{display:block;font-size:21px;margin-bottom:8px}
+.skillcard p{margin:0 0 16px;font-size:17px;line-height:1.65;color:#3a342d}
+.cta-band{background:#e6f0e5;color:#3a342d}.cta-band .section{border-top:none}
+.cta-band .inner{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(260px,.85fr);gap:26px;align-items:start}
+.cta-band h2{font-size:clamp(26px,4vw,44px);margin:0 0 16px}.cta-band p,.cta-band .lead{color:rgba(58,52,45,.9);font-size:18px;line-height:1.72}
+.cta-card{border:1px solid #cfe0d2;background:#fbfdfa;border-radius:8px;padding:22px}
+.cta-card b{display:block;color:#48b178;margin-bottom:10px;font-size:18px}.cta-card p{margin:0 0 14px}
+.footer{padding:30px clamp(20px,6vw,88px);font-size:14px;color:var(--muted);background:#fff;border-top:1px solid var(--line)}
+.footer-inner{width:min(1000px,100%);margin:0 auto}
+.footer-links{display:flex;flex-wrap:wrap;gap:6px 12px;margin-bottom:14px}.footer-links a{color:var(--blue);font-weight:900;text-decoration:none;font-size:14px}
+.footer-brand{font-weight:900;font-size:15px;margin-bottom:10px}.footer-note{font-size:13px;line-height:1.6}
+@media(max-width:820px){.inline-figure.portrait{max-width:340px}.infocard-grid{grid-template-columns:1fr}.duo{grid-template-columns:1fr}.workflow-grid{grid-template-columns:1fr}.cta-band .inner{grid-template-columns:1fr}.section{padding:40px 20px}.hero{min-height:52vh;flex-direction:column;justify-content:flex-start;align-items:flex-start;gap:24px}.hero>div{width:100%}.hero-figure{width:100%;max-width:560px}}
+@media(max-width:820px){html,body{overflow-x:hidden}.hero h1{word-break:break-word}}
+/* 長標題：縮字級、收窄文字欄，避免把封面擠到下一行（02-design-system） */
+.hero{gap:40px!important}
+.hero>div:not(.wc){width:540px!important}
+.hero h1{font-size:clamp(28px,2.7vw,40px)!important;line-height:1.2!important;margin:12px 0 16px!important}
+.hero p{font-size:clamp(17px,1.35vw,19px)!important;line-height:1.65!important}
+@media(max-width:1300px){.hero{gap:28px!important;flex-direction:column;align-items:flex-start}.hero>div:not(.wc){width:100%!important}.hero .hero-figure{width:100%;max-width:640px}.hero h1{font-size:clamp(28px,5vw,40px)!important}}
+</style>
+</head>
+<body class="spotlight">
+<!-- 官網共用導航列 nav.top：與首頁/總站同一條，文章不要自己另做極簡 topbar（江江 2026-06-25：要同一個框架、同一條導航列）。把對應頁面的 class="active" 標在自己那欄。
+     ⚠️ 下面 ul.nav-menu 整塊由 preflight 第 5 關 check-bilingual-nav.mjs 做「逐字比對」，
+        塞任何註解、多一個空白、換行位置不同都會被判導航不一致而擋下發布。要說明就寫在 <ul> 外面（像這裡）。
+        2026-08-16 修：原本的 EN 那行說明註解就夾在 <ul> 裡面，導致照範本起手的新文章一律卡第 5 關
+        （llm-rag-agent-mcp 與 rag-three-retrieval-modes 兩篇同時中招）。註解已移出來，<ul> 內保持乾淨。
+        萬一還是被擋，直接跑：node scripts/check-bilingual-nav.mjs --write --only=<你的檔案路徑> -->
+<nav class="top">
+  <div class="container">
+    <a class="nav-brand-img" href="../../index.html"><img src="../../images/footer-signature.png" alt="江江教練 | 江昱德"></a>
+    <button class="nav-toggle" aria-label="選單"><span></span><span></span><span></span></button>
+    <ul class="nav-menu">
+      <li><a href="../../index.html">首頁</a></li>
+      <li><a href="../../knowledge-architecture.html">知識架構</a></li>
+      <li><a href="../../courses.html">課程</a></li>
+      <li><a href="../../articles.html" class="active">文章</a></li>
+      <li><a href="../../skills.html">小工具</a></li>
+      <li><a href="../../offers.html">服務方案</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="wc wc1"></div>
+  <div class="wc wc2"></div>
+  <div class="wc wc3"></div>
+  <div>
+    <div class="kicker">AI 工作流 / 模型分工</div>
+    <h1>頂規 AI 模型很貴，哪些事交給它、哪些交給便宜的？｜Opus 5.5 動腦、Luna 搬磚的實際分工</h1>
+    <p>頂規模型很貴，便宜模型又怕出錯。我現在的分法是：Claude Opus 5.5 負責動腦，OpenAI 的 Luna 負責搬磚。這篇把實際交給它們的工作列出來，整理成三個判斷問題。</p>
+  </div>
+  <!-- 封面圖（建議放）：⚠️ 比例是硬規則，不是美感選擇。
+       封面一律【橫式 16:9】，生成 1600x900、落檔 1400 寬，用預設 .hero-figure{width:620px}，不要加 aspect-ratio。
+       理由：封面真正的工作是分享縮圖（OG 1200x630、Threads 與 FB 連結預覽都是橫的），直式封面塞進去只剩中間一小塊。
+       只有「直接沿用既有 4:5 咪卡輪播卡」這個例外才走直式，那時改 .hero-figure{width:320px} 並加
+       .hero-figure img{aspect-ratio:4/5;object-fit:cover}，而且要在 image-ratio-ignore.json 寫明理由，否則 preflight 會擋。
+       沒有封面圖就整個 <figure> 刪掉，hero 會自動置中只剩文字。封面同時設成上面 og:image / twitter:image。
+       比例表正本與立因 → knowledge-site-manager/references/08-article-visuals-from-source.md 第零節之前。 -->
+  <figure class="hero-figure">
+    <img src="../../images/articles/opus-luna-model-division-cover.jpg" alt="咪卡手繪風橫式圖：左邊寫 Claude Opus 5.5 動腦的神，很多複雜內容都整理得超好，最愛它做說明動畫或流程圖；右邊寫 GPT-6 Luna 搬磚的神，開發很多小工具、自己長期跑自動化、開放給親友試用時用 Luna 完全不心疼。中間是戴帽子的黑貓咪卡抱著筆記本" loading="lazy">
+    <figcaption>我自己的分法：Opus 5.5 動腦，Luna 搬磚</figcaption>
+  </figure>
+</section>
+
+<main>
+
+<section class="section" id="start">
+  <div class="inner">
+    <h2>這篇在講什麼</h2>
+    <p class="lead">我現在手上常用兩個模型：Anthropic 的 Claude Opus 5.5，和 OpenAI 最便宜的那一級 Luna。我給它們的分工很簡單，Opus 5.5 負責動腦，Luna 負責搬磚。</p>
+    <p class="lead">這篇把我實際交給它們的工作列出來，也講 Luna 交過白卷的那一次，最後整理成三個問題，幫你判斷一件工作該交給貴的還是便宜的模型。</p>
+
+    <div class="duo stack">
+      <div class="card a">
+        <b>適合誰</b>
+        <p>
+          ・你心裡有這個問題：「頂規模型很貴，怎麼把複雜的交給它、其他交給便宜的？」<br>
+          ・你做了一個 AI 小工具要每天跑，或想開放給朋友用，怕月費失控<br>
+          ・你幫客戶導入 AI，需要一套講得清楚的模型分工給對方
+        </p>
+      </div>
+      <div class="card b">
+        <b>你可以帶走什麼</b>
+        <p>
+          ・我目前的分工表：哪些工作給 Opus 5.5，哪些給 Luna<br>
+          ・判斷一件工作該交給哪一邊的三個問題<br>
+          ・便宜模型上線前的一道考試，以及一段可以直接貼給 AI 的分工提示詞
+        </p>
+      </div>
+    </div>
+
+    <div class="toc">
+      <b>這篇怎麼走</b>
+      <ol>
+        <li><a href="#split">我的模型分法：Opus 5.5 動腦，Luna 搬磚</a></li>
+        <li><a href="#opus">交給 Opus 的工作：整理複雜內容、做說明動畫和流程圖</a></li>
+        <li><a href="#luna">交給 Luna 的工作：小工具、長期自動化、開放給親友試用</a></li>
+        <li><a href="#exam">便宜模型也會交白卷：Luna 上線前先考一次</a></li>
+        <li><a href="#questions">一件工作該交給哪個模型：先問三個問題</a></li>
+        <li><a href="#prompt">模型分工提示詞：把你的工作清單貼給 AI 分類</a></li>
+      </ol>
+      <p class="toc-hint">只想直接動手的，從第 5 段開始看就好。</p>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="split">
+  <div class="inner">
+    <h2>我的模型分法：Opus 5.5 動腦，Luna 搬磚</h2>
+    <p>先說明兩個名字。Opus 5.5 是 Anthropic 在 2026 年 9 月 22 日推出的 Claude 模型。Luna 是 OpenAI 模型的等級名，同一代分三級：Sol 最貴，Terra 中間，Luna 最便宜。GPT-5.6 和 GPT-6 都有 Luna，下面每個例子都標出實際用的是哪一代。同一個模型還可以調推理強度，也就是讓它想久一點或快一點，下面會看到低推理、中推理、高推理。</p>
+    <p>我畫成一張圖（就是這篇的封面），上面寫的是我自己的感受：</p>
+    <ul>
+      <li><b>Claude Opus 5.5，動腦的神。</b>很多複雜內容都整理得超好，最愛它做說明動畫或流程圖。</li>
+      <li><b>GPT-6 Luna，搬磚的神。</b>開發很多小工具、自己長期跑自動化，或者開放給親友試用時，用 Luna 完全不心疼。</li>
+    </ul>
+    <p>這是我現在的分法。兩家各有擅長的地方，換一個工作場景，分工可能就會不同。</p>
+  </div>
+</section>
+
+<section class="section" id="opus">
+  <div class="inner">
+    <h2>交給 Opus 的工作：整理複雜內容、做說明動畫和流程圖</h2>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>工作</th><th>實際例子</th></tr></thead>
+        <tbody>
+          <tr><td>清理會議逐字稿</td><td>洽談、合約討論的逐字稿動輒上萬字，交給 Opus 子代理清理，附一份語音辨識錯字對照表當校正依據</td></tr>
+          <tr><td>講座課後整理</td><td>一場「AI 做網站」免費講座的逐字稿，整理成 19 章的教學手冊</td></tr>
+          <tr><td>內部會議記錄</td><td>照會議記錄技能包的格式，整理成內部會議記錄</td></tr>
+          <tr><td>說明動畫</td><td>咪卡陪講的講解動畫，一支約 20 秒，我也發過脆文分享 Opus 5.5 生成的咪卡動畫；做順了之後固定成技能包</td></tr>
+          <tr><td>流程圖、輔助決策頁</td><td>要拍板之前的對照頁、流程圖</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>同類的工作會一再出現，但每一件都要先讀懂很多內容，再重新組織成別人看得懂的樣子。</p>
+    <p>我最愛它做的是說明動畫和流程圖。</p>
+
+    <div class="readmore near">
+      <b>這一段提到的做法，官網上有另外寫過</b>
+      <ul>
+        <li><a href="../what-are-subagents/">什麼叫子代理？從分頭查資料到 30 人工作坊頁面</a>　上面說的「子代理」是什麼、怎麼叫它分頭做事，看這篇。</li>
+        <li><a href="../long-answer-three-layers/">AI 回答太長看不下去？把內容變成白話、流程圖與說明網頁</a>　流程圖和說明網頁怎麼請 AI 做，那篇有步驟。</li>
+        <li><a href="../meeting-record-agent-workflow/">會議有錄音也有逐字稿，為什麼事後還是查不到重點？｜我的會議記錄 Agent 工作流</a>　逐字稿清理之後怎麼變成查得到的會議記錄。</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="luna">
+  <div class="inner">
+    <h2>交給 Luna 的工作：小工具、長期自動化、開放給親友試用</h2>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>工作</th><th>實際例子</th></tr></thead>
+        <tbody>
+          <tr><td>官網 AI 客服</td><td>知識官網上公開的咪卡客服，預設用 GPT-5.6 Luna</td></tr>
+          <tr><td>LINE 群助理</td><td>萊卡在 LINE 群回話，預設用 GPT-5.6 Luna，複雜的題目才換更大的模型</td></tr>
+          <tr><td>給合作單位的 AI 秘書</td><td>給旅學堂用的旅貓秘書，只讀資料不寫入，用 GPT-5.6 Luna 開高推理</td></tr>
+          <tr><td>每天自動整理群組訊息</td><td>幫一個扶輪社做的活動看板，每天晚上八點自動整理一次，用 GPT-6 Luna 中推理</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>這些工作的共同點是有人用就要呼叫一次模型，用的人越多、跑得越久，次數累積得越快。單次便宜，累積起來才看得出差別。</p>
+    <p>兩個算過的帳：</p>
+    <ul>
+      <li><b>官網文字客服：</b>目前用 GPT-5.6 Luna。以每月 3000 則、每則約 2000 token 輸入、300 token 輸出試算（token 可以想成模型計費用的字數單位），Luna 約 2.28 美金，同樣的量用 Google 的 Gemini Flash-Lite 約 4.05 美金。照這組試算，文字客服用 Luna 比較便宜。</li>
+      <li><b>扶輪社活動看板：</b>GPT-6 Luna 單次呼叫約 0.01 美金，GPT-6 Sol 單次約 0.17 美金。正式做法是每天同時呼叫 Luna 兩次互相比對，不一致才再叫 Sol。加上把整理頻率從每三小時改成每天一次，月費從約 14 美金估到 0.2 到 0.4 美金。</li>
+    </ul>
+    <p>開放給親友試用的時候，用 Luna 完全不心疼。</p>
+  </div>
+</section>
+
+<section class="section" id="exam">
+  <div class="inner">
+    <h2>便宜模型也會交白卷：Luna 上線前先考一次</h2>
+    <p>Luna 也有沒做好的時候。</p>
+    <p>扶輪社活動看板第一次試 Luna（當時是 GPT-5.6），推理強度開最低，讀完 138 則訊息，交出一份空的結果，等於交白卷。後來出一份固定考卷重新考：</p>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>模型</th><th>分數（滿分 36）</th><th>狀況</th></tr></thead>
+        <tbody>
+          <tr><td>GPT-6 Sol 低推理</td><td>34</td><td>只考一次</td></tr>
+          <tr><td>GPT-6 Luna 中推理</td><td>32 到 34</td><td>考六次，分數穩定</td></tr>
+          <tr><td>GPT-6 Luna 低推理</td><td>22、36、26</td><td>會漏抓整場活動，機械檢查抓不到</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>所以現在的做法是：Luna 開中推理，同時跑兩次互相比對，兩次結果不一致才改叫 Sol。</p>
+
+    <div class="readmore near">
+      <b>這段考試的完整過程在這篇</b>
+      <ul>
+        <li><a href="../reevaluate-models-same-test/">AI 小工具該用便宜模型還是貴的？｜同一份考卷考三輪，新模型出來就重新評估</a>　這裡只放結果，那篇有三輪各自怎麼考、考卷怎麼出、月費怎麼算。</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="questions">
+  <div class="inner">
+    <h2>一件工作該交給哪個模型：先問三個問題</h2>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>問題</th><th>偏向 Opus 5.5 這類頂規模型</th><th>偏向 Luna 這類便宜模型</th></tr></thead>
+        <tbody>
+          <tr><td>內容複雜嗎？</td><td>要讀懂大量內容再重新組織：整理、設計、做動畫和流程圖</td><td>照規則分類、回答固定範圍的問題</td></tr>
+          <tr><td>總共要呼叫幾次？</td><td>次數少，單次貴一點，總額也有限</td><td>每天、每則訊息、每個訪客都要跑，先試便宜的</td></tr>
+          <tr><td>便宜模型考得過、錯了抓得到嗎？</td><td>考不過，或錯了抓不到</td><td>用同一份考卷考過，而且有檢查機制</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="meaning"><b>第三題要實際考過才算數</b>考不過先調高推理強度、跑兩次比對，還不行再換貴的。一次性的簡單工作，便宜模型通常就夠；錯了代價高的工作，換貴的模型之外，還是要有人或程式檢查。</div>
+
+    <div class="readmore near">
+      <b>想把「貴還是便宜」算得更細，可以接著看</b>
+      <ul>
+        <li><a href="../ai-cp-value-calculus/">模型不是越聰明越好：我開始學著算 AI 的 CP 值</a>　三個問題背後，是品質、時間、金錢一起算。</li>
+        <li><a href="../dual-track-planning-loop/">如何讓兩個不同的 AI 互相挑錯、自己訂正？</a>　同一個問題的企劃版本：規劃交給頂規模型，其他交給便宜的。</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="prompt">
+  <div class="inner">
+    <h2>模型分工提示詞：把你的工作清單貼給 AI 分類</h2>
+    <p>把下面這段貼給你常用的 AI，後面接上你每週會交給 AI 的工作清單：</p>
+    <div class="codeblock">以下是我每週會交給 AI 的工作清單。請幫我逐項判斷，適合交給頂規模型還是便宜模型。
+判斷依據用這三個問題：
+1. 這件事一個月要跑幾次？
+2. 要不要讀懂大量內容，再重新組織成別人看得懂的樣子？
+3. 如果交給便宜模型，我要怎麼檢查它有沒有做錯？
+
+請用表格列出：工作｜建議模型等級｜理由｜交給便宜模型時的檢查方式。
+資料不足、看不出來的項目請標「要先試考」，不要直接推薦頂規模型。
+
+我的工作清單：
+（貼上你的清單）</div>
+
+    <div class="tagrow">
+      <span class="tag">AI 工作流</span><span class="tag">差異比較</span><span class="tag">模型選擇</span><span class="tag">成本估算</span><span class="tag">Claude</span><span class="tag">ChatGPT</span>
+    </div>
+
+    <div class="readmore">
+      <b>想繼續替自己的工作選模型，可以接著看這些</b>
+      <ul>
+        <li><b>這篇提到過的</b></li>
+        <li><a href="../reevaluate-models-same-test/">AI 小工具該用便宜模型還是貴的？｜同一份考卷考三輪，新模型出來就重新評估</a>：Luna 交白卷之後，怎麼用同一份考卷重考。</li>
+        <li><a href="../ai-cp-value-calculus/">模型不是越聰明越好：我開始學著算 AI 的 CP 值</a>：分工背後的算法。</li>
+        <li><a href="../what-are-subagents/">什麼叫子代理？從分頭查資料到 30 人工作坊頁面</a>：交給 Opus 5.5 的逐字稿清理，就是開子代理做的。</li>
+        <li style="margin-top:12px"><b>再往前後延伸</b></li>
+        <li><a href="../fixed-test-set-for-ai/">新模型出來，我怎麼知道它對我的工作真的比較好？</a>：往前一步。第三個問題要的那份考卷，題目、答案、成績怎麼保存。</li>
+        <li><a href="../ai-schedule-wake-interval/">讓 AI 定時整理資料前，先決定它多久醒一次</a>：往前一步。扶輪社活動看板月費降下來，有一部分靠的是少跑幾次。</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<div class="cta-band">
+  <section class="section">
+    <div class="inner">
+      <div>
+        <h2>我是江江教練</h2>
+        <p>隱性知識提煉師、AI 應用規劃師。我把自己每天在用的 AI 工作流程寫成文章與技能包，讓不會寫程式的人也能照著做。</p>
+        <p>如果你也在替自己的工作分配模型、算月費，歡迎來社群聊。</p>
+      </div>
+      <div class="cta-card">
+        <b>LINE 社群</b>
+        <p>AI × 知識管理、隱性知識提煉，每月兩場免費線上講座的場次也會先在這裡公布。</p>
+        <p style="margin-bottom:0"><a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener" style="color:#48b178;font-weight:900;text-decoration:none">加入社群 ↗</a></p>
+      </div>
+    </div>
+  </section>
+</div>
+
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">江江教練 · AI 知識管理</div>
+    <div class="footer-links">
+      <a href="../../articles.html">← 回深度文章總站</a>
+      <a href="../../index.html">首頁</a>
+      <a href="../../learn.html">自學資源</a>
+      <a href="../../skills.html">小工具</a>
+      <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">LINE 社群 ↗</a>
+      <a href="https://www.threads.com/@jiang_yude_coach" target="_blank" rel="noopener">Threads ↗</a>
+      <a href="https://vocus.cc/salon/Jiang_Coach" target="_blank" rel="noopener">方格子 ↗</a>
+    </div>
+    <div class="footer-note">這是一篇案例文章，整理我對「頂規 AI 模型很貴，哪些事交給它、哪些交給便宜的？｜Opus 5.5 動腦、Luna 搬磚的實際分工」的看法，供你參考。</div>
+  </div>
+</footer>
+
+<!-- 點圖放大 lightbox（hero 與內文圖通用，已內建，不用每篇重加） -->
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <span class="lightbox-close" aria-label="關閉">×</span>
+  <img id="lightbox-img" src="" alt="放大檢視">
+</div>
+<script>
+(function(){
+  var box=document.getElementById('lightbox'),boxImg=document.getElementById('lightbox-img');
+  document.querySelectorAll('.hero-figure img,.inline-figure img').forEach(function(img){
+    img.addEventListener('click',function(){boxImg.src=img.currentSrc||img.src;boxImg.alt=img.alt||'放大檢視';box.classList.add('open');box.setAttribute('aria-hidden','false');});
+  });
+  function close(){box.classList.remove('open');box.setAttribute('aria-hidden','true');boxImg.src='';}
+  box.addEventListener('click',close);
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
+})();
+</script>
+
+<script src="../../image-interactions.js"></script>
+
+<!-- 官網共用：滑鼠暖光暈 + 導航列漢堡選單 -->
+<script src="../../spotlight.js"></script>
+
+<!-- 文章自動互聯（相關文章）：兩支已內建，順序不可顛倒，不用再另外加 -->
+<script src="../../articles-data.js"></script>
+<script src="../../related-render.js"></script>
+  <script src="/mika-chat-widget.js" defer></script>
+</body>
+</html>

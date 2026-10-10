@@ -13,8 +13,8 @@ const mainPages = [
   { key: "home", zh: "index.html", en: "en/index.html", zhLabel: "首頁", enLabel: "Home" },
   { key: "architecture", zh: "knowledge-architecture.html", en: "en/knowledge-architecture.html", zhLabel: "知識架構", enLabel: "Knowledge Architecture" },
   { key: "courses", zh: "courses.html", en: "en/courses.html", zhLabel: "課程", enLabel: "Courses" },
-  { key: "articles", zh: "articles.html", en: "en/articles.html", zhLabel: "深度文章", enLabel: "Articles" },
-  { key: "skills", zh: "skills.html", en: "en/skills.html", zhLabel: "技能包下載", enLabel: "Skill Packages" },
+  { key: "articles", zh: "articles.html", en: "en/articles.html", zhLabel: "文章", enLabel: "Articles" },
+  { key: "skills", zh: "skills.html", en: "en/skills.html", zhLabel: "小工具", enLabel: "Skill Packages" },
   { key: "services", zh: "offers.html", en: "en/offers.html", zhLabel: "服務方案", enLabel: "Services" }
 ];
 

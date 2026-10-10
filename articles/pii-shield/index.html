@@ -1,0 +1,515 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="index,follow">
+<title>用 AI 整理個案紀錄，個資會直接送出去嗎？｜個資防護盾，免費 Claude Code Mod 在 AI 讀取前把人名與聯絡資料換成代號</title>
+<meta name="description" content="NPO 與社福單位想用 AI 整理個案紀錄，又擔心服務對象的個資送上雲端。個資防護盾是免費的 Claude Code Mod，在 AI 讀到資料之前，先在你自己的電腦上把人名、身分證號、手機、Email 換成代號。附假資料前後對照、限制與安裝步驟。">
+<link rel="canonical" href="https://jiangyude.com/articles/pii-shield/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="用 AI 整理個案紀錄，個資會直接送出去嗎？｜個資防護盾，免費 Claude Code Mod 在 AI 讀取前把人名與聯絡資料換成代號｜江江教練">
+<!-- 分享封面：hero 文字填好後在 repo 根目錄跑 `node scripts/og-shot.mjs pii-shield` 自動截 1200×630 到 images/og/pii-shield.jpg（見 README「文章分享封面（OG 圖）機制」）。別退回 intro-jiang.png 直式人像，會被裁成只剩脖子。 -->
+<meta property="og:image" content="https://jiangyude.com/images/og/pii-shield.jpg">
+<meta property="og:description" content="NPO 與社福單位想用 AI 整理個案紀錄，又擔心服務對象的個資送上雲端。個資防護盾是免費的 Claude Code Mod，在 AI 讀到資料之前，先在你自己的電腦上把人名、身分證號、手機、Email 換成代號。附假資料前後對照、限制與安裝步驟。">
+<meta property="og:url" content="https://jiangyude.com/articles/pii-shield/">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:site_name" content="江江教練 · AI 知識管理">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="用 AI 整理個案紀錄，個資會直接送出去嗎？｜個資防護盾，免費 Claude Code Mod 在 AI 讀取前把人名與聯絡資料換成代號｜江江教練">
+<meta name="twitter:image" content="https://jiangyude.com/images/og/pii-shield.jpg">
+<meta name="twitter:description" content="NPO 與社福單位想用 AI 整理個案紀錄，又擔心服務對象的個資送上雲端。個資防護盾是免費的 Claude Code Mod，在 AI 讀到資料之前，先在你自己的電腦上把人名、身分證號、手機、Email 換成代號。附假資料前後對照、限制與安裝步驟。">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"用 AI 整理個案紀錄，個資會直接送出去嗎？｜個資防護盾，免費 Claude Code Mod 在 AI 讀取前把人名與聯絡資料換成代號","description":"NPO 與社福單位想用 AI 整理個案紀錄，又擔心服務對象的個資送上雲端。個資防護盾是免費的 Claude Code Mod，在 AI 讀到資料之前，先在你自己的電腦上把人名、身分證號、手機、Email 換成代號。附假資料前後對照、限制與安裝步驟。","author":{"@type":"Person","name":"江昱德","alternateName":"江江教練","jobTitle":"隱性知識提煉師、AI 應用規劃師"},"isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://jiangyude.com/"},"inLanguage":"zh-Hant","url":"https://jiangyude.com/articles/pii-shield/","dateModified":"2026-10-03"}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{--ink:#1a1612;--paper:#fefcf8;--muted:#6a635a;--line:#d8cdb8;--green:#5f7553;--blue:#5689b8;--orange:#e85a4f;--soft:#faf5ec;--dark:#2a2018;--shadow:0 18px 45px rgba(107,74,42,.14);--sp-shadow:hsla(35,50%,60%,.15);--sp-shadow-edge:hsla(35,50%,68%,.03);--sp-radius:400px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC","Segoe UI",sans-serif}
+a{color:inherit}
+/* 官網共用導航列 nav.top（與首頁/文章總站同一條） */
+nav.top{position:sticky;top:0;background:rgba(254,252,248,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid #d8cdb8;z-index:100}
+nav.top .container{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:24px;padding:14px 32px}
+.nav-brand-img{justify-self:start;display:flex;align-items:center;text-decoration:none;flex-shrink:0;transition:opacity .2s}
+.nav-brand-img:hover{opacity:.8}.nav-brand-img img{height:40px;width:auto;display:block}
+nav.top ul.nav-menu{justify-self:end;display:flex;gap:22px;list-style:none;margin:0;padding:0;font-size:.95rem;white-space:nowrap}
+nav.top ul.nav-menu a{color:#3a342d;text-decoration:none;transition:color .2s;font-weight:500;white-space:nowrap}
+nav.top ul.nav-menu a:hover{color:#1a1612}nav.top ul.nav-menu a.active{color:#1a1612;font-weight:700}
+.nav-toggle{display:none;background:none;border:none;padding:6px;cursor:pointer;width:36px;height:36px;position:relative}
+.nav-toggle span{display:block;position:absolute;left:8px;right:8px;height:2px;background:#1a1612;border-radius:2px;transition:transform .25s,opacity .25s,top .25s}
+.nav-toggle span:nth-child(1){top:11px}.nav-toggle span:nth-child(2){top:17px}.nav-toggle span:nth-child(3){top:23px}
+.nav-toggle.open span:nth-child(1){top:17px;transform:rotate(45deg)}.nav-toggle.open span:nth-child(2){opacity:0}.nav-toggle.open span:nth-child(3){top:17px;transform:rotate(-45deg)}
+.tablewrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:22px 0;border:1px solid var(--line);border-radius:10px;background:#fff;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.tablewrap table{border-collapse:collapse;width:100%;min-width:600px;font-size:18px;line-height:1.65}
+.tablewrap .zh{display:block;margin-top:5px;font-size:16px;line-height:1.55;color:var(--muted);font-weight:400}
+.tablewrap th,.tablewrap td{padding:12px 14px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top;color:#3a342d}
+.tablewrap thead th{background:var(--soft);font-weight:900;font-size:18px;color:#1a1612;white-space:nowrap}
+.tablewrap tbody tr:last-child td{border-bottom:none}
+.tablewrap td code,.section code{background:var(--soft);border:1px solid var(--line);border-radius:5px;padding:1px 6px;font:500 15px/1.5 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace}
+.inline-figure.wide{max-width:1000px}
+.inline-figure.portrait{max-width:430px}
+.toc{margin:26px 0 0;padding:20px 22px;background:#fff;border:1px solid var(--line);border-radius:10px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.toc>b{display:block;font-size:15px;letter-spacing:.05em;color:var(--green);margin-bottom:10px}
+.toc ol{margin:0;padding-left:1.35em;font-size:18px;line-height:1.7}
+.toc li{margin-bottom:7px;color:#3a342d}
+.toc a{color:var(--blue);font-weight:700;text-decoration:none}.toc a:hover{text-decoration:underline}
+.toc-hint{margin:12px 0 0!important;font-size:18px!important;color:var(--muted)!important;border-top:1px solid var(--line);padding-top:12px}
+.readmore{margin-top:24px;padding:20px 22px;background:var(--soft);border:1px solid var(--line);border-radius:12px}
+.readmore.near{margin:26px 0 6px;background:rgba(86,137,184,.07);border-color:#bcd0e2}
+.readmore.near b{color:var(--blue);font-size:18px}
+.readmore.near li{font-size:17px;line-height:1.7;margin-bottom:10px}
+.readmore b{display:block;margin-bottom:10px;font-size:19px}
+.readmore ul{margin:0;padding-left:1.25em}
+.readmore a{color:var(--blue);font-weight:700;text-decoration:none}
+.readmore a:hover{text-decoration:underline}
+@media(max-width:820px){.tablewrap table{min-width:560px;font-size:18px}.tablewrap{position:relative}.tablewrap::after{content:"表格可左右滑動 →";position:sticky;left:0;display:block;font-size:15px;color:var(--muted);background:var(--soft);border-top:1px solid var(--line);padding:7px 12px;width:100%}}
+@media(max-width:860px){
+ nav.top .container{grid-template-columns:auto 1fr auto;padding:10px 16px;gap:12px}
+ .nav-brand-img img{height:32px}
+ .nav-toggle{display:block;justify-self:end}
+ nav.top ul.nav-menu{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(254,252,248,.98);backdrop-filter:blur(14px);border-bottom:1px solid #d8cdb8;flex-direction:column;gap:0;padding:8px 0;box-shadow:0 10px 24px rgba(107,74,42,.08)}
+ nav.top ul.nav-menu.open{display:flex}
+ nav.top ul.nav-menu li{border-bottom:1px solid #e8dfc9}
+ nav.top ul.nav-menu li:last-child{border-bottom:none}
+ nav.top ul.nav-menu a{display:block;padding:14px 20px;font-size:1.06rem}
+}
+/* 滑鼠暖光暈（與首頁同一支 spotlight.js） */
+body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradient(var(--sp-radius) circle at var(--mx,50%) var(--my,50%),var(--sp-shadow) 0%,var(--sp-shadow-edge) 45%,transparent 75%);pointer-events:none;z-index:9999;mix-blend-mode:multiply;transition:background .06s linear}
+.hero{position:relative;overflow:hidden;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:72px;padding:96px clamp(20px,6vw,88px) 80px;background:linear-gradient(180deg,#fffcf0 0%,#f9e9d2 100%);color:#1a1612;border-bottom:1px solid #d8cdb8}
+.hero .wc{position:absolute;border-radius:50%;filter:blur(60px);pointer-events:none;z-index:0}
+.hero .wc1{width:420px;height:360px;top:-120px;right:-80px;background:#e8884b;opacity:.15}
+.hero .wc2{width:360px;height:300px;bottom:-110px;left:-70px;background:#5f7553;opacity:.13}
+.hero .wc3{width:280px;height:260px;top:34%;left:14%;background:#a08144;opacity:.10}
+.hero>div{flex:none;width:860px;max-width:100%;position:relative;z-index:2}
+.hero-figure{margin:0;width:620px;flex:none;position:relative;z-index:2}
+.hero-figure img{display:block;width:100%;border-radius:16px;border:1px solid #d8cdb8;box-shadow:0 18px 45px rgba(107,74,42,.16);cursor:zoom-in}
+.hero-figure figcaption{margin-top:10px;font-size:14px;line-height:1.6;color:#6a635a}
+.inline-figure{margin:30px auto 8px;max-width:820px}
+.inline-figure img{display:block;width:100%;border-radius:14px;border:1px solid var(--line);box-shadow:var(--shadow);background:#fff;cursor:zoom-in}
+.inline-figure figcaption{font-size:14px;line-height:1.6;color:var(--muted);margin-top:10px}
+.lightbox{position:fixed;inset:0;z-index:10000;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(12,10,8,.92);cursor:zoom-out;backdrop-filter:blur(4px)}
+.lightbox.open{display:flex}.lightbox img{max-width:96vw;max-height:92vh;border-radius:10px;box-shadow:0 24px 60px rgba(0,0,0,.5)}
+.lightbox-close{position:fixed;top:18px;right:24px;color:#fff;font-size:34px;line-height:1;font-weight:700;cursor:pointer;opacity:.85}
+.kicker{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.55rem;color:#7a5c3a;font-weight:500}
+.hero h1{max-width:none;margin:16px 0 18px;font-size:clamp(36px,6vw,72px);line-height:1.08;overflow-wrap:anywhere}
+.hero p{max-width:none;font-size:clamp(18px,2vw,23px);line-height:1.62;color:#3a342d}
+.cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
+.cta a{display:inline-flex;align-items:center;text-decoration:none;border-radius:8px;padding:12px 16px;font-weight:900}
+.cta .primary{background:#fff;color:#1a1612}.cta .ghost{border:1px solid rgba(255,255,255,.32);color:#fff;background:rgba(255,255,255,.08)}
+.section{padding:54px clamp(20px,6vw,88px);border-top:1px solid var(--line)}
+.inner{width:min(1000px,100%);margin:0 auto}
+.section h2{font-size:clamp(26px,4.2vw,48px);line-height:1.12;margin:0 0 18px}
+.section h3{font-size:clamp(21px,3vw,30px);line-height:1.2;margin:30px 0 12px}
+.lead{font-size:clamp(18px,1.6vw,22px);line-height:1.7;color:#3a342d;max-width:900px}
+.section p{font-size:18px;line-height:1.74;color:#3a342d}.section p+p{margin-top:14px}
+.section ul,.section ol{padding-left:1.4em;font-size:18px;line-height:1.74;color:#3a342d}.section li{margin-bottom:8px}
+.meaning{margin:22px 0;padding:16px 18px;border-left:5px solid var(--blue);background:rgba(86,137,184,.12);border-radius:6px;line-height:1.7;font-size:19px}
+.meaning b{display:block;color:var(--blue);margin-bottom:4px}
+.caveat{margin:0 0 8px;padding:16px 18px;border-left:5px solid var(--orange);background:rgba(232,90,79,.1);border-radius:6px;line-height:1.7;font-size:18px;color:#3a342d}
+.caveat b{display:block;color:var(--orange);margin-bottom:4px}
+.infocard{background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px 24px 22px;box-shadow:0 8px 22px rgba(107,74,42,.08);margin-top:8px}
+.infocard-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.info-item{padding:18px 14px 0}
+.info-item b{display:block;font-size:14px;font-weight:900;letter-spacing:.04em;margin-bottom:7px;text-transform:uppercase}
+.info-item:nth-child(1) b{color:var(--green)}.info-item:nth-child(2) b{color:var(--orange)}.info-item:nth-child(3) b{color:var(--blue)}
+.info-item p{margin:0;font-size:17px;line-height:1.6;color:#3a342d}
+.tagrow{display:flex;flex-wrap:wrap;gap:7px;margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
+.tag{font-size:14px;color:var(--muted);background:var(--soft);border:1px solid var(--line);border-radius:999px;padding:4px 11px}
+.duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:24px}
+.duo.stack{grid-template-columns:1fr}
+.duo .card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:22px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.duo .card.a{border-color:var(--orange)}.duo .card.b{border-color:var(--green);box-shadow:0 8px 24px rgba(95,117,83,.16)}
+.duo .card small{display:block;font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.04em;margin-bottom:9px}
+.duo .card.a small{color:var(--orange)}.duo .card.b small{color:var(--green)}
+.duo .card b{display:block;font-size:22px;line-height:1.3;margin-bottom:12px}.duo .card.a b{color:#c0512f}.duo .card.b b{color:#4a7a59}
+.duo .card p{margin:0;color:#3a342d;line-height:1.75;font-size:18px}
+.workflow-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:24px}
+.workflow-step{background:#fff;border:1px solid var(--line);border-radius:8px;padding:18px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.workflow-step small{display:block;color:var(--orange);font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;margin-bottom:9px}
+.workflow-step b{display:block;font-size:18px;line-height:1.3;margin-bottom:9px}
+.workflow-step p{margin:0;color:#3a342d;line-height:1.6;font-size:16px}
+.codeblock{background:var(--dark);color:#f3ead9;border-radius:8px;padding:18px 20px;font:500 14px/1.65 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;overflow-x:auto;white-space:pre-wrap;margin:20px 0;box-shadow:0 8px 22px rgba(107,74,42,.12)}
+.codeblock .c{color:#f6d7a6;font-weight:600}
+.skillcard{background:#fff;border:1px solid var(--green);border-radius:12px;padding:24px;box-shadow:0 10px 26px rgba(95,117,83,.16);margin-top:8px}
+.skillcard b{display:block;font-size:21px;margin-bottom:8px}
+.skillcard p{margin:0 0 16px;font-size:17px;line-height:1.65;color:#3a342d}
+.cta-band{background:#e6f0e5;color:#3a342d}.cta-band .section{border-top:none}
+.cta-band .inner{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(260px,.85fr);gap:26px;align-items:start}
+.cta-band h2{font-size:clamp(26px,4vw,44px);margin:0 0 16px}.cta-band p,.cta-band .lead{color:rgba(58,52,45,.9);font-size:18px;line-height:1.72}
+.cta-card{border:1px solid #cfe0d2;background:#fbfdfa;border-radius:8px;padding:22px}
+.cta-card b{display:block;color:#48b178;margin-bottom:10px;font-size:18px}.cta-card p{margin:0 0 14px}
+.footer{padding:30px clamp(20px,6vw,88px);font-size:14px;color:var(--muted);background:#fff;border-top:1px solid var(--line)}
+.footer-inner{width:min(1000px,100%);margin:0 auto}
+.footer-links{display:flex;flex-wrap:wrap;gap:6px 12px;margin-bottom:14px}.footer-links a{color:var(--blue);font-weight:900;text-decoration:none;font-size:14px}
+.footer-brand{font-weight:900;font-size:15px;margin-bottom:10px}.footer-note{font-size:13px;line-height:1.6}
+@media(max-width:820px){.inline-figure.portrait{max-width:340px}.infocard-grid{grid-template-columns:1fr}.duo{grid-template-columns:1fr}.workflow-grid{grid-template-columns:1fr}.cta-band .inner{grid-template-columns:1fr}.section{padding:40px 20px}.hero{min-height:52vh;flex-direction:column;justify-content:flex-start;align-items:flex-start;gap:24px}.hero>div{width:100%}.hero-figure{width:100%;max-width:560px}}
+@media(max-width:820px){html,body{overflow-x:hidden}.hero h1{word-break:break-word}}
+/* 個資防護盾前後對照示範（scoped .pii-） */
+.pii-demo{position:relative;margin:26px 0 18px;padding:22px;background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow)}
+.pii-demo.is-on{border-color:var(--green)}
+.pii-badge{display:inline-block;font-size:14px;font-weight:700;color:#8a5a12;background:#fff4dc;border:1px solid #f0d49a;border-radius:999px;padding:3px 12px;margin-bottom:12px}
+.pii-tabs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.pii-tab,.pii-toggle{font:inherit;font-size:17px;cursor:pointer;border-radius:8px;padding:9px 16px;border:1px solid var(--line);background:var(--soft);color:#3a342d}
+.pii-tab.is-on{background:#1a1612;color:#fff;border-color:#1a1612}
+.pii-switch{display:flex;flex-wrap:wrap;align-items:center;gap:12px;margin-bottom:14px}
+.pii-toggle{background:var(--green);border-color:var(--green);color:#fff;font-weight:700}
+.pii-demo.is-on .pii-toggle{background:#fff;color:var(--green)}
+.pii-state{font-size:17px;color:var(--muted)}
+.pii-panes{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.pii-pane{border:1px solid var(--line);border-radius:10px;padding:14px 16px;background:var(--paper)}
+.pii-pane.is-ai{background:#f3f7f1;border-color:#c9d8c2}
+.pii-pane small{display:block;font-size:14px;font-weight:700;color:var(--muted);margin-bottom:8px}
+.pii-text{white-space:pre-wrap;font-size:18px;line-height:1.75;color:#1a1612;overflow-wrap:anywhere}
+.pii-ph{background:#dcebd6;color:#2f5a2a;border-radius:4px;padding:0 2px}
+.pii-leak{background:#fde0dc;color:#b23a2e;border-radius:4px;padding:0 2px;outline:1px dashed #e85a4f}
+.pii-note{margin-top:14px;font-size:17px;line-height:1.7;color:#3a342d}
+.pii-list{margin-top:12px;font-size:17px}.pii-list summary{cursor:pointer;color:var(--blue);font-weight:700}
+.pii-list pre{margin:10px 0 0;background:var(--soft);border:1px solid var(--line);border-radius:8px;padding:12px 14px;font:500 15px/1.6 "JetBrains Mono",ui-monospace,monospace}
+@media(max-width:820px){.pii-panes{grid-template-columns:1fr}}
+</style>
+</head>
+<body class="spotlight">
+<!-- 官網共用導航列 nav.top：與首頁/總站同一條，文章不要自己另做極簡 topbar（江江 2026-06-25：要同一個框架、同一條導航列）。把對應頁面的 class="active" 標在自己那欄。
+     ⚠️ 下面 ul.nav-menu 整塊由 preflight 第 5 關 check-bilingual-nav.mjs 做「逐字比對」，
+        塞任何註解、多一個空白、換行位置不同都會被判導航不一致而擋下發布。要說明就寫在 <ul> 外面（像這裡）。
+        2026-08-16 修：原本的 EN 那行說明註解就夾在 <ul> 裡面，導致照範本起手的新文章一律卡第 5 關
+        （llm-rag-agent-mcp 與 rag-three-retrieval-modes 兩篇同時中招）。註解已移出來，<ul> 內保持乾淨。
+        萬一還是被擋，直接跑：node scripts/check-bilingual-nav.mjs --write --only=<你的檔案路徑> -->
+<nav class="top">
+  <div class="container">
+    <a class="nav-brand-img" href="../../index.html"><img src="../../images/footer-signature.png" alt="江江教練 | 江昱德"></a>
+    <button class="nav-toggle" aria-label="選單"><span></span><span></span><span></span></button>
+    <ul class="nav-menu">
+      <li><a href="../../index.html">首頁</a></li>
+      <li><a href="../../knowledge-architecture.html">知識架構</a></li>
+      <li><a href="../../courses.html">課程</a></li>
+      <li><a href="../../articles.html" class="active">文章</a></li>
+      <li><a href="../../skills.html">小工具</a></li>
+      <li><a href="../../offers.html">服務方案</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="wc wc1"></div>
+  <div class="wc wc2"></div>
+  <div class="wc wc3"></div>
+  <div>
+    <div class="kicker">AI 應用 / 個資保護</div>
+    <h1>用 AI 整理個案紀錄，個資會直接送出去嗎？｜個資防護盾，免費 Claude Code Mod 在 AI 讀取前把人名與聯絡資料換成代號</h1>
+    <p>給 NPO 與社福單位的免費小工具。名單上的名字與常見號碼，在 AI 讀到之前就在你自己的電腦上換成代號。</p>
+  </div>
+  <figure class="hero-figure">
+    <img src="../../images/articles/pii-shield-cover.jpg" alt="一份個案資料夾穿過大盾牌，名牌與電話變成色塊，咪卡從盾牌後探出半身" loading="lazy">
+    <figcaption>個案資料送給 AI 之前，先經過防護盾，名字和號碼換成代號。</figcaption>
+  </figure>
+</section>
+
+<main>
+<section class="section" id="start">
+  <div class="inner">
+    <h2>這篇在講什麼</h2>
+    <p class="lead">用 AI 整理個案紀錄很省時間，可是個資一旦送上雲端就收不回來。這篇介紹我做的免費小工具「個資防護盾」，它是一個 Claude Code Mod，會在 AI 讀到資料之前，先在你自己的電腦上把人名、身分證號、手機、Email 換成代號。你會看到它實際把資料變成什麼樣子、怎麼安裝，以及它做不到的地方。</p>
+    <div class="duo stack">
+      <div class="card a">
+        <b>適合誰</b>
+        <ul>
+          <li>在 NPO、社福單位寫個案紀錄、輔導紀錄，想用 AI 幫忙整理，又不敢把服務對象的名字貼給 AI</li>
+          <li>單位沒有預算買 ERP 系統，也沒錢買一台跑本地 AI 的電腦</li>
+          <li>服務家暴被害人、兒少保護個案這類身分不能曝光的對象，或是要幫這類單位導入 AI 的顧問</li>
+        </ul>
+      </div>
+      <div class="card b">
+        <b>你可以帶走什麼</b>
+        <ul>
+          <li>一個免費、原始碼公開的 Claude Code Mod，終端機版與桌面 App 都能裝</li>
+          <li>一個用假資料做的前後對照，看懂開啟防護盾後 AI 讀到的是什麼</li>
+          <li>一份上線前的五項檢查清單，判斷自己的單位能不能用、要先補什麼</li>
+        </ul>
+      </div>
+    </div>
+    <div class="toc">
+      <b>目錄</b>
+      <ol>
+        <li><a href="#npo-gap">企業有 ERP 擋著，NPO 的個案資料只能手動填表</a></li>
+        <li><a href="#law">家暴與兒少個案的身分資訊，法律有直接規定</a></li>
+        <li><a href="#mods">以前要先買一台地端電腦去識別化，現在這一步搬進 Claude Code</a></li>
+        <li><a href="#demo">開啟防護盾前後，AI 讀到的個案紀錄差在哪</a></li>
+        <li><a href="#coverage">防護盾在哪些地方換代號，哪些地方擋不住</a></li>
+        <li><a href="#limits">名單沒列到的寫法它認不出來，上線前要知道的限制</a></li>
+        <li><a href="#checklist">單位上線前的五項檢查</a></li>
+        <li><a href="#install">下載安裝個資防護盾，終端機與桌面 App 都能用</a></li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="npo-gap">
+  <div class="inner">
+    <h2>企業有 ERP 擋著，NPO 的個案資料只能手動填表</h2>
+    <p>我有幫一些組織導入 AI，企業組織有，NPO 也有。</p>
+    <p>企業通常有錢買比較完整的 ERP 系統，個資原本就管理得很好，比較不用擔心。</p>
+    <p>NPO 多半沒有這筆預算，沒辦法搭建完整的 ERP 系統，以前就是自己手動填表單。現在如果要用 AI，就會碰到個資上網的問題。</p>
+    <p>他們在做案例跟輔導，又不能不上網，也不會有錢去買企業等級的電腦跑本地 AI。這以前一直是很麻煩的事。</p>
+  </div>
+</section>
+
+<section class="section" id="law">
+  <div class="inner">
+    <h2>家暴與兒少個案的身分資訊，法律有直接規定</h2>
+    <p>這些 NPO 幫助的是弱勢群體，服務對象的個資本來就敏感。有一些特殊的服務個案，像被家暴的婦女或兒少，法律對他們的身分資訊有直接規定：</p>
+    <ul>
+      <li>《家庭暴力防治法》第 50 條之 1：媒體不得報導或記載被害人及其未成年子女的姓名或可識別身分的資訊。</li>
+      <li>《兒童及少年福利與權益保障法》第 66 條第 2 項：從事兒少保護、安置、訪視、調查、輔導的人員，對職務上知道的秘密與隱私要保密，沒有正當理由不得洩漏或公開，違反可罰 2 萬到 10 萬元。</li>
+      <li>同法第 69 條：任何人都不得以媒體、資訊或其他公示方式揭示特定兒少的身分資訊。</li>
+      <li>一般個案資料則受《個人資料保護法》規範。</li>
+    </ul>
+    <p>條文原文可以在<a href="https://law.moj.gov.tw/LawClass/LawAll.aspx?pcode=D0050071" target="_blank" rel="noopener">家庭暴力防治法</a>、<a href="https://law.moj.gov.tw/LawClass/LawAll.aspx?pcode=D0050001" target="_blank" rel="noopener">兒童及少年福利與權益保障法</a>、<a href="https://law.moj.gov.tw/LawClass/LawAll.aspx?pcode=I0050021" target="_blank" rel="noopener">個人資料保護法</a>的全國法規資料庫頁面查到。</p>
+    <div class="caveat"><b>這件事目前沒有定論</b>目前沒有判決或主管機關函釋直接說「把個案資料輸入雲端 AI」一定違反哪一條。正因為沒有定論，每個單位更需要自己謹慎，先把能去掉的身分資訊去掉。</div>
+  </div>
+</section>
+
+<section class="section" id="mods">
+  <div class="inner">
+    <h2>以前要先買一台地端電腦去識別化，現在這一步搬進 Claude Code</h2>
+    <p>過去要讓 AI 安全地處理這類資料，常見的做法是先有一台放在單位裡的電腦，在本機把隱私處理掉，再把處理過的內容交給雲端 AI。對 NPO 來說，這台電腦和維護它的人力都是成本。</p>
+    <p>Claude Code 在 2026 年 10 月 1 日的 v2.1.287 開放了 Mods。Mod 是一小段在 Claude Code 程式內部執行的程式，可以在 AI 讀到資料之前，先把資料改寫一次。</p>
+    <p>所以我做了個資防護盾，把「先在本機把隱私處理掉」這一步直接內建在防護盾裡。</p>
+    <div class="meaning"><b>要說清楚的一點</b>去識別化之後的內容，還是會送到雲端的 AI 服務。防護盾做的是讓送出去的東西裡沒有真名和號碼，跟完全不上網不一樣。</div>
+  </div>
+</section>
+
+<section class="section" id="demo">
+  <div class="inner">
+    <h2>開啟防護盾前後，AI 讀到的個案紀錄差在哪</h2>
+    <p>下面三筆個案紀錄全部是假資料，名字、電話、Email、身分證號都是編的。點上面的個案切換，再點「開啟防護盾」看 AI 讀到的版本。</p>
+
+    <div class="pii-demo" id="pii-demo">
+      <div class="pii-badge">示範資料全部是假的</div>
+      <div class="pii-tabs" role="tablist">
+        <button type="button" class="pii-tab is-on" data-case="0">個案一</button>
+        <button type="button" class="pii-tab" data-case="1">個案二</button>
+        <button type="button" class="pii-tab" data-case="2">個案三</button>
+      </div>
+      <div class="pii-switch">
+        <button type="button" class="pii-toggle" aria-pressed="false">開啟防護盾</button>
+        <span class="pii-state">目前：防護盾關閉，AI 讀到原文</span>
+      </div>
+      <div class="pii-panes">
+        <div class="pii-pane">
+          <small>你的檔案裡寫的</small>
+          <div class="pii-text" data-role="raw"></div>
+        </div>
+        <div class="pii-pane is-ai">
+          <small>AI 實際讀到的</small>
+          <div class="pii-text" data-role="ai"></div>
+        </div>
+      </div>
+      <div class="pii-note" data-role="note"></div>
+      <details class="pii-list">
+        <summary>這個示範用的名單 names.txt</summary>
+        <pre>王小明
+林佳慧
+張家豪
+陳美玲=個案B
+李志強=社工A</pre>
+      </details>
+    </div>
+
+    <p>上面是網頁模擬。下面是實際執行的畫面：用同一份假名單和假個案檔，在 Claude Code 載入個資防護盾，請 Claude 讀檔後原文貼出，它回報的內容全是代號。</p>
+    <figure class="inline-figure wide">
+      <img src="../../images/articles/pii-shield-live-run.jpg" alt="終端機實際執行截圖：上半是個案檔原文，有王小明、陳美玲、手機、Email、身分證；下半是 Claude 讀到的內容，全部變成代號" loading="lazy">
+      <figcaption>實際執行截圖（2026-10-03，Claude Code 2.1.288，資料全是假的）。上半是檔案原文，下半是 Claude 讀檔後回報的內容。</figcaption>
+    </figure>
+    <p>AI 照樣可以幫你整理段落、摘要重點、改寫成報告，只是它看不到是誰。</p>
+    <p>防護盾預設不會把代號換回真名，所以 AI 寫出來的檔案保留代號，適合產出給外部單位的去識別化報告。如果要讓 AI 修改含真名的原始檔案，輸入 <code>/pii-shield restore on</code>，它只會在本機寫檔的那一刻把代號換回真名，不會把真名帶進指令、網路或其他工具。</p>
+  </div>
+</section>
+
+<section class="section" id="coverage">
+  <div class="inner">
+    <h2>防護盾在哪些地方換代號，哪些地方擋不住</h2>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>資料從哪裡來</th><th>防護盾怎麼處理</th></tr></thead>
+        <tbody>
+          <tr><td>你在對話框打的字</td><td>換成代號</td></tr>
+          <tr><td>AI 讀的文字檔、指令輸出、網頁內容</td><td>換成代號</td></tr>
+          <tr><td>CLAUDE.md、記憶檔、對話壓縮後的摘要</td><td>換成代號</td></tr>
+          <tr><td>AI 用 Read 工具讀圖片和 PDF</td><td>直接擋掉，請先轉成文字檔；轉出來的文字會照常換代號</td></tr>
+          <tr><td>找不到名單、名單是空的，或格式有錯</td><td>停止送出，所有文字內容都不給 AI，直到你修好名單</td></tr>
+          <tr><td>你直接貼進對話框的圖片</td><td>擋不住</td></tr>
+          <tr><td>開啟防護盾之前的對話</td><td>不會補遮</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>防護盾本身只讀一個檔案，也就是你的名單。它不連網，也不執行其他程式。這件事可以用 Claude Code 內建的 <code>claude plugin validate</code> 指令自己驗證，輸出會列出它用到的每一個功能。</p>
+    <p>程式請另一家公司的 AI（OpenAI Codex）做了三輪資安審查。第一輪指出 12 項問題，最嚴重的是「換回真名的功能原本對所有工具都生效」，AI 呼叫網路工具時可能把真名帶出去，已改成預設關閉、只限本機寫檔。第二輪指出空白名單會放行，已改成停止送出。第三輪判定遮蔽核心已修好，但總評仍是需要修正，剩下的是同時開好幾個對話時設定會共用，目前寫在限制說明裡，還沒改程式。每一輪的意見與處理方式都公開在 <a href="https://github.com/Jiang-Yude/pii-shield#審查紀錄" target="_blank" rel="noopener">GitHub 的審查紀錄</a>。</p>
+    <p>目前通過的是 13 項自動測試與三輪審查，還沒有在真實個案上長期使用過。</p>
+  </div>
+</section>
+
+<section class="section" id="limits">
+  <div class="inner">
+    <h2>名單沒列到的寫法它認不出來，上線前要知道的限制</h2>
+    <ul>
+      <li>只認得名單上的寫法。名單寫「王小明」，「王先生」「小明哥」「阿明」都不會被遮，要全部列進名單。上面個案三的「小豪」就是例子。</li>
+      <li>間接線索遮不到。學校、地址、市話、親屬關係、事件細節組合起來，仍然可能認出是誰。</li>
+      <li>號碼只認常見格式，身分證號、手機、Email 換成代號之後換不回來。</li>
+      <li>名單裡的名字太短會誤傷。名單有「明」，所有「明」字都會被換掉。</li>
+      <li>防護盾管的是 AI 讀到什麼，不管 AI 執行什麼指令。請搭配 Claude Code 的權限設定，禁止 AI 執行連網指令。</li>
+      <li>你在畫面上看到的 AI 回覆會是代號，要自己對照名單。</li>
+      <li>處理保護性個案時建議只開一個對話，同時開好幾個對話時設定可能共用。</li>
+    </ul>
+    <div class="caveat"><b>它是降低風險的工具</b>個資防護盾不保證個資完全不外流，也不是法律意見。</div>
+  </div>
+</section>
+
+<section class="section" id="checklist">
+  <div class="inner">
+    <h2>單位上線前的五項檢查</h2>
+    <ol>
+      <li>用假資料先跑一次，確認 AI 讀到的真的是代號</li>
+      <li>把每位個案的本名、小名、稱謂、常見錯字都列進名單</li>
+      <li>名單只放在單位電腦本機，不放雲端硬碟、不用通訊軟體或 Email 傳</li>
+      <li>要給外部看的報告，保持寫回真名關閉（預設就是關閉）</li>
+      <li>照單位自己的個資規範評估，必要時請督導或法務一起看</li>
+    </ol>
+  </div>
+</section>
+
+<section class="section" id="install">
+  <div class="inner">
+    <h2>下載安裝個資防護盾，終端機與桌面 App 都能用</h2>
+    <p>需要 Claude Code v2.1.287 以上。終端機版與 Claude 桌面 App 的 Code 分頁都能用。</p>
+    <p>如果單位裡沒有人用過 Claude Code，可以把這篇文章和 GitHub 連結交給負責電腦的同事或協助導入的顧問，請他照下面的步驟裝好，再用假資料示範給大家看。</p>
+    <h3>桌面 App 或終端機：用外掛市集安裝</h3>
+    <p>在 Claude Code 對話框輸入：</p>
+    <div class="codeblock">/plugin marketplace add Jiang-Yude/pii-shield
+/plugin install pii-shield@pii-shield</div>
+    <p>裝好後，輸入 <code>/config</code> 打開設定選單，找到 pii-shield 的 Names file，填入名單檔在你電腦上的完整路徑。名單格式是一行一個名字，要指定代號就寫「真名=代號」。沒有設定名單之前，防護盾會停止送出所有文字內容。</p>
+    <h3>終端機：下載原始碼直接載入</h3>
+    <div class="codeblock">git clone https://github.com/Jiang-Yude/pii-shield.git
+cd pii-shield
+cp names.example.txt names.txt
+claude --plugin-dir ./pii-shield</div>
+    <p>狀態列出現「個資防護盾：保護 N 個名字」，就是開啟了。</p>
+    <div class="skillcard">
+      <b>個資防護盾 pii-shield</b>
+      <p>免費、MIT 授權。完整說明、做不到的事、測試與審查紀錄都在 GitHub。</p>
+      <div class="cta">
+        <a class="primary" href="https://github.com/Jiang-Yude/pii-shield" target="_blank" rel="noopener">GitHub 原始碼 ↗</a>
+        <a class="primary" href="../../skills.html#pii-shield">在小工具頁查看</a>
+      </div>
+    </div>
+    <div class="readmore near">
+      <b>同主題延伸閱讀</b>
+      <ul>
+        <li><a href="../ai-data-red-lines/">公司資料可以貼給 AI 嗎？｜先搞清楚這兩條紅線</a>：還沒用工具之前，先判斷哪些資料根本不該給 AI</li>
+        <li><a href="../ai-batch-work-without-seeing-data/">可以讓 AI 大量處理個資，又不讓它讀到內容嗎？</a>：另一種做法，AI 只看欄位名稱，資料交給程式搬</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="summary">
+  <div class="inner">
+    <h2>統整</h2>
+    <p>NPO 沒有 ERP，也沒有預算買地端電腦，卻要處理法律保護最嚴的個案資料。個資防護盾把「先在本機去識別化」這一步內建在 Claude Code 裡：名單上的名字和常見號碼，在 AI 讀到之前就換成代號；找不到名單就停止送出；換回真名預設關閉，打開也只在本機寫檔時作用。</p>
+    <p>它降低的是送出去的風險，名單沒列到的寫法和間接線索仍要人把關。先用假資料試一次，再決定你的單位要怎麼用。</p>
+  </div>
+</section>
+
+<div class="cta-band">
+  <section class="section">
+    <div class="inner">
+      <div>
+        <h2>想一起把 AI 用得安心</h2>
+        <p class="lead">我每月固定舉辦兩場免費線上講座，分享實戰經驗與方法論。場次會先在 LINE 社群公布，想持續學習，或是有陪跑、顧問需求，都歡迎先從社群開始。</p>
+      </div>
+      <div class="cta-card">
+        <b>加入 LINE 社群</b>
+        <p>主要討論：善用 AI 作為思考夥伴、把知識和經驗整理成提示詞、技能包、知識庫。</p>
+        <p><a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">點這裡加入 ↗</a></p>
+      </div>
+    </div>
+  </section>
+</div>
+
+<script>
+(function(){
+  var root=document.getElementById('pii-demo');if(!root)return;
+  // 與 pii-shield 相同的規則：名單長的先換，再換號碼。示範用假資料。
+  var NAMES=[['王小明','〔保護對象01〕'],['林佳慧','〔保護對象02〕'],['張家豪','〔保護對象03〕'],['陳美玲','〔個案B〕'],['李志強','〔社工A〕']];
+  var AUTO=[[/(?<![A-Za-z0-9])[A-Za-z][1289A-Da-d]\d{8}(?![A-Za-z0-9])/g,'〔身分證號〕'],[/(?:\+?886[-\s]?|0)9\d{2}[-\s]?\d{3}[-\s]?\d{3}(?!\d)/g,'〔手機號碼〕'],[/[\w.+-]+@[\w-]+(\.[\w-]+)+/g,'〔Email〕']];
+  var CASES=[
+    {text:'個案：王小明（10 歲），母親陳美玲。\n聯絡電話 0912-345-678\nEmail wang.demo@example.org\n身分證 A123456789',note:'名單上的兩個名字、手機、Email、身分證號，全部在 AI 讀到之前換成代號。'},
+    {text:'個案：林佳慧。\n本週與社工李志強面談，討論安置後的適應狀況。\n手機 +886 933 222 111\n信箱 lin.demo@example.net',note:'國際寫法的手機號碼也會換掉。社工的名字一樣可以列進名單保護。'},
+    {text:'個案：張家豪。\n學校老師說小豪最近常缺席，家長電話 0987654321。\n身分證 f234567890',note:'注意「小豪」沒有被換掉，因為名單只寫了「張家豪」。小名、稱謂都要另外列進名單。',leak:'小豪'}
+  ];
+  var cur=0,on=false;
+  function esc(s){return s.replace(/[&<>]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;'}[c];});}
+  function mask(s){NAMES.forEach(function(p){s=s.split(p[0]).join(p[1]);});AUTO.forEach(function(a){s=s.replace(a[0],a[1]);});return s;}
+  function paint(s,leak){var h=esc(s).replace(/〔[^〕]+〕/g,function(m){return '<mark class="pii-ph">'+m+'</mark>';});if(leak)h=h.split(leak).join('<mark class="pii-leak">'+leak+'</mark>');return h;}
+  function render(){
+    var c=CASES[cur];
+    root.querySelector('[data-role=raw]').innerHTML=esc(c.text);
+    root.querySelector('[data-role=ai]').innerHTML=on?paint(mask(c.text),c.leak):esc(c.text);
+    root.querySelector('[data-role=note]').textContent=on?c.note:'防護盾關閉時，AI 讀到的就是你檔案裡的原文。';
+    var t=root.querySelector('.pii-toggle');t.textContent=on?'關閉防護盾':'開啟防護盾';t.setAttribute('aria-pressed',on?'true':'false');
+    root.querySelector('.pii-state').textContent=on?'目前：防護盾開啟，AI 只讀到代號':'目前：防護盾關閉，AI 讀到原文';
+    root.classList.toggle('is-on',on);
+    root.querySelectorAll('.pii-tab').forEach(function(b,i){b.classList.toggle('is-on',i===cur);});
+  }
+  root.querySelectorAll('.pii-tab').forEach(function(b){b.addEventListener('click',function(){cur=+b.getAttribute('data-case');render();});});
+  root.querySelector('.pii-toggle').addEventListener('click',function(){on=!on;render();});
+  render();
+})();
+</script>
+
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">江江教練 · AI 知識管理</div>
+    <div class="footer-links">
+      <a href="../../articles.html">← 回深度文章總站</a>
+      <a href="../../index.html">首頁</a>
+      <a href="../../learn.html">自學資源</a>
+      <a href="../../skills.html">小工具</a>
+      <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">LINE 社群 ↗</a>
+      <a href="https://www.threads.com/@jiang_yude_coach" target="_blank" rel="noopener">Threads ↗</a>
+      <a href="https://vocus.cc/salon/Jiang_Coach" target="_blank" rel="noopener">方格子 ↗</a>
+    </div>
+    <div class="footer-note">這是一篇教學文章，整理我對「用 AI 整理個案紀錄，個資會直接送出去嗎？｜個資防護盾，免費 Claude Code Mod 在 AI 讀取前把人名與聯絡資料換成代號」的看法，供你參考。</div>
+  </div>
+</footer>
+
+<!-- 點圖放大 lightbox（hero 與內文圖通用，已內建，不用每篇重加） -->
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <span class="lightbox-close" aria-label="關閉">×</span>
+  <img id="lightbox-img" src="" alt="放大檢視">
+</div>
+<script>
+(function(){
+  var box=document.getElementById('lightbox'),boxImg=document.getElementById('lightbox-img');
+  document.querySelectorAll('.hero-figure img,.inline-figure img').forEach(function(img){
+    img.addEventListener('click',function(){boxImg.src=img.currentSrc||img.src;boxImg.alt=img.alt||'放大檢視';box.classList.add('open');box.setAttribute('aria-hidden','false');});
+  });
+  function close(){box.classList.remove('open');box.setAttribute('aria-hidden','true');boxImg.src='';}
+  box.addEventListener('click',close);
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
+})();
+</script>
+
+<script src="../../image-interactions.js"></script>
+
+<!-- 官網共用：滑鼠暖光暈 + 導航列漢堡選單 -->
+<script src="../../spotlight.js"></script>
+
+<!-- 文章自動互聯（相關文章）：兩支已內建，順序不可顛倒，不用再另外加 -->
+<script src="../../articles-data.js"></script>
+<script src="../../related-render.js"></script>
+  <script src="/mika-chat-widget.js" defer></script>
+</body>
+</html>

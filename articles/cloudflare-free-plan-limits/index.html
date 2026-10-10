@@ -163,7 +163,6 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
       <li><a href="../../articles.html" class="active">深度文章</a></li>
       <li><a href="../../skills.html">技能包下載</a></li>
       <li><a href="../../offers.html">服務方案</a></li>
-      <li class="lang-switch"><a href="../../en/articles.html" hreflang="en">EN</a></li>
     </ul>
   </div>
 </nav>
@@ -238,7 +237,7 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
           <tr><td>Worker 請求數</td><td>100,000 次（cron 每跑一次也算一次）</td><td>每五分鐘一輪＝288 次，加群訊息不到 400 次</td></tr>
           <tr><td>D1 讀取</td><td>500 萬列</td><td>幾千列</td></tr>
           <tr><td>D1 寫入</td><td>100,000 列</td><td>幾百列</td></tr>
-          <tr><td>D1 儲存</td><td>5 GB</td><td>幾 MB</td></tr>
+          <tr><td>D1 儲存</td><td>5 GB（全帳號合計，單一資料庫 500 MB）</td><td>幾 MB</td></tr>
           <tr><td>Cron 排程數</td><td>全帳號 5 個</td><td>3 個</td></tr>
         </tbody>
       </table>
@@ -248,14 +247,14 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
       <table>
         <thead><tr><th>每一輪上限</th><th>免費方案</th><th>付費方案</th></tr></thead>
         <tbody>
-          <tr><td>對外呼叫（fetch）</td><td>50 個</td><td>10,000 個</td></tr>
+          <tr><td>對外呼叫（fetch）</td><td>50 個</td><td>10,000 個（預設，可再調高）</td></tr>
           <tr><td>D1 查詢</td><td>50 個</td><td>1,000 個</td></tr>
-          <tr><td>CPU 時間</td><td>10 毫秒</td><td>30 秒</td></tr>
-          <tr><td>記憶體</td><td>128 MB</td><td>128 MB</td></tr>
+          <tr><td>CPU 時間</td><td>10 毫秒</td><td>30 秒（HTTP 預設，可調到 5 分鐘；cron 另有規則）</td></tr>
+          <tr><td>記憶體（每個 isolate）</td><td>128 MB</td><td>128 MB</td></tr>
         </tbody>
       </table>
     </div>
-    <div class="meaning"><b>一句話</b>萊卡一天的總用量連第一張表的百分之一都不到。讓它慢下來的，全在第二張表。</div>
+    <div class="meaning"><b>一句話</b>萊卡每天的請求數與 D1 讀寫，都不到第一張表上限的百分之一。讓它慢下來的，全在第二張表。</div>
   </div>
 </section>
 
@@ -263,13 +262,13 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
   <div class="inner">
     <h2>雷一：一輪五十件事，一張照片吃掉十幾件</h2>
     <p>一張照片要走完整條路：跟 Google 開一個上傳 session、跟 LINE 要檔案、把檔案傳過去，對外呼叫三到四個。D1 這邊要認領工作、預留額度、記結果、收尾，五到六個查詢。每一輪還要固定留一些額度給 token 更新、告警、本輪紀錄，主線能用的剩四十出頭。</p>
-    <p>所以一輪只塞得下兩三張。這是算得出來的，我一開始沒算。</p>
+    <p>所以一輪只塞得下兩三張。</p>
     <p>我改了兩層：</p>
     <ul>
       <li><strong>程式裡放一本帳。</strong>每個動作發出前先問帳本還有沒有額度，不夠就停手，沒做完的下一輪自然再被挑中，因為篩選條件沒變。開始一件工作前先把整條路徑的最壞成本鎖住，避免做到一半沒額度，留下「Google 已經收到檔案、D1 沒記到」的半成品。用不完的在收尾時退回去。</li>
       <li><strong>用輪數換每輪量。</strong>每小時一輪追不上，先改十五分鐘，再改五分鐘。一天 288 輪，理論上能存六七百張，花東參訪的量夠用。</li>
     </ul>
-    <div class="caveat"><b>老實說</b>第二層是免費方案下的權宜。付費方案每輪對外呼叫上限是一萬、D1 查詢一千，這個問題就不存在了。更正規的做法是把工作丟進 Cloudflare 的 Queues（佇列服務，工作先排隊、再一件一件消化）；它從 2026 年 2 月起免費方案也能用，每天一萬次操作，我這條線還沒改過去。</div>
+    <div class="caveat"><b>老實說</b>第二層是免費方案下的權宜。付費方案每輪對外呼叫預設上限是一萬、D1 查詢一千，這個問題就不存在了。更正規的做法是把工作丟進 Cloudflare 的 Queues（佇列服務，工作先排隊、再一件一件消化）；它從 2026 年 2 月起免費方案也能用，每天一萬次操作（一則訊息走完約三次操作），我這條線還沒改過去。</div>
 
     <div class="readmore near">
       <b>「先問帳本再動手、沒做完下輪再來」就是迴圈</b>
@@ -285,14 +284,14 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
     <h2>雷二：額度不夠時「整批放棄」</h2>
     <p>備份線合回去的第一天，D1 裡有 44 筆媒體等著存，每小時的 cron 卻一直記 idle，一張都沒存。</p>
     <p>根因在建工作單那一段。原本的寫法是「一次建全部」，本輪額度放不下 44 筆，就整批放棄，回報「建立 0 筆」，下一輪再來做一次一模一樣的事。改成「只建額度放得下的那幾筆」，留一點給後面的主線，整條線才動起來。</p>
-    <div class="meaning"><b>規則很短</b>在有每輪上限的環境，任何「全部或零」的寫法，最後都會變成零。</div>
+    <div class="meaning"><b>規則很短</b>在有每輪上限的環境，任何「全部或零」的寫法，量一超過上限，最後都會變成零。</div>
   </div>
 </section>
 
 <section class="section" id="trap-3">
   <div class="inner">
     <h2>雷三：Cron 全帳號只有五個，換 Worker 時新舊並存就掛不上</h2>
-    <p>Worker 不能改名，改名等於新建一個。8 月 31 日我把萊卡的 Worker 從舊名字換成 lyca-line-relay，新舊兩個 Worker 並存了一段時間，讓 LINE 的通知網址平順切過去（這種新舊並存再切換的做法叫藍綠切換）。</p>
+    <p>Worker 在 Cloudflare 後台可以改名，但我是在設定檔換一個新名字再部署，這等於新建一個 Worker。8 月 31 日我把萊卡的 Worker 從舊名字換成 lyca-line-relay，新舊兩個 Worker 並存了一段時間，讓 LINE 的通知網址平順切過去（這種新舊並存再切換的做法叫藍綠切換）。</p>
     <p>免費方案的五個 cron 是整個帳號共用，舊 Worker 的排程還佔著位子，新 Worker 的排程就掛不上，而且不會報錯。順序要鎖死：先刪舊的，才 deploy 掛新的排程。</p>
   </div>
 </section>
@@ -312,7 +311,7 @@ npx wrangler deployments list --name lyca-line-relay</div>
   <div class="inner">
     <h2>雷五：2026 年 9 月 1 日起，D1 超額直接失敗</h2>
     <p>Cloudflare 公告免費方案的 D1 超過當日讀寫上限時，查詢會直接失敗，不再只是警告。萊卡每天寫入離十萬列還很遠，但如果一個帳號接了很多群，或一次補抓大量歷史訊息，會從「慢」變成「當天寫不進去」。上線前值得算一次：一天寫幾列。</p>
-    <p>順便一條跟額度無關的小規則。Worker 的 secret 存進去就看不到，等於零備份，換 Worker 要全部重設。我把群白名單、成員對照表從 secret 搬進 D1，secret 只留真正的鑰匙。</p>
+    <p>順便一條跟額度無關的小規則。Worker 的 secret 存進去之後，後台和 wrangler 都看不到值（只有程式執行時讀得到），自己沒另存就等於沒有備份，另建 Worker 時要全部重設。我把群白名單、成員對照表從 secret 搬進 D1，secret 只留真正的鑰匙。</p>
   </div>
 </section>
 
@@ -324,9 +323,9 @@ npx wrangler deployments list --name lyca-line-relay</div>
       <table>
         <thead><tr><th>項目</th><th>免費</th><th>付費</th></tr></thead>
         <tbody>
-          <tr><td>每輪對外呼叫</td><td>50</td><td>10,000</td></tr>
+          <tr><td>每輪對外呼叫</td><td>50</td><td>10,000（預設）</td></tr>
           <tr><td>每輪 D1 查詢</td><td>50</td><td>1,000</td></tr>
-          <tr><td>每輪 CPU</td><td>10 毫秒</td><td>30 秒</td></tr>
+          <tr><td>每輪 CPU</td><td>10 毫秒</td><td>30 秒（預設）</td></tr>
           <tr><td>Cron 排程</td><td>全帳號 5 個</td><td>250 個</td></tr>
           <tr><td>D1 讀取</td><td>每天 500 萬列</td><td>每月 250 億列</td></tr>
           <tr><td>D1 寫入</td><td>每天 10 萬列</td><td>每月 5,000 萬列</td></tr>
@@ -357,7 +356,7 @@ npx wrangler deployments list --name lyca-line-relay</div>
       <div class="workflow-step"><small>02</small><b>一天要跑幾輪？</b><p>乘起來看每天總量離十萬次多遠、D1 寫入離十萬列多遠。</p></div>
       <div class="workflow-step"><small>03</small><b>帳號的五個 cron 剩幾個？</b><p>要掛新排程前先數。換 Worker 時先刪舊的再掛新的。</p></div>
     </div>
-    <p style="margin-top:24px">這篇的數字是 2026 年 9 月 2 日查 Cloudflare 官方文件的結果。他們每年都在調，用之前再看一次：<a href="https://developers.cloudflare.com/workers/platform/pricing/" target="_blank" rel="noopener">Workers 定價</a>、<a href="https://developers.cloudflare.com/d1/platform/pricing/" target="_blank" rel="noopener">D1 定價</a>、<a href="https://developers.cloudflare.com/workers/platform/limits/" target="_blank" rel="noopener">Workers 限制</a>。</p>
+    <p style="margin-top:24px">這篇的數字是 2026 年 9 月 2 日查 Cloudflare 官方文件的結果，10 月 10 日再對過一次。他們每年都在調，用之前再看一次：<a href="https://developers.cloudflare.com/workers/platform/pricing/" target="_blank" rel="noopener">Workers 定價</a>、<a href="https://developers.cloudflare.com/d1/platform/pricing/" target="_blank" rel="noopener">D1 定價</a>、<a href="https://developers.cloudflare.com/workers/platform/limits/" target="_blank" rel="noopener">Workers 限制</a>。</p>
     <p>本文的五個雷都發生在 2026 年 8 月 24 日到 9 月 2 日之間。萊卡的程式碼在 GitHub 的 lyca-line-agent，帳本那段在 worker/src/budget.js。</p>
     <div class="tagrow">
       <span class="tag">萊卡</span><span class="tag">系統設計</span><span class="tag">AI 工作流</span><span class="tag">Cloudflare</span><span class="tag">雲端硬碟</span>

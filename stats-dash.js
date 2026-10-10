@@ -72,7 +72,7 @@
     if (IDX[n]) return IDX[n].title;
     if (n === '/' || n === '/index.html') return '首頁';
     var named = {
-      '/articles.html': '深度文章總覽', '/courses.html': '課程總覽', '/skills.html': '技能包下載',
+      '/articles.html': '深度文章總覽', '/courses.html': '課程總覽', '/skills.html': '小工具',
       '/offers.html': '服務方案', '/knowledge-architecture.html': '知識架構', '/cases.html': '案例',
       '/learn.html': '學習地圖', '/search.html': '站內搜尋', '/stats.html': '站長儀表板',
       '/ai-trends.html': 'AI 趨勢', '/agent.html': 'Agent', '/invited-talks.html': '受邀演講',
@@ -643,7 +643,7 @@
     rows.push(['🕐', '每頁每日趨勢', (S.pageDaily && S.pageDaily.length)
       ? '已開始記錄，本月有 ' + S.pageDaily.length + ' 天資料'
       : '2026-09-01 才開始記，在那之前只有累計總數，看不出單頁的時間趨勢', !!(S.pageDaily && S.pageDaily.length)]);
-    rows.push(['💬', '咪卡對話保存', '每月一份，各留最近 20000 筆；目前有 ' + (S.chatMonths || []).join('、'), true]);
+    rows.push(['💬', '咪卡對話保存', '每月一份，各留最近 20000 筆；原始對話保存一年，該月結束後 365 天自動刪除（2026-09-07 起）；目前有 ' + (S.chatMonths || []).join('、'), true]);
     rows.push(['🤖', 'AI 爬蟲這套量不到（4O 的重要邊界）',
       '埋點是 JavaScript，而 GPTBot、OAI-SearchBot、PerplexityBot、ClaudeBot 這些爬蟲**不執行 JavaScript**，'
       + '所以它們來讀過幾次，這頁完全看不到。robots.txt 放行 AI 爬蟲（AXO）的成效，要從伺服器端日誌才量得到。'
@@ -723,6 +723,18 @@
       boot(d);
     }).catch(function (e) { fail(e.message || '讀取失敗'); });
   }
+
+  document.addEventListener('DOMContentLoaded', function () {
+    var eye = $('eye'), pwIn = $('pw');
+    if (eye && pwIn) eye.addEventListener('click', function () {
+      var show = eye.getAttribute('aria-pressed') !== 'true';
+      eye.setAttribute('aria-pressed', show ? 'true' : 'false');
+      eye.setAttribute('aria-label', show ? '隱藏密碼' : '顯示密碼');
+      pwIn.type = show ? 'text' : 'password';
+      pwIn.classList.toggle('masked', !show);
+      pwIn.focus();
+    });
+  });
 
   document.addEventListener('DOMContentLoaded', function () {
     fetch('/site-index.json').then(function (r) { return r.json(); }).then(function (d) {
