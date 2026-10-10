@@ -24,15 +24,16 @@ const llms = read("llms.txt");
 // 收錄的網址：Markdown 連結目的地＋內文裸露的本站網址，一律正規化成本站 pathname。
 // 跨家審（2026-10-10 OpenAI）抓到只用子字串比對會把錯網域、多一層路徑當成已收錄，相對路徑 articles/x/ 反而不算。
 const listed = new Set();
-const hrefs = [
-  ...[...llms.matchAll(/\]\(\s*<?([^)\s>]+)>?\s*\)/g)].map((m) => m[1]),
-  ...[...llms.matchAll(/https?:\/\/[^\s)<>\]]+/g)].map((m) => m[0]),
-];
+// Markdown 連結目的地（可帶 "標題"）先取出並從文字移除，剩下的文字才找裸網址，避免連結文字裡的網址被當成目的地。
+const mdLink = /\]\(\s*<?([^)\s>]+)>?(?:\s+["'(][^)]*)?\s*\)/g;
+const hrefs = [...llms.matchAll(mdLink)].map((m) => m[1]);
+const rest = llms.replace(/\[[^\]]*\]\([^)]*\)/g, " ");
+hrefs.push(...[...rest.matchAll(/https?:\/\/[^\s)<>\]]+/g)].map((m) => m[0]));
 for (const h of hrefs) {
-  let u;
-  try { u = new URL(h, SITE + "/"); } catch { continue; }
+  let u, p;
+  try { u = new URL(h, SITE + "/"); p = decodeURIComponent(u.pathname); } catch { continue; } // 壞網址不算收錄，也不讓整支檢查崩潰
   if (u.origin !== SITE) continue;
-  listed.add(decodeURIComponent(u.pathname).replace(/\/index\.html$/, "/").replace(/\/?$/, "/"));
+  listed.add(p.replace(/\/index\.html$/, "/").replace(/\/?$/, "/"));
 }
 if (![...listed].some((p) => p.startsWith("/articles/"))) {
   console.error("  llms.txt 讀不到任何本站 /articles/ 連結，本檢查不能靜默通過");
@@ -48,10 +49,11 @@ const blocked = new Set(
 );
 
 // robots meta 不限屬性順序（name 在前或 content 在前都認）
+// HTML 註解裡的 meta 不算；屬性名前面要是空白，data-name、data-content 不算
 function isNoindex(html) {
-  for (const m of html.matchAll(/<meta\b[^>]*>/gi)) {
+  for (const m of html.replace(/<!--[\s\S]*?-->/g, "").matchAll(/<meta\b[^>]*>/gi)) {
     const tag = m[0];
-    if (/\bname\s*=\s*["']robots["']/i.test(tag) && /\bcontent\s*=\s*["'][^"']*noindex/i.test(tag)) return true;
+    if (/\sname\s*=\s*["']robots["']/i.test(tag) && /\scontent\s*=\s*["'][^"']*noindex/i.test(tag)) return true;
   }
   return false;
 }
