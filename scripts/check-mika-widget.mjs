@@ -25,6 +25,8 @@ const EXEMPT = [
   // （2026-09-30 江江：「首頁先載入，其他分頁可以慢慢的載入」，手機首屏約 1MB 降到約 290KB）。
   // widget 有掛，只是不是靜態 script 標籤，所以本關的字串比對抓不到。
   /^index\.html$/,
+  // 文章內嵌的互動評量表（iframe 載入、noindex），掛 widget 會在文章頁裡多出第二個咪卡視窗；母頁 index.html 已掛。
+  'articles/ai-customer-service-model-retest/scorecard.html',
 ];
 
 // 非「對外頁面」的 HTML：不是給訪客看的，不在本關範圍。
