@@ -102,7 +102,7 @@ window.COURSES = [
     date: "2026-10-11",
     time: "20:00",
     duration_min: 60,
-    title: "雲端電腦與 AI 員工",
+    title: "OpenAI dots、GrokBot 我的實際使用心得：AI 員工怎麼用？",
     type_label: "免費線上講座",
     image: "images/courses/2026-10-11-cloud-computer-ai-employees.jpg",
     venue_mode: "online",
