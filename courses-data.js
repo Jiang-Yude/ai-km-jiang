@@ -98,6 +98,24 @@ window.COURSES = [
     }
   },
   {
+    id: "2026-10-11-cloud-computer-ai-employees",
+    date: "2026-10-11",
+    time: "20:00",
+    duration_min: 60,
+    title: "雲端電腦與 AI 員工",
+    type_label: "免費線上講座",
+    image: null,
+    venue_mode: "online",
+    venue_label: "線上",
+    host: "江江教練",
+    tags: ["AI員工", "AIAgent", "雲端電腦"],
+    summary: "分享把即時語音接上 3D VTuber、讓 AI 以桌面員工樣子出現的嘗試，以及實際跑下來的心得：怎麼交代工作、讓總機分派與追蹤任務。",
+    registration: {
+      status: "ended",
+      note: "已結束"
+    }
+  },
+  {
     id: "2026-09-26-ai-site-and-deploy",
     date: "2026-09-26",
     time: "20:00",
