@@ -23,6 +23,25 @@ window.ARTICLE_TAGS = {
 
 window.ARTICLES = [
   {
+    id: "task-queue-mod",
+    url: "articles/task-queue-mod/",
+    date: "2026-10-14",
+    updated: "2026-10-14",
+    title: "Claude Code Mod 做任務佇列｜一次交代 AI 好幾件事，對話旁看得到還剩什麼",
+    problem: "一個對話裡突然想到要做 A、B、C，做到後來自己忘了，AI 也忘了前面交代的事。",
+    audience: "在一個 AI 對話裡一次交代好幾件事的人；用 Claude Code、想知道 Mod 能做什麼的人。",
+    summary: "一個對話裡突然想到要做 A、B、C，做到後來我忘了，AI 也忘了前面交代的事。我用 Claude Code Mod 做了任務佇列：交代的事排在對話旁邊，我每次送出訊息都附給 AI；AI 做完先進待檢查區，等我驗。文章講怎麼用、改版後的三種狀態、太大的事另開對話、限制，以及不寫程式也能用的提示詞。",
+    tags: {
+      topic: ["AI工作流", "工具操作"],
+      level: ["進階"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["auto-compact-mod", "grok-bot-galaxy-day1-founders"],
+    cover: { wide: "images/articles/task-queue-mod-cover.jpg" }
+  },
+
+  {
     id: "ai-customer-service-model-retest",
     url: "articles/ai-customer-service-model-retest/",
     date: "2026-10-10",
@@ -113,7 +132,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["token-money-worth-doing", "pii-shield", "codex-log-health-check"],
+    related: ["token-money-worth-doing", "pii-shield", "codex-log-health-check", "task-queue-mod"],
     cover: { wide: "images/articles/auto-compact-mod-cover.jpg" }
   },
 
@@ -702,7 +721,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["grok-bot-galaxy-day2-workshops", "grok-bot-galaxy-day3-shipping", "ai-employee-four-levels", "agent-workflow-builds-automation", "cli-api-mcp-computer-use", "make-your-ai-secretary", "what-are-subagents"],
+    related: ["grok-bot-galaxy-day2-workshops", "grok-bot-galaxy-day3-shipping", "ai-employee-four-levels", "agent-workflow-builds-automation", "cli-api-mcp-computer-use", "make-your-ai-secretary", "what-are-subagents", "task-queue-mod"],
     cover: { tall: "images/articles/grok-bot-galaxy-day1-founders/card01.jpg" }
   },
 
