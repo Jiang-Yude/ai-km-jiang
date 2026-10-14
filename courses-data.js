@@ -104,7 +104,7 @@ window.COURSES = [
     duration_min: 60,
     title: "雲端電腦與 AI 員工",
     type_label: "免費線上講座",
-    image: null,
+    image: "images/courses/2026-10-11-cloud-computer-ai-employees.jpg",
     venue_mode: "online",
     venue_label: "線上",
     host: "江江教練",
