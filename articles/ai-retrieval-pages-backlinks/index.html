@@ -515,7 +515,7 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
 (function(){
   var NS='http://www.w3.org/2000/svg';
   var DEMOS={
-    backlinks:{title:'動手試試：在文件裡加連結',hint:'在文件裡按「＋ 加連結」，看對方那份底下會自動出現反向連結；圓點可以拖曳',len:150,rep:5200,extra:9,arrows:'both',
+    backlinks:{title:'動手試試：在文件裡加連結',hint:'在文件裡按「＋ 加連結」，看對方那份底下會自動出現反向連結；文件圖示可以拖曳',len:150,rep:5200,extra:9,arrows:'both',
       nodes:[['m','A 專案會議紀錄','#e8884b'],['p','A 專案執行企劃','#5689b8'],['r','A 專案復盤會議','#7a9a6a']],
       docs:[['m','今天討論 A 專案的分工和時程。下一步的執行企劃：'],['p','照會議結論排好執行步驟。做完之後的復盤：'],['r','回頭檢討這次執行。這件事一開始的會議：']],
       steps:[['m→p',[['m','p']]],['p→r',[['p','r']]],['r→m',[['r','m']]]],
@@ -539,14 +539,14 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
   function rnd(a,b){return a+Math.random()*(b-a);}
   function Demo(root,cfg){
     root.innerHTML='';
-    var head=el('div','bl-head');head.appendChild(el('b',null,cfg.title));head.appendChild(el('span',null,cfg.hint||'圓點可以拖曳；按鈕可以來回切換，比較做了和沒做'));root.appendChild(head);
+    var head=el('div','bl-head');head.appendChild(el('b',null,cfg.title));head.appendChild(el('span',null,cfg.hint||'文件圖示可以拖曳；按鈕可以來回切換，比較做了和沒做'));root.appendChild(head);
     var svg=document.createElementNS(NS,'svg');svg.setAttribute('class','bl-svg');svg.setAttribute('role','img');svg.setAttribute('aria-label',cfg.title+'（互動關聯圖）');
     var gL=document.createElementNS(NS,'g'),gN=document.createElementNS(NS,'g');svg.appendChild(gL);svg.appendChild(gN);root.appendChild(svg);
     var mid='blm'+Math.random().toString(36).slice(2,7);
     if(cfg.arrows){var defs=document.createElementNS(NS,'defs');defs.innerHTML='<marker id="'+mid+'" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#d9cfc0"/></marker><marker id="'+mid+'s" viewBox="0 0 10 10" refX="1" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M10 0L0 5L10 10z" fill="#d9cfc0"/></marker>';svg.insertBefore(defs,gL);}
     var docsW=null;if(cfg.docs){docsW=el('div','bl-docs');root.appendChild(docsW);}
     var ctrl=el('div','bl-ctrl');root.appendChild(ctrl);
-    var info=el('div','bl-info');var selB=el('b','bl-sel','點一下任何一個彩色圓點');var io=el('div','bl-io');
+    var info=el('div','bl-info');var selB=el('b','bl-sel','點一下任何一個文件圖示');var io=el('div','bl-io');
     var o1=el('div'),o2=el('div');o1.appendChild(el('small',null,'連出去（正向）'));var outS=el('span',null,'－');o1.appendChild(outS);o2.appendChild(el('small',null,'連進來（反向）'));var inS=el('span',null,'－');o2.appendChild(inS);io.appendChild(o1);io.appendChild(o2);info.appendChild(selB);info.appendChild(io);root.appendChild(info);if(cfg.docs)info.style.display='none';
     var msg=el('p','bl-msg');msg.setAttribute('aria-live','polite');root.appendChild(msg);
     var dl={},W,H,nodes=[],byId={},on=cfg.steps.map(function(){return false;}),sel=null,drag=null,moved=false,hl=null,hlTimer=0,btns=[];
@@ -625,7 +625,7 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
     function changed(){hl=null;drawLinks();status();renderDocs();kick();}
     if(cfg.docs){var allb=el('button','bl-path','一次全部連起來');allb.type='button';allb.addEventListener('click',function(){var ids=cfg.nodes.map(function(x){return x[0];});for(var i=0;i<ids.length;i++)dl[ids[i]+'>'+ids[(i+1)%ids.length]]=true;changed();});ctrl.appendChild(allb);}
     var rb=el('button','bl-reset','重來');rb.type='button';ctrl.appendChild(rb);
-    rb.addEventListener('click',function(){dl={};on=on.map(function(){return false;});btns.forEach(function(b){b.classList.remove('done');b.setAttribute('aria-pressed','false');});sel=null;hl=null;selB.textContent='點一下任何一個彩色圓點';outS.textContent='－';inS.textContent='－';build();drawLinks();status();renderDocs();kick();});
+    rb.addEventListener('click',function(){dl={};on=on.map(function(){return false;});btns.forEach(function(b){b.classList.remove('done');b.setAttribute('aria-pressed','false');});sel=null;hl=null;selB.textContent='點一下任何一個文件圖示';outS.textContent='－';inS.textContent='－';build();drawLinks();status();renderDocs();kick();});
     var t=0,kt=0,running=false,visible=true;
     function kick(){kt=t;if(!running&&visible){running=true;requestAnimationFrame(step);}}
     function step(){
