@@ -23,6 +23,24 @@ window.ARTICLE_TAGS = {
 
 window.ARTICLES = [
   {
+    id: "ai-manages-ai-focus",
+    url: "articles/ai-manages-ai-focus/",
+    date: "2026-10-15",
+    updated: "2026-10-15",
+    title: "AI 能跑的任務越來越多，人的專注力有限｜讓 AI 管 AI：總任務管子任務，一樣分層、一樣漸進式載入",
+    problem: "同時交代 AI 好幾件事，人追不過來；AI 的容量變大，但要它做的事也越來越多。",
+    audience: "開始同時交代 AI 好幾件事、想知道 AI 管 AI 怎麼運作的知識工作者。",
+    summary: "AI 可以跑的任務越來越多，人的專注力有限，所以讓 AI 管 AI：一個總任務管其他任務。這篇把靜態文件和 Agent 互聯並排對照：一樣連結出去、分階層、漸進式載入，最高密度的資訊擺第一層，差別在 Agent 會主動回報。附 Claude Code 一個對話當總機的實際做法、官方文件寫到哪裡，以及一段可以直接交代 AI 的話。",
+    tags: {
+      topic: ["AIAgent", "AI工作流", "知識管理"],
+      level: ["零基礎入門"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["what-are-subagents", "ai-employees-manage-agents", "session-messaging-reminder-layer", "diary-driven-agent-3x4-v2", "task-queue-mod"]
+  },
+
+  {
     id: "diary-driven-agent-3x4-v2",
     url: "articles/diary-driven-agent-3x4-v2/",
     date: "2026-10-15",
@@ -37,7 +55,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["diary-driven-agent-3x4", "what-is-loop-engineering", "knowledge-base-three-vault-split", "tag-wiki-method"]
+    related: ["diary-driven-agent-3x4", "what-is-loop-engineering", "knowledge-base-three-vault-split", "tag-wiki-method", "ai-manages-ai-focus"]
   },
 
   {
@@ -55,7 +73,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["auto-compact-mod", "grok-bot-galaxy-day1-founders"],
+    related: ["auto-compact-mod", "grok-bot-galaxy-day1-founders", "ai-manages-ai-focus"],
     cover: { wide: "images/articles/task-queue-mod-cover.jpg" }
   },
 
@@ -264,7 +282,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["dont-learn-ai-tools", "harness-to-loop", "parallel-site-editing", "what-is-loop-engineering", "cathay-tech-conference-2026", "chatgpt-web-codex-console"],
+    related: ["dont-learn-ai-tools", "harness-to-loop", "parallel-site-editing", "what-is-loop-engineering", "cathay-tech-conference-2026", "chatgpt-web-codex-console", "ai-manages-ai-focus"],
     cover: { wide: "images/articles/ai-employees-manage-agents-cover.jpg" }
   },
 
@@ -1081,7 +1099,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["parallel-site-editing", "same-question-different-answers", "long-document-review-layers", "grok-bot-galaxy-day2-workshops", "opus-luna-model-division"],
+    related: ["parallel-site-editing", "same-question-different-answers", "long-document-review-layers", "grok-bot-galaxy-day2-workshops", "opus-luna-model-division", "ai-manages-ai-focus"],
     cover: { wide: "images/articles/what-are-subagents-cover.jpg" }
   },
 
@@ -1726,7 +1744,7 @@ window.ARTICLES = [
       content_type: ["案例文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["ai-handoff-instructions", "laptop-desktop-webpage-sync-icloud-git", "caught-ai-slacking-into-rules", "dual-track-planning-loop", "knowledge-os-master-map"],
+    related: ["ai-handoff-instructions", "laptop-desktop-webpage-sync-icloud-git", "caught-ai-slacking-into-rules", "dual-track-planning-loop", "knowledge-os-master-map", "ai-manages-ai-focus"],
     cover: { tall: "images/articles/session-messaging-01.jpg" }
   },
 
