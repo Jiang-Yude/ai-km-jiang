@@ -23,6 +23,24 @@ window.ARTICLE_TAGS = {
 
 window.ARTICLES = [
   {
+    id: "diary-driven-agent-3x4-v2",
+    url: "articles/diary-driven-agent-3x4-v2/",
+    date: "2026-10-15",
+    updated: "2026-10-15",
+    title: "3X4 資料整理法新版：三種日記我改了｜AI 的工作日記、我的工作日記、觀點日記",
+    problem: "AI 寫的日記和自己寫的混在一起；想寫給 AI 看卻寫成流水帳，或說不出自己的邏輯就不寫了。",
+    audience: "已經在用 AI 做事、想讓 AI 讀懂自己的一人公司與知識工作者。",
+    summary: "用了五個月，我把 3X4 資料整理法的三種日記改成 AI 的工作日記、我的工作日記、觀點日記，四種時效不變。這篇放新舊對照、為什麼改，以及說不出自己邏輯時，先寫感覺再請 AI 分析、用自己的批評提煉出標準的做法。",
+    tags: {
+      topic: ["知識管理", "知識庫", "隱性知識", "AI工作流"],
+      level: ["零基礎入門"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["diary-driven-agent-3x4", "what-is-loop-engineering", "knowledge-base-three-vault-split", "tag-wiki-method"]
+  },
+
+  {
     id: "task-queue-mod",
     url: "articles/task-queue-mod/",
     date: "2026-10-14",
@@ -2551,7 +2569,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["llm-rag-agent-mcp", "questionnaire-to-slides-agent-workflow", "teacher-prep-knowledge-workflow", "knowledge-base-three-vault-split", "docs-as-system-design-agent", "ai-loop-safety-recovery", "inspiration-production-system", "why-split-data-into-cards", "knowledge-os-master-map", "build-your-own-dictionary", "rag-three-retrieval-modes", "ai-rule-file-slimming"]
+    related: ["llm-rag-agent-mcp", "questionnaire-to-slides-agent-workflow", "teacher-prep-knowledge-workflow", "knowledge-base-three-vault-split", "docs-as-system-design-agent", "ai-loop-safety-recovery", "inspiration-production-system", "why-split-data-into-cards", "knowledge-os-master-map", "build-your-own-dictionary", "rag-three-retrieval-modes", "ai-rule-file-slimming", "diary-driven-agent-3x4-v2"]
   },
 
   {
@@ -2860,7 +2878,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["what-is-graph-engineering", "strong-ai-models-knowledge-workflow-road", "questionnaire-to-slides-agent-workflow", "loop-round-limit", "five-loops-content-line", "loop-four-entries", "one-sentence-video-to-deep-article", "ai-employees-manage-agents"],
+    related: ["what-is-graph-engineering", "strong-ai-models-knowledge-workflow-road", "questionnaire-to-slides-agent-workflow", "loop-round-limit", "five-loops-content-line", "loop-four-entries", "one-sentence-video-to-deep-article", "ai-employees-manage-agents", "diary-driven-agent-3x4-v2"],
     cover: { tall: "images/articles/what-is-loop-engineering-01.jpg" }
   },
 
@@ -3082,7 +3100,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: "https://vocus.cc/salon/Jiang_Coach" },
-    related: ["diary-driven-agent-3x4", "tag-wiki-method", "knowledge-os-master-map", "free-deploy-three-boundaries"],
+    related: ["diary-driven-agent-3x4", "tag-wiki-method", "knowledge-os-master-map", "free-deploy-three-boundaries", "diary-driven-agent-3x4-v2"],
     cover: { wide: "images/three-vault-split.jpg" }
   },
 
@@ -3285,7 +3303,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: "https://vocus.cc/salon/Jiang_Coach" },
-    related: ["questionnaire-to-slides-agent-workflow", "teacher-prep-knowledge-workflow", "docs-as-system-design-agent", "how-to-train-your-ai-employee", "knowledge-base-three-vault-split", "tidy-mess-before-consulting", "meeting-record-agent-workflow", "inspiration-production-system", "why-split-data-into-cards"],
+    related: ["questionnaire-to-slides-agent-workflow", "teacher-prep-knowledge-workflow", "docs-as-system-design-agent", "how-to-train-your-ai-employee", "knowledge-base-three-vault-split", "tidy-mess-before-consulting", "meeting-record-agent-workflow", "inspiration-production-system", "why-split-data-into-cards", "diary-driven-agent-3x4-v2"],
     cover: { tall: "articles/diary-driven-agent-3x4/assets/card-01.jpg" }
   },
 
