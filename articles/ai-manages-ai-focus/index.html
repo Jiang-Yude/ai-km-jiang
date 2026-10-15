@@ -48,6 +48,7 @@ nav.top ul.nav-menu a:hover{color:#1a1612}nav.top ul.nav-menu a.active{color:#1a
 .tablewrap td code,.section code{background:var(--soft);border:1px solid var(--line);border-radius:5px;padding:1px 6px;font:500 15px/1.5 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace}
 .inline-figure.wide{max-width:1000px}
 .inline-figure.portrait{max-width:430px}
+.inline-figure.wide.shot{max-width:560px}
 .toc{margin:26px 0 0;padding:20px 22px;background:#fff;border:1px solid var(--line);border-radius:10px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
 .toc>b{display:block;font-size:15px;letter-spacing:.05em;color:var(--green);margin-bottom:10px}
 .toc ol{margin:0;padding-left:1.35em;font-size:18px;line-height:1.7}
@@ -203,7 +204,8 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
 
 <section class="section" id="ai-manages-ai"><div class="inner">
   <h2>讓 AI 管 AI：一個總任務管其他任務</h2>
-  <p>所以要讓 AI 管 AI。讓一個總任務去管其他任務，或是讓一個 AI 主管去管 AI 員工。</p>
+  <p>所以要讓 AI 管 AI。讓一個總任務去管其他任務，或者是像 Grok Bot 一樣，有一個 AI 主管去管 AI 員工。</p>
+  <p>xAI 官方的 Grok Bot 使用指南裡，就有人這樣配置：作者只管一個當幕僚長的 Bot，由它管其他 Bot（<a href="https://x.ai/bot/guides/grok-bot-for-post-sales" target="_blank" rel="noopener">Grok Bot for Post-Sales</a>）。</p>
   <p>分配出去、連接出去，其實就跟連結出去一樣。</p>
   <div class="readmore near"><b>延伸閱讀</b><ul>
     <li><a href="../what-are-subagents/">什麼叫子代理？從分頭查資料到 30 人工作坊頁面</a>：一個 Agent 開分身分頭做事、再收回來整併，這篇有兩個完整案例。</li>
@@ -229,26 +231,37 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
 <section class="section" id="practice"><div class="inner">
   <h2>實際用起來：在 Claude Code 讓一個對話當總機，其他任務分出去跑</h2>
   <div class="media-row">
-    <div class="media-fig"><figure class="inline-figure"><img src="../../images/articles/ai-manages-ai-focus-01.jpg" alt="咪卡戴著耳機坐在筆電前，把任務卡片分派到兩個視窗：一個對話當總機，其他任務分出去跑" loading="lazy" width="800" height="1000"></figure></div>
+    <div class="media-fig"><figure class="inline-figure"><img src="../../images/articles/ai-manages-ai-focus-01.jpg" alt="咪卡戴耳機坐在老式總機前接線，螢幕上是 Claude Code 側欄，主對話底下掛著五個子任務" loading="lazy" width="800" height="1000"></figure></div>
     <div class="media-text">
       <p>我今天在備第四堂課，用的是 Claude Code。</p>
-      <p>備課的時候我發現它有巢狀的工作階段，就問它這是不是更新，結果越問越多。我就叫它直接開一個新的子任務，專門討論這件事。</p>
-      <p>接著我讓主對話當總機，另外開子任務，一個去改名，一個去盤點素材，一個去查證。</p>
+      <p>主對話當總機，我一邊發想，子任務就一直開。下面是側欄在不同時間點的樣子，每一個子任務我都寫一句為什麼開。</p>
     </div>
   </div>
-  <div class="media-row img-right">
-    <div class="media-text">
-      <p>子任務做完，會回報給主對話。我可以點進去看進度，也可以直接插手。</p>
-      <p>對照上面那張表來看：主對話就像第一層，收到的是每個子任務的回報；想看細節，再點進子任務。</p>
-    </div>
-    <div class="media-fig"><figure class="inline-figure"><img src="../../images/articles/ai-manages-ai-focus-02.jpg" alt="咪卡拿放大鏡看資料夾裡的文件：子任務做完會回報給主對話，我可以點進去看進度，也可以直接插手" loading="lazy" width="800" height="1000"></figure></div>
-  </div>
-  <div class="media-row">
-    <div class="media-fig"><figure class="inline-figure"><img src="../../images/articles/ai-manages-ai-focus-03.jpg" alt="咪卡舉手示意，桌上有按鈕、規則書和垃圾桶：上線、改規則、刪東西，還是會停下來等我點頭" loading="lazy" width="800" height="1000"></figure></div>
-    <div class="media-text">
-      <p>上線、改規則、刪東西，還是會停下來等我點頭。</p>
-    </div>
-  </div>
+  <h3>一開始，同時分出兩個子任務</h3>
+  <figure class="inline-figure wide shot"><img src="../../images/articles/ai-manages-ai-focus-sidebar-02.png" alt="Claude Code 側欄：主對話「Agent 六堂課 第四堂課程」底下有兩個子任務" loading="lazy"><figcaption>一開始分出兩個子任務</figcaption></figure>
+  <ul>
+    <li><b>三庫分流改名為資料庫分流</b>：「三庫分流」這個詞容易跟「3X4 資料整理法」搞混，而且現在也不只三庫了，所以要全庫改名。後來定名為「知識庫分流」。</li>
+    <li><b>盤點按需載入技術篇素材</b>：我想寫一篇把 Tag Wiki 跟技能包合在一起講的技術文，要先把知識庫裡現成的素材找齊。</li>
+  </ul>
+  <h3>想到要查證，又開一個</h3>
+  <figure class="inline-figure wide shot"><img src="../../images/articles/ai-manages-ai-focus-sidebar-03.png" alt="Claude Code 側欄：主對話底下多了「查巢狀工作階段是不是新更新」，共三個子任務" loading="lazy"><figcaption>想到要查證，又開一個</figcaption></figure>
+  <ul>
+    <li><b>查巢狀工作階段是不是新更新</b>：我發現 Claude Code 有巢狀的工作階段，就問它這是不是新更新，結果越問越多，就直接開一個子任務專門查。</li>
+  </ul>
+  <h3>想到要寫這篇，再開一個</h3>
+  <figure class="inline-figure wide shot"><img src="../../images/articles/ai-manages-ai-focus-sidebar-04.png" alt="Claude Code 側欄：主對話底下多了「第3篇官網文：AI管AI是專注力管理」，共四個子任務" loading="lazy"><figcaption>想到要寫這篇，再開一個</figcaption></figure>
+  <ul>
+    <li><b>第3篇官網文：AI管AI是專注力管理</b>：我想到巢狀工作階段的核心是專注力管理，決定另寫一篇，也就是這篇。</li>
+  </ul>
+  <h3>子任務做到一半，又分出一個</h3>
+  <figure class="inline-figure wide shot"><img src="../../images/articles/ai-manages-ai-focus-sidebar-05.png" alt="Claude Code 側欄：主對話底下出現第五個項目「同步 Codex 端咪卡技能包複本落差」" loading="lazy"><figcaption>子任務做到一半，又開了一個</figcaption></figure>
+  <ul>
+    <li><b>同步 Codex 端咪卡技能包複本落差</b>：這個不是主對話開的。「查巢狀工作階段是不是新更新」那個子任務在做咪卡圖的途中，又分出一個。</li>
+  </ul>
+  <h3>做完回報，關鍵的事還是我點頭</h3>
+  <p>子任務做完，會回報給主對話。我可以點進去看進度，也可以直接插手。上線、改規則、刪東西，還是會停下來等我點頭。</p>
+  <p>我一直發想，子任務就一直開。這就是一個實際的案例。</p>
+  <p>對照上面那張表來看：主對話就像第一層，收到的是每個子任務的回報；想看細節，再點進子任務。</p>
 </div></section>
 
 <section class="section" id="official"><div class="inner">
