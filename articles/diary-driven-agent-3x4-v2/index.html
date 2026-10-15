@@ -147,6 +147,40 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
 /* 直式圖左右排（02-design-system「直式圖在桌機的左右排版」）：輪播卡上官網預設用 .media-row，圖左圖右看段落交替；連續兩張用 .figure-pair */
 .figure-pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;margin:30px auto 8px;max-width:820px}.figure-pair .inline-figure{margin:0;max-width:none}@media(max-width:640px){.figure-pair{grid-template-columns:1fr}.figure-pair .inline-figure{max-width:340px;margin:0 auto}}
 .media-row{display:grid;grid-template-columns:minmax(0,340px) minmax(0,1fr);gap:36px;align-items:center;margin:28px 0}.media-row.img-right{grid-template-columns:minmax(0,1fr) minmax(0,340px)}.media-row .inline-figure{margin:0;max-width:none}.media-row .media-text>*:first-child{margin-top:0}.media-row .media-text>*:last-child{margin-bottom:0}@media(max-width:820px){.media-row,.media-row.img-right{grid-template-columns:1fr;gap:18px}.media-row.img-right .media-fig{order:-1}.media-row .inline-figure{max-width:340px;margin:0 auto}}
+/* 3X4 新版：網頁元件圖（2026-10-15，取代三張表，手機自動直排） */
+.x34{margin:26px 0 10px;padding:22px;background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.x34-cap{font-size:15px;color:var(--muted);margin:10px 0 0;line-height:1.6}
+.x34-flow{display:grid;grid-template-columns:minmax(0,1fr) 120px minmax(0,1fr);gap:14px;align-items:center;padding:14px 0;border-bottom:1px dashed var(--line)}
+.x34-flow:last-of-type{border-bottom:none}
+.x34-col{display:flex;flex-direction:column;gap:8px}
+.x34-col small{font:900 13px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.04em;color:var(--muted)}
+.x34-chip{display:block;padding:12px 14px;border-radius:10px;font-size:19px;font-weight:700;line-height:1.35;border:1px solid var(--line);background:var(--soft);color:#3a342d}
+.x34-chip.new{background:rgba(95,117,83,.12);border-color:#9fb393;color:#3f5a35}
+.x34-chip.ai{background:rgba(86,137,184,.12);border-color:#9dbbd6;color:#2f5f8c}
+.x34-chip em{display:block;font-style:normal;font-weight:400;font-size:16px;color:var(--muted);margin-top:3px}
+.x34-arrow{text-align:center;color:var(--orange);font-weight:900;font-size:17px;line-height:1.3}
+.x34-arrow span{display:block;font-size:30px;line-height:1}
+.x34-ladder{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.x34-step{border:1px solid var(--line);border-radius:12px;padding:14px;background:var(--soft)}
+.x34-step:nth-child(1){background:rgba(232,90,79,.12);border-color:#e9a79f}
+.x34-step:nth-child(2){background:rgba(232,136,75,.10);border-color:#ecbf9a}
+.x34-step:nth-child(3){background:rgba(160,129,68,.10);border-color:#d6c193}
+.x34-step:nth-child(4){background:rgba(106,99,90,.08)}
+.x34-step b{display:block;font-size:19px;margin-bottom:8px;color:#1a1612}
+.x34-step p{margin:0!important;font-size:17px!important;line-height:1.55!important}
+.x34-step p+p{margin-top:6px!important;color:var(--muted)!important}
+.x34-dist{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:14px;font-size:17px;font-weight:700;color:#3a342d}
+.x34-dist i{flex:1;height:4px;border-radius:2px;background:linear-gradient(90deg,var(--orange),#d8cdb8);position:relative}
+.x34-dist i::after{content:"";position:absolute;right:-2px;top:-6px;border:8px solid transparent;border-left:12px solid #d8cdb8}
+.x34-loop{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;align-items:stretch}
+.x34-box{border:1px solid var(--line);border-radius:12px;padding:14px;background:var(--soft);font-size:18px;line-height:1.5;font-weight:700;color:#3a342d;position:relative}
+.x34-box small{display:block;font:900 13px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--orange);margin-bottom:6px}
+.x34-box em{display:block;font-style:normal;font-weight:400;font-size:16px;color:var(--muted);margin-top:4px}
+.x34-fork{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:12px}
+.x34-fork .x34-box.ok{background:rgba(95,117,83,.12);border-color:#9fb393}
+.x34-fork .x34-box.ng{background:rgba(232,90,79,.10);border-color:#e9a79f}
+.x34-back{margin-top:12px;text-align:center;font-size:17px;font-weight:700;color:var(--blue)}
+@media(max-width:820px){.x34{padding:16px}.x34-flow{grid-template-columns:1fr;gap:8px}.x34-arrow span{transform:rotate(90deg);display:inline-block}.x34-ladder,.x34-loop,.x34-fork{grid-template-columns:1fr}.x34-dist{font-size:16px}}
 </style>
 </head>
 <body class="spotlight">
@@ -196,15 +230,19 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
 <section class="section" id="compare"><div class="inner">
   <h2>3X4 舊版和新版對照</h2>
   <p>五月我寫過一篇 3X4 資料整理法，三種日記乘四種時效。那時候的三種日記是工作日記、觀點日記、心情日記。用了五個月，我的版本改了。</p>
-  <div class="tablewrap"><table>
-    <thead><tr><th></th><th>舊版（2026 年 5 月）</th><th>新版（2026 年 10 月）</th></tr></thead>
-    <tbody>
-      <tr><td>第一種</td><td>工作日記</td><td>AI 的工作日記</td></tr>
-      <tr><td>第二種</td><td>觀點日記</td><td>我的工作日記</td></tr>
-      <tr><td>第三種</td><td>心情日記</td><td>觀點日記（觀點、心情、合併都可以）</td></tr>
-      <tr><td>四種時效</td><td>最近幾天、一個月、半年、半年以上</td><td>沒變</td></tr>
-    </tbody>
-  </table></div>
+  <div class="x34" role="img" aria-label="舊版工作日記拆成 AI 的工作日記與我的工作日記；舊版觀點日記與心情日記合併成新版觀點日記；四種時效沒變">
+    <div class="x34-flow">
+      <div class="x34-col"><small>舊版（5 月）</small><span class="x34-chip">工作日記</span></div>
+      <div class="x34-arrow"><span>→</span>拆成兩種</div>
+      <div class="x34-col"><small>新版（10 月）</small><span class="x34-chip ai">AI 的工作日記<em>AI 做完事自己回寫</em></span><span class="x34-chip new">我的工作日記<em>我自己寫或口述</em></span></div>
+    </div>
+    <div class="x34-flow">
+      <div class="x34-col"><span class="x34-chip">觀點日記</span><span class="x34-chip">心情日記</span></div>
+      <div class="x34-arrow"><span>→</span>合併</div>
+      <div class="x34-col"><span class="x34-chip new">觀點日記<em>觀點、心情、合併都可以</em></span></div>
+    </div>
+    <p class="x34-cap">四種時效（最近幾天、一個月、半年、半年以上）沒變。</p>
+  </div>
   <p>改完之後更有彈性。兩版都放在這裡給大家參考，挑適合自己現在階段的用。</p>
   <div class="readmore near"><b>延伸閱讀</b><ul>
     <li><a href="../diary-driven-agent-3x4/">寫日記，就讓 AI 乖乖幫你做事：3X4 資料整理法</a>：舊版原文，三種日記與四種時效的完整說明都在這篇。</li>
@@ -214,10 +252,7 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
 <section class="section" id="why"><div class="inner">
   <h2>為什麼要改三種日記</h2>
   <p>我回頭查了自己主知識庫的檔名。今年 8 月 1 日到 10 月 15 日，工作日記有 364 篇，觀點日記 47 篇，心情日記 0 篇。</p>
-  <p>心情日記是 0 篇，但我沒有停止處理心情，我把它整合進觀點裡了。</p>
-  <p>以前我不曉得怎麼消化、理解自己的心情，很難覺察，所以速度很慢。那時候心情歸心情，觀點歸觀點，分開寫。</p>
-  <p>過去寫心情日記的那段練習，讓我發現心情會造就我的觀點，會改變我對事情的想法。</p>
-  <p>練習過了，速度就越來越快。現在我很快就知道自己怎麼看一件事，也知道這個觀點有沒有被心情影響、我的心情是怎麼樣。所以現在想到心情的時候，我會直接把觀點跟當下的判斷一起寫進去。</p>
+  <p>心情日記是 0 篇，但我沒有停止處理心情，我把它整合進觀點裡了。為什麼會這樣，後面講觀點日記時再說。</p>
   <p>工作日記也變了。我現在主要是搭配 AI 工作，所以 AI 寫的比例越來越重。AI 寫的和我寫的，原本全部叫同一個名字，混在一起。</p>
   <p>所以我把三種日記重新分了一次。</p>
 </div></section>
@@ -233,7 +268,13 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
     </tbody>
   </table></div>
   <p>AI 的部分交給 AI 寫，我自己的部分我自己統整。</p>
+  <h3>AI 的工作日記可以長到多遠</h3>
+  <p>一開始是我叫 AI 做完事回寫一篇工作日記給我看。</p>
+  <p>後來變成固定習慣，我不用叫，它收工就自己寫。</p>
+  <p>再後來長出了朵拉。朵拉是一個 AI 帳號，她把自己怎麼做事寫成實習日記，放在她自己的網站上。</p>
+  <h3>我的工作日記：除了進度，還可以寫標準</h3>
   <p>以前我的工作日記只是寫一些補充。後來學了迴圈工程，我工作上的目標、審核標準，也都會放進工作日記。</p>
+  <p>只講「寫工作日記」，大家很容易寫成流水帳，沒想到自己的價值觀、判斷、審核標準、規則邏輯，原來都可以寫。</p>
   <div class="readmore near"><b>延伸閱讀</b><ul>
     <li><a href="../what-is-loop-engineering/">每件事 AI 都要我確認，怎麼可以更自動？什麼是迴圈工程</a>：目標和審核標準為什麼要寫下來，這篇講得最完整。</li>
   </ul></div>
@@ -241,26 +282,32 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
 
 <section class="section" id="viewpoint"><div class="inner">
   <h2>觀點日記怎麼寫：觀點、心情、合併都可以</h2>
-  <p>我把觀點跟心情合併，是因為我練習過了。你可以直接寫觀點，想寫心情也可以寫心情，或是兩個合在一起寫。</p>
+  <p>以前我不曉得怎麼消化、理解自己的心情，很難覺察，所以速度很慢。那時候心情歸心情，觀點歸觀點，分開寫。</p>
+  <p>過去寫心情日記的那段練習，讓我發現心情會造就我的觀點，會改變我對事情的想法。</p>
+  <p>練習過了，速度就越來越快。現在我很快就知道自己怎麼看一件事，也知道當下的心情，以及觀點有沒有受它影響。所以現在想到心情的時候，我會直接把觀點跟當下的判斷一起寫進去。</p>
+  <p>這是我練習過之後的寫法。你可以直接寫觀點，想寫心情也可以寫心情，或是兩個合在一起寫。</p>
+  <p>也有人覺得自己好像沒什麼邏輯，不曉得怎麼講，乾脆就不寫了。不曉得怎麼講，你好歹也有感覺吧。那就描述感覺。</p>
   <p>觀點還沒有很成熟的時候，話說不清楚，就只剩下感覺：我感覺不好、我不開心、我覺得這樣不對。</p>
   <p>這樣寫就可以了。這樣做我比較開心，這樣做我比較不順，我很討厭、我很煩躁、我很焦慮，都可以寫。</p>
   <p>寫下來之後，再把心情跟自己的工作對照，慢慢就會變成觀點。持續訓練，才能清楚說明自己的論述、價值觀、判斷。</p>
 </div></section>
 
 <section class="section" id="extract"><div class="inner">
-  <h2>說不出自己的邏輯，就先讓 AI 有素材</h2>
-  <p>只講「寫工作日記」，大家很容易寫成流水帳，沒想到自己的價值觀、判斷、審核標準、規則邏輯，原來都可以寫。</p>
-  <p>也有人覺得自己好像沒什麼邏輯，不曉得怎麼講，乾脆就不寫了。</p>
-  <p>不曉得怎麼講，你好歹也有感覺吧。那就描述感覺。</p>
+  <h2>說不出自己的邏輯，就請 AI 從感覺裡整理</h2>
   <p>人很有趣，有時候要直接講，會講不出來。感覺寫久了，就請 AI 去分析：我那時候做什麼事覺得開心，做什麼事覺得不開心，幫我把我的原則、邏輯、價值觀、判斷整理出來。</p>
   <p>AI 會整理出一份。結果有兩種可能：</p>
-  <div class="tablewrap"><table>
-    <thead><tr><th>AI 整理得</th><th>你會怎麼做</th></tr></thead>
-    <tbody>
-      <tr><td>很好</td><td>那就用</td></tr>
-      <tr><td>不好，亂寫、都錯</td><td>你會忍不住批評：這裡不對、這裡歪了、這裡剛好相反</td></tr>
-    </tbody>
-  </table></div>
+  <div class="x34" role="img" aria-label="先寫感覺，請 AI 分析，AI 整理出一份；整理得好就用就補，整理得不好你會批評，批評的話就是你的標準，再回頭請 AI 修正">
+    <div class="x34-loop">
+      <div class="x34-box"><small>1</small>先寫感覺<em>開心、不開心、覺得不對</em></div>
+      <div class="x34-box"><small>2</small>請 AI 分析<em>我做什麼開心、做什麼不開心</em></div>
+      <div class="x34-box"><small>3</small>AI 整理出一份<em>原則、邏輯、價值觀、判斷</em></div>
+    </div>
+    <div class="x34-fork">
+      <div class="x34-box ok">整理得很好<em>那就用、就補</em></div>
+      <div class="x34-box ng">整理得不好，亂寫、都錯<em>你會忍不住批評：這裡不對、這裡歪了、這裡剛好相反</em></div>
+    </div>
+    <p class="x34-back">↺ 把批評拿回去，請 AI 修正</p>
+  </div>
   <div class="meaning"><b>第二種情況其實就是在提煉</b>你批評的那些話，就是你的標準。</div>
   <p>所以至少先讓 AI 有一些素材可以分析。分析對了就用、就補，分析錯了就改正。這就是我怎麼提煉自己的隱性知識：有多少，提煉多少。</p>
   <div class="codeblock"><span class="c"># 可以直接丟給 AI 的一句話</span>
@@ -268,32 +315,26 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
 再幫我把我的原則、邏輯、價值觀、判斷整理出來。</div>
 </div></section>
 
-<section class="section" id="ai-diary"><div class="inner">
-  <h2>AI 的工作日記可以長到多遠</h2>
-  <p>一開始是我叫 AI 做完事回寫一篇工作日記給我看。</p>
-  <p>後來變成固定習慣，我不用叫，它收工就自己寫。</p>
-  <p>再後來長出了朵拉。朵拉是一個 AI 帳號，她把自己怎麼做事寫成實習日記，放在她自己的網站上。</p>
-</div></section>
-
 <section class="section" id="tiers"><div class="inner">
   <h2>四種時效沒變，跟電腦存檔一模一樣</h2>
-  <div class="tablewrap"><table>
-    <thead><tr><th>時效</th><th>知識庫放哪裡</th><th>電腦裡對應的是</th></tr></thead>
-    <tbody>
-      <tr><td>最近幾天</td><td>快速檢索頁、看板</td><td>記憶體，最熱、最快拿到</td></tr>
-      <tr><td>最近一個月</td><td>根目錄</td><td>電腦硬碟</td></tr>
-      <tr><td>半年內</td><td>分類資料夾</td><td>硬碟裡收好的資料夾</td></tr>
-      <tr><td>超過半年</td><td>移出知識庫做備份</td><td>外接硬碟、雲端硬碟、隨身碟</td></tr>
-    </tbody>
-  </table></div>
+  <p>三種日記改了，四種時效沒變。寫好的東西放在哪裡，決定 AI 找不找得到。</p>
+  <div class="x34" role="img" aria-label="四種時效從近到遠：最近幾天放快速檢索頁像記憶體；最近一個月放根目錄像電腦硬碟；半年內放分類資料夾像硬碟裡收好的資料夾；超過半年移出知識庫像外接硬碟或雲端硬碟">
+    <div class="x34-ladder">
+      <div class="x34-step"><b>最近幾天</b><p>快速檢索頁、看板</p><p>記憶體，最熱、最快拿到</p></div>
+      <div class="x34-step"><b>最近一個月</b><p>根目錄</p><p>電腦硬碟</p></div>
+      <div class="x34-step"><b>半年內</b><p>分類資料夾</p><p>硬碟裡收好的資料夾</p></div>
+      <div class="x34-step"><b>超過半年</b><p>移出知識庫做備份</p><p>外接硬碟、雲端硬碟、隨身碟</p></div>
+    </div>
+    <div class="x34-dist"><span>近：AI 先找這裡</span><i></i><span>遠：找不到再往這裡</span></div>
+  </div>
   <p>越常用的放越近，越少用的放越遠。AI 搜尋的時候先找近的，找不到再往遠的找。</p>
 </div></section>
 
 <section class="section" id="split"><div class="inner">
   <h2>時效不同，就長出不同的知識庫</h2>
   <p>第四層「移出知識庫」，移去哪裡？這就是我後來有了第二個知識庫的原因。</p>
-  <p>我的副知識庫裡有一個資料夾，專門放主庫的舊檔，它就是我的外接硬碟。</p>
-  <p>知識庫要分幾個，會跟著階段變。我一開始分了三個，現在主要是兩個。這件事我叫做知識庫分流。</p>
+  <p>知識庫要分幾個，會跟著階段變。我一開始分了三個，現在主要是兩個。</p>
+  <p>我的副知識庫裡有一個資料夾，專門放主庫的舊檔，它就是我的外接硬碟。這件事我叫做知識庫分流。</p>
   <div class="readmore near"><b>延伸閱讀</b><ul>
     <li><a href="../knowledge-base-three-vault-split/">知識庫太大，資料該怎麼分庫？</a>：我當初怎麼判斷一份資料該放哪個庫。</li>
   </ul></div>
@@ -304,6 +345,8 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
   </ul>
   <b style="margin-top:16px">再往前後延伸</b><ul>
     <li><a href="../tag-wiki-method/">資料越堆越多，AI 反而找不到怎麼辦？標籤連結法 Tag Wiki</a>：資料放對位置之後，下一步是讓 AI 找得到。</li>
+    <li><a href="../ai-retrieval-pages-backlinks/">資料越存越多，怎麼讓 AI 找得到？</a>：檢索頁、雙向連結、漸進式載入，接著這篇往下講。</li>
+    <li><a href="../ai-manages-ai-focus/">AI 能跑的任務越來越多，人的專注力有限</a>：從文件換到 Agent，一樣的道理。</li>
   </ul></div>
 </div></section>
 
