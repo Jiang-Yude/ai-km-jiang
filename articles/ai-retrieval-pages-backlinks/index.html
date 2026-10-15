@@ -241,6 +241,7 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
 .bl-quick span{font-size:15px;color:var(--muted)}
 .bl-doc{cursor:pointer;transition:box-shadow .2s,background .2s,border-color .2s}
 .bl-doc.on{border-color:#e8b04b;background:#fff6e0;box-shadow:0 0 0 3px rgba(232,176,75,.45)}
+.bl-sent{font-size:17px;line-height:1.6}
 </style>
 </head>
 <body class="spotlight">
@@ -332,11 +333,16 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
   <div class="bl-demo" data-demo="backlinks"><p class="bl-noscript">這裡是互動示範，需要開啟 JavaScript 才看得到。</p></div>
   <div class="xr">
     <div class="xr-fork">
-      <div class="xr-box ok"><small>正向</small>會議紀錄裡寫了 [[A 專案執行企劃]]<em>從會議紀錄點過去</em></div>
-      <div class="xr-box"><small>反向</small>打開執行企劃，看得到「會議紀錄連到我」<em>從執行企劃找回來</em></div>
+      <div class="xr-box ok"><small>正向</small>執行企劃裡寫了「此專案由 [[A 專案會議紀錄]] 延伸而來」<em>從執行企劃點過去</em></div>
+      <div class="xr-box"><small>反向</small>打開會議紀錄，看得到「執行企劃連到我」<em>從會議紀錄找回來</em></div>
     </div>
     <p class="xr-cap">只有一邊寫連結，箭頭是單向；兩邊都寫，箭頭才是雙向。灰色小點是知識庫裡其他沒有連起來的筆記。</p>
   </div>
+  <h3>我實際的做法：只寫單向，請 AI 把兩邊補好</h3>
+  <p>我實際在寫的時候，連結旁邊會再稍微解釋一下。例如寫執行企劃，我會寫「此專案由 <code>[[A 專案會議紀錄]]</code> 延伸而來」；寫復盤會議，我會寫「這是此次 <code>[[A 專案執行企劃]]</code> 結束後的復盤會議」。</p>
+  <p>我個人實際操作只做單向連結，因為我很懶得去改上一篇的檔案。在 Obsidian 裡，單向連結就可以找出反向連結，其實就等於自動雙向連結。</p>
+  <p>可是如果不用 Obsidian，直接讓 AI 去找，就有點難回推。例如復盤會議裡寫了「這是此次 A 專案執行企劃結束後的復盤會議」，AI 讀復盤會議的時候，讀得到它源自執行企劃；可是 AI 如果只讀執行企劃，是讀不到這份復盤會議的。</p>
+  <p>所以一定要裝 Obsidian 嗎？其實不用。核心是希望檔案可以互連。AI 很厲害，可以在我改檔案的時候，請 AI 順便把兩邊都加好，這樣就沒有問題了；也可以寫一支程式，在建立檔案的時候就請 AI 自動互連。</p>
 </div></section>
 
 <section class="section" id="skills"><div class="inner">
@@ -519,7 +525,8 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
   var DEMOS={
     backlinks:{title:'動手試試：在文件裡加連結',hint:'在文件裡按「＋ 加連結」，看對方那份底下會自動出現反向連結；文件圖示可以拖曳',len:150,rep:5200,extra:9,arrows:true,
       nodes:[['m','A 專案會議紀錄','#e8884b'],['p','A 專案執行企劃','#5689b8'],['r','A 專案復盤會議','#7a9a6a']],
-      docs:[['m','今天討論 A 專案的分工和時程。下一步的執行企劃：'],['p','照會議結論排好執行步驟。做完之後的復盤：'],['r','回頭檢討這次執行。這件事一開始的會議：']],
+      docs:[['m','今天討論 A 專案的分工和時程。'],['p','照會議結論排好執行步驟。'],['r','回頭檢討這次執行。']],
+      phr:{'p>m':['此專案由 ',' 延伸而來。'],'r>p':['這是此次 ',' 結束後的復盤會議。'],'m>p':['後續執行：',''],'m>r':['後續復盤：',''],'p>r':['結束後的復盤：',''],'r>m':['源頭會議：','']},
       steps:[['m→p',[['m','p']]],['p→r',[['p','r']]],['r→m',[['r','m']]]],
       msgs:['還沒有連結：三份檔案各自散著，彼此找不到。','已經加了 {n} 個連結。只有一邊寫是單向箭頭，兩邊都寫才是雙向。','三份都互相連起來了：每一組兩邊都寫了連結，箭頭都是雙向。這就是雙向連結。']},
     skill:{title:'動手試試：春總編怎麼讓 AI 找到要讀的那一份',len:110,rep:3200,extra:8,
@@ -612,7 +619,7 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
         var me=d[0],card=el('div','bl-doc');card.setAttribute('data-id',me);if(sel&&sel.id===me)card.classList.add('on');
         card.addEventListener('click',function(e){if(e.target.closest('button'))return;select(byId[me]);});card.appendChild(el('b',null,nm(me)+'.md'));
         var body=el('div','bl-doc-body');body.appendChild(el('p',null,d[1]));
-        cfg.nodes.forEach(function(n){var to=n[0];if(to===me||!dl[me+'>'+to])return;var row=el('div','bl-line');var chip=el('span','bl-link','[['+nm(to)+']]');row.appendChild(chip);
+        cfg.nodes.forEach(function(n){var to=n[0];if(to===me||!dl[me+'>'+to])return;var row=el('div','bl-line');var ph=(cfg.phr&&cfg.phr[me+'>'+to])||['',''];var sent=el('span','bl-sent');if(ph[0])sent.appendChild(document.createTextNode(ph[0]));sent.appendChild(el('span','bl-link','[['+nm(to)+']]'));if(ph[1])sent.appendChild(document.createTextNode(ph[1]));row.appendChild(sent);
           var x=el('button','bl-x','✕');x.type='button';x.setAttribute('aria-label','移除連結 '+nm(to));x.addEventListener('click',function(){dl[me+'>'+to]=false;changed();});row.appendChild(x);body.appendChild(row);});
         card.appendChild(body);
         var quick=el('div','bl-quick');quick.appendChild(el('small',null,'快速加連結'));var any=false;
