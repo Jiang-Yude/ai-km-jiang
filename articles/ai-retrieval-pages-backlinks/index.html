@@ -191,6 +191,10 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
 @media(max-width:820px){.xr-three{grid-template-columns:1fr}}
 .xr-chain{display:grid;grid-template-columns:minmax(0,1fr) 44px minmax(0,1fr) 44px minmax(0,1fr);gap:8px;align-items:center}
 @media(max-width:820px){.xr-chain{grid-template-columns:1fr}.xr-chain .xr-arrow span{transform:rotate(90deg);display:inline-block}}
+.xr-ladder6{grid-template-columns:repeat(3,minmax(0,1fr))}
+.xr-ladder6 .xr-step:nth-child(5),.xr-ladder6 .xr-step:nth-child(6){background:rgba(106,99,90,.06)}
+@media(max-width:820px){.xr-ladder6{grid-template-columns:1fr}}
+.xr-side{margin-top:14px;background:rgba(86,137,184,.10)!important;border-color:#9dbbd6!important}
 </style>
 </head>
 <body class="spotlight">
@@ -255,17 +259,21 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
       <tr><td>人物檢索總表</td><td>某個人最近跟我在做什麼</td></tr>
     </tbody>
   </table></div>
-  <p>我的知識庫也有一份寫給 AI 的規則：問「專案在哪」，先讀專案位置總表，再讀專案檢索頁，再讀那個專案的入口檔，<b>以上都找不到才全庫搜尋</b>。全庫搜尋排在最後一順位。</p>
-  <div class="xr" role="img" aria-label="問專案在哪時的找法：先讀專案位置總表，再讀專案檢索頁，再讀那個專案的入口檔，都找不到才全庫搜尋。">
-    <div class="xr-ladder">
-      <div class="xr-step"><b>1 專案位置總表</b><p>先讀這張目錄</p></div>
-      <div class="xr-step"><b>2 專案檢索頁</b><p>再讀這張目錄</p></div>
-      <div class="xr-step"><b>3 專案入口檔</b><p>那個專案自己的入口</p></div>
-      <div class="xr-step"><b>4 全庫搜尋</b><p>以上都找不到才用</p></div>
+  <p>我的知識庫有一份寫給 AI 的規則檔 AGENTS.md，每次對話都會先載入。裡面寫好：問「專案在哪」，先讀專案位置總表，再讀專案檢索頁，再讀那個專案的入口，再讀入口連出去的主檔，<b>以上都找不到或不夠，才做範圍搜尋</b>。搜尋排在最後一順位。</p>
+  <div class="xr" role="img" aria-label="問專案在哪時的找法：0 先載入 AGENTS.md，1 專案位置總表，2 專案檢索頁，3 專案入口，4 入口連出的主檔，5 前面都找不到才範圍搜尋。另一條路是只讀檔名，不打開內容。">
+    <div class="xr-ladder xr-ladder6">
+      <div class="xr-step"><b>0 AGENTS.md</b><p>每次對話先載入</p><p>寫著問專案要先讀哪裡</p></div>
+      <div class="xr-step"><b>1 專案位置總表</b><p>專案在哪、什麼狀態</p></div>
+      <div class="xr-step"><b>2 專案檢索頁</b><p>分類目錄</p><p>只指向入口</p></div>
+      <div class="xr-step"><b>3 專案入口</b><p>看板裡的「專案主檔」段</p></div>
+      <div class="xr-step"><b>4 主檔</b><p>企劃、會議紀錄、交接檔</p></div>
+      <div class="xr-step"><b>5 範圍搜尋</b><p>前面都找不到或不夠才用</p></div>
     </div>
-    <div class="xr-dist"><span>先看目錄</span><i></i><span>最後一順位</span></div>
-    <p class="xr-cap">問「專案在哪」時，AI 照這個順序找。</p>
+    <div class="xr-dist"><span>先看目錄</span><i></i><span>最後才搜尋</span></div>
+    <div class="xr-box xr-side"><small>另一條路</small>只讀檔名<em>先列出檔名再篩，檔案內容不打開</em></div>
+    <p class="xr-cap">問「專案在哪」時，AI 照 0 到 5 的順序找；只想找某份檔案時，可以直接只讀檔名。</p>
   </div>
+  <p>還有一條更快的路：只讀檔名。我的檔名固定寫成「日期時間 歸屬：標題｜關鍵字」，AI 先列出檔名，再從檔名裡篩，檔案內容不打開，光看檔名就知道是什麼。</p>
   <p>檢索頁本身很省：AI 讀一張目錄，花的字數遠少於把每份檔案打開來看。它的代價是要維護，目錄跟實際檔案對不上時，AI 會照著錯的目錄去找。所以我讓程式從資料夾現況自動生成一部分目錄，例如每個技能包檔尾的檔案清單，後面會講到。</p>
 </div></section>
 
