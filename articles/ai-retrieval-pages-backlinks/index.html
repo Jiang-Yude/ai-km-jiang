@@ -195,6 +195,30 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
 .xr-ladder6 .xr-step:nth-child(5),.xr-ladder6 .xr-step:nth-child(6){background:rgba(106,99,90,.06)}
 @media(max-width:820px){.xr-ladder6{grid-template-columns:1fr}}
 .xr-side{margin-top:14px;background:rgba(86,137,184,.10)!important;border-color:#9dbbd6!important}
+.bl-demo{margin:26px 0 10px;padding:18px;background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.bl-head{display:flex;flex-wrap:wrap;justify-content:space-between;gap:6px 14px;align-items:baseline;margin-bottom:8px}
+.bl-head b{font-size:19px}.bl-head span{font-size:15px;color:var(--muted)}
+.bl-svg{display:block;width:100%;height:auto;background:#2a2622;border-radius:12px;touch-action:none;user-select:none;-webkit-user-select:none}
+.bl-svg .nd{cursor:grab}.bl-svg .nd.drag{cursor:grabbing}
+.bl-svg .nd text{font-size:17px;font-weight:700;fill:#f3ece0;pointer-events:none}
+.bl-svg .nd.sel circle{stroke:#ffd27a;stroke-width:4}
+.bl-svg line{stroke:#a99f92;stroke-width:2.2}
+.bl-svg line.hl{stroke:#ffd27a;stroke-width:3.2}
+.bl-ctrl{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:12px}
+.bl-ctrl button{font-family:inherit;font-weight:700;font-size:17px;line-height:1.4;padding:11px 12px;border-radius:10px;border:1px solid #9dbbd6;background:rgba(86,137,184,.10);color:#2f5f8c;cursor:pointer;text-align:left}
+.bl-ctrl button.done{background:rgba(95,117,83,.14);border-color:#9fb393;color:#3f5a35}
+.bl-ctrl button.done::before{content:"✓ "}
+.bl-ctrl .bl-reset{background:var(--soft);border-color:var(--line);color:#3a342d;text-align:center}
+.bl-info{margin-top:12px;padding:12px 14px;border:1px dashed var(--line);border-radius:10px;background:var(--soft)}
+.bl-info b{display:block;font-size:18px;margin-bottom:6px}
+.bl-io{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;font-size:17px;line-height:1.5}
+.bl-io small{display:block;font-size:14px;font-weight:900;color:var(--muted)}
+.bl-msg{margin:12px 0 0!important;font-size:17px!important;font-weight:700;color:var(--orange)}
+.bl-msg.ok{color:#3f5a35}
+@media(max-width:820px){.bl-demo{padding:14px}.bl-ctrl,.bl-io{grid-template-columns:1fr}}
+.bl-ctrl .bl-path{background:rgba(232,90,79,.10);border-color:#e9a79f;color:#b5443b;text-align:center}
+.bl-svg .nd.lit circle{stroke:#ffd27a;stroke-width:4}.bl-svg .nd.dim{opacity:.35}
+.bl-noscript{margin:0!important;color:var(--muted)}
 </style>
 </head>
 <body class="spotlight">
@@ -281,20 +305,15 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
   <h2>雙向連結：我連到你，你也找得到我</h2>
   <p>連結有兩個方向。A 檔寫了一個連到 B 的連結，這是正向連結；站在 B 的角度，「有哪些檔案連到我」就是反向連結（backlinks）。</p>
   <p>雙向連結的好處是不管從哪一端進來，都找得到另一端。我在 Obsidian（我用的筆記軟體）裡寫 <code>[[檔名]]</code>，就連到那份檔案。</p>
-  <p>例如我今天開了一個會，寫了一份會議紀錄；下次要去執行，有一份執行的紀錄；之後可能還有一份復盤。這三份連在一起，以後打開任何一份，都知道這件事還有哪些檔案。同一個專案的檔案都這樣連在一起，就很好找。</p>
-  <div class="xr" role="img" aria-label="會議紀錄、執行紀錄、復盤三份檔案互相連結，從任何一份都找得到另外兩份">
-    <div class="xr-chain">
-      <div class="xr-box"><small>第 1 份</small>會議紀錄<em>今天開會</em></div>
-      <div class="xr-arrow"><span>⇄</span></div>
-      <div class="xr-box"><small>第 2 份</small>執行紀錄<em>下次去執行</em></div>
-      <div class="xr-arrow"><span>⇄</span></div>
-      <div class="xr-box"><small>第 3 份</small>復盤<em>做完之後回頭看</em></div>
-    </div>
+  <p>例如 A 專案：今天開會，寫了一份「A 專案會議紀錄」；下次要去執行，有一份「A 專案執行企劃」；之後還有一場「A 專案復盤會議」。這三份連在一起，以後打開任何一份，都知道這件事還有哪些檔案。同一個專案的檔案都這樣連在一起，就很好找。</p>
+  <p>下面可以直接試：一開始三份檔案各自散著，按按鈕在檔案裡寫上連結，它們就會靠在一起。圓點可以拖曳，點一下圓點，看它連出去和連進來的是哪幾份。</p>
+  <div class="bl-demo" data-demo="backlinks"><p class="bl-noscript">這裡是互動示範，需要開啟 JavaScript 才看得到。</p></div>
+  <div class="xr">
     <div class="xr-fork">
-      <div class="xr-box ok"><small>正向</small>會議紀錄裡寫了 [[執行紀錄]]<em>從會議紀錄點過去</em></div>
-      <div class="xr-box"><small>反向</small>打開執行紀錄，看得到「會議紀錄連到我」<em>從執行紀錄找回來</em></div>
+      <div class="xr-box ok"><small>正向</small>會議紀錄裡寫了 [[A 專案執行企劃]]<em>從會議紀錄點過去</em></div>
+      <div class="xr-box"><small>反向</small>打開執行企劃，看得到「會議紀錄連到我」<em>從執行企劃找回來</em></div>
     </div>
-    <p class="xr-cap">同一個專案的檔案連成一串，打開任何一份，都知道這件事還有哪些檔案。</p>
+    <p class="xr-cap">同一條連結，兩個方向都找得到。灰色小點是知識庫裡其他沒有連起來的筆記。</p>
   </div>
 </div></section>
 
@@ -308,6 +327,7 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
   <p>主說明開頭掛兩到四個標籤，檔尾列出這個技能包所有參考檔的連結。這樣一來，技能包自己就是一張小檢索頁：從標籤卡可以反向找到技能包，從技能包可以正向找到每一份參考檔。131 個技能包裡，目前 112 個已經有這份清單。</p>
   <h3>用春總編來看：一個主說明，連到好幾份參考檔</h3>
   <p>春總編的主說明（SKILL.md）約 26,207 字，連到 35 份參考檔，參考檔合計約 218,289 字，整個技能包共約 244,496 字（2026 年 10 月 15 日統計，不含備份資料夾和 7 張圖）。每份參考檔管一種工作，例如脆文、方格子文章、簡報各有自己的參考檔，不同種類的文章有不同的原則和範例，寫到哪一種才讀哪一份。</p>
+  <div class="bl-demo" data-demo="skill"><p class="bl-noscript">這裡是互動示範，需要開啟 JavaScript 才看得到。</p></div>
   <div class="readmore near"><b>技能包是什麼、怎麼做，我另外寫過</b><ul>
     <li><a href="../claude-skills-knowledge-assets/">Claude Skills 是什麼？把你的專業流程，變成 AI 能重複執行的知識資產</a>　這一段只講技能包怎麼被 AI 找到，那篇講技能包是什麼，以及怎麼把自己的流程做成技能包</li>
   </ul></div>
@@ -323,6 +343,7 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
     <li>平常的操作分成三種：把新資料收進來、查詢、檢查整份 wiki 有沒有矛盾或過時的地方。</li>
   </ul>
   <p>它跟「問問題時才去原始資料裡撈片段」的做法不同，重點是讓 AI 平常就把知識整理好、把連結建好。</p>
+  <div class="bl-demo" data-demo="llmwiki"><p class="bl-noscript">這裡是互動示範，需要開啟 JavaScript 才看得到。</p></div>
   <h3>我怎麼看 LLM Wiki</h3>
   <p>我在 2026 年 6 月的觀點日記裡寫過，它跟 Obsidian 裡文件互相連結是同一類概念，都是讓文件跟文件之間可以互相找到，知識庫不會變成一堆孤立的文件。但我自己實際操作時發現，讓文件直接互連，準確性最高，管理成本也最高。每寫一篇文章，都要去找所有跟它有關的文章、一一建立連結，對我來說不切實際，除非是非常高價值的議題才值得這樣做。這是我對直接互連的取捨；Karpathy 的原案把交叉連結和維護交給 AI 來做。所以我用了別的方式，後面會講。</p>
 </div></section>
@@ -332,6 +353,7 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
   <p>Tag Wiki 是我自己的做法，中文叫標籤連結法。它的靈感來自 LLM Wiki，但做了取捨：不需要每篇內容互相比對，只要連到幾個關鍵節點就好。</p>
   <p>關鍵節點就是標籤卡。這裡的標籤本身就是一張頁面，可以寫下「我說的這個詞是什麼意思」，標籤卡之間也可以互相連結。每篇文章只掛幾個標籤，等於只連到幾張卡；要找某個主題時，從那張卡的反向連結就能把相關文章都叫回來。</p>
   <p>我常用的比喻是經絡與穴道。脈絡太多太細，管不完，抓住幾個關鍵穴位，就能調控整條經絡。標籤卡就是穴位。</p>
+  <div class="bl-demo" data-demo="tagwiki"><p class="bl-noscript">這裡是互動示範，需要開啟 JavaScript 才看得到。</p></div>
   <p>為了讓標籤不亂長，我有一份標籤字典，規定只能從字典裡選，字典沒有的詞要先問我。目前整理出的標籤卡有 289 張，分成對象、內容、情境、性質四類。</p>
   <div class="readmore near"><b>標籤卡怎麼定義、字典怎麼管，在另一篇</b><ul>
     <li><a href="../tag-wiki-method/">資料越堆越多，AI 反而找不到怎麼辦？：標籤連結法 Tag Wiki</a>　這一段只講 Tag Wiki 怎麼連，那篇講標籤卡怎麼寫、四個維度怎麼分、字典怎麼做版本管理，也寫了顧問跨客戶整理資料時的隔離原則</li>
@@ -469,6 +491,114 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
 })();
 </script>
 
+<script>
+(function(){
+  var NS='http://www.w3.org/2000/svg';
+  var DEMOS={
+    backlinks:{title:'動手試試：把 A 專案的三份檔案連起來',len:150,rep:5200,extra:9,
+      nodes:[['m','A 專案會議紀錄','#e8884b'],['p','A 專案執行企劃','#5689b8'],['r','A 專案復盤會議','#7a9a6a']],
+      steps:[['在「會議紀錄」寫 [[A 專案執行企劃]]',[['m','p']]],['在「執行企劃」寫 [[A 專案復盤會議]]',[['p','r']]],['在「復盤會議」寫 [[A 專案會議紀錄]]',[['r','m']]]],
+      msgs:['還沒有連結：三份檔案各自散著，彼此找不到。','已經寫了 {n} 條連結，連上的檔案靠在一起了。','三份都連起來了：打開任何一份，都找得到另外兩份。這就是雙向連結。']},
+    skill:{title:'動手試試：春總編怎麼讓 AI 找到要讀的那一份',len:110,rep:3200,extra:8,
+      nodes:[['i','簡介（索引）','#e85a4f'],['s','SKILL.md','#a0814a'],['t','脆文','#5689b8'],['f','方格子文章','#5689b8'],['k','簡報','#5689b8'],['l','講座預告','#5689b8'],['h','改標題','#5689b8'],['c','社群圖文','#5689b8']],
+      steps:[['寫上簡介（索引）',[['i','s']]],['主說明檔尾加上檔案清單',[['s','t'],['s','f'],['s','k'],['s','l'],['s','h'],['s','c']]]],
+      path:{btn:'模擬：我說「寫脆文」',seq:['i','s','t'],ok:'AI 先看簡介，判斷有關才讀 SKILL.md，再從清單找到「脆文」那份，其他參考檔都不用讀。',fail:'索引或清單還沒做好：AI 不知道該讀哪一份，只能整包翻。'},
+      msgs:['還沒有索引：一堆檔案散著，AI 不知道先讀哪一份。','做了一半，再把另一步做完。','索引和清單都有了：按「模擬：我說『寫脆文』」，看 AI 怎麼一層一層找。']},
+    llmwiki:{title:'動手試試：LLM Wiki 怎麼長出來',len:120,rep:3600,extra:6,
+      nodes:[['r1','原始資料 1','#8a7f72'],['r2','原始資料 2','#8a7f72'],['r3','原始資料 3','#8a7f72'],['w1','頁面 A','#5689b8'],['w2','頁面 B','#5689b8'],['w3','頁面 C','#5689b8'],['w4','頁面 D','#5689b8'],['u','規則文件','#e85a4f']],
+      steps:[['AI 讀原始資料，寫成 wiki 頁面',[['r1','w1'],['r1','w2'],['r2','w2'],['r2','w3'],['r3','w4'],['r3','w1']]],['AI 讓頁面互相連結',[['w1','w2'],['w2','w3'],['w3','w4'],['w4','w1'],['w1','w3'],['w2','w4']]],['加上規則文件',[['u','w1'],['u','w2'],['u','w3'],['u','w4']]]],
+      msgs:['還沒整理：原始資料各自散著。','AI 正在把資料整理成互相連結的頁面，已做 {n} 步。','三步都做了：原始資料不改動，AI 寫好、連好 wiki 頁面，規則文件告訴它結構和操作方式。']},
+    tagwiki:{title:'動手試試：Tag Wiki 每篇只連到幾張標籤卡',len:105,rep:2600,extra:6,
+      nodes:[['g1','標籤卡：知識管理','#5f7553'],['g2','標籤卡：AI工作流','#5f7553'],['g3','標籤卡：課程','#5f7553'],['a1','文章 1','#a0814a'],['a2','文章 2','#a0814a'],['a3','文章 3','#a0814a'],['a4','文章 4','#a0814a'],['a5','文章 5','#a0814a'],['a6','文章 6','#a0814a'],['a7','文章 7','#a0814a'],['a8','文章 8','#a0814a']],
+      steps:[['每篇文章掛上 1 到 2 個標籤',[['a1','g1'],['a2','g1'],['a3','g1'],['a3','g2'],['a4','g2'],['a5','g2'],['a6','g2'],['a6','g3'],['a7','g3'],['a8','g3']]],['標籤卡之間互相連結',[['g1','g2'],['g2','g3']]]],
+      path:{btn:'模擬：找「AI工作流」的文章',focusIn:'g2',ok:'從「AI工作流」這張卡的反向連結，把掛了它的文章一次叫回來。',fail:'文章還沒掛標籤：卡上找不到任何文章。'},
+      msgs:['還沒掛標籤：文章各自散著，要一篇一篇找。','每篇只連到幾張卡，卡把相關文章聚在一起。','標籤卡也連起來了，可以按「模擬」看怎麼從一張卡叫回文章。']}
+  };
+  function el(tag,cls,txt){var e=document.createElement(tag);if(cls)e.className=cls;if(txt!=null)e.textContent=txt;return e;}
+  function rnd(a,b){return a+Math.random()*(b-a);}
+  function Demo(root,cfg){
+    root.innerHTML='';
+    var head=el('div','bl-head');head.appendChild(el('b',null,cfg.title));head.appendChild(el('span',null,'圓點可以拖曳；按鈕可以來回切換，比較做了和沒做'));root.appendChild(head);
+    var svg=document.createElementNS(NS,'svg');svg.setAttribute('class','bl-svg');svg.setAttribute('role','img');svg.setAttribute('aria-label',cfg.title+'（互動關聯圖）');
+    var gL=document.createElementNS(NS,'g'),gN=document.createElementNS(NS,'g');svg.appendChild(gL);svg.appendChild(gN);root.appendChild(svg);
+    var ctrl=el('div','bl-ctrl');root.appendChild(ctrl);
+    var info=el('div','bl-info');var selB=el('b','bl-sel','點一下任何一個彩色圓點');var io=el('div','bl-io');
+    var o1=el('div'),o2=el('div');o1.appendChild(el('small',null,'連出去（正向）'));var outS=el('span',null,'－');o1.appendChild(outS);o2.appendChild(el('small',null,'連進來（反向）'));var inS=el('span',null,'－');o2.appendChild(inS);io.appendChild(o1);io.appendChild(o2);info.appendChild(selB);info.appendChild(io);root.appendChild(info);
+    var msg=el('p','bl-msg');msg.setAttribute('aria-live','polite');root.appendChild(msg);
+    var W,H,nodes=[],byId={},on=cfg.steps.map(function(){return false;}),sel=null,drag=null,moved=false,hl=null,hlTimer=0,btns=[];
+    var narrow=false;function size(){narrow=root.clientWidth<600;W=narrow?400:640;H=narrow?470:380;svg.setAttribute('viewBox','0 0 '+W+' '+H);}
+    function build(){
+      size();gN.innerHTML='';nodes=[];byId={};
+      cfg.nodes.forEach(function(n){var nd={id:n[0],label:n[1],color:n[2],main:true,r:15,x:rnd(70,W-70),y:rnd(30,H-50),vx:0,vy:0};nodes.push(nd);byId[nd.id]=nd;});
+      for(var k=0;k<cfg.extra;k++)nodes.push({main:false,r:6,x:rnd(20,W-20),y:rnd(20,H-20),vx:0,vy:0});
+      nodes.forEach(function(nd){
+        var g=document.createElementNS(NS,'g');g.setAttribute('class','nd'+(nd.main?'':' bg'));
+        var c=document.createElementNS(NS,'circle');c.setAttribute('r',nd.r);c.setAttribute('fill',nd.main?nd.color:'#6f6860');g.appendChild(c);
+        if(nd.main){var tx=document.createElementNS(NS,'text');tx.setAttribute('text-anchor','middle');tx.setAttribute('y',narrow?38:34);tx.style.fontSize=(narrow?22:17)+'px';tx.textContent=nd.label;g.appendChild(tx);
+          g.addEventListener('pointerdown',function(e){drag=nd;moved=false;g.classList.add('drag');try{svg.setPointerCapture(e.pointerId);}catch(_){}e.preventDefault();kick();});}
+        nd.el=g;gN.appendChild(g);
+      });
+    }
+    function pt(e){var p=svg.createSVGPoint();p.x=e.clientX;p.y=e.clientY;return p.matrixTransform(svg.getScreenCTM().inverse());}
+    svg.addEventListener('pointermove',function(e){if(!drag)return;var q=pt(e);if(Math.abs(q.x-drag.x)+Math.abs(q.y-drag.y)>3)moved=true;drag.x=q.x;drag.y=q.y;drag.vx=drag.vy=0;kick();});
+    function up(){if(!drag)return;drag.el.classList.remove('drag');if(!moved)select(drag);drag=null;}
+    svg.addEventListener('pointerup',up);svg.addEventListener('pointercancel',up);
+    function links(){var a=[];cfg.steps.forEach(function(s,k){if(on[k])s[1].forEach(function(l){a.push(l);});});return a;}
+    function drawLinks(){
+      gL.innerHTML='';
+      links().forEach(function(l){var ln=document.createElementNS(NS,'line');ln._a=byId[l[0]];ln._b=byId[l[1]];
+        var h=(sel&&(l[0]===sel.id||l[1]===sel.id))||(hl&&hl.links.some(function(x){return x[0]===l[0]&&x[1]===l[1];}));
+        if(h)ln.setAttribute('class','hl');gL.appendChild(ln);});
+      nodes.forEach(function(nd){if(!nd.main)return;nd.el.classList.toggle('sel',!!sel&&sel===nd);nd.el.classList.toggle('lit',!!hl&&hl.nodes.indexOf(nd.id)>=0);nd.el.classList.toggle('dim',!!hl&&hl.nodes.indexOf(nd.id)<0);});
+    }
+    function name(id){return byId[id].label;}
+    function select(nd){
+      sel=nd;hl=null;
+      var ls=links(),out=ls.filter(function(l){return l[0]===nd.id;}).map(function(l){return name(l[1]);}),inn=ls.filter(function(l){return l[1]===nd.id;}).map(function(l){return name(l[0]);});
+      selB.textContent='目前打開：'+nd.label;outS.textContent=out.length?out.join('、'):'還沒有';inS.textContent=inn.length?inn.join('、'):'還沒有';drawLinks();
+    }
+    function status(){
+      var n=on.filter(Boolean).length,all=n===on.length;
+      msg.classList.toggle('ok',all);msg.textContent=(n===0?cfg.msgs[0]:all?cfg.msgs[2]:cfg.msgs[1]).replace('{n}',n);
+    }
+    cfg.steps.forEach(function(s,k){var b=el('button',null,s[0]);b.type='button';b.setAttribute('aria-pressed','false');
+      b.addEventListener('click',function(){on[k]=!on[k];b.classList.toggle('done',on[k]);b.setAttribute('aria-pressed',on[k]);hl=null;if(sel)select(sel);else drawLinks();status();kick();});
+      btns.push(b);ctrl.appendChild(b);});
+    if(cfg.path){var pb=el('button','bl-path',cfg.path.btn);pb.type='button';ctrl.appendChild(pb);
+      pb.addEventListener('click',function(){
+        var ls=links(),has=function(a,b){return ls.some(function(l){return l[0]===a&&l[1]===b;});},ok,res;
+        if(cfg.path.seq){var q=cfg.path.seq;ok=true;var lk=[];for(var i=0;i<q.length-1;i++){if(!has(q[i],q[i+1]))ok=false;lk.push([q[i],q[i+1]]);}res={nodes:q.slice(),links:lk};}
+        else{var f=cfg.path.focusIn,src=ls.filter(function(l){return l[1]===f&&byId[l[0]].label.indexOf('標籤卡')<0;});ok=src.length>0;res={nodes:[f].concat(src.map(function(l){return l[0];})),links:src};}
+        sel=null;nodes.forEach(function(nd){if(nd.main)nd.el.classList.remove('sel');});
+        if(ok){hl=res;msg.classList.add('ok');msg.textContent=cfg.path.ok;}else{hl=null;msg.classList.remove('ok');msg.textContent=cfg.path.fail;}
+        drawLinks();clearTimeout(hlTimer);hlTimer=setTimeout(function(){hl=null;drawLinks();status();},6000);kick();
+      });}
+    var rb=el('button','bl-reset','重來');rb.type='button';ctrl.appendChild(rb);
+    rb.addEventListener('click',function(){on=on.map(function(){return false;});btns.forEach(function(b){b.classList.remove('done');b.setAttribute('aria-pressed','false');});sel=null;hl=null;selB.textContent='點一下任何一個彩色圓點';outS.textContent='－';inS.textContent='－';build();drawLinks();status();kick();});
+    var t=0,running=false,visible=true;
+    function kick(){if(!running&&visible){running=true;requestAnimationFrame(step);}}
+    function step(){
+      t++;var ls=links();
+      for(var a=0;a<nodes.length;a++)for(var b=a+1;b<nodes.length;b++){var A=nodes[a],B=nodes[b],dx=B.x-A.x,dy=B.y-A.y,d2=dx*dx+dy*dy+0.01,d=Math.sqrt(d2),f=(A.main&&B.main?cfg.rep:700)/d2;dx/=d;dy/=d;A.vx-=dx*f;A.vy-=dy*f;B.vx+=dx*f;B.vy+=dy*f;}
+      ls.forEach(function(l){var A=byId[l[0]],B=byId[l[1]],dx=B.x-A.x,dy=B.y-A.y,d=Math.sqrt(dx*dx+dy*dy)||1,f=(d-cfg.len)*0.02;dx/=d;dy/=d;A.vx+=dx*f;A.vy+=dy*f;B.vx-=dx*f;B.vy-=dy*f;});
+      nodes.forEach(function(nd){
+        var linked=nd.main&&ls.some(function(l){return l[0]===nd.id||l[1]===nd.id;}),g=linked?0.004:0.0012;
+        nd.vx+=(W/2-nd.x)*g;nd.vy+=(H/2-nd.y)*g;
+        if(!linked){nd.vx+=Math.sin(t/40+(nd.r*7))*0.05;nd.vy+=Math.cos(t/47+nd.x/50)*0.05;}
+        if(nd===drag)return;
+        nd.vx*=0.86;nd.vy*=0.86;nd.x+=nd.vx;nd.y+=nd.vy;
+        var mx=nd.main?60:10;nd.x=Math.max(mx,Math.min(W-mx,nd.x));nd.y=Math.max(nd.main?22:10,Math.min(H-(nd.main?42:10),nd.y));
+      });
+      nodes.forEach(function(nd){nd.el.setAttribute('transform','translate('+nd.x.toFixed(1)+','+nd.y.toFixed(1)+')');});
+      Array.prototype.forEach.call(gL.children,function(ln){ln.setAttribute('x1',ln._a.x);ln.setAttribute('y1',ln._a.y);ln.setAttribute('x2',ln._b.x);ln.setAttribute('y2',ln._b.y);});
+      if(visible)requestAnimationFrame(step);else running=false;
+    }
+    if('IntersectionObserver' in window)new IntersectionObserver(function(es){visible=es[0].isIntersecting;if(visible)kick();}).observe(root);
+    build();drawLinks();status();kick();
+  }
+  document.querySelectorAll('.bl-demo[data-demo]').forEach(function(r){var c=DEMOS[r.getAttribute('data-demo')];if(c)Demo(r,c);});
+})();
+</script>
 <script src="../../image-interactions.js"></script>
 
 <!-- 官網共用：滑鼠暖光暈 + 導航列漢堡選單 -->
