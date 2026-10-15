@@ -189,6 +189,8 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
 .xr-pane p{margin:8px 0 0!important;font-size:17px!important;line-height:1.55!important}
 .xr-pane p b{display:block;color:#1a1612;margin-bottom:4px}
 @media(max-width:820px){.xr-three{grid-template-columns:1fr}}
+.xr-chain{display:grid;grid-template-columns:minmax(0,1fr) 44px minmax(0,1fr) 44px minmax(0,1fr);gap:8px;align-items:center}
+@media(max-width:820px){.xr-chain{grid-template-columns:1fr}.xr-chain .xr-arrow span{transform:rotate(90deg);display:inline-block}}
 </style>
 </head>
 <body class="spotlight">
@@ -270,19 +272,21 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
 <section class="section" id="backlinks"><div class="inner">
   <h2>雙向連結：我連到你，你也找得到我</h2>
   <p>連結有兩個方向。A 檔寫了一個連到 B 的連結，這是正向連結；站在 B 的角度，「有哪些檔案連到我」就是反向連結（backlinks）。</p>
-  <p>雙向連結的好處是不管從哪一端進來，都找得到另一端。我在 Obsidian（我用的筆記軟體）裡寫 <code>[[標籤連結法]]</code>，這篇筆記就連到「標籤連結法」那張卡；反過來，從那張卡出發，可以列出所有提到它的筆記。2026 年 10 月 15 日查了一次，目前有 89 份檔案連到這張卡。</p>
-  <div class="xr" role="img" aria-label="正向連結：筆記 A、B、C 的內文都寫了標籤連結法，連到標籤連結法那張卡。反向連結：從標籤連結法那張卡出發，列出所有連到它的筆記，共 89 份。">
-    <div class="xr-flow">
-      <div class="xr-col"><small>正向：從筆記出發</small><span class="xr-chip">筆記 A<em>內文寫了 [[標籤連結法]]</em></span><span class="xr-chip">筆記 B<em>內文寫了 [[標籤連結法]]</em></span><span class="xr-chip">筆記 C ⋯<em>內文寫了 [[標籤連結法]]</em></span></div>
-      <div class="xr-arrow"><span>→</span>連到</div>
-      <div class="xr-col"><small>目的地</small><span class="xr-chip new">標籤連結法 那張卡</span></div>
+  <p>雙向連結的好處是不管從哪一端進來，都找得到另一端。我在 Obsidian（我用的筆記軟體）裡寫 <code>[[檔名]]</code>，就連到那份檔案。</p>
+  <p>例如我今天開了一個會，寫了一份會議紀錄；下次要去執行，有一份執行的紀錄；之後可能還有一份復盤。這三份連在一起，以後打開任何一份，都知道這件事還有哪些檔案。同一個專案的檔案都這樣連在一起，就很好找。</p>
+  <div class="xr" role="img" aria-label="會議紀錄、執行紀錄、復盤三份檔案互相連結，從任何一份都找得到另外兩份">
+    <div class="xr-chain">
+      <div class="xr-box"><small>第 1 份</small>會議紀錄<em>今天開會</em></div>
+      <div class="xr-arrow"><span>⇄</span></div>
+      <div class="xr-box"><small>第 2 份</small>執行紀錄<em>下次去執行</em></div>
+      <div class="xr-arrow"><span>⇄</span></div>
+      <div class="xr-box"><small>第 3 份</small>復盤<em>做完之後回頭看</em></div>
     </div>
-    <div class="xr-flow">
-      <div class="xr-col"><small>反向：從卡出發</small><span class="xr-chip new">標籤連結法 那張卡</span></div>
-      <div class="xr-arrow"><span>→</span>列出所有連到它的</div>
-      <div class="xr-col"><small>找回來的筆記</small><span class="xr-chip ai">筆記 A、筆記 B、筆記 C ⋯<em>目前共 89 份（2026 年 10 月 15 日查）</em></span></div>
+    <div class="xr-fork">
+      <div class="xr-box ok"><small>正向</small>會議紀錄裡寫了 [[執行紀錄]]<em>從會議紀錄點過去</em></div>
+      <div class="xr-box"><small>反向</small>打開執行紀錄，看得到「會議紀錄連到我」<em>從執行紀錄找回來</em></div>
     </div>
-    <p class="xr-cap">兩個方向走的是同一條連結。不管從筆記進來，還是從卡進來，都找得到另一端。</p>
+    <p class="xr-cap">同一個專案的檔案連成一串，打開任何一份，都知道這件事還有哪些檔案。</p>
   </div>
 </div></section>
 
