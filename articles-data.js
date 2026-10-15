@@ -41,6 +41,24 @@ window.ARTICLES = [
   },
 
   {
+    id: "ai-retrieval-pages-backlinks",
+    url: "articles/ai-retrieval-pages-backlinks/",
+    date: "2026-10-15",
+    updated: "2026-10-15",
+    title: "資料越存越多，怎麼讓 AI 找得到？｜LLM Wiki、技能包、Tag Wiki 的檢索頁、雙向連結與漸進式載入",
+    problem: "資料越存越多，叫 AI 去找卻找錯或找不到；技能包做了一堆，自己也忘記做過哪個。",
+    audience: "資料量變大、想讓 AI 找得到自己資料的知識工作者，以及在做技能包的人。",
+    summary: "AI 每次只讀幾份資料，靠的是檢索頁（先看目錄再翻內容）、雙向連結（我連到你，你也找得到我）、漸進式載入（先讀簡介，用到才讀全文）。這篇用 Karpathy 的 LLM Wiki、技能包、Tag Wiki 三個應用講這三件事，說明我為什麼選 Tag Wiki、三種做法怎麼互相應用，並附一段請 AI 做第一張檢索頁的提示詞。",
+    tags: {
+      topic: ["知識管理", "知識庫", "技能包設計", "AI工作流"],
+      level: ["基礎"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["tag-wiki-method", "claude-skills-knowledge-assets", "rag-three-retrieval-modes", "diary-driven-agent-3x4-v2", "docs-as-system-design-agent"]
+  },
+
+  {
     id: "diary-driven-agent-3x4-v2",
     url: "articles/diary-driven-agent-3x4-v2/",
     date: "2026-10-15",
@@ -55,7 +73,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["diary-driven-agent-3x4", "what-is-loop-engineering", "knowledge-base-three-vault-split", "tag-wiki-method", "ai-manages-ai-focus"]
+    related: ["diary-driven-agent-3x4", "what-is-loop-engineering", "knowledge-base-three-vault-split", "tag-wiki-method", "ai-retrieval-pages-backlinks", "ai-manages-ai-focus"]
   },
 
   {
@@ -1455,7 +1473,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["llm-rag-agent-mcp", "tag-wiki-method", "long-document-review-layers", "ai-said-it-watched-the-video"]
+    related: ["llm-rag-agent-mcp", "tag-wiki-method", "long-document-review-layers", "ai-said-it-watched-the-video", "ai-retrieval-pages-backlinks"]
   },
 
   {
@@ -2587,7 +2605,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["llm-rag-agent-mcp", "questionnaire-to-slides-agent-workflow", "teacher-prep-knowledge-workflow", "knowledge-base-three-vault-split", "docs-as-system-design-agent", "ai-loop-safety-recovery", "inspiration-production-system", "why-split-data-into-cards", "knowledge-os-master-map", "build-your-own-dictionary", "rag-three-retrieval-modes", "ai-rule-file-slimming", "diary-driven-agent-3x4-v2"]
+    related: ["llm-rag-agent-mcp", "questionnaire-to-slides-agent-workflow", "teacher-prep-knowledge-workflow", "knowledge-base-three-vault-split", "docs-as-system-design-agent", "ai-loop-safety-recovery", "inspiration-production-system", "why-split-data-into-cards", "knowledge-os-master-map", "build-your-own-dictionary", "rag-three-retrieval-modes", "ai-rule-file-slimming", "diary-driven-agent-3x4-v2", "ai-retrieval-pages-backlinks"]
   },
 
   {
@@ -2915,7 +2933,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: "https://vocus.cc/salon/Jiang_Coach" },
-    related: ["strong-ai-models-knowledge-workflow-road", "questionnaire-to-slides-agent-workflow", "teacher-prep-knowledge-workflow", "diary-driven-agent-3x4", "how-ai-connects-software", "how-to-train-your-ai-employee", "decision-ladder-non-programmer", "tidy-mess-before-consulting", "what-is-loop-engineering", "tag-wiki-method", "ai-delegators-optimism", "intangible-assets-grow-by-sharing", "publish-gate", "laptop-desktop-webpage-sync-icloud-git", "manage-ai-with-management-knowledge", "train-your-ai-agent-editor", "knowledge-os-master-map", "knowledge-as-employee", "mika-to-laika-product-character-design", "ai-employee-four-levels", "free-deploy-three-boundaries", "copied-mechanism-is-no-mechanism", "website-as-workstation"]
+    related: ["strong-ai-models-knowledge-workflow-road", "questionnaire-to-slides-agent-workflow", "teacher-prep-knowledge-workflow", "diary-driven-agent-3x4", "how-ai-connects-software", "how-to-train-your-ai-employee", "decision-ladder-non-programmer", "tidy-mess-before-consulting", "what-is-loop-engineering", "tag-wiki-method", "ai-delegators-optimism", "intangible-assets-grow-by-sharing", "publish-gate", "laptop-desktop-webpage-sync-icloud-git", "manage-ai-with-management-knowledge", "train-your-ai-agent-editor", "knowledge-os-master-map", "knowledge-as-employee", "mika-to-laika-product-character-design", "ai-employee-four-levels", "free-deploy-three-boundaries", "copied-mechanism-is-no-mechanism", "website-as-workstation", "ai-retrieval-pages-backlinks"]
   },
 
   {
@@ -3484,7 +3502,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["semantic-rules-before-prompt-templates", "ai-data-organization-usable-system", "manage-ai-with-management-knowledge", "chatgpt-work-skills-web-version", "old-prompts-intent-first-loop-engineering", "ai-employee-four-levels", "use-more-ai-not-enough", "ai-adoption-start-with-one-workflow", "one-sentence-ai-website-workflow", "one-sentence-video-to-deep-article"]
+    related: ["semantic-rules-before-prompt-templates", "ai-data-organization-usable-system", "manage-ai-with-management-knowledge", "chatgpt-work-skills-web-version", "old-prompts-intent-first-loop-engineering", "ai-employee-four-levels", "use-more-ai-not-enough", "ai-adoption-start-with-one-workflow", "one-sentence-ai-website-workflow", "one-sentence-video-to-deep-article", "ai-retrieval-pages-backlinks"]
   },
 
   {
