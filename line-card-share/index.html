@@ -143,8 +143,8 @@ $('run').onclick=async function(){
     list=FLEX_SHARE.check(msg);
   }catch(e){list=['JSON 讀不懂：'+e.message];}
   if(list.length){list.slice(0,8).forEach(function(t){var li=document.createElement('li');li.textContent=t;errs.appendChild(li);});return;}
+  var url;try{url=await FLEX_SHARE.shareUrl(msg);}catch(e){var li=document.createElement('li');li.textContent=e.message;errs.appendChild(li);return;}
   var pv=$('preview');pv.innerHTML='';renderFlexBubbles(msg).forEach(function(b){pv.appendChild(b);});
-  var url=await FLEX_SHARE.shareUrl(msg);
   $('url').value=url;$('try').href=url;
   $('urlLen').textContent='連結長度 '+url.length+' 字元'+(url.length>8000?'，偏長，建議減少張數或文字。':'。');
   $('snippet').value='<a href="'+url+'" target="_blank" rel="noopener">用 LINE 分享我的名片</a>';

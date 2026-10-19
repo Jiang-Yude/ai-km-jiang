@@ -72,7 +72,11 @@ var FLEX_SHARE = (function(){
     else if (kind !== 'j') throw new Error('看不懂這個分享連結');
     return JSON.parse(new TextDecoder().decode(bytes));
   }
-  async function shareUrl(msg){ return LIFF_URL + '?c=' + await encode(msg); }
+  async function shareUrl(msg){
+    var code = await encode(msg);
+    if (code.length > MAX_CODE) throw new Error('名片壓縮後還是太長（' + code.length + ' 字元，上限 ' + MAX_CODE + '），請減少張數或文字');
+    return LIFF_URL + '?c=' + code;
+  }
 
   return { LIFF_URL: LIFF_URL, normalize: normalize, check: check, encode: encode, decode: decode, shareUrl: shareUrl };
 })();
