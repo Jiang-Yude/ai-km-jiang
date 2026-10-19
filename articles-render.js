@@ -41,6 +41,19 @@
     });
   }
 
+  // 別名庫 search-aliases.js（約 76KB）改成訪客第一次點進或輸入搜尋框才載入，載完若已有關鍵字就重篩一次
+  var aliasesState = window.SEARCH_ALIASES ? "done" : "idle";
+  function loadAliases(onDone) {
+    if (aliasesState !== "idle") return;
+    aliasesState = "loading";
+    var sc = document.createElement("script");
+    sc.src = "search-aliases.js";
+    sc.async = true;
+    sc.onload = function () { aliasesState = "done"; onDone(); };
+    sc.onerror = function () { aliasesState = "idle"; };
+    document.head.appendChild(sc);
+  }
+
   // 一篇文章「同時符合」所有已選標籤（交集）
   function matchesTags(a) {
     if (selected.size === 0) return true;
@@ -367,7 +380,10 @@
     elClear.addEventListener("click", clearAll);
 
     if (elSearch) {
+      var aliasesDone = function () { if (query) refresh(); };
+      elSearch.addEventListener("focus", function () { loadAliases(aliasesDone); });
       elSearch.addEventListener("input", function () {
+        loadAliases(aliasesDone);
         query = elSearch.value.trim().toLowerCase();
         elSearchWrap.classList.toggle("has-text", query.length > 0);
         refresh();
