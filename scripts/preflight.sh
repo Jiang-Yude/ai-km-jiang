@@ -10,10 +10,10 @@ FAIL=0
 ok(){ echo "  ✅ $1"; }
 bad(){ echo "  ❌ $1"; FAIL=1; }
 
-echo "═══ 0/11 部署環境檢查 ═══"
+echo "═══ 0/12 部署環境檢查 ═══"
 if bash scripts/check-deploy-env.sh; then ok "部署環境"; else bad "部署環境未通過"; fi
 
-echo "═══ 1/11 站點索引重建（含受控詞彙檢查）═══"
+echo "═══ 1/12 站點索引重建（含受控詞彙檢查）═══"
 # 文章資料源一致性（2026-09-06 立）：articles-data.js 是一篇一檔 article.json 合併出的生成檔。
 # 這一關擋兩件事：①有人照舊習慣直接手改 articles-data.js（漂移）②新文章放了 article.json 卻沒重建。
 # 兩種都印出該怎麼修（--adopt 回寫／重建），不靜默覆蓋任何一邊。
@@ -73,16 +73,30 @@ else
   bad "列表封面欄位未過：見上方清單。article.json 補 cover，或在 article-cover-ignore.json 寫明理由"
 fi
 
-echo "═══ 2/11 文章互聯腳本齊全 ═══"
+# 文章日期與 head（2026-10-19 立，盤查驅動）：81 篇缺 datePublished、98 篇沒有可見日期行、14 篇 <title> 與 article.json 不同，
+# 規則 6/26 就有但模板沒接、也沒有檢查器。現在 head 與日期行由 build-article-head.mjs 從 article.json 生成，
+# 這兩關擋「缺日期」與「有人手改 head 或改了 article.json 沒重生」。與上面幾關同屬資料源一致性，刻意不另編號。
+if node scripts/check-article-dates.mjs; then
+  ok "文章日期（article.json、JSON-LD、可見日期行三處一致）"
+else
+  bad "文章日期未過：見上方清單。改 article.json 後跑 node scripts/build-article-head.mjs --only=<id>"
+fi
+if node scripts/build-article-head.mjs --check; then
+  ok "文章 head（title、og、twitter、JSON-LD、麵包屑與 article.json 一致）"
+else
+  bad "文章 head 與 article.json 不一致：跑 node scripts/build-article-head.mjs（不要手改 head）"
+fi
+
+echo "═══ 2/12 文章互聯腳本齊全 ═══"
 if node scripts/verify-interlink.js 2>&1 | grep -q "結果：PASS"; then ok "interlink"; else bad "verify-interlink FAIL（有文章缺互聯腳本）"; fi
 
-echo "═══ 3/11 雙向連結 ═══"
+echo "═══ 3/12 雙向連結 ═══"
 LG=$(node scripts/link-graph.js check 2>&1)
 if echo "$LG" | grep -q "結果：PASS"; then
   W=$(echo "$LG" | grep -c "WARN" || true); ok "link-graph（單向提醒 $W 筆，不擋）"
 else bad "link-graph 有斷連"; fi
 
-echo "═══ 4/11 新頁面有進 sitemap 與 llms.txt ═══"
+echo "═══ 4/12 新頁面有進 sitemap 與 llms.txt ═══"
 MISS=0
 for f in *.html; do
   # _ 開頭＝本機工具檔（校稿器 tuner 等），跟 _trash/ 同一個慣例，不上線也不進 sitemap
@@ -98,19 +112,26 @@ done
 # 這一關還留著當保底：分支不必再手補 sitemap，但若有人繞過 merge-publish 直接 publish，這裡仍擋。
 if node scripts/check-sitemap-coverage.mjs; then ok "已上線文章都在 sitemap"; else bad "有已上線文章不在 sitemap.xml（見上方清單）：跑 node scripts/build-sitemap.mjs 重建文章段，不用手補"; fi
 # 已上線文章 llms.txt 覆蓋（2026-10-10 立）：原本只驗知識架構一頁，10-03 後 10 篇文章沒進 llms.txt 也沒人擋。
-if node scripts/check-llms-coverage.mjs; then ok "已上線文章都在 llms.txt"; else bad "有已上線文章不在 llms.txt（見上方清單）：照清單補進 Deep Articles 段"; fi
+# 2026-10-19 起 llms.txt、llms-full.txt 文章段改由 build-llms.mjs 從 article.json 生成，覆蓋檢查同時驗標題。
+if node scripts/check-llms-coverage.mjs; then ok "已上線文章都在 llms.txt 與 llms-full.txt，標題一致"; else bad "llms 文章段缺漏或標題過時（見上方清單）：跑 node scripts/build-llms.mjs，不要手補"; fi
+if node scripts/build-llms.mjs --check; then ok "llms 文章段已是最新"; else bad "llms 文章段與 article.json 不一致：跑 node scripts/build-llms.mjs"; fi
 grep -q "knowledge-architecture" llms.txt && ok "llms.txt 有知識架構" || bad "llms.txt 缺知識架構"
 
-echo "═══ 5/11 雙語主導航（2026-09-22 停用）═══"
-# 2026-09-22 江江決定撤英文版，en/ 已整個移除，中英主導航對照已無對象，本關停用不再檢查。
-# check-bilingual-nav.mjs 檔案保留不刪（日後恢復英文版可從 tag archive/en-final-2026-09-22 取回整組）。
-# 保留本段標題是為了不改動 0-10 的關卡編號，publish／巡檢的回報格式不受影響。
-ok "雙語主導航（英文版已撤除，本關停用）"
+echo "═══ 5/12 主導覽一致性（2026-10-19 恢復，改單語）═══"
+# 2026-09-22 撤英文版後本關整關停用，之後沒有任何機制檢查 216 頁手寫導覽；2026-10-19 盤查發現 2 頁 10 月新文章用舊標籤。
+# check-bilingual-nav.mjs 改寫成單語版：比對連結目標與文字，不比空白與 active，沒有 --write。
+# 只擋本次變更的頁（舊頁不一致只提醒），比照 check-title-formula，避免與本次無關的舊頁卡住每次發布。
+if node scripts/check-bilingual-nav.mjs --changed; then ok "主導覽（本次變更的頁與主導覽六項一致）"; else bad "主導覽不一致（見上方「應為」清單，手動改，不要自動覆寫）"; fi
+# WebMCP 工具層（2026-10-19 接線）：check-webmcp.mjs 早就有，但沒接進 preflight，首頁改成動態載入後一直 FAIL 沒人看到。
+# 檢查器已改成認得動態掛載；工具是 AI 讀站的入口，與主導覽同屬「入口一致性」，刻意不另編號。
+_wm="$(mktemp "${TMPDIR:-/tmp}/preflight-webmcp.XXXXXX")"
+if node scripts/check-webmcp.mjs > "$_wm" 2>&1; then ok "WebMCP 工具層（唯讀邊界、掛載、實跑）"; else grep -E "❌|FAIL" "$_wm"; bad "WebMCP 檢查未過（完整輸出：node scripts/check-webmcp.mjs）"; fi
+rm -f "$_wm"
 
-echo "═══ 6/11 內部連結掃描 ═══"
+echo "═══ 6/12 內部連結掃描 ═══"
 python3 scripts/check-links.py && ok "內部連結" || bad "有內部斷鏈（見上）"
 
-echo "═══ 7/11 文章版面樣式完整 ═══"
+echo "═══ 7/12 文章版面樣式完整 ═══"
 # 2026-08-24 立，事故驅動（同一個雷第二次）：文章 CSS 完全內嵌，模板過去缺 .tablewrap／.toc／.readmore，
 # 新文章用到表格就得自己手抄 CSS，抄漏＝整塊退回瀏覽器預設。8/23、8/24 連兩篇上線後才被江江看到。
 # 模板已補齊，這一關是保底。
@@ -126,7 +147,7 @@ if node scripts/check-mika-widget.mjs; then ok "咪卡 widget 覆蓋"; else bad 
 # 現在 selector 改成明確 opt-in（只認 data-interactive-image），這一關擋「有人再把它放寬回去」。
 if node scripts/check-image-drag.mjs; then ok "圖片拖曳護欄"; else bad "圖片互動 selector 被放寬或原生拖曳護欄被拿掉（見上）"; fi
 
-echo "═══ 8/11 秘密掃描（未提交變更檔）═══"
+echo "═══ 8/12 秘密掃描（未提交變更檔）═══"
 if [[ ! -f "$SAFE_DEPLOY_TOOL" ]]; then
   bad "找不到共用秘密掃描入口"
 elif bash "$SAFE_DEPLOY_TOOL" --scan-only "$PWD"; then
@@ -135,11 +156,11 @@ else
   bad "共用秘密掃描未通過"
 fi
 
-echo "═══ 9/11 內容 lint（本次變更檔）═══"
+echo "═══ 9/12 內容 lint（本次變更檔）═══"
 DASH=$(git diff HEAD --unified=0 -- '*.html' 2>/dev/null | grep '^+' | grep -c '——\|——' || true)
 [ "${DASH:-0}" -eq 0 ] && ok "無新增破折號" || echo "  ⚠️  本次新增內容含破折號 $DASH 處（提醒，不擋）"
 
-echo "═══ 10/11 排隊一致性（擋板與索引不可矛盾）═══"
+echo "═══ 10/12 排隊一致性（擋板與索引不可矛盾）═══"
 # 2026-07-29 立，事故驅動：free-deploy-three-boundaries 的四索引接線隨 commit 61b058d 上線，
 # 但 .vercelignore 擋板同時也在，Vercel 沒傳該資料夾 → 線上索引宣告存在、實際 404。
 # 前七關全綠、safe-deploy 五站驗收也全綠，因為檢查都在本機跑（資料夾本機存在），
@@ -186,6 +207,10 @@ for d in articles/*/; do
   fi
 done
 [ $QBAD -eq 0 ] && ok "擋板與 ${PUBDATA_N} 個公開資料檔無矛盾（清單自動偵測，非寫死）"
+
+echo "═══ 11/12 離線測試（tests/）═══"
+# 2026-10-19 立：tests/ 五支從沒接進 preflight。能離線跑的照跑；要 redis 或 wrangler 的由 test-all.sh 依環境變數與 PATH 跳過並印原因。
+if bash scripts/test-all.sh; then ok "離線測試（略過的項目見上方原因）"; else bad "tests/ 有測試失敗（見上方，完整輸出路徑已印出）"; fi
 
 echo ""
 if [ $FAIL -eq 0 ]; then echo "🟢 PREFLIGHT PASS"; else echo "🔴 PREFLIGHT FAIL：修完再跑"; fi

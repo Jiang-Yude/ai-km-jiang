@@ -284,7 +284,7 @@ elif [[ "$PUBLISH_TARGET" == "vercel" ]]; then
 # 驗收三件套（Codex 跨家審查要求）：
 #   ① 本次 commit SHA 的 production 建置 READY；三網域實際指向 main 最新 commit 的建置
 #   ② 固定五站＋動態文章路徑 curl 200
-#   ③ 抽驗一篇 .vercelignore 擋板草稿仍 404（防擋板在 git 部署下失效）
+#   ③ 抽驗一篇 .vercelignore 擋板草稿仍 404（防擋板在 git 部署下失效；只挑 repo 裡真的有檔案的擋板，沒有就印「未驗」）
 # 並行規則（2026-09-27）：
 #   - 找建置用 vercel ls --meta githubCommitSha=<SHA> 精確查，不再猜「main 最新建置換新了沒」
 #     （舊寫法兩台接連 push 時會等到別人的建置；而 vercel inspect 的 JSON 不含 SHA，無法核對）
@@ -450,7 +450,17 @@ for _p in "/" "/offers.html" "/cases.html" "/skills.html" "/site-index.json" ${E
   fi
 done
 
-DRAFT_PATH=$(grep -E '^articles/.+/$' .vercelignore 2>/dev/null | head -1)
+# 擋板草稿 404 抽驗（2026-10-19 改）：舊寫法拿 .vercelignore 第一筆 articles/<id>/，
+# 但那個資料夾（nontech-partner-ai-onboarding）在 repo 裡根本不存在，線上永遠 404，等於沒驗。
+# 改成只挑「git 裡真的有檔案、但被 .vercelignore 擋著」的擋板資料夾來驗；一個都沒有就明說本次沒驗，不假裝通過。
+DRAFT_PATH=""
+while IFS= read -r _d; do
+  [[ -n "$_d" ]] || continue
+  if [[ -n "$(git ls-files -- "$_d" 2>/dev/null | head -1)" ]]; then DRAFT_PATH="$_d"; break; fi
+done < <(grep -E '^(articles|ai-trends)/[^*]+/$' .vercelignore 2>/dev/null)
+if [[ -z "$DRAFT_PATH" ]]; then
+  echo "  ▸ 擋板草稿抽驗：本次沒有可驗的擋板（.vercelignore 列的文章資料夾在 repo 裡都沒有已追蹤檔案），未驗，不算通過也不擋"
+fi
 if [[ -n "$DRAFT_PATH" ]]; then
   _code=$(curl -s -o /dev/null -w '%{http_code}' --max-time 20 ${CF_IP:+--resolve "jiangyude.com:443:$CF_IP"} "https://jiangyude.com/${DRAFT_PATH}" || true)
   if [[ "$_code" == "404" ]]; then

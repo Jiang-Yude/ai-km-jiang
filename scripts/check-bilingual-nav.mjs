@@ -1,137 +1,133 @@
 #!/usr/bin/env node
+/* ============================================================
+   check-bilingual-nav.mjs · 主導覽一致性檢查（單語版，2026-10-19 改寫）
+   ------------------------------------------------------------
+   沿革：原本是中英雙語主導覽的逐字比對器（含 --write 自動覆寫）。2026-09-22 撤英文版後整關停用，
+   之後沒有任何機制檢查全站手寫的 nav.top，盤查（2026-10-19）發現 216 頁裡有 2 頁是舊標籤
+   （深度文章、技能包下載），兩頁都是 10 月的新文章。檔名保留不改，因為 preflight 第 5 關、
+   文章模板與踩雷清單都用這個名字指它。
 
+   檢查什麼（只比對、不改檔；09 踩雷清單第四、二十三節禁用自動覆寫，所以 --write 已移除）：
+     全站公開 HTML 裡有 <nav class="top"> 且有 <ul class="nav-menu"> 的頁，
+     選單裡的連結必須「恰好是」下面六項、順序相同、文字相同、連結解析後指向同一頁。
+     不比對：空白、換行、縮排、active 標在哪一欄、a 標籤上的其他屬性。
+     有 nav.top 但沒有 ul.nav-menu 的頁＝頁內專用導覽（簡報、互動頁），列出數量不擋。
+   用法：
+     node scripts/check-bilingual-nav.mjs                全站，有不一致就 exit 1
+     node scripts/check-bilingual-nav.mjs --changed      preflight 用：只有「本次變更的 HTML」不一致才擋，
+                                                         其餘舊頁的不一致只印提醒（比照 check-title-formula 的做法，
+                                                         避免與本次無關的舊頁卡住每一次發布、逼人繞過規則）
+     node scripts/check-bilingual-nav.mjs --only=a,b     只查指定檔（相對 repo 根目錄）
+   被擋時：照印出的「應為」清單手動改那一塊 <ul class="nav-menu">。
+   ============================================================ */
 import fs from "node:fs";
 import path from "node:path";
-import process from "node:process";
+import { fileURLToPath } from "node:url";
 
-const root = process.cwd();
-const writeMode = process.argv.includes("--write");
-const onlyArg = process.argv.find((arg) => arg.startsWith("--only="));
-const onlyFiles = onlyArg ? new Set(onlyArg.slice("--only=".length).split(",").filter(Boolean)) : null;
+const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
+const argv = process.argv.slice(2);
+if (argv.includes("--write")) {
+  console.error("--write 已移除（09 踩雷清單第四、二十三節：自動覆寫導覽會連帶改掉頁面自訂內容）。照檢查結果手動改。");
+  process.exit(2);
+}
+const onlyArg = argv.find((a) => a.startsWith("--only="));
+const ONLY = onlyArg ? new Set(onlyArg.slice(7).split(",").filter(Boolean)) : null;
+const CHANGED_MODE = argv.includes("--changed");
+import { execSync } from "node:child_process";
+function changedHtml() {
+  const out = new Set();
+  for (const cmd of ["git diff HEAD --name-only", "git diff --cached --name-only", "git ls-files --others --exclude-standard"]) {
+    try { for (const l of execSync(cmd, { cwd: ROOT, encoding: "utf8" }).split("\n")) if (l.endsWith(".html")) out.add(l.trim()); } catch {}
+  }
+  return out;
+}
+const CHANGED = CHANGED_MODE ? changedHtml() : null;
 
-const mainPages = [
-  { key: "home", zh: "index.html", en: "en/index.html", zhLabel: "首頁", enLabel: "Home" },
-  { key: "architecture", zh: "knowledge-architecture.html", en: "en/knowledge-architecture.html", zhLabel: "知識架構", enLabel: "Knowledge Architecture" },
-  { key: "courses", zh: "courses.html", en: "en/courses.html", zhLabel: "課程", enLabel: "Courses" },
-  { key: "articles", zh: "articles.html", en: "en/articles.html", zhLabel: "文章", enLabel: "Articles" },
-  { key: "skills", zh: "skills.html", en: "en/skills.html", zhLabel: "小工具", enLabel: "Skill Packages" },
-  { key: "services", zh: "offers.html", en: "en/offers.html", zhLabel: "服務方案", enLabel: "Services" }
+// 主導覽唯一定義（與首頁 index.html 一致；改主導覽時先改這裡再改各頁）
+const MAIN_NAV = [
+  { target: "index.html", label: "首頁" },
+  { target: "knowledge-architecture.html", label: "知識架構" },
+  { target: "courses.html", label: "課程" },
+  { target: "articles.html", label: "文章" },
+  { target: "skills.html", label: "小工具" },
+  { target: "offers.html", label: "服務方案" },
 ];
 
-const excludedPrefixes = [
-  ".git/",
-  "_trash/",
-  "_templates/",
-  "node_modules/",
-  "scripts/",
-  "articles/nontech-partner-ai-onboarding/"
-];
+const EXCLUDED = [".git/", "_trash/", "_templates/", "node_modules/", "scripts/", "tests/", "_analytics/", ".cloudflare-generated/", "en/"];
+function blockedDirs() {
+  const f = path.join(ROOT, ".vercelignore");
+  if (!fs.existsSync(f)) return [];
+  return fs.readFileSync(f, "utf8").split("\n").map((l) => l.trim()).filter((l) => /^[^#*!][^*]*\/$/.test(l));
+}
+const SKIP = [...EXCLUDED, ...blockedDirs()];
 
 function walk(dir, prefix = "") {
   const out = [];
-  for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
-    const rel = path.posix.join(prefix, entry.name);
-    if (excludedPrefixes.some((p) => rel === p.slice(0, -1) || rel.startsWith(p))) continue;
-    if (entry.isDirectory()) out.push(...walk(path.join(dir, entry.name), rel));
-    else if (entry.isFile() && rel.endsWith(".html") && !/^index-parallel.*\.html$/.test(rel)) out.push(rel);
+  for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
+    const rel = prefix ? `${prefix}/${e.name}` : e.name;
+    if (SKIP.some((p) => `${rel}/`.startsWith(p) || rel.startsWith(p))) continue;
+    if (e.isDirectory()) out.push(...walk(path.join(dir, e.name), rel));
+    else if (e.isFile() && rel.endsWith(".html") && !/^(index-parallel.*|_.*)\.html$/.test(e.name)) out.push(rel);
   }
   return out.sort();
 }
 
-function relLink(fromFile, targetFile) {
-  return path.posix.relative(path.posix.dirname(fromFile), targetFile) || path.posix.basename(targetFile);
+function resolveHref(file, href) {
+  const clean = href.split(/[?#]/)[0];
+  let p;
+  if (/^https?:\/\/jiangyude\.com\//.test(clean)) p = clean.replace(/^https?:\/\/jiangyude\.com\//, "");
+  else if (/^[a-z]+:/i.test(clean)) return clean; // 外站
+  else if (clean.startsWith("/")) p = clean.slice(1);
+  else p = path.posix.normalize(path.posix.join(path.posix.dirname(file), clean));
+  if (p === "" || p === "." || p.endsWith("/")) p = `${p === "." ? "" : p}index.html`;
+  return p;
 }
+const text = (s) => s.replace(/<[^>]+>/g, "").replace(/\s+/g, " ").trim();
 
-function sectionFor(file) {
-  const f = file.startsWith("en/") ? file.slice(3) : file;
-  if (f === "index.html") return "home";
-  if (f === "knowledge-architecture.html") return "architecture";
-  if (f === "courses.html" || f === "invited-talks.html" || f.startsWith("courses/")) return "courses";
-  if (f === "articles.html" || f.startsWith("articles/") || f === "ai-trends.html" || f.startsWith("ai-trends/")) return "articles";
-  if (f === "skills.html") return "skills";
-  if (f === "offers.html" || f === "cases.html" || f.startsWith("offers/") || f.startsWith("cases/") || f.startsWith("ai-office/")) return "services";
-  return null;
+const files = walk(ROOT).filter((f) => !ONLY || ONLY.has(f));
+if (ONLY && files.length !== ONLY.size) {
+  console.error(`--only 指定的檔有找不到或被排除的：${[...ONLY].filter((f) => !files.includes(f)).join("、")}`);
+  process.exit(2);
 }
-
-function languageTarget(file, isEnglish) {
-  if (isEnglish) {
-    const direct = file.slice(3);
-    if (fs.existsSync(path.join(root, direct))) return direct;
-    const section = sectionFor(file);
-    return (mainPages.find((p) => p.key === section) || mainPages[0]).zh;
-  }
-  const direct = `en/${file}`;
-  if (fs.existsSync(path.join(root, direct))) return direct;
-  const section = sectionFor(file);
-  return (mainPages.find((p) => p.key === section) || mainPages[0]).en;
-}
-
-function navMenu(file) {
-  const isEnglish = file.startsWith("en/");
-  const active = sectionFor(file);
-  const links = mainPages.map((page) => {
-    const target = isEnglish ? page.en : page.zh;
-    const label = isEnglish ? page.enLabel : page.zhLabel;
-    const activeAttr = page.key === active ? ' class="active"' : "";
-    return `      <li><a href="${relLink(file, target)}"${activeAttr}>${label}</a></li>`;
-  });
-  const langTarget = languageTarget(file, isEnglish);
-  links.push(`      <li class="lang-switch"><a href="${relLink(file, langTarget)}" hreflang="${isEnglish ? "zh-Hant" : "en"}">${isEnglish ? "中文" : "EN"}</a></li>`);
-  return `<ul class="nav-menu">\n${links.join("\n")}\n    </ul>`;
-}
-
-function stripTags(value) {
-  return value.replace(/<[^>]+>/g, "").replace(/\s+/g, " ").trim();
-}
-
-const files = walk(root).filter((file) => !onlyFiles || onlyFiles.has(file));
-const navFiles = [];
-const changed = [];
 const errors = [];
-const customNavFiles = [];
-
+let shared = 0, custom = 0;
 for (const file of files) {
-  const abs = path.join(root, file);
-  let html = fs.readFileSync(abs, "utf8");
+  const html = fs.readFileSync(path.join(ROOT, file), "utf8");
   if (!/<nav\b[^>]*class=["'][^"']*\btop\b/i.test(html)) continue;
-  navFiles.push(file);
-  const navMatch = html.match(/<ul\b[^>]*class=["'][^"']*\bnav-menu\b[^"']*["'][^>]*>[\s\S]*?<\/ul>/i);
-  if (!navMatch) {
-    customNavFiles.push(file);
-    continue;
-  }
-  const expected = navMenu(file);
-  if (navMatch[0] !== expected) {
-    if (writeMode) {
-      html = html.slice(0, navMatch.index) + expected + html.slice(navMatch.index + navMatch[0].length);
-      fs.writeFileSync(abs, html);
-      changed.push(file);
-    } else {
-      const actualLabels = [...navMatch[0].matchAll(/<a\b[^>]*>([\s\S]*?)<\/a>/gi)].map((m) => stripTags(m[1]));
-      errors.push(`${file}: 導航不一致（${actualLabels.join(" / ")}）`);
-    }
-  }
-}
-
-for (const page of mainPages) {
-  for (const file of [page.zh, page.en]) {
-    if (!fs.existsSync(path.join(root, file))) errors.push(`${file}: 主導航頁不存在`);
+  const m = html.match(/<ul\b[^>]*class=["'][^"']*\bnav-menu\b[^"']*["'][^>]*>([\s\S]*?)<\/ul>/i);
+  if (!m) { custom++; continue; }
+  shared++;
+  const links = [...m[1].matchAll(/<a\b[^>]*\bhref=["']([^"']*)["'][^>]*>([\s\S]*?)<\/a>/gi)].map((x) => ({ href: x[1], to: resolveHref(file, x[1]), label: text(x[2]) }));
+  const probs = [];
+  if (links.length !== MAIN_NAV.length) probs.push(`有 ${links.length} 個連結，應為 ${MAIN_NAV.length} 個`);
+  MAIN_NAV.forEach((want, i) => {
+    const got = links[i];
+    if (!got) return;
+    if (got.label !== want.label) probs.push(`第 ${i + 1} 項文字「${got.label}」應為「${want.label}」`);
+    if (got.to !== want.target) probs.push(`第 ${i + 1} 項連到 ${got.href}（解析為 ${got.to}），應指向 ${want.target}`);
+  });
+  if (probs.length) {
+    const expect = MAIN_NAV.map((w) => `${w.label}→${path.posix.relative(path.posix.dirname(file), w.target) || w.target}`).join("、");
+    errors.push(`${file}：${probs.join("；")}\n      應為：${expect}`);
   }
 }
 
-if (writeMode) {
-  console.log(`已同步 ${changed.length} 個共用 nav.top；掃描 ${navFiles.length} 個公開 HTML，略過 ${customNavFiles.length} 個頁內專用導航。`);
-  if (errors.length) {
-    for (const error of errors) console.error(`ERROR ${error}`);
+if (shared === 0) { console.error("找不到任何共用 nav.top 選單，本檢查不能靜默通過"); process.exit(1); }
+if (CHANGED_MODE) {
+  const block = errors.filter((e) => CHANGED.has(e.split("：")[0]));
+  const old = errors.length - block.length;
+  if (old) console.log(`  ⚠️ 有 ${old} 頁舊頁主導覽與定義不一致（本次沒動到，提醒不擋；全站清單跑 node scripts/check-bilingual-nav.mjs）`);
+  if (block.length) {
+    for (const e of block) console.error(`  ❌ ${e}`);
+    console.error(`主導覽檢查失敗：本次變更的 ${block.length} 頁與主導覽定義不一致。照「應為」手動改，不要用自動覆寫。`);
     process.exit(1);
   }
+  console.log(`主導覽 PASS（本次變更 ${CHANGED.size} 個 HTML）：${shared} 頁有共用選單，本次變更的頁全部一致。`);
   process.exit(0);
 }
-
 if (errors.length) {
-  for (const error of errors) console.error(`ERROR ${error}`);
-  console.error(`雙語導航檢查失敗：${errors.length} 項。`);
+  for (const e of errors) console.error(`  ❌ ${e}`);
+  console.error(`主導覽檢查失敗：${errors.length} 頁與主導覽定義不一致（共 ${shared} 頁有共用選單）。照「應為」手動改，不要用自動覆寫。`);
   process.exit(1);
 }
-
-console.log(`雙語導航 PASS：${mainPages.length * 2} 個主導航頁存在，${navFiles.length - customNavFiles.length} 個共用 nav.top 結構一致；${customNavFiles.length} 個頁內專用導航不納入共用列。`);
+console.log(`主導覽 PASS：${shared} 頁共用 nav.top 選單與主導覽六項一致；${custom} 頁是頁內專用導覽，不納入比對。`);

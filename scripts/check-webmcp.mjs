@@ -457,10 +457,36 @@ console.log('③b 失敗路徑與重試');
 
 /* ── ④ 掛載頁檢查 ── */
 console.log('④ 頁面掛載');
+// 2026-10-19 修：首頁為了首屏速度改成「載完、瀏覽器空下來才動態插入」webmcp-tools.js 與 search-aliases.js
+// （index.html 的 later()：createElement('script')、async=false 依陣列順序載入），舊版只認靜態 <script src>，
+// 於是首頁一直被判 FAIL、檢查器又沒接進 preflight，沒人看到。現在兩種掛法都認：
+//   靜態：<script src="webmcp-tools.js…">
+//   動態：同一個 <script> 區塊裡有 createElement('script')，且有一個陣列字面值同時列出兩支、別名在工具前面
+//        （async=false 才保證別名先載入，webmcp-tools 一註冊就要用得到別名）。
+function mounted(html, name) {
+  const re = new RegExp(`<script[^>]+src="${name.replace('.', '\\.')}[^"]*"[^>]*>`);
+  return re.test(html);
+}
+function dynamicMount(html) {
+  for (const m of html.matchAll(/<script\b[^>]*>([\s\S]*?)<\/script>/gi)) {
+    const code = m[1];
+    if (!/createElement\(\s*['"]script['"]\s*\)/.test(code) || !/\.async\s*=\s*false/.test(code)) continue;
+    for (const arr of code.matchAll(/\[([^\]]*)\]/g)) {
+      const items = [...arr[1].matchAll(/['"]([^'"]+)['"]/g)].map((x) => x[1]);
+      const ia = items.findIndex((x) => /^\/?search-aliases\.js(\?|$)/.test(x));
+      const it = items.findIndex((x) => /^\/?webmcp-tools\.js(\?|$)/.test(x));
+      if (ia >= 0 && it >= 0) return { tools: true, aliases: ia < it };
+    }
+  }
+  return { tools: false, aliases: false };
+}
 for (const page of ['index.html', 'search.html', 'agent.html']) {
   const html = read(page);
-  check(`${page} 有掛 webmcp-tools.js`, /<script[^>]+src="webmcp-tools\.js[^"]*"[^>]*>/.test(html));
-  check(`${page} 有掛 search-aliases.js（別名同一份）`, /<script[^>]+src="search-aliases\.js[^"]*"[^>]*>/.test(html));
+  const dyn = dynamicMount(html);
+  const how = mounted(html, 'webmcp-tools.js') ? '靜態' : dyn.tools ? '動態' : '';
+  check(`${page} 有掛 webmcp-tools.js${how ? `（${how}）` : ''}`, mounted(html, 'webmcp-tools.js') || dyn.tools);
+  check(`${page} 有掛 search-aliases.js（別名同一份${dyn.tools && !mounted(html, 'search-aliases.js') ? '，動態載入且排在工具前' : ''}）`,
+    mounted(html, 'search-aliases.js') || dyn.aliases);
 }
 
 /* ── ⑤ 唯讀邊界（靜態層；動態層在 ③ 的 fetch 白名單） ── */
