@@ -14,7 +14,7 @@
      有 nav.top 但沒有 ul.nav-menu 的頁＝頁內專用導覽（簡報、互動頁），列出數量不擋。
    用法：
      node scripts/check-bilingual-nav.mjs                全站，有不一致就 exit 1
-     node scripts/check-bilingual-nav.mjs --changed      preflight 用：只有「本次變更的 HTML」不一致才擋，
+     node scripts/check-bilingual-nav.mjs --changed      preflight 用：只有「本次新增、或本次改動碰到導覽的 HTML」不一致才擋，
                                                          其餘舊頁的不一致只印提醒（比照 check-title-formula 的做法，
                                                          避免與本次無關的舊頁卡住每一次發布、逼人繞過規則）
      node scripts/check-bilingual-nav.mjs --only=a,b     只查指定檔（相對 repo 根目錄）
@@ -34,10 +34,22 @@ const onlyArg = argv.find((a) => a.startsWith("--only="));
 const ONLY = onlyArg ? new Set(onlyArg.slice(7).split(",").filter(Boolean)) : null;
 const CHANGED_MODE = argv.includes("--changed");
 import { execSync } from "node:child_process";
+// 「本次變更」＝新增的 HTML，或改動的新增行碰到導覽（nav-menu 或主導覽六頁的 <li><a>）。
+// 只改 head 或內文的頁不算（2026-10-19：build-article-head 重寫 191 篇 head 時，若照檔名算，
+// 舊頁積欠的導覽不一致會一次被拖進來擋下發布；比照 check-image-ratio 的收窄原則）。
+const NAV_LINE = /nav-menu|<li[^>]*>\s*<a\b[^>]*href=["'][^"']*(?:index|knowledge-architecture|courses|articles|skills|offers)\.html/i;
 function changedHtml() {
   const out = new Set();
-  for (const cmd of ["git diff HEAD --name-only", "git diff --cached --name-only", "git ls-files --others --exclude-standard"]) {
-    try { for (const l of execSync(cmd, { cwd: ROOT, encoding: "utf8" }).split("\n")) if (l.endsWith(".html")) out.add(l.trim()); } catch {}
+  const run = (cmd) => { try { return execSync(cmd, { cwd: ROOT, encoding: "utf8", maxBuffer: 64 * 1024 * 1024 }); } catch { return ""; } };
+  for (const l of run("git ls-files --others --exclude-standard").split("\n")) if (l.endsWith(".html")) out.add(l.trim());
+  for (const l of run("git diff --cached --name-only --diff-filter=A").split("\n")) if (l.endsWith(".html")) out.add(l.trim());
+  for (const cmd of ["git -c core.quotepath=false diff HEAD -U0 -- '*.html'", "git -c core.quotepath=false diff --cached -U0 -- '*.html'"]) {
+    let file = "";
+    for (const line of run(cmd).split("\n")) {
+      const h = line.match(/^diff --git a\/.+ b\/(.+)$/);
+      if (h) { file = h[1]; continue; }
+      if (file && line.startsWith("+") && !line.startsWith("+++") && NAV_LINE.test(line)) out.add(file);
+    }
   }
   return out;
 }
@@ -122,7 +134,7 @@ if (CHANGED_MODE) {
     console.error(`主導覽檢查失敗：本次變更的 ${block.length} 頁與主導覽定義不一致。照「應為」手動改，不要用自動覆寫。`);
     process.exit(1);
   }
-  console.log(`主導覽 PASS（本次變更 ${CHANGED.size} 個 HTML）：${shared} 頁有共用選單，本次變更的頁全部一致。`);
+  console.log(`主導覽 PASS（本次新增或動到導覽的 HTML ${CHANGED.size} 個）：${shared} 頁有共用選單，本次變更的頁全部一致。`);
   process.exit(0);
 }
 if (errors.length) {
