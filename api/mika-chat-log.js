@@ -7,10 +7,17 @@
 //   vid=瀏覽器識別  sid=單次瀏覽識別  role=user|bot  text=訊息  page=所在頁面路徑
 //   name=訪客自報稱呼（咪卡開場問「怎麼稱呼」收來的，純標籤：不驗證、不是帳號）。
 //   不做會員、不追個人軌跡（江江 2026-08-07 拍板，去中心化原則），只做「大家都問什麼」統計。
-//   防灌爆：同一 IP 每分鐘最多 60 筆，超過丟棄。
+//   ⚠️ 2026-10-19 起只收 role=user（安全審查 M4）：咪卡的回覆改由 api/mika-chat.js 回答完成後在伺服器端自己寫入，
+//   前端送來 role=bot（或任何不是 user 的 role）一律拒絕，避免有人偽造「咪卡說過的話」進後台。
+//   防灌爆：每網段（IPv4 整個位址、IPv6 取 /64）每分鐘 30 筆、每天 300 筆，超過回 429；
+//   限流服務壞掉時不寫入、回 503（原本是壞掉就放行）。
 // GET  ?month=YYYY-MM&limit=1000 讀當月紀錄（新到舊）。
 //   ⚠️ 聊天內容比搜尋字敏感：GET 必須帶 header `X-Read-Token`（環境變數 MIKA_CHAT_READ_TOKEN），
 //   token 不走網址參數（避免留在 access log），沒設定環境變數就整個關閉讀取。
+//   比對用常數時間 safeEqual，並與 stats-admin 同一套每網段 15 分鐘錯 5 次的原子限流（2026-10-19）。
+
+const {clientNetwork}=require('../lib/2026-09-13-0910-client-network.js');
+const { networkOf, safeEqual, authCommand, authVerdict, rateCommand, rateAllowed, pipelineResults, applyCors } = clientNetwork;
 
 const URL = () => process.env.UPSTASH_REDIS_REST_URL || process.env.KV_REST_API_URL;
 const TOKEN = () => process.env.UPSTASH_REDIS_REST_TOKEN || process.env.KV_REST_API_TOKEN;
@@ -21,10 +28,14 @@ async function pipe(commands) {
     method: 'POST',
     headers: { Authorization: `Bearer ${TOKEN()}`, 'Content-Type': 'application/json' },
     body: JSON.stringify(commands),
+    signal: AbortSignal.timeout(3000),
   });
   if (!r.ok) throw new Error(`upstash ${r.status}`);
-  return r.json();
+  return pipelineResults(await r.json(), commands.length);
 }
+
+const PER_MIN = 30;
+const PER_DAY = 300;
 
 function taipeiStamp(d = new Date()) {
   return new Intl.DateTimeFormat('en-CA', {
@@ -44,28 +55,39 @@ function expireAtFor(month /* 'YYYY-MM' */) {
 }
 
 module.exports = async (req, res) => {
-  res.setHeader('Access-Control-Allow-Origin', '*');
+  applyCors(req, res, 'GET, POST, OPTIONS');
   if (req.method === 'OPTIONS') { res.status(204).end(); return; }
   if (!URL() || !TOKEN()) { res.status(200).json({ ok: false, note: 'storage not configured' }); return; }
 
   if (req.method === 'GET') {
+    res.setHeader('Cache-Control', 'no-store');
+    const want = READ_TOKEN();
+    if (!want) { res.status(403).json({ error: 'token required' }); return; }
+    const network = networkOf(req);
+    if (!network) { res.status(503).json({ error: 'authentication temporarily unavailable' }); return; }
     const given = String(req.headers['x-read-token'] || '');
-    if (!READ_TOKEN() || given !== READ_TOKEN()) {
-      res.status(403).json({ error: 'token required' });
-      return;
+    const correct = safeEqual(given, want);
+    try {
+      const [n] = await pipe([authCommand(`chatlog:auth:${network}:${Math.floor(Date.now() / 900000)}`, correct)]);
+      if (authVerdict(n, correct) === 'limited') { res.status(429).json({ error: 'too many attempts' }); return; }
+    } catch (e) {
+      console.error('chat_log_auth_limiter_unavailable');
+      res.status(503).json({ error: 'authentication temporarily unavailable' }); return;
     }
+    if (!correct) { res.status(403).json({ error: 'token required' }); return; }
     const month = String((req.query && req.query.month) || '').match(/^\d{4}-\d{2}$/)
       ? req.query.month
       : taipeiStamp().slice(0, 7);
     const limit = Math.min(Number((req.query && req.query.limit) || 1000) || 1000, 5000);
     try {
       const out = await pipe([['LRANGE', `mika:chat:${month}`, 0, limit - 1]]);
-      const rows = (out[0] && out[0].result ? out[0].result : []).map((s) => {
+      const rows = (out[0] || []).map((s) => {
         try { return JSON.parse(s); } catch { return null; }
       }).filter(Boolean);
       res.status(200).json({ month, count: rows.length, rows });
     } catch (e) {
-      res.status(200).json({ month, count: 0, rows: [], error: String(e.message || e) });
+      console.error('chat_log_read_failed', String((e && e.message) || e));
+      res.status(503).json({ month, count: 0, rows: [], error: 'storage unavailable' });
     }
     return;
   }
@@ -76,6 +98,11 @@ module.exports = async (req, res) => {
   if (typeof body === 'string') { try { body = JSON.parse(body); } catch { body = {}; } }
   body = body || {};
 
+  /* 只收訪客自己的訊息。沒帶 role 視為 user（舊版快取的 widget 可能沒帶），帶了別的一律拒絕。 */
+  if (body.role !== undefined && body.role !== 'user') {
+    res.status(400).json({ ok: false, note: 'role not accepted' }); return;
+  }
+
   const text = String(body.text || '').trim().slice(0, 500);
   if (!text) { res.status(200).json({ ok: false, note: 'empty' }); return; }
   const ua = String(req.headers['user-agent'] || '');
@@ -83,15 +110,19 @@ module.exports = async (req, res) => {
     res.status(200).json({ ok: false, note: 'bot skipped' }); return;
   }
 
-  // 防灌爆：同一 IP 每分鐘 60 筆上限（Redis INCR＋60 秒過期）
-  const ip = String(req.headers['x-forwarded-for'] || '').split(',')[0].trim() || 'na';
+  const network = networkOf(req);
+  if (!network) { res.status(503).json({ ok: false, note: 'temporarily unavailable' }); return; }
+  const day = taipeiStamp().slice(0, 10);
   try {
-    const rateKey = `mika:rate:${ip}:${Math.floor(Date.now() / 60000)}`;
-    const rate = await pipe([['INCR', rateKey], ['EXPIRE', rateKey, 90]]);
-    if (Number(rate[0] && rate[0].result) > 60) {
-      res.status(429).json({ ok: false, note: 'rate limited' }); return;
-    }
-  } catch (e) { /* 限流壞了不擋記錄 */ }
+    const [n] = await pipe([rateCommand([
+      { key: `mika:rate:${network}:${Math.floor(Date.now() / 60000)}`, limit: PER_MIN, ttl: 90 },
+      { key: `mika:rateday:${network}:${day}`, limit: PER_DAY, ttl: 172800 },
+    ])]);
+    if (!rateAllowed(n, 2)) { res.status(429).json({ ok: false, note: 'rate limited' }); return; }
+  } catch (e) {
+    console.error('chat_log_limiter_unavailable', String((e && e.message) || e));
+    res.status(503).json({ ok: false, note: 'temporarily unavailable' }); return;
+  }
 
   const stamp = taipeiStamp();
   const month = stamp.slice(0, 7);
@@ -100,21 +131,20 @@ module.exports = async (req, res) => {
     vid: String(body.vid || 'na').slice(0, 24),
     sid: String(body.sid || 'na').slice(0, 24),
     name: body.name ? String(body.name).slice(0, 20) : undefined,
-    role: body.role === 'bot' ? 'bot' : 'user',
+    role: 'user',
     text,
     page: String(body.page || '').slice(0, 120),
   });
 
   try {
-    const out = await pipe([
+    await pipe([
       ['LPUSH', `mika:chat:${month}`, entry],
       ['LTRIM', `mika:chat:${month}`, 0, 19999],
       ['EXPIREAT', `mika:chat:${month}`, expireAtFor(month), 'NX'],
     ]);
-    const bad = (Array.isArray(out) ? out : []).find((o) => o && o.error);
-    if (bad) { res.status(200).json({ ok: false, error: String(bad.error) }); return; }
     res.status(200).json({ ok: true });
   } catch (e) {
-    res.status(200).json({ ok: false, error: String(e.message || e) });
+    console.error('chat_log_write_failed', String((e && e.message) || e));
+    res.status(503).json({ ok: false, note: 'storage unavailable' });
   }
 };

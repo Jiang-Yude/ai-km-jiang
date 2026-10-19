@@ -159,7 +159,8 @@
     var recent = history.slice(-12).map(function (m) {
       return { role: m.role, text: m.text };
     });
-    var payload = { messages: recent, name: getName() || undefined, page: location.pathname };
+    /* vid、sid 給伺服器端寫咪卡回覆的紀錄用（2026-10-19 起回覆改由 /api/mika-chat 自己記，前端不再送 role=bot） */
+    var payload = { messages: recent, name: getName() || undefined, page: location.pathname, vid: vid, sid: sid };
     if (isSimple()) payload.simple = true;
     /* 解鎖了才帶這一頁的內容過去。每次都重抽，不快取：
        課程頁與列表頁的內容可能在瀏覽過程中才長出來（展開段落、JS 渲染）。 */
@@ -213,6 +214,9 @@
   /* ── 對話記錄回傳（fire-and-forget，失敗不影響前台；name＝訪客自報稱呼） ── */
   function logMsg(role, text) {
     if (IS_DEMO) return;
+    /* 2026-10-19 起只送訪客自己的訊息：咪卡的回覆由 /api/mika-chat 在伺服器端記錄，
+       記錄端點會拒絕 role=bot（防止偽造咪卡的話）。 */
+    if (role !== 'user') return;
     try {
       fetch(LOG_ENDPOINT, {
         method: 'POST',

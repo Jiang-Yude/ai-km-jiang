@@ -50,6 +50,12 @@ export function storageFetch(env, prefix, transport = fetch) {
 
 export const runtime = {isIP, Buffer};
 
+/* 跨網域白名單（2026-10-19 安全修補 M5）：只有正式網域與本站 Pages 候選網域拿得到 CORS 標頭，
+   其他來源不回任何 CORS 標頭。這是 lib/2026-09-13-0910-client-network.js 的 CORS_ORIGIN_RE 副本
+   （本檔是 ESM，不能 require 那支 CommonJS），兩邊要一起改。 */
+const CORS_ORIGIN_RE = /^https:\/\/(?:(?:www\.)?jiangyude\.com|(?:[a-z0-9-]+\.)?ai-km-jiang-cf-20261004\.pages\.dev)$/;
+export function corsOrigin(origin) { const o = String(origin || ''); return CORS_ORIGIN_RE.test(o) ? o : ''; }
+
 async function readBody(request) {
   if (!request.body) return {};
   const reader = request.body.getReader(); let size = 0; const chunks = [];
@@ -75,12 +81,21 @@ export async function serve(name, factory, context, transport = fetch) {
   const headers = new Headers({'Content-Type':'application/json; charset=utf-8', 'Cache-Control':'private, no-store', 'X-Content-Type-Options':'nosniff'});
   if (mode !== 'production') headers.set('X-Robots-Tag','noindex, nofollow');
   const reply = (data,status=200) => new Response(JSON.stringify(data), {status,headers});
-  if (name !== 'stats-admin') {
+  // stats 只回公開的彙總數字、不寫入，維持全開；stats-admin 不回 CORS；其餘只對白名單來源回 CORS。
+  if (name === 'stats') {
     headers.set('Access-Control-Allow-Origin','*'); headers.set('Access-Control-Allow-Headers','Content-Type');
-    headers.set('Access-Control-Allow-Methods', name === 'stats' ? 'GET, OPTIONS' : 'GET, POST, OPTIONS');
+    headers.set('Access-Control-Allow-Methods','GET, OPTIONS');
+  } else if (name !== 'stats-admin') {
+    headers.set('Vary','Origin');
+    const origin = corsOrigin(request.headers.get('Origin'));
+    if (origin) {
+      headers.set('Access-Control-Allow-Origin',origin); headers.set('Access-Control-Allow-Headers','Content-Type');
+      headers.set('Access-Control-Allow-Methods', name === 'mika-chat-log' ? 'GET, POST, OPTIONS' : 'POST, OPTIONS');
+    }
   }
   if (request.method === 'OPTIONS') return new Response(null,{status:204,headers});
-  const allowed = name === 'stats' ? ['GET'] : ['mika-chat','stats-admin','view'].includes(name) ? ['POST'] : ['GET','POST'];
+  // search-log 的 GET 已移除（H1），只剩 mika-chat-log 有受密碼保護的 GET
+  const allowed = name === 'stats' ? ['GET'] : name === 'mika-chat-log' ? ['GET','POST'] : ['POST'];
   if (!allowed.includes(request.method)) return reply({error:'method not allowed'},405);
   const missing = [];
   if (!(env.UPSTASH_REDIS_REST_URL || env.KV_REST_API_URL)) missing.push('KV_REST_API_URL');
