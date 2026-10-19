@@ -714,7 +714,7 @@ window.COURSES = [
     time: "20:00",
     title: "把書、影片、PDF 變成你的 AI 顧問",
     type_label: "免費線上講座",
-    image: "images/courses/2026-05-03-pdf-ai-advisor.png",
+    image: "images/courses/2026-05-03-pdf-ai-advisor.jpg",
     venue_mode: "online",
     host: "江江教練",
     tags: ["人格提煉", "AI顧問", "知識管理", "PDF"],
