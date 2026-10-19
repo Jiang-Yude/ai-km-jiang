@@ -65,6 +65,7 @@ if node scripts/check-image-ratio.mjs; then
 else
   bad "圖片比例未過：見上方清單。重生該張圖，或在 image-ratio-ignore.json 寫明這篇為什麼不套"
 fi
+if node scripts/check-image-budget.mjs; then ok "圖片體積（新增圖 ≤400KB、寬 ≤1400px）"; else bad "圖片體積未過：見上方清單，縮寬 1400 並壓到 400KB 以下"; fi
 # 列表封面欄位（2026-10-09 立，事故驅動）：文章頁有 hero 封面、article.json 卻沒 cover，文章列表卡片就沒封面，
 # 之前沒有任何檢查擋。只驗本次變更的文章；舊文用 --all 列清單不擋。
 if node scripts/check-article-cover.mjs; then
