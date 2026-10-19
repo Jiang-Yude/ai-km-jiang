@@ -89,7 +89,7 @@ if(target==='candidate')fs.writeFileSync(path.join(out,'robots.txt'),'User-agent
 if(!fs.existsSync(path.join(out,'404.html')))fs.writeFileSync(path.join(out,'404.html'),'<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><meta name="robots" content="noindex, nofollow"><title>找不到頁面</title></head><body><h1>找不到頁面</h1><a href="/">回首頁</a></body></html>');
 // 快取（2026-10-19 效能盤查）：圖片 1 天新鮮、7 天內可先給舊版再背景更新；封面有原地覆寫的慣例，所以不用 immutable。
 // 「! Cache-Control」先拆掉 /* 那條的 max-age=0，避免兩條規則的值被 Cloudflare 用逗號併在一起。JS、CSS 不設長快取（沒有內容雜湊版本參數前不上 immutable）。
-fs.writeFileSync(path.join(out,'_headers'),'/*\n'+(target==='candidate'?'  X-Robots-Tag: noindex, nofollow\n':'')+'  X-Content-Type-Options: nosniff\n  Cache-Control: public, max-age=0, must-revalidate\n  Referrer-Policy: strict-origin-when-cross-origin\n/images/*\n  ! Cache-Control\n  Cache-Control: public, max-age=86400, stale-while-revalidate=604800\n/*.webp\n  ! Cache-Control\n  Cache-Control: public, max-age=86400, stale-while-revalidate=604800\n/api/*\n  Cache-Control: private, no-store\n/member/*\n  Cache-Control: private, no-store\n/admin/members/*\n  Cache-Control: private, no-store\n');
+fs.writeFileSync(path.join(out,'_headers'),'/*\n'+(target==='candidate'?'  X-Robots-Tag: noindex, nofollow\n':'')+'  X-Content-Type-Options: nosniff\n  Cache-Control: public, max-age=0, must-revalidate\n  Referrer-Policy: strict-origin-when-cross-origin\n/images/*\n  ! Cache-Control\n  Cache-Control: public, max-age=86400, stale-while-revalidate=604800\n/*.webp\n  ! Cache-Control\n  Cache-Control: public, max-age=86400, stale-while-revalidate=604800\n/api/*\n  Cache-Control: private, no-store\n/member/*\n  Cache-Control: private, no-store\n/admin/members/*\n  Cache-Control: private, no-store\n/member-content/*\n  Cache-Control: private, no-store\n  X-Robots-Tag: noindex, nofollow\n');
 const redirects=['/en / 301','/en/ / 301','/en/index.html / 301'];
 for(const kind of ['articles','ai-trends']) {
   for(const suffix of ['/index.html','/',''])redirects.push(`/en/${kind}/:slug${suffix} /${kind}/:slug/ 301`);
@@ -97,7 +97,7 @@ for(const kind of ['articles','ai-trends']) {
 for(const name of ['agent','ai-trends','articles','cases','courses','invited-talks','knowledge-architecture','learn','offers','resources','skills'])redirects.push(`/en/${name}.html /${name}.html 301`);
 redirects.push('/en/* / 301');
 fs.writeFileSync(path.join(out,'_redirects'),redirects.join('\n')+'\n');
-fs.writeFileSync(path.join(out,'_routes.json'),JSON.stringify({version:1,include:['/api/*','/member/*','/admin/members/*'],exclude:[]}));
+fs.writeFileSync(path.join(out,'_routes.json'),JSON.stringify({version:1,include:['/api/*','/member/*','/admin/members/*','/member-content/*'],exclude:[]}));
 // --outfile produces a multipart upload envelope, not executable JS. Pages advanced mode accepts an ES module directory.
 execFileSync('wrangler',['pages','functions','build',path.join(root,'functions'),'--outdir='+path.join(out,'_worker.js'),'--compatibility-date=2026-09-04','--compatibility-flags=nodejs_compat','--minify'],{cwd:root,stdio:'inherit'});
 const statics=manifest.filter(x=>x.classification==='static');
