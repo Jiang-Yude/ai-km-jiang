@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="robots" content="noindex,nofollow"><title>分享江江教練的 LINE 名片</title>
+<meta property="og:title" content="分享江江教練的 LINE 名片"><meta property="og:description" content="選好友或群組，把江江教練的五張 LINE 名片傳出去。"><meta property="og:image" content="https://jiangyude.com/card/portrait.png">
+<style>
+:root{--paper:#fffcf6;--ink:#382f26;--muted:#817466;--gold:#a27c45;--green:#B69A78;--line:#e3d8c6}
+*{box-sizing:border-box}body{margin:0;min-height:100dvh;background:#f5f0e7;color:var(--ink);font-family:-apple-system,"PingFang TC","Noto Sans TC",sans-serif;line-height:1.7;display:flex;align-items:center;justify-content:center;padding:24px 16px}
+main{max-width:420px;width:100%;background:var(--paper);border:1px solid var(--line);border-radius:23px;padding:32px 24px;text-align:center}
+img{width:120px;height:auto;display:block;margin:0 auto 12px}
+h1{font-family:"Songti TC","Noto Serif TC",serif;font-size:28px;font-weight:600;color:var(--gold);margin:0 0 8px}
+p{font-size:18px;margin:0 0 20px;color:var(--muted)}
+button{font:inherit;font-size:20px;font-weight:600;width:100%;padding:14px 12px;border-radius:12px;border:0;background:var(--green);color:var(--ink);cursor:pointer}
+button:disabled{opacity:.5;cursor:default}
+#msg{font-size:18px;color:var(--ink);margin:18px 0 0;min-height:1.7em}
+a{color:var(--gold)}
+</style></head><body>
+<main>
+<img src="portrait.png" alt="江江教練">
+<h1>分享江江的 LINE 名片</h1>
+<p>選好友或群組，對方會收到五張可以左右滑的名片。</p>
+<button id="share" disabled>選擇好友或群組</button>
+<p id="msg">準備中…</p>
+<p style="font-size:16px;margin:0"><a href="/card/">先看名片長什麼樣子</a></p>
+</main>
+<script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+<script>
+// 江江自己的 LIFF（LINE Developers：江江教練名片 channel）
+var LIFF_ID = '2012081068-MnNPDX8P';
+var btn = document.getElementById('share'), msg = document.getElementById('msg'), card = null, autoTried = false;
+function say(t){ msg.textContent = t; }
+function countShare(){
+  // 只記「有人送出一次分享」的次數，不記是誰、送到哪裡
+  try { fetch('/api/view', { method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({ path:'/card/share/sent/', increment:true, vid:'', ref:'' }) }).catch(function(){}); } catch(e){}
+}
+async function share(){
+  if (!card) return say('名片還沒載入，請重新整理再試。');
+  if (!liff.isApiAvailable('shareTargetPicker')) return say('這個環境不能分享，請用手機 LINE 開啟這一頁。');
+  btn.disabled = true;
+  try {
+    var res = await liff.shareTargetPicker([card], { isMultiple: true });
+    if (res) { countShare(); say('已分享，謝謝你！'); } else { say('已取消，想分享再按一次。'); }
+  } catch (e) { say('分享失敗：' + e.message); }
+  btn.disabled = false;
+}
+btn.onclick = share;
+(async function(){
+  try {
+    card = await fetch('/card/line-flex.json').then(function(r){ return r.json(); });
+    await liff.init({ liffId: LIFF_ID });
+    if (!liff.isLoggedIn()) { say('請先登入 LINE…'); return liff.login({ redirectUri: location.href }); }
+    btn.disabled = false; say('');
+    if (!autoTried) { autoTried = true; share(); }
+  } catch (e) { say('開啟失敗：' + e.message); }
+})();
+</script>
+</body></html>
