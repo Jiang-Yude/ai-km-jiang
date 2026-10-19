@@ -49,9 +49,21 @@
       "kind": "section",
       "builder": "scripts/build-static-lists.mjs",
       "source": "static-list 標記之間的 noscript 課程清單來自 courses-data.js"
+    },
+    {
+      "path": "articles/*/index.html",
+      "kind": "section",
+      "builder": "scripts/build-related-static.mjs",
+      "source": "related-static 標記之間的相關文章卡片來自各篇 article.json 的 related 與 tags.topic、articles-render.js 的 THUMBS 縮圖登記；頁面其餘是手寫來源檔。path 是萬用字元，消費端都用完整路徑比對，不會把文章頁當生成檔還原或擋 commit"
+    },
+    {
+      "path": "ai-trends/*/index.html",
+      "kind": "section",
+      "builder": "scripts/build-related-static.mjs",
+      "source": "同上（趨勢文）"
     }
   ],
-  "_builders 說明": "merge-publish 重建步依此順序執行。順序有意義：articles-data.js 先，site-index 與 article-keywords 都讀它；文章 head 重寫會動到 articles/<id>/index.html、Course JSON-LD 會動到 courses/ 課程頁的 head（那些是來源檔，只動生成的標籤，不列在 files）；sitemap 要在 Course 之後（讀 robots meta），靜態清單最後。",
+  "_builders 說明": "merge-publish 重建步依此順序執行。順序有意義：articles-data.js 先，site-index 與 article-keywords 都讀它；文章 head 重寫會動到 articles/<id>/index.html、Course JSON-LD 會動到 courses/ 課程頁的 head（那些是來源檔，只動生成的標籤，不列在 files）；sitemap 要在 Course 之後（讀 robots meta），靜態清單之後才是相關文章預渲染（只讀 article.json 與 articles-render.js，排最後不影響其他產物）。",
   "builders": [
     "scripts/build-articles-data.mjs",
     "scripts/build-site-index.mjs",
@@ -60,6 +72,7 @@
     "scripts/build-course-jsonld.mjs",
     "scripts/build-sitemap.mjs",
     "scripts/build-llms.mjs",
-    "scripts/build-static-lists.mjs"
+    "scripts/build-static-lists.mjs",
+    "scripts/build-related-static.mjs"
   ]
 }

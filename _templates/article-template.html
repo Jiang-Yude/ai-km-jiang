@@ -25,8 +25,9 @@
        標籤一律從 articles-tags.json 受控清單挑，不要自創字串。
        articles-data.js 是生成檔不要手改；本機要看相關文章區塊就跑
        node scripts/build-articles-data.mjs，上線時 merge-publish 會統一重建。
-    4. 兩支互聯 script 已內建在本檔   <script src="/views.js" defer></script>
-</body> 前，不用再另外加。
+    4. 相關文章區塊（2026-10-19 起預渲染）：本檔 footer 前已放空的 related-static 標記，
+       跑 node scripts/build-related-static.mjs --only={{SLUG}} 會把三張相關文章卡片寫進去
+       （上線時 merge-publish 也會統一重建）。文章頁不再載入 articles-data.js 與 related-render.js。
     5. sitemap.xml 與 llms.txt、llms-full.txt 的文章段都是生成的（build-sitemap.mjs、build-llms.mjs），
        不要手補；merge-publish 的重建步會從 article.json 產生。
     5b. 標題、日期、og、twitter、JSON-LD（Article＋BreadcrumbList）與 hero 下的日期行，
@@ -286,6 +287,8 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
 
 </main>
 
+<!-- related-static:start（scripts/build-related-static.mjs 從 article.json 生成，勿手改；改 related 改 article.json）-->
+<!-- related-static:end -->
 <footer class="footer">
   <div class="footer-inner">
     <div class="footer-brand">江江教練 · AI 知識管理</div>
@@ -324,12 +327,11 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
 <!-- 官網共用：滑鼠暖光暈 + 導航列漢堡選單 -->
 <script src="../../spotlight.js"></script>
 
-<!-- 文章自動互聯（相關文章）：兩支已內建，順序不可顛倒，不用再另外加 -->
-<script src="../../articles-data.js"></script>
-<script src="../../related-render.js"></script>
 <!-- 會員留言區（member.js 會把它移到頁尾前、相關文章之後；登入與留言都走 /member/ 端點） -->
 <section id="member-comments" class="member-comments" data-page="{{SECTION}}/{{SLUG}}/"></section>
 <script src="/member.js" defer></script>
+<!-- 文章瀏覽計數（原本誤夾在檔頭註解第 4 點裡，2026-10-19 移回 body） -->
+<script src="/views.js" defer></script>
   <script src="/mika-chat-widget.js" defer></script>
 </body>
 </html>

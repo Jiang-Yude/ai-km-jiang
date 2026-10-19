@@ -118,6 +118,9 @@ if node scripts/build-sitemap.mjs --check; then ok "sitemap 與來源一致（�
 # 靜態清單與課程 JSON-LD（2026-10-19 立，4O 體檢）：articles.html、courses.html 的 noscript 全清單、課程頁 Course JSON-LD 都是生成的。
 if node scripts/build-static-lists.mjs --check; then ok "文章總站與課程頁靜態清單已是最新"; else bad "靜態清單需要重建：跑 node scripts/build-static-lists.mjs"; fi
 if node scripts/build-course-jsonld.mjs --check; then ok "課程頁 Course JSON-LD 已是最新"; else bad "Course JSON-LD 需要重建：跑 node scripts/build-course-jsonld.mjs"; fi
+# 相關文章預渲染（2026-10-19 立，效能審查第 1 條）：文章頁不再載入 articles-data.js 與 related-render.js，
+# 相關文章卡片由 build-related-static.mjs 從 article.json 寫進頁面；--check 擋「改了 related、標籤、封面或新文章沒重建」。
+if node scripts/build-related-static.mjs --check; then ok "文章頁相關文章預渲染已是最新"; else bad "相關文章預渲染需要重建：跑 node scripts/build-related-static.mjs"; fi
 # 已上線文章 llms.txt 覆蓋（2026-10-10 立）：原本只驗知識架構一頁，10-03 後 10 篇文章沒進 llms.txt 也沒人擋。
 # 2026-10-19 起 llms.txt、llms-full.txt 文章段改由 build-llms.mjs 從 article.json 生成，覆蓋檢查同時驗標題。
 if node scripts/check-llms-coverage.mjs; then ok "已上線文章都在 llms.txt 與 llms-full.txt，標題一致"; else bad "llms 文章段缺漏或標題過時（見上方清單）：跑 node scripts/build-llms.mjs，不要手補"; fi

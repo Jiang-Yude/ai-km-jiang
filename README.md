@@ -67,6 +67,7 @@ Phase 1 不新增文章頁。文章先保留在課後簡報頁的方格子與 Th
 | build-sitemap.mjs | sitemap.xml 文章段、lastmod、noindex 移除、privacy 等固定頁 | article.json、頁面 robots meta | `--check` 與 check-sitemap-coverage（第 4 關） |
 | build-llms.mjs | llms.txt、llms-full.txt 的文章段 | article.json、scripts/llms-article-notes.json | `--check` 與 check-llms-coverage（驗網址與標題，第 4 關） |
 | build-static-lists.mjs | articles.html、courses.html 的 noscript 全清單 | article.json、courses-data.js | `--check`（第 4 關） |
+| build-related-static.mjs | 文章頁 footer 前 related-static 標記之間的「相關文章」卡片（文章頁因此不再載入 articles-data.js 與 related-render.js；related-render.js 留給其他頁） | article.json 的 related 與 tags.topic、articles-render.js 的 THUMBS 縮圖登記 | `--check`（第 4 關） |
 
 改標題、改日期：只改 article.json，再跑 `node scripts/build-article-head.mjs --only=<slug>`（本機看效果）；上線時 merge-publish 會全部重建。
 

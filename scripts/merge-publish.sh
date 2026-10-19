@@ -258,7 +258,7 @@ done
 
 echo "▶ 重建全部生成檔…"
 # 順序來自 scripts/generated-files.json 的 builders（有意義：articles-data.js 先，site-index 與 article-keywords 都讀它；
-# 文章 head 重寫、sitemap、llms 在後）。2026-10-19 起不再呼叫 build-en-articles-data.mjs（英文版 9/22 已撤，只剩空殼）。
+# 文章 head 重寫、sitemap、llms 在後；2026-10-19 起最後一支是 build-related-static.mjs，把相關文章卡片預渲染進文章頁）。2026-10-19 起不再呼叫 build-en-articles-data.mjs（英文版 9/22 已撤，只剩空殼）。
 # 這一步若停下（exit 2）＝main 自己的 articles-data.js 被直接手改過（分支那側已在上面判過）：
 # 看生成器印出的那幾筆，決定 --adopt 回寫或 --force 重建。
 for _b in "${BUILDERS[@]}"; do

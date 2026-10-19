@@ -3,8 +3,10 @@
    verify-interlink.js  ·  文章自動互聯 部署前兜底檢查
    ------------------------------------------------------------
    用途：在部署前，機器掃描所有文章頁，確保每一篇正式文章
-        都同時引入了 articles-data.js 與 related-render.js
-        這兩支互聯腳本（缺一篇「相關文章」就長不出來）。
+        都有「相關文章」區塊的來源（缺一篇「相關文章」就長不出來）。
+        2026-10-19 起文章頁改成預渲染：相關文章卡片由 scripts/build-related-static.mjs
+        寫進 related-static 標記之間，頁面不再載入 articles-data.js 與 related-render.js。
+        有標記就算齊全；還沒預渲染的頁仍可用舊寫法（兩支腳本都引入）過關。
 
    ⚠️ 部署前先跑這支：
         node scripts/verify-interlink.js
@@ -12,7 +14,7 @@
 
    檢查什麼：
      1. 掃 articles/<slug>/index.html 與 ai-trends/<slug>/index.html。
-     2. 每頁是否同時引入 articles-data.js 與 related-render.js。
+     2. 每頁是否有 related-static 標記，或同時引入 articles-data.js 與 related-render.js。
         - noindex 佔位頁（含 name="robots" 且 content 含 noindex）
           缺 script 只印 WARN，不算錯（還沒寫完的草稿頁）。
         - 其餘會被索引的正式文章，缺任一支印 ERROR。
@@ -35,7 +37,9 @@ var RENDER_SCRIPT = "related-render.js";
 
 // 手寫精選版：頁面有自己手寫的「相關文章」區，刻意不引入自動互聯腳本，
 // 不算漏接（再加會變成兩個「相關文章」區）。新增這類頁面把 url 加進來。
+// 名單與 scripts/build-related-static.mjs 的 HAND_CURATED 相同，兩邊要一起改。
 var HAND_CURATED = { "articles/own-ai-team-at-work/": 1 };
+var STATIC_MARK = "<!-- related-static:start";
 
 function read(file) {
   try {
@@ -101,8 +105,9 @@ function main() {
       return;
     }
 
-    var hasData = hasScript(html, DATA_SCRIPT);
-    var hasRender = hasScript(html, RENDER_SCRIPT);
+    var hasStatic = html.indexOf(STATIC_MARK) !== -1;
+    var hasData = hasStatic || hasScript(html, DATA_SCRIPT);
+    var hasRender = hasStatic || hasScript(html, RENDER_SCRIPT);
     var placeholder = isNoindex(html);
     var curated = HAND_CURATED[p.url];
 
@@ -110,7 +115,7 @@ function main() {
       var missing = [];
       if (!hasData) missing.push(DATA_SCRIPT);
       if (!hasRender) missing.push(RENDER_SCRIPT);
-      var msg = p.rel + " 缺少互聯腳本：" + missing.join("、");
+      var msg = p.rel + " 缺少相關文章預渲染標記（跑 node scripts/build-related-static.mjs），也沒有舊寫法的互聯腳本：" + missing.join("、");
       if (curated) {
         notes.push("[NOTE] (手寫精選版，刻意不引入自動互聯) " + p.rel);
       } else if (placeholder) {
@@ -135,7 +140,7 @@ function main() {
   console.log("");
   console.log("───────── 互聯檢查統計 ─────────");
   console.log("掃描文章頁：" + pages.length + " 篇");
-  console.log("兩支腳本齊全：" + okCount + " 篇");
+  console.log("相關文章來源齊全（預渲染或兩支腳本）：" + okCount + " 篇");
   console.log("手寫精選例外：" + notes.length + " 篇");
   console.log("WARN：" + warns.length + " 筆");
   console.log("ERROR：" + errors.length + " 筆");
