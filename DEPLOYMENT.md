@@ -259,7 +259,8 @@ Google 登入、文章留言、分級內容、管理後台。只在 Cloudflare P
 - 咪卡 pageText 計入額度：`units＝問題計次＋ceil(頁面字數÷3000)`，可用 `MIKA_PAGE_CHARS_PER_UNIT` 調整。上課時若學員被擋，先調這個或 `MIKA_RATE_PER_DAY`。
 - CORS 只對 jiangyude.com、www.jiangyude.com 與 ai-km-jiang-cf-20261004.pages.dev（含子網域）回標頭；/api/stats 維持全開。若有其他網站（例如 G 網名片）跨網域打 /api/view，會被瀏覽器擋下，要先把該網域加進 `lib/2026-09-13-0910-client-network.js` 與 `cloudflare/runtime.mjs` 兩處白名單。
 - 安全標頭：X-Frame-Options DENY（scorecard 評量表例外）、HSTS、Permissions-Policy；CSP 目前是 Report-Only，觀察瀏覽器主控台沒有誤報後再改強制。
-- tests/cloudflare-migration.mjs 尚未跟上：第 63 行仍測 search-log 的 GET，假 Redis 的 EVAL 只認舊的兩種腳本，要補上 RATE_SCRIPT 與 view 新鍵配額的模擬才跑得過。
+- tests/cloudflare-migration.mjs 已跟上（2026-10-19 整合）：假 Redis 依腳本內容分辨 AUTH、RATE、view 新鍵配額、咪卡四層額度四種 Lua，search-log 的 GET 改測 405；cloudflare-key-parity.mjs 的 view 比照 functions/api/view.js 帶 VIEW_KNOWN_URLS。本機以 wrangler 4.151.1 實跑 migration 18 項、key-parity 6 支全綠。
+- 已知缺口：build.mjs 只對 search-log、mika-chat-log 的紀錄注入 `source: cloudflare`，mika-chat 伺服器端寫的咪卡回覆（role=bot）沒有來源欄位，C 網與 Vercel 寫的回覆在資料上分不出來。要補就改 build.mjs 第 81 行的注入範圍，並同步 key-parity 測試。
 
 待辦：
 - [ ] 待江江確認學員同意：courses/2026-08-danhai-public-art/showcase/ 與 courses/mobile-ai-creation-workshop/ 公開列出學員全名，已先改 noindex, nofollow；確認每位學員同意具名公開前不要改回 index。sitemap.xml 仍列著其中一頁，由生成器那邊一併處理。

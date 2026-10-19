@@ -17,12 +17,30 @@ const value=k=>Number(db.get(k)||0);
 function command(c) {
   commands.push(c);const [op,key,...args]=c;
   if(op==='EVAL') {
-    const n=Number(c[2]),keys=c.slice(3,3+n),argv=c.slice(3+n);
-    if(n===1) {
+    // 假 Redis 依腳本內容分辨四種 Lua（2026-10-19 跟上安全修補；原本只用鍵數分辨，RATE_SCRIPT 單鍵時會被當成密碼錯誤計數）：
+    //   AUTH_SCRIPT（lib/2026-09-13-0910-client-network.js）：錯滿 5 次回 6、答對回 0、答錯加一
+    //   RATE_SCRIPT（同檔）：任一把鑰匙已達上限回它的序號、一筆都不加；全部未達才各加一回 0
+    //   NEW_KEY_SCRIPT（api/view.js）：page 鍵已存在回 0；每網段或全站新鍵額度用完回 1；否則兩個計數各加一回 0
+    //   咪卡四層額度（api/mika-chat.js）：units 一次扣，任一層超過回層號
+    // 認不得的腳本直接丟錯（回 400），讓測試明確失敗，不默默放行。
+    const script=String(c[1]),n=Number(c[2]),keys=c.slice(3,3+n),argv=c.slice(3+n);
+    if(script.includes('return 6')) {
       const old=value(keys[0]);if(old>=5)return 6;if(argv[0]==='1')return 0;db.set(keys[0],old+1);return old+1;
     }
-    const units=Number(argv[0]);for(let i=3;i>=0;i--)if(value(keys[i])+units>Number(argv[i+1]))return i+1;
-    keys.forEach(k=>db.set(k,value(k)+units));return 0;
+    if(script.includes('local n = #KEYS')) {
+      for(let i=0;i<n;i++)if(value(keys[i])>=Number(argv[i]))return i+1;
+      keys.forEach(k=>db.set(k,value(k)+1));return 0;
+    }
+    if(script.includes("redis.call('EXISTS'")) {
+      if(db.has(keys[0]))return 0;
+      if(value(keys[1])>=Number(argv[0])||value(keys[2])>=Number(argv[1]))return 1;
+      db.set(keys[1],value(keys[1])+1);db.set(keys[2],value(keys[2])+1);return 0;
+    }
+    if(script.includes('local units')) {
+      const units=Number(argv[0]);for(let i=3;i>=0;i--)if(value(keys[i])+units>Number(argv[i+1]))return i+1;
+      keys.forEach(k=>db.set(k,value(k)+units));return 0;
+    }
+    throw new Error('fake redis: unknown EVAL script');
   }
   if(op==='GET')return db.get(key)||null;
   if(op==='MGET')return c.slice(1).map(k=>db.get(k)||null);
@@ -60,7 +78,8 @@ try {
   await check('legacy English article routes',async()=>{for(const p of ['/en/articles/market-to-ai/','/en/articles/market-to-ai','/en/articles/market-to-ai/index.html']){const r=await request(p);assert.equal(r.status,301);assert.match(r.headers.get('location'),/\/articles\/market-to-ai\/$/);}});
   await check('server source paths unavailable',async()=>{for(const p of ['/api/view.js','/cloudflare/runtime.mjs','/functions/api/view.js','/.cloudflare-generated/mika-chat.mjs','/vercel.json']){const r=await request(p);assert(!r.text.includes('createHandler')&&!r.text.includes('module.exports'));assert.notEqual(r.status,200);}});
   await check('view writes isolated keys, stats reads same counters',async()=>{const r=await request('/api/view',{path:'/articles/market-to-ai/',vid:'fixture'});assert.equal(r.status,200);assert.equal(r.json.global,1);assert.equal(db.get('global'),undefined);const stats=await request('/api/stats');assert.equal(stats.json.total,1);assert.equal(stats.json.history.history,'isolated-preview');});
-  await check('search log success, unauthorised rejection, authorised read',async()=>{assert.equal((await request('/api/search-log',{q:'knowledge',n:0,surface:'search'})).json.ok,true);assert.equal((await request('/api/search-log')).status,403);const r=await request('/api/search-log',undefined,{'X-Read-Token':'local-password-placeholder'});assert.equal(r.status,200);assert.equal(r.json.count,1);assert.equal(r.json.rows[0].source,'cloudflare');assert.match(r.headers.get('Cache-Control'),/no-store/);});
+  // 2026-10-19 安全修補：search-log 的 GET 已移除（讀搜尋紀錄改走 stats-admin），帶不帶讀取權杖都回 405。
+  await check('search log write succeeds, GET removed (405 with or without token)',async()=>{assert.equal((await request('/api/search-log',{q:'knowledge',n:0,surface:'search'},{'CF-Connecting-IP':'203.0.113.20'})).json.ok,true);const logged=[...lists].filter(([k])=>/search:log:/.test(k)).flatMap(([,v])=>v).map(x=>JSON.parse(x));assert(logged.some(x=>x.q==='knowledge'));assert.equal((await request('/api/search-log')).status,405);assert.equal((await request('/api/search-log',undefined,{'X-Read-Token':'local-password-placeholder'})).status,405);assert.equal((await request('/api/search-log',undefined,{'X-Read-Token':'local-read-placeholder'})).status,405);});
   await check('chat log success, unauthorised rejection, authorised read',async()=>{assert.equal((await request('/api/mika-chat-log',{text:'fixture only',role:'user'})).json.ok,true);assert.equal((await request('/api/mika-chat-log')).status,403);const r=await request('/api/mika-chat-log',undefined,{'X-Read-Token':'local-read-placeholder'});assert.equal(r.json.count,1);assert.equal(r.json.rows[0].source,'cloudflare');});
   // Workerd dev does not supply the Cloudflare-controlled header. Positive identity tests use the same adapter with an explicit platform fixture.
   const factories={};for(const name of ['stats','stats-admin','view','search-log','mika-chat','mika-chat-log'])factories[name]=(await import('../.cloudflare-generated/'+name+'.mjs')).default;
@@ -83,7 +102,8 @@ try {
   });
   await check('concurrent paid quota cannot exceed atomic limit',async()=>{const before=llmCalls;const rs=await Promise.all(Array.from({length:6},()=>direct('mika-chat',{messages:[{role:'user',text:'知識管理如何起步'}]},{MIKA_RATE_PER_MIN:'2'},'203.0.113.99')));assert.equal(rs.filter(r=>r.status===200).length,2);assert.equal(rs.filter(r=>r.status===429).length,4);assert.equal(llmCalls-before,2);});
   await check('storage failure prevents paid calls',async()=>{dependencyBroken=true;const before=llmCalls;assert.equal((await direct('mika-chat',{messages:[{role:'user',text:'知識管理'}]},{},'203.0.113.100')).status,503);assert.equal(llmCalls,before);dependencyBroken=false;});
-  await check('production mode retains preexisting counts and raw chat',async()=>{db.set('global',4321);const month=new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Taipei',year:'numeric',month:'2-digit'}).format(new Date());lists.set('mika:chat:'+month,[JSON.stringify({text:'historic fixture',t:month+'-01 09:00'})]);const r=await serve('stats',factories.stats,{env:{...env,CF_SITE_MODE:'production',CF_PROD_KEYS:'original'},request:new Request('https://jiangyude.com/api/stats')});assert.equal((await r.json()).total,4321);const log=await serve('mika-chat-log',factories['mika-chat-log'],{env:{...env,CF_SITE_MODE:'production',CF_PROD_KEYS:'original'},request:new Request('https://jiangyude.com/api/mika-chat-log',{headers:{'X-Read-Token':'local-read-placeholder'}})});assert.equal((await log.json()).rows[0].text,'historic fixture');});
+  // 2026-10-19 起 mika-chat-log 的 GET 有每網段錯誤限流，要有平台提供的訪客 IP（沒有回 503），所以這裡補 CF-Connecting-IP。
+  await check('production mode retains preexisting counts and raw chat',async()=>{db.set('global',4321);const month=new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Taipei',year:'numeric',month:'2-digit'}).format(new Date());lists.set('mika:chat:'+month,[JSON.stringify({text:'historic fixture',t:month+'-01 09:00'})]);const r=await serve('stats',factories.stats,{env:{...env,CF_SITE_MODE:'production',CF_PROD_KEYS:'original'},request:new Request('https://jiangyude.com/api/stats')});assert.equal((await r.json()).total,4321);const log=await serve('mika-chat-log',factories['mika-chat-log'],{env:{...env,CF_SITE_MODE:'production',CF_PROD_KEYS:'original'},request:new Request('https://jiangyude.com/api/mika-chat-log',{headers:{'X-Read-Token':'local-read-placeholder','CF-Connecting-IP':'203.0.113.21'}})});assert.equal((await log.json()).rows[0].text,'historic fixture');});
   await check('production env on candidate host stays isolated',async()=>{const r=await direct('stats',undefined,{CF_SITE_MODE:'production',CF_PROD_KEYS:'original'});const data=await r.json();assert.notEqual(data.total,4321);assert.equal(data.history.mode,'preview');});
   await check('missing bindings fail closed for all six',async()=>{for(const name of Object.keys(factories)){const r=await serve(name,factories[name],{env:{},request:new Request('https://candidate.pages.dev/api/'+name,{method:name==='stats'?'GET':'POST',body:name==='stats'?undefined:'{}'})});assert.equal(r.status,503);}});
   await check('reserved member route fails closed',async()=>{const r=await request('/api/auth/login');assert.equal(r.status,503);assert.match(r.headers.get('Cache-Control'),/no-store/);});

@@ -26,10 +26,15 @@ try {
     sent=[];await require('../api/'+name+'.js')({method:body===undefined?'GET':'POST',headers,body,query},res);const original=structuredClone(sent);
     sent=[];const factory=(await import('../.cloudflare-generated/'+name+'.mjs')).default;
     const request=new Request('https://jiangyude.com/api/'+name,{method:body===undefined?'GET':'POST',headers:{'CF-Connecting-IP':'203.0.113.4','User-Agent':'fixture'},body:body===undefined?undefined:JSON.stringify(body)});
-    const result=await serve(name,factory,{env,request},transport);
+    // 2026-10-19 安全修補 M1：正式環境的 functions/api/view.js 會把打包時的 site-index 網址清單當 VIEW_KNOWN_URLS 帶進來，
+    // 這裡直接呼叫 factory 繞過了那層，所以照抄同一段；少了它 view 會把每條路徑都當白名單外，多送一段新鍵配額 Lua。
+    const fnEnv=name==='view'?{...env,VIEW_KNOWN_URLS:(await import('../.cloudflare-generated/catalog.mjs')).siteItems.map(i=>i&&i.url).filter(Boolean)}:env;
+    const result=await serve(name,factory,{env:fnEnv,request},transport);
     // Provenance is the only intentional difference in newly stored log payloads; keys, TTL, Lua and other arguments must match.
     const normalised=structuredClone(sent);
-    for(const c of normalised)if(c[0]==='LPUSH'){
+    // 2026-10-19 起 mika-chat 自己在伺服器端寫咪卡回覆（role=bot）的紀錄；build.mjs 只對 search-log、mika-chat-log 兩支注入來源欄位，
+    // mika-chat 寫的那筆沒有 source，兩邊指令本來就逐字相同，所以只對那兩支要求來源欄位（缺口已記在整合回報，未改 build.mjs）。
+    if(['search-log','mika-chat-log'].includes(name))for(const c of normalised)if(c[0]==='LPUSH'){
       const row=JSON.parse(c[2]);assert.equal(row.source,'cloudflare');assert.equal(row.countingVersion,'legacy-v1');delete row.source;delete row.countingVersion;c[2]=JSON.stringify(row);
     }
     assert.equal(result.status,200,name);assert.deepEqual(normalised,original,name+' original Redis commands differ');
