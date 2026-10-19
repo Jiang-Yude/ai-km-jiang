@@ -23,6 +23,25 @@ window.ARTICLE_TAGS = {
 
 window.ARTICLES = [
   {
+    id: "line-namecard-share-button",
+    url: "articles/line-namecard-share-button/",
+    date: "2026-10-19",
+    updated: "2026-10-19",
+    title: "官網放一顆按鈕，讓人把你的 LINE 名片傳到好友或群組｜名片貼進聊天室只是連結？自建 LIFF 分享器的做法",
+    problem: "做好了 LINE 名片，網址貼進聊天室卻只是一行連結；想在官網放一顆按鈕讓人把名片傳到好友或群組，不知道怎麼做。",
+    audience: "想在官網放 LINE 名片分享按鈕的個人工作者，以及幫客戶做官網或數位名片的人。",
+    summary: "LINE 的圖文名片（Flex Message）是訊息不是網頁，貼網址只會變成連結，一定要從 LINE 的分享畫面（shareTargetPicker）送出。江江自建 LIFF 分享器，官網按鈕一按就能選好友、選群組。文章整理自己開 LIFF 的三件一次性設定與不可逆的 Published、名片 3:4 排版與高度踩坑、Line 卡與 Line App 的見面流程，附不寫程式的 LINE 名片分享器與請 AI 把官網寫成名片 JSON 的提示詞。",
+    tags: {
+      topic: ["工具操作", "品牌資產", "AI應用"],
+      level: ["基礎"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["self-hosted-site-analytics", "hosting-platform-decision-tree", "website-as-workstation", "messaging-apps-ai-friendliness"],
+    cover: { wide: "images/articles/line-namecard-share-button-cover.jpg" }
+  },
+
+  {
     id: "ai-manages-ai-focus",
     url: "articles/ai-manages-ai-focus/",
     date: "2026-10-15",
@@ -851,7 +870,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["free-deploy-three-boundaries", "github-vercel-cloudflare-compare", "who-can-see-your-site", "webnode-to-cloudflare-pages", "cloudflare-service-map", "one-sentence-ai-website-workflow", "slides-by-audience-sop"],
+    related: ["free-deploy-three-boundaries", "github-vercel-cloudflare-compare", "who-can-see-your-site", "webnode-to-cloudflare-pages", "cloudflare-service-map", "one-sentence-ai-website-workflow", "slides-by-audience-sop", "line-namecard-share-button"],
     cover: { wide: "images/articles/hosting-platform-decision-tree-cover.jpg" }
   },
 
@@ -927,7 +946,7 @@ window.ARTICLES = [
       content_type: ["觀點文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["who-can-see-your-site", "ai-data-organization-usable-system", "yongli-ai-workshop-tools-to-workflow", "docs-as-system-design-agent", "post-class-organizing-loop"],
+    related: ["who-can-see-your-site", "ai-data-organization-usable-system", "yongli-ai-workshop-tools-to-workflow", "docs-as-system-design-agent", "post-class-organizing-loop", "line-namecard-share-button"],
     cover: { wide: "images/articles/website-as-workstation-cover.jpg" }
   },
 
@@ -1098,7 +1117,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: [],
+    related: ["line-namecard-share-button"],
     cover: { tall: "images/articles/analytics-7-ga4-gate.jpg" }
   },
 
@@ -1890,7 +1909,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["line-group-ai-workflow", "web-chat-ai-vs-desktop-agent", "free-deploy-three-boundaries", "ai-employee-four-levels", "line-backup-who-can-see-it"]
+    related: ["line-group-ai-workflow", "web-chat-ai-vs-desktop-agent", "free-deploy-three-boundaries", "ai-employee-four-levels", "line-backup-who-can-see-it", "line-namecard-share-button"]
   },
 
   {
