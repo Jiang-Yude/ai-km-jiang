@@ -38,12 +38,15 @@ const PROVIDER = { "@type": "Person", name: "江昱德", alternateName: "江江�
 const MODE = { online: "online", physical: "onsite", hybrid: "blended" };
 const GEN_RE = /\n?<script type="application\/ld\+json" id="course-jsonld">[\s\S]*?<\/script>/;
 
+// 課後簡報鎖定頁（cloudflare/legacy-decks.json 有雜湊鎖，改動會觸發重審），生成器一律跳過
+const LEGACY_DECKS = new Set(Object.keys(JSON.parse(readText(path.join(ROOT, "cloudflare/legacy-decks.json")))));
 function localFile(detailUrl) {
   if (!detailUrl) return null;
   let u = String(detailUrl).replace(/^https?:\/\/jiangyude\.com\//, "");
   if (/^[a-z]+:/i.test(u) || !u.startsWith("courses/")) return null;
   u = u.split(/[?#]/)[0];
   const rel = u.endsWith("/") ? `${u}index.html` : u;
+  if (LEGACY_DECKS.has(rel)) return null;
   return { rel, url: `${SITE}/${u}` };
 }
 function instructors(host) {
