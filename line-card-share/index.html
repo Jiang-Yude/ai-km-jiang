@@ -49,6 +49,10 @@ code{font-size:16px;background:var(--soft);padding:1px 6px;border-radius:6px}
 .toast.on{opacity:1}
 footer{max-width:980px;margin:0 auto;padding:0 16px 40px;color:var(--faint);font-size:18px}
 a{color:#7a5a2c}
+.guides{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin:14px 0 0}@media(max-width:720px){.guides{grid-template-columns:1fr}}
+.guide{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:16px 18px}
+.guide h3{font-size:20px;margin:0 0 6px}.guide p{margin:0 0 6px}
+.guide .btns{margin-top:10px}
 </style>
 </head>
 <body>
@@ -57,7 +61,7 @@ a{color:#7a5a2c}
 <h1>LINE 名片分享器</h1>
 <p class="lead">把一組 LINE 名片做成一條分享連結。放在你的官網上，訪客一按，LINE 就跳出選好友、選群組的畫面，對方收到的是可以左右滑的名片，不是一行網址。</p>
 <div class="box">
-<p><strong>為什麼需要它：</strong>LINE 的圖文名片（Flex Message）不能用貼網址的方式傳，網址貼進聊天室只會是一個連結。名片一定要從 LINE 的分享畫面送出，這個小工具就是幫你叫出那個畫面。</p>
+<p><strong>為什麼需要它：</strong>LINE 的圖文名片（Flex Message）不能用貼網址的方式傳，網址貼進聊天室只會是一個連結。要讓一般人用自己的 LINE 把名片傳出去，得叫出 LINE 的分享畫面，這個小工具就是幫你叫出那個畫面。</p>
 <p class="faint">想看完整做法與踩過的坑，讀這篇：<a href="/articles/line-namecard-share-button/">官網一顆按鈕分享 LINE 名片</a>。</p>
 </div>
 
@@ -70,7 +74,29 @@ a{color:#7a5a2c}
 <a class="btn" href="/lineapp/">Line App：見面時拿手機給對方看的頁</a>
 </div>
 
-<h2>做你自己的分享連結</h2>
+<h2>想學江江怎麼做：把說明交給你的 AI</h2>
+<p class="lead">下面兩份是寫給 AI 看的說明檔。複製網址或全文，貼給你的 ChatGPT、Claude 或 Gemini，它會照著帶你做。</p>
+<div class="guides">
+<div class="guide">
+<h3>1. 名片製作指南</h3>
+<p>AI 先問你要給誰看、放幾張、每張講什麼，確認後寫出名片 JSON。寫好貼進下面的分享器，就能拿到分享連結。</p>
+<div class="btns">
+<button class="btn go" type="button" data-copy-text="/line-card-share/agent-guide.md">複製全文</button>
+<button class="btn" type="button" data-copy-value="https://jiangyude.com/line-card-share/agent-guide.md">複製網址</button>
+<a class="btn" href="agent-guide.md" target="_blank" rel="noopener">打開看</a>
+</div></div>
+<div class="guide">
+<h3>2. 在自己官網裝分享按鈕</h3>
+<p>想跟江江一樣，在自己的網站放一顆分享按鈕、做 Line 卡給人掃。AI 會分清楚哪幾步要你自己按，哪些檔案它幫你寫。</p>
+<div class="btns">
+<button class="btn go" type="button" data-copy-text="/line-card-share/build-your-own.md">複製全文</button>
+<button class="btn" type="button" data-copy-value="https://jiangyude.com/line-card-share/build-your-own.md">複製網址</button>
+<a class="btn" href="build-your-own.md" target="_blank" rel="noopener">打開看</a>
+</div></div>
+</div>
+<p class="faint">AI 讀不了網址的話，就用「複製全文」整份貼過去。完整做法與踩過的坑，在<a href="/articles/line-namecard-share-button/">教學文章</a>。</p>
+
+<h2>已經有名片 JSON：做你自己的分享連結</h2>
 <ol class="steps">
 <li>先排好名片：到 LINE 官方的 <a href="https://developers.line.biz/flex-simulator/" target="_blank" rel="noopener">Flex Message Simulator</a> 排版，按右上角 <code>View as JSON</code> 複製。也可以請 AI 把你官網的自我介紹寫成 Flex Message JSON。</li>
 <li>名片裡的圖片要放在 <code>https://</code> 開頭的公開網址，最好就放在你自己的官網上。</li>
@@ -150,6 +176,11 @@ $('run').onclick=async function(){
   $('snippet').value='<a href="'+url+'" target="_blank" rel="noopener">用 LINE 分享我的名片</a>';
   $('out').classList.add('on');$('out').scrollIntoView({behavior:'smooth',block:'start'});
 };
+// 說明檔：複製網址、或抓全文來複製
+function copyStr(v){return navigator.clipboard?navigator.clipboard.writeText(v):Promise.reject();}
+document.addEventListener('click',function(e){var b=e.target.closest('[data-copy-value],[data-copy-text]');if(!b)return;
+  var t=b.getAttribute('data-copy-text');
+  (t?fetch(t).then(function(r){return r.text();}).then(copyStr):copyStr(b.getAttribute('data-copy-value'))).then(function(){toast(t?'已複製全文':'已複製網址');},function(){toast('複製失敗，請按「打開看」手動複製');});});
 document.addEventListener('click',function(e){var b=e.target.closest('[data-copy]');if(!b)return;
   var v=$(b.getAttribute('data-copy')).value;
   (navigator.clipboard?navigator.clipboard.writeText(v):Promise.reject()).then(function(){toast('已複製');},function(){$(b.getAttribute('data-copy')).select();toast('請長按選取後複製');});});
