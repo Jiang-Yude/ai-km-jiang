@@ -15,6 +15,8 @@
          {{BODY}}         正文（用下方 .section 區塊堆疊；可參考
                           現有文章如 articles/ai-market-microcosm/）
          {{CONTENT_TYPE}} 文章類型（教學文章／觀點文章／趨勢文章／案例文章）
+         {{DATE}}         發佈日 YYYY-MM-DD（＝article.json 的 date）
+         {{UPDATED}}      最後更新日 YYYY-MM-DD（＝article.json 的 updated，沒改過就等於 date）
        canonical / og / twitter / JSON-LD 的網址也都用
        https://jiangyude.com/{{SECTION}}/{{SLUG}}/ 帶入。
     3. 在文章資料夾放 {{SECTION}}/{{SLUG}}/article.json（一篇一檔，2026-09-06 起）：
@@ -25,7 +27,13 @@
        node scripts/build-articles-data.mjs，上線時 merge-publish 會統一重建。
     4. 兩支互聯 script 已內建在本檔   <script src="/views.js"></script>
 </body> 前，不用再另外加。
-    5. 到 sitemap.xml 與 llms.txt 各補一筆，讓搜尋與 AI 索引得到。
+    5. sitemap.xml 與 llms.txt、llms-full.txt 的文章段都是生成的（build-sitemap.mjs、build-llms.mjs），
+       不要手補；merge-publish 的重建步會從 article.json 產生。
+    5b. 標題、日期、og、twitter、JSON-LD（Article＋BreadcrumbList）與 hero 下的日期行，
+       以 article.json 為唯一來源（2026-10-19 立）。上面 {{TITLE}}／{{DATE}}／{{UPDATED}} 填一次就好，
+       之後改標題或更新日只改 article.json，再跑 node scripts/build-article-head.mjs --only=<slug>
+       把 head 與日期行重寫回來。preflight 會用 check-article-dates.mjs 擋缺日期、
+       用 build-article-head.mjs --check 擋 head 與 article.json 不一致。
     6. 到 search-aliases.js 補一條別名（2026-08-12 起 preflight 硬性檢查）。
        key 用 slug，內容寫「訪客會怎麼問」：上課的說法、比喻、金句、同義詞。
        至少兩個，不能只是照抄標題，否則 check-index-coverage.mjs 會擋下發布。
@@ -63,7 +71,9 @@
 <meta name="twitter:title" content="{{TITLE}}｜江江教練">
 <meta name="twitter:image" content="https://jiangyude.com/images/og/{{SLUG}}.jpg">
 <meta name="twitter:description" content="{{DESCRIPTION}}">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"{{TITLE}}","description":"{{DESCRIPTION}}","author":{"@type":"Person","name":"江昱德","alternateName":"江江教練","jobTitle":"隱性知識提煉師、AI 應用規劃師"},"isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://jiangyude.com/"},"inLanguage":"zh-Hant","url":"https://jiangyude.com/{{SECTION}}/{{SLUG}}/"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"{{TITLE}}","description":"{{DESCRIPTION}}","image":"https://jiangyude.com/images/og/{{SLUG}}.jpg","author":{"@type":"Person","name":"江昱德","alternateName":"江江教練","jobTitle":"隱性知識提煉師、AI 應用規劃師","url":"https://jiangyude.com/"},"datePublished":"{{DATE}}","dateModified":"{{UPDATED}}","isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://jiangyude.com/"},"inLanguage":"zh-Hant","url":"https://jiangyude.com/{{SECTION}}/{{SLUG}}/","mainEntityOfPage":{"@type":"WebPage","@id":"https://jiangyude.com/{{SECTION}}/{{SLUG}}/"}}</script>
+<!-- 麵包屑：第二層 articles 填「文章／articles.html」，ai-trends 填「AI 趨勢／ai-trends.html」。build-article-head.mjs 會自動校正。 -->
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"首頁","item":"https://jiangyude.com/"},{"@type":"ListItem","position":2,"name":"文章","item":"https://jiangyude.com/articles.html"},{"@type":"ListItem","position":3,"name":"{{TITLE}}","item":"https://jiangyude.com/{{SECTION}}/{{SLUG}}/"}]}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
@@ -195,11 +205,10 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
 </head>
 <body class="spotlight">
 <!-- 官網共用導航列 nav.top：與首頁/總站同一條，文章不要自己另做極簡 topbar（江江 2026-06-25：要同一個框架、同一條導航列）。把對應頁面的 class="active" 標在自己那欄。
-     ⚠️ 下面 ul.nav-menu 整塊由 preflight 第 5 關 check-bilingual-nav.mjs 做「逐字比對」，
-        塞任何註解、多一個空白、換行位置不同都會被判導航不一致而擋下發布。要說明就寫在 <ul> 外面（像這裡）。
-        2026-08-16 修：原本的 EN 那行說明註解就夾在 <ul> 裡面，導致照範本起手的新文章一律卡第 5 關
-        （llm-rag-agent-mcp 與 rag-three-retrieval-modes 兩篇同時中招）。註解已移出來，<ul> 內保持乾淨。
-        萬一還是被擋，直接跑：node scripts/check-bilingual-nav.mjs --write --only=<你的檔案路徑> -->
+     ⚠️ 下面 ul.nav-menu 由 preflight 第 5 關 check-bilingual-nav.mjs（2026-10-19 起改為單語導覽一致性檢查）
+        比對「連結目標與文字」是否與首頁同一套（空白與換行不計），active 標在哪一欄不算差異。
+        要說明就寫在 <ul> 外面（像這裡），<ul> 內保持乾淨。
+        被擋時照它印出的正確清單手動改這一塊；不要用任何自動覆寫參數（09 踩雷清單第四、二十三節禁用）。 -->
 <nav class="top">
   <div class="container">
     <a class="nav-brand-img" href="../../index.html"><img src="../../images/footer-signature.png" alt="江江教練 | 江昱德"></a>
@@ -222,6 +231,7 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
   <div>
     <div class="kicker">{{KICKER}}</div>
     <h1>{{TITLE}}</h1>
+    <p class="article-date" style="margin:0 0 18px;font-size:14px;line-height:1.6;color:#6a635a;">發佈 {{DATE}} ｜ 最後更新 {{UPDATED}}</p>
     <p>{{HERO_LEAD}}</p>
   </div>
   <!-- 封面圖（建議放）：⚠️ 比例是硬規則，不是美感選擇。
