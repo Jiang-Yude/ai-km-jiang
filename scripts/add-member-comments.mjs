@@ -5,7 +5,7 @@
 // 用法：
 //   node scripts/add-member-comments.mjs --dry-run                 只列出會改哪些檔，不寫入
 //   node scripts/add-member-comments.mjs articles/a/index.html ... 只改指定檔
-//   node scripts/add-member-comments.mjs --all                     改全部 articles/*/index.html
+//   node scripts/add-member-comments.mjs --all                     改全部 articles/*/index.html 與 ai-trends/*/index.html
 // 冪等：已經有 id="member-comments" 或 /member.js 的檔案一律跳過，重跑不會重複插。
 // 找不到 related-render.js 那行的檔案不改，列出來給人工處理。
 import fs from 'node:fs';
@@ -22,15 +22,17 @@ if (!files.length && !all && !dry) {
   process.exit(2);
 }
 if (!files.length) {
-  files = fs.readdirSync(path.join(ROOT, 'articles'), {withFileTypes: true}).filter(d => d.isDirectory())
-    .map(d => `articles/${d.name}/index.html`).filter(f => fs.existsSync(path.join(ROOT, f))).sort();
+  // 2026-10-19 補：趨勢文（ai-trends/）也是文章頁，一併處理
+  files = ['articles', 'ai-trends'].flatMap(root =>
+    fs.readdirSync(path.join(ROOT, root), {withFileTypes: true}).filter(d => d.isDirectory())
+      .map(d => `${root}/${d.name}/index.html`)).filter(f => fs.existsSync(path.join(ROOT, f))).sort();
 }
 
 const ANCHOR = /^([ \t]*)<script src="\.\.\/\.\.\/related-render\.js"><\/script>[ \t]*$/m;
 let changed = 0, skipped = 0, missing = [];
 for (const rel of files) {
   const m = /^(articles|ai-trends)\/([a-z0-9-]+)\/index\.html$/.exec(rel.replace(/^\.\//, ''));
-  if (!m) { missing.push(rel + '（路徑不是 articles/<slug>/index.html）'); continue; }
+  if (!m) { missing.push(rel + '（路徑不是 articles/<slug>/index.html 或 ai-trends/<slug>/index.html）'); continue; }
   const file = path.join(ROOT, rel);
   const html = fs.readFileSync(file, 'utf8');
   if (html.includes('id="member-comments"') || html.includes('src="/member.js"')) { skipped++; continue; }
