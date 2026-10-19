@@ -67,7 +67,7 @@ var LIFF_ID = '你的LIFF_ID';
 var btn = document.getElementById('share'), msg = document.getElementById('msg'), card = null;
 function say(t){ msg.textContent = t; }
 async function share(){
-  if (!liff.isApiAvailable('shareTargetPicker')) return say('請用手機 LINE 打開這一頁。');
+  if (!liff.isApiAvailable('shareTargetPicker')) return say('這裡叫不出分享畫面：確認 LIFF 已打開 shareTargetPicker，或改用手機 LINE 打開這一頁。');
   btn.disabled = true;
   try {
     var res = await liff.shareTargetPicker([card], { isMultiple: true });
@@ -118,7 +118,7 @@ btn.onclick = share;
 
 ## 常見問題
 
-- **電腦上打開分享頁沒反應**：分享畫面只在手機 LINE 裡可用，電腦請改用手機測。
+- **打開分享頁叫不出選人畫面**：先確認 LIFF 設定裡 shareTargetPicker 已打開、已登入 LINE；在一般瀏覽器打開時會先要求登入 LINE。最穩的測法是用手機 LINE 打開。
 - **只有自己能分享，別人按了失敗**：channel 還在 Developing，要改成 Published。
 - **名片顯示不出來或被退件**：用 LINE 官方的 Flex Message Simulator（https://developers.line.biz/flex-simulator/）貼 JSON 檢查；圖片要 https。
 - **個人 LINE 能不能在對方加好友時自動傳名片**：不行，個人帳號沒有自動傳訊；要自己按分享傳給他。
