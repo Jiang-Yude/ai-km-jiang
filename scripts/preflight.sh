@@ -100,7 +100,8 @@ echo "═══ 4/12 新頁面有進 sitemap 與 llms.txt ═══"
 MISS=0
 for f in *.html; do
   # _ 開頭＝本機工具檔（校稿器 tuner 等），跟 _trash/ 同一個慣例，不上線也不進 sitemap
-  case "$f" in _*.html|google*|stats.html|search.html|agent.html|skills.html|index-parallel*.html) continue;; esac
+  # 404.html＝自訂錯誤頁（2026-10-19 立），noindex，不該進 sitemap
+  case "$f" in _*.html|google*|stats.html|search.html|agent.html|skills.html|index-parallel*.html|404.html) continue;; esac
   loc="${f}"; [ "$f" = "index.html" ] && loc="/"
   grep -q "$loc" sitemap.xml || { bad "sitemap 缺 $f"; MISS=1; }
 done
@@ -111,6 +112,11 @@ done
 # 2026-10-09 起 sitemap 文章段是生成的（scripts/build-sitemap.mjs，merge-publish 重建步會跑）；
 # 這一關還留著當保底：分支不必再手補 sitemap，但若有人繞過 merge-publish 直接 publish，這裡仍擋。
 if node scripts/check-sitemap-coverage.mjs; then ok "已上線文章都在 sitemap"; else bad "有已上線文章不在 sitemap.xml（見上方清單）：跑 node scripts/build-sitemap.mjs 重建文章段，不用手補"; fi
+# 2026-10-19 起 sitemap 也負責移除 noindex 頁、補收 privacy 等固定頁、文章 lastmod 等於 article.json；--check 擋「有人改了來源沒重建」。
+if node scripts/build-sitemap.mjs --check; then ok "sitemap 與來源一致（含 noindex 移除、lastmod）"; else bad "sitemap.xml 需要重建：跑 node scripts/build-sitemap.mjs"; fi
+# 靜態清單與課程 JSON-LD（2026-10-19 立，4O 體檢）：articles.html、courses.html 的 noscript 全清單、課程頁 Course JSON-LD 都是生成的。
+if node scripts/build-static-lists.mjs --check; then ok "文章總站與課程頁靜態清單已是最新"; else bad "靜態清單需要重建：跑 node scripts/build-static-lists.mjs"; fi
+if node scripts/build-course-jsonld.mjs --check; then ok "課程頁 Course JSON-LD 已是最新"; else bad "Course JSON-LD 需要重建：跑 node scripts/build-course-jsonld.mjs"; fi
 # 已上線文章 llms.txt 覆蓋（2026-10-10 立）：原本只驗知識架構一頁，10-03 後 10 篇文章沒進 llms.txt 也沒人擋。
 # 2026-10-19 起 llms.txt、llms-full.txt 文章段改由 build-llms.mjs 從 article.json 生成，覆蓋檢查同時驗標題。
 if node scripts/check-llms-coverage.mjs; then ok "已上線文章都在 llms.txt 與 llms-full.txt，標題一致"; else bad "llms 文章段缺漏或標題過時（見上方清單）：跑 node scripts/build-llms.mjs，不要手補"; fi
