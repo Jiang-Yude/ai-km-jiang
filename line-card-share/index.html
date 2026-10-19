@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
+<meta name="description" content="把一組 LINE 名片（Flex Message）做成一條分享連結。放在官網上，訪客一按，LINE 就跳出選好友、選群組的畫面，對方收到可以左右滑的名片，不是一行網址。">
+<link rel="canonical" href="https://jiangyude.com/line-card-share/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="江江教練 · AI 知識管理">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:title" content="LINE 名片分享器｜官網一個按鈕，把名片傳到 LINE 好友或群組">
+<meta property="og:description" content="貼上 LINE 名片的 JSON，拿到一條分享連結和官網按鈕。訪客一按就能選好友或群組，對方收到的是可以滑的名片。">
+<meta property="og:url" content="https://jiangyude.com/line-card-share/">
+<meta property="og:image" content="https://jiangyude.com/card/portrait-round.png">
+<meta name="twitter:card" content="summary">
+<title>LINE 名片分享器｜官網一個按鈕，把名片傳到 LINE 好友或群組</title>
+<style>
+:root{--bg:#fefcf8;--soft:#faf5ec;--paper:#fff;--ink:#1a1612;--ink-soft:#3a342d;--faint:#635c53;--line:#e8dfc9;--accent:#a27c45;--green:#06c755;--err:#b3261e}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:19px/1.8 "Noto Sans TC","PingFang TC",system-ui,sans-serif}
+.wrap{max-width:980px;margin:0 auto;padding:32px 16px 80px}
+.kicker{color:var(--accent);font-size:18px;letter-spacing:.08em;margin:0}
+h1{font-size:clamp(30px,5vw,42px);line-height:1.28;margin:6px 0 12px}
+h2{font-size:24px;line-height:1.4;margin:44px 0 6px}
+.lead{color:var(--ink-soft);margin:0 0 14px}
+.faint{color:var(--faint);font-size:18px}
+.box{background:var(--soft);border:1px solid var(--line);border-radius:16px;padding:16px 18px;margin:0 0 20px}
+.box p{margin:0 0 8px}.box p:last-child{margin:0}
+.btns{display:flex;flex-wrap:wrap;gap:10px;margin:14px 0 0}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 18px;border-radius:12px;font:inherit;font-size:18px;font-weight:600;text-decoration:none;border:1px solid var(--line);background:var(--paper);color:var(--ink);cursor:pointer}
+.btn.go{background:var(--green);border-color:var(--green);color:#fff}
+.btn:disabled{opacity:.5;cursor:default}
+.rail{display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;padding:6px 2px 14px;-webkit-overflow-scrolling:touch}
+.rail .slot{flex:0 0 min(78vw,300px)}
+.steps{margin:0;padding-left:1.4em}.steps li{margin:0 0 10px}
+label{display:block;font-weight:600;margin:16px 0 6px}
+input[type=text],textarea{width:100%;font:16px/1.5 ui-monospace,Menlo,monospace;padding:12px;border:1px solid var(--line);border-radius:12px;background:var(--paper);color:var(--ink)}
+input[type=text]{font:18px/1.5 "Noto Sans TC","PingFang TC",system-ui,sans-serif}
+textarea{min-height:220px;resize:vertical}
+#errs{color:var(--err);margin:12px 0 0;padding-left:1.2em}
+#out{display:none}#out.on{display:block}
+.fx-bubble{flex:0 0 280px;scroll-snap-align:center;display:flex;flex-direction:column;border-radius:16px;overflow:hidden;background:#fff;border:1px solid var(--line);font-size:14px;line-height:1.4;box-shadow:0 6px 18px #7b61341a}
+.fx-link{display:block;text-align:center;color:#42659a;padding:8px 0;text-decoration:none}
+code{font-size:16px;background:var(--soft);padding:1px 6px;border-radius:6px}
+.copyrow{display:flex;gap:8px;align-items:stretch}.copyrow input{flex:1;min-width:0;font:15px/1.4 ui-monospace,Menlo,monospace}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 20px;border-radius:999px;font-size:18px;opacity:0;transition:opacity .2s;pointer-events:none}
+.toast.on{opacity:1}
+footer{max-width:980px;margin:0 auto;padding:0 16px 40px;color:var(--faint);font-size:18px}
+a{color:#7a5a2c}
+</style>
+</head>
+<body>
+<main class="wrap">
+<p class="kicker">網頁小工具</p>
+<h1>LINE 名片分享器</h1>
+<p class="lead">把一組 LINE 名片做成一條分享連結。放在你的官網上，訪客一按，LINE 就跳出選好友、選群組的畫面，對方收到的是可以左右滑的名片，不是一行網址。</p>
+<div class="box">
+<p><strong>為什麼需要它：</strong>LINE 的圖文名片（Flex Message）不能用貼網址的方式傳，網址貼進聊天室只會是一個連結。名片一定要從 LINE 的分享畫面送出，這個小工具就是幫你叫出那個畫面。</p>
+<p class="faint">想看完整做法與踩過的坑，讀這篇：<a href="/articles/line-namecard-share-button/">官網一顆按鈕分享 LINE 名片</a>。</p>
+</div>
+
+<h2>先看成果：江江自己的 LINE 名片</h2>
+<p class="faint">這五張就是江江官網首頁那顆分享按鈕送出去的名片。左右滑動看。</p>
+<div class="rail" id="mine" aria-label="江江的五張 LINE 名片"></div>
+<div class="btns">
+<a class="btn go" href="https://liff.line.me/2012081068-MnNPDX8P">用 LINE 分享江江的名片</a>
+<a class="btn" href="/linecard/">Line 卡：掃 QR Code 後看到的頁</a>
+<a class="btn" href="/lineapp/">Line App：見面時拿手機給對方看的頁</a>
+</div>
+
+<h2>做你自己的分享連結</h2>
+<ol class="steps">
+<li>先排好名片：到 LINE 官方的 <a href="https://developers.line.biz/flex-simulator/" target="_blank" rel="noopener">Flex Message Simulator</a> 排版，按右上角 <code>View as JSON</code> 複製。也可以請 AI 把你官網的自我介紹寫成 Flex Message JSON。</li>
+<li>名片裡的圖片要放在 <code>https://</code> 開頭的公開網址，最好就放在你自己的官網上。</li>
+<li>貼到下面，按「檢查並預覽」。通過就會拿到分享連結和官網按鈕的程式碼。</li>
+<li>用手機 LINE 打開分享連結，傳給自己或一個朋友試一次。</li>
+</ol>
+
+<label for="alt">聊天列表上顯示的那一行字（altText）</label>
+<input type="text" id="alt" maxlength="400" value="" placeholder="例：王小明的名片：室內設計、老屋翻新">
+<label for="json">名片 JSON</label>
+<textarea id="json" spellcheck="false" placeholder='貼上 bubble、carousel，或完整的 {"type":"flex", ...}'></textarea>
+<div class="btns">
+<button class="btn go" id="run" type="button">檢查並預覽</button>
+<button class="btn" id="sample" type="button">放入範例名片</button>
+</div>
+<ul id="errs"></ul>
+
+<section id="out" aria-live="polite">
+<h2>預覽</h2>
+<p class="faint">這是近似畫面，字距和高度以 LINE 實際顯示為準。</p>
+<div class="rail" id="preview"></div>
+<label for="url">分享連結</label>
+<div class="copyrow"><input type="text" id="url" readonly><button class="btn" type="button" data-copy="url">複製</button></div>
+<p class="faint" id="urlLen"></p>
+<label for="snippet">放在官網的按鈕（貼進你網頁的 HTML）</label>
+<div class="copyrow"><input type="text" id="snippet" readonly><button class="btn" type="button" data-copy="snippet">複製</button></div>
+<div class="btns"><a class="btn go" id="try" href="#" target="_blank" rel="noopener">在 LINE 裡試一次</a></div>
+</section>
+
+<h2>幾件要知道的事</h2>
+<div class="box">
+<p><strong>名片存在連結裡。</strong>這個網站不保存你的名片內容，名片改了就重新產生一條連結，把官網按鈕換掉。</p>
+<p><strong>第一次分享要按一次允許。</strong>第一次使用時 LINE 會跳出一次授權畫面，按允許之後才會出現選人畫面。</p>
+<p><strong>只記分享次數。</strong>每送出一次記一筆次數，不記是誰、傳給誰。</p>
+<p><strong>按鈕只能連到網址、LINE、電話、Email。</strong>其他類型的按鈕在這裡會被擋下來。</p>
+<p><strong>連結走的是江江官網的分享頁。</strong>如果這顆按鈕對你的生意很重要，或是要交付給客戶，長期建議自己開一個 LINE 分享器，做法在<a href="/articles/line-namecard-share-button/#own-liff">教學文章第三段</a>。</p>
+<p><strong>最多 12 張。</strong>LINE 輪播一組最多 12 張；張數越多連結越長，建議 3 到 5 張。</p>
+</div>
+
+<h2>想請江江幫你做</h2>
+<p class="lead">把你的官網整理成 LINE 名片、決定要放幾張、每張講什麼，可以直接在 LINE 找江江聊。</p>
+<div class="btns"><a class="btn go" href="https://line.me/ti/p/tBx4pCgLnz">用 LINE 聯絡江江</a></div>
+</main>
+<footer>江昱德（江江教練）・<a href="/skills.html#line-card-share">回到小工具</a>・<a href="/">知識官網</a></footer>
+<div class="toast" id="toast">已複製</div>
+
+<script src="/card/flex-render.js"></script>
+<script src="/card/flex-share.js"></script>
+<script>
+// 成果區：直接讀上線中的江江名片
+fetch('/card/line-flex.json').then(function(r){return r.json();}).then(function(f){
+  var rail=document.getElementById('mine');renderFlexCards(f).forEach(function(s){rail.appendChild(s);});fitSlots();
+}).catch(function(){});
+
+var SAMPLE={type:'bubble',body:{type:'box',layout:'vertical',spacing:'md',paddingAll:'xl',contents:[
+  {type:'text',text:'王小明',size:'xxl',weight:'bold',color:'#382f26'},
+  {type:'text',text:'室內設計師｜老屋翻新',size:'md',color:'#817466'},
+  {type:'separator',margin:'lg'},
+  {type:'text',text:'把三十年的老房子，改成住得舒服的家。',size:'md',color:'#382f26',wrap:true,margin:'lg'}]},
+  footer:{type:'box',layout:'vertical',spacing:'sm',contents:[
+  {type:'button',style:'primary',color:'#a27c45',action:{type:'uri',label:'看作品集',uri:'https://example.com/'}}]}};
+var $=function(id){return document.getElementById(id);};
+function toast(t){var e=$('toast');e.textContent=t;e.classList.add('on');setTimeout(function(){e.classList.remove('on');},1400);}
+$('sample').onclick=function(){$('json').value=JSON.stringify(SAMPLE,null,2);if(!$('alt').value)$('alt').value='王小明的名片：室內設計、老屋翻新';};
+$('run').onclick=async function(){
+  var errs=$('errs');errs.innerHTML='';$('out').classList.remove('on');
+  var list=[],msg;
+  try{msg=FLEX_SHARE.normalize(JSON.parse($('json').value),$('alt').value.trim());
+    if($('alt').value.trim())msg.altText=$('alt').value.trim();
+    list=FLEX_SHARE.check(msg);
+  }catch(e){list=['JSON 讀不懂：'+e.message];}
+  if(list.length){list.slice(0,8).forEach(function(t){var li=document.createElement('li');li.textContent=t;errs.appendChild(li);});return;}
+  var pv=$('preview');pv.innerHTML='';renderFlexBubbles(msg).forEach(function(b){pv.appendChild(b);});
+  var url=await FLEX_SHARE.shareUrl(msg);
+  $('url').value=url;$('try').href=url;
+  $('urlLen').textContent='連結長度 '+url.length+' 字元'+(url.length>8000?'，偏長，建議減少張數或文字。':'。');
+  $('snippet').value='<a href="'+url+'" target="_blank" rel="noopener">用 LINE 分享我的名片</a>';
+  $('out').classList.add('on');$('out').scrollIntoView({behavior:'smooth',block:'start'});
+};
+document.addEventListener('click',function(e){var b=e.target.closest('[data-copy]');if(!b)return;
+  var v=$(b.getAttribute('data-copy')).value;
+  (navigator.clipboard?navigator.clipboard.writeText(v):Promise.reject()).then(function(){toast('已複製');},function(){$(b.getAttribute('data-copy')).select();toast('請長按選取後複製');});});
+</script>
+<script src="/views.js"></script>
+<script src="/mika-chat-widget.js" defer></script>
+</body>
+</html>

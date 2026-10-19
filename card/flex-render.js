@@ -1,12 +1,14 @@
 // LINE Flex 名片繪製（名片頁 /card/ 與口袋頁 /line 共用）
 var FS={xxs:11,xs:13,sm:14,md:16,lg:19,xl:22,xxl:29,'3xl':35,'4xl':48,'5xl':74};
 var SP={none:0,xs:2,sm:4,md:8,lg:12,xl:16,xxl:20};
+// 只放行網址、LINE、電話、Email 連結；其他（javascript: 等）一律不給 href
+function safeUri(a){return a&&a.type==='uri'&&/^(https?:\/\/|line:\/\/|tel:|mailto:)/i.test(a.uri||'')?a.uri:null;}
 function px(v,map){if(v==null)return null;if(map&&map[v]!=null)return map[v]+'px';return v;}
 function el(n){
   var t=n.type,d;
   if(t==='box'){
     d=document.createElement(n.action?'a':'div');
-    if(n.action){d.href=n.action.uri;d.style.textDecoration='none';d.style.color='inherit';}
+    if(n.action){var u=safeUri(n.action);if(u)d.href=u;d.style.textDecoration='none';d.style.color='inherit';}
     d.style.display='flex';d.style.flexDirection=n.layout==='horizontal'||n.layout==='baseline'?'row':'column';
     if(n.layout==='baseline')d.style.alignItems='baseline';
     if(n.alignItems)d.style.alignItems=n.alignItems==='center'?'center':n.alignItems==='flex-end'?'flex-end':'flex-start';
@@ -28,8 +30,16 @@ function el(n){
     if(n.gravity==='bottom')d.style.alignSelf='flex-end';
     if(n.align==='center'||(!n.align&&n.size&&n.size!=='full'))d.style.margin='0 auto';
   }else if(t==='button'){
-    d=document.createElement('a');d.className='fx-link';d.href=n.action.uri;d.textContent=n.action.label;
+    d=document.createElement('a');d.className='fx-link';var bu=safeUri(n.action);if(bu)d.href=bu;d.textContent=(n.action&&n.action.label)||'';
+  }else if(t==='separator'){
+    d=document.createElement('div');d.style.borderTop='1px solid '+(n.color||'#e5e5e5');d.style.alignSelf='stretch';
+  }else if(t==='spacer'){
+    d=document.createElement('div');d.style.height=px(n.size||'md',SP);
+  }else if(t==='filler'){
+    d=document.createElement('div');d.style.flex='1';
   }else{d=document.createElement('div');}
+  if(t==='text'&&n.contents){d.textContent='';n.contents.forEach(function(sp){var s=document.createElement('span');s.textContent=sp.text;if(sp.color)s.style.color=sp.color;if(sp.weight==='bold')s.style.fontWeight='700';if(sp.size)s.style.fontSize=px(sp.size,FS);d.appendChild(s);});}
+  if(t==='button'&&n.style){d.style.cssText+=';display:block;border-radius:8px;padding:10px;margin-top:4px;'+(n.style==='primary'?'background:'+(n.color||'#17c950')+';color:#fff':n.style==='secondary'?'background:'+(n.color||'#dcdfe5')+';color:#111':'');}
   if(n.flex!=null)d.style.flex=n.flex===0?'0 0 auto':String(n.flex);
   if(n.position==='relative'){d.style.position='relative';if(n.offsetStart)d.style.left=n.offsetStart;if(n.offsetTop)d.style.top=n.offsetTop;}
   return d;
@@ -50,4 +60,16 @@ function renderFlexCards(json){
     var w=document.createElement('article');w.className='bubble';
     var body=el(b.body);body.classList.add('body');w.appendChild(body);if(b.footer)w.appendChild(el(b.footer));
     slot.appendChild(w);return slot;});
+}
+
+// 分享器預覽用：任何人的 Flex 名片照 LINE 寬度畫出來，高度跟內容走（不強制 3:4）
+function renderFlexBubbles(json){
+  var c=json.contents||json,car=c.type==='carousel'?c.contents:[c];
+  return car.map(function(b){var w=document.createElement('article');w.className='fx-bubble';
+    var st=b.styles||{};
+    ['header','hero','body','footer'].forEach(function(k){if(!b[k])return;var part=el(b[k]);
+      if(k!=='hero'&&b[k].type==='box'&&!b[k].paddingAll)part.style.padding='16px';
+      var bg=st[k]&&st[k].backgroundColor;if(bg)part.style.background=bg;
+      if(k==='body')part.style.flex='1';w.appendChild(part);});
+    return w;});
 }
