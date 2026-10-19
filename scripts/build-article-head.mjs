@@ -25,7 +25,7 @@
      og:image               → 現有值若檔案存在就保留；不存在或是相對路徑就依序退到
                                images/og/<id>.jpg、images/articles/<id>-cover.jpg、
                                article.json cover.wide、images/og/home.jpg（只改指向，不產新圖）。
-     作者                   → 江昱德／江江教練，職稱統一「隱性知識提煉師、AI 應用規劃師」，url 指首頁。
+     作者                   → 江昱德／江江教練，職稱讀 profile.json 的 job_title（隱性知識提煉師、AI 應用規劃師），url 指首頁。
 
    冪等：同一份 article.json 跑第二次不會有任何 diff。
    用法：
@@ -38,7 +38,10 @@ import fs from "node:fs";
 import path from "node:path";
 import { ROOT, SITE, listArticles, articleDates, DATE_RE } from "./lib-articles.mjs";
 
-const JOB_TITLE = "隱性知識提煉師、AI 應用規劃師";
+// 職稱唯一來源＝profile.json 的 job_title（2026-10-19 起與首頁 Person JSON-LD 統一），讀不到就停，不退回寫死值
+let JOB_TITLE;
+try { JOB_TITLE = String(JSON.parse(fs.readFileSync(path.join(ROOT, "profile.json"), "utf8")).job_title || "").trim(); } catch {}
+if (!JOB_TITLE) { console.error("  讀不到 profile.json 的 job_title，作者職稱沒有來源，不能繼續"); process.exit(2); }
 const SITE_NAME = "江江教練 · AI 知識管理";
 const BRAND = "江江教練";
 const FALLBACK_OG = `${SITE}/images/og/home.jpg`;
