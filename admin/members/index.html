@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<meta name="referrer" content="no-referrer">
+<title>會員管理後台｜江江教練</title>
+<link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+<main class="member-page member-admin">
+  <h1>會員管理後台</h1>
+  <p class="member-hint">密碼與站長儀表板相同。密碼只留在這個分頁的記憶體，重新整理就要重輸；30 分鐘內同一網路錯 5 次會暫時鎖住。</p>
+  <form id="login"><label>密碼 <input type="password" name="pw" autocomplete="current-password" required></label> <button class="member-btn" type="submit">進入</button> <span class="member-msg" id="login-msg" role="status"></span></form>
+
+  <div id="app" hidden>
+    <section class="member-card">
+      <h2 class="member-title">補登記等級（傳送門已付費學員）</h2>
+      <p class="member-hint">輸入學員購買時用的 Email。學員還沒登入也可以先登記，登入後自動套用。</p>
+      <form id="grant"><input type="email" name="email" placeholder="學員 Email" required> <select name="tier" id="tier-select"></select> <button class="member-btn" type="submit">登記</button> <span class="member-msg" role="status"></span></form>
+    </section>
+
+    <section class="member-card">
+      <h2 class="member-title">已登記等級</h2>
+      <div class="member-tablewrap"><table><thead><tr><th>Email</th><th>等級</th><th>已登入過</th><th>操作</th></tr></thead><tbody id="grants"></tbody></table></div>
+    </section>
+
+    <section class="member-card">
+      <h2 class="member-title">會員清單</h2>
+      <div class="member-tablewrap"><table><thead><tr><th>暱稱</th><th>Email</th><th>可用等級</th><th>最近登入</th><th>操作</th></tr></thead><tbody id="members"></tbody></table></div>
+    </section>
+
+    <section class="member-card">
+      <h2 class="member-title">留言管理</h2>
+      <form id="cfilter"><label><input type="radio" name="status" value="pending" checked> 待審</label> <label><input type="radio" name="status" value="all"> 全部</label> <button class="member-btn" type="submit">重新整理</button></form>
+      <div class="member-tablewrap"><table><thead><tr><th>時間</th><th>文章</th><th>暱稱</th><th>內容</th><th>狀態</th><th>操作</th></tr></thead><tbody id="comments"></tbody></table></div>
+    </section>
+
+    <section class="member-card">
+      <h2 class="member-title">傳送門 webhook 紀錄（最近 100 筆）</h2>
+      <button class="member-btn" type="button" id="load-log">載入</button>
+      <pre id="hooklog"></pre>
+    </section>
+  </div>
+</main>
+<script>
+(function () {
+  'use strict';
+  // 伺服器回傳的文字都已跳脫，這裡用 innerHTML 顯示時不再重複跳脫。
+  var pw = '';
+  var $ = function (id) { return document.getElementById(id); };
+  var fmt = function (ts) { return ts ? new Date(ts).toLocaleString('zh-TW', {timeZone: 'Asia/Taipei', hour12: false}) : ''; };
+  function call(action, extra) {
+    var body = Object.assign({pw: pw, action: action}, extra || {});
+    return fetch('/admin/members/api', {method: 'POST', credentials: 'same-origin', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(body)})
+      .then(function (r) { return r.json().catch(function () { return {}; }).then(function (j) { j._status = r.status; return j; }); })
+      .catch(function () { return {_status: 0}; });
+  }
+  function errText(j) {
+    return {403: '密碼錯誤', 429: '錯太多次，請 30 分鐘後再試', 503: '服務暫時無法使用', 0: '網路連線失敗'}[j._status] || ('操作失敗（' + j._status + '）');
+  }
+  function loadList() {
+    return call('list').then(function (j) {
+      if (!j.ok) { alert(errText(j)); return; }
+      $('tier-select').innerHTML = j.tierOptions.map(function (t) { return '<option value="' + t.id + '">' + t.name + '</option>'; }).join('');
+      $('grants').innerHTML = j.grants.map(function (g) {
+        return '<tr><td>' + g.email + '</td><td>' + g.tiers.map(function (t) { return t.name; }).join('、') + '</td><td>' + (g.loggedIn ? '是' : '否') + '</td><td>' +
+          g.tiers.map(function (t) { return '<button class="member-link" data-revoke="' + t.id + '" data-email="' + g.email + '">撤銷' + t.name + '</button>'; }).join(' ') + '</td></tr>';
+      }).join('') || '<tr><td colspan="4">尚無登記</td></tr>';
+      $('members').innerHTML = j.members.map(function (m) {
+        return '<tr><td>' + m.nick + '</td><td>' + m.email + '</td><td>' + m.tiers.join('、') + '</td><td>' + fmt(m.lastLogin) + '</td><td><button class="member-link" data-logout="' + m.email + '">強制登出</button></td></tr>';
+      }).join('') || '<tr><td colspan="5">尚無會員</td></tr>';
+    });
+  }
+  function loadComments() {
+    var status = document.querySelector('#cfilter input[name=status]:checked').value;
+    return call('comments', {status: status}).then(function (j) {
+      if (!j.ok) { alert(errText(j)); return; }
+      $('comments').innerHTML = j.comments.map(function (c) {
+        var ops = ['publish', 'hide', 'delete'].map(function (op) {
+          return '<button class="member-link" data-op="' + op + '" data-page="' + c.page + '" data-id="' + c.id + '">' + {publish: '發布', hide: '隱藏', delete: '刪除'}[op] + '</button>';
+        }).join(' ');
+        return '<tr><td>' + fmt(c.ts) + '</td><td><a class="member-link" href="/' + c.page + '" target="_blank" rel="noopener">' + c.page + '</a></td><td>' + c.nick + (c.guest ? '（訪客）' : '') + '</td><td>' + c.text.replace(/\n/g, '<br>') + '</td><td>' + c.status + '</td><td>' + ops + '</td></tr>';
+      }).join('') || '<tr><td colspan="6">沒有留言</td></tr>';
+    });
+  }
+  $('login').addEventListener('submit', function (e) {
+    e.preventDefault();
+    pw = e.target.pw.value; e.target.pw.value = '';
+    call('list').then(function (j) {
+      if (!j.ok) { pw = ''; $('login-msg').textContent = errText(j); return; }
+      $('login').hidden = true; $('app').hidden = false;
+      loadList(); loadComments();
+    });
+  });
+  $('grant').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var f = e.target, msg = f.querySelector('.member-msg');
+    call('grant', {email: f.email.value, tier: f.tier.value}).then(function (j) {
+      msg.textContent = j.ok ? '已登記' : errText(j);
+      if (j.ok) { f.email.value = ''; loadList(); }
+    });
+  });
+  document.addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    if (b.dataset.revoke) {
+      if (!confirm('確定撤銷 ' + b.dataset.email + ' 的這個等級？')) return;
+      call('revoke', {email: b.dataset.email, tier: b.dataset.revoke}).then(function (j) { if (!j.ok) alert(errText(j)); loadList(); });
+    } else if (b.dataset.logout) {
+      if (!confirm('確定讓 ' + b.dataset.logout + ' 所有裝置登出？')) return;
+      call('revoke-sessions', {email: b.dataset.logout}).then(function (j) { alert(j.ok ? '已登出 ' + j.revoked + ' 個裝置' : errText(j)); });
+    } else if (b.dataset.op) {
+      if (b.dataset.op === 'delete' && !confirm('刪除後無法復原，確定刪除？')) return;
+      call('moderate', {page: b.dataset.page, id: b.dataset.id, op: b.dataset.op}).then(function (j) { if (!j.ok) alert(errText(j)); loadComments(); });
+    } else if (b.id === 'load-log') {
+      call('webhook-log').then(function (j) { $('hooklog').innerHTML = j.ok ? (j.log.join('\n') || '沒有紀錄') : errText(j); });
+    }
+  });
+  $('cfilter').addEventListener('submit', function (e) { e.preventDefault(); loadComments(); });
+})();
+</script>
+</body>
+</html>

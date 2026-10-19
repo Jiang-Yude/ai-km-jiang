@@ -27,6 +27,8 @@ const EXEMPT = [
   /^index\.html$/,
   // 文章內嵌的互動評量表（iframe 載入、noindex），掛 widget 會在文章頁裡多出第二個咪卡視窗；母頁 index.html 已掛。
   'articles/ai-customer-service-model-retest/scorecard.html',
+  // 會員管理後台（noindex、只有站長用）：浮動聊天視窗會蓋到管理表格，也不該把後台操作畫面交給訪客客服。
+  'admin/members/',
   // /card/ 是 LINE 名片分享頁（noindex、整頁是名片輪播），沿用原名片頁不改版面；浮動聊天視窗會蓋到手機版輪播。
   'card/',
 ];
