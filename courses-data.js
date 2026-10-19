@@ -413,7 +413,7 @@ window.COURSES = [
     time: "14:00",
     title: "手機 + AI 拍出自己的專業商品照",
     type_label: "外部授課",
-    image: "images/courses/2026-05-25-mobile-product-photo.png",
+    image: "images/courses/2026-05-25-mobile-product-photo.jpg",
     venue_mode: "physical",
     host: "江江教練",
     tags: ["手機攝影", "AI", "商品照", "在地商家"],
