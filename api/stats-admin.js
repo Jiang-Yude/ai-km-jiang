@@ -33,15 +33,9 @@ function expectedPassword() {
   return process.env.STATS_PASSWORD || '';
 }
 
-/* 長度不同也要跑完整趟比對，避免用回應時間猜長度 */
-function safeEqual(a, b) {
-  const A = Buffer.from(String(a), 'utf8');
-  const B = Buffer.from(String(b), 'utf8');
-  let diff = A.length ^ B.length;
-  const n = Math.max(A.length, B.length);
-  for (let i = 0; i < n; i++) diff |= (A[i] || 0) ^ (B[i] || 0);
-  return diff === 0;
-}
+/* 常數時間比對與錯誤次數 Lua 已抽到 lib/2026-09-13-0910-client-network.js（2026-10-19），
+   search-log、mika-chat-log 共用同一份，避免兩處各自維護驗證邏輯。 */
+const { safeEqual, authCommand, authVerdict } = clientNetwork;
 
 async function pipe(commands) {
   const r = await fetch(`${URL()}/pipeline`, {
@@ -110,11 +104,9 @@ module.exports = async (req, res) => {
   if (!isIP(ip)) { res.status(503).json({ error: 'authentication temporarily unavailable' }); return; }
   const failKey = `stats:auth:${clientNetwork(ip)}:${Math.floor(Date.now() / 900000)}`;
   const correct = safeEqual(body.pw, want);
-  const script = "local n = tonumber(redis.call('GET', KEYS[1]) or '0'); if n >= 5 then return 6 end; if ARGV[1] == '1' then return 0 end; n = redis.call('INCR', KEYS[1]); redis.call('EXPIRE', KEYS[1], 1800); return n";
   try {
-    const [n] = await pipe([['EVAL', script, '1', failKey, correct ? '1' : '0']]);
-    if (!Number.isSafeInteger(n) || n < 0 || n > 6 || (correct ? (n !== 0 && n !== 6) : n === 0)) throw new Error('invalid auth counter');
-    if (n === 6) { res.status(429).json({ error: 'too many attempts' }); return; }
+    const [n] = await pipe([authCommand(failKey, correct)]);
+    if (authVerdict(n, correct) === 'limited') { res.status(429).json({ error: 'too many attempts' }); return; }
   } catch {
     console.error('stats_auth_limiter_unavailable');
     res.status(503).json({ error: 'authentication temporarily unavailable' }); return;
@@ -226,6 +218,8 @@ module.exports = async (req, res) => {
       chat, search, misses,
     });
   } catch (e) {
-    res.status(200).json({ error: String((e && e.message) || e) });
+    // 對外只回固定字串，細節只寫伺服器日誌（L5：不把 Upstash 狀態碼等內部資訊回給前端）
+    console.error('stats_admin_read_failed', String((e && e.message) || e));
+    res.status(503).json({ error: 'storage unavailable' });
   }
 };

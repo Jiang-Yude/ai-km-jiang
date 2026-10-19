@@ -248,3 +248,19 @@ Google 登入、文章留言、分級內容、管理後台。只在 Cloudflare P
 
 - repo 是公開的：`member-content/` 底下的檔案在 GitHub 上任何人都讀得到，守門只保護官網網址。真正的付費教材不要放進這個 repo。
 - Vercel 版沒有守門，若仍有人對 Vercel 發布，`/member-content/` 會變成公開靜態頁。
+
+## 2026-10-19 安全審查修補（分支 wt/security）
+
+本機修補，尚未合併或部署。合併後依既有候選與正式促轉流程處理。
+
+- search-log 的 GET 已移除，讀搜尋紀錄一律走 /stats.html（stats-admin，有錯誤次數限流）。`MIKA_CHAT_READ_TOKEN` 不再能讀搜尋紀錄，只剩 mika-chat-log 的 GET 在用，現在也有每網段 15 分鐘錯 5 次的限流。
+- 寫入端點的限流全部改成原子 Lua（view、search-log、mika-chat-log），以網段計（IPv6 取 /64），限流故障時不寫入、回 503。正式前用真實 Upstash 驗新 EVAL 相容（腳本只用 GET、INCR、TTL、EXPIRE、EXISTS）。
+- 咪卡的回覆改由 /api/mika-chat 伺服器端寫紀錄，/api/mika-chat-log 拒收 role=bot。舊版 widget 快取期間會出現 bot 被拒的 400，屬預期。
+- 咪卡 pageText 計入額度：`units＝問題計次＋ceil(頁面字數÷3000)`，可用 `MIKA_PAGE_CHARS_PER_UNIT` 調整。上課時若學員被擋，先調這個或 `MIKA_RATE_PER_DAY`。
+- CORS 只對 jiangyude.com、www.jiangyude.com 與 ai-km-jiang-cf-20261004.pages.dev（含子網域）回標頭；/api/stats 維持全開。若有其他網站（例如 G 網名片）跨網域打 /api/view，會被瀏覽器擋下，要先把該網域加進 `lib/2026-09-13-0910-client-network.js` 與 `cloudflare/runtime.mjs` 兩處白名單。
+- 安全標頭：X-Frame-Options DENY（scorecard 評量表例外）、HSTS、Permissions-Policy；CSP 目前是 Report-Only，觀察瀏覽器主控台沒有誤報後再改強制。
+- tests/cloudflare-migration.mjs 尚未跟上：第 63 行仍測 search-log 的 GET，假 Redis 的 EVAL 只認舊的兩種腳本，要補上 RATE_SCRIPT 與 view 新鍵配額的模擬才跑得過。
+
+待辦：
+- [ ] 待江江確認學員同意：courses/2026-08-danhai-public-art/showcase/ 與 courses/mobile-ai-creation-workshop/ 公開列出學員全名，已先改 noindex, nofollow；確認每位學員同意具名公開前不要改回 index。sitemap.xml 仍列著其中一頁，由生成器那邊一併處理。
+- [ ] Vercel 退場觀察期至 2026-11-08。vercel.json 已把 main 的 Git 自動部署關掉（其他分支仍會產生 preview）。到期前先拔掉 Vercel 環境變數中的寫入金鑰（`KV_REST_API_TOKEN`／`UPSTASH_REDIS_REST_TOKEN`、`MIKA_LLM_API_KEY`、`ANTHROPIC_API_KEY`），舊站就無法再寫入正式 Upstash 或呼叫付費模型；到期驗收後再停用 Vercel 專案的 Git 整合。這屬切換登記簿管理範圍，記得在本地主庫 cutover.py 登記。

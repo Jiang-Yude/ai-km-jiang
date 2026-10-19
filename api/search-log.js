@@ -3,7 +3,18 @@
 // 資料存 Upstash Redis，跟 view.js 同一套環境變數；每月一個 list，各留最近 5000 筆。
 //
 // POST {q, n, surface, click, tool}   q=搜尋字串  n=命中筆數  surface=search|articles|webmcp  click=點擊的結果 id（點擊事件才有）  tool=WebMCP 工具名（surface=webmcp 才有）
-// GET  ?month=YYYY-MM&limit=500 讀當月紀錄（新到舊），給江江或 AI 整理缺口清單用。
+//
+// 讀取：2026-10-19 移除本端點的 GET（安全審查 H1）。
+//   原本 GET 用站長後台同一組密碼，卻沒有錯誤次數限制，等於繞過 stats-admin 的每網段 5 次限流，
+//   可以無限次猜密碼。stats-admin 已經回傳同一批 search:log 逐筆與 search:miss 零命中排行，
+//   stats-dash.js 也只讀 stats-admin，沒有任何前端呼叫這支的 GET，所以直接拿掉，不再維護第二套驗證。
+//   要讀搜尋紀錄請用 /stats.html（stats-admin）。
+//
+// 寫入限流（2026-10-19，審查 M3）：每網段（IPv4 整個位址、IPv6 取 /64）每分鐘 10 筆、每天 200 筆，
+//   超過回 429 不寫入；限流服務壞掉時也不寫入（回 503），避免被灌假的搜尋缺口。
+
+const {clientNetwork}=require('../lib/2026-09-13-0910-client-network.js');
+const { networkOf, rateCommand, rateAllowed, pipelineResults, applyCors } = clientNetwork;
 
 const URL = () => process.env.UPSTASH_REDIS_REST_URL || process.env.KV_REST_API_URL;
 const TOKEN = () => process.env.UPSTASH_REDIS_REST_TOKEN || process.env.KV_REST_API_TOKEN;
@@ -13,10 +24,14 @@ async function pipe(commands) {
     method: 'POST',
     headers: { Authorization: `Bearer ${TOKEN()}`, 'Content-Type': 'application/json' },
     body: JSON.stringify(commands),
+    signal: AbortSignal.timeout(3000),
   });
   if (!r.ok) throw new Error(`upstash ${r.status}`);
-  return r.json();
+  return pipelineResults(await r.json(), commands.length);
 }
+
+const PER_MIN = 10;
+const PER_DAY = 200;
 
 function taipeiStamp(d = new Date()) {
   return new Intl.DateTimeFormat('en-CA', {
@@ -33,38 +48,10 @@ function expireAtFor(month /* 'YYYY-MM' */) {
 }
 
 module.exports = async (req, res) => {
-  res.setHeader('Access-Control-Allow-Origin', '*');
+  applyCors(req, res, 'POST, OPTIONS');
   if (req.method === 'OPTIONS') { res.status(204).end(); return; }
+  if (req.method !== 'POST') { res.status(405).json({ error: 'POST only' }); return; }
   if (!URL() || !TOKEN()) { res.status(200).json({ ok: false, note: 'storage not configured' }); return; }
-
-  if (req.method === 'GET') {
-    /* 2026-09-01 補驗證（Codex 跨家審查抓到本端點原本任何人都讀得到）。
-       搜尋字串會夾帶訪客在想什麼，跟聊天紀錄同級，不該公開。
-       密碼＝站長儀表板那一支，存環境變數 STATS_PASSWORD_B64（base64，存進去什麼就是什麼）。 */
-    const want = (() => {
-      const b64 = process.env.STATS_PASSWORD_B64;
-      if (b64) { try { return Buffer.from(b64, 'base64').toString('utf8'); } catch { /* 壞掉當沒設 */ } }
-      return process.env.STATS_PASSWORD || process.env.MIKA_CHAT_READ_TOKEN || '';
-    })();
-    const given = String(req.headers['x-read-token'] || '');
-    if (!want || given !== want) { res.status(403).json({ error: 'token required' }); return; }
-    const month = String((req.query && req.query.month) || '').match(/^\d{4}-\d{2}$/)
-      ? req.query.month
-      : taipeiStamp().slice(0, 7);
-    const limit = Math.min(Number((req.query && req.query.limit) || 500) || 500, 2000);
-    try {
-      const out = await pipe([['LRANGE', `search:log:${month}`, 0, limit - 1]]);
-      const rows = (out[0] && out[0].result ? out[0].result : []).map((s) => {
-        try { return JSON.parse(s); } catch { return null; }
-      }).filter(Boolean);
-      res.status(200).json({ month, count: rows.length, rows });
-    } catch (e) {
-      res.status(200).json({ month, count: 0, rows: [], error: String(e.message || e) });
-    }
-    return;
-  }
-
-  if (req.method !== 'POST') { res.status(405).json({ error: 'GET or POST only' }); return; }
 
   let body = req.body;
   if (typeof body === 'string') { try { body = JSON.parse(body); } catch { body = {}; } }
@@ -77,8 +64,23 @@ module.exports = async (req, res) => {
     res.status(200).json({ ok: false, note: 'bot skipped' }); return;
   }
 
+  const network = networkOf(req);
+  if (!network) { res.status(503).json({ ok: false, note: 'temporarily unavailable' }); return; }
+
   const stamp = taipeiStamp();               // "YYYY-MM-DD, HH:MM"
   const month = stamp.slice(0, 7);
+  const day = stamp.slice(0, 10);
+
+  try {
+    const [n] = await pipe([rateCommand([
+      { key: `search:rate:${network}:${Math.floor(Date.now() / 60000)}`, limit: PER_MIN, ttl: 90 },
+      { key: `search:rateday:${network}:${day}`, limit: PER_DAY, ttl: 172800 },
+    ])]);
+    if (!rateAllowed(n, 2)) { res.status(429).json({ ok: false, note: 'rate limited' }); return; }
+  } catch (e) {
+    console.error('search_log_limiter_unavailable', String((e && e.message) || e));
+    res.status(503).json({ ok: false, note: 'temporarily unavailable' }); return;
+  }
   const surface = ['search', 'articles', 'webmcp'].includes(body.surface) ? body.surface : 'other';
   const entry = JSON.stringify({
     t: stamp.replace(', ', ' '),
@@ -106,6 +108,7 @@ module.exports = async (req, res) => {
     await pipe(cmds);
     res.status(200).json({ ok: true });
   } catch (e) {
-    res.status(200).json({ ok: false, error: String(e.message || e) });
+    console.error('search_log_write_failed', String((e && e.message) || e));
+    res.status(503).json({ ok: false, note: 'storage unavailable' });
   }
 };

@@ -5,7 +5,11 @@
 (function () {
   'use strict';
 
+  /* 密碼只放在這個變數裡（2026-10-19 安全審查 L2）：原本明文存 sessionStorage，
+     同分頁任何被汙染的腳本都讀得到。現在重新整理或關掉分頁就要重輸。
+     PW_KEY 只用來清掉舊版留在 sessionStorage 的明文密碼。 */
   var PW_KEY = 'statsDash.pw.v1';
+  var memPw = '';
   var S = null;              // 後端回來的整包資料
   var IDX = {};              // url → {title, type}
   var sel = { page: null, kind: null };
@@ -663,8 +667,8 @@
       body: JSON.stringify({ pw: pw, from: r.from || undefined, to: r.to || undefined }),
     }).then(function (r) {
       if (r.status === 403) throw new Error('密碼不對。');
-      if (r.status === 429) throw new Error('嘗試太多次，等一分鐘再試。');
-      if (r.status === 503) throw new Error('伺服器還沒設定密碼。');
+      if (r.status === 429) throw new Error('嘗試太多次，等 15 分鐘再試。');
+      if (r.status === 503) throw new Error('伺服器暫時無法驗證或讀取資料（也可能還沒設定密碼），請稍後再試。');
       return r.json();
     }).then(function (d) {
       if (d.error) throw new Error(d.error);
@@ -699,8 +703,7 @@
   }
 
   function reload(r) {
-    var pw = '';
-    try { pw = sessionStorage.getItem(PW_KEY) || ''; } catch (e) { /* 忽略 */ }
+    var pw = memPw;
     $('stamp').textContent = '讀取中…';
     load(pw, r).then(function (d) {
       S = d; range = { from: S.from, to: S.to };
@@ -718,7 +721,7 @@
   function tryEnter(pw) {
     fail('讀取中…');
     load(pw, null).then(function (d) {
-      try { sessionStorage.setItem(PW_KEY, pw); } catch (e) { /* 私密視窗會丟例外 */ }
+      memPw = pw;
       fail('');
       boot(d);
     }).catch(function (e) { fail(e.message || '讀取失敗'); });
@@ -757,7 +760,7 @@
       reload({ from: a, to: b2 });
     });
     $('lock').addEventListener('click', function () {
-      try { sessionStorage.removeItem(PW_KEY); } catch (e) { /* 忽略 */ }
+      memPw = '';
       location.reload();
     });
     $('pgq').addEventListener('input', renderPages);
@@ -772,8 +775,15 @@
       });
     });
 
-    var saved = null;
-    try { saved = sessionStorage.getItem(PW_KEY); } catch (e) { /* 忽略 */ }
-    if (saved) tryEnter(saved);
+    /* 舊版存過的明文密碼直接清掉，不再自動登入 */
+    try { sessionStorage.removeItem(PW_KEY); } catch (e) { /* 忽略 */ }
+    /* 頁面說明（stats.html 由別人維護，這一行由這裡插在錯誤訊息下方） */
+    var errBox = $('err');
+    if (errBox && errBox.parentNode) {
+      var note = document.createElement('p');
+      note.className = 'sub';
+      note.textContent = '密碼只留在這個分頁的記憶體裡，不存進瀏覽器；重新整理或關掉分頁後要重新輸入。';
+      errBox.parentNode.insertBefore(note, errBox.nextSibling);
+    }
   });
 })();
