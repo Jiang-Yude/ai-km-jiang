@@ -41,6 +41,19 @@
     });
   }
 
+  // 別名庫 search-aliases.js（約 76KB）改成訪客第一次點進或輸入搜尋框才載入，載完若已有關鍵字就重篩一次
+  var aliasesState = window.SEARCH_ALIASES ? "done" : "idle";
+  function loadAliases(onDone) {
+    if (aliasesState !== "idle") return;
+    aliasesState = "loading";
+    var sc = document.createElement("script");
+    sc.src = "search-aliases.js";
+    sc.async = true;
+    sc.onload = function () { aliasesState = "done"; onDone(); };
+    sc.onerror = function () { aliasesState = "idle"; };
+    document.head.appendChild(sc);
+  }
+
   // 一篇文章「同時符合」所有已選標籤（交集）
   function matchesTags(a) {
     if (selected.size === 0) return true;
@@ -195,14 +208,134 @@
   var CARD_LINE = "audience"; // "problem" = 解決什麼｜"audience" = 適合誰
 
   // 封面：橫式（wide）用 16:9，直式（tall，多半是輪播卡）維持 4:5，不裁切。
+  // 列表縮圖登記表（THUMBS:BEGIN 到 THUMBS:END 之間可由腳本整段重寫）
+  // 鍵＝封面原圖路徑，值＝縮圖寬高；縮圖固定放 images/thumbs/<原路徑去掉 images/>.webp，640px 寬、WebP 品質 80。
+  // 沒登記的封面（新文章還沒產縮圖）自動退回用原圖，不會破圖。
+  // THUMBS:BEGIN
+  var THUMBS = {
+    "ai-trends/apple-wwdc26-siri-lobster-ai/assets/slide-01-opening.jpg": [640, 360],
+    "ai-trends/demis-hassabis-agi-science-ai/assets/youtube-thumbnail.jpg": [640, 480],
+    "ai-trends/spacex-ipo-musk-trillionaire-knowledge-work/assets/youtube-thumbnail.jpg": [640, 360],
+    "articles/agent-workflow-builds-automation/assets/00-summary.jpg": [640, 360],
+    "articles/diary-driven-agent-3x4/assets/card-01.jpg": [640, 1000],
+    "courses/2026-06-27-parenting-storytelling-ai/images/story-cover.jpg": [640, 383],
+    "images/ai-office/lyca/lyca-cover-hd.webp": [640, 360],
+    "images/articles/agent-three-layer-triage-cover.jpg": [640, 360],
+    "images/articles/agi-work-and-discovery-01.jpg": [640, 800],
+    "images/articles/ai-adoption-raise-not-install-cover.jpg": [640, 360],
+    "images/articles/ai-adoption-start-with-one-workflow-cover.jpg": [640, 360],
+    "images/articles/ai-batch-work-without-seeing-data-cover.jpg": [640, 360],
+    "images/articles/ai-cp-value-calculus-01.jpg": [640, 800],
+    "images/articles/ai-custom-work-compound-cover.jpg": [640, 360],
+    "images/articles/ai-customer-service-api-cost-cover.jpg": [640, 360],
+    "images/articles/ai-customer-service-model-retest-cover.jpg": [640, 360],
+    "images/articles/ai-data-red-lines-cover.jpg": [640, 360],
+    "images/articles/ai-employee-four-levels-hero.jpg": [640, 360],
+    "images/articles/ai-employees-manage-agents-cover.jpg": [640, 360],
+    "images/articles/ai-era-websites-for-agents-cover.jpg": [640, 360],
+    "images/articles/ai-image-api-cost-cover.jpg": [640, 960],
+    "images/articles/ai-model-token-efficiency-01.jpg": [640, 360],
+    "images/articles/ai-rule-file-slimming-cover.jpg": [640, 360],
+    "images/articles/ai-schedule-wake-interval-cover.jpg": [640, 360],
+    "images/articles/ai-slides-half-auto-google-slides-cover.jpg": [640, 360],
+    "images/articles/ai-understands-ei-ha-cover.jpg": [640, 360],
+    "images/articles/ai-usage-audit-cover.jpg": [640, 360],
+    "images/articles/ai-user-testing-cover.jpg": [640, 800],
+    "images/articles/ai-vs-script-four-situations-summary.jpg": [640, 360],
+    "images/articles/analytics-7-ga4-gate.jpg": [640, 800],
+    "images/articles/audrey-tang-reverse-alignment/cover.jpg": [640, 360],
+    "images/articles/auto-compact-mod-cover.jpg": [640, 360],
+    "images/articles/cathay-tech-conference-2026/cover.jpg": [640, 360],
+    "images/articles/character-costume-sheet-three-views/mika-costume-sheet-four-views.jpg": [640, 799],
+    "images/articles/chatgpt-web-codex-console/2026-10-09-2325-cover.jpg": [640, 360],
+    "images/articles/chatgpt-work-codex-choice/01.jpg": [640, 800],
+    "images/articles/claude-meta-ads-connector-cover.jpg": [640, 360],
+    "images/articles/cli-api-mcp-computer-use-cover.jpg": [640, 800],
+    "images/articles/cloudflare-service-map-cover.jpg": [640, 360],
+    "images/articles/codex-log-health-check-cover-image2.jpg": [640, 800],
+    "images/articles/cross-ai-review-both-wrong/01.jpg": [640, 800],
+    "images/articles/decision-ladder-01.jpg": [640, 800],
+    "images/articles/delete-before-automate-cover.jpg": [640, 800],
+    "images/articles/design-for-ai-errors-cover.jpg": [640, 800],
+    "images/articles/domain-and-account-ownership-cover.jpg": [640, 360],
+    "images/articles/dual-centaur-meeting-cover.jpg": [640, 427],
+    "images/articles/dual-track-planning-loop-cover.jpg": [640, 800],
+    "images/articles/eight-ai-system-concepts-2026-cover.jpg": [640, 800],
+    "images/articles/first-principles-money-soup-card-01.jpg": [640, 800],
+    "images/articles/five-loops-content-line-card-01.jpg": [640, 800],
+    "images/articles/fixed-test-set-for-ai-cover.jpg": [640, 360],
+    "images/articles/give-ai-choices-cover.jpg": [640, 581],
+    "images/articles/grok-bot-galaxy-day1-founders/card01.jpg": [640, 800],
+    "images/articles/grok-bot-galaxy-day2-workshops/card01.jpg": [640, 800],
+    "images/articles/grok-bot-galaxy-day3-shipping/card01.jpg": [640, 800],
+    "images/articles/handoff-continue-or-replace-cover.jpg": [640, 360],
+    "images/articles/harness-to-loop-01.jpg": [640, 360],
+    "images/articles/hosting-platform-decision-tree-cover.jpg": [640, 360],
+    "images/articles/how-ai-connects-software-mcp-usb.jpg": [640, 427],
+    "images/articles/how-to-verify-ai-rule-changes-cover.jpg": [640, 800],
+    "images/articles/inspiration-production-system-cover.jpg": [640, 960],
+    "images/articles/knowledge-workers-new-model-guide-01.jpg": [640, 800],
+    "images/articles/let-ai-review-itself-cover.jpg": [640, 800],
+    "images/articles/line-group-ai-workflow-summary.jpg": [640, 800],
+    "images/articles/llm-rag-agent-mcp-cover.jpg": [640, 800],
+    "images/articles/long-answer-overview.jpg": [640, 360],
+    "images/articles/long-task-completion-rate-compare.jpg": [640, 360],
+    "images/articles/loop-four-entries-01.jpg": [640, 800],
+    "images/articles/loop-round-limit-cover.jpg": [640, 360],
+    "images/articles/mac-for-agent-beginners-01.jpg": [640, 800],
+    "images/articles/make-your-ai-secretary-cover.jpg": [640, 800],
+    "images/articles/manage-ai-with-management-knowledge-cover.jpg": [640, 427],
+    "images/articles/meeting-mic-rescue-on-mac-cover.jpg": [640, 360],
+    "images/articles/meeting-record-agent-workflow-01.jpg": [640, 800],
+    "images/articles/mika-solo-company-summary.jpg": [640, 360],
+    "images/articles/mika-to-laika/laika-portrait.jpg": [640, 799],
+    "images/articles/my-three-loops-01.jpg": [640, 800],
+    "images/articles/notebooklm-real-photo-slides-01.jpg": [640, 397],
+    "images/articles/one-sentence-ai-website-workflow-cover.jpg": [640, 360],
+    "images/articles/one-sentence-video-to-deep-article/cover.jpg": [640, 360],
+    "images/articles/opus-luna-model-division-cover.jpg": [640, 360],
+    "images/articles/parallel-site-editing-cover.jpg": [640, 427],
+    "images/articles/pii-shield-cover.jpg": [640, 360],
+    "images/articles/reevaluate-models-same-test-cover.jpg": [640, 360],
+    "images/articles/same-question-different-answers-cover.jpg": [640, 800],
+    "images/articles/session-messaging-01.jpg": [640, 800],
+    "images/articles/slides-by-audience-sop-cover.jpg": [640, 360],
+    "images/articles/start-from-one-persons-problem-cover.jpg": [640, 360],
+    "images/articles/strong-ai-models-knowledge-workflow-road-02.jpg": [640, 360],
+    "images/articles/task-queue-mod-cover.jpg": [640, 360],
+    "images/articles/tidy-mess-before-consulting-cover.jpg": [640, 1001],
+    "images/articles/token-money-worth-doing-cover.jpg": [640, 360],
+    "images/articles/use-more-ai-not-enough-cover.jpg": [640, 320],
+    "images/articles/webmcp-day-one-cover.jpg": [640, 360],
+    "images/articles/webnode-to-cloudflare-pages-cover.jpg": [640, 360],
+    "images/articles/website-as-workstation-cover.jpg": [640, 360],
+    "images/articles/what-are-subagents-cover.jpg": [640, 360],
+    "images/articles/what-is-graph-engineering-cover.jpg": [640, 360],
+    "images/articles/what-is-loop-engineering-01.jpg": [640, 800],
+    "images/articles/where-is-my-server-01.jpg": [640, 800],
+    "images/courses/danhai-sample-vicky-designsheet.jpg": [640, 906],
+    "images/og/cloudflare-free-plan-limits.jpg": [640, 336],
+    "images/three-vault-split.jpg": [640, 360]
+  };
+  // THUMBS:END
+
+  function thumbPath(src) {
+    return "images/thumbs/" + src.replace(/^images\//, "").replace(/\.[^.\/]+$/, "") + ".webp";
+  }
+
   function coverHTML(a) {
     var c = a.cover;
     if (!c) return "";
     var src = c.wide || c.tall;
     if (!src) return "";
     var shape = c.wide ? "wide" : "tall";
+    var t = THUMBS[src];
+    // 有縮圖：src 用 640px WebP，原圖留在 data-full 給需要大圖的地方用
+    var img = t
+      ? '<img src="' + esc(thumbPath(src)) + '" data-full="' + esc(src) + '" width="' + t[0] + '" height="' + t[1] + '" alt="" loading="lazy" decoding="async">'
+      : '<img src="' + esc(src) + '" alt="" loading="lazy" decoding="async">';
     return '<a class="card-cover ' + shape + '" href="' + esc(a.url) + '" tabindex="-1" aria-hidden="true">' +
-      '<img src="' + esc(src) + '" alt="" loading="lazy">' +
+      img +
       "</a>";
   }
 
@@ -247,7 +380,10 @@
     elClear.addEventListener("click", clearAll);
 
     if (elSearch) {
+      var aliasesDone = function () { if (query) refresh(); };
+      elSearch.addEventListener("focus", function () { loadAliases(aliasesDone); });
       elSearch.addEventListener("input", function () {
+        loadAliases(aliasesDone);
         query = elSearch.value.trim().toLowerCase();
         elSearchWrap.classList.toggle("has-text", query.length > 0);
         refresh();

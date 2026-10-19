@@ -25,7 +25,7 @@
        標籤一律從 articles-tags.json 受控清單挑，不要自創字串。
        articles-data.js 是生成檔不要手改；本機要看相關文章區塊就跑
        node scripts/build-articles-data.mjs，上線時 merge-publish 會統一重建。
-    4. 兩支互聯 script 已內建在本檔   <script src="/views.js"></script>
+    4. 兩支互聯 script 已內建在本檔   <script src="/views.js" defer></script>
 </body> 前，不用再另外加。
     5. sitemap.xml 與 llms.txt、llms-full.txt 的文章段都是生成的（build-sitemap.mjs、build-llms.mjs），
        不要手補；merge-publish 的重建步會從 article.json 產生。
@@ -76,7 +76,7 @@
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"首頁","item":"https://jiangyude.com/"},{"@type":"ListItem","position":2,"name":"文章","item":"https://jiangyude.com/articles.html"},{"@type":"ListItem","position":3,"name":"{{TITLE}}","item":"https://jiangyude.com/{{SECTION}}/{{SLUG}}/"}]}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@600&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
 <style>
 :root{--ink:#1a1612;--paper:#fefcf8;--muted:#6a635a;--line:#d8cdb8;--green:#5f7553;--blue:#5689b8;--orange:#e85a4f;--soft:#faf5ec;--dark:#2a2018;--shadow:0 18px 45px rgba(107,74,42,.14);--sp-shadow:hsla(35,50%,60%,.15);--sp-shadow-edge:hsla(35,50%,68%,.03);--sp-radius:400px}
 *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC","Segoe UI",sans-serif}
