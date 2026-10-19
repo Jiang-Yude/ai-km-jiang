@@ -14,8 +14,6 @@ h1{font-size:22px;margin:0 0 14px;font-weight:600}
 .hint{font-size:16px;color:var(--muted);margin:10px 0 0}
 .rail{display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;padding:16px;align-items:stretch;-webkit-overflow-scrolling:touch}
 .rail::-webkit-scrollbar{display:none}
-.bubble{flex:0 0 min(86vw,386px);scroll-snap-align:center;display:flex;flex-direction:column;border-radius:18px;overflow:hidden;box-shadow:0 8px 24px #7b61341a}
-.bubble>.body{flex:1}
 .dots{display:flex;justify-content:center;gap:8px;padding:0 0 6px}
 .dots i{width:8px;height:8px;border-radius:50%;background:#d8ccb8}.dots i.on{background:var(--gold)}
 footer{max-width:520px;margin:0 auto;padding:6px 16px 28px}
@@ -41,6 +39,7 @@ fetch('/card/line-flex.json').then(function(r){return r.json();}).then(function(
   renderFlexCards(f).forEach(function(w,i){
     rail.appendChild(w);var dot=document.createElement('i');if(!i)dot.className='on';dots.appendChild(dot);
   });
+  fitSlots();
   rail.addEventListener('scroll',function(){var k=Math.round(rail.scrollLeft/(rail.firstChild.offsetWidth+14));[].forEach.call(dots.children,function(x,j){x.className=j===k?'on':'';});});
 });
 </script>

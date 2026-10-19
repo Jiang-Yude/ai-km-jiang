@@ -35,9 +35,19 @@ function el(n){
   return d;
 }
 
-// 把 line-flex.json 的每張名片畫成 <article class="bubble">，回傳陣列
+// 每張名片照 LINE 實際寬度 386px、3:4（高 515px）排版，再整張等比例縮到螢幕寬度，換行與高度跟 LINE 一致
+var CARD_W=386,CARD_H=515;
+(function(){var st=document.createElement('style');st.textContent=
+'.slot{flex:0 0 min(86vw,386px);aspect-ratio:3/4;position:relative;scroll-snap-align:center}'+
+'.slot>.bubble{position:absolute;left:0;top:0;width:'+CARD_W+'px;height:'+CARD_H+'px;transform-origin:0 0;display:flex;flex-direction:column;border-radius:18px;overflow:hidden;box-shadow:0 8px 24px #7b61341a;background:#fffcf6}'+
+'.slot>.bubble>.body{flex:1}';document.head.appendChild(st);})();
+function fitSlots(){[].forEach.call(document.querySelectorAll('.slot'),function(s){var b=s.firstElementChild;if(b)b.style.transform='scale('+(s.clientWidth/CARD_W)+')';});}
+window.addEventListener('resize',fitSlots);
+// 把 line-flex.json 的每張名片畫成 3:4 的 .slot，回傳陣列
 function renderFlexCards(json){
   var car=json.contents.type==='carousel'?json.contents.contents:[json.contents];
-  return car.map(function(b){var w=document.createElement('article');w.className='bubble';
-    var body=el(b.body);body.classList.add('body');w.appendChild(body);if(b.footer)w.appendChild(el(b.footer));return w;});
+  return car.map(function(b){var slot=document.createElement('div');slot.className='slot';
+    var w=document.createElement('article');w.className='bubble';
+    var body=el(b.body);body.classList.add('body');w.appendChild(body);if(b.footer)w.appendChild(el(b.footer));
+    slot.appendChild(w);return slot;});
 }
