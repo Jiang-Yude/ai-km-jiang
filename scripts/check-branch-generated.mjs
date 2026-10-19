@@ -14,8 +14,8 @@
        - articles-data.js：逐筆比對分叉點版與分支版，找出「分支改了這筆」的 id；
          若分支尖端**沒有**該 id 的 article.json → 這筆是手寫生成檔（舊式分支）→ exit 1，要人到分支跑 --adopt
          若 article.json 存在 → 生成檔那筆只是產物（過期重建或手改都一樣），可安全丟掉由 main 重建，印一行提醒
-       - 其他生成檔（site-index.json、article-keywords.js、en/articles-data.js、sitemap.xml 文章段）
-         本來就整檔重建，分支版一律可丟 → 只列出，不擋
+       - 其他生成檔（清單見 scripts/generated-files.json：site-index.json、article-keywords.js、
+         sitemap.xml、llms.txt 等）本來就由生成器重建，只列出，不擋；要不要還原由 merge-publish 依 kind 決定
    輸出（stdout，一行一個檔名）：分支改過的生成檔清單，給 merge-publish 決定要還原哪些。
    exit 0＝可以安全還原成 main 版再重建；exit 1＝有手改，要先 --adopt；exit 2＝參數或 git 錯。
 
@@ -30,12 +30,21 @@ if (!FORK || !BRANCH) {
   console.error("用法：node scripts/check-branch-generated.mjs <fork-point-sha> <branch-ref>");
   process.exit(2);
 }
-const GENERATED = ["articles-data.js", "site-index.json", "article-keywords.js", "en/articles-data.js", "sitemap.xml"];
-
 const git = (...args) => execFileSync("git", ["-c", "core.quotePath=false", ...args], { encoding: "utf8", maxBuffer: 64 * 1024 * 1024, stdio: ["ignore", "pipe", "ignore"] });
 const show = (ref, file) => {
   try { return git("show", `${ref}:${file}`); } catch { return null; }
 };
+
+// 生成檔清單唯一來源：scripts/generated-files.json（2026-10-19 起）。
+// 本支常被 merge-publish 從 git 取出放到暫存夾跑，所以清單也從 git 讀：先分支版，再 main（HEAD）版，都沒有就停。
+let GENERATED;
+{
+  const text = show(BRANCH, "scripts/generated-files.json") ?? show("HEAD", "scripts/generated-files.json");
+  try { GENERATED = JSON.parse(text).files.map((f) => f.path); } catch {
+    console.error("讀不到 scripts/generated-files.json（分支與 HEAD 都沒有或格式壞），無法判定哪些是生成檔");
+    process.exit(2);
+  }
+}
 
 let changed;
 try {

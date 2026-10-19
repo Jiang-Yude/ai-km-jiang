@@ -135,12 +135,32 @@ else
   exit 10
 fi
 
-# 本步「重建全部生成檔」會整個重寫的檔：衝突時直接收下 main 版再重建即可，不必人工合併。
+# 本步「重建全部生成檔」會重寫的檔：衝突時直接收下 main 版再重建即可，不必人工合併。
 # articles-data.js 自 2026-09-06 起也是生成檔（一篇一檔 article.json 合併而成，見 build-articles-data.mjs），
 # 過去「兩篇同時 append 撞 both-added」的那類衝突從此在這裡自動收掉。
-# sitemap.xml 自 2026-10-09 起文章段也是生成的（build-sitemap.mjs，只補文章、不重排不刪）；
-# llms.txt、llms-full.txt 仍是手維護檔，不在此列，衝突照舊人工判斷。
-REGENERATED=(articles-data.js site-index.json article-keywords.js en/articles-data.js sitemap.xml)
+# sitemap.xml 自 2026-10-09 起文章段也是生成的；llms.txt、llms-full.txt 自 2026-10-19 起文章段也是生成的。
+# 生成檔清單唯一來源（2026-10-19 起）：scripts/generated-files.json，本檔、pre-commit、agent-claim-check 都讀它，
+# 不再各自手抄（舊做法三處清單要人工同步，en/articles-data.js 撤掉後三處都沒人清）。
+#   kind＝whole：整檔生成，分支版一律丟、衝突收 main 版。
+#   kind＝section：只有部分段落生成（其餘手寫），分支版保留給生成器補；衝突才收 main 版並列出分支改動讓人補。
+# 清單與讀取工具優先取分支版（分支可能正在新增生成檔或升級工具本身），取不到才用 main 的。只讀 git，不靠工作區。
+_gf="$(mktemp "${TMPDIR:-/tmp}/generated-files.XXXXXX").mjs"
+if ! git show "${MERGE_REF}:scripts/generated-files.mjs" > "$_gf" 2>/dev/null; then
+  if [[ -f scripts/generated-files.mjs ]]; then cp scripts/generated-files.mjs "$_gf"; else
+    echo "⛔ 找不到 scripts/generated-files.mjs（main 與分支都沒有），不知道哪些是生成檔。"; rm -f "$_gf"; exit 10; fi
+fi
+GF_REF="${MERGE_REF}"
+git cat-file -e "${MERGE_REF}:scripts/generated-files.json" 2>/dev/null || GF_REF="HEAD"
+REGENERATED=(); WHOLE_GEN=(); BUILDERS=()
+while IFS= read -r _x; do [[ -n "$_x" ]] && REGENERATED+=("$_x"); done < <(node "$_gf" list --ref="$GF_REF")
+while IFS= read -r _x; do [[ -n "$_x" ]] && WHOLE_GEN+=("$_x"); done < <(node "$_gf" list --kind=whole --ref="$GF_REF")
+while IFS= read -r _x; do [[ -n "$_x" ]] && BUILDERS+=("$_x"); done < <(node "$_gf" builders --ref="$GF_REF")
+rm -f "$_gf"
+if [[ ${#REGENERATED[@]} -eq 0 || ${#WHOLE_GEN[@]} -eq 0 || ${#BUILDERS[@]} -eq 0 ]]; then
+  echo "⛔ 讀不到生成檔清單或重建順序（scripts/generated-files.json @ ${GF_REF}），不能靜默當成沒有生成檔。"
+  exit 10
+fi
+_is_in(){ local x="$1"; shift; local y; for y in "$@"; do [[ "$x" == "$y" ]] && return 0; done; return 1; }
 
 # 漂移偵測的基準版（Codex R2 條件 1）：squash 之後 merge-base 會變成 main 自己，
 # 所以在這裡先算「main 與分支的分叉點」，連同 main HEAD 一起交給生成器。
@@ -190,9 +210,7 @@ if ! git merge --squash "$MERGE_REF"; then
   fi
   MANUAL=()
   for f in ${CONFLICTS[@]+"${CONFLICTS[@]}"}; do
-    is_gen=0
-    for g in "${REGENERATED[@]}"; do [[ "${f}" == "${g}" ]] && is_gen=1; done
-    if [[ ${is_gen} -eq 1 ]]; then
+    if _is_in "${f}" "${REGENERATED[@]}"; then
       # 2026-10-09 改：articles-data.js 不再「收分支版交生成器判」，手改與否已由上面 check-branch-generated.mjs 用 git 歷史判過。
       git checkout --ours -- "${f}" && git add -- "${f}"
       echo "   ↻ 生成檔衝突自動收下 main 版：${f}（下一步會整個重建）"
@@ -203,6 +221,10 @@ if ! git merge --squash "$MERGE_REF"; then
           echo "   ⚠️ sitemap.xml 分支版還改了非文章段，收 main 版後這些會不見，請在 main 補回或另開分支："
           printf '%s\n' "${_nonart}" | sed 's/^/      /'
         fi
+      elif ! _is_in "${f}" "${WHOLE_GEN[@]}"; then
+        # kind＝section 的其他檔（llms.txt、llms-full.txt 等）：手寫段的分支改動會跟著 main 版一起丟，列出來讓人補。
+        echo "   ⚠️ ${f} 只有部分段落是生成的，收 main 版後分支對手寫段的改動會不見；分支改了這些行，請在 main 補回："
+        git diff "${FORK_POINT}" "${MERGE_REF}" -- "${f}" | grep -E '^[+-][^+-]' | head -20 | sed 's/^/      /' || true
       fi
     else
       MANUAL+=("${f}")
@@ -223,10 +245,11 @@ if ! git merge --squash "$MERGE_REF"; then
 fi
 
 # 分支夾帶的生成檔（沒撞衝突、squash 直接帶進來的那些）：還原成 main 版，下一步整個重建。
-# sitemap.xml 例外（Codex R1 第 3 條）：它只有「文章段」是生成的，分支可能合法改了課程頁等非文章段，
-# 所以沒撞衝突就保留 squash 進來的版本，只讓 build-sitemap 補文章；有撞衝突才在上面收 main 版並警告。
+# kind＝section 例外（Codex R1 第 3 條，原本只有 sitemap.xml）：只有生成段會被重寫，分支可能合法改了手寫段，
+# 所以沒撞衝突就保留 squash 進來的版本，只讓生成器補生成段；有撞衝突才在上面收 main 版並警告。
 for _g in ${BRANCH_GEN[@]+"${BRANCH_GEN[@]}"}; do
-  [[ "${_g}" == "sitemap.xml" ]] && continue
+  # 只還原整檔生成的；kind＝section（sitemap.xml、llms.txt…）保留分支版，交給生成器只補生成段
+  _is_in "${_g}" "${WHOLE_GEN[@]}" || continue
   if ! git diff --cached --quiet -- "${_g}"; then
     git checkout HEAD -- "${_g}" && git add -- "${_g}"
     echo "   ↻ 還原分支帶來的生成檔為 main 版：${_g}"
@@ -234,14 +257,14 @@ for _g in ${BRANCH_GEN[@]+"${BRANCH_GEN[@]}"}; do
 done
 
 echo "▶ 重建全部生成檔…"
-# 順序有意義：articles-data.js 先，site-index 與 article-keywords 都讀它；sitemap 最後（只補文章段）。
+# 順序來自 scripts/generated-files.json 的 builders（有意義：articles-data.js 先，site-index 與 article-keywords 都讀它；
+# 文章 head 重寫、sitemap、llms 在後）。2026-10-19 起不再呼叫 build-en-articles-data.mjs（英文版 9/22 已撤，只剩空殼）。
 # 這一步若停下（exit 2）＝main 自己的 articles-data.js 被直接手改過（分支那側已在上面判過）：
 # 看生成器印出的那幾筆，決定 --adopt 回寫或 --force 重建。
-node scripts/build-articles-data.mjs
-node scripts/build-site-index.mjs
-node scripts/build-article-keywords.mjs
-node scripts/build-en-articles-data.mjs
-node scripts/build-sitemap.mjs
+for _b in "${BUILDERS[@]}"; do
+  if [[ ! -f "${_b}" ]]; then echo "⛔ 重建順序列了 ${_b}，但合併後的工作區沒有這支，清單與程式不一致。"; exit 10; fi
+  node "${_b}"
+done
 
 git add -A
 if git diff --cached --quiet; then

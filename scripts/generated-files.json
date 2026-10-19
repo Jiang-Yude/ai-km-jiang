@@ -1,0 +1,21 @@
+{
+  "_說明": "生成檔清單的唯一來源（2026-10-19 立）。merge-publish.sh、scripts/git-hooks/pre-commit、scripts/agent-claim-check.sh、check-branch-generated.mjs 都讀這份，不要再在腳本裡手抄清單。讀法：node scripts/generated-files.mjs list [--kind=whole|section]；build 順序：node scripts/generated-files.mjs builders。",
+  "_kind 說明": "whole＝整檔由生成器重寫，分支版一律丟掉、衝突直接收 main 版。section＝檔案只有部分段落是生成的（其餘手寫），分支可以合法改手寫段，衝突時收 main 版後要人補回分支的手寫改動。",
+  "files": [
+    { "path": "articles-data.js", "kind": "whole", "builder": "scripts/build-articles-data.mjs", "source": "articles/<id>/article.json、ai-trends/<id>/article.json" },
+    { "path": "site-index.json", "kind": "whole", "builder": "scripts/build-site-index.mjs", "source": "articles-data.js、courses-data.js、skills.html、site-manual-entries.json 等" },
+    { "path": "article-keywords.js", "kind": "whole", "builder": "scripts/build-article-keywords.mjs", "source": "文章內文" },
+    { "path": "sitemap.xml", "kind": "section", "builder": "scripts/build-sitemap.mjs", "source": "文章段與 privacy／課程等非文章頁的 lastmod、robots meta" },
+    { "path": "llms.txt", "kind": "section", "builder": "scripts/build-llms.mjs", "source": "Deep Articles、AI Trends Articles 兩段來自 article.json" },
+    { "path": "llms-full.txt", "kind": "section", "builder": "scripts/build-llms.mjs", "source": "AI 趨勢、深度文章（完整）兩段來自 article.json 與 scripts/llms-article-notes.json" }
+  ],
+  "_builders 說明": "merge-publish 重建步依此順序執行。順序有意義：articles-data.js 先，site-index 與 article-keywords 都讀它；文章 head 重寫會動到 articles/<id>/index.html（那是來源檔，不列在 files）。",
+  "builders": [
+    "scripts/build-articles-data.mjs",
+    "scripts/build-site-index.mjs",
+    "scripts/build-article-keywords.mjs",
+    "scripts/build-article-head.mjs",
+    "scripts/build-sitemap.mjs",
+    "scripts/build-llms.mjs"
+  ]
+}
