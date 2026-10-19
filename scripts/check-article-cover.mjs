@@ -32,23 +32,41 @@ const ignore = (() => {
 })();
 
 const SPEC = "-- 'articles/*/article.json' 'articles/*/index.html' 'ai-trends/*/article.json' 'ai-trends/*/index.html'";
+// 2026-10-19 收窄（比照 check-image-ratio 2026-09-30 的原則）：index.html 只有「新增行碰到 hero 封面或圖片」才算本次變更；
+// head 的 <meta>、<link>、<title>、JSON-LD 與可見日期行不算。build-article-head.mjs 從 article.json 重寫 191 篇 head 那輪，
+// 若照舊用 --name-only，所有沒有 cover 的舊文都會被拖進來擋下整次發布。article.json 有改一律算（cover 欄位就在那裡）。
+const META_LINE = /^\+\s*(?:<meta\b|<link\b|<title>|<script type="application\/ld\+json"|<p class="article-date")/i;
+const IMG_LINE = /<img\b|<picture\b|<figure\b|hero-figure|\.(?:jpe?g|png|webp|gif|avif)\b/i;
 function changedDirs() {
   const cmds = [
-    `git -c core.quotepath=false diff --cached --name-only ${SPEC}`,
-    `git -c core.quotepath=false diff HEAD --name-only ${SPEC}`,
-    `git -c core.quotepath=false diff --name-only ${SPEC}`,
-    `git -c core.quotepath=false diff --name-only origin/main...HEAD ${SPEC}`,
-    `git -c core.quotepath=false diff --name-only main...HEAD ${SPEC}`,
+    `git -c core.quotepath=false diff --cached -U0 ${SPEC}`,
+    `git -c core.quotepath=false diff HEAD -U0 ${SPEC}`,
+    `git -c core.quotepath=false diff -U0 ${SPEC}`,
+    `git -c core.quotepath=false diff -U0 origin/main...HEAD ${SPEC}`,
+    `git -c core.quotepath=false diff -U0 main...HEAD ${SPEC}`,
   ];
   const dirs = new Set();
   for (const cmd of cmds) {
     let out = "";
-    try { out = execSync(cmd, { cwd: ROOT, stdio: ["ignore", "pipe", "ignore"] }).toString(); } catch { continue; }
-    for (const line of out.split("\n")) {
-      const m = line.trim().match(/^((?:articles|ai-trends)\/[^/]+)\//);
-      if (m) dirs.add(m[1]);
+    try { out = execSync(cmd, { cwd: ROOT, stdio: ["ignore", "pipe", "ignore"], maxBuffer: 64 * 1024 * 1024 }).toString(); } catch (e) {
+      if (e && (e.code === "ENOBUFS" || /maxBuffer/i.test(String(e.message)))) {
+        console.error("  ❌ 列表封面檢查：git diff 輸出超過緩衝區，無法判定本次變更。請縮小範圍或改跑 --all。");
+        process.exit(1);
+      }
+      continue;
     }
-    if (dirs.size) break;   // 階梯：第一個有結果的就是「本次變更」
+    let file = "";
+    let any = false;
+    for (const line of out.split("\n")) {
+      const h = line.match(/^diff --git a\/.+ b\/(.+)$/);
+      if (h) { file = h[1]; any = true; continue; }
+      const m = file.match(/^((?:articles|ai-trends)\/[^/]+)\/(article\.json|index\.html)$/);
+      if (!m) continue;
+      if (m[2] === "article.json") { dirs.add(m[1]); continue; }
+      if (!line.startsWith("+") || line.startsWith("+++") || META_LINE.test(line)) continue;
+      if (IMG_LINE.test(line)) dirs.add(m[1]);
+    }
+    if (any) break;   // 階梯：第一個有 diff 的指令就是「本次變更」（即使收窄後一篇都不算）
   }
   return [...dirs];
 }
