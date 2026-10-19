@@ -572,15 +572,19 @@ const codeNoComments = toolsSrc
   const handler = requireCjs(path.join(ROOT, 'api/search-log.js'));
   const origFetch = globalThis.fetch;
   let captured = [];
+  // 2026-10-19 跟上安全修補：search-log 先送一段限流 Lua（EVAL）再寫 log，且要逐筆檢查 Upstash 回應格式、
+  // 要有平台提供的訪客 IP（x-vercel-forwarded-for，沒有回 503）。假 Upstash 依指令數回結果（EVAL 回 0＝放行），
+  // 回傳本次呼叫送出的全部指令（限流與寫 log 兩趟攤平）。
   globalThis.fetch = async (_url, opts) => {
-    captured.push(JSON.parse(opts.body));
-    return { ok: true, json: async () => [] };
+    const cmds = JSON.parse(opts.body);
+    captured.push(cmds);
+    return { ok: true, json: async () => cmds.map((c) => ({ result: c[0] === 'EVAL' ? 0 : 1 })) };
   };
   const callApi = async (body) => {
     captured = [];
     const res = { setHeader() {}, status() { return this; }, json() {}, end() {} };
-    await handler({ method: 'POST', headers: { 'user-agent': 'Mozilla/5.0 test' }, body }, res);
-    return captured[0] || [];
+    await handler({ method: 'POST', headers: { 'user-agent': 'Mozilla/5.0 test', 'x-vercel-forwarded-for': '198.51.100.7' }, body }, res);
+    return captured.flat();
   };
   try {
     const ENTRY_ALLOWED = new Set(['t', 'q', 'n', 'surface', 'click', 'tool']);

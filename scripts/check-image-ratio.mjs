@@ -108,6 +108,7 @@ function changedSlugs() {
   // 現在「有新增行」還要新增行本身碰到圖片（img／figure／圖檔副檔名／portrait／landscape／wide 等）才算。
   // 新增文章、換圖、改 figure class 都仍照舊檢查；本檔仍只驗比例與 class，不驗圖好不好。
   const META_LINE = /^\+\s*(?:<meta\b|<link\b|<title>|<script type="application\/ld\+json"|<p class="article-date")/i;
+  const RELATED_LINE = /class="relx-card"|id="relx-style"|related-static:(?:start|end)|<section class="section" id="related-articles">/;
   const IMG_LINE = /<img\b|<picture\b|<source\b|<figure\b|hero-figure|inline-figure|srcset|background(?:-image)?\s*:|url\(|\.(?:jpe?g|png|webp|gif|avif|svg)\b|\bportrait\b|\blandscape\b|\bwide\b/i;
   // 只看文章 index.html（pathspec 讓輸出量很小），並關掉路徑引號轉義。
   const SPEC = "-- 'articles/*/index.html'";
@@ -142,6 +143,9 @@ function changedSlugs() {
       // 也會含 .jpg 字樣，但它們不會新增或換掉頁面上看得到的圖。build-article-head.mjs 從 article.json 重寫 191 篇 head 那輪，
       // 若不排除，會把所有舊文積欠的比例問題一次拖進來擋下整次發布。
       if (META_LINE.test(line)) continue;
+      // 2026-10-19：相關文章預渲染（build-related-static.mjs）的卡片含別篇的縮圖 <img> 與 background 樣式，
+      // 不是這篇自己的封面或內文圖；不排除的話重建一次就把 190 篇舊文全拖進來。
+      if (RELATED_LINE.test(line)) continue;
       if (m && IMG_LINE.test(line)) slugs.add(m[1]);
     }
   }

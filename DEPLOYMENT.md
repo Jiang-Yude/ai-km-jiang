@@ -263,5 +263,5 @@ Google 登入、文章留言、分級內容、管理後台。只在 Cloudflare P
 - 已知缺口：build.mjs 只對 search-log、mika-chat-log 的紀錄注入 `source: cloudflare`，mika-chat 伺服器端寫的咪卡回覆（role=bot）沒有來源欄位，C 網與 Vercel 寫的回覆在資料上分不出來。要補就改 build.mjs 第 81 行的注入範圍，並同步 key-parity 測試。
 
 待辦：
-- [ ] 待江江確認學員同意：courses/2026-08-danhai-public-art/showcase/ 與 courses/mobile-ai-creation-workshop/ 公開列出學員全名，已先改 noindex, nofollow；確認每位學員同意具名公開前不要改回 index。sitemap.xml 仍列著其中一頁，由生成器那邊一併處理。
+- [ ] 待江江確認學員同意：courses/2026-08-danhai-public-art/showcase/ 與 courses/mobile-ai-creation-workshop/ 公開列出學員全名，已先改 noindex, nofollow；確認每位學員同意具名公開前不要改回 index。sitemap.xml 已由 build-sitemap.mjs 依 noindex 移除這兩頁（2026-10-19 整合時重建）。
 - [ ] Vercel 退場觀察期至 2026-11-08。vercel.json 已把 main 的 Git 自動部署關掉（其他分支仍會產生 preview）。到期前先拔掉 Vercel 環境變數中的寫入金鑰（`KV_REST_API_TOKEN`／`UPSTASH_REDIS_REST_TOKEN`、`MIKA_LLM_API_KEY`、`ANTHROPIC_API_KEY`），舊站就無法再寫入正式 Upstash 或呼叫付費模型；到期驗收後再停用 Vercel 專案的 Git 整合。這屬切換登記簿管理範圍，記得在本地主庫 cutover.py 登記。

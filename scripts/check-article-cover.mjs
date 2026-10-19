@@ -36,6 +36,7 @@ const SPEC = "-- 'articles/*/article.json' 'articles/*/index.html' 'ai-trends/*/
 // head 的 <meta>、<link>、<title>、JSON-LD 與可見日期行不算。build-article-head.mjs 從 article.json 重寫 191 篇 head 那輪，
 // 若照舊用 --name-only，所有沒有 cover 的舊文都會被拖進來擋下整次發布。article.json 有改一律算（cover 欄位就在那裡）。
 const META_LINE = /^\+\s*(?:<meta\b|<link\b|<title>|<script type="application\/ld\+json"|<p class="article-date")/i;
+const RELATED_LINE = /class="relx-card"|id="relx-style"|related-static:(?:start|end)|<section class="section" id="related-articles">/;
 const IMG_LINE = /<img\b|<picture\b|<figure\b|hero-figure|\.(?:jpe?g|png|webp|gif|avif)\b/i;
 function changedDirs() {
   const cmds = [
@@ -64,6 +65,9 @@ function changedDirs() {
       if (!m) continue;
       if (m[2] === "article.json") { dirs.add(m[1]); continue; }
       if (!line.startsWith("+") || line.startsWith("+++") || META_LINE.test(line)) continue;
+      // 2026-10-19：相關文章預渲染（build-related-static.mjs）的卡片含別篇的縮圖 <img> 與 background 樣式，
+      // 不是這篇自己的封面或內文圖；不排除的話重建一次就把 190 篇舊文全拖進來。
+      if (RELATED_LINE.test(line)) continue;
       if (IMG_LINE.test(line)) dirs.add(m[1]);
     }
     if (any) break;   // 階梯：第一個有 diff 的指令就是「本次變更」（即使收窄後一篇都不算）
