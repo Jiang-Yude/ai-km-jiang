@@ -33,49 +33,12 @@ footer{max-width:520px;margin:0 auto;padding:6px 16px 28px}
 <a class="btn share" href="https://liff.line.me/2012081068-MnNPDX8P"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#06c755" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 9H7a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2h-1"/><path d="M12 14V3"/><path d="M8.5 6.5 12 3l3.5 3.5"/></svg>轉傳這組名片</a>
 <p class="hint" style="text-align:center">選好友或群組，對方會收到這五張名片。</p>
 </footer>
+<script src="/card/flex-render.js"></script>
 <script>
 // 直接讀上線中的 LINE 名片檔畫出來（名片改了，這頁跟著變）
-var FS={xxs:11,xs:13,sm:14,md:16,lg:19,xl:22,xxl:29,'3xl':35,'4xl':48,'5xl':74};
-var SP={none:0,xs:2,sm:4,md:8,lg:12,xl:16,xxl:20};
-function px(v,map){if(v==null)return null;if(map&&map[v]!=null)return map[v]+'px';return v;}
-function el(n){
-  var t=n.type,d;
-  if(t==='box'){
-    d=document.createElement(n.action?'a':'div');
-    if(n.action){d.href=n.action.uri;d.style.textDecoration='none';d.style.color='inherit';}
-    d.style.display='flex';d.style.flexDirection=n.layout==='horizontal'||n.layout==='baseline'?'row':'column';
-    if(n.layout==='baseline')d.style.alignItems='baseline';
-    if(n.alignItems)d.style.alignItems=n.alignItems==='center'?'center':n.alignItems==='flex-end'?'flex-end':'flex-start';
-    if(n.backgroundColor)d.style.background=n.backgroundColor;
-    if(n.cornerRadius)d.style.borderRadius=n.cornerRadius;
-    ['paddingAll','paddingTop','paddingBottom','paddingStart','paddingEnd'].forEach(function(k){if(n[k]){var v=px(n[k],SP);if(k==='paddingAll')d.style.padding=v;else d.style[{paddingTop:'paddingTop',paddingBottom:'paddingBottom',paddingStart:'paddingLeft',paddingEnd:'paddingRight'}[k]]=v;}});
-    var gap=n.spacing?px(n.spacing,SP):'0px';
-    (n.contents||[]).forEach(function(c,i){var ch=el(c);var m=c.margin!=null?px(c.margin,SP):(i?gap:null);if(i&&m){if(d.style.flexDirection==='row')ch.style.marginLeft=m;else ch.style.marginTop=m;}d.appendChild(ch);});
-  }else if(t==='text'){
-    d=document.createElement('div');d.textContent=n.text;d.style.whiteSpace='pre-line';
-    d.style.fontSize=px(n.size||'md',FS);if(n.color)d.style.color=n.color;if(n.weight==='bold')d.style.fontWeight='700';
-    if(n.align)d.style.textAlign=n.align==='start'?'left':n.align==='end'?'right':n.align;
-  }else if(t==='image'){
-    d=document.createElement('img');d.src=n.url;d.alt='';d.loading='lazy';
-    var r=(n.aspectRatio||'1:1').split(':');d.style.aspectRatio=r[0]+'/'+r[1];
-    d.style.objectFit=n.aspectMode==='cover'?'cover':'contain';
-    d.style.width=(!n.size||n.size==='full')?'100%':px(n.size,{xxs:40,xs:60,sm:80,md:100,lg:120,xl:140,xxl:160,'3xl':180,'4xl':200,'5xl':220});
-    d.style.maxWidth='100%';d.style.display='block';
-    if(n.gravity==='bottom')d.style.alignSelf='flex-end';
-    if(n.align==='center'||(!n.align&&n.size&&n.size!=='full'))d.style.margin='0 auto';
-  }else if(t==='button'){
-    d=document.createElement('a');d.className='fx-link';d.href=n.action.uri;d.textContent=n.action.label;
-  }else{d=document.createElement('div');}
-  if(n.flex!=null)d.style.flex=n.flex===0?'0 0 auto':String(n.flex);
-  if(n.position==='relative'){d.style.position='relative';if(n.offsetStart)d.style.left=n.offsetStart;if(n.offsetTop)d.style.top=n.offsetTop;}
-  return d;
-}
 fetch('/card/line-flex.json').then(function(r){return r.json();}).then(function(f){
-  var car=f.contents.type==='carousel'?f.contents.contents:[f.contents],rail=document.getElementById('rail'),dots=document.getElementById('dots');
-  car.forEach(function(b,i){
-    var w=document.createElement('article');w.className='bubble';
-    var body=el(b.body);body.classList.add('body');w.appendChild(body);
-    if(b.footer)w.appendChild(el(b.footer));
+  var rail=document.getElementById('rail'),dots=document.getElementById('dots');
+  renderFlexCards(f).forEach(function(w,i){
     rail.appendChild(w);var dot=document.createElement('i');if(!i)dot.className='on';dots.appendChild(dot);
   });
   rail.addEventListener('scroll',function(){var k=Math.round(rail.scrollLeft/(rail.firstChild.offsetWidth+14));[].forEach.call(dots.children,function(x,j){x.className=j===k?'on':'';});});
