@@ -5,7 +5,8 @@
 :root{--paper:#fffcf6;--ink:#382f26;--muted:#817466;--gold:#a27c45;--green:#B69A78;--line:#e3d8c6}
 *{box-sizing:border-box}body{margin:0;min-height:100dvh;background:#f5f0e7;color:var(--ink);font-family:-apple-system,"PingFang TC","Noto Sans TC",sans-serif;line-height:1.7;display:flex;align-items:center;justify-content:center;padding:24px 16px}
 main{max-width:420px;width:100%;background:var(--paper);border:1px solid var(--line);border-radius:23px;padding:32px 24px;text-align:center}
-img{width:120px;height:auto;display:block;margin:0 auto 12px}
+#first{min-height:200px;margin:0 auto 16px;max-width:360px;text-align:left}
+#first .fx-bubble{flex:none;width:100%}
 h1{font-family:"Songti TC","Noto Serif TC",serif;font-size:28px;font-weight:600;color:var(--gold);margin:0 0 8px}
 p{font-size:18px;margin:0 0 20px;color:var(--muted)}
 button{font:inherit;font-size:20px;font-weight:600;width:100%;padding:14px 12px;border-radius:12px;border:0;background:var(--green);color:var(--ink);cursor:pointer}
@@ -20,7 +21,7 @@ a{color:var(--gold)}
 </style></head><body>
 <main>
 <div id="mine">
-<img src="portrait.png" alt="江江教練">
+<div id="first" aria-label="江江的第一張名片"></div>
 <h1>分享江江的 LINE 名片</h1>
 <p>選好友或群組，對方會收到五張可以左右滑的名片。</p>
 </div>
@@ -58,6 +59,8 @@ async function share(){
   btn.disabled = false;
 }
 btn.onclick = share;
+// 沒帶 ?c= 時，上方直接畫出江江的第一張名片（名片改了這裡跟著變）
+if (!new URLSearchParams(location.search).get('c')) fetch('/card/line-flex.json').then(function(r){ return r.json(); }).then(function(f){ var b = renderFlexBubbles(f)[0]; if (b) document.getElementById('first').appendChild(b); }).catch(function(){});
 (async function(){
   try {
     await liff.init({ liffId: LIFF_ID });
