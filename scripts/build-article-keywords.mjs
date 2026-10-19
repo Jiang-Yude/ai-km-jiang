@@ -104,6 +104,8 @@ function loadVisible() {
 /* 只取文章主體：<article> 優先，退而求其次抓 <main>，都沒有才用整頁。
    立因：導覽列與頁尾的字每篇都一樣，混進來會讓關鍵詞全站雷同。 */
 function articleBody(html) {
+  // 2026-10-19：相關文章卡片改成預渲染（build-related-static.mjs）後，沒有 <article>／<main> 的頁會把別篇的標題吃進來，先拿掉那一段
+  html = html.replace(/<!-- related-static:start[\s\S]*?<!-- related-static:end -->/g, ' ');
   const m = html.match(/<article[\s\S]*?<\/article>/i) || html.match(/<main[\s\S]*?<\/main>/i);
   return m ? m[0] : html;
 }
