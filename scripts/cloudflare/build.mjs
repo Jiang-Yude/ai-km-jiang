@@ -87,7 +87,25 @@ for(const name of ['view','stats','stats-admin','search-log','mika-chat-log','mi
 }
 if(target==='candidate')fs.writeFileSync(path.join(out,'robots.txt'),'User-agent: *\nDisallow: /\n');
 if(!fs.existsSync(path.join(out,'404.html')))fs.writeFileSync(path.join(out,'404.html'),'<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><meta name="robots" content="noindex, nofollow"><title>找不到頁面</title></head><body><h1>找不到頁面</h1><a href="/">回首頁</a></body></html>');
-fs.writeFileSync(path.join(out,'_headers'),'/*\n'+(target==='candidate'?'  X-Robots-Tag: noindex, nofollow\n':'')+'  X-Content-Type-Options: nosniff\n  Cache-Control: public, max-age=0, must-revalidate\n  Referrer-Policy: strict-origin-when-cross-origin\n/api/*\n  Cache-Control: private, no-store\n/member/*\n  Cache-Control: private, no-store\n/admin/members/*\n  Cache-Control: private, no-store\n');
+// 2026-10-19 安全標頭（安全審查 L1）：
+//   X-Frame-Options DENY＝別站不能把本站框起來（stats.html 點擊劫持）；唯一被自家文章內嵌的
+//   評量表 scorecard 用 ! 拿掉這個標頭（.html 與去副檔名兩種網址都列）。
+//   HSTS 一年含子網域；Permissions-Policy 關掉站上沒用到的鏡頭、麥克風、定位、付款、USB、興趣追蹤。
+//   CSP 先用 Report-Only（只在瀏覽器主控台回報、不擋），來源依 2026-10-19 全站掃描：
+//   Cloudflare beacon、cdnjs（Chart.js）、jsdelivr（marked）、LINE LIFF、YouTube 內嵌與 iframe_api、
+//   Google Fonts，另預留 Google 登入（accounts.google.com、apis.google.com，會員系統正在接）。
+//   站上大量內嵌 <script> 與 style 屬性，所以暫時含 'unsafe-inline'，觀察一段時間沒有誤報再改強制。
+const csp=["default-src 'self'",
+  "script-src 'self' 'unsafe-inline' https://static.cloudflareinsights.com https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://static.line-scdn.net https://www.youtube.com https://s.ytimg.com https://accounts.google.com https://apis.google.com",
+  "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://accounts.google.com",
+  "font-src 'self' data: https://fonts.gstatic.com",
+  "img-src 'self' data: blob: https://jiangyude.com https://img.youtube.com https://i.ytimg.com https://jiang-yude.github.io https://danhai-showcase.pages.dev https://*.googleusercontent.com",
+  "connect-src 'self' https://cloudflareinsights.com https://static.cloudflareinsights.com https://cdn.jsdelivr.net https://accounts.google.com https://api.line.me https://liffsdk.line-scdn.net",
+  "frame-src 'self' https://www.youtube.com https://www.youtube-nocookie.com https://danhai-showcase.pages.dev https://jiang-yude.github.io https://accounts.google.com https://apis.google.com",
+  "frame-ancestors 'self'","base-uri 'self'","form-action 'self'","object-src 'none'"].join('; ');
+const security='  X-Frame-Options: DENY\n  Strict-Transport-Security: max-age=31536000; includeSubDomains\n  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=(), browsing-topics=()\n  Content-Security-Policy-Report-Only: '+csp+'\n';
+const framable='/articles/ai-customer-service-model-retest/scorecard.html\n  ! X-Frame-Options\n/articles/ai-customer-service-model-retest/scorecard\n  ! X-Frame-Options\n';
+fs.writeFileSync(path.join(out,'_headers'),'/*\n'+(target==='candidate'?'  X-Robots-Tag: noindex, nofollow\n':'')+'  X-Content-Type-Options: nosniff\n  Cache-Control: public, max-age=0, must-revalidate\n  Referrer-Policy: strict-origin-when-cross-origin\n'+security+framable+'/api/*\n  Cache-Control: private, no-store\n/member/*\n  Cache-Control: private, no-store\n/admin/members/*\n  Cache-Control: private, no-store\n');
 const redirects=['/en / 301','/en/ / 301','/en/index.html / 301'];
 for(const kind of ['articles','ai-trends']) {
   for(const suffix of ['/index.html','/',''])redirects.push(`/en/${kind}/:slug${suffix} /${kind}/:slug/ 301`);
