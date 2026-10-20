@@ -105,6 +105,10 @@ case $? in
 esac
 
 echo ""
+echo "▶ 黃燈提醒：時效文查證日期超過 90 天（只列清單，不影響本腳本 exit code）…"
+node scripts/check-article-verified.mjs --days 90 || true
+
+echo ""
 if [[ "$FAIL" -ne 0 ]]; then
   echo "═══ ❌ 有紅項：把上面輸出貼回官網看板開卡，交人判斷，不自動修 ═══"
   exit 1

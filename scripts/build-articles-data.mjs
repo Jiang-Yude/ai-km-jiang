@@ -51,7 +51,9 @@ const TAGS_FILE = path.join(ROOT, "articles-tags.json");
 const SOURCE_ROOTS = ["articles", "ai-trends"];
 const SOURCE_NAME = "article.json";
 const TAG_DIMS = ["topic", "level", "content_type"];
-const KEY_ORDER = ["id", "url", "date", "updated", "featured", "title", "problem", "audience", "summary", "tags", "external", "related", "cover"];
+const KEY_ORDER = ["id", "url", "date", "updated", "verified", "featured", "title", "problem", "audience", "summary", "tags", "external", "related", "cover"];
+// verified（2026-10-20 江江拍板）：時效文的查證日期，文章頁顯示「查證日期 YYYY-MM-DD」，
+// 超過 90 天由 scripts/check-article-verified.mjs 在每日巡檢列黃燈，不擋上線。
 // cover（2026-09-15 江江拍板）：文章封面，wide＝橫式、tall＝直式（常是輪播卡），有幾個存幾個，至少一個。
 // 列表怎麼排版之後再決定，這裡只負責把封面存進資料源。路徑相對 repo 根目錄，檔案必須存在。
 const COVER_KEYS = ["wide", "tall"];
@@ -179,6 +181,8 @@ function validateEntry(o, root, dirName, tags) {
     if (typeof o.updated !== "string" || !DATE_RE.test(o.updated)) errs.push(`updated 必須是 YYYY-MM-DD`);
     else if (typeof o.date === "string" && o.updated < o.date) errs.push(`updated（${o.updated}）早於 date（${o.date}）`);
   }
+  // 查證日可以早於發布日（先查證、隔天才上線），所以不比 date
+  if ("verified" in o && (typeof o.verified !== "string" || !DATE_RE.test(o.verified))) errs.push(`verified 必須是 YYYY-MM-DD`);
   if ("featured" in o && typeof o.featured !== "boolean") errs.push(`featured 必須是 true/false`);
   if (!o.tags || typeof o.tags !== "object") errs.push(`tags 必須是物件`);
   else {
