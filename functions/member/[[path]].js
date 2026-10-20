@@ -11,7 +11,8 @@
 import {TIERS, CONTENT, PORTALY_PRODUCTS, isTier, expandTiers, tierLabel} from '../../cloudflare/member-tiers.mjs';
 import {esc, reply, baseHeaders, storageMode, requestNetwork, readJson, readText, sameOriginJson, store, rateLimit,
   minuteBucket, dayBucket, sessionSecret, signSession, verifySession, sessionCookie, SESSION_TTL, verifyGoogleIdToken,
-  EMAIL_RE, normEmail, cleanNick, cleanText, cleanPicture, articlePages, normPage, getUser, newId, hmacHex, safeEqual} from '../../cloudflare/member-lib.mjs';
+  EMAIL_RE, normEmail, cleanNick, cleanText, cleanPicture, articlePages, normPage, getUser, newId, hmacHex, safeEqual,
+  memberTiers} from '../../cloudflare/member-lib.mjs';
 
 const MAX_COMMENTS_PER_PAGE = 2000;
 
@@ -73,9 +74,8 @@ async function currentMember(request, env, st) {
   if (!s) return null;
   const u = await getUser(st, s.sub);
   if (!u) return null;
-  // 授權以 grant 為準即時合併，管理後台補登記後不必重新登入
-  const grants = await st.one(['SMEMBERS', st.key('grant:' + normEmail(u.email))]) || [];
-  u.tier = [...new Set([...(u.tier || ['free']), ...grants.filter(isTier)])];
+  // 等級只看授權表（見 member-lib memberTiers），管理後台補登記或撤銷都即時生效
+  u.tier = await memberTiers(st, u.email);
   return {session: s, user: u};
 }
 
@@ -92,19 +92,20 @@ async function login({request, env, st}) {
   if (!payload) return reply({error: 'invalid credential'}, 401);
 
   const sub = payload.sub, email = normEmail(payload.email), now = Date.now();
-  const [rawUser, grants] = await st.pipe([['GET', st.key('u:' + sub)], ['SMEMBERS', st.key('grant:' + email)]]);
+  const rawUser = await st.one(['GET', st.key('u:' + sub)]);
   let u = null; try { u = rawUser ? JSON.parse(rawUser) : null; } catch { u = null; }
   const name = cleanNick(payload.name) || cleanNick(email.split('@')[0]) || '會員';
+  // 會員記錄不存付費等級（tier 固定 free），等級由授權表即時決定，撤銷不會被這裡寫回
   u = {
     email, name: String(payload.name || '').slice(0, 80), picture: cleanPicture(payload.picture),
-    nick: u?.nick || name, tier: [...new Set(['free', ...(u?.tier || []), ...(grants || []).filter(isTier)])],
-    createdAt: u?.createdAt || now, lastLogin: now,
+    nick: u?.nick || name, tier: ['free'], createdAt: u?.createdAt || now, lastLogin: now,
   };
   const exp = Math.floor(now / 1000) + SESSION_TTL;
   const {token, id} = await signSession(secret, sub, exp);
   await st.pipe([
     ['SET', st.key('u:' + sub), JSON.stringify(u)],
     ['SET', st.key('email:' + email), sub],
+    ['SADD', st.key('esubs:' + email), sub],
     ['SADD', st.key('users'), sub],
     ['SET', st.key('sess:' + id), sub, 'EX', SESSION_TTL],
     ['SADD', st.key('usess:' + sub), id],

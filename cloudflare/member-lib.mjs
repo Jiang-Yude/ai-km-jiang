@@ -2,6 +2,7 @@
 // 被 functions/member、functions/member-content、functions/admin/members 三處引用，由 wrangler 打包進 Functions。
 // 儲存沿用 Upstash Redis REST；鍵名一律加前綴 member:，預覽模式再加 cf-preview-20261004:（同 cloudflare/runtime.mjs）。
 import {isIP} from 'node:net';
+import {isTier} from './member-tiers.mjs';
 
 const enc = new TextEncoder();
 export const SESSION_COOKIE = '__Host-member';
@@ -274,6 +275,14 @@ export function normPage(p) {
   const s = String(p || '').trim().replace(/\/index\.html$/, '/').replace(/^\/+/, '');
   if (!/^(articles|ai-trends)\/[a-z0-9-]+\/?$/.test(s)) return null;
   return s.endsWith('/') ? s : s + '/';
+}
+
+/* ── 會員等級：付費等級唯一正本是授權表 grant:<email>，會員記錄 u:<sub> 不存付費等級。
+   以前登入時把授權複製進 u.tier，撤銷與併發登入交錯就會把舊等級寫回（Codex 第 3 輪重現）。
+   現在每次都即時讀授權表，u.tier 裡殘留的舊值一律不算。 ── */
+export async function memberTiers(st, email) {
+  const grants = await st.one(['SMEMBERS', st.key('grant:' + normEmail(email))]) || [];
+  return ['free', ...new Set(grants.filter(isTier).filter(t => t !== 'free'))];
 }
 
 /* ── 會員記錄 ── */

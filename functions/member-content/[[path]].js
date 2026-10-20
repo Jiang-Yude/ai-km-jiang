@@ -2,7 +2,7 @@
 // 沒登入或等級不夠回 403，頁面自動導向 /member/。
 // 提醒：repo 是公開的，這裡只保護官網上的網址，GitHub 上的原始檔任何人都看得到。
 import {isTier, expandTiers, tierLabel} from '../../cloudflare/member-tiers.mjs';
-import {esc, reply, storageMode, store, verifySession, getUser, normEmail} from '../../cloudflare/member-lib.mjs';
+import {esc, reply, storageMode, store, verifySession, getUser, memberTiers} from '../../cloudflare/member-lib.mjs';
 
 function denied(status, message) {
   const html = `<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
@@ -31,10 +31,7 @@ export async function onRequest({request, env}) {
     const s = await verifySession(request, env, st);
     if (s) {
       user = await getUser(st, s.sub);
-      if (user) {
-        const grants = await st.one(['SMEMBERS', st.key('grant:' + normEmail(user.email))]) || [];
-        user.tier = [...new Set([...(user.tier || ['free']), ...grants])];
-      }
+      if (user) user.tier = await memberTiers(st, user.email);
     }
   } catch { return denied(503, '會員功能暫時無法使用'); }
   if (!user) return denied(403, '請先登入會員');

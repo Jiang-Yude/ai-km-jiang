@@ -71,7 +71,7 @@ const ACTIONS = {
     const grantMap = Object.fromEntries(emails.map((e, i) => [e, (grants[i] || []).filter(isTier)]));
     const members = subs.map((sub, i) => {
       const u = parse(raws[i]); if (!u) return null;
-      const tiers = [...expandTiers([...(u.tier || []), ...(grantMap[u.email] || [])])];
+      const tiers = [...expandTiers(['free', ...(grantMap[u.email] || [])])];
       return {sub: esc(sub), email: esc(u.email), nick: esc(u.nick), tiers: tiers.map(t => esc(tierLabel(t))), createdAt: u.createdAt || 0, lastLogin: u.lastLogin || 0};
     }).filter(Boolean).sort((a, b) => b.lastLogin - a.lastLogin);
     const registered = new Set(members.map(m => m.email));
@@ -89,27 +89,24 @@ const ACTIONS = {
     return reply({ok: true});
   },
 
-  // 撤銷某 email 的某個等級（grant 與會員記錄都移除）
+  // 撤銷某 email 的某個等級。等級只存在授權表，移掉就即時生效（會員記錄不存付費等級，沒有東西會被寫回）
   async revoke(st, body) {
     const email = normEmail(body.email), tier = String(body.tier || '');
     if (!EMAIL_RE.test(email) || !isTier(tier) || tier === 'free') return reply({error: 'invalid email or tier'}, 400);
     await st.one(['SREM', st.key('grant:' + email), tier]);
-    const sub = await st.one(['GET', st.key('email:' + email)]);
-    if (sub) {
-      const u = parse(await st.one(['GET', st.key('u:' + sub)]));
-      if (u) { u.tier = (u.tier || ['free']).filter(t => t !== tier); await st.one(['SET', st.key('u:' + sub), JSON.stringify(u)]); }
-    }
     return reply({ok: true});
   },
 
-  // 強制登出某會員的所有裝置
+  // 強制登出用過這個 email 的所有 Google 帳號、所有裝置
   async 'revoke-sessions'(st, body) {
     const email = normEmail(body.email);
     if (!EMAIL_RE.test(email)) return reply({error: 'invalid email'}, 400);
-    const sub = await st.one(['GET', st.key('email:' + email)]);
-    if (!sub) return reply({ok: true, revoked: 0});
-    const ids = await st.one(['SMEMBERS', st.key('usess:' + sub)]) || [];
-    await st.pipe([...ids.map(id => ['DEL', st.key('sess:' + id)]), ['DEL', st.key('usess:' + sub)]]);
+    const [latest, known] = await st.pipe([['GET', st.key('email:' + email)], ['SMEMBERS', st.key('esubs:' + email)]]);
+    const subs = [...new Set([...(known || []), ...(latest ? [latest] : [])])];
+    if (!subs.length) return reply({ok: true, revoked: 0});
+    const idLists = await st.pipe(subs.map(s => ['SMEMBERS', st.key('usess:' + s)]));
+    const ids = idLists.flatMap(l => l || []);
+    await st.pipe([...ids.map(id => ['DEL', st.key('sess:' + id)]), ...subs.map(s => ['DEL', st.key('usess:' + s)])]);
     return reply({ok: true, revoked: ids.length});
   },
 

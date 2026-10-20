@@ -227,6 +227,53 @@ await test('webhook 簽章不符回 401、未知格式回 202 且不寫授權', 
   assert.equal(lists.get(PREFIX + 'webhook:log').length, 2);
 });
 
+await test('撤銷等級時剛好有併發登入，舊等級不會被寫回', async () => {
+  // 讓登入在「讀完會員記錄與授權」之後、「寫回會員記錄」之前停住，撤銷插在中間跑完
+  let release, paused;
+  const gate = new Promise(r => { release = r; });
+  const reached = new Promise(r => { paused = r; });
+  const inner = globalThis.fetch;
+  globalThis.fetch = async (url, opt = {}) => {
+    if (String(url) === 'https://redis.test/pipeline' && JSON.parse(opt.body).some(c => c[0] === 'SET' && c[1] === PREFIX + 'u:1234567890')) {
+      paused(); await gate;
+    }
+    return inner(url, opt);
+  };
+  const loginP = call(member, req('/member/login', {method: 'POST', ip: '203.0.113.88', body: {credential: await idToken(good.privateKey, claims())}}));
+  await reached;
+  globalThis.fetch = inner;
+  const rv = await call(admin, req('/admin/members/api', {method: 'POST', ip: '198.51.100.9', body: {pw: 'correct horse', action: 'revoke', email: 'student@example.com', tier: 'course-8000'}}));
+  assert.equal(rv.status, 200);
+  release();
+  const lr = await loginP;
+  assert.equal(lr.status, 200);
+  const raced = lr.headers.get('Set-Cookie').split(';')[0];
+  for (const ck of [cookie, raced]) {
+    assert.equal((await call(memberContent, req('/member-content/course-3000/', {cookie: ck}))).status, 403, '撤銷後不能再看');
+    const e = await (await call(member, req('/member/entitlements', {cookie: ck}))).json();
+    assert.ok(!e.tiers.some(t => t.id === 'course-3000'), 'entitlements 不能再列已撤銷的等級');
+  }
+});
+
+await test('補登記與撤銷只認授權表，會員記錄裡殘留的等級不算數', async () => {
+  const k = PREFIX + 'u:1234567890';
+  const u = JSON.parse(kv.get(k)); u.tier = ['free', 'course-30000']; kv.set(k, JSON.stringify(u));
+  assert.equal((await call(memberContent, req('/member-content/course-3000/', {cookie}))).status, 403);
+  const e = await (await call(member, req('/member/entitlements', {cookie}))).json();
+  assert.deepEqual(e.tiers.map(t => t.id), ['free']);
+});
+
+await test('同一個 email 換過 Google 帳號，強制登出要登出所有帳號', async () => {
+  const r2 = await call(member, req('/member/login', {method: 'POST', ip: '203.0.113.89', body: {credential: await idToken(good.privateKey, claims({sub: '555000111'}))}}));
+  assert.equal(r2.status, 200);
+  const c2 = r2.headers.get('Set-Cookie').split(';')[0];
+  const rs = await call(admin, req('/admin/members/api', {method: 'POST', ip: '198.51.100.9', body: {pw: 'correct horse', action: 'revoke-sessions', email: 'student@example.com'}}));
+  assert.equal(rs.status, 200);
+  for (const ck of [cookie, c2]) assert.equal((await (await call(member, req('/member/me', {cookie: ck}))).json()).loggedIn, false);
+  // 後面的登出測試要用一個有效 session
+  cookie = (await call(member, req('/member/login', {method: 'POST', ip: '203.0.113.90', body: {credential: await idToken(good.privateKey, claims())}}))).headers.get('Set-Cookie').split(';')[0];
+});
+
 await test('登出後 session 失效', async () => {
   const r = await call(member, req('/member/logout', {method: 'POST', cookie, body: {}}));
   assert.equal(r.status, 200);
