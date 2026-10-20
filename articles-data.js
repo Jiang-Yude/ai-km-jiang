@@ -42,6 +42,25 @@ window.ARTICLES = [
   },
 
   {
+    id: "rules-need-an-engine",
+    url: "articles/rules-need-an-engine/",
+    date: "2026-10-20",
+    updated: "2026-10-20",
+    title: "寫了一堆規則給 AI，為什麼還是沒人執行？｜立規矩除了機制，還要搭配引擎，舊規矩也要能退場",
+    problem: "寫了很多規則給 AI，寫完覺得放心，回頭看卻發現很多條沒人在執行；交代 AI 的事回一句好就沒下文。",
+    audience: "寫過 AGENTS.md、CLAUDE.md 或工作規範，卻發現規則沒人照做的人。",
+    summary: "規則寫下來不會自己動，每一條要持續做的規矩都要指定一個引擎：Hook 機械攔截、既有流程的事件掛載點、排程 AI，三種都掛不上就不立成常設規則。案例一是 2026-10-20 上線的 AGENTS.md 規則退場機制：立法滿 90 天、近 90 天沒有命中證據、已有別處承接就退場，由每月 1 號知識庫健檢執行，第一批退四條公告句。案例二是 AI 小編朵拉回一句 OK 就沒下文，補上每半小時巡查的排程、三種回報與 Trello 任務板。另整理防錯做法（登記觸發點、每月判死活、關鍵類不因零啟動退場、唯一真相、退場先備份與跨家審），附一段檢查規則有沒有引擎的提示詞。",
+    tags: {
+      topic: ["AI工作流", "知識庫", "工作流程"],
+      level: ["基礎"],
+      content_type: ["觀點文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["rule-file-rebound", "ai-rule-file-slimming", "how-to-verify-ai-rule-changes", "what-is-loop-engineering", "copied-mechanism-is-no-mechanism", "caught-ai-slacking-into-rules"],
+    cover: { wide: "images/articles/rules-need-an-engine-cover.jpg" }
+  },
+
+  {
     id: "line-namecard-share-button",
     url: "articles/line-namecard-share-button/",
     date: "2026-10-19",
