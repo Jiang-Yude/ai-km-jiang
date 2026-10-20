@@ -1,0 +1,313 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="index,follow">
+<title>你以為 AI 在隨機抽，其實它最愛 7｜叫 AI 抽籤會偏，這個坑先知道比較好</title>
+<meta name="description" content="叫 AI 從 1 到 10 隨機選一個數字，它常常每次都選 7。這篇用一個小實驗和一篇論文的圖，說明 AI 給的數字為什麼不是隨機，以及抽獎、分組時怎麼避開這個坑。">
+<link rel="canonical" href="https://jiangyude.com/articles/ai-random-true-random/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="你以為 AI 在隨機抽，其實它最愛 7｜江江教練">
+<meta property="og:image" content="https://jiangyude.com/images/og/ai-random-true-random.jpg">
+<meta property="og:description" content="叫 AI 從 1 到 10 隨機選一個數字，它常常每次都選 7。這篇用一個小實驗和一篇論文的圖，說明 AI 給的數字為什麼不是隨機，以及抽獎、分組時怎麼避開這個坑。">
+<meta property="og:url" content="https://jiangyude.com/articles/ai-random-true-random/">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:site_name" content="江江教練 · AI 知識管理">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="你以為 AI 在隨機抽，其實它最愛 7｜江江教練">
+<meta name="twitter:image" content="https://jiangyude.com/images/og/ai-random-true-random.jpg">
+<meta name="twitter:description" content="叫 AI 從 1 到 10 隨機選一個數字，它常常每次都選 7。這篇用一個小實驗和一篇論文的圖，說明 AI 給的數字為什麼不是隨機，以及抽獎、分組時怎麼避開這個坑。">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"你以為 AI 在隨機抽，其實它最愛 7｜叫 AI 抽籤會偏，這個坑先知道比較好","description":"叫 AI 從 1 到 10 隨機選一個數字，它常常每次都選 7。這篇用一個小實驗和一篇論文的圖，說明 AI 給的數字為什麼不是隨機，以及抽獎、分組時怎麼避開這個坑。","author":{"@type":"Person","name":"江昱德","alternateName":"江江教練","jobTitle":"隱性知識提煉師、AI 應用規劃師"},"isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://jiangyude.com/"},"inLanguage":"zh-Hant","url":"https://jiangyude.com/articles/ai-random-true-random/"}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{--ink:#1a1612;--paper:#fefcf8;--muted:#6a635a;--line:#d8cdb8;--green:#5f7553;--blue:#5689b8;--orange:#e85a4f;--soft:#faf5ec;--dark:#2a2018;--shadow:0 18px 45px rgba(107,74,42,.14);--sp-shadow:hsla(35,50%,60%,.15);--sp-shadow-edge:hsla(35,50%,68%,.03);--sp-radius:400px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC","Segoe UI",sans-serif}
+a{color:inherit}
+/* 官網共用導航列 nav.top（與首頁/文章總站同一條） */
+nav.top{position:sticky;top:0;background:rgba(254,252,248,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid #d8cdb8;z-index:100}
+nav.top .container{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:24px;padding:14px 32px}
+.nav-brand-img{justify-self:start;display:flex;align-items:center;text-decoration:none;flex-shrink:0;transition:opacity .2s}
+.nav-brand-img:hover{opacity:.8}.nav-brand-img img{height:40px;width:auto;display:block}
+nav.top ul.nav-menu{justify-self:end;display:flex;gap:22px;list-style:none;margin:0;padding:0;font-size:.95rem;white-space:nowrap}
+nav.top ul.nav-menu a{color:#3a342d;text-decoration:none;transition:color .2s;font-weight:500;white-space:nowrap}
+nav.top ul.nav-menu a:hover{color:#1a1612}nav.top ul.nav-menu a.active{color:#1a1612;font-weight:700}
+.nav-toggle{display:none;background:none;border:none;padding:6px;cursor:pointer;width:36px;height:36px;position:relative}
+.nav-toggle span{display:block;position:absolute;left:8px;right:8px;height:2px;background:#1a1612;border-radius:2px;transition:transform .25s,opacity .25s,top .25s}
+.nav-toggle span:nth-child(1){top:11px}.nav-toggle span:nth-child(2){top:17px}.nav-toggle span:nth-child(3){top:23px}
+.nav-toggle.open span:nth-child(1){top:17px;transform:rotate(45deg)}.nav-toggle.open span:nth-child(2){opacity:0}.nav-toggle.open span:nth-child(3){top:17px;transform:rotate(-45deg)}
+.tablewrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:22px 0;border:1px solid var(--line);border-radius:10px;background:#fff;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.tablewrap table{border-collapse:collapse;width:100%;min-width:600px;font-size:18px;line-height:1.65}
+.tablewrap .zh{display:block;margin-top:5px;font-size:16px;line-height:1.55;color:var(--muted);font-weight:400}
+.tablewrap th,.tablewrap td{padding:12px 14px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top;color:#3a342d}
+.tablewrap thead th{background:var(--soft);font-weight:900;font-size:18px;color:#1a1612;white-space:nowrap}
+.tablewrap tbody tr:last-child td{border-bottom:none}
+.tablewrap td code,.section code{background:var(--soft);border:1px solid var(--line);border-radius:5px;padding:1px 6px;font:500 15px/1.5 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace}
+.inline-figure.wide{max-width:1000px}
+.inline-figure.portrait{max-width:430px}
+.toc{margin:26px 0 0;padding:20px 22px;background:#fff;border:1px solid var(--line);border-radius:10px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.toc>b{display:block;font-size:15px;letter-spacing:.05em;color:var(--green);margin-bottom:10px}
+.toc ol{margin:0;padding-left:1.35em;font-size:18px;line-height:1.7}
+.toc li{margin-bottom:7px;color:#3a342d}
+.toc a{color:var(--blue);font-weight:700;text-decoration:none}.toc a:hover{text-decoration:underline}
+.toc-hint{margin:12px 0 0!important;font-size:18px!important;color:var(--muted)!important;border-top:1px solid var(--line);padding-top:12px}
+.readmore{margin-top:24px;padding:20px 22px;background:var(--soft);border:1px solid var(--line);border-radius:12px}
+.readmore.near{margin:26px 0 6px;background:rgba(86,137,184,.07);border-color:#bcd0e2}
+.readmore.near b{color:var(--blue);font-size:18px}
+.readmore.near li{font-size:17px;line-height:1.7;margin-bottom:10px}
+.readmore b{display:block;margin-bottom:10px;font-size:19px}
+.readmore ul{margin:0;padding-left:1.25em}
+.readmore a{color:var(--blue);font-weight:700;text-decoration:none}
+.readmore a:hover{text-decoration:underline}
+@media(max-width:820px){.tablewrap table{min-width:560px;font-size:18px}.tablewrap{position:relative}.tablewrap::after{content:"表格可左右滑動 →";position:sticky;left:0;display:block;font-size:15px;color:var(--muted);background:var(--soft);border-top:1px solid var(--line);padding:7px 12px;width:100%}}
+@media(max-width:860px){
+ nav.top .container{grid-template-columns:auto 1fr auto;padding:10px 16px;gap:12px}
+ .nav-brand-img img{height:32px}
+ .nav-toggle{display:block;justify-self:end}
+ nav.top ul.nav-menu{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(254,252,248,.98);backdrop-filter:blur(14px);border-bottom:1px solid #d8cdb8;flex-direction:column;gap:0;padding:8px 0;box-shadow:0 10px 24px rgba(107,74,42,.08)}
+ nav.top ul.nav-menu.open{display:flex}
+ nav.top ul.nav-menu li{border-bottom:1px solid #e8dfc9}
+ nav.top ul.nav-menu li:last-child{border-bottom:none}
+ nav.top ul.nav-menu a{display:block;padding:14px 20px;font-size:1.06rem}
+}
+/* 滑鼠暖光暈（與首頁同一支 spotlight.js） */
+body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradient(var(--sp-radius) circle at var(--mx,50%) var(--my,50%),var(--sp-shadow) 0%,var(--sp-shadow-edge) 45%,transparent 75%);pointer-events:none;z-index:9999;mix-blend-mode:multiply;transition:background .06s linear}
+.hero{position:relative;overflow:hidden;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:72px;padding:96px clamp(20px,6vw,88px) 80px;background:linear-gradient(180deg,#fffcf0 0%,#f9e9d2 100%);color:#1a1612;border-bottom:1px solid #d8cdb8}
+.hero .wc{position:absolute;border-radius:50%;filter:blur(60px);pointer-events:none;z-index:0}
+.hero .wc1{width:420px;height:360px;top:-120px;right:-80px;background:#e8884b;opacity:.15}
+.hero .wc2{width:360px;height:300px;bottom:-110px;left:-70px;background:#5f7553;opacity:.13}
+.hero .wc3{width:280px;height:260px;top:34%;left:14%;background:#a08144;opacity:.10}
+.hero>div{flex:none;width:860px;max-width:100%;position:relative;z-index:2}
+.hero-figure{margin:0;width:620px;flex:none;position:relative;z-index:2}
+.hero-figure img{display:block;width:100%;height:auto;border-radius:16px;border:1px solid #d8cdb8;box-shadow:0 18px 45px rgba(107,74,42,.16);cursor:zoom-in}
+.hero-figure figcaption{margin-top:10px;font-size:14px;line-height:1.6;color:#6a635a}
+.inline-figure{margin:30px auto 8px;max-width:820px}
+.inline-figure img{display:block;width:100%;height:auto;border-radius:14px;border:1px solid var(--line);box-shadow:var(--shadow);background:#fff;cursor:zoom-in}
+.inline-figure figcaption{font-size:14px;line-height:1.6;color:var(--muted);margin-top:10px}
+.lightbox{position:fixed;inset:0;z-index:10000;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(12,10,8,.92);cursor:zoom-out;backdrop-filter:blur(4px)}
+.lightbox.open{display:flex}.lightbox img{max-width:96vw;max-height:92vh;border-radius:10px;box-shadow:0 24px 60px rgba(0,0,0,.5)}
+.lightbox-close{position:fixed;top:18px;right:24px;color:#fff;font-size:34px;line-height:1;font-weight:700;cursor:pointer;opacity:.85}
+.kicker{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.55rem;color:#7a5c3a;font-weight:500}
+.hero h1{max-width:none;margin:16px 0 18px;font-size:clamp(36px,6vw,72px);line-height:1.08;overflow-wrap:anywhere}
+.hero p{max-width:none;font-size:clamp(18px,2vw,23px);line-height:1.62;color:#3a342d}
+.cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
+.cta a{display:inline-flex;align-items:center;text-decoration:none;border-radius:8px;padding:12px 16px;font-weight:900}
+.cta .primary{background:#fff;color:#1a1612}.cta .ghost{border:1px solid rgba(255,255,255,.32);color:#fff;background:rgba(255,255,255,.08)}
+.section{padding:54px clamp(20px,6vw,88px);border-top:1px solid var(--line)}
+.inner{width:min(1000px,100%);margin:0 auto}
+.section h2{font-size:clamp(26px,4.2vw,48px);line-height:1.12;margin:0 0 18px}
+.section h3{font-size:clamp(21px,3vw,30px);line-height:1.2;margin:30px 0 12px}
+.lead{font-size:clamp(18px,1.6vw,22px);line-height:1.7;color:#3a342d;max-width:900px}
+.section p{font-size:18px;line-height:1.74;color:#3a342d}.section p+p{margin-top:14px}
+.section ul,.section ol{padding-left:1.4em;font-size:18px;line-height:1.74;color:#3a342d}.section li{margin-bottom:8px}
+.meaning{margin:22px 0;padding:16px 18px;border-left:5px solid var(--blue);background:rgba(86,137,184,.12);border-radius:6px;line-height:1.7;font-size:19px}
+.meaning b{display:block;color:var(--blue);margin-bottom:4px}
+.caveat{margin:0 0 8px;padding:16px 18px;border-left:5px solid var(--orange);background:rgba(232,90,79,.1);border-radius:6px;line-height:1.7;font-size:18px;color:#3a342d}
+.caveat b{display:block;color:var(--orange);margin-bottom:4px}
+.infocard{background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px 24px 22px;box-shadow:0 8px 22px rgba(107,74,42,.08);margin-top:8px}
+.infocard-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.info-item{padding:18px 14px 0}
+.info-item b{display:block;font-size:14px;font-weight:900;letter-spacing:.04em;margin-bottom:7px;text-transform:uppercase}
+.info-item:nth-child(1) b{color:var(--green)}.info-item:nth-child(2) b{color:var(--orange)}.info-item:nth-child(3) b{color:var(--blue)}
+.info-item p{margin:0;font-size:17px;line-height:1.6;color:#3a342d}
+.tagrow{display:flex;flex-wrap:wrap;gap:7px;margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
+.tag{font-size:14px;color:var(--muted);background:var(--soft);border:1px solid var(--line);border-radius:999px;padding:4px 11px}
+.duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:24px}
+.duo.stack{grid-template-columns:1fr}
+.duo .card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:22px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.duo .card.a{border-color:var(--orange)}.duo .card.b{border-color:var(--green);box-shadow:0 8px 24px rgba(95,117,83,.16)}
+.duo .card small{display:block;font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.04em;margin-bottom:9px}
+.duo .card.a small{color:var(--orange)}.duo .card.b small{color:var(--green)}
+.duo .card b{display:block;font-size:22px;line-height:1.3;margin-bottom:12px}.duo .card.a b{color:#c0512f}.duo .card.b b{color:#4a7a59}
+.duo .card p{margin:0;color:#3a342d;line-height:1.75;font-size:18px}
+.duo .card ul{margin:0;padding-left:1.3em;font-size:18px;line-height:1.75;color:#3a342d}
+.workflow-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:24px}
+.workflow-step{background:#fff;border:1px solid var(--line);border-radius:8px;padding:18px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.workflow-step small{display:block;color:var(--orange);font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;margin-bottom:9px}
+.workflow-step b{display:block;font-size:18px;line-height:1.3;margin-bottom:9px}
+.workflow-step p{margin:0;color:#3a342d;line-height:1.6;font-size:16px}
+.codeblock{background:var(--dark);color:#f3ead9;border-radius:8px;padding:18px 20px;font:500 14px/1.65 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;overflow-x:auto;white-space:pre-wrap;margin:20px 0;box-shadow:0 8px 22px rgba(107,74,42,.12)}
+.codeblock .c{color:#f6d7a6;font-weight:600}
+.skillcard{background:#fff;border:1px solid var(--green);border-radius:12px;padding:24px;box-shadow:0 10px 26px rgba(95,117,83,.16);margin-top:8px}
+.skillcard b{display:block;font-size:21px;margin-bottom:8px}
+.skillcard p{margin:0 0 16px;font-size:17px;line-height:1.65;color:#3a342d}
+.cta-band{background:#e6f0e5;color:#3a342d}.cta-band .section{border-top:none}
+.cta-band .inner{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(260px,.85fr);gap:26px;align-items:start}
+.cta-band h2{font-size:clamp(26px,4vw,44px);margin:0 0 16px}.cta-band p,.cta-band .lead{color:rgba(58,52,45,.9);font-size:18px;line-height:1.72}
+.cta-card{border:1px solid #cfe0d2;background:#fbfdfa;border-radius:8px;padding:22px}
+.cta-card b{display:block;color:#48b178;margin-bottom:10px;font-size:18px}.cta-card p{margin:0 0 14px}
+.footer{padding:30px clamp(20px,6vw,88px);font-size:14px;color:var(--muted);background:#fff;border-top:1px solid var(--line)}
+.footer-inner{width:min(1000px,100%);margin:0 auto}
+.footer-links{display:flex;flex-wrap:wrap;gap:6px 12px;margin-bottom:14px}.footer-links a{color:var(--blue);font-weight:900;text-decoration:none;font-size:14px}
+.footer-brand{font-weight:900;font-size:15px;margin-bottom:10px}.footer-note{font-size:13px;line-height:1.6}
+@media(max-width:820px){.inline-figure.portrait{max-width:340px}.infocard-grid{grid-template-columns:1fr}.duo{grid-template-columns:1fr}.workflow-grid{grid-template-columns:1fr}.cta-band .inner{grid-template-columns:1fr}.section{padding:40px 20px}.hero{min-height:52vh;flex-direction:column;justify-content:flex-start;align-items:flex-start;gap:24px}.hero>div{width:100%}.hero-figure{width:100%;max-width:560px}}
+@media(max-width:820px){html,body{overflow-x:hidden}.hero h1{word-break:break-word}}
+/* 直式圖左右排（02-design-system「直式圖在桌機的左右排版」）：輪播卡上官網預設用 .media-row，圖左圖右看段落交替；連續兩張用 .figure-pair */
+.figure-pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;margin:30px auto 8px;max-width:820px}.figure-pair .inline-figure{margin:0;max-width:none}@media(max-width:640px){.figure-pair{grid-template-columns:1fr}.figure-pair .inline-figure{max-width:340px;margin:0 auto}}
+.media-row{display:grid;grid-template-columns:minmax(0,340px) minmax(0,1fr);gap:36px;align-items:center;margin:28px 0}.media-row.img-right{grid-template-columns:minmax(0,1fr) minmax(0,340px)}.media-row .inline-figure{margin:0;max-width:none}.media-row .media-text>*:first-child{margin-top:0}.media-row .media-text>*:last-child{margin-bottom:0}@media(max-width:820px){.media-row,.media-row.img-right{grid-template-columns:1fr;gap:18px}.media-row.img-right .media-fig{order:-1}.media-row .inline-figure{max-width:340px;margin:0 auto}}
+</style>
+</head>
+<body class="spotlight">
+<!-- 官網共用導航列 nav.top：與首頁/總站同一條，文章不要自己另做極簡 topbar。 -->
+<nav class="top">
+  <div class="container">
+    <a class="nav-brand-img" href="../../index.html"><img src="../../images/footer-signature.png" alt="江江教練 | 江昱德"></a>
+    <button class="nav-toggle" aria-label="選單"><span></span><span></span><span></span></button>
+    <ul class="nav-menu">
+      <li><a href="../../index.html">首頁</a></li>
+      <li><a href="../../knowledge-architecture.html">知識架構</a></li>
+      <li><a href="../../courses.html">課程</a></li>
+      <li><a href="../../articles.html" class="active">文章</a></li>
+      <li><a href="../../skills.html">小工具</a></li>
+      <li><a href="../../offers.html">服務方案</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="wc wc1"></div>
+  <div class="wc wc2"></div>
+  <div class="wc wc3"></div>
+  <div>
+    <div class="kicker">AI 應用</div>
+    <h1>你以為 AI 在隨機抽，其實它最愛 7｜叫 AI 抽籤會偏，這個坑先知道比較好</h1>
+    <p>抽獎、分組、抽籤，你可能也順手叫 AI 幫忙抽過。看起來很方便，但 AI 給你的那個數字，常常不是隨機的。</p>
+  </div>
+  <figure class="hero-figure">
+    <img src="../../images/articles/ai-random-true-random-cover.jpg" alt="咪卡伸手進抽獎箱，舉起又一顆 7 號球，桌上已經排了五顆 7 號球，標題為你以為 AI 在隨機抽，其實它最愛 7" width="1280" height="720">
+  </figure>
+</section>
+
+<main>
+
+<section class="section" id="chart"><div class="inner">
+<h2>先看一張圖</h2>
+<p class="lead">請你從 1 到 10 選一個數字。真正的隨機、人類、AI，選出來的樣子完全不一樣。</p>
+<figure class="inline-figure wide">
+  <img src="../../images/articles/ai-random-true-random-pick-1-10-chart.jpg" alt="請從 1 到 10 選一個數字示意圖：真正隨機是一條平線，人類偏好 5 和 7，AI 幾乎全部擠在 7" loading="lazy">
+  <figcaption>綠色是真正的隨機，每個數字機會一樣，所以是一條平線。橘色是人類，偏好 5 和 7。紅色是 AI，幾乎全部擠在 7。這是說明概念的示意圖，中文標註為本站加上。</figcaption>
+</figure>
+<p class="source-note">圖片來源：Adam Zachary Wasserman 在 X 發布的圖（2026-10-13），經 filmwalker 在 Threads 轉述介紹。</p>
+</div></section>
+
+<section class="section" id="test"><div class="inner">
+<h2>我叫 AI 選 1 到 10，問了十次</h2>
+<p class="lead">我請 AI 助手用同一句話去問另一個 AI：「從 1 到 10 選一個數字，只回答數字。」每次都開新的對話，一共問十次。</p>
+<p>十次的答案，全部都是 7。</p>
+<p>如果是真的隨機，十次全部抽到同一個數字，機會非常小。這只是我做的一個小實驗，只用了一種問法和一個工具，所以我又去找了研究，看看是不是只有我遇到。</p>
+</div></section>
+
+<section class="section" id="paper"><div class="inner">
+<h2>研究也看到一樣的事</h2>
+<p>有一篇 2025 年的論文，把同一個問題拿去問六個 AI 模型，每個模型問一百次。下面這張圖，顏色越亮代表那個數字被選得越多。</p>
+<figure class="inline-figure wide">
+  <img src="../../images/articles/ai-random-true-random-paper-heatmap-1-10.png" alt="六個模型選 1 到 10 數字的分布熱圖，多數模型集中在 7" loading="lazy">
+  <figcaption>英文提問，六個模型各問 100 次。其中三個模型 100 次全部選 7，另外三個模型也是選 7 最多。</figcaption>
+</figure>
+<p>你看，亮的幾乎都擠在 7 那一欄。如果是真的隨機，每個數字被選到的次數應該差不多。</p>
+<p class="source-note">圖片來源：Javier Coronado-Blázquez,〈Deterministic or probabilistic? The psychology of LLMs as random number generators〉，arXiv:2502.19965，依 CC BY 4.0 授權引用，圖未經修改。這篇文章參考了這篇論文。</p>
+</div></section>
+
+<section class="section" id="why"><div class="inner">
+<h2>為什麼 AI 會一直選 7</h2>
+<p>AI 是讀了大量人類寫的文字，學會「這句話後面，通常接什麼」。論文作者認為，AI 選數字的偏好，反映的是它從人類文字裡學到的習慣。</p>
+<p>所以你叫它「隨機」，它其實是照著學到的習慣，挑一個看起來最像答案的數字。它沒有在擲骰子。</p>
+<p>而且每個模型的習慣不一樣，有的偏 7，有的會在 7 和 8 之間跳。你用的模型不同，結果也可能不同。</p>
+</div></section>
+
+<section class="section" id="where"><div class="inner">
+<h2>這個坑會出現在哪裡</h2>
+<ul>
+<li><b>抽獎</b>：叫 AI 從名單裡抽一個人，某幾個人可能一直比較容易被抽到。</li>
+<li><b>分組、點名</b>：你以為很公平，其實 AI 有自己的偏好。</li>
+<li><b>抽題目、抽順序</b>：每次抽出來的結果，可能都差不多。</li>
+</ul>
+<p>被抽的人不會知道，你自己也很難發現。這就是這個坑麻煩的地方。</p>
+<p>論文測的是數字，抽名單我還沒看到同樣規模的研究。但連選數字都有偏好，抽名字這種大家在意公平的事，我不建議冒險。</p>
+</div></section>
+
+<section class="section" id="fix"><div class="inner">
+<h2>那要怎麼抽才對</h2>
+<p>很簡單：別讓 AI 用「想」的幫你挑。最省事的是用現成的抽籤工具；想留在 AI 裡，就請它寫一個抽籤小程式，由程式來抽。</p>
+<p>下面兩張圖是同一篇論文裡的比較，抽的是 1 到 5，紅色是「完全平均」該有的高度，藍色是實際抽到的次數。</p>
+<div class="figure-pair">
+<figure class="inline-figure landscape">
+  <img src="../../images/articles/ai-random-true-random-paper-python-1-5.png" alt="用程式抽 1 到 5 的結果，五個數字次數都接近平均" loading="lazy">
+  <figcaption>用程式抽：五個數字都被抽到，次數接近平均。</figcaption>
+</figure>
+<figure class="inline-figure landscape">
+  <img src="../../images/articles/ai-random-true-random-paper-llama-1-5.png" alt="AI 模型直接選 1 到 5 的結果，1 和 5 完全沒被選到" loading="lazy">
+  <figcaption>叫 AI 直接選（這張是 Llama 這個模型，問 100 次）：1 和 5 一次都沒被選到。</figcaption>
+</figure>
+</div>
+<p>想試試看，可以把這句話直接貼給 AI：</p>
+<div class="codeblock">請幫我寫一個簡單的抽籤程式，用程式內建的隨機功能，從 1 到 10 抽一個數字，並告訴我怎麼執行。請不要自己直接回答一個數字。</div>
+<p>如果是抽獎金、發獎品這種大家很在意公平的場合，抽完把程式和結果一起留下來，被問到的時候拿得出來。</p>
+<div class="readmore near"><b>就近延伸閱讀</b>
+<ul><li><a href="../ai-vs-script-four-situations/">讓 AI 只做需要判斷的事，其他交給程式｜四情境分工法</a>：抽籤這種要公平、要固定規則的事，就是適合交給程式的那一類。</li></ul>
+</div>
+</div></section>
+
+<section class="section" id="lesson"><div class="inner">
+<h2>真正要記住的</h2>
+<p>AI 很好用，但它有自己的習慣。這些習慣藏在模型裡面，平常看不出來，等到出事才發現。</p>
+<p>要避開這種坑，有兩個做法：一是先知道哪裡有坑，二是把規則寫清楚，交給程式去跑。</p>
+<p>你用 AI 有沒有哪一次覺得怪怪的，卻說不出哪裡怪？可以留言或來問我。很多坑，先知道就能少踩一次。</p>
+<div class="readmore"><b>這篇提到過的來源</b>
+<ul>
+<li><a href="https://arxiv.org/abs/2502.19965" target="_blank" rel="noopener">arXiv 2502.19965</a>：六個 AI 模型產生隨機數字的研究，本文的圖都來自這篇。</li>
+</ul>
+</div>
+<div class="readmore"><b>再往前後延伸</b>
+<ul><li><a href="../../articles.html">回深度文章總站</a></li><li><a href="../../index.html">回首頁</a></li></ul>
+</div>
+</div></section>
+
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">江江教練 · AI 知識管理</div>
+    <div class="footer-links">
+      <a href="../../articles.html">← 回深度文章總站</a>
+      <a href="../../index.html">首頁</a>
+      <a href="../../learn.html">自學資源</a>
+      <a href="../../skills.html">小工具</a>
+      <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">LINE 社群 ↗</a>
+      <a href="https://www.threads.com/@jiang_yude_coach" target="_blank" rel="noopener">Threads ↗</a>
+      <a href="https://vocus.cc/salon/Jiang_Coach" target="_blank" rel="noopener">方格子 ↗</a>
+    </div>
+    <div class="footer-note">這是一篇教學文章，整理我對「請 AI 幫你隨機抽，怎麼做才是真隨機」的看法，供你參考。</div>
+  </div>
+</footer>
+
+<!-- 點圖放大 lightbox（hero 與內文圖通用，已內建，不用每篇重加） -->
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <span class="lightbox-close" aria-label="關閉">×</span>
+  <img id="lightbox-img" src="" alt="放大檢視">
+</div>
+<script>
+(function(){
+  var box=document.getElementById('lightbox'),boxImg=document.getElementById('lightbox-img');
+  document.querySelectorAll('.hero-figure img,.inline-figure img').forEach(function(img){
+    img.addEventListener('click',function(){boxImg.src=img.currentSrc||img.src;boxImg.alt=img.alt||'放大檢視';box.classList.add('open');box.setAttribute('aria-hidden','false');});
+  });
+  function close(){box.classList.remove('open');box.setAttribute('aria-hidden','true');boxImg.src='';}
+  box.addEventListener('click',close);
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
+})();
+</script>
+
+<script src="../../image-interactions.js"></script>
+
+<!-- 官網共用：滑鼠暖光暈 + 導航列漢堡選單 -->
+<script src="../../spotlight.js"></script>
+
+<!-- 文章自動互聯（相關文章）：兩支已內建，順序不可顛倒 -->
+<script src="../../articles-data.js"></script>
+<script src="../../related-render.js"></script>
+  <script src="/mika-chat-widget.js" defer></script>
+</body>
+</html>
