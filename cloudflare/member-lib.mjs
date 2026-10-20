@@ -2,6 +2,7 @@
 // 被 functions/member、functions/member-content、functions/admin/members 三處引用，由 wrangler 打包進 Functions。
 // 儲存沿用 Upstash Redis REST；鍵名一律加前綴 member:，預覽模式再加 cf-preview-20261004:（同 cloudflare/runtime.mjs）。
 import {isIP} from 'node:net';
+import {createHash, timingSafeEqual} from 'node:crypto';
 import {isTier} from './member-tiers.mjs';
 
 const enc = new TextEncoder();
@@ -138,17 +139,17 @@ async function sha256Hex(text) {
   const d = await crypto.subtle.digest('SHA-256', enc.encode(text));
   return [...new Uint8Array(d)].map(b => b.toString(16).padStart(2, '0')).join('');
 }
-// 長度不同也跑完整趟比對（同 api/stats-admin.js 的 safeEqual）
+// 先各算 SHA-256（固定 32 bytes）再用平台 timingSafeEqual 比對；同 lib/2026-09-13-0910-client-network.js 的 safeEqual
 export function safeEqual(a, b) {
-  const A = enc.encode(String(a)), B = enc.encode(String(b));
-  let diff = A.length ^ B.length;
-  const n = Math.max(A.length, B.length);
-  for (let i = 0; i < n; i++) diff |= (A[i] || 0) ^ (B[i] || 0);
-  return diff === 0;
+  const A = createHash('sha256').update(String(a == null ? '' : a), 'utf8').digest();
+  const B = createHash('sha256').update(String(b == null ? '' : b), 'utf8').digest();
+  return timingSafeEqual(A, B);
 }
 
 /* ── Session：cookie 內容 sub.exp.sig，sig＝HMAC-SHA256(MEMBER_SESSION_SECRET, "sub.exp")。
-   伺服器另存 member:sess:<id>（id＝cookie 的 SHA-256 前 32 字），刪掉就撤銷。 ── */
+   伺服器另存 member:sess:<id>（id＝cookie 的 SHA-256 前 32 字），刪掉就撤銷。
+   2026-10-20 加撤銷世代（Codex 第 3 輪）：sess 的值是「sub|世代」，世代存在 member:ugen:<sub>。
+   強制登出全部裝置＝把世代加一，舊世代的 session 全部失效；登入如果剛好卡在撤銷中間，寫進去的也是舊世代，一樣無效。 ── */
 export function sessionSecret(env) {
   const s = String(env.MEMBER_SESSION_SECRET || '');
   return s.length >= 32 ? s : null;
@@ -179,10 +180,11 @@ export async function verifySession(request, env, st) {
   const ok = await crypto.subtle.verify('HMAC', await hmacKey(secret), sig, enc.encode(parts[0] + '.' + parts[1]));
   if (!ok || Number(parts[1]) * 1000 <= Date.now()) return null;
   const id = (await sha256Hex(token)).slice(0, 32);
-  const stored = await st.one(['GET', st.key('sess:' + id)]);
-  if (stored !== parts[0]) return null;
+  const [stored, gen] = await st.pipe([['GET', st.key('sess:' + id)], ['GET', st.key('ugen:' + parts[0])]]);
+  if (stored !== sessValue(parts[0], gen)) return null;
   return {sub: parts[0], id};
 }
+export const sessValue = (sub, gen) => sub + '|' + (Number(gen) || 0);
 export function sessionCookie(token, maxAge) {
   return `${SESSION_COOKIE}=${token}; HttpOnly; Secure; SameSite=Lax; Path=/; Max-Age=${maxAge}`;
 }
@@ -231,6 +233,9 @@ export async function verifyGoogleIdToken(token, clientId) {
   if (!ISSUERS.includes(payload.iss)) return null;
   const aud = Array.isArray(payload.aud) ? payload.aud : [payload.aud];
   if (!aud.includes(clientId)) return null;
+  // azp（授權方）有帶就必須是本站，避免別的用戶端申請、aud 剛好含本站的 token 被拿來登入
+  if (payload.azp !== undefined && payload.azp !== clientId) return null;
+  // exp 容許 30 秒時鐘誤差（刻意的；Codex 第 3 輪實測 exp＝現在減 10 秒仍可登入，屬於這個寬限）
   if (!Number.isFinite(payload.exp) || payload.exp < now - 30) return null;
   if (Number.isFinite(payload.iat) && payload.iat > now + 300) return null;
   if (!(payload.email_verified === true || payload.email_verified === 'true')) return null;
@@ -279,11 +284,33 @@ export function normPage(p) {
 
 /* ── 會員等級：付費等級唯一正本是授權表 grant:<email>，會員記錄 u:<sub> 不存付費等級。
    以前登入時把授權複製進 u.tier，撤銷與併發登入交錯就會把舊等級寫回（Codex 第 3 輪重現）。
-   現在每次都即時讀授權表，u.tier 裡殘留的舊值一律不算。 ── */
-export async function memberTiers(st, email) {
-  const grants = await st.one(['SMEMBERS', st.key('grant:' + normEmail(email))]) || [];
-  return ['free', ...new Set(grants.filter(isTier).filter(t => t !== 'free'))];
+   現在每次都即時讀授權表，u.tier 裡殘留的舊值一律不算。
+
+   email 預登記要「這個人現在真的擁有這個信箱」才承接（Codex 第 3 輪，高）：
+   Google 說 email_verified 對非 Google 管理的信箱只代表「當初驗證過」，信箱之後可能換人。
+   所以只有兩種情況自動承接：gmail.com／googlemail.com（信箱就是 Google 帳號本身），
+   或 token 帶 hd 且等於信箱網域（Google Workspace 管理的信箱）。其他信箱登入後只有免費等級，
+   要站長在後台核對訂單後按「確認信箱」，把確認寫在 member:vemail:<sub>＝當下信箱，才承接。
+   之後信箱改了，確認自動失效。 ── */
+export function emailTrusted(payload) {
+  const email = normEmail(payload && payload.email), at = email.lastIndexOf('@');
+  if (at < 1) return false;
+  const domain = email.slice(at + 1);
+  if (domain === 'gmail.com' || domain === 'googlemail.com') return true;
+  return typeof payload.hd === 'string' && payload.hd.toLowerCase() === domain;
 }
+export async function memberTiers(st, sub, u) {
+  const email = normEmail(u && u.email);
+  const [grants, confirmed] = await st.pipe([['SMEMBERS', st.key('grant:' + email)], ['GET', st.key('vemail:' + sub)]]);
+  const owns = (u && u.emailTrusted === true) || (!!email && confirmed === email);
+  return ['free', ...new Set(owns ? (grants || []).filter(isTier).filter(t => t !== 'free') : [])];
+}
+
+/* ── 會員記錄的原子寫入（2026-10-20，Codex 第 3 輪：登入與改暱稱都整份讀改寫，會互相蓋掉）──
+   USER_UPSERT_SCRIPT：登入寫記錄，保留伺服器上既有的 nick 與 createdAt，其他欄位用這次登入的值。
+   USER_NICK_SCRIPT：只改 nick 一個欄位；記錄不存在回 0。 */
+export const USER_UPSERT_SCRIPT = "local raw = redis.call('GET', KEYS[1]); local u = cjson.decode(ARGV[1]); if raw then local ok, old = pcall(cjson.decode, raw); if ok and type(old) == 'table' then if type(old.nick) == 'string' and old.nick ~= '' then u.nick = old.nick end; if old.createdAt then u.createdAt = old.createdAt end end end; redis.call('SET', KEYS[1], cjson.encode(u)); return cjson.encode(u)";
+export const USER_NICK_SCRIPT = "local raw = redis.call('GET', KEYS[1]); if not raw then return 0 end; local ok, u = pcall(cjson.decode, raw); if not ok or type(u) ~= 'table' then return 0 end; u.nick = ARGV[1]; redis.call('SET', KEYS[1], cjson.encode(u)); return 1";
 
 /* ── 會員記錄 ── */
 export async function getUser(st, sub) {

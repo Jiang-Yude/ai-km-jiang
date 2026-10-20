@@ -1,5 +1,6 @@
 import {isIP} from 'node:net';
 import {Buffer} from 'node:buffer';
+import {createHash, timingSafeEqual} from 'node:crypto';
 
 export function historyInfo(env, mode) {
   return {storage: 'Upstash Redis', mode, history: mode === 'production' ? 'shared-existing-keys' : 'isolated-preview',
@@ -48,7 +49,7 @@ export function storageFetch(env, prefix, transport = fetch) {
   };
 }
 
-export const runtime = {isIP, Buffer};
+export const runtime = {isIP, Buffer, createHash, timingSafeEqual};
 
 /* 跨網域白名單（2026-10-19 安全修補 M5）：只有正式網域與本站 Pages 候選網域拿得到 CORS 標頭，
    其他來源不回任何 CORS 標頭。這是 lib/2026-09-13-0910-client-network.js 的 CORS_ORIGIN_RE 副本

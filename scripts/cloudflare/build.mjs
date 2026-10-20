@@ -81,9 +81,10 @@ for(const name of ['view','stats','stats-admin','search-log','mika-chat-log','mi
   if(['search-log','mika-chat-log'].includes(name))code=code.replace('const entry = JSON.stringify({',"const entry = JSON.stringify({\n    source: 'cloudflare', countingVersion: 'legacy-v1',");
   if(!code.includes('module.exports = async'))throw new Error('handler transform mismatch');
   code=code.replace('module.exports = async','const handler = async');
-  const network=fs.readFileSync(path.join(root,'lib/2026-09-13-0910-client-network.js'),'utf8').replace("const {isIP}=require('node:net');",'').replace('module.exports={clientNetwork};','');
+  const network=fs.readFileSync(path.join(root,'lib/2026-09-13-0910-client-network.js'),'utf8').replace("const {isIP}=require('node:net');",'').replace("const {createHash,timingSafeEqual}=require('node:crypto');",'').replace('module.exports={clientNetwork};','');
+  if(/require\(/.test(network))throw new Error('client-network has an unhandled require');
   const prefix=name==='mika-chat'?"import {siteWindow,siteItems} from './catalog.mjs';\n":'';
-  fs.writeFileSync(path.join(generated,name+'.mjs'),prefix+'export default function createHandler(env,fetch,{isIP,Buffer}) {\nconst clientNetwork=((URL)=>{\n'+network+'\nreturn clientNetwork;})(globalThis.URL);\n'+code+'\nreturn handler;\n}\n');
+  fs.writeFileSync(path.join(generated,name+'.mjs'),prefix+'export default function createHandler(env,fetch,{isIP,Buffer,createHash,timingSafeEqual}) {\nconst clientNetwork=((URL)=>{\n'+network+'\nreturn clientNetwork;})(globalThis.URL);\n'+code+'\nreturn handler;\n}\n');
 }
 if(target==='candidate')fs.writeFileSync(path.join(out,'robots.txt'),'User-agent: *\nDisallow: /\n');
 if(!fs.existsSync(path.join(out,'404.html')))fs.writeFileSync(path.join(out,'404.html'),'<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><meta name="robots" content="noindex, nofollow"><title>找不到頁面</title></head><body><h1>找不到頁面</h1><a href="/">回首頁</a></body></html>');

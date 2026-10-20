@@ -31,7 +31,7 @@ export async function onRequest({request, env}) {
     const s = await verifySession(request, env, st);
     if (s) {
       user = await getUser(st, s.sub);
-      if (user) user.tier = await memberTiers(st, user.email);
+      if (user) user.tier = await memberTiers(st, s.sub, user);
     }
   } catch { return denied(503, '會員功能暫時無法使用'); }
   if (!user) return denied(403, '請先登入會員');

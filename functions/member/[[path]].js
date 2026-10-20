@@ -12,7 +12,7 @@ import {TIERS, CONTENT, PORTALY_PRODUCTS, isTier, expandTiers, tierLabel} from '
 import {esc, reply, baseHeaders, storageMode, requestNetwork, readJson, readText, sameOriginJson, store, rateLimit,
   minuteBucket, dayBucket, sessionSecret, signSession, verifySession, sessionCookie, SESSION_TTL, verifyGoogleIdToken,
   EMAIL_RE, normEmail, cleanNick, cleanText, cleanPicture, articlePages, normPage, getUser, newId, hmacHex, safeEqual,
-  memberTiers} from '../../cloudflare/member-lib.mjs';
+  memberTiers, emailTrusted, sessValue, USER_UPSERT_SCRIPT, USER_NICK_SCRIPT} from '../../cloudflare/member-lib.mjs';
 
 const MAX_COMMENTS_PER_PAGE = 2000;
 
@@ -75,7 +75,7 @@ async function currentMember(request, env, st) {
   const u = await getUser(st, s.sub);
   if (!u) return null;
   // 等級只看授權表（見 member-lib memberTiers），管理後台補登記或撤銷都即時生效
-  u.tier = await memberTiers(st, u.email);
+  u.tier = await memberTiers(st, s.sub, u);
   return {session: s, user: u};
 }
 
@@ -92,25 +92,28 @@ async function login({request, env, st}) {
   if (!payload) return reply({error: 'invalid credential'}, 401);
 
   const sub = payload.sub, email = normEmail(payload.email), now = Date.now();
-  const rawUser = await st.one(['GET', st.key('u:' + sub)]);
-  let u = null; try { u = rawUser ? JSON.parse(rawUser) : null; } catch { u = null; }
   const name = cleanNick(payload.name) || cleanNick(email.split('@')[0]) || '會員';
-  // 會員記錄不存付費等級（tier 固定 free），等級由授權表即時決定，撤銷不會被這裡寫回
-  u = {
+  // 會員記錄不存付費等級（tier 固定 free），等級由授權表即時決定，撤銷不會被這裡寫回。
+  // 用 Lua 原子寫入：既有的 nick、createdAt 由伺服器上的值保留，不會蓋掉同時進行的改暱稱。
+  const fresh = {
     email, name: String(payload.name || '').slice(0, 80), picture: cleanPicture(payload.picture),
-    nick: u?.nick || name, tier: ['free'], createdAt: u?.createdAt || now, lastLogin: now,
+    nick: name, tier: ['free'], emailTrusted: emailTrusted(payload), createdAt: now, lastLogin: now,
   };
+  // 先讀撤銷世代再寫 session：如果強制登出剛好插在中間，這個 session 帶的是舊世代，會直接失效
+  const gen = await st.one(['GET', st.key('ugen:' + sub)]);
   const exp = Math.floor(now / 1000) + SESSION_TTL;
   const {token, id} = await signSession(secret, sub, exp);
-  await st.pipe([
-    ['SET', st.key('u:' + sub), JSON.stringify(u)],
+  const [saved] = await st.pipe([
+    ['EVAL', USER_UPSERT_SCRIPT, 1, st.key('u:' + sub), JSON.stringify(fresh)],
     ['SET', st.key('email:' + email), sub],
     ['SADD', st.key('esubs:' + email), sub],
     ['SADD', st.key('users'), sub],
-    ['SET', st.key('sess:' + id), sub, 'EX', SESSION_TTL],
+    ['SET', st.key('sess:' + id), sessValue(sub, gen), 'EX', SESSION_TTL],
     ['SADD', st.key('usess:' + sub), id],
     ['EXPIRE', st.key('usess:' + sub), SESSION_TTL],
   ]);
+  let u = fresh; try { u = JSON.parse(saved); } catch { u = fresh; }
+  u.tier = await memberTiers(st, sub, u);
   return reply({ok: true, member: publicMember(u)}, 200, {'Set-Cookie': sessionCookie(token, SESSION_TTL)});
 }
 
@@ -138,11 +141,9 @@ async function nick({request, env, st}) {
   const body = await readJson(request, 2048);
   const n = cleanNick(body.nick);
   if (!n) return reply({error: '暱稱需 1 到 20 字'}, 400);
-  // 讀改寫：只改 nick，其他欄位沿用伺服器上的值
-  const u = await getUser(st, cur.session.sub);
-  if (!u) return reply({error: 'login required'}, 401);
-  u.nick = n;
-  await st.one(['SET', st.key('u:' + cur.session.sub), JSON.stringify(u)]);
+  // 只改 nick 一個欄位，在 Redis 裡原子完成，不會跟登入互相蓋掉
+  const ok = await st.one(['EVAL', USER_NICK_SCRIPT, 1, st.key('u:' + cur.session.sub), n]);
+  if (ok !== 1) return reply({error: 'login required'}, 401);
   return reply({ok: true, nick: esc(n)});
 }
 

@@ -4,7 +4,7 @@ import assert from 'node:assert/strict';
 import {onRequest as member} from '../functions/member/[[path]].js';
 import {onRequest as memberContent} from '../functions/member-content/[[path]].js';
 import {onRequest as admin} from '../functions/admin/members/[[path]].js';
-import {RATE_SCRIPT, ADMIN_AUTH_SCRIPT, MODERATE_SCRIPT, bytesToB64url, _resetMemberCaches} from '../cloudflare/member-lib.mjs';
+import {RATE_SCRIPT, ADMIN_AUTH_SCRIPT, MODERATE_SCRIPT, USER_UPSERT_SCRIPT, USER_NICK_SCRIPT, bytesToB64url, _resetMemberCaches} from '../cloudflare/member-lib.mjs';
 
 const ORIGIN = 'https://member-test.pages.dev';
 const CLIENT_ID = 'test-client.apps.googleusercontent.com';
@@ -44,6 +44,16 @@ function redis(c) {
         const i = l.findIndex(r => JSON.parse(r).id === argv[0]); if (i < 0) return 0;
         if (argv[1] === 'delete') l.splice(i, 1); else l[i] = JSON.stringify({...JSON.parse(l[i]), status: argv[1]});
         return 1;
+      }
+      if (script === USER_UPSERT_SCRIPT) {
+        const u = JSON.parse(argv[0]); let old = null; try { old = kv.has(keys[0]) ? JSON.parse(kv.get(keys[0])) : null; } catch {}
+        if (old && typeof old.nick === 'string' && old.nick) u.nick = old.nick;
+        if (old && old.createdAt) u.createdAt = old.createdAt;
+        kv.set(keys[0], JSON.stringify(u)); return JSON.stringify(u);
+      }
+      if (script === USER_NICK_SCRIPT) {
+        if (!kv.has(keys[0])) return 0;
+        const u = JSON.parse(kv.get(keys[0])); u.nick = argv[0]; kv.set(keys[0], JSON.stringify(u)); return 1;
       }
       throw new Error('unknown script');
     }
@@ -191,6 +201,12 @@ await test('admin 補登記後有 tier 回 200', async () => {
   const g = await call(admin, req('/admin/members/api', {method: 'POST', ip: '198.51.100.9', body: {pw: 'correct horse', action: 'grant', email: 'student@example.com', tier: 'course-8000'}}));
   assert.equal(g.status, 200);
   assert.equal(g.headers.get('Cache-Control'), 'private, no-store');
+  // example.com 不是 Gmail 也沒有 hd：預登記先不承接，站長確認信箱後才生效
+  assert.equal((await call(memberContent, req('/member-content/course-3000/', {cookie}))).status, 403, '未確認信箱不能承接預登記');
+  const lj = await (await call(admin, req('/admin/members/api', {method: 'POST', ip: '198.51.100.9', body: {pw: 'correct horse', action: 'list'}}))).json();
+  const row = lj.members.find(m => m.email === 'student@example.com');
+  assert.equal(row.emailStatus, 'unconfirmed'); assert.deepEqual(row.pendingTiers, ['8000 元課程學員']);
+  assert.equal((await call(admin, req('/admin/members/api', {method: 'POST', ip: '198.51.100.9', body: {pw: 'correct horse', action: 'confirm-email', sub: '1234567890'}}))).status, 200);
   const r = await call(memberContent, req('/member-content/course-3000/', {cookie}));
   assert.equal(r.status, 200, '8000 元包含 3000 元');
   assert.equal(r.headers.get('Cache-Control'), 'private, no-store');
@@ -234,7 +250,7 @@ await test('撤銷等級時剛好有併發登入，舊等級不會被寫回', as
   const reached = new Promise(r => { paused = r; });
   const inner = globalThis.fetch;
   globalThis.fetch = async (url, opt = {}) => {
-    if (String(url) === 'https://redis.test/pipeline' && JSON.parse(opt.body).some(c => c[0] === 'SET' && c[1] === PREFIX + 'u:1234567890')) {
+    if (String(url) === 'https://redis.test/pipeline' && JSON.parse(opt.body).some(c => (c[0] === 'SET' && c[1] === PREFIX + 'u:1234567890') || (c[0] === 'EVAL' && c[1] === USER_UPSERT_SCRIPT))) {
       paused(); await gate;
     }
     return inner(url, opt);
@@ -272,6 +288,58 @@ await test('同一個 email 換過 Google 帳號，強制登出要登出所有�
   for (const ck of [cookie, c2]) assert.equal((await (await call(member, req('/member/me', {cookie: ck}))).json()).loggedIn, false);
   // 後面的登出測試要用一個有效 session
   cookie = (await call(member, req('/member/login', {method: 'POST', ip: '203.0.113.90', body: {credential: await idToken(good.privateKey, claims())}}))).headers.get('Set-Cookie').split(';')[0];
+});
+
+await test('Gmail 與 Workspace（hd 等於網域）自動承接，第三方信箱與 hd 不符不承接', async () => {
+  const cases = [['g@gmail.com', undefined, 200, '7000001'], ['w@school.edu.tw', 'school.edu.tw', 200, '7000002'],
+    ['x@other.org', undefined, 403, '7000003'], ['y@school.edu.tw', 'evil.edu.tw', 403, '7000004']];
+  for (const [email, hd, want, sub] of cases) {
+    await call(admin, req('/admin/members/api', {method: 'POST', ip: '198.51.100.9', body: {pw: 'correct horse', action: 'grant', email, tier: 'course-3000'}}));
+    const lr = await call(member, req('/member/login', {method: 'POST', ip: '203.0.113.' + (100 + Number(sub.slice(-1))), body: {credential: await idToken(good.privateKey, claims({sub, email, ...(hd ? {hd} : {})}))}}));
+    assert.equal(lr.status, 200);
+    const ck = lr.headers.get('Set-Cookie').split(';')[0];
+    assert.equal((await call(memberContent, req('/member-content/course-3000/', {cookie: ck}))).status, want, email + ' ' + hd);
+  }
+});
+
+await test('azp 不是本站回 401', async () => {
+  const r = await call(member, req('/member/login', {method: 'POST', ip: '203.0.113.120', body: {credential: await idToken(good.privateKey, claims({azp: 'someone-else.apps.googleusercontent.com'}))}}));
+  assert.equal(r.status, 401);
+});
+
+await test('改暱稱與登入同時發生，暱稱不會被登入蓋掉', async () => {
+  let release, paused;
+  const gate = new Promise(r => { release = r; }), reached = new Promise(r => { paused = r; });
+  const inner = globalThis.fetch;
+  globalThis.fetch = async (url, opt = {}) => {
+    if (String(url) === 'https://redis.test/pipeline' && JSON.parse(opt.body).some(c => c[0] === 'EVAL' && c[1] === USER_UPSERT_SCRIPT)) { paused(); await gate; }
+    return inner(url, opt);
+  };
+  const loginP = call(member, req('/member/login', {method: 'POST', ip: '203.0.113.121', body: {credential: await idToken(good.privateKey, claims())}}));
+  await reached; globalThis.fetch = inner;
+  assert.equal((await call(member, req('/member/nick', {method: 'POST', ip: '203.0.113.122', cookie, body: {nick: '新暱稱'}}))).status, 200);
+  release(); assert.equal((await loginP).status, 200);
+  assert.equal(JSON.parse(kv.get(PREFIX + 'u:1234567890')).nick, '新暱稱');
+});
+
+await test('強制登出時剛好有登入在寫 session，那個 session 也要失效', async () => {
+  let release, paused;
+  const gate = new Promise(r => { release = r; }), reached = new Promise(r => { paused = r; });
+  const inner = globalThis.fetch;
+  globalThis.fetch = async (url, opt = {}) => {
+    if (String(url) === 'https://redis.test/pipeline' && JSON.parse(opt.body).some(c => c[0] === 'EVAL' && c[1] === USER_UPSERT_SCRIPT)) { paused(); await gate; }
+    return inner(url, opt);
+  };
+  const loginP = call(member, req('/member/login', {method: 'POST', ip: '203.0.113.123', body: {credential: await idToken(good.privateKey, claims())}}));
+  await reached; globalThis.fetch = inner;
+  assert.equal((await call(admin, req('/admin/members/api', {method: 'POST', ip: '198.51.100.9', body: {pw: 'correct horse', action: 'revoke-sessions', email: 'student@example.com'}}))).status, 200);
+  release();
+  const lr = await loginP; assert.equal(lr.status, 200);
+  const raced = lr.headers.get('Set-Cookie').split(';')[0];
+  assert.equal((await (await call(member, req('/member/me', {cookie: raced}))).json()).loggedIn, false, '撤銷期間建立的 session 不能用');
+  assert.equal((await (await call(member, req('/member/me', {cookie}))).json()).loggedIn, false);
+  cookie = (await call(member, req('/member/login', {method: 'POST', ip: '203.0.113.124', body: {credential: await idToken(good.privateKey, claims())}}))).headers.get('Set-Cookie').split(';')[0];
+  assert.equal((await (await call(member, req('/member/me', {cookie}))).json()).loggedIn, true, '撤銷後重新登入可以用');
 });
 
 await test('登出後 session 失效', async () => {

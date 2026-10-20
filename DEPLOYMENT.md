@@ -228,10 +228,19 @@ Google 登入、文章留言、分級內容、管理後台。只在 Cloudflare P
 
 ### 資料鍵（全部在 `member:` 前綴下，預覽站另加 `cf-preview-20261004:`）
 
-- `member:u:<Google sub>`：會員記錄 JSON（email、name、picture、nick、tier 陣列、createdAt、lastLogin）
-- `member:email:<email 小寫>` → sub；`member:users` 全部 sub 的 set
-- `member:sess:<id>` → sub（30 天到期，刪掉即撤銷）；`member:usess:<sub>` 該會員的 session id set
-- `member:grant:<email 小寫>`：等級授權 set（可在登入前先登記）；`member:grantees` 有登記的 email set
+- `member:u:<Google sub>`：會員記錄 JSON（email、name、picture、nick、tier 固定 ["free"]、emailTrusted、createdAt、lastLogin）。付費等級**不存在這裡**（2026-10-20 改，見下方「等級與信箱」）；登入與改暱稱都用 Lua 原子寫入，不會互相蓋掉
+- `member:email:<email 小寫>` → 最近一次用這個信箱登入的 sub；`member:esubs:<email 小寫>` 用過這個信箱的所有 sub；`member:users` 全部 sub 的 set
+- `member:sess:<id>` → `sub|撤銷世代`（30 天到期，刪掉即撤銷）；`member:usess:<sub>` 該會員的 session id set；`member:ugen:<sub>` 撤銷世代，強制登出時加一，舊世代的 session 全部失效
+- `member:grant:<email 小寫>`：付費等級的唯一正本（可在登入前先登記）；`member:grantees` 有登記的 email set
+- `member:vemail:<sub>`：站長在後台「確認信箱」時記下的信箱；信箱之後改了自動失效
+
+### 等級與信箱（2026-10-20，Codex 第 3 輪跨家審後修）
+
+- 等級每次都即時讀 `grant:<email>`，撤銷只要從授權表移除就立即生效，不會被同時發生的登入寫回。
+- 預登記要「現在擁有這個信箱」才承接。自動承接只有兩種：gmail.com／googlemail.com，或 Google token 帶 `hd` 且等於信箱網域（Workspace）。
+- 其他信箱（例如公司自架信箱、Yahoo、Outlook 綁的 Google 帳號）登入後只有免費等級，後台會員清單顯示「未確認」與「待確認才生效」的等級。站長核對訂單（例如請對方用該信箱回信）後按「確認信箱」才承接。原因：Google 說明第三方信箱的 email_verified 只代表當初驗證過，信箱之後可能換人。
+- Google token 的 exp 容許 30 秒時鐘誤差；azp 有帶就必須等於本站 Client ID。
+
 - `member:c:<文章路徑>`：留言 list，每筆 {id, sub, nick, text, ts, status, parent, guest}；`member:cpages` 有留言的文章 set
 - `member:webhook:log`：傳送門 webhook 紀錄（最近 200 筆）
 - `member:rl:*`、`member:admin:auth:*`：限流計數

@@ -66,13 +66,18 @@ const ACTIONS = {
   async list(st) {
     const subs = (await st.one(['SMEMBERS', st.key('users')]) || []).slice(0, 1000);
     const raws = subs.length ? await st.pipe(subs.map(s => ['GET', st.key('u:' + s)])) : [];
+    const confirmed = subs.length ? await st.pipe(subs.map(s => ['GET', st.key('vemail:' + s)])) : [];
     const emails = (await st.one(['SMEMBERS', st.key('grantees')]) || []).slice(0, 2000);
     const grants = emails.length ? await st.pipe(emails.map(e => ['SMEMBERS', st.key('grant:' + e)])) : [];
     const grantMap = Object.fromEntries(emails.map((e, i) => [e, (grants[i] || []).filter(isTier)]));
     const members = subs.map((sub, i) => {
       const u = parse(raws[i]); if (!u) return null;
-      const tiers = [...expandTiers(['free', ...(grantMap[u.email] || [])])];
-      return {sub: esc(sub), email: esc(u.email), nick: esc(u.nick), tiers: tiers.map(t => esc(tierLabel(t))), createdAt: u.createdAt || 0, lastLogin: u.lastLogin || 0};
+      const owns = u.emailTrusted === true || confirmed[i] === u.email;
+      const tiers = [...expandTiers(['free', ...(owns ? (grantMap[u.email] || []) : [])])];
+      return {sub: esc(sub), email: esc(u.email), nick: esc(u.nick), tiers: tiers.map(t => esc(tierLabel(t))),
+        emailStatus: u.emailTrusted === true ? 'google' : confirmed[i] === u.email ? 'confirmed' : 'unconfirmed',
+        pendingTiers: owns ? [] : (grantMap[u.email] || []).map(t => esc(tierLabel(t))),
+        createdAt: u.createdAt || 0, lastLogin: u.lastLogin || 0};
     }).filter(Boolean).sort((a, b) => b.lastLogin - a.lastLogin);
     const registered = new Set(members.map(m => m.email));
     return reply({ok: true, members,
@@ -97,6 +102,23 @@ const ACTIONS = {
     return reply({ok: true});
   },
 
+  // 確認信箱：非 Gmail、非 Workspace 信箱的會員，站長核對訂單（例如請對方用該信箱回信）後按確認，
+  // 才承接該信箱的預登記等級。確認綁在 sub 與當下信箱，信箱之後改了就自動失效。
+  async 'confirm-email'(st, body) {
+    const sub = String(body.sub || '');
+    if (!/^[A-Za-z0-9_-]{1,64}$/.test(sub)) return reply({error: 'invalid member'}, 400);
+    const u = parse(await st.one(['GET', st.key('u:' + sub)]));
+    if (!u || !EMAIL_RE.test(String(u.email || ''))) return reply({error: 'member not found'}, 404);
+    await st.one(['SET', st.key('vemail:' + sub), normEmail(u.email)]);
+    return reply({ok: true});
+  },
+  async 'unconfirm-email'(st, body) {
+    const sub = String(body.sub || '');
+    if (!/^[A-Za-z0-9_-]{1,64}$/.test(sub)) return reply({error: 'invalid member'}, 400);
+    await st.one(['DEL', st.key('vemail:' + sub)]);
+    return reply({ok: true});
+  },
+
   // 強制登出用過這個 email 的所有 Google 帳號、所有裝置
   async 'revoke-sessions'(st, body) {
     const email = normEmail(body.email);
@@ -104,6 +126,8 @@ const ACTIONS = {
     const [latest, known] = await st.pipe([['GET', st.key('email:' + email)], ['SMEMBERS', st.key('esubs:' + email)]]);
     const subs = [...new Set([...(known || []), ...(latest ? [latest] : [])])];
     if (!subs.length) return reply({ok: true, revoked: 0});
+    // 先把撤銷世代加一（之後才建立的、或正在建立的舊世代 session 全部失效），再清掉已知的 session
+    await st.pipe(subs.map(s => ['INCR', st.key('ugen:' + s)]));
     const idLists = await st.pipe(subs.map(s => ['SMEMBERS', st.key('usess:' + s)]));
     const ids = idLists.flatMap(l => l || []);
     await st.pipe([...ids.map(id => ['DEL', st.key('sess:' + id)]), ...subs.map(s => ['DEL', st.key('usess:' + s)])]);

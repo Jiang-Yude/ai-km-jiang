@@ -739,6 +739,7 @@ module.exports = async (req, res) => {
   applyCors(req, res, 'POST, OPTIONS');
   if (req.method === 'OPTIONS') { res.status(204).end(); return; }
   if (req.method !== 'POST') { res.status(405).json({ error: 'POST only' }); return; }
+  if (!clientNetwork.browserRequestAllowed(req)) { res.status(403).json({ reply: '', error: 'forbidden origin' }); return; }
   if (!API_KEY()) { res.status(200).json({ reply: '', error: 'llm not configured' }); return; }
 
   let body = req.body;

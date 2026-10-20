@@ -36,5 +36,22 @@ try {
   const nk=p=>redis(['EVAL',script,'3','page:'+p,'viewnew:n:d','viewnew:site:d','2','10']);
   assert.equal(await nk('/a/'),0);assert.equal(await nk('/b/'),0);assert.equal(await nk('/c/'),1);
   await redis(['SET','page:/exists/','7']);assert.equal(await nk('/exists/'),0);
-  console.log('PASS security lua (rate, auth, view new-key)');
+  // 2026-10-20 會員記錄原子寫入（member-lib USER_UPSERT_SCRIPT、USER_NICK_SCRIPT、MODERATE_SCRIPT），真 Redis 的 cjson 實跑
+  const lib=await import('../cloudflare/member-lib.mjs');
+  assert.equal(await redis(['EVAL',lib.USER_NICK_SCRIPT,'1','m:u:1','新名']),0,'記錄不存在不能憑空建');
+  const first=JSON.parse(await redis(['EVAL',lib.USER_UPSERT_SCRIPT,'1','m:u:1',JSON.stringify({email:'a@gmail.com',nick:'預設',tier:['free'],createdAt:100,lastLogin:100})]));
+  assert.equal(first.nick,'預設');assert.equal(first.createdAt,100);
+  assert.equal(await redis(['EVAL',lib.USER_NICK_SCRIPT,'1','m:u:1','新名']),1);
+  const again=JSON.parse(await redis(['EVAL',lib.USER_UPSERT_SCRIPT,'1','m:u:1',JSON.stringify({email:'a@gmail.com',nick:'預設',tier:['free'],createdAt:999,lastLogin:999})]));
+  assert.equal(again.nick,'新名','登入不能蓋掉暱稱');assert.equal(again.createdAt,100,'建立時間保留');assert.equal(again.lastLogin,999);
+  assert.equal(JSON.parse(await redis(['GET','m:u:1'])).nick,'新名');
+  await redis(['SET','m:u:bad','not json']);
+  assert.equal(await redis(['EVAL',lib.USER_NICK_SCRIPT,'1','m:u:bad','x']),0,'壞資料不改');
+  assert.equal(JSON.parse(await redis(['EVAL',lib.USER_UPSERT_SCRIPT,'1','m:u:bad',JSON.stringify({email:'b@gmail.com',nick:'乙',createdAt:5})])).nick,'乙','壞資料直接以新記錄覆蓋');
+  await redis(['RPUSH','m:c:p',JSON.stringify({id:'aaaaaaaaaaaaaaaa',status:'pending'}),JSON.stringify({id:'bbbbbbbbbbbbbbbb',status:'pending'})]);
+  assert.equal(await redis(['EVAL',lib.MODERATE_SCRIPT,'1','m:c:p','bbbbbbbbbbbbbbbb','published']),1);
+  assert.equal(JSON.parse((await redis(['LRANGE','m:c:p','0','-1']))[1]).status,'published');
+  assert.equal(await redis(['EVAL',lib.MODERATE_SCRIPT,'1','m:c:p','aaaaaaaaaaaaaaaa','delete']),1);
+  assert.equal((await redis(['LRANGE','m:c:p','0','-1'])).length,1);
+  console.log('PASS security lua (rate, auth, view new-key, member upsert/nick/moderate)');
 } finally {proc.kill('SIGTERM');}

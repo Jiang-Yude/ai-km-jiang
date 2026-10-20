@@ -28,7 +28,7 @@
 
     <section class="member-card">
       <h2 class="member-title">會員清單</h2>
-      <div class="member-tablewrap"><table><thead><tr><th>暱稱</th><th>Email</th><th>可用等級</th><th>最近登入</th><th>操作</th></tr></thead><tbody id="members"></tbody></table></div>
+      <div class="member-tablewrap"><table><thead><tr><th>暱稱</th><th>Email</th><th>信箱</th><th>可用等級</th><th>最近登入</th><th>操作</th></tr></thead><tbody id="members"></tbody></table></div>
     </section>
 
     <section class="member-card">
@@ -69,8 +69,14 @@
           g.tiers.map(function (t) { return '<button class="member-link" data-revoke="' + t.id + '" data-email="' + g.email + '">撤銷' + t.name + '</button>'; }).join(' ') + '</td></tr>';
       }).join('') || '<tr><td colspan="4">尚無登記</td></tr>';
       $('members').innerHTML = j.members.map(function (m) {
-        return '<tr><td>' + m.nick + '</td><td>' + m.email + '</td><td>' + m.tiers.join('、') + '</td><td>' + fmt(m.lastLogin) + '</td><td><button class="member-link" data-logout="' + m.email + '">強制登出</button></td></tr>';
-      }).join('') || '<tr><td colspan="5">尚無會員</td></tr>';
+        // 信箱狀態：Gmail／Workspace 由 Google 證明；其他信箱要站長核對訂單後按確認，才承接預登記等級
+        var st = {google: 'Google 已證明', confirmed: '已確認', unconfirmed: '未確認'}[m.emailStatus] || '';
+        var wait = m.pendingTiers && m.pendingTiers.length ? '<br><small>待確認才生效：' + m.pendingTiers.join('、') + '</small>' : '';
+        var ops = '<button class="member-link" data-logout="' + m.email + '">強制登出</button>';
+        if (m.emailStatus === 'unconfirmed') ops += ' <button class="member-link" data-confirm="' + m.sub + '" data-email="' + m.email + '">確認信箱</button>';
+        if (m.emailStatus === 'confirmed') ops += ' <button class="member-link" data-unconfirm="' + m.sub + '" data-email="' + m.email + '">取消確認</button>';
+        return '<tr><td>' + m.nick + '</td><td>' + m.email + '</td><td>' + st + '</td><td>' + m.tiers.join('、') + wait + '</td><td>' + fmt(m.lastLogin) + '</td><td>' + ops + '</td></tr>';
+      }).join('') || '<tr><td colspan="6">尚無會員</td></tr>';
     });
   }
   function loadComments() {
@@ -107,6 +113,12 @@
     if (b.dataset.revoke) {
       if (!confirm('確定撤銷 ' + b.dataset.email + ' 的這個等級？')) return;
       call('revoke', {email: b.dataset.email, tier: b.dataset.revoke}).then(function (j) { if (!j.ok) alert(errText(j)); loadList(); });
+    } else if (b.dataset.confirm) {
+      if (!confirm('確認 ' + b.dataset.email + ' 是付款的本人？（例如已請對方用這個信箱回信）確認後會承接這個信箱的預登記等級。')) return;
+      call('confirm-email', {sub: b.dataset.confirm}).then(function (j) { if (!j.ok) alert(errText(j)); loadList(); });
+    } else if (b.dataset.unconfirm) {
+      if (!confirm('取消 ' + b.dataset.email + ' 的信箱確認？預登記等級會立即失效。')) return;
+      call('unconfirm-email', {sub: b.dataset.unconfirm}).then(function (j) { if (!j.ok) alert(errText(j)); loadList(); });
     } else if (b.dataset.logout) {
       if (!confirm('確定讓 ' + b.dataset.logout + ' 所有裝置登出？')) return;
       call('revoke-sessions', {email: b.dataset.logout}).then(function (j) { alert(j.ok ? '已登出 ' + j.revoked + ' 個裝置' : errText(j)); });
