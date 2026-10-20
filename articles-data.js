@@ -75,7 +75,8 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["what-are-subagents", "ai-employees-manage-agents", "session-messaging-reminder-layer", "diary-driven-agent-3x4-v2", "task-queue-mod"]
+    related: ["what-are-subagents", "ai-employees-manage-agents", "session-messaging-reminder-layer", "diary-driven-agent-3x4-v2", "task-queue-mod"],
+    cover: { tall: "images/articles/ai-manages-ai-focus-01.jpg" }
   },
 
   {
@@ -93,7 +94,8 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["tag-wiki-method", "claude-skills-knowledge-assets", "rag-three-retrieval-modes", "diary-driven-agent-3x4-v2", "docs-as-system-design-agent"]
+    related: ["tag-wiki-method", "claude-skills-knowledge-assets", "rag-three-retrieval-modes", "diary-driven-agent-3x4-v2", "docs-as-system-design-agent"],
+    cover: { wide: "images/articles/ai-retrieval-pages-backlinks-cover.jpg" }
   },
 
   {
@@ -111,7 +113,8 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["diary-driven-agent-3x4", "what-is-loop-engineering", "knowledge-base-three-vault-split", "tag-wiki-method", "ai-retrieval-pages-backlinks", "ai-manages-ai-focus"]
+    related: ["diary-driven-agent-3x4", "what-is-loop-engineering", "knowledge-base-three-vault-split", "tag-wiki-method", "ai-retrieval-pages-backlinks", "ai-manages-ai-focus"],
+    cover: { wide: "images/articles/diary-driven-agent-3x4-v2-cover.jpg" }
   },
 
   {
@@ -1458,7 +1461,8 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["webnode-to-cloudflare-pages", "github-vercel-cloudflare-compare", "free-deploy-three-boundaries", "website-as-workstation", "hosting-platform-decision-tree", "cloudflare-service-map"]
+    related: ["webnode-to-cloudflare-pages", "github-vercel-cloudflare-compare", "free-deploy-three-boundaries", "website-as-workstation", "hosting-platform-decision-tree", "cloudflare-service-map"],
+    cover: { wide: "images/articles/who-can-see-your-site-cover.jpg" }
   },
 
   {
@@ -1728,7 +1732,8 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["semantic-rules-before-prompt-templates", "rule-file-rebound", "tag-wiki-method", "my-three-loops", "teach-ai-not-learn-ai", "ai-understands-ei-ha"]
+    related: ["semantic-rules-before-prompt-templates", "rule-file-rebound", "tag-wiki-method", "my-three-loops", "teach-ai-not-learn-ai", "ai-understands-ei-ha"],
+    cover: { tall: "images/articles/build-your-own-dictionary-vague-words.jpg" }
   },
 
   {
@@ -1764,7 +1769,8 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["after-ai-says-remembered", "caught-ai-slacking-into-rules", "teach-ai-not-learn-ai", "program-vs-ai-skill-library", "ai-said-it-watched-the-video"]
+    related: ["after-ai-says-remembered", "caught-ai-slacking-into-rules", "teach-ai-not-learn-ai", "program-vs-ai-skill-library", "ai-said-it-watched-the-video"],
+    cover: { wide: "images/articles/cognitive-debt-cover.jpg" }
   },
 
   {
@@ -2679,7 +2685,8 @@ window.ARTICLES = [
       content_type: ["觀點文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["what-is-loop-engineering", "agent-workflow-builds-automation"]
+    related: ["what-is-loop-engineering", "agent-workflow-builds-automation"],
+    cover: { tall: "articles/ai-changed-behavior-into-workflow/assets/00-summary.jpg" }
   },
 
   {
@@ -2697,7 +2704,8 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["intent-first-prompting", "prompt-to-loop-map", "loop-engineering-guardrails", "ai-employee-four-levels", "dont-learn-ai-tools", "ai-adoption-start-with-one-workflow"]
+    related: ["intent-first-prompting", "prompt-to-loop-map", "loop-engineering-guardrails", "ai-employee-four-levels", "dont-learn-ai-tools", "ai-adoption-start-with-one-workflow"],
+    cover: { wide: "images/articles/ai-four-terms-summary-wide.jpg" }
   },
 
   {
@@ -3359,7 +3367,8 @@ window.ARTICLES = [
       content_type: ["案例文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["web-chat-ai-vs-desktop-agent", "claude-skills-knowledge-assets", "website-as-workstation"]
+    related: ["web-chat-ai-vs-desktop-agent", "claude-skills-knowledge-assets", "website-as-workstation"],
+    cover: { tall: "images/courses/2026-05-30-yongli-ai-workshop.jpg" }
   },
 
   {
@@ -3414,7 +3423,8 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["parenting-story-ai-family-dialogue", "semantic-rules-before-prompt-templates"]
+    related: ["parenting-story-ai-family-dialogue", "semantic-rules-before-prompt-templates"],
+    cover: { tall: "images/courses/2026-05-20-relation-non-internal.jpg" }
   },
 
   {
@@ -3486,7 +3496,8 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["ai-course-map-from-entry-to-workflow", "ai-data-organization-usable-system", "one-on-one-questions"]
+    related: ["ai-course-map-from-entry-to-workflow", "ai-data-organization-usable-system", "one-on-one-questions"],
+    cover: { tall: "images/courses/2026-03-29-agent-learning-map.jpg" }
   },
 
   {
@@ -3594,6 +3605,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["ai-market-microcosm", "personal-studio-vs-solo-company", "ai-user-testing", "start-from-one-persons-problem", "first-principles-money-soup"]
+    related: ["ai-market-microcosm", "personal-studio-vs-solo-company", "ai-user-testing", "start-from-one-persons-problem", "first-principles-money-soup"],
+    cover: { wide: "images/courses/2026-05-05-mvp-validation.jpg" }
   }
 ];

@@ -73,6 +73,14 @@ else
   bad "列表封面欄位未過：見上方清單。article.json 補 cover，或在 article-cover-ignore.json 寫明理由"
 fi
 
+# 文章頁統計程式（2026-10-20 立，事故驅動）：範本註解說 views.js 已內建、實際沒有，9 月起 61 篇新文章
+# 瀏覽數全沒記，兩個月沒人發現。全站掃，缺 views.js 或 Cloudflare beacon 就擋。
+if node scripts/check-article-tracking.mjs; then
+  ok "文章頁統計程式（views.js＋Cloudflare beacon）"
+else
+  bad "文章頁統計程式未載入：見上方清單。</body> 前補範本的 tracking 兩段"
+fi
+
 echo "═══ 2/11 文章互聯腳本齊全 ═══"
 if node scripts/verify-interlink.js 2>&1 | grep -q "結果：PASS"; then ok "interlink"; else bad "verify-interlink FAIL（有文章缺互聯腳本）"; fi
 
