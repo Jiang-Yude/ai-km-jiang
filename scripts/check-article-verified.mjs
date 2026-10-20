@@ -15,8 +15,9 @@
 import fs from "node:fs";
 import path from "node:path";
 import { execSync } from "node:child_process";
+import { fileURLToPath } from "node:url";
 
-const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname), "..");
+const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
 
 const argDays = (() => {
@@ -54,7 +55,7 @@ for (const f of files) {
   }
   if (!("verified" in o)) continue;
   tracked++;
-  if (typeof o.verified !== "string" || !DATE_RE.test(o.verified)) {
+  if (typeof o.verified !== "string" || !DATE_RE.test(o.verified) || Number.isNaN(Date.parse(o.verified))) {
     broken.push(`${f}：verified「${o.verified}」不是 YYYY-MM-DD`);
     continue;
   }
