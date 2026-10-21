@@ -135,7 +135,7 @@ if [[ "${#PUBLISH_PATHS[@]}" -gt 0 ]]; then
   ALL_CHANGED=$(
     {
       git -c core.quotePath=false diff --name-only
-      git -c core.quotePath=false ls-files --others --exclude-standard
+      python3 scripts/git-dirty.py --untracked   # 與已追蹤檔內容相同的複製檔（「檔名 2.webp」）只警告不算（2026-10-21）
     } | LC_ALL=C sort -u
   )
   SELECTED_CHANGED=$(
@@ -165,7 +165,7 @@ else
   UNSTAGED=$(
     {
       git -c core.quotePath=false diff --name-only | grep -v '^site-index\.json$' || true
-      git -c core.quotePath=false ls-files --others --exclude-standard
+      python3 scripts/git-dirty.py --untracked
     } | awk 'NF' | LC_ALL=C sort -u
   )
   if [[ -n "$UNSTAGED" ]]; then
@@ -178,7 +178,7 @@ else
   fi
 fi
 
-if ! git diff --quiet || [[ -n "$(git -c core.quotePath=false ls-files --others --exclude-standard)" ]]; then
+if ! git diff --quiet || [[ -n "$(python3 scripts/git-dirty.py --untracked)" ]]; then
   echo "⛔ 準備 commit 時仍有未納入的變更；停止。"
   exit 2
 fi
@@ -194,11 +194,48 @@ git -c core.quotePath=false diff --cached --name-status
 echo "▶ Push 前秘密掃描…"
 bash "$SAFE_DEPLOY_TOOL" --scan-only "$REPO_ROOT"
 
+# ─── 建置預演（2026-10-21 立，事故驅動）───
+# 立因：build.mjs 打包時的檢查（凍結舊簡報雜湊、API 轉換、Pages 檔案上限、課後頁檢查器）原本只在
+# push 之後的 deploy-production 才跑。10:04 官網改版改到凍結簡報，壞改動先 push 進 main，打包才失敗，
+# main 從此帶著壞改動，之後每次部署都卡在同一處（結束碼 30），擋到 12:24。
+# 現在 commit 前先用同一支 build.mjs 對「即將 commit 的內容」完整打包一次（輸出到暫存夾、跑完丟掉），
+# 不過就不 commit、不 push。此時工作區＝index（上面已確認沒有未納入的變更），build.mjs 用 git ls-files 取檔，看到的就是本次要上線的樣子。
+# 只有 C 網要跑；PUBLISH_TARGET=vercel 不經 build.mjs。
+build_rehearsal() {
+  [[ "$PUBLISH_TARGET" == "cloudflare" ]] || return 0
+  local _root _rc=0
+  _root=$(mktemp -d "${TMPDIR:-/tmp}/ai-km-jiang-rehearsal.XXXXXX")
+  echo "▶ 建置預演（$1，push 前用 build.mjs 完整打包一次，不部署）…"
+  CF_BUILD_ROOT="$_root" \
+    SAFE_DEPLOY_POSTCLASS_EVIDENCE_DIR="${SAFE_DEPLOY_POSTCLASS_EVIDENCE_DIR:-$HOME/Library/Mobile Documents/iCloud~md~obsidian/Documents/江昱德 主知識庫/_agent/tmp/2026-10-06 歷史課後頁放行}" \
+    node scripts/cloudflare/build.mjs --target=production > "$_root/rehearsal.log" 2>&1 || _rc=$?
+  if (( _rc != 0 )); then
+    grep -E 'Error|❌|⛔' "$_root/rehearsal.log" | head -8 || true
+    echo "   （預演 log 末段）"; tail -12 "$_root/rehearsal.log" | sed 's/^/   /'
+  fi
+  python3 -c 'import shutil,sys; shutil.rmtree(sys.argv[1], ignore_errors=True)' "$_root"
+  if (( _rc != 0 )); then
+    echo "⛔ 建置預演失敗（exit ${_rc}）：這版內容打包不過，不 push，正式站與 origin/main 都沒動。"
+    return 1
+  fi
+  echo "  ✅ 建置預演通過"
+}
+build_rehearsal "commit 前" || exit 1
+
+PRE_COMMIT_HEAD=$(git rev-parse HEAD)
 echo "▶ Commit…"
 git commit -m "$MSG"
 
 echo "▶ 同步遠端（pull --rebase）…"
 git pull --rebase
+# rebase 帶進別人的新 commit，合起來的內容沒預演過，push 前再打包一次。
+# 這裡失敗時本機已有本輪 commit：經 merge-publish 跑會自動還原；直接跑 publish.sh 的照下面提示自己退。
+if [[ "$(git rev-parse HEAD~1)" != "$PRE_COMMIT_HEAD" ]]; then
+  build_rehearsal "rebase 後" || {
+    echo "   本機 main 留著本輪的 commit（沒 push）。直接跑 publish.sh 的：git reset --soft HEAD~1 退回 staged 狀態再處理。"
+    exit 1
+  }
+fi
 
 echo "▶ Rebase 後、push 前再掃描…"
 bash "$SAFE_DEPLOY_TOOL" --scan-only "$REPO_ROOT"

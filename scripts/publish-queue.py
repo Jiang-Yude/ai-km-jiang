@@ -59,8 +59,40 @@ STATUSES = ("queued", "held", "deploying", "done", "failed")
 EXIT_OK, EXIT_USAGE, EXIT_BLOCKED, EXIT_JUDGMENT, EXIT_PUSHED_UNVERIFIED = 0, 2, 10, 20, 30
 
 
+NOTIFY_CTX: dict = {}   # run／deploy 真的要上線時才填（dry-run 不通知）
+
+
+def notify_failure(code: int, next_step: str) -> None:
+    """部署失敗通知（2026-10-21 立，事故驅動：10:04 到 12:24 部署一直失敗，沒有任何警報，是江江自己發現卡住）。
+    ①追加一行到 failures.jsonl（之後的排程或 agent 可讀來補推手機）②跳 macOS 本機通知（同朵拉海巡台 notify.sh 做法）。
+    手機推播不在腳本裡做：非互動 claude -p 的 PushNotification 要 Remote Control 開著才送得到（2026-10-20 實測），
+    所以由執行部署的 agent 看到非 0 結束碼時自己推播（規則見 knowledge-site-manager 06）。SITE_PUBLISH_NOTIFY=0 關閉（測試用）。"""
+    if not NOTIFY_CTX or os.environ.get("SITE_PUBLISH_NOTIFY", "1") == "0":
+        return
+    rec = {"at": now(), "exit": code, "host": socket.gethostname().split(".")[0], "next": next_step, **NOTIFY_CTX}
+    channel = "none"
+    try:
+        LOG_DIR.mkdir(parents=True, exist_ok=True)
+        title = f"官網部署失敗（結束碼 {code}）"
+        body = next_step[:150].replace("\\", "").replace('"', "'")
+        r = subprocess.run(["osascript", "-e", f'display notification "{body}" with title "{title}"'],
+                           capture_output=True, timeout=10)
+        channel = "local" if r.returncode == 0 else "none"
+    except Exception:
+        pass
+    rec["notify"] = channel
+    try:
+        with (LOG_DIR / "failures.jsonl").open("a", encoding="utf-8") as fh:
+            fh.write(json.dumps(rec, ensure_ascii=False) + "\n")
+    except OSError:
+        pass
+    print(f"🔔 部署失敗已通知：本機通知 {'已跳出' if channel == 'local' else '沒跳出'}；紀錄 {LOG_DIR / 'failures.jsonl'}。手機推播要由執行部署的 agent 自己送。")
+
+
 def finish(code: int, next_step: str) -> None:
-    """最後一行固定「下一步：…」白話句，然後以約定結束碼離開。"""
+    """最後一行固定「下一步：…」白話句，然後以約定結束碼離開。非 0 且是真的上線時先通知。"""
+    if code != EXIT_OK:
+        notify_failure(code, next_step)
     print(f"下一步：{next_step}")
     sys.exit(code)
 
@@ -274,7 +306,16 @@ def preflight_desk(desk: Path) -> None:
         finish(EXIT_BLOCKED, f"主工作區 {desk} 不在 main（在 {br or 'detached'}）。請換 Sonnet 或 Opus 接手切回 main，或用 --desk 指到 main 桌子。")
     if (Path(git(desk, "rev-parse", "--git-dir").stdout.strip()) / "index.lock").exists():
         finish(EXIT_BLOCKED, "主工作區有 index.lock，別的 git 程序正在動它。等一分鐘再跑同一個指令。")
-    dirty = git(desk, "-c", "core.quotePath=false", "status", "--porcelain").stdout
+    # 2026-10-21：與已追蹤檔內容相同的未追蹤複製檔（macOS「檔名 2.webp」）只警告不擋，判斷共用 scripts/git-dirty.py。
+    # 主工作區是舊版、還沒有 git-dirty.py 時退回原本的 git status 判斷。
+    checker = desk / "scripts/git-dirty.py"
+    if checker.exists():
+        r = subprocess.run([sys.executable, str(checker)], cwd=str(desk), text=True, capture_output=True)
+        if r.stderr.strip():
+            print(r.stderr.strip())
+        dirty = r.stdout if r.returncode != 0 else ""
+    else:
+        dirty = git(desk, "-c", "core.quotePath=false", "status", "--porcelain").stdout
     if dirty.strip():
         print("⛔ 主工作區不乾淨（可能是別人的在途工作，不碰）：\n" + dirty)
         finish(EXIT_BLOCKED, "主工作區有別人未提交的變更，不能上線。請換 Sonnet 或 Opus 接手，確認是誰的工作再決定。")
@@ -302,6 +343,8 @@ def cmd_run(a) -> None:
             targets = targets[:1]
     if not targets:
         finish(EXIT_OK, "佇列沒有等待部署的項目，不用做事。")
+    if not a.dry_run:
+        NOTIFY_CTX.update({"items": [f"{t['id']} {t['branch']}" for t in targets], "authorized_by": a.authorized_by.strip()})
     for it in targets:
         if it["status"] not in ("queued", "failed"):
             finish(EXIT_BLOCKED, f"{it['id']} 狀態是 {it['status']}，不能部署；只跑 queued（或指定 id 重試 failed）。")
