@@ -83,6 +83,11 @@
   .exp-fold ul{list-style:none; margin:0; padding:0;}
   .exp-fold li{font-size:18px; line-height:1.65; color:var(--ink-faint); margin:0 0 6px;}
   .exp-fold li b{font-weight:600; color:var(--ink-soft);}
+.teachable{padding:24px 0 40px;scroll-margin-top:100px}.teachable-lead{color:var(--ink-soft);margin:4px 0 12px}
+.teachable-steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:0 0 20px}.teachable-step{display:flex;flex-direction:column;gap:2px;background:var(--bg-soft);border:1px solid var(--line-soft);border-radius:var(--radius-md);padding:14px 16px}.teachable-step b{font-size:1.1rem}.teachable-step span:last-child{color:var(--ink-soft);font-size:.95rem}.teachable-num{width:26px;height:26px;border-radius:50%;background:var(--c-coral);color:#fff;font-size:.85rem;font-weight:700;display:inline-flex;align-items:center;justify-content:center;margin-bottom:4px}
+.teachable-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.teachable-card{background:var(--paper);border:1px solid var(--line-soft);border-radius:var(--radius-lg);padding:18px 22px;box-shadow:var(--shadow)}.teachable-card h3{margin:0 0 6px}.teachable-route{margin:12px 0 0;font-size:.95rem;color:var(--c-coral)}.teachable-card ul{list-style:none;margin:0;padding:0}.teachable-card li{display:flex;justify-content:space-between;gap:12px;padding:9px 0;border-bottom:1px dashed var(--line-soft);line-height:1.6}.teachable-card li:last-child{border-bottom:0}
+.teachable-level{font-size:.82rem;color:var(--ink-faint);white-space:nowrap;border:1px solid var(--line);border-radius:999px;padding:0 9px;align-self:center}.teachable-extra{margin:16px 0 8px;display:flex;gap:8px;align-items:center}.teachable-more{margin:12px 0 0}
+@media(max-width:640px){.teachable-steps{grid-template-columns:1fr;gap:8px}.teachable-step{flex-direction:row;align-items:center;gap:10px;padding:10px 14px}.teachable-num{margin:0}.teachable-grid{grid-template-columns:1fr}}
 </style>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"課程 · 江江教練 · AI 知識管理","description":"江江教練的課程總覽：收費課程、每月免費線上講座、企業與學校邀約授課，一頁看完。","url":"https://jiangyude.com/courses.html","inLanguage":"zh-Hant","isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://jiangyude.com/"},"about":{"@type":"Person","name":"江昱德","alternateName":"江江教練","jobTitle":"隱性知識提煉師、AI 應用規劃師"}}</script>
 <!-- tracking:vercel-analytics -->
@@ -101,7 +106,7 @@
       <li><a href="courses.html" class="active">課程</a></li>
       <li><a href="articles.html">文章</a></li>
       <li><a href="skills.html">小工具</a></li>
-      <li><a href="offers.html">服務方案</a></li>
+      <li><a href="offers.html">AI 落地</a></li>
     </ul>
   </div>
 </nav>
@@ -114,6 +119,7 @@
     <h1>課 <span class="italic">程</span></h1>
     <p>想直接報名看收費課程；想先免費聽一場，每月兩場線上講座，加 LINE 社群就能參加；想邀我去講，看看講過的場次。用下面的篩選找到你要的。</p>
     <div class="btn-row" style="margin-top:20px; justify-content:center;">
+      <a class="button" href="#merged-courses">近期場次</a>
       <a class="button line" href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">加 LINE 社群拿免費講座報名連結 ↗</a>
     </div>
   </div>
@@ -125,6 +131,8 @@
     <!-- 釘選課程大橫幅：courses-render.js 的 renderPinnedBanner 渲染（資料源 courses-data.js 的 pinned + banner）
          下架＝把該卡的 pinned 拿掉，橫幅自動消失，不用動這裡 -->
     <div id="pinned-banner"></div>
+
+
 
     <div class="mfilter">
       <div class="grp"><b>類型</b>
@@ -210,7 +218,7 @@
       <a href="courses.html">課程</a>
       <a href="learn.html">自學資源</a>
       <a href="articles.html">文章</a>
-      <a href="offers.html">服務方案</a>
+      <a href="offers.html">AI 落地</a>
       <a href="resources.html">課後簡報</a>
       <a href="ai-trends.html">AI 趨勢</a>
       <a href="skills.html">小工具</a>
