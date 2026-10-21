@@ -1,0 +1,428 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="index,follow">
+<title>Google AI Pro 每月送的 10 美元 API 額度，怎麼領、怎麼用｜五個步驟、四個坑，含「預付額度已用完」怎麼解，我接到 Grok Bot 實測</title>
+<meta name="description" content="有訂 Google AI Pro，每個月會送 10 美元 Google Cloud 額度，可以拿來呼叫 Gemini API，但要自己去 Google Developer Program 福利頁領。這篇整理領額度、建金鑰、設每月上限、儲值的五個步驟，以及舊網址 404、Apply 沒反應、上限用台幣算、預付額度已用完四個坑。">
+<link rel="canonical" href="https://jiangyude.com/articles/google-ai-pro-api-credits/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Google AI Pro 每月送的 10 美元 API 額度，怎麼領、怎麼用｜五個步驟、四個坑，含「預付額度已用完」怎麼解，我接到 Grok Bot 實測｜江江教練">
+<!-- 分享封面：hero 文字填好後在 repo 根目錄跑 `node scripts/og-shot.mjs google-ai-pro-api-credits` 自動截 1200×630 到 images/og/google-ai-pro-api-credits.jpg（見 README「文章分享封面（OG 圖）機制」）。別退回 intro-jiang.png 直式人像，會被裁成只剩脖子。 -->
+<meta property="og:image" content="https://jiangyude.com/images/og/google-ai-pro-api-credits.jpg">
+<meta property="og:description" content="有訂 Google AI Pro，每個月會送 10 美元 Google Cloud 額度，可以拿來呼叫 Gemini API，但要自己去 Google Developer Program 福利頁領。這篇整理領額度、建金鑰、設每月上限、儲值的五個步驟，以及舊網址 404、Apply 沒反應、上限用台幣算、預付額度已用完四個坑。">
+<meta property="og:url" content="https://jiangyude.com/articles/google-ai-pro-api-credits/">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:site_name" content="江江教練 · AI 知識管理">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Google AI Pro 每月送的 10 美元 API 額度，怎麼領、怎麼用｜五個步驟、四個坑，含「預付額度已用完」怎麼解，我接到 Grok Bot 實測｜江江教練">
+<meta name="twitter:image" content="https://jiangyude.com/images/og/google-ai-pro-api-credits.jpg">
+<meta name="twitter:description" content="有訂 Google AI Pro，每個月會送 10 美元 Google Cloud 額度，可以拿來呼叫 Gemini API，但要自己去 Google Developer Program 福利頁領。這篇整理領額度、建金鑰、設每月上限、儲值的五個步驟，以及舊網址 404、Apply 沒反應、上限用台幣算、預付額度已用完四個坑。">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Google AI Pro 每月送的 10 美元 API 額度，怎麼領、怎麼用｜五個步驟、四個坑，含「預付額度已用完」怎麼解，我接到 Grok Bot 實測","description":"有訂 Google AI Pro，每個月會送 10 美元 Google Cloud 額度，可以拿來呼叫 Gemini API，但要自己去 Google Developer Program 福利頁領。這篇整理領額度、建金鑰、設每月上限、儲值的五個步驟，以及舊網址 404、Apply 沒反應、上限用台幣算、預付額度已用完四個坑。","author":{"@type":"Person","name":"江昱德","alternateName":"江江教練","jobTitle":"隱性知識提煉師、AI 應用規劃師"},"isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://jiangyude.com/"},"inLanguage":"zh-Hant","url":"https://jiangyude.com/articles/google-ai-pro-api-credits/"}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{--ink:#1a1612;--paper:#fefcf8;--muted:#6a635a;--line:#d8cdb8;--green:#5f7553;--blue:#5689b8;--orange:#e85a4f;--soft:#faf5ec;--dark:#2a2018;--shadow:0 18px 45px rgba(107,74,42,.14);--sp-shadow:hsla(35,50%,60%,.15);--sp-shadow-edge:hsla(35,50%,68%,.03);--sp-radius:400px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC","Segoe UI",sans-serif}
+a{color:inherit}
+/* 官網共用導航列 nav.top（與首頁/文章總站同一條） */
+nav.top{position:sticky;top:0;background:rgba(254,252,248,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid #d8cdb8;z-index:100}
+nav.top .container{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:24px;padding:14px 32px}
+.nav-brand-img{justify-self:start;display:flex;align-items:center;text-decoration:none;flex-shrink:0;transition:opacity .2s}
+.nav-brand-img:hover{opacity:.8}.nav-brand-img img{height:40px;width:auto;display:block}
+nav.top ul.nav-menu{justify-self:end;display:flex;gap:22px;list-style:none;margin:0;padding:0;font-size:.95rem;white-space:nowrap}
+nav.top ul.nav-menu a{color:#3a342d;text-decoration:none;transition:color .2s;font-weight:500;white-space:nowrap}
+nav.top ul.nav-menu a:hover{color:#1a1612}nav.top ul.nav-menu a.active{color:#1a1612;font-weight:700}
+.nav-toggle{display:none;background:none;border:none;padding:6px;cursor:pointer;width:36px;height:36px;position:relative}
+.nav-toggle span{display:block;position:absolute;left:8px;right:8px;height:2px;background:#1a1612;border-radius:2px;transition:transform .25s,opacity .25s,top .25s}
+.nav-toggle span:nth-child(1){top:11px}.nav-toggle span:nth-child(2){top:17px}.nav-toggle span:nth-child(3){top:23px}
+.nav-toggle.open span:nth-child(1){top:17px;transform:rotate(45deg)}.nav-toggle.open span:nth-child(2){opacity:0}.nav-toggle.open span:nth-child(3){top:17px;transform:rotate(-45deg)}
+.tablewrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:22px 0;border:1px solid var(--line);border-radius:10px;background:#fff;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.tablewrap table{border-collapse:collapse;width:100%;min-width:600px;font-size:18px;line-height:1.65}
+.tablewrap .zh{display:block;margin-top:5px;font-size:16px;line-height:1.55;color:var(--muted);font-weight:400}
+.tablewrap th,.tablewrap td{padding:12px 14px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top;color:#3a342d}
+.tablewrap thead th{background:var(--soft);font-weight:900;font-size:18px;color:#1a1612;white-space:nowrap}
+.tablewrap tbody tr:last-child td{border-bottom:none}
+.tablewrap td code,.section code{background:var(--soft);border:1px solid var(--line);border-radius:5px;padding:1px 6px;font:500 15px/1.5 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace}
+.inline-figure.wide{max-width:1000px}
+.inline-figure.portrait{max-width:430px}
+.toc{margin:26px 0 0;padding:20px 22px;background:#fff;border:1px solid var(--line);border-radius:10px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.toc>b{display:block;font-size:15px;letter-spacing:.05em;color:var(--green);margin-bottom:10px}
+.toc ol{margin:0;padding-left:1.35em;font-size:18px;line-height:1.7}
+.toc li{margin-bottom:7px;color:#3a342d}
+.toc a{color:var(--blue);font-weight:700;text-decoration:none}.toc a:hover{text-decoration:underline}
+.toc-hint{margin:12px 0 0!important;font-size:18px!important;color:var(--muted)!important;border-top:1px solid var(--line);padding-top:12px}
+.readmore{margin-top:24px;padding:20px 22px;background:var(--soft);border:1px solid var(--line);border-radius:12px}
+.readmore.near{margin:26px 0 6px;background:rgba(86,137,184,.07);border-color:#bcd0e2}
+.readmore.near b{color:var(--blue);font-size:18px}
+.readmore.near li{font-size:17px;line-height:1.7;margin-bottom:10px}
+.readmore b{display:block;margin-bottom:10px;font-size:19px}
+.readmore ul{margin:0;padding-left:1.25em}
+.readmore a{color:var(--blue);font-weight:700;text-decoration:none}
+.readmore a:hover{text-decoration:underline}
+@media(max-width:820px){.tablewrap table{min-width:560px;font-size:18px}.tablewrap{position:relative}.tablewrap::after{content:"表格可左右滑動 →";position:sticky;left:0;display:block;font-size:15px;color:var(--muted);background:var(--soft);border-top:1px solid var(--line);padding:7px 12px;width:100%}}
+@media(max-width:860px){
+ nav.top .container{grid-template-columns:auto 1fr auto;padding:10px 16px;gap:12px}
+ .nav-brand-img img{height:32px}
+ .nav-toggle{display:block;justify-self:end}
+ nav.top ul.nav-menu{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(254,252,248,.98);backdrop-filter:blur(14px);border-bottom:1px solid #d8cdb8;flex-direction:column;gap:0;padding:8px 0;box-shadow:0 10px 24px rgba(107,74,42,.08)}
+ nav.top ul.nav-menu.open{display:flex}
+ nav.top ul.nav-menu li{border-bottom:1px solid #e8dfc9}
+ nav.top ul.nav-menu li:last-child{border-bottom:none}
+ nav.top ul.nav-menu a{display:block;padding:14px 20px;font-size:1.06rem}
+}
+/* 滑鼠暖光暈（與首頁同一支 spotlight.js） */
+body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradient(var(--sp-radius) circle at var(--mx,50%) var(--my,50%),var(--sp-shadow) 0%,var(--sp-shadow-edge) 45%,transparent 75%);pointer-events:none;z-index:9999;mix-blend-mode:multiply;transition:background .06s linear}
+.hero{position:relative;overflow:hidden;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:72px;padding:96px clamp(20px,6vw,88px) 80px;background:linear-gradient(180deg,#fffcf0 0%,#f9e9d2 100%);color:#1a1612;border-bottom:1px solid #d8cdb8}
+.hero .wc{position:absolute;border-radius:50%;filter:blur(60px);pointer-events:none;z-index:0}
+.hero .wc1{width:420px;height:360px;top:-120px;right:-80px;background:#e8884b;opacity:.15}
+.hero .wc2{width:360px;height:300px;bottom:-110px;left:-70px;background:#5f7553;opacity:.13}
+.hero .wc3{width:280px;height:260px;top:34%;left:14%;background:#a08144;opacity:.10}
+.hero>div{flex:none;width:860px;max-width:100%;position:relative;z-index:2}
+.hero-figure{margin:0;width:620px;flex:none;position:relative;z-index:2}
+.hero-figure img{display:block;width:100%;height:auto;border-radius:16px;border:1px solid #d8cdb8;box-shadow:0 18px 45px rgba(107,74,42,.16);cursor:zoom-in}
+.hero-figure figcaption{margin-top:10px;font-size:14px;line-height:1.6;color:#6a635a}
+.inline-figure{margin:30px auto 8px;max-width:820px}
+.inline-figure img{display:block;width:100%;height:auto;border-radius:14px;border:1px solid var(--line);box-shadow:var(--shadow);background:#fff;cursor:zoom-in}
+.inline-figure figcaption{font-size:14px;line-height:1.6;color:var(--muted);margin-top:10px}
+.lightbox{position:fixed;inset:0;z-index:10000;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(12,10,8,.92);cursor:zoom-out;backdrop-filter:blur(4px)}
+.lightbox.open{display:flex}.lightbox img{max-width:96vw;max-height:92vh;border-radius:10px;box-shadow:0 24px 60px rgba(0,0,0,.5)}
+.lightbox-close{position:fixed;top:18px;right:24px;color:#fff;font-size:34px;line-height:1;font-weight:700;cursor:pointer;opacity:.85}
+.kicker{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.55rem;color:#7a5c3a;font-weight:500}
+.hero h1{max-width:none;margin:16px 0 18px;font-size:clamp(36px,6vw,72px);line-height:1.08;overflow-wrap:anywhere}
+.hero p{max-width:none;font-size:clamp(18px,2vw,23px);line-height:1.62;color:#3a342d}
+.cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
+.cta a{display:inline-flex;align-items:center;text-decoration:none;border-radius:8px;padding:12px 16px;font-weight:900}
+.cta .primary{background:#fff;color:#1a1612}.cta .ghost{border:1px solid rgba(255,255,255,.32);color:#fff;background:rgba(255,255,255,.08)}
+.section{padding:54px clamp(20px,6vw,88px);border-top:1px solid var(--line)}
+.inner{width:min(1000px,100%);margin:0 auto}
+.section h2{font-size:clamp(26px,4.2vw,48px);line-height:1.12;margin:0 0 18px}
+.section h3{font-size:clamp(21px,3vw,30px);line-height:1.2;margin:30px 0 12px}
+.lead{font-size:clamp(18px,1.6vw,22px);line-height:1.7;color:#3a342d;max-width:900px}
+.section p{font-size:18px;line-height:1.74;color:#3a342d}.section p+p{margin-top:14px}
+.section ul,.section ol{padding-left:1.4em;font-size:18px;line-height:1.74;color:#3a342d}.section li{margin-bottom:8px}
+.meaning{margin:22px 0;padding:16px 18px;border-left:5px solid var(--blue);background:rgba(86,137,184,.12);border-radius:6px;line-height:1.7;font-size:19px}
+.meaning b{display:block;color:var(--blue);margin-bottom:4px}
+.caveat{margin:0 0 8px;padding:16px 18px;border-left:5px solid var(--orange);background:rgba(232,90,79,.1);border-radius:6px;line-height:1.7;font-size:18px;color:#3a342d}
+.caveat b{display:block;color:var(--orange);margin-bottom:4px}
+.infocard{background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px 24px 22px;box-shadow:0 8px 22px rgba(107,74,42,.08);margin-top:8px}
+.infocard-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.info-item{padding:18px 14px 0}
+.info-item b{display:block;font-size:14px;font-weight:900;letter-spacing:.04em;margin-bottom:7px;text-transform:uppercase}
+.info-item:nth-child(1) b{color:var(--green)}.info-item:nth-child(2) b{color:var(--orange)}.info-item:nth-child(3) b{color:var(--blue)}
+.info-item p{margin:0;font-size:17px;line-height:1.6;color:#3a342d}
+.tagrow{display:flex;flex-wrap:wrap;gap:7px;margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
+.tag{font-size:14px;color:var(--muted);background:var(--soft);border:1px solid var(--line);border-radius:999px;padding:4px 11px}
+.duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:24px}
+.duo.stack{grid-template-columns:1fr}
+.duo .card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:22px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.duo .card.a{border-color:var(--orange)}.duo .card.b{border-color:var(--green);box-shadow:0 8px 24px rgba(95,117,83,.16)}
+.duo .card small{display:block;font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.04em;margin-bottom:9px}
+.duo .card.a small{color:var(--orange)}.duo .card.b small{color:var(--green)}
+.duo .card b{display:block;font-size:22px;line-height:1.3;margin-bottom:12px}.duo .card.a b{color:#c0512f}.duo .card.b b{color:#4a7a59}
+.duo .card p{margin:0;color:#3a342d;line-height:1.75;font-size:18px}
+.workflow-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:24px}
+.workflow-step{background:#fff;border:1px solid var(--line);border-radius:8px;padding:18px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.workflow-step small{display:block;color:var(--orange);font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;margin-bottom:9px}
+.workflow-step b{display:block;font-size:18px;line-height:1.3;margin-bottom:9px}
+.workflow-step p{margin:0;color:#3a342d;line-height:1.6;font-size:16px}
+.codeblock{background:var(--dark);color:#f3ead9;border-radius:8px;padding:18px 20px;font:500 14px/1.65 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;overflow-x:auto;white-space:pre-wrap;margin:20px 0;box-shadow:0 8px 22px rgba(107,74,42,.12)}
+.codeblock .c{color:#f6d7a6;font-weight:600}
+.skillcard{background:#fff;border:1px solid var(--green);border-radius:12px;padding:24px;box-shadow:0 10px 26px rgba(95,117,83,.16);margin-top:8px}
+.skillcard b{display:block;font-size:21px;margin-bottom:8px}
+.skillcard p{margin:0 0 16px;font-size:17px;line-height:1.65;color:#3a342d}
+.cta-band{background:#e6f0e5;color:#3a342d}.cta-band .section{border-top:none}
+.cta-band .inner{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(260px,.85fr);gap:26px;align-items:start}
+.cta-band h2{font-size:clamp(26px,4vw,44px);margin:0 0 16px}.cta-band p,.cta-band .lead{color:rgba(58,52,45,.9);font-size:18px;line-height:1.72}
+.cta-card{border:1px solid #cfe0d2;background:#fbfdfa;border-radius:8px;padding:22px}
+.cta-card b{display:block;color:#48b178;margin-bottom:10px;font-size:18px}.cta-card p{margin:0 0 14px}
+.footer{padding:30px clamp(20px,6vw,88px);font-size:14px;color:var(--muted);background:#fff;border-top:1px solid var(--line)}
+.footer-inner{width:min(1000px,100%);margin:0 auto}
+.footer-links{display:flex;flex-wrap:wrap;gap:6px 12px;margin-bottom:14px}.footer-links a{color:var(--blue);font-weight:900;text-decoration:none;font-size:14px}
+.footer-brand{font-weight:900;font-size:15px;margin-bottom:10px}.footer-note{font-size:13px;line-height:1.6}
+@media(max-width:820px){.inline-figure.portrait{max-width:340px}.infocard-grid{grid-template-columns:1fr}.duo{grid-template-columns:1fr}.workflow-grid{grid-template-columns:1fr}.cta-band .inner{grid-template-columns:1fr}.section{padding:40px 20px}.hero{min-height:52vh;flex-direction:column;justify-content:flex-start;align-items:flex-start;gap:24px}.hero>div{width:100%}.hero-figure{width:100%;max-width:560px}}
+@media(max-width:820px){html,body{overflow-x:hidden}.hero h1{word-break:break-word}}
+/* 直式圖左右排（02-design-system「直式圖在桌機的左右排版」）：輪播卡上官網預設用 .media-row，圖左圖右看段落交替；連續兩張用 .figure-pair */
+.figure-pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;margin:30px auto 8px;max-width:820px}.figure-pair .inline-figure{margin:0;max-width:none}@media(max-width:640px){.figure-pair{grid-template-columns:1fr}.figure-pair .inline-figure{max-width:340px;margin:0 auto}}
+.media-row{display:grid;grid-template-columns:minmax(0,340px) minmax(0,1fr);gap:36px;align-items:center;margin:28px 0}.media-row.img-right{grid-template-columns:minmax(0,1fr) minmax(0,340px)}.media-row .inline-figure{margin:0;max-width:none}.media-row .media-text>*:first-child{margin-top:0}.media-row .media-text>*:last-child{margin-bottom:0}@media(max-width:820px){.media-row,.media-row.img-right{grid-template-columns:1fr;gap:18px}.media-row.img-right .media-fig{order:-1}.media-row .inline-figure{max-width:340px;margin:0 auto}}
+.hero{gap:48px!important}.hero>div{width:600px!important}.hero h1{font-size:clamp(32px,3.4vw,50px)!important;line-height:1.14!important;margin:12px 0 16px!important}.hero p{font-size:clamp(16px,1.35vw,19px)!important;line-height:1.65!important}.hero-figure{width:560px}@media(max-width:820px){.hero>div{width:100%!important}.hero-figure{width:100%}}
+</style>
+</head>
+<body class="spotlight">
+<!-- 官網共用導航列 nav.top：與首頁/總站同一條，文章不要自己另做極簡 topbar（江江 2026-06-25：要同一個框架、同一條導航列）。把對應頁面的 class="active" 標在自己那欄。
+     ⚠️ 下面 ul.nav-menu 整塊由 preflight 第 5 關 check-bilingual-nav.mjs 做「逐字比對」，
+        塞任何註解、多一個空白、換行位置不同都會被判導航不一致而擋下發布。要說明就寫在 <ul> 外面（像這裡）。
+        2026-08-16 修：原本的 EN 那行說明註解就夾在 <ul> 裡面，導致照範本起手的新文章一律卡第 5 關
+        （llm-rag-agent-mcp 與 rag-three-retrieval-modes 兩篇同時中招）。註解已移出來，<ul> 內保持乾淨。
+        萬一還是被擋，直接跑：node scripts/check-bilingual-nav.mjs --write --only=<你的檔案路徑> -->
+<nav class="top">
+  <div class="container">
+    <a class="nav-brand-img" href="../../index.html"><img src="../../images/footer-signature.png" alt="江江教練 | 江昱德"></a>
+    <button class="nav-toggle" aria-label="選單"><span></span><span></span><span></span></button>
+    <ul class="nav-menu">
+      <li><a href="../../index.html">首頁</a></li>
+      <li><a href="../../knowledge-architecture.html">知識架構</a></li>
+      <li><a href="../../courses.html">課程</a></li>
+      <li><a href="../../articles.html" class="active">文章</a></li>
+      <li><a href="../../skills.html">小工具</a></li>
+      <li><a href="../../offers.html">AI 落地</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="wc wc1"></div>
+  <div class="wc wc2"></div>
+  <div class="wc wc3"></div>
+  <div>
+    <div class="kicker">AI 工具 / 省錢實測</div>
+    <h1>Google AI Pro 每月送的 10 美元 API 額度，<br>怎麼領、怎麼用</h1>
+    <p>五個步驟、四個坑，含「預付額度已用完」怎麼解。我把額度接到 Grok Bot 實測，Gemini 3.8 Flash、Gemini 4 Argon、生圖模型都叫得動。</p>
+  </div>
+  <figure class="hero-figure">
+    <img src="../../images/articles/google-ai-pro-api-credits-cover.jpg" alt="咪卡把 Google AI Pro 禮物盒裡的 10 美元額度券遞給米白圓球造型的 Grok Bot，旁邊圍著三隻彩色小 bot" loading="lazy">
+    <figcaption>Google AI Pro 每月送的 10 美元，接給 Grok Bot 用。</figcaption>
+  </figure>
+</section>
+
+<main>
+
+<section class="section" id="start"><div class="inner">
+  <h2>速讀：這筆錢是什麼、怎麼拿到</h2>
+  <p class="lead">訂 Google AI Pro 的人，帳號會附帶 Google Developer Program 進階方案，每個月送 10 美元的 Google Cloud 額度，可以拿來呼叫 Gemini API。這筆額度不會自動套用，要自己去領。我一查才發現累積了 6 筆沒領，合計 60 美元。這篇把我實際走過的五個步驟和踩到的四個坑寫下來。</p>
+  <div class="duo stack">
+    <div class="card a"><b>適合誰</b>
+      <ul>
+        <li>有訂 Google AI Pro，聽說有送 API 額度，但不知道去哪裡領的人</li>
+        <li>呼叫 Gemini API 一直收到「預付額度已用完」的人</li>
+        <li>在玩 Grok Bot 這類工具，想改用自己的 API 金鑰省錢的人</li>
+      </ul>
+    </div>
+    <div class="card b"><b>你可以帶走什麼</b>
+      <ul>
+        <li>領額度、建金鑰、設上限、儲值、測試的五步順序</li>
+        <li>四個坑的對照表：會看到什麼、怎麼處理</li>
+        <li>三道費用防線的設法，最壞情況只花掉 NT$150</li>
+      </ul>
+    </div>
+  </div>
+  <div class="toc"><b>目錄</b>
+    <ol>
+      <li><a href="#what">這筆錢是什麼，誰有</a></li>
+      <li><a href="#steps">五個步驟</a></li>
+      <li><a href="#pitfalls">四個坑，一張表</a></li>
+      <li><a href="#grok">我拿來做什麼：在 Grok Bot 裡接 Gemini 的 API</a></li>
+      <li><a href="#price">10 美元能做多少事：官方單價</a></li>
+      <li><a href="#cost">費用怎麼控制</a></li>
+      <li><a href="#unknown">還沒確認的事</a></li>
+    </ol>
+  </div>
+</div></section>
+
+<section class="section" id="what"><div class="inner">
+  <h2>這筆錢是什麼，誰有</h2>
+  <p>我訂的是 Google AI Pro 年繳方案，一年 NT$6,500。Google 把 Google Developer Program 的進階方案福利併進了 AI Pro，其中一項是每月 10 美元的「Gen AI &amp; Cloud credits」，頁面上的說明是可以用在 AI Studio、Agent Platform 和任何 Google Cloud 產品。</p>
+  <p>我的開發者帳號從 2026 年 2 月 12 日起就是進階方案，但我一直沒去領。這次打開福利頁，上面排著 6 張沒套用的 10 美元卡片：2 月一張、7 月兩張、8 月、9 月、10 月各一張。每張都有到期日，大約是發放後一年。3 到 6 月為什麼沒有卡片，頁面上沒有說明，我也不清楚。</p>
+  <p>到 Google Cloud 帳單頁看，一筆顯示 NT$318，適用範圍寫的是「Google Cloud Platform 中的所有服務和 Google Maps API」。</p>
+</div></section>
+
+<section class="section" id="steps"><div class="inner">
+  <h2>五個步驟</h2>
+
+  <h3>第一步：到福利頁領每月額度</h3>
+  <ol>
+    <li>打開 <code>me.developers.google.com/benefits</code>。</li>
+    <li>每張「$10 monthly Gen AI &amp; Cloud credits」卡片，點「Billing account」選一個帳單帳戶。</li>
+    <li>勾「Always use this billing account」，以後每個月的新額度會自動套到同一個帳戶。</li>
+    <li>按 Apply。</li>
+  </ol>
+  <figure class="inline-figure wide">
+    <img src="../../images/articles/google-ai-pro-api-credits-benefits.jpg" alt="Google Developer Program 福利頁，四張每月 10 美元額度卡片都選好帳單帳戶並勾選 Always use this billing account" loading="lazy">
+    <figcaption>福利頁：每張卡片選帳單帳戶、勾 Always use、按 Apply。</figcaption>
+  </figure>
+  <div class="caveat"><b>坑一：舊網址打不開</b>網路上流傳的 <code>developers.google.com/profile/benefits</code> 現在是 404，要用上面那個 <code>me.developers.google.com</code> 開頭的網址。</div>
+  <div class="caveat"><b>坑二：按 Apply 畫面不會變</b>按下去看起來像沒反應，其實已經領到了。我自己就差點以為沒成功，又去選別的帳戶重按。確認方式是到 Google Cloud 控制台的「帳單」，進那個帳單帳戶，看左側「抵免額」，有列出來就是領到了。</div>
+
+  <h3>第二步：開一個專用的帳單帳戶</h3>
+  <p>我原本有三個帳單帳戶，其中一個綁著 YouTube 上傳、看板這些專案。我不想讓測試 API 的花費跟它們混在一起，所以把一個沒在用的帳單帳戶改名成「Agent 測試帳戶」，額度全部套到這裡。</p>
+  <p>改名的位置在 Google Cloud 控制台「帳單 &gt; 帳戶管理 &gt; 變更帳單帳戶名稱」，帳戶 ID 不會變，不會影響已經連上的專案。這一步不是必要的，想要花費分得清楚才需要做。</p>
+
+  <h3>第三步：建一把 Gemini API 金鑰</h3>
+  <p>到 AI Studio 的 API Keys 頁，按「Create API key」，下拉選單裡選一個專案（要選掛在剛才那個帳單帳戶底下的專案，花費才會扣到領了額度的帳戶），名稱取一個看得出用途的，例如我取「Grok bots」。</p>
+  <p>建好後到 Google Cloud 控制台的「API 和服務 &gt; 憑證」看，這把金鑰的限制是「Gemini API」。AI Studio 頁面也提醒，沒有加限制的金鑰從 2026 年 6 月 19 日起已經不能用。</p>
+  <p>金鑰複製一次貼到要用的工具裡就好，不要貼進對話紀錄或筆記。</p>
+
+  <h3>第四步：設每月花費上限</h3>
+  <p>到 AI Studio 的「Spend」頁，找「Monthly spend cap」，按「Set spend cap」。</p>
+  <div class="caveat"><b>坑三：上限是用台幣算的，預設值很高</b>我打開時裡面的數字是 NT$3,178，大約 100 美元。要上限 10 美元，請改成 NT$318，跟一筆額度的金額一樣。</div>
+  <p>上限設 10 美元的意思是：就算你像我一樣累積了 60 美元，每個月也只會用到 10 美元。額度大約一年才到期，不用急著一次用完；真的有比較重的專案要跑，再回來把上限調高。</p>
+  <p>頁面上寫著：達到上限服務會暫停，統計大約延遲 10 分鐘，所以可能會稍微超過一點；每月 1 號重置，以美國太平洋時間為準。這個功能目前標示為實驗性。</p>
+
+  <h3>第五步：先儲值最低金額，解掉「預付額度已用完」</h3>
+  <p>這一步是我卡最久的地方。額度領了、金鑰建了、上限也設了，Grok Bot 一呼叫還是失敗，錯誤訊息是「prepayment credits are depleted」，意思是預付額度已用完。</p>
+  <div class="caveat"><b>坑四：帳戶要是寫著「必須預付」，預付餘額得大於 0 才能用</b>AI Studio 的 Billing 頁寫著「Prepay billing is required for this account」。光領到每月額度還不夠，要先儲值一點點，服務才會開。</div>
+  <p>我到儲值視窗看過、關掉之後，頁面上方出現一行官方說明：</p>
+  <div class="meaning"><b>AI Studio Billing 頁的說明</b>A credit balance above $0 is required to resume service. Eligible GCP credits will automatically apply to usage first.</div>
+  <p>白話是兩件事：預付餘額要大於 0 服務才會開；開了以後，官方寫會先扣你領到的 Cloud 額度。實際是不是這樣扣，我還在等扣款紀錄出來驗證，結果會補在文末。</p>
+  <figure class="inline-figure wide">
+    <img src="../../images/articles/google-ai-pro-api-credits-payments.jpg" alt="AI Studio Billing 頁的 Payments 區塊，Credit balance 顯示 NT$0.00，Auto-reload 為 Off，下方有 Buy credits 按鈕" loading="lazy">
+    <figcaption>Billing 頁的 Payments 區塊：預付餘額 NT$0.00，按最下面的 Buy credits。</figcaption>
+  </figure>
+  <ol>
+    <li>AI Studio 的 Billing 頁，確認上方的帳單帳戶是你要的那一個。</li>
+    <li>按「Buy credits」。</li>
+    <li>金額選最低的 NT$150（另外兩個選項是 NT$600 和 NT$3,000）。</li>
+    <li><strong>Auto-reload 不要開。</strong>畫面上它標著「Recommended」，開了以後餘額用完會自動再刷卡。</li>
+    <li>確認付款方式，按 Continue。</li>
+  </ol>
+  <figure class="inline-figure portrait">
+    <img src="../../images/articles/google-ai-pro-api-credits-buy-credits.jpg" alt="Buy credits 儲值視窗，選了 NT$150，Auto-reload 關閉，帳單帳戶 ID 與信用卡資訊已塗白" loading="lazy">
+    <figcaption>儲值視窗：選 NT$150、Auto-reload 保持關閉。帳戶 ID 與卡號已塗白。</figcaption>
+  </figure>
+  <p>視窗上寫著，預付金只能用在 Gemini API、不能退款、購買後一年到期。付完之後 Grok Bot 再試一次，Gemini 3.8 Flash 就叫得動了。</p>
+
+  <div class="readmore near"><b>延伸閱讀</b>
+    <ul>
+      <li><a href="../ai-customer-service-api-cost/">我想在官網放 AI 客服，API 是什麼、會不會很貴？</a>：API、金鑰、儲值這幾個詞第一次碰到的人，先看這篇打底。</li>
+    </ul>
+  </div>
+</div></section>
+
+<section class="section" id="pitfalls"><div class="inner">
+  <h2>四個坑，一張表</h2>
+  <div class="tablewrap"><table>
+    <thead><tr><th>坑</th><th>會看到什麼</th><th>怎麼處理</th></tr></thead>
+    <tbody>
+      <tr><td>舊網址</td><td><code>developers.google.com/profile/benefits</code> 顯示 404</td><td>改用 <code>me.developers.google.com/benefits</code></td></tr>
+      <tr><td>Apply 沒反應</td><td>按了畫面沒變</td><td>去 Cloud 帳單頁的「抵免額」確認，不要重按</td></tr>
+      <tr><td>上限用台幣算</td><td>預設大約 NT$3,178</td><td>改成 NT$318 就是 10 美元</td></tr>
+      <tr><td>必須預付</td><td>「prepayment credits are depleted」</td><td>先儲值 NT$150，Auto-reload 關掉</td></tr>
+    </tbody>
+  </table></div>
+</div></section>
+
+<section class="section" id="grok"><div class="inner">
+  <h2>我拿來做什麼：在 Grok Bot 裡接 Gemini 的 API</h2>
+  <p>Grok Bot 最近很紅，我想讓它幫我做市場行銷的調查。但 Grok 本身的額度有點貴，買一點點只夠玩一下。所以我在 Grok Bot 裡接 Gemini 的 API，讓它呼叫 Gemini 做事，花的是每月送的額度。Grok Bot 也可以接 Claude 的 API。</p>
+  <p>另外我看過有人直接在 Grok Bot 裡登入 Claude Code，走訂閱的額度，這個也蠻厲害，但我還沒有成功。我現在是接 API 成功。</p>
+  <p>Grok Bot 實測回報的結果：</p>
+  <ul>
+    <li><strong>Gemini 3.8 Flash</strong>：叫得動，它自報是 Gemini 3.8 Flash。</li>
+    <li><strong>搭 Google 搜尋查資料</strong>：查今天的台灣科技新聞，有回答，也附上 3 個來源。之後查資料可以留下出處。</li>
+    <li><strong>Gemini 4 Argon</strong>：也叫得動。Google 官方模型頁寫它是旗艦級推論模型，脈絡窗口 100 萬詞元。</li>
+    <li><strong>生圖</strong>：同一把金鑰也能叫 Google 的生圖模型。官方模型頁目前最新的是 Nano Banana 2.1，另外還有 Nano Banana 2、Nano Banana Pro。</li>
+  </ul>
+  <p>我是知識工作者，實測下來 Argon 的文件分析、推理還不錯。以前 3.8 Flash 我只能拿來查資料，沒什麼用；Argon 現在有用多了。生圖也還不錯。所以這 10 美元多少可以用一下。</p>
+  <div class="readmore near"><b>延伸閱讀</b>
+    <ul>
+      <li><a href="../grok-bot-galaxy-day1-founders/">一個人怎麼帶 22 個 AI 員工？Grok Bot Galaxy 直播 Day 1</a>：還不熟 Grok Bot 的人，先看大家怎麼用它。</li>
+      <li><a href="../ai-image-api-cost/">gpt-image-2.5 生一張圖多少錢？</a>：想拿 API 生圖，先看一張圖實際要花多少。</li>
+    </ul>
+  </div>
+</div></section>
+
+<section class="section" id="price"><div class="inner">
+  <h2>10 美元能做多少事：官方單價</h2>
+  <p>以下是 Google 官方定價頁（2026 年 10 月 21 日查）的付費層價格，單位是美元。</p>
+  <div class="tablewrap"><table>
+    <thead><tr><th>模型</th><th>價格</th><th>注意</th></tr></thead>
+    <tbody>
+      <tr><td>Gemini 3.8 Flash</td><td>每 100 萬 token 輸入 0.75、輸出 3.75</td><td>2027 年 1 月 1 日起漲一倍</td></tr>
+      <tr><td>Gemini 4 Argon</td><td>每 100 萬 token 輸入 2、輸出 10</td><td>2026 年 12 月 1 日起漲一倍；免費層不能用</td></tr>
+      <tr><td>Nano Banana 2.1 生圖</td><td>1K 一張約 0.034、2K 約 0.050、4K 約 0.113</td><td></td></tr>
+      <tr><td>Nano Banana Pro 生圖</td><td>1K／2K 一張約 0.134、4K 約 0.24</td><td></td></tr>
+      <tr><td>Google 搜尋</td><td>每月前 5,000 次免費（Gemini 3 以上模型共用），之後每 1,000 次 14</td><td></td></tr>
+    </tbody>
+  </table></div>
+  <p>用 10 美元換算（我自己估的，實際看每次用多少 token）：</p>
+  <ul>
+    <li>Nano Banana 2.1 生 1K 圖，大約 290 張。</li>
+    <li>Argon 讀一份約 5 萬 token 的文件、回 5 千 token 的分析，一次約 0.15 美元，大約 60 次。12 月漲價後減半。</li>
+  </ul>
+</div></section>
+
+<section class="section" id="cost"><div class="inner">
+  <h2>費用怎麼控制</h2>
+  <div class="tablewrap"><table>
+    <thead><tr><th>防線</th><th>設在哪</th><th>我的設定</th></tr></thead>
+    <tbody>
+      <tr><td>每月送的額度</td><td>福利頁，自動套到專用帳戶</td><td>每月 NT$318（10 美元）</td></tr>
+      <tr><td>每月花費上限</td><td>AI Studio 的 Spend 頁</td><td>NT$318，到了就暫停</td></tr>
+      <tr><td>預付金不自動加值</td><td>AI Studio 的 Billing 頁</td><td>只儲值 NT$150，Auto-reload 關閉</td></tr>
+    </tbody>
+  </table></div>
+  <p>三道一起設，最壞的情況是 NT$150 預付金被用掉，不會無限刷卡。</p>
+</div></section>
+
+<section class="section" id="unknown"><div class="inner">
+  <h2>還沒確認的事</h2>
+  <ul>
+    <li><strong>額度是不是真的先扣。</strong>官方說明寫「先扣 GCP 額度」，但扣款紀錄要過幾個小時才會出現，我還沒看到實際紀錄。過幾天我會回頭看預付餘額是不是還維持 NT$150，結果再補在這裡。</li>
+    <li><strong>你的帳戶會不會也要預付。</strong>我的帳戶頁面寫「必須預付」，不確定每個帳戶都一樣。如果你的帳戶沒有這個要求，第五步可以跳過。</li>
+  </ul>
+  <div class="readmore"><b>這篇提到過的</b>
+    <ul>
+      <li><a href="../ai-customer-service-api-cost/">我想在官網放 AI 客服，API 是什麼、會不會很貴？</a></li>
+      <li><a href="../grok-bot-galaxy-day1-founders/">一個人怎麼帶 22 個 AI 員工？Grok Bot Galaxy 直播 Day 1</a></li>
+      <li><a href="../ai-image-api-cost/">gpt-image-2.5 生一張圖多少錢？</a></li>
+    </ul>
+    <b style="margin-top:18px">再往前後延伸</b>
+    <ul>
+      <li><a href="../ai-model-token-efficiency/">新的 AI 模型 Token 效率要怎麼比較？</a>：額度有限時，先看哪個模型用同樣的錢做得最多。</li>
+    </ul>
+  </div>
+</div></section>
+
+
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">江江教練 · AI 知識管理</div>
+    <div class="footer-links">
+      <a href="../../articles.html">← 回深度文章總站</a>
+      <a href="../../index.html">首頁</a>
+      <a href="../../learn.html">自學資源</a>
+      <a href="../../skills.html">小工具</a>
+      <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">LINE 社群 ↗</a>
+      <a href="https://www.threads.com/@jiang_yude_coach" target="_blank" rel="noopener">Threads ↗</a>
+      <a href="https://vocus.cc/salon/Jiang_Coach" target="_blank" rel="noopener">方格子 ↗</a>
+    </div>
+    <div class="footer-note">這是一篇教學文章，整理我對「Google AI Pro 每月送的 10 美元 API 額度，怎麼領、怎麼用」的看法，供你參考。</div>
+  </div>
+</footer>
+
+<!-- 點圖放大 lightbox（hero 與內文圖通用，已內建，不用每篇重加） -->
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <span class="lightbox-close" aria-label="關閉">×</span>
+  <img id="lightbox-img" src="" alt="放大檢視">
+</div>
+<script>
+(function(){
+  var box=document.getElementById('lightbox'),boxImg=document.getElementById('lightbox-img');
+  document.querySelectorAll('.hero-figure img,.inline-figure img').forEach(function(img){
+    img.addEventListener('click',function(){boxImg.src=img.currentSrc||img.src;boxImg.alt=img.alt||'放大檢視';box.classList.add('open');box.setAttribute('aria-hidden','false');});
+  });
+  function close(){box.classList.remove('open');box.setAttribute('aria-hidden','true');boxImg.src='';}
+  box.addEventListener('click',close);
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
+})();
+</script>
+
+<script src="../../image-interactions.js"></script>
+
+<!-- 官網共用：滑鼠暖光暈 + 導航列漢堡選單 -->
+<script src="../../spotlight.js"></script>
+
+<!-- 文章自動互聯（相關文章）：兩支已內建，順序不可顛倒，不用再另外加 -->
+<script src="../../articles-data.js"></script>
+<script src="../../related-render.js"></script>
+  <script src="/mika-chat-widget.js" defer></script>
+<!-- tracking:cloudflare -->
+<script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "c3e3c857121d416ab405270557d017d3"}'></script>
+<!-- tracking:views-counter -->
+<script src="/views.js"></script>
+</body>
+</html>
