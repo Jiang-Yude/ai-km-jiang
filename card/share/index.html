@@ -59,6 +59,22 @@ async function share(){
   btn.disabled = false;
 }
 btn.onclick = share;
+// 送出前在最後一張底部加「轉傳這張名片」（第 1 張加了會超出 3:4，2026-10-21 實測）：收到的人在 LINE 裡一按，就回到這一頁再選好友傳出去。
+// 只加在送出的訊息上，官網看到的名片（line-flex.json）不動。別人的名片（?c=）連結太長放不進按鈕，不加。
+var FORWARD_URI = 'https://liff.line.me/' + LIFF_ID;
+function withForward(m){
+  var copy = JSON.parse(JSON.stringify(m));
+  var bubbles = copy.contents && copy.contents.type === 'carousel' ? copy.contents.contents : [copy.contents];
+  var picks = [bubbles.length - 1];
+  picks.forEach(function(i){
+    var b = bubbles[i]; if (!b || b.type !== 'bubble') return;
+    var btnBox = { type:'button', style:'link', height:'sm', color:'#A27C45',
+      action:{ type:'uri', label:'轉傳這張名片', uri:FORWARD_URI } };
+    if (b.footer && b.footer.type === 'box' && Array.isArray(b.footer.contents)) b.footer.contents.push(btnBox);
+    else b.footer = { type:'box', layout:'vertical', paddingAll:'8px', backgroundColor:'#FFFCF6', contents:[btnBox] };
+  });
+  return copy;
+}
 // 沒帶 ?c= 時，上方直接畫出江江的第一張名片（名片改了這裡跟著變）
 if (!new URLSearchParams(location.search).get('c')) fetch('/card/line-flex.json').then(function(r){ return r.json(); }).then(function(f){ var b = renderFlexBubbles(f)[0]; if (b) document.getElementById('first').appendChild(b); }).catch(function(){});
 (async function(){
@@ -78,7 +94,7 @@ if (!new URLSearchParams(location.search).get('c')) fetch('/card/line-flex.json'
       // 讓分享的人看得到名片裡的連結會開到哪些網站
       if (errs.hosts && errs.hosts.length) { var h = document.createElement('p'); h.className = 'note'; h.textContent = '名片裡的連結會開到：' + errs.hosts.join('、'); document.getElementById('custom').appendChild(h); }
     } else {
-      card = await fetch('/card/line-flex.json').then(function(r){ return r.json(); });
+      card = withForward(await fetch('/card/line-flex.json').then(function(r){ return r.json(); }));
     }
     if (!liff.isLoggedIn()) { say('請先登入 LINE…'); return liff.login({ redirectUri: location.href }); }
     btn.disabled = false; say('');
