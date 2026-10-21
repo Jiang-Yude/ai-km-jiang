@@ -53,7 +53,7 @@ else
   while IFS= read -r _u; do
     [[ -z "$_u" ]] && continue
     _path="/${_u#/}"
-    _code=$(curl -s -o /dev/null -w '%{http_code}' --max-time 20 "${BASE_URL}${_path}")
+    _code=$(curl -sL -o /dev/null -w '%{http_code}' --max-time 20 "${BASE_URL}${_path}")
     if [[ "$_code" == "200" ]]; then
       echo "  ✅ 200 ${_path}"
     else
