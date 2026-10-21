@@ -15,7 +15,7 @@ const decks = JSON.parse(fs.readFileSync(path.join(root, 'cloudflare/legacy-deck
 const indexed = new Set(execFileSync('git', ['-C', root, 'ls-files', '-z'], {maxBuffer: 10 * 1024 * 1024}).toString().split('\0').filter(Boolean));
 const changed = [];
 for (const [p, want] of Object.entries(decks)) {
-  if (!indexed.has(p)) { console.log(`  ⚠️  凍結簡報不在版控：${p}（不會上線，提醒）`); continue; }
+  if (!indexed.has(p)) { changed.push(`${p}（被移出版控；凍結簡報不准刪，真的要下架先走審查並更新 legacy-decks.json）`); continue; }
   const file = path.join(root, p);
   if (!fs.existsSync(file)) { changed.push(`${p}（index 有、工作區不見了）`); continue; }
   const got = crypto.createHash('sha256').update(fs.readFileSync(file)).digest('hex');

@@ -37,6 +37,17 @@ def main() -> int:
             continue
         meta, path = rec.split(b"\t", 1)
         tracked.setdefault(meta.split()[1].decode(), path.decode())
+    # HEAD 版也算（阿港審 2026-10-21）：這輪若改了或刪了複製檔的母檔，index 版的 hash 已變，
+    # 只比 index 會讓同一個複製檔在發布中途突然變成「髒檔」。
+    head = subprocess.run(["git", "-c", "core.quotePath=false", "ls-tree", "-r", "-z", "HEAD"], capture_output=True)
+    if head.returncode == 0:
+        for rec in head.stdout.split(b"\0"):
+            if not rec:
+                continue
+            meta, path = rec.split(b"\t", 1)
+            parts = meta.split()
+            if len(parts) == 3 and parts[1] == b"blob":
+                tracked.setdefault(parts[2].decode(), path.decode())
     untracked = [p.decode() for p in git("ls-files", "--others", "--exclude-standard", "-z").split(b"\0") if p]
     dups: dict[str, str] = {}
     if untracked:

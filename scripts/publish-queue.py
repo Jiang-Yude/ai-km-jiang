@@ -364,6 +364,12 @@ def main_health(desk: Path, log: Path) -> bool:
     with log.open("a", encoding="utf-8") as fh:
         fh.write(f"\n===== {now()} main 健康檢查 =====\n")
         fh.flush()
+        # 先對齊遠端最新 main 再檢查（阿港審 2026-10-21）：清理會把本機退回 squash 前，那可能比遠端舊，
+        # 拿舊的好版本檢查會誤判「main 健康」，漏掉別人剛推上去的壞 commit。
+        git(desk, "fetch", "--quiet", "origin", check=False)
+        if git(desk, "merge", "--ff-only", "--quiet", "origin/main", check=False).returncode != 0:
+            fh.write("本機 main 無法快轉到 origin/main，當作不健康\n")
+            return False
         for cmd in (["bash", "scripts/preflight.sh"], ["bash", "scripts/cloudflare/rehearse-build.sh", "main 健康檢查"]):
             if not (desk / cmd[1]).exists():
                 continue
@@ -453,7 +459,9 @@ def cmd_run(a) -> None:
             print(f"❌ {it['id']} {it['branch']}：origin 與本機都沒有這個分支。")
             if not a.dry_run:
                 _set_status(it["id"], "failed", result="分支不在 origin 也不在本機；到施工的 clone git push -u origin 再 run")
+                cmd_board_sync(argparse.Namespace(quiet=True))
             returned.append((it, EXIT_BLOCKED, msg))
+            blocked_files.append((it["slug"], set()))   # 沒有分支就沒有檔案，不連坐別人
             continue
         ref, note = resolve_ref(desk, it["branch"], local, sha)
         if note:
@@ -464,7 +472,9 @@ def cmd_run(a) -> None:
             why = f"跟退回的 {'、'.join(clash)} 改到同一批檔（或判斷不出來），先暫停，等前面修好再 release"
             print(f"⏸ {it['id']} {it['slug']}：{why}")
             _set_status(it["id"], "held", note=why)
+            cmd_board_sync(argparse.Namespace(quiet=True))
             paused.append(it)
+            blocked_files.append((it["slug"], mine))   # 暫停的也算：A 撞 B、B 撞 C 時 C 一起停（阿港審 2026-10-21）
             continue
         print(f"▶ {'[dry-run] ' if a.dry_run else ''}{it['id']} {it['branch']}（merge 用 {ref}）")
         if a.dry_run:
@@ -508,9 +518,9 @@ def cmd_run(a) -> None:
 
 def _cause(seg: list[str]) -> str:
     """從本輪 log 挑最具體的失敗原因：先找第一個 ❌ 檢查項，再找 Error:，最後才用 ⛔ 收尾句。"""
-    for pat in ("  ❌ ", "Error:", "⛔"):
+    for pat in ("CONFLICT (", "  ❌ ", "Error:", "⛔"):
         for l in seg:
-            if pat in l and "preflight 未過" not in l and "publish.sh 在 push 前停下" not in l:
+            if pat in l and "preflight 未過" not in l and "publish.sh 在 push 前停下" not in l and "失敗退出" not in l:
                 return l.strip()
     return next((l for l in reversed(seg) if l.strip()), "").strip()
 

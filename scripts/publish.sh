@@ -88,7 +88,7 @@ fi
 # 只有 C 網要跑；PUBLISH_TARGET=vercel 不經 build.mjs。
 build_rehearsal() {
   [[ "$PUBLISH_TARGET" == "cloudflare" ]] || return 0
-  bash scripts/cloudflare/rehearse-build.sh "$1" || { echo "   不 push，正式站與 origin/main 都沒動。"; return 1; }
+  bash scripts/cloudflare/rehearse-build.sh "$1" || { [[ "${2:-}" == "post-push" ]] || echo "   不 push，正式站與 origin/main 都沒動。"; return 1; }
   REHEARSED_TREE=$(git write-tree)   # 預演看到的就是 index 這棵樹；部署前用它核對
 }
 
@@ -309,7 +309,7 @@ if [[ "$PUBLISH_TARGET" == "cloudflare" ]]; then
     TIP=$(git rev-parse HEAD)
     # 部署的內容要是預演過的那一版（2026-10-21）：main 前進、或只重新部署時，對最終這一版再預演一次。
     if [[ "$(git rev-parse "HEAD^{tree}")" != "${REHEARSED_TREE:-}" ]]; then
-      build_rehearsal "部署前，${TIP:0:7} 未預演過" || { echo "⛔ 要部署的 ${TIP:0:7} 打包不過，正式站維持上一版。main 本身可能已壞，先停下。"; exit 1; }
+      build_rehearsal "部署前，${TIP:0:7} 未預演過" post-push || { echo "⛔ 要部署的 ${TIP:0:7} 打包不過，正式站維持上一版。main 本身可能已壞，先停下。"; exit 1; }
     fi
     echo "▶ 部署 C 網 production（${TIP:0:7}）…"
     # 執行 publish.sh 本身就是正式發布授權（與原本 Vercel 自動促轉同義）

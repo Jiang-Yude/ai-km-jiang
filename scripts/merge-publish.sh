@@ -66,6 +66,11 @@ _mp_unpushed_commit() {
 _mp_cleanup() {
   local rc=$?
   if (( rc != 0 && SQUASH_STARTED == 1 && PUBLISH_DONE == 0 )); then
+    # publish.sh 的 pull --rebase 撞衝突會留下進行中的 rebase（detached HEAD），先中止才能還原（阿港審 2026-10-21）
+    if [[ -d "$(git rev-parse --git-path rebase-merge)" || -d "$(git rev-parse --git-path rebase-apply)" ]]; then
+      git rebase --abort >/dev/null 2>&1 || true
+      echo "▶ 中止了進行中的 rebase"
+    fi
     # 2026-10-21：舊版只 reset --merge，publish.sh 若已 commit 未 push，本機 main 會留一個沒推出去的 commit，
     # 下次跑被「未推送 commit 檢查」擋。現在連那個 commit（與本輪 publish tag）一起退回 squash 前的 main。
     if _mp_unpushed_commit; then
@@ -280,10 +285,17 @@ bash scripts/agent-claim-check.sh "${BRANCH}" "${claim_files[@]}" || true
 echo "▶ 交給 publish.sh（preflight、秘密掃描、commit、push、等本次 SHA 的建置、促轉 main 最新、三網域與路徑驗收）…"
 # 2026-10-21：publish.sh 在 push 前停下（preflight、建置預演、秘密掃描、rebase）＝閘門擋下，main 未動，
 # 統一回 10（清理會把工作區與本輪未推送的 commit 都還原）；已 push 才沿用它的結束碼（佇列判成 30）。
-_pub_rc=0
-bash scripts/publish.sh "$MSG" || _pub_rc=$?
+# 有沒有 push 成功，看 publish.sh 印的 PUBLISH_PUSHED 收據，不用 git 狀態猜：
+# rebase 撞衝突時 HEAD 停在遠端 main 上，用「HEAD 在 origin/main 歷史裡」判斷會誤以為已 push（沙盒情境 C 實測，2026-10-21）。
+_pub_log="$(mktemp "${TMPDIR:-/tmp}/merge-publish-out.XXXXXX")"
+set +e   # 要拿 publish.sh 自己的結束碼（PIPESTATUS），中間不能讓 set -e／|| 蓋掉
+bash scripts/publish.sh "$MSG" 2>&1 | tee "$_pub_log"
+_pub_rc=${PIPESTATUS[0]}
+set -e
+_pushed=0; grep -q '^PUBLISH_PUSHED ' "$_pub_log" && _pushed=1
+rm -f "$_pub_log"
 if (( _pub_rc != 0 )); then
-  if [[ "$(git rev-parse HEAD)" != "$MAIN_BEFORE" ]] && git merge-base --is-ancestor HEAD refs/remotes/origin/main 2>/dev/null; then
+  if (( _pushed == 1 )); then
     echo "⛔ publish.sh 已 push，但部署或驗收沒完成（exit ${_pub_rc}）。"
     PUBLISH_DONE=1   # 已推出去的不還原
     exit "$_pub_rc"
