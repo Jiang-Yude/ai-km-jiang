@@ -23,6 +23,24 @@ window.ARTICLE_TAGS = {
 
 window.ARTICLES = [
   {
+    id: "ai-employee-tests-new-tools",
+    url: "articles/ai-employee-tests-new-tools/",
+    date: "2026-10-21",
+    updated: "2026-10-21",
+    title: "看到新 AI 工具，要自己去 GitHub 找來裝嗎？｜叫 AI 員工在虛擬環境自己裝自己測，難的是設計不用審核的授權",
+    problem: "在社群上看到新 AI 工具很想試，不知道要自己去 GitHub 找、自己裝，還是給 AI 一句指令就好；也怕裝壞電腦。",
+    audience: "有 Claude Code、Codex 這類 Agent，想讓它幫忙試工具，卻不知道該放手到哪裡的人。",
+    summary: "學員問叫 AI 試新工具只要給指令還是要自己串，我的回答是操作叫 Agent 自己做，難的是審核，更難的是不用審核。用 AI 員工朵拉 2026-10-21 測 Indra OCR 對 Mac 內建 OCR 的真實過程（7 張自製中文樣本，平均錯字率 Mac 0.54%、Indra 1.99%，耗時 Mac 112 毫秒、Indra 66 毫秒），講清楚 Agent 怎麼自己找、自己裝、自己測；Python 虛擬環境把工具和 22 個套件關在一個資料夾，但擋不住程式讀其他檔案；標註即授權之外，四種情況一定停下來問人，並留原始紀錄當事後證據。附一段叫 Agent 幫你試工具的提示詞。",
+    tags: {
+      topic: ["AI工作流", "AIAgent"],
+      level: ["基礎"],
+      content_type: ["案例文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["dont-learn-ai-tools", "ai-employees-manage-agents", "rules-need-an-engine", "before-installing-others-skill", "loop-engineering-guardrails"]
+  },
+
+  {
     id: "at-a-glance",
     url: "articles/at-a-glance/",
     date: "2026-10-21",
@@ -75,7 +93,7 @@ window.ARTICLES = [
       content_type: ["觀點文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["rule-file-rebound", "ai-rule-file-slimming", "how-to-verify-ai-rule-changes", "what-is-loop-engineering", "copied-mechanism-is-no-mechanism", "caught-ai-slacking-into-rules"],
+    related: ["rule-file-rebound", "ai-rule-file-slimming", "how-to-verify-ai-rule-changes", "what-is-loop-engineering", "copied-mechanism-is-no-mechanism", "caught-ai-slacking-into-rules", "ai-employee-tests-new-tools"],
     cover: { wide: "images/articles/rules-need-an-engine-cover.jpg" }
   },
 
@@ -379,7 +397,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["dont-learn-ai-tools", "harness-to-loop", "parallel-site-editing", "what-is-loop-engineering", "cathay-tech-conference-2026", "chatgpt-web-codex-console", "ai-manages-ai-focus"],
+    related: ["dont-learn-ai-tools", "harness-to-loop", "parallel-site-editing", "what-is-loop-engineering", "cathay-tech-conference-2026", "chatgpt-web-codex-console", "ai-manages-ai-focus", "ai-employee-tests-new-tools"],
     cover: { wide: "images/articles/ai-employees-manage-agents-cover.jpg" }
   },
 
@@ -1698,7 +1716,7 @@ window.ARTICLES = [
       content_type: ["觀點文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["harness-mindset-for-bosses", "ai-tools-professional-judgment", "start-with-a-wrong-draft", "let-ai-do-the-setup", "start-from-one-persons-problem", "ai-employees-manage-agents"]
+    related: ["harness-mindset-for-bosses", "ai-tools-professional-judgment", "start-with-a-wrong-draft", "let-ai-do-the-setup", "start-from-one-persons-problem", "ai-employees-manage-agents", "ai-employee-tests-new-tools"]
   },
 
   {
@@ -1900,7 +1918,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["after-ai-says-remembered", "long-document-review-layers", "dual-track-planning-loop", "copied-mechanism-is-no-mechanism", "ai-user-testing"]
+    related: ["after-ai-says-remembered", "long-document-review-layers", "dual-track-planning-loop", "copied-mechanism-is-no-mechanism", "ai-user-testing", "ai-employee-tests-new-tools"]
   },
 
   {
@@ -2652,7 +2670,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["what-is-loop-engineering", "harness-mindset-for-bosses", "ai-loop-safety-recovery", "dual-track-planning-loop", "ai-handoff-instructions", "long-task-completion-rate", "meeting-into-verifiable-loop", "loop-round-limit", "how-to-verify-ai-rule-changes", "loop-four-entries"]
+    related: ["what-is-loop-engineering", "harness-mindset-for-bosses", "ai-loop-safety-recovery", "dual-track-planning-loop", "ai-handoff-instructions", "long-task-completion-rate", "meeting-into-verifiable-loop", "loop-round-limit", "how-to-verify-ai-rule-changes", "loop-four-entries", "ai-employee-tests-new-tools"]
   },
 
   {
