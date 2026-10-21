@@ -134,6 +134,7 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
 .lightbox{position:fixed;inset:0;z-index:10000;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(12,10,8,.92);cursor:zoom-out;backdrop-filter:blur(4px)}
 .lightbox.open{display:flex}.lightbox img{max-width:96vw;max-height:92vh;border-radius:10px;box-shadow:0 24px 60px rgba(0,0,0,.5)}
 .lightbox-close{position:fixed;top:18px;right:24px;color:#fff;font-size:34px;line-height:1;font-weight:700;cursor:pointer;opacity:.85}
+.article-meta.verified-meta{display:flex;flex-wrap:wrap;gap:8px 12px;margin:14px 0 0;color:#6a635a;font-size:15px;font-weight:700}
 .kicker{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.55rem;color:#7a5c3a;font-weight:500}
 .hero h1{max-width:none;margin:16px 0 18px;font-size:clamp(36px,6vw,72px);line-height:1.08;overflow-wrap:anywhere}
 .hero p{max-width:none;font-size:clamp(18px,2vw,23px);line-height:1.62;color:#3a342d}
@@ -223,6 +224,11 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
     <div class="kicker">{{KICKER}}</div>
     <h1>{{TITLE}}</h1>
     <p>{{HERO_LEAD}}</p>
+    <!-- 時效文（價格、模型名、工具步驟）才放這行（2026-10-20 江江拍板）：article.json 加 "verified": "YYYY-MM-DD"，
+         這裡顯示同一個日期。日期要有出處（內文寫的查證日，沒寫就用發布日），不准自己編。
+         內文有多個查證日時，取主要那批全面查證的日期；只補查一兩處的局部複查不算。
+         超過 90 天由 scripts/check-article-verified.mjs 在每日巡檢列黃燈，不擋上線。非時效文整行刪掉。
+    <div class="article-meta verified-meta"><span>發布：{{DATE}}</span><span>查證日期 {{VERIFIED}}</span></div> -->
   </div>
   <!-- 封面圖（建議放）：⚠️ 比例是硬規則，不是美感選擇。
        封面一律【橫式 16:9】，生成 1600x900、落檔 1400 寬，用預設 .hero-figure{width:620px}，不要加 aspect-ratio。
