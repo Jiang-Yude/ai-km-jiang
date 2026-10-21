@@ -19,7 +19,7 @@ a{color:var(--gold)}
 .fx-link{display:block;text-align:center;color:#42659a;padding:8px 0;text-decoration:none}
 .note{font-size:15px;color:var(--muted);margin:14px 0 0}
 #fwd{display:none}.fwd #mine{display:none}.fwd #fwd{display:block}
-#fwdRail .slot{flex-basis:min(66vw,300px)}
+#fwdRail .slot{flex-basis:min(66vw,300px);aspect-ratio:auto}
 .fwd #mineLink{display:none}
 /* 轉傳頁版型：照丁禹勝老師的轉傳頁（上方橫幅＋名片框＋大按鈕），配色用江江的咖啡金（2026-10-21） */
 .band{display:none}
@@ -94,17 +94,23 @@ btn.onclick = share;
 // 送出前在每一張底部加小字「轉傳這張名片」（照丁禹勝老師的做法，2026-10-21 江江定）：收到的人在 LINE 裡一按，就回到這一頁看完名片再選好友傳出去。
 // 只加在送出的訊息上，官網看到的名片（line-flex.json）不動。別人的名片（?c=）連結太長放不進按鈕，不加。
 var FORWARD_URI = 'https://liff.line.me/' + LIFF_ID + '?fwd=1';
+// 轉傳頁預覽：量出每張名片的自然高度，取最高的當五張共同高度，再整張等比縮到格子寬度
+function fitFwd(){
+  var slots = document.querySelectorAll('#fwdRail .slot'), max = 0;
+  [].forEach.call(slots, function(s){ var b = s.firstElementChild; b.style.height = 'auto'; max = Math.max(max, b.scrollHeight); });
+  [].forEach.call(slots, function(s){ var b = s.firstElementChild, k = s.clientWidth / CARD_W;
+    b.style.height = max + 'px'; b.style.transform = 'scale(' + k + ')'; s.style.height = (max * k) + 'px'; });
+}
 function withForward(m){
   var copy = JSON.parse(JSON.stringify(m));
   var bubbles = copy.contents && copy.contents.type === 'carousel' ? copy.contents.contents : [copy.contents];
   bubbles.forEach(function(b){
     if (!b || b.type !== 'bubble') return;
-    // 用小字連結不用按鈕，盡量不把名片撐高
-    var link = { type:'text', text:'轉傳這張名片 ›', size:'sm', color:'#A27C45', align:'center',
-      action:{ type:'uri', label:'轉傳這張名片', uri:FORWARD_URI } };
+    // 跟「認識江江・看官網」同一種連結式按鈕（也是丁禹勝老師名片的樣式），江江 2026-10-21 要一眼看得到
+    var link = { type:'button', style:'link', height:'sm', action:{ type:'uri', label:'轉傳這張名片', uri:FORWARD_URI } };
     // 原本底部若是直排就接在後面；橫排或其他就整個包進一層直排，避免小字擠在旁邊（阿港 2026-10-21 審）
-    if (b.footer && b.footer.type === 'box' && b.footer.layout === 'vertical' && Array.isArray(b.footer.contents)) { link.margin = 'sm'; b.footer.contents.push(link); }
-    else if (b.footer) b.footer = { type:'box', layout:'vertical', contents:[b.footer, Object.assign({ margin:'sm' }, link)] };
+    if (b.footer && b.footer.type === 'box' && b.footer.layout === 'vertical' && Array.isArray(b.footer.contents)) { b.footer.contents.push(link); }
+    else if (b.footer) b.footer = { type:'box', layout:'vertical', contents:[b.footer, link] };
     else b.footer = { type:'box', layout:'vertical', paddingAll:'6px', backgroundColor:'#FFFCF6', contents:[link] };
   });
   return copy;
@@ -133,8 +139,9 @@ if (!param('c') && !isFwd) fetch('/card/line-flex.json').then(function(r){ retur
       if (isFwd) {
         document.body.classList.add('fwd'); btn.textContent = '選擇好友轉傳'; document.title = '轉傳江江教練的 LINE 名片';
         // 跟 /linecard/ 一樣照 LINE 寬度排 3:4 再縮小，換行才不會擠（AUT 2026-10-21）
-        renderFlexCards(mine).forEach(function(b){ document.getElementById('fwdRail').appendChild(b); });
-        fitSlots();
+        // 預覽畫「實際會傳出去」的那組（每張底部有轉傳這張名片），高度照 LINE：五張一樣高、以最高那張為準
+        renderFlexCards(card).forEach(function(b){ document.getElementById('fwdRail').appendChild(b); });
+        fitFwd(); window.addEventListener('resize', fitFwd);
       }
     }
     // 登入回來時網址要保留 fwd=1，否則會被當成首頁進來而自動跳選人（CX、阿港 2026-10-21 審）
