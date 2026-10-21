@@ -149,9 +149,18 @@ if [[ -n "$UNPUSHED" ]]; then
   echo "   ✅ 已帶 CONFIRM_UNPUSHED=1，視為已確認，繼續。"
 fi
 
+# ─── 快速部署（2026-10-21 江江：「有我說快速部署的時候 就快速驅改 然後再排一個時間有空再檢查」）───
+# PUBLISH_FAST=1：preflight 整套先不跑，只留又快又攸關安全的必擋（部署環境已在上面、凍結簡報雜湊、建置預演、
+# 秘密掃描、正式站驗收）；被跳過的檢查記進待補清單，由每日巡檢（launchd 06:30）在「改動前＋本次改動」的狀態補跑，
+# 沒過就列紅項開卡，不會自動 revert。
+if [[ "${PUBLISH_FAST:-0}" == 1 ]]; then
+  echo "▶ 快速部署：preflight 延後到每日巡檢補跑，現在只跑必擋"
+  node scripts/cloudflare/check-legacy-decks.mjs || { echo "⛔ 凍結舊簡報被改動，快速部署也不放行"; exit 1; }
+else
 echo "▶ Preflight…"
 PREFLIGHT_SKIP_SECRET=1 SAFE_DEPLOY_TOOL="$SAFE_DEPLOY_TOOL" bash scripts/preflight.sh \
   || { echo "⛔ preflight 未過，取消發佈"; exit 1; }
+fi
 
 if [[ "${#PUBLISH_PATHS[@]}" -gt 0 ]]; then
   ALL_CHANGED=$(
@@ -245,6 +254,7 @@ else
   echo "▶ Rebase 沒改內容，沿用 commit 前那次秘密掃描"
 fi
 
+REMOTE_BEFORE_PUSH=$(git rev-parse '@{u}')   # 快速部署補檢查的基準：推送前的遠端 main（阿港審：不能寫死 HEAD~1）
 TAG="publish/$(TZ=Asia/Taipei date +%Y-%m-%d-%H%M%S)"
 echo "▶ Tag ${TAG} + atomic push…"
 git tag "$TAG"
@@ -253,6 +263,12 @@ PUBLISH_SCANNED_TREE="$SCANNED_TREE" PUBLISH_CHECKED_TREE="$CHECKED_TREE" git pu
   "refs/tags/$TAG:refs/tags/$TAG"
 # 機器可讀收據（2026-10-09，Codex R2 第 1 條）：只有 push 真的成功才印；publish-queue.py 用它判「已 push 但部署或驗收未完成」。
 echo "PUBLISH_PUSHED $(git rev-parse HEAD) ${TAG}"
+if [[ "${PUBLISH_FAST:-0}" == 1 ]]; then
+  _fp="${FAST_PENDING_FILE:-$HOME/.cache/ai-km-jiang/fast-pending.jsonl}"; mkdir -p "$(dirname "$_fp")"
+  python3 -c 'import json,sys;print(json.dumps({"sha":sys.argv[1],"base":sys.argv[2],"tag":sys.argv[3],"msg":sys.argv[4],"at":sys.argv[5]},ensure_ascii=False))' \
+    "$(git rev-parse HEAD)" "$REMOTE_BEFORE_PUSH" "$TAG" "$MSG" "$(TZ=Asia/Taipei date +'%Y-%m-%d %H:%M')" >> "$_fp"
+  echo "▶ 已排進待補檢查：$(git rev-parse --short HEAD)（下次每日巡檢補跑 preflight）"
+fi
 else
   # 只重部署：工作區要乾淨、本機 main 要等於 origin/main（落後就快轉），部署的就是遠端已有的那一版。
   python3 scripts/git-dirty.py >/dev/null || { echo "⛔ 重新部署前工作區要乾淨"; python3 scripts/git-dirty.py || true; exit 2; }

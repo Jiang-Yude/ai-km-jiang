@@ -19,7 +19,7 @@ INCOMPLETE=0   # 有檢查沒跑完（不是紅項，但也不能說全綠）
 echo "═══ 官網每日巡檢 $(TZ=Asia/Taipei date +"%Y-%m-%d %H:%M") ═══"
 
 echo ""
-echo "▶ 1/7 文章互聯完整性（verify-interlink）…"
+echo "▶ 1/8 文章互聯完整性（verify-interlink）…"
 if node scripts/verify-interlink.js; then
   echo "  ✅ PASS"
 else
@@ -28,7 +28,7 @@ else
 fi
 
 echo ""
-echo "▶ 2/7 索引涵蓋（check-index-coverage）…"
+echo "▶ 2/8 索引涵蓋（check-index-coverage）…"
 if node scripts/check-index-coverage.mjs; then
   echo "  ✅ PASS"
 else
@@ -37,7 +37,7 @@ else
 fi
 
 echo ""
-echo "▶ 3/7 線上抽測：site-index 隨機 10 筆 URL 打正式站…"
+echo "▶ 3/8 線上抽測：site-index 隨機 10 筆 URL 打正式站…"
 SAMPLE=$(node -e '
   const idx = JSON.parse(require("fs").readFileSync("site-index.json", "utf8"));
   // 只抽站內路徑；站外資源連結（github.io、gamma.app 等）歸每週 check-links 管
@@ -64,7 +64,7 @@ else
 fi
 
 echo ""
-echo "▶ 4/7 本地索引與遠端一致性：線上 site-index.json 可取得…"
+echo "▶ 4/8 本地索引與遠端一致性：線上 site-index.json 可取得…"
 _code=$(curl -s -o /dev/null -w '%{http_code}' --max-time 20 "${BASE_URL}/site-index.json")
 if [[ "$_code" == "200" ]]; then
   echo "  ✅ 200 site-index.json"
@@ -74,7 +74,7 @@ else
 fi
 
 echo ""
-echo "▶ 5/7 對外講法漂移健檢（多站）…"
+echo "▶ 5/8 對外講法漂移健檢（多站）…"
 # 檢查網站的對外自我介紹有沒有跟真相脫節：禁用詞、版本標記齊全、跟上游 repo 對版。
 # 站台清單與每站設定在 scripts/messaging-sites/，加一個客戶站只要加一行，不用改程式。
 python3 scripts/messaging-check.py
@@ -90,7 +90,7 @@ else
 fi
 
 echo ""
-echo "▶ 6/7 未上線分支盤點（修好了但沒進 main 的東西）…"
+echo "▶ 6/8 未上線分支盤點（修好了但沒進 main 的東西）…"
 # 2026-08-31 立，事故驅動：8/19 修好「hero 圖可被讀者拖走」的 commit 停在分支沒 merge、沒部署，
 # 卡片留在「施工中掛牌」區被後續掛牌蓋掉，十二天沒人碰，同一個問題被江江抓第二次。
 # 「修好了」跟「上線了」中間本來沒有任何東西在看，這一項就是補那個缺口。
@@ -105,7 +105,7 @@ case $? in
 esac
 
 echo ""
-echo "▶ 7/7 全站檢查（2026-10-21 從上線前 preflight 移過來的全站項）…"
+echo "▶ 7/8 全站檢查（2026-10-21 從上線前 preflight 移過來的全站項）…"
 # 企劃 v3 第 4 件：上線前只擋「這次改動新造成的」，站上早就存在的舊問題由這裡每天全站掃一次。
 # 這裡一律嚴格（任何失敗都算紅），不做新舊比對。
 GLOBAL_RED=()
@@ -120,6 +120,48 @@ for _chk in "node scripts/link-graph.js check" "python3 scripts/check-links.py" 
     GLOBAL_RED+=("${_chk#* scripts/}"); FAIL=1
   fi
 done
+
+echo ""
+echo "▶ 8/8 快速部署的延後檢查（2026-10-21 立）…"
+# 「快速部署」當下跳過的 preflight 在這裡補跑：開一張「改動前」的暫時桌，套上那次改動（staged），
+# 等於重現當時正常部署會跑 preflight 的狀態（只擋那次改動新造成的問題）。沒過＝紅項開卡，不自動 revert。
+FAST_PENDING="${FAST_PENDING_FILE:-$HOME/.cache/ai-km-jiang/fast-pending.jsonl}"
+FAST_DONE="${FAST_PENDING%.jsonl}-done.jsonl"
+_fp_work="$FAST_PENDING.working"
+# 上一輪中斷留下的 .working 先接回來，再把新的待補併進去（阿港審：直接 mv 會覆蓋或永遠遺留）
+if [[ -s "$FAST_PENDING" ]]; then cat "$FAST_PENDING" >> "$_fp_work" && : > "$FAST_PENDING"; fi
+if [[ -s "$_fp_work" ]]; then
+  git fetch -q origin 2>/dev/null || true
+  _fp_retry="$_fp_work.retry"; : > "$_fp_retry"
+  while IFS= read -r _rec; do
+    [[ -n "$_rec" ]] || continue
+    _sha=$(python3 -c 'import json,sys;print(json.loads(sys.argv[1])["sha"])' "$_rec")
+    _base=$(python3 -c 'import json,sys;print(json.loads(sys.argv[1])["base"])' "$_rec")
+    _msg=$(python3 -c 'import json,sys;print(json.loads(sys.argv[1]).get("msg",""))' "$_rec")
+    _tmp=$(mktemp -d "${TMPDIR:-/tmp}/fast-postcheck.XXXXXX"); _wt="$_tmp/pc"; _rc=9
+    _log="$(dirname "$FAST_PENDING")/fast-postcheck-${_sha:0:7}.log"
+    if git worktree add --detach -q "$_wt" "$_base" 2>/dev/null && git -C "$_wt" read-tree -m -u "$_sha" 2>/dev/null; then
+      ( cd "$_wt" && PREFLIGHT_SKIP_ENV=1 PREFLIGHT_SKIP_SECRET=1 PREFLIGHT_BASE="$_base" bash scripts/preflight.sh ) > "$_log" 2>&1; _rc=$?
+    fi
+    git worktree remove --force "$_wt" >/dev/null 2>&1; rmdir "$_tmp" 2>/dev/null
+    if [[ $_rc -eq 9 ]]; then
+      # 補檢查的環境沒建起來（不是檢查沒過），留著下次重試，這輪不算全綠
+      echo "  ⚠️  快速部署 ${_sha:0:7} 補檢查環境建不起來，留到下次重試"; INCOMPLETE=1
+      printf '%s\n' "$_rec" >> "$_fp_retry"; continue
+    fi
+    if [[ $_rc -eq 0 ]]; then
+      echo "  ✅ 快速部署 ${_sha:0:7}（${_msg:0:40}）補檢查通過"
+    else
+      echo "  ❌ 快速部署 ${_sha:0:7}（${_msg:0:40}）補檢查沒過（log：$_log）"
+      grep -E '^  ❌|本次新出現' "$_log" | head -6 | sed 's/^/     /'
+      FAIL=1
+    fi
+    python3 -c 'import json,sys;r=json.loads(sys.argv[1]);r["checked_rc"]=int(sys.argv[2]);print(json.dumps(r,ensure_ascii=False))' "$_rec" "$_rc" >> "$FAST_DONE"
+  done < "$_fp_work"
+  mv "$_fp_retry" "$_fp_work"; [[ -s "$_fp_work" ]] || rm -f "$_fp_work"
+else
+  echo "  ✅ 沒有待補檢查的快速部署"
+fi
 
 echo ""
 if [[ "$FAIL" -ne 0 ]]; then

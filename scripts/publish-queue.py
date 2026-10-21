@@ -437,6 +437,12 @@ def cmd_run(a) -> None:
         finish(EXIT_OK, "佇列沒有等待部署的項目，不用做事。")
     if not a.dry_run:
         NOTIFY_CTX.update({"items": [f"{t['id']} {t['branch']}" for t in targets], "authorized_by": a.authorized_by.strip()})
+    # 快速部署（2026-10-21 江江：「有我說快速部署的時候 就快速驅改 然後再排一個時間有空再檢查」）：
+    # preflight 延後到每日巡檢補跑，只留必擋。由 merge-publish → publish.sh 讀環境變數 PUBLISH_FAST。
+    os.environ.pop("PUBLISH_FAST", None)   # 外部殘留的環境變數不算，只認這次指令的 --fast（阿港審建議）
+    if getattr(a, "fast", False):
+        os.environ["PUBLISH_FAST"] = "1"
+        print("⚡ 快速部署：preflight 延後到下次每日巡檢（06:30）補跑，現在只跑必擋（凍結簡報、建置預演、秘密掃描、正式站驗收）")
     for it in targets:
         if it["status"] not in ("queued", "failed"):
             finish(EXIT_BLOCKED, f"{it['id']} 狀態是 {it['status']}，不能部署；只跑 queued（或指定 id 重試 failed）。")
@@ -549,7 +555,9 @@ def _run_one(a, it, desk, me, script):
         head = git(desk, "rev-parse", "--short", "HEAD", check=False).stdout.strip()
         _set_status(it["id"], "done", result=f"{now()} 上線 main {head}｜{tail[:120]}")
         print(f"✅ {it['id']} 上線完成（main {head}）")
-        worklog_line(it, f"上線 main {head}", "部署台跑完、正式站驗收 200")
+        fast = os.environ.get("PUBLISH_FAST") == "1"
+        worklog_line(it, f"{'快速部署' if fast else ''}上線 main {head}",
+                     "快速部署：只跑必擋、正式站驗收 200，preflight 排到下次每日巡檢補跑" if fast else "部署台跑完、正式站驗收 200")
         cmd_board_sync(argparse.Namespace(quiet=True))
         return ("ok", EXIT_OK, "")
     if pushed:
@@ -654,12 +662,13 @@ def main() -> None:
     s = sub.add_parser("hold"); s.add_argument("id"); s.add_argument("--reason"); s.set_defaults(f=cmd_hold)
     s = sub.add_parser("release"); s.add_argument("id"); s.set_defaults(f=cmd_release)
     s = sub.add_parser("remove"); s.add_argument("id"); s.add_argument("--reason"); s.set_defaults(f=cmd_remove)
-    s = sub.add_parser("run"); s.add_argument("id", nargs="?"); s.add_argument("--next", action="store_true"); s.add_argument("--all", action="store_true"); s.add_argument("--dry-run", action="store_true"); s.add_argument("--desk"); s.add_argument("--authorized-by", help="江江當輪授權原話與時間，寫進紀錄；沒帶不跑"); s.add_argument("--here", action="store_true", help="佇列設了主要部署機時，仍在這台跑"); s.set_defaults(f=cmd_run)
+    s = sub.add_parser("run"); s.add_argument("id", nargs="?"); s.add_argument("--next", action="store_true"); s.add_argument("--all", action="store_true"); s.add_argument("--dry-run", action="store_true"); s.add_argument("--fast", action="store_true", help="快速部署：preflight 延後到每日巡檢補跑"); s.add_argument("--desk"); s.add_argument("--authorized-by", help="江江當輪授權原話與時間，寫進紀錄；沒帶不跑"); s.add_argument("--here", action="store_true", help="佇列設了主要部署機時，仍在這台跑"); s.set_defaults(f=cmd_run)
     for name, hint in (("deploy-next", "部署佇列裡下一筆（＝run --next，一個指令跑到上線並驗收）"), ("deploy", "部署指定 id（＝run <id>）")):
         s = sub.add_parser(name, help=hint)
         if name == "deploy":
             s.add_argument("id")
         s.add_argument("--dry-run", action="store_true"); s.add_argument("--desk"); s.add_argument("--authorized-by"); s.add_argument("--here", action="store_true")
+        s.add_argument("--fast", action="store_true", help="快速部署：preflight 延後到每日巡檢補跑，只跑必擋")
         s.set_defaults(f=cmd_run, next=name == "deploy-next", all=False, batch=name == "deploy-next", **({"id": None} if name == "deploy-next" else {}))
     s = sub.add_parser("board-sync"); s.set_defaults(f=cmd_board_sync, quiet=False)
     s = sub.add_parser("set-desk", help="部署現場（相對家目錄；空字串＝主 clone）"); s.add_argument("path"); s.set_defaults(f=cmd_set_desk)
