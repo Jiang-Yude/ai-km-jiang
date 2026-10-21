@@ -25,6 +25,14 @@ PUBLISH_TARGET="${PUBLISH_TARGET:-cloudflare}"
 case "$PUBLISH_TARGET" in cloudflare|vercel) ;; *) echo "⛔ PUBLISH_TARGET 只能是 cloudflare 或 vercel（目前：$PUBLISH_TARGET）"; exit 2 ;; esac
 export PUBLISH_TARGET
 EXPECTED_BRANCH="main"
+# --redeploy（2026-10-21 立）：結束碼 30（已 push、部署或驗收沒完成）時，只重跑「部署＋驗收」，不 commit、不 push。
+# 舊說明「重跑 publish.sh」其實會因為沒有 staged 內容而 exit 2，這個模式補上那條路。publish-queue.py 會自動用它重試一次。
+REDEPLOY=0
+if [[ "${1:-}" == "--redeploy" ]]; then
+  [[ "$#" == "1" ]] || { echo "⛔ --redeploy 不接其他參數"; exit 2; }
+  REDEPLOY=1
+  set -- "重新部署 origin/main（不 commit）"
+fi
 MSG="${1:?用法：bash scripts/publish.sh \"commit 訊息\"}"
 shift
 PUBLISH_PATHS=()
@@ -71,6 +79,20 @@ if [[ "$UPSTREAM" != "origin/$EXPECTED_BRANCH" ]]; then
   exit 2
 fi
 
+# ─── 建置預演（2026-10-21 立，事故驅動）───
+# 立因：build.mjs 打包時的檢查（凍結舊簡報雜湊、API 轉換、Pages 檔案上限、課後頁檢查器）原本只在
+# push 之後的 deploy-production 才跑。10:04 官網改版改到凍結簡報，壞改動先 push 進 main，打包才失敗，
+# main 從此帶著壞改動，之後每次部署都卡在同一處（結束碼 30），擋到 12:24。
+# 現在 commit 前先用同一支 build.mjs 對「即將 commit 的內容」完整打包一次（輸出到暫存夾、跑完丟掉），
+# 不過就不 commit、不 push。此時工作區＝index（上面已確認沒有未納入的變更），build.mjs 用 git ls-files 取檔，看到的就是本次要上線的樣子。
+# 只有 C 網要跑；PUBLISH_TARGET=vercel 不經 build.mjs。
+build_rehearsal() {
+  [[ "$PUBLISH_TARGET" == "cloudflare" ]] || return 0
+  bash scripts/cloudflare/rehearse-build.sh "$1" || { echo "   不 push，正式站與 origin/main 都沒動。"; return 1; }
+  REHEARSED_TREE=$(git write-tree)   # 預演看到的就是 index 這棵樹；部署前用它核對
+}
+
+if (( REDEPLOY == 0 )); then
 for path in "${PUBLISH_PATHS[@]}"; do
   case "$path" in
     ""|"."|/*|*..*|:*|!*|*[\*\?\[]*)
@@ -194,32 +216,6 @@ git -c core.quotePath=false diff --cached --name-status
 echo "▶ Push 前秘密掃描…"
 bash "$SAFE_DEPLOY_TOOL" --scan-only "$REPO_ROOT"
 
-# ─── 建置預演（2026-10-21 立，事故驅動）───
-# 立因：build.mjs 打包時的檢查（凍結舊簡報雜湊、API 轉換、Pages 檔案上限、課後頁檢查器）原本只在
-# push 之後的 deploy-production 才跑。10:04 官網改版改到凍結簡報，壞改動先 push 進 main，打包才失敗，
-# main 從此帶著壞改動，之後每次部署都卡在同一處（結束碼 30），擋到 12:24。
-# 現在 commit 前先用同一支 build.mjs 對「即將 commit 的內容」完整打包一次（輸出到暫存夾、跑完丟掉），
-# 不過就不 commit、不 push。此時工作區＝index（上面已確認沒有未納入的變更），build.mjs 用 git ls-files 取檔，看到的就是本次要上線的樣子。
-# 只有 C 網要跑；PUBLISH_TARGET=vercel 不經 build.mjs。
-build_rehearsal() {
-  [[ "$PUBLISH_TARGET" == "cloudflare" ]] || return 0
-  local _root _rc=0
-  _root=$(mktemp -d "${TMPDIR:-/tmp}/ai-km-jiang-rehearsal.XXXXXX")
-  echo "▶ 建置預演（$1，push 前用 build.mjs 完整打包一次，不部署）…"
-  CF_BUILD_ROOT="$_root" \
-    SAFE_DEPLOY_POSTCLASS_EVIDENCE_DIR="${SAFE_DEPLOY_POSTCLASS_EVIDENCE_DIR:-$HOME/Library/Mobile Documents/iCloud~md~obsidian/Documents/江昱德 主知識庫/_agent/tmp/2026-10-06 歷史課後頁放行}" \
-    node scripts/cloudflare/build.mjs --target=production > "$_root/rehearsal.log" 2>&1 || _rc=$?
-  if (( _rc != 0 )); then
-    grep -E 'Error|❌|⛔' "$_root/rehearsal.log" | head -8 || true
-    echo "   （預演 log 末段）"; tail -12 "$_root/rehearsal.log" | sed 's/^/   /'
-  fi
-  python3 -c 'import shutil,sys; shutil.rmtree(sys.argv[1], ignore_errors=True)' "$_root"
-  if (( _rc != 0 )); then
-    echo "⛔ 建置預演失敗（exit ${_rc}）：這版內容打包不過，不 push，正式站與 origin/main 都沒動。"
-    return 1
-  fi
-  echo "  ✅ 建置預演通過"
-}
 build_rehearsal "commit 前" || exit 1
 
 PRE_COMMIT_HEAD=$(git rev-parse HEAD)
@@ -248,6 +244,14 @@ git push --atomic origin \
   "refs/tags/$TAG:refs/tags/$TAG"
 # 機器可讀收據（2026-10-09，Codex R2 第 1 條）：只有 push 真的成功才印；publish-queue.py 用它判「已 push 但部署或驗收未完成」。
 echo "PUBLISH_PUSHED $(git rev-parse HEAD) ${TAG}"
+else
+  # 只重部署：工作區要乾淨、本機 main 要等於 origin/main（落後就快轉），部署的就是遠端已有的那一版。
+  python3 scripts/git-dirty.py >/dev/null || { echo "⛔ 重新部署前工作區要乾淨"; python3 scripts/git-dirty.py || true; exit 2; }
+  git fetch --quiet origin main || { echo "⛔ 讀不到 origin/main"; exit 1; }
+  git merge --ff-only --quiet origin/main || { echo "⛔ 本機 main 與 origin/main 分歧，不重新部署"; exit 2; }
+  TAG="redeploy"
+  echo "▶ 只重新部署 origin/main $(git rev-parse --short HEAD)（不 commit、不 push）"
+fi
 
 # ─── 動態驗收路徑（2026-07-29 立，事故驅動）───
 # 固定五站不含新文章路徑，所以「索引宣告存在、檔案被 .vercelignore 擋著沒上傳」的 404
@@ -303,6 +307,10 @@ if [[ "$PUBLISH_TARGET" == "cloudflare" ]]; then
       git merge --ff-only origin/main || { echo "⛔ 無法快轉到 origin/main，正式站未動"; exit 1; }
     fi
     TIP=$(git rev-parse HEAD)
+    # 部署的內容要是預演過的那一版（2026-10-21）：main 前進、或只重新部署時，對最終這一版再預演一次。
+    if [[ "$(git rev-parse "HEAD^{tree}")" != "${REHEARSED_TREE:-}" ]]; then
+      build_rehearsal "部署前，${TIP:0:7} 未預演過" || { echo "⛔ 要部署的 ${TIP:0:7} 打包不過，正式站維持上一版。main 本身可能已壞，先停下。"; exit 1; }
+    fi
     echo "▶ 部署 C 網 production（${TIP:0:7}）…"
     # 執行 publish.sh 本身就是正式發布授權（與原本 Vercel 自動促轉同義）
     SAFE_DEPLOY_CF_PROMOTE=ai-km-jiang-cf-20261004 bash "$REPO_ROOT/scripts/cloudflare/deploy-production.sh" \

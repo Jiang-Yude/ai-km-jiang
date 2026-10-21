@@ -74,7 +74,7 @@ _mp_cleanup() {
       echo "▶ 本輪 commit 沒推出去，本機 main 已退回 squash 前（${MAIN_BEFORE:0:7}）。"
     fi
     git reset --merge >/dev/null 2>&1 || git reset --hard -q >/dev/null 2>&1 || true
-    if [[ -z "$(git -c core.quotePath=false status --porcelain)" ]]; then
+    if python3 scripts/git-dirty.py >/dev/null 2>&1; then
       echo "▶ 失敗退出（exit ${rc}）：main 工作區已還原乾淨，分支內容未動，修好後可直接重跑。"
     else
       echo "⚠️ 失敗退出（exit ${rc}）且還原後工作區仍不乾淨，先 git status 看。"

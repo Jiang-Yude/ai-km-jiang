@@ -49,7 +49,7 @@ QUEUE_FILE = Path(os.environ.get("SITE_PUBLISH_QUEUE_FILE") or (KB / "_agent/too
 BOARD_FILE = Path(os.environ.get("SITE_PUBLISH_BOARD_FILE") or (KB / "00 工作台/🌐 官網看板.md"))
 REPO_ROOT = Path(__file__).resolve().parent.parent
 DEFAULT_DESK = Path(os.environ.get("SITE_PUBLISH_DESK") or (HOME / "Documents/repo-workspace/ai-km-jiang"))
-LOG_DIR = HOME / ".cache/ai-km-jiang/queue-logs"
+LOG_DIR = Path(os.environ.get("SITE_PUBLISH_LOG_DIR") or (HOME / ".cache/ai-km-jiang/queue-logs"))
 MARK_START = "<!-- publish-queue:start（自動生成，勿手改；來源＝_agent/tools/site-publish-queue/queue.json，指令 scripts/publish-queue.py） -->"
 MARK_END = "<!-- publish-queue:end -->"
 TZ = dt.timezone(dt.timedelta(hours=8))
@@ -66,13 +66,17 @@ def notify_failure(code: int, next_step: str) -> None:
     """部署失敗通知（2026-10-21 立，事故驅動：10:04 到 12:24 部署一直失敗，沒有任何警報，是江江自己發現卡住）。
     ①追加一行到 failures.jsonl（之後的排程或 agent 可讀來補推手機）②跳 macOS 本機通知（同朵拉海巡台 notify.sh 做法）。
     手機推播不在腳本裡做：非互動 claude -p 的 PushNotification 要 Remote Control 開著才送得到（2026-10-20 實測），
-    所以由執行部署的 agent 看到非 0 結束碼時自己推播（規則見 knowledge-site-manager 06）。SITE_PUBLISH_NOTIFY=0 關閉（測試用）。"""
-    if not NOTIFY_CTX or os.environ.get("SITE_PUBLISH_NOTIFY", "1") == "0":
+    所以由執行部署的 agent 看到非 0 結束碼時自己推播（規則見 knowledge-site-manager 06）。
+    SITE_PUBLISH_NOTIFY=0 全關；=log 只寫 failures.jsonl、不跳通知（測試用）。"""
+    mode = os.environ.get("SITE_PUBLISH_NOTIFY", "1")
+    if not NOTIFY_CTX or mode == "0":
         return
     rec = {"at": now(), "exit": code, "host": socket.gethostname().split(".")[0], "next": next_step, **NOTIFY_CTX}
     channel = "none"
     try:
         LOG_DIR.mkdir(parents=True, exist_ok=True)
+        if mode == "log":
+            raise RuntimeError("log-only")
         title = f"官網部署失敗（結束碼 {code}）"
         body = next_step[:150].replace("\\", "").replace('"', "'")
         r = subprocess.run(["osascript", "-e", f'display notification "{body}" with title "{title}"'],
@@ -321,9 +325,90 @@ def preflight_desk(desk: Path) -> None:
         finish(EXIT_BLOCKED, "主工作區有別人未提交的變更，不能上線。請換 Sonnet 或 Opus 接手，確認是誰的工作再決定。")
 
 
+def resolve_desk(a, data: dict) -> Path:
+    """部署現場（2026-10-21 立）：優先序 --desk ＞ 環境變數 SITE_PUBLISH_DESK ＞ 佇列設定 desk_path ＞ 主 clone。
+    desk_path 存「相對家目錄」的路徑（兩台機器帳號名不同），用 set-desk 切換；切回主 clone 就 set-desk ""。
+    這就是「專用發布桌」的單一開關，退回不必改程式（AGENTS 機制切換要留得回去）。"""
+    if a.desk:
+        return Path(a.desk).expanduser()
+    if os.environ.get("SITE_PUBLISH_DESK"):
+        return Path(os.environ["SITE_PUBLISH_DESK"]).expanduser()
+    rel = (data.get("desk_path") or "").strip()
+    return HOME / rel if rel else DEFAULT_DESK
+
+
+def cmd_set_desk(a) -> None:
+    rel = a.path.strip()
+    if rel.startswith("/"):
+        sys.exit("⛔ desk_path 要寫相對家目錄的路徑（例 Developer/ai-km-jiang-publish-desk），不寫含帳號名的絕對路徑")
+    with locked():
+        data = load()
+        data["desk_path"] = rel or None
+        save(data)
+    target = HOME / rel if rel else DEFAULT_DESK
+    print(f"部署現場＝{target}{'（主 clone）' if not rel else ''}；這台{'有' if (target / '.git').exists() else '還沒有'}這個 repo")
+
+
+def changed_files(desk: Path, ref: str) -> set[str]:
+    """這一筆相對 origin/main 改到哪些檔（判斷後面的項目跟它有沒有交集用）。算不出來回 None＝判斷不出來。"""
+    base = git(desk, "merge-base", "origin/main", ref, check=False).stdout.strip()
+    if not base:
+        return None
+    r = git(desk, "-c", "core.quotePath=false", "diff", "--name-only", base, ref, check=False)
+    return set(l for l in r.stdout.splitlines() if l.strip()) if r.returncode == 0 else None
+
+
+def main_health(desk: Path, log: Path) -> bool:
+    """某筆在 push 前被擋之後，檢查「main 自己」能不能過 preflight 與建置預演（2026-10-21 立）。
+    過＝問題在那一筆，隔離它、其餘照跑；不過＝main 本身或環境壞了，整條佇列停（v3 企劃第 2 件）。"""
+    with log.open("a", encoding="utf-8") as fh:
+        fh.write(f"\n===== {now()} main 健康檢查 =====\n")
+        fh.flush()
+        for cmd in (["bash", "scripts/preflight.sh"], ["bash", "scripts/cloudflare/rehearse-build.sh", "main 健康檢查"]):
+            if not (desk / cmd[1]).exists():
+                continue
+            if subprocess.run(cmd, cwd=str(desk), stdout=fh, stderr=subprocess.STDOUT, stdin=subprocess.DEVNULL).returncode != 0:
+                return False
+    return True
+
+
+WORKLOG_BOARD = Path(os.environ.get("SITE_PUBLISH_WORKLOG_BOARD") or (KB / "00 工作台/📓 工作日誌看板.md"))
+WORKLOG_MARK = "部署台自動紀錄"
+WEEKDAY = "一二三四五六日"
+
+
+def worklog_line(it: dict, outcome: str, detail: str) -> None:
+    """上線或失敗後，在 📓 工作日誌看板當天欄位自動寫一行（2026-10-21 江江選 A：自動一行就算數）。
+    Stop hook check-worklog.py 看到當天有本標記的行，就不再要求部署類任務另寫工作日記。
+    SITE_PUBLISH_WORKLOG_BOARD=0 關閉（測試用）。寫不進去只印警告，不影響部署結果。"""
+    if os.environ.get("SITE_PUBLISH_WORKLOG_BOARD") == "0":
+        return
+    try:
+        if not WORKLOG_BOARD.exists():
+            print(f"⚠️  找不到工作日誌看板 {WORKLOG_BOARD}，略過自動紀錄")
+            return
+        t = dt.datetime.now(TZ)
+        header = f"## {t:%m-%d} {WEEKDAY[t.weekday()]}"
+        line = (f"- [ ] {t:%H:%M} ｜ 官網部署：{it['slug']} {outcome}｜{it['message']} #工作日記\n"
+                f"    {detail}（{WORKLOG_MARK} {t:%Y-%m-%d %H:%M}，佇列 {it['id']}，授權：{it.get('authorized_by', '')}）\n")
+        text = WORKLOG_BOARD.read_text("utf-8")
+        if header + "\n" in text:
+            pos = text.index(header + "\n") + len(header) + 1
+            new = text[:pos] + "\n" + line + text[pos:].lstrip("\n") if text[pos:pos + 1] == "\n" else text[:pos] + line + text[pos:]
+        else:
+            m = re.search(r"^## ", text, flags=re.M)
+            pos = m.start() if m else len(text)
+            new = text[:pos] + header + "\n\n" + line + "\n" + text[pos:]
+        tmp = WORKLOG_BOARD.with_name(f".{WORKLOG_BOARD.name}.{os.getpid()}.tmp")
+        tmp.write_text(new, "utf-8")
+        os.replace(tmp, WORKLOG_BOARD)
+    except OSError as e:
+        print(f"⚠️  工作日誌看板自動紀錄沒寫進去：{e}")
+
+
 def cmd_run(a) -> None:
-    desk = Path(a.desk).expanduser() if a.desk else DEFAULT_DESK
     data = load()
+    desk = resolve_desk(a, data)
     # 授權不是 CLI 能代替的（Codex R1 第 1 條）：run 是正式上線，要帶江江當輪的授權原話，寫進紀錄；沒帶就不跑。
     a.authorized_by = (a.authorized_by or os.environ.get("SITE_PUBLISH_AUTHORIZED_BY") or "")
     if not a.dry_run and not a.authorized_by.strip():
@@ -338,8 +423,9 @@ def cmd_run(a) -> None:
     if a.id:
         targets = [find(data, a.id)]
     else:
+        # 2026-10-21：deploy-next／run --all 一次處理「授權當下」佇列裡的全部 queued（固定清單，之後新加的不算在這次授權裡）
         targets = [i for i in data["items"] if i["status"] == "queued"]
-        if not a.all:
+        if not a.all and not getattr(a, "batch", False):
             targets = targets[:1]
     if not targets:
         finish(EXIT_OK, "佇列沒有等待部署的項目，不用做事。")
@@ -354,7 +440,9 @@ def cmd_run(a) -> None:
     if not script.exists():
         finish(EXIT_USAGE, f"找不到 {script}，這台的官網 repo 不完整。")
     LOG_DIR.mkdir(parents=True, exist_ok=True)
-    failures = []   # --all 模式彙總（Codex R2 第 2 條）：任一筆失敗，整體結束碼就不能是 0
+    print(f"▶ 部署現場：{desk}；本次授權涵蓋 {len(targets)} 筆：{'、'.join(t['slug'] for t in targets)}")
+    done, returned, paused = [], [], []
+    blocked_files: list[tuple[str, set | None]] = []   # 退回那幾筆改到的檔
     for it in targets:
         sha = branch_on_origin(desk, it["branch"])
         if sha is None:
@@ -365,13 +453,19 @@ def cmd_run(a) -> None:
             print(f"❌ {it['id']} {it['branch']}：origin 與本機都沒有這個分支。")
             if not a.dry_run:
                 _set_status(it["id"], "failed", result="分支不在 origin 也不在本機；到施工的 clone git push -u origin 再 run")
-            if not a.all:
-                finish(EXIT_BLOCKED, msg)
-            failures.append((EXIT_BLOCKED, msg))
+            returned.append((it, EXIT_BLOCKED, msg))
             continue
         ref, note = resolve_ref(desk, it["branch"], local, sha)
         if note:
             print(f"⚠️  {it['id']} {note}")
+        mine = changed_files(desk, ref)
+        clash = [s for s, fs in blocked_files if fs is None or mine is None or (fs & mine)]
+        if clash and not a.dry_run:
+            why = f"跟退回的 {'、'.join(clash)} 改到同一批檔（或判斷不出來），先暫停，等前面修好再 release"
+            print(f"⏸ {it['id']} {it['slug']}：{why}")
+            _set_status(it["id"], "held", note=why)
+            paused.append(it)
+            continue
         print(f"▶ {'[dry-run] ' if a.dry_run else ''}{it['id']} {it['branch']}（merge 用 {ref}）")
         if a.dry_run:
             # dry-run 只讀：分叉點、分支有沒有手寫生成檔，與 merge-publish 同判準；不寫佇列狀態
@@ -385,19 +479,44 @@ def cmd_run(a) -> None:
             if chk.stdout.strip():
                 print(f"   （分支夾帶生成檔 {chk.stdout.strip().replace(chr(10), '、')}，上線時會還原重建，不算錯）")
             continue
-        rc_msg = _run_one(a, it, desk, me, script, stop_on_fail=not a.all)
-        if rc_msg:
-            failures.append(rc_msg)
+        it["authorized_by"] = a.authorized_by.strip()
+        kind, code, step = _run_one(a, it, desk, me, script)
+        if kind == "ok":
+            done.append(it)
+            continue
+        if kind == "item":
+            returned.append((it, code, step))
+            blocked_files.append((it["slug"], mine))
+            continue
+        # common／pushed：整條停下，剩下的照舊 queued
+        rest = [t["slug"] for t in targets if t is not it and t not in done and t not in paused and all(t is not r[0] for r in returned)]
+        tail = f"；未跑的 {'、'.join(rest)} 留在佇列" if rest else ""
+        finish(code, step + tail)
     if a.dry_run:
         finish(EXIT_OK, f"dry-run 通過，{len(targets)} 筆前置檢查都過，沒有真的上線。真的要上：江江說「部署」後，同一個指令去掉 --dry-run 並加 --authorized-by。")
-    if failures:
-        worst = max(c for c, _ in failures)
-        finish(worst, f"{len(failures)} 筆失敗（其餘已上線）。第一筆：{failures[0][1]}")
-    finish(EXIT_OK, "已上線，正式站驗收通過（網址 200）。看板自動區塊已更新。")
+    summary = f"上線 {len(done)} 筆" + (f"（{'、'.join(t['slug'] for t in done)}）" if done else "")
+    if returned or paused:
+        worst = max([c for _, c, _ in returned] or [EXIT_BLOCKED])
+        parts = [summary]
+        if returned:
+            parts.append(f"退回 {len(returned)} 筆：" + "；".join(f"{t['slug']}（{s}）" for t, _, s in returned))
+        if paused:
+            parts.append(f"暫停 {len(paused)} 筆（跟退回的改到同檔）：{'、'.join(t['slug'] for t in paused)}")
+        finish(worst, "。".join(parts))
+    finish(EXIT_OK, f"{summary}，正式站驗收通過（網址 200）。看板自動區塊與工作日誌看板已更新。")
 
 
-def _run_one(a, it, desk, me, script, stop_on_fail: bool = True):
-    """跑一筆。成功回 None；失敗回 (結束碼, 下一步句)，stop_on_fail 時直接 finish。"""
+def _cause(seg: list[str]) -> str:
+    """從本輪 log 挑最具體的失敗原因：先找第一個 ❌ 檢查項，再找 Error:，最後才用 ⛔ 收尾句。"""
+    for pat in ("  ❌ ", "Error:", "⛔"):
+        for l in seg:
+            if pat in l and "preflight 未過" not in l and "publish.sh 在 push 前停下" not in l:
+                return l.strip()
+    return next((l for l in reversed(seg) if l.strip()), "").strip()
+
+
+def _run_one(a, it, desk, me, script):
+    """跑一筆，回 (kind, 結束碼, 下一步句)。kind：ok／item（該筆自己的問題，隔離它）／common（main 或環境壞了，整條停）／pushed（已 push 未完成且重試失敗）。"""
     cmd = ["bash", str(script), it["branch"], it["message"]]
     log = LOG_DIR / f"{it['id']}.log"
     # 領取時重驗（Codex R1 第 5 條）：剛才 load 的狀態可能已被別台改掉，領取用狀態條件寫入
@@ -410,33 +529,58 @@ def _run_one(a, it, desk, me, script, stop_on_fail: bool = True):
         rc = subprocess.run(cmd, cwd=str(desk), stdout=fh, stderr=subprocess.STDOUT, stdin=subprocess.DEVNULL).returncode
     # 只看本輪那一段（Codex R2 第 1 條：舊 log 不能污染判斷），push 成功的證據＝publish.sh 印的 PUBLISH_PUSHED 收據
     try:
-        whole = log.read_text("utf-8", errors="replace")
-        seg = whole.split(marker)[-1].splitlines()
+        seg = log.read_text("utf-8", errors="replace").split(marker)[-1].splitlines()
     except OSError:
         seg = []
     tail = next((l for l in reversed(seg) if l.startswith(("🟢", "⛔", "❌"))), seg[-1] if seg else "")
     pushed = next((l for l in seg if l.startswith("PUBLISH_PUSHED ")), "")
+    cause = _cause(seg)
     if rc == 0:
         head = git(desk, "rev-parse", "--short", "HEAD", check=False).stdout.strip()
         _set_status(it["id"], "done", result=f"{now()} 上線 main {head}｜{tail[:120]}")
         print(f"✅ {it['id']} 上線完成（main {head}）")
+        worklog_line(it, f"上線 main {head}", "部署台跑完、正式站驗收 200")
         cmd_board_sync(argparse.Namespace(quiet=True))
-        return None
-    if rc == 20:
-        code, step = EXIT_JUDGMENT, f"{it['slug']} 卡在需要判斷的衝突（{tail[:60]}）。不自動合併，請換 Sonnet 或 Opus 接手，看 {log}。"
-        stage = "需要判斷的衝突，main 未動"
-    elif pushed:
-        code, step = EXIT_PUSHED_UNVERIFIED, f"{it['slug']} 已 push 到 main（{pushed.split()[1][:7]}）但部署或驗收沒完成。請換 Sonnet 或 Opus 接手，在主 clone 重跑 bash scripts/publish.sh，不要重跑 merge-publish。"
-        stage = "已 push、部署或驗收未完成；重跑 publish.sh"
-    else:
-        code, step = EXIT_BLOCKED, f"{it['slug']} 被閘門擋下（{tail[:60]}），main 未動。照 log 的修法修好後重跑同一個指令；看不懂就換 Sonnet 或 Opus。"
-        stage = "merge 或 preflight 階段失敗，main 未動"
-    _set_status(it["id"], "failed", result=f"{now()} exit {rc}｜{stage}｜{tail[:160]}")
-    print(f"❌ {it['id']} merge-publish exit {rc}：{tail}\n   {stage}\n   完整 log：{log}")
+        return ("ok", EXIT_OK, "")
+    if pushed:
+        # 已 push：改動已在 main，不能當沒上線跳過。自動只重部署一次（publish.sh --redeploy）。
+        sha7 = pushed.split()[1][:7]
+        print(f"↻ {it['id']} 已 push（{sha7}）但部署或驗收沒完成，自動重新部署一次…")
+        with log.open("a", encoding="utf-8") as fh:
+            fh.write(f"\n===== {now()} redeploy {it['id']} =====\n")
+            fh.flush()
+            rc2 = subprocess.run(["bash", "scripts/publish.sh", "--redeploy"], cwd=str(desk), stdout=fh, stderr=subprocess.STDOUT, stdin=subprocess.DEVNULL).returncode
+        if rc2 == 0:
+            head = git(desk, "rev-parse", "--short", "HEAD", check=False).stdout.strip()
+            _set_status(it["id"], "done", result=f"{now()} 上線 main {head}（第一次部署失敗，自動重部署成功）")
+            print(f"✅ {it['id']} 重新部署後上線完成（main {head}）")
+            worklog_line(it, f"上線 main {head}", "第一次部署失敗、自動重新部署後驗收 200")
+            cmd_board_sync(argparse.Namespace(quiet=True))
+            return ("ok", EXIT_OK, "")
+        stage = "已 push、部署或驗收未完成，自動重部署也失敗；佇列已停"
+        _set_status(it["id"], "failed", result=f"{now()} exit {rc}｜{stage}｜{cause[:160]}")
+        worklog_line(it, "已 push 但沒部署成功", f"{stage}｜{cause[:80]}")
+        cmd_board_sync(argparse.Namespace(quiet=True))
+        step = (f"需要人處理：{it['slug']} 已推上 main（{sha7}），但部署或驗收失敗、自動重試一次也失敗（{cause[:60]}）。"
+                f"遠端 main 已含這筆，正式站還是上一版。目前沒有人接手：請換 Sonnet 或 Opus 看 {log}，修好後在發布桌跑 bash scripts/publish.sh --redeploy。")
+        return ("pushed", EXIT_PUSHED_UNVERIFIED, step)
+    # push 前被擋：先看 main 自己健不健康，分辨「該筆的問題」還是「main／環境壞了」
+    healthy = main_health(desk, log)
+    if healthy:
+        code = EXIT_JUDGMENT if rc == 20 else EXIT_BLOCKED
+        stage = "需要判斷的衝突，遠端 main 未變、本機已還原" if rc == 20 else "push 前被閘門擋下，遠端 main 未變、本機已還原"
+        _set_status(it["id"], "failed", result=f"{now()} exit {rc}｜{stage}｜{cause[:160]}")
+        worklog_line(it, "退回", f"{stage}｜{cause[:80]}")
+        print(f"❌ {it['id']} 退回：{cause}\n   {stage}；main 本身健康，其餘照常\n   完整 log：{log}")
+        cmd_board_sync(argparse.Namespace(quiet=True))
+        return ("item", code, f"{it['slug']} 退回：{cause[:70]}。等施工這個分支的 AI 修（目前沒有人接手），修好後 release 再部署")
+    stage = "main 本身或部署環境過不了檢查，佇列已停"
+    _set_status(it["id"], "queued", result=f"{now()} 沒跑成：{stage}｜{cause[:160]}")
+    worklog_line(it, "沒跑成（main 或環境壞了）", f"{stage}｜{cause[:80]}")
     cmd_board_sync(argparse.Namespace(quiet=True))
-    if stop_on_fail:
-        finish(code, step)
-    return (code, step)
+    return ("common", EXIT_BLOCKED,
+            f"需要人處理：main 本身或部署環境過不了檢查（{cause[:60]}），不是 {it['slug']} 的問題，整條佇列已停。這次沒有推任何東西上 main、正式站沒動。"
+            f"目前沒有人接手：請換 Sonnet 或 Opus 看 {log} 的「main 健康檢查」段。")
 
 
 def render_board_block() -> str:
@@ -499,8 +643,9 @@ def main() -> None:
         if name == "deploy":
             s.add_argument("id")
         s.add_argument("--dry-run", action="store_true"); s.add_argument("--desk"); s.add_argument("--authorized-by"); s.add_argument("--here", action="store_true")
-        s.set_defaults(f=cmd_run, next=name == "deploy-next", all=False, **({"id": None} if name == "deploy-next" else {}))
+        s.set_defaults(f=cmd_run, next=name == "deploy-next", all=False, batch=name == "deploy-next", **({"id": None} if name == "deploy-next" else {}))
     s = sub.add_parser("board-sync"); s.set_defaults(f=cmd_board_sync, quiet=False)
+    s = sub.add_parser("set-desk", help="部署現場（相對家目錄；空字串＝主 clone）"); s.add_argument("path"); s.set_defaults(f=cmd_set_desk)
     s = sub.add_parser("set-primary"); s.add_argument("host", help="主要部署機的 hostname -s（空字串＝取消）"); s.set_defaults(f=cmd_set_primary)
     s = sub.add_parser("prune"); s.add_argument("--days", type=int, default=7); s.set_defaults(f=cmd_prune)
     a = ap.parse_args()
