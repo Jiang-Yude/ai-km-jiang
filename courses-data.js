@@ -84,7 +84,7 @@ window.COURSES = [
     venue_label: "台中實體",
     host: "江昱德（江江教練）· 許家瑜（星睦管理顧問執行長）",
     tags: ["AIAgent", "知識庫", "技能包", "中小企業", "SBIR", "工作坊"],
-    summary: "跟星睦管理顧問合開的兩天實體工作坊，台中市西區，每梯 20 席，上午 10:00 到下午 17:00。第一天用企業自己的真實資料建企業知識庫，做出 5 位 AI 員工技能包（資料整理員、知識庫管家、文稿助理、輔助決策顧問、AI 使用者測試員），課後技能包帶回公司繼續用；第二天上午排出公司下一批可以交給 AI 的工作，下午由星睦許家瑜執行長帶商業可行性、財務營運盤點、補助與 SBIR 方向。主要實作工具是 ChatGPT 桌面版（Codex）。以企業為單位報名，每家企業 2 個名額。",
+    summary: "跟星睦管理顧問合開的兩天實體工作坊。第一天用公司自己的資料做出 5 位 AI 員工；第二天排出下一批交給 AI 的工作，再談補助與商業可行性。",
     detail_url: "https://xingmu-ai-agent-workshop.shing-mu.chatgpt.site",
     detail_label: "課程內容、方案與補助說明（星睦）↗",
     materials: [],
@@ -107,7 +107,7 @@ window.COURSES = [
     venue_label: "線上",
     host: "江江教練",
     tags: ["AI趨勢", "SEO", "AIO", "GEO", "AXO", "WebMCP", "知識管理"],
-    summary: "網站不只給人看了。江江把自己的做法攤開：他的網站就是本地知識庫的線上版，升級之後多了三種使用者，AI 讀得到、合作夥伴查得到、訪客用得到。從這個角度講清楚 SEO（讓人在搜尋引擎找到你）、AIO（讓 AI 把你當答案）、GEO（讓 AI 在回答裡引用你的觀點）、AXO（讓 AI 能代表你接待訪客）、WebMCP（讓 AI 直接操作你的網站）各自在解決誰的問題，並用實際案例示範。",
+    summary: "網站不只給人看了。用江江自己的官網當例子，講清楚 SEO、AIO、GEO、AXO、WebMCP 各自在解決誰的問題。",
     detail_url: null,
     materials: [
       { label: "文章｜網路上一半以上的訪問已經不是人了 ↗", url: "https://jiangyude.com/articles/agent-web-turning-point/" },
@@ -149,7 +149,7 @@ window.COURSES = [
     venue_label: "線上",
     host: "江江教練",
     tags: ["4O", "SEO", "AIO", "GEO", "AXO", "WebMCP", "部署平台"],
-    summary: "網站用 AI 做出來只是開始。這場先比較 GitHub Pages、Vercel、Cloudflare Pages 的適用情境，再說明 SEO、AIO、GEO、AXO 與 WebMCP。包含旅行規劃時 AI 怎麼從官網找房型、價格與活動，AI 怎麼引用江江教練的網站觀點，以及 Skill、Agent、MCP、Google Slides API 如何一起完成簡報。",
+    summary: "用 AI 做出網站之後：比較 GitHub Pages、Vercel、Cloudflare Pages 怎麼選，再說明 SEO、AIO、GEO、AXO 與 WebMCP。",
     detail_url: "courses/2026-09-26-ai-site-and-deploy/",
     materials: [
       { label: "完整講座簡報｜怎麼用 AI 做網站＋部署平台選哪個？ ↗", url: "https://jiangyude.com/courses/2026-09-26-ai-site-and-deploy/" }
@@ -183,7 +183,7 @@ window.COURSES = [
     venue_label: "線上",
     host: "江昱德（江江教練）· 吳星瑩（思維助教）",
     tags: ["AIAgent", "技能包", "迴圈工程", "MCP", "知識庫", "系列課"],
-    summary: "六堂線上系列課，9/20 起每週日 19:30 開課，每堂兩小時，11/1 結業（10/11 國慶連假休息一週）。從技能包、迴圈工程，到 API／MCP／CLI 的差別，再到 Agent 找得到資料、找得到對的資料，最後用一個真實的產品開發過程走完一圈。每堂重點放在判斷不是操作，示範佔一半以上時間。報名含專屬 LINE 群組，課前課後有思維顧問協助引導。六堂 3,000 元，報名皆有回放。9/13（日）另有免費第零堂。",
+    summary: "六堂線上系列課，從技能包、迴圈工程、API／MCP／CLI，到 Agent 找得到對的資料，最後走完一個真實的產品開發。",
     detail_url: "courses/2026-09-ai-series/",
     detail_label: "完整課程內容與報名 ↗",
     materials: [
@@ -206,7 +206,7 @@ window.COURSES = [
     venue_label: "實體＋線上",
     host: "永力智庫顧問團隊",
     tags: ["永力智庫", "社會影響力", "永續報告書", "AI工作流", "工作坊"],
-    summary: "同一梯次共四場：9/9 與 9/23 兩個實體工作坊日（台北市萬華區，09:30 開始），中間再加 9/16 與 9/30 兩場線上兩小時課。帶著真實資料上課，兩天實作加兩次線上跟進，做出可用的永續影響力報告書 1.0。",
+    summary: "兩天實體工作坊加兩場線上跟進，帶著真實資料上課，做出可用的永續影響力報告書 1.0。",
     detail_url: "https://jiang-yude.github.io/yongli-thinktank-site/",
     detail_label: "查看課程資訊 ↗",
     materials: [],
@@ -227,7 +227,7 @@ window.COURSES = [
     venue_label: "線上",
     host: "江江教練",
     tags: ["AIAgent", "AI工作流", "上下文工程", "記憶管理", "MCP", "迴圈工程"],
-    summary: "八個機制：迴圈工程（讓它自己檢查完再交給你，你不用再當人肉校稿機）、事前規劃（開工前三分鐘講清楚，省掉後面改十遍）、上下文工程（把它猜不到的事先補給它，判斷才會準）、記憶工程（昨天教過的規矩，今天不用再教一次）、工作流圖（事情做到一半斷掉，下次從那一格接回去，不用整條重跑）、子代理（查資料、翻一整堆檔案這種累活派出去，回來只給你整理好的一頁）、統一接頭 MCP（每天手動複製貼上的東西，直接接起來讓它自己搬）、給 AI 獨立權限（放手讓它自己去做，但你查得到它做過什麼、關得掉）。",
+    summary: "八個 AI 機制：迴圈工程、事前規劃、上下文工程、記憶工程、工作流圖、子代理、MCP、給 AI 獨立權限。每個都講它幫你省掉什麼。",
     detail_url: null,
     materials: [
       { label: "文章｜2026 年知識工作者的八個 AI 系統概念 ↗", url: "https://jiangyude.com/articles/eight-ai-system-concepts-2026/" }
@@ -249,7 +249,7 @@ window.COURSES = [
     venue_label: "實體",
     host: "江江教練",
     tags: ["公共藝術", "淡海輕軌", "敘事轉譯", "AI生圖", "在地故事", "零基礎"],
-    summary: "《藝術流》2026 新北市公共藝術推廣計畫的藍海線場。9/12（六）09:30 淡水漁人碼頭站集合，上午跟著旅學堂走讀淡海輕軌沿線的公共藝術，下午用導覽、敘事、AI 生成三段接起來，把整天聽到的故事做成一張以自己為主角的電影海報。一支手機就可以參加，不用先會用 AI。",
+    summary: "上午走讀淡海輕軌沿線的公共藝術，下午用 AI 把聽到的故事做成一張以自己為主角的電影海報。一支手機就能參加。",
     detail_url: "courses/2026-09-12-danhai-public-art/",
     detail_label: "上課簡報與課程預告 ↗",
     materials: [
@@ -273,7 +273,7 @@ window.COURSES = [
     venue_label: "實體",
     host: "江江教練",
     tags: ["公共藝術", "敘事轉譯", "AI生圖", "提示詞", "在地故事", "零基礎"],
-    summary: "與旅學堂特約合作的走讀加創作工作坊。上午走讀淡海輕軌沿線的幾米公共藝術，下午用 AI 把早上聽到的故事變成一張屬於自己的淡水形象角色，再由全桌共創一個主角，做成六格繪本。一支手機就可以參加，不用先會用 AI。",
+    summary: "上午走讀淡海輕軌沿線的幾米公共藝術，下午用 AI 做出自己的淡水角色，全桌共創六格繪本。一支手機就能參加。",
     detail_url: "courses/2026-08-danhai-public-art/",
     materials: [],
     registration: {
@@ -295,7 +295,7 @@ window.COURSES = [
     venue_label: "實體",
     host: "江江教練",
     tags: ["樂齡", "AI生圖", "電影海報", "旅行簡報", "說故事", "零基礎"],
-    summary: "學員說自己的故事，AI 負責視覺、排版與剪輯。先用 ChatGPT 生一張以自己為主角的個人生活風格照，時間夠再把同一段故事變成一首歌、一份故事簡報、一支說故事短片和一張個人簡介。一支手機就可以參加，不用電腦基礎。",
+    summary: "學員說自己的故事，AI 負責視覺與排版，做出一張以自己為主角的海報。一支手機就能參加，不用電腦基礎。",
     detail_url: "courses/senior-ai-story-workshop/",
     materials: [],
     registration: {
@@ -316,7 +316,7 @@ window.COURSES = [
     venue_label: "實體",
     host: "江江教練",
     tags: ["AIAgent", "數位分身", "提示詞", "ChatGPT", "零基礎"],
-    summary: "永力智庫主辦、育成社福基金會共同主辦的三小時實體工作坊，地點在育成蕃薯藤餐廳。現場帶你弄懂 AI 代理人、體驗做好的顧問型 AI，再一步一步完成手機上的設定。走完三步，你的 AI 會從「聊得來」變成「幫得上」。不用會電腦，一支手機就可以參加。",
+    summary: "三小時實體工作坊，帶你弄懂 AI 代理人，一步一步完成手機上的設定，讓 AI 從「聊得來」變成「幫得上」。",
     detail_url: "courses/2026-08-15-ai-that-knows-you/",
     materials: [],
     registration: {
@@ -340,7 +340,7 @@ window.COURSES = [
     venue_label: "臺中",
     host: "江江教練",
     tags: ["AI應用", "圖片生成", "提示詞設計", "零基礎入門", "自媒體"],
-    summary: "八月數位創作課程，四天：8/4、8/11、8/18、8/25，對象是只用手機、多數沒碰過 AI 的中高齡學員。第一天用五個問題讓 AI 認識你、做出個人設定檔，再用自己的照片生出形象照；接著是圖文創作、剪輯與社群發布、互動經營。簡報一個入口，隨四天課程陸續更新，完課後整合四天內容與學員作品集。簡報裡所有指令都可以整段複製直接用。",
+    summary: "給只用手機的中高齡學員的四天課：讓 AI 認識你、做形象照，接著圖文創作、剪輯與社群發布。",
     detail_url: null,
     materials: [
       { label: "上課簡報 ↗", url: "https://jiangyude.com/courses/2026-08-04-digital-creation-1/" }
@@ -385,7 +385,7 @@ window.COURSES = [
     venue_mode: "online",
     host: "江江教練",
     tags: ["知識官網", "Codex", "技能包", "Agent", "零基礎"],
-    summary: "給還不太熟悉 Agent、想知道技能包是什麼、怎麼運作的新手。如果你常因為整理文書工作加班，可以下載 Codex；不會用的話，我有一個知識管理官網，裡面有技能包，甚至有教學。把官網網址貼給 Codex，網站就會教你怎麼使用它。這場晚上八點開講，我會現場示範一次。",
+    summary: "給還不熟 Agent 的新手：技能包是什麼、怎麼運作。把官網網址貼給 Codex，網站就會教你怎麼用。現場示範一次。",
     detail_url: null,
     materials: [],
     registration: {
