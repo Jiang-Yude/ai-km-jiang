@@ -565,20 +565,27 @@ def _run_batch(a, batch, desk, me, script) -> bool:
     print(f"📦 批次上線 {len(batch)} 筆：{ids}")
     try:
         return _run_batch_inner(a, batch, desk, me, script, ids)
+    except SystemExit as e:
+        if isinstance(e.code, int):
+            raise   # finish() 的正常收尾（已處理好狀態），照常結束
+        err = e.code
     except Exception as e:  # noqa: BLE001
-        # 程式本身出錯（Codex 審）：沒 push 就整批放回排隊；確認不了有沒有 push 就停下等人看，不重跑
-        # 有沒有 push 看收據（同 merge-publish 的做法），不用 git 狀態猜；log 讀不到就當作「確認不了」→ 標失敗等人看
+        err = e
+    # 程式本身出錯（Codex 兩輪審）：有沒有 push 看收據；讀不到就當作確認不了 → 標失敗等人看，不重跑
+    try:
+        last = (LOG_DIR / f"batch-{batch[0]['id']}.log").read_text("utf-8", errors="replace").split("\n===== ")[-1]
+        pushed = "\nPUBLISH_PUSHED " in "\n" + last
+    except OSError:
+        pushed = True
+    target = "failed" if pushed else "queued"
+    stuck = []
+    for t in batch:   # 逐筆復原，哪一筆沒成功就照實列出來，不宣稱全部完成
         try:
-            last = (LOG_DIR / f"batch-{batch[0]['id']}.log").read_text("utf-8", errors="replace").split("\n===== ")[-1]
-            pushed = "\nPUBLISH_PUSHED " in "\n" + last
-        except OSError:
-            pushed = True
-        for t in batch:
-            try:
-                _set_status(t["id"], "failed" if pushed else "queued", result=f"{now()} 批次執行時程式出錯：{e}")
-            except SystemExit:
-                pass
-        finish(EXIT_JUDGMENT, f"需要人處理：批次執行時部署台本身出錯（{e}）。項目已{'標成失敗' if pushed else '放回排隊'}，請換 Sonnet 或 Opus 看 log。")
+            _set_status(t["id"], target, result=f"{now()} 批次執行時程式出錯：{err}")
+        except BaseException as e2:  # noqa: BLE001
+            stuck.append(f"{t['id']}（{e2}）")
+    left = f"；以下沒復原成功、可能還卡在 deploying，要人手動處理：{'、'.join(stuck)}" if stuck else ""
+    finish(EXIT_JUDGMENT, f"需要人處理：批次執行時部署台本身出錯（{err}）。項目已{'標成失敗' if pushed else '放回排隊'}{left}。請換 Sonnet 或 Opus 看 log。")
 
 
 def _run_batch_inner(a, batch, desk, me, script, ids) -> bool:
