@@ -455,6 +455,15 @@ def cmd_run(a) -> None:
     print(f"▶ 部署現場：{desk}；本次授權涵蓋 {len(targets)} 筆：{'、'.join(t['slug'] for t in targets)}")
     done, returned, paused = [], [], []
     blocked_files: list[tuple[str, set | None]] = []   # 退回那幾筆改到的檔
+    # 批次上線（2026-10-21 立，三家投票 3 票通過；江江：「我應該要同時可以更新我的課程頁面、更新我這個小工具、更新我的文章」）：
+    # 佇列裡互相不撞檔的幾筆編成一批，一次合併、一次檢查、一次打包、一次上線。整批沒過就退回下面的一筆一筆流程找出是哪一筆。
+    if not a.dry_run and not a.id and len(targets) >= 2 and os.environ.get("SITE_PUBLISH_NO_BATCH") != "1":
+        batch = _pick_batch(desk, targets)
+        if len(batch) >= 2:
+            ok = _run_batch(a, batch, desk, me, script)
+            if ok:
+                done.extend(batch)
+                targets = [t for t in targets if t not in batch]
     for it in targets:
         sha = branch_on_origin(desk, it["branch"])
         if sha is None:
@@ -520,6 +529,76 @@ def cmd_run(a) -> None:
             parts.append(f"暫停 {len(paused)} 筆（跟退回的改到同檔）：{'、'.join(t['slug'] for t in paused)}")
         finish(worst, "。".join(parts))
     finish(EXIT_OK, f"{summary}，正式站驗收通過（網址 200）。看板自動區塊與工作日誌看板已更新。")
+
+
+GENERATED_FILES = {"articles-data.js", "site-index.json", "article-keywords.js", "sitemap.xml", "en/articles-data.js"}
+
+
+def _pick_batch(desk: Path, targets: list) -> list:
+    """依佇列順序挑出互不撞檔的項目。生成檔不算撞（部署時一律重建）；算不出改了哪些檔的不進批次。"""
+    batch, used = [], set()
+    for it in targets:
+        ref = f"origin/{it['branch']}"
+        if not git(desk, "rev-parse", "--verify", "--quiet", ref, check=False).stdout.strip():
+            ref = it["branch"]
+        files = changed_files(desk, ref)
+        if files is None:
+            continue
+        files = files - GENERATED_FILES
+        if files & used:
+            continue
+        batch.append(it)
+        used |= files
+    return batch
+
+
+def _run_batch(a, batch, desk, me, script) -> bool:
+    """跑一批。成功回 True；push 前失敗回 False（全部放回排隊，交給一筆一筆流程）；已 push 但部署失敗會先自動重部署，再不行就整條停。"""
+    ids = "、".join(t["slug"] for t in batch)
+    print(f"📦 批次上線 {len(batch)} 筆：{ids}")
+    for t in batch:
+        _set_status(t["id"], "deploying", result=f"開始 {now()}｜批次｜授權：{a.authorized_by.strip()}｜機器 {me}", expect=("queued", "failed"))
+        t["authorized_by"] = a.authorized_by.strip()
+    cmd_board_sync(argparse.Namespace(quiet=True))
+    msg = "批次上線：" + "；".join(t["message"] for t in batch)
+    env = dict(os.environ, PUBLISH_BATCH_BRANCHES=" ".join(t["branch"] for t in batch))
+    log = LOG_DIR / f"batch-{batch[0]['id']}.log"
+    marker = f"===== {now()} batch {' '.join(t['id'] for t in batch)} ====="
+    with log.open("a", encoding="utf-8") as fh:
+        fh.write(f"\n{marker}\n")
+        fh.flush()
+        rc = subprocess.run(["bash", str(script), batch[0]["branch"], msg], cwd=str(desk), env=env,
+                            stdout=fh, stderr=subprocess.STDOUT, stdin=subprocess.DEVNULL).returncode
+    try:
+        seg = log.read_text("utf-8", errors="replace").split(marker)[-1].splitlines()
+    except OSError:
+        seg = []
+    pushed = next((l for l in seg if l.startswith("PUBLISH_PUSHED ")), "")
+    if rc != 0 and pushed:
+        print(f"↻ 批次已 push 但部署或驗收沒完成，自動重新部署一次…")
+        with log.open("a", encoding="utf-8") as fh:
+            rc = subprocess.run(["bash", "scripts/publish.sh", "--redeploy"], cwd=str(desk), stdout=fh,
+                                stderr=subprocess.STDOUT, stdin=subprocess.DEVNULL).returncode
+        if rc != 0:
+            for t in batch:
+                _set_status(t["id"], "failed", result=f"{now()} 批次已 push、部署與自動重部署都失敗；佇列已停｜{_cause(seg)[:120]}")
+                worklog_line(t, "已 push 但沒部署成功（批次）", _cause(seg)[:80])
+            cmd_board_sync(argparse.Namespace(quiet=True))
+            finish(EXIT_PUSHED_UNVERIFIED, f"需要人處理：批次（{ids}）已推上 main，但部署或驗收失敗、自動重試也失敗。正式站還是上一版。目前沒有人接手：請換 Sonnet 或 Opus 看 {log}，修好後在發布桌跑 bash scripts/publish.sh --redeploy。")
+    if rc == 0:
+        head = git(desk, "rev-parse", "--short", "HEAD", check=False).stdout.strip()
+        fast = os.environ.get("PUBLISH_FAST") == "1"
+        for t in batch:
+            _set_status(t["id"], "done", result=f"{now()} 批次上線 main {head}（同批：{ids}）")
+            worklog_line(t, f"{'快速部署' if fast else ''}批次上線 main {head}", f"同批 {len(batch)} 筆一次上線：{ids}")
+        cmd_board_sync(argparse.Namespace(quiet=True))
+        print(f"✅ 批次上線完成（main {head}）：{ids}")
+        return True
+    for t in batch:
+        _set_status(t["id"], "queued", result=f"{now()} 批次沒過（{_cause(seg)[:100]}），改一筆一筆跑")
+    cmd_board_sync(argparse.Namespace(quiet=True))
+    print(f"↩ 批次沒過（{_cause(seg)[:80]}），遠端 main 未變，改成一筆一筆跑找出是哪一筆")
+    return False
 
 
 def _cause(seg: list[str]) -> str:
