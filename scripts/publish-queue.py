@@ -538,14 +538,21 @@ def _pick_batch(desk: Path, targets: list) -> list:
     """依佇列順序挑出互不撞檔的項目。生成檔不算撞（部署時一律重建）；算不出改了哪些檔的不進批次。"""
     batch, used = [], set()
     for it in targets:
-        ref = f"origin/{it['branch']}"
-        if not git(desk, "rev-parse", "--verify", "--quiet", ref, check=False).stdout.strip():
-            ref = it["branch"]
-        files = changed_files(desk, ref)
+        # 與 merge-publish 用同一版（Codex、阿港審）：本機與 origin 只有一邊有、或兩邊相同才進批次；兩邊不同就停止挑選，交給一筆一筆流程判斷
+        local = git(desk, "rev-parse", "--verify", "--quiet", f"refs/heads/{it['branch']}", check=False).stdout.strip()
+        remote = git(desk, "rev-parse", "--verify", "--quiet", f"refs/remotes/origin/{it['branch']}", check=False).stdout.strip()
+        if local and remote and local != remote:
+            break
+        sha = local or remote
+        files = changed_files(desk, sha) if sha else None
         if files is None:
-            continue
+            break   # 判斷不出改了什麼：後面的也不往前挑，維持佇列順序
         files = files - GENERATED_FILES
+        if not files:
+            used |= files
+            continue   # 只改生成檔或已上線過的，不放進批次（阿港建議）
         if files & used:
+            used |= files   # 跳過的這筆改到的檔也鎖住，後面的不能越過它先上線（阿港審：防插隊）
             continue
         batch.append(it)
         used |= files
@@ -556,6 +563,25 @@ def _run_batch(a, batch, desk, me, script) -> bool:
     """跑一批。成功回 True；push 前失敗回 False（全部放回排隊，交給一筆一筆流程）；已 push 但部署失敗會先自動重部署，再不行就整條停。"""
     ids = "、".join(t["slug"] for t in batch)
     print(f"📦 批次上線 {len(batch)} 筆：{ids}")
+    try:
+        return _run_batch_inner(a, batch, desk, me, script, ids)
+    except Exception as e:  # noqa: BLE001
+        # 程式本身出錯（Codex 審）：沒 push 就整批放回排隊；確認不了有沒有 push 就停下等人看，不重跑
+        # 有沒有 push 看收據（同 merge-publish 的做法），不用 git 狀態猜；log 讀不到就當作「確認不了」→ 標失敗等人看
+        try:
+            last = (LOG_DIR / f"batch-{batch[0]['id']}.log").read_text("utf-8", errors="replace").split("\n===== ")[-1]
+            pushed = "\nPUBLISH_PUSHED " in "\n" + last
+        except OSError:
+            pushed = True
+        for t in batch:
+            try:
+                _set_status(t["id"], "failed" if pushed else "queued", result=f"{now()} 批次執行時程式出錯：{e}")
+            except SystemExit:
+                pass
+        finish(EXIT_JUDGMENT, f"需要人處理：批次執行時部署台本身出錯（{e}）。項目已{'標成失敗' if pushed else '放回排隊'}，請換 Sonnet 或 Opus 看 log。")
+
+
+def _run_batch_inner(a, batch, desk, me, script, ids) -> bool:
     for t in batch:
         _set_status(t["id"], "deploying", result=f"開始 {now()}｜批次｜授權：{a.authorized_by.strip()}｜機器 {me}", expect=("queued", "failed"))
         t["authorized_by"] = a.authorized_by.strip()
@@ -580,6 +606,10 @@ def _run_batch(a, batch, desk, me, script) -> bool:
             rc = subprocess.run(["bash", "scripts/publish.sh", "--redeploy"], cwd=str(desk), stdout=fh,
                                 stderr=subprocess.STDOUT, stdin=subprocess.DEVNULL).returncode
         if rc != 0:
+            try:
+                seg = log.read_text("utf-8", errors="replace").split(marker)[-1].splitlines()   # 重讀，原因要是重部署那輪的（阿港建議）
+            except OSError:
+                pass
             for t in batch:
                 _set_status(t["id"], "failed", result=f"{now()} 批次已 push、部署與自動重部署都失敗；佇列已停｜{_cause(seg)[:120]}")
                 worklog_line(t, "已 push 但沒部署成功（批次）", _cause(seg)[:80])
