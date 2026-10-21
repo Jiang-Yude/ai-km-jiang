@@ -7,7 +7,8 @@ task_root=$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd -P)
 [[ "${SAFE_DEPLOY_CF_PROMOTE:-}" == "ai-km-jiang-cf-20261004" ]] || { echo "STOP: production deploy needs SAFE_DEPLOY_CF_PROMOTE=ai-km-jiang-cf-20261004"; exit 2; }
 task_safe="$HOME/Library/Mobile Documents/iCloud~md~obsidian/Documents/江昱德 主知識庫/_agent/tools/safe-deploy/safe-deploy.sh"
 [[ -f "$task_safe" ]] || { echo "safe-deploy missing"; exit 2; }
-[[ -z "$(git -C "$task_root" status --porcelain)" ]] || { echo "commit and synchronise the source before deployment"; exit 2; }
+# 與已追蹤檔內容相同的未追蹤複製檔（macOS「檔名 2.webp」）只警告不擋（2026-10-21）；build.mjs 用 git ls-files 取檔，不會打包它們。
+( cd "$task_root" && python3 scripts/git-dirty.py >/dev/null ) || { echo "commit and synchronise the source before deployment"; ( cd "$task_root" && python3 scripts/git-dirty.py ) || true; exit 2; }
 # 舊課後頁放行證據：預設用 2026-10-06 不到期的 pre_rule_legacy 放行
 export SAFE_DEPLOY_POSTCLASS_EVIDENCE_DIR="${SAFE_DEPLOY_POSTCLASS_EVIDENCE_DIR:-$HOME/Library/Mobile Documents/iCloud~md~obsidian/Documents/江昱德 主知識庫/_agent/tmp/2026-10-06 歷史課後頁放行}"
 node "$task_root/scripts/cloudflare/build.mjs" --target=production

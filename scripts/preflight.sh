@@ -12,6 +12,10 @@ bad(){ echo "  ❌ $1"; FAIL=1; }
 
 echo "═══ 0/11 部署環境檢查 ═══"
 if bash scripts/check-deploy-env.sh; then ok "部署環境"; else bad "部署環境未通過"; fi
+# 凍結舊簡報雜湊（2026-10-21 立，事故驅動）：原本只在 build.mjs 打包時檢查，而打包在 push 之後，
+# 10:04 官網改版改到凍結簡報，壞改動先進 main 才失敗，擋了兩個多小時的部署。移到 push 前先擋；
+# 與下面 publish.sh 的「建置預演」同屬部署建置閘門，刻意不另編號。
+if node scripts/cloudflare/check-legacy-decks.mjs; then ok "凍結舊簡報未被改動"; else bad "凍結舊簡報被改動（見上方清單），還原後再發布"; fi
 
 echo "═══ 1/11 站點索引重建（含受控詞彙檢查）═══"
 # 文章資料源一致性（2026-09-06 立）：articles-data.js 是一篇一檔 article.json 合併出的生成檔。

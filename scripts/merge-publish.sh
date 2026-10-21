@@ -56,11 +56,30 @@ publish_lock_acquire "merge-publish ${BRANCH}" || exit 10
 # 否則重跑會被「工作區不乾淨」擋住。squash 進來的內容都還在分支上，還原不會丟東西。
 SQUASH_STARTED=0
 PUBLISH_DONE=0
+MAIN_BEFORE=""
+# 本機 main 有本輪 commit 但還沒 push（publish.sh 在 commit 後、push 前停下，例如 rebase 後建置預演失敗）？
+# push 成功時 git 會順手把 refs/remotes/origin/main 更新到 HEAD，所以「HEAD 不在 origin/main 歷史裡」＝沒推出去。
+_mp_unpushed_commit() {
+  [[ -n "$MAIN_BEFORE" && "$(git rev-parse HEAD)" != "$MAIN_BEFORE" ]] || return 1
+  ! git merge-base --is-ancestor HEAD refs/remotes/origin/main 2>/dev/null
+}
 _mp_cleanup() {
   local rc=$?
   if (( rc != 0 && SQUASH_STARTED == 1 && PUBLISH_DONE == 0 )); then
+    # publish.sh 的 pull --rebase 撞衝突會留下進行中的 rebase（detached HEAD），先中止才能還原（阿港審 2026-10-21）
+    if [[ -d "$(git rev-parse --git-path rebase-merge)" || -d "$(git rev-parse --git-path rebase-apply)" ]]; then
+      git rebase --abort >/dev/null 2>&1 || true
+      echo "▶ 中止了進行中的 rebase"
+    fi
+    # 2026-10-21：舊版只 reset --merge，publish.sh 若已 commit 未 push，本機 main 會留一個沒推出去的 commit，
+    # 下次跑被「未推送 commit 檢查」擋。現在連那個 commit（與本輪 publish tag）一起退回 squash 前的 main。
+    if _mp_unpushed_commit; then
+      while IFS= read -r _t; do [[ -n "$_t" ]] && git tag -d "$_t" >/dev/null 2>&1 || true; done < <(git tag --points-at HEAD -l 'publish/*')
+      git reset --hard -q "$MAIN_BEFORE" >/dev/null 2>&1 || true
+      echo "▶ 本輪 commit 沒推出去，本機 main 已退回 squash 前（${MAIN_BEFORE:0:7}）。"
+    fi
     git reset --merge >/dev/null 2>&1 || git reset --hard -q >/dev/null 2>&1 || true
-    if [[ -z "$(git -c core.quotePath=false status --porcelain)" ]]; then
+    if python3 scripts/git-dirty.py >/dev/null 2>&1; then
       echo "▶ 失敗退出（exit ${rc}）：main 工作區已還原乾淨，分支內容未動，修好後可直接重跑。"
     else
       echo "⚠️ 失敗退出（exit ${rc}）且還原後工作區仍不乾淨，先 git status 看。"
@@ -84,11 +103,15 @@ while [[ -d "${LEGACY_LOCK}" ]]; do
 done
 
 # main 工作區必須乾淨（有別人的舊制在途工作就停，不蓋）
-if [[ -n "$(git -c core.quotePath=false status --porcelain)" ]]; then
+# 2026-10-21：與已追蹤檔內容相同的未追蹤複製檔（macOS「檔名 2.webp」）只警告不擋，見 scripts/git-dirty.py；
+# 它們在下面 git add -A 之後會被 unstage，不夾帶上線。
+if ! _dirty=$(python3 scripts/git-dirty.py); then
   echo "⛔ main 工作區不乾淨，先處理（可能是舊制在途工作，依防打架鐵律 1 不碰別人的東西）："
-  git -c core.quotePath=false status --porcelain
+  printf '%s\n' "$_dirty"
   exit 10
 fi
+DUP_UNTRACKED=()
+while IFS= read -r _d; do [[ -n "$_d" ]] && DUP_UNTRACKED+=("$_d"); done < <(python3 scripts/git-dirty.py --list-dups)
 
 # 別的 git 程序正在動這個工作區（例：另一個 session 在主 clone 跑 git pull）：等它放手再動，等不到就停。
 # 2026-10-09 補：主 clone 被別人同時 pull 是常態；發布鎖只管 merge-publish／publish.sh 自己，管不到裸 git。
@@ -106,6 +129,7 @@ done
 echo "▶ 同步 main…"
 git fetch origin
 git pull --rebase
+MAIN_BEFORE="$(git rev-parse HEAD)"
 
 # 分支解析（2026-10-09 改，事故驅動）：分支只存在「獨立 clone」時，舊版 `git merge --squash article/x`
 # 印 `not something we can merge`，接著 CONFLICTS 陣列在 bash 3.2 下 unbound，卻 exit 0（假成功）。
@@ -244,6 +268,10 @@ node scripts/build-en-articles-data.mjs
 node scripts/build-sitemap.mjs
 
 git add -A
+# 開工前就在的複製檔（見上方乾淨檢查）不屬於本次上線內容，退出 staged
+for _d in ${DUP_UNTRACKED[@]+"${DUP_UNTRACKED[@]}"}; do
+  git reset -q -- "${_d}" 2>/dev/null || true
+done
 if git diff --cached --quiet; then
   echo "⛔ 合併後沒有任何變更（分支可能已經上線過）。"
   exit 10
@@ -255,7 +283,26 @@ while IFS= read -r -d '' f; do claim_files+=("${f}"); done < <(git -c core.quote
 bash scripts/agent-claim-check.sh "${BRANCH}" "${claim_files[@]}" || true
 
 echo "▶ 交給 publish.sh（preflight、秘密掃描、commit、push、等本次 SHA 的建置、促轉 main 最新、三網域與路徑驗收）…"
-bash scripts/publish.sh "$MSG"
+# 2026-10-21：publish.sh 在 push 前停下（preflight、建置預演、秘密掃描、rebase）＝閘門擋下，main 未動，
+# 統一回 10（清理會把工作區與本輪未推送的 commit 都還原）；已 push 才沿用它的結束碼（佇列判成 30）。
+# 有沒有 push 成功，看 publish.sh 印的 PUBLISH_PUSHED 收據，不用 git 狀態猜：
+# rebase 撞衝突時 HEAD 停在遠端 main 上，用「HEAD 在 origin/main 歷史裡」判斷會誤以為已 push（沙盒情境 C 實測，2026-10-21）。
+_pub_log="$(mktemp "${TMPDIR:-/tmp}/merge-publish-out.XXXXXX")"
+set +e   # 要拿 publish.sh 自己的結束碼（PIPESTATUS），中間不能讓 set -e／|| 蓋掉
+bash scripts/publish.sh "$MSG" 2>&1 | tee "$_pub_log"
+_pub_rc=${PIPESTATUS[0]}
+set -e
+_pushed=0; grep -q '^PUBLISH_PUSHED ' "$_pub_log" && _pushed=1
+rm -f "$_pub_log"
+if (( _pub_rc != 0 )); then
+  if (( _pushed == 1 )); then
+    echo "⛔ publish.sh 已 push，但部署或驗收沒完成（exit ${_pub_rc}）。"
+    PUBLISH_DONE=1   # 已推出去的不還原
+    exit "$_pub_rc"
+  fi
+  echo "⛔ publish.sh 在 push 前停下（exit ${_pub_rc}）：被閘門擋下，origin/main 未動。"
+  exit 10
+fi
 PUBLISH_DONE=1
 # SHA 精確驗收已移進 publish.sh（2026-09-27）：舊寫法在 vercel inspect 的 JSON 裡找 SHA，
 # 但該 JSON 根本不含 commit SHA，每次都 exit 3「驗收待確認」。publish.sh 改用
