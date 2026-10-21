@@ -18,12 +18,22 @@ a{color:var(--gold)}
 .fx-bubble{flex:0 0 260px;scroll-snap-align:center;display:flex;flex-direction:column;border-radius:14px;overflow:hidden;background:#fff;border:1px solid var(--line);font-size:14px;line-height:1.4}
 .fx-link{display:block;text-align:center;color:#42659a;padding:8px 0;text-decoration:none}
 .note{font-size:15px;color:var(--muted);margin:14px 0 0}
+#fwd{display:none}.fwd #mine{display:none}.fwd #fwd{display:block}
+#fwdRail .slot{flex-basis:min(74vw,300px)}
+.fwd #mineLink{display:none}
+.kicker{font-size:13px;letter-spacing:.3em;color:var(--gold);margin:0 0 4px}
 </style></head><body>
 <main>
 <div id="mine">
 <div id="first" aria-label="江江的第一張名片"></div>
 <h1>分享江江的 LINE 名片</h1>
 <p>選好友或群組，對方會收到五張可以左右滑的名片。</p>
+</div>
+<div id="fwd">
+<p class="kicker">FORWARD CARD</p>
+<h1>轉傳名片</h1>
+<p>把江江教練的名片分享給你的朋友，往左滑看完五張。</p>
+<div class="rail" id="fwdRail"></div>
 </div>
 <div id="custom">
 <h1>分享這組 LINE 名片</h1>
@@ -43,10 +53,17 @@ a{color:var(--gold)}
 var LIFF_ID = '2012081068-MnNPDX8P';
 var btn = document.getElementById('share'), msg = document.getElementById('msg'), card = null, autoTried = false, custom = false;
 function say(t){ msg.textContent = t; }
+// 讀網址參數：LINE 從 liff.line.me 轉過來時，參數可能包在 liff.state 裡
+function param(n){
+  var s = new URLSearchParams(location.search); if (s.get(n)) return s.get(n);
+  var st = s.get('liff.state'); return st ? new URLSearchParams(st.split('?')[1] || '').get(n) : null;
+}
+// 從名片上「轉傳這張名片」點進來（?fwd=1）：先給人看整組名片，再自己按轉傳
+var isFwd = param('fwd') === '1';
 function countShare(){
   // 只記「有人送出一次分享」的次數，不記是誰、送到哪裡
   try { fetch('/api/view', { method:'POST', headers:{'Content-Type':'application/json'},
-    body: JSON.stringify({ path: custom ? '/card/share/sent-custom/' : '/card/share/sent/', increment:true, vid:'', ref:'' }) }).catch(function(){}); } catch(e){}
+    body: JSON.stringify({ path: custom ? '/card/share/sent-custom/' : isFwd ? '/card/share/sent-forward/' : '/card/share/sent/', increment:true, vid:'', ref:'' }) }).catch(function(){}); } catch(e){}
 }
 async function share(){
   if (!card) return say('名片還沒載入，請重新整理再試。');
@@ -59,29 +76,31 @@ async function share(){
   btn.disabled = false;
 }
 btn.onclick = share;
-// 送出前在最後一張底部加「轉傳這張名片」（第 1 張加了會超出 3:4，2026-10-21 實測）：收到的人在 LINE 裡一按，就回到這一頁再選好友傳出去。
+// 送出前在每一張底部加小字「轉傳這張名片」（照丁禹勝老師的做法，2026-10-21 江江定）：收到的人在 LINE 裡一按，就回到這一頁看完名片再選好友傳出去。
 // 只加在送出的訊息上，官網看到的名片（line-flex.json）不動。別人的名片（?c=）連結太長放不進按鈕，不加。
-var FORWARD_URI = 'https://liff.line.me/' + LIFF_ID;
+var FORWARD_URI = 'https://liff.line.me/' + LIFF_ID + '?fwd=1';
 function withForward(m){
   var copy = JSON.parse(JSON.stringify(m));
   var bubbles = copy.contents && copy.contents.type === 'carousel' ? copy.contents.contents : [copy.contents];
-  var picks = [bubbles.length - 1];
-  picks.forEach(function(i){
-    var b = bubbles[i]; if (!b || b.type !== 'bubble') return;
-    var btnBox = { type:'button', style:'link', height:'sm', color:'#A27C45',
+  bubbles.forEach(function(b){
+    if (!b || b.type !== 'bubble') return;
+    // 用小字連結不用按鈕，盡量不把名片撐高
+    var link = { type:'text', text:'轉傳這張名片 ›', size:'sm', color:'#A27C45', align:'center',
       action:{ type:'uri', label:'轉傳這張名片', uri:FORWARD_URI } };
-    if (b.footer && b.footer.type === 'box' && Array.isArray(b.footer.contents)) b.footer.contents.push(btnBox);
-    else b.footer = { type:'box', layout:'vertical', paddingAll:'8px', backgroundColor:'#FFFCF6', contents:[btnBox] };
+    // 原本底部若是直排就接在後面；橫排或其他就整個包進一層直排，避免小字擠在旁邊（阿港 2026-10-21 審）
+    if (b.footer && b.footer.type === 'box' && b.footer.layout === 'vertical' && Array.isArray(b.footer.contents)) { link.margin = 'sm'; b.footer.contents.push(link); }
+    else if (b.footer) b.footer = { type:'box', layout:'vertical', contents:[b.footer, Object.assign({ margin:'sm' }, link)] };
+    else b.footer = { type:'box', layout:'vertical', paddingAll:'6px', backgroundColor:'#FFFCF6', contents:[link] };
   });
   return copy;
 }
 // 沒帶 ?c= 時，上方直接畫出江江的第一張名片（名片改了這裡跟著變）
-if (!new URLSearchParams(location.search).get('c')) fetch('/card/line-flex.json').then(function(r){ return r.json(); }).then(function(f){ var b = renderFlexBubbles(f)[0]; if (b) document.getElementById('first').appendChild(b); }).catch(function(){});
+if (!param('c') && !isFwd) fetch('/card/line-flex.json').then(function(r){ return r.json(); }).then(function(f){ var b = renderFlexBubbles(f)[0]; if (b) document.getElementById('first').appendChild(b); }).catch(function(){});
 (async function(){
   try {
     await liff.init({ liffId: LIFF_ID });
     // 分享器做出來的連結會帶 ?c=（別人的名片）；沒帶就是江江自己的名片
-    var code = new URLSearchParams(location.search).get('c');
+    var code = param('c');
     if (code) {
       custom = true; document.body.classList.add('custom');
       document.getElementById('mineLink').hidden = true; document.getElementById('customNote').hidden = false;
@@ -94,11 +113,19 @@ if (!new URLSearchParams(location.search).get('c')) fetch('/card/line-flex.json'
       // 讓分享的人看得到名片裡的連結會開到哪些網站
       if (errs.hosts && errs.hosts.length) { var h = document.createElement('p'); h.className = 'note'; h.textContent = '名片裡的連結會開到：' + errs.hosts.join('、'); document.getElementById('custom').appendChild(h); }
     } else {
-      card = withForward(await fetch('/card/line-flex.json').then(function(r){ return r.json(); }));
+      var mine = await fetch('/card/line-flex.json').then(function(r){ return r.json(); });
+      card = withForward(mine);
+      if (isFwd) {
+        document.body.classList.add('fwd'); btn.textContent = '選擇好友轉傳'; document.title = '轉傳江江教練的 LINE 名片';
+        // 跟 /linecard/ 一樣照 LINE 寬度排 3:4 再縮小，換行才不會擠（AUT 2026-10-21）
+        renderFlexCards(mine).forEach(function(b){ document.getElementById('fwdRail').appendChild(b); });
+        fitSlots();
+      }
     }
-    if (!liff.isLoggedIn()) { say('請先登入 LINE…'); return liff.login({ redirectUri: location.href }); }
+    // 登入回來時網址要保留 fwd=1，否則會被當成首頁進來而自動跳選人（CX、阿港 2026-10-21 審）
+    if (!liff.isLoggedIn()) { say('請先登入 LINE…'); return liff.login({ redirectUri: isFwd ? location.origin + location.pathname + '?fwd=1' : location.href }); }
     btn.disabled = false; say('');
-    if (!autoTried) { autoTried = true; share(); }
+    if (!autoTried && !isFwd) { autoTried = true; share(); }
   } catch (e) { say('開啟失敗：' + e.message); }
 })();
 </script>
