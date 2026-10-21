@@ -17,11 +17,13 @@ bad(){ echo "  ❌ $1"; FAIL=1; }
 #   - 比對不出來（建不了基準桌、沒有可比的問題行）一律照擋（保守）
 # PREFLIGHT_STRICT=1 關掉比對、任何失敗都擋（每日巡檢與想全站把關時用）。
 # 誠實邊界：比的是輸出的「問題行」文字，檢查器若只印數量不印是哪一筆，數量變了就算新問題（會擋，不會漏）。
-PROBLEM_RE='❌|ERROR|FAIL|✗|缺|斷|⛔|missing|不在|沒有|找不到'
-SUMMARY_RE='WARN：|結果：|掃 [0-9]+ 篇|共 [0-9]+|總計'
+PROBLEM_RE='❌|ERROR|FAIL|✗|缺|斷|⛔|missing|not found|不在|沒有|找不到'
+# 比對時忽略的行：單向連結提醒（link-graph 的 WARN，新文章一定會多）與行首的總結句。其餘每一行都比（阿港審：只比問題行會被舊問題遮住新問題）。
+IGNORE_RE='WARN|單向|^[[:space:]]*(結果：|斷連 ERROR：)'
 BASE_WT=""
+BASE_TMP=""
 OLD_ISSUES=()
-_cleanup_base(){ [[ -n "$BASE_WT" && "$BASE_WT" != FAIL ]] && git worktree remove --force "$BASE_WT" >/dev/null 2>&1; true; }
+_cleanup_base(){ [[ -n "$BASE_WT" && "$BASE_WT" != FAIL ]] && git worktree remove --force "$BASE_WT" >/dev/null 2>&1; [[ -n "$BASE_TMP" ]] && rmdir "$BASE_TMP" 2>/dev/null; true; }
 trap _cleanup_base EXIT
 _passed(){  # $1＝結束碼 $2＝輸出；有「結果：」的檢查器另要求 結果：PASS
   [[ "$1" == 0 ]] || return 1
@@ -32,21 +34,31 @@ delta(){  # 用法：delta "名稱" 指令…；回 0＝過或只有舊問題，
   local out rc base brc newp
   out=$("$@" 2>&1); rc=$?
   if _passed "$rc" "$out"; then return 0; fi
-  printf '%s\n' "$out" | grep -vE "$SUMMARY_RE" | grep -E "$PROBLEM_RE" | head -15 | sed 's/^/    /'
+  printf '%s\n' "$out" | grep -iE "$PROBLEM_RE" | grep -vE "$IGNORE_RE" | head -15 | sed 's/^/    /'
   [[ "${PREFLIGHT_STRICT:-0}" == 1 ]] && return 1
   if [[ -z "$BASE_WT" ]]; then
-    BASE_WT="$(mktemp -d "${TMPDIR:-/tmp}/preflight-base.XXXXXX")/main"
-    git worktree add --detach -q "$BASE_WT" HEAD >/dev/null 2>&1 || { echo "    （建不了改動前的基準桌，無法分辨新舊，照擋）"; BASE_WT=FAIL; }
+    # 基準＝本次改動與 origin/main 的分叉點（阿港審：拿 HEAD 當基準，已 commit 的改動會被當成舊問題放過）。
+    # 由 publish.sh 在 commit 前呼叫時分叉點就是 HEAD；在施工桌或 main 健康檢查時也都對。拿不到 origin/main 就照擋。
+    local base_ref
+    base_ref=$(git merge-base HEAD origin/main 2>/dev/null) || base_ref=""
+    BASE_TMP="$(mktemp -d "${TMPDIR:-/tmp}/preflight-base.XXXXXX")"
+    BASE_WT="$BASE_TMP/main"
+    if [[ -z "$base_ref" ]] || ! git worktree add --detach -q "$BASE_WT" "$base_ref" >/dev/null 2>&1; then
+      echo "    （建不了改動前的基準桌，無法分辨新舊，照擋）"; BASE_WT=FAIL
+    fi
   fi
   [[ "$BASE_WT" == FAIL ]] && return 1
   base=$(cd "$BASE_WT" && "$@" 2>&1); brc=$?
   if _passed "$brc" "$base"; then echo "    （改動前的 main 這關是過的＝本次造成）"; return 1; fi
-  base="${base//$BASE_WT/$PWD}"
-  newp=$(comm -23 <(printf '%s\n' "$out" | grep -vE "$SUMMARY_RE" | grep -E "$PROBLEM_RE" | LC_ALL=C sort -u) \
-                  <(printf '%s\n' "$base" | grep -vE "$SUMMARY_RE" | grep -E "$PROBLEM_RE" | LC_ALL=C sort -u))
-  if [[ -z "$(printf '%s\n' "$out" | grep -vE "$SUMMARY_RE" | grep -E "$PROBLEM_RE")" ]]; then
-    echo "    （輸出裡找不到可比對的問題行，無法分辨新舊，照擋）"; return 1
+  local real_base; real_base=$(cd "$BASE_WT" && pwd -P)
+  base="${base//$real_base/$PWD}"; base="${base//$BASE_WT/$PWD}"
+  local cur_lines base_lines
+  cur_lines=$(printf '%s\n' "$out" | grep -vE "$IGNORE_RE" | grep -v '^[[:space:]]*$' | LC_ALL=C sort -u)
+  base_lines=$(printf '%s\n' "$base" | grep -vE "$IGNORE_RE" | grep -v '^[[:space:]]*$' | LC_ALL=C sort -u)
+  if [[ -z "$cur_lines" ]]; then
+    echo "    （輸出裡沒有可比對的內容，無法分辨新舊，照擋）"; return 1
   fi
+  newp=$(comm -23 <(printf '%s\n' "$cur_lines") <(printf '%s\n' "$base_lines"))
   if [[ -z "$newp" ]]; then
     echo "  ⚠️  ${name}：上面都是改動前就有的舊問題，不擋本次上線（交每日巡檢開卡）"
     OLD_ISSUES+=("$name"); return 0

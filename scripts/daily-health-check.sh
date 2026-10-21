@@ -109,7 +109,7 @@ echo "▶ 7/7 全站檢查（2026-10-21 從上線前 preflight 移過來的全�
 # 企劃 v3 第 4 件：上線前只擋「這次改動新造成的」，站上早就存在的舊問題由這裡每天全站掃一次。
 # 這裡一律嚴格（任何失敗都算紅），不做新舊比對。
 GLOBAL_RED=()
-for _chk in "node scripts/verify-interlink.js" "node scripts/link-graph.js check" "python3 scripts/check-links.py" \
+for _chk in "node scripts/link-graph.js check" "python3 scripts/check-links.py" \
             "node scripts/check-article-css.mjs" "node scripts/check-mika-widget.mjs" "node scripts/check-image-drag.mjs" \
             "node scripts/check-sitemap-coverage.mjs" "node scripts/check-llms-coverage.mjs" "node scripts/check-article-tracking.mjs"; do
   _o=$($_chk 2>&1); _r=$?

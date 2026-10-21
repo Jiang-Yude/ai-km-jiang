@@ -18,8 +18,12 @@ if ! publish_lock_acquire "daily-health-check"; then
   printf '{"at":"%s","exit":3,"summary":"等發布鎖逾時，這輪沒跑","red":[]}\n' "$TS" > "$OUT_DIR/latest.json"; exit 3
 fi
 trap publish_lock_release EXIT
-git pull -q --ff-only >/dev/null 2>&1 || echo "⚠️  git pull 沒成功，用本機現有版本跑" >> "$LOG"
+STALE=""
+[[ "$(git symbolic-ref --quiet --short HEAD 2>/dev/null)" == "main" ]] || STALE="發布桌不在 main"
+[[ -n "$STALE" ]] || git pull -q --ff-only >/dev/null 2>&1 || STALE="git pull 沒成功"
 bash scripts/daily-health-check.sh > "$LOG" 2>&1; RC=$?
+# 拿不到最新版時，過了也不算全綠（阿港審：舊版跑過不能當成今天全綠）
+if [[ -n "$STALE" ]]; then echo "⚠️  ${STALE}，這輪用的是本機舊版，不算全綠" >> "$LOG"; [[ $RC -eq 0 ]] && RC=2; fi
 RED=$(grep -E '^  ❌ ' "$LOG" | sed 's/^  ❌ //' | head -12)
 python3 - "$OUT_DIR/latest.json" "$TS" "$RC" "$LOG" "$RED" <<'PY'
 import json, sys
