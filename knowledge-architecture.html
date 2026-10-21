@@ -724,10 +724,10 @@
   var one = document.getElementById('mika-one'); if (!one) return;
   var SECS = ['.pillars-section', '#docsys', '.tiers-section', '#growth-history', '.entry-section'].map(function(q){ return document.querySelector(q); });
   /* 開場講話、文件即系統＝跟小機器人裝技能包、分三庫＝在白板前講、成長史＝翻書、開始＝插旗比讚 */
-  var ART = [['images/mika-guide-talk.webp', 190 / 310], ['images/mika-office-anim.webp', .8], ['images/mika-lecture-anim.webp', .8], ['images/mika-reading-anim.webp', .8], ['images/mika-tour.webp', .5, 'flag']];
+  var ART = [null, ['images/mika-office-anim.webp', .8], ['images/mika-lecture-anim.webp', .8], ['images/mika-reading-anim.webp', .8], ['images/mika-tour.webp', .5, 'flag']];
   var layers = [one.querySelector('.a'), one.querySelector('.b')], front = 0, cur = -1, ticking = false;
   var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
-  ART.forEach(function(a){ var im = new Image(); im.src = a[0]; });
+  ART.forEach(function(a){ if (!a) return; var im = new Image(); im.src = a[0]; });
   function show(i){
     var a = ART[i], next = layers[1 - front], prev = layers[front];
     next.className = 'mo-art ' + (next === layers[0] ? 'a' : 'b') + (a[2] ? ' flag' : '') + (reduce ? '' : ' play');
@@ -742,11 +742,13 @@
     SECS.forEach(function(el, i){ if (el && el.getBoundingClientRect().top <= mid) k = i; });
     if (innerHeight + scrollY >= document.documentElement.scrollHeight - 4) k = SECS.length - 1;
     if (k < 0) k = 0;
+    /* 開場那區不放貼圖（2026-10-21 江江：那個在閃的圖框拿掉） */
+    if (!ART[k]) { one.classList.remove('show'); cur = k; return; }
     one.classList.add('show');
     if (k !== cur) { cur = k; show(k); }
   }
   addEventListener('scroll', function(){ if (!ticking) { ticking = true; requestAnimationFrame(pick); } }, { passive: true });
-  addEventListener('resize', function(){ var i = cur; cur = -1; if (i >= 0) { cur = i; show(i); } });
+  addEventListener('resize', function(){ var i = cur; cur = -1; if (i >= 0 && ART[i]) { cur = i; show(i); } });
   pick();
 })();
 </script>
