@@ -1715,7 +1715,8 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["cli-api-mcp-computer-use", "ai-cp-value-calculus", "line-backup-who-can-see-it", "ai-data-red-lines", "ai-batch-work-without-seeing-data"]
+    related: ["cli-api-mcp-computer-use", "ai-cp-value-calculus", "line-backup-who-can-see-it", "ai-data-red-lines", "ai-batch-work-without-seeing-data"],
+    cover: { wide: "images/og/openrouter-deepseek-data-routing.jpg" }
   },
 
   {

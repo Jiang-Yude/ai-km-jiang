@@ -50,9 +50,31 @@
 
 window.COURSES = [
   {
+    id: "2026-10-31-gemini-skills",
+    date: "2026-10-31",
+    time: "20:00",
+    duration_min: 60,
+    title: "Gemini 怎麼用技能包？",
+    type_label: "免費線上講座",
+    image: "images/courses/2026-10-31-gemini-skills.jpg",
+    venue_mode: "online",
+    venue_label: "線上",
+    host: "江江教練",
+    tags: ["Gemini", "技能包", "AI工作流"],
+    summary: "技能包不只 Claude 能用。這場示範把同一份技能包拿到 Gemini 裡跑：怎麼貼、怎麼叫它照規則做、哪些地方跟 Claude 不一樣。",
+    detail_url: null,
+    materials: [],
+    registration: {
+      status: "open",
+      url: "https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ",
+      label: "加入 LINE 社群報名 ↗",
+      note: "免費，線上。報名連結與會議室資訊都在 LINE 社群公告。"
+    }
+  },
+  {
     id: "2026-10-15-xingmu-ai-agent-workshop",
-    date: "2026-10-15",
-    date_label: "兩梯：10/15–16、10/22–23（週四五）",
+    date: "2026-10-22",
+    date_label: "第一梯 10/15–16 已結束；第二梯 10/22–23（週四五）開放報名",
     time: "10:00",
     duration_min: null,
     title: "中小企業 AI Agent 2 天實作工作坊（星睦管理顧問 × 江江教練）",
@@ -133,10 +155,8 @@ window.COURSES = [
       { label: "完整講座簡報｜怎麼用 AI 做網站＋部署平台選哪個？ ↗", url: "https://jiangyude.com/courses/2026-09-26-ai-site-and-deploy/" }
     ],
     registration: {
-      status: "open",
-      url: "https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ",
-      label: "加入 LINE 社群 ↗",
-      note: "免費參加，上課連結會在開課前半小時公布在 LINE 社群"
+      status: "ended",
+      note: "已結束"
     }
   },
   {
@@ -158,7 +178,6 @@ window.COURSES = [
         "每堂重點是判斷不是操作，開螢幕現場做一件真實的事，示範佔一半以上時間",
         "報名含專屬 LINE 群組，課前課後有思維顧問協助引導"
       ],
-      secondary: { label: "先參加 9/13 免費場", url: "courses/2026-09-ai-series/#free" }
     },
     venue_mode: "online",
     venue_label: "線上",
@@ -171,10 +190,8 @@ window.COURSES = [
       { label: "第零堂上課簡報（9/13）", url: "https://jiangyude.com/courses/2026-09-ai-series/lesson-0/" }
     ],
     registration: {
-      status: "open",
-      url: "https://portaly.cc/Jiang_Yude/product/cX2tx7cTT9ODxU7x8jPl",
-      label: "前往報名 ↗",
-      note: "六堂 3,000 元，一次收。9/17（三）23:59 前覺得不如預期可全額退費。9/13（日）19:30 另有免費第零堂，加 LINE 社群即可參加。"
+      status: "ended",
+      note: "本期已開課、報名已截止；下一期開放時在 LINE 社群公告"
     }
   },
   {
@@ -194,8 +211,8 @@ window.COURSES = [
     detail_label: "查看課程資訊 ↗",
     materials: [],
     registration: {
-      status: "pending",
-      note: "同一梯次四場：9/9（實體）、9/16（線上兩小時）、9/23（實體）、9/30（線上兩小時）。報名方式待主辦單位公告。"
+      status: "ended",
+      note: "已結束"
     }
   },
   {
@@ -216,10 +233,8 @@ window.COURSES = [
       { label: "文章｜2026 年知識工作者的八個 AI 系統概念 ↗", url: "https://jiangyude.com/articles/eight-ai-system-concepts-2026/" }
     ],
     registration: {
-      status: "open",
-      url: "https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ",
-      label: "加入 LINE 社群 ↗",
-      note: "免費參加，上課連結會在開課前半小時公布在 LINE 社群"
+      status: "ended",
+      note: "已結束"
     }
   },
   {
@@ -241,11 +256,9 @@ window.COURSES = [
       { label: "三站場景照片複製區", url: "https://jiangyude.com/courses/2026-09-12-danhai-public-art/scenes/" }
     ],
     registration: {
-      status: "open",
-      url: "https://www.accupass.com/go/artflow",
-      label: "前往報名 ↗",
+      status: "ended",
       host_org: "旅學堂",
-      note: "報名與售票由旅學堂於 Accupass 開放，8/28 上午 10:00 開賣，名額與費用以該頁公告為準。"
+      note: "已結束"
     }
   },
   {
@@ -358,10 +371,8 @@ window.COURSES = [
       { label: "文章｜讓兩個 AI 互相挑錯：企劃雙軌互審 loop ↗", url: "https://jiangyude.com/articles/dual-track-planning-loop/" }
     ],
     registration: {
-      status: "open",
-      url: "https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ",
-      label: "加入 LINE 社群 ↗",
-      note: "免費參加，課程連結會在上課前半小時公布於 LINE 社群；課程時長待公告"
+      status: "ended",
+      note: "已結束"
     }
   },
   {
@@ -461,8 +472,8 @@ window.COURSES = [
     detail_url: null,
     materials: [],
     registration: {
-      status: "pending",
-      note: "播出後會更新連結"
+      status: "ended",
+      note: "已結束"
     }
   },
   {
@@ -560,8 +571,8 @@ window.COURSES = [
     detail_url: "courses/2026-07-05-slide-to-skill/",
     materials: [],
     registration: {
-      status: "open",
-      note: "免費參加，講座連結在 LINE 社群記事本公布"
+      status: "ended",
+      note: "已結束"
     }
   },
   {

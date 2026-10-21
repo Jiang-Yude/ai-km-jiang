@@ -44,8 +44,29 @@
   /* ── 交集篩選器 ── */
   .filter-intro { color: var(--ink-soft); font-size: 18px; line-height: 1.7; margin: 0 0 18px; }
   .article-filter { background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius-lg); padding: 8px 22px 18px; box-shadow: var(--shadow); }
+  .mk-guide { display: flex; gap: 16px; align-items: flex-start; background: var(--bg-soft, #f7f1e7); border: 1px solid rgba(160,129,68,.25); border-radius: 18px; padding: 18px 20px; margin: 0 0 18px; }
+  .mk-guide-avatar { width: 64px; height: 64px; border-radius: 50%; flex: none; object-fit: cover; }
+  .mk-guide-body { flex: 1; min-width: 0; }
+  .mk-guide-bubble { margin: 0 0 12px; font-size: 18px; font-weight: 700; line-height: 1.6; color: var(--ink); }
+  .mk-guide-row { display: flex; gap: 12px; align-items: flex-start; margin: 8px 0; }
+  .mk-guide-row > b { flex: 0 0 56px; padding-top: 8px; font-size: 15px; color: var(--ink-soft, #6b5d4f); }
+  .mk-guide-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .mk-guide-chips .achip { background: #fff; }
+  .mk-guide-chips .achip.other { border-style: dashed; color: var(--ink-soft, #6b5d4f); }
+  .mk-guide-picks { margin: 12px 0 0; padding: 12px 16px 12px 36px; background: #fff; border: 1px solid rgba(160,129,68,.25); border-radius: 14px; }
+  .mk-guide-picks li { margin: 4px 0; line-height: 1.6; }
+  .mk-guide-picks a { color: var(--ink); font-weight: 700; text-decoration: none; border-bottom: 1px solid rgba(160,129,68,.5); }
+  .mk-guide-picks small { color: var(--ink-faint, #8a7d6d); margin-left: 6px; }
+  @media (max-width: 640px) { .mk-guide { flex-wrap: wrap; } .mk-guide-avatar { width: 48px; height: 48px; } .mk-guide-row { flex-direction: column; gap: 4px; } .mk-guide-row > b { padding-top: 0; } }
   .filter-dim { display: flex; gap: 14px; align-items: flex-start; padding: 13px 0; border-bottom: 1px solid var(--line-soft); }
   .filter-dim:last-child { border-bottom: none; }
+  details.filter-dim-collapse { display: block; }
+  details.filter-dim-collapse > summary { cursor: pointer; list-style: none; color: var(--ink-soft, #6b635a); font-weight: 600; flex: none; padding-top: 0; font-size: 15px; }
+  details.filter-dim-collapse > summary::-webkit-details-marker { display: none; }
+  details.filter-dim-collapse > summary::before { content: "▸ "; }
+  details.filter-dim-collapse[open] > summary::before { content: "▾ "; }
+  details.filter-dim-collapse .filter-dim-chips { margin-top: 10px; }
+  .filter-dim .achip[title] { cursor: pointer; }
   .filter-dim-label { flex: 0 0 64px; font-weight: 700; color: var(--ink); font-size: 16px; padding-top: 8px; letter-spacing: .02em; }
   .filter-dim-chips { display: flex; flex-wrap: wrap; gap: 9px; }
   .achip { display: inline-flex; align-items: center; gap: 7px; padding: 8px 14px; border: 1px solid var(--line); border-radius: var(--radius-pill); background: #fff; font-family: inherit; font-size: 16px; color: var(--ink-soft); cursor: pointer; transition: all .15s ease; }
@@ -112,7 +133,7 @@
       <li><a href="courses.html">課程</a></li>
       <li><a href="articles.html" class="active">文章</a></li>
       <li><a href="skills.html">小工具</a></li>
-      <li><a href="offers.html">服務方案</a></li>
+      <li><a href="offers.html">AI 落地</a></li>
     </ul>
   </div>
 </nav>
@@ -123,7 +144,7 @@
   <div class="container narrow">
     <div class="eyebrow">深度文章總站</div>
     <h1>深度 <span class="italic">文章</span></h1>
-    <p>我在脆文、方格子寫的東西，整理後完整版都收進這裡。可以直接打關鍵字搜尋（標題、內文、標籤都會找），或用下面三種標籤交集篩選，越點越精準。</p>
+    <p>我在脆文、方格子寫的東西，整理後完整版都收進這裡。可以直接打關鍵字搜尋（標題、內文、標籤都會找），或先點你現在遇到的問題，再用難度、類型縮小範圍。</p>
   </div>
 </div>
 
@@ -137,7 +158,16 @@
       <button type="button" class="s-clear" id="search-clear" aria-label="清除搜尋">×</button>
     </div>
 
-    <p class="filter-intro">點下面的標籤，文章要<strong>同時符合</strong>你選的每一個條件才會留下（交集，不是任選其一）。再點一次可取消。搜尋和標籤可以一起用。</p>
+    <div class="mk-guide" id="mkGuide">
+      <img class="mk-guide-avatar" src="images/mika-avatar.png" alt="咪卡" width="64" height="64">
+      <div class="mk-guide-body">
+        <p class="mk-guide-bubble" id="mkGuideSay">不知道從哪篇看起？勾一下你是誰、想解決什麼，我幫你挑。</p>
+        <div class="mk-guide-row"><b>我是</b><div class="mk-guide-chips" id="mkGuideWho"></div></div>
+        <div class="mk-guide-row"><b>想解決</b><div class="mk-guide-chips" id="mkGuideGoal"></div></div>
+        <ol class="mk-guide-picks" id="mkGuidePicks" hidden></ol>
+      </div>
+    </div>
+    <p class="filter-intro">先點你現在遇到的問題。想再縮小範圍，可以加難度、類型，或打開技術標籤；文章要<strong>同時符合</strong>你選的每一個條件才會留下。再點一次可取消，搜尋和標籤可以一起用。</p>
 
     <div class="article-filter">
       <div id="filter-dims"><!-- 篩選標籤由 articles-render.js 依資料長出 --></div>
@@ -180,7 +210,7 @@
       <a href="courses.html">課程</a>
       <a href="learn.html">自學資源</a>
       <a href="articles.html">文章</a>
-      <a href="offers.html">服務方案</a>
+      <a href="offers.html">AI 落地</a>
       <a href="resources.html">課後簡報</a>
       <a href="ai-trends.html">AI 趨勢</a>
       <a href="skills.html">小工具</a>
@@ -201,6 +231,7 @@
 
 <script src="spotlight.js" defer></script>
 <script src="articles-data.js" defer></script>
+<script src="articles-pain.js" defer></script>
 <script src="search-aliases.js" defer></script>
 <script src="articles-render.js" defer></script>
   <script src="/views.js"></script>
