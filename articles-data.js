@@ -23,6 +23,24 @@ window.ARTICLE_TAGS = {
 
 window.ARTICLES = [
   {
+    id: "at-a-glance",
+    url: "articles/at-a-glance/",
+    date: "2026-10-21",
+    updated: "2026-10-21",
+    title: "AI 講的話太長、太複雜，讓我看不懂？｜就用「一看就懂」技能包：一句答案、兩三個選項，講不清楚就畫成示意圖",
+    problem: "AI 的回答廢話太多、又長又難懂，講了「不要那麼複雜」還是要一直重講。",
+    audience: "每天叫 AI 做事、常被一大段回報淹沒，或要把 AI 分析拿給別人看的人。",
+    summary: "AI 有時候回答太複雜，讓它用簡單的方式，甚至畫成示意圖，讓我們一看就懂。四種呈現方式：一句答案加最多三點的白話；要你決定的事給兩三個選項，推薦放第一個並寫為什麼推薦、好處與風險；文字講不清楚就在對話裡畫圖；東西多就做一頁網頁圖解，框和箭頭滑鼠移上去才浮出細節。附免費技能包「一看就懂」（GitHub at-a-glance，MIT）、不用安裝直接貼的提示詞與三個示範，也查證了爆紅專案 caveman 的省字數字。",
+    tags: {
+      topic: ["提示詞設計", "技能包設計", "AI工作流"],
+      level: ["零基礎入門"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["long-answer-three-layers", "ai-understands-ei-ha", "ai-that-knows-you"]
+  },
+
+  {
     id: "ai-random-true-random",
     url: "articles/ai-random-true-random/",
     date: "2026-10-20",
@@ -379,7 +397,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["build-your-own-dictionary", "semantic-rules-before-prompt-templates", "ai-handoff-instructions", "ai-rule-file-slimming"],
+    related: ["at-a-glance", "build-your-own-dictionary", "semantic-rules-before-prompt-templates", "ai-handoff-instructions", "ai-rule-file-slimming"],
     cover: { wide: "images/articles/ai-understands-ei-ha-cover.jpg" }
   },
 
@@ -1622,7 +1640,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["map-is-not-the-territory", "intent-first-prompting", "decision-ladder-non-programmer", "ai-data-organization-usable-system", "give-ai-choices-not-descriptions", "opus-luna-model-division"],
+    related: ["at-a-glance", "map-is-not-the-territory", "intent-first-prompting", "decision-ladder-non-programmer", "ai-data-organization-usable-system", "give-ai-choices-not-descriptions", "opus-luna-model-division"],
     cover: { wide: "images/articles/long-answer-overview.jpg" }
   },
 
@@ -2190,7 +2208,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["how-to-train-your-ai-employee", "semantic-rules-before-prompt-templates", "intent-first-prompting", "strong-ai-models-knowledge-workflow-road", "ai-course-map-from-entry-to-workflow", "one-on-one-questions", "meta-prompt-thirty-versions", "personal-poster-and-wallpaper"]
+    related: ["at-a-glance", "how-to-train-your-ai-employee", "semantic-rules-before-prompt-templates", "intent-first-prompting", "strong-ai-models-knowledge-workflow-road", "ai-course-map-from-entry-to-workflow", "one-on-one-questions", "meta-prompt-thirty-versions", "personal-poster-and-wallpaper"]
   },
 
   {
