@@ -597,6 +597,13 @@ def render_board_block() -> str:
     p = status_payload()
     items = p["items"]
     lines = [MARK_START, f"- 佇列同步時間 {p['generated_at']}｜等待 {p['counts']['queued']}、暫停 {p['counts']['held']}、部署中 {p['counts']['deploying']}、失敗 {p['counts']['failed']}｜加入：`python3 scripts/publish-queue.py add --branch article/<slug> --message \"…\"`；上線（江江說部署後）：`python3 scripts/publish-queue.py deploy-next --authorized-by \"江江 時間 原話\"`（結束碼 0 才算上線）"]
+    # 每日巡檢結果（2026-10-21，企劃 v3 第 4 件）：launchd 寫不進 iCloud，所以由這裡（有權限的 session）帶進看板
+    try:
+        dh = json.loads((Path(os.environ.get("DAILY_HEALTH_DIR") or (HOME / ".cache/ai-km-jiang/daily-health")) / "latest.json").read_text("utf-8"))
+        red = f"：{'、'.join(dh.get('red') or [])}" if dh.get("red") else ""
+        lines.append(f"- 每日巡檢 {dh.get('at', '?')}｜{dh.get('summary', '?')}{red}（全站舊問題不擋上線，有紅項請開卡給負責的 AI；log：{dh.get('log', '')}）")
+    except (OSError, ValueError):
+        lines.append("- 每日巡檢：這台還沒有結果（排程 com.jiangyude.site-daily-health，每天 06:30 在專用發布桌跑）")
     order = {s: i for i, s in enumerate(("deploying", "queued", "held", "failed", "done"))}
     shown = [i for i in items if i["status"] != "done"] + [i for i in items if i["status"] == "done"][-5:]
     for it in sorted(shown, key=lambda i: (order.get(i["status"], 9), i["id"])):
@@ -605,7 +612,7 @@ def render_board_block() -> str:
         extra = f"｜{it['note']}" if it.get("note") else ""
         res = f"｜{it['last_result']}" if it.get("last_result") else ""
         lines.append(f"- {box} {mark} `{it['id']}` **{it['slug']}**｜`{it['branch']}`｜{it['message']}{extra}{res}（{it['added_at']} 由 {it['added_by']} 加入）")
-    if len(lines) == 2:
+    if len(lines) == 3:
         lines.append("- （佇列目前是空的）")
     lines.append(MARK_END)
     return "\n".join(lines)

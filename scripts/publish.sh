@@ -150,7 +150,7 @@ if [[ -n "$UNPUSHED" ]]; then
 fi
 
 echo "▶ Preflight…"
-SAFE_DEPLOY_TOOL="$SAFE_DEPLOY_TOOL" bash scripts/preflight.sh \
+PREFLIGHT_SKIP_SECRET=1 SAFE_DEPLOY_TOOL="$SAFE_DEPLOY_TOOL" bash scripts/preflight.sh \
   || { echo "⛔ preflight 未過，取消發佈"; exit 1; }
 
 if [[ "${#PUBLISH_PATHS[@]}" -gt 0 ]]; then
@@ -215,6 +215,10 @@ git -c core.quotePath=false diff --cached --name-status
 
 echo "▶ Push 前秘密掃描…"
 bash "$SAFE_DEPLOY_TOOL" --scan-only "$REPO_ROOT"
+# 2026-10-21：記下掃過與 preflight 跑過的那棵樹（此時工作區＝index）。rebase 沒改內容就不重掃，
+# pre-push hook 看到要推的樹相同也不重跑掃描與品質檢查；內容變了一律照掃。一次部署從至少 4 遍掃描減成 1 遍。
+SCANNED_TREE=$(git write-tree)
+CHECKED_TREE="$SCANNED_TREE"
 
 build_rehearsal "commit 前" || exit 1
 
@@ -233,13 +237,18 @@ if [[ "$(git rev-parse HEAD~1)" != "$PRE_COMMIT_HEAD" ]]; then
   }
 fi
 
-echo "▶ Rebase 後、push 前再掃描…"
-bash "$SAFE_DEPLOY_TOOL" --scan-only "$REPO_ROOT"
+if [[ "$(git rev-parse "HEAD^{tree}")" != "$SCANNED_TREE" ]]; then
+  echo "▶ Rebase 帶進新內容，push 前再掃描…"
+  bash "$SAFE_DEPLOY_TOOL" --scan-only "$REPO_ROOT"
+  SCANNED_TREE=$(git rev-parse "HEAD^{tree}")
+else
+  echo "▶ Rebase 沒改內容，沿用 commit 前那次秘密掃描"
+fi
 
 TAG="publish/$(TZ=Asia/Taipei date +%Y-%m-%d-%H%M%S)"
 echo "▶ Tag ${TAG} + atomic push…"
 git tag "$TAG"
-git push --atomic origin \
+PUBLISH_SCANNED_TREE="$SCANNED_TREE" PUBLISH_CHECKED_TREE="$CHECKED_TREE" git push --atomic origin \
   "HEAD:refs/heads/$EXPECTED_BRANCH" \
   "refs/tags/$TAG:refs/tags/$TAG"
 # 機器可讀收據（2026-10-09，Codex R2 第 1 條）：只有 push 真的成功才印；publish-queue.py 用它判「已 push 但部署或驗收未完成」。

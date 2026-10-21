@@ -10,6 +10,51 @@ FAIL=0
 ok(){ echo "  ✅ $1"; }
 bad(){ echo "  ❌ $1"; FAIL=1; }
 
+# ─── 只擋「這次改動造成的」（2026-10-21 立，企劃 v3 第 4 件，江江「不要我只是想要改一個小東西…還要警察這個警察那個」）───
+# 全站掃描類關卡照跑；通過就沒事。沒通過時，拿同一關去跑「改動前的 main」（HEAD，暫時開一張基準桌）：
+#   - 問題行在改動前就有＝舊問題，只警告、交每日巡檢（scripts/daily-health-check.sh），不擋本次上線
+#   - 有這次才出現的問題行＝本次造成，照擋，並列出新出現的那幾行
+#   - 比對不出來（建不了基準桌、沒有可比的問題行）一律照擋（保守）
+# PREFLIGHT_STRICT=1 關掉比對、任何失敗都擋（每日巡檢與想全站把關時用）。
+# 誠實邊界：比的是輸出的「問題行」文字，檢查器若只印數量不印是哪一筆，數量變了就算新問題（會擋，不會漏）。
+PROBLEM_RE='❌|ERROR|FAIL|✗|缺|斷|⛔|missing|不在|沒有|找不到'
+SUMMARY_RE='WARN：|結果：|掃 [0-9]+ 篇|共 [0-9]+|總計'
+BASE_WT=""
+OLD_ISSUES=()
+_cleanup_base(){ [[ -n "$BASE_WT" && "$BASE_WT" != FAIL ]] && git worktree remove --force "$BASE_WT" >/dev/null 2>&1; true; }
+trap _cleanup_base EXIT
+_passed(){  # $1＝結束碼 $2＝輸出；有「結果：」的檢查器另要求 結果：PASS
+  [[ "$1" == 0 ]] || return 1
+  if grep -q "結果：" <<<"$2"; then grep -q "結果：PASS" <<<"$2"; else return 0; fi
+}
+delta(){  # 用法：delta "名稱" 指令…；回 0＝過或只有舊問題，1＝本次造成或判斷不出來
+  local name="$1"; shift
+  local out rc base brc newp
+  out=$("$@" 2>&1); rc=$?
+  if _passed "$rc" "$out"; then return 0; fi
+  printf '%s\n' "$out" | grep -vE "$SUMMARY_RE" | grep -E "$PROBLEM_RE" | head -15 | sed 's/^/    /'
+  [[ "${PREFLIGHT_STRICT:-0}" == 1 ]] && return 1
+  if [[ -z "$BASE_WT" ]]; then
+    BASE_WT="$(mktemp -d "${TMPDIR:-/tmp}/preflight-base.XXXXXX")/main"
+    git worktree add --detach -q "$BASE_WT" HEAD >/dev/null 2>&1 || { echo "    （建不了改動前的基準桌，無法分辨新舊，照擋）"; BASE_WT=FAIL; }
+  fi
+  [[ "$BASE_WT" == FAIL ]] && return 1
+  base=$(cd "$BASE_WT" && "$@" 2>&1); brc=$?
+  if _passed "$brc" "$base"; then echo "    （改動前的 main 這關是過的＝本次造成）"; return 1; fi
+  base="${base//$BASE_WT/$PWD}"
+  newp=$(comm -23 <(printf '%s\n' "$out" | grep -vE "$SUMMARY_RE" | grep -E "$PROBLEM_RE" | LC_ALL=C sort -u) \
+                  <(printf '%s\n' "$base" | grep -vE "$SUMMARY_RE" | grep -E "$PROBLEM_RE" | LC_ALL=C sort -u))
+  if [[ -z "$(printf '%s\n' "$out" | grep -vE "$SUMMARY_RE" | grep -E "$PROBLEM_RE")" ]]; then
+    echo "    （輸出裡找不到可比對的問題行，無法分辨新舊，照擋）"; return 1
+  fi
+  if [[ -z "$newp" ]]; then
+    echo "  ⚠️  ${name}：上面都是改動前就有的舊問題，不擋本次上線（交每日巡檢開卡）"
+    OLD_ISSUES+=("$name"); return 0
+  fi
+  echo "    本次新出現的問題："; printf '%s\n' "$newp" | sed 's/^/      /'
+  return 1
+}
+
 echo "═══ 0/11 部署環境檢查 ═══"
 if bash scripts/check-deploy-env.sh; then ok "部署環境"; else bad "部署環境未通過"; fi
 # 凍結舊簡報雜湊（2026-10-21 立，事故驅動）：原本只在 build.mjs 打包時檢查，而打包在 push 之後，
@@ -42,7 +87,7 @@ fi
 # 擋不住「人工別名沒補」與「改標題把詞洗掉」。8/12 定裝照那篇上線當輪沒補別名，
 # 江江實測問「角色定妝照」查不到，就是這個洞。盤點另發現 37 篇改過標題、16 篇有詞掉出索引。
 # 這一關與上一關同屬咪卡索引，刻意不另編號，維持「一個發布閘門」。
-if node scripts/check-index-coverage.mjs; then
+if delta "索引覆蓋率" node scripts/check-index-coverage.mjs; then
   ok "索引覆蓋率（新文章有別名、改標題沒洗掉詞）"
 else
   bad "索引覆蓋率未過：見上方清單。補 search-aliases.js，或在 index-coverage-ignore.json 寫明不補的理由"
@@ -79,20 +124,17 @@ fi
 
 # 文章頁統計程式（2026-10-20 立，事故驅動）：範本註解說 views.js 已內建、實際沒有，9 月起 61 篇新文章
 # 瀏覽數全沒記，兩個月沒人發現。全站掃，缺 views.js 或 Cloudflare beacon 就擋。
-if node scripts/check-article-tracking.mjs; then
+if delta "文章頁統計程式" node scripts/check-article-tracking.mjs; then
   ok "文章頁統計程式（views.js＋Cloudflare beacon）"
 else
   bad "文章頁統計程式未載入：見上方清單。</body> 前補範本的 tracking 兩段"
 fi
 
 echo "═══ 2/11 文章互聯腳本齊全 ═══"
-if node scripts/verify-interlink.js 2>&1 | grep -q "結果：PASS"; then ok "interlink"; else bad "verify-interlink FAIL（有文章缺互聯腳本）"; fi
+if delta "文章互聯腳本" node scripts/verify-interlink.js; then ok "interlink"; else bad "verify-interlink FAIL（本次造成：有文章缺互聯腳本）"; fi
 
 echo "═══ 3/11 雙向連結 ═══"
-LG=$(node scripts/link-graph.js check 2>&1)
-if echo "$LG" | grep -q "結果：PASS"; then
-  W=$(echo "$LG" | grep -c "WARN" || true); ok "link-graph（單向提醒 $W 筆，不擋）"
-else bad "link-graph 有斷連"; fi
+if delta "雙向連結" node scripts/link-graph.js check; then ok "link-graph（單向沒回連只提醒，不擋）"; else bad "link-graph 有斷連（本次造成）"; fi
 
 echo "═══ 4/11 新頁面有進 sitemap 與 llms.txt ═══"
 MISS=0
@@ -108,9 +150,9 @@ done
 # （排除 .vercelignore 擋板與 noindex）與 sitemap.xml，缺一篇就擋。
 # 2026-10-09 起 sitemap 文章段是生成的（scripts/build-sitemap.mjs，merge-publish 重建步會跑）；
 # 這一關還留著當保底：分支不必再手補 sitemap，但若有人繞過 merge-publish 直接 publish，這裡仍擋。
-if node scripts/check-sitemap-coverage.mjs; then ok "已上線文章都在 sitemap"; else bad "有已上線文章不在 sitemap.xml（見上方清單）：跑 node scripts/build-sitemap.mjs 重建文章段，不用手補"; fi
+if delta "sitemap 覆蓋" node scripts/check-sitemap-coverage.mjs; then ok "已上線文章都在 sitemap"; else bad "有已上線文章不在 sitemap.xml（見上方清單）：跑 node scripts/build-sitemap.mjs 重建文章段，不用手補"; fi
 # 已上線文章 llms.txt 覆蓋（2026-10-10 立）：原本只驗知識架構一頁，10-03 後 10 篇文章沒進 llms.txt 也沒人擋。
-if node scripts/check-llms-coverage.mjs; then ok "已上線文章都在 llms.txt"; else bad "有已上線文章不在 llms.txt（見上方清單）：照清單補進 Deep Articles 段"; fi
+if delta "llms.txt 覆蓋" node scripts/check-llms-coverage.mjs; then ok "已上線文章都在 llms.txt"; else bad "有已上線文章不在 llms.txt（見上方清單）：照清單補進 Deep Articles 段"; fi
 grep -q "knowledge-architecture" llms.txt && ok "llms.txt 有知識架構" || bad "llms.txt 缺知識架構"
 
 echo "═══ 5/11 雙語主導航（2026-09-22 停用）═══"
@@ -120,26 +162,28 @@ echo "═══ 5/11 雙語主導航（2026-09-22 停用）═══"
 ok "雙語主導航（英文版已撤除，本關停用）"
 
 echo "═══ 6/11 內部連結掃描 ═══"
-python3 scripts/check-links.py && ok "內部連結" || bad "有內部斷鏈（見上）"
+if delta "內部連結" python3 scripts/check-links.py; then ok "內部連結"; else bad "有內部斷鏈（本次造成，見上）"; fi
 
 echo "═══ 7/11 文章版面樣式完整 ═══"
 # 2026-08-24 立，事故驅動（同一個雷第二次）：文章 CSS 完全內嵌，模板過去缺 .tablewrap／.toc／.readmore，
 # 新文章用到表格就得自己手抄 CSS，抄漏＝整塊退回瀏覽器預設。8/23、8/24 連兩篇上線後才被江江看到。
 # 模板已補齊，這一關是保底。
-if node scripts/check-article-css.mjs; then ok "文章版面樣式"; else bad "有文章用到版面 class 卻沒有對應 CSS（見上）"; fi
+if delta "文章版面樣式" node scripts/check-article-css.mjs; then ok "文章版面樣式"; else bad "有文章用到版面 class 卻沒有對應 CSS（見上）"; fi
 # 咪卡 widget 全站覆蓋（2026-08-30 立，事故驅動）：8/10 上線是一次性回填，模板漏行，
 # 之後新文章全漏（累 13 篇）、en/ 的排除只寫在 commit 訊息裡沒人看得到。
 # 模板已補行、全站已補齊，這一關是保底；刻意不掛的頁寫進 check-mika-widget.mjs 的 EXEMPT 附原因。
 # 與上一關同屬「模板保底」，刻意不另編號（同索引覆蓋率關的慣例）。
-if node scripts/check-mika-widget.mjs; then ok "咪卡 widget 覆蓋"; else bad "有頁面缺咪卡 widget 掛載（見上）"; fi
+if delta "咪卡 widget 覆蓋" node scripts/check-mika-widget.mjs; then ok "咪卡 widget 覆蓋"; else bad "有頁面缺咪卡 widget 掛載（見上）"; fi
 # 圖片拖曳護欄（2026-08-31 立，事故驅動：同一個雷炸兩次）：8/07 加的全站圖片互動預設把 hero
 # 與內文圖全吃進去，讀者能把封面拖走、拉四角縮放。8/19 江江抓到一次、改好了，但 commit 停在分支
 # 沒 merge 沒部署，且留著 img.interactive-image 開關，8/30 課程頁 hero 誤用，8/31 又被抓到。
 # 現在 selector 改成明確 opt-in（只認 data-interactive-image），這一關擋「有人再把它放寬回去」。
-if node scripts/check-image-drag.mjs; then ok "圖片拖曳護欄"; else bad "圖片互動 selector 被放寬或原生拖曳護欄被拿掉（見上）"; fi
+if delta "圖片拖曳護欄" node scripts/check-image-drag.mjs; then ok "圖片拖曳護欄"; else bad "圖片互動 selector 被放寬或原生拖曳護欄被拿掉（見上）"; fi
 
 echo "═══ 8/11 秘密掃描（未提交變更檔）═══"
-if [[ ! -f "$SAFE_DEPLOY_TOOL" ]]; then
+if [[ "${PREFLIGHT_SKIP_SECRET:-0}" == 1 ]]; then
+  ok "秘密掃描交給 publish.sh commit 前那一次（2026-10-21 起不重複掃）"
+elif [[ ! -f "$SAFE_DEPLOY_TOOL" ]]; then
   bad "找不到共用秘密掃描入口"
 elif bash "$SAFE_DEPLOY_TOOL" --scan-only "$PWD"; then
   ok "共用掃描全綠"
@@ -200,5 +244,6 @@ done
 [ $QBAD -eq 0 ] && ok "擋板與 ${PUBDATA_N} 個公開資料檔無矛盾（清單自動偵測，非寫死）"
 
 echo ""
+if [ ${#OLD_ISSUES[@]} -gt 0 ]; then echo "⚠️  有改動前就存在的舊問題（不擋本次）：${OLD_ISSUES[*]}；每日巡檢會開卡，或 PREFLIGHT_STRICT=1 bash scripts/preflight.sh 看全部"; fi
 if [ $FAIL -eq 0 ]; then echo "🟢 PREFLIGHT PASS"; else echo "🔴 PREFLIGHT FAIL：修完再跑"; fi
 exit $FAIL
