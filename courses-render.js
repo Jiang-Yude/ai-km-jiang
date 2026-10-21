@@ -156,8 +156,10 @@
 
   // ─── 延伸資源（簡報、技能包等）───
   function materialsHTML(c) {
-    if (!c.materials || !c.materials.length) return '';
-    const links = c.materials.map(m =>
+    /* 卡片只留課程簡報，延伸閱讀與其他連結一律不放（2026-10-21 江江：「全部喔 只有保留課程簡報 延伸閱讀都拿掉」） */
+    const mats = (c.materials || []).filter(m => /簡報/.test(m.label || ''));
+    if (!mats.length) return '';
+    const links = mats.map(m =>
       `<a class="course-material" href="${escapeHtml(m.url)}" target="_blank" rel="noopener" style="display:inline-block;margin-top:10px;margin-right:14px;font-size:0.95rem;font-weight:600;color:var(--c-coral);border-bottom:1px dashed var(--c-coral);text-decoration:none;">${escapeHtml(m.label || '資源 ↗')}</a>`
     ).join('');
     return `<div class="card-materials">${links}</div>`;
