@@ -61,10 +61,9 @@
       case "private": {
         const org = r.host_org || c.host;
         const note = r.note ? `<p class="cta-note">${escapeHtml(r.note)}</p>` : '';
+        /* 卡片只留一行主辦（2026-10-21 江江：卡片拉太長） */
         return `<div class="course-cta private">
           <p class="cta-private-tag">主辦：<strong>${escapeHtml(org)}</strong></p>
-          <p class="cta-private-sub">封閉場次，由主辦邀約</p>
-          ${note}
         </div>`;
       }
       case "pending": {
@@ -72,9 +71,9 @@
         return `<div class="course-cta pending"><p class="cta-note">${note}</p></div>`;
       }
       case "ended": {
-        const note = r.note ? escapeHtml(r.note) : '已結束';
+        /* 標籤已寫「已結束」，底部不再重複；有主辦就留一行（2026-10-21 江江：卡片拉太長） */
         const host = r.host_org ? `<p class="cta-private-tag">主辦：<strong>${escapeHtml(r.host_org)}</strong></p>` : '';
-        return `<div class="course-cta ended">${host}<p class="cta-note">${note}</p></div>`;
+        return host ? `<div class="course-cta ended">${host}</div>` : '';
       }
       default:
         return '';
@@ -158,7 +157,8 @@
   function materialsHTML(c) {
     /* 卡片只留課程簡報，延伸閱讀與其他連結一律不放（2026-10-21 江江：「全部喔 只有保留課程簡報 延伸閱讀都拿掉」） */
     const mats = (c.materials || []).filter(m => /簡報/.test(m.label || ''));
-    if (!mats.length) return '';
+    /* 已有「完整課程內容與簡報」按鈕就不再重複列簡報（2026-10-21 江江：卡片拉太長） */
+    if (!mats.length || c.detail_url) return '';
     const links = mats.map(m =>
       `<a class="course-material" href="${escapeHtml(m.url)}" target="_blank" rel="noopener" style="display:inline-block;margin-top:10px;margin-right:14px;font-size:0.95rem;font-weight:600;color:var(--c-coral);border-bottom:1px dashed var(--c-coral);text-decoration:none;">${escapeHtml(m.label || '資源 ↗')}</a>`
     ).join('');
