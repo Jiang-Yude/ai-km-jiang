@@ -19,7 +19,7 @@ INCOMPLETE=0   # 有檢查沒跑完（不是紅項，但也不能說全綠）
 echo "═══ 官網每日巡檢 $(TZ=Asia/Taipei date +"%Y-%m-%d %H:%M") ═══"
 
 echo ""
-echo "▶ 1/6 文章互聯完整性（verify-interlink）…"
+echo "▶ 1/7 文章互聯完整性（verify-interlink）…"
 if node scripts/verify-interlink.js; then
   echo "  ✅ PASS"
 else
@@ -28,7 +28,7 @@ else
 fi
 
 echo ""
-echo "▶ 2/6 索引涵蓋（check-index-coverage）…"
+echo "▶ 2/7 索引涵蓋（check-index-coverage）…"
 if node scripts/check-index-coverage.mjs; then
   echo "  ✅ PASS"
 else
@@ -37,7 +37,7 @@ else
 fi
 
 echo ""
-echo "▶ 3/6 線上抽測：site-index 隨機 10 筆 URL 打正式站…"
+echo "▶ 3/7 線上抽測：site-index 隨機 10 筆 URL 打正式站…"
 SAMPLE=$(node -e '
   const idx = JSON.parse(require("fs").readFileSync("site-index.json", "utf8"));
   // 只抽站內路徑；站外資源連結（github.io、gamma.app 等）歸每週 check-links 管
@@ -64,7 +64,7 @@ else
 fi
 
 echo ""
-echo "▶ 4/6 本地索引與遠端一致性：線上 site-index.json 可取得…"
+echo "▶ 4/7 本地索引與遠端一致性：線上 site-index.json 可取得…"
 _code=$(curl -s -o /dev/null -w '%{http_code}' --max-time 20 "${BASE_URL}/site-index.json")
 if [[ "$_code" == "200" ]]; then
   echo "  ✅ 200 site-index.json"
@@ -74,7 +74,7 @@ else
 fi
 
 echo ""
-echo "▶ 5/6 對外講法漂移健檢（多站）…"
+echo "▶ 5/7 對外講法漂移健檢（多站）…"
 # 檢查網站的對外自我介紹有沒有跟真相脫節：禁用詞、版本標記齊全、跟上游 repo 對版。
 # 站台清單與每站設定在 scripts/messaging-sites/，加一個客戶站只要加一行，不用改程式。
 python3 scripts/messaging-check.py
@@ -90,7 +90,7 @@ else
 fi
 
 echo ""
-echo "▶ 6/6 未上線分支盤點（修好了但沒進 main 的東西）…"
+echo "▶ 6/7 未上線分支盤點（修好了但沒進 main 的東西）…"
 # 2026-08-31 立，事故驅動：8/19 修好「hero 圖可被讀者拖走」的 commit 停在分支沒 merge、沒部署，
 # 卡片留在「施工中掛牌」區被後續掛牌蓋掉，十二天沒人碰，同一個問題被江江抓第二次。
 # 「修好了」跟「上線了」中間本來沒有任何東西在看，這一項就是補那個缺口。
@@ -103,6 +103,23 @@ case $? in
   2) echo "  ⚠️  這一項沒跑完，這次不算全綠"; INCOMPLETE=1 ;;
   *) echo "  ❌ FAIL：有分支本週剛滿七天還沒進 main，今天要給下落（上線或刪掉）"; FAIL=1 ;;
 esac
+
+echo ""
+echo "▶ 7/7 全站檢查（2026-10-21 從上線前 preflight 移過來的全站項）…"
+# 企劃 v3 第 4 件：上線前只擋「這次改動新造成的」，站上早就存在的舊問題由這裡每天全站掃一次。
+# 這裡一律嚴格（任何失敗都算紅），不做新舊比對。
+GLOBAL_RED=()
+for _chk in "node scripts/link-graph.js check" "python3 scripts/check-links.py" \
+            "node scripts/check-article-css.mjs" "node scripts/check-mika-widget.mjs" "node scripts/check-image-drag.mjs" \
+            "node scripts/check-sitemap-coverage.mjs" "node scripts/check-llms-coverage.mjs" "node scripts/check-article-tracking.mjs"; do
+  _o=$($_chk 2>&1); _r=$?
+  if [[ $_r -eq 0 ]] && { ! grep -q "結果：" <<<"$_o" || grep -q "結果：PASS" <<<"$_o"; }; then
+    echo "  ✅ ${_chk#* scripts/}"
+  else
+    echo "  ❌ ${_chk#* scripts/}"; printf '%s\n' "$_o" | grep -E '❌|ERROR|FAIL|✗|缺|斷|⛔|missing|不在|沒有|找不到' | grep -v 'WARN：' | head -8 | sed 's/^/     /'
+    GLOBAL_RED+=("${_chk#* scripts/}"); FAIL=1
+  fi
+done
 
 echo ""
 if [[ "$FAIL" -ne 0 ]]; then
