@@ -40,7 +40,8 @@ delta(){  # 用法：delta "名稱" 指令…；回 0＝過或只有舊問題，
     # 基準＝本次改動與 origin/main 的分叉點（阿港審：拿 HEAD 當基準，已 commit 的改動會被當成舊問題放過）。
     # 由 publish.sh 在 commit 前呼叫時分叉點就是 HEAD；在施工桌或 main 健康檢查時也都對。拿不到 origin/main 就照擋。
     local base_ref
-    base_ref=$(git merge-base HEAD origin/main 2>/dev/null) || base_ref=""
+    base_ref="${PREFLIGHT_BASE:-}"
+    [[ -n "$base_ref" ]] || base_ref=$(git merge-base HEAD origin/main 2>/dev/null) || base_ref=""
     BASE_TMP="$(mktemp -d "${TMPDIR:-/tmp}/preflight-base.XXXXXX")"
     BASE_WT="$BASE_TMP/main"
     if [[ -z "$base_ref" ]] || ! git worktree add --detach -q "$BASE_WT" "$base_ref" >/dev/null 2>&1; then
@@ -68,7 +69,8 @@ delta(){  # 用法：delta "名稱" 指令…；回 0＝過或只有舊問題，
 }
 
 echo "═══ 0/11 部署環境檢查 ═══"
-if bash scripts/check-deploy-env.sh; then ok "部署環境"; else bad "部署環境未通過"; fi
+if [[ "${PREFLIGHT_SKIP_ENV:-0}" == 1 ]]; then ok "部署環境（快速部署補檢查模式略過，這裡不部署）"
+elif bash scripts/check-deploy-env.sh; then ok "部署環境"; else bad "部署環境未通過"; fi
 # 凍結舊簡報雜湊（2026-10-21 立，事故驅動）：原本只在 build.mjs 打包時檢查，而打包在 push 之後，
 # 10:04 官網改版改到凍結簡報，壞改動先進 main 才失敗，擋了兩個多小時的部署。移到 push 前先擋；
 # 與下面 publish.sh 的「建置預演」同屬部署建置閘門，刻意不另編號。
