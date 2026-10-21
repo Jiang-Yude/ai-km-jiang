@@ -186,3 +186,139 @@
 - 交接線索中的 article/task-queue-mod、site/course-1011-cover、site/courses-experience 判在「要人看」，與線索預期一致；site/course-1011-title 判成「已在 main」。
 - 交接線索寫 site/dora-url-fyi 確定還沒上，但 main 已在 2026-10-21 20:47 以 f855d8d5 上線同一改動，本次判為「已在 main」，site/dora-url-fyi-v2 亦同。
 - 本清單由唯讀 git 指令產生，盤點期間若有人推新分支，數字會變。
+
+## 第二輪：「要人看」107 條逐行細篩（2026-10-21 晚）
+
+方法：排除五個生成檔後，取分支相對分叉點新增的每一行（長度超過 8 字），看它是否出現在 origin/main 同一個檔裡。這是輔助判斷，不改第一輪分類，也不構成刪除依據。
+
+| 細篩結果 | 條數 | 意思 |
+|---|---:|---|
+| 九成以上新增行已在 main | 79 | 大概已上線，只差細節或後來又被改過 |
+| 三成到九成 | 16 | 部分上線，要人看 |
+| 不到三成 | 10 | 大概沒上線 |
+| 只改生成檔 | 2 | 沒有實質內容 |
+
+已知線索對照：article/task-queue-mod、site/course-1011-cover、site/courses-experience 三條（已知已上線）都落在「九成以上」，方法與線索一致。
+
+### 大概沒上線（10）
+
+| 分支 | 最後 commit | 訊息 | 還不同的檔 |
+|---|---|---|---|
+| claude/old-article-chronicle | 2026-10-20 | 編年史化第三組互連、舊文圖片比例放行、codex-log 更新日期更正 | _templates/article-template.html,articles/auto-compact-mod/article.json,articles/auto-compact-mod/index.html |
+| claude/zealous-maxwell-oc23qq | 2026-10-20 | 會員與咪卡：Codex 第 3 輪其餘阻擋項 | 404.html,DEPLOYMENT.md,README.md |
+| cloud/claude/site-fixes-20261019 | 2026-10-19 | 課後簡報鎖定 10 頁退回 main 原樣，Course JSON-LD 生成器跳過鎖定頁 | 404.html,DEPLOYMENT.md,README.md |
+| article/revert-lesson0-20261010 | 2026-10-10 | Revert "第零堂課後實錄版" | courses/2026-09-ai-series/lesson-0/index.html |
+| article/ai-adoption-raise-cover-v2 | 2026-10-03 | 企業導入 AI 文章換封面：老闆硬拉暈頭轉向的 AI 進辦公室 | articles/ai-adoption-raise-not-install/index.html,images/articles/ai-adoption-raise-not-install-cover.jpg,images/og/ai-adoption-raise-not-install.jpg |
+| article/why-ai-gives-bad-titles-first | 2026-09-20 | 配圖與可直接複製的提示詞段 | articles/why-ai-gives-bad-titles-first/article.json,articles/why-ai-gives-bad-titles-first/index.html,images/articles/why-ai-gives-bad-titles-first-cover.jpg |
+| article/mechanism-needs-an-engine | 2026-09-08 | 接線：site-index 帶上本篇（preflight 重跑產生器後的更新） | articles/build-your-own-dictionary/article.json,articles/caught-ai-slacking-into-rules/article.json,articles/copied-mechanism-is-no-mechanism/article.json |
+| article/skill-store | 2026-09-08 | 技能包商店：第三輪 SSR 對照後修四處（購買鈕不再被 catalog 失敗擋掉、待核對碼可自己拿掉重打、誤點登出加確認、通關碼與訂單編號文案分開） | api/skill-access.js,scripts/skill-store-sync.mjs,scripts/test-skill-access.mjs |
+| article/split-shared-hotspot | 2026-09-06 | split-shared-hotspot v2.1：套 Codex 複審（副標改「不用搶」、症狀歸屬改準、刪無來源句、補同篇仍會撞） | articles/five-loops-content-line/article.json,articles/parallel-site-editing/article.json,articles/publish-gate/article.json |
+| article/what-is-ai-office | 2026-09-05 | article(what-is-ai-office): 對象去識別化改通用組織團隊、第二步補複製實際工作資料夾、summary 改課程用詞 | .vercelignore,articles/what-is-ai-office/index.html,images/og/what-is-ai-office.jpg |
+
+### 部分上線（16）
+
+| 分支 | 最後 commit | 訊息 | 還不同的檔 |
+|---|---|---|---|
+| article/ai-employee-tests-screenshots | 2026-10-21 | 文章補上兩張真實截圖與 Threads 原串連結 | articles/ai-employee-tests-new-tools/index.html |
+| fix/mika-cite-rules | 2026-10-21 | 咪卡客服：引用站內東西的規矩（提到就標編號、標題照原字、對不上就直說沒有），人設來源升 mika v1.7.0（28e6fa5） | api/mika-chat.js,llms.txt |
+| article/card-compact | 2026-10-19 | 名片壓成約 4:5：第 1 張改頭銜與說明、到肩膀圓框人像、咪卡動畫並排；第 2-4 張拿掉按鈕、重點合併；第 5 張改加入 LINE 社群；首頁分享鈕改分享圖示 | card/line-carousel.json,card/line-flex.json,card/portrait-round.png |
+| article/card-own-liff | 2026-10-19 | 名片改用江江自己的 LIFF：新增 /card/share/ 分享頁，首頁與 /card/ 分享按鈕改連 liff.line.me/2012081068-MnNPDX8P，移除借用的 liff.lovable.app | card/index.html,card/share/index.html,index.html |
+| article/add-dora-offer | 2026-10-13 | 服務方案加朵拉 DoraAI 卡（AI 實習生），連到 dora-aicat.pages.dev；萊卡編號改 05 | offers.html |
+| article/ai-adoption-raise-images-v2 | 2026-10-03 | 企業導入AI文章換架構圖版配圖：封面、四張流程圖改圖片、加一頁總結 | articles/ai-adoption-raise-not-install/index.html |
+| article/ai-adoption-raise-no-video | 2026-10-03 | 企業導入 AI 文章拿掉影片引用，三階段改用自己的說法 | articles/ai-adoption-raise-not-install/index.html,search-aliases.js |
+| article/slides-merge | 2026-10-03 | 合併版：半自動篇舊網址 301 轉址、刪舊目錄、相關連結與搜尋別名合併（未上線） | articles/ai-slides-half-auto-google-slides/article.json,articles/ai-slides-half-auto-google-slides/index.html,articles/dual-track-planning-loop/article.json |
+| article/remove-en-version | 2026-09-22 | 轉址改明確 301（Codex 跨家審：permanent:true 實為 308） | _templates/article-template.html,agent.html,ai-office/lyca/index.html |
+| article/course-0926-ai-site | 2026-09-19 | 標題定案與兩張咪卡海報：9/26 改用江江原話標題，9/21 補海報 | courses-data.js,images/courses/2026-09-26-ai-site-and-deploy.jpg |
+| article/design-for-ai-errors | 2026-09-13 | 層層追問改用江江傳給客戶的原話，一頁總結圖換成四層追問總結 | articles/design-for-ai-errors/index.html,images/articles/design-for-ai-errors-summary.jpg |
+| article/danhai-0912-poster-optional | 2026-09-09 | 0912 課程頁：插畫版必做、電影海報版選做且要用實拍場景 | courses/2026-09-12-danhai-public-art/index.html |
+| article/stats-admin | 2026-09-01 | 站長儀表板：stats.html 改成密碼保護的資料視覺化後台 | api/search-log.js,api/stats-admin.js,api/view.js |
+| article/stats-admin-v2 | 2026-09-01 | 站長儀表板四項修正：拿掉密碼提示、矩陣文字轉正、對話改成依訪客整合的對話串 | api/search-log.js,api/stats-admin.js,stats-dash.js |
+| infra/parallel-publish | 2026-08-19 | 並行施工機制兩處實測修補：worktree 帶 .vercel/project.json、main 桌子可發布 | scripts/daily-health-check.sh,scripts/merge-publish.sh,scripts/new-article-workspace.sh |
+| drafts/laptop-unpushed-2026-08-15 | 2026-08-12 | 封面換 v2（翻開實體書版，比 v1 筆電版更貼近旅行簡報成品） | .vercelignore,articles/data-page-before-data-arrives/index.html,courses/senior-ai-story-workshop/deck.html |
+
+### 只改生成檔（2）
+
+- migration/cloudflare-20261004
+- publish/2026-07-12-chatgpt-work
+
+### 九成以上已在 main（79）
+
+- article/0908-three-articles
+- article/agent-three-layer-triage
+- article/ai-adoption-raise-cards
+- article/ai-adoption-raise-media-row
+- article/ai-adoption-raise-not-install
+- article/ai-adoption-start-with-one-workflow
+- article/ai-adoption-title-a
+- article/ai-custom-work-compound
+- article/ai-customer-service-model-retest
+- article/ai-data-red-lines
+- article/ai-employee-tests-carousel
+- article/ai-employee-tests-cover
+- article/ai-employee-tests-new-tools
+- article/ai-employees-manage-agents
+- article/ai-manages-ai-focus
+- article/ai-model-token-efficiency
+- article/ai-random-true-random
+- article/ai-retrieval-pages-backlinks
+- article/ai-rule-file-slimming
+- article/ai-schedule-wake-interval
+- article/ai-understands-ei-ha
+- article/ai-user-testing
+- article/ai-vs-script-four-situations
+- article/ai-when-you-only-have-phone
+- article/auto-compact-mod
+- article/card-3x4
+- article/card-hello
+- article/cathay-tech-conference-2026
+- article/chatgpt-web-codex-console
+- article/claude-meta-ads-connector
+- article/cloudflare-free-plan-limits
+- article/cloudflare-service-map
+- article/course-0926-postclass
+- article/covers-0901-0915
+- article/delete-before-automate
+- article/diary-driven-agent-3x4-v2
+- article/draw-it-for-me
+- article/first-principles-money-soup
+- article/fix-llms-og-2026-10-10
+- article/fix-publish-gate-order
+- article/fix-sitemap-llms-workstation
+- article/fixed-test-set-for-ai
+- article/fixed-test-set-for-ai-v2
+- article/gate-tiering
+- article/grok-bot-galaxy-day1-founders
+- article/grok-bot-galaxy-day2-workshops
+- article/grok-bot-galaxy-day3-shipping
+- article/grok-bot-galaxy-series-nav
+- article/handoff-continue-or-replace
+- article/home-motion-and-architecture
+- article/home-service-first
+- article/hosting-platform-decision-tree
+- article/how-to-verify-ai-rule-changes
+- article/infra-article-css-precommit
+- article/knowledge-workers-new-model-guide
+- article/line-namecard-share-button
+- article/loop-four-entries
+- article/one-sentence-ai-website-workflow
+- article/opus-luna-model-division
+- article/parallel-site-editing
+- article/pii-shield
+- article/rules-need-an-engine
+- article/search-aliases-pw-mask-2026-10-10
+- article/self-hosted-site-analytics
+- article/slides-by-audience-sop
+- article/slides-relink
+- article/stats-admin-v3
+- article/stats-admin-v4
+- article/task-queue-mod
+- article/token-money-worth-doing
+- article/view-ratelimit
+- article/website-as-workstation
+- article/where-is-my-server
+- fix/security-2026-09-13
+- fix/share-page-first-card
+- site/card-line-share
+- site/course-1011-cover
+- site/courses-experience
+- tool/coffee-roundtable
