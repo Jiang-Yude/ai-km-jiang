@@ -57,14 +57,18 @@ for b in $BRANCHES; do
   # 誠實邊界：main 後來又改過同一段時反向套不上，仍會列出來（寧可多列，不漏）。
   _mb=$(git merge-base "$b" origin/main 2>/dev/null || true)
   if [[ -n "$_mb" ]]; then
-    _patch=$(git diff "$_mb" "$b" -- . ':(exclude)articles-data.js' ':(exclude)site-index.json' ':(exclude)article-keywords.js' ':(exclude)sitemap.xml' ':(exclude)en/articles-data.js' 2>/dev/null)
-    if [[ -z "$_patch" ]]; then continue; fi
+    _patch=$(git diff --binary "$_mb" "$b" -- . ':(exclude)articles-data.js' ':(exclude)site-index.json' ':(exclude)article-keywords.js' ':(exclude)sitemap.xml' ':(exclude)en/articles-data.js' 2>/dev/null)
+    # 只改到生成檔的分支沒有可比的內容，照舊列出（阿港審：不能當成已上線）
+    if [[ -n "$_patch" ]]; then
     _idx=$(mktemp "${TMPDIR:-/tmp}/stale-idx.XXXXXX")
+    # 反向套得上＝改動在 main 裡；同時要「正向套不上」，排除刪重複行這類正反都套得上的誤判（阿港審）
     if GIT_INDEX_FILE="$_idx" git read-tree origin/main 2>/dev/null \
-       && printf '%s\n' "$_patch" | GIT_INDEX_FILE="$_idx" git apply -R --cached --check 2>/dev/null; then
+       && printf '%s\n' "$_patch" | GIT_INDEX_FILE="$_idx" git apply -R --cached --check 2>/dev/null \
+       && ! printf '%s\n' "$_patch" | GIT_INDEX_FILE="$_idx" git apply --cached --check 2>/dev/null; then
       rm -f "$_idx"; continue
     fi
     rm -f "$_idx"
+    fi
   fi
   ts=$(git log -1 --format=%ct "$b" 2>/dev/null) || continue
   age=$(( (NOW - ts) / 86400 ))

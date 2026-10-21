@@ -439,6 +439,7 @@ def cmd_run(a) -> None:
         NOTIFY_CTX.update({"items": [f"{t['id']} {t['branch']}" for t in targets], "authorized_by": a.authorized_by.strip()})
     # 快速部署（2026-10-21 江江：「有我說快速部署的時候 就快速驅改 然後再排一個時間有空再檢查」）：
     # preflight 延後到每日巡檢補跑，只留必擋。由 merge-publish → publish.sh 讀環境變數 PUBLISH_FAST。
+    os.environ.pop("PUBLISH_FAST", None)   # 外部殘留的環境變數不算，只認這次指令的 --fast（阿港審建議）
     if getattr(a, "fast", False):
         os.environ["PUBLISH_FAST"] = "1"
         print("⚡ 快速部署：preflight 延後到下次每日巡檢（06:30）補跑，現在只跑必擋（凍結簡報、建置預演、秘密掃描、正式站驗收）")

@@ -254,6 +254,7 @@ else
   echo "▶ Rebase 沒改內容，沿用 commit 前那次秘密掃描"
 fi
 
+REMOTE_BEFORE_PUSH=$(git rev-parse '@{u}')   # 快速部署補檢查的基準：推送前的遠端 main（阿港審：不能寫死 HEAD~1）
 TAG="publish/$(TZ=Asia/Taipei date +%Y-%m-%d-%H%M%S)"
 echo "▶ Tag ${TAG} + atomic push…"
 git tag "$TAG"
@@ -265,7 +266,7 @@ echo "PUBLISH_PUSHED $(git rev-parse HEAD) ${TAG}"
 if [[ "${PUBLISH_FAST:-0}" == 1 ]]; then
   _fp="${FAST_PENDING_FILE:-$HOME/.cache/ai-km-jiang/fast-pending.jsonl}"; mkdir -p "$(dirname "$_fp")"
   python3 -c 'import json,sys;print(json.dumps({"sha":sys.argv[1],"base":sys.argv[2],"tag":sys.argv[3],"msg":sys.argv[4],"at":sys.argv[5]},ensure_ascii=False))' \
-    "$(git rev-parse HEAD)" "$(git rev-parse HEAD~1)" "$TAG" "$MSG" "$(TZ=Asia/Taipei date +'%Y-%m-%d %H:%M')" >> "$_fp"
+    "$(git rev-parse HEAD)" "$REMOTE_BEFORE_PUSH" "$TAG" "$MSG" "$(TZ=Asia/Taipei date +'%Y-%m-%d %H:%M')" >> "$_fp"
   echo "▶ 已排進待補檢查：$(git rev-parse --short HEAD)（下次每日巡檢補跑 preflight）"
 fi
 else

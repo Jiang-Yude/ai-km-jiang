@@ -127,8 +127,12 @@ echo "▶ 8/8 快速部署的延後檢查（2026-10-21 立）…"
 # 等於重現當時正常部署會跑 preflight 的狀態（只擋那次改動新造成的問題）。沒過＝紅項開卡，不自動 revert。
 FAST_PENDING="${FAST_PENDING_FILE:-$HOME/.cache/ai-km-jiang/fast-pending.jsonl}"
 FAST_DONE="${FAST_PENDING%.jsonl}-done.jsonl"
-if [[ -s "$FAST_PENDING" ]]; then
-  _fp_work="$FAST_PENDING.working"; mv "$FAST_PENDING" "$_fp_work"
+_fp_work="$FAST_PENDING.working"
+# 上一輪中斷留下的 .working 先接回來，再把新的待補併進去（阿港審：直接 mv 會覆蓋或永遠遺留）
+if [[ -s "$FAST_PENDING" ]]; then cat "$FAST_PENDING" >> "$_fp_work" && : > "$FAST_PENDING"; fi
+if [[ -s "$_fp_work" ]]; then
+  git fetch -q origin 2>/dev/null || true
+  _fp_retry="$_fp_work.retry"; : > "$_fp_retry"
   while IFS= read -r _rec; do
     [[ -n "$_rec" ]] || continue
     _sha=$(python3 -c 'import json,sys;print(json.loads(sys.argv[1])["sha"])' "$_rec")
@@ -136,11 +140,15 @@ if [[ -s "$FAST_PENDING" ]]; then
     _msg=$(python3 -c 'import json,sys;print(json.loads(sys.argv[1]).get("msg",""))' "$_rec")
     _tmp=$(mktemp -d "${TMPDIR:-/tmp}/fast-postcheck.XXXXXX"); _wt="$_tmp/pc"; _rc=9
     _log="$(dirname "$FAST_PENDING")/fast-postcheck-${_sha:0:7}.log"
-    if git fetch -q origin 2>/dev/null; git worktree add --detach -q "$_wt" "$_base" 2>/dev/null; then
-      ( cd "$_wt" && git read-tree -m -u "$_sha" && PREFLIGHT_SKIP_ENV=1 PREFLIGHT_SKIP_SECRET=1 PREFLIGHT_BASE="$_base" bash scripts/preflight.sh ) > "$_log" 2>&1; _rc=$?
-      git worktree remove --force "$_wt" >/dev/null 2>&1
+    if git worktree add --detach -q "$_wt" "$_base" 2>/dev/null && git -C "$_wt" read-tree -m -u "$_sha" 2>/dev/null; then
+      ( cd "$_wt" && PREFLIGHT_SKIP_ENV=1 PREFLIGHT_SKIP_SECRET=1 PREFLIGHT_BASE="$_base" bash scripts/preflight.sh ) > "$_log" 2>&1; _rc=$?
     fi
-    rmdir "$_tmp" 2>/dev/null
+    git worktree remove --force "$_wt" >/dev/null 2>&1; rmdir "$_tmp" 2>/dev/null
+    if [[ $_rc -eq 9 ]]; then
+      # 補檢查的環境沒建起來（不是檢查沒過），留著下次重試，這輪不算全綠
+      echo "  ⚠️  快速部署 ${_sha:0:7} 補檢查環境建不起來，留到下次重試"; INCOMPLETE=1
+      printf '%s\n' "$_rec" >> "$_fp_retry"; continue
+    fi
     if [[ $_rc -eq 0 ]]; then
       echo "  ✅ 快速部署 ${_sha:0:7}（${_msg:0:40}）補檢查通過"
     else
@@ -150,7 +158,7 @@ if [[ -s "$FAST_PENDING" ]]; then
     fi
     python3 -c 'import json,sys;r=json.loads(sys.argv[1]);r["checked_rc"]=int(sys.argv[2]);print(json.dumps(r,ensure_ascii=False))' "$_rec" "$_rc" >> "$FAST_DONE"
   done < "$_fp_work"
-  rm -f "$_fp_work"
+  mv "$_fp_retry" "$_fp_work"; [[ -s "$_fp_work" ]] || rm -f "$_fp_work"
 else
   echo "  ✅ 沒有待補檢查的快速部署"
 fi
