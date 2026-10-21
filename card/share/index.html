@@ -32,7 +32,8 @@ body.fwd{display:block;padding:0}
 .fwd main{max-width:860px;margin:-56px auto 32px;padding:20px 16px 28px;box-shadow:0 12px 32px #4f3a2022}
 .fwd #fwdRail{background:#efe5d3;border-radius:16px;margin:0 0 10px;padding:16px;gap:14px}
 .pnote{font-size:13px;color:var(--muted);text-align:center;margin:0 0 18px}
-.fwd button{background:linear-gradient(180deg,#a27c45,#7d5d31);color:#fffcf6}
+.fwd button{background:linear-gradient(180deg,#a27c45,#7d5d31);color:#fffcf6;font-size:26px;padding:22px 12px;border-radius:16px;box-shadow:0 8px 20px #7d5d3140;margin:0 0 6px}
+.fwd #msg{margin:0 0 10px;min-height:0;text-align:center}
 .kicker{font-size:13px;letter-spacing:.3em;color:var(--gold);margin:0 0 4px}
 </style></head><body>
 <header class="band"><div>
@@ -138,6 +139,8 @@ if (!param('c') && !isFwd) fetch('/card/line-flex.json').then(function(r){ retur
       card = withForward(mine);
       if (isFwd) {
         document.body.classList.add('fwd'); btn.textContent = '選擇好友轉傳'; document.title = '轉傳江江教練的 LINE 名片';
+        // 江江 2026-10-21：轉傳按鈕放在名片上面、做大一點，一進來就看到
+        var fwdBox = document.getElementById('fwd'); fwdBox.insertBefore(msg, fwdBox.firstChild); fwdBox.insertBefore(btn, msg);
         // 跟 /linecard/ 一樣照 LINE 寬度排 3:4 再縮小，換行才不會擠（AUT 2026-10-21）
         // 預覽畫「實際會傳出去」的那組（每張底部有轉傳這張名片），高度照 LINE：五張一樣高、以最高那張為準
         renderFlexCards(card).forEach(function(b){ document.getElementById('fwdRail').appendChild(b); });
