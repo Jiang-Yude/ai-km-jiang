@@ -60,6 +60,25 @@ window.ARTICLES = [
   },
 
   {
+    id: "know-ai-assign-ai",
+    url: "articles/know-ai-assign-ai/",
+    date: "2026-10-21",
+    updated: "2026-10-21",
+    title: "用 AI 跟用人一模一樣｜知人善用，讓對的 AI 做對的事",
+    problem: "手上同時有好幾個 AI，不知道什麼事該交給哪一個；覺得某個 AI 生的圖不好看、查資料會有幻覺。",
+    audience: "同時在用 Claude、ChatGPT、Gemini 等多個 AI，想知道怎麼分工的人；管過團隊、想把帶人經驗用在 AI 身上的人。",
+    summary: "朋友問用 Claude 做簡報美感有比較好嗎，我把它拆成審美能力跟生圖能力兩件事：Claude 規劃圖文排版並審圖，ChatGPT 生圖。再用三個例子講分工：Gemini 有官方的 Google 搜尋接地功能，當子代理只抓事實不做判斷；Grok 爬 X、GPT Astra 做 3D 模型、GPT Dots 當秘書長；同一家模型 Opus 5.5 規劃與統整、Haiku 當子代理爬幾百則留言；官網客服固定產品用 Haiku、複雜抽象用 Sonnet 5.5。結論：用 AI 跟用人一模一樣，比的是組織分工、分工合作與規劃工作流程的能力。",
+    tags: {
+      topic: ["AI工作流", "AIAgent", "差異比較"],
+      level: ["基礎"],
+      content_type: ["觀點文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["opus-luna-model-division", "ai-customer-service-model-retest", "ai-slides-half-auto-google-slides", "how-to-train-your-ai-employee", "ai-vs-script-four-situations"],
+    cover: { wide: "images/articles/know-ai-assign-ai-cover.jpg" }
+  },
+
+  {
     id: "ai-random-true-random",
     url: "articles/ai-random-true-random/",
     date: "2026-10-20",
