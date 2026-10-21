@@ -131,6 +131,14 @@ git fetch origin
 git pull --rebase
 MAIN_BEFORE="$(git rev-parse HEAD)"
 
+# ─── 批次上線（2026-10-21 立，江江：「我應該要同時可以更新我的課程頁面、更新我這個小工具、更新我的文章」）───
+# PUBLISH_BATCH_BRANCHES="分支1 分支2 …"：依序把每條分支 squash 進來，每筆先做一個暫時的本機 commit（衝突判斷與一筆一筆跑完全相同），
+# 全部合完再 reset --soft 回 MAIN_BEFORE 收成一包，生成檔只重建一次、檢查一次、打包一次、上線一次。
+# 任一筆在這段失敗：整批還原（清理會把暫時 commit 一起退掉），由 publish-queue.py 改成一筆一筆跑找出是哪一筆。
+# 沒設 PUBLISH_BATCH_BRANCHES 時就是原本的單筆流程（只合 $1 那一條）。
+FORK_POINTS=()
+merge_one() {
+BRANCH="$1"
 # 分支解析（2026-10-09 改，事故驅動）：分支只存在「獨立 clone」時，舊版 `git merge --squash article/x`
 # 印 `not something we can merge`，接著 CONFLICTS 陣列在 bash 3.2 下 unbound，卻 exit 0（假成功）。
 # 現在三態明確：①本地有分支→用本地 ②本地沒有、origin 有→用 origin/<branch>（別台或獨立 clone push 上來的）
@@ -174,7 +182,7 @@ if [[ -z "$FORK_POINT" ]]; then
   echo "⛔ 算不出 main 與 ${MERGE_REF} 的分叉點（分支可能已 squash 上線過一次，見踩坑清單第十條）。"
   exit 20
 fi
-export ARTICLES_DATA_BASELINES="${FORK_POINT} $(git rev-parse HEAD)"
+FORK_POINTS+=("$FORK_POINT")
 
 # ─── 分支夾帶生成檔的判定（2026-10-09 立，事故驅動）───
 # 分支在 commit 當下已有 pre-commit 擋生成檔；這裡是第二道，順便處理擋之前就 commit 的舊分支。
@@ -256,6 +264,22 @@ for _g in ${BRANCH_GEN[@]+"${BRANCH_GEN[@]}"}; do
     echo "   ↻ 還原分支帶來的生成檔為 main 版：${_g}"
   fi
 done
+
+}
+
+if [[ -n "${PUBLISH_BATCH_BRANCHES:-}" ]]; then
+  read -r -a _BATCH <<< "$PUBLISH_BATCH_BRANCHES"
+  echo "▶ 批次上線 ${#_BATCH[@]} 筆：${_BATCH[*]}"
+  for _b in "${_BATCH[@]}"; do
+    merge_one "$_b"
+    git commit -q --no-verify -m "batch-tmp: ${_b}" || { echo "⛔ ${_b} 合進來後沒有任何變更（可能已上線過）"; exit 10; }
+  done
+  git reset -q --soft "$MAIN_BEFORE"
+  BRANCH="batch:${_BATCH[*]}"
+else
+  merge_one "$BRANCH"
+fi
+export ARTICLES_DATA_BASELINES="${FORK_POINTS[*]} $(git rev-parse HEAD)"
 
 echo "▶ 重建全部生成檔…"
 # 順序有意義：articles-data.js 先，site-index 與 article-keywords 都讀它；sitemap 最後（只補文章段）。
