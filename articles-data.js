@@ -37,7 +37,8 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["long-answer-three-layers", "ai-understands-ei-ha", "ai-that-knows-you"]
+    related: ["long-answer-three-layers", "ai-understands-ei-ha", "ai-that-knows-you"],
+    cover: { wide: "images/articles/at-a-glance-cover.jpg" }
   },
 
   {

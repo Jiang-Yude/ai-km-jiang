@@ -160,8 +160,9 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
 .dif-cards summary{cursor:pointer;font-size:18px;font-weight:700}.dif-cards details p{margin:8px 0 0;font-size:18px}
 #dif-tipbox{position:fixed;z-index:50;max-width:320px;padding:12px 16px;border-radius:12px;background:#2a2018;color:#fff;font-size:18px;line-height:1.6;box-shadow:0 6px 24px rgba(0,0,0,.18);pointer-events:none;opacity:0;transition:opacity .12s}
 #dif-tipbox.on{opacity:1}
-.hero h1{font-size:clamp(32px,4.4vw,54px)!important;line-height:1.16!important}
+.hero{gap:44px!important}.hero>div{width:500px!important}.hero-figure{width:500px!important}.hero h1{font-size:clamp(28px,2.8vw,40px)!important;line-height:1.2!important;margin:12px 0 16px!important}.hero p{font-size:clamp(17px,1.35vw,19px)!important}
 .dif-hint{display:none;font-size:16px;color:var(--muted);margin:0 0 8px}@media(max-width:760px){.dif-hint{display:block}}
+.dif-embed{padding:0;overflow:hidden}.dif-embed iframe{display:block;width:100%;height:1400px;border:0;background:#f7f4ee}.dif-embed figcaption{padding:0 18px 16px}
 .dif-btn{display:inline-block;margin:6px 8px 0 0;padding:11px 18px;border-radius:8px;background:#5f7553;color:#fff!important;font-weight:700;text-decoration:none!important;font-size:18px}.dif-btn.ghost{background:#fff;color:#5f7553!important;border:1px solid #5f7553}
 </style>
 </head>
@@ -196,6 +197,10 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
     <h1>AI 講的話太長、太複雜，讓我看不懂？｜就用「一看就懂」技能包：一句答案、兩三個選項，講不清楚就畫成示意圖</h1>
     <p>AI 有時候回答太複雜。讓它用簡單的方式，甚至畫成示意圖，讓你一看就懂。</p>
   </div>
+  <figure class="hero-figure">
+    <img src="../../images/articles/at-a-glance-cover.jpg" alt="咪卡把一張畫著三格流程圖的小卡舉高，背後是一大堆又長又亂的紙卷；標題：AI 講的話太長、太複雜看不懂？就用「一看就懂」" loading="lazy">
+    <figcaption>AI 的長篇回答，整理成一張一看就懂的小卡。</figcaption>
+  </figure>
 </section>
 
 <main>
@@ -294,11 +299,10 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
 <section class="section" id="demo-web"><div class="inner">
   <h2>示範：做成一頁網頁圖解</h2>
   <p>東西多的時候，AI 會做一頁網頁。最上面一句話就是答案，下面是重點卡片，再往下是一張一張的圖，預設最多五張。</p>
-  <figure class="inline-figure wide">
-    <img src="../../images/articles/at-a-glance-demo.jpg" alt="一看就懂的網頁圖解示範頁：上方一句答案、三張重點卡片、流程圖，滑鼠移到框上浮出細節" loading="lazy">
-    <figcaption>網頁圖解示範頁的截圖，滑鼠移到「客套加重述」時浮出細節。</figcaption>
+  <figure class="dif dif-embed">
+    <iframe id="dif-demo" src="demo.html" title="一看就懂的網頁圖解示範頁（可以直接滑）" loading="lazy"></iframe>
+    <figcaption>這就是示範頁本身，直接在這裡滑：框、箭頭移上去會浮出細節，卡片點開會展開。<a href="demo.html">想看整頁就開新頁</a>。</figcaption>
   </figure>
-  <p><a class="dif-btn" href="demo.html">打開示範頁，自己滑滑看</a></p>
 </div></section>
 
 <section class="section" id="look"><div class="inner">
@@ -383,6 +387,14 @@ el.addEventListener('mousemove',function(e){show(el,e.clientX,e.clientY)});el.ad
 el.addEventListener('click',function(e){e.stopPropagation();show(el,e.clientX,e.clientY)});
 el.addEventListener('focus',function(){var r=el.getBoundingClientRect();show(el,r.left+r.width/2,r.bottom)});el.addEventListener('blur',hide);});
 document.addEventListener('click',hide);addEventListener('scroll',hide,{passive:true});})();
+</script>
+<script>
+(function(){var f=document.getElementById('dif-demo');if(!f)return;
+function fit(){try{var d=f.contentDocument;if(!d)return;var w=d.getElementById('mkw-root');if(w)w.style.display='none';
+var st=d.getElementById('dif-embed-style');if(!st){st=d.createElement('style');st.id='dif-embed-style';st.textContent='body{padding-top:20px!important;padding-bottom:24px!important}#mkw-root{display:none!important}';d.head.appendChild(st);}
+f.style.height=(d.documentElement.scrollHeight+4)+'px';}catch(e){}}
+f.addEventListener('load',function(){fit();setTimeout(fit,400);setTimeout(fit,1500);try{f.contentDocument.addEventListener('toggle',fit,true);}catch(e){}});
+addEventListener('resize',fit);})();
 </script>
 <!-- 點圖放大 lightbox（hero 與內文圖通用，已內建，不用每篇重加） -->
 <div class="lightbox" id="lightbox" aria-hidden="true">
