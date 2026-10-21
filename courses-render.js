@@ -194,6 +194,7 @@
           </div>
           <h3>${escapeHtml(c.title)}</h3>
           ${modeBadgesHTML(c)}
+          ${c.summary ? `<p class="card-summary">${escapeHtml(c.summary)}</p>` : ''}
           ${detailLinkHTML(c)}
           ${materialsHTML(c)}
           ${ctaHTML(c)}
