@@ -37,7 +37,8 @@ window.ARTICLES = [
       content_type: ["案例文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["dont-learn-ai-tools", "ai-employees-manage-agents", "rules-need-an-engine", "before-installing-others-skill", "loop-engineering-guardrails"]
+    related: ["dont-learn-ai-tools", "ai-employees-manage-agents", "rules-need-an-engine", "before-installing-others-skill", "loop-engineering-guardrails"],
+    cover: { wide: "images/articles/ai-employee-tests-new-tools-cover.jpg" }
   },
 
   {
