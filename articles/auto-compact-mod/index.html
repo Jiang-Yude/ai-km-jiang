@@ -189,7 +189,7 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
 <main>
 <section class="section" id="start"><div class="inner">
   <h2>這篇在講什麼</h2>
-  <p class="lead">我常常任務跑到一半就離開，離開超過一小時回來講第一句話，那一輪比平常貴，原因是快取過期了。我想要的是：快取消失前，自動把工作日誌寫好存檔，再壓縮上下文，回來時就是一個新的段落。第一版用 Hook 做不到，後來改用 Claude Code Mod 做出來。這篇講為什麼、怎麼做、踩過什麼坑，最後附不寫程式也能用的手動做法。</p>
+  <p class="lead">我常常任務跑到一半就離開，或是 AI 做到一半停下來等我決定，我剛好不在位子上。離開超過一小時回來講第一句話，那一輪比平常貴，原因是快取過期了。我想要的是：快取消失前，自動把工作日誌寫好存檔，再壓縮上下文，回來時就是一個新的段落。第一版用 Hook 做不到，後來改用 Claude Code Mod 做出來。這篇講為什麼、怎麼做、踩過什麼坑，最後附不寫程式也能用的手動做法。</p>
   <div class="duo stack">
     <div class="card a"><b>適合誰</b>
       <ul>
@@ -213,7 +213,7 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
   <p>AI 每回答一次，都要把前面整段對話重新讀一次。對話越長，每一輪要讀的就越多。</p>
   <p>快取（prompt caching，提示詞快取）的作用，是把已經讀過的那一段先存起來。下一輪再讀到同一段，就用很便宜的價格計算，Claude 讀快取的價格大約是原價的十分之一。</p>
   <p>快取有時效。Claude Code 用的快取存 1 小時，而且每用一次就重新計時。任務在跑的時候，快取一直被續命。</p>
-  <div class="meaning"><b>真正會過期的時候</b>是你停下來、離開超過一小時。回來講第一句話，前面的對話沒有快取可用，要用一般價格重新計算。對話越長，這一下越貴。</div>
+  <div class="meaning"><b>真正會過期的時候</b>是你停下來、離開超過一小時。最常見的情況是 AI 做到一半停下來等你決定，你剛好不在。回來講第一句話，前面的對話沒有快取可用，要用一般價格重新計算。對話越長，這一下越貴。</div>
   <figure class="inline-figure wide">
     <img src="../../images/articles/auto-compact-mod-timeline.svg" alt="兩個區塊對照：上方情況 A 沒有 Mod 時閒置超過 60 分鐘快取過期，回來第一句整段用一般價重算；下方情況 B 有 Mod 時第 55 分鐘先寫工作日誌再壓縮，回來是短對話加一份工作日誌" loading="lazy">
     <figcaption>快取是從最後一輪結束才開始倒數。Mod 搶在第 55 分鐘先整理，第 60 分鐘過期之後，回來要重算的只剩一段短對話。</figcaption>
@@ -238,7 +238,7 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
     <div class="card a"><small>只壓縮</small><b>AI 自己決定留什麼</b><p>檔案放在哪、為什麼這樣決定，這些細節可能在濃縮時被省略掉。</p></div>
     <div class="card b"><small>先寫工作日誌</small><b>另外存成檔案</b><p>可以同步到其他電腦，或交給另一家 AI 接續，讀得到做到哪、卡在哪、下一步。</p></div>
   </div>
-  <p>我還另外寫一張「續接卡」，比工作日誌更短，只放四件事：目標、做到哪、卡在哪、下一步。回來時先讀這張卡再接著做。卡片寫得夠不夠清楚，決定接不接得上。</p>
+  <p>我還另外寫一張「續接卡」，比工作日誌更短，只放六件事：目標、做到哪、卡在哪（或在等我決定什麼）、下一步、相關檔案、接續第一句。接續第一句是一句可以直接貼進新對話的話，裡面寫著這張卡的位置；回來時貼上這句，AI 先讀這張卡再接著做，不用整段對話重讀。卡片寫得夠不夠清楚，決定接不接得上。</p>
   <p>時機也要對：要趕在快取過期前做。快取還在的話，壓縮時 AI 讀前面的對話還是用快取價。</p>
 </div></section>
 
