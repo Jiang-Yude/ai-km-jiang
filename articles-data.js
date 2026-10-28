@@ -23,6 +23,25 @@ window.ARTICLE_TAGS = {
 
 window.ARTICLES = [
   {
+    id: "learn-obsidian-mechanism",
+    url: "articles/learn-obsidian-mechanism/",
+    date: "2026-10-28",
+    updated: "2026-10-28",
+    title: "一定要用 Obsidian 嗎？｜學雙向連結的機制：每份文件寫下為什麼，記下跟其他文件的關係",
+    problem: "聽說 Obsidian 很好用，不確定要不要裝；或是裝了之後筆記越存越多，還是用不起來。",
+    audience: "想整理自己的知識庫、讓 AI 讀得懂找得到，或要幫客戶整理資料的人。",
+    summary: "重點是學 Obsidian 建立連結的機制，軟體裝不裝都可以。加一份文件時多寫下六件事：為什麼重要、為什麼想加、教 AI 的原因、當時情境、要解決什麼問題、跟其他內容的關係。文件之間的因果、脈絡、抉擇比單篇內容重要，Obsidian 的雙向連結與關聯圖是練習這件事的好方法。內化之後，用檢索頁或在每份文件裡記下關聯也做得到。附規則立因、工作日記來源與去處、專案位置總表等真實例子，以及一段讓 AI 幫你問出為什麼的提示詞。",
+    tags: {
+      topic: ["知識管理", "知識庫"],
+      level: ["零基礎入門"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["ai-retrieval-pages-backlinks", "tag-wiki-method", "copied-mechanism-is-no-mechanism", "dont-learn-ai-tools", "diary-driven-agent-3x4-v2", "rag-three-retrieval-modes"],
+    cover: { wide: "images/articles/learn-obsidian-mechanism-cover.jpg" }
+  },
+
+  {
     id: "ai-employee-tests-new-tools",
     url: "articles/ai-employee-tests-new-tools/",
     date: "2026-10-21",
@@ -189,7 +208,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["tag-wiki-method", "claude-skills-knowledge-assets", "rag-three-retrieval-modes", "diary-driven-agent-3x4-v2", "docs-as-system-design-agent"],
+    related: ["tag-wiki-method", "claude-skills-knowledge-assets", "rag-three-retrieval-modes", "diary-driven-agent-3x4-v2", "docs-as-system-design-agent", "learn-obsidian-mechanism"],
     cover: { wide: "images/articles/ai-retrieval-pages-backlinks-cover.jpg" }
   },
 
@@ -208,7 +227,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["diary-driven-agent-3x4", "what-is-loop-engineering", "knowledge-base-three-vault-split", "tag-wiki-method", "ai-retrieval-pages-backlinks", "ai-manages-ai-focus"],
+    related: ["diary-driven-agent-3x4", "what-is-loop-engineering", "knowledge-base-three-vault-split", "tag-wiki-method", "ai-retrieval-pages-backlinks", "ai-manages-ai-focus", "learn-obsidian-mechanism"],
     cover: { wide: "images/articles/diary-driven-agent-3x4-v2-cover.jpg" }
   },
 
@@ -1755,7 +1774,7 @@ window.ARTICLES = [
       content_type: ["觀點文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["harness-mindset-for-bosses", "ai-tools-professional-judgment", "start-with-a-wrong-draft", "let-ai-do-the-setup", "start-from-one-persons-problem", "ai-employees-manage-agents", "ai-employee-tests-new-tools"]
+    related: ["harness-mindset-for-bosses", "ai-tools-professional-judgment", "start-with-a-wrong-draft", "let-ai-do-the-setup", "start-from-one-persons-problem", "ai-employees-manage-agents", "ai-employee-tests-new-tools", "learn-obsidian-mechanism"]
   },
 
   {
@@ -1884,7 +1903,7 @@ window.ARTICLES = [
       content_type: ["觀點文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["ai-usage-audit", "before-installing-others-skill", "decision-ladder-non-programmer", "how-to-train-your-ai-employee", "caught-ai-slacking-into-rules", "parallel-site-editing"]
+    related: ["ai-usage-audit", "before-installing-others-skill", "decision-ladder-non-programmer", "how-to-train-your-ai-employee", "caught-ai-slacking-into-rules", "parallel-site-editing", "learn-obsidian-mechanism"]
   },
 
   {
@@ -2745,7 +2764,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["llm-rag-agent-mcp", "questionnaire-to-slides-agent-workflow", "teacher-prep-knowledge-workflow", "knowledge-base-three-vault-split", "docs-as-system-design-agent", "ai-loop-safety-recovery", "inspiration-production-system", "why-split-data-into-cards", "knowledge-os-master-map", "build-your-own-dictionary", "rag-three-retrieval-modes", "ai-rule-file-slimming", "diary-driven-agent-3x4-v2", "ai-retrieval-pages-backlinks"]
+    related: ["llm-rag-agent-mcp", "questionnaire-to-slides-agent-workflow", "teacher-prep-knowledge-workflow", "knowledge-base-three-vault-split", "docs-as-system-design-agent", "ai-loop-safety-recovery", "inspiration-production-system", "why-split-data-into-cards", "knowledge-os-master-map", "build-your-own-dictionary", "rag-three-retrieval-modes", "ai-rule-file-slimming", "diary-driven-agent-3x4-v2", "ai-retrieval-pages-backlinks", "learn-obsidian-mechanism"]
   },
 
   {
