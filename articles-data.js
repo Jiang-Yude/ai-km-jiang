@@ -80,6 +80,25 @@ window.ARTICLES = [
   },
 
   {
+    id: "inspiration-production-system",
+    url: "articles/inspiration-production-system/",
+    date: "2026-07-13",
+    updated: "2026-10-24",
+    title: "每天想不到要發什麼？｜用靈感池把我的內容、受眾需求和熱門話題組成貼文",
+    problem: "每天硬想今天發什麼想到累；有一堆舊素材卻要用時找不到。",
+    audience: "一人公司、自媒體、想穩定經營社群卻卡在選題的知識工作者。",
+    summary: "把靈感當成可以系統性產出的東西：三個來源（我過去累積的內容、受眾的需求、網路上的熱門話題）怎麼組合，加上標籤撈取系統、從話題到貼文的兩句話流程，以及沒靈感時怎麼選題。最後講靈感池為什麼也是知識管理，接到標籤連結法 Tag Wiki，讓有個人特色的穩定發文變成一套會自己運轉的系統。",
+    tags: {
+      topic: ["AI工作流", "工作流程", "知識管理"],
+      level: ["基礎"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
+    related: ["tag-wiki-method", "ai-retrieval-pages-backlinks", "diary-driven-agent-3x4-v2", "ai-user-testing", "five-loops-content-line", "train-your-ai-agent-editor", "diary-driven-agent-3x4"],
+    cover: { wide: "images/articles/inspiration-production-system-cover-wide.jpg" }
+  },
+
+  {
     id: "ai-employee-tests-new-tools",
     url: "articles/ai-employee-tests-new-tools/",
     date: "2026-10-21",
@@ -246,7 +265,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["tag-wiki-method", "claude-skills-knowledge-assets", "rag-three-retrieval-modes", "diary-driven-agent-3x4-v2", "docs-as-system-design-agent", "learn-obsidian-mechanism"],
+    related: ["tag-wiki-method", "claude-skills-knowledge-assets", "rag-three-retrieval-modes", "diary-driven-agent-3x4-v2", "docs-as-system-design-agent", "learn-obsidian-mechanism", "inspiration-production-system"],
     cover: { wide: "images/articles/ai-retrieval-pages-backlinks-cover.jpg" }
   },
 
@@ -265,7 +284,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["diary-driven-agent-3x4", "what-is-loop-engineering", "knowledge-base-three-vault-split", "tag-wiki-method", "ai-retrieval-pages-backlinks", "ai-manages-ai-focus", "learn-obsidian-mechanism"],
+    related: ["diary-driven-agent-3x4", "what-is-loop-engineering", "knowledge-base-three-vault-split", "tag-wiki-method", "ai-retrieval-pages-backlinks", "ai-manages-ai-focus", "learn-obsidian-mechanism", "inspiration-production-system"],
     cover: { wide: "images/articles/diary-driven-agent-3x4-v2-cover.jpg" }
   },
 
@@ -1158,7 +1177,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["ai-market-microcosm", "ai-mvp-validation-before-product", "before-installing-others-skill", "loop-four-entries", "one-sentence-video-to-deep-article"],
+    related: ["ai-market-microcosm", "ai-mvp-validation-before-product", "before-installing-others-skill", "loop-four-entries", "one-sentence-video-to-deep-article", "inspiration-production-system"],
     cover: { tall: "images/articles/ai-user-testing-cover.jpg" }
   },
 
@@ -1329,7 +1348,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["what-is-loop-engineering", "what-is-graph-engineering", "ai-era-websites-for-agents"],
+    related: ["what-is-loop-engineering", "what-is-graph-engineering", "ai-era-websites-for-agents", "inspiration-production-system"],
     cover: { tall: "images/articles/five-loops-content-line-card-01.jpg" }
   },
 
@@ -2545,25 +2564,6 @@ window.ARTICLES = [
     },
     external: { threads: null, vocus: null },
     related: ["chatgpt-work-codex-choice", "claude-skills-knowledge-assets", "how-ai-connects-software", "semantic-rules-before-prompt-templates"]
-  },
-
-  {
-    id: "inspiration-production-system",
-    url: "articles/inspiration-production-system/",
-    date: "2026-07-13",
-    updated: "2026-07-13",
-    title: "工作很忙、時間很破碎，沒空經營內容？：靈感產出系統與靈感池",
-    problem: "每天硬想今天發什麼想到累；有一堆舊素材卻要用時找不到。",
-    audience: "一人公司、自媒體、想穩定經營社群卻卡在選題的知識工作者。",
-    summary: "把靈感當成可以系統性產出的東西：三個來源（過去累積的內容、AI 模擬受眾、熱門話題）加上標籤撈取系統，配一套從話題到貼文的實操流程，以及沒靈感時請 AI 搜話題並從大眾與專業兩個角度選題的流程，讓有個人特色的穩定發文變成一套會自己運轉的系統。",
-    tags: {
-      topic: ["AI工作流", "工作流程", "知識管理"],
-      level: ["基礎"],
-      content_type: ["教學文章"]
-    },
-    external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["tag-wiki-method", "diary-driven-agent-3x4", "train-your-ai-agent-editor"],
-    cover: { tall: "images/articles/inspiration-production-system-cover.jpg" }
   },
 
   {
