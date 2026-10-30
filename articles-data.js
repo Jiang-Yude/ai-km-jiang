@@ -23,6 +23,63 @@ window.ARTICLE_TAGS = {
 
 window.ARTICLES = [
   {
+    id: "learn-obsidian-mechanism",
+    url: "articles/learn-obsidian-mechanism/",
+    date: "2026-10-28",
+    updated: "2026-10-28",
+    title: "一定要用 Obsidian 嗎？｜學雙向連結的機制：每份文件寫下為什麼，記下跟其他文件的關係",
+    problem: "聽說 Obsidian 很好用，不確定要不要裝；或是裝了之後筆記越存越多，還是用不起來。",
+    audience: "想整理自己的知識庫、讓 AI 讀得懂找得到，或要幫客戶整理資料的人。",
+    summary: "重點是學 Obsidian 建立連結的機制，軟體裝不裝都可以。加一份文件時多寫下六件事：為什麼重要、為什麼想加、教 AI 的原因、當時情境、要解決什麼問題、跟其他內容的關係。文件之間的因果、脈絡、抉擇比單篇內容重要，Obsidian 的雙向連結與關聯圖是練習這件事的好方法。內化之後，用檢索頁或在每份文件裡記下關聯也做得到。附規則立因、工作日記來源與去處、專案位置總表等真實例子，以及一段讓 AI 幫你問出為什麼的提示詞。",
+    tags: {
+      topic: ["知識管理", "知識庫"],
+      level: ["零基礎入門"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["ai-retrieval-pages-backlinks", "tag-wiki-method", "copied-mechanism-is-no-mechanism", "dont-learn-ai-tools", "diary-driven-agent-3x4-v2", "rag-three-retrieval-modes"],
+    cover: { wide: "images/articles/learn-obsidian-mechanism-cover.jpg" }
+  },
+
+  {
+    id: "auto-compact-mod",
+    url: "articles/auto-compact-mod/",
+    date: "2026-10-09",
+    updated: "2026-10-28",
+    title: "離開超過一小時回來，AI 對話為什麼變貴？｜我用 Claude Code Mod 做了閒置 55 分鐘先寫日誌再自動壓縮",
+    problem: "AI 對話開很久、中途離開超過一小時回來，第一句話特別貴；直接壓縮上下文又怕 AI 忘記做到哪。",
+    audience: "常常一個 AI 對話開很久、中途離開又回來的人；用 Claude Code、想知道 Mod 能做什麼的人。",
+    summary: "Claude Code 的快取存 1 小時，離開超過一小時回來，前面的對話要用一般價格重新計算。我先用 Hook 做續接卡，但 Hook 叫不醒閒置的對話；後來用 Claude Code Mod 做了 auto-compact-55：說「壓縮上下文」就先寫工作日誌再壓縮，閒置 55 分鐘也會自動先寫日誌再壓縮。文章講兩套機制、說了卻沒壓縮的坑怎麼修、安全邊界，最後附不寫程式也能照做的手動流程。",
+    tags: {
+      topic: ["AI工作流", "工具操作"],
+      level: ["進階"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["token-money-worth-doing", "pii-shield", "codex-log-health-check", "task-queue-mod"],
+    cover: { wide: "images/articles/auto-compact-mod-cover.jpg" }
+  },
+
+  {
+    id: "run-with-ai-first-then-script",
+    url: "articles/run-with-ai-first-then-script/",
+    date: "2026-10-27",
+    updated: "2026-10-27",
+    title: "用 AI 做自動化，要先寫程式嗎？｜先讓 AI 把整條流程跑通，固定的 SOP 再請它寫成程式",
+    problem: "想用 AI 做自動化，卻卡在要不要先學寫程式、哪一段該寫成程式。",
+    audience: "想用 AI 做自動化工作流、但不會寫程式的知識工作者。",
+    summary: "工作流一開始先讓大語言模型把整條流程跑通，跑通後找出每次都一樣的固定 SOP，再請 AI 寫成程式，以後那一段交給程式，AI 就不用管了。程式也是 AI 寫的，不用自己寫。附兩個真實例子：網頁上線前的檢查腳本 safe-deploy.sh，以及課後簡報上線前的檢查器，各自寫明能擋什麼、管不到什麼，最後給一句流程跑通之後可以丟給 AI 的話。",
+    tags: {
+      topic: ["AI工作流", "工作流程"],
+      level: ["基礎"],
+      content_type: ["案例文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["ai-vs-script-four-situations", "agent-workflow-builds-automation", "post-class-organizing-loop", "rules-need-an-engine", "delete-before-automate"],
+    cover: { wide: "images/articles/run-with-ai-first-then-script-cover.jpg" }
+  },
+
+  {
     id: "ai-employee-tests-new-tools",
     url: "articles/ai-employee-tests-new-tools/",
     date: "2026-10-21",
@@ -132,7 +189,7 @@ window.ARTICLES = [
       content_type: ["觀點文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["rule-file-rebound", "ai-rule-file-slimming", "how-to-verify-ai-rule-changes", "what-is-loop-engineering", "copied-mechanism-is-no-mechanism", "caught-ai-slacking-into-rules", "ai-employee-tests-new-tools"],
+    related: ["rule-file-rebound", "ai-rule-file-slimming", "how-to-verify-ai-rule-changes", "what-is-loop-engineering", "copied-mechanism-is-no-mechanism", "caught-ai-slacking-into-rules", "ai-employee-tests-new-tools", "run-with-ai-first-then-script"],
     cover: { wide: "images/articles/rules-need-an-engine-cover.jpg" }
   },
 
@@ -189,7 +246,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["tag-wiki-method", "claude-skills-knowledge-assets", "rag-three-retrieval-modes", "diary-driven-agent-3x4-v2", "docs-as-system-design-agent"],
+    related: ["tag-wiki-method", "claude-skills-knowledge-assets", "rag-three-retrieval-modes", "diary-driven-agent-3x4-v2", "docs-as-system-design-agent", "learn-obsidian-mechanism"],
     cover: { wide: "images/articles/ai-retrieval-pages-backlinks-cover.jpg" }
   },
 
@@ -208,7 +265,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["diary-driven-agent-3x4", "what-is-loop-engineering", "knowledge-base-three-vault-split", "tag-wiki-method", "ai-retrieval-pages-backlinks", "ai-manages-ai-focus"],
+    related: ["diary-driven-agent-3x4", "what-is-loop-engineering", "knowledge-base-three-vault-split", "tag-wiki-method", "ai-retrieval-pages-backlinks", "ai-manages-ai-focus", "learn-obsidian-mechanism"],
     cover: { wide: "images/articles/diary-driven-agent-3x4-v2-cover.jpg" }
   },
 
@@ -305,25 +362,6 @@ window.ARTICLES = [
     external: { threads: null, vocus: null },
     related: ["line-group-ai-workflow", "github-vercel-cloudflare-compare", "what-is-loop-engineering", "mika-to-laika-product-character-design"],
     cover: { wide: "images/og/cloudflare-free-plan-limits.jpg" }
-  },
-
-  {
-    id: "auto-compact-mod",
-    url: "articles/auto-compact-mod/",
-    date: "2026-10-09",
-    updated: "2026-10-09",
-    title: "離開超過一小時回來，AI 對話為什麼變貴？｜我用 Claude Code Mod 做了閒置 55 分鐘先寫日誌再自動壓縮",
-    problem: "AI 對話開很久、中途離開超過一小時回來，第一句話特別貴；直接壓縮上下文又怕 AI 忘記做到哪。",
-    audience: "常常一個 AI 對話開很久、中途離開又回來的人；用 Claude Code、想知道 Mod 能做什麼的人。",
-    summary: "Claude Code 的快取存 1 小時，離開超過一小時回來，前面的對話要用一般價格重新計算。我先用 Hook 做續接卡，但 Hook 叫不醒閒置的對話；後來用 Claude Code Mod 做了 auto-compact-55：說「壓縮上下文」就先寫工作日誌再壓縮，閒置 55 分鐘也會自動先寫日誌再壓縮。文章講兩套機制、說了卻沒壓縮的坑怎麼修、安全邊界，最後附不寫程式也能照做的手動流程。",
-    tags: {
-      topic: ["AI工作流", "工具操作"],
-      level: ["進階"],
-      content_type: ["教學文章"]
-    },
-    external: { threads: null, vocus: null },
-    related: ["token-money-worth-doing", "pii-shield", "codex-log-health-check", "task-queue-mod"],
-    cover: { wide: "images/articles/auto-compact-mod-cover.jpg" }
   },
 
   {
@@ -835,7 +873,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["vibe-coding-ten-half-products", "elon-musk-live-skill", "ai-vs-script-four-situations", "dont-learn-ai-tools", "ai-adoption-start-with-one-workflow", "first-principles-money-soup", "ai-adoption-raise-not-install", "token-money-worth-doing"],
+    related: ["vibe-coding-ten-half-products", "elon-musk-live-skill", "ai-vs-script-four-situations", "dont-learn-ai-tools", "ai-adoption-start-with-one-workflow", "first-principles-money-soup", "ai-adoption-raise-not-install", "token-money-worth-doing", "run-with-ai-first-then-script"],
     cover: { tall: "images/articles/delete-before-automate-cover.jpg" }
   },
 
@@ -968,7 +1006,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["agent-workflow-builds-automation", "claude-skills-knowledge-assets", "loop-engineering-guardrails", "my-three-loops", "liberal-arts-agent-framework", "ai-schedule-wake-interval", "delete-before-automate", "ai-adoption-start-with-one-workflow", "ai-batch-work-without-seeing-data", "ai-random-true-random"],
+    related: ["agent-workflow-builds-automation", "claude-skills-knowledge-assets", "loop-engineering-guardrails", "my-three-loops", "liberal-arts-agent-framework", "ai-schedule-wake-interval", "delete-before-automate", "ai-adoption-start-with-one-workflow", "ai-batch-work-without-seeing-data", "ai-random-true-random", "run-with-ai-first-then-script"],
     cover: { wide: "images/articles/ai-vs-script-four-situations-summary.jpg" }
   },
 
@@ -1755,7 +1793,7 @@ window.ARTICLES = [
       content_type: ["觀點文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["harness-mindset-for-bosses", "ai-tools-professional-judgment", "start-with-a-wrong-draft", "let-ai-do-the-setup", "start-from-one-persons-problem", "ai-employees-manage-agents", "ai-employee-tests-new-tools"]
+    related: ["harness-mindset-for-bosses", "ai-tools-professional-judgment", "start-with-a-wrong-draft", "let-ai-do-the-setup", "start-from-one-persons-problem", "ai-employees-manage-agents", "ai-employee-tests-new-tools", "learn-obsidian-mechanism"]
   },
 
   {
@@ -1884,7 +1922,7 @@ window.ARTICLES = [
       content_type: ["觀點文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["ai-usage-audit", "before-installing-others-skill", "decision-ladder-non-programmer", "how-to-train-your-ai-employee", "caught-ai-slacking-into-rules", "parallel-site-editing"]
+    related: ["ai-usage-audit", "before-installing-others-skill", "decision-ladder-non-programmer", "how-to-train-your-ai-employee", "caught-ai-slacking-into-rules", "parallel-site-editing", "learn-obsidian-mechanism"]
   },
 
   {
@@ -2450,7 +2488,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["how-to-train-your-ai-employee", "docs-as-system-design-agent", "inspiration-production-system", "train-your-ai-agent-editor", "meeting-into-verifiable-loop", "website-as-workstation"]
+    related: ["how-to-train-your-ai-employee", "docs-as-system-design-agent", "inspiration-production-system", "train-your-ai-agent-editor", "meeting-into-verifiable-loop", "website-as-workstation", "run-with-ai-first-then-script"]
   },
 
   {
@@ -2745,7 +2783,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["llm-rag-agent-mcp", "questionnaire-to-slides-agent-workflow", "teacher-prep-knowledge-workflow", "knowledge-base-three-vault-split", "docs-as-system-design-agent", "ai-loop-safety-recovery", "inspiration-production-system", "why-split-data-into-cards", "knowledge-os-master-map", "build-your-own-dictionary", "rag-three-retrieval-modes", "ai-rule-file-slimming", "diary-driven-agent-3x4-v2", "ai-retrieval-pages-backlinks"]
+    related: ["llm-rag-agent-mcp", "questionnaire-to-slides-agent-workflow", "teacher-prep-knowledge-workflow", "knowledge-base-three-vault-split", "docs-as-system-design-agent", "ai-loop-safety-recovery", "inspiration-production-system", "why-split-data-into-cards", "knowledge-os-master-map", "build-your-own-dictionary", "rag-three-retrieval-modes", "ai-rule-file-slimming", "diary-driven-agent-3x4-v2", "ai-retrieval-pages-backlinks", "learn-obsidian-mechanism"]
   },
 
   {
@@ -3315,7 +3353,7 @@ window.ARTICLES = [
       content_type: ["案例文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["program-vs-ai-skill-library", "how-to-train-your-ai-employee", "line-group-ai-workflow", "codex-log-health-check", "how-ai-connects-software", "meeting-record-agent-workflow", "vibe-coding-ten-half-products", "ai-delegators-optimism", "ai-changed-behavior-into-workflow", "give-ai-choices-not-descriptions", "ai-batch-work-without-seeing-data"],
+    related: ["program-vs-ai-skill-library", "how-to-train-your-ai-employee", "line-group-ai-workflow", "codex-log-health-check", "how-ai-connects-software", "meeting-record-agent-workflow", "vibe-coding-ten-half-products", "ai-delegators-optimism", "ai-changed-behavior-into-workflow", "give-ai-choices-not-descriptions", "ai-batch-work-without-seeing-data", "run-with-ai-first-then-script"],
     cover: { wide: "articles/agent-workflow-builds-automation/assets/00-summary.jpg" }
   },
 
