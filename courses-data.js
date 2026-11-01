@@ -156,6 +156,10 @@ window.COURSES = [
     host: "江江教練",
     tags: ["AI員工", "AIAgent", "雲端電腦"],
     summary: "分享把即時語音接上 3D VTuber、讓 AI 以桌面員工樣子出現的嘗試，以及實際跑下來的心得：怎麼交代工作、讓總機分派與追蹤任務。",
+    detail_url: "courses/2026-10-11-cloud-computer-ai-employees/",
+    materials: [
+      { label: "直播畫布（課後實錄版）｜AI 員工實際使用心得 ↗", url: "https://jiangyude.com/courses/2026-10-11-cloud-computer-ai-employees/" }
+    ],
     registration: {
       status: "ended",
       note: "已結束"
