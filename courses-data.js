@@ -50,25 +50,49 @@
 
 window.COURSES = [
   {
+    id: "2026-11-08-line-ai-workshop",
+    date: "2026-11-08",
+    time: "14:00",
+    duration_min: 120,
+    title: "LINE AI 應用：基礎課程二合一",
+    type_label: "付費線上工作坊",
+    image: "images/courses/2026-11-08-line-ai-workshop.jpg",
+    venue_mode: "online",
+    venue_label: "線上",
+    host: "江江教練",
+    tags: ["LINE群組", "AIAgent", "API", "MCP", "行事曆", "雲端硬碟"],
+    summary: "把 LINE 群組接到 AI：群組裡有人改時間、交代事情，自動進行事曆與待辦並先查撞期；群組檔案存進自己的 Google 雲端硬碟。有錄影回放，送技能包與講義。",
+    detail_url: null,
+    materials: [
+      { label: "課程說明與操作畫面 ↗", url: "https://lyca-lineai-dpwu9o.pages.dev/#course" }
+    ],
+    registration: {
+      status: "open",
+      url: "https://portaly.cc/Jiang_Yude/product/8q555HyTgPSaHzJpS090",
+      label: "報名 ↗",
+      note: "11/1 到 11/8 開課前特價 NT$880，限 99 人。ChatGPT、Gemini 都可以用。"
+    }
+  },
+  {
     id: "2026-10-31-gemini-skills",
     date: "2026-10-31",
     time: "20:00",
     duration_min: 60,
-    title: "Gemini 怎麼用技能包？",
+    title: "讓 Gemini 變成你的小助理：技能包與個人秘書",
     type_label: "免費線上講座",
     image: "images/courses/2026-10-31-gemini-skills.jpg",
     venue_mode: "online",
     venue_label: "線上",
     host: "江江教練",
     tags: ["Gemini", "技能包", "AI工作流"],
-    summary: "技能包不只 Claude 能用。這場示範把同一份技能包拿到 Gemini 裡跑：怎麼貼、怎麼叫它照規則做、哪些地方跟 Claude 不一樣。",
-    detail_url: null,
-    materials: [],
+    summary: "用社群圖卡示範 Gemini 技能包：取明確觸發詞、固定角色定妝照、先排分鏡再生圖；再教 Gemini 每天整理行事曆、Gmail、待辦，排成早晚報的個人秘書。",
+    detail_url: "courses/2026-10-31-gemini-skills/",
+    materials: [
+      { label: "完整講座簡報（課後實錄版）｜讓 Gemini 變成你的小助理 ↗", url: "https://jiangyude.com/courses/2026-10-31-gemini-skills/" }
+    ],
     registration: {
-      status: "open",
-      url: "https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ",
-      label: "加入 LINE 社群報名 ↗",
-      note: "免費，線上。報名連結與會議室資訊都在 LINE 社群公告。"
+      status: "ended",
+      note: "已結束"
     }
   },
   {
