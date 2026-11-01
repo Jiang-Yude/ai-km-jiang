@@ -23,6 +23,25 @@ window.ARTICLE_TAGS = {
 
 window.ARTICLES = [
   {
+    id: "pstack-knowledge-workflow",
+    url: "articles/pstack-knowledge-workflow/",
+    date: "2026-11-01",
+    updated: "2026-11-01",
+    title: "AI 做的東西要怎麼確認，才敢放手讓它自己做？｜從 Lauren Tan 的 pstack，學知識工作也用得上的三件事",
+    problem: "看到工程師讓 AI 半夜自己把工作做完，不確定那套是不是只有寫程式的人用得上，自己寫文章、做企劃、整理資料時還是得盯著 AI 一句一句改。",
+    audience: "不寫程式、想讓 AI 少讓自己盯一點的知識工作者，以及要幫客戶導入 AI 的顧問。",
+    summary: "把 Lauren Tan 的開源工作流 pstack 和我的知識工作流逐項對照。pstack 驗的是程式會不會動，對錯可以交給機器判；知識工作驗的是內容對不對、有沒有加油添醋，更依賴另一家 AI 審和人的最後一眼。兩邊共通的是三件事：交件附證據、錯誤做成擋得住的規則、信任一階一階放。附影片六步過關標準的知識工作版，與記糾正、附證據、換家挑錯三段可複製提示詞。",
+    tags: {
+      topic: ["AI工作流", "差異比較", "工作流程", "AIAgent"],
+      level: ["基礎"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["how-to-verify-ai-rule-changes", "caught-ai-slacking-into-rules", "cross-ai-review-both-wrong", "dual-track-planning-loop", "what-is-loop-engineering", "ai-loop-safety-recovery", "codex-only-auto-worklog", "harness-mindset-for-bosses"],
+    cover: { wide: "images/articles/pstack-knowledge-workflow-cover.jpg" }
+  },
+
+  {
     id: "learn-obsidian-mechanism",
     url: "articles/learn-obsidian-mechanism/",
     date: "2026-10-28",
@@ -1234,7 +1253,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["rule-file-rebound", "caught-ai-slacking-into-rules", "three-levels-of-cross-review", "how-to-train-your-ai-employee", "loop-engineering-guardrails", "semantic-rules-before-prompt-templates", "let-ai-review-itself", "ai-rule-file-slimming", "ai-schedule-wake-interval", "fixed-test-set-for-ai", "reevaluate-models-same-test"],
+    related: ["rule-file-rebound", "caught-ai-slacking-into-rules", "three-levels-of-cross-review", "how-to-train-your-ai-employee", "loop-engineering-guardrails", "semantic-rules-before-prompt-templates", "let-ai-review-itself", "ai-rule-file-slimming", "ai-schedule-wake-interval", "fixed-test-set-for-ai", "reevaluate-models-same-test", "pstack-knowledge-workflow"],
     cover: { tall: "images/articles/how-to-verify-ai-rule-changes-cover.jpg" }
   },
 
@@ -1519,7 +1538,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["three-levels-of-cross-review", "caught-ai-slacking-into-rules", "long-document-review-layers", "webmcp-day-one", "meeting-mic-rescue-on-mac", "two-computers-combine-data-icloud"],
+    related: ["three-levels-of-cross-review", "caught-ai-slacking-into-rules", "long-document-review-layers", "webmcp-day-one", "meeting-mic-rescue-on-mac", "two-computers-combine-data-icloud", "pstack-knowledge-workflow"],
     cover: { tall: "images/articles/cross-ai-review-both-wrong/01.jpg" }
   },
 
@@ -2618,7 +2637,7 @@ window.ARTICLES = [
       content_type: ["案例文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["loop-engineering-guardrails", "a2a-agent-protocol", "docs-as-system-design-agent", "ai-handoff-instructions", "long-task-completion-rate", "session-messaging-reminder-layer", "before-installing-others-skill", "parallel-site-editing", "let-ai-review-itself", "reevaluate-models-same-test", "one-sentence-video-to-deep-article", "opus-luna-model-division", "ai-slides-half-auto-google-slides"],
+    related: ["loop-engineering-guardrails", "a2a-agent-protocol", "docs-as-system-design-agent", "ai-handoff-instructions", "long-task-completion-rate", "session-messaging-reminder-layer", "before-installing-others-skill", "parallel-site-editing", "let-ai-review-itself", "reevaluate-models-same-test", "one-sentence-video-to-deep-article", "opus-luna-model-division", "ai-slides-half-auto-google-slides", "pstack-knowledge-workflow"],
     cover: { tall: "images/articles/dual-track-planning-loop-cover.jpg" }
   },
 
@@ -2857,7 +2876,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["intent-first-prompting", "prompt-to-loop-map", "loop-engineering-guardrails", "ai-employee-four-levels", "dont-learn-ai-tools", "ai-adoption-start-with-one-workflow"],
+    related: ["intent-first-prompting", "prompt-to-loop-map", "loop-engineering-guardrails", "ai-employee-four-levels", "dont-learn-ai-tools", "ai-adoption-start-with-one-workflow", "pstack-knowledge-workflow"],
     cover: { wide: "images/articles/ai-four-terms-summary-wide.jpg" }
   },
 
@@ -2948,7 +2967,7 @@ window.ARTICLES = [
       content_type: ["觀點文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["what-is-loop-engineering", "my-three-loops", "tag-wiki-method", "recovery-over-perfection", "loop-engineering-guardrails", "laptop-desktop-webpage-sync-icloud-git", "ai-data-red-lines", "two-computers-combine-data-icloud"]
+    related: ["what-is-loop-engineering", "my-three-loops", "tag-wiki-method", "recovery-over-perfection", "loop-engineering-guardrails", "laptop-desktop-webpage-sync-icloud-git", "ai-data-red-lines", "two-computers-combine-data-icloud", "pstack-knowledge-workflow"]
   },
 
   {
@@ -3113,7 +3132,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["what-is-graph-engineering", "strong-ai-models-knowledge-workflow-road", "questionnaire-to-slides-agent-workflow", "loop-round-limit", "five-loops-content-line", "loop-four-entries", "one-sentence-video-to-deep-article", "ai-employees-manage-agents", "diary-driven-agent-3x4-v2"],
+    related: ["what-is-graph-engineering", "strong-ai-models-knowledge-workflow-road", "questionnaire-to-slides-agent-workflow", "loop-round-limit", "five-loops-content-line", "loop-four-entries", "one-sentence-video-to-deep-article", "ai-employees-manage-agents", "diary-driven-agent-3x4-v2", "pstack-knowledge-workflow"],
     cover: { tall: "images/articles/what-is-loop-engineering-01.jpg" }
   },
 
@@ -3391,7 +3410,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: "https://vocus.cc/salon/Jiang_Coach" },
-    related: ["questionnaire-to-slides-agent-workflow", "own-ai-team-at-work", "caught-ai-slacking-into-rules", "line-group-ai-workflow", "codex-log-health-check", "meeting-record-agent-workflow", "vibe-coding-ten-half-products"]
+    related: ["questionnaire-to-slides-agent-workflow", "own-ai-team-at-work", "caught-ai-slacking-into-rules", "line-group-ai-workflow", "codex-log-health-check", "meeting-record-agent-workflow", "vibe-coding-ten-half-products", "pstack-knowledge-workflow"]
   },
 
   {
@@ -3502,7 +3521,7 @@ window.ARTICLES = [
       content_type: ["案例文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: "https://vocus.cc/salon/Jiang_Coach" },
-    related: ["codex-only-auto-worklog", "decision-ladder-non-programmer", "publish-gate", "session-messaging-reminder-layer", "cognitive-debt", "start-with-a-wrong-draft", "ai-said-it-watched-the-video", "cross-ai-review-both-wrong", "how-to-verify-ai-rule-changes", "ai-adoption-raise-not-install"]
+    related: ["codex-only-auto-worklog", "decision-ladder-non-programmer", "publish-gate", "session-messaging-reminder-layer", "cognitive-debt", "start-with-a-wrong-draft", "ai-said-it-watched-the-video", "cross-ai-review-both-wrong", "how-to-verify-ai-rule-changes", "ai-adoption-raise-not-install", "pstack-knowledge-workflow"]
   },
 
   {

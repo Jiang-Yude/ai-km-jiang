@@ -1,0 +1,560 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="index,follow">
+<title>AI 做的東西要怎麼確認，才敢放手讓它自己做？｜從 Lauren Tan 的 pstack，學知識工作也用得上的三件事</title>
+<meta name="description" content="pstack 是給工程師用的嗎？把 Lauren Tan 的 pstack 工程師工作流和我的知識工作流放在一起對照：交件附證據、錯誤做成擋得住的規則、信任一階一階放。附影片六步的知識工作版與三段可複製提示詞。">
+<link rel="canonical" href="https://jiangyude.com/articles/pstack-knowledge-workflow/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AI 做的東西要怎麼確認，才敢放手讓它自己做？｜從 Lauren Tan 的 pstack，學知識工作也用得上的三件事｜江江教練">
+<!-- 分享封面：hero 文字填好後在 repo 根目錄跑 `node scripts/og-shot.mjs pstack-knowledge-workflow` 自動截 1200×630 到 images/og/pstack-knowledge-workflow.jpg（見 README「文章分享封面（OG 圖）機制」）。別退回 intro-jiang.png 直式人像，會被裁成只剩脖子。 -->
+<meta property="og:image" content="https://jiangyude.com/images/og/pstack-knowledge-workflow.jpg">
+<meta property="og:description" content="pstack 是給工程師用的嗎？把 Lauren Tan 的 pstack 工程師工作流和我的知識工作流放在一起對照：交件附證據、錯誤做成擋得住的規則、信任一階一階放。附影片六步的知識工作版與三段可複製提示詞。">
+<meta property="og:url" content="https://jiangyude.com/articles/pstack-knowledge-workflow/">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:site_name" content="江江教練 · AI 知識管理">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="AI 做的東西要怎麼確認，才敢放手讓它自己做？｜從 Lauren Tan 的 pstack，學知識工作也用得上的三件事｜江江教練">
+<meta name="twitter:image" content="https://jiangyude.com/images/og/pstack-knowledge-workflow.jpg">
+<meta name="twitter:description" content="pstack 是給工程師用的嗎？把 Lauren Tan 的 pstack 工程師工作流和我的知識工作流放在一起對照：交件附證據、錯誤做成擋得住的規則、信任一階一階放。附影片六步的知識工作版與三段可複製提示詞。">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"AI 做的東西要怎麼確認，才敢放手讓它自己做？｜從 Lauren Tan 的 pstack，學知識工作也用得上的三件事","description":"pstack 是給工程師用的嗎？把 Lauren Tan 的 pstack 工程師工作流和我的知識工作流放在一起對照：交件附證據、錯誤做成擋得住的規則、信任一階一階放。附影片六步的知識工作版與三段可複製提示詞。","author":{"@type":"Person","name":"江昱德","alternateName":"江江教練","jobTitle":"隱性知識提煉師、AI 應用規劃師"},"isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://jiangyude.com/"},"datePublished":"2026-11-01","dateModified":"2026-11-01","inLanguage":"zh-Hant","url":"https://jiangyude.com/articles/pstack-knowledge-workflow/"}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{--ink:#1a1612;--paper:#fefcf8;--muted:#6a635a;--line:#d8cdb8;--green:#5f7553;--blue:#5689b8;--orange:#e85a4f;--soft:#faf5ec;--dark:#2a2018;--shadow:0 18px 45px rgba(107,74,42,.14);--sp-shadow:hsla(35,50%,60%,.15);--sp-shadow-edge:hsla(35,50%,68%,.03);--sp-radius:400px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC","Segoe UI",sans-serif}
+a{color:inherit}
+/* 官網共用導航列 nav.top（與首頁/文章總站同一條） */
+nav.top{position:sticky;top:0;background:rgba(254,252,248,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid #d8cdb8;z-index:100}
+nav.top .container{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:24px;padding:14px 32px}
+.nav-brand-img{justify-self:start;display:flex;align-items:center;text-decoration:none;flex-shrink:0;transition:opacity .2s}
+.nav-brand-img:hover{opacity:.8}.nav-brand-img img{height:40px;width:auto;display:block}
+nav.top ul.nav-menu{justify-self:end;display:flex;gap:22px;list-style:none;margin:0;padding:0;font-size:.95rem;white-space:nowrap}
+nav.top ul.nav-menu a{color:#3a342d;text-decoration:none;transition:color .2s;font-weight:500;white-space:nowrap}
+nav.top ul.nav-menu a:hover{color:#1a1612}nav.top ul.nav-menu a.active{color:#1a1612;font-weight:700}
+.nav-toggle{display:none;background:none;border:none;padding:6px;cursor:pointer;width:36px;height:36px;position:relative}
+.nav-toggle span{display:block;position:absolute;left:8px;right:8px;height:2px;background:#1a1612;border-radius:2px;transition:transform .25s,opacity .25s,top .25s}
+.nav-toggle span:nth-child(1){top:11px}.nav-toggle span:nth-child(2){top:17px}.nav-toggle span:nth-child(3){top:23px}
+.nav-toggle.open span:nth-child(1){top:17px;transform:rotate(45deg)}.nav-toggle.open span:nth-child(2){opacity:0}.nav-toggle.open span:nth-child(3){top:17px;transform:rotate(-45deg)}
+.tablewrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:22px 0;border:1px solid var(--line);border-radius:10px;background:#fff;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.tablewrap table{border-collapse:collapse;width:100%;min-width:600px;font-size:18px;line-height:1.65}
+.tablewrap .zh{display:block;margin-top:5px;font-size:16px;line-height:1.55;color:var(--muted);font-weight:400}
+.tablewrap th,.tablewrap td{padding:12px 14px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top;color:#3a342d}
+.tablewrap thead th{background:var(--soft);font-weight:900;font-size:18px;color:#1a1612;white-space:nowrap}
+.tablewrap tbody tr:last-child td{border-bottom:none}
+.tablewrap td code,.section code{background:var(--soft);border:1px solid var(--line);border-radius:5px;padding:1px 6px;font:500 15px/1.5 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace}
+.inline-figure.wide{max-width:1000px}
+.inline-figure.portrait{max-width:430px}
+.toc{margin:26px 0 0;padding:20px 22px;background:#fff;border:1px solid var(--line);border-radius:10px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.toc>b{display:block;font-size:15px;letter-spacing:.05em;color:var(--green);margin-bottom:10px}
+.toc ol{margin:0;padding-left:1.35em;font-size:18px;line-height:1.7}
+.toc li{margin-bottom:7px;color:#3a342d}
+.toc a{color:var(--blue);font-weight:700;text-decoration:none}.toc a:hover{text-decoration:underline}
+.toc-hint{margin:12px 0 0!important;font-size:18px!important;color:var(--muted)!important;border-top:1px solid var(--line);padding-top:12px}
+.readmore{margin-top:24px;padding:20px 22px;background:var(--soft);border:1px solid var(--line);border-radius:12px}
+.readmore.near{margin:26px 0 6px;background:rgba(86,137,184,.07);border-color:#bcd0e2}
+.readmore.near b{color:var(--blue);font-size:18px}
+.readmore.near li{font-size:17px;line-height:1.7;margin-bottom:10px}
+.readmore b{display:block;margin-bottom:10px;font-size:19px}
+.readmore ul{margin:0;padding-left:1.25em}
+.readmore a{color:var(--blue);font-weight:700;text-decoration:none}
+.readmore a:hover{text-decoration:underline}
+@media(max-width:820px){.tablewrap table{min-width:560px;font-size:18px}.tablewrap{position:relative}.tablewrap::after{content:"表格可左右滑動 →";position:sticky;left:0;display:block;font-size:15px;color:var(--muted);background:var(--soft);border-top:1px solid var(--line);padding:7px 12px;width:100%}}
+@media(max-width:860px){
+ nav.top .container{grid-template-columns:auto 1fr auto;padding:10px 16px;gap:12px}
+ .nav-brand-img img{height:32px}
+ .nav-toggle{display:block;justify-self:end}
+ nav.top ul.nav-menu{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(254,252,248,.98);backdrop-filter:blur(14px);border-bottom:1px solid #d8cdb8;flex-direction:column;gap:0;padding:8px 0;box-shadow:0 10px 24px rgba(107,74,42,.08)}
+ nav.top ul.nav-menu.open{display:flex}
+ nav.top ul.nav-menu li{border-bottom:1px solid #e8dfc9}
+ nav.top ul.nav-menu li:last-child{border-bottom:none}
+ nav.top ul.nav-menu a{display:block;padding:14px 20px;font-size:1.06rem}
+}
+/* 滑鼠暖光暈（與首頁同一支 spotlight.js） */
+body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradient(var(--sp-radius) circle at var(--mx,50%) var(--my,50%),var(--sp-shadow) 0%,var(--sp-shadow-edge) 45%,transparent 75%);pointer-events:none;z-index:9999;mix-blend-mode:multiply;transition:background .06s linear}
+.hero{position:relative;overflow:hidden;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:72px;padding:96px clamp(20px,6vw,88px) 80px;background:linear-gradient(180deg,#fffcf0 0%,#f9e9d2 100%);color:#1a1612;border-bottom:1px solid #d8cdb8}
+.hero .wc{position:absolute;border-radius:50%;filter:blur(60px);pointer-events:none;z-index:0}
+.hero .wc1{width:420px;height:360px;top:-120px;right:-80px;background:#e8884b;opacity:.15}
+.hero .wc2{width:360px;height:300px;bottom:-110px;left:-70px;background:#5f7553;opacity:.13}
+.hero .wc3{width:280px;height:260px;top:34%;left:14%;background:#a08144;opacity:.10}
+.hero>div{flex:none;width:860px;max-width:100%;position:relative;z-index:2}
+.hero-figure{margin:0;width:620px;flex:none;position:relative;z-index:2}
+.hero-figure img{display:block;width:100%;height:auto;border-radius:16px;border:1px solid #d8cdb8;box-shadow:0 18px 45px rgba(107,74,42,.16);cursor:zoom-in}
+.hero-figure figcaption{margin-top:10px;font-size:14px;line-height:1.6;color:#6a635a}
+.inline-figure{margin:30px auto 8px;max-width:820px}
+.inline-figure img{display:block;width:100%;height:auto;border-radius:14px;border:1px solid var(--line);box-shadow:var(--shadow);background:#fff;cursor:zoom-in}
+.inline-figure figcaption{font-size:14px;line-height:1.6;color:var(--muted);margin-top:10px}
+.lightbox{position:fixed;inset:0;z-index:10000;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(12,10,8,.92);cursor:zoom-out;backdrop-filter:blur(4px)}
+.lightbox.open{display:flex}.lightbox img{max-width:96vw;max-height:92vh;border-radius:10px;box-shadow:0 24px 60px rgba(0,0,0,.5)}
+.lightbox-close{position:fixed;top:18px;right:24px;color:#fff;font-size:34px;line-height:1;font-weight:700;cursor:pointer;opacity:.85}
+.kicker{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.55rem;color:#7a5c3a;font-weight:500}
+.hero h1{max-width:none;margin:16px 0 18px;font-size:clamp(36px,6vw,72px);line-height:1.08;overflow-wrap:anywhere}
+.hero p{max-width:none;font-size:clamp(18px,2vw,23px);line-height:1.62;color:#3a342d}
+.cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
+.cta a{display:inline-flex;align-items:center;text-decoration:none;border-radius:8px;padding:12px 16px;font-weight:900}
+.cta .primary{background:#fff;color:#1a1612}.cta .ghost{border:1px solid rgba(255,255,255,.32);color:#fff;background:rgba(255,255,255,.08)}
+.section{padding:54px clamp(20px,6vw,88px);border-top:1px solid var(--line)}
+.inner{width:min(1000px,100%);margin:0 auto}
+.section h2{font-size:clamp(26px,4.2vw,48px);line-height:1.12;margin:0 0 18px}
+.section h3{font-size:clamp(21px,3vw,30px);line-height:1.2;margin:30px 0 12px}
+.lead{font-size:clamp(18px,1.6vw,22px);line-height:1.7;color:#3a342d;max-width:900px}
+.section p{font-size:18px;line-height:1.74;color:#3a342d}.section p+p{margin-top:14px}
+.section ul,.section ol{padding-left:1.4em;font-size:18px;line-height:1.74;color:#3a342d}.section li{margin-bottom:8px}
+.meaning{margin:22px 0;padding:16px 18px;border-left:5px solid var(--blue);background:rgba(86,137,184,.12);border-radius:6px;line-height:1.7;font-size:19px}
+.meaning b{display:block;color:var(--blue);margin-bottom:4px}
+.caveat{margin:0 0 8px;padding:16px 18px;border-left:5px solid var(--orange);background:rgba(232,90,79,.1);border-radius:6px;line-height:1.7;font-size:18px;color:#3a342d}
+.caveat b{display:block;color:var(--orange);margin-bottom:4px}
+.infocard{background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px 24px 22px;box-shadow:0 8px 22px rgba(107,74,42,.08);margin-top:8px}
+.infocard-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.info-item{padding:18px 14px 0}
+.info-item b{display:block;font-size:14px;font-weight:900;letter-spacing:.04em;margin-bottom:7px;text-transform:uppercase}
+.info-item:nth-child(1) b{color:var(--green)}.info-item:nth-child(2) b{color:var(--orange)}.info-item:nth-child(3) b{color:var(--blue)}
+.info-item p{margin:0;font-size:17px;line-height:1.6;color:#3a342d}
+.tagrow{display:flex;flex-wrap:wrap;gap:7px;margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
+.tag{font-size:14px;color:var(--muted);background:var(--soft);border:1px solid var(--line);border-radius:999px;padding:4px 11px}
+.duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:24px}
+.duo.stack{grid-template-columns:1fr}
+.duo .card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:22px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.duo .card.a{border-color:var(--orange)}.duo .card.b{border-color:var(--green);box-shadow:0 8px 24px rgba(95,117,83,.16)}
+.duo .card small{display:block;font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.04em;margin-bottom:9px}
+.duo .card.a small{color:var(--orange)}.duo .card.b small{color:var(--green)}
+.duo .card b{display:block;font-size:22px;line-height:1.3;margin-bottom:12px}.duo .card.a b{color:#c0512f}.duo .card.b b{color:#4a7a59}
+.duo .card p{margin:0;color:#3a342d;line-height:1.75;font-size:18px}
+.workflow-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:24px}
+.workflow-step{background:#fff;border:1px solid var(--line);border-radius:8px;padding:18px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.workflow-step small{display:block;color:var(--orange);font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;margin-bottom:9px}
+.workflow-step b{display:block;font-size:18px;line-height:1.3;margin-bottom:9px}
+.workflow-step p{margin:0;color:#3a342d;line-height:1.6;font-size:16px}
+.codeblock{background:var(--dark);color:#f3ead9;border-radius:8px;padding:18px 20px;font:500 14px/1.65 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;overflow-x:auto;white-space:pre-wrap;margin:20px 0;box-shadow:0 8px 22px rgba(107,74,42,.12)}
+.codeblock .c{color:#f6d7a6;font-weight:600}
+.skillcard{background:#fff;border:1px solid var(--green);border-radius:12px;padding:24px;box-shadow:0 10px 26px rgba(95,117,83,.16);margin-top:8px}
+.skillcard b{display:block;font-size:21px;margin-bottom:8px}
+.skillcard p{margin:0 0 16px;font-size:17px;line-height:1.65;color:#3a342d}
+.cta-band{background:#e6f0e5;color:#3a342d}.cta-band .section{border-top:none}
+.cta-band .inner{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(260px,.85fr);gap:26px;align-items:start}
+.cta-band h2{font-size:clamp(26px,4vw,44px);margin:0 0 16px}.cta-band p,.cta-band .lead{color:rgba(58,52,45,.9);font-size:18px;line-height:1.72}
+.cta-card{border:1px solid #cfe0d2;background:#fbfdfa;border-radius:8px;padding:22px}
+.cta-card b{display:block;color:#48b178;margin-bottom:10px;font-size:18px}.cta-card p{margin:0 0 14px}
+.footer{padding:30px clamp(20px,6vw,88px);font-size:14px;color:var(--muted);background:#fff;border-top:1px solid var(--line)}
+.footer-inner{width:min(1000px,100%);margin:0 auto}
+.footer-links{display:flex;flex-wrap:wrap;gap:6px 12px;margin-bottom:14px}.footer-links a{color:var(--blue);font-weight:900;text-decoration:none;font-size:14px}
+.footer-brand{font-weight:900;font-size:15px;margin-bottom:10px}.footer-note{font-size:13px;line-height:1.6}
+@media(max-width:820px){.inline-figure.portrait{max-width:340px}.infocard-grid{grid-template-columns:1fr}.duo{grid-template-columns:1fr}.workflow-grid{grid-template-columns:1fr}.cta-band .inner{grid-template-columns:1fr}.section{padding:40px 20px}.hero{min-height:52vh;flex-direction:column;justify-content:flex-start;align-items:flex-start;gap:24px}.hero>div{width:100%}.hero-figure{width:100%;max-width:560px}}
+@media(max-width:820px){html,body{overflow-x:hidden}.hero h1{word-break:break-word}}
+/* 直式圖左右排（02-design-system「直式圖在桌機的左右排版」）：輪播卡上官網預設用 .media-row，圖左圖右看段落交替；連續兩張用 .figure-pair */
+.figure-pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;margin:30px auto 8px;max-width:820px}.figure-pair .inline-figure{margin:0;max-width:none}@media(max-width:640px){.figure-pair{grid-template-columns:1fr}.figure-pair .inline-figure{max-width:340px;margin:0 auto}}
+.media-row{display:grid;grid-template-columns:minmax(0,340px) minmax(0,1fr);gap:36px;align-items:center;margin:28px 0}.media-row.img-right{grid-template-columns:minmax(0,1fr) minmax(0,340px)}.media-row .inline-figure{margin:0;max-width:none}.media-row .media-text>*:first-child{margin-top:0}.media-row .media-text>*:last-child{margin-bottom:0}@media(max-width:820px){.media-row,.media-row.img-right{grid-template-columns:1fr;gap:18px}.media-row.img-right .media-fig{order:-1}.media-row .inline-figure{max-width:340px;margin:0 auto}}
+/* 本篇：標題超過 20 字，縮字級並收窄文字欄，避免把封面擠下去（02-design-system） */
+.hero{gap:40px}
+.hero>div:not(.wc){width:560px}
+.hero h1{font-size:clamp(28px,2.9vw,42px);line-height:1.18;margin:12px 0 16px}
+.hero p{font-size:clamp(17px,1.3vw,19px);line-height:1.65}
+.hero .kicker{font-size:1.25rem}
+.hero-figure{width:480px}
+@media(max-width:1240px){.hero{flex-direction:column;align-items:flex-start;gap:28px}.hero>div:not(.wc){width:100%;max-width:900px}.hero-figure{width:100%;max-width:640px}}
+.readmore b+ul{margin-bottom:4px}
+
+.flowfig{margin:26px 0;background:#fff;border:1px solid var(--line);border-radius:12px;padding:18px 18px 14px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.flowfig>b{display:block;font-size:20px;line-height:1.4;color:#1a1612;margin-bottom:10px}
+.flowfig .flow-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.flowfig svg{display:block;width:100%;height:auto}
+.flowfig figcaption{font-size:18px;line-height:1.65;color:var(--muted);margin-top:12px}
+.flowfig details{margin-top:10px;font-size:18px;line-height:1.7}
+.flowfig summary{cursor:pointer;color:var(--blue);font-weight:700}
+.flowfig details ol{margin:8px 0 0;padding-left:1.4em}
+.flow-hint{display:none;font-size:15px;color:var(--muted);margin:0 0 6px}
+@media(max-width:820px){#fig-pstack-loop svg,#fig-my-workflow svg{min-width:760px}#fig-correction-to-hook svg{min-width:720px}.flow-hint{display:block}}
+</style>
+</head>
+<body class="spotlight">
+<!-- 官網共用導航列 nav.top：與首頁/總站同一條，文章不要自己另做極簡 topbar（江江 2026-06-25：要同一個框架、同一條導航列）。把對應頁面的 class="active" 標在自己那欄。
+     ⚠️ 下面 ul.nav-menu 整塊由 preflight 第 5 關 check-bilingual-nav.mjs 做「逐字比對」，
+        塞任何註解、多一個空白、換行位置不同都會被判導航不一致而擋下發布。要說明就寫在 <ul> 外面（像這裡）。
+        2026-08-16 修：原本的 EN 那行說明註解就夾在 <ul> 裡面，導致照範本起手的新文章一律卡第 5 關
+        （llm-rag-agent-mcp 與 rag-three-retrieval-modes 兩篇同時中招）。註解已移出來，<ul> 內保持乾淨。
+        萬一還是被擋，直接跑：node scripts/check-bilingual-nav.mjs --write --only=<你的檔案路徑> -->
+<nav class="top">
+  <div class="container">
+    <a class="nav-brand-img" href="../../index.html"><img src="../../images/footer-signature.png" alt="江江教練 | 江昱德"></a>
+    <button class="nav-toggle" aria-label="選單"><span></span><span></span><span></span></button>
+    <ul class="nav-menu">
+      <li><a href="../../index.html">首頁</a></li>
+      <li><a href="../../knowledge-architecture.html">知識架構</a></li>
+      <li><a href="../../courses.html">課程</a></li>
+      <li><a href="../../articles.html" class="active">文章</a></li>
+      <li><a href="../../skills.html">小工具</a></li>
+      <li><a href="../../offers.html">AI 落地</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="wc wc1"></div>
+  <div class="wc wc2"></div>
+  <div class="wc wc3"></div>
+  <div>
+    <div class="kicker">AI 工作流｜工程師與知識工作對照</div>
+    <h1>AI 做的東西要怎麼確認，才敢放手讓它自己做？｜從 Lauren Tan 的 pstack，學知識工作也用得上的三件事</h1>
+    <p>影片中提到，Lauren Tan 一個月合併 2,500 張 PR，睡覺時 AI 也在做事。那套是給工程師用的嗎？我把她的 pstack 和我的知識工作流對照，拆出不寫程式也用得上的三件事。</p>
+  </div>
+  <figure class="hero-figure">
+    <img src="../../images/articles/pstack-knowledge-workflow-cover.jpg" alt="咪卡拿著放大鏡檢查文件，站在證據、規則、放手三層階梯的中間" width="1400" height="787" loading="lazy">
+    <figcaption>先檢查證據、守住規則，才一階一階往上放手。</figcaption>
+  </figure>
+</section>
+
+<main>
+
+<section class="section" id="start">
+  <div class="inner">
+    <p class="lead">最近有一支影片在拆解 Lauren Tan（網路暱稱 poteto）的 AI 工作流 pstack。影片中提到她一個月合併了 2,500 張 PR（PR 是一份程式修改提案，「合併」是把這份修改正式併進主要程式碼，之後才隨發布上線），睡覺的時候 AI 也在幫她把工作做完。看完 AI 幫我做的分析，我問的是「所以我能怎麼用？」，接著問這是不是只給工程師用，那我的知識工作流呢。這篇把她的工程師工作流和我的知識工作流放在一起對照，拆出兩邊共通的骨架，最後把影片整理的六個步驟換成知識工作者的版本，附上可以直接貼給 AI 的提示詞。</p>
+
+    <div class="duo stack">
+      <div class="card a">
+        <b>適合誰</b>
+        <ul>
+          <li>看到別人說 AI 半夜自己把工作做完，想知道自己做不做得到</li>
+          <li>寫文章、做企劃、整理資料，常常要盯著 AI 一句一句改</li>
+          <li>不寫程式，想知道工程師那套 AI 做法自己用不用得上（pstack、hook 這些詞沒聽過也沒關係，文中第一次出現都會用白話講）</li>
+          <li>要幫客戶導入 AI，想知道「讓 AI 自己做」之前要先準備什麼</li>
+        </ul>
+      </div>
+      <div class="card b">
+        <b>你可以帶走什麼</b>
+        <ul>
+          <li>第一步不用裝任何東西：先記下你每次糾正 AI 的那句話，同一類錯誤被糾正第二次，就把它變成規則</li>
+          <li>一張對照表：pstack 的每個做法，在知識工作裡對應什麼</li>
+          <li>兩邊共通的三件事：交件附證據、錯誤做成擋得住的規則、信任一階一階放</li>
+          <li>影片整理的六步過關標準換成知識工作版，加三段可以直接貼給 AI 的提示詞</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="source">
+  <div class="inner">
+    <h2>我看的是一支拆解 pstack 的影片，產量數字只能算影片說法</h2>
+    <p>影片是 Gary Chen 的〈<a href="https://www.youtube.com/watch?v=l_xDqUm0MDQ" target="_blank" rel="noopener">pstack 深度拆解！怎麼讓 AI 全自動完成你的工作？</a>〉。我請 AI 分析時，它用的是影片的公開字幕，沒有看畫面。</p>
+    <p>影片介紹 Lauren Tan 待過 Netflix、Meta、Cursor，現在在 SpaceX 的 AI 團隊做 Grok Bot。我們另外查了公開資料：她的 <a href="https://github.com/poteto" target="_blank" rel="noopener">GitHub 個人頁</a>寫的是 xAI 的軟體工程師、React Compiler 核心團隊；pstack 的說明文件裡，她自述在 Meta、Netflix、Cursor 工作過。SpaceX 這個說法來自影片。</p>
+    <p>pstack 是開源的，放在 <a href="https://github.com/cursor/plugins/tree/main/pstack" target="_blank" rel="noopener">Cursor 官方的外掛 repo</a>，也能裝進 Claude Code。裡面有 58 個技能包（技能包是寫給 AI 照著做的工作說明書），其中 24 個是寫給 AI 遵守的工程原則，跟影片說的「將近六十個、二十四個是原則」相符。</p>
+    <div class="caveat"><b>影片裡的產量數字，我沒有找到原始出處</b>一個月 2,500 張 PR、一天八十幾張、醒來發現 20 張 PR 已經做完、先花六百多張 PR 打地基，下面提到這些數字時，都是「影片中提到」。影片也沒有交代 PR 怎麼算，沒有給出事率或退回率。</div>
+  </div>
+</section>
+
+<section class="section" id="how-pstack-works">
+  <div class="inner">
+    <h2>pstack 怎麼運作：規劃、實作、驗收，加上修環境</h2>
+    <p>照影片的說法，pstack 有一個總管指令 <code>/poteto-mode</code>，它會看你現在要修錯誤、做新功能還是改效能，自動叫出對應的技能包。整套分成幾段：</p>
+        <figure class="flowfig" id="fig-pstack-loop">
+      <b>pstack 的大致順序，重點是兩條回線</b>
+      <p class="flow-hint">圖比螢幕寬，可以左右滑動看完整張 →</p>
+      <div class="flow-scroll"><svg viewBox="0 0 760 380" xmlns="http://www.w3.org/2000/svg" role="img" style="font-family:-apple-system,BlinkMacSystemFont,&quot;PingFang TC&quot;,&quot;Noto Sans TC&quot;,sans-serif" aria-label="pstack 的大致順序：規劃、實作、驗收、過夜合併；驗收沒過退回實作；各階段反覆出現同類錯誤就去修環境，讓下一輪能自動檢查這類錯誤"><defs><marker id="pkA-g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#8a8178"/></marker><marker id="pkA-o" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#e85a4f"/></marker></defs><rect x="20" y="110" width="160" height="96" rx="12" fill="#fff" stroke="#5689b8" stroke-width="2"/><text x="100.0" y="152.0" text-anchor="middle" font-size="21" font-weight="700" fill="#1a1612">規劃</text><text x="100.0" y="180.0" text-anchor="middle" font-size="18" fill="#3a342d">先讀懂再動手</text><rect x="210" y="110" width="160" height="96" rx="12" fill="#fff" stroke="#5689b8" stroke-width="2"/><text x="290.0" y="152.0" text-anchor="middle" font-size="21" font-weight="700" fill="#1a1612">實作</text><text x="290.0" y="180.0" text-anchor="middle" font-size="18" fill="#3a342d">先定外框和測試</text><rect x="400" y="110" width="160" height="96" rx="12" fill="#fff" stroke="#5689b8" stroke-width="2"/><text x="480.0" y="152.0" text-anchor="middle" font-size="21" font-weight="700" fill="#1a1612">驗收</text><text x="480.0" y="180.0" text-anchor="middle" font-size="18" fill="#3a342d">附證據、換家審</text><rect x="590" y="110" width="160" height="96" rx="12" fill="#fff" stroke="#5689b8" stroke-width="2"/><text x="670.0" y="152.0" text-anchor="middle" font-size="21" font-weight="700" fill="#1a1612">過夜合併</text><text x="670.0" y="180.0" text-anchor="middle" font-size="18" fill="#3a342d">換別的 AI 驗收</text><path d="M180,158 L206,158" fill="none" stroke="#8a8178" stroke-width="2.2" marker-end="url(#pkA-g)"/><path d="M370,158 L396,158" fill="none" stroke="#8a8178" stroke-width="2.2" marker-end="url(#pkA-g)"/><path d="M560,158 L586,158" fill="none" stroke="#8a8178" stroke-width="2.2" marker-end="url(#pkA-g)"/><path d="M480,110 C480,48 290,48 290,104" fill="none" stroke="#e85a4f" stroke-width="2.2" marker-end="url(#pkA-o)"/><text x="385" y="40" text-anchor="middle" font-size="18" font-weight="700" fill="#e85a4f">驗收沒過，退回重做</text><rect x="220" y="282" width="320" height="80" rx="12" fill="#fdf1ef" stroke="#e85a4f" stroke-width="2"/><text x="380.0" y="316.0" text-anchor="middle" font-size="20" font-weight="700" fill="#1a1612">修環境（/correct）</text><text x="380.0" y="344.0" text-anchor="middle" font-size="18" fill="#3a342d">把同類錯誤做成自動檢查</text><path d="M670,206 C670,300 610,322 546,322" fill="none" stroke="#e85a4f" stroke-width="2.2" marker-end="url(#pkA-o)"/><text x="652" y="246" text-anchor="end" font-size="18" font-weight="700" fill="#e85a4f">各階段反覆</text><text x="652" y="270" text-anchor="end" font-size="18" font-weight="700" fill="#e85a4f">出現同類錯誤</text><path d="M216,322 C120,322 100,290 100,212" fill="none" stroke="#e85a4f" stroke-width="2.2" marker-end="url(#pkA-o)"/><text x="160" y="250" text-anchor="middle" font-size="18" font-weight="700" fill="#e85a4f">下一輪能</text><text x="160" y="274" text-anchor="middle" font-size="18" font-weight="700" fill="#e85a4f">自動檢查</text></svg></div>
+      <figcaption>這是影片整理的大致順序，不是每次都固定照走。真正撐起品質的是兩條紅色回線：驗收沒過就退回重做；各階段反覆出現同類錯誤，就去修環境，把它做成自動檢查，讓下一輪能自動檢查這類錯誤。自動檢查也可能漏判，所以驗收還是要做。</figcaption>
+      <details><summary>文字版</summary><ol>
+        <li>規劃：先讀懂現有系統，再動手。</li>
+        <li>實作：先定外框，先寫一定會失敗的測試。</li>
+        <li>驗收：附操作證據，換不同家的模型交叉審；沒過就退回實作。</li>
+        <li>過夜合併：寫的 AI 不能核准自己，換別的 AI 驗收。</li>
+        <li>修環境（/correct）：各階段反覆出現同類錯誤，就把它做成自動檢查，讓下一輪能自動檢查這類錯誤。</li>
+      </ol></details>
+    </figure>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>階段</th><th>指令</th><th>白話說它在做什麼</th></tr></thead>
+        <tbody>
+          <tr><td>規劃</td><td><code>/how</code>、<code>/why</code></td><td>動手前先讀懂現有系統怎麼運作，再去翻修改紀錄、工單、文件，挖出當初為什麼這樣設計，避免把前人的防呆改掉</td></tr>
+          <tr><td>規劃</td><td><code>/sharpen</code></td><td>把一句模糊的需求，改寫成有驗收條件的指令，而且不擴大範圍</td></tr>
+          <tr><td>實作</td><td><code>/architect</code>、<code>/arena</code></td><td>先定外框再寫細節；同一個題目丟給不同家的模型各自設計，再把各家的亮點融合</td></tr>
+          <tr><td>實作</td><td><code>/tdd</code></td><td>先寫一個一定會失敗的測試，再寫程式，直到測試通過，避免 AI 為了交差，寫出配合錯誤邏輯的測試</td></tr>
+          <tr><td>驗收</td><td><code>/create-verification-skill</code></td><td>讓 AI 自己打開 App，照使用者的路徑點一遍，錄影或截圖當證據</td></tr>
+          <tr><td>驗收</td><td><code>/blast-radius</code></td><td>標出這次修改的影響範圍，小的掃一眼就好，大的多花時間看</td></tr>
+          <tr><td>驗收</td><td><code>/interrogate</code></td><td>把改好的程式丟給不同家的模型交叉審，因為同一個模型換幾個角色，很可能還是同樣的盲點</td></tr>
+          <tr><td>過夜</td><td><code>/swarm</code>、<code>/show-me-your-work</code></td><td>寫的 AI 不能核准自己的工作，另外派一群沒參與的 AI 驗收；AI 邊做邊填決策紀錄表，再派另一家模型核對</td></tr>
+          <tr><td>修環境</td><td><code>/correct</code></td><td>AI 一直犯同一個錯，就把它變成自動檢查擋下來；寫進 AGENTS.md 這種說明檔是最後手段</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>影片作者的判斷是，現在用 AI 寫程式已經很快，「真正的瓶頸其實卡在檢查」。所以 pstack 大部分的力氣花在驗收和修環境。</p>
+    <p>影片也講了她的信任曲線，分四階：全程緊盯、AI 自己驗收、AI 自己接單、AI 自動合併。她起步時跟大多數人一樣，自己打開軟體測試、截圖、把錯誤訊息貼給 AI，影片作者轉述，她把那時候的自己形容成「人肉轉接頭」。</p>
+  </div>
+</section>
+
+<section class="section" id="code-vs-content">
+  <div class="inner">
+    <h2>pstack 驗得了程式，知識工作要驗的是內容</h2>
+    <p>我的判斷是這樣：pstack 驗的是程式會不會動。有測試、有自動檢查、有實機點擊，很大一部分對錯可以交給機器判：測試亮紅燈就是沒過，自動檢查擋下某種寫法就是不准用。測試通過也不代表需求全對，所以影片裡她隔天早上還是會抽查。</p>
+    <p>知識工作驗的是內容對不對、有沒有加油添醋、語氣對不對、有沒有冒犯人。這些很多只能靠另一家模型讀、靠人看。所以我的知識工作流更依賴跨家審（請另一家公司的 AI 來審）和人的最後一眼。能機械攔的是格式、流程、有沒有漏步驟，例如有沒有寫工作日記、連結點不點得開、生圖走哪條路。</p>
+    <div class="duo">
+      <div class="card a"><b>工程師的工作流</b><p>驗「程式會不會動」。測試、自動檢查、實機點擊都能判對錯，所以能把人退到合併之後抽查。</p></div>
+      <div class="card b"><b>知識工作流</b><p>驗「內容對不對、有沒有加料、語氣對不對」。機器擋得住格式和流程，內容要靠另一家 AI 讀、靠人最後看一眼。</p></div>
+    </div>
+    <p>所以它看起來是給工程師用的，是因為工程師的對錯比較容易交給機器判。它的骨架，知識工作一樣用得上。</p>
+  </div>
+</section>
+
+<section class="section" id="compare">
+  <div class="inner">
+    <h2>兩條工作流對照：pstack 的做法，在我的系統裡對應什麼</h2>
+    <p>我的系統裡有一套四層控制：最硬的一層是 hook，也就是 AI 做某個動作前後會自動跑的一支小程式，條件不對就擋下來；再來是所有 AI 共用的規則主檔 AGENTS.md（Claude、Codex、Gemini 讀的都是同一份）；再來是技能包；最後是各家 AI 自己的記憶。</p>
+        <figure class="flowfig" id="fig-my-workflow">
+      <b>我的知識工作流：骨架一樣，放手停在上線前</b>
+      <p class="flow-hint">圖比螢幕寬，可以左右滑動看完整張 →</p>
+      <div class="flow-scroll"><svg viewBox="0 0 760 380" xmlns="http://www.w3.org/2000/svg" role="img" style="font-family:-apple-system,BlinkMacSystemFont,&quot;PingFang TC&quot;,&quot;Noto Sans TC&quot;,sans-serif" aria-label="我的知識工作流：先讀規則、產出、驗收、上線前等我點頭；審稿判要修改就退回改稿；同類錯誤被我糾正第二次，就做成 hook 或寫進技能包，下一輪照規則做，掛了 hook 的會自動檢查"><defs><marker id="pkM-g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#8a8178"/></marker><marker id="pkM-o" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#e85a4f"/></marker></defs><rect x="20" y="110" width="160" height="96" rx="12" fill="#fff" stroke="#5f7553" stroke-width="2"/><text x="100.0" y="152.0" text-anchor="middle" font-size="21" font-weight="700" fill="#1a1612">先讀規則</text><text x="100.0" y="180.0" text-anchor="middle" font-size="18" fill="#3a342d">技能包、規則先讀</text><rect x="210" y="110" width="160" height="96" rx="12" fill="#fff" stroke="#5f7553" stroke-width="2"/><text x="290.0" y="152.0" text-anchor="middle" font-size="21" font-weight="700" fill="#1a1612">產出</text><text x="290.0" y="180.0" text-anchor="middle" font-size="18" fill="#3a342d">照技能包寫、做</text><rect x="400" y="110" width="160" height="96" rx="12" fill="#fff" stroke="#5f7553" stroke-width="2"/><text x="480.0" y="152.0" text-anchor="middle" font-size="21" font-weight="700" fill="#1a1612">驗收</text><text x="480.0" y="180.0" text-anchor="middle" font-size="18" fill="#3a342d">附證據、換一家審</text><rect x="590" y="110" width="160" height="96" rx="12" fill="#eef4fa" stroke="#5689b8" stroke-width="2"/><text x="670.0" y="152.0" text-anchor="middle" font-size="21" font-weight="700" fill="#1a1612">上線前</text><text x="670.0" y="180.0" text-anchor="middle" font-size="18" fill="#3a342d">等我點頭</text><path d="M180,158 L206,158" fill="none" stroke="#8a8178" stroke-width="2.2" marker-end="url(#pkM-g)"/><path d="M370,158 L396,158" fill="none" stroke="#8a8178" stroke-width="2.2" marker-end="url(#pkM-g)"/><path d="M560,158 L586,158" fill="none" stroke="#8a8178" stroke-width="2.2" marker-end="url(#pkM-g)"/><path d="M480,110 C480,48 290,48 290,104" fill="none" stroke="#e85a4f" stroke-width="2.2" marker-end="url(#pkM-o)"/><text x="385" y="40" text-anchor="middle" font-size="18" font-weight="700" fill="#e85a4f">審稿判要修改，退回改稿</text><rect x="220" y="282" width="320" height="80" rx="12" fill="#fdf1ef" stroke="#e85a4f" stroke-width="2"/><text x="380.0" y="316.0" text-anchor="middle" font-size="20" font-weight="700" fill="#1a1612">修環境（錯誤轉 hook）</text><text x="380.0" y="344.0" text-anchor="middle" font-size="18" fill="#3a342d">做成 hook 或寫進技能包</text><path d="M670,206 C670,300 610,322 546,322" fill="none" stroke="#e85a4f" stroke-width="2.2" marker-end="url(#pkM-o)"/><text x="652" y="246" text-anchor="end" font-size="18" font-weight="700" fill="#e85a4f">同類錯誤被我</text><text x="652" y="270" text-anchor="end" font-size="18" font-weight="700" fill="#e85a4f">糾正第二次</text><path d="M216,322 C120,322 100,290 100,212" fill="none" stroke="#e85a4f" stroke-width="2.2" marker-end="url(#pkM-o)"/><text x="124" y="250" text-anchor="start" font-size="18" font-weight="700" fill="#e85a4f">下一輪照規則做</text><text x="124" y="274" text-anchor="start" font-size="18" font-weight="700" fill="#e85a4f">掛了 hook 的自動查</text></svg></div>
+      <figcaption>借用跟上一段 pstack 那張圖一樣的版面，方便比較共同的骨架：都有「驗收沒過就退回」和「同類錯誤回頭修環境」兩條回線。做法和授權邊界各有不同：影片中提到，pstack 最後一階是換別的 AI 驗收後自動合併；我這邊審完還是停在上線前，我不在場時網站只推到候選網址，正式上線等我點頭。修環境那條，做成 hook（自動攔截的小程式）的，目前只在 Claude 系的 AI 上自動檢查；要判斷內容的寫進技能包，靠 AI 下一輪照著做，不保證每次都做到，所以驗收還是要做。</figcaption>
+      <details><summary>文字版</summary><ol>
+        <li>先讀規則：動手前先讀對應的技能包和規則。</li>
+        <li>產出：照技能包寫稿、做網頁。</li>
+        <li>驗收：附證據（用了什麼素材、核對了什麼），換另一家公司的 AI 審；審稿判要修改就退回改稿。</li>
+        <li>上線前：我不在場時只推到候選網址，正式上線等我點頭；不可逆、對外送出的事也要我個別同意。</li>
+        <li>修環境（錯誤轉 hook）：同類錯誤被我糾正第二次，就做成 hook（自動攔截的小程式）或寫進技能包。下一輪照規則做；做成 hook 的，目前只在 Claude 系的 AI 上自動檢查。</li>
+      </ol></details>
+    </figure>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>pstack 的做法（影片說法）</th><th>我的知識工作流裡對應的東西</th></tr></thead>
+        <tbody>
+          <tr><td><code>/interrogate</code>：不同家的模型交叉審，同一個模型換角色，盲點可能還在</td><td>跨家審稿：產出和主審必須是不同公司的模型，同一家只能算自我檢查或輔助審</td></tr>
+          <tr><td>寫 PR 的 AI 不能核准自己的 PR</td><td>同上；成品的最後一審，由另一家模型開一個全新的對話來做</td></tr>
+          <tr><td><code>/correct</code>：錯誤變成自動檢查擋下來，AGENTS.md 是最後手段</td><td>四層控制：漏了代價高、會重複犯的做成 hook。2026-11-01 新增「錯誤轉 hook」：同一類錯誤被糾正第二次，就直接做成 hook 或技能包，不先問我</td></tr>
+          <tr><td>睡前交任務，只准開 PR、不准合併</td><td>我不在場時，網站部署只推到候選網址，正式上線要我當輪授權；就算我說「全自動」，不可逆、對外送出、金錢、秘密外送、破壞性刪除，仍要我個別授權</td></tr>
+          <tr><td><code>/create-verification-skill</code>：交件附截圖或錄影</td><td>「成功訊息不能當驗收證據」；收尾要寫驗收結果和證據形式；做好的網頁當輪直接打開、圖片直接顯示，沒做到 hook 會攔</td></tr>
+          <tr><td><code>/show-me-your-work</code>：決策紀錄表</td><td>工作日記詳細版 10 點，包含判斷邏輯、踩雷配規則、驗收證據、待追的事；沒寫工作日記就收尾，hook 會擋</td></tr>
+          <tr><td>平行派工、總管 AI 拆任務</td><td>多模型分工的技能包：Gemini 4 Argon 做、Codex 審、Claude 決斷</td></tr>
+          <tr><td>自動進單：Grok Bot 盯使用者回報</td><td>朵拉（獨立的 AI 帳號）巡社群、萊卡（LINE 群助理）；朵拉發文要過三模型投票</td></tr>
+          <tr><td>信任曲線，一階一階放手</td><td>自主度三級：預設 Loop、「自動一點」、「全自動」；朵拉帳號分級授權：查收、自巡、發文三級</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>這張表左右兩邊放手的位置不一樣。她把人退到合併之後抽查；我的網站部署，比較像她說的「睡前交代、停在合併前」那一階。</p>
+  </div>
+</section>
+
+<section class="section" id="evidence">
+  <div class="inner">
+    <h2>共通的第一件事：交件附證據，知識工作的證據是素材、核對紀錄和打得開的成品</h2>
+    <p>pstack 交到 Lauren 面前的 PR，影片中提到已經附好修改前後的操作影片和影響範圍，她看幾十秒就能判斷。影片整理給新手的建議裡也有一句很適合知識工作：整理資料，就叫 AI 列出核對過哪幾筆、怎麼核對的。</p>
+    <p>我的規則是「成功訊息不能當驗收證據」。AI 說「已完成」不算數，要看檔案內容、要看打得開的成品。這次分析影片，AI 第一句就交代它用的是公開字幕、沒有看畫面；查證結果也分成「已核實」和「沒核實到」兩欄。這兩件事就是知識工作的證據：用了什麼素材、哪些沒查到。</p>
+  </div>
+</section>
+
+<section class="section" id="error-to-hook">
+  <div class="inner">
+    <h2>共通的第二件事：錯誤做成擋得住的規則，我抱怨過的好幾件事都變成了 hook</h2>
+    <p>影片說，Lauren 每看到 AI 犯一次錯，問自己的是：怎麼改環境，才能讓這個錯從物理上就不可能發生。她認為寫在 AGENTS.md 裡的是軟規則，AI 讀了，聊幾句還是會忘。</p>
+    <p>我的 hook 幾乎都是這樣長出來的，每一支都留著我當時說的話：</p>
+    <ul>
+      <li>2026-08-08：「總是要我提醒你寫工作日記 我覺得很煩耶」→ 收尾沒寫工作日記就擋</li>
+      <li>2026-08-17：「用 CX CLI 生圖 到底要講幾次？」→ 生圖沒先走 Codex 的命令列，就擋下開網頁</li>
+      <li>2026-09-25：「每次都要我反應你才修正，其實你一開始就應該可以給我能開的版本才對」→ 交付的網頁當輪就要打開</li>
+      <li>2026-10-28：「這種就是要你抓呀」「以後不要我再說了」「寫規則跟做引擎」→ 社群連結交給專門的抓取程式</li>
+    </ul>
+    <p>規則主檔裡原本就有一條：我抱怨「怎麼講不聽」，AI 就要主動建議加 hook。這次看完影片，我又定了一條：「我覺得錯誤的東西要記得幫我轉 hook，這個還不錯」。現在同一類錯誤被糾正第二次，AI 會判斷該做成 hook 還是寫進技能包，直接做，不先問我。現在主知識庫有 55 支 hook 腳本（含共用模組，其中有些只負責共用功能，不做攔截）、118 個技能包。這些 hook 目前只在 Claude 系的 AI 上自動攔截，Codex、Gemini 讀的是同一份規則文字，沒有機械攔截。</p>
+    <figure class="flowfig" id="fig-correction-to-hook">
+      <b>錯誤轉 hook：從被糾正到真的擋下來</b>
+      <p class="flow-hint">圖比螢幕寬，可以左右滑動看完整張 →</p>
+      <div class="flow-scroll"><svg viewBox="0 0 720 970" xmlns="http://www.w3.org/2000/svg" role="img" style="font-family:-apple-system,BlinkMacSystemFont,&quot;PingFang TC&quot;,&quot;Noto Sans TC&quot;,sans-serif" aria-label="錯誤轉 hook 流程：訊息像在糾正，帳本記待確認，先確認是不是糾正再修錯，同一類第二次就選最小處理範圍，經備份、跨家審、測試，新 hook 先只提醒，月度健檢確認提醒無誤判且我同意才改阻擋"><defs><marker id="pkC-g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#8a8178"/></marker><marker id="pkC-o" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#e85a4f"/></marker></defs><rect x="80" y="20" width="360" height="72" rx="12" fill="#fff" stroke="#5689b8" stroke-width="2"/><text x="260.0" y="50.0" text-anchor="middle" font-size="21" font-weight="700" fill="#1a1612">訊息像在糾正我</text><text x="260.0" y="78.0" text-anchor="middle" font-size="18" fill="#3a342d">詞表偵測，可能誤判</text><path d="M260,92 L260,122" fill="none" stroke="#8a8178" stroke-width="2.2" marker-end="url(#pkC-g)"/><rect x="80" y="126" width="360" height="72" rx="12" fill="#fff" stroke="#5689b8" stroke-width="2"/><text x="260.0" y="156.0" text-anchor="middle" font-size="21" font-weight="700" fill="#1a1612">帳本記一筆「待確認」</text><text x="260.0" y="184.0" text-anchor="middle" font-size="18" fill="#3a342d">不存訊息原文</text><path d="M260,198 L260,228" fill="none" stroke="#8a8178" stroke-width="2.2" marker-end="url(#pkC-g)"/><rect x="80" y="232" width="360" height="72" rx="12" fill="#fff" stroke="#5689b8" stroke-width="2"/><text x="260.0" y="262.0" text-anchor="middle" font-size="21" font-weight="700" fill="#1a1612">先確認是不是糾正</text><text x="260.0" y="290.0" text-anchor="middle" font-size="18" fill="#3a342d">是的話修錯、記分類</text><path d="M440,268 L486,268" fill="none" stroke="#8a8178" stroke-width="2.2" marker-end="url(#pkC-g)"/><text x="492" y="274" text-anchor="start" font-size="18" font-weight="400" fill="#6a635a">不是糾正：標掉</text><path d="M260,304 L260,334" fill="none" stroke="#8a8178" stroke-width="2.2" marker-end="url(#pkC-g)"/><polygon points="260,338 410,380 260,422 110,380" fill="#faf5ec" stroke="#5689b8" stroke-width="2"/><text x="260" y="374" text-anchor="middle" font-size="19" font-weight="700" fill="#1a1612">同一類第二次？</text><text x="260" y="400" text-anchor="middle" font-size="19" font-weight="700" fill="#1a1612">或結案後又犯？</text><path d="M410,380 L486,380" fill="none" stroke="#8a8178" stroke-width="2.2" marker-end="url(#pkC-g)"/><text x="492" y="386" text-anchor="start" font-size="18" font-weight="400" fill="#6a635a">還沒：繼續記錄</text><path d="M260,422 L260,452" fill="none" stroke="#8a8178" stroke-width="2.2" marker-end="url(#pkC-g)"/><text x="272" y="444" text-anchor="start" font-size="18" font-weight="700" fill="#5f7553">是</text><rect x="80" y="456" width="360" height="72" rx="12" fill="#fff" stroke="#5689b8" stroke-width="2"/><text x="260.0" y="486.0" text-anchor="middle" font-size="21" font-weight="700" fill="#1a1612">選最小的處理範圍</text><text x="260.0" y="514.0" text-anchor="middle" font-size="18" fill="#3a342d">hook、技能包不先問我</text><rect x="10" y="566" width="165" height="72" rx="10" fill="#fff" stroke="#5689b8" stroke-width="2"/><text x="92.5" y="596" text-anchor="middle" font-size="18" font-weight="400" fill="#3a342d">已有規則涵蓋</text><text x="92.5" y="622" text-anchor="middle" font-size="19" font-weight="700" fill="#1a1612">修既有的</text><rect x="190" y="566" width="165" height="72" rx="10" fill="#fff" stroke="#5689b8" stroke-width="2"/><text x="272.5" y="596" text-anchor="middle" font-size="18" font-weight="400" fill="#3a342d">判得準又重要</text><text x="272.5" y="622" text-anchor="middle" font-size="19" font-weight="700" fill="#1a1612">做 hook</text><rect x="370" y="566" width="165" height="72" rx="10" fill="#fff" stroke="#5689b8" stroke-width="2"/><text x="452.5" y="596" text-anchor="middle" font-size="18" font-weight="400" fill="#3a342d">要判斷語意</text><text x="452.5" y="622" text-anchor="middle" font-size="19" font-weight="700" fill="#1a1612">寫進技能包</text><rect x="550" y="566" width="165" height="72" rx="10" fill="#faf5ec" stroke="#8a8178" stroke-width="2" stroke-dasharray="6 5"/><text x="632.5" y="596" text-anchor="middle" font-size="18" font-weight="400" fill="#3a342d">要動 AGENTS</text><text x="632.5" y="622" text-anchor="middle" font-size="19" font-weight="700" fill="#1a1612">只開候選，等我定</text><path d="M260,528 L92.5,562" fill="none" stroke="#8a8178" stroke-width="2.2" marker-end="url(#pkC-g)"/><path d="M260,528 L272.5,562" fill="none" stroke="#8a8178" stroke-width="2.2" marker-end="url(#pkC-g)"/><path d="M260,528 L452.5,562" fill="none" stroke="#8a8178" stroke-width="2.2" marker-end="url(#pkC-g)"/><path d="M260,528 L632.5,562" fill="none" stroke="#8a8178" stroke-width="2.2" marker-end="url(#pkC-g)"/><path d="M92.5,638 L260,676" fill="none" stroke="#8a8178" stroke-width="2.2" marker-end="url(#pkC-g)"/><path d="M272.5,638 L260,676" fill="none" stroke="#8a8178" stroke-width="2.2" marker-end="url(#pkC-g)"/><path d="M452.5,638 L260,676" fill="none" stroke="#8a8178" stroke-width="2.2" marker-end="url(#pkC-g)"/><rect x="80" y="680" width="360" height="72" rx="12" fill="#fff" stroke="#5689b8" stroke-width="2"/><text x="260.0" y="710.0" text-anchor="middle" font-size="21" font-weight="700" fill="#1a1612">備份、跨家審、測試</text><text x="260.0" y="738.0" text-anchor="middle" font-size="18" fill="#3a342d">審稿判要修改就修好</text><path d="M440,700 C520,700 520,735 446,735" fill="none" stroke="#e85a4f" stroke-width="2.2" marker-end="url(#pkC-o)"/><text x="530" y="724" text-anchor="start" font-size="18" font-weight="700" fill="#e85a4f">再審一輪</text><path d="M260,752 L260,782" fill="none" stroke="#8a8178" stroke-width="2.2" marker-end="url(#pkC-g)"/><text x="70" y="774" text-anchor="start" font-size="18" font-weight="400" fill="#6a635a">技能包：審過就生效</text><text x="272" y="774" text-anchor="start" font-size="18" font-weight="400" fill="#6a635a">審過測過，做的是 hook</text><rect x="80" y="786" width="360" height="60" rx="12" fill="#fff" stroke="#5689b8" stroke-width="2"/><text x="260.0" y="823.0" text-anchor="middle" font-size="21" font-weight="700" fill="#1a1612">新 hook 先只提醒、不阻擋</text><path d="M260,846 L260,876" fill="none" stroke="#8a8178" stroke-width="2.2" marker-end="url(#pkC-g)"/><rect x="80" y="880" width="360" height="72" rx="12" fill="#f1f4ee" stroke="#5f7553" stroke-width="2"/><text x="260.0" y="910.0" text-anchor="middle" font-size="21" font-weight="700" fill="#1a1612">月度健檢確認提醒無誤判＋我同意</text><text x="260.0" y="938.0" text-anchor="middle" font-size="18" fill="#3a342d">才改成阻擋</text></svg></div>
+      <figcaption>中間有三個停下來的地方：不是糾正就標掉、還沒到第二次就繼續記、要動規則主檔只開候選等我決定。新做的 hook 也不會馬上擋人，先只提醒，下一次月度健檢確認提醒沒有誤判、我同意了，才改成阻擋。改的是技能包，審過測過就生效。</figcaption>
+      <details><summary>文字版</summary><ol>
+        <li>我的訊息像在糾正（用詞表偵測，可能誤判），帳本記一筆「待確認」，不存訊息原文。</li>
+        <li>AI 先確認是不是糾正；不是就標掉，是的話把錯修好、記下分類。</li>
+        <li>同一類錯誤第二次，或結案後又犯，才往下走；還沒就繼續記錄。</li>
+        <li>選最小的處理範圍，不先問我：已有規則涵蓋就修既有的；判得準又重要就做 hook；要判斷語意就寫進技能包；要動 AGENTS 規則主檔只開候選，等我決定。</li>
+        <li>備份、跨家審、測試；審稿判要修改就修好再審一輪。</li>
+        <li>審過測過才往下：改的是技能包就此生效；做的是 hook，先只提醒、不阻擋，月度健檢確認提醒沒有誤判、我同意了，才改成阻擋。</li>
+      </ol></details>
+    </figure>
+    <p>知識工作要注意的是，做得成 hook 的多半是格式和流程。內容有沒有加油添醋，hook 判不了，還是要靠下一段的跨家審和自己讀。</p>
+    <div class="readmore near">
+      <b>哪些規則能交給程式擋，我另外寫過</b>
+      <ul>
+        <li><a href="../how-to-verify-ai-rule-changes/">改完規則，怎麼知道 AI 到底有沒有變乖？｜改完當下看不出來的東西，要當病人觀察不能當程式碼驗</a>　這一段只講錯誤怎麼變成 hook，那篇把規則分成「寫得成程式判斷的」和「要靠 AI 自己遵守、得觀察的」兩邊</li>
+        <li><a href="../caught-ai-slacking-into-rules/">AI 寫的東西我怎麼確認它是對的？：抓到 AI 偷懶之後，我把它寫進流程規則</a>　這一段只講機制，那篇是一次 AI 沒真的做事卻回報完成，我怎麼抓到、怎麼寫成規則</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="cross-review">
+  <div class="inner">
+    <h2>做跟審分開，而且換一家公司的 AI 來審</h2>
+    <p>影片裡 <code>/interrogate</code> 的理由是：同一個模型換幾個角色，很可能還是留著同樣的盲點。寫 PR 的 AI 也永遠不能核准自己的 PR。</p>
+    <p>我的跨家審稿是同一個道理：產出和主審要是不同公司的模型。同一家的模型可以先自我檢查，但不能算數。</p>
+    <p>跨家審也會錯。我寫過一次真實的互審，對方退了我九項，其中三項是我真的寫錯，但它自己也錯了兩項。所以互審拿到的是一張待驗清單，要不要改，還是自己決定。</p>
+    <div class="readmore near">
+      <b>換一家 AI 來審，我實際跑過</b>
+      <ul>
+        <li><a href="../cross-ai-review-both-wrong/">OpenAI 出了官方外掛，讓 Codex 能接到 Claude Code 一起工作｜codex-plugin-cc</a>　這一段只講為什麼要換一家，那篇有三輪退件九項的完整過程，和零成本就能用的互審提示詞</li>
+        <li><a href="../dual-track-planning-loop/">如何讓兩個不同的 AI 互相挑錯、自己訂正？：我的企劃送出前先被模擬評審打了 2/5 分</a>　這一段講審稿，那篇是企劃版的做法：兩家各自寫完再互審</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="trust-ladder">
+  <div class="inner">
+    <h2>共通的第三件事：信任一階一階放，先把地基打好再談全自動</h2>
+    <p>影片中提到，Lauren 為了爬上第四階，先花了六百多張 PR 整理專案；第一次讓 AI 整晚自己跑、自己合併，她其實很怕半夜把系統弄垮。她也提醒，地基還沒打好就開十幾個 AI 平行跑，只會用十倍的速度產出垃圾。</p>
+    <p>我的系統也是分級放手。平常是預設 Loop，AI 按任務風險自己分級；我說「自動一點」，它就少問一點；說「全自動」，它才一路跑到完成，但不可逆和對外送出的事仍然要我點頭。朵拉帳號也是一樣，查收、自巡、發文分三級授權，發文是最後一級，發之前要過三模型投票。</p>
+    <div class="readmore near">
+      <b>讓 AI 自己跑之前，先想好它出錯怎麼辦</b>
+      <ul>
+        <li><a href="../what-is-loop-engineering/">每件事 AI 都要我確認，怎麼可以更自動？｜什麼是迴圈工程 Loop Engineering</a>　這一段只講分級放手，那篇把迴圈工程從頭講清楚，也講到先手動跑穩、最後才自動化</li>
+        <li><a href="../ai-loop-safety-recovery/">AI 出錯不可怕，沒有備援才可怕：一次搞壞 170 檔案的教訓</a>　這一段講放手的順序，那篇是放手之後真的出錯，靠哪三道防線零遺失收場</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="this-conversation">
+  <div class="inner">
+    <h2>寫這篇文章的那段對話，剛好把三件事跑了一遍</h2>
+    <p>這篇文章的起點是一段對話，那段對話剛好把上面三件事都跑過一次：</p>
+    <ol>
+      <li>我把影片丟給 AI，它用公開字幕分析，沒有看畫面。這是交件附證據：先講清楚用了什麼素材。</li>
+      <li>我請 Anthropic 的 Fable 和 Google 的 Gemini 4 Argon 各自分析，再請 OpenAI 的另一個模型審 Fable 的分析。Gemini 4 Argon 做到一半額度用完，我才定好互審的備援順序。這是做跟審分開。</li>
+      <li>排順序時，AI 第一次把 Codex 的「GPT Sol」誤判成另一個模型（gpt-oss），被我糾正。這個錯誤成了「錯誤轉 hook」帳本的第一筆。這是錯誤轉規則。</li>
+      <li>「錯誤轉 hook」這套設計，由我的 Claude 審查技能包「審話一哥」和 Codex 的 GPT Sol 各審一輪，兩邊都判「要修改」，合併採納後才施工。施工完再交給 GPT Sol 開新對話終審，三輪都判「要修改」，每輪抓到的問題都修掉並寫成測試，最後 48 項測試全過。這是跨家審加上測試證據。</li>
+    </ol>
+    <p>最後我說的是：「這個 hook 該做的也就做，技能包該寫的就寫。好，不要再問我了哈，回圈工程。」這一句就是放手的那一階。</p>
+  </div>
+</section>
+
+<section class="section" id="six-steps">
+  <div class="inner">
+    <h2>想向 Lauren 學：影片整理的六步，換成知識工作者的版本</h2>
+    <p>影片最後把 Lauren 給新手的建議整理成六步，每一步都有過關標準。我把右邊那欄換成知識工作的做法：</p>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>步驟</th><th>影片的過關標準</th><th>知識工作可以這樣做</th></tr></thead>
+        <tbody>
+          <tr><td>1. 先用一個 AI，看它怎麼失敗</td><td>講得出它最常犯的三種錯</td><td>每次開口糾正 AI，就記下那句話</td></tr>
+          <tr><td>2. 把糾正變成規則</td><td>同一種錯不再出現第二次；能用 hook 攔就不要只寫在文件裡</td><td>寫進 AI 每次都會讀的說明檔（例如 Claude 的專案指示、ChatGPT 的自訂指令，或 CLAUDE.md 這種檔案）；格式、流程、漏步驟這類，請 AI 做成自動檢查</td></tr>
+          <tr><td>3. 交件一定要附證據</td><td>不用自己打開檔案，光看證據就能判斷對不對</td><td>整理資料：列出核對過哪幾筆、怎麼核對；分析素材：交代用了什麼、哪些沒查到；做網頁：打開截圖給你看</td></tr>
+          <tr><td>4. 同時開兩三個 AI，做跟審分開</td><td>三個 AI 顧得過來，交回來的大部分不用重做</td><td>寫的和審的換不同公司的模型</td></tr>
+          <tr><td>5. 睡前交代任務，停在合併前</td><td>完成條件非黑即白，卡太久就停下寫原因</td><td>發布、刪資料、對外發訊息這種難挽回的動作，留給隔天的自己</td></tr>
+          <tr><td>6. 自動合併，讓工作自己找上門</td><td>連續幾個早上，都不用幫它收拾殘局</td><td>知識工作的「合併」多半就是對外發布，先挑一個範圍很窄的地方放手</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>影片作者也建議，一般人先從另一套工作流起步：<a href="https://github.com/mattpocock/skills" target="_blank" rel="noopener">Matt Pocock 的技能包</a>。那套把重心放在動工前讓 AI 把需求問清楚、合併前由人看過證據。影片的說法是兩套沒有誰比較好：想法還模糊、要從零做新東西時，Matt 那套比較適合；已經有大量舊東西、重點是不能改壞時，pstack 用起來比較舒服。</p>
+    <p>影片最後說，按部就班走完，你得到的會是屬於你自己的工作流。我的知識工作流就是這樣長出來的。</p>
+  </div>
+</section>
+
+<section class="section" id="prompts">
+  <div class="inner">
+    <h2>今天就能開始：記糾正、附證據、換家挑錯的三段提示詞</h2>
+    <p>第一步不用裝任何東西。先讓 AI 幫你記下每次的糾正：</p>
+    <div class="codeblock">從現在開始，每次我糾正你，請在回覆最後記一行：日期、我糾正了什麼、你原本怎麼做。同一類錯誤出現第二次時，主動提醒我，並提出兩個做法：一是寫進我的說明檔的一條規則，二是能不能做成自動檢查（例如格式、連結、漏掉的步驟）。只記我真的糾正過的事，不要自己補。</div>
+    <p>交件時，要它附上證據：</p>
+    <div class="codeblock">交件前附上三件事：一、你用了哪些素材，哪些沒讀到；二、你核對過哪幾筆、怎麼核對的；三、你沒把握的地方。只寫你真的做過的核對，沒做的就寫沒做。</div>
+    <p>拿去給另一家公司的 AI 挑錯：</p>
+    <div class="codeblock">下面是另一個 AI 交給我的成品、它附的核對紀錄，以及原始素材。請你只做挑錯：哪些說法找不到出處、哪些是素材裡沒有的話、哪些地方核對不夠。每一條寫出位置和理由，不要幫我改寫。沒附上素材的部分，請標「無法判定」。</div>
+  </div>
+</section>
+
+<section class="section" id="limits">
+  <div class="inner">
+    <h2>這篇的誠實邊界：哪些沒查到、我自己停在哪一階</h2>
+    <ul>
+      <li>影片裡的產量數字（2,500 張 PR、一天八十幾張、醒來 20 張、六百多張打地基）都沒有找到原始出處，只能當影片說法。</li>
+      <li><code>/swarm</code> 的驗收 AI 有沒有用不同家的模型，我們查到的說明文件沒有寫清楚。</li>
+      <li>我這邊，hook 擋得住的是格式和流程；內容對不對，靠跨家審和自己讀，跨家審本身也會錯。</li>
+    </ul>
+    <div class="caveat"><b>我自己還沒放到最後一階</b>我的網站部署還沒放到自動上線，停在「不在場只推到候選」那一階：我不在的時候，AI 只能把網頁推到預覽網址，正式上線還是要我點頭。</div>
+  </div>
+</section>
+
+<section class="section" id="closing">
+  <div class="inner">
+    <h2>驗證跟放手，工程師和知識工作者走的是同一條路</h2>
+    <p>pstack 讓我看到的，是一個人怎麼把自己一步一步往工作流程的後面移。工具和指令是工程師的，骨架是共通的：交件附證據、錯誤做成擋得住的規則、信任一階一階放。從下一次你開口糾正 AI 開始記，就是第一階。</p>
+    <div class="readmore">
+      <b>這篇提到過的</b>
+      <ul>
+        <li><a href="../how-to-verify-ai-rule-changes/">改完規則，怎麼知道 AI 到底有沒有變乖？</a>　記下的糾正變成規則之後，怎麼確認它真的有效</li>
+        <li><a href="../caught-ai-slacking-into-rules/">AI 寫的東西我怎麼確認它是對的？</a>　一次 AI 回報完成卻沒真的做，抓到之後怎麼寫進流程</li>
+        <li><a href="../cross-ai-review-both-wrong/">OpenAI 出了官方外掛，讓 Codex 能接到 Claude Code 一起工作</a>　換一家 AI 來審的完整案例與提示詞</li>
+        <li><a href="../dual-track-planning-loop/">如何讓兩個不同的 AI 互相挑錯、自己訂正？</a>　企劃版的雙軌互審</li>
+        <li><a href="../what-is-loop-engineering/">每件事 AI 都要我確認，怎麼可以更自動？</a>　分級放手背後的迴圈工程</li>
+        <li><a href="../ai-loop-safety-recovery/">AI 出錯不可怕，沒有備援才可怕</a>　放手之後出錯，怎麼零遺失收場</li>
+      </ul>
+      <b style="margin-top:16px">再往前後延伸</b>
+      <ul>
+        <li><a href="../codex-only-auto-worklog/">工作日記老是忘記寫，能叫 AI 自動收集嗎？</a>　往後一步：決策紀錄表在知識工作裡就是工作日記，這篇講怎麼讓 AI 自動記</li>
+        <li><a href="../harness-mindset-for-bosses/">給老闆的駕馭思維：把不敢對員工說的，講給 AI 聽</a>　往前一步：在交代任務之前，先把要求講到位</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="cta-band">
+  <div class="section">
+    <div class="inner">
+      <div>
+        <h2>想把這套用進自己的工作流？</h2>
+        <p class="lead">我每個月有兩場免費線上講座，主題輪流，場次會先在 LINE 社群公布。</p>
+      </div>
+      <div class="cta-card">
+        <b>免費線上講座</b>
+        <p>每個月兩場免費講座。</p>
+        <div class="cta"><a class="primary" style="background:#48b178;color:#fff" href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">點我加入 Line 社群 ↗</a></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">江江教練 · AI 知識管理</div>
+    <div class="footer-links">
+      <a href="../../articles.html">← 回深度文章總站</a>
+      <a href="../../index.html">首頁</a>
+      <a href="../../learn.html">自學資源</a>
+      <a href="../../skills.html">小工具</a>
+      <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">LINE 社群 ↗</a>
+      <a href="https://www.threads.com/@jiang_yude_coach" target="_blank" rel="noopener">Threads ↗</a>
+      <a href="https://vocus.cc/salon/Jiang_Coach" target="_blank" rel="noopener">方格子 ↗</a>
+    </div>
+    <div class="footer-note">這是一篇教學文章，整理我對「AI 做的東西要怎麼確認，才敢放手讓它自己做？｜從 Lauren Tan 的 pstack，學知識工作也用得上的三件事」的看法，供你參考。</div>
+  </div>
+</footer>
+
+<!-- 點圖放大 lightbox（hero 與內文圖通用，已內建，不用每篇重加） -->
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <span class="lightbox-close" aria-label="關閉">×</span>
+  <img id="lightbox-img" src="" alt="放大檢視">
+</div>
+<script>
+(function(){
+  var box=document.getElementById('lightbox'),boxImg=document.getElementById('lightbox-img');
+  document.querySelectorAll('.hero-figure img,.inline-figure img').forEach(function(img){
+    img.addEventListener('click',function(){boxImg.src=img.currentSrc||img.src;boxImg.alt=img.alt||'放大檢視';box.classList.add('open');box.setAttribute('aria-hidden','false');});
+  });
+  function close(){box.classList.remove('open');box.setAttribute('aria-hidden','true');boxImg.src='';}
+  box.addEventListener('click',close);
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
+})();
+</script>
+
+<script src="../../image-interactions.js"></script>
+
+<!-- 官網共用：滑鼠暖光暈 + 導航列漢堡選單 -->
+<script src="../../spotlight.js"></script>
+
+<!-- 文章自動互聯（相關文章）：兩支已內建，順序不可顛倒，不用再另外加 -->
+<script src="../../articles-data.js"></script>
+<script src="../../related-render.js"></script>
+  <script src="/mika-chat-widget.js" defer></script>
+<!-- tracking:cloudflare -->
+<script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "c3e3c857121d416ab405270557d017d3"}'></script>
+<!-- tracking:views-counter -->
+<script src="/views.js"></script>
+</body>
+</html>
