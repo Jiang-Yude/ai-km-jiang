@@ -1,0 +1,427 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="index,follow">
+<title>電腦裡一大堆圖片、影片，AI 找得到嗎？｜用 Google 開源的 EmbeddingGemma 2 在自己電腦實測</title>
+<meta name="description" content="電腦裡一大堆圖片、影片，AI 找得到嗎？Google 免費開源的 EmbeddingGemma 2 能在自己電腦用一句話找圖片和影片畫面。白話介紹、網路上的用法、實測找得到與找不到的、三條開始的路與常見問題。">
+<link rel="canonical" href="https://jiangyude.com/articles/course-video-multimodal-search/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="電腦裡一大堆圖片、影片，AI 找得到嗎？｜用 Google 開源的 EmbeddingGemma 2 在自己電腦實測｜江江教練">
+<!-- 分享封面：hero 文字填好後在 repo 根目錄跑 `node scripts/og-shot.mjs course-video-multimodal-search` 自動截 1200×630 到 images/og/course-video-multimodal-search.jpg（見 README「文章分享封面（OG 圖）機制」）。別退回 intro-jiang.png 直式人像，會被裁成只剩脖子。 -->
+<meta property="og:image" content="https://jiangyude.com/images/og/course-video-multimodal-search.jpg">
+<meta property="og:description" content="電腦裡一大堆圖片、影片，AI 找得到嗎？Google 免費開源的 EmbeddingGemma 2 能在自己電腦用一句話找圖片和影片畫面。白話介紹、網路上的用法、實測找得到與找不到的、三條開始的路與常見問題。">
+<meta property="og:url" content="https://jiangyude.com/articles/course-video-multimodal-search/">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:site_name" content="江江教練 · AI 知識管理">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="電腦裡一大堆圖片、影片，AI 找得到嗎？｜用 Google 開源的 EmbeddingGemma 2 在自己電腦實測｜江江教練">
+<meta name="twitter:image" content="https://jiangyude.com/images/og/course-video-multimodal-search.jpg">
+<meta name="twitter:description" content="電腦裡一大堆圖片、影片，AI 找得到嗎？Google 免費開源的 EmbeddingGemma 2 能在自己電腦用一句話找圖片和影片畫面。白話介紹、網路上的用法、實測找得到與找不到的、三條開始的路與常見問題。">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"電腦裡一大堆圖片、影片，AI 找得到嗎？｜用 Google 開源的 EmbeddingGemma 2 在自己電腦實測","description":"電腦裡一大堆圖片、影片，AI 找得到嗎？Google 免費開源的 EmbeddingGemma 2 能在自己電腦用一句話找圖片和影片畫面。白話介紹、網路上的用法、實測找得到與找不到的、三條開始的路與常見問題。","author":{"@type":"Person","name":"江昱德","alternateName":"江江教練","jobTitle":"隱性知識提煉師、AI 應用規劃師"},"isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://jiangyude.com/"},"inLanguage":"zh-Hant","url":"https://jiangyude.com/articles/course-video-multimodal-search/"}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{--ink:#1a1612;--paper:#fefcf8;--muted:#6a635a;--line:#d8cdb8;--green:#5f7553;--blue:#5689b8;--orange:#e85a4f;--soft:#faf5ec;--dark:#2a2018;--shadow:0 18px 45px rgba(107,74,42,.14);--sp-shadow:hsla(35,50%,60%,.15);--sp-shadow-edge:hsla(35,50%,68%,.03);--sp-radius:400px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC","Segoe UI",sans-serif}
+a{color:inherit}
+/* 官網共用導航列 nav.top（與首頁/文章總站同一條） */
+nav.top{position:sticky;top:0;background:rgba(254,252,248,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid #d8cdb8;z-index:100}
+nav.top .container{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:24px;padding:14px 32px}
+.nav-brand-img{justify-self:start;display:flex;align-items:center;text-decoration:none;flex-shrink:0;transition:opacity .2s}
+.nav-brand-img:hover{opacity:.8}.nav-brand-img img{height:40px;width:auto;display:block}
+nav.top ul.nav-menu{justify-self:end;display:flex;gap:22px;list-style:none;margin:0;padding:0;font-size:.95rem;white-space:nowrap}
+nav.top ul.nav-menu a{color:#3a342d;text-decoration:none;transition:color .2s;font-weight:500;white-space:nowrap}
+nav.top ul.nav-menu a:hover{color:#1a1612}nav.top ul.nav-menu a.active{color:#1a1612;font-weight:700}
+.nav-toggle{display:none;background:none;border:none;padding:6px;cursor:pointer;width:36px;height:36px;position:relative}
+.nav-toggle span{display:block;position:absolute;left:8px;right:8px;height:2px;background:#1a1612;border-radius:2px;transition:transform .25s,opacity .25s,top .25s}
+.nav-toggle span:nth-child(1){top:11px}.nav-toggle span:nth-child(2){top:17px}.nav-toggle span:nth-child(3){top:23px}
+.nav-toggle.open span:nth-child(1){top:17px;transform:rotate(45deg)}.nav-toggle.open span:nth-child(2){opacity:0}.nav-toggle.open span:nth-child(3){top:17px;transform:rotate(-45deg)}
+.tablewrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:22px 0;border:1px solid var(--line);border-radius:10px;background:#fff;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.tablewrap table{border-collapse:collapse;width:100%;min-width:600px;font-size:18px;line-height:1.65}
+.tablewrap .zh{display:block;margin-top:5px;font-size:16px;line-height:1.55;color:var(--muted);font-weight:400}
+.tablewrap th,.tablewrap td{padding:12px 14px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top;color:#3a342d}
+.tablewrap thead th{background:var(--soft);font-weight:900;font-size:18px;color:#1a1612;white-space:nowrap}
+.tablewrap tbody tr:last-child td{border-bottom:none}
+.tablewrap td code,.section code{background:var(--soft);border:1px solid var(--line);border-radius:5px;padding:1px 6px;font:500 15px/1.5 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace}
+.inline-figure.wide{max-width:1000px}
+.inline-figure.portrait{max-width:430px}
+.toc{margin:26px 0 0;padding:20px 22px;background:#fff;border:1px solid var(--line);border-radius:10px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.toc>b{display:block;font-size:15px;letter-spacing:.05em;color:var(--green);margin-bottom:10px}
+.toc ol{margin:0;padding-left:1.35em;font-size:18px;line-height:1.7}
+.toc li{margin-bottom:7px;color:#3a342d}
+.toc a{color:var(--blue);font-weight:700;text-decoration:none}.toc a:hover{text-decoration:underline}
+.toc-hint{margin:12px 0 0!important;font-size:18px!important;color:var(--muted)!important;border-top:1px solid var(--line);padding-top:12px}
+.readmore{margin-top:24px;padding:20px 22px;background:var(--soft);border:1px solid var(--line);border-radius:12px}
+.readmore.near{margin:26px 0 6px;background:rgba(86,137,184,.07);border-color:#bcd0e2}
+.readmore.near b{color:var(--blue);font-size:18px}
+.readmore.near li{font-size:17px;line-height:1.7;margin-bottom:10px}
+.readmore b{display:block;margin-bottom:10px;font-size:19px}
+.readmore ul{margin:0;padding-left:1.25em}
+.readmore a{color:var(--blue);font-weight:700;text-decoration:none}
+.readmore a:hover{text-decoration:underline}
+@media(max-width:820px){.tablewrap table{min-width:560px;font-size:18px}.tablewrap{position:relative}.tablewrap::after{content:"表格可左右滑動 →";position:sticky;left:0;display:block;font-size:15px;color:var(--muted);background:var(--soft);border-top:1px solid var(--line);padding:7px 12px;width:100%}}
+@media(max-width:860px){
+ nav.top .container{grid-template-columns:auto 1fr auto;padding:10px 16px;gap:12px}
+ .nav-brand-img img{height:32px}
+ .nav-toggle{display:block;justify-self:end}
+ nav.top ul.nav-menu{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(254,252,248,.98);backdrop-filter:blur(14px);border-bottom:1px solid #d8cdb8;flex-direction:column;gap:0;padding:8px 0;box-shadow:0 10px 24px rgba(107,74,42,.08)}
+ nav.top ul.nav-menu.open{display:flex}
+ nav.top ul.nav-menu li{border-bottom:1px solid #e8dfc9}
+ nav.top ul.nav-menu li:last-child{border-bottom:none}
+ nav.top ul.nav-menu a{display:block;padding:14px 20px;font-size:1.06rem}
+}
+/* 滑鼠暖光暈（與首頁同一支 spotlight.js） */
+body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradient(var(--sp-radius) circle at var(--mx,50%) var(--my,50%),var(--sp-shadow) 0%,var(--sp-shadow-edge) 45%,transparent 75%);pointer-events:none;z-index:9999;mix-blend-mode:multiply;transition:background .06s linear}
+.hero{position:relative;overflow:hidden;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:72px;padding:96px clamp(20px,6vw,88px) 80px;background:linear-gradient(180deg,#fffcf0 0%,#f9e9d2 100%);color:#1a1612;border-bottom:1px solid #d8cdb8}
+.hero .wc{position:absolute;border-radius:50%;filter:blur(60px);pointer-events:none;z-index:0}
+.hero .wc1{width:420px;height:360px;top:-120px;right:-80px;background:#e8884b;opacity:.15}
+.hero .wc2{width:360px;height:300px;bottom:-110px;left:-70px;background:#5f7553;opacity:.13}
+.hero .wc3{width:280px;height:260px;top:34%;left:14%;background:#a08144;opacity:.10}
+.hero>div{flex:none;width:860px;max-width:100%;position:relative;z-index:2}
+.hero-figure{margin:0;width:620px;flex:none;position:relative;z-index:2}
+.hero-figure img{display:block;width:100%;height:auto;border-radius:16px;border:1px solid #d8cdb8;box-shadow:0 18px 45px rgba(107,74,42,.16);cursor:zoom-in}
+.hero-figure figcaption{margin-top:10px;font-size:14px;line-height:1.6;color:#6a635a}
+.inline-figure{margin:30px auto 8px;max-width:820px}
+.inline-figure img{display:block;width:100%;height:auto;border-radius:14px;border:1px solid var(--line);box-shadow:var(--shadow);background:#fff;cursor:zoom-in}
+.inline-figure figcaption{font-size:14px;line-height:1.6;color:var(--muted);margin-top:10px}
+.lightbox{position:fixed;inset:0;z-index:10000;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(12,10,8,.92);cursor:zoom-out;backdrop-filter:blur(4px)}
+.lightbox.open{display:flex}.lightbox img{max-width:96vw;max-height:92vh;border-radius:10px;box-shadow:0 24px 60px rgba(0,0,0,.5)}
+.lightbox-close{position:fixed;top:18px;right:24px;color:#fff;font-size:34px;line-height:1;font-weight:700;cursor:pointer;opacity:.85}
+.kicker{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.55rem;color:#7a5c3a;font-weight:500}
+.hero h1{max-width:none;margin:16px 0 18px;font-size:clamp(36px,6vw,72px);line-height:1.08;overflow-wrap:anywhere}
+.hero p{max-width:none;font-size:clamp(18px,2vw,23px);line-height:1.62;color:#3a342d}
+.cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
+.cta a{display:inline-flex;align-items:center;text-decoration:none;border-radius:8px;padding:12px 16px;font-weight:900}
+.cta .primary{background:#fff;color:#1a1612}.cta .ghost{border:1px solid rgba(255,255,255,.32);color:#fff;background:rgba(255,255,255,.08)}
+.section{padding:54px clamp(20px,6vw,88px);border-top:1px solid var(--line)}
+.inner{width:min(1000px,100%);margin:0 auto}
+.section h2{font-size:clamp(26px,4.2vw,48px);line-height:1.12;margin:0 0 18px}
+.section h3{font-size:clamp(21px,3vw,30px);line-height:1.2;margin:30px 0 12px}
+.lead{font-size:clamp(18px,1.6vw,22px);line-height:1.7;color:#3a342d;max-width:900px}
+.section p{font-size:18px;line-height:1.74;color:#3a342d}.section p+p{margin-top:14px}
+.section ul,.section ol{padding-left:1.4em;font-size:18px;line-height:1.74;color:#3a342d}.section li{margin-bottom:8px}
+.meaning{margin:22px 0;padding:16px 18px;border-left:5px solid var(--blue);background:rgba(86,137,184,.12);border-radius:6px;line-height:1.7;font-size:19px}
+.meaning b{display:block;color:var(--blue);margin-bottom:4px}
+.caveat{margin:0 0 8px;padding:16px 18px;border-left:5px solid var(--orange);background:rgba(232,90,79,.1);border-radius:6px;line-height:1.7;font-size:18px;color:#3a342d}
+.caveat b{display:block;color:var(--orange);margin-bottom:4px}
+.infocard{background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px 24px 22px;box-shadow:0 8px 22px rgba(107,74,42,.08);margin-top:8px}
+.infocard-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.info-item{padding:18px 14px 0}
+.info-item b{display:block;font-size:14px;font-weight:900;letter-spacing:.04em;margin-bottom:7px;text-transform:uppercase}
+.info-item:nth-child(1) b{color:var(--green)}.info-item:nth-child(2) b{color:var(--orange)}.info-item:nth-child(3) b{color:var(--blue)}
+.info-item p{margin:0;font-size:17px;line-height:1.6;color:#3a342d}
+.tagrow{display:flex;flex-wrap:wrap;gap:7px;margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
+.tag{font-size:14px;color:var(--muted);background:var(--soft);border:1px solid var(--line);border-radius:999px;padding:4px 11px}
+.duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:24px}
+.duo.stack{grid-template-columns:1fr}
+.duo .card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:22px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.duo .card.a{border-color:var(--orange)}.duo .card.b{border-color:var(--green);box-shadow:0 8px 24px rgba(95,117,83,.16)}
+.duo .card small{display:block;font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.04em;margin-bottom:9px}
+.duo .card.a small{color:var(--orange)}.duo .card.b small{color:var(--green)}
+.duo .card b{display:block;font-size:22px;line-height:1.3;margin-bottom:12px}.duo .card.a b{color:#c0512f}.duo .card.b b{color:#4a7a59}
+.duo .card p{margin:0;color:#3a342d;line-height:1.75;font-size:18px}
+.workflow-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:24px}
+.workflow-step{background:#fff;border:1px solid var(--line);border-radius:8px;padding:18px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.workflow-step small{display:block;color:var(--orange);font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;margin-bottom:9px}
+.workflow-step b{display:block;font-size:18px;line-height:1.3;margin-bottom:9px}
+.workflow-step p{margin:0;color:#3a342d;line-height:1.6;font-size:16px}
+.codeblock{background:var(--dark);color:#f3ead9;border-radius:8px;padding:18px 20px;font:500 14px/1.65 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;overflow-x:auto;white-space:pre-wrap;margin:20px 0;box-shadow:0 8px 22px rgba(107,74,42,.12)}
+.codeblock .c{color:#f6d7a6;font-weight:600}
+.skillcard{background:#fff;border:1px solid var(--green);border-radius:12px;padding:24px;box-shadow:0 10px 26px rgba(95,117,83,.16);margin-top:8px}
+.skillcard b{display:block;font-size:21px;margin-bottom:8px}
+.skillcard p{margin:0 0 16px;font-size:17px;line-height:1.65;color:#3a342d}
+.cta-band{background:#e6f0e5;color:#3a342d}.cta-band .section{border-top:none}
+.cta-band .inner{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(260px,.85fr);gap:26px;align-items:start}
+.cta-band h2{font-size:clamp(26px,4vw,44px);margin:0 0 16px}.cta-band p,.cta-band .lead{color:rgba(58,52,45,.9);font-size:18px;line-height:1.72}
+.cta-card{border:1px solid #cfe0d2;background:#fbfdfa;border-radius:8px;padding:22px}
+.cta-card b{display:block;color:#48b178;margin-bottom:10px;font-size:18px}.cta-card p{margin:0 0 14px}
+.footer{padding:30px clamp(20px,6vw,88px);font-size:14px;color:var(--muted);background:#fff;border-top:1px solid var(--line)}
+.footer-inner{width:min(1000px,100%);margin:0 auto}
+.footer-links{display:flex;flex-wrap:wrap;gap:6px 12px;margin-bottom:14px}.footer-links a{color:var(--blue);font-weight:900;text-decoration:none;font-size:14px}
+.footer-brand{font-weight:900;font-size:15px;margin-bottom:10px}.footer-note{font-size:13px;line-height:1.6}
+@media(max-width:820px){.inline-figure.portrait{max-width:340px}.infocard-grid{grid-template-columns:1fr}.duo{grid-template-columns:1fr}.workflow-grid{grid-template-columns:1fr}.cta-band .inner{grid-template-columns:1fr}.section{padding:40px 20px}.hero{min-height:52vh;flex-direction:column;justify-content:flex-start;align-items:flex-start;gap:24px}.hero>div{width:100%}.hero-figure{width:100%;max-width:560px}}
+@media(max-width:820px){html,body{overflow-x:hidden}.hero h1{word-break:break-word}}
+/* 直式圖左右排（02-design-system「直式圖在桌機的左右排版」）：輪播卡上官網預設用 .media-row，圖左圖右看段落交替；連續兩張用 .figure-pair */
+.figure-pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;margin:30px auto 8px;max-width:820px}.figure-pair .inline-figure{margin:0;max-width:none}@media(max-width:640px){.figure-pair{grid-template-columns:1fr}.figure-pair .inline-figure{max-width:340px;margin:0 auto}}
+.media-row{display:grid;grid-template-columns:minmax(0,340px) minmax(0,1fr);gap:36px;align-items:center;margin:28px 0}.media-row.img-right{grid-template-columns:minmax(0,1fr) minmax(0,340px)}.media-row .inline-figure{margin:0;max-width:none}.media-row .media-text>*:first-child{margin-top:0}.media-row .media-text>*:last-child{margin-bottom:0}@media(max-width:820px){.media-row,.media-row.img-right{grid-template-columns:1fr;gap:18px}.media-row.img-right .media-fig{order:-1}.media-row .inline-figure{max-width:340px;margin:0 auto}}
+.methods{margin:26px 0;padding:8px 22px 16px;background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.m-row{display:grid;grid-template-columns:minmax(0,250px) 1fr;gap:22px;align-items:center;padding:14px 0;border-top:1px solid var(--line)}.m-row:first-child{border-top:none}
+.m-label b{display:block;font-size:19px;color:#1a1612}.m-label span{display:block;font-size:17px;line-height:1.5;color:var(--muted)}
+.m-axis{background:var(--soft);border:1px solid var(--line);border-radius:6px;padding:8px 12px;text-align:center;font-size:17px;color:#3a342d}
+.m-bar{display:flex;justify-content:space-between;height:46px}.m-bar i{display:block;background:var(--green);border-radius:2px}.m-bar.a i{width:8px}.m-bar.b i{width:3px}
+.m-bar.c{gap:8px}.m-bar.c i{flex:1;display:flex;align-items:center;justify-content:center;background:rgba(232,90,79,.12);border:1px solid var(--orange);border-radius:6px;font-style:normal;font-size:16px;color:#a33a2f}
+.m-note{margin:12px 0 0!important;font-size:16px!important;color:var(--muted)!important;text-align:center}
+@media(max-width:640px){.m-row{grid-template-columns:1fr;gap:10px}}
+.hero{gap:44px!important}
+.hero>div{width:500px!important}
+.hero-figure{width:480px!important}
+.hero h1{font-size:clamp(30px,3vw,42px)!important;line-height:1.18!important;margin:12px 0 16px!important}
+.hero p{font-size:clamp(16px,1.3vw,19px)!important;line-height:1.65!important}
+.hero .kicker{font-size:1.28rem!important}
+@media(max-width:1100px){
+  .hero{gap:32px!important;flex-direction:column;align-items:flex-start}
+  .hero>div{width:100%!important}
+  .hero-figure{width:100%!important;max-width:620px}
+  .hero h1{font-size:clamp(28px,5vw,40px)!important}
+}
+</style>
+</head>
+<body class="spotlight">
+<!-- 官網共用導航列 nav.top：與首頁/總站同一條，文章不要自己另做極簡 topbar（江江 2026-06-25：要同一個框架、同一條導航列）。把對應頁面的 class="active" 標在自己那欄。
+     ⚠️ 下面 ul.nav-menu 整塊由 preflight 第 5 關 check-bilingual-nav.mjs 做「逐字比對」，
+        塞任何註解、多一個空白、換行位置不同都會被判導航不一致而擋下發布。要說明就寫在 <ul> 外面（像這裡）。
+        2026-08-16 修：原本的 EN 那行說明註解就夾在 <ul> 裡面，導致照範本起手的新文章一律卡第 5 關
+        （llm-rag-agent-mcp 與 rag-three-retrieval-modes 兩篇同時中招）。註解已移出來，<ul> 內保持乾淨。
+        萬一還是被擋，直接跑：node scripts/check-bilingual-nav.mjs --write --only=<你的檔案路徑> -->
+<nav class="top">
+  <div class="container">
+    <a class="nav-brand-img" href="../../index.html"><img src="../../images/footer-signature.png" alt="江江教練 | 江昱德"></a>
+    <button class="nav-toggle" aria-label="選單"><span></span><span></span><span></span></button>
+    <ul class="nav-menu">
+      <li><a href="../../index.html">首頁</a></li>
+      <li><a href="../../knowledge-architecture.html">知識架構</a></li>
+      <li><a href="../../courses.html">課程</a></li>
+      <li><a href="../../articles.html" class="active">文章</a></li>
+      <li><a href="../../skills.html">小工具</a></li>
+      <li><a href="../../offers.html">AI 落地</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="wc wc1"></div>
+  <div class="wc wc2"></div>
+  <div class="wc wc3"></div>
+  <div>
+    <div class="kicker">AI 趨勢實測</div>
+    <h1>電腦裡一大堆圖片、影片，AI 找得到嗎？｜用 Google 開源的 EmbeddingGemma 2 在自己電腦實測</h1>
+    <p>Google 免費開源的 EmbeddingGemma 2，能在自己電腦用一句話找圖片、找影片裡的某一頁。這篇講它是什麼、大家怎麼用、實際找不找得到，和怎麼開始。</p>
+  </div>
+  <figure class="hero-figure">
+    <img src="../../images/articles/course-video-multimodal-search-cover.jpg" alt="咪卡拿著放大鏡，在一大疊照片、截圖和電影膠卷裡找到發光的那一張" width="1400" height="787" loading="lazy">
+    <figcaption>一大疊圖片和影片裡，用一句話找到要的那一張。</figcaption>
+  </figure>
+</section>
+
+<main>
+
+<section class="section" id="start"><div class="inner">
+  <h2>速讀</h2>
+  <ul><li>找得到。Google 免費開源的 EmbeddingGemma 2 裝在自己電腦，就能打一句話找圖片、找影片裡的某一頁。</li><li>畫面上有字的（簡報、海報、圖卡）找得最準；只記得「長什麼樣子」的，比較難找。</li><li>影片最省事的做法是每 10 秒截一張圖再搜，一個多小時的錄影幾分鐘就處理完，不花雲端費用。</li></ul>
+</div></section>
+<section class="section" id="pain"><div class="inner">
+  <h2>這些情況，你應該遇過</h2>
+  <ul><li>記得做過一張圖卡，檔名卻是一串數字，翻了半小時找不到。</li><li>兩小時的課程錄影，想找「講到那一頁簡報」的片段，只能一直拖時間軸。</li><li>想丟給 ChatGPT 幫你看，影片太大傳不上去；就算傳得上去，也怕客戶資料外流，而且很花錢。</li></ul>
+  <p>逐字稿也只幫得上一半：它記下說了什麼，畫面上那一頁寫了什麼，它不知道。</p>
+  <h3>適合誰</h3>
+  <ul><li>電腦裡有大量圖片、截圖、課程或活動錄影，常常要回頭找</li><li>資料不想上傳到雲端，希望在自己電腦處理</li><li>要幫客戶整理簡報、設計稿、照片，想先知道 AI 搜圖做得到哪裡</li></ul>
+  <h3>你可以帶走什麼</h3>
+  <ul><li>EmbeddingGemma 2 的白話介紹，和四種尺寸怎麼選</li><li>網路上大家拿它做的幾種事</li><li>我用自己的錄影和圖片測出來的結果：哪些找得到、哪些找不到</li><li>三條開始的路，和一段可以直接貼給 AI 助手的提示詞</li></ul>
+</div></section>
+<section class="section" id="what-is"><div class="inner">
+  <h2>EmbeddingGemma 2 是什麼：幫你的圖片和影片編目錄的 AI</h2>
+  <p>它不聊天，也不回答問題，只做一件事：把每張圖、每段文字、每段影片，換成一組「座標」。意思接近的東西，座標就靠得近。你打一句話，它也把這句話換成座標，再去找離它最近的那幾張圖。</p>
+  <p>這個動作叫「嵌入」（embedding）。很多「讓 AI 先查你的資料、再回答」的系統（叫做 RAG，檢索增強生成），第一步都靠它。過去常見的嵌入模型只處理文字；EmbeddingGemma 2 把圖片、影片、聲音也放進同一套座標，所以你可以用一句中文去找一張截圖。</p>
+  <div class="tablewrap"><table>
+    <thead><tr><th></th><th>ChatGPT、Gemini 這類聊天 AI</th><th>EmbeddingGemma 2</th></tr></thead>
+    <tbody>
+      <tr><td>做什麼</td><td>回答問題、寫東西</td><td>幫資料編目錄，讓你找得到</td></tr>
+      <tr><td>在哪裡跑</td><td>雲端</td><td>可以在自己的電腦、甚至手機</td></tr>
+      <tr><td>資料要不要上傳</td><td>要</td><td>不用（只有第一次下載模型要連網）</td></tr>
+      <tr><td>費用</td><td>訂閱或按用量</td><td>模型免費，用自己的電腦跑</td></tr>
+    </tbody>
+  </table></div>
+  <p>幾個重點：</p>
+  <ul><li>Google DeepMind（Google 的 AI 研究團隊）在 2026 年 10 月 6 日發布。它是「開源」的，也就是模型檔案公開，任何人都能免費下載來用。授權是 Apache 2.0，這是一種很寬鬆的開源授權：個人和公司都能免費使用、修改，也能放進商業產品，只要保留原本的版權與授權聲明。</li><li>一套座標同時收文字、程式碼、圖片、影片、聲音。</li><li>官方說支援 100 多種語言，但沒有公布中文的專項成績。</li><li>設計給手機、筆電這類一般設備在本機跑。</li></ul>
+  <p>它是同一顆模型，看你要載入哪些「眼睛和耳朵」，分成四種尺寸。尺寸裡的 M 是百萬，270M 就是大約 2.7 億個參數（可以想成模型的腦細胞數）；數字越大，看得懂的東西越多，檔案也越大：</p>
+  <div class="tablewrap"><table>
+    <thead><tr><th>尺寸</th><th>看得懂什麼</th><th>適合</th></tr></thead>
+    <tbody>
+      <tr><td>270M</td><td>文字、程式碼</td><td>只搜文件、筆記</td></tr>
+      <tr><td>440M</td><td>文字＋圖片＋影片畫面</td><td>搜圖片、搜影片畫面</td></tr>
+      <tr><td>570M</td><td>文字＋聲音</td><td>搜錄音</td></tr>
+      <tr><td>740M</td><td>全部</td><td>什麼都要搜；我裝的是這個，下載約 1.3 GB</td></tr>
+    </tbody>
+  </table></div>
+  <div class="readmore near"><b>RAG 查資料的方法不只一種</b><ul><li><a href="../rag-three-retrieval-modes/">把資料丟給 AI，它其實沒有全部看完：RAG 的三種查法與怎麼選</a>：這一段只講「比座標遠近」這一種查法，那篇把三種查法擺在一起，講各自接得住和接不住什麼題目。</li></ul></div>
+</div></section>
+<section class="section" id="community"><div class="inner">
+  <h2>網路上大家拿它做什麼</h2>
+  <p>發布不到一個月，網路上已經有人做出這幾類東西。以下是開發者公開分享的作品與測試，我沒有一一試用：</p>
+  <div class="tablewrap"><table>
+    <thead><tr><th>想做的事</th><th>別人的做法</th><th>在哪裡跑</th></tr></thead>
+    <tbody>
+      <tr><td>用一句話找照片、截圖</td><td><a href="https://github.com/zkwi/local-photo-search" target="_blank" rel="noopener">Local Photo Search</a>：Windows 離線相簿，用中文描述找照片、以圖找圖、找出相似照片</td><td>自己電腦</td></tr>
+      <tr><td>找影片裡的某個時刻</td><td><a href="https://www.reddit.com/r/LocalLLM/comments/1x0mn7h/two_local_models_in_a_browser_video_editor/" target="_blank" rel="noopener">Kaairos</a>：瀏覽器裡的影片剪輯工具，打字就跳到那個畫面；說過的話另外用語音轉文字處理</td><td>瀏覽器</td></tr>
+      <tr><td>手機離線找檔案</td><td><a href="https://www.reddit.com/r/SideProject/comments/1x64360/i_got_tired_of_never_finding_things_on_my_phone/" target="_blank" rel="noopener">Trove</a>：Android 用描述找登機證、Wi-Fi 截圖</td><td>手機</td></tr>
+      <tr><td>現場人員離線找資料</td><td><a href="https://www.theaiautomators.com/embeddinggemma-2-offline-ai-search/" target="_blank" rel="noopener">The AI Automators</a>：手機開飛航模式，照樣找得到故障照片、報告和語音紀錄</td><td>手機</td></tr>
+      <tr><td>不裝軟體，直接在瀏覽器搜</td><td><a href="https://tpiros.dev/blog/embeddinggemma-2-in-the-browser/" target="_blank" rel="noopener">Tamas Piros</a>、<a href="https://huggingface.co/spaces/webml-community/embeddinggemma-2-webgpu" target="_blank" rel="noopener">webml-community 展示頁</a>：照片、聲音、影片、筆記放進同一個搜尋框</td><td>瀏覽器</td></tr>
+      <tr><td>截圖搜尋</td><td><a href="https://github.com/Xeven777/xreenshoty" target="_blank" rel="noopener">xreenshoty</a>：截圖搜尋，加上文字辨識和語音搜尋</td><td>自己電腦</td></tr>
+    </tbody>
+  </table></div>
+  <p>Google 官方自己舉的例子也差不多：用文字或圖片找媒體庫裡的內容、用一句話找影片片段、搜尋錄音，以及在本機建知識庫讓 AI 查資料（<a href="https://blog.google/innovation-and-ai/technology/developers-tools/embeddinggemma-2/" target="_blank" rel="noopener">Google 發布文</a>）。</p>
+  <p>大家分享時提到的幾個坑：</p>
+  <ul><li><b>截圖上的名字、數字容易漏</b>：Local Photo Search 作者說，沒有另外加文字辨識（OCR）時，截圖裡的特定名字、數字會找不到。我測到「印著名字的形象照」沒找到，方向一致。</li><li><b>中文要分開看</b>：有人用中文文件測「找文字」，總分略低於常用的文字搜尋模型 bge-m3（我原本的知識庫搜尋用的就是它）（<a href="https://huggingface.co/Weidows/embeddinggemma-2-zh/blob/main/README.md" target="_blank" rel="noopener">測試報告</a>）；但另一位開發者用中文描述「找照片」，結果比另一個常用的看圖模型 SigLIP 2 好（<a href="https://www.reddit.com/r/LocalLLM/comments/1xchc2m/embeddinggemma_for_local_search_on_iphone/" target="_blank" rel="noopener">測試</a>）。中文找圖可以試，純中文文件可以先沿用原本的工具。</li><li><b>速度看電腦</b>：Local Photo Search 作者測到，有獨立顯示卡約 0.05 秒一張；沒有顯示卡、只靠電腦主處理器（CPU）跑，約 2 秒一張。</li></ul>
+</div></section>
+<section class="section" id="test"><div class="inner">
+  <h2>實際找得到嗎：用我自己的資料測</h2>
+  <p>我拿兩批自己的資料，在一台 Mac mini（M2 Pro、16GB）上測：</p>
+  <div class="tablewrap"><table>
+    <thead><tr><th>資料</th><th>怎麼測</th><th>結果</th></tr></thead>
+    <tbody>
+      <tr><td>一場 84 分鐘的直播錄影</td><td>每 10 秒截一張，共 506 張，用 5 句話找</td><td>4 句在前 3 名找到；用畫面上的字去找的都找到</td></tr>
+      <tr><td>60 張文章配圖、圖卡、截圖、照片</td><td>只看檔名、不先看圖，寫 7 句話找</td><td>4 句在前 5 名找到；有的照片找到，有的沒有</td></tr>
+    </tbody>
+  </table></div>
+  <figure class="inline-figure wide">
+    <img src="../../images/articles/course-video-multimodal-search-frames.jpg" alt="直播錄影的兩張截圖：左邊是「我的 AI 員工怎麼用？」封面，右邊是畫布上的 Pew 研究調查文字" loading="lazy">
+    <figcaption>實測用的其中兩張截圖。左：第 9 分 50 秒的封面；右：第 24 分 50 秒，畫布左上角有一段 Pew 研究的文字。</figcaption>
+  </figure>
+  <p>找得到的，像「生圖一張多少錢的價格表」「Pew 研究的調查」「兩個人在台上對談的照片」，都排第 1 名。找不到的，像「聊天視窗」這種只描述長相的、只有圖示沒有字的架構圖、一張印著名字的形象照。</p>
+  <div class="meaning"><b>重點</b>畫面上有字，用那些字去找，最有把握；只描述畫面長相，結果不穩。樣本只有兩批、十幾句話，當成方向參考，不是準確率。</div>
+</div></section>
+<section class="section" id="video"><div class="inner">
+  <h2>影片要怎麼處理：截圖，還是直接讀影片？</h2>
+  <p>官方說它吃得了影片，但影片還是得先切小段：一整支丟進去只會得到一組座標，說得出像不像，說不出在第幾分鐘。切法有三種，我用同一支錄影比過：</p>
+  <div class="methods" aria-label="三種做法：同一段 2 分鐘影片怎麼切">
+    <div class="m-row"><div class="m-label"><b>原本的影片</b></div><div class="m-axis">影片時間軸（放大其中 2 分鐘）</div></div>
+    <div class="m-row"><div class="m-label"><b>A 每 10 秒拍一張</b><span>約 5 分鐘，找到 4 句</span><span>擅長：畫面上的字</span></div><div class="m-bar a"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div>
+    <div class="m-row"><div class="m-label"><b>B 每 3 秒拍一張</b><span>約 14 分鐘，找到 3 句</span><span>照太密，同頁重複擠位</span></div><div class="m-bar b"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div>
+    <div class="m-row"><div class="m-label"><b>C 每 30 秒剪一段</b><span>約 31 分鐘，找到 3 句</span><span>擅長：畫面長什麼樣子</span></div><div class="m-bar c"><i>短片</i><i>短片</i><i>短片</i><i>短片</i></div></div>
+    <p class="m-note">綠條＝一張照片，紅框＝一小段影片</p>
+  </div>
+  <div class="tablewrap"><table>
+    <thead><tr><th>做法</th><th>84 分鐘影片約多久</th><th>5 句找到幾句</th><th>擅長</th></tr></thead>
+    <tbody>
+      <tr><td>A 每 10 秒截一張圖</td><td>約 5 分鐘</td><td>4 句</td><td>畫面上的字</td></tr>
+      <tr><td>B 每 3 秒截一張圖</td><td>約 14 分鐘</td><td>3 句</td><td>跟 A 一樣，但相鄰的圖幾乎一模一樣，會把前幾名占滿</td></tr>
+      <tr><td>C 每 30 秒剪一段，直接讀影片</td><td>約 31 分鐘</td><td>3 句</td><td>畫面長什麼樣子（「聊天視窗」只有它找到）</td></tr>
+    </tbody>
+  </table></div>
+  <p>截得更密沒有更準，直接讀影片最慢，也只能找到「在哪 30 秒內」。課程、講座這類以簡報為主的錄影，用 A 就夠；活動紀錄這類以畫面為主、沒什麼字的，可以 A、C 各試一小段再決定（這是我的推論，還沒拿活動影片測過）。</p>
+  <div class="readmore near"><b>AI 說自己看過影片，其實沒看</b><ul><li><a href="../ai-said-it-watched-the-video/">AI 交出一份很專業的分析，但它根本沒看過那支影片</a>：這一段只講怎麼讓 AI 找到畫面，那篇講 AI 沒看過影片卻交出一份分析的經過，和四個檢查動作。</li></ul></div>
+</div></section>
+<section class="section" id="how-to"><div class="inner">
+  <h2>怎麼開始：三條路</h2>
+  <ol><li><b>不想碰指令</b>：把下面這段提示詞貼給能在你電腦上動手的 AI 助手（例如 Claude Code、Codex），讓它幫你裝、幫你建好。</li><li><b>想自己動手搜圖片</b>：安裝 Ollama（在自己電腦跑 AI 模型的免費軟體），下載 <code>embeddinggemma-2:740m</code>（只搜圖可以選 440m），再請 AI 幫你寫一個小程式，把資料夾裡的圖一張張轉成座標，存起來就能搜。</li><li><b>要直接讀影片</b>：Ollama 目前不收影片，改用 Google 官方範例裡的 sentence-transformers，這是一套用 Python 程式語言寫的工具，要在電腦裡另外安裝。這條要裝的東西比較多，建議走第 1 條，讓 AI 助手幫你裝。</li></ol>
+  <div class="codeblock">我想在自己電腦上，用一句話搜尋 &lt;資料夾路徑&gt; 裡的圖片和影片。
+請幫我：
+1. 用 Ollama 安裝 embeddinggemma-2:740m。
+2. 影片先用 ffmpeg 每 10 秒截一張圖（寬 768），記下每張圖對應的影片時間。
+3. 把所有圖片和截圖轉成向量，連同檔名、影片時間存成一個 json。
+   圖片寫法是 /api/embed，input 放 [{"image": "&lt;base64&gt;"}]。
+4. 寫一個小程式：我輸入一句中文，回我最像的前 5 張圖，影片要附第幾分鐘。
+全程在本機跑，不要上傳任何檔案到雲端。做完先用一句話試給我看。</div>
+</div></section>
+<section class="section" id="when-to-use"><div class="inner">
+  <h2>什麼情況適合用，什麼先不要</h2>
+  <div class="tablewrap"><table>
+    <thead><tr><th>情況</th><th>建議</th></tr></thead>
+    <tbody>
+      <tr><td>簡報、圖卡、海報、截圖很多</td><td>很適合，有字的畫面找得準</td></tr>
+      <tr><td>課程、講座、會議錄影</td><td>適合，每 10 秒截圖就夠，再搭配逐字稿找說過的話</td></tr>
+      <tr><td>活動照片、活動影片，以畫面為主</td><td>可以試，結果不穩，先拿一小批測</td></tr>
+      <tr><td>設計稿、作品照很多的資料夾</td><td>先拿 50 張、寫 5 句話小規模試，看前 5 筆命中幾張再決定</td></tr>
+      <tr><td>只有幾張圖、幾分鐘的影片</td><td>直接看就好，不用搭這一套</td></tr>
+    </tbody>
+  </table></div>
+  <div class="readmore near"><b>錄音、逐字稿怎麼變成查得到的紀錄</b><ul><li><a href="../meeting-record-agent-workflow/">會議有錄音也有逐字稿，為什麼事後還是查不到重點？</a>：這一段只講畫面怎麼找，那篇從錄音、轉成文字一路講到會議策略書，是「找說過的話」這一半的完整做法。</li></ul></div>
+</div></section>
+<section class="section" id="faq"><div class="inner">
+  <h2>常見問題</h2>
+  <h3>要錢嗎？</h3>
+  <p>模型免費，在自己電腦跑不用付雲端費用。要有一台夠力的電腦，我用的是 Mac mini M2 Pro、16GB 記憶體。</p>
+  <h3>我的照片、影片會被上傳嗎？</h3>
+  <p>不會。只有第一次下載模型要連網，之後轉座標、搜尋都在自己電腦裡。</p>
+  <h3>中文可以嗎？</h3>
+  <p>官方說支援 100 多種語言，沒有公布中文成績。我用中文句子找中文簡報和圖卡，找得到。</p>
+  <h3>能直接讀影片嗎？</h3>
+  <p>可以，用官方範例的 Python 工具 sentence-transformers；Ollama 目前不行。但直接讀影片比截圖慢很多，以簡報為主的錄影，截圖就夠。</p>
+  <h3>它會幫我整理資料夾、改檔名嗎？</h3>
+  <p>不會。它只負責「找」，要搭配一個小程式或 AI 助手，才能變成你打一句話就跳出結果的工具。</p>
+</div></section>
+<section class="section" id="ai-memo"><div class="inner">
+  <h2>給你的 AI 讀的技術備忘（人可以跳過）</h2>
+  <p>規格（官方來源，2026-11-01 查證）：</p>
+  <ul><li>發布：2026-10-06，Google DeepMind，Apache 2.0。</li><li>尺寸：同一個 checkpoint 載入不同編碼器。270M 文字與程式碼；440M 加圖片與影片影格；570M 加聲音；740M 全部（實際參數 744,371,488）。</li><li>向量：原生 768 維，支援 Matryoshka，可縮到 512、256、128（縮完重新 L2 正規化）。</li><li>上下文：官方 model card 8,192 tokens；Ollama 標籤頁寫 256K，不一致，以官方為準。</li><li>多語言 MTEB（v2）768 維 61.36；查不到中文專項成績。</li><li>記憶體：官方數字是量化後在 Pixel 11 Pro 的 active RAM，文字約 191MB、完整多模態約 567MB，不是通用最低需求。</li></ul>
+  <p>Ollama（伺服器 v0.40.13，<code>embeddinggemma-2:740m</code>，nvfp4）圖片嵌入，官方 API 文件截至 2026-11-01 尚未記載：</p>
+  <div class="codeblock">curl http://localhost:11434/api/embed -d '{
+  "model": "embeddinggemma-2:740m",
+  "input": [{"image": "&lt;純 base64，不含 data: 前綴&gt;"}]
+}'</div>
+  <ul><li>不從頂層 <code>images</code> 讀圖（實測回空陣列）；<code>{"type": "image"}</code> 回 unknown input field；<code>input.video</code> 被拒。</li><li><code>ollama show</code> 顯示 embedding length 512，API 實際回 768；官方架構表有 512→768 投影層，可能相關，未確認。</li></ul>
+  <p>sentence-transformers（本機 Python 3.12 實測，影片要另裝 <code>torchcodec</code>）：</p>
+  <div class="codeblock">from sentence_transformers import SentenceTransformer
+m = SentenceTransformer("google/embeddinggemma-2", device="mps")
+v_img = m.encode({"image": "photo.jpg"})
+v_vid = m.encode({"video": "clip_30s.mp4"})
+q = m.encode("講到價格表的那一頁", prompt_name="query")</div>
+  <p>實測細節：</p>
+  <ul><li>影片：2026-10-11 直播 84 分 17 秒。A 每 10 秒 506 張（ffmpeg 1 分 37 秒＋Ollama 3 分 18 秒）；B 每 3 秒 1,686 張（單獨跑估約 14 分鐘）；C 每 30 秒 169 段（單獨跑估約 31 分鐘，約 10 秒一段）。命中標準：前 5 名出現目標那一頁。C 的查詢加 <code>prompt_name="query"</code>，A、B 沒加，條件不完全相同。影片那 5 句是先看過截圖才寫的。</li><li>圖片：60 張，只看檔名寫 8 句，其中「一朵花」那題的目標其實不是花，不計；有效 7 句，前 5 名命中 4 句（第 1、1、1、4 名；沒中的是第 18、29、52 名）。</li><li>截圖：<code>ffmpeg -i 影片 -vf "fps=1/10,scale=768:-1" -q:v 4 f_%04d.jpg</code></li></ul>
+  <p>判斷不出來適不適合你的資料，把這段貼給你的 AI：</p>
+  <div class="codeblock">我有一批資料：&lt;描述，例如 3 場兩小時的課程錄影、2000 張活動照片&gt;。
+請根據 EmbeddingGemma 2 的特性（圖文同一套向量；小樣本實測顯示畫面上有字的較好找，只描述畫面長相不穩），
+判斷值不值得建本機搜尋，並建議我先用多少樣本、寫哪幾句測試問題。</div>
+  <div class="readmore"><b>這篇提到過的</b><ul>
+    <li><a href="../ai-said-it-watched-the-video/">AI 交出一份很專業的分析，但它根本沒看過那支影片</a></li>
+    <li><a href="../rag-three-retrieval-modes/">把資料丟給 AI，它其實沒有全部看完：RAG 的三種查法與怎麼選</a></li>
+    <li><a href="../meeting-record-agent-workflow/">會議有錄音也有逐字稿，為什麼事後還是查不到重點？</a></li>
+  </ul><b style="margin-top:14px">再往前後延伸</b><ul>
+    <li><a href="../youtube-to-opinion-report-workflow/">影片看完就忘了，怎麼變成用得上的東西？</a>：別人的影片怎麼整理成自己用得上的報告。</li>
+    <li><a href="../ai-retrieval-pages-backlinks/">資料越存越多，怎麼讓 AI 找得到？</a>：文字資料這一側的檢索怎麼搭。</li>
+  </ul></div>
+</div></section>
+
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">江江教練 · AI 知識管理</div>
+    <div class="footer-links">
+      <a href="../../articles.html">← 回深度文章總站</a>
+      <a href="../../index.html">首頁</a>
+      <a href="../../learn.html">自學資源</a>
+      <a href="../../skills.html">小工具</a>
+      <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">LINE 社群 ↗</a>
+      <a href="https://www.threads.com/@jiang_yude_coach" target="_blank" rel="noopener">Threads ↗</a>
+      <a href="https://vocus.cc/salon/Jiang_Coach" target="_blank" rel="noopener">方格子 ↗</a>
+    </div>
+    <div class="footer-note">這是一篇教學文章，整理我對「電腦裡一大堆圖片、影片，AI 找得到嗎？｜用 Google 開源的 EmbeddingGemma 2 在自己電腦實測」的看法，供你參考。</div>
+  </div>
+</footer>
+
+<!-- 點圖放大 lightbox（hero 與內文圖通用，已內建，不用每篇重加） -->
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <span class="lightbox-close" aria-label="關閉">×</span>
+  <img id="lightbox-img" src="" alt="放大檢視">
+</div>
+<script>
+(function(){
+  var box=document.getElementById('lightbox'),boxImg=document.getElementById('lightbox-img');
+  document.querySelectorAll('.hero-figure img,.inline-figure img').forEach(function(img){
+    img.addEventListener('click',function(){boxImg.src=img.currentSrc||img.src;boxImg.alt=img.alt||'放大檢視';box.classList.add('open');box.setAttribute('aria-hidden','false');});
+  });
+  function close(){box.classList.remove('open');box.setAttribute('aria-hidden','true');boxImg.src='';}
+  box.addEventListener('click',close);
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
+})();
+</script>
+
+<script src="../../image-interactions.js"></script>
+
+<!-- 官網共用：滑鼠暖光暈 + 導航列漢堡選單 -->
+<script src="../../spotlight.js"></script>
+
+<!-- 文章自動互聯（相關文章）：兩支已內建，順序不可顛倒，不用再另外加 -->
+<script src="../../articles-data.js"></script>
+<script src="../../related-render.js"></script>
+  <script src="/mika-chat-widget.js" defer></script>
+<!-- tracking:cloudflare -->
+<script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "c3e3c857121d416ab405270557d017d3"}'></script>
+<!-- tracking:views-counter -->
+<script src="/views.js"></script>
+</body>
+</html>
