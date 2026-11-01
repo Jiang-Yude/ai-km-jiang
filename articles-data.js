@@ -42,6 +42,25 @@ window.ARTICLES = [
   },
 
   {
+    id: "debate-summary-video-prompts",
+    url: "articles/debate-summary-video-prompts/",
+    date: "2026-11-01",
+    updated: "2026-11-01",
+    title: "我怎麼叫 AI 幫我做摘要影片？｜兩小時辯論變三分鐘懶人包，我下的提示詞與三個坑",
+    problem: "長影片沒時間看完，想叫 AI 做成一支摘要影片，但不知道要怎麼下提示詞，也怕摘要失真。",
+    audience: "長影片很多、想叫 AI 先抓重點，或要整理新聞、活動、課程錄影給別人看的人。",
+    summary: "我請 AI 把 2026 台北市長辯論（約 2 小時 16 分）整理成 3 分鐘懶人包動畫，主要是測試 AI 能力。雙方各 11 句原話金句，螢幕放整段話、聲音只放金句原音。照順序分享我下的提示詞（開頭、立場、內容、畫面、封面、配樂），記下逐字稿漏話、數字張冠李戴、配樂忽大忽小三個坑，附一份可直接複製的整理版提示詞。",
+    tags: {
+      topic: ["AI工作流", "工具操作", "提示詞設計"],
+      level: ["基礎"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["ai-said-it-watched-the-video", "three-levels-of-cross-review", "youtube-to-opinion-report-workflow", "one-sentence-video-to-deep-article"],
+    cover: { wide: "images/articles/debate-summary-video-prompts-cover.jpg" }
+  },
+
+  {
     id: "pstack-knowledge-workflow",
     url: "articles/pstack-knowledge-workflow/",
     date: "2026-11-01",
@@ -721,7 +740,7 @@ window.ARTICLES = [
       content_type: ["案例文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["audrey-tang-reverse-alignment", "claude-skills-knowledge-assets", "three-levels-of-cross-review", "ai-user-testing", "ai-said-it-watched-the-video", "what-is-loop-engineering", "cathay-tech-conference-2026", "dual-track-planning-loop"],
+    related: ["audrey-tang-reverse-alignment", "claude-skills-knowledge-assets", "three-levels-of-cross-review", "ai-user-testing", "ai-said-it-watched-the-video", "what-is-loop-engineering", "cathay-tech-conference-2026", "dual-track-planning-loop", "debate-summary-video-prompts"],
     cover: { wide: "images/articles/one-sentence-video-to-deep-article/cover.jpg" }
   },
 
@@ -1689,7 +1708,7 @@ window.ARTICLES = [
       content_type: ["案例文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["caught-ai-slacking-into-rules", "web-chat-ai-vs-desktop-agent", "three-levels-of-cross-review", "rag-three-retrieval-modes", "long-document-review-layers", "cognitive-debt", "one-sentence-video-to-deep-article", "course-video-multimodal-search"]
+    related: ["caught-ai-slacking-into-rules", "web-chat-ai-vs-desktop-agent", "three-levels-of-cross-review", "rag-three-retrieval-modes", "long-document-review-layers", "cognitive-debt", "one-sentence-video-to-deep-article", "course-video-multimodal-search", "debate-summary-video-prompts"]
   },
 
   {
@@ -2053,7 +2072,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["after-ai-says-remembered", "long-document-review-layers", "mobile-to-desktop-publish-loop", "ai-said-it-watched-the-video", "cross-ai-review-both-wrong", "webmcp-day-one", "how-to-verify-ai-rule-changes", "let-ai-review-itself", "ai-rule-file-slimming", "fixed-test-set-for-ai", "reevaluate-models-same-test", "one-sentence-ai-website-workflow", "one-sentence-video-to-deep-article"]
+    related: ["after-ai-says-remembered", "long-document-review-layers", "mobile-to-desktop-publish-loop", "ai-said-it-watched-the-video", "cross-ai-review-both-wrong", "webmcp-day-one", "how-to-verify-ai-rule-changes", "let-ai-review-itself", "ai-rule-file-slimming", "fixed-test-set-for-ai", "reevaluate-models-same-test", "one-sentence-ai-website-workflow", "one-sentence-video-to-deep-article", "debate-summary-video-prompts"]
   },
 
   {
@@ -3465,7 +3484,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["notebooklm-knowledge-analysis-assistant", "web-chat-ai-vs-desktop-agent", "course-video-multimodal-search"]
+    related: ["notebooklm-knowledge-analysis-assistant", "web-chat-ai-vs-desktop-agent", "course-video-multimodal-search", "debate-summary-video-prompts"]
   },
 
   {
