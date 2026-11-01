@@ -23,6 +23,25 @@ window.ARTICLE_TAGS = {
 
 window.ARTICLES = [
   {
+    id: "course-video-multimodal-search",
+    url: "articles/course-video-multimodal-search/",
+    date: "2026-11-01",
+    updated: "2026-11-01",
+    title: "電腦裡一大堆圖片、影片，AI 找得到嗎？｜用 Google 開源的 EmbeddingGemma 2 在自己電腦實測",
+    problem: "電腦裡一大堆圖片、影片，想用一句話找回某張圖或影片裡某一頁簡報，不知道 AI 找不找得到。",
+    audience: "圖片、影片、課程錄影很多，常要回頭找某張圖或某一段的人。",
+    summary: "電腦裡一大堆圖片、影片，AI 找得到嗎？找得到。Google 免費開源的 EmbeddingGemma 2 能在自己電腦用一句話找圖片、找影片裡的某一頁，不用上傳。這篇用白話講它是什麼、四種尺寸怎麼選、網路上大家拿它做什麼，再用我自己的錄影和圖片實測哪些找得到、哪些找不到，比較影片截圖和直接讀影片三種做法，附三條開始的路、可貼給 AI 助手的提示詞與常見問題。",
+    tags: {
+      topic: ["知識管理", "AI趨勢", "工具操作"],
+      level: ["基礎"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["ai-said-it-watched-the-video", "rag-three-retrieval-modes", "meeting-record-agent-workflow", "youtube-to-opinion-report-workflow", "ai-retrieval-pages-backlinks"],
+    cover: { wide: "images/articles/course-video-multimodal-search-cover.jpg" }
+  },
+
+  {
     id: "pstack-knowledge-workflow",
     url: "articles/pstack-knowledge-workflow/",
     date: "2026-11-01",
@@ -303,7 +322,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["tag-wiki-method", "claude-skills-knowledge-assets", "rag-three-retrieval-modes", "diary-driven-agent-3x4-v2", "docs-as-system-design-agent", "learn-obsidian-mechanism", "inspiration-production-system"],
+    related: ["tag-wiki-method", "claude-skills-knowledge-assets", "rag-three-retrieval-modes", "diary-driven-agent-3x4-v2", "docs-as-system-design-agent", "learn-obsidian-mechanism", "inspiration-production-system", "course-video-multimodal-search"],
     cover: { wide: "images/articles/ai-retrieval-pages-backlinks-cover.jpg" }
   },
 
@@ -1670,7 +1689,7 @@ window.ARTICLES = [
       content_type: ["案例文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["caught-ai-slacking-into-rules", "web-chat-ai-vs-desktop-agent", "three-levels-of-cross-review", "rag-three-retrieval-modes", "long-document-review-layers", "cognitive-debt", "one-sentence-video-to-deep-article"]
+    related: ["caught-ai-slacking-into-rules", "web-chat-ai-vs-desktop-agent", "three-levels-of-cross-review", "rag-three-retrieval-modes", "long-document-review-layers", "cognitive-debt", "one-sentence-video-to-deep-article", "course-video-multimodal-search"]
   },
 
   {
@@ -1705,7 +1724,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["llm-rag-agent-mcp", "tag-wiki-method", "long-document-review-layers", "ai-said-it-watched-the-video", "ai-retrieval-pages-backlinks"]
+    related: ["llm-rag-agent-mcp", "tag-wiki-method", "long-document-review-layers", "ai-said-it-watched-the-video", "ai-retrieval-pages-backlinks", "course-video-multimodal-search"]
   },
 
   {
@@ -2748,7 +2767,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: "https://vocus.cc/salon/Jiang_Coach" },
-    related: ["agent-workflow-builds-automation", "codex-only-auto-worklog", "how-to-train-your-ai-employee", "diary-driven-agent-3x4", "tidy-mess-before-consulting", "meeting-into-verifiable-loop", "ai-employee-four-levels", "eight-ai-system-concepts-2026", "meeting-mic-rescue-on-mac", "opus-luna-model-division"],
+    related: ["agent-workflow-builds-automation", "codex-only-auto-worklog", "how-to-train-your-ai-employee", "diary-driven-agent-3x4", "tidy-mess-before-consulting", "meeting-into-verifiable-loop", "ai-employee-four-levels", "eight-ai-system-concepts-2026", "meeting-mic-rescue-on-mac", "opus-luna-model-division", "course-video-multimodal-search"],
     cover: { tall: "images/articles/meeting-record-agent-workflow-01.jpg" }
   },
 
@@ -3446,7 +3465,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["notebooklm-knowledge-analysis-assistant", "web-chat-ai-vs-desktop-agent"]
+    related: ["notebooklm-knowledge-analysis-assistant", "web-chat-ai-vs-desktop-agent", "course-video-multimodal-search"]
   },
 
   {
