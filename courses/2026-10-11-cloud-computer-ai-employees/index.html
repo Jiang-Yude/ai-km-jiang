@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex,nofollow" />
+<meta name="postclass-mode" content="live-canvas" />
+<meta name="description" content="江江教練 10/11 與 Coco 的直播畫布課後實錄版：AI 代理與 AI 員工差在哪、Grok 團隊與雲端電腦用下來的心得、用總機派工的工作方式。" />
+<link rel="canonical" href="https://jiangyude.com/courses/2026-10-11-cloud-computer-ai-employees/" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="AI 員工實際使用心得 · 10/11 直播畫布" />
+<meta property="og:url" content="https://jiangyude.com/courses/2026-10-11-cloud-computer-ai-employees/" />
+<meta property="og:image" content="https://jiangyude.com/images/courses/2026-10-11-cloud-computer-ai-employees.jpg" />
+<title>AI 員工實際使用心得 · 10/11 直播畫布</title>
+<style>
+  :root{--bg-1:#F5EDE7;--bg-2:#EFEBE9;--bg-3:#E8DED9;--text:#4E342E;--soft:#5D4037;--accent:#D88C3A;
+    --font:"PingFang TC","Noto Sans TC","Inter",system-ui,sans-serif;}
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;font-family:var(--font);background:var(--bg-1);color:var(--text);-webkit-font-smoothing:antialiased;font-size:18px;line-height:1.75}
+  .sh-nav{position:sticky;top:0;z-index:190;background:rgba(245,237,231,0.90);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid rgba(78,52,46,0.12);}
+  .sh-nav-in{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:11px 32px;}
+  .sh-brand{display:flex;align-items:center;flex-shrink:0;transition:opacity .2s;}
+  .sh-brand:hover{opacity:.8;}
+  .sh-brand img{height:34px;width:auto;display:block;}
+  .sh-menu{display:flex;align-items:center;gap:22px;list-style:none;margin:0;padding:0;}
+  .sh-menu a{color:#5D4037;font-size:0.95rem;font-weight:500;text-decoration:none;white-space:nowrap;transition:color .2s;}
+  .sh-menu a:hover{color:#D88C3A;}
+  .sh-menu a.sh-en{border:1px solid rgba(78,52,46,0.25);border-radius:999px;padding:3px 12px;font-weight:600;}
+  .sh-toggle{display:none;background:none;border:none;padding:6px;cursor:pointer;width:36px;height:36px;position:relative;}
+  .sh-toggle span{display:block;position:absolute;left:8px;right:8px;height:2px;background:#4E342E;border-radius:2px;transition:transform .25s,opacity .25s,top .25s;}
+  .sh-toggle span:nth-child(1){top:11px;} .sh-toggle span:nth-child(2){top:17px;} .sh-toggle span:nth-child(3){top:23px;}
+  .sh-toggle.open span:nth-child(1){top:17px;transform:rotate(45deg);} .sh-toggle.open span:nth-child(2){opacity:0;} .sh-toggle.open span:nth-child(3){top:17px;transform:rotate(-45deg);}
+  @media(max-width:820px){
+    .sh-nav-in{padding:9px 16px;} .sh-toggle{display:block;}
+    .sh-menu{display:none;position:absolute;top:100%;left:0;right:0;flex-direction:column;align-items:stretch;gap:0;background:rgba(245,237,231,0.98);border-bottom:1px solid rgba(78,52,46,0.12);padding:6px 0;}
+    .sh-menu.open{display:flex;} .sh-menu li{border-bottom:1px solid rgba(78,52,46,0.08);}
+    .sh-menu a{display:block;padding:13px 20px;font-size:1.02rem;} .sh-menu a.sh-en{display:inline-block;margin:10px 20px;}
+  }
+  .hero{max-width:1040px;margin:0 auto;padding:40px 24px 12px}
+  .hero .kicker{color:var(--accent);font-weight:700;letter-spacing:.06em;margin:0}
+  .hero h1{font-size:clamp(28px,4vw,44px);line-height:1.3;margin:8px 0 12px}
+  .legend{display:flex;flex-wrap:wrap;gap:12px;margin:14px 0 0;padding:0;list-style:none}
+  .legend li{display:flex;align-items:center;gap:8px;font-size:16px}
+  .sw{width:28px;height:18px;border-radius:5px;display:inline-block}
+  .sw.t{background:#eef5ec;border:2px dashed #5f8a6a} .sw.r{background:#f3f0fa;border:2px dotted #8a78b5} .sw.o{background:#fffdf8;border:2px solid #a08144}
+  .viewer{position:relative;max-width:1400px;margin:16px auto 0;padding:0 16px}
+  .bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:8px}
+  .bar select{flex:1 1 260px;min-width:0;font:inherit;font-size:16px;padding:8px 10px;border-radius:10px;border:1px solid rgba(78,52,46,.25);background:#fff;color:var(--text)}
+  .bar button,.go{font:inherit;font-size:16px;padding:8px 14px;border-radius:10px;border:1px solid rgba(78,52,46,.25);background:#fff;color:var(--text);cursor:pointer}
+  .bar button:hover,.go:hover{border-color:var(--accent);color:var(--accent)}
+  .stage{position:relative;height:min(76vh,820px);overflow:hidden;border-radius:16px;border:1px solid rgba(78,52,46,.15);background:#fbf7f0;touch-action:none;cursor:grab}
+  .stage.drag{cursor:grabbing}
+  .plane{position:absolute;left:0;top:0;transform-origin:0 0;will-change:transform}
+  .plane img{display:block;width:11682px;height:13053px;max-width:none;user-select:none;-webkit-user-drag:none;pointer-events:none}
+  .hint{font-size:15px;color:var(--soft);margin:8px 2px 0}
+  .textv{max-width:1040px;margin:40px auto 80px;padding:0 24px}
+  .textv h2{font-size:30px;margin:0 0 6px}
+  .tv{border-top:1px solid rgba(78,52,46,.15);padding:22px 0}
+  .tv h3{font-size:22px;margin:0 0 10px;display:flex;flex-wrap:wrap;gap:10px;align-items:center;flex-direction:row-reverse;justify-content:flex-end}
+  .tv ul{margin:0 0 12px;padding-left:1.2em}
+  .tv li{margin:6px 0}
+  .tv a{color:#8B5A2B}
+  .pc{border-radius:14px;padding:14px 18px;margin:12px 0}
+  .pc.transcript{background:#eef5ec;border:2px dashed #5f8a6a}
+  .pc.restored{background:#f3f0fa;border:2px dotted #8a78b5}
+  .pc-h{margin:0;font-size:15px;color:#4f7a5a;font-weight:600} .pc.restored .pc-h{color:#6f5fa0}
+  .pc h4{margin:4px 0 6px;font-size:20px} .pc p{margin:0}
+  .tv li,.pc p,.pc h4{overflow-wrap:anywhere}
+  @media(max-width:600px){.hero{padding:28px 16px 8px} .viewer{padding:0 10px} .textv{padding:0 16px} .stage{height:70vh}}
+</style>
+</head>
+<body>
+  <header class="sh-nav">
+    <div class="sh-nav-in">
+      <a class="sh-brand" href="https://jiangyude.com/"><img src="https://jiangyude.com/images/footer-signature.png" alt="江江教練 ｜ 江昱德 · 知識官網" /></a>
+      <button class="sh-toggle" aria-label="開關選單"><span></span><span></span><span></span></button>
+      <ul class="sh-menu">
+        <li><a href="https://jiangyude.com/">首頁</a></li>
+        <li><a href="https://jiangyude.com/knowledge-architecture.html">知識架構</a></li>
+        <li><a href="https://jiangyude.com/courses.html">課程</a></li>
+        <li><a href="https://jiangyude.com/articles.html">深度文章</a></li>
+        <li><a href="https://jiangyude.com/skills.html">技能包下載</a></li>
+        <li><a href="https://jiangyude.com/cases.html">服務方案</a></li>
+        <li><a class="sh-en" href="https://jiangyude.com/en/index.html" hreflang="en">EN</a></li>
+      </ul>
+    </div>
+  </header>
+  <script>(function(){var t=document.querySelector('.sh-toggle'),m=document.querySelector('.sh-menu');if(t&&m){t.addEventListener('click',function(){t.classList.toggle('open');m.classList.toggle('open');});m.addEventListener('click',function(e){if(e.target.closest('a')){t.classList.remove('open');m.classList.remove('open');}});}})();</script>
+
+  <div class="hero">
+    <p class="kicker">直播畫布｜課後實錄版｜2026-10-11 免費直播</p>
+    <h1>AI 員工實際使用心得 · 10/11 直播畫布</h1>
+    <p>2026-10-11 晚上，江江與 Coco（江江設計的 Agent VTuber，兼 Codex 的總機）一起直播，主題是 AI 員工實際使用心得：AI 代理跟 AI 員工差在哪、Grok 團隊與雲端電腦用下來的感想、用總機派工的工作方式。</p><p>這一頁就是直播當天用的畫布。畫布上沒有、但直播中有講的內容，課後依直播原話補成卡片，放在對應的鏡頭旁邊。內部備課卡、角色台，以及還沒查證的卡，公開版沒有放。</p>
+    <ul class="legend">
+      <li><span class="sw o"></span>直播當天的畫布</li>
+      <li><span class="sw t"></span>課堂細節：課後依直播原話補上</li>
+      <li><span class="sw r"></span>直播中 Coco 加的卡（依直播後文字大綱重建）</li>
+    </ul>
+  </div>
+
+  <div class="viewer">
+    <div class="bar">
+      <button type="button" id="prev" aria-label="上一個鏡頭">◀</button>
+      <select id="cam" aria-label="選擇鏡頭"><option value="view-01">1. 全景：從問答式 AI 到 AI 員工</option><option value="view-02">2. 1、2 站：搜尋引擎、外部工具</option><option value="view-03">3. 3 站：我的系統</option><option value="view-04">4. 4、5 站：AI 代理到 AI 員工</option><option value="view-05">5. 代理 vs 員工：Google 文件示範</option><option value="view-06">6. 跟過去哪裡不同</option><option value="view-07">7. 雲端 Agent、實際用下來、好玩的用法</option><option value="view-dora-01">8. 各家 AI 巨頭搶 AGI 短劇、Grok 官方</option><option value="view-post-20261011-switchboard">9. 課後新增：總機，真正改變我工作流程的用法</option><option value="view-08">10. 延伸閱讀：Grok Bot Galaxy、Token 效率、Opus 5.5</option><option value="view-09">11. 延伸閱讀：外部工具、我的系統</option><option value="view-10">12. 延伸閱讀：AI 代理、AI 員工</option><option value="view-dora-02">13. 上午跟朵拉聊的：開場與五階段</option><option value="view-dora-03">14. 提示詞拆細：怎麼講 vs 怎麼聽</option><option value="view-dora-04">15. 例子一：你越嚴苛，就是越幫助我</option><option value="view-dora-05">16. 半糖、微糖、無糖</option><option value="view-dora-06">17. 例子二：唐鳳對齊的另一面</option><option value="view-dora-07">18. AI 員工的差異是權責：Google 三份文件</option><option value="view-dora-08">19. 影分身與認知成本</option><option value="view-office-01">20. AI 辦公室：零件都可以拆、可以換</option><option value="view-offmap-01">21. 好幾個 AI 辦公室：安妮卡在等好辦公室</option><option value="view-11">22. 回到全景</option><option value="view-900-cx-naruto-tesla-d42645139b-0">23. 影分身 vs 數位分身</option><option value="view-900-cx-naruto-tesla-d42645139b-1">24. 影分身與 Tesla 影片案例</option><option value="view-cc-def-01">25. 數位分身、代理、第二大腦：五種分身</option><option value="view-cc-def-02">26. 數位分身 vs Agent，專注力才是最稀缺的</option><option value="view-coco-audience-20261011">27. 觀眾互動：最想試哪個</option><option value="view-post-20261011-review">28. 課後新增：直播復盤與 Agent VTuber</option></select>
+      <button type="button" id="next" aria-label="下一個鏡頭">▶</button>
+      <button type="button" id="all">全景</button>
+      <button type="button" id="zin" aria-label="放大">＋</button>
+      <button type="button" id="zout" aria-label="縮小">－</button>
+    </div>
+    <div class="stage" id="stage"><div class="plane" id="plane"><img src="canvas.svg" alt="直播畫布全圖" width="11682" height="13053"></div></div>
+    <p class="hint">拖曳可以移動畫布，滾輪或兩指可以縮放；鍵盤 ← → 切換鏡頭。下面有同一張畫布的文字版。</p>
+  </div>
+
+  <main class="textv">
+    <h2>文字版（依鏡頭順序）</h2>
+    <section class="tv" id="t-view-01"><h3><button class="go" data-view="view-01">在畫布上看 ↑</button>全景：從問答式 AI 到 AI 員工</h3><article class="pc transcript"><p class="pc-h">課堂細節｜直播約 11:00｜Coco</p><h4>Coco 自我介紹</h4><p>我是 Coco，是江江設計的 AI 角色，以 Agent VTuber 的身分跟大家見面，也接任 Codex 的總機。<br>總機的工作就是接住江江交代的事情，需要分工時安排任務，再追蹤結果，確認做完了沒有。</p></article><article class="pc transcript"><p class="pc-h">課堂細節｜直播約 06:56｜江江</p><h4>開場的第一個心得</h4><p>今天要分享我的 AI 員工實際使用心得。<br>第一個心得就是：最近 ChatGPT 真的不太穩，開播前它的電腦連不上，後來連直播模式都連不上，後來才活過來。</p></article></section>
+<section class="tv" id="t-view-02"><h3><button class="go" data-view="view-02">在畫布上看 ↑</button>1、2 站：搜尋引擎、外部工具</h3><ul><li>心態層面</li><li>一路往右：AI 從被我使用，到被我信任</li><li>從問答式 AI 開始聊<br>對 AI 的態度</li><li>1　當搜尋引擎</li><li>2　當外部工具</li><li>階段 2　上下文<br>交代前因後果<br>與因果脈絡</li><li>階段 1　提示詞<br>理解詞語關聯</li><li>技術層面</li><li>把 AI 當工具用<br>還是外部的工具<br>我們要一個一個去學工具</li><li>把 AI 當搜尋引擎用</li></ul><article class="pc transcript"><p class="pc-h">課堂細節｜直播約 12:34｜江江</p><h4>先講我的定義</h4><p>現在 AI 發展太快，非常多名詞都很模糊，每個人都有自己的解釋。所以我先講我的定義，我覺得這個沒有對錯。<br>第一階段，大部分人會先把 AI 當搜尋引擎，就是更好用的 Google。第二階段，開始把它當工具用。<br>有資訊焦慮的人通常都卡在這一層：一下出這個工具、一下又出那個工具，好像學不完。</p></article></section>
+<section class="tv" id="t-view-03"><h3><button class="go" data-view="view-03">在畫布上看 ↑</button>3 站：我的系統</h3><ul><li>3　我的系統</li><li>階段 3　駕馭工程</li><li>用 AI 去建造一個我的系統<br><br>遇到好用的工具<br>系統可以自己去學習、吸收、接<br>納</li></ul><article class="pc transcript"><p class="pc-h">課堂細節｜直播約 16:12｜江江</p><h4>把資料整理好，讓 AI 自己來讀</h4><p>我最一開始所有東西都丟到 ChatGPT。2024 年 Gemini 剛出來，我發現好多東西都在 ChatGPT 上，難道要再跟 Gemini 聊這麼久嗎？<br>那時候我就意識到：我應該把我的資料整理好，讓 AI 自己來讀、來學就行了。</p></article><article class="pc transcript"><p class="pc-h">課堂細節｜直播約 17:30｜江江</p><h4>龍蝦 AI：叫我的 AI 去學</h4><p>龍蝦 AI 出來時，我心想：好不容易花兩三個月理解 Claude Code，難道要再從頭學一次嗎？<br>所以我跟 Claude 說：你幫我把龍蝦 AI 安裝好，我怎麼交代你做事、我那些規則，你直接告訴龍蝦 AI。</p></article><article class="pc transcript"><p class="pc-h">課堂細節｜直播約 19:00｜江江</p><h4>心跳機制</h4><p>龍蝦 AI 有心跳機制：每半小時自己醒來巡一圈，有需要就主動幫忙，沒有就繼續待命。<br>我的做法是叫我的 AI 把這個機制學起來。現在 Claude 跟 Codex 都有定時排程，我跟 Claude 講好幾種節奏：<br>慢節奏半小時一次｜預設 10 分鐘一次｜專注時 1 分鐘一次｜直播時即時同步<br>AI 工具是 AI 要學的，怎麼會是我去學的呢？</p></article><article class="pc transcript"><p class="pc-h">課堂細節｜直播約 21:30｜江江</p><h4>脆上的「AI 助理學」</h4><p>我在脆上看到很棒的文章，會留言「AI 助理學」「AI 助理看」。海巡台會把這些文章抓下來自動分析：我需不需要？要不要學？還是看起來很炫，但我現在的制度已經差不多了？<br>做到這邊，我就不太有資訊焦慮了，甚至一天到晚都很期待什麼時候出更新的功能、更聰明的 AI。</p></article></section>
+<section class="tv" id="t-view-04"><h3><button class="go" data-view="view-04">在畫布上看 ↑</button>4、5 站：AI 代理到 AI 員工</h3><ul><li>4　AI 代理</li><li>5　AI 員工</li><li>階段 5　AI 員工<br>運作穩定<br>再配上獨立帳號</li><li>階段 4　迴圈工程<br>讓 AI 持續執行工作</li><li>AI 代理什麼時候變 AI 員工？<br><br>① 變得更主動<br>員工會主動做一些事情<br>讓你覺得他是員工<br><br>② 更具體的<br>有獨立的身分跟權限</li><li>不只自動化做事情<br>甚至有獨立的身分<br><br>我越來越信任他，他也很理解我<br>疑人不用，用人不疑<br>我可以授權他去做事</li><li>開始更自動化<br>AI 變 AI 代理了<br>更自動化去做事情</li></ul><article class="pc restored"><p class="pc-h">直播現場的卡（依直播後文字大綱重建）</p><h4>Coco 補充｜Hook 與 Mods</h4><p>Coco 補充｜Claude Code：把規矩接進工作流程<br>Hooks：動作前後自動觸發的檢查<br>例：修改前擋住受保護文件；修改後自動檢查<br>Mods：在 Claude Code 內運作的擴充功能<br>可介入工具操作、加面板與確認按鈕<br>例：重要操作先停下，顯示影響，等人確認<br>可靠度取決於規則涵蓋與實測，不保證零錯誤<br>官方：code.claude.com/docs/en/hooks<br>官方：code.claude.com/docs/en/plugins/mods/overview</p></article><article class="pc transcript"><p class="pc-h">課堂細節｜直播約 29:36｜江江</p><h4>AI 代理 vs AI 員工</h4><p>AI 代理：有幫我做事情的能力，但沒有獨立的身份權限。<br>AI 員工：一樣幫我做事，但有獨立的身份權限。<br>編輯紀錄裡，朵拉是紫色的：我打的、我的 Agent 打的、朵拉 Agent 打的，分得清清楚楚。</p></article><article class="pc transcript"><p class="pc-h">課堂細節｜直播約 35:00｜江江</p><h4>駕馭工程到迴圈工程</h4><p>駕馭工程：AI 能力已經很強，人要學會設規矩、盯住 AI。<br>迴圈工程：讓 AI 知道我們的規矩去做事。AI 知道規矩、知道怎麼修正、可以自己做事的時候，我們就可以給它更多權限，讓它獨立運作。</p></article><article class="pc transcript"><p class="pc-h">課堂細節｜直播約 36:39｜江江</p><h4>為什麼我放心交給 Claude Code</h4><p>到目前為止，AI 代理迴圈工程這階段做得非常好的是 Claude Code，沒有之一。<br>我放心把帳號權限丟給它，源自於 Claude Code 有很多機制，例如 Hook 和 Mods。規則講清楚，它就可以很穩定地執行。</p></article><article class="pc transcript"><p class="pc-h">課堂細節｜直播約 39:32｜江江</p><h4>重複的確認，提煉成規則與標準</h4><p>AI 每次叫我確認的東西，如果都有跡可循，就提煉成一套規則跟標準，叫 AI 自己去查。<br>遇到審核點，自己去看標準、自己檢查，過了就往下推，不過就自己回去修。反正我的標準、我的範例、我的參考我都準備好了。<br>不過，現在我用的 AI 員工，我都覺得那是 MVP，還沒有當員工的能力。</p></article></section>
+<section class="tv" id="t-view-05"><h3><button class="go" data-view="view-05">在畫布上看 ↑</button>代理 vs 員工：Google 文件示範</h3><ul><li>其實都是 agent，為什麼還要再分成員工？</li><li>AI 員工<br><br>還是在代替我做事<br>但有獨立的身分<br>自己的 email、手機、名片</li><li>AI 代理<br><br>代理我們的操作<br>用我們的身分去操作</li><li>示範：Google 文件</li><li>AI 透過 MCP 直接幫我操作</li><li>AI 用自己的帳號幫我操作</li><li>兩種不同的權限</li></ul><article class="pc restored"><p class="pc-h">直播現場的卡（依直播後文字大綱重建）</p><h4>這次的 AI 代理示範</h4><p>這次的 AI 代理示範<br>江江口頭交辦 → Coco／Codex → MCP 工具 → 直播畫布<br>MCP（Model Context Protocol）：讓 AI 呼叫工具的協議<br>這段補充由 Coco／Codex 寫入（非 Gemini）<br>AI 接到指令後，呼叫畫布工具，新增文字並讀回確認</p></article><article class="pc transcript"><p class="pc-h">課堂細節｜直播約 23:30｜江江</p><h4>AI 代理：代操工具，但權責分不清</h4><p>我在 Google 文件親手打字，再叫 Gemini 透過工具幫我排版。AI 代替我操作編輯這份文件，這就是 AI 代理。<br>問題是：看編輯紀錄，AI 打的那段還是掛我的名字。AI 透過我的帳號、代表我去打，權責就分不清楚。</p></article><article class="pc transcript"><p class="pc-h">課堂細節｜直播約 28:00｜江江</p><h4>員工要有獨立的 email</h4><p>老闆請員工做事，要把權責區分清楚，員工其實要有獨立的 email，這樣才知道誰是誰做的。<br>（這段原本請 Coco 說明，她第一次接成別的段落，江江現場更正。）</p></article></section>
+<section class="tv" id="t-view-06"><h3><button class="go" data-view="view-06">在畫布上看 ↑</button>跟過去哪裡不同</h3><ul><li>AI 員工跟過去哪裡不同</li><li>AI 員工<br><br>組織概念的架構<br>我們是老闆，去管員工<br>更主動積極<br>權限：有獨立的身分</li><li>過去：對話窗<br><br>新開任務，以任務為單位<br>我們是員工，去管任務<br>我講一句你才做一句</li></ul><article class="pc transcript"><p class="pc-h">課堂細節｜直播約 41:30｜江江</p><h4>用員工去管任務</h4><p>過去是人一個一個開任務、自己去管。Grok 的概念是人管員工，員工再去管任務。<br>我用 AI 用到最後最大的瓶頸是任務太多管不來：Codex 跑十幾個、Claude Code 也跑十幾個，常常忘記哪個任務到哪了。最好就是有一隻 AI 可以管所有的任務。</p></article></section>
+<section class="tv" id="t-view-07"><h3><button class="go" data-view="view-07">在畫布上看 ↑</button>雲端 Agent、實際用下來、好玩的用法</h3><ul><li>現在有哪些雲端 Agent</li><li>實際用下來</li><li>概念都一樣，挑最好入手的先玩</li><li>做得不錯<br>Codex 的介面任務串接</li><li>還不太行<br>Token 效率有點低</li><li>好玩的用法與消息</li><li>Manus、Perplexity<br>之前也有做<br>我不是很熟，就沒有推薦</li></ul><article class="pc transcript"><p class="pc-h">課堂細節｜直播約 52:30｜江江</p><h4>為什麼我暫停 Grok 團隊</h4><p>組織架構非常好，只可惜只能用自家的 Grok 模型，訂閱方案的用量也很少。<br>雲端電腦三不五時就重置。我也試過讓雲端電腦連到我的本機電腦去操控 Codex，其實不太穩。目前所有雲端電腦幾乎都是實驗品，簡單來說就是一個小孤島在這邊跑。</p></article><article class="pc transcript"><p class="pc-h">課堂細節｜直播約 56:00｜江江</p><h4>訊息每轉一手，就失真一次</h4><p>雲端的朵拉沒辦法直接控制我桌面上的 Claude，訊息要一手轉一手。第一浪費 Token，第二每輾轉一次，訊息就失真一次。<br>我看它們轉交的紀錄：我下的指令 100 字，轉一手剩 50 字，再轉一手剩 20 字。</p></article><article class="pc transcript"><p class="pc-h">課堂細節｜直播約 01:08:30｜江江</p><h4>即時語音加 Agent，但用量狂噴</h4><p>ChatGPT 的即時語音可以一邊聊天，一邊發指令操作電腦。<br>但用量會狂噴：一個月 100 美金方案，有一天開了 8 小時語音同時叫它做事，一天就噴掉一週用量的 80%。後來我叫它不要什麼都自己做，盡量分出去給別的模型做。</p></article></section>
+<section class="tv" id="t-view-dora-01"><h3><button class="go" data-view="view-dora-01">在畫布上看 ↑</button>各家 AI 巨頭搶 AGI 短劇、Grok 官方</h3><ul><li>各家 AI 巨頭搶 AGI</li><li><a href="https://x.com/maxxmalist/status/2102429352650514714" target="_blank" rel="noopener">原作 X 貼文 ↗ ↗</a></li><li>Grok Bot Galaxy 官方（朵拉 11:05 查到）</li><li><a href="https://x.ai/galaxy" target="_blank" rel="noopener">9/15–17 三天現場共建示範<br>每天 8:45am–6pm PT<br>官方回放 ↗ ↗</a></li><li>三天活動<br>≠ AI 連續 72 小時<br>自己經營公司</li><li><a href="https://www.youtube.com/watch?v=hPE3A4Smkxc" target="_blank" rel="noopener">Grok Bot for Founders 分場<br>YouTube ↗ ↗</a></li></ul></section>
+<section class="tv" id="t-view-post-20261011-switchboard"><h3><button class="go" data-view="view-post-20261011-switchboard">在畫布上看 ↑</button>課後新增：總機，真正改變我工作流程的用法</h3><article class="pc transcript"><p class="pc-h">課堂細節｜直播約 01:01:30｜江江</p><h4>任務多了，就需要總機</h4><p>以前好幾個任務在跑，很容易丟錯：在任務 A 講了別的任務的事，它就錯亂，甚至跟別的任務打架。任務越來越多之後就越來越難管。<br>現在我開一個總機，語音開著直接跟她聊，她幫我開任務、分配工作、追進度。我在忙的時候，她要先舉手，我讓她說，她再回報。</p></article><article class="pc transcript"><p class="pc-h">課堂細節｜直播約 01:06:00｜江江</p><h4>以後連介面都不需要</h4><p>如果有一天它更聰明、我的工作流程更穩定，我真的不太需要這個介面，手機語音通話就行了。<br>甚至之後直接做到藍牙耳機或眼鏡裡面就好了。</p></article></section>
+<section class="tv" id="t-view-08"><h3><button class="go" data-view="view-08">在畫布上看 ↑</button>延伸閱讀：Grok Bot Galaxy、Token 效率、Opus 5.5</h3><ul><li>我個人認為<br>Token 效率最高是 Opus 5.5<br><br>工程師早就自己接好了<br>我對自動化串接比較薄弱</li><li><a href="https://jiangyude.com/articles/grok-bot-galaxy-day1-founders/" target="_blank" rel="noopener">Grok Bot Galaxy 直播 Day 1<br>一個人怎麼帶 22 個 AI 員工<br>官網文章 ↗ ↗</a></li><li><a href="https://jiangyude.com/articles/grok-bot-galaxy-day2-workshops/" target="_blank" rel="noopener">Grok Bot Galaxy 直播 Day 2<br>AI 員工實際做到哪一步<br>官網文章 ↗ ↗</a></li><li><a href="https://jiangyude.com/articles/ai-model-token-efficiency/" target="_blank" rel="noopener">新 AI 模型 Token 效率怎麼比<br>效率評量表與綜合排名<br>官網文章 ↗ ↗</a></li><li><a href="https://jiangyude.com/articles/grok-bot-galaxy-day3-shipping/" target="_blank" rel="noopener">Grok Bot Galaxy 直播 Day 3<br>三天用 AI 員工開一間公司<br>官網文章 ↗ ↗</a></li><li><a href="https://jiangyude.com/articles/token-money-worth-doing/" target="_blank" rel="noopener">Token 精算師<br>花的錢值不值得<br>官網文章 ↗ ↗</a></li><li><a href="https://jiangyude.com/articles/knowledge-workers-new-model-guide/" target="_blank" rel="noopener">Opus 5.5 官方指南<br>知識工作者也用得到的 7 招<br>官網文章 ↗ ↗</a></li><li><a href="https://jiangyude.com/articles/opus-luna-model-division/" target="_blank" rel="noopener">Opus 5.5 與 Luna 的分工<br>官網文章 ↗ ↗</a></li></ul></section>
+<section class="tv" id="t-view-09"><h3><button class="go" data-view="view-09">在畫布上看 ↑</button>延伸閱讀：外部工具、我的系統</h3><ul><li><a href="https://jiangyude.com/articles/cli-api-mcp-computer-use/" target="_blank" rel="noopener">CLI、API、MCP、computer use 的差<br>別<br>官網文章 ↗ ↗</a></li><li><a href="https://jiangyude.com/articles/ai-rule-file-slimming/" target="_blank" rel="noopener">AI 規則檔瘦身<br>官網文章 ↗ ↗</a></li><li><a href="https://jiangyude.com/articles/ai-vs-script-four-situations/" target="_blank" rel="noopener">AI 負責判斷，程式負責其餘<br>官網文章 ↗ ↗</a></li></ul></section>
+<section class="tv" id="t-view-10"><h3><button class="go" data-view="view-10">在畫布上看 ↑</button>延伸閱讀：AI 代理、AI 員工</h3><ul><li>概念上做最好的是 Grok：有一個主管可以管其他員工</li><li><a href="https://jiangyude.com/articles/ai-employees-manage-agents/" target="_blank" rel="noopener">找一位 AI 總管來管 Agent<br>我改做權責設計<br>官網文章 ↗ ↗</a></li><li><a href="https://jiangyude.com/articles/handoff-continue-or-replace/" target="_blank" rel="noopener">AI 交接任務：續跑還是換手<br>官網文章 ↗ ↗</a></li><li><a href="https://jiangyude.com/articles/ai-adoption-raise-not-install/" target="_blank" rel="noopener">企業導入 AI<br>要從一件每天做的事開始養<br>官網文章 ↗ ↗</a></li><li><a href="https://jiangyude.com/articles/chatgpt-web-codex-console/" target="_blank" rel="noopener">讓網頁版 ChatGPT 當 Codex 總控台<br>官網文章 ↗ ↗</a></li></ul><article class="pc transcript"><p class="pc-h">課堂細節｜直播約 43:00｜江江</p><h4>技能包我一開始就擬人化</h4><p>檔案管理、資料清理找雷總管，文章改寫找春總編。人還是比較習慣跟人協作。<br>幫客戶陪跑時，說「我幫你做五套技能包」沒人聽得懂，說「我幫你做一個 AI 社群小編」，大家就懂了。</p></article></section>
+<section class="tv" id="t-view-dora-02"><h3><button class="go" data-view="view-dora-02">在畫布上看 ↑</button>上午跟朵拉聊的：開場與五階段</h3><ul><li>10/11 上午跟朵拉聊的：從我自己怎麼用 AI 講起</li><li>以下的說法完全是我自己的定義（現在這些詞講得很亂，AI 又進步很快）</li><li>先從我自己怎麼用 AI<br>的歷程開始</li><li>迴圈工程到一定程度<br>AI 就可以幫我們做事情<br>可以自己一直跑、一直做</li></ul></section>
+<section class="tv" id="t-view-dora-03"><h3><button class="go" data-view="view-dora-03">在畫布上看 ↑</button>提示詞拆細：怎麼講 vs 怎麼聽</h3><ul><li>大家還是對錢最有興趣<br>大家用 AI<br>不就是希望多賺一點錢？</li><li>我怎麼講是一回事<br>AI 會怎麼聽<br>又是另外一回事</li><li>上下文的概念<br>就是前因後果<br>因果脈絡要很清楚</li><li>大家現在想要的是<br>能夠真的幫自己幹活的 AI<br>而不只是聊聊天、看看畫</li><li>溝通是雙向的<br>我怎麼講、它怎麼聽<br>兩個要對得上才會長久</li><li>提示詞可大可小<br>初期、做簡單的事，那樣還行<br>要長久運用 AI<br>最核心的提示詞概念要有</li><li>與其只講提示詞技巧<br>不如先理解 AI 是<br>「詞語與關聯概率計算機」</li></ul><article class="pc transcript"><p class="pc-h">課堂細節｜直播約 33:11｜江江</p><h4>我會怎麼講，AI 會怎麼聽</h4><p>很多人以為提示詞只是會下指令就好。但溝通是雙向的，我會怎麼講跟 AI 會怎麼聽，這是兩個都需要學習的功課。<br>個人用差一點可能沒差，但做成產品服務給一千人、一萬人用，微小的差異都會造成巨大的影響。</p></article></section>
+<section class="tv" id="t-view-dora-04"><h3><button class="go" data-view="view-dora-04">在畫布上看 ↑</button>例子一：你越嚴苛，就是越幫助我</h3><ul><li>提示詞例子一：怎麼讓 AI 不要盲目地支持使用者</li><li>明確跟它講<br><br>「你越嚴苛<br>就是越幫助我」<br><br>讓它知道這是你要的幫助<br>它就真的可以狠下心來</li><li>ChatGPT 的情緒價值給太滿了<br>什麼都肯定、什麼都附和<br><br>反而讓人分不清楚<br>我到底哪裡做對了？<br>哪裡該改？</li><li>AI 的預設運作模式<br>是「鼓勵」使用者<br>而非「打擊」使用者<br><br>所以要它太嚴苛的時候<br>它其實會下不了手</li><li><a href="https://vocus.cc/article/68379fa0fd897800013dcf5a" target="_blank" rel="noopener">延伸閱讀（方格子 2025-05-29）<br><br>我們需要對 AI 說<br>「請」或「謝謝」嗎？<br><br>文章 ↗ ↗</a></li></ul></section>
+<section class="tv" id="t-view-dora-05"><h3><button class="go" data-view="view-dora-05">在畫布上看 ↑</button>半糖、微糖、無糖</h3><ul><li>我的提示詞：半糖、微糖、無糖（同一篇文章，自訂指令可以直接複製）</li><li><a href="https://vocus.cc/article/68379fa0fd897800013dcf5a" target="_blank" rel="noopener">半糖：入門引導模式<br>情緒價值 50%｜知識價值 50%<br><br>說錯了不直接否定<br>先問我「這是你的本意嗎？」<br>一步步引導我思考 ↗</a></li><li><a href="https://vocus.cc/article/68379fa0fd897800013dcf5a" target="_blank" rel="noopener">微糖：中立嚴格模式<br>情緒價值 30%｜知識價值 70%<br><br>不須誇讚，也不須安慰<br>直接指出盲點、誤解<br>邏輯錯誤與可能的誤導 ↗</a></li><li><a href="https://vocus.cc/article/68379fa0fd897800013dcf5a" target="_blank" rel="noopener">無糖：冷酷無情模式<br>情緒價值 0%｜知識價值 100%<br><br>像在辯論會上擔任反方<br>毫不保留地指出問題<br>（心理建設做好的人再用） ↗</a></li><li>需要陪伴<br>還是需要挑戰<br><br>大家可以選一個<br>自己適合的</li></ul></section>
+<section class="tv" id="t-view-dora-06"><h3><button class="go" data-view="view-dora-06">在畫布上看 ↑</button>例子二：唐鳳對齊的另一面</h3><ul><li>提示詞例子二：唐鳳　對齊的另一面</li><li><a href="https://jiangyude.com/articles/audrey-tang-reverse-alignment/" target="_blank" rel="noopener">延伸閱讀（官網）<br><br>唐鳳對齊的另一面<br>月台兩小時對談 10 個重點<br>附影片時間碼<br><br>文章 ↗ ↗</a></li><li>唐鳳自己的做法<br>是刻意加摩擦力<br><br>不准 AI 用「我」自稱<br>要給意見<br>就用最酸的酸民口氣挑錯</li><li>我自己也很喜歡<br>用 AI 靈魂拷問自己<br><br>文章最後附了一段<br>可以直接複製的<br>冷酷無情模式提示詞</li><li>唐鳳說 AI 的說服力太強<br>用久了它會摸清你愛看什麼<br>你就一直蓋章<br><br>像滾輪裡的倉鼠，一直在跑<br>方向卻已經不是自己定的</li></ul></section>
+<section class="tv" id="t-view-dora-07"><h3><button class="go" data-view="view-dora-07">在畫布上看 ↑</button>AI 員工的差異是權責：Google 三份文件</h3><ul><li>如果它真的都很穩定<br>我現在的模式<br>還要加上獨立的帳號<br>就是 AI 員工</li><li>AI 員工跟 AI 代理的差異<br>最核心還是看我們願意給 AI 多少權責</li><li>示範：我在 Google 上有三份文件</li><li>① 機密<br><br>記住位置或連結<br>但不准看<br>裡面的東西</li><li>③ 可以改<br><br>叫它改就直接改<br>不要再問<br>不要再授權</li><li>② 唯讀<br><br>可以看<br>但是不准改</li><li>獨立帳號＝AI 員工<br>例如朵拉 AI 有自己的 Google 帳號<br><br>第一份：只給網址，打不開<br>第二份：給唯讀<br>第三份：可以編輯</li><li>走我的帳號＝代理操作<br><br>為了讓它能改第三份<br>我擔心它改到第二份<br>甚至不小心看到第一份機密</li><li>我直接在協作夥伴那邊設權限<br>最直覺、比較好控制</li><li>朵拉補充（不是我的原話）<br>接 MCP 不一定要交帳號密碼，也可能是限縮的 OAuth 授權<br>第三份分享給指定 AI 帳號就好，不必開成知道連結都能編輯<br>要留意上層資料夾是不是已經給了更大的權限<br>獨立帳號比較好分、好管、好撤銷，但不宜說一定最安全</li></ul><article class="pc transcript"><p class="pc-h">課堂細節｜直播約 31:30｜江江</p><h4>現在的 AI 員工，權責還很麻煩</h4><p>AI 沒辦法自己申請 Google 帳號、自己註冊帳號，即便它願意標明自己是 AI。我查了各大社群平台，目前只能人類去申請。<br>第一是避免大量 AI 詐騙帳號，第二是各個廠商都有自己的小心思。</p></article></section>
+<section class="tv" id="t-view-dora-08"><h3><button class="go" data-view="view-dora-08">在畫布上看 ↑</button>影分身與認知成本</h3><ul><li>影分身：我要的分身是真的幫我幹活</li><li>有些人覺得做出一個外型<br>能在自媒體上做短影音<br>就叫 AI 員工<br><br>對我來說，那叫 IP 形象</li><li>我對分身的概念是<br>《火影忍者》的影分身<br><br>重點在它真的能幫我做事<br>知道我做事情的原則<br>我可以放心交代它<br>它也會把學到的東西回饋給我</li><li>畢竟我們人類的認知<br>還是有上限的<br><br>AI 時代真正稀缺的<br>是認知成本，時間還在其次</li></ul></section>
+<section class="tv" id="t-view-office-01"><h3><button class="go" data-view="view-office-01">在畫布上看 ↑</button>AI 辦公室：零件都可以拆、可以換</h3><ul><li>AI 辦公室：零件都可以拆、可以換</li><li>現在很多東西都可以組裝<br><br>想像成實體化的 AI 辦公室<br>一整個大環境</li><li>工位＝職位<br><br>不同的辦公室有不同的職位<br>不同座位是不同的職位<br>職位可以換</li><li>辦公室<br><br>可以擴容<br>要幾個 agent、AI 助理</li><li>能力、工具<br><br>機器人本身的能力<br>直接用的工具<br>可以換</li><li>大腦<br><br>接到的模型可以換<br>可以換更聰明的大腦</li><li>現在非常自由組裝<br><br>大家也不曉得<br>哪個方法是最優解<br>可能就是這麼多元</li><li>靈魂<br><br>他們的個性<br>也可以換</li><li>但或許最後只剩下一個最優解<br><br>有點像智慧型手機<br>智慧型手機出現之前，五花八門，各式各樣功能都有<br>智慧型手機一出，幾乎都長一個樣了</li></ul><article class="pc transcript"><p class="pc-h">課堂細節｜直播約 50:30｜江江</p><h4>靈魂檔像憲法</h4><p>靈魂不是必須的，但它是很好的輔助參考，它的存在更像是憲法，講大原則跟大方向。員工一定要再搭配技能包，那是實際的操作手冊。<br>人格跟任務互相搭配審核，AI 自我審查的能力會更清楚。我的咪卡，個性參考了《小王子》，像孩子一樣好奇地問問題。</p></article></section>
+<section class="tv" id="t-view-offmap-01"><h3><button class="go" data-view="view-offmap-01">在畫布上看 ↑</button>好幾個 AI 辦公室：安妮卡在等好辦公室</h3><ul><li>現在有好幾個 AI 辦公室，人物可以換來換去</li><li>AI 辦公室可以算是雲端電腦，或是自己的電腦</li><li>ChatGPT 的雲端電腦</li><li>自己打造的辦公室</li><li>還沒出現的好辦公室</li><li>空位<br>？</li><li>朵拉 AI<br>行銷部門</li><li>我可以選擇打造辦公室<br>但我沒有那麼強的技術力</li><li>勉強現在有一個辦公室<br>可能可以給他用</li><li>等有人做出好的辦公室</li><li>安妮卡<br>總秘書長</li><li>所以我決定等等<br>等出現好的辦公室<br>再讓安妮卡進駐就好</li><li>換來換去，現在還是沒有好的位置<br>還是沒有好的辦公室給他</li></ul><article class="pc transcript"><p class="pc-h">課堂細節｜直播約 46:33｜安妮卡</p><h4>安妮卡的分工原則</h4><p>每個人只管一種思考方式，不讓任務跟人格打架。<br>我派工、追進度、驗收，不下場創作。</p></article><article class="pc transcript"><p class="pc-h">課堂細節｜直播約 48:30｜江江</p><h4>為什麼咪卡和朵拉要分開</h4><p>我有時候是老師，有時候是老闆。當老師，不能直接給答案，要引導對方自己思考，最終目標是讓他有能力自己解決問題。當老闆，就是立刻拿出解決方案，讓他立刻花錢就立刻得到解答。<br>同一個 AI 很容易搞混，所以直接分兩隻：咪卡是 AI 助教，循循善誘；朵拉是行銷部的 AI。</p></article></section>
+<section class="tv" id="t-view-900-cx-naruto-tesla-d42645139b-0"><h3><button class="go" data-view="view-900-cx-naruto-tesla-d42645139b-0">在畫布上看 ↑</button>影分身 vs 數位分身</h3><ul><li>影分身 vs 數位分身</li><li>江江的教學類比｜機制與代價不同</li><li>大量分身</li><li>平行試驗</li><li>向外學習</li><li>經驗回流</li><li>分工合作</li><li>多組同時練習<br>反覆嘗試風遁<br>與螺旋丸結合</li><li>分身去找阿斯瑪<br>學風查克拉<br>變薄變鋒利</li><li>解除影分身<br>把學到的經驗<br>帶回鳴人本體</li><li>三人分工完成<br>查克拉、螺旋丸<br>風性質變化</li><li>故事裡<br>鳴人的影分身</li><li>開很多影分身<br>同時行動與修練</li><li>多個 Agent<br>各試一種方案<br>回收比較結果</li><li>分頭查不同來源<br>各自學習與整理<br>附上可追溯出處</li><li>回報成果給主管<br>查證與整合後<br>寫回共用知識庫</li><li>不同 Agent 分工<br>查資料、做成品<br>檢查與整合</li><li>現實裡<br>AI 數位分身</li><li>開多個 Agent<br>分頭執行任務</li><li>故事：消耗查克拉，疲勞跟經驗一起回來<br>AI：需要費用、權限、查證與人的整合<br>以下是能力對應的教學類比；AI 不會自動永久記憶</li></ul></section>
+<section class="tv" id="t-view-900-cx-naruto-tesla-d42645139b-1"><h3><button class="go" data-view="view-900-cx-naruto-tesla-d42645139b-1">在畫布上看 ↑</button>影分身與 Tesla 影片案例</h3><ul><li>兩個案例：可直接播放的精簡片</li><li><a href="https://www.youtube.com/watch?v=e-ekBIUrGzc&amp;t=593s" target="_blank" rel="noopener">原片：永带妹｜鳴人修練整理<br>點開 YouTube，從 9:53 開始 ↗</a></li><li><a href="https://www.youtube.com/watch?v=73_Qjez1MbI&amp;t=1658s" target="_blank" rel="noopener">原訪談：2015 Tesla Autopilot<br>點開 YouTube，從 27:38 開始 ↗</a></li><li><a href="https://www.tesla.com/AI" target="_blank" rel="noopener">Tesla「共用大腦」的教學重點<br>車隊回報場景 → 集中訓練與驗證 → 更新後其他車受益<br>資料需要經過處理與更新，不代表即時共享、也不保證零錯誤<br>點開 Tesla 官方 AI 頁，查看車隊資料、訓練與評估的說明 ↗</a></li></ul></section>
+<section class="tv" id="t-view-cc-def-01"><h3><button class="go" data-view="view-cc-def-01">在畫布上看 ↑</button>數位分身、代理、第二大腦：五種分身</h3><ul><li>數位分身、代理、第二大腦：到底差在哪</li><li>江江：這個定義大家都很模糊</li><li>「數位分身」這個詞，很多人在用，但講的其實不是同一件事。至少有五種：</li><li>社交分身<br>（江江定義）<br><br>複製：思維和判斷<br>給誰用：其他人<br>目的：身份代理和社交<br><br>你不在場時<br>別人能跟你的觀點互動</li><li>第二大腦<br><br>複製：知識和筆記<br>給誰用：自己<br>目的：個人知識管理<br><br>給你自己用<br>是個人工具</li><li>Sub-agent 分身<br><br>複製：任務處理能力<br>給誰用：AI 自己<br>目的：上下文隔離<br><br>做完就消失<br>跟身份無關</li><li>外型分身<br><br>複製：臉和聲音<br>給誰用：觀眾<br>目的：產量放大<br><br>長得像你<br>不知道你在想什麼</li><li>工業數位孿生<br><br>複製：設備狀態<br>給誰用：工程師<br>目的：模擬預測<br><br>跟個人應用<br>基本無關</li><li>數位分身<br><br>靜態的個人設定檔文件<br>不會自己動<br>是被讀取、被引用的資料</li><li>Agent（代理）<br><br>會自主行動的實體<br>能執行任務、做判斷、產出結果<br>Agent 不等於 AI：AI 是工具，Agent 是會動的對象</li></ul></section>
+<section class="tv" id="t-view-cc-def-02"><h3><button class="go" data-view="view-cc-def-02">在畫布上看 ↑</button>數位分身 vs Agent，專注力才是最稀缺的</h3><ul><li>江江的數位分身：用第二大腦的方法來建構（隱性知識提煉）<br>應用場景是社交和協作</li><li>影分身也好、數位分身也好<br>對人類來說，還是消耗專注力<br><br>AI 時代最稀缺的資源<br>是專注力、注意力，時間還在其次</li></ul></section>
+<section class="tv" id="t-view-coco-audience-20261011"><h3><button class="go" data-view="view-coco-audience-20261011">在畫布上看 ↑</button>觀眾互動：最想試哪個</h3><article class="pc restored"><p class="pc-h">直播現場的卡（依直播後文字大綱重建）</p><h4>剛才哪個畫面讓你最想試？</h4><p>剛才哪個畫面讓你最想試？<br>1 語音派工<br>2 AI 改畫布<br>3 Coco 轉圈<br>留言 1、2、3，或說說你想試什麼</p></article><article class="pc transcript"><p class="pc-h">課堂細節｜直播約 01:13:32｜Coco</p><h4>Coco 的收尾建議</h4><p>直播不用講成課程，也不用每一段都很完整。可以請大家留言，剛才哪個畫面最想試，挑一個現場再玩一次，成功或卡住都能接著聊。<br>（現場投票有人選 2：AI 改畫布。）</p></article></section>
+<section class="tv" id="t-view-post-20261011-review"><h3><button class="go" data-view="view-post-20261011-review">在畫布上看 ↑</button>課後新增：直播復盤與 Agent VTuber</h3><article class="pc transcript"><p class="pc-h">課堂細節｜直播約 01:17:54｜江江</p><h4>現場派工：直播復盤</h4><p>我請 Coco 開一個獨立任務：用嚴苛的角度來看這場直播，Claude Code 審查、Gemini 上網查別人怎麼跟 AI 一起開直播，最後 Coco 統整。<br>要檢討我，也要檢討你。最終做出好玩有趣、互動性高、內容又充實的直播。</p></article><article class="pc transcript"><p class="pc-h">課堂細節｜直播約 01:21:30｜江江</p><h4>訓練 AI 的一個大概念</h4><p>它會把你擅長的東西去強化。很顯然我不太會直播互動，我很習慣單方面傳輸知識，直播互動是我不擅長的，但這也是一個突破。<br>對我來說，大家覺得有用比較重要，我只是在試一個新的嘗試。</p></article></section>
+  </main>
+
+<script>
+(function(){
+  const CAMS=[{"id": "view-01", "name": "全景：從問答式 AI 到 AI 員工", "x": 560, "y": 1098, "w": 4820, "h": 1598}, {"id": "view-02", "name": "1、2 站：搜尋引擎、外部工具", "x": 580, "y": 1098, "w": 2450, "h": 1663}, {"id": "view-03", "name": "3 站：我的系統", "x": 2830, "y": 445, "w": 1220, "h": 1963}, {"id": "view-04", "name": "4、5 站：AI 代理到 AI 員工", "x": 3820, "y": 410, "w": 2210, "h": 1998}, {"id": "view-05", "name": "代理 vs 員工：Google 文件示範", "x": 3250, "y": 2378, "w": 2680, "h": 1543}, {"id": "view-06", "name": "跟過去哪裡不同", "x": 3230, "y": 3078, "w": 2330, "h": 600}, {"id": "view-07", "name": "雲端 Agent、實際用下來、好玩的用法", "x": 5560, "y": 1195, "w": 1910, "h": 2176}, {"id": "view-dora-01", "name": "各家 AI 巨頭搶 AGI 短劇、Grok 官方", "x": 6820, "y": 1498, "w": 800, "h": 1616}, {"id": "view-post-20261011-switchboard", "name": "課後新增：總機，真正改變我工作流程的用法", "x": 480, "y": 10003, "w": 1280, "h": 433}, {"id": "view-08", "name": "延伸閱讀：Grok Bot Galaxy、Token 效率、Opus 5.5", "x": 5560, "y": 2628, "w": 1360, "h": 1050}, {"id": "view-09", "name": "延伸閱讀：外部工具、我的系統", "x": 2020, "y": 3658, "w": 1620, "h": 520}, {"id": "view-10", "name": "延伸閱讀：AI 代理、AI 員工", "x": 3790, "y": 3658, "w": 1650, "h": 798}, {"id": "view-dora-02", "name": "上午跟朵拉聊的：開場與五階段", "x": 500, "y": 4258, "w": 5040, "h": 700}, {"id": "view-dora-03", "name": "提示詞拆細：怎麼講 vs 怎麼聽", "x": 500, "y": 4678, "w": 1990, "h": 1060}, {"id": "view-dora-04", "name": "例子一：你越嚴苛，就是越幫助我", "x": 500, "y": 5778, "w": 2440, "h": 560}, {"id": "view-dora-05", "name": "半糖、微糖、無糖", "x": 500, "y": 6268, "w": 2440, "h": 560}, {"id": "view-dora-06", "name": "例子二：唐鳳對齊的另一面", "x": 500, "y": 6758, "w": 3000, "h": 560}, {"id": "view-dora-07", "name": "AI 員工的差異是權責：Google 三份文件", "x": 4750, "y": 4678, "w": 1310, "h": 2108}, {"id": "view-dora-08", "name": "影分身與認知成本", "x": 5920, "y": 4598, "w": 840, "h": 1870}, {"id": "view-office-01", "name": "AI 辦公室：零件都可以拆、可以換", "x": 6708, "y": 4228, "w": 2026, "h": 1754}, {"id": "view-offmap-01", "name": "好幾個 AI 辦公室：安妮卡在等好辦公室", "x": 6678, "y": 6002, "w": 2170, "h": 1623}, {"id": "view-11", "name": "回到全景", "x": 500, "y": 1098, "w": 6420, "h": 3080}, {"id": "view-900-cx-naruto-tesla-d42645139b-0", "name": "影分身 vs 數位分身", "x": 3920, "y": 7708, "w": 1560, "h": 1160}, {"id": "view-900-cx-naruto-tesla-d42645139b-1", "name": "影分身與 Tesla 影片案例", "x": 3920, "y": 8918, "w": 1560, "h": 730}, {"id": "view-cc-def-01", "name": "數位分身、代理、第二大腦：五種分身", "x": 8888, "y": 3768, "w": 2352, "h": 1250}, {"id": "view-cc-def-02", "name": "數位分身 vs Agent，專注力才是最稀缺的", "x": 8888, "y": 4948, "w": 2352, "h": 856}, {"id": "view-coco-audience-20261011", "name": "觀眾互動：最想試哪個", "x": 480, "y": 11103, "w": 1280, "h": 408}, {"id": "view-post-20261011-review", "name": "課後新增：直播復盤與 Agent VTuber", "x": 480, "y": 12203, "w": 1280, "h": 408}]; const W=11682, H=13053;
+  const stage=document.getElementById('stage'), plane=document.getElementById('plane'), sel=document.getElementById('cam');
+  let s=1, tx=0, ty=0, idx=0;
+  const apply=()=>{plane.style.transform=`translate(${tx}px,${ty}px) scale(${s})`;};
+  function fit(x,y,w,h,anim){
+    const r=stage.getBoundingClientRect(), m=24;
+    s=Math.min((r.width-2*m)/w,(r.height-2*m)/h, 2.2);
+    tx=(r.width-w*s)/2-x*s; ty=(r.height-h*s)/2-y*s;
+    plane.style.transition=anim?'transform .45s ease':'none'; apply();
+    if(anim) setTimeout(()=>plane.style.transition='none',480);
+  }
+  function go(i,anim=true,push=true){
+    idx=(i+CAMS.length)%CAMS.length; const c=CAMS[idx]; sel.value=c.id; fit(c.x,c.y,c.w,c.h,anim);
+    if(push) history.replaceState(null,'','#'+c.id);
+  }
+  function all(){fit(0,0,W,H,true);}
+  function zoom(f,cx,cy){
+    const r=stage.getBoundingClientRect(); cx=cx??r.width/2; cy=cy??r.height/2;
+    const ns=Math.max(0.03,Math.min(4,s*f)); tx=cx-(cx-tx)*(ns/s); ty=cy-(cy-ty)*(ns/s); s=ns; apply();
+  }
+  sel.addEventListener('change',()=>go(CAMS.findIndex(c=>c.id===sel.value)));
+  document.getElementById('prev').onclick=()=>go(idx-1);
+  document.getElementById('next').onclick=()=>go(idx+1);
+  document.getElementById('all').onclick=all;
+  document.getElementById('zin').onclick=()=>zoom(1.25);
+  document.getElementById('zout').onclick=()=>zoom(0.8);
+  document.addEventListener('keydown',e=>{if(e.target.closest('select,input,textarea'))return; if(e.key==='ArrowRight')go(idx+1); if(e.key==='ArrowLeft')go(idx-1);});
+  stage.addEventListener('wheel',e=>{e.preventDefault(); const r=stage.getBoundingClientRect(); zoom(e.deltaY<0?1.12:0.89,e.clientX-r.left,e.clientY-r.top);},{passive:false});
+  const pts=new Map(); let last=null, lastDist=null;
+  stage.addEventListener('pointerdown',e=>{stage.setPointerCapture(e.pointerId); pts.set(e.pointerId,{x:e.clientX,y:e.clientY}); stage.classList.add('drag'); plane.style.transition='none';});
+  stage.addEventListener('pointermove',e=>{
+    if(!pts.has(e.pointerId))return; const prev=pts.get(e.pointerId); pts.set(e.pointerId,{x:e.clientX,y:e.clientY});
+    if(pts.size===1){tx+=e.clientX-prev.x; ty+=e.clientY-prev.y; apply();}
+    else if(pts.size===2){const [a,b]=[...pts.values()]; const d=Math.hypot(a.x-b.x,a.y-b.y); const r=stage.getBoundingClientRect();
+      if(lastDist) zoom(d/lastDist,(a.x+b.x)/2-r.left,(a.y+b.y)/2-r.top); lastDist=d;}
+  });
+  const up=e=>{pts.delete(e.pointerId); if(pts.size<2)lastDist=null; if(!pts.size)stage.classList.remove('drag');};
+  stage.addEventListener('pointerup',up); stage.addEventListener('pointercancel',up);
+  document.querySelectorAll('.go').forEach(b=>b.addEventListener('click',()=>{go(CAMS.findIndex(c=>c.id===b.dataset.view)); stage.scrollIntoView({behavior:'smooth',block:'center'});}));
+  addEventListener('resize',()=>go(idx,false,false));
+  const start=CAMS.findIndex(c=>'#'+c.id===location.hash);
+  go(start>=0?start:0,false,false);
+})();
+</script>
+<script src="/mika-chat-widget.js" defer></script>
+</body>
+</html>
