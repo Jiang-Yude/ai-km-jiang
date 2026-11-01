@@ -1,0 +1,766 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex,nofollow" />
+<meta name="postclass-loop" content="required" />
+<meta name="description" content="江江教練 10/31 免費講座課後實錄版：Gemini 技能包怎麼建、觸發詞怎麼取、社群圖卡怎麼固定角色與先排分鏡，以及讓 Gemini 每天幫你報行程的個人秘書做法。" />
+<link rel="canonical" href="https://jiangyude.com/courses/2026-10-31-gemini-skills/" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="讓 Gemini 變成你的小助理 · 10/31 免費講座" />
+<meta property="og:url" content="https://jiangyude.com/courses/2026-10-31-gemini-skills/" />
+<meta property="og:image" content="https://jiangyude.com/images/courses/2026-10-31-gemini-skills.jpg" />
+<title>讓 Gemini 變成你的小助理 · 10/31 免費講座</title>
+<style>
+  :root {
+    --bg-1:#F5EDE7; --bg-2:#EFEBE9; --bg-3:#E8DED9; --bg-4:#D7CCC8; --bg-5:#C9BAB1;
+    --bg-6:#B5A199; --bg-7:#8B6F5C; --bg-8:#5D4037; --bg-9:#3E2723;
+    --text-on-light:#4E342E; --text-on-dark:#F5EDE0;
+    --soft-light:#5D4037; --soft-dark:rgba(245,237,224,0.85);
+    --accent:#D88C3A; --accent-light:#D4A574; --accent-on-dark:#E6B87D;
+    --subtle-light:#BCAAA4; --subtle-dark:rgba(245,237,224,0.2);
+    --font-display:"PingFang TC","Noto Sans TC","Inter","Helvetica Neue",system-ui,sans-serif;
+    --font-body:"PingFang TC","Noto Sans TC","Inter",system-ui,sans-serif;
+    --font-mono:"JetBrains Mono","SF Mono",ui-monospace,monospace;
+    --fs:1;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;font-family:var(--font-body);background:var(--bg-1);color:var(--text-on-light);-webkit-font-smoothing:antialiased}
+
+  section{position:relative;min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:96px 56px}
+  section>.wrap{width:100%;max-width:1040px}
+  section[data-bg="1"]{background:var(--bg-1)} section[data-bg="2"]{background:var(--bg-2)}
+  section[data-bg="3"]{background:var(--bg-3)} section[data-bg="4"]{background:var(--bg-4)}
+  section[data-bg="5"]{background:var(--bg-5)} section[data-bg="6"]{background:var(--bg-6)}
+  section[data-bg="7"]{background:var(--bg-7);color:var(--text-on-dark)}
+  section[data-bg="8"]{background:var(--bg-8);color:var(--text-on-dark)}
+  section[data-bg="9"]{background:var(--bg-9);color:var(--text-on-dark)}
+
+  .act-cap{font-family:var(--font-mono);font-size:20px;letter-spacing:.16em;text-transform:uppercase;font-weight:700;color:var(--accent);margin-bottom:24px;display:inline-flex;align-items:center;gap:12px}
+  .act-cap::before{content:"";width:28px;height:2px;background:var(--accent)}
+  section[data-bg="7"] .act-cap,section[data-bg="8"] .act-cap,section[data-bg="9"] .act-cap{color:var(--accent-on-dark)}
+  section[data-bg="7"] .act-cap::before,section[data-bg="8"] .act-cap::before,section[data-bg="9"] .act-cap::before{background:var(--accent-on-dark)}
+
+  .display{font-family:var(--font-display);font-size:calc(clamp(44px,7vw,96px)*var(--fs));line-height:1.1;font-weight:800;letter-spacing:-.02em;margin:0 0 24px}
+  .display.sm{font-size:calc(clamp(34px,5vw,64px)*var(--fs))}
+  .h2{font-size:calc(24px*var(--fs));line-height:1.35;font-weight:700;margin:0 0 10px}
+  .lead{font-size:calc(clamp(21px,1.8vw,25px)*var(--fs));line-height:1.75;color:var(--soft-light);margin:0 0 12px}
+  .body{font-size:calc(20px*var(--fs));line-height:1.75;color:var(--soft-light);margin:0}
+  section[data-bg="7"] .lead,section[data-bg="8"] .lead,section[data-bg="9"] .lead,
+  section[data-bg="7"] .body,section[data-bg="8"] .body,section[data-bg="9"] .body{color:var(--soft-dark)}
+  .note{font-family:var(--font-mono);font-size:20px;letter-spacing:.06em;color:var(--accent);margin-top:28px}
+  section[data-bg="7"] .note,section[data-bg="8"] .note,section[data-bg="9"] .note{color:var(--accent-on-dark)}
+
+  /* 江江原話 */
+  .said{background:#FFF8F0;border-left:6px solid var(--accent);border-radius:12px;padding:22px 26px;margin:20px 0;font-size:calc(22px*var(--fs));line-height:1.7;color:#3E2723;box-shadow:0 6px 20px rgba(78,52,46,.08)}
+  .said .who{display:block;font-family:var(--font-mono);font-size:20px;letter-spacing:.08em;color:var(--accent);margin-bottom:6px}
+  /* 操作卡、心法卡（上下排） */
+  .op{background:#fff;border:1px solid var(--subtle-light);border-radius:14px;padding:22px 26px;margin:18px 0}
+  .op .tag,.mind .tag{font-family:var(--font-mono);font-size:20px;letter-spacing:.06em;color:var(--accent);font-weight:700;display:block;margin-bottom:6px}
+  .mind{background:rgba(255,248,240,.75);border-left:6px solid var(--accent);border-radius:12px;padding:20px 24px;margin:18px 0}
+  section[data-bg="7"] .op,section[data-bg="8"] .op,section[data-bg="9"] .op{background:rgba(255,248,240,.08);border-color:var(--subtle-dark)}
+  section[data-bg="7"] .mind,section[data-bg="8"] .mind,section[data-bg="9"] .mind{background:rgba(255,248,240,.08);border-left-color:var(--accent-on-dark)}
+  section[data-bg="7"] .op .tag,section[data-bg="8"] .op .tag,section[data-bg="9"] .op .tag,
+  section[data-bg="7"] .mind .tag,section[data-bg="8"] .mind .tag,section[data-bg="9"] .mind .tag{color:var(--accent-on-dark)}
+  ol.steps{margin:8px 0 0;padding-left:1.4em;font-size:calc(20px*var(--fs));line-height:1.8}
+
+  figure{margin:20px 0}
+  figure img{display:block;max-width:100%;height:auto;border-radius:12px;box-shadow:0 10px 30px rgba(40,24,16,.18)}
+  figcaption{font-size:20px;line-height:1.6;color:var(--soft-light);margin-top:10px}
+  section[data-bg="7"] figcaption,section[data-bg="8"] figcaption,section[data-bg="9"] figcaption{color:var(--soft-dark)}
+  .shots{display:flex;flex-wrap:wrap;gap:18px;align-items:flex-start}
+  .shots figure{flex:1 1 300px;margin:0}
+  .pair{display:flex;flex-wrap:wrap;gap:24px}
+  .pair figure{flex:1 1 360px;margin:0}
+  .badge{display:inline-block;font-size:20px;font-weight:700;padding:4px 14px;border-radius:999px;margin-bottom:8px}
+  .bad{background:#F3D9CF;color:#8C2F14} .neu{background:#EFE3D6;color:#4E342E} .good{background:#DCE8D2;color:#2F5A1F}
+
+  table.cmp{width:100%;border-collapse:collapse;font-size:calc(20px*var(--fs));line-height:1.6;margin-top:16px}
+  table.cmp th,table.cmp td{border-bottom:1px solid var(--subtle-dark);padding:14px 12px;text-align:left;vertical-align:top}
+  table.cmp th{color:var(--accent-on-dark);font-family:var(--font-mono);letter-spacing:.06em}
+  .scroll-x{overflow-x:auto}
+  .pc{background:#fff;border:1px solid var(--subtle-light);border-radius:16px;overflow:hidden;margin:22px 0;box-shadow:0 10px 30px rgba(62,39,35,.08)}
+  .pc-head{display:flex;align-items:center;gap:14px;flex-wrap:wrap;background:var(--bg-8);color:var(--text-on-dark);padding:14px 22px}
+  .pc-label{font-family:var(--font-mono);font-size:20px;letter-spacing:.14em;color:var(--accent-on-dark);border:1px solid rgba(230,184,125,.5);border-radius:6px;padding:2px 10px}
+  .pc-title{font-size:20px;font-weight:700;flex:1;min-width:12em}
+  .pc-copy{font-size:20px;font-weight:700;padding:6px 18px;border-radius:8px;border:1px solid var(--accent-on-dark);background:transparent;color:var(--accent-on-dark);cursor:pointer;transition:background .2s,color .2s}
+  .pc-copy:hover{background:var(--accent-on-dark);color:var(--bg-9)}
+  .pc-body{padding:26px 28px 28px;color:#3E2723;font-size:calc(20px*var(--fs));line-height:1.75}
+  .pc-lead{font-weight:700;font-size:calc(22px*var(--fs));margin:0 0 14px;padding-bottom:14px;border-bottom:1px solid #EFE6DF}
+  .pc-rules{list-style:none;margin:0 0 22px;padding:0}
+  .pc-rules li{position:relative;padding-left:22px;margin:8px 0}
+  .pc-rules li::before{content:"";position:absolute;left:2px;top:.72em;width:8px;height:8px;border-radius:2px;background:var(--accent)}
+  .pc-sub{font-family:var(--font-mono);font-size:20px;letter-spacing:.08em;color:var(--accent);margin-bottom:10px}
+  .pc-grid{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+  .pc-grid li{display:flex;align-items:center;gap:14px;background:var(--bg-1);border:1px solid #EADFD8;border-radius:10px;padding:14px 16px;font-weight:700}
+  .pc-n{font-family:var(--font-mono);font-size:20px;color:var(--accent);min-width:2em}
+  @media (max-width:720px){.pc-grid{grid-template-columns:1fr}.pc-body{padding:20px 18px}.pc-head{padding:12px 16px}}
+  table.cmp.light th{color:var(--accent)} table.cmp.light th,table.cmp.light td{border-bottom-color:var(--subtle-light)} table.cmp.light td:first-child,table.cmp.light th:first-child{white-space:nowrap}
+
+  details{background:rgba(255,248,240,.6);border:1px solid var(--subtle-light);border-radius:12px;padding:14px 20px;margin:16px 0;font-size:20px;line-height:1.7}
+  details summary{cursor:pointer;font-weight:700}
+  section[data-bg="7"] details,section[data-bg="8"] details,section[data-bg="9"] details{background:rgba(255,248,240,.08);border-color:var(--subtle-dark)}
+  pre.prompt{white-space:pre-wrap;word-break:break-word;font-size:20px;line-height:1.6;background:#fff;border-radius:10px;padding:14px 16px;color:#3E2723}
+
+  .btn{display:inline-block;padding:16px 32px;background:var(--accent);color:#fff;border-radius:999px;text-decoration:none;font-weight:700;font-size:20px;margin-top:24px}
+
+  /* 導覽 */
+  .progress{position:fixed;top:0;left:0;height:4px;width:0;background:linear-gradient(90deg,var(--accent),var(--accent-light));z-index:200}
+  .dot-indicator{position:fixed;right:24px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:14px;z-index:100}
+  .dot-indicator a{width:11px;height:11px;border-radius:50%;background:rgba(78,52,46,.25);position:relative;transition:all .3s}
+  .dot-indicator a.active{background:var(--accent);transform:scale(1.5);box-shadow:0 0 0 4px rgba(216,140,58,.2)}
+  .dot-indicator a .lbl{position:absolute;right:22px;top:50%;transform:translateY(-50%);font-family:var(--font-mono);font-size:20px;color:var(--soft-light);white-space:nowrap;opacity:0;transition:opacity .25s;pointer-events:none;background:rgba(245,237,231,.92);padding:2px 10px;border-radius:6px}
+  .dot-indicator.scrolling a.active .lbl,.dot-indicator a:hover .lbl{opacity:1}
+  body.on-dark .dot-indicator a{background:rgba(245,237,224,.3)}
+  body.on-dark .dot-indicator a.active{background:var(--accent-on-dark)}
+  .fs-ctl{position:fixed;left:16px;bottom:16px;z-index:150;display:flex;gap:6px}
+  .fs-ctl button{font-size:20px;padding:6px 12px;border-radius:8px;border:1px solid var(--subtle-light);background:rgba(255,248,240,.92);color:#4E342E;cursor:pointer}
+
+  .reveal{transition:opacity .7s ease,transform .7s ease}
+  .js-on .reveal:not(.in){opacity:0;transform:translateY(28px)}
+  @media (prefers-reduced-motion:reduce){.reveal{opacity:1!important;transform:none!important}}
+  @media (max-width:720px){
+    section{padding:72px 18px}
+    .dot-indicator{display:none}
+    .said{font-size:20px}
+  }
+
+  a.zoom{display:block;cursor:zoom-in;text-decoration:none;color:inherit}
+  a.zoom img{transition:transform .2s}
+  a.zoom:hover img{transform:scale(1.01)}
+  .hint{font-size:20px;color:var(--soft-light);margin:6px 0 0}
+  section[data-bg="7"] .hint,section[data-bg="8"] .hint,section[data-bg="9"] .hint{color:var(--soft-dark,#E8DCCB)}
+  .shot img{width:auto;max-width:100%;max-height:62vh;margin:0 auto;border:1px solid var(--subtle-light)}
+  .stepline{font-size:calc(clamp(22px,2vw,28px)*var(--fs));line-height:1.6;font-weight:700;margin:0 0 6px}
+  .gal{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}
+  .gal figure{margin:0}
+  .flow{list-style:none;padding:0;margin:18px 0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;counter-reset:f}
+  .flow li{background:#fff;border:1px solid var(--subtle-light);border-radius:12px;padding:16px 18px;font-weight:700;font-size:calc(20px*var(--fs));line-height:1.5;color:#3E2723}
+  .flow li span{display:block;font-family:var(--font-mono);font-size:20px;color:var(--accent);margin-bottom:4px}
+  .agenda{list-style:none;padding:0;margin:28px 0 0;display:grid;gap:14px;max-width:760px}
+  .agenda li{background:rgba(255,255,255,.7);border:1px solid var(--subtle-light);border-radius:14px;padding:18px 22px;font-size:calc(22px*var(--fs));line-height:1.6;color:#3E2723}
+  .agenda b{font-family:var(--font-mono);color:var(--accent);margin-right:12px}
+  .lb{position:fixed;inset:0;z-index:999;background:rgba(30,18,12,.92);display:none;align-items:center;justify-content:center;padding:24px;cursor:zoom-out}
+  .lb.on{display:flex}
+  .lb img{max-width:96vw;max-height:90vh;width:auto;height:auto;border-radius:10px;box-shadow:0 20px 60px rgba(0,0,0,.5)}
+  .lb-x{position:fixed;top:16px;right:20px;font-size:20px;font-weight:700;color:#F5EDE0;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.3);border-radius:999px;padding:8px 18px;cursor:pointer}
+  .op.copy p{font-size:calc(21px*var(--fs));line-height:1.75;margin:4px 0;color:var(--text-on-dark)}
+  @media (max-width:720px){.gal{grid-template-columns:repeat(2,minmax(0,1fr))}.flow{grid-template-columns:1fr 1fr}}
+  /* 官網品牌導航列（與 ai-km-jiang 課程頁同套 .sh-nav） */
+  .sh-nav{position:sticky;top:0;z-index:190;background:rgba(245,237,231,0.90);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid rgba(78,52,46,0.12);}
+  .sh-nav-in{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:11px 32px;}
+  .sh-brand{display:flex;align-items:center;flex-shrink:0;transition:opacity .2s;}
+  .sh-brand:hover{opacity:.8;}
+  .sh-brand img{height:34px;width:auto;display:block;}
+  .sh-menu{display:flex;align-items:center;gap:22px;list-style:none;margin:0;padding:0;}
+  .sh-menu a{color:#5D4037;font-size:0.95rem;font-weight:500;text-decoration:none;white-space:nowrap;transition:color .2s;}
+  .sh-menu a:hover{color:#D88C3A;}
+  .sh-menu a.sh-en{border:1px solid rgba(78,52,46,0.25);border-radius:999px;padding:3px 12px;font-weight:600;}
+  .sh-menu a.sh-en:hover{border-color:#D88C3A;}
+  .sh-toggle{display:none;background:none;border:none;padding:6px;cursor:pointer;width:36px;height:36px;position:relative;}
+  .sh-toggle span{display:block;position:absolute;left:8px;right:8px;height:2px;background:#4E342E;border-radius:2px;transition:transform .25s,opacity .25s,top .25s;}
+  .sh-toggle span:nth-child(1){top:11px;}
+  .sh-toggle span:nth-child(2){top:17px;}
+  .sh-toggle span:nth-child(3){top:23px;}
+  .sh-toggle.open span:nth-child(1){top:17px;transform:rotate(45deg);}
+  .sh-toggle.open span:nth-child(2){opacity:0;}
+  .sh-toggle.open span:nth-child(3){top:17px;transform:rotate(-45deg);}
+  @media(max-width:820px){
+    .sh-nav-in{padding:9px 16px;}
+    .sh-toggle{display:block;}
+    .sh-menu{display:none;position:absolute;top:100%;left:0;right:0;flex-direction:column;align-items:stretch;gap:0;background:rgba(245,237,231,0.98);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid rgba(78,52,46,0.12);padding:6px 0;box-shadow:0 10px 24px rgba(62,39,35,0.10);}
+    .sh-menu.open{display:flex;}
+    .sh-menu li{border-bottom:1px solid rgba(78,52,46,0.08);}
+    .sh-menu li:last-child{border-bottom:none;}
+    .sh-menu a{display:block;padding:13px 20px;font-size:1.02rem;}
+    .sh-menu a.sh-en{display:inline-block;margin:10px 20px;}
+  }
+  .classroom-detail p{margin:10px 0}
+  .classroom-detail ul{margin:8px 0;padding-left:1.3em}
+  .classroom-detail li{margin:4px 0}
+  body.deck .classroom-detail{display:none}
+</style>
+</head>
+<body>
+  <header class="sh-nav">
+    <div class="sh-nav-in">
+      <a class="sh-brand" href="https://jiangyude.com/"><img src="https://jiangyude.com/images/footer-signature.png" alt="江江教練 ｜ 江昱德 · 知識官網" /></a>
+      <button class="sh-toggle" aria-label="開關選單"><span></span><span></span><span></span></button>
+      <ul class="sh-menu">
+        <li><a href="https://jiangyude.com/">首頁</a></li>
+        <li><a href="https://jiangyude.com/knowledge-architecture.html">知識架構</a></li>
+        <li><a href="https://jiangyude.com/courses.html">課程</a></li>
+        <li><a href="https://jiangyude.com/articles.html">深度文章</a></li>
+        <li><a href="https://jiangyude.com/skills.html">技能包下載</a></li>
+        <li><a href="https://jiangyude.com/cases.html">服務方案</a></li>
+        <li><a class="sh-en" href="https://jiangyude.com/en/index.html" hreflang="en">EN</a></li>
+      </ul>
+    </div>
+  </header>
+  <script>(function(){var t=document.querySelector('.sh-toggle'),m=document.querySelector('.sh-menu');if(t&&m){t.addEventListener('click',function(){t.classList.toggle('open');m.classList.toggle('open');});m.addEventListener('click',function(e){if(e.target.closest('a')){t.classList.remove('open');m.classList.remove('open');}});}})();</script>
+
+<div class="progress" id="progress"></div>
+<nav class="dot-indicator" aria-label="章節導覽">
+  <a href="#act-01"><span class="lbl">01 封面</span></a>
+  <a href="#act-02"><span class="lbl">02 什麼是技能</span></a>
+  <a href="#act-03"><span class="lbl">03 取名與觸發詞</span></a>
+  <a href="#act-04"><span class="lbl">04 示範：社群圖卡</span></a>
+  <a href="#act-04a"><span class="lbl">04+ 別人的技能包</span></a>
+  <a href="#act-05"><span class="lbl">05 第一步 固定角色</span></a>
+  <a href="#act-06"><span class="lbl">06 第二步 提煉風格</span></a>
+  <a href="#act-07"><span class="lbl">07 第三步 先排分鏡</span></a>
+  <a href="#act-08"><span class="lbl">08 存成技能 1</span></a>
+  <a href="#act-09"><span class="lbl">09 存成技能 2</span></a>
+  <a href="#act-10"><span class="lbl">10 存成技能 3</span></a>
+  <a href="#act-11"><span class="lbl">11 存成技能 4</span></a>
+  <a href="#act-12"><span class="lbl">12 存成技能 5</span></a>
+  <a href="#act-13"><span class="lbl">13 存成技能 6</span></a>
+  <a href="#act-14"><span class="lbl">14 畫錯怎麼修</span></a>
+  <a href="#act-15"><span class="lbl">15 GPT 與 Gemini</span></a>
+  <a href="#act-15a"><span class="lbl">15+ Antigravity</span></a>
+  <a href="#act-15b"><span class="lbl">15+ AI 派工</span></a>
+  <a href="#act-16"><span class="lbl">16 PART 2 個人秘書</span></a>
+  <a href="#act-17"><span class="lbl">17 秘書 1 交代</span></a>
+  <a href="#act-18"><span class="lbl">18 秘書 2 模擬</span></a>
+  <a href="#act-19"><span class="lbl">19 秘書 3 排時間</span></a>
+  <a href="#act-20"><span class="lbl">20 秘書 4 已排定</span></a>
+  <a href="#act-20a"><span class="lbl">20+ 早報的坑</span></a>
+  <a href="#act-21"><span class="lbl">21 收尾</span></a>
+  <a href="#act-22"><span class="lbl">22 LINE 工作坊</span></a>
+  <a href="#act-23"><span class="lbl">23 工作坊文案</span></a>
+  <a href="#act-23a"><span class="lbl">24 課堂 QA</span></a>
+</nav>
+<div class="fs-ctl" aria-label="字級"><button data-fs="0.9">A−</button><button data-fs="1">A</button><button data-fs="1.15">A＋</button></div>
+
+<section id="act-01" data-bg="1"><div class="wrap">
+  <div class="act-cap reveal">ACT 01 · 10/31 免費線上講座</div>
+  <h1 class="display reveal">讓 Gemini<br/>變成你的小助理</h1>
+  <p class="lead reveal">今天講兩個主題。</p>
+  <ol class="agenda reveal">
+    <li><b>PART 1</b>什麼是技能包：用社群圖卡來示範</li>
+    <li><b>PART 2</b>個人秘書：教大家怎麼串</li>
+  </ol>
+  <p class="note reveal">↓ 往下滑 · 圖片都可以點開看大圖 ↓</p>
+  <details class="classroom-detail reveal d4"><summary>課堂細節：為什麼這個時間點講 Gemini</summary>
+    <p>「兩個重要的節點。第一個是 Gemini 4 最近推出了，如果你是付費版的用戶，可以用它最新的模型 Gemini 4 Argon，那真的有重回第一梯隊。第二件事情是，如果你是免費用戶，它最近也可以用技能包了。」</p>
+    <ul><li>今天偏初階，會比較同一個技能包在 Gemini 跟 ChatGPT 用起來有什麼不一樣，也示範 Gemini 的桌面版 Antigravity。</li><li>現場調查「有沒有聽過技能包」，回覆幾乎都聽過，所以技能包的基礎講得比較快。</li></ul>
+  </details>
+</div></section>
+
+<section id="act-02" data-bg="2"><div class="wrap">
+  <div class="act-cap reveal">ACT 02 · PART 1 · 什麼是技能</div>
+  <h2 class="display sm reveal">技能，是給 AI 的一張小抄</h2>
+  <p class="lead reveal">把你做某件事的方法寫下來，交給 AI 照做。寫好之後，每次不用重講規矩，長時間工作它也不會做到一半忘記。</p>
+  <div class="op reveal"><span class="tag">🖥 建一個技能，要寫清楚三件事</span>
+    <ol class="flow" style="grid-template-columns:repeat(3,minmax(0,1fr))">
+      <li><span>01</span>它要做什麼</li>
+      <li><span>02</span>什麼時候用</li>
+      <li><span>03</span>有什麼規矩</li>
+    </ol>
+  </div>
+  <div class="mind reveal"><span class="tag">💡 心法</span><p class="body">一個技能只做一件事。活動前新聞稿、活動後新聞稿、致詞稿，各做一個。技能裡不要放個資、密碼。</p></div>
+  <p class="hint reveal">參考：欸那個AJ〈<a href="https://www.youtube.com/watch?v=tGPQ1bVKEgE" target="_blank" rel="noopener">Gemini「技能 Skill」全新功能登場</a>〉</p>
+  <details class="classroom-detail reveal d4"><summary>課堂細節：技能包就是工作手冊</summary>
+    <p>「技能包其實就是給 AI 執行用的一個工作手冊。」</p>
+    <p>「比如說這就是我的社群輪播卡分鏡腳本的技能包：以後我叫你做輪播卡，你就要用分鏡腳本的模式去幫我做。它以後就會這樣去做了。」</p>
+  </details>
+</div></section>
+
+<section id="act-03" data-bg="3"><div class="wrap">
+  <div class="act-cap reveal">ACT 03 · PART 1 · 技能的名字</div>
+  <h2 class="display sm reveal">取一個明確的觸發詞</h2>
+  <div class="said reveal"><span class="who">江江說</span>技能包的名字要取好，建議取一個明確的觸發詞，讓 AI 知道我只要講到這個字，就是要觸發這個技能包。比如說我講「做咪卡輪播卡」的時候，就一定要幫我觸發，它就會自己去觸發。</div>
+  <div class="op reveal"><span class="tag">🖥 寫法</span>
+    <ol class="steps">
+      <li>在技能的「什麼時候用」裡，直接寫出觸發詞，例如：使用者說「做咪卡輪播卡」時使用。</li>
+      <li>之後在對話開頭講這個詞，不用 @，也不用斜線，技能自己會啟動。</li>
+    </ol>
+  </div>
+  <details class="classroom-detail reveal d4"><summary>課堂細節：為什麼不要用 AI 預設的觸發詞</summary>
+    <p>「AI 為了讓技能包能夠觸發，通常都會取好幾個觸發詞，一般預設會寫得很廣泛：喊 Mika 的時候它就會做，講社群圖文的時候就會做，講輪播卡的時候就會做。正常至少五個，有些預設會是五到十個。」</p>
+    <p>「如果我今天是要叫 Mika 幫我做官網的客服，那是不是就會誤觸？或者我要做的圖是教學簡報的文章，它是不是也會不小心觸發？」</p>
+    <p>「我的精準詞就是 Mika 的輪播卡、社群輪播卡、Mika 的圖卡，講到就一定會觸發。但是如果只講咪卡、只講圖卡、講社群貼文，它都不會觸發。」</p>
+    <ul><li>適合使用情境很清楚的人。先養成習慣：寫一個明確的觸發詞。</li></ul>
+  </details>
+</div></section>
+
+<section id="act-04" data-bg="4"><div class="wrap">
+  <div class="act-cap reveal">ACT 04 · PART 1 · 示範</div>
+  <h2 class="display sm reveal">用技能包做社群圖卡</h2>
+  <p class="lead reveal">先用社群圖文來介紹技能包，因為這是最近大家很有興趣的主題。下面這 5 張，是 Gemini 用咪卡輪播卡技能包做出來的。</p>
+  <div class="gal reveal"><figure><a class="zoom" href="assets/gemini-A1.jpg" ><img src="assets/gemini-A1.jpg" alt="Gemini 做的咪卡輪播卡第 1 張" loading="lazy"></a></figure><figure><a class="zoom" href="assets/gemini-A2.jpg" ><img src="assets/gemini-A2.jpg" alt="Gemini 做的咪卡輪播卡第 2 張" loading="lazy"></a></figure><figure><a class="zoom" href="assets/gemini-A3.jpg" ><img src="assets/gemini-A3.jpg" alt="Gemini 做的咪卡輪播卡第 3 張" loading="lazy"></a></figure><figure><a class="zoom" href="assets/gemini-A4.jpg" ><img src="assets/gemini-A4.jpg" alt="Gemini 做的咪卡輪播卡第 4 張" loading="lazy"></a></figure><figure><a class="zoom" href="assets/gemini-A5.jpg" ><img src="assets/gemini-A5.jpg" alt="Gemini 做的咪卡輪播卡第 5 張" loading="lazy"></a></figure></div>
+  <p class="hint reveal">點圖看大圖</p>
+  <p class="lead reveal" style="margin-top:28px">做法分四步：固定角色、提煉風格、先排分鏡、存成技能。</p>
+  <details class="classroom-detail reveal d4"><summary>課堂細節：為什麼用社群圖卡來示範</summary>
+    <p>「圖卡、圖片跟短影音，其實還是大家蠻喜歡的閱讀格式。第二個是我們今天用來對比的 ChatGPT 跟 Gemini 都可以生圖片，很多人在問這兩個生圖的效果差在哪，這邊也可以一起比較。」</p>
+  </details>
+</div></section>
+
+<section id="act-04a" data-bg="5"><div class="wrap">
+  <div class="act-cap reveal">ACT 04+ · 課堂補充 · 抓別人的技能包</div>
+  <h2 class="display sm reveal">別人的技能包，先問 AI 兩件事</h2>
+  <p class="lead reveal">網路上有很多技能包可以抓，不要照單全收。</p>
+  <ol class="flow reveal" style="grid-template-columns:repeat(2,minmax(0,1fr))">
+    <li><span>01</span>安全嗎？有沒有惡意程式</li>
+    <li><span>02</span>合不合我的工作流程？不合就改</li>
+  </ol>
+  <div class="pc reveal">
+    <div class="pc-head"><span class="pc-label">PROMPT</span><span class="pc-title">下載前檢查指令｜複製後直接貼給 AI</span><button class="pc-copy" type="button" onclick="navigator.clipboard.writeText(document.getElementById('p-dl').value).then(()=>{this.textContent='已複製';setTimeout(()=>this.textContent='複製提示詞',1500)})">複製提示詞</button></div>
+    <div class="pc-body"><ul class="pc-rules"><li>第一，幫我檢查這個技能包裡面有沒有惡意程式，是否一切安全。</li><li>第二，幫我看看這個技能包的操作方向，跟我的工作流程符不符合。</li><li>如果很符合，就直接幫我抓下來；不符合的話，幫我看是要擷取某個部分，還是怎麼修改。</li></ul></div>
+    <textarea id="p-dl" hidden>第一，幫我檢查這個技能包裡面有沒有惡意程式，是否一切安全。
+第二，幫我看看這個技能包的操作方向，跟我的工作流程符不符合。
+如果很符合，就直接幫我抓下來；不符合的話，幫我看是要擷取某個部分，還是怎麼修改。</textarea>
+  </div>
+  <details class="classroom-detail reveal d4"><summary>課堂細節：為什麼要先問這兩件事</summary>
+    <p>「技能包是給 AI 的操作手冊，可是每一個人的工作習慣、環境、目標可能都不太一樣，所以有時候硬套別人的工作流程，不見得適合自己。」</p>
+    <p>「總之要把別人的工作流，改成適合我的形狀，改成我用得順手的模式。」</p>
+    <ul><li>你用同一個 AI 用到一定程度，它對你已經有一些基礎知識與記憶，才判斷得出合不合你。</li></ul>
+  </details>
+</div></section>
+
+<section id="act-05" data-bg="5"><div class="wrap">
+  <div class="act-cap reveal">ACT 05 · 第一步 · 角色要固定</div>
+  <h2 class="display sm reveal">先固定角色，再做圖卡</h2>
+  <p class="lead reveal">我希望角色固定，就是咪卡。角色是這樣來的：</p>
+  <ol class="flow reveal">
+    <li><span>01</span>請 AI 生圖，抽角色</li>
+    <li><span>02</span>抽到覺得不錯的，跟 AI 說「我喜歡這個」就 OK 了</li>
+    <li><span>03</span>立刻請它做一張定妝照</li>
+    <li><span>04</span>做成角色三視圖</li>
+  </ol>
+  <div class="mind reveal"><span class="tag">💡 我的習慣</span><p class="body">我自己會做四視圖：正面、左邊、背面、右邊。因為我希望左邊、右邊都有。</p></div>
+  <div class="pair reveal"><figure><a class="zoom" href="assets/mika-three-view.jpg" ><img src="assets/mika-three-view.jpg" alt="咪卡角色定妝照：四視圖加帽子角度" loading="lazy"></a><figcaption>咪卡的定妝照：四視圖加帽子角度</figcaption></figure><figure><a class="zoom" href="assets/lei-character.jpg" ><img src="assets/lei-character.jpg" alt="雷總管角色設定圖" loading="lazy"></a><figcaption>雷總管的角色設定圖</figcaption></figure></div>
+  <p class="hint reveal">點圖看大圖</p>
+  <div class="pc reveal">
+    <div class="pc-head"><span class="pc-label">PROMPT</span><span class="pc-title">定妝照指令｜複製後直接貼給 AI</span><button class="pc-copy" type="button" onclick="navigator.clipboard.writeText(document.getElementById('p-cast').value).then(()=>{this.textContent='已複製';setTimeout(()=>this.textContent='複製提示詞',1500)})">複製提示詞</button></div>
+    <div class="pc-body"><p class="pc-lead">我喜歡這個角色。</p><p style="margin:0">請幫我做一張定妝照，四視圖：正面、左邊、背面、右邊。</p></div>
+    <textarea id="p-cast" hidden>我喜歡這個角色。
+請幫我做一張定妝照，四視圖：正面、左邊、背面、右邊。</textarea>
+  </div>
+  <details class="classroom-detail reveal d4"><summary>課堂細節：抽角色、鴨舌帽與角色設定圖</summary>
+    <p>「最一開始設定還是有點像抽卡。我那時候說想要一隻黑貓，要戴鴨舌帽，可是不管怎麼抽，鴨舌帽的樣子都不是我喜歡的。最後我是去蝦皮找鴨舌帽的商品照丟進去，它才生成的。所以你看，我的貓咪才四視圖，帽子有五視圖。」</p>
+    <p>「重刷了好幾次，終於看到我要的黑貓跟鴨舌帽，就立刻跟它說：幫我把你剛剛做出來那個角色做角色設定圖。因為它上一次就對了，你只要立刻做，它就延續剛剛的記憶跟參數。」</p>
+    <ul><li>三視圖：正面、側面、背面。四視圖：左側、右側都有，因為左右會長得不太一樣。</li><li>打「角色設定圖」，AI 可能還會加表情特寫、服裝造型特寫、身高比例（例如設定 190 公分）。</li><li>之後生圖時，把設定圖丟給它當參照。</li></ul>
+  </details>
+</div></section>
+
+<section id="act-06" data-bg="6"><div class="wrap">
+  <div class="act-cap reveal">ACT 06 · 第二步 · 文章風格</div>
+  <h2 class="display sm reveal">請 AI 提煉思維邏輯</h2>
+  <div class="said reveal"><span class="who">江江說</span>我可以先把我的文章風格丟給 AI。我覺得重點是要請它分析，不要只是照抄，要請它去提煉思維邏輯。</div>
+  <p class="lead reveal">這是我之前寫過的方法，四個步驟：</p>
+  <ol class="flow reveal">
+    <li><span>01</span>案例觀察</li>
+    <li><span>02</span>思考框架</li>
+    <li><span>03</span>操作手冊</li>
+    <li><span>04</span>實際應用</li>
+  </ol>
+  <div class="mind reveal"><span class="tag">💡 為什麼要提煉</span><p class="body" style="font-size:calc(24px*var(--fs));font-weight:800;margin-bottom:8px">知其然，更要知其所以然。</p><p class="body">照抄是知其然，只會得到同一篇。提煉思維邏輯是知其所以然：把背後的思維框架、底層邏輯找出來，學會方法，才能用在自己的主題上。</p></div>
+  <div class="pc reveal">
+    <div class="pc-head"><span class="pc-label">PROMPT</span><span class="pc-title">提煉風格指令｜複製後直接貼給 AI</span><button class="pc-copy" type="button" onclick="navigator.clipboard.writeText(document.getElementById('p-style').value).then(()=>{this.textContent='已複製';setTimeout(()=>this.textContent='複製提示詞',1500)})">複製提示詞</button></div>
+    <div class="pc-body"><p class="pc-lead">幫我分析我附上的這幾篇文章（或輪播卡）。</p>
+<ul class="pc-rules"><li>把背後的思維框架、底層邏輯找出來，把可以參考的、該注意的都整理出來。</li><li>整理成一套可用的操作手冊（提示詞）。</li><li>目標：當我把新文章給你時，你就可以依照這個操作手冊，幫我做成同樣風格的輪播卡。</li><li>這整組提示詞，要人好閱讀，AI 也好用。</li></ul></div>
+    <textarea id="p-style" hidden>幫我分析我附上的這幾篇文章（或輪播卡），把背後的思維框架、底層邏輯找出來，把可以參考的、該注意的都整理出來。
+並且整理成一套可用的操作手冊（提示詞）。
+目標是當我把新文章給你時，你就可以依照這個操作手冊，幫我做成同樣風格的輪播卡。
+這整組提示詞，要人好閱讀，AI 也好用。</textarea>
+  </div>
+  <p class="hint reveal">出處：我 2025-09 的方格子文章〈<a href="https://vocus.cc/article/68c7ce23fd89780001535f0c" target="_blank" rel="noopener">看到好案例不知道怎麼學？四步驟複製大師級思維框架</a>〉</p>
+  <details class="classroom-detail reveal d4"><summary>課堂細節：教 AI 你怎麼想，比給範本更耐用</summary>
+    <p>「很多人會以為把資料丟給 AI，AI 就可以參考了。我甚至會問 AI：你可不可以觀察一下我的這些案例，幫我把我的思考框架提煉出來，我是如何思考，我的整個思緒脈絡、邏輯判斷，變成一套標準或原則。」</p>
+    <p>「技能包目前比較偏向固定的工作流程。但未知的變化一定越來越多，已知固定的流程會越來越少。有一樣的樣本它就直接套，沒有樣本，至少還有思維框架、大原則可以參考。」</p>
+    <p>「如果能夠把審核的標準也提煉出來做成技能包，很多時候不需要我們待在電腦前面審核 AI。你按照我的標準去檢查，過了就過，不過就自己重新修到過。」</p>
+    <p>「我有時候三不五時也會考它一下：這十篇你覺得我現在如果要寫什麼，要參考哪幾篇？你可不可以依照我的標準試著挑挑看？」</p>
+    <ul><li>它真的知道你怎麼想、為什麼這麼想，就可以放心交更複雜的工作。</li><li>越複雜、越抽象的技能包，配越高階的模型；簡單的技能包用簡單的模型。</li></ul>
+  </details>
+</div></section>
+
+<section id="act-07" data-bg="4"><div class="wrap">
+  <div class="act-cap reveal">ACT 07 · 第三步 · 分鏡</div>
+  <h2 class="display sm reveal">每一張都先講清楚，再畫</h2><div class="pc reveal">
+    <div class="pc-head"><span class="pc-label">PROMPT</span><span class="pc-title">分鏡指令｜複製後直接貼給 AI</span><button class="pc-copy" type="button" onclick="navigator.clipboard.writeText(document.getElementById('p-sb').value).then(()=>{this.textContent='已複製';setTimeout(()=>this.textContent='複製提示詞',1500)})">複製提示詞</button></div>
+    <div class="pc-body"><p class="pc-lead">請先幫我做分鏡表，我確認後再生圖。</p>
+<ul class="pc-rules"><li>圖卡的內容要跟主題相扣。</li><li>畫面要豐富。豐富指的是場景內容跟角色的動作要扣緊主題，不要加一堆無關緊要的花花草草。</li><li>這些場景跟動作，是要幫助觀眾更好、更快速地理解內容。</li></ul>
+<div class="pc-sub">每一張圖卡都要告訴我</div><ol class="pc-grid"><li><span class="pc-n">01</span>大標內容</li><li><span class="pc-n">02</span>場景設計</li><li><span class="pc-n">03</span>場景裡的元素</li><li><span class="pc-n">04</span>角色的動作和位置</li></ol></div>
+    <textarea id="p-sb" hidden>請先幫我做分鏡表，我確認後再生圖。
+圖卡的內容要跟主題相扣。
+畫面要豐富。豐富指的是場景內容跟角色的動作要扣緊主題，不要加一堆無關緊要的花花草草。
+這些場景跟動作，是要幫助觀眾更好、更快速地理解內容。
+每一張圖卡都要告訴我：
+1. 大標內容
+2. 場景設計
+3. 場景裡的元素
+4. 角色的動作和位置</textarea>
+  </div>
+  <div class="shot reveal"><figure><a class="zoom" href="assets/steps/step-07.jpg" ><img src="assets/steps/step-07.jpg" alt="Gemini 用觸發詞啟動技能後交出分鏡表" loading="lazy"></a><figcaption>技能建好之後（第四步），對話開頭講觸發詞就會啟動。這次實測我用的觸發詞是「輪播咪卡」，Gemini 先交分鏡表，確認後才生圖</figcaption></figure><p class="hint">點圖看大圖</p></div>
+  <details class="classroom-detail reveal d4"><summary>課堂細節：「畫面豐富」是修出來的</summary>
+    <p>「我很討厭 AI 幫我畫的圖非常花花綠綠，花花綠綠到我看不清楚內容。資訊圖表應該是要讓我們更好理解內容才對。」</p>
+    <p>「我先跟它說不要太花花綠綠，做完之後 AI 又變得太乾淨了，都是白底。所以我就知道怎麼跟 AI 溝通：我要畫面豐富，但我豐富的意思是，場景的內容跟角色的動作要扣緊主題，要讓觀眾更好更快速理解內容。」</p>
+    <ul><li>很多人先預想工作流程，預想的通常不會跑得很順。江江習慣在實際工作裡修，修到滿意再收成技能包。</li><li>技能包裡可以直接寫自己的喜好、偏好、預設目標與風格。</li></ul>
+  </details>
+  <details class="classroom-detail reveal d4"><summary>課堂細節：為什麼先打草稿</summary>
+    <p>「叫 AI 生圖，一張圖第一個很久，第二個免費額度一天可能生個一兩張就沒額度了。就算付費，短時間內一直生成，它也會變慢或很快到上限。與其讓它隨便生一張我不喜歡，不如先叫它打草稿給我看。」</p>
+    <p>「這是我每一次都花很多時間心血跟它聊出來的，所以我就請它幫我記起來，寫成技能包。」</p>
+    <ul><li>張數由自己指定：三張、三到五張、七張、十張都可以。</li><li>第一張一定是封面，封面先丟一個大問題。</li><li>第二張之後，每張的文字（主標加副標或短文案）、場景、角色都要寫清楚；咪卡的動作要活潑，也要扣合場景與主題。</li></ul>
+  </details>
+</div></section>
+
+<section id="act-08" data-bg="3"><div class="wrap">
+  <div class="act-cap reveal">ACT 08 · 第四步 · 存成技能（1/6）</div>
+  
+  <p class="stepline reveal">第 1 步：左下角按齒輪「設定」。</p>
+  <div class="shot reveal"><figure><a class="zoom" href="assets/steps/step-01.jpg" ><img src="assets/steps/step-01.jpg" alt="第 1 步：左下角按齒輪「設定」。" loading="lazy"></a></figure></div>
+  <p class="hint reveal">點圖看大圖</p>
+  <details class="classroom-detail reveal d4"><summary>課堂細節：在 Gemini 建技能的三種方式</summary>
+    <p>「通常我習慣開一個新的 Gemini，就跟它說我要做技能包，你按照我的模式，幫我把剛剛的東西建成技能包，這樣就可以了。」</p>
+    <ul><li>上課時是從網頁版側邊欄的「自訂」進去，裡面有探索、連接器、技能。</li><li>手動上傳：抓了別人的技能檔，可以手動上傳。</li><li>技能包是網址的話，開新對話叫 AI 安裝就好。</li><li>技能包裡可以存規則、程式、圖片；技能頁的預覽會有一點小問題。</li></ul>
+  </details>
+</div></section>
+
+<section id="act-09" data-bg="4"><div class="wrap">
+  <div class="act-cap reveal">ACT 09 · 第四步 · 存成技能（2/6）</div>
+  
+  <p class="stepline reveal">第 2 步：選單裡按「技能」。</p>
+  <div class="shot reveal"><figure><a class="zoom" href="assets/steps/step-02.jpg" ><img src="assets/steps/step-02.jpg" alt="第 2 步：選單裡按「技能」。" loading="lazy"></a></figure></div>
+  <p class="hint reveal">點圖看大圖</p>
+</div></section>
+
+<section id="act-10" data-bg="5"><div class="wrap">
+  <div class="act-cap reveal">ACT 10 · 第四步 · 存成技能（3/6）</div>
+  
+  <p class="stepline reveal">第 3 步：右上角按「建立」。</p>
+  <div class="shot reveal"><figure><a class="zoom" href="assets/steps/step-03.jpg" ><img src="assets/steps/step-03.jpg" alt="第 3 步：右上角按「建立」。" loading="lazy"></a></figure></div>
+  <p class="hint reveal">點圖看大圖</p>
+</div></section>
+
+<section id="act-11" data-bg="6"><div class="wrap">
+  <div class="act-cap reveal">ACT 11 · 第四步 · 存成技能（4/6）</div>
+  
+  <p class="stepline reveal">第 4 步：選「用 Gemini 建立」，把這三樣貼給它：觸發詞、第二步請 AI 整理出來的風格操作手冊、第三步的分鏡指令。四視圖不用放進技能，生圖時直接貼進對話最穩。</p>
+  <div class="shot reveal"><figure><a class="zoom" href="assets/steps/step-04.jpg" ><img src="assets/steps/step-04.jpg" alt="第 4 步：選「用 Gemini 建立」，把這三樣貼給它：觸發詞、第二步請 AI 整理出來的風格操作手冊、第三步的分鏡指令。四視圖不用放進技能，生圖時直接貼進對話最穩。" loading="lazy"></a></figure></div>
+  <p class="hint reveal">點圖看大圖</p>
+</div></section>
+
+<section id="act-12" data-bg="6"><div class="wrap">
+  <div class="act-cap reveal">ACT 12 · 第四步 · 存成技能（5/6）</div>
+  
+  <p class="stepline reveal">第 5 步（進階，今天可以跳過）：已經有做好的技能資料夾，才用「上傳」，資料夾裡要有 SKILL.md。</p>
+  <div class="shot reveal"><figure><a class="zoom" href="assets/steps/step-05.jpg" ><img src="assets/steps/step-05.jpg" alt="第 5 步（進階，今天可以跳過）：已經有做好的技能資料夾，才用「上傳」，資料夾裡要有 SKILL.md。" loading="lazy"></a></figure></div>
+  <p class="hint reveal">點圖看大圖</p>
+</div></section>
+
+<section id="act-13" data-bg="6"><div class="wrap">
+  <div class="act-cap reveal">ACT 13 · 第四步 · 存成技能（6/6）</div>
+  
+  <p class="stepline reveal">第 6 步：建好之後，每個技能的「⋯」裡有：立即使用、編輯、取代、停用。</p>
+  <div class="shot reveal"><figure><a class="zoom" href="assets/steps/step-06.jpg" ><img src="assets/steps/step-06.jpg" alt="第 6 步：建好之後，每個技能的「⋯」裡有：立即使用、編輯、取代、停用。" loading="lazy"></a></figure></div>
+  <p class="hint reveal">點圖看大圖</p>
+</div></section>
+
+<section id="act-14" data-bg="7"><div class="wrap">
+  <div class="act-cap reveal">ACT 14 · 實測 · 畫錯了怎麼辦</div>
+  <h2 class="display sm reveal">把四視圖貼進對話</h2>
+  <p class="lead reveal">技能包裡放了咪卡的圖，Gemini 也說有照著畫，結果帽子畫錯，紙上還多了沒指定的字。把四視圖直接貼進對話，講清楚哪裡不對，重畫就對了。</p>
+  <div class="shot reveal"><figure><a class="zoom" href="assets/steps/step-08.jpg" ><img src="assets/steps/step-08.jpg" alt="把四視圖貼進對話修正咪卡長相" loading="lazy"></a></figure><p class="hint">點圖看大圖</p></div>
+  <div class="pair reveal">
+    <figure><span class="badge bad">沒貼四視圖</span><a class="zoom" href="assets/fix-before.jpg" ><img src="assets/fix-before.jpg" alt="修正前：帽子有頂部鈕扣" loading="lazy"></a><figcaption>帽子頂部有鈕扣，紙上多了沒指定的字</figcaption></figure>
+    <figure><span class="badge good">貼了四視圖</span><a class="zoom" href="assets/fix-after.jpg" ><img src="assets/fix-after.jpg" alt="修正後：斜檐扁帽加側邊銅扣" loading="lazy"></a><figcaption>斜檐扁帽、側邊銅扣、布紋都對了</figcaption></figure>
+  </div>
+  <div class="mind reveal"><span class="tag">💡 心法</span><p class="body">技能包裡的圖，不保證每次都會真的送進生圖。角色要穩，生圖前把四視圖貼進對話最保險。</p></div>
+  <div class="mind reveal"><span class="tag">⚠️ 踩到的坑</span><p class="body">按「取代技能」更新之後，Gemini 會把技能自動停用。要回技能頁按「⋯」，再按一次「啟用」。</p></div>
+  <details class="classroom-detail reveal d4"><summary>課堂細節：Gemini 網頁版跟 ChatGPT 網頁版，讀圖不一樣</summary>
+    <p>「我的圖片如果存在技能包裡面，就算我已經指定了，它依然無法正確辨識。Gemini 網頁版目前一定要自己手動丟圖片進去，我再重丟一張圖片說咪卡長這樣子喔，它接下來出來的才是正確的。」</p>
+    <p>「ChatGPT 最一開始網頁版的技能包也沒辦法讀圖片，但是它現在進步了。我只丟提示詞：幫我用 Mika 輪播卡的技能包做這張圖，也沒有標註，它就讀到了，說找到已存的咪卡三視圖，會沿用格式。」</p>
+    <ul><li>技能名字跟觸發詞寫清楚，直接在對話框打就會觸發；不確定的話，可以從對話框的技能選單手動選。</li><li>網頁版做多張輪播卡：生成一張，按繼續，再生成下一張。</li></ul>
+  </details>
+</div></section>
+
+<section id="act-15" data-bg="9"><div class="wrap">
+  <div class="act-cap reveal">ACT 15 · 實測 · 同一篇文章，兩邊做的</div>
+  <h2 class="display sm reveal">兩種流程，各做一次</h2>
+  <p class="lead reveal">先講前提：GPT 那組是我平常的做法，先排好分鏡、附上定妝照、每張檢查，不對就重畫。Gemini 這組只靠技能包自己跑，對話裡沒貼四視圖，也沒有逐張重畫。所以下面看的是流程差多少，不能直接當成兩個模型的能力排名。</p>
+  <div class="reveal"><span class="badge neu">GPT · 想用 AI 做自動化</span><figure><a class="zoom" href="assets/compare-A-gpt.jpg" ><img src="assets/compare-A-gpt.jpg" alt="GPT 版 5 張輪播卡" loading="lazy"></a></figure></div>
+  <div class="reveal"><span class="badge neu">Gemini · 想用 AI 做自動化</span><figure><a class="zoom" href="assets/compare-A-gemini.jpg" ><img src="assets/compare-A-gemini.jpg" alt="Gemini 版 5 張輪播卡" loading="lazy"></a></figure></div>
+  <div class="reveal"><span class="badge neu">GPT · 自主式 AI</span><figure><a class="zoom" href="assets/compare-B-gpt.jpg" ><img src="assets/compare-B-gpt.jpg" alt="GPT 版 3 張輪播卡" loading="lazy"></a></figure></div>
+  <div class="reveal"><span class="badge neu">Gemini · 自主式 AI</span><figure><a class="zoom" href="assets/compare-B-gemini.jpg" ><img src="assets/compare-B-gemini.jpg" alt="Gemini 版 3 張輪播卡" loading="lazy"></a></figure></div>
+  <p class="hint reveal">點圖看大圖</p>
+  <div class="scroll-x reveal"><table class="cmp">
+    <tr><th>看哪裡</th><th>GPT（排分鏡＋附定妝照＋逐張檢查）</th><th>Gemini（只靠技能包、沒貼圖、沒重畫）</th></tr>
+    <tr><td>咪卡長相</td><td>兩組都穩定</td><td>第一篇對；第二篇帽子錯、多了斗篷</td></tr>
+    <tr><td>咪卡位置與動作</td><td>每張位置、動作都不同</td><td>第一篇 5 張都在左下、同一個角度</td></tr>
+    <tr><td>沒指定的字</td><td>這兩組沒看到</td><td>出現 PAUSE、RUN/執行、SCRIPT 等字</td></tr>
+    <tr><td>文案</td><td>照先排好的分鏡</td><td>第一篇照原文；第二篇第 3 張改寫原文</td></tr>
+    <tr><td>流程規則</td><td>每張都有人檢查</td><td>會先出分鏡表等確認；「先停下來問」的關卡被跳過</td></tr>
+  </table></div>
+</div></section>
+
+<section id="act-15a" data-bg="3"><div class="wrap">
+  <div class="act-cap reveal">ACT 15+ · 課堂補充 · 桌面版</div>
+  <h2 class="display sm reveal">有訂 Google AI Pro，就下載 Antigravity</h2>
+  <p class="lead reveal">Antigravity 是裝在電腦裡的 Agent，它可以自己去讀技能裡的三視圖。結果要看模型。</p>
+  <div class="scroll-x reveal"><table class="cmp light">
+    <tr><th>模型</th><th>同一句「用 Mika 輪播卡做一張圖」</th></tr>
+    <tr><td>Gemini 3.8 Flash</td><td>找到三視圖，但畫錯，要罵一下「完全不同耶」才修正</td></tr>
+    <tr><td>Gemini 4 Argon</td><td>自己找到三視圖樣板並生成，造型對，耳朵有一點不對</td></tr>
+  </table></div>
+  <div class="mind reveal"><span class="tag">💡 怎麼看值不值得</span><p class="body">Google AI Pro 每月 20 美金。只為了用 Gemini 可能不划算，看整個 Google 生態系（Meet、雲端硬碟）就很划算，Gemini 是順便送的。</p></div>
+  <details class="classroom-detail reveal d4"><summary>課堂細節：現場怎麼講</summary>
+    <p>「如果我們覺得訂 Google AI Pro 就是為了用 Gemini，那是賠的。但是如果我們看的是 Google 全家桶、Google 生態系，你就會發現好讚，而且還順便送 Gemini。我個人是因為 Google Meet 訂的，我知道很多人是為了 Google 雲端硬碟訂的。」</p>
+    <p>「Gemini 4 Argon 真的聰明多了，它自己去讀，自己找到三視圖的樣板，然後自己去生成。」</p>
+    <ul><li>現場調查：大家只用 Gemini，還是也用其他 AI？不少人用 Claude。</li></ul>
+  </details>
+</div></section>
+
+<section id="act-15b" data-bg="4"><div class="wrap">
+  <div class="act-cap reveal">ACT 15+ · 課堂補充 · 進階</div>
+  <h2 class="display sm reveal">叫 AI 去操作 AI 工具</h2>
+  <p class="lead reveal">讓一個 AI 當主管，派工給其他 AI，自己負責檢查。</p>
+  <div class="scroll-x reveal"><table class="cmp light">
+    <tr><th>工作</th><th>誰做</th><th>誰把關</th></tr>
+    <tr><td>上網查資料</td><td>Antigravity 的 Gemini 3.8 Flash</td><td>Claude 回頭整理分析</td></tr>
+    <tr><td>生輪播卡圖</td><td>GPT</td><td>Claude 依標準檢查，不合就重生</td></tr>
+  </table></div>
+  <div class="mind reveal"><span class="tag">💡 江江的建議</span><p class="body">目前不建議叫 Antigravity 自己跑技能包，除非用 Gemini 4 Argon。會同時用到兩邊額度，但可以分擔。很多人有訂 Google 服務卻沒在用 Gemini，正好分擔火力。</p></div>
+  <details class="classroom-detail reveal d4"><summary>課堂細節：現場怎麼講</summary>
+    <p>「我大概兩個月左右幾乎沒有開 ChatGPT 了，因為我的 ChatGPT 跟 Antigravity，其實都是下載來給我的 Claude 用的。可以直接叫 Claude 用 CLI 的方式，把 ChatGPT 跟 Gemini 聯動起來。」</p>
+    <p>「3.8 Flash 上網查資料查得不錯，但要它整理容易有幻覺，所以不要它整理，叫 Claude 回去整理就好。」</p>
+    <p>「GPT 生圖偶爾還是會有幻覺，比如耳朵掉了。Claude 的審美在線，很嚴謹，所以我都叫 Claude 監督 GPT 生圖。咪卡太呆板、呆呆站在那邊，動作沒有跟場景主題符合，你要重生；帽子跑掉了、耳朵跑掉了，你要重生。」</p>
+  </details>
+</div></section>
+
+<section id="act-16" data-bg="2"><div class="wrap">
+  <div class="act-cap reveal">ACT 16 · PART 2 · 個人秘書</div>
+  <h2 class="display sm reveal">讓 Gemini 每天幫你報行程</h2>
+  <p class="lead reveal">第二個主題：教大家怎麼串。Gemini 可以讀你的 Google 行事曆、Gmail、Google 待辦，整理好之後，排成每天固定時間的任務。</p>
+  <ol class="flow reveal">
+    <li><span>01</span>一句話交代要整理什麼</li>
+    <li><span>02</span>先模擬匯報一次</li>
+    <li><span>03</span>再講要幾點報</li>
+    <li><span>04</span>到「已排定」確認</li>
+  </ol>
+  <details class="classroom-detail reveal d4"><summary>課堂細節：從排程開始，邊教邊考再放權</summary>
+    <p>「你要讓 AI 變得更主動之前，就要讓它更懂你的規則跟邏輯。你的邊界、底線、原則都要講得更清楚，它才知道什麼可以做、怎麼做、什麼不能做，什麼時候第一時間回報你。」</p>
+    <p>「在設計自主性的 AI 之前，先推薦大家可以從排程開始。排程我個人把它歸在半自動的概念。」</p>
+    <p>「一開始交代會有點麻煩，慢慢教。比如合約這種事情我講過三次，我就跟它說：你覺得這個合約我會怎麼處理？問它兩三次，發現它已經很懂我，就比較放心，可以放權給 AI 員工了。」</p>
+    <ul><li>免費版 Gemini 的連接器：Gmail、Google 行事曆、Google 待辦、Google 雲端硬碟。</li><li>直接整理 Email 的部分因為隱私，現場沒有示範。</li><li>GPT 跟 Claude 能接的工具更多，例如 Trello、Notion 這類專案管理工具。</li></ul>
+  </details>
+</div></section>
+
+<section id="act-17" data-bg="3"><div class="wrap">
+  <div class="act-cap reveal">ACT 17 · PART 2 · 個人秘書（1/4）</div>
+  
+  <p class="stepline reveal">第 1 步：一句話交代要整理什麼，並請它先模擬匯報一次。它會自己去讀行事曆、Gmail、待辦。</p>
+  <div class="shot reveal"><figure><a class="zoom" href="assets/secretary/sec-01.jpg" ><img src="assets/secretary/sec-01.jpg" alt="請 Gemini 每天整理行程、email、待辦並先模擬匯報" loading="lazy"></a></figure><p class="hint">點圖看大圖</p></div>
+  <div class="pc reveal">
+    <div class="pc-head"><span class="pc-label">PROMPT</span><span class="pc-title">秘書指令 1｜複製後直接貼給 Gemini</span><button class="pc-copy" type="button" onclick="navigator.clipboard.writeText(document.getElementById('p-sec1').value).then(()=>{this.textContent='已複製';setTimeout(()=>this.textContent='複製提示詞',1500)})">複製提示詞</button></div>
+    <div class="pc-body"><p class="pc-lead" style="border:0;margin:0;padding:0">你可以每天早上幫我整理一下我的新日程、email 跟待辦清單，然後彙報我。我希望你可以先模擬彙報一次。</p></div>
+    <textarea id="p-sec1" hidden>你可以每天早上幫我整理一下我的新日程、email 跟待辦清單，然後彙報我。我希望你可以先模擬彙報一次。</textarea>
+  </div>
+</div></section>
+
+<section id="act-18" data-bg="4"><div class="wrap">
+  <div class="act-cap reveal">ACT 18 · PART 2 · 個人秘書（2/4）</div>
+  
+  <p class="stepline reveal">第 2 步：看它模擬的匯報。分成今日日程、待辦事項、重要郵件三段，格式對了再排時間。</p>
+  <div class="shot reveal"><figure><a class="zoom" href="assets/secretary/sec-02.jpg" ><img src="assets/secretary/sec-02.jpg" alt="Gemini 模擬的晨間匯報，內容已遮蔽" loading="lazy"></a></figure><p class="hint">這張的單位名稱、人名、地址已刪除 · 點圖看大圖</p></div>
+</div></section>
+
+<section id="act-19" data-bg="5"><div class="wrap">
+  <div class="act-cap reveal">ACT 19 · PART 2 · 個人秘書（3/4）</div>
+  
+  <p class="stepline reveal">第 3 步：講清楚幾點報。我設早上 7 點報今天整天，下午 5 點報今晚跟明天，重複確認一次。</p>
+  <div class="shot reveal"><figure><a class="zoom" href="assets/secretary/sec-03.jpg" ><img src="assets/secretary/sec-03.jpg" alt="追加早上七點與下午五點兩次匯報" loading="lazy"></a></figure><p class="hint">點圖看大圖</p></div>
+  <div class="pc reveal">
+    <div class="pc-head"><span class="pc-label">PROMPT</span><span class="pc-title">秘書指令 2｜複製後直接貼給 Gemini</span><button class="pc-copy" type="button" onclick="navigator.clipboard.writeText(document.getElementById('p-sec2').value).then(()=>{this.textContent='已複製';setTimeout(()=>this.textContent='複製提示詞',1500)})">複製提示詞</button></div>
+    <div class="pc-body"><ul class="pc-rules"><li>我希望你每天早上七點報一次早上行程，然後下午五點報一次晚上的行程，再跟我確認一次。</li><li>下午五點報晚上跟明天的行程。早上再報一次今天早上跟晚上的行程，這樣子重複確認一次，可以嗎？</li><li>你可以整合哪些東西？你現在整合 email、整合行事曆，那有沒有整合 Google 待辦？</li></ul></div>
+    <textarea id="p-sec2" hidden>我希望你每天早上七點報一次早上行程，然後下午五點報一次晚上的行程，再跟我確認一次。下午五點報晚上跟明天的行程。早上再報一次今天早上跟晚上的行程，這樣子重複確認一次，可以嗎？
+你可以整合哪些東西？你現在整合 email、整合行事曆，那有沒有整合 Google 待辦？</textarea>
+  </div>
+</div></section>
+
+<section id="act-20" data-bg="6"><div class="wrap">
+  <div class="act-cap reveal">ACT 20 · PART 2 · 個人秘書（4/4）</div>
+  
+  <p class="stepline reveal">第 4 步：左側選單的「已排定」裡，會看到兩個「每天」的任務。</p>
+  <div class="shot reveal"><figure><a class="zoom" href="assets/secretary/sec-04.jpg" ><img src="assets/secretary/sec-04.jpg" alt="已排定頁面出現兩個每天執行的匯報任務" loading="lazy"></a></figure><p class="hint">點圖看大圖</p></div>
+  <div class="mind reveal"><span class="tag">💡 心法</span><p class="body">先模擬一次，看格式對不對，再排時間。早上報一次、傍晚再報一次，重複確認。</p></div>
+</div></section>
+
+<section id="act-20a" data-bg="7"><div class="wrap">
+  <div class="act-cap reveal">ACT 20+ · 課堂補充 · 早報的坑</div>
+  <h2 class="display sm reveal">「沒事」，也要講查了哪裡</h2>
+  <p class="lead reveal">AI 可能以為只有行事曆上的才算事，漏掉待辦、沒回的邀約信、LINE 群組裡的改期。</p>
+  <div class="pc reveal">
+    <div class="pc-head"><span class="pc-label">PROMPT</span><span class="pc-title">早報規則｜複製後直接貼給 AI</span><button class="pc-copy" type="button" onclick="navigator.clipboard.writeText(document.getElementById('p-empty').value).then(()=>{this.textContent='已複製';setTimeout(()=>this.textContent='複製提示詞',1500)})">複製提示詞</button></div>
+    <div class="pc-body"><p class="pc-lead" style="border:0;margin:0;padding:0">我問你有沒有事的時候，不要只回我沒事。你要跟我說你查了哪些地方，每個地方的結果是什麼。</p></div>
+    <textarea id="p-empty" hidden>我問你有沒有事的時候，不要只回我沒事。你要跟我說你查了哪些地方，每個地方的結果是什麼。</textarea>
+  </div>
+  <details class="classroom-detail reveal d4"><summary>課堂細節：現場怎麼講</summary>
+    <p>「我問它有沒有事情的時候，禁止跟我說沒事。它要跟我說它查了哪些地方，上面都沒有資料。比如我查了 email，今天是空的；查了你的行事曆，今天是空的；查了你的待辦也是空的。」</p>
+    <p>「因為我之前問它有沒有事，它說沒事，它以為只有放在行事曆的才算。但是我待辦裡面有事，email 裡面有人邀約我我忘了回，LINE 群組有人跟我說要改期，我還忘記回。」</p>
+    <ul><li>它列完之後，江江會追問：「那我的 Trello、專案管理看板，你看了嗎？」</li></ul>
+  </details>
+</div></section>
+
+<section id="act-21" data-bg="8"><div class="wrap">
+  <div class="act-cap reveal">ACT 21 · 下一步</div>
+  <h2 class="display sm reveal">回去做你的第一個 Gemini 技能</h2>
+  <div class="op reveal" style="background:rgba(255,248,240,.08);border-color:rgba(245,237,224,.2)"><span class="tag">🖥 照著做</span>
+    <ol class="steps" style="color:var(--text-on-dark)">
+      <li>挑一件你每次都要重講規矩的事，寫成一個技能。</li>
+      <li>取一個明確的觸發詞，寫進「什麼時候用」。</li>
+      <li>有角色的，先做定妝照，生圖前貼進對話。</li>
+      <li>請 AI 分析你的作品，提煉思維邏輯，不要只是照抄。</li>
+      <li>每張成品自己看過：長相、錯字、多出來的字、有沒有改到原文。</li>
+    </ol>
+  </div>
+  <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" class="btn reveal" target="_blank" rel="noopener">加入 Line 社群，看下一場免費講座</a>
+  <p class="note reveal">江江教練 · 每個月兩場免費講座</p>
+  <details class="classroom-detail reveal d4"><summary>課堂細節：收尾</summary>
+    <p>「希望大家可以練習，在跟 AI 操作的時候，把我們的原則提煉出來，這個我覺得很重要。知其然，更要知其所以然。你有辦法把這個原則提煉出來，AI 可以做更多的事情。」</p>
+  </details>
+</div></section>
+
+<section id="act-22" data-bg="8"><div class="wrap">
+  <div class="act-cap reveal">ACT 22 · PART 2 · 再串一個：LINE</div>
+  <h2 class="display sm reveal">工作訊息，都在 LINE 群裡</h2>
+  <p class="lead reveal">台灣大家的工作訊息、進度，最多都散落在 LINE 群組裡。剛剛的秘書已經能讀行事曆、Google 文件；如果它也能讀 LINE，整個就串在一起了。</p>
+  <p class="stepline reveal">LINE 要怎麼讀？可以參考這堂工作坊。</p>
+  <div class="shot reveal"><figure><a class="zoom" href="assets/line-workshop-cover.jpg" ><img src="assets/line-workshop-cover.jpg" alt="線上工作坊 LINE AI 應用 基礎課程二合一" style="max-width:min(440px,100%);max-height:52vh" loading="lazy"></a></figure><p class="hint">點圖看大圖</p></div>
+  <a href="https://portaly.cc/Jiang_Yude/product/8q555HyTgPSaHzJpS090" class="btn reveal" target="_blank" rel="noopener">看 LINE AI 應用工作坊</a>
+  <details class="classroom-detail reveal d4"><summary>課堂細節：早晚報抓到的事，與 LINE 接出來之後</summary>
+    <p>「像我 10 月初的時候，它就提醒我 Adobe 快到期喔，記得續約。我看到一瞬間就立刻解約了，因為年約到期了，很多 AI 都可以做了。還有 LINE 群組，它會抓到有人改期你還沒確認，或誰跟你約幾月幾號，要趕快回他。」</p>
+    <p>「我在上 Agent 的課程叫大家提煉知識，發現東西都卡在 LINE 裡面。我們所有的工作、所有的交流、所有的專業知識，都發生在群組。只要把群組裡面的東西抓出來，叫 AI 幫我們整理淬鍊，順便訂一下行事曆跟待辦清單，就會輕鬆不少。」</p>
+    <ul><li>資料接出來之後可以自己延伸：一群人去參訪，大家把訊息丟進去，變成活動紀錄網站；發票丟進 LINE 群組做報帳；十幾二十個群組做成客戶管理或專案管理。</li></ul>
+  </details>
+</div></section>
+
+<section id="act-23" data-bg="9"><div class="wrap">
+  <div class="act-cap reveal">ACT 23 · LINE AI 應用課程</div>
+  <h2 class="display sm reveal">基礎課程二合一</h2>
+  <div class="op copy reveal"><span class="tag">課程資訊</span>
+    <p><strong>11/8（日）14:00–16:00 線上工作坊</strong></p>
+    <p><strong>有錄影回放，送技能包與講義，限 99 人</strong></p>
+  </div>
+  <div class="op copy reveal"><span class="tag">價格</span>
+    <p>・<strong>10/31（六）講座價 NT$680</strong>：今晚 24:00 前下單</p>
+    <p>・<strong>11/1（日）到 11/8（日）開課前，特價 NT$880</strong></p>
+    <p>・第一次上完之後，兩堂課會分開賣，恢復原價：每堂 NT$500，兩堂合計 NT$1,000</p>
+  </div>
+  <div class="op copy reveal"><span class="tag">基礎課程二合一：兩堂課合在一起</span>
+    <p>這是兩堂課加在一起：第一堂 LINE AI 串接（行事曆、待辦），加上第二堂雲端硬碟串接。</p>
+  </div>
+  <div class="op copy reveal"><span class="tag">上課會拿到什麼</span>
+    <p>・線上工作坊兩小時，帶大家實際操作</p>
+    <p>・錄影回放，不用擔心跟不上</p>
+    <p>・技能包，拿到就可以直接用</p>
+    <p>・老師的講義</p>
+  </div>
+  <div class="shot reveal"><figure><a class="zoom" href="assets/line-workshop/workflow.jpg" ><img src="assets/line-workshop/workflow.jpg" alt="群組一句話，自動進行事曆和待辦" loading="lazy"></a></figure><p class="hint">點圖看大圖</p></div>
+  <div class="op copy reveal"><span class="tag">第一堂：LINE AI 串接（行事曆、待辦）</span>
+    <p>這堂課教你怎麼透過 AI 去串接其他工具，打造一個工作流程。</p>
+    <p>範例用的是大家最常見的 LINE 群組：把群組對話和行事曆串接起來。群組裡有人說要改時間、交代事情，就會自動連到你的行事曆和待辦，不用怕忘記事情。</p>
+    <p>・搞懂什麼是 API、MCP、Agent 怎麼用</p>
+    <p>・把 LINE 群組和行事曆、待辦串起來</p>
+  </div>
+  <div class="shot reveal"><figure><a class="zoom" href="assets/line-workshop/conflict.jpg" ><img src="assets/line-workshop/conflict.jpg" alt="改時間，先幫你查撞期" loading="lazy"></a></figure><p class="hint">點圖看大圖</p></div>
+  <div class="shot reveal"><figure><a class="zoom" href="assets/line-workshop/drive.jpg" ><img src="assets/line-workshop/drive.jpg" alt="檔案自動存進雲端，要找直接問 AI" loading="lazy"></a></figure><p class="hint">點圖看大圖</p></div>
+  <div class="op copy reveal"><span class="tag">第二堂：雲端硬碟串接</span>
+    <p>群組裡的照片、影片、檔案，直接存到你自己的 Google 雲端硬碟。不用擔心檔案錯過，也不用擔心過一陣子就過期消失，要找的時候還可以直接叫 AI 幫你找。</p>
+    <p>・Google 那邊要怎麼設定：開專案、打開雲端硬碟的 API、授權同意畫面、授權</p>
+    <p>・授權同意畫面為什麼一定要切成正式版（沒切七天後會失效）</p>
+    <p>・把 LINE 群組和雲端硬碟串起來，每個群組一個資料夾</p>
+  </div>
+  <div class="op copy reveal"><span class="tag">適合誰</span>
+    <p>・很忙的人</p>
+    <p>・群組很多的人</p>
+    <p>・希望 AI 幫你管群組、管行事曆、確認有沒有撞期的人</p>
+  </div>
+  <div class="shot reveal"><figure><a class="zoom" href="assets/line-workshop/more-tools.jpg" ><img src="assets/line-workshop/more-tools.jpg" alt="學會串接，之後自己接更多工具" loading="lazy"></a></figure><p class="hint">點圖看大圖</p></div>
+  <div class="op copy reveal"><span class="tag">學會之後</span>
+    <p>學會這套串接方法，之後你還可以自己再串更多工具。</p>
+  </div>
+  <div class="op copy reveal"><span class="tag">課程資訊</span>
+    <p>・11/8（日）14:00–16:00 線上工作坊</p>
+    <p>・有錄影回放，送技能包與講義</p>
+    <p>・限 99 人</p>
+    <p>・ChatGPT、Gemini 都可以用</p>
+    <p>・10/31 講座價 NT$680，11/1 到 11/8 開課前特價 NT$880，第一次上完之後恢復原價</p>
+    <p>・課程說明與操作畫面：<a href="https://lyca-lineai-dpwu9o.pages.dev/#course" target="_blank" rel="noopener" style="color:var(--accent-on-dark);word-break:break-all">https://lyca-lineai-dpwu9o.pages.dev/#course</a></p>
+  </div>
+  <a href="https://portaly.cc/Jiang_Yude/product/8q555HyTgPSaHzJpS090" class="btn reveal" target="_blank" rel="noopener">真棒，我要這個！</a>
+  <details class="classroom-detail reveal d4"><summary>課堂細節：上課時怎麼介紹這堂工作坊</summary>
+    <p>「坊間有教蠻多 LINE 怎麼去設定的方法，但我這個是針對 AI Agent 的工作流，一整套 AI Agent 的工作流，再串接 LINE。因為我發現很多時候大家的資料都卡在 LINE 裡面拿不出來，拿不出來其實很難做後續的應用。」</p>
+    <p>「我會教大家怎麼樣把 LINE 裡面的東西透過 API 串出來，接到我們的 AI 裡面。第二個也可以去接雲端硬碟，像 LINE 現在一個禮拜就過期了。」</p>
+    <p>「有錄影回放，所以不用擔心老師講得太快怎麼辦，我會一步一步一個細節去講清楚。會有講義，甚至我有配好的技能包會給大家。」</p>
+    <p>「這次上完課之後，我會把各種 LINE AI 應用直接做成預錄線上課，一個單元課程是 500，這個是兩個單元：AI 串接行事曆，加 AI 串接 Google 雲端硬碟。」</p>
+  </details>
+</div></section>
+
+<section id="act-23a" data-bg="8"><div class="wrap">
+  <div class="act-cap reveal">ACT 24 · 課堂 QA</div>
+  <h2 class="display sm reveal">現場學員問的三題</h2>
+  <div class="op copy reveal"><span class="tag">Q1 · 今天講的 Gemini 一定要付費版嗎？</span>
+    <p>不用。今天的內容免費版 Gemini 都可以用；LINE 串接工作坊鎖定 Google 家的服務（Gmail、行事曆、待辦、雲端硬碟），免費版 Gemini 也可以串。</p>
+    <p>ChatGPT 要 690 的方案才能自動串接。免費版可以讀 Gmail，但 Google 文件、檔案存取被鎖住。</p>
+  </div>
+  <div class="op copy reveal"><span class="tag">Q2 · LINE 工作坊可以把工作流放進行事曆嗎？</span>
+    <p>可以，直接接到行事曆。手機能上網頁版的 Gemini 或 ChatGPT 就能做；建議有訂 690 的，能串的工具比較多。沒有也可以接，只是比較辛苦，會手把手教。</p>
+  </div>
+  <div class="op copy reveal"><span class="tag">Q3 · Grok Bot 可以呼叫 ChatGPT 或 Gemini 嗎？</span>
+    <p>Grok Bot 裡面內建一台電腦，可以直接安裝 Claude Code、Codex 的終端機版本。</p>
+  </div>
+  <details class="classroom-detail reveal d4"><summary>課堂細節：Q1 老師怎麼回答</summary>
+    <p>「我都是鎖定 Google 家的服務，所以在 Google 的條件下，Gemini 免費就可以串接。GPT 用戶需要 690 才可以自動串接，因為它要用到外掛程式才有辦法接。如果我希望 LINE 的檔案可以自動備存，GPT 版本要 690，Gemini 免費版就可以使用了。」</p>
+    <p>「之後更進階的應用，就建議一定要是桌面版、有付費的 Agent，基本上工具都是可以通的，會簡單非常多。最基礎的工具串接原理其實都一樣：什麼叫做 API、什麼是 MCP，AI 跟工具之間怎麼直接互動。新的工具出來了，我學不會怎麼辦？叫 AI 學，叫 AI 操作。」</p>
+  </details>
+  <details class="classroom-detail reveal d4"><summary>課堂細節：Q3 老師怎麼回答，與雲端化</summary>
+    <p>「我最終的組織圖會是 Grok Bot 操作我的 Claude Code，再由它派工給其他的 AI。它真的是一個很好的派工窗口。」</p>
+    <p>「我 2023 年玩 ChatGPT 玩了一整年，2024 年就意識到，我應該要有一個資料夾，把我所有的知識經驗裝在裡面，哪個 AI 好用我就餵給哪個 AI，不用一個一個重新訓練。所以我嚴重綁定本地端。如果大家從現在開始建立規則、建立技能包，建議就是雲端化。」</p>
+  </details>
+</div></section>
+
+<div class="lb" id="lb" role="dialog" aria-label="放大圖片"><button class="lb-x" type="button">關閉 ✕</button><img alt=""></div>
+<script>
+(function(){
+  const lb=document.getElementById('lb'),im=lb.querySelector('img');
+  document.addEventListener('click',e=>{
+    const a=e.target.closest('a.zoom'); if(!a) return;
+    e.preventDefault(); im.src=a.getAttribute('href'); im.alt=(a.querySelector('img')||{}).alt||''; lb.classList.add('on'); document.body.style.overflow='hidden';
+  });
+  function close(){lb.classList.remove('on');document.body.style.overflow='';}
+  lb.addEventListener('click',close);
+  document.addEventListener('keydown',e=>{if(e.key==='Escape')close();});
+})();
+</script>
+<script>
+(function(){
+  document.body.classList.add('js-on');
+  const sections=[...document.querySelectorAll('section')];
+  const dots=[...document.querySelectorAll('.dot-indicator a')];
+  const nav=document.querySelector('.dot-indicator');
+  const progress=document.getElementById('progress');
+  const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(!reduce&&'IntersectionObserver' in window){
+    const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.querySelectorAll('.reveal').forEach(el=>el.classList.add('in'))}}),{threshold:0.12});
+    sections.forEach(s=>io.observe(s));
+  } else { document.querySelectorAll('.reveal').forEach(el=>el.classList.add('in')); }
+  const darkBgs=new Set(['7','8','9']);
+  function current(){
+    const mid=innerHeight/2;let idx=0;
+    sections.forEach((s,i)=>{const r=s.getBoundingClientRect();if(r.top<=mid)idx=i;});
+    dots.forEach((d,i)=>d.classList.toggle('active',i===idx));
+    document.body.classList.toggle('on-dark',darkBgs.has(sections[idx].dataset.bg));
+    const max=document.documentElement.scrollHeight-innerHeight;
+    progress.style.width=(max>0?scrollY/max*100:0)+'%';
+  }
+  let t;
+  addEventListener('scroll',()=>{current();nav.classList.add('scrolling');clearTimeout(t);t=setTimeout(()=>nav.classList.remove('scrolling'),1100);},{passive:true});
+  current();
+  document.querySelectorAll('.fs-ctl button').forEach(b=>b.addEventListener('click',()=>document.documentElement.style.setProperty('--fs',b.dataset.fs)));
+})();
+</script>
+</body>
+</html>
