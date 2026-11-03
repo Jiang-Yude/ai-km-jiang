@@ -23,6 +23,24 @@ window.ARTICLE_TAGS = {
 
 window.ARTICLES = [
   {
+    id: "ai-employee-ask-before-act",
+    url: "articles/ai-employee-ask-before-act/",
+    date: "2026-11-03",
+    updated: "2026-11-04",
+    title: "交辦給 AI 的事，為什麼總是做得跟我想的不一樣？｜先讓它分析、先問你、你拍板再動手",
+    problem: "丟一句話叫 AI 做事，結果常常方向只對一半，因為它沒看過全貌就動手。",
+    audience: "常交辦給 AI 的一人公司、上班族，以及幫團隊設計 AI 工作流程的人。",
+    summary: "拆開講兩套讓 AI 先看全貌再動手的方案。軟體工程師的做法：AI 先讀完整份程式碼，找出影響範圍、合併相近的單、寫成規格，再問產品經理和工程師，人拍板後才交給 Claude Code 或 Codex 實作。我的 AI 知識管理方案：AI 先讀規則主檔、技能包和知識庫，查得到的自己定，執行細節讓三家公司的 AI 投票，只有策略、改規則和只有我知道的事才問我。兩套對照，文末附交辦前可以直接貼的提示詞。",
+    tags: {
+      topic: ["AI工作流", "輔助決策", "提示詞設計"],
+      level: ["基礎"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["loop-engineering-guardrails", "ai-handoff-instructions", "opus-luna-model-division", "how-to-train-your-ai-employee", "caught-ai-slacking-into-rules", "rules-need-an-engine", "five-loops-content-line", "harness-to-loop", "loop-round-limit"]
+  },
+
+  {
     id: "ai-agent-gap-fde",
     url: "articles/ai-agent-gap-fde/",
     date: "2026-11-03",
@@ -359,7 +377,7 @@ window.ARTICLES = [
       content_type: ["觀點文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["rule-file-rebound", "ai-rule-file-slimming", "how-to-verify-ai-rule-changes", "what-is-loop-engineering", "copied-mechanism-is-no-mechanism", "caught-ai-slacking-into-rules", "ai-employee-tests-new-tools", "run-with-ai-first-then-script", "ai-worktree-disk-cleanup"],
+    related: ["rule-file-rebound", "ai-rule-file-slimming", "how-to-verify-ai-rule-changes", "what-is-loop-engineering", "copied-mechanism-is-no-mechanism", "caught-ai-slacking-into-rules", "ai-employee-tests-new-tools", "run-with-ai-first-then-script", "ai-worktree-disk-cleanup", "ai-employee-ask-before-act"],
     cover: { wide: "images/articles/rules-need-an-engine-cover.jpg" }
   },
 
@@ -834,7 +852,7 @@ window.ARTICLES = [
       content_type: ["案例文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["reevaluate-models-same-test", "ai-cp-value-calculus", "what-are-subagents", "long-answer-three-layers", "meeting-record-agent-workflow", "dual-track-planning-loop", "fixed-test-set-for-ai", "ai-schedule-wake-interval", "ai-customer-service-api-cost", "domain-and-account-ownership", "ai-model-token-efficiency", "ai-customer-service-model-retest"],
+    related: ["reevaluate-models-same-test", "ai-cp-value-calculus", "what-are-subagents", "long-answer-three-layers", "meeting-record-agent-workflow", "dual-track-planning-loop", "fixed-test-set-for-ai", "ai-schedule-wake-interval", "ai-customer-service-api-cost", "domain-and-account-ownership", "ai-model-token-efficiency", "ai-customer-service-model-retest", "ai-employee-ask-before-act"],
     cover: { wide: "images/articles/opus-luna-model-division-cover.jpg" }
   },
 
@@ -1499,7 +1517,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["what-is-loop-engineering", "what-is-graph-engineering", "ai-era-websites-for-agents", "inspiration-production-system"],
+    related: ["what-is-loop-engineering", "what-is-graph-engineering", "ai-era-websites-for-agents", "inspiration-production-system", "ai-employee-ask-before-act"],
     cover: { tall: "images/articles/five-loops-content-line-card-01.jpg" }
   },
 
@@ -1518,7 +1536,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["what-is-loop-engineering", "loop-engineering-guardrails", "prompt-to-loop-map", "eight-ai-system-concepts-2026", "cross-ai-review-both-wrong", "how-to-train-your-ai-employee", "loop-four-entries", "ai-slides-half-auto-google-slides", "ai-employees-manage-agents"],
+    related: ["what-is-loop-engineering", "loop-engineering-guardrails", "prompt-to-loop-map", "eight-ai-system-concepts-2026", "cross-ai-review-both-wrong", "how-to-train-your-ai-employee", "loop-four-entries", "ai-slides-half-auto-google-slides", "ai-employees-manage-agents", "ai-employee-ask-before-act"],
     cover: { wide: "images/articles/harness-to-loop-01.jpg" }
   },
 
@@ -1537,7 +1555,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["what-is-loop-engineering", "loop-engineering-guardrails", "after-ai-says-remembered", "dual-track-planning-loop", "what-is-graph-engineering", "ai-usage-audit", "loop-four-entries", "ai-schedule-wake-interval"],
+    related: ["what-is-loop-engineering", "loop-engineering-guardrails", "after-ai-says-remembered", "dual-track-planning-loop", "what-is-graph-engineering", "ai-usage-audit", "loop-four-entries", "ai-schedule-wake-interval", "ai-employee-ask-before-act"],
     cover: { wide: "images/articles/loop-round-limit-cover.jpg" }
   },
 
@@ -2640,7 +2658,7 @@ window.ARTICLES = [
       content_type: ["案例文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["handoff-continue-or-replace", "dual-track-planning-loop", "loop-engineering-guardrails", "how-to-train-your-ai-employee", "intent-first-prompting", "rule-file-rebound", "long-task-completion-rate", "session-messaging-reminder-layer", "audrey-tang-reverse-alignment", "ai-understands-ei-ha"]
+    related: ["handoff-continue-or-replace", "dual-track-planning-loop", "loop-engineering-guardrails", "how-to-train-your-ai-employee", "intent-first-prompting", "rule-file-rebound", "long-task-completion-rate", "session-messaging-reminder-layer", "audrey-tang-reverse-alignment", "ai-understands-ei-ha", "ai-employee-ask-before-act"]
   },
 
   {
@@ -2898,7 +2916,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["what-is-loop-engineering", "harness-mindset-for-bosses", "ai-loop-safety-recovery", "dual-track-planning-loop", "ai-handoff-instructions", "long-task-completion-rate", "meeting-into-verifiable-loop", "loop-round-limit", "how-to-verify-ai-rule-changes", "loop-four-entries", "ai-employee-tests-new-tools"]
+    related: ["what-is-loop-engineering", "harness-mindset-for-bosses", "ai-loop-safety-recovery", "dual-track-planning-loop", "ai-handoff-instructions", "long-task-completion-rate", "meeting-into-verifiable-loop", "loop-round-limit", "how-to-verify-ai-rule-changes", "loop-four-entries", "ai-employee-tests-new-tools", "ai-employee-ask-before-act"]
   },
 
   {
@@ -3413,7 +3431,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["strong-ai-models-knowledge-workflow-road", "questionnaire-to-slides-agent-workflow", "teacher-prep-knowledge-workflow", "own-ai-team-at-work", "agent-workflow-builds-automation", "line-group-ai-workflow", "elon-musk-live-skill", "codex-log-health-check", "how-ai-connects-software", "meeting-record-agent-workflow", "decision-ladder-non-programmer", "tidy-mess-before-consulting", "diary-driven-agent-3x4", "docs-as-system-design-agent", "what-is-loop-engineering", "map-is-not-the-territory", "intangible-assets-grow-by-sharing", "manage-ai-with-management-knowledge", "ai-handoff-instructions", "train-your-ai-agent-editor", "ai-that-knows-you", "personal-studio-vs-solo-company", "cli-api-mcp-computer-use", "knowledge-as-employee", "mika-to-laika-product-character-design", "agent-native-tools-software-interface", "ai-tools-professional-judgment", "answer-to-action-enterprise-ai-agent", "teach-ai-not-learn-ai", "talent-vs-expertise", "ai-employee-four-levels", "copied-mechanism-is-no-mechanism", "eight-ai-system-concepts-2026", "how-to-verify-ai-rule-changes", "start-from-one-persons-problem", "ai-slides-half-auto-google-slides", "slides-by-audience-sop"]
+    related: ["strong-ai-models-knowledge-workflow-road", "questionnaire-to-slides-agent-workflow", "teacher-prep-knowledge-workflow", "own-ai-team-at-work", "agent-workflow-builds-automation", "line-group-ai-workflow", "elon-musk-live-skill", "codex-log-health-check", "how-ai-connects-software", "meeting-record-agent-workflow", "decision-ladder-non-programmer", "tidy-mess-before-consulting", "diary-driven-agent-3x4", "docs-as-system-design-agent", "what-is-loop-engineering", "map-is-not-the-territory", "intangible-assets-grow-by-sharing", "manage-ai-with-management-knowledge", "ai-handoff-instructions", "train-your-ai-agent-editor", "ai-that-knows-you", "personal-studio-vs-solo-company", "cli-api-mcp-computer-use", "knowledge-as-employee", "mika-to-laika-product-character-design", "agent-native-tools-software-interface", "ai-tools-professional-judgment", "answer-to-action-enterprise-ai-agent", "teach-ai-not-learn-ai", "talent-vs-expertise", "ai-employee-four-levels", "copied-mechanism-is-no-mechanism", "eight-ai-system-concepts-2026", "how-to-verify-ai-rule-changes", "start-from-one-persons-problem", "ai-slides-half-auto-google-slides", "slides-by-audience-sop", "ai-employee-ask-before-act"]
   },
 
   {
@@ -3634,7 +3652,7 @@ window.ARTICLES = [
       content_type: ["案例文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: "https://vocus.cc/salon/Jiang_Coach" },
-    related: ["codex-only-auto-worklog", "decision-ladder-non-programmer", "publish-gate", "session-messaging-reminder-layer", "cognitive-debt", "start-with-a-wrong-draft", "ai-said-it-watched-the-video", "cross-ai-review-both-wrong", "how-to-verify-ai-rule-changes", "ai-adoption-raise-not-install", "pstack-knowledge-workflow"]
+    related: ["codex-only-auto-worklog", "decision-ladder-non-programmer", "publish-gate", "session-messaging-reminder-layer", "cognitive-debt", "start-with-a-wrong-draft", "ai-said-it-watched-the-video", "cross-ai-review-both-wrong", "how-to-verify-ai-rule-changes", "ai-adoption-raise-not-install", "pstack-knowledge-workflow", "ai-employee-ask-before-act"]
   },
 
   {
