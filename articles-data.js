@@ -75,7 +75,8 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["ai-batch-work-without-seeing-data", "domain-and-account-ownership", "ai-customer-service-api-cost", "let-ai-do-the-setup"]
+    related: ["ai-batch-work-without-seeing-data", "domain-and-account-ownership", "ai-customer-service-api-cost", "let-ai-do-the-setup"],
+    cover: { wide: "images/articles/api-key-dont-paste-to-ai-cover.jpg" }
   },
 
   {
