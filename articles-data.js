@@ -42,6 +42,24 @@ window.ARTICLES = [
   },
 
   {
+    id: "hormozi-stop-chasing-ai",
+    url: "articles/hormozi-stop-chasing-ai/",
+    date: "2026-11-03",
+    title: "AI 時代創業，什麼才是別人拿不走的護城河？｜Alex Hormozi 上 The Diary Of A CEO 訪談重點整理：AI 用在哪、留存、定價、信譽",
+    problem: "AI 讓每個人都能很快做出產品和內容，不確定自己的生意還剩什麼優勢，也不確定 AI 該用在公司的哪個地方。",
+    audience: "正在想要不要做 AI 公司或全面自動化的創業者、一人公司與接案者、幫客戶規劃經營方向的顧問。",
+    summary: "整理 Alex Hormozi 上 The Diary Of A CEO 的 2 小時 22 分訪談，依主題重排成六部並標時間碼：能自動化不代表該自動化、最難的思考不要交給 AI、AI 時代價值在承擔決定的人、真實與信譽是護城河、沒有成果就記錄努力、價值方程式、留存比行銷重要、定價看客戶願意付多少、價格加一兩個零只需要五個客戶、選服務對象、招人和找客戶是同一條管線、安排條件不靠說服、恐懼只存在模糊裡、推進還是轉向，以及伴侶、母親過世與快樂。附台上數字的查證結果與一段先找瓶頸再決定 AI 用在哪的提示詞。",
+    tags: {
+      topic: ["AI應用", "輔助決策", "品牌資產"],
+      level: ["基礎"],
+      content_type: ["觀點文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["delete-before-automate", "company-shape-is-the-moat", "ai-tools-professional-judgment", "personal-studio-vs-solo-company", "intangible-assets-grow-by-sharing", "audrey-tang-reverse-alignment", "ai-delegators-optimism"],
+    cover: { wide: "images/articles/hormozi-stop-chasing-ai/cover.jpg" }
+  },
+
+  {
     id: "course-video-multimodal-search",
     url: "articles/course-video-multimodal-search/",
     date: "2026-11-01",
@@ -797,7 +815,7 @@ window.ARTICLES = [
       content_type: ["觀點文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["one-sentence-video-to-deep-article", "design-for-ai-errors", "ai-custom-work-compound", "intangible-assets-grow-by-sharing", "ai-handoff-instructions", "ai-data-red-lines", "ai-delegators-optimism", "cathay-tech-conference-2026", "answer-to-action-enterprise-ai-agent", "elon-musk-live-skill"],
+    related: ["one-sentence-video-to-deep-article", "design-for-ai-errors", "ai-custom-work-compound", "intangible-assets-grow-by-sharing", "ai-handoff-instructions", "ai-data-red-lines", "ai-delegators-optimism", "cathay-tech-conference-2026", "answer-to-action-enterprise-ai-agent", "elon-musk-live-skill", "hormozi-stop-chasing-ai"],
     cover: { wide: "images/articles/audrey-tang-reverse-alignment/cover.jpg" }
   },
 
@@ -987,7 +1005,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["vibe-coding-ten-half-products", "elon-musk-live-skill", "ai-vs-script-four-situations", "dont-learn-ai-tools", "ai-adoption-start-with-one-workflow", "first-principles-money-soup", "ai-adoption-raise-not-install", "token-money-worth-doing", "run-with-ai-first-then-script"],
+    related: ["vibe-coding-ten-half-products", "elon-musk-live-skill", "ai-vs-script-four-situations", "dont-learn-ai-tools", "ai-adoption-start-with-one-workflow", "first-principles-money-soup", "ai-adoption-raise-not-install", "token-money-worth-doing", "run-with-ai-first-then-script", "hormozi-stop-chasing-ai"],
     cover: { tall: "images/articles/delete-before-automate-cover.jpg" }
   },
 
@@ -2455,7 +2473,7 @@ window.ARTICLES = [
       content_type: ["觀點文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["ai-capability-tiers", "how-to-train-your-ai-employee", "vibe-coding-ten-half-products", "strong-ai-models-knowledge-workflow-road", "ai-cp-value-calculus", "ai-employee-four-levels", "use-more-ai-not-enough", "agi-work-and-discovery", "meta-prompt-thirty-versions", "dont-learn-ai-tools"]
+    related: ["ai-capability-tiers", "how-to-train-your-ai-employee", "vibe-coding-ten-half-products", "strong-ai-models-knowledge-workflow-road", "ai-cp-value-calculus", "ai-employee-four-levels", "use-more-ai-not-enough", "agi-work-and-discovery", "meta-prompt-thirty-versions", "dont-learn-ai-tools", "hormozi-stop-chasing-ai"]
   },
 
   {
@@ -2529,7 +2547,7 @@ window.ARTICLES = [
       content_type: ["觀點文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["company-shape-is-the-moat", "how-to-train-your-ai-employee", "ai-mvp-validation-before-product", "own-ai-team-at-work", "intangible-assets-grow-by-sharing", "first-principles-money-soup"],
+    related: ["company-shape-is-the-moat", "how-to-train-your-ai-employee", "ai-mvp-validation-before-product", "own-ai-team-at-work", "intangible-assets-grow-by-sharing", "first-principles-money-soup", "hormozi-stop-chasing-ai"],
     cover: { wide: "images/articles/mika-solo-company-summary.jpg" }
   },
 
@@ -3006,7 +3024,7 @@ window.ARTICLES = [
       content_type: ["趨勢文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["what-is-loop-engineering", "my-three-loops", "agent-workflow-builds-automation", "docs-as-system-design-agent", "decision-ladder-non-programmer", "ai-capability-tiers", "dual-centaur-meeting", "let-ai-do-the-setup", "audrey-tang-reverse-alignment"]
+    related: ["what-is-loop-engineering", "my-three-loops", "agent-workflow-builds-automation", "docs-as-system-design-agent", "decision-ladder-non-programmer", "ai-capability-tiers", "dual-centaur-meeting", "let-ai-do-the-setup", "audrey-tang-reverse-alignment", "hormozi-stop-chasing-ai"]
   },
 
   {
@@ -3042,7 +3060,7 @@ window.ARTICLES = [
       content_type: ["觀點文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["intangible-assets-grow-by-sharing", "ai-king-off-battlefield", "spacex-ipo-musk-trillionaire-knowledge-work", "ai-capability-tiers", "own-ai-team-at-work", "manage-ai-with-management-knowledge", "personal-studio-vs-solo-company", "answer-in-person-or-ai", "start-from-one-persons-problem"]
+    related: ["intangible-assets-grow-by-sharing", "ai-king-off-battlefield", "spacex-ipo-musk-trillionaire-knowledge-work", "ai-capability-tiers", "own-ai-team-at-work", "manage-ai-with-management-knowledge", "personal-studio-vs-solo-company", "answer-in-person-or-ai", "start-from-one-persons-problem", "hormozi-stop-chasing-ai"]
   },
 
   {
@@ -3152,7 +3170,7 @@ window.ARTICLES = [
       content_type: ["觀點文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["how-to-train-your-ai-employee", "docs-as-system-design-agent", "company-shape-is-the-moat", "personal-studio-vs-solo-company", "knowledge-as-employee", "audrey-tang-reverse-alignment"]
+    related: ["how-to-train-your-ai-employee", "docs-as-system-design-agent", "company-shape-is-the-moat", "personal-studio-vs-solo-company", "knowledge-as-employee", "audrey-tang-reverse-alignment", "hormozi-stop-chasing-ai"]
   },
 
   {
