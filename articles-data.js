@@ -42,6 +42,44 @@ window.ARTICLES = [
   },
 
   {
+    id: "ai-worktree-disk-cleanup",
+    url: "articles/ai-worktree-disk-cleanup/",
+    date: "2026-11-03",
+    updated: "2026-11-03",
+    title: "在電腦裡用 Agent 跑任務，硬碟突然就爆滿了？｜工作樹做完不會自己消失，先檢查五件事再清",
+    problem: "用 AI 寫程式一陣子，硬碟突然不夠用，找不到是什麼佔掉的；AI 開的工作樹（worktree）做完不會自己消失，又怕刪了掉東西。",
+    audience: "用 Claude Code、Codex 這類 AI 做網站或小工具，讓 AI 開過工作樹的人。",
+    summary: "AI 寫程式時會把專案複製成工作樹，讓兩個 AI 同時改不互相蓋掉，但做完不會自己收。我的電腦查出 211 份、48.1GB，官網一篇文章一份就佔了 165 份。用五個檢查點判斷能不能清：沒有沒存的改動、沒有被 gitignore 的檔案、最新進度已推上遠端、沒被鎖、7 天沒動。清法是先試 2 份、整個搬垃圾桶、分支不刪，清掉 127 份後剩 84 份、20.3GB。另找到 27 份沒推上遠端又超過 30 天沒動的，其中 22 份的內容不在主線上。最後把盤點掛進每月知識庫健檢，附一段可直接貼給 AI 的盤點提示詞。",
+    tags: {
+      topic: ["AI工作流", "工作流程"],
+      level: ["基礎"],
+      content_type: ["案例文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["parallel-site-editing", "rules-need-an-engine", "laptop-desktop-webpage-sync-icloud-git", "delete-before-automate"],
+    cover: { wide: "images/articles/ai-worktree-disk-cleanup-cover.jpg" }
+  },
+
+  {
+    id: "api-key-dont-paste-to-ai",
+    url: "articles/api-key-dont-paste-to-ai/",
+    date: "2026-11-03",
+    updated: "2026-11-03",
+    title: "API key 可以貼給 AI 嗎？｜存進 Mac 鑰匙圈，讓程式自己去拿",
+    problem: "用 AI 寫程式或接 AI 服務時被要求提供 API key，不知道能不能直接貼進對話。",
+    audience: "用 AI 寫程式、接客服、串自動化的非工程師，以及幫客戶規劃 AI 工具的顧問。",
+    summary: "修正一句常見說法：人很容易洩露密碼，AI 也會。列出 AI 讓 API key 外洩的三個管道（貼進對話、寫進程式推上 GitHub、測試時印在畫面上），附 GitGuardian 2025 與 Verizon DBIR 數字。在 Mac 上用鑰匙圈存 key、讓程式自己讀取的三個步驟，含正確的 security 指令寫法與一段可直接貼給 AI 的提示詞。再加上花費上限、一個專案一把 key、外洩先停用三道防線，並逐條判斷網路常見建議哪些可以照做。",
+    tags: {
+      topic: ["AI應用", "提示詞設計"],
+      level: ["零基礎入門"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["ai-batch-work-without-seeing-data", "domain-and-account-ownership", "ai-customer-service-api-cost", "let-ai-do-the-setup"],
+    cover: { wide: "images/articles/api-key-dont-paste-to-ai-cover.jpg" }
+  },
+
+  {
     id: "hormozi-stop-chasing-ai",
     url: "articles/hormozi-stop-chasing-ai/",
     date: "2026-11-03",
@@ -321,7 +359,7 @@ window.ARTICLES = [
       content_type: ["觀點文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["rule-file-rebound", "ai-rule-file-slimming", "how-to-verify-ai-rule-changes", "what-is-loop-engineering", "copied-mechanism-is-no-mechanism", "caught-ai-slacking-into-rules", "ai-employee-tests-new-tools", "run-with-ai-first-then-script"],
+    related: ["rule-file-rebound", "ai-rule-file-slimming", "how-to-verify-ai-rule-changes", "what-is-loop-engineering", "copied-mechanism-is-no-mechanism", "caught-ai-slacking-into-rules", "ai-employee-tests-new-tools", "run-with-ai-first-then-script", "ai-worktree-disk-cleanup"],
     cover: { wide: "images/articles/rules-need-an-engine-cover.jpg" }
   },
 
@@ -1005,7 +1043,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["vibe-coding-ten-half-products", "elon-musk-live-skill", "ai-vs-script-four-situations", "dont-learn-ai-tools", "ai-adoption-start-with-one-workflow", "first-principles-money-soup", "ai-adoption-raise-not-install", "token-money-worth-doing", "run-with-ai-first-then-script", "hormozi-stop-chasing-ai"],
+    related: ["vibe-coding-ten-half-products", "elon-musk-live-skill", "ai-vs-script-four-situations", "dont-learn-ai-tools", "ai-adoption-start-with-one-workflow", "first-principles-money-soup", "ai-adoption-raise-not-install", "token-money-worth-doing", "run-with-ai-first-then-script", "hormozi-stop-chasing-ai", "ai-worktree-disk-cleanup"],
     cover: { tall: "images/articles/delete-before-automate-cover.jpg" }
   },
 
@@ -1688,7 +1726,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["what-is-graph-engineering", "webnode-to-cloudflare-pages", "copied-mechanism-is-no-mechanism", "what-are-subagents", "one-sentence-ai-website-workflow", "ai-employees-manage-agents", "two-computers-combine-data-icloud"],
+    related: ["what-is-graph-engineering", "webnode-to-cloudflare-pages", "copied-mechanism-is-no-mechanism", "what-are-subagents", "one-sentence-ai-website-workflow", "ai-employees-manage-agents", "two-computers-combine-data-icloud", "ai-worktree-disk-cleanup"],
     cover: { wide: "images/articles/parallel-site-editing-cover.jpg" }
   },
 
@@ -2750,7 +2788,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["docs-as-system-design-agent", "ai-loop-safety-recovery", "session-messaging-reminder-layer", "github-vercel-cloudflare-compare", "who-can-see-your-site", "two-computers-combine-data-icloud"]
+    related: ["docs-as-system-design-agent", "ai-loop-safety-recovery", "session-messaging-reminder-layer", "github-vercel-cloudflare-compare", "who-can-see-your-site", "two-computers-combine-data-icloud", "ai-worktree-disk-cleanup"]
   },
 
   {
