@@ -3,6 +3,7 @@
    維護：新文章上稿時補一條；訪客搜尋 log 發現沒接住的問法，第一線修法＝來這裡補別名。
    key＝articles-data.js 的文章 id。 */
 window.SEARCH_ALIASES = {
+  "api-key-dont-paste-to-ai": ["為什麼不讓AI知道密碼","AI會不會洩露密碼","AI不會洩露密碼嗎","API key可以貼給ChatGPT嗎","API key可以貼給Claude嗎","API key貼給AI安全嗎","AI跟我要API key","API key要怎麼給AI","API key放哪裡","API key怎麼保管","Mac怎麼存API key","Mac鑰匙圈","Keychain存API key","macOS Keychain","security add-generic-password","安全視窗輸入密碼","API key不小心貼給AI怎麼辦","API key外洩怎麼辦","API key推上GitHub","金鑰寫進程式","env檔要加gitignore","API花費上限","OpenAI花費上限","Anthropic花費上限","一個專案一把key","讓程式自己去拿key","Claude Code讀得到鑰匙圈嗎"],
   "know-ai-assign-ai": ["Claude 做簡報美感有比較好嗎","Claude 簡報好看嗎","Claude 會生圖嗎","Claude 生的圖不好看","ChatGPT 生圖比較好看","AI 分工 簡報","模型分工 工作流","哪個 AI 適合做什麼","Gemini 會幻覺嗎","Gemini 幻覺怎麼辦","Gemini 查資料準嗎","Google 搜尋接地","Grok 爬 X","GPT Astra 3D 模型","GPT Dots 秘書","Haiku 適合做什麼","Haiku 5.5","子代理是什麼","Opus 規劃 Haiku 執行","爬留言 統整意見","客服模型 選型 成本","客服用 Haiku 還是 Sonnet","知人善用 AI","用 AI 跟用人一樣","AI 員工怎麼分工","讓對的 AI 做對的事"],
   "ai-employee-tests-new-tools": ["叫AI試新工具","AI幫我測工具","看到新AI工具想試","要不要去GitHub找工具","只要給指令就好嗎","Agent自己裝工具","AI員工自己裝自己測","虛擬環境是什麼","venv是什麼","Python虛擬環境","裝工具會不會弄壞電腦","套件版本打架","虛擬環境跟沙盒差在哪","授權AI到哪裡","AI什麼時候要停下來問我","不用審核","標註即授權","朵拉測試","Indra OCR","Mac內建OCR","OCR比較","Mac OCR準不準","試工具提示詞","AI幫我裝軟體","AI工具評估","工具選型怎麼測","AI員工授權範圍"],
   "ai-random-true-random": ["AI 抽獎 公平","ChatGPT 抽籤","叫 AI 抽獎","線上抽籤工具","隨機分組","AI 分組公平嗎","AI 點名","AI 隨機抽人","叫AI選一個數字","AI 選數字都選 7","為什麼 AI 都選 7","AI 最愛 7","AI 不是真的隨機","你以為的隨機不是隨機","AI 隨機 7","LLM random number bias","抽獎 公平 證明","AI 抽獎 客訴","抽籤程式","這個坑先知道比較好","叫 AI 抽籤會偏"],

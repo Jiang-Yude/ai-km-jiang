@@ -61,6 +61,24 @@ window.ARTICLES = [
   },
 
   {
+    id: "api-key-dont-paste-to-ai",
+    url: "articles/api-key-dont-paste-to-ai/",
+    date: "2026-11-03",
+    updated: "2026-11-03",
+    title: "API key 可以貼給 AI 嗎？｜存進 Mac 鑰匙圈，讓程式自己去拿",
+    problem: "用 AI 寫程式或接 AI 服務時被要求提供 API key，不知道能不能直接貼進對話。",
+    audience: "用 AI 寫程式、接客服、串自動化的非工程師，以及幫客戶規劃 AI 工具的顧問。",
+    summary: "修正一句常見說法：人很容易洩露密碼，AI 也會。列出 AI 讓 API key 外洩的三個管道（貼進對話、寫進程式推上 GitHub、測試時印在畫面上），附 GitGuardian 2025 與 Verizon DBIR 數字。在 Mac 上用鑰匙圈存 key、讓程式自己讀取的三個步驟，含正確的 security 指令寫法與一段可直接貼給 AI 的提示詞。再加上花費上限、一個專案一把 key、外洩先停用三道防線，並逐條判斷網路常見建議哪些可以照做。",
+    tags: {
+      topic: ["AI應用", "提示詞設計"],
+      level: ["零基礎入門"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["ai-batch-work-without-seeing-data", "domain-and-account-ownership", "ai-customer-service-api-cost", "let-ai-do-the-setup"]
+  },
+
+  {
     id: "hormozi-stop-chasing-ai",
     url: "articles/hormozi-stop-chasing-ai/",
     date: "2026-11-03",
