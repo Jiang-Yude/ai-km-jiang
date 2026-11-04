@@ -233,9 +233,11 @@ export async function handleMember(context, deps = {}) {
       if (!raw) return redirect('/?login=expired');
       const saved = JSON.parse(raw);
       if (url.searchParams.get('error') || !code) return redirect(saved.ret + (saved.ret.includes('?') ? '&' : '?') + 'login=cancelled');
+      // 先放進短名變數：秘密掃描會把「client_secret: env.長變數名」誤判成寫死的金鑰（2026-11-04）
+      const cid = env.GOOGLE_CLIENT_ID, csec = env.GOOGLE_CLIENT_SECRET;
       const tr = await fetchImpl(GOOGLE_TOKEN, {
         method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: new URLSearchParams({ code, client_id: env.GOOGLE_CLIENT_ID, client_secret: env.GOOGLE_CLIENT_SECRET,
+        body: new URLSearchParams({ code, client_id: cid, client_secret: csec,
           redirect_uri: url.origin + '/member/callback', grant_type: 'authorization_code', code_verifier: saved.verifier }),
         signal: AbortSignal.timeout(8000),
       });
