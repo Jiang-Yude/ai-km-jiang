@@ -11,12 +11,18 @@ CF_SITE_MODE = "preview"
 
 [env.preview.vars]
 CF_SITE_MODE = "preview"
+MEMBER_ENABLED = "0"
+GOOGLE_CLIENT_ID = ""
 LLM_PRIMARY = "claude"
 CLAUDE_MODEL = "claude-haiku-5-5"
 CLAUDE_EFFORT = "medium"
 
 [env.production.vars]
 CF_SITE_MODE = "production"
+# 會員登入與留言板（2026-11-04）：拿到 Google OAuth 用戶端 ID 後填 GOOGLE_CLIENT_ID、MEMBER_ENABLED 改 "1" 再發布。
+# GOOGLE_CLIENT_SECRET 與 MEMBER_ADMIN_EMAILS 是機密，不寫在這裡，用 wrangler pages secret put 設定（見 docs/member-setup.md）。
+MEMBER_ENABLED = "0"
+GOOGLE_CLIENT_ID = ""
 CF_PROD_KEYS = "original"
 # 咪卡客服模型切換點：claude＝先 Claude 失敗換 OpenAI；改 openai 再發布即退回
 LLM_PRIMARY = "claude"
