@@ -6,7 +6,10 @@
 //   GET  /member/login?return=/articles/x/  → 轉去 Google 登入（授權碼流程＋PKCE＋state＋nonce）
 //   GET  /member/callback               → Google 回來，驗 id_token 簽章與欄位，建立 session
 //   GET  /member/me                     → 目前登入者（公開欄位）
-//   POST /member/profile                → 改暱稱與頭像（Google 照片／首字／12 個圖示，不開放上傳）
+//   POST /member/profile                → 改暱稱與頭像（自己上傳／Google 照片／首字／12 個圖示）
+//   POST /member/avatar                 → 上傳頭像（瀏覽器先縮成 256px；只收 JPEG／PNG／WebP、300KB 內）
+//   GET  /member/avatar/<pid>           → 讀頭像（隨機代號，不露 Google 識別碼）
+//   POST /member/comments/reset-avatar  → 管理員移除某則留言作者的頭像
 //   POST /member/logout                 → 登出
 //   GET  /member/comments?page=/articles/x/  → 列出留言（任何人可看）
 //   POST /member/comments               → 新增留言（登入）
@@ -163,9 +166,13 @@ async function isAdmin(u, cfg) {
   if (!cfg.adminHashes) cfg.adminHashes = await Promise.all(cfg.admins.map(emailHash));
   return cfg.adminHashes.includes(u.eh);
 }
-// 暱稱與頭像（2026-11-04 江江：讓大家可以取暱稱、換頭像）。頭像不開放上傳（免審圖、免另開儲存），三選一：Google 照片、名字首字、12 個圖示
+// 暱稱與頭像（2026-11-04 江江：讓大家可以取暱稱、換頭像、上傳自己的照片）。頭像四種：自己上傳、Google 照片、名字首字、12 個圖示。
+// 上傳：瀏覽器先裁成正方形、縮成 256px 再送（順便去掉 EXIF 位置資訊），伺服器只收 JPEG／PNG／WebP、300KB 以內，存在 Upstash；
+// 公開網址用隨機代號 pid，不露出 Google 識別碼；管理員可以一鍵移除某人的頭像。
 export const AVATAR_EMOJIS = ['🐱', '🐶', '🦊', '🐼', '🐻', '🐰', '🦉', '🐢', '🐳', '🌻', '☕', '📚'];
-const AVATARS = ['google', 'initial', ...AVATAR_EMOJIS.map(e => 'e:' + e)];
+const AVATARS = ['upload', 'google', 'initial', ...AVATAR_EMOJIS.map(e => 'e:' + e)];
+const AVATAR_MAX = 300 * 1024;
+const PID_RE = /^[A-Za-z0-9_-]{12}$/;
 const RESERVED_NICK = /江江|江昱德|昱德|管理員|管理者|官方|站長|客服|咪卡|admin|jiangyude/i;
 const NICK_MAX = 20;
 const LIMIT_PROFILE_DAY = 10;
@@ -173,11 +180,24 @@ function display(u) {
   if (!u) return null;
   let avatar = AVATARS.includes(u.avatar) ? u.avatar : (u.picture ? 'google' : 'initial');
   if (avatar === 'google' && !u.picture) avatar = 'initial';
-  return { name: u.nick || u.name, picture: avatar === 'google' ? u.picture : '', emoji: avatar.startsWith('e:') ? avatar.slice(2) : '', avatar };
+  if (avatar === 'upload' && !(u.pid && u.av)) avatar = 'initial';
+  const picture = avatar === 'google' ? u.picture : avatar === 'upload' ? `/member/avatar/${u.pid}?v=${u.av}` : '';
+  return { name: u.nick || u.name, picture, emoji: avatar.startsWith('e:') ? avatar.slice(2) : '', avatar };
 }
-const publicUser = async (u, cfg) => u ? ({ ...display(u), nick: u.nick || '', googleName: u.name, googlePicture: u.picture || '', admin: await isAdmin(u, cfg) }) : null;
+const publicUser = async (u, cfg) => u ? ({ ...display(u), nick: u.nick || '', googleName: u.name, googlePicture: u.picture || '',
+  uploaded: u.pid && u.av ? `/member/avatar/${u.pid}?v=${u.av}` : '', admin: await isAdmin(u, cfg) }) : null;
+
+// 只認真正的圖片檔頭，偽裝成圖片的 HTML／SVG 一律擋下
+export function sniffImage(bytes) {
+  const b = bytes;
+  if (b.length > 3 && b[0] === 0xff && b[1] === 0xd8 && b[2] === 0xff) return 'image/jpeg';
+  if (b.length > 8 && b[0] === 0x89 && b[1] === 0x50 && b[2] === 0x4e && b[3] === 0x47 && b[4] === 0x0d && b[5] === 0x0a && b[6] === 0x1a && b[7] === 0x0a) return 'image/png';
+  if (b.length > 12 && String.fromCharCode(...b.slice(0, 4)) === 'RIFF' && String.fromCharCode(...b.slice(8, 12)) === 'WEBP') return 'image/webp';
+  return '';
+}
+const b64ToBytes = s => Uint8Array.from(atob(s), c => c.charCodeAt(0));
 function cleanNick(text) {
-  return String(text || '').replace(/[\u0000-\u001f\u007f​-‏‪-‮⁦-⁩<>]/g, '').replace(/\s+/g, ' ').trim();
+  return String(text || '').replace(/[\u0000-\u001f\u007f\u200b-\u200f\u202a-\u202e\u2066-\u2069<>]/g, '').replace(/\s+/g, ' ').trim();
 }
 
 export async function handleMember(context, deps = {}) {
@@ -241,6 +261,65 @@ export async function handleMember(context, deps = {}) {
       return json({ user: await publicUser(u, cfg) });
     }
 
+    const avatarMatch = path.match(/^\/member\/avatar\/([A-Za-z0-9_-]{12})$/);
+    if (avatarMatch && method === 'GET') {
+      const [raw] = await redis(['GET', 'member:avatar:' + avatarMatch[1]]);
+      if (!raw) return new Response('not found', { status: 404, headers: { ...headersBase(), 'Content-Type': 'text/plain' } });
+      const img = JSON.parse(raw);
+      const bytes = b64ToBytes(img.d);
+      const type = sniffImage(bytes);
+      if (!type) return new Response('not found', { status: 404, headers: { ...headersBase(), 'Content-Type': 'text/plain' } });
+      return new Response(bytes, { status: 200, headers: {
+        'Content-Type': type, 'Cache-Control': 'public, max-age=86400', 'X-Content-Type-Options': 'nosniff',
+        'Content-Security-Policy': "default-src 'none'; sandbox", 'Content-Disposition': 'inline; filename="avatar"',
+        'Cross-Origin-Resource-Policy': 'same-origin', 'X-Robots-Tag': 'noindex' } });
+    }
+
+    if (path === '/member/avatar' && method === 'POST') {
+      if (writeGuard(request, url)) return json({ error: 'forbidden' }, 403);
+      const u = await currentUser(request, redis);
+      if (!u) return json({ error: '請先登入' }, 401);
+      let input;
+      try { input = await readJson(request, 450 * 1024); } catch { return json({ error: '照片太大，請換一張' }, 413); }
+      const m = String(input.image || '').match(/^data:image\/(jpeg|png|webp);base64,([A-Za-z0-9+/]+={0,2})$/);
+      if (!m) return json({ error: '只接受 JPG、PNG、WebP 照片' }, 400);
+      let bytes;
+      try { bytes = b64ToBytes(m[2]); } catch { return json({ error: '照片格式不正確' }, 400); }
+      if (bytes.length > AVATAR_MAX) return json({ error: '照片太大，請換一張' }, 413);
+      const type = sniffImage(bytes);
+      if (!type || type !== 'image/' + m[1]) return json({ error: '只接受 JPG、PNG、WebP 照片' }, 400);
+      const kday = `member:rl:${u.sub}:p${Math.floor(now / 86_400_000)}`;
+      const [cnt] = await redis(['INCR', kday], ['EXPIRE', kday, 90_000]);
+      if (Number(cnt) > LIMIT_PROFILE_DAY) return json({ error: '今天改太多次了，明天再試' }, 429);
+      const { sid, ...stored } = u;
+      const pid = PID_RE.test(stored.pid || '') ? stored.pid : randomId(9);
+      const next = { ...stored, pid, av: now.toString(36), avatar: 'upload' };
+      await redis(['SET', 'member:avatar:' + pid, JSON.stringify({ d: m[2], ts: now })], ['SET', 'member:user:' + u.sub, JSON.stringify(next)]);
+      return json({ user: await publicUser(next, cfg) });
+    }
+
+    if (path === '/member/comments/reset-avatar' && method === 'POST') {
+      if (writeGuard(request, url)) return json({ error: 'forbidden' }, 403);
+      const u = await currentUser(request, redis);
+      if (!u || !(await isAdmin(u, cfg))) return json({ error: 'forbidden' }, 403);
+      let input;
+      try { input = await readJson(request); } catch { return json({ error: 'invalid request' }, 400); }
+      const page = String(input.page || ''), id = String(input.id || '');
+      if (!PAGE_RE.test(page) || !/^[a-z0-9]{6,12}-[A-Za-z0-9_-]{8}$/.test(id)) return json({ error: 'invalid request' }, 400);
+      const [raw] = await redis(['HGET', 'comments:h:' + page, id]);
+      if (!raw) return json({ error: 'not found' }, 404);
+      const c = JSON.parse(raw);
+      const [ur] = await redis(['GET', 'member:user:' + c.sub]);
+      if (!ur) return json({ error: 'not found' }, 404);
+      const target = JSON.parse(ur);
+      const cmds = [];
+      if (target.pid) cmds.push(['DEL', 'member:avatar:' + target.pid]);
+      target.avatar = 'initial'; delete target.av;
+      cmds.push(['SET', 'member:user:' + c.sub, JSON.stringify(target)]);
+      await redis(...cmds);
+      return json({ ok: true });
+    }
+
     if (path === '/member/profile' && method === 'POST') {
       if (writeGuard(request, url)) return json({ error: 'forbidden' }, 403);
       const u = await currentUser(request, redis);
@@ -251,7 +330,7 @@ export async function handleMember(context, deps = {}) {
       if (Array.from(nick).length > NICK_MAX) return json({ error: `暱稱最多 ${NICK_MAX} 個字` }, 400);
       if (nick && RESERVED_NICK.test(nick) && !(await isAdmin(u, cfg))) return json({ error: '這個暱稱容易跟站方混淆，請換一個' }, 400);
       const avatar = String(input.avatar || '');
-      if (!AVATARS.includes(avatar) || (avatar === 'google' && !u.picture)) return json({ error: '請選一個頭像' }, 400);
+      if (!AVATARS.includes(avatar) || (avatar === 'google' && !u.picture) || (avatar === 'upload' && !(u.pid && u.av))) return json({ error: '請選一個頭像' }, 400);
       const kday = `member:rl:${u.sub}:p${Math.floor(now / 86_400_000)}`;
       const [cnt] = await redis(['INCR', kday], ['EXPIRE', kday, 90_000]);
       if (Number(cnt) > LIMIT_PROFILE_DAY) return json({ error: '今天改太多次了，明天再試' }, 429);

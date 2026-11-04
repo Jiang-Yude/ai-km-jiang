@@ -201,6 +201,41 @@ await t('管理員可以用含「江江」的暱稱', async () => {
   assert.equal((await write('/member/profile', b2.cookie, { nick: '江江教練', avatar: 'initial' })).status, 200);
 });
 
+// 最小的真 PNG（1x1）與 JPEG 檔頭
+const PNG1 = 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==';
+await t('上傳頭像：存成隨機代號網址，留言跟著換，回應頭安全', async () => {
+  const r = await write('/member/avatar', alice.cookie, { image: 'data:image/png;base64,' + PNG1 });
+  assert.equal(r.status, 200);
+  const u = (await r.json()).user;
+  assert.equal(u.avatar, 'upload'); assert.match(u.picture, /^\/member\/avatar\/[A-Za-z0-9_-]{12}\?v=/);
+  assert.ok(!u.picture.includes('alice'));
+  const img = await call(u.picture);
+  assert.equal(img.status, 200); assert.equal(img.headers.get('Content-Type'), 'image/png');
+  assert.equal(img.headers.get('X-Content-Type-Options'), 'nosniff'); assert.match(img.headers.get('Content-Security-Policy'), /sandbox/);
+  const list = await (await call('/member/comments?page=/articles/hello/')).json();
+  assert.ok(list.comments.some(c => c.picture === u.picture));
+});
+await t('上傳頭像：假裝成圖片的 HTML／SVG、格式不符、太大都擋', async () => {
+  const b = s => Buffer.from(s).toString('base64');
+  assert.equal((await write('/member/avatar', alice.cookie, { image: 'data:image/png;base64,' + b('<html><script>alert(1)</script></html>') })).status, 400);
+  assert.equal((await write('/member/avatar', alice.cookie, { image: 'data:image/svg+xml;base64,' + b('<svg onload=alert(1)>') })).status, 400);
+  assert.equal((await write('/member/avatar', alice.cookie, { image: 'data:image/jpeg;base64,' + PNG1 })).status, 400);
+  const big = Buffer.concat([Buffer.from([0xff, 0xd8, 0xff]), Buffer.alloc(301 * 1024)]).toString('base64');
+  assert.equal((await write('/member/avatar', alice.cookie, { image: 'data:image/jpeg;base64,' + big })).status, 413);
+  assert.equal((await write('/member/avatar', '', { image: 'data:image/png;base64,' + PNG1 })).status, 401);
+});
+await t('管理員可以移除別人的頭像，一般人不行', async () => {
+  const b2 = await login({ sub: 'boss', name: '江昱德', email: 'boss@example.com' });
+  const list = await (await call('/member/comments?page=/articles/hello/')).json();
+  const target = list.comments.find(c => c.picture.startsWith('/member/avatar/'));
+  const carol2 = await login({ sub: 'carol', name: 'Carol', email: 'c@example.com' });
+  assert.equal((await write('/member/comments/reset-avatar', carol2.cookie, { page: '/articles/hello/', id: target.id })).status, 403);
+  assert.equal((await write('/member/comments/reset-avatar', b2.cookie, { page: '/articles/hello/', id: target.id })).status, 200);
+  assert.equal((await call(target.picture)).status, 404);
+  const after = await (await call('/member/comments?page=/articles/hello/')).json();
+  assert.ok(after.comments.filter(c => c.id === target.id).every(c => c.picture === ''));
+});
+
 const bob = await login({ sub: 'bob', name: 'Bob', email: 'bob@example.com' });
 const boss = await login({ sub: 'boss', name: '江江', email: 'boss@example.com' });
 await t('別人不能刪我的留言', async () => {
