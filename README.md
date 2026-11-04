@@ -1,6 +1,6 @@
 # 江江教練官網 v0.8 學習地圖與 SEO/GEO 重整
 
-正式站：https://jiangyude.com/
+正式站：https://jiangyude.com/（2026-10-09 起由 Cloudflare Pages 服務；發布流程與 Vercel 回退說明見 DEPLOYMENT.md 第 0 節）
 
 本版從 v0.7 複製成獨立工作副本，主改版目標是把「課程預告、課後簡報、學習地圖、Skills、合作案例」重新分流，並新增公開索引與 GEO 友善檔案。
 

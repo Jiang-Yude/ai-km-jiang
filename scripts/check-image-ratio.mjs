@@ -137,6 +137,9 @@ function changedSlugs() {
       if (!file || line.startsWith('+++') || !line.startsWith('+')) continue;
       // 只認 index.html 有變更。改 article.json 補雙向回連不該把那篇拖進比例檢查。
       const m = file.match(/^articles\/([^/]+)\/index\.html$/);
+      // 2026-11-04 同一原則再收窄：JSON-LD 結構化資料常寫成一整行、本來就含 image 網址，
+      // 全站統一作者資料（Person @id／sameAs）會讓每篇都「新增」一行，但那不是換圖，也不影響 figure 比例。
+      if (/application\/ld\+json|"@type"\s*:/.test(line)) continue;
       if (m && IMG_LINE.test(line)) slugs.add(m[1]);
     }
   }

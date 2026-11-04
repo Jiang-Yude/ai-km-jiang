@@ -459,8 +459,10 @@ console.log('③b 失敗路徑與重試');
 console.log('④ 頁面掛載');
 for (const page of ['index.html', 'search.html', 'agent.html']) {
   const html = read(page);
-  check(`${page} 有掛 webmcp-tools.js`, /<script[^>]+src="webmcp-tools\.js[^"]*"[^>]*>/.test(html));
-  check(`${page} 有掛 search-aliases.js（別名同一份）`, /<script[^>]+src="search-aliases\.js[^"]*"[^>]*>/.test(html));
+  // 首頁 2026-09-30 起改成載完、瀏覽器空閒時才動態插入 script（見 index.html 檔尾 later()），兩種掛法都算
+  const lazy = (name) => new RegExp(`\\[[^\\]]*['"]\\/?${name}[^'"]*['"][^\\]]*\\]\\.forEach\\(function\\(src\\)[\\s\\S]{0,200}createElement\\('script'\\)`).test(html);
+  check(`${page} 有掛 webmcp-tools.js`, /<script[^>]+src="webmcp-tools\.js[^"]*"[^>]*>/.test(html) || lazy('webmcp-tools\\.js'));
+  check(`${page} 有掛 search-aliases.js（別名同一份）`, /<script[^>]+src="search-aliases\.js[^"]*"[^>]*>/.test(html) || lazy('search-aliases\\.js'));
 }
 
 /* ── ⑤ 唯讀邊界（靜態層；動態層在 ③ 的 fetch 白名單） ── */

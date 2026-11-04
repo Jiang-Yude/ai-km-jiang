@@ -6,6 +6,8 @@
 
 ## 0. 重要結論
 
+> 2026-11-04 更新：正式站 jiangyude.com 自 2026-10-09 起由 Cloudflare Pages 服務（專案 ai-km-jiang-cf-20261004）。`publish.sh` 預設 `PUBLISH_TARGET=cloudflare`，需要 `wrangler login`；Vercel 只在 `scripts/cloudflare/cutover.py` 回退後才用 `PUBLISH_TARGET=vercel`。本檔下面提到 Vercel 的安裝與登入步驟，只有回退時才需要。
+
 - 這是靜態站：目前沒有 `package.json`，發布不需要 `npm install` 或 `node_modules`。
 - Node 版本固定在 `.nvmrc`：Node 22。
 - 唯一正式發布入口是：`bash scripts/publish.sh "本次修改說明" -- path1 path2`。
