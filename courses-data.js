@@ -59,14 +59,14 @@ window.COURSES = [
     image: "images/courses/2026-11-06-goh-ai-workflow.jpg",
     venue_mode: "physical",
     host: "江江教練",
-    tags: ["勵馨基金會", "三重", "NPO", "社工", "會議紀錄", "結案報告", "AI工作流"],
-    summary: "勵馨基金會三重地區社工專場。用會議紀錄和結案報告當題目，看 AI 現在能做到哪裡，再一起盤點大家的工作需求。",
+    tags: ["勵馨", "三重", "NPO", "社工", "會議紀錄", "結案報告", "AI工作流"],
+    summary: "勵馨三重地區社工的小型培訓，只限這一區。用會議紀錄和結案報告當題目，看 AI 現在能做到哪裡，再一起盤點大家的工作需求。",
     materials: [
       { label: "上課簡報 ↗", url: "https://goh-ai-workshop-kkwf0m.pages.dev" }
     ],
     registration: {
       status: "private",
-      host_org: "勵馨基金會"
+      host_org: "勵馨三重地區社工"
     }
   },
   {
