@@ -10,7 +10,7 @@ task_safe="$HOME/Library/Mobile Documents/iCloud~md~obsidian/Documents/江昱德
 # 與已追蹤檔內容相同的未追蹤複製檔（macOS「檔名 2.webp」）只警告不擋（2026-10-21）；build.mjs 用 git ls-files 取檔，不會打包它們。
 ( cd "$task_root" && python3 scripts/git-dirty.py >/dev/null ) || { echo "commit and synchronise the source before deployment"; ( cd "$task_root" && python3 scripts/git-dirty.py ) || true; exit 2; }
 # 舊課後頁放行證據：預設用 2026-10-06 不到期的 pre_rule_legacy 放行
-export SAFE_DEPLOY_POSTCLASS_EVIDENCE_DIR="${SAFE_DEPLOY_POSTCLASS_EVIDENCE_DIR:-$HOME/Library/Mobile Documents/iCloud~md~obsidian/Documents/江昱德 主知識庫/_agent/tmp/2026-10-06 歷史課後頁放行}"
+source "$task_root/scripts/cloudflare/postclass-evidence-path.sh"
 node "$task_root/scripts/cloudflare/build.mjs" --target=production
 task_dir=$(node -e 'const fs=require("fs"),os=require("os"),path=require("path");const p=process.env.CF_BUILD_ROOT||path.join(os.tmpdir(),"ai-km-jiang-cf-build");const l=JSON.parse(fs.readFileSync(path.join(p,"latest.json")));if(l.target!=="production")process.exit(3);console.log(l.directory)')
 SAFE_DEPLOY_CALLER=scripts/publish.sh \
