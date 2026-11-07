@@ -19,7 +19,7 @@ Claude Code 那邊另有一個 Mod 面板（只讀本佇列顯示，不執行部
   publish-queue.py deploy-next [--dry-run] --authorized-by "…"   便宜模型用這個：一個指令跑到上線並驗收，最後一行「下一步：…」照念
   publish-queue.py run [<id>|--next|--all] --authorized-by "江江 2026-10-09 23:10 原話" [--dry-run] [--desk <main工作區>] [--here]
                                               依序呼叫 merge-publish.sh；這一步就是正式上線，只在江江說「部署」後跑，授權原話寫進紀錄
-  publish-queue.py set-primary <host>         指定主要部署機（兩台同時 run 有短暫互蓋窗口，預設只讓一台跑；別台加 --here）
+  publish-queue.py set-primary <host>         （2026-11-07 起沒有作用，兩台都能部署，互斥靠跨機鎖）
   publish-queue.py board-sync                 把佇列狀態寫進官網看板「🚀 待部署」的自動區塊（marker 包住，重跑整段替換）
   publish-queue.py prune [--days 7]           清掉 done 超過 N 天的紀錄
 
@@ -419,13 +419,9 @@ def cmd_run(a) -> None:
     a.authorized_by = (a.authorized_by or os.environ.get("SITE_PUBLISH_AUTHORIZED_BY") or "")
     if not a.dry_run and not a.authorized_by.strip():
         finish(EXIT_USAGE, "run／deploy-next 要帶 --authorized-by \"江江 YYYY-MM-DD HH:MM 原話\"（或環境變數 SITE_PUBLISH_AUTHORIZED_BY）。只想看會跑什麼：加 --dry-run。")
-    # 主要部署機（Codex R1 第 4 條）：兩台同時 run 仍有「舊部署最後完成」的窄窗，預設只讓一台跑；別台要明說 --here。
-    primary = data.get("primary_host")
+    # 2026-11-07 起兩台都能部署（江江：「筆電跟桌機都要能部署」）。互斥改由 publish-lock.sh 的跨機鎖負責，
+    # 不再限定主要部署機；--here 與 set-primary 留著相容舊指令，沒有作用。
     me = socket.gethostname().split(".")[0]
-    if not primary and not a.dry_run:
-        finish(EXIT_USAGE, f"佇列還沒指定主要部署機。先在要負責部署的那台跑一次：python3 scripts/publish-queue.py set-primary {me}")
-    if primary and primary != me and not a.here and not a.dry_run:
-        finish(EXIT_BLOCKED, f"佇列設定主要部署機＝{primary}，這台是 {me}。到 {primary} 跑，或確定只有這台在部署時加 --here。")
     if a.id:
         targets = [find(data, a.id)]
     else:

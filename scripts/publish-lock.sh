@@ -11,11 +11,18 @@
 #      接手要先拿到 recover 小鎖、再讀一次確認還是同一個持有者，用改名一次搬走，不會搬到別人剛建的新鎖
 #   ④ 釋放時核對 token，只放自己的鎖
 #   ⑤ merge-publish 持鎖後呼叫 publish.sh，publish.sh 看到 PUBLISH_LOCK_HELD 與鎖內 token 相同就沿用
-# 跨機（桌機、筆電同時發布）不靠這把鎖，靠 publish.sh 的「永遠促轉 main 最新」收斂。
+# 跨機（2026-11-07 加，江江：「筆電跟桌機都要能部署」「沒衝突」）：
+#   本機鎖拿到後，再到 GitHub 搶 refs/deploy-lock/site。建立這個 ref 是伺服器端的原子動作，
+#   兩台同時搶只有一台成功，另一台排隊。不靠 iCloud，因為同步有延遲，不能當鎖。
+#   持有者當掉：同一台重跑直接接手（本機鎖已確認沒有別的程序）；別台超過 PUBLISH_REMOTE_LOCK_TTL 秒才接手。
+#   問不到 GitHub 就停，不在確認不了的狀態下部署。測試或離線工具可設 PUBLISH_REMOTE_LOCK=off。
 
 PUBLISH_LOCK_DIR="${PUBLISH_LOCK_DIR:-${HOME}/.cache/ai-km-jiang/publish.lock}"
 PUBLISH_LOCK_WAIT="${PUBLISH_LOCK_WAIT:-1200}"
 PUBLISH_LOCK_TOKEN=""
+PUBLISH_REMOTE_LOCK_REF="refs/deploy-lock/site"
+PUBLISH_REMOTE_LOCK_TTL="${PUBLISH_REMOTE_LOCK_TTL:-2700}"
+PUBLISH_REMOTE_LOCK_SHA="${PUBLISH_REMOTE_LOCK_SHA:-}"
 
 # 呼叫端開著 set -e／pipefail：鎖檔不存在時 sed 會回非零，一律吞掉，只回空字串
 _pl_read() { sed -n "s/^${1}=//p" "${PUBLISH_LOCK_DIR}/owner" 2>/dev/null | head -1 || true; }
@@ -28,6 +35,101 @@ _pl_owner_dead() {
   [[ -n "${pid}" && -n "${lstart}" ]] || return 1
   now=$(ps -p "${pid}" -o lstart= 2>/dev/null || true)
   [[ -z "${now}" || "${now}" != "${lstart}" ]]
+}
+
+# 網路卡住 30 秒沒進度就算失敗，不會無限等待
+_pl_git() { git -C "${REPO_ROOT:-.}" -c http.lowSpeedLimit=1 -c http.lowSpeedTime=30 "$@"; }
+
+# 機器識別：用硬體編號的雜湊，不靠 hostname（可能改名或相同）；硬體編號不會上傳原文
+_pl_machine_id() {
+  if [[ -n "${PUBLISH_MACHINE_ID:-}" ]]; then printf '%s' "${PUBLISH_MACHINE_ID}"; return 0; fi
+  local uuid
+  uuid=$(ioreg -rd1 -c IOPlatformExpertDevice 2>/dev/null | awk -F'"' '/IOPlatformUUID/{print $4}' || true)
+  [[ -n "${uuid}" ]] || return 1
+  printf '%s' "${uuid}" | shasum -a 256 | cut -c1-16
+}
+
+# 回 0＝拿到；回 1＝停止（問不到 GitHub，或排隊逾時）
+_pl_remote_acquire() {
+  [[ "${PUBLISH_REMOTE_LOCK:-on}" != "off" ]] || return 0
+  local what="$1" start=${SECONDS} last=-999 me my_id tree commit cur msg owner_host owner_id owner_epoch age expect push_err=""
+  me="$(hostname -s 2>/dev/null || echo unknown)"
+  # 認不出這台就停：退回 hostname 可能跟另一台同名，被誤認成同機而接手
+  my_id="$(_pl_machine_id)" || my_id=""
+  [[ -n "${my_id}" ]] || { echo "⛔ 跨機部署鎖：讀不到這台電腦的硬體編號，認不出是哪台，停止。"; return 1; }
+  tree=$(_pl_git hash-object -w -t tree /dev/null) || { echo "⛔ 跨機部署鎖：這裡不是可用的 git 工作區，停止。"; return 1; }
+  while true; do
+    if (( SECONDS - start > PUBLISH_LOCK_WAIT )); then
+      echo "⛔ 跨機部署鎖：超過 ${PUBLISH_LOCK_WAIT} 秒仍拿不到，沒有動任何東西，稍後重跑。${push_err:+最後的錯誤：${push_err}}"
+      return 1
+    fi
+    if ! cur=$(_pl_git ls-remote origin "${PUBLISH_REMOTE_LOCK_REF}" 2>/dev/null); then
+      echo "⛔ 跨機部署鎖：問不到 GitHub，確認不了另一台有沒有在部署，所以不部署。確認網路後重跑。"
+      return 1
+    fi
+    cur="${cur%%[[:space:]]*}"
+    expect=""
+    if [[ -n "${cur}" ]]; then
+      if ! _pl_git fetch -q origin "${PUBLISH_REMOTE_LOCK_REF}" 2>/dev/null; then
+        echo "⛔ 跨機部署鎖：讀不到目前持有者，停止。"
+        return 1
+      fi
+      msg=$(_pl_git log -1 --format=%B "${cur}" 2>/dev/null || true)
+      owner_host=$(printf '%s\n' "${msg}" | sed -n 's/^host=//p' | head -1)
+      owner_id=$(printf '%s\n' "${msg}" | sed -n 's/^id=//p' | head -1)
+      owner_epoch=$(printf '%s\n' "${msg}" | sed -n 's/^epoch=//p' | head -1)
+      age=$(( $(date +%s) - ${owner_epoch:-0} ))
+      if [[ -n "${owner_id}" && "${owner_id}" == "${my_id}" ]]; then
+        echo "▶ 跨機部署鎖：這台上次留下的鎖（本機已確認沒有別的程序），接手"
+        expect="${cur}"
+      elif (( age > PUBLISH_REMOTE_LOCK_TTL )); then
+        echo "▶ 跨機部署鎖：${owner_host} 的鎖已超過 ${PUBLISH_REMOTE_LOCK_TTL} 秒，視為中斷，接手"
+        expect="${cur}"
+      else
+        push_err="${owner_host} 仍在部署"
+        if (( SECONDS - last >= 60 )); then
+          echo "⏳ 另一台 ${owner_host} 正在部署（已持有 ${age} 秒），排隊等它結束…"
+          last=${SECONDS}
+        fi
+        sleep "${PUBLISH_REMOTE_LOCK_POLL:-15}"
+        continue
+      fi
+    fi
+    commit=$(_pl_git -c user.name=deploy-lock -c user.email=deploy-lock@localhost commit-tree "${tree}" \
+      -m "deploy lock" -m "host=${me}
+id=${my_id}
+epoch=$(date +%s)
+what=${what}") || { echo "⛔ 跨機部署鎖：建立鎖內容失敗，停止。"; return 1; }
+    if push_err=$(_pl_git push --no-verify -q --force-with-lease="${PUBLISH_REMOTE_LOCK_REF}:${expect}" origin "${commit}:${PUBLISH_REMOTE_LOCK_REF}" 2>&1); then
+      export PUBLISH_REMOTE_LOCK_SHA="${commit}"
+      echo "▶ 跨機部署鎖：已取得（${me}）"
+      return 0
+    fi
+    # 被搶先、權限或網路問題：回到迴圈重讀，總期限在迴圈開頭檢查，錯誤會印出來
+    sleep 2
+  done
+}
+
+# 動正式站或推 main 前呼叫：確認鎖還是自己的。逾時被別台接手就停，不繼續部署。
+publish_lock_verify() {
+  [[ "${PUBLISH_REMOTE_LOCK:-on}" != "off" ]] || return 0
+  local cur
+  if ! cur=$(_pl_git ls-remote origin "${PUBLISH_REMOTE_LOCK_REF}" 2>/dev/null); then
+    echo "⛔ 跨機部署鎖：問不到 GitHub，確認不了鎖還在不在，停止。"
+    return 1
+  fi
+  cur="${cur%%[[:space:]]*}"
+  if [[ -z "${PUBLISH_REMOTE_LOCK_SHA:-}" || "${cur}" != "${PUBLISH_REMOTE_LOCK_SHA}" ]]; then
+    echo "⛔ 跨機部署鎖：這次部署已經不持有鎖（可能逾時被另一台接手），停止，不動正式站。"
+    return 1
+  fi
+}
+
+_pl_remote_release() {
+  [[ -n "${PUBLISH_REMOTE_LOCK_SHA}" ]] || return 0
+  _pl_git push --no-verify -q --force-with-lease="${PUBLISH_REMOTE_LOCK_REF}:${PUBLISH_REMOTE_LOCK_SHA}" origin ":${PUBLISH_REMOTE_LOCK_REF}" 2>/dev/null \
+    || echo "⚠️ 跨機部署鎖沒放掉（網路問題）。這台下次會自動接手，別台 ${PUBLISH_REMOTE_LOCK_TTL} 秒後接手。"
+  PUBLISH_REMOTE_LOCK_SHA=""
 }
 
 publish_lock_acquire() {
@@ -88,10 +190,15 @@ publish_lock_acquire() {
   fi
   export PUBLISH_LOCK_HELD="${PUBLISH_LOCK_TOKEN}"
   echo "▶ 發布鎖：已取得（${what}）"
+  if ! _pl_remote_acquire "${what}"; then
+    publish_lock_release
+    return 1
+  fi
 }
 
 publish_lock_release() {
   [[ -n "${PUBLISH_LOCK_TOKEN}" ]] || return 0
+  _pl_remote_release
   if [[ "$(_pl_read token)" == "${PUBLISH_LOCK_TOKEN}" ]]; then
     rm -f "${PUBLISH_LOCK_DIR}/owner"
     rmdir "${PUBLISH_LOCK_DIR}" 2>/dev/null || true

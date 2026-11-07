@@ -10,9 +10,18 @@ task_safe="$HOME/Library/Mobile Documents/iCloud~md~obsidian/Documents/江昱德
 # 與已追蹤檔內容相同的未追蹤複製檔（macOS「檔名 2.webp」）只警告不擋（2026-10-21）；build.mjs 用 git ls-files 取檔，不會打包它們。
 ( cd "$task_root" && python3 scripts/git-dirty.py >/dev/null ) || { echo "commit and synchronise the source before deployment"; ( cd "$task_root" && python3 scripts/git-dirty.py ) || true; exit 2; }
 # 舊課後頁放行證據：預設用 2026-10-06 不到期的 pre_rule_legacy 放行
+# 跨機鎖（2026-11-07）：由 publish.sh 呼叫時沿用上層的鎖；直接呼叫時自己拿，都要確認鎖還是自己的才動正式站
+REPO_ROOT="$task_root"
+source "$task_root/scripts/deploy-path.sh"
+source "$task_root/scripts/publish-lock.sh"
+publish_lock_acquire "deploy-production" || exit 1
+trap publish_lock_release EXIT
+publish_lock_verify || exit 1
 source "$task_root/scripts/cloudflare/postclass-evidence-path.sh"
 node "$task_root/scripts/cloudflare/build.mjs" --target=production
 task_dir=$(node -e 'const fs=require("fs"),os=require("os"),path=require("path");const p=process.env.CF_BUILD_ROOT||path.join(os.tmpdir(),"ai-km-jiang-cf-build");const l=JSON.parse(fs.readFileSync(path.join(p,"latest.json")));if(l.target!=="production")process.exit(3);console.log(l.directory)')
+# 打包花了時間，真正送出前再確認一次鎖還是自己的
+publish_lock_verify || exit 1
 SAFE_DEPLOY_CALLER=scripts/publish.sh \
   SAFE_DEPLOY_ALLOW_NON_GIT=1 SAFE_DEPLOY_SOURCE_REPO="$task_root" \
   SAFE_DEPLOY_CF_PROD_BRANCH=main SAFE_DEPLOY_CF_CANDIDATE_BRANCH=safe-candidate \

@@ -85,7 +85,14 @@ if node scripts/build-articles-data.mjs --check 2>&1 | tail -1 | grep -q "✅"; 
 else
   bad "articles-data.js 與 article.json 來源不一致：node scripts/build-articles-data.mjs（手改要保留就加 --adopt）"
 fi
-if node scripts/build-site-index.mjs 2>&1 | tail -1 | grep -q "✅"; then ok "site-index + 詞彙"; else bad "build-site-index 未通過"; fi
+# 2026-11-07 改看結束碼：生成器明寫 WARN「不擋」，舊寫法只看最後一行有沒有 ✅，有 WARN 就誤判失敗。
+_bsi_rc=0; _bsi_out=$(node scripts/build-site-index.mjs 2>&1) || _bsi_rc=$?
+if [[ ${_bsi_rc} -eq 0 ]]; then
+  ok "site-index + 詞彙"
+  printf '%s\n' "${_bsi_out}" | grep '^WARN' | sed 's/^/  ⚠️  /' || true
+else
+  bad "build-site-index 失敗（exit ${_bsi_rc}）：$(printf '%s\n' "${_bsi_out}" | tail -1)"
+fi
 # 英文文章索引檢查已於 2026-09-22 拿掉：江江決定撤英文版（en/ 整個移除，301 轉回中文頁），
 # build-en-articles-data.mjs 只剩空殼。英文內容備存在 git tag archive/en-final-2026-09-22。
 # 咪卡檢索用的內文關鍵詞：每次發布重跑，新文章的專有名詞才會進索引。

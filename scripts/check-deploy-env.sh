@@ -5,6 +5,7 @@
 set -uo pipefail
 
 cd "$(dirname "$0")/.."
+source scripts/deploy-path.sh
 FAIL=0
 WARN=0
 EXPECTED_NODE_MAJOR="${EXPECTED_NODE_MAJOR:-22}"
