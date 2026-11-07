@@ -136,6 +136,11 @@ publish_lock_acquire() {
   local what="${1:-發布}" start=${SECONDS} last=-999 stale_token moved
   if [[ -n "${PUBLISH_LOCK_HELD:-}" && "$(_pl_read token)" == "${PUBLISH_LOCK_HELD}" ]]; then
     echo "▶ 發布鎖：沿用上層已持有的鎖"
+    # 上層是還沒有跨機鎖的舊版腳本（只會發生在版本交接那一次）：這裡補拿，也由這裡負責放掉
+    if [[ "${PUBLISH_REMOTE_LOCK:-on}" != "off" && -z "${PUBLISH_REMOTE_LOCK_SHA:-}" ]]; then
+      _pl_remote_acquire "${what}" || return 1
+      PL_REMOTE_OWNED=1
+    fi
     return 0
   fi
   mkdir -p "$(dirname "${PUBLISH_LOCK_DIR}")"
@@ -190,6 +195,7 @@ publish_lock_acquire() {
   fi
   export PUBLISH_LOCK_HELD="${PUBLISH_LOCK_TOKEN}"
   echo "▶ 發布鎖：已取得（${what}）"
+  PL_REMOTE_OWNED=1
   if ! _pl_remote_acquire "${what}"; then
     publish_lock_release
     return 1
@@ -197,8 +203,11 @@ publish_lock_acquire() {
 }
 
 publish_lock_release() {
+  if [[ -n "${PL_REMOTE_OWNED:-}" ]]; then
+    _pl_remote_release
+    PL_REMOTE_OWNED=""
+  fi
   [[ -n "${PUBLISH_LOCK_TOKEN}" ]] || return 0
-  _pl_remote_release
   if [[ "$(_pl_read token)" == "${PUBLISH_LOCK_TOKEN}" ]]; then
     rm -f "${PUBLISH_LOCK_DIR}/owner"
     rmdir "${PUBLISH_LOCK_DIR}" 2>/dev/null || true

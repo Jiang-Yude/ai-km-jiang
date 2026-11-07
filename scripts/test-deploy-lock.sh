@@ -66,6 +66,13 @@ git -C "${W}/a" push -q origin ":${REF}"
 out=$(PUBLISH_MACHINE_ID=id-mini REPO_ROOT="${W}/a" PUBLISH_LOCK_DIR="${W}/lock-v" bash -c 'set -euo pipefail; source "$0"; publish_lock_acquire v >/dev/null; trap publish_lock_release EXIT; publish_lock_verify && echo first-ok; T=$(git -C "$REPO_ROOT" hash-object -w -t tree /dev/null); C=$(git -C "$REPO_ROOT" -c user.name=x -c user.email=x@x commit-tree "$T" -m stolen); git -C "$REPO_ROOT" push -q -f origin "$C:refs/deploy-lock/site"; publish_lock_verify || echo second-blocked' "${LIB}" 2>&1)
 [[ "${out}" == *first-ok* && "${out}" == *second-blocked* ]] && ok "鎖被接手：舊持有者停下" || ng "鎖被接手（${out}）"
 
+# 7b 版本交接：上層舊版只有本機鎖，下層新版要補拿跨機鎖、驗得過、結束時放掉；真正的巢狀不可提早放掉
+git -C "${W}/a" push -q origin ":${REF}"
+out=$(PUBLISH_MACHINE_ID=id-mini REPO_ROOT="${W}/a" PUBLISH_LOCK_DIR="${W}/lock-h" bash -c 'set -euo pipefail; source "$0"; PUBLISH_REMOTE_LOCK=off publish_lock_acquire old >/dev/null; L="$0"; bash -c "set -euo pipefail; source \"\$0\"; publish_lock_acquire new >/dev/null; trap publish_lock_release EXIT; publish_lock_verify && echo verify-ok" "$L"; publish_lock_release' "${LIB}" 2>&1)
+[[ "${out}" == *verify-ok* && -z "$(git -C "${W}/a" ls-remote origin ${REF})" ]] && ok "版本交接：補拿鎖並放掉" || ng "版本交接（${out}）"
+out=$(PUBLISH_MACHINE_ID=id-mini REPO_ROOT="${W}/a" PUBLISH_LOCK_DIR="${W}/lock-n" bash -c 'set -euo pipefail; source "$0"; publish_lock_acquire top >/dev/null; trap publish_lock_release EXIT; L="$0"; bash -c "set -euo pipefail; source \"\$0\"; publish_lock_acquire inner >/dev/null; trap publish_lock_release EXIT" "$L"; publish_lock_verify && echo still-held' "${LIB}" 2>&1)
+[[ "${out}" == *still-held* && -z "$(git -C "${W}/a" ls-remote origin ${REF})" ]] && ok "巢狀呼叫：內層不放鎖，外層結束才放" || ng "巢狀（${out}）"
+
 # 8 遠端拒絕更新：有總期限、印錯誤、不卡死
 git -C "${W}/a" push -q origin ":${REF}" 2>/dev/null
 cat > "${W}/origin.git/hooks/update" <<'HOOK'
