@@ -23,6 +23,25 @@ window.ARTICLE_TAGS = {
 
 window.ARTICLES = [
   {
+    id: "ai-content-topic-picking",
+    url: "articles/ai-content-topic-picking/",
+    date: "2026-11-07",
+    updated: "2026-11-07",
+    title: "怎麼用 AI 找內容題目？｜請 AI 整理曉輝博士的選題標準，再從我的紀錄裡挑題",
+    problem: "想把工作心得做成內容，卻不知道今天該講哪一題，請 AI 想題目又不想照抄別人。",
+    audience: "想把工作心得拍成短片或寫成貼文，手上有日記和工作紀錄，想請 AI 幫忙挑題的人。",
+    summary: "分享我怎麼用 AI 找內容題目：請 AI 讀曉輝博士的影片逐字稿，整理她決定今天講什麼的標準，再用這些標準從我自己的紀錄裡挑題。內含她的選題做法出處、三個選題問題、一段可複製的 AI 指令、上傳前要先拿掉哪些資料，以及之後打算怎麼錄成短片。方法才剛開始用，還沒有成效數字。",
+    tags: {
+      topic: ["AI工作流", "工作流程"],
+      level: ["基礎"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["inspiration-production-system", "diary-driven-agent-3x4-v2"],
+    cover: { wide: "images/articles/ai-content-topic-picking/cover.jpg" }
+  },
+
+  {
     id: "ai-employee-ask-before-act",
     url: "articles/ai-employee-ask-before-act/",
     date: "2026-11-03",
@@ -244,7 +263,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["tag-wiki-method", "ai-retrieval-pages-backlinks", "diary-driven-agent-3x4-v2", "ai-user-testing", "five-loops-content-line", "train-your-ai-agent-editor", "diary-driven-agent-3x4"],
+    related: ["tag-wiki-method", "ai-retrieval-pages-backlinks", "diary-driven-agent-3x4-v2", "ai-user-testing", "five-loops-content-line", "train-your-ai-agent-editor", "diary-driven-agent-3x4", "ai-content-topic-picking"],
     cover: { wide: "images/articles/inspiration-production-system-cover-wide.jpg" }
   },
 
@@ -453,7 +472,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["diary-driven-agent-3x4", "what-is-loop-engineering", "knowledge-base-three-vault-split", "tag-wiki-method", "ai-retrieval-pages-backlinks", "ai-manages-ai-focus", "learn-obsidian-mechanism", "inspiration-production-system"],
+    related: ["diary-driven-agent-3x4", "what-is-loop-engineering", "knowledge-base-three-vault-split", "tag-wiki-method", "ai-retrieval-pages-backlinks", "ai-manages-ai-focus", "learn-obsidian-mechanism", "inspiration-production-system", "ai-content-topic-picking"],
     cover: { wide: "images/articles/diary-driven-agent-3x4-v2-cover.jpg" }
   },
 
