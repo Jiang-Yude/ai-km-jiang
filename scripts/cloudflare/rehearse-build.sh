@@ -11,8 +11,8 @@ LABEL="${1:-預演}"
 _root=$(mktemp -d "${TMPDIR:-/tmp}/ai-km-jiang-rehearsal.XXXXXX")
 echo "▶ 建置預演（${LABEL}，用 build.mjs 完整打包一次，不部署）…"
 _rc=0
+source scripts/cloudflare/postclass-evidence-path.sh
 CF_BUILD_ROOT="$_root" \
-  SAFE_DEPLOY_POSTCLASS_EVIDENCE_DIR="${SAFE_DEPLOY_POSTCLASS_EVIDENCE_DIR:-$HOME/Library/Mobile Documents/iCloud~md~obsidian/Documents/江昱德 主知識庫/_agent/tmp/2026-10-06 歷史課後頁放行}" \
   node scripts/cloudflare/build.mjs --target=production > "$_root/rehearsal.log" 2>&1 || _rc=$?
 if (( _rc != 0 )); then
   grep -E 'Error|❌|⛔' "$_root/rehearsal.log" | head -8 || true
