@@ -5,6 +5,7 @@ set -uo pipefail
 LIB="${1:?給 publish-lock.sh 絕對路徑}"
 W=$(mktemp -d "${TMPDIR:-/tmp}/publock.XXXXXX")
 export PUBLISH_LOCK_DIR="${W}/publish.lock"
+export PUBLISH_REMOTE_LOCK=off  # 本檔只測同機鎖；跨機鎖見 test-deploy-lock.sh
 P=0; F=0
 ok(){ P=$((P+1)); echo "  PASS  $1"; }
 ng(){ F=$((F+1)); echo "  FAIL  $1"; }

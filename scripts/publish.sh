@@ -54,6 +54,7 @@ fi
 cd "$REPO_ROOT"
 
 # 發布鎖：同一台機器同時只有一個發布在動工作區；由 merge-publish 呼叫時沿用它的鎖。
+source "$REPO_ROOT/scripts/deploy-path.sh"
 # shellcheck source=publish-lock.sh
 source "$REPO_ROOT/scripts/publish-lock.sh"
 publish_lock_acquire "publish.sh ${MSG}" || exit 1
@@ -258,6 +259,7 @@ REMOTE_BEFORE_PUSH=$(git rev-parse '@{u}')   # 快速部署補檢查的基準：
 TAG="publish/$(TZ=Asia/Taipei date +%Y-%m-%d-%H%M%S)"
 echo "▶ Tag ${TAG} + atomic push…"
 git tag "$TAG"
+publish_lock_verify || exit 1
 PUBLISH_SCANNED_TREE="$SCANNED_TREE" PUBLISH_CHECKED_TREE="$CHECKED_TREE" git push --atomic origin \
   "HEAD:refs/heads/$EXPECTED_BRANCH" \
   "refs/tags/$TAG:refs/tags/$TAG"

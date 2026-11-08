@@ -49,6 +49,7 @@ fi
 
 # 發布鎖（2026-09-27 改）：搶不到就排隊，不再直接退出；持有者被強制停掉留下的鎖會安全接手。
 # 規則見 scripts/publish-lock.sh；publish.sh 會沿用這把鎖，不會自己卡自己。
+source "$REPO_ROOT/scripts/deploy-path.sh"
 # shellcheck source=publish-lock.sh
 source "$REPO_ROOT/scripts/publish-lock.sh"
 publish_lock_acquire "merge-publish ${BRANCH}" || exit 10
