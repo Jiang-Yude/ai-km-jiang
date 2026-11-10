@@ -23,6 +23,25 @@ window.ARTICLE_TAGS = {
 
 window.ARTICLES = [
   {
+    id: "two-computers-combine-data-icloud",
+    url: "articles/two-computers-combine-data-icloud/",
+    date: "2026-10-22",
+    updated: "2026-11-10",
+    title: "三台電腦用同一個帳號，AI 用量要怎麼合、額度該由誰去查？｜用 iCloud 共用資料夾，各台金額自算再加總，額度一台查、關機換別台接手",
+    problem: "桌機、筆電、第三台各自裝了同一個小工具，數字各算各的；同一個帳號的額度三台各自去查，被說請求太頻繁。",
+    audience: "有兩台以上電腦、想把各台的用量或花費合在一起看的人，同一個帳號在好幾台電腦上用的人，以及要幫客戶設計多台裝置合計的顧問。",
+    summary: "我的 AI 用量小工具 TokenMoney 在桌機、筆電、第三台各算各的。這篇講我怎麼讓好幾台合計：每台只把算好的數字放進 iCloud 雲碟的共用資料夾，再讀其他台的檔案加總，對話內容留在原本那台。裝到第三台後，程式讀到 iCloud 還沒下載的檔會卡住，額度也被說請求太頻繁，所以改成同一個帳號的額度只由一台查、三台共用，任一台關機都有別台接手。附另一家 AI 兩次審查抓到的九個陷阱、管不到的邊界，以及一段可以直接貼給 AI 照做的提示詞。",
+    tags: {
+      topic: ["AI工作流", "工具操作", "工作流程"],
+      level: ["基礎"],
+      content_type: ["案例文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["token-money-worth-doing", "laptop-desktop-webpage-sync-icloud-git", "cross-ai-review-both-wrong", "parallel-site-editing", "ai-loop-safety-recovery"],
+    cover: { wide: "images/articles/two-computers-combine-data-icloud-cover.jpg" }
+  },
+
+  {
     id: "ai-employee-tests-new-tools",
     url: "articles/ai-employee-tests-new-tools/",
     date: "2026-10-21",
@@ -341,7 +360,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["auto-compact-mod", "ai-model-token-efficiency", "delete-before-automate", "reevaluate-models-same-test", "ai-image-api-cost", "ai-customer-service-api-cost", "pii-shield", "codex-log-health-check"],
+    related: ["auto-compact-mod", "ai-model-token-efficiency", "delete-before-automate", "reevaluate-models-same-test", "ai-image-api-cost", "ai-customer-service-api-cost", "pii-shield", "codex-log-health-check", "two-computers-combine-data-icloud"],
     cover: { wide: "images/articles/token-money-worth-doing-cover.jpg" }
   },
 
@@ -1443,7 +1462,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["three-levels-of-cross-review", "caught-ai-slacking-into-rules", "long-document-review-layers", "webmcp-day-one", "meeting-mic-rescue-on-mac"],
+    related: ["three-levels-of-cross-review", "caught-ai-slacking-into-rules", "long-document-review-layers", "webmcp-day-one", "meeting-mic-rescue-on-mac", "two-computers-combine-data-icloud"],
     cover: { tall: "images/articles/cross-ai-review-both-wrong/01.jpg" }
   },
 
@@ -1518,7 +1537,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["what-is-graph-engineering", "webnode-to-cloudflare-pages", "copied-mechanism-is-no-mechanism", "what-are-subagents", "one-sentence-ai-website-workflow", "ai-employees-manage-agents"],
+    related: ["what-is-graph-engineering", "webnode-to-cloudflare-pages", "copied-mechanism-is-no-mechanism", "what-are-subagents", "one-sentence-ai-website-workflow", "ai-employees-manage-agents", "two-computers-combine-data-icloud"],
     cover: { wide: "images/articles/parallel-site-editing-cover.jpg" }
   },
 
@@ -2599,7 +2618,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["docs-as-system-design-agent", "ai-loop-safety-recovery", "session-messaging-reminder-layer", "github-vercel-cloudflare-compare", "who-can-see-your-site"]
+    related: ["docs-as-system-design-agent", "ai-loop-safety-recovery", "session-messaging-reminder-layer", "github-vercel-cloudflare-compare", "who-can-see-your-site", "two-computers-combine-data-icloud"]
   },
 
   {
@@ -2891,7 +2910,7 @@ window.ARTICLES = [
       content_type: ["觀點文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["what-is-loop-engineering", "my-three-loops", "tag-wiki-method", "recovery-over-perfection", "loop-engineering-guardrails", "laptop-desktop-webpage-sync-icloud-git", "ai-data-red-lines"]
+    related: ["what-is-loop-engineering", "my-three-loops", "tag-wiki-method", "recovery-over-perfection", "loop-engineering-guardrails", "laptop-desktop-webpage-sync-icloud-git", "ai-data-red-lines", "two-computers-combine-data-icloud"]
   },
 
   {
