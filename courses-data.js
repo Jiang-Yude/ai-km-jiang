@@ -50,13 +50,35 @@
 
 window.COURSES = [
   {
+    id: "2026-11-15-ai-security",
+    date: "2026-11-15",
+    time: "20:00",
+    duration_min: 60,
+    title: "不會寫程式，也要懂的 AI 資安",
+    type_label: "免費線上講座",
+    image: "images/courses/2026-11-15-ai-security.jpg",
+    venue_mode: "online",
+    venue_label: "線上",
+    host: "江江教練",
+    tags: ["資訊安全", "AI應用", "個資", "API key"],
+    summary: "給不會寫程式、工作會碰到客戶或個案資料、已經開始用 AI 的人。用近期資安事件拆解原因，講資料怎麼分級、自己要怎麼準備。",
+    materials: [],
+    registration: {
+      status: "open",
+      url: "https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ",
+      label: "加入 LINE 社群 ↗",
+      note: "免費。上課連結在課前半小時公布在 LINE 社群"
+    }
+  },
+  {
     id: "2026-11-25-wenzao-german-teacher-workshop",
-    date: "2026-11-25",
+    date: "2026-12-23",
+    date_label: "共三場：11/25（三）線上、12/9（三）實體、12/23（三）線上",
     time: null,
     duration_min: 480,
     title: "文藻大學德文系 教師 AI 工作坊｜講師的 Agent 工作流（共三場）",
     type_label: "外部授課",
-    image: null,
+    image: "images/courses/2026-11-25-wenzao-german-teacher-workshop.jpg",
     venue_mode: "hybrid",
     host: "江江教練",
     tags: ["文藻大學", "德文系", "教師", "AI助教", "Agent", "工作流"],
