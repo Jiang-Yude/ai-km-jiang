@@ -1,0 +1,438 @@
+<!--
+============================================================
+  article-template.html  ·  深度文章新頁模板（暖色拿鐵版型）
+------------------------------------------------------------
+  新增一篇文章的步驟：
+    1. 複製本檔到 articles/<slug>/index.html
+       （趨勢文章放 ai-trends/<slug>/index.html）。
+    2. 全檔填掉所有 {{...}} placeholder：
+         一個人管五個 Google 帳號，Claude 要怎麼一次串起來？｜主帳號加共用資料夾，Claude 連多個 Google 帳號的三種做法        文章標題（純文字）
+         Claude 內建的 Google 連接一次只綁一個帳號。一個人管好幾個 Google 帳號時，最不用碰技術的做法是用一個主帳號，其他帳號把雲端硬碟資料夾以編輯者權限共用給它。這篇比較三種做法，附三步設定、設定完的小測試、三個坑與一段可直接貼給 Claude 的提示詞。  meta description / og:description
+         claude-multiple-google-accounts         網址 slug，對應資料夾名
+         articles      所屬區段：articles 或 ai-trends
+         AI 應用 / 工具操作       hero 上方小標（例：AI 應用 / 需求驗證）
+         一位行政秘書幫五個社團做事，手上有五個 Google 帳號，Claude 卻一次只能接一個。用一個主帳號，其他帳號把資料夾共用進來，就能讓 Claude 一次看到五個社團。    hero 大標下的一段引言
+         {{BODY}}         正文（用下方 .section 區塊堆疊；可參考
+                          現有文章如 articles/ai-market-microcosm/）
+         教學文章 文章類型（教學文章／觀點文章／趨勢文章／案例文章）
+       canonical / og / twitter / JSON-LD 的網址也都用
+       https://jiangyude.com/articles/claude-multiple-google-accounts/ 帶入。
+    3. 在文章資料夾放 articles/claude-multiple-google-accounts/article.json（一篇一檔，2026-09-06 起）：
+       複製 _templates/article.example.json 改內容（id＝資料夾名、url「articles/claude-multiple-google-accounts/」、
+       date、title、summary、tags.topic / level / content_type，related 可為空陣列）。
+       標籤一律從 articles-tags.json 受控清單挑，不要自創字串。
+       articles-data.js 是生成檔不要手改；本機要看相關文章區塊就跑
+       node scripts/build-articles-data.mjs，上線時 merge-publish 會統一重建。
+    4. 兩支互聯 script 已內建在本檔   <script src="/views.js"></script>
+</body> 前，不用再另外加。
+    5. 到 sitemap.xml 與 llms.txt 各補一筆，讓搜尋與 AI 索引得到。
+    6. 到 search-aliases.js 補一條別名（2026-08-12 起 preflight 硬性檢查）。
+       key 用 slug，內容寫「訪客會怎麼問」：上課的說法、比喻、金句、同義詞。
+       至少兩個，不能只是照抄標題，否則 check-index-coverage.mjs 會擋下發布。
+       拼寫變體不用補（模型自己橋得起來），要補的是語意距離遠的詞。
+       立因：8/12 江江實測問「角色定妝照」查不到，追出來是文章上線當輪沒補別名。
+    7. 發布範圍要一起帶上 article-keywords.js 與 site-index.json。
+       preflight 會重跑產生器，這兩個檔有更新未提交就擋。
+
+  部署前跑：node scripts/verify-interlink.js 確認互聯腳本齊全。
+
+  ⚠️ 改舊文章的 title / problem / summary 時：被拿掉的詞若該篇內文還在用，
+     check-index-coverage.mjs 會擋。三種處理都算過關：補進 search-aliases.js、
+     寫進 index-coverage-ignore.json 並附理由、或在該檔標記敏感與過期。
+     不強迫補回，因為被移除的可能是錯字、過時名稱或隱私詞。
+============================================================
+-->
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="index,follow">
+<title>一個人管五個 Google 帳號，Claude 要怎麼一次串起來？｜主帳號加共用資料夾，Claude 連多個 Google 帳號的三種做法</title>
+<meta name="description" content="Claude 內建的 Google 連接一次只綁一個帳號。一個人管好幾個 Google 帳號時，最不用碰技術的做法是用一個主帳號，其他帳號把雲端硬碟資料夾以編輯者權限共用給它。這篇比較三種做法，附三步設定、設定完的小測試、三個坑與一段可直接貼給 Claude 的提示詞。">
+<link rel="canonical" href="https://jiangyude.com/articles/claude-multiple-google-accounts/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="一個人管五個 Google 帳號，Claude 要怎麼一次串起來？｜主帳號加共用資料夾，Claude 連多個 Google 帳號的三種做法｜江江教練">
+<!-- 分享封面：hero 文字填好後在 repo 根目錄跑 `node scripts/og-shot.mjs claude-multiple-google-accounts` 自動截 1200×630 到 images/og/claude-multiple-google-accounts.jpg（見 README「文章分享封面（OG 圖）機制」）。別退回 intro-jiang.png 直式人像，會被裁成只剩脖子。 -->
+<meta property="og:image" content="https://jiangyude.com/images/og/claude-multiple-google-accounts.jpg">
+<meta property="og:description" content="Claude 內建的 Google 連接一次只綁一個帳號。一個人管好幾個 Google 帳號時，最不用碰技術的做法是用一個主帳號，其他帳號把雲端硬碟資料夾以編輯者權限共用給它。這篇比較三種做法，附三步設定、設定完的小測試、三個坑與一段可直接貼給 Claude 的提示詞。">
+<meta property="og:url" content="https://jiangyude.com/articles/claude-multiple-google-accounts/">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:site_name" content="江江教練 · AI 知識管理">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="一個人管五個 Google 帳號，Claude 要怎麼一次串起來？｜主帳號加共用資料夾，Claude 連多個 Google 帳號的三種做法｜江江教練">
+<meta name="twitter:image" content="https://jiangyude.com/images/og/claude-multiple-google-accounts.jpg">
+<meta name="twitter:description" content="Claude 內建的 Google 連接一次只綁一個帳號。一個人管好幾個 Google 帳號時，最不用碰技術的做法是用一個主帳號，其他帳號把雲端硬碟資料夾以編輯者權限共用給它。這篇比較三種做法，附三步設定、設定完的小測試、三個坑與一段可直接貼給 Claude 的提示詞。">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"一個人管五個 Google 帳號，Claude 要怎麼一次串起來？｜主帳號加共用資料夾，Claude 連多個 Google 帳號的三種做法","description":"Claude 內建的 Google 連接一次只綁一個帳號。一個人管好幾個 Google 帳號時，最不用碰技術的做法是用一個主帳號，其他帳號把雲端硬碟資料夾以編輯者權限共用給它。這篇比較三種做法，附三步設定、設定完的小測試、三個坑與一段可直接貼給 Claude 的提示詞。","author":{"@type":"Person","@id":"https://jiangyude.com/#person","name":"江昱德","alternateName":"江江教練","jobTitle":"AI 教練","url":"https://jiangyude.com/","sameAs":["https://www.threads.com/@jiang_yude_coach","https://vocus.cc/salon/Jiang_Coach","https://github.com/Jiang-Yude","https://www.youtube.com/@aipkmcc","https://www.instagram.com/jiang_yude_coach/"]},"isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://jiangyude.com/"},"inLanguage":"zh-Hant","url":"https://jiangyude.com/articles/claude-multiple-google-accounts/"}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{--ink:#1a1612;--paper:#fefcf8;--muted:#6a635a;--line:#d8cdb8;--green:#5f7553;--blue:#5689b8;--orange:#e85a4f;--soft:#faf5ec;--dark:#2a2018;--shadow:0 18px 45px rgba(107,74,42,.14);--sp-shadow:hsla(35,50%,60%,.15);--sp-shadow-edge:hsla(35,50%,68%,.03);--sp-radius:400px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC","Segoe UI",sans-serif}
+a{color:inherit}
+/* 官網共用導航列 nav.top（與首頁/文章總站同一條） */
+nav.top{position:sticky;top:0;background:rgba(254,252,248,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid #d8cdb8;z-index:100}
+nav.top .container{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:24px;padding:14px 32px}
+.nav-brand-img{justify-self:start;display:flex;align-items:center;text-decoration:none;flex-shrink:0;transition:opacity .2s}
+.nav-brand-img:hover{opacity:.8}.nav-brand-img img{height:40px;width:auto;display:block}
+nav.top ul.nav-menu{justify-self:end;display:flex;gap:22px;list-style:none;margin:0;padding:0;font-size:.95rem;white-space:nowrap}
+nav.top ul.nav-menu a{color:#3a342d;text-decoration:none;transition:color .2s;font-weight:500;white-space:nowrap}
+nav.top ul.nav-menu a:hover{color:#1a1612}nav.top ul.nav-menu a.active{color:#1a1612;font-weight:700}
+.nav-toggle{display:none;background:none;border:none;padding:6px;cursor:pointer;width:36px;height:36px;position:relative}
+.nav-toggle span{display:block;position:absolute;left:8px;right:8px;height:2px;background:#1a1612;border-radius:2px;transition:transform .25s,opacity .25s,top .25s}
+.nav-toggle span:nth-child(1){top:11px}.nav-toggle span:nth-child(2){top:17px}.nav-toggle span:nth-child(3){top:23px}
+.nav-toggle.open span:nth-child(1){top:17px;transform:rotate(45deg)}.nav-toggle.open span:nth-child(2){opacity:0}.nav-toggle.open span:nth-child(3){top:17px;transform:rotate(-45deg)}
+.tablewrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:22px 0;border:1px solid var(--line);border-radius:10px;background:#fff;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.tablewrap table{border-collapse:collapse;width:100%;min-width:600px;font-size:18px;line-height:1.65}
+.tablewrap .zh{display:block;margin-top:5px;font-size:16px;line-height:1.55;color:var(--muted);font-weight:400}
+.tablewrap th,.tablewrap td{padding:12px 14px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top;color:#3a342d}
+.tablewrap thead th{background:var(--soft);font-weight:900;font-size:18px;color:#1a1612;white-space:nowrap}
+.tablewrap tbody tr:last-child td{border-bottom:none}
+.tablewrap td code,.section code{background:var(--soft);border:1px solid var(--line);border-radius:5px;padding:1px 6px;font:500 15px/1.5 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace}
+.inline-figure.wide{max-width:1000px}
+.inline-figure.portrait{max-width:430px}
+.toc{margin:26px 0 0;padding:20px 22px;background:#fff;border:1px solid var(--line);border-radius:10px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.toc>b{display:block;font-size:15px;letter-spacing:.05em;color:var(--green);margin-bottom:10px}
+.toc ol{margin:0;padding-left:1.35em;font-size:18px;line-height:1.7}
+.toc li{margin-bottom:7px;color:#3a342d}
+.toc a{color:var(--blue);font-weight:700;text-decoration:none}.toc a:hover{text-decoration:underline}
+.toc-hint{margin:12px 0 0!important;font-size:18px!important;color:var(--muted)!important;border-top:1px solid var(--line);padding-top:12px}
+.readmore{margin-top:24px;padding:20px 22px;background:var(--soft);border:1px solid var(--line);border-radius:12px}
+.readmore.near{margin:26px 0 6px;background:rgba(86,137,184,.07);border-color:#bcd0e2}
+.readmore.near b{color:var(--blue);font-size:18px}
+.readmore.near li{font-size:17px;line-height:1.7;margin-bottom:10px}
+.readmore b{display:block;margin-bottom:10px;font-size:19px}
+.readmore ul{margin:0;padding-left:1.25em}
+.readmore a{color:var(--blue);font-weight:700;text-decoration:none}
+.readmore a:hover{text-decoration:underline}
+@media(max-width:820px){.tablewrap table{min-width:560px;font-size:18px}.tablewrap{position:relative}.tablewrap::after{content:"表格可左右滑動 →";position:sticky;left:0;display:block;font-size:15px;color:var(--muted);background:var(--soft);border-top:1px solid var(--line);padding:7px 12px;width:100%}}
+@media(max-width:860px){
+ nav.top .container{grid-template-columns:auto 1fr auto;padding:10px 16px;gap:12px}
+ .nav-brand-img img{height:32px}
+ .nav-toggle{display:block;justify-self:end}
+ nav.top ul.nav-menu{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(254,252,248,.98);backdrop-filter:blur(14px);border-bottom:1px solid #d8cdb8;flex-direction:column;gap:0;padding:8px 0;box-shadow:0 10px 24px rgba(107,74,42,.08)}
+ nav.top ul.nav-menu.open{display:flex}
+ nav.top ul.nav-menu li{border-bottom:1px solid #e8dfc9}
+ nav.top ul.nav-menu li:last-child{border-bottom:none}
+ nav.top ul.nav-menu a{display:block;padding:14px 20px;font-size:1.06rem}
+}
+/* 滑鼠暖光暈（與首頁同一支 spotlight.js） */
+body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradient(var(--sp-radius) circle at var(--mx,50%) var(--my,50%),var(--sp-shadow) 0%,var(--sp-shadow-edge) 45%,transparent 75%);pointer-events:none;z-index:9999;mix-blend-mode:multiply;transition:background .06s linear}
+.hero{position:relative;overflow:hidden;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:72px;padding:96px clamp(20px,6vw,88px) 80px;background:linear-gradient(180deg,#fffcf0 0%,#f9e9d2 100%);color:#1a1612;border-bottom:1px solid #d8cdb8}
+.hero .wc{position:absolute;border-radius:50%;filter:blur(60px);pointer-events:none;z-index:0}
+.hero .wc1{width:420px;height:360px;top:-120px;right:-80px;background:#e8884b;opacity:.15}
+.hero .wc2{width:360px;height:300px;bottom:-110px;left:-70px;background:#5f7553;opacity:.13}
+.hero .wc3{width:280px;height:260px;top:34%;left:14%;background:#a08144;opacity:.10}
+.hero>div{flex:none;width:860px;max-width:100%;position:relative;z-index:2}
+.hero-figure{margin:0;width:620px;flex:none;position:relative;z-index:2}
+.hero-figure img{display:block;width:100%;height:auto;border-radius:16px;border:1px solid #d8cdb8;box-shadow:0 18px 45px rgba(107,74,42,.16);cursor:zoom-in}
+.hero-figure figcaption{margin-top:10px;font-size:14px;line-height:1.6;color:#6a635a}
+.inline-figure{margin:30px auto 8px;max-width:820px}
+.inline-figure img{display:block;width:100%;height:auto;border-radius:14px;border:1px solid var(--line);box-shadow:var(--shadow);background:#fff;cursor:zoom-in}
+.inline-figure figcaption{font-size:14px;line-height:1.6;color:var(--muted);margin-top:10px}
+.lightbox{position:fixed;inset:0;z-index:10000;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(12,10,8,.92);cursor:zoom-out;backdrop-filter:blur(4px)}
+.lightbox.open{display:flex}.lightbox img{max-width:96vw;max-height:92vh;border-radius:10px;box-shadow:0 24px 60px rgba(0,0,0,.5)}
+.lightbox-close{position:fixed;top:18px;right:24px;color:#fff;font-size:34px;line-height:1;font-weight:700;cursor:pointer;opacity:.85}
+.kicker{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.55rem;color:#7a5c3a;font-weight:500}
+.hero h1{max-width:none;margin:16px 0 18px;font-size:clamp(36px,6vw,72px);line-height:1.08;overflow-wrap:anywhere}
+.hero p{max-width:none;font-size:clamp(18px,2vw,23px);line-height:1.62;color:#3a342d}
+.cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
+.cta a{display:inline-flex;align-items:center;text-decoration:none;border-radius:8px;padding:12px 16px;font-weight:900}
+.cta .primary{background:#fff;color:#1a1612}.cta .ghost{border:1px solid rgba(255,255,255,.32);color:#fff;background:rgba(255,255,255,.08)}
+.section{padding:54px clamp(20px,6vw,88px);border-top:1px solid var(--line)}
+.inner{width:min(1000px,100%);margin:0 auto}
+.section h2{font-size:clamp(26px,4.2vw,48px);line-height:1.12;margin:0 0 18px}
+.section h3{font-size:clamp(21px,3vw,30px);line-height:1.2;margin:30px 0 12px}
+.lead{font-size:clamp(18px,1.6vw,22px);line-height:1.7;color:#3a342d;max-width:900px}
+.section p{font-size:18px;line-height:1.74;color:#3a342d}.section p+p{margin-top:14px}
+.section ul,.section ol{padding-left:1.4em;font-size:18px;line-height:1.74;color:#3a342d}.section li{margin-bottom:8px}
+.meaning{margin:22px 0;padding:16px 18px;border-left:5px solid var(--blue);background:rgba(86,137,184,.12);border-radius:6px;line-height:1.7;font-size:19px}
+.meaning b{display:block;color:var(--blue);margin-bottom:4px}
+.caveat{margin:0 0 8px;padding:16px 18px;border-left:5px solid var(--orange);background:rgba(232,90,79,.1);border-radius:6px;line-height:1.7;font-size:18px;color:#3a342d}
+.caveat b{display:block;color:var(--orange);margin-bottom:4px}
+.infocard{background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px 24px 22px;box-shadow:0 8px 22px rgba(107,74,42,.08);margin-top:8px}
+.infocard-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.info-item{padding:18px 14px 0}
+.info-item b{display:block;font-size:14px;font-weight:900;letter-spacing:.04em;margin-bottom:7px;text-transform:uppercase}
+.info-item:nth-child(1) b{color:var(--green)}.info-item:nth-child(2) b{color:var(--orange)}.info-item:nth-child(3) b{color:var(--blue)}
+.info-item p{margin:0;font-size:17px;line-height:1.6;color:#3a342d}
+.tagrow{display:flex;flex-wrap:wrap;gap:7px;margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
+.tag{font-size:14px;color:var(--muted);background:var(--soft);border:1px solid var(--line);border-radius:999px;padding:4px 11px}
+.duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:24px}
+.duo.stack{grid-template-columns:1fr}
+.duo .card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:22px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.duo .card.a{border-color:var(--orange)}.duo .card.b{border-color:var(--green);box-shadow:0 8px 24px rgba(95,117,83,.16)}
+.duo .card small{display:block;font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.04em;margin-bottom:9px}
+.duo .card.a small{color:var(--orange)}.duo .card.b small{color:var(--green)}
+.duo .card b{display:block;font-size:22px;line-height:1.3;margin-bottom:12px}.duo .card.a b{color:#c0512f}.duo .card.b b{color:#4a7a59}
+.duo .card p{margin:0;color:#3a342d;line-height:1.75;font-size:18px}
+.workflow-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:24px}
+.workflow-step{background:#fff;border:1px solid var(--line);border-radius:8px;padding:18px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.workflow-step small{display:block;color:var(--orange);font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;margin-bottom:9px}
+.workflow-step b{display:block;font-size:18px;line-height:1.3;margin-bottom:9px}
+.workflow-step p{margin:0;color:#3a342d;line-height:1.6;font-size:16px}
+.codeblock{background:var(--dark);color:#f3ead9;border-radius:8px;padding:18px 20px;font:500 14px/1.65 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;overflow-x:auto;white-space:pre-wrap;margin:20px 0;box-shadow:0 8px 22px rgba(107,74,42,.12)}
+.codeblock .c{color:#f6d7a6;font-weight:600}
+.skillcard{background:#fff;border:1px solid var(--green);border-radius:12px;padding:24px;box-shadow:0 10px 26px rgba(95,117,83,.16);margin-top:8px}
+.skillcard b{display:block;font-size:21px;margin-bottom:8px}
+.skillcard p{margin:0 0 16px;font-size:17px;line-height:1.65;color:#3a342d}
+.cta-band{background:#e6f0e5;color:#3a342d}.cta-band .section{border-top:none}
+.cta-band .inner{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(260px,.85fr);gap:26px;align-items:start}
+.cta-band h2{font-size:clamp(26px,4vw,44px);margin:0 0 16px}.cta-band p,.cta-band .lead{color:rgba(58,52,45,.9);font-size:18px;line-height:1.72}
+.cta-card{border:1px solid #cfe0d2;background:#fbfdfa;border-radius:8px;padding:22px}
+.cta-card b{display:block;color:#48b178;margin-bottom:10px;font-size:18px}.cta-card p{margin:0 0 14px}
+.footer{padding:30px clamp(20px,6vw,88px);font-size:14px;color:var(--muted);background:#fff;border-top:1px solid var(--line)}
+.footer-inner{width:min(1000px,100%);margin:0 auto}
+.footer-links{display:flex;flex-wrap:wrap;gap:6px 12px;margin-bottom:14px}.footer-links a{color:var(--blue);font-weight:900;text-decoration:none;font-size:14px}
+.footer-brand{font-weight:900;font-size:15px;margin-bottom:10px}.footer-note{font-size:13px;line-height:1.6}
+@media(max-width:820px){.inline-figure.portrait{max-width:340px}.infocard-grid{grid-template-columns:1fr}.duo{grid-template-columns:1fr}.workflow-grid{grid-template-columns:1fr}.cta-band .inner{grid-template-columns:1fr}.section{padding:40px 20px}.hero{min-height:52vh;flex-direction:column;justify-content:flex-start;align-items:flex-start;gap:24px}.hero>div{width:100%}.hero-figure{width:100%;max-width:560px}}
+@media(max-width:820px){html,body{overflow-x:hidden}.hero h1{word-break:break-word}}
+/* 直式圖左右排（02-design-system「直式圖在桌機的左右排版」）：輪播卡上官網預設用 .media-row，圖左圖右看段落交替；連續兩張用 .figure-pair */
+.figure-pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;margin:30px auto 8px;max-width:820px}.figure-pair .inline-figure{margin:0;max-width:none}@media(max-width:640px){.figure-pair{grid-template-columns:1fr}.figure-pair .inline-figure{max-width:340px;margin:0 auto}}
+.media-row{display:grid;grid-template-columns:minmax(0,340px) minmax(0,1fr);gap:36px;align-items:center;margin:28px 0}.media-row.img-right{grid-template-columns:minmax(0,1fr) minmax(0,340px)}.media-row .inline-figure{margin:0;max-width:none}.media-row .media-text>*:first-child{margin-top:0}.media-row .media-text>*:last-child{margin-bottom:0}@media(max-width:820px){.media-row,.media-row.img-right{grid-template-columns:1fr;gap:18px}.media-row.img-right .media-fig{order:-1}.media-row .inline-figure{max-width:340px;margin:0 auto}}
+.quote{margin:18px 0;padding:14px 18px;border-left:4px solid var(--line);background:var(--soft);border-radius:6px;font-size:18px;line-height:1.8;color:#3a342d}
+.note{font-size:16px;color:var(--muted)}
+.hero{gap:56px!important}
+.hero>div:not(.wc){width:560px!important}
+.hero-figure{width:480px!important}
+.hero h1{font-size:clamp(30px,3.1vw,44px)!important;line-height:1.18!important;margin:12px 0 16px!important}
+.hero p{font-size:clamp(16px,1.35vw,19px)!important;line-height:1.65!important}
+@media(max-width:1120px){.hero{gap:32px!important;flex-direction:column;align-items:flex-start}.hero>div:not(.wc){width:100%!important}.hero-figure{width:100%!important;max-width:560px}.hero h1{font-size:clamp(28px,5vw,40px)!important}}
+.flowscroll{overflow-x:auto;-webkit-overflow-scrolling:touch}.flowfig svg{display:block;width:100%;min-width:640px;height:auto;background:#fff;border:1px solid var(--line);border-radius:14px}
+.section ol li,.section ul li{font-size:18px;line-height:1.8;margin-bottom:6px}
+.section h3{font-size:22px;margin:26px 0 10px}
+</style>
+</head>
+<body class="spotlight">
+<!-- 官網共用導航列 nav.top：與首頁/總站同一條，文章不要自己另做極簡 topbar（江江 2026-06-25：要同一個框架、同一條導航列）。把對應頁面的 class="active" 標在自己那欄。
+     ⚠️ 下面 ul.nav-menu 整塊由 preflight 第 5 關 check-bilingual-nav.mjs 做「逐字比對」，
+        塞任何註解、多一個空白、換行位置不同都會被判導航不一致而擋下發布。要說明就寫在 <ul> 外面（像這裡）。
+        2026-08-16 修：原本的 EN 那行說明註解就夾在 <ul> 裡面，導致照範本起手的新文章一律卡第 5 關
+        （llm-rag-agent-mcp 與 rag-three-retrieval-modes 兩篇同時中招）。註解已移出來，<ul> 內保持乾淨。
+        萬一還是被擋，直接跑：node scripts/check-bilingual-nav.mjs --write --only=<你的檔案路徑> -->
+<nav class="top">
+  <div class="container">
+    <a class="nav-brand-img" href="../../index.html"><img src="../../images/footer-signature.png" alt="江江教練 | 江昱德"></a>
+    <button class="nav-toggle" aria-label="選單"><span></span><span></span><span></span></button>
+    <ul class="nav-menu">
+      <li><a href="../../index.html">首頁</a></li>
+      <li><a href="../../knowledge-architecture.html">知識架構</a></li>
+      <li><a href="../../courses.html">課程</a></li>
+      <li><a href="../../articles.html" class="active">文章</a></li>
+      <li><a href="../../skills.html">小工具</a></li>
+      <li><a href="../../offers.html">AI 落地</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="wc wc1"></div>
+  <div class="wc wc2"></div>
+  <div class="wc wc3"></div>
+  <div>
+    <div class="kicker">AI 應用 / 工具操作</div>
+    <h1>一個人管五個 Google 帳號，Claude 要怎麼一次串起來？｜主帳號加共用資料夾，Claude 連多個 Google 帳號的三種做法</h1>
+    <p>一位行政秘書幫五個社團做事，手上有五個 Google 帳號，Claude 卻一次只能接一個。用一個主帳號，其他帳號把資料夾共用進來，就能讓 Claude 一次看到五個社團。</p>
+  </div>
+  <!-- 封面圖（建議放）：⚠️ 比例是硬規則，不是美感選擇。
+       封面一律【橫式 16:9】，生成 1600x900、落檔 1400 寬，用預設 .hero-figure{width:620px}，不要加 aspect-ratio。
+       理由：封面真正的工作是分享縮圖（OG 1200x630、Threads 與 FB 連結預覽都是橫的），直式封面塞進去只剩中間一小塊。
+       只有「直接沿用既有 4:5 咪卡輪播卡」這個例外才走直式，那時改 .hero-figure{width:320px} 並加
+       .hero-figure img{aspect-ratio:4/5;object-fit:cover}，而且要在 image-ratio-ignore.json 寫明理由，否則 preflight 會擋。
+       沒有封面圖就整個 <figure> 刪掉，hero 會自動置中只剩文字。封面同時設成上面 og:image / twitter:image。
+       比例表正本與立因 → knowledge-site-manager/references/08-article-visuals-from-source.md 第零節之前。 -->
+  <figure class="hero-figure">
+    <img src="../../images/articles/claude-multiple-google-accounts-cover.jpg" alt="咪卡抱著五個社團的資料夾跑向主帳號，標題：一個人管五個 Google 帳號，Claude 要怎麼一次串起來" loading="lazy">
+    <figcaption>五個社團各自把資料夾共用給一個主帳號，Claude 只接這一個。</figcaption>
+  </figure>
+</section>
+
+<main>
+<section class="section" id="start"><div class="inner">
+<h2>這篇在講什麼</h2>
+<p class="lead">一個人手上有好幾個 Google 帳號，例如一位行政秘書同時幫五個社團做事，每個社團各有一個帳號。想讓 Claude 幫忙整理雲端硬碟時會卡住，因為 Claude 內建的 Google 連接一次只綁一個帳號。這篇比較三種做法，推薦最不用碰技術的那一種：用一個主帳號，其他帳號把資料夾共用給它，Claude 只接主帳號。也把這個做法會踩到的三個坑先講清楚。</p>
+<div class="duo stack">
+<div class="card a"><b>適合誰</b><ul>
+<li>一個人身兼好幾個單位，有好幾個 Google 帳號，每次換帳號都要登出登入的人</li>
+<li>想讓 Claude 幫忙整理雲端硬碟，卻發現一次只能接一個帳號的人</li>
+<li>幫社團、協會、小公司規劃 AI 工具，要決定帳號怎麼分的顧問與行政主管</li></ul></div>
+<div class="card b"><b>你可以帶走什麼</b><ul>
+<li>三種做法的比較表：要不要懂技術、要花什麼、會出什麼事</li>
+<li>推薦做法的三個設定步驟，不用寫程式，加上設定完確認有沒有接好的小測試</li>
+<li>一段可以直接貼給 Claude 的提示詞，避免它把 A 社的檔案放進 B 社</li></ul></div>
+</div>
+<figure class="inline-figure wide"><img src="../../images/articles/claude-multiple-google-accounts-summary.jpg" alt="一頁總結：主帳號加共用資料夾的做法、三步設定與三個坑" loading="lazy"><figcaption>先看一頁總結，細節在下面。</figcaption></figure>
+</div></section>
+
+<section class="section" id="problem"><div class="inner">
+<h2>一、問題：五個社團、五個帳號，Claude 只能接一個</h2>
+<p>這題是有人直接問我的：</p>
+<blockquote class="quote">「Cloud Code 可以串這個雲端硬碟嘛？但我現在有一個人，他是行政秘書，假設他跑了五個社團，所以他有五個社團的 Google 帳號。那現在 Cloud 他去操作就是綁定一個，那他到底要怎麼樣可以同時去管這五個帳號？是以一個帳號為主，然後這個帳號有權限去協作其他帳號呢，還是可以五個帳號都授權給 Cloud Code？」</blockquote>
+<p class="note">（原話是語音輸入，刪掉了「呃」這類語助詞；「Cloud」就是 Claude。）</p>
+<p>先講答案：<b>以一個帳號為主，其他帳號把資料夾共用給它。</b>五個帳號同時授權給 Claude 內建的連接，目前做不到。</p>
+<p>Claude 內建的 Google 連接（connector，就是讓 Claude 可以讀寫你 Google 資料的那個授權開關），一次只綁一個 Google 帳號。想換帳號，要先解除連接、再用另一個帳號重新授權。</p>
+<div class="caveat"><b>這一點要老實講清楚</b>Anthropic 官方說明頁沒有寫明帳號上限，「一次一個」是幾份第三方說明的一致講法，GitHub 上也有人提出「同一個連接器支援多帳號」的功能請求。我查到的是這樣，官方之後如果開放多帳號，這篇要跟著改。另外，下面的做法是我照 Google 與 Anthropic 的說明整理的，還沒有實際幫這位秘書設定過，所以第三段最後放了一個設定完的小測試。</div>
+<figure class="inline-figure wide flowfig" data-no-image-interaction>
+<div class="flowscroll"><svg viewBox="0 0 900 380" role="img" aria-label="五個社團帳號把資料夾共用給秘書主帳號，Claude 只連接主帳號">
+<defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#6a635a"/></marker></defs>
+<style>.b{fill:#fff;stroke:#3a342d;stroke-width:2}.ba{fill:#fcebdc;stroke:#e8884b;stroke-width:2.5}.bb{fill:#e2f1ea;stroke:#4d9c7d;stroke-width:2.5}.t{font:600 22px -apple-system,"PingFang TC","Noto Sans TC",sans-serif;fill:#1a1612}.tb{font:700 26px -apple-system,"PingFang TC","Noto Sans TC",sans-serif;fill:#1a1612}.v{font:500 20px -apple-system,"PingFang TC","Noto Sans TC",sans-serif;fill:#6a635a}.ar{stroke:#6a635a;stroke-width:2.5;fill:none;marker-end:url(#ah)}</style>
+<rect class="b" x="10" y="12" width="190" height="56" rx="12"/><text class="t" x="105" y="48" text-anchor="middle">A 社帳號</text>
+<rect class="b" x="10" y="86" width="190" height="56" rx="12"/><text class="t" x="105" y="122" text-anchor="middle">B 社帳號</text>
+<rect class="b" x="10" y="160" width="190" height="56" rx="12"/><text class="t" x="105" y="196" text-anchor="middle">C 社帳號</text>
+<rect class="b" x="10" y="234" width="190" height="56" rx="12"/><text class="t" x="105" y="270" text-anchor="middle">D 社帳號</text>
+<rect class="b" x="10" y="308" width="190" height="56" rx="12"/><text class="t" x="105" y="344" text-anchor="middle">E 社帳號</text>
+<path class="ar" d="M206,40 L404,180"/><path class="ar" d="M206,114 L404,184"/><path class="ar" d="M206,188 L404,188"/><path class="ar" d="M206,262 L404,192"/><path class="ar" d="M206,336 L404,196"/>
+<rect x="236" y="148" width="132" height="64" rx="10" fill="#fefcf8" stroke="#d8cdb8"/><text class="v" x="302" y="175" text-anchor="middle">共用資料夾</text><text class="v" x="302" y="202" text-anchor="middle">（編輯者）</text>
+<rect class="ba" x="410" y="140" width="200" height="96" rx="14"/><text class="tb" x="510" y="180" text-anchor="middle">秘書</text><text class="tb" x="510" y="214" text-anchor="middle">主帳號</text>
+<path class="ar" d="M616,188 L704,188"/><text class="v" x="660" y="170" text-anchor="middle">連接</text>
+<rect class="bb" x="710" y="140" width="180" height="96" rx="14"/><text class="tb" x="800" y="196" text-anchor="middle">Claude</text>
+</svg></div>
+<figcaption>五個社團的資料夾都匯到秘書主帳號，Claude 只接主帳號這一個。圖比螢幕寬時可以左右滑動。</figcaption>
+</figure>
+</div></section>
+
+<section class="section" id="three-ways"><div class="inner">
+<h2>二、三種做法比一比</h2>
+<div class="tablewrap"><table>
+<thead><tr><th>做法</th><th>怎麼做</th><th>好處</th><th>代價與風險</th></tr></thead>
+<tbody>
+<tr><td><b>① 主帳號加共用（推薦）</b></td><td>五個社團各自把雲端硬碟資料夾，以「編輯者」權限共用給秘書的主帳號；Claude 只綁主帳號</td><td>不用碰技術；Claude 一次看得到五個社團；秘書離職時，各社團取消共用就收回</td><td>有三個坑，見第四段</td></tr>
+<tr><td><b>② 多帳號連接工具或自架連線</b></td><td>用第三方的多帳號連接服務，或自己架 MCP 連線，每個帳號各授權一次</td><td>每個社團的帳號各自授權，不用把資料夾共用給別人</td><td>第三方服務：資料多經過一家公司，要先看懂它的隱私條款與收費。自己架：要到 Google 後台申請憑證，需要懂技術的人設定與維護</td></tr>
+<tr><td><b>③ 電腦版 Google 雲端硬碟</b></td><td>在電腦裝 Google 雲端硬碟軟體，Claude Code 直接讀電腦裡的雲端硬碟資料夾</td><td>不靠 Claude 的連接功能</td><td>電腦版雲端硬碟最多同時登入 4 個帳號，五個社團剛好超過；只有裝了軟體的那台電腦能用</td></tr>
+</tbody></table></div>
+<p>MCP 是 Model Context Protocol 的縮寫，可以想成讓 AI 接上外部服務的一種標準插座。內建連接也是走類似的路，只是 Anthropic 幫你做好了，所以只能照它的規格，一次一個帳號。</p>
+<div class="readmore near"><b>MCP 到底是什麼，我用點餐講過一次</b><ul><li><a href="../cli-api-mcp-computer-use/">叫 AI 幫你點餐，就懂 CLI、API、MCP</a>：這一段只講「自己架 MCP 要懂技術」，那篇把 MCP 跟 API、CLI 的差別拆成四層講清楚。</li></ul></div>
+<p><b>為什麼推薦 ①</b>：如果做事的人不寫程式、身邊也沒有工程師，① 是三種裡最不需要技術人員的做法，自己就能設定、自己就能維護。② 比較適合有工程人員支援，或資料不能經過主帳號的單位。</p>
+</div></section>
+
+<section class="section" id="setup"><div class="inner">
+<h2>三、主帳號加共用怎麼設定：三步加一個小測試</h2>
+<div class="media-row">
+<div class="media-fig"><figure class="inline-figure portrait"><img src="../../images/articles/claude-multiple-google-accounts-card02.jpg" alt="三步串起來，不用寫程式：各社團建資料夾、共用給主帳號選編輯者、Claude 只綁主帳號" loading="lazy"></figure></div>
+<div class="media-text">
+<ol>
+<li><b>每個社團各建一個資料夾。</b>名稱要一眼分得出來，例如「01 A社」「02 B社」。這一步在各社團自己的帳號裡做。</li>
+<li><b>把資料夾共用給秘書主帳號。</b>在雲端硬碟對資料夾按「共用」，輸入秘書主帳號，權限選「編輯者」。五個社團各做一次。</li>
+<li><b>Claude 只綁主帳號。</b>在 Claude 的設定裡找到「連接器」（Connectors），用秘書主帳號登入 Google。共用進來的資料夾，在主帳號雲端硬碟的「與我共用」裡找得到。</li>
+</ol>
+<p>秘書離職或換人時，各社團把共用對象改掉就好，不用交出社團帳號的密碼。</p>
+</div></div>
+<p><b>設定完先做一個小測試</b>，確認 Claude 真的讀得到、寫得進去：</p>
+<ol>
+<li>請 Claude 列出「與我共用」裡的資料夾，看五個社團是不是都在。</li>
+<li>請它在其中一個社團的資料夾裡建一份測試文件。</li>
+<li>到那個社團自己的帳號裡，確認看得到這份文件。</li>
+</ol>
+<p>三步都過了再開始正式交代工作。哪一步不過，先回去檢查那個社團的共用權限是不是選了「編輯者」。</p>
+</div></section>
+
+<section class="section" id="pitfalls"><div class="inner">
+<h2>四、主帳號加共用的三個坑</h2>
+<div class="media-row img-right">
+<div class="media-text">
+<h3>坑一：秘書新建的檔案，擁有者是秘書個人</h3>
+<p>一般免費 Gmail 帳號的雲端硬碟，誰建立或上傳的檔案就歸誰，也算在那個人的儲存空間裡。資料夾是社團的，但秘書在裡面新建的檔案歸秘書。秘書離職、刪掉帳號，那些檔案可能跟著不見。</p>
+<p>解法是讓社團改用 Google Workspace 的「共用雲端硬碟」。共用雲端硬碟裡的檔案屬於組織，人離開了檔案還在。Google 對符合資格的非營利組織提供免費的 Google Workspace for Nonprofits，裡面有共用雲端硬碟。台灣的社團能不能申請、要準備什麼文件，先看 Google 官方的「各國提供的產品」與資格說明頁再決定。</p>
+</div>
+<div class="media-fig"><figure class="inline-figure portrait"><img src="../../images/articles/claude-multiple-google-accounts-card03.jpg" alt="秘書建的檔案歸秘書個人，人走了檔案可能跟著不見；改用共用雲端硬碟，檔案歸社團" loading="lazy"></figure></div>
+</div>
+<div class="readmore near"><b>帳號權限要握在誰手上，我另外寫過</b><ul><li><a href="../domain-and-account-ownership/">網域要去哪裡買？小編要給帳號密碼嗎？</a>：這一段只講雲端硬碟檔案歸誰，那篇講更大的原則：金流與帳號權限握在自己手上，其他都能交出去。</li></ul></div>
+<h3>坑二：只解決雲端硬碟，信箱不算</h3>
+<p>共用資料夾解決的是檔案。五個社團的 Gmail 信件，Claude 還是只讀得到主帳號那一個。行事曆可以另外處理：每個社團把自己的 Google 日曆共用給秘書主帳號，權限選「變更活動」，主帳號接受共用之後，就能看到也能改那個社團的活動。設成「只有我」看得到的私人活動，共用之後還是看不到。</p>
+<h3>坑三：Claude 容易放錯社團</h3>
+<p>五個社團的資料夾都在同一個帳號底下，對 Claude 來說只是五個資料夾。資料夾名稱取得不清楚，或交代工作時沒講是哪個社團，它可能把 A 社的會議紀錄存進 B 社。解法是名稱加編號，再給 Claude 一段固定規則（下一段）。</p>
+</div></section>
+
+<section class="section" id="prompt"><div class="inner">
+<h2>五、可以直接貼給 Claude 的提示詞</h2>
+<div class="media-row">
+<div class="media-fig"><figure class="inline-figure portrait"><img src="../../images/articles/claude-multiple-google-accounts-card04.jpg" alt="先跟 Claude 講好是哪個社團：交代工作先講社團名稱，沒講或不確定先問我不要猜" loading="lazy"></figure></div>
+<div class="media-text">
+<p>設定好之後，第一次跟 Claude 合作時先貼這段：</p>
+<pre class="codeblock">我的 Google 雲端硬碟「與我共用」裡，有五個社團共用給我的資料夾：
+01 A社、02 B社、03 C社、04 D社、05 E社（請換成實際名稱）。
+
+規則：
+1. 我交代工作時會先講是哪個社團。你只能讀寫那個社團的資料夾。
+2. 我沒講是哪個社團，或你不確定，先問我，不要猜。
+3. 要把資料從一個社團搬到另一個社團之前，先跟我確認。
+4. 新建檔案前，告訴我會存在哪個資料夾。</pre>
+</div></div>
+<div class="caveat"><b>提示詞是口頭約定，不是權限上鎖</b>這段提示詞能降低 Claude 放錯社團的機率。主帳號對五個資料夾都有編輯權，Claude 技術上都動得到。社團之間的資料如果絕對不能互相看到，就不要共用到同一個主帳號，改用第二種做法。</div>
+<p><b>都不做的話</b>：秘書每次換社團，就要在 Claude 裡解除連接、換另一個帳號重新登入。跨社團的整理，例如五個社團的年度活動總表，只能一個社團一個社團分次處理，再自己拼起來。</p>
+<div class="readmore"><b>這篇提到過的</b><ul>
+<li><a href="../cli-api-mcp-computer-use/">叫 AI 幫你點餐，就懂 CLI、API、MCP</a>：MCP 是什麼、跟 API 差在哪</li>
+<li><a href="../domain-and-account-ownership/">網域要去哪裡買？小編要給帳號密碼嗎？</a>：帳號權限握在自己手上</li></ul>
+<b style="margin-top:14px">再往前後延伸</b><ul>
+<li><a href="../claude-meta-ads-connector/">Meta 廣告後台可以整段交給 AI 嗎？</a>：另一個用 Claude 自訂連接器接外部服務的實例，看授權頁怎麼留給本人按</li>
+<li><a href="../api-key-dont-paste-to-ai/">API key 可以貼給 AI 嗎？</a>：接服務時遇到金鑰，怎麼不經過對話</li></ul></div>
+</div></section>
+
+<section class="section" id="ai-memo"><div class="inner">
+<h2>給你的 AI 讀的技術備忘（人可以跳過）</h2>
+<ul>
+<li>Claude 內建 Google 連接：一個 Claude 帳號同時只授權一個 Google 身分，換帳號需解除後重新授權。Anthropic 官方說明 <a href="https://support.claude.com/en/articles/10166901" target="_blank" rel="noopener">Use connectors</a> 未寫明帳號上限；第三方說明（<a href="https://composio.dev/content/how-to-connect-multiple-google-drive-accounts-to-claude" target="_blank" rel="noopener">Composio</a>、<a href="https://www.usecarly.com/blog/can-claude-connect-to-multiple-google-drive-accounts/" target="_blank" rel="noopener">Carly</a>）講法一致，兩家都是賣多帳號連接服務的廠商。2026-11-11 查證。</li>
+<li>電腦版 Google 雲端硬碟同時最多 4 個帳號：<a href="https://support.google.com/drive/answer/13470231" target="_blank" rel="noopener">Google 雲端硬碟說明</a>。</li>
+<li>檔案擁有者與儲存空間：在別人共用的資料夾中新建或上傳的檔案，擁有者是上傳者，算上傳者的容量：<a href="https://support.google.com/drive/answer/9312312" target="_blank" rel="noopener">Google 儲存空間的運作方式</a>。</li>
+<li>共用雲端硬碟檔案屬於組織、成員離開仍保留；Nonprofits 版含共用雲端硬碟：<a href="https://support.google.com/a/answer/2858465" target="_blank" rel="noopener">Google Workspace for Nonprofits 版本</a>、<a href="https://support.google.com/nonprofits/answer/3367223?hl=zh-Hant" target="_blank" rel="noopener">非營利版方案資格</a>。台灣是否在可申請國家名單，本次未在官方頁確認。</li>
+<li>Google 日曆共用給特定使用者與「變更活動」權限：<a href="https://support.google.com/calendar/answer/37082" target="_blank" rel="noopener">與特定使用者共用日曆</a>。</li>
+</ul>
+<p>判斷不出來用哪一種做法，把這段話貼給你的 AI：</p>
+<pre class="codeblock">我有 N 個 Google 帳號，想讓 Claude 同時處理它們的雲端硬碟。
+我會不會寫程式：＿
+資料要不要嚴格分開：＿
+能不能接受資料經過第三方服務：＿
+請依「一個人管五個 Google 帳號，Claude 要怎麼一次串起來？」這篇的三種做法幫我判斷用哪一種，並列出我要做的步驟。</pre>
+</div></section>
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">江江教練 · AI 知識管理</div>
+    <div class="footer-links">
+      <a href="../../articles.html">← 回深度文章總站</a>
+      <a href="../../index.html">首頁</a>
+      <a href="../../learn.html">自學資源</a>
+      <a href="../../skills.html">小工具</a>
+      <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">LINE 社群 ↗</a>
+      <a href="https://www.threads.com/@jiang_yude_coach" target="_blank" rel="noopener">Threads ↗</a>
+      <a href="https://vocus.cc/salon/Jiang_Coach" target="_blank" rel="noopener">方格子 ↗</a>
+    </div>
+    <div class="footer-note">這是一篇教學文章，整理我對「一個人管五個 Google 帳號，Claude 要怎麼一次串起來？｜主帳號加共用資料夾，Claude 連多個 Google 帳號的三種做法」的看法，供你參考。</div>
+  </div>
+</footer>
+
+<!-- 點圖放大 lightbox（hero 與內文圖通用，已內建，不用每篇重加） -->
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <span class="lightbox-close" aria-label="關閉">×</span>
+  <img id="lightbox-img" src="" alt="放大檢視">
+</div>
+<script>
+(function(){
+  var box=document.getElementById('lightbox'),boxImg=document.getElementById('lightbox-img');
+  document.querySelectorAll('.hero-figure img,.inline-figure img').forEach(function(img){
+    img.addEventListener('click',function(){boxImg.src=img.currentSrc||img.src;boxImg.alt=img.alt||'放大檢視';box.classList.add('open');box.setAttribute('aria-hidden','false');});
+  });
+  function close(){box.classList.remove('open');box.setAttribute('aria-hidden','true');boxImg.src='';}
+  box.addEventListener('click',close);
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
+})();
+</script>
+
+<script src="../../image-interactions.js"></script>
+
+<!-- 官網共用：滑鼠暖光暈 + 導航列漢堡選單 -->
+<script src="../../spotlight.js"></script>
+
+<!-- 文章自動互聯（相關文章）：兩支已內建，順序不可顛倒，不用再另外加 -->
+<script src="../../articles-data.js"></script>
+<script src="../../related-render.js"></script>
+  <script src="/mika-chat-widget.js" defer></script>
+  <script src="/member-comments.js" defer></script>
+<!-- tracking:cloudflare -->
+<script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "c3e3c857121d416ab405270557d017d3"}'></script>
+<!-- tracking:views-counter -->
+<script src="/views.js"></script>
+</body>
+</html>
