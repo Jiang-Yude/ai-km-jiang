@@ -1,0 +1,543 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="index,follow">
+<title>喜歡 Grok Bot 的 AI 員工模式，但每月 30 美元太貴，能自己架一個嗎？（上篇）｜Hermes Agent、MausBot、Pi 比較，Google 免費主機、便宜雲端主機怎麼選、怎麼接 LINE</title>
+<meta name="description" content="喜歡 Grok Bot 一個 AI 主管帶 AI 員工的模式，但每月 30 美元起；如果算力本來就外接 API，缺的只是一台穩定的雲端主機。比較三款可以自己架的開源 Agent：Hermes Agent（有官方 LINE 外掛）、MausBot（仿 Grok Bot 的開源替代品）、Pi（龍蝦 AI 的核心），附網友心得、Google 免費主機與 Hetzner 的實際費用、四題決策樹，和一段貼給 AI 的判斷用話。">
+<link rel="canonical" href="https://jiangyude.com/articles/open-source-ai-agent-24h-compare/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="喜歡 Grok Bot 的 AI 員工模式，但每月 30 美元太貴，能自己架一個嗎？（上篇）｜Hermes Agent、MausBot、Pi 比較，Google 免費主機、便宜雲端主機怎麼選、怎麼接 LINE｜江江教練">
+<!-- 分享封面：hero 文字填好後在 repo 根目錄跑 `node scripts/og-shot.mjs open-source-ai-agent-24h-compare` 自動截 1200×630 到 images/og/open-source-ai-agent-24h-compare.jpg（見 README「文章分享封面（OG 圖）機制」）。別退回 intro-jiang.png 直式人像，會被裁成只剩脖子。 -->
+<meta property="og:image" content="https://jiangyude.com/images/og/open-source-ai-agent-24h-compare.jpg">
+<meta property="og:description" content="喜歡 Grok Bot 一個 AI 主管帶 AI 員工的模式，但每月 30 美元起；如果算力本來就外接 API，缺的只是一台穩定的雲端主機。比較三款可以自己架的開源 Agent：Hermes Agent（有官方 LINE 外掛）、MausBot（仿 Grok Bot 的開源替代品）、Pi（龍蝦 AI 的核心），附網友心得、Google 免費主機與 Hetzner 的實際費用、四題決策樹，和一段貼給 AI 的判斷用話。">
+<meta property="og:url" content="https://jiangyude.com/articles/open-source-ai-agent-24h-compare/">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:site_name" content="江江教練 · AI 知識管理">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="喜歡 Grok Bot 的 AI 員工模式，但每月 30 美元太貴，能自己架一個嗎？（上篇）｜Hermes Agent、MausBot、Pi 比較，Google 免費主機、便宜雲端主機怎麼選、怎麼接 LINE｜江江教練">
+<meta name="twitter:image" content="https://jiangyude.com/images/og/open-source-ai-agent-24h-compare.jpg">
+<meta name="twitter:description" content="喜歡 Grok Bot 一個 AI 主管帶 AI 員工的模式，但每月 30 美元起；如果算力本來就外接 API，缺的只是一台穩定的雲端主機。比較三款可以自己架的開源 Agent：Hermes Agent（有官方 LINE 外掛）、MausBot（仿 Grok Bot 的開源替代品）、Pi（龍蝦 AI 的核心），附網友心得、Google 免費主機與 Hetzner 的實際費用、四題決策樹，和一段貼給 AI 的判斷用話。">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"喜歡 Grok Bot 的 AI 員工模式，但每月 30 美元太貴，能自己架一個嗎？（上篇）｜Hermes Agent、MausBot、Pi 比較，Google 免費主機、便宜雲端主機怎麼選、怎麼接 LINE","description":"喜歡 Grok Bot 一個 AI 主管帶 AI 員工的模式，但每月 30 美元起；如果算力本來就外接 API，缺的只是一台穩定的雲端主機。比較三款可以自己架的開源 Agent：Hermes Agent（有官方 LINE 外掛）、MausBot（仿 Grok Bot 的開源替代品）、Pi（龍蝦 AI 的核心），附網友心得、Google 免費主機與 Hetzner 的實際費用、四題決策樹，和一段貼給 AI 的判斷用話。","author":{"@type":"Person","@id":"https://jiangyude.com/#person","name":"江昱德","alternateName":"江江教練","jobTitle":"AI 教練","url":"https://jiangyude.com/","sameAs":["https://www.threads.com/@jiang_yude_coach","https://vocus.cc/salon/Jiang_Coach","https://github.com/Jiang-Yude","https://www.youtube.com/@aipkmcc","https://www.instagram.com/jiang_yude_coach/"]},"isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://jiangyude.com/"},"inLanguage":"zh-Hant","url":"https://jiangyude.com/articles/open-source-ai-agent-24h-compare/"}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{--ink:#1a1612;--paper:#fefcf8;--muted:#6a635a;--line:#d8cdb8;--green:#5f7553;--blue:#5689b8;--orange:#e85a4f;--soft:#faf5ec;--dark:#2a2018;--shadow:0 18px 45px rgba(107,74,42,.14);--sp-shadow:hsla(35,50%,60%,.15);--sp-shadow-edge:hsla(35,50%,68%,.03);--sp-radius:400px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC","Segoe UI",sans-serif}
+a{color:inherit}
+/* 官網共用導航列 nav.top（與首頁/文章總站同一條） */
+nav.top{position:sticky;top:0;background:rgba(254,252,248,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid #d8cdb8;z-index:100}
+nav.top .container{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:24px;padding:14px 32px}
+.nav-brand-img{justify-self:start;display:flex;align-items:center;text-decoration:none;flex-shrink:0;transition:opacity .2s}
+.nav-brand-img:hover{opacity:.8}.nav-brand-img img{height:40px;width:auto;display:block}
+nav.top ul.nav-menu{justify-self:end;display:flex;gap:22px;list-style:none;margin:0;padding:0;font-size:.95rem;white-space:nowrap}
+nav.top ul.nav-menu a{color:#3a342d;text-decoration:none;transition:color .2s;font-weight:500;white-space:nowrap}
+nav.top ul.nav-menu a:hover{color:#1a1612}nav.top ul.nav-menu a.active{color:#1a1612;font-weight:700}
+.nav-toggle{display:none;background:none;border:none;padding:6px;cursor:pointer;width:36px;height:36px;position:relative}
+.nav-toggle span{display:block;position:absolute;left:8px;right:8px;height:2px;background:#1a1612;border-radius:2px;transition:transform .25s,opacity .25s,top .25s}
+.nav-toggle span:nth-child(1){top:11px}.nav-toggle span:nth-child(2){top:17px}.nav-toggle span:nth-child(3){top:23px}
+.nav-toggle.open span:nth-child(1){top:17px;transform:rotate(45deg)}.nav-toggle.open span:nth-child(2){opacity:0}.nav-toggle.open span:nth-child(3){top:17px;transform:rotate(-45deg)}
+.tablewrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:22px 0;border:1px solid var(--line);border-radius:10px;background:#fff;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.tablewrap table{border-collapse:collapse;width:100%;min-width:600px;font-size:18px;line-height:1.65}
+.tablewrap .zh{display:block;margin-top:5px;font-size:16px;line-height:1.55;color:var(--muted);font-weight:400}
+.tablewrap th,.tablewrap td{padding:12px 14px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top;color:#3a342d}
+.tablewrap thead th{background:var(--soft);font-weight:900;font-size:18px;color:#1a1612;white-space:nowrap}
+.tablewrap tbody tr:last-child td{border-bottom:none}
+.tablewrap td code,.section code{background:var(--soft);border:1px solid var(--line);border-radius:5px;padding:1px 6px;font:500 15px/1.5 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace}
+.inline-figure.wide{max-width:1000px}
+.inline-figure.portrait{max-width:430px}
+.toc{margin:26px 0 0;padding:20px 22px;background:#fff;border:1px solid var(--line);border-radius:10px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.toc>b{display:block;font-size:15px;letter-spacing:.05em;color:var(--green);margin-bottom:10px}
+.toc ol{margin:0;padding-left:1.35em;font-size:18px;line-height:1.7}
+.toc li{margin-bottom:7px;color:#3a342d}
+.toc a{color:var(--blue);font-weight:700;text-decoration:none}.toc a:hover{text-decoration:underline}
+.toc-hint{margin:12px 0 0!important;font-size:18px!important;color:var(--muted)!important;border-top:1px solid var(--line);padding-top:12px}
+.readmore{margin-top:24px;padding:20px 22px;background:var(--soft);border:1px solid var(--line);border-radius:12px}
+.readmore.near{margin:26px 0 6px;background:rgba(86,137,184,.07);border-color:#bcd0e2}
+.readmore.near b{color:var(--blue);font-size:18px}
+.readmore.near li{font-size:17px;line-height:1.7;margin-bottom:10px}
+.readmore b{display:block;margin-bottom:10px;font-size:19px}
+.readmore ul{margin:0;padding-left:1.25em}
+.readmore a{color:var(--blue);font-weight:700;text-decoration:none}
+.readmore a:hover{text-decoration:underline}
+@media(max-width:820px){.tablewrap table{min-width:560px;font-size:18px}.tablewrap{position:relative}.tablewrap::after{content:"表格可左右滑動 →";position:sticky;left:0;display:block;font-size:15px;color:var(--muted);background:var(--soft);border-top:1px solid var(--line);padding:7px 12px;width:100%}}
+@media(max-width:860px){
+ nav.top .container{grid-template-columns:auto 1fr auto;padding:10px 16px;gap:12px}
+ .nav-brand-img img{height:32px}
+ .nav-toggle{display:block;justify-self:end}
+ nav.top ul.nav-menu{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(254,252,248,.98);backdrop-filter:blur(14px);border-bottom:1px solid #d8cdb8;flex-direction:column;gap:0;padding:8px 0;box-shadow:0 10px 24px rgba(107,74,42,.08)}
+ nav.top ul.nav-menu.open{display:flex}
+ nav.top ul.nav-menu li{border-bottom:1px solid #e8dfc9}
+ nav.top ul.nav-menu li:last-child{border-bottom:none}
+ nav.top ul.nav-menu a{display:block;padding:14px 20px;font-size:1.06rem}
+}
+/* 滑鼠暖光暈（與首頁同一支 spotlight.js） */
+body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradient(var(--sp-radius) circle at var(--mx,50%) var(--my,50%),var(--sp-shadow) 0%,var(--sp-shadow-edge) 45%,transparent 75%);pointer-events:none;z-index:9999;mix-blend-mode:multiply;transition:background .06s linear}
+.hero{position:relative;overflow:hidden;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:72px;padding:96px clamp(20px,6vw,88px) 80px;background:linear-gradient(180deg,#fffcf0 0%,#f9e9d2 100%);color:#1a1612;border-bottom:1px solid #d8cdb8}
+.hero .wc{position:absolute;border-radius:50%;filter:blur(60px);pointer-events:none;z-index:0}
+.hero .wc1{width:420px;height:360px;top:-120px;right:-80px;background:#e8884b;opacity:.15}
+.hero .wc2{width:360px;height:300px;bottom:-110px;left:-70px;background:#5f7553;opacity:.13}
+.hero .wc3{width:280px;height:260px;top:34%;left:14%;background:#a08144;opacity:.10}
+.hero>div{flex:none;width:860px;max-width:100%;position:relative;z-index:2}
+.hero-figure{margin:0;width:620px;flex:none;position:relative;z-index:2}
+.hero-figure img{display:block;width:100%;height:auto;border-radius:16px;border:1px solid #d8cdb8;box-shadow:0 18px 45px rgba(107,74,42,.16);cursor:zoom-in}
+.hero-figure figcaption{margin-top:10px;font-size:14px;line-height:1.6;color:#6a635a}
+.inline-figure{margin:30px auto 8px;max-width:820px}
+.inline-figure img{display:block;width:100%;height:auto;border-radius:14px;border:1px solid var(--line);box-shadow:var(--shadow);background:#fff;cursor:zoom-in}
+.inline-figure figcaption{font-size:14px;line-height:1.6;color:var(--muted);margin-top:10px}
+.lightbox{position:fixed;inset:0;z-index:10000;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(12,10,8,.92);cursor:zoom-out;backdrop-filter:blur(4px)}
+.lightbox.open{display:flex}.lightbox img{max-width:96vw;max-height:92vh;border-radius:10px;box-shadow:0 24px 60px rgba(0,0,0,.5)}
+.lightbox-close{position:fixed;top:18px;right:24px;color:#fff;font-size:34px;line-height:1;font-weight:700;cursor:pointer;opacity:.85}
+.kicker{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.55rem;color:#7a5c3a;font-weight:500}
+.hero h1{max-width:none;margin:16px 0 18px;font-size:clamp(36px,6vw,72px);line-height:1.08;overflow-wrap:anywhere}
+.hero p{max-width:none;font-size:clamp(18px,2vw,23px);line-height:1.62;color:#3a342d}
+.cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
+.cta a{display:inline-flex;align-items:center;text-decoration:none;border-radius:8px;padding:12px 16px;font-weight:900}
+.cta .primary{background:#fff;color:#1a1612}.cta .ghost{border:1px solid rgba(255,255,255,.32);color:#fff;background:rgba(255,255,255,.08)}
+.section{padding:54px clamp(20px,6vw,88px);border-top:1px solid var(--line)}
+.inner{width:min(1000px,100%);margin:0 auto}
+.section h2{font-size:clamp(26px,4.2vw,48px);line-height:1.12;margin:0 0 18px}
+.section h3{font-size:clamp(21px,3vw,30px);line-height:1.2;margin:30px 0 12px}
+.lead{font-size:clamp(18px,1.6vw,22px);line-height:1.7;color:#3a342d;max-width:900px}
+.section p{font-size:18px;line-height:1.74;color:#3a342d}.section p+p{margin-top:14px}
+.section ul,.section ol{padding-left:1.4em;font-size:18px;line-height:1.74;color:#3a342d}.section li{margin-bottom:8px}
+.meaning{margin:22px 0;padding:16px 18px;border-left:5px solid var(--blue);background:rgba(86,137,184,.12);border-radius:6px;line-height:1.7;font-size:19px}
+.meaning b{display:block;color:var(--blue);margin-bottom:4px}
+.caveat{margin:0 0 8px;padding:16px 18px;border-left:5px solid var(--orange);background:rgba(232,90,79,.1);border-radius:6px;line-height:1.7;font-size:18px;color:#3a342d}
+.caveat b{display:block;color:var(--orange);margin-bottom:4px}
+.infocard{background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px 24px 22px;box-shadow:0 8px 22px rgba(107,74,42,.08);margin-top:8px}
+.infocard-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.info-item{padding:18px 14px 0}
+.info-item b{display:block;font-size:14px;font-weight:900;letter-spacing:.04em;margin-bottom:7px;text-transform:uppercase}
+.info-item:nth-child(1) b{color:var(--green)}.info-item:nth-child(2) b{color:var(--orange)}.info-item:nth-child(3) b{color:var(--blue)}
+.info-item p{margin:0;font-size:17px;line-height:1.6;color:#3a342d}
+.tagrow{display:flex;flex-wrap:wrap;gap:7px;margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
+.tag{font-size:14px;color:var(--muted);background:var(--soft);border:1px solid var(--line);border-radius:999px;padding:4px 11px}
+.duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:24px}
+.duo.stack{grid-template-columns:1fr}
+.duo .card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:22px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.duo .card.a{border-color:var(--orange)}.duo .card.b{border-color:var(--green);box-shadow:0 8px 24px rgba(95,117,83,.16)}
+.duo .card small{display:block;font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.04em;margin-bottom:9px}
+.duo .card.a small{color:var(--orange)}.duo .card.b small{color:var(--green)}
+.duo .card b{display:block;font-size:22px;line-height:1.3;margin-bottom:12px}.duo .card.a b{color:#c0512f}.duo .card.b b{color:#4a7a59}
+.duo .card p{margin:0;color:#3a342d;line-height:1.75;font-size:18px}
+.workflow-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:24px}
+.workflow-step{background:#fff;border:1px solid var(--line);border-radius:8px;padding:18px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.workflow-step small{display:block;color:var(--orange);font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;margin-bottom:9px}
+.workflow-step b{display:block;font-size:18px;line-height:1.3;margin-bottom:9px}
+.workflow-step p{margin:0;color:#3a342d;line-height:1.6;font-size:16px}
+.codeblock{background:var(--dark);color:#f3ead9;border-radius:8px;padding:18px 20px;font:500 14px/1.65 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;overflow-x:auto;white-space:pre-wrap;margin:20px 0;box-shadow:0 8px 22px rgba(107,74,42,.12)}
+.codeblock .c{color:#f6d7a6;font-weight:600}
+.skillcard{background:#fff;border:1px solid var(--green);border-radius:12px;padding:24px;box-shadow:0 10px 26px rgba(95,117,83,.16);margin-top:8px}
+.skillcard b{display:block;font-size:21px;margin-bottom:8px}
+.skillcard p{margin:0 0 16px;font-size:17px;line-height:1.65;color:#3a342d}
+.cta-band{background:#e6f0e5;color:#3a342d}.cta-band .section{border-top:none}
+.cta-band .inner{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(260px,.85fr);gap:26px;align-items:start}
+.cta-band h2{font-size:clamp(26px,4vw,44px);margin:0 0 16px}.cta-band p,.cta-band .lead{color:rgba(58,52,45,.9);font-size:18px;line-height:1.72}
+.cta-card{border:1px solid #cfe0d2;background:#fbfdfa;border-radius:8px;padding:22px}
+.cta-card b{display:block;color:#48b178;margin-bottom:10px;font-size:18px}.cta-card p{margin:0 0 14px}
+.footer{padding:30px clamp(20px,6vw,88px);font-size:14px;color:var(--muted);background:#fff;border-top:1px solid var(--line)}
+.footer-inner{width:min(1000px,100%);margin:0 auto}
+.footer-links{display:flex;flex-wrap:wrap;gap:6px 12px;margin-bottom:14px}.footer-links a{color:var(--blue);font-weight:900;text-decoration:none;font-size:14px}
+.footer-brand{font-weight:900;font-size:15px;margin-bottom:10px}.footer-note{font-size:13px;line-height:1.6}
+@media(max-width:820px){.inline-figure.portrait{max-width:340px}.infocard-grid{grid-template-columns:1fr}.duo{grid-template-columns:1fr}.workflow-grid{grid-template-columns:1fr}.cta-band .inner{grid-template-columns:1fr}.section{padding:40px 20px}.hero{min-height:52vh;flex-direction:column;justify-content:flex-start;align-items:flex-start;gap:24px}.hero>div{width:100%}.hero-figure{width:100%;max-width:560px}}
+@media(max-width:820px){html,body{overflow-x:hidden}.hero h1{word-break:break-word}}
+/* 直式圖左右排（02-design-system「直式圖在桌機的左右排版」）：輪播卡上官網預設用 .media-row，圖左圖右看段落交替；連續兩張用 .figure-pair */
+.figure-pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;margin:30px auto 8px;max-width:820px}.figure-pair .inline-figure{margin:0;max-width:none}@media(max-width:640px){.figure-pair{grid-template-columns:1fr}.figure-pair .inline-figure{max-width:340px;margin:0 auto}}
+.media-row{display:grid;grid-template-columns:minmax(0,340px) minmax(0,1fr);gap:36px;align-items:center;margin:28px 0}.media-row.img-right{grid-template-columns:minmax(0,1fr) minmax(0,340px)}.media-row .inline-figure{margin:0;max-width:none}.media-row .media-text>*:first-child{margin-top:0}.media-row .media-text>*:last-child{margin-bottom:0}@media(max-width:820px){.media-row,.media-row.img-right{grid-template-columns:1fr;gap:18px}.media-row.img-right .media-fig{order:-1}.media-row .inline-figure{max-width:340px;margin:0 auto}}
+/* 決策樹（簡化版，抄自 hosting-platform-decision-tree，拿掉總覽圖） */
+.dtree{margin:28px 0 8px;background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);padding:22px clamp(16px,3vw,28px) 24px}
+.dt-head b{display:block;font-size:21px;line-height:1.35;color:#1a1612}
+.dt-head span{display:block;margin-top:6px;font-size:18px;line-height:1.6;color:var(--muted)}
+.dt-crumbs{list-style:none;margin:16px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:8px}
+.dt-crumbs:empty{display:none}
+.dt-crumbs li{font-size:18px;line-height:1.4;background:var(--soft);border:1px solid var(--line);border-radius:999px;padding:5px 12px;color:#3a342d}
+.dt-crumbs li b{color:var(--green);font-weight:700}
+.dt-card{margin-top:16px;border:2px solid var(--blue);border-radius:12px;padding:18px 20px;background:rgba(86,137,184,.06);animation:dtIn .35s ease}
+.dt-card.is-end{border-color:var(--green);background:rgba(95,117,83,.08)}
+.dt-step{display:block;font:700 18px/1.3 -apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC",sans-serif;color:var(--blue);margin-bottom:6px}
+.dt-card.is-end .dt-step{color:var(--green)}
+.dtree .dt-q{font-size:clamp(22px,3vw,28px);line-height:1.3;font-weight:800;margin:0 0 14px;color:#1a1612}
+.dt-opts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.dt-opt{font:inherit;font-size:18px;line-height:1.5;text-align:left;background:#fff;border:1px solid var(--line);border-radius:10px;padding:14px 16px;cursor:pointer;color:#1a1612;transition:border-color .2s,box-shadow .2s,transform .2s}
+.dt-opt b{display:block;font-size:19px;margin-bottom:3px}
+.dt-opt span{display:block;color:var(--muted);font-size:18px}
+.dt-opt:hover,.dt-opt:focus-visible{border-color:var(--blue);box-shadow:0 6px 18px rgba(86,137,184,.2);transform:translateY(-1px);outline:none}
+.dtree .dt-platform{font-size:clamp(24px,3.4vw,32px);line-height:1.25;font-weight:900;color:#3f6b4a;margin:0 0 10px}
+.dt-card dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:6px 14px;font-size:18px;line-height:1.65}
+.dt-card dt{font-weight:800;color:#3a342d;white-space:nowrap}
+.dt-card dd{margin:0;color:#3a342d}
+.dt-controls{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap}
+.dt-btn{font:inherit;font-size:18px;border-radius:8px;padding:9px 16px;cursor:pointer;border:1px solid var(--line);background:var(--soft);color:#3a342d}
+.dt-btn:hover,.dt-btn:focus-visible{border-color:var(--blue);outline:none}
+.dt-btn[disabled]{opacity:.45;cursor:default}
+.dt-fallback{margin-top:18px;font-size:18px;line-height:1.7}
+.dt-fallback b{font-weight:800}
+.dtree.js .dt-fallback{display:none}
+.dtree:not(.js) .dt-controls,.dtree:not(.js) .dt-card{display:none}
+@keyframes dtIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@media(max-width:820px){.dt-opts{grid-template-columns:1fr}.dt-card dl{grid-template-columns:1fr}.dt-card dt{margin-top:6px}}
+.hero h1{font-size:clamp(28px,3.4vw,46px);line-height:1.18}
+.section .dt-crumbs{padding-left:0}
+</style>
+</head>
+<body class="spotlight">
+<!-- 官網共用導航列 nav.top：與首頁/總站同一條，文章不要自己另做極簡 topbar（江江 2026-06-25：要同一個框架、同一條導航列）。把對應頁面的 class="active" 標在自己那欄。
+     ⚠️ 下面 ul.nav-menu 整塊由 preflight 第 5 關 check-bilingual-nav.mjs 做「逐字比對」，
+        塞任何註解、多一個空白、換行位置不同都會被判導航不一致而擋下發布。要說明就寫在 <ul> 外面（像這裡）。
+        2026-08-16 修：原本的 EN 那行說明註解就夾在 <ul> 裡面，導致照範本起手的新文章一律卡第 5 關
+        （llm-rag-agent-mcp 與 rag-three-retrieval-modes 兩篇同時中招）。註解已移出來，<ul> 內保持乾淨。
+        萬一還是被擋，直接跑：node scripts/check-bilingual-nav.mjs --write --only=<你的檔案路徑> -->
+<nav class="top">
+  <div class="container">
+    <a class="nav-brand-img" href="../../index.html"><img src="../../images/footer-signature.png" alt="江江教練 | 江昱德"></a>
+    <button class="nav-toggle" aria-label="選單"><span></span><span></span><span></span></button>
+    <ul class="nav-menu">
+      <li><a href="../../index.html">首頁</a></li>
+      <li><a href="../../knowledge-architecture.html">知識架構</a></li>
+      <li><a href="../../courses.html">課程</a></li>
+      <li><a href="../../articles.html" class="active">文章</a></li>
+      <li><a href="../../skills.html">小工具</a></li>
+      <li><a href="../../offers.html">AI 落地</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="wc wc1"></div>
+  <div class="wc wc2"></div>
+  <div class="wc wc3"></div>
+  <div>
+    <div class="kicker">AI 員工 / 工具比較</div>
+    <h1>喜歡 Grok Bot 的 AI 員工模式，但每月 30 美元太貴，能自己架一個嗎？（上篇）｜Hermes Agent、MausBot、Pi 比較，Google 免費主機、便宜雲端主機怎麼選、怎麼接 LINE</h1>
+    <p>我平常用 Claude Code 訂閱加一台一直開著的 Mac mini，大部分的事都解決了，卡在兩個地方：我住山區，電和網路不穩；大部分人也不會有一台 24 小時開機的電腦。另一邊，我為了減輕 Grok Bot 的費用，已經另外接 Claude 和 Gemini 的 API，所以開始想：既然都接 API 了，能不能自己搭一個穩定的雲端執行環境？這篇把三款開源 Agent 和幾種主機排在一起比，最後用四個問題幫你挑。</p>
+  </div>
+  <figure class="hero-figure">
+    <img src="../../images/articles/open-source-ai-agent-24h-compare-cover.jpg" alt="咪卡捧著一盤小小的 AI 員工，從山上會跳電斷網的小木屋，沿著階梯往雲上那台亮著綠燈的主機走" loading="lazy">
+    <figcaption>家裡的電腦會跳電，想把整個 AI 員工團隊搬到雲端。</figcaption>
+  </figure>
+</section>
+
+<main>
+
+<section class="section" id="start"><div class="inner">
+<h2>這篇在講什麼</h2>
+<p class="lead">喜歡 Grok Bot 那種一個 AI 主管帶一群 AI 員工的模式，又覺得每月 30 美元起太貴；如果 AI 的算力本來就外接 API，缺的其實只是一台穩定的雲端主機。這篇比較三款可以自己架的開源 Agent：Hermes Agent、MausBot、Pi，講清楚它們各是什麼、網路上用過的人怎麼說、要放在哪台主機上、想接 LINE 的話哪一款做得到，最後用四個問題幫你選出一款。</p>
+<div class="duo stack">
+<div class="card a"><b>適合誰</b><ul>
+<li>你喜歡 Grok Bot 這種 AI 員工的模式，但覺得月費太貴，想自己架一個</li>
+<li>你用家裡的電腦一直開著跑 AI，可是住的地方電和網路不穩，或你想推給沒有 24 小時開機電腦的人</li>
+<li>你看到 Grok Bot、龍蝦 AI（OpenClaw）、愛馬仕 AI（Hermes Agent）這些名字，分不清楚差在哪，也不知道要不要付錢</li>
+<li>你想讓 AI 員工住在 LINE 裡，或想幫客戶架一個，但不確定哪一款接得上</li>
+<li>你還沒付過 API 也沒關係：Hermes 支援訂閱登入，MausBot 可以用你已經有的 Claude 或 ChatGPT 付費訂閱</li>
+</ul></div>
+<div class="card b"><b>你可以帶走什麼</b><ul>
+<li>一張三款工具的對照表：本質、授權、聊天入口、怎麼付 AI 費用、要多大的主機，再加一種不裝 Agent、用 Cloudflare Worker 直接接 Claude API 的做法</li>
+<li>一棵四題的決策樹，點完就知道你該先試哪一款</li>
+<li>依你的狀況給的第一步，加上一段可以直接貼給你的 AI 的判斷用話</li>
+</ul></div>
+</div>
+<nav class="toc"><b>目錄</b><ol>
+<li><a href="#s1">我為什麼想把 AI 員工搬上雲端</a></li>
+<li><a href="#s2">AI 員工軟體在做什麼</a></li>
+<li><a href="#s3">Hermes Agent、MausBot、Pi 各是什麼</a></li>
+<li><a href="#s4">網路上用過的人怎麼說</a></li>
+<li><a href="#s5">四個問題點下去，看你該先試哪一款</a></li>
+<li><a href="#first-step">今天就能做的第一步</a></li>
+<li><a href="#s6">AI 員工要住哪台主機：家裡電腦、Google 免費主機，還是便宜的雲端主機</a></li>
+<li><a href="#worker">不裝 Agent 也可以：用 Cloudflare Worker 直接接 Claude API</a></li>
+<li><a href="#s7">想讓 AI 員工住在 LINE 裡</a></li>
+<li><a href="#s8">自己架 AI 員工前要想清楚的四個風險</a></li>
+<li><a href="#s9">判斷不出來，把這段話貼給你的 AI</a></li>
+</ol></nav>
+</div></section>
+
+<section class="section" id="s1"><div class="inner">
+<h2>我為什麼想把 AI 員工搬上雲端</h2>
+<p>我現在是用 Claude Code 訂閱制，加一台 Mac mini 一直開著跑，這樣其實解決了大部分的問題。卡住的有兩個地方。第一個是我住山區，電和網路都比較不穩，會跳電、會斷網。第二個是這套很難推廣，大部分人不會有一台電腦 24 小時開機。所以我一直在想雲端化這件事。</p>
+<p>雲端的做法裡，我覺得實踐得不錯的是 Grok Bot。我很喜歡它的模式：一個 AI 主管管一群 AI 員工，我管的是 AI 員工，不是一件一件的任務。我覺得這樣比較親民。大部分人不是工程師，對管 AI 任務不熟；把它擬人化變成 AI 員工，我現在遇到的很多管理者、創辦人、中高階主管，都有管理員工、培訓員工的經驗，對他們來說比較親切，對我來說也是。</p>
+<p>可是 Grok Bot 實在太貴，方案每月 30 美元起。為了減輕它的費用，我都另外接 Claude 和 Gemini 的 API。後來我想，反正都要接 API 了，我缺的只是一個穩定的雲端執行環境，那我何必付 30 美元給 Grok Bot？能不能自己搭一個？Google 有免費的雲端主機可以用；就算不行，也有地方一個月 5 美元左右就租得到雲端電腦。真正執行的算力，都是外接的 API。</p>
+<p>所以我請 AI 幫我查了三款可以自己架的開源 Agent，其中 MausBot 就是照 Grok Bot 的 AI 員工團隊模式做的，也一起查要把它們放在哪裡。這篇是上篇，先把我目前遇到的情況和查到的選項整理出來；三款我都還沒用過，之後我會實際做兩個版本：Cloudflare Worker 版，和 Google 免費主機版，實測完寫成下篇，補上實際用的心得。</p>
+<div class="readmore near"><b>Grok Bot 和我的 Mac mini，我之前各寫過一篇</b><ul>
+<li><a href="https://jiangyude.com/articles/grok-bot-galaxy-day1-founders/">一個人怎麼帶 22 個 AI 員工？Grok Bot Galaxy 直播 Day 1 整理</a>：這一段只提 Grok Bot 要付月費，那篇整理官方怎麼示範一個人帶一整隊 bot</li>
+<li><a href="https://jiangyude.com/articles/where-is-my-server/">我的 Server 架在哪裡？</a>：這一段只講我想搬上雲端的原因，那篇講 Mac mini 在我的工作流裡擔任什麼角色、哪些事不該綁在家裡</li>
+</ul></div>
+</div></section>
+
+<section class="section" id="s2"><div class="inner">
+<h2>AI 員工軟體在做什麼：一個住在電腦裡、會自己動手的助理</h2>
+<p>聊天機器人只會回你話。Agent 多了一雙手：它可以讀寫檔案、執行指令、開網頁、照排程自己做事，做完再回報給你。</p>
+<p>先把兩個詞講白話：<b>主機</b>就是 AI 住的那台電腦，可以是你家的電腦，也可以是租來的雲端電腦；<b>API</b> 是讓軟體連上 AI 模型的通道，通常照用量計費，用多少付多少。</p>
+<p>這類軟體本身大多免費，真正要花錢的是兩件事：</p>
+<div class="tablewrap"><table>
+<thead><tr><th>要花錢的地方</th><th>是什麼</th><th>誰來付</th></tr></thead>
+<tbody>
+<tr><td>AI 模型</td><td>Agent 的腦袋，例如 Claude、GPT</td><td>你自己的 API 金鑰，或你已經訂閱的方案</td></tr>
+<tr><td>主機</td><td>Agent 住的那台電腦</td><td>家裡電腦免費但會停；雲端主機每月幾美元起，Google 也有免費的小台（對外網址、流量另計小錢）</td></tr>
+</tbody></table></div>
+</div></section>
+
+<section class="section" id="s3"><div class="inner">
+<h2>Hermes Agent、MausBot、Pi 各是什麼</h2>
+<h3>Hermes Agent（愛馬仕 AI）：24 小時待命的個人助理</h3>
+<p>Nous Research 做的開源 Agent，MIT 授權。它的招牌是會把做過的事整理成「技能」，下次遇到同類工作直接拿出來用，用的過程中也會修改這些技能。可以從 Telegram、Discord、Slack、WhatsApp、Signal、Email 跟它說話，也有官方的 LINE 外掛。AI 模型可以接你自己的 API 金鑰，也支援訂閱登入和本機模型。官方文件寫最低 1GB 記憶體、建議 2 到 4GB，要它開瀏覽器至少 2GB。</p>
+<h3>MausBot（OpenMausBot）：仿 Grok Bot 的開源替代品，一整個 AI 員工團隊</h3>
+<p>獨立開發者做的開源替代品，跟 xAI 沒有關係，前身叫 OpenGrokBot，Apache 2.0 授權（企業功能的資料夾另有授權）。它在你的電腦上開 Claude Code、Codex 這些官方的命令列工具，所以可以用你已經訂閱的方案登入。每個 bot 有自己的角色、記憶和工作資料夾，有一位「幕僚長」bot 可以建立專家 bot、分派工作，也能排程、互相交接。不想自己顧主機的話，另有付費雲端版，每月 15 美元起，模型費另計。</p>
+<h3>Pi：極簡的寫程式引擎，也是龍蝦 AI 的核心</h3>
+<p>Mario Zechner 做的終端機 Agent，MIT 授權。作者最初的設計只有四個工具：讀檔、寫檔、改檔、執行指令，系統提示詞不到 1,000 個 token，其他功能讓使用者自己用擴充套件加。2026 年 10 月 1 日出了 1.0，加進了 MCP 等功能。龍蝦 AI（OpenClaw）就是拿 Pi 當核心做出來的。</p>
+<h3>Hermes Agent、MausBot、Pi 一張表看完</h3>
+<div class="tablewrap"><table>
+<thead><tr><th></th><th>Hermes Agent</th><th>MausBot</th><th>Pi</th></tr></thead>
+<tbody>
+<tr><td>本質</td><td>24 小時個人助理</td><td>AI 員工團隊平台</td><td>寫程式用的極簡引擎</td></tr>
+<tr><td>授權（能不能免費用、改、拿來做生意）</td><td>MIT：可以免費用、修改、商用，保留原本的版權聲明就好</td><td>Apache 2.0：可以免費用、修改、商用，要保留版權與授權聲明，改過的檔案要註明；企業功能的資料夾另有授權，要用先看那份條款</td><td>MIT：同 Hermes Agent</td></tr>
+<tr><td>跟它說話的地方</td><td>Telegram、Discord、Slack、WhatsApp、Signal、Email、LINE</td><td>自己的桌面與手機 App</td><td>終端機</td></tr>
+<tr><td>AI 費用怎麼付</td><td>自己的 API 金鑰、訂閱登入或本機模型</td><td>可用既有訂閱（透過 Claude Code、Codex 登入）或 API</td><td>訂閱登入或 API 金鑰，看你用哪家模型</td></tr>
+<tr><td>1GB 的小主機跑得動嗎</td><td>可以試不開瀏覽器的輕量用法；長期開著，官方建議 2 到 4GB</td><td>不建議，每個 bot 各開一個命令列工具</td><td>程式本身很小，實際要看你讓它做多重的事</td></tr>
+<tr><td>成熟度</td><td>更新很快，這次查到的使用心得最多</td><td>早期版本（v0.1 系列）</td><td>2026 年 10 月出了 1.0</td></tr>
+<tr><td>要特別小心的</td><td>模型費用會隨用量變多</td><td>命令列版的金鑰用明文存在設定檔</td><td>預設沒有沙箱，能做的事等於執行它的那個帳號</td></tr>
+<tr><td>我用過嗎</td><td>還沒用，之後要用，打算先裝到 Google 免費主機</td><td>沒有，我現在用的是 Grok Bot</td><td>沒有，我寫程式用 Claude Code</td></tr>
+</tbody></table></div>
+</div></section>
+
+<section class="section" id="s4"><div class="inner">
+<h2>網路上用過 Hermes、MausBot、Pi 的人怎麼說</h2>
+<div class="caveat"><b>這一段的來源有限</b>這次沒有查到 Reddit 或 Hacker News 上的真人討論串，下面的心得來自部落格和評測站，有些作者跟產品或競品有利害關係，我標在後面。</div>
+<h3>Hermes Agent：用了三個月的人說生意靠它在跑</h3>
+<ul>
+<li>有人用了三個月，說研究、寫程式、寫文章、上線都交給它，「整個生意都靠它在跑」。這個網站本身就架在 Hermes 上。（<a href="https://tonyreviewsthings.com/hermes-agent-by-nous-research-review/" target="_blank" rel="noopener">Tony Reviews Things</a>）</li>
+<li>有人測了三週，說「越用越熟」的效果在每日研究摘要、程式碼審查、看系統紀錄上看得出來。（<a href="https://axis-intelligence.com/hermes-agent-review-tested/" target="_blank" rel="noopener">Axis Intelligence</a>）</li>
+<li>有人算過軟體免費，模型費用每月大約 29 到 251 美元，看你用多少。這位作者在賣競品。（<a href="https://preuve.ai/blog/hermes-agent-review.md" target="_blank" rel="noopener">preuve.ai</a>）</li>
+</ul>
+<h3>MausBot：還在早期，介紹文多、長期心得少</h3>
+<ul>
+<li>幾乎都是介紹文，還沒有長期使用的心得。</li>
+<li>評測提醒的地方：Windows 安裝檔沒有簽章，會跳出警告；Ubuntu 版還是 beta；有一個自動安全掃描站給了警告，那次掃描沒有回報嚴重問題。（<a href="https://aiprofitboardroom.com/blog/openmausbot/" target="_blank" rel="noopener">AI Profit Boardroom</a>、<a href="https://skillsllm.com/skill/openmausbot" target="_blank" rel="noopener">SkillsLLM</a>）</li>
+<li>價格說法互相矛盾，有寫免費、有寫付費，以官網為準。</li>
+</ul>
+<h3>Pi：作者因為對 Claude Code 不滿才自己做</h3>
+<ul>
+<li>作者 Mario Zechner 的不滿是工具的行為慢慢變了，又看不到它到底讀進了什麼。（<a href="https://mariozechner.at/posts/2025-11-30-pi-coding-agent/" target="_blank" rel="noopener">作者自己的文章</a>）</li>
+<li>有人實測同一個一個字的指令，Pi 用了大約 1,358 個 token 的上下文，Claude Code 用了大約 31,012 個，這是該文作者自己的單次實測。（<a href="https://dev.to/urvvil/i-tried-pi-after-watching-its-founder-explain-why-he-quit-claude-code-2oef" target="_blank" rel="noopener">DEV Community</a>）</li>
+<li>有評測文建議 Pi 跟 Claude Code 搭著用，因為 Pi 沒有子代理，安全設定也比較少。（<a href="https://composio.dev/blog/pi-agent-vs-claude-code" target="_blank" rel="noopener">Composio</a>）</li>
+</ul>
+</div></section>
+
+<section class="section" id="s5"><div class="inner">
+<h2>四個問題點下去，看你該先試哪一款</h2>
+<p>先回答它要幫你做什麼、你願不願意自己顧主機，再回答你想用什麼跟它說話，答案通常只剩一款。這棵樹只是起點：要從 LINE 交辦寫程式的工作，或要好幾個 AI 員工分工又想用聊天軟體下指令，就把兩個終點的條件都看過再決定。</p>
+<div class="dtree" id="dtree">
+  <div class="dt-head"><b>點點看：你的 AI 員工該裝哪一套</b><span>一題一題點答案，最後會看到建議、理由和我自己的例子。</span></div>
+  <ol class="dt-crumbs" id="dt-crumbs" aria-label="已回答的問題"></ol>
+  <div class="dt-card" id="dt-card" aria-live="polite"></div>
+  <div class="dt-controls">
+    <button type="button" class="dt-btn" id="dt-back">← 上一步</button>
+    <button type="button" class="dt-btn" id="dt-reset">重來</button>
+  </div>
+  <div class="dt-fallback">
+    <b>決策樹文字版</b>
+    <ol>
+      <li>它只要被人找的時候回一句、查一下資料就好嗎？是：<b>不用裝 Agent，用 Cloudflare Worker 這類雲端小程式直接接 Claude API</b>；不是，要自己動手做事：看第 2 題</li>
+      <li>你願意自己顧一台主機嗎（安裝、更新、壞了自己修）？不想：<b>付費託管版，例如 Grok Bot 或 MausBot 雲端版</b>（先核對聊天入口、資料放哪國、預算，不符合就找人代管）；願意：看第 3 題</li>
+      <li>要它做的事主要是寫程式，還是處理日常工作？寫程式、在終端機直接操作：<b>Pi，或你已經在用的 Claude Code</b>；日常工作，或想從手機聊天軟體交辦寫程式：看第 4 題</li>
+      <li>你想用什麼跟它說話？LINE、Telegram 這類聊天軟體：<b>Hermes Agent</b>；一個專門的 App，裡面好幾個 AI 員工各管一件事：<b>MausBot</b>（主機要 4GB 以上，比較小就選 Hermes Agent）</li>
+    </ol>
+  </div>
+</div>
+</div></section>
+
+<section class="section" id="first-step"><div class="inner">
+<h2>今天就能做的第一步，依你的狀況挑一條</h2>
+<div class="tablewrap"><table>
+<thead><tr><th>你的狀況</th><th>第一步</th></tr></thead>
+<tbody>
+<tr><td>不懂技術，只想要一個隨時能交辦的 AI 員工</td><td>先不用租主機。把下面「貼給你的 AI」那段話貼給 ChatGPT 或 Claude，或請熟悉的人陪你照決策樹走一次，選好再動手</td></tr>
+<tr><td>用過 Claude Code 或 Codex，想自己架</td><td>先在你現有的電腦裝決策樹選出來的那一款，試一週；模型費用先查服務商能不能設成「到額度就停用」，只能寄提醒的話，自己另外訂一個停止的條件；確定每天真的會用，再搬到 Google 免費主機或便宜的雲端主機</td></tr>
+<tr><td>要幫客戶導入</td><td>先跟客戶談清楚三件事：資料能不能放在國外的主機、誰負責日常維護、出事誰處理。談清楚再選工具和主機</td></tr>
+</tbody></table></div>
+</div></section>
+
+<section class="section" id="s6"><div class="inner">
+<h2>AI 員工要住哪台主機：家裡電腦、Google 免費主機，還是便宜的雲端主機</h2>
+<p>選好軟體，接著選它住的地方。差別在記憶體夠不夠、會不會停，還有每月要不要付錢。</p>
+<div class="tablewrap"><table>
+<thead><tr><th>放哪裡</th><th>每月大約</th><th>適合</th><th>要注意</th></tr></thead>
+<tbody>
+<tr><td>家裡的電腦（例如 Mac mini）</td><td>0 元</td><td>先試試看、偶爾停掉沒關係</td><td>跳電、斷網就停；Agent 碰得到你電腦裡的檔案</td></tr>
+<tr><td>Google Cloud 免費主機（e2-micro）</td><td>主機 0 元，但預設配的對外 IP 每月約 3.65 美元，流量超出免費額度另計</td><td>先試 Hermes、Pi 不開瀏覽器的輕量用法</td><td>只有 1GB 記憶體，作業系統也要吃一點，長期開著可能不夠；機房只能選美國三區，要綁信用卡</td></tr>
+<tr><td>便宜的雲端主機（例如 Hetzner 2 核 4GB）</td><td>約 7 美元（含對外 IP，未稅）</td><td>MausBot、要開瀏覽器做事的 Agent</td><td>要自己設防火牆和登入方式；2026 年 11 月查時這個方案顯示缺貨，可能要選別的機型</td></tr>
+<tr><td>Cloudflare 這類雲端小程式</td><td>免費額度起</td><td>被找才回應、照排程分幾步做完的小任務</td><td>沒辦法像一般主機那樣一直開著跑任意程式，也不能裝軟體</td></tr>
+</tbody></table></div>
+<div class="readmore near"><b>網頁和小程式放哪裡，我之前另外排過</b><ul>
+<li><a href="https://jiangyude.com/articles/hosting-platform-decision-tree/">我做的網頁，要放在哪裡別人才打得開？</a>：這一段只講 Agent 要住哪台主機，那篇講網頁和小程式放 Cloudflare、Vercel、GitHub Pages 的判斷</li>
+</ul></div>
+</div></section>
+
+<section class="section" id="worker"><div class="inner">
+<h2>不裝 Agent 也可以：用 Cloudflare Worker 直接接 Claude API</h2>
+<p>還有第四種做法，不裝上面任何一款。Cloudflare Worker 是放在 Cloudflare 上的小程式，平常不佔一台電腦，有人呼叫它、或排程時間到了才醒來。它醒來後把訊息交給 Claude API，拿到回答再送回去，做完就停。</p>
+<p>這種做法要自己寫程式，或請 AI 幫你寫。Claude 能用哪些功能、能做多少事，看你寫了什麼。你可以寫成固定流程，也可以把幾個功能交給 Claude，讓它自己決定下一步要用哪一個。</p>
+<div class="tablewrap"><table>
+<thead><tr><th></th><th>Cloudflare Worker 直接接 Claude API</th><th>自己架 Agent（Hermes、MausBot、Pi）</th></tr></thead>
+<tbody>
+<tr><td>要不要一台一直開著的主機</td><td>不用，Cloudflare 幫你跑</td><td>要隨時接單的話，要有一台一直開著的電腦，家裡的或租來的</td></tr>
+<tr><td>每月固定費用</td><td>免費方案整個帳號合計每天十萬次請求，每次執行的 CPU 時間上限 10 毫秒（等 Claude 回應的時間不算），資料庫另有額度；Claude API 照用量另計</td><td>家裡電腦只有電費；租雲端主機照方案計價，本文查到的 Hetzner CX23（2 核 4GB）每月約 7 美元；再加模型費用</td></tr>
+<tr><td>能做什麼</td><td>收訊息、照排程查東西、呼叫 Claude 寫回覆、把資料存進 Cloudflare 的資料庫</td><td>看你給它哪些工具和權限，讀寫檔案、執行指令、開瀏覽器、裝軟體都做得到，Agent 自己決定下一步</td></tr>
+<tr><td>做不到的事</td><td>不能像一般主機那樣隨意安裝軟體、碰不到你電腦裡的檔案；要開瀏覽器得另接雲端瀏覽器服務，例如 Cloudflare 自己的；每一次執行能做的事有上限</td><td>主機停了它就停</td></tr>
+<tr><td>誰來設計流程</td><td>你（或你的 AI）事先寫好固定的流程，和 Claude 可以用的功能</td><td>Agent 自己判斷，你給目標和規則</td></tr>
+<tr><td>適合</td><td>固定流程：被標註就回覆、定時查一下再通知你</td><td>每次都不太一樣、要動手做的工作</td></tr>
+</tbody></table></div>
+<p>我想讓朵拉 AI 兩種一起用：在 Threads 標註朵拉，雲端的 Claude API 先回，簡單的、已經知道的直接回；需要電腦安裝測試的才叫家裡的 Mac mini，Mac mini 沒開，就先回「電腦沒開，先把需求記著，重開之後再幫你測試」。目前 Cloudflare Worker 版已經做好，還在試跑，只寫稿不發出去；電腦沒開時要回的那句話，還要再改成這個意思。朵拉官網右下角的小客服也是用 Cloudflare 接 Claude API，接的是比較便宜的 Claude Haiku 模型，回答訪客問題，已經正式在用。</p>
+<div class="readmore near"><b>Cloudflare 免費方案的上限，我實際算過</b><ul>
+<li><a href="https://jiangyude.com/articles/cloudflare-free-plan-limits/">Cloudflare 免費方案夠用嗎？</a>：這一段只講 Worker 能接 Claude API，那篇用我的 LINE 群助理萊卡算過每天總量和每一輪能做幾件事</li>
+</ul></div>
+</div></section>
+
+<section class="section" id="s7"><div class="inner">
+<h2>想讓 AI 員工住在 LINE 裡，三款只有 Hermes 有官方外掛</h2>
+<p>Hermes Agent 走 LINE 官方的 Messaging API。你要在 LINE 後台填一個公開的 HTTPS 網址（webhook），LINE 收到訊息才會轉給 Hermes，所以光是收文字就需要這個網址；要傳圖片、語音、影片給你，還要再設定一個媒體用的公開網址參數，通常沿用同一個 HTTPS 網址就可以。費用上，用回覆的方式（Reply）回訊息不計入官方帳號的訊息額度，但回覆有時間限制；用主動推播（Push）就會計入，就算內容是在回答對方也一樣。龍蝦 AI（OpenClaw）也有 LINE 頻道。MausBot 和 Pi 目前都沒有。</p>
+<div class="caveat"><b>一個 LINE 官方帳號只能填一個 webhook 網址</b>如果你的官方帳號已經接了別的 bot，直接改接 Hermes，原本那個就會停。要一個帳號同時接兩套，得自己做一個中介服務幫忙分流，還要處理訊息驗證和重複訊息。剛開始比較簡單的做法是另外開一個新的官方帳號給它。</div>
+<div class="readmore near"><b>AI 該住在哪個通訊軟體，我另外比過</b><ul>
+<li><a href="https://jiangyude.com/articles/messaging-apps-ai-friendliness/">通訊軟體 AI 友善度比較：LINE、Telegram、Discord、Slack</a>：這一段只講 LINE 怎麼接 Hermes，那篇比四個平台對 AI 員工的友善程度</li>
+</ul></div>
+</div></section>
+
+<section class="section" id="s8"><div class="inner">
+<h2>自己架 AI 員工前要想清楚的四個風險</h2>
+<div class="caveat"><b>主機再穩，帳號被卡住也一樣會停</b>朵拉 AI 在 Threads 被標註就回覆的程式，現在跑在家裡的 Mac mini。11 月 10 日查的時候發現，朵拉的 Threads 帳號被平台卡在驗證關卡，程式連不上，最後一次成功回覆停在 10 月 23 日，之後就沒有再回過標註。換到 24 小時的主機，解決的是「電腦停了」；帳號被鎖、金鑰過期、額度用完，還是會讓它停。所以不管放哪裡，都要有辦法知道它停了。最簡單的做法：叫它每天固定時間在 LINE 或 Telegram 回你一句「我還在」，哪天沒收到就去檢查。收到了也只代表報平安這條路是通的，像朵拉這種帳號被卡住的狀況，還要另外看它最後一次成功回覆是什麼時候。</div>
+<div class="tablewrap"><table>
+<thead><tr><th>風險</th><th>會發生什麼</th><th>怎麼降低</th></tr></thead>
+<tbody>
+<tr><td>金鑰外洩</td><td>MausBot 命令列版把 API 金鑰用明文存在主機的設定檔（桌面版改存作業系統的安全儲存區）；主機被入侵，金鑰就被拿走</td><td>給 Agent 專用的金鑰並設用量上限，主機只開必要的連線</td></tr>
+<tr><td>權限太大</td><td>Agent 通常能做的事等於執行它的那個帳號，Pi 預設也沒有沙箱；那個帳號碰得到的檔案，它都碰得到</td><td>放在專用主機或專用帳號裡，不要跟你的工作資料放在一起</td></tr>
+<tr><td>費用失控</td><td>模型 API 照用量計費，Agent 一直跑就一直花</td><td>先查服務商能不能設成到額度就停用，只能寄提醒的話自己訂停止條件；第一週每天看一次用量</td></tr>
+<tr><td>客戶資料放錯地方</td><td>Google 免費主機只能選美國機房；幫客戶架的話，客戶資料會存在國外的主機上</td><td>先問客戶資料能不能出國、誰負責維護、出事誰處理，談清楚再選主機</td></tr>
+</tbody></table></div>
+<div class="readmore near"><b>API 金鑰怎麼放才安全，我另外寫過</b><ul>
+<li><a href="https://jiangyude.com/articles/api-key-dont-paste-to-ai/">API key 可以貼給 AI 嗎？</a>：這一段只提醒金鑰會外洩，那篇講怎麼存進 Mac 鑰匙圈讓程式自己去拿</li>
+</ul></div>
+</div></section>
+
+<section class="section" id="s9"><div class="inner">
+<h2>判斷不出來，把這段話貼給你的 AI</h2>
+<div class="codeblock"><pre>我想要一個 24 小時開著的 AI 員工。我平常用 ＿＿（LINE／Telegram／其他）跟人聯絡，主要想讓它做 ＿＿（例如整理資料、回覆訊息、寫程式、上網查東西）。我已經有 ＿＿（Claude／ChatGPT 的訂閱或 API 金鑰），每月主機預算 ＿＿ 美元。我 ＿＿（願意／不想）自己顧一台主機。請幫我在 Hermes Agent、MausBot、Pi 三款裡選一款，告訴我要放在哪種主機、需要多少記憶體，以及第一週要注意的安全設定；如果三款都不適合我，也請直接說，並告訴我還有什麼選擇。查不到的資訊請直接說查不到。</pre></div>
+</div></section>
+
+<section class="section" id="ai-notes"><div class="inner">
+<h2>給你的 AI 讀的技術備忘（人可以跳過）</h2>
+<ul>
+<li>Hermes Agent：<a href="https://hermes-agent.nousresearch.com/docs/user-guide/messaging/line" target="_blank" rel="noopener">官方 LINE 設定文件</a>。LINE 走 <code>hermes gateway setup</code> 選 LINE，webhook 路徑 <code>/line/webhook</code>，傳媒體要設 <code>LINE_PUBLIC_URL</code>，群組白名單 <code>LINE_ALLOWED_GROUPS</code>。</li>
+<li>MausBot：<a href="https://github.com/milind-soni/OpenMausBot" target="_blank" rel="noopener">github.com/milind-soni/OpenMausBot</a>。無介面主機可用 <code>npx openmausbot serve</code>（需 Node 24 以上），repo 附 Dockerfile 與 compose.yaml；命令列與無介面版的金鑰用明文存在 <code>~/.openmausbot/config.json</code>（權限 0600），桌面版存在作業系統的安全儲存區。</li>
+<li>Pi：npm 套件已改名到 <code>@earendil-works/pi-coding-agent</code>（舊名 <code>@mariozechner/pi-coding-agent</code>）；最初設計的內建工具是 read、write、edit、bash，1.0（2026-10-01）加入 MCP。</li>
+<li>Google Cloud 免費方案：每月一整個月份的 e2-micro 時數（約等於一台），限 us-west1、us-central1、us-east1，30GB 標準永久磁碟；使用中的對外 IPv4 每小時 0.005 美元，不在免費範圍，整月約 3.65 美元。</li>
+<li>Hetzner：德國、芬蘭機房 CX23（2 vCPU、4GB）含 IPv4 每月 5.99 歐元（約 7.09 美元），未稅；2026 年 11 月查時這個系列顯示缺貨。</li>
+<li>Hermes 記憶體：官方 Docker 文件最低 1GB、建議 2 到 4GB，開瀏覽器至少 2GB。</li>
+<li>價格與方案常變，以各家官方頁面為準。</li>
+</ul>
+</div></section>
+
+<section class="section" id="sources"><div class="inner">
+<h2>這篇的資料從哪來</h2>
+<ul>
+<li>三款工具：官方 GitHub、官方文件，加上評測文與部落格（上面各段已附連結），2026 年 11 月查。</li>
+<li>主機價格：Google Cloud、Hetzner 官方價格頁，2026 年 11 月查。</li>
+<li>我的狀況：Claude Code 訂閱加 Mac mini、住山區電和網路不穩、Grok Bot 月費與另外接 Claude 和 Gemini 的 API、朵拉帳號卡在驗證關卡，都是我自己的實際情況；朵拉雲端與 Mac mini 的分工是我的規劃，Worker 版還在試跑。Hermes Agent、MausBot、Pi 我現在都還沒用；Hermes Agent 是之後要用的，打算先裝到 Google 免費主機。這篇是上篇，Cloudflare Worker 版和 Google 免費主機版的實測心得留到下篇。</li>
+</ul>
+<div class="readmore"><b>延伸閱讀</b><ul>
+<li>這篇提到過的：<a href="https://jiangyude.com/articles/hosting-platform-decision-tree/">網頁要放在哪裡別人才打得開</a>、<a href="https://jiangyude.com/articles/cloudflare-free-plan-limits/">Cloudflare 免費方案夠用嗎</a>、<a href="https://jiangyude.com/articles/messaging-apps-ai-friendliness/">通訊軟體 AI 友善度比較</a>、<a href="https://jiangyude.com/articles/api-key-dont-paste-to-ai/">API key 可以貼給 AI 嗎</a></li>
+<li>再往前後延伸：<a href="https://jiangyude.com/articles/ai-employees-manage-agents/">AI 任務多到管不過來，找一位 AI 總管來管 Agent</a>、<a href="https://jiangyude.com/articles/mac-for-agent-beginners/">想學 Agent，我為什麼會先推薦 Mac？</a></li>
+</ul></div>
+</div></section>
+
+<div class="cta-band"><section class="section"><div class="inner"><div><h2>想一起訓練自己的 AI 員工？</h2><p class="lead">我每個月有兩場免費線上講座，也在 LINE 社群分享一人公司 ＋ AI 員工的應用技巧。</p></div><div class="cta-card"><b>加入 LINE 社群</b><p><a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">江江教練 LINE 社群 ↗</a></p></div></div></section></div>
+
+
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">江江教練 · AI 知識管理</div>
+    <div class="footer-links">
+      <a href="../../articles.html">← 回深度文章總站</a>
+      <a href="../../index.html">首頁</a>
+      <a href="../../learn.html">自學資源</a>
+      <a href="../../skills.html">小工具</a>
+      <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">LINE 社群 ↗</a>
+      <a href="https://www.threads.com/@jiang_yude_coach" target="_blank" rel="noopener">Threads ↗</a>
+      <a href="https://vocus.cc/salon/Jiang_Coach" target="_blank" rel="noopener">方格子 ↗</a>
+    </div>
+    <div class="footer-note">這是一篇教學文章，整理我對「喜歡 Grok Bot 的 AI 員工模式，但每月 30 美元太貴，能自己架一個嗎？（上篇）｜Hermes Agent、MausBot、Pi 比較，Google 免費主機、便宜雲端主機怎麼選、怎麼接 LINE」的看法，供你參考。</div>
+  </div>
+</footer>
+
+<!-- 點圖放大 lightbox（hero 與內文圖通用，已內建，不用每篇重加） -->
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <span class="lightbox-close" aria-label="關閉">×</span>
+  <img id="lightbox-img" src="" alt="放大檢視">
+</div>
+<script>
+(function(){
+  var box=document.getElementById('lightbox'),boxImg=document.getElementById('lightbox-img');
+  document.querySelectorAll('.hero-figure img,.inline-figure img').forEach(function(img){
+    img.addEventListener('click',function(){boxImg.src=img.currentSrc||img.src;boxImg.alt=img.alt||'放大檢視';box.classList.add('open');box.setAttribute('aria-hidden','false');});
+  });
+  function close(){box.classList.remove('open');box.setAttribute('aria-hidden','true');boxImg.src='';}
+  box.addEventListener('click',close);
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
+})();
+</script>
+
+<script>
+(function(){
+  var root=document.getElementById('dtree');if(!root)return;root.classList.add('js');
+  var N={
+    q1:{q:'它只要被人找的時候回一句、查一下資料就好嗎？',opts:[{b:'是，回一句就好',s:'例如被標註就回覆、問答客服',to:'e_cf'},{b:'不是，要自己動手做事',s:'開檔案、跑指令、上網、照排程做事',to:'qh'}]},
+    qh:{q:'你願意自己顧一台主機嗎？',opts:[{b:'願意',s:'安裝、更新、壞了自己修，或有人幫你',to:'q2'},{b:'不想，付錢省事',s:'每月付費，讓服務商幫你顧',to:'e_hosted'}]},
+    q2:{q:'你要它做的事，主要是寫程式，還是處理日常工作？',opts:[{b:'寫程式，在終端機直接操作',s:'改程式碼、跑測試、修 bug',to:'e_pi'},{b:'日常工作，或要從聊天軟體交辦',s:'整理資料、回訊息、研究、排程；也包括從手機交辦寫程式',to:'q3'}]},
+    q3:{q:'你想用什麼跟它說話？',opts:[{b:'每天在用的聊天軟體',s:'LINE、Telegram、Discord、Slack',to:'e_hermes'},{b:'一個專門的 App',s:'裡面有好幾個 AI 員工各管一件事',to:'e_maus'}]},
+    e_cf:{end:'用 Cloudflare 這類雲端小程式就夠',rec:'Cloudflare Worker 這類雲端小程式直接接 Claude API，不用裝 Agent；要自己寫程式，或請 AI 幫你寫',why:'被找才回應、照排程分幾步做完的小任務，不需要一台一直開著的電腦，免費額度通常就夠',mine:'我想讓朵拉 AI 被標註時先用雲端的 Claude API 回，簡單的直接回，要安裝測試才叫家裡的 Mac mini；Cloudflare Worker 版已經做好，還在試跑、不發文'},
+    e_hosted:{end:'付費託管版',rec:'Grok Bot，或 MausBot 的雲端版（每月 15 美元起，模型費另計）。付費前先核對三件事：有沒有你要的聊天入口（例如 LINE）、資料放在哪個國家、預算夠不夠；不符合就找人代管，或這三款都先不用',why:'主機、更新、備份都由服務商處理，你只管交辦',mine:'我現在用 Grok Bot，為了減輕費用另外接 Claude 和 Gemini 的 API；後來覺得既然都接 API，缺的只是穩定的雲端主機，才想自己架。MausBot 雲端版我沒用過'},
+    e_pi:{end:'Pi，或你已經在用的 Claude Code',rec:'Pi，或你已經在用的 Claude Code',why:'寫程式要的是精準控制和省 token，Pi 夠小、什麼都能自己改',mine:'我沒有用過 Pi，寫程式我用 Claude Code。Pi 只能在終端機操作，想從手機聊天軟體交辦寫程式的工作，按上一步改選「日常工作」，用 Hermes Agent'},
+    e_hermes:{end:'Hermes Agent',rec:'Hermes Agent，放在 24 小時開著的主機上',why:'支援的聊天軟體最多，有官方 LINE 外掛，會把做過的事整理成技能重複使用',mine:'我還沒用，之後要用，打算先裝到 Google 的免費主機、接我自己的 Claude API'},
+    e_maus:{end:'MausBot',rec:'MausBot，主機至少 4GB 記憶體（它沒有 LINE 入口，要用它自己的 App 交辦；主機比較小的話改選 Hermes Agent）',why:'多個 AI 員工分工的功能最完整，可以用你已經訂閱的方案',mine:'我沒有用過；我喜歡 Grok Bot 一個 AI 主管帶 AI 員工的模式，嫌月費太貴，才去找它的開源版'}
+  };
+  var card=document.getElementById('dt-card'),crumbs=document.getElementById('dt-crumbs'),back=document.getElementById('dt-back'),reset=document.getElementById('dt-reset');
+  var path=[];
+  function esc(t){var d=document.createElement('div');d.textContent=t;return d.innerHTML;}
+  function render(){
+    var cur=path.length?path[path.length-1].to:'q1',n=N[cur],step=path.length+1;
+    crumbs.innerHTML=path.map(function(p){return '<li>'+esc(N[p.from].q.replace(/？$/,''))+'：<b>'+esc(p.b)+'</b></li>';}).join('');
+    if(n.end){
+      card.className='dt-card is-end';
+      card.innerHTML='<span class="dt-step">建議先試</span><p class="dt-platform">'+esc(n.end)+'</p><dl><dt>建議</dt><dd>'+esc(n.rec)+'</dd><dt>理由</dt><dd>'+esc(n.why)+'</dd><dt>我的例子</dt><dd>'+esc(n.mine)+'</dd></dl>';
+    }else{
+      card.className='dt-card';
+      card.innerHTML='<span class="dt-step">第 '+step+' 題</span><p class="dt-q">'+esc(n.q)+'</p><div class="dt-opts">'+n.opts.map(function(o,i){return '<button type="button" class="dt-opt" data-i="'+i+'"><b>'+esc(o.b)+'</b><span>'+esc(o.s)+'</span></button>';}).join('')+'</div>';
+      card.querySelectorAll('.dt-opt').forEach(function(btn){btn.addEventListener('click',function(){var o=n.opts[+btn.dataset.i];path.push({from:cur,to:o.to,b:o.b});render();});});
+    }
+    back.disabled=!path.length;reset.disabled=!path.length;
+  }
+  back.addEventListener('click',function(){path.pop();render();});
+  reset.addEventListener('click',function(){path=[];render();});
+  render();
+})();
+</script>
+
+<script src="../../image-interactions.js"></script>
+
+<!-- 官網共用：滑鼠暖光暈 + 導航列漢堡選單 -->
+<script src="../../spotlight.js"></script>
+
+<!-- 文章自動互聯（相關文章）：兩支已內建，順序不可顛倒，不用再另外加 -->
+<script src="../../articles-data.js"></script>
+<script src="../../related-render.js"></script>
+  <script src="/mika-chat-widget.js" defer></script>
+  <script src="/member-comments.js" defer></script>
+<!-- tracking:cloudflare -->
+<script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "c3e3c857121d416ab405270557d017d3"}'></script>
+<!-- tracking:views-counter -->
+<script src="/views.js"></script>
+</body>
+</html>

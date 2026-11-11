@@ -23,6 +23,25 @@ window.ARTICLE_TAGS = {
 
 window.ARTICLES = [
   {
+    id: "open-source-ai-agent-24h-compare",
+    url: "articles/open-source-ai-agent-24h-compare/",
+    date: "2026-11-10",
+    updated: "2026-11-10",
+    title: "喜歡 Grok Bot 的 AI 員工模式，但每月 30 美元太貴，能自己架一個嗎？（上篇）｜Hermes Agent、MausBot、Pi 比較，Google 免費主機、便宜雲端主機怎麼選、怎麼接 LINE",
+    problem: "AI 助理裝在家裡電腦，一跳電、斷網就停；雲端的 Grok Bot 每月 30 美元起。想自己架一個 24 小時開著的 AI 員工，分不清 Hermes Agent、MausBot、Pi、龍蝦 AI 差在哪，也不知道 Google 免費主機跑不跑得動、能不能接 LINE。",
+    audience: "家裡電腦常停、想自己架 AI 員工，或要幫客戶選一套的人。",
+    summary: "比較三款可以自己架的開源 Agent：Hermes Agent（MIT，支援 Telegram、Discord、Slack、WhatsApp、Signal、Email，有官方 LINE 外掛，會把做過的事整理成技能）、MausBot（OpenMausBot，仿 Grok Bot 的開源替代品，Apache 2.0，用既有的 Claude Code、Codex 訂閱登入，多個 AI 員工分工、幕僚長派工）、Pi（龍蝦 AI OpenClaw 的核心，極簡的寫程式引擎）。附網友心得（標明多為部落格、沒有找到 Reddit 與 Hacker News 真人討論）、主機選擇（家裡電腦、Google Cloud 免費 e2-micro 主機 0 元但對外 IP 約 3.65 美元、Hetzner 2 核 4GB 約 7 美元）；再比較第四種做法：不裝 Agent，用 Cloudflare Worker 直接接 Claude API，適合固定流程，不能裝軟體、開瀏覽器、LINE 一個官方帳號只能填一個 webhook 的坑、四個風險（金鑰明文、權限太大、費用失控、客戶資料放錯地方），一棵四題決策樹（含不想自己顧主機的付費託管終點）、依讀者狀況分的第一步，終點附江江自己的例子：Hermes 接 Claude API、朵拉被標註就回覆的雲端版還在試跑、Threads 帳號卡在驗證關卡兩週多才發現。文末有貼給 AI 的判斷用話與技術備忘。",
+    tags: {
+      topic: ["差異比較", "AIAgent", "工具操作"],
+      level: ["基礎"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["hosting-platform-decision-tree", "grok-bot-galaxy-day1-founders", "where-is-my-server", "cloudflare-free-plan-limits", "messaging-apps-ai-friendliness", "api-key-dont-paste-to-ai", "ai-employees-manage-agents", "mac-for-agent-beginners"],
+    cover: { wide: "images/articles/open-source-ai-agent-24h-compare-cover.jpg" }
+  },
+
+  {
     id: "two-computers-combine-data-icloud",
     url: "articles/two-computers-combine-data-icloud/",
     date: "2026-10-22",
@@ -131,7 +150,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["ai-batch-work-without-seeing-data", "domain-and-account-ownership", "ai-customer-service-api-cost", "let-ai-do-the-setup"],
+    related: ["ai-batch-work-without-seeing-data", "domain-and-account-ownership", "ai-customer-service-api-cost", "let-ai-do-the-setup", "open-source-ai-agent-24h-compare"],
     cover: { wide: "images/articles/api-key-dont-paste-to-ai-cover.jpg" }
   },
 
@@ -567,7 +586,7 @@ window.ARTICLES = [
       content_type: ["案例文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["line-group-ai-workflow", "github-vercel-cloudflare-compare", "what-is-loop-engineering", "mika-to-laika-product-character-design"],
+    related: ["line-group-ai-workflow", "github-vercel-cloudflare-compare", "what-is-loop-engineering", "mika-to-laika-product-character-design", "open-source-ai-agent-24h-compare"],
     cover: { wide: "images/og/cloudflare-free-plan-limits.jpg" }
   },
 
@@ -681,7 +700,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["dont-learn-ai-tools", "harness-to-loop", "parallel-site-editing", "what-is-loop-engineering", "cathay-tech-conference-2026", "chatgpt-web-codex-console", "ai-manages-ai-focus", "ai-employee-tests-new-tools"],
+    related: ["dont-learn-ai-tools", "harness-to-loop", "parallel-site-editing", "what-is-loop-engineering", "cathay-tech-conference-2026", "chatgpt-web-codex-console", "ai-manages-ai-focus", "ai-employee-tests-new-tools", "open-source-ai-agent-24h-compare"],
     cover: { wide: "images/articles/ai-employees-manage-agents-cover.jpg" }
   },
 
@@ -1156,7 +1175,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["grok-bot-galaxy-day2-workshops", "grok-bot-galaxy-day3-shipping", "ai-employee-four-levels", "agent-workflow-builds-automation", "cli-api-mcp-computer-use", "make-your-ai-secretary", "what-are-subagents", "task-queue-mod"],
+    related: ["grok-bot-galaxy-day2-workshops", "grok-bot-galaxy-day3-shipping", "ai-employee-four-levels", "agent-workflow-builds-automation", "cli-api-mcp-computer-use", "make-your-ai-secretary", "what-are-subagents", "task-queue-mod", "open-source-ai-agent-24h-compare"],
     cover: { tall: "images/articles/grok-bot-galaxy-day1-founders/card01.jpg" }
   },
 
@@ -1232,7 +1251,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["free-deploy-three-boundaries", "github-vercel-cloudflare-compare", "who-can-see-your-site", "webnode-to-cloudflare-pages", "cloudflare-service-map", "one-sentence-ai-website-workflow", "slides-by-audience-sop", "line-namecard-share-button"],
+    related: ["free-deploy-three-boundaries", "github-vercel-cloudflare-compare", "who-can-see-your-site", "webnode-to-cloudflare-pages", "cloudflare-service-map", "one-sentence-ai-website-workflow", "slides-by-audience-sop", "line-namecard-share-button", "open-source-ai-agent-24h-compare"],
     cover: { wide: "images/articles/hosting-platform-decision-tree-cover.jpg" }
   },
 
@@ -1327,7 +1346,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["knowledge-base-three-vault-split", "chatgpt-work-codex-choice", "mobile-to-desktop-publish-loop", "cli-api-mcp-computer-use", "ai-loop-safety-recovery", "ai-data-organization-usable-system"],
+    related: ["knowledge-base-three-vault-split", "chatgpt-work-codex-choice", "mobile-to-desktop-publish-loop", "cli-api-mcp-computer-use", "ai-loop-safety-recovery", "ai-data-organization-usable-system", "open-source-ai-agent-24h-compare"],
     cover: { tall: "images/articles/where-is-my-server-01.jpg" }
   },
 
@@ -1593,7 +1612,7 @@ window.ARTICLES = [
       content_type: ["觀點文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["web-chat-ai-vs-desktop-agent", "chatgpt-work-codex-choice"],
+    related: ["web-chat-ai-vs-desktop-agent", "chatgpt-work-codex-choice", "open-source-ai-agent-24h-compare"],
     cover: { tall: "images/articles/mac-for-agent-beginners-01.jpg" }
   },
 
@@ -2275,7 +2294,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["line-group-ai-workflow", "web-chat-ai-vs-desktop-agent", "free-deploy-three-boundaries", "ai-employee-four-levels", "line-backup-who-can-see-it", "line-namecard-share-button"]
+    related: ["line-group-ai-workflow", "web-chat-ai-vs-desktop-agent", "free-deploy-three-boundaries", "ai-employee-four-levels", "line-backup-who-can-see-it", "line-namecard-share-button", "open-source-ai-agent-24h-compare"]
   },
 
   {
