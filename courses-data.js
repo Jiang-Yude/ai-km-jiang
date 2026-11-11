@@ -50,6 +50,27 @@
 
 window.COURSES = [
   {
+    id: "2026-11-24-thu-usr-agent-workshop",
+    date: "2026-11-24",
+    duration_min: 180,
+    title: "東海大學 USR 計畫 AI Agent 實作工作坊",
+    type_label: "外部授課",
+    image: "images/courses/2026-11-24-thu-usr-agent-workshop.jpg",
+    venue_mode: "physical",
+    host: "江江教練",
+    tags: ["東海大學", "USR", "AIAgent", "LINE", "行事曆", "雲端硬碟", "定時排程"],
+    summary: "東海大學 USR 計畫邀約的三小時實體工作坊。先講 Agent 的基本概念與操作，再用 LINE 示範怎麼叫 AI 串工具，接著串行事曆、雲端硬碟與定時排程。",
+    detail_url: "courses/2026-11-24-thu-usr-agent-workshop/",
+    detail_label: "課程介紹 ↗",
+    materials: [
+      { label: "課程介紹 ↗", url: "courses/2026-11-24-thu-usr-agent-workshop/" }
+    ],
+    registration: {
+      status: "private",
+      host_org: "東海大學 USR 計畫"
+    }
+  },
+  {
     id: "2026-11-06-goh-ai-workflow",
     date: "2026-11-06",
     time: "09:30",
