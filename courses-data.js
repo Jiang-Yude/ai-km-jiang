@@ -279,7 +279,6 @@ window.COURSES = [
     duration_min: 120,
     title: "AI 到底能用到什麼程度：我用 Codex 跟 Claude 示範給你看",
     type_label: "付費線上系列課",
-    pinned: true,
     image: "images/courses/2026-09-ai-series.jpg",
     banner: {
       poster: "images/courses/2026-09-ai-series-poster.jpg",
