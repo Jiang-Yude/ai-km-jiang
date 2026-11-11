@@ -50,6 +50,25 @@
 
 window.COURSES = [
   {
+    id: "2026-11-25-wenzao-german-teacher-workshop",
+    date: "2026-11-25",
+    time: null,
+    duration_min: 480,
+    title: "文藻大學德文系 教師 AI 工作坊｜講師的 Agent 工作流（共三場）",
+    type_label: "外部授課",
+    image: null,
+    venue_mode: "hybrid",
+    host: "江江教練",
+    tags: ["文藻大學", "德文系", "教師", "AI助教", "Agent", "工作流"],
+    summary: "文藻大學德文系邀約的教師 AI 工作坊，共三場 8 小時：11/25 線上 2 小時、12/9 實體 4 小時、12/23 線上 2 小時。",
+    materials: [],
+    registration: {
+      status: "private",
+      host_org: "文藻大學德文系",
+      note: "共三場：11/25（三）線上、12/9（三）實體、12/23（三）線上"
+    }
+  },
+  {
     id: "2026-11-24-thu-usr-agent-workshop",
     date: "2026-11-24",
     duration_min: 180,
