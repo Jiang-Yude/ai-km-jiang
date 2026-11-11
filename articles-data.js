@@ -23,6 +23,25 @@ window.ARTICLE_TAGS = {
 
 window.ARTICLES = [
   {
+    id: "claude-multiple-google-accounts",
+    url: "articles/claude-multiple-google-accounts/",
+    date: "2026-11-11",
+    updated: "2026-11-11",
+    title: "一個人管五個 Google 帳號，Claude 要怎麼一次串起來？｜主帳號加共用資料夾，連多帳號的三種做法",
+    problem: "一個人有好幾個 Google 帳號，例如幫五個社團做事的行政秘書，想讓 Claude 一次整理五個雲端硬碟，卻發現 Claude 內建的 Google 連接一次只能綁一個帳號。",
+    audience: "身兼好幾個單位、有好幾個 Google 帳號的人，以及幫社團、協會、小公司規劃 AI 工具的顧問與行政主管。",
+    summary: "Claude 內建的 Google 連接一次只綁一個帳號（官方沒寫明上限，第三方說明一致）。三種做法裡最不用碰技術的是主帳號加共用：各社團把雲端硬碟資料夾以編輯者權限共用給秘書主帳號，Claude 只接主帳號；另外兩種是多帳號連接工具或自架 MCP、電腦版 Google 雲端硬碟（最多 4 個帳號）。附三步設定、設定完的小測試，以及三個坑：新建檔案歸秘書個人（改用共用雲端硬碟）、信箱不算（日曆可另外共用）、Claude 容易放錯社團。文末有一段可直接貼給 Claude 的提示詞，並說明它是口頭約定不是權限上鎖。",
+    tags: {
+      topic: ["AI應用", "工具操作", "輔助決策"],
+      level: ["零基礎入門"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["cli-api-mcp-computer-use", "domain-and-account-ownership", "claude-meta-ads-connector", "api-key-dont-paste-to-ai"],
+    cover: { wide: "images/articles/claude-multiple-google-accounts-cover.jpg" }
+  },
+
+  {
     id: "open-source-ai-agent-24h-compare",
     url: "articles/open-source-ai-agent-24h-compare/",
     date: "2026-11-10",
@@ -150,7 +169,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["ai-batch-work-without-seeing-data", "domain-and-account-ownership", "ai-customer-service-api-cost", "let-ai-do-the-setup", "open-source-ai-agent-24h-compare"],
+    related: ["ai-batch-work-without-seeing-data", "domain-and-account-ownership", "ai-customer-service-api-cost", "let-ai-do-the-setup", "open-source-ai-agent-24h-compare", "claude-multiple-google-accounts"],
     cover: { wide: "images/articles/api-key-dont-paste-to-ai-cover.jpg" }
   },
 
@@ -814,7 +833,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["ai-customer-service-api-cost", "github-vercel-cloudflare-compare", "webnode-to-cloudflare-pages", "opus-luna-model-division"],
+    related: ["ai-customer-service-api-cost", "github-vercel-cloudflare-compare", "webnode-to-cloudflare-pages", "opus-luna-model-division", "claude-multiple-google-accounts"],
     cover: { wide: "images/articles/domain-and-account-ownership-cover.jpg" }
   },
 
@@ -833,7 +852,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["how-ai-connects-software", "ai-capability-tiers", "how-to-train-your-ai-employee", "openrouter-deepseek-data-routing", "grok-bot-galaxy-day2-workshops", "ai-customer-service-api-cost", "chatgpt-web-codex-console"],
+    related: ["how-ai-connects-software", "ai-capability-tiers", "how-to-train-your-ai-employee", "openrouter-deepseek-data-routing", "grok-bot-galaxy-day2-workshops", "ai-customer-service-api-cost", "chatgpt-web-codex-console", "claude-multiple-google-accounts"],
     cover: { tall: "images/articles/cli-api-mcp-computer-use-cover.jpg" }
   },
 
@@ -1403,7 +1422,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["harness-to-loop", "cli-api-mcp-computer-use", "ai-said-it-watched-the-video", "let-ai-do-the-setup", "ai-tools-professional-judgment"],
+    related: ["harness-to-loop", "cli-api-mcp-computer-use", "ai-said-it-watched-the-video", "let-ai-do-the-setup", "ai-tools-professional-judgment", "claude-multiple-google-accounts"],
     cover: { wide: "images/articles/claude-meta-ads-connector-cover.jpg" }
   },
 
