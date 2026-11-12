@@ -99,8 +99,8 @@ window.COURSES = [
     image: "images/courses/2026-11-24-thu-usr-agent-workshop.jpg",
     venue_mode: "physical",
     host: "江江教練",
-    tags: ["東海大學", "USR", "AIAgent", "LINE", "行事曆", "雲端硬碟", "定時排程"],
-    summary: "東海大學 USR 計畫邀約的三小時實體工作坊。先講 Agent 的基本概念與操作，再用 LINE 示範怎麼叫 AI 串工具，接著串行事曆、雲端硬碟與定時排程。",
+    tags: ["東海大學", "USR", "AIAgent", "講師的Agent工作流", "技能包", "知識庫"],
+    summary: "東海大學 USR 計畫邀約的三小時實體工作坊。先講 Agent 概念與基礎環境設定，再用「做簡報」示範講師的 Agent 工作流，現場試做技能包，最後分享實際陪跑案例。核心概念：建立自己的知識庫與工作流程，讓 AI 學會怎麼幫自己做事。",
     detail_url: "courses/2026-11-24-thu-usr-agent-workshop/",
     detail_label: "課程介紹 ↗",
     materials: [
