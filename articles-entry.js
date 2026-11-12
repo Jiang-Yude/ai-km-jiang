@@ -355,7 +355,7 @@ window.ARTICLE_ENTRIES = [
   {
     key: "e7",
     label: "AI 做錯了，怎麼辦",
-    desc: "東西是壞的、忘記交代、當機、互相檢查、安全與權限。",
+    desc: "東西是壞的、忘記你交代的事、當機、互相檢查、安全與權限。",
     picks: [
       "ai-said-it-watched-the-video",                  // AI 交出一份很專業的分析，但它根本沒看過那支影片
       "dual-track-planning-loop",                      // 如何讓兩個不同的 AI 互相挑錯、自己訂正？：我的企劃送出前先被模擬評審打了 2/5 分
