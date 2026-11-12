@@ -23,6 +23,25 @@ window.ARTICLE_TAGS = {
 
 window.ARTICLES = [
   {
+    id: "claude-beat-synced-video",
+    url: "articles/claude-beat-synced-video/",
+    date: "2026-11-12",
+    updated: "2026-11-12",
+    title: "用 Claude Code 剪影片，配樂從哪來、怎麼卡在拍子上？｜Suno 免費版下載限制、AI 配旁白一分鐘多少錢、免費音色庫與卡點對拍實測",
+    problem: "想用 Claude Code 做介紹片、說明片，但不知道配樂和節奏怎麼處理。",
+    audience: "想用 Claude Code 做介紹片、說明片，但不知道配樂和節奏怎麼處理的人。",
+    summary: "用 Claude Code 剪影片要處理好四件事：配樂從哪來、旁白怎麼配、畫面怎麼卡在拍子上、內容的架構。這篇整理配樂的兩種來源與 Suno 免費版的下載限制、用 Gemini 語音合成配一分鐘旁白要多少錢、卡點表要有哪幾樣、動感型與沉穩型兩種卡點怎麼選，還有可以直接貼給 Claude Code 的三句話。",
+    tags: {
+      topic: ["AI工作流", "工具操作"],
+      level: ["基礎"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["debate-summary-video-prompts", "before-installing-others-skill", "ai-said-it-watched-the-video", "claude-skills-knowledge-assets", "ai-vs-script-four-situations"],
+    cover: { wide: "images/articles/claude-beat-synced-video-hero.jpg" }
+  },
+
+  {
     id: "skill-pack-three-layers",
     url: "articles/skill-pack-three-layers/",
     date: "2026-11-12",
@@ -244,7 +263,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["ai-said-it-watched-the-video", "three-levels-of-cross-review", "youtube-to-opinion-report-workflow", "one-sentence-video-to-deep-article"],
+    related: ["ai-said-it-watched-the-video", "three-levels-of-cross-review", "youtube-to-opinion-report-workflow", "one-sentence-video-to-deep-article", "claude-beat-synced-video"],
     cover: { wide: "images/articles/debate-summary-video-prompts-cover.jpg" }
   },
 
@@ -1270,7 +1289,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["agent-workflow-builds-automation", "claude-skills-knowledge-assets", "loop-engineering-guardrails", "my-three-loops", "liberal-arts-agent-framework", "ai-schedule-wake-interval", "delete-before-automate", "ai-adoption-start-with-one-workflow", "ai-batch-work-without-seeing-data", "ai-random-true-random", "run-with-ai-first-then-script"],
+    related: ["agent-workflow-builds-automation", "claude-skills-knowledge-assets", "loop-engineering-guardrails", "my-three-loops", "liberal-arts-agent-framework", "ai-schedule-wake-interval", "delete-before-automate", "ai-adoption-start-with-one-workflow", "ai-batch-work-without-seeing-data", "ai-random-true-random", "run-with-ai-first-then-script", "claude-beat-synced-video"],
     cover: { wide: "images/articles/ai-vs-script-four-situations-summary.jpg" }
   },
 
@@ -1877,7 +1896,7 @@ window.ARTICLES = [
       content_type: ["案例文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["caught-ai-slacking-into-rules", "web-chat-ai-vs-desktop-agent", "three-levels-of-cross-review", "rag-three-retrieval-modes", "long-document-review-layers", "cognitive-debt", "one-sentence-video-to-deep-article", "course-video-multimodal-search", "debate-summary-video-prompts"]
+    related: ["caught-ai-slacking-into-rules", "web-chat-ai-vs-desktop-agent", "three-levels-of-cross-review", "rag-three-retrieval-modes", "long-document-review-layers", "cognitive-debt", "one-sentence-video-to-deep-article", "course-video-multimodal-search", "debate-summary-video-prompts", "claude-beat-synced-video"]
   },
 
   {
@@ -2259,7 +2278,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["after-ai-says-remembered", "long-document-review-layers", "dual-track-planning-loop", "copied-mechanism-is-no-mechanism", "ai-user-testing", "ai-employee-tests-new-tools"]
+    related: ["after-ai-says-remembered", "long-document-review-layers", "dual-track-planning-loop", "copied-mechanism-is-no-mechanism", "ai-user-testing", "ai-employee-tests-new-tools", "claude-beat-synced-video"]
   },
 
   {
@@ -3930,7 +3949,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["semantic-rules-before-prompt-templates", "ai-data-organization-usable-system", "manage-ai-with-management-knowledge", "chatgpt-work-skills-web-version", "old-prompts-intent-first-loop-engineering", "ai-employee-four-levels", "use-more-ai-not-enough", "ai-adoption-start-with-one-workflow", "one-sentence-ai-website-workflow", "one-sentence-video-to-deep-article", "ai-retrieval-pages-backlinks", "skill-pack-three-layers"]
+    related: ["semantic-rules-before-prompt-templates", "ai-data-organization-usable-system", "manage-ai-with-management-knowledge", "chatgpt-work-skills-web-version", "old-prompts-intent-first-loop-engineering", "ai-employee-four-levels", "use-more-ai-not-enough", "ai-adoption-start-with-one-workflow", "one-sentence-ai-website-workflow", "one-sentence-video-to-deep-article", "ai-retrieval-pages-backlinks", "skill-pack-three-layers", "claude-beat-synced-video"]
   },
 
   {
