@@ -81,7 +81,7 @@ window.ARTICLE_ENTRIES = [
     label: "寫內容、做簡報、寫企劃",
     desc: "脆文、社群圖卡、簡報、提案、問卷與市調、影片。",
     picks: [
-      "questionnaire-to-slides-agent-workflow",        // 把課前問卷變成簡報，再把流程存成技能包
+      "train-your-ai-agent-editor",                    // 沒空寫，可以叫 AI 幫我寫嗎？：讓 AI 認識你，比學會用 AI 更重要
       "one-sentence-video-to-deep-article",            // 我怎麼一句話，就讓我的 AI 把一支專題影片變成一篇深度文章？
       "slides-by-audience-sop",                        // 怎麼把 AI 訓練成懂你的簡報助理？
     ],
@@ -357,7 +357,7 @@ window.ARTICLE_ENTRIES = [
     label: "AI 做錯了，怎麼辦",
     desc: "東西是壞的、忘記交代、當機、互相檢查、安全與權限。",
     picks: [
-      "api-key-dont-paste-to-ai",                      // API key 可以貼給 AI 嗎？
+      "ai-said-it-watched-the-video",                  // AI 交出一份很專業的分析，但它根本沒看過那支影片
       "dual-track-planning-loop",                      // 如何讓兩個不同的 AI 互相挑錯、自己訂正？：我的企劃送出前先被模擬評審打了 2/5 分
       "agent-three-layer-triage",                      // 「AI 說它做完了，可是東西是壞的」
     ],
