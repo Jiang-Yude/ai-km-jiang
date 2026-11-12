@@ -3,7 +3,8 @@
    ------------------------------------------------------------
    讀 window.ARTICLES，做四件事：
      1. 渲染所有文章卡片（依日期新到舊，最新在前）
-     2. 從資料長出四維篩選標籤（只顯示真的有文章用到的，附篇數）
+     2. 入口區（articles-entry.js）：一排「你現在想解決什麼」，點了只列屬於那一題的文章，先推人工指定的幾篇
+        進一步篩選（難度、類型、主題）預設收合，只顯示真的有文章用到的標籤，附篇數
      3. 多選「交集（AND）」過濾：選越多剩越少，即時顯示剩餘篇數
      4. 關鍵字搜尋：標題、摘要、解決、適合、標籤全文比對，跟篩選並用
    ============================================================ */
@@ -11,10 +12,9 @@
   "use strict";
 
   var DIMS = [
-    { key: "pain",         label: "我遇到的問題" },
-    { key: "topic",        label: "主題", collapse: true },
     { key: "level",        label: "難度" },
-    { key: "content_type", label: "類型" }
+    { key: "content_type", label: "類型" },
+    { key: "topic",        label: "主題", collapse: true }
   ];
 
   var TYPE_BADGE = {
@@ -30,27 +30,25 @@
   });
 
   var selected = new Set();   // "dim::tag"
-  var GUIDE = window.ARTICLE_GUIDE || { who: [], goal: [] };
-  var guide = { who: null, goal: null };   // 咪卡引導區選到的選項（物件）
+  // 入口（2026-11-13 改版）：一套 8 個入口取代舊的「我是／想解決」兩排與「我遇到的問題」一排。
+  // 每篇歸哪個入口、每個入口先推哪幾篇，都寫在 articles-entry.js，不再用關鍵字比對猜。
+  var ENTRIES = window.ARTICLE_ENTRIES || [];
+  var entry = null;           // 目前選到的入口（物件）
+  var byId = {};
+  articles.forEach(function (a) { byId[a.id] = a; });
+  ENTRIES.forEach(function (e) {
+    e._set = {};
+    (e.ids || []).forEach(function (id) { e._set[id] = 2; });      // 主入口
+    (e.also || []).forEach(function (id) { if (!e._set[id]) e._set[id] = 1; }); // 副入口
+    e._picks = (e.picks || []).map(function (id) { return byId[id]; }).filter(Boolean);
+  });
   var query = "";             // 搜尋關鍵字（小寫）
 
   var elGrid, elCount, elFilter, elSelected, elClear, elEmpty, elSearch, elSearchWrap, elSearchClear;
 
   function tagKey(dim, tag) { return dim + "::" + tag; }
 
-  // 「我遇到的問題」不是文章自帶的標籤，而是由主題標籤分組算出來（任一主題命中就算）
-  var PAIN = window.ARTICLE_PAIN || [];
   function articleTags(a, dim) {
-    if (dim === "pain") {
-      if (a._pain) return a._pain;
-      var topics = (a.tags && a.tags.topic) || [];
-      var text = [a.title, a.summary, a.problem, a.audience].join(" ").toLowerCase();
-      a._pain = PAIN.filter(function (p) {
-        if (p.topics.some(function (t) { return topics.indexOf(t) !== -1; })) return true;
-        return (p.keywords || []).some(function (k) { return text.indexOf(k.toLowerCase()) !== -1; });
-      }).map(function (p) { return p.label; });
-      return a._pain;
-    }
     return (a.tags && a.tags[dim]) || [];
   }
 
@@ -106,31 +104,16 @@
     }, 1200);
   }
 
-  function guideHit(a, opt) {
-    if (!opt) return false;
-    if (a._gh === undefined) a._gh = {};
-    if (a._gh[opt.label] !== undefined) return a._gh[opt.label];
-    var pains = articleTags(a, "pain"), h = haystack(a), t = String(a.title || "").toLowerCase(), ok = 0;
-    if ((opt.kw || []).some(function (k) { return t.indexOf(k.toLowerCase()) !== -1; })) ok = 2;            // 標題命中最強
-    else if ((opt.pain || []).some(function (p) { return pains.indexOf(p) !== -1; })) ok = 1;
-    else if ((opt.kw || []).some(function (k) { return h.indexOf(k.toLowerCase()) !== -1; })) ok = 1;
-    return (a._gh[opt.label] = ok);
-  }
-  function guideScore(a) {
-    var s = 0;
-    if (guide.goal) s += guideHit(a, guide.goal) * 3;
-    if (guide.who) s += guideHit(a, guide.who);
-    return s;
-  }
-  function matchesGuide(a) {
-    if (guide.goal) return guideHit(a, guide.goal);
-    if (guide.who) return guideHit(a, guide.who);
-    return true;
-  }
-  function visible(a) { return matchesTags(a) && matchesQuery(a) && matchesGuide(a); }
+  function entryHit(a) { return entry ? (entry._set[a.id] || 0) : 0; }
+  function matchesEntry(a) { return entry ? !!entry._set[a.id] : true; }
+  function visible(a) { return matchesTags(a) && matchesQuery(a) && matchesEntry(a); }
   var LEVEL_ORDER = { "零基礎入門": 0, "基礎": 1, "進階": 2, "專業": 3 };
-  function guideRank(a, b) {
-    var d = guideScore(b) - guideScore(a); if (d) return d;
+  // 選了入口後的排序：先推的幾篇在最前（照指定順序），再來主入口、副入口，同級先零基礎再新文
+  function entryRank(a, b) {
+    var pa = entry._picks.indexOf(a), pb = entry._picks.indexOf(b);
+    if (pa === -1) pa = 99; if (pb === -1) pb = 99;
+    if (pa !== pb) return pa - pb;
+    var d = entryHit(b) - entryHit(a); if (d) return d;
     var la = LEVEL_ORDER[((a.tags && a.tags.level) || [])[0]], lb = LEVEL_ORDER[((b.tags && b.tags.level) || [])[0]];
     if (la === undefined) la = 2; if (lb === undefined) lb = 2;
     if (la !== lb) return la - lb;
@@ -141,7 +124,7 @@
   function countWith(dim, tag) {
     return articles.filter(function (a) {
       if (articleTags(a, dim).indexOf(tag) === -1) return false;
-      if (!matchesQuery(a)) return false;
+      if (!matchesQuery(a) || !matchesEntry(a)) return false;
       var ok = true;
       selected.forEach(function (key) {
         if (!ok || key === tagKey(dim, tag)) return;
@@ -154,7 +137,7 @@
   }
 
   function usedTags(dim) {
-    var order = dim === "pain" ? PAIN.map(function (p) { return p.label; }) : ((window.ARTICLE_TAGS && window.ARTICLE_TAGS[dim]) || []);
+    var order = (window.ARTICLE_TAGS && window.ARTICLE_TAGS[dim]) || [];
     var present = {};
     articles.forEach(function (a) {
       articleTags(a, dim).forEach(function (t) { present[t] = true; });
@@ -166,6 +149,9 @@
 
   function renderFilter() {
     elFilter.innerHTML = "";
+    // 開合完全交給讀者（要選條件本來就得先打開），這裡只在標題上標出已選幾個
+    var advSum = document.getElementById("advFilterSum");
+    if (advSum) advSum.textContent = "進一步篩選：難度、類型、主題" + (selected.size ? "（已選 " + selected.size + " 個）" : "");
     DIMS.forEach(function (dim) {
       var tags = usedTags(dim.key);
       if (!tags.length) return;
@@ -188,7 +174,6 @@
         chip.type = "button";
         chip.className = "achip" + (selected.has(key) ? " on" : "") + (n === 0 && !selected.has(key) ? " dim" : "");
         chip.innerHTML = esc(tag) + ' <span class="c">' + n + "</span>";
-        if (dim.key === "pain") { var pd = PAIN.filter(function (p) { return p.label === tag; })[0]; if (pd) chip.title = pd.desc; }
         chip.addEventListener("click", function () { toggle(key); });
         chips.appendChild(chip);
       });
@@ -198,27 +183,31 @@
   }
 
   function renderSelected() {
-    if (selected.size === 0) {
-      elSelected.innerHTML = '<span class="sel-hint">還沒選條件，下面是全部文章。點上面的標籤開始交集篩選。</span>';
-      elClear.style.display = "none";
+    if (selected.size === 0 && !entry) {
+      elSelected.innerHTML = '<span class="sel-hint">' + (query ? "下面是搜尋結果。" : "還沒選，下面是全部文章，最新的在前面。") + "</span>";
+      elClear.style.display = query ? "" : "none";
       return;
     }
     elClear.style.display = "";
-    var html = '<span class="sel-hint">已選（要同時符合）：</span>';
+    var html = '<span class="sel-hint">' + (selected.size + (entry ? 1 : 0) > 1 ? "已選（要同時符合）：" : "已選：") + "</span>";
+    if (entry) html += '<button type="button" class="sel-tag" data-entry="1">' + esc(entry.label) + " ×</button>";
     selected.forEach(function (key) {
       var tag = key.slice(key.indexOf("::") + 2);
       html += '<button type="button" class="sel-tag" data-key="' + esc(key) + '">' + esc(tag) + ' ×</button>';
     });
     elSelected.innerHTML = html;
     elSelected.querySelectorAll(".sel-tag").forEach(function (b) {
-      b.addEventListener("click", function () { toggle(b.getAttribute("data-key")); });
+      b.addEventListener("click", function () {
+        if (b.getAttribute("data-entry")) { entry = null; renderEntries(); refresh(); }
+        else toggle(b.getAttribute("data-key"));
+      });
     });
   }
 
   function renderCards() {
-    var n = 0, active = !!(guide.who || guide.goal);
+    var n = 0, active = !!entry;
     var order = null;
-    if (active) { order = {}; articles.map(function (a, i) { return i; }).sort(function (i, j) { return guideRank(articles[i], articles[j]); }).forEach(function (idx, pos) { order[idx] = pos; }); }
+    if (active) { order = {}; articles.map(function (a, i) { return i; }).sort(function (i, j) { return entryRank(articles[i], articles[j]); }).forEach(function (idx, pos) { order[idx] = pos; }); }
     elGrid.querySelectorAll(".article-card").forEach(function (card) {
       var idx = +card.getAttribute("data-idx");
       var show = visible(articles[idx]);
@@ -226,29 +215,44 @@
       card.style.order = active ? order[idx] : "";
       if (show) n++;
     });
-    renderGuidePicks(n);
+    renderPicks(n);
     elCount.innerHTML = "符合 <b>" + n + "</b> 篇" +
-      ((selected.size || query) ? "（共 " + articles.length + " 篇）" : "");
+      ((selected.size || query || entry) ? "（共 " + articles.length + " 篇）" : "");
     elEmpty.classList.toggle("show", n === 0);
     queueQueryLog(n);
   }
 
   function refresh() { renderFilter(); renderSelected(); renderCards(); }
 
-  // 咪卡引導區：我是誰 × 想解決什麼 → 縮小列表、先推三篇
-  function renderGuidePicks(n) {
-    var say = document.getElementById("mkGuideSay"), picks = document.getElementById("mkGuidePicks");
+  // 入口區：沒選時推「第一次來先看」（ENTRIES 裡 starter: true 那個入口的 picks）；選了就推該入口的 picks
+  function pickHTML(a) {
+    var lv = ((a.tags && a.tags.level) || [])[0] || "";
+    return '<li><a href="' + esc(a.url || ("articles/" + a.id + "/")) + '">' + esc(a.title.split("｜")[0]) + "</a>" +
+      (lv ? "<small>" + esc(lv) + "</small>" : "") +
+      (a.problem ? '<span class="pick-why">' + esc(a.problem) + "</span>" : "") + "</li>";
+  }
+  function renderPicks(n) {
+    var say = document.getElementById("mkGuideSay"), picks = document.getElementById("mkGuidePicks"), note = document.getElementById("mkGuideNote");
     if (!say || !picks) return;
-    if (!guide.who && !guide.goal) { say.textContent = "不知道從哪篇看起？勾一下你是誰、想解決什麼，我幫你挑。"; picks.hidden = true; picks.innerHTML = ""; return; }
-    var top = articles.filter(visible).sort(guideRank).slice(0, 3);
-    var whoTxt = guide.who ? guide.who.label : "", goalTxt = guide.goal ? "想" + guide.goal.label : "";
-    if (!n) { say.textContent = "這個組合我還沒寫過文章，直接問我吧，我帶你看相近的。"; picks.hidden = true; picks.innerHTML = ""; return; }
-    say.textContent = "好，" + whoTxt + (whoTxt && goalTxt ? "，" : "") + goalTxt + "。我找到 " + n + " 篇，先看這幾篇：";
-    picks.innerHTML = top.map(function (a) {
-      var lv = ((a.tags && a.tags.level) || [])[0] || "";
-      return '<li><a href="' + esc(a.url || ("articles/" + a.id + "/")) + '">' + esc(a.title.split("｜")[0]) + "</a><small>" + esc(lv) + "</small></li>";
-    }).join("");
-    picks.hidden = false;
+    var filtered = !!(selected.size || query);   // 另外下了搜尋或篩選：推薦可能不在結果裡，只留符合的
+    var src = entry || ENTRIES.filter(function (e) { return e.starter; })[0];
+    var list = src ? src._picks.filter(function (a) { return !filtered || visible(a); }) : [];
+    if (!entry) {
+      say.textContent = "不知道從哪篇看起？點一個你現在想解決的事，我只列那一題的文章給你。";
+      if (note) { note.hidden = !list.length || filtered; note.textContent = "第一次來，可以先看這幾篇："; }
+      if (filtered) list = [];
+    } else {
+      say.textContent = entry.label + "：" + entry.desc;
+      if (note) {
+        note.hidden = false;
+        note.textContent = !n ? "這一題加上你選的條件，目前沒有文章。拿掉一個條件，或直接問我。"
+          : (list.length && n > list.length) ? "這一題有 " + n + " 篇，先看這幾篇，其餘在下面："
+          : list.length ? "符合的有 " + n + " 篇："
+          : "符合的有 " + n + " 篇，都在下面。";
+      }
+    }
+    picks.innerHTML = list.map(pickHTML).join("");
+    picks.hidden = !list.length;
   }
   function askMika(text) {
     var input = document.querySelector(".mkw-input"), btn = document.querySelector(".mkw-send"), launcher = document.querySelector(".mkw-launcher"), root = document.getElementById("mkw-root");
@@ -256,26 +260,32 @@
     if (root && !root.classList.contains("mkw-open") && launcher) launcher.click();
     input.value = text; setTimeout(function () { btn.click(); }, 150);
   }
-  function renderGuide() {
-    var rows = [["who", "mkGuideWho", "我是"], ["goal", "mkGuideGoal", "想解決"]];
-    rows.forEach(function (r) {
-      var el = document.getElementById(r[1]); if (!el) return;
-      el.innerHTML = "";
-      (GUIDE[r[0]] || []).forEach(function (opt) {
-        var b = document.createElement("button"); b.type = "button";
-        b.className = "achip" + (guide[r[0]] === opt ? " on" : "");
-        b.textContent = opt.label;
-        b.addEventListener("click", function () { guide[r[0]] = (guide[r[0]] === opt) ? null : opt; renderGuide(); refresh(); });
-        el.appendChild(b);
+  function renderEntries() {
+    var el = document.getElementById("mkGuideEntries"); if (!el) return;
+    if (el._built) {   // 只更新狀態、不重建按鈕，鍵盤焦點才不會跑掉
+      ENTRIES.forEach(function (e) {
+        e._btn.className = "achip" + (entry === e ? " on" : "");
+        e._btn.setAttribute("aria-pressed", entry === e ? "true" : "false");
       });
-      var o = document.createElement("button"); o.type = "button"; o.className = "achip other"; o.textContent = "其他，問咪卡";
-      o.addEventListener("click", function () {
-        var w = guide.who ? "我是" + guide.who.label + "，" : "", g = guide.goal ? "想" + guide.goal.label + "，" : "";
-        var extra = window.prompt("跟咪卡說一句：你是誰、想解決什麼？", w + g) ;
-        if (extra) askMika(extra + " 請推薦我該先看哪幾篇文章");
-      });
-      el.appendChild(o);
+      return;
+    }
+    el._built = true;
+    ENTRIES.forEach(function (e) {
+      var b = document.createElement("button"); b.type = "button";
+      b.className = "achip" + (entry === e ? " on" : "");
+      b.setAttribute("aria-pressed", entry === e ? "true" : "false");
+      b.textContent = e.label;
+      b.title = e.desc || "";
+      b.addEventListener("click", function () { entry = (entry === e) ? null : e; renderEntries(); refresh(); });
+      e._btn = b;
+      el.appendChild(b);
     });
+    var o = document.createElement("button"); o.type = "button"; o.className = "achip other"; o.textContent = "都不是，問咪卡";
+    o.addEventListener("click", function () {
+      var extra = window.prompt("跟咪卡說一句：你想解決什麼？", entry ? "我想" + entry.label + "，" : "");
+      if (extra) askMika(extra + " 請推薦我該先看哪幾篇文章");
+    });
+    el.appendChild(o);
   }
 
   function toggle(key) {
@@ -285,7 +295,7 @@
 
   function clearAll() {
     selected.clear();
-    guide.who = null; guide.goal = null; renderGuide();
+    entry = null; renderEntries();
     query = "";
     if (elSearch) elSearch.value = "";
     if (elSearchWrap) elSearchWrap.classList.remove("has-text");
@@ -347,7 +357,7 @@
 
     elGrid.innerHTML = articles.map(cardHTML).join("");
     elClear.addEventListener("click", clearAll);
-    renderGuide();
+    renderEntries();
 
     if (elSearch) {
       elSearch.addEventListener("input", function () {
