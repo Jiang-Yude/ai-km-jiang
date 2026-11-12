@@ -23,6 +23,25 @@ window.ARTICLE_TAGS = {
 
 window.ARTICLES = [
   {
+    id: "ai-employee-experienced-managers",
+    url: "articles/ai-employee-experienced-managers/",
+    date: "2026-11-12",
+    updated: "2026-11-12",
+    title: "AI 員工誰帶得好？有經驗的主管可能更有優勢｜公司導入 AI 要找誰負責？帶 AI 像帶新人，YC 四集 Podcast 對照我的企業陪跑",
+    problem: "企業導入 AI，常卡在三件事：該把什麼交給 AI、怎麼交代、怎麼驗收。",
+    audience: "正在評估 AI 導入、不確定該讓誰來負責的經營者或主管。",
+    summary: "把 Y Combinator 合夥人 Podcast《Lightcone》2024 到 2026 年的四集排在一起看，談新創團隊的重點從「幾乎每家公司都有技術創辦人」移到「要知道該做什麼」。這跟企業導入 AI 常卡的三件事很像：該把什麼交給 AI、怎麼交代、怎麼驗收，剛好都是帶過人的主管每天在做的。對照我在企業陪跑看到的事，整理帶新人和帶 AI 員工的對照，以及團隊可以先動的三步。",
+    tags: {
+      topic: ["AI趨勢", "數位轉型", "AIAgent"],
+      level: ["基礎"],
+      content_type: ["趨勢文章"]
+    },
+    external: { threads: "https://www.threads.com/@jiang_yude_coach/post/DflfDaJkj7t", vocus: null },
+    related: ["ai-adoption-raise-not-install", "ai-adoption-start-with-one-workflow", "ai-agent-gap-fde", "manage-ai-with-management-knowledge", "cathay-tech-conference-2026"],
+    cover: { wide: "images/articles/ai-employee-experienced-managers-cover.jpg" }
+  },
+
+  {
     id: "claude-beat-synced-video",
     url: "articles/claude-beat-synced-video/",
     date: "2026-11-12",
@@ -169,7 +188,7 @@ window.ARTICLES = [
       content_type: ["趨勢文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach/post/DfR1PjOmBOr", vocus: null },
-    related: ["ai-adoption-raise-not-install"],
+    related: ["ai-adoption-raise-not-install", "ai-employee-experienced-managers"],
     cover: { wide: "images/articles/ai-agent-gap-fde-cover.jpg" }
   },
 
@@ -738,7 +757,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["ai-adoption-start-with-one-workflow", "caught-ai-slacking-into-rules", "let-ai-review-itself", "delete-before-automate"],
+    related: ["ai-adoption-start-with-one-workflow", "caught-ai-slacking-into-rules", "let-ai-review-itself", "delete-before-automate", "ai-employee-experienced-managers"],
     cover: { wide: "images/articles/ai-adoption-raise-not-install-cover.jpg" }
   },
 
@@ -1042,7 +1061,7 @@ window.ARTICLES = [
       content_type: ["觀點文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["a2a-agent-protocol", "harness-to-loop", "ai-native-not-transformation", "ai-data-red-lines", "answer-to-action-enterprise-ai-agent", "grok-bot-galaxy-day1-founders", "audrey-tang-reverse-alignment", "one-sentence-video-to-deep-article", "ai-employees-manage-agents"],
+    related: ["a2a-agent-protocol", "harness-to-loop", "ai-native-not-transformation", "ai-data-red-lines", "answer-to-action-enterprise-ai-agent", "grok-bot-galaxy-day1-founders", "audrey-tang-reverse-alignment", "one-sentence-video-to-deep-article", "ai-employees-manage-agents", "ai-employee-experienced-managers"],
     cover: { wide: "images/articles/cathay-tech-conference-2026/cover.jpg" }
   },
 
@@ -1099,7 +1118,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["delete-before-automate", "ai-vs-script-four-situations", "manage-ai-with-management-knowledge", "ai-employee-four-levels", "claude-skills-knowledge-assets", "harness-mindset-for-bosses", "ai-adoption-raise-not-install"],
+    related: ["delete-before-automate", "ai-vs-script-four-situations", "manage-ai-with-management-knowledge", "ai-employee-four-levels", "claude-skills-knowledge-assets", "harness-mindset-for-bosses", "ai-adoption-raise-not-install", "ai-employee-experienced-managers"],
     cover: { wide: "images/articles/ai-adoption-start-with-one-workflow-cover.jpg" }
   },
 
@@ -2661,7 +2680,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["how-to-train-your-ai-employee", "docs-as-system-design-agent", "what-is-loop-engineering", "claude-skills-knowledge-assets", "company-shape-is-the-moat", "decision-ladder-non-programmer", "ai-adoption-start-with-one-workflow"],
+    related: ["how-to-train-your-ai-employee", "docs-as-system-design-agent", "what-is-loop-engineering", "claude-skills-knowledge-assets", "company-shape-is-the-moat", "decision-ladder-non-programmer", "ai-adoption-start-with-one-workflow", "ai-employee-experienced-managers"],
     cover: { wide: "images/articles/manage-ai-with-management-knowledge-cover.jpg" }
   },
 
