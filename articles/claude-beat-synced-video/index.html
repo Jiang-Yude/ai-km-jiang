@@ -162,6 +162,7 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
 .section a.ext{color:var(--blue);font-weight:700;text-decoration:none;overflow-wrap:anywhere}.section a.ext:hover{text-decoration:underline}
 .duo .card ul{margin:0}
 .cue-chart{margin:24px 0;padding:16px;background:var(--paper);border:1px solid var(--line-soft);border-radius:var(--radius-md)}.cue-scroll{overflow-x:auto}.cue-scroll svg{display:block;width:100%;min-width:640px;height:auto}.cue-chart figcaption{margin-top:10px;font-size:15px;color:var(--ink-faint)}
+.prompt{position:relative;margin:16px 0;border:1px solid var(--line);border-radius:10px;background:#221c16;overflow:hidden}.prompt pre{margin:0;padding:16px;overflow:auto;color:#f3ece0;font:500 15px/1.7 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;white-space:pre-wrap;word-break:break-word}
 </style>
 </head>
 <body class="spotlight">
@@ -222,6 +223,7 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
           <li>卡點表要有哪幾樣</li>
           <li>動感型與沉穩型兩種卡點怎麼選</li>
           <li>可以直接貼給 Claude Code 的三句話</li>
+          <li>自己剪一支的五個步驟、四樣準備、一段指令和三個坑</li>
         </ul>
       </div>
     </div>
@@ -258,7 +260,7 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
         <figcaption>第五版介紹片的結尾聯絡方式（第 37 秒）。</figcaption>
       </figure>
     </div>
-    <p style="margin-top:24px">下面四段，就是這支片背後的四件事。</p>
+    <p style="margin-top:24px">下面四段，就是這支片背後的四件事；第五段是自己從頭剪一支的步驟。</p>
   </div>
 </section>
 
@@ -378,12 +380,6 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
     <p>我的介紹片是比較專業的自我介紹，就沒有用那麼強烈的鼓點，因為我覺得會太躁動。我只讓文字、標題、示意圖出現的那一下卡在拍子上，其他時間畫面是穩的。這就是比較沉穩型的解說卡點影片。</p>
     <p>要哪一種，可以自己跟 Claude 說，自己調整。</p>
 
-    <h3>實測卡點的兩個雷：閃白轉場會提早、畫面一直動看不出拍點</h3>
-    <ul>
-      <li>閃白轉場會比拍子早大約 0.07 秒（我這次量到的），要卡準就用直接切。</li>
-      <li>畫面一直動，拍點反而看不出來。測試片我的做法是一拍走一格，拍子到了畫面才動。</li>
-    </ul>
-
     <h3>想用現成配樂做卡點，可以直接貼給 Claude Code 的三句話</h3>
     <p>亞里在圖文版裡給了可以直接貼給 Claude Code 的話，我照他的原意轉成繁體：</p>
     <div class="tablewrap">
@@ -413,7 +409,49 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
     <h2>四、重點還是架構：已經有架構的東西，轉影片最簡單</h2>
     <p>我之前做企劃書轉影片，現在做官網轉影片，概念都一樣：要講什麼、先講什麼後講什麼先定好，AI 只負責把它轉成畫面和聲音。</p>
     <p>所以如果你手上已經有架構好的東西，例如企劃書、報告、文件、網站，轉影片就會更簡單。架構清楚，後面要改的都只是畫面和聲音的細節。</p>
-    <p>企劃書轉影片的做法，我在<a href="https://www.threads.com/@jiang_yude_coach/post/DfmYhakGnxI" target="_blank" rel="noopener">這篇脆文</a>分享過，完整版的官網文章還在整理。</p>
+    <p>像我前幾天交的一支三分鐘提案說明片（定稿 2 分 42 秒），企劃書已經寫好，我只請 AI 把它轉成短片，大概半小時，我只改了一些小地方。提案影片先不公開，當時的心得我在<a href="https://www.threads.com/@jiang_yude_coach/post/DfmYhakGnxI" target="_blank" rel="noopener">這篇脆文</a>寫過。</p>
+  </div>
+</section>
+
+<section class="section" id="diy">
+  <div class="inner">
+    <h2>五、自己剪一支：五個步驟、四樣準備、一段可以直接貼的指令</h2>
+    <p>下面用那支提案說明片當例子。這些步驟都是 Claude Code 在我的電腦上跑的。這支提案片以講清楚為主，畫面是照旁白長度排的，沒有用卡點表。</p>
+    <h3>整支片是怎麼組起來的</h3>
+    <ol>
+      <li>寫旁白稿：從企劃書拆成一段一段的旁白，存成一份稿。</li>
+      <li>做畫面：每一幕用網頁做出來，再截成高解析度的圖。</li>
+      <li>配旁白：每段旁白各配一個音檔（Gemini 語音合成），風格提示是「自然台灣華語、清楚溫暖、穩定語速」。</li>
+      <li>對時間：量每段音檔多長，決定每張畫面什麼時候出現、字幕每句什麼時候出現。</li>
+      <li>合成：用 ffmpeg 把畫面、旁白、字幕、配樂合成一支影片。ffmpeg 是免費的影片處理工具。畫面慢慢推近，換畫面時淡入淡出；旁白講話時配樂一路壓低，只有開頭和結尾拉回比較大聲。</li>
+    </ol>
+    <p>截圖工具和 ffmpeg 要用哪個、怎麼裝，可以交給 Claude Code 處理，過程中它會問你要不要允許安裝，你看懂再按同意。一支兩分四十秒的片，合成一次大約五分鐘。</p>
+    <h3>開始前先準備四樣東西</h3>
+    <ol>
+      <li>Claude Code：要付費訂閱 Claude 才能用。只用網頁版聊天的話，它可以幫你寫旁白稿，但沒辦法在你的電腦上配音、截圖、合成整支影片。</li>
+      <li>Gemini API 金鑰：到 Google AI Studio 申請。金鑰不要貼進對話裡，請 AI 教你存進電腦的密碼保管處（Mac 是鑰匙圈，Windows 是認證管理員），並記下你存的名稱。</li>
+      <li>一個專用資料夾：把要轉成影片的文件（例如企劃書）存成文字檔放進去，在這個資料夾裡開 Claude Code。</li>
+      <li>一首配樂：用前面講的配樂機或 Suno 做好，存成音樂檔放進同一個資料夾。建議做純音樂，不要有人聲，才不會跟旁白打架。</li>
+    </ol>
+    <p>準備好之後，把這段貼給 Claude Code（把檔名換成你自己的）：</p>
+    <div class="prompt"><pre>請把這個資料夾裡的（你的文件檔名，例如企劃書）做成三分鐘內的說明影片
+橫式 1920x1080
+先從文件拆出旁白稿給我看 我確認後再做畫面
+畫面用 HTML 做好再截圖
+旁白用 Gemini TTS API 配音 金鑰存在密碼保管處 名稱是（你存的名稱）
+風格是自然台灣華語 清楚溫暖 穩定語速
+配樂用這個資料夾裡的（你的配樂檔名）
+最後用 ffmpeg 合成 加上字幕和配樂
+旁白講話時配樂一路壓低 不要忽大忽小
+只寫文件裡真的有的功能 不確定的先問我</pre></div>
+    <p>「先給我看旁白稿」這句很重要。旁白稿就是影片的骨架，稿對了，後面只是在調畫面和聲音。</p>
+    <h3>我自己踩過的三個坑</h3>
+    <ul>
+      <li>AI 會畫出根本沒有的功能：我的提案是做給長輩用的服務，它畫了一個「已經自動分享給女兒」的畫面，可是我們的產品沒有自動傳訊息這件事。所以指令最後一行要寫：只寫企劃書裡真的有的功能，不確定的先問我。</li>
+      <li>細節太多，影片會變瑣碎：三分鐘很短，執行細節放進影片就太瑣碎了。影片只講主線，細節留在文件裡。</li>
+      <li>Claude Code 合成時不會自己去聽聲音：發音對不對、有沒有念錯字、配樂搭不搭，每一版都要自己聽過才算數。</li>
+    </ul>
+    <div class="caveat">這個流程我只用來做過這一支提案片，換別的題材，段落怎麼分可能要調整。字幕時間是照字數比例估的，沒有逐句對聲音校正，偶爾會差一點。文件會交給 Claude 讀，旁白稿會送到 Google 的配音服務，含客戶機密的內容先確認可不可以。</div>
   </div>
 </section>
 
@@ -423,7 +461,7 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
     <h3>亞里教的</h3>
     <p>先把歌拆成數字再讓 AI 寫畫面、卡點表、先分軌再從鼓軌測拍、做完從成片檢查，還有 mv-director 這套工具。</p>
     <h3>我自己加的</h3>
-    <p>下載音色庫做配樂機，配樂機直接輸出卡點表；沉穩型的卡點，只在文字、標題、示意圖出現時卡拍。旁白用 Gemini 的語音合成一句一句錄。</p>
+    <p>下載音色庫做配樂機，配樂機直接輸出卡點表；沉穩型的卡點，只在文字、標題、示意圖出現時卡拍。旁白用 Gemini 的語音合成一句一句錄。從文件轉成影片的五個步驟和三個坑，是我做提案說明片時整理的。</p>
     <h3>我還沒試的</h3>
     <p>〈Bright Idea Girl〉是純音樂，所以「唱到哪個字，畫面就演那個字」我還沒試。做出來的是一支 MP4，再拿進剪映或 Premiere 修改這件事，我也還沒試。</p>
 
