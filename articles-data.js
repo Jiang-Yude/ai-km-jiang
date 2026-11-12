@@ -23,6 +23,25 @@ window.ARTICLE_TAGS = {
 
 window.ARTICLES = [
   {
+    id: "skill-pack-three-layers",
+    url: "articles/skill-pack-three-layers/",
+    date: "2026-11-12",
+    updated: "2026-11-12",
+    title: "AI 換新模型，技能包要整份重寫嗎？｜三層分法：原則、操作、補丁（防 AI 犯錯的提醒），各自什麼時候改",
+    problem: "AI 出了新模型，原本寫好的技能包和規則檔不知道要不要整份重寫，也分不清哪些規則還有用。",
+    audience: "已經寫了幾份技能包或規則檔，每次 AI 出新模型都不確定要不要重寫的人。",
+    summary: "技能包的內容可以分成原則、操作、補丁三層，三層修改的時機不同：原則跟著人的想法走，操作跟著工具和流程走，補丁是踩過坑之後防 AI 犯錯的提醒。補丁再分成工具的坑（換模型也要留）和模型的毛病（換模型時逐條檢討，測過沒走樣才刪）。起點是一個把 skill file 分成兩層的建議，兩種分法各有適合的情況。附一段請 AI 把既有技能包分類成表的提示詞。2026-11-12 現況是作者自己的技能包還在照這個分法整理，沒有省工數字。",
+    tags: {
+      topic: ["技能包設計", "ClaudeSkills", "AI工作流"],
+      level: ["基礎"],
+      content_type: ["觀點文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["knowledge-workers-new-model-guide", "how-to-verify-ai-rule-changes", "rule-file-rebound", "claude-skills-knowledge-assets", "ai-handoff-instructions"],
+    cover: { wide: "images/articles/skill-pack-three-layers-cover.jpg" }
+  },
+
+  {
     id: "claude-multiple-google-accounts",
     url: "articles/claude-multiple-google-accounts/",
     date: "2026-11-11",
@@ -681,7 +700,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach/post/DeDc1yfj-R5", vocus: null },
-    related: ["intent-first-prompting", "reevaluate-models-same-test", "what-are-subagents", "diary-driven-agent-3x4", "old-prompts-intent-first-loop-engineering", "prompt-to-loop-map"],
+    related: ["intent-first-prompting", "reevaluate-models-same-test", "what-are-subagents", "diary-driven-agent-3x4", "old-prompts-intent-first-loop-engineering", "prompt-to-loop-map", "skill-pack-three-layers"],
     cover: { tall: "images/articles/knowledge-workers-new-model-guide-01.jpg" }
   },
 
@@ -1441,7 +1460,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["rule-file-rebound", "caught-ai-slacking-into-rules", "three-levels-of-cross-review", "how-to-train-your-ai-employee", "loop-engineering-guardrails", "semantic-rules-before-prompt-templates", "let-ai-review-itself", "ai-rule-file-slimming", "ai-schedule-wake-interval", "fixed-test-set-for-ai", "reevaluate-models-same-test", "pstack-knowledge-workflow"],
+    related: ["rule-file-rebound", "caught-ai-slacking-into-rules", "three-levels-of-cross-review", "how-to-train-your-ai-employee", "loop-engineering-guardrails", "semantic-rules-before-prompt-templates", "let-ai-review-itself", "ai-rule-file-slimming", "ai-schedule-wake-interval", "fixed-test-set-for-ai", "reevaluate-models-same-test", "pstack-knowledge-workflow", "skill-pack-three-layers"],
     cover: { tall: "images/articles/how-to-verify-ai-rule-changes-cover.jpg" }
   },
 
@@ -2531,7 +2550,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["ai-handoff-instructions", "what-is-loop-engineering", "why-split-data-into-cards", "build-your-own-dictionary", "start-with-a-wrong-draft", "how-to-verify-ai-rule-changes", "let-ai-review-itself", "ai-rule-file-slimming"]
+    related: ["ai-handoff-instructions", "what-is-loop-engineering", "why-split-data-into-cards", "build-your-own-dictionary", "start-with-a-wrong-draft", "how-to-verify-ai-rule-changes", "let-ai-review-itself", "ai-rule-file-slimming", "skill-pack-three-layers"]
   },
 
   {
@@ -2715,7 +2734,7 @@ window.ARTICLES = [
       content_type: ["案例文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["handoff-continue-or-replace", "dual-track-planning-loop", "loop-engineering-guardrails", "how-to-train-your-ai-employee", "intent-first-prompting", "rule-file-rebound", "long-task-completion-rate", "session-messaging-reminder-layer", "audrey-tang-reverse-alignment", "ai-understands-ei-ha", "ai-employee-ask-before-act"]
+    related: ["handoff-continue-or-replace", "dual-track-planning-loop", "loop-engineering-guardrails", "how-to-train-your-ai-employee", "intent-first-prompting", "rule-file-rebound", "long-task-completion-rate", "session-messaging-reminder-layer", "audrey-tang-reverse-alignment", "ai-understands-ei-ha", "ai-employee-ask-before-act", "skill-pack-three-layers"]
   },
 
   {
@@ -3911,7 +3930,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["semantic-rules-before-prompt-templates", "ai-data-organization-usable-system", "manage-ai-with-management-knowledge", "chatgpt-work-skills-web-version", "old-prompts-intent-first-loop-engineering", "ai-employee-four-levels", "use-more-ai-not-enough", "ai-adoption-start-with-one-workflow", "one-sentence-ai-website-workflow", "one-sentence-video-to-deep-article", "ai-retrieval-pages-backlinks"]
+    related: ["semantic-rules-before-prompt-templates", "ai-data-organization-usable-system", "manage-ai-with-management-knowledge", "chatgpt-work-skills-web-version", "old-prompts-intent-first-loop-engineering", "ai-employee-four-levels", "use-more-ai-not-enough", "ai-adoption-start-with-one-workflow", "one-sentence-ai-website-workflow", "one-sentence-video-to-deep-article", "ai-retrieval-pages-backlinks", "skill-pack-three-layers"]
   },
 
   {
