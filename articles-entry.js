@@ -12,9 +12,9 @@ window.ARTICLE_ENTRIES = [
     desc: "第一次用、觀念怎麼建立、公司要不要導入，都在這裡。",
     starter: true,
     picks: [
+      "teach-ai-not-learn-ai",                         // 為什麼你的 AI 每次都要重講一遍：教 AI 的四個步驟
+      "ai-that-knows-you",                             // AI 回答總是不夠懂我，怎麼讓他更聰明？：從「懂我」到「能幫我做事」
       "prompt-to-loop-map",                            // 跟 AI 合作該從哪裡學起？
-      "delete-before-automate",                        // 想用 AI 提升效率，結果都在瞎忙？
-      "one-on-one-questions",                          // AI 常見問題 37 問：知識庫怎麼建、技能包怎麼用、公司裡怎麼推
     ],
     ids: [
       "ai-employee-experienced-managers",              // AI 員工誰帶得好？有經驗的主管可能更有優勢
