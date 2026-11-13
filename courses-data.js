@@ -78,7 +78,7 @@ window.COURSES = [
     duration_min: 480,
     title: "文藻大學德文系 教師 AI 工作坊｜講師的 Agent 工作流（共三場）",
     type_label: "外部授課",
-    image: "images/courses/2026-11-25-wenzao-german-teacher-workshop.jpg",
+    image: "images/courses/2026-11-25-wenzao-german-teacher-workshop-poster.jpg",
     venue_mode: "hybrid",
     host: "江江教練",
     tags: ["文藻大學", "德文系", "教師", "AI助教", "Agent", "工作流"],
