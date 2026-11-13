@@ -80,6 +80,25 @@ window.ARTICLES = [
   },
 
   {
+    id: "knowledge-worker-automation",
+    url: "articles/knowledge-worker-automation/",
+    date: "2026-11-13",
+    updated: "2026-11-13",
+    title: "都 Agent 時代了，還要學 n8n 或設計自動化小程式嗎？｜知識工作者的分工法，固定的交給程式，要判斷的才交給 Agent",
+    problem: "工作大多是讀文件、做研究、分析、推理，n8n 這種固定流程用得很少，看起來好像沒辦法自動化。有了 AI Agent 之後，也不確定以前學的自動化工具還要不要用。",
+    audience: "工作大多要判斷、覺得自動化跟自己沒關係的知識工作者。",
+    summary: "知識工作者的工作大多要判斷，但哪怕是知識工作者，還是有些流程每次做法都一樣，讓程式重複處理比較好。先講我的 PDF 清理與光學辨識（OCR）流程，附流程圖與可以直接複製的提示詞；再看 Notion、n8n、AI Agent 怎麼分工，以及 Anthropic〈Building Effective Agents〉的分法；最後是背後的核心：提煉知識、架構知識的能力。",
+    tags: {
+      topic: ["AI工作流", "工作流程", "知識管理"],
+      level: ["基礎"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["run-with-ai-first-then-script", "ai-vs-script-four-situations", "agent-workflow-builds-automation", "delete-before-automate", "books-videos-pdf-ai-advisor"],
+    cover: { wide: "images/articles/knowledge-worker-automation-hero.jpg" }
+  },
+
+  {
     id: "claude-beat-synced-video",
     url: "articles/claude-beat-synced-video/",
     date: "2026-11-12",
@@ -416,7 +435,7 @@ window.ARTICLES = [
       content_type: ["案例文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["ai-vs-script-four-situations", "agent-workflow-builds-automation", "post-class-organizing-loop", "rules-need-an-engine", "delete-before-automate"],
+    related: ["ai-vs-script-four-situations", "agent-workflow-builds-automation", "post-class-organizing-loop", "rules-need-an-engine", "delete-before-automate", "knowledge-worker-automation"],
     cover: { wide: "images/articles/run-with-ai-first-then-script-cover.jpg" }
   },
 
@@ -1233,7 +1252,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["vibe-coding-ten-half-products", "elon-musk-live-skill", "ai-vs-script-four-situations", "dont-learn-ai-tools", "ai-adoption-start-with-one-workflow", "first-principles-money-soup", "ai-adoption-raise-not-install", "token-money-worth-doing", "run-with-ai-first-then-script", "hormozi-stop-chasing-ai", "ai-worktree-disk-cleanup"],
+    related: ["vibe-coding-ten-half-products", "elon-musk-live-skill", "ai-vs-script-four-situations", "dont-learn-ai-tools", "ai-adoption-start-with-one-workflow", "first-principles-money-soup", "ai-adoption-raise-not-install", "token-money-worth-doing", "run-with-ai-first-then-script", "hormozi-stop-chasing-ai", "ai-worktree-disk-cleanup", "knowledge-worker-automation"],
     cover: { tall: "images/articles/delete-before-automate-cover.jpg" }
   },
 
@@ -1366,7 +1385,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["agent-workflow-builds-automation", "claude-skills-knowledge-assets", "loop-engineering-guardrails", "my-three-loops", "liberal-arts-agent-framework", "ai-schedule-wake-interval", "delete-before-automate", "ai-adoption-start-with-one-workflow", "ai-batch-work-without-seeing-data", "ai-random-true-random", "run-with-ai-first-then-script", "claude-beat-synced-video"],
+    related: ["agent-workflow-builds-automation", "claude-skills-knowledge-assets", "loop-engineering-guardrails", "my-three-loops", "liberal-arts-agent-framework", "ai-schedule-wake-interval", "delete-before-automate", "ai-adoption-start-with-one-workflow", "ai-batch-work-without-seeing-data", "ai-random-true-random", "run-with-ai-first-then-script", "claude-beat-synced-video", "knowledge-worker-automation"],
     cover: { wide: "images/articles/ai-vs-script-four-situations-summary.jpg" }
   },
 
@@ -3694,7 +3713,7 @@ window.ARTICLES = [
       content_type: ["案例文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["program-vs-ai-skill-library", "how-to-train-your-ai-employee", "line-group-ai-workflow", "codex-log-health-check", "how-ai-connects-software", "meeting-record-agent-workflow", "vibe-coding-ten-half-products", "ai-delegators-optimism", "ai-changed-behavior-into-workflow", "give-ai-choices-not-descriptions", "ai-batch-work-without-seeing-data", "run-with-ai-first-then-script", "claude-in-chrome-upload-video"],
+    related: ["program-vs-ai-skill-library", "how-to-train-your-ai-employee", "line-group-ai-workflow", "codex-log-health-check", "how-ai-connects-software", "meeting-record-agent-workflow", "vibe-coding-ten-half-products", "ai-delegators-optimism", "ai-changed-behavior-into-workflow", "give-ai-choices-not-descriptions", "ai-batch-work-without-seeing-data", "run-with-ai-first-then-script", "claude-in-chrome-upload-video", "knowledge-worker-automation"],
     cover: { wide: "articles/agent-workflow-builds-automation/assets/00-summary.jpg" }
   },
 
@@ -3935,7 +3954,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["notebooklm-knowledge-analysis-assistant", "youtube-to-opinion-report-workflow", "why-split-data-into-cards", "book-to-ai-consultant"]
+    related: ["notebooklm-knowledge-analysis-assistant", "youtube-to-opinion-report-workflow", "why-split-data-into-cards", "book-to-ai-consultant", "knowledge-worker-automation"]
   },
 
   {
