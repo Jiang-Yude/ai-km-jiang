@@ -23,6 +23,25 @@ window.ARTICLE_TAGS = {
 
 window.ARTICLES = [
   {
+    id: "ai-voice-clone-taiwan-accent",
+    url: "articles/ai-voice-clone-taiwan-accent/",
+    date: "2026-11-13",
+    updated: "2026-11-13",
+    title: "想用自己的聲音做 AI 配音，該選哪個？｜Qwen3-TTS、Breeze-TTS-2、Gemini 克隆實測，台灣口音與混出新聲音的差別",
+    problem: "想用自己的聲音做 AI 配音，不知道該選哪個模型、要不要錢、會不會有中國口音。",
+    audience: "想用自己的聲音做影片旁白、課程配音，又在意台灣口音的人。",
+    summary: "我這週為了幫影片配旁白，試了五種 AI 聲音克隆做法：Breeze-TTS-2、Qwen3-TTS、OmniVoice、VoxCPM2 在自己的 Mac 免費跑，Gemini 在雲端跑，另外查了 ElevenLabs 與 GPT-SoVITS 的價格。只是克隆一個人的聲音，中國跟台灣的模型都很自然；想混出新聲音，Qwen 會帶中國口音、Breeze 只能克隆。這篇整理每個方案要準備什麼、多久轉好、同意句為什麼被退，以及可以直接貼給 Claude Code 的一段話。",
+    tags: {
+      topic: ["AI工作流", "工具操作"],
+      level: ["基礎"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["claude-beat-synced-video", "google-ai-pro-api-credits", "api-key-dont-paste-to-ai", "before-installing-others-skill", "debate-summary-video-prompts"],
+    cover: { wide: "images/articles/ai-voice-clone-taiwan-accent-hero.jpg" }
+  },
+
+  {
     id: "claude-code-slash-commands",
     url: "articles/claude-code-slash-commands/",
     date: "2026-11-13",
@@ -61,6 +80,25 @@ window.ARTICLES = [
   },
 
   {
+    id: "claude-beat-synced-video",
+    url: "articles/claude-beat-synced-video/",
+    date: "2026-11-12",
+    updated: "2026-11-13",
+    title: "用 Claude Code 剪影片，配樂從哪來、怎麼卡在拍子上？｜Suno 免費版下載限制、AI 配旁白一分鐘多少錢、免費音色庫與卡點對拍實測",
+    problem: "想用 Claude Code 做介紹片、說明片，但不知道配樂和節奏怎麼處理。",
+    audience: "想用 Claude Code 做介紹片、說明片，但不知道配樂和節奏怎麼處理的人。",
+    summary: "用 Claude Code 剪影片要處理好四件事：配樂從哪來、旁白怎麼配、畫面怎麼卡在拍子上、內容的架構。這篇整理配樂的兩種來源與 Suno 免費版的下載限制、用 Gemini 語音合成配一分鐘旁白要多少錢、卡點表要有哪幾樣、動感型與沉穩型兩種卡點怎麼選，還有可以直接貼給 Claude Code 的三句話。",
+    tags: {
+      topic: ["AI工作流", "工具操作"],
+      level: ["基礎"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["debate-summary-video-prompts", "before-installing-others-skill", "ai-said-it-watched-the-video", "claude-skills-knowledge-assets", "ai-vs-script-four-situations", "ai-voice-clone-taiwan-accent", "claude-in-chrome-upload-video"],
+    cover: { wide: "images/articles/claude-beat-synced-video-hero.jpg" }
+  },
+
+  {
     id: "ai-employee-experienced-managers",
     url: "articles/ai-employee-experienced-managers/",
     date: "2026-11-12",
@@ -77,25 +115,6 @@ window.ARTICLES = [
     external: { threads: "https://www.threads.com/@jiang_yude_coach/post/DflfDaJkj7t", vocus: null },
     related: ["ai-adoption-raise-not-install", "ai-adoption-start-with-one-workflow", "ai-agent-gap-fde", "manage-ai-with-management-knowledge", "cathay-tech-conference-2026"],
     cover: { wide: "images/articles/ai-employee-experienced-managers-cover.jpg" }
-  },
-
-  {
-    id: "claude-beat-synced-video",
-    url: "articles/claude-beat-synced-video/",
-    date: "2026-11-12",
-    updated: "2026-11-12",
-    title: "用 Claude Code 剪影片，配樂從哪來、怎麼卡在拍子上？｜Suno 免費版下載限制、AI 配旁白一分鐘多少錢、免費音色庫與卡點對拍實測",
-    problem: "想用 Claude Code 做介紹片、說明片，但不知道配樂和節奏怎麼處理。",
-    audience: "想用 Claude Code 做介紹片、說明片，但不知道配樂和節奏怎麼處理的人。",
-    summary: "用 Claude Code 剪影片要處理好四件事：配樂從哪來、旁白怎麼配、畫面怎麼卡在拍子上、內容的架構。這篇整理配樂的兩種來源與 Suno 免費版的下載限制、用 Gemini 語音合成配一分鐘旁白要多少錢、卡點表要有哪幾樣、動感型與沉穩型兩種卡點怎麼選，還有可以直接貼給 Claude Code 的三句話。",
-    tags: {
-      topic: ["AI工作流", "工具操作"],
-      level: ["基礎"],
-      content_type: ["教學文章"]
-    },
-    external: { threads: null, vocus: null },
-    related: ["debate-summary-video-prompts", "before-installing-others-skill", "ai-said-it-watched-the-video", "claude-skills-knowledge-assets", "ai-vs-script-four-situations", "claude-in-chrome-upload-video"],
-    cover: { wide: "images/articles/claude-beat-synced-video-hero.jpg" }
   },
 
   {
@@ -264,7 +283,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["ai-batch-work-without-seeing-data", "domain-and-account-ownership", "ai-customer-service-api-cost", "let-ai-do-the-setup", "open-source-ai-agent-24h-compare", "claude-multiple-google-accounts"],
+    related: ["ai-batch-work-without-seeing-data", "domain-and-account-ownership", "ai-customer-service-api-cost", "let-ai-do-the-setup", "open-source-ai-agent-24h-compare", "claude-multiple-google-accounts", "ai-voice-clone-taiwan-accent"],
     cover: { wide: "images/articles/api-key-dont-paste-to-ai-cover.jpg" }
   },
 
@@ -320,7 +339,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["ai-said-it-watched-the-video", "three-levels-of-cross-review", "youtube-to-opinion-report-workflow", "one-sentence-video-to-deep-article", "claude-beat-synced-video"],
+    related: ["ai-said-it-watched-the-video", "three-levels-of-cross-review", "youtube-to-opinion-report-workflow", "one-sentence-video-to-deep-article", "claude-beat-synced-video", "ai-voice-clone-taiwan-accent"],
     cover: { wide: "images/articles/debate-summary-video-prompts-cover.jpg" }
   },
 
@@ -472,7 +491,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["ai-customer-service-api-cost", "grok-bot-galaxy-day1-founders", "ai-image-api-cost", "ai-model-token-efficiency"],
+    related: ["ai-customer-service-api-cost", "grok-bot-galaxy-day1-founders", "ai-image-api-cost", "ai-model-token-efficiency", "ai-voice-clone-taiwan-accent"],
     cover: { wide: "images/articles/google-ai-pro-api-credits-cover.jpg" }
   },
 
@@ -2335,7 +2354,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["after-ai-says-remembered", "long-document-review-layers", "dual-track-planning-loop", "copied-mechanism-is-no-mechanism", "ai-user-testing", "ai-employee-tests-new-tools", "claude-beat-synced-video"]
+    related: ["after-ai-says-remembered", "long-document-review-layers", "dual-track-planning-loop", "copied-mechanism-is-no-mechanism", "ai-user-testing", "ai-employee-tests-new-tools", "claude-beat-synced-video", "ai-voice-clone-taiwan-accent"]
   },
 
   {
