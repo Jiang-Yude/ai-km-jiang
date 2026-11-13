@@ -227,7 +227,8 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["loop-engineering-guardrails", "ai-handoff-instructions", "opus-luna-model-division", "how-to-train-your-ai-employee", "caught-ai-slacking-into-rules", "rules-need-an-engine", "five-loops-content-line", "harness-to-loop", "loop-round-limit"]
+    related: ["loop-engineering-guardrails", "ai-handoff-instructions", "opus-luna-model-division", "how-to-train-your-ai-employee", "caught-ai-slacking-into-rules", "rules-need-an-engine", "five-loops-content-line", "harness-to-loop", "loop-round-limit"],
+    cover: { wide: "images/articles/ai-employee-ask-before-act-hero.jpg" }
   },
 
   {
