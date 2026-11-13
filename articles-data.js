@@ -42,6 +42,25 @@ window.ARTICLES = [
   },
 
   {
+    id: "claude-in-chrome-upload-video",
+    url: "articles/claude-in-chrome-upload-video/",
+    date: "2026-11-13",
+    updated: "2026-11-13",
+    title: "叫 AI 幫我發文，會被平台封鎖嗎？｜我試過 API、Grok Bot，最後選 Claude in Chrome",
+    problem: "想讓 AI 幫忙發文、上傳影片，但怕帳號被平台當成 AI 封掉，API 又很難串。",
+    audience: "自己經營社群，想把發佈也交給 AI，又擔心被平台封鎖的人。",
+    summary: "我試過串 API，也試過用 Grok Bot 發文，那個帳號後來被封。最後選的是 Claude in Chrome：讓 AI 操作我自己已登入的 Chrome 上傳 YouTube Shorts、排程發文。這篇講我觀察到平台不歡迎 AI 代點的三個原因、五個步驟、三種常見狀況，以及這樣做不保證不被封的地方。",
+    tags: {
+      topic: ["AI工作流", "工具操作"],
+      level: ["基礎"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["agent-web-turning-point", "how-ai-connects-software", "agent-workflow-builds-automation", "ai-era-websites-for-agents", "claude-beat-synced-video"],
+    cover: { wide: "images/articles/claude-in-chrome-upload-video-cover.jpg" }
+  },
+
+  {
     id: "ai-employee-experienced-managers",
     url: "articles/ai-employee-experienced-managers/",
     date: "2026-11-12",
@@ -75,7 +94,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["debate-summary-video-prompts", "before-installing-others-skill", "ai-said-it-watched-the-video", "claude-skills-knowledge-assets", "ai-vs-script-four-situations"],
+    related: ["debate-summary-video-prompts", "before-installing-others-skill", "ai-said-it-watched-the-video", "claude-skills-knowledge-assets", "ai-vs-script-four-situations", "claude-in-chrome-upload-video"],
     cover: { wide: "images/articles/claude-beat-synced-video-hero.jpg" }
   },
 
@@ -1631,7 +1650,7 @@ window.ARTICLES = [
       content_type: ["趨勢文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["webmcp-day-one", "agent-web-turning-point", "web-chat-ai-vs-desktop-agent", "a2a-agent-protocol", "five-loops-content-line", "one-sentence-ai-website-workflow"],
+    related: ["webmcp-day-one", "agent-web-turning-point", "web-chat-ai-vs-desktop-agent", "a2a-agent-protocol", "five-loops-content-line", "one-sentence-ai-website-workflow", "claude-in-chrome-upload-video"],
     cover: { wide: "images/articles/ai-era-websites-for-agents-cover.jpg" }
   },
 
@@ -2534,7 +2553,7 @@ window.ARTICLES = [
       content_type: ["趨勢文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["market-to-ai", "a2a-agent-protocol", "agent-native-tools-software-interface", "free-deploy-three-boundaries", "answer-in-person-or-ai", "webmcp-day-one", "ai-era-websites-for-agents"]
+    related: ["market-to-ai", "a2a-agent-protocol", "agent-native-tools-software-interface", "free-deploy-three-boundaries", "answer-in-person-or-ai", "webmcp-day-one", "ai-era-websites-for-agents", "claude-in-chrome-upload-video"]
   },
 
   {
@@ -3507,7 +3526,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["llm-rag-agent-mcp", "questionnaire-to-slides-agent-workflow", "teacher-prep-knowledge-workflow", "how-to-train-your-ai-employee", "agent-workflow-builds-automation", "program-vs-ai-skill-library", "docs-as-system-design-agent", "vibe-coding-ten-half-products", "chatgpt-work-codex-choice", "chatgpt-work-skills-web-version", "cli-api-mcp-computer-use", "agent-native-tools-software-interface", "let-ai-do-the-setup"],
+    related: ["llm-rag-agent-mcp", "questionnaire-to-slides-agent-workflow", "teacher-prep-knowledge-workflow", "how-to-train-your-ai-employee", "agent-workflow-builds-automation", "program-vs-ai-skill-library", "docs-as-system-design-agent", "vibe-coding-ten-half-products", "chatgpt-work-codex-choice", "chatgpt-work-skills-web-version", "cli-api-mcp-computer-use", "agent-native-tools-software-interface", "let-ai-do-the-setup", "claude-in-chrome-upload-video"],
     cover: { wide: "images/articles/how-ai-connects-software-mcp-usb.jpg" }
   },
 
@@ -3655,7 +3674,7 @@ window.ARTICLES = [
       content_type: ["案例文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["program-vs-ai-skill-library", "how-to-train-your-ai-employee", "line-group-ai-workflow", "codex-log-health-check", "how-ai-connects-software", "meeting-record-agent-workflow", "vibe-coding-ten-half-products", "ai-delegators-optimism", "ai-changed-behavior-into-workflow", "give-ai-choices-not-descriptions", "ai-batch-work-without-seeing-data", "run-with-ai-first-then-script"],
+    related: ["program-vs-ai-skill-library", "how-to-train-your-ai-employee", "line-group-ai-workflow", "codex-log-health-check", "how-ai-connects-software", "meeting-record-agent-workflow", "vibe-coding-ten-half-products", "ai-delegators-optimism", "ai-changed-behavior-into-workflow", "give-ai-choices-not-descriptions", "ai-batch-work-without-seeing-data", "run-with-ai-first-then-script", "claude-in-chrome-upload-video"],
     cover: { wide: "articles/agent-workflow-builds-automation/assets/00-summary.jpg" }
   },
 
