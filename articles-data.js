@@ -23,6 +23,25 @@ window.ARTICLE_TAGS = {
 
 window.ARTICLES = [
   {
+    id: "claude-code-slash-commands",
+    url: "articles/claude-code-slash-commands/",
+    date: "2026-11-13",
+    updated: "2026-11-13",
+    title: "Claude Code 打「/」跳出一整排英文指令，到底有啥功能？｜從最常用的 /compact 開始，附官方全部指令中文總表",
+    problem: "Claude Code 打「/」跳出一整排英文指令，看不懂哪個是做什麼的，也不知道先學哪幾個。",
+    audience: "剛開始用 Claude Code（終端機或桌面 App）的人；要教學員或同事用 Claude Code 的人。",
+    summary: "Claude Code 輸入框打「/」會跳出一整排英文指令。這篇對照官方文件整理成中文：怎麼叫出選單、我最常用的 /compact 怎麼用、跟 /clear 差在哪，省錢的 /model 和 /effort、先交計畫的 /plan、倒回去的 /rewind、查額度的 /usage 和健檢的 /doctor，附一張遇到什麼狀況打哪個的小抄、官方全部指令中文總表，和一段可以貼給 AI 查指令的句子。",
+    tags: {
+      topic: ["工具操作", "AI工作流"],
+      level: ["零基礎入門"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["auto-compact-mod", "token-money-worth-doing", "loop-round-limit", "task-queue-mod"],
+    cover: { wide: "images/articles/claude-code-slash-commands-cover.jpg" }
+  },
+
+  {
     id: "ai-employee-experienced-managers",
     url: "articles/ai-employee-experienced-managers/",
     date: "2026-11-12",
@@ -339,7 +358,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["token-money-worth-doing", "pii-shield", "codex-log-health-check", "task-queue-mod"],
+    related: ["token-money-worth-doing", "pii-shield", "codex-log-health-check", "task-queue-mod", "claude-code-slash-commands"],
     cover: { wide: "images/articles/auto-compact-mod-cover.jpg" }
   },
 
@@ -586,7 +605,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["auto-compact-mod", "grok-bot-galaxy-day1-founders", "ai-manages-ai-focus"],
+    related: ["auto-compact-mod", "grok-bot-galaxy-day1-founders", "ai-manages-ai-focus", "claude-code-slash-commands"],
     cover: { wide: "images/articles/task-queue-mod-cover.jpg" }
   },
 
@@ -681,7 +700,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["auto-compact-mod", "ai-model-token-efficiency", "delete-before-automate", "reevaluate-models-same-test", "ai-image-api-cost", "ai-customer-service-api-cost", "pii-shield", "codex-log-health-check", "two-computers-combine-data-icloud"],
+    related: ["auto-compact-mod", "ai-model-token-efficiency", "delete-before-automate", "reevaluate-models-same-test", "ai-image-api-cost", "ai-customer-service-api-cost", "pii-shield", "codex-log-health-check", "two-computers-combine-data-icloud", "claude-code-slash-commands"],
     cover: { wide: "images/articles/token-money-worth-doing-cover.jpg" }
   },
 
@@ -1669,7 +1688,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["what-is-loop-engineering", "loop-engineering-guardrails", "after-ai-says-remembered", "dual-track-planning-loop", "what-is-graph-engineering", "ai-usage-audit", "loop-four-entries", "ai-schedule-wake-interval", "ai-employee-ask-before-act"],
+    related: ["what-is-loop-engineering", "loop-engineering-guardrails", "after-ai-says-remembered", "dual-track-planning-loop", "what-is-graph-engineering", "ai-usage-audit", "loop-four-entries", "ai-schedule-wake-interval", "ai-employee-ask-before-act", "claude-code-slash-commands"],
     cover: { wide: "images/articles/loop-round-limit-cover.jpg" }
   },
 
