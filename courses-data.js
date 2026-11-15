@@ -62,7 +62,10 @@ window.COURSES = [
     host: "江江教練",
     tags: ["資訊安全", "AI應用", "個資", "API key"],
     summary: "給不會寫程式、工作會碰到客戶或個案資料、已經開始用 AI 的人。用近期資安事件拆解原因，講資料怎麼分級、自己要怎麼準備。",
-    materials: [],
+    detail_url: "courses/2026-11-15-ai-security/",
+    materials: [
+      { label: "講座簡報｜AI 時代，個人的基本資安概念 ↗", url: "https://jiangyude.com/courses/2026-11-15-ai-security/" }
+    ],
     registration: {
       status: "open",
       url: "https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ",
