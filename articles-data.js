@@ -42,6 +42,25 @@ window.ARTICLES = [
   },
 
   {
+    id: "google-ai-pro-colab-flow-short-video",
+    url: "articles/google-ai-pro-colab-flow-short-video/",
+    date: "2026-11-15",
+    updated: "2026-11-15",
+    title: "Google AI Pro 的 Colab 和 Flow 可以做什麼？｜開源配音、圖轉影片做成 30.5 秒短影音，實測數字與失敗片段",
+    problem: "有訂 Google AI Pro，不知道訂閱附的 Colab 運算單元和 Flow 點數能拿來做什麼；自己電腦跑 AI 配音、AI 影片又很卡。",
+    audience: "有訂 Google AI Pro、想用 AI 做直式短影音，或電腦跑 AI 工作很卡的人。",
+    summary: "Google AI Pro 訂閱每月附 200 個 Colab 運算單元、1000 點 Flow 點數。我在 Colab 實測開源配音（Qwen3-TTS、Breeze-TTS-2）和圖轉影片（Wan2.2 失敗、HunyuanVideo 沒跑完），用 Flow 的 Omni 1.2 Flash 把輪播卡變成 5 秒動態影片（一支扣 15 點），再接進剪輯台做成 30.5 秒直式短影音。這篇整理實測數字、Flow 操作步驟、4:5 圖被裁切要一開始就生 9:16、剪輯台從無聲版改到定版的過程、網頁版 Colab 七個坑、花費推估，以及還沒實測的 Colab CLI，附失敗片段與成品。",
+    tags: {
+      topic: ["AI工作流", "工具操作"],
+      level: ["基礎"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["google-ai-pro-api-credits", "ai-voice-clone-taiwan-accent", "claude-beat-synced-video", "where-is-my-server", "debate-summary-video-prompts"],
+    cover: { wide: "images/articles/google-ai-pro-colab-flow-short-video-cover.gif" }
+  },
+
+  {
     id: "team-ai-plan-hook",
     url: "articles/team-ai-plan-hook/",
     date: "2026-11-14",
@@ -75,7 +94,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["claude-beat-synced-video", "google-ai-pro-api-credits", "api-key-dont-paste-to-ai", "before-installing-others-skill", "debate-summary-video-prompts"],
+    related: ["claude-beat-synced-video", "google-ai-pro-api-credits", "api-key-dont-paste-to-ai", "before-installing-others-skill", "debate-summary-video-prompts", "google-ai-pro-colab-flow-short-video"],
     cover: { wide: "images/articles/ai-voice-clone-taiwan-accent-hero.jpg" }
   },
 
@@ -151,7 +170,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["debate-summary-video-prompts", "before-installing-others-skill", "ai-said-it-watched-the-video", "claude-skills-knowledge-assets", "ai-vs-script-four-situations", "ai-voice-clone-taiwan-accent", "claude-in-chrome-upload-video"],
+    related: ["debate-summary-video-prompts", "before-installing-others-skill", "ai-said-it-watched-the-video", "claude-skills-knowledge-assets", "ai-vs-script-four-situations", "ai-voice-clone-taiwan-accent", "claude-in-chrome-upload-video", "google-ai-pro-colab-flow-short-video"],
     cover: { wide: "images/articles/claude-beat-synced-video-hero.jpg" }
   },
 
@@ -397,7 +416,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["ai-said-it-watched-the-video", "three-levels-of-cross-review", "youtube-to-opinion-report-workflow", "one-sentence-video-to-deep-article", "claude-beat-synced-video", "ai-voice-clone-taiwan-accent"],
+    related: ["ai-said-it-watched-the-video", "three-levels-of-cross-review", "youtube-to-opinion-report-workflow", "one-sentence-video-to-deep-article", "claude-beat-synced-video", "ai-voice-clone-taiwan-accent", "google-ai-pro-colab-flow-short-video"],
     cover: { wide: "images/articles/debate-summary-video-prompts-cover.jpg" }
   },
 
@@ -549,7 +568,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["ai-customer-service-api-cost", "grok-bot-galaxy-day1-founders", "ai-image-api-cost", "ai-model-token-efficiency", "ai-voice-clone-taiwan-accent"],
+    related: ["ai-customer-service-api-cost", "grok-bot-galaxy-day1-founders", "ai-image-api-cost", "ai-model-token-efficiency", "ai-voice-clone-taiwan-accent", "google-ai-pro-colab-flow-short-video"],
     cover: { wide: "images/articles/google-ai-pro-api-credits-cover.jpg" }
   },
 
@@ -1537,7 +1556,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["knowledge-base-three-vault-split", "chatgpt-work-codex-choice", "mobile-to-desktop-publish-loop", "cli-api-mcp-computer-use", "ai-loop-safety-recovery", "ai-data-organization-usable-system", "open-source-ai-agent-24h-compare"],
+    related: ["knowledge-base-three-vault-split", "chatgpt-work-codex-choice", "mobile-to-desktop-publish-loop", "cli-api-mcp-computer-use", "ai-loop-safety-recovery", "ai-data-organization-usable-system", "open-source-ai-agent-24h-compare", "google-ai-pro-colab-flow-short-video"],
     cover: { tall: "images/articles/where-is-my-server-01.jpg" }
   },
 
