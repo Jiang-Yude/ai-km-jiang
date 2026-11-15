@@ -23,6 +23,25 @@ window.ARTICLE_TAGS = {
 
 window.ARTICLES = [
   {
+    id: "claude-or-chatgpt-rules-first",
+    url: "articles/claude-or-chatgpt-rules-first/",
+    date: "2026-11-15",
+    updated: "2026-11-15",
+    title: "ChatGPT 和 Claude 該選哪個？｜ChatGPT 很多能力都有八十分，Claude 把老實可靠聽話做到一百分",
+    problem: "要訂 ChatGPT 還是 Claude？很多人只比功能，比不出差別。",
+    audience: "剛開始用 AI 在猶豫要訂哪個的人，以及已經把 AI 用在工作上、希望它老實做事的人。",
+    summary: "完全沒有規矩，兩個其實差不多；有規矩，Claude Code 比較會守。這篇是我陪跑客戶時給的建議：純新手先用 ChatGPT（即時語音、畫畫，很多能力每個都有八十分水準），規矩很多、希望 AI 老老實實做事就用 Claude Code，它是把老實、可靠、聽話做到一百分；推薦 Claude 的原因是安全可靠，外加 Hook 機制，AI 憲法這個概念也很重要；要畫圖就讓 Claude 叫 ChatGPT 畫，盯到畫好才給我看。附一張判斷表。",
+    tags: {
+      topic: ["差異比較", "AI應用", "AI工作流"],
+      level: ["零基礎入門"],
+      content_type: ["觀點文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["rules-need-an-engine", "chatgpt-work-codex-choice", "mac-for-agent-beginners", "ai-rule-file-slimming"],
+    cover: { wide: "images/articles/claude-or-chatgpt-rules-first-cover.jpg" }
+  },
+
+  {
     id: "ai-voice-clone-taiwan-accent",
     url: "articles/ai-voice-clone-taiwan-accent/",
     date: "2026-11-13",
@@ -568,7 +587,7 @@ window.ARTICLES = [
       content_type: ["觀點文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["rule-file-rebound", "ai-rule-file-slimming", "how-to-verify-ai-rule-changes", "what-is-loop-engineering", "copied-mechanism-is-no-mechanism", "caught-ai-slacking-into-rules", "ai-employee-tests-new-tools", "run-with-ai-first-then-script", "ai-worktree-disk-cleanup", "ai-employee-ask-before-act"],
+    related: ["rule-file-rebound", "ai-rule-file-slimming", "how-to-verify-ai-rule-changes", "what-is-loop-engineering", "copied-mechanism-is-no-mechanism", "caught-ai-slacking-into-rules", "ai-employee-tests-new-tools", "run-with-ai-first-then-script", "ai-worktree-disk-cleanup", "ai-employee-ask-before-act", "claude-or-chatgpt-rules-first"],
     cover: { wide: "images/articles/rules-need-an-engine-cover.jpg" }
   },
 
@@ -1442,7 +1461,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["rule-file-rebound", "how-to-verify-ai-rule-changes", "three-levels-of-cross-review", "let-ai-review-itself", "tag-wiki-method", "ai-understands-ei-ha"],
+    related: ["rule-file-rebound", "how-to-verify-ai-rule-changes", "three-levels-of-cross-review", "let-ai-review-itself", "tag-wiki-method", "ai-understands-ei-ha", "claude-or-chatgpt-rules-first"],
     cover: { wide: "images/articles/ai-rule-file-slimming-cover.jpg" }
   },
 
@@ -1765,7 +1784,7 @@ window.ARTICLES = [
       content_type: ["觀點文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["web-chat-ai-vs-desktop-agent", "chatgpt-work-codex-choice", "open-source-ai-agent-24h-compare"],
+    related: ["web-chat-ai-vs-desktop-agent", "chatgpt-work-codex-choice", "open-source-ai-agent-24h-compare", "claude-or-chatgpt-rules-first"],
     cover: { tall: "images/articles/mac-for-agent-beginners-01.jpg" }
   },
 
@@ -2738,7 +2757,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["web-chat-ai-vs-desktop-agent", "mac-for-agent-beginners", "how-ai-connects-software", "ai-capability-tiers", "program-vs-ai-skill-library", "chatgpt-work-skills-web-version", "chatgpt-web-codex-console"],
+    related: ["web-chat-ai-vs-desktop-agent", "mac-for-agent-beginners", "how-ai-connects-software", "ai-capability-tiers", "program-vs-ai-skill-library", "chatgpt-work-skills-web-version", "chatgpt-web-codex-console", "claude-or-chatgpt-rules-first"],
     cover: { tall: "images/articles/chatgpt-work-codex-choice/01.jpg" }
   },
 
