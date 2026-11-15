@@ -37,8 +37,27 @@ window.ARTICLES = [
       content_type: ["觀點文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["rules-need-an-engine", "chatgpt-work-codex-choice", "mac-for-agent-beginners", "ai-rule-file-slimming"],
+    related: ["team-ai-plan-hook", "rules-need-an-engine", "chatgpt-work-codex-choice", "mac-for-agent-beginners", "ai-rule-file-slimming"],
     cover: { wide: "images/articles/claude-or-chatgpt-rules-first-cover.jpg" }
+  },
+
+  {
+    id: "team-ai-plan-hook",
+    url: "articles/team-ai-plan-hook/",
+    date: "2026-11-14",
+    updated: "2026-11-15",
+    title: "公司訂了 ChatGPT 商務版或 Claude Team，員工用 AI 做的東西就會留在公司嗎？｜商務版管什麼、不管什麼，什麼情況選哪一個｜公司資產、共用知識庫、Codex、Hook",
+    problem: "我訂閱商務版，就可以完全控管員工在公司做的東西嗎？員工做的這些東西、這些知識經驗，自動就會變成我的資產了嗎？",
+    audience: "想把公司的 AI 跟個人的 AI 分開，正在選 ChatGPT 商務版或 Claude Team 的老闆。",
+    summary: "不會自動回到公司手上。訂了商務版或團隊版，公司控管的主要是使用權限：誰可以用、公司統一付款、員工離職時把他的權限移除。帳號分開了，檔案也要分開，公司的事在公司的資料夾裡做，成果才會留在公司。選哪一家看習慣和規矩：大部分人習慣用 GPT，可以先買 GPT 的商務版試試看；要 AI 嚴格守規矩，我個人推薦 Claude 的商務版；兩個都買也可以。",
+    tags: {
+      topic: ["AI工作流", "數位轉型", "差異比較"],
+      level: ["基礎"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["claude-or-chatgpt-rules-first", "ai-data-red-lines", "chatgpt-work-codex-choice", "rules-need-an-engine", "ai-adoption-start-with-one-workflow", "harness-mindset-for-bosses"],
+    cover: { wide: "images/articles/team-ai-plan-hook-cover.jpg" }
   },
 
   {
