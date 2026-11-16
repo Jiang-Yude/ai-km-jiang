@@ -89,7 +89,14 @@
   /* 免點按鈕的口語觸發（江江：學員不會每次都乖乖先按鈕）。
      命中就自動解鎖，但咪卡要先確認再答，不是悶頭當成在問這一頁。 */
   var PAGE_HINT_RE = /這一?[頁篇]|本頁|這堂|這場|這門課|剛剛|剛才|方才|老師|講師|上面(說|寫|講)|投影片|簡報|提示詞|指令/;
-  var pageUnlocked = false;
+  /* 2026-11-16 江江拍板「照推薦開工」：首頁以外一律自動帶這一頁，不再要訪客先按鈕。
+     立因＝9/15～11/15 紀錄裡，學校邀課（10-20）、工程履約（10-08）等付費前提問，
+     都先被「這一頁的內容我還沒讀到喔」擋一輪，按鈕後又整句重打。
+     8/20 改純按鈕制，是因為當時「猜」要先確認；現在不猜、每頁都帶，
+     後端的頁面區塊本來就寫明「這一頁沒有的照舊從總目錄找」，問江江是什麼樣的老師也答得對。
+     成本：每則多帶一頁文字（最多 3 萬字），以兩個月 107 則的量計算可忽略。
+     解鎖鈕與 unlockPage() 保留不刪，pageUnlocked 改回 false 即退回舊制。 */
+  var pageUnlocked = !isHomePage();
   var pageAuto = false;      // 這一輪是關鍵詞自動解鎖（要先確認）還是訪客自己按的鈕
 
   /* 首頁不算，其餘頁面都可以解鎖 */
@@ -155,7 +162,15 @@
   }
 
   /* ── 真回覆：問咪卡的大腦端點（人設＋站內檢索＋LLM） ── */
-  function askMika(done) {
+  function askMika(done, attempt) {
+    attempt = attempt || 0;
+    /* 斷線自動重試一次（2026-11-16）：9/15～11/15 出現 4 次「好像斷線了」，
+       其中 11-04「免費講座什麼時候？」整題沒答到。只重試「連不上」與後端回報 error 的情況；
+       額度用完（429，回覆沒有 error 欄）不重試，免得多扣額度。 */
+    function retryOr(msg) {
+      if (attempt < 1) { setTimeout(function () { askMika(done, attempt + 1); }, 1500); return; }
+      done(msg, []);
+    }
     var recent = history.slice(-12).map(function (m) {
       return { role: m.role, text: m.text };
     });
@@ -175,11 +190,22 @@
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload)
-    }).then(function (r) { return r.json(); }).then(function (data) {
-      if (data && data.reply) done(data.reply, data.sources || []);
-      else done('（咪卡歪歪頭）我這邊怪怪的，等一下再問我一次好嗎？', []);
+    }).then(function (r) {
+      /* 額度擋下（429）或額度服務暫停（503）一律不重試，就算回應不是 JSON 也一樣（小氫跨家審指出） */
+      if (r.status === 429 || r.status === 503) {
+        return r.json().catch(function () { return {}; }).then(function (d) {
+          done((d && d.reply) || '（咪卡喘口氣）現在有點忙，等一下再來找我好嗎？', []);
+          return null;
+        });
+      }
+      return r.json();
+    }).then(function (data) {
+      if (data === null) return;
+      if (data && data.reply && !data.error) done(data.reply, data.sources || []);
+      else if (data && data.reply) retryOr(data.reply);
+      else retryOr('（咪卡歪歪頭）我這邊怪怪的，等一下再問我一次好嗎？');
     }).catch(function () {
-      done('（咪卡抓抓頭）連線好像不太穩，等一下再試一次好嗎？', []);
+      retryOr('（咪卡抓抓頭）連線好像不太穩，等一下再試一次好嗎？');
     });
   }
 
