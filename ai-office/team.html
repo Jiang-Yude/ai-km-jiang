@@ -36,6 +36,24 @@
       background: var(--accent);
       color: #fff;
     }
+    /* AI 影像製作團隊（2026-11-16） */
+    .vt-section { background: linear-gradient(180deg, var(--bg-alt) 0%, #FFF7EC 100%); }
+    .vt-kicker { text-align:center; color: var(--accent); font-weight:700; letter-spacing:.12em; margin:0 0 6px; font-size:15px; }
+    .vt-flow { list-style:none; margin:36px 0 0; padding:0; display:grid; grid-template-columns:repeat(3,1fr); gap:28px 30px; }
+    .vt-member { position:relative; background: var(--card); border:1px solid #EADCC8; border-radius: var(--radius-lg); padding:26px 22px 22px; text-align:center; box-shadow: var(--shadow); transition: transform .2s, box-shadow .2s; }
+    .vt-member:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+    .vt-step { position:absolute; top:14px; left:16px; width:30px; height:30px; border-radius:50%; background: var(--accent); color:#FFF8F0; font-weight:700; font-size:15px; display:flex; align-items:center; justify-content:center; }
+    .vt-avatar { width:118px; height:118px; border-radius:50%; object-fit:cover; background:#FBF1E3; border:4px solid #F3E2CA; display:block; margin:0 auto 14px; }
+    .vt-member h4 { margin:0 0 8px; font-size:21px; color: var(--text-strong); }
+    .vt-member p { margin:0 0 14px; color: var(--text-soft); font-size:16px; line-height:1.75; }
+    .vt-status { display:inline-block; padding:4px 14px; border-radius:999px; font-size:13px; font-weight:700; letter-spacing:.05em; }
+    .vt-live { background:#EAF4DD; color:#4E7A22; border:1px solid #B9D891; }
+    .vt-build { background:rgba(216,140,58,.12); color: var(--accent); border:1px dashed var(--accent); }
+    @media (min-width: 900px) {
+      .vt-member:not(:nth-child(3n))::after { content:"→"; position:absolute; right:-24px; top:50%; transform:translateY(-50%); color: var(--accent); font-size:20px; font-weight:700; }
+    }
+    @media (max-width: 899px) { .vt-flow { grid-template-columns:repeat(2,1fr); } }
+    @media (max-width: 560px) { .vt-flow { grid-template-columns:1fr; } .vt-avatar { width:104px; height:104px; } }
   </style>
 <!-- tracking:vercel-analytics -->
 <script defer src="/_vercel/insights/script.js"></script>
@@ -316,46 +334,55 @@
   </section>
 
   <!-- AI 影像製作團隊（2026-11-16 加） -->
-  <section id="video-team" class="section">
+  <section id="video-team" class="section vt-section">
     <div class="container">
+      <p class="vt-kicker">第二支團隊</p>
       <h2>AI 影像製作團隊</h2>
       <p class="section-intro">上面是行政作業的助理，這一隊專門做影片。一份內容交進來，<strong>從拆題、寫稿、剪輯、配音到品管</strong>，六位依序接手。</p>
-
-      <div class="team-group">
-        <h3 class="group-title"><span class="group-subtitle">影像製作</span></h3>
-        <div class="team-grid">
-          <div class="staff-card">
+      <ol class="vt-flow">
+          <li class="vt-member">
+            <span class="vt-step">1</span>
+            <img class="vt-avatar" src="img/video-team/plan.webp" alt="內容策劃插畫頭像" width="220" height="220" loading="lazy" />
             <h4>內容策劃</h4>
-            <p>一份內容拆成幾支短影音，每支寫好大概內容、給誰看、放哪個平台。講座的拆法已經有了。</p>
-            <span class="tag-preparing">施工中</span>
-          </div>
-          <div class="staff-card">
+            <p>一份內容拆成幾支短影音，每支寫好大概內容、給誰看、放哪個平台。</p>
+            <span class="vt-status vt-build">施工中</span>
+          </li>
+          <li class="vt-member">
+            <span class="vt-step">2</span>
+            <img class="vt-avatar" src="img/video-team/copy.webp" alt="文案插畫頭像" width="220" height="220" loading="lazy" />
             <h4>文案</h4>
             <p>每支寫成旁白稿和字幕稿。</p>
-            <span class="tag-free">在用中</span>
-          </div>
-          <div class="staff-card">
+            <span class="vt-status vt-live">在用中</span>
+          </li>
+          <li class="vt-member">
+            <span class="vt-step">3</span>
+            <img class="vt-avatar" src="img/video-team/sb.webp" alt="分鏡師插畫頭像" width="220" height="220" loading="lazy" />
             <h4>分鏡師</h4>
             <p>排時間軸，做分鏡腳本初剪，畫面先放圖表與文字。</p>
-            <span class="tag-preparing">施工中</span>
-          </div>
-          <div class="staff-card">
+            <span class="vt-status vt-build">施工中</span>
+          </li>
+          <li class="vt-member">
+            <span class="vt-step">4</span>
+            <img class="vt-avatar" src="img/video-team/ani.webp" alt="動畫師插畫頭像" width="220" height="220" loading="lazy" />
             <h4>動畫師</h4>
             <p>細剪：動畫、轉場、前 3 秒抓人。</p>
-            <span class="tag-free">在用中</span>
-          </div>
-          <div class="staff-card">
+            <span class="vt-status vt-live">在用中</span>
+          </li>
+          <li class="vt-member">
+            <span class="vt-step">5</span>
+            <img class="vt-avatar" src="img/video-team/vo.webp" alt="配音員插畫頭像" width="220" height="220" loading="lazy" />
             <h4>配音員</h4>
             <p>配上旁白聲。</p>
-            <span class="tag-free">在用中</span>
-          </div>
-          <div class="staff-card">
+            <span class="vt-status vt-live">在用中</span>
+          </li>
+          <li class="vt-member">
+            <span class="vt-step">6</span>
+            <img class="vt-avatar" src="img/video-team/qc.webp" alt="品管員插畫頭像" width="220" height="220" loading="lazy" />
             <h4>品管員</h4>
             <p>匯出前審字幕、畫面、聲音，通過才轉出。</p>
-            <span class="tag-free">在用中</span>
-          </div>
-        </div>
-      </div>
+            <span class="vt-status vt-live">在用中</span>
+          </li>
+      </ol>
     </div>
   </section>
 
