@@ -125,7 +125,7 @@ window.ARTICLES = [
     title: "想用自己的聲音做 AI 配音，該選哪個？｜Qwen3-TTS、Breeze-TTS-2、Gemini 克隆實測，台灣口音與混出新聲音的差別",
     problem: "想用自己的聲音做 AI 配音，不知道該選哪個模型、要不要錢、會不會有中國口音。",
     audience: "想用自己的聲音做影片旁白、課程配音，又在意台灣口音的人。",
-    summary: "我這週為了幫影片配旁白，試了五種 AI 聲音克隆做法：Breeze-TTS-2、Qwen3-TTS、OmniVoice、VoxCPM2 在自己的 Mac 免費跑，Gemini 在雲端跑，另外查了 ElevenLabs 與 GPT-SoVITS 的價格。只是克隆一個人的聲音，中國跟台灣的模型都很自然；想混出新聲音，Qwen 會帶中國口音、Breeze 只能克隆。這篇整理每個方案要準備什麼、多久轉好、同意句為什麼被退，以及可以直接貼給 Claude Code 的一段話。",
+    summary: "我這週為了幫影片配旁白，試了五種 AI 聲音克隆做法：Breeze-TTS-2、Qwen3-TTS、OmniVoice、VoxCPM2 在自己的 Mac 免費跑，Gemini 在雲端跑，另外查了 ElevenLabs 與 GPT-SoVITS 的價格。只是克隆一個人的聲音，Qwen3-TTS 跟 Breeze-TTS-2 都很自然；想混出新聲音，Qwen 會帶中國口音、Breeze 只能克隆。這篇整理每個方案要準備什麼、多久轉好、同意句為什麼被退，以及可以直接貼給 Claude Code 的一段話。",
     tags: {
       topic: ["AI工作流", "工具操作"],
       level: ["基礎"],
