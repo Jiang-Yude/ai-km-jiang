@@ -166,6 +166,23 @@
     .cp-final h2 { max-width: 720px; margin: 0 auto 16px; font-family: "Cormorant Garamond",serif; font-size: clamp(2rem, 4.5vw, 3.6rem); font-weight: 500; line-height: 1.15; }
     .cp-final p { max-width: 620px; margin: 0 auto 28px; color: rgba(255,255,255,0.72); line-height: 1.8; }
     .cp-final .cp-btn { border-color: #fff; background: #fff; color: var(--cp-ink); }
+    .cp-plan-wrap { border: 1px solid var(--cp-line); border-radius: 20px; background: #fff; overflow: hidden; box-shadow: var(--cp-shadow); }
+    .cp-plan { width: 100%; border-collapse: collapse; font-size: 1rem; }
+    .cp-plan thead th { background: var(--cp-cream); color: var(--cp-muted); font-weight: 700; text-align: left; padding: 14px 18px; font-size: 0.95rem; letter-spacing: 0.06em; }
+    .cp-plan td, .cp-plan tbody th { padding: 18px; vertical-align: top; border-top: 1px solid var(--cp-line); line-height: 1.8; text-align: left; }
+    .cp-plan tbody th { width: 22%; font-weight: 700; font-size: 1.08rem; }
+    .cp-plan tbody th small { display: block; margin-top: 4px; color: var(--cp-green); font-size: 0.92rem; font-weight: 500; }
+    .cp-plan td:last-child { width: 28%; color: var(--cp-green); font-weight: 500; }
+    .cp-plan td { color: var(--cp-muted); }
+    .cp-plan-no { display: inline-grid; place-items: center; width: 30px; height: 30px; margin-right: 10px; border-radius: 50%; background: var(--cp-ink); color: #fff; font-family: "Cormorant Garamond", serif; font-size: 0.95rem; vertical-align: 1px; }
+    @media (max-width: 720px) {
+      .cp-plan thead { display: none; }
+      .cp-plan, .cp-plan tbody, .cp-plan tr, .cp-plan td, .cp-plan tbody th { display: block; width: auto !important; }
+      .cp-plan tr { border-top: 1px solid var(--cp-line); padding: 6px 0; }
+      .cp-plan tr:first-child { border-top: 0; }
+      .cp-plan td, .cp-plan tbody th { border-top: 0; padding: 8px 18px; }
+      .cp-plan td::before { content: attr(data-label); display: block; color: var(--cp-ink); font-weight: 700; font-size: 0.9rem; }
+    }
     @media (max-width: 720px) {
       .cp-cols { grid-template-columns: 1fr; }
     }
@@ -195,7 +212,7 @@
       <div class="cp-shell">
         <div class="cp-eyebrow">One-to-One Companion</div>
         <h1>一個月客製化陪跑<span>一小時盤點＋12 小時，搭出你自己的 AI 辦公室</span></h1>
-        <div class="cp-price"><small>NT$</small> 30,000 <small>起 · 未稅 · 一小時盤點＋12 小時</small></div>
+        <div class="cp-price"><small>NT$</small> 30,000 <small>起 · 未稅 · 線上 · 一小時盤點＋12 小時</small></div>
         <p class="lead">給專業人士與高階主管，也就是要讓自己這段工作變輕的人。你已經知道自己卡在哪，需要有人跟你一起把它做出來，並且在你自己用過之後再一起修。教的是怎麼指揮 AI、它的能力與邊界在哪、怎麼做出自己的 AI 辦公室與知識庫，做法是直接拿你手上真正在做的工作來練。</p>
         <div class="cp-btnrow">
           <a class="cp-btn" href="https://docs.google.com/forms/d/e/1FAIpQLSdh32iYxwkY9WBe-0rYtsyoDMR2nxk9QusaDI70xpNRqPMXGg/viewform" target="_blank" rel="noopener">填表預約免費 20 分鐘評估</a>
@@ -207,16 +224,17 @@
     <section class="cp-section">
       <div class="cp-shell">
         <h2>這一次怎麼跑</h2>
-        <p class="sub">先盤點，再陪你做。全程在你的真實工作上動手，不上概念課。</p>
-        <div class="cp-steps">
-          <article class="cp-step">
-            <span>01</span>
-            <div><h3>盤點 · 1 小時</h3><p>看你現在實際怎麼工作，一起盤點資料、步驟，還有你做這件事時的判斷標準，挑出這次要做的那一件。</p></div>
-          </article>
-          <article class="cp-step">
-            <span>02</span>
-            <div><h3>陪跑 · 12 小時</h3><p>依你的需求客製。我先示範一位 AI 員工，你接手做下一位，做完自己接得下去。</p></div>
-          </article>
+        <p class="sub">全程線上。先花 1 小時盤點，再用 12 小時陪你做，分在一個月內，依你的進度安排。全程在你的真實工作上動手，不上概念課。</p>
+        <div class="cp-plan-wrap">
+          <table class="cp-plan">
+            <thead><tr><th scope="col">階段</th><th scope="col">做什麼</th><th scope="col">你拿到</th></tr></thead>
+            <tbody>
+            <tr><th scope="row"><span class="cp-plan-no">00</span>前期盤點<small>開始前 · 線上 1 小時</small></th><td data-label="做什麼">一起挑一段你常卡住、常出錯的工作，問清楚：誰在做、用什麼記、做的時候判斷什麼、最常錯在哪、錯了會怎樣。最後一起決定這個月要做哪一件，怎樣才算完成。</td><td data-label="你拿到">一頁盤點結果：這個月要做的那件事，和驗收標準</td></tr>
+            <tr><th scope="row"><span class="cp-plan-no">01</span>我先示範<small>第 1 週</small></th><td data-label="做什麼">拿你手上真正的工作，我示範做出第一位 AI 員工，把你的判斷標準寫成第一個技能包。</td><td data-label="你拿到">你的第一位 AI 員工、第一個技能包</td></tr>
+            <tr><th scope="row"><span class="cp-plan-no">02</span>你接手做<small>第 2 到 3 週</small></th><td data-label="做什麼">換你自己動手做下一位，我陪你排除卡住的地方。每週一次線上復盤，平常用工作日誌記下實際省了多少時間。</td><td data-label="你拿到">你自己做出的第二位 AI 員工、每週的復盤紀錄</td></tr>
+            <tr><th scope="row"><span class="cp-plan-no">03</span>收尾驗收<small>第 4 週</small></th><td data-label="做什麼">拿盤點時定的標準對照，你自己照著檔案從頭跑一次，確定成果放在固定的位置，之後自己接得下去。</td><td data-label="你拿到">收尾紀錄：這個月改變了什麼、下一步做什麼</td></tr>
+            </tbody>
+          </table>
         </div>
       </div>
     </section>
