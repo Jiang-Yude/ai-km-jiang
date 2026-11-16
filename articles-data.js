@@ -42,6 +42,25 @@ window.ARTICLES = [
   },
 
   {
+    id: "ai-hell-15-years-taiwan",
+    url: "articles/ai-hell-15-years-taiwan/",
+    date: "2026-11-15",
+    updated: "2026-11-15",
+    title: "老闆想用 AI 取代員工，員工怎麼辦？｜前 Google X 高管說的 15 年 AI 動盪期，放到台灣來看：彈性就業能力與一人公司",
+    problem: "老闆會想用 AI 取代員工，那員工怎麼辦？",
+    audience: "擔心公司導入 AI 之後自己位置的上班族、正在考慮自己出來做的人、已經在做一人公司的人。",
+    summary: "前 Google X 首席商務官 Mo Gawdat 上了 Podcast《The Diary of a CEO》，他說人類接下來會經過大約 12 到 15 年的動盪期。這篇只整理跟「工作」有關的部分，再接到台灣現在的情況，最後講我的看法：老闆會想用 AI 取代員工，員工也只能用 AI 取代老闆。",
+    tags: {
+      topic: ["AI趨勢", "一人公司", "AI應用"],
+      level: ["基礎"],
+      content_type: ["趨勢文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["ai-delegators-optimism", "ai-employee-experienced-managers"],
+    cover: { wide: "images/articles/ai-hell-15-years-taiwan-doac-cover.jpg" }
+  },
+
+  {
     id: "claude-or-chatgpt-rules-first",
     url: "articles/claude-or-chatgpt-rules-first/",
     date: "2026-11-15",
@@ -208,7 +227,7 @@ window.ARTICLES = [
       content_type: ["趨勢文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach/post/DflfDaJkj7t", vocus: null },
-    related: ["ai-adoption-raise-not-install", "ai-adoption-start-with-one-workflow", "ai-agent-gap-fde", "manage-ai-with-management-knowledge", "cathay-tech-conference-2026"],
+    related: ["ai-adoption-raise-not-install", "ai-adoption-start-with-one-workflow", "ai-agent-gap-fde", "manage-ai-with-management-knowledge", "cathay-tech-conference-2026", "ai-hell-15-years-taiwan"],
     cover: { wide: "images/articles/ai-employee-experienced-managers-cover.jpg" }
   },
 
@@ -3347,7 +3366,7 @@ window.ARTICLES = [
       content_type: ["趨勢文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["what-is-loop-engineering", "my-three-loops", "agent-workflow-builds-automation", "docs-as-system-design-agent", "decision-ladder-non-programmer", "ai-capability-tiers", "dual-centaur-meeting", "let-ai-do-the-setup", "audrey-tang-reverse-alignment", "hormozi-stop-chasing-ai"]
+    related: ["what-is-loop-engineering", "my-three-loops", "agent-workflow-builds-automation", "docs-as-system-design-agent", "decision-ladder-non-programmer", "ai-capability-tiers", "dual-centaur-meeting", "let-ai-do-the-setup", "audrey-tang-reverse-alignment", "hormozi-stop-chasing-ai", "ai-hell-15-years-taiwan"]
   },
 
   {
