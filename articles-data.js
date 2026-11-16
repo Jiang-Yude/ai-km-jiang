@@ -23,6 +23,25 @@ window.ARTICLE_TAGS = {
 
 window.ARTICLES = [
   {
+    id: "doc-analysis-model-test",
+    url: "articles/doc-analysis-model-test/",
+    date: "2026-11-16",
+    updated: "2026-11-16",
+    title: "整理會議記錄、分析文件，該用哪個 AI 模型？｜七款模型同一份逐字稿實測，文件分析推理的分工與固定考題做法",
+    problem: "手上好幾個 AI 模型，不知道整理會議記錄、清理逐字稿、分析文件該交給哪一個。",
+    audience: "每週要整理會議記錄、逐字稿或分析文件的知識工作者，以及幫客戶挑模型的顧問。",
+    summary: "用會議統整、課程簡報、規則推理、逐字稿清理四種真實工作，實測 AI 模型（前三題六款、逐字稿清理七款），程式比對加三家 AI 互評、不評自家，清理題跑兩輪看穩定度。結果：清理交給 Opus 5.5，整理由 Opus 寫、GPT-6.1 Sol 互審，Gemini 4 Hydrogen 替補。文末附自己出固定考題的六個步驟。",
+    tags: {
+      topic: ["AI工作流", "差異比較", "輔助決策"],
+      level: ["基礎"],
+      content_type: ["案例文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["fixed-test-set-for-ai", "reevaluate-models-same-test", "opus-luna-model-division", "ai-model-token-efficiency", "ai-customer-service-model-retest"],
+    cover: { wide: "images/articles/doc-analysis-model-test-cover.jpg" }
+  },
+
+  {
     id: "claude-or-chatgpt-rules-first",
     url: "articles/claude-or-chatgpt-rules-first/",
     date: "2026-11-15",
@@ -739,7 +758,7 @@ window.ARTICLES = [
       content_type: ["案例文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["ai-customer-service-api-cost", "opus-luna-model-division", "fixed-test-set-for-ai", "ai-cp-value-calculus"],
+    related: ["ai-customer-service-api-cost", "opus-luna-model-division", "fixed-test-set-for-ai", "ai-cp-value-calculus", "doc-analysis-model-test"],
     cover: { wide: "images/articles/ai-customer-service-model-retest-cover.jpg" }
   },
 
@@ -834,7 +853,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["reevaluate-models-same-test", "opus-luna-model-division", "fixed-test-set-for-ai", "ai-customer-service-api-cost", "strong-ai-models-knowledge-workflow-road", "token-money-worth-doing"],
+    related: ["reevaluate-models-same-test", "opus-luna-model-division", "fixed-test-set-for-ai", "ai-customer-service-api-cost", "strong-ai-models-knowledge-workflow-road", "token-money-worth-doing", "doc-analysis-model-test"],
     cover: { wide: "images/articles/ai-model-token-efficiency-01.jpg" }
   },
 
@@ -1100,7 +1119,7 @@ window.ARTICLES = [
       content_type: ["案例文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["reevaluate-models-same-test", "ai-cp-value-calculus", "what-are-subagents", "long-answer-three-layers", "meeting-record-agent-workflow", "dual-track-planning-loop", "fixed-test-set-for-ai", "ai-schedule-wake-interval", "ai-customer-service-api-cost", "domain-and-account-ownership", "ai-model-token-efficiency", "ai-customer-service-model-retest", "ai-employee-ask-before-act"],
+    related: ["reevaluate-models-same-test", "ai-cp-value-calculus", "what-are-subagents", "long-answer-three-layers", "meeting-record-agent-workflow", "dual-track-planning-loop", "fixed-test-set-for-ai", "ai-schedule-wake-interval", "ai-customer-service-api-cost", "domain-and-account-ownership", "ai-model-token-efficiency", "ai-customer-service-model-retest", "ai-employee-ask-before-act", "doc-analysis-model-test"],
     cover: { wide: "images/articles/opus-luna-model-division-cover.jpg" }
   },
 
@@ -1233,7 +1252,7 @@ window.ARTICLES = [
       content_type: ["案例文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["fixed-test-set-for-ai", "ai-cp-value-calculus", "three-levels-of-cross-review", "dual-track-planning-loop", "how-to-verify-ai-rule-changes", "ai-schedule-wake-interval", "opus-luna-model-division", "ai-model-token-efficiency", "token-money-worth-doing"],
+    related: ["fixed-test-set-for-ai", "ai-cp-value-calculus", "three-levels-of-cross-review", "dual-track-planning-loop", "how-to-verify-ai-rule-changes", "ai-schedule-wake-interval", "opus-luna-model-division", "ai-model-token-efficiency", "token-money-worth-doing", "doc-analysis-model-test"],
     cover: { wide: "images/articles/reevaluate-models-same-test-cover.jpg" }
   },
 
@@ -1404,7 +1423,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["how-to-verify-ai-rule-changes", "three-levels-of-cross-review", "dual-track-planning-loop", "ai-cp-value-calculus", "ai-schedule-wake-interval", "rule-file-rebound", "caught-ai-slacking-into-rules", "ai-user-testing", "long-document-review-layers", "reevaluate-models-same-test", "opus-luna-model-division", "ai-model-token-efficiency", "ai-customer-service-model-retest"],
+    related: ["how-to-verify-ai-rule-changes", "three-levels-of-cross-review", "dual-track-planning-loop", "ai-cp-value-calculus", "ai-schedule-wake-interval", "rule-file-rebound", "caught-ai-slacking-into-rules", "ai-user-testing", "long-document-review-layers", "reevaluate-models-same-test", "opus-luna-model-division", "ai-model-token-efficiency", "ai-customer-service-model-retest", "doc-analysis-model-test"],
     cover: { wide: "images/articles/fixed-test-set-for-ai-cover.jpg" }
   },
 
