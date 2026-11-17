@@ -5,21 +5,21 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="index,follow">
 <title>想用自己的聲音做 AI 配音，該選哪個？｜Qwen3-TTS、Breeze-TTS-2、Gemini 克隆實測，台灣口音與混出新聲音的差別</title>
-<meta name="description" content="我這週為了幫影片配旁白，試了五種 AI 聲音克隆做法：Breeze-TTS-2、Qwen3-TTS、OmniVoice、VoxCPM2 在自己的 Mac 免費跑，Gemini 在雲端跑，另外查了 ElevenLabs 與 GPT-SoVITS 的價格。只是克隆一個人的聲音，中國跟台灣的模型都很自然；想混出新聲音，Qwen 會帶中國口音、Breeze 只能克隆。這篇整理每個方案要準備什麼、多久轉好、同意句為什麼被退，以及可以直接貼給 Claude Code 的一段話。">
+<meta name="description" content="我這週為了幫影片配旁白，試了五種 AI 聲音克隆做法：Breeze-TTS-2、Qwen3-TTS、OmniVoice、VoxCPM2 在自己的 Mac 免費跑，Gemini 在雲端跑，另外查了 ElevenLabs 與 GPT-SoVITS 的價格。只是克隆一個人的聲音，Qwen3-TTS 跟 Breeze-TTS-2 都很自然；想混出新聲音，Qwen 會帶中國口音、Breeze 只能克隆。這篇整理每個方案要準備什麼、多久轉好、同意句為什麼被退，以及可以直接貼給 Claude Code 的一段話。">
 <link rel="canonical" href="https://jiangyude.com/articles/ai-voice-clone-taiwan-accent/">
 <meta property="og:type" content="article">
 <meta property="og:title" content="想用自己的聲音做 AI 配音，該選哪個？｜Qwen3-TTS、Breeze-TTS-2、Gemini 克隆實測，台灣口音與混出新聲音的差別｜江江教練">
 <!-- 分享封面：hero 文字填好後在 repo 根目錄跑 `node scripts/og-shot.mjs ai-voice-clone-taiwan-accent` 自動截 1200×630 到 images/og/ai-voice-clone-taiwan-accent.jpg（見 README「文章分享封面（OG 圖）機制」）。別退回 intro-jiang.png 直式人像，會被裁成只剩脖子。 -->
 <meta property="og:image" content="https://jiangyude.com/images/og/ai-voice-clone-taiwan-accent.jpg">
-<meta property="og:description" content="我這週為了幫影片配旁白，試了五種 AI 聲音克隆做法：Breeze-TTS-2、Qwen3-TTS、OmniVoice、VoxCPM2 在自己的 Mac 免費跑，Gemini 在雲端跑，另外查了 ElevenLabs 與 GPT-SoVITS 的價格。只是克隆一個人的聲音，中國跟台灣的模型都很自然；想混出新聲音，Qwen 會帶中國口音、Breeze 只能克隆。這篇整理每個方案要準備什麼、多久轉好、同意句為什麼被退，以及可以直接貼給 Claude Code 的一段話。">
+<meta property="og:description" content="我這週為了幫影片配旁白，試了五種 AI 聲音克隆做法：Breeze-TTS-2、Qwen3-TTS、OmniVoice、VoxCPM2 在自己的 Mac 免費跑，Gemini 在雲端跑，另外查了 ElevenLabs 與 GPT-SoVITS 的價格。只是克隆一個人的聲音，Qwen3-TTS 跟 Breeze-TTS-2 都很自然；想混出新聲音，Qwen 會帶中國口音、Breeze 只能克隆。這篇整理每個方案要準備什麼、多久轉好、同意句為什麼被退，以及可以直接貼給 Claude Code 的一段話。">
 <meta property="og:url" content="https://jiangyude.com/articles/ai-voice-clone-taiwan-accent/">
 <meta property="og:locale" content="zh_TW">
 <meta property="og:site_name" content="江江教練 · AI 知識管理">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="想用自己的聲音做 AI 配音，該選哪個？｜Qwen3-TTS、Breeze-TTS-2、Gemini 克隆實測，台灣口音與混出新聲音的差別｜江江教練">
 <meta name="twitter:image" content="https://jiangyude.com/images/og/ai-voice-clone-taiwan-accent.jpg">
-<meta name="twitter:description" content="我這週為了幫影片配旁白，試了五種 AI 聲音克隆做法：Breeze-TTS-2、Qwen3-TTS、OmniVoice、VoxCPM2 在自己的 Mac 免費跑，Gemini 在雲端跑，另外查了 ElevenLabs 與 GPT-SoVITS 的價格。只是克隆一個人的聲音，中國跟台灣的模型都很自然；想混出新聲音，Qwen 會帶中國口音、Breeze 只能克隆。這篇整理每個方案要準備什麼、多久轉好、同意句為什麼被退，以及可以直接貼給 Claude Code 的一段話。">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"想用自己的聲音做 AI 配音，該選哪個？｜Qwen3-TTS、Breeze-TTS-2、Gemini 克隆實測，台灣口音與混出新聲音的差別","description":"我這週為了幫影片配旁白，試了五種 AI 聲音克隆做法：Breeze-TTS-2、Qwen3-TTS、OmniVoice、VoxCPM2 在自己的 Mac 免費跑，Gemini 在雲端跑，另外查了 ElevenLabs 與 GPT-SoVITS 的價格。只是克隆一個人的聲音，中國跟台灣的模型都很自然；想混出新聲音，Qwen 會帶中國口音、Breeze 只能克隆。這篇整理每個方案要準備什麼、多久轉好、同意句為什麼被退，以及可以直接貼給 Claude Code 的一段話。","author":{"@type":"Person","@id":"https://jiangyude.com/#person","name":"江昱德","alternateName":"江江教練","jobTitle":"AI 教練","url":"https://jiangyude.com/","sameAs":["https://www.threads.com/@jiang_yude_coach","https://vocus.cc/salon/Jiang_Coach","https://github.com/Jiang-Yude","https://www.youtube.com/@aipkmcc","https://www.instagram.com/jiang_yude_coach/"]},"isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://jiangyude.com/"},"datePublished":"2026-11-12","dateModified":"2026-11-13","image":"https://jiangyude.com/images/og/ai-voice-clone-taiwan-accent.jpg","inLanguage":"zh-Hant","url":"https://jiangyude.com/articles/ai-voice-clone-taiwan-accent/"}</script>
+<meta name="twitter:description" content="我這週為了幫影片配旁白，試了五種 AI 聲音克隆做法：Breeze-TTS-2、Qwen3-TTS、OmniVoice、VoxCPM2 在自己的 Mac 免費跑，Gemini 在雲端跑，另外查了 ElevenLabs 與 GPT-SoVITS 的價格。只是克隆一個人的聲音，Qwen3-TTS 跟 Breeze-TTS-2 都很自然；想混出新聲音，Qwen 會帶中國口音、Breeze 只能克隆。這篇整理每個方案要準備什麼、多久轉好、同意句為什麼被退，以及可以直接貼給 Claude Code 的一段話。">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"想用自己的聲音做 AI 配音，該選哪個？｜Qwen3-TTS、Breeze-TTS-2、Gemini 克隆實測，台灣口音與混出新聲音的差別","description":"我這週為了幫影片配旁白，試了五種 AI 聲音克隆做法：Breeze-TTS-2、Qwen3-TTS、OmniVoice、VoxCPM2 在自己的 Mac 免費跑，Gemini 在雲端跑，另外查了 ElevenLabs 與 GPT-SoVITS 的價格。只是克隆一個人的聲音，Qwen3-TTS 跟 Breeze-TTS-2 都很自然；想混出新聲音，Qwen 會帶中國口音、Breeze 只能克隆。這篇整理每個方案要準備什麼、多久轉好、同意句為什麼被退，以及可以直接貼給 Claude Code 的一段話。","author":{"@type":"Person","@id":"https://jiangyude.com/#person","name":"江昱德","alternateName":"江江教練","jobTitle":"AI 教練","url":"https://jiangyude.com/","sameAs":["https://www.threads.com/@jiang_yude_coach","https://vocus.cc/salon/Jiang_Coach","https://github.com/Jiang-Yude","https://www.youtube.com/@aipkmcc","https://www.instagram.com/jiang_yude_coach/"]},"isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://jiangyude.com/"},"datePublished":"2026-11-12","dateModified":"2026-11-13","image":"https://jiangyude.com/images/og/ai-voice-clone-taiwan-accent.jpg","inLanguage":"zh-Hant","url":"https://jiangyude.com/articles/ai-voice-clone-taiwan-accent/"}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
@@ -194,7 +194,7 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
   <div>
     <div class="kicker">AI 工作流｜AI 配音、聲音克隆</div>
     <h1>想用自己的聲音做 AI 配音，該選哪個？｜Qwen3-TTS、Breeze-TTS-2、Gemini 克隆實測，台灣口音與混出新聲音的差別</h1>
-    <p>只是克隆一個人的聲音，中國跟台灣的模型都很自然；想混出新聲音，就會碰到口音問題。</p>
+    <p>只是克隆一個人的聲音，Qwen3-TTS 跟 Breeze-TTS-2 都很自然；想混出新聲音，就會碰到口音問題。</p>
   </div>
   <figure class="hero-figure">
     <img src="../../images/articles/ai-voice-clone-taiwan-accent-hero.jpg" alt="封面：戴扁帽的咪卡扶著麥克風，左邊大字「想用自己的聲音做 AI 配音，該選哪個？」，右邊聲波分兩路：上路「克隆」順順進喇叭打勾，下路兩條聲波經過混音旋鈕後變歪、旁邊問號" width="1280" height="720" loading="lazy">
@@ -206,9 +206,9 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
 
 <section class="section" id="start">
   <div class="inner">
-    <p class="lead">先講結論：只是克隆一個人的聲音，中國跟台灣的模型都很自然。想把兩個聲音混成新聲音，問題就來了。</p>
+    <p class="lead">先講結論：只是克隆一個人的聲音，Qwen3-TTS 跟 Breeze-TTS-2 都很自然。想把兩個聲音混成新聲音，問題就來了。</p>
     <ul>
-      <li>我試了阿里巴巴的 Qwen3-TTS 跟聯發科的 Breeze-TTS-2，單純克隆時，台灣人說話的語氣都留得住。</li>
+      <li>我試了阿里巴巴的 Qwen3-TTS 跟 BreezeBlue 的 Breeze-TTS-2，單純克隆時，台灣人說話的語氣都留得住。</li>
       <li>Qwen3-TTS 可以混，但聲音一出來就帶中國口音；Breeze-TTS-2 台灣口音很自然，但沒有混音功能，只能克隆。</li>
       <li>要台灣口音就單純克隆；想要好聽的新聲音，還是去找聲音好聽的人，請他授權給你做。</li>
     </ul>
@@ -245,7 +245,7 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
           <tr><th>方案</th><th>在哪跑、要不要錢</th><th>轉 30 秒旁白要多久</th><th>我的結果</th></tr>
         </thead>
         <tbody>
-          <tr><td>Breeze-TTS-2（聯發科）</td><td>自己電腦，免費</td><td>5～11 分鐘</td><td>最像我本人；有一段參考音念出來語助詞太多</td></tr>
+          <tr><td>Breeze-TTS-2（BreezeBlue）</td><td>自己電腦，免費</td><td>5～11 分鐘</td><td>最像我本人；有一段參考音念出來語助詞太多</td></tr>
           <tr><td>Qwen3-TTS（阿里巴巴）</td><td>自己電腦，免費</td><td>1～2 分鐘，最快</td><td>也很像；偶爾會念到停不下來，要設長度上限</td></tr>
           <tr><td>OmniVoice（VoiceStudio 預設模型）</td><td>自己電腦，免費</td><td>約 3 分鐘</td><td>常吃掉句首</td></tr>
           <tr><td>VoxCPM2</td><td>自己電腦，免費</td><td>一句就 3 分多，估 30 分以上</td><td>太慢，沒跑完</td></tr>
