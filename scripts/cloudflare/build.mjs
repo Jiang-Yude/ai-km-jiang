@@ -95,7 +95,16 @@ for(const kind of ['articles','ai-trends']) {
 for(const name of ['agent','ai-trends','articles','cases','courses','invited-talks','knowledge-architecture','learn','offers','resources','skills'])redirects.push(`/en/${name}.html /${name}.html 301`);
 redirects.push('/en/* / 301');
 fs.writeFileSync(path.join(out,'_redirects'),redirects.join('\n')+'\n');
-fs.writeFileSync(path.join(out,'_routes.json'),JSON.stringify({version:1,include:['/api/*','/member/*','/admin/members/*'],exclude:[]}));
+// 延後公開（2026-11-17）：cloudflare/embargo.json 列的文章才經 Functions（cloudflare/embargo.mjs 到點前回 404），其餘仍是純靜態。
+const embargo=JSON.parse(fs.readFileSync(path.join(root,'cloudflare','embargo.json'),'utf8'));
+const embargoRoutes=[];
+for(const [key,at] of Object.entries(embargo)){
+  if(!/^(articles|ai-trends)\/[a-z0-9-]+$/.test(key))throw new Error('embargo key 格式錯：'+key);
+  if(Number.isNaN(Date.parse(at)))throw new Error('embargo 時間格式錯：'+key+' '+at);
+  if(!fs.existsSync(path.join(root,key,'index.html')))throw new Error('embargo 清單的文章不存在：'+key);
+  embargoRoutes.push('/'+key,'/'+key+'/*');
+}
+fs.writeFileSync(path.join(out,'_routes.json'),JSON.stringify({version:1,include:['/api/*','/member/*','/admin/members/*',...embargoRoutes],exclude:[]}));
 // --outfile produces a multipart upload envelope, not executable JS. Pages advanced mode accepts an ES module directory.
 execFileSync('wrangler',['pages','functions','build',path.join(root,'functions'),'--outdir='+path.join(out,'_worker.js'),'--compatibility-date=2026-09-04','--compatibility-flags=nodejs_compat','--minify'],{cwd:root,stdio:'inherit'});
 const statics=manifest.filter(x=>x.classification==='static');
