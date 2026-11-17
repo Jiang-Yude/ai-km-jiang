@@ -299,7 +299,7 @@ window.COURSES = [
     tags: ["AIAgent", "技能包", "迴圈工程", "MCP", "知識庫", "系列課"],
     summary: "六堂線上系列課，從技能包、迴圈工程、API／MCP／CLI，到 Agent 找得到對的資料，最後走完一個真實的產品開發。",
     detail_url: "courses/2026-09-ai-series/",
-    detail_label: "完整課程內容與報名 ↗",
+    detail_label: "完整課程內容 ↗",
     materials: [
       { label: "第零堂上課簡報（9/13）", url: "https://jiangyude.com/courses/2026-09-ai-series/lesson-0/" }
     ],
