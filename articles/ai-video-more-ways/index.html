@@ -4,11 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
-<title>用 AI 做影片有哪些方式？｜不只生成影片：我做過的 AI 剪輯、AI 動畫、AI 配音，從 Unreal Engine 5.9 × Kimodo 說起</title>
+<title>用 AI 做影片有哪些方式？｜不只生成影片：剪輯、動畫、角色、配音、圖轉影片，我實際用過的六類做法</title>
 <meta name="description" content="用 AI 協助影片製作的方式有很多，不是只有生成影片而已。從 Unreal Engine 5.9 接上 NVIDIA Kimodo、畫一條線讓 3D 角色自己走說起，整理我實際做過的六類 AI 影片做法：剪輯、動畫、角色、配音配樂、生成影片、工具流程，加上動畫效果清單和一段可以直接貼給 AI 的提示詞。">
 <link rel="canonical" href="https://jiangyude.com/articles/ai-video-more-ways/">
 <meta property="og:type" content="article">
-<meta property="og:title" content="用 AI 做影片有哪些方式？｜不只生成影片：我做過的 AI 剪輯、AI 動畫、AI 配音，從 Unreal Engine 5.9 × Kimodo 說起｜江江教練">
+<meta property="og:title" content="用 AI 做影片有哪些方式？｜不只生成影片：剪輯、動畫、角色、配音、圖轉影片，我實際用過的六類做法｜江江教練">
 <!-- 分享封面：hero 文字填好後在 repo 根目錄跑 `node scripts/og-shot.mjs ai-video-more-ways` 自動截 1200×630 到 images/og/ai-video-more-ways.jpg（見 README「文章分享封面（OG 圖）機制」）。別退回 intro-jiang.png 直式人像，會被裁成只剩脖子。 -->
 <meta property="og:image" content="https://jiangyude.com/images/og/ai-video-more-ways.jpg">
 <meta property="og:description" content="用 AI 協助影片製作的方式有很多，不是只有生成影片而已。從 Unreal Engine 5.9 接上 NVIDIA Kimodo、畫一條線讓 3D 角色自己走說起，整理我實際做過的六類 AI 影片做法：剪輯、動畫、角色、配音配樂、生成影片、工具流程，加上動畫效果清單和一段可以直接貼給 AI 的提示詞。">
@@ -16,10 +16,10 @@
 <meta property="og:locale" content="zh_TW">
 <meta property="og:site_name" content="江江教練 · AI 知識管理">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="用 AI 做影片有哪些方式？｜不只生成影片：我做過的 AI 剪輯、AI 動畫、AI 配音，從 Unreal Engine 5.9 × Kimodo 說起｜江江教練">
+<meta name="twitter:title" content="用 AI 做影片有哪些方式？｜不只生成影片：剪輯、動畫、角色、配音、圖轉影片，我實際用過的六類做法｜江江教練">
 <meta name="twitter:image" content="https://jiangyude.com/images/og/ai-video-more-ways.jpg">
 <meta name="twitter:description" content="用 AI 協助影片製作的方式有很多，不是只有生成影片而已。從 Unreal Engine 5.9 接上 NVIDIA Kimodo、畫一條線讓 3D 角色自己走說起，整理我實際做過的六類 AI 影片做法：剪輯、動畫、角色、配音配樂、生成影片、工具流程，加上動畫效果清單和一段可以直接貼給 AI 的提示詞。">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"用 AI 做影片有哪些方式？｜不只生成影片：我做過的 AI 剪輯、AI 動畫、AI 配音，從 Unreal Engine 5.9 × Kimodo 說起","description":"用 AI 協助影片製作的方式有很多，不是只有生成影片而已。從 Unreal Engine 5.9 接上 NVIDIA Kimodo、畫一條線讓 3D 角色自己走說起，整理我實際做過的六類 AI 影片做法：剪輯、動畫、角色、配音配樂、生成影片、工具流程，加上動畫效果清單和一段可以直接貼給 AI 的提示詞。","author":{"@type":"Person","@id":"https://jiangyude.com/#person","name":"江昱德","alternateName":"江江教練","jobTitle":"AI 教練","url":"https://jiangyude.com/","sameAs":["https://www.threads.com/@jiang_yude_coach","https://vocus.cc/salon/Jiang_Coach","https://github.com/Jiang-Yude","https://www.youtube.com/@aipkmcc","https://www.instagram.com/jiang_yude_coach/"]},"isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://jiangyude.com/"},"inLanguage":"zh-Hant","url":"https://jiangyude.com/articles/ai-video-more-ways/"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"用 AI 做影片有哪些方式？｜不只生成影片：剪輯、動畫、角色、配音、圖轉影片，我實際用過的六類做法","description":"用 AI 協助影片製作的方式有很多，不是只有生成影片而已。從 Unreal Engine 5.9 接上 NVIDIA Kimodo、畫一條線讓 3D 角色自己走說起，整理我實際做過的六類 AI 影片做法：剪輯、動畫、角色、配音配樂、生成影片、工具流程，加上動畫效果清單和一段可以直接貼給 AI 的提示詞。","author":{"@type":"Person","@id":"https://jiangyude.com/#person","name":"江昱德","alternateName":"江江教練","jobTitle":"AI 教練","url":"https://jiangyude.com/","sameAs":["https://www.threads.com/@jiang_yude_coach","https://vocus.cc/salon/Jiang_Coach","https://github.com/Jiang-Yude","https://www.youtube.com/@aipkmcc","https://www.instagram.com/jiang_yude_coach/"]},"isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://jiangyude.com/"},"inLanguage":"zh-Hant","url":"https://jiangyude.com/articles/ai-video-more-ways/"}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
@@ -189,7 +189,7 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
   <div class="wc wc3"></div>
   <div>
     <div class="kicker">AI 應用 / 影片製作</div>
-    <h1>用 AI 做影片有哪些方式？｜不只生成影片：我做過的 AI 剪輯、AI 動畫、AI 配音，從 Unreal Engine 5.9 × Kimodo 說起</h1>
+    <h1>用 AI 做影片有哪些方式？｜不只生成影片：剪輯、動畫、角色、配音、圖轉影片，我實際用過的六類做法</h1>
     <p>Unreal Engine 5.9 預覽版接上 NVIDIA 的 Kimodo，畫一條線、寫一句提示詞，3D 角色就自己走起來。我想分享的是：用 AI 協助影片製作的方式有很多，不是只有生成影片而已。用 AI 剪輯、做動畫，或者用 3D 軟體、遊戲引擎搭攝影棚，都是有可能的。</p>
   </div>
   <figure class="hero-figure">
@@ -202,7 +202,7 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
 
 <section class="section" id="start"><div class="inner">
   <h2>這篇在講什麼</h2>
-  <p class="lead">Unreal Engine 5.9 預覽版接上 NVIDIA 的 Kimodo，在地上畫一條線、寫一句提示詞，3D 角色就自己走起來。我看到這個實測，想分享各種用 AI 協助做影片的方式。這篇把我自己實際做過的整理成六類：剪輯、動畫、角色、配音配樂、生成影片、工具與流程，每一種都附上我做過的例子。用 3D 軟體和遊戲引擎搭攝影棚這一種，我目前還沒用在 AI 影片上，放在最後一段老實講。</p>
+  <p class="lead">Unreal Engine 5.9 預覽版接上 NVIDIA 的 Kimodo，在地上畫一條線、寫一句提示詞，3D 角色就自己走起來。我看到這個實測，想分享各種用 AI 協助做影片的方式。這篇把我自己實際用過的整理成六類：剪輯、動畫、角色、聲音、生成影片、改編現有影片，每一類都寫 AI 幫你做什麼、適合什麼影片，附上我的例子。</p>
   <div class="duo stack">
     <div class="card a"><b>適合誰</b>
       <ul>
@@ -213,7 +213,7 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
     </div>
     <div class="card b"><b>你可以帶走什麼</b>
       <ul>
-        <li>一張「用 AI 做影片的方式」總表：分六類，每一種都是我實際做過的</li>
+        <li>一張「用 AI 做影片的方式」總表：分六類，對照你想做的影片，看哪一類先交給 AI</li>
         <li>一張動畫效果清單：哪些效果可以請 AI 寫成程式做出來</li>
         <li>一段可以直接貼給你的 AI 的提示詞，先找出你的影片哪幾段可以交給 AI</li>
       </ul>
@@ -224,14 +224,14 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
 <section class="section" id="kimodo"><div class="inner">
   <h2>Unreal Engine 5.9 接上 Kimodo：畫一條線，3D 角色就自己走</h2>
   <p>這次的起點是 X 上 KanaWorks（<a href="https://x.com/KanaWorks_AI/status/2122164163900576053" target="_blank" rel="noopener">@KanaWorks_AI 原貼文 ↗</a>）分享的實測：Unreal Engine 5.9 預覽版接上 NVIDIA 的 Kimodo。</p>
-  <p>Kimodo 是 NVIDIA Research 開源的角色動作生成模型，可以用文字、地上的路徑和指定時間點的姿勢來生成 3D 角色動作，程式碼放在 <a href="https://github.com/nv-tlabs/kimodo" target="_blank" rel="noopener">GitHub nv-tlabs/kimodo ↗</a>（Apache-2.0 授權）。</p>
+  <p>Kimodo 是 NVIDIA 開源的角色動作生成模型（<a href="https://github.com/nv-tlabs/kimodo" target="_blank" rel="noopener">GitHub ↗</a>）。</p>
   <ul>
     <li>在地上畫一條路線，寫一句英文描述，例如「放鬆往前走」，Kimodo 就幫角色生出整段動作，不用一格一格調姿勢。</li>
     <li>同一條線換一句話，走法就跟著變。片中示範了殭屍的走法，再換一句，變成模特兒走秀。</li>
     <li>也可以只指定某幾個瞬間的動作：0 秒放鬆往前走、3.5 秒高高跳兩次、6.5 秒盤腿坐下，中間的動作交給 Kimodo 補。</li>
-    <li>片中畫面寫的是用 RTX 3060 生成一次大約 23 秒，一次會給 4 種版本，全部在自己的電腦上生成，動畫關鍵影格（手動設定每個時間點姿勢的那個點）是 0 個。</li>
+    <li>一次會給好幾種版本可以挑，全部在自己的電腦上生成，不用一格一格手動擺姿勢。</li>
   </ul>
-  <div class="caveat"><b>先講清楚</b>這段畫面是 KanaWorks 的作品，我沒有自己跑過 Kimodo。Kimodo 在 Unreal Engine 裡目前還是實驗性功能，上面的秒數與版本數是照原片畫面上寫的。</div>
+  <div class="caveat"><b>先講清楚</b>這段畫面是 KanaWorks 的作品，我沒有自己跑過 Kimodo。Kimodo 在 Unreal Engine 裡目前還是實驗性功能。</div>
   <p>我請朵拉（我的 AI 助理）把這段做成一支短影音介紹。原片照播畫面，原本的日文語音不放，由朵拉用中文翻譯：</p>
   <div class="video-embed vertical"><iframe src="https://www.youtube-nocookie.com/embed/V3OO0WYAjpI" title="用 AI 製作影片的方式比你想像的多（短影音）" loading="lazy" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
   <p class="video-note">影片在 YouTube：<a href="https://youtube.com/shorts/V3OO0WYAjpI" target="_blank" rel="noopener">用 AI 製作影片的方式比你想像的多（短影音）↗</a></p>
@@ -242,107 +242,47 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
   <p>看到 Kimodo，我想到自己以前教攝影的時候，也用軟體搭過虛擬攝影棚。像我那支講髮絲光跟輪廓光的教學，攝影棚就是用軟體搭的，燈從人的斜後方照過來。</p>
   <p>那時候搭一個簡陋的攝影棚，就花了一兩個月，而且只是超簡易的攝影棚。現在 Unreal Engine 5.9 加上 Kimodo，角色的動作寫一句話就生出來了。</p>
   <p>所以我想分享的是：其實用 AI 協助影片製作的方式有很多，不是只有生成影片而已。用 AI 剪輯、做動畫，或者用 3D 軟體、遊戲引擎搭攝影棚，都是有可能的。</p>
-  <p>完整的長片版本在這裡，片中把這三種方式各講了一次：</p>
+  <p>完整的長片版本在這裡：</p>
   <div class="video-embed"><iframe src="https://www.youtube-nocookie.com/embed/Bp29J4L-1rs" title="用 AI 製作影片的方式比你想像的多（長片）" loading="lazy" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
   <p class="video-note">影片在 YouTube：<a href="https://youtu.be/Bp29J4L-1rs" target="_blank" rel="noopener">用 AI 製作影片的方式比你想像的多（長片）↗</a></p>
 </div></section>
 
-<section class="section" id="three-ways"><div class="inner">
-  <h2>用 AI 協助影片製作的三大方式：剪輯、動畫、搭攝影棚</h2>
-  <div class="workflow-grid">
-    <div class="workflow-step"><small>第一種</small><b>用 AI 剪輯</b><p>我請 AI 幫我做了一個剪輯台網頁。AI 先剪好初剪放進去，我在瀏覽器裡改字、拖位置、調每一幕的長短，改完再匯出成影片。</p></div>
-    <div class="workflow-step"><small>第二種</small><b>用 AI 做動畫</b><p>讓 Claude 寫 HTML 動畫，再轉成影片。想要 3D，可以用 Three.js（開源的 JavaScript 3D 函式庫）。網路上很多範例，我之前也找到一個專門放 Three.js 動畫效果的範本網站 <a href="https://threeui.com/" target="_blank" rel="noopener">Three UI ↗</a>。</p></div>
-    <div class="workflow-step"><small>第三種</small><b>用 3D 軟體或遊戲引擎搭攝影棚</b><p>像 Blender（免費開源的 3D 軟體）、Unreal Engine，搭一個虛擬攝影棚來拍，再讓 AI 幫忙，就像 Kimodo 幫角色生動作。這一種我目前還沒實際用來做 AI 影片。</p></div>
-  </div>
-  <p>生成影片也是一種方式，我也用過，放在下一段表格的第五類。</p>
-</div></section>
-
 <section class="section" id="my-list"><div class="inner">
-  <h2>我實際做過的 AI 影片、短影音做法，分成六類</h2>
-  <p>下面這張表只放我真的做過、有留下紀錄的做法，日期是我第一次做或做出代表作的時間。表裡的剪輯台、動畫程式，多半是我請 AI 寫程式做出來的工具，不是現成的軟體。你不用照抄工具，可以先用文末那段提示詞，找出你的影片哪幾段可以交給 AI。</p>
-  <h3>一、剪輯：AI 先剪，人在剪輯台上改</h3>
+  <h2>我實際用過的 AI 影片、短影音做法，分成六類</h2>
+  <p>下面每一類都是我做過的。你可以對照自己想做的影片，看哪一類先交給 AI。</p>
   <div class="tablewrap"><table>
-    <thead><tr><th>做法</th><th>我做過的例子</th></tr></thead>
+    <thead><tr><th>類別</th><th>AI 幫你做什麼</th><th>適合什麼影片</th><th>我的例子</th></tr></thead>
     <tbody>
-      <tr><td>剪輯台網頁：看稿、改字、拖位置、調長短，再匯出影片、字幕和封面</td><td>2026-10 開始用，2026-11 改成通用版，這支 Kimodo 介紹片也是在上面剪的</td></tr>
-      <tr><td>草稿夾：一個固定網址列出所有剪輯中的影片</td><td>2026-11-14</td></tr>
-      <tr><td>長錄影切出精華，做成短影音</td><td>2026-11 雙 AI 搶話片段</td></tr>
-      <tr><td>講解錄影剪順：整支保留、裁邊、開頭露臉</td><td>2026-11 幫合作夥伴剪說明影片</td></tr>
-      <tr><td>長錄影重剪成預錄課：口白重寫，原本的錄影當畫面</td><td>2026-11 LINE AI 應用課（還在驗收）</td></tr>
-      <tr><td>課程錄影自動打碼，只遮對話內容</td><td>2026-10 課程重錄版</td></tr>
-      <tr><td>別人的影片加中文字幕與註解、燒錄字幕（把字幕直接壓進畫面）</td><td>2026-09</td></tr>
-      <tr><td>介紹別人的影片：原片照播，朵拉翻譯</td><td>2026-11 這支 Kimodo 介紹片</td></tr>
+      <tr><td>剪輯</td><td>AI 先剪好初剪，你在剪輯台網頁上改字、拖位置、調長短，再匯出影片、字幕和封面</td><td>口播、說明片、長錄影切成短影音</td><td>這支 Kimodo 介紹片就是這樣剪的</td></tr>
+      <tr><td>動畫</td><td>AI 寫 HTML 動畫再轉成影片；做好的輪播卡、插畫，拆層讓裡面的東西動起來</td><td>沒有真人出鏡的說明片、課程影片、文章介紹短片</td><td>官網文章的介紹短片（<a href="../claude-beat-synced-video/">做法在這篇</a>）</td></tr>
+      <tr><td>角色</td><td>一張角色圖加上呼吸、眨眼、對嘴，讓 AI 角色當主持人</td><td>不想自己露臉的播報、課程、介紹片</td><td>朵拉在這兩支 Kimodo 影片裡講解</td></tr>
+      <tr><td>聲音</td><td>AI 配旁白、克隆自己的聲音、配樂跟著拍子換畫面、講話時配樂自動壓低</td><td>需要旁白但不想自己錄，或想讓畫面有節奏的影片</td><td><a href="../ai-voice-clone-taiwan-accent/">四個配音模型的台灣口音實測</a>、<a href="../claude-beat-synced-video/">配樂卡點</a></td></tr>
+      <tr><td>生成影片</td><td>把一張圖變成幾秒鐘的動態影片，再接進剪輯台</td><td>手上只有圖，想讓畫面動起來</td><td><a href="../google-ai-pro-colab-flow-short-video/">Google Flow 把輪播卡變成影片</a>（下面有一小段）</td></tr>
+      <tr><td>改編現有影片</td><td>別人的影片加中文字幕和註解；長影片切出精華，或濃縮成懶人包</td><td>想介紹國外影片，或把長的直播、講座變短</td><td><a href="../debate-summary-video-prompts/">兩小時辯論變三分鐘懶人包</a></td></tr>
     </tbody>
   </table></div>
-
-  <h3>二、動畫：讓 AI 寫程式畫出來</h3>
-  <div class="tablewrap"><table>
-    <thead><tr><th>做法</th><th>我做過的例子</th></tr></thead>
-    <tbody>
-      <tr><td>HTML 動畫轉成影片：瀏覽器逐格截圖，再用 ffmpeg（免費的影音轉檔工具）接成影片</td><td>2026-09 咪卡講解動畫</td></tr>
-      <tr><td>AI 做的動畫頁當「底片」，接進剪輯台讓人微調</td><td>2026-11 起的短影音都這樣做</td></tr>
-      <tr><td>互動網頁錄成影片</td><td>2026-11 圓桌活動短片</td></tr>
-      <tr><td>輪播卡、插畫拆層做成短影音（生圖時就分好底稿和會動的元件）</td><td>2026-09 動態封面、2026-11 五張卡拆層</td></tr>
-      <tr><td>課程影片版型：15 種版型，高階模型規劃、便宜模型照做</td><td>2026-11 課程影片</td></tr>
-      <tr><td>沒有真人出鏡的說明片、提案片：官網素材加旁白加緩慢推近</td><td>2026-11 提案片、陪跑介紹片</td></tr>
-    </tbody>
-  </table></div>
-
-  <h3>三、角色：讓 AI 角色出來講</h3>
-  <div class="tablewrap"><table>
-    <thead><tr><th>做法</th><th>我做過的例子</th></tr></thead>
-    <tbody>
-      <tr><td>咪卡（我官網上的 AI 角色）貼圖骨架動畫：換姿勢、呼吸、眨眼、講話的嘴</td><td>2026-09</td></tr>
-      <tr><td>AI 生綠幕動作片，再去背成角色</td><td>2026-10 朵拉全身 12 段動作</td></tr>
-      <tr><td>去背的角色圖一格一格輪流換，做成會動的 VTuber</td><td>2026-10</td></tr>
-      <tr><td>一張站姿加呼吸、眨眼、對嘴，做成會講話的角色</td><td>2026-11 LINE AI 應用課第一課</td></tr>
-      <tr><td>AI 角色播報：插畫封面加動態圖表卡，由朵拉講</td><td>2026-11 朵拉讀研究報告</td></tr>
-    </tbody>
-  </table></div>
-
-  <h3>四、聲音：配音和配樂</h3>
-  <div class="tablewrap"><table>
-    <thead><tr><th>做法</th><th>我做過的例子</th></tr></thead>
-    <tbody>
-      <tr><td>AI 配音：朵拉（我的 AI 助理）的聲音，用 Gemini 語音合成</td><td>2026-11 起的影片旁白</td></tr>
-      <tr><td>AI 配音：克隆我自己的聲音，四個模型實測比較</td><td>2026-11-13</td></tr>
-      <tr><td>配樂卡點：AI 列出音樂重拍的時間點（卡點表），畫面跟著拍子換</td><td>2026-11-12</td></tr>
-      <tr><td>配樂：預設四首，加一個用真樂器音色自動出卡點表的配樂工具</td><td>2026-11</td></tr>
-      <tr><td>講話時配樂自動壓低、某一幕配樂整段關掉</td><td>2026-11，這支片我自己講話的那幾幕就把配樂關了，因為我的片本來就有配樂</td></tr>
-    </tbody>
-  </table></div>
-
-  <div class="readmore near"><b>配音和配樂，我另外寫過</b><ul>
-    <li><a href="../ai-voice-clone-taiwan-accent/">想用自己的聲音做 AI 配音，該選哪個？</a>：這一段只列我用過哪些配音方式，那篇有四個模型的台灣口音實測。</li>
+  <p>表裡的剪輯台和動畫，都是我請會寫程式的 AI（例如 Claude Code）做出來的，我自己不寫程式。想要 3D 動畫，可以請 AI 用 Three.js（開源的 JavaScript 3D 函式庫）來做，網路上很多範例，我之前也找到一個專門放 Three.js 動畫效果的範本網站 <a href="https://threeui.com/" target="_blank" rel="noopener">Three UI ↗</a>。</p>
+  <div class="media-row">
+    <div class="media-fig">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;max-width:340px;margin:0 auto">
+        <figure class="inline-figure portrait" style="margin:0">
+          <img src="../../images/articles/google-ai-pro-colab-flow-short-video-card01-916.jpg" width="720" height="1280" alt="丟進 Flow 的原圖：9:16 輪播卡，咪卡站在禮物盒旁" loading="lazy">
+          <figcaption>原圖</figcaption>
+        </figure>
+        <figure class="inline-figure portrait" style="margin:0">
+          <video src="../../images/articles/google-ai-pro-colab-flow-short-video-flow-v2.mp4" width="270" height="480" style="width:100%;height:auto;border-radius:14px;display:block" autoplay muted loop playsinline preload="metadata" aria-label="Flow 做出來的 5 秒影片：咪卡打開禮物盒，晶片飛出來"></video>
+          <figcaption>Flow 做出來的影片</figcaption>
+        </figure>
+      </div>
+    </div>
+    <div class="media-text">
+      <p>這是那篇的一小段：左邊是我丟進 Google Flow 的原圖，一張 9:16 的輪播卡；右邊是 Flow 做出來的 5 秒影片。這段影片再接進剪輯台，跟其他畫面一起剪成 30.5 秒的直式短影音。</p>
+    </div>
+  </div>
+  <div class="readmore near"><b>上面幾類，我另外寫過</b><ul>
+    <li><a href="../google-ai-pro-colab-flow-short-video/">Google AI Pro 的 Colab 和 Flow 可以做什麼？</a>：這一段只放一小段成品，那篇有 Flow 的操作步驟、實測數字和失敗片段。</li>
     <li><a href="../claude-beat-synced-video/">用 Claude Code 剪影片，配樂從哪來、怎麼卡在拍子上？</a>：這一段只講有卡點這件事，那篇有配樂來源、旁白費用和卡點表怎麼做。</li>
-  </ul></div>
-
-  <h3>五、生成影片：真的請 AI 生畫面</h3>
-  <div class="tablewrap"><table>
-    <thead><tr><th>做法</th><th>我做過的例子</th></tr></thead>
-    <tbody>
-      <tr><td>Google Flow 把圖片轉成動態影片，再接進剪輯台</td><td>2026-11-15〈Google AI Pro 算力不用白不用〉</td></tr>
-      <tr><td>AI 生綠幕動作片（角色用）</td><td>2026-10，同第三類</td></tr>
-    </tbody>
-  </table></div>
-  <div class="readmore near"><b>圖轉影片的實測，我另外寫過</b><ul>
-    <li><a href="../google-ai-pro-colab-flow-short-video/">Google AI Pro 的 Colab 和 Flow 可以做什麼？</a>：這一段只講生成影片是其中一種，那篇有 Flow 的操作步驟、實測數字和失敗片段。</li>
-  </ul></div>
-
-  <h3>六、工具與流程：把剪輯、動畫、角色與聲音串起來</h3>
-  <div class="tablewrap"><table>
-    <thead><tr><th>做法</th><th>我做過的例子</th></tr></thead>
-    <tbody>
-      <tr><td>用 Claude Code（Anthropic 的 AI 程式助理）剪官網文章的介紹短片</td><td>2026-11-13</td></tr>
-      <tr><td>朵拉短影音固定版型：紙底、花邊、手繪框、出處標籤、朵拉每幕換位置</td><td>2026-11-16</td></tr>
-      <tr><td>開源工具實測：去背、人聲分離、換鏡頭偵測、防手震</td><td>2026-11-03</td></tr>
-      <tr><td>開源語音模型比較影片</td><td>2026-11-16</td></tr>
-      <tr><td>影片效果參考庫：看到不錯的效果先收進來</td><td>2026-11-13</td></tr>
-      <tr><td>兩小時辯論做成三分鐘摘要影片</td><td>2026-11-01</td></tr>
-    </tbody>
-  </table></div>
-  <div class="readmore near"><b>摘要影片怎麼下提示詞，我另外寫過</b><ul>
-    <li><a href="../debate-summary-video-prompts/">我怎麼叫 AI 幫我做摘要影片？</a>：這一段只列有這個做法，那篇有我下的提示詞和遇到的三個坑。</li>
+    <li><a href="../ai-voice-clone-taiwan-accent/">想用自己的聲音做 AI 配音，該選哪個？</a>：這一段只列有 AI 配音，那篇有四個模型的台灣口音實測。</li>
   </ul></div>
 </div></section>
 
@@ -365,23 +305,21 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
 </div></section>
 
 <section class="section" id="this-video"><div class="inner">
-  <h2>實作拆解：Kimodo 介紹長片是怎麼做的</h2>
-  <p>上面那支長片也是用剪輯、角色、配音這幾類方式拼出來的，沒有用到生成影片：</p>
+  <h2>想介紹國外的影片，可以這樣做</h2>
+  <p>這支 Kimodo 介紹片屬於六類裡的「改編現有影片」，沒有用到生成影片。做法可以照著用：</p>
   <div class="workflow-grid">
-    <div class="workflow-step"><small>畫面</small><b>原片照播，朵拉翻譯</b><p>KanaWorks 的原片直接播，原本燒在畫面上的外語字幕裁掉，再接上我以前的攝影教學片段。</p></div>
-    <div class="workflow-step"><small>剪輯</small><b>AI 先剪，我在剪輯台改</b><p>AI 把初剪放進剪輯台，我在瀏覽器裡調朵拉的位置，再請 AI 把我的畫面拉大，改完才匯出。</p></div>
-    <div class="workflow-step"><small>聲音</small><b>朵拉配音，我講話時關配樂</b><p>旁白是朵拉的 AI 配音。我自己講話的那幾幕把配樂關掉，因為我的片本來就有配樂。</p></div>
+    <div class="workflow-step"><small>第一步</small><b>原片照播，標明出處</b><p>原片畫面直接播，畫面上標出處，說明欄放原貼文連結。原片的外語語音不放。</p></div>
+    <div class="workflow-step"><small>第二步</small><b>用中文講給觀眾聽</b><p>旁白用 AI 配音，把原片在做什麼用中文翻譯、講清楚。</p></div>
+    <div class="workflow-step"><small>第三步</small><b>接上你自己的角度</b><p>最後接你自己的經驗或看法。這支片接的是我以前教攝影、搭虛擬攝影棚的片段。</p></div>
   </div>
 </div></section>
 
 <section class="section" id="not-yet"><div class="inner">
-  <h2>我還沒做過的 AI 影片工具與做法</h2>
-  <div class="caveat"><b>六類做法表裡沒有的</b>
+  <h2>我還沒用在影片裡的工具</h2>
+  <div class="caveat"><b>這些沒放進六類做法表</b>
     <ul>
       <li>Veo、Kling、Sora、Runway 這些生成影片工具，我目前沒有用來做過影片。</li>
-      <li>Three.js 的 3D 場景、Remotion 這類用程式做影片的工具，我收了範例和範本，還沒實際做成片。</li>
-      <li>3D 角色（咪卡、朵拉）我在 2026-11 試做過，還沒用在影片裡。</li>
-      <li>虛擬攝影棚：我以前搭的那個是教攝影時做的，影片片段還在，搭建過程沒有留下紀錄；Unreal Engine 加 Kimodo 這段是 KanaWorks 的作品。</li>
+      <li>用 Three.js、Remotion 寫程式做 3D 影片，或用 3D 軟體、遊戲引擎搭攝影棚，我還沒做成片。</li>
     </ul>
   </div>
 </div></section>
@@ -431,7 +369,7 @@ body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradie
       <a href="https://www.threads.com/@jiang_yude_coach" target="_blank" rel="noopener">Threads ↗</a>
       <a href="https://vocus.cc/salon/Jiang_Coach" target="_blank" rel="noopener">方格子 ↗</a>
     </div>
-    <div class="footer-note">這是一篇教學文章，整理我對「用 AI 做影片有哪些方式？｜不只生成影片：我做過的 AI 剪輯、AI 動畫、AI 配音，從 Unreal Engine 5.9 × Kimodo 說起」的看法，供你參考。</div>
+    <div class="footer-note">這是一篇教學文章，整理我對「用 AI 做影片有哪些方式？｜不只生成影片：剪輯、動畫、角色、配音、圖轉影片，我實際用過的六類做法」的看法，供你參考。</div>
   </div>
 </footer>
 
