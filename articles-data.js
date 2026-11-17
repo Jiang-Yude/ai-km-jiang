@@ -23,6 +23,25 @@ window.ARTICLE_TAGS = {
 
 window.ARTICLES = [
   {
+    id: "site-social-interlink",
+    url: "articles/site-social-interlink/",
+    date: "2026-11-17",
+    updated: "2026-11-17",
+    title: "我的官網怎麼跟其他社群互聯？｜雙向連結是什麼、為什麼要連、三種連法我選星狀",
+    problem: "同一個內容發在官網、方格子、YouTube、Threads 好幾個地方，連結要怎麼放，才不會互相找不到，又不會多到管不動？",
+    audience: "官網和社群都在經營，想讓自己的作品互相連起來的人。",
+    summary: "講清楚四件事：什麼是雙向連結、為什麼要連結、有哪些連法、我實際怎麼連。官網當母版，方格子、就享知、IG、FB、YouTube、Threads 當分身；三種連法是母版第一加同組互連、全面互連、星狀，我選星狀，因為管理很煩、先簡單管理就好。附 Google 官方怎麼說連結與搜尋、每個平台連結放哪裡，以及一段幫你盤點連結的 AI 提示詞。",
+    tags: {
+      topic: ["品牌資產", "知識管理", "輔助決策"],
+      level: ["基礎"],
+      content_type: ["觀點文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["learn-obsidian-mechanism", "market-to-ai", "ai-retrieval-pages-backlinks"],
+    cover: { wide: "images/articles/site-social-interlink-cover.jpg" }
+  },
+
+  {
     id: "doc-analysis-model-test",
     url: "articles/doc-analysis-model-test/",
     date: "2026-11-16",
@@ -492,7 +511,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["ai-retrieval-pages-backlinks", "tag-wiki-method", "copied-mechanism-is-no-mechanism", "dont-learn-ai-tools", "diary-driven-agent-3x4-v2", "rag-three-retrieval-modes"],
+    related: ["ai-retrieval-pages-backlinks", "tag-wiki-method", "copied-mechanism-is-no-mechanism", "dont-learn-ai-tools", "diary-driven-agent-3x4-v2", "rag-three-retrieval-modes", "site-social-interlink"],
     cover: { wide: "images/articles/learn-obsidian-mechanism-cover.jpg" }
   },
 
@@ -720,7 +739,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["tag-wiki-method", "claude-skills-knowledge-assets", "rag-three-retrieval-modes", "diary-driven-agent-3x4-v2", "docs-as-system-design-agent", "learn-obsidian-mechanism", "inspiration-production-system", "course-video-multimodal-search"],
+    related: ["tag-wiki-method", "claude-skills-knowledge-assets", "rag-three-retrieval-modes", "diary-driven-agent-3x4-v2", "docs-as-system-design-agent", "learn-obsidian-mechanism", "inspiration-production-system", "course-video-multimodal-search", "site-social-interlink"],
     cover: { wide: "images/articles/ai-retrieval-pages-backlinks-cover.jpg" }
   },
 
@@ -3494,7 +3513,7 @@ window.ARTICLES = [
       content_type: ["觀點文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["a2a-agent-protocol", "agent-web-turning-point"]
+    related: ["a2a-agent-protocol", "agent-web-turning-point", "site-social-interlink"]
   },
 
   {
