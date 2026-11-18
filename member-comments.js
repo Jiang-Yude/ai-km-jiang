@@ -5,6 +5,13 @@
   'use strict';
   var page = location.pathname;
   if (!/^\/(articles|ai-trends)\/[a-z0-9][a-z0-9-]*\/$/.test(page)) return;
+  /* 2026-11-19：文章結尾行動區塊（article-cta.js）由這裡帶進來，每篇文章都已載入本檔，不必逐篇改 HTML。
+     行動區塊不看會員開關，留言區關著也會出現。 */
+  if (!document.querySelector('script[src="/article-cta.js"]')) {
+    var ctaJs = document.createElement('script');
+    ctaJs.src = '/article-cta.js'; ctaJs.defer = true;
+    document.head.appendChild(ctaJs);
+  }
   if (document.getElementById('jy-comments')) return;
 
   var MAX = 1000;
