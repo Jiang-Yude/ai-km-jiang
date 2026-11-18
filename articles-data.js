@@ -23,6 +23,25 @@ window.ARTICLE_TAGS = {
 
 window.ARTICLES = [
   {
+    id: "ai-agent-when-computer-off",
+    url: "articles/ai-agent-when-computer-off/",
+    date: "2026-11-19",
+    updated: "2026-11-19",
+    title: "電腦關了，AI 還會幫你做事嗎？｜人在電腦操作、遠端操作、雲端操作、雲端電腦，看 AI 跑在哪台電腦上",
+    problem: "想讓 AI 幫忙做事，但不知道電腦要不要一直開著；出門在外想叫家裡電腦繼續做，不知道會卡在哪。",
+    audience: "想讓 AI 在自己不在電腦前時繼續做事、常出門或在比較 Codex、Claude Code、Grok Bot 的人。",
+    summary: "AI Agent 關機後還會不會繼續做事，只看它跑在哪台電腦上。用生活裡的例子比較人在電腦操作、遠端操作、雲端操作、雲端電腦四種方式，附兩個問題就能挑出適合你的流程圖，以及用手機遙控家裡電腦前要準備的四件事。",
+    tags: {
+      topic: ["AIAgent", "差異比較", "工具操作"],
+      level: ["基礎"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["mobile-to-desktop-publish-loop", "where-is-my-server", "open-source-ai-agent-24h-compare", "mac-for-agent-beginners", "chatgpt-work-codex-choice"],
+    cover: { wide: "images/articles/ai-agent-when-computer-off-cover.jpg" }
+  },
+
+  {
     id: "gemini-tts-rate-limit",
     url: "articles/gemini-tts-rate-limit/",
     date: "2026-11-17",
@@ -322,7 +341,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["hosting-platform-decision-tree", "grok-bot-galaxy-day1-founders", "where-is-my-server", "cloudflare-free-plan-limits", "messaging-apps-ai-friendliness", "api-key-dont-paste-to-ai", "ai-employees-manage-agents", "mac-for-agent-beginners"],
+    related: ["hosting-platform-decision-tree", "grok-bot-galaxy-day1-founders", "where-is-my-server", "cloudflare-free-plan-limits", "messaging-apps-ai-friendliness", "api-key-dont-paste-to-ai", "ai-employees-manage-agents", "mac-for-agent-beginners", "ai-agent-when-computer-off"],
     cover: { wide: "images/articles/open-source-ai-agent-24h-compare-cover.jpg" }
   },
 
@@ -1632,7 +1651,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["knowledge-base-three-vault-split", "chatgpt-work-codex-choice", "mobile-to-desktop-publish-loop", "cli-api-mcp-computer-use", "ai-loop-safety-recovery", "ai-data-organization-usable-system", "open-source-ai-agent-24h-compare", "google-ai-pro-colab-flow-short-video"],
+    related: ["knowledge-base-three-vault-split", "chatgpt-work-codex-choice", "mobile-to-desktop-publish-loop", "cli-api-mcp-computer-use", "ai-loop-safety-recovery", "ai-data-organization-usable-system", "open-source-ai-agent-24h-compare", "google-ai-pro-colab-flow-short-video", "ai-agent-when-computer-off"],
     cover: { tall: "images/articles/where-is-my-server-01.jpg" }
   },
 
@@ -1898,7 +1917,7 @@ window.ARTICLES = [
       content_type: ["觀點文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["web-chat-ai-vs-desktop-agent", "chatgpt-work-codex-choice", "open-source-ai-agent-24h-compare", "claude-or-chatgpt-rules-first"],
+    related: ["web-chat-ai-vs-desktop-agent", "chatgpt-work-codex-choice", "open-source-ai-agent-24h-compare", "claude-or-chatgpt-rules-first", "ai-agent-when-computer-off"],
     cover: { tall: "images/articles/mac-for-agent-beginners-01.jpg" }
   },
 
@@ -2543,7 +2562,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["after-ai-says-remembered", "before-installing-others-skill", "three-levels-of-cross-review"]
+    related: ["after-ai-says-remembered", "before-installing-others-skill", "three-levels-of-cross-review", "ai-agent-when-computer-off"]
   },
 
   {
@@ -2871,7 +2890,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["web-chat-ai-vs-desktop-agent", "mac-for-agent-beginners", "how-ai-connects-software", "ai-capability-tiers", "program-vs-ai-skill-library", "chatgpt-work-skills-web-version", "chatgpt-web-codex-console", "claude-or-chatgpt-rules-first"],
+    related: ["web-chat-ai-vs-desktop-agent", "mac-for-agent-beginners", "how-ai-connects-software", "ai-capability-tiers", "program-vs-ai-skill-library", "chatgpt-work-skills-web-version", "chatgpt-web-codex-console", "claude-or-chatgpt-rules-first", "ai-agent-when-computer-off"],
     cover: { tall: "images/articles/chatgpt-work-codex-choice/01.jpg" }
   },
 
