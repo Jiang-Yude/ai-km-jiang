@@ -42,6 +42,25 @@ window.ARTICLES = [
   },
 
   {
+    id: "dan-koe-ai-consultant-site-audit",
+    url: "articles/dan-koe-ai-consultant-site-audit/",
+    date: "2026-11-19",
+    updated: "2026-11-19",
+    title: "網站有人看，卻沒人找你？用四段檢查找出斷在哪｜我把 Dan Koe 的方法做成 AI 顧問，查自己的官網",
+    problem: "網站或粉專有人看，私訊和詢問卻很少，說不出是哪裡斷掉。",
+    audience: "有網站或粉專、想讓看完的人主動來問的小老闆、講師與接案者。",
+    summary: "我用 Dan Koe 2026 年 11 月爆紅電子報的觀點，請 AI 扮成他的顧問健檢自己的官網，找到卡在「沒人被問到要不要買」這一段，再請 Claude、GPT、Gemini 三家 AI 投票、自己拍板改版。文中附四段檢查表、一段可直接複製的健檢提示詞，以及多家 AI 投票的指令。",
+    tags: {
+      topic: ["AI應用", "輔助決策", "品牌資產"],
+      level: ["基礎"],
+      content_type: ["案例文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["at-a-glance"],
+    cover: { wide: "images/articles/dan-koe-ai-consultant-site-audit-cover.jpg" }
+  },
+
+  {
     id: "gemini-tts-rate-limit",
     url: "articles/gemini-tts-rate-limit/",
     date: "2026-11-17",
@@ -644,7 +663,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["long-answer-three-layers", "ai-understands-ei-ha", "ai-that-knows-you"],
+    related: ["long-answer-three-layers", "ai-understands-ei-ha", "ai-that-knows-you", "dan-koe-ai-consultant-site-audit"],
     cover: { wide: "images/articles/at-a-glance-cover.jpg" }
   },
 
