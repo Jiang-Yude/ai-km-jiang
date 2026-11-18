@@ -234,6 +234,7 @@ window.ARTICLE_ENTRIES = [
       "what-is-graph-engineering",                     // 可以放著讓 AI 自己跑完嗎？
       "let-ai-do-the-setup",                           // 換電腦，設定又要重來一次嗎？：我把 OBS 交給 AI，一個選項都沒點過
       "mobile-to-desktop-publish-loop",                // 人在外面，可以叫家裡的電腦先做嗎？：手機掃一次 QR code，桌機就開始跑
+      "ai-agent-when-computer-off",                    // 電腦關了，AI 還會幫你做事嗎？
       "meeting-into-verifiable-loop",                  // 一場會議整理，我把它做成了一條可驗收的迴圈
       "loop-engineering-guardrails",                   // AI 一直停下來要授權，怎麼讓它順順跑完？：迴圈護欄的五條規則
       "ai-changed-behavior-into-workflow",             // 把不知不覺被 AI 改變的行為，抓成一套流程
