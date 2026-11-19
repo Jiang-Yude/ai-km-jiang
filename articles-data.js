@@ -56,7 +56,8 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["api-key-dont-paste-to-ai", "ai-batch-work-without-seeing-data", "let-ai-do-the-setup", "cloudflare-service-map", "domain-and-account-ownership"]
+    related: ["api-key-dont-paste-to-ai", "ai-batch-work-without-seeing-data", "let-ai-do-the-setup", "cloudflare-service-map", "domain-and-account-ownership"],
+    cover: { wide: "images/articles/ai-paste-secret-without-seeing-cover.jpg" }
   },
 
   {
