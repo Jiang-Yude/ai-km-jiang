@@ -79,6 +79,25 @@ window.ARTICLES = [
   },
 
   {
+    id: "new-models-retest-dispatch",
+    url: "articles/new-models-retest-dispatch/",
+    date: "2026-11-19",
+    updated: "2026-11-19",
+    title: "新 AI 模型出來要不要換？｜Gemini 4 Neon、GPT-6.2 用固定考卷實測，與我的 AI 派工原則",
+    problem: "新的 AI 模型一直出來，不知道要不要換、工作要不要重新分給不同的 AI。",
+    audience: "手上有好幾家 AI、每週做會議記錄與文件分析的知識工作者，以及幫客戶挑模型、排分工的顧問。",
+    summary: "Gemini 4 補齊 Hydrogen、Neon、Argon、Carbon，OpenAI 推出 GPT-6.2 Sol 與 Astra。用 11/16 同一份知識工作考卷重測三款新模型：Neon 三題平均 90.3、逐字稿清理 82.6 都是這批最高但在誤差內；GPT-6.2 Sol 會議統整 95.3、規則推理 65.3；GPT-6.2 Astra 課程簡報 97.5、清理 71.4。附新舊成績對照、費用、用舊答卷量誤差的方法，與我的 AI 派工原則和分工表。",
+    tags: {
+      topic: ["AI工作流", "差異比較", "輔助決策"],
+      level: ["基礎"],
+      content_type: ["案例文章"]
+    },
+    external: { threads: "https://www.threads.com/@jiang_yude_coach/post/Df6WJTCFMBO", vocus: null },
+    related: ["doc-analysis-model-test", "reevaluate-models-same-test", "opus-luna-model-division", "ai-employees-manage-agents", "fixed-test-set-for-ai", "ai-model-token-efficiency"],
+    cover: { wide: "images/articles/new-models-retest-dispatch-cover.jpg" }
+  },
+
+  {
     id: "gemini-tts-rate-limit",
     url: "articles/gemini-tts-rate-limit/",
     date: "2026-11-17",
@@ -131,7 +150,7 @@ window.ARTICLES = [
       content_type: ["案例文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["fixed-test-set-for-ai", "reevaluate-models-same-test", "opus-luna-model-division", "ai-model-token-efficiency", "ai-customer-service-model-retest"],
+    related: ["new-models-retest-dispatch", "fixed-test-set-for-ai", "reevaluate-models-same-test", "opus-luna-model-division", "ai-model-token-efficiency", "ai-customer-service-model-retest"],
     cover: { wide: "images/articles/doc-analysis-model-test-cover.jpg" }
   },
 
@@ -966,7 +985,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["reevaluate-models-same-test", "opus-luna-model-division", "fixed-test-set-for-ai", "ai-customer-service-api-cost", "strong-ai-models-knowledge-workflow-road", "token-money-worth-doing", "doc-analysis-model-test"],
+    related: ["new-models-retest-dispatch", "reevaluate-models-same-test", "opus-luna-model-division", "fixed-test-set-for-ai", "ai-customer-service-api-cost", "strong-ai-models-knowledge-workflow-road", "token-money-worth-doing", "doc-analysis-model-test"],
     cover: { wide: "images/articles/ai-model-token-efficiency-01.jpg" }
   },
 
@@ -1042,7 +1061,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["dont-learn-ai-tools", "harness-to-loop", "parallel-site-editing", "what-is-loop-engineering", "cathay-tech-conference-2026", "chatgpt-web-codex-console", "ai-manages-ai-focus", "ai-employee-tests-new-tools", "open-source-ai-agent-24h-compare"],
+    related: ["new-models-retest-dispatch", "dont-learn-ai-tools", "harness-to-loop", "parallel-site-editing", "what-is-loop-engineering", "cathay-tech-conference-2026", "chatgpt-web-codex-console", "ai-manages-ai-focus", "ai-employee-tests-new-tools", "open-source-ai-agent-24h-compare"],
     cover: { wide: "images/articles/ai-employees-manage-agents-cover.jpg" }
   },
 
@@ -1232,7 +1251,7 @@ window.ARTICLES = [
       content_type: ["案例文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["reevaluate-models-same-test", "ai-cp-value-calculus", "what-are-subagents", "long-answer-three-layers", "meeting-record-agent-workflow", "dual-track-planning-loop", "fixed-test-set-for-ai", "ai-schedule-wake-interval", "ai-customer-service-api-cost", "domain-and-account-ownership", "ai-model-token-efficiency", "ai-customer-service-model-retest", "ai-employee-ask-before-act", "doc-analysis-model-test"],
+    related: ["new-models-retest-dispatch", "reevaluate-models-same-test", "ai-cp-value-calculus", "what-are-subagents", "long-answer-three-layers", "meeting-record-agent-workflow", "dual-track-planning-loop", "fixed-test-set-for-ai", "ai-schedule-wake-interval", "ai-customer-service-api-cost", "domain-and-account-ownership", "ai-model-token-efficiency", "ai-customer-service-model-retest", "ai-employee-ask-before-act", "doc-analysis-model-test"],
     cover: { wide: "images/articles/opus-luna-model-division-cover.jpg" }
   },
 
@@ -1365,7 +1384,7 @@ window.ARTICLES = [
       content_type: ["案例文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["fixed-test-set-for-ai", "ai-cp-value-calculus", "three-levels-of-cross-review", "dual-track-planning-loop", "how-to-verify-ai-rule-changes", "ai-schedule-wake-interval", "opus-luna-model-division", "ai-model-token-efficiency", "token-money-worth-doing", "doc-analysis-model-test"],
+    related: ["new-models-retest-dispatch", "fixed-test-set-for-ai", "ai-cp-value-calculus", "three-levels-of-cross-review", "dual-track-planning-loop", "how-to-verify-ai-rule-changes", "ai-schedule-wake-interval", "opus-luna-model-division", "ai-model-token-efficiency", "token-money-worth-doing", "doc-analysis-model-test"],
     cover: { wide: "images/articles/reevaluate-models-same-test-cover.jpg" }
   },
 
@@ -1536,7 +1555,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["how-to-verify-ai-rule-changes", "three-levels-of-cross-review", "dual-track-planning-loop", "ai-cp-value-calculus", "ai-schedule-wake-interval", "rule-file-rebound", "caught-ai-slacking-into-rules", "ai-user-testing", "long-document-review-layers", "reevaluate-models-same-test", "opus-luna-model-division", "ai-model-token-efficiency", "ai-customer-service-model-retest", "doc-analysis-model-test"],
+    related: ["new-models-retest-dispatch", "how-to-verify-ai-rule-changes", "three-levels-of-cross-review", "dual-track-planning-loop", "ai-cp-value-calculus", "ai-schedule-wake-interval", "rule-file-rebound", "caught-ai-slacking-into-rules", "ai-user-testing", "long-document-review-layers", "reevaluate-models-same-test", "opus-luna-model-division", "ai-model-token-efficiency", "ai-customer-service-model-retest", "doc-analysis-model-test"],
     cover: { wide: "images/articles/fixed-test-set-for-ai-cover.jpg" }
   },
 
