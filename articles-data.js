@@ -42,6 +42,24 @@ window.ARTICLES = [
   },
 
   {
+    id: "ai-paste-secret-without-seeing",
+    url: "articles/ai-paste-secret-without-seeing/",
+    date: "2026-11-19",
+    updated: "2026-11-19",
+    title: "讓 AI 幫我設定 API key，可以不讓它看到嗎？｜剪貼簿直接交給程式，AI 只看到「完成」",
+    problem: "用 AI 架網站、接 Google 登入時，密鑰要放進 Cloudflare 等雲端服務的秘密設定，交給 AI 做又怕值進了對話紀錄。",
+    audience: "用 AI 架網站、接登入、串 API 的非工程師，以及幫客戶設定 AI 工具的顧問與接案者。",
+    summary: "介紹一支免費的 macOS 小工具 secret-paste：值從剪貼簿或隱藏輸入框來，只檢查開頭與長度，經標準輸入交給 wrangler 或 gh secret set，輸出含值先遮蔽，最後一律清空剪貼簿，AI 只看到一行完成訊息。說明 Google Cloud 複製鍵的 aria-label 含完整密鑰這顆雷、最簡單的自己按複製鍵做法、可直接貼給 AI 的交代，以及防不了存心偷看的程式、剪貼簿歷史工具清不到、只用假值測過等限制。文末附下載。",
+    tags: {
+      topic: ["AI工作流", "工具操作", "AI應用"],
+      level: ["基礎"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["api-key-dont-paste-to-ai", "ai-batch-work-without-seeing-data", "let-ai-do-the-setup", "cloudflare-service-map", "domain-and-account-ownership"]
+  },
+
+  {
     id: "dan-koe-ai-consultant-site-audit",
     url: "articles/dan-koe-ai-consultant-site-audit/",
     date: "2026-11-19",
@@ -474,7 +492,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["ai-batch-work-without-seeing-data", "domain-and-account-ownership", "ai-customer-service-api-cost", "let-ai-do-the-setup", "open-source-ai-agent-24h-compare", "claude-multiple-google-accounts", "ai-voice-clone-taiwan-accent"],
+    related: ["ai-paste-secret-without-seeing", "ai-batch-work-without-seeing-data", "domain-and-account-ownership", "ai-customer-service-api-cost", "let-ai-do-the-setup", "open-source-ai-agent-24h-compare", "claude-multiple-google-accounts", "ai-voice-clone-taiwan-accent"],
     cover: { wide: "images/articles/api-key-dont-paste-to-ai-cover.jpg" }
   },
 
@@ -1252,7 +1270,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["ai-data-red-lines", "ai-vs-script-four-situations", "agent-workflow-builds-automation", "openrouter-deepseek-data-routing", "pii-shield"],
+    related: ["ai-paste-secret-without-seeing", "ai-data-red-lines", "ai-vs-script-four-situations", "agent-workflow-builds-automation", "openrouter-deepseek-data-routing", "pii-shield"],
     cover: { wide: "images/articles/ai-batch-work-without-seeing-data-cover.jpg" }
   },
 
