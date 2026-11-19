@@ -15,7 +15,7 @@ function fakeRedis() {
   const z = k => zsets.get(k) || zsets.set(k, new Map()).get(k);
   const run = ([cmd, key, ...a]) => {
     switch (cmd.toUpperCase()) {
-      case 'SET': kv.set(key, a[0]); if (a[1] === 'EX') ttl.set(key, Number(a[2])); return 'OK';
+      case 'SET': if (a.includes('NX') && kv.has(key)) return null; kv.set(key, a[0]); if (a[1] === 'EX') ttl.set(key, Number(a[2])); return 'OK';
       case 'GET': return kv.has(key) ? kv.get(key) : null;
       case 'GETDEL': { const v = kv.has(key) ? kv.get(key) : null; kv.delete(key); return v; }
       case 'DEL': return kv.delete(key) ? 1 : 0;
@@ -199,6 +199,38 @@ await t('沒有 Google 照片的人不能選 google 頭像；重新登入保留�
 await t('管理員可以用含「江江」的暱稱', async () => {
   const b2 = await login({ sub: 'boss', name: '江昱德', email: 'boss@example.com' });
   assert.equal((await write('/member/profile', b2.cookie, { nick: '江江教練', avatar: 'initial' })).status, 200);
+});
+await t('暱稱先搶先贏；拆字冒名「江 江」也擋；Google 名稱叫江江教練的一般人顯示成讀者', async () => {
+  const dave = await login({ sub: 'dave', name: 'Dave', email: 'd@example.com' });
+  assert.equal((await write('/member/profile', dave.cookie, { nick: '卡蘿', avatar: 'initial' })).status, 409);
+  assert.equal((await write('/member/profile', dave.cookie, { nick: ' 卡 蘿 ', avatar: 'initial' })).status, 409);
+  assert.equal((await write('/member/profile', dave.cookie, { nick: '江 江教練', avatar: 'initial' })).status, 400);
+  assert.equal((await write('/member/profile', dave.cookie, { nick: '江．江', avatar: 'initial' })).status, 400);
+  assert.equal((await write('/member/profile', dave.cookie, { nick: '大衛', avatar: 'initial' })).status, 200);
+  assert.equal((await write('/member/profile', dave.cookie, { nick: '大衛', avatar: 'e:🐱' })).status, 200);
+  const carol = await login({ sub: 'carol', name: 'Carol', email: 'c@example.com' });
+  assert.equal((await write('/member/profile', carol.cookie, { nick: '小卡', avatar: 'initial' })).status, 200);
+  assert.equal((await write('/member/profile', dave.cookie, { nick: '卡蘿', avatar: 'initial' })).status, 409); // 60 秒保護期內
+  db.kv.set('member:nick:卡蘿', 'carol|0'); // 模擬超過 60 秒
+  assert.equal((await write('/member/profile', dave.cookie, { nick: '卡蘿', avatar: 'initial' })).status, 200);
+  assert.equal((await write('/member/profile', dave.cookie, { nick: '江\u2060江', avatar: 'initial' })).status, 400);
+  assert.equal((await write('/member/profile', dave.cookie, { nick: '江\u115F江', avatar: 'initial' })).status, 400);
+  assert.equal((await write('/member/profile', dave.cookie, { nick: '江\u3164江教練', avatar: 'initial' })).status, 400);
+  assert.equal((await write('/member/profile', dave.cookie, { nick: '江\uFE0F江教練', avatar: 'initial' })).status, 400);
+  // 舊資料：有暱稱但沒有占用紀錄、Google 名稱含站方字眼且沒有 staff 旗標
+  db.kv.set('member:user:legacy', JSON.stringify({ sub: 'legacy', name: '江江教練', nick: '', avatar: 'initial' }));
+  db.kv.set('member:user:legacy2', JSON.stringify({ sub: 'legacy2', name: 'L2', nick: '老會員', avatar: 'initial' }));
+  db.kv.set('member:sess:legacysessAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', 'legacy');
+  const lme = await (await call('/member/me', { cookie: '__Host-jy_sess=legacysessAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA' })).json();
+  assert.equal(lme.user.name, '讀者');
+  db.kv.set('member:sess:legacy2sessBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB', 'legacy2');
+  assert.equal((await write('/member/profile', '__Host-jy_sess=legacy2sessBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB', { nick: '老會員', avatar: 'e:🐱' })).status, 200);
+  assert.equal((await write('/member/profile', dave.cookie, { nick: '老會員', avatar: 'initial' })).status, 409);
+  const fake = await login({ sub: 'fake', name: '江江教練', email: 'fake@example.com' });
+  const me = await (await call('/member/me', { cookie: fake.cookie })).json();
+  assert.equal(me.user.name, '讀者');
+  const boss = await (await call('/member/me', { cookie: (await login({ sub: 'boss', name: '江昱德', email: 'boss@example.com' })).cookie })).json();
+  assert.equal(boss.user.name, '江江教練');
 });
 
 // 最小的真 PNG（1x1）與 JPEG 檔頭
