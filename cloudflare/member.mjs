@@ -175,6 +175,13 @@ const AVATAR_MAX = 300 * 1024;
 const PID_RE = /^[A-Za-z0-9_-]{12}$/;
 const RESERVED_NICK = /江江|江昱德|昱德|管理員|管理者|官方|站長|客服|咪卡|admin|jiangyude/i;
 const NICK_MAX = 20;
+// 2026-11-19 江江：「暱稱先搶先贏，但避免詐騙，江江、江江教練禁止他人使用」。
+// 比對前先去掉空白、標點、符號，擋「江 江」「江．江教練」這類拆字冒名。
+// 看不見的填充字（韓文填充字、點字空白等）歸類成字母，要另外點名去掉
+const INVISIBLE = /[\u115F\u1160\u3164\uFFA0\u2800\u180E\u17B4\u17B5\u034F]/gu;
+const squeeze = s => String(s || '').normalize('NFKC').replace(INVISIBLE, '').replace(/[\s\p{P}\p{S}\p{C}\p{M}_]/gu, '');
+export const isReservedNick = s => RESERVED_NICK.test(squeeze(s));
+const nickKey = s => 'member:nick:' + squeeze(s).toLowerCase();
 const LIMIT_PROFILE_DAY = 10;
 function display(u) {
   if (!u) return null;
@@ -182,7 +189,8 @@ function display(u) {
   if (avatar === 'google' && !u.picture) avatar = 'initial';
   if (avatar === 'upload' && !(u.pid && u.av)) avatar = 'initial';
   const picture = avatar === 'google' ? u.picture : avatar === 'upload' ? `/member/avatar/${u.pid}?v=${u.av}` : '';
-  return { name: u.nick || u.name, picture, emoji: avatar.startsWith('e:') ? avatar.slice(2) : '', avatar };
+  const name = u.nick || (isReservedNick(u.name) && !u.staff ? '讀者' : u.name);
+  return { name, picture, emoji: avatar.startsWith('e:') ? avatar.slice(2) : '', avatar };
 }
 const publicUser = async (u, cfg) => u ? ({ ...display(u), nick: u.nick || '', googleName: u.name, googlePicture: u.picture || '',
   uploaded: u.pid && u.av ? `/member/avatar/${u.pid}?v=${u.av}` : '', admin: await isAdmin(u, cfg) }) : null;
@@ -197,7 +205,7 @@ export function sniffImage(bytes) {
 }
 const b64ToBytes = s => Uint8Array.from(atob(s), c => c.charCodeAt(0));
 function cleanNick(text) {
-  return String(text || '').replace(/[\u0000-\u001f\u007f\u200b-\u200f\u202a-\u202e\u2066-\u2069<>]/g, '').replace(/\s+/g, ' ').trim();
+  return String(text || '').replace(/[\u0000-\u001f\u007f\u200b-\u200f\u202a-\u202e\u2066-\u2069<>]/g, '').replace(/[\p{Cf}\uFE00-\uFE0F]/gu, '').replace(INVISIBLE, '').replace(/\s+/g, ' ').trim();
 }
 
 export async function handleMember(context, deps = {}) {
@@ -247,11 +255,15 @@ export async function handleMember(context, deps = {}) {
       const userKey = 'member:user:' + claims.sub;
       const [prev] = await redis(['GET', userKey]);
       const old = prev ? JSON.parse(prev) : {};
+      // Google 名稱含「江江」等站方字眼的非管理員，顯示名稱改成「讀者」，免得沒取暱稱就冒名
+      const staff = cfg.admins.includes(String(claims.email || '').trim().toLowerCase());
+      let googleName = String(claims.name || claims.given_name || '讀者').slice(0, 40);
+      if (isReservedNick(googleName) && !staff) googleName = '讀者';
       const user = {
-        sub: String(claims.sub), name: String(claims.name || claims.given_name || '讀者').slice(0, 40),
+        sub: String(claims.sub), name: googleName,
         picture: /^https:\/\/[a-z0-9.-]+\.googleusercontent\.com\//.test(claims.picture || '') ? claims.picture : '',
         eh: await emailHash(claims.email), created: old.created || now, last: now,
-        nick: old.nick || '', avatar: old.avatar || '',
+        nick: old.nick || '', avatar: old.avatar || '', staff,
       };
       const sid = randomId(32);
       await redis(['SET', userKey, JSON.stringify(user)], ['SET', 'member:sess:' + sid, user.sub, 'EX', SESSION_TTL], ['SADD', 'member:index', user.sub]);
@@ -293,9 +305,12 @@ export async function handleMember(context, deps = {}) {
       const kday = `member:rl:${u.sub}:p${Math.floor(now / 86_400_000)}`;
       const [cnt] = await redis(['INCR', kday], ['EXPIRE', kday, 90_000]);
       if (Number(cnt) > LIMIT_PROFILE_DAY) return json({ error: '今天改太多次了，明天再試' }, 429);
+      // 寫回前重讀最新資料，只動頭像欄位，免得上傳途中改的暱稱被舊資料蓋回去
       const { sid, ...stored } = u;
-      const pid = PID_RE.test(stored.pid || '') ? stored.pid : randomId(9);
-      const next = { ...stored, pid, av: now.toString(36), avatar: 'upload' };
+      const [fresh] = await redis(['GET', 'member:user:' + u.sub]);
+      const base = fresh ? JSON.parse(fresh) : stored;
+      const pid = PID_RE.test(base.pid || '') ? base.pid : randomId(9);
+      const next = { ...base, pid, av: now.toString(36), avatar: 'upload' };
       await redis(['SET', 'member:avatar:' + pid, JSON.stringify({ d: m[2], ts: now })], ['SET', 'member:user:' + u.sub, JSON.stringify(next)]);
       return json({ user: await publicUser(next, cfg) });
     }
@@ -330,12 +345,28 @@ export async function handleMember(context, deps = {}) {
       try { input = await readJson(request); } catch { return json({ error: 'invalid request' }, 400); }
       const nick = cleanNick(input.nick);
       if (Array.from(nick).length > NICK_MAX) return json({ error: `暱稱最多 ${NICK_MAX} 個字` }, 400);
-      if (nick && RESERVED_NICK.test(nick) && !(await isAdmin(u, cfg))) return json({ error: '這個暱稱容易跟站方混淆，請換一個' }, 400);
+      if (nick && isReservedNick(nick) && !(await isAdmin(u, cfg))) return json({ error: '這個暱稱容易跟站方混淆，請換一個' }, 400);
       const avatar = String(input.avatar || '');
       if (!AVATARS.includes(avatar) || (avatar === 'google' && !u.picture) || (avatar === 'upload' && !(u.pid && u.av))) return json({ error: '請選一個頭像' }, 400);
       const kday = `member:rl:${u.sub}:p${Math.floor(now / 86_400_000)}`;
       const [cnt] = await redis(['INCR', kday], ['EXPIRE', kday, 90_000]);
       if (Number(cnt) > LIMIT_PROFILE_DAY) return json({ error: '今天改太多次了，明天再試' }, 429);
+      // 暱稱先搶先贏：同一個暱稱（忽略大小寫、空白、標點）只給第一個人用
+      // 暱稱先搶先贏。占用紀錄不主動刪：原主人已經改用別的暱稱（或資料不在）才算過期，別人可以接手。
+      // 這樣同一人同時改名、寫入失敗、回應遺失都不會誤刪別人正在用的占用。
+      // 占用值是「sub|搶到的時間」；剛搶到 60 秒內一律算有效，避免對方還沒寫完資料就被當成過期
+      const newKey = nick ? nickKey(nick) : '';
+      if (newKey) {
+        const [, val] = await redis(['SET', newKey, u.sub + '|' + now, 'NX'], ['GET', newKey]);
+        const [owner, at] = String(val || '').split('|');
+        if (owner && owner !== u.sub) {
+          const [ownerRaw] = await redis(['GET', 'member:user:' + owner]);
+          const ownerNick = ownerRaw ? JSON.parse(ownerRaw).nick : '';
+          const fresh = now - Number(at || 0) < 60_000;
+          if (fresh || (ownerNick && nickKey(ownerNick) === newKey)) return json({ error: '這個暱稱已經有人用了，請換一個' }, 409);
+          await redis(['SET', newKey, u.sub + '|' + now]);
+        }
+      }
       const { sid, ...stored } = u;
       const next = { ...stored, nick, avatar };
       await redis(['SET', 'member:user:' + u.sub, JSON.stringify(next)]);
