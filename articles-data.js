@@ -23,6 +23,25 @@ window.ARTICLE_TAGS = {
 
 window.ARTICLES = [
   {
+    id: "tacit-knowledge-to-your-own-ai",
+    url: "articles/tacit-knowledge-to-your-own-ai/",
+    date: "2026-11-20",
+    updated: "2026-11-20",
+    title: "不管在職場還是在找工作，AI 時代我們該怎麼做？｜我看完兩份研究資料：史丹佛就業研究與美國入學統計，分享一下",
+    problem: "AI 越來越會做事，不管在職場還是正在找工作，都不確定接下來該怎麼做、現在該學什麼。",
+    audience: "在職場裡想知道該怎麼做的人、正在找工作不確定該學什麼的人，以及要帶新人的主管。",
+    summary: "我讀了史丹佛 Digital Economy Lab 的就業研究與美國 2026 秋季入學初步統計：22 到 25 歲在最容易受 AI 影響的職業，就業比受影響較少的同齡人低 19%（相對落差，作者說不能當因果）。整理兩份資料寫了什麼、沒說什麼，再講我的兩個提醒：別再鑽 AI 很容易學走的東西，把正在做、正在學的隱性知識提煉出來，給自己的 AI 做。",
+    tags: {
+      topic: ["AI趨勢", "隱性知識", "技能包設計"],
+      level: ["基礎"],
+      content_type: ["趨勢文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["ai-adoption-start-with-one-workflow", "intangible-assets-grow-by-sharing", "claude-skills-knowledge-assets", "ai-hell-15-years-taiwan", "ai-delegators-optimism", "ai-employee-experienced-managers", "ai-mvp-validation-before-product"],
+    cover: { wide: "images/articles/tacit-knowledge-to-your-own-ai-cover.jpg" }
+  },
+
+  {
     id: "ai-agent-when-computer-off",
     url: "articles/ai-agent-when-computer-off/",
     date: "2026-11-19",
@@ -170,7 +189,7 @@ window.ARTICLES = [
       content_type: ["趨勢文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["ai-delegators-optimism", "ai-employee-experienced-managers"],
+    related: ["ai-delegators-optimism", "ai-employee-experienced-managers", "tacit-knowledge-to-your-own-ai"],
     cover: { wide: "images/articles/ai-hell-15-years-taiwan-doac-cover.jpg" }
   },
 
@@ -341,7 +360,7 @@ window.ARTICLES = [
       content_type: ["趨勢文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach/post/DflfDaJkj7t", vocus: null },
-    related: ["ai-adoption-raise-not-install", "ai-adoption-start-with-one-workflow", "ai-agent-gap-fde", "manage-ai-with-management-knowledge", "cathay-tech-conference-2026", "ai-hell-15-years-taiwan"],
+    related: ["ai-adoption-raise-not-install", "ai-adoption-start-with-one-workflow", "ai-agent-gap-fde", "manage-ai-with-management-knowledge", "cathay-tech-conference-2026", "ai-hell-15-years-taiwan", "tacit-knowledge-to-your-own-ai"],
     cover: { wide: "images/articles/ai-employee-experienced-managers-cover.jpg" }
   },
 
@@ -1404,7 +1423,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["delete-before-automate", "ai-vs-script-four-situations", "manage-ai-with-management-knowledge", "ai-employee-four-levels", "claude-skills-knowledge-assets", "harness-mindset-for-bosses", "ai-adoption-raise-not-install", "ai-employee-experienced-managers"],
+    related: ["delete-before-automate", "ai-vs-script-four-situations", "manage-ai-with-management-knowledge", "ai-employee-four-levels", "claude-skills-knowledge-assets", "harness-mindset-for-bosses", "ai-adoption-raise-not-install", "ai-employee-experienced-managers", "tacit-knowledge-to-your-own-ai"],
     cover: { wide: "images/articles/ai-adoption-start-with-one-workflow-cover.jpg" }
   },
 
@@ -3480,7 +3499,7 @@ window.ARTICLES = [
       content_type: ["趨勢文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["what-is-loop-engineering", "my-three-loops", "agent-workflow-builds-automation", "docs-as-system-design-agent", "decision-ladder-non-programmer", "ai-capability-tiers", "dual-centaur-meeting", "let-ai-do-the-setup", "audrey-tang-reverse-alignment", "hormozi-stop-chasing-ai", "ai-hell-15-years-taiwan"]
+    related: ["what-is-loop-engineering", "my-three-loops", "agent-workflow-builds-automation", "docs-as-system-design-agent", "decision-ladder-non-programmer", "ai-capability-tiers", "dual-centaur-meeting", "let-ai-do-the-setup", "audrey-tang-reverse-alignment", "hormozi-stop-chasing-ai", "ai-hell-15-years-taiwan", "tacit-knowledge-to-your-own-ai"]
   },
 
   {
@@ -3626,7 +3645,7 @@ window.ARTICLES = [
       content_type: ["觀點文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["how-to-train-your-ai-employee", "docs-as-system-design-agent", "company-shape-is-the-moat", "personal-studio-vs-solo-company", "knowledge-as-employee", "audrey-tang-reverse-alignment", "hormozi-stop-chasing-ai"]
+    related: ["how-to-train-your-ai-employee", "docs-as-system-design-agent", "company-shape-is-the-moat", "personal-studio-vs-solo-company", "knowledge-as-employee", "audrey-tang-reverse-alignment", "hormozi-stop-chasing-ai", "tacit-knowledge-to-your-own-ai"]
   },
 
   {
@@ -4254,7 +4273,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["semantic-rules-before-prompt-templates", "ai-data-organization-usable-system", "manage-ai-with-management-knowledge", "chatgpt-work-skills-web-version", "old-prompts-intent-first-loop-engineering", "ai-employee-four-levels", "use-more-ai-not-enough", "ai-adoption-start-with-one-workflow", "one-sentence-ai-website-workflow", "one-sentence-video-to-deep-article", "ai-retrieval-pages-backlinks", "skill-pack-three-layers", "claude-beat-synced-video"]
+    related: ["semantic-rules-before-prompt-templates", "ai-data-organization-usable-system", "manage-ai-with-management-knowledge", "chatgpt-work-skills-web-version", "old-prompts-intent-first-loop-engineering", "ai-employee-four-levels", "use-more-ai-not-enough", "ai-adoption-start-with-one-workflow", "one-sentence-ai-website-workflow", "one-sentence-video-to-deep-article", "ai-retrieval-pages-backlinks", "skill-pack-three-layers", "claude-beat-synced-video", "tacit-knowledge-to-your-own-ai"]
   },
 
   {
@@ -4308,7 +4327,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["ai-market-microcosm", "personal-studio-vs-solo-company", "ai-user-testing", "start-from-one-persons-problem", "first-principles-money-soup"],
+    related: ["ai-market-microcosm", "personal-studio-vs-solo-company", "ai-user-testing", "start-from-one-persons-problem", "first-principles-money-soup", "tacit-knowledge-to-your-own-ai"],
     cover: { wide: "images/courses/2026-05-05-mvp-validation.jpg" }
   }
 ];
