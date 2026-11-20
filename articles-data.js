@@ -23,6 +23,25 @@ window.ARTICLE_TAGS = {
 
 window.ARTICLES = [
   {
+    id: "ai-memory-retirement-five-layers",
+    url: "articles/ai-memory-retirement-five-layers/",
+    date: "2026-11-20",
+    updated: "2026-11-20",
+    title: "AI 的記憶和規則越存越多，哪些可以收掉？｜對照 Lauren Tan 五層防錯法，有機器擋的記憶就退場備存",
+    problem: "常常跟 AI 說「記住」，東西越來越多，不知道哪些可以收掉；同一件事糾正過 AI 好幾次，它還是會再犯。",
+    audience: "常跟 AI 說「記住」或把要求寫進自訂指令的人，以及幫團隊或客戶導入 AI、要想清楚規則以後怎麼維護的人。",
+    summary: "我常跟 AI 說「記住」。講多了，它幫我記的事累積到四百多條，我整理過三次，還是又滿出來。這篇講我怎麼替這些記憶加上「退場」：哪些可以收掉、收到哪裡、怎麼確定之後還找得到。做法是跟一位工程師 Lauren Tan 借的，我把她的方法對照自己的系統之後，改了三件事。",
+    tags: {
+      topic: ["AI工作流", "知識庫", "工作流程"],
+      level: ["進階"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["pstack-knowledge-workflow", "rules-need-an-engine", "how-to-verify-ai-rule-changes", "ai-rule-file-slimming"],
+    cover: { wide: "images/articles/ai-memory-retirement-five-layers-cover.jpg" }
+  },
+
+  {
     id: "tacit-knowledge-to-your-own-ai",
     url: "articles/tacit-knowledge-to-your-own-ai/",
     date: "2026-11-20",
@@ -606,7 +625,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["how-to-verify-ai-rule-changes", "caught-ai-slacking-into-rules", "cross-ai-review-both-wrong", "dual-track-planning-loop", "what-is-loop-engineering", "ai-loop-safety-recovery", "codex-only-auto-worklog", "harness-mindset-for-bosses"],
+    related: ["how-to-verify-ai-rule-changes", "caught-ai-slacking-into-rules", "cross-ai-review-both-wrong", "dual-track-planning-loop", "what-is-loop-engineering", "ai-loop-safety-recovery", "codex-only-auto-worklog", "harness-mindset-for-bosses", "ai-memory-retirement-five-layers"],
     cover: { wide: "images/articles/pstack-knowledge-workflow-cover.jpg" }
   },
 
@@ -796,7 +815,7 @@ window.ARTICLES = [
       content_type: ["觀點文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["rule-file-rebound", "ai-rule-file-slimming", "how-to-verify-ai-rule-changes", "what-is-loop-engineering", "copied-mechanism-is-no-mechanism", "caught-ai-slacking-into-rules", "ai-employee-tests-new-tools", "run-with-ai-first-then-script", "ai-worktree-disk-cleanup", "ai-employee-ask-before-act", "claude-or-chatgpt-rules-first"],
+    related: ["rule-file-rebound", "ai-rule-file-slimming", "how-to-verify-ai-rule-changes", "what-is-loop-engineering", "copied-mechanism-is-no-mechanism", "caught-ai-slacking-into-rules", "ai-employee-tests-new-tools", "run-with-ai-first-then-script", "ai-worktree-disk-cleanup", "ai-employee-ask-before-act", "claude-or-chatgpt-rules-first", "ai-memory-retirement-five-layers"],
     cover: { wide: "images/articles/rules-need-an-engine-cover.jpg" }
   },
 
@@ -1670,7 +1689,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["rule-file-rebound", "how-to-verify-ai-rule-changes", "three-levels-of-cross-review", "let-ai-review-itself", "tag-wiki-method", "ai-understands-ei-ha", "claude-or-chatgpt-rules-first"],
+    related: ["rule-file-rebound", "how-to-verify-ai-rule-changes", "three-levels-of-cross-review", "let-ai-review-itself", "tag-wiki-method", "ai-understands-ei-ha", "claude-or-chatgpt-rules-first", "ai-memory-retirement-five-layers"],
     cover: { wide: "images/articles/ai-rule-file-slimming-cover.jpg" }
   },
 
@@ -1803,7 +1822,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["rule-file-rebound", "caught-ai-slacking-into-rules", "three-levels-of-cross-review", "how-to-train-your-ai-employee", "loop-engineering-guardrails", "semantic-rules-before-prompt-templates", "let-ai-review-itself", "ai-rule-file-slimming", "ai-schedule-wake-interval", "fixed-test-set-for-ai", "reevaluate-models-same-test", "pstack-knowledge-workflow", "skill-pack-three-layers"],
+    related: ["rule-file-rebound", "caught-ai-slacking-into-rules", "three-levels-of-cross-review", "how-to-train-your-ai-employee", "loop-engineering-guardrails", "semantic-rules-before-prompt-templates", "let-ai-review-itself", "ai-rule-file-slimming", "ai-schedule-wake-interval", "fixed-test-set-for-ai", "reevaluate-models-same-test", "pstack-knowledge-workflow", "skill-pack-three-layers", "ai-memory-retirement-five-layers"],
     cover: { tall: "images/articles/how-to-verify-ai-rule-changes-cover.jpg" }
   },
 
