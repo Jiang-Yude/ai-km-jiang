@@ -38,7 +38,7 @@ window.ARTICLES = [
     },
     external: { threads: null, vocus: null },
     related: ["ai-adoption-start-with-one-workflow", "intangible-assets-grow-by-sharing", "claude-skills-knowledge-assets", "ai-hell-15-years-taiwan", "ai-delegators-optimism", "ai-employee-experienced-managers", "ai-mvp-validation-before-product"],
-    cover: { wide: "images/articles/tacit-knowledge-to-your-own-ai-cover.jpg" }
+    cover: { wide: "images/articles/tacit-knowledge-to-your-own-ai-cover-v2.jpg" }
   },
 
   {
