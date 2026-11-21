@@ -23,6 +23,25 @@ window.ARTICLE_TAGS = {
 
 window.ARTICLES = [
   {
+    id: "small-site-security-checklist",
+    url: "articles/small-site-security-checklist/",
+    date: "2026-11-22",
+    updated: "2026-11-22",
+    title: "自己架的網站被攻擊怎麼辦？｜上線前照網站類型勾完資安檢查表，出事時先止血再查原因（Cloudflare Pages 適用）",
+    problem: "用 AI 或自己架了小網站，看到別人被攻擊，不知道自己的站要做到哪些資安檢查、被攻擊時先做什麼。",
+    audience: "用 AI 做網站的非工程師、網站有表單或付費 AI 的站長，以及要跟客戶交代資安範圍的接案者。",
+    summary: "從一篇被連續攻擊 13 小時的創業貼文與 62 則留言出發，整理成照網站類型分段勾的資安檢查表：純靜態、有表單 API、有付費 AI 或登入金流。每一條標明交給 AI 改還是要自己去後台設，包含 Turnstile 要在後端驗、綁了自己網域後 pages.dev 會繞過 WAF、舊部署網址還在跑、供應商花費上限、付款通知驗簽回查。被攻擊時先止血再判斷是不是被針對，附一段請 AI 檢查網站的提示詞與可貼進驗收文件的純清單版。",
+    tags: {
+      topic: ["AI應用", "工具操作"],
+      level: ["基礎"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["hosting-platform-decision-tree", "free-deploy-three-boundaries", "api-key-dont-paste-to-ai", "cloudflare-free-plan-limits", "cloudflare-service-map"],
+    cover: { wide: "images/og/small-site-security-checklist.jpg" }
+  },
+
+  {
     id: "ai-memory-retirement-five-layers",
     url: "articles/ai-memory-retirement-five-layers/",
     date: "2026-11-20",
@@ -550,7 +569,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["ai-paste-secret-without-seeing", "ai-batch-work-without-seeing-data", "domain-and-account-ownership", "ai-customer-service-api-cost", "let-ai-do-the-setup", "open-source-ai-agent-24h-compare", "claude-multiple-google-accounts", "ai-voice-clone-taiwan-accent"],
+    related: ["ai-paste-secret-without-seeing", "ai-batch-work-without-seeing-data", "domain-and-account-ownership", "ai-customer-service-api-cost", "let-ai-do-the-setup", "open-source-ai-agent-24h-compare", "claude-multiple-google-accounts", "ai-voice-clone-taiwan-accent", "small-site-security-checklist"],
     cover: { wide: "images/articles/api-key-dont-paste-to-ai-cover.jpg" }
   },
 
@@ -986,7 +1005,7 @@ window.ARTICLES = [
       content_type: ["案例文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["line-group-ai-workflow", "github-vercel-cloudflare-compare", "what-is-loop-engineering", "mika-to-laika-product-character-design", "open-source-ai-agent-24h-compare"],
+    related: ["line-group-ai-workflow", "github-vercel-cloudflare-compare", "what-is-loop-engineering", "mika-to-laika-product-character-design", "open-source-ai-agent-24h-compare", "small-site-security-checklist"],
     cover: { wide: "images/og/cloudflare-free-plan-limits.jpg" }
   },
 
@@ -1480,7 +1499,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["hosting-platform-decision-tree", "github-vercel-cloudflare-compare", "who-can-see-your-site", "webnode-to-cloudflare-pages", "free-deploy-three-boundaries", "laptop-desktop-webpage-sync-icloud-git", "slides-by-audience-sop"],
+    related: ["hosting-platform-decision-tree", "github-vercel-cloudflare-compare", "who-can-see-your-site", "webnode-to-cloudflare-pages", "free-deploy-three-boundaries", "laptop-desktop-webpage-sync-icloud-git", "slides-by-audience-sop", "small-site-security-checklist"],
     cover: { wide: "images/articles/cloudflare-service-map-cover.jpg" }
   },
 
@@ -1651,7 +1670,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["free-deploy-three-boundaries", "github-vercel-cloudflare-compare", "who-can-see-your-site", "webnode-to-cloudflare-pages", "cloudflare-service-map", "one-sentence-ai-website-workflow", "slides-by-audience-sop", "line-namecard-share-button", "open-source-ai-agent-24h-compare"],
+    related: ["free-deploy-three-boundaries", "github-vercel-cloudflare-compare", "who-can-see-your-site", "webnode-to-cloudflare-pages", "cloudflare-service-map", "one-sentence-ai-website-workflow", "slides-by-audience-sop", "line-namecard-share-button", "open-source-ai-agent-24h-compare", "small-site-security-checklist"],
     cover: { wide: "images/articles/hosting-platform-decision-tree-cover.jpg" }
   },
 
@@ -2731,7 +2750,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["agent-web-turning-point", "docs-as-system-design-agent", "knowledge-base-three-vault-split", "recovery-over-perfection", "messaging-apps-ai-friendliness", "github-vercel-cloudflare-compare", "who-can-see-your-site", "hosting-platform-decision-tree"]
+    related: ["agent-web-turning-point", "docs-as-system-design-agent", "knowledge-base-three-vault-split", "recovery-over-perfection", "messaging-apps-ai-friendliness", "github-vercel-cloudflare-compare", "who-can-see-your-site", "hosting-platform-decision-tree", "small-site-security-checklist"]
   },
 
   {
