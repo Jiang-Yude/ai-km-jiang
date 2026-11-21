@@ -50,6 +50,28 @@
 
 window.COURSES = [
   {
+    id: "2026-11-21-wear-tamsui",
+    date: "2026-11-21",
+    time: null,
+    duration_min: 90,
+    title: "把淡水穿在身上：AI 生圖工作坊",
+    type_label: "外部授課（旅學堂特約合作）",
+    image: "images/courses/2026-11-21-wear-tamsui.jpg",
+    venue_mode: "physical",
+    venue_label: "實體",
+    host: "江江教練",
+    tags: ["AI生圖", "攝影", "敘事轉譯", "在地故事", "淡海輕軌", "零基礎"],
+    summary: "上午跟著旅學堂走淡海輕軌綠山線，下午用手機把今天的感受畫成一張自己的圖。教學簡報加進江江攝影課的遠、中、近、特寫與用畫面說故事。",
+    detail_url: "courses/2026-11-21-wear-tamsui/",
+    detail_label: "教學簡報 ↗",
+    materials: [],
+    registration: {
+      status: "ended",
+      host_org: "旅學堂",
+      note: "已結束"
+    }
+  },
+  {
     id: "2026-11-15-ai-security",
     date: "2026-11-15",
     time: "20:00",

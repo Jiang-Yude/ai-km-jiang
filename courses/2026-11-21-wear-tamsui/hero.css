@@ -1,0 +1,51 @@
+/* 共用首圖：生圖站首頁與上課簡報封面都用這一份（2026-11-19 江江：簡報的 Hero 要變通用、兩邊看起來是一整組）。
+   五到六張範例圖左中右重疊自動輪播，底部一條淡水河慢慢流。配色是旅學堂官網色。 */
+.chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px}
+.chips span{background:#f7ebe1;color:#7e3516;font-weight:700;border-radius:999px;padding:5px 18px}
+.cover-art{position:relative;height:min(62vh,560px)}
+.cover-art img{position:absolute;top:0;left:50%;height:100%;width:auto;max-width:none;aspect-ratio:2/3;object-fit:cover;border-radius:12px;border:6px solid #fff;box-shadow:0 18px 44px rgba(62,39,35,.22);cursor:pointer;transition:transform .8s cubic-bezier(.2,.7,.2,1),filter .8s,opacity .8s}
+.cover-art img.c-left{transform:translateX(-96%) translateY(8%) scale(.8) rotate(-5deg);z-index:1;filter:saturate(.85)}
+.cover-art img.c-right{transform:translateX(-4%) translateY(8%) scale(.8) rotate(5deg);z-index:1;filter:saturate(.85)}
+.cover-art img.c-mid{transform:translateX(-50%);z-index:3;cursor:default}
+.cover-art img.c-hide{transform:translateX(-50%) translateY(10%) scale(.7);opacity:0;z-index:0;pointer-events:none}
+@media (prefers-reduced-motion:reduce){.cover-art img{transition:none}}
+.cover-river{position:absolute;left:0;right:0;bottom:0;height:118px;width:100%}
+.wv{will-change:transform}
+.wv1{animation:wvA 14s linear infinite}
+.wv2{animation:wvB 22s linear infinite}
+.wv3{animation:wvC 9s ease-in-out infinite alternate}
+@keyframes wvA{from{transform:translateX(0)}to{transform:translateX(400px)}}
+@keyframes wvB{from{transform:translateX(0)}to{transform:translateX(-520px)}}
+@keyframes wvC{from{transform:translate(0,0)}to{transform:translate(40px,3px)}}
+@media (prefers-reduced-motion:reduce){.wv{animation:none}}
+
+/* 首圖版面：兩頁一模一樣，字級寫死，不吃各頁自己的字級 */
+.hc{position:relative;overflow:hidden;background:#fffdf9;padding:64px 64px 150px;font-family:"PingFang TC","Noto Sans TC","Microsoft JhengHei",system-ui,sans-serif;color:#3e2723}
+.hc-in{position:relative;z-index:1;width:100%;max-width:1120px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center}
+.hc-logo{display:block;width:132px;height:auto;margin:0 0 26px}
+.hc-cap{font-size:20px;letter-spacing:.14em;font-weight:700;color:#93421f;display:flex;align-items:center;gap:12px;margin:0 0 14px}
+.hc-cap::before{content:"";width:34px;height:3px;background:#93421f;border-radius:2px;flex:none}
+.hc h1{font-family:"Noto Serif TC","Songti TC","PMingLiU",serif;font-weight:900;font-size:clamp(46px,7.6vw,104px);line-height:1.22;letter-spacing:.06em;color:#4e342e;margin:0 !important;text-shadow:none}
+.hc h1 em{font-style:normal;color:#93421f}
+.hc-lead{font-size:clamp(20px,1.7vw,26px);line-height:1.7;color:#5f4338;margin:16px 0 0;max-width:20em}
+.hc .chips span{font-size:20px;line-height:1.7}
+.hc .cover-art{height:min(62vh,560px)}
+.hc .cover-river{z-index:0}
+@media (max-width:900px){
+  .hc{padding:22px 20px 96px}
+  .hc-in{grid-template-columns:1fr;gap:16px}
+  .hc-logo{width:84px;margin-bottom:12px}
+  .hc-cap{font-size:16px;margin-bottom:6px}
+  .hc h1{font-size:clamp(40px,11vw,64px)}
+  .hc-lead{font-size:18px;margin-top:8px}
+  .hc .chips{margin-top:14px;gap:8px}
+  .hc .chips span{font-size:16px;padding:3px 14px}
+  .hc .cover-art{height:240px;max-width:360px;width:100%;margin:4px auto 0}
+  .hc .cover-art img{border-width:4px}
+  .hc .cover-river{height:84px}
+}
+/* 首圖底下的四個分頁（簡報頁用；生圖站首頁的分頁樣式在 app.css，長得一樣） */
+.site-tabs{display:flex;gap:6px;max-width:648px;width:calc(100% - 32px);margin:-30px auto 0;padding:5px;position:relative;z-index:2;background:#fcf5ec;border:1px solid #d6c7b8;border-radius:4px;box-shadow:0 1px 2px rgba(78,52,46,.05),0 6px 18px rgba(78,52,46,.06);font-family:"PingFang TC","Noto Sans TC","Microsoft JhengHei",system-ui,sans-serif}
+.site-tabs a{flex:1;min-height:50px;display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:700;color:#5f4338;text-decoration:none;border-radius:2px;white-space:nowrap}
+.site-tabs a.on{background:#4e342e;color:#fff}
+@media (max-width:420px){.site-tabs{gap:3px}.site-tabs a{font-size:15px}}
