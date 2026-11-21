@@ -23,6 +23,25 @@ window.ARTICLE_TAGS = {
 
 window.ARTICLES = [
   {
+    id: "how-i-teach-ai-to-edit-video",
+    url: "articles/how-i-teach-ai-to-edit-video/",
+    date: "2026-11-22",
+    updated: "2026-11-22",
+    title: "怎麼教 AI 剪影片？｜字幕壓臉、角色忽左忽右，親手調一次再讓 AI 量成數字檢查",
+    problem: "AI 剪的短影音總是差一點：字幕壓到角色的臉、角色每幕忽左忽右。叫它改，下一支片同樣的錯又出現。",
+    audience: "用 AI 剪影片、做短影音，想把自己的剪輯判斷交給 AI 照做的創作者、講師、一人公司。",
+    summary: "用一支 86 秒短影音的真實過程示範怎麼教 AI 剪片：AI 原稿 11 幕朵拉的臉全被字幕壓到、位置左右來回跳。我先在剪輯台親手調一次，叫 AI 存數字、分析規律，糾正它把「剛好如此」寫成「一律如此」的地方，再把「微調」量成相鄰兩幕身體重疊比例的門檻，寫成用尺寸計算、不用截圖的檢查程式，放回剪輯技能包。也對照隱性知識提煉：說不出來的先示範、分清通則與個例、形容詞換成標準、先定錨點，這也是訓練 AI 員工的方法。附三個版本的實測數字、誠實邊界與可直接貼給 AI 的提示詞。",
+    tags: {
+      topic: ["AI工作流", "技能包設計", "AI應用", "隱性知識"],
+      level: ["基礎"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["ai-vs-script-four-situations", "rules-need-an-engine", "let-ai-review-itself", "claude-beat-synced-video", "ai-said-it-watched-the-video", "how-to-train-your-ai-employee", "ai-employee-four-levels", "knowledge-as-employee"],
+    cover: { wide: "images/articles/how-i-teach-ai-to-edit-video-cover.jpg" }
+  },
+
+  {
     id: "small-site-security-checklist",
     url: "articles/small-site-security-checklist/",
     date: "2026-11-22",
@@ -379,7 +398,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["debate-summary-video-prompts", "before-installing-others-skill", "ai-said-it-watched-the-video", "claude-skills-knowledge-assets", "ai-vs-script-four-situations", "ai-voice-clone-taiwan-accent", "claude-in-chrome-upload-video", "google-ai-pro-colab-flow-short-video"],
+    related: ["debate-summary-video-prompts", "before-installing-others-skill", "ai-said-it-watched-the-video", "claude-skills-knowledge-assets", "ai-vs-script-four-situations", "ai-voice-clone-taiwan-accent", "claude-in-chrome-upload-video", "google-ai-pro-colab-flow-short-video", "how-i-teach-ai-to-edit-video"],
     cover: { wide: "images/articles/claude-beat-synced-video-hero.jpg" }
   },
 
@@ -834,7 +853,7 @@ window.ARTICLES = [
       content_type: ["觀點文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["rule-file-rebound", "ai-rule-file-slimming", "how-to-verify-ai-rule-changes", "what-is-loop-engineering", "copied-mechanism-is-no-mechanism", "caught-ai-slacking-into-rules", "ai-employee-tests-new-tools", "run-with-ai-first-then-script", "ai-worktree-disk-cleanup", "ai-employee-ask-before-act", "claude-or-chatgpt-rules-first", "ai-memory-retirement-five-layers"],
+    related: ["rule-file-rebound", "ai-rule-file-slimming", "how-to-verify-ai-rule-changes", "what-is-loop-engineering", "copied-mechanism-is-no-mechanism", "caught-ai-slacking-into-rules", "ai-employee-tests-new-tools", "run-with-ai-first-then-script", "ai-worktree-disk-cleanup", "ai-employee-ask-before-act", "claude-or-chatgpt-rules-first", "ai-memory-retirement-five-layers", "how-i-teach-ai-to-edit-video"],
     cover: { wide: "images/articles/rules-need-an-engine-cover.jpg" }
   },
 
@@ -1651,7 +1670,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["agent-workflow-builds-automation", "claude-skills-knowledge-assets", "loop-engineering-guardrails", "my-three-loops", "liberal-arts-agent-framework", "ai-schedule-wake-interval", "delete-before-automate", "ai-adoption-start-with-one-workflow", "ai-batch-work-without-seeing-data", "ai-random-true-random", "run-with-ai-first-then-script", "claude-beat-synced-video", "knowledge-worker-automation"],
+    related: ["agent-workflow-builds-automation", "claude-skills-knowledge-assets", "loop-engineering-guardrails", "my-three-loops", "liberal-arts-agent-framework", "ai-schedule-wake-interval", "delete-before-automate", "ai-adoption-start-with-one-workflow", "ai-batch-work-without-seeing-data", "ai-random-true-random", "run-with-ai-first-then-script", "claude-beat-synced-video", "knowledge-worker-automation", "how-i-teach-ai-to-edit-video"],
     cover: { wide: "images/articles/ai-vs-script-four-situations-summary.jpg" }
   },
 
@@ -1860,7 +1879,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["rule-file-rebound", "three-levels-of-cross-review", "dual-track-planning-loop", "how-to-verify-ai-rule-changes", "decision-ladder-non-programmer", "ai-rule-file-slimming", "ai-slides-half-auto-google-slides", "ai-adoption-raise-not-install"],
+    related: ["rule-file-rebound", "three-levels-of-cross-review", "dual-track-planning-loop", "how-to-verify-ai-rule-changes", "decision-ladder-non-programmer", "ai-rule-file-slimming", "ai-slides-half-auto-google-slides", "ai-adoption-raise-not-install", "how-i-teach-ai-to-edit-video"],
     cover: { tall: "images/articles/let-ai-review-itself-cover.jpg" }
   },
 
@@ -2258,7 +2277,7 @@ window.ARTICLES = [
       content_type: ["案例文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["caught-ai-slacking-into-rules", "web-chat-ai-vs-desktop-agent", "three-levels-of-cross-review", "rag-three-retrieval-modes", "long-document-review-layers", "cognitive-debt", "one-sentence-video-to-deep-article", "course-video-multimodal-search", "debate-summary-video-prompts", "claude-beat-synced-video"]
+    related: ["caught-ai-slacking-into-rules", "web-chat-ai-vs-desktop-agent", "three-levels-of-cross-review", "rag-three-retrieval-modes", "long-document-review-layers", "cognitive-debt", "one-sentence-video-to-deep-article", "course-video-multimodal-search", "debate-summary-video-prompts", "claude-beat-synced-video", "how-i-teach-ai-to-edit-video"]
   },
 
   {
@@ -2731,7 +2750,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["how-to-train-your-ai-employee", "harness-mindset-for-bosses", "train-your-ai-agent-editor", "ai-native-not-transformation", "web-chat-ai-vs-desktop-agent", "knowledge-as-employee", "claude-skills-knowledge-assets", "docs-as-system-design-agent", "ai-tools-professional-judgment", "meeting-record-agent-workflow", "program-vs-ai-skill-library", "intent-first-prompting", "messaging-apps-ai-friendliness", "grok-bot-galaxy-day2-workshops", "ai-adoption-start-with-one-workflow"],
+    related: ["how-to-train-your-ai-employee", "harness-mindset-for-bosses", "train-your-ai-agent-editor", "ai-native-not-transformation", "web-chat-ai-vs-desktop-agent", "knowledge-as-employee", "claude-skills-knowledge-assets", "docs-as-system-design-agent", "ai-tools-professional-judgment", "meeting-record-agent-workflow", "program-vs-ai-skill-library", "intent-first-prompting", "messaging-apps-ai-friendliness", "grok-bot-galaxy-day2-workshops", "ai-adoption-start-with-one-workflow", "how-i-teach-ai-to-edit-video"],
     cover: { wide: "images/articles/ai-employee-four-levels-hero.jpg" }
   },
 
@@ -3300,7 +3319,7 @@ window.ARTICLES = [
       content_type: ["觀點文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["knowledge-os-master-map", "how-to-train-your-ai-employee", "docs-as-system-design-agent", "strong-ai-models-knowledge-workflow-road", "intangible-assets-grow-by-sharing", "talent-vs-expertise", "ai-employee-four-levels"]
+    related: ["knowledge-os-master-map", "how-to-train-your-ai-employee", "docs-as-system-design-agent", "strong-ai-models-knowledge-workflow-road", "intangible-assets-grow-by-sharing", "talent-vs-expertise", "ai-employee-four-levels", "how-i-teach-ai-to-edit-video"]
   },
 
   {
@@ -3888,7 +3907,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["strong-ai-models-knowledge-workflow-road", "questionnaire-to-slides-agent-workflow", "teacher-prep-knowledge-workflow", "own-ai-team-at-work", "agent-workflow-builds-automation", "line-group-ai-workflow", "elon-musk-live-skill", "codex-log-health-check", "how-ai-connects-software", "meeting-record-agent-workflow", "decision-ladder-non-programmer", "tidy-mess-before-consulting", "diary-driven-agent-3x4", "docs-as-system-design-agent", "what-is-loop-engineering", "map-is-not-the-territory", "intangible-assets-grow-by-sharing", "manage-ai-with-management-knowledge", "ai-handoff-instructions", "train-your-ai-agent-editor", "ai-that-knows-you", "personal-studio-vs-solo-company", "cli-api-mcp-computer-use", "knowledge-as-employee", "mika-to-laika-product-character-design", "agent-native-tools-software-interface", "ai-tools-professional-judgment", "answer-to-action-enterprise-ai-agent", "teach-ai-not-learn-ai", "talent-vs-expertise", "ai-employee-four-levels", "copied-mechanism-is-no-mechanism", "eight-ai-system-concepts-2026", "how-to-verify-ai-rule-changes", "start-from-one-persons-problem", "ai-slides-half-auto-google-slides", "slides-by-audience-sop", "ai-employee-ask-before-act"]
+    related: ["strong-ai-models-knowledge-workflow-road", "questionnaire-to-slides-agent-workflow", "teacher-prep-knowledge-workflow", "own-ai-team-at-work", "agent-workflow-builds-automation", "line-group-ai-workflow", "elon-musk-live-skill", "codex-log-health-check", "how-ai-connects-software", "meeting-record-agent-workflow", "decision-ladder-non-programmer", "tidy-mess-before-consulting", "diary-driven-agent-3x4", "docs-as-system-design-agent", "what-is-loop-engineering", "map-is-not-the-territory", "intangible-assets-grow-by-sharing", "manage-ai-with-management-knowledge", "ai-handoff-instructions", "train-your-ai-agent-editor", "ai-that-knows-you", "personal-studio-vs-solo-company", "cli-api-mcp-computer-use", "knowledge-as-employee", "mika-to-laika-product-character-design", "agent-native-tools-software-interface", "ai-tools-professional-judgment", "answer-to-action-enterprise-ai-agent", "teach-ai-not-learn-ai", "talent-vs-expertise", "ai-employee-four-levels", "copied-mechanism-is-no-mechanism", "eight-ai-system-concepts-2026", "how-to-verify-ai-rule-changes", "start-from-one-persons-problem", "ai-slides-half-auto-google-slides", "slides-by-audience-sop", "ai-employee-ask-before-act", "how-i-teach-ai-to-edit-video"]
   },
 
   {
