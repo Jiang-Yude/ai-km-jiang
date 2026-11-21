@@ -189,6 +189,7 @@ pre.codeblock{white-space:pre-wrap}
 @media(max-width:640px){.cmpflow{grid-template-columns:1fr}}
 
 .section p.note{font-size:15px;color:var(--muted);margin-top:-6px}
+.th-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;max-width:880px;margin:24px auto 6px}.th-cell{margin:0}.th-cell svg{display:block;width:100%;height:auto;border:1px solid var(--line);border-radius:14px;box-shadow:0 8px 22px rgba(107,74,42,.08)}.ghost-pair{display:grid;grid-template-columns:1fr 1fr;gap:18px;max-width:1000px;margin:24px auto 6px}.ghost-pair .inline-figure{margin:0;max-width:none}@media(max-width:700px){.th-grid,.ghost-pair{grid-template-columns:1fr;max-width:420px}}
 </style>
 </head>
 <body class="spotlight">
@@ -457,6 +458,35 @@ pre.codeblock{white-space:pre-wrap}
 <tr><td>量化之後</td><td>相鄰兩幕，朵拉的身體要重疊一半以上；重疊不到兩成，就是忽左忽右</td><td>做得到。程式算得出來，每次判斷都一樣</td></tr>
 </tbody></table></div>
 <p>AI 用我調的 11 幕定了一個量法：<b>相鄰兩幕，朵拉的身體左右重疊多少</b>。重疊的寬度除以兩隻朵拉裡比較寬那隻的寬度，100% 代表站在同一個位置，0% 代表完全換到另一邊。</p>
+<div class="th-grid" aria-label="相鄰兩幕朵拉身體重疊的三種情況"><figure class="th-cell"><svg viewBox="0 0 280 300" role="img" aria-label="微調：重疊一半以上">
+<rect x="0" y="0" width="280" height="300" rx="14" fill="#fff"/>
+<text x="140" y="40" font-size="24" text-anchor="middle" fill="#4a7a59" font-weight="700">微調</text>
+<rect x="60" y="62" width="90" height="170" rx="12" fill="rgba(95,117,83,.18)" stroke="#4a7a59" stroke-width="3"/>
+<rect x="95" y="62" width="90" height="170" rx="12" fill="rgba(95,117,83,.18)" stroke="#4a7a59" stroke-width="3" stroke-dasharray="8 6"/>
+<text x="140" y="262" font-size="20" text-anchor="middle" fill="#4a7a59">重疊一半以上</text>
+<text x="140" y="290" font-size="18" text-anchor="middle" fill="#6a635a">可以</text>
+</svg></figure><figure class="th-cell"><svg viewBox="0 0 280 300" role="img" aria-label="避開重點時才可以：重疊兩成到一半">
+<rect x="0" y="0" width="280" height="300" rx="14" fill="#fff"/>
+<text x="140" y="40" font-size="24" text-anchor="middle" fill="#a07a1f" font-weight="700">避開重點時才可以</text>
+<rect x="60" y="62" width="90" height="170" rx="12" fill="rgba(160,129,68,.16)" stroke="#a07a1f" stroke-width="3"/>
+<rect x="120" y="62" width="90" height="170" rx="12" fill="rgba(160,129,68,.16)" stroke="#a07a1f" stroke-width="3" stroke-dasharray="8 6"/>
+<text x="140" y="262" font-size="20" text-anchor="middle" fill="#a07a1f">重疊兩成到一半</text>
+<text x="140" y="290" font-size="18" text-anchor="middle" fill="#6a635a">列警告，要寫原因</text>
+</svg></figure><figure class="th-cell"><svg viewBox="0 0 280 300" role="img" aria-label="忽左忽右：重疊不到兩成">
+<rect x="0" y="0" width="280" height="300" rx="14" fill="#fff"/>
+<text x="140" y="40" font-size="24" text-anchor="middle" fill="#c0512f" font-weight="700">忽左忽右</text>
+<rect x="60" y="62" width="90" height="170" rx="12" fill="rgba(232,90,79,.14)" stroke="#c0512f" stroke-width="3"/>
+<rect x="165" y="62" width="90" height="170" rx="12" fill="rgba(232,90,79,.14)" stroke="#c0512f" stroke-width="3" stroke-dasharray="8 6"/>
+<text x="140" y="262" font-size="20" text-anchor="middle" fill="#c0512f">重疊不到兩成</text>
+<text x="140" y="290" font-size="18" text-anchor="middle" fill="#6a635a">擋下來，要改</text>
+</svg></figure></div>
+<p class="note">實線框是上一幕的朵拉，虛線框是這一幕。</p>
+<p>把真的朵拉疊起來看更清楚。下面兩張，半透明的是上一幕的朵拉，實心的是這一幕：</p>
+<div class="ghost-pair">
+<figure class="inline-figure wide"><img src="../../images/articles/how-i-teach-ai-to-edit-video-ghost-ai.jpg" alt="AI 原稿第 5→6 幕、第 8→9 幕疊影：上一幕的朵拉在左邊，這一幕整隻跳到右邊，身體重疊 0%" loading="lazy" width="780" height="586"></figure>
+<figure class="inline-figure wide"><img src="../../images/articles/how-i-teach-ai-to-edit-video-ghost-jiang.jpg" alt="我調過的第 5→6 幕、第 8→9 幕疊影：朵拉在同一個位置換姿勢、小移一點，第 8→9 幕從全身換成半身，身體重疊 61% 與 73%" loading="lazy" width="780" height="586"></figure>
+</div>
+<p class="note">AI 原稿是一直跳來跳去；我調過的版本，看起來像朵拉稍微換個姿勢、稍微靠近一點。</p>
 <div class="bars" role="img" aria-label="相鄰兩幕朵拉身體重疊比例：AI 原稿十組裡九組不到 20%，我調過的版本最低 23%">
 <div class="bars-legend"><span class="sw ai"></span>AI 原稿　<span class="sw me"></span>我調過　<span class="sw line"></span>20% 與 50% 兩條門檻</div>
 <div class="bar-row"><span class="bar-lab">第 1→2 幕</span><div class="bar-track"><span class="th t20"></span><span class="th t50"></span><div class="bl"><i class="bar ai" style="width:0.8%"></i><em>0%</em></div><div class="bl"><i class="bar me" style="width:39%"></i><em>39%</em></div></div></div>
