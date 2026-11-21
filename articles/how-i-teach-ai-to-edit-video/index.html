@@ -1,0 +1,635 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="index,follow">
+<title>怎麼教 AI 剪影片？｜字幕壓臉、角色忽左忽右，親手調一次再讓 AI 量成數字檢查</title>
+<meta name="description" content="AI 剪的短影音，角色朵拉 11 幕的臉都被字幕壓到、位置忽左忽右。我先在剪輯台親手調一次，叫 AI 存下數字、分析我的規律，糾正它說錯的，再把「微調」量成數字，寫成用尺寸計算、不用截圖的檢查程式，放回剪輯規則。">
+<link rel="canonical" href="https://jiangyude.com/articles/how-i-teach-ai-to-edit-video/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="怎麼教 AI 剪影片？｜字幕壓臉、角色忽左忽右，親手調一次再讓 AI 量成數字檢查｜江江教練">
+<!-- 分享封面：hero 文字填好後在 repo 根目錄跑 `node scripts/og-shot.mjs how-i-teach-ai-to-edit-video` 自動截 1200×630 到 images/og/how-i-teach-ai-to-edit-video.jpg（見 README「文章分享封面（OG 圖）機制」）。別退回 intro-jiang.png 直式人像，會被裁成只剩脖子。 -->
+<meta property="og:image" content="https://jiangyude.com/images/og/how-i-teach-ai-to-edit-video.jpg">
+<meta property="og:description" content="AI 剪的短影音，角色朵拉 11 幕的臉都被字幕壓到、位置忽左忽右。我先在剪輯台親手調一次，叫 AI 存下數字、分析我的規律，糾正它說錯的，再把「微調」量成數字，寫成用尺寸計算、不用截圖的檢查程式，放回剪輯規則。">
+<meta property="og:url" content="https://jiangyude.com/articles/how-i-teach-ai-to-edit-video/">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:site_name" content="江江教練 · AI 知識管理">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="怎麼教 AI 剪影片？｜字幕壓臉、角色忽左忽右，親手調一次再讓 AI 量成數字檢查｜江江教練">
+<meta name="twitter:image" content="https://jiangyude.com/images/og/how-i-teach-ai-to-edit-video.jpg">
+<meta name="twitter:description" content="AI 剪的短影音，角色朵拉 11 幕的臉都被字幕壓到、位置忽左忽右。我先在剪輯台親手調一次，叫 AI 存下數字、分析我的規律，糾正它說錯的，再把「微調」量成數字，寫成用尺寸計算、不用截圖的檢查程式，放回剪輯規則。">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"怎麼教 AI 剪影片？｜字幕壓臉、角色忽左忽右，親手調一次再讓 AI 量成數字檢查","description":"AI 剪的短影音，角色朵拉 11 幕的臉都被字幕壓到、位置忽左忽右。我先在剪輯台親手調一次，叫 AI 存下數字、分析我的規律，糾正它說錯的，再把「微調」量成數字，寫成用尺寸計算、不用截圖的檢查程式，放回剪輯規則。","author":{"@type":"Person","@id":"https://jiangyude.com/#person","name":"江昱德","alternateName":"江江教練","jobTitle":"AI 教練","url":"https://jiangyude.com/","sameAs":["https://www.threads.com/@jiang_yude_coach","https://vocus.cc/salon/Jiang_Coach","https://github.com/Jiang-Yude","https://www.youtube.com/@aipkmcc","https://www.instagram.com/jiang_yude_coach/"]},"isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://jiangyude.com/"},"inLanguage":"zh-Hant","url":"https://jiangyude.com/articles/how-i-teach-ai-to-edit-video/"}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{--ink:#1a1612;--paper:#fefcf8;--muted:#6a635a;--line:#d8cdb8;--green:#5f7553;--blue:#5689b8;--orange:#e85a4f;--soft:#faf5ec;--dark:#2a2018;--shadow:0 18px 45px rgba(107,74,42,.14);--sp-shadow:hsla(35,50%,60%,.15);--sp-shadow-edge:hsla(35,50%,68%,.03);--sp-radius:400px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC","Segoe UI",sans-serif}
+a{color:inherit}
+/* 官網共用導航列 nav.top（與首頁/文章總站同一條） */
+nav.top{position:sticky;top:0;background:rgba(254,252,248,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid #d8cdb8;z-index:100}
+nav.top .container{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:24px;padding:14px 32px}
+.nav-brand-img{justify-self:start;display:flex;align-items:center;text-decoration:none;flex-shrink:0;transition:opacity .2s}
+.nav-brand-img:hover{opacity:.8}.nav-brand-img img{height:40px;width:auto;display:block}
+nav.top ul.nav-menu{justify-self:end;display:flex;gap:22px;list-style:none;margin:0;padding:0;font-size:.95rem;white-space:nowrap}
+nav.top ul.nav-menu a{color:#3a342d;text-decoration:none;transition:color .2s;font-weight:500;white-space:nowrap}
+nav.top ul.nav-menu a:hover{color:#1a1612}nav.top ul.nav-menu a.active{color:#1a1612;font-weight:700}
+.nav-toggle{display:none;background:none;border:none;padding:6px;cursor:pointer;width:36px;height:36px;position:relative}
+.nav-toggle span{display:block;position:absolute;left:8px;right:8px;height:2px;background:#1a1612;border-radius:2px;transition:transform .25s,opacity .25s,top .25s}
+.nav-toggle span:nth-child(1){top:11px}.nav-toggle span:nth-child(2){top:17px}.nav-toggle span:nth-child(3){top:23px}
+.nav-toggle.open span:nth-child(1){top:17px;transform:rotate(45deg)}.nav-toggle.open span:nth-child(2){opacity:0}.nav-toggle.open span:nth-child(3){top:17px;transform:rotate(-45deg)}
+.tablewrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:22px 0;border:1px solid var(--line);border-radius:10px;background:#fff;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.tablewrap table{border-collapse:collapse;width:100%;min-width:600px;font-size:18px;line-height:1.65}
+.tablewrap .zh{display:block;margin-top:5px;font-size:16px;line-height:1.55;color:var(--muted);font-weight:400}
+.tablewrap th,.tablewrap td{padding:12px 14px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top;color:#3a342d}
+.tablewrap thead th{background:var(--soft);font-weight:900;font-size:18px;color:#1a1612;white-space:nowrap}
+.tablewrap tbody tr:last-child td{border-bottom:none}
+.tablewrap td code,.section code{background:var(--soft);border:1px solid var(--line);border-radius:5px;padding:1px 6px;font:500 15px/1.5 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace}
+.inline-figure.wide{max-width:1000px}
+.inline-figure.portrait{max-width:430px}
+.toc{margin:26px 0 0;padding:20px 22px;background:#fff;border:1px solid var(--line);border-radius:10px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.toc>b{display:block;font-size:15px;letter-spacing:.05em;color:var(--green);margin-bottom:10px}
+.toc ol{margin:0;padding-left:1.35em;font-size:18px;line-height:1.7}
+.toc li{margin-bottom:7px;color:#3a342d}
+.toc a{color:var(--blue);font-weight:700;text-decoration:none}.toc a:hover{text-decoration:underline}
+.toc-hint{margin:12px 0 0!important;font-size:18px!important;color:var(--muted)!important;border-top:1px solid var(--line);padding-top:12px}
+.readmore{margin-top:24px;padding:20px 22px;background:var(--soft);border:1px solid var(--line);border-radius:12px}
+.readmore.near{margin:26px 0 6px;background:rgba(86,137,184,.07);border-color:#bcd0e2}
+.readmore.near b{color:var(--blue);font-size:18px}
+.readmore.near li{font-size:17px;line-height:1.7;margin-bottom:10px}
+.readmore b{display:block;margin-bottom:10px;font-size:19px}
+.readmore ul{margin:0;padding-left:1.25em}
+.readmore a{color:var(--blue);font-weight:700;text-decoration:none}
+.readmore a:hover{text-decoration:underline}
+@media(max-width:820px){.tablewrap table{min-width:560px;font-size:18px}.tablewrap{position:relative}.tablewrap::after{content:"表格可左右滑動 →";position:sticky;left:0;display:block;font-size:15px;color:var(--muted);background:var(--soft);border-top:1px solid var(--line);padding:7px 12px;width:100%}}
+@media(max-width:860px){
+ nav.top .container{grid-template-columns:auto 1fr auto;padding:10px 16px;gap:12px}
+ .nav-brand-img img{height:32px}
+ .nav-toggle{display:block;justify-self:end}
+ nav.top ul.nav-menu{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(254,252,248,.98);backdrop-filter:blur(14px);border-bottom:1px solid #d8cdb8;flex-direction:column;gap:0;padding:8px 0;box-shadow:0 10px 24px rgba(107,74,42,.08)}
+ nav.top ul.nav-menu.open{display:flex}
+ nav.top ul.nav-menu li{border-bottom:1px solid #e8dfc9}
+ nav.top ul.nav-menu li:last-child{border-bottom:none}
+ nav.top ul.nav-menu a{display:block;padding:14px 20px;font-size:1.06rem}
+}
+/* 滑鼠暖光暈（與首頁同一支 spotlight.js） */
+body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradient(var(--sp-radius) circle at var(--mx,50%) var(--my,50%),var(--sp-shadow) 0%,var(--sp-shadow-edge) 45%,transparent 75%);pointer-events:none;z-index:9999;mix-blend-mode:multiply;transition:background .06s linear}
+.hero{position:relative;overflow:hidden;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:72px;padding:96px clamp(20px,6vw,88px) 80px;background:linear-gradient(180deg,#fffcf0 0%,#f9e9d2 100%);color:#1a1612;border-bottom:1px solid #d8cdb8}
+.hero .wc{position:absolute;border-radius:50%;filter:blur(60px);pointer-events:none;z-index:0}
+.hero .wc1{width:420px;height:360px;top:-120px;right:-80px;background:#e8884b;opacity:.15}
+.hero .wc2{width:360px;height:300px;bottom:-110px;left:-70px;background:#5f7553;opacity:.13}
+.hero .wc3{width:280px;height:260px;top:34%;left:14%;background:#a08144;opacity:.10}
+.hero>div{flex:none;width:860px;max-width:100%;position:relative;z-index:2}
+.hero-figure{margin:0;width:620px;flex:none;position:relative;z-index:2}
+.hero-figure img{display:block;width:100%;height:auto;border-radius:16px;border:1px solid #d8cdb8;box-shadow:0 18px 45px rgba(107,74,42,.16);cursor:zoom-in}
+.hero-figure figcaption{margin-top:10px;font-size:14px;line-height:1.6;color:#6a635a}
+.inline-figure{margin:30px auto 8px;max-width:820px}
+.inline-figure img{display:block;width:100%;height:auto;border-radius:14px;border:1px solid var(--line);box-shadow:var(--shadow);background:#fff;cursor:zoom-in}
+.inline-figure figcaption{font-size:14px;line-height:1.6;color:var(--muted);margin-top:10px}
+.lightbox{position:fixed;inset:0;z-index:10000;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(12,10,8,.92);cursor:zoom-out;backdrop-filter:blur(4px)}
+.lightbox.open{display:flex}.lightbox img{max-width:96vw;max-height:92vh;border-radius:10px;box-shadow:0 24px 60px rgba(0,0,0,.5)}
+.lightbox-close{position:fixed;top:18px;right:24px;color:#fff;font-size:34px;line-height:1;font-weight:700;cursor:pointer;opacity:.85}
+.kicker{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.55rem;color:#7a5c3a;font-weight:500}
+.hero h1{max-width:none;margin:16px 0 18px;font-size:clamp(36px,6vw,72px);line-height:1.08;overflow-wrap:anywhere}
+.hero p{max-width:none;font-size:clamp(18px,2vw,23px);line-height:1.62;color:#3a342d}
+.cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
+.cta a{display:inline-flex;align-items:center;text-decoration:none;border-radius:8px;padding:12px 16px;font-weight:900}
+.cta .primary{background:#fff;color:#1a1612}.cta .ghost{border:1px solid rgba(255,255,255,.32);color:#fff;background:rgba(255,255,255,.08)}
+.section{padding:54px clamp(20px,6vw,88px);border-top:1px solid var(--line)}
+.inner{width:min(1000px,100%);margin:0 auto}
+.section h2{font-size:clamp(26px,4.2vw,48px);line-height:1.12;margin:0 0 18px}
+.section h3{font-size:clamp(21px,3vw,30px);line-height:1.2;margin:30px 0 12px}
+.lead{font-size:clamp(18px,1.6vw,22px);line-height:1.7;color:#3a342d;max-width:900px}
+.section p{font-size:18px;line-height:1.74;color:#3a342d}.section p+p{margin-top:14px}
+.section ul,.section ol{padding-left:1.4em;font-size:18px;line-height:1.74;color:#3a342d}.section li{margin-bottom:8px}
+.meaning{margin:22px 0;padding:16px 18px;border-left:5px solid var(--blue);background:rgba(86,137,184,.12);border-radius:6px;line-height:1.7;font-size:19px}
+.meaning b{display:block;color:var(--blue);margin-bottom:4px}
+.caveat{margin:0 0 8px;padding:16px 18px;border-left:5px solid var(--orange);background:rgba(232,90,79,.1);border-radius:6px;line-height:1.7;font-size:18px;color:#3a342d}
+.caveat b{display:block;color:var(--orange);margin-bottom:4px}
+.infocard{background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px 24px 22px;box-shadow:0 8px 22px rgba(107,74,42,.08);margin-top:8px}
+.infocard-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.info-item{padding:18px 14px 0}
+.info-item b{display:block;font-size:14px;font-weight:900;letter-spacing:.04em;margin-bottom:7px;text-transform:uppercase}
+.info-item:nth-child(1) b{color:var(--green)}.info-item:nth-child(2) b{color:var(--orange)}.info-item:nth-child(3) b{color:var(--blue)}
+.info-item p{margin:0;font-size:17px;line-height:1.6;color:#3a342d}
+.tagrow{display:flex;flex-wrap:wrap;gap:7px;margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
+.tag{font-size:14px;color:var(--muted);background:var(--soft);border:1px solid var(--line);border-radius:999px;padding:4px 11px}
+.duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:24px}
+.duo.stack{grid-template-columns:1fr}
+.duo .card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:22px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.duo .card.a{border-color:var(--orange)}.duo .card.b{border-color:var(--green);box-shadow:0 8px 24px rgba(95,117,83,.16)}
+.duo .card small{display:block;font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.04em;margin-bottom:9px}
+.duo .card.a small{color:var(--orange)}.duo .card.b small{color:var(--green)}
+.duo .card b{display:block;font-size:22px;line-height:1.3;margin-bottom:12px}.duo .card.a b{color:#c0512f}.duo .card.b b{color:#4a7a59}
+.duo .card p{margin:0;color:#3a342d;line-height:1.75;font-size:18px}
+.workflow-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:24px}
+.workflow-step{background:#fff;border:1px solid var(--line);border-radius:8px;padding:18px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.workflow-step small{display:block;color:var(--orange);font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;margin-bottom:9px}
+.workflow-step b{display:block;font-size:18px;line-height:1.3;margin-bottom:9px}
+.workflow-step p{margin:0;color:#3a342d;line-height:1.6;font-size:16px}
+.codeblock{background:var(--dark);color:#f3ead9;border-radius:8px;padding:18px 20px;font:500 14px/1.65 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;overflow-x:auto;white-space:pre-wrap;margin:20px 0;box-shadow:0 8px 22px rgba(107,74,42,.12)}
+.codeblock .c{color:#f6d7a6;font-weight:600}
+.skillcard{background:#fff;border:1px solid var(--green);border-radius:12px;padding:24px;box-shadow:0 10px 26px rgba(95,117,83,.16);margin-top:8px}
+.skillcard b{display:block;font-size:21px;margin-bottom:8px}
+.skillcard p{margin:0 0 16px;font-size:17px;line-height:1.65;color:#3a342d}
+.cta-band{background:#e6f0e5;color:#3a342d}.cta-band .section{border-top:none}
+.cta-band .inner{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(260px,.85fr);gap:26px;align-items:start}
+.cta-band h2{font-size:clamp(26px,4vw,44px);margin:0 0 16px}.cta-band p,.cta-band .lead{color:rgba(58,52,45,.9);font-size:18px;line-height:1.72}
+.cta-card{border:1px solid #cfe0d2;background:#fbfdfa;border-radius:8px;padding:22px}
+.cta-card b{display:block;color:#48b178;margin-bottom:10px;font-size:18px}.cta-card p{margin:0 0 14px}
+.footer{padding:30px clamp(20px,6vw,88px);font-size:14px;color:var(--muted);background:#fff;border-top:1px solid var(--line)}
+.footer-inner{width:min(1000px,100%);margin:0 auto}
+.footer-links{display:flex;flex-wrap:wrap;gap:6px 12px;margin-bottom:14px}.footer-links a{color:var(--blue);font-weight:900;text-decoration:none;font-size:14px}
+.footer-brand{font-weight:900;font-size:15px;margin-bottom:10px}.footer-note{font-size:13px;line-height:1.6}
+@media(max-width:820px){.inline-figure.portrait{max-width:340px}.infocard-grid{grid-template-columns:1fr}.duo{grid-template-columns:1fr}.workflow-grid{grid-template-columns:1fr}.cta-band .inner{grid-template-columns:1fr}.section{padding:40px 20px}.hero{min-height:52vh;flex-direction:column;justify-content:flex-start;align-items:flex-start;gap:24px}.hero>div{width:100%}.hero-figure{width:100%;max-width:560px}}
+@media(max-width:820px){html,body{overflow-x:hidden}.hero h1{word-break:break-word}}
+/* 直式圖左右排（02-design-system「直式圖在桌機的左右排版」）：輪播卡上官網預設用 .media-row，圖左圖右看段落交替；連續兩張用 .figure-pair */
+.figure-pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;margin:30px auto 8px;max-width:820px}.figure-pair .inline-figure{margin:0;max-width:none}@media(max-width:640px){.figure-pair{grid-template-columns:1fr}.figure-pair .inline-figure{max-width:340px;margin:0 auto}}
+.media-row{display:grid;grid-template-columns:minmax(0,340px) minmax(0,1fr);gap:36px;align-items:center;margin:28px 0}.media-row.img-right{grid-template-columns:minmax(0,1fr) minmax(0,340px)}.media-row .inline-figure{margin:0;max-width:none}.media-row .media-text>*:first-child{margin-top:0}.media-row .media-text>*:last-child{margin-bottom:0}@media(max-width:820px){.media-row,.media-row.img-right{grid-template-columns:1fr;gap:18px}.media-row.img-right .media-fig{order:-1}.media-row .inline-figure{max-width:340px;margin:0 auto}}
+.hero{gap:48px}.hero>div{width:500px}.hero-figure{width:540px}.hero h1{font-size:clamp(28px,3.2vw,44px);line-height:1.2}
+blockquote.quote{margin:18px 0;padding:14px 20px;border-left:5px solid var(--orange);background:#fff;border-radius:6px;font-size:19px;line-height:1.75;color:#3a342d;box-shadow:0 6px 18px rgba(107,74,42,.07)}
+.who{display:inline-block;font-size:14px;font-weight:700;line-height:1.4;border-radius:999px;padding:1px 10px;white-space:nowrap}
+.who.ai{background:#e6f0e5;color:#3f6b4a;border:1px solid #b9d3bd}.who.me{background:#fbe9e2;color:#a8452f;border:1px solid #efc3b5}
+.steps7-fig{max-width:1000px}
+.steps7{list-style:none;margin:0;padding:0;display:grid;gap:14px}
+.steps7 li{display:grid;grid-template-columns:44px 300px 1fr;gap:18px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 18px;box-shadow:0 8px 22px rgba(107,74,42,.08);margin:0}
+.steps7 .n{font:900 34px/1 'Cormorant Garamond',serif;color:var(--orange);text-align:center}
+.steps7 .st-pic img,.steps7 .st-pic svg{display:block;width:100%;height:auto;border:1px solid var(--line);border-radius:10px;box-shadow:none;cursor:default}
+.steps7 .st-head{display:flex;align-items:center;gap:10px;margin-bottom:6px}.steps7 .st-head b{font-size:21px;color:#1a1612}
+.steps7 p{margin:0;font-size:17px;line-height:1.7;color:#3a342d}.steps7 p em{font-style:normal;font-weight:700;color:var(--green)}
+@media(max-width:760px){.steps7 li{grid-template-columns:30px 1fr;gap:10px}.steps7 .n{font-size:28px;align-self:start}.steps7 .st-pic,.steps7 .st-main{grid-column:2}}
+.meaning.key{border-left-color:var(--orange);background:#fdf1ec;font-size:19px}.meaning.key b{color:#c0512f;font-size:23px;line-height:1.4;margin-bottom:8px}.meaning.key b.sub{font-size:20px;margin:12px 0 4px}
+.cf-pic{margin:0 0 12px}.cf-pic img,.cf-pic svg{display:block;width:100%;height:auto;border-radius:10px;border:1px solid var(--line);background:#fff;box-shadow:none}
+.svg-fig{max-width:540px}.svg-fig svg{display:block;width:100%;height:auto;border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);background:#fefcf8}
+.bars{margin:24px 0;padding:18px 20px;background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.bars-legend{font-size:16px;color:#3a342d;margin-bottom:12px}
+.sw{display:inline-block;width:14px;height:14px;border-radius:3px;vertical-align:-2px;margin:0 4px 0 10px}.sw:first-child{margin-left:0}
+.sw.ai{background:#e8884b}.sw.me{background:#5f7553}.sw.line{width:3px;background:#a08144}
+.bar-row{display:grid;grid-template-columns:96px 1fr;gap:10px;align-items:center;padding:6px 0;border-top:1px dashed #eadfcb}
+.bar-lab{font-size:15px;color:#6a635a;white-space:nowrap}
+.bar-track{position:relative;padding-right:52px}
+.bl{display:flex;align-items:center;gap:6px;height:18px;margin:2px 0}
+.bar{display:block;height:13px;border-radius:3px}.bar.ai{background:#e8884b}.bar.me{background:#5f7553}
+.bl em{font-style:normal;font-size:14px;color:#3a342d;white-space:nowrap}
+.th{position:absolute;top:-4px;bottom:-4px;width:2px;background:rgba(160,129,68,.55)}
+.th.t20{left:calc((100% - 52px)*.2)}.th.t50{left:calc((100% - 52px)*.5)}
+.bl{width:100%}.bl .bar{flex:none;max-width:calc(100% - 52px)}
+pre.codeblock{white-space:pre-wrap}
+.cmpflow-fig{max-width:900px}
+.cmpflow{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.cf-col{border-radius:14px;padding:16px 16px 18px;border:2px solid}
+.cf-col.bad{background:#fdf1ec;border-color:#efc3b5}.cf-col.good{background:#eef5ec;border-color:#b9d3bd}
+.cf-h{display:block;font-size:22px;margin:0 0 12px;text-align:center}.bad .cf-h{color:#c0512f}.good .cf-h{color:#3f6b4a}
+.cf-box{background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 12px;font-size:17px;font-weight:700;line-height:1.45;color:#1a1612;text-align:center}
+.cf-box small{display:block;font-size:14.5px;font-weight:400;color:#6a635a;margin-top:4px}
+.bad .cf-box.end{border-color:#e8884b}.good .cf-box.end{border-color:#5f7553}
+.cf-ar{text-align:center;font-size:20px;line-height:1.3;color:#a08144}
+@media(max-width:640px){.cmpflow{grid-template-columns:1fr}}
+
+.section p.note{font-size:15px;color:var(--muted);margin-top:-6px}
+</style>
+</head>
+<body class="spotlight">
+<!-- 官網共用導航列 nav.top：與首頁/總站同一條，文章不要自己另做極簡 topbar（江江 2026-06-25：要同一個框架、同一條導航列）。把對應頁面的 class="active" 標在自己那欄。
+     ⚠️ 下面 ul.nav-menu 整塊由 preflight 第 5 關 check-bilingual-nav.mjs 做「逐字比對」，
+        塞任何註解、多一個空白、換行位置不同都會被判導航不一致而擋下發布。要說明就寫在 <ul> 外面（像這裡）。
+        2026-08-16 修：原本的 EN 那行說明註解就夾在 <ul> 裡面，導致照範本起手的新文章一律卡第 5 關
+        （llm-rag-agent-mcp 與 rag-three-retrieval-modes 兩篇同時中招）。註解已移出來，<ul> 內保持乾淨。
+        萬一還是被擋，直接跑：node scripts/check-bilingual-nav.mjs --write --only=<你的檔案路徑> -->
+<nav class="top">
+  <div class="container">
+    <a class="nav-brand-img" href="../../index.html"><img src="../../images/footer-signature.png" alt="江江教練 | 江昱德"></a>
+    <button class="nav-toggle" aria-label="選單"><span></span><span></span><span></span></button>
+    <ul class="nav-menu">
+      <li><a href="../../index.html">首頁</a></li>
+      <li><a href="../../offers.html">付費服務</a></li>
+      <li><a href="../../courses.html">各式講座</a></li>
+      <li><a href="../../articles.html" class="active">教學文章</a></li>
+      <li><a href="../../knowledge-architecture.html">知識架構</a></li>
+      <li><a href="../../skills.html">小工具</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="wc wc1"></div>
+  <div class="wc wc2"></div>
+  <div class="wc wc3"></div>
+  <div>
+    <div class="kicker">AI 工作流 / 影片剪輯</div>
+    <h1>怎麼教 AI 剪影片？｜字幕壓臉、角色忽左忽右，親手調一次再讓 AI 量成數字檢查</h1>
+    <p>一支真的短影音從 AI 原稿到我調過的版本：人先動手改，AI 存數字、分析、被糾正，最後把感覺量成數字，寫成不用截圖的檢查。</p>
+  </div>
+  <figure class="hero-figure">
+    <img src="../../images/articles/how-i-teach-ai-to-edit-video-cover.jpg" alt="封面：怎麼教 AI 剪影片？朵拉在手機短影音畫面裡把字幕條往下推，咪卡拿捲尺量她跟上一個位置差多少" loading="lazy" width="1400" height="788">
+  </figure>
+</section>
+
+<main>
+<section class="section" id="start"><div class="inner">
+<p class="lead">AI 幫我把一支短影音剪好，角色朵拉 11 幕的臉都被字幕壓到，位置還一幕左、一幕右來回跳。我覺得不對，就先在剪輯台親手把朵拉調一次，叫它把數字存下來、分析我為什麼這樣調；它分析不到位的地方我再糾正，最後把「微調」這種說不清楚的話量成數字，寫成一支用尺寸計算的檢查程式，放回它的剪輯規則裡。這篇把錯的版本跟對的版本都攤開來，其中我覺得最重要的一課，是分清楚通則跟個例。</p>
+<div class="duo stack">
+<div class="card a"><b>適合誰</b>
+<ul>
+<li>用 AI 剪影片、做短影音，成品總是差一點，又說不清楚差在哪的人</li>
+<li>已經會跟 AI 說「改一下」，但同樣的錯下一支片又出現的人</li>
+<li>想把自己的剪輯眼光、版面判斷交給 AI 或助理照做的講師、創作者、一人公司</li>
+</ul></div>
+<div class="card b"><b>你可以帶走什麼</b>
+<ul>
+<li>我教 AI 剪片實際走過的七個步驟，從自己動手改到寫成檢查</li>
+<li>把「微調」「不要擋到臉」這種感覺翻成 AI 算得出來的數字的做法</li>
+<li>分清楚通則跟個例：抓出 AI 把「這支片剛好如此」寫成「一律如此」的地方</li>
+<li>什麼時候直接用尺寸算就好，不用叫 AI 一張張截圖看</li>
+<li>一張對照表：這次七步怎麼對應到隱性知識提煉，換到其他 AI 員工也能照著走</li>
+<li>文末一段可以直接貼給 AI 的提示詞</li>
+</ul></div>
+</div>
+
+<figure class="inline-figure wide steps7-fig" aria-label="教 AI 剪片的七個步驟">
+<ol class="steps7">
+<li><span class="n">1</span><div class="st-pic"><img src="../../images/articles/how-i-teach-ai-to-edit-video-step1.jpg" alt="第 1 幕對照：左邊 AI 剪的朵拉小小的、臉被字幕壓到；右邊我拖過，朵拉放大、臉在字幕上方" loading="lazy" width="680" height="570"></div><div class="st-main"><div class="st-head"><span class="who me">我</span><b>先自己動手改一次</b></div><p><em>這次：</em>AI 剪的朵拉，臉被字幕壓到、左右亂跳。我在剪輯台把 11 幕的朵拉一個一個拖過、調大小。</p></div></li>
+<li><span class="n">2</span><div class="st-pic"><svg viewBox="0 0 340 250" role="img" aria-label="AI 的記憶檔，記著每一幕改前改後"><rect x="0" y="0" width="340" height="250" rx="12" fill="#fff"/><rect x="40" y="24" width="260" height="206" rx="10" fill="#fbf6ea" stroke="#d8cdb8" stroke-width="2"/>
+<text x="170" y="56" font-size="20" text-anchor="middle" fill="#3a342d" font-weight="700">AI 的記憶檔</text>
+<line x1="56" y1="70" x2="284" y2="70" stroke="#d8cdb8" stroke-width="2"/>
+<text x="62" y="102" font-size="18" fill="#3a342d">第 1 幕　改前 → 改後</text>
+<text x="62" y="134" font-size="18" fill="#3a342d">第 2 幕　改前 → 改後</text>
+<text x="62" y="166" font-size="18" fill="#3a342d">第 3 幕　改前 → 改後</text>
+<text x="62" y="198" font-size="18" fill="#6a635a">……一直到第 11 幕</text></svg></div><div class="st-main"><div class="st-head"><span class="who ai">AI</span><b>叫 AI 先記住</b></div><p><em>這次：</em>我說「請你先記住。」AI 把每一幕我改之前、改之後的位置和大小，存進它的記憶檔。</p></div></li>
+<li><span class="n">3</span><div class="st-pic"><svg viewBox="0 0 340 250" role="img" aria-label="AI 列出它看到的規律"><rect x="0" y="0" width="340" height="250" rx="12" fill="#fff"/><rect x="20" y="22" width="300" height="190" rx="16" fill="#e6f0e5" stroke="#b9d3bd" stroke-width="2"/>
+<path d="M60 212l-6 26 30-26z" fill="#e6f0e5" stroke="#b9d3bd" stroke-width="2"/>
+<text x="40" y="58" font-size="18" fill="#4a7a59" font-weight="700">AI：我看到的規律是</text>
+<text x="40" y="94" font-size="18" fill="#3a342d">① 全部放大</text>
+<text x="40" y="124" font-size="18" fill="#3a342d">② 臉全部在字幕上方</text>
+<text x="40" y="154" font-size="18" fill="#3a342d">③ 內容越少，朵拉越大</text>
+<text x="40" y="184" font-size="18" fill="#3a342d">④ ⑤ ……</text></svg></div><div class="st-main"><div class="st-head"><span class="who ai">AI</span><b>叫 AI 分析我為什麼這樣改</b></div><p><em>這次：</em>AI 歸納出五條規律，例如「臉全部在字幕上方」「畫面內容越少，朵拉越大」。</p></div></li>
+<li><span class="n">4</span><div class="st-pic"><svg viewBox="0 0 340 250" role="img" aria-label="我劃掉說錯的那條，補上沒看到的"><rect x="0" y="0" width="340" height="250" rx="12" fill="#fff"/><rect x="20" y="22" width="300" height="206" rx="16" fill="#fbe9e2" stroke="#efc3b5" stroke-width="2"/>
+<text x="40" y="58" font-size="18" fill="#c0512f" font-weight="700">我：</text>
+<text x="40" y="92" font-size="18" fill="#3a342d">② 臉全部在字幕上方</text>
+<line x1="40" y1="86" x2="212" y2="86" stroke="#c0512f" stroke-width="3"/>
+<text x="40" y="122" font-size="18" fill="#c0512f" font-weight="700">→ 圖表滿時，朵拉可以</text>
+<text x="40" y="148" font-size="18" fill="#c0512f" font-weight="700">　 小小的放在字幕下方</text>
+<text x="40" y="186" font-size="18" fill="#c0512f" font-weight="700">＋ 畫面要連續，</text>
+<text x="40" y="212" font-size="18" fill="#c0512f" font-weight="700">　 不要忽左忽右</text></svg></div><div class="st-main"><div class="st-head"><span class="who me">我</span><b>我糾正它的分析</b></div><p><em>這次：</em>我指出「臉在字幕上方」只是這支片剛好如此，圖表很滿時，朵拉可以小小的放在字幕下方；也補上它沒看到的：畫面要連續，不要忽左忽右。</p></div></li>
+<li><span class="n">5</span><div class="st-pic"><svg viewBox="0 0 340 250" role="img" aria-label="兩幕朵拉的身體重疊一半以上算微調，完全沒重疊就是忽左忽右"><rect x="0" y="0" width="340" height="250" rx="12" fill="#fff"/><text x="85" y="34" font-size="18" text-anchor="middle" fill="#4a7a59" font-weight="700">微調</text>
+<rect x="30" y="50" width="70" height="150" rx="8" fill="rgba(95,117,83,.25)" stroke="#4a7a59" stroke-width="2"/>
+<rect x="68" y="50" width="70" height="150" rx="8" fill="rgba(95,117,83,.25)" stroke="#4a7a59" stroke-width="2" stroke-dasharray="6 4"/>
+<text x="85" y="230" font-size="17" text-anchor="middle" fill="#4a7a59">重疊一半以上</text>
+<text x="255" y="34" font-size="18" text-anchor="middle" fill="#c0512f" font-weight="700">忽左忽右</text>
+<rect x="190" y="50" width="56" height="150" rx="8" fill="rgba(232,90,79,.2)" stroke="#c0512f" stroke-width="2"/>
+<rect x="268" y="50" width="56" height="150" rx="8" fill="rgba(232,90,79,.2)" stroke="#c0512f" stroke-width="2" stroke-dasharray="6 4"/>
+<text x="255" y="230" font-size="17" text-anchor="middle" fill="#c0512f">完全沒重疊</text></svg></div><div class="st-main"><div class="st-head"><span class="who ai">AI</span><b>把模糊的話變成數字</b></div><p><em>這次：</em>我問「到底怎麼叫微調？」AI 用我改的 11 幕算出門檻：相鄰兩幕，朵拉的身體要重疊一半以上。</p></div></li>
+<li><span class="n">6</span><div class="st-pic"><svg viewBox="0 0 340 250" role="img" aria-label="檢查程式一次列出哪一幕有問題"><rect x="0" y="0" width="340" height="250" rx="12" fill="#fff"/><rect x="16" y="20" width="308" height="210" rx="10" fill="#2a2018"/>
+<text x="34" y="58" font-size="17" fill="#f6d7a6" font-weight="700">檢查結果</text>
+<text x="34" y="92" font-size="17" fill="#f3ead9">第 1 幕　字幕壓到臉 ✗</text>
+<text x="34" y="122" font-size="17" fill="#f3ead9">第 2 幕　字幕壓到臉 ✗</text>
+<text x="34" y="152" font-size="17" fill="#f3ead9">第 2→3 幕　忽左忽右 ✗</text>
+<text x="34" y="182" font-size="17" fill="#f3ead9">……</text>
+<text x="34" y="212" font-size="17" fill="#f6d7a6">不用截圖，一次算完</text></svg></div><div class="st-main"><div class="st-head"><span class="who ai">AI</span><b>寫成檢查程式</b></div><p><em>這次：</em>「字幕壓到臉」和「忽左忽右」兩件事，寫成一支程式用數字算，不用截圖看。</p></div></li>
+<li><span class="n">7</span><div class="st-pic"><svg viewBox="0 0 340 250" role="img" aria-label="規則手冊：三條擺位規則，剪完先跑兩項檢查再給我看"><rect x="0" y="0" width="340" height="250" rx="12" fill="#fff"/><path d="M40 40c40-14 80-14 120 0v170c-40-14-80-14-120 0z" fill="#fff" stroke="#36608a" stroke-width="3"/>
+<path d="M160 40c40-14 80-14 120 0v170c-40-14-80-14-120 0z" fill="#fff" stroke="#36608a" stroke-width="3"/>
+<text x="100" y="80" font-size="18" text-anchor="middle" fill="#36608a" font-weight="700">剪輯規則</text>
+<text x="100" y="116" font-size="16" text-anchor="middle" fill="#3a342d">大小跟資訊量走</text>
+<text x="100" y="142" font-size="16" text-anchor="middle" fill="#3a342d">字幕不壓臉</text>
+<text x="100" y="168" font-size="16" text-anchor="middle" fill="#3a342d">鏡位連續</text>
+<text x="220" y="80" font-size="18" text-anchor="middle" fill="#4a7a59" font-weight="700">剪完先跑</text>
+<text x="220" y="118" font-size="16" text-anchor="middle" fill="#3a342d">☑ 字幕壓臉</text>
+<text x="220" y="146" font-size="16" text-anchor="middle" fill="#3a342d">☑ 忽左忽右</text>
+<text x="220" y="184" font-size="16" text-anchor="middle" fill="#3a342d">再給我看</text></svg></div><div class="st-main"><div class="st-head"><span class="who ai">AI</span><b>放回剪輯規則</b></div><p><em>這次：</em>寫進剪輯台的規則手冊。下一支片剪完、給我看之前，先跑這支程式。</p></div></li>
+</ol>
+<figcaption>我教 AI 剪片的順序。標「我」的是我做的，標「AI」的是我叫 AI 做的。這支片有一個例外：字幕壓臉那支檢查，是在我動手調之前就先叫 AI 寫好的，鏡位連續的檢查是第 5 步之後才補進同一支程式。</figcaption>
+</figure>
+</div></section>
+
+<section class="section" id="scene"><div class="inner">
+<h2>AI 剪好的短影音，角色 11 幕的臉全被字幕壓到</h2>
+<p>這支片是〈朵拉：大模型怎麼訓練出來 為什麼別無腦信 AI〉，直式、86 秒。朵拉是我的 AI 角色，每一幕站在畫面下方講解，字幕固定在畫面靠下的同一個高度。</p>
+<p>我做短影音的方式是：AI（這次是 Claude）把素材、配音、字幕剪好，接進我的「剪輯台」。剪輯台是我請 AI 做的一個網頁，整支片每一幕都在上面，我可以在瀏覽器裡直接預覽、拖位置、改字，存檔後再匯出影片。</p>
+<p>這次 AI 交給我之前有自己檢查一輪，可是它截圖檢查的那幾張，剛好都是沒有朵拉的畫面。我一打開就看到了：</p>
+<blockquote class="quote">「你沒發現，朵拉的臉被字幕遮到了嗎？」「好幾個。」</blockquote>
+<p class="note">（這篇引號裡是我當時口述的原話，經語音辨識轉成文字；整理時補了標點、改了辨識錯的字，意思沒動。）</p>
+<p>後來用程式算，是 11 幕全部。第二個問題是位置：朵拉第 1 幕站右邊、第 2 幕跳到最左邊、第 3 幕又回到右邊，整支片左右來回跳。</p>
+<figure class="inline-figure wide">
+<img src="../../images/articles/how-i-teach-ai-to-edit-video-compare.jpg" alt="同一支短影音 11 幕對照：上排 AI 原稿朵拉小小的、臉被字幕壓到、左右來回跳；下排我調過的版本朵拉放大、臉在字幕上方、位置連續" loading="lazy" width="1528" height="590">
+<figcaption>上排是 AI 原稿，下排是我在剪輯台親手拖過的版本。同一份畫面、同一份字幕，只動了朵拉的位置和大小。</figcaption>
+</figure>
+<figure class="inline-figure wide">
+<img src="../../images/articles/how-i-teach-ai-to-edit-video-closeup.jpg" alt="第 1 幕與第 9 幕放大對照：AI 原稿的字幕橫在朵拉臉上，我調過的版本朵拉放大，臉在字幕上方" loading="lazy" width="1322" height="663">
+<figcaption>放大其中兩幕。左邊兩張是第 1 幕，右邊兩張是第 9 幕。</figcaption>
+</figure>
+<p>同一份資料，我也讓另一家 AI（Google 的 Gemini 4 Neon）獨立剪了一版。用後面會講的同一支程式檢查，它那版有朵拉的 8 幕也全部壓到臉。兩家都一樣，代表「字幕跟角色會不會疊到」這件事，AI 剪的時候沒有在算。</p>
+</div></section>
+
+<section class="section" id="why-missed"><div class="inner">
+<h2>AI 自己檢查為什麼沒抓到：截圖抽錯張，內建檢查又默默跳過</h2>
+<p>回頭追原因，有三個。</p>
+<div class="tablewrap"><table>
+<thead><tr><th>哪裡漏了</th><th>實際發生什麼</th></tr></thead>
+<tbody>
+<tr><td>截圖檢查是抽樣</td><td>AI 截了幾張畫面來看，剛好都沒有朵拉。抽到的那幾張沒問題，它就當全部沒問題。</td></tr>
+<tr><td>內建的自動檢查一直沒在跑</td><td>剪輯台裡本來就有一道「字幕壓到臉」的檢查。可是它要知道臉在角色圖裡的哪個位置，這支片接進剪輯台的流程沒有把這份資料帶進去，所以那道檢查每次都默默跳過，不報錯也不擋。這次追下去才發現。</td></tr>
+<tr><td>一句話被寫成固定做法</td><td>剪輯規則裡原本寫著「每幕左、中、右輪換」，那是 11 月 17 日我說「希望朵拉的位置，短影音裡可以更多變靈活」之後記下的做法。這支片的初稿就照這條，朵拉一幕右、一幕左地換邊。</td></tr>
+</tbody></table></div>
+<p>第三個最值得記下來。我當時說的是「多變靈活」，到了規則裡變成每一幕都要換邊，剪出來就是忽左忽右。</p>
+</div></section>
+
+<section class="section" id="math"><div class="inner">
+<h2>字幕會不會壓到臉，用尺寸算得出來，不用截圖</h2>
+<p>我要 AI 設計一個檢查機制，但我特別交代：</p>
+<blockquote class="quote">「我希望不是用截圖的。」「應該是可以用尺寸比例去估，這樣會比較快吧？」</blockquote>
+<p>後來我講得更完整：</p>
+<blockquote class="quote">「朵拉的臉的比例尺寸是固定的，字幕的比例尺寸是固定的，應該直接用算就可以算出來了。用數學去計算，絕對是會更便宜。」「所以有些素材的位置跟什麼的，盡量可以用數學去計算就用數學去計算，因為這樣子更省 token，也更快速、更準確，不要一直截圖去看。」</blockquote>
+<p>叫 AI 截圖檢查，等於每一張畫面都要它重新看圖、辨識一次。截圖去辨識圖片，又慢、又貴、又不準，而且很抽象，它看完說「沒問題」，你也不知道它到底看了哪裡。</p>
+<figure class="inline-figure wide cmpflow-fig" aria-label="截圖檢查和用數字算的對照">
+<div class="cmpflow">
+<div class="cf-col bad"><b class="cf-h">截圖檢查</b>
+<div class="cf-pic"><img src="../../images/articles/how-i-teach-ai-to-edit-video-screenshots.jpg" alt="一疊這支片的截圖，標著乘以 11 張：每一幕都要截一張給 AI 看" loading="lazy" width="1080" height="800"></div>
+<div class="cf-box">每一幕截一張圖<small>11 幕就要截 11 張</small></div><div class="cf-ar">↓</div>
+<div class="cf-box">把圖丟給 AI 看<small>每一張圖都要花 token 讀</small></div><div class="cf-ar">↓</div>
+<div class="cf-box">AI 自己判斷臉在哪、字幕在哪<small>又慢、又不準，可能截錯張、看漏</small></div><div class="cf-ar">↓</div>
+<div class="cf-box end">回你一句「看起來沒問題」<small>抽象，不知道它看了哪裡</small></div>
+</div>
+<div class="cf-col good"><b class="cf-h">用數字算</b>
+<div class="cf-pic svg"><svg viewBox="0 0 540 400" role="img" aria-label="示意：朵拉圖層裡臉的位置是固定比例，算出臉在畫面上的位置，再看跟字幕有沒有疊到">
+<rect x="0" y="0" width="540" height="400" fill="#fefcf8"/>
+<rect x="300" y="30" width="200" height="300" fill="none" stroke="#6a635a" stroke-width="2" stroke-dasharray="7 6"/>
+<text x="400" y="22" font-size="19" text-anchor="middle" fill="#6a635a">朵拉這張圖</text>
+<rect x="344" y="81" width="88" height="75" fill="rgba(86,137,184,.18)" stroke="#5689b8" stroke-width="3"/>
+<text x="388" y="124" font-size="21" text-anchor="middle" fill="#36608a" font-weight="700">臉</text>
+<rect x="20" y="132" width="500" height="34" rx="6" fill="rgba(26,22,18,.80)"/>
+<text x="170" y="156" font-size="19" text-anchor="middle" fill="#fff">字幕</text>
+<rect x="344" y="132" width="88" height="24" fill="rgba(232,90,79,.75)"/>
+<text x="20" y="40" font-size="20" fill="#36608a" font-weight="700">① 臉在圖裡的位置固定</text>
+<text x="20" y="70" font-size="20" fill="#3a342d" font-weight="700">② 朵拉放在哪、多大：已知</text>
+<text x="20" y="100" font-size="20" fill="#3a342d" font-weight="700">③ 字幕位置：已知</text>
+<text x="20" y="210" font-size="21" fill="#c0512f" font-weight="700">紅色那塊疊到</text>
+<text x="20" y="238" font-size="21" fill="#c0512f" font-weight="700">＝字幕壓到臉</text>
+<text x="20" y="290" font-size="18" fill="#6a635a">三樣都是數字，</text>
+<text x="20" y="316" font-size="18" fill="#6a635a">直接算，不用截圖看</text>
+</svg></div>
+<div class="cf-box">三個現成的數字<small>臉在朵拉圖裡的位置、朵拉放在哪多大、字幕的位置</small></div><div class="cf-ar">↓</div>
+<div class="cf-box">一支小程式直接算<small>不用看圖</small></div><div class="cf-ar">↓</div>
+<div class="cf-box">11 幕一次算完<small>快、便宜，每次算的結果都一樣</small></div><div class="cf-ar">↓</div>
+<div class="cf-box end">每一幕說清楚：壓到或沒壓到<small>哪一幕、差多少都講得出來</small></div>
+</div>
+</div>
+<figcaption>同一件事「字幕有沒有壓到臉」，兩種檢查方式：左邊靠 AI 看圖判斷，右邊用現成數字算，紅色那塊疊到就是壓到臉。</figcaption>
+</figure>
+<p>所以我要它把這件事量化成數字。朵拉這張圖不管換什麼姿勢，臉差不多都在同一塊位置；字幕的位置和大小也是固定的；每一幕朵拉放在哪、放多大，剪輯台本來就記著。這三樣都是現成的數字，臉會落在畫面哪裡直接算得出來，再看它跟字幕有沒有疊到就好：臉跟字幕的框，距離不到 8 像素就算壓到。</p>
+<p>整支片 11 幕一次算完，一張圖都不用截，算出來 AI 原稿 11 幕全部壓到臉。</p>
+<p>同一支程式還順手做了一件事：把「臉在圖裡的位置」寫進剪輯台，原本一直默默跳過的那道內建檢查，從此有資料可以算了。</p>
+<p>AI 接著用這支程式把每一幕的朵拉上下挪開。挪完臉是露出來了，但每一幕都剛好貼著字幕邊緣，左右來回跳的問題也還在。接下來我自己動手調。</p>
+<div class="readmore near"><b>就近延伸閱讀</b><ul>
+<li><a href="../ai-vs-script-four-situations/">讓 AI 只做需要判斷的事，其他交給程式</a>：字幕會不會壓到臉，就是那篇講的「完全不用判斷」那一種，該寫成程式，不該每次叫 AI 重看。</li>
+</ul></div>
+</div></section>
+
+<section class="section" id="hand-adjust"><div class="inner">
+<h2>我親手把角色位置調一次，叫 AI 先存下來，再分析我為什麼這樣調</h2>
+<p>我在剪輯台裡把 11 幕的朵拉一個一個拖過、調大小，然後跟 AI 說：</p>
+<blockquote class="quote">「我移動了朵拉圖片，調整大小位置。」「請你先記住。」「然後思考分析，為何我這麼移動。」「我的規律跟邏輯。」</blockquote>
+<p>順序是先記住、再分析。AI 先把每一幕我調之前、調之後的位置和大小寫進它的記憶檔，再開始分析。數字先存下來，後面分析說錯的時候，糾正有原始數字可以對照。</p>
+</div></section>
+
+<section class="section" id="analysis"><div class="inner">
+<h2>AI 分析我調角色位置的規律：哪幾條說對，哪幾條我糾正</h2>
+<p>AI 從這 11 幕的數字歸納出五條規律。我逐條回它：</p>
+<div class="tablewrap"><table>
+<thead><tr><th>AI 的分析</th><th>我怎麼回</th></tr></thead>
+<tbody>
+<tr><td>1. 全部放大，大約是畫面寬的一半到九成</td><td>沒有另外改，後來併進「大小跟畫面資訊量走」</td></tr>
+<tr><td>2. 臉全部在字幕上方</td><td><b>更正</b>：「所以並沒有臉一律在上方。如果今天這個圖表很滿的話，那朵拉，也可以小小的，放在字幕下方。」</td></tr>
+<tr><td>3. 腳站在畫面底，內容少的幕放到半身、腳出框</td><td>沒有另外改</td></tr>
+<tr><td>4. 頭頂貼著上方內容的下緣，內容越少朵拉越大</td><td><b>確認</b>：「所以像這個東西比較空，朵拉就可以大一點；如果資訊比較多，那朵拉就是小一點。」</td></tr>
+<tr><td>5. 右側有紅章的幕移到左邊避開，其他往中間收</td><td><b>補上它沒看到的</b>：「因為我們畫面是連續的……一下朵拉跳左邊，一下朵拉跳很右邊……會有點煩。」「可是應該我每次的位置就是微調。」「……換個姿勢，就換個動作這樣子，比如在旁邊像在中間……就是永遠是全身，現在是半身。」「我不是忽左忽右這樣子。」</td></tr>
+</tbody></table></div>
+<div class="meaning key"><b>第 2 條是 AI 把「這支片剛好如此」寫成了「一律如此」。</b>這是 AI 很常見的錯誤，也是我覺得這整件事裡最重要的概念，下一節專門講。</div>
+<p>第 5 條是 AI 看到了每一幕各自在哪裡，沒看到相鄰兩幕之間的關係。我在意的是畫面連續，朵拉的變化靠換姿勢、全身換半身、在旁邊和中間之間小移動，不靠換邊。</p>
+<p>AI 據此把規則改寫成「鏡位連續，每幕只微調」。我看完又問了一句：</p>
+<blockquote class="quote">「那個微調會不會寫得太空泛了？到底怎麼叫微調？」</blockquote>
+</div></section>
+
+<section class="section" id="general-vs-case"><div class="inner">
+<h2>AI 很常見的錯誤：把個例寫成通則，通則跟個例要分清楚</h2>
+<p>上一節 AI 歸納的「臉全部在字幕上方」，這支片確實 11 幕都是這樣，但那是這支片剛好如此，換一支圖表很滿的片馬上不成立。</p>
+<p>這就是把<b>個例</b>寫成了<b>通則</b>：</p>
+<ul>
+<li><b>通則</b>：每一支片都要守的。</li>
+<li><b>個例</b>：只有這支片、這個畫面才成立的做法。</li>
+</ul>
+<p>AI 手上只有這一支片的數字，它看到 11 次一樣，就很容易寫成「一律」。所以我的做法是三步：</p>
+<ol>
+<li><b>每一條規律都問一句</b>：這是這支片剛好如此（個例），還是每支片都要這樣（通則）？</li>
+<li><b>AI 如果分不清楚，就跟它講</b>：哪些是通則、哪些是個例。</li>
+<li><b>能夠成為通則的，盡量提煉成通則</b>：個例往上多問一層「為什麼這樣做」，找到背後每支片都成立的那一條。</li>
+</ol>
+<p>這支片實際提煉出來的對照：</p>
+<div class="tablewrap"><table>
+<thead><tr><th>這支片看到的（個例）</th><th>提煉成的通則</th></tr></thead>
+<tbody>
+<tr><td>11 幕的臉都在字幕上方</td><td>字幕不能壓到臉；臉在字幕上方或下方都可以</td></tr>
+<tr><td>大字那幾幕，朵拉放到半身、放很大</td><td>朵拉的大小跟畫面資訊量走：資訊少朵拉大，資訊多朵拉小</td></tr>
+<tr><td>第 2、6 幕右邊有紅章，朵拉站到左邊</td><td>避開畫面上的重點</td></tr>
+<tr><td>多數幕朵拉往中間收</td><td>鏡位連續，每一幕只微調，不忽左忽右</td></tr>
+</tbody></table></div>
+<p>左欄換一支片就失效，右欄每支片都用得上。寫進剪輯規則的，是右欄的通則。</p>
+</div></section>
+
+<section class="section" id="quantify"><div class="inner">
+<h2>角色位置「微調」到底是多少？用我調的 11 幕量出門檻</h2>
+<p>AI 被我糾正之後，在規則裡寫下「鏡位連續，每幕只微調」。看起來寫對了，其實這是回寫技能包很常見的坑。我當時說：</p>
+<blockquote class="quote">「AI 知道要微調，它就寫微調，這樣有寫跟沒寫一樣……不知道到底微調怎麼調，到底多微，對不對？」「所以我們就要具體把微調這件事情給量化，一個具體的判斷跟標準。」</blockquote>
+<p>同一個「微調」，其實有三種講法：</p>
+<div class="tablewrap"><table>
+<thead><tr><th>誰在講</th><th>怎麼講</th><th>下一支片 AI 照得做嗎</th></tr></thead>
+<tbody>
+<tr><td>我</td><td>「我每次的位置就是微調。」只說了每次移一點，沒說移多少</td><td>做不到。AI 不知道「一點」是多少</td></tr>
+<tr><td>AI 第一次寫進規則</td><td>「鏡位連續，每幕只微調」</td><td>做不到。寫了跟沒寫一樣，它不知道多微才算</td></tr>
+<tr><td>量化之後</td><td>相鄰兩幕，朵拉的身體要重疊一半以上；重疊不到兩成，就是忽左忽右</td><td>做得到。程式算得出來，每次判斷都一樣</td></tr>
+</tbody></table></div>
+<p>AI 用我調的 11 幕定了一個量法：<b>相鄰兩幕，朵拉的身體左右重疊多少</b>。重疊的寬度除以兩隻朵拉裡比較寬那隻的寬度，100% 代表站在同一個位置，0% 代表完全換到另一邊。</p>
+<div class="bars" role="img" aria-label="相鄰兩幕朵拉身體重疊比例：AI 原稿十組裡九組不到 20%，我調過的版本最低 23%">
+<div class="bars-legend"><span class="sw ai"></span>AI 原稿　<span class="sw me"></span>我調過　<span class="sw line"></span>20% 與 50% 兩條門檻</div>
+<div class="bar-row"><span class="bar-lab">第 1→2 幕</span><div class="bar-track"><span class="th t20"></span><span class="th t50"></span><div class="bl"><i class="bar ai" style="width:0.8%"></i><em>0%</em></div><div class="bl"><i class="bar me" style="width:39%"></i><em>39%</em></div></div></div>
+<div class="bar-row"><span class="bar-lab">第 2→3 幕</span><div class="bar-track"><span class="th t20"></span><span class="th t50"></span><div class="bl"><i class="bar ai" style="width:0.8%"></i><em>0%</em></div><div class="bl"><i class="bar me" style="width:34%"></i><em>34%</em></div></div></div>
+<div class="bar-row"><span class="bar-lab">第 3→4 幕</span><div class="bar-track"><span class="th t20"></span><span class="th t50"></span><div class="bl"><i class="bar ai" style="width:11.0%"></i><em>11%</em></div><div class="bl"><i class="bar me" style="width:58%"></i><em>58%</em></div></div></div>
+<div class="bar-row"><span class="bar-lab">第 4→5 幕</span><div class="bar-track"><span class="th t20"></span><span class="th t50"></span><div class="bl"><i class="bar ai" style="width:8.0%"></i><em>8%</em></div><div class="bl"><i class="bar me" style="width:89%"></i><em>89%</em></div></div></div>
+<div class="bar-row"><span class="bar-lab">第 5→6 幕</span><div class="bar-track"><span class="th t20"></span><span class="th t50"></span><div class="bl"><i class="bar ai" style="width:0.8%"></i><em>0%</em></div><div class="bl"><i class="bar me" style="width:61%"></i><em>61%</em></div></div></div>
+<div class="bar-row"><span class="bar-lab">第 6→7 幕</span><div class="bar-track"><span class="th t20"></span><span class="th t50"></span><div class="bl"><i class="bar ai" style="width:91.0%"></i><em>91%</em></div><div class="bl"><i class="bar me" style="width:23%"></i><em>23%</em></div></div></div>
+<div class="bar-row"><span class="bar-lab">第 7→8 幕</span><div class="bar-track"><span class="th t20"></span><span class="th t50"></span><div class="bl"><i class="bar ai" style="width:0.8%"></i><em>0%</em></div><div class="bl"><i class="bar me" style="width:64%"></i><em>64%</em></div></div></div>
+<div class="bar-row"><span class="bar-lab">第 8→9 幕</span><div class="bar-track"><span class="th t20"></span><span class="th t50"></span><div class="bl"><i class="bar ai" style="width:0.8%"></i><em>0%</em></div><div class="bl"><i class="bar me" style="width:73%"></i><em>73%</em></div></div></div>
+<div class="bar-row"><span class="bar-lab">第 9→10 幕</span><div class="bar-track"><span class="th t20"></span><span class="th t50"></span><div class="bl"><i class="bar ai" style="width:0.8%"></i><em>0%</em></div><div class="bl"><i class="bar me" style="width:69%"></i><em>69%</em></div></div></div>
+<div class="bar-row"><span class="bar-lab">第 10→11 幕</span><div class="bar-track"><span class="th t20"></span><span class="th t50"></span><div class="bl"><i class="bar ai" style="width:13.0%"></i><em>13%</em></div><div class="bl"><i class="bar me" style="width:64%"></i><em>64%</em></div></div></div></div>
+<p>怎麼看這張圖：條越長，代表兩幕之間朵拉移得越少；過了 50% 那條線就是微調，連 20% 那條線都沒過，就是忽左忽右。</p>
+<p>兩個版本差在這裡：</p>
+<ul>
+<li>AI 原稿十組相鄰幕裡，九組重疊不到 20%，其中六組是 0%，也就是整隻換到另一邊。</li>
+<li>我調過的版本十組都在 23% 以上，一半以上超過 60%。</li>
+<li>換成朵拉中心點左右移動的距離：AI 原稿平均每換一幕移 253 像素，我的版本平均 98 像素（畫面寬 540）。</li>
+</ul>
+<p>從這組數字定出來的門檻是：</p>
+<div class="tablewrap"><table>
+<thead><tr><th>相鄰兩幕重疊</th><th>算什麼</th></tr></thead>
+<tbody>
+<tr><td>50% 以上</td><td>微調，可以</td></tr>
+<tr><td>20% 到 50%</td><td>只有為了避開畫面重點時可以（例如右邊有紅章就站左邊），列成警告，要寫原因</td></tr>
+<tr><td>不到 20%</td><td>忽左忽右，擋下來，要改</td></tr>
+<tr><td>大小變化超過 0.6 倍到 1.6 倍</td><td>列成警告</td></tr>
+</tbody></table></div>
+<p>我調的版本落在 20% 到 50% 的有三組：第 1 到 2 幕、第 2 到 3 幕、第 6 到 7 幕。三組都跟第 2 幕、第 6 幕右側有紅章、朵拉站到左邊避開有關。</p>
+<div class="caveat"><b>這組門檻是錨點，不是絕對值</b>這些數字是 AI 從我調的這一支片、11 幕算出來的，我還沒有改過數字。之後多調幾支片，門檻可能會動。<br>但一定要先定下來。我當時是這樣說的：「我們可以說我們先這麼做，這不是絕對的值，但是先有一個基礎。這樣子有這個判斷之後，我們後續就可以更好的去修正、去補充、去改變，或再去疊加。總是有一個起點，或總是有個錨點……如果我們一開始沒有定這個點，那我們就永遠沒有校準的可能性了。」</div>
+</div></section>
+
+<section class="section" id="writeback"><div class="inner">
+<h2>量好的數字寫成檢查程式，放回 AI 的剪輯規則</h2>
+<p>最後一步是讓下一支片不用再教一次。AI 把兩項檢查寫成同一支程式，放進剪輯台的技能包（技能包是我給 AI 的工作規則手冊，剪片時它會照著做）：</p>
+<ul>
+<li><b>字幕壓臉</b>：用臉的位置跟字幕的位置算，疊到就擋。</li>
+<li><b>鏡位連續</b>：用相鄰兩幕的重疊比例算，照上面的門檻分成可以、警告、擋。</li>
+</ul>
+<p>技能包裡也寫進四條擺位規則：大小跟畫面資訊量走、字幕不壓臉、鏡位連續每幕只微調、能用數學算的位置就用數學算不截圖。原本那條「每幕左、中、右輪換」標成過時。AI 剪完片的自我檢查清單多了一題：接進剪輯台之後、開給我看之前，先跑這支程式，貼結果，不截圖。</p>
+<p>這次改動有找另一家 AI（Google 的 Gemini 4 Neon）審過一輪，判定要修正，抓出幾個問題：程式在發現壓臉時沒把鏡位的結果印出來、往上挪沒有設上限、計算重疊比例時，要以兩幕裡比較寬的那隻朵拉為基準。都改了才收。</p>
+<p>三個版本跑同一支程式的結果：</p>
+<div class="tablewrap"><table>
+<thead><tr><th>版本</th><th>字幕壓到臉</th><th>鏡位連續：擋</th><th>鏡位連續：警告</th></tr></thead>
+<tbody>
+<tr><td>AI 原稿</td><td>11 幕全部</td><td>9 組</td><td>0</td></tr>
+<tr><td>AI 用程式挪過臉之後（我還沒動）</td><td>5 幕（臉剛好貼著字幕邊緣）</td><td>9 組</td><td>0</td></tr>
+<tr><td>我親手調過</td><td>0</td><td>0</td><td>3 組（都跟避開紅章有關）</td></tr>
+</tbody></table></div>
+<div class="readmore near"><b>就近延伸閱讀</b><ul>
+<li><a href="../rules-need-an-engine/">寫了一堆規則給 AI，為什麼還是沒人執行？</a>：把檢查掛進「接進剪輯台之後、給我看之前」這個時間點，就是那篇講的把規則掛在既有流程上。</li>
+<li><a href="../let-ai-review-itself/">我明明都講過了，AI 為什麼還要再問我？</a>：把重複的判斷寫成標準、讓 AI 自己檢查自己，這篇是同一件事用在剪片上。</li>
+</ul></div>
+</div></section>
+
+<section class="section" id="tacit-knowledge"><div class="inner">
+<h2>教 AI 剪片，就是在提煉隱性知識：訓練一個 AI 剪輯師的過程</h2>
+<p>回頭看這整段，我做的事情就是平常在教的「隱性知識提煉」，也是我訓練 AI 員工的方法。這次要訓練的員工，是一個 AI 剪輯師。</p>
+<p>隱性知識，是你會做、看一眼就知道對不對，但說不出為什麼的那種判斷。朵拉該站哪裡、該多大，我是動手調出來的，當下並沒有一套寫好的規則；連我自己講的「微調」，也說不出到底是多少。沒寫下來的東西，AI 學不到。</p>
+<p>而且這次要提煉的還是畫面感覺，很抽象。我的想法是：</p>
+<blockquote class="quote">「哪怕是這種抽象的圖片，我們還是可以去提煉。它這種抽象的圖片跟感覺，我們還是可以把它提煉出來。」</blockquote>
+<p>把這次的七步，對回隱性知識提煉的做法：</p>
+<div class="tablewrap"><table>
+<thead><tr><th>這次實際做的</th><th>對應的提煉做法</th><th>為什麼要這樣做</th></tr></thead>
+<tbody>
+<tr><td>說不清楚哪裡不對，我先動手調一次</td><td>說不出來的，先示範</td><td>判斷藏在做法裡。做一次，判斷就留在結果上了</td></tr>
+<tr><td>叫 AI 先把改前改後的數字存下來</td><td>先留下可以對照的原始紀錄</td><td>後面分析說錯的時候，有東西可以對</td></tr>
+<tr><td>叫 AI 分析我為什麼這樣調</td><td>讓 AI 把看到的規律說出來</td><td>它說出來，我才看得到它理解成什麼樣子</td></tr>
+<tr><td>糾正它把「這支片剛好如此」寫成「一律如此」</td><td>分清楚通則跟個例</td><td>個例換一支片就失效，寫進規則的要是通則</td></tr>
+<tr><td>問它「到底怎麼叫微調」</td><td>形容詞換成具體的判斷跟標準</td><td>寫「微調」等於沒寫，下一個 AI 不知道多微</td></tr>
+<tr><td>門檻先標草案，不等完美</td><td>先定錨點</td><td>有起點，才能在上面修正、疊加、校準</td></tr>
+<tr><td>寫成檢查程式，放回剪輯規則</td><td>讓判斷可以被下一個 AI 照著做</td><td>不靠人每次重講</td></tr>
+</tbody></table></div>
+<p>這個順序不只能用在剪片。只要是「我會做、但說不清楚」的工作，訓練 AI 員工的時候都可以照這樣走：你先做一次，讓它存、讓它分析、你糾正，再把說不清楚的形容詞變成標準。</p>
+<div class="readmore near"><b>就近延伸閱讀</b><ul>
+<li><a href="../how-to-train-your-ai-employee/">如何訓練自己的 AI 員工：員工＋顧問框架</a>：這篇是其中一個員工（AI 剪輯師）實際被訓練的過程，那篇講整體怎麼帶 AI 員工。</li>
+<li><a href="../ai-employee-four-levels/">訓練 AI 員工的四個層次</a>：從自己會用，到讓 AI 幫你訓練 AI；這次寫回剪輯規則、讓下一個 AI 照做，就是往上走的那一步。</li>
+</ul></div>
+</div></section>
+
+<section class="section" id="boundary"><div class="inner">
+<h2>用數學檢查剪片，哪裡有把握，哪裡還是草案</h2>
+<p><b>有把握的部分</b>：字幕會不會壓到臉，是純粹的尺寸問題。只要臉在角色圖裡的位置量對了，答案就是準的，而且 11 幕一次算完，不用一張張截圖叫 AI 看。</p>
+<p><b>還沒把握的部分</b>：</p>
+<ul>
+<li>「微調」的門檻是從一支片、11 幕、我調一次算出來的，我還沒改過數字。</li>
+<li>臉的位置只量了朵拉現在這組站姿。換角色、換成坐姿或側身，要先重新量臉在圖裡的哪裡。</li>
+<li>字幕只算一行。剪輯台本來就把字幕換行當成錯誤擋下來，所以一行夠用；如果你的影片允許兩行字幕，算法要跟著改。</li>
+<li>程式只算兩件事：字幕有沒有壓到臉、相鄰兩幕有沒有跳太遠。朵拉的大小跟畫面資訊量配不配、有沒有擋到畫面重點，程式沒有算，還是靠人看。</li>
+</ul>
+</div></section>
+
+<section class="section" id="how-to-start"><div class="inner">
+<h2>今天就能開始：下次 AI 剪錯，先自己改一次，再叫它分析</h2>
+<p>不一定要有剪輯台。剪輯軟體裡顯示位置、縮放數字的地方，或 AI 給你的設定檔，都可以拿來做。</p>
+<ol>
+<li>不要只說「改一下」。自己動手改一次，拖位置、改大小都算。</li>
+<li>叫 AI 把你改前改後的數字存下來，列成表給你看。</li>
+<li>叫 AI 說出你為什麼這樣改，每一條規律都要附上是哪幾幕的數字支持它。</li>
+<li>逐條糾正。每一條都問：這是這次剛好如此（個例），還是每次都要這樣（通則）？特別注意它說得太絕對（「一律」「全部」）跟太空泛（「微調」「適當」）的地方。能提煉成通則的，請它往上提煉。</li>
+<li>空泛的詞，叫它用你改的數字量出門檻。</li>
+<li>能用尺寸、座標算的檢查，叫它寫成程式，不要每次截圖看。</li>
+<li>放回它的工作規則，並且講好什麼時候跑：剪完、給你看之前。</li>
+</ol>
+<p>第 6 步不用自己會寫程式。程式由 AI 寫，你看的是它跑出來的結果：哪幾幕擋到、相鄰兩幕差多少。</p>
+<p>可以直接貼給 AI 的版本：</p>
+<pre class="codeblock">我剛手動調整了影片裡〔角色／字幕／素材〕的位置和大小。
+1. 先把我調整前、調整後每一幕的數字（位置、大小）存起來，列成表給我看。
+2. 分析我為什麼這樣調，列出你看到的規律，每條都附上是哪幾幕的數字支持它。
+3. 我會逐條糾正。改完之後，把規律裡「微調」「不要太大」「避開」這類形容詞，用我調的數字算出門檻。
+4. 能用尺寸和座標算的檢查（會不會擋到、相鄰兩幕差多少），寫成一支程式，不要用截圖檢查。
+5. 用這支程式分別檢查調整前和調整後的版本，把結果貼給我。我確認之後，再寫進你的剪輯規則，並寫清楚每次剪完、給我看之前要先跑。</pre>
+<p>「逐條糾正」這一步最花時間。這次 AI 歸納的五條裡，就有一條是把「這支片剛好如此」寫成「一律如此」，要人一條一條指出來。</p>
+</div></section>
+
+<section class="section" id="more"><div class="inner">
+<div class="readmore"><b>延伸閱讀</b>
+<p><b style="font-size:17px;margin:8px 0 4px">這篇提到過的</b></p>
+<ul>
+<li><a href="../ai-vs-script-four-situations/">讓 AI 只做需要判斷的事，其他交給程式</a></li>
+<li><a href="../rules-need-an-engine/">寫了一堆規則給 AI，為什麼還是沒人執行？</a></li>
+<li><a href="../let-ai-review-itself/">我明明都講過了，AI 為什麼還要再問我？</a></li>
+<li><a href="../how-to-train-your-ai-employee/">如何訓練自己的 AI 員工：員工＋顧問框架</a></li>
+<li><a href="../ai-employee-four-levels/">訓練 AI 員工的四個層次</a></li>
+</ul>
+<p><b style="font-size:17px;margin:8px 0 4px">再往前後延伸</b></p>
+<ul>
+<li><a href="../claude-beat-synced-video/">用 Claude Code 剪影片，配樂從哪來、怎麼卡在拍子上？</a>：用 AI 剪片的另一半，配樂、旁白與卡點</li>
+<li><a href="../knowledge-as-employee/">做過筆記也建過知識庫，還缺什麼？</a>：把知識當員工，答案落在隱性知識提煉</li>
+<li><a href="../ai-said-it-watched-the-video/">AI 交出一份很專業的分析，但它根本沒看過那支影片</a>：AI 說它檢查過、看過，跟它真的看過是兩回事</li>
+</ul></div>
+</div></section>
+
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">江江教練 · AI 知識管理</div>
+    <div class="footer-links">
+      <a href="../../articles.html">← 回深度文章總站</a>
+      <a href="../../index.html">首頁</a>
+      <a href="../../learn.html">自學資源</a>
+      <a href="../../skills.html">小工具</a>
+      <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">LINE 社群 ↗</a>
+      <a href="https://www.threads.com/@jiang_yude_coach" target="_blank" rel="noopener">Threads ↗</a>
+      <a href="https://vocus.cc/salon/Jiang_Coach" target="_blank" rel="noopener">方格子 ↗</a>
+    </div>
+    <div class="footer-note">這是一篇教學文章，整理我對「怎麼教 AI 剪影片？｜字幕壓臉、角色忽左忽右，親手調一次再讓 AI 量成數字檢查」的看法，供你參考。</div>
+  </div>
+</footer>
+
+<!-- 點圖放大 lightbox（hero 與內文圖通用，已內建，不用每篇重加） -->
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <span class="lightbox-close" aria-label="關閉">×</span>
+  <img id="lightbox-img" src="" alt="放大檢視">
+</div>
+<script>
+(function(){
+  var box=document.getElementById('lightbox'),boxImg=document.getElementById('lightbox-img');
+  document.querySelectorAll('.hero-figure img,.inline-figure img').forEach(function(img){
+    img.addEventListener('click',function(){boxImg.src=img.currentSrc||img.src;boxImg.alt=img.alt||'放大檢視';box.classList.add('open');box.setAttribute('aria-hidden','false');});
+  });
+  function close(){box.classList.remove('open');box.setAttribute('aria-hidden','true');boxImg.src='';}
+  box.addEventListener('click',close);
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
+})();
+</script>
+
+<script src="../../image-interactions.js"></script>
+
+<!-- 官網共用：滑鼠暖光暈 + 導航列漢堡選單 -->
+<script src="../../spotlight.js"></script>
+
+<!-- 文章自動互聯（相關文章）：兩支已內建，順序不可顛倒，不用再另外加 -->
+<script src="../../articles-data.js"></script>
+<script src="../../related-render.js"></script>
+  <script src="/mika-chat-widget.js" defer></script>
+  <script src="/member-comments.js" defer></script>
+<!-- tracking:cloudflare -->
+<script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "c3e3c857121d416ab405270557d017d3"}'></script>
+<!-- tracking:views-counter -->
+<script src="/views.js"></script>
+</body>
+</html>
