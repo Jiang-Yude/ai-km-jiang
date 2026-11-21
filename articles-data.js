@@ -61,6 +61,25 @@ window.ARTICLES = [
   },
 
   {
+    id: "ai-memory-not-shared-agents-md",
+    url: "articles/ai-memory-not-shared-agents-md/",
+    date: "2026-11-20",
+    updated: "2026-11-20",
+    title: "請 AI 記住的工作規則，換一家 AI 怎麼就不知道了？｜AI 的記憶不是共用的，規則寫進 AGENTS.md，會讀這份檔的 AI 開工先讀",
+    problem: "請某一家 AI 記住工作規則，換成另一家 AI 就不知道，同一條規則要重教好幾次。",
+    audience: "同時用兩家以上 AI，或正想換一家 AI，不想每次重教規則的知識工作者。",
+    summary: "AI 的記憶不是共用的，ChatGPT、Claude、Codex 各存各的。這篇整理規則可以放的三個地方（對話、AI 自己的記憶、工作資料夾裡的檔案）、一段可以直接複製的提示詞（請 AI 不只自己記，要記在 AGENTS.md 或技能包）、AGENTS.md 是什麼，以及 Codex、反重力（Antigravity）、Cursor、Claude Code、Gemini CLI 各自怎麼讀到它，附 Claude Code 與 Gemini CLI 的設定寫法、AGENTS.md 與技能包怎麼分、三步確認規則有接上，文末有官方文件出處。",
+    tags: {
+      topic: ["AI工作流", "提示詞設計", "技能包設計"],
+      level: ["基礎"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["ai-understands-ei-ha", "after-ai-says-remembered", "claude-skills-knowledge-assets", "rules-need-an-engine", "ai-handoff-instructions", "ai-data-red-lines"],
+    cover: { tall: "images/articles/ai-memory-not-shared-agents-md-01.jpg" }
+  },
+
+  {
     id: "ai-memory-retirement-five-layers",
     url: "articles/ai-memory-retirement-five-layers/",
     date: "2026-11-20",
@@ -853,7 +872,7 @@ window.ARTICLES = [
       content_type: ["觀點文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["rule-file-rebound", "ai-rule-file-slimming", "how-to-verify-ai-rule-changes", "what-is-loop-engineering", "copied-mechanism-is-no-mechanism", "caught-ai-slacking-into-rules", "ai-employee-tests-new-tools", "run-with-ai-first-then-script", "ai-worktree-disk-cleanup", "ai-employee-ask-before-act", "claude-or-chatgpt-rules-first", "ai-memory-retirement-five-layers", "how-i-teach-ai-to-edit-video"],
+    related: ["rule-file-rebound", "ai-rule-file-slimming", "how-to-verify-ai-rule-changes", "what-is-loop-engineering", "copied-mechanism-is-no-mechanism", "caught-ai-slacking-into-rules", "ai-employee-tests-new-tools", "run-with-ai-first-then-script", "ai-worktree-disk-cleanup", "ai-employee-ask-before-act", "claude-or-chatgpt-rules-first", "ai-memory-retirement-five-layers", "how-i-teach-ai-to-edit-video", "ai-memory-not-shared-agents-md"],
     cover: { wide: "images/articles/rules-need-an-engine-cover.jpg" }
   },
 
@@ -1157,7 +1176,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["at-a-glance", "build-your-own-dictionary", "semantic-rules-before-prompt-templates", "ai-handoff-instructions", "ai-rule-file-slimming"],
+    related: ["at-a-glance", "build-your-own-dictionary", "semantic-rules-before-prompt-templates", "ai-handoff-instructions", "ai-rule-file-slimming", "ai-memory-not-shared-agents-md"],
     cover: { wide: "images/articles/ai-understands-ei-ha-cover.jpg" }
   },
 
@@ -1556,7 +1575,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["openrouter-deepseek-data-routing", "ai-loop-safety-recovery", "ai-usage-audit", "ai-batch-work-without-seeing-data", "audrey-tang-reverse-alignment", "pii-shield"],
+    related: ["openrouter-deepseek-data-routing", "ai-loop-safety-recovery", "ai-usage-audit", "ai-batch-work-without-seeing-data", "audrey-tang-reverse-alignment", "pii-shield", "ai-memory-not-shared-agents-md"],
     cover: { wide: "images/articles/ai-data-red-lines-cover.jpg" }
   },
 
@@ -2623,7 +2642,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["three-levels-of-cross-review", "long-document-review-layers", "before-installing-others-skill", "mobile-to-desktop-publish-loop", "cognitive-debt", "eight-ai-system-concepts-2026", "loop-round-limit"]
+    related: ["three-levels-of-cross-review", "long-document-review-layers", "before-installing-others-skill", "mobile-to-desktop-publish-loop", "cognitive-debt", "eight-ai-system-concepts-2026", "loop-round-limit", "ai-memory-not-shared-agents-md"]
   },
 
   {
@@ -3134,7 +3153,7 @@ window.ARTICLES = [
       content_type: ["案例文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["handoff-continue-or-replace", "dual-track-planning-loop", "loop-engineering-guardrails", "how-to-train-your-ai-employee", "intent-first-prompting", "rule-file-rebound", "long-task-completion-rate", "session-messaging-reminder-layer", "audrey-tang-reverse-alignment", "ai-understands-ei-ha", "ai-employee-ask-before-act", "skill-pack-three-layers"]
+    related: ["handoff-continue-or-replace", "dual-track-planning-loop", "loop-engineering-guardrails", "how-to-train-your-ai-employee", "intent-first-prompting", "rule-file-rebound", "long-task-completion-rate", "session-messaging-reminder-layer", "audrey-tang-reverse-alignment", "ai-understands-ei-ha", "ai-employee-ask-before-act", "skill-pack-three-layers", "ai-memory-not-shared-agents-md"]
   },
 
   {
@@ -4330,7 +4349,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["semantic-rules-before-prompt-templates", "ai-data-organization-usable-system", "manage-ai-with-management-knowledge", "chatgpt-work-skills-web-version", "old-prompts-intent-first-loop-engineering", "ai-employee-four-levels", "use-more-ai-not-enough", "ai-adoption-start-with-one-workflow", "one-sentence-ai-website-workflow", "one-sentence-video-to-deep-article", "ai-retrieval-pages-backlinks", "skill-pack-three-layers", "claude-beat-synced-video", "tacit-knowledge-to-your-own-ai"]
+    related: ["semantic-rules-before-prompt-templates", "ai-data-organization-usable-system", "manage-ai-with-management-knowledge", "chatgpt-work-skills-web-version", "old-prompts-intent-first-loop-engineering", "ai-employee-four-levels", "use-more-ai-not-enough", "ai-adoption-start-with-one-workflow", "one-sentence-ai-website-workflow", "one-sentence-video-to-deep-article", "ai-retrieval-pages-backlinks", "skill-pack-three-layers", "claude-beat-synced-video", "tacit-knowledge-to-your-own-ai", "ai-memory-not-shared-agents-md"]
   },
 
   {
