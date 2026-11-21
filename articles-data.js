@@ -61,6 +61,24 @@ window.ARTICLES = [
   },
 
   {
+    id: "youtube-english-dub-own-voice",
+    url: "articles/youtube-english-dub-own-voice/",
+    date: "2026-11-22",
+    updated: "2026-11-22",
+    title: "YouTube 中文影片怎麼做英文版？｜AI 克隆自己的聲音講英文，讓內容試著走向國際",
+    problem: "中文內容想讓更多人看到，甚至跨出台灣，但不想重拍英文版、不想另開英文頻道。",
+    audience: "做自媒體的人、對 AI 配音好奇的人，以及中文平台都有了、在想要不要試英文的一人公司。",
+    summary: "YouTube 同一支影片現在可以掛英文音軌，AI 也能克隆自己的聲音講英文。我把一支中文 Shorts 加上英文版，也剪了一支短影音比較兩種做法：付費雲端的 Google Gemini 與本機免費的 Qwen3-TTS。我做英文版，是想開始跟國外的內容交流。附中英文平台分工圖（中文平台發中文、YouTube 掛英文音軌、X 與 LinkedIn 直接發英文），以及想試的第一步。效果還在實驗。",
+    tags: {
+      topic: ["AI應用", "工具操作", "品牌資產"],
+      level: ["基礎"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["ai-voice-clone-taiwan-accent", "gemini-tts-rate-limit", "site-social-interlink"]
+  },
+
+  {
     id: "ai-memory-not-shared-agents-md",
     url: "articles/ai-memory-not-shared-agents-md/",
     date: "2026-11-20",
@@ -208,7 +226,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["ai-voice-clone-taiwan-accent", "api-key-dont-paste-to-ai", "cloudflare-free-plan-limits", "ai-image-api-cost"],
+    related: ["ai-voice-clone-taiwan-accent", "api-key-dont-paste-to-ai", "cloudflare-free-plan-limits", "ai-image-api-cost", "youtube-english-dub-own-voice"],
     cover: { wide: "images/articles/gemini-tts-rate-limit-cover.jpg" }
   },
 
@@ -227,7 +245,7 @@ window.ARTICLES = [
       content_type: ["觀點文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["learn-obsidian-mechanism", "market-to-ai", "ai-retrieval-pages-backlinks"],
+    related: ["learn-obsidian-mechanism", "market-to-ai", "ai-retrieval-pages-backlinks", "youtube-english-dub-own-voice"],
     cover: { wide: "images/articles/site-social-interlink-cover.jpg" }
   },
 
@@ -341,7 +359,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["claude-beat-synced-video", "google-ai-pro-api-credits", "api-key-dont-paste-to-ai", "before-installing-others-skill", "debate-summary-video-prompts", "google-ai-pro-colab-flow-short-video"],
+    related: ["claude-beat-synced-video", "google-ai-pro-api-credits", "api-key-dont-paste-to-ai", "before-installing-others-skill", "debate-summary-video-prompts", "google-ai-pro-colab-flow-short-video", "youtube-english-dub-own-voice"],
     cover: { wide: "images/articles/ai-voice-clone-taiwan-accent-hero.jpg" }
   },
 
