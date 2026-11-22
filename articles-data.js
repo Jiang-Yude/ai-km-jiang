@@ -23,6 +23,25 @@ window.ARTICLE_TAGS = {
 
 window.ARTICLES = [
   {
+    id: "ai-checks-line-oa-inbox",
+    url: "articles/ai-checks-line-oa-inbox/",
+    date: "2026-11-22",
+    updated: "2026-11-22",
+    title: "讓 AI 幫我盯官方 LINE，一登出就斷？｜我讓它自己按登入，和我為什麼敢交給它",
+    problem: "讓 AI 幫忙整理訊息，官方 LINE 後台卻常自己登出，自己又忘記按登入，訊息漏看好幾天。",
+    audience: "已經讓 AI 幫忙收訊息、整理報告，想知道哪些事可以放心交給 AI 自己做的人。",
+    summary: "我讓 AI 秘書每天早晚整理各平台的訊息，官方 LINE 後台卻會自己登出，我又常忘記按登入，那幾天就漏看。現在讓 AI 用 ego lite 自己按登入、只看不回，還會提醒我看過沒回的訊息。這篇講做法、哪些資料會送給 AI、為什麼寫成腳本比較省，以及我為什麼敢交給它。",
+    tags: {
+      topic: ["AI工作流", "工具操作"],
+      level: ["基礎"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["make-your-ai-secretary", "claude-in-chrome-upload-video", "loop-engineering-guardrails", "ai-agent-when-computer-off", "ai-data-red-lines"],
+    cover: { wide: "images/articles/ai-checks-line-oa-inbox-cover.jpg" }
+  },
+
+  {
     id: "how-i-teach-ai-to-edit-video",
     url: "articles/how-i-teach-ai-to-edit-video/",
     date: "2026-11-22",
@@ -397,7 +416,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["agent-web-turning-point", "how-ai-connects-software", "agent-workflow-builds-automation", "ai-era-websites-for-agents", "claude-beat-synced-video"],
+    related: ["agent-web-turning-point", "how-ai-connects-software", "agent-workflow-builds-automation", "ai-era-websites-for-agents", "claude-beat-synced-video", "ai-checks-line-oa-inbox"],
     cover: { wide: "images/articles/claude-in-chrome-upload-video-cover.jpg" }
   },
 
@@ -1935,7 +1954,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["grok-bot-galaxy-day2-workshops"],
+    related: ["grok-bot-galaxy-day2-workshops", "ai-checks-line-oa-inbox"],
     cover: { tall: "images/articles/make-your-ai-secretary-cover.jpg" }
   },
 
@@ -3429,7 +3448,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["what-is-loop-engineering", "harness-mindset-for-bosses", "ai-loop-safety-recovery", "dual-track-planning-loop", "ai-handoff-instructions", "long-task-completion-rate", "meeting-into-verifiable-loop", "loop-round-limit", "how-to-verify-ai-rule-changes", "loop-four-entries", "ai-employee-tests-new-tools", "ai-employee-ask-before-act"]
+    related: ["what-is-loop-engineering", "harness-mindset-for-bosses", "ai-loop-safety-recovery", "dual-track-planning-loop", "ai-handoff-instructions", "long-task-completion-rate", "meeting-into-verifiable-loop", "loop-round-limit", "how-to-verify-ai-rule-changes", "loop-four-entries", "ai-employee-tests-new-tools", "ai-employee-ask-before-act", "ai-checks-line-oa-inbox"]
   },
 
   {

@@ -1,0 +1,388 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="light">
+<meta name="robots" content="index,follow">
+<title>讓 AI 幫我盯官方 LINE，一登出就斷？｜我讓它自己按登入，和我為什麼敢交給它</title>
+<meta name="description" content="我讓 AI 秘書每天早晚整理各平台的訊息，官方 LINE 後台卻會自己登出，我又常忘記按登入，那幾天就漏看。現在讓 AI 用 ego lite 自己按登入、只看不回，還會提醒我看過沒回的訊息。這篇講做法、哪些資料會送給 AI、為什麼寫成腳本比較省，以及我為什麼敢交給它。">
+<link rel="canonical" href="https://jiangyude.com/articles/ai-checks-line-oa-inbox/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="讓 AI 幫我盯官方 LINE，一登出就斷？｜我讓它自己按登入，和我為什麼敢交給它｜江江教練">
+<meta property="og:image" content="https://jiangyude.com/images/og/ai-checks-line-oa-inbox.jpg">
+<meta property="og:description" content="我讓 AI 秘書每天早晚整理各平台的訊息，官方 LINE 後台卻會自己登出，我又常忘記按登入，那幾天就漏看。現在讓 AI 用 ego lite 自己按登入、只看不回，還會提醒我看過沒回的訊息。這篇講做法、哪些資料會送給 AI、為什麼寫成腳本比較省，以及我為什麼敢交給它。">
+<meta property="og:url" content="https://jiangyude.com/articles/ai-checks-line-oa-inbox/">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:site_name" content="江江教練 · AI 知識管理">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="讓 AI 幫我盯官方 LINE，一登出就斷？｜我讓它自己按登入，和我為什麼敢交給它｜江江教練">
+<meta name="twitter:image" content="https://jiangyude.com/images/og/ai-checks-line-oa-inbox.jpg">
+<meta name="twitter:description" content="我讓 AI 秘書每天早晚整理各平台的訊息，官方 LINE 後台卻會自己登出，我又常忘記按登入，那幾天就漏看。現在讓 AI 用 ego lite 自己按登入、只看不回，還會提醒我看過沒回的訊息。這篇講做法、哪些資料會送給 AI、為什麼寫成腳本比較省，以及我為什麼敢交給它。">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"讓 AI 幫我盯官方 LINE，一登出就斷？｜我讓它自己按登入，和我為什麼敢交給它","description":"我讓 AI 秘書每天早晚整理各平台的訊息，官方 LINE 後台卻會自己登出，我又常忘記按登入，那幾天就漏看。現在讓 AI 用 ego lite 自己按登入、只看不回，還會提醒我看過沒回的訊息。這篇講做法、哪些資料會送給 AI、為什麼寫成腳本比較省，以及我為什麼敢交給它。","author":{"@type":"Person","@id":"https://jiangyude.com/#person","name":"江昱德","alternateName":"江江教練","jobTitle":"AI 教練","url":"https://jiangyude.com/","sameAs":["https://www.threads.com/@jiang_yude_coach","https://vocus.cc/salon/Jiang_Coach","https://github.com/Jiang-Yude","https://www.youtube.com/@aipkmcc","https://www.instagram.com/jiang_yude_coach/"]},"isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://jiangyude.com/"},"inLanguage":"zh-Hant","url":"https://jiangyude.com/articles/ai-checks-line-oa-inbox/"}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{--ink:#1a1612;--paper:#fefcf8;--muted:#6a635a;--line:#d8cdb8;--green:#5f7553;--blue:#5689b8;--orange:#e85a4f;--soft:#faf5ec;--dark:#2a2018;--shadow:0 18px 45px rgba(107,74,42,.14);--sp-shadow:hsla(35,50%,60%,.15);--sp-shadow-edge:hsla(35,50%,68%,.03);--sp-radius:400px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC","Segoe UI",sans-serif}
+a{color:inherit}
+/* 官網共用導航列 nav.top（與首頁/文章總站同一條） */
+nav.top{position:sticky;top:0;background:rgba(254,252,248,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid #d8cdb8;z-index:100}
+nav.top .container{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:24px;padding:14px 32px}
+.nav-brand-img{justify-self:start;display:flex;align-items:center;text-decoration:none;flex-shrink:0;transition:opacity .2s}
+.nav-brand-img:hover{opacity:.8}.nav-brand-img img{height:40px;width:auto;display:block}
+nav.top ul.nav-menu{justify-self:end;display:flex;gap:22px;list-style:none;margin:0;padding:0;font-size:.95rem;white-space:nowrap}
+nav.top ul.nav-menu a{color:#3a342d;text-decoration:none;transition:color .2s;font-weight:500;white-space:nowrap}
+nav.top ul.nav-menu a:hover{color:#1a1612}nav.top ul.nav-menu a.active{color:#1a1612;font-weight:700}
+.nav-toggle{display:none;background:none;border:none;padding:6px;cursor:pointer;width:36px;height:36px;position:relative}
+.nav-toggle span{display:block;position:absolute;left:8px;right:8px;height:2px;background:#1a1612;border-radius:2px;transition:transform .25s,opacity .25s,top .25s}
+.nav-toggle span:nth-child(1){top:11px}.nav-toggle span:nth-child(2){top:17px}.nav-toggle span:nth-child(3){top:23px}
+.nav-toggle.open span:nth-child(1){top:17px;transform:rotate(45deg)}.nav-toggle.open span:nth-child(2){opacity:0}.nav-toggle.open span:nth-child(3){top:17px;transform:rotate(-45deg)}
+.tablewrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:22px 0;border:1px solid var(--line);border-radius:10px;background:#fff;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.tablewrap table{border-collapse:collapse;width:100%;min-width:600px;font-size:18px;line-height:1.65}
+.tablewrap .zh{display:block;margin-top:5px;font-size:16px;line-height:1.55;color:var(--muted);font-weight:400}
+.tablewrap th,.tablewrap td{padding:12px 14px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top;color:#3a342d}
+.tablewrap thead th{background:var(--soft);font-weight:900;font-size:18px;color:#1a1612;white-space:nowrap}
+.tablewrap tbody tr:last-child td{border-bottom:none}
+.tablewrap td code,.section code{background:var(--soft);border:1px solid var(--line);border-radius:5px;padding:1px 6px;font:500 15px/1.5 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace}
+.inline-figure.wide{max-width:1000px}
+.inline-figure.portrait{max-width:430px}
+.toc{margin:26px 0 0;padding:20px 22px;background:#fff;border:1px solid var(--line);border-radius:10px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.toc>b{display:block;font-size:15px;letter-spacing:.05em;color:var(--green);margin-bottom:10px}
+.toc ol{margin:0;padding-left:1.35em;font-size:18px;line-height:1.7}
+.toc li{margin-bottom:7px;color:#3a342d}
+.toc a{color:var(--blue);font-weight:700;text-decoration:none}.toc a:hover{text-decoration:underline}
+.toc-hint{margin:12px 0 0!important;font-size:18px!important;color:var(--muted)!important;border-top:1px solid var(--line);padding-top:12px}
+.readmore{margin-top:24px;padding:20px 22px;background:var(--soft);border:1px solid var(--line);border-radius:12px}
+.readmore.near{margin:26px 0 6px;background:rgba(86,137,184,.07);border-color:#bcd0e2}
+.readmore.near b{color:var(--blue);font-size:18px}
+.readmore.near li{font-size:17px;line-height:1.7;margin-bottom:10px}
+.readmore b{display:block;margin-bottom:10px;font-size:19px}
+.readmore ul{margin:0;padding-left:1.25em}
+.readmore a{color:var(--blue);font-weight:700;text-decoration:none}
+.readmore a:hover{text-decoration:underline}
+@media(max-width:820px){.tablewrap table{min-width:560px;font-size:18px}.tablewrap{position:relative}.tablewrap::after{content:"表格可左右滑動 →";position:sticky;left:0;display:block;font-size:15px;color:var(--muted);background:var(--soft);border-top:1px solid var(--line);padding:7px 12px;width:100%}}
+@media(max-width:860px){
+ nav.top .container{grid-template-columns:auto 1fr auto;padding:10px 16px;gap:12px}
+ .nav-brand-img img{height:32px}
+ .nav-toggle{display:block;justify-self:end}
+ nav.top ul.nav-menu{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(254,252,248,.98);backdrop-filter:blur(14px);border-bottom:1px solid #d8cdb8;flex-direction:column;gap:0;padding:8px 0;box-shadow:0 10px 24px rgba(107,74,42,.08)}
+ nav.top ul.nav-menu.open{display:flex}
+ nav.top ul.nav-menu li{border-bottom:1px solid #e8dfc9}
+ nav.top ul.nav-menu li:last-child{border-bottom:none}
+ nav.top ul.nav-menu a{display:block;padding:14px 20px;font-size:1.06rem}
+}
+/* 滑鼠暖光暈（與首頁同一支 spotlight.js） */
+body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradient(var(--sp-radius) circle at var(--mx,50%) var(--my,50%),var(--sp-shadow) 0%,var(--sp-shadow-edge) 45%,transparent 75%);pointer-events:none;z-index:9999;mix-blend-mode:multiply;transition:background .06s linear}
+.hero{position:relative;overflow:hidden;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:72px;padding:96px clamp(20px,6vw,88px) 80px;background:linear-gradient(180deg,#fffcf0 0%,#f9e9d2 100%);color:#1a1612;border-bottom:1px solid #d8cdb8}
+.hero .wc{position:absolute;border-radius:50%;filter:blur(60px);pointer-events:none;z-index:0}
+.hero .wc1{width:420px;height:360px;top:-120px;right:-80px;background:#e8884b;opacity:.15}
+.hero .wc2{width:360px;height:300px;bottom:-110px;left:-70px;background:#5f7553;opacity:.13}
+.hero .wc3{width:280px;height:260px;top:34%;left:14%;background:#a08144;opacity:.10}
+.hero>div{flex:none;width:860px;max-width:100%;position:relative;z-index:2}
+.hero-figure{margin:0;width:620px;flex:none;position:relative;z-index:2}
+.hero-figure img{display:block;width:100%;height:auto;border-radius:16px;border:1px solid #d8cdb8;box-shadow:0 18px 45px rgba(107,74,42,.16);cursor:zoom-in}
+.hero-figure figcaption{margin-top:10px;font-size:14px;line-height:1.6;color:#6a635a}
+.inline-figure{margin:30px auto 8px;max-width:820px}
+.inline-figure img{display:block;width:100%;height:auto;border-radius:14px;border:1px solid var(--line);box-shadow:var(--shadow);background:#fff;cursor:zoom-in}
+.inline-figure figcaption{font-size:14px;line-height:1.6;color:var(--muted);margin-top:10px}
+.lightbox{position:fixed;inset:0;z-index:10000;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(12,10,8,.92);cursor:zoom-out;backdrop-filter:blur(4px)}
+.lightbox.open{display:flex}.lightbox img{max-width:96vw;max-height:92vh;border-radius:10px;box-shadow:0 24px 60px rgba(0,0,0,.5)}
+.lightbox-close{position:fixed;top:18px;right:24px;color:#fff;font-size:34px;line-height:1;font-weight:700;cursor:pointer;opacity:.85}
+.kicker{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.55rem;color:#7a5c3a;font-weight:500}
+.hero h1{max-width:none;margin:16px 0 18px;font-size:clamp(36px,6vw,72px);line-height:1.08;overflow-wrap:anywhere}
+.hero p{max-width:none;font-size:clamp(18px,2vw,23px);line-height:1.62;color:#3a342d}
+.cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
+.cta a{display:inline-flex;align-items:center;text-decoration:none;border-radius:8px;padding:12px 16px;font-weight:900}
+.cta .primary{background:#fff;color:#1a1612}.cta .ghost{border:1px solid rgba(255,255,255,.32);color:#fff;background:rgba(255,255,255,.08)}
+.section{padding:54px clamp(20px,6vw,88px);border-top:1px solid var(--line)}
+.inner{width:min(1000px,100%);margin:0 auto}
+.section h2{font-size:clamp(26px,4.2vw,48px);line-height:1.12;margin:0 0 18px}
+.section h3{font-size:clamp(21px,3vw,30px);line-height:1.2;margin:30px 0 12px}
+.lead{font-size:clamp(18px,1.6vw,22px);line-height:1.7;color:#3a342d;max-width:900px}
+.section p{font-size:18px;line-height:1.74;color:#3a342d}.section p+p{margin-top:14px}
+.section ul,.section ol{padding-left:1.4em;font-size:18px;line-height:1.74;color:#3a342d}.section li{margin-bottom:8px}
+.meaning{margin:22px 0;padding:16px 18px;border-left:5px solid var(--blue);background:rgba(86,137,184,.12);border-radius:6px;line-height:1.7;font-size:19px}
+.meaning b{display:block;color:var(--blue);margin-bottom:4px}
+.caveat{margin:0 0 8px;padding:16px 18px;border-left:5px solid var(--orange);background:rgba(232,90,79,.1);border-radius:6px;line-height:1.7;font-size:18px;color:#3a342d}
+.caveat b{display:block;color:var(--orange);margin-bottom:4px}
+.infocard{background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px 24px 22px;box-shadow:0 8px 22px rgba(107,74,42,.08);margin-top:8px}
+.infocard-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.info-item{padding:18px 14px 0}
+.info-item b{display:block;font-size:14px;font-weight:900;letter-spacing:.04em;margin-bottom:7px;text-transform:uppercase}
+.info-item:nth-child(1) b{color:var(--green)}.info-item:nth-child(2) b{color:var(--orange)}.info-item:nth-child(3) b{color:var(--blue)}
+.info-item p{margin:0;font-size:17px;line-height:1.6;color:#3a342d}
+.tagrow{display:flex;flex-wrap:wrap;gap:7px;margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
+.tag{font-size:14px;color:var(--muted);background:var(--soft);border:1px solid var(--line);border-radius:999px;padding:4px 11px}
+.duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:24px}
+.duo.stack{grid-template-columns:1fr}
+.duo .card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:22px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.duo .card.a{border-color:var(--orange)}.duo .card.b{border-color:var(--green);box-shadow:0 8px 24px rgba(95,117,83,.16)}
+.duo .card small{display:block;font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.04em;margin-bottom:9px}
+.duo .card.a small{color:var(--orange)}.duo .card.b small{color:var(--green)}
+.duo .card b{display:block;font-size:22px;line-height:1.3;margin-bottom:12px}.duo .card.a b{color:#c0512f}.duo .card.b b{color:#4a7a59}
+.duo .card p{margin:0;color:#3a342d;line-height:1.75;font-size:18px}
+.workflow-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:24px}
+.workflow-step{background:#fff;border:1px solid var(--line);border-radius:8px;padding:18px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.workflow-step small{display:block;color:var(--orange);font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;margin-bottom:9px}
+.workflow-step b{display:block;font-size:18px;line-height:1.3;margin-bottom:9px}
+.workflow-step p{margin:0;color:#3a342d;line-height:1.6;font-size:16px}
+.codeblock{background:var(--dark);color:#f3ead9;border-radius:8px;padding:18px 20px;font:500 14px/1.65 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;overflow-x:auto;white-space:pre-wrap;margin:20px 0;box-shadow:0 8px 22px rgba(107,74,42,.12)}
+.codeblock .c{color:#f6d7a6;font-weight:600}
+.skillcard{background:#fff;border:1px solid var(--green);border-radius:12px;padding:24px;box-shadow:0 10px 26px rgba(95,117,83,.16);margin-top:8px}
+.skillcard b{display:block;font-size:21px;margin-bottom:8px}
+.skillcard p{margin:0 0 16px;font-size:17px;line-height:1.65;color:#3a342d}
+.cta-band{background:#e6f0e5;color:#3a342d}.cta-band .section{border-top:none}
+.cta-band .inner{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(260px,.85fr);gap:26px;align-items:start}
+.cta-band h2{font-size:clamp(26px,4vw,44px);margin:0 0 16px}.cta-band p,.cta-band .lead{color:rgba(58,52,45,.9);font-size:18px;line-height:1.72}
+.cta-card{border:1px solid #cfe0d2;background:#fbfdfa;border-radius:8px;padding:22px}
+.cta-card b{display:block;color:#48b178;margin-bottom:10px;font-size:18px}.cta-card p{margin:0 0 14px}
+.footer{padding:30px clamp(20px,6vw,88px);font-size:14px;color:var(--muted);background:#fff;border-top:1px solid var(--line)}
+.footer-inner{width:min(1000px,100%);margin:0 auto}
+.footer-links{display:flex;flex-wrap:wrap;gap:6px 12px;margin-bottom:14px}.footer-links a{color:var(--blue);font-weight:900;text-decoration:none;font-size:14px}
+.footer-brand{font-weight:900;font-size:15px;margin-bottom:10px}.footer-note{font-size:13px;line-height:1.6}
+@media(max-width:820px){.inline-figure.portrait{max-width:340px}.infocard-grid{grid-template-columns:1fr}.duo{grid-template-columns:1fr}.workflow-grid{grid-template-columns:1fr}.cta-band .inner{grid-template-columns:1fr}.section{padding:40px 20px}.hero{min-height:52vh;flex-direction:column;justify-content:flex-start;align-items:flex-start;gap:24px}.hero>div{width:100%}.hero-figure{width:100%;max-width:560px}}
+@media(max-width:820px){html,body{overflow-x:hidden}.hero h1{word-break:break-word}}
+/* 直式圖左右排（02-design-system「直式圖在桌機的左右排版」）：輪播卡上官網預設用 .media-row，圖左圖右看段落交替；連續兩張用 .figure-pair */
+.figure-pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;margin:30px auto 8px;max-width:820px}.figure-pair .inline-figure{margin:0;max-width:none}@media(max-width:640px){.figure-pair{grid-template-columns:1fr}.figure-pair .inline-figure{max-width:340px;margin:0 auto}}
+.media-row{display:grid;grid-template-columns:minmax(0,340px) minmax(0,1fr);gap:36px;align-items:center;margin:28px 0}.media-row.img-right{grid-template-columns:minmax(0,1fr) minmax(0,340px)}.media-row .inline-figure{margin:0;max-width:none}.media-row .media-text>*:first-child{margin-top:0}.media-row .media-text>*:last-child{margin-bottom:0}@media(max-width:820px){.media-row,.media-row.img-right{grid-template-columns:1fr;gap:18px}.media-row.img-right .media-fig{order:-1}.media-row .inline-figure{max-width:340px;margin:0 auto}}
+/* 本篇：標題超過 20 字，縮字級並收窄文字欄，避免把封面擠下去（02-design-system） */
+.hero{gap:40px}
+.hero h1{font-size:clamp(28px,2.7vw,38px);line-height:1.2;margin:12px 0 16px}
+.hero p{font-size:clamp(17px,1.3vw,19px);line-height:1.65}
+.hero .kicker{font-size:1.25rem}
+.hero>div:not(.wc){width:500px}
+.hero-figure{width:440px}
+@media(max-width:1160px){.hero{flex-direction:column;align-items:flex-start;gap:28px}.hero>div:not(.wc){width:100%;max-width:900px}.hero-figure{width:100%;max-width:640px}}
+.workflow-grid{grid-template-columns:repeat(auto-fit,minmax(180px,1fr))}
+.section a.ext{color:var(--blue);font-weight:700;text-decoration:none}
+/* 本篇：五張卡一排（五個理由、STEP 1 到 5），窄螢幕再往下排 */
+.workflow-grid.five{grid-template-columns:repeat(5,minmax(0,1fr))}
+@media(max-width:1000px){.workflow-grid.five{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:560px){.workflow-grid.five{grid-template-columns:1fr}}
+</style>
+</head>
+<body class="spotlight">
+<!-- 官網共用導航列 nav.top：與首頁/總站同一條，文章不要自己另做極簡 topbar（江江 2026-06-25：要同一個框架、同一條導航列）。把對應頁面的 class="active" 標在自己那欄。
+     ⚠️ 下面 ul.nav-menu 整塊由 preflight 第 5 關 check-bilingual-nav.mjs 做「逐字比對」，
+        塞任何註解、多一個空白、換行位置不同都會被判導航不一致而擋下發布。要說明就寫在 <ul> 外面（像這裡）。
+        2026-08-16 修：原本的 EN 那行說明註解就夾在 <ul> 裡面，導致照範本起手的新文章一律卡第 5 關
+        （llm-rag-agent-mcp 與 rag-three-retrieval-modes 兩篇同時中招）。註解已移出來，<ul> 內保持乾淨。
+        萬一還是被擋，直接跑：node scripts/check-bilingual-nav.mjs --write --only=<你的檔案路徑> -->
+<nav class="top">
+  <div class="container">
+    <a class="nav-brand-img" href="../../index.html"><img src="../../images/footer-signature.png" alt="江江教練 | 江昱德"></a>
+    <button class="nav-toggle" aria-label="選單"><span></span><span></span><span></span></button>
+    <ul class="nav-menu">
+      <li><a href="../../index.html">首頁</a></li>
+      <li><a href="../../offers.html">付費服務</a></li>
+      <li><a href="../../courses.html">各式講座</a></li>
+      <li><a href="../../articles.html" class="active">教學文章</a></li>
+      <li><a href="../../knowledge-architecture.html">知識架構</a></li>
+      <li><a href="../../skills.html">小工具</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="wc wc1"></div>
+  <div class="wc wc2"></div>
+  <div class="wc wc3"></div>
+  <div>
+    <div class="kicker">AI 工作流 / 資訊安全</div>
+    <h1>讓 AI 幫我盯官方 LINE，一登出就斷？｜我讓它自己按登入，和我為什麼敢交給它</h1>
+    <p>我讓 AI 秘書每天整理各平台的訊息，官方 LINE 卻常因為登出而讀不到。這篇講我怎麼讓它自己按登入、提醒我看過沒回的訊息，以及我敢交給它的五個理由。</p>
+  </div>
+  <figure class="hero-figure">
+    <img src="../../images/articles/ai-checks-line-oa-inbox-cover.jpg" alt="朵拉按下筆電上的綠色登入鍵，咪卡拿著寫字板看三則還沒回的訊息，標題：讓 AI 幫我自己按登入" loading="lazy">
+    <figcaption>AI 只按綠色的登入鍵，只看不回。</figcaption>
+  </figure>
+</section>
+
+<main>
+<section class="section" id="start"><div class="inner">
+<h2>這篇在講什麼</h2>
+<p class="lead">我的 LINE 官方帳號是對外的聯絡窗口，另外還有 Threads、IG、YouTube 等平台的留言和私訊。手機通知一多就滑掉，點開看過的訊息手機也不會再提醒，所以我讓 AI 秘書每天早晚把這些地方整理成一份報告。問題出在官方帳號的後台網頁會自己登出，我又常忘記按登入，那幾天報告就讀不到官方 LINE。</p>
+<div class="duo stack">
+  <div class="card a"><b>適合誰</b><ul>
+    <li>已經讓 AI 幫你收訊息、整理報告，卻常因為登出而斷掉的人</li>
+    <li>訊息分散在好幾個平台，想要一份總整理的人</li>
+    <li>想知道「哪些事可以放心讓 AI 自己做」的人</li>
+  </ul></div>
+  <div class="card b"><b>你可以帶走什麼</b><ul>
+    <li>讓 AI 自己按登入、只看不回的做法</li>
+    <li>「看過但還沒回」的提醒怎麼判斷</li>
+    <li>我判斷一件事能不能交給 AI 自己做的五個理由，和一段可以直接貼給 AI 的交代</li>
+  </ul></div>
+</div>
+<div class="caveat"><b>如果你只用手機、還沒有能定時跑的 AI</b>先在手機裝 LINE 官方帳號 App、把訊息通知打開就好。這篇的做法要一台一直開著的電腦，加上能定時操作瀏覽器的 AI 工具。就算你不用官方 LINE，後半段「我為什麼敢讓 AI 幫我按登入」的五個理由，換到別的重複動作也用得到。</div>
+<div class="meaning"><b>文中會出現的兩個詞</b>ego lite：Citro Labs 出的瀏覽器，專門給 AI 用，可以免費下載，跟我自己用的 Chrome 分開。<br>秘書早晚報：AI 每天 06:45、16:45 各跑一次，把各平台有人找我的訊息整理成一張待辦卡片。</div>
+<div class="toc"><b>目錄</b><ol>
+  <li><a href="#scene">官方 LINE 一登出，AI 秘書就讀不到，我以為沒人找我</a></li>
+  <li><a href="#how">讓 AI 自己按登入，碰到驗證就停</a></li>
+  <li><a href="#unreplied">看過但還沒回的訊息，每天再提醒一次</a></li>
+  <li><a href="#data">哪些資料會送給 AI，什麼情況不要這樣做</a></li>
+  <li><a href="#token">為什麼比較省：步驟固定就寫成腳本，AI 只讀結果</a></li>
+  <li><a href="#five">我為什麼敢讓 AI 幫我按登入：五個理由</a></li>
+  <li><a href="#prompt">可以直接貼給 AI 的交代，和還沒驗證的地方</a></li>
+</ol></div>
+</div></section>
+
+<section class="section" id="scene"><div class="inner">
+<h2>官方 LINE 一登出，AI 秘書就讀不到，我以為沒人找我</h2>
+<p>AI 秘書讀官方帳號的方式，是打開官方帳號的後台網頁看對話列表。後台的登入會過期，過期之後它打開的是登入頁，沒有訊息可讀。報告第一段會寫「要你登入」，但這一段很容易被我略過；我本來打算每天早上開電腦順手登入，總有幾天會忘。兩件事疊在一起，那幾天就一直讀不到。</p>
+<div class="meaning"><b>我當時的原話</b>「現在最麻煩的，它就是會忘記，然後我有時候也會忘記點，這樣子它就沒有登入，你就搞到兩三天好像都沒有訊息，那其實說明人家是已經等了，這問題必須要解決。」</div>
+</div></section>
+
+<section class="section" id="how"><div class="inner">
+<h2>讓 AI 自己按登入，碰到驗證就停</h2>
+<p>我問 AI 能不能讓秘書自己去登入。它的回答是：LINE 要密碼、行動條碼或驗證碼的時候，哪個 AI 都不該代打；LINE 還記得我的時候，按一下就能進去。所以我只交出「按那顆綠色鍵」這一個動作。</p>
+<div class="media-row">
+  <div class="media-fig"><figure class="inline-figure portrait">
+    <img src="../../images/articles/ai-checks-line-oa-inbox-login.jpg" alt="LINE Business ID 登入頁，綠色「LINE帳號」鍵上方標示上次使用的登入方式" loading="lazy">
+    <figcaption>官方帳號後台被登出時會看到這頁。AI 只准按綠色的「LINE帳號」。</figcaption>
+  </figure></div>
+  <div class="media-text">
+    <p>LINE 記得我的時候，按下去就直接進後台；有時會多一頁「登入」確認，也只按那一顆。</p>
+    <p>其他登入方式都要輸入東西或做驗證，一律不碰。</p>
+  </div>
+</div>
+<div class="workflow-grid five">
+  <div class="workflow-step"><small>STEP 1</small><b>打開後台</b><p>秘書早晚報跑的時候，用 ego lite 打開官方帳號後台。</p></div>
+  <div class="workflow-step"><small>STEP 2</small><b>被登出就按一下</b><p>看到登入頁，只按綠色的「LINE帳號」，和之後那一顆「登入」。</p></div>
+  <div class="workflow-step"><small>STEP 3</small><b>碰到驗證就停</b><p>出現任何輸入欄、行動條碼或驗證碼就停，報告第一段寫「要你登入」。</p></div>
+  <div class="workflow-step"><small>STEP 4</small><b>只看列表</b><p>不點進任何對話，客人的訊息不會變成「已讀」。</p></div>
+  <div class="workflow-step"><small>STEP 5</small><b>整理兩種提醒</b><p>還沒讀的；和我看過但還沒回的。</p></div>
+</div>
+</div></section>
+
+<section class="section" id="unreplied"><div class="inner">
+<h2>看過但還沒回的訊息，每天再提醒一次</h2>
+<p>只看「還沒讀」不夠。我常在手機上點開看了，想說等一下再回，結果忘了；這種訊息已經不是未讀，手機不會再提醒，報告原本也不會。</p>
+<p>現在只要同時符合這三件事，就每天提醒我一次，直到我回了為止：</p>
+<ul>
+  <li>14 天內的對話</li>
+  <li>最後一則是對方傳的，或只有官方帳號的自動回覆</li>
+  <li>我沒在後台把它標成「已完成」</li>
+</ul>
+<p>手機 App 也能自己篩，但我常常滑掉通知、忘了打開 App，加上要顧好幾個平台。早晚報是主動把「還有人在等你」放到我眼前。加上這個提醒之後，當天實測就抓到 3 位看過沒回的對話。</p>
+<div class="readmore near"><b>延伸閱讀</b><ul>
+  <li><a href="../make-your-ai-secretary/">怎麼做一個 AI 小秘書｜Gmail、行事曆、LINE 群的進度都幫你盯著</a>：還沒有 AI 秘書的話，那篇從頭講一個每天幫你看信、看行程的小秘書怎麼設。</li>
+</ul></div>
+</div></section>
+
+<section class="section" id="data"><div class="inner">
+<h2>哪些資料會送給 AI，什麼情況不要這樣做</h2>
+<p>AI 只讀對話列表，不點進對話。列表上每一則會讀到的是：對方的名字、最後一則訊息的開頭、時間。這些會交給雲端的 AI 模型整理，寫進我自己的待辦卡片。</p>
+<div class="caveat"><b>收客戶機密的官方帳號，不建議這樣做</b>如果你的官方帳號會收到報稅資料、病歷、合約這類內容，最後一則訊息的開頭就可能是機密。這種情況，用官方帳號後台的多人管理，讓同事或助理用自己的帳號人工看，比讓雲端 AI 讀列表穩妥。</div>
+<p>另外，瀏覽器一直保持登入，等於把官方帳號後台的鑰匙留在那台電腦上。先確認那台電腦只有你自己在用、離開時會鎖螢幕。</p>
+</div></section>
+
+<section class="section" id="token"><div class="inner">
+<h2>為什麼比較省：步驟固定就寫成腳本，AI 只讀結果</h2>
+<p>這段掃描是事先寫好、照順序自動跑的一小段程式（腳本），交給 ego lite 執行：打開後台、讀列表、整理成清單。過程中不用 AI 一張一張看截圖、決定下一步按哪裡；AI 只在最後讀那份清單，寫成早晚報。AI 每看一張截圖都在用額度（用量單位叫 token），讀一份文字清單用得少很多。</p>
+<div class="duo">
+  <div class="card a"><small>一步一步看畫面</small><b>AI 自己看、自己按</b><p>每一步截圖給 AI 看，AI 想好再按下一步。適合第一次摸索、步驟還沒固定的時候。</p></div>
+  <div class="card b"><small>寫成腳本</small><b>腳本跑，AI 讀結果</b><p>步驟固定之後寫成腳本，瀏覽器照跑，AI 只讀最後的清單。適合每天重複的同一件事。</p></div>
+</div>
+<p>每天兩次、每次八個平台左右，這個差別會累積。ego lite 在這裡的角色，是讓腳本有一個已經登入、又不跟我搶的瀏覽器可以跑，我自己的 Chrome 照常用。為什麼我把 Chrome 留給自己、讓 AI 用 ego lite，我另外寫了一篇（即將上線）。</p>
+<div class="readmore near"><b>延伸閱讀</b><ul>
+  <li><a href="../claude-in-chrome-upload-video/">叫 AI 幫我發文，會被平台封鎖嗎？｜我試過 API、Grok Bot，最後選 Claude in Chrome</a>：這段講 AI 用哪個瀏覽器，那篇講我為什麼讓 AI 走網頁操作，以及我守的界線。</li>
+</ul></div>
+</div></section>
+
+<section class="section" id="five"><div class="inner">
+<h2>我為什麼敢讓 AI 幫我按登入：五個理由</h2>
+<ol>
+  <li>不按的話會漏看訊息，人家在等我回。</li>
+  <li>它跑在我家的 Mac mini 上，不是會帶出門的筆電。</li>
+  <li>它只看訊息，不幫我回。</li>
+  <li>按登入本來就是無腦按，我自己按的時候也沒在檢查。</li>
+  <li>遇到要密碼或驗證碼，它會停下來叫我。</li>
+</ol>
+<p>我覺得最關鍵的是第四個。每天按登入這件事，我自己按的時候也是看都不看就按。這種確認留在我手上，擋不住什麼，只會讓我漏掉訊息。前提是另外四個理由也都成立：它只看不回、只認那兩顆鍵、碰到密碼或驗證碼就停、跑在我自己的電腦上，所以這一步放手的風險很小。</p>
+<p>反過來說，只要其中一個不成立，我就不會交給 AI。換成我會帶出門的筆電、換成要它幫我回訊息、換成我每次都會認真看內容的那一步，都不行。</p>
+<div class="readmore near"><b>延伸閱讀</b><ul>
+  <li><a href="../loop-engineering-guardrails/">AI 一直停下來要授權，怎麼讓它順順跑完？：迴圈護欄的五條規則</a>：這段講什麼事可以一直交給 AI 做，那篇講 AI 連續自動工作時，怎麼讓錯誤不會一路滾下去。</li>
+</ul></div>
+</div></section>
+
+<section class="section" id="prompt"><div class="inner">
+<h2>可以直接貼給 AI 的交代，和還沒驗證的地方</h2>
+<p>前提有三個：①你的 AI 工具能定時執行、能操作瀏覽器（例如 Claude Code 搭配 ego lite）；一般只能聊天的 AI 做不到定時，也可能為了看清楚而點進對話，讓訊息變成已讀 ②那個瀏覽器已經登入過 LINE 官方帳號後台 ③跑在只有你在用的電腦上。第一次先讓它只看、不要按登入，看過再放手。</p>
+<p>下面這段是貼給 AI 的需求。建議請它先陪你手動跑一次，確認步驟對了，再幫你把這五步寫成固定腳本、設定每天早晚自動跑；這樣每天跑的是腳本，AI 只讀結果。</p>
+<div class="codeblock">每天早上和下午，用（你給 AI 用的瀏覽器）打開我的 LINE 官方帳號後台，只看對話列表，不要點進任何對話，不要回覆。列出兩種：還沒讀的；和 14 天內、已讀、沒標「已完成」，但最後一則是對方傳的或只有自動回覆的（我本人還沒回的）。如果被登出，只准按登入頁的「LINE帳號」鍵，和之後出現的那一顆「登入」確認鍵；頁面上出現任何輸入欄、行動條碼或驗證碼就停下來，告訴我要自己登入。</div>
+<h3>這套做法還沒驗證、做不到的地方</h3>
+<ul>
+  <li><b>自動按登入這一段，還沒實際跑過。</b>寫這篇的時候我是登入狀態，還沒遇到被登出的那一輪；跑過之後我會回來補上結果。「看過沒回」提醒已經實測過。</li>
+  <li><b>LINE 要驗證的時候，還是要我自己來。</b>LINE 不記得我了，要掃行動條碼或收驗證碼，AI 會停下來叫我。</li>
+  <li><b>它只看，不幫我回。</b>誰該怎麼回，還是我自己決定。</li>
+  <li><b>只在我家裡這台電腦上跑。</b>這是我交給它的前提，不適用在別的電腦。</li>
+  <li><b>看過沒回只看 14 天內的。</b>超過 14 天的對話不會再提醒。</li>
+  <li><b>幫客戶管官方帳號，這篇沒有涵蓋。</b>這篇只講我自己的帳號；幫客戶做，在誰的電腦跑、授權範圍、資料送給誰，都要另外跟客戶談。</li>
+</ul>
+<div class="readmore">
+  <b>這篇提到過的</b><ul>
+    <li><a href="../make-your-ai-secretary/">怎麼做一個 AI 小秘書｜Gmail、行事曆、LINE 群的進度都幫你盯著</a></li>
+    <li><a href="../claude-in-chrome-upload-video/">叫 AI 幫我發文，會被平台封鎖嗎？｜我試過 API、Grok Bot，最後選 Claude in Chrome</a></li>
+    <li><a href="../loop-engineering-guardrails/">AI 一直停下來要授權，怎麼讓它順順跑完？：迴圈護欄的五條規則</a></li>
+  </ul>
+  <b>再往前後延伸</b><ul>
+    <li><a href="../ai-agent-when-computer-off/">電腦關了，AI 還會幫你做事嗎？</a>：為什麼我讓秘書跑在家裡那台一直開著的電腦上。</li>
+    <li><a href="../ai-data-red-lines/">公司資料可以貼給 AI 嗎？｜先搞清楚這兩條紅線</a>：AI 碰得到你電腦裡的什麼，交出去之前要先想的事。</li>
+  </ul>
+</div>
+</div></section>
+
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">江江教練 · AI 知識管理</div>
+    <div class="footer-links">
+      <a href="../../articles.html">← 回深度文章總站</a>
+      <a href="../../index.html">首頁</a>
+      <a href="../../learn.html">自學資源</a>
+      <a href="../../skills.html">小工具</a>
+      <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">LINE 社群 ↗</a>
+      <a href="https://www.threads.com/@jiang_yude_coach" target="_blank" rel="noopener">Threads ↗</a>
+      <a href="https://vocus.cc/salon/Jiang_Coach" target="_blank" rel="noopener">方格子 ↗</a>
+    </div>
+    <div class="footer-note">這是一篇教學文章，整理我對「讓 AI 幫我盯官方 LINE，一登出就斷？｜我讓它自己按登入，和我為什麼敢交給它」的看法，供你參考。</div>
+  </div>
+</footer>
+
+<!-- 點圖放大 lightbox（hero 與內文圖通用，已內建，不用每篇重加） -->
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <span class="lightbox-close" aria-label="關閉">×</span>
+  <img id="lightbox-img" src="" alt="放大檢視">
+</div>
+<script>
+(function(){
+  var box=document.getElementById('lightbox'),boxImg=document.getElementById('lightbox-img');
+  document.querySelectorAll('.hero-figure img,.inline-figure img').forEach(function(img){
+    img.addEventListener('click',function(){boxImg.src=img.currentSrc||img.src;boxImg.alt=img.alt||'放大檢視';box.classList.add('open');box.setAttribute('aria-hidden','false');});
+  });
+  function close(){box.classList.remove('open');box.setAttribute('aria-hidden','true');boxImg.src='';}
+  box.addEventListener('click',close);
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
+})();
+</script>
+
+<script src="../../image-interactions.js"></script>
+
+<!-- 官網共用：滑鼠暖光暈 + 導航列漢堡選單 -->
+<script src="../../spotlight.js"></script>
+
+<!-- 文章自動互聯（相關文章）：兩支已內建，順序不可顛倒，不用再另外加 -->
+<script src="../../articles-data.js"></script>
+<script src="../../related-render.js"></script>
+  <script src="/mika-chat-widget.js" defer></script>
+  <script src="/member-comments.js" defer></script>
+<!-- tracking:cloudflare -->
+<script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "c3e3c857121d416ab405270557d017d3"}'></script>
+<!-- tracking:views-counter -->
+<script src="/views.js"></script>
+</body>
+</html>
