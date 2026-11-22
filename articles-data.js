@@ -42,6 +42,25 @@ window.ARTICLES = [
   },
 
   {
+    id: "cheap-model-for-chores",
+    url: "articles/cheap-model-for-chores/",
+    date: "2026-11-22",
+    updated: "2026-11-22",
+    title: "每件事都叫最貴的 AI，額度很快就沒了？｜一段話交代 AI：雜事派便宜小模型，難的決策才用最貴的",
+    problem: "查資料、清文件這種小事也叫最貴的 AI 模型，每週額度很快就用完，真正要它幫忙想清楚的時候反而沒得用。",
+    audience: "用 Claude Code、Codex 這類會自己動手的 AI 工具，手上有不只一個模型可以用的人。",
+    summary: "用一次陪跑現場，整理我交代 AI 分工的一段話：上網查資料、整理文件、影片轉文字稿、抓網頁內容這些雜事，派給便宜的小模型 Gemini 4 Hydrogen；要做重要決定、請兩家 AI 互相檢查、文章發出去前抓錯，這種怕出錯的事才用最貴的 Gemini 4 Argon。附可直接複製、把方括號換成自己模型的分工提示詞，這段話的三個重點，照著做的三步，以及確定沒問題後請 AI 把原則記起來、每一家 AI 都要記。",
+    tags: {
+      topic: ["AI工作流", "提示詞設計", "輔助決策"],
+      level: ["基礎"],
+      content_type: ["案例文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["opus-luna-model-division", "dual-track-planning-loop", "ai-memory-not-shared-agents-md", "ai-model-token-efficiency", "token-money-worth-doing"],
+    cover: { wide: "images/articles/cheap-model-for-chores-cover.jpg" }
+  },
+
+  {
     id: "how-i-teach-ai-to-edit-video",
     url: "articles/how-i-teach-ai-to-edit-video/",
     date: "2026-11-22",
@@ -112,7 +131,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["ai-understands-ei-ha", "after-ai-says-remembered", "claude-skills-knowledge-assets", "rules-need-an-engine", "ai-handoff-instructions", "ai-data-red-lines", "youtube-english-dub-own-voice"],
+    related: ["ai-understands-ei-ha", "after-ai-says-remembered", "claude-skills-knowledge-assets", "rules-need-an-engine", "ai-handoff-instructions", "ai-data-red-lines", "youtube-english-dub-own-voice", "cheap-model-for-chores"],
     cover: { tall: "images/articles/ai-memory-not-shared-agents-md-01.jpg" }
   },
 
@@ -1099,7 +1118,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["auto-compact-mod", "ai-model-token-efficiency", "delete-before-automate", "reevaluate-models-same-test", "ai-image-api-cost", "ai-customer-service-api-cost", "pii-shield", "codex-log-health-check", "two-computers-combine-data-icloud", "claude-code-slash-commands"],
+    related: ["auto-compact-mod", "ai-model-token-efficiency", "delete-before-automate", "reevaluate-models-same-test", "ai-image-api-cost", "ai-customer-service-api-cost", "pii-shield", "codex-log-health-check", "two-computers-combine-data-icloud", "claude-code-slash-commands", "cheap-model-for-chores"],
     cover: { wide: "images/articles/token-money-worth-doing-cover.jpg" }
   },
 
@@ -1118,7 +1137,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["new-models-retest-dispatch", "reevaluate-models-same-test", "opus-luna-model-division", "fixed-test-set-for-ai", "ai-customer-service-api-cost", "strong-ai-models-knowledge-workflow-road", "token-money-worth-doing", "doc-analysis-model-test"],
+    related: ["new-models-retest-dispatch", "reevaluate-models-same-test", "opus-luna-model-division", "fixed-test-set-for-ai", "ai-customer-service-api-cost", "strong-ai-models-knowledge-workflow-road", "token-money-worth-doing", "doc-analysis-model-test", "cheap-model-for-chores"],
     cover: { wide: "images/articles/ai-model-token-efficiency-01.jpg" }
   },
 
@@ -1384,7 +1403,7 @@ window.ARTICLES = [
       content_type: ["案例文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["new-models-retest-dispatch", "reevaluate-models-same-test", "ai-cp-value-calculus", "what-are-subagents", "long-answer-three-layers", "meeting-record-agent-workflow", "dual-track-planning-loop", "fixed-test-set-for-ai", "ai-schedule-wake-interval", "ai-customer-service-api-cost", "domain-and-account-ownership", "ai-model-token-efficiency", "ai-customer-service-model-retest", "ai-employee-ask-before-act", "doc-analysis-model-test"],
+    related: ["new-models-retest-dispatch", "reevaluate-models-same-test", "ai-cp-value-calculus", "what-are-subagents", "long-answer-three-layers", "meeting-record-agent-workflow", "dual-track-planning-loop", "fixed-test-set-for-ai", "ai-schedule-wake-interval", "ai-customer-service-api-cost", "domain-and-account-ownership", "ai-model-token-efficiency", "ai-customer-service-model-retest", "ai-employee-ask-before-act", "doc-analysis-model-test", "cheap-model-for-chores"],
     cover: { wide: "images/articles/opus-luna-model-division-cover.jpg" }
   },
 
@@ -3300,7 +3319,7 @@ window.ARTICLES = [
       content_type: ["案例文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["loop-engineering-guardrails", "a2a-agent-protocol", "docs-as-system-design-agent", "ai-handoff-instructions", "long-task-completion-rate", "session-messaging-reminder-layer", "before-installing-others-skill", "parallel-site-editing", "let-ai-review-itself", "reevaluate-models-same-test", "one-sentence-video-to-deep-article", "opus-luna-model-division", "ai-slides-half-auto-google-slides", "pstack-knowledge-workflow"],
+    related: ["loop-engineering-guardrails", "a2a-agent-protocol", "docs-as-system-design-agent", "ai-handoff-instructions", "long-task-completion-rate", "session-messaging-reminder-layer", "before-installing-others-skill", "parallel-site-editing", "let-ai-review-itself", "reevaluate-models-same-test", "one-sentence-video-to-deep-article", "opus-luna-model-division", "ai-slides-half-auto-google-slides", "pstack-knowledge-workflow", "cheap-model-for-chores"],
     cover: { tall: "images/articles/dual-track-planning-loop-cover.jpg" }
   },
 
