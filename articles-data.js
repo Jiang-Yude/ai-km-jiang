@@ -75,7 +75,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["ai-voice-clone-taiwan-accent", "gemini-tts-rate-limit", "site-social-interlink"]
+    related: ["ai-voice-clone-taiwan-accent", "gemini-tts-rate-limit", "site-social-interlink", "ai-memory-not-shared-agents-md"]
   },
 
   {
@@ -93,7 +93,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["ai-understands-ei-ha", "after-ai-says-remembered", "claude-skills-knowledge-assets", "rules-need-an-engine", "ai-handoff-instructions", "ai-data-red-lines"],
+    related: ["ai-understands-ei-ha", "after-ai-says-remembered", "claude-skills-knowledge-assets", "rules-need-an-engine", "ai-handoff-instructions", "ai-data-red-lines", "youtube-english-dub-own-voice"],
     cover: { tall: "images/articles/ai-memory-not-shared-agents-md-01.jpg" }
   },
 
