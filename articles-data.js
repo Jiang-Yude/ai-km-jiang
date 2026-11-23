@@ -36,7 +36,7 @@ window.ARTICLES = [
       level: ["基礎"],
       content_type: ["教學文章"]
     },
-    external: { threads: null, vocus: null },
+    external: { threads: "https://www.threads.com/@jiang_yude_coach/post/DgFYlgtAFg7", vocus: null },
     related: ["character-costume-sheet-three-views", "ai-image-api-cost", "mika-to-laika-product-character-design"],
     cover: { wide: "images/articles/two-characters-one-reference-sheet-cover.jpg" }
   },
