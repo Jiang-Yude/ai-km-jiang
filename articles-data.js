@@ -23,6 +23,25 @@ window.ARTICLE_TAGS = {
 
 window.ARTICLES = [
   {
+    id: "two-characters-one-reference-sheet",
+    url: "articles/two-characters-one-reference-sheet/",
+    date: "2026-11-23",
+    updated: "2026-11-23",
+    title: "讓 AI 把兩個固定角色畫在同一張圖，長相不跑｜兩張角色設定圖拼成一張，生圖從 54 秒變 12 秒",
+    problem: "圖卡裡固定有兩個角色，每生一張圖都要把兩個角色的設定圖各丟一張給 AI 參考，再加畫風樣板，生圖要等快一分鐘。",
+    audience: "圖卡、海報裡固定有兩個以上品牌角色，用 AI 生圖時要讓每張長相都對得上設定圖的人。",
+    summary: "把咪卡和朵拉的角色設定圖（定裝照、三視圖）左右拼成一張參考圖，生圖時只帶這一張加畫風樣板。同一張圖、同模型 gpt-image-2.6-flare、同樣中等畫質實測：參考圖從三張變兩張，生圖從 54 秒變 12 秒，輸入 token 少 33%，一張約省台幣 0.4 元。拼的時候用裁切並排，不請 AI 重畫，長相才會跟原圖一樣。附之前之後流程圖、實測表、拼圖三步驟、拼完要守的兩件事（定裝照是正本、參考圖順序固定）與可直接複製的提示詞。每種帶法只測一次，費用是估的。",
+    tags: {
+      topic: ["圖片生成", "AI工作流", "品牌資產"],
+      level: ["基礎"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["character-costume-sheet-three-views", "ai-image-api-cost", "mika-to-laika-product-character-design"],
+    cover: { wide: "images/articles/two-characters-one-reference-sheet-cover.jpg" }
+  },
+
+  {
     id: "ai-checks-line-oa-inbox",
     url: "articles/ai-checks-line-oa-inbox/",
     date: "2026-11-22",
@@ -1992,7 +2011,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["ai-schedule-wake-interval", "token-money-worth-doing", "chatgpt-web-codex-console"],
+    related: ["two-characters-one-reference-sheet", "ai-schedule-wake-interval", "token-money-worth-doing", "chatgpt-web-codex-console"],
     cover: { tall: "images/articles/ai-image-api-cost-cover.jpg" }
   },
 
@@ -2494,7 +2513,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["mika-to-laika-product-character-design", "map-is-not-the-territory", "semantic-rules-before-prompt-templates", "chatgpt-web-codex-console"],
+    related: ["two-characters-one-reference-sheet", "mika-to-laika-product-character-design", "map-is-not-the-territory", "semantic-rules-before-prompt-templates", "chatgpt-web-codex-console"],
     cover: { tall: "images/articles/character-costume-sheet-three-views/mika-costume-sheet-four-views.jpg" }
   },
 
@@ -3264,7 +3283,7 @@ window.ARTICLES = [
       content_type: ["觀點文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["line-group-ai-workflow", "how-to-train-your-ai-employee", "docs-as-system-design-agent", "character-costume-sheet-three-views", "personal-poster-and-wallpaper"],
+    related: ["two-characters-one-reference-sheet", "line-group-ai-workflow", "how-to-train-your-ai-employee", "docs-as-system-design-agent", "character-costume-sheet-three-views", "personal-poster-and-wallpaper"],
     cover: { tall: "images/articles/mika-to-laika/laika-portrait.jpg" }
   },
 
