@@ -224,6 +224,7 @@ window.ARTICLE_ENTRIES = [
       "open-source-ai-agent-24h-compare",              // 喜歡 Grok Bot 的 AI 員工模式，但每月 30 美元太貴，能自己架一個嗎？（上篇）
       "run-with-ai-first-then-script",                 // 用 AI 做自動化，要先寫程式嗎？
       "task-queue-mod",                                // Claude Code Mod 做任務佇列
+      "last-question-mod",                             // 好幾個 AI 任務切來切去，忘了剛剛問什麼？
       "chatgpt-web-codex-console",                     // 讓網頁版 ChatGPT 當 Codex 總控台
       "ai-schedule-wake-interval",                     // 讓 AI 定時整理資料前，先決定它多久醒一次
       "grok-bot-galaxy-day2-workshops",                // 客服、業務、開發客戶，AI 員工實際做到哪一步？
