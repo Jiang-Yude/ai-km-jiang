@@ -98,6 +98,7 @@ window.ARTICLE_ENTRIES = [
       "personal-poster-and-wallpaper",                 // 用手機做一張自己的電影海報和手機桌布：先讓 AI 認識你，它才畫得出你
       "notebooklm-real-photo-slides",                  // 把照片放進 NotebookLM，生一份用真實照片的簡報
       "character-costume-sheet-three-views",           // AI 每次生的角色都不一樣，用定裝照解決
+      "two-characters-one-reference-sheet",            // 讓 AI 把兩個固定角色畫在同一張圖，長相不跑
       "train-your-ai-agent-editor",                    // 沒空寫，可以叫 AI 幫我寫嗎？：讓 AI 認識你，比學會用 AI 更重要
       "questionnaire-to-slides-agent-workflow",        // 把課前問卷變成簡報，再把流程存成技能包
       "give-ai-choices-not-descriptions",              // 跟 AI 調配色，別讓它一直猜：六組一次給你挑，挑了再微調
