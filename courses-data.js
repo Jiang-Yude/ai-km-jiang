@@ -50,6 +50,26 @@
 
 window.COURSES = [
   {
+    id: "2026-11-29-ai-employee",
+    date: "2026-11-29",
+    time: "20:00",
+    duration_min: 30,
+    title: "AI 員工是什麼？ChatGPT Plus 現在也能用 Dot 了",
+    type_label: "免費線上講座",
+    image: "images/courses/2026-11-29-ai-employee.jpg",
+    venue_mode: "online",
+    venue_label: "線上",
+    host: "江江教練",
+    tags: ["AI員工", "ChatGPT", "Dot", "Grok Bot", "AIAgent"],
+    summary: "借 ChatGPT Plus 現在也能用 Dot 的話題，講現在所謂的 AI 員工是什麼。江江自己在 100 美元方案時就在用 Dot，也用 Grok Bot，分享實際怎麼做、它可以怎麼做、做什麼事情。",
+    registration: {
+      status: "open",
+      url: "https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ",
+      label: "加入 LINE 社群 ↗",
+      note: "免費。上課連結在課前半小時公布在 LINE 社群"
+    }
+  },
+  {
     id: "2026-11-21-wear-tamsui",
     date: "2026-11-21",
     date_label: "11-21 (六) 下午",
