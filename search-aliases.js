@@ -3,6 +3,7 @@
    維護：新文章上稿時補一條；訪客搜尋 log 發現沒接住的問法，第一線修法＝來這裡補別名。
    key＝articles-data.js 的文章 id。 */
 window.SEARCH_ALIASES = {
+  "ai-trust-judgment-first-principles": ["做東西很簡單 難的是賣東西","難的是賣東西","Anthropic 不考 coding interview","Anthropic 面試不考寫程式","coding interview","客戶為什麼找我","客戶憑什麼找你買","AI 時代 信任感","AI 時代 判斷力","品味 同理心 原則性思考","第一性原理 提示詞","第一性原理 拆題"],
   "two-characters-one-reference-sheet": ["兩個角色同框","兩個角色 同框 生圖","AI 雙角色","AI 多角色","多角色 參考圖","多角色 參考圖 拼圖","兩個角色 參考圖","角色設定圖 拼成一張","定裝照 拼成一張","三視圖 合成","三視圖 拼成一張","參考圖 合成一張","參考圖拼圖","參考圖順序","參考圖太多 生圖很慢","生圖很慢","帶參考圖生圖很慢","吉祥物 同框","品牌角色 圖卡","品牌 角色圖卡","角色一致性","長相不跑","角色長相跑掉","AI 多角色 不跑樣","咪卡朵拉","gpt-image-2.6 參考圖","images edits 多張參考圖"],
   "tacit-knowledge-to-your-own-ai": ["AI 時代我們該怎麼做","AI 時代該學什麼","在職場 AI 怎麼辦","找工作 AI 取代","AI 取代 年輕人","年輕人 AI 就業","史丹佛 AI 就業研究","史丹佛 19%","資工科系人數下滑","隱性知識","隱性知識 AI","標準化知識 隱性知識","帶新人 錄音 AI","新人手冊 技能包","提煉經驗給 AI"],
   "ai-memory-not-shared-agents-md": ["換一家AI規則要重教","換AI規則重教","AI記憶不共用","AI的記憶不是共用的","ChatGPT的記憶Claude看得到嗎","ChatGPT換Claude規則要重講","ChatGPT Claude記憶不共用","Codex Claude規則共用","不同AI共用同一份規則","怎麼讓不同AI都記得我的規則","AI工作規則放哪裡","AGENTS.md是什麼","AGENTS.md怎麼用","AGENTS.md怎麼寫","AI操作手冊","AI基礎公約","AI開工先讀的檔案","Claude Code讀AGENTS.md","CLAUDE.md加@AGENTS.md","Gemini CLI讀AGENTS.md","context.fileName","反重力AGENTS.md","Antigravity規則檔","Cursor AGENTS.md","AGENTS.md跟技能包怎麼分","請AI記住規則的提示詞","不只是你自己記","規則同步到不同AI工具"],
