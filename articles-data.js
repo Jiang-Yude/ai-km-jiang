@@ -23,6 +23,25 @@ window.ARTICLE_TAGS = {
 
 window.ARTICLES = [
   {
+    id: "why-ai-sounds-smart-but-gets-it-wrong",
+    url: "articles/why-ai-sounds-smart-but-gets-it-wrong/",
+    date: "2026-11-26",
+    updated: "2026-11-26",
+    title: "AI 講得頭頭是道，答案卻是錯的？｜看懂預訓練、微調、強化學習三個步驟，學會三個把關問法",
+    problem: "AI 回答得很專業、條列很工整，答案還是可能錯，不知道什麼時候該信、什麼時候該查。",
+    audience: "每天用 ChatGPT、Claude、Gemini，但不懂技術的人。",
+    summary: "從洗車店離家 50 公尺 AI 說走路就好這一題開始，講大模型被訓練出來的三個步驟：預訓練學會接話但不懂意思（火星文與一加一的比喻）、微調學會專家口氣但標準答案裡沒有犯錯修正的過程、強化學習在程式與數學這種有明確對錯的題目最可靠。最後給三個把關做法與四段可以直接複製的問法，附約 6 分鐘的 YouTube 說明影片與 93 秒短影音版。",
+    tags: {
+      topic: ["AI應用"],
+      level: ["基礎"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null, youtube: "https://youtu.be/bszs6ftH0kw" },
+    related: ["llm-rag-agent-mcp", "ai-vs-script-four-situations", "let-ai-review-itself", "fixed-test-set-for-ai", "teach-ai-not-learn-ai"],
+    cover: { wide: "images/articles/why-ai-sounds-smart-but-gets-it-wrong-cover.jpg" }
+  },
+
+  {
     id: "ai-trust-judgment-first-principles",
     url: "articles/ai-trust-judgment-first-principles/",
     date: "2026-11-24",
@@ -1781,7 +1800,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["new-models-retest-dispatch", "how-to-verify-ai-rule-changes", "three-levels-of-cross-review", "dual-track-planning-loop", "ai-cp-value-calculus", "ai-schedule-wake-interval", "rule-file-rebound", "caught-ai-slacking-into-rules", "ai-user-testing", "long-document-review-layers", "reevaluate-models-same-test", "opus-luna-model-division", "ai-model-token-efficiency", "ai-customer-service-model-retest", "doc-analysis-model-test"],
+    related: ["new-models-retest-dispatch", "how-to-verify-ai-rule-changes", "three-levels-of-cross-review", "dual-track-planning-loop", "ai-cp-value-calculus", "ai-schedule-wake-interval", "rule-file-rebound", "caught-ai-slacking-into-rules", "ai-user-testing", "long-document-review-layers", "reevaluate-models-same-test", "opus-luna-model-division", "ai-model-token-efficiency", "ai-customer-service-model-retest", "doc-analysis-model-test", "why-ai-sounds-smart-but-gets-it-wrong"],
     cover: { wide: "images/articles/fixed-test-set-for-ai-cover.jpg" }
   },
 
@@ -1819,7 +1838,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["agent-workflow-builds-automation", "claude-skills-knowledge-assets", "loop-engineering-guardrails", "my-three-loops", "liberal-arts-agent-framework", "ai-schedule-wake-interval", "delete-before-automate", "ai-adoption-start-with-one-workflow", "ai-batch-work-without-seeing-data", "ai-random-true-random", "run-with-ai-first-then-script", "claude-beat-synced-video", "knowledge-worker-automation", "how-i-teach-ai-to-edit-video"],
+    related: ["agent-workflow-builds-automation", "claude-skills-knowledge-assets", "loop-engineering-guardrails", "my-three-loops", "liberal-arts-agent-framework", "ai-schedule-wake-interval", "delete-before-automate", "ai-adoption-start-with-one-workflow", "ai-batch-work-without-seeing-data", "ai-random-true-random", "run-with-ai-first-then-script", "claude-beat-synced-video", "knowledge-worker-automation", "how-i-teach-ai-to-edit-video", "why-ai-sounds-smart-but-gets-it-wrong"],
     cover: { wide: "images/articles/ai-vs-script-four-situations-summary.jpg" }
   },
 
@@ -2028,7 +2047,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["rule-file-rebound", "three-levels-of-cross-review", "dual-track-planning-loop", "how-to-verify-ai-rule-changes", "decision-ladder-non-programmer", "ai-rule-file-slimming", "ai-slides-half-auto-google-slides", "ai-adoption-raise-not-install", "how-i-teach-ai-to-edit-video"],
+    related: ["rule-file-rebound", "three-levels-of-cross-review", "dual-track-planning-loop", "how-to-verify-ai-rule-changes", "decision-ladder-non-programmer", "ai-rule-file-slimming", "ai-slides-half-auto-google-slides", "ai-adoption-raise-not-install", "how-i-teach-ai-to-edit-video", "why-ai-sounds-smart-but-gets-it-wrong"],
     cover: { tall: "images/articles/let-ai-review-itself-cover.jpg" }
   },
 
@@ -2443,7 +2462,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["tag-wiki-method", "how-ai-connects-software", "a2a-agent-protocol", "rag-three-retrieval-modes"],
+    related: ["tag-wiki-method", "how-ai-connects-software", "a2a-agent-protocol", "rag-three-retrieval-modes", "why-ai-sounds-smart-but-gets-it-wrong"],
     cover: { tall: "images/articles/llm-rag-agent-mcp-cover.jpg" }
   },
 
@@ -2972,7 +2991,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["ten-year-anchor", "ai-native-not-transformation", "timing-and-forecast", "one-on-one-questions", "how-to-train-your-ai-employee", "cognitive-debt", "build-your-own-dictionary", "slides-by-audience-sop"]
+    related: ["ten-year-anchor", "ai-native-not-transformation", "timing-and-forecast", "one-on-one-questions", "how-to-train-your-ai-employee", "cognitive-debt", "build-your-own-dictionary", "slides-by-audience-sop", "why-ai-sounds-smart-but-gets-it-wrong"]
   },
 
   {
