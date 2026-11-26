@@ -211,6 +211,24 @@ window.ARTICLES = [
   },
 
   {
+    id: "ai-video-more-ways",
+    url: "articles/ai-video-more-ways/",
+    date: "2026-11-20",
+    title: "用 AI 做影片有哪些方式？｜剪輯、動畫、角色、配音、圖片變影片、3D 攝影棚，13 種做法每種附案例",
+    problem: "以為用 AI 做影片就是叫 AI 生成影片，不知道還有哪些環節可以交給 AI。",
+    audience: "想做短影音、說明片、課程影片，想知道 AI 能幫到哪一段的人。",
+    summary: "用 AI 協助影片製作的方式有很多，不是只有生成影片而已。我把自己用過的 13 種做法，依你手上有什麼分成五組：錄好的影片、圖片或文字稿、不想露臉要角色出鏡、不想錄音、想搭整個場景。每種都寫 AI 幫你做什麼、適合什麼影片、要先準備什麼，附我的案例和一段可以當場貼給 AI 練習的提示詞。",
+    tags: {
+      topic: ["AI應用", "AI工作流", "工具操作"],
+      level: ["基礎"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["google-ai-pro-colab-flow-short-video", "claude-beat-synced-video", "ai-voice-clone-taiwan-accent", "debate-summary-video-prompts", "character-costume-sheet-three-views", "one-sentence-video-to-deep-article"],
+    cover: { wide: "images/articles/ai-video-more-ways-cover.jpg" }
+  },
+
+  {
     id: "tacit-knowledge-to-your-own-ai",
     url: "articles/tacit-knowledge-to-your-own-ai/",
     date: "2026-11-20",
@@ -415,7 +433,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["google-ai-pro-api-credits", "ai-voice-clone-taiwan-accent", "claude-beat-synced-video", "where-is-my-server", "debate-summary-video-prompts"],
+    related: ["ai-video-more-ways", "google-ai-pro-api-credits", "ai-voice-clone-taiwan-accent", "claude-beat-synced-video", "where-is-my-server", "debate-summary-video-prompts"],
     cover: { wide: "images/articles/google-ai-pro-colab-flow-short-video-cover.gif" }
   },
 
@@ -453,7 +471,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["claude-beat-synced-video", "google-ai-pro-api-credits", "api-key-dont-paste-to-ai", "before-installing-others-skill", "debate-summary-video-prompts", "google-ai-pro-colab-flow-short-video", "youtube-english-dub-own-voice"],
+    related: ["ai-video-more-ways", "claude-beat-synced-video", "google-ai-pro-api-credits", "api-key-dont-paste-to-ai", "before-installing-others-skill", "debate-summary-video-prompts", "google-ai-pro-colab-flow-short-video", "youtube-english-dub-own-voice"],
     cover: { wide: "images/articles/ai-voice-clone-taiwan-accent-hero.jpg" }
   },
 
@@ -529,7 +547,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["debate-summary-video-prompts", "before-installing-others-skill", "ai-said-it-watched-the-video", "claude-skills-knowledge-assets", "ai-vs-script-four-situations", "ai-voice-clone-taiwan-accent", "claude-in-chrome-upload-video", "google-ai-pro-colab-flow-short-video", "how-i-teach-ai-to-edit-video"],
+    related: ["ai-video-more-ways", "debate-summary-video-prompts", "before-installing-others-skill", "ai-said-it-watched-the-video", "claude-skills-knowledge-assets", "ai-vs-script-four-situations", "ai-voice-clone-taiwan-accent", "claude-in-chrome-upload-video", "google-ai-pro-colab-flow-short-video", "how-i-teach-ai-to-edit-video"],
     cover: { wide: "images/articles/claude-beat-synced-video-hero.jpg" }
   },
 
@@ -775,7 +793,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["ai-said-it-watched-the-video", "three-levels-of-cross-review", "youtube-to-opinion-report-workflow", "one-sentence-video-to-deep-article", "claude-beat-synced-video", "ai-voice-clone-taiwan-accent", "google-ai-pro-colab-flow-short-video"],
+    related: ["ai-video-more-ways", "ai-said-it-watched-the-video", "three-levels-of-cross-review", "youtube-to-opinion-report-workflow", "one-sentence-video-to-deep-article", "claude-beat-synced-video", "ai-voice-clone-taiwan-accent", "google-ai-pro-colab-flow-short-video"],
     cover: { wide: "images/articles/debate-summary-video-prompts-cover.jpg" }
   },
 
@@ -1440,7 +1458,7 @@ window.ARTICLES = [
       content_type: ["案例文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["audrey-tang-reverse-alignment", "claude-skills-knowledge-assets", "three-levels-of-cross-review", "ai-user-testing", "ai-said-it-watched-the-video", "what-is-loop-engineering", "cathay-tech-conference-2026", "dual-track-planning-loop", "debate-summary-video-prompts"],
+    related: ["ai-video-more-ways", "audrey-tang-reverse-alignment", "claude-skills-knowledge-assets", "three-levels-of-cross-review", "ai-user-testing", "ai-said-it-watched-the-video", "what-is-loop-engineering", "cathay-tech-conference-2026", "dual-track-planning-loop", "debate-summary-video-prompts"],
     cover: { wide: "images/articles/one-sentence-video-to-deep-article/cover.jpg" }
   },
 
@@ -2550,7 +2568,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["two-characters-one-reference-sheet", "mika-to-laika-product-character-design", "map-is-not-the-territory", "semantic-rules-before-prompt-templates", "chatgpt-web-codex-console"],
+    related: ["ai-video-more-ways", "two-characters-one-reference-sheet", "mika-to-laika-product-character-design", "map-is-not-the-territory", "semantic-rules-before-prompt-templates", "chatgpt-web-codex-console"],
     cover: { tall: "images/articles/character-costume-sheet-three-views/mika-costume-sheet-four-views.jpg" }
   },
 
