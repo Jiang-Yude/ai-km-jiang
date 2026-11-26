@@ -41,6 +41,25 @@ window.ARTICLES = [
   },
 
   {
+    id: "agent-model-and-effort",
+    url: "articles/agent-model-and-effort/",
+    date: "2026-11-23",
+    updated: "2026-11-23",
+    title: "AI Agent 的模型和思考深度怎麼選？｜Claude 官方指南＋我的實際分工",
+    problem: "AI 做出來不夠好就想換最強的模型，可是看到模型和思考深度兩個選單，不知道該調哪個、從哪裡開始。",
+    audience: "用 Claude Code、Codex、ChatGPT 這類 AI 工具做事，想知道模型和思考深度怎麼選的人，特別是工作大多沒有標準答案的知識工作者。",
+    summary: "用 Claude 當例子，講 Agent 儀表板上的兩個儀表：模型決定請誰做、懂多少，思考深度（effort）決定想多久、多用力。做不好先問它是不知道還是不夠努力。附 Claude 官方選模型指南的 11 種工作對照表（只有 2 種建議從 Fable 開始）、ChatGPT 與 Codex 的對應名稱、做不好的三個步驟與官方數字，以及我身為知識工作者的分工：大部分交給 Opus，寫成工作說明的給 Sonnet，量大的雜活給 Haiku，難又大的給 Fable，最簡單的做法是開 Opus 5.5 加 medium、叫它開子代理，附一段可以直接貼的分工交代。",
+    tags: {
+      topic: ["AI工作流", "AIAgent", "輔助決策"],
+      level: ["基礎"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["what-are-subagents", "cheap-model-for-chores", "knowledge-worker-automation", "opus-luna-model-division", "fixed-test-set-for-ai"],
+    cover: { wide: "images/articles/agent-model-and-effort-cover.jpg" }
+  },
+
+  {
     id: "two-characters-one-reference-sheet",
     url: "articles/two-characters-one-reference-sheet/",
     date: "2026-11-23",
@@ -93,7 +112,7 @@ window.ARTICLES = [
       content_type: ["案例文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["opus-luna-model-division", "dual-track-planning-loop", "ai-memory-not-shared-agents-md", "ai-model-token-efficiency", "token-money-worth-doing"],
+    related: ["agent-model-and-effort", "opus-luna-model-division", "dual-track-planning-loop", "ai-memory-not-shared-agents-md", "ai-model-token-efficiency", "token-money-worth-doing"],
     cover: { wide: "images/articles/cheap-model-for-chores-cover.jpg" }
   },
 
@@ -491,7 +510,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["run-with-ai-first-then-script", "ai-vs-script-four-situations", "agent-workflow-builds-automation", "delete-before-automate", "books-videos-pdf-ai-advisor"],
+    related: ["agent-model-and-effort", "run-with-ai-first-then-script", "ai-vs-script-four-situations", "agent-workflow-builds-automation", "delete-before-automate", "books-videos-pdf-ai-advisor"],
     cover: { wide: "images/articles/knowledge-worker-automation-hero.jpg" }
   },
 
@@ -1440,7 +1459,7 @@ window.ARTICLES = [
       content_type: ["案例文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["new-models-retest-dispatch", "reevaluate-models-same-test", "ai-cp-value-calculus", "what-are-subagents", "long-answer-three-layers", "meeting-record-agent-workflow", "dual-track-planning-loop", "fixed-test-set-for-ai", "ai-schedule-wake-interval", "ai-customer-service-api-cost", "domain-and-account-ownership", "ai-model-token-efficiency", "ai-customer-service-model-retest", "ai-employee-ask-before-act", "doc-analysis-model-test", "cheap-model-for-chores"],
+    related: ["agent-model-and-effort", "new-models-retest-dispatch", "reevaluate-models-same-test", "ai-cp-value-calculus", "what-are-subagents", "long-answer-three-layers", "meeting-record-agent-workflow", "dual-track-planning-loop", "fixed-test-set-for-ai", "ai-schedule-wake-interval", "ai-customer-service-api-cost", "domain-and-account-ownership", "ai-model-token-efficiency", "ai-customer-service-model-retest", "ai-employee-ask-before-act", "doc-analysis-model-test", "cheap-model-for-chores"],
     cover: { wide: "images/articles/opus-luna-model-division-cover.jpg" }
   },
 
@@ -2067,7 +2086,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: "https://www.threads.com/@jiang_yude_coach", vocus: null },
-    related: ["parallel-site-editing", "same-question-different-answers", "long-document-review-layers", "grok-bot-galaxy-day2-workshops", "opus-luna-model-division", "ai-manages-ai-focus"],
+    related: ["agent-model-and-effort", "parallel-site-editing", "same-question-different-answers", "long-document-review-layers", "grok-bot-galaxy-day2-workshops", "opus-luna-model-division", "ai-manages-ai-focus"],
     cover: { wide: "images/articles/what-are-subagents-cover.jpg" }
   },
 
