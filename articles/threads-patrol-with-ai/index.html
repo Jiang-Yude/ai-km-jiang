@@ -1,0 +1,532 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="index,follow">
+<title>Threads 海巡怎麼做？｜讓 AI 先幫我滑熱門貼文，找值得留言的從一小時變十分鐘</title>
+<meta name="description" content="在 Threads 自己發文沒流量？我的實驗紀錄：海巡就是去熱門貼文底下留言，現在 Threads 還有海巡紅利。以前滑一小時才找到五六篇值得留言的，現在 AI 先滑、我自己判斷，大概十分鐘。附三種海巡做法、五個步驟、實際留過的留言分析範例與提示詞。">
+<link rel="canonical" href="https://jiangyude.com/articles/threads-patrol-with-ai/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Threads 海巡怎麼做？｜讓 AI 先幫我滑熱門貼文，找值得留言的從一小時變十分鐘｜江江教練">
+<!-- 分享封面：hero 文字填好後在 repo 根目錄跑 `node scripts/og-shot.mjs threads-patrol-with-ai` 自動截 1200×630 到 images/og/threads-patrol-with-ai.jpg（見 README「文章分享封面（OG 圖）機制」）。別退回 intro-jiang.png 直式人像，會被裁成只剩脖子。 -->
+<meta property="og:image" content="https://jiangyude.com/images/og/threads-patrol-with-ai.jpg">
+<meta property="og:description" content="在 Threads 自己發文沒流量？我的實驗紀錄：海巡就是去熱門貼文底下留言，現在 Threads 還有海巡紅利。以前滑一小時才找到五六篇值得留言的，現在 AI 先滑、我自己判斷，大概十分鐘。附三種海巡做法、五個步驟、實際留過的留言分析範例與提示詞。">
+<meta property="og:url" content="https://jiangyude.com/articles/threads-patrol-with-ai/">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:site_name" content="江江教練 · AI 知識管理">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Threads 海巡怎麼做？｜讓 AI 先幫我滑熱門貼文，找值得留言的從一小時變十分鐘｜江江教練">
+<meta name="twitter:image" content="https://jiangyude.com/images/og/threads-patrol-with-ai.jpg">
+<meta name="twitter:description" content="在 Threads 自己發文沒流量？我的實驗紀錄：海巡就是去熱門貼文底下留言，現在 Threads 還有海巡紅利。以前滑一小時才找到五六篇值得留言的，現在 AI 先滑、我自己判斷，大概十分鐘。附三種海巡做法、五個步驟、實際留過的留言分析範例與提示詞。">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Threads 海巡怎麼做？｜讓 AI 先幫我滑熱門貼文，找值得留言的從一小時變十分鐘","description":"在 Threads 自己發文沒流量？我的實驗紀錄：海巡就是去熱門貼文底下留言，現在 Threads 還有海巡紅利。以前滑一小時才找到五六篇值得留言的，現在 AI 先滑、我自己判斷，大概十分鐘。附三種海巡做法、五個步驟、實際留過的留言分析範例與提示詞。","author":{"@type":"Person","@id":"https://jiangyude.com/#person","name":"江昱德","alternateName":"江江教練","jobTitle":"AI 教練","url":"https://jiangyude.com/","sameAs":["https://www.threads.com/@jiang_yude_coach","https://vocus.cc/salon/Jiang_Coach","https://github.com/Jiang-Yude","https://www.youtube.com/@aipkmcc","https://www.instagram.com/jiang_yude_coach/"]},"isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://jiangyude.com/"},"inLanguage":"zh-Hant","url":"https://jiangyude.com/articles/threads-patrol-with-ai/"}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{--ink:#1a1612;--paper:#fefcf8;--muted:#6a635a;--line:#d8cdb8;--green:#5f7553;--blue:#5689b8;--orange:#e85a4f;--soft:#faf5ec;--dark:#2a2018;--shadow:0 18px 45px rgba(107,74,42,.14);--sp-shadow:hsla(35,50%,60%,.15);--sp-shadow-edge:hsla(35,50%,68%,.03);--sp-radius:400px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC","Segoe UI",sans-serif}
+a{color:inherit}
+/* 官網共用導航列 nav.top（與首頁/文章總站同一條） */
+nav.top{position:sticky;top:0;background:rgba(254,252,248,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid #d8cdb8;z-index:100}
+nav.top .container{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:24px;padding:14px 32px}
+.nav-brand-img{justify-self:start;display:flex;align-items:center;text-decoration:none;flex-shrink:0;transition:opacity .2s}
+.nav-brand-img:hover{opacity:.8}.nav-brand-img img{height:40px;width:auto;display:block}
+nav.top ul.nav-menu{justify-self:end;display:flex;gap:22px;list-style:none;margin:0;padding:0;font-size:.95rem;white-space:nowrap}
+nav.top ul.nav-menu a{color:#3a342d;text-decoration:none;transition:color .2s;font-weight:500;white-space:nowrap}
+nav.top ul.nav-menu a:hover{color:#1a1612}nav.top ul.nav-menu a.active{color:#1a1612;font-weight:700}
+.nav-toggle{display:none;background:none;border:none;padding:6px;cursor:pointer;width:36px;height:36px;position:relative}
+.nav-toggle span{display:block;position:absolute;left:8px;right:8px;height:2px;background:#1a1612;border-radius:2px;transition:transform .25s,opacity .25s,top .25s}
+.nav-toggle span:nth-child(1){top:11px}.nav-toggle span:nth-child(2){top:17px}.nav-toggle span:nth-child(3){top:23px}
+.nav-toggle.open span:nth-child(1){top:17px;transform:rotate(45deg)}.nav-toggle.open span:nth-child(2){opacity:0}.nav-toggle.open span:nth-child(3){top:17px;transform:rotate(-45deg)}
+.tablewrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:22px 0;border:1px solid var(--line);border-radius:10px;background:#fff;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.tablewrap table{border-collapse:collapse;width:100%;min-width:600px;font-size:18px;line-height:1.65}
+.tablewrap .zh{display:block;margin-top:5px;font-size:16px;line-height:1.55;color:var(--muted);font-weight:400}
+.tablewrap th,.tablewrap td{padding:12px 14px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top;color:#3a342d}
+.tablewrap thead th{background:var(--soft);font-weight:900;font-size:18px;color:#1a1612;white-space:nowrap}
+.tablewrap tbody tr:last-child td{border-bottom:none}
+.tablewrap td code,.section code{background:var(--soft);border:1px solid var(--line);border-radius:5px;padding:1px 6px;font:500 15px/1.5 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace}
+.inline-figure.wide{max-width:1000px}
+.inline-figure.portrait{max-width:430px}
+.toc{margin:26px 0 0;padding:20px 22px;background:#fff;border:1px solid var(--line);border-radius:10px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.toc>b{display:block;font-size:15px;letter-spacing:.05em;color:var(--green);margin-bottom:10px}
+.toc ol{margin:0;padding-left:1.35em;font-size:18px;line-height:1.7}
+.toc li{margin-bottom:7px;color:#3a342d}
+.toc a{color:var(--blue);font-weight:700;text-decoration:none}.toc a:hover{text-decoration:underline}
+.toc-hint{margin:12px 0 0!important;font-size:18px!important;color:var(--muted)!important;border-top:1px solid var(--line);padding-top:12px}
+.readmore{margin-top:24px;padding:20px 22px;background:var(--soft);border:1px solid var(--line);border-radius:12px}
+.readmore.near{margin:26px 0 6px;background:rgba(86,137,184,.07);border-color:#bcd0e2}
+.readmore.near b{color:var(--blue);font-size:18px}
+.readmore.near li{font-size:17px;line-height:1.7;margin-bottom:10px}
+.readmore b{display:block;margin-bottom:10px;font-size:19px}
+.readmore ul{margin:0;padding-left:1.25em}
+.readmore a{color:var(--blue);font-weight:700;text-decoration:none}
+.readmore a:hover{text-decoration:underline}
+@media(max-width:820px){.tablewrap table{min-width:560px;font-size:18px}.tablewrap{position:relative}.tablewrap::after{content:"表格可左右滑動 →";position:sticky;left:0;display:block;font-size:15px;color:var(--muted);background:var(--soft);border-top:1px solid var(--line);padding:7px 12px;width:100%}}
+@media(max-width:860px){
+ nav.top .container{grid-template-columns:auto 1fr auto;padding:10px 16px;gap:12px}
+ .nav-brand-img img{height:32px}
+ .nav-toggle{display:block;justify-self:end}
+ nav.top ul.nav-menu{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(254,252,248,.98);backdrop-filter:blur(14px);border-bottom:1px solid #d8cdb8;flex-direction:column;gap:0;padding:8px 0;box-shadow:0 10px 24px rgba(107,74,42,.08)}
+ nav.top ul.nav-menu.open{display:flex}
+ nav.top ul.nav-menu li{border-bottom:1px solid #e8dfc9}
+ nav.top ul.nav-menu li:last-child{border-bottom:none}
+ nav.top ul.nav-menu a{display:block;padding:14px 20px;font-size:1.06rem}
+}
+/* 滑鼠暖光暈（與首頁同一支 spotlight.js） */
+body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradient(var(--sp-radius) circle at var(--mx,50%) var(--my,50%),var(--sp-shadow) 0%,var(--sp-shadow-edge) 45%,transparent 75%);pointer-events:none;z-index:9999;mix-blend-mode:multiply;transition:background .06s linear}
+.hero{position:relative;overflow:hidden;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:72px;padding:96px clamp(20px,6vw,88px) 80px;background:linear-gradient(180deg,#fffcf0 0%,#f9e9d2 100%);color:#1a1612;border-bottom:1px solid #d8cdb8}
+.hero .wc{position:absolute;border-radius:50%;filter:blur(60px);pointer-events:none;z-index:0}
+.hero .wc1{width:420px;height:360px;top:-120px;right:-80px;background:#e8884b;opacity:.15}
+.hero .wc2{width:360px;height:300px;bottom:-110px;left:-70px;background:#5f7553;opacity:.13}
+.hero .wc3{width:280px;height:260px;top:34%;left:14%;background:#a08144;opacity:.10}
+.hero>div{flex:none;width:860px;max-width:100%;position:relative;z-index:2}
+.hero-figure{margin:0;width:620px;flex:none;position:relative;z-index:2}
+.hero-figure img{display:block;width:100%;height:auto;border-radius:16px;border:1px solid #d8cdb8;box-shadow:0 18px 45px rgba(107,74,42,.16);cursor:zoom-in}
+.hero-figure figcaption{margin-top:10px;font-size:14px;line-height:1.6;color:#6a635a}
+.inline-figure{margin:30px auto 8px;max-width:820px}
+.inline-figure img{display:block;width:100%;height:auto;border-radius:14px;border:1px solid var(--line);box-shadow:var(--shadow);background:#fff;cursor:zoom-in}
+.inline-figure figcaption{font-size:14px;line-height:1.6;color:var(--muted);margin-top:10px}
+.lightbox{position:fixed;inset:0;z-index:10000;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(12,10,8,.92);cursor:zoom-out;backdrop-filter:blur(4px)}
+.lightbox.open{display:flex}.lightbox img{max-width:96vw;max-height:92vh;border-radius:10px;box-shadow:0 24px 60px rgba(0,0,0,.5)}
+.lightbox-close{position:fixed;top:18px;right:24px;color:#fff;font-size:34px;line-height:1;font-weight:700;cursor:pointer;opacity:.85}
+.kicker{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.55rem;color:#7a5c3a;font-weight:500}
+.hero h1{max-width:none;margin:16px 0 18px;font-size:clamp(30px,4.2vw,52px);line-height:1.08;overflow-wrap:anywhere}
+.hero p{max-width:none;font-size:clamp(18px,2vw,23px);line-height:1.62;color:#3a342d}
+.cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
+.cta a{display:inline-flex;align-items:center;text-decoration:none;border-radius:8px;padding:12px 16px;font-weight:900}
+.cta .primary{background:#fff;color:#1a1612}.cta .ghost{border:1px solid rgba(255,255,255,.32);color:#fff;background:rgba(255,255,255,.08)}
+.section{padding:54px clamp(20px,6vw,88px);border-top:1px solid var(--line)}
+.inner{width:min(1000px,100%);margin:0 auto}
+.section h2{font-size:clamp(26px,4.2vw,48px);line-height:1.12;margin:0 0 18px}
+.section h3{font-size:clamp(21px,3vw,30px);line-height:1.2;margin:30px 0 12px}
+.lead{font-size:clamp(18px,1.6vw,22px);line-height:1.7;color:#3a342d;max-width:900px}
+.section p{font-size:18px;line-height:1.74;color:#3a342d}.section p+p{margin-top:14px}
+.section ul,.section ol{padding-left:1.4em;font-size:18px;line-height:1.74;color:#3a342d}.section li{margin-bottom:8px}
+.meaning{margin:22px 0;padding:16px 18px;border-left:5px solid var(--blue);background:rgba(86,137,184,.12);border-radius:6px;line-height:1.7;font-size:19px}
+.meaning b{display:block;color:var(--blue);margin-bottom:4px}
+.caveat{margin:0 0 8px;padding:16px 18px;border-left:5px solid var(--orange);background:rgba(232,90,79,.1);border-radius:6px;line-height:1.7;font-size:18px;color:#3a342d}
+.caveat b{display:block;color:var(--orange);margin-bottom:4px}
+.infocard{background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px 24px 22px;box-shadow:0 8px 22px rgba(107,74,42,.08);margin-top:8px}
+.infocard-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.info-item{padding:18px 14px 0}
+.info-item b{display:block;font-size:14px;font-weight:900;letter-spacing:.04em;margin-bottom:7px;text-transform:uppercase}
+.info-item:nth-child(1) b{color:var(--green)}.info-item:nth-child(2) b{color:var(--orange)}.info-item:nth-child(3) b{color:var(--blue)}
+.info-item p{margin:0;font-size:17px;line-height:1.6;color:#3a342d}
+.tagrow{display:flex;flex-wrap:wrap;gap:7px;margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
+.tag{font-size:14px;color:var(--muted);background:var(--soft);border:1px solid var(--line);border-radius:999px;padding:4px 11px}
+.duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:24px}
+.duo.stack{grid-template-columns:1fr}
+.duo .card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:22px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.duo .card.a{border-color:var(--orange)}.duo .card.b{border-color:var(--green);box-shadow:0 8px 24px rgba(95,117,83,.16)}
+.duo .card small{display:block;font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.04em;margin-bottom:9px}
+.duo .card.a small{color:var(--orange)}.duo .card.b small{color:var(--green)}
+.duo .card b{display:block;font-size:22px;line-height:1.3;margin-bottom:12px}.duo .card.a b{color:#c0512f}.duo .card.b b{color:#4a7a59}
+.duo .card p{margin:0;color:#3a342d;line-height:1.75;font-size:18px}
+.workflow-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:24px}
+.workflow-step{background:#fff;border:1px solid var(--line);border-radius:8px;padding:18px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.workflow-step small{display:block;color:var(--orange);font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;margin-bottom:9px}
+.workflow-step b{display:block;font-size:18px;line-height:1.3;margin-bottom:9px}
+.workflow-step p{margin:0;color:#3a342d;line-height:1.6;font-size:16px}
+.codeblock{background:var(--dark);color:#f3ead9;border-radius:8px;padding:18px 20px;font:500 14px/1.65 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;overflow-x:auto;white-space:pre-wrap;margin:20px 0;box-shadow:0 8px 22px rgba(107,74,42,.12)}
+.codeblock .c{color:#f6d7a6;font-weight:600}
+.skillcard{background:#fff;border:1px solid var(--green);border-radius:12px;padding:24px;box-shadow:0 10px 26px rgba(95,117,83,.16);margin-top:8px}
+.skillcard b{display:block;font-size:21px;margin-bottom:8px}
+.skillcard p{margin:0 0 16px;font-size:17px;line-height:1.65;color:#3a342d}
+.cta-band{background:#e6f0e5;color:#3a342d}.cta-band .section{border-top:none}
+.cta-band .inner{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(260px,.85fr);gap:26px;align-items:start}
+.cta-band h2{font-size:clamp(26px,4vw,44px);margin:0 0 16px}.cta-band p,.cta-band .lead{color:rgba(58,52,45,.9);font-size:18px;line-height:1.72}
+.cta-card{border:1px solid #cfe0d2;background:#fbfdfa;border-radius:8px;padding:22px}
+.cta-card b{display:block;color:#48b178;margin-bottom:10px;font-size:18px}.cta-card p{margin:0 0 14px}
+.footer{padding:30px clamp(20px,6vw,88px);font-size:14px;color:var(--muted);background:#fff;border-top:1px solid var(--line)}
+.footer-inner{width:min(1000px,100%);margin:0 auto}
+.footer-links{display:flex;flex-wrap:wrap;gap:6px 12px;margin-bottom:14px}.footer-links a{color:var(--blue);font-weight:900;text-decoration:none;font-size:14px}
+.footer-brand{font-weight:900;font-size:15px;margin-bottom:10px}.footer-note{font-size:13px;line-height:1.6}
+@media(max-width:820px){.inline-figure.portrait{max-width:340px}.infocard-grid{grid-template-columns:1fr}.duo{grid-template-columns:1fr}.workflow-grid{grid-template-columns:1fr}.cta-band .inner{grid-template-columns:1fr}.section{padding:40px 20px}.hero{min-height:52vh;flex-direction:column;justify-content:flex-start;align-items:flex-start;gap:24px}.hero>div{width:100%}.hero-figure{width:100%;max-width:560px}}
+@media(max-width:820px){html,body{overflow-x:hidden}.hero h1{word-break:break-word}}
+/* 直式圖左右排（02-design-system「直式圖在桌機的左右排版」）：輪播卡上官網預設用 .media-row，圖左圖右看段落交替；連續兩張用 .figure-pair */
+.figure-pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;margin:30px auto 8px;max-width:820px}.figure-pair .inline-figure{margin:0;max-width:none}@media(max-width:640px){.figure-pair{grid-template-columns:1fr}.figure-pair .inline-figure{max-width:340px;margin:0 auto}}
+.media-row{display:grid;grid-template-columns:minmax(0,340px) minmax(0,1fr);gap:36px;align-items:center;margin:28px 0}.media-row.img-right{grid-template-columns:minmax(0,1fr) minmax(0,340px)}.media-row .inline-figure{margin:0;max-width:none}.media-row .media-text>*:first-child{margin-top:0}.media-row .media-text>*:last-child{margin-bottom:0}@media(max-width:820px){.media-row,.media-row.img-right{grid-template-columns:1fr;gap:18px}.media-row.img-right .media-fig{order:-1}.media-row .inline-figure{max-width:340px;margin:0 auto}}
+.thumbs{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:12px;max-width:720px;margin:18px 0 8px}.thumbs figure{margin:0}.thumbs img{display:block;width:100%;height:auto;border-radius:8px;border:1px solid var(--line);box-shadow:0 6px 16px rgba(107,74,42,.10);cursor:zoom-in;background:#fff}.thumbs figcaption{font-size:13px;line-height:1.4;color:var(--muted);margin-top:6px}.inline-figure.shot{margin:22px 0 8px}
+.album{background:#f6eee1;border:1px solid var(--line);border-radius:14px;padding:16px 18px 14px;margin:20px 0 10px;max-width:820px}.album-hint{font-size:15px;font-weight:700;color:#7a5c3a;margin-bottom:10px}.album .inline-figure.shot{margin:0 0 12px;max-width:380px}.album .thumbs{margin:0;max-width:none}.thumbs figure{position:relative}.thumbs figure::after{content:"⤢ 放大";position:absolute;top:6px;right:6px;background:rgba(26,22,18,.7);color:#fff;border-radius:6px;font-size:12px;padding:2px 6px;pointer-events:none}.album .shot{position:relative}.album .shot::after{content:"⤢ 放大";position:absolute;top:8px;right:8px;background:rgba(26,22,18,.7);color:#fff;border-radius:6px;font-size:12px;padding:2px 6px;pointer-events:none}
+</style>
+</head>
+<body class="spotlight">
+<!-- 官網共用導航列 nav.top：與首頁/總站同一條，文章不要自己另做極簡 topbar（江江 2026-06-25：要同一個框架、同一條導航列）。把對應頁面的 class="active" 標在自己那欄。
+     ⚠️ 下面 ul.nav-menu 整塊由 preflight 第 5 關 check-bilingual-nav.mjs 做「逐字比對」，
+        塞任何註解、多一個空白、換行位置不同都會被判導航不一致而擋下發布。要說明就寫在 <ul> 外面（像這裡）。
+        2026-08-16 修：原本的 EN 那行說明註解就夾在 <ul> 裡面，導致照範本起手的新文章一律卡第 5 關
+        （llm-rag-agent-mcp 與 rag-three-retrieval-modes 兩篇同時中招）。註解已移出來，<ul> 內保持乾淨。
+        萬一還是被擋，直接跑：node scripts/check-bilingual-nav.mjs --write --only=<你的檔案路徑> -->
+<nav class="top">
+  <div class="container">
+    <a class="nav-brand-img" href="../../index.html"><img src="../../images/footer-signature.png" alt="江江教練 | 江昱德"></a>
+    <button class="nav-toggle" aria-label="選單"><span></span><span></span><span></span></button>
+    <ul class="nav-menu">
+      <li><a href="../../index.html">首頁</a></li>
+      <li><a href="../../offers.html">付費服務</a></li>
+      <li><a href="../../courses.html">各式講座</a></li>
+      <li><a href="../../articles.html" class="active">教學文章</a></li>
+      <li><a href="../../knowledge-architecture.html">知識架構</a></li>
+      <li><a href="../../skills.html">小工具</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="wc wc1"></div>
+  <div class="wc wc2"></div>
+  <div class="wc wc3"></div>
+  <div>
+    <div class="kicker">AI 應用 / Threads 海巡</div>
+    <h1>Threads 海巡怎麼做？｜讓 AI 先幫我滑熱門貼文，找值得留言的從一小時變十分鐘</h1>
+    <p>在 Threads 自己發文沒流量，可以去熱門貼文底下留言。以前我滑一小時才找到五六篇值得留言的，現在讓 AI 先幫我滑，我自己看過、判斷過，前後大概十分鐘。這是一篇還在實驗中的紀錄。</p>
+  </div>
+</section>
+
+<main>
+<section class="section" id="start"><div class="inner">
+<h2>這篇在講什麼</h2>
+<p class="lead">在 Threads 上自己發文沒人看，是很多人剛開始的狀態。依我的觀察，現在 Threads 還有「海巡紅利」：你願意去熱門貼文底下留言，平台就願意給你流量。海巡最花時間的是找貼文，以前我要滑一個小時才找到五六篇值得留言的，現在讓 AI 先幫我滑，我自己看過、判斷過，前後大概十分鐘。這篇整理海巡的三種做法，還有我用 AI 加速的實際流程與範例。</p>
+<div class="caveat"><b>這是一篇實驗紀錄</b>這個做法「我還在實驗中，先跟大家分享這樣子的概念」。哪裡有把握、哪裡還沒有，文末會分開講。</div>
+<div class="duo stack">
+  <div class="card a"><b>適合誰</b>
+    <ul>
+      <li>你在 Threads 上認真寫了專業內容，卻沒幾個人看</li>
+      <li>你聽過「去別人底下留言」，但一想到要一篇一篇滑就放棄</li>
+      <li>你是顧問、老師、社工這類有專業的人，想讓需要你的人找到你</li>
+      <li>你擔心交給 AI 就變成全自動，不知道 AI 該做到哪裡</li>
+    </ul>
+  </div>
+  <div class="card b"><b>你可以帶走什麼</b>
+    <ul>
+      <li>海巡是什麼、為什麼現在做還有效</li>
+      <li>三種海巡做法，各自適合什麼人</li>
+      <li>我用 AI 海巡的五個步驟：哪些交給 AI、哪些一定自己看</li>
+      <li>我實際做過的留言分析範例，和一段可以直接用的提示詞</li>
+    </ul>
+  </div>
+</div>
+<nav class="toc"><b>目錄</b><ol>
+  <li><a href="#crowd">自己發可能沒流量，熱門貼文底下已經聚滿了人</a></li>
+  <li><a href="#what">海巡是什麼：一般說法，和我的說法</a></li>
+  <li><a href="#why-now">為什麼現在做還有效：平台還在補貼</a></li>
+  <li><a href="#three">三種海巡做法，挑一種你做得下去的</a></li>
+  <li><a href="#two-kinds">我自己的海巡分兩種：流量海巡和議題海巡</a></li>
+  <li><a href="#ai">海巡最卡的是「滑」：以前一小時，現在十分鐘</a></li>
+  <li><a href="#steps">我用 AI 海巡的五個步驟</a></li>
+  <li><a href="#examples">我實際做過的範例</a></li>
+  <li><a href="#criticism">被罵很正常，你可以決定要走多保守</a></li>
+  <li><a href="#content">海巡只是讓人看見你，接住人的是你自己的內容</a></li>
+  <li><a href="#boundary">這套方法我有把握的，和還沒把握的</a></li>
+  <li><a href="#start-now">今天就能開始</a></li>
+</ol></nav>
+</div></section>
+
+<section class="section" id="crowd"><div class="inner">
+<h2>自己發可能沒流量，熱門貼文底下已經聚滿了人</h2>
+<div class="media-row">
+  <div class="media-fig"><figure class="inline-figure portrait"><img src="../../images/articles/threads-patrol-with-ai-crowd.jpg" alt="示意圖：咪卡一個人坐在冷板凳上看手機，自己發的文 0 則留言；朵拉在另一邊被人群簇擁，熱門貼文 1000 則留言" loading="lazy"><figcaption>自己發的文冷冷清清，熱門貼文底下擠滿人</figcaption></figure></div>
+  <div class="media-text">
+<p>我常舉一個假設的例子。我在自己帳號發一篇「我可以設計 Agent（會自己動手做事的 AI）教師工作坊」，沒幾個人看。同一天，另一篇貼文有老師抱怨叫 AI 幫忙改檔案，結果 AI 把教學檔案都刪掉了，那篇有 10 萬人按讚。</p>
+<p>這時我去那篇底下留一句「教你一招，就不會這樣了」，可能就有 1000 人按讚、500 人追蹤。</p>
+<p>差別在哪？「因為那一篇把 10 萬個對這個問題有共鳴的人都聚集在那裡。」裡面可能 7 萬人在酸那位老師，但也可能有 3 萬人在說「我也好怕」。我去回答的，就是那 3 萬人。</p>
+  </div>
+</div>
+</div></section>
+
+<section class="section" id="what"><div class="inner">
+<h2>海巡是什麼：一般說法，和我的說法</h2>
+<p>「海巡」是 Threads 上的說法。網路上的整理大意都是：主動到別人的貼文底下留言、互動，借對方已經有的曝光，讓更多人認識你。名人或品牌沒被標記、卻自己跑來留言，大家會說「被海巡到了」。</p>
+<p class="toc-hint">參考：<a href="https://mindthread.tw/blog/threads-haixun-reply-marketing-guide-2026" target="_blank" rel="noopener">MindThread〈Threads 海巡是什麼意思？〉</a>、<a href="https://social.ifans.one/blog/threads-patrol-free-tool" target="_blank" rel="noopener">愛粉絲 iFans〈Threads 海巡是什麼？〉</a></p>
+<div class="duo">
+  <div class="card a"><small>一般說法</small><b>到處去巡</b><p>主動四處滑、四處留言、四處互動。</p></div>
+  <div class="card b"><small>我的說法</small><b>更聚焦地巡</b><p>不只到處去巡，而是去已經有一群人在問的地方，給他們答案。</p></div>
+</div>
+<div class="meaning"><b>我的理解</b>「我已經知道那邊有一群人有問題了，我直接去那邊跟他們講答案，他們就知道我很厲害了。」</div>
+<p>動作本身很簡單：去別人的貼文底下留言、按讚。「樸實無華，我願意一直去巡就會有流量，完全可以靠苦巡巡出來。」</p>
+</div></section>
+
+<section class="section" id="why-now"><div class="inner">
+<h2>為什麼現在做還有效：平台還在補貼</h2>
+<p>「平台在增長，你是被平台帶著增長的。」YouTube 剛開始的時候、抖音剛開始的時候，都是隨便發都有機會紅。Threads 一開始也是發文就有紅利；到現在，是「你有海巡，還有紅利」。</p>
+<p>我的理解是：「所有的商業模式，剛起來的時候一定會補貼使用者。」「我幫你刷十個讚，平台就會導十個人來你這邊幫你刷讚。」你願意貢獻流量給別人，Meta 就願意給你流量。</p>
+<p>現在已經不是無腦補貼，是有條件的補貼，「但現在條件還很寬鬆：你願意每天發文、你願意每天去刷一下別人，這就行了。」我估計再過一陣子，去留言就會沒有效應，紅利會越來越緊縮。</p>
+</div></section>
+
+<section class="section" id="three"><div class="inner">
+<h2>三種海巡做法，挑一種你做得下去的</h2>
+<h3>第一種：在你專業相關的熱門貼文底下給精準解法</h3>
+<div class="workflow-grid">
+  <div class="workflow-step"><small>1</small><b>找到跟你專業有關、正在爆紅的貼文</b></div>
+  <div class="workflow-step"><small>2</small><b>看底下大家卡在哪、在怕什麼</b></div>
+  <div class="workflow-step"><small>3</small><b>留一則具體的解法</b></div>
+</div>
+<p>找到跟你專業有關、正在爆紅的貼文，在底下給一個具體的解法，「讓對這個話題有興趣的人知道我是這個地方的專業」。</p>
+<p>換成社工也一樣（假設的例子）：你自己發「社會工作者如何用 Agent」可能沒人看；但有人發「AI 把我的檔案都拖出去了」，底下 1000 則留言、一半以上在罵，其實那裡聚集了一萬個關心這件事的人。你用專業社工的身分留言：最近在學 AI，老師提醒過這樣可以避免，「就立刻在那邊吸引到一萬個人的關注了」。</p>
+<p>勞資顧問、法律顧問最適合這一種。勞資糾紛的貼文天天有，底下給一個專業建議就好。</p>
+<h3>第二種：什麼話題都能接到自己身上</h3>
+<div class="workflow-grid">
+  <div class="workflow-step"><small>1</small><b>看到任何正在紅的話題</b></div>
+  <div class="workflow-step"><small>2</small><b>想到它跟你專業的關係</b></div>
+  <div class="workflow-step"><small>3</small><b>有梗地接過去</b></div>
+</div>
+<p>有些人很厲害，「路邊兩隻小貓小狗打架，也可以開始講社福、家暴議題」。這種很吃天賦。「我就不是有梗的人，但我有找到我樸實無華的模式。」</p>
+<h3>第三種：認真苦巡，熱門的都去留</h3>
+<div class="workflow-grid">
+  <div class="workflow-step"><small>1</small><b>滑到熱門的貼文</b></div>
+  <div class="workflow-step"><small>2</small><b>留一句簡短的回應</b></div>
+  <div class="workflow-step"><small>3</small><b>趁平台還在補貼，換到流量</b></div>
+</div>
+<p>不管跟自己有沒有關，滑到熱門的就去留言，「喔好厲害喔好棒喔好猛喔」，這樣也行。現在平台還在補貼，這種留言也算數。但引來的人點進你的帳號，最好你本身有內容，才接得住。</p>
+</div></section>
+
+<section class="section" id="two-kinds"><div class="inner">
+<h2>我自己的海巡分兩種：流量海巡和議題海巡</h2>
+<p>我現在請 AI 幫我挑貼文時，會分成兩種，分開挑、分開列：</p>
+<div class="tablewrap"><table>
+<thead><tr><th>種類</th><th>從哪裡挑</th><th>門檻</th></tr></thead>
+<tbody>
+<tr><td>流量海巡</td><td>「為你推薦」動態</td><td>1 萬讚，而且 100 則留言，兩個都要</td></tr>
+<tr><td>流量海巡</td><td>我自己按讚過的</td><td>破 1 千讚</td></tr>
+<tr><td>議題海巡</td><td>「為你推薦」或搜尋關鍵字</td><td>破 100 則留言</td></tr>
+<tr><td>議題海巡</td><td>我自己按讚過的</td><td>是議題文就好，不看讚數</td></tr>
+</tbody></table></div>
+<div class="duo">
+  <div class="card a"><small>流量海巡</small><b>看人多不多</b><p>挑讚數高的熱門文，去人最多的地方。門檻依來源不同，見上表。</p></div>
+  <div class="card b"><small>議題海巡</small><b>看大家在不在討論</b><p>挑大家正在討論的議題文。留言夠多（大約 100 則以上）就做留言分析，不夠就寫一句回覆。</p></div>
+</div>
+<p>兩種都只挑有知識價值的。熱門但沒有知識價值的文，我頂多留一句簡短的話。</p>
+</div></section>
+
+<section class="section" id="ai"><div class="inner">
+<h2>海巡最卡的是「滑」：以前一小時，現在十分鐘</h2>
+<p>三種做法都有一個共同的麻煩：你得先找到值得留言的貼文。</p>
+<p>在沒有 AI 之前，這件事我很難做。「以前我要滑到幾篇精彩的，可能要滑十幾分鐘才滑到一篇，我要滑個五六篇，都要花一個小時。」</p>
+<p>現在我讓 AI 先幫我巡，「我花在上面十分鐘。以前要一小時，現在大概就十分鐘，幫我找到有價值可以留言的內容。」</p>
+<div class="duo">
+  <div class="card a"><small>以前</small><b>自己一篇一篇滑</b><p>滑十幾分鐘才找到一篇，五六篇要一個小時。</p></div>
+  <div class="card b"><small>現在</small><b>AI 先滑，我判斷</b><p>前後大概十分鐘，找到有價值可以留言的內容。</p></div>
+</div>
+<p>先講清楚一件事：「我不是沒有看過哦，我只是因為以前要一篇篇滑就很麻煩嘛。」AI 做的是滑和整理，判斷是我做的。</p>
+</div></section>
+
+<section class="section" id="steps"><div class="inner">
+<h2>我用 AI 海巡的五個步驟</h2>
+<div class="tablewrap"><table>
+<thead><tr><th>步驟</th><th>誰做</th><th>做什麼</th></tr></thead>
+<tbody>
+<tr><td>1. 快速滑</td><td>AI</td><td>先幫我把候選貼文列出來</td></tr>
+<tr><td>2. 看主題</td><td>我</td><td>看內容跟主題 OK 不 OK，也稍微看一下大家在留什麼</td></tr>
+<tr><td>3. 統整</td><td>AI</td><td>我覺得不錯，才叫 AI 把留言整個統整</td></tr>
+<tr><td>4. 再看一遍</td><td>我</td><td>統整完的內容我會看過</td></tr>
+<tr><td>5. 留言</td><td>我</td><td>我決定要不要留、留在哪一篇</td></tr>
+</tbody></table></div>
+<p>第一批我是這樣開始的：AI 把我近一兩天按讚過的 45 則貼文列出來，我從裡面挑了 4 則，請 AI 把留言整理成分析圖卡，我看過再決定要不要留。
+
+實際做法是讓 AI 操作瀏覽器，打開 Threads 上「你說讚的內容」那一頁，把貼文和底下的留言抓下來，再交給 AI 分類、做圖卡。這套工具我還在實驗。手邊沒有這種工具的話，可以先用最小版本：自己挑一篇，把貼文和留言複製給 AI（提示詞在文末）。</p>
+<p>「AI 只是讓我更快速、更高效的這樣去做。」第 2 步和第 4 步我都會自己看過。</p>
+<div class="readmore near"><b>延伸閱讀</b><ul>
+  <li><a href="../five-loops-content-line/">哪些事可以交給 AI 自己跑完？我把內容產線拆成五個小迴圈</a>：海巡的五步也是同一種拆法，哪段給 AI、哪段自己看。</li>
+</ul></div>
+</div></section>
+
+<section class="section" id="examples"><div class="inner">
+<h2>我實際做過的範例</h2>
+<p>「我當然說剛剛開始還抓不準，但是我記得我幾篇還不錯的」，照時間順序是這三篇。小圖點開可以放大、左右滑。</p>
+
+<h3>第一篇：網站被攻擊、又要去警局的血淚教訓</h3>
+<p>有人分享自己架的網站被攻擊、又要去警局的經過（<a href="https://www.threads.com/@vibeaico.tw/post/Df_bjTqmqmp" target="_blank" rel="noopener">原文</a>），底下一堆工程師在嘲笑，但也有幾個人給了建議。</p>
+<p>我謝謝原作者和留言區，照大家的建議自己再查證、研究，整理成資安檢查表<a href="https://www.threads.com/@jiang_yude_coach/post/DgB83QZkjk5" target="_blank" rel="noopener">發成 Threads 貼文</a>，詳細內容寫成官網文章。這篇有效果之後，我才開始幫熱門貼文做留言分析。</p>
+<div class="album">
+<div class="album-hint">🔍 圖片區：點任一張可放大，左右滑看全部</div>
+<figure class="inline-figure portrait shot"><img src="../../images/articles/small-site-security-checklist-post.jpg" alt="Threads @vibeaico.tw 原貼文〈我又要去警局了｜創業 Day 63〉公開畫面" loading="lazy"><figcaption>原貼文公開畫面（截圖時間 2026-11-22 03:23）</figcaption></figure>
+<div class="thumbs">
+  <figure><img src="../../images/articles/small-site-security-checklist-one-page.jpg" alt="資安檢查表：上線前照網站類型勾選的一頁總表" loading="lazy"><figcaption>一頁檢查表</figcaption></figure>
+  <figure><img src="../../images/articles/small-site-security-checklist-overview.jpg" alt="資安檢查表總覽" loading="lazy"><figcaption>總覽</figcaption></figure>
+  <figure><img src="../../images/articles/small-site-security-checklist-response-flow.jpg" alt="網站被攻擊時的處理順序" loading="lazy"><figcaption>被攻擊時先做什麼</figcaption></figure>
+</div>
+</div>
+<div class="readmore near"><b>延伸閱讀</b><ul>
+  <li><a href="../small-site-security-checklist/">自己架的網站被攻擊怎麼辦？上線前資安檢查表</a>：就是這篇，留言區的建議查證後整理成的檢查表。</li>
+</ul></div>
+
+<h3>第二篇：身為 AI 小白，要怎麼做出自己的 AI Agent？</h3>
+<p>看過資安那篇大家整理的檢查表之後，我懂了：可以幫大家整理留言的重點。</p>
+<p>這篇是一位 AI 小白發問（<a href="https://www.threads.com/@anna.yayaya/post/DgCVBCkIKtx" target="_blank" rel="noopener">原文</a>）：目前只會一問一答，想知道怎麼做出自己的 AI Agent，讓它在自己睡覺的時候也能產出東西，有沒有適合初學者一步一步學的資源。</p>
+<p>底下 183 則回覆，我請 AI 整理了其中 137 則，做成四張「留言分析」圖卡：大家站哪一邊、在聊什麼、哪幾則最多讚、三個重點，<a href="https://www.threads.com/@jiang_yude_coach/post/DgM9hhJiD0t" target="_blank" rel="noopener">留在原作者的貼文底下</a>。讚最多的留言都在說先別急：先手動跑順一件事，再讓 AI 自己跑。</p>
+<p>我的留言只寫：「小白問題 留言區大家都好熱心 😂／我把 137 則留言整理成四張圖放這」。這篇也比較適合小白，版主還回應謝謝我。到 11 月 26 日晚上，這則留言有 729 次瀏覽、8 個讚、1 次分享。</p>
+<div class="album">
+<div class="album-hint">🔍 圖片區：點任一張可放大，左右滑看全部</div>
+<figure class="inline-figure portrait shot"><img src="../../images/articles/threads-patrol-with-ai-newbie-thread.jpg" alt="原文〈身為 AI 小白〉與我在底下留的留言分析" loading="lazy"><figcaption>原文和我留在底下的留言（2026-11-27 截圖）</figcaption></figure>
+<div class="thumbs">
+  <figure><img src="../../images/articles/threads-patrol-with-ai-newbie1.jpg" alt="第 1 張：137 則留言回答小白，讚最多的都在說先別急，附輿情分布圖" loading="lazy"><figcaption>1 輿情分布</figcaption></figure>
+  <figure><img src="../../images/articles/threads-patrol-with-ai-newbie2.jpg" alt="第 2 張：大家在聊什麼" loading="lazy"><figcaption>2 大家在聊什麼</figcaption></figure>
+  <figure><img src="../../images/articles/threads-patrol-with-ai-newbie3.jpg" alt="第 3 張：最多人按讚的留言" loading="lazy"><figcaption>3 最多讚的留言</figcaption></figure>
+  <figure><img src="../../images/articles/threads-patrol-with-ai-newbie4.jpg" alt="第 4 張：小白打造自動化 AI 的三個實用建議" loading="lazy"><figcaption>4 三個重點</figcaption></figure>
+</div>
+</div>
+
+<h3>第三篇：日本的女生叫櫻花妹，那男生呢？</h3>
+<p>這篇是大家在留言區接龍取名（<a href="https://www.threads.com/@cutie_flower168/post/DgJx9zzgVnP" target="_blank" rel="noopener">原文</a>），底下 847 則回覆。這種好笑的貼文，我改用兩張詞雲：AI 抓下 326 則留言，只取讚數 500 以上的 17 則，字越大代表提到它的留言讚數加總越多。</p>
+<p>我的留言只寫兩行：「大家都好有才／我來整理一下」，再附兩張詞雲（<a href="https://www.threads.com/@jiang_yude_coach/post/DgM3Rt1GNFa" target="_blank" rel="noopener">我的留言</a>）。這篇效果也不錯，看的人覺得很厲害。到 11 月 26 日晚上，這則留言有 665 次瀏覽、9 個讚、2 次分享。</p>
+<div class="album">
+<div class="album-hint">🔍 圖片區：點任一張可放大，左右滑看全部</div>
+<figure class="inline-figure portrait shot"><img src="../../images/articles/threads-patrol-with-ai-sakura-thread.jpg" alt="原文〈日本的女生叫櫻花妹，那男生呢？〉與我在底下留的兩張詞雲" loading="lazy"><figcaption>原文和我留在底下的留言（2026-11-27 截圖）</figcaption></figure>
+<div class="thumbs">
+  <figure><img src="../../images/articles/threads-patrol-with-ai-cloud1.jpg" alt="詞雲第 1 張：日本男生叫什麼？壽司郎、葬壽司最大，附讚數排行" loading="lazy"><figcaption>1 日本男生叫什麼</figcaption></figure>
+  <figure><img src="../../images/articles/threads-patrol-with-ai-cloud2.jpg" alt="詞雲第 2 張：台灣與韓國的延伸稱呼" loading="lazy"><figcaption>2 延伸到台灣與韓國</figcaption></figure>
+</div>
+</div>
+
+<p>這件事的重點是「在蹭的過程讓人家知道你是很厲害的專業」。我留分析表，是讓人看到我的分析能力；你的專業是什麼，就讓人看到那個專業。</p>
+</div></section>
+
+<section class="section" id="criticism"><div class="inner">
+<h2>被罵很正常，你可以決定要走多保守</h2>
+<p>在 Threads 被罵是正常的。我的觀察是：以前的社群媒體，把你的內容推給喜歡你的人；「Threads 的留言會有百分之二三十推送給討厭你的人」，Threads 會把你的內容推送給你不喜歡的人。但總歸都是有流量。</p>
+<p>這其實也是破圈。以前我們看到的多半是同溫層；你被推到不認識你的人面前，就是在破圈、拓展新的同溫層，「其實就是很需要這件事情」。</p>
+<p>你可以自己決定爭議程度。我是知識型的，一律走保守客觀，也會先想好怎麼防雷；代價是累積粉絲比較慢。想快，就要很會操作爭議，但那也看天賦，我個人不做。</p>
+</div></section>
+
+<section class="section" id="content"><div class="inner">
+<h2>海巡只是讓人看見你，接住人的是你自己的內容</h2>
+<p>專業分享型的帳號，我建議三件事一起做：</p>
+<ol>
+  <li><b>每天發一篇</b>：在你的領域輸出核心觀點，專業要翻譯成大家看得懂的話</li>
+  <li><b>借話題</b>：最近社會在討論什麼，用你的專業角度分析</li>
+  <li><b>海巡</b>：在相關的熱門貼文底下留言</li>
+</ol>
+<p>短影音現在太捲了，除非你超有梗、有才或有資本，一般人我會推薦先做 Threads。被看到之後要讓人信任，還是要回到長內容：深度文章、完整的影片、講座、工作坊。</p>
+<div class="readmore near"><b>延伸閱讀</b><ul>
+  <li><a href="../ai-content-topic-picking/">怎麼用 AI 找內容題目？</a>：每天發一篇、借話題，題目可以先請 AI 從自己的紀錄裡挑。</li>
+  <li><a href="../site-social-interlink/">我的官網怎麼跟其他社群互聯？</a>：從 Threads 點進來的人，下一步要能找到你的長內容。</li>
+</ul></div>
+</div></section>
+
+<section class="section" id="boundary"><div class="inner">
+<h2>這套方法我有把握的，和還沒把握的</h2>
+<ul>
+  <li><b>有把握</b>：讓 AI 先滑、我再判斷，找貼文的時間從一小時降到十分鐘左右。</li>
+  <li><b>初步觀察</b>：到 11 月 26 日晚上，我留出去的 16 則留言分析，有 8 則達到我自己定的有效標準（讚 3 個以上，或 1 則以上留言，或 1 次以上分享）。兩天後的數字我還在追。</li>
+  <li><b>還沒把握</b>：紅利會維持多久。我估計再過一陣子會越來越緊縮，去留言會慢慢沒有效應。</li>
+  <li><b>還在調整</b>：找有價值可以留言的內容，我剛剛開始還抓不準，還在試。</li>
+</ul>
+</div></section>
+
+<section class="section" id="start-now"><div class="inner">
+<h2>今天就能開始</h2>
+<ol>
+  <li>寫下你的專業領域，和這個領域最常被討論的三個話題</li>
+  <li>在 Threads 搜尋這三個話題，或打開你最近按讚過的貼文，找讚數和留言都多的</li>
+  <li>先自己看一眼主題適不適合你回應</li>
+  <li>適合的話，把貼文和留言交給 AI 整理（提示詞在下面）</li>
+  <li>看過 AI 整理的內容，用你的專業留一則具體的回應，記得謝謝原作者</li>
+</ol>
+<p>把貼文和留言貼給 AI，可以先用這段提示詞：</p>
+<div class="codeblock">我是〔你的職業〕，專長是〔你的專業〕。
+下面是一篇熱門貼文和它的留言。請幫我：
+1. 把留言分成支持、中立、反對，各估一個比例
+2. 列出大家最在意的三個問題
+3. 從我的專業角度，各給一個具體、有幫助的回應方向
+4. 不要評價原作者，語氣保守客觀
+〔貼上貼文和留言〕</div>
+<p>AI 給的是方向，留言之前自己再看一遍。</p>
+<div class="readmore"><b>這篇提到過的</b><ul>
+  <li><a href="../five-loops-content-line/">哪些事可以交給 AI 自己跑完？我把內容產線拆成五個小迴圈</a></li>
+  <li><a href="../small-site-security-checklist/">自己架的網站被攻擊怎麼辦？上線前資安檢查表</a></li>
+  <li><a href="../ai-content-topic-picking/">怎麼用 AI 找內容題目？</a></li>
+  <li><a href="../site-social-interlink/">我的官網怎麼跟其他社群互聯？</a></li>
+</ul>
+<b style="margin-top:16px">再往前後延伸</b><ul>
+  <li><a href="../what-is-loop-engineering/">每件事 AI 都要我確認，怎麼可以更自動？什麼是迴圈工程</a>：哪些步驟交給 AI、哪些留給自己確認。</li>
+</ul></div>
+</div></section>
+
+<div class="cta-band"><section class="section"><div class="inner">
+  <div>
+    <h2>我是江江教練</h2>
+    <p class="lead">隱性知識提煉師、AI 應用規劃師。對 AI × 知識管理、隱性知識提煉有興趣，歡迎加入我的 LINE 社群。</p>
+    <p>我每月固定舉辦兩場免費線上講座，分享實戰經驗與方法論。想持續學習，或是有顧問需求，都歡迎先從社群開始。</p>
+  </div>
+  <div class="cta-card"><b>主要討論</b>
+    <p>🔸 善用 AI 作為思考夥伴，提升決策品質與思考深度。</p>
+    <p>🔸 把知識、經驗，整理成提示詞、技能包、知識庫，讓 AI 能靈活運用。</p>
+    <p><a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">加入 LINE 社群 ↗</a></p>
+  </div>
+</div></section></div>
+
+
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">江江教練 · AI 知識管理</div>
+    <div class="footer-links">
+      <a href="../../articles.html">← 回深度文章總站</a>
+      <a href="../../index.html">首頁</a>
+      <a href="../../learn.html">自學資源</a>
+      <a href="../../skills.html">小工具</a>
+      <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">LINE 社群 ↗</a>
+      <a href="https://www.threads.com/@jiang_yude_coach" target="_blank" rel="noopener">Threads ↗</a>
+      <a href="https://vocus.cc/salon/Jiang_Coach" target="_blank" rel="noopener">方格子 ↗</a>
+    </div>
+    <div class="footer-note">這是一篇案例文章，整理我對「Threads 海巡怎麼做？｜讓 AI 先幫我滑熱門貼文，找值得留言的從一小時變十分鐘」的看法，供你參考。</div>
+  </div>
+</footer>
+
+<!-- 點圖放大 lightbox：同頁多張圖可左右切換（鍵盤左右鍵、手機左右滑、下排縮圖、第幾張） -->
+<style>
+.lightbox{flex-direction:column;gap:14px}
+.lb-btn{position:fixed;top:50%;transform:translateY(-50%);width:48px;height:64px;border:0;border-radius:10px;background:rgba(255,255,255,.14);color:#fff;font-size:34px;cursor:pointer;z-index:2}
+.lb-prev{left:14px}.lb-next{right:14px}.lb-btn:hover{background:rgba(255,255,255,.26)}
+.lb-count{color:#f3ead9;font-size:15px;letter-spacing:.04em}
+.lb-thumbs{display:flex;gap:8px;overflow-x:auto;max-width:92vw;padding:4px}
+.lb-thumbs img{width:56px;height:70px;object-fit:cover;border-radius:6px;opacity:.5;cursor:pointer;border:2px solid transparent;flex:none;max-width:none;max-height:none;box-shadow:none}
+.lb-thumbs img.on{opacity:1;border-color:#f6d7a6}
+.lightbox #lightbox-img{max-height:74vh}
+@media(max-width:640px){.lb-btn{width:38px;height:52px;font-size:26px}.lb-prev{left:6px}.lb-next{right:6px}}
+</style>
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <span class="lightbox-close" aria-label="關閉">×</span>
+  <button class="lb-btn lb-prev" aria-label="上一張">‹</button>
+  <img id="lightbox-img" src="" alt="放大檢視">
+  <button class="lb-btn lb-next" aria-label="下一張">›</button>
+  <div class="lb-count" id="lb-count"></div>
+  <div class="lb-thumbs" id="lb-thumbs"></div>
+</div>
+<script>
+(function(){
+  var box=document.getElementById('lightbox'),boxImg=document.getElementById('lightbox-img'),cnt=document.getElementById('lb-count'),th=document.getElementById('lb-thumbs');
+  var imgs=[].slice.call(document.querySelectorAll('.hero-figure img,.inline-figure img,.thumbs img')),cur=0;
+  imgs.forEach(function(img,i){var t=document.createElement('img');t.src=img.getAttribute('src');t.alt='';t.addEventListener('click',function(e){e.stopPropagation();show(i);});th.appendChild(t);
+    img.addEventListener('click',function(){show(i);box.classList.add('open');box.setAttribute('aria-hidden','false');});});
+  function show(i){cur=(i+imgs.length)%imgs.length;var img=imgs[cur];boxImg.src=img.currentSrc||img.src;boxImg.alt=img.alt||'放大檢視';cnt.textContent=(cur+1)+' / '+imgs.length;
+    [].forEach.call(th.children,function(t,k){t.classList.toggle('on',k===cur);});var on=th.children[cur];if(on&&on.scrollIntoView)on.scrollIntoView({block:'nearest',inline:'center'});}
+  function close(){box.classList.remove('open');box.setAttribute('aria-hidden','true');boxImg.src='';}
+  box.querySelector('.lb-prev').addEventListener('click',function(e){e.stopPropagation();show(cur-1);});
+  box.querySelector('.lb-next').addEventListener('click',function(e){e.stopPropagation();show(cur+1);});
+  boxImg.addEventListener('click',function(e){e.stopPropagation();});
+  box.addEventListener('click',close);
+  document.addEventListener('keydown',function(e){if(!box.classList.contains('open'))return;if(e.key==='Escape')close();if(e.key==='ArrowLeft')show(cur-1);if(e.key==='ArrowRight')show(cur+1);});
+  var sx=null;box.addEventListener('touchstart',function(e){sx=e.touches[0].clientX;},{passive:true});
+  box.addEventListener('touchend',function(e){if(sx===null)return;var dx=e.changedTouches[0].clientX-sx;if(Math.abs(dx)>40)show(cur+(dx<0?1:-1));sx=null;});
+})();
+</script>
+
+<script src="../../image-interactions.js"></script>
+
+<!-- 官網共用：滑鼠暖光暈 + 導航列漢堡選單 -->
+<script src="../../spotlight.js"></script>
+
+<!-- 文章自動互聯（相關文章）：兩支已內建，順序不可顛倒，不用再另外加 -->
+<script src="../../articles-data.js"></script>
+<script src="../../related-render.js"></script>
+  <script src="/mika-chat-widget.js" defer></script>
+  <script src="/member-comments.js" defer></script>
+<!-- tracking:cloudflare -->
+<script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "c3e3c857121d416ab405270557d017d3"}'></script>
+<!-- tracking:views-counter -->
+<script src="/views.js"></script>
+</body>
+</html>

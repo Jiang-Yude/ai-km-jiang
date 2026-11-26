@@ -61,6 +61,24 @@ window.ARTICLES = [
   },
 
   {
+    id: "threads-patrol-with-ai",
+    url: "articles/threads-patrol-with-ai/",
+    date: "2026-11-26",
+    updated: "2026-11-26",
+    title: "Threads 海巡怎麼做？｜讓 AI 先幫我滑熱門貼文，找值得留言的從一小時變十分鐘",
+    problem: "在 Threads 自己發文沒人看；想去熱門貼文底下留言，但一篇一篇滑太花時間。",
+    audience: "想在 Threads 上被看見的顧問、老師、社工等專業工作者，以及想讓 AI 幫忙找貼文、又不想變成全自動留言的人。",
+    summary: "海巡就是去已經有人在問的熱門貼文底下回答，現在 Threads 還有海巡紅利。整理三種海巡做法（專業解法、天賦蹭話題、苦巡），以及我用 AI 的五個步驟：AI 先滑、我看主題、AI 統整留言、我再看一遍、我決定要不要留，找值得留言的貼文從一小時降到大約十分鐘。附三篇實際做過的範例（資安檢查表、留言分析圖卡、詞雲）與成效數字、被罵怎麼看、誠實邊界與可直接用的提示詞。這是還在實驗中的紀錄。",
+    tags: {
+      topic: ["AI工作流", "AI應用", "品牌資產"],
+      level: ["基礎"],
+      content_type: ["案例文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["five-loops-content-line", "small-site-security-checklist", "ai-content-topic-picking", "site-social-interlink", "what-is-loop-engineering"]
+  },
+
+  {
     id: "why-ai-sounds-smart-but-gets-it-wrong",
     url: "articles/why-ai-sounds-smart-but-gets-it-wrong/",
     date: "2026-11-26",
