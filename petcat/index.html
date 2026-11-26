@@ -249,7 +249,7 @@
       <audio id="bgmAudio" loop preload="none"></audio>
     </div>
   </div>
-  <p class="hint">把手放到貓背上，順著毛摸。也可以按「自動摸一下」，或點一下貓再按空白鍵。</p>
+  <p class="hint">把手放到貓背上，順著毛摸；點一下是拍拍。也可以按「自動摸一下」，或點一下貓再按空白鍵。</p>
 
   <section class="card" aria-labelledby="upTitle">
     <div class="card-head"><h2 id="upTitle">讓你家的貓也上來</h2></div>
@@ -1350,6 +1350,9 @@ $('mine').addEventListener('click', function(){
 
 /* ---------- 指標：只追第一根手指 ---------- */
 var activeId = null, auto = null;
+var pat = null, downAt = 0, downCX = 0, downCY = 0;   // 點一下＝拍一下（江江 11-26：「點一下 變成拍」「想要拍屁屁」）
+var PAT_T = .62, PAT_J = 2.6;
+var ripple = null, RIP_A = .016, RIP_K = 38, RIP_W = 15, RIP_DECAY = 2.6;   // 拍下去的肉肉水波：振幅、波數、速度、衰減（江江：「肉肉 水波狀晃動感」）                        // 拍一下的總長（秒）與打下去的彈力
 function clock(){ return performance.now() / 1000; }
 function setHandFromEvent(e){
   var r = glc.getBoundingClientRect();
@@ -1364,6 +1367,7 @@ glc.addEventListener('pointerdown', function(e){
   activeId = e.pointerId; auto = null;
   if (!hand.show || e.pointerType !== 'mouse') hand.fresh = true;
   setHandFromEvent(e); hand.down = true; hand.show = true; hand.hideAt = 0;
+  downAt = clock(); downCX = e.clientX; downCY = e.clientY;
   try { glc.setPointerCapture(e.pointerId); } catch (err) {}
 });
 glc.addEventListener('pointermove', function(e){
@@ -1375,7 +1379,9 @@ glc.addEventListener('pointermove', function(e){
 });
 function endStroke(e){
   if (e && e.pointerId !== activeId) return;
+  var tap = !!e && e.type === 'pointerup' && clock() - downAt < .3 && Math.hypot(e.clientX - downCX, e.clientY - downCY) < 12;
   activeId = null; hand.down = false;
+  if (tap){ startPat(); return; }
   if (e && e.pointerType !== 'mouse'){ hand.hover = false; hand.hideAt = clock() + .6; }   // 手機：放開 0.6 秒後淡出
   else if (e){ var r = glc.getBoundingClientRect(); if (e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom){ hand.show = false; hand.hover = false; } }
 }
@@ -1390,6 +1396,22 @@ glc.addEventListener('pointerleave', function(e){
 function handGeom(){   // 手在畫面上的尺寸（佔畫面高的比例）與指尖到手中心的位移
   var iw = HAND_W * ASP, ih = handImg ? iw * handH / handImg.naturalWidth : iw * 3.15;
   return { iw:iw, ih:ih, dx:(HAND.midX - HAND.tipX) * iw, dy:(HAND.midY - HAND.tipY) * ih, rx:HAND.rx * iw, ry:HAND.ry * ih };
+}
+function startPat(){
+  if (!prep) return;
+  pat = { t0:clock(), x:hand.x, y:hand.y, hit:false };
+  auto = null; hand.show = true; hand.hideAt = 0;
+}
+// 拍一下打到貓的那一刻：手掌周圍的毛往外彈、往下沉一點，之後靠彈簧自己晃回來
+function patImpulse(hcx, hcy, g){
+  var comp = prep.comp, i, j, n;
+  for (j = 1; j < NY - 1; j++) for (i = 1; i < NX - 1; i++){
+    n = j * NX + i; var c = comp[n]; if (!c) continue;
+    var dx = (i / (NX - 1) * ASP + ox[n] - hcx) / g.rx, dy = (j / (NY - 1) + oy[n] - hcy) / g.ry, d2 = dx * dx + dy * dy;
+    if (d2 > 14) continue;
+    var d = Math.sqrt(d2) + 1e-6, w = Math.exp(-d2 * .3) * c * PAT_J;
+    vx[n] += dx / d * w * g.rx * .6; vy[n] += (dy / d * .6 + .5) * w * g.ry;
+  }
 }
 function autoPet(){
   if (!prep) return;
@@ -1505,14 +1527,24 @@ function frame(){
       hand.x = ux - offx / ASP; hand.y = uy - offy; hand.show = true;
     }
   }
-  if (hand.hideAt && now > hand.hideAt && !hand.down && !hand.hover && !auto){ hand.show = false; hand.hideAt = 0; }
+  var patOn = false, lift = 0, slam = false;
+  if (pat){
+    var pk = (now - pat.t0) / PAT_T;
+    if (pk >= 1){ pat = null; if (!hand.hover) hand.hideAt = now + .25; }
+    else {
+      patOn = true; hand.x = pat.x; hand.y = pat.y; hand.show = true;
+      lift = pk < .32 ? Math.sin(pk / .32 * Math.PI / 2) : (pk < .42 ? 1 - (pk - .32) / .1 : 0);   // 手抬起來，再快速打下去
+      slam = pk >= .42 && pk < .7;
+    }
+  }
+  if (hand.hideAt && now > hand.hideAt && !hand.down && !hand.hover && !auto && !pat){ hand.show = false; hand.hideAt = 0; }
   hand.alpha = clamp(hand.alpha + (hand.show ? 9 : -4.5) * dt, 0, 1);
-  var pressT = (hand.down || autoOn) ? 1 : 0;
-  hand.press += (pressT - hand.press) * Math.min(1, dt * 14);
+  var pressT = (hand.down || autoOn || slam) ? 1 : 0;
+  hand.press += (pressT - hand.press) * Math.min(1, dt * (slam ? 40 : 14));
   // 手中心的位置（佔畫面比例）與是否碰到貓
   var pcx = hand.x + offx / ASP, pcy = hand.y + offy;
   var contact = Math.max(A.at(pcx, pcy), .7 * A.at(pcx, pcy - g.ry * .5), .7 * A.at(pcx, pcy + g.ry * .5));
-  var active = hand.show && (hand.down || autoOn || hand.hover);
+  var active = hand.show && (hand.down || autoOn || hand.hover || patOn);
   if (!isFinite(contact)) contact = 0;
   hand.contact += ((active ? contact : 0) - hand.contact) * Math.min(1, dt * 12);
   if (!isFinite(hand.contact)) hand.contact = 0;   // 萬一數值壞掉就自己復原
@@ -1521,6 +1553,17 @@ function frame(){
   var hvx = (hx - ppx) / dt, hvy = (hy - ppy) / dt, sp = Math.hypot(hvx, hvy);
   if (sp > 4){ hvx *= 4 / sp; hvy *= 4 / sp; sp = 4; }
   ppx = hx; ppy = hy;
+  if (pat && slam && !pat.hit){
+    pat.hit = true;
+    if (A.at(pcx, pcy) > .2){
+      patImpulse(hx, hy, g);
+      if (heartsOn) for (var hb = 0; hb < 5; hb++) hearts.push({ x:pcx + (hb - 2) * .9 * g.rx / ASP, y:pcy - g.ry * (.8 + Math.random() * .4),
+        vx:(hb - 2) * .035, vy:-(.16 + Math.random() * .08), s:.02 + Math.random() * .014, t:now, r:(hb - 2) * .25 });
+      if (hearts.length > 40) hearts.splice(0, hearts.length - 40);
+      pat.pop = { x:pcx, y:pcy - g.ry * 1.6, t:now };
+      ripple = { x:hx, y:hy, t:now };
+    }
+  }
   var strength = (hand.down || autoOn) ? 1 : (hand.hover ? .55 : 0);
   var grip = active ? strength * contact : 0, press = hand.contact * (.45 + .55 * hand.press) * hand.alpha;
   physics(dt / 2, hx, hy, hvx, hvy, grip, press, g);
@@ -1540,8 +1583,22 @@ function frame(){
   if (Math.abs(sizeTarget - sizeK) < .0001 && Math.abs(sizeVel) < .0001){ sizeK = sizeTarget; sizeVel = 0; }
   var breath = (reduced || still) ? 0 : BREATH_K * (.5 - .5 * Math.cos(now * 2 * Math.PI / BREATH_T));
   var sk = sizeK + breath, G = prep.G, n, mo = 0;
+  var ra = ripple ? now - ripple.t : 9, rc = prep.comp;
+  if (ra > 1.6) ripple = null;
+  if (ripple && !reduced) sk += .045 * Math.sin(ra * 19) * Math.exp(-ra * 3.2);   // 整個身體像果凍一樣胖瘦彈幾下
   for (n = 0; n < NN; n++){
-    offArr[n * 2] = ox[n] / ASP; offArr[n * 2 + 1] = oy[n] + sk * G[n];
+    var rx2 = 0, ry2 = 0;
+    if (ripple && rc[n] > 0 && !reduced){      // 水波：從拍的地方一圈圈往外擴、越來越小
+      var qx = (n % NX) / (NX - 1) * ASP - ripple.x, qy = Math.floor(n / NX) / (NY - 1) - ripple.y, qr = Math.hypot(qx, qy) + 1e-6;
+      var ph = qr * RIP_K - ra * RIP_W;
+      if (ph < 0){
+        var wv = RIP_A * Math.sin(ph) * Math.exp(-ra * RIP_DECAY) * Math.exp(-qr * 3) * Math.min(1, -ph / 3) * Math.max(rc[n], .75);   // 頭也跟著晃（江江：「頭部可以有晃動」）
+        rx2 = qx / qr * wv; ry2 = qy / qr * wv;
+      }
+      var wob = .007 * Math.sin(ra * 21 - qr * 14) * Math.exp(-ra * 3.4);   // 整隻貓（頭、身體、尾巴）跟著抖幾下，離拍的地方越遠晚一點
+      rx2 += wob * .5; ry2 += wob;
+    }
+    offArr[n * 2] = (ox[n] + rx2) / ASP; offArr[n * 2 + 1] = oy[n] + ry2 + sk * G[n];
     var q = Math.abs(ox[n]) + Math.abs(oy[n]); if (q > mo) mo = q;
   }
   debug.maxOff = mo; debug.contact = hand.contact; debug.alpha = hand.alpha; debug.pcx = pcx; debug.pcy = pcy;
@@ -1564,15 +1621,27 @@ function frame(){
   if (!useGL) fx.drawImage(prep.photo, 0, 0, W, H);
   // 手與陰影
   if (!bare && handCv && hand.alpha > .01){
-    var iwPx = HAND_W * W * (1 - .03 * hand.press), sc = iwPx / handCv.width, u = W / 720;
+    var iwPx = HAND_W * W * (1 - .03 * hand.press) * (1 + .22 * lift), sc = iwPx / handCv.width, u = W / 720;
     fx.save();
     fx.globalAlpha = hand.alpha;
-    fx.translate(hand.x * W, hand.y * H); fx.rotate(ang); fx.scale(sc, sc);
+    fx.translate(hand.x * W, (hand.y - .05 * lift) * H); fx.rotate(ang); fx.scale(sc, sc);
     // 碰到貓：陰影深一點、貼近一點；按下去：陰影更小。沒碰到貓（落在坐墊上）：淡一點
     fx.shadowColor = 'rgba(40,24,8,' + (.20 + .14 * hand.contact).toFixed(3) + ')';
-    fx.shadowBlur = (15 - 8 * hand.press) * u; fx.shadowOffsetX = (11 - 6 * hand.press) * u; fx.shadowOffsetY = (13 - 7 * hand.press) * u;
+    fx.shadowBlur = (15 - 8 * hand.press + 14 * lift) * u; fx.shadowOffsetX = (11 - 6 * hand.press + 10 * lift) * u; fx.shadowOffsetY = (13 - 7 * hand.press + 40 * lift) * u;
     fx.drawImage(handCv, -HAND.tipX * handCv.width, -HAND.tipY * handH);
     fx.restore();
+  }
+  // 拍一下：打到的地方跳出「啪」
+  var pp = pat && pat.pop;
+  if (pp && !bare){
+    var pa = now - pp.t;
+    if (pa < .5){
+      fx.save(); fx.globalAlpha = Math.max(0, 1 - pa / .5);
+      fx.translate(pp.x * W, (pp.y - pa * .06) * H); fx.scale(1 + pa * .8, 1 + pa * .8);
+      fx.font = '700 ' + Math.round(H * .075) + 'px system-ui, sans-serif'; fx.textAlign = 'center'; fx.textBaseline = 'middle';
+      fx.lineWidth = H * .012; fx.strokeStyle = 'rgba(255,255,255,.95)'; fx.strokeText('啪', 0, 0);
+      fx.fillStyle = '#e85a4f'; fx.fillText('啪', 0, 0); fx.restore();
+    }
   }
   // 愛心
   for (var i = hearts.length - 1; i >= 0; i--){
