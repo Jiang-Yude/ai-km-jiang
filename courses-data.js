@@ -97,6 +97,30 @@ window.COURSES = [
     }
   },
   {
+    id: "2026-11-27-tianyi-mobile-ai-workshop",
+    date: "2026-12-18",
+    date_label: "共三場：11/27（五）台北、12/13（日）板橋、12/18（五）桃園",
+    time: "10:00",
+    duration_min: 240,
+    title: "手機 AI 工作坊：做自己的電影海報（天翼國際培訓，共三場）",
+    type_label: "外部授課",
+    image: "images/courses/2026-11-27-tianyi-mobile-ai-poster.jpg",
+    venue_mode: "physical",
+    venue_label: "實體",
+    host: "江江教練",
+    tags: ["樂齡", "手機", "AI生圖", "電影海報", "NotebookLM", "Suno"],
+    summary: "一支手機、免費版 AI，用自己的照片做電影海報、插畫短影音和自己的歌。每場 10:00 到 12:00、14:00 到 16:00。",
+    detail_url: null,
+    materials: [
+      { label: "上課簡報 ↗", url: "https://mobile-ai-workshop-cgo9yd.pages.dev/tianyi/class/" }
+    ],
+    registration: {
+      status: "private",
+      host_org: "天翼國際培訓",
+      note: "共三場：11/27（五）台北、12/13（日）板橋、12/18（五）桃園"
+    }
+  },
+  {
     id: "2026-11-25-wenzao-german-teacher-workshop",
     date: "2026-12-23",
     date_label: "共三場：11/25（三）線上、12/9（三）實體、12/23（三）線上",
