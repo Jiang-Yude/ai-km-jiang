@@ -32,7 +32,8 @@ const OPENAI_EDITS = 'https://api.openai.com/v1/images/edits';
 const PROMPT = `Image 1 is a photo of someone's real cat. Image 2 is a style and pose reference.
 Create a new photorealistic image of the cat from Image 1, copying its exact coat colors, pattern placement and fur length, in the exact pose, size, framing and camera angle of the cat in Image 2: seen straight from directly above, lying curled and relaxed, showing only its back and the back of its head. The face must NOT be visible (no eyes, no nose, no mouth). Head toward the left, tail curled at the right. Soft natural indoor light from the top.
 Only the cat. Transparent background, no cushion, no floor, no shadow, no text.
-If Image 1 does not clearly show a cat, still draw a generic cat with the main colors of Image 1.`;
+If Image 1 does not clearly show a cat, still draw a generic cat with the main colors of Image 1.
+FUR LENGTH IS CRITICAL: if the cat in Image 1 is long-haired or fluffy (Persian, British Longhair, Ragdoll, Maine Coon, Norwegian Forest, Siberian and similar), keep it just as long-haired and fluffy in the new image: thick voluminous fur that stands out from the body, a soft fur halo around the whole silhouette, a fluffy neck ruff and a big bushy plume tail. Image 2 is only for pose and camera angle; do NOT copy its short, sleek coat or its thin tail. If the cat in Image 1 is short-haired, keep it short-haired.`;
 
 // 公開暱稱的基本過濾：擋網址與少數明顯不雅字（江江之後可加）
 const BLOCKED = ['http', 'www.', '.com', '.tw', 'line.me', '幹', '屌', '靠北', '雞巴', '機掰', '王八', '去死', 'fuck', 'shit', 'sex'];
