@@ -240,7 +240,7 @@
       </button>
       <button type="button" class="pill" id="hearts" aria-pressed="true">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20s-7-4.4-7-9.6A3.9 3.9 0 0 1 12 8a3.9 3.9 0 0 1 7 2.4C19 15.6 12 20 12 20z"/></svg>
-        <span><span class="off">愛心：關</span><span class="on">愛心：開</span></span>
+        <span><span class="off">特效：關</span><span class="on">特效：開</span></span>
       </button>
       <button type="button" class="pill" id="autoPet">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 15c3-6 7-8 11-7"/><path d="M12 5l4 3-3 4"/><path d="M5 20h14"/></svg>
@@ -1560,7 +1560,7 @@ function frame(){
       if (heartsOn) for (var hb = 0; hb < 5; hb++) hearts.push({ x:pcx + (hb - 2) * .9 * g.rx / ASP, y:pcy - g.ry * (.8 + Math.random() * .4),
         vx:(hb - 2) * .035, vy:-(.16 + Math.random() * .08), s:.02 + Math.random() * .014, t:now, r:(hb - 2) * .25 });
       if (hearts.length > 40) hearts.splice(0, hearts.length - 40);
-      pat.pop = { x:pcx, y:pcy - g.ry * 1.6, t:now };
+      if (heartsOn) pat.pop = { x:pcx, y:pcy - g.ry * 1.6, t:now };   // 「啪」字跟愛心一起由特效開關管（江江：關特效就單純擼貓）
       ripple = { x:hx, y:hy, t:now };
     }
   }
