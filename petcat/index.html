@@ -1,0 +1,1577 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
+<meta name="robots" content="index, follow">
+<title>線上擼貓｜摸三隻貓，也能生成你家的貓｜江江教練</title>
+<link rel="canonical" href="https://jiangyude.com/petcat/" />
+<meta name="description" content="線上擼貓：用滑鼠或手指順著毛摸三隻貓，可以切換瘦、正常、胖。也能上傳自家貓的照片，生成一隻可以摸的版本放上貓牆，前 100 名免費。江江教練的網頁小工具。" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="江江教練 · AI 知識管理" />
+<meta property="og:locale" content="zh_TW" />
+<meta property="og:url" content="https://jiangyude.com/petcat/" />
+<meta property="og:title" content="線上擼貓｜摸三隻貓，也能生成你家的貓" />
+<meta property="og:description" content="摸三隻貓，也能上傳自家貓生成可以摸的版本，前 100 名免費。" />
+<meta property="og:image" content="https://jiangyude.com/petcat/og.jpg" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="線上擼貓｜摸三隻貓，也能生成你家的貓" />
+<meta name="twitter:description" content="摸三隻貓，也能上傳自家貓生成可以摸的版本，前 100 名免費。" />
+<meta name="twitter:image" content="https://jiangyude.com/petcat/og.jpg" />
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"線上擼貓｜摸三隻貓，也能生成你家的貓","description":"線上擼貓：用滑鼠或手指順著毛摸三隻貓，可以切換瘦、正常、胖。也能上傳自家貓的照片，生成一隻可以摸的版本放上貓牆，前 100 名免費。江江教練的網頁小工具。","url":"https://jiangyude.com/petcat/","inLanguage":"zh-Hant","isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://jiangyude.com/"},"author":{"@type":"Person","@id":"https://jiangyude.com/#person","name":"江昱德","alternateName":"江江教練","jobTitle":"AI 教練","url":"https://jiangyude.com/","sameAs":["https://www.threads.com/@jiang_yude_coach","https://vocus.cc/salon/Jiang_Coach","https://github.com/Jiang-Yude","https://www.youtube.com/@aipkmcc","https://www.instagram.com/jiang_yude_coach/"]}}</script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" />
+<link rel="stylesheet" href="../styles.css?v=20260603-learning-map" />
+<style>
+:root{ --r-s:14px; --r-m:22px; --r-l:28px; }
+*{box-sizing:border-box}
+.petcat{font-size:16px; line-height:1.6; color:var(--ink)}
+.wrap{max-width:800px; margin:0 auto; padding:14px 16px 40px}
+.petcat h1{font-size:18px; font-weight:600; letter-spacing:.12em; text-align:center; margin:2px 0 8px; color:var(--ink-soft)}
+.petcat h2{font-size:20px; margin:0; font-weight:700}
+.petcat button, .petcat input{font:inherit; color:inherit}
+.sr-only{position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap}
+
+.stage-box{
+  position:relative; margin:0 auto;
+  width:min(100%, 768px, max(280px, calc((100vh - 250px) * 3 / 2)));
+  aspect-ratio:3/2; border-radius:var(--r-l); overflow:hidden;
+  background:var(--bg-soft); box-shadow:var(--shadow); border:1px solid var(--line-soft);
+}
+.stage-box canvas{position:absolute; inset:0; width:100%; height:100%; display:block}
+#gl{touch-action:none; cursor:grab; outline:none; user-select:none; -webkit-user-select:none; -webkit-touch-callout:none}
+#gl.has-hand{cursor:none}
+#gl:focus-visible{box-shadow:inset 0 0 0 3px var(--c-sky)}
+#fx{pointer-events:none}
+.now{margin:8px 0 6px; text-align:center; font-size:16px; font-weight:600; color:var(--ink-soft); min-height:26px}
+.msg{margin:0 auto 8px; max-width:720px; text-align:center; font-size:14px; color:var(--c-coral)}
+.msg:empty{display:none}
+.upload .msg{margin:0; text-align:left}
+
+.controls{display:flex; flex-direction:column; align-items:center; gap:10px}
+.coats{display:flex; gap:14px; justify-content:center; flex-wrap:wrap}
+.thumb{
+  background:none; border:0; padding:0; cursor:pointer;
+  display:flex; flex-direction:column; align-items:center; gap:2px;
+  min-width:56px; min-height:44px; font-size:14px; color:var(--ink-faint);
+}
+.thumb canvas{
+  width:56px; height:56px; border-radius:50%; display:block;
+  border:2px solid var(--line); background:var(--bg-soft);
+  transition:transform .15s, border-color .15s, box-shadow .15s;
+}
+.thumb:hover canvas{transform:scale(1.06)}
+.thumb[aria-pressed="true"]{color:var(--ink); font-weight:600}
+.thumb[aria-pressed="true"] canvas{border-color:var(--c-coral); box-shadow:0 0 0 3px rgba(232,90,79,.22)}
+.thumb:focus-visible{outline:none}
+.thumb:focus-visible canvas{box-shadow:0 0 0 3px var(--c-sky)}
+
+.tools{display:flex; gap:10px; align-items:center; justify-content:center; flex-wrap:wrap}
+.seg{display:inline-flex; border:1px solid var(--line); border-radius:999px; background:var(--paper); padding:3px}
+.seg button{
+  min-width:72px; min-height:44px; border:0; border-radius:999px; background:transparent;
+  cursor:pointer; font-size:16px; color:var(--ink-faint); padding:0 18px;
+  transition:background .2s, color .2s;
+}
+.seg button[aria-pressed="true"]{background:var(--c-peach); color:#fff; font-weight:600}
+.seg button:focus-visible, .pill:focus-visible, .btn:focus-visible{outline:3px solid var(--c-sky); outline-offset:2px}
+.pill{
+  display:inline-flex; align-items:center; gap:6px; min-height:50px; padding:0 16px;
+  border:1px solid var(--line); border-radius:999px; background:var(--paper); cursor:pointer;
+  font-size:16px; color:var(--ink-soft);
+}
+.pill svg{width:22px; height:22px; flex:none}
+.pill[aria-pressed="true"]{border-color:var(--c-mint); color:var(--c-mint)}
+.pill .on{display:none} .pill[aria-pressed="true"] .on{display:inline} .pill[aria-pressed="true"] .off{display:none}
+.pill[hidden]{display:none}
+.hint{text-align:center; font-size:14px; color:var(--ink-faint); margin:10px 0 0}
+
+.petcat .card{
+  overflow:visible; margin-top:28px; background:var(--paper); border:1px solid var(--line-soft);
+  border-radius:var(--r-m); box-shadow:var(--shadow); padding:20px;
+}
+.card-head{display:flex; align-items:baseline; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-bottom:6px}
+.count{font-size:16px; color:var(--c-sand); font-weight:600}
+.sub{font-size:14px; color:var(--ink-faint); margin:0 0 14px}
+.btn{
+  display:inline-flex; align-items:center; justify-content:center; gap:8px;
+  min-height:48px; padding:0 22px; border-radius:999px; cursor:pointer;
+  background:var(--c-coral); color:#fff; font-weight:600; font-size:16px; border:0;
+}
+.btn svg{width:20px; height:20px; flex:none}
+.btn{max-width:100%; text-align:center; line-height:1.35; padding-top:8px; padding-bottom:8px}
+.btn.ghost{background:var(--paper); color:var(--c-coral); box-shadow:inset 0 0 0 2px var(--c-coral)}
+.btn[disabled]{opacity:.65; cursor:default}
+[hidden]{display:none !important}
+.two{display:grid; grid-template-columns:1fr 1fr; gap:14px; width:100%}
+.box{
+  display:flex; flex-direction:column; gap:8px; min-width:0; padding:14px;
+  border:1px solid var(--line-soft); border-radius:var(--r-s); background:var(--bg-soft);
+}
+.box .lab{font-size:17px; font-weight:700; color:var(--ink)}
+.drop{
+  position:relative; display:flex; align-items:center; justify-content:center; min-height:136px; flex:1;
+  border:2px dashed var(--line); border-radius:12px; background:var(--paper); cursor:pointer; overflow:hidden;
+}
+.drop img{position:absolute; inset:0; width:100%; height:100%; object-fit:cover}
+.drop-empty{display:flex; flex-direction:column; align-items:center; gap:4px; padding:10px; text-align:center; color:var(--c-coral); font-weight:600}
+.drop-empty svg{width:30px; height:30px}
+.drop-empty small{font-size:14px; font-weight:400; color:var(--ink-faint)}
+.drop-change{position:absolute; right:8px; bottom:8px; background:rgba(26,22,18,.74); color:#fff; border-radius:999px; padding:4px 14px; font-size:14px}
+#file:focus-visible + .drop{outline:3px solid var(--c-sky); outline-offset:2px}
+.box input[type=text]{
+  width:100%; min-height:52px; border:1px solid var(--line); border-radius:12px; padding:0 14px;
+  font-size:18px; background:var(--paper); color:var(--ink);
+}
+.box input[type=text]:focus-visible{outline:3px solid var(--c-sky); outline-offset:2px}
+.field{display:flex; flex-direction:column; align-items:flex-start; gap:4px; width:100%; max-width:360px}
+.field label, .field .lab{font-size:15px; color:var(--ink-soft); font-weight:600}
+.field input[type=text]{
+  width:100%; min-height:48px; border:1px solid var(--line); border-radius:var(--r-s); padding:0 14px;
+  font:inherit; font-size:16px; background:var(--paper); color:var(--ink);
+}
+.field input[type=text]:focus-visible{outline:3px solid var(--c-sky); outline-offset:2px}
+.fine{font-size:14px; color:var(--ink-faint); margin:0}
+.prog{width:100%; max-width:360px; height:12px; border-radius:999px; background:var(--bg-soft); border:1px solid var(--line-soft); overflow:hidden}
+.prog i{
+  display:block; height:100%; width:3%; border-radius:999px;
+  background:repeating-linear-gradient(45deg, var(--c-peach) 0 10px, #f0a877 10px 20px);
+  background-size:28.28px 100%; animation:prog-slide 1s linear infinite; transition:width .6s;
+}
+@keyframes prog-slide{to{background-position:28.28px 0}}
+.upload{display:flex; flex-direction:column; align-items:flex-start; gap:10px}
+.note{
+  margin:0; font-size:15px; color:var(--ink-soft); background:var(--bg-soft);
+  border:1px solid var(--line-soft); border-radius:var(--r-s); padding:12px 14px;
+}
+.note[hidden]{display:none}
+
+.rows{display:flex; flex-direction:column; gap:14px}
+.row{display:grid; grid-template-columns:60px 1fr; gap:8px; align-items:start}
+.range{
+  font-size:14px; color:var(--ink-faint); font-variant-numeric:tabular-nums;
+  padding-top:14px; white-space:nowrap;
+}
+.slots{list-style:none; margin:0; padding:0; display:grid; grid-template-columns:repeat(10, minmax(0,1fr)); gap:6px}
+.slots li{display:flex; justify-content:center}
+.slot{
+  background:none; border:0; padding:0; cursor:pointer; width:100%;
+  display:flex; flex-direction:column; align-items:center; gap:1px; min-height:44px;
+  font-size:14px; color:var(--ink-faint); font-variant-numeric:tabular-nums;
+}
+.slot canvas, .slot .hole{
+  width:min(100%, 52px); aspect-ratio:1; height:auto; border-radius:50%; display:block;
+}
+.slot canvas{border:2px solid var(--line); background:var(--bg-soft); transition:transform .15s}
+.slot:hover canvas{transform:scale(1.08)}
+.slot[aria-pressed="true"]{color:var(--ink); font-weight:700}
+.slot[aria-pressed="true"] canvas{border-color:var(--c-coral); box-shadow:0 0 0 3px rgba(232,90,79,.22)}
+.slot:focus-visible{outline:none}
+.slot:focus-visible canvas{box-shadow:0 0 0 3px var(--c-sky)}
+.slot.empty{cursor:default}
+.slot .hole{border:2px dashed var(--line)}
+.slot .nick{max-width:100%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-size:13px; line-height:1.3}
+.legend{margin:14px 0 0; font-size:14px; color:var(--ink-faint); display:flex; align-items:center; gap:8px}
+.legend i{width:18px; height:18px; border-radius:50%; border:2px dashed var(--line); display:inline-block; flex:none}
+.pc-foot{margin-top:28px; text-align:center; font-size:14px; color:var(--ink-faint)}
+.pc-foot a{color:var(--c-sky); text-decoration:underline}
+.pc-foot p{margin:0 0 6px}
+
+@media (max-width:640px){
+  .wrap{padding:8px 16px 32px}
+  .card{padding:16px}
+  .row{grid-template-columns:54px 1fr}
+  .slots{grid-template-columns:repeat(5, minmax(0,1fr)); row-gap:8px}
+  .two{grid-template-columns:1fr}
+}
+@media (prefers-reduced-motion:reduce){
+  *{transition:none !important}
+  .prog i{animation:none}
+}
+</style>
+</head>
+<body>
+
+<nav class="top">
+  <div class="container">
+    <a class="nav-brand-img" href="../index.html"><img src="../images/footer-signature.png" alt="江江教練 | 江昱德" /></a>
+    <button class="nav-toggle" aria-label="選單"><span></span><span></span><span></span></button>
+    <ul class="nav-menu">
+      <li><a href="../index.html">首頁</a></li>
+      <li><a href="../offers.html">付費服務</a></li>
+      <li><a href="../courses.html">各式講座</a></li>
+      <li><a href="../articles.html">教學文章</a></li>
+      <li><a href="../knowledge-architecture.html">知識架構</a></li>
+      <li><a href="../skills.html" class="active">小工具</a></li>
+    </ul>
+  </div>
+</nav>
+
+<main class="wrap petcat">
+  <h1>線上擼貓</h1>
+
+  <div class="stage-box" id="stage">
+    <canvas id="gl" tabindex="0" role="application" aria-roledescription="可以摸的貓" aria-label="一隻趴著的貓，從正上方看牠的背。用滑鼠或手指在牠背上劃過就是摸牠；焦點在這裡時按空白鍵會自動從頭後面摸到尾巴。"></canvas>
+    <canvas id="fx" aria-hidden="true"></canvas>
+  </div>
+  <p class="now" id="now" aria-live="polite"></p>
+  <p class="msg" id="msg" role="status"></p>
+
+  <div class="controls">
+    <div class="coats" id="coats" role="group" aria-label="選一隻貓"></div>
+    <div class="tools">
+      <div class="seg" role="group" aria-label="體型" id="sizeSeg">
+        <button type="button" data-size="slim" aria-pressed="false">瘦</button>
+        <button type="button" data-size="normal" aria-pressed="true">正常</button>
+        <button type="button" data-size="fat" aria-pressed="false">胖</button>
+      </div>
+      <button type="button" class="pill" id="bgm" aria-pressed="false">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 17.5V6l10-2v11.5"/><circle cx="6.5" cy="17.5" r="2.5"/><circle cx="16.5" cy="15.5" r="2.5"/></svg>
+        <span><span class="off">背景音樂：關</span><span class="on">背景音樂：開</span></span>
+      </button>
+      <button type="button" class="pill" id="hearts" aria-pressed="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20s-7-4.4-7-9.6A3.9 3.9 0 0 1 12 8a3.9 3.9 0 0 1 7 2.4C19 15.6 12 20 12 20z"/></svg>
+        <span><span class="off">愛心：關</span><span class="on">愛心：開</span></span>
+      </button>
+      <button type="button" class="pill" id="autoPet">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 15c3-6 7-8 11-7"/><path d="M12 5l4 3-3 4"/><path d="M5 20h14"/></svg>
+        <span>自動摸一下</span>
+      </button>
+      <audio id="bgmAudio" loop preload="none"></audio>
+    </div>
+  </div>
+  <p class="hint">把手放到貓背上，順著毛摸。也可以按「自動摸一下」，或點一下貓再按空白鍵。</p>
+
+  <section class="card" aria-labelledby="upTitle">
+    <div class="card-head"><h2 id="upTitle">讓你家的貓也上來</h2></div>
+    <p class="sub" id="upSub"></p>
+    <button type="button" class="btn ghost" id="mine" hidden></button>
+    <form class="upload" id="upForm" novalidate>
+      <div class="two">
+        <div class="box">
+          <span class="lab" id="pickLab">傳圖片</span>
+          <input type="file" id="file" accept="image/*" class="sr-only" aria-labelledby="pickLab">
+          <label for="file" class="drop" id="pickBtn">
+            <span class="drop-empty" id="pickEmpty">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 16V5"/><path d="M7.5 9.5L12 5l4.5 4.5"/><path d="M5 19h14"/></svg>
+              <span>點這裡選照片</span>
+              <small>選一張你家貓的照片</small>
+            </span>
+            <img id="pickPrev" alt="你選的照片" hidden>
+            <span class="drop-change" id="pickChange" hidden>換一張</span>
+          </label>
+        </div>
+        <div class="box">
+          <label class="lab" for="nick">幫貓取名字</label>
+          <input type="text" id="nick" maxlength="20" autocomplete="off" placeholder="例如：咪咪" required>
+          <small class="fine">1 到 10 個字，會顯示在貓的旁邊。</small>
+        </div>
+      </div>
+      <div class="field">
+        <span class="lab" id="upSizeLab">體型</span>
+        <div class="seg" role="group" aria-labelledby="upSizeLab" id="upSize">
+          <button type="button" data-size="slim" aria-pressed="false">瘦</button>
+          <button type="button" data-size="normal" aria-pressed="true">正常</button>
+          <button type="button" data-size="fat" aria-pressed="false">胖</button>
+        </div>
+      </div>
+      <button type="submit" class="btn" id="genBtn">生成我家的貓</button>
+      <div class="prog" id="prog" hidden><i id="progBar"></i></div>
+      <p class="fine" id="fineText"></p>
+      <p class="msg" id="upMsg" role="status"></p>
+      <p class="note" id="note" hidden>這是你在自己瀏覽器裡的預覽，沒有送出，也不會加入貓牆。</p>
+    </form>
+  </section>
+
+  <section class="card" aria-labelledby="gTitle">
+    <div class="card-head">
+      <h2 id="gTitle">網友的貓</h2>
+      <span class="count" id="count"></span>
+    </div>
+    <p class="sub" id="gSub"></p>
+    <div class="rows" id="rows"></div>
+    <p class="legend" id="legend"><i aria-hidden="true"></i><span>虛線圈是還空著的名額</span></p>
+  </section>
+
+  <div class="pc-foot">
+    <p><a href="../skills.html">江江教練知識官網・更多 AI 小工具</a></p>
+    <p>靈感來自 <a href="https://x.com/zubububu" target="_blank" rel="noopener">@zubububu 的 pet-the-cat</a></p>
+  </div>
+</main>
+
+<footer>
+  <div class="watercolor wc-sand"></div>
+  <div class="container">
+    <div class="foot-brand">
+      <div class="logo"><span class="eye">江江教練的</span>AI 知識管理</div>
+      <p>提煉 · 累積 · 應用你的知識資產</p>
+    </div>
+    <div class="foot-links">
+      <a href="../index.html">首頁</a>
+      <a href="../knowledge-architecture.html">知識架構</a>
+      <a href="../courses.html">課程</a>
+      <a href="../learn.html">自學資源</a>
+      <a href="../articles.html">文章</a>
+      <a href="../offers.html">付費服務</a>
+      <a href="../resources.html">課後簡報</a>
+      <a href="../ai-trends.html">AI 趨勢</a>
+      <a href="../skills.html">小工具</a>
+      <a href="../ai-office/">AI 辦公室</a>
+      <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">LINE 社群 ↗</a>
+      <a href="https://line.me/R/ti/p/@713kczfc" target="_blank" rel="noopener">LINE OA ↗</a>
+      <a href="https://www.threads.com/@jiang_yude_coach" target="_blank" rel="noopener">Threads ↗</a>
+      <a href="https://vocus.cc/salon/Jiang_Coach" target="_blank" rel="noopener">方格子 ↗</a>
+      <a href="https://www.instagram.com/jiang_yude_coach/" target="_blank" rel="noopener">IG ↗</a>
+      <a href="https://www.youtube.com/@aipkmcc" target="_blank" rel="noopener">YouTube ↗</a>
+      <a href="https://github.com/Jiang-Yude" target="_blank" rel="noopener">GitHub ↗</a>
+    </div>
+    <div class="foot-meta">線上擼貓 · 江江教練的網頁小工具</div>
+  </div>
+</footer>
+
+<script>
+/* ============================================================
+   設定區：換照片、加網友的貓，都只改這一段。說明見 README.md
+   ============================================================ */
+
+// 後台 API（同網域）。貓牆 GET、生成 POST 都打這個網址；後台邏輯在 cloudflare/petcat.mjs。
+var API_CATS = '/api/petcat/cats';
+// 要不要連後台。改成 false 就整頁只用本機預覽。
+var API_ENABLED = true;
+// 背景輕音樂（預設關，按了才載入）。volume 是音量 0 到 1。src 與 dataURL 都空的話，按鈕會自動藏起來。
+var BGM = { volume:.2, src:'bgm-chill.mp3', dataURL:'' };
+// 沒有貓的空坐墊底圖：網友的貓（透明背景 PNG）會疊在這張上面。
+var PLATE = { src:'plate.jpg', dataURL:'' };
+
+// 是否讀取同資料夾的圖檔（貓、手、底圖）。網址加 ?photos=off 可以臨時關掉，改用程式畫的替代圖。
+var PROBE_PHOTO_FILES = true;
+
+// 三隻預設貓：去背好的透明背景圖（跟空坐墊底圖同尺寸、同構圖），疊在 PLATE 上面，遮罩就是圖的透明度。
+// 優先順序：dataURL > src 檔案 > 程式畫的替代圖。圖：3:2 橫式、正上方俯拍、貓平趴、頭在左、尾巴在右。
+// size：預設體型 'slim'（瘦）、'normal'（正常）、'fat'（胖）。圖都是正常體型，胖瘦是畫面變形做出來的。
+// 背脊線、頭、尾巴的位置由透明度自動算，不用手動填。
+var CATS = [
+  { id:'sanhua', name:'三花', src:'sanhua-cat.webp', dataURL:'', size:'normal',
+    coat:{ type:'patch', base:'#fbf8f2', colors:['#e0863a','#2f2a26'], seed:11 } },
+  { id:'orange', name:'橘貓', src:'orange-cat.webp', dataURL:'', size:'fat',
+    coat:{ type:'tabby', base:'#eda352', stripe:'#c46d27', seed:3 } },
+  { id:'white',  name:'白貓', src:'white-cat.webp', dataURL:'', size:'slim',
+    coat:{ type:'solid', base:'#fdfcf8', seed:5 } }
+];
+
+// 手（正上方俯拍、指尖朝上、袖子從下緣出去的透明背景圖）。數字是佔圖片寬高的比例。
+// tipX/tipY：中指指尖（對齊游標的點）。midX/midY：手指加手掌的中心。rx/ry：手貼在貓身上的範圍。
+// tile：最下面多少比例的袖子拿來往下接長手臂。
+var HAND = { src:'hand.webp', dataURL:'', tipX:.61, tipY:.02, midX:.48, midY:.30, rx:.44, ry:.30, tile:.08 };
+
+// 網友的貓一律從後台讀（GET API_CATS），這裡只留名額上限的預設值；沒有真的網友貓時只顯示空格子。
+var GALLERY_MAX = 100;
+
+/* ============================================================
+   以下是程式
+   ============================================================ */
+(function(){
+'use strict';
+var TW = 1200, TH = 800, ASP = TW / TH;           // 畫面固定 3:2
+var DS = TH / 768, DX = (TW - 1024 * DS) / 2;      // 替代圖用 1024x768 座標畫，置中放進 3:2
+var AW = 240, AH = 160;                            // 分析遮罩用的小格
+var NX = 48, NY = 32, NN = NX * NY;                // 貓層的彈簧網格
+var FAT_K = .18;                                   // 胖：身體加寬 18%
+var SLIM_K = .12;                                  // 瘦：身體變窄 12%
+var SIZE_K = { slim:-SLIM_K, normal:0, fat:FAT_K };
+var GEN_FIT = { w:.78, h:.62 };                    // 生成貓（透明 PNG）等比縮放後，貓本體最多佔畫面寬高的比例（置中）
+var GEN_SHADOW = [                                 // 生成貓在坐墊上的接觸陰影（畫在底圖層）：大而淡一層、貼身一層。blur/dx/dy 以 1200 px 寬為準
+  { color:'rgba(62,40,16,.34)', blur:30, dx:7, dy:13 },
+  { color:'rgba(62,40,16,.30)', blur:9,  dx:2, dy:4 }
+];
+var UPLOAD_MAX = 1536, UPLOAD_Q = .85;             // 上傳前把照片縮到長邊最多 1536 px、JPEG 品質 .85
+var API_TIMEOUT = 120000, WALL_TIMEOUT = 8000;     // 生成最多等 120 秒；讀貓牆最多等 8 秒
+var BREATH_K = .006, BREATH_T = 3.5;               // 呼吸：身體擴張 0.6%，3.5 秒一次
+var MAX_OFF = .015 * ASP;                          // 毛被帶走的上限：畫面寬的 1.5%
+var HAND_W = .13;                                  // 手的圖寬佔畫面寬
+var Q = location.search;
+var reduced = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+var still = /[?&]still=1/.test(Q);                 // 驗收用：停掉呼吸
+var bare = /[?&]bare=1/.test(Q);                   // 驗收用：不畫手、陰影、愛心（物理照跑）
+var $ = function(id){ return document.getElementById(id); };
+function safely(fn){ try { fn(); } catch (e) { if (window.console) console.warn('線上擼貓：', e); } }
+function lsGet(k){ try { return window.localStorage.getItem(k); } catch (e) { return null; } }
+function lsSet(k, v){ try { window.localStorage.setItem(k, v); } catch (e) {} }
+function sizeOf(cat){ return SIZE_K.hasOwnProperty(cat.size) ? cat.size : (cat.fat ? 'fat' : 'normal'); }
+function clamp(v, a, b){ return v < a ? a : (v > b ? b : v); }
+function sstep(a, b, x){ var t = clamp((x - a) / (b - a), 0, 1); return t * t * (3 - 2 * t); }
+
+/* ---------- 替代圖：用 canvas 畫正上方看下去的貓背 ---------- */
+function rng(seed){
+  var a = (seed * 2654435761) >>> 0;
+  return function(){
+    a |= 0; a = a + 0x6D2B79F5 | 0;
+    var t = Math.imul(a ^ a >>> 15, 1 | a);
+    t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+    return ((t ^ t >>> 14) >>> 0) / 4294967296;
+  };
+}
+function lum(hex){
+  var n = parseInt(hex.slice(1), 16);
+  return (0.299 * (n >> 16 & 255) + 0.587 * (n >> 8 & 255) + 0.114 * (n & 255)) / 255;
+}
+var TAIL = [[800,440],[905,470],[940,600],[862,690]];
+function tailPt(t){
+  var u = 1 - t, p = TAIL;
+  return [u*u*u*p[0][0] + 3*u*u*t*p[1][0] + 3*u*t*t*p[2][0] + t*t*t*p[3][0],
+          u*u*u*p[0][1] + 3*u*u*t*p[1][1] + 3*u*t*t*p[2][1] + t*t*t*p[3][1]];
+}
+function tailPath(c){
+  c.beginPath(); c.moveTo(TAIL[0][0], TAIL[0][1]);
+  c.bezierCurveTo(TAIL[1][0], TAIL[1][1], TAIL[2][0], TAIL[2][1], TAIL[3][0], TAIL[3][1]);
+}
+function ell(c, x, y, rx, ry, rot){ c.beginPath(); c.ellipse(x, y, rx, ry, rot || 0, 0, Math.PI * 2); }
+function blob(c, x, y, r, rnd){
+  var n = 9, pts = [], i;
+  for (i = 0; i < n; i++){
+    var a = i / n * Math.PI * 2, rr = r * (0.72 + rnd() * 0.5);
+    pts.push([x + Math.cos(a) * rr * 1.15, y + Math.sin(a) * rr]);
+  }
+  c.beginPath();
+  for (i = 0; i < n; i++){
+    var p = pts[i], q = pts[(i + 1) % n], mx = (p[0] + q[0]) / 2, my = (p[1] + q[1]) / 2;
+    if (i === 0) c.moveTo(mx, my); else c.quadraticCurveTo(p[0], p[1], mx, my);
+  }
+  c.quadraticCurveTo(pts[0][0], pts[0][1], (pts[0][0] + pts[1][0]) / 2, (pts[0][1] + pts[1][1]) / 2);
+  c.closePath();
+}
+function earPath(c, side){   // side -1 上面那隻、+1 下面那隻（頭朝左）
+  var y = function(v){ return 392 + side * v; };
+  c.beginPath(); c.moveTo(232, y(-96)); c.quadraticCurveTo(170, y(-128), 142, y(-104));
+  c.quadraticCurveTo(150, y(-70), 176, y(-40)); c.closePath();
+}
+var SHAPES = {
+  body: function(c){
+    ell(c,545,392,262,160); c.fill();
+    ell(c,700,394,150,158); c.fill();
+    ell(c,385,392,128,132); c.fill();
+  },
+  tail: function(c){ tailPath(c); c.lineWidth = 46; c.lineCap = 'round'; c.strokeStyle = c.fillStyle; c.stroke(); },
+  head: function(c){
+    earPath(c,-1); c.fill(); earPath(c,1); c.fill();
+    ell(c,250,392,98,106); c.fill();
+  }
+};
+var PATCH_SPOTS = [[240,340,70],[420,330,95],[560,440,110],[700,330,100],[800,470,80],[330,470,60],[900,600,60],[620,300,55],[250,450,50]];
+function paintPattern(c, kind, coat){
+  var rnd = rng(coat.seed || 1), i;
+  if (coat.type === 'patch'){
+    for (i = 0; i < PATCH_SPOTS.length; i++){
+      var s = PATCH_SPOTS[i];
+      c.fillStyle = coat.colors[i % coat.colors.length];
+      blob(c, s[0] + (rnd() - .5) * 60, s[1] + (rnd() - .5) * 50, s[2] * (0.8 + rnd() * 0.45), rnd);
+      if (rnd() < 0.86 || i < 4) c.fill();
+    }
+  } else if (coat.type === 'tabby'){
+    c.lineCap = 'round'; c.strokeStyle = coat.stripe;
+    if (kind === 'body'){
+      c.lineWidth = 14; c.globalAlpha = .75; c.beginPath(); c.moveTo(330,392); c.lineTo(830,396); c.stroke(); c.globalAlpha = 1;
+      for (i = 0; i < 10; i++){
+        var x = 350 + i * 50 + (rnd() - .5) * 14; c.lineWidth = 13 + rnd() * 7;
+        c.beginPath(); c.moveTo(x - 14, 200); c.quadraticCurveTo(x + 22, 300, x, 384); c.stroke();
+        c.beginPath(); c.moveTo(x - 14, 588); c.quadraticCurveTo(x + 22, 488, x, 402); c.stroke();
+      }
+    }
+    if (kind === 'tail'){
+      c.lineWidth = 13;
+      for (var t = .12; t < .98; t += .125){
+        var a = tailPt(t), b = tailPt(t + .01), dx = b[0] - a[0], dy = b[1] - a[1], l = Math.hypot(dx, dy) || 1;
+        c.beginPath(); c.moveTo(a[0] - dy / l * 30, a[1] + dx / l * 30); c.lineTo(a[0] + dy / l * 30, a[1] - dx / l * 30); c.stroke();
+      }
+    }
+    if (kind === 'head'){
+      c.lineWidth = 10;
+      [[178,362,300,356],[170,392,310,392],[178,422,300,428]].forEach(function(p){ c.beginPath(); c.moveTo(p[0], p[1]); c.lineTo(p[2], p[3]); c.stroke(); });
+    }
+  } else if (coat.type === 'tuxedo'){
+    c.fillStyle = '#fbf8f2';
+    if (kind === 'body'){ ell(c,330,392,34,96); c.fill(); }
+    if (kind === 'tail'){ var e = tailPt(1); ell(c, e[0], e[1], 44, 44); c.fill(); }
+  } else if (coat.type === 'point'){
+    var d = coat.dark || '#5b4334';
+    c.fillStyle = d;
+    if (kind === 'tail'){ c.fillRect(0, 0, 1024, 768); }
+    if (kind === 'head'){
+      earPath(c,-1); c.fill(); earPath(c,1); c.fill();
+      var gm = c.createRadialGradient(205,392,10,230,392,120);
+      gm.addColorStop(0, d); gm.addColorStop(.5, d); gm.addColorStop(1, 'rgba(0,0,0,0)');
+      c.save(); c.fillStyle = gm; c.globalAlpha = .9; c.fillRect(120, 250, 260, 290); c.restore();
+    }
+  }
+}
+function paintFur(c, kind, coat, detail, dark){
+  var rnd = rng((coat.seed || 1) * 7 + kind.length), n, i;
+  var box = kind === 'head' ? [130,260,240,270] : (kind === 'tail' ? [780,410,190,310] : [250,200,620,390]);
+  n = Math.round((kind === 'head' ? 900 : (kind === 'tail' ? 500 : 3600)) * detail);
+  c.lineCap = 'round';
+  for (i = 0; i < n; i++){
+    var x = box[0] + rnd() * box[2], y = box[1] + rnd() * box[3], ang;
+    if (kind === 'tail') ang = Math.PI * .45 + (rnd() - .5) * .9;
+    else ang = (y - 392) / 420 + (rnd() - .5) * .5;        // 毛從頭往尾巴順
+    var len = 10 + rnd() * 18, light = rnd() < .5;
+    c.strokeStyle = light ? 'rgba(255,255,255,' + (dark ? .09 : .30) + ')' : 'rgba(60,38,16,' + (dark ? .22 : .11) + ')';
+    c.lineWidth = 1.2 + rnd() * 1.6;
+    c.beginPath(); c.moveTo(x, y); c.lineTo(x + Math.cos(ang) * len, y + Math.sin(ang) * len); c.stroke();
+  }
+}
+function paintShade(c, kind, dark){
+  var g;
+  if (kind === 'tail'){
+    g = c.createLinearGradient(800, 0, 960, 0);
+    g.addColorStop(0, 'rgba(70,44,18,.20)'); g.addColorStop(.5, 'rgba(255,255,255,.10)'); g.addColorStop(1, 'rgba(70,44,18,.22)');
+  } else {
+    g = c.createLinearGradient(0, 226, 0, 560);       // 背脊亮、兩側暗，看起來是圓的
+    g.addColorStop(0, 'rgba(70,44,18,.30)'); g.addColorStop(.3, 'rgba(70,44,18,.04)');
+    g.addColorStop(.5, 'rgba(255,255,255,' + (dark ? .10 : .16) + ')');
+    g.addColorStop(.7, 'rgba(70,44,18,.04)'); g.addColorStop(1, 'rgba(70,44,18,.30)');
+  }
+  c.fillStyle = g; c.fillRect(0, 0, 1024, 768);
+  if (kind === 'body'){
+    g = c.createRadialGradient(300,392,30,300,392,150);  // 頭壓在肩膀上的陰影
+    g.addColorStop(0, 'rgba(60,38,16,.30)'); g.addColorStop(1, 'rgba(60,38,16,0)');
+    c.fillStyle = g; c.fillRect(0, 0, 1024, 768);
+  }
+  if (kind === 'head'){
+    c.fillStyle = 'rgba(240,170,160,.55)';
+    [-1,1].forEach(function(s){
+      var y = function(v){ return 392 + s * v; };
+      c.beginPath(); c.moveTo(214, y(-98)); c.quadraticCurveTo(176, y(-116), 156, y(-102)); c.quadraticCurveTo(162, y(-80), 180, y(-58)); c.closePath(); c.fill();
+    });
+  }
+}
+function paintBackdrop(c){
+  c.fillStyle = '#efe3cb'; c.fillRect(-400, -400, 1824, 1568);
+  var rnd = rng(99), i;
+  c.lineWidth = 1.5;
+  for (i = 0; i < 260; i++){                           // 淡淡的布紋
+    var y = rnd() * 768, x = -80 + rnd() * 1184, l = 60 + rnd() * 200;
+    c.strokeStyle = rnd() < .5 ? 'rgba(255,255,255,.22)' : 'rgba(150,118,70,.10)';
+    c.beginPath(); c.moveTo(x, y); c.lineTo(x + l, y + (rnd() - .5) * 6); c.stroke();
+  }
+  var g = c.createRadialGradient(512,400,80,512,400,470);
+  g.addColorStop(0, '#f7edd8'); g.addColorStop(.75, '#eedfbf'); g.addColorStop(1, '#e2cfa6');
+  c.fillStyle = g; ell(c,512,400,450,330); c.fill();
+  c.strokeStyle = 'rgba(160,129,68,.30)'; c.lineWidth = 3; c.setLineDash([12,10]);
+  ell(c,512,400,414,296); c.stroke(); c.setLineDash([]);
+}
+// 在 ctx 目前的座標變換下畫一張 1024x768 的場景；maskCtx 有給的話，同時畫出貓的遮罩
+function drawScene(ctx, coat, detail, maskCtx){
+  var m = ctx.getTransform(), cv = ctx.canvas, dark = lum(coat.base) < .38;
+  paintBackdrop(ctx);
+  var cat = document.createElement('canvas'); cat.width = cv.width; cat.height = cv.height;
+  var cc = cat.getContext('2d');
+  ['tail','body','head'].forEach(function(kind){
+    var L = document.createElement('canvas'); L.width = cv.width; L.height = cv.height;
+    var c = L.getContext('2d'); c.setTransform(m);
+    c.fillStyle = coat.base; SHAPES[kind](c);
+    c.globalCompositeOperation = 'source-atop';
+    paintPattern(c, kind, coat); c.globalAlpha = 1;
+    paintShade(c, kind, dark);
+    paintFur(c, kind, coat, detail, dark);
+    cc.save();
+    if (kind !== 'tail'){ cc.shadowColor = 'rgba(50,32,14,.30)'; cc.shadowBlur = 10 * m.a; cc.shadowOffsetX = -3 * m.a; }
+    cc.drawImage(L, 0, 0); cc.restore();
+  });
+  ctx.save(); ctx.setTransform(1,0,0,1,0,0);
+  ctx.shadowColor = 'rgba(74,48,20,.40)'; ctx.shadowBlur = 22 * m.a; ctx.shadowOffsetY = 8 * m.a; ctx.shadowOffsetX = 5 * m.a;
+  ctx.drawImage(cat, 0, 0); ctx.restore();
+  if (maskCtx){
+    maskCtx.save(); maskCtx.setTransform(1,0,0,1,0,0);
+    maskCtx.fillStyle = '#000'; maskCtx.fillRect(0, 0, cv.width, cv.height);
+    // 把貓的不透明範圍轉成白色
+    var w = document.createElement('canvas'); w.width = cv.width; w.height = cv.height;
+    var wc = w.getContext('2d'); wc.drawImage(cat, 0, 0);
+    wc.globalCompositeOperation = 'source-in'; wc.fillStyle = '#fff'; wc.fillRect(0, 0, cv.width, cv.height);
+    maskCtx.drawImage(w, 0, 0); maskCtx.restore();
+  }
+}
+function coverDraw(ctx, img, w, h){
+  var iw = img.naturalWidth || img.width, ih = img.naturalHeight || img.height;
+  var s = Math.max(w / iw, h / ih), dw = iw * s, dh = ih * s;
+  ctx.drawImage(img, (w - dw) / 2, (h - dh) / 2, dw, dh);
+}
+
+/* ---------- 遮罩分析：自動找背脊線、頭、尾巴 ---------- */
+function analyze(maskCanvas){
+  var sc = document.createElement('canvas'); sc.width = AW; sc.height = AH;
+  var c = sc.getContext('2d', { willReadFrequently:true }); c.drawImage(maskCanvas, 0, 0, AW, AH);
+  var d = c.getImageData(0, 0, AW, AH).data, n = AW * AH;
+  var soft = new Float32Array(n), m = new Uint8Array(n), i, x, y;
+  for (i = 0; i < n; i++){ soft[i] = d[i * 4] / 255; m[i] = d[i * 4] > 127 ? 1 : 0; }
+  var vr = new Uint16Array(n), hr = new Uint16Array(n), segTop = new Uint16Array(n), segBot = new Uint16Array(n);
+  var colMax = [], xa = AW, xb = -1;
+  for (x = 0; x < AW; x++){
+    var best = 0; y = 0;
+    while (y < AH){
+      if (!m[y * AW + x]){ y++; continue; }
+      var y0 = y; while (y < AH && m[y * AW + x]) y++;
+      for (var k = y0; k < y; k++){ vr[k * AW + x] = y - y0; segTop[k * AW + x] = y0; segBot[k * AW + x] = y - 1; }
+      if (y - y0 > best) best = y - y0;
+    }
+    if (best){ colMax.push(best); if (x < xa) xa = x; if (x > xb) xb = x; }
+  }
+  for (y = 0; y < AH; y++){
+    x = 0;
+    while (x < AW){
+      if (!m[y * AW + x]){ x++; continue; }
+      var x0 = x; while (x < AW && m[y * AW + x]) x++;
+      for (var k2 = x0; k2 < x; k2++) hr[y * AW + k2] = x - x0;
+    }
+  }
+  var A = { soft:soft, m:m, empty:!colMax.length };
+  if (A.empty){ xa = AW * .2; xb = AW * .8; }
+  colMax.sort(function(p, q){ return p - q; });
+  var M = colMax.length ? colMax[colMax.length >> 1] : AH * .4, thinT = .4 * M;
+  // 每一欄：含有「夠厚的像素」最多的那一段就是身體（頭也算在內），其他細的是尾巴
+  var bTop = new Int16Array(AW).fill(-1), bBot = new Int16Array(AW).fill(-1);
+  for (x = 0; x < AW; x++){
+    var cnt = {}, bestTop = -1, bestN = 0;
+    for (y = 0; y < AH; y++){
+      i = y * AW + x;
+      if (m[i] && Math.min(vr[i], hr[i]) >= thinT){ var t = segTop[i]; cnt[t] = (cnt[t] || 0) + 1; if (cnt[t] > bestN){ bestN = cnt[t]; bestTop = t; } }
+    }
+    if (bestTop >= 0){ bTop[x] = bestTop; bBot[x] = segBot[bestTop * AW + x]; }
+  }
+  // 取最長的連續區間當身體
+  var runL = -1, runR = -1, cur = -1;
+  for (x = 0; x <= AW; x++){
+    var on = x < AW && bTop[x] >= 0;
+    if (on && cur < 0) cur = x;
+    if (!on && cur >= 0){ if (x - cur > runR - runL + 1 || runL < 0){ runL = cur; runR = x - 1; } cur = -1; }
+  }
+  if (runL < 0){ runL = Math.round(AW * .25); runR = Math.round(AW * .75); }
+  var spine = new Float32Array(AW), half = new Float32Array(AW);
+  for (x = 0; x < AW; x++){
+    var xx = clamp(x, runL, runR);
+    if (bTop[xx] >= 0){ spine[x] = (bTop[xx] + bBot[xx] + 1) / 2 / AH; half[x] = (bBot[xx] - bTop[xx] + 1) / 2 / AH; }
+    else { spine[x] = .5; half[x] = .2; }
+  }
+  function smooth(a){
+    for (var pass = 0; pass < 2; pass++){
+      var o = new Float32Array(AW);
+      for (var p = 0; p < AW; p++){ var s = 0, c2 = 0; for (var q = -6; q <= 6; q++){ var r = clamp(p + q, 0, AW - 1); s += a[r]; c2++; } o[p] = s / c2; }
+      a.set(o);
+    }
+  }
+  smooth(spine); smooth(half);
+  A.xa = xa / AW; A.xb = (xb + 1) / AW;
+  A.headEnd = A.xa + .2 * (A.xb - A.xa);              // 頭：遮罩最左邊 20%
+  A.bodyL = Math.max(runL / AW, A.headEnd); A.bodyR = (runR + 1) / AW;
+  A.spine = function(u){ return spine[clamp(Math.round(u * (AW - 1)), 0, AW - 1)]; };
+  A.half = function(u){ return half[clamp(Math.round(u * (AW - 1)), 0, AW - 1)]; };
+  A.at = function(u, v){ if (u < 0 || u > 1 || v < 0 || v > 1) return 0; return soft[clamp(Math.round(v * (AH - 1)), 0, AH - 1) * AW + clamp(Math.round(u * (AW - 1)), 0, AW - 1)]; };
+  A.inBody = function(u, v){
+    var px = clamp(Math.round(u * (AW - 1)), 0, AW - 1), py = Math.round(v * (AH - 1));
+    return px >= runL && px <= runR && bTop[px] >= 0 && py >= bTop[px] - 1 && py <= bBot[px] + 1;
+  };
+  return A;
+}
+
+/* ---------- 生成貓：透明背景 PNG 疊在空坐墊底圖上 ---------- */
+var plateImg = null;
+function drawPlate(ctx, w, h){
+  if (plateImg){ coverDraw(ctx, plateImg, w, h); return; }
+  var s = h / 768;                                   // 底圖還沒載到（或讀不到）：先用程式畫的坐墊
+  ctx.save(); ctx.setTransform(s, 0, 0, s, (w - 1024 * s) / 2, 0); paintBackdrop(ctx); ctx.restore();
+}
+// 算出 PNG 要畫在畫面的哪裡（佔畫面的比例）：找出不透明範圍，等比縮放到 GEN_FIT、置中
+function genLayout(cat){
+  if (cat._lay) return cat._lay;
+  var img = cat._img, iw = img.naturalWidth, ih = img.naturalHeight, bx0 = 0, by0 = 0, bx1 = 1, by1 = 1;
+  if (cat._full){                                    // 預設貓：跟底圖同構圖，照原位置鋪滿，不重新置中縮放
+    var cs = Math.max(TW / iw, TH / ih), F = { w:iw * cs / TW, h:ih * cs / TH };
+    F.x = (1 - F.w) / 2; F.y = (1 - F.h) / 2;
+    return (cat._lay = F);
+  }
+  try {
+    var w = 192, h = Math.max(2, Math.round(192 * ih / iw));
+    var t = document.createElement('canvas'); t.width = w; t.height = h;
+    var c = t.getContext('2d', { willReadFrequently:true }); c.drawImage(img, 0, 0, w, h);
+    var d = c.getImageData(0, 0, w, h).data, x0 = w, y0 = h, x1 = -1, y1 = -1, x, y;
+    for (y = 0; y < h; y++) for (x = 0; x < w; x++){
+      if (d[(y * w + x) * 4 + 3] > 24){ if (x < x0) x0 = x; if (x > x1) x1 = x; if (y < y0) y0 = y; if (y > y1) y1 = y; }
+    }
+    if (x1 >= x0 && y1 >= y0){ bx0 = x0 / w; bx1 = (x1 + 1) / w; by0 = y0 / h; by1 = (y1 + 1) / h; }
+  } catch (e) {}
+  var s = Math.min(GEN_FIT.w * TW / ((bx1 - bx0) * iw), GEN_FIT.h * TH / ((by1 - by0) * ih));
+  var L = { w:iw * s / TW, h:ih * s / TH };
+  L.x = .5 - (bx0 + bx1) / 2 * L.w; L.y = .5 - (by0 + by1) / 2 * L.h;
+  return (cat._lay = L);
+}
+// 回傳三張 w×h 的畫布：base（坐墊＋陰影，不會動）、full（base＋貓）、mask（白色是貓）
+function composeGen(cat, w, h){
+  var mk = function(){ var c = document.createElement('canvas'); c.width = w; c.height = h; return c; };
+  var base = mk(), full = mk(), mask = mk(), img = cat._img, L = genLayout(cat), u = w / TW;
+  var dx = L.x * w, dy = L.y * h, dw = L.w * w, dh = L.h * h;
+  var bc = base.getContext('2d', { willReadFrequently:true }); drawPlate(bc, w, h);
+  GEN_SHADOW.forEach(function(s){      // 只要陰影：把貓畫在畫面外，陰影用位移丟回原位（形狀＝PNG 的 alpha 模糊）
+    bc.save(); bc.shadowColor = s.color; bc.shadowBlur = s.blur * u;
+    bc.shadowOffsetX = w * 2 + s.dx * u; bc.shadowOffsetY = s.dy * u;
+    bc.drawImage(img, dx - w * 2, dy, dw, dh); bc.restore();
+  });
+  var fc = full.getContext('2d', { willReadFrequently:true }); fc.drawImage(base, 0, 0); fc.drawImage(img, dx, dy, dw, dh);
+  var mc = mask.getContext('2d', { willReadFrequently:true }); mc.drawImage(img, dx, dy, dw, dh);
+  mc.globalCompositeOperation = 'source-in'; mc.fillStyle = '#fff'; mc.fillRect(0, 0, w, h);
+  mc.globalCompositeOperation = 'destination-over'; mc.fillStyle = '#000'; mc.fillRect(0, 0, w, h);
+  return { base:base, full:full, mask:mask };
+}
+// 把一隻貓準備成：照片畫布、帶遮罩 alpha 的像素、底圖層像素、分析結果、每個網格節點的軟硬與胖瘦位移
+function prepare(cat){
+  var base = null;
+  var photo = document.createElement('canvas'); photo.width = TW; photo.height = TH;
+  var pc = photo.getContext('2d', { willReadFrequently:true });
+  var mask = document.createElement('canvas'); mask.width = TW; mask.height = TH;
+  var mc = mask.getContext('2d', { willReadFrequently:true });
+  mc.fillStyle = '#000'; mc.fillRect(0, 0, TW, TH);
+  if (cat._gen){
+    if (cat._img){
+      var cg = composeGen(cat, TW, TH);
+      pc.drawImage(cg.full, 0, 0); mc.drawImage(cg.mask, 0, 0); base = cg.base;
+    } else drawPlate(pc, TW, TH);                    // PNG 還在載：先給空坐墊
+  } else if (cat._img){
+    pc.fillStyle = '#faf5ec'; pc.fillRect(0, 0, TW, TH); coverDraw(pc, cat._img, TW, TH);
+    {        // 本機預覽的照片沒有遮罩：畫面中央羽化橢圓當簡易遮罩
+      mc.save(); mc.translate(TW / 2, TH / 2); mc.scale(TW * .37, TH * .36);
+      var g = mc.createRadialGradient(0, 0, .55, 0, 0, 1);
+      g.addColorStop(0, '#fff'); g.addColorStop(1, '#000');
+      mc.fillStyle = g; mc.beginPath(); mc.arc(0, 0, 1, 0, Math.PI * 2); mc.fill(); mc.restore();
+    }
+  } else {
+    pc.setTransform(DS,0,0,DS,DX,0); mc.setTransform(DS,0,0,DS,DX,0);
+    drawScene(pc, cat.coat || CATS[0].coat, 1, mc);
+    pc.setTransform(1,0,0,1,0,0); mc.setTransform(1,0,0,1,0,0);
+    base = document.createElement('canvas'); base.width = TW; base.height = TH;
+    var bcx = base.getContext('2d', { willReadFrequently:true });
+    bcx.setTransform(DS,0,0,DS,DX,0); paintBackdrop(bcx); bcx.setTransform(1,0,0,1,0,0);
+  }
+  var P = { photo:photo, pixels:null, basePixels:null };
+  try {
+    var pd = pc.getImageData(0, 0, TW, TH), md = mc.getImageData(0, 0, TW, TH).data, px = pd.data;
+    // 底圖層：畫面最下面那層，永遠不動。沒有另外準備的話（本機預覽的照片）就跟貓層用同一張
+    if (base) P.basePixels = new Uint8Array(base.getContext('2d').getImageData(0, 0, TW, TH).data.buffer);
+    for (var i = 3; i < px.length; i += 4) px[i] = md[i - 3];
+    P.pixels = new Uint8Array(px.buffer);
+  } catch (e) { P.pixels = null; }
+  var A = P.an = analyze(mask);
+  // 節點：comp 是軟硬（身體 1、尾巴 0.6、頭 1/3、背景 0），G 是胖瘦與呼吸的位移形狀
+  var comp = new Float32Array(NN), G = new Float32Array(NN), inM = new Uint8Array(NN), i2, j, n;
+  for (j = 0; j < NY; j++) for (i2 = 0; i2 < NX; i2++){
+    n = j * NX + i2; var u = i2 / (NX - 1), v = j / (NY - 1);
+    var a = A.at(u, v), c = 0;
+    if (a > .3){
+      inM[n] = 1;
+      var hw = 1 - sstep(A.headEnd - .02, A.headEnd + .06, u);
+      c = A.inBody(u, v) ? 1 : .6;
+      c = c + (1 / 3 - c) * hw;
+    }
+    comp[n] = c;
+    var h = A.half(u), t = (v - A.spine(u)) / h, at = Math.abs(t);
+    var g2 = at <= 1 ? t : (t / at) * Math.max(0, 1 - (at - 1) / 1.2);
+    var wx = sstep(A.headEnd, A.headEnd + .10, u) * (1 - sstep(A.bodyR - .06, A.bodyR + .02, u));
+    G[n] = wx * g2 * h;
+  }
+  // 遮罩邊緣往外一格的節點跟著邊緣的毛動，再外面固定不動
+  var comp2 = new Float32Array(comp);
+  for (j = 0; j < NY; j++) for (i2 = 0; i2 < NX; i2++){
+    n = j * NX + i2; if (inM[n]) continue;
+    var mx = 0;
+    for (var dj = -1; dj <= 1; dj++) for (var di = -1; di <= 1; di++){
+      var a2 = i2 + di, b2 = j + dj; if (a2 < 0 || b2 < 0 || a2 >= NX || b2 >= NY) continue;
+      if (comp[b2 * NX + a2] > mx) mx = comp[b2 * NX + a2];
+    }
+    comp2[n] = mx;
+  }
+  P.comp = comp2; P.G = G;
+  return P;
+}
+function paintThumb(cv, cat){
+  var ctx = cv.getContext('2d'), n = cv.width;
+  ctx.setTransform(1,0,0,1,0,0); ctx.clearRect(0,0,n,n);
+  if (cat._gen){
+    if (!cat._img){ drawPlate(ctx, n, n); return; }
+    var cg = composeGen(cat, 300, 200), gx = .5, gy = .5, gs = 200;
+    try { var GA = analyze(cg.mask); gx = (GA.bodyL + GA.bodyR) / 2; gy = GA.spine(gx); gs = clamp(GA.half(gx) * 3 * 200, 80, 200); } catch (e) {}
+    ctx.drawImage(cg.full, clamp(300 * gx - gs / 2, 0, 300 - gs), clamp(200 * gy - gs / 2, 0, 200 - gs), gs, gs, 0, 0, n, n);
+    cat._thumbDone = true; return;
+  }
+  if (cat._img){
+    var iw = cat._img.naturalWidth, ih = cat._img.naturalHeight, side = Math.min(iw, ih), cx = .5, cy = .5;
+    var sx = clamp(iw * cx - side / 2, 0, iw - side), sy = clamp(ih * cy - side / 2, 0, ih - side);
+    ctx.drawImage(cat._img, sx, sy, side, side, 0, 0, n, n); return;
+  }
+  var s = n / 470; ctx.setTransform(s,0,0,s,-305 * s,-157 * s);
+  drawScene(ctx, cat.coat || CATS[0].coat, .2);
+  ctx.setTransform(1,0,0,1,0,0);
+}
+
+/* ---------- WebGL：底層照片不動，上面一層貓用三角網格貼圖 ---------- */
+var glc = $('gl'), fxc = $('fx'), fx = fxc.getContext('2d');
+var gl = null, glOK = false, glLost = false, prog, uni = {}, tex, tex0, offBuf, idxCount = 0;
+var offArr = new Float32Array(NN * 2);
+var VS = [
+  'attribute vec2 aPos;attribute vec2 aOff;uniform float uLayer;varying vec2 vUV;varying vec2 vP;',
+  'void main(){vUV=aPos;vec2 p=aPos+aOff*uLayer;vP=p;gl_Position=vec4(p.x*2.-1.,1.-p.y*2.,0.,1.);}'
+].join('\n');
+var FS = [
+  '#ifdef GL_FRAGMENT_PRECISION_HIGH',
+  'precision highp float;',
+  '#else',
+  'precision mediump float;',
+  '#endif',
+  'varying vec2 vUV;varying vec2 vP;uniform sampler2D T;uniform float uLayer,uAsp;',
+  'uniform vec4 uPalm;uniform vec2 uPalmR;',      // 手的中心、壓暗強度、手的範圍
+  'void main(){',
+  ' vec4 c=texture2D(T,vUV);',
+  ' vec2 d=(vP-uPalm.xy)*vec2(uAsp,1.)/uPalmR;',
+  ' float k=exp(-dot(d,d)*1.3);',
+  ' gl_FragColor=vec4(c.rgb*(1.-uPalm.z*k*uLayer),mix(1.,c.a,uLayer));',   // 底層不透明；貓層用遮罩當 alpha、手下面稍微壓暗
+  '}'
+].join('\n');
+function initGL(){
+  try {
+    if (/[?&]nogl=1/.test(Q)) return false;        // 驗收用：模擬 WebGL 壞掉
+    if (!gl) gl = glc.getContext('webgl', { antialias:false, alpha:false }) || glc.getContext('experimental-webgl');
+    if (!gl) return false;
+    var mk = function(type, src){
+      var s = gl.createShader(type); gl.shaderSource(s, src); gl.compileShader(s);
+      if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) throw new Error('shader: ' + gl.getShaderInfoLog(s));
+      return s;
+    };
+    prog = gl.createProgram();
+    gl.attachShader(prog, mk(gl.VERTEX_SHADER, VS)); gl.attachShader(prog, mk(gl.FRAGMENT_SHADER, FS));
+    gl.linkProgram(prog);
+    if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) throw new Error('link: ' + gl.getProgramInfoLog(prog));
+    gl.useProgram(prog);
+    var pos = new Float32Array(NN * 2), idx = new Uint16Array((NX - 1) * (NY - 1) * 6), i, j, k = 0;
+    for (j = 0; j < NY; j++) for (i = 0; i < NX; i++){ pos[(j * NX + i) * 2] = i / (NX - 1); pos[(j * NX + i) * 2 + 1] = j / (NY - 1); }
+    for (j = 0; j < NY - 1; j++) for (i = 0; i < NX - 1; i++){
+      var a = j * NX + i, b = a + 1, c = a + NX, d = c + 1;
+      idx[k++] = a; idx[k++] = b; idx[k++] = c; idx[k++] = b; idx[k++] = d; idx[k++] = c;
+    }
+    idxCount = k;
+    var pb = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, pb); gl.bufferData(gl.ARRAY_BUFFER, pos, gl.STATIC_DRAW);
+    var lp = gl.getAttribLocation(prog, 'aPos'); gl.enableVertexAttribArray(lp); gl.vertexAttribPointer(lp, 2, gl.FLOAT, false, 0, 0);
+    offBuf = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, offBuf); gl.bufferData(gl.ARRAY_BUFFER, offArr, gl.DYNAMIC_DRAW);
+    var lo = gl.getAttribLocation(prog, 'aOff'); gl.enableVertexAttribArray(lo); gl.vertexAttribPointer(lo, 2, gl.FLOAT, false, 0, 0);
+    var ib = gl.createBuffer(); gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, ib); gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, idx, gl.STATIC_DRAW);
+    ['uLayer','uAsp','uPalm','uPalmR','T'].forEach(function(n){ uni[n] = gl.getUniformLocation(prog, n); });
+    var mkTex = function(){
+      var t = gl.createTexture(); gl.bindTexture(gl.TEXTURE_2D, t);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+      return t;
+    };
+    tex0 = mkTex();                                  // 底圖層（不動）
+    tex = mkTex();                                   // 貓層（alpha 是遮罩）
+    gl.uniform1i(uni.T, 0); gl.uniform1f(uni.uAsp, ASP);
+    gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+    return true;
+  } catch (e) { return false; }
+}
+function glStatus(){
+  $('msg').textContent = glOK ? '' : '這個瀏覽器現在不能用 WebGL，貓可以看，但摸了不會變形。';
+}
+glOK = initGL(); glStatus();
+glc.addEventListener('webglcontextlost', function(e){ e.preventDefault(); glLost = true; });
+glc.addEventListener('webglcontextrestored', function(){
+  glLost = false; glOK = initGL(); glStatus();
+  if (glOK && current) uploadTexture();
+});
+
+/* ---------- 狀態 ---------- */
+var current = null, prep = null, uploadCat = null;
+var sizeK = 0, sizeVel = 0, sizeTarget = 0;         // 體型位移量：瘦是負的、胖是正的，帶回彈過渡
+var wall = [], wallReal = false, wallLoading = false, wallCount = 0, wallMax = GALLERY_MAX;   // 貓牆：讀到後台就換成真資料
+var heartsOn = lsGet('petcat.hearts') !== '0';
+var ox = new Float32Array(NN), oy = new Float32Array(NN), vx = new Float32Array(NN), vy = new Float32Array(NN);
+var hearts = [], lastPet = -9, petDist = 0;
+// 手：x,y 是指尖位置（佔畫面比例）
+var hand = { x:.5, y:.5, show:false, alpha:0, press:0, down:false, hover:false, hideAt:0, fresh:true, pcx:.5, pcy:.5, contact:0 };
+var handImg = null, handCv = null, handH = 0;
+
+function labelOf(cat){
+  if (cat === uploadCat) return (cat.name || '你家的貓') + '（本機預覽）';
+  if (cat.no) return cat.no + ' 號' + (cat.name ? '　' + cat.name : '');
+  return cat.name;
+}
+function uploadTexture(){
+  if (!(glOK && !glLost && prep)) return;
+  try {
+    if (!prep.pixels) throw new Error('no pixels');
+    gl.bindTexture(gl.TEXTURE_2D, tex0);
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, TW, TH, 0, gl.RGBA, gl.UNSIGNED_BYTE, prep.basePixels || prep.pixels);
+    gl.bindTexture(gl.TEXTURE_2D, tex);
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, TW, TH, 0, gl.RGBA, gl.UNSIGNED_BYTE, prep.pixels);
+  } catch (e) { glOK = false; glStatus(); }
+}
+function markSize(){
+  var bs = $('sizeSeg').querySelectorAll('button');
+  for (var i = 0; i < bs.length; i++) bs[i].setAttribute('aria-pressed', String(!!current && bs[i].getAttribute('data-size') === current._size));
+}
+function select(cat, animateSize){
+  var prev = current;
+  current = cat;
+  if (prev && prev !== cat && prev._lazy) prev._img = null;        // 生成貓的大圖只留正在摸的那隻，省記憶體
+  if (!cat._size) cat._size = sizeOf(cat);
+  sizeTarget = SIZE_K[cat._size];
+  if (!animateSize){ sizeK = sizeTarget; sizeVel = 0; }
+  ox.fill(0); oy.fill(0); vx.fill(0); vy.fill(0);
+  prep = prepare(cat);
+  uploadTexture();
+  $('now').textContent = labelOf(cat);                             // 暱稱是網友填的，一律 textContent
+  markSize();
+  markSelected();
+  if (cat._gen && !cat._img) loadGen(cat, function(){ if (current === cat) select(cat, false); });
+}
+function setSize(v){
+  if (!current || !SIZE_K.hasOwnProperty(v)) return;
+  current._size = v; sizeTarget = SIZE_K[v];
+  if (reduced){ sizeK = sizeTarget; sizeVel = 0; }
+  markSize();
+}
+$('sizeSeg').addEventListener('click', function(e){
+  var b = e.target && e.target.closest ? e.target.closest('button[data-size]') : null;
+  if (b) setSize(b.getAttribute('data-size'));
+});
+
+/* ---------- 照片與遮罩：內嵌 dataURL 或 cats/ 檔案，有就換掉替代圖 ---------- */
+var hasEmbedded = CATS.some(function(c){ return c.dataURL; }) || !!HAND.dataURL || !!PLATE.dataURL;
+var canProbe = PROBE_PHOTO_FILES && !/[?&]photos=off/.test(Q) && !hasEmbedded;   // 已經內嵌就不再抓任何檔案
+function tryPhoto(cat){
+  if (cat._gen) return;
+  var url = cat.dataURL || (canProbe && cat.src) || '';
+  if (!url) return;
+  var img = new Image();
+  img.onload = function(){
+    // 用 file:// 直接開檔時，瀏覽器不准讀本機圖片的像素，這種情況維持替代圖
+    try {
+      var t = document.createElement('canvas'); t.width = t.height = 2;
+      var c = t.getContext('2d'); c.drawImage(img, 0, 0, 2, 2); c.getImageData(0, 0, 1, 1);
+    } catch (e) { return; }
+    if (!(img.naturalWidth > 0)) return;
+    cat._img = img; cat._gen = true; cat._full = true; cat._lay = null;   // 之後跟生成貓走同一條路：底圖＋透明貓
+    if (cat._thumb) paintThumb(cat._thumb, cat);
+    if (current === cat) select(cat, false);
+  };
+  img.onerror = function(){};
+  img.src = url;
+}
+function loadPlate(){
+  var url = PLATE.dataURL || (canProbe && PLATE.src) || '';
+  if (!url) return;
+  var img = new Image();
+  img.onload = function(){
+    try {      // file:// 直接開檔時讀不了像素：維持程式畫的坐墊
+      var t = document.createElement('canvas'); t.width = t.height = 2;
+      var c = t.getContext('2d'); c.drawImage(img, 0, 0, 2, 2); c.getImageData(0, 0, 1, 1);
+    } catch (e) { return; }
+    if (!(img.naturalWidth > 0)) return;
+    plateImg = img;
+    CATS.concat(wall).forEach(function(cat){      // 底圖比貓晚到：已經畫好的縮圖重畫一次
+      if (!(cat._gen && cat._thumb)) return;
+      cat._thumbDone = false;
+      if (cat._img) paintThumb(cat._thumb, cat); else if (cat._seen) loadGen(cat);
+    });
+    if (current && current._gen) select(current, false);
+  };
+  img.onerror = function(){};
+  img.src = url;
+}
+// 載入生成貓的透明 PNG。載到就畫縮圖；不是正在摸的那隻，畫完就放掉大圖
+function loadGen(cat, cb){
+  if (cat._img){ if (cb) cb(); return; }
+  if (cat._loading){ if (cb) cat._loading.push(cb); return; }
+  cat._loading = cb ? [cb] : [];
+  var img = new Image();
+  if (/^https?:/i.test(cat.src) && cat.src.indexOf(location.origin + '/') !== 0) img.crossOrigin = 'anonymous';
+  img.onload = function(){
+    var q = cat._loading || []; cat._loading = null;
+    if (!(img.naturalWidth > 0)) return;
+    cat._img = img; cat._lay = null;
+    if (cat._thumb && !cat._thumbDone) safely(function(){ paintThumb(cat._thumb, cat); });
+    q.forEach(safely);
+    if (current !== cat) cat._img = null;
+  };
+  img.onerror = function(){
+    cat._loading = null;
+    if (current === cat) $('msg').textContent = '這隻貓的圖現在讀不到，等一下再試';
+  };
+  img.src = cat.src;
+}
+function loadHand(){
+  var url = HAND.dataURL || (canProbe && HAND.src) || '';
+  if (!url) return;
+  var img = new Image();
+  img.onload = function(){
+    if (!(img.naturalWidth > 0)) return;
+    // 把袖子往下接長，手臂才不會在畫面中間斷掉
+    var w = img.naturalWidth, h = img.naturalHeight, sh = Math.max(4, Math.round(h * HAND.tile)), ext = Math.round(h * 1.1);
+    var cv = document.createElement('canvas'); cv.width = w; cv.height = h + ext;
+    var c = cv.getContext('2d'); c.drawImage(img, 0, 0);
+    for (var y = h, k = 0; y < h + ext; y += sh, k++){
+      if (k % 2 === 0){ c.save(); c.translate(0, y + sh); c.scale(1, -1); c.drawImage(img, 0, h - sh, w, sh, 0, 0, w, sh + 1); c.restore(); }
+      else c.drawImage(img, 0, h - sh, w, sh, 0, y, w, sh + 1);
+    }
+    handImg = img; handCv = cv; handH = h;
+    glc.classList.add('has-hand');
+  };
+  img.onerror = function(){};
+  img.src = url;
+}
+
+/* ---------- 縮圖按鈕 ---------- */
+function makeThumb(cat, cls, text, aria){
+  var b = document.createElement('button'); b.type = 'button'; b.className = cls; b._cat = cat;
+  b.setAttribute('aria-pressed', 'false'); b.setAttribute('aria-label', aria);
+  var cv = (cat._thumb && cat._thumbDone) ? cat._thumb : document.createElement('canvas');   // 生成貓畫好的縮圖留著重用
+  if (cv !== cat._thumb){ cv.width = cv.height = 112; cat._thumb = cv; paintThumb(cv, cat); }
+  var s = document.createElement('span'); s.textContent = text;
+  b.appendChild(cv); b.appendChild(s);
+  return b;
+}
+function markSelected(){
+  var all = document.querySelectorAll('.thumb, .slot:not(.empty)');
+  for (var i = 0; i < all.length; i++) all[i].setAttribute('aria-pressed', String(all[i]._cat === current));
+}
+function renderCoats(){
+  var box = $('coats'); box.textContent = '';
+  CATS.forEach(function(cat){
+    var b = makeThumb(cat, 'thumb', cat.name, '換成' + cat.name);
+    b.addEventListener('click', function(){ select(cat, false); });
+    box.appendChild(b);
+  });
+  if (uploadCat){
+    var u = makeThumb(uploadCat, 'thumb', uploadCat.name || '本機預覽', '換成你上傳的貓（本機預覽）');
+    u.addEventListener('click', function(){ select(uploadCat, false); });
+    box.appendChild(u);
+  }
+  markSelected();
+}
+var thumbIO = null;
+function renderGallery(){
+  var list = wall.slice().sort(function(a, b){ return a.no - b.no; });
+  var n = list.length, last = n ? list[n - 1].no : 0;
+  // 名額用後台給的數字；讀不到後台時不顯示數字
+  $('count').textContent = wallReal ? '已加入 ' + wallCount + '／' + wallMax : '';
+  $('gSub').textContent = n === 0
+    ? '還沒有貓加入，前 ' + wallMax + ' 名，照加入順序拿編號。'
+    : '點一隻就能摸牠。前 ' + wallMax + ' 名，照加入順序拿編號，最新的在最下面。';
+  if (wallLoading){ $('count').textContent = ''; $('gSub').textContent = '正在讀取網友的貓…'; }
+  if (thumbIO){ thumbIO.disconnect(); thumbIO = null; }
+  if (typeof IntersectionObserver === 'function'){   // 縮圖捲到附近才載，100 隻不會一次全抓
+    thumbIO = new IntersectionObserver(function(es){
+      es.forEach(function(en){ if (en.isIntersecting){ thumbIO.unobserve(en.target); en.target._cat._seen = true; loadGen(en.target._cat); } });
+    }, { rootMargin:'300px' });
+  }
+  var rows = $('rows'); rows.textContent = '';
+  var byNo = {}; list.forEach(function(c){ byNo[c.no] = c; });
+  var rowCount = Math.max(1, Math.ceil(last / 10)), anyEmpty = false;
+  for (var r = 0; r < rowCount; r++){
+    var from = r * 10 + 1, to = r * 10 + 10;
+    var row = document.createElement('div'); row.className = 'row';
+    var lab = document.createElement('div'); lab.className = 'range'; lab.textContent = from + '–' + to;
+    var ol = document.createElement('ol'); ol.className = 'slots'; ol.setAttribute('aria-label', '第 ' + from + ' 到 ' + to + ' 號');
+    for (var no = from; no <= to; no++){
+      var li = document.createElement('li'), cat = byNo[no];
+      if (cat){
+        (function(cat){
+          var b = makeThumb(cat, 'slot', String(cat.no), '摸第 ' + cat.no + ' 號的貓' + (cat.name ? '：' + cat.name : ''));
+          if (cat.name){                             // 暱稱一律用 textContent
+            var nk = document.createElement('span'); nk.className = 'nick'; nk.textContent = cat.name; nk.setAttribute('title', cat.name);
+            b.appendChild(nk);
+          }
+          if (cat._gen && !cat._thumbDone){ if (thumbIO) thumbIO.observe(b); else { cat._seen = true; loadGen(cat); } }
+          b.addEventListener('click', function(){
+            select(cat, false);
+            $('stage').scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block:'start' });
+          });
+          li.appendChild(b);
+        })(cat);
+      } else {
+        anyEmpty = true;
+        var d = document.createElement('div'); d.className = 'slot empty'; d.setAttribute('role', 'img'); d.setAttribute('aria-label', '第 ' + no + ' 號，空名額');
+        var h = document.createElement('i'); h.className = 'hole';
+        var s = document.createElement('span'); s.textContent = String(no); s.setAttribute('aria-hidden', 'true');
+        d.appendChild(h); d.appendChild(s); li.appendChild(d);
+      }
+      ol.appendChild(li);
+    }
+    row.appendChild(lab); row.appendChild(ol); rows.appendChild(row);
+  }
+  $('legend').style.display = anyEmpty ? '' : 'none';
+  markSelected();
+}
+
+/* ---------- 後台：讀貓牆、送出生成。後台沒開放或連不到時，同一張表單改成「只在本機預覽」 ---------- */
+var ERR = {
+  full:'100 個名額已經滿了，謝謝你',
+  already:'這個網路或這台裝置已經生成過一次了，一人一張喔',
+  bad_nick:'暱稱要 1 到 10 個字',
+  bad_photo:'這張照片讀不出來，換一張試試',
+  too_big:'照片太大了',
+  busy:'現在太多人在生成，等一下再試',
+  gen_failed:'生成失敗了，名額已經退回，可以再試一次',
+  closed:'生成功能還沒開放，先摸摸看三隻貓吧',
+  other:'出了點問題，等一下再試'
+};
+function errText(code){ return (typeof code === 'string' && code !== 'other' && ERR.hasOwnProperty(code)) ? ERR[code] : ERR.other; }
+// mode：wait 還在問後台／online 可以生成／closed 後台說還沒開放／full 名額滿了／local 連不到後台。只有 online 會真的送出
+var mode = 'wait', chosen = null, chosenURL = '', upSizeSel = 'normal', busy = false, mine = null, progTimer = null, memDevice = '';
+var PREVIEW_ONLY = '現在可以先傳照片、取名字，在你自己的瀏覽器裡預覽摸摸看，照片不會上傳，也不會加入貓牆。';
+function apiOK(){
+  return API_ENABLED && typeof fetch === 'function' && typeof FormData === 'function' && location.protocol !== 'file:';   // file:// 開檔沒有同網域後台，不發請求
+}
+function fetchJSON(url, opt, ms){
+  var ac = typeof AbortController === 'function' ? new AbortController() : null, timer = null;
+  opt = opt || {};
+  if (ac){ opt.signal = ac.signal; timer = setTimeout(function(){ ac.abort(); }, ms); }
+  return fetch(url, opt).then(function(r){
+    return r.json().then(function(j){ return { ok:r.ok, body:j }; });
+  }).then(function(v){ clearTimeout(timer); return v; }, function(e){ clearTimeout(timer); throw e; });
+}
+function fromApi(c){
+  if (!c) return null;
+  var no = parseInt(c.no, 10), src = String(c.img || '');
+  if (!(no > 0) || !src) return null;
+  if (!/^(https?:|data:|blob:|\/)/i.test(src)) src = '/' + src;
+  return { no:no, name:String(c.nickname == null ? '' : c.nickname).slice(0, 40), size:SIZE_K.hasOwnProperty(c.size) ? c.size : 'normal', src:src, _gen:true, _lazy:true };
+}
+function deviceId(){
+  var id = lsGet('petcat.device') || memDevice;
+  if (!id){
+    var a = new Uint8Array(16), i;
+    if (window.crypto && crypto.getRandomValues) crypto.getRandomValues(a); else for (i = 0; i < 16; i++) a[i] = Math.random() * 256;
+    for (i = 0; i < 16; i++) id += (a[i] + 256).toString(16).slice(1);
+    memDevice = id; lsSet('petcat.device', id);
+  }
+  return id;
+}
+function readMine(){
+  try { var m = JSON.parse(lsGet('petcat.mine') || 'null'); if (m && m.no > 0) return { no:+m.no, nickname:String(m.nickname || '') }; } catch (e) {}
+  return null;
+}
+function upMsg(t){ $('upMsg').textContent = t || ''; }
+function setMode(m){
+  mode = m;
+  var online = m === 'online';
+  mine = (m === 'wait' || wallReal) ? readMine() : null;      // 連不到後台時找不到牠，就照常顯示表單
+  $('upSub').textContent = mine ? '你已經生成過一隻了，一人一張。點下面就能找到牠。'
+    : m === 'wait' ? '傳一張你家貓的照片、幫牠取個名字，就能在上面摸摸看。'
+    : online ? '傳一張你家貓的照片、幫牠取個名字，大約 30 到 60 秒會生成一隻可以摸的貓，拿到編號。前 ' + wallMax + ' 名免費，一人一張。'
+    : m === 'full' ? ERR.full + '。' + PREVIEW_ONLY
+    : m === 'closed' ? '生成功能還沒開放。' + PREVIEW_ONLY
+    : '現在連不到生成服務。' + PREVIEW_ONLY;
+  $('mine').hidden = !mine;
+  if (mine) $('mine').textContent = '你的貓是第 ' + mine.no + ' 號：' + mine.nickname;
+  $('upForm').hidden = !!mine;                                // 兩格（傳圖片、取名字）與體型在每個模式都看得到
+  if (!busy){ $('genBtn').disabled = m === 'wait'; $('genBtn').textContent = btnText(); }
+  $('fineText').textContent = online ? '照片只用來生成，生成好的貓會公開在網友的貓牆上。'
+    : m === 'wait' ? '' : (m === 'closed' ? '生成功能還沒開放：' : '') + '按下去只會在這台裝置上預覽，照片只留在你的瀏覽器裡。';
+}
+function btnText(){ return mode === 'online' ? '生成我家的貓' : (mode === 'wait' ? '正在連線…' : '在這裡預覽我家的貓'); }
+function goStage(){ $('stage').scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block:'start' }); }
+function loadWall(){
+  if (!apiOK()){ setMode('local'); return; }
+  setMode('wait'); wallLoading = true; renderGallery();
+  fetchJSON(API_CATS, { headers:{ Accept:'application/json' } }, WALL_TIMEOUT).then(function(v){
+    var j = v.body;
+    if (!v.ok || !j || !Array.isArray(j.cats)) throw new Error('bad wall');
+    wall = j.cats.map(fromApi).filter(Boolean); wallReal = true; wallLoading = false;
+    wallMax = j.max > 0 ? +j.max : GALLERY_MAX;
+    wallCount = j.count >= 0 ? +j.count : wall.length;
+    renderGallery();
+    setMode(j.open === true ? 'online' : (wallCount >= wallMax ? 'full' : 'closed'));
+  }).catch(function(){      // 讀不到：貓牆留空格子、表單改成本機預覽，不報錯
+    wallLoading = false;
+    if (!wallReal){ wall = []; safely(renderGallery); setMode('local'); }
+  });
+}
+// 本機預覽：照片不送出，直接在這台裝置上變成可以摸的貓，名字與體型照表單填的
+function localPreview(f, nick, size){
+  var url = URL.createObjectURL(f), img = new Image();
+  function bad(){ upMsg(ERR.bad_photo); }
+  img.onload = function(){
+    try {
+      if (!(img.naturalWidth > 0 && img.naturalHeight > 0)){ bad(); return; }
+      var cat = uploadCat || { id:'upload' };
+      cat._img = img; cat.name = nick; cat._size = SIZE_K.hasOwnProperty(size) ? size : 'normal';
+      uploadCat = cat; current = cat;
+      renderCoats();                                          // 縮圖下面的字是他取的名字（textContent）
+      select(cat, false);
+      $('note').hidden = false; upMsg('');
+      goStage();
+    } catch (e) { bad(); }
+    finally { URL.revokeObjectURL(url); }
+  };
+  img.onerror = function(){ try { bad(); } finally { URL.revokeObjectURL(url); } };
+  img.src = url;
+}
+$('file').addEventListener('change', function(){
+  var f = this.files && this.files[0]; if (!f) return;
+  chosen = f; upMsg('');
+  if (chosenURL) URL.revokeObjectURL(chosenURL);
+  chosenURL = URL.createObjectURL(f);
+  var pv = $('pickPrev');
+  pv.onerror = function(){ pv.hidden = true; $('pickEmpty').hidden = false; $('pickChange').hidden = true; chosen = null; upMsg(ERR.bad_photo); };
+  pv.src = chosenURL; pv.hidden = false; $('pickEmpty').hidden = true; $('pickChange').hidden = false;   // 選完在格子裡顯示縮圖
+});
+$('upSize').addEventListener('click', function(e){
+  var b = e.target && e.target.closest ? e.target.closest('button[data-size]') : null;
+  if (!b || busy) return;
+  upSizeSel = b.getAttribute('data-size');
+  var bs = this.querySelectorAll('button');
+  for (var i = 0; i < bs.length; i++) bs[i].setAttribute('aria-pressed', String(bs[i] === b));
+});
+// 送出前在瀏覽器把照片縮小、轉成 JPEG
+function shrinkPhoto(file){
+  return new Promise(function(res, rej){
+    var url = URL.createObjectURL(file), img = new Image();
+    img.onload = function(){
+      try {
+        var w = img.naturalWidth, h = img.naturalHeight;
+        if (!(w > 0 && h > 0)) throw new Error('empty');
+        var s = Math.min(1, UPLOAD_MAX / Math.max(w, h));
+        var cv = document.createElement('canvas'); cv.width = Math.max(1, Math.round(w * s)); cv.height = Math.max(1, Math.round(h * s));
+        var c = cv.getContext('2d'); c.fillStyle = '#fff'; c.fillRect(0, 0, cv.width, cv.height); c.drawImage(img, 0, 0, cv.width, cv.height);
+        cv.toBlob(function(b){ URL.revokeObjectURL(url); if (b) res(b); else rej(new Error('blob')); }, 'image/jpeg', UPLOAD_Q);
+      } catch (e) { URL.revokeObjectURL(url); rej(e); }
+    };
+    img.onerror = function(){ URL.revokeObjectURL(url); rej(new Error('decode')); };
+    img.src = url;
+  });
+}
+function setBusy(b){
+  busy = b;
+  $('genBtn').disabled = b; $('genBtn').textContent = b ? '生成中，大約 30 到 60 秒，不要關掉這頁' : btnText();
+  $('file').disabled = b; $('nick').disabled = b;
+  $('pickBtn').style.opacity = b ? '.5' : ''; $('pickBtn').style.pointerEvents = b ? 'none' : '';
+  $('prog').hidden = !b;
+  if (progTimer){ clearInterval(progTimer); progTimer = null; }
+  if (b){
+    var t0 = clock(), bar = $('progBar');
+    bar.style.width = '3%';
+    progTimer = setInterval(function(){ bar.style.width = (3 + 92 * (1 - Math.exp(-(clock() - t0) / 28))).toFixed(1) + '%'; }, 500);   // 60 秒走到大約 85%，不會假裝跑完
+  }
+}
+function onGenerated(c, nick){
+  var cat = fromApi(c);
+  if (!cat) throw new Error('bad cat');
+  if (!cat.name) cat.name = nick;
+  wall = wall.filter(function(o){ return o.no !== cat.no; }); wall.push(cat); wallReal = true;
+  wallCount = Math.max(wallCount + 1, wall.length);
+  lsSet('petcat.mine', JSON.stringify({ no:cat.no, nickname:cat.name }));
+  renderGallery(); select(cat, false); setMode('online');
+  if (!mine){      // 瀏覽器不給存也照樣收起表單
+    mine = { no:cat.no, nickname:cat.name };
+    $('mine').hidden = false; $('mine').textContent = '你的貓是第 ' + mine.no + ' 號：' + mine.nickname;
+    $('upForm').hidden = true; $('upSub').textContent = '你已經生成過一隻了，一人一張。點下面就能找到牠。';
+  }
+  goStage();
+}
+$('upForm').addEventListener('submit', function(e){
+  e.preventDefault();
+  if (mode === 'wait' || busy) return;
+  var nick = $('nick').value.trim(), len = Array.from ? Array.from(nick).length : nick.length;
+  if (!chosen){ upMsg('先傳一張你家貓的照片'); return; }
+  if (len < 1 || len > 10){ upMsg(ERR.bad_nick); $('nick').focus(); return; }
+  upMsg('');
+  if (mode !== 'online'){ localPreview(chosen, nick, upSizeSel); return; }   // 沒開放、名額滿、連不到：只在本機預覽
+  setBusy(true);
+  shrinkPhoto(chosen).catch(function(){ return Promise.reject({ code:'bad_photo' }); }).then(function(blob){
+    var fd = new FormData();
+    fd.append('photo', blob, 'photo.jpg'); fd.append('nickname', nick); fd.append('size', upSizeSel); fd.append('device', deviceId());
+    return fetchJSON(API_CATS, { method:'POST', body:fd, headers:{ 'X-JY-Petcat':'1' } }, API_TIMEOUT);   // 後台要這個標頭才收
+  }).then(function(v){
+    var j = v.body;
+    if (j && j.ok === true && j.cat) onGenerated(j.cat, nick);
+    else return Promise.reject({ code:j && j.code });
+  }).catch(function(err){
+    var code = err && err.code;
+    busy = false;
+    if (code === 'closed') setMode('closed');                 // 後台說還沒開放：表單留著，之後按下去改成本機預覽
+    else if (code === 'full') setMode('full');
+    upMsg(errText(code));
+  }).then(function(){ setBusy(false); });
+});
+$('mine').addEventListener('click', function(){
+  if (!mine) return;
+  for (var i = 0; i < wall.length; i++) if (wall[i].no === mine.no){ select(wall[i], false); goStage(); return; }
+});
+
+/* ---------- 指標：只追第一根手指 ---------- */
+var activeId = null, auto = null;
+function clock(){ return performance.now() / 1000; }
+function setHandFromEvent(e){
+  var r = glc.getBoundingClientRect();
+  if (!(r.width > 0 && r.height > 0)) return false;
+  var x = (e.clientX - r.left) / r.width, y = (e.clientY - r.top) / r.height;
+  if (!isFinite(x) || !isFinite(y)) return false;
+  hand.x = x; hand.y = y; return true;
+}
+glc.addEventListener('pointerdown', function(e){
+  if (activeId !== null) return;
+  if (e.pointerType === 'mouse' && e.button !== 0) return;   // 右鍵、中鍵不算摸
+  activeId = e.pointerId; auto = null;
+  if (!hand.show || e.pointerType !== 'mouse') hand.fresh = true;
+  setHandFromEvent(e); hand.down = true; hand.show = true; hand.hideAt = 0;
+  try { glc.setPointerCapture(e.pointerId); } catch (err) {}
+});
+glc.addEventListener('pointermove', function(e){
+  if (activeId !== null){ if (e.pointerId !== activeId) return; }
+  else if (e.pointerType !== 'mouse') return;
+  if (auto) auto = null;
+  if (!hand.show) hand.fresh = true;
+  setHandFromEvent(e); hand.show = true; hand.hover = e.pointerType === 'mouse'; hand.hideAt = 0;
+});
+function endStroke(e){
+  if (e && e.pointerId !== activeId) return;
+  activeId = null; hand.down = false;
+  if (e && e.pointerType !== 'mouse'){ hand.hover = false; hand.hideAt = clock() + .6; }   // 手機：放開 0.6 秒後淡出
+  else if (e){ var r = glc.getBoundingClientRect(); if (e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom){ hand.show = false; hand.hover = false; } }
+}
+glc.addEventListener('pointerup', endStroke);
+glc.addEventListener('pointercancel', endStroke);
+glc.addEventListener('lostpointercapture', endStroke);
+glc.addEventListener('pointerleave', function(e){
+  if (activeId === null && e.pointerType === 'mouse' && !auto){ hand.show = false; hand.hover = false; }
+});
+
+// 自動摸一下：手出現，從頭後面順著背脊摸到尾巴根部
+function handGeom(){   // 手在畫面上的尺寸（佔畫面高的比例）與指尖到手中心的位移
+  var iw = HAND_W * ASP, ih = handImg ? iw * handH / handImg.naturalWidth : iw * 3.15;
+  return { iw:iw, ih:ih, dx:(HAND.midX - HAND.tipX) * iw, dy:(HAND.midY - HAND.tipY) * ih, rx:HAND.rx * iw, ry:HAND.ry * ih };
+}
+function autoPet(){
+  if (!prep) return;
+  var A = prep.an;
+  auto = { t0:clock(), x0:A.headEnd + .01, x1:A.bodyR - .05, dur:reduced ? .9 : 1.5 };
+  hand.fresh = true; hand.show = true; hand.hideAt = 0;
+}
+glc.addEventListener('keydown', function(e){      // 只有畫布有焦點時才攔空白鍵，其他時候照常捲頁
+  if (e.code !== 'Space' && e.key !== ' ' && e.key !== 'Enter') return;
+  e.preventDefault();
+  if (!e.repeat) autoPet();
+});
+$('autoPet').addEventListener('click', autoPet);
+
+/* ---------- 背景輕音樂（預設關，按了才載入、才播）與愛心開關 ---------- */
+var bgmEl = $('bgmAudio'), bgmUrl = BGM.dataURL || BGM.src || '', bgmAC = null;
+if (!bgmUrl) $('bgm').hidden = true;
+$('bgm').addEventListener('click', function(){
+  var btn = this, on = btn.getAttribute('aria-pressed') !== 'true';
+  function off(msg){
+    btn.setAttribute('aria-pressed', 'false');
+    try { bgmEl.pause(); } catch (e) {}
+    if (msg) $('msg').textContent = msg;
+  }
+  if (!on){ off(''); return; }
+  try {
+    if (!bgmEl.getAttribute('src')) bgmEl.src = bgmUrl;
+    bgmEl.loop = true; bgmEl.volume = BGM.volume;
+    if (!bgmAC && Math.abs(bgmEl.volume - BGM.volume) > .01){   // iPhone 不讓網頁改 <audio> 音量：改用 WebAudio 把音量降下來
+      try {
+        var AC = window.AudioContext || window.webkitAudioContext, ac = new AC(), g = ac.createGain();
+        g.gain.value = BGM.volume; ac.createMediaElementSource(bgmEl).connect(g); g.connect(ac.destination); bgmAC = ac;
+      } catch (e2) {}
+    }
+    if (bgmAC && bgmAC.resume) bgmAC.resume();
+    var p = bgmEl.play();
+    btn.setAttribute('aria-pressed', 'true');
+    if (p && p.catch) p.catch(function(){ off('這個瀏覽器現在播不了背景音樂'); });
+  } catch (e) { off('這個瀏覽器現在播不了背景音樂'); }
+});
+$('hearts').setAttribute('aria-pressed', String(heartsOn));
+$('hearts').addEventListener('click', function(){
+  heartsOn = !heartsOn; lsSet('petcat.hearts', heartsOn ? '1' : '0');
+  this.setAttribute('aria-pressed', String(heartsOn));
+  if (!heartsOn) hearts.length = 0;
+});
+
+/* ---------- 彈簧網格：毛被手帶著走、手下面被壓扁、手離開慢慢彈回 ---------- */
+var KS = 85, KD = 8.5, KN = 55, KDRAG = 16, PRESS_A = .010;
+function physics(dt, hcx, hcy, hvx, hvy, grip, press, g){
+  // hcx,hcy：手中心（x 已乘畫面比例，單位是畫面高）；hvx,hvy：手的速度；grip：抓毛的力道；press：往下壓的程度
+  var comp = prep.comp, i, j, n;
+  for (j = 1; j < NY - 1; j++) for (i = 1; i < NX - 1; i++){
+    n = j * NX + i; var c = comp[n];
+    if (c === 0){ ox[n] = oy[n] = vx[n] = vy[n] = 0; continue; }
+    var tx = 0, ty = 0;
+    if (grip > 0 || press > 0){
+      var dx = (i / (NX - 1) * ASP + ox[n] - hcx) / g.rx, dy = (j / (NY - 1) + oy[n] - hcy) / g.ry, d2 = dx * dx + dy * dy;
+      if (d2 < 9){
+        var wp = Math.exp(-d2 * .9);
+        if (grip > 0){   // 摩擦拖曳：毛的速度被拉向手的速度（有延遲）
+          var k = Math.min(1, wp * c * grip * KDRAG * dt);
+          vx[n] += (hvx - vx[n]) * k; vy[n] += (hvy - vy[n]) * k;
+        }
+        if (press > 0){  // 手下面往手心收（壓扁），手邊緣外面往外鼓（肉被擠開）
+          var d = Math.sqrt(d2) + 1e-6, hgt = d < 1 ? -Math.sin(Math.PI * d) : (d < 2 ? .6 * Math.sin(Math.PI * (d - 1)) : 0);
+          var amp = PRESS_A * press * c * hgt;
+          tx = dx / d * amp; ty = dy / d * amp;
+        }
+      }
+    }
+    var lx = (ox[n - 1] + ox[n + 1] + ox[n - NX] + ox[n + NX]) * .25 - ox[n];
+    var ly = (oy[n - 1] + oy[n + 1] + oy[n - NX] + oy[n + NX]) * .25 - oy[n];
+    vx[n] += (KS * (tx - ox[n]) / Math.max(c, .33) * .6 + KS * .4 * (tx - ox[n]) - KD * vx[n] + KN * lx) * dt;
+    vy[n] += (KS * (ty - oy[n]) / Math.max(c, .33) * .6 + KS * .4 * (ty - oy[n]) - KD * vy[n] + KN * ly) * dt;
+  }
+  for (n = 0; n < NN; n++){
+    if (comp[n] === 0) continue;
+    ox[n] += vx[n] * dt; oy[n] += vy[n] * dt;
+    var lim = MAX_OFF * comp[n], m = Math.hypot(ox[n], oy[n]);
+    if (m > lim){ ox[n] *= lim / m; oy[n] *= lim / m; }
+  }
+}
+
+/* ---------- 畫面更新 ---------- */
+function resize(){
+  var r = glc.getBoundingClientRect(), dpr = Math.min(window.devicePixelRatio || 1, 2);
+  var w = Math.max(2, Math.round(r.width * dpr)), h = Math.max(2, Math.round(r.height * dpr));
+  if (glc.width !== w || glc.height !== h){ glc.width = w; glc.height = h; fxc.width = w; fxc.height = h; }
+}
+function heartPath(c){
+  c.beginPath(); c.moveTo(0, .9);
+  c.bezierCurveTo(-1.25, .1, -.62, -.95, 0, -.3);
+  c.bezierCurveTo(.62, -.95, 1.25, .1, 0, .9);
+  c.closePath();
+}
+var prev = clock(), ppx = 0, ppy = 0, debug = { maxOff:0 };
+function frame(){
+  var now = clock(), dt = Math.min(.05, Math.max(.001, now - prev)); prev = now;
+  resize();
+  if (!current || !prep) return;
+  var A = prep.an, g = handGeom(), W = fxc.width, H = fxc.height;
+  var ang = clamp((hand.x - .5) * 2, -1, 1) * 12 * Math.PI / 180;   // 手臂像從畫面下方中央伸過來
+  var cs = Math.cos(ang), sn = Math.sin(ang);
+  var offx = g.dx * cs - g.dy * sn, offy = g.dx * sn + g.dy * cs;   // 指尖到手中心（畫面高為單位）
+  var autoOn = false;
+  if (auto){
+    var k = (now - auto.t0) / auto.dur;
+    if (k >= 1){ auto = null; hand.show = hand.hover; hand.hideAt = now + .25; }
+    else {
+      autoOn = true;
+      var e = k * k * (3 - 2 * k), ux = auto.x0 + (auto.x1 - auto.x0) * e, uy = A.spine(ux);
+      hand.x = ux - offx / ASP; hand.y = uy - offy; hand.show = true;
+    }
+  }
+  if (hand.hideAt && now > hand.hideAt && !hand.down && !hand.hover && !auto){ hand.show = false; hand.hideAt = 0; }
+  hand.alpha = clamp(hand.alpha + (hand.show ? 9 : -4.5) * dt, 0, 1);
+  var pressT = (hand.down || autoOn) ? 1 : 0;
+  hand.press += (pressT - hand.press) * Math.min(1, dt * 14);
+  // 手中心的位置（佔畫面比例）與是否碰到貓
+  var pcx = hand.x + offx / ASP, pcy = hand.y + offy;
+  var contact = Math.max(A.at(pcx, pcy), .7 * A.at(pcx, pcy - g.ry * .5), .7 * A.at(pcx, pcy + g.ry * .5));
+  var active = hand.show && (hand.down || autoOn || hand.hover);
+  if (!isFinite(contact)) contact = 0;
+  hand.contact += ((active ? contact : 0) - hand.contact) * Math.min(1, dt * 12);
+  if (!isFinite(hand.contact)) hand.contact = 0;   // 萬一數值壞掉就自己復原
+  var hx = pcx * ASP, hy = pcy;
+  if (hand.fresh){ ppx = hx; ppy = hy; hand.fresh = false; }
+  var hvx = (hx - ppx) / dt, hvy = (hy - ppy) / dt, sp = Math.hypot(hvx, hvy);
+  if (sp > 4){ hvx *= 4 / sp; hvy *= 4 / sp; sp = 4; }
+  ppx = hx; ppy = hy;
+  var strength = (hand.down || autoOn) ? 1 : (hand.hover ? .55 : 0);
+  var grip = active ? strength * contact : 0, press = hand.contact * (.45 + .55 * hand.press) * hand.alpha;
+  physics(dt / 2, hx, hy, hvx, hvy, grip, press, g);
+  physics(dt / 2, hx, hy, hvx, hvy, grip, press, g);
+  if (grip > .3 && sp > .05){
+    lastPet = now; petDist += sp * dt;
+    if (petDist > (reduced ? .5 : .16)){
+      petDist = 0;
+      if (heartsOn) hearts.push({ x:pcx + (Math.random() - .5) * 2.6 * g.rx / ASP, y:pcy - g.ry * (1.0 + Math.random() * .35),   // 從指尖上方冒出來，不蓋在手上
+        vx:(Math.random() - .5) * .05, vy:-(.10 + Math.random() * .08),
+        s:.018 + Math.random() * .016, t:now, r:(Math.random() - .5) * .6 });
+      if (hearts.length > 40) hearts.shift();
+    }
+  }
+  // 瘦／正常／胖：帶一點回彈的過渡
+  sizeVel += ((sizeTarget - sizeK) * 70 - sizeVel * 10) * dt; sizeK += sizeVel * dt;
+  if (Math.abs(sizeTarget - sizeK) < .0001 && Math.abs(sizeVel) < .0001){ sizeK = sizeTarget; sizeVel = 0; }
+  var breath = (reduced || still) ? 0 : BREATH_K * (.5 - .5 * Math.cos(now * 2 * Math.PI / BREATH_T));
+  var sk = sizeK + breath, G = prep.G, n, mo = 0;
+  for (n = 0; n < NN; n++){
+    offArr[n * 2] = ox[n] / ASP; offArr[n * 2 + 1] = oy[n] + sk * G[n];
+    var q = Math.abs(ox[n]) + Math.abs(oy[n]); if (q > mo) mo = q;
+  }
+  debug.maxOff = mo; debug.contact = hand.contact; debug.alpha = hand.alpha; debug.pcx = pcx; debug.pcy = pcy;
+  var useGL = glOK && !glLost && !gl.isContextLost();
+  if (useGL){
+    gl.viewport(0, 0, glc.width, glc.height);
+    gl.bindBuffer(gl.ARRAY_BUFFER, offBuf); gl.bufferSubData(gl.ARRAY_BUFFER, 0, offArr);
+    gl.uniform4f(uni.uPalm, pcx, pcy, bare ? 0 : .13 * press, 0);
+    gl.uniform2f(uni.uPalmR, g.rx, g.ry);
+    gl.bindTexture(gl.TEXTURE_2D, tex0);
+    gl.disable(gl.BLEND); gl.uniform1f(uni.uLayer, 0);            // 底層：底圖，完全不動
+    gl.drawElements(gl.TRIANGLES, idxCount, gl.UNSIGNED_SHORT, 0);
+    gl.bindTexture(gl.TEXTURE_2D, tex);
+    gl.enable(gl.BLEND); gl.uniform1f(uni.uLayer, 1);             // 貓層：只有貓會動
+    gl.drawElements(gl.TRIANGLES, idxCount, gl.UNSIGNED_SHORT, 0);
+  }
+  fx.setTransform(1,0,0,1,0,0);
+  fx.clearRect(0, 0, W, H);
+  // WebGL 不能用時，直接把照片畫在上層的 2D 畫布（不變形）
+  if (!useGL) fx.drawImage(prep.photo, 0, 0, W, H);
+  // 手與陰影
+  if (!bare && handCv && hand.alpha > .01){
+    var iwPx = HAND_W * W * (1 - .03 * hand.press), sc = iwPx / handCv.width, u = W / 720;
+    fx.save();
+    fx.globalAlpha = hand.alpha;
+    fx.translate(hand.x * W, hand.y * H); fx.rotate(ang); fx.scale(sc, sc);
+    // 碰到貓：陰影深一點、貼近一點；按下去：陰影更小。沒碰到貓（落在坐墊上）：淡一點
+    fx.shadowColor = 'rgba(40,24,8,' + (.20 + .14 * hand.contact).toFixed(3) + ')';
+    fx.shadowBlur = (15 - 8 * hand.press) * u; fx.shadowOffsetX = (11 - 6 * hand.press) * u; fx.shadowOffsetY = (13 - 7 * hand.press) * u;
+    fx.drawImage(handCv, -HAND.tipX * handCv.width, -HAND.tipY * handH);
+    fx.restore();
+  }
+  // 愛心
+  for (var i = hearts.length - 1; i >= 0; i--){
+    var h = hearts[i], a = now - h.t;
+    if (a > 1.3){ hearts.splice(i, 1); continue; }
+    if (bare) continue;
+    var s2 = h.s * H * Math.min(1, a * 7) * (1 + a * .25);
+    fx.save();
+    fx.translate((h.x + h.vx * a) * W, (h.y + h.vy * a) * H);
+    fx.rotate(h.r + Math.sin(a * 5 + h.r * 9) * .15); fx.scale(s2, s2);
+    fx.globalAlpha = Math.max(0, 1 - a / 1.3);
+    heartPath(fx); fx.fillStyle = '#e85a4f'; fx.fill();
+    fx.lineWidth = .14; fx.strokeStyle = 'rgba(255,255,255,.9)'; fx.stroke();
+    fx.restore();
+  }
+}
+window.__petMask = function(){ return prep ? { w:AW, h:AH, m:Array.prototype.slice.call(prep.an.m) } : null; };   // 驗收用：目前這隻貓的遮罩
+window.__petDebug = function(){ return { size:current && current._size, sizeK:sizeK, hearts:hearts.length, mode:mode, wallReal:wallReal, gen:!!(current && current._gen), genReady:!!(current && current._gen && current._img), plate:!!plateImg,
+  maxOff:debug.maxOff, contact:debug.contact, handAlpha:debug.alpha, pc:[debug.pcx, debug.pcy], glOK:glOK,
+  an: prep ? { headEnd:prep.an.headEnd, bodyL:prep.an.bodyL, bodyR:prep.an.bodyR, xa:prep.an.xa, xb:prep.an.xb, spineMid:prep.an.spine((prep.an.bodyL + prep.an.bodyR) / 2), halfMid:prep.an.half((prep.an.bodyL + prep.an.bodyR) / 2) } : null }; };
+
+/* ---------- 啟動：任何一步出錯都不讓頁面空白 ---------- */
+safely(resize);
+safely(renderCoats);
+safely(function(){ select(CATS[0], false); });
+safely(function(){ CATS.forEach(tryPhoto); loadHand(); loadPlate(); });
+safely(function(){ if (apiOK()) loadWall(); else { renderGallery(); setMode('local'); } });
+requestAnimationFrame(function loop(){
+  try { frame(); } catch (e) { if (glOK && window.console) console.error('線上擼貓：畫面更新失敗，改用不變形的顯示', e); glOK = false; safely(glStatus); }
+  requestAnimationFrame(loop);
+});
+})();
+</script>
+<script src="../spotlight.js" defer></script>
+<script>
+// 減少動態效果時 spotlight.js 不會接手機選單，這裡自己接
+if (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) document.addEventListener('DOMContentLoaded', function(){
+  var t = document.querySelector('.nav-toggle'), m = document.querySelector('.nav-menu');
+  if (t && m) t.addEventListener('click', function(){ t.classList.toggle('open'); m.classList.toggle('open'); });
+});
+</script>
+<script src="/views.js"></script>
+<script src="/mika-chat-widget.js" defer></script>
+</body>
+</html>
