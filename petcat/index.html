@@ -43,6 +43,8 @@
 #gl.has-hand{cursor:none}
 #gl:focus-visible{box-shadow:inset 0 0 0 3px var(--c-sky)}
 #fx{pointer-events:none}
+.share-row{margin:0 0 8px; text-align:center}
+.share-row button[hidden]{display:none}
 .now{margin:8px 0 6px; text-align:center; font-size:16px; font-weight:600; color:var(--ink-soft); min-height:26px}
 .msg{margin:0 auto 8px; max-width:720px; text-align:center; font-size:14px; color:var(--c-coral)}
 .msg:empty{display:none}
@@ -50,6 +52,7 @@
 
 .controls{display:flex; flex-direction:column; align-items:center; gap:10px}
 .coats{display:flex; gap:14px; justify-content:center; flex-wrap:wrap}
+.row1{display:flex; gap:22px; align-items:center; justify-content:center; flex-wrap:wrap}   /* 江江 11-26：選貓與胖瘦放同一列 */
 .thumb{
   background:none; border:0; padding:0; cursor:pointer;
   display:flex; flex-direction:column; align-items:center; gap:2px;
@@ -183,6 +186,9 @@
   .row{grid-template-columns:54px 1fr}
   .slots{grid-template-columns:repeat(5, minmax(0,1fr)); row-gap:8px}
   .two{grid-template-columns:1fr}
+  .row1{gap:12px}
+  .coats{gap:8px}
+  .seg button{min-width:46px; padding:0 10px}
 }
 @media (prefers-reduced-motion:reduce){
   *{transition:none !important}
@@ -216,15 +222,18 @@
   </div>
   <p class="now" id="now" aria-live="polite"></p>
   <p class="msg" id="msg" role="status"></p>
+  <p class="share-row"><button type="button" class="pill" id="shareBtn" hidden>分享這隻貓</button></p>
 
   <div class="controls">
+    <div class="row1">
     <div class="coats" id="coats" role="group" aria-label="選一隻貓"></div>
-    <div class="tools">
-      <div class="seg" role="group" aria-label="體型" id="sizeSeg">
+    <div class="seg" role="group" aria-label="體型" id="sizeSeg">
         <button type="button" data-size="slim" aria-pressed="false">瘦</button>
         <button type="button" data-size="normal" aria-pressed="true">正常</button>
         <button type="button" data-size="fat" aria-pressed="false">胖</button>
-      </div>
+    </div>
+    </div>
+    <div class="tools">
       <button type="button" class="pill" id="bgm" aria-pressed="false">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 17.5V6l10-2v11.5"/><circle cx="6.5" cy="17.5" r="2.5"/><circle cx="16.5" cy="15.5" r="2.5"/></svg>
         <span><span class="off">背景音樂：關</span><span class="on">背景音樂：開</span></span>
@@ -377,13 +386,15 @@ var DS = TH / 768, DX = (TW - 1024 * DS) / 2;      // 替代圖用 1024x768 座�
 var AW = 240, AH = 160;                            // 分析遮罩用的小格
 var NX = 48, NY = 32, NN = NX * NY;                // 貓層的彈簧網格
 var FAT_K = .18;                                   // 胖：身體加寬 18%
-var SLIM_K = .12;                                  // 瘦：身體變窄 12%
-var SIZE_K = { slim:-SLIM_K, normal:0, fat:FAT_K };
+var SLIM_K = .24;                                  // 瘦：身體變窄 24%（江江 11-26：原本的瘦當正常，瘦再更瘦）
+var NORMAL_K = -.12;                               // 正常：身體變窄 12%（生成圖本身偏圓）
+var SIZE_K = { slim:-SLIM_K, normal:NORMAL_K, fat:FAT_K };
 var GEN_FIT = { w:.78, h:.62 };                    // 生成貓（透明 PNG）等比縮放後，貓本體最多佔畫面寬高的比例（置中）
 var GEN_SHADOW = [                                 // 生成貓在坐墊上的接觸陰影（畫在底圖層）：大而淡一層、貼身一層。blur/dx/dy 以 1200 px 寬為準
   { color:'rgba(62,40,16,.34)', blur:30, dx:7, dy:13 },
-  { color:'rgba(62,40,16,.30)', blur:9,  dx:2, dy:4 }
+  { color:'rgba(62,40,16,.22)', blur:9,  dx:2, dy:4 }
 ];
+var GEN_SHADOW_K = .74;                            // 陰影用壓扁的貓形（上下縮到 74%）：貓變瘦或被壓時，陰影仍藏在身體底下，不會露出一圈黑邊
 var UPLOAD_MAX = 1536, UPLOAD_Q = .85;             // 上傳前把照片縮到長邊最多 1536 px、JPEG 品質 .85
 var API_TIMEOUT = 120000, WALL_TIMEOUT = 8000;     // 生成最多等 120 秒；讀貓牆最多等 8 秒
 var BREATH_K = .006, BREATH_T = 3.5;               // 呼吸：身體擴張 0.6%，3.5 秒一次
@@ -712,7 +723,8 @@ function composeGen(cat, w, h){
   GEN_SHADOW.forEach(function(s){      // 只要陰影：把貓畫在畫面外，陰影用位移丟回原位（形狀＝PNG 的 alpha 模糊）
     bc.save(); bc.shadowColor = s.color; bc.shadowBlur = s.blur * u;
     bc.shadowOffsetX = w * 2 + s.dx * u; bc.shadowOffsetY = s.dy * u;
-    bc.drawImage(img, dx - w * 2, dy, dw, dh); bc.restore();
+    var sh = dh * GEN_SHADOW_K;
+    bc.drawImage(img, dx - w * 2, dy + (dh - sh) / 2, dw, sh); bc.restore();
   });
   var fc = full.getContext('2d', { willReadFrequently:true }); fc.drawImage(base, 0, 0); fc.drawImage(img, dx, dy, dw, dh);
   var mc = mask.getContext('2d', { willReadFrequently:true }); mc.drawImage(img, dx, dy, dw, dh);
@@ -926,6 +938,7 @@ function select(cat, animateSize){
   prep = prepare(cat);
   uploadTexture();
   $('now').textContent = labelOf(cat);                             // 暱稱是網友填的，一律 textContent
+  safely(function(){ $('shareBtn').hidden = !cat.no; setCatURL(cat.no || 0); });
   markSize();
   markSelected();
   if (cat._gen && !cat._img) loadGen(cat, function(){ if (current === cat) select(cat, false); });
@@ -1176,6 +1189,35 @@ function setMode(m){
     : m === 'wait' ? '' : (m === 'closed' ? '生成功能還沒開放：' : '') + '按下去只會在這台裝置上預覽，照片只留在你的瀏覽器裡。';
 }
 function btnText(){ return mode === 'online' ? '生成我家的貓' : (mode === 'wait' ? '正在連線…' : '在這裡預覽我家的貓'); }
+// 每隻貓自己的網址：?cat=編號。選到貓牆的貓就把網址換成牠的，分享出去對方一點開就是這隻
+function setCatURL(no){
+  if (!(window.history && history.replaceState && window.URLSearchParams)) return;
+  var sp = new URLSearchParams(location.search);
+  if (no) sp.set('cat', String(no)); else sp.delete('cat');
+  var qs = sp.toString();
+  history.replaceState(null, '', location.pathname + (qs ? '?' + qs : '') + location.hash);
+}
+var wantCat = (function(){ var m = /[?&]cat=(\d{1,4})(?:&|$)/.exec(Q); return m ? +m[1] : 0; })();
+function openWanted(){
+  if (!wantCat) return;
+  var hit = wall.filter(function(o){ return o.no === wantCat; })[0];
+  wantCat = 0;
+  if (hit){ select(hit, false); goStage(); }
+  else setCatURL(0);
+}
+function shareCat(){
+  var cat = current;
+  if (!cat || !cat.no) return;
+  var url = location.origin + location.pathname + '?cat=' + cat.no;
+  var text = (cat.name || '這隻貓') + '是線上擼貓第 ' + cat.no + ' 號，點開就能摸牠';
+  var say = function(t){ $('msg').textContent = t; setTimeout(function(){ if ($('msg').textContent === t) $('msg').textContent = ''; }, 4000); };
+  if (navigator.share){
+    navigator.share({ title:'線上擼貓：' + (cat.name || cat.no + ' 號'), text:text, url:url }).catch(function(){});
+  } else if (navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(url).then(function(){ say('已複製這隻貓的網址，貼給朋友就能摸牠'); }, function(){ say(url); });
+  } else say(url);
+}
+$('shareBtn').addEventListener('click', shareCat);
 function goStage(){ $('stage').scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block:'start' }); }
 function loadWall(){
   if (!apiOK()){ setMode('local'); return; }
@@ -1187,6 +1229,7 @@ function loadWall(){
     wallMax = j.max > 0 ? +j.max : GALLERY_MAX;
     wallCount = j.count >= 0 ? +j.count : wall.length;
     renderGallery();
+    safely(openWanted);
     setMode(j.open === true ? 'online' : (wallCount >= wallMax ? 'full' : 'closed'));
   }).catch(function(){      // 讀不到：貓牆留空格子、表單改成本機預覽，不報錯
     wallLoading = false;
