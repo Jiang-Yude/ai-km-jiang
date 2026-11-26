@@ -23,6 +23,25 @@ window.ARTICLE_TAGS = {
 
 window.ARTICLES = [
   {
+    id: "icloud-agent-clean-phone-photos",
+    url: "articles/icloud-agent-clean-phone-photos/",
+    date: "2026-11-26",
+    updated: "2026-11-26",
+    title: "iPhone 照片清不完，又怕 AI 亂刪？｜透過 Mac 整理照片圖庫，愛心留下、比對完再自己刪",
+    problem: "手機照片、截圖、錄影多到不想整理，一張一張刪刪不完，想交給 AI 又怕它亂刪、照片外流。",
+    audience: "用 iPhone 加 Mac、照片多到不想整理，想讓 AI 幫忙但怕出錯的人。",
+    summary: "iPhone 加 Mac 開 iCloud 照片，Agent 只整理電腦版照片 App：在本機辨識分類（報帳、名片、社群截圖、工具截圖、活動、出遊），一組一組問我用途，照月份上傳 Google 雲端硬碟並逐檔比對，比對好的放進「已封存可刪（非愛心）」相簿，我在手機自己刪。這次 810 個照片和影片、約 28 GB，愛心 4 張留手機。附四條規則、照做前要看的三件事（雲端容量、編輯不會帶出、雲端是唯一一份）和可直接貼的提示詞。",
+    tags: {
+      topic: ["AI工作流", "AIAgent"],
+      level: ["基礎"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["ai-checks-line-oa-inbox", "knowledge-worker-automation"],
+    cover: { wide: "images/articles/icloud-agent-clean-phone-photos-cover.jpg" }
+  },
+
+  {
     id: "why-ai-sounds-smart-but-gets-it-wrong",
     url: "articles/why-ai-sounds-smart-but-gets-it-wrong/",
     date: "2026-11-26",
