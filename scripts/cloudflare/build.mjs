@@ -5,9 +5,12 @@ import crypto from 'node:crypto';
 import os from 'node:os';
 import {execFileSync} from 'node:child_process';
 import {fileURLToPath} from 'node:url';
+import {prerenderPage,loadConfig,checkThinPages} from './prerender.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)),'../..');
 const legacyDecks = JSON.parse(fs.readFileSync(path.join(root,'cloudflare/legacy-decks.json'),'utf8'));
+const prerenderAll = loadConfig(root);
+const prerenderConfig = prerenderAll.pages;
 const target = process.argv.find(a=>a.startsWith('--target='))?.split('=')[1] || 'candidate';
 if(!['candidate','production'].includes(target))throw new Error('unknown build target');
 const buildRoot = process.env.CF_BUILD_ROOT || path.join(os.tmpdir(),'ai-km-jiang-cf-build');
@@ -45,6 +48,8 @@ for (const p of files) {
     let html=fs.readFileSync(src,'utf8');
     // Platform-specific beacons cannot collect on Pages. Preserve the source and the independent Upstash views.js.
     html=html.replace(/<script\b[^>]*\bsrc=["']\/_vercel\/(?:insights|speed-insights)\/script\.js["'][^>]*>[\s\S]*?<\/script>/gi,'');
+    // 列表頁預畫（2026-11-27）：不跑 JS 的 AI 也讀得到文章、課程清單。
+    if(Object.hasOwn(prerenderConfig,p)) html=prerenderPage(root,p,html,prerenderConfig[p]);
     if(target==='candidate') {
       html=html.replace(/<meta\s+name=["']robots["'][^>]*>/gi,'');
       html=html.replace(/<head\b[^>]*>/i, m=>m+'\n<meta name="robots" content="noindex, nofollow">');
@@ -54,6 +59,7 @@ for (const p of files) {
   } else fs.copyFileSync(src,dst);
   entry.outputSha256=hashes(dst);
 }
+checkThinPages(root,out,prerenderAll.thinCheck);
 const win={};
 for(const p of ['search-aliases.js','courses-data.js','article-keywords.js','slides-data.js'])
   vm.runInNewContext(fs.readFileSync(path.join(root,p),'utf8'),{window:win},{timeout:1000});

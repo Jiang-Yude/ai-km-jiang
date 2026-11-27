@@ -1,0 +1,40 @@
+{
+  "_說明": "打包時預先畫好的列表（scripts/cloudflare/prerender.mjs）。頁面內容靠 JS 才長出來的，都要列在這裡，不然不跑 JS 的 AI（手機與免費版 ChatGPT、Gemini）只看到空殼。containers＝要預畫的容器 id；minChars＝畫出來少於這個字元數就擋下打包。限制：只跑外部 <script src>（不跑 inline script），而且該頁 JS 載入後要用 innerHTML 整段覆寫容器（用 appendChild 或 innerHTML += 會畫出兩份）。統計、咪卡浮鈕這類只在瀏覽器有意義的腳本不跑（prerender.mjs 的 SKIP_SCRIPTS，個別頁可再加 skipScripts）；其他腳本出錯、卡數為 0 都會擋下打包。",
+  "pages": {
+    "articles.html": {
+      "containers": [
+        "articles-grid"
+      ],
+      "minChars": 5000,
+      "count": {
+        "id": "filter-count",
+        "from": "articles-grid",
+        "pattern": "class=\"list-card article-card",
+        "template": "符合 <b>{n}</b> 篇"
+      },
+      "hide": [
+        "articles-empty"
+      ]
+    },
+    "courses.html": {
+      "containers": [
+        "merged-courses"
+      ],
+      "minChars": 2000
+    },
+    "invited-talks.html": {
+      "containers": [
+        "invited-talks"
+      ],
+      "minChars": 2000
+    }
+  },
+  "thinCheck": {
+    "_說明": "打包後檢查：根目錄公開頁（原始檔沒標 noindex）去掉 head、script、style、導覽列、header、頁尾後少於 minChars 字就擋下，提醒把它加進 pages。確定本來就短的頁放 allow。只掃根目錄；子資料夾的文章頁本來就是靜態 HTML。",
+    "minChars": 300,
+    "allow": [
+      "search.html",
+      "google516e27a0bd42f1cf.html"
+    ]
+  }
+}
