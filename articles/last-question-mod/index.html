@@ -1,0 +1,478 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="index,follow">
+<title>好幾個 AI 任務切來切去，忘了剛剛問什麼？｜免費 Claude Code Mod：輸入框上方顯示上一題、多久前問的、上下文用了多少</title>
+<meta name="description" content="同時開好幾個 Claude Code 任務，切回來常常忘了剛剛問什麼。我用 Claude Code Mod 在輸入框上方加一列提示：上一題、多久前問的，加上一個彩色圓圈表示上下文用了多少。附 Mod 是什麼、四種顏色、兩行安裝指令、請 AI 做自己 Mod 的提示詞，以及不裝 Mod 也能查的方法。">
+<link rel="canonical" href="https://jiangyude.com/articles/last-question-mod/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="好幾個 AI 任務切來切去，忘了剛剛問什麼？｜免費 Claude Code Mod：輸入框上方顯示上一題、多久前問的、上下文用了多少｜江江教練">
+<!-- 分享封面：hero 文字填好後在 repo 根目錄跑 `node scripts/og-shot.mjs last-question-mod` 自動截 1200×630 到 images/og/last-question-mod.jpg（見 README「文章分享封面（OG 圖）機制」）。別退回 intro-jiang.png 直式人像，會被裁成只剩脖子。 -->
+<meta property="og:image" content="https://jiangyude.com/images/og/last-question-mod.jpg">
+<meta property="og:description" content="同時開好幾個 Claude Code 任務，切回來常常忘了剛剛問什麼。我用 Claude Code Mod 在輸入框上方加一列提示：上一題、多久前問的，加上一個彩色圓圈表示上下文用了多少。附 Mod 是什麼、四種顏色、兩行安裝指令、請 AI 做自己 Mod 的提示詞，以及不裝 Mod 也能查的方法。">
+<meta property="og:url" content="https://jiangyude.com/articles/last-question-mod/">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:site_name" content="江江教練 · AI 知識管理">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="好幾個 AI 任務切來切去，忘了剛剛問什麼？｜免費 Claude Code Mod：輸入框上方顯示上一題、多久前問的、上下文用了多少｜江江教練">
+<meta name="twitter:image" content="https://jiangyude.com/images/og/last-question-mod.jpg">
+<meta name="twitter:description" content="同時開好幾個 Claude Code 任務，切回來常常忘了剛剛問什麼。我用 Claude Code Mod 在輸入框上方加一列提示：上一題、多久前問的，加上一個彩色圓圈表示上下文用了多少。附 Mod 是什麼、四種顏色、兩行安裝指令、請 AI 做自己 Mod 的提示詞，以及不裝 Mod 也能查的方法。">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"好幾個 AI 任務切來切去，忘了剛剛問什麼？｜免費 Claude Code Mod：輸入框上方顯示上一題、多久前問的、上下文用了多少","description":"同時開好幾個 Claude Code 任務，切回來常常忘了剛剛問什麼。我用 Claude Code Mod 在輸入框上方加一列提示：上一題、多久前問的，加上一個彩色圓圈表示上下文用了多少。附 Mod 是什麼、四種顏色、兩行安裝指令、請 AI 做自己 Mod 的提示詞，以及不裝 Mod 也能查的方法。","author":{"@type":"Person","@id":"https://jiangyude.com/#person","name":"江昱德","alternateName":"江江教練","jobTitle":"AI 教練","url":"https://jiangyude.com/","sameAs":["https://www.threads.com/@jiang_yude_coach","https://vocus.cc/salon/Jiang_Coach","https://github.com/Jiang-Yude","https://www.youtube.com/@aipkmcc","https://www.instagram.com/jiang_yude_coach/"]},"isPartOf":{"@type":"WebSite","name":"江江教練 · AI 知識管理","url":"https://jiangyude.com/"},"inLanguage":"zh-Hant","url":"https://jiangyude.com/articles/last-question-mod/"}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{--ink:#1a1612;--paper:#fefcf8;--muted:#6a635a;--line:#d8cdb8;--green:#5f7553;--blue:#5689b8;--orange:#e85a4f;--soft:#faf5ec;--dark:#2a2018;--shadow:0 18px 45px rgba(107,74,42,.14);--sp-shadow:hsla(35,50%,60%,.15);--sp-shadow-edge:hsla(35,50%,68%,.03);--sp-radius:400px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC","Segoe UI",sans-serif}
+a{color:inherit}
+/* 官網共用導航列 nav.top（與首頁/文章總站同一條） */
+nav.top{position:sticky;top:0;background:rgba(254,252,248,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid #d8cdb8;z-index:100}
+nav.top .container{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:24px;padding:14px 32px}
+.nav-brand-img{justify-self:start;display:flex;align-items:center;text-decoration:none;flex-shrink:0;transition:opacity .2s}
+.nav-brand-img:hover{opacity:.8}.nav-brand-img img{height:40px;width:auto;display:block}
+nav.top ul.nav-menu{justify-self:end;display:flex;gap:22px;list-style:none;margin:0;padding:0;font-size:.95rem;white-space:nowrap}
+nav.top ul.nav-menu a{color:#3a342d;text-decoration:none;transition:color .2s;font-weight:500;white-space:nowrap}
+nav.top ul.nav-menu a:hover{color:#1a1612}nav.top ul.nav-menu a.active{color:#1a1612;font-weight:700}
+.nav-toggle{display:none;background:none;border:none;padding:6px;cursor:pointer;width:36px;height:36px;position:relative}
+.nav-toggle span{display:block;position:absolute;left:8px;right:8px;height:2px;background:#1a1612;border-radius:2px;transition:transform .25s,opacity .25s,top .25s}
+.nav-toggle span:nth-child(1){top:11px}.nav-toggle span:nth-child(2){top:17px}.nav-toggle span:nth-child(3){top:23px}
+.nav-toggle.open span:nth-child(1){top:17px;transform:rotate(45deg)}.nav-toggle.open span:nth-child(2){opacity:0}.nav-toggle.open span:nth-child(3){top:17px;transform:rotate(-45deg)}
+.tablewrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:22px 0;border:1px solid var(--line);border-radius:10px;background:#fff;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.tablewrap table{border-collapse:collapse;width:100%;min-width:600px;font-size:18px;line-height:1.65}
+.tablewrap .zh{display:block;margin-top:5px;font-size:16px;line-height:1.55;color:var(--muted);font-weight:400}
+.tablewrap th,.tablewrap td{padding:12px 14px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top;color:#3a342d}
+.tablewrap thead th{background:var(--soft);font-weight:900;font-size:18px;color:#1a1612;white-space:nowrap}
+.tablewrap tbody tr:last-child td{border-bottom:none}
+.tablewrap td code,.section code{background:var(--soft);border:1px solid var(--line);border-radius:5px;padding:1px 6px;font:500 15px/1.5 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace}
+.inline-figure.wide{max-width:1000px}
+.inline-figure.portrait{max-width:430px}
+.toc{margin:26px 0 0;padding:20px 22px;background:#fff;border:1px solid var(--line);border-radius:10px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.toc>b{display:block;font-size:15px;letter-spacing:.05em;color:var(--green);margin-bottom:10px}
+.toc ol{margin:0;padding-left:1.35em;font-size:18px;line-height:1.7}
+.toc li{margin-bottom:7px;color:#3a342d}
+.toc a{color:var(--blue);font-weight:700;text-decoration:none}.toc a:hover{text-decoration:underline}
+.toc-hint{margin:12px 0 0!important;font-size:18px!important;color:var(--muted)!important;border-top:1px solid var(--line);padding-top:12px}
+.readmore{margin-top:24px;padding:20px 22px;background:var(--soft);border:1px solid var(--line);border-radius:12px}
+.readmore.near{margin:26px 0 6px;background:rgba(86,137,184,.07);border-color:#bcd0e2}
+.readmore.near b{color:var(--blue);font-size:18px}
+.readmore.near li{font-size:17px;line-height:1.7;margin-bottom:10px}
+.readmore b{display:block;margin-bottom:10px;font-size:19px}
+.readmore ul{margin:0;padding-left:1.25em}
+.readmore a{color:var(--blue);font-weight:700;text-decoration:none}
+.readmore a:hover{text-decoration:underline}
+@media(max-width:820px){.tablewrap table{min-width:560px;font-size:18px}.tablewrap{position:relative}.tablewrap::after{content:"表格可左右滑動 →";position:sticky;left:0;display:block;font-size:15px;color:var(--muted);background:var(--soft);border-top:1px solid var(--line);padding:7px 12px;width:100%}}
+@media(max-width:860px){
+ nav.top .container{grid-template-columns:auto 1fr auto;padding:10px 16px;gap:12px}
+ .nav-brand-img img{height:32px}
+ .nav-toggle{display:block;justify-self:end}
+ nav.top ul.nav-menu{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(254,252,248,.98);backdrop-filter:blur(14px);border-bottom:1px solid #d8cdb8;flex-direction:column;gap:0;padding:8px 0;box-shadow:0 10px 24px rgba(107,74,42,.08)}
+ nav.top ul.nav-menu.open{display:flex}
+ nav.top ul.nav-menu li{border-bottom:1px solid #e8dfc9}
+ nav.top ul.nav-menu li:last-child{border-bottom:none}
+ nav.top ul.nav-menu a{display:block;padding:14px 20px;font-size:1.06rem}
+}
+/* 滑鼠暖光暈（與首頁同一支 spotlight.js） */
+body.spotlight::after{content:'';position:fixed;inset:0;background:radial-gradient(var(--sp-radius) circle at var(--mx,50%) var(--my,50%),var(--sp-shadow) 0%,var(--sp-shadow-edge) 45%,transparent 75%);pointer-events:none;z-index:9999;mix-blend-mode:multiply;transition:background .06s linear}
+.hero{position:relative;overflow:hidden;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:72px;padding:96px clamp(20px,6vw,88px) 80px;background:linear-gradient(180deg,#fffcf0 0%,#f9e9d2 100%);color:#1a1612;border-bottom:1px solid #d8cdb8}
+.hero .wc{position:absolute;border-radius:50%;filter:blur(60px);pointer-events:none;z-index:0}
+.hero .wc1{width:420px;height:360px;top:-120px;right:-80px;background:#e8884b;opacity:.15}
+.hero .wc2{width:360px;height:300px;bottom:-110px;left:-70px;background:#5f7553;opacity:.13}
+.hero .wc3{width:280px;height:260px;top:34%;left:14%;background:#a08144;opacity:.10}
+.hero>div{flex:none;width:860px;max-width:100%;position:relative;z-index:2}
+.hero-figure{margin:0;width:620px;flex:none;position:relative;z-index:2}
+.hero-figure img{display:block;width:100%;height:auto;border-radius:16px;border:1px solid #d8cdb8;box-shadow:0 18px 45px rgba(107,74,42,.16);cursor:zoom-in}
+.hero-figure figcaption{margin-top:10px;font-size:14px;line-height:1.6;color:#6a635a}
+.inline-figure{margin:30px auto 8px;max-width:820px}
+.inline-figure img{display:block;width:100%;height:auto;border-radius:14px;border:1px solid var(--line);box-shadow:var(--shadow);background:#fff;cursor:zoom-in}
+.inline-figure figcaption{font-size:14px;line-height:1.6;color:var(--muted);margin-top:10px}
+.kicker{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.55rem;color:#7a5c3a;font-weight:500}
+.hero h1{max-width:none;margin:16px 0 18px;font-size:clamp(36px,6vw,72px);line-height:1.08;overflow-wrap:anywhere}
+.hero p{max-width:none;font-size:clamp(18px,2vw,23px);line-height:1.62;color:#3a342d}
+.cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
+.cta a{display:inline-flex;align-items:center;text-decoration:none;border-radius:8px;padding:12px 16px;font-weight:900}
+.cta .primary{background:#fff;color:#1a1612}.cta .ghost{border:1px solid rgba(255,255,255,.32);color:#fff;background:rgba(255,255,255,.08)}
+.section{padding:54px clamp(20px,6vw,88px);border-top:1px solid var(--line)}
+.inner{width:min(1000px,100%);margin:0 auto}
+.section h2{font-size:clamp(26px,4.2vw,48px);line-height:1.12;margin:0 0 18px}
+.section h3{font-size:clamp(21px,3vw,30px);line-height:1.2;margin:30px 0 12px}
+.lead{font-size:clamp(18px,1.6vw,22px);line-height:1.7;color:#3a342d;max-width:900px}
+.section p{font-size:18px;line-height:1.74;color:#3a342d}.section p+p{margin-top:14px}
+.section ul,.section ol{padding-left:1.4em;font-size:18px;line-height:1.74;color:#3a342d}.section li{margin-bottom:8px}
+.meaning{margin:22px 0;padding:16px 18px;border-left:5px solid var(--blue);background:rgba(86,137,184,.12);border-radius:6px;line-height:1.7;font-size:19px}
+.meaning b{display:block;color:var(--blue);margin-bottom:4px}
+.caveat{margin:0 0 8px;padding:16px 18px;border-left:5px solid var(--orange);background:rgba(232,90,79,.1);border-radius:6px;line-height:1.7;font-size:18px;color:#3a342d}
+.caveat b{display:block;color:var(--orange);margin-bottom:4px}
+.infocard{background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px 24px 22px;box-shadow:0 8px 22px rgba(107,74,42,.08);margin-top:8px}
+.infocard-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.info-item{padding:18px 14px 0}
+.info-item b{display:block;font-size:14px;font-weight:900;letter-spacing:.04em;margin-bottom:7px;text-transform:uppercase}
+.info-item:nth-child(1) b{color:var(--green)}.info-item:nth-child(2) b{color:var(--orange)}.info-item:nth-child(3) b{color:var(--blue)}
+.info-item p{margin:0;font-size:17px;line-height:1.6;color:#3a342d}
+.tagrow{display:flex;flex-wrap:wrap;gap:7px;margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
+.tag{font-size:14px;color:var(--muted);background:var(--soft);border:1px solid var(--line);border-radius:999px;padding:4px 11px}
+.duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:24px}
+.duo.stack{grid-template-columns:1fr}
+.duo .card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:22px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.duo .card.a{border-color:var(--orange)}.duo .card.b{border-color:var(--green);box-shadow:0 8px 24px rgba(95,117,83,.16)}
+.duo .card small{display:block;font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.04em;margin-bottom:9px}
+.duo .card.a small{color:var(--orange)}.duo .card.b small{color:var(--green)}
+.duo .card b{display:block;font-size:22px;line-height:1.3;margin-bottom:12px}.duo .card.a b{color:#c0512f}.duo .card.b b{color:#4a7a59}
+.duo .card p{margin:0;color:#3a342d;line-height:1.75;font-size:18px}
+.workflow-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:24px}
+.workflow-step{background:#fff;border:1px solid var(--line);border-radius:8px;padding:18px;box-shadow:0 8px 22px rgba(107,74,42,.08)}
+.workflow-step small{display:block;color:var(--orange);font:900 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;margin-bottom:9px}
+.workflow-step b{display:block;font-size:18px;line-height:1.3;margin-bottom:9px}
+.workflow-step p{margin:0;color:#3a342d;line-height:1.6;font-size:16px}
+.codeblock{background:var(--dark);color:#f3ead9;border-radius:8px;padding:18px 20px;font:500 14px/1.65 "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;overflow-x:auto;white-space:pre-wrap;margin:20px 0;box-shadow:0 8px 22px rgba(107,74,42,.12)}
+.codeblock .c{color:#f6d7a6;font-weight:600}
+.skillcard{background:#fff;border:1px solid var(--green);border-radius:12px;padding:24px;box-shadow:0 10px 26px rgba(95,117,83,.16);margin-top:8px}
+.skillcard b{display:block;font-size:21px;margin-bottom:8px}
+.skillcard p{margin:0 0 16px;font-size:17px;line-height:1.65;color:#3a342d}
+.cta-band{background:#e6f0e5;color:#3a342d}.cta-band .section{border-top:none}
+.cta-band .inner{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(260px,.85fr);gap:26px;align-items:start}
+.cta-band h2{font-size:clamp(26px,4vw,44px);margin:0 0 16px}.cta-band p,.cta-band .lead{color:rgba(58,52,45,.9);font-size:18px;line-height:1.72}
+.cta-card{border:1px solid #cfe0d2;background:#fbfdfa;border-radius:8px;padding:22px}
+.cta-card b{display:block;color:#48b178;margin-bottom:10px;font-size:18px}.cta-card p{margin:0 0 14px}
+.footer{padding:30px clamp(20px,6vw,88px);font-size:14px;color:var(--muted);background:#fff;border-top:1px solid var(--line)}
+.footer-inner{width:min(1000px,100%);margin:0 auto}
+.footer-links{display:flex;flex-wrap:wrap;gap:6px 12px;margin-bottom:14px}.footer-links a{color:var(--blue);font-weight:900;text-decoration:none;font-size:14px}
+.footer-brand{font-weight:900;font-size:15px;margin-bottom:10px}.footer-note{font-size:13px;line-height:1.6}
+@media(max-width:820px){.inline-figure.portrait{max-width:340px}.infocard-grid{grid-template-columns:1fr}.duo{grid-template-columns:1fr}.workflow-grid{grid-template-columns:1fr}.cta-band .inner{grid-template-columns:1fr}.section{padding:40px 20px}.hero{min-height:52vh;flex-direction:column;justify-content:flex-start;align-items:flex-start;gap:24px}.hero>div{width:100%}.hero-figure{width:100%;max-width:560px}}
+@media(max-width:820px){html,body{overflow-x:hidden}.hero h1{word-break:break-word}}
+/* 直式圖左右排（02-design-system「直式圖在桌機的左右排版」）：輪播卡上官網預設用 .media-row，圖左圖右看段落交替；連續兩張用 .figure-pair */
+.figure-pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;margin:30px auto 8px;max-width:820px}.figure-pair .inline-figure{margin:0;max-width:none}@media(max-width:640px){.figure-pair{grid-template-columns:1fr}.figure-pair .inline-figure{max-width:340px;margin:0 auto}}
+.media-row{display:grid;grid-template-columns:minmax(0,340px) minmax(0,1fr);gap:36px;align-items:center;margin:28px 0}.media-row.img-right{grid-template-columns:minmax(0,1fr) minmax(0,340px)}.media-row .inline-figure{margin:0;max-width:none}.media-row .media-text>*:first-child{margin-top:0}.media-row .media-text>*:last-child{margin-bottom:0}@media(max-width:820px){.media-row,.media-row.img-right{grid-template-columns:1fr;gap:18px}.media-row.img-right .media-fig{order:-1}.media-row .inline-figure{max-width:340px;margin:0 auto}}
+/* 直式圖左右排（02-design-system「直式圖在桌機的左右排版」）：輪播卡上官網預設用 .media-row，圖左圖右看段落交替；連續兩張用 .figure-pair */
+.figure-pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;margin:30px auto 8px;max-width:820px}.figure-pair .inline-figure{margin:0;max-width:none}@media(max-width:640px){.figure-pair{grid-template-columns:1fr}.figure-pair .inline-figure{max-width:340px;margin:0 auto}}
+.media-row{display:grid;grid-template-columns:minmax(0,340px) minmax(0,1fr);gap:36px;align-items:center;margin:28px 0}.media-row.img-right{grid-template-columns:minmax(0,1fr) minmax(0,340px)}.media-row .inline-figure{margin:0;max-width:none}.media-row .media-text>*:first-child{margin-top:0}.media-row .media-text>*:last-child{margin-bottom:0}@media(max-width:820px){.media-row,.media-row.img-right{grid-template-columns:1fr;gap:18px}.media-row.img-right .media-fig{order:-1}.media-row .inline-figure{max-width:340px;margin:0 auto}}
+</style>
+</head>
+<body class="spotlight">
+<!-- 官網共用導航列 nav.top：與首頁/總站同一條，文章不要自己另做極簡 topbar（江江 2026-06-25：要同一個框架、同一條導航列）。把對應頁面的 class="active" 標在自己那欄。
+     ⚠️ 下面 ul.nav-menu 整塊由 preflight 第 5 關 check-bilingual-nav.mjs 做「逐字比對」，
+        塞任何註解、多一個空白、換行位置不同都會被判導航不一致而擋下發布。要說明就寫在 <ul> 外面（像這裡）。
+        2026-08-16 修：原本的 EN 那行說明註解就夾在 <ul> 裡面，導致照範本起手的新文章一律卡第 5 關
+        （llm-rag-agent-mcp 與 rag-three-retrieval-modes 兩篇同時中招）。註解已移出來，<ul> 內保持乾淨。
+        萬一還是被擋，直接跑：node scripts/check-bilingual-nav.mjs --write --only=<你的檔案路徑> -->
+<nav class="top">
+  <div class="container">
+    <a class="nav-brand-img" href="../../index.html"><img src="../../images/footer-signature.png" alt="江江教練 | 江昱德"></a>
+    <button class="nav-toggle" aria-label="選單"><span></span><span></span><span></span></button>
+    <ul class="nav-menu">
+      <li><a href="../../index.html">首頁</a></li>
+      <li><a href="../../knowledge-architecture.html">知識架構</a></li>
+      <li><a href="../../courses.html">課程</a></li>
+      <li><a href="../../articles.html" class="active">文章</a></li>
+      <li><a href="../../skills.html">小工具</a></li>
+      <li><a href="../../offers.html">服務方案</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="wc wc1"></div>
+  <div class="wc wc2"></div>
+  <div class="wc wc3"></div>
+  <div>
+    <div class="kicker">Claude Code Mod · 上一題提示列</div>
+    <h1>好幾個 AI 任務切來切去，忘了剛剛問什麼？｜免費 Claude Code Mod：輸入框上方顯示上一題、多久前問的、上下文用了多少</h1>
+    <p>我常常同時開好幾個 Claude Code 任務，切回其中一個時，已經想不起來剛剛問了什麼。我用 Claude Code Mod 在輸入框上方加了一列提示：上一題、多久前問的，再加一個彩色小圓圈表示這個對話的上下文（AI 這個對話能記住的空間）用了多少。原始碼公開在 GitHub，免費下載。</p>
+  </div>
+  <figure class="hero-figure">
+    <img src="../../images/articles/last-question-mod-cover.jpg" alt="咪卡和朵拉坐在電腦前，螢幕的輸入框上方多了一列「上一題」提示和一個彩色小圓圈；標題：忘了剛剛問什麼？" loading="lazy">
+    <figcaption>切回任務時，抬頭先看上一題。</figcaption>
+  </figure>
+</section>
+
+<main>
+<section class="section" id="start"><div class="inner">
+  <h2>這篇在講什麼</h2>
+  <p class="lead">Claude Code Mod 可以照你自己的習慣，改造 Claude Code 的工作畫面。我做的第一個用法很小：在輸入框上方固定顯示一列「上一題」，旁邊有時間和一個會變色的圓圈。這篇講我為什麼需要它、那一列怎麼看、圓圈的四種顏色、Mod 是什麼、怎麼安裝，最後附一段提示詞，讓你請 AI 幫你做自己的 Mod，以及不裝 Mod 也能查上一題和上下文用量的方法。</p>
+  <div class="duo stack">
+    <div class="card a"><b>適合誰</b>
+      <ul>
+        <li>同時開好幾個 AI 對話或任務，切回來常常忘記剛剛問什麼的人</li>
+        <li>用 Claude Code，想知道這個對話的上下文用了多少的人</li>
+        <li>聽過 Claude Code Mod，想知道它能拿來改什麼的人</li>
+      </ul>
+    </div>
+    <div class="card b"><b>你可以帶走什麼</b>
+      <ul>
+        <li>一個免費的 Claude Code Mod，貼一兩行指令就裝好</li>
+        <li>圓圈四種顏色各代表上下文用了多少</li>
+        <li>一段提示詞，請 AI 幫你做自己的 Mod；以及不裝 Mod 也能查的方法</li>
+      </ul>
+    </div>
+  </div>
+  <figure class="inline-figure wide">
+    <img src="../../images/articles/last-question-mod-band.svg" alt="示意圖：輸入框上方一列寫著「上一題（3 分鐘前・彩色圓圈）：幫我把這份會議紀錄整理成三個重點」和收起按鈕；下方四張小卡，淺綠 20% 以內、深綠 20 到 50%、黃 50 到 70%、紅 70% 以上" loading="lazy">
+    <figcaption>示意圖。前面的時間用數字，後面的用量用圓圈，一眼分得開。</figcaption>
+  </figure>
+</div></section>
+
+<section class="section" id="why"><div class="inner">
+  <h2>好幾個任務切來切去，回到對話時已經忘了剛剛問什麼</h2>
+  <div class="media-row">
+  <div class="media-fig"><figure class="inline-figure portrait"><img src="../../images/articles/last-question-mod-01.jpg" alt="輪播卡：好幾個 AI 任務切來切去，忘了剛剛問什麼？朵拉坐在三台筆電前抓頭，咪卡拉著一長條對話紀錄紙卷在找" width="1080" height="1350" loading="lazy"><figcaption>三台筆電都在跑，切回來已經不記得問過什麼</figcaption></figure></div>
+  <div class="media-text">
+  <p>我用 Claude Code 工作時，常常好幾個任務同時在跑。這個在整理會議紀錄，那個在改網頁，另一個在等我決定。AI 在做的時候我就去看別的。</p>
+  <p>問題出在切回來的那一刻：</p>
+  </div>
+  </div>
+  <div class="meaning"><b>我當時的原話</b>我很容易很多任務在跑，有時候我回到這個任務，這個任務可能是半個小時前的，而且我好多個任務在切換，我已經有點搞不懂我這個任務剛剛問什麼了。</div>
+  <p>所以我做了一列小小的提示，掛在輸入框上方，切回來就看得到上一題問了什麼。</p>
+</div></section>
+
+<section class="section" id="what-it-shows"><div class="inner">
+  <h2>上一題提示列顯示什麼：題目、多久前問的、上下文用了多少</h2>
+  <div class="media-row img-right">
+  <div class="media-text">
+  <p>裝好之後，每次送出問題，輸入框上方就會出現一列提示：上一題、幾分鐘前問的，後面一個小圓圈。</p>
+  <p>這一列一直掛在那裡，切回任務時抬頭就看得到，不用往上捲。終端機版長這樣：</p>
+  </div>
+  <div class="media-fig"><figure class="inline-figure portrait"><img src="../../images/articles/last-question-mod-02.jpg" alt="輪播卡：輸入框上方多一列。輸入框上面一條提示列寫著上一題・3 分鐘前，旁邊一個灰底綠色小圓餅，咪卡指著它，朵拉從輸入框後探頭笑" width="1080" height="1350" loading="lazy"><figcaption>輸入框上方多一列提示</figcaption></figure></div>
+  </div>
+  <div class="codeblock">上一題（3 分鐘前・◔）：幫我把這份會議紀錄整理成三個重點   [收起]</div>
+  <div class="tablewrap"><table>
+    <thead><tr><th>位置</th><th>顯示什麼</th></tr></thead>
+    <tbody>
+      <tr><td>上一題</td><td>你最後送出的問題。換行會併成一行，超過 80 字截斷。斜線指令（例如 <code>/compact</code>）不算。</td></tr>
+      <tr><td>多久前問的</td><td>剛剛、N 分鐘前、N 小時 N 分前，每分鐘更新一次。</td></tr>
+      <tr><td>彩色圓圈</td><td>這個對話的上下文已使用多少。灰色底，從 12 點鐘方向順時針填色，用得越多填得越滿。不顯示數字；在 Claude 桌面 App 裡，滑鼠移到圓圈上會出現「上下文已使用 X%」。上面範例的 ◔ 是終端機版的樣子。</td></tr>
+      <tr><td>收起</td><td>這一題先不顯示，下次送出新問題會再出現。</td></tr>
+    </tbody>
+  </table></div>
+  <p>一開始我做的是文字「已使用 27%」。後來改成圓圈，理由是：</p>
+  <div class="meaning"><b>我當時的原話</b>前面那個幾分鐘已經用數字了，所以後面用圓圈，我覺得這樣子視覺上更好區分。</div>
+  <h3>圓圈的四種顏色</h3>
+  <div class="tablewrap"><table>
+    <thead><tr><th>上下文已使用</th><th>圓圈顏色</th></tr></thead>
+    <tbody>
+      <tr><td>20% 以內（含 20%）</td><td>淺綠</td></tr>
+      <tr><td>超過 20%，到 50%（含）</td><td>深綠</td></tr>
+      <tr><td>超過 50%，未滿 70%</td><td>黃</td></tr>
+      <tr><td>70% 以上（含 70%）</td><td>紅</td></tr>
+    </tbody>
+  </table></div>
+  <div class="media-row">
+  <div class="media-fig"><figure class="inline-figure portrait"><img src="../../images/articles/last-question-mod-03.jpg" alt="輪播卡：小圓圈，上下文用了多少。四個灰底圓餅：20% 以內淺綠、50% 以內深綠、70% 前黃、70% 以上紅，朵拉拿指示棒指著紅色，咪卡在筆記本上記" width="1080" height="1350" loading="lazy"><figcaption>圓圈越滿、顏色越熱，用得越多</figcaption></figure></div>
+  <div class="media-text">
+  <p>這個數字跟 Claude Code 狀態列、Claude 桌面 App「背景資訊」顯示的是同一個。Claude Code 每回答完一輪會量一次，所以圓圈是每輪更新，不是即時跳動；剛開的對話還沒量到之前，只顯示時間，不顯示圓圈。</p>
+  </div>
+  </div>
+  <p>終端機畫不了圖，改用 ○◔◑◕● 五個字元表示，顏色規則一樣。</p>
+</div></section>
+
+<section class="section" id="use"><div class="inner">
+  <h2>看時間和圓圈，決定要不要先寫工作日誌、壓縮上下文</h2>
+  <p>上一題解決的是「剛剛問什麼」。時間和圓圈放在旁邊，是想再多知道一件事：這個任務跑多久了、用了多少。</p>
+  <div class="meaning"><b>我當時的原話</b>也可以去寫這個任務執行多久、它佔了多少，讓我知道我要不要寫工作日誌啊，到這個階段啊，是不是要壓縮上下文啊。</div>
+  <p>上下文快滿時，Claude Code 會自己壓縮，那時候留下什麼由 AI 決定。我習慣在那之前，自己先把做到哪、卡在哪、下一步寫成工作日誌存檔，再壓縮。圓圈讓我不用另外去查，抬頭就知道現在大概在哪個階段。</p>
+  <p>圓圈只負責顯示，不會幫你寫日誌，也不會自己壓縮。什麼顏色該做什麼，照你自己的工作習慣決定。</p>
+  <div class="readmore near"><b>延伸閱讀</b>
+    <ul>
+      <li><a href="../auto-compact-mod/">離開超過一小時回來，AI 對話為什麼變貴？</a>：為什麼要先寫工作日誌再壓縮，以及我另一個 Mod 怎麼在閒置 55 分鐘時自動做這件事。</li>
+      <li><a href="../claude-code-slash-commands/">Claude Code 打「/」跳出一整排英文指令，到底有啥功能？</a>：<code>/compact</code>、<code>/context</code> 這些指令在做什麼。</li>
+    </ul>
+  </div>
+</div></section>
+
+<section class="section" id="what-is-mod"><div class="inner">
+  <h2>Claude Code Mod 是什麼：照自己的習慣改造 AI 的工作畫面</h2>
+  <p>Claude Code 是 Anthropic 出的 AI 工作助理，可以在終端機或 Claude 桌面 App 的 Code 分頁使用，能直接讀寫你電腦上的檔案、幫你做事。如果你只用過 ChatGPT 或 Claude 的網頁聊天，這一段可以先看個大概。</p>
+  <p>Claude Code Mod 是 Claude Code 外掛裡的一段程式（JavaScript 或 TypeScript），需要 Claude Code 2.1.287 以上的版本。它可以在你送出訊息、AI 回答完、AI 要動用工具這些時間點插手，也可以在畫面上加東西。</p>
+  <p>我覺得它最好用的地方，是可以照自己的工作習慣去改。像我很容易同時開很多任務，就做一列提示幫自己記上一題。Mod 能改的地方，官方開放的有這些：</p>
+  <div class="tablewrap"><table>
+    <thead><tr><th>可以改哪裡</th><th>舉例</th></tr></thead>
+    <tbody>
+      <tr><td>輸入框上方加一列</td><td>這篇的上一題提示列</td></tr>
+      <tr><td>對話旁邊加一個面板</td><td>我做的<a href="../task-queue-mod/">任務佇列</a>，交代的事排在旁邊</td></tr>
+      <tr><td>畫面下方的狀態列</td><td>顯示目前狀態或提醒</td></tr>
+      <tr><td>跳出一則小提示</td><td>某件事做完時提醒你</td></tr>
+      <tr><td>新增斜線指令</td><td>打 <code>/</code> 就能用的自訂指令</td></tr>
+      <tr><td>主題配色</td><td>換整個畫面的顏色</td></tr>
+      <tr><td>AI 動用工具前先檢查</td><td>擋下或改寫某些動作，例如<a href="../pii-shield/">個資防護盾</a>先把人名換成代號</td></tr>
+      <tr><td>送出的訊息先改過</td><td>自動幫每則訊息附上補充資料</td></tr>
+    </tbody>
+  </table></div>
+  <p>官方說明在 <a href="https://code.claude.com/docs/en/plugins/mods/create" target="_blank" rel="noopener">Claude Code Mods 建立教學</a>。</p>
+  <h3>這一列是怎麼做出來的</h3>
+  <p>上一題提示列用到四個 Mod 提供的功能：</p>
+  <ol>
+    <li><b>你送出問題時</b>，記下問題的文字和送出時間。</li>
+    <li><b>每分鐘</b>更新一次「幾分鐘前」。</li>
+    <li><b>Claude Code 每輪回答完量一次上下文用量</b>，Mod 拿這個數字決定圓圈填多滿、什麼顏色。</li>
+    <li><b>畫在輸入框上方</b>。Claude 桌面 App 這類可以畫圖的畫面畫圓餅；終端機改用字元。</li>
+  </ol>
+  <p>程式大約 140 行，附兩條自動測試：一條檢查圓圈在桌面 App、手機、VS Code、終端機都畫得出來，以及顏色分界（20、21、50、51、69、70%）各對到正確顏色；另一條檢查還沒量到用量時只顯示時間。中間有一版我請另一家公司的模型（Google 的 Gemini 4 Neon）交叉審查程式碼，採用了四項修正，例如重開舊對話時時間顯示錯成「剛剛」、超長問題截斷時把表情符號切壞。</p>
+  <div class="readmore near"><b>延伸閱讀</b>
+    <ul>
+      <li><a href="../task-queue-mod/">Claude Code Mod 做任務佇列</a>：同樣是 Mod，這個是在對話旁邊加一個面板。</li>
+      <li><a href="../pii-shield/">個資防護盾</a>：這個 Mod 不加畫面，是在 AI 讀資料之前先把個資換成代號。</li>
+    </ul>
+  </div>
+</div></section>
+
+<section class="section" id="install"><div class="inner">
+  <h2>下載安裝上一題提示列，終端機與桌面 App 都能用</h2>
+  <div class="media-row img-right">
+  <div class="media-text">
+  <p>原始碼公開在 GitHub，免費下載。需要 Claude Code 2.1.287 以上，終端機版與 Claude 桌面 App 的 Code 分頁都能用。</p>
+  <p>下面兩種裝法擇一，裝好後開一個新對話就看得到。</p>
+  </div>
+  <div class="media-fig"><figure class="inline-figure portrait"><img src="../../images/articles/last-question-mod-04.jpg" alt="輪播卡：免費下載，安裝方法在官網文章。咪卡捧著打開的禮物盒，盒裡飄出一條上一題提示列，遞給伸手的朵拉" width="1080" height="1350" loading="lazy"><figcaption>免費下載，兩種裝法擇一</figcaption></figure></div>
+  </div>
+  <h3>在 Claude Code 對話框輸入</h3>
+  <div class="codeblock">/plugin marketplace add Jiang-Yude/claude-last-question
+/plugin install last-question@claude-last-question</div>
+  <h3>或在一般終端機（例如 Mac 的「終端機」App）輸入</h3>
+  <div class="codeblock">claude plugin install last-question --marketplace Jiang-Yude/claude-last-question</div>
+  <p>裝好後開一個新對話，送出第一個問題，輸入框上方就會出現這一列。圓圈要等 AI 回答完第一輪才會出現。</p>
+  <h3>不想用了</h3>
+  <div class="codeblock">/plugin uninstall last-question</div>
+  <div class="skillcard">
+    <b>上一題提示列 last-question</b>
+    <p>免費、MIT 授權（可以自由使用、修改、分享）。原始碼、測試和完整說明都在 GitHub。</p>
+    <div class="cta">
+      <a class="primary" href="https://github.com/Jiang-Yude/claude-last-question" target="_blank" rel="noopener">GitHub 原始碼 ↗</a>
+      <a class="primary" href="../../skills.html#last-question">在小工具頁查看</a>
+    </div>
+  </div>
+</div></section>
+
+<section class="section" id="make-your-own"><div class="inner">
+  <h2>請 AI 幫你做自己的 Claude Code Mod：一段提示詞</h2>
+  <p>你不一定要用我的版本。每個人卡住的地方不一樣，可以請 Claude Code 照你的習慣做一個。支援 Mod 的 Claude Code（2.1.287 以上）內建做 Mod 的技能，把需求講清楚，請它幫你起草：</p>
+  <div class="codeblock">我想做一個 Claude Code Mod，解決這個問題：＿＿＿（例如：我常常忘記上一題問什麼）。
+我希望它顯示在＿＿＿（例如：輸入框上方／對話旁邊／狀態列）。
+請先告訴我做得到嗎、會長什麼樣子，我說可以再開始做。
+做好先寫測試、跑過，再讓我在畫面上看。</div>
+  <p>第一次用，建議從「只顯示、不改動任何東西」的小功能開始，像這篇的提示列。會擋下或改寫 AI 動作的 Mod，影響比較大，做好要多測幾次。</p>
+</div></section>
+
+<section class="section" id="limits"><div class="inner">
+  <h2>上一題提示列的限制與隱私提醒</h2>
+  <ul>
+    <li><b>只能用在 Claude Code</b>，而且要 2.1.287 以上。</li>
+    <li><b>圓圈每輪更新一次</b>：AI 回答到一半時，圓圈還是上一輪量到的數字。</li>
+    <li><b>只記這個對話的上一題</b>：不會列出更早的問題，也不會跨對話。</li>
+    <li><b>Mod 本身不連網</b>：它只讀你本來就送進這個對話的上一題，不會把文字另外傳到任何地方。</li>
+    <li><b>分享螢幕前先按「收起」</b>：上一題如果貼了密碼、金鑰或客戶資料，它會一直顯示在輸入框上方。</li>
+    <li><b>Mod 用你自己的權限執行</b>：你電腦上你能打開的檔案、能跑的指令，Mod 理論上也碰得到。來路不明的 Mod 不要裝；這個的原始碼公開，可以先請 AI 幫你讀過再裝。</li>
+  </ul>
+</div></section>
+
+<section class="section" id="no-code"><div class="inner">
+  <h2>不裝 Mod，也能查上一題和上下文用了多少</h2>
+  <ul>
+    <li><b>上下文用了多少</b>：在 Claude Code 輸入 <code>/context</code>，會列出這個對話的上下文用量。Claude 桌面 App 的「背景資訊」也看得到。</li>
+    <li><b>上一題</b>：終端機版按鍵盤 ↑，可以叫出之前送出過的訊息。或直接問 AI：「我上一題問了什麼？」</li>
+  </ul>
+  <p>差別在於這些都要你主動去查。我要的是切回來不用想、抬頭就看到，所以才做成一直掛在那裡的一列。</p>
+  <div class="readmore"><b>這篇提到過的</b>
+    <ul>
+      <li><a href="../auto-compact-mod/">離開超過一小時回來，AI 對話為什麼變貴？｜閒置 55 分鐘先寫日誌再自動壓縮</a></li>
+      <li><a href="../task-queue-mod/">Claude Code Mod 做任務佇列｜一次交代 AI 好幾件事</a></li>
+      <li><a href="../pii-shield/">個資防護盾：免費 Claude Code Mod</a></li>
+      <li><a href="../claude-code-slash-commands/">Claude Code 打「/」跳出一整排英文指令，到底有啥功能？</a></li>
+    </ul>
+    <b style="margin-top:14px">再往前後延伸</b>
+    <ul>
+      <li><a href="../token-money-worth-doing/">用 AI 解決一件事，花的錢值不值得？｜我做了一個 Token 精算師</a></li>
+    </ul>
+  </div>
+</div></section>
+
+<div class="cta-band"><section class="section"><div class="inner">
+  <div>
+    <h2>你也想照自己的習慣改造 AI 工作畫面嗎</h2>
+    <p class="lead">裝了覺得哪裡不順手，或想做一個自己的 Mod 卡住了，歡迎到 LINE 社群跟我說。</p>
+  </div>
+  <div class="cta-card"><b>加入 LINE 社群</b>
+    <p>我每月固定舉辦兩場免費線上講座，分享 AI × 知識管理的實戰經驗。</p>
+    <p><a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">加入社群 ↗</a></p>
+  </div>
+</div></section></div>
+
+</main>
+
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">江江教練 · AI 知識管理</div>
+    <div class="footer-links">
+      <a href="../../articles.html">← 回深度文章總站</a>
+      <a href="../../index.html">首頁</a>
+      <a href="../../learn.html">自學資源</a>
+      <a href="../../skills.html">小工具</a>
+      <a href="https://line.me/R/ti/g2/V63_43ngbs_kq1mpVc9LlxXB-1kchHnwdsy3WQ" target="_blank" rel="noopener">LINE 社群 ↗</a>
+      <a href="https://www.threads.com/@jiang_yude_coach" target="_blank" rel="noopener">Threads ↗</a>
+      <a href="https://vocus.cc/salon/Jiang_Coach" target="_blank" rel="noopener">方格子 ↗</a>
+    </div>
+    <div class="footer-note">這是一篇教學文章，整理我對「好幾個 AI 任務切來切去，忘了剛剛問什麼？｜免費 Claude Code Mod：輸入框上方顯示上一題、多久前問的、上下文用了多少」的看法，供你參考。</div>
+  </div>
+</footer>
+
+<!-- 相簿：同頁照片點開深色底、左右鍵與手機左右滑、下面一排小縮圖、顯示第幾張（江江規則，做法沿用天翼簡報 #lb） -->
+<style>
+dialog#lb{padding:0;border:0;border-radius:0;max-width:100vw;max-height:100vh;width:100vw;height:100vh;background:#111;margin:0}
+dialog#lb::backdrop{background:#111}
+.gal{position:relative;width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:56px 70px 12px;box-sizing:border-box}
+.gal img#lb-img{max-width:100%;max-height:calc(100vh - 210px);object-fit:contain;border-radius:4px;margin:0 auto}
+.gal-x{position:absolute;top:12px;right:16px;font-size:34px;background:none;border:none;color:#fff;cursor:pointer;padding:4px 14px}
+.gal-count{position:absolute;top:18px;left:22px;color:#ddd;font-size:22px}
+.gal-nav{position:absolute;top:45%;transform:translateY(-50%);font-size:56px;line-height:1;background:rgba(255,255,255,.12);border:none;color:#fff;cursor:pointer;border-radius:50%;width:68px;height:68px}
+.gal-nav.prev{left:10px}.gal-nav.next{right:10px}
+.gal-cap{color:#eee;font-size:18px;margin:10px 0 6px;text-align:center;max-width:90%;line-height:1.6}
+.gal-thumbs{display:flex;gap:8px;overflow-x:auto;max-width:100%;padding:4px}
+.gal-thumbs img{width:84px;height:60px;object-fit:cover;opacity:.5;cursor:pointer;border-radius:4px;flex:none;border:2px solid transparent}
+.gal-thumbs img.on{opacity:1;border-color:#f2b24c}
+@media (max-width:900px){.gal{padding:52px 8px 10px}.gal-nav{width:46px;height:46px;font-size:36px}.gal img#lb-img{max-height:calc(100vh - 190px)}}
+</style>
+<dialog id="lb" aria-label="看照片">
+  <div class="gal">
+    <button class="gal-x" id="lb-x" aria-label="關閉">✕</button>
+    <div class="gal-count" id="lb-count"></div>
+    <button class="gal-nav prev" id="lb-prev" aria-label="上一張">‹</button>
+    <img id="lb-img" alt="放大的圖">
+    <button class="gal-nav next" id="lb-next" aria-label="下一張">›</button>
+    <div class="gal-cap" id="lb-cap"></div>
+    <div class="gal-thumbs" id="lb-thumbs"></div>
+  </div>
+</dialog>
+<script>
+(function(){
+  var imgs=[].slice.call(document.querySelectorAll('.hero-figure img,main .inline-figure img'));
+  var lb=document.getElementById('lb');if(!lb||!imgs.length)return;
+  var im=document.getElementById('lb-img'),cnt=document.getElementById('lb-count'),cap=document.getElementById('lb-cap'),th=document.getElementById('lb-thumbs'),i=0;
+  imgs.forEach(function(g,k){var t=document.createElement('img');t.src=g.src;t.alt='';t.onclick=function(){show(k)};th.appendChild(t);g.style.cursor='zoom-in';g.addEventListener('click',function(){show(k);if(!lb.open)lb.showModal()})});
+  function show(k){i=(k+imgs.length)%imgs.length;var g=imgs[i];im.src=g.src;im.alt=g.alt;cnt.textContent=(i+1)+' / '+imgs.length;
+    var fc=g.closest('figure')&&g.closest('figure').querySelector('figcaption');cap.textContent=fc?fc.textContent:'';
+    [].forEach.call(th.children,function(t,n){t.classList.toggle('on',n===i)});}
+  document.getElementById('lb-prev').onclick=function(){show(i-1)};document.getElementById('lb-next').onclick=function(){show(i+1)};
+  document.getElementById('lb-x').onclick=function(){lb.close()};
+  lb.addEventListener('click',function(e){if(e.target===lb||e.target.classList.contains('gal'))lb.close()});
+  document.addEventListener('keydown',function(e){if(!lb.open)return;if(e.key==='ArrowLeft')show(i-1);if(e.key==='ArrowRight')show(i+1)});
+  var x0=null;lb.addEventListener('touchstart',function(e){x0=e.touches[0].clientX},{passive:true});
+  lb.addEventListener('touchend',function(e){if(x0===null)return;var dx=e.changedTouches[0].clientX-x0;if(Math.abs(dx)>40)show(i+(dx<0?1:-1));x0=null},{passive:true});
+})();
+</script>
+
+<script src="../../image-interactions.js"></script>
+
+<!-- 官網共用：滑鼠暖光暈 + 導航列漢堡選單 -->
+<script src="../../spotlight.js"></script>
+
+<!-- 文章自動互聯（相關文章）：兩支已內建，順序不可顛倒，不用再另外加 -->
+<script src="../../articles-data.js"></script>
+<script src="../../related-render.js"></script>
+  <script src="/mika-chat-widget.js" defer></script>
+  <script src="/member-comments.js" defer></script>
+<!-- tracking:cloudflare -->
+<script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "c3e3c857121d416ab405270557d017d3"}'></script>
+<!-- tracking:views-counter -->
+<script src="/views.js"></script>
+</body>
+</html>

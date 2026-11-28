@@ -135,6 +135,25 @@ window.ARTICLES = [
   },
 
   {
+    id: "last-question-mod",
+    url: "articles/last-question-mod/",
+    date: "2026-11-23",
+    updated: "2026-11-23",
+    title: "好幾個 AI 任務切來切去，忘了剛剛問什麼？｜免費 Claude Code Mod：輸入框上方顯示上一題、多久前問的、上下文用了多少",
+    problem: "同時開好幾個 AI 任務，切回某個對話時已經忘了剛剛問什麼；也不知道這個對話的上下文用了多少。",
+    audience: "同時開好幾個 AI 對話或任務的人；用 Claude Code、想知道 Mod 能改什麼的人。",
+    summary: "我用 Claude Code Mod 做了上一題提示列：輸入框上方固定顯示上一題、多久前問的，以及一個彩色圓圈表示上下文用了多少（20% 以內淺綠、20 到 50% 深綠、50 到 70% 黃、70% 以上紅）。文章講為什麼需要它、怎麼用時間和圓圈決定要不要寫工作日誌與壓縮上下文、Claude Code Mod 能改哪些地方、兩行安裝指令、請 AI 做自己 Mod 的提示詞、限制與隱私，以及不裝 Mod 也能查的方法。原始碼：https://github.com/Jiang-Yude/claude-last-question",
+    tags: {
+      topic: ["AI工作流", "工具操作"],
+      level: ["進階"],
+      content_type: ["教學文章"]
+    },
+    external: { threads: null, vocus: null },
+    related: ["auto-compact-mod", "task-queue-mod", "pii-shield", "claude-code-slash-commands", "token-money-worth-doing"],
+    cover: { wide: "images/articles/last-question-mod-cover.jpg" }
+  },
+
+  {
     id: "two-characters-one-reference-sheet",
     url: "articles/two-characters-one-reference-sheet/",
     date: "2026-11-23",
@@ -565,7 +584,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["auto-compact-mod", "token-money-worth-doing", "loop-round-limit", "task-queue-mod"],
+    related: ["auto-compact-mod", "token-money-worth-doing", "loop-round-limit", "task-queue-mod", "last-question-mod"],
     cover: { wide: "images/articles/claude-code-slash-commands-cover.jpg" }
   },
 
@@ -925,7 +944,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["token-money-worth-doing", "pii-shield", "codex-log-health-check", "task-queue-mod", "claude-code-slash-commands"],
+    related: ["token-money-worth-doing", "pii-shield", "codex-log-health-check", "task-queue-mod", "claude-code-slash-commands", "last-question-mod"],
     cover: { wide: "images/articles/auto-compact-mod-cover.jpg" }
   },
 
@@ -1172,7 +1191,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["auto-compact-mod", "grok-bot-galaxy-day1-founders", "ai-manages-ai-focus", "claude-code-slash-commands"],
+    related: ["auto-compact-mod", "grok-bot-galaxy-day1-founders", "ai-manages-ai-focus", "claude-code-slash-commands", "last-question-mod"],
     cover: { wide: "images/articles/task-queue-mod-cover.jpg" }
   },
 
@@ -1400,7 +1419,7 @@ window.ARTICLES = [
       content_type: ["教學文章"]
     },
     external: { threads: null, vocus: null },
-    related: ["ai-data-red-lines", "ai-batch-work-without-seeing-data", "token-money-worth-doing", "auto-compact-mod"],
+    related: ["ai-data-red-lines", "ai-batch-work-without-seeing-data", "token-money-worth-doing", "auto-compact-mod", "last-question-mod"],
     cover: { wide: "images/articles/pii-shield-cover.jpg" }
   },
 

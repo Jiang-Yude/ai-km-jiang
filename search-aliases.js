@@ -252,4 +252,5 @@ window.SEARCH_ALIASES = {
   "team-ai-plan-hook": ["綁死一家 AI","換 AI 帶得走","AI 平台匯出","ChatGPT 商務版","ChatGPT Business","Claude Team","Claude 商務版","團隊方案","公司訂 AI","公司 AI 帳號","公司 AI 跟個人 AI 分開","商務版管什麼","買了商務版就能管好公司資產嗎","員工用 AI 做的東西","公司資產","共用知識庫","員工離職 AI","Codex 檔案存在哪","Claude Code Hook","Hook 機制","AI 守規矩","工作日誌自動上傳","NAS"],
   "claude-or-chatgpt-rules-first": ["ChatGPT 還是 Claude","ChatGPT Claude 差別","Claude 和 ChatGPT 哪個好","新手用哪個 AI","要訂哪個 AI","為什麼推薦 Claude","為什麼推薦 Claude 不推薦 ChatGPT","Claude Code 為什麼比較聽話","AI 守規矩","AI 不亂搞","八十分一百分","老實可靠聽話","AI 同事","Claude 不會畫圖怎麼辦","AI 憲法","Constitutional AI","Hook 機制","抽卡","AI 畫圖不用抽卡","ChatGPT 情商高","Claude 專業顧問"],
   "how-i-teach-ai-to-edit-video": ["怎麼教 AI 剪輯","怎麼教 AI 剪片","AI 剪片一直剪錯","AI 剪的影片字幕擋到臉","字幕壓到人臉","字幕遮到角色的臉","角色忽左忽右","角色位置每幕一直跳","AI 一直截圖檢查","截圖檢查很花 token","用數學檢查取代截圖","用尺寸算會不會擋到","微調到底是多少","把感覺量化成數字","叫 AI 分析我為什麼這樣改","教 AI 我的剪輯習慣","剪輯台","朵拉擺位","短影音角色擺位","Claude 剪影片","AI 剪片同樣的錯一直犯","AI 剪輯品質檢查"],
+  "last-question-mod": ["忘了剛剛問什麼","忘了剛剛問 AI 什麼","忘記剛剛問 AI 什麼","上一題提示","上一題提示列","切回任務忘了問什麼","Claude Code 上一題","Claude Code Mod是什麼","Claude Code 上下文用了多少","上下文圓圈","圓圈四種顏色","last-question","claude-last-question"]
 };
